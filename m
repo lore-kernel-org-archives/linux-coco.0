@@ -1,18 +1,19 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D97E70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBFA2F80
 	for <linux-coco@lists.linux.dev>; Thu,  6 May 2021 09:39:22 +0000 (UTC)
 Received: from cap.home.8bytes.org (p5b0069de.dip0.t-ipconnect.de [91.0.105.222])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id EB37B247;
-	Thu,  6 May 2021 11:31:55 +0200 (CEST)
+	by theia.8bytes.org (Postfix) with ESMTPSA id 05B423FF;
+	Thu,  6 May 2021 11:31:57 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: Eric Biederman <ebiederm@xmission.com>,
 	x86@kernel.org
 Cc: kexec@lists.infradead.org,
 	Joerg Roedel <jroedel@suse.de>,
+	stable@vger.kernel.org,
 	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -35,10 +36,12 @@ Cc: kexec@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH 0/2] x86: Disable kexec for SEV-ES guests
-Date: Thu,  6 May 2021 11:31:20 +0200
-Message-Id: <20210506093122.28607-1-joro@8bytes.org>
+Subject: [PATCH 2/2] x86/kexec/64: Forbid kexec when running as an SEV-ES guest
+Date: Thu,  6 May 2021 11:31:22 +0200
+Message-Id: <20210506093122.28607-3-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210506093122.28607-1-joro@8bytes.org>
+References: <20210506093122.28607-1-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -48,31 +51,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Hi,
+For now, kexec is not supported when running as an SEV-ES guest. Doing
+so requires additional hypervisor support and special code to hand
+over the CPUs to the new kernel in a safe way.
 
-two small patches to disable kexec on x86 when running as an SEV-ES
-guest. Trying to kexec a new kernel would fail anyway because there is
-no mechanism yet to hand over the APs from the old to the new kernel.
-Supporting this needs changes in the Hypervisor and the guest kernel
-as well.
+Until this is implemented, do not support kexec in SEV-ES guests.
 
-This code is currently being work on, but disable kexec in SEV-ES
-guests until it is ready.
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+---
+ arch/x86/kernel/machine_kexec_64.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Please review.
-
-Regards,
-
-	Joerg
-
-Joerg Roedel (2):
-  kexec: Allow architecture code to opt-out at runtime
-  x86/kexec/64: Forbid kexec when running as an SEV-ES guest
-
- arch/x86/kernel/machine_kexec_64.c |  8 ++++++++
- kernel/kexec.c                     | 14 ++++++++++++++
- 2 files changed, 22 insertions(+)
-
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index c078b0d3ab0e..f902cc9cc634 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -620,3 +620,11 @@ void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages)
+ 	 */
+ 	set_memory_encrypted((unsigned long)vaddr, pages);
+ }
++
++/*
++ * Kexec is not supported in SEV-ES guests yet
++ */
++bool arch_kexec_supported(void)
++{
++	return !sev_es_active();
++}
 -- 
 2.31.1
 
