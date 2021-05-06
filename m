@@ -1,44 +1,78 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE545F
-	for <linux-coco@lists.linux.dev>; Mon, 22 Mar 2021 21:35:48 +0000 (UTC)
-Received: by mail-qv1-f42.google.com with SMTP id j17so9401704qvo.13
-        for <linux-coco@lists.linux.dev>; Mon, 22 Mar 2021 14:35:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s7grtCkX7DKhOXuOtCYVfYQ7dhHtAiix1eK5L5X2R+I=;
-        b=XS24Bu/c39iqddMd82uSYeI3Qn6xlgMoyj1MoMZFB2svp32SL8VsrgckwjEQ6jYGzt
-         iOlJSu6BxjxfKqoTvpPxtaT7eDzlOi3Y1446HwN7VLC8gZfPSLZaL51PczR20Z6n9N/i
-         /o5TMDbEdBNdkpHaW9/WP8C84jOcZMUe2EaYg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s7grtCkX7DKhOXuOtCYVfYQ7dhHtAiix1eK5L5X2R+I=;
-        b=bt+WiEzOsg4LoyT8wQtYmjG9LN1CoT7LvhSO0xTI9iqBCJSQhAjOJKTIm3mwJFEkn1
-         zH49fUeqYnFC2wyNb7o0GBlPIU5Ll7nLV5Zo0jiKo9grVqkMCtMLGGBJwrsNAVshxU85
-         7YYxZoXYR9DojCKpFuRhZhbWNw825vP5dc1dnPFrg2olbGh92KNwV92aheAxvJU+cTFK
-         EggPI9IukdxjOFXDWDEjLF4apiHi/j1A8gA4cvsjP926AVhtaMiR5MoBqnxvnHHEDDBM
-         nmsr5jN8WnEBKCNvO5cYgsZ1pEf/DHLVpAloTM86Rf8pCfgjTmJKQanUMBvATz3Kw9EA
-         JQkA==
-X-Gm-Message-State: AOAM531gwxt9hJ9xkV6IhMqeQelITSJuiE8AmBL3vpz7QY2M35x2laiL
-	qoS323RS60RJE4Xuto8xguMYNAPRgXpeVOTRiz/l8FUtyoHX+vuX
-X-Google-Smtp-Source: ABdhPJxwF65dJMs7dmj/2W+M4Eu4ppTZgKrUrtk5BTIz/2F1knjyONgJo/g2zWL9LeBEXcl+bon6c+M1FrbGKVpz1CE=
-X-Received: by 2002:a05:6214:1424:: with SMTP id o4mr1827425qvx.34.1616448947574;
- Mon, 22 Mar 2021 14:35:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D97E70
+	for <linux-coco@lists.linux.dev>; Thu,  6 May 2021 09:39:22 +0000 (UTC)
+Received: from cap.home.8bytes.org (p5b0069de.dip0.t-ipconnect.de [91.0.105.222])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by theia.8bytes.org (Postfix) with ESMTPSA id EB37B247;
+	Thu,  6 May 2021 11:31:55 +0200 (CEST)
+From: Joerg Roedel <joro@8bytes.org>
+To: Eric Biederman <ebiederm@xmission.com>,
+	x86@kernel.org
+Cc: kexec@lists.infradead.org,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	Joerg Roedel <joro@8bytes.org>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: [PATCH 0/2] x86: Disable kexec for SEV-ES guests
+Date: Thu,  6 May 2021 11:31:20 +0200
+Message-Id: <20210506093122.28607-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Date: Mon, 22 Mar 2021 17:35:37 -0400
-Message-ID: <CAMwyc-RcB5YvjkW8QDj7gB46LVrXvgECrxHmc0rfX6nmyNsx+Q@mail.gmail.com>
-Subject: Initial message to start the archive
-To: linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello world.
+From: Joerg Roedel <jroedel@suse.de>
 
--K
+Hi,
+
+two small patches to disable kexec on x86 when running as an SEV-ES
+guest. Trying to kexec a new kernel would fail anyway because there is
+no mechanism yet to hand over the APs from the old to the new kernel.
+Supporting this needs changes in the Hypervisor and the guest kernel
+as well.
+
+This code is currently being work on, but disable kexec in SEV-ES
+guests until it is ready.
+
+Please review.
+
+Regards,
+
+	Joerg
+
+Joerg Roedel (2):
+  kexec: Allow architecture code to opt-out at runtime
+  x86/kexec/64: Forbid kexec when running as an SEV-ES guest
+
+ arch/x86/kernel/machine_kexec_64.c |  8 ++++++++
+ kernel/kexec.c                     | 14 ++++++++++++++
+ 2 files changed, 22 insertions(+)
+
+-- 
+2.31.1
+
