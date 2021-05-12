@@ -1,98 +1,80 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6D770
-	for <linux-coco@lists.linux.dev>; Thu,  6 May 2021 20:41:10 +0000 (UTC)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-	id E58A0312; Thu,  6 May 2021 22:41:07 +0200 (CEST)
-Date: Thu, 6 May 2021 22:41:05 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFB970
+	for <linux-coco@lists.linux.dev>; Wed, 12 May 2021 07:55:15 +0000 (UTC)
+Received: from cap.home.8bytes.org (p549ad305.dip0.t-ipconnect.de [84.154.211.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by theia.8bytes.org (Postfix) with ESMTPSA id 4BF4D90;
+	Wed, 12 May 2021 09:55:07 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Joerg Roedel <jroedel@suse.de>, x86@kernel.org,
-	kexec@lists.infradead.org, stable@vger.kernel.org, hpa@zytor.com,
+To: x86@kernel.org,
+	Hyunwook Baek <baekhw@google.com>
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
 	Erdem Aktas <erdemaktas@google.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mike Stunes <mstunes@vmware.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH 2/2] x86/kexec/64: Forbid kexec when running as an SEV-ES
- guest
-Message-ID: <YJRUYWRItEziB2eP@8bytes.org>
-References: <20210506093122.28607-1-joro@8bytes.org>
- <20210506093122.28607-3-joro@8bytes.org>
- <m17dkb4v4k.fsf@fess.ebiederm.org>
- <YJQ4QTtvG76WpcNf@suse.de>
- <m1o8dn1ye9.fsf@fess.ebiederm.org>
+Subject: [PATCH 0/6] x86/sev-es: Fixes for SEV-ES guest support
+Date: Wed, 12 May 2021 09:54:39 +0200
+Message-Id: <20210512075445.18935-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <m1o8dn1ye9.fsf@fess.ebiederm.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 06, 2021 at 01:59:42PM -0500, Eric W. Biederman wrote:
-> Joerg Roedel <jroedel@suse.de> writes:
+From: Joerg Roedel <jroedel@suse.de>
 
-> Why does it need that?
-> 
-> Would it not make sense to instead teach kexec how to pass a cpu from
-> one kernel to another.  We could use that everywhere.
-> 
-> Even the kexec-on-panic case should work as even in that case we have
-> to touch the cpus as they go down.
-> 
-> The hardware simply worked well enough that it hasn't mattered enough
-> for us to do something like that, but given that we need to do something
-> anyway.  It seems like it would make most sense do something that
-> will work everywhere, and does not introduce unnecessary dependencies
-> on hypervisors.
+Hi,
 
-Well, I guess we could implement something that even works for non
-SEV-ES guests and bare-metal. The question is what benefit we get from
-that. Is the SIPI sequence currently used not reliable enough?
+here is a collection of fixes for the SEV-ES guest support. They fix
+simple and more severe issues and are all targeted for v5.13. The most
+important fixes are the revert of 7024f60d6552 which just doesn't work
+in any context the #VC handler could run and the fix to forward #PF
+exceptions caused during emulation. The issue that 7024f60d6552
+intended to fix should be fixed correctly with these patches too.
 
-The benefit of being able to rely on the SIPI sequence is that the
-kexec'ed kernel can use the same method to bring up APs as the first
-kernel did.
-
-Btw, the same is true for SEV-ES guests, The goal is bring the APs of
-an SEV-ES guest into a state where they will use the SEV-ES method of
-AP-bringup when they wake up again. This method involves a
-firmware-owned page called the AP-jump-table, which contains the reset
-vector for the AP in its first 4 bytes.
-
-> > As I said above, for protocol version 1 it will stay disabled, so it is
-> > not only a temporary hack.
-> 
-> Why does bringing up a cpu need hypervisor support?
-
-When a CPU is taken offline under SEV-ES it will do a special hypercall
-named AP-reset-hold. The hypervisor will put the CPU into a halt state
-until the next SIPI arrives. In protocol version 1 this hypercall
-requires a GHCB shared page to be set up for the CPU doing the hypercall
-and upon CPU wakeup the HV will write to that shared page. Problem with
-that is that the page which contains the GHCB is already owned by the
-new kernel then and is probably not shared anymore, which can cause data
-corruption in the new kernel.
-
-Version 2 of the protocol adds a purely MSR based version of the
-AP-reset-hold hypercall. This one does not need a GHCB page and has to
-be used to bring the APs offline before doing the kexec. That is the
-reason I plan to only support kexec when the hypervisor provides version
-2 of the protocol.
+Please review and test.
 
 Regards,
 
 	Joerg
+
+Joerg Roedel (6):
+  x86/sev-es: Don't return NULL from sev_es_get_ghcb()
+  x86/sev-es: Forward page-faults which happen during emulation
+  x86/sev-es: Use __put_user()/__get_user
+  Revert "x86/sev-es: Handle string port IO to kernel memory properly"
+  x86/sev-es: Fix error message in runtime #VC handler
+  x86/sev-es: Leave NMI-mode before sending signals
+
+ arch/x86/kernel/sev.c | 76 +++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 38 deletions(-)
+
+
+base-commit: 059e5c321a65657877924256ea8ad9c0df257b45
+-- 
+2.31.1
+
