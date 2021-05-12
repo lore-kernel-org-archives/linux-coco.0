@@ -1,12 +1,12 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2F82FB0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455E12FAF
 	for <linux-coco@lists.linux.dev>; Wed, 12 May 2021 07:55:17 +0000 (UTC)
 Received: from cap.home.8bytes.org (p549ad305.dip0.t-ipconnect.de [84.154.211.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id A32B141D;
+	by theia.8bytes.org (Postfix) with ESMTPSA id 14ABF3E6;
 	Wed, 12 May 2021 09:55:09 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org,
@@ -35,9 +35,9 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH 4/6] Revert "x86/sev-es: Handle string port IO to kernel memory properly"
-Date: Wed, 12 May 2021 09:54:43 +0200
-Message-Id: <20210512075445.18935-5-joro@8bytes.org>
+Subject: [PATCH 3/6] x86/sev-es: Use __put_user()/__get_user
+Date: Wed, 12 May 2021 09:54:42 +0200
+Message-Id: <20210512075445.18935-4-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210512075445.18935-1-joro@8bytes.org>
 References: <20210512075445.18935-1-joro@8bytes.org>
@@ -50,57 +50,84 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-This reverts commit 7024f60d655272bd2ca1d3a4c9e0a63319b1eea1.
+The put_user() and get_user() functions do checks on the address which is
+passed to them. They check whether the address is actually a user-space
+address and whether its fine to access it. They also call might_fault()
+to indicate that they could fault and possibly sleep.
 
-The commit reverted here introduces a short-cut into the #VC handlers
-memory access code which only works reliably in task context. But the
-kernels #VC handler can be invoked from any context, making the
-access_ok() call trigger a warning with CONFIG_DEBUG_ATOMIC_SLEEP
-enabled.
+All of these checks are neither wanted nor required in the #VC exception
+handler, which can be invoked from almost any context and also for MMIO
+instructions from kernel space on kernel memory. All the #VC handler
+wants to know is whether a fault happened when the access was tried.
 
-Also the memcpy() used in the reverted patch is wrong, as it has no
-page-fault handling. Access to kernel memory can also fault due to
-kernel bugs, and those should not be reported as faults from the #VC
-handler but as bugs of their real call-site, which is correctly later
-done from vc_forward_exception().
+This is provided by __put_user()/__get_user(), which just do the access
+no matter what.
 
-Fixes: 7024f60d6552 ("x86/sev-es: Handle string port IO to kernel memory properly")
-Cc: stable@vger.kernel.org # v5.11
+Fixes: f980f9c31a92 ("x86/sev-es: Compile early handler code into kernel image")
+Cc: stable@vger.kernel.org # v5.10+
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/x86/kernel/sev.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ arch/x86/kernel/sev.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 110b39345b40..f4f319004713 100644
+index 6530a844eb61..110b39345b40 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -333,12 +333,6 @@ static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
- 	u16 d2;
- 	u8  d1;
- 
--	/* If instruction ran in kernel mode and the I/O buffer is in kernel space */
--	if (!user_mode(ctxt->regs) && !access_ok(target, size)) {
--		memcpy(dst, buf, size);
--		return ES_OK;
--	}
--
+@@ -342,22 +342,22 @@ static enum es_result vc_write_mem(struct es_em_ctxt *ctxt,
  	switch (size) {
  	case 1:
  		memcpy(&d1, buf, 1);
-@@ -388,12 +382,6 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- 	u16 d2;
- 	u8  d1;
+-		if (put_user(d1, target))
++		if (__put_user(d1, target))
+ 			goto fault;
+ 		break;
+ 	case 2:
+ 		memcpy(&d2, buf, 2);
+-		if (put_user(d2, target))
++		if (__put_user(d2, target))
+ 			goto fault;
+ 		break;
+ 	case 4:
+ 		memcpy(&d4, buf, 4);
+-		if (put_user(d4, target))
++		if (__put_user(d4, target))
+ 			goto fault;
+ 		break;
+ 	case 8:
+ 		memcpy(&d8, buf, 8);
+-		if (put_user(d8, target))
++		if (__put_user(d8, target))
+ 			goto fault;
+ 		break;
+ 	default:
+@@ -396,22 +396,22 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
  
--	/* If instruction ran in kernel mode and the I/O buffer is in kernel space */
--	if (!user_mode(ctxt->regs) && !access_ok(s, size)) {
--		memcpy(buf, src, size);
--		return ES_OK;
--	}
--
  	switch (size) {
  	case 1:
- 		if (__get_user(d1, s))
+-		if (get_user(d1, s))
++		if (__get_user(d1, s))
+ 			goto fault;
+ 		memcpy(buf, &d1, 1);
+ 		break;
+ 	case 2:
+-		if (get_user(d2, s))
++		if (__get_user(d2, s))
+ 			goto fault;
+ 		memcpy(buf, &d2, 2);
+ 		break;
+ 	case 4:
+-		if (get_user(d4, s))
++		if (__get_user(d4, s))
+ 			goto fault;
+ 		memcpy(buf, &d4, 4);
+ 		break;
+ 	case 8:
+-		if (get_user(d8, s))
++		if (__get_user(d8, s))
+ 			goto fault;
+ 		memcpy(buf, &d8, 8);
+ 		break;
 -- 
 2.31.1
 
