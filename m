@@ -1,122 +1,161 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A8E2FAD
-	for <linux-coco@lists.linux.dev>; Wed, 12 May 2021 07:55:20 +0000 (UTC)
-Received: from cap.home.8bytes.org (p549ad305.dip0.t-ipconnect.de [84.154.211.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id D19EA4B4;
-	Wed, 12 May 2021 09:55:10 +0200 (CEST)
-From: Joerg Roedel <joro@8bytes.org>
-To: x86@kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5AF70
+	for <linux-coco@lists.linux.dev>; Wed, 12 May 2021 08:04:39 +0000 (UTC)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-226-GJ3a8MFKOOuK1O-e4s34MQ-1; Wed, 12 May 2021 09:04:35 +0100
+X-MC-Unique: GJ3a8MFKOOuK1O-e4s34MQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Wed, 12 May 2021 09:04:33 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.015; Wed, 12 May 2021 09:04:33 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Joerg Roedel' <joro@8bytes.org>, "x86@kernel.org" <x86@kernel.org>,
 	Hyunwook Baek <baekhw@google.com>
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	hpa@zytor.com,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>,
-	Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: [PATCH 6/6] x86/sev-es: Leave NMI-mode before sending signals
-Date: Wed, 12 May 2021 09:54:45 +0200
-Message-Id: <20210512075445.18935-7-joro@8bytes.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210512075445.18935-1-joro@8bytes.org>
+CC: Joerg Roedel <jroedel@suse.de>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, Andy Lutomirski
+	<luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Peter Zijlstra
+	<peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>, Dan Williams
+	<dan.j.williams@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Juergen
+ Gross" <jgross@suse.com>, Kees Cook <keescook@chromium.org>, David Rientjes
+	<rientjes@google.com>, Cfir Cohen <cfir@google.com>, Erdem Aktas
+	<erdemaktas@google.com>, Masami Hiramatsu <mhiramat@kernel.org>, Mike Stunes
+	<mstunes@vmware.com>, Sean Christopherson <seanjc@google.com>, Martin Radev
+	<martin.b.radev@gmail.com>, Arvind Sankar <nivedita@alum.mit.edu>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"virtualization@lists.linux-foundation.org"
+	<virtualization@lists.linux-foundation.org>
+Subject: RE: [PATCH 3/6] x86/sev-es: Use __put_user()/__get_user
+Thread-Topic: [PATCH 3/6] x86/sev-es: Use __put_user()/__get_user
+Thread-Index: AQHXRwQswpicLJM6a0eoGXhfP+3kQqrfe29g
+Date: Wed, 12 May 2021 08:04:33 +0000
+Message-ID: <0496626f018d4d27a8034a4822170222@AcuMS.aculab.com>
 References: <20210512075445.18935-1-joro@8bytes.org>
+ <20210512075445.18935-4-joro@8bytes.org>
+In-Reply-To: <20210512075445.18935-4-joro@8bytes.org>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Joerg Roedel <jroedel@suse.de>
+From: Joerg
+> Sent: 12 May 2021 08:55
+>=20
+> From: Joerg Roedel <jroedel@suse.de>
+>=20
+> The put_user() and get_user() functions do checks on the address which is
+> passed to them. They check whether the address is actually a user-space
+> address and whether its fine to access it. They also call might_fault()
+> to indicate that they could fault and possibly sleep.
+>=20
+> All of these checks are neither wanted nor required in the #VC exception
+> handler, which can be invoked from almost any context and also for MMIO
+> instructions from kernel space on kernel memory. All the #VC handler
+> wants to know is whether a fault happened when the access was tried.
+>=20
+> This is provided by __put_user()/__get_user(), which just do the access
+> no matter what.
 
-The error path in the runtime #VC handler sends a signal to kill the
-current task if the exception was raised from user-space. Some parts of
-the #VC handler run in NMI mode, because it is critical that it is not
-interrupted (except from an NMI) while the GHCB is in use.
+That can't be right at all.
+__put/get_user() are only valid on user addresses and will try to
+fault in a missing page - so can sleep.
 
-But sending signals in NMI-mode is actually broken and triggers lockdep
-warnings. On the other side, when the signal is sent, there is no reason
-for the handler to still be in NMI-mode, as the GHCB is not used
-anymore.
+At best this is abused the calls.
 
-Leave NMI-mode before entering the error path to get rid of the lockdep
-warnings.
+=09David
 
-Fixes: 62441a1fb532 ("x86/sev-es: Correctly track IRQ states in runtime #VC handler")
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- arch/x86/kernel/sev.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+> Fixes: f980f9c31a92 ("x86/sev-es: Compile early handler code into kernel =
+image")
+> Cc: stable@vger.kernel.org # v5.10+
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> ---
+>  arch/x86/kernel/sev.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 6530a844eb61..110b39345b40 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -342,22 +342,22 @@ static enum es_result vc_write_mem(struct es_em_ctx=
+t *ctxt,
+>  =09switch (size) {
+>  =09case 1:
+>  =09=09memcpy(&d1, buf, 1);
+> -=09=09if (put_user(d1, target))
+> +=09=09if (__put_user(d1, target))
+>  =09=09=09goto fault;
+>  =09=09break;
+>  =09case 2:
+>  =09=09memcpy(&d2, buf, 2);
+> -=09=09if (put_user(d2, target))
+> +=09=09if (__put_user(d2, target))
+>  =09=09=09goto fault;
+>  =09=09break;
+>  =09case 4:
+>  =09=09memcpy(&d4, buf, 4);
+> -=09=09if (put_user(d4, target))
+> +=09=09if (__put_user(d4, target))
+>  =09=09=09goto fault;
+>  =09=09break;
+>  =09case 8:
+>  =09=09memcpy(&d8, buf, 8);
+> -=09=09if (put_user(d8, target))
+> +=09=09if (__put_user(d8, target))
+>  =09=09=09goto fault;
+>  =09=09break;
+>  =09default:
+> @@ -396,22 +396,22 @@ static enum es_result vc_read_mem(struct es_em_ctxt=
+ *ctxt,
+>=20
+>  =09switch (size) {
+>  =09case 1:
+> -=09=09if (get_user(d1, s))
+> +=09=09if (__get_user(d1, s))
+>  =09=09=09goto fault;
+>  =09=09memcpy(buf, &d1, 1);
+>  =09=09break;
+>  =09case 2:
+> -=09=09if (get_user(d2, s))
+> +=09=09if (__get_user(d2, s))
+>  =09=09=09goto fault;
+>  =09=09memcpy(buf, &d2, 2);
+>  =09=09break;
+>  =09case 4:
+> -=09=09if (get_user(d4, s))
+> +=09=09if (__get_user(d4, s))
+>  =09=09=09goto fault;
+>  =09=09memcpy(buf, &d4, 4);
+>  =09=09break;
+>  =09case 8:
+> -=09=09if (get_user(d8, s))
+> +=09=09if (__get_user(d8, s))
+>  =09=09=09goto fault;
+>  =09=09memcpy(buf, &d8, 8);
+>  =09=09break;
+> --
+> 2.31.1
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 77155c4f07f5..79cbed2f28de 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1300,9 +1300,10 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 		return;
- 	}
- 
-+	instrumentation_begin();
-+
- 	irq_state = irqentry_nmi_enter(regs);
- 	lockdep_assert_irqs_disabled();
--	instrumentation_begin();
- 
- 	/*
- 	 * This is invoked through an interrupt gate, so IRQs are disabled. The
-@@ -1352,13 +1353,19 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 		BUG();
- 	}
- 
--out:
--	instrumentation_end();
- 	irqentry_nmi_exit(regs, irq_state);
-+	instrumentation_end();
- 
- 	return;
- 
- fail:
-+	/*
-+	 * Leave NMI mode - the GHCB is not busy anymore and depending on where
-+	 * the #VC came from this code is about to either kill the task (when in
-+	 * task context) or kill the machine.
-+	 */
-+	irqentry_nmi_exit(regs, irq_state);
-+
- 	if (user_mode(regs)) {
- 		/*
- 		 * Do not kill the machine if user-space triggered the
-@@ -1380,7 +1387,9 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 		panic("Returned from Terminate-Request to Hypervisor\n");
- 	}
- 
--	goto out;
-+	instrumentation_end();
-+
-+	return;
- }
- 
- /* This handler runs on the #VC fall-back stack. It can cause further #VC exceptions */
--- 
-2.31.1
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
