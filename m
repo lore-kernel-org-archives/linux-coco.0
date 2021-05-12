@@ -1,39 +1,46 @@
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55C571
-	for <linux-coco@lists.linux.dev>; Wed, 12 May 2021 15:57:58 +0000 (UTC)
-IronPort-SDR: Z75QELYll8gS5LzCtuvWX+YESQ/sbLnnlKguq5RzAPGpqH0pjWRN2DDGRn245006j6cRjRuJVe
- 8JjjQ7xtqsqw==
-X-IronPort-AV: E=McAfee;i="6200,9189,9982"; a="187165787"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B51B71
+	for <linux-coco@lists.linux.dev>; Wed, 12 May 2021 15:59:41 +0000 (UTC)
+IronPort-SDR: arSAU2MOTY9j8GzAkYKdnIbp3CkPMYfUxIzFkGvVPeM7Vsus+AO2X53dQUFZYQN6QO0Ln1hKkc
+ tZH4DJ5g1j1w==
+X-IronPort-AV: E=McAfee;i="6200,9189,9982"; a="199794254"
 X-IronPort-AV: E=Sophos;i="5.82,293,1613462400"; 
-   d="scan'208";a="187165787"
+   d="scan'208";a="199794254"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2021 08:57:58 -0700
-IronPort-SDR: bHBR6UUMf+KOk0QqXsDmTT1fo+HsrbG4ADlD8Ch2i1wEbb2LBXwXtYDN2kovAK2/0eFr7qJeLz
- HrOXs9WA1pHw==
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2021 08:59:40 -0700
+IronPort-SDR: uFih82oNkOSZHPt46lEwinAqdk4PGmQ3NWbLu1ol8Ttwv35DdXSGDD5voj2T5vP24jCfj8NwPM
+ mSMDSvhP5X8A==
 X-IronPort-AV: E=Sophos;i="5.82,293,1613462400"; 
-   d="scan'208";a="622557569"
+   d="scan'208";a="622561252"
 Received: from purnend1-mobl1.amr.corp.intel.com (HELO [10.209.123.133]) ([10.209.123.133])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2021 08:57:56 -0700
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2021 08:59:38 -0700
 Subject: Re: [PATCH 3/6] x86/sev-es: Use __put_user()/__get_user
-To: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- Hyunwook Baek <baekhw@google.com>
-Cc: Joerg Roedel <jroedel@suse.de>, stable@vger.kernel.org, hpa@zytor.com,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>,
- Jiri Slaby <jslaby@suse.cz>, Dan Williams <dan.j.williams@intel.com>,
+To: 'Joerg Roedel' <joro@8bytes.org>, David Laight <David.Laight@aculab.com>
+Cc: "x86@kernel.org" <x86@kernel.org>, Hyunwook Baek <baekhw@google.com>,
+ Joerg Roedel <jroedel@suse.de>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "hpa@zytor.com" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+ Dan Williams <dan.j.williams@intel.com>,
  Tom Lendacky <thomas.lendacky@amd.com>, Juergen Gross <jgross@suse.com>,
  Kees Cook <keescook@chromium.org>, David Rientjes <rientjes@google.com>,
  Cfir Cohen <cfir@google.com>, Erdem Aktas <erdemaktas@google.com>,
  Masami Hiramatsu <mhiramat@kernel.org>, Mike Stunes <mstunes@vmware.com>,
  Sean Christopherson <seanjc@google.com>,
  Martin Radev <martin.b.radev@gmail.com>,
- Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org
+ Arvind Sankar <nivedita@alum.mit.edu>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "virtualization@lists.linux-foundation.org"
+ <virtualization@lists.linux-foundation.org>
 References: <20210512075445.18935-1-joro@8bytes.org>
  <20210512075445.18935-4-joro@8bytes.org>
+ <0496626f018d4d27a8034a4822170222@AcuMS.aculab.com>
+ <YJuTzhSp2XAJIYlv@8bytes.org>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -78,8 +85,8 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <9282239c-138c-7226-88d3-a5611d11cccd@intel.com>
-Date: Wed, 12 May 2021 08:57:53 -0700
+Message-ID: <52d51917-4a58-f760-6fb7-80b5759231e6@intel.com>
+Date: Wed, 12 May 2021 08:59:39 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -87,27 +94,16 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20210512075445.18935-4-joro@8bytes.org>
+In-Reply-To: <YJuTzhSp2XAJIYlv@8bytes.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 5/12/21 12:54 AM, Joerg Roedel wrote:
-> The put_user() and get_user() functions do checks on the address which is
-> passed to them. They check whether the address is actually a user-space
-> address and whether its fine to access it. They also call might_fault()
-> to indicate that they could fault and possibly sleep.
-> 
-> All of these checks are neither wanted nor required in the #VC exception
-> handler, which can be invoked from almost any context and also for MMIO
-> instructions from kernel space on kernel memory. All the #VC handler
-> wants to know is whether a fault happened when the access was tried.
-> 
-> This is provided by __put_user()/__get_user(), which just do the access
-> no matter what.
+On 5/12/21 1:37 AM, 'Joerg Roedel' wrote:
+> I also thought about adding page_fault_disable()/page_fault_enable()
+> calls, but being in atomic context is enough according to the
+> faulthandler_disabled() implementation.
 
-The changelog _helps_, but using a "user" function to handle kernel MMIO
-for its error handling properties seems like it's begging for a comment.
-
-__put_user() also seems to have fun stuff like __chk_user_ptr().  It all
-seems sketchy to me.
+That would be nice to add to a comment:
+page_fault_disable()/page_fault_enable() are not needed because of the
+context this must be called in.
