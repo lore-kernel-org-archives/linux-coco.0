@@ -1,11 +1,11 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2B870
-	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 12:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC0A72
+	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 13:16:41 +0000 (UTC)
 Received: by theia.8bytes.org (Postfix, from userid 1000)
-	id 562EB2FA; Wed, 19 May 2021 14:22:49 +0200 (CEST)
-Date: Wed, 19 May 2021 14:22:48 +0200
+	id 63C252FA; Wed, 19 May 2021 15:16:39 +0200 (CEST)
+Date: Wed, 19 May 2021 15:16:38 +0200
 From: Joerg Roedel <joro@8bytes.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: x86@kernel.org, Hyunwook Baek <baekhw@google.com>,
@@ -24,12 +24,12 @@ Cc: x86@kernel.org, Hyunwook Baek <baekhw@google.com>,
 	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH 4/6] Revert "x86/sev-es: Handle string port IO to kernel
- memory properly"
-Message-ID: <YKUDGIrnR2doYEKj@8bytes.org>
+Subject: Re: [PATCH 2/6] x86/sev-es: Forward page-faults which happen during
+ emulation
+Message-ID: <YKUPtrquQyImL3h5@8bytes.org>
 References: <20210512075445.18935-1-joro@8bytes.org>
- <20210512075445.18935-5-joro@8bytes.org>
- <YJwSlVnHb0SZTSrG@google.com>
+ <20210512075445.18935-3-joro@8bytes.org>
+ <YJwQ1xsiDtv3LkBe@google.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -37,18 +37,38 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YJwSlVnHb0SZTSrG@google.com>
+In-Reply-To: <YJwQ1xsiDtv3LkBe@google.com>
 
-On Wed, May 12, 2021 at 05:38:29PM +0000, Sean Christopherson wrote:
-> Alternatively, and probably even better, fold this revert into the switch to
-> the unchecked version (sounds like those will use kernel-specific flavors?).
+Hi Sean,
 
-I folded this revert into the previous commit. But I kept the
-__get_user()/__put_user() calls and just added a comment explaining why
-they are used and why it is safe to use them.
+On Wed, May 12, 2021 at 05:31:03PM +0000, Sean Christopherson wrote:
+> This got me looking at the flows that "inject" #PF, and I'm pretty sure there
+> are bugs in __vc_decode_user_insn() + insn_get_effective_ip().
+> 
+> Problem #1: __vc_decode_user_insn() assumes a #PF if insn_fetch_from_user_inatomic()
+> fails, but the majority of failure cases in insn_get_seg_base() are #GPs, not #PF.
+> 
+> 	res = insn_fetch_from_user_inatomic(ctxt->regs, buffer);
+> 	if (!res) {
+> 		ctxt->fi.vector     = X86_TRAP_PF;
+> 		ctxt->fi.error_code = X86_PF_INSTR | X86_PF_USER;
+> 		ctxt->fi.cr2        = ctxt->regs->ip;
+> 		return ES_EXCEPTION;
+> 	}
+> 
+> Problem #2: Using '0' as an error code means a legitimate effective IP of '0'
+> will be misinterpreted as a failure.  Practically speaking, I highly doubt anyone
+> will ever actually run code at address 0, but it's technically possible.  The
+> most robust approach would be to pass a pointer to @ip and return an actual error
+> code.  Using a non-canonical magic value might also work, but that could run afoul
+> of future shenanigans like LAM.
+> 
+> 	ip = insn_get_effective_ip(regs);
+> 	if (!ip)
+> 		return 0;
 
-After all, even the get_kernel*() functions call __get_user_size() under
-the hood.
+Your observations are all correct. I put some changes onto this
+patch-set to fix these problems.
 
 Regards,
 
