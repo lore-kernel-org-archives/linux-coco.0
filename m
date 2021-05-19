@@ -1,43 +1,35 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF87970
-	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 11:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2B870
+	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 12:22:51 +0000 (UTC)
 Received: by theia.8bytes.org (Postfix, from userid 1000)
-	id 689F82FA; Wed, 19 May 2021 13:33:48 +0200 (CEST)
-Date: Wed, 19 May 2021 13:33:46 +0200
-From: 'Joerg Roedel' <joro@8bytes.org>
-To: Joerg Roedel <jroedel@suse.de>
-Cc: Juergen Gross <jgross@suse.com>, David Laight <David.Laight@aculab.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	Hyunwook Baek <baekhw@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	id 562EB2FA; Wed, 19 May 2021 14:22:49 +0200 (CEST)
+Date: Wed, 19 May 2021 14:22:48 +0200
+From: Joerg Roedel <joro@8bytes.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: x86@kernel.org, Hyunwook Baek <baekhw@google.com>,
+	Joerg Roedel <jroedel@suse.de>, stable@vger.kernel.org,
+	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Kees Cook <keescook@chromium.org>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
 	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
 	Erdem Aktas <erdemaktas@google.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
 	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"virtualization@lists.linux-foundation.org" <virtualization@lists.linux-foundation.org>
-Subject: Re: [PATCH 3/6] x86/sev-es: Use __put_user()/__get_user
-Message-ID: <YKT3mpYlPqNHo1QU@8bytes.org>
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH 4/6] Revert "x86/sev-es: Handle string port IO to kernel
+ memory properly"
+Message-ID: <YKUDGIrnR2doYEKj@8bytes.org>
 References: <20210512075445.18935-1-joro@8bytes.org>
- <20210512075445.18935-4-joro@8bytes.org>
- <0496626f018d4d27a8034a4822170222@AcuMS.aculab.com>
- <fcb2c501-70ca-1a54-4a75-8ab05c21ee30@suse.com>
- <YJuW4TtRJKZ+OIhj@8bytes.org>
- <92244e37-4443-98bd-24aa-bf59548aab47@suse.com>
- <YJugs0CdiNo0/Gbd@suse.de>
+ <20210512075445.18935-5-joro@8bytes.org>
+ <YJwSlVnHb0SZTSrG@google.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -45,23 +37,18 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YJugs0CdiNo0/Gbd@suse.de>
+In-Reply-To: <YJwSlVnHb0SZTSrG@google.com>
 
-On Wed, May 12, 2021 at 11:32:35AM +0200, Joerg Roedel wrote:
-> On Wed, May 12, 2021 at 10:58:20AM +0200, Juergen Gross wrote:
-> > No, those were used before, but commit 9da3f2b7405440 broke Xen's use
-> > case. That is why I did commit 1457d8cf7664f.
->
-> [...]
->
-> Having the distinction between user and kernel memory accesses
-> explicitly in the code seems to be the most robust solution.
+On Wed, May 12, 2021 at 05:38:29PM +0000, Sean Christopherson wrote:
+> Alternatively, and probably even better, fold this revert into the switch to
+> the unchecked version (sounds like those will use kernel-specific flavors?).
 
-On the other hand, as I found out today, 9da3f2b7405440 had a short
-life-time and got reverted upstream. So using __get_user()/__put_user()
-should be fine in this code path. It just deserves a comment explaining
-its use here and why pagefault_enable()/disable() is not needed.
-Even the get_kernel* helpers use __get_user_size() internally.
+I folded this revert into the previous commit. But I kept the
+__get_user()/__put_user() calls and just added a comment explaining why
+they are used and why it is safe to use them.
+
+After all, even the get_kernel*() functions call __get_user_size() under
+the hood.
 
 Regards,
 
