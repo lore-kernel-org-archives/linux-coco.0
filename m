@@ -1,12 +1,12 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE6E6D0E
-	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 13:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEDF6D00
+	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 13:53:14 +0000 (UTC)
 Received: from cap.home.8bytes.org (p549ad305.dip0.t-ipconnect.de [84.154.211.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 3E2894B4;
+	by theia.8bytes.org (Postfix) with ESMTPSA id CEA4C4CA;
 	Wed, 19 May 2021 15:53:10 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org,
@@ -34,9 +34,9 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH v2 4/8] x86/sev-es: Fix error message in runtime #VC handler
-Date: Wed, 19 May 2021 15:52:47 +0200
-Message-Id: <20210519135251.30093-5-joro@8bytes.org>
+Subject: [PATCH v2 5/8] x86/sev-es: Leave NMI-mode before sending signals
+Date: Wed, 19 May 2021 15:52:48 +0200
+Message-Id: <20210519135251.30093-6-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210519135251.30093-1-joro@8bytes.org>
 References: <20210519135251.30093-1-joro@8bytes.org>
@@ -49,27 +49,74 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-The runtime #VC handler is not "early" anymore. Fix the copy&paste error
-and remove that word from the error message.
+The error path in the runtime #VC handler sends a signal to kill the
+current task if the exception was raised from user-space. Some parts of
+the #VC handler run in NMI mode, because it is critical that it is not
+interrupted (except from an NMI) while the GHCB is in use.
 
+But sending signals in NMI-mode is actually broken and triggers lockdep
+warnings. On the other side, when the signal is sent, there is no reason
+for the handler to still be in NMI-mode, as the GHCB is not used
+anymore.
+
+Leave NMI-mode before entering the error path to get rid of the lockdep
+warnings.
+
+Fixes: 62441a1fb532 ("x86/sev-es: Correctly track IRQ states in runtime #VC handler")
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/x86/kernel/sev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/sev.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 651b81cd648e..4fd997bbf059 100644
+index 4fd997bbf059..9a64030e74c0 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -1369,7 +1369,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 		vc_finish_insn(&ctxt);
- 		break;
- 	case ES_UNSUPPORTED:
--		pr_err_ratelimited("Unsupported exit-code 0x%02lx in early #VC exception (IP: 0x%lx)\n",
-+		pr_err_ratelimited("Unsupported exit-code 0x%02lx in #VC exception (IP: 0x%lx)\n",
- 				   error_code, regs->ip);
- 		goto fail;
- 	case ES_VMM_ERROR:
+@@ -1343,9 +1343,10 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 		return;
+ 	}
+ 
++	instrumentation_begin();
++
+ 	irq_state = irqentry_nmi_enter(regs);
+ 	lockdep_assert_irqs_disabled();
+-	instrumentation_begin();
+ 
+ 	/*
+ 	 * This is invoked through an interrupt gate, so IRQs are disabled. The
+@@ -1395,13 +1396,19 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 		BUG();
+ 	}
+ 
+-out:
+-	instrumentation_end();
+ 	irqentry_nmi_exit(regs, irq_state);
++	instrumentation_end();
+ 
+ 	return;
+ 
+ fail:
++	/*
++	 * Leave NMI mode - the GHCB is not busy anymore and depending on where
++	 * the #VC came from this code is about to either kill the task (when in
++	 * task context) or kill the machine.
++	 */
++	irqentry_nmi_exit(regs, irq_state);
++
+ 	if (user_mode(regs)) {
+ 		/*
+ 		 * Do not kill the machine if user-space triggered the
+@@ -1423,7 +1430,9 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 		panic("Returned from Terminate-Request to Hypervisor\n");
+ 	}
+ 
+-	goto out;
++	instrumentation_end();
++
++	return;
+ }
+ 
+ /* This handler runs on the #VC fall-back stack. It can cause further #VC exceptions */
 -- 
 2.31.1
 
