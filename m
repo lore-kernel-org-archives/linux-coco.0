@@ -1,91 +1,119 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0925A6D11
-	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 13:53:15 +0000 (UTC)
-Received: from cap.home.8bytes.org (p549ad305.dip0.t-ipconnect.de [84.154.211.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 7FCAC50F;
-	Wed, 19 May 2021 15:53:12 +0200 (CEST)
-From: Joerg Roedel <joro@8bytes.org>
-To: x86@kernel.org,
-	Hyunwook Baek <baekhw@google.com>
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	hpa@zytor.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B168471
+	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 17:56:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0VusAJZ3GsBzVSdLTEAGWr7rdRHdzn/JtH42moT3IVU=; b=RF8RFvqQuOtdFP/lCsk93yjuz9
+	LTOSQBYY2k6m3umvaeS2K30f9je5U14s6FuCQezx+ml8LwzduT3682kYN72e7kAXxlFkaLpCEkALU
+	u9NL1h1C4e/riHeHEUZfm16LDlc3uHlsIRFrZPWeixuho32kANI9e+dZzxJNM9siit0/n4Jmxmcli
+	5kONPHTxaJ+tC/1VAo5uRnYbKWhHetXqeNRAzaShstYsNAvCqs+n7znoLP1qSotPo+nM0EN3S7Mgq
+	Gz/lXNIqTq6iNQCjCe/BNG6yKXdM2Kr0aOI7y0Z+cWo2vI4JH67DZTB/1qxgdQ87QkyaDvmBMEUjR
+	XP02rlpA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+	id 1ljQPD-00FB8B-O6; Wed, 19 May 2021 17:55:03 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 336EF986465; Wed, 19 May 2021 19:54:50 +0200 (CEST)
+Date: Wed, 19 May 2021 19:54:50 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Hyunwook Baek <baekhw@google.com>,
+	Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
 	Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>,
-	Cfir Cohen <cfir@google.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
 	Erdem Aktas <erdemaktas@google.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mike Stunes <mstunes@vmware.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH v2 8/8] x86/sev-es: Propagate #GP if getting linear instruction address failed
-Date: Wed, 19 May 2021 15:52:51 +0200
-Message-Id: <20210519135251.30093-9-joro@8bytes.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210519135251.30093-1-joro@8bytes.org>
+Subject: Re: [PATCH v2 5/8] x86/sev-es: Leave NMI-mode before sending signals
+Message-ID: <20210519175450.GF21560@worktop.programming.kicks-ass.net>
 References: <20210519135251.30093-1-joro@8bytes.org>
+ <20210519135251.30093-6-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210519135251.30093-6-joro@8bytes.org>
 
-From: Joerg Roedel <jroedel@suse.de>
+On Wed, May 19, 2021 at 03:52:48PM +0200, Joerg Roedel wrote:
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -1343,9 +1343,10 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+>  		return;
+>  	}
+>  
+> +	instrumentation_begin();
+> +
+>  	irq_state = irqentry_nmi_enter(regs);
+>  	lockdep_assert_irqs_disabled();
+> -	instrumentation_begin();
+>  
+>  	/*
+>  	 * This is invoked through an interrupt gate, so IRQs are disabled. The
 
-When an instruction is fetched from user-space, segmentation needs to
-be taken into account. This means that getting the linear address of
-an instruction can fail. Hardware would raise a #GP
-exception in that case, but the #VC exception handler would emulate it
-as a page-fault.
+That's just plain wrong. No instrumentation is allowed before you enter
+the exception context.
 
-The insn_fetch_from_user*() functions now provide the relevant
-information in case of an failure. Use that and propagate a #GP when
-the linear address of an instruction to fetch could not be calculated.
+> @@ -1395,13 +1396,19 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+>  		BUG();
+>  	}
+>  
+> -out:
+> -	instrumentation_end();
+>  	irqentry_nmi_exit(regs, irq_state);
+> +	instrumentation_end();
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- arch/x86/kernel/sev.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+And this can't be right either, same issue, no instrumentation is
+allowed after you leave the exception context.
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 1edb6cd5e308..4736290361e4 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -261,11 +261,16 @@ static enum es_result __vc_decode_user_insn(struct es_em_ctxt *ctxt)
- 	int insn_bytes = 0, res;
- 
- 	res = insn_fetch_from_user_inatomic(ctxt->regs, buffer, &insn_bytes);
--	if (res) {
-+	if (res == -EFAULT) {
- 		ctxt->fi.vector     = X86_TRAP_PF;
- 		ctxt->fi.error_code = X86_PF_INSTR | X86_PF_USER;
- 		ctxt->fi.cr2        = ctxt->regs->ip;
- 		return ES_EXCEPTION;
-+	} else if (res == -EINVAL) {
-+		ctxt->fi.vector     = X86_TRAP_GP;
-+		ctxt->fi.error_code = 0;
-+		ctxt->fi.cr2        = 0;
-+		return ES_EXCEPTION;
- 	}
- 
- 	if (!insn_decode_from_regs(&ctxt->insn, ctxt->regs, buffer, insn_bytes))
--- 
-2.31.1
+>  
+>  	return;
+>  
+>  fail:
+> +	/*
+> +	 * Leave NMI mode - the GHCB is not busy anymore and depending on where
+> +	 * the #VC came from this code is about to either kill the task (when in
+> +	 * task context) or kill the machine.
+> +	 */
+> +	irqentry_nmi_exit(regs, irq_state);
+> +
 
+And this is wrong too; because at this point the handler doesn't run in
+_any_ context anymore, certainly not one you can call regular C code
+from.
+
+>  	if (user_mode(regs)) {
+>  		/*
+>  		 * Do not kill the machine if user-space triggered the
+> @@ -1423,7 +1430,9 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+>  		panic("Returned from Terminate-Request to Hypervisor\n");
+>  	}
+>  
+> -	goto out;
+> +	instrumentation_end();
+> +
+> +	return;
+>  }
+
+
+You either get to do what MCE does, or what MCE does. That is, either
+use task_work or MCE_USER and have the _user() handler use
+irqentry_enter_from_user_mode().
+
+The above is an absolute no-go.
