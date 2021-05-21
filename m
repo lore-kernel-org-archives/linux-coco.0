@@ -1,31 +1,30 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4729C70
-	for <linux-coco@lists.linux.dev>; Wed, 19 May 2021 19:34:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Wm6Fg6hPEXzb07sPLpGnEeLDWpfOMrauzZEfAlcYzmM=; b=YmoOqAur2JknC74gPCU8jGvugp
-	P88XBQSr2WV4USjdKsyTqVsgFLp9ogTq6CoyV9QmGmhOkRFRSH3OhA1Gk3od5PQ/k6IZ1Hg8LP6hE
-	7e9XrO7uoMSxt3qWDgWa1kpNE2v+ksyiq1GD6PBLx9gLjWBri/dtPcGYBapdd8F0t/oqD88Wp1rHF
-	cPWt5ZzNKurWzPdQrIaF5JmBLwEA7+dixraZw4EC7r3xNq4XFkH6CWVLR720EWcYK3U2dv/vKO7pB
-	4WRNJMV+rsawx3qRiA4q1YRO4uIgJStawTWIEsweO9LksGnPfrFH3CyY3ftNEmem07is3KL5U/TSt
-	F0CD3LEg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-	id 1ljRvD-00FFAb-4q; Wed, 19 May 2021 19:32:15 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 4F1D1986465; Wed, 19 May 2021 21:31:58 +0200 (CEST)
-Date: Wed, 19 May 2021 21:31:58 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Joerg Roedel <jroedel@suse.de>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
-	Hyunwook Baek <baekhw@google.com>, hpa@zytor.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3BA70
+	for <linux-coco@lists.linux.dev>; Fri, 21 May 2021 14:34:43 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0ea400b1711cbbd717391b.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:a400:b171:1cbb:d717:391b])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 394031EC061D;
+	Fri, 21 May 2021 16:34:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1621607681;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=+eiP6mVRfierNZHVHWE39OmfVBD4FccBazbJrnrFRg0=;
+	b=ROd1grQ3afwj6jw9TXiBn8Gd9qql4j0xLcF+A4Lqj4zbmGPwP2BmwMNSG9cy7VgQRH6Y1i
+	q7L03gy8DOnoLw9UiHZ6w+3+1IRtJ3DdPWKaZRMMCu9EkiRcmi3F0YGbVRbTLJm25OqlWG
+	Wz3z6tI68a+fpsHb7fn5HUCNVbQJv6Y=
+Date: Fri, 21 May 2021 16:34:34 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Hyunwook Baek <baekhw@google.com>,
+	Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jiri Slaby <jslaby@suse.cz>,
+	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
@@ -38,76 +37,76 @@ Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
 	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v2 5/8] x86/sev-es: Leave NMI-mode before sending signals
-Message-ID: <20210519193158.GJ21560@worktop.programming.kicks-ass.net>
+Subject: Re: [PATCH v2 7/8] x86/insn: Extend error reporting from
+ insn_fetch_from_user[_inatomic]()
+Message-ID: <YKfE+gfK5AdE9ckm@zn.tnic>
 References: <20210519135251.30093-1-joro@8bytes.org>
- <20210519135251.30093-6-joro@8bytes.org>
- <20210519175450.GF21560@worktop.programming.kicks-ass.net>
- <YKVjRJmva/Y2EHPZ@suse.de>
+ <20210519135251.30093-8-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YKVjRJmva/Y2EHPZ@suse.de>
+In-Reply-To: <20210519135251.30093-8-joro@8bytes.org>
 
-On Wed, May 19, 2021 at 09:13:08PM +0200, Joerg Roedel wrote:
-> Hi Peter,
-> 
-> thanks for your review.
-> 
-> On Wed, May 19, 2021 at 07:54:50PM +0200, Peter Zijlstra wrote:
-> > On Wed, May 19, 2021 at 03:52:48PM +0200, Joerg Roedel wrote:
-> > > --- a/arch/x86/kernel/sev.c
-> > > +++ b/arch/x86/kernel/sev.c
-> > > @@ -1343,9 +1343,10 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
-> > >  		return;
-> > >  	}
-> > >  
-> > > +	instrumentation_begin();
-> > > +
-> > >  	irq_state = irqentry_nmi_enter(regs);
-> > >  	lockdep_assert_irqs_disabled();
-> > > -	instrumentation_begin();
-> > >  
-> > >  	/*
-> > >  	 * This is invoked through an interrupt gate, so IRQs are disabled. The
-> > 
-> > That's just plain wrong. No instrumentation is allowed before you enter
-> > the exception context.
-> 
-> Okay.
-> 
-> > > +	irqentry_nmi_exit(regs, irq_state);
-> > > +
-> > 
-> > And this is wrong too; because at this point the handler doesn't run in
-> > _any_ context anymore, certainly not one you can call regular C code
-> > from.
-> 
-> The #VC handler is at this point not running on the IST stack anymore,
-> but on the stack it came from or on the task stack. So my believe was
-> that at this point it inherits the context it came from (just like the
-> page-fault handler). But I also don't fully understand the context
-> tracking, so is my assumption wrong?
+On Wed, May 19, 2021 at 03:52:50PM +0200, Joerg Roedel wrote:
+> diff --git a/arch/x86/lib/insn-eval.c b/arch/x86/lib/insn-eval.c
+> index 4eecb9c7c6a0..d8a057ba0895 100644
+> --- a/arch/x86/lib/insn-eval.c
+> +++ b/arch/x86/lib/insn-eval.c
+> @@ -1442,27 +1442,36 @@ static int insn_get_effective_ip(struct pt_regs *regs, unsigned long *ip)
+>   * insn_fetch_from_user() - Copy instruction bytes from user-space memory
+>   * @regs:	Structure with register values as seen when entering kernel mode
+>   * @buf:	Array to store the fetched instruction
+> + * @copied:	Pointer to an int where the number of copied instruction bytes
+> + *		is stored. Can be NULL.
+>   *
+>   * Gets the linear address of the instruction and copies the instruction bytes
+>   * to the buf.
+>   *
+>   * Returns:
+>   *
+> - * Number of instruction bytes copied.
+> + * -EINVAL if the linear address of the instruction could not be calculated
+> + * -EFAULT if nothing was copied
+> + *       0 on success
+>   *
+> - * 0 if nothing was copied.
+>   */
+> -int insn_fetch_from_user(struct pt_regs *regs, unsigned char buf[MAX_INSN_SIZE])
+> +int insn_fetch_from_user(struct pt_regs *regs, unsigned char buf[MAX_INSN_SIZE],
+> +			 int *copied)
+>  {
+>  	unsigned long ip;
+>  	int not_copied;
+> +	int bytes;
+>  
+>  	if (insn_get_effective_ip(regs, &ip))
+> -		return 0;
+> +		return -EINVAL;
+>  
+>  	not_copied = copy_from_user(buf, (void __user *)ip, MAX_INSN_SIZE);
+>  
+> -	return MAX_INSN_SIZE - not_copied;
+> +	bytes = MAX_INSN_SIZE - not_copied;
+> +	if (copied)
+> +		*copied = bytes;
+> +
+> +	return bytes ? 0 : -EFAULT;
 
-Being on the right stack is only part of the issue; you also need to
-make sure your runtime environment is set up.
+Why not simpler?
 
-Regular kernel C expects a whole lot of things to be present; esp. so
-with all the debug options on. The irqentry_*_enter() family of
-functions very carefully sets up this environment and the
-irqentry_*_exit() undoes it again. Before and after you really cannot
-run normal code.
+return value >= 0 says how many bytes were copied
+return value < 0 means some kind of error
 
-Just an example, RCU might not be watching, it might think the CPU is in
-userspace and advance the GP while you're relying on it not doing so.
+And then you don't need @copied...
 
-Similarly lockdep is in some undefined state and any lock used can
-trigger random 'funny' things.
+Ditto for the other one.
 
-Just because this is 'C', doesn't immediately mean you can go call any
-random function. Up until recently most of this was in ASM. There's a
-reason for the noinstr annotations.
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
