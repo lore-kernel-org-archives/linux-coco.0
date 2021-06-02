@@ -1,33 +1,33 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2044.outbound.protection.outlook.com [40.107.244.44])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam08on2070.outbound.protection.outlook.com [40.107.101.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F17A6D2B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C488E70
 	for <linux-coco@lists.linux.dev>; Wed,  2 Jun 2021 14:05:10 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Za0m6XsvNnD/BCOL9N9htjIPrLoIFo2USlNCob8eSjYmZZeRhAb3aUBLNPIO+Bi4IfO4U1KNFnIHdbOvX3D3GBYjxxC5NYzRlrLIfRhtwFRCiYzRedVYXlvt4N5vFvWz1w64Ewdd2A0z3XCZ6mXJcWWIn458HnC8jcDHe432XYM3TonLUUKKc4wA/vh9bNOqDe7HKj6RKxJyUhAvXeFjzjybeGqIIg4LfVFf1qxM2TDX/waGgQ9hsyZV/whqnFj8+H4A0s4LIYyMaDQpWXllhF+hyc7GB4Vr1FveN98MVcJcB/YIAi7ikTmI8/R1oTivHH4L19Mz0Gywb1sSUJbMwQ==
+ b=dUMMebSC3B5N41Un1rN3/G7lAF+e2xEwpaIGqQ10ZguOh4UO7advMUfRhJd63m1e4IQOfRUJyHLU31nb1rk+A2QHOOCi3yElP6SyKVjD6XcJ1um7c2g5K9zt/sATLgmGSD+dwIq+sTlmz5TZ+jLt58Lz7nVy26Xw5zdw1oMko7GJGr1CRD6tL7WDSdT77rX0omppvi97S6Depi2HzAIjdq3iza4UNEHTRLA1EUOrxQfLrem6MPQmUNKqwI80BhUeqak9YC9ezKUoJAD+6TyrtPAPmk9STZ+PA6wRWAULf7uztoVG2tHW+u8klg6UUeOtIg+MqrmNLBOqIGryn39lTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jMrjUnVepEzQT2zCxLV5ivalIMMuIKD/RxguuBq3Wvo=;
- b=VpgisA8gTUAraDQMXtTVznhVmYUAcwy8TiqjBWoNzZa/ks3wZ8nl1O5X0PBLUCe0iTXyrlUrl/8nOmedgqFCRe8LGO+VutcR6UV7vy2TmHLWo/7kil3e+rfVNDESGSR4Ts+384Y5xrkiiOy7IqwvmS3t6a92nMWHBRPRTIQheJSVP4qiiQbxIeJgImKZc7wA2oOu4OsjUIkwyl4M2cgJmqOu3ODMYBTv6SU0fcQUYj3T/A+JMrbX5pAWIUZbWA3rET6DLdSekgTXA1ZT5BVEQUK6n1U86SQZh77625sk0kKkh9xczip97xc1wipPSa/P7A16LKG1kga8xCGFUW6jQQ==
+ bh=awnMpOPG0eeizOJVeGcQAnq9ILBGxpAUriKoAFC3lWQ=;
+ b=khm+84Y8lNl7RXV1XAjyy5QRsFd0XgmAhvmeuhiQYkRZxZuG4aUT6OZN8BLgadyGZQvyz3TgTpRQVIuWTPyA9O9e8STAx9GI1VjPglsFOuOj2qfTNJiVnnR1M5DkJrIYjO90oTTPVGBGnIrOLFKo8jOQunsq2zci14Lvh+uui1VbYqL4hbZX7KqJ4dQoOzmZVHUre1hOjPd4lldqzs9aiQCQdCWDpmbAoxxOkfyyonaOXvyuIf4ffdAV386KFdQd3QY5Gi//avDr5k5UDJKSEEuxzKBS/1+ZIbnAO4X2IqQFal2r65v6WaLAZuXtyp/xb/2b4b+TjwDQ+Owi1xCuoA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jMrjUnVepEzQT2zCxLV5ivalIMMuIKD/RxguuBq3Wvo=;
- b=w75EpsAqZ0C70bsO/iNX7eWcZC0rjkZWCdv04x15hsXfp6oWaI+Czy4jTcWbP7TOQZbrO6+RbIbWsH53OkDPa1xW/knk5y29Sgw2GkSq61yYJgnq/s/mCf8eJQM8vt/6UEb067QVtcFdI6JbXdEkv/8DwZyzdx8Cm/g3QOcQpIM=
+ bh=awnMpOPG0eeizOJVeGcQAnq9ILBGxpAUriKoAFC3lWQ=;
+ b=hLT7p4n2ekIYfY6H9VepEOUq+AK5vi1AHoOdzhZElZ4IuPEuyQU7wIWT21e45rwcrP532qTR7K5/OfId34H688eCA9KSQGO4yGjtQH/XxOB9DTGVw9UngAHk0m83mLEiM9Z3toxs/Rl5WczP9mYvXVjLXpHlkkC2z55cQABNqo0=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SN6PR12MB2766.namprd12.prod.outlook.com (2603:10b6:805:78::10) with
+ by SA0PR12MB4446.namprd12.prod.outlook.com (2603:10b6:806:71::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4173.22; Wed, 2 Jun
- 2021 14:05:03 +0000
+ 2021 14:05:08 +0000
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::9898:5b48:a062:db94]) by SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::9898:5b48:a062:db94%6]) with mapi id 15.20.4173.030; Wed, 2 Jun 2021
- 14:05:03 +0000
+ 14:05:08 +0000
 From: Brijesh Singh <brijesh.singh@amd.com>
 To: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	tony.luck@intel.com,
 	npmccallum@redhat.com,
 	Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part1 RFC v3 15/22] KVM: SVM: define new SEV_FEATURES field in the VMCB Save State Area
-Date: Wed,  2 Jun 2021 09:04:09 -0500
-Message-Id: <20210602140416.23573-16-brijesh.singh@amd.com>
+Subject: [PATCH Part1 RFC v3 17/22] KVM: SVM: Create a separate mapping for the GHCB save area
+Date: Wed,  2 Jun 2021 09:04:11 -0500
+Message-Id: <20210602140416.23573-18-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210602140416.23573-1-brijesh.singh@amd.com>
 References: <20210602140416.23573-1-brijesh.singh@amd.com>
@@ -75,110 +75,155 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR05CA0010.namprd05.prod.outlook.com (2603:10b6:805:de::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.9 via Frontend Transport; Wed, 2 Jun 2021 14:05:02 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SN6PR05CA0010.namprd05.prod.outlook.com (2603:10b6:805:de::23) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4219.9 via Frontend Transport; Wed, 2 Jun 2021 14:05:07 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: db9dfabd-203d-45aa-6817-08d925cf6ae9
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2766:
+X-MS-Office365-Filtering-Correlation-Id: 1b517165-5d82-4e49-7c46-08d925cf6ddf
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4446:
 X-MS-Exchange-Transport-Forked: True
 X-Microsoft-Antispam-PRVS:
-	<SN6PR12MB2766E9D470489D7A66AE4F30E53D9@SN6PR12MB2766.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+	<SA0PR12MB444640A583EBFD6DCF0A3760E53D9@SA0PR12MB4446.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	/TQ4ipZZcMe/6rvxR9N6WxhlGqJCeGP4znfa6gqgblP1+GAfHJlGz0OFbJPwnxYoVSUTNR6IfnxQf5ZatXnqWsxBP4ejlmcaaV+8f2NyHHib+O6GkRHdlcYEHfJf5WYY4DP4otEp9pibUzJ+HM/ozijX8d60xp7a8OgV2EOrwKCd6ApBV/C0osItnIe54f+NaE9EDEj+ofBr5SaIaD6nPw4Rch50GXSHfIlyMIyLgL6TI2PUoHucwgFyloa/PAKps1kAk6QSjw2AeiFguQgvcLZdRMB72kUTNEX0echjYsW7AS6JQAO8IYRuzeyi/+1jAQoDYhkKWbIOvH3wjHYqeP39obk5zyYfrfcHT3buMDjou+36dBRZGmFDZkz1aXPmYX7M0jMcgzc4x8LqOYms/W2H7JYyDnsafEzOSA6g0HjBB5bS3QN+JRKLGo8e345agczQhCruNUXxxYBVDn1RcqbKqEdQOg0I+5UVB+2njbHoSuEwzWN5k1nQkdFBwRb2y+BoM6OmX+ESTpLkLzxFpGuZ4eGb9s2cP21eLVcUNtnB2U6yd8jWfBP+zoWSEjYv7kA/QlOmOGXH86o4SKPp7jmT9Fj+Pts8ICiKARGWv9ufoczM2i1LB1cVQg7qDycU/69VYl7+p+osSxdbvGu9nA==
+	t8aqpmOh1Y1s+WFbmvd/VCe19Wlcyrf+wdck0c/PqZfVXlJzKyAJ4wQrC8r+acusxgW3JW0M0Rok9DE91jUjb3PD4h6HEYw4TJKLaP/rrKzzVGlYRW6weSLHE7jtqttQKAWePg54rDxC3+YHZmmUnOCDV9vUT7Lg45E1/YWXy0WgvKqK3VPkDerl/EnmTZw79WkCjojd1w6h1klkCKE6C20ws4YE4Jy+5lf4T2y8uKoAvU4SEhnTIZFQrFbotxm+X/Y3c6MvG5B5ghCZGL09SCt1OFdwG/ll5zabKw3vyhP9Wqx/qcocVoS/vDRqbA8/Qj0bTE11zBBcUlhuwiA24t2AZ3v9gqNSqb+604wjH/dFVJtrCVBNohkotI081O5TO75A3K7XbKqgTvR5itnW3iYjrRBTqIVkRjCUNvVMkeUHW5JxpY4d1TWL7YPnE40LFdtNONvw87K6GehDkXk0V+kTgl9uftjRrvgc0IbfAqOjUTxKCVcsHxkahajA8JzYpx7bU5pC+khaFt6qSfUEJSdPCtxwcW1L4h6KXEbULJyUZQX+0Ginjvk3Xg/5rq2VWofTzwcPr4sYCCvPBq381e27N7j4kUegQPw3xespUuAeoo8a9m7LNuD8t9omAZqD+UAcrErrHChdzuF3z5V1/Q==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(136003)(346002)(396003)(39860400002)(366004)(6486002)(38350700002)(86362001)(66946007)(38100700002)(44832011)(52116002)(36756003)(8676002)(83380400001)(7416002)(26005)(4326008)(2616005)(1076003)(186003)(956004)(16526019)(2906002)(316002)(54906003)(66476007)(478600001)(5660300002)(7696005)(66556008)(8936002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(366004)(396003)(346002)(136003)(39860400002)(478600001)(8936002)(7416002)(16526019)(44832011)(66476007)(186003)(66946007)(4326008)(8676002)(7696005)(52116002)(1076003)(86362001)(83380400001)(38350700002)(6486002)(316002)(6666004)(5660300002)(54906003)(38100700002)(26005)(66556008)(36756003)(2616005)(956004)(2906002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData:
-	=?us-ascii?Q?Qk12zGRFENXpjs47Ada8bsZNuwgohbUZXmnot5Wmpjq9jgfNZss1kwM6cyvi?=
- =?us-ascii?Q?CvaGDcJ2dW0cZmqXVAWz9cb0z77OgHNDrl9mNGFtdjqap+hy7sr9+TKLssk+?=
- =?us-ascii?Q?UuWyD7ezNc8dGLT5l2dEZs2z7gME0lkVKgz5uc3NtKNGjwicl/pvbNag1wgq?=
- =?us-ascii?Q?+cR8trOcVATrIjZwSuj3swGFbeCF51nTFnZGoyU7Z1Brc6n8mzoIbAggl/nR?=
- =?us-ascii?Q?OorTVv+dCPAxTiiWSVU0MLTsQ/EKi764g1jUfxsjvJTmYu8OdIIBmdT8MV9W?=
- =?us-ascii?Q?Ji6Xtur3FjyVz2wnZ39mZgBNTTt/O+tgx+x8XkqZ192rAT+yTSlXHFvBa3jX?=
- =?us-ascii?Q?3cx0mThjFa9zhwCBf6t1BK19ek4RgdeiCsvdbTifxUnvgCnWmK6kKpjzNP8I?=
- =?us-ascii?Q?lU/zeGcbR/R2jFm64tLt9+a5yRVrxSp7+24xq8ztTYk4E9FkPDhE0I5b8YY0?=
- =?us-ascii?Q?ffRfHuhJow0XJF6iMov9m/74kjCb9bmagfujDXwzkPV056brgwiMWZt4w717?=
- =?us-ascii?Q?CFCdokS3IlETCT+GiFF8emUVX2pDxP/49KtS2j5FUT0fXtiD3Z6ylEUCpB28?=
- =?us-ascii?Q?s5uPgcbvDwVB+uEL9hY4B5mI5bz1WEUpJ54mHJZbQeEztfb6dEk7ZwAkmeVZ?=
- =?us-ascii?Q?Y3UvzR0uf8syZlHI5sO0U9GvCVRNbUkIAM/9dFbzE8YF1AqgVR2vOitzY5p2?=
- =?us-ascii?Q?jRXd4ZLZTdgXiARKAQ/E7l/gn5zAQscYJzdvbCjD6/wxULK4saKceVK9aYsJ?=
- =?us-ascii?Q?HgRz5OPiC1xOZhpmQKJ059CPWWVszGb1hv0jFtcwXE2LkRWnDGU2UQMKl/L3?=
- =?us-ascii?Q?5hgXGHG47ca4BFjF2pp4N3BL9M2jcTBC6tFoDM707M3SAVM6e8eIx1ft7E2j?=
- =?us-ascii?Q?o/c/JhrUKt1wNPUSh5DW/Z+hmPYqOd/8JJFM/TZtlFVd5pOzyYOmeE9o80Rp?=
- =?us-ascii?Q?eFSd7ln1S5+2Xf5Dzj8uWm+vdAyyn9NsfivIH93RV+165Q+OXqYA9aVDp7FY?=
- =?us-ascii?Q?pZ/C4GgvdA7+sGNuLqHpaO4E7blpMWlEZSncJROWZqGVRhhuodBHhPr/9b5a?=
- =?us-ascii?Q?L48+NHa7cqbP5tsVFAOH9q1Zrxc3DR+HhL/QoVS1CK+W32ekcZ2G02BlyeCW?=
- =?us-ascii?Q?RCeQPxdM+XT/eVZM6Dh27GPQ5Pgd+ha29m1dEQ0kE4cswVqIpPNYHnD3NMY5?=
- =?us-ascii?Q?vB9IXw50KWBbxYmIUDW5AliWbA94k0PkVb2HChisWo5LoH3pMORSIWGiChPw?=
- =?us-ascii?Q?+p6zAxy4lRs31kKLd9W8moFuRjs5TK7yISEhQG+n9D3yejCfHwbr5nM9N9VU?=
- =?us-ascii?Q?QNQoyqGTNPVbz1LmIZ4u8/tr?=
+	=?us-ascii?Q?VZvm2oS1zVwcvRPgpHZ0XwkDyUYzejJa2uiJ/YhRKKVTSiEre/tSYuUkS3d+?=
+ =?us-ascii?Q?baiVuOS+YJNzwL0pALBn/El++z0IQDkm+5f1pE22g0tdLlyfpJGbhkitfxhE?=
+ =?us-ascii?Q?pBN571u1pUbRVx/7HtauMBhd/coP1jd2S7fEQdTuA6r0cLqtcW1x+xJnzD8S?=
+ =?us-ascii?Q?4VDivh7uAv0DrxuTNXPw32m+Wn+JqgccQb5rbkjz2VLAoO9i1iNMpwqUr2UA?=
+ =?us-ascii?Q?fFiQ9mWLcXrIcD7KD+3QktqRx9Z10uF0K6Ehru1sAbRnpL574Z7nzHNo95h+?=
+ =?us-ascii?Q?DGFkPCSp5v9xPuKRH9ewM7iscbEDcjsbbp7tj9ZUUJsRdg6+/6EDJbD1K6t7?=
+ =?us-ascii?Q?Ld+7fViLPWyV4vdw4OQ/cMkmY2wDBQArGhwuO+JKF15CgC+sgNol4NHuSvWq?=
+ =?us-ascii?Q?cCUZVs/UVvGoLSHAQt/hxdpYN6hmRbM0C9y05Zt2zBNxVKb1zE6xggbPjYKg?=
+ =?us-ascii?Q?leq3BwZVymEd8b0x9xnzCZ57OFLfJ2CdzrouRnrZ4ivWXPjW5vH3GgyS/g6P?=
+ =?us-ascii?Q?2eR2FywgJf0IgCogpP7BNk6yHNSFmkQXWfRBVObDHPg67e93uqTERDzEkCds?=
+ =?us-ascii?Q?ksf+YBinL4d07gxsvYrI17oFIlrBsOM8N8HXMABNh1gXfr8duAtEMZIKP+A1?=
+ =?us-ascii?Q?I4bZgQZFqcOG/k1MuR6lTHpr+OWm5jXPWTaC/0afV7/7IzBGpC1TN0Q1too5?=
+ =?us-ascii?Q?5e2zqFX3MB6p3f4otp9mGW3DXj7NZgqJEZGMzziasTdmvOUvwZNvClapOxcp?=
+ =?us-ascii?Q?WJ1w/F3khoOj8lIEyZKMG0U+4lQE6EIZP+wT6jHgRmh9gaaQgzo5n+5Eba/v?=
+ =?us-ascii?Q?O1dgL8gQoN0XqxsR52KOBTUyyrVmsxa3JVbJzB51KnkWOEnvBeVTCnB+umnS?=
+ =?us-ascii?Q?pxsN3biQ0BfOOfXhKIim6cBMEEH40V7/J5p2d89zb75uCGfa/zojAYxLJ3Ly?=
+ =?us-ascii?Q?Mea2eb4ns+8Y6T2Aov4Zh9rk8GePMso3d17xdIJ1ywukJswsfZXwMshzshih?=
+ =?us-ascii?Q?n7Aw9yk/FRbJii3QsjhvH9BvtbwdeIyYHh2N3KM0FofRFB5Jhd0mAxEOYLXS?=
+ =?us-ascii?Q?/AAutzGXTWWVL1X/IQL3ySYf0HmK5RhJqtFt853/pzYiE7g63CqfQkEfyZVD?=
+ =?us-ascii?Q?nb3KeHsFkDlvhJBdP07uQye1BLAjojOsOr9WWQsxV26vB9mogGeIdoKq2CBg?=
+ =?us-ascii?Q?MoAsiitEj+pNnXBLKCY5LvC1U6FCwhZD/813b7pQqj4ePcVjg9sg4XSWfnbW?=
+ =?us-ascii?Q?kEah8DtC3OH3pRakYft/LVZSchLkT/cBSDW4k28Npag2Z0hXLbiG0SnVCsZu?=
+ =?us-ascii?Q?RDbHPhh6J8hLELchg7Cur9gy?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db9dfabd-203d-45aa-6817-08d925cf6ae9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b517165-5d82-4e49-7c46-08d925cf6ddf
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2021 14:05:03.3654
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2021 14:05:08.3445
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zQKw0yaHqu4kj2FC+exsyaRmCV5APxjWXhEP7wGHtQZZ5yTHXlp/T2CYmoTbGgRY709TOf2EY9ZeCOlIkVWkcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2766
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3NnJhp2TN06lMN0xBvP/MwjyFVX85u5vTieZSP8ndXHxwCGWQ4+W2nYCcZHsLyaYzvgbDiPY64kqz38Zf7puHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4446
 
-The hypervisor uses the SEV_FEATURES field (offset 3B0h) in the Save State
-Area to control the SEV-SNP guest features such as SNPActive, vTOM,
-ReflectVC etc. An SEV-SNP guest can read the SEV_FEATURES fields through
-the SEV_STATUS MSR.
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-While at it, update the dump_vmcb() to log the VMPL level.
+The initial implementation of the GHCB spec was based on trying to keep
+the register state offsets the same relative to the VM save area. However,
+the save area for SEV-ES has changed within the hardware causing the
+relation between the SEV-ES save area to change relative to the GHCB save
+area.
 
-See APM2 Table 15-34 and B-4 for more details.
+This is the second step in defining the multiple save areas to keep them
+separate and ensuring proper operation amongst the different types of
+guests. Create a GHCB save area that matches the GHCB specification.
 
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/svm.h | 6 ++++--
- arch/x86/kvm/svm/svm.c     | 4 ++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/svm.h | 48 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 45 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index 772e60efe243..fb38fae3d5ab 100644
+index 482fb20104da..f5edfc552240 100644
 --- a/arch/x86/include/asm/svm.h
 +++ b/arch/x86/include/asm/svm.h
-@@ -230,7 +230,8 @@ struct vmcb_save_area {
- 	struct vmcb_seg ldtr;
- 	struct vmcb_seg idtr;
- 	struct vmcb_seg tr;
--	u8 reserved_1[43];
-+	u8 reserved_1[42];
-+	u8 vmpl;
- 	u8 cpl;
- 	u8 reserved_2[4];
- 	u64 efer;
-@@ -295,7 +296,8 @@ struct vmcb_save_area {
- 	u64 sw_exit_info_1;
- 	u64 sw_exit_info_2;
- 	u64 sw_scratch;
--	u8 reserved_11[56];
-+	u64 sev_features;
-+	u8 reserved_11[48];
- 	u64 xcr0;
- 	u8 valid_bitmap[16];
+@@ -346,9 +346,49 @@ struct sev_es_save_area {
  	u64 x87_state_gpa;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 05eca131eaf2..2acf187a3100 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3186,8 +3186,8 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
- 	       "tr:",
- 	       save01->tr.selector, save01->tr.attrib,
- 	       save01->tr.limit, save01->tr.base);
--	pr_err("cpl:            %d                efer:         %016llx\n",
--		save->cpl, save->efer);
-+	pr_err("vmpl: %d   cpl:  %d               efer:          %016llx\n",
-+		save->vmpl, save->cpl, save->efer);
- 	pr_err("%-15s %016llx %-13s %016llx\n",
- 	       "cr0:", save->cr0, "cr2:", save->cr2);
- 	pr_err("%-15s %016llx %-13s %016llx\n",
+ } __packed;
+ 
++struct ghcb_save_area {
++	u8 reserved_1[203];
++	u8 cpl;
++	u8 reserved_2[116];
++	u64 xss;
++	u8 reserved_3[24];
++	u64 dr7;
++	u8 reserved_4[16];
++	u64 rip;
++	u8 reserved_5[88];
++	u64 rsp;
++	u8 reserved_6[24];
++	u64 rax;
++	u8 reserved_7[264];
++	u64 rcx;
++	u64 rdx;
++	u64 rbx;
++	u8 reserved_8[8];
++	u64 rbp;
++	u64 rsi;
++	u64 rdi;
++	u64 r8;
++	u64 r9;
++	u64 r10;
++	u64 r11;
++	u64 r12;
++	u64 r13;
++	u64 r14;
++	u64 r15;
++	u8 reserved_9[16];
++	u64 sw_exit_code;
++	u64 sw_exit_info_1;
++	u64 sw_exit_info_2;
++	u64 sw_scratch;
++	u8 reserved_10[56];
++	u64 xcr0;
++	u8 valid_bitmap[16];
++	u64 x87_state_gpa;
++} __packed;
++
+ struct ghcb {
+-	struct sev_es_save_area save;
+-	u8 reserved_save[2048 - sizeof(struct sev_es_save_area)];
++	struct ghcb_save_area save;
++	u8 reserved_save[2048 - sizeof(struct ghcb_save_area)];
+ 
+ 	u8 shared_buffer[2032];
+ 
+@@ -359,6 +399,7 @@ struct ghcb {
+ 
+ 
+ #define EXPECTED_VMCB_SAVE_AREA_SIZE		740
++#define EXPECTED_GHCB_SAVE_AREA_SIZE		1032
+ #define EXPECTED_SEV_ES_SAVE_AREA_SIZE		1032
+ #define EXPECTED_VMCB_CONTROL_AREA_SIZE		272
+ #define EXPECTED_GHCB_SIZE			PAGE_SIZE
+@@ -366,6 +407,7 @@ struct ghcb {
+ static inline void __unused_size_checks(void)
+ {
+ 	BUILD_BUG_ON(sizeof(struct vmcb_save_area)	!= EXPECTED_VMCB_SAVE_AREA_SIZE);
++	BUILD_BUG_ON(sizeof(struct ghcb_save_area)	!= EXPECTED_GHCB_SAVE_AREA_SIZE);
+ 	BUILD_BUG_ON(sizeof(struct sev_es_save_area)	!= EXPECTED_SEV_ES_SAVE_AREA_SIZE);
+ 	BUILD_BUG_ON(sizeof(struct vmcb_control_area)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
+ 	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
+@@ -437,7 +479,7 @@ struct vmcb {
+ /* GHCB Accessor functions */
+ 
+ #define GHCB_BITMAP_IDX(field)							\
+-	(offsetof(struct sev_es_save_area, field) / sizeof(u64))
++	(offsetof(struct ghcb_save_area, field) / sizeof(u64))
+ 
+ #define DEFINE_GHCB_ACCESSORS(field)						\
+ 	static inline bool ghcb_##field##_is_valid(const struct ghcb *ghcb)	\
 -- 
 2.17.1
 
