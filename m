@@ -1,134 +1,73 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B941C2FB0
-	for <linux-coco@lists.linux.dev>; Thu,  3 Jun 2021 13:31:27 +0000 (UTC)
-Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id E20F9374;
-	Thu,  3 Jun 2021 15:22:58 +0200 (CEST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C770
+	for <linux-coco@lists.linux.dev>; Thu,  3 Jun 2021 14:51:40 +0000 (UTC)
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+	id 1FDDA48E; Thu,  3 Jun 2021 16:51:38 +0200 (CEST)
+Date: Thu, 3 Jun 2021 16:51:35 +0200
 From: Joerg Roedel <joro@8bytes.org>
-To: Eric Biederman <ebiederm@xmission.com>,
-	x86@kernel.org
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	stable@vger.kernel.org,
-	hpa@zytor.com,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <keescook@chromium.org>,
+To: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, virtualization@lists.linux-foundation.org
+Cc: Andi Kleen <ak@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	David Kaplan <David.Kaplan@amd.com>,
 	David Rientjes <rientjes@google.com>,
-	Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sathya Kuppuswamy <sathyanarayanan.kuppuswamy@intel.com>,
 	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: [PATCH v2 1/2] kexec: Allow architecture code to opt-out at runtime
-Date: Thu,  3 Jun 2021 15:22:32 +0200
-Message-Id: <20210603132233.10004-2-joro@8bytes.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210603132233.10004-1-joro@8bytes.org>
-References: <20210603132233.10004-1-joro@8bytes.org>
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [CFP LPC 2021] Confidential Computing Microconference
+Message-ID: <YLjsd7zskBPaN9C6@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-From: Joerg Roedel <jroedel@suse.de>
+Hi,
 
-Allow a runtime opt-out of kexec support for architecture code in case
-the kernel is running in an environment where kexec is not properly
-supported yet.
+I am pleased to announce that the
 
-This will be used on x86 when the kernel is running as an SEV-ES
-guest. SEV-ES guests need special handling for kexec to hand over all
-CPUs to the new kernel. This requires special hypervisor support and
-handling code in the guest which is not yet implemented.
+	Confidential Computing Microconference[1]
+	
+has been accepted at this years Linux Plumbers Conference.
 
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- include/linux/kexec.h |  1 +
- kernel/kexec.c        | 14 ++++++++++++++
- kernel/kexec_file.c   |  9 +++++++++
- 3 files changed, 24 insertions(+)
+In this microconference we will discuss how Linux can support encryption
+technologies which protect data during processing on the CPU. Examples
+are AMD SEV, Intel TDX, IBM Secure Execution for s390x and ARM Secure
+Virtualization.
 
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index 0c994ae37729..85c30dcd0bdc 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -201,6 +201,7 @@ int arch_kexec_kernel_verify_sig(struct kimage *image, void *buf,
- 				 unsigned long buf_len);
- #endif
- int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf);
-+bool arch_kexec_supported(void);
- 
- extern int kexec_add_buffer(struct kexec_buf *kbuf);
- int kexec_locate_mem_hole(struct kexec_buf *kbuf);
-diff --git a/kernel/kexec.c b/kernel/kexec.c
-index c82c6c06f051..d03134160458 100644
---- a/kernel/kexec.c
-+++ b/kernel/kexec.c
-@@ -195,11 +195,25 @@ static int do_kexec_load(unsigned long entry, unsigned long nr_segments,
-  * that to happen you need to do that yourself.
-  */
- 
-+bool __weak arch_kexec_supported(void)
-+{
-+	return true;
-+}
-+
- static inline int kexec_load_check(unsigned long nr_segments,
- 				   unsigned long flags)
- {
- 	int result;
- 
-+	/*
-+	 * The architecture may support kexec in general, but the kernel could
-+	 * run in an environment where it is not (yet) possible to execute a new
-+	 * kernel. Allow the architecture code to opt-out of kexec support when
-+	 * it is running in such an environment.
-+	 */
-+	if (!arch_kexec_supported())
-+		return -ENOSYS;
-+
- 	/* We only trust the superuser with rebooting the system. */
- 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
- 		return -EPERM;
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 33400ff051a8..96d08a512e9c 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -358,6 +358,15 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
- 	int ret = 0, i;
- 	struct kimage **dest_image, *image;
- 
-+	/*
-+	 * The architecture may support kexec in general, but the kernel could
-+	 * run in an environment where it is not (yet) possible to execute a new
-+	 * kernel. Allow the architecture code to opt-out of kexec support when
-+	 * it is running in such an environment.
-+	 */
-+	if (!arch_kexec_supported())
-+		return -ENOSYS;
-+
- 	/* We only trust the superuser with rebooting the system. */
- 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
- 		return -EPERM;
--- 
-2.31.1
+Suggested Topics are:
 
+	- Live Migration of Confidential VMs
+	- Lazy Memory Validation
+	- APIC emulation/interrupt management
+	- Debug Support for Confidential VMs
+	- Required Memory Management changes for memory validation
+	- Safe Kernel entry for TDX and SEV exceptions
+	- Requirements for Confidential Containers
+	- Trusted Device Drivers Framework and driver fuzzing
+	- Remote Attestation
+
+Please submit your proposals on the LPC website at:
+
+	https://www.linuxplumbersconf.org/event/11/abstracts/#submit-abstract
+
+Make sure to select "Confidential Computing MC" in the Track pulldown
+menu.
+
+Looking forward to seeing you all there! :)
+
+Thanks,
+
+	Joerg Roedel
+	
+[1] https://www.linuxplumbersconf.org/blog/2021/index.php/2021/05/14/confidential-computing-microconference-accepted-into-2021-linux-plumbers-conference/
