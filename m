@@ -1,13 +1,13 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C1C70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B941C2FB0
 	for <linux-coco@lists.linux.dev>; Thu,  3 Jun 2021 13:31:27 +0000 (UTC)
 Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 87631391;
-	Thu,  3 Jun 2021 15:22:59 +0200 (CEST)
+	by theia.8bytes.org (Postfix) with ESMTPSA id E20F9374;
+	Thu,  3 Jun 2021 15:22:58 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: Eric Biederman <ebiederm@xmission.com>,
 	x86@kernel.org
@@ -35,9 +35,9 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH v2 2/2] x86/kexec/64: Forbid kexec when running as an SEV-ES guest
-Date: Thu,  3 Jun 2021 15:22:33 +0200
-Message-Id: <20210603132233.10004-3-joro@8bytes.org>
+Subject: [PATCH v2 1/2] kexec: Allow architecture code to opt-out at runtime
+Date: Thu,  3 Jun 2021 15:22:32 +0200
+Message-Id: <20210603132233.10004-2-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210603132233.10004-1-joro@8bytes.org>
 References: <20210603132233.10004-1-joro@8bytes.org>
@@ -50,34 +50,85 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-For now, kexec is not supported when running as an SEV-ES guest. Doing
-so requires additional hypervisor support and special code to hand
-over the CPUs to the new kernel in a safe way.
+Allow a runtime opt-out of kexec support for architecture code in case
+the kernel is running in an environment where kexec is not properly
+supported yet.
 
-Until this is implemented, do not support kexec in SEV-ES guests.
+This will be used on x86 when the kernel is running as an SEV-ES
+guest. SEV-ES guests need special handling for kexec to hand over all
+CPUs to the new kernel. This requires special hypervisor support and
+handling code in the guest which is not yet implemented.
 
 Cc: stable@vger.kernel.org # v5.10+
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/x86/kernel/machine_kexec_64.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/kexec.h |  1 +
+ kernel/kexec.c        | 14 ++++++++++++++
+ kernel/kexec_file.c   |  9 +++++++++
+ 3 files changed, 24 insertions(+)
 
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index c078b0d3ab0e..f902cc9cc634 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -620,3 +620,11 @@ void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages)
- 	 */
- 	set_memory_encrypted((unsigned long)vaddr, pages);
- }
-+
-+/*
-+ * Kexec is not supported in SEV-ES guests yet
-+ */
-+bool arch_kexec_supported(void)
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index 0c994ae37729..85c30dcd0bdc 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -201,6 +201,7 @@ int arch_kexec_kernel_verify_sig(struct kimage *image, void *buf,
+ 				 unsigned long buf_len);
+ #endif
+ int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf);
++bool arch_kexec_supported(void);
+ 
+ extern int kexec_add_buffer(struct kexec_buf *kbuf);
+ int kexec_locate_mem_hole(struct kexec_buf *kbuf);
+diff --git a/kernel/kexec.c b/kernel/kexec.c
+index c82c6c06f051..d03134160458 100644
+--- a/kernel/kexec.c
++++ b/kernel/kexec.c
+@@ -195,11 +195,25 @@ static int do_kexec_load(unsigned long entry, unsigned long nr_segments,
+  * that to happen you need to do that yourself.
+  */
+ 
++bool __weak arch_kexec_supported(void)
 +{
-+	return !sev_es_active();
++	return true;
 +}
++
+ static inline int kexec_load_check(unsigned long nr_segments,
+ 				   unsigned long flags)
+ {
+ 	int result;
+ 
++	/*
++	 * The architecture may support kexec in general, but the kernel could
++	 * run in an environment where it is not (yet) possible to execute a new
++	 * kernel. Allow the architecture code to opt-out of kexec support when
++	 * it is running in such an environment.
++	 */
++	if (!arch_kexec_supported())
++		return -ENOSYS;
++
+ 	/* We only trust the superuser with rebooting the system. */
+ 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
+ 		return -EPERM;
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 33400ff051a8..96d08a512e9c 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -358,6 +358,15 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
+ 	int ret = 0, i;
+ 	struct kimage **dest_image, *image;
+ 
++	/*
++	 * The architecture may support kexec in general, but the kernel could
++	 * run in an environment where it is not (yet) possible to execute a new
++	 * kernel. Allow the architecture code to opt-out of kexec support when
++	 * it is running in such an environment.
++	 */
++	if (!arch_kexec_supported())
++		return -ENOSYS;
++
+ 	/* We only trust the superuser with rebooting the system. */
+ 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
+ 		return -EPERM;
 -- 
 2.31.1
 
