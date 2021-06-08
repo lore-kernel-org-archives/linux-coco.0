@@ -1,127 +1,85 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C63D72
-	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 11:12:46 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0bc9005757c3be7e9afbb5.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:c900:5757:c3be:7e9a:fbb5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6E0BA1EC036C;
-	Tue,  8 Jun 2021 13:12:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1623150755;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=3sPDCvRlwwIpxA2b3PcLxBUFevSmv4P/XZ/ZVXKpHEY=;
-	b=pm3yWyMyq0vfbN/1lB1/7YSiZn9GqmppzRw5hFrYhvwk6G8zDGbVnobmgbVtvU5ugIyGc2
-	AvNowWwi3/OJYL2ri6TSgeqQ6tZbxnkJW1XzcRYwrpPRsJY9eY4tLQhjhK0PfmioT/M5D8
-	XquQKU68mAu73X2MJSJsE7Wl84JJeyg=
-Date: Tue, 8 Jun 2021 13:12:35 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5227F72
+	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 12:00:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=DycXleRZZakhNiWk5mkor9tyBuVnVqL3f4nz52Lyagk=; b=irluC+5RhkL+SPw7n56VFsnUa3
+	A6KF3/s55ZYxA0h5WQdhlc9VxpnlqkRu8nOP51S/dNz3A31rBJK6S9oxeXGYaBp6omXkVTaJtnaPw
+	sA1CuBszTSMZ3el0Og5AtmMUvXw9lHXRA54lx5KW7ZWSbHHNWG26SdVzjtdysBJ8qwWorblycsHxN
+	KhZg4ubvQ5PehEEmgLmsFlvxhCaqrZc9CbL+PnsrR/1+U96Fd3vRr5MZ1qfG9jrGeGPfTFHGnjecO
+	zmVJFh+nFBQ4uPBzaNuwZQj30AOVpu0rSVoXC11jIOWeScueEcUp1GtrrMROKzQ31brpts3R0AhuL
+	+n5P3vXg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+	id 1lqaNc-00Gu7t-CN; Tue, 08 Jun 2021 11:58:53 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 34544300258;
+	Tue,  8 Jun 2021 13:58:47 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 1DF2722B9AE15; Tue,  8 Jun 2021 13:58:47 +0200 (CEST)
+Date: Tue, 8 Jun 2021 13:58:47 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-	npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 08/22] x86/compressed: Add helper for
- validating pages in the decompression stage
-Message-ID: <YL9Qo/8ycWKZGRwt@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-9-brijesh.singh@amd.com>
+	Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v3 4/7] x86/sev-es: Run #VC handler in plain IRQ state
+Message-ID: <YL9bd2hx/y9oD6x/@hirez.programming.kicks-ass.net>
+References: <20210608095439.12668-1-joro@8bytes.org>
+ <20210608095439.12668-5-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210602140416.23573-9-brijesh.singh@amd.com>
+In-Reply-To: <20210608095439.12668-5-joro@8bytes.org>
 
-On Wed, Jun 02, 2021 at 09:04:02AM -0500, Brijesh Singh wrote:
-> +static void __page_state_change(unsigned long paddr, int op)
-> +{
-> +	u64 val;
-> +
-> +	if (!sev_snp_enabled())
-> +		return;
-> +
-> +	/*
-> +	 * If private -> shared then invalidate the page before requesting the
-> +	 * state change in the RMP table.
-> +	 */
-> +	if ((op == SNP_PAGE_STATE_SHARED) && pvalidate(paddr, RMP_PG_SIZE_4K, 0))
-> +		goto e_pvalidate;
-> +
-> +	/* Issue VMGEXIT to change the page state in RMP table. */
-> +	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
-> +	VMGEXIT();
-> +
-> +	/* Read the response of the VMGEXIT. */
-> +	val = sev_es_rd_ghcb_msr();
-> +	if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
-> +		sev_es_terminate(1, GHCB_TERM_PSC);
-> +
-> +	/*
-> +	 * Now that page is added in the RMP table, validate it so that it is
-> +	 * consistent with the RMP entry.
-> +	 */
-> +	if ((op == SNP_PAGE_STATE_PRIVATE) && pvalidate(paddr, RMP_PG_SIZE_4K, 1))
-> +		goto e_pvalidate;
-> +
-> +	return;
-> +
-> +e_pvalidate:
-> +	sev_es_terminate(1, GHCB_TERM_PVALIDATE);
-> +}
+On Tue, Jun 08, 2021 at 11:54:36AM +0200, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
+> 
+> Use irqentry_enter() and irqentry_exit() to track the runtime state of
+> the #VC handler. The reason it ran in NMI mode was solely to make sure
+> nothing interrupts the handler while the GHCB is in use.
+> 
+> This is handled now in sev_es_get/put_ghcb() directly, so there is no
+> reason the #VC handler can not run in normal IRQ mode and enjoy the
+> benefits like being able to send signals.
 
-You don't even need that label, diff ontop:
+You sure?
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 808fe1f6b170..dd0f22386fd2 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -146,7 +146,7 @@ static void __page_state_change(unsigned long paddr, int op)
- 	 * state change in the RMP table.
- 	 */
- 	if ((op == SNP_PAGE_STATE_SHARED) && pvalidate(paddr, RMP_PG_SIZE_4K, 0))
--		goto e_pvalidate;
-+		sev_es_terminate(1, GHCB_TERM_PVALIDATE);
- 
- 	/* Issue VMGEXIT to change the page state in RMP table. */
- 	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
-@@ -162,12 +162,7 @@ static void __page_state_change(unsigned long paddr, int op)
- 	 * consistent with the RMP entry.
- 	 */
- 	if ((op == SNP_PAGE_STATE_PRIVATE) && pvalidate(paddr, RMP_PG_SIZE_4K, 1))
--		goto e_pvalidate;
--
--	return;
--
--e_pvalidate:
--	sev_es_terminate(1, GHCB_TERM_PVALIDATE);
-+		sev_es_terminate(1, GHCB_TERM_PVALIDATE);
- }
- 
- void snp_set_page_private(unsigned long paddr)
+So #VC cannot happen with IRQs disabled?
 
--- 
-Regards/Gruss,
-    Boris.
+	raw_spin_lock_irq(&my_lock);
+	<#VC>
+		raw_spin_lock_irqsave(&my_lock); // whoopsie
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Every exception that can happen with IRQs disabled must be NMI like.
+
+Again, what you seem to want is to split the handler in a from-user and
+from-kernel way, just like we did with #DB and MCE. See how
+exc_debug_user() is IRQ-like and can send signals, while
+exc_debug_kernel() is NMI like and can not.
+
+
