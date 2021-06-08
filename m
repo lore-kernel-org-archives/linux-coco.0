@@ -1,32 +1,13 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5227F72
-	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 12:00:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=DycXleRZZakhNiWk5mkor9tyBuVnVqL3f4nz52Lyagk=; b=irluC+5RhkL+SPw7n56VFsnUa3
-	A6KF3/s55ZYxA0h5WQdhlc9VxpnlqkRu8nOP51S/dNz3A31rBJK6S9oxeXGYaBp6omXkVTaJtnaPw
-	sA1CuBszTSMZ3el0Og5AtmMUvXw9lHXRA54lx5KW7ZWSbHHNWG26SdVzjtdysBJ8qwWorblycsHxN
-	KhZg4ubvQ5PehEEmgLmsFlvxhCaqrZc9CbL+PnsrR/1+U96Fd3vRr5MZ1qfG9jrGeGPfTFHGnjecO
-	zmVJFh+nFBQ4uPBzaNuwZQj30AOVpu0rSVoXC11jIOWeScueEcUp1GtrrMROKzQ31brpts3R0AhuL
-	+n5P3vXg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-	id 1lqaNc-00Gu7t-CN; Tue, 08 Jun 2021 11:58:53 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 34544300258;
-	Tue,  8 Jun 2021 13:58:47 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 1DF2722B9AE15; Tue,  8 Jun 2021 13:58:47 +0200 (CEST)
-Date: Tue, 8 Jun 2021 13:58:47 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Joerg Roedel <joro@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E1829CA
+	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 13:25:55 +0000 (UTC)
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+	id 8A7F3386; Tue,  8 Jun 2021 15:25:53 +0200 (CEST)
+Date: Tue, 8 Jun 2021 15:25:51 +0200
+From: Joerg Roedel <joro@8bytes.org>
+To: Peter Zijlstra <peterz@infradead.org>
 Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -44,9 +25,10 @@ Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
 Subject: Re: [PATCH v3 4/7] x86/sev-es: Run #VC handler in plain IRQ state
-Message-ID: <YL9bd2hx/y9oD6x/@hirez.programming.kicks-ass.net>
+Message-ID: <YL9v38J0JC5FrZnM@8bytes.org>
 References: <20210608095439.12668-1-joro@8bytes.org>
  <20210608095439.12668-5-joro@8bytes.org>
+ <YL9bd2hx/y9oD6x/@hirez.programming.kicks-ass.net>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -54,32 +36,29 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210608095439.12668-5-joro@8bytes.org>
+In-Reply-To: <YL9bd2hx/y9oD6x/@hirez.programming.kicks-ass.net>
 
-On Tue, Jun 08, 2021 at 11:54:36AM +0200, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
+Hi Peter,
+
+On Tue, Jun 08, 2021 at 01:58:47PM +0200, Peter Zijlstra wrote:
+> So #VC cannot happen with IRQs disabled?
 > 
-> Use irqentry_enter() and irqentry_exit() to track the runtime state of
-> the #VC handler. The reason it ran in NMI mode was solely to make sure
-> nothing interrupts the handler while the GHCB is in use.
+> 	raw_spin_lock_irq(&my_lock);
+> 	<#VC>
+> 		raw_spin_lock_irqsave(&my_lock); // whoopsie
 > 
-> This is handled now in sev_es_get/put_ghcb() directly, so there is no
-> reason the #VC handler can not run in normal IRQ mode and enjoy the
-> benefits like being able to send signals.
+> Every exception that can happen with IRQs disabled must be NMI like.
+> 
+> Again, what you seem to want is to split the handler in a from-user and
+> from-kernel way, just like we did with #DB and MCE. See how
+> exc_debug_user() is IRQ-like and can send signals, while
+> exc_debug_kernel() is NMI like and can not.
 
-You sure?
+You are right, thanks for pointing this out. I replaced that patch by
+one implementing the split in a from-user and from-kernel part. Initial
+testing looks good, will send it out later this week.
 
-So #VC cannot happen with IRQs disabled?
+Thanks,
 
-	raw_spin_lock_irq(&my_lock);
-	<#VC>
-		raw_spin_lock_irqsave(&my_lock); // whoopsie
-
-Every exception that can happen with IRQs disabled must be NMI like.
-
-Again, what you seem to want is to split the handler in a from-user and
-from-kernel way, just like we did with #DB and MCE. See how
-exc_debug_user() is IRQ-like and can send signals, while
-exc_debug_kernel() is NMI like and can not.
-
+	Joerg
 
