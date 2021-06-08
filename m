@@ -1,24 +1,24 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7682FAD
-	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 09:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9752FB1
+	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 09:54:52 +0000 (UTC)
 Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 0B5D2222;
+	by theia.8bytes.org (Postfix) with ESMTPSA id 91B0A386;
 	Tue,  8 Jun 2021 11:54:44 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org
 Cc: Joerg Roedel <joro@8bytes.org>,
 	Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
 	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
 	Juergen Gross <jgross@suse.com>,
 	Kees Cook <keescook@chromium.org>,
 	David Rientjes <rientjes@google.com>,
@@ -33,10 +33,12 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH v3 0/7] x86/sev-es: Fixes for SEV-ES Guest Support
-Date: Tue,  8 Jun 2021 11:54:32 +0200
-Message-Id: <20210608095439.12668-1-joro@8bytes.org>
+Subject: [PATCH v3 1/7] x86/ioremap: Map efi_mem_reserve() memory as encrypted for SEV
+Date: Tue,  8 Jun 2021 11:54:33 +0200
+Message-Id: <20210608095439.12668-2-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210608095439.12668-1-joro@8bytes.org>
+References: <20210608095439.12668-1-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -44,47 +46,64 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Joerg Roedel <jroedel@suse.de>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-Hi,
+Some drivers require memory that is marked as EFI boot services data. So that
+this memory is not re-used by the kernel after ExitBootServices(),
+efi_mem_reserve() is used to preserve it by inserting a new EFI memory
+descriptor and marking it with the EFI_MEMORY_RUNTIME attribute.
 
-here is the next revision of my pending fixes for SEV-ES guest
-support. Changes to the previous version are:
+Under SEV, memory marked with the EFI_MEMORY_RUNTIME attribute needs to
+be mapped encrypted by Linux, otherwise the kernel might crash at boot
+like below:
 
-	- Removed the patches already merged
-	- Added a new fix to map the EFI MOKVar table encrypted
-	- Disabled IRQs when GHCB is active
-	- Relaxed state tracking by using irqentry_enter()/exit
-	  instead of irqentry_nmi_enter()/exit()
-	- Changed error reporting from insn_fetch_from_user*() as
-	  requested by Boris
+ EFI Variables Facility v0.08 2004-May-17
+ general protection fault, probably for non-canonical address 0x3597688770a868b2: 0000 [#1] SMP NOPTI
+ CPU: 13 PID: 1 Comm: swapper/0 Not tainted 5.12.4-2-default #1 openSUSE Tumbleweed
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+ RIP: 0010:efi_mokvar_entry_next+0x34/0x40
+ Code: c5 01 48 8b 17 48 c7 07 00 00 00 00 48 85 c0 74 24 48 85 d2 74 14 80 3a 00 74 18 48 8b 82 00 01 00 00 48 8d 84 02 08 01 00 00 <80> 38 00 74 04 48 89 07 c3 31 c0 c3 0f 1f 44 00 00 41 54 4c 8b 25
+ [...]
+ Call Trace:
+  efi_mokvar_sysfs_init
+  ? efi_mokvar_table_init
+  do_one_initcall
+  ? __kmalloc
+  kernel_init_freeable
+  ? rest_init
+  kernel_init
+  ret_from_fork
+ Modules linked in:
+ ---[ end trace 0de27ecc25d41b73 ]---
 
-Changes are based on tip/x86/urgent. Please review.
+Expand the __ioremap_check_other() function to additionally check for this
+other type of "runtime" data and indicate that it should be mapped encrypted
+for an SEV guest.
 
-Thanks,
+Fixes: 58c909022a5a ("efi: Support for MOK variable config table")
+Reported-by: Joerg Roedel <jroedel@suse.de>
+Tested-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+---
+ arch/x86/mm/ioremap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-	Joerg
-
-Joerg Roedel (6):
-  x86/sev-es: Fix error message in runtime #VC handler
-  x86/sev-es: Disable IRQs while GHCB is active
-  x86/sev-es: Run #VC handler in plain IRQ state
-  x86/insn-eval: Make 0 a valid RIP for insn_get_effective_ip()
-  x86/insn: Extend error reporting from
-    insn_fetch_from_user[_inatomic]()
-  x86/sev-es: Propagate #GP if getting linear instruction address failed
-
-Tom Lendacky (1):
-  x86/ioremap: Map efi_mem_reserve() memory as encrypted for SEV
-
- arch/x86/kernel/sev.c    | 61 +++++++++++++++++++++++++---------------
- arch/x86/kernel/umip.c   | 10 +++----
- arch/x86/lib/insn-eval.c | 22 +++++++++------
- arch/x86/mm/ioremap.c    |  4 ++-
- 4 files changed, 59 insertions(+), 38 deletions(-)
-
-
-base-commit: 009767dbf42ac0dbe3cf48c1ee224f6b778aa85a
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index 12c686c65ea9..60ade7dd71bd 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -118,7 +118,9 @@ static void __ioremap_check_other(resource_size_t addr, struct ioremap_desc *des
+ 	if (!IS_ENABLED(CONFIG_EFI))
+ 		return;
+ 
+-	if (efi_mem_type(addr) == EFI_RUNTIME_SERVICES_DATA)
++	if (efi_mem_type(addr) == EFI_RUNTIME_SERVICES_DATA ||
++	    (efi_mem_type(addr) == EFI_BOOT_SERVICES_DATA &&
++	     efi_mem_attributes(addr) & EFI_MEMORY_RUNTIME))
+ 		desc->flags |= IORES_MAP_ENCRYPTED;
+ }
+ 
 -- 
 2.31.1
 
