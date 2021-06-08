@@ -1,69 +1,90 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A86129CA
-	for <linux-coco@lists.linux.dev>; Mon,  7 Jun 2021 19:17:57 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0b4f0088b5a9d37dea41e8.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:4f00:88b5:a9d3:7dea:41e8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7682FAD
+	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 09:54:53 +0000 (UTC)
+Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 857C91EC01DF;
-	Mon,  7 Jun 2021 21:17:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1623093475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=ehln04p+pdRKYdvljTdVaV1hT2/TwzWAtZ5Bi9xJ3pM=;
-	b=IiP6uM+6kRb7GZOxGl0o+S+6Ci9htoOXKscwvzrsIGqDdPFmm1AFoG4voddW2DSdf6S0hd
-	61BYBoBQ1gt5WW84qB5anjzjpH5ZWJn5by0iw2r1F06SXbvvmENTPHu8QgC3TtH2uCBt5I
-	wCUo2xFrQTPxBo3Pm6y8NncUCEFaJdg=
-Date: Mon, 7 Jun 2021 21:17:48 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Venu Busireddy <venu.busireddy@oracle.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
+	by theia.8bytes.org (Postfix) with ESMTPSA id 0B5D2222;
+	Tue,  8 Jun 2021 11:54:44 +0200 (CEST)
+From: Joerg Roedel <joro@8bytes.org>
+To: x86@kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-	npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 00/22] Add AMD Secure Nested Paging
- (SEV-SNP) Guest Support
-Message-ID: <YL5w3N4baodLeIhi@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <YL5wSgektxdZPXZC@dt>
+	Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: [PATCH v3 0/7] x86/sev-es: Fixes for SEV-ES Guest Support
+Date: Tue,  8 Jun 2021 11:54:32 +0200
+Message-Id: <20210608095439.12668-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YL5wSgektxdZPXZC@dt>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 07, 2021 at 02:15:22PM -0500, Venu Busireddy wrote:
-> I could not find that commit (493a0d4559fd) either in
-> git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git repo, or in
-> git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git repo. Which
-> repo can I use to apply this series?
+From: Joerg Roedel <jroedel@suse.de>
 
-Use the current tip/master, whichever it is, in the former repo.
+Hi,
 
+here is the next revision of my pending fixes for SEV-ES guest
+support. Changes to the previous version are:
+
+	- Removed the patches already merged
+	- Added a new fix to map the EFI MOKVar table encrypted
+	- Disabled IRQs when GHCB is active
+	- Relaxed state tracking by using irqentry_enter()/exit
+	  instead of irqentry_nmi_enter()/exit()
+	- Changed error reporting from insn_fetch_from_user*() as
+	  requested by Boris
+
+Changes are based on tip/x86/urgent. Please review.
+
+Thanks,
+
+	Joerg
+
+Joerg Roedel (6):
+  x86/sev-es: Fix error message in runtime #VC handler
+  x86/sev-es: Disable IRQs while GHCB is active
+  x86/sev-es: Run #VC handler in plain IRQ state
+  x86/insn-eval: Make 0 a valid RIP for insn_get_effective_ip()
+  x86/insn: Extend error reporting from
+    insn_fetch_from_user[_inatomic]()
+  x86/sev-es: Propagate #GP if getting linear instruction address failed
+
+Tom Lendacky (1):
+  x86/ioremap: Map efi_mem_reserve() memory as encrypted for SEV
+
+ arch/x86/kernel/sev.c    | 61 +++++++++++++++++++++++++---------------
+ arch/x86/kernel/umip.c   | 10 +++----
+ arch/x86/lib/insn-eval.c | 22 +++++++++------
+ arch/x86/mm/ioremap.c    |  4 ++-
+ 4 files changed, 59 insertions(+), 38 deletions(-)
+
+
+base-commit: 009767dbf42ac0dbe3cf48c1ee224f6b778aa85a
 -- 
-Regards/Gruss,
-    Boris.
+2.31.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
