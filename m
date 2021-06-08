@@ -1,109 +1,127 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177EF2FB4
-	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 09:54:59 +0000 (UTC)
-Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C63D72
+	for <linux-coco@lists.linux.dev>; Tue,  8 Jun 2021 11:12:46 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0bc9005757c3be7e9afbb5.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:c900:5757:c3be:7e9a:fbb5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id E2B2648E;
-	Tue,  8 Jun 2021 11:54:46 +0200 (CEST)
-From: Joerg Roedel <joro@8bytes.org>
-To: x86@kernel.org
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	hpa@zytor.com,
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6E0BA1EC036C;
+	Tue,  8 Jun 2021 13:12:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1623150755;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=3sPDCvRlwwIpxA2b3PcLxBUFevSmv4P/XZ/ZVXKpHEY=;
+	b=pm3yWyMyq0vfbN/1lB1/7YSiZn9GqmppzRw5hFrYhvwk6G8zDGbVnobmgbVtvU5ugIyGc2
+	AvNowWwi3/OJYL2ri6TSgeqQ6tZbxnkJW1XzcRYwrpPRsJY9eY4tLQhjhK0PfmioT/M5D8
+	XquQKU68mAu73X2MJSJsE7Wl84JJeyg=
+Date: Tue, 8 Jun 2021 13:12:35 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>,
-	Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: [PATCH v3 5/7] x86/insn-eval: Make 0 a valid RIP for insn_get_effective_ip()
-Date: Tue,  8 Jun 2021 11:54:37 +0200
-Message-Id: <20210608095439.12668-6-joro@8bytes.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210608095439.12668-1-joro@8bytes.org>
-References: <20210608095439.12668-1-joro@8bytes.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+	npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 08/22] x86/compressed: Add helper for
+ validating pages in the decompression stage
+Message-ID: <YL9Qo/8ycWKZGRwt@zn.tnic>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-9-brijesh.singh@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210602140416.23573-9-brijesh.singh@amd.com>
 
-From: Joerg Roedel <jroedel@suse.de>
+On Wed, Jun 02, 2021 at 09:04:02AM -0500, Brijesh Singh wrote:
+> +static void __page_state_change(unsigned long paddr, int op)
+> +{
+> +	u64 val;
+> +
+> +	if (!sev_snp_enabled())
+> +		return;
+> +
+> +	/*
+> +	 * If private -> shared then invalidate the page before requesting the
+> +	 * state change in the RMP table.
+> +	 */
+> +	if ((op == SNP_PAGE_STATE_SHARED) && pvalidate(paddr, RMP_PG_SIZE_4K, 0))
+> +		goto e_pvalidate;
+> +
+> +	/* Issue VMGEXIT to change the page state in RMP table. */
+> +	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+> +	VMGEXIT();
+> +
+> +	/* Read the response of the VMGEXIT. */
+> +	val = sev_es_rd_ghcb_msr();
+> +	if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
+> +		sev_es_terminate(1, GHCB_TERM_PSC);
+> +
+> +	/*
+> +	 * Now that page is added in the RMP table, validate it so that it is
+> +	 * consistent with the RMP entry.
+> +	 */
+> +	if ((op == SNP_PAGE_STATE_PRIVATE) && pvalidate(paddr, RMP_PG_SIZE_4K, 1))
+> +		goto e_pvalidate;
+> +
+> +	return;
+> +
+> +e_pvalidate:
+> +	sev_es_terminate(1, GHCB_TERM_PVALIDATE);
+> +}
 
-In theory 0 is a valid value for the instruction pointer, so don't use
-it as the error return value from insn_get_effective_ip().
+You don't even need that label, diff ontop:
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- arch/x86/lib/insn-eval.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/lib/insn-eval.c b/arch/x86/lib/insn-eval.c
-index a67afd74232c..4eecb9c7c6a0 100644
---- a/arch/x86/lib/insn-eval.c
-+++ b/arch/x86/lib/insn-eval.c
-@@ -1417,7 +1417,7 @@ void __user *insn_get_addr_ref(struct insn *insn, struct pt_regs *regs)
- 	}
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 808fe1f6b170..dd0f22386fd2 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -146,7 +146,7 @@ static void __page_state_change(unsigned long paddr, int op)
+ 	 * state change in the RMP table.
+ 	 */
+ 	if ((op == SNP_PAGE_STATE_SHARED) && pvalidate(paddr, RMP_PG_SIZE_4K, 0))
+-		goto e_pvalidate;
++		sev_es_terminate(1, GHCB_TERM_PVALIDATE);
+ 
+ 	/* Issue VMGEXIT to change the page state in RMP table. */
+ 	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+@@ -162,12 +162,7 @@ static void __page_state_change(unsigned long paddr, int op)
+ 	 * consistent with the RMP entry.
+ 	 */
+ 	if ((op == SNP_PAGE_STATE_PRIVATE) && pvalidate(paddr, RMP_PG_SIZE_4K, 1))
+-		goto e_pvalidate;
+-
+-	return;
+-
+-e_pvalidate:
+-	sev_es_terminate(1, GHCB_TERM_PVALIDATE);
++		sev_es_terminate(1, GHCB_TERM_PVALIDATE);
  }
  
--static unsigned long insn_get_effective_ip(struct pt_regs *regs)
-+static int insn_get_effective_ip(struct pt_regs *regs, unsigned long *ip)
- {
- 	unsigned long seg_base = 0;
- 
-@@ -1430,10 +1430,12 @@ static unsigned long insn_get_effective_ip(struct pt_regs *regs)
- 	if (!user_64bit_mode(regs)) {
- 		seg_base = insn_get_seg_base(regs, INAT_SEG_REG_CS);
- 		if (seg_base == -1L)
--			return 0;
-+			return -EINVAL;
- 	}
- 
--	return seg_base + regs->ip;
-+	*ip = seg_base + regs->ip;
-+
-+	return 0;
- }
- 
- /**
-@@ -1455,8 +1457,7 @@ int insn_fetch_from_user(struct pt_regs *regs, unsigned char buf[MAX_INSN_SIZE])
- 	unsigned long ip;
- 	int not_copied;
- 
--	ip = insn_get_effective_ip(regs);
--	if (!ip)
-+	if (insn_get_effective_ip(regs, &ip))
- 		return 0;
- 
- 	not_copied = copy_from_user(buf, (void __user *)ip, MAX_INSN_SIZE);
-@@ -1484,8 +1485,7 @@ int insn_fetch_from_user_inatomic(struct pt_regs *regs, unsigned char buf[MAX_IN
- 	unsigned long ip;
- 	int not_copied;
- 
--	ip = insn_get_effective_ip(regs);
--	if (!ip)
-+	if (insn_get_effective_ip(regs, &ip))
- 		return 0;
- 
- 	not_copied = __copy_from_user_inatomic(buf, (void __user *)ip, MAX_INSN_SIZE);
+ void snp_set_page_private(unsigned long paddr)
+
 -- 
-2.31.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
