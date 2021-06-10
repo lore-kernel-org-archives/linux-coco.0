@@ -1,33 +1,27 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787F72F80
-	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 13:03:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1623330234;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F95173
+	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 15:50:58 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0cf600591105fc6a1dcc4d.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:f600:5911:5fc:6a1d:cc4d])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1C6851EC047D;
+	Thu, 10 Jun 2021 17:50:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1623340257;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w1yRG9vI4ont0xlQTDfWQBvjqAZg/7xjdkXXrg1Zl+M=;
-	b=WjzeOjJFr2D4llpTZaYez/OMil270b+h7wDPMX/8SVktCogmt/PvUJ3HsHWoCKwicjaoB/
-	0KoivJJFE4d1TzRx548V88z3w5jqsWpfIEBf9SUOjXY0UzxaTLQz0LkRSFO6SreFBRbmAL
-	AEXdUhz3kvYKghhqQtGxtXUn9Pey790=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-211-2Zzpl9QmNe-i8YEvI8cx5A-1; Thu, 10 Jun 2021 09:03:51 -0400
-X-MC-Unique: 2Zzpl9QmNe-i8YEvI8cx5A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 95914100C624;
-	Thu, 10 Jun 2021 13:03:47 +0000 (UTC)
-Received: from work-vm (ovpn-114-240.ams2.redhat.com [10.36.114.240])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 552845C1D1;
-	Thu, 10 Jun 2021 13:03:30 +0000 (UTC)
-Date: Thu, 10 Jun 2021 14:03:27 +0100
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=/ucDEPiAjCNgh+5QYV19aaLxDA7Gu7w2xk6M9j+LUNE=;
+	b=hw2aXx8BFfNHa4IZlkwBdukgEW8Ik8YFYC6RGLU1bKHqwQ80CVn0B0VEaJxiCjJln46oPK
+	fYImG+6j+vFbfPd4bXZgu/g/Jzv1RMvR0bmq9ul0RLWe/yTIRreFOeWAtTyiBzTg2GEPDI
+	4imoc5EragOgkErfv4T4zV31vKEHWG8=
+Date: Thu, 10 Jun 2021 17:50:51 +0200
+From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
@@ -44,137 +38,340 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Peter Zijlstra <peterz@infradead.org>,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-	npmccallum@redhat.com, Borislav Petkov <bp@suse.de>
-Subject: Re: [PATCH Part2 RFC v3 06/37] x86/sev: Add helper functions for
- RMPUPDATE and PSMASH instruction
-Message-ID: <YMINnxkDVzRZ8gCQ@work-vm>
-References: <20210602141057.27107-1-brijesh.singh@amd.com>
- <20210602141057.27107-7-brijesh.singh@amd.com>
+	npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 11/22] x86/sev: Add helper for validating
+ pages in early enc attribute changes
+Message-ID: <YMI02+k2zk9eazjQ@zn.tnic>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-12-brijesh.singh@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210602141057.27107-7-brijesh.singh@amd.com>
-User-Agent: Mutt/2.0.7 (2021-05-04)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+In-Reply-To: <20210602140416.23573-12-brijesh.singh@amd.com>
 
-* Brijesh Singh (brijesh.singh@amd.com) wrote:
-> The RMPUPDATE instruction writes a new RMP entry in the RMP Table. The
-> hypervisor will use the instruction to add pages to the RMP table. See
-> APM3 for details on the instruction operations.
-> 
-> The PSMASH instruction expands a 2MB RMP entry into a corresponding set of
-> contiguous 4KB-Page RMP entries. The hypervisor will use this instruction
-> to adjust the RMP entry without invalidating the previous RMP entry.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/sev.c | 42 ++++++++++++++++++++++++++++++++++++++++++
->  include/linux/sev.h   | 20 ++++++++++++++++++++
->  2 files changed, 62 insertions(+)
-> 
+On Wed, Jun 02, 2021 at 09:04:05AM -0500, Brijesh Singh wrote:
+> @@ -65,6 +65,12 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+>  /* RMP page size */
+>  #define RMP_PG_SIZE_4K			0
+>  
+> +/* Memory opertion for snp_prep_memory() */
+> +enum snp_mem_op {
+> +	MEMORY_PRIVATE,
+> +	MEMORY_SHARED
+
+See below.
+
+> +};
+> +
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>  extern struct static_key_false sev_es_enable_key;
+>  extern void __sev_es_ist_enter(struct pt_regs *regs);
+> @@ -103,6 +109,11 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
+>  
+>  	return rc;
+>  }
+> +void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
+> +		unsigned int npages);
+> +void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
+> +		unsigned int npages);
+
+Align arguments on the opening brace.
+
+> +void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op);
+>  #else
+>  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+>  static inline void sev_es_ist_exit(void) { }
+> @@ -110,6 +121,15 @@ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { ret
+>  static inline void sev_es_nmi_complete(void) { }
+>  static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
+>  static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+> +static inline void __init
+> +early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned int npages)
+
+Put those { } at the end of the line:
+
+early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned int npages) { }
+
+no need for separate lines. Ditto below.
+
+> +{
+> +}
+> +static inline void __init
+> +early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr, unsigned int npages)
+> +{
+> +}
+> +static inline void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op) { }
+>  #endif
+>  
+>  #endif
 > diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index 51676ab1a321..9727df945fb1 100644
+> index 455c09a9b2c2..6e9b45bb38ab 100644
 > --- a/arch/x86/kernel/sev.c
 > +++ b/arch/x86/kernel/sev.c
-> @@ -2226,3 +2226,45 @@ struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level)
->  	return entry;
+> @@ -532,6 +532,111 @@ static u64 get_jump_table_addr(void)
+>  	return ret;
 >  }
->  EXPORT_SYMBOL_GPL(snp_lookup_page_in_rmptable);
-> +
-> +int psmash(struct page *page)
-> +{
-> +	unsigned long spa = page_to_pfn(page) << PAGE_SHIFT;
-> +	int ret;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return -ENXIO;
-> +
-> +	/* Retry if another processor is modifying the RMP entry. */
-> +	do {
-> +		/* Binutils version 2.36 supports the PSMASH mnemonic. */
-> +		asm volatile(".byte 0xF3, 0x0F, 0x01, 0xFF"
-> +			      : "=a"(ret)
-> +			      : "a"(spa)
-> +			      : "memory", "cc");
-> +	} while (ret == FAIL_INUSE);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(psmash);
-> +
-> +int rmpupdate(struct page *page, struct rmpupdate *val)
-> +{
-> +	unsigned long spa = page_to_pfn(page) << PAGE_SHIFT;
-> +	int ret;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return -ENXIO;
-> +
-> +	/* Retry if another processor is modifying the RMP entry. */
-> +	do {
-> +		/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
-> +		asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
-> +			     : "=a"(ret)
-> +			     : "a"(spa), "c"((unsigned long)val)
-> +			     : "memory", "cc");
-> +	} while (ret == FAIL_INUSE);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(rmpupdate);
-> diff --git a/include/linux/sev.h b/include/linux/sev.h
-> index 83c89e999999..bcd4d75d87c8 100644
-> --- a/include/linux/sev.h
-> +++ b/include/linux/sev.h
-> @@ -39,13 +39,33 @@ struct __packed rmpentry {
 >  
->  #define RMP_TO_X86_PG_LEVEL(level)	(((level) == RMP_PG_SIZE_4K) ? PG_LEVEL_4K : PG_LEVEL_2M)
+> +static void pvalidate_pages(unsigned long vaddr, unsigned int npages, bool validate)
+> +{
+> +	unsigned long vaddr_end;
+> +	int rc;
+> +
+> +	vaddr = vaddr & PAGE_MASK;
+> +	vaddr_end = vaddr + (npages << PAGE_SHIFT);
+> +
+> +	while (vaddr < vaddr_end) {
+> +		rc = pvalidate(vaddr, RMP_PG_SIZE_4K, validate);
+> +		if (WARN(rc, "Failed to validate address 0x%lx ret %d", vaddr, rc))
+> +			sev_es_terminate(1, GHCB_TERM_PVALIDATE);
+					^^
+
+I guess that 1 should be a define too, if we have to be correct:
+
+			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
+
+or so. Ditto for all other calls of this.
+
+> +
+> +		vaddr = vaddr + PAGE_SIZE;
+> +	}
+> +}
+> +
+> +static void __init early_set_page_state(unsigned long paddr, unsigned int npages, int op)
+> +{
+> +	unsigned long paddr_end;
+> +	u64 val;
+> +
+> +	paddr = paddr & PAGE_MASK;
+> +	paddr_end = paddr + (npages << PAGE_SHIFT);
+> +
+> +	while (paddr < paddr_end) {
+> +		/*
+> +		 * Use the MSR protocol because this function can be called before the GHCB
+> +		 * is established.
+> +		 */
+> +		sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+> +		VMGEXIT();
+> +
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP)
+
+From a previous review:
+
+Does that one need a warning too or am I being too paranoid?
+
+> +			goto e_term;
+> +
+> +		if (WARN(GHCB_MSR_PSC_RESP_VAL(val),
+> +			 "Failed to change page state to '%s' paddr 0x%lx error 0x%llx\n",
+> +			 op == SNP_PAGE_STATE_PRIVATE ? "private" : "shared",
+> +			 paddr, GHCB_MSR_PSC_RESP_VAL(val)))
+> +			goto e_term;
+> +
+> +		paddr = paddr + PAGE_SIZE;
+> +	}
+> +
+> +	return;
+> +
+> +e_term:
+> +	sev_es_terminate(1, GHCB_TERM_PSC);
+> +}
+> +
+> +void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
+> +					 unsigned int npages)
+> +{
+> +	if (!sev_feature_enabled(SEV_SNP))
+> +		return;
+> +
+> +	 /* Ask hypervisor to add the memory pages in RMP table as a 'private'. */
+
+	    Ask the hypervisor to mark the memory pages as private in the RMP table.
+
+> +	early_set_page_state(paddr, npages, SNP_PAGE_STATE_PRIVATE);
+> +
+> +	/* Validate the memory pages after they've been added in the RMP table. */
+> +	pvalidate_pages(vaddr, npages, 1);
+> +}
+> +
+> +void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
+> +					unsigned int npages)
+> +{
+> +	if (!sev_feature_enabled(SEV_SNP))
+> +		return;
+> +
+> +	/*
+> +	 * Invalidate the memory pages before they are marked shared in the
+> +	 * RMP table.
+> +	 */
+> +	pvalidate_pages(vaddr, npages, 0);
+> +
+> +	 /* Ask hypervisor to make the memory pages shared in the RMP table. */
+
+			      mark
+
+> +	early_set_page_state(paddr, npages, SNP_PAGE_STATE_SHARED);
+> +}
+> +
+> +void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op)
+> +{
+> +	unsigned long vaddr, npages;
+> +
+> +	vaddr = (unsigned long)__va(paddr);
+> +	npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +
+> +	switch (op) {
+> +	case MEMORY_PRIVATE: {
+> +		early_snp_set_memory_private(vaddr, paddr, npages);
+> +		return;
+> +	}
+> +	case MEMORY_SHARED: {
+> +		early_snp_set_memory_shared(vaddr, paddr, npages);
+> +		return;
+> +	}
+> +	default:
+> +		break;
+> +	}
+> +
+> +	WARN(1, "invalid memory op %d\n", op);
+
+A lot easier, diff ontop of your patch:
+
+---
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 7c2cb5300e43..2ad4b5ab3f6c 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -65,12 +65,6 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+ /* RMP page size */
+ #define RMP_PG_SIZE_4K			0
+ 
+-/* Memory opertion for snp_prep_memory() */
+-enum snp_mem_op {
+-	MEMORY_PRIVATE,
+-	MEMORY_SHARED
+-};
+-
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ extern struct static_key_false sev_es_enable_key;
+ extern void __sev_es_ist_enter(struct pt_regs *regs);
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 2a5dce42af35..991d7964cee9 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -662,20 +662,13 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, int op)
+ 	vaddr = (unsigned long)__va(paddr);
+ 	npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+ 
+-	switch (op) {
+-	case MEMORY_PRIVATE: {
++	if (op == SNP_PAGE_STATE_PRIVATE)
+ 		early_snp_set_memory_private(vaddr, paddr, npages);
+-		return;
+-	}
+-	case MEMORY_SHARED: {
++	else if (op == SNP_PAGE_STATE_SHARED)
+ 		early_snp_set_memory_shared(vaddr, paddr, npages);
+-		return;
++	else {
++		WARN(1, "invalid memory page op %d\n", op);
+ 	}
+-	default:
+-		break;
+-	}
+-
+-	WARN(1, "invalid memory op %d\n", op);
+ }
+ 
+ int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+---
+
+>  static char sme_early_buffer[PAGE_SIZE] __initdata __aligned(PAGE_SIZE);
 >  
-> +struct rmpupdate {
-> +	u64 gpa;
-> +	u8 assigned;
-> +	u8 pagesize;
-> +	u8 immutable;
-> +	u8 rsvd;
-> +	u32 asid;
-> +} __packed;
-> +
-> +
 > +/*
-> + * The psmash() and rmpupdate() returns FAIL_INUSE when another processor is
-> + * modifying the RMP entry.
+> + * When SNP is active, changes the page state from private to shared before
+
+s/changes/change/
+
+> + * copying the data from the source to destination and restore after the copy.
+> + * This is required because the source address is mapped as decrypted by the
+> + * caller of the routine.
 > + */
-> +#define FAIL_INUSE              3
+> +static inline void __init snp_memcpy(void *dst, void *src, size_t sz,
+> +				     unsigned long paddr, bool decrypt)
+> +{
+> +	unsigned long npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +
+> +	if (!sev_feature_enabled(SEV_SNP) || !decrypt) {
+> +		memcpy(dst, src, sz);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * If the paddr needs to be accessed decrypted, mark the page
 
-Perhaps SEV_FAIL_INUSE ?
+What do you mean "If" - this is the SNP version of memcpy. Just say:
 
-(Given that there are a whole buunch of FAIL_* macros already in
-general)
+	/*
+	 * With SNP, the page address needs to be ...
+	 */
 
-Dave
-
->  #ifdef CONFIG_AMD_MEM_ENCRYPT
->  struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level);
-> +int psmash(struct page *page);
-> +int rmpupdate(struct page *page, struct rmpupdate *e);
->  #else
->  static inline struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level)
->  {
->  	return NULL;
->  }
-> +static inline int psmash(struct page *page) { return -ENXIO; }
-> +static inline int rmpupdate(struct page *page, struct rmpupdate *e) { return -ENXIO; }
+> +	 * shared in the RMP table before copying it.
+> +	 */
+> +	early_snp_set_memory_shared((unsigned long)__va(paddr), paddr, npages);
+> +
+> +	memcpy(dst, src, sz);
+> +
+> +	/* Restore the page state after the memcpy. */
+> +	early_snp_set_memory_private((unsigned long)__va(paddr), paddr, npages);
+> +}
+> +
+>  /*
+>   * This routine does not change the underlying encryption setting of the
+>   * page(s) that map this memory. It assumes that eventually the memory is
+> @@ -96,8 +125,8 @@ static void __init __sme_early_enc_dec(resource_size_t paddr,
+>  		 * Use a temporary buffer, of cache-line multiple size, to
+>  		 * avoid data corruption as documented in the APM.
+>  		 */
+> -		memcpy(sme_early_buffer, src, len);
+> -		memcpy(dst, sme_early_buffer, len);
+> +		snp_memcpy(sme_early_buffer, src, len, paddr, enc);
+> +		snp_memcpy(dst, sme_early_buffer, len, paddr, !enc);
 >  
->  #endif /* CONFIG_AMD_MEM_ENCRYPT */
->  #endif /* __LINUX_SEV_H */
-> -- 
-> 2.17.1
-> 
-> 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+>  		early_memunmap(dst, len);
+>  		early_memunmap(src, len);
+> @@ -277,9 +306,23 @@ static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
+>  	else
+>  		sme_early_decrypt(pa, size);
+>  
+> +	/*
+> +	 * If page is getting mapped decrypted in the page table, then the page state
+> +	 * change in the RMP table must happen before the page table updates.
+> +	 */
+> +	if (!enc)
+> +		early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
 
+Merge the two branches:
+
+	/* Encrypt/decrypt the contents in-place */
+        if (enc) {
+                sme_early_encrypt(pa, size);
+        } else {
+                sme_early_decrypt(pa, size);
+
+                /*
+                 * On SNP, the page state change in the RMP table must happen
+                 * before the page table updates.
+                 */
+                early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
+        }
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
