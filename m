@@ -1,35 +1,55 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8456670
-	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 11:30:30 +0000 (UTC)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-	id 87206329; Thu, 10 Jun 2021 13:30:28 +0200 (CEST)
-Date: Thu, 10 Jun 2021 13:30:27 +0200
-From: Joerg Roedel <joro@8bytes.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787F72F80
+	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 13:03:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1623330234;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=w1yRG9vI4ont0xlQTDfWQBvjqAZg/7xjdkXXrg1Zl+M=;
+	b=WjzeOjJFr2D4llpTZaYez/OMil270b+h7wDPMX/8SVktCogmt/PvUJ3HsHWoCKwicjaoB/
+	0KoivJJFE4d1TzRx548V88z3w5jqsWpfIEBf9SUOjXY0UzxaTLQz0LkRSFO6SreFBRbmAL
+	AEXdUhz3kvYKghhqQtGxtXUn9Pey790=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-211-2Zzpl9QmNe-i8YEvI8cx5A-1; Thu, 10 Jun 2021 09:03:51 -0400
+X-MC-Unique: 2Zzpl9QmNe-i8YEvI8cx5A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 95914100C624;
+	Thu, 10 Jun 2021 13:03:47 +0000 (UTC)
+Received: from work-vm (ovpn-114-240.ams2.redhat.com [10.36.114.240])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 552845C1D1;
+	Thu, 10 Jun 2021 13:03:30 +0000 (UTC)
+Date: Thu, 10 Jun 2021 14:03:27 +0100
+From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v4 3/6] x86/sev-es: Split up runtime #VC handler for
- correct state tracking
-Message-ID: <YMH30/wFyE1JkKZg@8bytes.org>
-References: <20210610091141.30322-1-joro@8bytes.org>
- <20210610091141.30322-4-joro@8bytes.org>
- <YMHnP1qgvznyYazv@hirez.programming.kicks-ass.net>
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+	npmccallum@redhat.com, Borislav Petkov <bp@suse.de>
+Subject: Re: [PATCH Part2 RFC v3 06/37] x86/sev: Add helper functions for
+ RMPUPDATE and PSMASH instruction
+Message-ID: <YMINnxkDVzRZ8gCQ@work-vm>
+References: <20210602141057.27107-1-brijesh.singh@amd.com>
+ <20210602141057.27107-7-brijesh.singh@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -37,89 +57,124 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YMHnP1qgvznyYazv@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210602141057.27107-7-brijesh.singh@amd.com>
+User-Agent: Mutt/2.0.7 (2021-05-04)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 
-Hi Peter,
-
-On Thu, Jun 10, 2021 at 12:19:43PM +0200, Peter Zijlstra wrote:
-> On Thu, Jun 10, 2021 at 11:11:38AM +0200, Joerg Roedel wrote:
+* Brijesh Singh (brijesh.singh@amd.com) wrote:
+> The RMPUPDATE instruction writes a new RMP entry in the RMP Table. The
+> hypervisor will use the instruction to add pages to the RMP table. See
+> APM3 for details on the instruction operations.
 > 
-> > +static void vc_handle_from_kernel(struct pt_regs *regs, unsigned long error_code)
+> The PSMASH instruction expands a 2MB RMP entry into a corresponding set of
+> contiguous 4KB-Page RMP entries. The hypervisor will use this instruction
+> to adjust the RMP entry without invalidating the previous RMP entry.
 > 
-> static noinstr ...
-
-Right, I forgot that, will update the patch and add the correct noinstr
-annotations.
-
-> > +	if (user_mode(regs))
-> > +		vc_handle_from_user(regs, error_code);
-> > +	else
-> > +		vc_handle_from_kernel(regs, error_code);
-> >  }
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kernel/sev.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/sev.h   | 20 ++++++++++++++++++++
+>  2 files changed, 62 insertions(+)
 > 
-> #DB and MCE use idtentry_mce_db and split out in asm. When I look at
-> idtentry_vc, it appears to me that VC_SAFE_STACK already implies
-> from-user, or am I reading that wrong?
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 51676ab1a321..9727df945fb1 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -2226,3 +2226,45 @@ struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level)
+>  	return entry;
+>  }
+>  EXPORT_SYMBOL_GPL(snp_lookup_page_in_rmptable);
+> +
+> +int psmash(struct page *page)
+> +{
+> +	unsigned long spa = page_to_pfn(page) << PAGE_SHIFT;
+> +	int ret;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return -ENXIO;
+> +
+> +	/* Retry if another processor is modifying the RMP entry. */
+> +	do {
+> +		/* Binutils version 2.36 supports the PSMASH mnemonic. */
+> +		asm volatile(".byte 0xF3, 0x0F, 0x01, 0xFF"
+> +			      : "=a"(ret)
+> +			      : "a"(spa)
+> +			      : "memory", "cc");
+> +	} while (ret == FAIL_INUSE);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(psmash);
+> +
+> +int rmpupdate(struct page *page, struct rmpupdate *val)
+> +{
+> +	unsigned long spa = page_to_pfn(page) << PAGE_SHIFT;
+> +	int ret;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return -ENXIO;
+> +
+> +	/* Retry if another processor is modifying the RMP entry. */
+> +	do {
+> +		/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
+> +		asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
+> +			     : "=a"(ret)
+> +			     : "a"(spa), "c"((unsigned long)val)
+> +			     : "memory", "cc");
+> +	} while (ret == FAIL_INUSE);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(rmpupdate);
+> diff --git a/include/linux/sev.h b/include/linux/sev.h
+> index 83c89e999999..bcd4d75d87c8 100644
+> --- a/include/linux/sev.h
+> +++ b/include/linux/sev.h
+> @@ -39,13 +39,33 @@ struct __packed rmpentry {
+>  
+>  #define RMP_TO_X86_PG_LEVEL(level)	(((level) == RMP_PG_SIZE_4K) ? PG_LEVEL_4K : PG_LEVEL_2M)
+>  
+> +struct rmpupdate {
+> +	u64 gpa;
+> +	u8 assigned;
+> +	u8 pagesize;
+> +	u8 immutable;
+> +	u8 rsvd;
+> +	u32 asid;
+> +} __packed;
+> +
+> +
+> +/*
+> + * The psmash() and rmpupdate() returns FAIL_INUSE when another processor is
+> + * modifying the RMP entry.
+> + */
+> +#define FAIL_INUSE              3
 
-VC_SAFE_STACK does not imply from-user. It means that the #VC handler
-asm code was able to switch away from the IST stack to either the
-task-stack (if from-user or syscall gap) or to the previous kernel
-stack. There is a check in vc_switch_off_ist() that shows which stacks
-are considered safe.
+Perhaps SEV_FAIL_INUSE ?
 
-If it can not switch to a safe stack the VC entry code switches to the
-fall-back stack and a special handler function is called, which for now
-just panics the system.
+(Given that there are a whole buunch of FAIL_* macros already in
+general)
 
-> How about you don't do that and have exc_ call your new from_kernel
-> function, then we know that safe_stack_ is always from-user. Then also
-> maybe do:
+Dave
+
+>  #ifdef CONFIG_AMD_MEM_ENCRYPT
+>  struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level);
+> +int psmash(struct page *page);
+> +int rmpupdate(struct page *page, struct rmpupdate *e);
+>  #else
+>  static inline struct rmpentry *snp_lookup_page_in_rmptable(struct page *page, int *level)
+>  {
+>  	return NULL;
+>  }
+> +static inline int psmash(struct page *page) { return -ENXIO; }
+> +static inline int rmpupdate(struct page *page, struct rmpupdate *e) { return -ENXIO; }
+>  
+>  #endif /* CONFIG_AMD_MEM_ENCRYPT */
+>  #endif /* __LINUX_SEV_H */
+> -- 
+> 2.17.1
 > 
-> 	s/VS_SAFE_STACK/VC_USER/
-> 	s/safe_stack_/noist_/
 > 
-> to match all the others (#DB/MCE).
+-- 
+Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
-So #VC is different from #DB and #MCE in that it switches stacks even
-when coming from kernel mode, so that the #VC handler can be nested.
-What I can do is to call the from_user function directly from asm in
-the .Lfrom_user_mode_switch_stack path. That will avoid having another
-from_user check in C code.
-
-> DEFINE_IDTENTRY_VC(exc_vc)
-> {
-> 	if (unlikely(on_vc_fallback_stack(regs))) {
-> 		instrumentation_begin();
-> 		panic("boohooo\n");
-> 		instrumentation_end();
-
-The on_vc_fallback_stack() path is for now only calling panic(), because
-it can't be hit when the hypervisor is behaving correctly. In the future
-it is not clear yet if that path needs to be extended for SNP page
-validation exceptions, which can basically happen anywhere.
-
-The implementation of SNP should make sure that all memory touched
-during entry (while on unsafe stacks) is always validated, but not sure
-yet if that holds when live-migration of SNP guests is added to the
-picture.
-
-There is the possibility that this doesn't fit in the above branch, but
-it can also be moved to a separate function if needed.
-
-> 	}
-> 
-> 	vc_from_kernel();
-> }
-> 
-> DEFINE_IDTENTRY_VC_USER(exc_vc)
-> {
-> 	vc_from_user();
-> }
-> 
-> Which is, I'm thinking, much simpler, no?
-
-Okay, I am going to try this out. Thanks for your feedback.
-
-Regards,
-
-	Joerg
