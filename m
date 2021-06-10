@@ -1,32 +1,13 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B17072
-	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 10:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=h/muEhpxVB/fiLZzxDtNWLmprGe33vvGrnl4EIsyiME=; b=C9711rfL7VWAOpk6sJJ9J7J/I1
-	zaCKOfBhOnlG98lP2S47uOkx7vj7XIY74Syna8t0J7A1iYuJdd5jZhyvArBg8tCPqpHoWNsbbwVGt
-	6mpY4+CRaLfOMN2C51RUHQPX7MV8AdfqjOf65GQVVg5gXj1lgemfVVOS86BOXJvFafieSbfH8S/bu
-	uU96SaHMvaBDL5GEwfMIpu6IuPe2p6GPGLwwriTEo/pobY5OPGk0ZcuPxTcePBSm1p+CeuSgqS2k9
-	lGVGbKGFQ34etlCs0UaYdXjTcacWG1COJwp9YBMrI9vNveIAm78LmGJGideBbJIcU/37qrHKKYLp6
-	GoVRv4AQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-	id 1lrHmr-001UFJ-SK; Thu, 10 Jun 2021 10:19:49 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id BC91B300258;
-	Thu, 10 Jun 2021 12:19:43 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id AB1BB20811810; Thu, 10 Jun 2021 12:19:43 +0200 (CEST)
-Date: Thu, 10 Jun 2021 12:19:43 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Joerg Roedel <joro@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8456670
+	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 11:30:30 +0000 (UTC)
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+	id 87206329; Thu, 10 Jun 2021 13:30:28 +0200 (CEST)
+Date: Thu, 10 Jun 2021 13:30:27 +0200
+From: Joerg Roedel <joro@8bytes.org>
+To: Peter Zijlstra <peterz@infradead.org>
 Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -45,9 +26,10 @@ Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	virtualization@lists.linux-foundation.org
 Subject: Re: [PATCH v4 3/6] x86/sev-es: Split up runtime #VC handler for
  correct state tracking
-Message-ID: <YMHnP1qgvznyYazv@hirez.programming.kicks-ass.net>
+Message-ID: <YMH30/wFyE1JkKZg@8bytes.org>
 References: <20210610091141.30322-1-joro@8bytes.org>
  <20210610091141.30322-4-joro@8bytes.org>
+ <YMHnP1qgvznyYazv@hirez.programming.kicks-ass.net>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -55,129 +37,89 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210610091141.30322-4-joro@8bytes.org>
+In-Reply-To: <YMHnP1qgvznyYazv@hirez.programming.kicks-ass.net>
 
+Hi Peter,
 
-Bah, I suppose the trouble is that this SEV crap requires PARAVIRT?
+On Thu, Jun 10, 2021 at 12:19:43PM +0200, Peter Zijlstra wrote:
+> On Thu, Jun 10, 2021 at 11:11:38AM +0200, Joerg Roedel wrote:
+> 
+> > +static void vc_handle_from_kernel(struct pt_regs *regs, unsigned long error_code)
+> 
+> static noinstr ...
 
-I should really get around to fixing noinstr validation with PARAVIRT on
-:-(
+Right, I forgot that, will update the patch and add the correct noinstr
+annotations.
 
-On Thu, Jun 10, 2021 at 11:11:38AM +0200, Joerg Roedel wrote:
+> > +	if (user_mode(regs))
+> > +		vc_handle_from_user(regs, error_code);
+> > +	else
+> > +		vc_handle_from_kernel(regs, error_code);
+> >  }
+> 
+> #DB and MCE use idtentry_mce_db and split out in asm. When I look at
+> idtentry_vc, it appears to me that VC_SAFE_STACK already implies
+> from-user, or am I reading that wrong?
 
-> +static void vc_handle_from_kernel(struct pt_regs *regs, unsigned long error_code)
+VC_SAFE_STACK does not imply from-user. It means that the #VC handler
+asm code was able to switch away from the IST stack to either the
+task-stack (if from-user or syscall gap) or to the previous kernel
+stack. There is a check in vc_switch_off_ist() that shows which stacks
+are considered safe.
 
-static noinstr ...
+If it can not switch to a safe stack the VC entry code switches to the
+fall-back stack and a special handler function is called, which for now
+just panics the system.
 
-> +{
-> +	irqentry_state_t irq_state = irqentry_nmi_enter(regs);
->  
-> +	instrumentation_begin();
->  
-> +	if (!vc_raw_handle_exception(regs, error_code)) {
->  		/* Show some debug info */
->  		show_regs(regs);
->  
-> @@ -1434,7 +1400,59 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
->  		panic("Returned from Terminate-Request to Hypervisor\n");
->  	}
->  
-> +	instrumentation_end();
-> +	irqentry_nmi_exit(regs, irq_state);
-> +}
-> +
-> +static void vc_handle_from_user(struct pt_regs *regs, unsigned long error_code)
+> How about you don't do that and have exc_ call your new from_kernel
+> function, then we know that safe_stack_ is always from-user. Then also
+> maybe do:
+> 
+> 	s/VS_SAFE_STACK/VC_USER/
+> 	s/safe_stack_/noist_/
+> 
+> to match all the others (#DB/MCE).
 
-static noinstr ...
+So #VC is different from #DB and #MCE in that it switches stacks even
+when coming from kernel mode, so that the #VC handler can be nested.
+What I can do is to call the from_user function directly from asm in
+the .Lfrom_user_mode_switch_stack path. That will avoid having another
+from_user check in C code.
 
-> +{
-> +	irqentry_state_t irq_state = irqentry_enter(regs);
-> +
-> +	instrumentation_begin();
-> +
-> +	if (!vc_raw_handle_exception(regs, error_code)) {
-> +		/*
-> +		 * Do not kill the machine if user-space triggered the
-> +		 * exception. Send SIGBUS instead and let user-space deal with
-> +		 * it.
-> +		 */
-> +		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
-> +	}
-> +
-> +	instrumentation_end();
-> +	irqentry_exit(regs, irq_state);
-> +}
+> DEFINE_IDTENTRY_VC(exc_vc)
+> {
+> 	if (unlikely(on_vc_fallback_stack(regs))) {
+> 		instrumentation_begin();
+> 		panic("boohooo\n");
+> 		instrumentation_end();
 
-+ linebreak
+The on_vc_fallback_stack() path is for now only calling panic(), because
+it can't be hit when the hypervisor is behaving correctly. In the future
+it is not clear yet if that path needs to be extended for SNP page
+validation exceptions, which can basically happen anywhere.
 
-> +/*
-> + * Main #VC exception handler. It is called when the entry code was able to
-> + * switch off the IST to a safe kernel stack.
-> + *
-> + * With the current implementation it is always possible to switch to a safe
-> + * stack because #VC exceptions only happen at known places, like intercepted
-> + * instructions or accesses to MMIO areas/IO ports. They can also happen with
-> + * code instrumentation when the hypervisor intercepts #DB, but the critical
-> + * paths are forbidden to be instrumented, so #DB exceptions currently also
-> + * only happen in safe places.
-> + */
-> +DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
-> +{
-> +	/*
-> +	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
-> +	 */
-> +	if (error_code == SVM_EXIT_EXCP_BASE + X86_TRAP_DB) {
-> +		vc_handle_trap_db(regs);
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * This is invoked through an interrupt gate, so IRQs are disabled. The
-> +	 * code below might walk page-tables for user or kernel addresses, so
-> +	 * keep the IRQs disabled to protect us against concurrent TLB flushes.
-> +	 */
-> +
-> +	if (user_mode(regs))
-> +		vc_handle_from_user(regs, error_code);
-> +	else
-> +		vc_handle_from_kernel(regs, error_code);
->  }
+The implementation of SNP should make sure that all memory touched
+during entry (while on unsafe stacks) is always validated, but not sure
+yet if that holds when live-migration of SNP guests is added to the
+picture.
 
-#DB and MCE use idtentry_mce_db and split out in asm. When I look at
-idtentry_vc, it appears to me that VC_SAFE_STACK already implies
-from-user, or am I reading that wrong?
+There is the possibility that this doesn't fit in the above branch, but
+it can also be moved to a separate function if needed.
 
-Ah, it appears you're muddling things up again by then also calling
-safe_stack_ from exc_.
+> 	}
+> 
+> 	vc_from_kernel();
+> }
+> 
+> DEFINE_IDTENTRY_VC_USER(exc_vc)
+> {
+> 	vc_from_user();
+> }
+> 
+> Which is, I'm thinking, much simpler, no?
 
-How about you don't do that and have exc_ call your new from_kernel
-function, then we know that safe_stack_ is always from-user. Then also
-maybe do:
+Okay, I am going to try this out. Thanks for your feedback.
 
-	s/VS_SAFE_STACK/VC_USER/
-	s/safe_stack_/noist_/
+Regards,
 
-to match all the others (#DB/MCE).
-
-Also, AFAICT, you don't actually need DEFINE_IDTENTRY_VC_IST, it doesn't
-have an ASM counterpart.
-
-So then you end up with something like:
-
-DEFINE_IDTENTRY_VC(exc_vc)
-{
-	if (unlikely(on_vc_fallback_stack(regs))) {
-		instrumentation_begin();
-		panic("boohooo\n");
-		instrumentation_end();
-	}
-
-	vc_from_kernel();
-}
-
-DEFINE_IDTENTRY_VC_USER(exc_vc)
-{
-	vc_from_user();
-}
-
-Which is, I'm thinking, much simpler, no?
+	Joerg
