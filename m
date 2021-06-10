@@ -1,74 +1,84 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663452F80
-	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 05:49:29 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0cf6003c3f1790b4f2bf21.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:f600:3c3f:1790:b4f2:bf21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EBE72
+	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 09:12:02 +0000 (UTC)
+Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 64CAA1EC0589;
-	Thu, 10 Jun 2021 07:49:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1623304167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=RitcXYgrIWSrnu6FZ/EJXPF/tjn3PKo31V95ISXbgF0=;
-	b=qM1OQy1794JXyxVV5fsWNyyZSDAbcDerSJ88Q7muUjuvnYHleLySEJGIT9KZZI2c+v8RO9
-	AETG4d7ywrFpN6LOdY/nl/hh9bMi7nUeJZnyLsnzb/Ztow1RoHfAGsI4LJI+qI+zz6O/U8
-	M54qtas2cdYNR2624jhdc01yLKmtQ24=
-Date: Thu, 10 Jun 2021 07:49:19 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
+	by theia.8bytes.org (Postfix) with ESMTPSA id E88EF17C;
+	Thu, 10 Jun 2021 11:11:54 +0200 (CEST)
+From: Joerg Roedel <joro@8bytes.org>
+To: x86@kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-	npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 10/22] x86/sev: Register GHCB memory when
- SEV-SNP is active
-Message-ID: <YMGn3/9t5QhS+1rp@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-11-brijesh.singh@amd.com>
+	Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: [PATCH v4 0/6] x86/sev-es: Fixes for SEV-ES Guest Support
+Date: Thu, 10 Jun 2021 11:11:35 +0200
+Message-Id: <20210610091141.30322-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210602140416.23573-11-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 02, 2021 at 09:04:04AM -0500, Brijesh Singh wrote:
-> +++ b/arch/x86/kernel/sev-internal.h
-> @@ -0,0 +1,12 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Forward declarations for sev-shared.c
-> + *
-> + * Author: Brijesh Singh <brijesh.singh@amd.com>
-> + */
-> +
-> +#ifndef _ARCH_X86_KERNEL_SEV_INTERNAL_H
+From: Joerg Roedel <jroedel@suse.de>
 
-	__X86_SEV_INTERNAL_H__
+Hi,
 
+here is the next revision of my pending fixes for Linux' SEV-ES
+support. Changes to the previous version are:
+
+	- Removed first patch which is now in tip/x86/urgent already
+	- Removed patch "x86/sev-es: Run #VC handler in plain IRQ state"
+	  and replaced it with
+	  "x86/sev-es: Split up runtime #VC handler for correct state tracking"
+	  as per suggestion from PeterZ
+
+Changes are based on tip/x86/urgent. Please review.
+
+Thanks,
+
+	Joerg
+
+Joerg Roedel (6):
+  x86/sev-es: Fix error message in runtime #VC handler
+  x86/sev-es: Disable IRQs while GHCB is active
+  x86/sev-es: Split up runtime #VC handler for correct state tracking
+  x86/insn-eval: Make 0 a valid RIP for insn_get_effective_ip()
+  x86/insn: Extend error reporting from
+    insn_fetch_from_user[_inatomic]()
+  x86/sev-es: Propagate #GP if getting linear instruction address failed
+
+ arch/x86/kernel/sev.c    | 174 +++++++++++++++++++++++----------------
+ arch/x86/kernel/umip.c   |  10 +--
+ arch/x86/lib/insn-eval.c |  22 +++--
+ 3 files changed, 122 insertions(+), 84 deletions(-)
+
+
+base-commit: efa165504943f2128d50f63de0c02faf6dcceb0d
 -- 
-Regards/Gruss,
-    Boris.
+2.31.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
