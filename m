@@ -1,13 +1,13 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551312FB2
-	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 09:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02FB72
+	for <linux-coco@lists.linux.dev>; Thu, 10 Jun 2021 09:12:04 +0000 (UTC)
 Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 3723D45B;
-	Thu, 10 Jun 2021 11:11:57 +0200 (CEST)
+	by theia.8bytes.org (Postfix) with ESMTPSA id 0DBE936A;
+	Thu, 10 Jun 2021 11:11:56 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org
 Cc: Joerg Roedel <joro@8bytes.org>,
@@ -33,9 +33,9 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH v4 4/6] x86/insn-eval: Make 0 a valid RIP for insn_get_effective_ip()
-Date: Thu, 10 Jun 2021 11:11:39 +0200
-Message-Id: <20210610091141.30322-5-joro@8bytes.org>
+Subject: [PATCH v4 2/6] x86/sev-es: Disable IRQs while GHCB is active
+Date: Thu, 10 Jun 2021 11:11:37 +0200
+Message-Id: <20210610091141.30322-3-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210610091141.30322-1-joro@8bytes.org>
 References: <20210610091141.30322-1-joro@8bytes.org>
@@ -48,62 +48,156 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-In theory 0 is a valid value for the instruction pointer, so don't use
-it as the error return value from insn_get_effective_ip().
+The #VC handler only cares about IRQs being disabled while the GHCB is
+active, as it must not be interrupted by something which could cause
+another #VC while it holds the GHCB (NMI is the exception for which the
+backup GHCB is there).
+
+Make sure nothing interrupts the code path while the GHCB is active by
+disabling IRQs in sev_es_get_ghcb() and restoring the previous irq state
+in sev_es_put_ghcb().
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/x86/lib/insn-eval.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/x86/kernel/sev.c | 39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/lib/insn-eval.c b/arch/x86/lib/insn-eval.c
-index a67afd74232c..4eecb9c7c6a0 100644
---- a/arch/x86/lib/insn-eval.c
-+++ b/arch/x86/lib/insn-eval.c
-@@ -1417,7 +1417,7 @@ void __user *insn_get_addr_ref(struct insn *insn, struct pt_regs *regs)
- 	}
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 4fd997bbf059..2a922d1b03c8 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -192,14 +192,23 @@ void noinstr __sev_es_ist_exit(void)
+ 	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], *(unsigned long *)ist);
  }
  
--static unsigned long insn_get_effective_ip(struct pt_regs *regs)
-+static int insn_get_effective_ip(struct pt_regs *regs, unsigned long *ip)
+-static __always_inline struct ghcb *sev_es_get_ghcb(struct ghcb_state *state)
++static __always_inline struct ghcb *sev_es_get_ghcb(struct ghcb_state *state,
++						    unsigned long *flags)
  {
- 	unsigned long seg_base = 0;
+ 	struct sev_es_runtime_data *data;
+ 	struct ghcb *ghcb;
  
-@@ -1430,10 +1430,12 @@ static unsigned long insn_get_effective_ip(struct pt_regs *regs)
- 	if (!user_64bit_mode(regs)) {
- 		seg_base = insn_get_seg_base(regs, INAT_SEG_REG_CS);
- 		if (seg_base == -1L)
--			return 0;
-+			return -EINVAL;
- 	}
- 
--	return seg_base + regs->ip;
-+	*ip = seg_base + regs->ip;
++	/*
++	 * Nothing shall interrupt this code path while holding the per-cpu
++	 * GHCB. The backup GHCB is only for NMIs interrupting this path.
++	 */
++	local_irq_save(*flags);
 +
-+	return 0;
+ 	data = this_cpu_read(runtime_data);
+ 	ghcb = &data->ghcb_page;
+ 
++
++
+ 	if (unlikely(data->ghcb_active)) {
+ 		/* GHCB is already in use - save its contents */
+ 
+@@ -479,7 +488,8 @@ static enum es_result vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt
+ /* Include code shared with pre-decompression boot stage */
+ #include "sev-shared.c"
+ 
+-static __always_inline void sev_es_put_ghcb(struct ghcb_state *state)
++static __always_inline void sev_es_put_ghcb(struct ghcb_state *state,
++					    unsigned long flags)
+ {
+ 	struct sev_es_runtime_data *data;
+ 	struct ghcb *ghcb;
+@@ -500,14 +510,17 @@ static __always_inline void sev_es_put_ghcb(struct ghcb_state *state)
+ 		vc_ghcb_invalidate(ghcb);
+ 		data->ghcb_active = false;
+ 	}
++
++	local_irq_restore(flags);
  }
  
- /**
-@@ -1455,8 +1457,7 @@ int insn_fetch_from_user(struct pt_regs *regs, unsigned char buf[MAX_INSN_SIZE])
- 	unsigned long ip;
- 	int not_copied;
+ void noinstr __sev_es_nmi_complete(void)
+ {
+ 	struct ghcb_state state;
++	unsigned long flags;
+ 	struct ghcb *ghcb;
  
--	ip = insn_get_effective_ip(regs);
--	if (!ip)
-+	if (insn_get_effective_ip(regs, &ip))
- 		return 0;
+-	ghcb = sev_es_get_ghcb(&state);
++	ghcb = sev_es_get_ghcb(&state, &flags);
  
- 	not_copied = copy_from_user(buf, (void __user *)ip, MAX_INSN_SIZE);
-@@ -1484,8 +1485,7 @@ int insn_fetch_from_user_inatomic(struct pt_regs *regs, unsigned char buf[MAX_IN
- 	unsigned long ip;
- 	int not_copied;
+ 	vc_ghcb_invalidate(ghcb);
+ 	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_NMI_COMPLETE);
+@@ -517,7 +530,7 @@ void noinstr __sev_es_nmi_complete(void)
+ 	sev_es_wr_ghcb_msr(__pa_nodebug(ghcb));
+ 	VMGEXIT();
  
--	ip = insn_get_effective_ip(regs);
--	if (!ip)
-+	if (insn_get_effective_ip(regs, &ip))
- 		return 0;
+-	sev_es_put_ghcb(&state);
++	sev_es_put_ghcb(&state, flags);
+ }
  
- 	not_copied = __copy_from_user_inatomic(buf, (void __user *)ip, MAX_INSN_SIZE);
+ static u64 get_jump_table_addr(void)
+@@ -527,9 +540,7 @@ static u64 get_jump_table_addr(void)
+ 	struct ghcb *ghcb;
+ 	u64 ret = 0;
+ 
+-	local_irq_save(flags);
+-
+-	ghcb = sev_es_get_ghcb(&state);
++	ghcb = sev_es_get_ghcb(&state, &flags);
+ 
+ 	vc_ghcb_invalidate(ghcb);
+ 	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_JUMP_TABLE);
+@@ -543,9 +554,7 @@ static u64 get_jump_table_addr(void)
+ 	    ghcb_sw_exit_info_2_is_valid(ghcb))
+ 		ret = ghcb->save.sw_exit_info_2;
+ 
+-	sev_es_put_ghcb(&state);
+-
+-	local_irq_restore(flags);
++	sev_es_put_ghcb(&state, flags);
+ 
+ 	return ret;
+ }
+@@ -666,9 +675,10 @@ static bool __init sev_es_setup_ghcb(void)
+ static void sev_es_ap_hlt_loop(void)
+ {
+ 	struct ghcb_state state;
++	unsigned long flags;
+ 	struct ghcb *ghcb;
+ 
+-	ghcb = sev_es_get_ghcb(&state);
++	ghcb = sev_es_get_ghcb(&state, &flags);
+ 
+ 	while (true) {
+ 		vc_ghcb_invalidate(ghcb);
+@@ -685,7 +695,7 @@ static void sev_es_ap_hlt_loop(void)
+ 			break;
+ 	}
+ 
+-	sev_es_put_ghcb(&state);
++	sev_es_put_ghcb(&state, flags);
+ }
+ 
+ /*
+@@ -1333,6 +1343,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 	struct ghcb_state state;
+ 	struct es_em_ctxt ctxt;
+ 	enum es_result result;
++	unsigned long flags;
+ 	struct ghcb *ghcb;
+ 
+ 	/*
+@@ -1353,7 +1364,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 	 * keep the IRQs disabled to protect us against concurrent TLB flushes.
+ 	 */
+ 
+-	ghcb = sev_es_get_ghcb(&state);
++	ghcb = sev_es_get_ghcb(&state, &flags);
+ 
+ 	vc_ghcb_invalidate(ghcb);
+ 	result = vc_init_em_ctxt(&ctxt, regs, error_code);
+@@ -1361,7 +1372,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
+ 	if (result == ES_OK)
+ 		result = vc_handle_exitcode(&ctxt, ghcb, error_code);
+ 
+-	sev_es_put_ghcb(&state);
++	sev_es_put_ghcb(&state, flags);
+ 
+ 	/* Done - now check the result */
+ 	switch (result) {
 -- 
 2.31.1
 
