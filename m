@@ -1,13 +1,13 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAB36D0E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB09A70
 	for <linux-coco@lists.linux.dev>; Mon, 14 Jun 2021 13:53:44 +0000 (UTC)
 Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 67FC7465;
-	Mon, 14 Jun 2021 15:53:42 +0200 (CEST)
+	by theia.8bytes.org (Postfix) with ESMTPSA id D562937E;
+	Mon, 14 Jun 2021 15:53:41 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org
 Cc: Joerg Roedel <joro@8bytes.org>,
@@ -33,12 +33,10 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH v5 1/6] x86/sev-es: Fix error message in runtime #VC handler
-Date: Mon, 14 Jun 2021 15:53:22 +0200
-Message-Id: <20210614135327.9921-2-joro@8bytes.org>
+Subject: [PATCH v5 0/6] x86/sev-es: Fixes for SEV-ES Guest Support
+Date: Mon, 14 Jun 2021 15:53:21 +0200
+Message-Id: <20210614135327.9921-1-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210614135327.9921-1-joro@8bytes.org>
-References: <20210614135327.9921-1-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -48,27 +46,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-The runtime #VC handler is not "early" anymore. Fix the copy&paste error
-and remove that word from the error message.
+Hi,
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- arch/x86/kernel/sev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+here is the next revision of my pending fixes for Linux' SEV-ES
+support. Changes to the previous version are:
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 651b81cd648e..4fd997bbf059 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1369,7 +1369,7 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 		vc_finish_insn(&ctxt);
- 		break;
- 	case ES_UNSUPPORTED:
--		pr_err_ratelimited("Unsupported exit-code 0x%02lx in early #VC exception (IP: 0x%lx)\n",
-+		pr_err_ratelimited("Unsupported exit-code 0x%02lx in #VC exception (IP: 0x%lx)\n",
- 				   error_code, regs->ip);
- 		goto fail;
- 	case ES_VMM_ERROR:
+	- Updated patch 2 and implemented wrappers around
+	  sev_es_get/put_ghcb() which will disable/enable IRQs when
+	  needed.
+	- Updated patch 3 to now call the from_user and from_kernel
+	  functions of the VC handler directly from entry-asm.
+
+The previous version can be found here:
+
+	https://lore.kernel.org/lkml/20210610091141.30322-1-joro@8bytes.org/
+
+Changes are based on tip/x86/urgent. Please review.
+
+Thanks,
+
+	Joerg
+
+
+Joerg Roedel (6):
+  x86/sev-es: Fix error message in runtime #VC handler
+  x86/sev-es: Make sure IRQs are disabled while GHCB is active
+  x86/sev-es: Split up runtime #VC handler for correct state tracking
+  x86/insn-eval: Make 0 a valid RIP for insn_get_effective_ip()
+  x86/insn: Extend error reporting from
+    insn_fetch_from_user[_inatomic]()
+  x86/sev-es: Propagate #GP if getting linear instruction address failed
+
+ arch/x86/entry/entry_64.S       |   4 +-
+ arch/x86/include/asm/idtentry.h |  29 ++---
+ arch/x86/kernel/sev.c           | 207 ++++++++++++++++++++------------
+ arch/x86/kernel/umip.c          |  10 +-
+ arch/x86/lib/insn-eval.c        |  22 ++--
+ 5 files changed, 156 insertions(+), 116 deletions(-)
+
+
+base-commit: efa165504943f2128d50f63de0c02faf6dcceb0d
 -- 
 2.31.1
 
