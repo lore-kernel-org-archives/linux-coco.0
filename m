@@ -1,80 +1,78 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C94472
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 09:46:43 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0dd8004fc95bebb5201001.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:d800:4fc9:5beb:b520:1001])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6F1EC1EC0559;
-	Fri, 18 Jun 2021 11:46:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1624009601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=fhCS1VjB+E7C2WKgFiWhTOQPZHXnjbEcqr3FRlWi0xU=;
-	b=mVNHyRCG/AgGBIUULY2n0rYyqbBpwtuaHTqg5MgQ8DzjcE9TF4eqo9kb51Zi7yIPdYmL1j
-	UmVDFMG5XYUnevK4WKpCAJrbwegX9Q43eENYMOjzOw/qYPF1y04M24QPeRJ9ZYw+hFFVzJ
-	pl8wgyAk+mMAdq8y2SXzcZsoQS0G0Ek=
-Date: Fri, 18 Jun 2021 11:46:31 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1EB71
+	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 10:54:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WXE8AGIvrigHAr3bWkiTQ8lrgYlIfDElqocU4mw+Hqk=; b=DBRrSrmnwX8IhMiypDyD/kXhC7
+	+boU6L8ETBEcjztGRQxBjSlCAbA0dNg+PYtDCa9zkXGFl9+6xm7LV524fQHHUqQnkDWzrM8FqdDjk
+	JdRZJ7WUVY76TE1Kz5ykIqdg1rDwG0YFzK0qwfj7hpejRnN0r+WC/tEcTo8MzAEfkzgtuS0Q5kxU6
+	jrgt0fnGeAbRQhWAQ6AGQsnErqOtDZNrPkzdcC0CJlqp2fZyh5pOzrj5Y689ksfCS33EhcPTfJBLl
+	kS3udIaHPKp7tXH3iYPKg/nhK/ix+2GMxD3rQ/AvsSAawuMlYlzL5+kCvt5gefxG79tasJ4B+EblB
+	2bdHZdbg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1luC7v-00AAwD-3g; Fri, 18 Jun 2021 10:53:46 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 21546300204;
+	Fri, 18 Jun 2021 12:53:29 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 063ED21BD53A7; Fri, 18 Jun 2021 12:53:29 +0200 (CEST)
+Date: Fri, 18 Jun 2021 12:53:28 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-	npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 21/22] x86/sev: Register SNP guest request
- platform device
-Message-ID: <YMxrd5M1teku/hnA@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-22-brijesh.singh@amd.com>
+	Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v6 1/2] x86/sev: Make sure IRQs are disabled while GHCB
+ is active
+Message-ID: <YMx7KDtf7S0W8oxy@hirez.programming.kicks-ass.net>
+References: <20210616184913.13064-1-joro@8bytes.org>
+ <20210616184913.13064-2-joro@8bytes.org>
+ <YMtshtgEbiQ993Zk@hirez.programming.kicks-ass.net>
+ <YMxWsjZcudaorPgV@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210602140416.23573-22-brijesh.singh@amd.com>
+In-Reply-To: <YMxWsjZcudaorPgV@8bytes.org>
 
-On Wed, Jun 02, 2021 at 09:04:15AM -0500, Brijesh Singh wrote:
->  arch/x86/include/asm/sev.h      |  12 +++
->  arch/x86/include/uapi/asm/svm.h |   2 +
->  arch/x86/kernel/sev.c           | 176 ++++++++++++++++++++++++++++++++
->  arch/x86/platform/efi/efi.c     |   2 +
->  include/linux/efi.h             |   1 +
->  include/linux/sev-guest.h       |  76 ++++++++++++++
->  6 files changed, 269 insertions(+)
->  create mode 100644 include/linux/sev-guest.h
+On Fri, Jun 18, 2021 at 10:17:54AM +0200, Joerg Roedel wrote:
+> On Thu, Jun 17, 2021 at 05:38:46PM +0200, Peter Zijlstra wrote:
+> > I'm getting (with all of v6.1 applied):
+> > 
+> > vmlinux.o: warning: objtool: __sev_es_nmi_complete()+0x1bf: call to panic() leaves .noinstr.text section
+> > 
+> > $ ./scripts/faddr2line defconfig-build/vmlinux __sev_es_nmi_complete+0x1bf
+> > __sev_es_nmi_complete+0x1bf/0x1d0:
+> > __sev_get_ghcb at arch/x86/kernel/sev.c:223
+> > (inlined by) __sev_es_nmi_complete at arch/x86/kernel/sev.c:519
+> 
+> I see where this is coming from, but can't create the same warning. I
+> did run 'objtool check -n vmlinux'. Is there more to do to get the full
+> check?
 
-This patch is at least three patches in one:
-
-1. EFI changes
-2. SNP_GUEST_REQUEST struct etc definitions
-3. Add the functionality.
-
-Please split it this way before I take a look.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+You get those when you enable CONFIG_DEBUG_ENTRY=y (make sure to have
+PARAVIRT=n, I so need to go fix that :/).
