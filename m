@@ -1,14 +1,56 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F16E70
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 08:18:04 +0000 (UTC)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-	id 639DC3A7; Fri, 18 Jun 2021 10:17:56 +0200 (CEST)
-Date: Fri, 18 Jun 2021 10:17:54 +0200
-From: Joerg Roedel <joro@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D3972
+	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 08:32:36 +0000 (UTC)
+Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A08591FDF6;
+	Fri, 18 Jun 2021 08:25:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1624004708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
+	b=e2K8BVdia2rtzCx8g9U0y0K5QFEUTW6+tRBPdUKB1/9rUgIoHo69R4uqIfzkQYeVzE5Vnp
+	qHZ+KH7deAYpjZj5NgxCopEAM7/qSVz8W26Yrcjik7+6jfSLnq2Ilc8w8Obg3edPP7I0ia
+	sp+YXzpmdkpkG/3juEFrbxx70lq/rX4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1624004708;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
+	b=05L887bTpKMQfMGEUgoeZ0S9x5jtN6qake3lq4t7r92HDvG2EfnO3sp26PCC6HgXQlFqw5
+	l1RrDidk2KmJJzBg==
+Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
+	by imap.suse.de (Postfix) with ESMTP id D3D7C118DD;
+	Fri, 18 Jun 2021 08:25:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1624004708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
+	b=e2K8BVdia2rtzCx8g9U0y0K5QFEUTW6+tRBPdUKB1/9rUgIoHo69R4uqIfzkQYeVzE5Vnp
+	qHZ+KH7deAYpjZj5NgxCopEAM7/qSVz8W26Yrcjik7+6jfSLnq2Ilc8w8Obg3edPP7I0ia
+	sp+YXzpmdkpkG/3juEFrbxx70lq/rX4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1624004708;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
+	b=05L887bTpKMQfMGEUgoeZ0S9x5jtN6qake3lq4t7r92HDvG2EfnO3sp26PCC6HgXQlFqw5
+	l1RrDidk2KmJJzBg==
+Received: from director2.suse.de ([192.168.254.72])
+	by imap3-int with ESMTPSA
+	id mnUcMmNYzGCmfgAALh3uQQ
+	(envelope-from <jroedel@suse.de>); Fri, 18 Jun 2021 08:25:07 +0000
+Date: Fri, 18 Jun 2021 10:25:06 +0200
+From: Joerg Roedel <jroedel@suse.de>
 To: Peter Zijlstra <peterz@infradead.org>
-Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Jiri Slaby <jslaby@suse.cz>,
@@ -26,10 +68,10 @@ Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	virtualization@lists.linux-foundation.org
 Subject: Re: [PATCH v6 1/2] x86/sev: Make sure IRQs are disabled while GHCB
  is active
-Message-ID: <YMxWsjZcudaorPgV@8bytes.org>
+Message-ID: <YMxYYkawXh1kZ/jf@suse.de>
 References: <20210616184913.13064-1-joro@8bytes.org>
  <20210616184913.13064-2-joro@8bytes.org>
- <YMtshtgEbiQ993Zk@hirez.programming.kicks-ass.net>
+ <YMtjoLLQpKyveVlS@hirez.programming.kicks-ass.net>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -37,21 +79,17 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YMtshtgEbiQ993Zk@hirez.programming.kicks-ass.net>
+In-Reply-To: <YMtjoLLQpKyveVlS@hirez.programming.kicks-ass.net>
 
-On Thu, Jun 17, 2021 at 05:38:46PM +0200, Peter Zijlstra wrote:
-> I'm getting (with all of v6.1 applied):
+On Thu, Jun 17, 2021 at 05:00:48PM +0200, Peter Zijlstra wrote:
+> I think this is broken, at this point RCU is quite dead on this CPU and
+> local_irq_save/restore include tracing and all sorts.
 > 
-> vmlinux.o: warning: objtool: __sev_es_nmi_complete()+0x1bf: call to panic() leaves .noinstr.text section
-> 
-> $ ./scripts/faddr2line defconfig-build/vmlinux __sev_es_nmi_complete+0x1bf
-> __sev_es_nmi_complete+0x1bf/0x1d0:
-> __sev_get_ghcb at arch/x86/kernel/sev.c:223
-> (inlined by) __sev_es_nmi_complete at arch/x86/kernel/sev.c:519
+> Also, shouldn't IRQs already be disabled by the time we get here?
 
-I see where this is coming from, but can't create the same warning. I
-did run 'objtool check -n vmlinux'. Is there more to do to get the full
-check?
+Yes it is, I removed these calls, made __sev_get/put_ghcb() noinstr
+instead of __always_inline and put instrumentation_begin()/end() around
+the panic() call in __sev_get_ghcb().
 
 Regards,
 
