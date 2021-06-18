@@ -1,359 +1,179 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2080.outbound.protection.outlook.com [40.107.243.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9972FAD
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 11:54:20 +0000 (UTC)
-Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 7D75E3A9;
-	Fri, 18 Jun 2021 13:54:18 +0200 (CEST)
-From: Joerg Roedel <joro@8bytes.org>
-To: x86@kernel.org
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	hpa@zytor.com,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>,
-	Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: [PATCH v7 2/2] x86/sev: Split up runtime #VC handler for correct state tracking
-Date: Fri, 18 Jun 2021 13:54:09 +0200
-Message-Id: <20210618115409.22735-3-joro@8bytes.org>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210618115409.22735-1-joro@8bytes.org>
-References: <20210618115409.22735-1-joro@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563BC70
+	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 13:57:20 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CJpT8D+Mit5VVUeeXfkU9q7r9HRJaXqXRldivCM9FfGf6Lne/9oP9OGhxA2IFuVFSngOwD82JAHJlK9GdDUCOhAPetsZPKLPvGyFgI2pNwWMmpYpePgbZ+ncLZH9Z+SNQtsjMN86IQlacxRrtCVt1V6yFodch0VBaYKRq+6alc/cJolLzX+XuHkWwz2FqtwirHWLCFB2YU3LHsYXzZwfV8yR9Det5tS0FZvMS0WpHTTsxsiPqWorFQA4XbFwGnh6QZovxLGNjBlzs1AW5uEbCiMXUWCGkZcxYst4AV8Z9zpjxvrlLn8eI2Q1GJLsmduAOQLaoY/8exMQy6bj6mD9NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h6yR7e81+fcmZ5z7QU4oCIo9QBgH6IG4LuBexB9gWPU=;
+ b=MdCPUqmdxuQujqvHf1eQwLbT7rqBYsFdii4ENQ8Zz6VVt0ftVU8RnwlFFvNZuvNzlTMnm/hRHIhpMapR/jR2RmJwePyRAYsP584wr66jyMgmCDRlzI7ALb8kahkpG1tZ4/6pQq+UZ68oi7i1xUTji5ugk0r5n03/jUnzny+4/OYUwdWQVT8vQYB2R2jgvxIOppliZnXf11IVtYxiijWJrTs3TmFuANqRIbJ3BNoBeeD36ADdtAa/EaGLNItdbG2P7ta/45ousHkIMTjqfnzzB1s2Pr0PHGfRsr+rsozjVvWQ5A8ZgBm7tJIskAuqGammCO0kn77U1TcVakYrleecZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h6yR7e81+fcmZ5z7QU4oCIo9QBgH6IG4LuBexB9gWPU=;
+ b=wmi+/qR888PGJ5UNN5i6tkOksuzBOzy9ZzJlLqf9nNZaYay0lXigr4C6Mah8LJ/U+aT2XCu0XaiKz2LmDzzGUyy1kPfG7rpHUO/6h3sRKhbe0OUu2c7p7Lq+NklCNsT+bt9aCtGWHu987zV1xCz6qzQUmaYRr74Pf/5eTlyBmQA=
+Authentication-Results: redhat.com; dkim=none (message not signed)
+ header.d=none;redhat.com; dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB2714.namprd12.prod.outlook.com (2603:10b6:5:42::18) by
+ DM6PR12MB4154.namprd12.prod.outlook.com (2603:10b6:5:21d::21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4242.16; Fri, 18 Jun 2021 13:57:15 +0000
+Received: from DM6PR12MB2714.namprd12.prod.outlook.com
+ ([fe80::7df8:b0cd:fe1b:ae7b]) by DM6PR12MB2714.namprd12.prod.outlook.com
+ ([fe80::7df8:b0cd:fe1b:ae7b%5]) with mapi id 15.20.4219.022; Fri, 18 Jun 2021
+ 13:57:15 +0000
+Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+ npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 20/22] x86/boot: Add Confidential Computing
+ address to setup_header
+To: Borislav Petkov <bp@alien8.de>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-21-brijesh.singh@amd.com> <YMw4UZn6AujpPSZO@zn.tnic>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <15568c80-c9a9-5602-d940-264af87bed98@amd.com>
+Date: Fri, 18 Jun 2021 08:57:12 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YMw4UZn6AujpPSZO@zn.tnic>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [70.112.153.56]
+X-ClientProxiedBy: SA9PR13CA0086.namprd13.prod.outlook.com
+ (2603:10b6:806:23::31) To DM6PR12MB2714.namprd12.prod.outlook.com
+ (2603:10b6:5:42::18)
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.0.0.12] (70.112.153.56) by SA9PR13CA0086.namprd13.prod.outlook.com (2603:10b6:806:23::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.7 via Frontend Transport; Fri, 18 Jun 2021 13:57:13 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 784ca967-7cf0-4436-2374-08d93260faa3
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4154:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS:
+	<DM6PR12MB4154E8FFE99CA5056DA5BA51E50D9@DM6PR12MB4154.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3383;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	pd/avOOgBjIWGEK0zFNVosLnC7P86pQPQK81hbkwxmKt4cbE6FsTehEbz9EQqqSplJQcOCbQqdW9PrjLrLOQVJTzP/Q9Dpp/AL8kikqLV0AXtff3Prwm0/+NBbcYXPwun62JAxw+FwhW5f9kyZubFKlYf9dIGBh3c5sBDGwEzMXQ9NlnexYzu8HBsn+svU853lZYYpU/qlXzaSDhrujwU6ZY1rz3UgzhbVbmkFOJz6XgLa6lQdv330GcxL9ibF2eI+2xBazQOsWOsESg0qFSITVnDQDZ0g75iUE69NUn9fscW5FpC7k/a4fVgeMPj6vKZLrOAiSUNrRXuuHPJqTepmxutnpSWJlUfhQauvst5gYy5v5F1MOLE5RrYUtFRSQH0dsGXVTmms2tIi6KleCuOPpNCdqFVVRC3VyEEFMf2SaXhyYl+IaC0QGdpmprHJI2Lpqqy3QtNyGe/VwvCVbToJF7WYs2E92OGoiqeOVgxobAsvCPquio3OaoPh85T2jjeUjJ3VpNaCT43/or1QJi7g7RFNAjoiRBMBKbasd1OJFcAOpNfgrFzNF/CErkqrK3dHvjwUKvbEvejrRQZrLz44AcmOh0pJVx7t+gjP7bMLWyJHAosWKTsZsdkfK8uXkl/O5iZ2o7I7cl+lEpWzzKzHouwR4jqylZ7vFuwR2zkJ11jwp8p1TcXEytasKYtsXTYkTnqWmvTn8Rdwk3/l4q5g==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2714.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(366004)(396003)(136003)(346002)(376002)(2906002)(54906003)(5660300002)(8936002)(31696002)(478600001)(44832011)(52116002)(4326008)(83380400001)(36756003)(8676002)(31686004)(86362001)(38350700002)(16576012)(38100700002)(66946007)(66476007)(66556008)(316002)(53546011)(2616005)(6916009)(956004)(186003)(16526019)(6486002)(26005)(7416002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MmpadWQ0WGJwZnJQRmJtOUUxKzI4OSs3M2Y0dkZ6T2ZXcGxvSjZxMThaQ0Zo?=
+ =?utf-8?B?LzFaNDdOaG5JdVBOV2VnMnRLV092eHhLRkZrK3BXZ2NhUkJCdnNsQ3gvOVBE?=
+ =?utf-8?B?WVhBcFlFYlJ1QU8zSy84ZENSTFdMend2VnRNalJGZHJReFoyRFJ5RXROdHNp?=
+ =?utf-8?B?RVJaVy9hT2FJUzlaNVJzTy9yRitVMXA0Zm01NE9ZV0xnM081WDE3bmdWcHFZ?=
+ =?utf-8?B?dGxvR0RFWm90T1lZTURmOGhpbms2czlRQ0tEekFTWi8wMTF2OE9pYUFJTjRp?=
+ =?utf-8?B?ZVNZaGVDRGtqeFIrYlp6aVJtcmROc21YQVFsZVFOYS9WakxhVy9EY21GOExl?=
+ =?utf-8?B?Zkg5bE9peU9RcE5XeE9rYUxGcFNsa3VSV0dZZTcwbmZZS29zR3JTdm05eVpI?=
+ =?utf-8?B?bmd0SlAwTmFFbWZxamNBVnlXS2M4SzJ3dGpIcDBmdzBOOGNCY1JMcnlMWE5F?=
+ =?utf-8?B?YytnVFFlKzRZczVmYVBzbGZYS0FNR3cyWTNTOUFNTys5TjZnNUMxN1lRcG15?=
+ =?utf-8?B?TWRWZE1GeVdycGJlVVpyWkN1QVRuQ0s1bHZ2YTJOOHVCSXpvQktaTmFmejNT?=
+ =?utf-8?B?U1lwaEhuNFdqeElwR3pLdjN5eUFKeVJtQWhCSEVwd01WNnYxNjF4S3pYR3Vt?=
+ =?utf-8?B?NWovc09iYXNnMThFUjFucUdNRWhQMnJqSnFJaWJvWmxibGVGRFRzWUp1TEhz?=
+ =?utf-8?B?SXJIZjZDNGFzeXM2UTI0UTFheTRRZXpqRllJSktNeW5yM0lEdllzM09NQll0?=
+ =?utf-8?B?R0E4NW81U2QrUjJudjJrOUVrWFk0Zm15ektzV3NwcmVDdVVPRmw5V0ZiTGh1?=
+ =?utf-8?B?U1czeEdleDhCd0hEa2Z2Nzh3bEtFeDYyMXBkakhpcDhTSTVXc1VVK3kwbXdE?=
+ =?utf-8?B?ZGN6L0pRM0hEVmFocVRXQW5vclpycFFaSStvRkZNdTd4UDduanduVTRoa0Zo?=
+ =?utf-8?B?QURkK0dwWElTd1BNS2pZYjl3YmRzTGZBRGl6SkhPU0QxTHBobkVYcmhoVTdt?=
+ =?utf-8?B?RHdlRTV3T1BFN0ZtUE51NXY4SlloL2ZRaWRmcXhSb244UmFuRDkzQ1lnRmcv?=
+ =?utf-8?B?WkdaTmZoZ09tQ1lwZ0FUdFhLdk1UdGF5b1FEaWRTSldHdkcvbjgvcU9zOXpI?=
+ =?utf-8?B?WGRtNEI1S2s2dy9kYjQ0dHRnUWhoVk5YQ1FXYXdoMWx0Mit5eEJFMlYveWdG?=
+ =?utf-8?B?dm1IaEdBaVRzenUrTzNjd3NNU0lPMndQZVRuUVVvbWEwZm1DMlZGTllMMmNx?=
+ =?utf-8?B?NWVOTEE1NHF0c3p4MVVyWVFxY0RsbmRLVHUyZWp0czdSZm84eW4xcnVDWHpZ?=
+ =?utf-8?B?S3NldkV4RU9vTjErTXl0ZEFTNS9Tc3czNStwYllsL0hwSmc3SHhqQ3dHWC9C?=
+ =?utf-8?B?aCs1RDIycS96U1FjZTBMVWZwVFpLLzB1YWpvLzNtY3VpOHE2ZSt2RkxiTUpt?=
+ =?utf-8?B?VHNtZHduNXI5UDloTFcxTW44UkFoZnJPREZzb05ES291NGx2bFN2QU5CMXBs?=
+ =?utf-8?B?MllOK0NNdTlaQlQwUEdQaGFudXFtdWNlTlUrNW83aDdQVUIxbzdkNjU5NU9a?=
+ =?utf-8?B?TEJxV0NwUHp0OVpGVEJQYkJUWHRqVDFBTC9NdlFMbHVoYzdFcWgyVG5oM1dR?=
+ =?utf-8?B?WVpvZmltc1N4Y2NYWUlhVDh2M3NYdzBDY293WGpndE9QenpCLzlpQ3FxYzZh?=
+ =?utf-8?B?V1BPTlFhMFkzeXRmTTE2MmZWTWExWktFdXZFL0ZmMXpHdzVzSlZrSmJ1b1Bh?=
+ =?utf-8?Q?xmTYcFTbPBa7vu/BFfOABhApj0p+RgkIsheDHH0?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 784ca967-7cf0-4436-2374-08d93260faa3
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2714.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2021 13:57:15.6748
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /hCJTRdfBHGXtPYTtjRHWpRtnIZbXrDfZ4eYvmW7c0mhYEoxsuZzmWbSaQd4Ji/qvbS2IdZ5Q2l8qtI73+aAPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4154
 
-From: Joerg Roedel <jroedel@suse.de>
 
-Split up the #VC handler code into a from-user and a from-kernel part.
-This allows clean and correct state tracking, as the #VC handler needs
-to enter NMI-state when raised from kernel mode and plain IRQ state when
-raised from user-mode.
 
-Fixes: 62441a1fb532 ("x86/sev-es: Correctly track IRQ states in runtime #VC handler")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- arch/x86/entry/entry_64.S       |   4 +-
- arch/x86/include/asm/idtentry.h |  29 +++----
- arch/x86/kernel/sev.c           | 148 +++++++++++++++++---------------
- 3 files changed, 91 insertions(+), 90 deletions(-)
+On 6/18/2021 1:08 AM, Borislav Petkov wrote:
+> On Wed, Jun 02, 2021 at 09:04:14AM -0500, Brijesh Singh wrote:
+>> While launching the encrypted guests, the hypervisor may need to provide
+>> some additional information that will used during the guest boot. In the
+>> case of AMD SEV-SNP the information includes the address of the secrets
+>> and CPUID pages. The secrets page contains information such as a VM to
+>> PSP communication key and CPUID page contain PSP filtered CPUID values.
+>>
+>> When booting under the EFI based BIOS, the EFI configuration table
+>> contains an entry for the confidential computing blob. In order to support
+>> booting encrypted guests on non EFI VM, the hypervisor to pass these
+>> additional information to the kernel with different method.
+>>
+>> For this purpose expand the struct setup_header to hold the physical
+>> address of the confidential computing blob location. Being zero means it
+>> isn't passed.
+>>
+>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>> ---
+>>  Documentation/x86/boot.rst            | 27 +++++++++++++++++++++++++++
+>>  arch/x86/boot/header.S                |  7 ++++++-
+>>  arch/x86/include/uapi/asm/bootparam.h |  1 +
+>>  3 files changed, 34 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/x86/boot.rst b/Documentation/x86/boot.rst
+>> index fc844913dece..9b32805617bb 100644
+>> --- a/Documentation/x86/boot.rst
+>> +++ b/Documentation/x86/boot.rst
+>> @@ -75,6 +75,8 @@ Protocol 2.14	BURNT BY INCORRECT COMMIT
+>>  		DO NOT USE!!! ASSUME SAME AS 2.13.
+>>  
+>>  Protocol 2.15	(Kernel 5.5) Added the kernel_info and kernel_info.setup_type_max.
+>> +
+>> +Protocol 2.16	(Kernel 5.14) Added the confidential computing blob address
+>>  =============	============================================================
+>>  
+>>  .. note::
+>> @@ -226,6 +228,7 @@ Offset/Size	Proto		Name			Meaning
+>>  0260/4		2.10+		init_size		Linear memory required during initialization
+>>  0264/4		2.11+		handover_offset		Offset of handover entry point
+>>  0268/4		2.15+		kernel_info_offset	Offset of the kernel_info
+>> +026C/4		2.16+		cc_blob_address	        Physical address of the confidential computing blob
+> 
+> Why is this a separate thing instead of being passed as setup_data?
+> 
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index a16a5294d55f..1886aaf19914 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -506,7 +506,7 @@ SYM_CODE_START(\asmsym)
- 
- 	movq	%rsp, %rdi		/* pt_regs pointer */
- 
--	call	\cfunc
-+	call	kernel_\cfunc
- 
- 	/*
- 	 * No need to switch back to the IST stack. The current stack is either
-@@ -517,7 +517,7 @@ SYM_CODE_START(\asmsym)
- 
- 	/* Switch to the regular task stack */
- .Lfrom_usermode_switch_stack_\@:
--	idtentry_body safe_stack_\cfunc, has_error_code=1
-+	idtentry_body user_\cfunc, has_error_code=1
- 
- _ASM_NOKPROBE(\asmsym)
- SYM_CODE_END(\asmsym)
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index 73d45b0dfff2..cd9f3e304944 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -312,8 +312,8 @@ static __always_inline void __##func(struct pt_regs *regs)
-  */
- #define DECLARE_IDTENTRY_VC(vector, func)				\
- 	DECLARE_IDTENTRY_RAW_ERRORCODE(vector, func);			\
--	__visible noinstr void ist_##func(struct pt_regs *regs, unsigned long error_code);	\
--	__visible noinstr void safe_stack_##func(struct pt_regs *regs, unsigned long error_code)
-+	__visible noinstr void kernel_##func(struct pt_regs *regs, unsigned long error_code);	\
-+	__visible noinstr void   user_##func(struct pt_regs *regs, unsigned long error_code)
- 
- /**
-  * DEFINE_IDTENTRY_IST - Emit code for IST entry points
-@@ -355,33 +355,24 @@ static __always_inline void __##func(struct pt_regs *regs)
- 	DEFINE_IDTENTRY_RAW_ERRORCODE(func)
- 
- /**
-- * DEFINE_IDTENTRY_VC_SAFE_STACK - Emit code for VMM communication handler
--				   which runs on a safe stack.
-+ * DEFINE_IDTENTRY_VC_KERNEL - Emit code for VMM communication handler
-+			       when raised from kernel mode
-  * @func:	Function name of the entry point
-  *
-  * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
-  */
--#define DEFINE_IDTENTRY_VC_SAFE_STACK(func)				\
--	DEFINE_IDTENTRY_RAW_ERRORCODE(safe_stack_##func)
-+#define DEFINE_IDTENTRY_VC_KERNEL(func)				\
-+	DEFINE_IDTENTRY_RAW_ERRORCODE(kernel_##func)
- 
- /**
-- * DEFINE_IDTENTRY_VC_IST - Emit code for VMM communication handler
--			    which runs on the VC fall-back stack
-+ * DEFINE_IDTENTRY_VC_USER - Emit code for VMM communication handler
-+			     when raised from user mode
-  * @func:	Function name of the entry point
-  *
-  * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
-  */
--#define DEFINE_IDTENTRY_VC_IST(func)				\
--	DEFINE_IDTENTRY_RAW_ERRORCODE(ist_##func)
--
--/**
-- * DEFINE_IDTENTRY_VC - Emit code for VMM communication handler
-- * @func:	Function name of the entry point
-- *
-- * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
-- */
--#define DEFINE_IDTENTRY_VC(func)					\
--	DEFINE_IDTENTRY_RAW_ERRORCODE(func)
-+#define DEFINE_IDTENTRY_VC_USER(func)				\
-+	DEFINE_IDTENTRY_RAW_ERRORCODE(user_##func)
- 
- #else	/* CONFIG_X86_64 */
- 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 9f32cbb773d9..87a4b00f028e 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -793,7 +793,7 @@ void __init sev_es_init_vc_handling(void)
- 	sev_es_setup_play_dead();
- 
- 	/* Secondary CPUs use the runtime #VC handler */
--	initial_vc_handler = (unsigned long)safe_stack_exc_vmm_communication;
-+	initial_vc_handler = (unsigned long)kernel_exc_vmm_communication;
- }
- 
- static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
-@@ -1231,14 +1231,6 @@ static enum es_result vc_handle_trap_ac(struct ghcb *ghcb,
- 	return ES_EXCEPTION;
- }
- 
--static __always_inline void vc_handle_trap_db(struct pt_regs *regs)
--{
--	if (user_mode(regs))
--		noist_exc_debug(regs);
--	else
--		exc_debug(regs);
--}
--
- static enum es_result vc_handle_exitcode(struct es_em_ctxt *ctxt,
- 					 struct ghcb *ghcb,
- 					 unsigned long exit_code)
-@@ -1334,41 +1326,13 @@ static __always_inline bool on_vc_fallback_stack(struct pt_regs *regs)
- 	return (sp >= __this_cpu_ist_bottom_va(VC2) && sp < __this_cpu_ist_top_va(VC2));
- }
- 
--/*
-- * Main #VC exception handler. It is called when the entry code was able to
-- * switch off the IST to a safe kernel stack.
-- *
-- * With the current implementation it is always possible to switch to a safe
-- * stack because #VC exceptions only happen at known places, like intercepted
-- * instructions or accesses to MMIO areas/IO ports. They can also happen with
-- * code instrumentation when the hypervisor intercepts #DB, but the critical
-- * paths are forbidden to be instrumented, so #DB exceptions currently also
-- * only happen in safe places.
-- */
--DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
-+static bool vc_raw_handle_exception(struct pt_regs *regs, unsigned long error_code)
- {
--	irqentry_state_t irq_state;
- 	struct ghcb_state state;
- 	struct es_em_ctxt ctxt;
- 	enum es_result result;
- 	struct ghcb *ghcb;
--
--	/*
--	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
--	 */
--	if (error_code == SVM_EXIT_EXCP_BASE + X86_TRAP_DB) {
--		vc_handle_trap_db(regs);
--		return;
--	}
--
--	irq_state = irqentry_nmi_enter(regs);
--	instrumentation_begin();
--
--	/*
--	 * This is invoked through an interrupt gate, so IRQs are disabled. The
--	 * code below might walk page-tables for user or kernel addresses, so
--	 * keep the IRQs disabled to protect us against concurrent TLB flushes.
--	 */
-+	bool ret = true;
- 
- 	ghcb = __sev_get_ghcb(&state);
- 
-@@ -1388,15 +1352,18 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 	case ES_UNSUPPORTED:
- 		pr_err_ratelimited("Unsupported exit-code 0x%02lx in #VC exception (IP: 0x%lx)\n",
- 				   error_code, regs->ip);
--		goto fail;
-+		ret = false;
-+		break;
- 	case ES_VMM_ERROR:
- 		pr_err_ratelimited("Failure in communication with VMM (exit-code 0x%02lx IP: 0x%lx)\n",
- 				   error_code, regs->ip);
--		goto fail;
-+		ret = false;
-+		break;
- 	case ES_DECODE_FAILED:
- 		pr_err_ratelimited("Failed to decode instruction (exit-code 0x%02lx IP: 0x%lx)\n",
- 				   error_code, regs->ip);
--		goto fail;
-+		ret = false;
-+		break;
- 	case ES_EXCEPTION:
- 		vc_forward_exception(&ctxt);
- 		break;
-@@ -1412,24 +1379,52 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 		BUG();
- 	}
- 
--out:
--	instrumentation_end();
--	irqentry_nmi_exit(regs, irq_state);
-+	return ret;
-+}
- 
--	return;
-+static __always_inline bool vc_is_db(unsigned long error_code)
-+{
-+	return error_code == SVM_EXIT_EXCP_BASE + X86_TRAP_DB;
-+}
- 
--fail:
--	if (user_mode(regs)) {
--		/*
--		 * Do not kill the machine if user-space triggered the
--		 * exception. Send SIGBUS instead and let user-space deal with
--		 * it.
--		 */
--		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
--	} else {
--		pr_emerg("PANIC: Unhandled #VC exception in kernel space (result=%d)\n",
--			 result);
-+/*
-+ * Runtime #VC exception handler when raised from kernel mode. Runs in NMI mode
-+ * and will panic when an error happens.
-+ */
-+DEFINE_IDTENTRY_VC_KERNEL(exc_vmm_communication)
-+{
-+	irqentry_state_t irq_state;
-+
-+	/*
-+	 * With the current implementation it is always possible to switch to a
-+	 * safe stack because #VC exceptions only happen at known places, like
-+	 * intercepted instructions or accesses to MMIO areas/IO ports. They can
-+	 * also happen with code instrumentation when the hypervisor intercepts
-+	 * #DB, but the critical paths are forbidden to be instrumented, so #DB
-+	 * exceptions currently also only happen in safe places.
-+	 *
-+	 * But keep this here in case the noinstr annotations are violated due
-+	 * to bug elsewhere.
-+	 */
-+	if (unlikely(on_vc_fallback_stack(regs))) {
-+		instrumentation_begin();
-+		panic("Can't handle #VC exception from unsupported context\n");
-+		instrumentation_end();
-+	}
-+
-+	/*
-+	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
-+	 */
-+	if (vc_is_db(error_code)) {
-+		exc_debug(regs);
-+		return;
-+	}
-+
-+	irq_state = irqentry_nmi_enter(regs);
- 
-+	instrumentation_begin();
-+
-+	if (!vc_raw_handle_exception(regs, error_code)) {
- 		/* Show some debug info */
- 		show_regs(regs);
- 
-@@ -1440,23 +1435,38 @@ DEFINE_IDTENTRY_VC_SAFE_STACK(exc_vmm_communication)
- 		panic("Returned from Terminate-Request to Hypervisor\n");
- 	}
- 
--	goto out;
-+	instrumentation_end();
-+	irqentry_nmi_exit(regs, irq_state);
- }
- 
--/* This handler runs on the #VC fall-back stack. It can cause further #VC exceptions */
--DEFINE_IDTENTRY_VC_IST(exc_vmm_communication)
-+/*
-+ * Runtime #VC exception handler when raised from user mode. Runs in IRQ mode
-+ * and will kill the current task with SIGBUS when an error happens.
-+ */
-+DEFINE_IDTENTRY_VC_USER(exc_vmm_communication)
- {
-+	/*
-+	 * Handle #DB before calling into !noinstr code to avoid recursive #DB.
-+	 */
-+	if (vc_is_db(error_code)) {
-+		noist_exc_debug(regs);
-+		return;
-+	}
-+
-+	irqentry_enter_from_user_mode(regs);
- 	instrumentation_begin();
--	panic("Can't handle #VC exception from unsupported context\n");
--	instrumentation_end();
--}
- 
--DEFINE_IDTENTRY_VC(exc_vmm_communication)
--{
--	if (likely(!on_vc_fallback_stack(regs)))
--		safe_stack_exc_vmm_communication(regs, error_code);
--	else
--		ist_exc_vmm_communication(regs, error_code);
-+	if (!vc_raw_handle_exception(regs, error_code)) {
-+		/*
-+		 * Do not kill the machine if user-space triggered the
-+		 * exception. Send SIGBUS instead and let user-space deal with
-+		 * it.
-+		 */
-+		force_sig_fault(SIGBUS, BUS_OBJERR, (void __user *)0);
-+	}
-+
-+	instrumentation_end();
-+	irqentry_exit_to_user_mode(regs);
- }
- 
- bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
--- 
-2.31.1
+Don't have any strong reason to keep it separate, I can define a new type and use the
+setup_data to pass this information.
 
+-Brijesh
