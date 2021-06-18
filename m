@@ -1,96 +1,80 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D3972
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 08:32:36 +0000 (UTC)
-Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C94472
+	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 09:46:43 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0dd8004fc95bebb5201001.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:d800:4fc9:5beb:b520:1001])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A08591FDF6;
-	Fri, 18 Jun 2021 08:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1624004708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
-	b=e2K8BVdia2rtzCx8g9U0y0K5QFEUTW6+tRBPdUKB1/9rUgIoHo69R4uqIfzkQYeVzE5Vnp
-	qHZ+KH7deAYpjZj5NgxCopEAM7/qSVz8W26Yrcjik7+6jfSLnq2Ilc8w8Obg3edPP7I0ia
-	sp+YXzpmdkpkG/3juEFrbxx70lq/rX4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1624004708;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
-	b=05L887bTpKMQfMGEUgoeZ0S9x5jtN6qake3lq4t7r92HDvG2EfnO3sp26PCC6HgXQlFqw5
-	l1RrDidk2KmJJzBg==
-Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
-	by imap.suse.de (Postfix) with ESMTP id D3D7C118DD;
-	Fri, 18 Jun 2021 08:25:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1624004708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
-	b=e2K8BVdia2rtzCx8g9U0y0K5QFEUTW6+tRBPdUKB1/9rUgIoHo69R4uqIfzkQYeVzE5Vnp
-	qHZ+KH7deAYpjZj5NgxCopEAM7/qSVz8W26Yrcjik7+6jfSLnq2Ilc8w8Obg3edPP7I0ia
-	sp+YXzpmdkpkG/3juEFrbxx70lq/rX4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1624004708;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l6MJAIsLVgqXfW5lwfZV7HOLJW17Cm0NEkHH1qVZkSE=;
-	b=05L887bTpKMQfMGEUgoeZ0S9x5jtN6qake3lq4t7r92HDvG2EfnO3sp26PCC6HgXQlFqw5
-	l1RrDidk2KmJJzBg==
-Received: from director2.suse.de ([192.168.254.72])
-	by imap3-int with ESMTPSA
-	id mnUcMmNYzGCmfgAALh3uQQ
-	(envelope-from <jroedel@suse.de>); Fri, 18 Jun 2021 08:25:07 +0000
-Date: Fri, 18 Jun 2021 10:25:06 +0200
-From: Joerg Roedel <jroedel@suse.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, hpa@zytor.com,
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6F1EC1EC0559;
+	Fri, 18 Jun 2021 11:46:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1624009601;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=fhCS1VjB+E7C2WKgFiWhTOQPZHXnjbEcqr3FRlWi0xU=;
+	b=mVNHyRCG/AgGBIUULY2n0rYyqbBpwtuaHTqg5MgQ8DzjcE9TF4eqo9kb51Zi7yIPdYmL1j
+	UmVDFMG5XYUnevK4WKpCAJrbwegX9Q43eENYMOjzOw/qYPF1y04M24QPeRJ9ZYw+hFFVzJ
+	pl8wgyAk+mMAdq8y2SXzcZsoQS0G0Ek=
+Date: Fri, 18 Jun 2021 11:46:31 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v6 1/2] x86/sev: Make sure IRQs are disabled while GHCB
- is active
-Message-ID: <YMxYYkawXh1kZ/jf@suse.de>
-References: <20210616184913.13064-1-joro@8bytes.org>
- <20210616184913.13064-2-joro@8bytes.org>
- <YMtjoLLQpKyveVlS@hirez.programming.kicks-ass.net>
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+	npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 21/22] x86/sev: Register SNP guest request
+ platform device
+Message-ID: <YMxrd5M1teku/hnA@zn.tnic>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-22-brijesh.singh@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YMtjoLLQpKyveVlS@hirez.programming.kicks-ass.net>
+In-Reply-To: <20210602140416.23573-22-brijesh.singh@amd.com>
 
-On Thu, Jun 17, 2021 at 05:00:48PM +0200, Peter Zijlstra wrote:
-> I think this is broken, at this point RCU is quite dead on this CPU and
-> local_irq_save/restore include tracing and all sorts.
-> 
-> Also, shouldn't IRQs already be disabled by the time we get here?
+On Wed, Jun 02, 2021 at 09:04:15AM -0500, Brijesh Singh wrote:
+>  arch/x86/include/asm/sev.h      |  12 +++
+>  arch/x86/include/uapi/asm/svm.h |   2 +
+>  arch/x86/kernel/sev.c           | 176 ++++++++++++++++++++++++++++++++
+>  arch/x86/platform/efi/efi.c     |   2 +
+>  include/linux/efi.h             |   1 +
+>  include/linux/sev-guest.h       |  76 ++++++++++++++
+>  6 files changed, 269 insertions(+)
+>  create mode 100644 include/linux/sev-guest.h
 
-Yes it is, I removed these calls, made __sev_get/put_ghcb() noinstr
-instead of __always_inline and put instrumentation_begin()/end() around
-the panic() call in __sev_get_ghcb().
+This patch is at least three patches in one:
 
-Regards,
+1. EFI changes
+2. SNP_GUEST_REQUEST struct etc definitions
+3. Add the functionality.
 
-	Joerg
+Please split it this way before I take a look.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
