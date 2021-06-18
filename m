@@ -1,78 +1,88 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1EB71
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 10:54:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=WXE8AGIvrigHAr3bWkiTQ8lrgYlIfDElqocU4mw+Hqk=; b=DBRrSrmnwX8IhMiypDyD/kXhC7
-	+boU6L8ETBEcjztGRQxBjSlCAbA0dNg+PYtDCa9zkXGFl9+6xm7LV524fQHHUqQnkDWzrM8FqdDjk
-	JdRZJ7WUVY76TE1Kz5ykIqdg1rDwG0YFzK0qwfj7hpejRnN0r+WC/tEcTo8MzAEfkzgtuS0Q5kxU6
-	jrgt0fnGeAbRQhWAQ6AGQsnErqOtDZNrPkzdcC0CJlqp2fZyh5pOzrj5Y689ksfCS33EhcPTfJBLl
-	kS3udIaHPKp7tXH3iYPKg/nhK/ix+2GMxD3rQ/AvsSAawuMlYlzL5+kCvt5gefxG79tasJ4B+EblB
-	2bdHZdbg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1luC7v-00AAwD-3g; Fri, 18 Jun 2021 10:53:46 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 21546300204;
-	Fri, 18 Jun 2021 12:53:29 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 063ED21BD53A7; Fri, 18 Jun 2021 12:53:29 +0200 (CEST)
-Date: Fri, 18 Jun 2021 12:53:28 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Joerg Roedel <joro@8bytes.org>
-Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB50871
+	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 11:54:19 +0000 (UTC)
+Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by theia.8bytes.org (Postfix) with ESMTPSA id 59DD61E9;
+	Fri, 18 Jun 2021 13:54:17 +0200 (CEST)
+From: Joerg Roedel <joro@8bytes.org>
+To: x86@kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
 	Erdem Aktas <erdemaktas@google.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mike Stunes <mstunes@vmware.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v6 1/2] x86/sev: Make sure IRQs are disabled while GHCB
- is active
-Message-ID: <YMx7KDtf7S0W8oxy@hirez.programming.kicks-ass.net>
-References: <20210616184913.13064-1-joro@8bytes.org>
- <20210616184913.13064-2-joro@8bytes.org>
- <YMtshtgEbiQ993Zk@hirez.programming.kicks-ass.net>
- <YMxWsjZcudaorPgV@8bytes.org>
+Subject: [PATCH v7 0/2] x86/sev: Fixes for SEV-ES Guest Support
+Date: Fri, 18 Jun 2021 13:54:07 +0200
+Message-Id: <20210618115409.22735-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YMxWsjZcudaorPgV@8bytes.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 18, 2021 at 10:17:54AM +0200, Joerg Roedel wrote:
-> On Thu, Jun 17, 2021 at 05:38:46PM +0200, Peter Zijlstra wrote:
-> > I'm getting (with all of v6.1 applied):
-> > 
-> > vmlinux.o: warning: objtool: __sev_es_nmi_complete()+0x1bf: call to panic() leaves .noinstr.text section
-> > 
-> > $ ./scripts/faddr2line defconfig-build/vmlinux __sev_es_nmi_complete+0x1bf
-> > __sev_es_nmi_complete+0x1bf/0x1d0:
-> > __sev_get_ghcb at arch/x86/kernel/sev.c:223
-> > (inlined by) __sev_es_nmi_complete at arch/x86/kernel/sev.c:519
-> 
-> I see where this is coming from, but can't create the same warning. I
-> did run 'objtool check -n vmlinux'. Is there more to do to get the full
-> check?
+From: Joerg Roedel <jroedel@suse.de>
 
-You get those when you enable CONFIG_DEBUG_ENTRY=y (make sure to have
-PARAVIRT=n, I so need to go fix that :/).
+Hi,
+
+please find here the next iteration of my pending fixes for SEV-ES
+guest support in Linux. This version addresses the comments I received
+from Peter on the previous version, in particular:
+
+	- Removed IRQ disable/enable calls in the ap-hlt loop code
+	- Made __sev_get/put_ghcb() noinstr instead of __always_inline
+	  and put instrumentation_begin()/end() calls around panic()
+	  to fix an objtool warning.
+	- Split up #DB handling in the #VC handler into a from-user
+	  and from-kernel part as well.
+
+The patches are again tested with a kernel with various debugging
+options enabled, running as an SEV-ES guest.
+
+The previous version of these patches can be found here:
+
+	https://lore.kernel.org/lkml/20210616184913.13064-1-joro@8bytes.org/
+
+Please review.
+
+Thanks,
+
+	Joerg
+
+Joerg Roedel (2):
+  x86/sev: Make sure IRQs are disabled while GHCB is active
+  x86/sev: Split up runtime #VC handler for correct state tracking
+
+ arch/x86/entry/entry_64.S       |   4 +-
+ arch/x86/include/asm/idtentry.h |  29 ++---
+ arch/x86/kernel/sev.c           | 182 ++++++++++++++++++--------------
+ 3 files changed, 113 insertions(+), 102 deletions(-)
+
+
+base-commit: 07570cef5e5c3fcec40f82a9075abb4c1da63319
+-- 
+2.31.1
+
