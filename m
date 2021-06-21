@@ -1,51 +1,46 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957EE72
-	for <linux-coco@lists.linux.dev>; Fri, 18 Jun 2021 15:05:53 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0dd800f1d29af1870b9e89.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:d800:f1d2:9af1:870b:9e89])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C696B71
+	for <linux-coco@lists.linux.dev>; Mon, 21 Jun 2021 12:40:54 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0aba0093154f80778061c9.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:ba00:9315:4f80:7780:61c9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E16551EC0529;
-	Fri, 18 Jun 2021 17:05:42 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 91EDE1EC058C;
+	Mon, 21 Jun 2021 14:40:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1624028743;
+	t=1624279245;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=DAkmjtSEjAQW5/oSQSGY2SJZEOQXFtsl+lpahSbt7CM=;
-	b=Ol1RhoAL2zOpnn55wSrncRMqg5PShyikP6yN9Dd9Spb+mo2L1xWn7DUx8YDT6MBohBRh4j
-	r4JUcLI0Bq1CtLIQIkucqpI/IRSrlQ8P5Qg6k9hoOVYEc08pew3bLadc5ekrVfBLtZef1X
-	N+VDfH4YnAnzuSIy9dUDc4cKbLo9mC4=
-Date: Fri, 18 Jun 2021 17:05:28 +0200
+	bh=vxv+Cb6FghH+Ce7UyXbZ9MQhB51hjGkjpNSgjCGcHF0=;
+	b=q2tertqrWuoJH4HUUxbXX4JflnrZ0vNnsMxW6BnpwI1Go30/kEYLB5JWnx3vFWvTh8Fj0h
+	FeiZQ9RU9/jvZG+ICKskzWaMIGyTXpHKJ/C8a6AO2SJr56GTu0Yhrco32rPYQ7u1HVowpE
+	7TJZX8NWNokO8uKzcBaKkwDspZxUul8=
+Date: Mon, 21 Jun 2021 14:40:40 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-	npmccallum@redhat.com
-Subject: Re: [PATCH Part1 RFC v3 20/22] x86/boot: Add Confidential Computing
- address to setup_header
-Message-ID: <YMy2OGwsRzrR5bwD@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-21-brijesh.singh@amd.com>
- <YMw4UZn6AujpPSZO@zn.tnic>
- <15568c80-c9a9-5602-d940-264af87bed98@amd.com>
+	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v7 1/2] x86/sev: Make sure IRQs are disabled while GHCB
+ is active
+Message-ID: <YNCIyFltNGzLWuk5@zn.tnic>
+References: <20210618115409.22735-1-joro@8bytes.org>
+ <20210618115409.22735-2-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -53,17 +48,21 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <15568c80-c9a9-5602-d940-264af87bed98@amd.com>
+In-Reply-To: <20210618115409.22735-2-joro@8bytes.org>
 
-On Fri, Jun 18, 2021 at 08:57:12AM -0500, Brijesh Singh wrote:
-> Don't have any strong reason to keep it separate, I can define a new
-> type and use the setup_data to pass this information.
+On Fri, Jun 18, 2021 at 01:54:08PM +0200, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
+> 
+> The #VC handler only cares about IRQs being disabled while the GHCB is
+> active, as it must not be interrupted by something which could cause
+> another #VC while it holds the GHCB (NMI is the exception for which the
+> backup GHCB exits).
+> 
+> Make sure nothing interrupts the code path while the GHCB is active by
+> disabling IRQs in sev_es_get_ghcb() and restoring the previous irq state
+> in sev_es_put_ghcb().
 
-setup_data is exactly for use cases like that - pass a bunch of data
-to the kernel. So there's no need for a separate thing. Also see that
-kernel_info thing which got added recently for read_only data.
-
-Thx.
+Note for committer: update those function names.
 
 -- 
 Regards/Gruss,
