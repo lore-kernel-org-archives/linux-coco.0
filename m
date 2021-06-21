@@ -1,29 +1,36 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C696B71
-	for <linux-coco@lists.linux.dev>; Mon, 21 Jun 2021 12:40:54 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0aba0093154f80778061c9.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:ba00:9315:4f80:7780:61c9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 91EDE1EC058C;
-	Mon, 21 Jun 2021 14:40:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1624279245;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=vxv+Cb6FghH+Ce7UyXbZ9MQhB51hjGkjpNSgjCGcHF0=;
-	b=q2tertqrWuoJH4HUUxbXX4JflnrZ0vNnsMxW6BnpwI1Go30/kEYLB5JWnx3vFWvTh8Fj0h
-	FeiZQ9RU9/jvZG+ICKskzWaMIGyTXpHKJ/C8a6AO2SJr56GTu0Yhrco32rPYQ7u1HVowpE
-	7TJZX8NWNokO8uKzcBaKkwDspZxUul8=
-Date: Mon, 21 Jun 2021 14:40:40 +0200
-From: Borislav Petkov <bp@alien8.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCDC71
+	for <linux-coco@lists.linux.dev>; Mon, 21 Jun 2021 13:13:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Qu1aJMR4flK0FS15KBa/VkE4TUOWBJPRGztPmWnzK6c=; b=K0W+z+kc1UHE1xUwN23ov4DCXk
+	UfNfytG81fCmu7N1/rVD6hDM5ZQASQVrfULgFCTHfXTbo9+aPfqSaT686/FlRf/IwfnQ/TtfLVnLz
+	VTKBasZqrJunBpw1tyc3XWvYjCMfmCjZ08PSmYaSulth3AgwY811iHeAxtu6rh9aDyQHcEnjmfgsA
+	au8SKJM6tRKOQWnfcL0S1IpZ7sVpSBHxn2J2c024z/r+YWKwmwrIHsSFa1/RS0lixLfFPTKB+NK9g
+	B3+8DmaOt7MHjr1DfH9FPY6c/okFymw5ZmHpv7Erm5QUf64OA4Waf1YfeGCZouAuWoftnmYPQH3Wq
+	5HRpb+nQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1lvJjl-00AFAZ-NK; Mon, 21 Jun 2021 13:13:20 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 579303001C0;
+	Mon, 21 Jun 2021 15:13:18 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 41770203C06B1; Mon, 21 Jun 2021 15:13:18 +0200 (CEST)
+Date: Mon, 21 Jun 2021 15:13:18 +0200
+From: Peter Zijlstra <peterz@infradead.org>
 To: Joerg Roedel <joro@8bytes.org>
 Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
@@ -36,36 +43,21 @@ Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v7 1/2] x86/sev: Make sure IRQs are disabled while GHCB
- is active
-Message-ID: <YNCIyFltNGzLWuk5@zn.tnic>
+Subject: Re: [PATCH v7 0/2] x86/sev: Fixes for SEV-ES Guest Support
+Message-ID: <YNCQbmC6kuL4K1Mp@hirez.programming.kicks-ass.net>
 References: <20210618115409.22735-1-joro@8bytes.org>
- <20210618115409.22735-2-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210618115409.22735-2-joro@8bytes.org>
+In-Reply-To: <20210618115409.22735-1-joro@8bytes.org>
 
-On Fri, Jun 18, 2021 at 01:54:08PM +0200, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
-> 
-> The #VC handler only cares about IRQs being disabled while the GHCB is
-> active, as it must not be interrupted by something which could cause
-> another #VC while it holds the GHCB (NMI is the exception for which the
-> backup GHCB exits).
-> 
-> Make sure nothing interrupts the code path while the GHCB is active by
-> disabling IRQs in sev_es_get_ghcb() and restoring the previous irq state
-> in sev_es_put_ghcb().
+On Fri, Jun 18, 2021 at 01:54:07PM +0200, Joerg Roedel wrote:
+> Joerg Roedel (2):
+>   x86/sev: Make sure IRQs are disabled while GHCB is active
+>   x86/sev: Split up runtime #VC handler for correct state tracking
 
-Note for committer: update those function names.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
