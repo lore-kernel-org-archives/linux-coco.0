@@ -1,33 +1,56 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCDC71
-	for <linux-coco@lists.linux.dev>; Mon, 21 Jun 2021 13:13:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Qu1aJMR4flK0FS15KBa/VkE4TUOWBJPRGztPmWnzK6c=; b=K0W+z+kc1UHE1xUwN23ov4DCXk
-	UfNfytG81fCmu7N1/rVD6hDM5ZQASQVrfULgFCTHfXTbo9+aPfqSaT686/FlRf/IwfnQ/TtfLVnLz
-	VTKBasZqrJunBpw1tyc3XWvYjCMfmCjZ08PSmYaSulth3AgwY811iHeAxtu6rh9aDyQHcEnjmfgsA
-	au8SKJM6tRKOQWnfcL0S1IpZ7sVpSBHxn2J2c024z/r+YWKwmwrIHsSFa1/RS0lixLfFPTKB+NK9g
-	B3+8DmaOt7MHjr1DfH9FPY6c/okFymw5ZmHpv7Erm5QUf64OA4Waf1YfeGCZouAuWoftnmYPQH3Wq
-	5HRpb+nQ==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1lvJjl-00AFAZ-NK; Mon, 21 Jun 2021 13:13:20 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 579303001C0;
-	Mon, 21 Jun 2021 15:13:18 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 41770203C06B1; Mon, 21 Jun 2021 15:13:18 +0200 (CEST)
-Date: Mon, 21 Jun 2021 15:13:18 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Joerg Roedel <joro@8bytes.org>
-Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD47173
+	for <linux-coco@lists.linux.dev>; Mon, 21 Jun 2021 15:52:28 +0000 (UTC)
+Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AF7651FD42;
+	Mon, 21 Jun 2021 15:52:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1624290740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
+	b=WvmxKlxAVRMoYFZIQoXIPooX5wqG7nsGBl+LsiA7+M6E9y4KVPieWil2p8dFCcd8G9nUUN
+	qS7Y5Hbp2OE/9TUlOEMrvgBaYZspbqKZJKPjqItATXWXrZ3hxUh4msyj+5qjo31hvt8j1H
+	u9KXe73ra8DEwhH4Vgsamdg+i3A1CH0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1624290740;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
+	b=XmFjjm32wWes2zR6ngx/UexJ1qoTZ1+FIXXuqeeotDr0TK+NLnrAtHNKwGdlbV5Vye6sVf
+	GPUJSIdoexk6UNAg==
+Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
+	by imap.suse.de (Postfix) with ESMTP id F250C118DD;
+	Mon, 21 Jun 2021 15:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1624290740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
+	b=WvmxKlxAVRMoYFZIQoXIPooX5wqG7nsGBl+LsiA7+M6E9y4KVPieWil2p8dFCcd8G9nUUN
+	qS7Y5Hbp2OE/9TUlOEMrvgBaYZspbqKZJKPjqItATXWXrZ3hxUh4msyj+5qjo31hvt8j1H
+	u9KXe73ra8DEwhH4Vgsamdg+i3A1CH0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1624290740;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
+	b=XmFjjm32wWes2zR6ngx/UexJ1qoTZ1+FIXXuqeeotDr0TK+NLnrAtHNKwGdlbV5Vye6sVf
+	GPUJSIdoexk6UNAg==
+Received: from director2.suse.de ([192.168.254.72])
+	by imap3-int with ESMTPSA
+	id e1mDObO10GC1HgAALh3uQQ
+	(envelope-from <jroedel@suse.de>); Mon, 21 Jun 2021 15:52:19 +0000
+Date: Mon, 21 Jun 2021 17:52:18 +0200
+From: Joerg Roedel <jroedel@suse.de>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Jiri Slaby <jslaby@suse.cz>,
@@ -44,8 +67,9 @@ Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
 Subject: Re: [PATCH v7 0/2] x86/sev: Fixes for SEV-ES Guest Support
-Message-ID: <YNCQbmC6kuL4K1Mp@hirez.programming.kicks-ass.net>
+Message-ID: <YNC1sn9VxnKxP0iC@suse.de>
 References: <20210618115409.22735-1-joro@8bytes.org>
+ <YNCQbmC6kuL4K1Mp@hirez.programming.kicks-ass.net>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -53,11 +77,14 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210618115409.22735-1-joro@8bytes.org>
+In-Reply-To: <YNCQbmC6kuL4K1Mp@hirez.programming.kicks-ass.net>
 
-On Fri, Jun 18, 2021 at 01:54:07PM +0200, Joerg Roedel wrote:
-> Joerg Roedel (2):
->   x86/sev: Make sure IRQs are disabled while GHCB is active
->   x86/sev: Split up runtime #VC handler for correct state tracking
+On Mon, Jun 21, 2021 at 03:13:18PM +0200, Peter Zijlstra wrote:
+> On Fri, Jun 18, 2021 at 01:54:07PM +0200, Joerg Roedel wrote:
+> > Joerg Roedel (2):
+> >   x86/sev: Make sure IRQs are disabled while GHCB is active
+> >   x86/sev: Split up runtime #VC handler for correct state tracking
+> 
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Thanks Peter, also for your help with improving this code.
