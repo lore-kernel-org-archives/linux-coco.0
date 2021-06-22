@@ -1,13 +1,13 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255D92FB2
-	for <linux-coco@lists.linux.dev>; Tue, 22 Jun 2021 14:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3012FB4
+	for <linux-coco@lists.linux.dev>; Tue, 22 Jun 2021 14:48:51 +0000 (UTC)
 Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 9AE0F260;
-	Tue, 22 Jun 2021 16:48:41 +0200 (CEST)
+	by theia.8bytes.org (Postfix) with ESMTPSA id 070142DF;
+	Tue, 22 Jun 2021 16:48:43 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org
 Cc: Joerg Roedel <joro@8bytes.org>,
@@ -33,9 +33,9 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH 1/3] x86/sev: Add Comments to existing GHCB MSR protocol defines
-Date: Tue, 22 Jun 2021 16:48:23 +0200
-Message-Id: <20210622144825.27588-2-joro@8bytes.org>
+Subject: [PATCH 3/3] x86/sev: Use "SEV: " prefix for messages from sev.c
+Date: Tue, 22 Jun 2021 16:48:25 +0200
+Message-Id: <20210622144825.27588-4-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210622144825.27588-1-joro@8bytes.org>
 References: <20210622144825.27588-1-joro@8bytes.org>
@@ -48,34 +48,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Add comments to the defines for SEV Info and CPUID MSR protocol defines
-to document to which protocol part they belong.
+The source file has been renamed froms sev-es.c to sev.c, but the
+messages are still prefixed with "SEV-ES: ". Change that to "SEV: " to
+make it consistent.
 
+Fixes: e759959fe3b8 ("x86/sev-es: Rename sev-es.{ch} to sev.{ch}")
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/x86/include/asm/sev-common.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/sev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index 629c3df243f0..1cc9e7dd8107 100644
---- a/arch/x86/include/asm/sev-common.h
-+++ b/arch/x86/include/asm/sev-common.h
-@@ -11,6 +11,7 @@
- #define GHCB_MSR_INFO_POS		0
- #define GHCB_MSR_INFO_MASK		(BIT_ULL(12) - 1)
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 87a4b00f028e..a6895e440bc3 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -7,7 +7,7 @@
+  * Author: Joerg Roedel <jroedel@suse.de>
+  */
  
-+/* SEV Information Request/Response */
- #define GHCB_MSR_SEV_INFO_RESP		0x001
- #define GHCB_MSR_SEV_INFO_REQ		0x002
- #define GHCB_MSR_VER_MAX_POS		48
-@@ -28,6 +29,7 @@
- #define GHCB_MSR_PROTO_MAX(v)		(((v) >> GHCB_MSR_VER_MAX_POS) & GHCB_MSR_VER_MAX_MASK)
- #define GHCB_MSR_PROTO_MIN(v)		(((v) >> GHCB_MSR_VER_MIN_POS) & GHCB_MSR_VER_MIN_MASK)
+-#define pr_fmt(fmt)	"SEV-ES: " fmt
++#define pr_fmt(fmt)	"SEV: " fmt
  
-+/* CPUID Request/Response */
- #define GHCB_MSR_CPUID_REQ		0x004
- #define GHCB_MSR_CPUID_RESP		0x005
- #define GHCB_MSR_CPUID_FUNC_POS		32
+ #include <linux/sched/debug.h>	/* For show_regs() */
+ #include <linux/percpu-defs.h>
 -- 
 2.31.1
 
