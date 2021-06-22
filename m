@@ -1,12 +1,12 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B9A173
-	for <linux-coco@lists.linux.dev>; Tue, 22 Jun 2021 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255D92FB2
+	for <linux-coco@lists.linux.dev>; Tue, 22 Jun 2021 14:48:50 +0000 (UTC)
 Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id 0A56D133;
+	by theia.8bytes.org (Postfix) with ESMTPSA id 9AE0F260;
 	Tue, 22 Jun 2021 16:48:41 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org
@@ -33,10 +33,12 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH 0/3] x86/sev: Minor updates for SEV guest support
-Date: Tue, 22 Jun 2021 16:48:22 +0200
-Message-Id: <20210622144825.27588-1-joro@8bytes.org>
+Subject: [PATCH 1/3] x86/sev: Add Comments to existing GHCB MSR protocol defines
+Date: Tue, 22 Jun 2021 16:48:23 +0200
+Message-Id: <20210622144825.27588-2-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210622144825.27588-1-joro@8bytes.org>
+References: <20210622144825.27588-1-joro@8bytes.org>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
@@ -46,30 +48,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Hi,
+Add comments to the defines for SEV Info and CPUID MSR protocol defines
+to document to which protocol part they belong.
 
-here are three small patches to update SEV-ES guest support in Linux.
-It would be great to have at least patch 3 merged for v5.14 to avoid
-future merge conflicts. It contains defines needed by KVM and X86
-patches under development.
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+---
+ arch/x86/include/asm/sev-common.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks,
-
-	Joerg
-
-Brijesh Singh (1):
-  x86/sev: Add defines for GHCB version 2 MSR protocol requests
-
-Joerg Roedel (2):
-  x86/sev: Add Comments to existing GHCB MSR protocol defines
-  x86/sev: Use "SEV: " prefix for messages from sev.c
-
- arch/x86/include/asm/sev-common.h | 17 +++++++++++++++++
- arch/x86/kernel/sev.c             |  2 +-
- 2 files changed, 18 insertions(+), 1 deletion(-)
-
-
-base-commit: be1a5408868af341f61f93c191b5e346ee88c82a
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 629c3df243f0..1cc9e7dd8107 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -11,6 +11,7 @@
+ #define GHCB_MSR_INFO_POS		0
+ #define GHCB_MSR_INFO_MASK		(BIT_ULL(12) - 1)
+ 
++/* SEV Information Request/Response */
+ #define GHCB_MSR_SEV_INFO_RESP		0x001
+ #define GHCB_MSR_SEV_INFO_REQ		0x002
+ #define GHCB_MSR_VER_MAX_POS		48
+@@ -28,6 +29,7 @@
+ #define GHCB_MSR_PROTO_MAX(v)		(((v) >> GHCB_MSR_VER_MAX_POS) & GHCB_MSR_VER_MAX_MASK)
+ #define GHCB_MSR_PROTO_MIN(v)		(((v) >> GHCB_MSR_VER_MIN_POS) & GHCB_MSR_VER_MIN_MASK)
+ 
++/* CPUID Request/Response */
+ #define GHCB_MSR_CPUID_REQ		0x004
+ #define GHCB_MSR_CPUID_RESP		0x005
+ #define GHCB_MSR_CPUID_FUNC_POS		32
 -- 
 2.31.1
 
