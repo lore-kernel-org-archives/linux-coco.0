@@ -1,90 +1,75 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD47173
-	for <linux-coco@lists.linux.dev>; Mon, 21 Jun 2021 15:52:28 +0000 (UTC)
-Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B9A173
+	for <linux-coco@lists.linux.dev>; Tue, 22 Jun 2021 14:48:49 +0000 (UTC)
+Received: from cap.home.8bytes.org (p4ff2ba7c.dip0.t-ipconnect.de [79.242.186.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AF7651FD42;
-	Mon, 21 Jun 2021 15:52:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1624290740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
-	b=WvmxKlxAVRMoYFZIQoXIPooX5wqG7nsGBl+LsiA7+M6E9y4KVPieWil2p8dFCcd8G9nUUN
-	qS7Y5Hbp2OE/9TUlOEMrvgBaYZspbqKZJKPjqItATXWXrZ3hxUh4msyj+5qjo31hvt8j1H
-	u9KXe73ra8DEwhH4Vgsamdg+i3A1CH0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1624290740;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
-	b=XmFjjm32wWes2zR6ngx/UexJ1qoTZ1+FIXXuqeeotDr0TK+NLnrAtHNKwGdlbV5Vye6sVf
-	GPUJSIdoexk6UNAg==
-Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
-	by imap.suse.de (Postfix) with ESMTP id F250C118DD;
-	Mon, 21 Jun 2021 15:52:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1624290740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
-	b=WvmxKlxAVRMoYFZIQoXIPooX5wqG7nsGBl+LsiA7+M6E9y4KVPieWil2p8dFCcd8G9nUUN
-	qS7Y5Hbp2OE/9TUlOEMrvgBaYZspbqKZJKPjqItATXWXrZ3hxUh4msyj+5qjo31hvt8j1H
-	u9KXe73ra8DEwhH4Vgsamdg+i3A1CH0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1624290740;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aWl5oiozFnzBHCGQMAccuUiysRNNMrHrEHi6rCshBRA=;
-	b=XmFjjm32wWes2zR6ngx/UexJ1qoTZ1+FIXXuqeeotDr0TK+NLnrAtHNKwGdlbV5Vye6sVf
-	GPUJSIdoexk6UNAg==
-Received: from director2.suse.de ([192.168.254.72])
-	by imap3-int with ESMTPSA
-	id e1mDObO10GC1HgAALh3uQQ
-	(envelope-from <jroedel@suse.de>); Mon, 21 Jun 2021 15:52:19 +0000
-Date: Mon, 21 Jun 2021 17:52:18 +0200
-From: Joerg Roedel <jroedel@suse.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, hpa@zytor.com,
+	by theia.8bytes.org (Postfix) with ESMTPSA id 0A56D133;
+	Tue, 22 Jun 2021 16:48:41 +0200 (CEST)
+From: Joerg Roedel <joro@8bytes.org>
+To: x86@kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
 	Erdem Aktas <erdemaktas@google.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mike Stunes <mstunes@vmware.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v7 0/2] x86/sev: Fixes for SEV-ES Guest Support
-Message-ID: <YNC1sn9VxnKxP0iC@suse.de>
-References: <20210618115409.22735-1-joro@8bytes.org>
- <YNCQbmC6kuL4K1Mp@hirez.programming.kicks-ass.net>
+Subject: [PATCH 0/3] x86/sev: Minor updates for SEV guest support
+Date: Tue, 22 Jun 2021 16:48:22 +0200
+Message-Id: <20210622144825.27588-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YNCQbmC6kuL4K1Mp@hirez.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 21, 2021 at 03:13:18PM +0200, Peter Zijlstra wrote:
-> On Fri, Jun 18, 2021 at 01:54:07PM +0200, Joerg Roedel wrote:
-> > Joerg Roedel (2):
-> >   x86/sev: Make sure IRQs are disabled while GHCB is active
-> >   x86/sev: Split up runtime #VC handler for correct state tracking
-> 
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+From: Joerg Roedel <jroedel@suse.de>
 
-Thanks Peter, also for your help with improving this code.
+Hi,
+
+here are three small patches to update SEV-ES guest support in Linux.
+It would be great to have at least patch 3 merged for v5.14 to avoid
+future merge conflicts. It contains defines needed by KVM and X86
+patches under development.
+
+Thanks,
+
+	Joerg
+
+Brijesh Singh (1):
+  x86/sev: Add defines for GHCB version 2 MSR protocol requests
+
+Joerg Roedel (2):
+  x86/sev: Add Comments to existing GHCB MSR protocol defines
+  x86/sev: Use "SEV: " prefix for messages from sev.c
+
+ arch/x86/include/asm/sev-common.h | 17 +++++++++++++++++
+ arch/x86/kernel/sev.c             |  2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+
+base-commit: be1a5408868af341f61f93c191b5e346ee88c82a
+-- 
+2.31.1
+
