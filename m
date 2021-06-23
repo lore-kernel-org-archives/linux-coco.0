@@ -1,94 +1,137 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA4070
-	for <linux-coco@lists.linux.dev>; Wed, 23 Jun 2021 09:49:43 +0000 (UTC)
-Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B795370
+	for <linux-coco@lists.linux.dev>; Wed, 23 Jun 2021 10:22:33 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f114b00a4a414805e84bac1.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:4b00:a4a4:1480:5e84:bac1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C1ECE21970;
-	Wed, 23 Jun 2021 09:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1624441781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ux+joYOB/UsMHX7POd5I9X3miorAtdiYmMYNa+mcW6E=;
-	b=mpcL6YYNLF0eM6WXm1Q4WixD/1Y0RnUjjEOMj46KrRfzIvpiyEyvAz2w4RPKVf8tHkkxoL
-	6S7sXh6xbj3f802IhtyD/00gI6cHXGKk3DM6+mNDgFt2DUmLwag5CRxqHvdI5KzJCzSv13
-	WIGLqCJgTEuPkg1lftiUMCsBAGXzPEI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1624441781;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ux+joYOB/UsMHX7POd5I9X3miorAtdiYmMYNa+mcW6E=;
-	b=nV2ZmUFlTFTEi4JFefYmjQ6Nsp0O9ka/R/08BSGYZLCHK4k+RdQVrxkZ5IGj8UMTmpFkR8
-	GOMXtbRIVPf1eQDA==
-Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
-	by imap.suse.de (Postfix) with ESMTP id EBBD211A97;
-	Wed, 23 Jun 2021 09:49:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1624441781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ux+joYOB/UsMHX7POd5I9X3miorAtdiYmMYNa+mcW6E=;
-	b=mpcL6YYNLF0eM6WXm1Q4WixD/1Y0RnUjjEOMj46KrRfzIvpiyEyvAz2w4RPKVf8tHkkxoL
-	6S7sXh6xbj3f802IhtyD/00gI6cHXGKk3DM6+mNDgFt2DUmLwag5CRxqHvdI5KzJCzSv13
-	WIGLqCJgTEuPkg1lftiUMCsBAGXzPEI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1624441781;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ux+joYOB/UsMHX7POd5I9X3miorAtdiYmMYNa+mcW6E=;
-	b=nV2ZmUFlTFTEi4JFefYmjQ6Nsp0O9ka/R/08BSGYZLCHK4k+RdQVrxkZ5IGj8UMTmpFkR8
-	GOMXtbRIVPf1eQDA==
-Received: from director2.suse.de ([192.168.254.72])
-	by imap3-int with ESMTPSA
-	id FdfVN7QD02ATSgAALh3uQQ
-	(envelope-from <jroedel@suse.de>); Wed, 23 Jun 2021 09:49:40 +0000
-Date: Wed, 23 Jun 2021 11:49:39 +0200
-From: Joerg Roedel <jroedel@suse.de>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, hpa@zytor.com,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1F7B01EC0501;
+	Wed, 23 Jun 2021 12:22:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1624443752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=p5+c5VpLnVkRT8GmtkDspNcjMFF7W/ui62AD9LCqlPk=;
+	b=e2LuFJNezzgau+25vW0IJH4CjrNtDoAaSBLURhPLxyMyrRAds/jOnXt78I5xC77knVEKvq
+	baJZP/TmTVV21d+sc0U45cY5tY1aI6z5eCV+axHmCLAaoAhEo9UqtSrSgRlXHKCYtdphid
+	1muhFRjcmYp9jP5yPnJw3C7F3KP/mR8=
+Date: Wed, 23 Jun 2021 12:22:23 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>,
+	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Dave Hansen <dave.hansen@intel.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH 2/3] x86/sev: Add defines for GHCB version 2 MSR protocol
- requests
-Message-ID: <YNMDs5iuhCxeII/U@suse.de>
-References: <20210622144825.27588-1-joro@8bytes.org>
- <20210622144825.27588-3-joro@8bytes.org>
- <YNLXQIZ5e1wjkshG@8bytes.org>
- <YNL/wpVY1PmGJASW@zn.tnic>
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>, Sergio Lopez <slp@redhat.com>,
+	Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+	npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 20/22] x86/boot: Add Confidential Computing
+ address to setup_header
+Message-ID: <YNMLX6fbB3PQwSpv@zn.tnic>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-21-brijesh.singh@amd.com>
+ <YMw4UZn6AujpPSZO@zn.tnic>
+ <15568c80-c9a9-5602-d940-264af87bed98@amd.com>
+ <YMy2OGwsRzrR5bwD@zn.tnic>
+ <162442264313.98837.16983159316116149849@amd.com>
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YNL/wpVY1PmGJASW@zn.tnic>
+In-Reply-To: <162442264313.98837.16983159316116149849@amd.com>
 
-On Wed, Jun 23, 2021 at 11:32:50AM +0200, Borislav Petkov wrote:
-> Ok, so I took a critical look at this and it doesn't make sense to have
-> a differently named define each time you need the [63:12] slice of
-> GHCBData. So you can simply use GHCB_DATA(msr_value) instead, see below.
+On Tue, Jun 22, 2021 at 11:30:43PM -0500, Michael Roth wrote:
+> Quoting Borislav Petkov (2021-06-18 10:05:28)
+> > On Fri, Jun 18, 2021 at 08:57:12AM -0500, Brijesh Singh wrote:
+> > > Don't have any strong reason to keep it separate, I can define a new
+> > > type and use the setup_data to pass this information.
+> > 
+> > setup_data is exactly for use cases like that - pass a bunch of data
+> > to the kernel. So there's no need for a separate thing. Also see that
+> > kernel_info thing which got added recently for read_only data.
 > 
-> Complaints?
+> Hi Boris,
+> 
+> There's one side-effect to this change WRT the CPUID page (which I think
+> we're hoping to include in RFC v4).
+> 
+> With CPUID page we need to access it very early in boot, for both
+> boot/compressed kernel, and the uncompressed kernel. At first this was
+> implemented by moving the early EFI table parsing code from
+> arch/x86/kernel/boot/compressed/acpi.c into a little library to handle early
+> EFI table parsing to fetch the Confidential Computing blob to get the CPUID
+> page address.
+> 
+> This was a bit messy since we needed to share that library between
+> boot/compressed and uncompressed, and at that early stage things like
+> fixup_pointer() are needed in some places, else even basic things like
+> accessing EFI64_LOADER_SIGNATURE and various EFI helper functions could crash
+> in uncompressed otherwise, so the library code needed to be fixed up
+> accordingly.
+> 
+> To simplify things we ended up simply keeping the early EFI table parsing in
+> boot/compressed, and then having boot/compressed initialize
+> setup_data.cc_blob_address so that the uncompressed kernel could access it
+> from there (acpi does something similar with rdsp address).
 
-Looks good to me.
+Yes, except the rsdp address is not vendor-specific but an x86 ACPI
+thing, so pretty much omnipresent.
 
+Also, acpi_rsdp_addr is part of boot_params and that struct is full
+of padding holes and obsolete members so reusing a u32 there is a lot
+"easier" than changing the setup_header. So can you put that address in
+boot_params instead?
+
+> Now that we're moving it to setup_data, this becomes a bit more awkward,
+> since we need to reserve memory in boot/compressed to store the setup_data
+> entry, then add it to the linked list to pass along to uncompressed kernel.
+> In turn that also means we need to add an identity mapping for this in
+> ident_map_64.c, so I'm not sure that's the best approach.
+> 
+> So just trying to pin what the best approach is:
+> 
+> a) move cc_blob to setup_data, and do the above-described to pass
+>    cc_blob_address from boot/compressed to uncompressed to avoid early
+>    EFI parsing in uncompressed
+> b) move cc_blob to setup_data, and do the EFI table parsing in both
+>    boot/compressed. leave setup_data allocation/init for BIOS/bootloader
+> c) keep storing cc_blob_address in setup_header.cc_blob_address
+> d) something else?
+
+Leaving in the whole text for newly CCed TDX folks in case they're going
+to need something like that.
+
+And if so, then both vendors should even share the field definition.
+
+Dave, Sathya, you can find the whole subthread here:
+
+https://lkml.kernel.org/r/20210602140416.23573-21-brijesh.singh@amd.com
+
+in case you need background info on the topic at hand.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
