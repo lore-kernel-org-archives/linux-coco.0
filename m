@@ -1,140 +1,244 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2059.outbound.protection.outlook.com [40.107.244.59])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2083.outbound.protection.outlook.com [40.107.220.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DA12FB1
-	for <linux-coco@lists.linux.dev>; Wed, 23 Jun 2021 13:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A13A168
+	for <linux-coco@lists.linux.dev>; Thu, 24 Jun 2021 03:19:28 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c8FCjuTLtSR8jw5XIt73LByD/To7wTQwYy2V1PLaI7W/K58Bn0aZJcFdxnp3dp9k/7dkFU9EDUksyqGdYcEIl3j9sMeDEN8w4IlyfiLbxFpL28S2UmO7Jd+BI4e2G4j9tpbVDyBWLtt33QvbWAk29qMrJ22UCsXRYcGMfNGFi05FS+RvaywaGD1//J6qo485UehVGw1l9zkE0sJrYJg0uLlYt21E0iDxDcd3kLMKpRB1BAm9CA/kO6fBuuMcmPOyKeaHQ/ApVtI3gU8mc1jpETII0S7ob2Bde9e2RFMDi8ylHobZuO27fwivRS3ZBsHoo/030KKaTosR8CFFtonihQ==
+ b=l8CJBmNJ+9zabBEWfUK/stLQ+UEDs3LJIDlLERlFftAF/j482UAREtGoNIh2oOZTNobPnkj/VwRC4AyK0e6fW+vWLwiiJUi9HQkCjdr5wO62gBLKrIJ8AWp5O2fUzX3JqWEb3yziQUCuT0Yz2NjYLPIxsSlahiR162EeFR8wOwNQF3FrOFJwy1z2UikwuMmMNkydRtRZA5iiJSalp5PDAqtQXuHMWH1ktwSBjb/yXgUdXffJ0yIWP8ImNdee2vicJa7qO4zbLe07BOWsWD8swJFmAKKFZ0s85eJKDHqgy/v6OCDthY3TASX5sRg7e/WjSW4u0Pd3exnSEObZaUcI/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CA1M2lsqam+MK4IBbH+p1RELSlXr+x6DqmJkhyPgfbk=;
- b=mZaHHqiCjOPpJSnVhVq0Rs2BV1mX8t9osBiz0aoKkUqEEMekRd1hrGtxzd0wODLvhigctqu4i1obuJRg6qgknPPuJoNfOTWmDzxfU4hPtoC2WxJH9cqFadMIA5A6BHvIBbRrYGgQIXeAysgevDLmyPBKcp0X7IBb/ALoLsjerxGImBUqIr9ePiRJmVg5CjNaKDx0fok6PYgqcybZcydQBJ9tRSgQI0NK5Hp41j8rfqFQ2Sft8d0dkEqABr1CoiMqAy7guN4y/iIOX1XcMn/GQrVG1GvZCdoHRwwdcMc0ugjwKQYuDi+h7h6I3rboDA4eZ8EUfYSOs8L7v3ZqIbuT+w==
+ bh=uIl5/pZFU58Lz2g9ooE4GvlHx4JadRnfQtgZo+RAgHo=;
+ b=F48kzzZuXofirzBx447FuelGLX+JliwBhLpUzr3ao7dh7MT8+soN9fJLolrMN6gbIdlGL4NYjbYJbpQHd7Uqmp9C9S/MLG+EqkJ52dcVsJ02zrIqzcj1Y1ITar13lx6Rmvnby4aPnbLb7g/eotN8XNmdUQutPUJxq6/yx/rCtT+fkjLpukdKk150+lNfgFxwnkABXdbfj6RbQWz9sgeIwxmhagWn4MmzkknodlXAQ7nHcSEG71dewFH0GUXWkW+a7sLx8QzWTTnLsAizv7/nMk8bK/Tt5SiJetwz3YAWv/YVM16Sv7v3Wb7La9v8BilSdV4eZcHP0SYmNkIs4FuQ5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CA1M2lsqam+MK4IBbH+p1RELSlXr+x6DqmJkhyPgfbk=;
- b=VSM/lbfIif/0a9NuIztCHF7cgUSvL0zbRebUqOszE3xEZJst8c4kpBLryoS829S6BnOb7DU/e/VSHNs6s0eWu1gAB+pgTSFNypbaPoXX9zlMkySU04wSYKaAl+rVy7xuZ+F9a8zhnUslhxvNHQSk25VGhWYLNBEpxu+kI/LKZdI=
-Authentication-Results: lists.linux-foundation.org; dkim=none (message not
- signed) header.d=none;lists.linux-foundation.org; dmarc=none action=none
- header.from=amd.com;
-Received: from DM5PR12MB1355.namprd12.prod.outlook.com (2603:10b6:3:6e::7) by
- DM5PR12MB1353.namprd12.prod.outlook.com (2603:10b6:3:76::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.4242.22; Wed, 23 Jun 2021 13:12:19 +0000
-Received: from DM5PR12MB1355.namprd12.prod.outlook.com
- ([fe80::6437:2e87:f7dc:a686]) by DM5PR12MB1355.namprd12.prod.outlook.com
- ([fe80::6437:2e87:f7dc:a686%12]) with mapi id 15.20.4242.024; Wed, 23 Jun
- 2021 13:12:19 +0000
-Subject: Re: [PATCH 2/3] x86/sev: Add defines for GHCB version 2 MSR protocol
- requests
-To: Borislav Petkov <bp@alien8.de>, Joerg Roedel <joro@8bytes.org>
-Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>,
- Brijesh Singh <brijesh.singh@amd.com>, hpa@zytor.com,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>,
- Jiri Slaby <jslaby@suse.cz>, Dan Williams <dan.j.williams@intel.com>,
- Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
- David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
- Erdem Aktas <erdemaktas@google.com>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mike Stunes <mstunes@vmware.com>, Sean Christopherson <seanjc@google.com>,
- Martin Radev <martin.b.radev@gmail.com>,
- Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org
-References: <20210622144825.27588-1-joro@8bytes.org>
- <20210622144825.27588-3-joro@8bytes.org> <YNLXQIZ5e1wjkshG@8bytes.org>
- <YNL/wpVY1PmGJASW@zn.tnic>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <d1ce7eaa-2600-d909-b847-cb334be11439@amd.com>
-Date: Wed, 23 Jun 2021 08:12:16 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
-In-Reply-To: <YNL/wpVY1PmGJASW@zn.tnic>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [165.204.77.1]
-X-ClientProxiedBy: SN6PR01CA0001.prod.exchangelabs.com (2603:10b6:805:b6::14)
- To DM5PR12MB1355.namprd12.prod.outlook.com (2603:10b6:3:6e::7)
+ bh=uIl5/pZFU58Lz2g9ooE4GvlHx4JadRnfQtgZo+RAgHo=;
+ b=O+BV1EbrXwIUq0+MbvPVkErrMrjW2lIGDVA2+3vvJQQF1GUAzkBNkL7Ms3bHluDspD7KvxALp4UlvcyOmykvnPQPzKS4bPPMEdW1Llnk3NDPsBHv44JAJHtNXbkE0NBudpn2NBW/NMif1LJFW7Xxh+69rX+kVxvXcCBK0jMiqGk=
+Authentication-Results: alien8.de; dkim=none (message not signed)
+ header.d=none;alien8.de; dmarc=none action=none header.from=amd.com;
+Received: from CH2PR12MB4133.namprd12.prod.outlook.com (2603:10b6:610:7a::13)
+ by CH2PR12MB4837.namprd12.prod.outlook.com (2603:10b6:610:f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.20; Thu, 24 Jun
+ 2021 03:19:22 +0000
+Received: from CH2PR12MB4133.namprd12.prod.outlook.com
+ ([fe80::181:e51d:a4f7:af62]) by CH2PR12MB4133.namprd12.prod.outlook.com
+ ([fe80::181:e51d:a4f7:af62%5]) with mapi id 15.20.4264.020; Thu, 24 Jun 2021
+ 03:19:22 +0000
+Date: Wed, 23 Jun 2021 22:19:11 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>, Sergio Lopez <slp@redhat.com>,
+	Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
+	npmccallum@redhat.com
+Subject: Re: [PATCH Part1 RFC v3 20/22] x86/boot: Add Confidential Computing
+ address to setup_header
+Message-ID: <20210624031911.eznpkbgjt4e445xj@amd.com>
+References: <20210602140416.23573-1-brijesh.singh@amd.com>
+ <20210602140416.23573-21-brijesh.singh@amd.com>
+ <YMw4UZn6AujpPSZO@zn.tnic>
+ <15568c80-c9a9-5602-d940-264af87bed98@amd.com>
+ <YMy2OGwsRzrR5bwD@zn.tnic>
+ <162442264313.98837.16983159316116149849@amd.com>
+ <YNMLX6fbB3PQwSpv@zn.tnic>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YNMLX6fbB3PQwSpv@zn.tnic>
+X-Originating-IP: [165.204.77.11]
+X-ClientProxiedBy: SN4PR0701CA0014.namprd07.prod.outlook.com
+ (2603:10b6:803:28::24) To CH2PR12MB4133.namprd12.prod.outlook.com
+ (2603:10b6:610:7a::13)
+Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.30.118] (165.204.77.1) by SN6PR01CA0001.prod.exchangelabs.com (2603:10b6:805:b6::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.18 via Frontend Transport; Wed, 23 Jun 2021 13:12:17 +0000
+Received: from localhost (165.204.77.11) by SN4PR0701CA0014.namprd07.prod.outlook.com (2603:10b6:803:28::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4264.18 via Frontend Transport; Thu, 24 Jun 2021 03:19:21 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cb77a129-71b5-4cdf-cbfe-08d9364887a0
-X-MS-TrafficTypeDiagnostic: DM5PR12MB1353:
+X-MS-Office365-Filtering-Correlation-Id: 2e9c59f5-183b-4332-cfb6-08d936bedc6c
+X-MS-TrafficTypeDiagnostic: CH2PR12MB4837:
 X-MS-Exchange-Transport-Forked: True
 X-Microsoft-Antispam-PRVS:
-	<DM5PR12MB1353FC7324610E3C8D7B37B4EC089@DM5PR12MB1353.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:4303;
+	<CH2PR12MB4837BF4E11CEC772676F36EC95079@CH2PR12MB4837.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	C+E36r7dyB5RGcEnz4L9w1Y/u3L0R3iSMUfoo3aJqT7Dr1JhiJ3Uq8PkH/in9lifyGoFvrH+XQb/hCyvhe9jCCW25GlOWXrwS0jUiTPpcre0qkUf4kUHUPNItg/a/nIVwXWNzmxZD2kBVdPcW7we7zo3pe/PhVnKPpGRDHQCl5qH3rCTWI6NZwEf3QFoYA83H3urnYgN0J65QL6oue+lDh3kAowtAFkWqNVzYqZTkWRgaEibyXikD3FOjZOza4bx1ztdnOHq74lP8apvySmPD6vbRNXbitVFG+9w4NTyzqX5RxsG73AbDpqV/mbuK/KwvhI4jlBQD8BFi4lIcY3vkDKHO3YlTyJmar52PyzLST5jC8pAk2L66qA9BEcM2ewXff5SF02HRKcTToMpZhWbKW7fT0oSRGd8Ec7vfZlCTPS30tibHdEi9F3mk5Fw0N6Xw6kbvnxf22IpI8ISme12fMeAteqedu3+nazQpKGkwbkbbEv+ZRaHF2O0w0qW9w3fPo4wMPb7CvnP85vzgypyAYGKSbG6cy9pUGMGqLaC860jq3pKNdAUi2OvUOYeugScXAHRhYnXNiZsUxmakeFxOb/KPwvce9CQqhVacuCqKzGeRv+qQ2+u0bsheFht6gyTYcrdEk89hfKBaH0HVmjaf0rqYug6o6JczThT5aImrcwRC7024MySbCiusHnDQxOPSpM6Je9BkRu+7TxLDzzMuw==
+	BD99qnTEYhXBAAoJ1GoIaaeE0wn7FmRh6n+EXQ3KHC/apem5EE+NSHZ4c4SV5P2OdqRUvqXJA/b9PON0KOEOoJdadabgOKai0h2qQju/NyvzCDwFYZKHtiNl6scEFCc0QBXKfaGr3Ersx4dKBQ8od6vvEK1o/0/X7CimTK5G5Uc1lhb/JzyR6thadonr5b9BM+IRivFzCg+1ievbIHFpMwSa9rSbKVh9P1tF3Rrukv3J5VQgIW1uMM6g2gZde87lTtcm/wGeJuocxto+mr3geTjhI4Z8ruEO7TnNUNeCYkbrcy+c+R/XlVFqKIS0NOf7Kzj1vJmMlzOHlm/iP8SwvgCw99hG4cSUIQj1kB+oBODdFYzZqLcoTI9WemTGKGUHTvXegUnf/SvhUWtXHOgP5krLCXGyI/E/Vv7tiKHjIAmALYwOwzLDeO/WKgrdoC3BhkXBA9WRsQ7/1JtgkUdl96A/BN0ojEsJyoMcBtMJClxB/X57YnCXc0y3+0TJu3UvfS/ZAPDWlxcn0gjYkQ5S5RWRMAG7AeqDgmtL+7wG2wJ69Z10QGDaVy6lXelubNMy7zhTb2d/iMz7P5HWR47ZMLiU/YeGU785bHEc0QEnpCsdHQ6QqD35zvPJhDLLX7wiliqk1EbBaY/czUgSpuuC3N3Y3o9Rk4shDxGCMLgCU9bGKhrpLgRiXdK65ZLe61ij9zwewGWRZnrlVyuRzzU1EP+2SL+bWrPrt06tHBWonAZwI1NfS+6PU9ogqvYKNI1YaV9FLmsjjEU795F9hxDjcw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR12MB1355.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(376002)(39860400002)(366004)(346002)(396003)(66946007)(53546011)(26005)(2616005)(956004)(66556008)(86362001)(66476007)(478600001)(36756003)(2906002)(4326008)(16576012)(4744005)(7416002)(316002)(31686004)(8676002)(6486002)(31696002)(8936002)(110136005)(5660300002)(16526019)(186003)(54906003)(38100700002)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4133.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(346002)(366004)(39860400002)(136003)(376002)(8676002)(1076003)(52116002)(7416002)(6916009)(16526019)(186003)(966005)(26005)(45080400002)(6666004)(5660300002)(66476007)(66556008)(478600001)(66946007)(6486002)(6496006)(316002)(54906003)(83380400001)(38100700002)(38350700002)(2906002)(36756003)(2616005)(956004)(8936002)(4326008)(86362001)(44832011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b1Y5MWV6VlpsMlVaRFJyNFE1bnpKVW4xdEp1cE1BVlE3dzVwVUVORVZCMHNR?=
- =?utf-8?B?WHdjSi85QlQ5MjZiR2lZb3VPelNRNEd3ZWo2REM3eExUWExNdmc5OXNML3do?=
- =?utf-8?B?SjdvcnNJTjM3Q25UdlZTL0VFMFZNVWJVNWJnY1krSXh1WFJJU2FUWVZ5MmJl?=
- =?utf-8?B?TkswTmZlbHF4VkM5N2NqMmN3RXBOSW5meDhkUjBYc1EyWG5KM0dxRys4U3Ny?=
- =?utf-8?B?QUE4MzlLcTNrSStDY3oySnh3ZDZVczFMdTVSRStKQzRiNERVSnN4ZlNtaUIr?=
- =?utf-8?B?OCtYeXlla2k0VTdjd3huT0JQNzE3UlZ1dGYwZFdyTi8vSlBBVFA3dGhucFlV?=
- =?utf-8?B?VXMyVmRJNlg3TkVMRXFDT25mT0hjb0JiVTh0dzdZS1NnYjNqZ2Y4bVM4THNS?=
- =?utf-8?B?cmpUNHFRei9UcWdSWi9XSHBQWVdJQmxENXYwR0xJeWRENGgzVVZkZmw1alNC?=
- =?utf-8?B?dkkwMmtTTGhsTk1yakR2YkpQSUFYNjkxWmNSaUcwOS9pZ1hTUS9hRytQc0F3?=
- =?utf-8?B?cEV6ZkE2dzNmR0F3SGlmLzYwNGFqZ09ONUd6M25RVEpLaWRudElvWDZlMFl1?=
- =?utf-8?B?U1d3L0szVVdjQ3FTL3BPcnlwcjh2Q3c5KzU0ZWdlTmdna2E3NlVvSU9DL3Ra?=
- =?utf-8?B?Q25DZUJ5VElCU1htR21MRXFUOTBQTWhhMzZrV29PRFhSeStiVGhFamJHYUkw?=
- =?utf-8?B?RGpFY3p6ZjBjZ24wUjRnR1BiZUgxWVF4REswSnZhMDFwZG9ZRVBWbHZNN282?=
- =?utf-8?B?Q0JYcmZZb0pGZDJMWis1K2loZmZWU3luQTRZSVp0amZhUDArblpJak9nRzY0?=
- =?utf-8?B?VTJHZk5EdDZNblNIdFRjR2pHUTdnZ251cW5aekRBNnFpS21UeWk0SDZSUDJB?=
- =?utf-8?B?NkZ3L0FuNTRpNEQvajhlM1RMSjRwTFF4c2djZENwaFlPS0ZidHBqV1RFbUNU?=
- =?utf-8?B?TW1kSTUyakVqWHVjM1A4YzUzQTdoUS9OUkMzYXB2eGl2MTBHQ0lOdmx3aUpI?=
- =?utf-8?B?NVNRTXFLS1hrM1FsaUYwMWJKNkZNRm5STGxtYXRpRVhtb0paaGJYMTZwNXRw?=
- =?utf-8?B?Uk5NcWJsckM0U3E0bkpmbVl4c1c3eXcwenlrNlAydEJQd3RUS1F0QzVma1g5?=
- =?utf-8?B?UFFsM3NtdHZjOFY3aE12cTBJejhON0tNbzRGVE84UFlOVzc1MDUvK2xveXZt?=
- =?utf-8?B?MHJ3R2ZKOWN5Ukt6Mm1NZVVJRnh3dEFSMStOb1hQZTQyUHhzdGswb0tFV24z?=
- =?utf-8?B?QnhyMTJBWm1Bbmx4T1lRNWpHSnB2b0RZb3pXUjExYTdxNE4rOFRCdVZFT3lG?=
- =?utf-8?B?L0tiVjJGbDJTWTdTQU1zQ3Q1Zjd6MEtzTjJQeE5DcEMxYk9HTFJncXNKalNn?=
- =?utf-8?B?Q3Zia2xZem10eXU2bzBxc1N1b3JFZ1lneHpsUmphenVldUYrNGZtMVE3SU9h?=
- =?utf-8?B?TEZnQlVXQTQ4VGo2OU4rRmx5TzZvQndwK1ZXRVBVYloweTdwZzQ4SmwzeXdY?=
- =?utf-8?B?Q2NCcVdnR1YvQmNmN1g3UGdZaFR5eC9RcVU0USt2N0I0cVFuVHVuL2dSVUpJ?=
- =?utf-8?B?NlBOaEE3TE0xakJ1blUrQXF0YkhCVW9TWW5BeURhTkJZWVdlS2lBK2xlN3NT?=
- =?utf-8?B?MUR3VzE5V0k5d3VBRjZVTkE3RnNGUTg3d3dXMTNGM1hmTkhrek5YRlhTdURn?=
- =?utf-8?B?STZMUllZelllSCtRQTNmN2pMQVVHYXdIZFVFRkNGNjhHclZQTE5LYXNXcThq?=
- =?utf-8?Q?FEXZHaywoezXdGVQ5u2rLPpGsWlJYsusLvycMLN?=
+	=?us-ascii?Q?Y9SU1teWqTS5TfL1BpyVwZQBgwU9j4B1KDVoDGpQ1aSg6D9ZDGRYRkgGVhx1?=
+ =?us-ascii?Q?JI+mqh48R15ZNkvsIEQ1n4x5jEnRGIMdWO10MFSjUdRKPpShXVE3An/MHZIM?=
+ =?us-ascii?Q?HsVl5Dn9qPvnIwAch0wsGdYiYSYAIxTGrnHZ6W9QDxHbSDG3c2pKYSxEnpTS?=
+ =?us-ascii?Q?UP1idgH0+eEhvBv710syTYEKW6hTJDAPL5kk8w1PdJMVzOx6hh5GPAVpRJrg?=
+ =?us-ascii?Q?+n+29zZFX1WzJR2GsPPzH2rOD8saORgkVPmyLKeeLuz9NKd2ZaySVYVkY7CV?=
+ =?us-ascii?Q?4jCV8IKIOFhD1mWo4spSl7WfYTtrzugdoU+Ups7KMdfOYZdIpKcbZ4oud/ue?=
+ =?us-ascii?Q?cGTOt2CMzWOyZVBmVL9bESiN92knF4E4wEt6tSTdd1Q5J8y0LgETLK8yXW6M?=
+ =?us-ascii?Q?nXpYqB9rsXgYcldzb5lDrJhNKKdtOoW5qaEvQT7tycgATFi5kuY23t1xFlCx?=
+ =?us-ascii?Q?pXmx7HO6FsESXGSLoZS6dyvHtarzcdck1OTzh/thMhJO8Q0vq5QG7ukJE4XE?=
+ =?us-ascii?Q?VgHUqWj7dMGmt05qQmqB4lzJwDbcGl/pirhEa2L9hYb8vs7WDuhsTm7YMMoV?=
+ =?us-ascii?Q?Dfg+t4+hOwi8QbDDm7bAzMSUQRyr6OS7QqlS+qdrncweb8lJzSqyh7aD9CrY?=
+ =?us-ascii?Q?O/sp29HtFux6J9xpPL9zY/UArtFbs7kOGdgJlSgnXc3ITvZhYSkVsdLiFKSr?=
+ =?us-ascii?Q?1aLHmPR0/640uS6SvyAJBZr2TuU/ED828ZMm5KIkLtQxa9QPOZTVY4t1512q?=
+ =?us-ascii?Q?OQSZIJ0h1IAiAl/8wOUzr46oJiujrn6ZaSdPIcnsAqT5FOTB27rJmFYyq4EO?=
+ =?us-ascii?Q?0SLtFXHGJH5H+L6xfZKIVJx/uR0bjeutstafOArxtqgAuSBY5XD6ZoSfR1r5?=
+ =?us-ascii?Q?srleTTWQjUpvvRlPb4y3G1NSl93fJEXidzAcnKORplZuaQIPvBmWU3O25/Gv?=
+ =?us-ascii?Q?houJZlwJqZAEnA3EQOm5W26OVBeL+XHr61B8dfezUnFhi/9KZh5lFuHn6H2I?=
+ =?us-ascii?Q?WDG1EGKGmBoqNzU/E8sOZo4YgoxRpIDvJU27nVpXqCFvNiTMAuIBTPkpokWh?=
+ =?us-ascii?Q?Z2QyIgHzTvybAJtbr0L5TAVRI0Vz6CPVh8Ez17SO07xEbpcO8FF7nKuXUIP7?=
+ =?us-ascii?Q?bFSNHg21MDC87oQii/0XT2n/XkGptjAgmODu8cFRD1uHvjdDYlSPlNC/zZEr?=
+ =?us-ascii?Q?JiHK2++QUyZ9uEvLlcLfYMXKC0bWCEjbS/tfQq1h8sVZn4mP/5Cpu7uLjiT6?=
+ =?us-ascii?Q?UiaUWhOYJbn7yI+NsVc7TD/yLDvrkBH3n3mVRLK05xWP4IQ4EoXNb1iltcE3?=
+ =?us-ascii?Q?wGeto/f6ynIY1hmpXQcTkxA8?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb77a129-71b5-4cdf-cbfe-08d9364887a0
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR12MB1355.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e9c59f5-183b-4332-cfb6-08d936bedc6c
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4133.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2021 13:12:19.2922
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2021 03:19:22.2795
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y78P4LZ1Z0QQaix14J4mPAKLfHwOzbEjb89shiy47SiZ4eLiSZZzZignR0xd/q/PPHJMsY9sRykaPK2x6Rq8FQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1353
+X-MS-Exchange-CrossTenant-UserPrincipalName: yshIZRuN9Epsj66Jbvu1Am0+z+f8u1QUn+KSCKFyvy60ELW6QjKxytyHauRGGhA8UN6pkJEjqHsUhqb8oDtZWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4837
 
-On 6/23/21 4:32 AM, Borislav Petkov wrote:
-> On Wed, Jun 23, 2021 at 08:40:00AM +0200, Joerg Roedel wrote:
->> From: Brijesh Singh <brijesh.singh@amd.com>
->>
+On Wed, Jun 23, 2021 at 12:22:23PM +0200, Borislav Petkov wrote:
+> On Tue, Jun 22, 2021 at 11:30:43PM -0500, Michael Roth wrote:
+> > Quoting Borislav Petkov (2021-06-18 10:05:28)
+> > > On Fri, Jun 18, 2021 at 08:57:12AM -0500, Brijesh Singh wrote:
+> > > > Don't have any strong reason to keep it separate, I can define a new
+> > > > type and use the setup_data to pass this information.
+> > > 
+> > > setup_data is exactly for use cases like that - pass a bunch of data
+> > > to the kernel. So there's no need for a separate thing. Also see that
+> > > kernel_info thing which got added recently for read_only data.
+> > 
+> > Hi Boris,
+> > 
+> > There's one side-effect to this change WRT the CPUID page (which I think
+> > we're hoping to include in RFC v4).
+> > 
+> > With CPUID page we need to access it very early in boot, for both
+> > boot/compressed kernel, and the uncompressed kernel. At first this was
+> > implemented by moving the early EFI table parsing code from
+> > arch/x86/kernel/boot/compressed/acpi.c into a little library to handle early
+> > EFI table parsing to fetch the Confidential Computing blob to get the CPUID
+> > page address.
+> > 
+> > This was a bit messy since we needed to share that library between
+> > boot/compressed and uncompressed, and at that early stage things like
+> > fixup_pointer() are needed in some places, else even basic things like
+> > accessing EFI64_LOADER_SIGNATURE and various EFI helper functions could crash
+> > in uncompressed otherwise, so the library code needed to be fixed up
+> > accordingly.
+> > 
+> > To simplify things we ended up simply keeping the early EFI table parsing in
+> > boot/compressed, and then having boot/compressed initialize
+> > setup_data.cc_blob_address so that the uncompressed kernel could access it
+> > from there (acpi does something similar with rdsp address).
 > 
-> Ok, so I took a critical look at this and it doesn't make sense to have
-> a differently named define each time you need the [63:12] slice of
-> GHCBData. So you can simply use GHCB_DATA(msr_value) instead, see below.
+> Yes, except the rsdp address is not vendor-specific but an x86 ACPI
+> thing, so pretty much omnipresent.
 > 
-> Complaints?
+> Also, acpi_rsdp_addr is part of boot_params and that struct is full
+> of padding holes and obsolete members so reusing a u32 there is a lot
+> "easier" than changing the setup_header. So can you put that address in
+> boot_params instead?
 
-None from me.
+Thanks for the suggestion! I tried something like the below and that seems to
+work pretty well. I'm not sure if that's the best spot or not though, it
+seems like it might be a good idea to leave some padding after eddbuf in
+case it needs to grow in the future. I'll look into that a bit more.
 
-Thanks,
-Tom
+One downside to this is we still need something in the boot protocol,
+either via setup_data, or setup_header directly. Having it in
+setup_header avoids the need to also have to add a field to boot_params
+for the boot/compressed->uncompressed passing, but maybe that's not a good
+enough justification. Perhaps if the TDX folks have similar needs though.
+
+diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
+index 1ac5acca72ce..0824c8646861 100644
+--- a/arch/x86/include/uapi/asm/bootparam.h
++++ b/arch/x86/include/uapi/asm/bootparam.h
+@@ -218,7 +218,8 @@ struct boot_params {
+        struct boot_e820_entry e820_table[E820_MAX_ENTRIES_ZEROPAGE]; /* 0x2d0 */
+        __u8  _pad8[48];                                /* 0xcd0 */
+        struct edd_info eddbuf[EDDMAXNR];               /* 0xd00 */
+-       __u8  _pad9[276];                               /* 0xeec */
++       __u32 cc_blob_address;							/* 0xeec */
++       __u8  _pad9[272];                               /* 0xef0 */
+ } __attribute__((packed));
+
+diff --git a/arch/x86/include/asm/bootparam_utils.h b/arch/x86/include/asm/bootparam_utils.h
+index 981fe923a59f..53e9b0620d96 100644
+--- a/arch/x86/include/asm/bootparam_utils.h
++++ b/arch/x86/include/asm/bootparam_utils.h
+@@ -74,6 +74,7 @@ static void sanitize_boot_params(struct boot_params *boot_params)
+                        BOOT_PARAM_PRESERVE(hdr),
+                        BOOT_PARAM_PRESERVE(e820_table),
+                        BOOT_PARAM_PRESERVE(eddbuf),
++                       BOOT_PARAM_PRESERVE(cc_blob_address),
+                };
+
+                memset(&scratch, 0, sizeof(scratch));
+
+> 
+> > Now that we're moving it to setup_data, this becomes a bit more awkward,
+> > since we need to reserve memory in boot/compressed to store the setup_data
+> > entry, then add it to the linked list to pass along to uncompressed kernel.
+> > In turn that also means we need to add an identity mapping for this in
+> > ident_map_64.c, so I'm not sure that's the best approach.
+> > 
+> > So just trying to pin what the best approach is:
+> > 
+> > a) move cc_blob to setup_data, and do the above-described to pass
+> >    cc_blob_address from boot/compressed to uncompressed to avoid early
+> >    EFI parsing in uncompressed
+> > b) move cc_blob to setup_data, and do the EFI table parsing in both
+> >    boot/compressed. leave setup_data allocation/init for BIOS/bootloader
+> > c) keep storing cc_blob_address in setup_header.cc_blob_address
+> > d) something else?
+> 
+> Leaving in the whole text for newly CCed TDX folks in case they're going
+> to need something like that.
+> 
+> And if so, then both vendors should even share the field definition.
+> 
+> Dave, Sathya, you can find the whole subthread here:
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flkml.kernel.org%2Fr%2F20210602140416.23573-21-brijesh.singh%40amd.com&amp;data=04%7C01%7Cmichael.roth%40amd.com%7C3b352c4b944c4d95bbdb08d93630d0eb%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637600405622460196%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=464O7JxibsbjC3bc0LkGcztdb4kCYH7kcQAcqohJhug%3D&amp;reserved=0
+> 
+> in case you need background info on the topic at hand.
+> 
+> Thx.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7Cmichael.roth%40amd.com%7C3b352c4b944c4d95bbdb08d93630d0eb%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637600405622460196%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=ruCM7CNgPCNPkrOoiNts1ZKi5k7JSUumln7qQMP%2BMi0%3D&amp;reserved=0
