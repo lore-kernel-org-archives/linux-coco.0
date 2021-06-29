@@ -1,182 +1,181 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F03617F
-	for <linux-coco@lists.linux.dev>; Tue, 29 Jun 2021 07:24:17 +0000 (UTC)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15T73gfB055349;
-	Tue, 29 Jun 2021 03:24:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=1vA65LUOxdzS+qRVdjMOwhh+4VfRa8ghdpzPy5WUhBs=;
- b=YTQQlzQZMmzN5XdeYiMdu3IYJBRdgRYQU1awl0Y8sl2josWMlHV0jvltKa2l3pIAh5/1
- V1OttJS1d/d4pH3AWTDZY3cyXoL5nW4jMmwLfn3j6mhlHK6zJwArZAPu+3M8gYjddhf4
- VVAMDZIjrZUeC86CvrVa46jvG0wEEaiiUkt2oUVG0rw05GX3LVRi8aUxdcLMmU+oxnCH
- rNNOsa+A4FPuJoKWMPeQ4hY93PSbCslV6UB0t6mjhqIJTbwKWci5nXoP7mSyg0UCd0Xe
- 4egSjSFamwuel87htDEvw0Q3tjT4+92fTuv58cUDjYrF2hs5qf5Hwo1kpVaGD3eIrnzl 4g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 39fwa5jkw0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Jun 2021 03:24:02 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15T742Yn056895;
-	Tue, 29 Jun 2021 03:24:01 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 39fwa5jkuw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Jun 2021 03:24:01 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15T7NxXJ014280;
-	Tue, 29 Jun 2021 07:23:59 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma05fra.de.ibm.com with ESMTP id 39ft8er1jx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Jun 2021 07:23:58 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 15T7MKnE21692804
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Jun 2021 07:22:20 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A2B5DA4054;
-	Tue, 29 Jun 2021 07:23:55 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AF727A405B;
-	Tue, 29 Jun 2021 07:23:50 +0000 (GMT)
-Received: from [9.160.49.135] (unknown [9.160.49.135])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 29 Jun 2021 07:23:50 +0000 (GMT)
-Subject: Re: [RFC PATCH v2 3/3] virt: Add sev_secret module to expose
- confidential computing secrets
-To: Borislav Petkov <bp@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A4270
+	for <linux-coco@lists.linux.dev>; Tue, 29 Jun 2021 17:33:31 +0000 (UTC)
+Received: from imap.suse.de (imap-alt.suse-dmz.suse.de [192.168.254.47])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8EFC31FD8F;
+	Tue, 29 Jun 2021 17:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1624988009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+	b=uxNn0trq96rjaJlhGmwt9nsqODDA6IvN3PPpJ5pLk6OxC6qBfAgIVpB5NRGMBE6k8IOXmv
+	ZSr1dwfkXmzSEkbW7k/NgzESvoQka9c2YO3aHmlvDbMXOxpDaDv3x93LomyFeoXQWtl7KR
+	B5yx/g/zAs4hqWi4ySdPiunHS+DKSKg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1624988009;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+	b=Zka4re+vRWBErBR3ow9OxmqXnLm6TloqkjJiAV7fQVsYLeVWuXjSfTukR3Tr5dKPJE6Dm0
+	FDRQ/vAhvGvrrBBg==
+Received: from imap3-int (imap-alt.suse-dmz.suse.de [192.168.254.47])
+	by imap.suse.de (Postfix) with ESMTP id 7477A11906;
+	Tue, 29 Jun 2021 17:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1624988009; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+	b=uxNn0trq96rjaJlhGmwt9nsqODDA6IvN3PPpJ5pLk6OxC6qBfAgIVpB5NRGMBE6k8IOXmv
+	ZSr1dwfkXmzSEkbW7k/NgzESvoQka9c2YO3aHmlvDbMXOxpDaDv3x93LomyFeoXQWtl7KR
+	B5yx/g/zAs4hqWi4ySdPiunHS+DKSKg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1624988009;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4ATW6Ca30ZVV7Zzd+CeAnHIUpIriktflFykS2CyCKVU=;
+	b=Zka4re+vRWBErBR3ow9OxmqXnLm6TloqkjJiAV7fQVsYLeVWuXjSfTukR3Tr5dKPJE6Dm0
+	FDRQ/vAhvGvrrBBg==
+Received: from director2.suse.de ([192.168.254.72])
+	by imap3-int with ESMTPSA
+	id H0KjHGlZ22C1YAAALh3uQQ
+	(envelope-from <bp@suse.de>); Tue, 29 Jun 2021 17:33:29 +0000
+Date: Tue, 29 Jun 2021 19:33:24 +0200
+From: Borislav Petkov <bp@suse.de>
+To: Dov Murik <dovmurik@linux.ibm.com>
 Cc: linux-efi@vger.kernel.org, Laszlo Ersek <lersek@redhat.com>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>,
-        "Dr. David Alan Gilbert"
- <dgilbert@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dov Murik <dovmurik@linux.ibm.com>
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+	Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 0/3] Allow access to confidential computing secret
+ area
+Message-ID: <YNtZZLWOO+qO/oAu@zn.tnic>
 References: <20210628183431.953934-1-dovmurik@linux.ibm.com>
- <20210628183431.953934-4-dovmurik@linux.ibm.com> <YNojYBIwk0xCHQ0v@zn.tnic>
-From: Dov Murik <dovmurik@linux.ibm.com>
-Message-ID: <6e35f6db-9c5b-3c75-a66b-de1392295f6a@linux.ibm.com>
-Date: Tue, 29 Jun 2021 10:23:49 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ <YNoiydeow+ftvfYX@zn.tnic>
+ <90fa45e6-8c24-6c72-2ef5-35a4b3c4d5d7@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YNojYBIwk0xCHQ0v@zn.tnic>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JUDPkLjGeAeHzYs28BbUkloBVAObIJns
-X-Proofpoint-ORIG-GUID: 5-vxk4qAy8PYa_wxU5hKn0WiPMHHmLSy
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-06-29_02:2021-06-25,2021-06-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 phishscore=0 malwarescore=0 adultscore=0
- mlxlogscore=999 impostorscore=0 clxscore=1015 spamscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2104190000 definitions=main-2106290050
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <90fa45e6-8c24-6c72-2ef5-35a4b3c4d5d7@linux.ibm.com>
 
+On Tue, Jun 29, 2021 at 10:16:22AM +0300, Dov Murik wrote:
+> OK, I'll add it in the cover letter; something along the lines of:
+>
+> An example would be a guest performing computations on encrypted files.
+>  The Guest Owner provides the decryption key (= secret) using the secret
+> injection mechanism.  The guest application reads the secret from the
+> sev_secret filesystem and proceeds to decrypt the files into memory and
+> then performs the needed computations on the content.
+>
+> Host can't read the files from the disk image because they are
+> encrypted. Host can't read the decryption key because it is passed using
+> the secret injection mechanism (= secure channel). Host can't read the
+> decrypted content from memory because it's a confidential
+> (memory-encrypted) guest.
 
+Yap, much better, thanks!
 
-On 28/06/2021 22:30, Borislav Petkov wrote:
-> On Mon, Jun 28, 2021 at 06:34:31PM +0000, Dov Murik wrote:
->> The new sev_secret module exposes the confidential computing secret area
->> via securityfs interface.
->>
->> When the module is loaded (and securityfs is mounted, typically under
->> /sys/kernel/security), an "sev_secret" directory is created in
->> securityfs.  In it, a file is created for each secret entry.  The name
->> of each such file is the GUID of the secret entry, and its content is
->> the secret data.
->>
->> This allows applications running in a confidential computing setting to
->> read secrets provided by the guest owner via a secure secret injection
->> mechanism (such as AMD SEV's LAUNCH_SECRET command).
->>
->> Removing (unlinking) files in the "sev_secret" directory will zero out
->> the secret in memory, and remove the filesystem entry.  If the module
->> is removed and loaded again, that secret will not appear in the
->> filesystem.
->>
->> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
->> ---
->>  drivers/virt/Kconfig                 |   2 +
->>  drivers/virt/Makefile                |   1 +
->>  drivers/virt/sev_secret/Kconfig      |  11 +
->>  drivers/virt/sev_secret/Makefile     |   2 +
->>  drivers/virt/sev_secret/sev_secret.c | 298 +++++++++++++++++++++++++++
->>  5 files changed, 314 insertions(+)
->>  create mode 100644 drivers/virt/sev_secret/Kconfig
->>  create mode 100644 drivers/virt/sev_secret/Makefile
->>  create mode 100644 drivers/virt/sev_secret/sev_secret.c
+And that whole deal with the providing the secret this way is because
+you want to be starting the same guest image in the cloud over and over
+again but each guest owner would have their own decryption key which
+they would supply this way.
+
+Yap, good.
+
+> On one hand, I agree.  This entire series has no SEV-specific code (but
+> I tested it only on SEV).
 > 
-> Same question here: maybe have 
+> On the other hand, secret injection mechanisms in SEV-SNP and TDX are
+> different beasts than the one used here (SEV).  In SEV the secrets must
+> be injected at VM launch time; so when OVMF runs and kernel efistub runs
+> the secrets are already there (patches 1+2).  However, in SNP there's no
+> secret injection at launch; (/me hand-waving) the guest can securely
+> talk with the PSP hardware, check the attestation, and if OK then
+> securely contact some Guest Owner secret provider to get the required
+> secrets.  Not sure it makes sense for the kernel to be part of this
+> "getting secrets from secret provider and exposing them in securityfs".
+
+Which begs the question: why are you even doing this for only SEV
+instead of supporting SEV-SNP/TDX only?
+
+I'm under the impression that people should run only SNP and the
+equivalent of that in TDX, guests but not those earlier technologies
+which are lacking in some situations.
+
+> So maybe for regular SEV we'll use this sev_secret module to get one
+> secret which will allow the guest to contact to the Guest Owner secret
+> provider (and from here continue like SNP or TDX).  Brijesh (AMD) also
+> suggested collapsing the proposed sev_secret module into the new
+> sev-guest module ("[PATCH Part1 RFC v3 22/22] virt: Add SEV-SNP guest
+> driver", sent 2021-06-02),
+
+Which reminds me - I still need to take a look at that one.
+
+> and the logic suggested here will be used when SNP is not active.
+>
+> Or taking a step back: Maybe the kernel should not try to unify
+> SEV/SEV-SNP/TDX/PEF/s390x-SE.  Each should have its own API.  A
+> userspace process will have to understand what is available and get the
+> required info to run the application in a confidential environment.
 > 
-> drivers/virt/coco/
+> Or maybe we can find an API that fits all these confidential computing
+> mechanisms and expose a unified API that hides the underlying
+> implementation.
 > 
-> and put all coco guest stuff in there.
+> (I'm not really sure - that's the reason this is an RFC series.)
+
+I'm gravitating towards a common API so that userspace doesn't have to
+care. But that comes at the price of having to define that API properly
+so that it fits them all. And we all know how that bikeshedding works.
+
+:-\
+
+> When I wrote this I didn't yet encounter "coco" as an abbreviation. Now
+> there's a linux-coco mailing list, but I saw no other mentions of it in
+> the kernel (as an abbreviation for confidential computing).
+
+That's what Joerg and me came up with - "coco" :-)
+
+> I agree that the full term is too long; I considered conf-comp (but in
+> my mind "conf" is short for "configuration").  I used it in one place:
+> "ConfCompSecret" in patch 2/3.
 > 
-
-I agree, according to what comes up of the conversation we have in
-replies to the cover letter.
-
-
->> diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
->> index 8061e8ef449f..c222cc625891 100644
->> --- a/drivers/virt/Kconfig
->> +++ b/drivers/virt/Kconfig
->> @@ -36,4 +36,6 @@ source "drivers/virt/vboxguest/Kconfig"
->>  source "drivers/virt/nitro_enclaves/Kconfig"
->>  
->>  source "drivers/virt/acrn/Kconfig"
->> +
->> +source "drivers/virt/sev_secret/Kconfig"
->>  endif
->> diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
->> index 3e272ea60cd9..0765e5418d1d 100644
->> --- a/drivers/virt/Makefile
->> +++ b/drivers/virt/Makefile
->> @@ -8,3 +8,4 @@ obj-y				+= vboxguest/
->>  
->>  obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
->>  obj-$(CONFIG_ACRN_HSM)		+= acrn/
->> +obj-y				+= sev_secret/
->> diff --git a/drivers/virt/sev_secret/Kconfig b/drivers/virt/sev_secret/Kconfig
->> new file mode 100644
->> index 000000000000..4505526b8ef1
->> --- /dev/null
->> +++ b/drivers/virt/sev_secret/Kconfig
->> @@ -0,0 +1,11 @@
->> +# SPDX-License-Identifier: GPL-2.0-only
->> +config AMD_SEV_SECRET_SECURITYFS
->> +	tristate "AMD SEV secret area securityfs support"
->> +	depends on EFI
+> If as a community we settle on coco / CoCo / COCO then I agree these
+> should be renamed.
 > 
-> That probably needs to depend on CONFIG_AMD_MEM_ENCRYPT - otherwise
-> what's the point for it.
-> 
+> (in QEMU they use CGS = Confidential Guest Support [1].)
 
-But not if it's a generic driver that is useful for other confidential
-computing implementations.  Consider some non-encrypting guest memory
-isolation mechanism where the host can't read most guest pages; this
-module might be useful there too.
+That's not bad too.
 
-Also, isn't it a bit weird to depend on CONFIG_AMD_MEM_ENCRYPT but not
-use any of its APIs?
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
 
--Dov
+SUSE Software Solutions Germany GmbH, GF: Felix Imendörffer, HRB 36809, AG Nürnberg
