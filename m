@@ -1,13 +1,13 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA1B2FAE
-	for <linux-coco@lists.linux.dev>; Mon,  5 Jul 2021 08:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2327429CA
+	for <linux-coco@lists.linux.dev>; Mon,  5 Jul 2021 08:26:23 +0000 (UTC)
 Received: from cap.home.8bytes.org (p5b006775.dip0.t-ipconnect.de [91.0.103.117])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id C92567DD;
-	Mon,  5 Jul 2021 10:26:15 +0200 (CEST)
+	by theia.8bytes.org (Postfix) with ESMTPSA id 954FDA56;
+	Mon,  5 Jul 2021 10:26:17 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org
 Cc: Joerg Roedel <joro@8bytes.org>,
@@ -33,9 +33,9 @@ Cc: Joerg Roedel <joro@8bytes.org>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [RFC PATCH 06/12] x86/sev: Cache AP Jump Table Address
-Date: Mon,  5 Jul 2021 10:24:37 +0200
-Message-Id: <20210705082443.14721-7-joro@8bytes.org>
+Subject: [RFC PATCH 09/12] x86/sev: Use AP Jump Table blob to stop CPU
+Date: Mon,  5 Jul 2021 10:24:40 +0200
+Message-Id: <20210705082443.14721-10-joro@8bytes.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210705082443.14721-1-joro@8bytes.org>
 References: <20210705082443.14721-1-joro@8bytes.org>
@@ -49,92 +49,100 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Store the physical address of the AP Jump Table in kernel memory so
-that it does not need to be fetched from the Hypervisor again.
+To support kexec under SEV-ES the APs can't be parked with HLT. Upon
+wakeup the AP needs to find its way to execute at the reset vector set
+by the new kernel and in real-mode.
+
+This is what the AP Jump Table blob provides, so stop the APs the
+SEV-ES way by calling the AP-reset-hold VMGEXIT from the AP Jump
+Table.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/x86/kernel/sev.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/sev.h |  7 +++++++
+ arch/x86/kernel/process.c  |  8 ++++++++
+ arch/x86/kernel/sev.c      | 11 ++++++++++-
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 134a7c9d91b6..cd14b6e10f12 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -81,12 +81,19 @@ static __always_inline void sev_es_nmi_complete(void)
+ 		__sev_es_nmi_complete();
+ }
+ extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
++void __sev_es_stop_this_cpu(void);
++static __always_inline void sev_es_stop_this_cpu(void)
++{
++	if (static_branch_unlikely(&sev_es_enable_key))
++		__sev_es_stop_this_cpu();
++}
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
+ static inline void sev_es_nmi_complete(void) { }
+ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
++static inline void sev_es_stop_this_cpu(void) { }
+ #endif
+ 
+ #endif
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 5e1f38179f49..c5da02f9100f 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -43,6 +43,7 @@
+ #include <asm/io_bitmap.h>
+ #include <asm/proto.h>
+ #include <asm/frame.h>
++#include <asm/sev.h>
+ 
+ #include "process.h"
+ 
+@@ -736,6 +737,13 @@ void stop_this_cpu(void *dummy)
+ 	if (boot_cpu_has(X86_FEATURE_SME))
+ 		native_wbinvd();
+ 	for (;;) {
++		/*
++		 * SEV-ES guests need a special stop routine to support
++		 * kexec. Try this first, if it fails the function will
++		 * return and native_halt() is used.
++		 */
++		sev_es_stop_this_cpu();
++
+ 		/*
+ 		 * Use native_halt() so that memory contents don't change
+ 		 * (stack usage and variables) after possibly issuing the
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 5d3422e8b25e..eedba56b6bac 100644
+index 2147ebd0e919..5fdfa94c823c 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -42,6 +42,9 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
-  */
- static struct ghcb __initdata *boot_ghcb;
- 
-+/* Cached AP Jump Table Address */
-+static phys_addr_t sev_es_jump_table_pa;
-+
- /* #VC handler runtime per-CPU data */
- struct sev_es_runtime_data {
- 	struct ghcb ghcb_page;
-@@ -546,12 +549,14 @@ void noinstr __sev_es_nmi_complete(void)
- 	__sev_put_ghcb(&state);
+@@ -695,7 +695,6 @@ static bool __init sev_es_setup_ghcb(void)
+ 	return true;
  }
  
--static u64 get_jump_table_addr(void)
-+static phys_addr_t get_jump_table_addr(void)
+-#ifdef CONFIG_HOTPLUG_CPU
+ static void __noreturn sev_jumptable_ap_park(void)
+ {
+ 	local_irq_disable();
+@@ -725,6 +724,16 @@ static void __noreturn sev_jumptable_ap_park(void)
+ }
+ STACK_FRAME_NON_STANDARD(sev_jumptable_ap_park);
+ 
++void __sev_es_stop_this_cpu(void)
++{
++	/* Only park in the AP Jump Table when the code has been installed */
++	if (!sev_ap_jumptable_blob_installed)
++		return;
++
++	sev_jumptable_ap_park();
++}
++
++#ifdef CONFIG_HOTPLUG_CPU
+ static void sev_es_ap_hlt_loop(void)
  {
  	struct ghcb_state state;
- 	unsigned long flags;
- 	struct ghcb *ghcb;
--	u64 ret = 0;
-+
-+	if (sev_es_jump_table_pa)
-+		return sev_es_jump_table_pa;
- 
- 	local_irq_save(flags);
- 
-@@ -567,39 +572,36 @@ static u64 get_jump_table_addr(void)
- 
- 	if (ghcb_sw_exit_info_1_is_valid(ghcb) &&
- 	    ghcb_sw_exit_info_2_is_valid(ghcb))
--		ret = ghcb->save.sw_exit_info_2;
-+		sev_es_jump_table_pa = (phys_addr_t)ghcb->save.sw_exit_info_2;
- 
- 	__sev_put_ghcb(&state);
- 
- 	local_irq_restore(flags);
- 
--	return ret;
-+	return sev_es_jump_table_pa;
- }
- 
- int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
- {
- 	u16 startup_cs, startup_ip;
--	phys_addr_t jump_table_pa;
--	u64 jump_table_addr;
- 	u16 __iomem *jump_table;
-+	phys_addr_t pa;
- 
--	jump_table_addr = get_jump_table_addr();
-+	pa = get_jump_table_addr();
- 
- 	/* On UP guests there is no jump table so this is not a failure */
--	if (!jump_table_addr)
-+	if (!pa)
- 		return 0;
- 
- 	/* Check if AP Jump Table is page-aligned */
--	if (jump_table_addr & ~PAGE_MASK)
-+	if (pa & ~PAGE_MASK)
- 		return -EINVAL;
- 
--	jump_table_pa = jump_table_addr & PAGE_MASK;
--
- 	startup_cs = (u16)(rmh->trampoline_start >> 4);
- 	startup_ip = (u16)(rmh->sev_es_trampoline_start -
- 			   rmh->trampoline_start);
- 
--	jump_table = ioremap_encrypted(jump_table_pa, PAGE_SIZE);
-+	jump_table = ioremap_encrypted(pa, PAGE_SIZE);
- 	if (!jump_table)
- 		return -EIO;
- 
 -- 
 2.31.1
 
