@@ -1,124 +1,83 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A5670
-	for <linux-coco@lists.linux.dev>; Sat,  3 Jul 2021 16:29:48 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f289e0085c7d3fefeb66b8e.dip0.t-ipconnect.de [IPv6:2003:ec:2f28:9e00:85c7:d3fe:feb6:6b8e])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DC070
+	for <linux-coco@lists.linux.dev>; Mon,  5 Jul 2021 08:26:23 +0000 (UTC)
+Received: from cap.home.8bytes.org (p5b006775.dip0.t-ipconnect.de [91.0.103.117])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1282F1EC047F;
-	Sat,  3 Jul 2021 18:19:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1625329195;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=upKFgpUh0zZ782nZABcY/RNBj8bd/OadOyw5te8iHZc=;
-	b=NudzYXsG646/+XcrvCCfobxDIXDqoINAGQsj0E1AkwVZlvZjqXEC4Q/LmnHdK/BN54pmaw
-	JFsqB2fy+zUTz07NLLpEzLpX8tb+BSpe+VA0CqnOJO8wCl7siWJe7RndUF0FD5wSiMEe/r
-	qnuIbLGmBy99uqaqdSvureQd8IDQa2A=
-Date: Sat, 3 Jul 2021 18:19:47 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
+	by theia.8bytes.org (Postfix) with ESMTPSA id D03EBAA3;
+	Mon,  5 Jul 2021 10:26:18 +0200 (CEST)
+From: Joerg Roedel <joro@8bytes.org>
+To: x86@kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>, tony.luck@intel.com,
-	npmccallum@redhat.com, Dov Murik <dovmurik@linux.ibm.com>
-Subject: Re: [PATCH Part1 RFC v3 22/22] virt: Add SEV-SNP guest driver
-Message-ID: <YOCOIy1AW5RUfbx4@zn.tnic>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-23-brijesh.singh@amd.com>
- <YNxzJ2I3ZumTELLb@zn.tnic>
- <46499161-0106-3ae9-9688-0afd9076b28b@amd.com>
- <YN4DixahyShxyyCv@zn.tnic>
- <5b4d20db-3013-4411-03b9-708dd18dbe64@amd.com>
+	Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: [RFC PATCH 11/12] x86/sev: Handle CLFLUSH MMIO events
+Date: Mon,  5 Jul 2021 10:24:42 +0200
+Message-Id: <20210705082443.14721-12-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210705082443.14721-1-joro@8bytes.org>
+References: <20210705082443.14721-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5b4d20db-3013-4411-03b9-708dd18dbe64@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 01, 2021 at 04:32:25PM -0500, Brijesh Singh wrote:
-> The spec definition is present in include/linux/psp-sev.h but sometime
-> we don't expose the spec defs as-is to userspace.
+From: Joerg Roedel <jroedel@suse.de>
 
-Why?
+Handle CLFLUSH instruction to MMIO memory in the #VC handler. The
+instruction is ignored by the handler, as the Hypervisor is
+responsible for cache management of emulated MMIO memory.
 
-Having such undocumented and maybe unwarranted differences - I still
-don't see a clear reason why - is calling for additional and unnecessary
-confusion.
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+---
+ arch/x86/kernel/sev-shared.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-> Several SEV/SEV-SNP does not need to be exposed to the userspace,
-> those which need to be expose we provide a bit modified Linux uapi for
-> it, and for SEV drivers we choose "_user" prefix.
-
-Is that documented somewhere?
-
-Because "user" doesn't tell me it is a modified structure which is
-different from the spec.
-
-> e.g
-> a spec definition for the PEK import in include/linux/psp-sev.h is:
-> struct sev_data_pek_cert_import {
-> 	u64 pdh_cert_address;  /* system physical address */
-> 	u32 pdh_cert_len;
-> 	u32 reserved;
-> 	...
-> };
-> 
-> But its corresponding userspace structure def in include/uapi/linux/psp-sev.h is:
-> struct sev_user_data_pek_cert_import {
-> 	__u64 pek_cert_uaddr; /* userspace address */
-> 	__u32 pek_cert_len;
-> 	...
-> };
-
-And the difference is a single "u32 reserved"?
-
-Dunno, from where I'm standing this looks like unnecessary confusion to
-me.
-
-> The ioctl handling takes care of mapping from uaddr to pa and other
-> things as required. So, I took similar approach for the SEV-SNP guest
-> ioctl. In this particular case the guest request structure defined in
-> the spec contains multiple field but many of those fields are managed
-> internally by the kernel (e.g seqno, IV, etc etc).
-
-Ok, multiple fields sounds like you wanna save on the data that is
-shovelled between kernel and user space and then some of the fields
-don't mean a thing for the user API. Ok.
-
-But again, where is this documented and stated clear so that people are
-aware?
-
-Or are you assuming that since the user counterparts are in
-
-include/uapi/linux/psp-sev.h
-	^^^^
-
-and it being an uapi header, then that should state that?
-
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index a7a0793c4f98..682fa202444f 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -632,6 +632,15 @@ static enum es_result vc_handle_mmio_twobyte_ops(struct ghcb *ghcb,
+ 	long *reg_data;
+ 
+ 	switch (insn->opcode.bytes[1]) {
++		/* CLFLUSH */
++	case 0xae:
++		/*
++		 * Ignore CLFLUSHes - those go to emulated MMIO anyway and the
++		 * hypervisor is responsible for cache management.
++		 */
++		ret = ES_OK;
++		break;
++
+ 		/* MMIO Read w/ zero-extension */
+ 	case 0xb6:
+ 		bytes = 1;
 -- 
-Regards/Gruss,
-    Boris.
+2.31.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
