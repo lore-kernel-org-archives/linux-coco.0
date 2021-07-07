@@ -1,67 +1,77 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062.outbound.protection.outlook.com [40.107.220.62])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2043.outbound.protection.outlook.com [40.107.236.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CCE72
-	for <linux-coco@lists.linux.dev>; Mon,  5 Jul 2021 10:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BD972
+	for <linux-coco@lists.linux.dev>; Wed,  7 Jul 2021 18:15:29 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j6Cp62xpwQlaj5N3ns+8HK3u0shmkFy5dNxX1b98RCZr/Ya8QlM1mmbovsrX9OonCALcu6zJ6CaVQkfN7pS8VjBOZ7VnqFf+5yUTraXNhsH5kkY4GkWoY0HTfcXWVspJCgVDPN7SG1XMfwwFfFq4Z3kId8PVTzvLYwlEtwr62s2k00P0XktJmXP1nqYfn3l78AA6jHAC0/Afodz1HXKrNVvQE5E9g2EJUCH8PXBjPLWam0bZMiGxLE275dl553Cb2ztaLf5z/2aXtCJgXH24CvUtBGV6coQCmq7ugSTDLbPlKuerXPdHj4w3UJKciWbU+axbwqXsW6neY9czTPFFkg==
+ b=Sne/WWUHjSR3z0lPqJoDMyUGtC2MjggsStlJ2SgvoAy9PQjSC8fgMwY7tb3y7Q6SMZ9xAgEX42/T1rnqstDDjiVqhfSSr97YfrLZnKvu4gEeEVJgG1gAxiNI8o0JcOO03Jbi9HC3nunD7vd85tWzpuiUAol4gQbT1fk05qZUFAQRJMQxiT/Jf+UsOykBpsdmqaK1fy22zWOEvGx1TynGYJwHWpnSSz5HgR4BKcTTuI4EyDveNooIEIYmPHwEr137v9Fo5BbelWvzax/P6fp+iCb3hb+ioUwwypmzTlvPG1+BLatRKAya6aYRfm1hLfgYyp9i3KCI2rUOwIaNWpLqGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8ttdNd5gJxm+Oyy4vh4A0iUmWkaHPfUjtbn3zIDpEqg=;
- b=b6vma36xLTN0E4liswyK/nrE9hb9zeIlkKzahJjH9tJSnOs7HeF8KOi3iQPhxF+1Kmm+lni6Gdn8cfHyeMVL5RiWGq/khrT+KyPTl54Yhc+icXdiZZApHibmgaY1bwpJ9jI18VjPZV5KMgJ90QCj5d6y+DsxYZBZfjJUarcGElDD3aqBjrReqPzrgOCwLlLnIMo2ObXlVzbjgDCEoC0iiBwBJVF76kr5IatYYtzmq9C2za6mXTJGMJg6cZYMnJValgutL2xNDKCZMGm401xmSJYBTI7JThrWjzhxazc4C0uI9YGqHaWSDm29K8Iv5qdGdtKlotj9ahsAxAATF1cn8A==
+ bh=VFrg4Pfqgj5kMYuGr3NuwoyePIZkPmZCc+GPXuVdkdU=;
+ b=oJYBvy4JixDAMYfvnE0xyN6bE1MjHDZYAXIW1tat5duMlN7kFf/Houhyhki+1xQqu8Xra8DbjCylX/spmPhA9XFCUX1DvYaIs5OprGCIdckqx3HAF9gu/lpFRtn5Wbty3nOKbV7dysvAQagO/DcWjHC8xX3Se5Nj+IemO64OmySjXDIhFuFzZjJu6H4AwqG89qC4yVwq2EvMJWBzp+al3QhlOchu8d+Fmz0Tqt3SxeYroNxgwco6l8lHicEJ8zO+LIszz81nU1Qb1emX/+oZJrYwpTb+ykETExkWuJLtmjLrkr3I0pFr73pPUBPl1s6QvPOdhwrewzT/aNokhwLK6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8ttdNd5gJxm+Oyy4vh4A0iUmWkaHPfUjtbn3zIDpEqg=;
- b=3xpaMVZcJb08y+IhXrigDrCtQ734tJwl5s+4ld5ua8OLlj07UbXZu+BzSIpGL8YoQbpN2AsZTuyMCjV8u7o6opCmnRxisE4HET74Hv4NOuaw0cM7NRuxyNP9CrYLL7G6ItsNdRuVmPL+6qoPPo48isNdpdgKIPHCP8MR0FmLHeQ=
-Authentication-Results: linux.ibm.com; dkim=none (message not signed)
- header.d=none;linux.ibm.com; dmarc=none action=none header.from=amd.com;
+ bh=VFrg4Pfqgj5kMYuGr3NuwoyePIZkPmZCc+GPXuVdkdU=;
+ b=1TdKoGZAH5Sy2glo1s3Jk8mK70Su00gAsDKPKa5/d6vz8IvWX2hA8qneJcJW+9fLQad7+vgyrLFkrkp3iRo6mOxrBYrsHEiyGbjssE01pKe0V8PvJebs1NBbWaD/XwK+eKZn7gosA0rnwBXdStxdQrLSJuYcnCicLY6SRc6rrVI=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com (2603:10b6:a03:63::10)
- by BYAPR12MB4728.namprd12.prod.outlook.com (2603:10b6:a03:a3::24) with
+ by BY5PR12MB3939.namprd12.prod.outlook.com (2603:10b6:a03:1a5::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.27; Mon, 5 Jul
- 2021 10:39:08 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.21; Wed, 7 Jul
+ 2021 18:15:26 +0000
 Received: from BYAPR12MB2711.namprd12.prod.outlook.com
  ([fe80::40e3:aade:9549:4bed]) by BYAPR12MB2711.namprd12.prod.outlook.com
- ([fe80::40e3:aade:9549:4bed%7]) with mapi id 15.20.4287.033; Mon, 5 Jul 2021
- 10:39:08 +0000
-Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-efi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, linux-crypto@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
- Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, tony.luck@intel.com,
- npmccallum@redhat.com, Dov Murik <dovmurik@linux.ibm.com>
-Subject: Re: [PATCH Part1 RFC v3 22/22] virt: Add SEV-SNP guest driver
-To: Borislav Petkov <bp@alien8.de>
-References: <20210602140416.23573-1-brijesh.singh@amd.com>
- <20210602140416.23573-23-brijesh.singh@amd.com> <YNxzJ2I3ZumTELLb@zn.tnic>
- <46499161-0106-3ae9-9688-0afd9076b28b@amd.com> <YN4DixahyShxyyCv@zn.tnic>
- <5b4d20db-3013-4411-03b9-708dd18dbe64@amd.com> <YOCOIy1AW5RUfbx4@zn.tnic>
+ ([fe80::40e3:aade:9549:4bed%7]) with mapi id 15.20.4287.033; Wed, 7 Jul 2021
+ 18:15:26 +0000
 From: Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <9c5037b6-d9a7-78e3-f2e4-bf8bebc12da7@amd.com>
-Date: Mon, 5 Jul 2021 05:39:04 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
-In-Reply-To: <YOCOIy1AW5RUfbx4@zn.tnic>
-Content-Type: text/plain; charset=utf-8
+To: x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>,
+	Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	tony.luck@intel.com,
+	npmccallum@redhat.com,
+	brijesh.ksingh@gmail.com,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: [PATCH Part1 RFC v4 00/36] Add AMD Secure Nested Paging (SEV-SNP) Guest Support
+Date: Wed,  7 Jul 2021 13:14:30 -0500
+Message-Id: <20210707181506.30489-1-brijesh.singh@amd.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [70.112.153.56]
-X-ClientProxiedBy: SN4PR0401CA0007.namprd04.prod.outlook.com
- (2603:10b6:803:21::17) To BYAPR12MB2711.namprd12.prod.outlook.com
+X-ClientProxiedBy: SA0PR11CA0104.namprd11.prod.outlook.com
+ (2603:10b6:806:d1::19) To BYAPR12MB2711.namprd12.prod.outlook.com
  (2603:10b6:a03:63::10)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -70,147 +80,256 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SN4PR0401CA0007.namprd04.prod.outlook.com (2603:10b6:803:21::17) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4287.21 via Frontend Transport; Mon, 5 Jul 2021 10:39:05 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA0PR11CA0104.namprd11.prod.outlook.com (2603:10b6:806:d1::19) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4308.19 via Frontend Transport; Wed, 7 Jul 2021 18:15:23 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5b9313a0-b717-4254-80f7-08d93fa11e5e
-X-MS-TrafficTypeDiagnostic: BYAPR12MB4728:
+X-MS-Office365-Filtering-Correlation-Id: 874eec20-c674-4e93-d7c3-08d941733170
+X-MS-TrafficTypeDiagnostic: BY5PR12MB3939:
 X-MS-Exchange-Transport-Forked: True
 X-Microsoft-Antispam-PRVS:
-	<BYAPR12MB4728244C0FDC7F2C24E4FF29E51C9@BYAPR12MB4728.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+	<BY5PR12MB3939907124D2B9311A1EBB43E51A9@BY5PR12MB3939.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	fJl4UDfYWxl9tDkMtbshyYofrig8ulSdTWr2BhHFeuxOD4o9iMosz1Gmog1hl2wWyAI+iwUlC7SFXBQvaMKtkWvU6qr7nk/x+dvw0YM0SE/hislrKj7U/NHc58RxrC5bqZOy1fjUD0sOxH2gmAHN/Kmuiw0Eu3WOfx14q62TM+/K/K0ee3r6X2rBeaK3ShsIP8qsr0BWUB5S9uAg8247QWvnmzvfsR6WhROkr4chq5YMbB8GGC7mog3w/k73hixZmu7sBEynOU6GdZKHtNg3J8ZBHb1vLhfIduN9rJP+bqTSwAqx9cg4cFOKerDuvefQu2SCw7vwSQtkHzlCqaJDpKTur12JIkZ1g1hnnBEwtLD83o+zopYVOk/Rsin1bYbNSzpX0WcyjbbQEQW7t9uxW+2/ujNss+VQ/NRMXKL8eVTjqRyJJfDLRY4WPpAfyHYonbpjgJASG4v59Qu+/BbFMZv38DCyNzxFQNDO3d9IMDgEYBoyQgNvMudk78f04rWW157oxteMTg9AA9Z1oe8sNSi2ky/cvhPuGkanerTpwRdrjouxIeWJTlJejgZ+O0nx944AgJfiGD4icaz/NAKg6/kkf36MgSjk5oRp5bblt0PWIse13HmsBjpi6B1pnEFSLOUwzWqVoUHYBUAF83RKf3Xcowzf5BJV03WTW0XZPVUkGTgT6+9HOGJuyMLasUGjx/4wA4OgZwFy37sdUcNX9xEbfTBiby6kQP6w3GX+0K1gs9fMO14vG7ze8ZYqwA54ZG5FSnvFSwAN5nGtS00ihQ==
+	v6hdruh8twro+N/56EBGijvkAUaKt/EEAWIBAtt4+5gpoK9HIBIFnn0eZjm0RwPIZKZm1O2HWPepyIUAQUROT8UHnkQi+MnSsXMC5FNEwRKA9uW0JwP9c/XIZWNnt72z3E8UfMltbgnaxthxQrg1k6q6dL7ngl8Xt55H8n/rNMebYYXffZpO/Ad/nqvTbY10ITOfgBE9e/ViqVOUgcJisqvcsHePSO00x/z/L8W3C4qTvrArtBORwCziKZL7uIqC1YNK8FAxrwuMGy/Oac3e0Ub44J7gR+VyFig1Cb7fOzzY25o8U4oWqHrKfJe2Y9ZUFgZ8p8Wnfa95U0CFPk22b0/Kf2MOze3MTP2swJiSao9cTgXid53bgyZLiysdWvDPxDfWp3B0P691KIqSHn0jGTpfmEo5g2YNNcWgm/usBXlWT6GbUH6KHLpZ39Wn1osa0QuRk8Pm+tk8fTT9FhKrsXzoaQ4xQDxem+oU3Li8dT+VLwCbyjItrLhaqp3VK2+hFxLdEMPSePcpp2OZptGiTDo+HltRDySxLSrTseOVObh65XelKZmceUoK84og7l73tJVGsk9S1pHZ0TpAc52941DZbPZmzeB7vXjTHMg7ZKX2zi2LAEZV+BimxG0/JdxjASNo79XxxE36MkfsuxwJKkRAumvjpw5XZm5q/DfzDCwk9kyP16GS6lSpdwk9MLVaDwVf4tLlbCamMkP/wzRlTlI6GhgeJzqd8+pRqer3NyJnofzwWYBtk9JZ06Mvv7ZcDMWOZrxWYt/YgRqkg5oiM+EWIzQU5GrHpfHDU33Qpbg5AquYb5SqhpDmLuuYo7N13wHOPBRb83HT4YVaT3Yj/A==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(346002)(396003)(136003)(376002)(39860400002)(66476007)(6512007)(66556008)(38100700002)(31686004)(53546011)(6506007)(4326008)(38350700002)(66946007)(83380400001)(52116002)(8936002)(8676002)(316002)(44832011)(54906003)(478600001)(26005)(16526019)(186003)(31696002)(86362001)(6486002)(2906002)(7416002)(956004)(2616005)(5660300002)(36756003)(6916009)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2711.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(39860400002)(366004)(376002)(136003)(44832011)(966005)(66556008)(38100700002)(38350700002)(66946007)(186003)(66476007)(2906002)(1076003)(26005)(52116002)(8936002)(2616005)(6486002)(7696005)(6666004)(5660300002)(8676002)(956004)(7406005)(7416002)(478600001)(83380400001)(316002)(54906003)(86362001)(36756003)(4326008);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OG5uVmM1QU9HSHFEYWEyODlscm1DK3dFaW1rUHdSZjl5Zy94d1pDTHMwMlhS?=
- =?utf-8?B?WWgwblhGRmoyOFpMek45cFhVUERHS1BqOFFjUTdLQUJWQjZqZGN4MTZGUFlw?=
- =?utf-8?B?WkcwZlMxL01ZWHRxc0xsNHZvNUhqS0ZwR1JaNGdSM092bGNzSFpBSFh4bDkz?=
- =?utf-8?B?anE2YWZLVTY1Mk92Z3ZLS3lMM0tzOTJGWENZSk9reTIyZzBpN2VrTnpPaDRO?=
- =?utf-8?B?ZzZCVTU3dkJvZml4cHlUWGd2STQvS0ZPblJ4QytRT0o3K2VXU1orN1U5OGox?=
- =?utf-8?B?dlY1STBpQjZ1N2k1OFN0TDhiZ0VEelBVY2tIR01ZZTJ3dE1sTEtlQU0xWE9B?=
- =?utf-8?B?UTRhSjZwMVdpQURaTFhMQ2V6MDh3R0x1RFJaWWJ6WVVjZlF4c3hESnRoS1NW?=
- =?utf-8?B?TnFJMnMyWGthaFphdlBJSnNLNCtFWTZxaGlyQ1ltbkZYQ2NRbmNTcXlxRk9H?=
- =?utf-8?B?NWFkdURTazdPd2xRYUZXajZIWFBEZHRYK1JNam1ydTVWZ0IwamJLb0hpYzdB?=
- =?utf-8?B?bnJoMnRaRHUvWmFVNDhvNmU3V0p5S3FkL2tZak9mYm54RW9ONUVHWnRzR1Fa?=
- =?utf-8?B?a2dybzhpclRIMmZRQ2tJazhZVWszWlRtTmlMWGx5OFhLOFdQamxxQ1VuTUZG?=
- =?utf-8?B?RmR3ZjliQWlJTklvMTRWeDF0eUxVT2FNU1NEb0tYMVF2NkVjZDloOWdNYlk0?=
- =?utf-8?B?QkEyVWtnaGdNdy9mRDJQUWZST3BVQndPQnl3cC9nalA1a3h0V3RTWS9meTJz?=
- =?utf-8?B?UzhOVnJ3U0VuYWhrZnVCbU5JSWx4NkRBdzM4MkIzcVc2VEREOFNibDAzb1dW?=
- =?utf-8?B?ME1IWTVSZ0dyWTJIdTJoa25NRVVTNjhZQlA3am5qTWtKRFI4N2ZGVmtvcE96?=
- =?utf-8?B?TVhPdVRYNVpNL3hxalg1d21GYWtGWmZOU2NiQ3hhZEgvOTNtMHkvb0kxT1Vn?=
- =?utf-8?B?MVhFSkJpdnF6cklTSzJzRGk0TnF2c2ZZMEI3SW5aVEtlRU9vVzAwK1BETGox?=
- =?utf-8?B?QWNydzFIbkV5NGovZmpXYjQyVmhrYWowSHdDQkxPa3NKREdSYUJIZS94cE9j?=
- =?utf-8?B?bTZTNFBBRkt5alg3NVpnU2hUcC9nMTZTK0xTamNjdUFBQnAzMTZYcGI4b1c5?=
- =?utf-8?B?ZE5KTDBFZzh4dExsU3NVdXl3eHhqaUovNmZGWmxmdVlOZDlOKzVBQWtJT20w?=
- =?utf-8?B?cDlPc0NRVnVmM3E0TytCTjJDcnJ0NjBUOGhteVQwTEMzS1hBMlJIZi80WmNV?=
- =?utf-8?B?SmpHZEJ5U05mRjgwWTI5Ky85bHFLeEZQRGlBYkhtcVFxenkwSUhUZU5kamN1?=
- =?utf-8?B?ZkhVZEd0V2VWNU9rd25BbnNNMWdsME4vV25Rc09UZ0tEREpQZ3lYOTIzREVD?=
- =?utf-8?B?QTIyVUxLdE55b2hXYmpOY0pjb3J2SGZtSjF0dTNkWDVwcWhVd2grRnllTVJi?=
- =?utf-8?B?ZXduenBBdnNyZng5UHg4NTdrNkZYSWYzc2xMSm1taFNVN0tzY2Nvd25WNGQ3?=
- =?utf-8?B?RllycWUrVjN1Q1ZxZUs1cUhrSldyaTRZQVZtVUxINnNncUJjSFFaUXAvWXBr?=
- =?utf-8?B?Z0RTMHFyQTN0aWd0QVM2MFMxM3ZZS3Y1SmdRc05JdjhENi90SmNHS0V5SzE3?=
- =?utf-8?B?OFhmU1BXdWpsaFVMN3l4UkFQNTcyUmJoWGFJUjVYYStFYk1TdFVJZDFPUnB1?=
- =?utf-8?B?ZnhwaVBYTDUreGVoK3ZyZW8yYVJmSitjeGdyeko3L2JibTlubXEydkU1aGxr?=
- =?utf-8?Q?EV6oUfCtyx/oAZtSAr+lXtcOvS2PpKlM543CS+X?=
+	=?utf-8?B?ejA4Nlg5UjdMa0VtM09qZkJ2T01SZDhTb2hsV25WbElEMHNvOWpuT0toejRC?=
+ =?utf-8?B?cEQ3ZUREbVJGT29FdDNUNkFFMHRURXFnSGhwQ0duOXovNnVabjdHVzA4SUlh?=
+ =?utf-8?B?a0VIR2hiVmRWaS9JZ2RrTEx1V0NKUFZ1d3lRbFNSK2UzWkkyS2I1a3J1cVZK?=
+ =?utf-8?B?NndsdjFtNkRudWJaYzV0K3ZpVjBuVmpyYmtxcnlkeVl3VEV6a1ZyWmRlVmJw?=
+ =?utf-8?B?VmtISGdUTkdTRW1pOHk0dEJ6Y1BScGVCRVBXK0plc3BQUnpVenM2Q25FbTQr?=
+ =?utf-8?B?a0VyZjVEcWVRMWh5WDllZGE4U1A3cmtXR1V3bXk1Qkt0NWhvTEhKei9yWDRQ?=
+ =?utf-8?B?WSs3Y1pGZ1U2bVB6STY4c2E0OW9HOWNZVi9zb0l6TUNMM0FFYUZJNTNmbW5I?=
+ =?utf-8?B?cHRFblgxL2xCZ0R1OVlub3VvT1RMVW9wQXhIaGdnbitybDcyTEFUSXFMRWtj?=
+ =?utf-8?B?cGlzVE5HWXZiZUFhRGlIcUtIbnFMN3hNVGtOdHUrY0FKbWVmU1NNMVoxNlFP?=
+ =?utf-8?B?cHVKbjJvaElWeVY3NlgxNHFJVnZMZXBVWVkrSXJBM1RqOXE5cHhETHZENWZY?=
+ =?utf-8?B?TnRpUG9YQUQvM2E4YXgzV0VjZlRWWkM3d1crSjZIYXhNN0JyeVJsOVB3QjZa?=
+ =?utf-8?B?Zkc0TUNjZ0NwQTFwUGFIS0lFSVU4MmhmNUtGR0J6VTJZNEcwTzcyYXVsRG9y?=
+ =?utf-8?B?SjZ4WldTMXdRZTFCOStmaUJNcVZqVVJuVEdoNjZWRWNzOThDMWhIOG1QS1A0?=
+ =?utf-8?B?a1VGVzQ0Q2UzdVcwU3RyZUc0cUZidVlEdHQvbE9NcW1aU1JjdmFTV3hvVDNY?=
+ =?utf-8?B?Qk54anNRZFJ0aTF1OE5WczRoUjAva3VjWEU2S2VOalRCbE13eC81cEdoWDd5?=
+ =?utf-8?B?TUlINnJMNEdFUzhjSlBxc3dJWE9SVExQdXFBRG9ZUGZKVTYvNGVVbnZuVVdD?=
+ =?utf-8?B?MTc1RzBueFJlOHBLTERFSWNRaFpVVTJuUHVWQWJBRXFXRUt2Q2cybXJnSkJx?=
+ =?utf-8?B?dzQzem1TUitnL1BOQ0FkSWxrS3ZlVTNpdWQ3bTd2VGdPbTlSakNiakU2b1R2?=
+ =?utf-8?B?VWY3NFVhaWwwalNrL2xZM3pTbFkxL3hmdlF6OGUzY2Q2cVRqZnhVeXZ4MTFK?=
+ =?utf-8?B?dTltSHNQZ2QyNVRjUDZpdmhoVDhvYmxnMk8xVmN3ZjNkY0JlMktEaVNyS3F6?=
+ =?utf-8?B?K1h1ZWRTZ2pQc2ZURkxKNWJvMlo3ZVB2WXBEOEJRYjJJdlo1S3d3N1phaFM1?=
+ =?utf-8?B?ZHZ5dmVyMktHS25UdXBDTjlSUnlqaDBiQ0Z3Y0RSMU9ZdjJRdkJLYWU1MnBR?=
+ =?utf-8?B?MmlMbmpYK1dFV2o3YjlWaEE2cHZYanRqQU1CRjBGMGdUckNvVzdTNGNqRXBt?=
+ =?utf-8?B?Um1PTDlodExqL3pheVk4ZnpNM3EycWxwU05TcGo3dUxhbzhtdFJjcVlOcnZG?=
+ =?utf-8?B?OEx4anU1K2hWbVZ4d2RBQUN1ZWdQd2EvVklQRDhWUFo5a0lvTEZLdllOTE5a?=
+ =?utf-8?B?TTQ3bGZndnBiNlQ2WXJQUkZwQnlLVWdBNnpkd1lsYkpJb2szcUYvSXdvTEkx?=
+ =?utf-8?B?K05RSWwzeDNEQzdZWExhT0g2MkppdE1zcVVVa2c0V29nSHBpSHFOQVNvWUda?=
+ =?utf-8?B?R0RqVkx1T2R6MitEcGhhZlo3VzNJZlNjVnhXb0VHSGNhcGpoTFAvNlMvQ1Nx?=
+ =?utf-8?B?YS93WDBjWnhZQVk4SkdnSHlwN1FHZUNEQmFYT2tKcTNjTHNYN09WOWdNRFM3?=
+ =?utf-8?Q?rMwPQ5soXpf7fUrf5iqatCmKzmiMoP1hSl1th9a?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b9313a0-b717-4254-80f7-08d93fa11e5e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 874eec20-c674-4e93-d7c3-08d941733170
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2711.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jul 2021 10:39:08.4448
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2021 18:15:25.9517
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BzJNYDKIJiQTcUbow747cQX49QR9ChnSSYw4gQ8tL7Km7iF/ynjKraxsRD5TqJO7Mmk3LXA9pVA3VaENt/QFRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB4728
+X-MS-Exchange-CrossTenant-UserPrincipalName: /uOQov26PZsz26t+SJ5dodJEVWEQA4epiWOLno/kW418yuprmbQOOjRqPBFvU+4E4C6LNiZHXid7kOAqzzirlQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB3939
 
+This part of Secure Encrypted Paging (SEV-SNP) series focuses on the changes
+required in a guest OS for SEV-SNP support.
 
-On 7/3/21 11:19 AM, Borislav Petkov wrote:
-> On Thu, Jul 01, 2021 at 04:32:25PM -0500, Brijesh Singh wrote:
->> The spec definition is present in include/linux/psp-sev.h but sometime
->> we don't expose the spec defs as-is to userspace.
-> Why?
->
-> Having such undocumented and maybe unwarranted differences - I still
-> don't see a clear reason why - is calling for additional and unnecessary
-> confusion.
+SEV-SNP builds upon existing SEV and SEV-ES functionality while adding
+new hardware-based memory protections. SEV-SNP adds strong memory integrity
+protection to help prevent malicious hypervisor-based attacks like data
+replay, memory re-mapping and more in order to create an isolated memory
+encryption environment.
+ 
+This series provides the basic building blocks to support booting the SEV-SNP
+VMs, it does not cover all the security enhancement introduced by the SEV-SNP
+such as interrupt protection.
 
-Because some of fields don't make any sense for the userspace interfaces. 
+Many of the integrity guarantees of SEV-SNP are enforced through a new
+structure called the Reverse Map Table (RMP). Adding a new page to SEV-SNP
+VM requires a 2-step process. First, the hypervisor assigns a page to the
+guest using the new RMPUPDATE instruction. This transitions the page to
+guest-invalid. Second, the guest validates the page using the new PVALIDATE
+instruction. The SEV-SNP VMs can use the new "Page State Change Request NAE"
+defined in the GHCB specification to ask hypervisor to add or remove page
+from the RMP table.
 
+Each page assigned to the SEV-SNP VM can either be validated or unvalidated,
+as indicated by the Validated flag in the page's RMP entry. There are two
+approaches that can be taken for the page validation: Pre-validation and
+Lazy Validation.
 
->
->> Several SEV/SEV-SNP does not need to be exposed to the userspace,
->> those which need to be expose we provide a bit modified Linux uapi for
->> it, and for SEV drivers we choose "_user" prefix.
-> Is that documented somewhere?
->
-> Because "user" doesn't tell me it is a modified structure which is
-> different from the spec.
+Under pre-validation, the pages are validated prior to first use. And under
+lazy validation, pages are validated when first accessed. An access to a
+unvalidated page results in a #VC exception, at which time the exception
+handler may validate the page. Lazy validation requires careful tracking of
+the validated pages to avoid validating the same GPA more than once. The
+recently introduced "Unaccepted" memory type can be used to communicate the
+unvalidated memory ranges to the Guest OS.
 
-We have good documentation for the SEV ioctl and structure provided
-through the KVM interface.
+At this time we only sypport the pre-validation, the OVMF guest BIOS
+validates the entire RAM before the control is handed over to the guest kernel.
+The early_set_memory_{encrypt,decrypt} and set_memory_{encrypt,decrypt} are
+enlightened to perform the page validation or invalidation while setting or
+clearing the encryption attribute from the page table.
 
-Unfortunately the the documentation for the ioctl and structure provided
-through /dev/sev does not exist. We could look into adding this
-documentation outside this series. The structure provided through
-/dev/sev is identical to the structure documented in the spec with minor
-changes such as not exposing reserved fields or rename from paddr to
-uaddr etc.
+This series does not provide support for the following SEV-SNP features yet:
 
+* Lazy validation
+* Interrupt security
 
->> e.g
->> a spec definition for the PEK import in include/linux/psp-sev.h is:
->> struct sev_data_pek_cert_import {
->> 	u64 pdh_cert_address;  /* system physical address */
->> 	u32 pdh_cert_len;
->> 	u32 reserved;
->> 	...
->> };
->>
->> But its corresponding userspace structure def in include/uapi/linux/psp-sev.h is:
->> struct sev_user_data_pek_cert_import {
->> 	__u64 pek_cert_uaddr; /* userspace address */
->> 	__u32 pek_cert_len;
->> 	...
->> };
-> And the difference is a single "u32 reserved"?
+The series is based on tip/master
+  e53fbd0a2509 (origin/master) Merge branch 'core/urgent'
 
-Mostly yes.
+Additional resources
+---------------------
+SEV-SNP whitepaper
+https://www.amd.com/system/files/TechDocs/SEV-SNP-strengthening-vm-isolation-with-integrity-protection-and-more.pdf
+ 
+APM 2: https://www.amd.com/system/files/TechDocs/24593.pdf
+(section 15.36)
 
->
-> Dunno, from where I'm standing this looks like unnecessary confusion to
-> me.
->> The ioctl handling takes care of mapping from uaddr to pa and other
->> things as required. So, I took similar approach for the SEV-SNP guest
->> ioctl. In this particular case the guest request structure defined in
->> the spec contains multiple field but many of those fields are managed
->> internally by the kernel (e.g seqno, IV, etc etc).
-> Ok, multiple fields sounds like you wanna save on the data that is
-> shovelled between kernel and user space and then some of the fields
-> don't mean a thing for the user API. Ok.
->
-> But again, where is this documented and stated clear so that people are
-> aware?
->
-> Or are you assuming that since the user counterparts are in
->
-> include/uapi/linux/psp-sev.h
-> 	^^^^
->
-> and it being an uapi header, then that should state that?
->
-Yes, the assumption is user wanting to communicate to PSP through
-/dev/sev will need to include include psp-sev.h from
-uapi/linux/psp-sev.h. The header file itself document the fields
-definition, and then user need to refer to SEV SPEC for the further
-details. I could start documenting the SNP specific ioctl in
-Documentation/virt/coco/sevguest.rst and it can be later expanded to
-cover SEV and SEV-ES.
+GHCB spec:
+https://developer.amd.com/wp-content/resources/56421.pdf
 
--Brijesh
+SEV-SNP firmware specification:
+https://developer.amd.com/sev/
 
+Changes since v3:
+ * Add support to use the PSP filtered CPUID.
+ * Add support for the extended guest request.
+ * Move sevguest driver in driver/virt/coco.
+ * Add documentation for sevguest ioctl.
+ * Add support to check the vmpl0.
+ * Pass the VM encryption key and id to be used for encrypting guest messages
+   through the platform drv data.
+ * Multiple cleanup and fixes to address the review feedbacks.
+
+Changes since v2:
+ * Add support for AP startup using SNP specific vmgexit.
+ * Add snp_prep_memory() helper.
+ * Drop sev_snp_active() helper.
+ * Add sev_feature_enabled() helper to check which SEV feature is active.
+ * Sync the SNP guest message request header with latest SNP FW spec.
+ * Multiple cleanup and fixes to address the review feedbacks.
+
+Changes since v1:
+ * Integerate the SNP support in sev.{ch}.
+ * Add support to query the hypervisor feature and detect whether SNP is supported.
+ * Define Linux specific reason code for the SNP guest termination.
+ * Extend the setup_header provide a way for hypervisor to pass secret and cpuid page.
+ * Add support to create a platform device and driver to query the attestation report
+   and the derive a key.
+ * Multiple cleanup and fixes to address Boris's review fedback.
+
+Brijesh Singh (23):
+  x86/sev: shorten GHCB terminate macro names
+  x86/sev: Save the negotiated GHCB version
+  x86/sev: Add support for hypervisor feature VMGEXIT
+  x86/mm: Add sev_feature_enabled() helper
+  x86/sev: Define the Linux specific guest termination reasons
+  x86/sev: check SEV-SNP features support
+  x86/sev: Add a helper for the PVALIDATE instruction
+  x86/sev: check the vmpl level
+  x86/compressed: Add helper for validating pages in the decompression
+    stage
+  x86/compressed: Register GHCB memory when SEV-SNP is active
+  x86/sev: Register GHCB memory when SEV-SNP is active
+  x86/sev: Add helper for validating pages in early enc attribute
+    changes
+  x86/kernel: Make the bss.decrypted section shared in RMP table
+  x86/kernel: Validate rom memory before accessing when SEV-SNP is
+    active
+  x86/mm: Add support to validate memory when changing C-bit
+  KVM: SVM: define new SEV_FEATURES field in the VMCB Save State Area
+  x86/boot: Add Confidential Computing type to setup_data
+  x86/sev: Provide support for SNP guest request NAEs
+  x86/sev: Add snp_msg_seqno() helper
+  x86/sev: Register SNP guest request platform device
+  virt: Add SEV-SNP guest driver
+  virt: sevguest: Add support to derive key
+  virt: sevguest: Add support to get extended report
+
+Michael Roth (9):
+  x86/head/64: set up a startup %gs for stack protector
+  x86/sev: move MSR-based VMGEXITs for CPUID to helper
+  KVM: x86: move lookup of indexed CPUID leafs to helper
+  x86/compressed/acpi: move EFI config table access to common code
+  x86/compressed/64: enable SEV-SNP-validated CPUID in #VC handler
+  x86/boot: add a pointer to Confidential Computing blob in bootparams
+  x86/compressed/64: store Confidential Computing blob address in
+    bootparams
+  x86/compressed/64: add identity mapping for Confidential Computing
+    blob
+  x86/sev: enable SEV-SNP-validated CPUID in #VC handlers
+
+Tom Lendacky (4):
+  KVM: SVM: Create a separate mapping for the SEV-ES save area
+  KVM: SVM: Create a separate mapping for the GHCB save area
+  KVM: SVM: Update the SEV-ES save area mapping
+  x86/sev: Use SEV-SNP AP creation to start secondary CPUs
+
+ Documentation/virt/coco/sevguest.rst        | 109 +++
+ arch/x86/boot/compressed/Makefile           |   1 +
+ arch/x86/boot/compressed/acpi.c             | 124 ++--
+ arch/x86/boot/compressed/efi-config-table.c | 224 ++++++
+ arch/x86/boot/compressed/head_64.S          |   1 +
+ arch/x86/boot/compressed/ident_map_64.c     |  35 +-
+ arch/x86/boot/compressed/idt_64.c           |   7 +-
+ arch/x86/boot/compressed/misc.h             |  66 ++
+ arch/x86/boot/compressed/sev.c              | 115 +++-
+ arch/x86/include/asm/bootparam_utils.h      |   1 +
+ arch/x86/include/asm/cpuid-indexed.h        |  26 +
+ arch/x86/include/asm/mem_encrypt.h          |  10 +
+ arch/x86/include/asm/msr-index.h            |   2 +
+ arch/x86/include/asm/realmode.h             |   1 +
+ arch/x86/include/asm/setup.h                |   5 +-
+ arch/x86/include/asm/sev-common.h           |  80 ++-
+ arch/x86/include/asm/sev.h                  |  79 ++-
+ arch/x86/include/asm/svm.h                  | 176 ++++-
+ arch/x86/include/uapi/asm/bootparam.h       |   4 +-
+ arch/x86/include/uapi/asm/svm.h             |  13 +
+ arch/x86/kernel/head64.c                    |  46 +-
+ arch/x86/kernel/head_64.S                   |   6 +-
+ arch/x86/kernel/probe_roms.c                |  13 +-
+ arch/x86/kernel/setup.c                     |   3 +
+ arch/x86/kernel/sev-internal.h              |  12 +
+ arch/x86/kernel/sev-shared.c                | 572 +++++++++++++++-
+ arch/x86/kernel/sev.c                       | 716 +++++++++++++++++++-
+ arch/x86/kernel/smpboot.c                   |   5 +
+ arch/x86/kvm/cpuid.c                        |  17 +-
+ arch/x86/kvm/svm/sev.c                      |  24 +-
+ arch/x86/kvm/svm/svm.c                      |   4 +-
+ arch/x86/kvm/svm/svm.h                      |   2 +-
+ arch/x86/mm/mem_encrypt.c                   |  65 +-
+ arch/x86/mm/pat/set_memory.c                |  15 +
+ drivers/virt/Kconfig                        |   3 +
+ drivers/virt/Makefile                       |   1 +
+ drivers/virt/coco/sevguest/Kconfig          |   9 +
+ drivers/virt/coco/sevguest/Makefile         |   2 +
+ drivers/virt/coco/sevguest/sevguest.c       | 623 +++++++++++++++++
+ drivers/virt/coco/sevguest/sevguest.h       |  63 ++
+ include/linux/efi.h                         |   1 +
+ include/linux/sev-guest.h                   |  90 +++
+ include/uapi/linux/sev-guest.h              |  81 +++
+ 43 files changed, 3253 insertions(+), 199 deletions(-)
+ create mode 100644 Documentation/virt/coco/sevguest.rst
+ create mode 100644 arch/x86/boot/compressed/efi-config-table.c
+ create mode 100644 arch/x86/include/asm/cpuid-indexed.h
+ create mode 100644 arch/x86/kernel/sev-internal.h
+ create mode 100644 drivers/virt/coco/sevguest/Kconfig
+ create mode 100644 drivers/virt/coco/sevguest/Makefile
+ create mode 100644 drivers/virt/coco/sevguest/sevguest.c
+ create mode 100644 drivers/virt/coco/sevguest/sevguest.h
+ create mode 100644 include/linux/sev-guest.h
+ create mode 100644 include/uapi/linux/sev-guest.h
+
+-- 
+2.17.1
 
