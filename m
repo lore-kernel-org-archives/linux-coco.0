@@ -1,42 +1,42 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D54F168
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jul 2021 20:17:34 +0000 (UTC)
-Received: by mail-pg1-f179.google.com with SMTP id y17so3651742pgf.12
-        for <linux-coco@lists.linux.dev>; Wed, 14 Jul 2021 13:17:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5960C70
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jul 2021 20:37:10 +0000 (UTC)
+Received: by mail-pj1-f43.google.com with SMTP id jx7-20020a17090b46c7b02901757deaf2c8so2267985pjb.0
+        for <linux-coco@lists.linux.dev>; Wed, 14 Jul 2021 13:37:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=gI+EA8/Nf0J6cK0TpEGVYGTiyDY2bGvR4CfRf7LwiKE=;
-        b=g5d0iCWIXzMtG9uTu4/WlfhcZDBDTSjF3SH5HB9h4kkyFWdS7ZFPeo0oNtlcStWvtn
-         OANE7EZVNP4nmKgWq8tgYnWAvrvGJWebyAdeeXhf96uLFGMcFQsamzdhmuuzVPYGOyb8
-         O5RDhJG8U68pCLJi5ASJNrLwnUrnkZNoF7FD6XOsrw74H2NswKJvPvJgBvUDCkLvprwV
-         NLId20507N3qid+yv8cijIDtEser1wyOco2oH3TW+xXgGAo00hgYD3DO+d60Or3VkQeb
-         Wx27yxaXGRcyWXv3NnYcW7bUilesUtohyflmFOm3jAn7bgNguf6V8uYVWOpKM14JokT9
-         aPoQ==
+        bh=ZVoghOGzFUo2g1EHO3svD45q6oPjKQ3+d8OVWxkKeFs=;
+        b=JiU2GbbPqJEfjdLSrQJtgYY3oWalcHVF5itcoxrvKNVRdaiNBcHkThvP5a13TSbF/F
+         975P58r0yXUBYucj06Qebr86YNALTQ+WyrW8dwDAzxB5rRtElAwzRA5OLP/QBpJbUPw0
+         EXbFkofXnP6BHr0opiIKPx1G6cbmQMXpNY2Ft4SImg1JUU9x0QpEdd9rY9la8Lc6KI6Q
+         /tBVkTIXZpTN14WonkOF+PsfWoFfhZeFXuH3VW2oazKiJSWXyLBV7BAcC3wIrR+eR9oF
+         M6re8cCcSA0q47xQspQh2x4zNkVDMuZ8Fmn8Z59RpcGleVkcOUjcm7nBPQLI7V+hGLzL
+         eMSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=gI+EA8/Nf0J6cK0TpEGVYGTiyDY2bGvR4CfRf7LwiKE=;
-        b=oxDXCPJJr/4GMdRY3yPqPBItXr9+J59Rz890ypOAX7rioJ5M/9J1Unwmd2+C39KGIZ
-         4lFdRNDbURRuU76y8M8CH9xWEwEJhdt87CzEVa44VBPksRXuau7vlV/61t2e71Bt0DAT
-         RE9Obo4AXALvgh8wm12PiNcRVRHLShOYVA/75RkOrkb4NOCF5WDs6LIIlZrmWHEU+Qqo
-         DFE2b/hucU25vxvrPsFXx/hzbWFE5sOt649+YPztmiSUMAHFYvH5oqXEdjANoEOX7Ey+
-         KDRX9TprbtqGOJ77yZBtbTjjOzSh/5pqGqqSu3Do0bojGVyo2hqR2NnlNbeBpiN8bbfo
-         xOsQ==
-X-Gm-Message-State: AOAM532z5LVr3GQBdeqhjP1KKMW24xwlCqJ9qTbjKvhxO5taZSnuopcA
-	03fhwxjmaGoAtIBl3nEr7vX9dQ==
-X-Google-Smtp-Source: ABdhPJxZmb+DhcGTDT/5mCgrCU1UlHYl4NvPyzbchWS9bE34G11Vek+44z/cDUPxjy/753noD0t2Cw==
-X-Received: by 2002:a63:471b:: with SMTP id u27mr11470643pga.301.1626293853407;
-        Wed, 14 Jul 2021 13:17:33 -0700 (PDT)
+        bh=ZVoghOGzFUo2g1EHO3svD45q6oPjKQ3+d8OVWxkKeFs=;
+        b=lLhacNExlDm6+3cQI4p8w4VJGc4klrb5NbXXotNXvPxS5v5i6I1BZdgkWjwUAAd5FE
+         XN5ikT+3PRuZ5ztsUU8BXoxq7+3K8+bA86xSP5z/eEmbOdWAteFeXauliFIcJTCsDKnN
+         VM0hg20dNDlCQs1H63/hdCH00VQy3OoAHL9FOs7HV2GZX0Uzk0RrtlCfuSElfObsIW9R
+         Wj6zxO9eTZkh+b+WOwMZLalAU6NmYK+eTN0/3eYb3QXpfjhqs36YwUdyu5mh4lTckXo2
+         CRywckkvPzw2J9fZbwB6vecFo+7FHjQLtvV/dXU80El87KY/5VLnm4Nq4K3QAQRdol4+
+         iRTw==
+X-Gm-Message-State: AOAM532Tl6RE9sBTOJ1+oIF++Tfx3IYRD2HMRNazpCKO9FipI4vBnThp
+	NTLQMfXJZoXiTy7PAFc5bqQZew==
+X-Google-Smtp-Source: ABdhPJwUL+v46lDMA+LqJ5QvGmnIpHnxv/opqwJmq3pJ98w6lIS+a2sQ5Xiu1judhEtQf2xwoOjymw==
+X-Received: by 2002:a17:90b:b88:: with SMTP id bd8mr5383285pjb.26.1626295029550;
+        Wed, 14 Jul 2021 13:37:09 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id p1sm3784881pfp.137.2021.07.14.13.17.32
+        by smtp.gmail.com with ESMTPSA id t37sm3942693pfg.14.2021.07.14.13.37.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jul 2021 13:17:32 -0700 (PDT)
-Date: Wed, 14 Jul 2021 20:17:29 +0000
+        Wed, 14 Jul 2021 13:37:08 -0700 (PDT)
+Date: Wed, 14 Jul 2021 20:37:05 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -61,11 +61,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
 	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 01/40] KVM: SVM: Add support to handle AP
- reset MSR protocol
-Message-ID: <YO9GWVsZmfXJ4BRl@google.com>
+Subject: Re: [PATCH Part2 RFC v4 02/40] KVM: SVM: Provide the Hypervisor
+ Feature support VMGEXIT
+Message-ID: <YO9K8akh1CdY1kjd@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-2-brijesh.singh@amd.com>
+ <20210707183616.5620-3-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,150 +74,44 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-2-brijesh.singh@amd.com>
+In-Reply-To: <20210707183616.5620-3-brijesh.singh@amd.com>
 
 On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> From: Tom Lendacky <thomas.lendacky@amd.com>
+> Version 2 of the GHCB specification introduced advertisement of features
+> that are supported by the Hypervisor.
 > 
-> Add support for AP Reset Hold being invoked using the GHCB MSR protocol,
-> available in version 2 of the GHCB specification.
+> Now that KVM supports version 2 of the GHCB specification, bump the
+> maximum supported protocol version.
 
-Please provide a brief overview of the protocol, and why it's needed.  I assume
-it's to allow AP wakeup without a shared GHCB?
+Heh, the changelog doesn't actually state that it's adding support for said
+advertisement of features.  It took me a few seconds to figure out what the
+patch was doing, even though it's quite trivial in the end.
 
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
-
-...
-
->  static u8 sev_enc_bit;
->  static DECLARE_RWSEM(sev_deactivate_lock);
->  static DEFINE_MUTEX(sev_bitmap_lock);
-> @@ -2199,6 +2203,9 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
->  
->  void sev_es_unmap_ghcb(struct vcpu_svm *svm)
->  {
-> +	/* Clear any indication that the vCPU is in a type of AP Reset Hold */
-> +	svm->ap_reset_hold_type = AP_RESET_HOLD_NONE;
-> +
->  	if (!svm->ghcb)
->  		return;
->  
-> @@ -2404,6 +2411,22 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  				  GHCB_MSR_INFO_POS);
->  		break;
->  	}
-> +	case GHCB_MSR_AP_RESET_HOLD_REQ:
-> +		svm->ap_reset_hold_type = AP_RESET_HOLD_MSR_PROTO;
-> +		ret = kvm_emulate_ap_reset_hold(&svm->vcpu);
-
-The hold type feels like it should be a param to kvm_emulate_ap_reset_hold().
-
-> +
-> +		/*
-> +		 * Preset the result to a non-SIPI return and then only set
-> +		 * the result to non-zero when delivering a SIPI.
-> +		 */
-> +		set_ghcb_msr_bits(svm, 0,
-> +				  GHCB_MSR_AP_RESET_HOLD_RESULT_MASK,
-> +				  GHCB_MSR_AP_RESET_HOLD_RESULT_POS);
-> +
-> +		set_ghcb_msr_bits(svm, GHCB_MSR_AP_RESET_HOLD_RESP,
-> +				  GHCB_MSR_INFO_MASK,
-> +				  GHCB_MSR_INFO_POS);
-
-It looks like all uses set an arbitrary value and then the response.  I think
-folding the response into the helper would improve both readability and robustness.
-I also suspect the helper needs to do WRITE_ONCE() to guarantee the guest sees
-what it's supposed to see, though memory ordering is not my strong suit.
-
-Might even be able to squeeze in a build-time assertion.
-
-Also, do the guest-provided contents actually need to be preserved?  That seems
-somewhat odd.
-
-E.g. can it be
-
-static void set_ghcb_msr_response(struct vcpu_svm *svm, u64 response, u64 value,
-				  u64 mask, unsigned int pos)
-{
-	u64 val = (response << GHCB_MSR_INFO_POS) | (val << pos);
-
-	WRITE_ONCE(svm->vmcb->control.ghcb_gpa |= (value & mask) << pos;
-}
-
-and
-
-		set_ghcb_msr_response(svm, GHCB_MSR_AP_RESET_HOLD_RESP,
-				      GHCB_MSR_AP_RESET_HOLD_RESULT_MASK,
-				      GHCB_MSR_AP_RESET_HOLD_RESULT_POS);
-
-> +		break;
->  	case GHCB_MSR_TERM_REQ: {
->  		u64 reason_set, reason_code;
->  
-> @@ -2491,6 +2514,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
->  		ret = svm_invoke_exit_handler(vcpu, SVM_EXIT_IRET);
->  		break;
->  	case SVM_VMGEXIT_AP_HLT_LOOP:
-> +		svm->ap_reset_hold_type = AP_RESET_HOLD_NAE_EVENT;
->  		ret = kvm_emulate_ap_reset_hold(vcpu);
->  		break;
->  	case SVM_VMGEXIT_AP_JUMP_TABLE: {
-> @@ -2628,13 +2652,29 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector)
->  		return;
->  	}
->  
-> -	/*
-> -	 * Subsequent SIPI: Return from an AP Reset Hold VMGEXIT, where
-> -	 * the guest will set the CS and RIP. Set SW_EXIT_INFO_2 to a
-> -	 * non-zero value.
-> -	 */
-> -	if (!svm->ghcb)
-> -		return;
-> +	/* Subsequent SIPI */
-> +	switch (svm->ap_reset_hold_type) {
-> +	case AP_RESET_HOLD_NAE_EVENT:
-> +		/*
-> +		 * Return from an AP Reset Hold VMGEXIT, where the guest will
-> +		 * set the CS and RIP. Set SW_EXIT_INFO_2 to a non-zero value.
-> +		 */
-> +		ghcb_set_sw_exit_info_2(svm->ghcb, 1);
-> +		break;
-> +	case AP_RESET_HOLD_MSR_PROTO:
-> +		/*
-> +		 * Return from an AP Reset Hold VMGEXIT, where the guest will
-> +		 * set the CS and RIP. Set GHCB data field to a non-zero value.
-> +		 */
-> +		set_ghcb_msr_bits(svm, 1,
-> +				  GHCB_MSR_AP_RESET_HOLD_RESULT_MASK,
-> +				  GHCB_MSR_AP_RESET_HOLD_RESULT_POS);
->  
-> -	ghcb_set_sw_exit_info_2(svm->ghcb, 1);
-> +		set_ghcb_msr_bits(svm, GHCB_MSR_AP_RESET_HOLD_RESP,
-> +				  GHCB_MSR_INFO_MASK,
-> +				  GHCB_MSR_INFO_POS);
-> +		break;
-> +	default:
-> +		break;
-> +	}
->  }
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 0b89aee51b74..ad12ca26b2d8 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -174,6 +174,7 @@ struct vcpu_svm {
->  	struct ghcb *ghcb;
->  	struct kvm_host_map ghcb_map;
->  	bool received_first_sipi;
-> +	unsigned int ap_reset_hold_type;
-
-Can't this be a u8?
-
->  
->  	/* SEV-ES scratch area support */
->  	void *ghcb_sa;
-> -- 
-> 2.17.1
+>  arch/x86/include/uapi/asm/svm.h |  4 ++--
+>  arch/x86/kvm/svm/sev.c          | 14 ++++++++++++++
+>  arch/x86/kvm/svm/svm.h          |  3 ++-
+>  3 files changed, 18 insertions(+), 3 deletions(-)
 > 
+> diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+> index 9aaf0ab386ef..ba4137abf012 100644
+> --- a/arch/x86/include/uapi/asm/svm.h
+> +++ b/arch/x86/include/uapi/asm/svm.h
+> @@ -115,7 +115,7 @@
+>  #define SVM_VMGEXIT_AP_CREATE_ON_INIT		0
+>  #define SVM_VMGEXIT_AP_CREATE			1
+>  #define SVM_VMGEXIT_AP_DESTROY			2
+> -#define SVM_VMGEXIT_HYPERVISOR_FEATURES		0x8000fffd
+> +#define SVM_VMGEXIT_HV_FT			0x8000fffd
+
+This is fixing up commit 3 from Part1, though I think it can and should be
+omitted from that patch entirely since it's not relevant to the guest, only to
+KVM.
+
+And FWIW, I like the verbose name, though it looks like Boris requested the
+shorter names for the guest.  Can we keep the verbose form for KVM-only VMEGXIT
+name?  Hyper-V has mostly laid claim to "HV", and feature is not the first thing
+that comes to mind for "FT".
+
+>  #define SVM_VMGEXIT_UNSUPPORTED_EVENT		0x8000ffff
