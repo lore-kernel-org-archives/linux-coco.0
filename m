@@ -1,111 +1,134 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF933168
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 20:24:50 +0000 (UTC)
-Received: by mail-pf1-f175.google.com with SMTP id u126so9895807pfb.8
-        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 13:24:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=/ueH7e1R+Y/9Tjm+iXp9T6qooVmg3C+ED64P3I591HI=;
-        b=rpRYvrfz6uIHeUpHKmujhCdwk9rbm/oL9LmMIjkgkvoLoy4OntrYE11Df5glviaYn+
-         6C0Q64khcfMxVcXVTZZJn0FhXZsMIWu7qge2Ikf+ANhdDMCuolK0QajXqXOPTNNHQZdC
-         y/xBvL7a5FL6SqIsOmmCdR8XBrRAJI17s57sbB5vZLH7VyKT5Kd02Df0zVHtq3PHedc2
-         AYGbSnbqVtsE8UGU6HqfkIJfnpR8FHr2WEGoUKQqEJb0tyMcLPVkbr0kfMMru3LYCdSj
-         TFMutp7A6eXjOdVSWKArL+d8R0xMsMIgFPkOWgSOt7A4IDqP9TdzUq3FT9hlrYbGTz3z
-         kCxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=/ueH7e1R+Y/9Tjm+iXp9T6qooVmg3C+ED64P3I591HI=;
-        b=JrP9inv8uCSP28yERAQZEHZCy7IyzkIT2WjY8ioocU94QBRfpiiOPZ3CpIIDRCGYth
-         agekzAde8IzGKgFiBQrWZph+g+U2DRCELK2X4Bfs9izRYSdc0HCbtWrZSEsTeG+s6u/W
-         cE7Ry7maehX8vG7D5LbenxWCv3o27zs/RIqnOkLm/CGX+wIccRAggaLRwLExpFYs6W1K
-         t6b8x2L6y3B1TlcL3r6X0In5bLCcHZenDp0CEcBt3RgaogzIRBOx//enxUX5yFQFNIiI
-         T8QL+uQvR8nik+OlMF+vWr0MQpWSU1bhmjQ7ATisNQ5lg4wn9HskwXsXjcftMuDFIh1w
-         1T4w==
-X-Gm-Message-State: AOAM530H5l+nWpslInqcvEdD3dljvrORZn0cAm3jMHVU4Xbx+CUD93Ac
-	FSrH6DsriQ2MTJuCvyXjNWaKdQ==
-X-Google-Smtp-Source: ABdhPJx5z2KfcuWt/DfKkC4lsDSx4E1hp1htq+WW2Tom9he1jw05rOfD+bqBAYmCI98dUfs6qLi1hw==
-X-Received: by 2002:a62:1a47:0:b029:328:cbf8:6d42 with SMTP id a68-20020a621a470000b0290328cbf86d42mr27228516pfa.37.1626726290119;
-        Mon, 19 Jul 2021 13:24:50 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id n6sm23363563pgb.60.2021.07.19.13.24.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jul 2021 13:24:49 -0700 (PDT)
-Date: Mon, 19 Jul 2021 20:24:45 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 22/40] KVM: SVM: Add KVM_SNP_INIT command
-Message-ID: <YPXfjYsEepISApuf@google.com>
-References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-23-brijesh.singh@amd.com>
- <YPHfC1mI8dQkkzyV@google.com>
- <3f12243a-dee3-2a97-9a1b-51f4f6095349@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0563C72
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 20:39:50 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10050"; a="190715217"
+X-IronPort-AV: E=Sophos;i="5.84,253,1620716400"; 
+   d="scan'208";a="190715217"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2021 13:39:50 -0700
+X-IronPort-AV: E=Sophos;i="5.84,253,1620716400"; 
+   d="scan'208";a="461741719"
+Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.212.130.235]) ([10.212.130.235])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2021 13:39:49 -0700
+Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
+To: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Jon Grimm <jon.grimm@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ "Kaplan, David" <David.Kaplan@amd.com>, Varad Gautam
+ <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>
+Cc: x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev
+References: <YPV27hDPZUoVsIZt@suse.de>
+From: Andi Kleen <ak@linux.intel.com>
+Message-ID: <4e33d22e-330f-c5ba-bc15-08a3298598c5@linux.intel.com>
+Date: Mon, 19 Jul 2021 13:39:48 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3f12243a-dee3-2a97-9a1b-51f4f6095349@amd.com>
+In-Reply-To: <YPV27hDPZUoVsIZt@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-On Fri, Jul 16, 2021, Brijesh Singh wrote:
-> 
-> On 7/16/21 2:33 PM, Sean Christopherson wrote:
-> > On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> >> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> >> index 3fd9a7e9d90c..989a64aa1ae5 100644
-> >> --- a/include/uapi/linux/kvm.h
-> >> +++ b/include/uapi/linux/kvm.h
-> >> @@ -1678,6 +1678,9 @@ enum sev_cmd_id {
-> >>  	/* Guest Migration Extension */
-> >>  	KVM_SEV_SEND_CANCEL,
-> >>  
-> >> +	/* SNP specific commands */
-> >> +	KVM_SEV_SNP_INIT = 256,
-> > Is there any meaning behind '256'?  If not, why skip a big chunk?  I wouldn't be
-> > concerned if it weren't for KVM_SEV_NR_MAX, whose existence arguably implies that
-> > 0-KVM_SEV_NR_MAX-1 are all valid SEV commands.
-> 
-> In previous patches, Peter highlighted that we should keep some gap
-> between the SEV/ES and SNP to leave room for legacy SEV/ES expansion. I
-> was not sure how many we need to reserve without knowing what will come
-> in the future; especially recently some of the command additional  are
-> not linked to the firmware. I am okay to reduce the gap or remove the
-> gap all together.
 
-Unless the numbers themselves have meaning, which I don't think they do, I vote
-to keep the arbitrary numbers contiguous.  KVM_SEV_NR_MAX makes me nervous, and
-there are already cases of related commands being discontiguous, e.g. KVM_SEND_CANCEL.
+> 	III. Approach I. and II. can be combined. The firmware only
+> 	     validates the first X MB/GB of guest memory and the rest is
+> 	     validated on-demand.
 
-Peter or Paolo, any thoughts?
+
+It's actually not just the first X. As I understand there is a proposal 
+for a new UEFI memory type, that will allow the firmware (and anyone 
+else) to declare memory regions as accepted in a fine grained manner.
+
+
+>
+> For method II. and III. the guest needs to track which pages have
+> already been validated to detect hypervisor attacks. This information
+> needs to be carried through the whole boot process.
+
+I don't think it's that bad. If we know what has been validated already 
+using the memory map, then it's straight forward to check what is a 
+valid validation request and what is not. Anything that's in a BIOS 
+reserved region or in a region already marked as validated must be 
+already validated and and can be rejected (or rather panic'ed). So I 
+don't see the need to pass a fine grained validation bitmap around. Of 
+course the kernel needs to maintain something (likely not a bitmap, but 
+rather some form of page flag) on its own, but it doesn't need to be 
+visible in any outside interfaces.
+
+There's one exception to this, which is the previous memory view in 
+crash kernels. But that's an relatively obscure case and there might be 
+other solutions for this.
+
+
+> Memory Validation through the Boot Process and in the Running System
+> --------------------------------------------------------------------
+>
+> The memory is validated throughout the boot process as described below.
+> These steps assume a firmware is present, but this proposal does not
+> strictly require a firmware. The tasks done be the firmware can also be
+> done by the hypervisor before starting the guest. The steps are:
+>
+> 	1. The firmware validates all memory which will not be owned by
+> 	   the boot loader or the OS.
+>
+> 	2. The firmware also validates the first X MB of memory, just
+> 	   enough to run a boot loader and to load the compressed Linux
+> 	   kernel image. X is not expected to be very large, 64 or 128
+> 	   MB should be enough. This pre-validation should not cause
+> 	   significant delays in the boot process.
+>
+> 	3. The validated memory is marked E820-Usable in struct
+> 	   boot_params for the Linux decompressor. The rest of the
+> 	   memory is also passed to Linux via new special E820 entries
+> 	   which mark the memory as Usable-but-Invalid.
+>
+> 	4. When the Linux decompressor takes over control, it evaluates
+> 	   the E820 table and calculates to total amount of memory
+> 	   available to Linux (valid and invalid memory).
+>
+> 	   The decompressor allocates a physically contiguous data
+> 	   structure at a random memory location which is big enough to
+> 	   hold the the validation states of all 4kb pages available to
+> 	   the guest. This data structure will be called the Validation
+> 	   Bitmap through the rest of this document. The Validation
+> 	   Bitmap is indexed by page frame numbers.
+
+I don't think we need to go that fine grained. The decompressor will 
+just pre-validate all the memory it needs (which is relatively) limited 
+and the later kernel can know about it in some static way and then fix 
+up its mem_map state. We might need a few extra allocations between main 
+kernel entry and mem_map init, but that could be handled in some simple 
+data structure.
+
+
+>
+> 	8. When memory is returned to the memblock or page allocators,
+> 	   it is _not_ invalidated. In fact, all memory which is freed
+> 	   need to be valid. If it was marked invalid in the meantime
+> 	   (e.g. if it the memory was used for DMA buffers), the code
+> 	   owning the memory needs to validate it again before freeing
+> 	   it.
+
+
+I'm not sure about AMD, but in TDX we're certainly have no need to 
+reaccept after something was shared.
+
+Also in general i don't think it will really happen, at least initially. 
+All the shared buffers we use are allocated and never freed. So such a 
+problem could be deferred.
+
+-Andi
+
