@@ -1,42 +1,42 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203EB168
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 19:14:20 +0000 (UTC)
-Received: by mail-pg1-f176.google.com with SMTP id a6so12701727pgw.3
-        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 12:14:20 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEE829D6
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 19:14:52 +0000 (UTC)
+Received: by mail-pf1-f178.google.com with SMTP id u126so9624214pfb.8
+        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 12:14:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=2XllpOUOhhdBvpd5Av+f2na/9hRxJV/QURDHxqubmW8=;
-        b=TAK2LJLZI6u4VHRX2CtOxDwgftlqvQHU1lzhdQy0LcCcpbcr9ralpKcma3Fe1DAXVB
-         YEbBG2X95V7PcYiO0NGfbsi3Mq0cpEE3BWadst6/qrqSI45eUiSf3Qjvvs6crWGL9pAk
-         f2S4uAxDH1tnD8dXBw6emsJHGIQpk2eykj7mExtMmKVHuA7Vr+eL6Oey1hzAPDg0oa7c
-         OqiF98AMx5gJrcAFkQlYE7iIsV7JKMNqh9RKqeBFp/4OqS+g0z1Kqo7z2BDexEgHIRFG
-         OcCF2FjqNIBEhh9hv1V9N0corxEGyzsVRPh6ngPwFo0wqMpY3VZZiMwxPSWpMijKQ4qA
-         4xYQ==
+        bh=tQHel7KfmZotRt+JL+tikCTH8i4jvKerKwX4Ykhe458=;
+        b=XzM+UTgoPg+XkDOQ81Qyu9Aj1IHESyBIMhh/NFuqluTQUx/dfqwUh9CfJ7hyZrzFOq
+         98OBWEJ8SBib/jcg/gWXAgVqsGzmGzVmU1OUdWlfXwZp6TOhQz8JOPY/LhU0HLup5t60
+         MG09uBh/EZAN80GUdXbWAIzfSVF8OpL6KrxKsnW7KZT5qxtMjdXlgfFYJCVMyibNrxap
+         bI8rESzefHOSN3QAHId4wLC6/nFzqtJ5ez4iL6x1w8/BsoenbhCPqleRFd2divXFsxNi
+         r/lz770w0+7cZ8LA1ahJas+30qW/2CSV1uocE/OAPLcIqktisM8VvyTh0xw7f/nc4gbi
+         Wsfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=2XllpOUOhhdBvpd5Av+f2na/9hRxJV/QURDHxqubmW8=;
-        b=iTVc6HFN/Ix8/PmW27yrzFGF3wtoP5zVxbqcystv4GSrMjtgR2S3G0+UbtzszBFc0w
-         O0rwBV5SO+bzwMhT9icAeor8JS5tceGfJh7neZhT5pCEUCEqTRPnaJWMuzS8OiGgTdyv
-         orCVYk9zqBhal7OXnUmukaFAhtB//cADcPY0NyedF3kjQ58z8adMpgwfxfJ/wqJ2PKoh
-         9Q+80/L35q2ICOfgMv/mMyCwS5JAUIC6DpYtiVlPQx4w1maLEeCg+fcqieUU0ZDtVqbf
-         dAECl8NNDa2gz0H1ZTLxqSfCbHDUQw2BfJsm57VW930XygHaW4tYjModqaUte9k2Gbna
-         uB0w==
-X-Gm-Message-State: AOAM530TyWeD0/peQar7xETJx78HkreF8EFvjSBRvl7IYQiXvLqHCNlz
-	4+t7SshwQxVAYdUwXOXuW1kPmTh70zg8rw==
-X-Google-Smtp-Source: ABdhPJx+EzDcqa/llq3nQF6Vq0NHWvv5j8Tkv3O31Pzz7AmNV8hJdli78mh1Sa+ATMQeYmFd5XN3Uw==
-X-Received: by 2002:a63:5059:: with SMTP id q25mr26911779pgl.9.1626722059360;
-        Mon, 19 Jul 2021 12:14:19 -0700 (PDT)
+        bh=tQHel7KfmZotRt+JL+tikCTH8i4jvKerKwX4Ykhe458=;
+        b=j9eSW2SZ4TPNf6oGYfB27skF3tkPe7ubP7QbzRZ0IJiARbmBMB//fm3WV6V4DHMbRJ
+         lltw8DfMeeSJw7HL2/b4XI6eBlzxRniM8kIIVMu2dnPbVYgpIJ3o04PNy73hUug9TgJi
+         NsuSa6V263Wm6XCeC5gCnpsfSSfaJ8nv+G8RI2i7euUm0ABRyQax3PC9eePP+06XpwsP
+         0gewCNEMsa4xMOr6R2ulDIXsL1CFZz3/WkWOD71avHHyFA/OaQdllpBVmnWQ3xWH0HpK
+         WZTuVf3kM6the6dJJeMYEyrzHWeMJnavNSwjFduCd6wKk/R7l3Op1R1gTUvck3fTQsm0
+         Zovg==
+X-Gm-Message-State: AOAM530HDbv4YUn2XQAomm3/ozrj4By3QgPIPO3VEXtrgZVeZ0dqt0X/
+	hH4ywr6NvXfKN/tJgZQhfiqh1w==
+X-Google-Smtp-Source: ABdhPJwrFVVD96rnIFIK2jlY/ieHH+6lfcSv1ywrpxxBKG4B8nAAH7dSYEIACsmYQwT8smdf5ajGig==
+X-Received: by 2002:a65:5bc6:: with SMTP id o6mr3241244pgr.43.1626722092334;
+        Mon, 19 Jul 2021 12:14:52 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id u24sm22109816pfm.141.2021.07.19.12.14.18
+        by smtp.gmail.com with ESMTPSA id x10sm22140073pgj.73.2021.07.19.12.14.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jul 2021 12:14:18 -0700 (PDT)
-Date: Mon, 19 Jul 2021 19:14:15 +0000
+        Mon, 19 Jul 2021 12:14:51 -0700 (PDT)
+Date: Mon, 19 Jul 2021 19:14:48 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -61,18 +61,15 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
 	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 25/40] KVM: SVM: Reclaim the guest pages
- when SEV-SNP VM terminates
-Message-ID: <YPXPB1WMW8WY9cZ7@google.com>
+Subject: Re: [PATCH Part2 RFC v4 26/40] KVM: SVM: Add
+ KVM_SEV_SNP_LAUNCH_FINISH command
+Message-ID: <YPXPKLW8DvqK7yak@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-26-brijesh.singh@amd.com>
- <YPHnb5pW9IoTcwWU@google.com>
- <2711d9f9-21a0-7baa-d0ff-2c0f69ca6949@amd.com>
- <YPIoaoDCjNVzn2ZM@google.com>
- <e1cc1e21-e7b7-5930-1c01-8f4bb6e43b3a@amd.com>
- <YPWz6YwjDZcla5/+@google.com>
- <912c929c-06ba-a391-36bb-050384907d81@amd.com>
- <YPXMas+9O1Y5910b@google.com>
+ <20210707183616.5620-27-brijesh.singh@amd.com>
+ <YPHpk3RFSmE13ZXz@google.com>
+ <9ee5a991-3e43-3489-5ee1-ff8c66cfabc1@amd.com>
+ <YPWuVY+rKU2/DVUS@google.com>
+ <379fd4da-3ca9-3205-535b-8d1891b3a75a@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -81,40 +78,56 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YPXMas+9O1Y5910b@google.com>
+In-Reply-To: <379fd4da-3ca9-3205-535b-8d1891b3a75a@amd.com>
 
-On Mon, Jul 19, 2021, Sean Christopherson wrote:
-> On Mon, Jul 19, 2021, Brijesh Singh wrote:
-> > 
-> > On 7/19/21 12:18 PM, Sean Christopherson wrote:
-> > > > 
-> > > > Okay, I will add helper to make things easier. One case where we will
-> > > > need to directly call the rmpupdate() is during the LAUNCH_UPDATE
-> > > > command. In that case the page is private and its immutable bit is also
-> > > > set. This is because the firmware makes change to the page, and we are
-> > > > required to set the immutable bit before the call.
-> > > 
-> > > Or do "int rmp_make_firmware(u64 pfn, bool immutable)"?
-> > 
-> > That's not what we need.
-> > 
-> > We need 'rmp_make_private() + immutable' all in one RMPUPDATE.  Here is the
-> > snippet from SNP_LAUNCH_UPDATE.
+On Mon, Jul 19, 2021, Brijesh Singh wrote:
 > 
-> Ah, not firmwrare, gotcha.  But we can still use a helper, e.g. an inner
-> double-underscore helper, __rmp_make_private().
+> 
+> On 7/19/21 11:54 AM, Sean Christopherson wrote:
+> > > As I said in previous comments that by default all the memory is in the
+> > > hypervisor state. if the rmpupdate() failed that means nothing is changed in
+> > > the RMP and there is no need to reclaim. The reclaim is required only if the
+> > > pages are assigned in the RMP table.
+> > 
+> > I wasn't referring to RMPUPDATE failing here (or anywhere).  This is the vCPU free
+> > path, which I think means the svm->vmsa page was successfully updated in the RMP
+> > during LAUNCH_UPDATE.  snp_launch_update_vmsa() goes through snp_page_reclaim()
+> > on LAUNCH_UPDATE failure, whereas this happy path does not.  Is there some other
+> > transition during teardown that obviastes the need for reclaim?  If so, a comment
+> > to explain that would be very helpful.
+> > 
+> 
+> In this patch, the sev_free_vcpu() hunk takes care of reclaiming the vmsa
+> pages before releasing it. I think it will make it more obvious after I add
+> a helper so that we don't depend on user reading the comment block to see
+> what its doing.
 
-Hmm, looking at it again, I think I also got confused by the comment for the VMSA
-page:
+Where?  I feel like I'm missing something.  The only change to sev_free_vcpu() I
+see is that addition of the rmpupdate(), I don't see any reclaim path.
 
-	/* Transition the VMSA page to a firmware state. */
- 	e.assigned = 1;
-	e.immutable = 1;
-	e.asid = sev->asid;
-	e.gpa = -1;
-	e.pagesize = RMP_PG_SIZE_4K;
+@@ -2346,8 +2454,25 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
 
-Unlike __snp_alloc_firmware_pages() in the CCP code, the VMSA is associated with
-the guest's ASID, just not a GPA.  I.e. the VMSA is more of a specialized guest
-private page, as opposed to a dedicated firmware page.  I.e. a __rmp_make_private()
-and/or rmp_make_private_immutable() definitely seems like a good idea.
+        if (vcpu->arch.guest_state_protected)
+                sev_flush_guest_memory(svm, svm->vmsa, PAGE_SIZE);
++
++       /*
++        * If its an SNP guest, then VMSA was added in the RMP entry as a guest owned page.
++        * Transition the page to hyperivosr state before releasing it back to the system.
++        */
++       if (sev_snp_guest(vcpu->kvm)) {
++               struct rmpupdate e = {};
++               int rc;
++
++               rc = rmpupdate(virt_to_page(svm->vmsa), &e);
++               if (rc) {
++                       pr_err("Failed to release SNP guest VMSA page (rc %d), leaking it\n", rc);
++                       goto skip_vmsa_free;
++               }
++       }
++
+        __free_page(virt_to_page(svm->vmsa));
+
++skip_vmsa_free:
+        if (svm->ghcb_sa_free)
+                kfree(svm->ghcb_sa);
+ }
