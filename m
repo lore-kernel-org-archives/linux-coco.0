@@ -1,42 +1,42 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55E2168
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 18:55:59 +0000 (UTC)
-Received: by mail-pf1-f173.google.com with SMTP id y4so17258190pfi.9
-        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 11:55:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEF2168
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 19:03:11 +0000 (UTC)
+Received: by mail-pj1-f50.google.com with SMTP id b5-20020a17090a9905b029016fc06f6c5bso607155pjp.5
+        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 12:03:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=lOc5+rloDVdT/oQx00DjmvvmSON6OrGGoIPjsiSNP8Y=;
-        b=g4AlSOFhPm6hVf/7SR105tRah3Aea3+9KqN56Ke/OvVzbLLxQa+2FEdnRI5yCBDV+U
-         4E04weFnBKUQ3efnvzdPhRQY+2+Od5nqIyCKNKgiFX0wtkQXrweRsh5bUaswhmgDdflh
-         twIaMTzdSaq840Cc7sDRoqigwkJn4mAzbH3OXS7gdeaYNQPustFoljMzhp71Jz/EDIPl
-         iQ0u6pB02qRWEy9NOKHisJRFVf53eOgb0bPRjLegKpAPXdgUt4CSFJjUZQnOg29L//qi
-         bWnnKN93uYWfM5tgm7e4zrwTJ+oo8OaLK8lCgwcR4sL6wlqDO3MXhRGr9K/4lw9CfxuI
-         K3uA==
+        bh=9m2rZHOVB1NoZtYoNA6EFBVCz7Bbir+fDae0NyH8yOk=;
+        b=cKMSuskXfTZmYOL+qFY2CjsQm3HSNuYn6k9NptZ+JPJvmISriI4cZ3yoIyeYtyxvv1
+         7oGLcbXabYb6lI+2vVxKFEJvm0ak02KG+H7bbNvqNZVkkmSiKcPJdAFjSPe2MDdu91II
+         l5JB7D82QfrUjFShHZTnPAy+smnwbQuWDI0w462/H1ygcKedZSNtC5I7u7xO9JNeg7vg
+         JqJAwxUtVLVBsS9kTMF9Thfv1hSTtzrZlIZ31izAavsZjUTXVHIXgvyzcT/qV9CGue75
+         c7WuDs77rTWCMSdOjcww3bR8tv6L5H28sqTZcJJbnPEzgwpVo2WWSvCNXmrmWKdZYdE+
+         Hl1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=lOc5+rloDVdT/oQx00DjmvvmSON6OrGGoIPjsiSNP8Y=;
-        b=GY66kCeLmcQxRwNLZt3PySG+7k6L1b7lZPb2cE3/NlSZIXngUXX5O20gTaW2XdWeBH
-         sQxzlIgAK/MrzqEpEBjSZkVFdP4PbgZqbUJv09LA3p85/dy1Z2KCVuOgW6MgGwNq3+15
-         R4SUq60QqUet8lPuqGoAmQCxiz49LILQes3gNn6Ntc2ZiRqZHF1UGFanD9LpSscs/xKb
-         M+gacf6L+vDILsenzQ/EfNVOBkNiIa8Muq1yGIES2w6SNfdNHxk52WUED4Gfqwomg/Sa
-         rcaz5UNNeGhVEpEVpEN+hipNaq2hC9DV6TOV1DSq5cLFV0Os0qsjoqZSx1K0C0+HJw5f
-         Abjw==
-X-Gm-Message-State: AOAM533sT1UVTe0H2ZBnK7jK4wr592Kvx7kK0IDWbK1G2PwhbDSbClZi
-	PkfwiD1mWz+VjgQvTd/nBvDRHQ==
-X-Google-Smtp-Source: ABdhPJxmSOu7+O2DfzTj7tTZcm5PtaeD09Hlmp3Y4R1m0EFLmxzdwqmHKXKDHGBPl5X7i0P9uc4f5A==
-X-Received: by 2002:a05:6a00:1951:b029:333:64d3:e1f1 with SMTP id s17-20020a056a001951b029033364d3e1f1mr24076104pfk.43.1626720959003;
-        Mon, 19 Jul 2021 11:55:59 -0700 (PDT)
+        bh=9m2rZHOVB1NoZtYoNA6EFBVCz7Bbir+fDae0NyH8yOk=;
+        b=crmLkWtD7WCC8DJNKVKcFWIhAbIGdsnUr81NzhV87UjdAjT1i0A5DjRYVRHIghppKg
+         o9uVADFQldEi3fK+BZiScJ++lxX7/eTqfSmAog0TGC0whA7vRKi5WQLCtvJM+byYN7+b
+         gckVfAgl16HTDpmZfTlK4kh50bIBcr3LN4GJ8B3eZnYdZf/c9KcuxQAZxu8IjUhuuAnF
+         aUemv9s1lo8vgRRyYd4rKStROMIYbdgOY6+oa/0fuIjS0kFDs8bKx3nIjaHUFgYs2AGL
+         72rURQRuwJhkFtNMhK4b66SRzBUFSuOf7iFjbmT4tg2R7p/AAesKBKlRZCASvq6ep2dk
+         +Wrg==
+X-Gm-Message-State: AOAM532nPkSYn8RCPzfNrP/EWzrszapiTPDVKo9mtIcKG6NjNJ+HLBsq
+	NiInEnj8R1QI5KgF/tlUkUkX1A==
+X-Google-Smtp-Source: ABdhPJzKRz7pQLf5Lk3Ijby/XshCZupalvr6olwQaiWS02HChg4VytvEL0vS1aw+zs+u/vaUP8R/OA==
+X-Received: by 2002:a17:90a:d486:: with SMTP id s6mr26678412pju.142.1626721391280;
+        Mon, 19 Jul 2021 12:03:11 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id q17sm24643642pgd.39.2021.07.19.11.55.58
+        by smtp.gmail.com with ESMTPSA id f7sm20453955pfc.111.2021.07.19.12.03.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jul 2021 11:55:58 -0700 (PDT)
-Date: Mon, 19 Jul 2021 18:55:54 +0000
+        Mon, 19 Jul 2021 12:03:10 -0700 (PDT)
+Date: Mon, 19 Jul 2021 19:03:06 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -61,13 +61,17 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
 	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 33/40] KVM: SVM: Add support to handle MSR
- based Page State Change VMGEXIT
-Message-ID: <YPXKuiRCjod8Wn2n@google.com>
+Subject: Re: [PATCH Part2 RFC v4 25/40] KVM: SVM: Reclaim the guest pages
+ when SEV-SNP VM terminates
+Message-ID: <YPXMas+9O1Y5910b@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-34-brijesh.singh@amd.com>
- <YPHzcstus9mS8hOm@google.com>
- <b9527f12-f3ad-c6b9-2967-5d708d69d937@amd.com>
+ <20210707183616.5620-26-brijesh.singh@amd.com>
+ <YPHnb5pW9IoTcwWU@google.com>
+ <2711d9f9-21a0-7baa-d0ff-2c0f69ca6949@amd.com>
+ <YPIoaoDCjNVzn2ZM@google.com>
+ <e1cc1e21-e7b7-5930-1c01-8f4bb6e43b3a@amd.com>
+ <YPWz6YwjDZcla5/+@google.com>
+ <912c929c-06ba-a391-36bb-050384907d81@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,67 +80,24 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b9527f12-f3ad-c6b9-2967-5d708d69d937@amd.com>
+In-Reply-To: <912c929c-06ba-a391-36bb-050384907d81@amd.com>
 
 On Mon, Jul 19, 2021, Brijesh Singh wrote:
 > 
-> On 7/16/21 4:00 PM, Sean Christopherson wrote:
-> > On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> > > +static int __snp_handle_psc(struct kvm_vcpu *vcpu, int op, gpa_t gpa, int level)
+> On 7/19/21 12:18 PM, Sean Christopherson wrote:
+> > > 
+> > > Okay, I will add helper to make things easier. One case where we will
+> > > need to directly call the rmpupdate() is during the LAUNCH_UPDATE
+> > > command. In that case the page is private and its immutable bit is also
+> > > set. This is because the firmware makes change to the page, and we are
+> > > required to set the immutable bit before the call.
 > > 
-> > I can live with e.g. GHCB_MSR_PSC_REQ, but I'd strongly prefer to spell this out,
-> > e.g. __snp_handle_page_state_change() or whatever.  I had a hell of a time figuring
-> > out what PSC was the first time I saw it in some random context.
+> > Or do "int rmp_make_firmware(u64 pfn, bool immutable)"?
 > 
-> Based on the previous review feedback I renamed from
-> __snp_handle_page_state_change to __snp_handle_psc(). I will see what others
-> say and based on that will rename accordingly.
+> That's not what we need.
+> 
+> We need 'rmp_make_private() + immutable' all in one RMPUPDATE.  Here is the
+> snippet from SNP_LAUNCH_UPDATE.
 
-I've no objection to using PSC for enums and whatnot, and I'll happily defer to
-Boris for functions in the core kernel and guest, but for KVM I'd really like to
-spell out the name for the two or so main handler functions.
-
-> > > +	while (gpa < gpa_end) {
-> > > +		/*
-> > > +		 * Get the pfn and level for the gpa from the nested page table.
-> > > +		 *
-> > > +		 * If the TDP walk failed, then its safe to say that we don't have a valid
-> > > +		 * mapping for the gpa in the nested page table. Create a fault to map the
-> > > +		 * page is nested page table.
-> > > +		 */
-> > > +		if (!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &tdp_level)) {
-> > > +			pfn = kvm_mmu_map_tdp_page(vcpu, gpa, PFERR_USER_MASK, level);
-> > > +			if (is_error_noslot_pfn(pfn))
-> > > +				goto out;
-> > > +
-> > > +			if (!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &tdp_level))
-> > > +				goto out;
-> > > +		}
-> > > +
-> > > +		/* Adjust the level so that we don't go higher than the backing page level */
-> > > +		level = min_t(size_t, level, tdp_level);
-> > > +
-> > > +		write_lock(&kvm->mmu_lock);
-> > 
-> > Retrieving the PFN and level outside of mmu_lock is not correct.  Because the
-> > pages are pinned and the VMM is not malicious, it will function as intended, but
-> > it is far from correct.
-> 
-> Good point, I should have retrieved the pfn and level inside the lock.
-> 
-> > The overall approach also feels wrong, e.g. a guest won't be able to convert a
-> > 2mb chunk back to a 2mb large page if KVM mapped the GPA as a 4kb page in the
-> > past (from a different conversion).
-> > 
-> 
-> Maybe I am missing something, I am not able to follow 'guest won't be able
-> to convert a 2mb chunk back to a 2mb large page'. The page-size used inside
-> the guest have to relationship with the RMP/NPT page-size. e.g, a guest can
-> validate the page range as a 4k and still map the page range as a 2mb or 1gb
-> in its pagetable.
-
-The proposed code walks KVM's TDP and adjusts the RMP level to be the min of the
-guest+host levels.  Once KVM has installed a 4kb TDP SPTE, that walk will find
-the 4kb TDP SPTE and thus operate on the RMP at a 4kb granularity.  To allow full
-restoration of 2mb PTE+SPTE+RMP, KVM needs to zap the 4kb SPTE(s) at some point
-to allow rebuilding a 2mb SPTE.
+Ah, not firmwrare, gotcha.  But we can still use a helper, e.g. an inner
+double-underscore helper, __rmp_make_private().
