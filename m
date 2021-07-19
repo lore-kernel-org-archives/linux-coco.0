@@ -1,134 +1,184 @@
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0563C72
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 20:39:50 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10050"; a="190715217"
-X-IronPort-AV: E=Sophos;i="5.84,253,1620716400"; 
-   d="scan'208";a="190715217"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2021 13:39:50 -0700
-X-IronPort-AV: E=Sophos;i="5.84,253,1620716400"; 
-   d="scan'208";a="461741719"
-Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.212.130.235]) ([10.212.130.235])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2021 13:39:49 -0700
-Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-To: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Brijesh Singh <brijesh.singh@amd.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Jon Grimm <jon.grimm@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- "Kaplan, David" <David.Kaplan@amd.com>, Varad Gautam
- <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>
-Cc: x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <YPV27hDPZUoVsIZt@suse.de>
-From: Andi Kleen <ak@linux.intel.com>
-Message-ID: <4e33d22e-330f-c5ba-bc15-08a3298598c5@linux.intel.com>
-Date: Mon, 19 Jul 2021 13:39:48 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7353E72
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 20:52:04 +0000 (UTC)
+Received: by mail-pf1-f169.google.com with SMTP id 21so17675097pfp.3
+        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 13:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=AFTM2GRWufz5H7ZF2I53fhdcy31mPSD1WmaoCuSp/kE=;
+        b=EaCLfVRUeWm1VySqrv8i2wNaa1wkPklvEK+xtMHdsSwgX2wFqb1Td6Qxx/Gb5l+cVb
+         iFDBBPj7D4Vc1AccEll1JyWJ1bUw6f6E5fWHeRlt33bQVWVeosWbQYPcJTxJJzXLzM9O
+         kIducZm41jdtN6sUFDlUG707INiMICk4cgWapIwGO3HfFDCHIJXCNZP4gXRP+tRtGBAe
+         upzRB6mNR4POD1tE5HNErufrnwLonZnXJR1npy0SArVe6sk5bxak769zdSKot2JBoe2R
+         8I+m0tueFJM91D9WIUbZQDxA3BDZrk+shYWYLpiKWRmq9uaqtm4emtrPiHXDahsjmVPG
+         OV2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=AFTM2GRWufz5H7ZF2I53fhdcy31mPSD1WmaoCuSp/kE=;
+        b=lzYo78mffXQWe80K4xjjzqx7CdKOwyXOCT8QGY5Ckbb1lwEqRuy/nbT03ouK+ySgTH
+         SAE1hOOfQzf009Hwkh4dijpwryVUb3PHuNUVKJef85oxpuAM0QeZf2TLe2PptDlf6HNn
+         ebBGiIJDBXW6kL57zdrx6iaE2ZGfsWRNRfajfK47wI+EdUW4KpAMZMhxfuiCcTQhQrjm
+         WoIcJ+qxxiYdQPHwTaXDFroeIt0768N0yU3Lbt4SI+tWidAiTNOx2yJB16PYQaKM7V/f
+         XEt+9rQ6D+sn6cXllb0Kb/knD6g1if5EXn7PnSxcRx+c+n00CBL9BzJVASV0CtAp+qnB
+         Flug==
+X-Gm-Message-State: AOAM532rt/jYtkzHuhMExvSG4U/EU5m9qQzJxFyhES8zwoStzArQHfso
+	VVx74w3fouuEfB5reNpj/PAzKg==
+X-Google-Smtp-Source: ABdhPJyjItrVjb+a0pFhuKYnpkTfNH72AHGpeo/P7u6yE1PaSgsExPO2J1JwGyGZTKpxOFB6QaRDuw==
+X-Received: by 2002:a62:3045:0:b029:32b:880f:c03a with SMTP id w66-20020a6230450000b029032b880fc03amr27819158pfw.22.1626727923390;
+        Mon, 19 Jul 2021 13:52:03 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id v10sm381814pjd.29.2021.07.19.13.52.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jul 2021 13:52:02 -0700 (PDT)
+Date: Mon, 19 Jul 2021 20:51:58 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+	npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 24/40] KVM: SVM: Add
+ KVM_SEV_SNP_LAUNCH_UPDATE command
+Message-ID: <YPXl7sVBx7lDLx/U@google.com>
+References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-25-brijesh.singh@amd.com>
+ <YPHlt4VCm6b2MZMs@google.com>
+ <a574de6d-f810-004f-dad2-33e3f389482b@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YPV27hDPZUoVsIZt@suse.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a574de6d-f810-004f-dad2-33e3f389482b@amd.com>
 
+On Fri, Jul 16, 2021, Brijesh Singh wrote:
+> 
+> On 7/16/21 3:01 PM, Sean Christopherson wrote:
+> > I'm having a bit of deja vu...  This flow needs to hold kvm->srcu to do a memslot
+> > lookup.
+> >
+> > That said, IMO having KVM do the hva->gpa is not a great ABI.  The memslots are
+> > completely arbitrary (from a certain point of view) and have no impact on the
+> > validity of the memory pinning or PSP command.  E.g. a memslot update while this
+> > code is in-flight would be all kinds of weird.
+> >
+> > In other words, make userspace provide both the hva (because it's sadly needed
+> > to pin memory) as well as the target gpa.  That prevents KVM from having to deal
+> > with memslot lookups and also means that userspace can issue the command before
+> > configuring the memslots (though I've no idea if that's actually feasible for
+> > any userspace VMM).
+> 
+> The operation happen during the guest creation time so I was not sure if
+> memslot will be updated while we are executing this command. But I guess
+> its possible that a VMM may run different thread which may update
+> memslot while another thread calls the encryption. I'll let userspace
+> provide both the HVA and GPA as you recommended.
 
-> 	III. Approach I. and II. can be combined. The firmware only
-> 	     validates the first X MB/GB of guest memory and the rest is
-> 	     validated on-demand.
+I'm not worried about a well-behaved userspace VMM, I'm worried about the code
+KVM has to carry to guard against a misbehaving VMM.
+ 
+> >> +			ret = -EINVAL;
+> >> +			goto e_unpin;
+> >> +		}
+> >> +
+> >> +		psize = page_level_size(level);
+> >> +		pmask = page_level_mask(level);
+> > Is there any hope of this path supporting 2mb/1gb pages in the not-too-distant
+> > future?  If not, then I vote to do away with the indirection and just hardcode
+> > 4kg sizes in the flow.  I.e. if this works on 4kb chunks, make that obvious.
+> 
+> No plans to do 1g/2mb in this path. I will make that obvious by
+> hardcoding it.
+> 
+> 
+> >> +		gpa = gpa & pmask;
+> >> +
+> >> +		/* Transition the page state to pre-guest */
+> >> +		memset(&e, 0, sizeof(e));
+> >> +		e.assigned = 1;
+> >> +		e.gpa = gpa;
+> >> +		e.asid = sev_get_asid(kvm);
+> >> +		e.immutable = true;
+> >> +		e.pagesize = X86_TO_RMP_PG_LEVEL(level);
+> >> +		ret = rmpupdate(inpages[i], &e);
+> > What happens if userspace pulls a stupid and assigns the same page to multiple
+> > SNP guests?  Does RMPUPDATE fail?  Can one RMPUPDATE overwrite another?
+> 
+> The RMPUPDATE is available to the hv and it can call anytime with
+> whatever it want. The important thing is the RMPUPDATE + PVALIDATE
+> combination is what locks the page. In this case, PSP firmware updates
+> the RMP table and also validates the page.
+> 
+> If someone else attempts to issue another RMPUPDATE then Validated bit
+> will be cleared and page is no longer used as a private. Access to
+> unvalidated page will cause #VC.
 
+Hmm, and there's no indication on success that the previous entry was assigned?
+Adding a tracepoint in rmpupdate() to allow tracking transitions is probably a
+good idea, otherwise debugging RMP violations and/or unexpected #VC is going to
+be painful.
 
-It's actually not just the first X. As I understand there is a proposal 
-for a new UEFI memory type, that will allow the firmware (and anyone 
-else) to declare memory regions as accepted in a fine grained manner.
+And/or if the kernel/KVM behavior is to never reassign directly and reading an RMP
+entry isn't prohibitively expensive, then we could add a sanity check that the RMP
+is unassigned and reject rmpupdate() if the page is already assigned.  Probably
+not worth it if the overhead is noticeable, but it could be nice to have if things
+go sideways.
 
-
+> >> +e_unpin:
+> >> +  /* Content of memory is updated, mark pages dirty */
+> >> +  memset(&e, 0, sizeof(e));
+> >> +  for (i = 0; i < npages; i++) {
+> >> +          set_page_dirty_lock(inpages[i]);
+> >> +          mark_page_accessed(inpages[i]);
+> >> +
+> >> +          /*
+> >> +           * If its an error, then update RMP entry to change page ownership
+> >> +           * to the hypervisor.
+> >> +           */
+> >> +          if (ret)
+> >> +                  rmpupdate(inpages[i], &e);
+> > This feels wrong since it's purging _all_ RMP entries, not just those that were
+> > successfully modified.  And maybe add a RMP "reset" helper, e.g. why is zeroing
+> > the RMP entry the correct behavior?
+> 
+> By default all the pages are hypervior owned (i.e zero). If the
+> LAUNCH_UPDATE was successful then page should have transition from the
+> hypervisor owned to guest valid. By zero'ing it are reverting it back to
+> hypevisor owned.
 >
-> For method II. and III. the guest needs to track which pages have
-> already been validated to detect hypervisor attacks. This information
-> needs to be carried through the whole boot process.
+> I agree that I optimize it to clear the modified entries only and leave
+> everything else as a default.
 
-I don't think it's that bad. If we know what has been validated already 
-using the memory map, then it's straight forward to check what is a 
-valid validation request and what is not. Anything that's in a BIOS 
-reserved region or in a region already marked as validated must be 
-already validated and and can be rejected (or rather panic'ed). So I 
-don't see the need to pass a fine grained validation bitmap around. Of 
-course the kernel needs to maintain something (likely not a bitmap, but 
-rather some form of page flag) on its own, but it doesn't need to be 
-visible in any outside interfaces.
-
-There's one exception to this, which is the previous memory view in 
-crash kernels. But that's an relatively obscure case and there might be 
-other solutions for this.
-
-
-> Memory Validation through the Boot Process and in the Running System
-> --------------------------------------------------------------------
->
-> The memory is validated throughout the boot process as described below.
-> These steps assume a firmware is present, but this proposal does not
-> strictly require a firmware. The tasks done be the firmware can also be
-> done by the hypervisor before starting the guest. The steps are:
->
-> 	1. The firmware validates all memory which will not be owned by
-> 	   the boot loader or the OS.
->
-> 	2. The firmware also validates the first X MB of memory, just
-> 	   enough to run a boot loader and to load the compressed Linux
-> 	   kernel image. X is not expected to be very large, 64 or 128
-> 	   MB should be enough. This pre-validation should not cause
-> 	   significant delays in the boot process.
->
-> 	3. The validated memory is marked E820-Usable in struct
-> 	   boot_params for the Linux decompressor. The rest of the
-> 	   memory is also passed to Linux via new special E820 entries
-> 	   which mark the memory as Usable-but-Invalid.
->
-> 	4. When the Linux decompressor takes over control, it evaluates
-> 	   the E820 table and calculates to total amount of memory
-> 	   available to Linux (valid and invalid memory).
->
-> 	   The decompressor allocates a physically contiguous data
-> 	   structure at a random memory location which is big enough to
-> 	   hold the the validation states of all 4kb pages available to
-> 	   the guest. This data structure will be called the Validation
-> 	   Bitmap through the rest of this document. The Validation
-> 	   Bitmap is indexed by page frame numbers.
-
-I don't think we need to go that fine grained. The decompressor will 
-just pre-validate all the memory it needs (which is relatively) limited 
-and the later kernel can know about it in some static way and then fix 
-up its mem_map state. We might need a few extra allocations between main 
-kernel entry and mem_map init, but that could be handled in some simple 
-data structure.
-
-
->
-> 	8. When memory is returned to the memblock or page allocators,
-> 	   it is _not_ invalidated. In fact, all memory which is freed
-> 	   need to be valid. If it was marked invalid in the meantime
-> 	   (e.g. if it the memory was used for DMA buffers), the code
-> 	   owning the memory needs to validate it again before freeing
-> 	   it.
-
-
-I'm not sure about AMD, but in TDX we're certainly have no need to 
-reaccept after something was shared.
-
-Also in general i don't think it will really happen, at least initially. 
-All the shared buffers we use are allocated and never freed. So such a 
-problem could be deferred.
-
--Andi
-
+To be clear, it's not just an optimization.  Pages that haven't yet been touched
+may be already owned by a different VM (or even this VM).  I.e. "reverting" those
+pages would actually result in a form of corruption.  It's somewhat of a moot point
+because assigning a single page to multiple guests is going to be fatal anyways,
+but potentially making a bug worse by introducing even more noise/confusion is not
+good.
