@@ -1,42 +1,42 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D7070
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 22:50:07 +0000 (UTC)
-Received: by mail-pg1-f175.google.com with SMTP id i16so3228272pgi.9
-        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 15:50:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B882F70
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 23:30:31 +0000 (UTC)
+Received: by mail-pg1-f178.google.com with SMTP id o4so16242934pgs.6
+        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 16:30:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=/KQZ/og+MMwG7+gZQy+I2ifIZbW2sC3CrysTm6RWo48=;
-        b=TrC6uyzelR+/+DuhHGkQhT8ZilBSns6EN6zr6R3GsDzwt1A0B1ob14VfGLKbKtyYHf
-         UnePiDR4FpHICi6z5QS4Br4KOWkHIgLEeR8gx7IzpIzQOJFTLlF7+NNZycoVeKnxYD6h
-         HbjmZ/PaBHV0V8e+cfLnxBcowZivtCrjpWnTV8c2ZjABFcunj+ENtzWsgGQLyJbKIFv/
-         VR+A8muZqP5sibfw7uvl/qPo2Ty2GVOGxwdOKplp/U4hoGQCi7nhVUCLUrGwfAlFMGnd
-         p98tI4Tr+xvCXIgbQNI2AJDXVbX1JKOsFuuzRo2sS//yKyLQdg5uMFTMCUas9NSy8J5b
-         Frtg==
+        bh=ml3Q/kTxZiD4jac4rsa9z6q3oqgw/koE0r8JlYAWEoE=;
+        b=sMaBLc6xZX7zehQ8U1kn7T2/C76fdCJIRBEmJcwUdtN+Ur6xNDVNIA4wnj+n5MAgrI
+         fRKop8qSFfB5cJj5Qd7DEJPBG9n2V1DApSvIFOjQinvQRz7V6ozyOBexcCug8btYPM+J
+         MMZqkMfsPwKR7hJ8KfXCbL9q5j/u8ILTW+OotIbqxzJ+akWq3OX+Rux7DSgW64emjSxx
+         /G3uagHiW/9cKFWa857nddfAl6IcWtZDkPwv7s7H35o+5FI3X0D2AEhUoR4OdKHktGMB
+         5lpjpv8BqF9q2yg/iuIW7lEANMTukouIkKW+oDuuhgdavYXnIqR/tPR7p66hSzMduya7
+         pthQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=/KQZ/og+MMwG7+gZQy+I2ifIZbW2sC3CrysTm6RWo48=;
-        b=liw/FSdSh6kvjSfFx9f4u3qkHIGc1f05xkKjHXH3oXP+kaLWoOy/BfN68LbQefaKbs
-         c+Qcjv6zFv8MyiJyt5OxsviGqSFRB6DkDv1rAipB6COHn5d9G6xCh9fDQmfS8ekb7ff/
-         99jcNOfv/cIAjroPjH34zsAgRs33GaAc9MDSpebDUG8nR91VQhbKP5AsXCIRQ+q3LRbg
-         +1BYjzVPxs5G3ndU3jMn+IzyQqhpSxeVYPdWxQyhKYKxKZI7YQlBvMSVtsZyuInN2/D5
-         RWW5OJP2MSJq7twOJx0t13ehAyDQGkc76ZU1YJfmiYug3tXT83lPlypdLqNYle3Db+9F
-         2/4A==
-X-Gm-Message-State: AOAM530RSj1ix8aki0JnlixW0hTSf/oOMPs9Ain6orm2u4+qEpY9mFAc
-	QJLLVDPh38fpy7g0Aagg2742Ag==
-X-Google-Smtp-Source: ABdhPJy/imUID7VPk45W7GZdlhJTj17s4zd4R4dZUGmjWKYmnjQB23dmeWQOvmtu+8kvlA6P6vSXfw==
-X-Received: by 2002:a63:a558:: with SMTP id r24mr12070616pgu.438.1626735006916;
-        Mon, 19 Jul 2021 15:50:06 -0700 (PDT)
+        bh=ml3Q/kTxZiD4jac4rsa9z6q3oqgw/koE0r8JlYAWEoE=;
+        b=onHMeq5SLDBG5XcMUpTPPTEh9amGM7+GM24xBGaMTFseHwWC4H5vzt3ZSqB7rB4/pp
+         GQbAbxNpoTLRLx48jj6+RVliKCWVTeVVggQnabK8fG7bvR3lHuoyDItH/S1e68nP3QVe
+         dius/1Fru0UImA+rx5eoNHxXiXxTMT9O6K+wCvABocgimiQfl6jkDe6HhfD2VYXNyCut
+         s1EGqH8Fgpj4iNKt5oO41fXF+jM20vf7+Kl1PDIqi+LIYl45PhcAAVHkOrCaZw7ghuut
+         YWYzzkib9q0yfxJRCl5zqk3Vl1smHiGYlCkaM0YJeMjYddUeB01KCN2RpngBQvLEyBJM
+         riqQ==
+X-Gm-Message-State: AOAM531BivpDRoOlh0X7OlbNsFdd4IAOUtvm0cKQQwksG1mg1EqaAXnl
+	dH+NG//UIsPViu19A2n4ygxEZw==
+X-Google-Smtp-Source: ABdhPJxkrxZk/0Zz1bAor5ysJ9w0e2+YW2IaG8snr9Fl4r2Iz1JNpsaNu5NP3/nbL6PnRtlutO5udg==
+X-Received: by 2002:a62:4e0f:0:b029:329:20be:287a with SMTP id c15-20020a624e0f0000b029032920be287amr28021297pfb.55.1626737431050;
+        Mon, 19 Jul 2021 16:30:31 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id p33sm21208412pfw.40.2021.07.19.15.50.06
+        by smtp.gmail.com with ESMTPSA id bt17sm571551pjb.40.2021.07.19.16.30.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jul 2021 15:50:06 -0700 (PDT)
-Date: Mon, 19 Jul 2021 22:50:02 +0000
+        Mon, 19 Jul 2021 16:30:30 -0700 (PDT)
+Date: Mon, 19 Jul 2021 23:30:26 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -61,11 +61,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
 	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 38/40] KVM: SVM: Provide support for
- SNP_GUEST_REQUEST NAE event
-Message-ID: <YPYBmlCuERUIO5+M@google.com>
+Subject: Re: [PATCH Part2 RFC v4 35/40] KVM: Add arch hooks to track the host
+ write to guest memory
+Message-ID: <YPYLEksyzOWHZwpA@google.com>
 References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-39-brijesh.singh@amd.com>
+ <20210707183616.5620-36-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,173 +74,104 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-39-brijesh.singh@amd.com>
+In-Reply-To: <20210707183616.5620-36-brijesh.singh@amd.com>
 
 On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> Version 2 of GHCB specification added the support two SNP Guest Request
-> Message NAE event. The events allows for an SEV-SNP guest to make request
-> to the SEV-SNP firmware through hypervisor using the SNP_GUEST_REQUEST
-> API define in the SEV-SNP firmware specification.
+> The kvm_write_guest{_page} and kvm_vcpu_write_guest{_page} are used by
+> the hypevisor to write to the guest memory. The kvm_vcpu_map() and
+> kvm_map_gfn() are used by the hypervisor to map the guest memory and
+> and access it later.
+> 
+> When SEV-SNP is enabled in the guest VM, the guest memory pages can
+> either be a private or shared. A write from the hypervisor goes through
+> the RMP checks. If hardware sees that hypervisor is attempting to write
+> to a guest private page, then it triggers an RMP violation (i.e, #PF with
+> RMP bit set).
+> 
+> Enhance the KVM guest write helpers to invoke an architecture specific
+> hooks (kvm_arch_write_gfn_{begin,end}) to track the write access from the
+> hypervisor.
+> 
+> When SEV-SNP is enabled, the guest uses the PAGE_STATE vmgexit to ask the
+> hypervisor to change the page state from shared to private or vice versa.
+> While changing the page state to private, use the
+> kvm_host_write_track_is_active() to check whether the page is being
+> tracked for the host write access (i.e either mapped or kvm_write_guest
+> is in progress). If its tracked, then do not change the page state.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
 
-IIUC, this snippet in the spec means KVM can't restrict what requests are made
-by the guests.  If so, that makes it difficult to detect/ratelimit a misbehaving
-guest, and also limits our options if there are firmware issues (hopefully there
-aren't).  E.g. ratelimiting a guest after KVM has explicitly requested it to
-migrate is not exactly desirable.
-
-  The hypervisor cannot alter the messages without detection nor read the
-  plaintext of the messages.
-
-> The SNP_GUEST_REQUEST requires two unique pages, one page for the request
-> and one page for the response. The response page need to be in the firmware
-> state. The GHCB specification says that both the pages need to be in the
-> hypervisor state but before executing the SEV-SNP command the response page
-> need to be in the firmware state.
- 
 ...
 
-> Now that KVM supports all the VMGEXIT NAEs required for the base SEV-SNP
-> feature, set the hypervisor feature to advertise it.
-
-It would helpful if this changelog listed the Guest Requests that are required
-for "base" SNP, e.g. to provide some insight as to why we care about guest
-requests.
-
->  static int snp_bind_asid(struct kvm *kvm, int *error)
-> @@ -1618,6 +1631,12 @@ static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  	if (rc)
->  		goto e_free_context;
+> @@ -3468,3 +3489,33 @@ int sev_get_tdp_max_page_level(struct kvm_vcpu *vcpu, gpa_t gpa, int max_level)
 >  
-> +	/* Used for rate limiting SNP guest message request, use the default settings */
-> +	ratelimit_default_init(&sev->snp_guest_msg_rs);
-
-Is this exposed to userspace in any way?  This feels very much like a knob that
-needs to be configurable per-VM.
-
-Also, what are the estimated latencies of a guest request?  If the worst case
-latency is >200ms, a default ratelimit frequency of 5hz isn't going to do a whole
-lot.
-
-> +static void snp_handle_guest_request(struct vcpu_svm *svm, struct ghcb *ghcb,
-> +				     gpa_t req_gpa, gpa_t resp_gpa)
+>  	return min_t(uint32_t, level, max_level);
+>  }
+> +
+> +void sev_snp_write_page_begin(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn)
 > +{
-> +	struct sev_data_snp_guest_request data = {};
-> +	struct kvm_vcpu *vcpu = &svm->vcpu;
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct kvm_sev_info *sev;
-> +	int rc, err = 0;
+> +	struct rmpentry *e;
+> +	int level, rc;
+> +	kvm_pfn_t pfn;
 > +
-> +	if (!sev_snp_guest(vcpu->kvm)) {
-> +		rc = -ENODEV;
-> +		goto e_fail;
+> +	if (!sev_snp_guest(kvm))
+> +		return;
+> +
+> +	pfn = gfn_to_pfn(kvm, gfn);
+> +	if (is_error_noslot_pfn(pfn))
+> +		return;
+> +
+> +	e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &level);
+> +	if (unlikely(!e))
+> +		return;
+> +
+> +	/*
+> +	 * A hypervisor should never write to the guest private page. A write to the
+> +	 * guest private will cause an RMP violation. If the guest page is private,
+> +	 * then make it shared.
+
+NAK on converting RMP entries in response to guest accesses.  Corrupting guest
+data (due to dropping the "validated" flag) on a rogue/incorrect guest emulation
+request or misconfigured PV feature is double ungood.  The potential kernel panic
+below isn't much better.
+
+And I also don't think we need this heavyweight flow for user access, e.g.
+__copy_to_user(), just eat the RMP violation #PF like all other #PFs and exit
+to userspace with -EFAULT.
+
+kvm_vcpu_map() and friends might need the manual lookup, at least initially, but
+in an ideal world that would be naturally handled by gup(), e.g. by unmapping
+guest private memory or whatever approach TDX ends up employing to avoid #MCs.
+
+> +	 */
+> +	if (rmpentry_assigned(e)) {
+> +		pr_err("SEV-SNP: write to guest private gfn %llx\n", gfn);
+> +		rc = snp_make_page_shared(kvm_get_vcpu(kvm, 0),
+> +				gfn << PAGE_SHIFT, pfn, PG_LEVEL_4K);
+> +		BUG_ON(rc != 0);
 > +	}
-> +
-> +	sev = &to_kvm_svm(kvm)->sev_info;
-> +
-> +	if (!__ratelimit(&sev->snp_guest_msg_rs)) {
-> +		pr_info_ratelimited("svm: too many guest message requests\n");
-> +		rc = -EAGAIN;
-
-What guarantee do we have that the guest actually understands -EAGAIN?  Ditto
-for -EINVAL returned by snp_build_guest_buf().  AFAICT, our options are to return
-one of the error codes defined in "Table 95. Status Codes for SNP_GUEST_REQUEST"
-of the firmware ABI, kill the guest, or ratelimit the guest without returning
-control to the guest.
-
-> +		goto e_fail;
-> +	}
-> +
-> +	rc = snp_build_guest_buf(svm, &data, req_gpa, resp_gpa);
-> +	if (rc)
-> +		goto e_fail;
-> +
-> +	sev = &to_kvm_svm(kvm)->sev_info;
-> +
-> +	mutex_lock(&kvm->lock);
-
-Question on the VMPCK sequences.  The firmware ABI says:
-
-   Each guest has four VMPCKs ... Each message contains a sequence number per
-   VMPCK. The sequence number is incremented with each message sent. Messages
-   sent by the guest to the firmware and by the firmware to the guest must be
-   delivered in order. If not, the firmware will reject subsequent messages ...
-
-Does that mean there are four independent sequences, i.e. four streams the guest
-can use "concurrently", or does it mean the overall freshess/integrity check is
-composed from four VMPCK sequences, all of which must be correct for the message
-to be valid?
-
-If it's the latter, then a traditional mutex isn't really necessary because the
-guest must implement its own serialization, e.g. it's own mutex or whatever, to
-ensure there is at most one request in-flight at any given time.  And on the KVM
-side it means KVM can simpy reject requests if there is already an in-flight
-request.  It might also give us more/better options for ratelimiting?
-
-> +	rc = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &err);
-> +	if (rc) {
-> +		mutex_unlock(&kvm->lock);
-
-I suspect you reused this pattern from other, more complex code, but here it's
-overkill.  E.g.
-
-	if (!rc)
-		rc = kvm_write_guest(kvm, resp_gpa, sev->snp_resp_page, PAGE_SIZE);
-	else if (err)
-		rc = err;
-
-	mutex_unlock(&kvm->lock);
-
-	ghcb_set_sw_exit_info_2(ghcb, rc);
-
-> +		/* If we have a firmware error code then use it. */
-> +		if (err)
-> +			rc = err;
-> +
-> +		goto e_fail;
-> +	}
-> +
-> +	/* Copy the response after the firmware returns success. */
-> +	rc = kvm_write_guest(kvm, resp_gpa, sev->snp_resp_page, PAGE_SIZE);
-> +
-> +	mutex_unlock(&kvm->lock);
-> +
-> +e_fail:
-> +	ghcb_set_sw_exit_info_2(ghcb, rc);
 > +}
-> +
-> +static void snp_handle_ext_guest_request(struct vcpu_svm *svm, struct ghcb *ghcb,
-> +					 gpa_t req_gpa, gpa_t resp_gpa)
+
+...
+
+> +void kvm_arch_write_gfn_begin(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn)
 > +{
-> +	struct sev_data_snp_guest_request req = {};
-> +	struct kvm_vcpu *vcpu = &svm->vcpu;
-> +	struct kvm *kvm = vcpu->kvm;
-> +	unsigned long data_npages;
-> +	struct kvm_sev_info *sev;
-> +	unsigned long err;
-> +	u64 data_gpa;
-> +	int rc;
-> +
-> +	if (!sev_snp_guest(vcpu->kvm)) {
-> +		rc = -ENODEV;
-> +		goto e_fail;
-> +	}
-> +
-> +	sev = &to_kvm_svm(kvm)->sev_info;
-> +
-> +	if (!__ratelimit(&sev->snp_guest_msg_rs)) {
-> +		pr_info_ratelimited("svm: too many guest message requests\n");
-> +		rc = -EAGAIN;
-> +		goto e_fail;
-> +	}
-> +
-> +	if (!sev->snp_certs_data) {
-> +		pr_err("svm: certs data memory is not allocated\n");
-> +		rc = -EFAULT;
+> +	update_gfn_track(slot, gfn, KVM_PAGE_TRACK_WRITE, 1);
 
-Another instance where the kernel's error numbers will not suffice.
+Tracking only writes isn't correct, as KVM reads to guest private memory will
+return garbage.  Pulling the rug out from under KVM reads won't fail as
+spectacularly as writes (at least not right away), but they'll still fail.  I'm
+actually ok reading garbage if the guest screws up, but KVM needs consistent
+semantics.
 
-> +		goto e_fail;
-> +	}
-> +
-> +	data_gpa = ghcb_get_rax(ghcb);
-> +	data_npages = ghcb_get_rbx(ghcb);
+Good news is that per-gfn tracking is probably overkill anyways.  As mentioned
+above, user access don't need extra magic, they either fail or they don't.
+
+For kvm_vcpu_map(), one thought would be to add a "short-term" map variant that
+is not allowed to be retained across VM-Entry, and then use e.g. SRCU to block
+PSC requests until there are no consumers.
+
+> +	if (kvm_x86_ops.write_page_begin)
+> +		kvm_x86_ops.write_page_begin(kvm, slot, gfn);
+> +}
