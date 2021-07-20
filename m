@@ -1,153 +1,132 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20F3168
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 19:38:19 +0000 (UTC)
-Received: by mail-pf1-f172.google.com with SMTP id p36so367394pfw.11
-        for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 12:38:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A07D168
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 19:54:28 +0000 (UTC)
+Received: by mail-pl1-f178.google.com with SMTP id y3so7567386plp.4
+        for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 12:54:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=opGYJ8ATKeLRJGjAJK6R9tbhbI7CJxP6XB4aUSj1rRc=;
-        b=U3suekfYP80TfhnSWCdW0AeB5YxRYqo2o3/gq9NjySLOotsA/QHsKv4nrfgs9Q6OW4
-         KjSFSlK0XO5pyVT8FlownP4GS3PcIrtF/1itOWU4Pga+6PwG15GCcUmAHgnsNMPMi4LX
-         DxT0uRyt0039tsJZa4N+W8sH3nZ3ORXDV7KdShXCKvh6oAxgtZUERz3/kYRLyJ5E2nWy
-         NESQv+xyyGvE5IhgT/cYsM8bQaF8F8f+olP6Pv+1dQQcP53pETJLgqGRDE75b9vRhf5t
-         erL1h5JQ4WgB3pRfhQQaD4CT4UWWh7xaKg8C46eFTZOacYR8kBVBLxEUzPFoFCtyV1A7
-         oJRA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ZeLArdOwF4c3/dM031IJ0PsQhPF9cHure1pZVMgRz14=;
+        b=Ycdyq1Koqw5nqatustzX/3lxSMyaJ3MBd0LBcRK3vSZHgVkW5p3TptELx63aOLsZvj
+         dSpcMfWs3+55T1t4bJzGjjnxwT+SuW5IkWd5Lx2Z8jh0RitqG2idOsaonGxj2fqo8R0y
+         TM9Qy1fzy2zBMh0ZGkjm880ga1/5m309u/y18pMyZYmgTZRK8PE5CAJMJ2xygsNSaqcJ
+         LLHdgb7Oc1TXfEKxLArgHccTQIjDSqpHVd7nlAnvApAK0LjqIgzbUYVry2qlHcZT9XGn
+         jK9U4JMnLXhF3nj8lY6vkGvzoZmT7lyWiwZUYfniF4i2hS9WL7A3RILu0v5RqdY6qJhd
+         AXhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=opGYJ8ATKeLRJGjAJK6R9tbhbI7CJxP6XB4aUSj1rRc=;
-        b=g2MlquX7JWmbeOO4Zzrigwrw/sh11OXHywMqZlIOxZLytbM8FgVWdmjJfjhBtxX4bE
-         r4pF8uPPb8r2rNTCQ9m3VegS/RROoBu/DiEE/t94aFqcRVQcHAN7221rfJrT42VpvAS2
-         xgPcN2FroppNi7GrqOHR6KC281CdAJeB+ygcWd2LbZatLJxjJDvJAw07dZ5bZ5Xm2BAA
-         A2KdY+ImWh3RZGWeTWaVbyHyuTnCLK26ryEUywu+8Mly8GWL00uDJUQcodsXbNLbjkzS
-         xh1g+6jBsjlQPkd3lYFIU9Bdgn6K8LjYr9ftlR1ISbFgntulv6EgiDA7n60JbrDW8bq2
-         9Liw==
-X-Gm-Message-State: AOAM533yXR4Cyv5YegP5+irZnBJxpvIOYJ8GSXP3zf4R2kypeloMuqm5
-	r47MgAPk21Ak0aVaeyGcfPoIGQ==
-X-Google-Smtp-Source: ABdhPJxaIdbx05Hn/m0/ilrMVvfZTLe2YGc+vQnLw4+1SqOXt5bk80Vq8MgVTJaPuxiVmjKAyXSIhA==
-X-Received: by 2002:a63:5620:: with SMTP id k32mr6362897pgb.32.1626809898963;
-        Tue, 20 Jul 2021 12:38:18 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id a20sm23827514pfv.101.2021.07.20.12.38.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 12:38:18 -0700 (PDT)
-Date: Tue, 20 Jul 2021 19:38:14 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 27/40] KVM: X86: Add kvm_x86_ops to get the
- max page level for the TDP
-Message-ID: <YPcmJuKHFYjCgpqd@google.com>
-References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-28-brijesh.singh@amd.com>
- <YPHbxAVbuFk6Xtkj@google.com>
- <1ed3c439-a02c-7182-b140-32cddd5e4f34@amd.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ZeLArdOwF4c3/dM031IJ0PsQhPF9cHure1pZVMgRz14=;
+        b=qjw4jDLsmT10Sm5XLdXS4nxCYSu8VE8vkuLVkCwbcRf72Z5DpMlB36zKaWPuz82KGV
+         2FLBDIuGbVEUeL8dMj1hL0yZxE9kDNfGBaLExVerRfdV4SDrHJqQ9lmyHA8m9eHblGC4
+         0/0yngca/u+3ovykEs2kj2olZK0ZpN1fTwx3OZfvRwOSUhqGtaCCxld/Ln7zyqbZF6++
+         A3OdOOeOxPDxE7n1MpO4ZPIgqfoCo7SrJChsAIy86lgnIDvnzk4EG8xW5SRjKzRg06Y9
+         T9DznaWw400Dz6SbxmVfCb4rRGpcZmTTs83tn4ZkHjFAHjgpLkPGBOOgDdwIZ1CVolSZ
+         DBpQ==
+X-Gm-Message-State: AOAM532n3vKdzrZEyqfD6sqJlE/05akJBS4NYP3zOp8fkmQbTRxLy4sF
+	7rCwi1q8f0LPknw/xnQgiTIoC910SDs85j9ALBtbkA==
+X-Google-Smtp-Source: ABdhPJzUuzNf/3K19rxIA+H4yJeU72HxIaji1TTHMpDiABGGWGhdOGLMbUtX0qh/oukG/ldzaCSp4dHv6espN8e7ewI=
+X-Received: by 2002:a17:90b:787:: with SMTP id l7mr70312pjz.162.1626810867697;
+ Tue, 20 Jul 2021 12:54:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1ed3c439-a02c-7182-b140-32cddd5e4f34@amd.com>
+References: <YPV27hDPZUoVsIZt@suse.de> <a5ac5af6-7e28-4e9c-e55b-db31842a5911@kernel.org>
+ <CAAYXXYwFzrf8uY-PFkMRSG28+HztfGdJft8kB3Y3keWCx9K8TQ@mail.gmail.com> <eacb9c1f-2c61-4a7f-b5a3-7bf579e6cbf6@www.fastmail.com>
+In-Reply-To: <eacb9c1f-2c61-4a7f-b5a3-7bf579e6cbf6@www.fastmail.com>
+From: Erdem Aktas <erdemaktas@google.com>
+Date: Tue, 20 Jul 2021 12:54:16 -0700
+Message-ID: <CAAYXXYzDheR6C19Q01w267CfgW6DnZ-Hurscm-=OVATwb4dy4Q@mail.gmail.com>
+Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
+To: Andy Lutomirski <luto@kernel.org>
+Cc: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Sean Christopherson <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
+	Andi Kleen <ak@linux.intel.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Jon Grimm <jon.grimm@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	"Kaplan, David" <David.Kaplan@amd.com>, Varad Gautam <varad.gautam@suse.com>, 
+	Dario Faggioli <dfaggioli@suse.com>, "the arch/x86 maintainers" <x86@kernel.org>, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 16, 2021, Brijesh Singh wrote:
-> On 7/16/21 2:19 PM, Sean Christopherson wrote:
-> > On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> > Another option would be to drop the kvm_x86_ops hooks entirely and call
-> > snp_lookup_page_in_rmptable() directly from MMU code.  That would require tracking
-> > that a VM is SNP-enabled in arch code, but I'm pretty sure info has already bled
-> > into common KVM in one form or another.
-> 
-> I would prefer this as it eliminates some of the other unnecessary call
-> sites. Unfortunately, currently there is no generic way to know if its
-> an SEV guest (outside the svm/*).  So far there was no need as such but
-> with SNP having such information would help. Should we extend the
-> 'struct kvm' to include a new field that can be used to determine the
-> guest type. Something like
-> 
-> enum {
-> 
->    GUEST_TYPE_SEV,
-> 
->    GUEST_TYPE_SEV_ES,
-> 
->    GUEST_TYPE_SEV_SNP,
-> 
-> };
-> 
-> struct kvm {
-> 
->    ...
-> 
->   u64 enc_type;
-> 
-> };
-> 
-> bool kvm_guest_enc_type(struct kvm *kvm, enum type); {
-> 
->     return !!kvm->enc_type & type;
-> 
-> }
-> 
-> The mmu.c can then call kvm_guest_enc_type() to check if its SNP guest
-> and use the SNP lookup directly to determine the pagesize.
+On Mon, Jul 19, 2021 at 8:30 PM Andy Lutomirski <luto@kernel.org> wrote:
+> What=E2=80=99s the attack you have in mind?  With TDX, the guest using th=
+e wrong shared vs secure type should, at worst, cause > crashes.  With SEV,=
+ I can imagine it=E2=80=99s possible for a guest to read or write the ciphe=
+rtext of a private page, but actually
+> turning that into an attack seems like it would require convincing a gues=
+t to use the same page with both modes.
 
-The other option is to use vm_type, which TDX is already planning on leveraging.
-Paolo raised the question of whether or not the TDX type could be reused for SNP.
-We should definitely sort that out before merging either series.  I'm personally
-in favor of separating TDX and SNP, it seems inevitable that common code will
-want to differentiate between the two.
+There are a couple of things that can go wrong (maybe more):
 
-https://lkml.kernel.org/r/8eb87cd52a89d957af03f93a9ece5634426a7757.1625186503.git.isaku.yamahata@intel.com
+Imagine Guest set a page shared. It is assumed that the host should
+remove the SEPT entry but it does not have to, so that entry might
+stay there with a valid bit set.
 
-> > As the APM is currently worded, this is wrong, and the whole "tdp_max_page_level"
-> > name is wrong.  As noted above, the Page-Size bullet points states that 2mb/1gb
-> > pages in the NPT _must_ have RMP.page_size=1, and 4kb pages in the NPT _must_
-> > have RMP.page_size=0.  That means that the RMP adjustment is not a constraint,
-> > it's an exact requirement.  Specifically, if the RMP is a 2mb page then KVM must
-> > install a 2mb (or 1gb) page.  Maybe it works because KVM will PSMASH the RMP
-> > after installing a bogus 4kb NPT and taking an RMP violation, but that's a very
-> > convoluted and sub-optimal solution.
-> 
-> This is why I was passing the preferred max_level in the pre-fault
-> handle then later query the npt level; use the npt level in the RMP to
-> make sure they are in sync.
-> 
-> There is yet another reason why we can't avoid the PSMASH after doing
-> everything to ensure that NPT and RMP are in sync. e.g if NPT and RMP
-> are programmed with 2mb size but the guest tries to PVALIDATE the page
-> as a 4k. In that case, we will see #NPF with page size mismatch and have
-> to perform psmash.
+Guest should accept a page before it accesses it the first time or
+guest can accept a page as part of #VE handler when a PENDING page is
+accessed.
 
-Boo, there's no way to communicate to the guest that it's doing PVALIDATE wrong
-is there?
+Current guest patch series (v3) from intel does not have any #VE
+handler to accept pages on the fly. It seems like it has an assumption
+that all the pages are accepted by UEFI (I have not reviewed the code
+yet in detail).
+
+Now let's say the kernel wants to access a page for the first time, or
+after a kexec it wants to make sure all the pages are private. it
+needs to call tdx_hcall_gpa_intent or  tdg_accept_page individually.
+If the page is already accepted, tdg_accept_page does not return any
+error in the current implementation in v3. Depending on how this page
+is being used, it's content is now "not zeroed" as opposed to what it
+is being expected. Converting this to an attack is not trivial but
+possible.
+
+I did not see any #VE implementation to handle SEPT violations when a
+page is in PENDING state. I am assuming that this needs to be
+supported at some point (If not then we need to discuss the use cases
+for such support).
+
+In such an implementation, hypervisor can inject a zeroed page
+anytime. This seems like a not big deal but IMO it is and it can be
+used as an attack vector to change conditions, masking variables etc.
+
+> >> At the risk of asking a potentially silly question, would it be
+> >> reasonable to treat non-validated memory as not-present for kernel
+> >> purposes and hot-add it in a thread as it gets validated?
+>
+> My concern with this is, it assumes that all the present memory is privat=
+e. UEFI might have some pages which are shared therefore also are present.
+>
+>
+> Why is this a problem?  In TDX, I don=E2=80=99t think shared pages need a=
+ny sort of validation. The private memory needs acceptance, but only DoS sh=
+ould be possible by getting it wrong. If EFI passed in a messy map with sha=
+red and private transitions all over, there will be a lot of extents in the=
+ map, but what actually goes wrong?
+
+I mean if the only attack vector is DoS (which is not part of the
+threat model that TDX is addressing), then why do we even need
+tdaccept? I thought we need tdaccept to prevent VMM to change the
+content of a page without guest knowing it.
+My comment was about if we assume all non-validated memory as
+not-present, how we were going to handle the shared pages transferred
+from UEFI to kernel. Those are not validated but the range is present.
+How can the guest kernel read those shared pages if it does not know
+that they need to be mapped as shared in the first place.
+
+Depending on how the guest kernel is handling shared to private page
+conversion or how it is initializing the private pages for the first
+time, a lot of things can go wrong but I need to look at the code to
+provide more concrete examples.
+
+-Erdem
