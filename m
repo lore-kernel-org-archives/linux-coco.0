@@ -1,79 +1,65 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE02D173
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 16:40:24 +0000 (UTC)
-Received: by mail-pj1-f54.google.com with SMTP id cu14so28820pjb.0
-        for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 09:40:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74FB173
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 17:30:02 +0000 (UTC)
+Received: by mail-lf1-f44.google.com with SMTP id g8so31057606lfh.8
+        for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 10:30:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=ll0RiUGMAmvrONO+nzQxFqpEs/97py7ihZNr5b1dhP0=;
-        b=PEZtiQtiWMdi7vFzMSbRev47alSkv5RYM7hOiBpVFjrIkQB6RVc6YkKqKcOefW/fKP
-         Y42zRAQKBib8tKzc4/Oeif2decwbJFIYi9dJXDc6MugQE+ryuq7DQHauE/2g/akaFlnX
-         kYfS9YpWsG5CTHYxQnlED4GDEP4F1teLpG4M0cHXDCdsJMdbMjc9/eKJKYEDF5Vqq3aU
-         5oSXV+xP6qAX91AZNaByWJKOQ7OCNnRasAVpNbY2ZV+EABYACD7yCw2YM92GJ1aTvl6U
-         ip/9lfrG9+yIYkquVRRv+8hW4RYPu57N4/E0TZNqFzlUQchnuVkuSktjys7zqFmAJoDs
-         gJ3w==
+        bh=PYzK9ri0wIdljhq6R6h5Hl0OjUXn/x1ahofHrDXqhBA=;
+        b=rXy5IzXLJ2LRp7pmnt15ymph4B/0p5u1xUpH0rEN+Een0gawz3di3qAso+yKnm4E8X
+         Q+hEnS1jTQoLCutI3OV80huTDNW4mPBVXKb4AwZxLEhl3eRoO+6pAScVI7/RT62WSCWS
+         eruQRUyRrLiKzjWByE/eJjKqymUjWMx5zsVsDb6tXC+jRSk/2mAKNzsBLdl4wT9yRIj6
+         pxG0YrKqdiYH6eOmZ3Kr0FmoE2mntYmoHYffNguxs9c7U2gDphAG9+k/bIbr+F6+hPd8
+         MWv8vuEJuUIH1z3hnMMmNfCPYqie00BgzvMZVPf5q6A3GyOu43oJMWiVVJWQQVyadYtd
+         9mmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=ll0RiUGMAmvrONO+nzQxFqpEs/97py7ihZNr5b1dhP0=;
-        b=gb6Dv04wza/nzerkHVnhIVmvVVgQbkW+7x0E+E7hjaUKPNslDLetcDg333xcidAmDs
-         64NCFvZsOKlxXBpy3uCkbBUTw0vhNq7vOXkEJEMLtE9A3lb/OaP0nSHN++VOlynglwYH
-         1JEUZQGyCUJbv1+6zV2y9qSyn/RITvw3Umbx0G+x90ToQOSRQzc8849k9YIgTONObB/A
-         uytqChdI09wnzw5eonoVD81GUSHP73XuEwqEpjBVuNxaRnIIvG8RtwxO95AaF/YI+x/L
-         l+4g1GkFs8ZVfGyBzDAStI0zqMYJ2tJXMiwiERFn21sFYbMsgRdY74gUgef+BUJuJBRm
-         E1iQ==
-X-Gm-Message-State: AOAM533agKsWow0KfgR2mNkF5xlSZnuDGb5eX/7743BS+rcGmvnz+aaI
-	mSLZQkEhQTBH6x6WMQFV2RE08A==
-X-Google-Smtp-Source: ABdhPJyroP8tgh93DCfc3z5U9V+qQ+qSioQG+b9tGScCAvFrwti9nKvzMBMeyynwyPM0BW+TNCCkEg==
-X-Received: by 2002:a17:90a:df04:: with SMTP id gp4mr36464585pjb.164.1626799224059;
-        Tue, 20 Jul 2021 09:40:24 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id v10sm25322836pfg.160.2021.07.20.09.40.23
+        bh=PYzK9ri0wIdljhq6R6h5Hl0OjUXn/x1ahofHrDXqhBA=;
+        b=o+et/h7SLvvjpjOiqEezHSCnR4AW9qp/noYovQzNFf3eqylbxTK71nrq9EqCxPyH2v
+         HRweXAxSt89Vf0K+FLoz/3Vf+LjJnCO5WeysJ7Ox/OAzradn05LirC4C3I6HKOi5+M8r
+         VSnT6mh9zbH+AN/EbiRRp+Mk++HyCPOBC2cFY6yN0X1CBtFKQ0hwGXcpGNAH/gOBVtJA
+         9MZ9BXUCDXf2YSiFwn018BOZvrSUmks+lKC7xmb3CjHrC6HB1oLt3x8DBF+ltyaMP7kR
+         ihBLTlUK6dbqpYpKkcap7xC+4so3cQPhI3w4uCV4stInQlJFKxNFnz6z1njn1WHm1mkk
+         Pp1g==
+X-Gm-Message-State: AOAM530e0FdXaRR7a+s6SvZ3Ra6zUdo71mcGC4IkQzeE4kotCNXUqWMt
+	nxkeID9rUUFfMqeQ1cdSsC5Nbg==
+X-Google-Smtp-Source: ABdhPJy1QKhdQ7LW30PS5fQTE29sjRoYZ1Eju0zWZAw94Tpm/uVpMbpKhbcYmJSNay/SUZjROfNO0w==
+X-Received: by 2002:a19:ab1a:: with SMTP id u26mr6150777lfe.457.1626802200880;
+        Tue, 20 Jul 2021 10:30:00 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id v22sm1180881lfi.270.2021.07.20.10.29.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jul 2021 09:40:23 -0700 (PDT)
-Date: Tue, 20 Jul 2021 16:40:19 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
+        Tue, 20 Jul 2021 10:30:00 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id CEE9C102630; Tue, 20 Jul 2021 20:30:04 +0300 (+03)
+Date: Tue, 20 Jul 2021 20:30:04 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Joerg Roedel <jroedel@suse.de>
+Cc: David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Jon Grimm <jon.grimm@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 25/40] KVM: SVM: Reclaim the guest pages
- when SEV-SNP VM terminates
-Message-ID: <YPb8c5qlZ6JuDR05@google.com>
-References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-26-brijesh.singh@amd.com>
- <YPHnb5pW9IoTcwWU@google.com>
- <2711d9f9-21a0-7baa-d0ff-2c0f69ca6949@amd.com>
- <YPIoaoDCjNVzn2ZM@google.com>
- <e1cc1e21-e7b7-5930-1c01-8f4bb6e43b3a@amd.com>
- <YPWz6YwjDZcla5/+@google.com>
- <912c929c-06ba-a391-36bb-050384907d81@amd.com>
- <YPXMas+9O1Y5910b@google.com>
- <96154428-4c18-9e5f-3742-d0446a8d9848@amd.com>
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	"Kaplan, David" <David.Kaplan@amd.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
+Message-ID: <20210720173004.ucrliup5o7l3jfq3@box.shutemov.name>
+References: <YPV27hDPZUoVsIZt@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -82,37 +68,243 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <96154428-4c18-9e5f-3742-d0446a8d9848@amd.com>
+In-Reply-To: <YPV27hDPZUoVsIZt@suse.de>
 
-On Mon, Jul 19, 2021, Brijesh Singh wrote:
+On Mon, Jul 19, 2021 at 02:58:22PM +0200, Joerg Roedel wrote:
+> Hi,
 > 
-> On 7/19/21 2:03 PM, Sean Christopherson wrote:
-> > On Mon, Jul 19, 2021, Brijesh Singh wrote:
-> > Ah, not firmwrare, gotcha.  But we can still use a helper, e.g. an inner
-> > double-underscore helper, __rmp_make_private().
+> I'd like to get some movement again into the discussion around how to
+> implement runtime memory validation for confidential guests and wrote up
+> some thoughts on it.
+> Below are the results in form of a proposal I put together. Please let
+> me know your thoughts on it and whether it fits everyones requirements.
+
+Thanks for bringing it up. I'm working on the topic for Intel TDX. See
+comments below.
+
 > 
-> In that case we are basically passing the all the fields defined in the
-> 'struct rmpupdate' as individual arguments.
-
-Yes, but (a) not _all_ fields, (b) it would allow hiding "struct rmpupdate", and
-(c) this is much friendlier to readers:
-
-	__rmp_make_private(pfn, gpa, PG_LEVEL_4K, svm->asid, true);
-
-than:
-
-	rmpupdate(&rmpupdate);
-
-For the former, I can see in a single line of code that KVM is creating a 4k
-private, immutable guest page.  With the latter, I need to go hunt down all code
-that modifies rmpupdate to understand what the code is doing.
-
-> How about something like this:
+> Thanks,
 > 
-> * core kernel exports the rmpupdate()
-> * the include/linux/sev.h header file defines the helper functions
+> 	Joerg
 > 
->   int rmp_make_private(u64 pfn, u64 gpa, int psize, int asid)
+> Proposal for Runtime Memory Validation in Secure Guests on x86
+> ==============================================================
+> 
+> This proposal describes a method and protocol for runtime validation of
+> memory in virtualization guests running with Intel Trusted Domain
+> Extensions (Intel-TDX) or AMD Secure Nested Paging (AMD-SNP).
+> 
+> AMD-SNP and Intel-TDX use different terms to discuss memory page states.
+> In AMD-SNP memory has to be 'validated' while in Intel-TDX is will be
+> 'accepted'. This document uses the term 'validated' for both.
+> 
+> Problem Statement
+> -----------------
+> 
+> Virtualization guests which run with AMD-SNP or Intel-TDX need to
+> validate their memory before using it. The validation assigns a hardware
+> state to each page which allows the guest to detect when the hypervisor
+> tries to maliciously access or remap a guest-private page. The guest can
+> only access validated pages.
+> 
+> There are three ways the guest memory can be validated:
+> 
+> 	I.   The firmware validates all of guest memory at boot time. This
+> 	     is the simplest method which requires the least changes to
+> 	     the Linux kernel. But this method is also very slow and
+> 	     causes unwanted delays in the boot process, as verification
+> 	     can take several seconds (depending on guest memory size).
+> 
+> 	II.  The firmware only validates its own memory and memory
+> 	     validation happens as the memory is used. This significantly
+> 	     improves the boot time, but needs more intrusive changes to
+> 	     the Linux kernel and its boot process.
+> 
+> 
+> 	III. Approach I. and II. can be combined. The firmware only
+> 	     validates the first X MB/GB of guest memory and the rest is
+> 	     validated on-demand.
+> 
+> For method II. and III. the guest needs to track which pages have
+> already been validated to detect hypervisor attacks. This information
+> needs to be carried through the whole boot process.
+> 
+> This poses challenges on the Linux boot process, as there is currently
+> no way to forward information about validated memory up the boot chain.
+> This proposal tries to describe a way to solve these challenges.
 
-I think we'll want s/psize/level, i.e. make it more obvious clear that the input
-is PG_LEVEL_*.  
+We use EFI unaccepted memory type to pass this information between
+firmware and kernel. In my WIP patch I translate it to a new E820 memory
+type: E820_TYPE_UNACCEPTED.
+
+E820 can also be used during early boot for tracking what memory got
+accepted by kernel too.
+
+> Memory Validation through the Boot Process and in the Running System
+> --------------------------------------------------------------------
+> 
+> The memory is validated throughout the boot process as described below.
+> These steps assume a firmware is present, but this proposal does not
+> strictly require a firmware. The tasks done be the firmware can also be
+> done by the hypervisor before starting the guest. The steps are:
+> 
+> 	1. The firmware validates all memory which will not be owned by
+> 	   the boot loader or the OS.
+> 
+> 	2. The firmware also validates the first X MB of memory, just
+> 	   enough to run a boot loader and to load the compressed Linux
+> 	   kernel image. X is not expected to be very large, 64 or 128
+> 	   MB should be enough. This pre-validation should not cause
+> 	   significant delays in the boot process.
+
+For now, I debug with 256MiB accepted by firmware. It allows to avoid
+dealing with decompression code at this stage of the project. I plan to
+lower the number later.
+
+> 
+> 	3. The validated memory is marked E820-Usable in struct
+> 	   boot_params for the Linux decompressor. The rest of the
+> 	   memory is also passed to Linux via new special E820 entries
+> 	   which mark the memory as Usable-but-Invalid.
+> 
+> 	4. When the Linux decompressor takes over control, it evaluates
+> 	   the E820 table and calculates to total amount of memory
+> 	   available to Linux (valid and invalid memory).
+> 
+> 	   The decompressor allocates a physically contiguous data
+> 	   structure at a random memory location which is big enough to
+> 	   hold the the validation states of all 4kb pages available to
+> 	   the guest. This data structure will be called the Validation
+> 	   Bitmap through the rest of this document. The Validation
+> 	   Bitmap is indexed by page frame numbers. 
+> 
+> 	   It still needs to be determined how many bits are required
+> 	   per page. This depends on the necessity to track validation
+> 	   page-sizes. Two bits per page are enough to track the 3
+> 	   page-sizes currently available on the x86 architecture.
+> 
+> 	   The decompressor initializes the Validation Bitmap by first
+> 	   validating its backing memory and then updating it with the
+> 	   information from the E820 table. It will also update the
+> 	   table if it changes the state of pages from invalid to valid
+> 	   (and vice versa, e.g. for mapping a GHCB page).
+
+I would argue for per-range, not per-page, tracking of accepted/validated
+memory for decompresser and early boot code, until page allocator is fully
+functional. I have reasonable success with this approach so far.
+
+Once page allocator is ready we can switch to fine-grained tracking.
+
+> 	5. The 'struct boot_params' is extended to carry the location
+> 	   and size of the Validation Bitmap to the extracted kernel
+> 	   image.
+> 	   In fact, since the decompressor already receives a 'struct
+> 	   boot_params', it will check if it carries a Validation
+> 	   Bitmap. If it does, the decompressor uses the existing one
+> 	   instead of allocating a new one.
+> 
+> 	6. When the extracted kernel image takes over control, it will
+> 	   make sure the Validation Bitmap is up to date when memory
+> 	   needs to be validated.
+> 
+> 	7. When set up, the memblock and page allocators have to check
+> 	   whether the memory they return is already validated, and
+> 	   validate it if not.
+> 
+> 	   This should happen after the memory is allocated and all
+> 	   allocator-locks are dropped, but before the memory is
+> 	   returned to the caller. This way the access to the
+> 	   validation bitmap can be implemented without locking and only
+> 	   using atomic instructions.
+> 
+> 	   Under no circumstances the Linux kernel is allowed to
+> 	   validate a page more than once. Doing this might create
+> 	   attack vectors for the Hypervisor towards the guest.
+> 
+> 	8. When memory is returned to the memblock or page allocators,
+> 	   it is _not_ invalidated. In fact, all memory which is freed
+> 	   need to be valid. If it was marked invalid in the meantime
+> 	   (e.g. if it the memory was used for DMA buffers), the code
+> 	   owning the memory needs to validate it again before freeing
+> 	   it.
+> 
+> 	   The benefit of doing memory validation at allocation time is
+> 	   that it keeps the exception handler for invalid memory
+> 	   simple, because no exceptions of this kind are expected under
+> 	   normal operation.
+
+During early boot I treat unaccepted memory as a usable RAM. It only
+requires special treatment on memblock_reserve(), which used for early
+memory allocation: unaccepted usable RAM has to be accepted, before
+reserving.
+
+For fine-grained accepting/validation tracking I use PageOffline() flags
+(it's encoded into mapcount): before adding an unaccepted page to free
+list I set the PageOffline() to indicate that the page has to be accepted
+before returning from the page allocator. Currently, we never have
+PageOffline() set for pages on free lists, so we won't have confusion with
+ballooning or memory hotplug.
+
+I try to keep pages accepted in 2M or 4M chunks (pageblock_order or
+MAX_ORDER). It is reasonable compromise on speed/latency.
+
+I still debugging the code, but hopefully will get working PoC this week.
+
+> The Validation Bitmap
+> ---------------------
+> 
+> This document proposes the use of a Validation Bitmap to store the
+> validation state of guest pages. This section discusses the benefits of
+> this approach.
+> 
+> The Linux kernel already has an array to store various state for each
+> memory page in the system: The struct page array. While this would be a
+> natural place to also store page validation information, the Validation
+> Bitmap is chosen because having the information separated has some clear
+> benefits:
+> 
+> 	- The Validation Bitmap is allocated in the Linux decompressor
+> 	  and already available long before the struct page array is
+> 	  initialized.
+> 
+> 	- Since it is a simple in-memory data structure which is
+> 	  physically contiguous, it can be passed along through the
+> 	  various stages of the boot process.
+> 
+> 	- It can even be passed to a new kernel booted via kexec/kdump,
+> 	  making it trivial to enable these features for AMD-SNP and
+> 	  Intel-TDX.
+> 
+> 	- When memory validation happens in the memblock and page
+> 	  allocators, there is no need for locking when making changes
+> 	  to the Validation Bitmap, because:
+> 	  
+> 	    - Nobody will try to concurrently access the same bits, as
+> 	      the code-path doing the validation is the only owner of
+> 	      the memory.
+> 
+> 	    - Updates can happen via atomic cmpxchg instructions
+> 	      when multiple bits are used per page. If only one bit is
+> 	      needed, atomic bit manipulation instructions will suffice.
+> 
+> 	- NUMA-locality is not considered to be a problem for the
+> 	  Validation Bitmap. Since memory is not invalidated upon free,
+> 	  the data structure will become read-mostly over time.
+> 
+
+I'm not sure a bitmap is needed. I hope we can use E820 for early
+tracking. But let's see if it works.
+
+> Final Notes
+> -----------
+> 
+> This proposal does not introduce requirements about the firmware that
+> has to be used to run Intel-TDX or AMD-SNP guests. It works with UEFI
+> and non-UEFI firmwares, or with no firmware at all. This is important
+> for use-cases like Confidential Containers running in VMs, which often
+> use a very small firmware (or no firmware at all) for reducing boot
+> times.
+> 
+
+-- 
+ Kirill A. Shutemov
