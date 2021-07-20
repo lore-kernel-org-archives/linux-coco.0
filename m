@@ -1,45 +1,46 @@
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658DB173
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 08:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF491173
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 09:11:07 +0000 (UTC)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E77E91FDD2;
-	Tue, 20 Jul 2021 08:55:49 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D2971FD3E;
+	Tue, 20 Jul 2021 09:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1626771349; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1626772266; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0sf2lL/WSs0Z3IMfWxBFv2FOoeHVxjrvZYcbibsEAXQ=;
-	b=rjEefgeuR84ltJ8ZXtBzBHuUMW0ncRDF92aPilfGqIaO6ZNFt5O5GCnlMtYjaFpn9JB9sl
-	YcRee1g2tejFK9F/DoyVPaSnHJCULeyy6RD+IM79YdoFVI5mXi+wVw5bCMio1t5XYoZrop
-	c6OS3lQqXrt5cm29xsP4/nJsCXorxls=
+	bh=+kd/u8CU4q26Few9zjEdRRSxYLzHoRL5c+SvecSD1cU=;
+	b=tzc14/s6q326MAX/80brC9WF6A7XgWSXeSSLmj6PNY7rXZZJPeRmGz5hFedadMeZVN8/AK
+	MlPmOGBhEk9b5LHvJAzeDhZhRgqPlAmN3B+R/kM2S/OKUnmT3kwx5DLLk0NLj7VOamZZwc
+	MJUrz0ElEaCUAbtvWL3GF+HeVBWNQP8=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1626771349;
+	s=susede2_ed25519; t=1626772266;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0sf2lL/WSs0Z3IMfWxBFv2FOoeHVxjrvZYcbibsEAXQ=;
-	b=LOMuJq16P+MuFRZQjqwu2B50n2ABUXIzppapWj5frmewT6BrAfiNEr0X2ZZxOrKro3Ubal
-	sl55ZuZJVndRK5DA==
+	bh=+kd/u8CU4q26Few9zjEdRRSxYLzHoRL5c+SvecSD1cU=;
+	b=uwuvTENOmHD9IJ/WMdd1vHZ0TdBeHTnAtN5Hak03B42Mkn6NeWYykYxmx/Oe++jT7iAlPR
+	5Zag7Dpmx5JxKDCw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3B35513D5E;
-	Tue, 20 Jul 2021 08:55:49 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B1A3E13C89;
+	Tue, 20 Jul 2021 09:11:05 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id K/SiDJWP9mCiHQAAMHmgww
-	(envelope-from <jroedel@suse.de>); Tue, 20 Jul 2021 08:55:49 +0000
-Date: Tue, 20 Jul 2021 10:55:47 +0200
+	id VtGuKSmT9mD1IgAAMHmgww
+	(envelope-from <jroedel@suse.de>); Tue, 20 Jul 2021 09:11:05 +0000
+Date: Tue, 20 Jul 2021 11:11:04 +0200
 From: Joerg Roedel <jroedel@suse.de>
 To: Andi Kleen <ak@linux.intel.com>
-Cc: David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
+Cc: Erdem Aktas <erdemaktas@google.com>, Andy Lutomirski <luto@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
@@ -51,12 +52,14 @@ Cc: David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
 	"Kaplan, David" <David.Kaplan@amd.com>,
 	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	Dario Faggioli <dfaggioli@suse.com>, x86 <x86@kernel.org>,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <YPaPk19JwcwmwzqR@suse.de>
+Message-ID: <YPaTKF0TPicll2FN@suse.de>
 References: <YPV27hDPZUoVsIZt@suse.de>
- <4e33d22e-330f-c5ba-bc15-08a3298598c5@linux.intel.com>
+ <a5ac5af6-7e28-4e9c-e55b-db31842a5911@kernel.org>
+ <CAAYXXYwFzrf8uY-PFkMRSG28+HztfGdJft8kB3Y3keWCx9K8TQ@mail.gmail.com>
+ <aa564856-36c7-ae19-7a82-17638cdf5ec1@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -65,56 +68,44 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4e33d22e-330f-c5ba-bc15-08a3298598c5@linux.intel.com>
+In-Reply-To: <aa564856-36c7-ae19-7a82-17638cdf5ec1@linux.intel.com>
 
-On Mon, Jul 19, 2021 at 01:39:48PM -0700, Andi Kleen wrote:
-> It's actually not just the first X. As I understand there is a proposal for
-> a new UEFI memory type, that will allow the firmware (and anyone else) to
-> declare memory regions as accepted in a fine grained manner.
+On Mon, Jul 19, 2021 at 10:17:36PM -0700, Andi Kleen wrote:
+> For non crash kexec it's fine to reaccept/validate memory because we don't
+> care about the old contents anymore, except for the kernel itself and
+> perhaps your stack/page tables. So something very simple is enough for that
+> too.
 
-Yes, but relying on this means we 1) introduce a dependency to UEFI into
-booting confidential guests and 2) the decompressor stub in the kernel
-needs to parse UEFI tables. None of this is a good idea for several
-reasons.
+I am not sure how it is implemented in TDX hardware, but for SNP the
+guest _must_ _not_ double-validate or even double-invalidate memory.
 
-> I don't think it's that bad. If we know what has been validated already
-> using the memory map, then it's straight forward to check what is a valid
-> validation request and what is not. Anything that's in a BIOS reserved
-> region or in a region already marked as validated must be already validated
-> and and can be rejected (or rather panic'ed). So I don't see the need to
-> pass a fine grained validation bitmap around. Of course the kernel needs to
-> maintain something (likely not a bitmap, but rather some form of page flag)
-> on its own, but it doesn't need to be visible in any outside interfaces.
+What I sent here is actually v2 of my proposal, v1 had a much more lazy
+approach like you are proposing here. But as I learned what can happen
+is this:
 
-Using page flags means that the information about what is already
-validated/accepted needs to be carried in another form until the
-struct-page array is initialized. A lot can happen until then, and every
-modification in the code that runs before carries the risk of breaking
-TDX and SNP guests.
+	* Hypervisor maps GPA X to HPA A
+	* Guest validates GPA X
+	  Hardware enforces that HPA A always maps to GPA X
+	* Hypervisor remaps GPA X to HPA B
+	* Guest lazily re-validates GPA X
+	  Hardware enforces that HPA B always maps to GPA X
+	
+The situation we have now is that host pages A and B are validated for
+the same guest page, and the hypervisor can switch between them at will,
+without the guest being able to notice it.
 
-The Validation Bitmap on the other side is set up on the first boot and
-kept alive for the rest of the guests life-time (even over kexec/kdump)
-and will be updated by the allocators in use. This is a much more robust
-solution than carrying the information in some other way forward until
-the page array is there.
+This can open various attack vectors from the hypervisor towards the
+guest, like tricking the guest into a code-path where it accidentially
+reveals its secrets.
 
-I must admit that I was also voting for a page-flag in the past, but the
-benefits for robustness, supporting kexec/kdump, and the boot process in
-general made me re-visit this opinion.
+For that reason the guest needs to know at any time whether a given page
+has already been validated/accepted. And the guest needs to pass along
+this fine-grained information even in the case of kexec/kdump.
 
-> There's one exception to this, which is the previous memory view in crash
-> kernels. But that's an relatively obscure case and there might be other
-> solutions for this.
+> If the device filter is active it won't.
 
-Kexec and kdump are not obscure cases, those are real-world requirements
-for TDX and SNP guests.
-
-> I'm not sure about AMD, but in TDX we're certainly have no need to reaccept
-> after something was shared.
-
-Re-validation is needed on AMD, if I am not mistaken AMD hardware even
-enforces that shared memory is mapped unencrypted and private memory
-encrypted.
+We are not going to pohibit dma_alloc_coherent() in SNP guests just
+because we are too lazy to implement memory re-validation.
 
 Regards,
 
