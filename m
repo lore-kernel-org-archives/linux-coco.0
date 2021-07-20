@@ -1,46 +1,51 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF491173
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 09:11:07 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D2971FD3E;
-	Tue, 20 Jul 2021 09:11:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1626772266; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3651173
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 09:34:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1626773648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+kd/u8CU4q26Few9zjEdRRSxYLzHoRL5c+SvecSD1cU=;
-	b=tzc14/s6q326MAX/80brC9WF6A7XgWSXeSSLmj6PNY7rXZZJPeRmGz5hFedadMeZVN8/AK
-	MlPmOGBhEk9b5LHvJAzeDhZhRgqPlAmN3B+R/kM2S/OKUnmT3kwx5DLLk0NLj7VOamZZwc
-	MJUrz0ElEaCUAbtvWL3GF+HeVBWNQP8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1626772266;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+kd/u8CU4q26Few9zjEdRRSxYLzHoRL5c+SvecSD1cU=;
-	b=uwuvTENOmHD9IJ/WMdd1vHZ0TdBeHTnAtN5Hak03B42Mkn6NeWYykYxmx/Oe++jT7iAlPR
-	5Zag7Dpmx5JxKDCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B1A3E13C89;
-	Tue, 20 Jul 2021 09:11:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id VtGuKSmT9mD1IgAAMHmgww
-	(envelope-from <jroedel@suse.de>); Tue, 20 Jul 2021 09:11:05 +0000
-Date: Tue, 20 Jul 2021 11:11:04 +0200
-From: Joerg Roedel <jroedel@suse.de>
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Erdem Aktas <erdemaktas@google.com>, Andy Lutomirski <luto@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Borislav Petkov <bp@alien8.de>,
+	bh=XV8I+8PwrPZnsF+J0mVxJplAW6dmriYfcaV2/c4g/9o=;
+	b=WthOuSGhVf4S3MefE1++wgzlL8Nr4vgl31+lDZIlt2DdHdhLU63Svh+o50B8md/yyvLlCN
+	aFGtXGsk94p/RswRJgfqipsF+dqZJ3+TBvvPCo4xOZTFXfka1P2Lf/FNGKHwwj0GvHYTzH
+	lRFfdDX6AiyK7KL4oNuyDZgXnMZOZno=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-542-VsF9uey6NeSuV3WE8k9GgA-1; Tue, 20 Jul 2021 05:34:05 -0400
+X-MC-Unique: VsF9uey6NeSuV3WE8k9GgA-1
+Received: by mail-wr1-f70.google.com with SMTP id h11-20020adffa8b0000b029013a357d7bdcso10084071wrr.18
+        for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 02:34:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=XV8I+8PwrPZnsF+J0mVxJplAW6dmriYfcaV2/c4g/9o=;
+        b=FXG57LO1VIdQ/uZFVmq4ikTbipVBE+Anc6mchhgKcaC8KkM/4pCFT0HEIijQ+xUsj7
+         qanfs4rEt83iQwxgE3Y7kW7KTN8xgw3GbO9p4iRjqmQBq35YYKrjX+lIufUt/BAcDE2Z
+         8Unaizd6WYMNeTf8TVCQNKNi2gVMEZiV/VfQiWTCb1Ki1ZSlni21+pWsAiKaaXbCZLVo
+         Y9wRvisxQFC2ihbZrvdUqBGCo/nZtIU7TZkfJ8lpPv0R9kuofilLEPDJgLNgEFYn330d
+         uKy2ptUoQIFF7+Z9u/jNrGrZvfy76arHKE+RM4wyUb1HFbY/kg3BYBfrMQUYFggfq7dW
+         iX/Q==
+X-Gm-Message-State: AOAM533Z3Ii83/d80CvtiDNz4Bm6/V0ozrNi06Qs7/DfTZI4WukFFWJG
+	w9gQEjGyNiV4t+s+qShKq8jNzFLTRtnfj/vL3J2GmB49Xj01n3rSqGSLUgnMVoZZtHoQ+ibsY88
+	b/HciXESZjBHQfugcwmSv+A==
+X-Received: by 2002:a5d:6a4d:: with SMTP id t13mr34507217wrw.412.1626773644015;
+        Tue, 20 Jul 2021 02:34:04 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwzHZhKwHX+Y1GZJBHsqWHJ/kZvRIkpWuNhFWkVYJa0xNJrWABu4uaUEH0JtFI36tYQoLgyHQ==
+X-Received: by 2002:a5d:6a4d:: with SMTP id t13mr34507193wrw.412.1626773643871;
+        Tue, 20 Jul 2021 02:34:03 -0700 (PDT)
+Received: from work-vm (cpc109021-salf6-2-0-cust453.10-2.cable.virginm.net. [82.29.237.198])
+        by smtp.gmail.com with ESMTPSA id 129sm19560994wmz.26.2021.07.20.02.34.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jul 2021 02:34:03 -0700 (PDT)
+Date: Tue, 20 Jul 2021 10:34:01 +0100
+From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+To: Joerg Roedel <jroedel@suse.de>
+Cc: Andi Kleen <ak@linux.intel.com>, David Rientjes <rientjes@google.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
@@ -52,61 +57,34 @@ Cc: Erdem Aktas <erdemaktas@google.com>, Andy Lutomirski <luto@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
 	"Kaplan, David" <David.Kaplan@amd.com>,
 	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86 <x86@kernel.org>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <YPaTKF0TPicll2FN@suse.de>
+Message-ID: <YPaYiW/TlrDydY6m@work-vm>
 References: <YPV27hDPZUoVsIZt@suse.de>
- <a5ac5af6-7e28-4e9c-e55b-db31842a5911@kernel.org>
- <CAAYXXYwFzrf8uY-PFkMRSG28+HztfGdJft8kB3Y3keWCx9K8TQ@mail.gmail.com>
- <aa564856-36c7-ae19-7a82-17638cdf5ec1@linux.intel.com>
+ <4e33d22e-330f-c5ba-bc15-08a3298598c5@linux.intel.com>
+ <YPaPk19JwcwmwzqR@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <YPaPk19JwcwmwzqR@suse.de>
+User-Agent: Mutt/2.0.7 (2021-05-04)
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aa564856-36c7-ae19-7a82-17638cdf5ec1@linux.intel.com>
 
-On Mon, Jul 19, 2021 at 10:17:36PM -0700, Andi Kleen wrote:
-> For non crash kexec it's fine to reaccept/validate memory because we don't
-> care about the old contents anymore, except for the kernel itself and
-> perhaps your stack/page tables. So something very simple is enough for that
-> too.
+Hi,
+  Does the bitmap need to be page granulairty or can we work
+on bigger chunks?
 
-I am not sure how it is implemented in TDX hardware, but for SNP the
-guest _must_ _not_ double-validate or even double-invalidate memory.
+Dave
 
-What I sent here is actually v2 of my proposal, v1 had a much more lazy
-approach like you are proposing here. But as I learned what can happen
-is this:
+-- 
+Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
-	* Hypervisor maps GPA X to HPA A
-	* Guest validates GPA X
-	  Hardware enforces that HPA A always maps to GPA X
-	* Hypervisor remaps GPA X to HPA B
-	* Guest lazily re-validates GPA X
-	  Hardware enforces that HPA B always maps to GPA X
-	
-The situation we have now is that host pages A and B are validated for
-the same guest page, and the hypervisor can switch between them at will,
-without the guest being able to notice it.
-
-This can open various attack vectors from the hypervisor towards the
-guest, like tricking the guest into a code-path where it accidentially
-reveals its secrets.
-
-For that reason the guest needs to know at any time whether a given page
-has already been validated/accepted. And the guest needs to pass along
-this fine-grained information even in the case of kexec/kdump.
-
-> If the device filter is active it won't.
-
-We are not going to pohibit dma_alloc_coherent() in SNP guests just
-because we are too lazy to implement memory re-validation.
-
-Regards,
-
-	Joerg
