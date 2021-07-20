@@ -1,232 +1,89 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6F370
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 00:10:40 +0000 (UTC)
-Received: by mail-pf1-f173.google.com with SMTP id d9so6923820pfv.4
-        for <linux-coco@lists.linux.dev>; Mon, 19 Jul 2021 17:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=AK7Am28M2zvc87KGZLscBYou7JeqfY9AoMRwA8Z1is0=;
-        b=kOJz/QU/yH26H5nk02wvJPuP7I15H5DyQmeaxzTCZy4nge9IPwiNMKHI7U3dCKd+z9
-         VC46tces4DPjfyQd6/7DoXA8J0G8oMlGEvEwNHxh8zAiKv4xlhDbHdbn7UTq6cU0emJX
-         bXtDSYyPOi2ynMErJTUKqEjXAR575c7xvzK3Q2zaohOoMkCX3bqOSYvttDkw34YdWZoW
-         UE0rNfvMHAczrp8ll5j1fxv/l7Y9beXzNf5dJ/pjBhVIxzpMgE/gLBA9qQHOdS4CIRbN
-         tPqP556jUWGYKfSbaAIj2nWSdziw0T1MJUhOJWd5mlT+jpq+wQgyLLVdbRUU7Xe1WZ0c
-         kv3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=AK7Am28M2zvc87KGZLscBYou7JeqfY9AoMRwA8Z1is0=;
-        b=dnQy/1jTaUrg2Alj5lIOFCJVZH7jU109MdP/GUq0w0Df7jQoMufoT9afs7X2KkN1oY
-         4/+CPIpJ1u7KDRNrNRcbaC4tvEepkVmwNIY6xFVDC1yQGSwYNqTXTdWkuKhv1oUAcpey
-         cV2rigdHVDAwhNWGI2z6LjnveXa9PrhZ1G+sM/Wrz51j7o2Geb4hhv7qYNdkEMu/20/T
-         idobwvjjjNOvqfYw15cQOonlJLuF9jTHI3Kji+6WSBctLWdTfoyQJqjP2bXmnnCDnXvb
-         DIW0DI+V6Wkg5zLritBjdgwHjNUO3xCLWAkcMj6ZVwDmjKMsRv7E6MDHuuhLChIEt2NM
-         XKfg==
-X-Gm-Message-State: AOAM530CkeSd7rg9j7maBEZNfSsfLSeJjbPAsD4yECwXw+VWTp7bqgNL
-	gvBBy9Ts9/q9n55Xv+1NT6k5Rg==
-X-Google-Smtp-Source: ABdhPJwXXNzz6kdDJ2LYdi7Q+ws13YMDHqvdk1hUvnOwKNdrC60c1ezx7UMJv5UI1Q2z1WInzxdE0g==
-X-Received: by 2002:a62:684:0:b029:330:2fe:28ef with SMTP id 126-20020a6206840000b029033002fe28efmr28679143pfg.21.1626739839808;
-        Mon, 19 Jul 2021 17:10:39 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id d191sm24218090pga.27.2021.07.19.17.10.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jul 2021 17:10:39 -0700 (PDT)
-Date: Tue, 20 Jul 2021 00:10:35 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 37/40] KVM: SVM: Add support to handle the
- RMP nested page fault
-Message-ID: <YPYUe8hAz5/c7IW9@google.com>
-References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-38-brijesh.singh@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C705F70
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 00:26:23 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3182961002;
+	Tue, 20 Jul 2021 00:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1626740783;
+	bh=IrZr03z2SQRxc1W/xuTvhpX0Ux1VQDmxsw9XbqpRfYo=;
+	h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+	b=RjdsKTIpIlVlfQh6IP8KYojvOEw02JEfzQ+dqxGxqzSZeGxO6k7xEsmxzMgsxIcWq
+	 K7vszQ3DVEEF8OUKBNiIiV54hKrhQqOOz70VicNBVTmH6Bx+UdkcRzEXHYV3ZknBAn
+	 CXNnGzBeNqsJ7lns3dQb3iFE2QS/hleXhtXp2JTh3UTRFAcuCC/qpsowOw3jcyN0M8
+	 vDtH+GO/canQLIxYJDvjSBxJ2gx6VsAhEfNrRybWuvrjFwYxV7taMSQ+zYvKBSxqXE
+	 NZAhhh3BGmlqrqU7rTrKzUkYKC00cSEmAGqYaK5oPJjP18bcpY21HcMBkybSD/EkM9
+	 ZsRw+kEdZfj7A==
+Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
+To: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
+ Borislav Petkov <bp@alien8.de>, Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Andi Kleen <ak@linux.intel.com>, Brijesh Singh <brijesh.singh@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Jon Grimm <jon.grimm@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ "Kaplan, David" <David.Kaplan@amd.com>, Varad Gautam
+ <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>
+Cc: x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev
+References: <YPV27hDPZUoVsIZt@suse.de>
+From: Andy Lutomirski <luto@kernel.org>
+Message-ID: <a5ac5af6-7e28-4e9c-e55b-db31842a5911@kernel.org>
+Date: Mon, 19 Jul 2021 17:26:20 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210707183616.5620-38-brijesh.singh@amd.com>
+In-Reply-To: <YPV27hDPZUoVsIZt@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 07, 2021, Brijesh Singh wrote:
-> Follow the recommendation from APM2 section 15.36.10 and 15.36.11 to
-> resolve the RMP violation encountered during the NPT table walk.
+On 7/19/21 5:58 AM, Joerg Roedel wrote:
 
-Heh, please elaborate on exactly what that recommendation is.  A recommendation
-isn't exactly architectural, i.e. is subject to change :-)
+> Memory Validation through the Boot Process and in the Running System
+> --------------------------------------------------------------------
+> 
+> The memory is validated throughout the boot process as described below.
+> These steps assume a firmware is present, but this proposal does not
+> strictly require a firmware. The tasks done be the firmware can also be
+> done by the hypervisor before starting the guest. The steps are:
+> 
+> 	1. The firmware validates all memory which will not be owned by
+> 	   the boot loader or the OS.
+> 
+> 	2. The firmware also validates the first X MB of memory, just
+> 	   enough to run a boot loader and to load the compressed Linux
+> 	   kernel image. X is not expected to be very large, 64 or 128
+> 	   MB should be enough. This pre-validation should not cause
+> 	   significant delays in the boot process.
+> 
+> 	3. The validated memory is marked E820-Usable in struct
+> 	   boot_params for the Linux decompressor. The rest of the
+> 	   memory is also passed to Linux via new special E820 entries
+> 	   which mark the memory as Usable-but-Invalid.
+> 
+> 	4. When the Linux decompressor takes over control, it evaluates
+> 	   the E820 table and calculates to total amount of memory
+> 	   available to Linux (valid and invalid memory).
+> 
+> 	   The decompressor allocates a physically contiguous data
+> 	   structure at a random memory location which is big enough to
+> 	   hold the the validation states of all 4kb pages available to
+> 	   the guest. This data structure will be called the Validation
+> 	   Bitmap through the rest of this document. The Validation
+> 	   Bitmap is indexed by page frame numbers. 
 
-And, do we have to follow the APM's recommendation?  Specifically, can KVM treat
-#NPF RMP violations as guest errors, or is that not allowed by the GHCB spec?
-I.e. can we mandate accesses be preceded by page state change requests?  It would
-simplify KVM (albeit not much of a simplificiation) and would also make debugging
-easier since transitions would require an explicit guest request and guest bugs
-would result in errors instead of random corruption/weirdness.
+At the risk of asking a potentially silly question, would it be
+reasonable to treat non-validated memory as not-present for kernel
+purposes and hot-add it in a thread as it gets validated?  Or would this
+result in poor system behavior before enough memory is validated?
+Perhaps we should block instead of failing allocations if we want more
+memory than is currently validated?
 
-> index 46323af09995..117e2e08d7ed 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1399,6 +1399,9 @@ struct kvm_x86_ops {
->  
->  	void (*write_page_begin)(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn);
->  	void (*write_page_end)(struct kvm *kvm, struct kvm_memory_slot *slot, gfn_t gfn);
-> +
-> +	int (*handle_rmp_page_fault)(struct kvm_vcpu *vcpu, gpa_t gpa, kvm_pfn_t pfn,
-> +			int level, u64 error_code);
->  };
->  
->  struct kvm_x86_nested_ops {
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index e60f54455cdc..b6a676ba1862 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -5096,6 +5096,18 @@ static void kvm_mmu_pte_write(struct kvm_vcpu *vcpu, gpa_t gpa,
->  	write_unlock(&vcpu->kvm->mmu_lock);
->  }
->  
-> +static int handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
-> +{
-> +	kvm_pfn_t pfn;
-> +	int level;
-> +
-> +	if (unlikely(!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &level)))
-> +		return RET_PF_RETRY;
-> +
-> +	kvm_x86_ops.handle_rmp_page_fault(vcpu, gpa, pfn, level, error_code);
-> +	return RET_PF_RETRY;
-> +}
-> +
->  int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
->  		       void *insn, int insn_len)
->  {
-> @@ -5112,6 +5124,14 @@ int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
->  			goto emulate;
->  	}
->  
-> +	if (unlikely(error_code & PFERR_GUEST_RMP_MASK)) {
-> +		r = handle_rmp_page_fault(vcpu, cr2_or_gpa, error_code);
-
-Adding a kvm_x86_ops hook is silly, there's literally one path, npf_interception()
-that can encounter RMP violations.  Just invoke snp_handle_rmp_page_fault() from
-there.  That works even if kvm_mmu_get_tdp_walk() stays around since it was
-exported earlier.
-
-> +		if (r == RET_PF_RETRY)
-> +			return 1;
-> +		else
-> +			return r;
-> +	}
-> +
->  	if (r == RET_PF_INVALID) {
->  		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
->  					  lower_32_bits(error_code), false);
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 839cf321c6dd..53a60edc810e 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3519,3 +3519,60 @@ void sev_snp_write_page_begin(struct kvm *kvm, struct kvm_memory_slot *slot, gfn
->  		BUG_ON(rc != 0);
->  	}
->  }
-> +
-> +int snp_handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, kvm_pfn_t pfn,
-> +			      int level, u64 error_code)
-> +{
-> +	struct rmpentry *e;
-> +	int rlevel, rc = 0;
-> +	bool private;
-> +	gfn_t gfn;
-> +
-> +	e = snp_lookup_page_in_rmptable(pfn_to_page(pfn), &rlevel);
-> +	if (!e)
-> +		return 1;
-> +
-> +	private = !!(error_code & PFERR_GUEST_ENC_MASK);
-> +
-> +	/*
-> +	 * See APM section 15.36.11 on how to handle the RMP fault for the large pages.
-
-Please do not punt the reader to the APM for things like this.  It's ok when there
-are gory details about CPU behavior that aren't worth commenting, but under no
-circumstance should KVM's software implementation be "documented" in a CPU spec.
-
-> +	 *
-> +	 *  npt	     rmp    access      action
-> +	 *  --------------------------------------------------
-> +	 *  4k       2M     C=1       psmash
-> +	 *  x        x      C=1       if page is not private then add a new RMP entry
-> +	 *  x        x      C=0       if page is private then make it shared
-> +	 *  2M       4k     C=x       zap
-> +	 */
-> +	if ((error_code & PFERR_GUEST_SIZEM_MASK) ||
-> +	    ((level == PG_LEVEL_4K) && (rlevel == PG_LEVEL_2M) && private)) {
-> +		rc = snp_rmptable_psmash(vcpu, pfn);
-> +		goto zap_gfn;
-> +	}
-> +
-> +	/*
-> +	 * If it's a private access, and the page is not assigned in the RMP table, create a
-> +	 * new private RMP entry.
-> +	 */
-> +	if (!rmpentry_assigned(e) && private) {
-> +		rc = snp_make_page_private(vcpu, gpa, pfn, PG_LEVEL_4K);
-> +		goto zap_gfn;
-> +	}
-> +
-> +	/*
-> +	 * If it's a shared access, then make the page shared in the RMP table.
-> +	 */
-> +	if (rmpentry_assigned(e) && !private)
-> +		rc = snp_make_page_shared(vcpu, gpa, pfn, PG_LEVEL_4K);
-
-Hrm, this really feels like it needs to be protected by mmu_lock.  Functionally,
-it might all work out in the end after enough RMP violations, but it's extremely
-difficult to reason about and probably even more difficult if multiple vCPUs end
-up fighting over a gfn.
-
-My gut reaction is that this is also backwards, i.e. KVM should update the RMP
-to match its TDP SPTEs, not the other way around.
-
-The one big complication is that the TDP MMU only takes mmu_lock for read.  A few
-options come to mind but none of them are all that pretty.  I'll wait to hear back
-on whether or not we can make PSC request mandatory before thinking too hard on
-this one.
-
-> +zap_gfn:
-> +	/*
-> +	 * Now that we have updated the RMP pagesize, zap the existing rmaps for
-> +	 * large entry ranges so that nested page table gets rebuilt with the updated RMP
-> +	 * pagesize.
-> +	 */
-> +	gfn = gpa_to_gfn(gpa) & ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
-> +	kvm_zap_gfn_range(vcpu->kvm, gfn, gfn + 512);
-> +
-> +	return 0;
-> +}
+--Andy
