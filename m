@@ -1,127 +1,160 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2045.outbound.protection.outlook.com [40.107.94.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DCC70
-	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 23:10:09 +0000 (UTC)
-Received: by mail-pf1-f170.google.com with SMTP id m83so846833pfd.0
-        for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 16:10:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8GS05+M5HxIVJGD8swK1udLTBOXRLN/mWtXb22swtSk=;
-        b=fo7zBSNhZlxBGzkz3iTxRF04ETYxLay9z+B74c7Cg9MTGKARF6wNQDL6q+0N/KxSfl
-         VLUxHuJ5MJN0JblQC1tyuMrE0i7tLBZmec860Nfc3faibAL9ODWdv+ALf0RFIFpA/S/b
-         oWwJwl7NlZhlbe6lDXeTNbXcoYJ0gz7zkzIjgvYilStAlGtFsfG6+ilddzZCoVbvMinJ
-         4UoIGGW/+WEgbQlYRMMujTb9gf9UQBmbggDlAOPNeCNkqTA/0AjDbP6zECVsRGVfRl76
-         spBal5q+vUjpQpkSSBV+BnecwkN8oJJaVlfvRlMljXTmh0LdiRQYOSaIcfXrZJzLQs6n
-         ipWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8GS05+M5HxIVJGD8swK1udLTBOXRLN/mWtXb22swtSk=;
-        b=tjz871oDpWCwuywI/0PGbXcKF7fzHWuw/qsfYbAaoy08cgeikB0sGGCIROs50B1N9P
-         3DPEJUix2S/eT7J0Lai+dYJ2pnm1SowgORbkCohRx+w+WXH4dW9nC/Th5o2siYQpKI4O
-         xL05gpV6wouYpjNKdieI1N4xZXGeAhiHvo8pMpBzC71I2Wv3PVgQySlyLkmWQNwkgdO0
-         6/mfLuWxi5o3mbdYca0X95P8EkbRIfPU6mbGIqtu8PCz0vPBIn9r20scR1Szd9GzTSti
-         VCL9nxDv3eFhePpkw3gxGF0+ZGPj6ekFCVoW5ofscQQOncL16f3XTA4i8Rp052bQ7wP+
-         NNWQ==
-X-Gm-Message-State: AOAM533otDFuC63VSswILT/tSVxZFx7PIxXH3xSqhAnmBfyZ3g6uOQSh
-	cLDN5/6fkSd+XemrGlcnEflB/TbkbaDdUKqPt10IHg==
-X-Google-Smtp-Source: ABdhPJzRYfGoJ4OMK4+YDvysh2ep9yENDjPmZ3bVp/z4TLjM/bNNnaSTdqVgm0u/oD9Rksv6bkICleek0amw+M3BuAs=
-X-Received: by 2002:a05:6a00:8c4:b029:2b4:8334:ed4d with SMTP id
- s4-20020a056a0008c4b02902b48334ed4dmr33013122pfu.36.1626822608693; Tue, 20
- Jul 2021 16:10:08 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAEE70
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jul 2021 23:10:21 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jKP6net69+u+F2uecVxUFhJ3LG222guGTvunsbGpq7C7EuAhcPAOv1Ol0ph6FxE2ZfDM6euVVdPjtj+dXFQb+LlzdMVIusixaK6BsJD1n6watU9HSj3C7i05O1J9azCcszAWhUYjJpaJ42eUzb5DNHtj3+18CM5XJNSU9t5e7sN2dYOTtrUvYc+n4w2LMXQXajw++43y22Iuyv0Ok5OBC1qD1l1gFwFKxdNFeYtBelNIgV+vnYWg6SRTF3Xyw89ijDSJ0QIg1S0L/To1z05Bk9PkHprsWfGBxal2uurb0gJ8XNBZebsYpmYHlPcFHOkZqFmImrtOVVzQWkG6RDSwTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i9oJ19Tn4Ab3jpYZCXCjUOBMj3nYYJUJ/CXDsm5/ljc=;
+ b=X+n3IYcO8sOf7/tQisgdr5hg9xYuQC4UmoQ43hTf3RscVQW+ffBO0SxMPsbymdqsUH+GlynNByyQd6De3957jlWS49Ntrg3FYwc5+7Y0MFQDNTrQDZfmrzdbeFQVeG4p8IBIqEvKFOtkBwQZFYDaCijXj2jdR0SultEW9EAqrWr5Rs9TkYbhvpomBHjP/QgRi4UHAtcZth+wYo7urpDhfjPPyx7edQPUQ4wSj9WW2lmjgG4dijmNCZ2kcjyW5PiAgjgVg5dcEGQuiebzTJ/qFx1ah13kPq7JwXZe80dqGo5iFAXwKG32vnW516ald6PVId4X9H+1yS+FTfoGtmuc8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i9oJ19Tn4Ab3jpYZCXCjUOBMj3nYYJUJ/CXDsm5/ljc=;
+ b=U/9FA5QOiLl8UxMeJm+VVNoHP0ZhVeA4iL2j6BNL0KNvGYaVSROLlYuZsFW6mWGAgxoFG8sY4otzEwCwIitD4QoNaSY1DH+lmfcuA9BClPONHeTP7zKxULFSFmIiCq7qU1QMs5bxZcku0lwsAuumZSBXeC76g88QyDUR5CF08jU=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN6PR12MB2717.namprd12.prod.outlook.com (2603:10b6:805:68::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.22; Tue, 20 Jul
+ 2021 23:10:19 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4331.034; Tue, 20 Jul 2021
+ 23:10:19 +0000
+Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+ tony.luck@intel.com, npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 05/40] x86/sev: Add RMP entry lookup helpers
+To: Sean Christopherson <seanjc@google.com>
+References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-6-brijesh.singh@amd.com> <YPCAZaROOHNskGlO@google.com>
+ <437a5230-64fc-64ab-9378-612c34e1b641@amd.com>
+ <39be0f79-e8e4-fd4a-5c4a-47731c61740d@amd.com> <YPdI4JLrJJdPxy7e@google.com>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <e9d4bf1e-83cf-5290-0613-bf46e359432f@amd.com>
+Date: Tue, 20 Jul 2021 18:10:10 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.12.0
+In-Reply-To: <YPdI4JLrJJdPxy7e@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-ClientProxiedBy: SN1PR12CA0099.namprd12.prod.outlook.com
+ (2603:10b6:802:21::34) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <YPV27hDPZUoVsIZt@suse.de> <a5ac5af6-7e28-4e9c-e55b-db31842a5911@kernel.org>
- <CAAYXXYwFzrf8uY-PFkMRSG28+HztfGdJft8kB3Y3keWCx9K8TQ@mail.gmail.com> <aa564856-36c7-ae19-7a82-17638cdf5ec1@linux.intel.com>
-In-Reply-To: <aa564856-36c7-ae19-7a82-17638cdf5ec1@linux.intel.com>
-From: Erdem Aktas <erdemaktas@google.com>
-Date: Tue, 20 Jul 2021 16:09:58 -0700
-Message-ID: <CAAYXXYxfpc8ix2dWzsPJ8Ew-fHROKm+WYLemjD1U8cTqzy6BHQ@mail.gmail.com>
-Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>, Joerg Roedel <jroedel@suse.de>, 
-	David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>, 
-	Sean Christopherson <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Jon Grimm <jon.grimm@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ingo Molnar <mingo@redhat.com>, "Kaplan, David" <David.Kaplan@amd.com>, 
-	Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>, x86 <x86@kernel.org>, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-
-On Mon, Jul 19, 2021 at 10:17 PM Andi Kleen <ak@linux.intel.com> wrote:
->
-> First I suspect for crash it's not a real security problem if a
-> malicious hypervisor would inject zeroed pages. That means actual strong
-> checks against revalidation/reaccept are not needed. That still leaves
-> the issue of triggering an exception when the memory is not there. TDX
-> has an option to trigger a #VE in this case, but we will actually force
-> disable it to avoid #VE in the system call gap. But the standard crash
-> dump tools already know how to parse mem_map to distinguish different
-> types of pages. So they already would be able to do that. We just need
-> some kind of safety mechanism to prevent any crashes, but that should be
-> doable. Actually I'm not sure they're really needed because that's a
-> root operation.
-
-Just to make sure that I am not confused. We are talking about a
-scenario where no private/shared page mapping is transferred between
-normal kernel and crash kernel.
-
-It is very hard to identify a security issue without seeing an
-implementation but if the crash kernel does not revalidate the memory,
-it might use a memory which was not accepted before (for example a
-previously shared page) and then it needs to handle EPT-violation #VE
-to accept it and now the content is gone. - assuming that we want to
-dump all the pages. I might be missing something obvious here but I am
-not sure how to crash kernel dumps all the memory when #VE handler is
-disabled or without having some private/shared page mapping. Once you
-have that #VE handler to accept pages, then VMM can inject zeroed
-pages to any location unless the guest keeps track of what has been
-accepted before.
-
-> > >> Also in general i don't think it will really happen, at least
-> > initially.
-> > >> All the shared buffers we use are allocated and never freed. So such a
-> > >> problem could be deferred.
-> >
-> > Does it not depend on kernel configs? Currently, there is a valid
-> > control path in dma_alloc_coherent which might alloc and free shared
-> > pages.
->
-> If the device filter is active it won't.
->
-
-If I am not missing something, I do not see that the device filter
-checks for CONFIG_DMA_COHERENT_POOL and if it is not enabled,
-dma_alloc_coherent will allocate a regular memory, convert it to
-shared and convert it back to private when it is freed.
-
--Erdem
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SN1PR12CA0099.namprd12.prod.outlook.com (2603:10b6:802:21::34) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.22 via Frontend Transport; Tue, 20 Jul 2021 23:10:17 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: e02d9f9c-b176-4688-d4e1-08d94bd38af9
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2717:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS:
+	<SN6PR12MB2717D8A4D95BD004C85CF14CE5E29@SN6PR12MB2717.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	/oGGOXvaj8Y3/epKD7VQ3wWbV44L7QQ81kdDR/y9PUtZm3LOtSqz0Ubp8Luxi12ffpfPo2KZR998A+mmo+w7fUUmqk4gmYgD7owMRqUngC6ifAjsE0EyyL11Bh3al61ATVuCN7p9ZcQsrLAtm+t2Mj/frkw/JYocN9ZU2QsbmBda7Iyp+fFtARXHAPD1fsMrcDASxQAixiC/JzQd47dTw/s8kn2t6G1bJqmL1cjbTm3YfubgELRdtDUkc6zx8+IQ1UgRNy/2LXhKalIw0Ed7TM70qlI3yytSGFz9000PfPTSyD22dP3tg7R9B/H9u/tuYTZrUFX8/7eC9+RJdtrf/zYBmZk7hE9/543vlpE+iCqC2tRBZqaIJnZMZzYijobl3/AZIzfVgIGxt0LRzF00VW7P2qGy15+7eINv+FiKHwq++3mYC1v0KeHa+MAP+xq13oSTQJZhvwhWqSO7RUn38LudkbYa336IVA8xNhlIV7j6FbKwepFBkxXJDc37W6etXIFT5Gp1iyj7raFSAokWlkZi/97yMB/T2kWqRU6IbHBzpIEc4jv+rF6/dpRp6s3dazviFvUedGl5D7SNgvwflVhr7kiZRvp3UWz9KszvCzPYR/ulOjh1B7nt7wcdkYKSLTbTX132FfVEwMsXsHS0FRRuRRs9oec1leB3X3v0ZuxndPd1pSspeu8JIKyOU7urIwW4ZMEPO2HHdrmJXfgISTJ4CdWF6RUqM3v7ODd+4x+x2Q3JPSIlA2zlYs1HsJn6TexKLXerbH9UEqrOgbGbFw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(136003)(346002)(396003)(366004)(7416002)(6916009)(83380400001)(38100700002)(38350700002)(36756003)(8676002)(186003)(44832011)(31696002)(956004)(6512007)(6486002)(6506007)(86362001)(478600001)(53546011)(26005)(7406005)(2906002)(4326008)(66476007)(6666004)(66556008)(8936002)(31686004)(66946007)(316002)(52116002)(2616005)(5660300002)(54906003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cEo2dlVEWURXMVgrcXB6cS9CaUdlOWJFczJoWER2MXJaSXM3bC9sakRia2k2?=
+ =?utf-8?B?M3ltUVgxZUxyRU5FYTlsVHBzalZlMWVyTW96R0JUc2dHM3R5MXJVM1RuTHl4?=
+ =?utf-8?B?WE5YOEJDTEJFc2EvVWdEV09XRGhwODJMR05wZlZ2UEFFb3cybXpMbU5IUHE1?=
+ =?utf-8?B?dzBNeXpUNVZhRndhTGhsSjFuRUs5YjR5Z1pYQUJmVWpYTnByb004MDdlVHVa?=
+ =?utf-8?B?Z1dUMGd4Y3k5RXN5VnE1VjFwRnR3WHJ0RUh4T3pDSmtVTFdocUM0bUtsSzBZ?=
+ =?utf-8?B?Wk5GNTd0QnhXekszV01XRkk4YW1CaURXb292TEhmS2xlZi9ja09wR2ZhU1Rp?=
+ =?utf-8?B?MVdKSFdIK2Y2L1dzZFUzeTJpNFJYZ005anN5TnEzUUthQzhMcDRvNzVCc1Y5?=
+ =?utf-8?B?UFhCYzhDQkR1NWlFanp6UUdGWWdEMEFHMXBvTFNhNWFxaEdkMGVrRGtWMllm?=
+ =?utf-8?B?RWh5WXJUWDRlQVU5VVFiUElOSXFZSjE0NW1wdDBrQWhFNk5UUkl1TWc5YVo5?=
+ =?utf-8?B?VVNqUXl6NURFcXpaR0xndlRSMk9vcC81d1FhQWZuTU5kNnY0cnZkTlBvazR4?=
+ =?utf-8?B?WndmVkltbHUvVG1pMDIxWUpMYkZwQjEwSmw2TWg2N3N1UW5KdTQ1c1EvVmtt?=
+ =?utf-8?B?TWpsS3c3SndOR1FaczBJVTg1UU5nMWw5REJubUp4SVRUSEltdHBNQ21PMVNY?=
+ =?utf-8?B?MS96RVF6d21vTWFob2ZNcFRNa2VCdnRXNk5NcEpma2FTbkVlbGRFcDVUbmVB?=
+ =?utf-8?B?Qmg0WFV5UGVFTFNGemoyZGVQMW4zNEpYaldhODd6WGEyTGNJa2dEUlErdUc0?=
+ =?utf-8?B?N2ZydnhmM05xSUpBUkN5UkVDVUVRUlR5VDV5azNJKzhOQ0JBbGVhbUU5SXgv?=
+ =?utf-8?B?QVhWL3dhdUxjUisvOSt6Qzg3Ymlzdm9tRHVySFhyc3dVOGtUaEtlNE93NEo0?=
+ =?utf-8?B?WVl5TkFtam81eGNOdzloRU5YandVTDN2Q3BpREw4NlpoV3VHNWR3dGx0bUNI?=
+ =?utf-8?B?blRJbWN5emVlNHVpdU04bnNpU2VjZkRRWmxMTUJmV2QxakdZeTFBWEtlaXVK?=
+ =?utf-8?B?Ym5HZW1zd0d6TExGOTNYd3J0MzNqU1luN3llMXBRdjh2RUkyS09uenduNFdv?=
+ =?utf-8?B?QlE4cVg3WXhqcmpYUWpOK2ZwV2thc1BkMHc3MU5VT2k2NEdpUGNFaFF3d2la?=
+ =?utf-8?B?WXQ3dTkxRkgrenJORXdtc1o3ZWw1M1k2cXNLOWhhQlJnNGY0cmlsTVp3RkI1?=
+ =?utf-8?B?Y1hBYWZMemd2QWtrMzJWTWdIZEU4c0FUWnlVSm5xUDlNT0hobytnWGpPM1BO?=
+ =?utf-8?B?dXZaMXhpVi9sQkxSbTJxS3ZaWjY1L0gwQ05PaW5sWmV5OUl1enFneEcycG12?=
+ =?utf-8?B?dmFiOUxjQ09WTmxMc200dTZkeTNWNWxiTE9Ub1BPV1pjNDRGcGpMakd2N0hm?=
+ =?utf-8?B?SXJWb0s0ZE05ekhpeEJDNlRqbk9MUmdNbGVZeEMxUU1Qa0I5dFg5Z0h4dTlW?=
+ =?utf-8?B?QUZraENTckdnV1llR1dlUnZQU3dQbklTciszQkZVV3NaVzJVVDlUd3p0WEJ1?=
+ =?utf-8?B?NEtyZEZObnhucEw5dU9NV0xHV1NvOWI4bnc0MytOdzJMcURVME9WaklEaUEx?=
+ =?utf-8?B?SWt5bWlwNktadDNPcE93RUFuVDNZNHBQa0xPOGh6Ny9aOWhqdFlHKzB4bTI3?=
+ =?utf-8?B?b2FPc05xMjRITWZaSm9PZDdxbjh3MXBXVXZYYUFQMUJrMDJaSTMzVWhlSE5C?=
+ =?utf-8?Q?675M9Ieaqq/lawywc9xoO0A4ANtllZ6j537FLFA?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e02d9f9c-b176-4688-d4e1-08d94bd38af9
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2021 23:10:19.4315
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uiWBjpY6JxWM4YLQVtayoQztWtEllf1/VGzqytiXPtLXMLrwGPDzs9NYrdDgfQIi9unrmGs80RSSHTjQohlhuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2717
 
 
-> > >> At the risk of asking a potentially silly question, would it be
-> > >> reasonable to treat non-validated memory as not-present for kernel
-> > >> purposes and hot-add it in a thread as it gets validated?
-> >
-> > My concern with this is, it assumes that all the present memory is
-> > private. UEFI might have some pages which are shared therefore also
-> > are present.
->
->
-> Hot add is nearly always a bad idea.
->
->
-> -Andi
->
->
->
+On 7/20/21 5:06 PM, Sean Christopherson wrote:
+> On Fri, Jul 16, 2021, Brijesh Singh wrote:
+>> On 7/15/21 2:28 PM, Brijesh Singh wrote:
+>>>> Looking at the future patches, dump_rmpentry() is the only power user,
+>>>> e.g.  everything else mostly looks at "assigned" and "level" (and one
+>>>> ratelimited warn on "validated" in snp_make_page_shared(), but I suspect
+>>>> that particular check can and should be dropped).
+>>> Yes, we need "assigned" and "level" and other entries are mainly for
+>>> the debug purposes.
+>>>
+>> For the debug purposes, we would like to dump additional RMP entries. If
+>> we go with your proposed function then how do we get those information
+>> in the dump_rmpentry()?
+> As suggested below, move dump_rmpentry() into sev.c so that it can use the
+> microarchitectural version.  For debug, I'm pretty that's what we'll want anyways,
+> e.g. dump the raw value along with the meaning of various bits.
+
+
+Based on other feedbacks, I am not sure if we need to dump the RMP
+entry;  In other feedback we agreed to unmap the pages from the direct
+map while adding them in the RMP table, so, if anyone attempts to access
+those pages they will now get the page-not-present instead of the RMP
+violation.
+
+thanks
+
+
+
