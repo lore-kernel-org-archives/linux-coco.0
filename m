@@ -1,126 +1,202 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2041.outbound.protection.outlook.com [40.107.92.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5415872
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 20:15:22 +0000 (UTC)
-Received: by mail-pj1-f51.google.com with SMTP id x13-20020a17090a46cdb0290175cf22899cso2007238pjg.2
-        for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 13:15:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=JYgF6/pkTp1ByHMaAngGJCR/bmJodLde5csRbzkM0r4=;
-        b=UhVUzEOtC4uWKpgp+8WrUnRj1KkG0NU0qXSw6K31wuPNQzTvnMNYXNk0eEmIJ/deHp
-         4urTjpJN9QlonhLvFzYlpUnuaGRNEo+n8pboDfPEBiftxqMsxcSi9fVEIq95RLJ4G1C5
-         epEUNX99hjz9o/cShG6PGS+S/7maU+ahD19VoTNjj9dlslgE/D3EzMiMs21uwSzAIjt+
-         6lsdpmyaBa04q38/Faqo8JjVQP6rzU+ED4+vprLPalQdgDC/HYqfMyRd5NW9hxUEdkTZ
-         Tky/uifJKxgKmBQfc46OSY7qMfNDkxQJ/Jz78Z2rYwL7c8D3jJXBrrRWMuAjkEO6jZIo
-         3NLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=JYgF6/pkTp1ByHMaAngGJCR/bmJodLde5csRbzkM0r4=;
-        b=R+kRDTLX/gIfbIJjbmYeGRUMvVF7bG+hEWWGH39FdJjMzFF/85koB3hhhCXBNmJElZ
-         8LMpf5AK9skudpzaqnhwx3MQqE0M+iN9IGR7H61xuC2e04rDE1FxBLrBhjN0v/9b92/X
-         fkeNgXlWVMiFl6w06cpggi57SRqZtajFBJAGRzStgmogJVCIKw1VdzBQk97/cC/gJ7Pw
-         B2wQHKikHZzdS8IJBRCFk/CvJmyBSbBZuieahkFp7fZt46o+jpztyTZsoYPPhS0eWDAd
-         gkdrRYlaIw8WFKkh8NK5ii6i59IKecnvjUpSobxiX2t7EFui50IEvfJkdbpuWqiA1hP6
-         PHDg==
-X-Gm-Message-State: AOAM532tKF9k5lUJVWBb/qeeY2Wo5skOkA9i+pAbiDO4KdaFMHSQYLwa
-	PTN9Vz5OnTaWxae+47Zqpd0x0A==
-X-Google-Smtp-Source: ABdhPJwl1I+ugWhiFqcmskmLa+S1KfP1gCUBBWpNkdILi0W0UrSnBIhERqyC8NYVuMxc+aNo5sruIA==
-X-Received: by 2002:a05:6a00:d53:b029:32a:2db6:1be3 with SMTP id n19-20020a056a000d53b029032a2db61be3mr37731045pfv.71.1626898521394;
-        Wed, 21 Jul 2021 13:15:21 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id q18sm27746006pfj.178.2021.07.21.13.15.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jul 2021 13:15:20 -0700 (PDT)
-Date: Wed, 21 Jul 2021 20:15:16 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-	npmccallum@redhat.com, brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part2 RFC v4 37/40] KVM: SVM: Add support to handle the
- RMP nested page fault
-Message-ID: <YPiAVEuAuDS3neyx@google.com>
-References: <20210707183616.5620-1-brijesh.singh@amd.com>
- <20210707183616.5620-38-brijesh.singh@amd.com>
- <YPYUe8hAz5/c7IW9@google.com>
- <bff43050-aed7-011c-89e5-9899bd1df414@amd.com>
- <YPdOxrIA6o3uymq2@google.com>
- <03f42d61-fa32-38d0-7e14-17ee6f1d7dad@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9FB70
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 21:17:44 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ST5CU+btcpaOJV+xPpbGFnZhyp/+Pna3m6tzfyTg1d90LJck+04pPLGght9NwlpMwJvks12BUYd1Zsw+/hyEr9F18cK+fbVSC0AoQjZG6A/tcevLCQYDyeTAho7KNRCWS+KJrwnxD4FQ5izMkaKWfeddjp0GQYSBW0AjsMkYfQIWEkQgtGMSKrDLANDvKX10KzerR5KJvemn6NHuL0O3EiPOckhuCHBiJktuCLZAI0Cz24M6pmRVsYDFOwzkDKDqhwY3XtyukeyZ+UhbClX36jJEwR7ATW5F7vWEUuJTf6A+Ih48T6ivfZsTCAG4ETiDnEQB+vezwRE3R28/VFpA9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t+qkSGxcmLTfG0eDpBfX0+qiJAwxc3MsmwMXfR2oBmA=;
+ b=QqtA/2sf9jhPqQ9ssR3bSgEOrbIvwG/hQTJbHNjEU+femAyOsHbDfzLIHmw7pnE+wKF5E0Ov79sCRSVWdQggKVE4UP5G7Wz3rhi8gYo98d4ldno2L8LGDKUboOUzMPessjUIPrUqRUqtVnvjJZwBpMvSA2ZTwxA0OMWyNaLgSmZN6GmEQYkeUcohoy2TuW5/+A+CpG5K8iTUYflcXowQDKZO06EWC4oUES9LsVuX/T0aor0+vYA+0jTwQbJYIfA7HauyKU7Ewi6md+6GRQSHR1jVDFuE+E+CR19M1Qm7fra+3zRrhMfcZzQI6+3ObjAHWW7yBvoUj5H0j+jkf55Qng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t+qkSGxcmLTfG0eDpBfX0+qiJAwxc3MsmwMXfR2oBmA=;
+ b=ZHHyW6fNY6sajifXjhEAmu3KSNN9UWIzxVLjrnA+lwy5p9O6QgTlfY/8XCEsE5P1vfXR957i8M8v3bPPvAj6OQCGlgrKT/JMdtmo2eH+IfV0+rEoaTd2DP0PIBHRsj362bypfCnBS03zSrP7M8NNcdx4aoDucMT+tG9xBmXrXDA=
+Authentication-Results: lists.linux-foundation.org; dkim=none (message not
+ signed) header.d=none;lists.linux-foundation.org; dmarc=none action=none
+ header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by DM8PR12MB5413.namprd12.prod.outlook.com (2603:10b6:8:3b::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.4331.32; Wed, 21 Jul 2021 21:17:41 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::73:2581:970b:3208%3]) with mapi id 15.20.4331.034; Wed, 21 Jul 2021
+ 21:17:41 +0000
+Subject: Re: [PATCH 04/12] x86/sev: Do not hardcode GHCB protocol version
+To: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ Eric Biederman <ebiederm@xmission.com>
+Cc: kexec@lists.infradead.org, Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jiri Slaby <jslaby@suse.cz>, Dan Williams <dan.j.williams@intel.com>,
+ Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+ David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+ Erdem Aktas <erdemaktas@google.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mike Stunes <mstunes@vmware.com>, Sean Christopherson <seanjc@google.com>,
+ Martin Radev <martin.b.radev@gmail.com>,
+ Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux-foundation.org
+References: <20210721142015.1401-1-joro@8bytes.org>
+ <20210721142015.1401-5-joro@8bytes.org>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Message-ID: <1eef6235-a8d0-1012-969e-ef6f0804d054@amd.com>
+Date: Wed, 21 Jul 2021 16:17:38 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <20210721142015.1401-5-joro@8bytes.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0026.namprd13.prod.outlook.com
+ (2603:10b6:806:21::31) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <03f42d61-fa32-38d0-7e14-17ee6f1d7dad@amd.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.30.241] (165.204.77.1) by SA9PR13CA0026.namprd13.prod.outlook.com (2603:10b6:806:21::31) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.7 via Frontend Transport; Wed, 21 Jul 2021 21:17:39 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: ade37281-6cd2-4a06-0c9e-08d94c8cf928
+X-MS-TrafficTypeDiagnostic: DM8PR12MB5413:
+X-Microsoft-Antispam-PRVS:
+	<DM8PR12MB5413A78EDB749733D74224CEECE39@DM8PR12MB5413.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	iCKoYgpSZL/OpwOapXNZYNvUS9vJkHaCGvub9oMHGCtUJXyzmMotkbohZn5RGHot6qYaxMVHLnGfcZMHswSEgSOhOzcDAG5AE+x6CwQFQva75xPjfkvQMppd03FxMShHrZLyhtfcVEYwuuYiCyIbSwJa43stwfcia2FHWbmH1OOwUag4UpVC5tkX9WCSEaO2g84g954fdd75lIezlb9x6zn3nG8xgtBMCa4im6dM3BewlX/TnenF6li6ZiQlQrt1A9033CAB/keXa07S7UbZ4a6R5WMxneNk+53MLu/QBbfuRMzyvA5beE8QRuem6elXmdoktMtN4wCuYgVFHLtfDU4IaM9Rvw4JoMIGH8fAZUPOqeK2idEDLlWWm9693Ms22GQ7k3qobDwFarLVf93MN4o0Z0U+ADMMxjjDFSws7uGFw8Ijoz1HmeT9YpuNn88noaPWuwGCijlyjT5Q02gur/0lTzuxsa84ewSbXqYRM1IXlpFSYvnSusWsQEH1Ekm51iNkuo7FtkwxvPfI8+jPijyl76A7Z3uEiI+qU8oN7kV+tGhvTbMcB3ubHgeuIpXd1psZ0aau9a9eRc43uc4ibMdSPheLhf0AFx4zxXZ10D6/VRnVJ62M8dz0moOV9HwuOXtP00mzW7ST27xW9ozRtUiDzmC4KzuagV/K2S2CeGAcRVr9j2BhteJ0JthtC6Z4gBkjluNUVm30utj71qGQo/KjskM20MVJRwqn1UT68oYfivkSk9fWaLuiSxBpUY88
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(346002)(366004)(376002)(136003)(36756003)(38100700002)(31696002)(86362001)(8936002)(83380400001)(4326008)(53546011)(8676002)(5660300002)(16576012)(66476007)(26005)(66556008)(7416002)(66946007)(186003)(110136005)(31686004)(6486002)(478600001)(316002)(54906003)(956004)(2616005)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dG1LUzRZeUdsREVMM2JHL2hvVWpzTmhjOWRIS210dXNLdjAvZ251OWFxNGxQ?=
+ =?utf-8?B?ZzJwSm5qejV6MjlCWVZtNms2QXhZaUlINWZEUmREWmg1MUorcHBvbkZ4RW84?=
+ =?utf-8?B?QXBDS1hvWnAvNmtpejhMZUZ6bkVxbHJWRnAwTCs5bjNxak1ZeTdLN0ErcURJ?=
+ =?utf-8?B?UEs3MG01cmJVUlhyVEtLYkJwRno5N1ZkY0srSUJ1dlJpcms4emNjMUg3SEJw?=
+ =?utf-8?B?RFdVOUo0aDlLRTU2SlhsTEhxemtKVG9QdjRSTForaFVjNGxrSXZmbkdTcU00?=
+ =?utf-8?B?Y2l3cVJVYStENXFwY1dkRStIMCtCb1p0UlNwZWFMcUhPbnpVSDBqSVJsNm1Y?=
+ =?utf-8?B?STBKNVJUVTFKOVJ5S2xMeStKUDFwcUFrWUlQdTdhR0xIN1dzYmdPNi95NE8w?=
+ =?utf-8?B?aUpLdk9nZ3dCWmpPalgxRG11ZGFsaVdJMFRvaGVYa2JKdHJDYXN3V3NWTHRP?=
+ =?utf-8?B?SmcrQThQaXg5WVVQTDN5TStlMjlFVmpXTGtQSkFmVXdBY2IzMnpkT2oxc2J3?=
+ =?utf-8?B?M05VeG1JeW45RC9QYnZlRkZkZ054Q2M5aEtnWERaZjgwenRIRjN0Mk5KS2VP?=
+ =?utf-8?B?aUNkb0V2Q3k5Z2hZUjB0RlBZODVCV2tCQnNtK1YxdDJzbE8xQ3Q3M00yY0dO?=
+ =?utf-8?B?TUFNWUJ4dmJBN3E0Mkp1VmN5U0tXM29FWUFza0wvNCt4Y2w5VXN5a1dQYlh0?=
+ =?utf-8?B?MXJHR1JVOU9iWGdMeDI5d2lxaFIvR2NvL2tDR1RaN2ViRnNGdUx2b3V5V2ZQ?=
+ =?utf-8?B?Q1luVVRIaEVlcmk2K3lNTzRNbTJXdmdWZnVwejcxN296Y25wdVY5VXNlSTRF?=
+ =?utf-8?B?dnBUeUhoamFsY0QzaDUyQnNiSzRWbWpvSXdqZS9pOFNWYW9SVVljK0JSaHFC?=
+ =?utf-8?B?WmhiY2xoZlR5SVlvWXJKZFozTUNGWTcyQ1BsOTR2TmhvQWpMSnh4QmNKQ3N5?=
+ =?utf-8?B?KzBmamlpY0tSTzVITW51dkoyQXJqRkcvRkpyVU1pbDF6Z3BxMk9mOFRCWFhW?=
+ =?utf-8?B?US9URnBYcDh2cENUWlo2THhWMlJNTnhUNXZMcTZRWCs3UWtodUJRKzVqWUxC?=
+ =?utf-8?B?eC9zZGE2TVFERFBCQnQweisyRDl6OUdOaWpqbmFXSHRkU2w3ckUrcVRsZURF?=
+ =?utf-8?B?Vjd2ZVNZOWxPaXoydm1ydmprd1FpNitSeWROUkRwS1RYOVAyUFp5MnFlMXha?=
+ =?utf-8?B?SEdoSEFjOGtWOHZGcUZBMEl4QkFnR0xCbHVncTlGS3o5Vk9VMTFNYVU5ckFL?=
+ =?utf-8?B?ZUkvWDdTd2tCSEdkVmV6UzFuODZCTnRMNzVOVzJSQytleDRUMS8rbmtLOGN4?=
+ =?utf-8?B?KzFzL21zNjVaUVlxR2JlUkFQWjUwUTk2VFBNR3paaDlHVVRXK25ZeG93bHNE?=
+ =?utf-8?B?VkhMRzFPVGNwOXNiaWVGcGhBSzhXNVdtNXlLNEFJNkNPN3NYQUFxNytWN1Fz?=
+ =?utf-8?B?STdjR1BWcTNTdEo0cDNaSTkrRFJOQ1Nxcm83Z2ttUk1oTlc2blpzbVdid2tE?=
+ =?utf-8?B?UDF3QTU3enlvaEVGOUljd1hzb1dUdzZPUWFMZmVKb1NrSHJlRUNVbUpXQ01z?=
+ =?utf-8?B?aFJBSDJTcEJ4Y2c2Mk9YWmhQanZBeTRvV2dmT0VOb2RmZHJrM2hMR2xPZER2?=
+ =?utf-8?B?MzRVL3pwYVk4bVk0b0tUemFzZzB2M2IxaWZiUHc1dmhWdzQraTJYamVLWlY3?=
+ =?utf-8?B?ZE1iZjgwUVVNZ3hGS3ZTTThoTldINFI0cHlWVFozMnJJaHNXUk5WOEhEdXBQ?=
+ =?utf-8?Q?VzbIlsMlYOTb9/tJ9HwOPMm014I2L/tL8yBa/Dy?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ade37281-6cd2-4a06-0c9e-08d94c8cf928
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2021 21:17:41.1309
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9iPkJuLHNLE7q41GfmjuHActjg00e8OvXmtpDfk6/OUjgzkBF0l+InwvU9M5Ht5E7erNR4/+c2oXhtiMekzSnA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5413
 
-On Tue, Jul 20, 2021, Brijesh Singh wrote:
+On 7/21/21 9:20 AM, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
 > 
-> On 7/20/21 5:31 PM, Sean Christopherson wrote:
-> ...
-> >> This is a good question, the GHCB spec does not enforce that a guest *must*
-> >> use page state. If the page state changes is not done by the guest then it
-> >> will cause #NPF and its up to the hypervisor to decide on what it wants to
-> >> do.
-> > Drat.  Is there any hope of pushing through a GHCB change to require the guest
-> > to use PSC?
+> Introduce the sev_get_ghcb_proto_ver() which will return the negotiated
+> GHCB protocol version and use it to set the version field in the GHCB.
 > 
-> Well, I am not sure if we can push it through GHCB. Other hypervisor
-> also need to agree to it. We need to define them some architectural way
-> for hypervisor to detect the violation and notify guest about it.
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> ---
+>  arch/x86/boot/compressed/sev.c | 5 +++++
+>  arch/x86/kernel/sev-shared.c   | 5 ++++-
+>  arch/x86/kernel/sev.c          | 5 +++++
+>  3 files changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 1a2e49730f8b..101e08c67296 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -119,6 +119,11 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+>  /* Include code for early handlers */
+>  #include "../../kernel/sev-shared.c"
+>  
+> +static u64 sev_get_ghcb_proto_ver(void)
+> +{
+> +	return GHCB_PROTOCOL_MAX;
+> +}
+> +
+>  static bool early_setup_sev_es(void)
+>  {
+>  	if (!sev_es_negotiate_protocol(NULL))
+> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> index 73eeb5897d16..36eaac2773ed 100644
+> --- a/arch/x86/kernel/sev-shared.c
+> +++ b/arch/x86/kernel/sev-shared.c
+> @@ -28,6 +28,9 @@ struct sev_ghcb_protocol_info {
+>  	unsigned int vm_proto;
+>  };
+>  
+> +/* Returns the negotiated GHCB Protocol version */
+> +static u64 sev_get_ghcb_proto_ver(void);
+> +
+>  static bool __init sev_es_check_cpu_features(void)
+>  {
+>  	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
+> @@ -122,7 +125,7 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+>  	enum es_result ret;
+>  
+>  	/* Fill in protocol and format specifiers */
+> -	ghcb->protocol_version = GHCB_PROTOCOL_MAX;
+> +	ghcb->protocol_version = sev_get_ghcb_proto_ver();
 
-And other guest's, too :-/
+So this probably needs better clarification in the spec, but the GHCB
+version field is for the GHCB structure layout. So if you don't plan to
+use the XSS field that was added for version 2 of the layout, then you
+should report the GHCB structure version as 1.
 
-> >>> It would simplify KVM (albeit not much of a simplificiation) and would also
-> >>> make debugging easier since transitions would require an explicit guest
-> >>> request and guest bugs would result in errors instead of random
-> >>> corruption/weirdness.
-> >> I am good with enforcing this from the KVM. But the question is, what fault
-> >> we should inject in the guest when KVM detects that guest has issued the
-> >> page state change.
-> > Injecting a fault, at least from KVM, isn't an option since there's no architectural
-> > behavior we can leverage.  E.g. a guest that isn't enlightened enough to properly
-> > use PSC isn't going to do anything useful with a #MC or #VC.
-> >
-> > Sadly, as is I think our only options are to either automatically convert RMP
-> > entries as need, or to punt the exit to userspace.  Maybe we could do both, e.g.
-> > have a module param to control the behavior?  The problem with punting to userspace
-> > is that KVM would also need a way for userspace to fix the issue, otherwise we're
-> > just taking longer to kill the guest :-/
-> >
-> I think we should automatically convert the RMP entries at time, its
-> possible that non Linux guest may access the page without going through
-> the PSC.
+Thanks,
+Tom
 
-Agreed.  I don't love that KVM will disallow automatic conversions when the host
-is accessing guest memory, but not when the guest is accessing memory.  On the
-other hand, auto-converting when accessing from the host is far, far worse.
-
-And FWIW, IIRC this is also aligns with the expected/proposed TDX behavior, so
-that's a plus.
+>  	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
+>  
+>  	ghcb_set_sw_exit_code(ghcb, exit_code);
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 8084bfd7cce1..5d3422e8b25e 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -498,6 +498,11 @@ static enum es_result vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt
+>  /* Negotiated GHCB protocol version */
+>  static struct sev_ghcb_protocol_info ghcb_protocol_info __ro_after_init;
+>  
+> +static u64 sev_get_ghcb_proto_ver(void)
+> +{
+> +	return ghcb_protocol_info.vm_proto;
+> +}
+> +
+>  static noinstr void __sev_put_ghcb(struct ghcb_state *state)
+>  {
+>  	struct sev_es_runtime_data *data;
+> 
