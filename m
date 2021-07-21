@@ -1,68 +1,43 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F86173
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 08:51:10 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E0EA81FE7F;
-	Wed, 21 Jul 2021 08:51:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1626857462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RgODuVW3AaV2E0f9UPQm0t7b6U8BHQyRuS3VzEAnXZ8=;
-	b=FQSKW8knkTEp5/E1cgVIPc289sKfAUTSzNkE1RDQUVag449dya2FCrQ4WxTsEFPq3hbOup
-	IlMThr1d7vBAcu43/0V08meLXkAHblcVJeJZ1+csntKarE4u5ZAUEiodSbud59QuoQNMoA
-	c3T+BY1LHgezMA1UOpVS8RBnYtm7VDU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1626857462;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RgODuVW3AaV2E0f9UPQm0t7b6U8BHQyRuS3VzEAnXZ8=;
-	b=ZkIIlxCXNeGrRWdra/1UuYLRW4ht9H4gfYF8hhS317yaWIwzhSjRcG+DfZjWd72WGo5zje
-	8iIhld61tRJIkuAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2CABD13B36;
-	Wed, 21 Jul 2021 08:51:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id uzk9Cfbf92CVFgAAMHmgww
-	(envelope-from <jroedel@suse.de>); Wed, 21 Jul 2021 08:51:02 +0000
-Date: Wed, 21 Jul 2021 10:51:00 +0200
-From: Joerg Roedel <jroedel@suse.de>
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Erdem Aktas <erdemaktas@google.com>, Andy Lutomirski <luto@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Borislav Petkov <bp@alien8.de>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5566173
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 09:20:28 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 9200360231;
+	Wed, 21 Jul 2021 09:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1626859228;
+	bh=GkynGoumT9wcm/sQsNIj2d0Z1J0oFLaY3PRxaTyQI/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZZntQxYoO+PBiYIKN4O3Gpx5Za8TNKgL9JVVM7XxngldwunyMdZNrCPFP938PiR48
+	 Gu8fH9SgDgtYtLSJFOL1xQs6uDz/6WAf49v9rSwhWZpL6CQz1JkUOR6kUY0rCdi6O9
+	 sVC8IB4/FSQdoGxi9gyT/KP3IgeRN0rp+Fl/4fVsTlOGa9tWyalmKJrA9J7/jmsfYM
+	 rf0jSPnGM+vrDsWFLDx2fqDfR33AOt/sLKzWtC60pN915956mgiBIHKStG1eYxEHRp
+	 llXHu64l47YOavbdGaMDszOUTOBbmsfgi4K+YjK1SJbgPovlStEA9P9tIpGn1FcQZR
+	 hDjA57rJ52QeA==
+Date: Wed, 21 Jul 2021 12:20:17 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
 	Brijesh Singh <brijesh.singh@amd.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Jon Grimm <jon.grimm@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
 	"Kaplan, David" <David.Kaplan@amd.com>,
 	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	the arch/x86 maintainers <x86@kernel.org>, linux-mm@kvack.org,
-	linux-coco@lists.linux.dev
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <YPff9IMQFC599N4+@suse.de>
+Message-ID: <YPfm0VvLx8DcNjDh@kernel.org>
 References: <YPV27hDPZUoVsIZt@suse.de>
- <a5ac5af6-7e28-4e9c-e55b-db31842a5911@kernel.org>
- <CAAYXXYwFzrf8uY-PFkMRSG28+HztfGdJft8kB3Y3keWCx9K8TQ@mail.gmail.com>
- <eacb9c1f-2c61-4a7f-b5a3-7bf579e6cbf6@www.fastmail.com>
- <CAAYXXYzDheR6C19Q01w267CfgW6DnZ-Hurscm-=OVATwb4dy4Q@mail.gmail.com>
- <20210720220113.GA535804@tassilo.jf.intel.com>
+ <20210720173004.ucrliup5o7l3jfq3@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,26 +46,74 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210720220113.GA535804@tassilo.jf.intel.com>
+In-Reply-To: <20210720173004.ucrliup5o7l3jfq3@box.shutemov.name>
 
-On Tue, Jul 20, 2021 at 03:01:13PM -0700, Andi Kleen wrote:
-> On Tue, Jul 20, 2021 at 12:54:16PM -0700, Erdem Aktas wrote:
-> > I did not see any #VE implementation to handle SEPT violations when a
-> > page is in PENDING state. I am assuming that this needs to be
-> > supported at some point (If not then we need to discuss the use cases
-> > for such support).
+On Tue, Jul 20, 2021 at 08:30:04PM +0300, Kirill A. Shutemov wrote:
+> On Mon, Jul 19, 2021 at 02:58:22PM +0200, Joerg Roedel wrote:
+> > Hi,
+> > 
+> > I'd like to get some movement again into the discussion around how to
+> > implement runtime memory validation for confidential guests and wrote up
+> > some thoughts on it.
+> > Below are the results in form of a proposal I put together. Please let
+> > me know your thoughts on it and whether it fits everyones requirements.
 > 
-> We actually plan to disable those #VEs, to avoid any problems with
-> the system call gap. Instead the plan is that the kernel will know
-> in advance what memory has been accepted or not, and accept it before
-> touching.
+> Thanks for bringing it up. I'm working on the topic for Intel TDX. See
+> comments below.
+> 
+> > 
+> > Thanks,
+> > 
+> > 	Joerg
+> > 
+> > Proposal for Runtime Memory Validation in Secure Guests on x86
+> > ==============================================================
 
-This confuses me a bit, what happens when the VMM is malicious and
-re-maps an already accepted page and the TD tries to access it?
+[ snip ]
 
-My thinking was that this causes a #VE, but what happens instead when
-this #VE can be disabled?
+> > 	8. When memory is returned to the memblock or page allocators,
+> > 	   it is _not_ invalidated. In fact, all memory which is freed
+> > 	   need to be valid. If it was marked invalid in the meantime
+> > 	   (e.g. if it the memory was used for DMA buffers), the code
+> > 	   owning the memory needs to validate it again before freeing
+> > 	   it.
+> > 
+> > 	   The benefit of doing memory validation at allocation time is
+> > 	   that it keeps the exception handler for invalid memory
+> > 	   simple, because no exceptions of this kind are expected under
+> > 	   normal operation.
+> 
+> During early boot I treat unaccepted memory as a usable RAM. It only
+> requires special treatment on memblock_reserve(), which used for early
+> memory allocation: unaccepted usable RAM has to be accepted, before
+> reserving.
 
-Regards,
+memblock_reserve() is not always used for early allocations and some of the
+early allocations on x86 don't use memblock at all. Hooking
+validation/acceptance to memblock_reserve() should be fine for PoC but I
+suspect there will be caveats for production.
+ 
+> For fine-grained accepting/validation tracking I use PageOffline() flags
+> (it's encoded into mapcount): before adding an unaccepted page to free
+> list I set the PageOffline() to indicate that the page has to be accepted
+> before returning from the page allocator. Currently, we never have
+> PageOffline() set for pages on free lists, so we won't have confusion with
+> ballooning or memory hotplug.
+>
+> I try to keep pages accepted in 2M or 4M chunks (pageblock_order or
+> MAX_ORDER). It is reasonable compromise on speed/latency.
 
-	Joerg
+Keeping fine grained accepting/validation information in the memory map
+means it cannot be reused across reboots/kexec and there should be an
+additional data structure to carry this information. It could be the same
+structure that is used by firmware to inform kernel about usable memory,
+just it needs to live after boot and get updates about new (in)validations.
+Doing those in 2M/4M chunks will help to prevent this structure from
+exploding.
+
+BTW, as Dave mentioned, the deferred struct page init can also take care of
+the validation.
+
+-- 
+Sincerely yours,
+Mike.
