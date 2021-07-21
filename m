@@ -1,85 +1,165 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA20168
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 10:53:23 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8D572
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 14:20:41 +0000 (UTC)
+Received: from cap.home.8bytes.org (p4ff2b1ea.dip0.t-ipconnect.de [79.242.177.234])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EA654224C5;
-	Wed, 21 Jul 2021 10:53:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1626864801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uC4JHriA0CBKe4OgSBxOhsq1bT7TDY8nMHdACrDqoE4=;
-	b=ohxJ5jBG3DrGKxgJu6r7lhW82HIRfRoRgPqm4l8CQRg002ilYJdkoeZo40LxVco63FnReE
-	wLPI3sDrzcxm75Ldov1mVAvVTb4bMgw2nIf03Oug8stPnfaaD4cCWvDHdcth5u+btYN0Wj
-	xbpk6gc7LbapGM3SV0TP2b6XXCFoFEQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1626864801;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uC4JHriA0CBKe4OgSBxOhsq1bT7TDY8nMHdACrDqoE4=;
-	b=eFqtn9xtfWhXzLo8SrLHoPObf5H9/Sc1AG3+OsRL/0Fag5cRlYllSLedEZglPJrLaoZHgA
-	AXIbUm4twKwh97BA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 33CCD13B37;
-	Wed, 21 Jul 2021 10:53:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 88f5CqH892DIOgAAMHmgww
-	(envelope-from <jroedel@suse.de>); Wed, 21 Jul 2021 10:53:21 +0000
-Date: Wed, 21 Jul 2021 12:53:19 +0200
-From: Joerg Roedel <jroedel@suse.de>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: Mike Rapoport <rppt@kernel.org>, David Rientjes <rientjes@google.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Jon Grimm <jon.grimm@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
+	by theia.8bytes.org (Postfix) with ESMTPSA id C917F99D;
+	Wed, 21 Jul 2021 16:20:25 +0200 (CEST)
+From: Joerg Roedel <joro@8bytes.org>
+To: x86@kernel.org,
+	Eric Biederman <ebiederm@xmission.com>
+Cc: kexec@lists.infradead.org,
+	Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	"Kaplan, David" <David.Kaplan@amd.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <YPf8n9hdHmGe5AqV@suse.de>
-References: <YPV27hDPZUoVsIZt@suse.de>
- <20210720173004.ucrliup5o7l3jfq3@box.shutemov.name>
- <YPfm0VvLx8DcNjDh@kernel.org>
- <20210721100206.mfldptiwiothowpz@box>
+	Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	Joerg Roedel <joro@8bytes.org>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: [PATCH 03/12] x86/sev: Save and print negotiated GHCB protocol version
+Date: Wed, 21 Jul 2021 16:20:06 +0200
+Message-Id: <20210721142015.1401-4-joro@8bytes.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210721142015.1401-1-joro@8bytes.org>
+References: <20210721142015.1401-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210721100206.mfldptiwiothowpz@box>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 21, 2021 at 01:02:06PM +0300, Kirill A. Shutemov wrote:
-> Yeah, we would need to reconstruct the EFI map somehow. Or we can give
-> most of memory back to the host and accept/validate the memory again after
-> reboot/kexec. I donno.
+From: Joerg Roedel <jroedel@suse.de>
 
-Invalidating all memory will also take a lot of time (in the range of
-seconds). And the EFI map can get pretty large when there is enough
-fragmentation. The easiest way to handle this is to just pass on an
-up-to-date data structure.
+Save the results of the GHCB protocol negotiation into a data structure
+and print information about versions supported and used to the kernel
+log.
 
-Regards,
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+---
+ arch/x86/boot/compressed/sev.c |  2 +-
+ arch/x86/kernel/sev-shared.c   | 22 +++++++++++++++++++++-
+ arch/x86/kernel/sev.c          | 13 ++++++++++++-
+ 3 files changed, 34 insertions(+), 3 deletions(-)
 
-	Joerg
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 670e998fe930..1a2e49730f8b 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -121,7 +121,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+ 
+ static bool early_setup_sev_es(void)
+ {
+-	if (!sev_es_negotiate_protocol())
++	if (!sev_es_negotiate_protocol(NULL))
+ 		sev_es_terminate(GHCB_SEV_ES_REASON_PROTOCOL_UNSUPPORTED);
+ 
+ 	if (set_page_decrypted((unsigned long)&boot_ghcb_page))
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index 9f90f460a28c..73eeb5897d16 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -14,6 +14,20 @@
+ #define has_cpuflag(f)	boot_cpu_has(f)
+ #endif
+ 
++/*
++ * struct sev_ghcb_protocol_info - Used to return GHCB protocol
++ *				   negotiation details.
++ *
++ * @hv_proto_min:	Minimum GHCB protocol version supported by Hypervisor
++ * @hv_proto_max:	Maximum GHCB protocol version supported by Hypervisor
++ * @vm_proto:		Protocol version the VM (this kernel) will use
++ */
++struct sev_ghcb_protocol_info {
++	unsigned int hv_proto_min;
++	unsigned int hv_proto_max;
++	unsigned int vm_proto;
++};
++
+ static bool __init sev_es_check_cpu_features(void)
+ {
+ 	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
+@@ -42,7 +56,7 @@ static void __noreturn sev_es_terminate(unsigned int reason)
+ 		asm volatile("hlt\n" : : : "memory");
+ }
+ 
+-static bool sev_es_negotiate_protocol(void)
++static bool sev_es_negotiate_protocol(struct sev_ghcb_protocol_info *info)
+ {
+ 	u64 val;
+ 
+@@ -58,6 +72,12 @@ static bool sev_es_negotiate_protocol(void)
+ 	    GHCB_MSR_PROTO_MIN(val) > GHCB_PROTO_OUR)
+ 		return false;
+ 
++	if (info) {
++		info->hv_proto_min = GHCB_MSR_PROTO_MIN(val);
++		info->hv_proto_max = GHCB_MSR_PROTO_MAX(val);
++		info->vm_proto	   = GHCB_PROTO_OUR;
++	}
++
+ 	return true;
+ }
+ 
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index a6895e440bc3..8084bfd7cce1 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -495,6 +495,9 @@ static enum es_result vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt
+ /* Include code shared with pre-decompression boot stage */
+ #include "sev-shared.c"
+ 
++/* Negotiated GHCB protocol version */
++static struct sev_ghcb_protocol_info ghcb_protocol_info __ro_after_init;
++
+ static noinstr void __sev_put_ghcb(struct ghcb_state *state)
+ {
+ 	struct sev_es_runtime_data *data;
+@@ -665,7 +668,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ static bool __init sev_es_setup_ghcb(void)
+ {
+ 	/* First make sure the hypervisor talks a supported protocol. */
+-	if (!sev_es_negotiate_protocol())
++	if (!sev_es_negotiate_protocol(&ghcb_protocol_info))
+ 		return false;
+ 
+ 	/*
+@@ -794,6 +797,14 @@ void __init sev_es_init_vc_handling(void)
+ 
+ 	/* Secondary CPUs use the runtime #VC handler */
+ 	initial_vc_handler = (unsigned long)kernel_exc_vmm_communication;
++
++	/*
++	 * Print information about supported and negotiated GHCB protocol
++	 * versions.
++	 */
++	pr_info("Hypervisor GHCB protocol version support: min=%u max=%u\n",
++		ghcb_protocol_info.hv_proto_min, ghcb_protocol_info.hv_proto_max);
++	pr_info("Using GHCB protocol version %u\n", ghcb_protocol_info.vm_proto);
+ }
+ 
+ static void __init vc_early_forward_exception(struct es_em_ctxt *ctxt)
+-- 
+2.31.1
+
