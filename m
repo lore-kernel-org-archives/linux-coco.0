@@ -1,25 +1,45 @@
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5566173
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 09:20:28 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 9200360231;
-	Wed, 21 Jul 2021 09:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1626859228;
-	bh=GkynGoumT9wcm/sQsNIj2d0Z1J0oFLaY3PRxaTyQI/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZZntQxYoO+PBiYIKN4O3Gpx5Za8TNKgL9JVVM7XxngldwunyMdZNrCPFP938PiR48
-	 Gu8fH9SgDgtYtLSJFOL1xQs6uDz/6WAf49v9rSwhWZpL6CQz1JkUOR6kUY0rCdi6O9
-	 sVC8IB4/FSQdoGxi9gyT/KP3IgeRN0rp+Fl/4fVsTlOGa9tWyalmKJrA9J7/jmsfYM
-	 rf0jSPnGM+vrDsWFLDx2fqDfR33AOt/sLKzWtC60pN915956mgiBIHKStG1eYxEHRp
-	 llXHu64l47YOavbdGaMDszOUTOBbmsfgi4K+YjK1SJbgPovlStEA9P9tIpGn1FcQZR
-	 hDjA57rJ52QeA==
-Date: Wed, 21 Jul 2021 12:20:17 +0300
-From: Mike Rapoport <rppt@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF2D173
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 09:25:34 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 494B922383;
+	Wed, 21 Jul 2021 09:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1626859527; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t6qAAHS2nVzNXquSRRxozOjfoWN1S34yUdOkPJaKLrc=;
+	b=h04N6ZKtKp7bQPZ/3ueEHYMQHB/VpDupHDAl0zv6eNM+YjHG9AWwqy0D/qA4uBwDdNztI5
+	6MD9ZMkwh3D11qyu+Pxk/qO13+WaaJ7mvMy9DIbk7rxGquIICxFV+PR+hA4mLzrv0dAUS3
+	bz5Taeu7pZx0o/Izt1Ae2pr+2tDgxH0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1626859527;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t6qAAHS2nVzNXquSRRxozOjfoWN1S34yUdOkPJaKLrc=;
+	b=czzYhhKqEZAfG/JI+/XW5hIlVnl6VN70Bh6SDhvPvaXDa3kJOfEPIcBw9KGQLbjCk21Q75
+	fqARsylT/QTm0wCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 87ADF13A66;
+	Wed, 21 Jul 2021 09:25:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id KpJ6Hgbo92D7IAAAMHmgww
+	(envelope-from <jroedel@suse.de>); Wed, 21 Jul 2021 09:25:26 +0000
+Date: Wed, 21 Jul 2021 11:25:25 +0200
+From: Joerg Roedel <jroedel@suse.de>
 To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+Cc: David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@suse.cz>,
@@ -35,7 +55,7 @@ Cc: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
 	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <YPfm0VvLx8DcNjDh@kernel.org>
+Message-ID: <YPfoBZ+ezF2dN1d6@suse.de>
 References: <YPV27hDPZUoVsIZt@suse.de>
  <20210720173004.ucrliup5o7l3jfq3@box.shutemov.name>
 Precedence: bulk
@@ -48,72 +68,78 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20210720173004.ucrliup5o7l3jfq3@box.shutemov.name>
 
+Hi Kirill,
+
 On Tue, Jul 20, 2021 at 08:30:04PM +0300, Kirill A. Shutemov wrote:
 > On Mon, Jul 19, 2021 at 02:58:22PM +0200, Joerg Roedel wrote:
-> > Hi,
-> > 
-> > I'd like to get some movement again into the discussion around how to
-> > implement runtime memory validation for confidential guests and wrote up
-> > some thoughts on it.
-> > Below are the results in form of a proposal I put together. Please let
-> > me know your thoughts on it and whether it fits everyones requirements.
-> 
-> Thanks for bringing it up. I'm working on the topic for Intel TDX. See
-> comments below.
-> 
-> > 
-> > Thanks,
-> > 
-> > 	Joerg
-> > 
-> > Proposal for Runtime Memory Validation in Secure Guests on x86
-> > ==============================================================
+> We use EFI unaccepted memory type to pass this information between
+> firmware and kernel. In my WIP patch I translate it to a new E820 memory
+> type: E820_TYPE_UNACCEPTED.
 
-[ snip ]
+Yeah, that is what I meant with a new E820 entry type.
 
-> > 	8. When memory is returned to the memblock or page allocators,
-> > 	   it is _not_ invalidated. In fact, all memory which is freed
-> > 	   need to be valid. If it was marked invalid in the meantime
-> > 	   (e.g. if it the memory was used for DMA buffers), the code
-> > 	   owning the memory needs to validate it again before freeing
-> > 	   it.
-> > 
-> > 	   The benefit of doing memory validation at allocation time is
-> > 	   that it keeps the exception handler for invalid memory
-> > 	   simple, because no exceptions of this kind are expected under
-> > 	   normal operation.
-> 
+> E820 can also be used during early boot for tracking what memory got
+> accepted by kernel too.
+
+Won't this get very fragmented? How do you handle overlaps with other
+E820 regions?
+
+> For now, I debug with 256MiB accepted by firmware. It allows to avoid
+> dealing with decompression code at this stage of the project. I plan to
+> lower the number later.
+
+Yes, this can be experimented with, the proposal allows a custom amount
+of memory to be pre-validated/accepted.
+
+> I would argue for per-range, not per-page, tracking of accepted/validated
+> memory for decompresser and early boot code, until page allocator is fully
+> functional. I have reasonable success with this approach so far.
+
+What do you mean by 'reasonable' success? Especially, how robust is that
+against unrelated changes to the boot code? As with SEV-SNP, I guess
+there will be no broad testing of unrelated kernel changes in a TDX
+environment, so some robustness is key to keep things working.
+
 > During early boot I treat unaccepted memory as a usable RAM. It only
 > requires special treatment on memblock_reserve(), which used for early
 > memory allocation: unaccepted usable RAM has to be accepted, before
 > reserving.
 
-memblock_reserve() is not always used for early allocations and some of the
-early allocations on x86 don't use memblock at all. Hooking
-validation/acceptance to memblock_reserve() should be fine for PoC but I
-suspect there will be caveats for production.
- 
+What happens before memblock is active, say in the decompressor. Will
+unaccepted memory be considered for KASLR placement?
+
 > For fine-grained accepting/validation tracking I use PageOffline() flags
 > (it's encoded into mapcount): before adding an unaccepted page to free
 > list I set the PageOffline() to indicate that the page has to be accepted
 > before returning from the page allocator. Currently, we never have
 > PageOffline() set for pages on free lists, so we won't have confusion with
 > ballooning or memory hotplug.
->
+
+Okay, I think that could also easily break with unrelated memory
+management changes, but should work for now in TDX.
+
 > I try to keep pages accepted in 2M or 4M chunks (pageblock_order or
 > MAX_ORDER). It is reasonable compromise on speed/latency.
 
-Keeping fine grained accepting/validation information in the memory map
-means it cannot be reused across reboots/kexec and there should be an
-additional data structure to carry this information. It could be the same
-structure that is used by firmware to inform kernel about usable memory,
-just it needs to live after boot and get updates about new (in)validations.
-Doing those in 2M/4M chunks will help to prevent this structure from
-exploding.
+Makes sense, SEV-SNP will likely do something similar.
 
-BTW, as Dave mentioned, the deferred struct page init can also take care of
-the validation.
+> I'm not sure a bitmap is needed. I hope we can use E820 for early
+> tracking. But let's see if it works.
 
--- 
-Sincerely yours,
-Mike.
+We should find a solution which works for TDX and SNP, given that the
+required changes are intrusive and that it is much easier to just
+support one way to handle this.
+
+That said, the Validation Bitmap has a clear benefit for SEV-SNP in that
+it makes it trivial to support kexec/kdump scenarios. Further the
+bitmap makes it trivial to transport the information through the whole
+boot process. It also won't be big, SNP (and I think TDX too) would
+be okay with one bit per 4k page, so the bitmap would need 32kb of
+memory per GB of guest RAM.
+
+And keeping the information separate from struct page will make the code
+more robust against unrelated code changes.
+
+Regards,
+
+	Joerg
