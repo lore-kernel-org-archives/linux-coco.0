@@ -1,21 +1,44 @@
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F6B173
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 00:38:56 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10051"; a="296911183"
-X-IronPort-AV: E=Sophos;i="5.84,256,1620716400"; 
-   d="scan'208";a="296911183"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2021 17:38:56 -0700
-X-IronPort-AV: E=Sophos;i="5.84,256,1620716400"; 
-   d="scan'208";a="415424790"
-Received: from tassilo.jf.intel.com ([10.54.74.11])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2021 17:38:55 -0700
-Date: Tue, 20 Jul 2021 17:38:54 -0700
-From: Andi Kleen <ak@linux.intel.com>
-To: Erdem Aktas <erdemaktas@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>, Joerg Roedel <jroedel@suse.de>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F86173
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jul 2021 08:51:10 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E0EA81FE7F;
+	Wed, 21 Jul 2021 08:51:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1626857462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RgODuVW3AaV2E0f9UPQm0t7b6U8BHQyRuS3VzEAnXZ8=;
+	b=FQSKW8knkTEp5/E1cgVIPc289sKfAUTSzNkE1RDQUVag449dya2FCrQ4WxTsEFPq3hbOup
+	IlMThr1d7vBAcu43/0V08meLXkAHblcVJeJZ1+csntKarE4u5ZAUEiodSbud59QuoQNMoA
+	c3T+BY1LHgezMA1UOpVS8RBnYtm7VDU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1626857462;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RgODuVW3AaV2E0f9UPQm0t7b6U8BHQyRuS3VzEAnXZ8=;
+	b=ZkIIlxCXNeGrRWdra/1UuYLRW4ht9H4gfYF8hhS317yaWIwzhSjRcG+DfZjWd72WGo5zje
+	8iIhld61tRJIkuAg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2CABD13B36;
+	Wed, 21 Jul 2021 08:51:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id uzk9Cfbf92CVFgAAMHmgww
+	(envelope-from <jroedel@suse.de>); Wed, 21 Jul 2021 08:51:02 +0000
+Date: Wed, 21 Jul 2021 10:51:00 +0200
+From: Joerg Roedel <jroedel@suse.de>
+To: Andi Kleen <ak@linux.intel.com>
+Cc: Erdem Aktas <erdemaktas@google.com>, Andy Lutomirski <luto@kernel.org>,
 	David Rientjes <rientjes@google.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Sean Christopherson <seanjc@google.com>,
@@ -25,19 +48,21 @@ Cc: Andy Lutomirski <luto@kernel.org>, Joerg Roedel <jroedel@suse.de>,
 	Brijesh Singh <brijesh.singh@amd.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Jon Grimm <jon.grimm@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
 	"Kaplan, David" <David.Kaplan@amd.com>,
 	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86 <x86@kernel.org>,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
+	Dario Faggioli <dfaggioli@suse.com>,
+	the arch/x86 maintainers <x86@kernel.org>, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev
 Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <20210721003854.GD535804@tassilo.jf.intel.com>
+Message-ID: <YPff9IMQFC599N4+@suse.de>
 References: <YPV27hDPZUoVsIZt@suse.de>
  <a5ac5af6-7e28-4e9c-e55b-db31842a5911@kernel.org>
  <CAAYXXYwFzrf8uY-PFkMRSG28+HztfGdJft8kB3Y3keWCx9K8TQ@mail.gmail.com>
- <aa564856-36c7-ae19-7a82-17638cdf5ec1@linux.intel.com>
- <CAAYXXYxfpc8ix2dWzsPJ8Ew-fHROKm+WYLemjD1U8cTqzy6BHQ@mail.gmail.com>
+ <eacb9c1f-2c61-4a7f-b5a3-7bf579e6cbf6@www.fastmail.com>
+ <CAAYXXYzDheR6C19Q01w267CfgW6DnZ-Hurscm-=OVATwb4dy4Q@mail.gmail.com>
+ <20210720220113.GA535804@tassilo.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -46,32 +71,26 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAAYXXYxfpc8ix2dWzsPJ8Ew-fHROKm+WYLemjD1U8cTqzy6BHQ@mail.gmail.com>
+In-Reply-To: <20210720220113.GA535804@tassilo.jf.intel.com>
 
-> > > >> Also in general i don't think it will really happen, at least
-> > > initially.
-> > > >> All the shared buffers we use are allocated and never freed. So such a
-> > > >> problem could be deferred.
-> > >
-> > > Does it not depend on kernel configs? Currently, there is a valid
-> > > control path in dma_alloc_coherent which might alloc and free shared
-> > > pages.
-> >
-> > If the device filter is active it won't.
-> >
+On Tue, Jul 20, 2021 at 03:01:13PM -0700, Andi Kleen wrote:
+> On Tue, Jul 20, 2021 at 12:54:16PM -0700, Erdem Aktas wrote:
+> > I did not see any #VE implementation to handle SEPT violations when a
+> > page is in PENDING state. I am assuming that this needs to be
+> > supported at some point (If not then we need to discuss the use cases
+> > for such support).
 > 
-> If I am not missing something, I do not see that the device filter
-> checks for CONFIG_DMA_COHERENT_POOL and if it is not enabled,
-> dma_alloc_coherent will allocate a regular memory, convert it to
-> shared and convert it back to private when it is freed.
+> We actually plan to disable those #VEs, to avoid any problems with
+> the system call gap. Instead the plan is that the kernel will know
+> in advance what memory has been accepted or not, and accept it before
+> touching.
 
-What I meant is that the only devices that will be supported (mainly
-virtio) initially don't ever free coherent memory
-And the device filter enforces that.
+This confuses me a bit, what happens when the VMM is malicious and
+re-maps an already accepted page and the TD tries to access it?
 
-Now we probably want to support freeing anyways just to be able to run
-without device filter, but it definitely doesn't have to be fast
-or efficient. If there's a problem with it it would be a quite reasonable
-implementation to keep it in a pool.
+My thinking was that this causes a #VE, but what happens instead when
+this #VE can be disabled?
 
--Andi
+Regards,
+
+	Joerg
