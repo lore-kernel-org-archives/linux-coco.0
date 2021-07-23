@@ -1,483 +1,356 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from de-smtp-delivery-102.mimecast.com (de-smtp-delivery-102.mimecast.com [194.104.111.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148DA70
-	for <linux-coco@lists.linux.dev>; Thu, 22 Jul 2021 19:51:27 +0000 (UTC)
-Received: by mail-lj1-f173.google.com with SMTP id t3so8812832ljc.3
-        for <linux-coco@lists.linux.dev>; Thu, 22 Jul 2021 12:51:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=mK0yyFSJy9qRTE/mMdstMrai0xNqxHkjDwgU0hxWH/s=;
-        b=PpTicYD8/bwSrMK+nIQ39n/8RDeU4uhx02rVsVZbKYRKhVV8r8fSSVWlJAle8/Ojkc
-         2n7C6sigoA6YYEwb/vACrVHV2OOnoSdDglARb8wGVBoG+1UCv2su/AaEFdyGW6z1JzoP
-         ar++iXbmlbOvrjBr2yvkdud84V5h1xbpx4eb+QX9Qjday/4sNq5eppbMrYiJsuNe9R0V
-         HLKhs6vI1lx/9EQTsbSmjjpzJxkH6pW9g9yJ3IO4ITSdZts8slsonEHoD5mMZSrcG5rt
-         /BMJQ3Roqgxj7uokMAsae1lnPe9Zw5QpzOlHJ16gxl1l3Q1iNWpF6s8z8kuw2xZOmr/z
-         jvJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mK0yyFSJy9qRTE/mMdstMrai0xNqxHkjDwgU0hxWH/s=;
-        b=Ke60EscfegQl6a1jb+EPxKkrmp3Rq0WkIbznn531Z2eXOuhDuaH8YG79N6N9JMl5HJ
-         yLnJgTw74eV7p82bp5PAYYiZIJfHvAc8dHz+tSvegp3xiLM/LzAG4PXlzRcbkW/4y9/G
-         6RNvGyaQhMaD4+s9KDhFru6muY3OYKrPHpUlSYRyeF/B10Ri5wwxC96IZ+VuRB75iAOr
-         HxEjS9C+uqJSIxtL25fSUaj9WAVK4VkEFEvaRH7kcxlj/CzqnyiXtE6xu3dz6r8h5TWw
-         fhc3ubu0OjkN6fyssfHRhF73SeD9nv8S0yTS0L/pHkZApp8KD7Urh+y8gXC7JZ1bc+Mt
-         4GGg==
-X-Gm-Message-State: AOAM531qHist3HLSJI2ZBDv5uFt61RwYO8/7xaSGHlVAxo4eis0k60Ut
-	XPQOtQIXCIjds2Cgoj2wiZZBxg==
-X-Google-Smtp-Source: ABdhPJyEFvl8pdw/z7ss6yDCFvqIo6JTLizDxZo3iO/r+MyNDhJlUP2o7p+w8h50ibwx6vUXBcHrkA==
-X-Received: by 2002:a2e:a22b:: with SMTP id i11mr1113897ljm.57.1626983485890;
-        Thu, 22 Jul 2021 12:51:25 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id s7sm1798297lfo.257.2021.07.22.12.51.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jul 2021 12:51:24 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-	id 065C410285F; Thu, 22 Jul 2021 22:51:31 +0300 (+03)
-Date: Thu, 22 Jul 2021 22:51:30 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>
-Cc: David Rientjes <rientjes@google.com>, Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Jon Grimm <jon.grimm@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	"Kaplan, David" <David.Kaplan@amd.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <20210722195130.beazbb5blvj3mruo@box>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A872
+	for <linux-coco@lists.linux.dev>; Fri, 23 Jul 2021 11:04:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=mimecast20200619;
+	t=1627038257;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5Npt1n6wVMVmWpfsgwfl1/ungaVj5vcZucbo9ihzCyw=;
+	b=moywjODsCV6s1fQaxF7Pql5SAS5FLh4MlyKmbR3zFDzF+mcBfYwRqhoBaXT1JxR5MgqagV
+	l1MbApNTf7pDK0UXdDudaM0Ve5oyzPCkfpm8RigrRwJHJROL0CDIm8A0GCMu/kjoQebrED
+	kykIHAQzjCWDcfGaOXuwM4/DZV/dEFQ=
+Received: from EUR03-VE1-obe.outbound.protection.outlook.com
+ (mail-ve1eur03lp2050.outbound.protection.outlook.com [104.47.9.50]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ de-mta-26-bQJ0mvEZNeq1G0XKll2SIw-2; Fri, 23 Jul 2021 13:04:15 +0200
+X-MC-Unique: bQJ0mvEZNeq1G0XKll2SIw-2
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bOmq+J58sHiaxs1F9PLidL5PzJwmUNthhL0Frr7BDt06TVtGgqxiTzvc3RNBflv2jpzd+2L7lnfLZV7bwoTCX348+v33F66ag36HExPRxlJbbfRWTGGvpNsJZQ+iroptELr/B/H9x9IKjr06J9PrRq0LtgNnXhwGc/Xr48BnUKSw9ULKjwSsgavETObvcI7WTpciomAztGuFXC3LJJIeRDBqGKtQsrw83wnKsiMDevVnnpAcE0P6wf5nJrVnPxhuWZVo0GZzrLk/ovy2jGm0u6YgyCCgcKWdo8vHsHC+E+AkU0AgXDQ+SLAxCHm1lUPWv1CxN9mtNeIBgaT60HxtPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q/pBQIXarbMYL76J43sriXgOVUzTNb2gP10iOp7X1wY=;
+ b=kE8h98/eGOfsgpLY348pAPt86BryTGeyY51cq9fP5zMi4vEinI3r1u9JzFNAKCZFnEHP0ggoAhD8WBsFn8/wdJ/vm2DLT5kA8eSmSKcJHNvDUy3Qs3sFe/J9Lht9x/ux2902gJkPFhqaBJhnKrLpBHYPAoQ5Pq6XmbvqA1VGIHY65EtuNxOAYI/ium1hfJdLrbD5ihOUMTtBhbjmNdY7ZTCXMGXR/5LF3C9DwBLXLSCTr0BdFdFk24cHrg181iR7FygiEaYpSSvCzlh0eRM1fvbmOtng69E3V8W8lVgDrYrFN09qNtpplMuHNn0b//rcBttrm4LxRga+KioTLAzNow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+Authentication-Results: lists.linux.dev; dkim=none (message not signed)
+ header.d=none;lists.linux.dev; dmarc=none action=none header.from=suse.com;
+Received: from AM0PR04MB5650.eurprd04.prod.outlook.com (2603:10a6:208:128::18)
+ by AM0PR04MB4338.eurprd04.prod.outlook.com (2603:10a6:208:58::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4331.26; Fri, 23 Jul
+ 2021 11:04:12 +0000
+Received: from AM0PR04MB5650.eurprd04.prod.outlook.com
+ ([fe80::55a8:3faa:c572:5e98]) by AM0PR04MB5650.eurprd04.prod.outlook.com
+ ([fe80::55a8:3faa:c572:5e98%7]) with mapi id 15.20.4352.026; Fri, 23 Jul 2021
+ 11:04:12 +0000
+To: Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Andi Kleen <ak@linux.intel.com>, Brijesh Singh <brijesh.singh@amd.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Jon Grimm <jon.grimm@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ "Kaplan, David" <David.Kaplan@amd.com>, Dario Faggioli <dfaggioli@suse.com>
+CC: x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev
 References: <YPV27hDPZUoVsIZt@suse.de>
+From: Varad Gautam <varad.gautam@suse.com>
+Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
+Message-ID: <07abb8b7-f25a-6aba-9717-1d1418e2610a@suse.com>
+Date: Fri, 23 Jul 2021 13:04:09 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+In-Reply-To: <YPV27hDPZUoVsIZt@suse.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: PR3P192CA0008.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:102:56::13) To AM0PR04MB5650.eurprd04.prod.outlook.com
+ (2603:10a6:208:128::18)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YPV27hDPZUoVsIZt@suse.de>
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [192.168.77.33] (95.90.166.153) by PR3P192CA0008.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:56::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4352.29 via Frontend Transport; Fri, 23 Jul 2021 11:04:10 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: be5cd5c2-7c57-433c-9ea8-08d94dc99a1e
+X-MS-TrafficTypeDiagnostic: AM0PR04MB4338:
+X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtAddr,ExtFwd
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM0PR04MB4338924A6200BB1FA9664FB5E0E59@AM0PR04MB4338.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: c/BzvgDgFiUEA+3W4AmzuQ1hmoOxoXJbxpcbIpyHhpm8HwPXggRF6+lbMvQFSNfziFTJ8nX8Ky7yYeNs3whQmB8qjWcn4RO7r1MB2iZmdf3W90Lg6EI3BpaJzmUl9BrfvHn/XtYu3YWqbWW6lGG2uJ0EupVnVNL3tWIvyPEFBOcUPr516tld/Pap2pSICdvbf13MjNGR3wpnLHjClH86XLMsYWf0LCO7E9i83kF3amwYe4l6flVIRsn0HL+TSICCIQLFzmIYDaP4fcOOu4xZPBX1DbD71sMBw7wJT6mdfYCvp6DsKRXaFQaEGe6msG4PH0FTCozdpQT/hHeBzfosloNvsm4QYXuhxJ1ufwGtQhlKCACb118Vwwj3J6f98eWNYFaf0GicWJpeRhk5VqkF3dObLA0+sGK8rq4n1NwPgdBlaI4QaKu7gZ0wOSD1spJ1IwPs1vnAuwcTLgqm50c4fURM2XhCt85BDIDeblAV+pbNn1uhIALuagmD8jnaOPb9BanGjD45H0hdR139I5pvIn/s2mbPBCpGg8G1v4Lxv/tkKANRJUGr2Bg6woCT+qbPB2TjegAR28gKUBSZ1Fbnl86X4hrB5YFYGFwoEXufipy06sZK5hCiTBwUKtCOnEnlImZsAxOJx0uP/GSbpJ/OWapdSC8ukhKNG5AAtdCl+ZUhBT9KuklH9808jAe0zbvHuRc6JKgbVUYOd67bmUl/fNNw5we9ngyq4n8uLPEttGPwJxmw9nQPzXLOu0t0W8QJShzmIBzAoCuUE4sgolDCS+SKKJyCRdtTcdb/8R8sB4qx16gVvAVf/PJ1PWPfqUZw3LCFH7N6eUAyo8iPS7ubTA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5650.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(39850400004)(136003)(396003)(346002)(376002)(186003)(110136005)(26005)(2906002)(921005)(6486002)(66946007)(66556008)(86362001)(66476007)(6636002)(44832011)(478600001)(966005)(316002)(53546011)(66574015)(83380400001)(5660300002)(16576012)(38100700002)(31686004)(4326008)(7416002)(31696002)(8936002)(8676002)(956004)(36756003)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RjBDN0syZis4Y3Q2SzUvNlRnQXJ0TVNlZGVzai9vdVNSZ29CNFZ6Ykcvek9Y?=
+ =?utf-8?B?RHh5VVF5Rmt1eUhjcWhNMFNoV2MxWEdXZWo4U3NCTmcvMFdSZHNWVmYxRTNn?=
+ =?utf-8?B?YmxqeVVnazdpMGNIMDE2TEdqVk1pN3JrOHF5cHlUM2x4M0NXam9xVHVoS2dR?=
+ =?utf-8?B?RHpGeWF3b3Zsb3hJZEwyVVhsQjFDanFBTGRkNHBkanFZUXI0byt1OXBERmox?=
+ =?utf-8?B?eG5oS1BVSVB1THEwWEZ6NGdOVEdwYWtvV1RkZkgwYXZXbVJPTVNjeEUwZDM0?=
+ =?utf-8?B?RCtHaFpOZnF2OFpjT2xUU2lpY3NTUTNicVVmVStIblkrVUNpRDlEWlA4c3Fu?=
+ =?utf-8?B?U0NCMElDQnM2eCt0b1phZTlvSUM1aW85SVlVempSR3l4WUcwY3F2K2lWZk0r?=
+ =?utf-8?B?SHQxUHBEck4zd1cxNkEvcTRxUWRBVGJ4aENyakgwMnBCa1Iyb3Z4ZG1CaTRD?=
+ =?utf-8?B?U0ZHcUhubEpjUllkSnVCRzkyRVp0N0p4RnBPNnptbWZnRXZiaTNIM2lOMXhY?=
+ =?utf-8?B?cDgyN1dhK0RkU3U4VWJ0VjByMk1kSnlMbVpjR2hFajdiamp4NGtVZSthZjVQ?=
+ =?utf-8?B?TjU0RjEyTkVaTkNyV1JXQXZJNlcyQWM5QlM4a1hsTklQVExSOWZxTDlSMnJu?=
+ =?utf-8?B?andPNUF0SlFXR2ZoK0dkMk5aa2F3OUJPd0JTNHQ2Qm5vcVBacEgyczEya1li?=
+ =?utf-8?B?ME5uRXFoVlgxVHJxS2VuWGFQWTdMVkFyV2xQNUp3bXBWb2JQYTJjOVJZeVR0?=
+ =?utf-8?B?bUVtUW4vckZYc3EzMGlrdkp3RVR0WEY3Y0dXNG5TQkdjamMvWTJOWDEyblc2?=
+ =?utf-8?B?VXZNL09Wd2tSVVUyUGFxWjdERTlMWHZWVTlSY0o1RkVrZkhDa0tNMVp5MHVj?=
+ =?utf-8?B?cERlbExzNDFLT04yMGxxOTk5RUVBdkdqdWhJb20rbURkYkh6RXZKcU11UDBO?=
+ =?utf-8?B?d3BqVmhRaXEwUGd1NW1sRDNwTStmdzBib3diSEFyN1BEUHJRd0x4cW4zeXRk?=
+ =?utf-8?B?emxURmlnWnZhOVM2R3pET3ZyaEhLK2FFWXUrbTJDSEZZQWFkSFZHd05zM2NO?=
+ =?utf-8?B?NXlPeTVmSnRzSGVyN1NoKzkxemlMY09jZlNycXUxRHoxWEtmNlA5S0phUExZ?=
+ =?utf-8?B?STJ3SFF0bTc5RlJxNmRvcjlzb3FEQXo1UXpQSS9BdytJNjVZNGs3dVdZbmk0?=
+ =?utf-8?B?SlEvVGNXMnZQSlc3Ull2S0VBdUlERmR3cWE3aWoxd2s5VEFqQnY1aENCeEZr?=
+ =?utf-8?B?VmlRNnd6bE9ZbUxYYUpUUGczZDdRZWljQ1A3cnpUOFRIcC9CTjZDMXhneGhY?=
+ =?utf-8?B?Nmt5Z1N2czRGeG5KMUlyRHdsaXVSQy9iSjFqcG9BblNxVkpHZDc2Kzg3TGhm?=
+ =?utf-8?B?VTNHcVU4bmVuNUtkNGlIdUgwSmRFaDFDQzMyRlRwSTJjVGZwYVlyYjdZWkFk?=
+ =?utf-8?B?ekZRQUhSS3N6a1Z3MVB5Ulc2OXVBaDRzQ3k3TUVxS3BiSlNBbGxpMThScGdO?=
+ =?utf-8?B?d3MwOXZqcHQ4U3NKeUJNbmxFRmRLVFZBbU1YckIvUVVLaE1nUEdEa0JMK1BG?=
+ =?utf-8?B?TUFzd2FsKzdZMnlpYVpMSis2bjF4WlkwMXQzdTJ5VXV1K3lWN1ZiRUlpdE5l?=
+ =?utf-8?B?elBsdnp3M2RSdVdpanpDSWsxOEN4MmVUeFE0REx6WnphTmlrU2ErMzBGZ2s3?=
+ =?utf-8?B?UU1COXFvRWFLdGpIbG84alB6dzNVUmEveG1oV25zTTlNRVppTEtnSmxybGdl?=
+ =?utf-8?Q?/Giq2AyE48wjZ5rBUYOtKxtwzgLIWrPpgLV7RFe?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: be5cd5c2-7c57-433c-9ea8-08d94dc99a1e
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5650.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2021 11:04:12.1797
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: u1tZHbj4ErHieBdcXNOSDvo7Hk/AP9DKOVcieLuamYMSjUliq41L0PEGIIEB8tAPD9XhoCKUQY1HPbsNgR+6sg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4338
 
-On Mon, Jul 19, 2021 at 02:58:22PM +0200, Joerg Roedel wrote:
+On 7/19/21 2:58 PM, Joerg Roedel wrote:
 > Hi,
-> 
+>=20
 > I'd like to get some movement again into the discussion around how to
 > implement runtime memory validation for confidential guests and wrote up
 > some thoughts on it.
 > Below are the results in form of a proposal I put together. Please let
 > me know your thoughts on it and whether it fits everyones requirements.
+>=20
+> Thanks,
+>=20
+> 	Joerg
+>=20
+> Proposal for Runtime Memory Validation in Secure Guests on x86
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> This proposal describes a method and protocol for runtime validation of
+> memory in virtualization guests running with Intel Trusted Domain
+> Extensions (Intel-TDX) or AMD Secure Nested Paging (AMD-SNP).
+>=20
+> AMD-SNP and Intel-TDX use different terms to discuss memory page states.
+> In AMD-SNP memory has to be 'validated' while in Intel-TDX is will be
+> 'accepted'. This document uses the term 'validated' for both.
+>=20
+> Problem Statement
+> -----------------
+>=20
+> Virtualization guests which run with AMD-SNP or Intel-TDX need to
+> validate their memory before using it. The validation assigns a hardware
+> state to each page which allows the guest to detect when the hypervisor
+> tries to maliciously access or remap a guest-private page. The guest can
+> only access validated pages.
+>=20
+> There are three ways the guest memory can be validated:
+>=20
+> 	I.   The firmware validates all of guest memory at boot time. This
+> 	     is the simplest method which requires the least changes to
+> 	     the Linux kernel. But this method is also very slow and
+> 	     causes unwanted delays in the boot process, as verification
+> 	     can take several seconds (depending on guest memory size).
+>=20
+> 	II.  The firmware only validates its own memory and memory
+> 	     validation happens as the memory is used. This significantly
+> 	     improves the boot time, but needs more intrusive changes to
+> 	     the Linux kernel and its boot process.
+>=20
+>=20
+> 	III. Approach I. and II. can be combined. The firmware only
+> 	     validates the first X MB/GB of guest memory and the rest is
+> 	     validated on-demand.
+>=20
+> For method II. and III. the guest needs to track which pages have
+> already been validated to detect hypervisor attacks. This information
+> needs to be carried through the whole boot process.
+>=20
 
-Okay, below is my first take on the topic.
+The need for tracking validity within the guest can be eliminated if:
+- the guest has a trusted communication channel with the security
+  processor (PSP in the SNP case), and
+- the security processor has access to the validation state (RMP table for
+  SNP)
 
-Please don't mind code structuring, naming, etc. It's early PoC and aimed
-to test the approach.
+The guest kernel (linux or non-linux) can then just ask the security
+processor for this information when needed, provided the communication ABI
+exists.
 
-I ended up combing your idea with bitmap with PageOffline(): early boot
-code uses bitmap, but on page allocator init I mark unaccepted pages with
-PageOffline(). This way page allocator need to touch the bitmap only when
-it steps on PageOffline() which shouldn't be often once things settle
-after boot.
+I am not familiar with TDX specifics, but for SNP [1], I see that the PSP
+firmware is able to dump the page validation state along with some other
+information into a per-page metadata entry on the SNP_PAGE_SWAP_OUT ABI
+call. This leads me to conclude that the PSP has access to the RMP table,
+in which case it can probably be made to export the RMP state for a given
+guest in a cleaner layout (eg, a guest 'GET_VALIDATION_TABLE' call)?
 
-One bit in the bitmap represents 2M region. Any unaligned chunks gets
-accepted when we construct the bitmap. This way one 4K page can represent
-64 GiB of physical address space.
+[1] https://www.amd.com/system/files/TechDocs/56860.pdf
 
-I still don't touch decompresser code. This is something I'll look into
-next. Given the density of the bitmap. It should be enough to have a
-single-page bitmap allocated in decompresser.
+Regards,
+Varad
 
-Any feedback is welcome.
+> This poses challenges on the Linux boot process, as there is currently
+> no way to forward information about validated memory up the boot chain.
+> This proposal tries to describe a way to solve these challenges.
+>=20
+> Memory Validation through the Boot Process and in the Running System
+> --------------------------------------------------------------------
+>=20
+> The memory is validated throughout the boot process as described below.
+> These steps assume a firmware is present, but this proposal does not
+> strictly require a firmware. The tasks done be the firmware can also be
+> done by the hypervisor before starting the guest. The steps are:
+>=20
+> 	1. The firmware validates all memory which will not be owned by
+> 	   the boot loader or the OS.
+>=20
+> 	2. The firmware also validates the first X MB of memory, just
+> 	   enough to run a boot loader and to load the compressed Linux
+> 	   kernel image. X is not expected to be very large, 64 or 128
+> 	   MB should be enough. This pre-validation should not cause
+> 	   significant delays in the boot process.
+>=20
+> 	3. The validated memory is marked E820-Usable in struct
+> 	   boot_params for the Linux decompressor. The rest of the
+> 	   memory is also passed to Linux via new special E820 entries
+> 	   which mark the memory as Usable-but-Invalid.
+>=20
+> 	4. When the Linux decompressor takes over control, it evaluates
+> 	   the E820 table and calculates to total amount of memory
+> 	   available to Linux (valid and invalid memory).
+>=20
+> 	   The decompressor allocates a physically contiguous data
+> 	   structure at a random memory location which is big enough to
+> 	   hold the the validation states of all 4kb pages available to
+> 	   the guest. This data structure will be called the Validation
+> 	   Bitmap through the rest of this document. The Validation
+> 	   Bitmap is indexed by page frame numbers.=20
+>=20
+> 	   It still needs to be determined how many bits are required
+> 	   per page. This depends on the necessity to track validation
+> 	   page-sizes. Two bits per page are enough to track the 3
+> 	   page-sizes currently available on the x86 architecture.
+>=20
+> 	   The decompressor initializes the Validation Bitmap by first
+> 	   validating its backing memory and then updating it with the
+> 	   information from the E820 table. It will also update the
+> 	   table if it changes the state of pages from invalid to valid
+> 	   (and vice versa, e.g. for mapping a GHCB page).
+>=20
+> 	5. The 'struct boot_params' is extended to carry the location
+> 	   and size of the Validation Bitmap to the extracted kernel
+> 	   image.
+> 	   In fact, since the decompressor already receives a 'struct
+> 	   boot_params', it will check if it carries a Validation
+> 	   Bitmap. If it does, the decompressor uses the existing one
+> 	   instead of allocating a new one.
+>=20
+> 	6. When the extracted kernel image takes over control, it will
+> 	   make sure the Validation Bitmap is up to date when memory
+> 	   needs to be validated.
+>=20
+> 	7. When set up, the memblock and page allocators have to check
+> 	   whether the memory they return is already validated, and
+> 	   validate it if not.
+>=20
+> 	   This should happen after the memory is allocated and all
+> 	   allocator-locks are dropped, but before the memory is
+> 	   returned to the caller. This way the access to the
+> 	   validation bitmap can be implemented without locking and only
+> 	   using atomic instructions.
+>=20
+> 	   Under no circumstances the Linux kernel is allowed to
+> 	   validate a page more than once. Doing this might create
+> 	   attack vectors for the Hypervisor towards the guest.
+>=20
+> 	8. When memory is returned to the memblock or page allocators,
+> 	   it is _not_ invalidated. In fact, all memory which is freed
+> 	   need to be valid. If it was marked invalid in the meantime
+> 	   (e.g. if it the memory was used for DMA buffers), the code
+> 	   owning the memory needs to validate it again before freeing
+> 	   it.
+>=20
+> 	   The benefit of doing memory validation at allocation time is
+> 	   that it keeps the exception handler for invalid memory
+> 	   simple, because no exceptions of this kind are expected under
+> 	   normal operation.
+>=20
+> The Validation Bitmap
+> ---------------------
+>=20
+> This document proposes the use of a Validation Bitmap to store the
+> validation state of guest pages. This section discusses the benefits of
+> this approach.
+>=20
+> The Linux kernel already has an array to store various state for each
+> memory page in the system: The struct page array. While this would be a
+> natural place to also store page validation information, the Validation
+> Bitmap is chosen because having the information separated has some clear
+> benefits:
+>=20
+> 	- The Validation Bitmap is allocated in the Linux decompressor
+> 	  and already available long before the struct page array is
+> 	  initialized.
+>=20
+> 	- Since it is a simple in-memory data structure which is
+> 	  physically contiguous, it can be passed along through the
+> 	  various stages of the boot process.
+>=20
+> 	- It can even be passed to a new kernel booted via kexec/kdump,
+> 	  making it trivial to enable these features for AMD-SNP and
+> 	  Intel-TDX.
+>=20
+> 	- When memory validation happens in the memblock and page
+> 	  allocators, there is no need for locking when making changes
+> 	  to the Validation Bitmap, because:
+> 	 =20
+> 	    - Nobody will try to concurrently access the same bits, as
+> 	      the code-path doing the validation is the only owner of
+> 	      the memory.
+>=20
+> 	    - Updates can happen via atomic cmpxchg instructions
+> 	      when multiple bits are used per page. If only one bit is
+> 	      needed, atomic bit manipulation instructions will suffice.
+>=20
+> 	- NUMA-locality is not considered to be a problem for the
+> 	  Validation Bitmap. Since memory is not invalidated upon free,
+> 	  the data structure will become read-mostly over time.
+>=20
+> Final Notes
+> -----------
+>=20
+> This proposal does not introduce requirements about the firmware that
+> has to be used to run Intel-TDX or AMD-SNP guests. It works with UEFI
+> and non-UEFI firmwares, or with no firmware at all. This is important
+> for use-cases like Confidential Containers running in VMs, which often
+> use a very small firmware (or no firmware at all) for reducing boot
+> times.
+>=20
 
-diff --git a/arch/x86/include/asm/e820/types.h b/arch/x86/include/asm/e820/types.h
-index 314f75d886d0..98f281752a30 100644
---- a/arch/x86/include/asm/e820/types.h
-+++ b/arch/x86/include/asm/e820/types.h
-@@ -28,6 +28,8 @@ enum e820_type {
- 	 */
- 	E820_TYPE_PRAM		= 12,
- 
-+	E820_TYPE_UNACCEPTED	= 13, /* XXX: is there a standardized type ? */
-+
- 	/*
- 	 * Special-purpose memory is indicated to the system via the
- 	 * EFI_MEMORY_SP attribute. Define an e820 translation of this
-diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
-index 7555b48803a8..21972e9159fe 100644
---- a/arch/x86/include/asm/page.h
-+++ b/arch/x86/include/asm/page.h
-@@ -71,6 +71,11 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
- extern bool __virt_addr_valid(unsigned long kaddr);
- #define virt_addr_valid(kaddr)	__virt_addr_valid((unsigned long) (kaddr))
- 
-+void mark_unaccepted(phys_addr_t start, phys_addr_t end);
-+void accept_pages(phys_addr_t start, phys_addr_t end);
-+
-+void maybe_set_page_offline(struct page *page, unsigned int order);
-+void clear_page_offline(struct page *page, unsigned int order);
- #endif	/* __ASSEMBLY__ */
- 
- #include <asm-generic/memory_model.h>
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index bc0657f0deed..4cd80d107a06 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -196,6 +196,7 @@ static void __init e820_print_type(enum e820_type type)
- 	case E820_TYPE_UNUSABLE:	pr_cont("unusable");			break;
- 	case E820_TYPE_PMEM:		/* Fall through: */
- 	case E820_TYPE_PRAM:		pr_cont("persistent (type %u)", type);	break;
-+	case E820_TYPE_UNACCEPTED:	pr_cont("unaccepted");			break;
- 	default:			pr_cont("type %u", type);		break;
- 	}
- }
-@@ -763,7 +764,9 @@ void __init e820__register_nosave_regions(unsigned long limit_pfn)
- 
- 		pfn = PFN_DOWN(entry->addr + entry->size);
- 
--		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_RESERVED_KERN &&
-+		    entry->type != E820_TYPE_UNACCEPTED)
- 			register_nosave_region(PFN_UP(entry->addr), pfn);
- 
- 		if (pfn >= limit_pfn)
-@@ -864,7 +867,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 
- unsigned long __init e820__end_of_ram_pfn(void)
- {
--	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
-+	return max(e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM),
-+		   e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_UNACCEPTED));
- }
- 
- unsigned long __init e820__end_of_low_ram_pfn(void)
-@@ -1064,6 +1068,7 @@ static const char *__init e820_type_to_string(struct e820_entry *entry)
- 	case E820_TYPE_PMEM:		return "Persistent Memory";
- 	case E820_TYPE_RESERVED:	return "Reserved";
- 	case E820_TYPE_SOFT_RESERVED:	return "Soft Reserved";
-+	case E820_TYPE_UNACCEPTED:	return "Unaccepted Memory";
- 	default:			return "Unknown E820 type";
- 	}
- }
-@@ -1072,6 +1077,7 @@ static unsigned long __init e820_type_to_iomem_type(struct e820_entry *entry)
- {
- 	switch (entry->type) {
- 	case E820_TYPE_RESERVED_KERN:	/* Fall-through: */
-+	case E820_TYPE_UNACCEPTED:	/* Fall-through: */
- 	case E820_TYPE_RAM:		return IORESOURCE_SYSTEM_RAM;
- 	case E820_TYPE_ACPI:		/* Fall-through: */
- 	case E820_TYPE_NVS:		/* Fall-through: */
-@@ -1095,6 +1101,7 @@ static unsigned long __init e820_type_to_iores_desc(struct e820_entry *entry)
- 	case E820_TYPE_SOFT_RESERVED:	return IORES_DESC_SOFT_RESERVED;
- 	case E820_TYPE_RESERVED_KERN:	/* Fall-through: */
- 	case E820_TYPE_RAM:		/* Fall-through: */
-+	case E820_TYPE_UNACCEPTED:	/* Fall-through: */
- 	case E820_TYPE_UNUSABLE:	/* Fall-through: */
- 	default:			return IORES_DESC_NONE;
- 	}
-@@ -1118,6 +1125,7 @@ static bool __init do_mark_busy(enum e820_type type, struct resource *res)
- 		return false;
- 	case E820_TYPE_RESERVED_KERN:
- 	case E820_TYPE_RAM:
-+	case E820_TYPE_UNACCEPTED:
- 	case E820_TYPE_ACPI:
- 	case E820_TYPE_NVS:
- 	case E820_TYPE_UNUSABLE:
-@@ -1220,7 +1228,8 @@ void __init e820__reserve_resources_late(void)
- 		struct e820_entry *entry = &e820_table->entries[i];
- 		u64 start, end;
- 
--		if (entry->type != E820_TYPE_RAM)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_UNACCEPTED)
- 			continue;
- 
- 		start = entry->addr + entry->size;
-@@ -1318,9 +1327,14 @@ void __init e820__memblock_setup(void)
- 		if (entry->type == E820_TYPE_SOFT_RESERVED)
- 			memblock_reserve(entry->addr, entry->size);
- 
--		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_RESERVED_KERN &&
-+		    entry->type != E820_TYPE_UNACCEPTED)
- 			continue;
- 
-+		if (entry->type == E820_TYPE_UNACCEPTED)
-+			mark_unaccepted(entry->addr, end);
-+
- 		memblock_add(entry->addr, entry->size);
- 	}
- 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 72920af0b3c0..db9d1bcac9ed 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -944,6 +944,8 @@ void __init setup_arch(char **cmdline_p)
- 	if (movable_node_is_enabled())
- 		memblock_set_bottom_up(true);
- #endif
-+	/* TODO: make conditional */
-+	memblock_set_bottom_up(true);
- 
- 	x86_report_nx();
- 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index e527d829e1ed..582e398f953a 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -463,7 +463,9 @@ phys_pte_init(pte_t *pte_page, unsigned long paddr, unsigned long paddr_end,
- 			    !e820__mapped_any(paddr & PAGE_MASK, paddr_next,
- 					     E820_TYPE_RAM) &&
- 			    !e820__mapped_any(paddr & PAGE_MASK, paddr_next,
--					     E820_TYPE_RESERVED_KERN))
-+					     E820_TYPE_RESERVED_KERN) &&
-+			    !e820__mapped_any(paddr & PAGE_MASK, paddr_next,
-+					     E820_TYPE_UNACCEPTED))
- 				set_pte_init(pte, __pte(0), init);
- 			continue;
- 		}
-@@ -518,7 +520,9 @@ phys_pmd_init(pmd_t *pmd_page, unsigned long paddr, unsigned long paddr_end,
- 			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
- 					     E820_TYPE_RAM) &&
- 			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
--					     E820_TYPE_RESERVED_KERN))
-+					     E820_TYPE_RESERVED_KERN) &&
-+			    !e820__mapped_any(paddr & PMD_MASK, paddr_next,
-+					     E820_TYPE_UNACCEPTED))
- 				set_pmd_init(pmd, __pmd(0), init);
- 			continue;
- 		}
-@@ -606,7 +610,9 @@ phys_pud_init(pud_t *pud_page, unsigned long paddr, unsigned long paddr_end,
- 			    !e820__mapped_any(paddr & PUD_MASK, paddr_next,
- 					     E820_TYPE_RAM) &&
- 			    !e820__mapped_any(paddr & PUD_MASK, paddr_next,
--					     E820_TYPE_RESERVED_KERN))
-+					     E820_TYPE_RESERVED_KERN) &&
-+			    !e820__mapped_any(paddr & PUD_MASK, paddr_next,
-+					     E820_TYPE_UNACCEPTED))
- 				set_pud_init(pud, __pud(0), init);
- 			continue;
- 		}
-@@ -697,7 +703,9 @@ phys_p4d_init(p4d_t *p4d_page, unsigned long paddr, unsigned long paddr_end,
- 			    !e820__mapped_any(paddr & P4D_MASK, paddr_next,
- 					     E820_TYPE_RAM) &&
- 			    !e820__mapped_any(paddr & P4D_MASK, paddr_next,
--					     E820_TYPE_RESERVED_KERN))
-+					     E820_TYPE_RESERVED_KERN) &&
-+			    !e820__mapped_any(paddr & P4D_MASK, paddr_next,
-+					     E820_TYPE_UNACCEPTED))
- 				set_p4d_init(p4d, __p4d(0), init);
- 			continue;
- 		}
-diff --git a/arch/x86/mm/mem_encrypt_common.c b/arch/x86/mm/mem_encrypt_common.c
-index da94fc2e9b56..f51bb39963f2 100644
---- a/arch/x86/mm/mem_encrypt_common.c
-+++ b/arch/x86/mm/mem_encrypt_common.c
-@@ -44,3 +44,86 @@ int arch_has_restricted_virtio_memory_access(void)
- }
- EXPORT_SYMBOL_GPL(arch_has_restricted_virtio_memory_access);
- 
-+/* TODO: make dynamic. Enough for 64GiB */
-+static DECLARE_BITMAP(unaccepted_memory, 32768);
-+static DEFINE_SPINLOCK(unaccepted_memory_lock);
-+
-+#define PMD_ORDER (PMD_SHIFT - PAGE_SHIFT)
-+#define PMD_NR (1 << PMD_ORDER)
-+
-+void mark_unaccepted(phys_addr_t start, phys_addr_t end)
-+{
-+	unsigned int npages;
-+
-+	if (start & ~PMD_MASK) {
-+		npages = (round_up(start, PMD_SIZE) - start) / PAGE_SIZE;
-+		tdx_hcall_gpa_intent(start, npages, TDX_MAP_PRIVATE);
-+		start = round_up(start, PMD_SIZE);
-+	}
-+
-+	if (end & ~PMD_MASK) {
-+		npages = (end - round_down(end, PMD_SIZE)) / PAGE_SIZE;
-+		end = round_down(end, PMD_SIZE);
-+		tdx_hcall_gpa_intent(end, npages, TDX_MAP_PRIVATE);
-+	}
-+
-+	npages = (end - start) / PMD_SIZE;
-+	spin_lock(&unaccepted_memory_lock);
-+	bitmap_set(unaccepted_memory, start / PMD_SIZE, npages);
-+	spin_unlock(&unaccepted_memory_lock);
-+}
-+
-+static void __accept_pages(phys_addr_t start, phys_addr_t end)
-+{
-+	unsigned int rs, re;
-+
-+	bitmap_for_each_set_region(unaccepted_memory, rs, re,
-+				   start / PMD_SIZE, end / PMD_SIZE) {
-+		tdx_hcall_gpa_intent(rs * PMD_SIZE, (re - rs) * PMD_NR,
-+				     TDX_MAP_PRIVATE);
-+
-+		bitmap_clear(unaccepted_memory, rs, re - rs);
-+	}
-+}
-+
-+void accept_pages(phys_addr_t start, phys_addr_t end)
-+{
-+	spin_lock(&unaccepted_memory_lock);
-+	__accept_pages(start, end);
-+	spin_unlock(&unaccepted_memory_lock);
-+}
-+
-+void maybe_set_page_offline(struct page *page, unsigned int order)
-+{
-+	phys_addr_t addr = page_to_phys(page);
-+	bool unaccepted = true;
-+	unsigned int i;
-+
-+	spin_lock(&unaccepted_memory_lock);
-+	if (order < PMD_ORDER) {
-+		BUG_ON(test_bit(addr / PMD_SIZE, unaccepted_memory));
-+		goto out;
-+	}
-+
-+	for (i = 0; i < (1 << (order - PMD_ORDER)); i++) {
-+		if (!test_bit(addr / PMD_SIZE + i, unaccepted_memory)) {
-+			unaccepted = false;
-+			break;
-+		}
-+	}
-+
-+	if (unaccepted)
-+		__SetPageOffline(page);
-+	else
-+		__accept_pages(addr, addr + (PAGE_SIZE << order));
-+out:
-+	spin_unlock(&unaccepted_memory_lock);
-+}
-+
-+void clear_page_offline(struct page *page, unsigned int order)
-+{
-+	phys_addr_t addr = page_to_phys(page);
-+	accept_pages(addr, addr + (PAGE_SIZE << order));
-+	__ClearPageOffline(page);
-+}
-+
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 4b7ee3fa9224..86e85e267ee3 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -737,6 +737,7 @@ static __initdata char memory_type_name[][13] = {
- 	"MMIO Port",
- 	"PAL Code",
- 	"Persistent",
-+	"Unaccepted",
- };
- 
- char * __init efi_md_typeattr_format(char *buf, size_t size,
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index f14c4ff5839f..dc3aebd493b3 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -504,6 +504,9 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
- 			e820_type = E820_TYPE_PMEM;
- 			break;
- 
-+		case EFI_UNACCEPTED_MEMORY:
-+			e820_type = E820_TYPE_UNACCEPTED;
-+			break;
- 		default:
- 			continue;
- 		}
-diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 6b5d36babfcc..d43cc872b582 100644
---- a/include/linux/efi.h
-+++ b/include/linux/efi.h
-@@ -108,7 +108,8 @@ typedef	struct {
- #define EFI_MEMORY_MAPPED_IO_PORT_SPACE	12
- #define EFI_PAL_CODE			13
- #define EFI_PERSISTENT_MEMORY		14
--#define EFI_MAX_MEMORY_TYPE		15
-+#define EFI_UNACCEPTED_MEMORY		15
-+#define EFI_MAX_MEMORY_TYPE		16
- 
- /* Attribute values: */
- #define EFI_MEMORY_UC		((u64)0x0000000000000001ULL)	/* uncached */
-diff --git a/mm/memblock.c b/mm/memblock.c
-index afaefa8fc6ab..f7423ad0a692 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -814,6 +814,7 @@ int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)
- 	memblock_dbg("%s: [%pa-%pa] %pS\n", __func__,
- 		     &base, &end, (void *)_RET_IP_);
- 
-+	accept_pages(base, base + size);
- 	return memblock_add_range(&memblock.reserved, base, size, MAX_NUMNODES, 0);
- }
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index aaa1655cf682..0356329b1ea7 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -857,6 +857,9 @@ static inline bool page_is_buddy(struct page *page, struct page *buddy,
- 	if (buddy_order(buddy) != order)
- 		return false;
- 
-+	if (PageOffline(buddy) || PageOffline(page))
-+		return false;
-+
- 	/*
- 	 * zone check is done late to avoid uselessly calculating
- 	 * zone/node ids for pages that could never merge.
-@@ -959,6 +962,9 @@ static inline void del_page_from_free_list(struct page *page, struct zone *zone,
- 	if (page_reported(page))
- 		__ClearPageReported(page);
- 
-+	if (PageOffline(page))
-+		clear_page_offline(page, order);
-+
- 	list_del(&page->lru);
- 	__ClearPageBuddy(page);
- 	set_page_private(page, 0);
-@@ -1123,7 +1129,8 @@ static inline void __free_one_page(struct page *page,
- static inline bool page_expected_state(struct page *page,
- 					unsigned long check_flags)
- {
--	if (unlikely(atomic_read(&page->_mapcount) != -1))
-+	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
-+	    !PageOffline(page))
- 		return false;
- 
- 	if (unlikely((unsigned long)page->mapping |
-@@ -1666,6 +1673,8 @@ void __init memblock_free_pages(struct page *page, unsigned long pfn,
- {
- 	if (early_page_uninitialised(pfn))
- 		return;
-+
-+	maybe_set_page_offline(page, order);
- 	__free_pages_core(page, order);
- }
- 
-@@ -1757,10 +1766,12 @@ static void __init deferred_free_range(unsigned long pfn,
- 	if (nr_pages == pageblock_nr_pages &&
- 	    (pfn & (pageblock_nr_pages - 1)) == 0) {
- 		set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-+		maybe_set_page_offline(page, pageblock_order);
- 		__free_pages_core(page, pageblock_order);
- 		return;
- 	}
- 
-+	accept_pages(pfn << PAGE_SHIFT, (pfn + nr_pages) << PAGE_SHIFT);
- 	for (i = 0; i < nr_pages; i++, page++, pfn++) {
- 		if ((pfn & (pageblock_nr_pages - 1)) == 0)
- 			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
--- 
- Kirill A. Shutemov
+--=20
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5
+90409 N=C3=BCrnberg
+Germany
+
+HRB 36809, AG N=C3=BCrnberg
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+
