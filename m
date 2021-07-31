@@ -1,46 +1,45 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9393481
-	for <linux-coco@lists.linux.dev>; Fri, 30 Jul 2021 22:42:35 +0000 (UTC)
-Received: by mail-pj1-f46.google.com with SMTP id m10-20020a17090a34cab0290176b52c60ddso16398853pjf.4
-        for <linux-coco@lists.linux.dev>; Fri, 30 Jul 2021 15:42:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=m4d9ZD9p7GoqrvGaiugJJi1dtX5ER6dFXKneRi0unZQ=;
-        b=UD+a7OHG6R6O1/v3XLdigN6MDc2FUkFXi8AJqiXtL/E14oNXaLlRshONH4ZEV3U+2l
-         O+FzXhy3YiQv+j4no8ejXyA6qCG/BbE0OuzfWVYJOTMwDIotwWFqUQUQbBd3T5DPGMSF
-         5iPGQsZVmTereOWIZlj3lJLfB/t9OU1fBzXXyuzxnV5O4y5+GR2wmZ824olLGhYcqMkt
-         E93R50vJJPqYgYn7QQLQWVtvwHr9P+fVXsYDY1SeyAqQ9+CWTTX/I6WqGr0+IR6ZayAB
-         b3TfGwNivuG/xRxTkOXgXhJ1+wvMpC744swkcitnGwK5utnhKiWijfQde9qagLVzSfIq
-         ULgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=m4d9ZD9p7GoqrvGaiugJJi1dtX5ER6dFXKneRi0unZQ=;
-        b=kvBLdJavP5eRSSihhg6plrrejnaJx3+gnH8U28tBHIF93GJYRljqaRhZqVgq/ePJUI
-         hZrSK56qaJXrPez8J00qyH0q9gynwwny1ddQPA97mlknR+pjKCF9vjfG/oVUGY6UbL26
-         Bj7XWxKXshbSXxTroa1Vhpxrd9xt5IbgYDXhtKXTNlNfTQuzyDXwA8Q+w1H7y55TcE4g
-         cjFoPp3YiD5CqLcfO68FSUN4fW78V4ToZYNvd5hvboQGT5hnbwOBlug2Y6kEu01hzAoX
-         utsJRg0Z0ODh3qQDEJGAX87YQ6aCUEZunYytptlwFRBqLra4CWaGy0zt/GuW0lZVHRa/
-         ieuQ==
-X-Gm-Message-State: AOAM530gKLz9Xh79zMR4nvmtkNWCT/K04XYhzrSRIWUh+I6UnUtfXjYH
-	iVVMlqc8RGHlWHiiBSVVhVqIBg==
-X-Google-Smtp-Source: ABdhPJxk7W+2sIVLDSmSMOXUC11qCNLIDPGNOd/xxKNg/QQ+ueW+7XNXlkhxJYUWIL4woVvOFDCobg==
-X-Received: by 2002:a62:bd15:0:b029:31c:a584:5f97 with SMTP id a21-20020a62bd150000b029031ca5845f97mr4921999pff.33.1627684955184;
-        Fri, 30 Jul 2021 15:42:35 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id n23sm3926800pgv.76.2021.07.30.15.42.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jul 2021 15:42:34 -0700 (PDT)
-Date: Fri, 30 Jul 2021 22:42:30 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Joerg Roedel <joro@8bytes.org>
-Cc: x86@kernel.org, Eric Biederman <ebiederm@xmission.com>,
-	kexec@lists.infradead.org, Joerg Roedel <jroedel@suse.de>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A583481
+	for <linux-coco@lists.linux.dev>; Sat, 31 Jul 2021 07:17:41 +0000 (UTC)
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DCE38221E7;
+	Sat, 31 Jul 2021 07:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1627715859; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kyM9js2aRHyfGQiZvaRI/san3KM6xq/gaboX810m66s=;
+	b=lAxg8F6VD+4AnPsG/mMhP3TjLl40VG23Kmwg7lgnscQBVXujxipnB1sRvy5Fwphgzm4MTl
+	QqLgOnsZRhK9HeWuIQ56QyuwQZemhPbKhqTsuyhMYUqkwt8qCMn0O9ZG91clmhv3fuJxJ0
+	LJjlecCWVAS8I36UubMgskseBux/bCA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1627715859;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kyM9js2aRHyfGQiZvaRI/san3KM6xq/gaboX810m66s=;
+	b=Hynwo4vVVOPM1dP9PH0k9MPz4dgRUYk0yb4mOQgcejQs4gUNDFuPN/RU9Xx9dWthWdCdVJ
+	dBCyAXx0G9H401CA==
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 0EF0D1368F;
+	Sat, 31 Jul 2021 07:17:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap1.suse-dmz.suse.de with ESMTPSA
+	id jptYARP5BGF3OQAAGKfGzw
+	(envelope-from <jroedel@suse.de>); Sat, 31 Jul 2021 07:17:39 +0000
+Date: Sat, 31 Jul 2021 09:17:37 +0200
+From: Joerg Roedel <jroedel@suse.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+	Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
 	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
@@ -56,9 +55,10 @@ Cc: x86@kernel.org, Eric Biederman <ebiederm@xmission.com>,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
 Subject: Re: [PATCH 11/12] x86/sev: Handle CLFLUSH MMIO events
-Message-ID: <YQSAVo0CXUKHXdLF@google.com>
+Message-ID: <YQT5Ec5M6maZdFoO@suse.de>
 References: <20210721142015.1401-1-joro@8bytes.org>
  <20210721142015.1401-12-joro@8bytes.org>
+ <YQSAVo0CXUKHXdLF@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,54 +67,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210721142015.1401-12-joro@8bytes.org>
+In-Reply-To: <YQSAVo0CXUKHXdLF@google.com>
 
-On Wed, Jul 21, 2021, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
+Hi Sean,
+
+On Fri, Jul 30, 2021 at 10:42:30PM +0000, Sean Christopherson wrote:
+> On Wed, Jul 21, 2021, Joerg Roedel wrote:
+> This wording can be misread as "the hypervisor is responsible for _all_ cache
+> management".  Maybe just:
 > 
-> Handle CLFLUSH instruction to MMIO memory in the #VC handler. The
-                               ^
-			       |- emulated
+> 		/*
+> 		 * Ignore CLFLUSHes - the hyperivsor is responsible for cache
+> 		 * management of emulated MMIO.
+> 		 */
 
-> instruction is ignored by the handler, as the Hypervisor is
-> responsible for cache management of emulated MMIO memory.
-> 
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
-> ---
->  arch/x86/kernel/sev-shared.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index a7a0793c4f98..682fa202444f 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -632,6 +632,15 @@ static enum es_result vc_handle_mmio_twobyte_ops(struct ghcb *ghcb,
->  	long *reg_data;
->  
->  	switch (insn->opcode.bytes[1]) {
-> +		/* CLFLUSH */
-> +	case 0xae:
-> +		/*
-> +		 * Ignore CLFLUSHes - those go to emulated MMIO anyway and the
-> +		 * hypervisor is responsible for cache management.
+Right, will update the comment, thanks.
 
-This wording can be misread as "the hypervisor is responsible for _all_ cache
-management".  Maybe just:
+> Side topic, out of curisoity, what's mapping/accessing emulated MMIO as non-UC?
 
-		/*
-		 * Ignore CLFLUSHes - the hyperivsor is responsible for cache
-		 * management of emulated MMIO.
-		 */
+The CLFLUSHes happen when the kexec'ed kernel maps the VGA framebuffer
+as unencrypted. Initially it is mapped encrypted and before re-mapping
+the kernel flushes the range from the caches.
 
-Side topic, out of curisoity, what's mapping/accessing emulated MMIO as non-UC?
+I have not investigated why this doesn't happen on the first boot,
+though.
 
-> +		 */
-> +		ret = ES_OK;
-> +		break;
-> +
->  		/* MMIO Read w/ zero-extension */
->  	case 0xb6:
->  		bytes = 1;
-> -- 
-> 2.31.1
-> 
+Regards,
+
+	Joerg
