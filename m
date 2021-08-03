@@ -1,156 +1,174 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2050.outbound.protection.outlook.com [40.107.93.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC7F168
-	for <linux-coco@lists.linux.dev>; Mon,  2 Aug 2021 18:47:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1627930058;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+tUKWkMeQsSWEtCeAubGhlT01HSrUGdhuY5cfxhdFAc=;
-	b=dQk3PxT2mMRxgDfIjefLdVjQf4B5IYVOVBB8W1w97fUE/h+MNqE5LWCcjvnSTPGDupiLSZ
-	n3GyjfFVpxlV3M43MSsr+M9tIU3CB4ZrcYS3LMoGL6+cxitfoBHAyIubd3I7eiN8gVgbHM
-	M0lgXs3vKUvRXTb0v/wdJNgzk294Vwc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-124-EPfXGC8WO_Kyr8iHuzvfIw-1; Mon, 02 Aug 2021 14:47:37 -0400
-X-MC-Unique: EPfXGC8WO_Kyr8iHuzvfIw-1
-Received: by mail-wr1-f70.google.com with SMTP id z10-20020adfdf8a0000b02901536d17cd63so6795292wrl.21
-        for <linux-coco@lists.linux.dev>; Mon, 02 Aug 2021 11:47:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=+tUKWkMeQsSWEtCeAubGhlT01HSrUGdhuY5cfxhdFAc=;
-        b=Gh9Ef1TTHqMu+kKeng6/8Wez7fHviEISidv+eNT8K+DozYXSxNtcVN/ziURaBWMVr7
-         S69jkDClVNnoDXRn3mSnkry4u5CG3Ll9s5NyQBhQ508zh715UT/RO9+29WxMesz4VJKE
-         u18GGX9fxB6fyITjtjw56DYgNBPcTn6AtwVoeC54i6f2+zQVDRBbm00e7x00h7iTxAfZ
-         anTXeYXAyZHyOrGAIEnRzQwTP+MOVyd1wSKYyhCt/sy65aoBaMvbC/GL1yoc2ta9wQtM
-         hr7goP9xpDiplPeJfLw42H9gcpH0N5HIDumP9S1T+W9F0r9fj9RiebZZb1xHjX7r5T3q
-         Vakg==
-X-Gm-Message-State: AOAM5317/Z5ZRJJMSz9RljW2+oi/NaX46FNQ1LLiZG8I7YTUxie4oFRL
-	u3BxZYt6ybXrMvlLufspmtuwcPOblYfaa3nkFMb8TG62/PBSuTd1pXPft88EuTvPObSHTsfKYL9
-	Nw2DgLe0kFSvByQpdKW4oA83rcUKcpa3VYHCv/Dqi0sXEuTGEkPsgv98YNPFpLofsL50W5g==
-X-Received: by 2002:a05:6000:1818:: with SMTP id m24mr19061612wrh.49.1627930056214;
-        Mon, 02 Aug 2021 11:47:36 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyGLzls7DU16mDoxCL8Z/qw6AL3eM1mcV6oWIwd0406N+uBq7aMeNLjgAj9sclyhtqxEWTXtw==
-X-Received: by 2002:a05:6000:1818:: with SMTP id m24mr19061570wrh.49.1627930055907;
-        Mon, 02 Aug 2021 11:47:35 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c60af.dip0.t-ipconnect.de. [91.12.96.175])
-        by smtp.gmail.com with ESMTPSA id z5sm164744wmp.26.2021.08.02.11.47.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Aug 2021 11:47:35 -0700 (PDT)
-To: Joerg Roedel <joro@8bytes.org>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
- Joerg Roedel <jroedel@suse.de>, David Rientjes <rientjes@google.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Andi Kleen <ak@linux.intel.com>, Brijesh Singh <brijesh.singh@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Jon Grimm <jon.grimm@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- "Kaplan, David" <David.Kaplan@amd.com>, Varad Gautam
- <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev
-References: <YPV27hDPZUoVsIZt@suse.de>
- <20210720173004.ucrliup5o7l3jfq3@box.shutemov.name>
- <fa38e74e-e7ca-39f3-f2db-f0a0de152edb@redhat.com>
- <YP8G1EuMPk1U40kz@8bytes.org>
- <023d2435-8cc7-dc44-6258-4135136ddfba@redhat.com>
- <YQfGo2rVgW0wkLnv@8bytes.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: Runtime Memory Validation in Intel-TDX and AMD-SNP
-Message-ID: <470865dc-64dc-713e-c8df-99a9067a19ba@redhat.com>
-Date: Mon, 2 Aug 2021 20:47:33 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D950570
+	for <linux-coco@lists.linux.dev>; Tue,  3 Aug 2021 14:39:02 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PPVAJr2Xus9E1/vmDRbnILZjAGh/L6JiNlgnIwTDnwSTWPrWdPdJxokLYEaR3DJMaDety1+u3RIEYOUbcNsyOnmZYDM0ljMhCFcgabD73P2Hw6Z5h0dB99p54L8q7wCXuSP+OmSNhe2vsp/qZ7tqbgeWv0xq7nGGTX+Jw2H+gFXHLCAj0KZVxP0SbKJcrwt9tJlWghK82Cqzy/3atPZcBtymiyvOvbPxi+zMVLyGhgJJsBNM/iZvMuF5sgfB9HqZ1VuSQ1cUX0emcxXqvBsIGHwdG5AXNMIu9Wpgc42/ksSP5N3LNVvLuqT4uis770p/TWIMzEsSJ+jtk8TvAkFCLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eq7LZZ4ZwwPEecSecBs70GDoJrELJf8DMXZrhLOTNrc=;
+ b=gO4HcSkoRl4YwezXAZMuPC7U6UDJURp5Bc/mPUUqCsHZzI3rrHtp/TSFjTF3Xh0QF58Ip9kBuEmkwRiOLMiBQU4T1c/dCVKwaFJ+HPJOtMrfFa9QR27wZqRv+SqHBs+y5KSFim4wiVS3Fbo+mwnUjGucydDDYGb5f0/a/t9o7ChpU4R0MSWfsBFrOznyNz/zLNrBYx5xuxu6veS0Rc6Y18yT+6p0eS5WLz/vvcpuf+zFqDJq0jJN2tvBGYRJHt99JUCTLBw4SMCH/21f487DzhB6ZL7tl1qp5s7u8Zq0Qu5H3tuIEuQyDu+9xQabu4yuJ+SzkkveAxxqQy6wdzN4rg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eq7LZZ4ZwwPEecSecBs70GDoJrELJf8DMXZrhLOTNrc=;
+ b=sGxbtZiXGRhw3Dsl8vW3H8FrTGbCefe/wI3CpWDCMNwO5dT9owtG/NWUawCL/4y6kols+ebvXBXW/SsenLYh9B3yyJW0UkA3BKgMptM2SMqc6K6SPmfLVVehAmEK2PeCuLhCzd9yHRK+yXEmUw/YQGE0AlKNra76C0QGlhUuc9o=
+Authentication-Results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN1PR12MB2414.namprd12.prod.outlook.com (2603:10b6:802:2e::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.26; Tue, 3 Aug
+ 2021 14:39:00 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::a8a9:2aac:4fd1:88fa%3]) with mapi id 15.20.4373.026; Tue, 3 Aug 2021
+ 14:39:00 +0000
+Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+ tony.luck@intel.com, npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part2 RFC v4 20/40] KVM: SVM: Make AVIC backing, VMSA and
+ VMCB memory allocation SNP safe
+To: Sean Christopherson <seanjc@google.com>
+References: <20210707183616.5620-1-brijesh.singh@amd.com>
+ <20210707183616.5620-21-brijesh.singh@amd.com> <YPcPqpqRju/QLoHI@google.com>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <898be17b-cc2c-cceb-5691-4efcf693d994@amd.com>
+Date: Tue, 3 Aug 2021 09:38:57 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
+In-Reply-To: <YPcPqpqRju/QLoHI@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN4PR0701CA0001.namprd07.prod.outlook.com
+ (2603:10b6:803:28::11) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YQfGo2rVgW0wkLnv@8bytes.org>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from [10.236.31.95] (165.204.77.1) by SN4PR0701CA0001.namprd07.prod.outlook.com (2603:10b6:803:28::11) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.15 via Frontend Transport; Tue, 3 Aug 2021 14:38:58 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0992472e-3c2c-479a-eaa8-08d9568c6e5c
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2414:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS:
+	<SN1PR12MB241441DF6640FB9ED40CF02BE5F09@SN1PR12MB2414.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	diUTUAI0MOngmvbjD4xs8cbeuO9MhamLs0u4AlOrFRoGhgGQ/Ykcv1ewepcYT9uccoNTXKrrSpBctiQo6wmc+/WJM50zYvMXNJolbzRNJBggS0S+CZQKVMwccaC5BX2ILUc8G3PWLru9xGzz9JUi2YhupV3QwjzUl2CoMolI+gG9lqDO1qO0sYvSKYVBV6d2b1aYZJckadtJzeGrNJA2ZpSS9twMVY/DFqVPRfcummgAHhZqbYFxXqmsMFZk9vM1KYRYjv4NST3yCGPIOfc2B7lUh6UY7DqJjbdg/bB8kn2UKeAl7YOtc2lPqlPHF7BO1YgFwOns57Y/+2vw4zZ/MU5CnpPeGY4Y1C3QpTUyynmg6EMB5m/T364oMXb03ZKspA63tACyu2kybyKpFI2G4LH8UXVOC7nayCeO5dWOqlsnEpi8zDByICsW4L90EZoq+dxnCi0TS7yF38QFzijLeJQaFoGhOYPaqi74fN3FVDZIUG5PnESfRxdU4eEGXV8+VU+fi7UbJuN2x2clQ8FE3JmlXJh3trw0z17CxDgy1Un1pQQuLZb8isTp+3ELHBBEjqWOwqE0uzj8gUX5vaADPQaEQhJkp9MfZrMpc+bRW+Lp8ygukIiiFH6h2YsdTwNu7Sx6PaGgoI018+yZApaWgjgnJ9CNdoxKvBsvZfXm9DVCC5DD/rZ5W66NW2hdBcEJYHGlxRJLz5UiD4ChHR311iqlr4bOyvxcvXpr7BxWVcMHMeoso2RijdfbBZaN1KHLmblr2vbz4ni3HRmD8i3uOw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(366004)(346002)(376002)(136003)(39860400002)(66476007)(26005)(5660300002)(2616005)(66946007)(86362001)(186003)(66556008)(44832011)(956004)(31686004)(7416002)(478600001)(31696002)(7406005)(8936002)(52116002)(4326008)(16576012)(83380400001)(2906002)(8676002)(36756003)(54906003)(53546011)(316002)(6486002)(38100700002)(38350700002)(6916009)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UmZEUlR4bFVmWnBqOTRNSC9uTm9zMVBhbFNEejh2QXEwUUc4L0NnRGxvZ0p5?=
+ =?utf-8?B?aEpmaGhER0VCL01md1Jxa2hkVEx5OG1Ja2VUOGx2czQ1Y01lK1VLai9SS1px?=
+ =?utf-8?B?SlErUzdRSis4a0cyODcvcTdpdFlQYmtNR1g0OTVRcGExMHRsVWFGZm4zOFUr?=
+ =?utf-8?B?ZXc2bThJWFdPKzA5Qndpb3ErK0JhbUhGWVBzQXRVYmN0YUczSW9wSTFwVW02?=
+ =?utf-8?B?VVAwbWtwYTd0RzBrU2NmdDFiQjArb28rb2VhV0FMLzdQS0VwVnM3TTVGYVlD?=
+ =?utf-8?B?SmI1M0k2WFR6cllqcGdFR25qaE5mZkpzMytWemxZUi9ycVNxZ2dOaEZPaUQ1?=
+ =?utf-8?B?MVpVNUNicitVRWc3d09rbUdVc0QwQVVxV3FyN3BzSTQzVi8rVHNhRThmVHNR?=
+ =?utf-8?B?MS9tRGh4b3lobHgrR0dyLytVTUllbE94K2xPOVFiMUMxaVd1emNqNkFiQStY?=
+ =?utf-8?B?UWo5NzR5RWx3MFNROCtNaXVMRHR2SE9hVE9tazFaUW40ZEFCU1FyVUI1Q3hh?=
+ =?utf-8?B?QTVidVB6QUVFNXM4QWw1L05KVGZjWkZQZzZIQWR4OEJVQWNPOERYMGlUam9l?=
+ =?utf-8?B?QnJjc2tERGhxNWRueURsT3Q3UHRSMXdjbC9Ib3Z6amwyampSZVN1d0lGUS9l?=
+ =?utf-8?B?OHgwRUFiMXVYTW1KdXBoemxJeVpmczdCemovcis0Sjh1VUlmL0UzdmFSd0JG?=
+ =?utf-8?B?TU1BWHA0dGhtZXlmUkdyUDE0cnI5VmZUMG9LMzIyc1dpRVoxNmZMWXNIWTRC?=
+ =?utf-8?B?U2FsNFRXODVrSGkzVmE4THdvNy96TTBESkEvVU5oKzRrc0NneDE3THlLMFFz?=
+ =?utf-8?B?NWdHcEMvczRZRlZIaHpzYXFFS1JDdTdlYmdQdXozaXBqWG1rZEZWSnVmM0hM?=
+ =?utf-8?B?Zk56TFh6cklPNjNqbGI4TUIrK1RLcHNBNjNHWnQ0L2NLblZJSHRwWmovRG9Z?=
+ =?utf-8?B?MnF6QjlwM25pRnFtaTlNeXhkM1NLam1hTW9IMWhvUnhyZEhhSHU1UndoQndR?=
+ =?utf-8?B?WlZtbldSTkY4c0RVQlY2UzBLNHNrSHQrNWVzcDZzNThlNEp4Q3diVFBOQkt5?=
+ =?utf-8?B?T1pzSjZWcmpJVDRzbmFMUGVpeVYvRnE3d1IvWFg0M2VLQ1ZSdm5PS2oxWWZJ?=
+ =?utf-8?B?clJKRzJ6TmFGRE4vcjNCdEJHeC92T3JrZW44bWViOHdTL0JYQ0NwNHN5QlBX?=
+ =?utf-8?B?cldHdzVVSnpiVnhrRm5mbEU2NjVaVVBpT3J5YklwMGVTdGgzalR0b3h0VE5F?=
+ =?utf-8?B?Ym5yQWlmeGVTa2tyemtuTzJyViszMUhOVWxvL1I0ZVJmTkF4NCtHbzRscWE2?=
+ =?utf-8?B?RXdKM1UxNzNuYXhwREdDOHFGQjBnR3VTOWhRakZIdGR6Z2ptTHNpcU9uNWZW?=
+ =?utf-8?B?UHFlSXpVMS9YTE9NVU5LMkpmR2pubWRpeCtHVmFtY3M5dkZxbGRIbzRXQU1M?=
+ =?utf-8?B?Q1BrZ25CVGFNSXBLdEplaVdqSFBvVUhwaHVTbE5mV1BxNHNSVytoV3I2VlJU?=
+ =?utf-8?B?SnZsYzBudXhTSE5ycnRxMmVGV3VYOXdOak0zRUFnNTBBU0psZmNmUkZ5RmxK?=
+ =?utf-8?B?SDgxSm5hNFhQSXQ4ZlJ2UnZ6TFZuUVRTaGVPMDJrK21QZU9HRTh3ekpKb2RF?=
+ =?utf-8?B?VVgxZWNKZVM1YWRTc2ovdWRZQ2xDTG9tS2dDQ2VFL1ZTbHBOUUlOdG9yblh6?=
+ =?utf-8?B?MW53Yjk3R29abURGZFlmd3hmdTMrYlIwcFhkTklZQVEyMjE5OHl1NkNFcDAx?=
+ =?utf-8?Q?1VzI1rbOG1O9dPT+AkxET/FXVjSlToPIGcHkbeJ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0992472e-3c2c-479a-eaa8-08d9568c6e5c
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2021 14:39:00.0377
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TRPxUrR+4LioUbhGukCfhYZjRiBqtNp4YRO5Z8QMG/YZdwgpsUzh/4n1Qe+3f7/N5SvI7SIqrUuWTLa+VvmTbg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2414
 
-On 02.08.21 12:19, Joerg Roedel wrote:
-> On Tue, Jul 27, 2021 at 11:34:47AM +0200, David Hildenbrand wrote:
->> What makes you think that? I already heard people express desires for memory
->> hot(un)plug, especially in the context of running containers inside
->> encrypted VMs. And static bitmaps are naturally a bad choice for changing
->> memory layouts.
+Hi Sean,
+
+
+On 7/20/21 1:02 PM, Sean Christopherson wrote:
+> IMO, the CPU behavior is a bug, even if the behavior is working as intended for
+> the microarchitecture.  I.e. this should be treated as an erratum.
 > 
-> In the worst case some memory in the bitmap is wasted when memory is
-> hot-unplugged. The amount depends on how much memory one bit covers, but
-> I don't see this as a show stopper.
 
-Devil's in the details when you want to hotplug later; for example, 
-before parsing SRAT, we have no clue how much memory we might have at 
-one point at runtime later. And you'd have to prepare for that by 
-allocating the bitmap accordingly. And as I said, it's not a sparse data 
-structure, so you will at least waste some memory.
+I agreed with your comment that it should be treated as an erratum. I 
+now have agreement from the hardware team to publish this as an erratum 
+with explanation and recommendation. This will certainly help in 
+documenting on "why" we are making the page split.
 
->> I'm wondering, why exactly would a kdump kernel (not touching memory of the
->> old kernel while booting up) need access to the bitmap? Just wondering, for
->> ACPI tables and such? I can understand why makedumpfile would need that
->> information when actually dumping memory of the old kernel, but it would
->> have access to the memmap of the old kernel to obtain that information.
+...
+
+>>   
+>> -	apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+>> +	if (kvm_x86_ops.alloc_apic_backing_page)
+>> +		apic->regs = kvm_x86_ops.alloc_apic_backing_page(vcpu);
 > 
-> The kdump kernel needs the bitmap to detect when the Hypervisor is doing
-> something malicious, well, at least on its own memory. The kdump kernel
-> has full access to the previous kernels memory and could also be tricked
-> by the Hypervisor to reveal secrets.
+> This can be a static_call().
 
-That's an interesting thought. But this raises many questions, how and 
-what to dump in context of encrypted VMs at all. I'd love to see some 
-writeup of what we actually want to dump, with which tools, and to which 
-(encrypted?) locations.
-
-The kdump kernel has access to the memmap of the old kernel. The memmap 
-of the old kernel would contain information regarding encrypted pages. 
-The kdump kernel and the tools (makedumpfile) running in the VM cannot 
-be tampered with by the hypervisor. The memmap of the old kernel cannot 
-be tampered with, as it resides on encrypted memory. Are my assumptions 
-correct?
-
-I'd be interested how a hypervisor could trigger revealing secrets.
+Noted.
 
 > 
->> Mirroring is a good point. But I'd suggest using the bitmap only during
->> early boot if really necessary and after syncing it to the bitmap, get rid
->> of it. Sure, kexec is more challenging, but at least it's a clean design. We
->> can always try expressing the state of validated memory in the e820 map we
->> present to the kexec kernel.
+> This isn't "finding" anything, it's identifying which of the two pages is
+> _guaranteed_ to be unaligned.  The whole function needs a much bigger comment to
+> explain what's going on.
+
+Let me add more comment to clarify it.
+
 > 
-> It depends on how fragmented the validated/unvalidated regions will get
-> over time. I think currently it is not very fragmented, the biggest
-> shared regions are the .bss_decrypted section and the DMA bounce buffer.
-> But there are also a couple of page-size regions which need to be
-> shared. For kexec these regions can be validated again when tearing down
-> the APs, but for kdump it would be too fragile to do such extensive
-> stuff before jumping the the kdump kernel.
+>> +	pfn = page_to_pfn(p);
+>> +	if (IS_ALIGNED(__pfn_to_phys(pfn), PMD_SIZE)) {
+>> +		pfn++;
+>> +		__free_page(p);
+>> +	} else {
+>> +		__free_page(pfn_to_page(pfn + 1));
+>> +	}
+>> +
+>> +	return pfn_to_page(pfn);
+>> +}
 
-Right, I don't really see a blocker for kexec, just needs some proper 
-creation/update of the e820 map. For kdump, I am not sure if we really 
-need it, but most probably if we would have a complete picture of kdump 
-for encrypted VMs it would get much clearer what we actually have to 
-care about.
-
-
--- 
-Thanks,
-
-David / dhildenb
-
+thanks
