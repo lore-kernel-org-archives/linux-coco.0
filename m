@@ -1,25 +1,23 @@
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF13529D6
-	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 20:51:01 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="213136614"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543A717F
+	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 21:20:15 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="195263193"
 X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="213136614"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 13:51:01 -0700
+   d="scan'208";a="195263193"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 14:20:10 -0700
 X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="503261274"
-Received: from chdubay-mobl1.amr.corp.intel.com (HELO [10.212.234.193]) ([10.212.234.193])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 13:51:00 -0700
+   d="scan'208";a="515987352"
+Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.209.69.62]) ([10.209.69.62])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 14:20:09 -0700
 Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
-From: Dave Hansen <dave.hansen@intel.com>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
+To: Dave Hansen <dave.hansen@intel.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>,
  Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
  David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
  Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
  <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
@@ -31,111 +29,62 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
  <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
  <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <f7667988-4d6c-461e-901d-a6c3612b2f0f@intel.com>
-Date: Tue, 10 Aug 2021 13:50:57 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
+ <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
+ <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
+ <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
+From: Andi Kleen <ak@linux.intel.com>
+Message-ID: <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
+Date: Tue, 10 Aug 2021 14:20:08 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
 
-On 8/10/21 11:13 AM, Dave Hansen wrote:
->> @@ -1001,6 +1004,9 @@ static inline void del_page_from_free_list(struct page *page, struct zone *zone,
->>  	if (page_reported(page))
->>  		__ClearPageReported(page);
->>  
->> +	if (PageOffline(page))
->> +		clear_page_offline(page, order);
->> +
->>  	list_del(&page->lru);
->>  	__ClearPageBuddy(page);
->>  	set_page_private(page, 0);
-> So, this is right in the fast path of the page allocator.  It's a
-> one-time thing per 2M page, so it's not permanent.
-> 
-> *But* there's both a global spinlock and a firmware call hidden in
-> clear_page_offline().  That's *GOT* to hurt if you were, for instance,
-> running a benchmark while this code path is being tickled.  Not just to
-> 
-> That could be just downright catastrophic for scalability, albeit
-> temporarily.
 
-One more thing...
+> These boot blips are not the biggest issue in the world.  But, it is
+> fully under the guest's control and I think the guest has some
+> responsibility to provide *some* mitigation for it.
 
-How long are these calls?  You have to make at least 512 calls into the
-SEAM module.  Assuming they're syscall-ish, so ~1,000 cycles each,
-that's ~500,000 cycles, even if we ignore the actual time it takes to
-zero that 2MB worth of memory and all other overhead within the SEAM module.
+It sounds more like an exercise in preliminary optimization at this 
+point. If it's a real problem we can still worry about it later.
 
-So, we're sitting on one CPU with interrupts off, blocking all the other
-CPUs from doing page allocation in this zone.  Then, we're holding a
-global lock which prevents any other NUMA nodes from accepting pages.
-If the other node happens to *try* to do an accept, it will sit with its
-zone lock held waiting for this one.
 
-Maybe nobody will ever notice.  But, it seems like an awfully big risk
-to me.  I'd at least *try* do these calls outside of the zone lock.
-Then the collateral damage will at least be limited to things doing
-accepts rather than all zone->lock users.
+> 1. Do background acceptance, as opposed to relying 100% on demand-driven
+>     acceptance.  Guarantees a limited window in which blips can occur.
 
-Couldn't we delay the acceptance to, say the place where we've dropped
-the zone->lock and do the __GFP_ZERO memset() like at prep_new_page()?
-Or is there some concern that the page has been split at that point?
+Like Kirill wrote this was abandoned because it always allocates all 
+memory on the host even if the guest doesn't need it.
 
-I guess that makes it more complicated because you might have a 4k page
-but you need to go accept a 2M page.  You might end up having to check
-the bitmap 511 more times because you might see 511 more PageOffline()
-pages come through.
 
-You shouldn't even need the bitmap lock to read since it's a one-way
-trip from unaccepted->accepted.
+> 2. Do acceptance based on user input, like from sysfs.
+
+You can easily do that by running "memhog" at boot. No need for anything 
+in the kernel.
+
+BTW I believe this is also configurable at the guest BIOS level.
+
+> 3. Add a command-line argument to accept everything up front, or at
+>     least before userspace runs.
+
+Same.
+
+
+> 4. Add some statistic for how much unaccepted memory remains.
+
+Yes that makes sense. We should have statistic counters for all of this.
+
+Also I agree with your suggestion that we should get the slow path out 
+of the zone locks/interrupt disable region. That should be easy enough 
+and is an obvious improvement.
+
+-Andi
+
