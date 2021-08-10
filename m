@@ -1,45 +1,45 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFAC2FB7
-	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 06:26:26 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id x27so16605444lfu.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD022FBF
+	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 06:26:27 +0000 (UTC)
+Received: by mail-lf1-f49.google.com with SMTP id x8so39340400lfe.3
         for <linux-coco@lists.linux.dev>; Mon, 09 Aug 2021 23:26:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=yhM9rzQZh1hFlmIsdV4JGrfhMhv28jDR+Y6mMaIyOd4=;
-        b=iI6obK6IDsJ5WRxV6OM1M/tAx2RUXXdpWjOOljATFp3gKmjcJd16cMca3CRczpVk90
-         vdUUedOazrl3bkG2F0IfOJ6AItLxNYJwCF1n4JKF50+TflcgrRKXqnKIm/J/THTyieZr
-         KsM8HcwID/NK5sqFV1M5hQPxhiER2JGcI0YABCRIa4iVTkIyyqaNxusuU50potUPb3Oi
-         PUB+8f9Ij8rl+y/qgnVCYh7HdM2F7I53V4Dh1DLgERtHiB2qPWoUfEd0GCbBsUCX6DAg
-         /nKOFs0c2RkzNtTU4ew3Npu0B4ABZRqH7MBpxW8V+hsglvKIqewABkD2rTgSDih6C3Up
-         n1uA==
+        bh=wBfWTIHuoUkiwmizGdYmrNr5TmKY7E7Jf9eiL0J7uVk=;
+        b=0h4kwTTU9bgsr5+7M2dbKNl6HdsvupLgIPjYSGLs6f8fz3APWo6zJSPPWqNXW4N/Li
+         UunV42SnRXg/QfbOe6YhRwV3FHVUGTQLs/9luwBZqG1bEgUsxo7c8tHkZ+XQFDIuTpU/
+         dE60LpbSxBQE68n6v6KGu9eg0zHbWg3jw9ysv+LSIJuLieR4bO4yps2uMY/2h7Q1vR2P
+         q/QdcwI+rjdhzncpWhT1oKNYF68WnvwozDBbb0/dok1B+62Pzyuw46SN/Dp7slhPoMUW
+         fd/rPnR6ZCWvPlxEXkK6rmZqS/R7ooKaJrHFi/MtCXKJLO9zPFiKSaryFrn4KeSfJFd0
+         VQ5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=yhM9rzQZh1hFlmIsdV4JGrfhMhv28jDR+Y6mMaIyOd4=;
-        b=aTyNXB0GbhBO6FeOf8pRurcG2ky7FEeFwSKby3HosMgKSP6Wt9GQOSgVdTNppORh99
-         Yr8Bsr0lf5asuZ0adI9VxbR/W1gAyjb2x4xz/jrQEaaLvOuC5F+4gTn9p0S+iK+pGOjn
-         oc92EhX9uZYKQP0iWZGTO7WCPXDi+EvFiDXvfvxTlCsb7NT2N10/SeYe/KpsMGiXGT0o
-         4SrmePZ/pNHSl8gWcA4ZM/a6aJbbAKf8IMGl6gXTIILc5qPbpchIlUHxkLwEgWZD3Ker
-         fSzO8//qJsrecOY/ubbSJmDHb28dvEav3fxhDnc2tCAzcqTB6+u4YUTfsTyRexChW2f4
-         D4lQ==
-X-Gm-Message-State: AOAM530S/NEN1cPrj/zYPYzdBbLTJA2D0KwnTBySQD0fa0YYtSmV1o36
-	jhcp9xBmB1UfNrtWo9/ijMozeA==
-X-Google-Smtp-Source: ABdhPJywOJGNlI7IqnnlU0lsO+YPTdIUQE6GK58teoRywSZHJeH0Ifngw9u6S0AYbWyYjWXtNj2VvA==
-X-Received: by 2002:a05:6512:e86:: with SMTP id bi6mr21473291lfb.592.1628576784944;
-        Mon, 09 Aug 2021 23:26:24 -0700 (PDT)
+        bh=wBfWTIHuoUkiwmizGdYmrNr5TmKY7E7Jf9eiL0J7uVk=;
+        b=nGU1oAxa9bHudUqu2X3zUAD9Rg8MZkuMXq+UmIpCklc6eZSTYE8aSY7RQj+ws8YG/s
+         IIXu8Avr1FquYfM67nyXVxcuuW11mVGHZ2RQuGHivcMUdpq3kxPl0LTPzhRoBK2ci3U7
+         e2Vces1NhjCofyMnPhg2/YPn7/7NDa9q+eDmINLkppg7tgzB2UkPRup5OASKB5Nlf35G
+         InuWvmmudZm6ci5xzz15Y+QCuH7ZSYnBS4ux6Af4sEYryk2NO9mk4Ek1kCxvH0sRE8E7
+         nnrdgI6fD0RMnSv6afMYbBZ/pzb6Obg0UbPvAGR5O0U6S4czWxFHK36tNIZdPnAgoTXQ
+         IMFA==
+X-Gm-Message-State: AOAM533c/uArZnuf34di+OsuifpJ6XroJYAU6QJfIdVROoYJae6c+JpT
+	dXQR7XAFXIgDwK6CklSC8TD2ww==
+X-Google-Smtp-Source: ABdhPJwRONZllplmQufLj5RnClnVIfE2Nmqatiq9pV28+ucprKnq9Or8NIypwNI4s9sGELeie9B4GA==
+X-Received: by 2002:ac2:443a:: with SMTP id w26mr3042148lfl.537.1628576785236;
+        Mon, 09 Aug 2021 23:26:25 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id w27sm264085lfa.308.2021.08.09.23.26.22
+        by smtp.gmail.com with ESMTPSA id m13sm1948755lfu.5.2021.08.09.23.26.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 09 Aug 2021 23:26:22 -0700 (PDT)
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Received: by box.localdomain (Postfix, from userid 1000)
-	id A60D9102BDA; Tue, 10 Aug 2021 09:26:34 +0300 (+03)
+	id AECA5102BDB; Tue, 10 Aug 2021 09:26:34 +0300 (+03)
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
@@ -61,9 +61,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 3/5] x86/boot/compressed: Handle unaccepted memory
-Date: Tue, 10 Aug 2021 09:26:24 +0300
-Message-Id: <20210810062626.1012-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 4/5] x86/mm: Provide helpers for unaccepted memory
+Date: Tue, 10 Aug 2021 09:26:25 +0300
+Message-Id: <20210810062626.1012-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
@@ -75,184 +75,171 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Firmware is responsible for accepting memory where compressed kernel
-image and initrd land. But kernel has to accept memory for decompression
-buffer: accept memory just before decompression starts
+Core-mm requires few helpers to support unaccepted memory:
 
-KASLR allowed to use unaccepted memory for output buffer.
+ - accept_memory() checks the range of addresses against the bitmap and
+   accept memory if needed;
+
+ - maybe_set_page_offline() checks the bitmap and marks a page with
+   PageOffline() if memory acceptance is required on the first
+   allocation of the page.
+
+ - clear_page_offline() accepts memory for the page and clears
+   PageOffline().
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/boot/compressed/bitmap.c            | 62 ++++++++++++++++++++
- arch/x86/boot/compressed/kaslr.c             | 14 ++++-
- arch/x86/boot/compressed/misc.c              |  9 +++
- arch/x86/boot/compressed/unaccepted_memory.c | 13 ++++
- arch/x86/include/asm/unaccepted_memory.h     |  2 +
- 5 files changed, 98 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/unaccepted_memory.c |  3 +-
+ arch/x86/include/asm/page.h                  |  5 ++
+ arch/x86/include/asm/unaccepted_memory.h     |  3 +
+ arch/x86/mm/Makefile                         |  2 +
+ arch/x86/mm/unaccepted_memory.c              | 80 ++++++++++++++++++++
+ 5 files changed, 91 insertions(+), 2 deletions(-)
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
 
-diff --git a/arch/x86/boot/compressed/bitmap.c b/arch/x86/boot/compressed/bitmap.c
-index bf58b259380a..ba2de61c0823 100644
---- a/arch/x86/boot/compressed/bitmap.c
-+++ b/arch/x86/boot/compressed/bitmap.c
-@@ -2,6 +2,48 @@
- /* Taken from lib/string.c */
- 
- #include <linux/bitmap.h>
-+#include <linux/math.h>
-+#include <linux/minmax.h>
-+
-+unsigned long _find_next_bit(const unsigned long *addr1,
-+		const unsigned long *addr2, unsigned long nbits,
-+		unsigned long start, unsigned long invert, unsigned long le)
-+{
-+	unsigned long tmp, mask;
-+
-+	if (unlikely(start >= nbits))
-+		return nbits;
-+
-+	tmp = addr1[start / BITS_PER_LONG];
-+	if (addr2)
-+		tmp &= addr2[start / BITS_PER_LONG];
-+	tmp ^= invert;
-+
-+	/* Handle 1st word. */
-+	mask = BITMAP_FIRST_WORD_MASK(start);
-+	if (le)
-+		mask = swab(mask);
-+
-+	tmp &= mask;
-+
-+	start = round_down(start, BITS_PER_LONG);
-+
-+	while (!tmp) {
-+		start += BITS_PER_LONG;
-+		if (start >= nbits)
-+			return nbits;
-+
-+		tmp = addr1[start / BITS_PER_LONG];
-+		if (addr2)
-+			tmp &= addr2[start / BITS_PER_LONG];
-+		tmp ^= invert;
-+	}
-+
-+	if (le)
-+		tmp = swab(tmp);
-+
-+	return min(start + __ffs(tmp), nbits);
-+}
- 
- void __bitmap_set(unsigned long *map, unsigned int start, int len)
- {
-@@ -22,3 +64,23 @@ void __bitmap_set(unsigned long *map, unsigned int start, int len)
- 		*p |= mask_to_set;
- 	}
- }
-+
-+void __bitmap_clear(unsigned long *map, unsigned int start, int len)
-+{
-+	unsigned long *p = map + BIT_WORD(start);
-+	const unsigned int size = start + len;
-+	int bits_to_clear = BITS_PER_LONG - (start % BITS_PER_LONG);
-+	unsigned long mask_to_clear = BITMAP_FIRST_WORD_MASK(start);
-+
-+	while (len - bits_to_clear >= 0) {
-+		*p &= ~mask_to_clear;
-+		len -= bits_to_clear;
-+		bits_to_clear = BITS_PER_LONG;
-+		mask_to_clear = ~0UL;
-+		p++;
-+	}
-+	if (len) {
-+		mask_to_clear &= BITMAP_LAST_WORD_MASK(size);
-+		*p &= ~mask_to_clear;
-+	}
-+}
-diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index e36690778497..89cdc17dcbf1 100644
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -729,10 +729,20 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
- 		 * but in practice there's firmware where using that memory leads
- 		 * to crashes.
- 		 *
--		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
-+		 * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if
-+		 * supported) are guaranteed to be free.
- 		 */
--		if (md->type != EFI_CONVENTIONAL_MEMORY)
-+
-+		switch (md->type) {
-+		case EFI_CONVENTIONAL_MEMORY:
-+			break;
-+		case EFI_UNACCEPTED_MEMORY:
-+			if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-+				break;
- 			continue;
-+		default:
-+			continue;
-+		}
- 
- 		if (efi_soft_reserve_enabled() &&
- 		    (md->attribute & EFI_MEMORY_SP))
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 743f13ea25c1..eeefcde8394d 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -18,6 +18,7 @@
- #include "../string.h"
- #include "../voffset.h"
- #include <asm/bootparam_utils.h>
-+#include <asm/unaccepted_memory.h>
- 
- /*
-  * WARNING!!
-@@ -435,6 +436,14 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- #endif
- 
- 	debug_putstr("\nDecompressing Linux... ");
-+
-+	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
-+	    boot_params->unaccepted_memory) {
-+		debug_putstr("Accepting memory... ");
-+		accept_memory((phys_addr_t)output,
-+			      (phys_addr_t)output + needed_size);
-+	}
-+
- 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
- 			NULL, error);
- 	parse_elf(output);
 diff --git a/arch/x86/boot/compressed/unaccepted_memory.c b/arch/x86/boot/compressed/unaccepted_memory.c
-index c2eca85b5073..17b70627b0cd 100644
+index 17b70627b0cd..818d32169eef 100644
 --- a/arch/x86/boot/compressed/unaccepted_memory.c
 +++ b/arch/x86/boot/compressed/unaccepted_memory.c
-@@ -34,3 +34,16 @@ void mark_unaccepted(struct boot_params *params, u64 start, u64 num)
- 	bitmap_set((unsigned long *)params->unaccepted_memory,
- 		   start / PMD_SIZE, npages);
- }
+@@ -13,8 +13,7 @@ void mark_unaccepted(struct boot_params *params, u64 start, u64 num)
+ 	unsigned int npages;
+ 
+ 	if ((start & PMD_MASK) == (end & PMD_MASK)) {
+-		npages = (end - start) / PAGE_SIZE;
+-		__accept_memory(start, start + npages * PAGE_SIZE);
++		__accept_memory(start, end);
+ 		return;
+ 	}
+ 
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 4d5810c8fab7..1e56d76ca474 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -19,6 +19,11 @@
+ struct page;
+ 
+ #include <linux/range.h>
 +
-+void accept_memory(phys_addr_t start, phys_addr_t end)
++#ifdef CONFIG_UNACCEPTED_MEMORY
++#include <asm/unaccepted_memory.h>
++#endif
++
+ extern struct range pfn_mapped[];
+ extern int nr_pfn_mapped;
+ 
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index f1f835d3cd78..712128760131 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -6,9 +6,12 @@
+ #include <linux/types.h>
+ 
+ struct boot_params;
++struct page;
+ 
+ void mark_unaccepted(struct boot_params *params, u64 start, u64 num);
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end);
+ 
++void maybe_set_page_offline(struct page *page, unsigned int order);
++void clear_page_offline(struct page *page, unsigned int order);
+ #endif
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index b31cb52bf1bd..fe4e16322868 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -57,3 +57,5 @@ obj-$(CONFIG_X86_MEM_ENCRYPT_COMMON)	+= mem_encrypt_common.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_identity.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
++
++obj-$(CONFIG_UNACCEPTED_MEMORY)	+= unaccepted_memory.o
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+new file mode 100644
+index 000000000000..e11933f62ead
+--- /dev/null
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -0,0 +1,80 @@
++#include <linux/memblock.h>
++#include <linux/mm.h>
++#include <linux/pfn.h>
++#include <linux/spinlock.h>
++
++#include <asm/io.h>
++#include <asm/setup.h>
++#include <asm/unaccepted_memory.h>
++
++static DEFINE_SPINLOCK(unaccepted_memory_lock);
++
++#define PMD_ORDER (PMD_SHIFT - PAGE_SHIFT)
++
++static void __accept_memory(phys_addr_t start, phys_addr_t end)
 +{
 +	unsigned long *unaccepted_memory;
 +	unsigned int rs, re;
 +
-+	unaccepted_memory = (unsigned long *)boot_params->unaccepted_memory;
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
 +	bitmap_for_each_set_region(unaccepted_memory, rs, re,
-+				   start / PMD_SIZE, end / PMD_SIZE) {
-+		__accept_memory(rs * PMD_SIZE, re * PMD_SIZE);
++				   start / PMD_SIZE,
++				   DIV_ROUND_UP(end, PMD_SIZE)) {
++		/* Platform-specific memory-acceptance call goes here */
++		panic("Cannot accept memory");
 +		bitmap_clear(unaccepted_memory, rs, re - rs);
 +	}
 +}
-diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
-index cbc24040b853..f1f835d3cd78 100644
---- a/arch/x86/include/asm/unaccepted_memory.h
-+++ b/arch/x86/include/asm/unaccepted_memory.h
-@@ -9,4 +9,6 @@ struct boot_params;
- 
- void mark_unaccepted(struct boot_params *params, u64 start, u64 num);
- 
-+void accept_memory(phys_addr_t start, phys_addr_t end);
 +
- #endif
++void accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	if (!boot_params.unaccepted_memory)
++		return;
++
++	spin_lock(&unaccepted_memory_lock);
++	__accept_memory(start, end);
++	spin_unlock(&unaccepted_memory_lock);
++}
++
++void __init maybe_set_page_offline(struct page *page, unsigned int order)
++{
++	unsigned long *unaccepted_memory;
++	phys_addr_t addr = page_to_phys(page);
++	bool unaccepted = true;
++	unsigned int i;
++
++	if (!boot_params.unaccepted_memory)
++		return;
++
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
++	spin_lock(&unaccepted_memory_lock);
++	if (order < PMD_ORDER) {
++		BUG_ON(test_bit(addr / PMD_SIZE, unaccepted_memory));
++		goto out;
++	}
++
++	for (i = 0; i < (1 << (order - PMD_ORDER)); i++) {
++		if (!test_bit(addr / PMD_SIZE + i, unaccepted_memory)) {
++			unaccepted = false;
++			break;
++		}
++	}
++
++	if (unaccepted)
++		__SetPageOffline(page);
++	else
++		__accept_memory(addr, addr + (PAGE_SIZE << order));
++out:
++	spin_unlock(&unaccepted_memory_lock);
++}
++
++void clear_page_offline(struct page *page, unsigned int order)
++{
++	phys_addr_t addr = page_to_phys(page);
++
++	/* PageOffline() page on a free list, but no unaccepted memory? Hm. */
++	WARN_ON_ONCE(!boot_params.unaccepted_memory);
++
++	accept_memory(addr, addr + (PAGE_SIZE << order));
++	__ClearPageOffline(page);
++}
 -- 
 2.31.1
 
