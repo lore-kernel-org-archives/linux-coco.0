@@ -1,23 +1,25 @@
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4793172
-	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 19:46:34 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="195246464"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF13529D6
+	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 20:51:01 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="213136614"
 X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="195246464"
+   d="scan'208";a="213136614"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 12:46:33 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 13:51:01 -0700
 X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="503247620"
+   d="scan'208";a="503261274"
 Received: from chdubay-mobl1.amr.corp.intel.com (HELO [10.212.234.193]) ([10.212.234.193])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 12:46:32 -0700
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 13:51:00 -0700
 Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
-To: Andi Kleen <ak@linux.intel.com>, "Kirill A. Shutemov"
- <kirill@shutemov.name>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>,
+From: Dave Hansen <dave.hansen@intel.com>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
  Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+Cc: Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
  David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
  Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
  <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
@@ -29,10 +31,6 @@ Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
  <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
  <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
- <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
- <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
- <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -76,8 +74,8 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
-Date: Tue, 10 Aug 2021 12:46:30 -0700
+Message-ID: <f7667988-4d6c-461e-901d-a6c3612b2f0f@intel.com>
+Date: Tue, 10 Aug 2021 13:50:57 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 Precedence: bulk
@@ -86,62 +84,58 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
+In-Reply-To: <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 
-On 8/10/21 12:23 PM, Andi Kleen wrote:
->> But, not everyone is going to agree with me.
+On 8/10/21 11:13 AM, Dave Hansen wrote:
+>> @@ -1001,6 +1004,9 @@ static inline void del_page_from_free_list(struct page *page, struct zone *zone,
+>>  	if (page_reported(page))
+>>  		__ClearPageReported(page);
+>>  
+>> +	if (PageOffline(page))
+>> +		clear_page_offline(page, order);
+>> +
+>>  	list_del(&page->lru);
+>>  	__ClearPageBuddy(page);
+>>  	set_page_private(page, 0);
+> So, this is right in the fast path of the page allocator.  It's a
+> one-time thing per 2M page, so it's not permanent.
 > 
-> Both the Intel TDX and the AMD SEV side independently came to opposite
-> conclusions. In general people care a lot about boot time of VM guests.
-
-I was also saying that getting to userspace fast is important to me.
-Almost everyone agrees there.
-
->> This also begs the question of how folks know when this "blip" is over.
->>   Do we have a counter for offline pages?  Is there any way to force page
->> acceptance?  Or, are we just stuck allocating a bunch of memory to warm
->> up the system?
->>
->> How do folks who care about these new blips avoid them?
+> *But* there's both a global spinlock and a firmware call hidden in
+> clear_page_offline().  That's *GOT* to hurt if you were, for instance,
+> running a benchmark while this code path is being tickled.  Not just to
 > 
-> It's not different than any other warmup. At warmup time you always have
-> lots of blips until the working set stabilizes. For example in
-> virtualization first touch of a new page is usually an EPT violation
-> handled to the host. Or in the native case you may need to do IO or free
-> memory. Everybody who based their critical latency percentiles around a
-> warming up process would be foolish, the picture would be completely
-> distorted.
-> 
-> So the basic operation is adding some overhead, but I don't think
-> anything is that unusual compared to the state of the art.
+> That could be just downright catastrophic for scalability, albeit
+> temporarily.
 
-Except that today, you can totally avoid the allocation latency (not
-sure about the EPT violation/fill latency) from things like QEMU's
--mem-prealloc.
+One more thing...
 
-> Now perhaps the locking might be a problem if the other operations all
-> run in parallel, causing unnecessary serialization If that's really a
-> problem I guess we can optimize later. I don't think there's anything
-> fundamental about the current locking.
+How long are these calls?  You have to make at least 512 calls into the
+SEAM module.  Assuming they're syscall-ish, so ~1,000 cycles each,
+that's ~500,000 cycles, even if we ignore the actual time it takes to
+zero that 2MB worth of memory and all other overhead within the SEAM module.
 
-These boot blips are not the biggest issue in the world.  But, it is
-fully under the guest's control and I think the guest has some
-responsibility to provide *some* mitigation for it.
+So, we're sitting on one CPU with interrupts off, blocking all the other
+CPUs from doing page allocation in this zone.  Then, we're holding a
+global lock which prevents any other NUMA nodes from accepting pages.
+If the other node happens to *try* to do an accept, it will sit with its
+zone lock held waiting for this one.
 
-1. Do background acceptance, as opposed to relying 100% on demand-driven
-   acceptance.  Guarantees a limited window in which blips can occur.
-2. Do acceptance based on user input, like from sysfs.
-3. Add a command-line argument to accept everything up front, or at
-   least before userspace runs.
-4. Add some statistic for how much unaccepted memory remains.
+Maybe nobody will ever notice.  But, it seems like an awfully big risk
+to me.  I'd at least *try* do these calls outside of the zone lock.
+Then the collateral damage will at least be limited to things doing
+accepts rather than all zone->lock users.
 
-I can think of at least four ways we could mitigate it.  A sysfs
-statistic file would probably take ~30 lines of code to loop over the
-bitmap.  A command-line option would probably be <10 lines of code to
-just short-circuit the bitmap and accept everything up front.  A file to
-force acceptance would probably be pretty quick too.
+Couldn't we delay the acceptance to, say the place where we've dropped
+the zone->lock and do the __GFP_ZERO memset() like at prep_new_page()?
+Or is there some concern that the page has been split at that point?
 
-Nothing there seem too onerous.
+I guess that makes it more complicated because you might have a 4k page
+but you need to go accept a 2M page.  You might end up having to check
+the bitmap 511 more times because you might see 511 more PageOffline()
+pages come through.
+
+You shouldn't even need the bitmap lock to read since it's a one-way
+trip from unaccepted->accepted.
