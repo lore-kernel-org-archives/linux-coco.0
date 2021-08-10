@@ -1,230 +1,173 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6906D0F
-	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 06:26:28 +0000 (UTC)
-Received: by mail-lj1-f169.google.com with SMTP id h11so12356738ljo.12
-        for <linux-coco@lists.linux.dev>; Mon, 09 Aug 2021 23:26:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=BWJUZP0dbskrNbtaJwK/Tbp+8mAAWASI6DAzHFq/lFg=;
-        b=aVjEJN6SQwrYycsPycBz2KNKkeTGZwuzwnHT1R1uplQFzzkx3iDN7NBneR19HXIwuF
-         NXIv8lWfs6zpG/K7Sux3uy9JSAPf3V7yVMRaZZZLrzrEHPvrJapDmNr3vVx2FOgj82De
-         rZe/gFeTDL/bZ2kqUJ067TKudI5KVLZJz9gKXoDS9TYMqIjIqWXgsmguHUYEsfndZeJK
-         JvbzHkO0CUCxjrS+0iXhg6+S5oFl8YWCh1zURsxV+nAHwhlfDyYkwLd/ZkilLCWXkunw
-         6NATuUgbbguSRL1DrDkg0ne2oRm459dbrn1hVjiOP3qDLvzeCpJq6Y1/2EQqTbh9iGtk
-         ySDA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E278E177
+	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 07:48:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1628581688;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qyiZQfgk3j2MX/M11JnnsZSFCKezwOSWW55OSmu9ncY=;
+	b=WZf8WkUuIjZIkJrVlXCuL7mkeR/J3GwD+1LVyeZMU6qogn1BB5J6XAv0ktL+IrI0aZwda8
+	h1/KfGnO6nLKCs7EyRR2uUsZFiC1FICxwlqnSJ8VTZcycmTZCYBDSX60mAnizXrjLboIHw
+	a+0KbZ8YxToz02tH/D36ydoR1GSKiiA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-343-CfeT-EhANeqMK7jmQ6qHLA-1; Tue, 10 Aug 2021 03:48:07 -0400
+X-MC-Unique: CfeT-EhANeqMK7jmQ6qHLA-1
+Received: by mail-wm1-f72.google.com with SMTP id c2-20020a7bc8420000b0290238db573ab7so725909wml.5
+        for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 00:48:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=BWJUZP0dbskrNbtaJwK/Tbp+8mAAWASI6DAzHFq/lFg=;
-        b=tr4PhdWgqk0b/45zrbG2yUVWu+nvgQuaWeaDvll8wDowh/7crHvK4lcH/y/bftR/Ef
-         thdjqJy7s/HAZWdb3/wEIunmCxNh0cmRMNJoCsaYwIbWp8IcIV7dsh4NSsy3mBOXi5hP
-         xZ4fl+9yDsZm8dLVBAgFgu3HH88HrWyu+qcH5+HMrVS6CUGrXVQ9VLdRzIuv8Slig28k
-         dTJe39U8f5hKl+mjGE2KCs+qio60pj6Pk0orVNuRrjg/ngnT93tLcCOhTCFdMdXb+2Y1
-         TCi/tBF9eP9JC3UDkDOghQwFoRSZdv61Z/cIZGguZsCxIm7gmwQNYGLlvpYed5EGNLMB
-         e28g==
-X-Gm-Message-State: AOAM533vtB5Cz17DxKmBM+uNx2ei9fN6F2Wx3l/X/Mq4y47/6lafbp3d
-	g7UaJg9qmkvJZ7NArUlwVCZzbQ==
-X-Google-Smtp-Source: ABdhPJxFXIZNu8BRH3d+/+nzJFBbH2eGlX5f7qfMtPHplWcg+ebB0Wn91QuSk/T4ncwIyHb4y7E2Tw==
-X-Received: by 2002:a2e:d1a:: with SMTP id 26mr18928460ljn.360.1628576786905;
-        Mon, 09 Aug 2021 23:26:26 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id u3sm1600860lfu.151.2021.08.09.23.26.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Aug 2021 23:26:26 -0700 (PDT)
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Received: by box.localdomain (Postfix, from userid 1000)
-	id B7058102BDC; Tue, 10 Aug 2021 09:26:34 +0300 (+03)
-To: Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>
+        h=x-gm-message-state:to:cc:references:from:organization:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=qyiZQfgk3j2MX/M11JnnsZSFCKezwOSWW55OSmu9ncY=;
+        b=nrxYh6ybrq5lE5xVUFWUcjVpH/fF4UuXKp7GrubiwbuoHdzRVcaBMLCCEJkegJpVvn
+         F7lAVPP2OwFFxXByMghdfMxKcXTZqFLjUibPB0Ri1QY5HF0fb+P0V117diPELiEe8gq9
+         JfWCq2t5K/+lfNaYVbpSaH6o2pWxWnIb12C8RSezVi1agAmugdOMZECsmKI0HhnLnUxv
+         rBRFkn6EhAUsTeVOJw1eZMxJNTqkwhTPiX2S1n5yYZ04RAHGqRxv7wNSDH42JC3bRKHn
+         o+QJRvc3w/W2DTS8+k80OZQ3x2XbWgXdF+oKrm0bssGii5qo3WaSl5ssjJ+jew/b+pqO
+         DQRw==
+X-Gm-Message-State: AOAM530wo7mbWLSR8HPRD0J0l5SSqI46zJgibCEpf/oi6gWEaLYzgrtR
+	nYdB0LVP4EpZOtQ02xGt5xy80H/3iBMvzwVBXY8Qo1Br9aoYDv6fda5u/f0aPnURTiXKNkT+6Sn
+	EdgyXm/cJbOOfGKZxF0Ma/Q==
+X-Received: by 2002:a1c:3847:: with SMTP id f68mr118830wma.27.1628581686198;
+        Tue, 10 Aug 2021 00:48:06 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx3nGwLd7fpNoXzdy/z33L+jLJPlF/DBsrza1eqzfBVIcellVymHPn+c/mpsbj+CQSbYYkvpg==
+X-Received: by 2002:a1c:3847:: with SMTP id f68mr118784wma.27.1628581685855;
+        Tue, 10 Aug 2021 00:48:05 -0700 (PDT)
+Received: from ?IPv6:2003:d8:2f0a:7f00:fad7:3bc9:69d:31f? (p200300d82f0a7f00fad73bc9069d031f.dip0.t-ipconnect.de. [2003:d8:2f0a:7f00:fad7:3bc9:69d:31f])
+        by smtp.gmail.com with ESMTPSA id e11sm2137939wrm.80.2021.08.10.00.48.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Aug 2021 00:48:05 -0700 (PDT)
+To: "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>
 Cc: Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 5/5] x86/tdx: Unaccepted memory support
-Date: Tue, 10 Aug 2021 09:26:26 +0300
-Message-Id: <20210810062626.1012-6-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
+ x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
+ <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
+Message-ID: <dd4b7aff-ccf3-24f6-3f6e-14c4b6aa8b64@redhat.com>
+Date: Tue, 10 Aug 2021 09:48:04 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 
-All preparation is complete. Hookup TDX-specific code to accept memory.
+On 10.08.21 08:26, Kirill A. Shutemov wrote:
+> UEFI Specification version 2.9 introduces concept of memory acceptance:
+> Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
+> requiring memory to be accepted before it can be used by the guest.
+> Accepting happens via a protocol specific for the Virtrual Machine
+> platform.
+> 
+> Accepting memory is costly and it makes VMM allocate memory for the
+> accepted guest physical address range. It's better to postpone memory
+> acceptation until memory is needed. It lowers boot time and reduces
+> memory overhead.
+> 
+> Support of such memory requires few changes in core-mm code:
+> 
+>    - memblock has to accept memory on allocation;
+> 
+>    - page allocator has to accept memory on the first allocation of the
+>      page;
+> 
+> Memblock change is trivial.
+> 
+> Page allocator is modified to accept pages on the first allocation.
+> PageOffline() is used to indicate that the page requires acceptance.
+> The flag currently used by hotplug and balloon. Such pages are not
+> available to page allocator.
+> 
+> An architecture has to provide three helpers if it wants to support
+> unaccepted memory:
+> 
+>   - accept_memory() makes a range of physical addresses accepted.
+> 
+>   - maybe_set_page_offline() marks a page PageOffline() if it requires
+>     acceptance. Used during boot to put pages on free lists.
+> 
+>   - clear_page_offline() clears makes a page accepted and clears
+>     PageOffline().
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>   mm/internal.h   | 14 ++++++++++++++
+>   mm/memblock.c   |  1 +
+>   mm/page_alloc.c | 13 ++++++++++++-
+>   3 files changed, 27 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 31ff935b2547..d2fc8a17fbe0 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -662,4 +662,18 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
+>   int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
+>   		      unsigned long addr, int page_nid, int *flags);
+>   
+> +#ifndef CONFIG_UNACCEPTED_MEMORY
+> +static inline void maybe_set_page_offline(struct page *page, unsigned int order)
+> +{
+> +}
+> +
+> +static inline void clear_page_offline(struct page *page, unsigned int order)
+> +{
+> +}
+> +
+> +static inline void accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +}
 
-There are two tdg_accept_memory() implementations: one in main kernel
-and one in the decompresser.
+Can we find better fitting names for the first two? The function names 
+are way too generic. For example:
 
-The implementation in core kernel uses tdx_hcall_gpa_intent(). The
-helper is not available in the decompresser, self-contained
-implementation added there instead.
+accept_or_set_page_offline()
 
-Note that tdx_hcall_gpa_intent() is going to be more complex once we
-teach it to accept in 1G and 2M chunks.
+accept_and_clear_page_offline()
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/Kconfig                             |  1 +
- arch/x86/boot/compressed/tdx.c               | 29 ++++++++++++++++++++
- arch/x86/boot/compressed/unaccepted_memory.c |  5 +++-
- arch/x86/include/asm/tdx.h                   |  2 ++
- arch/x86/kernel/tdx.c                        |  8 ++++++
- arch/x86/mm/unaccepted_memory.c              |  6 +++-
- 6 files changed, 49 insertions(+), 2 deletions(-)
+I thought for a second if
+	PAGE_TYPE_OPS(Unaccepted, offline)
+makes sense as well, not sure.
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index c0261cc72449..5b1b3dc84c7d 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -874,6 +874,7 @@ config INTEL_TDX_GUEST
- 	select ARCH_HAS_PROTECTED_GUEST
- 	select X86_MEM_ENCRYPT_COMMON
- 	select ARCH_HAS_RESTRICTED_VIRTIO_MEMORY_ACCESS
-+	select UNACCEPTED_MEMORY
- 	help
- 	  Provide support for running in a trusted domain on Intel processors
- 	  equipped with Trusted Domain eXtensions. TDX is a new Intel
-diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-index 88ed6465405b..6f13bdaf327f 100644
---- a/arch/x86/boot/compressed/tdx.c
-+++ b/arch/x86/boot/compressed/tdx.c
-@@ -5,6 +5,10 @@
- 
- #include "../cpuflags.h"
- #include "../string.h"
-+#include "error.h"
-+
-+#include <asm/page_types.h>
-+#include <asm/tdx.h>
- 
- #define TDX_CPUID_LEAF_ID                       0x21
- 
-@@ -32,3 +36,28 @@ bool early_is_tdx_guest(void)
- 
- 	return !!tdx_guest;
- }
-+
-+#define TDACCEPTPAGE		6
-+#define TDVMCALL_MAP_GPA	0x10001
-+
-+void tdg_accept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+	struct tdx_hypercall_output outl = {0};
-+	int i;
-+
-+	if (__tdx_hypercall(TDX_HYPERCALL_STANDARD, TDVMCALL_MAP_GPA,
-+			    start, end, 0, 0, &outl)) {
-+		error("Cannot accept memory: MapGPA failed\n");
-+	}
-+
-+	/*
-+	 * For shared->private conversion, accept the page using TDACCEPTPAGE
-+	 * TDX module call.
-+	 */
-+	for (i = 0; i < (end - start) / PAGE_SIZE; i++) {
-+		if (__tdx_module_call(TDACCEPTPAGE, start + i * PAGE_SIZE,
-+				      0, 0, 0, NULL)) {
-+			error("Cannot accept memory: page accept failed\n");
-+		}
-+	}
-+}
-diff --git a/arch/x86/boot/compressed/unaccepted_memory.c b/arch/x86/boot/compressed/unaccepted_memory.c
-index 818d32169eef..146a3a6968a8 100644
---- a/arch/x86/boot/compressed/unaccepted_memory.c
-+++ b/arch/x86/boot/compressed/unaccepted_memory.c
-@@ -4,7 +4,10 @@
- static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
- {
- 	/* Platform-specific memory-acceptance call goes here */
--	error("Cannot accept memory");
-+	if (early_is_tdx_guest())
-+		tdg_accept_memory(start, end);
-+	else
-+		error("Cannot accept memory");
- }
- 
- void mark_unaccepted(struct boot_params *params, u64 start, u64 num)
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index af6e4cd8078d..f74b6cfde205 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -97,6 +97,8 @@ extern phys_addr_t tdg_shared_mask(void);
- extern int tdx_hcall_gpa_intent(phys_addr_t gpa, int numpages,
- 				enum tdx_map_type map_type);
- 
-+extern void tdg_accept_memory(phys_addr_t start, phys_addr_t end);
-+
- int tdx_mcall_tdreport(u64 data, u64 reportdata);
- 
- int tdx_mcall_rtmr_extend(u64 data, u64 rmtr);
-diff --git a/arch/x86/kernel/tdx.c b/arch/x86/kernel/tdx.c
-index dc6d9441f3be..75f3804f86da 100644
---- a/arch/x86/kernel/tdx.c
-+++ b/arch/x86/kernel/tdx.c
-@@ -372,6 +372,14 @@ int tdx_hcall_gpa_intent(phys_addr_t gpa, int numpages,
- 	return 0;
- }
- 
-+void tdg_accept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+	if (tdx_hcall_gpa_intent(start, (end - start) / PAGE_SIZE,
-+				 TDX_MAP_PRIVATE)) {
-+		panic("Accepting memory failed\n");
-+	}
-+}
-+
- static __cpuidle void tdg_halt(void)
- {
- 	u64 ret;
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index e11933f62ead..19e0309e128b 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -5,6 +5,7 @@
- 
- #include <asm/io.h>
- #include <asm/setup.h>
-+#include <asm/tdx.h>
- #include <asm/unaccepted_memory.h>
- 
- static DEFINE_SPINLOCK(unaccepted_memory_lock);
-@@ -21,7 +22,10 @@ static void __accept_memory(phys_addr_t start, phys_addr_t end)
- 				   start / PMD_SIZE,
- 				   DIV_ROUND_UP(end, PMD_SIZE)) {
- 		/* Platform-specific memory-acceptance call goes here */
--		panic("Cannot accept memory");
-+		if (prot_guest_has(PATTR_GUEST_TDX))
-+			tdg_accept_memory(rs * PMD_SIZE, re * PMD_SIZE);
-+		else
-+			panic("Cannot accept memory");
- 		bitmap_clear(unaccepted_memory, rs, re - rs);
- 	}
- }
+
+Also, please update the description of PageOffline in page-flags.h to 
+include the additional usage with PageBuddy set at the same time.
+
+
+I assume you don't have to worry about page_offline_freeze/thaw ... as 
+we only set PageOffline initially, but not later at runtime when other 
+subsystems (/proc/kcore) might stumble over it.
+
 -- 
-2.31.1
+Thanks,
+
+David / dhildenb
 
