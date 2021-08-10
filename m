@@ -1,189 +1,127 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A92572
-	for <linux-coco@lists.linux.dev>; Mon,  9 Aug 2021 20:16:29 +0000 (UTC)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 179Icr4g057538;
-	Mon, 9 Aug 2021 15:02:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=HpqaO3+MhiLePUDKJkioMaJjmHnxGYgpMvVEEt+qXKg=;
- b=PN2eVIZhPrmGoezSPvR6ROuitrF+cm/kjSXMTyVKr8vd9VZTwiLqlUDvLGCOtk5KZv1q
- G2csg3mna4iYaeqAXKBolGb/AmvHjIH+8stXTpHAyoDUO16nAtdvFkKpGsM9fWOTy61t
- wQxaNJee7y6PRnN2jhdGJ9xsxp5kNx/bkWoKNEROdzk6oUZ2wxbey1HWAtpLPePBbohr
- lrmWKEXj/ib7dKAlD4uPEiP9ayqo//uK0h1CIJ224KPVq6XTWeEzrKA+gWJIzOuRZugh
- DD7VoCO+tK2+jXrmSlSY4EMGgf2RFcO8brMut+MEqUSvR2oiFG/3gT0P0AysjZIP+YrJ 6g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3ab1j8fcwp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Aug 2021 15:02:05 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 179IhPRU084423;
-	Mon, 9 Aug 2021 15:02:05 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3ab1j8fcw2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Aug 2021 15:02:05 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 179Iv0jb012346;
-	Mon, 9 Aug 2021 19:02:03 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma04wdc.us.ibm.com with ESMTP id 3a9htb3wcw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Aug 2021 19:02:03 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 179J22eO42140026
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Aug 2021 19:02:02 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 31580112066;
-	Mon,  9 Aug 2021 19:02:02 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EBAD911206B;
-	Mon,  9 Aug 2021 19:02:01 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.2.130.16])
-	by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Aug 2021 19:02:01 +0000 (GMT)
-From: Dov Murik <dovmurik@linux.ibm.com>
-To: linux-efi@vger.kernel.org
-Cc: Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] Allow access to confidential computing secret area in SEV guests
-Date: Mon,  9 Aug 2021 19:01:54 +0000
-Message-Id: <20210809190157.279332-1-dovmurik@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 2_POTc4eDedfA_kbZXChZhodWJSIokXz
-X-Proofpoint-ORIG-GUID: B8rkwtUXUfE5w291her3XjbeAw70QWrD
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FB717F
+	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 06:26:25 +0000 (UTC)
+Received: by mail-lf1-f42.google.com with SMTP id w20so12645366lfu.7
+        for <linux-coco@lists.linux.dev>; Mon, 09 Aug 2021 23:26:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KJblD1y+qHn3wdjDCoDkUfQxp7E9z/k1WwnfUwfIYyM=;
+        b=WYP8kUAPCPad7gI6jY98V65Vgu7u4/0nE4cFaF3MnWAhh+uO5OikXIunOk5RNWWCkS
+         2L6VtL9haY/GqvhguHP/OSS0aEwBYpZBbwTv59KTSkIWXCAubBcnZv+Ls75+kPb7Hwdr
+         QFsD1CY6vuPvVsb34IIukZYV4wBtB8OTcY89cNj4qUQjXOv3Cr67D/BbNJNOcCdgw3jI
+         vUDVtu1E7ioVS7PDsYvp93akWuyAEw01sq0vGI5iAfR3lnitOOFNtmVwHjugdjbv8j2t
+         VqvUd/LaVckZJjeD2gl4nlS9FnV1DW56dAPD5t5rtIGQEDH4QrcqceouPgW1n3XS3B/+
+         ouPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KJblD1y+qHn3wdjDCoDkUfQxp7E9z/k1WwnfUwfIYyM=;
+        b=t5ZyoUJcVqBp3vx10YkKImy5RoPQKTdVZam7wqVKnqPnX9wOmREwWAL0HTLvUEdVWl
+         SuqeRkRJ+DZkRIuA5d5CQ5lATfZaCW3l/ycwwmNGGoLQcTtGE8Ykq8Q9kifdXqwVRCG7
+         Dw7sQvnDZ3rykYN2xodgQhQaK4R+oIfJrkNZNwXHbsNrPlFktddnaM16WsYSr2BvHoaI
+         YsFKOJMTosC29IEp3Dbg6u2J2PAADKSvprwi3LkLEZhXI7MjPzDOOmRgPZ+KZ65rOplN
+         GNGmwT0ZRQE6CLt/fo4rhr8U8WTgCbFlHBSuAg1eIQecDMxlE9b6Og5pjkR4fLqx3hN4
+         toAA==
+X-Gm-Message-State: AOAM531iJYcbz/+f5tPWDoRXRYhit/AAG1ln34a1USnJoIE1aFLXu3ZU
+	Qpbpg4BptpjtU4pFjKK+MKTIcQ==
+X-Google-Smtp-Source: ABdhPJwEfhyq1oDAPUD+NUvsniIszXrUrcqLIpaj8cWNmXevuFhB6Zr+WNuDP199OnFXqedrudhx9A==
+X-Received: by 2002:ac2:4472:: with SMTP id y18mr20677419lfl.137.1628576783588;
+        Mon, 09 Aug 2021 23:26:23 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id c9sm1957788lfr.46.2021.08.09.23.26.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Aug 2021 23:26:22 -0700 (PDT)
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+X-Google-Original-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 8BED5102BBF; Tue, 10 Aug 2021 09:26:34 +0300 (+03)
+To: Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>
+Cc: Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH 0/5] x86: Impplement support for unaccepted memory
+Date: Tue, 10 Aug 2021 09:26:21 +0300
+Message-Id: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-09_07:2021-08-06,2021-08-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 impostorscore=0 suspectscore=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0 mlxscore=0
- spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108090131
+Content-Transfer-Encoding: 8bit
 
-Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-Virtualization) allows guest owners to inject secrets into the VMs
-memory without the host/hypervisor being able to read them.  In SEV,
-secret injection is performed early in the VM launch process, before the
-guest starts running.
+UEFI Specification version 2.9 introduces concept of memory acceptance:
+Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
+requiring memory to be accepted before it can be used by the guest.
+Accepting happens via a protocol specific for the Virtrual Machine
+platform.
 
-OVMF already reserves designated area for secret injection (in its
-AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
-Sev Secret area using a configuration table" [1]), but the secrets were
-not available in the guest kernel.
+Accepting memory is costly and it makes VMM allocate memory for the
+accepted guest physical address range. We don't want to accept all memory
+upfront.
 
-The patch series copies the secrets from the EFI-provided memory to
-kernel reserved memory, and optionally exposes them to userspace via
-securityfs using a new sev_secret kernel module.
+The patchset implements on-demand memory acceptance for TDX.
 
-The first patch in efi/libstub copies the secret area from the EFI
-memory to specially allocated memory; the second patch reserves that
-memory block; and the third patch introduces the new sev_secret module
-that exposes the content of the secret entries as securityfs files, and
-allows clearing out secrets with a file unlink interface.
+Please, review. Any feedback is welcome.
 
-As a usage example, consider a guest performing computations on
-encrypted files.  The Guest Owner provides the decryption key (= secret)
-using the secret injection mechanism.  The guest application reads the
-secret from the sev_secret filesystem and proceeds to decrypt the files
-into memory and then performs the needed computations on the content.
+Kirill A. Shutemov (5):
+  mm: Add support for unaccepted memory
+  efi/x86: Implement support for unaccepted memory
+  x86/boot/compressed: Handle unaccepted memory
+  x86/mm: Provide helpers for unaccepted memory
+  x86/tdx: Unaccepted memory support
 
-In this example, the host can't read the files from the disk image
-because they are encrypted.  Host can't read the decryption key because
-it is passed using the secret injection mechanism (= secure channel).
-Host can't read the decrypted content from memory because it's a
-confidential (memory-encrypted) guest.
+ Documentation/x86/zero-page.rst              |  1 +
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/boot/compressed/Makefile            |  1 +
+ arch/x86/boot/compressed/bitmap.c            | 86 ++++++++++++++++++++
+ arch/x86/boot/compressed/kaslr.c             | 14 +++-
+ arch/x86/boot/compressed/misc.c              |  9 ++
+ arch/x86/boot/compressed/tdx.c               | 29 +++++++
+ arch/x86/boot/compressed/unaccepted_memory.c | 51 ++++++++++++
+ arch/x86/include/asm/page.h                  |  5 ++
+ arch/x86/include/asm/tdx.h                   |  2 +
+ arch/x86/include/asm/unaccepted_memory.h     | 17 ++++
+ arch/x86/include/uapi/asm/bootparam.h        |  3 +-
+ arch/x86/kernel/tdx.c                        |  8 ++
+ arch/x86/mm/Makefile                         |  2 +
+ arch/x86/mm/unaccepted_memory.c              | 84 +++++++++++++++++++
+ drivers/firmware/efi/Kconfig                 | 12 +++
+ drivers/firmware/efi/efi.c                   |  1 +
+ drivers/firmware/efi/libstub/x86-stub.c      | 75 ++++++++++++++---
+ include/linux/efi.h                          |  3 +-
+ mm/internal.h                                | 14 ++++
+ mm/memblock.c                                |  1 +
+ mm/page_alloc.c                              | 13 ++-
+ 22 files changed, 414 insertions(+), 18 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/bitmap.c
+ create mode 100644 arch/x86/boot/compressed/unaccepted_memory.c
+ create mode 100644 arch/x86/include/asm/unaccepted_memory.h
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
 
-This has been tested with AMD SEV guests, but the kernel side of
-handling the secret area has no SEV-specific dependencies, and therefore
-might be usable (perhaps with minor changes) for any confidential
-computing hardware that can publish the secret area via the standard EFI
-config table entry.
-
-Here is a simple example for usage of the sev_secret module in a guest
-to which a secret are with 4 secrets was injected during launch:
-
-# modprobe sev_secret
-# ls -la /sys/kernel/security/coco/sev_secret
-total 0
-drwxr-xr-x 2 root root 0 Jun 28 11:54 .
-drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
--r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
--r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
--r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
--r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
-
-# xxd /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-00000000: 7468 6573 652d 6172 652d 7468 652d 6b61  these-are-the-ka
-00000010: 7461 2d73 6563 7265 7473 0001 0203 0405  ta-secrets......
-00000020: 0607                                     ..
-
-# rm /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-
-# ls -la /sys/kernel/security/coco/sev_secret
-total 0
-drwxr-xr-x 2 root root 0 Jun 28 11:55 .
-drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
--r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
--r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
--r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
-
-
-Previously sent as an RFC series [2].
-
-[1] https://github.com/tianocore/edk2/commit/01726b6d23d4
-[2] https://lore.kernel.org/linux-coco/20210628183431.953934-1-dovmurik@linux.ibm.com/
-
-
-Dov Murik (3):
-  efi/libstub: Copy confidential computing secret area
-  efi: Reserve confidential computing secret area
-  virt: Add sev_secret module to expose confidential computing secrets
-
- arch/x86/platform/efi/efi.c               |   1 +
- drivers/firmware/efi/Makefile             |   2 +-
- drivers/firmware/efi/coco.c               |  41 +++
- drivers/firmware/efi/efi.c                |   3 +
- drivers/firmware/efi/libstub/Makefile     |   2 +-
- drivers/firmware/efi/libstub/coco.c       |  68 +++++
- drivers/firmware/efi/libstub/efi-stub.c   |   2 +
- drivers/firmware/efi/libstub/efistub.h    |   2 +
- drivers/firmware/efi/libstub/x86-stub.c   |   2 +
- drivers/virt/Kconfig                      |   3 +
- drivers/virt/Makefile                     |   1 +
- drivers/virt/coco/sev_secret/Kconfig      |  11 +
- drivers/virt/coco/sev_secret/Makefile     |   2 +
- drivers/virt/coco/sev_secret/sev_secret.c | 313 ++++++++++++++++++++++
- include/linux/efi.h                       |   9 +
- 15 files changed, 460 insertions(+), 2 deletions(-)
- create mode 100644 drivers/firmware/efi/coco.c
- create mode 100644 drivers/firmware/efi/libstub/coco.c
- create mode 100644 drivers/virt/coco/sev_secret/Kconfig
- create mode 100644 drivers/virt/coco/sev_secret/Makefile
- create mode 100644 drivers/virt/coco/sev_secret/sev_secret.c
-
-
-base-commit: 36a21d51725af2ce0700c6ebcb6b9594aac658a6
 -- 
-2.25.1
+2.31.1
 
