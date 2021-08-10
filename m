@@ -1,23 +1,23 @@
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E3177
-	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 15:04:04 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="236932209"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6DD29CA
+	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 15:16:26 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="236936471"
 X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="236932209"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 08:02:49 -0700
+   d="scan'208";a="236936471"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 08:16:25 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="671795060"
+   d="scan'208";a="469054407"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga006.fm.intel.com with ESMTP; 10 Aug 2021 08:02:43 -0700
+  by orsmga008.jf.intel.com with ESMTP; 10 Aug 2021 08:16:15 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 84889142; Tue, 10 Aug 2021 18:02:16 +0300 (EEST)
-Date: Tue, 10 Aug 2021 18:02:16 +0300
+	id 03C38142; Tue, 10 Aug 2021 18:15:48 +0300 (EEST)
+Date: Tue, 10 Aug 2021 18:15:48 +0300
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: David Hildenbrand <david@redhat.com>
+To: Dave Hansen <dave.hansen@intel.com>
 Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
 	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
@@ -34,11 +34,10 @@ Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
 	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
-Message-ID: <20210810150216.dwn2rylcpzxx6b6l@black.fi.intel.com>
+Subject: Re: [PATCH 0/5] x86: Impplement support for unaccepted memory
+Message-ID: <20210810151548.4exag5uj73bummsr@black.fi.intel.com>
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
- <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
- <dd4b7aff-ccf3-24f6-3f6e-14c4b6aa8b64@redhat.com>
+ <4b80289a-07a4-bf92-9946-b0a8afb27326@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -47,10 +46,10 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dd4b7aff-ccf3-24f6-3f6e-14c4b6aa8b64@redhat.com>
+In-Reply-To: <4b80289a-07a4-bf92-9946-b0a8afb27326@intel.com>
 
-On Tue, Aug 10, 2021 at 09:48:04AM +0200, David Hildenbrand wrote:
-> On 10.08.21 08:26, Kirill A. Shutemov wrote:
+On Tue, Aug 10, 2021 at 07:08:58AM -0700, Dave Hansen wrote:
+> On 8/9/21 11:26 PM, Kirill A. Shutemov wrote:
 > > UEFI Specification version 2.9 introduces concept of memory acceptance:
 > > Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
 > > requiring memory to be accepted before it can be used by the guest.
@@ -58,88 +57,40 @@ On Tue, Aug 10, 2021 at 09:48:04AM +0200, David Hildenbrand wrote:
 > > platform.
 > > 
 > > Accepting memory is costly and it makes VMM allocate memory for the
-> > accepted guest physical address range. It's better to postpone memory
-> > acceptation until memory is needed. It lowers boot time and reduces
-> > memory overhead.
-> > 
-> > Support of such memory requires few changes in core-mm code:
-> > 
-> >    - memblock has to accept memory on allocation;
-> > 
-> >    - page allocator has to accept memory on the first allocation of the
-> >      page;
-> > 
-> > Memblock change is trivial.
-> > 
-> > Page allocator is modified to accept pages on the first allocation.
-> > PageOffline() is used to indicate that the page requires acceptance.
-> > The flag currently used by hotplug and balloon. Such pages are not
-> > available to page allocator.
-> > 
-> > An architecture has to provide three helpers if it wants to support
-> > unaccepted memory:
-> > 
-> >   - accept_memory() makes a range of physical addresses accepted.
-> > 
-> >   - maybe_set_page_offline() marks a page PageOffline() if it requires
-> >     acceptance. Used during boot to put pages on free lists.
-> > 
-> >   - clear_page_offline() clears makes a page accepted and clears
-> >     PageOffline().
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >   mm/internal.h   | 14 ++++++++++++++
-> >   mm/memblock.c   |  1 +
-> >   mm/page_alloc.c | 13 ++++++++++++-
-> >   3 files changed, 27 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 31ff935b2547..d2fc8a17fbe0 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -662,4 +662,18 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
-> >   int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
-> >   		      unsigned long addr, int page_nid, int *flags);
-> > +#ifndef CONFIG_UNACCEPTED_MEMORY
-> > +static inline void maybe_set_page_offline(struct page *page, unsigned int order)
-> > +{
-> > +}
-> > +
-> > +static inline void clear_page_offline(struct page *page, unsigned int order)
-> > +{
-> > +}
-> > +
-> > +static inline void accept_memory(phys_addr_t start, phys_addr_t end)
-> > +{
-> > +}
+> > accepted guest physical address range. We don't want to accept all memory
+> > upfront.
 > 
-> Can we find better fitting names for the first two? The function names are
-> way too generic. For example:
+> This could use a bit more explanation.  Any VM is likely to *eventually*
+> touch all its memory, so it's not like a VMM has a long-term advantage
+> by delaying this.
 > 
-> accept_or_set_page_offline()
-> 
-> accept_and_clear_page_offline()
+> So, it must have to do with resource use at boot.  Is this to help boot
+> times?
 
-Sounds good.
+Yes, boot time is main motivation.
 
-> I thought for a second if
-> 	PAGE_TYPE_OPS(Unaccepted, offline)
-> makes sense as well, not sure.
+But I'm going also to look at long-term VM behaviour with the fixed memory
+footprint. I think if a workload allocate/free memory within the same
+amount we can keep memory beyond the size unaccepted. Few tweaks likely
+will be required such as disabling page shuffling on free to keep
+unaccepted memory at the tail of free list. More investigation needed.
 
-I find Offline fitting the situation. Don't see a reason to add more
-terminology here.
+> I had expected this series, but I also expected it to be connected to
+> CONFIG_DEFERRED_STRUCT_PAGE_INIT somehow.  Could you explain a bit how
+> this problem is different and demands a totally orthogonal solution?
+>
+> For instance, what prevents us from declaring: "Memory is accepted at
+> the time that its 'struct page' is initialized" ?  Then, we use all the
+> infrastructure we already have for DEFERRED_STRUCT_PAGE_INIT.
 
-> Also, please update the description of PageOffline in page-flags.h to
-> include the additional usage with PageBuddy set at the same time.
+That was my first thought too and I tried it just to realize that it is
+not what we want. If we would accept page on page struct init it means we
+would make host allocate all memory assigned to the guest on boot even if
+guest actually use small portion of it.
 
-Okay.
-
-> I assume you don't have to worry about page_offline_freeze/thaw ... as we
-> only set PageOffline initially, but not later at runtime when other
-> subsystems (/proc/kcore) might stumble over it.
-
-I think so, but I would need to look at this code once again.
+Also deferred page init only allows to scale memory accept across multiple
+CPUs, but doesn't allow to get to userspace before we done with it. See
+wait_for_completion(&pgdat_init_all_done_comp).
 
 -- 
  Kirill A. Shutemov
