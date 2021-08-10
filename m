@@ -1,90 +1,93 @@
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543A717F
-	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 21:20:15 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10072"; a="195263193"
-X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="195263193"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 14:20:10 -0700
-X-IronPort-AV: E=Sophos;i="5.84,310,1620716400"; 
-   d="scan'208";a="515987352"
-Received: from akleen-mobl1.amr.corp.intel.com (HELO [10.209.69.62]) ([10.209.69.62])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2021 14:20:09 -0700
-Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
-To: Dave Hansen <dave.hansen@intel.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
- <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
- <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
- <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
- <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
- <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
- <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
-From: Andi Kleen <ak@linux.intel.com>
-Message-ID: <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
-Date: Tue, 10 Aug 2021 14:20:08 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4BD17F
+	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 21:51:51 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0d6500329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:6500:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 95C511EC0347;
+	Tue, 10 Aug 2021 23:51:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1628632305;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=bhrvSWnua4QgXGDLToC7m7WROlxA3VPxoYeGWv6d9b4=;
+	b=p7oMu+RhNEK0R7x19i+M996JIz9jAolp9gSi95HKMhewjNccujQhOtGEXBac5xmuyWnoQ8
+	VtNpb/aUb4bne0yLrWo++9p6EawNSD7KAttCXyDPqb0UwUAg1MTrP2eFAOM1Zm3RyuHGj4
+	2kVcVvuDB8EtlmSykCB6fmc5ev+4LKM=
+Date: Tue, 10 Aug 2021 23:52:25 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+	brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part1 RFC v4 05/36] x86/sev: Define the Linux specific
+ guest termination reasons
+Message-ID: <YRL1GSmdJhoUCXZv@zn.tnic>
+References: <20210707181506.30489-1-brijesh.singh@amd.com>
+ <20210707181506.30489-6-brijesh.singh@amd.com>
+ <YRJkDhcbUi9xQemM@zn.tnic>
+ <955b4f50-5a7b-8c60-d31e-864bc29638f5@amd.com>
+ <65c53556-94e1-b372-7fb1-64bb78c7ae15@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <65c53556-94e1-b372-7fb1-64bb78c7ae15@amd.com>
 
+On Tue, Aug 10, 2021 at 02:30:44PM -0500, Tom Lendacky wrote:
+> IIRC, during the review of the first GHCB version there was discussion
+> about assigning reason sets outside of 0 within the spec and the overall
+> feeling was to not do that as part of the spec.
+> 
+> We can re-open that discussion for the next version of the GHCB document.
 
-> These boot blips are not the biggest issue in the world.  But, it is
-> fully under the guest's control and I think the guest has some
-> responsibility to provide *some* mitigation for it.
+My worry is that if nothing documents which sets are allocated to which
+vendor, it'll become a mess.
 
-It sounds more like an exercise in preliminary optimization at this 
-point. If it's a real problem we can still worry about it later.
+Imagine a Linux SNP guest and a windoze one, both running on a KVM
+hypervisor (is that even possible?) and both using the same termination
+reason set with conflicting reason numbers.
 
+Unneeded confusion.
 
-> 1. Do background acceptance, as opposed to relying 100% on demand-driven
->     acceptance.  Guarantees a limited window in which blips can occur.
+Unless the spec says, "reason set 1 is allocated to Linux, set 2 to
+windoze, etc"
 
-Like Kirill wrote this was abandoned because it always allocates all 
-memory on the host even if the guest doesn't need it.
+Then all know which is which.
 
+And so on...
 
-> 2. Do acceptance based on user input, like from sysfs.
+Thx.
 
-You can easily do that by running "memhog" at boot. No need for anything 
-in the kernel.
+-- 
+Regards/Gruss,
+    Boris.
 
-BTW I believe this is also configurable at the guest BIOS level.
-
-> 3. Add a command-line argument to accept everything up front, or at
->     least before userspace runs.
-
-Same.
-
-
-> 4. Add some statistic for how much unaccepted memory remains.
-
-Yes that makes sense. We should have statistic counters for all of this.
-
-Also I agree with your suggestion that we should get the slow path out 
-of the zone locks/interrupt disable region. That should be easy enough 
-and is an obvious improvement.
-
--Andi
-
+https://people.kernel.org/tglx/notes-about-netiquette
