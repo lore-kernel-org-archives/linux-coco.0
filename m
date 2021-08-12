@@ -1,159 +1,154 @@
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FDC6D13
-	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 20:59:05 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10074"; a="195717738"
-X-IronPort-AV: E=Sophos;i="5.84,316,1620716400"; 
-   d="scan'208";a="195717738"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2021 13:59:04 -0700
-X-IronPort-AV: E=Sophos;i="5.84,316,1620716400"; 
-   d="scan'208";a="517619937"
-Received: from wtharris-mobl1.amr.corp.intel.com (HELO [10.209.22.190]) ([10.209.22.190])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2021 13:59:03 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36716D13
+	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 21:08:34 +0000 (UTC)
+Received: by mail-lj1-f180.google.com with SMTP id h11so12458772ljo.12
+        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 14:08:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=YpFOixfCUpC49LCJc0vUvfuAwPcwjJWVPf9TZf8tyJ8=;
+        b=cAG9i2LwB3ilC3ArMI7sK1ndTIQHyayqlAYVv3TlOJ5K+Z6NySlDYlyxQEVoQ9Wgvk
+         NhkpaxSmgxedeZ2O7khhDzfm6Pak3MvGiXBVHRibHFlBD2cRKkF8oTVL46xJI4ean5h7
+         GVZlzbl37MOZrjyehEAeM9aL+K9Z8D0aTmBV/UpyNzofZ3IdxRhubVb37DRtAxp6f/1W
+         XBMmDjpd+LuS370xmTefqRvppJguLKysX+6ubL2k8A+4chahQoxIFx5fdSIdFoWutTy4
+         fqmEKHXyCBHHbu9yMrwydNqTj7C7EXBa6HS3BN+B4DqpzrbXVuTyXhqsCprOwayzDeRC
+         tEjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=YpFOixfCUpC49LCJc0vUvfuAwPcwjJWVPf9TZf8tyJ8=;
+        b=SOvsAMtVCw3ktzSR+MXliO7y6CMqqwN55M9sZ/dRRgT7cQwzW7Q+tOI21iwxCpEiiH
+         U2N3IYAzLQ7fqt1bIhDOL0QhVx21019hRDTONiGNfmIQM4PLUga4WK3kHP4ae7rgAD55
+         2cZ2FDNMOC9oDfO51LwWGRR/SN9i3K+70pXy8YsqJtRWLqjlSXx+lnZjb5h7pnK1o0aG
+         zPzZrS3j2sADbV5DD9z1aytK/dML+IipsFdgUWQsyHLc50sSPRKakvbS5b0GvVVhvIqp
+         whWGtRpCm3j8xiHKvp6MhjAY+/gHVuYI15o0p63Tm9CGv3vP1l9IW4E+WytChNqZvlvC
+         vSTQ==
+X-Gm-Message-State: AOAM533SrsRvOFPD7PbCXGCxBZzvN3CZaUIDwlZWD4xoXK4SK4+0SJWD
+	3rjtoXtW7DOX2LL5jRCBDcXnhA==
+X-Google-Smtp-Source: ABdhPJzFIkQOm8E0duwu89bHdOD4H/nXReJ/pZkzEeRcCz/lKjlA0OADTVu1mSRdY1UHYhvG1mAEcQ==
+X-Received: by 2002:a05:651c:516:: with SMTP id o22mr161107ljp.152.1628802513050;
+        Thu, 12 Aug 2021 14:08:33 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id q66sm441742ljb.83.2021.08.12.14.08.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Aug 2021 14:08:32 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 10242102BEE; Fri, 13 Aug 2021 00:08:46 +0300 (+03)
+Date: Fri, 13 Aug 2021 00:08:46 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Message-ID: <20210812210846.bfalflrvn4bfpyyh@box.shutemov.name>
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
  <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
  <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
- <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
- <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
- <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
- <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
- <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
- <YRTZr/Pxyb8fsV58@suse.de> <25312492-5d67-e5b0-1a51-b6880f45a550@intel.com>
- <20210812204924.haneuxapkmluli6t@box.shutemov.name>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <708c758f-2305-4fe6-ddcd-6881794402a5@intel.com>
-Date: Thu, 12 Aug 2021 13:59:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <f7667988-4d6c-461e-901d-a6c3612b2f0f@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20210812204924.haneuxapkmluli6t@box.shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f7667988-4d6c-461e-901d-a6c3612b2f0f@intel.com>
 
-On 8/12/21 1:49 PM, Kirill A. Shutemov wrote:
-> On Thu, Aug 12, 2021 at 07:14:20AM -0700, Dave Hansen wrote:
->> On 8/12/21 1:19 AM, Joerg Roedel wrote:
->> maybe_accept_page()
->> {
->> 	unsigned long huge_pfn = page_to_phys(page) / PMD_SIZE;
->>
->> 	/* Test the bit before taking any locks: */
->> 	if (test_bit(huge_pfn, &accepted_bitmap))
->> 		return;
->>
->> 	spin_lock_irq();
->> 	/* Retest inside the lock: */
->> 	if (test_bit(huge_pfn, &accepted_bitmap))
->> 		return;
->> 	tdx_accept_page(page, PMD_SIZE);
->> 	set_bit(huge_pfn, &accepted_bitmap));
->> 	spin_unlock_irq();
->> }
->>
->> That's still not great.  It's still a global lock and the lock is still
->> held for quite a while because that accept isn't going to be lightning
->> fast.  But, at least it's not holding any *other* locks.  It also
->> doesn't take any locks in the fast path where the 2MB page was already
->> accepted.
+On Tue, Aug 10, 2021 at 01:50:57PM -0700, Dave Hansen wrote:
+> On 8/10/21 11:13 AM, Dave Hansen wrote:
+> >> @@ -1001,6 +1004,9 @@ static inline void del_page_from_free_list(struct page *page, struct zone *zone,
+> >>  	if (page_reported(page))
+> >>  		__ClearPageReported(page);
+> >>  
+> >> +	if (PageOffline(page))
+> >> +		clear_page_offline(page, order);
+> >> +
+> >>  	list_del(&page->lru);
+> >>  	__ClearPageBuddy(page);
+> >>  	set_page_private(page, 0);
+> > So, this is right in the fast path of the page allocator.  It's a
+> > one-time thing per 2M page, so it's not permanent.
+> > 
+> > *But* there's both a global spinlock and a firmware call hidden in
+> > clear_page_offline().  That's *GOT* to hurt if you were, for instance,
+> > running a benchmark while this code path is being tickled.  Not just to
+> > 
+> > That could be just downright catastrophic for scalability, albeit
+> > temporarily.
 > 
-> I expect a cache line with bitmap to bounce around during warm up. One
-> cache line covers a gig of RAM.
+> One more thing...
+> 
+> How long are these calls?  You have to make at least 512 calls into the
+> SEAM module.  Assuming they're syscall-ish, so ~1,000 cycles each,
+> that's ~500,000 cycles, even if we ignore the actual time it takes to
+> zero that 2MB worth of memory and all other overhead within the SEAM module.
 
-The bitmap bouncing around isn't going to really matter when you have a
-global lock protecting it from writes.
+I hope to get away with 2 calls per 2M: one MapGPA and one TDACCEPTPAGE
+(or 3 for MAXORDER -- 4M -- pages). I don't have any numbers yet.
 
-> It's also not clear at all at what point the static key has to be
-> switched. We don't have any obvious point where we can say we are done
-> with accepting (unless you advocate for proactive accepting).
+> So, we're sitting on one CPU with interrupts off, blocking all the other
+> CPUs from doing page allocation in this zone. 
 
-Two easy options:
-1. Run over the bitmap and counts the bits left.  That can be done
-   outside the lock even.
-2. Keep a counter of the number of bits set in the bitmap.
+I agree that's not good. Let's see if it's going to be okay with accepting
+in 2M chunks.
 
-> I like PageOffline() because we only need to consult the cache page
-> allocator already have in hands before looking into bitmap.
+> Then, we're holding a global lock which prevents any other NUMA nodes
+> from accepting pages.
 
-I like it too.  But, it's really nasty if the value is only valid deep
-in the allocator.
+Looking at this again, the global lock is aviodable: the caller owns the
+pfn range so nobody can touch these bits in the bitmap. We can replace
+bitmap_clear() with atomic clear_bit() loop and drop the lock completely.
 
-We could keep the PageOffline() thing and then move it to some other
-field in 'struct page' that's only valid between ClearPageOffline() and
-prep_new_page().   Some magic value that says: "This page has not yet
-been accepted, you better check the bitmap."  Something like:
+> If the other node happens to *try* to do an
+> accept, it will sit with its zone lock held waiting for this one.
 
-	if (TestClearPageOffline(page))
-		page->private = 0Xdeadbeef;
+> Maybe nobody will ever notice.  But, it seems like an awfully big risk
+> to me.  I'd at least *try* do these calls outside of the zone lock.
+> Then the collateral damage will at least be limited to things doing
+> accepts rather than all zone->lock users.
+> 
+> Couldn't we delay the acceptance to, say the place where we've dropped
+> the zone->lock and do the __GFP_ZERO memset() like at prep_new_page()?
+> Or is there some concern that the page has been split at that point?
 
-and then check page->private in prep_new_page(). There should be plenty
-of 'struct page' space to hijack in that small window.
+It *will* be split by the point. Like if you ask for order-0 page and you
+don't any left page allocator will try higher orders until finds anything.
+On order-9 it would hit unaccepted. At that point the page going to split
+and put on the free lists accordingly. That's all happens under zone lock.
 
-BTW, I was going to actually try and hack something up, but I got
-annoyed that your patches don't apply upstream and gave up.  A git tree
-with all of the dependencies would be nice. <hint, hint>
+  __rmqueue_smallest ->
+    del_page_from_free_list()
+    expand()
+
+> I guess that makes it more complicated because you might have a 4k page
+> but you need to go accept a 2M page.  You might end up having to check
+> the bitmap 511 more times because you might see 511 more PageOffline()
+> pages come through.
+> 
+> You shouldn't even need the bitmap lock to read since it's a one-way
+> trip from unaccepted->accepted.
+
+Yeah. Unless we don't want to flip it back on making the range share.
+I think we do. Otherwise it will cause problems for kexec.
+
+-- 
+ Kirill A. Shutemov
