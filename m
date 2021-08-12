@@ -1,50 +1,50 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A412972
-	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 20:22:40 +0000 (UTC)
-Received: by mail-lf1-f49.google.com with SMTP id x27so15702878lfu.5
-        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 13:22:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFCE70
+	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 20:31:42 +0000 (UTC)
+Received: by mail-lf1-f45.google.com with SMTP id g30so15762451lfv.4
+        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 13:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=lD9P9nE94kR+CL+KH4TKKi2qyNFlxYCyV9udAgSMPuk=;
-        b=xaNDyhy88byYnIIk4BDvaJifaQ3BFM2799N3xhmZu3XCpJXK6fGOG2OL1+ne0TARRU
-         9vf8APrv9QSkUtaBzwzgGbkVKiwbR7Q+5QemRBksc5mujL2R1IY2OPoJVVtRxFIgDsDy
-         mlkgIXH8kLQ7pqfv1IEaURoQXtPQIqSqw/6vXZbYABgivFdUehFYxo6gLlyGrsq5gTmu
-         QreyA4Dza+o8Qo0kEmhaH62oopN6QWlqRmZALFkzU3J0NjVgKTqCemkJgR/Q1d1TCf7R
-         9gSGa2MV6lC2gh6f6aqQbjymZ5CDWiJdGu6ux4U1C2d15ZhMhqBFAIkjzqkpR1QIlbQa
-         YUyg==
+        bh=KUUhLtTlH34qCrAMz8FLnyHB8kOZP64VRsvKeH3KR8s=;
+        b=nOrRIYAAPbw5bHnn75Pm1qIco3wpb+lMROBcM7ri9KOPOhTw4kzAADCurwjRrUInst
+         AXb0PTXH/Ifcg2m/DuYXno20AWpOr1UP3nS9ZCLJYk6Vvkv0cayMwMxZd+7RW49DkTc7
+         5ghHighVMBccvkyAh5MMV0rI78r1gJdnmKDO88f61M7O4pTz9YBPRbFqroZPoi6+iWaR
+         0DeXqL15wzNkOOaK4cHifr5LqGK+oqI9Zql05LdmdBoDzT9Hvi0K2+kJ2oIj4wT2gOIT
+         S28D/7Aw2YvHu5ix/XLS27EequZ1oFuGbNVzTIm3vAe5ebX8CSfvvsdKPYTlFd+lOBUl
+         YXjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=lD9P9nE94kR+CL+KH4TKKi2qyNFlxYCyV9udAgSMPuk=;
-        b=eZsFaFxhPYluFo9Oj3+52IobbWSNTrlLhfAmIEXoCnA6x1UY83lOymk0Qosly5jbPv
-         wcA/KVkYDv0NEci+8Jle0x3VE01J0xoYm6vRisx2W1IY27XUZLmayM++a0rdZB/qF0Vb
-         4sQyHL0pmbknLRaIQfBBRn61aJa+9xEIbLVKLpN0lfQVcjlTGPXTi7ErrQaQwsGkTVyM
-         dcldXuiI8PBUO5y0Ge8dr60rSsPYRh7VMOacYJ4UJ1cXUs19X575aCI/s7QNJ2r75sn4
-         1W4VSVJ0cO5goIpJbQqI64MqgPbaoCr3Iy6tvg0XNl8gggWVXSvse7pjg2d6cy9KnVbS
-         FzNQ==
-X-Gm-Message-State: AOAM5325pQzf0gHvsd87RTggoTnGr0Q4FXovG34rTC9V5cjNhA2vsa8/
-	61KKWa1rIVrjqpipfglBAvTrLg==
-X-Google-Smtp-Source: ABdhPJxeBkiE8ikw29XNB8mMQnkymNKk4mH63Wj2JCylomBb7HKCsIjevdUDN654nitfIPtyjCkmrw==
-X-Received: by 2002:ac2:5e76:: with SMTP id a22mr3640177lfr.500.1628799758664;
-        Thu, 12 Aug 2021 13:22:38 -0700 (PDT)
+        bh=KUUhLtTlH34qCrAMz8FLnyHB8kOZP64VRsvKeH3KR8s=;
+        b=ifWiL9J2Km5y+EBMjay2+r6IAlHkttISO3nzahppwPipxIXvt6K7irf8YhtfOHKvIB
+         BbEwzPrZUi6uJM2ku6AImXFsArmrVTBZvwIPhM8S9sQh6jatEdMlmf4V2Gw8vvJ4THnE
+         G3dDLJzo+pwMowusd6381TLDoctl0Pf7yFcAlKEx/IaBjBcnRfQKCC5lrILaFvy0Arx/
+         r7WKntCmgxUa4eM2ebacwdNYx1JOIKYgqHM+cBFCBdmUMPMj3Dw0gT4lIdyiSw3c9nUd
+         3clJqMcb2ZDEkzvg3TzfDkExiAflDdpzPRyXq+bPDsDJCWX8humvis/peOAhmZtvpAWQ
+         wxpQ==
+X-Gm-Message-State: AOAM530OOzChxdhSxLSnh9d5/BpSvj7nBoL6oaTfNe5lyW3UZkcjaSpN
+	FBv9vC9b8edZ3d7aH1iHdZpo2Q==
+X-Google-Smtp-Source: ABdhPJyvYaymFYFw8Uki/dQxRfjDAkBBlPMhq9oHb4aqfUAn1utra3SHn9C+FY7EgizSN1SPsk58yw==
+X-Received: by 2002:a05:6512:2153:: with SMTP id s19mr3859298lfr.140.1628800300644;
+        Thu, 12 Aug 2021 13:31:40 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id s14sm358017lfe.268.2021.08.12.13.22.37
+        by smtp.gmail.com with ESMTPSA id u19sm361918lfo.205.2021.08.12.13.31.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Aug 2021 13:22:37 -0700 (PDT)
+        Thu, 12 Aug 2021 13:31:39 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 72DF4102BEE; Thu, 12 Aug 2021 23:22:51 +0300 (+03)
-Date: Thu, 12 Aug 2021 23:22:51 +0300
+	id A70E9102BEE; Thu, 12 Aug 2021 23:31:53 +0300 (+03)
+Date: Thu, 12 Aug 2021 23:31:53 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
@@ -57,12 +57,11 @@ Cc: Joerg Roedel <jroedel@suse.de>, Borislav Petkov <bp@alien8.de>,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 0/5] x86: Impplement support for unaccepted memory
-Message-ID: <20210812202251.hn3c2xykm2l73avu@box.shutemov.name>
+Subject: Re: [PATCH 4/5] x86/mm: Provide helpers for unaccepted memory
+Message-ID: <20210812203153.uoa7nx7w5zdsmzck@box.shutemov.name>
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
- <YRTafEovVZme+KO9@suse.de>
- <20210812101054.5y6oufwwnisebuyy@box.shutemov.name>
- <e72e34b5-a232-6dc9-0cdb-cc8c97783772@linux.intel.com>
+ <20210810062626.1012-5-kirill.shutemov@linux.intel.com>
+ <67ce254c-aacc-43b6-d8d5-168ef9200f9e@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,31 +70,46 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e72e34b5-a232-6dc9-0cdb-cc8c97783772@linux.intel.com>
+In-Reply-To: <67ce254c-aacc-43b6-d8d5-168ef9200f9e@intel.com>
 
-On Thu, Aug 12, 2021 at 12:33:11PM -0700, Andi Kleen wrote:
+On Tue, Aug 10, 2021 at 11:16:26AM -0700, Dave Hansen wrote:
+> On 8/9/21 11:26 PM, Kirill A. Shutemov wrote:
+> > +void accept_memory(phys_addr_t start, phys_addr_t end)
+> > +{
+> > +	if (!boot_params.unaccepted_memory)
+> > +		return;
+> > +
+> > +	spin_lock(&unaccepted_memory_lock);
+> > +	__accept_memory(start, end);
+> > +	spin_unlock(&unaccepted_memory_lock);
+> > +}
 > 
-> On 8/12/2021 3:10 AM, Kirill A. Shutemov wrote:
-> > On Thu, Aug 12, 2021 at 10:23:24AM +0200, Joerg Roedel wrote:
-> > > Hi Kirill,
-> > > 
-> > > On Tue, Aug 10, 2021 at 09:26:21AM +0300, Kirill A. Shutemov wrote:
-> > > > Accepting happens via a protocol specific for the Virtrual Machine
-> > > > platform.
-> > > That sentence bothers me a bit. Can you explain what it VMM specific in
-> > > the acceptance protocol?
-> > For TDX we have a signle MapGPA hypercall to VMM plus TDAcceptPage for
-> > every accepted page to TDX Module. SEV-SNP has to something similar.
+> Isn't this taken in the:
 > 
+> 	del_page_from_free_list()->
+> 	clear_page_offline()->
+> 	accept_memory()
 > 
-> I think Joerg's question was if TDX has a single ABI for all hypervisors.
-> The GHCI specification supports both hypervisor specific and hypervisor
-> agnostic calls. But these basic operations like MapGPA are all hypervisor
-> agnostic. The only differences would be in the existing hypervisor specific
-> PV code.
+> call path?
+> 
+> That's underneath:
+> 
+> 	spin_lock_irqsave(&zone->lock, flags);
+> 
+> Which means that accept_memory() can happen from interrupt context.  Is
+> it always covered by another spin_lock_irqsave() which means that it can
+> use a plain spin_lock()?
 
-My point was that TDX and SEV-SNP going to be different and we need a way
-to hook the right protocol for each.
+I didn't give it enough thought yet, but we always run under zone lock
+which has to use spin_lock_irqsave() if it called from interrupt context.
+
+Having said that I think it is good idea to move clear_page_offline() out
+zone lock. It should help with allocation latency. Not sure how messy it
+gets. Merging/splitting path looks complex and I'm not an expert in the
+page allocator.
+
+> If so, it would be nice to call out that logic.  It *looks* like a
+> spinlock that we would want to be spin_lock_irqsave().
 
 -- 
  Kirill A. Shutemov
