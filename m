@@ -1,51 +1,50 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7535070
-	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 20:34:47 +0000 (UTC)
-Received: by mail-lf1-f52.google.com with SMTP id r9so6303969lfn.3
-        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 13:34:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F276D13
+	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 20:49:13 +0000 (UTC)
+Received: by mail-lf1-f46.google.com with SMTP id d4so15761177lfk.9
+        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 13:49:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=WbT2Y/qRqTYMOLIgDiAlPur6EimbqnsytMdLoRasZoM=;
-        b=AyOWzJ2ElYARqGk8GcwFZ7QYPk7RpVVs4+zMu7Xi8u1nGtuIh7mP4tiR+o4DAZQaII
-         tJXYVJ6SPYV36CejuVL1VSqxs+AyAdG5pDQUsFT3XS++1iZSbXc6alCB2rYodYRZ4QvO
-         lzR4hT5IR5sovz1lSSlhNrkuBXt1v+XeHgHEixBvHp2tkG/xsjwC6lwFTRrp6DoD4eE5
-         W0vsPvJc02WRG8rqSOzVLzQRJIiYH9yBDl5805VN+hMgHYho9GBBxLJBd3L/KT1Uc61P
-         MBBkCeUxoFnrbMAlmU96txHGtVbOoPdsWuvccj62EH8UpOHE6f/fO6+Nma7xC2T+H+Wk
-         5elQ==
+        bh=pfVYeiF6NsTodz2n4eSeO7tT8BowjN/vmYohy2o7SVU=;
+        b=pTPOMagXaOUXVggHiYUHmrkCBZT4ZIZ8OcOlXpc7anChygiuYEiuDMFnf3RqRNcM26
+         OzweCu8YyeDAJcSJIP63ZV4nfBiX7FGB7RB54fv4t9PkDPyt97XfD/cx97VeKalO8dY8
+         d+Vns1JaZOc0hTjGsxPeXXQGbUx58KdeJwUg+GBr2fNgaAlYb7iSeVtPHY7rE3sPeZCD
+         8vbdsy+9twQDArQLUz8Fh0pRIxgFjQ2NjOI0+cQbO6mI4cdNtv3P9uDjwThn0OgE4cPz
+         7dZOYsxhT3yQTth6RzYIEvXEH0JrQYHIrMRFuuXMvjZ139FYzBm/NxPw0P3oBGXN2oir
+         emUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=WbT2Y/qRqTYMOLIgDiAlPur6EimbqnsytMdLoRasZoM=;
-        b=c2KRtY13zDrQ47oet8XMoosKNexK5+yE+rJ2ZS/EIpgfeDnV9FrRnFRkev275ik/Ou
-         d0rtMT/ISPjb8XoVjlEmZcIUXEGjMDJV3xE2ykZ6IxksHNPb0ZW1rlnUmW2OF4N/dbKa
-         ZLJh8HH7NY+SAM5tlc21iVKt0MnzcUQqoBcL70FWwSw6QofDj6M0EqV6xVMYXVYRRkUO
-         gN8B2JXPRnlSdqf5MXTcYxoxX0CLFQzdUBi0osTmTIuPYpTSyLENerGBTG1c5+B8wvLQ
-         dqRW8vub1PbHQSPdt7y0vX4SCM5PSrYnN3mRjbXdTIXOuHwEr7fk7gUPNP0b4yoUaNsP
-         zCXQ==
-X-Gm-Message-State: AOAM531htm1edbr1lTFuNeXIkGhrFtujx53tEf21R6GW/IIU5c3ilOnf
-	nd0+lw4EL7yWpCZpOWhTklel7Q==
-X-Google-Smtp-Source: ABdhPJxPnl/3ZvpGm9NlFCtffH7hxLvwR+kgerqlOFaM1gutMTpql47rTjRpqAfXyy+surckQjorJw==
-X-Received: by 2002:a05:6512:b09:: with SMTP id w9mr3683314lfu.273.1628800485549;
-        Thu, 12 Aug 2021 13:34:45 -0700 (PDT)
+        bh=pfVYeiF6NsTodz2n4eSeO7tT8BowjN/vmYohy2o7SVU=;
+        b=iVR+1+Zyp0exmKIofEIvhh2n5rjHtZY5qnxHRQiQp2rxpWcFbJKmKjBOscjJhnoAsC
+         6ayS89I6V4V2wGp75arNc2zVlEb/BUfrixRTJswL2hatymXu2+AXZqhZbZAA1ZoF4Rea
+         ZV1U10VtMb69zduoadX96GIsocDngf3KV8GeFI8EG0Je0KlxTsCsZ1Ojb1EQo7Ds6TSo
+         urqYX6bcEr3m4BcjxXowiMkMAh7M+1OEKF/wkOdZDzEdJRZob0sVzrLsJfn94obVY8b4
+         FDW+yDAcgwxfuArD1dTn8y5efjV71I7GapZ7eUAZ3H2OTZx3OGQT8bbktKRw4gZwjIpY
+         jJjQ==
+X-Gm-Message-State: AOAM5318/dQkltszldL9rtVOuhUyj7/vWpiZZwLts572MnWVuIJ9TC1H
+	RjxnGrRXLW8pqKgh9yK0M3iNbA==
+X-Google-Smtp-Source: ABdhPJx0kYDvYIJQVOD8WIttESM9kcBa3OyExZB3hoeM0L7g01xXKYY3CCXhwlpnGaNCOgkg88F9QA==
+X-Received: by 2002:a05:6512:3682:: with SMTP id d2mr3897174lfs.50.1628801351604;
+        Thu, 12 Aug 2021 13:49:11 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id w19sm412018ljd.67.2021.08.12.13.34.44
+        by smtp.gmail.com with ESMTPSA id e1sm2294lfs.307.2021.08.12.13.49.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Aug 2021 13:34:44 -0700 (PDT)
+        Thu, 12 Aug 2021 13:49:10 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 8CDC8102BEE; Thu, 12 Aug 2021 23:34:58 +0300 (+03)
-Date: Thu, 12 Aug 2021 23:34:58 +0300
+	id B3CE4102BEE; Thu, 12 Aug 2021 23:49:24 +0300 (+03)
+Date: Thu, 12 Aug 2021 23:49:24 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: David Hildenbrand <david@redhat.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
 	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
@@ -56,14 +55,20 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
-Message-ID: <20210812203458.oobmqnjhmilewnai@box.shutemov.name>
+Message-ID: <20210812204924.haneuxapkmluli6t@box.shutemov.name>
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
  <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
- <dd4b7aff-ccf3-24f6-3f6e-14c4b6aa8b64@redhat.com>
- <20210810150216.dwn2rylcpzxx6b6l@black.fi.intel.com>
- <2e45209d-6a99-9496-6cb0-111291bd481a@redhat.com>
+ <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
+ <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
+ <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
+ <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
+ <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
+ <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
+ <YRTZr/Pxyb8fsV58@suse.de>
+ <25312492-5d67-e5b0-1a51-b6880f45a550@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,122 +77,85 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2e45209d-6a99-9496-6cb0-111291bd481a@redhat.com>
+In-Reply-To: <25312492-5d67-e5b0-1a51-b6880f45a550@intel.com>
 
-On Tue, Aug 10, 2021 at 05:21:48PM +0200, David Hildenbrand wrote:
-> On 10.08.21 17:02, Kirill A. Shutemov wrote:
-> > On Tue, Aug 10, 2021 at 09:48:04AM +0200, David Hildenbrand wrote:
-> > > On 10.08.21 08:26, Kirill A. Shutemov wrote:
-> > > > UEFI Specification version 2.9 introduces concept of memory acceptance:
-> > > > Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
-> > > > requiring memory to be accepted before it can be used by the guest.
-> > > > Accepting happens via a protocol specific for the Virtrual Machine
-> > > > platform.
-> > > > 
-> > > > Accepting memory is costly and it makes VMM allocate memory for the
-> > > > accepted guest physical address range. It's better to postpone memory
-> > > > acceptation until memory is needed. It lowers boot time and reduces
-> > > > memory overhead.
-> > > > 
-> > > > Support of such memory requires few changes in core-mm code:
-> > > > 
-> > > >     - memblock has to accept memory on allocation;
-> > > > 
-> > > >     - page allocator has to accept memory on the first allocation of the
-> > > >       page;
-> > > > 
-> > > > Memblock change is trivial.
-> > > > 
-> > > > Page allocator is modified to accept pages on the first allocation.
-> > > > PageOffline() is used to indicate that the page requires acceptance.
-> > > > The flag currently used by hotplug and balloon. Such pages are not
-> > > > available to page allocator.
-> > > > 
-> > > > An architecture has to provide three helpers if it wants to support
-> > > > unaccepted memory:
-> > > > 
-> > > >    - accept_memory() makes a range of physical addresses accepted.
-> > > > 
-> > > >    - maybe_set_page_offline() marks a page PageOffline() if it requires
-> > > >      acceptance. Used during boot to put pages on free lists.
-> > > > 
-> > > >    - clear_page_offline() clears makes a page accepted and clears
-> > > >      PageOffline().
-> > > > 
-> > > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > > ---
-> > > >    mm/internal.h   | 14 ++++++++++++++
-> > > >    mm/memblock.c   |  1 +
-> > > >    mm/page_alloc.c | 13 ++++++++++++-
-> > > >    3 files changed, 27 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/mm/internal.h b/mm/internal.h
-> > > > index 31ff935b2547..d2fc8a17fbe0 100644
-> > > > --- a/mm/internal.h
-> > > > +++ b/mm/internal.h
-> > > > @@ -662,4 +662,18 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
-> > > >    int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
-> > > >    		      unsigned long addr, int page_nid, int *flags);
-> > > > +#ifndef CONFIG_UNACCEPTED_MEMORY
-> > > > +static inline void maybe_set_page_offline(struct page *page, unsigned int order)
-> > > > +{
-> > > > +}
-> > > > +
-> > > > +static inline void clear_page_offline(struct page *page, unsigned int order)
-> > > > +{
-> > > > +}
-> > > > +
-> > > > +static inline void accept_memory(phys_addr_t start, phys_addr_t end)
-> > > > +{
-> > > > +}
-> > > 
-> > > Can we find better fitting names for the first two? The function names are
-> > > way too generic. For example:
-> > > 
-> > > accept_or_set_page_offline()
-> > > 
-> > > accept_and_clear_page_offline()
+On Thu, Aug 12, 2021 at 07:14:20AM -0700, Dave Hansen wrote:
+> On 8/12/21 1:19 AM, Joerg Roedel wrote:
+> > On Tue, Aug 10, 2021 at 02:20:08PM -0700, Andi Kleen wrote:
+> >> Also I agree with your suggestion that we should get the slow path out of
+> >> the zone locks/interrupt disable region. That should be easy enough and is
+> >> an obvious improvement.
 > > 
-> > Sounds good.
+> > I also agree that the slow-path needs to be outside of the memory
+> > allocator locks. But I think this conflicts with the concept of
+> > accepting memory in 2MB chunks even if allocation size is smaller.
 > > 
-> > > I thought for a second if
-> > > 	PAGE_TYPE_OPS(Unaccepted, offline)
-> > > makes sense as well, not sure.
-> > 
-> > I find Offline fitting the situation. Don't see a reason to add more
-> > terminology here.
-> > 
-> > > Also, please update the description of PageOffline in page-flags.h to
-> > > include the additional usage with PageBuddy set at the same time.
-> > 
-> > Okay.
-> > 
-> > > I assume you don't have to worry about page_offline_freeze/thaw ... as we
-> > > only set PageOffline initially, but not later at runtime when other
-> > > subsystems (/proc/kcore) might stumble over it.
-> > 
-> > I think so, but I would need to look at this code once again.
-> > 
+> > Given some kernel code allocated 2 pages and the allocator path starts
+> > to validate the whole 2MB page the memory is on, then there are
+> > potential races to take into account.
 > 
-> Another thing to look into would be teaching makedumpfile via vmcoreinfo
-> about these special buddy pages:
+> Yeah, the PageOffline()+PageBuddy() trick breaks down as soon as
+> PageBuddy() gets cleared.
 > 
-> makedumpfile will naturally skip all PageOffline pages and skip PageBuddy
-> pages if requested to skip free pages. It detects these pages via the
-> mapcount value. You will want makedumpfile to treat them like PageOffline
-> pages: kernel/crash_core.c
+> I'm not 100% sure we need a page flag, though.  Imagine if we just did a
+> static key check in prep_new_page():
 > 
-> #define PAGE_BUDDY_MAPCOUNT_VALUE	(~PG_buddy)
-> VMCOREINFO_NUMBER(PAGE_BUDDY_MAPCOUNT_VALUE);
+> 	if (static_key_whatever(tdx_accept_ongoing))
+> 		maybe_accept_page(page, order);
 > 
-> #define PAGE_OFFLINE_MAPCOUNT_VALUE	(~PG_offline)
-> VMCOREINFO_NUMBER(PAGE_OFFLINE_MAPCOUNT_VALUE);
+> maybe_accept_page() could just check the acceptance bitmap and see if
+> the 2MB page has been accepted.  If so, just return.  If not, take the
+> bitmap lock, accept the 2MB page, then mark the bitmap.
 > 
-> We could export PAGE_BUDDY_OFFLINE_MAPCOUNT_VALUE or just compute it inside
-> makedumpfile from the other two values.
+> maybe_accept_page()
+> {
+> 	unsigned long huge_pfn = page_to_phys(page) / PMD_SIZE;
+> 
+> 	/* Test the bit before taking any locks: */
+> 	if (test_bit(huge_pfn, &accepted_bitmap))
+> 		return;
+> 
+> 	spin_lock_irq();
+> 	/* Retest inside the lock: */
+> 	if (test_bit(huge_pfn, &accepted_bitmap))
+> 		return;
+> 	tdx_accept_page(page, PMD_SIZE);
+> 	set_bit(huge_pfn, &accepted_bitmap));
+> 	spin_unlock_irq();
+> }
+> 
+> That's still not great.  It's still a global lock and the lock is still
+> held for quite a while because that accept isn't going to be lightning
+> fast.  But, at least it's not holding any *other* locks.  It also
+> doesn't take any locks in the fast path where the 2MB page was already
+> accepted.
 
-Thanks, for digging it up. I'll look into makedumpfile, but it's not on
-top of my todo list, so may take a while.
+I expect a cache line with bitmap to bounce around during warm up. One
+cache line covers a gig of RAM.
+
+It's also not clear at all at what point the static key has to be
+switched. We don't have any obvious point where we can say we are done
+with accepting (unless you advocate for proactive accepting).
+
+I like PageOffline() because we only need to consult the cache page
+allocator already have in hands before looking into bitmap.
+
+> The locking could be more fine-grained, for sure.  The bitmap could, for
+> instance, have a lock bit too.  Or we could just have an array of locks
+> and hash the huge_pfn to find a lock given a huge_pfn.  But, for now, I
+> think it's fine to just keep the global lock.
+> 
+> > Either some other code path allocates memory from that page and returns
+> > it before validation is finished or we end up with double validation.
+> > Returning unvalidated memory is a guest-problem and double validation
+> > will cause security issues for SNP guests.
+> 
+> Yeah, I think the *canonical* source of information for accepts is the
+> bitmap.  The page flags and any static keys or whatever are
+> less-canonical sources that tell you when you _might_ need to consult
+> the bitmap.
+
+Right.
 
 -- 
  Kirill A. Shutemov
