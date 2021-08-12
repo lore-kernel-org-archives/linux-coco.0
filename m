@@ -1,93 +1,98 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4BD17F
-	for <linux-coco@lists.linux.dev>; Tue, 10 Aug 2021 21:51:51 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0d6500329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:6500:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F5472
+	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 08:20:03 +0000 (UTC)
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 95C511EC0347;
-	Tue, 10 Aug 2021 23:51:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1628632305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=bhrvSWnua4QgXGDLToC7m7WROlxA3VPxoYeGWv6d9b4=;
-	b=p7oMu+RhNEK0R7x19i+M996JIz9jAolp9gSi95HKMhewjNccujQhOtGEXBac5xmuyWnoQ8
-	VtNpb/aUb4bne0yLrWo++9p6EawNSD7KAttCXyDPqb0UwUAg1MTrP2eFAOM1Zm3RyuHGj4
-	2kVcVvuDB8EtlmSykCB6fmc5ev+4LKM=
-Date: Tue, 10 Aug 2021 23:52:25 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CA93E1FF1F;
+	Thu, 12 Aug 2021 08:20:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1628756401; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+nfS8qOmyfIYA2Mf0aXHVt9ATNP8lz9AMeYrHpMK/5s=;
+	b=ts3pYMzUQcqW0Gkjtx/WWY4ScRfH6uEO1D1ScsIYDXqU08PDeiGoi3wZ+TYWnjaUNXMZnt
+	9nJxXhDbxc/aDjU0st2scpFDc1JlMpQTEN1WW9haG84zo5mWpLmUMfJnp75AiN60JJaFCj
+	7fTvQa9gvRrgzyU2MDL0IEhHeeUhO3M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1628756401;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+nfS8qOmyfIYA2Mf0aXHVt9ATNP8lz9AMeYrHpMK/5s=;
+	b=rx07iiQdwqQZKFzKHGNSz061RUNeiXz+xircouhbBQ40fgNk+wU+puXtI49WOq3zRQLUQ4
+	k3+SW73FBj9csdBQ==
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id F379413846;
+	Thu, 12 Aug 2021 08:20:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap1.suse-dmz.suse.de with ESMTPSA
+	id FHKcObDZFGGaCQAAGKfGzw
+	(envelope-from <jroedel@suse.de>); Thu, 12 Aug 2021 08:20:00 +0000
+Date: Thu, 12 Aug 2021 10:19:59 +0200
+From: Joerg Roedel <jroedel@suse.de>
+To: Andi Kleen <ak@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	"Kirill A. Shutemov" <kirill@shutemov.name>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-	brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 05/36] x86/sev: Define the Linux specific
- guest termination reasons
-Message-ID: <YRL1GSmdJhoUCXZv@zn.tnic>
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-6-brijesh.singh@amd.com>
- <YRJkDhcbUi9xQemM@zn.tnic>
- <955b4f50-5a7b-8c60-d31e-864bc29638f5@amd.com>
- <65c53556-94e1-b372-7fb1-64bb78c7ae15@amd.com>
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
+Message-ID: <YRTZr/Pxyb8fsV58@suse.de>
+References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
+ <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
+ <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
+ <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
+ <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
+ <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
+ <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
+ <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <65c53556-94e1-b372-7fb1-64bb78c7ae15@amd.com>
+In-Reply-To: <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
 
-On Tue, Aug 10, 2021 at 02:30:44PM -0500, Tom Lendacky wrote:
-> IIRC, during the review of the first GHCB version there was discussion
-> about assigning reason sets outside of 0 within the spec and the overall
-> feeling was to not do that as part of the spec.
-> 
-> We can re-open that discussion for the next version of the GHCB document.
+On Tue, Aug 10, 2021 at 02:20:08PM -0700, Andi Kleen wrote:
+> Also I agree with your suggestion that we should get the slow path out of
+> the zone locks/interrupt disable region. That should be easy enough and is
+> an obvious improvement.
 
-My worry is that if nothing documents which sets are allocated to which
-vendor, it'll become a mess.
+I also agree that the slow-path needs to be outside of the memory
+allocator locks. But I think this conflicts with the concept of
+accepting memory in 2MB chunks even if allocation size is smaller.
 
-Imagine a Linux SNP guest and a windoze one, both running on a KVM
-hypervisor (is that even possible?) and both using the same termination
-reason set with conflicting reason numbers.
+Given some kernel code allocated 2 pages and the allocator path starts
+to validate the whole 2MB page the memory is on, then there are
+potential races to take into account.
 
-Unneeded confusion.
+Either some other code path allocates memory from that page and returns
+it before validation is finished or we end up with double validation.
+Returning unvalidated memory is a guest-problem and double validation
+will cause security issues for SNP guests.
 
-Unless the spec says, "reason set 1 is allocated to Linux, set 2 to
-windoze, etc"
+Regards,
 
-Then all know which is which.
-
-And so on...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+	Joerg
