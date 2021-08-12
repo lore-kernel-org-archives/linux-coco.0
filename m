@@ -1,47 +1,48 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D288A6D13
-	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 21:14:38 +0000 (UTC)
-Received: by mail-lf1-f48.google.com with SMTP id r9so6503094lfn.3
-        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 14:14:38 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2964F6D13
+	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 21:17:21 +0000 (UTC)
+Received: by mail-lf1-f46.google.com with SMTP id w20so15965294lfu.7
+        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 14:17:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=O9Ui4Q6PbF0T/rKVbRolnp389K3oQYeJwugtlRVK+Bo=;
-        b=nt7t6noInmS46fO73mQssKdC9yvBRGkXwZCI0IBinN70xxUtKdg7mZT6iZmKZWQQmq
-         EL1PYad5hI1ZbyEBEWTfZdmrWe/N5mQ4U3zNUL4lfDFG1bVGVg2MsK31R4mZJzCrczMN
-         Mk+dfziQ1XP8urPfCtCmbdrQyXqDNzdXR+CmKp2JshpW92JEtRU9AO0NiA9uyCGuQe4L
-         uZpC1EeRbCURCLiHHRDc40Y8mrlfJ3vz/+LG6YalsIN0TFaDWib7qVaL9+ZB45PcyB35
-         /LO0Cdy5YA6xyLSNYTTMle5uJtufletrPU3xEr5wJnRRwAdBCDw8OA02yiK+m5Hfq5K4
-         maOw==
+        bh=b2BirSVgdv61++1qgCbkrnEDz6Qii/PCQKwWPaT0kRE=;
+        b=VXmNW/rBJjdUX9bbBX1Ste1p1ni7x23r3FJaTKr3DW4fSW4SfMOjOvvLLadmtYdpQO
+         9w03+1YiJybcJHP6mCNeW6hfv0Lxz0nEktyf7Kyn7XA2D63hOgBVjOT3XNBpIqe9ENNN
+         f7BBJC8R6fcBzt+RfzsK7e93zOmRpIgy8Ug4dfESSUA+NO/fUnva/RYm3FuAjdIskbVM
+         2GMapYddrr6YMdGjT2yHJ99APmM9o/ef0nymvWWWi5b08V+ixhnntkmGKyO6te6SX6IM
+         hMmU7uW9OHFG9WrQq9Hal7fItPeI/pSkXgCN7Wk0wJJhGEIPbvVFbaqsaWChG/wqjFle
+         ODVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=O9Ui4Q6PbF0T/rKVbRolnp389K3oQYeJwugtlRVK+Bo=;
-        b=AhDg3s97hEfIsQ/l+nu7gx+BDV5syd8+FIUKjqZOiLLMI4ugU2nRgkHYRPWxeJsR/c
-         ZZq6JHdWOp/7eNI5ph+xk42KFa3OtX8bhWyxvU3lymKpf6wYTuBIBcHR6jMqP5C7LEbL
-         JrjATcDsZRphvyX3J4DWsREh7H3f6BEEhTLsRNWjEPxVHbrgJjioExiIiL4kCAboH0aP
-         n1zZ5Y/oxNUqNh9BwNm5UtxJ3bc96mQFaharwDFYnjC9Opawgb0hai8CiVGdAKkOUQsC
-         8pa2v+yVoLbM5CH6p/uI2Y068K9++1OaY4bkC6fMj2lt+lKpvQDCzAt3ZZQn0jaZsjZt
-         FDhg==
-X-Gm-Message-State: AOAM530fURQDeOxGLgqSFhrfw8EzL0h5pwNDxasm0jaiCp8Q9yM5ijI6
-	vcq4tBEFm92AXZl7EES/JfQShw==
-X-Google-Smtp-Source: ABdhPJxCnDou6x8BHSKfwHgrInMCW0EOGw+eNpa6BoJHZhlZVjwD62MZzkIh4Yo37zkF5U4ACBw85Q==
-X-Received: by 2002:ac2:5fcf:: with SMTP id q15mr3904047lfg.597.1628802876962;
-        Thu, 12 Aug 2021 14:14:36 -0700 (PDT)
+        bh=b2BirSVgdv61++1qgCbkrnEDz6Qii/PCQKwWPaT0kRE=;
+        b=DEUHltvrv3s4c/RX0n9nO4kFs9tjXnMfuJwu3WFY2o78kHucTui4gbnNUgnareqBR7
+         60WvL5L+1Jvjx5LPGtqLD7dMdCcYUqmPcVzR6Dzc2gid15Yei28+EMXY35dHc4msPjGi
+         aNt2KbBq2tgym5Ltdh5vnKyI75sw5wbJzqJOKQh2BRYhdGWBOT92TstnrhUJ2u4/iJMf
+         LcZbTnzOYpBfKmvDjGXhNlWvIwuX+eVbkvnIZi4pJVhHm76PPqg3zM3wzvgAARODmKvY
+         eosuogTxSmgbdAUcZYjJzqxZ4dpEnYMrBWf4uvVGVozBbaafHiTSoAYIzaEnsf6QvUQB
+         yfew==
+X-Gm-Message-State: AOAM533f5EjWu5uJt5lKHvvCE5I1+Z92V2DFnWFT0GtKtWnb8NZ+paZc
+	zr8OcDEflrWoa3sRdAG2QTgzog==
+X-Google-Smtp-Source: ABdhPJxqIiUrSNtMEkd3DckwzHM+lwkbd5+BtE5CifV6cR0ixYu839okyszKguc39ACYMEkzvwj5zA==
+X-Received: by 2002:ac2:5d4a:: with SMTP id w10mr3941318lfd.529.1628803039302;
+        Thu, 12 Aug 2021 14:17:19 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id f16sm371871lfv.115.2021.08.12.14.14.35
+        by smtp.gmail.com with ESMTPSA id p2sm371787lft.157.2021.08.12.14.17.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Aug 2021 14:14:36 -0700 (PDT)
+        Thu, 12 Aug 2021 14:17:18 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id E31FB102BEE; Fri, 13 Aug 2021 00:14:49 +0300 (+03)
-Date: Fri, 13 Aug 2021 00:14:49 +0300
+	id 69A1C102BEE; Fri, 13 Aug 2021 00:17:32 +0300 (+03)
+Date: Fri, 13 Aug 2021 00:17:32 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Dave Hansen <dave.hansen@intel.com>
-Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
@@ -55,13 +56,14 @@ Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 2/5] efi/x86: Implement support for unaccepted memory
-Message-ID: <20210812211449.5bsblj6lphtu7zsd@box.shutemov.name>
+Message-ID: <20210812211732.l46uwa5p22s4nsqg@box.shutemov.name>
 References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
  <20210810062626.1012-3-kirill.shutemov@linux.intel.com>
- <142bccc6-0e67-dfc1-9069-b773c2bad585@intel.com>
+ <07c2770e-1171-24ab-9403-91b306b5b1a4@intel.com>
+ <20210810190836.cffj4fjqenuunwsd@black.fi.intel.com>
+ <ef45d48f-2e7f-850e-f4d0-f518d34c598d@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,197 +72,49 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <142bccc6-0e67-dfc1-9069-b773c2bad585@intel.com>
+In-Reply-To: <ef45d48f-2e7f-850e-f4d0-f518d34c598d@intel.com>
 
-On Tue, Aug 10, 2021 at 10:50:33AM -0700, Dave Hansen wrote:
-> ...
-> > +void mark_unaccepted(struct boot_params *params, u64 start, u64 num)
-> > +{
+On Tue, Aug 10, 2021 at 12:19:22PM -0700, Dave Hansen wrote:
+> On 8/10/21 12:08 PM, Kirill A. Shutemov wrote:
+> >>> +config UNACCEPTED_MEMORY
+> >>> +	bool
+> >>> +	depends on EFI_STUB
+> >>> +	help
+> >>> +	   Some Virtual Machine platforms, such as Intel TDX, introduce
+> >>> +	   the concept of memory acceptance, requiring memory to be accepted
+> >>> +	   before it can be used by the guest. This protects against a class of
+> >>> +	   attacks by the virtual machine platform.
+> >>> +
+> >>> +	   This option adds support for unaccepted memory and makes such memory
+> >>> +	   usable by kernel.
+> >> Do we really need a full-blown user-visible option here?  If we, for
+> >> instance, just did:
+> >>
+> >> config UNACCEPTED_MEMORY
+> >> 	bool
+> >> 	depends on EFI_STUB
+> >>
+> >> it could be 'select'ed from the TDX Kconfig and no users would ever be
+> >> bothered with it.  Would a user *ever* turn this on if they don't have
+> >> TDX (or equivalent)?
+> > But it's already not user selectable. Note that there's no prompt next to
+> > the "bool". The "help" section is just for documentation. I think it can
+> > be useful.
 > 
-> Some of these interfaces like accept_memory() take a start/end physical
-> address.  Having this take a "num pages" is bound to cause confusion.
-> Could you make these all consistently take start/end physical addresses?
+> Ahh, gotcha.  I misread it.  Seems like an odd thing to do, but it's
+> also fairly widespread in the tree.
+> 
+> Can you even reach that help text from any of the configuration tools?
+> If you're doing an 'oldconfig', you won't get a prompt to do the "?".
+> Even in the 'meunconfig' search results, it doesn't display "help" text,
+> only the "prompt".
 
-Okay.
+I don't know how get a tool show the text, but my vim sees just fine :P
 
-> 
-> > +	u64 end = start + num * PAGE_SIZE;
-> > +	unsigned int npages;
-> 
-> 
-> Could you comment those, please?
-> 
-> 	/*
-> 	 * The accepted memory bitmap only works at PMD_SIZE
-> 	 * granularity.  If a request comes in to mark memory
-> 	 * as unaccepted which is not PMD_SIZE-aligned, simply
-> 	 * accept the memory now since it can not be *marked* as
-> 	 * unaccepted.
-> 	 */
-> 
-> Then go on to comment the three cases:
-> 
-> 	/* Check for ranges which do not span a whole PMD_SIZE area: */
-
-Okay.
-
-> > +	if ((start & PMD_MASK) == (end & PMD_MASK)) {
-> > +		npages = (end - start) / PAGE_SIZE;
-> > +		__accept_memory(start, start + npages * PAGE_SIZE);
-> > +		return;
-> > +	}
-> 
-> Hmm, is it possible to have this case hit, but neither of the two below
-> cases?  This seems to be looking for a case where the range is somehow
-> entirely contained in one PMD_SIZE area, but where it doesn't consume a
-> whole area.
-> 
-> Wouldn't that mean that 'start' or 'end' must be unaligned?
-
-The problem is that if both of them unaligned round_up() and round_down()
-in the cases below would step outside the requested range.
-
-> > +	if (start & ~PMD_MASK) {
-> > +		npages = (round_up(start, PMD_SIZE) - start) / PAGE_SIZE;
-> > +		__accept_memory(start, start + npages * PAGE_SIZE);
-> > +		start = round_up(start, PMD_SIZE);
-> > +	}
-> > +
-> > +	if (end & ~PMD_MASK) {
-> > +		npages = (end - round_down(end, PMD_SIZE)) / PAGE_SIZE;
-> > +		end = round_down(end, PMD_SIZE);
-> > +		__accept_memory(end, end + npages * PAGE_SIZE);
-> > +	}
-> > +	npages = (end - start) / PMD_SIZE;
-> > +	bitmap_set((unsigned long *)params->unaccepted_memory,
-> > +		   start / PMD_SIZE, npages);
-> > +}
-> 
-> Even though it's changed right there, it's a bit cruel to change the
-> units of 'npages' right in the middle of a function.  It's just asking
-> for bugs.
-> 
-> It would only take a single extra variable declaration to make this
-> unambiguous:
-> 
-> 	u64 nr_unaccepted_bits;
-> 
-> or something, then you can do:
-> 
-> 	nr_unaccepted_bits = (end - start) / PMD_SIZE;
-> 	bitmap_set((unsigned long *)params->unaccepted_memory,
-> 		   start / PMD_SIZE, nr_unaccepted_bits);
-
-Okay.
-
-> 
-> ...
-> >  static efi_status_t allocate_e820(struct boot_params *params,
-> > +				  struct efi_boot_memmap *map,
-> >  				  struct setup_data **e820ext,
-> >  				  u32 *e820ext_size)
-> >  {
-> > -	unsigned long map_size, desc_size, map_key;
-> >  	efi_status_t status;
-> > -	__u32 nr_desc, desc_version;
-> > -
-> > -	/* Only need the size of the mem map and size of each mem descriptor */
-> > -	map_size = 0;
-> > -	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
-> > -			     &desc_size, &desc_version);
-> > -	if (status != EFI_BUFFER_TOO_SMALL)
-> > -		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
-> 
-> I noticed that there's no reference to EFI_BUFFER_TOO_SMALL in the hunks
-> you added back.  That makes me a bit nervous that this is going to
-> unintentionally change behavior.
-> 
-> It might be worth having a preparatory reorganization patch for
-> allocate_e820() before this new feature is added to make this more clear.
-
-Okay. Will do.
-> 
-> > +	__u32 nr_desc;
-> > +	bool unaccepted_memory_present = false;
-> > +	u64 max_addr = 0;
-> > +	int i;
-> >  
-> > -	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
-> > +	status = efi_get_memory_map(map);
-> > +	if (status != EFI_SUCCESS)
-> > +		return status;
-> >  
-> > -	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
-> > -		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
-> > +	nr_desc = *map->map_size / *map->desc_size;
-> > +	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
-> > +		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) -
-> > +			EFI_MMAP_NR_SLACK_SLOTS;
-> >  
-> >  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
-> >  		if (status != EFI_SUCCESS)
-> >  			return status;
-> >  	}
-> >  
-> > +	if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-> > +		return EFI_SUCCESS;
-> > +
-> > +	/* Check if there's any unaccepted memory and find the max address */
-> > +	for (i = 0; i < nr_desc; i++) {
-> > +		efi_memory_desc_t *d;
-> > +
-> > +		d = efi_early_memdesc_ptr(*map->map, *map->desc_size, i);
-> > +		if (d->type == EFI_UNACCEPTED_MEMORY)
-> > +			unaccepted_memory_present = true;
-> > +		if (d->phys_addr + d->num_pages * PAGE_SIZE > max_addr)
-> > +			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
-> > +	}
-> 
-> This 'max_addr' variable looks a bit funky.
-> 
-> It *seems* like it's related only to EFI_UNACCEPTED_MEMORY, but it's not
-> underneath the EFI_UNACCEPTED_MEMORY check.  Is this somehow assuming
-> that once unaccepted memory as been found that *all* memory found in
-> later descriptors at higher addresses is also going to be unaccepted?
-
-You got it right below :P
-
-> > +	/*
-> > +	 * If unaccepted memory present allocate a bitmap to track what memory
-> > +	 * has to be accepted before access.
-> > +	 *
-> > +	 * One bit in the bitmap represents 2MiB in the address space: one 4k
-> > +	 * page is enough to track 64GiB or physical address space.
-> > +	 *
-> > +	 * In the worst case scenario -- a huge hole in the middle of the
-> > +	 * address space -- we would need 256MiB to handle 4PiB of the address
-> > +	 * space.
-> > +	 *
-> > +	 * TODO: handle situation if params->unaccepted_memory has already set.
-> > +	 * It's required to deal with kexec.
-> > +	 */
-> > +	if (unaccepted_memory_present) {
-> > +		unsigned long *unaccepted_memory = NULL;
-> > +		u64 size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
-> 
-> Oh, so the bitmap has to be present for *all* memory, not just
-> unaccepted memory.  So, we really do need to know the 'max_addr' so that
-> we can allocate the bitmap for so that can be marked in the bitmap has
-> having been accepted.
-
-Right we need a bit for every 2M. Accepted or not.
-
-> > +		status = efi_allocate_pages(size,
-> > +					    (unsigned long *)&unaccepted_memory,
-> > +					    ULONG_MAX);
-> > +		if (status != EFI_SUCCESS)
-> > +			return status;
-> > +		memset(unaccepted_memory, 0, size);
-> > +		params->unaccepted_memory = (u64)unaccepted_memory;
-> > +	}
-> 
-> It might be nice to refer to setup_e820() here to mention that it is the
-> thing that actually fills out the bitmap.
+> BTW, should this text call out that this is for parsing an actual UEFI
+> feature along with the spec version?  It's not obvious from the text
+> that "unaccepted memory" really is a UEFI thing as opposed to being some
+> kernel-only concept.
 
 Okay.
 
