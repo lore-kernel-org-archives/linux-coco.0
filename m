@@ -1,51 +1,50 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2964F6D13
-	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 21:17:21 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id w20so15965294lfu.7
-        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 14:17:21 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A0C6D13
+	for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 21:23:02 +0000 (UTC)
+Received: by mail-lf1-f42.google.com with SMTP id y34so15978547lfa.8
+        for <linux-coco@lists.linux.dev>; Thu, 12 Aug 2021 14:23:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=b2BirSVgdv61++1qgCbkrnEDz6Qii/PCQKwWPaT0kRE=;
-        b=VXmNW/rBJjdUX9bbBX1Ste1p1ni7x23r3FJaTKr3DW4fSW4SfMOjOvvLLadmtYdpQO
-         9w03+1YiJybcJHP6mCNeW6hfv0Lxz0nEktyf7Kyn7XA2D63hOgBVjOT3XNBpIqe9ENNN
-         f7BBJC8R6fcBzt+RfzsK7e93zOmRpIgy8Ug4dfESSUA+NO/fUnva/RYm3FuAjdIskbVM
-         2GMapYddrr6YMdGjT2yHJ99APmM9o/ef0nymvWWWi5b08V+ixhnntkmGKyO6te6SX6IM
-         hMmU7uW9OHFG9WrQq9Hal7fItPeI/pSkXgCN7Wk0wJJhGEIPbvVFbaqsaWChG/wqjFle
-         ODVg==
+        bh=tjnLas4N38VG1m6ngVp/nKbMad+Le5jniGEKC9/f/AI=;
+        b=MXWrG/3xOqi8ily+EcD8UFrv2cZ8HoPYEmzUwkZbpnFCeK+N47Cjkha3j17KWz05OK
+         vX85Imq1+eOG78/hrTPhFMyiZo1Z6Q9/o9u//bsnP+/iHJzd3p1GJDZNkSxrT5N2oTSG
+         0v4LnzMXGTQ7jjGPeDkS9fCH/g+jx/cREcHkqxls1i229tBc9Cp1NHXlJLjS5wz4thod
+         T7rDsNFGvhoqvMkkVV0Fc/wpEjKXFq/AXYy+n5sfA3TJbdOueGjS8HrovJyUj0uMh4Rl
+         wJ6gC0hmGy+SprZa44Dh2+EcOGJwgInuv5WBpbR9URukxBOKnkVuhTDd0MIyvVmnI7Nn
+         O0vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=b2BirSVgdv61++1qgCbkrnEDz6Qii/PCQKwWPaT0kRE=;
-        b=DEUHltvrv3s4c/RX0n9nO4kFs9tjXnMfuJwu3WFY2o78kHucTui4gbnNUgnareqBR7
-         60WvL5L+1Jvjx5LPGtqLD7dMdCcYUqmPcVzR6Dzc2gid15Yei28+EMXY35dHc4msPjGi
-         aNt2KbBq2tgym5Ltdh5vnKyI75sw5wbJzqJOKQh2BRYhdGWBOT92TstnrhUJ2u4/iJMf
-         LcZbTnzOYpBfKmvDjGXhNlWvIwuX+eVbkvnIZi4pJVhHm76PPqg3zM3wzvgAARODmKvY
-         eosuogTxSmgbdAUcZYjJzqxZ4dpEnYMrBWf4uvVGVozBbaafHiTSoAYIzaEnsf6QvUQB
-         yfew==
-X-Gm-Message-State: AOAM533f5EjWu5uJt5lKHvvCE5I1+Z92V2DFnWFT0GtKtWnb8NZ+paZc
-	zr8OcDEflrWoa3sRdAG2QTgzog==
-X-Google-Smtp-Source: ABdhPJxqIiUrSNtMEkd3DckwzHM+lwkbd5+BtE5CifV6cR0ixYu839okyszKguc39ACYMEkzvwj5zA==
-X-Received: by 2002:ac2:5d4a:: with SMTP id w10mr3941318lfd.529.1628803039302;
-        Thu, 12 Aug 2021 14:17:19 -0700 (PDT)
+        bh=tjnLas4N38VG1m6ngVp/nKbMad+Le5jniGEKC9/f/AI=;
+        b=l7aC7SsDnlC8F3Ph+/SXDof/Vwb/RBAoKYRNcx2hHKoNX4qxx33i/t6alO3QCwedLx
+         3DKIl7suthPu2ZxE6y70R/9YDSHMxwu94yqD9er/Ph7dCjGAQKfML3RhkOw9TroFD9T0
+         b8Pis0uXTfwF42iErfFp4hdh0+VuqLG3Ij9qNVlUe/A5N36L5t0D2L+JDldEnQxKrQTy
+         HVuf/+ihZC3wgabZt5D7wetlIYVbShfr3RD5k82O49WbVDuZHPtGEesgLJkv7rnc0Pgt
+         dPlNtmkDJWh2R8Pj1Qg6sgdGcPB/fqzHhRwKA3BcbTM7Tg70fUyTv027MWo/kx0ryDUh
+         84pg==
+X-Gm-Message-State: AOAM5319F6ZTHshckUXgjzTbUjOYdXabIWkohizeW3AaP0uKjYYXERWF
+	ADoNNb9dEdf3J4j8BQj33U4dcg==
+X-Google-Smtp-Source: ABdhPJz/anlsUnp0mfpy0EkAT/Lpv+5EMg5m7i7pyxjTOplUpJrzrf3oaG3AcLuJz3F89935FLlydw==
+X-Received: by 2002:ac2:5fee:: with SMTP id s14mr3897521lfg.646.1628803380918;
+        Thu, 12 Aug 2021 14:23:00 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id p2sm371787lft.157.2021.08.12.14.17.18
+        by smtp.gmail.com with ESMTPSA id o16sm372463lfl.309.2021.08.12.14.22.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Aug 2021 14:17:18 -0700 (PDT)
+        Thu, 12 Aug 2021 14:23:00 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 69A1C102BEE; Fri, 13 Aug 2021 00:17:32 +0300 (+03)
-Date: Fri, 13 Aug 2021 00:17:32 +0300
+	id 1BF2C102BEE; Fri, 13 Aug 2021 00:23:14 +0300 (+03)
+Date: Fri, 13 Aug 2021 00:23:14 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+Cc: Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
 	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
@@ -56,14 +55,20 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/5] efi/x86: Implement support for unaccepted memory
-Message-ID: <20210812211732.l46uwa5p22s4nsqg@box.shutemov.name>
-References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
- <20210810062626.1012-3-kirill.shutemov@linux.intel.com>
- <07c2770e-1171-24ab-9403-91b306b5b1a4@intel.com>
- <20210810190836.cffj4fjqenuunwsd@black.fi.intel.com>
- <ef45d48f-2e7f-850e-f4d0-f518d34c598d@intel.com>
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
+Message-ID: <20210812212314.4fkrmzebluyl3umo@box.shutemov.name>
+References: <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
+ <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
+ <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
+ <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
+ <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
+ <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
+ <YRTZr/Pxyb8fsV58@suse.de>
+ <25312492-5d67-e5b0-1a51-b6880f45a550@intel.com>
+ <20210812204924.haneuxapkmluli6t@box.shutemov.name>
+ <708c758f-2305-4fe6-ddcd-6881794402a5@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -72,49 +77,76 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ef45d48f-2e7f-850e-f4d0-f518d34c598d@intel.com>
+In-Reply-To: <708c758f-2305-4fe6-ddcd-6881794402a5@intel.com>
 
-On Tue, Aug 10, 2021 at 12:19:22PM -0700, Dave Hansen wrote:
-> On 8/10/21 12:08 PM, Kirill A. Shutemov wrote:
-> >>> +config UNACCEPTED_MEMORY
-> >>> +	bool
-> >>> +	depends on EFI_STUB
-> >>> +	help
-> >>> +	   Some Virtual Machine platforms, such as Intel TDX, introduce
-> >>> +	   the concept of memory acceptance, requiring memory to be accepted
-> >>> +	   before it can be used by the guest. This protects against a class of
-> >>> +	   attacks by the virtual machine platform.
-> >>> +
-> >>> +	   This option adds support for unaccepted memory and makes such memory
-> >>> +	   usable by kernel.
-> >> Do we really need a full-blown user-visible option here?  If we, for
-> >> instance, just did:
+On Thu, Aug 12, 2021 at 01:59:01PM -0700, Dave Hansen wrote:
+> On 8/12/21 1:49 PM, Kirill A. Shutemov wrote:
+> > On Thu, Aug 12, 2021 at 07:14:20AM -0700, Dave Hansen wrote:
+> >> On 8/12/21 1:19 AM, Joerg Roedel wrote:
+> >> maybe_accept_page()
+> >> {
+> >> 	unsigned long huge_pfn = page_to_phys(page) / PMD_SIZE;
 > >>
-> >> config UNACCEPTED_MEMORY
-> >> 	bool
-> >> 	depends on EFI_STUB
+> >> 	/* Test the bit before taking any locks: */
+> >> 	if (test_bit(huge_pfn, &accepted_bitmap))
+> >> 		return;
 > >>
-> >> it could be 'select'ed from the TDX Kconfig and no users would ever be
-> >> bothered with it.  Would a user *ever* turn this on if they don't have
-> >> TDX (or equivalent)?
-> > But it's already not user selectable. Note that there's no prompt next to
-> > the "bool". The "help" section is just for documentation. I think it can
-> > be useful.
+> >> 	spin_lock_irq();
+> >> 	/* Retest inside the lock: */
+> >> 	if (test_bit(huge_pfn, &accepted_bitmap))
+> >> 		return;
+> >> 	tdx_accept_page(page, PMD_SIZE);
+> >> 	set_bit(huge_pfn, &accepted_bitmap));
+> >> 	spin_unlock_irq();
+> >> }
+> >>
+> >> That's still not great.  It's still a global lock and the lock is still
+> >> held for quite a while because that accept isn't going to be lightning
+> >> fast.  But, at least it's not holding any *other* locks.  It also
+> >> doesn't take any locks in the fast path where the 2MB page was already
+> >> accepted.
+> > 
+> > I expect a cache line with bitmap to bounce around during warm up. One
+> > cache line covers a gig of RAM.
 > 
-> Ahh, gotcha.  I misread it.  Seems like an odd thing to do, but it's
-> also fairly widespread in the tree.
+> The bitmap bouncing around isn't going to really matter when you have a
+> global lock protecting it from writes.
+
+The idea with static key would not work if we mark shared memory as
+unaccepted there.
+
+> > It's also not clear at all at what point the static key has to be
+> > switched. We don't have any obvious point where we can say we are done
+> > with accepting (unless you advocate for proactive accepting).
 > 
-> Can you even reach that help text from any of the configuration tools?
-> If you're doing an 'oldconfig', you won't get a prompt to do the "?".
-> Even in the 'meunconfig' search results, it doesn't display "help" text,
-> only the "prompt".
+> Two easy options:
+> 1. Run over the bitmap and counts the bits left.  That can be done
+>    outside the lock even.
+> 2. Keep a counter of the number of bits set in the bitmap.
+> 
+> > I like PageOffline() because we only need to consult the cache page
+> > allocator already have in hands before looking into bitmap.
+> 
+> I like it too.  But, it's really nasty if the value is only valid deep
+> in the allocator.
+> 
+> We could keep the PageOffline() thing and then move it to some other
+> field in 'struct page' that's only valid between ClearPageOffline() and
+> prep_new_page().   Some magic value that says: "This page has not yet
+> been accepted, you better check the bitmap."  Something like:
+> 
+> 	if (TestClearPageOffline(page))
+> 		page->private = 0Xdeadbeef;
+> 
+> and then check page->private in prep_new_page(). There should be plenty
+> of 'struct page' space to hijack in that small window.
 
-I don't know how get a tool show the text, but my vim sees just fine :P
+PageOffline() encoded in mapcount and check_new_page_bad() would complain
+is mapcount is not -1.
 
-> BTW, should this text call out that this is for parsing an actual UEFI
-> feature along with the spec version?  It's not obvious from the text
-> that "unaccepted memory" really is a UEFI thing as opposed to being some
-> kernel-only concept.
+> BTW, I was going to actually try and hack something up, but I got
+> annoyed that your patches don't apply upstream and gave up.  A git tree
+> with all of the dependencies would be nice. <hint, hint>
 
 Okay.
 
