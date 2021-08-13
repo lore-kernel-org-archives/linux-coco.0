@@ -1,92 +1,109 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E821E168
-	for <linux-coco@lists.linux.dev>; Fri, 13 Aug 2021 14:56:52 +0000 (UTC)
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6432B168
+	for <linux-coco@lists.linux.dev>; Fri, 13 Aug 2021 15:16:11 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0a0d0070a51027a6cfb94b.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:d00:70a5:1027:a6cf:b94b])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3D0162230F;
-	Fri, 13 Aug 2021 14:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1628866611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90F391EC01A8;
+	Fri, 13 Aug 2021 17:16:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1628867765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=slEidIfXYzT+MiWaqkcgYapT9R1n6p0OzdWrLkn7fh8=;
-	b=tBfPzpWLMjXvhI46J2x162VjLl+kTSZN4cLJ9uYOPJk5FPcwdodpsOWl1oj/jonBLpysSj
-	NR785d26AY9tuAeectH8uJiys1iH6W8B7sdJarOSUie381hL/jI1Mo6kyInegunIy4rmFy
-	yupU5fDVOjnbr1lpJzYzoSukAEH4LNk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1628866611;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=slEidIfXYzT+MiWaqkcgYapT9R1n6p0OzdWrLkn7fh8=;
-	b=oCXQ5TfJrh/zLZ4Sfhl9AAyIFKDObOf5SItYpDdLewpJA3EjX5vJhs4ZQ4s71zir3VL2HO
-	yOPDAJ6/VvFmu5Bg==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 7F7B613806;
-	Fri, 13 Aug 2021 14:56:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap1.suse-dmz.suse.de with ESMTPSA
-	id gNxDHTKIFmEeEgAAGKfGzw
-	(envelope-from <jroedel@suse.de>); Fri, 13 Aug 2021 14:56:50 +0000
-Date: Fri, 13 Aug 2021 16:56:48 +0200
-From: Joerg Roedel <jroedel@suse.de>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: Andi Kleen <ak@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	bh=lcZRb7fN3hFtAKCXxg7x6SSxBo6yLJXq3dd1LH5J27A=;
+	b=Clc8p7koFJ+GJJXpijQCzMHuLwybz/LyKXR0HDs+oqj3CwGY5tNTpH+j+U/fF+kI9y3oIf
+	DLgkSPeZps+chyUHErsdpd71tlyGXnxpRP1mexeir7y8per+tlAF/7FEHY0maGC2sfT0nL
+	jFaiheSWsQhftC/35TNt3MLwEerRIm4=
+Date: Fri, 13 Aug 2021 17:16:48 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH 0/5] x86: Impplement support for unaccepted memory
-Message-ID: <YRaIMEp/mTLbt++E@suse.de>
-References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
- <YRTafEovVZme+KO9@suse.de>
- <20210812101054.5y6oufwwnisebuyy@box.shutemov.name>
- <e72e34b5-a232-6dc9-0cdb-cc8c97783772@linux.intel.com>
- <20210812202251.hn3c2xykm2l73avu@box.shutemov.name>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+	npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part1 RFC v4 08/36] x86/sev: check the vmpl level
+Message-ID: <YRaM4LK/mQS+/pOm@zn.tnic>
+References: <20210707181506.30489-1-brijesh.singh@amd.com>
+ <20210707181506.30489-9-brijesh.singh@amd.com>
+ <YRYegqsigZfrbFbk@zn.tnic>
+ <bd5b8826-ab0b-4f4f-8594-0c7e6232941a@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210812202251.hn3c2xykm2l73avu@box.shutemov.name>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bd5b8826-ab0b-4f4f-8594-0c7e6232941a@amd.com>
 
-On Thu, Aug 12, 2021 at 11:22:51PM +0300, Kirill A. Shutemov wrote:
-> On Thu, Aug 12, 2021 at 12:33:11PM -0700, Andi Kleen wrote:
-> > I think Joerg's question was if TDX has a single ABI for all hypervisors.
-> > The GHCI specification supports both hypervisor specific and hypervisor
-> > agnostic calls. But these basic operations like MapGPA are all hypervisor
-> > agnostic. The only differences would be in the existing hypervisor specific
-> > PV code.
-> 
-> My point was that TDX and SEV-SNP going to be different and we need a way
-> to hook the right protocol for each.
+On Fri, Aug 13, 2021 at 08:13:20AM -0500, Brijesh Singh wrote:
+> During the firmware initialization the PSP requires that the VMPLEn is
+> set. See SNP firmware spec [1] section 8.6. To run the SNP guest you
+> *must* specify a VMPL level during the vCPU creation.
 
-Yeah, okay, thanks for the clarification. My misunderstanding was that
-there could be per-hypervisor contract on what memory is pre-accepted
-and what Linux is responsible for.
+Yes, that's why I said "implicit VMPL level 0"! When you don't specify
+it, it should implied as 0.
 
-Thanks,
+Right now that "enable" bit is useless as it is *forced* to be enabled.
 
-	Joerg
+I sincerely hope querying the VMPL level is going to be made
+straight-forwaed in future versions.
 
+> I should not say its optional when we know from the SEV-SNP spec that
+> VMPLEn must be set to launch SEV-SNP guest. I will fix the description.
+
+It probably wasn't required when that bit was invented - why would you
+call it "enable" otherwise - but some decision later made it required,
+I'd guess.
+
+> There is no easy way for a guest to query its VMPL level.
+
+Yes, and there should be.
+
+> The VMPL level is set during the vCPU creation. The boot cpu is
+> created by the HV and thus its VMPL level is set by the HV. If HV
+> chooses a lower VMPL level for the boot CPU then Linux guest will
+> not be able to validate its memory because the PVALIDATE instruction
+> will cause #GP when the vCPU is running at !VMPL0. The patch tries to
+> detect the boot CPU VMPL level and terminate the boot.
+
+I figured as much. All I don't like is the VMPL checking method.
+
+> If guest is not running at VMPL0 then step #2 will cause #GP.  The check
+> is prevent the #GP and terminate the boot early.
+
+Yah, Tom helped me understand the design of the permission masks in the
+RMP on IRC.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
