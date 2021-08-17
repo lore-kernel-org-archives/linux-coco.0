@@ -1,161 +1,270 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A862173
-	for <linux-coco@lists.linux.dev>; Tue, 17 Aug 2021 15:01:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1629212460;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161302FB0
+	for <linux-coco@lists.linux.dev>; Tue, 17 Aug 2021 17:26:30 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f1175006a73053df3c19379.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:7500:6a73:53d:f3c1:9379])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D659F1EC01B5;
+	Tue, 17 Aug 2021 19:26:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1629221183;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yGg8Z4A5xf8oGJMYeSLD5P5QfCrx/EVCnSOaaJXq7EU=;
-	b=B6XOq4YuyvfhipDRykN/9sY6QnzZsK4vpJivkTx+5j1+vtJ000USgqryvCgQ3GX32QLVf7
-	9QSmMbfCej5Q+go9b5yWkp57bFPg1J7DnXy3kGuSjmfiTQFuolIu4aAybiQlTV8FoSknuI
-	iY0IhJzFj4lm7bGgEyZZQUJMaFOasuM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-306-__HfGLjhPviorqPbYqcbHA-1; Tue, 17 Aug 2021 11:00:59 -0400
-X-MC-Unique: __HfGLjhPviorqPbYqcbHA-1
-Received: by mail-wm1-f69.google.com with SMTP id z186-20020a1c7ec30000b02902e6a27a9962so1058988wmc.3
-        for <linux-coco@lists.linux.dev>; Tue, 17 Aug 2021 08:00:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=yGg8Z4A5xf8oGJMYeSLD5P5QfCrx/EVCnSOaaJXq7EU=;
-        b=XV0+wsW9KLhk8gS3EwKi0HTKjxANo6kHYRLDUVgqdt/SxaxBa5szI6LzzRW007q450
-         vvjyt3Ac7e5UZkYmhgLOkLaOkDpY4hnRd+wCBC5Ua0Qw996rCZuLKvJ2Iunv/luBn4Pr
-         wzC/yKyYtg5xaffPqhGIQkTzo454Wvoe4rCSS2b+YWRLfpdVacd4Ag8BHQSJrkv1G/Dp
-         lrUUqVSBe8/SZ0vahoSsTsM8sO7k1gDGIUr0zTGVFXHsQECsOp1RjLtgEgCVPJhc3A1Z
-         8L6e6PJPHefST7JHMrqN3IOClOsPd0j7TMDiQ9Gistidlt62C61KmUUDWv7JqioxM7LP
-         OgqQ==
-X-Gm-Message-State: AOAM532O6E14CBasuCtg5XZml80Hsr/sUSrJTMyqNVYI0P0T8PJYl0FH
-	Y8GY+zGt4ZQBURCTCIgAAGEpzX+gx7BCMmWlvJCXeoWAaXZrrvhKFbeRiH1SW9IYuTJhetRmYK8
-	5L/rnKXqU3yEadI8cIETxVA==
-X-Received: by 2002:a5d:5646:: with SMTP id j6mr4609610wrw.314.1629212457442;
-        Tue, 17 Aug 2021 08:00:57 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyejLIxYhCB2E9DeA3krcwwCmu3fprlXT+ZDG/zyn7XM9Sp+8y2K9rvPbf9PtXB3ei0mDoIlA==
-X-Received: by 2002:a5d:5646:: with SMTP id j6mr4609574wrw.314.1629212457208;
-        Tue, 17 Aug 2021 08:00:57 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c65c6.dip0.t-ipconnect.de. [91.12.101.198])
-        by smtp.gmail.com with ESMTPSA id w14sm2674088wrt.23.2021.08.17.08.00.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Aug 2021 08:00:56 -0700 (PDT)
-To: Joerg Roedel <jroedel@suse.de>, Dave Hansen <dave.hansen@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>, "Kirill A. Shutemov"
- <kirill@shutemov.name>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <20210810062626.1012-1-kirill.shutemov@linux.intel.com>
- <20210810062626.1012-2-kirill.shutemov@linux.intel.com>
- <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
- <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
- <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
- <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
- <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
- <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
- <YRTZr/Pxyb8fsV58@suse.de> <25312492-5d67-e5b0-1a51-b6880f45a550@intel.com>
- <YRaGch+D5HPtUk9l@suse.de>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
-Message-ID: <b0228048-d2c2-6081-cfae-147e17acf785@redhat.com>
-Date: Tue, 17 Aug 2021 17:00:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=DNJ7vQbeipIQzVqoNzpebqgTcO1JqCy5VA8Wf98/yoc=;
+	b=g1khrBdad75yo8euxQQm3YXRG/lrWYNNavOA/yqhWhFYsf3+kH3fltXo+mjEjOxrwlbahA
+	RK9GLTwIgfvCxq0DaaKZDczWmhZrDoJ9xvCOsd6/ajPMdZM8QuqEalus8YDh1p3DgNhY7s
+	IIh11MTwqipTCOwGaV0F1PgcV7NUGrw=
+Date: Tue, 17 Aug 2021 19:27:02 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+	npmccallum@redhat.com, brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part1 RFC v4 15/36] x86/mm: Add support to validate
+ memory when changing C-bit
+Message-ID: <YRvxZtLkVNda9xwX@zn.tnic>
+References: <20210707181506.30489-1-brijesh.singh@amd.com>
+ <20210707181506.30489-16-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YRaGch+D5HPtUk9l@suse.de>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210707181506.30489-16-brijesh.singh@amd.com>
 
-On 13.08.21 16:49, Joerg Roedel wrote:
-> Hi Dave,
-> 
-> On Thu, Aug 12, 2021 at 07:14:20AM -0700, Dave Hansen wrote:
->> maybe_accept_page()
->> {
->> 	unsigned long huge_pfn = page_to_phys(page) / PMD_SIZE;
->>
->> 	/* Test the bit before taking any locks: */
->> 	if (test_bit(huge_pfn, &accepted_bitmap))
->> 		return;
->>
->> 	spin_lock_irq();
->> 	/* Retest inside the lock: */
->> 	if (test_bit(huge_pfn, &accepted_bitmap))
->> 		return;
->> 	tdx_accept_page(page, PMD_SIZE);
->> 	set_bit(huge_pfn, &accepted_bitmap));
->> 	spin_unlock_irq();
->> }
-> 
-> Yeah, this could work, but the global lock is likely the show-stopper
-> here. For SNP we also not allowed to double-validate, so we need
-> something that basically indicates 'validation-is-ongoing' on a per 2MB
-> basis.
-> 
-> I am not an mm expert, but a page flag probably doesn't work. The flag
-> would be on the head of the 2MB range and when that page is already used
-> somewhere else there is no guarantee that the flag will survive. But
-> correct me if I am wrong here :)
-> 
-> The other options I can come up with are not great either:
-> 
-> 	1) using an AVL bit in the direct-mapping PMD of that page. The
-> 	   page-table would only be walked if the bit in the
-> 	   accept_bitmap is clear. But I am not sure that all memory
-> 	   which needs to be validated is in the direct-map.
-> 
-> 	2) Use another page-sized bitmap. If the machine has more than
-> 	   64GB of memory the bit index is wrapped around. This
-> 	   shouldn't be a performance problem at runtime, if this page
-> 	   is only consulted when the valid bit is clear in the
-> 	   accept_bitmap.
-> 
-> MM experts could certainly come up with better ideas :)
+On Wed, Jul 07, 2021 at 01:14:45PM -0500, Brijesh Singh wrote:
+> +struct __packed psc_hdr {
+> +	u16 cur_entry;
+> +	u16 end_entry;
+> +	u32 reserved;
+> +};
+> +
+> +struct __packed psc_entry {
+> +	u64	cur_page	: 12,
+> +		gfn		: 40,
+> +		operation	: 4,
+> +		pagesize	: 1,
+> +		reserved	: 7;
+> +};
+> +
+> +struct __packed snp_psc_desc {
+> +	struct psc_hdr hdr;
+> +	struct psc_entry entries[VMGEXIT_PSC_MAX_ENTRY];
+> +};
 
+The majority of kernel code puts __packed after the struct definition,
+let's put it there too pls, out of the way.
 
-Not sure if already discussed, but what about making sure that free 
-pages are not a mixture (partially unaccepted, partially accepted).
+...
 
-You'd have to expose the pages in that granularity to the buddy 
-(__free_pages_core), indicating the state. You'd have to reject merging 
-pages of differing acceptance state.
+> +static int vmgexit_psc(struct snp_psc_desc *desc)
+> +{
+> +	int cur_entry, end_entry, ret;
+> +	struct snp_psc_desc *data;
+> +	struct ghcb_state state;
+> +	struct ghcb *ghcb;
+> +	struct psc_hdr *hdr;
+> +	unsigned long flags;
+> +
+> +	local_irq_save(flags);
+> +
+> +	ghcb = __sev_get_ghcb(&state);
+> +	if (unlikely(!ghcb))
+> +		panic("SEV-SNP: Failed to get GHCB\n");
+> +
+> +	/* Copy the input desc into GHCB shared buffer */
+> +	data = (struct snp_psc_desc *)ghcb->shared_buffer;
+> +	memcpy(ghcb->shared_buffer, desc, sizeof(*desc));
+> +
+> +	hdr = &data->hdr;
+> +	cur_entry = hdr->cur_entry;
+> +	end_entry = hdr->end_entry;
+> +
+> +	/*
+> +	 * As per the GHCB specification, the hypervisor can resume the guest
+> +	 * before processing all the entries. Checks whether all the entries
+> +	 * are processed. If not, then keep retrying.
+> +	 *
+> +	 * The stragtegy here is to wait for the hypervisor to change the page
+> +	 * state in the RMP table before guest access the memory pages. If the
+> +	 * page state was not successful, then later memory access will result
+> +	 * in the crash.
+> +	 */
+> +	while (hdr->cur_entry <= hdr->end_entry) {
+> +		ghcb_set_sw_scratch(ghcb, (u64)__pa(data));
+> +
+> +		ret = sev_es_ghcb_hv_call(ghcb, NULL, SVM_VMGEXIT_PSC, 0, 0);
+> +
+> +		/*
+> +		 * Page State Change VMGEXIT can pass error code through
+> +		 * exit_info_2.
+> +		 */
+> +		if (WARN(ret || ghcb->save.sw_exit_info_2,
+> +			 "SEV-SNP: page state change failed ret=%d exit_info_2=%llx\n",
+> +			 ret, ghcb->save.sw_exit_info_2))
+> +			return 1;
 
-Accepting a page would then be handled outside of the zone lock, 
-completely controlled by the state.
+Yikes, you return here and below with interrupts disabled.
 
-So a page in the buddy would either be completely accepted or completely 
-unaccepted, signaled e.g., by PageOffline().
+All your returns need to be "goto out;" instead where you do
 
-Consequently, when allocating a 4KiB page, you'd split an unaccepted 
-2MiB page into separate unaccepted pages. You'd grab one of the 
-unaccepted 4KiB pages and accept it before initializing it and handing 
-it out.
+out:
+        __sev_put_ghcb(&state);
+        local_irq_restore(flags);
+
+Yap, you very likely need to put the GHCB too.
+
+> +		/*
+> +		 * Lets do some sanity check that entry processing is not going
+> +		 * backward. This will happen only if hypervisor is tricking us.
+> +		 */
+> +		if (WARN((hdr->end_entry > end_entry) || (cur_entry > hdr->cur_entry),
+> +			"SEV-SNP: page state change processing going backward, end_entry "
+> +			"(expected %d got %d) cur_entry (expected %d got %d)\n",
+> +			end_entry, hdr->end_entry, cur_entry, hdr->cur_entry))
+> +			return 1;
+
+WARNING: quoted string split across lines
+#293: FILE: arch/x86/kernel/sev.c:750:
++			"SEV-SNP: page state change processing going backward, end_entry "
++			"(expected %d got %d) cur_entry (expected %d got %d)\n",
+
+If you're wondering what to do, yes, you can really stretch that string
+and shorten it too:
+
+                if (WARN((hdr->end_entry > end_entry) || (cur_entry > hdr->cur_entry),
+"SEV-SNP: PSC processing going backwards, end_entry %d (got %d) cur_entry: %d (got %d)\n",
+                         end_entry, hdr->end_entry, cur_entry, hdr->cur_entry))
+                        return 1;
+
+so that it fits on a single line and grepping can find it.
+
+> +		/* Lets verify that reserved bit is not set in the header*/
+> +		if (WARN(hdr->reserved, "Reserved bit is set in the PSC header\n"))
+
+psc_entry has a ->reserved field too and since we're iterating over the
+entries...
+
+> +			return 1;
+> +	}
+> +
+> +	__sev_put_ghcb(&state);
+> +	local_irq_restore(flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static void __set_page_state(struct snp_psc_desc *data, unsigned long vaddr,
+> +			     unsigned long vaddr_end, int op)
+> +{
+> +	struct psc_hdr *hdr;
+> +	struct psc_entry *e;
+> +	unsigned long pfn;
+> +	int i;
+> +
+> +	hdr = &data->hdr;
+> +	e = data->entries;
+> +
+> +	memset(data, 0, sizeof(*data));
+> +	i = 0;
+> +
+> +	while (vaddr < vaddr_end) {
+> +		if (is_vmalloc_addr((void *)vaddr))
+> +			pfn = vmalloc_to_pfn((void *)vaddr);
+> +		else
+> +			pfn = __pa(vaddr) >> PAGE_SHIFT;
+> +
+> +		e->gfn = pfn;
+> +		e->operation = op;
+> +		hdr->end_entry = i;
+> +
+> +		/*
+> +		 * The GHCB specification provides the flexibility to
+> +		 * use either 4K or 2MB page size in the RMP table.
+> +		 * The current SNP support does not keep track of the
+> +		 * page size used in the RMP table. To avoid the
+> +		 * overlap request, use the 4K page size in the RMP
+> +		 * table.
+> +		 */
+> +		e->pagesize = RMP_PG_SIZE_4K;
+> +
+> +		vaddr = vaddr + PAGE_SIZE;
+> +		e++;
+> +		i++;
+> +	}
+> +
+> +	/* Terminate the guest on page state change failure. */
+
+That comment is kinda obvious :)
+
+> +	if (vmgexit_psc(data))
+> +		sev_es_terminate(1, GHCB_TERM_PSC);
+> +}
+> +
+> +static void set_page_state(unsigned long vaddr, unsigned int npages, int op)
+> +{
+> +	unsigned long vaddr_end, next_vaddr;
+> +	struct snp_psc_desc *desc;
+> +
+> +	vaddr = vaddr & PAGE_MASK;
+> +	vaddr_end = vaddr + (npages << PAGE_SHIFT);
+> +
+> +	desc = kmalloc(sizeof(*desc), GFP_KERNEL_ACCOUNT);
+
+kzalloc() so that you don't have to memset() later in
+__set_page_state().
+
+> +	if (!desc)
+> +		panic("failed to allocate memory");
+
+Make that error message more distinctive so that *if* it happens, one
+can pinpoint the place in the code where the panic comes from.
+
+> +	while (vaddr < vaddr_end) {
+> +		/*
+> +		 * Calculate the last vaddr that can be fit in one
+> +		 * struct snp_psc_desc.
+> +		 */
+> +		next_vaddr = min_t(unsigned long, vaddr_end,
+> +				(VMGEXIT_PSC_MAX_ENTRY * PAGE_SIZE) + vaddr);
+> +
+> +		__set_page_state(desc, vaddr, next_vaddr, op);
+> +
+> +		vaddr = next_vaddr;
+> +	}
+> +
+> +	kfree(desc);
+> +}
+> +
 
 -- 
-Thanks,
+Regards/Gruss,
+    Boris.
 
-David / dhildenb
-
+https://people.kernel.org/tglx/notes-about-netiquette
