@@ -1,106 +1,113 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E13B72
-	for <linux-coco@lists.linux.dev>; Thu, 19 Aug 2021 09:45:02 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0f6a00d82486aa7bad8753.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:6a00:d824:86aa:7bad:8753])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD7472
+	for <linux-coco@lists.linux.dev>; Thu, 19 Aug 2021 09:55:11 +0000 (UTC)
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 77C831EC046C;
-	Thu, 19 Aug 2021 11:44:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1629366296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=uwmNYKgUvDl1MbeSM8Zbb3wFcWRj1jNc+CWB7kbhWHw=;
-	b=lfXxT/rKfaIm0ZtPpptiTqf0qCun2SrPQ6oRQQ0UoETMJZABV80vUnbMS9+m6inEZ15Hjp
-	bp4UuLvXP3Id5wKidovffjUau1hQYozxYFQHk5JdMNAger0/gwaVe39YAwkH/9RoG7TpS8
-	9so/nY/sffmLI3KXVeb2zWHB3XSDeqE=
-Date: Thu, 19 Aug 2021 11:45:35 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3A63E200B8;
+	Thu, 19 Aug 2021 09:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1629366910; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pBx7UvjXszKNzjrsiqHLkrPggQDMMUiJVYYt4I/aFBY=;
+	b=Gb3P5uQsliDPSyaSdPwt9DDA/+NZsn8pb8lq88jTIZv9/3O282MkGBKjMJd02MfQAmRiux
+	80YRH5jd6dF9pnmUxVfjcUCM9qYttgOcCAPatQS1HNpTDeChF5LVaQitWdRtlPCjp6h+e5
+	GG1YL5EYBriHTJE6nc5LgGgpfQypIlw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1629366910;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pBx7UvjXszKNzjrsiqHLkrPggQDMMUiJVYYt4I/aFBY=;
+	b=ZTvPUcKZrNXECsQm0diB42W33txsl3l+81DrtzSPnII0dabhm0Flu3KcbMI2L+aqhwYkvs
+	c7v2zmNCoxx6QICg==
+Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 6602F1389C;
+	Thu, 19 Aug 2021 09:55:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap1.suse-dmz.suse.de with ESMTPSA
+	id iY8kF30qHmGZNAAAGKfGzw
+	(envelope-from <jroedel@suse.de>); Thu, 19 Aug 2021 09:55:09 +0000
+Date: Thu, 19 Aug 2021 11:55:07 +0200
+From: Joerg Roedel <jroedel@suse.de>
+To: David Hildenbrand <david@redhat.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Andi Kleen <ak@linux.intel.com>,
+	"Kirill A. Shutemov" <kirill@shutemov.name>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
-	brijesh.ksingh@gmail.com
-Subject: Re: [PATCH Part1 RFC v4 22/36] x86/sev: move MSR-based VMGEXITs for
- CPUID to helper
-Message-ID: <YR4oP+PDnmJbvfKR@zn.tnic>
-References: <20210707181506.30489-1-brijesh.singh@amd.com>
- <20210707181506.30489-23-brijesh.singh@amd.com>
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH 1/5] mm: Add support for unaccepted memory
+Message-ID: <YR4qexszQ+Wxqe5r@suse.de>
+References: <d091b333-9ef8-ac32-58c5-c325d29f26d7@intel.com>
+ <9748c07c-4e59-89d0-f425-c57f778d1b42@linux.intel.com>
+ <17b6a3a3-bd7d-f57e-8762-96258b16247a@intel.com>
+ <796a4b20-7fa3-3086-efa0-2f728f35ae06@linux.intel.com>
+ <f445da8b-c044-3765-65f2-f911dbf6a507@intel.com>
+ <3caf5e73-c104-0057-680c-7851476e67ac@linux.intel.com>
+ <YRTZr/Pxyb8fsV58@suse.de>
+ <25312492-5d67-e5b0-1a51-b6880f45a550@intel.com>
+ <YRaGch+D5HPtUk9l@suse.de>
+ <b0228048-d2c2-6081-cfae-147e17acf785@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210707181506.30489-23-brijesh.singh@amd.com>
+In-Reply-To: <b0228048-d2c2-6081-cfae-147e17acf785@redhat.com>
 
-Finally drop this bouncing npmccallum at RH email address from the Cc
-list.
+Hi David,
 
-On Wed, Jul 07, 2021 at 01:14:52PM -0500, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
+On Tue, Aug 17, 2021 at 05:00:55PM +0200, David Hildenbrand wrote:
+> Not sure if already discussed, but what about making sure that free pages
+> are not a mixture (partially unaccepted, partially accepted).
 > 
-> This code will also be used later for SEV-SNP-validated CPUID code in
-> some cases, so move it to a common helper.
+> You'd have to expose the pages in that granularity to the buddy
+> (__free_pages_core), indicating the state. You'd have to reject merging
+> pages of differing acceptance state.
 > 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/sev-shared.c | 84 +++++++++++++++++++++++++-----------
->  1 file changed, 58 insertions(+), 26 deletions(-)
+> Accepting a page would then be handled outside of the zone lock, completely
+> controlled by the state.
 > 
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index be4025f14b4f..4884de256a49 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -184,6 +184,58 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
->  	return ret;
->  }
->  
-> +static int sev_es_cpuid_msr_proto(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
+> So a page in the buddy would either be completely accepted or completely
+> unaccepted, signaled e.g., by PageOffline().
+> 
+> Consequently, when allocating a 4KiB page, you'd split an unaccepted 2MiB
+> page into separate unaccepted pages. You'd grab one of the unaccepted 4KiB
+> pages and accept it before initializing it and handing it out.
 
-Since it is not only SEV-ES, then it should be prefixed with "sev_" like
-we do for the other such functions. I guess simply
+Yes, that is the alternative to over-accepting memory on allocation. But
+the problem here is that accepting/validating memory is an expensive
+operation which also requires a hypercall. The hypercalls on SNP and TDX
+can accept/validate multiple pages in one call. So the recommendation is
+to accept memory in bigger chunks, like the 2MB that have been proposed.
 
-	sev_cpuid()
+Only accepting memory in allocation size might be too slow, as there is
+a lot of code doing order-0 allocations. I think this approach will also
+be more intrusive to the page alloctor, as it needs more changes on the
+free path to check for acceptance states before pages can be merged.
 
-?
+Regards,
 
-> +				  u32 *ecx, u32 *edx)
-> +{
-> +	u64 val;
-> +
-> +	if (eax) {
-
-What's the protection for? Is it ever going to be called with NULL ptrs
-for the regs? That's not the case in this patchset at least...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+	Joerg
