@@ -1,33 +1,33 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam08on2065.outbound.protection.outlook.com [40.107.100.65])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2065.outbound.protection.outlook.com [40.107.237.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82333FC3
-	for <linux-coco@lists.linux.dev>; Fri, 20 Aug 2021 15:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA013FC2
+	for <linux-coco@lists.linux.dev>; Fri, 20 Aug 2021 15:21:29 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HBAGl7AwNfI+GiEzUPB3q9/EnbHQAS2X9pYnfY6j76dj2ieE/q6iWKTzWMIqi8UNA+4belGjt8/VyWLJP/8+5tzc/MkmBJvpxt2PDSPtDJuiQp3HF3ML6el5Rc3hHAT69btrcvXO7MRAdypbHhsjyyKxvJ4OpUA20glNgZ+dvtZsCpGoqhREpLo7AaFip7QZBR5UmGYxeE9smg1B1Xcm3YsKDmMHor1Nue2XflUJUemOnIDdgAorGfUHRk9bZoZ8g3/WJjKXrx7dMScLLoOac/3awQded9tQUwTZHhvOGH35OOYqxzm0QqEquOStYFVFwBameN1biOkcH0D68/S6JQ==
+ b=apVRyn0fK6VtDpQtyZybtenjds7NWgLvjVanmMtVMSg+Y5G8+U1AoBV/hdtljGEEIDJxwQcG/Jnq/cEA5CmTWqpLPAG/CtnOclUunBLUYwDHcK91BqPLIMxMm4xgg7WkgGth7k6OaMVH2ySqPSrVIif6nzLtLAqyRcmQKcJ1rvH+ScVuIZ3mkqe0Cn0OXEMKozFis5Ga2FoZpGBChvZxkl3kcaGuJnO2ZOKgbg+niR6ihEag97Ft8yvnJpoBGfZ3OEv1mJNBjKneJj9BGmQz/7NlJqCaoShAb8dGmg9p/fOz0HrpJ7txLlhdI2MX4nzAxWo+lw0vRZr7uhDtK4JgNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Leho8Jmkv5yLql5LB5x4IW1bbgPiHRPzBpGLROjWfHc=;
- b=oRqaMYPvlcGRGe85PPSSO5lhaaCXfNc9PiQi8lGCMAM/0CVClnn/ZJdGbyncnfV1heyMvzmSqAEP8UHkZhPH4UfIJoqMshLEkCPnPoQRourqXGwjPpHKNqasnHZQcofTdAm7XVyKHyzLnHH94PPxwabByH+VnD+U+4xQAjkTxW9B+JFwvJpbIJQYffPZEb5rlLBCUvruLWxI4E/Ex12CWv3fqpwRX8ujftTe+BmXDa0+Jwz2T0Wskx/6WXHsEDWKPhWbnTQCWSSOBAHeSXCb83Qugny0sbt/JYUQ+E/9niBtkoO2yZupUAaGFF1XNxOtV9Y4N0NWAMPsDzxiDdlzdw==
+ bh=g94HUF5z//jEzl5Mw8OJ7CXYsyA5fsqJXW0iW+/UsVw=;
+ b=D5qrrZCZL/Brsid9zpLGNe6PN236D385EnOpT4BIl5NN3VCJRBRe/YreMKenbzDHivET47Lftr7kso9H3YF0NPrdSdwSrK5QXwfbEyUiWbAxOifnqkwww7NoTgcYZsmBDdyDYZwBccu9SerKJ4bVHAsksKQmdt9a8TbiJEwoodvNVA+/srPOpF7vDh+tqx/KTTnSAlkPirAT1d3iSuc+FTLCHFRSZU86tBTVn84o3z3lMl530RZEaxuc/WGlgcHcPbkGLJvXIa8yg4Vkvu4lYrQtke8109FH0q43nJURfbVLlHgM9L4w7UnBkjGncjFsUb3RSKjcEDSw2gq9QPLw/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Leho8Jmkv5yLql5LB5x4IW1bbgPiHRPzBpGLROjWfHc=;
- b=MeOFTVnfWalVA5MSID8xxswBtMV6NQIBSQA7JbsfNAsB4AcEssW6rlZdLPmDrVe7oDP2cQN6aFbG6PBhDK0LllJNTQv3GXd0lzg2Rzh0wAUd2/8pqaTdLqhj3m7iAoPevrhNRBTWxqND+xvZvxzE+YWK7af5UtL1tE9fcgWLCwM=
+ bh=g94HUF5z//jEzl5Mw8OJ7CXYsyA5fsqJXW0iW+/UsVw=;
+ b=5nVPuLzi/uTJw40UQUMUZKGmAjeH2Df+TC95NDWRiWVm4pM9kWoVZkJ2Qa/k6JyE+nqlFWKzcqiLSohJZZqldqe2kl/ogTHF0oEL8vEXr3Ll+549PZjRpZHTX/hLo1dMM+GmYg3ChmOVYAyTIEoNsnvKIqgnr8ONH7lBH2nOSEM=
 Authentication-Results: kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=none action=none header.from=amd.com;
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SA0PR12MB4557.namprd12.prod.outlook.com (2603:10b6:806:9d::10) with
+ by SN6PR12MB2638.namprd12.prod.outlook.com (2603:10b6:805:6f::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19; Fri, 20 Aug
- 2021 15:21:20 +0000
+ 2021 15:21:22 +0000
 Received: from SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
  ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4436.019; Fri, 20 Aug 2021
- 15:21:20 +0000
+ 15:21:22 +0000
 From: Brijesh Singh <brijesh.singh@amd.com>
 To: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -65,9 +65,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
 	marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com,
 	Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH Part1 v5 25/38] KVM: x86: move lookup of indexed CPUID leafs to helper
-Date: Fri, 20 Aug 2021 10:19:20 -0500
-Message-Id: <20210820151933.22401-26-brijesh.singh@amd.com>
+Subject: [PATCH Part1 v5 27/38] x86/boot: Add Confidential Computing type to setup_data
+Date: Fri, 20 Aug 2021 10:19:22 -0500
+Message-Id: <20210820151933.22401-28-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210820151933.22401-1-brijesh.singh@amd.com>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
@@ -82,140 +82,133 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 15:21:18 +0000
+Received: from sbrijesh-desktop.amd.com (165.204.77.1) by SA9P223CA0002.NAMP223.PROD.OUTLOOK.COM (2603:10b6:806:26::7) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.19 via Frontend Transport; Fri, 20 Aug 2021 15:21:21 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 87d552e6-b495-4996-3257-08d963ee2978
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4557:
+X-MS-Office365-Filtering-Correlation-Id: 69b34526-d1a9-4fa3-f3b4-08d963ee2b01
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2638:
 X-MS-Exchange-Transport-Forked: True
 X-Microsoft-Antispam-PRVS:
-	<SA0PR12MB45578B7DD682164A217D3934E5C19@SA0PR12MB4557.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2150;
+	<SN6PR12MB26386CCAC6B778BE7BE83280E5C19@SN6PR12MB2638.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	GIRe7PU1d0CLqbUOpp0gBMy4UIEHppyrODbISf9rqmXcY/n6v846cGcFhAgdq0eWgyseTszsUjASozOCAzJYhaynwmlugqcH2smk3WXy+eabDrczy0ZeaU74p3ivwACUy12cWd3t8TIv+18N1nEBQAHIVfYlS+6j5877CnqRwhN8kJ0vtSZStj3jZcRzRLGXhB1ZLDF+q99sT6S3nUcHwrO7zsGHR3Jl2dmeh0vLKtHlxhYMK+asjyjw5UTnVYY2eGh3ZAshsXtyeI0BOMi9FMb15+WUwmxU7CvPFNJKkmmOUkCE2FxNxGHr1EhQQLDafep+fnFIlr/4kq/65rbXO2dFBoROwjRIFwZtPJu2SxDx7umjtgmvfBJ3cH7sJHOlieIAjojFgNazvQtQaEgnzgDAW0KiJhw9OyHS9H1Ev1Ga/a4wfga1jkqFL+xmYWJRAY9GH89S9FOXd+1u19ysYgMxej0OdKO7tkspZsunSYWJAmuQfMollarYy6I9g2ou9dJN00lhsY9MAUgJ3G2rqcdgYyy7yYkPRWKoOCSf1zrlY/QB1a/7SGesFBrcRAyYQIoNLiDSf2D3xSKIvrhmGUw89ovTGqXXUja4ffpe55K1butM+oFDVthD6+ucS/Hbx6lvzanMUPln8HvqUHYlfRmGyzZGqitYfmx+uji+fw0VnfJ2BHUFvX9aGKdNHsznjAsDzU0kDK3fSLbVbfZrww==
+	wNo43tdMD6ZuOnZJmU3SVt1aLsDWz9U76p5ZvlvVmBYb1/erXU/eGq3D5DRLUgACVaxuP1arkx2DxfouT3AaK2D3GBB2LNF5X2ELdOzKVl1uYa3L2sUxJqwbCMjHm+kp5wb96uPg1kN697rs2/2RVWpf71HTXuDtawNlrYtVmSTnR6+MnmaLapMvV3XOBO5tUc04nPrXi55egclFN8693jDIona7TvQFcvhDtx9C2PsHuN9iKRrzCt1VGHg1d7oDkjArJzuvJg+xPlWohxbOMm9CUQFC4mjSgZ5Vqn/KY6hvejJ9D5awa81CBzTO7dehzt/3TtrCFIcmlnOFwQ8lO3ucAn8mUPF3WiS24Thh7M4XOJeAShBC9GcexHmDs07p6PpLksQb9DM6GqoWCApO5T4Io6eQN6hC2pHYtj4bfMpvki6Fk28bBK3eNX2dWZYWzWssnFJFs5rNKJiGBijsvp7kGmXsyQoSaIis1ioHqOFHEK5+u1AVxXlPJyXMtSm1mQnQXFLJUOfMixDutSFe5MRlrYnirK05WzVWj3o2vWMleUps3H3tbQV5UDwJ0sBrs6L0jDGEikqNj/WRVYH5/CuZLbVgEyASLez8SC8MbavrrW6WlNWDs0qHKuyt1C9wviCY8qWWOJlFRcVQWQ0zIaZGHYydYM2qe7tX03gYUDXCXWC9GXM8jsbFyEOBXtNe+UyjJ2W1G8SfM87qSYkbIQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(366004)(39860400002)(136003)(376002)(66476007)(66946007)(4326008)(478600001)(44832011)(956004)(2616005)(7696005)(7406005)(38350700002)(52116002)(66556008)(7416002)(38100700002)(6666004)(36756003)(186003)(316002)(8936002)(2906002)(83380400001)(86362001)(26005)(54906003)(1076003)(6486002)(8676002)(5660300002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(39860400002)(346002)(376002)(366004)(8676002)(8936002)(86362001)(316002)(54906003)(1076003)(478600001)(2616005)(44832011)(2906002)(4326008)(7406005)(956004)(66556008)(7416002)(66476007)(186003)(66946007)(26005)(5660300002)(36756003)(7696005)(52116002)(38100700002)(6486002)(38350700002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RFGDeabkwHdw9A5ABB0Lam0EFgog80Qo729/bzQ4ZL9J39S4tnphfykg68Yg?=
- =?us-ascii?Q?htgrAxD20ehskg2Q0DTeZBjO6H8CKLEPg3GYthKLAhi85RR6sAr0nntpe35g?=
- =?us-ascii?Q?DOyPxsDhv62x1rP3rTI0DcVg3MpkCDWBd/dVnDZnwmtEHZEd/DjkVjV9Hq6k?=
- =?us-ascii?Q?10x6iS/8l41NHvUzhwsjKWz5ycOAutSlwp9ALGMiT7mzw23H6tPhLd4LCX5D?=
- =?us-ascii?Q?F7/jdLj/l4Bvh8UQqiLG8pw6n0irW1a9IT/erPVmTWxISYxdm491AwmvkLBT?=
- =?us-ascii?Q?aOGUT1po8bSQyOhLZl53AKkX8oyrkWahhM4tFfR/O4mJDzkuVMFSNo98ZEi6?=
- =?us-ascii?Q?AZZvZ6LxoINm8+EwVf3zhjJBrPAdwnlokYVkifmSeFH/+6Z6NpbjtfIQqwxd?=
- =?us-ascii?Q?wug9/xPNHPEL2thUPi4/o88G5U0nsCjxCRnFjqnbiz0s/nY11zd2YkyTIo/k?=
- =?us-ascii?Q?7qD7axzYn2Spma6h2zkjb1bPU1La2VW6QEHS2RLeiLhEye3mDk2mmNJa2VVi?=
- =?us-ascii?Q?tajqeXwAcRSY3JODMPTWSZOgkXHznERILjqrti00qow244lPv23yoQGbrX1H?=
- =?us-ascii?Q?Xa/00SfdecN3GHR/E8TXw1Ib4WGvrO9YuEivrmGbDw3i/dH8otf7vo5h+sw/?=
- =?us-ascii?Q?GXkg/UaoeE6+yYgPridq3xiRRJghbKwj6cmmpJ6xfw+RvgYMzWqShicDNnoE?=
- =?us-ascii?Q?KcAtE8DYFLZIaeXS1WgUYDNv9FBtVC7bWzorxKrzjEgbW2s9MA06WLaXP5Lm?=
- =?us-ascii?Q?3Ggc3NdLw9XIKQ5/5wGi+abB+KPw8q9uN5E+rStzBi0CcxXIRIYetvzuVpcS?=
- =?us-ascii?Q?y5TiGDn6i+Bn5PkqNBJ3lZMchTo3gbV9yu1mtyM0dyPjf2peZPraycj8HFsG?=
- =?us-ascii?Q?QvLSF73Wa1t20y5ilClRNdQ/TdYzUiUH7yJk+1J3630MA8PN/LEzfXkUoBXZ?=
- =?us-ascii?Q?cBAzX/i7+r8hFkeYdRYCS2tzNgLoyvEj3YUJwB+qmE5ji8kOn5PFjTgBKOhe?=
- =?us-ascii?Q?0G5Kv7gV78xbrb/hx3xhADwgGfhT24tdscbWmTmA+JjwSwuniznkZ3Ha88y3?=
- =?us-ascii?Q?SbpxaHYijpGYZwFMMURf+U0lQML58PY5oRAul1pP9Bj51wsOHPGTi3rIB/Sn?=
- =?us-ascii?Q?osL9yPT6t2hpXiFtn7Vpb1EiaXab+AOmkxpmAm91P0bJ9HuDNRUHm8oPKZhu?=
- =?us-ascii?Q?q0yXj32SghYDm5SiI1azZkXuP5rUG2Rx6Y0QcRFZaMK59EXhyHii9HIkGFXw?=
- =?us-ascii?Q?t4s2y6eFO42qR9g7RTii031bba+VjbES1d6uepvN/0ibCbgWyyaIpU2YEteh?=
- =?us-ascii?Q?rTnVxbpRQXONhc8eYfTQalfo?=
+	=?us-ascii?Q?sZf+syVFMfOU9/pxzA9QImpBD/sXH/jSwNoGm6N8W9zZU4GsAbeonfL/mAIp?=
+ =?us-ascii?Q?BPOh9BnORJZqXgOyGEeUOMVKqElpQpMsrlb2dhccr0vvpFBkK9ZYIEJ0kVMD?=
+ =?us-ascii?Q?sKP+ish+xDGIwhUAsV+JZ0t0zqMhlJE7C8nhZhgdgE4Q0G3IjPub3jx5IKA2?=
+ =?us-ascii?Q?ikVsUdt0VBOx4j3+twlaBbnimUQZbgizNg3IvLRVTOFXprnjNcqzaT9Z+lQr?=
+ =?us-ascii?Q?pcXvg+XTxY7Wwsnqg4TtTMxatnor5l1UWivFqZ4tnt7OYGfGE6Ok0CtHpOkw?=
+ =?us-ascii?Q?xhMbfnjgtaW3xr5ABff9FXIN0tukfZYGP6KT/CPedZS/YlLXaercUwVDOwpO?=
+ =?us-ascii?Q?EJMpTaNEY2TbMJXXyRud9lVgmAGx1TZZf1eGK3GBx7K+PeqEYNm7KIMtUsCs?=
+ =?us-ascii?Q?w3CMaI7+BN6dXn9P9DTYAw6uqirf57O655hoP5bZb51UCEyBOFLcY9pVa5Lo?=
+ =?us-ascii?Q?N4Y0V2QoacPUuUWlbpqHBcZcniTZTJ1rF28VKHmX95PCZWIDYaA7hsGvcaHu?=
+ =?us-ascii?Q?2umK7SC3lX+zjAMT5oQb9HqRJhuF6LNP1o3Au+D3QVoQClqpL6/+xbVM/o4v?=
+ =?us-ascii?Q?PQpAARm8RtiZxowL8pl7CPwdK2zTSmO8LWGIF55S/KWi/+DX2YGMnoGiIWG1?=
+ =?us-ascii?Q?l144bb6oVD/tnDITQu73M5HEPecE/pUlJLiKVDaGqCxEr5zRyDMUHuC9y7/y?=
+ =?us-ascii?Q?1SezQVNiYxsJFX6dwz/f3y3I3NoRy1duMKQoL25RFkVnc+yItoPWy15eCpNk?=
+ =?us-ascii?Q?iyXHQu3rySKvaJuGm3uGye7aIv6D3cKXcb35GD+Znv3s2WTBTEmJSZ4RAm2P?=
+ =?us-ascii?Q?kTrq7i8GCm8zWySYejlWJ/XXlRLhw7FIfjT1c4NbkB9fjmCqm7xRvB3Lru4T?=
+ =?us-ascii?Q?+I7kQNrOo6MAoM5l2FGzM563JQCvQ4lIuaTmrrIFbgNXyePHinWCdaEhA7/w?=
+ =?us-ascii?Q?wZpHhYZ5QSmTsYZtxiwBoik2fNFoZkRp/PIcjyKE8bKhtJXv5Zm+XBTrNJxy?=
+ =?us-ascii?Q?5hsHCOcyqBWHbygidzsUGQEwGsLKnBacU1LayvVUIBnT+zpWxRB1vtuZZ2o0?=
+ =?us-ascii?Q?CvK/dl4T7SEjvajIYT49VAFUIgiCuTLp5HjfoXmzMt1tXUorvqxOHf43sXMe?=
+ =?us-ascii?Q?cNrDUc0fd6v6aRRhK4kYHiJwDWFtIieDE3Scax/WFVoHK+w5Y5kY0npxADpp?=
+ =?us-ascii?Q?NxwVFDc2Mymu0teQ/m2Y8/g+OESsPYnl89E4wT4qg2zbtpuwrkdAd3fUJh0v?=
+ =?us-ascii?Q?Am5/BWmJbIsGeLCUgfZXG2fvx5cINITOj1qFx3cE+K0OYiPbDqa6IWvT7ikU?=
+ =?us-ascii?Q?Ww8CivxyiDAuuizIlSDlnkwn?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87d552e6-b495-4996-3257-08d963ee2978
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69b34526-d1a9-4fa3-f3b4-08d963ee2b01
 X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 15:21:20.0224
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2021 15:21:22.6149
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tpsMZ7O858Qb73Pq8Z0sYXXfjFVba7wwe02KcVOOgvLiHTjlZHIjnK+C11mF1spvnoQ7Ctv3mqVAEKiHPZaPlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4557
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3VmFFpMN4bqBehqvbyZ+xNuJ8CGlT0d7YDwycDQGpOwiRNz44531fwnlyyHxy/UtRUPKK3C8LrJ7VDjttYgbTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2638
 
-From: Michael Roth <michael.roth@amd.com>
+While launching the encrypted guests, the hypervisor may need to provide
+some additional information during the guest boot. When booting under the
+EFI based BIOS, the EFI configuration table contains an entry for the
+confidential computing blob that contains the required information.
 
-Determining which CPUID leafs have significant ECX/index values is
-also needed by guest kernel code when doing SEV-SNP-validated CPUID
-lookups. Move this to common code to keep future updates in sync.
+To support booting encrypted guests on non-EFI VM, the hypervisor needs to
+pass this additional information to the kernel with a different method.
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
+For this purpose, introduce SETUP_CC_BLOB type in setup_data to hold the
+physical address of the confidential computing blob location. The boot
+loader or hypervisor may choose to use this method instead of EFI
+configuration table. The CC blob location scanning should give preference
+to setup_data data over the EFI configuration table.
+
+In AMD SEV-SNP, the CC blob contains the address of the secrets and CPUID
+pages. The secrets page includes information such as a VM to PSP
+communication key and CPUID page contains PSP filtered CPUID values.
+Define the AMD SEV confidential computing blob structure.
+
+While at it, define the EFI GUID for the confidential computing blob.
+
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/cpuid.h | 26 ++++++++++++++++++++++++++
- arch/x86/kvm/cpuid.c         | 17 ++---------------
- 2 files changed, 28 insertions(+), 15 deletions(-)
- create mode 100644 arch/x86/include/asm/cpuid.h
+ arch/x86/include/asm/sev.h            | 12 ++++++++++++
+ arch/x86/include/uapi/asm/bootparam.h |  1 +
+ include/linux/efi.h                   |  1 +
+ 3 files changed, 14 insertions(+)
 
-diff --git a/arch/x86/include/asm/cpuid.h b/arch/x86/include/asm/cpuid.h
-new file mode 100644
-index 000000000000..61426eb1f665
---- /dev/null
-+++ b/arch/x86/include/asm/cpuid.h
-@@ -0,0 +1,26 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_CPUID_H
-+#define _ASM_X86_CPUID_H
-+
-+static __always_inline bool cpuid_function_is_indexed(u32 function)
-+{
-+	switch (function) {
-+	case 4:
-+	case 7:
-+	case 0xb:
-+	case 0xd:
-+	case 0xf:
-+	case 0x10:
-+	case 0x12:
-+	case 0x14:
-+	case 0x17:
-+	case 0x18:
-+	case 0x1f:
-+	case 0x8000001d:
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+#endif /* _ASM_X86_CPUID_H */
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 739be5da3bca..9ef13775f29e 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -19,6 +19,7 @@
- #include <asm/user.h>
- #include <asm/fpu/xstate.h>
- #include <asm/sgx.h>
-+#include <asm/cpuid.h>
- #include "cpuid.h"
- #include "lapic.h"
- #include "mmu.h"
-@@ -608,22 +609,8 @@ static struct kvm_cpuid_entry2 *do_host_cpuid(struct kvm_cpuid_array *array,
- 	cpuid_count(entry->function, entry->index,
- 		    &entry->eax, &entry->ebx, &entry->ecx, &entry->edx);
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 7f063127aa66..534fa1c4c881 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -44,6 +44,18 @@ struct es_em_ctxt {
  
--	switch (function) {
--	case 4:
--	case 7:
--	case 0xb:
--	case 0xd:
--	case 0xf:
--	case 0x10:
--	case 0x12:
--	case 0x14:
--	case 0x17:
--	case 0x18:
--	case 0x1f:
--	case 0x8000001d:
-+	if (cpuid_function_is_indexed(function))
- 		entry->flags |= KVM_CPUID_FLAG_SIGNIFCANT_INDEX;
--		break;
--	}
+ void do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code);
  
- 	return entry;
- }
++/* AMD SEV Confidential computing blob structure */
++#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
++struct cc_blob_sev_info {
++	u32 magic;
++	u16 version;
++	u16 reserved;
++	u64 secrets_phys;
++	u32 secrets_len;
++	u64 cpuid_phys;
++	u32 cpuid_len;
++};
++
+ static inline u64 lower_bits(u64 val, unsigned int bits)
+ {
+ 	u64 mask = (1ULL << bits) - 1;
+diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
+index b25d3f82c2f3..1ac5acca72ce 100644
+--- a/arch/x86/include/uapi/asm/bootparam.h
++++ b/arch/x86/include/uapi/asm/bootparam.h
+@@ -10,6 +10,7 @@
+ #define SETUP_EFI			4
+ #define SETUP_APPLE_PROPERTIES		5
+ #define SETUP_JAILHOUSE			6
++#define SETUP_CC_BLOB			7
+ 
+ #define SETUP_INDIRECT			(1<<31)
+ 
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 6b5d36babfcc..75aeb2a56888 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -344,6 +344,7 @@ void efi_native_runtime_setup(void);
+ #define EFI_CERT_SHA256_GUID			EFI_GUID(0xc1c41626, 0x504c, 0x4092, 0xac, 0xa9, 0x41, 0xf9, 0x36, 0x93, 0x43, 0x28)
+ #define EFI_CERT_X509_GUID			EFI_GUID(0xa5c059a1, 0x94e4, 0x4aa7, 0x87, 0xb5, 0xab, 0x15, 0x5c, 0x2b, 0xf0, 0x72)
+ #define EFI_CERT_X509_SHA256_GUID		EFI_GUID(0x3bd2a492, 0x96c0, 0x4079, 0xb4, 0x20, 0xfc, 0xf9, 0x8e, 0xf1, 0x03, 0xed)
++#define EFI_CC_BLOB_GUID			EFI_GUID(0x067b1f5f, 0xcf26, 0x44c5, 0x85, 0x54, 0x93, 0xd7, 0x77, 0x91, 0x2d, 0x42)
+ 
+ /*
+  * This GUID is used to pass to the kernel proper the struct screen_info
 -- 
 2.17.1
 
