@@ -1,171 +1,95 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail.skyhub.de (unknown [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CA73FC0
-	for <linux-coco@lists.linux.dev>; Fri, 20 Aug 2021 19:17:47 +0000 (UTC)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17KIWaAw123077;
-	Fri, 20 Aug 2021 14:36:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=wuzUIU8KjfQ54EF54lX/CiPbBu8YyPftPw/seHB3IRI=;
- b=LEQbwOtASKCUrd2nNr8HLXglnqVmAtvI2pNybnG0lcKwF64aFnvU+roMgZ9LB/HGKEFX
- 8O99oGEE51Hepuy+fM1wdnXxPJbVc45p2O95FUeir0BCgHNxagQo8kecFqSSINsEok6s
- qPVJoJ5S+Pji9UHxgu+/1mTvcXgk1s0H9HIox8F7ST1yL4vn4TysEZKulCF4W5bEV0UM
- x4iX/5Q4bSrNC4htwwgjrKuTa3Dy7r6vK+GMjgQOxhH9W0nFm0q1VQiecXkYFRTRdS+F
- U/Cmq6lAIaCXXRsoQFpl38yUywm4G57HPTPqHFxMHH2rdBpTsLP/dtUzj7uBkoJ+tekk rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3ahkacjv6u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Aug 2021 14:36:57 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 17KIXH52124317;
-	Fri, 20 Aug 2021 14:36:57 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3ahkacjv5w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Aug 2021 14:36:57 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17KIXUXt009972;
-	Fri, 20 Aug 2021 18:36:55 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-	by ppma04wdc.us.ibm.com with ESMTP id 3ae5fg3hw4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Aug 2021 18:36:54 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
-	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 17KIarMd37290302
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Aug 2021 18:36:53 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C94D0B2066;
-	Fri, 20 Aug 2021 18:36:53 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EADA0B2065;
-	Fri, 20 Aug 2021 18:36:48 +0000 (GMT)
-Received: from [9.160.110.229] (unknown [9.160.110.229])
-	by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Aug 2021 18:36:48 +0000 (GMT)
-Subject: Re: [PATCH 3/3] virt: Add sev_secret module to expose confidential
- computing secrets
-To: Andrew Scull <ascull@google.com>, Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi <linux-efi@vger.kernel.org>, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20210809190157.279332-1-dovmurik@linux.ibm.com>
- <20210809190157.279332-4-dovmurik@linux.ibm.com>
- <YRZuIIVIzMfgjtEl@google.com>
- <CAMj1kXFC-cizTw2Tv40uZHdLArKtdMNxdQXWoPWSL-8qexdkLQ@mail.gmail.com>
- <CADcWuH0mP+e6GxkUGN3ni_Yu0z8YTn-mo677obH+p-OFCL+wOQ@mail.gmail.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-Message-ID: <b3c65f9d-5fd3-22c5-cd23-481774d92222@linux.ibm.com>
-Date: Fri, 20 Aug 2021 21:36:46 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698613FC1
+	for <linux-coco@lists.linux.dev>; Mon, 23 Aug 2021 04:49:50 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f07d90037f6d6bcf935006e.dip0.t-ipconnect.de [IPv6:2003:ec:2f07:d900:37f6:d6bc:f935:6e])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 510D11EC0464;
+	Mon, 23 Aug 2021 06:49:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1629694172;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=Wemuc7ifFKY1JG/J29bORf/DK0p/Jh7ow0XTFAR5vaQ=;
+	b=GWFpORbvrZ8l8jHKGAzgi+Cz1txdHdZz8F9sjQY9xBZvlXhqDXf+r0vx5NE81Hj6mQ8dlo
+	+IAvWd5e/mO995J1rlhjfLNvLK6UguEzHzL5ps2RT1YPXRl84mVgESeSiD7AG2hGH8zBHe
+	mNWAN3/Z4gJGd5z3iKn0CHCn+yqr8j0=
+Date: Mon, 23 Aug 2021 06:50:06 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>, tony.luck@intel.com,
+	brijesh.ksingh@gmail.com
+Subject: Re: [PATCH Part1 RFC v4 22/36] x86/sev: move MSR-based VMGEXITs for
+ CPUID to helper
+Message-ID: <YSMo/stGWxQgqC+Q@zn.tnic>
+References: <20210707181506.30489-1-brijesh.singh@amd.com>
+ <20210707181506.30489-23-brijesh.singh@amd.com>
+ <YR4oP+PDnmJbvfKR@zn.tnic>
+ <20210819153741.h6yloeihz5vl6hvu@amd.com>
+ <YR6K+BzCB9Tokw85@zn.tnic>
+ <20210820032908.vqnptvjqnp7xxa6i@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <CADcWuH0mP+e6GxkUGN3ni_Yu0z8YTn-mo677obH+p-OFCL+wOQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9kbPMz4xAuUJD4vBYofJZIqKJOViYTrP
-X-Proofpoint-ORIG-GUID: b3ZcUyslaSKfRcKCznK32dCVOs4aM1z5
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-20_06:2021-08-20,2021-08-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 spamscore=0 clxscore=1015 mlxlogscore=999 suspectscore=0
- impostorscore=0 priorityscore=1501 bulkscore=0 mlxscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108200103
+Content-Disposition: inline
+In-Reply-To: <20210820032908.vqnptvjqnp7xxa6i@amd.com>
 
-
-
-On 19/08/2021 16:02, Andrew Scull wrote:
-> On Mon, 16 Aug 2021 at 10:57, Ard Biesheuvel <ardb@kernel.org> wrote:
->>
->> On Fri, 13 Aug 2021 at 15:05, Andrew Scull <ascull@google.com> wrote:
->>>
->>> On Mon, Aug 09, 2021 at 07:01:57PM +0000, Dov Murik wrote:
-
-[...]
-
->>>
->>>> +static int sev_secret_unlink(struct inode *dir, struct dentry *dentry)
->>>> +{
->>>> +     struct sev_secret *s = sev_secret_get();
->>>> +     struct inode *inode = d_inode(dentry);
->>>> +     struct secret_entry *e = (struct secret_entry *)inode->i_private;
->>>> +     int i;
->>>> +
->>>> +     if (e) {
->>>> +             /* Zero out the secret data */
->>>> +             memzero_explicit(e->data, secret_entry_data_len(e));
->>>
->>> Would there be a benefit in flushing these zeros?
->>>
->>
->> Do you mean cache clean+invalidate? Better to be precise here.
+On Thu, Aug 19, 2021 at 10:29:08PM -0500, Michael Roth wrote:
+> The select cases where we still fetch CPUID values from hypervisor in
+> SNP need careful consideration, so for the purposes of auditing the code
+> for security, or just noticing things in patches, I think it's important
+> to make it clear what is the "normal" SNP case (not trusting hypervisor
+> CPUID values) and what are exceptional cases (getting select values from
+> hypervisor). If something got added in the future, I think something
+> like:
 > 
-> At least a clean, to have the zeros written back to memory from the
-> cache, in order to overwrite the secret.
+>   +sev_cpuid_hv(0x8000001f, ...)
 > 
+> would be more likely to raise eyebrows and get more scrutiny than:
+> 
+>   +sev_cpuid(0x8000001f, ...)
+> 
+> where it might get lost in the noise or mistaken as similar to
+> sev_snp_cpuid().
+> 
+> Maybe a bit contrived, and probably not a big deal in practice, but
+> conveying the source it in the naming does seem at least seem slightly
+> better than not doing so.
 
-I agree, but not sure how to implement this:
+Ok, makes sense.
 
-I see there's an arch_wb_cache_pmem exported function which internally
-(in arch/x86/lib/usercopy_64.c) calls clean_cache_range which seems to
-do what we want (assume the secret can be longer than the cache line).
+Thx.
 
-But arch_wb_cache_pmem is declared in include/linux/libnvdimm.h and
-guarded with #ifdef CONFIG_ARCH_HAS_PMEM_API -- both seem not related to
-what I'm trying to do.
+-- 
+Regards/Gruss,
+    Boris.
 
-I see there's an exported clflush_cache_range for x86 -- but that's a
-clean+flush if I understand correctly.
-
-Suggestions on how to approach? I can copy the clean_cache_range
-implementation into the sev_secret module but hopefully there's a better
-way to reuse.  Maybe export clean_cache_range in x86?
-
-Since this is for SEV the solution can be x86-specific, but if there's a
-generic way I guess it's better (I think all of sev_secret module
-doesn't have x86-specific stuff).
-
--Dov
-
-
->>
->>>> +             e->guid = NULL_GUID;
->>>> +     }
->>>> +
->>>> +     inode->i_private = NULL;
->>>> +
->>>> +     for (i = 0; i < SEV_SECRET_NUM_FILES; i++)
->>>> +             if (s->fs_files[i] == dentry)
->>>> +                     s->fs_files[i] = NULL;
->>>> +
->>>> +     /*
->>>> +      * securityfs_remove tries to lock the directory's inode, but we reach
->>>> +      * the unlink callback when it's already locked
->>>> +      */
->>>> +     inode_unlock(dir);
->>>> +     securityfs_remove(dentry);
->>>> +     inode_lock(dir);
->>>> +
->>>> +     return 0;
->>>> +}
+https://people.kernel.org/tglx/notes-about-netiquette
