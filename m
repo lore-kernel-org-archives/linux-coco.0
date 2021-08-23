@@ -1,23 +1,24 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E2572
-	for <linux-coco@lists.linux.dev>; Mon, 23 Aug 2021 09:47:05 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f07d9000a71bbbd2fefb12e.dip0.t-ipconnect.de [IPv6:2003:ec:2f07:d900:a71:bbbd:2fef:b12e])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67373FC4
+	for <linux-coco@lists.linux.dev>; Mon, 23 Aug 2021 14:16:21 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f07d900e826476efa1e0ef3.dip0.t-ipconnect.de [IPv6:2003:ec:2f07:d900:e826:476e:fa1e:ef3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C78C11EC0236;
-	Mon, 23 Aug 2021 11:46:59 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E7C151EC01DF;
+	Mon, 23 Aug 2021 16:16:15 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1629712019;
+	t=1629728176;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=hTGqJSB99PZEZoaa2JK7dAiOoUAbusV7wq0edRHIa4g=;
-	b=Xl+0l4zzO8gkqhdQvxLoxh3KL93gUcH3KDD59hvOgRQE36+mZUnrVYTwCnD+iTjmwHCIiP
-	osVL7c/3rUhL3Adl9pKRURCPUI5Q8LTL2zMZhvpc1mdFy8wydrUlp+nOJZXEKF1/wJX6Gb
-	OG9ruTq3Y/JCAN274stHJ5fgoZNgwzo=
-Date: Mon, 23 Aug 2021 11:47:34 +0200
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gKD+/8Qbv6yv6nIGV7iJbsxCYPsTuanF1BGer6VcD3Q=;
+	b=fl2Qa5G0kimY8dlcx57nwjuUVsOyw/YTDGgTJJIaA2N0r2c9wtb47MYkDSQbAUPKdcccji
+	exXZ8QJN7O52aXOlT0T1CVQQE8Da6aBbgEZZ2YOE263xSzLuAcAFM7fQ+bCZmZl9FGXEjh
+	HzbE1JM09KsuZt4AnEG95Z4di2Vt2ws=
+Date: Mon, 23 Aug 2021 16:16:51 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -45,11 +46,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 07/38] x86/sev: Add support for hypervisor
- feature VMGEXIT
-Message-ID: <YSNutt/E0bm0kKsl@zn.tnic>
+Subject: Re: [PATCH Part1 v5 11/38] x86/compressed: Add helper for validating
+ pages in the decompression stage
+Message-ID: <YSOt01Qk9KOsTVj/@zn.tnic>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-8-brijesh.singh@amd.com>
+ <20210820151933.22401-12-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -58,99 +59,38 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210820151933.22401-8-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210820151933.22401-12-brijesh.singh@amd.com>
 
-On Fri, Aug 20, 2021 at 10:19:02AM -0500, Brijesh Singh wrote:
-> Version 2 of GHCB specification introduced advertisement of a features
-> that are supported by the hypervisor. Add support to query the HV
-> features on boot.
-> 
-> Version 2 of GHCB specification adds several new NAEs, most of them are
-> optional except the hypervisor feature. Now that hypervisor feature NAE
-> is implemented, so bump the GHCB maximum support protocol version.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/mem_encrypt.h |  2 ++
->  arch/x86/include/asm/sev-common.h  |  3 +++
->  arch/x86/include/asm/sev.h         |  2 +-
->  arch/x86/include/uapi/asm/svm.h    |  2 ++
->  arch/x86/kernel/sev-shared.c       | 23 +++++++++++++++++++++++
->  5 files changed, 31 insertions(+), 1 deletion(-)
+On Fri, Aug 20, 2021 at 10:19:06AM -0500, Brijesh Singh wrote:
+> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> index d426c30ae7b4..1cd8ce838af8 100644
+> --- a/arch/x86/include/asm/sev-common.h
+> +++ b/arch/x86/include/asm/sev-common.h
+> @@ -57,6 +57,26 @@
+>  #define GHCB_MSR_AP_RESET_HOLD_REQ	0x006
+>  #define GHCB_MSR_AP_RESET_HOLD_RESP	0x007
+>  
+> +/* SNP Page State Change */
 
-I think you can simplify more.
+Let's make it very clear here that those cmd numbers below are actually
+part of the protocol and not randomly chosen:
 
-The HV features are read twice - once in the decompressor stub and again
-in kernel proper - but I guess that's not such a big deal.
+/*
+ * ...
+ *
+ * 0x014 – SNP Page State Change Request
+ *
+ * GHCBData[55:52] – Page operation:
+ *   0x0001 – Page assignment, Private
+ *   0x0002 – Page assignment, Shared
+ */
 
-Also, sev_hv_features can be static.
-
-Diff ontop:
-
----
-diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-index fb857f2e72cb..df14291d65de 100644
---- a/arch/x86/include/asm/mem_encrypt.h
-+++ b/arch/x86/include/asm/mem_encrypt.h
-@@ -26,7 +26,6 @@ enum sev_feature_type {
- 
- extern u64 sme_me_mask;
- extern u64 sev_status;
--extern u64 sev_hv_features;
- 
- void sme_encrypt_execute(unsigned long encrypted_kernel_vaddr,
- 			 unsigned long decrypted_kernel_vaddr,
-@@ -67,7 +66,6 @@ bool sev_feature_enabled(unsigned int feature_type);
- #else	/* !CONFIG_AMD_MEM_ENCRYPT */
- 
- #define sme_me_mask	0ULL
--#define sev_hv_features	0ULL
- 
- static inline void __init sme_early_encrypt(resource_size_t paddr,
- 					    unsigned long size) { }
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 8bd67087d79e..d657c2c5a1ee 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -24,7 +24,7 @@
- static u16 __ro_after_init ghcb_version;
- 
- /* Bitmap of SEV features supported by the hypervisor */
--u64 __ro_after_init sev_hv_features = 0;
-+static u64 __ro_after_init sev_hv_features;
- 
- static bool __init sev_es_check_cpu_features(void)
- {
-@@ -51,10 +51,18 @@ static void __noreturn sev_es_terminate(unsigned int set, unsigned int reason)
- 		asm volatile("hlt\n" : : : "memory");
- }
- 
-+/*
-+ * The hypervisor features are available from GHCB version 2 onward.
-+ */
- static bool get_hv_features(void)
- {
- 	u64 val;
- 
-+	sev_hv_features = 0;
-+
-+	if (ghcb_version < 2)
-+		return false;
-+
- 	sev_es_wr_ghcb_msr(GHCB_MSR_HV_FT_REQ);
- 	VMGEXIT();
- 
-@@ -85,8 +93,7 @@ static bool sev_es_negotiate_protocol(void)
- 
- 	ghcb_version = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
- 
--	/* The hypervisor features are available from version 2 onward. */
--	if (ghcb_version >= 2 && !get_hv_features())
-+	if (!get_hv_features())
- 		return false;
- 
- 	return true;
-
+> +enum psc_op {
+> +	SNP_PAGE_STATE_PRIVATE = 1,
+> +	SNP_PAGE_STATE_SHARED,
+> +};
+> +
 
 -- 
 Regards/Gruss,
