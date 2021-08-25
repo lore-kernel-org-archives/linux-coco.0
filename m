@@ -1,42 +1,39 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2081.outbound.protection.outlook.com [40.107.236.81])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2060.outbound.protection.outlook.com [40.107.236.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2423FC0
-	for <linux-coco@lists.linux.dev>; Wed, 25 Aug 2021 13:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4983A3FC0
+	for <linux-coco@lists.linux.dev>; Wed, 25 Aug 2021 13:54:37 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Y/vagrbM/RvmfHhJalLKKIHivSRpq7bfAJ56ZV//MIIgbYnGYg4X/m1CmkyybGQe709HnkdXMaYLLwC541RndXBSYt7tVoYyqdLq/+m+nC/uPP78WSjmkrxSdXOLCY7KJAjYvqtauXal2d/7rKK1hZiV8at2HHnWeVqsKxctoL1yDw7yjdTNEh6dLtNUCmRQUqjNRpVr4FzPH6YX3WvWC4Fk9r4aY/lRNE9flkbwQ84sOqRKNqSf9uXqJbggtA0oBTXLH+bd+nw3V8Jz4Jw3QJd92/G3LH5lPG/v6EDKVFAiS3SMGPEDQ+VIa0Racd5b6oMMpSyw5qLz9V7atKsocQ==
+ b=ELCnA4qVH6U8kaHnHvDQEvDFZcxh2FJ+Mp/exaEiXom4Zn4dhEu3NMifahsr3iMsZP4mZUXKUo/b7ofqCyIZlq4x0p2lMShWZFrnf11wry7akITAaocfVysXhocPuohROTIJrE1wLHXXs9jJiPkY34VwjG2Q1ZpWI49Ae/FllmATE4XRuMt5iSN9+4PGVXgdNQ1G80BX6ZpTFjimoZBIUHKVjr4PW4tLRC9VLNhX5n1T47ov05JJw5aaovbmMCmuWgJOYIF3r4BjEFivJfwV0DsO2lJPRA4A0bfMHKpCfFvoqVsxxC4aESaF58dUccCkB3C8OmC0ZFYtxuFCzbaTYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zwgJyZjTlByZgyJipd8xiHMYLZhCJeRlNDBEN4L/T3w=;
- b=cBsxwwUSj43JKL88w+N4vnVxPyQPh0Ws+3ui1S6OvqAn3CWtLicpK0zuGc7Z/x563UbyQYBt43+kuuO3x2kmui1t3e8yo6I1ynSB4u2rZFWjvN8K4Mst2K7e0BTQGa5BlPbS74OMi1ifZbFhMdb9xnC5XowHbI+giJgcSize7Fvvb8ZGsZKjSsIZCweapZtRpR+6e9aOXfXJyPRCxpDrgKYXBgU+0kyAURTjLwAOS8sy+zKOVezefrDWzvqukVU4t6Q33f216tAAnyOUFzoNvSJTvbLH4ux7zWQj77FZrEhI4a2GvEG76OgeeFOXWZ2+y/xXOD1E4jTKtD30X2SQwQ==
+ bh=qKxbaDS0O/tGln3o/+oe54T/in+s485/48Z2++nze2Y=;
+ b=YCOFrLoeuLTthhYO3QnEn+LKIPuvv3o+e0VVH7HZ6ujAP4B8DdaayrVqmsrdbzrKDwwxjIVJDr5W26FcOPZCGugiKsUtXUQSQZOriZknEBku1r9YMU5L9IA14ghIXOxoBLDuZA3d/fvQ/F3Mn5EJweGaiTnaUQgujgpZGgOJ5vG6zgtnJxuF8A75mI5jSa9grGEjCoYr0QSXltxZhn8JicSnat4y7WtCEekvMUZM0V55rMpeVDQD0DzwI1Aw8TOkvujFzKXojnWVLG9SgpI11AMlmAJ1Q1mB+zqRComxe1SsATIuZgMLcpoYhzLJ+5NT6OQDSoxSMt8vjOTD3ahyhw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zwgJyZjTlByZgyJipd8xiHMYLZhCJeRlNDBEN4L/T3w=;
- b=uSB0wy9GaK6qv/jLwmsT/SC9cZtB0AUwAE+jFHIO9d/2wpW8eWRUUd+rk8hWUvYNkci1VBjd9dSGJmRnhTO8gJRZnt/4XgdhmuHMv67juwiTdJyELoR9gGf+RoWMcG8ktOKhQpl84x/2gk3cX7/qYX1/6OiHsCAHEXaUjFBlncE=
-Authentication-Results: oracle.com; dkim=none (message not signed)
- header.d=none;oracle.com; dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DM6PR12MB5568.namprd12.prod.outlook.com (2603:10b6:5:20c::8) with
+ bh=qKxbaDS0O/tGln3o/+oe54T/in+s485/48Z2++nze2Y=;
+ b=4JOGNRRtf2031F4fjPqaE5lmpx8T5GNwOXMNWkHgbnkxKbPrPjuQOvPZgFVJQCqM9Py7/972Obbthn8C9KfLTLIDG8evrptHV9DgKOPyX6sTzqj1O1K2LPIKJSm19NrWHRxmEX+A3dhYUOBbV2/NtzDKBNPGy8+nx/wFEf7GIy8=
+Authentication-Results: linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN6PR12MB2688.namprd12.prod.outlook.com (2603:10b6:805:6f::29) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.16; Wed, 25 Aug
- 2021 13:50:15 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::d560:d21:cd59:9418%6]) with mapi id 15.20.4436.024; Wed, 25 Aug 2021
- 13:50:15 +0000
-Subject: Re: [PATCH Part2 v5 08/45] x86/fault: Add support to handle the RMP
- fault for user address
-To: Vlastimil Babka <vbabka@suse.cz>, Joerg Roedel <jroedel@suse.de>,
- Dave Hansen <dave.hansen@intel.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4436.23; Wed, 25 Aug
+ 2021 13:54:34 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4436.027; Wed, 25 Aug 2021
+ 13:54:33 +0000
+Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
  Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
@@ -45,30 +42,28 @@ Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
  Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
  Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
  David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
- Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
- Michael Roth <michael.roth@amd.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
- <ak@linux.intel.com>, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com,
- Mike Kravetz <mike.kravetz@oracle.com>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-9-brijesh.singh@amd.com>
- <f6d778a0-840d-8c9c-392d-5c9ffcc0bdc6@intel.com>
- <19599ede-9fc5-25e1-dcb3-98aafd8b7e87@amd.com>
- <3f426ef8-060e-ccc9-71b9-2448f2582a30@intel.com> <YSUhg/87jZPocLDP@suse.de>
- <c5a8f7e8-7146-0737-81a1-1faceb6992ab@suse.cz>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <3a82fd1d-c801-840b-afe8-63d000efe7cd@amd.com>
-Date: Wed, 25 Aug 2021 08:50:11 -0500
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+ <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part1 v5 17/38] x86/mm: Add support to validate memory
+ when changing C-bit
+To: Borislav Petkov <bp@alien8.de>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-18-brijesh.singh@amd.com> <YSYkHhAMSOotEzXQ@zn.tnic>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <de04db4c-95e2-e921-5a2f-7fb33fed4fdc@amd.com>
+Date: Wed, 25 Aug 2021 08:54:31 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
-In-Reply-To: <c5a8f7e8-7146-0737-81a1-1faceb6992ab@suse.cz>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <YSYkHhAMSOotEzXQ@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0031.namprd04.prod.outlook.com
- (2603:10b6:806:120::6) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+X-ClientProxiedBy: SN4PR0501CA0126.namprd05.prod.outlook.com
+ (2603:10b6:803:42::43) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,88 +71,112 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.236.30.241] (165.204.77.1) by SN7PR04CA0031.namprd04.prod.outlook.com (2603:10b6:806:120::6) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.17 via Frontend Transport; Wed, 25 Aug 2021 13:50:13 +0000
+Received: from [10.236.31.95] (165.204.77.1) by SN4PR0501CA0126.namprd05.prod.outlook.com (2603:10b6:803:42::43) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.9 via Frontend Transport; Wed, 25 Aug 2021 13:54:32 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 605c1b0b-35e0-4a23-9af8-08d967cf441e
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5568:
+X-MS-Office365-Filtering-Correlation-Id: 8e9d7a85-78d0-44dc-2472-08d967cfde53
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2688:
 X-MS-Exchange-Transport-Forked: True
 X-Microsoft-Antispam-PRVS:
-	<DM6PR12MB556868D8FA7760E01A7452AEECC69@DM6PR12MB5568.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:6790;
+	<SN6PR12MB2688E51A6EC6D516AD1CD441E5C69@SN6PR12MB2688.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5236;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	xeLCStfkEf0l7VMbsB/anRekrdE3QW8MA1wkxk2/wNA6W/py7+UA/jcBHeCbkpiA+W7Pq38rBwBETdRPqP7d25hN0/8rKojRkkITXcoao25+8FTwHCaj6ESjlBmQwegQATjtqX5XeYs90Av33cN8JhEPo+cL7fTC6j0YleXrivZYOMaWFrw8B4muu1p8WBSFjozbwTVu+TWIBIvQesEBB6ePJFDemxCKDbhs2tc2rqcf+Q33kYatu/797fsDs8hMI06eoJ/R43tF1y7x9i1FO4J++99d5E7FnruV98Fiu1H7ObG6uhnxReJKSJVzWfvLyfgqcb6fZq7ltPHvRj6yp58IvZz1JtV9tS0WwVtpffjP+0NS+7f5mdfqXUVdxggkNJd7AIlcjxDDgWyN5Vze+KyrRLGwr60Vh7X/zD0gmJ2Z1Nr/gA/rLXB2OsXQ9cB2dKJDelJtYyI35jM8nK+nDfy/+i6X+4us3zANTIrk6kxNcBCUF96TfKXvh1hkwJMkG7INpa2E32W8pK88ROTHexRf5u2pf3dM1+sp3FczoHiYOeiyMFdu/sBBYAAZucD5J3Kvr2f8oZm/Of6/0qwPEAn7KuwZ2r3lwyKO/OLHNLArdy3WsX8BSAtQ1tfa7GZTvDsE5b0rgNiKy3QqM3KIDoBPQHGj7/ANhC65xM60gQ4vEr6OX7orTloYRbGmEQi37Kyd1aJ9wi6WZz8zGvjAZTJRkkz2x8sAwLtvNZu4nF2oEgTU4vXwIhyifbREtw/Nfkqr36uSay70r/BEovSHQPCy7MGq5O0vK13m+ANK7DOZTuwGokTIXa5pBabDVQyr
+	GWpErSBqo3tvVMAIiXOllXkfxfi/SZVxEY4xotl+XdHrARAzOgZM7RPoAuGQ58ds6kyBsc0K3DYsSIbrS8yteLSlK6RTzJXrXEfJnzZ0mS2P47MHTBrW2m6HqpsQDkuf3QfHkzO0NCoBSvcfA3gqS5zh2cSmlVadoy7dWk8tDVIMD4Qht6DjDBdGMiH3SkAWWjmQ47FYfbY1AVV2djf6dvgjRdPQG3PEXcCGc2GbPipzCj4AJmq3spig4+/iFdtJDnAlPP34S6ePyHxBRlhTySBsXgfoBzmKI9TOUgU7iac1TpZbQnPnPbmuqEOfTWATlk9jttyUnzIywv7b4ZkYaC1zRzGmofhng9vq22oDQpJQZjwR48qWRLWO2HjLWeP+/RUCrR4vMcDqS5NuQzyWEYcZRr4WVRerDy23vx4DxIU0Ppfm9GZSLjYRS8VAZZM/nWoVNjvFmbu7CY0VG6PnUM+qwAsa5cmFtJYEw2x/LG+feSXH8EDMrm+nL1wqB4//kmLJaBLrAJq5pZka7mQKBKiU8SuUrZkoPBqHGnj8BLOkGH6K6NwYwbiXdE7MLJfhJMZn4Rjkjhdy05M5jrZf0YyGlKWCqpZzVLno496/SFr+LXZSqc2/fmPe8R5qmsnwdkvjmAIfhSxwppXUvt0Emhph0cpTQPMC4MZmefMSUnY0KHXFeOx/sCH5WWXcu9ucYmRGKxAHlNxkkTm9xZKY2de+43p8kDLzAbjBmry9kaqER5i3lqjJM/c++X5VlLYJdNJGhde/9Iij8N54SFpYJQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(346002)(376002)(39860400002)(396003)(366004)(7416002)(16576012)(31686004)(2906002)(53546011)(966005)(316002)(38100700002)(7406005)(4326008)(5660300002)(45080400002)(8676002)(110136005)(54906003)(26005)(478600001)(86362001)(8936002)(31696002)(66476007)(186003)(956004)(2616005)(36756003)(66946007)(6486002)(66556008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(136003)(396003)(376002)(366004)(346002)(66556008)(16576012)(2906002)(66946007)(66476007)(5660300002)(316002)(38100700002)(38350700002)(54906003)(86362001)(7406005)(6916009)(31696002)(4326008)(8936002)(52116002)(7416002)(478600001)(31686004)(8676002)(53546011)(186003)(44832011)(6486002)(26005)(83380400001)(2616005)(956004)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	WVvowln/HdWy7KTO+joE9ZFo2xC8XNrkKFZpMYZPLfQZGTogdZprqS+l04ADzE987pHa4fXFfOkp961eCotzgkiYq0wiSVBHBy1Y2kYtX2vMf5pro/CgSQn+IN7/tFelFK51a3QSrl2MvaMtmTLKWuNDGrDcTscUxCltxOzKeX1DQcb6BW/Q4k3f0NN6KNuUiQnfsoVgaROz+zuHGwM+c9F+4THGTQuzAJQi/sS9PF0AlQNFbFST/N1wW3/QeEHJVFRB2OXZ7xye+hUlto/H2tC+RvUObVJYK23BMpOjMUxiBsVWPKX7iD8UgsFdqn5nVa8uTcY3m+YsB55i/4Uph26PNpNmTr+W/4plrkitV1KUZ266jHHqusUQI7wTzPFZq2AkLEysH5N8mwSt7a9A3tLIdMHExdcFqhHFdGLaf0w4p0F3Jx/TT5YHKCBmkDpd690VEEo+fkWIegCkqqzlS5Dg++SP3kRCLwM+ozkbKJ32uAvE6LI0u1Jv6Nswdy4n1ZIjNCo68cl9lug4i0U1Brzaahx8hDLyi3M/odm6VVC6puU4AS5aG9AmIGq214BkFAHoDz37sskgmjd85LGz99n1yuQPaBOV1DPXyxzjrKoooQQlt07lzXgw6PQQdsX6SQZEVQJp4Q9BPehVFLIpECh1769QQeKGO0cHsCrnQ3gwkUW2ilbl/LhG7bAum6DYJNuT6m9r7jJhW50wEnBQCIHgimLduZyvilb0/Bh1FV2zRrcCiT5mQlTj5LxpPFBq
+	=?utf-8?B?RDk1b2x3Q1c3Snh1WFBldDh6Z3VEYVVsRHF5RWRtQytPMzl2d3czS1IyZWNE?=
+ =?utf-8?B?ZHNDVTJqcjFSYnhXdmJSOEN1MXlqRXRhVFlpWTkzOVhWeW1RR0tNdERJVmJ2?=
+ =?utf-8?B?WkhJOGFPSzBXQndodkFHVUhrWGIwc1FoQTZwQlRlbkh2L1c1RzZxbHUzTHZP?=
+ =?utf-8?B?dkJUMVljN0hzbWlneGVhUnU3NHVId00rQ0FrQkZXbGtTdHZPZXBQL3VXdG1p?=
+ =?utf-8?B?aXR1NVhIM1laOTloRmFmL2tXazY4Um1sNTVESE5VV3RkclpMRm5xYlU0YjA1?=
+ =?utf-8?B?bTFqK2RvTEJqeFZYQ2JRNEk5WUxjK0R6THlNalg1LzBVcUxTMWFadE9DZUZ2?=
+ =?utf-8?B?dUd6NWpaUU5zcFNhQjMrMW1Xd1hQZCtzNlplQ2JpeWI4cWJITlZiU3pkc245?=
+ =?utf-8?B?eFI5NWJDdnRoOG5vOXZIZGxsUFN3L3ptcjVmbU1ZdHlVL1o0N1FHNllkQVda?=
+ =?utf-8?B?WWw2SXpqMjlqV0pjek03c2g0eHdDMEVLdmg4Zno5cXI2aXl2UEtxaFF0MFdo?=
+ =?utf-8?B?eHEyYzlKb1BxZFVQOXMwN0RxYXZFZEQ2clgxVkZYSDdoYTdUVDVyNXNXUzRR?=
+ =?utf-8?B?cUIvNzd1dEpmNE9EcFdMODdnMXVaWjF4Q0wyZm9ZTjcvWFlGZnhZWWxGQWhv?=
+ =?utf-8?B?aElSbWlENXIrcmVTc1F0R2o4TGhKU0Y3VWNFWXYwTlI1R1IxTzNtUDd6cnov?=
+ =?utf-8?B?eldJY1B3bWlsTGYvbU43Z0h1YnhpWGlGamhpeGVKb2EzTjJBVjBRbVNHWFZx?=
+ =?utf-8?B?SFRacnhrN2o4amVWNWxJdTZnbTNybTJyNnVLdktVdC9ydmZnbnlVSmpsV21N?=
+ =?utf-8?B?RkQrNzRJRHFPdVRrT09rSFZBOFRyMk5QazlnTEZjV3dpTlhvWmNKN0RBajA3?=
+ =?utf-8?B?V2x2WlVuNzBrTnZwTmtjMUw2aXcxU2RFWm44SWRISkhCWisxRlFpMXlNV3NC?=
+ =?utf-8?B?eTRmdmdvR0NoajVia3JoQlNaT1R0enJsZFBqNmgxNUdMSVAwV2Q3MlQ1dnFU?=
+ =?utf-8?B?eVk2aUhUKzA0bVF5VzdIN2NOM09UN1VFM29BSk53elhYY3dKc3JLM0RWNmtB?=
+ =?utf-8?B?cXIyWVJRUXNtYk5KelNXSUJTaXl3NU80QzVZci9rd3RxWWkyZUFDNlVISEdx?=
+ =?utf-8?B?KzlXM2dndzg0YXlTcHF2RHRBUVpDM1Vydm1lN29UQUtBeE5MODd6TCtnNWEz?=
+ =?utf-8?B?eThvT3ZEdWF3eUVCOEZXU1IvUDZINi9INnVIUVYwMDEvc1JxNm1pbUE5eHBN?=
+ =?utf-8?B?Rm1rZzFEZGNDK0s0SEd0aUg1dS9VbTZqR1ZlQ2ZPQTdaOUUxaFJnTkdGUmF6?=
+ =?utf-8?B?dGdyYzNNckZMMWd2U0V5Nm5BU0V3ZEtyTktEK2ZSWW1ueEJycm9MUVQveUx1?=
+ =?utf-8?B?cWN5SENmMmRqMWsxakIvYWlWSWdpanhIdUxwWnZlU2JZWUs5Ym9ybEdPdVpQ?=
+ =?utf-8?B?d2tock8rQ0w0TjhVTWlsTTJCN0g5b2ZUS3JHTCtOSU94Zk5DT3o2cnRmZVYz?=
+ =?utf-8?B?UkxRNVlyUnpGeE1EUW1BRUh3VVZ3Y1hGbS8xa2FVRkVnZmk1OGhXUE5EaGVL?=
+ =?utf-8?B?UENmUGZ2T2FmMUZwQ09ZNWpFTTZpLzQxcDNCSjZMUFA5RW5CVHNkQ1RNcTJ2?=
+ =?utf-8?B?YVJXS2l4MG1TMkhuUHFvZXltWmpVS2xPNkp4MnJPS2tHSzFLbTZlVUZlSTVV?=
+ =?utf-8?B?dWZqTWFscDBVUXV1NDNDNXhDcWVBbWtxeW5tSU10ZTJ0S1ZRaVVOQVg2cE9N?=
+ =?utf-8?Q?b0U/LUwCW9ZJRZMyPZRJYPMqZO/WdkKlByD0mEz?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 605c1b0b-35e0-4a23-9af8-08d967cf441e
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e9d7a85-78d0-44dc-2472-08d967cfde53
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2021 13:50:15.0862
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2021 13:54:33.8536
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pOveZbmb+c0NZEHqDgEZOQjBrbwKMnGbk5sWmBb5O4ojIe7n4Rw6HkH+DDyHdd/wYeAXyx2yG6m5kEY29LKiWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB5568
+X-MS-Exchange-CrossTenant-UserPrincipalName: ABwqaUbc58ELAnCn0j7GQ81qTSINsLSqXdcwtG5kgvRQsRVCjy4IfTDjJ2wLM4r3rglksLJ9Hj0uRZOheMDfAA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2688
 
-On 8/25/21 4:16 AM, Vlastimil Babka wrote:
-> On 8/24/21 18:42, Joerg Roedel wrote:
->> On Mon, Aug 23, 2021 at 07:50:22AM -0700, Dave Hansen wrote:
->>> It *has* to be done in KVM, IMNHO.
->>>
->>> The core kernel really doesn't know much about SEV.  It *really* doesn't
->>> know when its memory is being exposed to a virtualization architecture
->>> that doesn't know how to split TLBs like every single one before it.
->>>
->>> This essentially *must* be done at the time that the KVM code realizes
->>> that it's being asked to shove a non-splittable page mapping into the
->>> SEV hardware structures.
->>>
->>> The only other alternative is raising a signal from the fault handler
->>> when the page can't be split.  That's a *LOT* nastier because it's so
->>> much later in the process.
->>>
->>> It's either that, or figure out a way to split hugetlbfs (and DAX)
->>> mappings in a failsafe way.
->>
->> Yes, I agree with that. KVM needs a check to disallow HugeTLB pages in
->> SEV-SNP guests, at least as a temporary workaround. When HugeTLBfs
->> mappings can be split into smaller pages the check can be removed.
-> 
-> FTR, this is Sean's reply with concerns in v4:
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flinux-coco%2FYPCuTiNET%252FhJHqOY%40google.com%2F&amp;data=04%7C01%7Cthomas.lendacky%40amd.com%7C692ea2e8bfd744e7ab5d08d967a918d3%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637654798234874418%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=leZuMY0%2FX8xbHA%2FOrxkXNoLCGNoVUQpY5eB3EInM55A%3D&amp;reserved=0
-> 
-> I think there are two main arguments there:
-> - it's not KVM business to decide
-> - guest may do all page state changes with 2mb granularity so it might be fine
-> with hugetlb
-> 
-> The latter might become true, but I think it's more probable that sooner
-> hugetlbfs will learn to split the mappings to base pages - I know people plan to
-> work on that. At that point qemu will have to recognize if the host kernel is
-> the new one that can do this splitting vs older one that can't. Preferably
-> without relying on kernel version number, as backports exist. Thus, trying to
-> register a hugetlbfs range that either is rejected (kernel can't split) or
-> passes (kernel can split) seems like a straightforward way. So I'm also in favor
-> of adding that, hopefuly temporary, check.
 
-If that's the direction taken, I think we'd be able to use a KVM_CAP_
-value that can be queried by the VMM to make the determination.
 
-Thanks,
-Tom
+On 8/25/21 6:06 AM, Borislav Petkov wrote:
+> 
+> I really meant putting the beginning of that string at the very first
+> position on the line:
+> 
+>                  if (WARN(hdr->end_entry > end_entry || cur_entry > hdr->cur_entry,
+> "SEV-SNP: PSC processing going backward, end_entry %d (got %d) cur_entry %d (got %d)\n",
+>                           end_entry, hdr->end_entry, cur_entry, hdr->cur_entry)) {
+> 
+> Exactly like this!
+> 
 
+Noted.
+
+> ...
 > 
-> Vlastimil
+>> +static void set_page_state(unsigned long vaddr, unsigned int npages, int op)
+>> +{
+>> +	unsigned long vaddr_end, next_vaddr;
+>> +	struct snp_psc_desc *desc;
+>> +
+>> +	vaddr = vaddr & PAGE_MASK;
+>> +	vaddr_end = vaddr + (npages << PAGE_SHIFT);
+>> +
+>> +	desc = kmalloc(sizeof(*desc), GFP_KERNEL_ACCOUNT);
 > 
->> Regards,
->>
->> 	Joerg
->>
+> And again, from previous review:
 > 
+> kzalloc() so that you don't have to memset() later in
+> __set_page_state().
+> 
+
+I replied to your previous comment. Depending on the npages value, the 
+__set_page_state() will be called multiple times and on each call it 
+needs to clear desc before populate it. So, I do not see strong reason 
+to use kzalloc() during the desc allocation. I thought you were okay 
+with that explanation.
+
+
+>> +	if (!desc)
+>> +		panic("SEV-SNP: failed to alloc memory for PSC descriptor\n");
+> 
+> "allocate" fits just fine too.
+> 
+
+Noted.
+
+thanks
