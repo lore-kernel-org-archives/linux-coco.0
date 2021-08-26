@@ -1,878 +1,437 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465B13FC2
-	for <linux-coco@lists.linux.dev>; Wed, 25 Aug 2021 19:18:47 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0ea7007b784b676aa09a2d.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:a700:7b78:4b67:6aa0:9a2d])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 05D121EC0301;
-	Wed, 25 Aug 2021 21:18:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1629919121;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=vGtCbkWWcZU1UftG25Zvj4+jED+zYU9/qkqUZZNspiw=;
-	b=ktovmpUyQpXqlSeljgV2k4XrX23GlANVNbHO4/vcqGzv8Cszo/n9kE6TVlAbNko1+BvlB9
-	mOo7W2+HhO6mE3fbu/fILBazBq9d8cpdPT69IpDCkCUXuOGx9+T9PAqTOjFok1rWOVTmbm
-	JJ1qWHi/vNN7ey2R98H3ZyRZklFTcW8=
-Date: Wed, 25 Aug 2021 21:19:18 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1A572
+	for <linux-coco@lists.linux.dev>; Thu, 26 Aug 2021 00:35:26 +0000 (UTC)
+Received: by mail-pj1-f53.google.com with SMTP id z24-20020a17090acb1800b0018e87a24300so1079432pjt.0
+        for <linux-coco@lists.linux.dev>; Wed, 25 Aug 2021 17:35:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=jXvMvc20pWnkEwxKzY+RWm8Jt/TW+w1UslrkfjkbNE0=;
+        b=pMfeH2f35LKY/xHcHbUFEbYHKy/GMvlS10yB0H8ZIjTeJHPMdwzmr1wfPoWu7GC1Dw
+         9b8V9rVzr5DR8+DDBhwj97qXn12omxnGDmFn8N4zgkXaqgIyH3STtqIawRmJ3Q4KlESM
+         0REU/fTh9XZLONg6rB9SUwAB3W/u6LtybtbhqIJuQbFUduneYeCGmnzwXbxBjuC9bC83
+         CsRywNP3DOhVdVLjqmYzKAfrW0bOSbHpE3ux8iWJhRu3cbx+2VMZ7I2PV37e8tRzq8cg
+         ZxXehJ864QLlrLIToiqBbALgLCImxlZRVDGaVtkGpKmocn96r0S0/I2ulKjN/5jsYL4I
+         SN9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=jXvMvc20pWnkEwxKzY+RWm8Jt/TW+w1UslrkfjkbNE0=;
+        b=sdhyupDh51IcLCZAx/ZQDvjrwtT6EAncaG3WruagUzJNZeeJC8S6LZgTPARmWlNhOM
+         GvcU5RLk7OP994e7A70RFhuluOCZNS9QMRp7wYyaZ+tkaVJ7Z/ZDinbYMv1vsrttAU9W
+         VUH0RTGaWL6jy91CcRbDFEr64otWBrMjKc224XdK9dlICS2SI5W3IqorWjWJypMQ+GkV
+         6KZAiKBk73srATJU3j5y+AQMQYWhHgVIWurCpTDbKjUlMtDBOInfzpT1QQxm7Dul7DWq
+         Xx6RjxonjZEHtOy7w6q832FtNK6JT66tCahekmVN+egyGRWawlogT+GWBSbSUiqV9d6k
+         AG/A==
+X-Gm-Message-State: AOAM532OwqdSDwH/urJ9RbWTxt9IFxLlI0DinglW2JZogrJoj50oNzvz
+	FQJLvPn7NaoPkcG9p+ioNtiLIA==
+X-Google-Smtp-Source: ABdhPJxEEBWID4N77KZQVOmJG5fQMI8wF+OJhIswmBwZ81EUftxZ+BEo1uLAtXKTET2ahT3oyRPAYA==
+X-Received: by 2002:a17:902:d3d2:b0:133:aef2:8bc4 with SMTP id w18-20020a170902d3d200b00133aef28bc4mr909516plb.79.1629938125391;
+        Wed, 25 Aug 2021 17:35:25 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id gm5sm321949pjb.32.2021.08.25.17.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Aug 2021 17:35:24 -0700 (PDT)
+Date: Thu, 26 Aug 2021 00:35:21 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Yu Zhang <yu.c.zhang@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 28/38] x86/compressed/64: enable
- SEV-SNP-validated CPUID in #VC handler
-Message-ID: <YSaXtpKT+iE7dxYq@zn.tnic>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-29-brijesh.singh@amd.com>
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Isaku Yamahata <isaku.yamahata@gmail.com>
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
+ private memory
+Message-ID: <YSbhydC0rleRRyU6@google.com>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <20210824104821.gwbxdvu43lhviuwl@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210820151933.22401-29-brijesh.singh@amd.com>
+In-Reply-To: <20210824104821.gwbxdvu43lhviuwl@linux.intel.com>
 
-On Fri, Aug 20, 2021 at 10:19:23AM -0500, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
+On Tue, Aug 24, 2021, Yu Zhang wrote:
+> On Mon, Aug 23, 2021 at 05:52:48PM -0700, Sean Christopherson wrote:
 > 
-> CPUID instructions generate a #VC exception for SEV-ES/SEV-SNP guests,
-> for which early handlers are currently set up to handle. In the case
-> of SEV-SNP, guests can use a special location in guest memory address
-> space that has been pre-populated with firmware-validated CPUID
-> information to look up the relevant CPUID values rather than
-> requesting them from hypervisor via a VMGEXIT.
+> Thanks a lot for sharing these ideas. Lots of questions are inlined below. :)
 > 
-> Determine the location of the CPUID memory address in advance of any
-> CPUID instructions/exceptions and, when available, use it to handle
-> the CPUID lookup.
+> > The goal of this RFC is to try and align KVM, mm, and anyone else with skin in the
+> > game, on an acceptable direction for supporting guest private memory, e.g. for
+> > Intel's TDX.  The TDX architectural effectively allows KVM guests to crash the
+> > host if guest private memory is accessible to host userspace, and thus does not
 > 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/boot/compressed/efi.c     |   1 +
->  arch/x86/boot/compressed/head_64.S |   1 +
->  arch/x86/boot/compressed/idt_64.c  |   7 +-
->  arch/x86/boot/compressed/misc.h    |   1 +
->  arch/x86/boot/compressed/sev.c     |   3 +
->  arch/x86/include/asm/sev-common.h  |   2 +
->  arch/x86/include/asm/sev.h         |   3 +
->  arch/x86/kernel/sev-shared.c       | 374 +++++++++++++++++++++++++++++
->  arch/x86/kernel/sev.c              |   4 +
->  9 files changed, 394 insertions(+), 2 deletions(-)
-
-Another huuge patch. I wonder if it can be split...
-
-> diff --git a/arch/x86/boot/compressed/efi.c b/arch/x86/boot/compressed/efi.c
-> index 16ff5cb9a1fb..a1529a230ea7 100644
-> --- a/arch/x86/boot/compressed/efi.c
-> +++ b/arch/x86/boot/compressed/efi.c
-> @@ -176,3 +176,4 @@ efi_get_conf_table(struct boot_params *boot_params,
->  
->  	return 0;
->  }
-> +
-
-Applying: x86/compressed/64: Enable SEV-SNP-validated CPUID in #VC handler
-.git/rebase-apply/patch:21: new blank line at EOF.
-+
-warning: 1 line adds whitespace errors.
-
-That looks like a stray hunk which doesn't belong.
-
-> diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-> index a2347ded77ea..1c1658693fc9 100644
-> --- a/arch/x86/boot/compressed/head_64.S
-> +++ b/arch/x86/boot/compressed/head_64.S
-> @@ -441,6 +441,7 @@ SYM_CODE_START(startup_64)
->  .Lon_kernel_cs:
->  
->  	pushq	%rsi
-> +	movq	%rsi, %rdi		/* real mode address */
->  	call	load_stage1_idt
->  	popq	%rsi
->  
-> diff --git a/arch/x86/boot/compressed/idt_64.c b/arch/x86/boot/compressed/idt_64.c
-> index 9b93567d663a..1f6511a6625d 100644
-> --- a/arch/x86/boot/compressed/idt_64.c
-> +++ b/arch/x86/boot/compressed/idt_64.c
-> @@ -3,6 +3,7 @@
->  #include <asm/segment.h>
->  #include <asm/trapnr.h>
->  #include "misc.h"
-> +#include <asm/sev.h>
-
-asm/ namespaced headers should go together, before the private ones,
-i.e., above the misc.h line.
-
->  static void set_idt_entry(int vector, void (*handler)(void))
->  {
-> @@ -28,13 +29,15 @@ static void load_boot_idt(const struct desc_ptr *dtr)
->  }
->  
->  /* Setup IDT before kernel jumping to  .Lrelocated */
-> -void load_stage1_idt(void)
-> +void load_stage1_idt(void *rmode)
->  {
->  	boot_idt_desc.address = (unsigned long)boot_idt;
->  
->  
-> -	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
-> +	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
-> +		sev_snp_cpuid_init(rmode);
->  		set_idt_entry(X86_TRAP_VC, boot_stage1_vc);
-> +	}
->  
->  	load_boot_idt(&boot_idt_desc);
->  }
-> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-> index 16b092fd7aa1..cdd328aa42c2 100644
-> --- a/arch/x86/boot/compressed/misc.h
-> +++ b/arch/x86/boot/compressed/misc.h
-> @@ -190,6 +190,7 @@ int efi_get_conf_table(struct boot_params *boot_params,
->  		       unsigned long *conf_table_pa,
->  		       unsigned int *conf_table_len,
->  		       bool *is_efi_64);
-> +
-
-Another stray hunk.
-
->  #else
->  static inline int
->  efi_find_vendor_table(unsigned long conf_table_pa, unsigned int conf_table_len,
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index 6e8d97c280aa..910bf5cf010e 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -20,6 +20,9 @@
->  #include <asm/fpu/xcr.h>
->  #include <asm/ptrace.h>
->  #include <asm/svm.h>
-> +#include <asm/cpuid.h>
-> +#include <linux/efi.h>
-> +#include <linux/log2.h>
-
-What are those includes for?
-
-Polluting the decompressor namespace with kernel proper defines is a
-real pain to untangle as it is. What do you need those for and can you
-do it without them?
-
->  #include "error.h"
->  
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-> index 072540dfb129..5f134c172dbf 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -148,6 +148,8 @@ struct snp_psc_desc {
->  #define GHCB_TERM_PSC			1	/* Page State Change failure */
->  #define GHCB_TERM_PVALIDATE		2	/* Pvalidate failure */
->  #define GHCB_TERM_NOT_VMPL0		3	/* SNP guest is not running at VMPL-0 */
-> +#define GHCB_TERM_CPUID			4	/* CPUID-validation failure */
-> +#define GHCB_TERM_CPUID_HV		5	/* CPUID failure during hypervisor fallback */
->  
->  #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
->  
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index 534fa1c4c881..c73931548346 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -11,6 +11,7 @@
->  #include <linux/types.h>
->  #include <asm/insn.h>
->  #include <asm/sev-common.h>
-> +#include <asm/bootparam.h>
->  
->  #define GHCB_PROTOCOL_MIN	1ULL
->  #define GHCB_PROTOCOL_MAX	2ULL
-> @@ -126,6 +127,7 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op
->  void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
->  void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
->  void snp_set_wakeup_secondary_cpu(void);
-> +void sev_snp_cpuid_init(struct boot_params *bp);
->  #else
->  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
->  static inline void sev_es_ist_exit(void) { }
-> @@ -141,6 +143,7 @@ static inline void __init snp_prep_memory(unsigned long paddr, unsigned int sz,
->  static inline void snp_set_memory_shared(unsigned long vaddr, unsigned int npages) { }
->  static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npages) { }
->  static inline void snp_set_wakeup_secondary_cpu(void) { }
-> +static inline void sev_snp_cpuid_init(struct boot_params *bp) { }
->  #endif
->  
->  #endif
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index ae4556925485..651980ddbd65 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -14,6 +14,25 @@
->  #define has_cpuflag(f)	boot_cpu_has(f)
->  #endif
->  
-> +struct sev_snp_cpuid_fn {
-> +	u32 eax_in;
-> +	u32 ecx_in;
-> +	u64 unused;
-> +	u64 unused2;
-
-What are those for? Padding? Or are they spec-ed somewhere and left for
-future use?
-
-Seeing how the struct is __packed, they probably are part of a spec
-definition somewhere.
-
-Link pls.
-
-> +	u32 eax;
-> +	u32 ebx;
-> +	u32 ecx;
-> +	u32 edx;
-> +	u64 reserved;
-
-Ditto.
-
-Please prefix all those unused/reserved members with "__".
-
-> +} __packed;
-> +
-> +struct sev_snp_cpuid_info {
-> +	u32 count;
-> +	u32 reserved1;
-> +	u64 reserved2;
-
-Ditto.
-
-> +	struct sev_snp_cpuid_fn fn[0];
-> +} __packed;
-> +
->  /*
->   * Since feature negotiation related variables are set early in the boot
->   * process they must reside in the .data section so as not to be zeroed
-> @@ -26,6 +45,15 @@ static u16 __ro_after_init ghcb_version;
->  /* Bitmap of SEV features supported by the hypervisor */
->  u64 __ro_after_init sev_hv_features = 0;
->  
-> +/*
-> + * These are also stored in .data section to avoid the need to re-parse
-> + * boot_params and re-determine CPUID memory range when .bss is cleared.
-> + */
-> +static int sev_snp_cpuid_enabled __section(".data");
-
-That will become part of prot_guest_has() or cc_platform_has() or
-whatever its name is going to be.
-
-> +static unsigned long sev_snp_cpuid_pa __section(".data");
-> +static unsigned long sev_snp_cpuid_sz __section(".data");
-> +static const struct sev_snp_cpuid_info *cpuid_info __section(".data");
-
-All those: __ro_after_init?
-
-Also, just like the ones above have a short comment explaining what they
-are, add such comments for those too pls and perhaps what they're used
-for.
-
-> +
->  static bool __init sev_es_check_cpu_features(void)
->  {
->  	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
-> @@ -236,6 +264,219 @@ static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
->  	return 0;
->  }
->  
-> +static bool sev_snp_cpuid_active(void)
-> +{
-> +	return sev_snp_cpuid_enabled;
-> +}
-
-That too will become part of prot_guest_has() or cc_platform_has() or
-whatever its name is going to be.
-
-> +
-> +static int sev_snp_cpuid_xsave_size(u64 xfeatures_en, u32 base_size,
-> +				    u32 *xsave_size, bool compacted)
-
-Function name needs a verb. Please audit all your patches.
-
-> +{
-> +	u64 xfeatures_found = 0;
-> +	int i;
-> +
-> +	*xsave_size = base_size;
-
-Set that xsave_size only...
-> +
-> +	for (i = 0; i < cpuid_info->count; i++) {
-> +		const struct sev_snp_cpuid_fn *fn = &cpuid_info->fn[i];
-> +
-> +		if (!(fn->eax_in == 0xd && fn->ecx_in > 1 && fn->ecx_in < 64))
-> +			continue;
-> +		if (!(xfeatures_en & (1UL << fn->ecx_in)))
-> +			continue;
-> +		if (xfeatures_found & (1UL << fn->ecx_in))
-> +			continue;
-> +
-> +		xfeatures_found |= (1UL << fn->ecx_in);
-
-For all use BIT_ULL().
-
-> +		if (compacted)
-> +			*xsave_size += fn->eax;
-> +		else
-> +			*xsave_size = max(*xsave_size, fn->eax + fn->ebx);
-
-... not here ...
-
-> +	}
-> +
-> +	/*
-> +	 * Either the guest set unsupported XCR0/XSS bits, or the corresponding
-> +	 * entries in the CPUID table were not present. This is not a valid
-> +	 * state to be in.
-> +	 */
-> +	if (xfeatures_found != (xfeatures_en & ~3ULL))
-> +		return -EINVAL;
-
-... but here when you're not going to return an error because callers
-will see that value change temporarily which is not clean.
-
-Also, you need to set it once - not during each loop iteration.
-
-> +
-> +	return 0;
-> +}
-> +
-> +static void sev_snp_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
-> +			     u32 *ecx, u32 *edx)
-> +{
-> +	/*
-> +	 * Currently MSR protocol is sufficient to handle fallback cases, but
-> +	 * should that change make sure we terminate rather than grabbing random
-
-Fix the "we"s please. Please audit all your patches.
-
-> +	 * values. Handling can be added in future to use GHCB-page protocol for
-> +	 * cases that occur late enough in boot that GHCB page is available
-
-End comment sentences with a fullstop. Please audit all your patches.
-
-> +	 */
-
-Also, put that comment over the function.
-
-> +	if (cpuid_function_is_indexed(func) && subfunc != 0)
-
-In all your patches:
-
-s/ != 0//g
-
-> +		sev_es_terminate(1, GHCB_TERM_CPUID_HV);
-> +
-> +	if (sev_cpuid_hv(func, 0, eax, ebx, ecx, edx))
-> +		sev_es_terminate(1, GHCB_TERM_CPUID_HV);
-> +}
-> +
-> +static bool sev_snp_cpuid_find(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
-
-I guess
-
-	find_validated_cpuid_func()
-
-or so to denote where it picks it out from.
-
-> +			       u32 *ecx, u32 *edx)
-> +{
-> +	int i;
-> +	bool found = false;
-
-The tip-tree preferred ordering of variable declarations at the
-beginning of a function is reverse fir tree order::
-
-	struct long_struct_name *descriptive_name;
-	unsigned long foo, bar;
-	unsigned int tmp;
-	int ret;
-
-The above is faster to parse than the reverse ordering::
-
-	int ret;
-	unsigned int tmp;
-	unsigned long foo, bar;
-	struct long_struct_name *descriptive_name;
-
-And even more so than random ordering::
-
-	unsigned long foo, bar;
-	int ret;
-	struct long_struct_name *descriptive_name;
-	unsigned int tmp;
-
-Audit all your patches pls.
-
-> +
-> +	for (i = 0; i < cpuid_info->count; i++) {
-> +		const struct sev_snp_cpuid_fn *fn = &cpuid_info->fn[i];
-> +
-> +		if (fn->eax_in != func)
-> +			continue;
-> +
-> +		if (cpuid_function_is_indexed(func) && fn->ecx_in != subfunc)
-> +			continue;
-> +
-> +		*eax = fn->eax;
-> +		*ebx = fn->ebx;
-> +		*ecx = fn->ecx;
-> +		*edx = fn->edx;
-> +		found = true;
-> +
-> +		break;
-
-That's just silly. Simply:
-
-		return true;
-
-
-> +	}
-> +
-> +	return found;
-
-	return false;
-
-here and the "found" variable can go.
-
-> +}
-> +
-> +static bool sev_snp_cpuid_in_range(u32 func)
-> +{
-> +	int i;
-> +	u32 std_range_min = 0;
-> +	u32 std_range_max = 0;
-> +	u32 hyp_range_min = 0x40000000;
-> +	u32 hyp_range_max = 0;
-> +	u32 ext_range_min = 0x80000000;
-> +	u32 ext_range_max = 0;
-> +
-> +	for (i = 0; i < cpuid_info->count; i++) {
-> +		const struct sev_snp_cpuid_fn *fn = &cpuid_info->fn[i];
-> +
-> +		if (fn->eax_in == std_range_min)
-> +			std_range_max = fn->eax;
-> +		else if (fn->eax_in == hyp_range_min)
-> +			hyp_range_max = fn->eax;
-> +		else if (fn->eax_in == ext_range_min)
-> +			ext_range_max = fn->eax;
-> +	}
-
-So this loop which determines those ranges will run each time
-sev_snp_cpuid_find() doesn't find @func among the validated CPUID leafs.
-
-Why don't you do that determination once at init...
-
-> +
-> +	if ((func >= std_range_min && func <= std_range_max) ||
-> +	    (func >= hyp_range_min && func <= hyp_range_max) ||
-> +	    (func >= ext_range_min && func <= ext_range_max))
-
-... so that this function becomes only this check?
-
-This is unnecessary work as it is.
-
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +/*
-> + * Returns -EOPNOTSUPP if feature not enabled. Any other return value should be
-> + * treated as fatal by caller since we cannot fall back to hypervisor to fetch
-> + * the values for security reasons (outside of the specific cases handled here)
-> + */
-> +static int sev_snp_cpuid(u32 func, u32 subfunc, u32 *eax, u32 *ebx, u32 *ecx,
-> +			 u32 *edx)
-> +{
-> +	if (!sev_snp_cpuid_active())
-> +		return -EOPNOTSUPP;
-> +
-> +	if (!cpuid_info)
-> +		return -EIO;
-> +
-> +	if (!sev_snp_cpuid_find(func, subfunc, eax, ebx, ecx, edx)) {
-> +		/*
-> +		 * Some hypervisors will avoid keeping track of CPUID entries
-> +		 * where all values are zero, since they can be handled the
-> +		 * same as out-of-range values (all-zero). In our case, we want
-> +		 * to be able to distinguish between out-of-range entries and
-> +		 * in-range zero entries, since the CPUID table entries are
-> +		 * only a template that may need to be augmented with
-> +		 * additional values for things like CPU-specific information.
-> +		 * So if it's not in the table, but is still in the valid
-> +		 * range, proceed with the fix-ups below. Otherwise, just return
-> +		 * zeros.
-> +		 */
-> +		*eax = *ebx = *ecx = *edx = 0;
-> +		if (!sev_snp_cpuid_in_range(func))
-> +			goto out;
-
-That label is not needed.
-
-> +	}
-
-All that from here on looks like it should go into a separate function
-called
-
-snp_cpuid_postprocess()
-
-where you can do a switch-case on func and have it nice, readable and
-extensible there, in case more functions get added.
-
-> +	if (func == 0x1) {
-> +		u32 ebx2, edx2;
-> +
-> +		sev_snp_cpuid_hv(func, subfunc, NULL, &ebx2, NULL, &edx2);
-> +		/* initial APIC ID */
-> +		*ebx = (*ebx & 0x00FFFFFF) | (ebx2 & 0xFF000000);
-
-For all hex masks: use GENMASK_ULL.
-
-> +		/* APIC enabled bit */
-> +		*edx = (*edx & ~BIT_ULL(9)) | (edx2 & BIT_ULL(9));
-> +
-> +		/* OSXSAVE enabled bit */
-> +		if (native_read_cr4() & X86_CR4_OSXSAVE)
-> +			*ecx |= BIT_ULL(27);
-> +	} else if (func == 0x7) {
-> +		/* OSPKE enabled bit */
-> +		*ecx &= ~BIT_ULL(4);
-> +		if (native_read_cr4() & X86_CR4_PKE)
-> +			*ecx |= BIT_ULL(4);
-> +	} else if (func == 0xB) {
-> +		/* extended APIC ID */
-> +		sev_snp_cpuid_hv(func, 0, NULL, NULL, NULL, edx);
-> +	} else if (func == 0xd && (subfunc == 0x0 || subfunc == 0x1)) {
-> +		bool compacted = false;
-> +		u64 xcr0 = 1, xss = 0;
-> +		u32 xsave_size;
-> +
-> +		if (native_read_cr4() & X86_CR4_OSXSAVE)
-> +			xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
-> +		if (subfunc == 1) {
-> +			/* boot/compressed doesn't set XSS so 0 is fine there */
-> +#ifndef __BOOT_COMPRESSED
-> +			if (*eax & 0x8) /* XSAVES */
-> +				if (boot_cpu_has(X86_FEATURE_XSAVES))
-
-cpu_feature_enabled()
-
-> +					rdmsrl(MSR_IA32_XSS, xss);
-> +#endif
-> +			/*
-> +			 * The PPR and APM aren't clear on what size should be
-> +			 * encoded in 0xD:0x1:EBX when compaction is not enabled
-> +			 * by either XSAVEC or XSAVES since SNP-capable hardware
-> +			 * has the entries fixed as 1. KVM sets it to 0 in this
-> +			 * case, but to avoid this becoming an issue it's safer
-> +			 * to simply treat this as unsupported or SNP guests.
-> +			 */
-> +			if (!(*eax & 0xA)) /* (XSAVEC|XSAVES) */
-
-Please put side comments over the line they comment.
-
-> +				return -EINVAL;
-> +
-> +			compacted = true;
-> +		}
-> +
-> +		if (sev_snp_cpuid_xsave_size(xcr0 | xss, *ebx, &xsave_size,
-> +					     compacted))
-
-No need for that linebreak.
-
-> +			return -EINVAL;
-> +
-> +		*ebx = xsave_size;
-> +	} else if (func == 0x8000001E) {
-> +		u32 ebx2, ecx2;
-> +
-> +		/* extended APIC ID */
-> +		sev_snp_cpuid_hv(func, subfunc, eax, &ebx2, &ecx2, NULL);
-> +		/* compute ID */
-> +		*ebx = (*ebx & 0xFFFFFFF00) | (ebx2 & 0x000000FF);
-> +		/* node ID */
-> +		*ecx = (*ecx & 0xFFFFFFF00) | (ecx2 & 0x000000FF);
-> +	}
-> +
-> +out:
-> +	return 0;
-> +}
-> +
->  /*
->   * Boot VC Handler - This is the first VC handler during boot, there is no GHCB
->   * page yet, so it only supports the MSR based communication with the
-
-Is that comment...
-
-> @@ -244,15 +485,25 @@ static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
->  void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
->  {
->  	unsigned int fn = lower_bits(regs->ax, 32);
-> +	unsigned int subfn = lower_bits(regs->cx, 32);
->  	u32 eax, ebx, ecx, edx;
-> +	int ret;
->  
->  	/* Only CPUID is supported via MSR protocol */
-
-... and that still valid?
-
->  	if (exit_code != SVM_EXIT_CPUID)
->  		goto fail;
->  
-> +	ret = sev_snp_cpuid(fn, subfn, &eax, &ebx, &ecx, &edx);
-> +	if (ret == 0)
-> +		goto out;
-
-I think you mean here "goto cpuid_done;" or so.
-
-> +
-> +	if (ret != -EOPNOTSUPP)
-> +		goto fail;
-> +
->  	if (sev_cpuid_hv(fn, 0, &eax, &ebx, &ecx, &edx))
->  		goto fail;
->  
-> +out:
->  	regs->ax = eax;
->  	regs->bx = ebx;
->  	regs->cx = ecx;
-> @@ -552,6 +803,19 @@ static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
->  	struct pt_regs *regs = ctxt->regs;
->  	u32 cr4 = native_read_cr4();
->  	enum es_result ret;
-> +	u32 eax, ebx, ecx, edx;
-> +	int cpuid_ret;
-> +
-> +	cpuid_ret = sev_snp_cpuid(regs->ax, regs->cx, &eax, &ebx, &ecx, &edx);
-> +	if (cpuid_ret == 0) {
-> +		regs->ax = eax;
-> +		regs->bx = ebx;
-> +		regs->cx = ecx;
-> +		regs->dx = edx;
-> +		return ES_OK;
-> +	}
-> +	if (cpuid_ret != -EOPNOTSUPP)
-> +		return ES_VMM_ERROR;
-
-I don't like this thing slapped inside the function. Pls put it in a separate 
-
-vc_handle_cpuid_snp()
-
-which is called by vc_handle_cpuid() instead.
-
->  
->  	ghcb_set_rax(ghcb, regs->ax);
->  	ghcb_set_rcx(ghcb, regs->cx);
-> @@ -603,3 +867,113 @@ static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
->  
->  	return ES_OK;
->  }
-> +
-> +#ifdef BOOT_COMPRESSED
-> +static struct setup_data *get_cc_setup_data(struct boot_params *bp)
-> +{
-> +	struct setup_data *hdr = (struct setup_data *)bp->hdr.setup_data;
-> +
-> +	while (hdr) {
-> +		if (hdr->type == SETUP_CC_BLOB)
-> +			return hdr;
-> +		hdr = (struct setup_data *)hdr->next;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +/*
-> + * For boot/compressed kernel:
-> + *
-> + *   1) Search for CC blob in the following order/precedence:
-> + *      - via linux boot protocol / setup_data entry
-> + *      - via EFI configuration table
-> + *   2) Return a pointer to the CC blob, NULL otherwise.
-> + */
-> +static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
-
-snp_find_cc_blob() simply.
-
-> +{
-> +	struct cc_blob_sev_info *cc_info = NULL;
-> +	struct setup_data_cc {
-> +		struct setup_data header;
-> +		u32 cc_blob_address;
-> +	} *sd;
-
-Define that struct above the function and call it "cc_setup_data" like
-the rest of the stuff which deals with that.
-
-> +	unsigned long conf_table_pa;
-> +	unsigned int conf_table_len;
-> +	bool efi_64;
-> +
-> +	/* Try to get CC blob via setup_data */
-> +	sd = (struct setup_data_cc *)get_cc_setup_data(bp);
-> +	if (sd) {
-> +		cc_info = (struct cc_blob_sev_info *)(unsigned long)sd->cc_blob_address;
-> +		goto out_verify;
-> +	}
-> +
-> +	/* CC blob isn't in setup_data, see if it's in the EFI config table */
-> +	if (!efi_get_conf_table(bp, &conf_table_pa, &conf_table_len, &efi_64))
-> +		(void)efi_find_vendor_table(conf_table_pa, conf_table_len,
-> +					    EFI_CC_BLOB_GUID, efi_64,
-> +					    (unsigned long *)&cc_info);
-
-Yah, check that retval pls with a proper ret variable. No need to cram
-it all together.
-
-> +
-> +out_verify:
-> +	/* CC blob should be either valid or not present. Fail otherwise. */
-> +	if (cc_info && cc_info->magic != CC_BLOB_SEV_HDR_MAGIC)
-> +		sev_es_terminate(1, GHCB_SNP_UNSUPPORTED);
-> +
-> +	return cc_info;
-> +}
-> +#else
-> +/*
-> + * Probing for CC blob for run-time kernel will be enabled in a subsequent
-> + * patch. For now we need to stub this out.
-> + */
-> +static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
-> +{
-> +	return NULL;
-> +}
-> +#endif
-> +
-> +/*
-> + * Initial set up of CPUID table when running identity-mapped.
-> + *
-> + * NOTE: Since SEV_SNP feature partly relies on CPUID checks that can't
-> + * happen until we access CPUID page, we skip the check and hope the
-> + * bootloader is providing sane values.
-
-So I don't like the sound of that even one bit. We shouldn't hope
-anything here...
-
-> Current code relies on all CPUID
-> + * page lookups originating from #VC handler, which at least provides
-> + * indication that SEV-ES is enabled. Subsequent init levels will check for
-> + * SEV_SNP feature once available to also take SEV MSR value into account.
-> + */
-> +void sev_snp_cpuid_init(struct boot_params *bp)
-
-snp_cpuid_init()
-
-In general, prefix all SNP-specific variables, structs, functions, etc
-with "snp_" simply.
-
-> +{
-> +	struct cc_blob_sev_info *cc_info;
-> +
-> +	if (!bp)
-> +		sev_es_terminate(1, GHCB_TERM_CPUID);
-> +
-> +	cc_info = sev_snp_probe_cc_blob(bp);
-> +
-
-^ Superfluous newline.
-
-> +	if (!cc_info)
-> +		return;
-> +
-> +	sev_snp_cpuid_pa = cc_info->cpuid_phys;
-> +	sev_snp_cpuid_sz = cc_info->cpuid_len;
-
-You can do those assignments ...
-
-> +
-> +	/*
-> +	 * These should always be valid values for SNP, even if guest isn't
-> +	 * actually configured to use the CPUID table.
-> +	 */
-> +	if (!sev_snp_cpuid_pa || sev_snp_cpuid_sz < PAGE_SIZE)
-> +		sev_es_terminate(1, GHCB_TERM_CPUID);
-
-
-... here, after you've verified them.
-
-> +
-> +	cpuid_info = (const struct sev_snp_cpuid_info *)sev_snp_cpuid_pa;
-> +
-> +	/*
-> +	 * We should be able to trust the 'count' value in the CPUID table
-> +	 * area, but ensure it agrees with CC blob value to be safe.
-> +	 */
-> +	if (sev_snp_cpuid_sz < (sizeof(struct sev_snp_cpuid_info) +
-> +				sizeof(struct sev_snp_cpuid_fn) *
-> +				cpuid_info->count))
-
-Yah, this is the type of paranoia I'm talking about!
-
-> +		sev_es_terminate(1, GHCB_TERM_CPUID);
-> +
-> +	sev_snp_cpuid_enabled = 1;
-> +}
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index ddf8ced4a879..d7b6f7420551 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -19,6 +19,8 @@
->  #include <linux/kernel.h>
->  #include <linux/mm.h>
->  #include <linux/cpumask.h>
-> +#include <linux/log2.h>
-> +#include <linux/efi.h>
->  
->  #include <asm/cpu_entry_area.h>
->  #include <asm/stacktrace.h>
-> @@ -32,6 +34,8 @@
->  #include <asm/smp.h>
->  #include <asm/cpu.h>
->  #include <asm/apic.h>
-> +#include <asm/efi.h>
-> +#include <asm/cpuid.h>
->  
->  #include "sev-internal.h"
-
-What are those includes for?
-
-Looks like a leftover...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> What about incorrect/malicious accesses from host kernel? Should the direct mapping
+> also be removed for guest private memory?
+
+I would say that's out of scope for this RFC as it should not require any
+coordination between KVM and MM.
+
+> > play nice with KVM's existing approach of pulling the pfn and mapping level from
+> > the host page tables.
+> > 
+> > This is by no means a complete patch; it's a rough sketch of the KVM changes that
+> > would be needed.  The kernel side of things is completely omitted from the patch;
+> > the design concept is below.
+> > 
+> > There's also fair bit of hand waving on implementation details that shouldn't
+> > fundamentally change the overall ABI, e.g. how the backing store will ensure
+> > there are no mappings when "converting" to guest private.
+> > 
+> > Background
+> > ==========
+> > 
+> > This is a loose continuation of Kirill's RFC[*] to support TDX guest private
+> > memory by tracking guest memory at the 'struct page' level.  This proposal is the
+> > result of several offline discussions that were prompted by Andy Lutomirksi's
+> > concerns with tracking via 'struct page':
+> > 
+> >   1. The kernel wouldn't easily be able to enforce a 1:1 page:guest association,
+> >      let alone a 1:1 pfn:gfn mapping.
+> 
+> May I ask why? Doesn't FOLL_GUEST in Kirill's earlier patch work? Or just
+> because traversing the host PT to get a PFN(for a PageGuest(page)) is too
+> heavy?
+
+To ensure a 1:1 page:guest, 'struct page' would need to track enough information
+to uniquely identify which guest owns the page.  With TDX, one can argue that the
+kernel can rely on the TDX-Module to do that tracking (I argued this :-)), but
+for SEV and pure software implementations there is no third party that's tracking
+who owns what.  In other words, without stashing an identifier in 'struct page',
+the kernel would only know that _a_ guest owns the page, it couldn't identify which
+guest owns the page.  And allocating that much space in 'struct page' would be
+painfully expensive.
+
+1:1 pfn:gfn is even worse.  E.g. if userspace maps the same file as MAP_GUEST at
+multiple host virtual adddress, then configures KVM's memslots to have multiple
+regions, one for each alias, the guest will end up with 1:N pfn:gfn mappings.
+Preventing that would be nigh impossible without ending up with a plethora of
+races.
+
+> >   2. Does not work for memory that isn't backed by 'struct page', e.g. if devices
+> >      gain support for exposing encrypted memory regions to guests.
+> 
+> Do you mean that a page not backed by 'struct page' might be mapped to other
+> user space? I thought the VM_GUEST flags for the VMA could prevent that(though
+> I may possiblely be wrong). Could you explain more? Thanks!
+
+It's about enabling, not preventing.  If in the future there is some form of memory
+that is not backed by 'struct page' (CXL memory?), that can also be mapped into
+a protected KVM guest, relying on 'struct page' to ensure that only the owning KVM
+guest has access to that memory would not work.
+
+> >   3. Does not help march toward page migration or swap support (though it doesn't
+> >      hurt either).
+> > 
+> > [*] https://lkml.kernel.org/r/20210416154106.23721-1-kirill.shutemov@linux.intel.com
+> > 
+> > Concept
+> > =======
+> > 
+> > Guest private memory must be backed by an "enlightened" file descriptor, where
+> > "enlightened" means the implementing subsystem supports a one-way "conversion" to
+> > guest private memory and provides bi-directional hooks to communicate directly
+> > with KVM.  Creating a private fd doesn't necessarily have to be a conversion, e.g. it
+> > could also be a flag provided at file creation, a property of the file system itself,
+> > etc...
+> > 
+> > Before a private fd can be mapped into a KVM guest, it must be paired 1:1 with a
+> > KVM guest, i.e. multiple guests cannot share a fd.  At pairing, KVM and the fd's
+> > subsystem exchange a set of function pointers to allow KVM to call into the subsystem,
+> > e.g. to translate gfn->pfn, and vice versa to allow the subsystem to call into KVM,
+> > e.g. to invalidate/move/swap a gfn range.
+> 
+> So the gfn->pfn translation is done by the fd's subsystem? Again, could you
+> please elaborate how?
+
+Rats, I meant to capture this in the "patch" and did not.  The memslot would hold
+the base offset into the file instead of a host virtual address.  I.e. instead of
+gfn -> hva -> pfn, it would roughly be gfn -> offset -> pfn.
+
+> And each private memory region would need a seperate group of callbacks?
+
+Each private memslot would have its own pointer to a virtual function table, but
+there would only be a single table per backing store implementation.
+
+> > Mapping a private fd in host userspace is disallowed, i.e. there is never a host
+> > virtual address associated with the fd and thus no userspace page tables pointing
+> > at the private memory.
+> > 
+> > Pinning _from KVM_ is not required.  If the backing store supports page migration
+> > and/or swap, it can query the KVM-provided function pointers to see if KVM supports
+> > the operation.  If the operation is not supported (this will be the case initially
+> > in KVM), the backing store is responsible for ensuring correct functionality.
+> > 
+> > Unmapping guest memory, e.g. to prevent use-after-free, is handled via a callback
+> > from the backing store to KVM.  KVM will employ techniques similar to those it uses
+> > for mmu_notifiers to ensure the guest cannot access freed memory.
+> > 
+> > A key point is that, unlike similar failed proposals of the past, e.g. /dev/mktme,
+> > existing backing stores can be englightened, a from-scratch implementations is not
+> > required (though would obviously be possible as well).
+> > 
+> > One idea for extending existing backing stores, e.g. HugeTLBFS and tmpfs, is
+> > to add F_SEAL_GUEST, which would convert the entire file to guest private memory
+> > and either fail if the current size is non-zero or truncate the size to zero.
+> 
+> Have you discussed memfd_secret(if host direct mapping is also to be removed)? 
+
+No.  From a userspace perspective, the two would be mutually exclusive
+
+> And how does this F_SEAL_GUEST work?
+
+Are you asking about semantics or implementation?  If it's implementation, that's
+firmly in the handwaving part :-)  Semantically, once F_SEAL_GUEST is set it can't
+be removed, i.e. the file is forever "guest private".  In a way it's destructive,
+e.g. the host can't ever read out the memory, but that's really just a reflection
+of the hardware, e.g. even with SEV, the host can read the memory but it can never
+decrypt the memory.
+
+> > 
+> > KVM
+> > ===
+> > 
+> > Guest private memory is managed as a new address space, i.e. as a different set of
+> > memslots, similar to how KVM has a separate memory view for when a guest vCPU is
+> > executing in virtual SMM.  SMM is mutually exclusive with guest private memory.
+> > 
+> > The fd (the actual integer) is provided to KVM when a private memslot is added
+> > via KVM_SET_USER_MEMORY_REGION.  This is when the aforementioned pairing occurs.
+> 
+> My understanding of KVM_SET_USER_MEMORY_REGION is that, this ioctl is to
+> facilitate the binding of HVA and GPA ranges. But if there's no HVAs for
+> a private region at all, why do we need a memslot for it? Besides to keep
+> track of the private GFN ranges, and provide the callbacks, is there any
+> other reason?
+
+The short answer is that something in KVM needs to translate gfn->pfn.  Using just
+the gfn isn't feasible because there's no anchor (see above regarding the base file
+offset).  And even if the offset weren't needed, KVM still needs a lot of the same
+metadata, e.g. some day there may be read-only private memsots, dirty logging of
+private memslots, etc...  Implementing something else entirely would also require
+an absurd amount of code churn as all of KVM revolves around gfn -> slot -> pfn.
+
+> Another question is: why do we need a whole new address space, instead of
+> one address space accommodating memslot types?
+
+Either way could be made to work, and there isn't thaaat much code difference.  My
+initial thoughts were to use a flag, but there are some niceties that a separate
+address space provides (more below).
+
+> > By default, KVM memslot lookups will be "shared", only specific touchpoints will
+> > be modified to work with private memslots, e.g. guest page faults.  All host
+> > accesses to guest memory, e.g. for emulation, will thus look for shared memory
+> > and naturally fail without attempting copy_to/from_user() if the guest attempts
+> 
+> Becasue gfn_to_hva() will fail first?
+
+Yes.  More precisely, gfn_to_hva() will fail because there is no memslot for the
+current address space (shared).  This is one advantage over a flag, e.g. there's no
+need to check a flag after getting a memslot.  It's somewhat superficial as it
+wouldn't be too difficult to add low level helpers to default to "shared", but there
+are multiple instances of those types of patterns, so I do hope/think it will yield
+to cleaner code.
+
+> > to coerce KVM into access private memory.  Note, avoiding copy_to/from_user() and
+> > friends isn't strictly necessary, it's more of a happy side effect.
+> > 
+> > A new KVM exit reason, e.g. KVM_EXIT_MEMORY_ERROR, and data struct in vcpu->run
+> > is added to propagate illegal accesses (see above) and implicit conversions
+> 
+> Sorry, illegal accesses from VM?
+
+Illegal accesses from the host, e.g. attempting to read/write guest private memory
+via gfn_to_hva().
+
+> Do you actually mean a KVM page fault caused by private access from VM, which
+> implicitly notifies KVM to mark it as private(e.g. by bouncing to Qemu, which
+> then creates a private memory region and ioctls into KVM)?
+> 
+> If the answer is yes, how about naming the exit reason as KVM_EXIT_MEMORY_PRIVATE?
+> Meanwhile, is Qemu also supposed to invoke some system call into host kernel
+> before ioctls into KVM? I'm still confused where the kernel callbacks like
+> the gfn_to_pfn() come from(and how they function)... :)
+
+I would like the exit to be generic so that it can be reused for other, completely
+unrelated (yet similar) scenarios (see links below).
+
+> > to userspace (see below).  Note, the new exit reason + struct can also be to
+> > support several other feature requests in KVM[1][2].
+> > 
+> > The guest may explicitly or implicity request KVM to map a shared/private variant
+> > of a GFN.  An explicit map request is done via hypercall (out of scope for this
+> > proposal as both TDX and SNP ABIs define such a hypercall).  An implicit map request
+> > is triggered simply by the guest accessing the shared/private variant, which KVM
+> > sees as a guest page fault (EPT violation or #NPF).  Ideally only explicit requests
+> > would be supported, but neither TDX nor SNP require this in their guest<->host ABIs.
+> 
+> Well, I am wondering, should we assume all guest pages as shared or private by
+> default? I mean, if all guest pages are private when the VM is created, maybe
+> the private memslots can be initialized in VM creation time, and be deleted/splited
+> later(e.g. in response to guest sharing  hypercalls)?
+
+Define "we".  I absolutely expect the userspace VMM to assume all guest pages are
+private by default.  But I feel very strongly that KVM should not be involved in
+the control logic for decided when to convert a given page between shared and
+private.  Thus, deciding the default state is not KVM's responsibility.
+
+> It may simplify the logic, but may also restrict the VM type(e.g. to be TD guest).
+> 
+> > 
+> > For implicit or explicit mappings, if a memslot is found that fully covers the
+> > requested range (which is a single gfn for implicit mappings), KVM's normal guest
+> > page fault handling works with minimal modification.
+> > 
+> > If a memslot is not found, for explicit mappings, KVM will exit to userspace with
+> > the aforementioned dedicated exit reason.  For implict _private_ mappings, KVM will
+> > also immediately exit with the same dedicated reason.  For implicit shared mappings,
+> > an additional check is required to differentiate between emulated MMIO and an
+> > implicit private->shared conversion[*].  If there is an existing private memslot
+> > for the gfn, KVM will exit to userspace, otherwise KVM will treat the access as an
+> > emulated MMIO access and handle the page fault accordingly.
+> > 
+> > [1] https://lkml.kernel.org/r/YKxJLcg/WomPE422@google.com
+> > [2] https://lkml.kernel.org/r/20200617230052.GB27751@linux.intel.com
+> > 
+> > Punching Holes
+> > ==============
+> > 
+> > The expected userspace memory model is that mapping requests will be handled as
+> > conversions, e.g. on a shared mapping request, first unmap the private gfn range,
+> > then map the shared gfn range.  A new KVM ioctl() will likely be needed to allow
+> > userspace to punch a hole in a memslot, as expressing such an operation isn't
+> > possible with KVM_SET_USER_MEMORY_REGION.  While userspace could delete the
+> > memslot, then recreate three new memslots, doing so would be destructive to guest
+> > data as unmapping guest private memory (from the EPT/NPT tables) is destructive
+> > to the data for both TDX and SEV-SNP guests.
+> 
+> May I ask why? Thanks!
+
+Hmm, for SNP it might not actually be destructive, I forget the exact flows for
+unmapping memory.
+
+Anyways, for TDX it's most certainly destructive.  When mapping private pages into
+the guest (ignore pre-boot), the guest must accept a page before accessing the page,
+as a #VE will occur if the page is not accepted.  This holds true even if the host
+unmaps and remaps the same PFN -> GFN.  The TDX module also explicitly zeroes the
+page when installing a new mapping.
+
+And to prevent use-after-free, KVM must fully unmap a page if its corresponding
+memslot is deleted, e.g. it can't trust userspace to remap the memory at the exact
+gfn:pfn combo.
+
+Without a new API to punch a hole, deleting private memslots to create two smaller,
+discontiguous memslots would destroy the data in the two remaining/new memslots.
+
+> > Pros (vs. struct page)
+> > ======================
+> > 
+> > Easy to enforce 1:1 fd:guest pairing, as well as 1:1 gfn:pfn mapping.
+> > 
+> > Userspace page tables are not populated, e.g. reduced memory footprint, lower
+> > probability of making private memory accessible to userspace.
+> > 
+> > Provides line of sight to supporting page migration and swap.
+> > 
+> > Provides line of sight to mapping MMIO pages into guest private memory.
+> > 
+> > Cons (vs. struct page)
+> > ======================
+> > 
+> > Significantly more churn in KVM, e.g. to plumb 'private' through where needed,
+> > support memslot hole punching, etc...
+> > 
+> > KVM's MMU gets another method of retrieving host pfn and page size.
+> 
+> And the method is provided by host kernel? How does this method work?
+
+It's a function callback provided by the backing store.  The details of the
+function would be likely specific to the backing store's implementation, e.g.
+HugeTLBFS would likely have its own implementation.
+
+> [...]
+> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > index a272ccbddfa1..771080235b2d 100644
+> > --- a/arch/x86/kvm/mmu/mmu.c
+> > +++ b/arch/x86/kvm/mmu/mmu.c
+> > @@ -2896,6 +2896,9 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm,
+> >  	if (max_level == PG_LEVEL_4K)
+> >  		return PG_LEVEL_4K;
+> >  
+> > +	if (memslot_is_private(slot))
+> > +		return slot->private_ops->pfn_mapping_level(...);
+> > +
+> 
+> Oh, any suggestion how host kernel decides the mapping level here?
+
+That decision comes from the backing store.  E.g. HugeTLBFS would simply return
+its static/configured size/level.
+ 
+> >  	host_level = host_pfn_mapping_level(kvm, gfn, pfn, slot);
+> >  	return min(host_level, max_level);
+> >  }
+> > @@ -3835,9 +3838,11 @@ static bool kvm_arch_setup_async_pf(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+> >  
+> >  static bool kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault, int *r)
+> >  {
+> > -	struct kvm_memory_slot *slot = kvm_vcpu_gfn_to_memslot(vcpu, fault->gfn);
+> > +	struct kvm_memory_slot *slot;
+> >  	bool async;
+> >  
+> > +	slot = __kvm_vcpu_gfn_to_memslot(vcpu, fault->gfn, fault->private);
+> > +
+> >  	/*
+> >  	 * Retry the page fault if the gfn hit a memslot that is being deleted
+> >  	 * or moved.  This ensures any existing SPTEs for the old memslot will
+> > @@ -3846,8 +3851,19 @@ static bool kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
+> >  	if (slot && (slot->flags & KVM_MEMSLOT_INVALID))
+> >  		goto out_retry;
+> >  
+> > +	/*
+> > +	 * Exit to userspace to map the requested private/shared memory region
+> > +	 * if there is no memslot and (a) the access is private or (b) there is
+> > +	 * an existing private memslot.  Emulated MMIO must be accessed through
+> > +	 * shared GPAs, thus a memslot miss on a private GPA is always handled
+> > +	 * as an implicit conversion "request".
+> > +	 */
+> 
+> For (b), do you mean this fault is for a GFN which marked as private, but now
+> converted to a shared?
+
+Yes.
+
+> If true, could we just disallow it if no explict sharing hypercall is triggered?
+
+Sadly, no.  Even if all hardware vendor specs _required_ such behavior, KVM has no
+recourse but to exit to userspace because there's no way to communicate to the
+guest that it accessed a "bad" address.  E.g. KVM can't inject exceptions in TDX,
+and it can't touch guest register state to "return" an error code,  Not to mention
+that the guest would be in some random flow accessing memory.
+
+Happily for KVM, it's userspace's problem^Wdecision.
