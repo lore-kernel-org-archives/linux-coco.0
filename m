@@ -1,437 +1,433 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1A572
-	for <linux-coco@lists.linux.dev>; Thu, 26 Aug 2021 00:35:26 +0000 (UTC)
-Received: by mail-pj1-f53.google.com with SMTP id z24-20020a17090acb1800b0018e87a24300so1079432pjt.0
-        for <linux-coco@lists.linux.dev>; Wed, 25 Aug 2021 17:35:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=jXvMvc20pWnkEwxKzY+RWm8Jt/TW+w1UslrkfjkbNE0=;
-        b=pMfeH2f35LKY/xHcHbUFEbYHKy/GMvlS10yB0H8ZIjTeJHPMdwzmr1wfPoWu7GC1Dw
-         9b8V9rVzr5DR8+DDBhwj97qXn12omxnGDmFn8N4zgkXaqgIyH3STtqIawRmJ3Q4KlESM
-         0REU/fTh9XZLONg6rB9SUwAB3W/u6LtybtbhqIJuQbFUduneYeCGmnzwXbxBjuC9bC83
-         CsRywNP3DOhVdVLjqmYzKAfrW0bOSbHpE3ux8iWJhRu3cbx+2VMZ7I2PV37e8tRzq8cg
-         ZxXehJ864QLlrLIToiqBbALgLCImxlZRVDGaVtkGpKmocn96r0S0/I2ulKjN/5jsYL4I
-         SN9w==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0925272
+	for <linux-coco@lists.linux.dev>; Thu, 26 Aug 2021 10:15:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1629972953;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=apRFv7n2xmJmjLZVOcA8MxfCoee4fjfaD3LiY08vc2c=;
+	b=cx9TtM2U9O/Tnzfnd8PPRED7JcoWQxw3symfuMDrqgpfxHM7Or6mVO/peQFFtreQj3k5di
+	hY7p0+hmXZRZDB6/nh5aOl01CptgzAIg4LJ0YBTfbYOyfXpDPItTtf3JzZ6BojzSUfWBlj
+	ecDslc7S4DT6N9CcpN8RUoMkqIvq/68=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-562-UMVvKWysNWm2Q0PReyMoXA-1; Thu, 26 Aug 2021 06:15:52 -0400
+X-MC-Unique: UMVvKWysNWm2Q0PReyMoXA-1
+Received: by mail-wm1-f69.google.com with SMTP id a201-20020a1c7fd2000000b002e748bf0544so4136746wmd.2
+        for <linux-coco@lists.linux.dev>; Thu, 26 Aug 2021 03:15:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=jXvMvc20pWnkEwxKzY+RWm8Jt/TW+w1UslrkfjkbNE0=;
-        b=sdhyupDh51IcLCZAx/ZQDvjrwtT6EAncaG3WruagUzJNZeeJC8S6LZgTPARmWlNhOM
-         GvcU5RLk7OP994e7A70RFhuluOCZNS9QMRp7wYyaZ+tkaVJ7Z/ZDinbYMv1vsrttAU9W
-         VUH0RTGaWL6jy91CcRbDFEr64otWBrMjKc224XdK9dlICS2SI5W3IqorWjWJypMQ+GkV
-         6KZAiKBk73srATJU3j5y+AQMQYWhHgVIWurCpTDbKjUlMtDBOInfzpT1QQxm7Dul7DWq
-         Xx6RjxonjZEHtOy7w6q832FtNK6JT66tCahekmVN+egyGRWawlogT+GWBSbSUiqV9d6k
-         AG/A==
-X-Gm-Message-State: AOAM532OwqdSDwH/urJ9RbWTxt9IFxLlI0DinglW2JZogrJoj50oNzvz
-	FQJLvPn7NaoPkcG9p+ioNtiLIA==
-X-Google-Smtp-Source: ABdhPJxEEBWID4N77KZQVOmJG5fQMI8wF+OJhIswmBwZ81EUftxZ+BEo1uLAtXKTET2ahT3oyRPAYA==
-X-Received: by 2002:a17:902:d3d2:b0:133:aef2:8bc4 with SMTP id w18-20020a170902d3d200b00133aef28bc4mr909516plb.79.1629938125391;
-        Wed, 25 Aug 2021 17:35:25 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id gm5sm321949pjb.32.2021.08.25.17.35.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Aug 2021 17:35:24 -0700 (PDT)
-Date: Thu, 26 Aug 2021 00:35:21 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Yu Zhang <yu.c.zhang@linux.intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Isaku Yamahata <isaku.yamahata@gmail.com>
-Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
- private memory
-Message-ID: <YSbhydC0rleRRyU6@google.com>
+        h=x-gm-message-state:to:cc:references:from:organization:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=apRFv7n2xmJmjLZVOcA8MxfCoee4fjfaD3LiY08vc2c=;
+        b=DC3FRkK+f4a62pYAO5y6JRV57thTGf2YAfyrhiXtKhg7hTX6BhzTZgk0GUsWsBhDQj
+         xDjO4F4+15nMJbJ47Y9t2txFXUduXBG1i484dCxC5ITpQvOsDRsF4scRjm8sAMQ3dN06
+         mvM5lCnjQD0drdQ7elbBo4+KguKzz2a6jVAmV9XtHVeMAGR+0t97tBjmgO/XX+CkvXcR
+         lESX3U5B9LYwAI+qHJKPZmyu3UGiOR6/2u1PxcGEXynvR/+CuY+qjWyoXOkopKfVouc9
+         phdLyt9IBCloj6aVS21jz/y7ZDuzI1GCM+COoR0W45yPLGmubfAE3bY1F8EgrTb8eRmq
+         Pkqg==
+X-Gm-Message-State: AOAM531K7avVwZEBlwjzpdWEEeqI6jaKe5Nmuo0/SCBEa3NdvgxXYYdZ
+	YfhvUk3QSPdEKjCnoqiAF1gLqdS4Tic2dVlHg3t1oZ4w9jpThu/zJTdd7TMlUKrfdoQT7lwbLWy
+	X9lZAmQ+7vCaZmwa9x+rD+Q==
+X-Received: by 2002:a1c:443:: with SMTP id 64mr2848186wme.180.1629972951185;
+        Thu, 26 Aug 2021 03:15:51 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJws+Zz5x4nWfAWadjnNuM/1anXIJMI5QeO37QlkNT5/NFOCoz+fMpeETmx5krIHxk7l3Ib+vw==
+X-Received: by 2002:a1c:443:: with SMTP id 64mr2848149wme.180.1629972950788;
+        Thu, 26 Aug 2021 03:15:50 -0700 (PDT)
+Received: from [192.168.3.132] (p4ff23dec.dip0.t-ipconnect.de. [79.242.61.236])
+        by smtp.gmail.com with ESMTPSA id z19sm9274050wma.0.2021.08.26.03.15.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Aug 2021 03:15:50 -0700 (PDT)
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li
+ <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+ Joerg Roedel <joro@8bytes.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Andi Kleen <ak@linux.intel.com>, David Rientjes <rientjes@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>,
+ Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Dave Hansen <dave.hansen@intel.com>, Yu Zhang <yu.c.zhang@linux.intel.com>
 References: <20210824005248.200037-1-seanjc@google.com>
- <20210824104821.gwbxdvu43lhviuwl@linux.intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
+ memory
+Message-ID: <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
+Date: Thu, 26 Aug 2021 12:15:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210824104821.gwbxdvu43lhviuwl@linux.intel.com>
+In-Reply-To: <20210824005248.200037-1-seanjc@google.com>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 24, 2021, Yu Zhang wrote:
-> On Mon, Aug 23, 2021 at 05:52:48PM -0700, Sean Christopherson wrote:
+On 24.08.21 02:52, Sean Christopherson wrote:
+> The goal of this RFC is to try and align KVM, mm, and anyone else with skin in the
+> game, on an acceptable direction for supporting guest private memory, e.g. for
+> Intel's TDX.  The TDX architectural effectively allows KVM guests to crash the
+> host if guest private memory is accessible to host userspace, and thus does not
+> play nice with KVM's existing approach of pulling the pfn and mapping level from
+> the host page tables.
 > 
-> Thanks a lot for sharing these ideas. Lots of questions are inlined below. :)
+> This is by no means a complete patch; it's a rough sketch of the KVM changes that
+> would be needed.  The kernel side of things is completely omitted from the patch;
+> the design concept is below.
 > 
-> > The goal of this RFC is to try and align KVM, mm, and anyone else with skin in the
-> > game, on an acceptable direction for supporting guest private memory, e.g. for
-> > Intel's TDX.  The TDX architectural effectively allows KVM guests to crash the
-> > host if guest private memory is accessible to host userspace, and thus does not
+> There's also fair bit of hand waving on implementation details that shouldn't
+> fundamentally change the overall ABI, e.g. how the backing store will ensure
+> there are no mappings when "converting" to guest private.
 > 
-> What about incorrect/malicious accesses from host kernel? Should the direct mapping
-> also be removed for guest private memory?
 
-I would say that's out of scope for this RFC as it should not require any
-coordination between KVM and MM.
+This is a lot of complexity and rather advanced approaches (not saying 
+they are bad, just that we try to teach the whole stack something 
+completely new).
 
-> > play nice with KVM's existing approach of pulling the pfn and mapping level from
-> > the host page tables.
-> > 
-> > This is by no means a complete patch; it's a rough sketch of the KVM changes that
-> > would be needed.  The kernel side of things is completely omitted from the patch;
-> > the design concept is below.
-> > 
-> > There's also fair bit of hand waving on implementation details that shouldn't
-> > fundamentally change the overall ABI, e.g. how the backing store will ensure
-> > there are no mappings when "converting" to guest private.
-> > 
-> > Background
-> > ==========
-> > 
-> > This is a loose continuation of Kirill's RFC[*] to support TDX guest private
-> > memory by tracking guest memory at the 'struct page' level.  This proposal is the
-> > result of several offline discussions that were prompted by Andy Lutomirksi's
-> > concerns with tracking via 'struct page':
-> > 
-> >   1. The kernel wouldn't easily be able to enforce a 1:1 page:guest association,
-> >      let alone a 1:1 pfn:gfn mapping.
+
+What I think would really help is a list of requirements, such that 
+everybody is aware of what we actually want to achieve. Let me start:
+
+GFN: Guest Frame Number
+EPFN: Encrypted Physical Frame Number
+
+
+1) An EPFN must not get mapped into more than one VM: it belongs exactly 
+to one VM. It must neither be shared between VMs between processes nor 
+between VMs within a processes.
+
+
+2) User space (well, and actually the kernel) must never access an EPFN:
+
+- If we go for an fd, essentially all operations (read/write) have to
+   fail.
+- If we have to map an EPFN into user space page tables (e.g., to
+   simplify KVM), we could only allow fake swap entries such that "there
+   is something" but it cannot be  accessed and is flagged accordingly.
+- /proc/kcore and friends have to be careful as well and should not read
+   this memory. So there has to be a way to flag these pages.
+
+3) We need a way to express the GFN<->EPFN mapping and essentially 
+assign an EPFN to a GFN.
+
+
+4) Once we assigned a EPFN to a GFN, that assignment must not longer 
+change. Further, an EPFN must not get assigned to multiple GFNs.
+
+
+5) There has to be a way to "replace" encrypted parts by "shared" parts
+    and the other way around.
+
+What else?
+
+
+
+> Background
+> ==========
 > 
-> May I ask why? Doesn't FOLL_GUEST in Kirill's earlier patch work? Or just
-> because traversing the host PT to get a PFN(for a PageGuest(page)) is too
-> heavy?
-
-To ensure a 1:1 page:guest, 'struct page' would need to track enough information
-to uniquely identify which guest owns the page.  With TDX, one can argue that the
-kernel can rely on the TDX-Module to do that tracking (I argued this :-)), but
-for SEV and pure software implementations there is no third party that's tracking
-who owns what.  In other words, without stashing an identifier in 'struct page',
-the kernel would only know that _a_ guest owns the page, it couldn't identify which
-guest owns the page.  And allocating that much space in 'struct page' would be
-painfully expensive.
-
-1:1 pfn:gfn is even worse.  E.g. if userspace maps the same file as MAP_GUEST at
-multiple host virtual adddress, then configures KVM's memslots to have multiple
-regions, one for each alias, the guest will end up with 1:N pfn:gfn mappings.
-Preventing that would be nigh impossible without ending up with a plethora of
-races.
-
-> >   2. Does not work for memory that isn't backed by 'struct page', e.g. if devices
-> >      gain support for exposing encrypted memory regions to guests.
+> This is a loose continuation of Kirill's RFC[*] to support TDX guest private
+> memory by tracking guest memory at the 'struct page' level.  This proposal is the
+> result of several offline discussions that were prompted by Andy Lutomirksi's
+> concerns with tracking via 'struct page':
 > 
-> Do you mean that a page not backed by 'struct page' might be mapped to other
-> user space? I thought the VM_GUEST flags for the VMA could prevent that(though
-> I may possiblely be wrong). Could you explain more? Thanks!
+>    1. The kernel wouldn't easily be able to enforce a 1:1 page:guest association,
+>       let alone a 1:1 pfn:gfn mapping.
 
-It's about enabling, not preventing.  If in the future there is some form of memory
-that is not backed by 'struct page' (CXL memory?), that can also be mapped into
-a protected KVM guest, relying on 'struct page' to ensure that only the owning KVM
-guest has access to that memory would not work.
+Well, it could with some help on higher layers. Someone has to do the 
+tracking. Marking EPFNs as EPFNs can actually be very helpful,  e.g., 
+allow /proc/kcore to just not touch such pages. If we want to do all the 
+tracking in the struct page is a different story.
 
-> >   3. Does not help march toward page migration or swap support (though it doesn't
-> >      hurt either).
-> > 
-> > [*] https://lkml.kernel.org/r/20210416154106.23721-1-kirill.shutemov@linux.intel.com
-> > 
-> > Concept
-> > =======
-> > 
-> > Guest private memory must be backed by an "enlightened" file descriptor, where
-> > "enlightened" means the implementing subsystem supports a one-way "conversion" to
-> > guest private memory and provides bi-directional hooks to communicate directly
-> > with KVM.  Creating a private fd doesn't necessarily have to be a conversion, e.g. it
-> > could also be a flag provided at file creation, a property of the file system itself,
-> > etc...
-> > 
-> > Before a private fd can be mapped into a KVM guest, it must be paired 1:1 with a
-> > KVM guest, i.e. multiple guests cannot share a fd.  At pairing, KVM and the fd's
-> > subsystem exchange a set of function pointers to allow KVM to call into the subsystem,
-> > e.g. to translate gfn->pfn, and vice versa to allow the subsystem to call into KVM,
-> > e.g. to invalidate/move/swap a gfn range.
 > 
-> So the gfn->pfn translation is done by the fd's subsystem? Again, could you
-> please elaborate how?
+>    2. Does not work for memory that isn't backed by 'struct page', e.g. if devices
+>       gain support for exposing encrypted memory regions to guests.
 
-Rats, I meant to capture this in the "patch" and did not.  The memslot would hold
-the base offset into the file instead of a host virtual address.  I.e. instead of
-gfn -> hva -> pfn, it would roughly be gfn -> offset -> pfn.
+Let's keep it simple. If a struct page is right now what we need to 
+properly track it, so be it. If not, good. But let's not make this a 
+requirement right from the start if it's stuff for the far future.
 
-> And each private memory region would need a seperate group of callbacks?
-
-Each private memslot would have its own pointer to a virtual function table, but
-there would only be a single table per backing store implementation.
-
-> > Mapping a private fd in host userspace is disallowed, i.e. there is never a host
-> > virtual address associated with the fd and thus no userspace page tables pointing
-> > at the private memory.
-> > 
-> > Pinning _from KVM_ is not required.  If the backing store supports page migration
-> > and/or swap, it can query the KVM-provided function pointers to see if KVM supports
-> > the operation.  If the operation is not supported (this will be the case initially
-> > in KVM), the backing store is responsible for ensuring correct functionality.
-> > 
-> > Unmapping guest memory, e.g. to prevent use-after-free, is handled via a callback
-> > from the backing store to KVM.  KVM will employ techniques similar to those it uses
-> > for mmu_notifiers to ensure the guest cannot access freed memory.
-> > 
-> > A key point is that, unlike similar failed proposals of the past, e.g. /dev/mktme,
-> > existing backing stores can be englightened, a from-scratch implementations is not
-> > required (though would obviously be possible as well).
-> > 
-> > One idea for extending existing backing stores, e.g. HugeTLBFS and tmpfs, is
-> > to add F_SEAL_GUEST, which would convert the entire file to guest private memory
-> > and either fail if the current size is non-zero or truncate the size to zero.
 > 
-> Have you discussed memfd_secret(if host direct mapping is also to be removed)? 
+>    3. Does not help march toward page migration or swap support (though it doesn't
+>       hurt either).
 
-No.  From a userspace perspective, the two would be mutually exclusive
+"Does not help towards world peace, (though it doesn't hurt either)".
 
-> And how does this F_SEAL_GUEST work?
+Maybe let's ignore that for now, as it doesn't seem to be required to 
+get something reasonable running.
 
-Are you asking about semantics or implementation?  If it's implementation, that's
-firmly in the handwaving part :-)  Semantically, once F_SEAL_GUEST is set it can't
-be removed, i.e. the file is forever "guest private".  In a way it's destructive,
-e.g. the host can't ever read out the memory, but that's really just a reflection
-of the hardware, e.g. even with SEV, the host can read the memory but it can never
-decrypt the memory.
-
-> > 
-> > KVM
-> > ===
-> > 
-> > Guest private memory is managed as a new address space, i.e. as a different set of
-> > memslots, similar to how KVM has a separate memory view for when a guest vCPU is
-> > executing in virtual SMM.  SMM is mutually exclusive with guest private memory.
-> > 
-> > The fd (the actual integer) is provided to KVM when a private memslot is added
-> > via KVM_SET_USER_MEMORY_REGION.  This is when the aforementioned pairing occurs.
 > 
-> My understanding of KVM_SET_USER_MEMORY_REGION is that, this ioctl is to
-> facilitate the binding of HVA and GPA ranges. But if there's no HVAs for
-> a private region at all, why do we need a memslot for it? Besides to keep
-> track of the private GFN ranges, and provide the callbacks, is there any
-> other reason?
-
-The short answer is that something in KVM needs to translate gfn->pfn.  Using just
-the gfn isn't feasible because there's no anchor (see above regarding the base file
-offset).  And even if the offset weren't needed, KVM still needs a lot of the same
-metadata, e.g. some day there may be read-only private memsots, dirty logging of
-private memslots, etc...  Implementing something else entirely would also require
-an absurd amount of code churn as all of KVM revolves around gfn -> slot -> pfn.
-
-> Another question is: why do we need a whole new address space, instead of
-> one address space accommodating memslot types?
-
-Either way could be made to work, and there isn't thaaat much code difference.  My
-initial thoughts were to use a flag, but there are some niceties that a separate
-address space provides (more below).
-
-> > By default, KVM memslot lookups will be "shared", only specific touchpoints will
-> > be modified to work with private memslots, e.g. guest page faults.  All host
-> > accesses to guest memory, e.g. for emulation, will thus look for shared memory
-> > and naturally fail without attempting copy_to/from_user() if the guest attempts
+> [*] https://lkml.kernel.org/r/20210416154106.23721-1-kirill.shutemov@linux.intel.com
 > 
-> Becasue gfn_to_hva() will fail first?
-
-Yes.  More precisely, gfn_to_hva() will fail because there is no memslot for the
-current address space (shared).  This is one advantage over a flag, e.g. there's no
-need to check a flag after getting a memslot.  It's somewhat superficial as it
-wouldn't be too difficult to add low level helpers to default to "shared", but there
-are multiple instances of those types of patterns, so I do hope/think it will yield
-to cleaner code.
-
-> > to coerce KVM into access private memory.  Note, avoiding copy_to/from_user() and
-> > friends isn't strictly necessary, it's more of a happy side effect.
-> > 
-> > A new KVM exit reason, e.g. KVM_EXIT_MEMORY_ERROR, and data struct in vcpu->run
-> > is added to propagate illegal accesses (see above) and implicit conversions
+> Concept
+> =======
 > 
-> Sorry, illegal accesses from VM?
+> Guest private memory must be backed by an "enlightened" file descriptor, where
+> "enlightened" means the implementing subsystem supports a one-way "conversion" to
+> guest private memory and provides bi-directional hooks to communicate directly
+> with KVM.  Creating a private fd doesn't necessarily have to be a conversion, e.g. it
+> could also be a flag provided at file creation, a property of the file system itself,
+> etc...
 
-Illegal accesses from the host, e.g. attempting to read/write guest private memory
-via gfn_to_hva().
+Doesn't sound too crazy. Maybe even introducing memfd_encrypted() if 
+extending the other ones turns out too complicated.
 
-> Do you actually mean a KVM page fault caused by private access from VM, which
-> implicitly notifies KVM to mark it as private(e.g. by bouncing to Qemu, which
-> then creates a private memory region and ioctls into KVM)?
 > 
-> If the answer is yes, how about naming the exit reason as KVM_EXIT_MEMORY_PRIVATE?
-> Meanwhile, is Qemu also supposed to invoke some system call into host kernel
-> before ioctls into KVM? I'm still confused where the kernel callbacks like
-> the gfn_to_pfn() come from(and how they function)... :)
-
-I would like the exit to be generic so that it can be reused for other, completely
-unrelated (yet similar) scenarios (see links below).
-
-> > to userspace (see below).  Note, the new exit reason + struct can also be to
-> > support several other feature requests in KVM[1][2].
-> > 
-> > The guest may explicitly or implicity request KVM to map a shared/private variant
-> > of a GFN.  An explicit map request is done via hypercall (out of scope for this
-> > proposal as both TDX and SNP ABIs define such a hypercall).  An implicit map request
-> > is triggered simply by the guest accessing the shared/private variant, which KVM
-> > sees as a guest page fault (EPT violation or #NPF).  Ideally only explicit requests
-> > would be supported, but neither TDX nor SNP require this in their guest<->host ABIs.
+> Before a private fd can be mapped into a KVM guest, it must be paired 1:1 with a
+> KVM guest, i.e. multiple guests cannot share a fd.  At pairing, KVM and the fd's
+> subsystem exchange a set of function pointers to allow KVM to call into the subsystem,
+> e.g. to translate gfn->pfn, and vice versa to allow the subsystem to call into KVM,
+> e.g. to invalidate/move/swap a gfn range.
 > 
-> Well, I am wondering, should we assume all guest pages as shared or private by
-> default? I mean, if all guest pages are private when the VM is created, maybe
-> the private memslots can be initialized in VM creation time, and be deleted/splited
-> later(e.g. in response to guest sharing  hypercalls)?
+> Mapping a private fd in host userspace is disallowed, i.e. there is never a host
+> virtual address associated with the fd and thus no userspace page tables pointing
+> at the private memory.
 
-Define "we".  I absolutely expect the userspace VMM to assume all guest pages are
-private by default.  But I feel very strongly that KVM should not be involved in
-the control logic for decided when to convert a given page between shared and
-private.  Thus, deciding the default state is not KVM's responsibility.
+To keep the primary vs. secondary MMU thing working, I think it would 
+actually be nice to go with special swap entries instead; it just keeps 
+most things working as expected. But let's see where we end up.
 
-> It may simplify the logic, but may also restrict the VM type(e.g. to be TD guest).
 > 
-> > 
-> > For implicit or explicit mappings, if a memslot is found that fully covers the
-> > requested range (which is a single gfn for implicit mappings), KVM's normal guest
-> > page fault handling works with minimal modification.
-> > 
-> > If a memslot is not found, for explicit mappings, KVM will exit to userspace with
-> > the aforementioned dedicated exit reason.  For implict _private_ mappings, KVM will
-> > also immediately exit with the same dedicated reason.  For implicit shared mappings,
-> > an additional check is required to differentiate between emulated MMIO and an
-> > implicit private->shared conversion[*].  If there is an existing private memslot
-> > for the gfn, KVM will exit to userspace, otherwise KVM will treat the access as an
-> > emulated MMIO access and handle the page fault accordingly.
-> > 
-> > [1] https://lkml.kernel.org/r/YKxJLcg/WomPE422@google.com
-> > [2] https://lkml.kernel.org/r/20200617230052.GB27751@linux.intel.com
-> > 
-> > Punching Holes
-> > ==============
-> > 
-> > The expected userspace memory model is that mapping requests will be handled as
-> > conversions, e.g. on a shared mapping request, first unmap the private gfn range,
-> > then map the shared gfn range.  A new KVM ioctl() will likely be needed to allow
-> > userspace to punch a hole in a memslot, as expressing such an operation isn't
-> > possible with KVM_SET_USER_MEMORY_REGION.  While userspace could delete the
-> > memslot, then recreate three new memslots, doing so would be destructive to guest
-> > data as unmapping guest private memory (from the EPT/NPT tables) is destructive
-> > to the data for both TDX and SEV-SNP guests.
+> Pinning _from KVM_ is not required.  If the backing store supports page migration
+> and/or swap, it can query the KVM-provided function pointers to see if KVM supports
+> the operation.  If the operation is not supported (this will be the case initially
+> in KVM), the backing store is responsible for ensuring correct functionality.
 > 
-> May I ask why? Thanks!
-
-Hmm, for SNP it might not actually be destructive, I forget the exact flows for
-unmapping memory.
-
-Anyways, for TDX it's most certainly destructive.  When mapping private pages into
-the guest (ignore pre-boot), the guest must accept a page before accessing the page,
-as a #VE will occur if the page is not accepted.  This holds true even if the host
-unmaps and remaps the same PFN -> GFN.  The TDX module also explicitly zeroes the
-page when installing a new mapping.
-
-And to prevent use-after-free, KVM must fully unmap a page if its corresponding
-memslot is deleted, e.g. it can't trust userspace to remap the memory at the exact
-gfn:pfn combo.
-
-Without a new API to punch a hole, deleting private memslots to create two smaller,
-discontiguous memslots would destroy the data in the two remaining/new memslots.
-
-> > Pros (vs. struct page)
-> > ======================
-> > 
-> > Easy to enforce 1:1 fd:guest pairing, as well as 1:1 gfn:pfn mapping.
-> > 
-> > Userspace page tables are not populated, e.g. reduced memory footprint, lower
-> > probability of making private memory accessible to userspace.
-> > 
-> > Provides line of sight to supporting page migration and swap.
-> > 
-> > Provides line of sight to mapping MMIO pages into guest private memory.
-> > 
-> > Cons (vs. struct page)
-> > ======================
-> > 
-> > Significantly more churn in KVM, e.g. to plumb 'private' through where needed,
-> > support memslot hole punching, etc...
-> > 
-> > KVM's MMU gets another method of retrieving host pfn and page size.
+> Unmapping guest memory, e.g. to prevent use-after-free, is handled via a callback
+> from the backing store to KVM.  KVM will employ techniques similar to those it uses
+> for mmu_notifiers to ensure the guest cannot access freed memory.
 > 
-> And the method is provided by host kernel? How does this method work?
+> A key point is that, unlike similar failed proposals of the past, e.g. /dev/mktme,
+> existing backing stores can be englightened, a from-scratch implementations is not
+> required (though would obviously be possible as well).
 
-It's a function callback provided by the backing store.  The details of the
-function would be likely specific to the backing store's implementation, e.g.
-HugeTLBFS would likely have its own implementation.
+Right. But if it's just a bad fit, let's do something new. Just like we 
+did with memfd_secret.
 
-> [...]
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index a272ccbddfa1..771080235b2d 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -2896,6 +2896,9 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm,
-> >  	if (max_level == PG_LEVEL_4K)
-> >  		return PG_LEVEL_4K;
-> >  
-> > +	if (memslot_is_private(slot))
-> > +		return slot->private_ops->pfn_mapping_level(...);
-> > +
 > 
-> Oh, any suggestion how host kernel decides the mapping level here?
+> One idea for extending existing backing stores, e.g. HugeTLBFS and tmpfs, is
+> to add F_SEAL_GUEST, which would convert the entire file to guest private memory
+> and either fail if the current size is non-zero or truncate the size to zero.
 
-That decision comes from the backing store.  E.g. HugeTLBFS would simply return
-its static/configured size/level.
- 
-> >  	host_level = host_pfn_mapping_level(kvm, gfn, pfn, slot);
-> >  	return min(host_level, max_level);
-> >  }
-> > @@ -3835,9 +3838,11 @@ static bool kvm_arch_setup_async_pf(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
-> >  
-> >  static bool kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault, int *r)
-> >  {
-> > -	struct kvm_memory_slot *slot = kvm_vcpu_gfn_to_memslot(vcpu, fault->gfn);
-> > +	struct kvm_memory_slot *slot;
-> >  	bool async;
-> >  
-> > +	slot = __kvm_vcpu_gfn_to_memslot(vcpu, fault->gfn, fault->private);
-> > +
-> >  	/*
-> >  	 * Retry the page fault if the gfn hit a memslot that is being deleted
-> >  	 * or moved.  This ensures any existing SPTEs for the old memslot will
-> > @@ -3846,8 +3851,19 @@ static bool kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault,
-> >  	if (slot && (slot->flags & KVM_MEMSLOT_INVALID))
-> >  		goto out_retry;
-> >  
-> > +	/*
-> > +	 * Exit to userspace to map the requested private/shared memory region
-> > +	 * if there is no memslot and (a) the access is private or (b) there is
-> > +	 * an existing private memslot.  Emulated MMIO must be accessed through
-> > +	 * shared GPAs, thus a memslot miss on a private GPA is always handled
-> > +	 * as an implicit conversion "request".
-> > +	 */
+While possible, I actually do have the feeling that we want eventually 
+to have something new, as the semantics are just too different. But 
+let's see.
+
+
+> KVM
+> ===
 > 
-> For (b), do you mean this fault is for a GFN which marked as private, but now
-> converted to a shared?
+> Guest private memory is managed as a new address space, i.e. as a different set of
+> memslots, similar to how KVM has a separate memory view for when a guest vCPU is
+> executing in virtual SMM.  SMM is mutually exclusive with guest private memory.
+> 
+> The fd (the actual integer) is provided to KVM when a private memslot is added
+> via KVM_SET_USER_MEMORY_REGION.  This is when the aforementioned pairing occurs.
+> 
+> By default, KVM memslot lookups will be "shared", only specific touchpoints will
+> be modified to work with private memslots, e.g. guest page faults.  All host
+> accesses to guest memory, e.g. for emulation, will thus look for shared memory
+> and naturally fail without attempting copy_to/from_user() if the guest attempts
+> to coerce KVM into access private memory.  Note, avoiding copy_to/from_user() and
+> friends isn't strictly necessary, it's more of a happy side effect.
+> 
+> A new KVM exit reason, e.g. KVM_EXIT_MEMORY_ERROR, and data struct in vcpu->run
+> is added to propagate illegal accesses (see above) and implicit conversions
+> to userspace (see below).  Note, the new exit reason + struct can also be to
+> support several other feature requests in KVM[1][2].
+> 
+> The guest may explicitly or implicity request KVM to map a shared/private variant
+> of a GFN.  An explicit map request is done via hypercall (out of scope for this
+> proposal as both TDX and SNP ABIs define such a hypercall).  An implicit map request
+> is triggered simply by the guest accessing the shared/private variant, which KVM
+> sees as a guest page fault (EPT violation or #NPF).  Ideally only explicit requests
+> would be supported, but neither TDX nor SNP require this in their guest<->host ABIs.
+> 
+> For implicit or explicit mappings, if a memslot is found that fully covers the
+> requested range (which is a single gfn for implicit mappings), KVM's normal guest
+> page fault handling works with minimal modification.
+> 
+> If a memslot is not found, for explicit mappings, KVM will exit to userspace with
+> the aforementioned dedicated exit reason.  For implict _private_ mappings, KVM will
+> also immediately exit with the same dedicated reason.  For implicit shared mappings,
+> an additional check is required to differentiate between emulated MMIO and an
+> implicit private->shared conversion[*].  If there is an existing private memslot
+> for the gfn, KVM will exit to userspace, otherwise KVM will treat the access as an
+> emulated MMIO access and handle the page fault accordingly.
 
-Yes.
+Do you mean some kind of overlay. "Ordinary" user memory regions overlay 
+"private user memory regions"? So when marking something shared, you'd 
+leave the private user memory region alone and only create a new 
+"ordinary"user memory regions that references shared memory in QEMU 
+(IOW, a different mapping)?
 
-> If true, could we just disallow it if no explict sharing hypercall is triggered?
+Reading below, I think you were not actually thinking about an overlay, 
+but maybe overlays might actually be a nice concept to have instead.
 
-Sadly, no.  Even if all hardware vendor specs _required_ such behavior, KVM has no
-recourse but to exit to userspace because there's no way to communicate to the
-guest that it accessed a "bad" address.  E.g. KVM can't inject exceptions in TDX,
-and it can't touch guest register state to "return" an error code,  Not to mention
-that the guest would be in some random flow accessing memory.
 
-Happily for KVM, it's userspace's problem^Wdecision.
+> Punching Holes
+> ==============
+> 
+> The expected userspace memory model is that mapping requests will be handled as
+> conversions, e.g. on a shared mapping request, first unmap the private gfn range,
+> then map the shared gfn range.  A new KVM ioctl() will likely be needed to allow
+> userspace to punch a hole in a memslot, as expressing such an operation isn't
+> possible with KVM_SET_USER_MEMORY_REGION.  While userspace could delete the
+> memslot, then recreate three new memslots, doing so would be destructive to guest
+> data as unmapping guest private memory (from the EPT/NPT tables) is destructive
+> to the data for both TDX and SEV-SNP guests.
+
+If you'd treat it like an overlay, you'd not actually be punching holes. 
+You'd only be creating/removing ordinary user memory regions when 
+marking something shared/unshared.
+
+> 
+> Pros (vs. struct page)
+> ======================
+> 
+> Easy to enforce 1:1 fd:guest pairing, as well as 1:1 gfn:pfn mapping.
+> 
+> Userspace page tables are not populated, e.g. reduced memory footprint, lower
+> probability of making private memory accessible to userspace.
+
+Agreed to the first part, although I consider that a secondary concern. 
+The second part, I'm not sure if that is really the case. Fake swap 
+entries are just a marker.
+
+> 
+> Provides line of sight to supporting page migration and swap.
+
+Again, let's leave that out for now. I think that's an kernel internal 
+that will require quite some thought either way.
+
+> 
+> Provides line of sight to mapping MMIO pages into guest private memory.
+
+That's an interesting thought. Would it work via overlays as well? Can 
+you elaborate?
+
+> 
+> Cons (vs. struct page)
+> ======================
+> 
+> Significantly more churn in KVM, e.g. to plumb 'private' through where needed,
+> support memslot hole punching, etc...
+> 
+> KVM's MMU gets another method of retrieving host pfn and page size.
+> 
+> Requires enabling in every backing store that someone wants to support.
+
+I think we will only care about anonymous memory eventually with 
+huge/gigantic pages in the next years. Just to what memfd() is already 
+limited. File-backed -- I don't know ... if at all, swapping ... in a 
+couple of years ...
+
+> 
+> Because the NUMA APIs work on virtual addresses, new syscalls fmove_pages(),
+> fbind(), etc... would be required to provide equivalents to existing NUMA
+> functionality (though those syscalls would likely be useful irrespective of guest
+> private memory).
+
+Right, that's because we don't have a VMA that describes all this. E.g., 
+mbind().
+
+> 
+> Washes (vs. struct page)
+> ========================
+> 
+> A misbehaving guest that triggers a large number of shared memory mappings will
+> consume a large number of memslots.  But, this is likely a wash as similar effect
+> would happen with VMAs in the struct page approach.
+
+Just cap it then to something sane. 32k which we have right now is crazy 
+and only required in very special setups. You can just make QEMU 
+override/set the KVM default.
+
+
+
+
+
+My wild idea after reading everything so far (full of flaws, just want 
+to mention it, maybe it gives some ideas):
+
+Introduce memfd_encrypted().
+
+Similar to like memfd_secret()
+- Most system calls will just fail.
+- Allow MAP_SHARED only.
+- Enforce VM_DONTDUMP and skip during fork().
+- File size can change exactly once, before any mmap. (IIRC)
+
+Different to memfd_secret(), allow mapping each page of the fd exactly 
+one time via mmap() into a single process.
+
+The simplest way would be requiring that only the whole file can be 
+mmaped, and that can happen exactly once. memremap() and friends will 
+fail. Splitting the VMA will fail. munmap()/mmap(MAP_FIXED) will fail. 
+You'll have it in a single process mapped ever only and persistent. 
+Unmap will only work when tearing down the MM.
+
+Hole punching via fallocate() has to be evaluated (below).
+
+
+You'll end up with a VMA that corresponds to the whole file in a single 
+process only, and that cannot vanish, not even in parts.
+
+Define "ordinary" user memory slots as overlay on top of "encrypted" 
+memory slots.  Inside KVM, bail out if you encounter such a VMA inside a 
+normal user memory slot. When creating a "encryped" user memory slot, 
+require that the whole VMA is covered at creation time. You know the VMA 
+can't change later.
+
+In QEMU, allocate for each RAMBlock a MAP_PRIVATE memfd_encrypted() and 
+a MAP_SHARED memfd(). Make QEMU and other processes always access the 
+MAP_SHARED part only. Initially, create "encrypted" user memory regions 
+in KVM when defining the RAM layout, disallowing changes. Define the 
+MAP_SHARED memfd() overlay user memory regions in KVM depending on the 
+shared/private state.
+
+In the actual memory backend, flag all new allocated pages as 
+PG_encrypted. Pages can be faulted into a process page table via a new 
+fake swap entry, where KVM can look them up via a special GUP flag, as 
+Kirill suggested. If access via user space or another GUP user, SIGBUS 
+instead of converting the special swap entry.
+
+Allow only a single encrypted VM per process ever in KVM for now.
+All that handshake regarding swapping/migration ... can be handled 
+internally if ever required.
+
+Memory hotplug: should not be an issue.
+Memory hotunplug would require some thought -- maybe 
+fallcoate(PUNCHHOLE) will do.
+
+Reducing memory consumption: With MADV_DONTNEED/fallocate(punchole) we 
+can reclaim memory at least within the shared memory part when switching 
+back and forth. Maybe even in the MAP_PRIVATE/memfd_encrypted() part 
+when marking something shared. TBD.
+
+-- 
+Thanks,
+
+David / dhildenb
+
