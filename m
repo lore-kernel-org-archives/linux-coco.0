@@ -1,138 +1,138 @@
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA67F3FC1
-	for <linux-coco@lists.linux.dev>; Fri, 27 Aug 2021 02:31:58 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10088"; a="303458343"
-X-IronPort-AV: E=Sophos;i="5.84,355,1620716400"; 
-   d="scan'208";a="303458343"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2021 19:31:58 -0700
-X-IronPort-AV: E=Sophos;i="5.84,355,1620716400"; 
-   d="scan'208";a="528139305"
-Received: from xumingcu-mobl.ccr.corp.intel.com (HELO localhost) ([10.249.172.104])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2021 19:31:49 -0700
-Date: Fri, 27 Aug 2021 10:31:50 +0800
-From: Yu Zhang <yu.c.zhang@linux.intel.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8017C3FC6
+	for <linux-coco@lists.linux.dev>; Fri, 27 Aug 2021 13:50:58 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f1117006e0d6268a9fc7b3e.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:1700:6e0d:6268:a9fc:7b3e])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 59FAE1EC0537;
+	Fri, 27 Aug 2021 15:50:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1630072252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=MgcfjTqcSY9gu+zATu+viDfC+xRfq+ze2XUVEcy5kJQ=;
+	b=cO0UcApzABFyvPv+e6G4bGRLUXS/CNO2/DFEGytg7MS8u7V43idZQCwPExuB4RZ2dTpRkF
+	ZxrfGsWj2Lzr+LOSyR0G1Fy/jCw1vouDlF4GKT7VnZ9xWps8tPd6rZuQft0qi4nHtT/Sfa
+	fAPo0aIk+YOA4sfiUsRttbNgb58ivFI=
+Date: Fri, 27 Aug 2021 15:51:29 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
- private memory
-Message-ID: <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
-References: <20210824005248.200037-1-seanjc@google.com>
- <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part1 v5 29/38] x86/boot: add a pointer to Confidential
+ Computing blob in bootparams
+Message-ID: <YSjt4YDQR8vDeOdI@zn.tnic>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-30-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
-User-Agent: NeoMutt/20171215
+In-Reply-To: <20210820151933.22401-30-brijesh.singh@amd.com>
 
-On Thu, Aug 26, 2021 at 12:15:48PM +0200, David Hildenbrand wrote:
-> On 24.08.21 02:52, Sean Christopherson wrote:
-> > The goal of this RFC is to try and align KVM, mm, and anyone else with skin in the
-> > game, on an acceptable direction for supporting guest private memory, e.g. for
-> > Intel's TDX.  The TDX architectural effectively allows KVM guests to crash the
-> > host if guest private memory is accessible to host userspace, and thus does not
-> > play nice with KVM's existing approach of pulling the pfn and mapping level from
-> > the host page tables.
-> > 
-> > This is by no means a complete patch; it's a rough sketch of the KVM changes that
-> > would be needed.  The kernel side of things is completely omitted from the patch;
-> > the design concept is below.
-> > 
-> > There's also fair bit of hand waving on implementation details that shouldn't
-> > fundamentally change the overall ABI, e.g. how the backing store will ensure
-> > there are no mappings when "converting" to guest private.
-> > 
+On Fri, Aug 20, 2021 at 10:19:24AM -0500, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
 > 
-> This is a lot of complexity and rather advanced approaches (not saying they
-> are bad, just that we try to teach the whole stack something completely
-> new).
+> The previously defined Confidential Computing blob is provided to the
+> kernel via a setup_data structure or EFI config table entry. Currently
+> these are both checked for by boot/compressed kernel to access the
+> CPUID table address within it for use with SEV-SNP CPUID enforcement.
 > 
+> To also enable SEV-SNP CPUID enforcement for the run-time kernel,
+> similar early access to the CPUID table is needed early on while it's
+> still using the identity-mapped page table set up by boot/compressed,
+> where global pointers need to be accessed via fixup_pointer().
 > 
-> What I think would really help is a list of requirements, such that
-> everybody is aware of what we actually want to achieve. Let me start:
+> This is much of an issue for accessing setup_data, and the EFI config
+> table helper code currently used in boot/compressed *could* be used in
+> this case as well since they both rely on identity-mapping. However, it
+> has some reliance on EFI helpers/string constants that would need to be
+> accessed via fixup_pointer(), and fixing it up while making it
+> shareable between boot/compressed and run-time kernel is fragile and
+> introduces a good bit of uglyness.
 > 
-> GFN: Guest Frame Number
-> EPFN: Encrypted Physical Frame Number
-> 
-> 
-> 1) An EPFN must not get mapped into more than one VM: it belongs exactly to
-> one VM. It must neither be shared between VMs between processes nor between
-> VMs within a processes.
-> 
-> 
-> 2) User space (well, and actually the kernel) must never access an EPFN:
-> 
-> - If we go for an fd, essentially all operations (read/write) have to
->   fail.
-> - If we have to map an EPFN into user space page tables (e.g., to
->   simplify KVM), we could only allow fake swap entries such that "there
->   is something" but it cannot be  accessed and is flagged accordingly.
-> - /proc/kcore and friends have to be careful as well and should not read
->   this memory. So there has to be a way to flag these pages.
-> 
-> 3) We need a way to express the GFN<->EPFN mapping and essentially assign an
-> EPFN to a GFN.
-> 
-> 
-> 4) Once we assigned a EPFN to a GFN, that assignment must not longer change.
-> Further, an EPFN must not get assigned to multiple GFNs.
-> 
-> 
-> 5) There has to be a way to "replace" encrypted parts by "shared" parts
->    and the other way around.
-> 
-> What else?
+> Instead, this patch adds a boot_params->cc_blob_address pointer that
 
-Thanks a lot for this summary. A question about the requirement: do we or
-do we not have plan to support assigned device to the protected VM?
+Avoid having "This patch" or "This commit" in the commit message. It is
+tautologically useless.
 
-If yes. The fd based solution may need change the VFIO interface as well(
-though the fake swap entry solution need mess with VFIO too). Because:
+Also, do
 
-1> KVM uses VFIO when assigning devices into a VM.
+$ git grep 'This patch' Documentation/process
 
-2> Not knowing which GPA ranges may be used by the VM as DMA buffer, all
-guest pages will have to be mapped in host IOMMU page table to host pages,
-which are pinned during the whole life cycle fo the VM.
+for more details.
 
-3> IOMMU mapping is done during VM creation time by VFIO and IOMMU driver,
-in vfio_dma_do_map().
+> boot/compressed can initialize so that the run-time kernel can access
+> the prelocated CC blob that way instead.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/include/asm/bootparam_utils.h | 1 +
+>  arch/x86/include/uapi/asm/bootparam.h  | 3 ++-
+>  2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/include/asm/bootparam_utils.h b/arch/x86/include/asm/bootparam_utils.h
+> index 981fe923a59f..53e9b0620d96 100644
+> --- a/arch/x86/include/asm/bootparam_utils.h
+> +++ b/arch/x86/include/asm/bootparam_utils.h
+> @@ -74,6 +74,7 @@ static void sanitize_boot_params(struct boot_params *boot_params)
+>  			BOOT_PARAM_PRESERVE(hdr),
+>  			BOOT_PARAM_PRESERVE(e820_table),
+>  			BOOT_PARAM_PRESERVE(eddbuf),
+> +			BOOT_PARAM_PRESERVE(cc_blob_address),
+>  		};
+>  
+>  		memset(&scratch, 0, sizeof(scratch));
+> diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
+> index 1ac5acca72ce..bea5cdcdf532 100644
+> --- a/arch/x86/include/uapi/asm/bootparam.h
+> +++ b/arch/x86/include/uapi/asm/bootparam.h
+> @@ -188,7 +188,8 @@ struct boot_params {
+>  	__u32 ext_ramdisk_image;			/* 0x0c0 */
+>  	__u32 ext_ramdisk_size;				/* 0x0c4 */
+>  	__u32 ext_cmd_line_ptr;				/* 0x0c8 */
+> -	__u8  _pad4[116];				/* 0x0cc */
+> +	__u8  _pad4[112];				/* 0x0cc */
+> +	__u32 cc_blob_address;				/* 0x13c */
 
-4> However, vfio_dma_do_map() needs the HVA to perform a GUP to get the HPA
-and pin the page. 
+So I know I've heard grub being mentioned in conjunction with this: if
+you are ever going to pass this through the boot loader, then you'd need
+to update Documentation/x86/zero-page.rst too to state that this field
+can be written by the boot loader too.
 
-But if we are using fd based solution, not every GPA can have a HVA, thus
-the current VFIO interface to map and pin the GPA(IOVA) wont work. And I
-doubt if VFIO can be modified to support this easily.
+-- 
+Regards/Gruss,
+    Boris.
 
-
-B.R.
-Yu
+https://people.kernel.org/tglx/notes-about-netiquette
