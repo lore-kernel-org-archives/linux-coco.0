@@ -1,23 +1,23 @@
-Received: from mail.skyhub.de (unknown [5.9.137.197])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034DA3FC6
-	for <linux-coco@lists.linux.dev>; Fri, 27 Aug 2021 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990013FC2
+	for <linux-coco@lists.linux.dev>; Fri, 27 Aug 2021 14:43:20 +0000 (UTC)
 Received: from zn.tnic (p200300ec2f1117006e0d6268a9fc7b3e.dip0.t-ipconnect.de [IPv6:2003:ec:2f11:1700:6e0d:6268:a9fc:7b3e])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2FD8E1EC0493;
-	Fri, 27 Aug 2021 16:14:37 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D16451EC0493;
+	Fri, 27 Aug 2021 16:43:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1630073677;
+	t=1630075393;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=3hBv70kaJ7xEYPUSElnsV+8ktxYO20ij25UtBpP2GHs=;
-	b=RvUnxtHP5ZBZ7z5DJaIp60qjgWYo4OZEBia83SzIl3zY4GMzFkUSp0X8fXVP4csuFG9OL7
-	cwZQf9i50aJTbvYkf29NQruKb+VvUU37WJVWvPmbdC1X59BTOfEV0O0yIhxB0pnKNH23+N
-	bxOk1W2hd7hfH8IjKvYrjLnoIREET4E=
-Date: Fri, 27 Aug 2021 16:15:14 +0200
+	bh=JnpD/7q7WF7NuQTfcoCi3R50uMQ/1+7oFap3seyqFiU=;
+	b=e26r5thZw3XobM2ye3EddiEyjsURteB1VBnb9DqalDrz/BfqeAqavI3AfDm3wWbyRpHNYf
+	KaaDG9MPIkesEZZlZNR1sFhG8o8pPc4me7+aevWWCAlge78mDHfvYrrKAql2Ceq4wAet5Z
+	tCUyonEcyXAV+onAyLO+agfkeabOE2s=
+Date: Fri, 27 Aug 2021 16:43:51 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -45,11 +45,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 30/38] x86/compressed/64: store Confidential
- Computing blob address in bootparams
-Message-ID: <YSjzcgQDubOY1pGI@zn.tnic>
+Subject: Re: [PATCH Part1 v5 31/38] x86/compressed/64: add identity mapping
+ for Confidential Computing blob
+Message-ID: <YSj6J+TFnJzueCAQ@zn.tnic>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-31-brijesh.singh@amd.com>
+ <20210820151933.22401-32-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -58,88 +58,55 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210820151933.22401-31-brijesh.singh@amd.com>
+In-Reply-To: <20210820151933.22401-32-brijesh.singh@amd.com>
 
-On Fri, Aug 20, 2021 at 10:19:25AM -0500, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
-> 
-> When the Confidential Computing blob is located by the boot/compressed
-> kernel, store a pointer to it in bootparams->cc_blob_address to avoid
-> the need for the run-time kernel to rescan the EFI config table to find
-> it again.
-> 
-> Since this function is also shared by the run-time kernel, this patch
-
-Here's "this patch" again... but you know what to do.
-
-> also adds the logic to make use of bootparams->cc_blob_address when it
-> has been initialized.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/sev-shared.c | 40 ++++++++++++++++++++++++++----------
->  1 file changed, 29 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index 651980ddbd65..6f70ba293c5e 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -868,7 +868,6 @@ static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
->  	return ES_OK;
->  }
+On Fri, Aug 20, 2021 at 10:19:26AM -0500, Brijesh Singh wrote:
+> diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+> index 3cf7a7575f5c..54374e0f0257 100644
+> --- a/arch/x86/boot/compressed/ident_map_64.c
+> +++ b/arch/x86/boot/compressed/ident_map_64.c
+> @@ -37,6 +37,9 @@
+>  #include <asm/setup.h>	/* For COMMAND_LINE_SIZE */
+>  #undef _SETUP
 >  
-> -#ifdef BOOT_COMPRESSED
->  static struct setup_data *get_cc_setup_data(struct boot_params *bp)
->  {
->  	struct setup_data *hdr = (struct setup_data *)bp->hdr.setup_data;
-> @@ -888,6 +887,16 @@ static struct setup_data *get_cc_setup_data(struct boot_params *bp)
->   *   1) Search for CC blob in the following order/precedence:
->   *      - via linux boot protocol / setup_data entry
->   *      - via EFI configuration table
-> + *   2) If found, initialize boot_params->cc_blob_address to point to the
-> + *      blob so that uncompressed kernel can easily access it during very
-> + *      early boot without the need to re-parse EFI config table
-> + *   3) Return a pointer to the CC blob, NULL otherwise.
-> + *
-> + * For run-time/uncompressed kernel:
-> + *
-> + *   1) Search for CC blob in the following order/precedence:
-> + *      - via linux boot protocol / setup_data entry
+> +#define __BOOT_COMPRESSED
+> +#include <asm/sev.h> /* For sev_snp_active() + ConfidentialComputing blob */
+> +
 
-Why would you do this again if the boot/compressed kernel has already
-searched for it?
+When you move all the cc_blob parsing to the compressed kernel, all that
+ugly ifdeffery won't be needed.
 
-> + *      - via boot_params->cc_blob_address
+>  extern unsigned long get_cmd_line_ptr(void);
+>  
+>  /* Used by PAGE_KERN* macros: */
+> @@ -163,6 +166,21 @@ void initialize_identity_maps(void *rmode)
+>  	cmdline = get_cmd_line_ptr();
+>  	add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
 
-Yes, that is the only thing you need to do in the runtime kernel - see
-if cc_blob_address is not 0. And all the work has been done by the
-decompressor kernel already.
+Carve that ...
 
->   *   2) Return a pointer to the CC blob, NULL otherwise.
->   */
->  static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
-> @@ -897,9 +906,11 @@ static struct cc_blob_sev_info *sev_snp_probe_cc_blob(struct boot_params *bp)
->  		struct setup_data header;
->  		u32 cc_blob_address;
->  	} *sd;
-> +#ifdef __BOOT_COMPRESSED
->  	unsigned long conf_table_pa;
->  	unsigned int conf_table_len;
->  	bool efi_64;
-> +#endif
+> +	/*
+> +	 * The ConfidentialComputing blob is used very early in uncompressed
+> +	 * kernel to find CPUID memory to handle cpuid instructions. Make sure
+> +	 * an identity-mapping exists so they can be accessed after switchover.
+> +	 */
+> +	if (sev_snp_enabled()) {
+> +		struct cc_blob_sev_info *cc_info =
+> +			(void *)(unsigned long)boot_params->cc_blob_address;
+> +
+> +		add_identity_map((unsigned long)cc_info,
+> +				 (unsigned long)cc_info + sizeof(*cc_info));
+> +		add_identity_map((unsigned long)cc_info->cpuid_phys,
+> +				 (unsigned long)cc_info->cpuid_phys + cc_info->cpuid_len);
+> +	}
+> +
+>  	/* Load the new page-table. */
+>  	sev_verify_cbit(top_level_pgt);
 
-That function turns into an unreadable mess with that #ifdef
-__BOOT_COMPRESSED slapped everywhere.
+... up to here into a separate function called sev_prep_identity_maps()
+so that SEV-specific code flow is not in the generic code path.
 
-It seems the cleanest thing to do is to do what we do with
-acpi_rsdp_addr: do all the parsing in boot/compressed/ and pass it on
-through boot_params. Kernel proper simply reads the pointer.
-
-Which means, you can stick all that cc_blob figuring out functionality
-in arch/x86/boot/compressed/sev.c instead.
-
-Thx.
+>  	write_cr3(top_level_pgt);
 
 -- 
 Regards/Gruss,
