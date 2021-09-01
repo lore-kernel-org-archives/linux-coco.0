@@ -1,81 +1,76 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5703FC1
-	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 07:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B596A3FC1
+	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 08:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1630482681;
+	s=mimecast20190719; t=1630483751;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5/n4oX+wgvboyZg/iFTnmBK58XCroGgLcRn2/A07gOQ=;
-	b=Oc4EzyZOaFGKcO9FtwKX35hqRDwqlVH2Sk9gQ3CCvgMpo1K4VTWrxBvXvT/aP0dp6Jmfih
-	tXAttoPieJQLgsHlIZmef4513r8x0g6fvxRi/yG0p+PjXBADIR5spZMpjUiKTrYRPw+Yfy
-	NyrBWIAr2FdVtXtfgYFCsNH5dHdZU4c=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-500-9_5cXIbEN8arC-ko-Mn5zg-1; Wed, 01 Sep 2021 03:51:20 -0400
-X-MC-Unique: 9_5cXIbEN8arC-ko-Mn5zg-1
-Received: by mail-wr1-f69.google.com with SMTP id d10-20020adffbca000000b00157bc86d94eso484084wrs.20
-        for <linux-coco@lists.linux.dev>; Wed, 01 Sep 2021 00:51:19 -0700 (PDT)
+	bh=xehwNc5m+0VkuxXN2ywY3KTZndfyL4hPEsZFfPwosyo=;
+	b=Gqfb2DC+SIKh/b+m6HsvIL3HWsTUEAqJJSW2rK3DlHaTqe96lAqoF3Rq3eIYDM3KTx4fwW
+	E87coeCpedqZBVkRDI8yScIb8dwADF5OukhyJGyRtjVJ5eoE0fdITGv2uGDTVVYSA6K5xU
+	ML6wStMWTLjrZzsij1G2yqu12QwdPoc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-373-P04eN1DoOiaq4RvE5hc6gA-1; Wed, 01 Sep 2021 04:09:10 -0400
+X-MC-Unique: P04eN1DoOiaq4RvE5hc6gA-1
+Received: by mail-wr1-f72.google.com with SMTP id j1-20020adff541000000b001593715d384so139458wrp.1
+        for <linux-coco@lists.linux.dev>; Wed, 01 Sep 2021 01:09:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
+        h=x-gm-message-state:to:cc:references:from:organization:subject
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=5/n4oX+wgvboyZg/iFTnmBK58XCroGgLcRn2/A07gOQ=;
-        b=CGnfi3YvCylbHxtqmur4gGz/dql1slRcFklr/PYU/C8Y38BeftpzNYJ/TxwfU6f3i8
-         DGRaCm2pZZnyuRFBhjqP2SZXvuqxnNkLLokMSpQkeVP9OMpjJTfuWyCz6ozwi40lLNx9
-         Y9cTRqRLCs2YJsZJm9g1lHDj1VvWqL26hdYgH7U60PQsVOfybaQec50nf/35hZOcG3o9
-         2OYd4qR6gFtaSAIKJCcUQuH/D/GAVIW1JxildmD3wz3plYThYt6YbQ0vwbiJjjyvEOxC
-         J6YRUFlaDlQdQ5+GEQ2IfdKFBBPHM3ls2VUjuxEFFlP0biAg2xZaBmxqvxcM94GbSlMr
-         IYtQ==
-X-Gm-Message-State: AOAM533pm0E910f3lwBtWsBn+ZBejXPFauxpZvetfsYrrODRBblQ9HSU
-	JJz02ScFnABU8KAe+SybIQ+Ou3ZgmFm0E9PVQqzEk4ArOFdWc2ztrd6sfDMEN+eTCVy9bF1Gzjt
-	lTsNwL+0nl2kbUR5YKWqGvg==
-X-Received: by 2002:a5d:6909:: with SMTP id t9mr34318587wru.44.1630482678972;
-        Wed, 01 Sep 2021 00:51:18 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxMTvey89SA3DoF/1V8U6PpKmCzoHc/KiiggH+ZLjefcj776vc8ndYgcBGPfQkb8V+1P+tq7Q==
-X-Received: by 2002:a5d:6909:: with SMTP id t9mr34318566wru.44.1630482678787;
-        Wed, 01 Sep 2021 00:51:18 -0700 (PDT)
+        bh=xehwNc5m+0VkuxXN2ywY3KTZndfyL4hPEsZFfPwosyo=;
+        b=VoSVp+/ufD18PTZ9Zux6iIUoUjykBOcO936hvz3uVH8aSjtDBkuXiMnlghgPQAw3rb
+         yKcWSlmE25gRVtY3cQ6bcL7BVYiUS0OREA6BZRt9ycV6AxlRkBZ0ikiGIqyPd1DVHaic
+         OXBpucmzntWjDW8mhODOw29bRJhSxkyRgijxWbR/jEkDT29QXqIJVaxK5sz/XHL/BhAO
+         fP0o1OQey1yXaqvifeYsKwTLyQtram6/oumONaYBMvXvlCohHz5I43q6FwhQH7WCNMfs
+         Jlr9aN/UEXJW4BjsJP63o12WA7SGRHj0jkEeEZii5Gq0/WvH7AiUfNn98SJXw/hl5o+3
+         pxqg==
+X-Gm-Message-State: AOAM531bI141jxsHUn0//WrZ0gUz3J4cTRI1gaUjj43K7f1a5UDPLNqr
+	GOXgVJatvlBi+BrsxyD8GJFU3xM0rN88C6SrFCubuDJ+3Px+U3lOC/F2dbJcfxG8dF78ujkK8J1
+	o52NSjBKslxeFi8Eb5Whosg==
+X-Received: by 2002:a1c:2684:: with SMTP id m126mr8402714wmm.65.1630483749480;
+        Wed, 01 Sep 2021 01:09:09 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxVg9SDEJVZUq3nbvsMK7CWfSbicB1cKUcx7fhtGFdGrRsx3YALb8TPN4qumsd3be+NY8b/Lw==
+X-Received: by 2002:a1c:2684:: with SMTP id m126mr8402689wmm.65.1630483749203;
+        Wed, 01 Sep 2021 01:09:09 -0700 (PDT)
 Received: from [192.168.3.132] (p4ff23f71.dip0.t-ipconnect.de. [79.242.63.113])
-        by smtp.gmail.com with ESMTPSA id v13sm21108768wrf.55.2021.09.01.00.51.17
+        by smtp.gmail.com with ESMTPSA id o7sm4481973wmc.46.2021.09.01.01.09.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Sep 2021 00:51:18 -0700 (PDT)
-Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
- memory
+        Wed, 01 Sep 2021 01:09:08 -0700 (PDT)
 To: Sean Christopherson <seanjc@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
  Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
- kvm list <kvm@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>,
- Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Andi Kleen <ak@linux.intel.com>, David Rientjes <rientjes@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
  Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>,
- Dario Faggioli <dfaggioli@suse.com>,
- the arch/x86 maintainers <x86@kernel.org>, linux-mm@kvack.org,
+ Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
  "Kirill A . Shutemov" <kirill@shutemov.name>,
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
  Dave Hansen <dave.hansen@intel.com>, Yu Zhang <yu.c.zhang@linux.intel.com>
 References: <20210824005248.200037-1-seanjc@google.com>
  <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
- <40af9d25-c854-8846-fdab-13fe70b3b279@kernel.org>
- <cfe75e39-5927-c02a-b8bc-4de026bb7b3b@redhat.com>
- <73319f3c-6f5e-4f39-a678-7be5fddd55f2@www.fastmail.com>
- <YSlnJpWh8fdpddTA@google.com>
- <949e6d95-266d-0234-3b86-6bd3c5267333@redhat.com>
- <YS6U1u/p+nOXVEfS@google.com>
+ <YSlkzLblHfiiPyVM@google.com>
+ <61ea53ce-2ba7-70cc-950d-ca128bcb29c5@redhat.com>
+ <YS6lIg6kjNPI1EgF@google.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-Message-ID: <a21fc9cf-0775-2c70-0ad6-61bb1363e2d0@redhat.com>
-Date: Wed, 1 Sep 2021 09:51:17 +0200
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
+ memory
+Message-ID: <f413cc20-66fc-cf1e-47ab-b8f099c89583@redhat.com>
+Date: Wed, 1 Sep 2021 10:09:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 Precedence: bulk
@@ -84,81 +79,144 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YS6U1u/p+nOXVEfS@google.com>
+In-Reply-To: <YS6lIg6kjNPI1EgF@google.com>
 Authentication-Results: relay.mimecast.com;
 	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 31.08.21 22:45, Sean Christopherson wrote:
-> On Tue, Aug 31, 2021, David Hildenbrand wrote:
->> On 28.08.21 00:28, Sean Christopherson wrote:
->>> On Fri, Aug 27, 2021, Andy Lutomirski wrote:
->>>>
->>>> On Thu, Aug 26, 2021, at 2:26 PM, David Hildenbrand wrote:
->>>>> On 26.08.21 19:05, Andy Lutomirski wrote:
->>>>
->>>>>> Oof.  That's quite a requirement.  What's the point of the VMA once all
->>>>>> this is done?
->>>>>
->>>>> You can keep using things like mbind(), madvise(), ... and the GUP code
->>>>> with a special flag might mostly just do what you want. You won't have
->>>>> to reinvent too many wheels on the page fault logic side at least.
->>>
->>> Ya, Kirill's RFC more or less proved a special GUP flag would indeed Just Work.
->>> However, the KVM page fault side of things would require only a handful of small
->>> changes to send private memslots down a different path.  Compared to the rest of
->>> the enabling, it's quite minor.
->>>
->>> The counter to that is other KVM architectures would need to learn how to use the
->>> new APIs, though I suspect that there will be a fair bit of arch enabling regardless
->>> of what route we take.
->>>
->>>> You can keep calling the functions.  The implementations working is a
->>>> different story: you can't just unmap (pte_numa-style or otherwise) a private
->>>> guest page to quiesce it, move it with memcpy(), and then fault it back in.
->>>
->>> Ya, I brought this up in my earlier reply.  Even the initial implementation (without
->>> real NUMA support) would likely be painful, e.g. the KVM TDX RFC/PoC adds dedicated
->>> logic in KVM to handle the case where NUMA balancing zaps a _pinned_ page and then
->>> KVM fault in the same pfn.  It's not thaaat ugly, but it's arguably more invasive
->>> to KVM's page fault flows than a new fd-based private memslot scheme.
->>
->> I might have a different mindset, but less code churn doesn't necessarily
->> translate to "better approach".
+>> Do we have to protect from that? How would KVM protect from user space
+>> replacing private pages by shared pages in any of the models we discuss?
 > 
-> I wasn't referring to code churn.  By "invasive" I mean number of touchpoints in
-> KVM as well as the nature of the touchpoints.  E.g. poking into how KVM uses
-> available bits in its shadow PTEs and adding multiple checks through KVM's page
-> fault handler, versus two callbacks to get the PFN and page size.
-> 
->> I'm certainly not pushing for what I proposed (it's a rough, broken sketch).
->> I'm much rather trying to come up with alternatives that try solving the
->> same issue, handling the identified requirements.
->>
->> I have a gut feeling that the list of requirements might not be complete
->> yet. For example, I wonder if we have to protect against user space
->> replacing private pages by shared pages or punishing random holes into the
->> encrypted memory fd.
-> 
-> Replacing a private page with a shared page for a given GFN is very much a
-> requirement as it's expected behavior for all VMM+guests when converting guest
-> memory between shared and private.
-> 
-> Punching holes is a sort of optional requirement.  It's a "requirement" in that
-> it's allowed if the backing store supports such a behavior, optional in that
-> support wouldn't be strictly necessary and/or could come with constraints.  The
-> expected use case is that host userspace would punch a hole to free unreachable
-> private memory, e.g. after the corresponding GFN(s) is converted to shared, so
-> that it doesn't consume 2x memory for the guest.
-> 
+> The overarching rule is that KVM needs to guarantee a given pfn is never mapped[*]
+> as both private and shared, where "shared" also incorporates any mapping from the
+> host.  Essentially it boils down to the kernel ensuring that a pfn is unmapped
+> before it's converted to/from private, and KVM ensuring that it honors any
+> unmap notifications from the kernel, e.g. via mmu_notifier or via a direct callback
+> as proposed in this RFC.
 
-Okay, that matches my understanding then. I was rather thinking about 
-"what happens if we punch a hole where private memory was not converted 
-to shared yet". AFAIU, we will simply crash the guest then.
+Okay, so the fallocate(PUNCHHOLE) from user space could trigger the 
+respective unmapping and freeing of backing storage.
+
+> 
+> As it pertains to PUNCH_HOLE, the responsibilities are no different than when the
+> backing-store is destroyed; the backing-store needs to notify downstream MMUs
+> (a.k.a. KVM) to unmap the pfn(s) before freeing the associated memory.
+
+Right.
+
+> 
+> [*] Whether or not the kernel's direct mapping needs to be removed is debatable,
+>      but my argument is that that behavior is not visible to userspace and thus
+>      out of scope for this discussion, e.g. zapping/restoring the direct map can
+>      be added/removed without impacting the userspace ABI.
+
+Right. Removing it shouldn't also be requited IMHO. There are other ways 
+to teach the kernel to not read/write some online pages (filter 
+/proc/kcore, disable hibernation, strict access checks for /dev/mem ...).
+
+> 
+>>>> Define "ordinary" user memory slots as overlay on top of "encrypted" memory
+>>>> slots.  Inside KVM, bail out if you encounter such a VMA inside a normal
+>>>> user memory slot. When creating a "encryped" user memory slot, require that
+>>>> the whole VMA is covered at creation time. You know the VMA can't change
+>>>> later.
+>>>
+>>> This can work for the basic use cases, but even then I'd strongly prefer not to
+>>> tie memslot correctness to the VMAs.  KVM doesn't truly care what lies behind
+>>> the virtual address of a memslot, and when it does care, it tends to do poorly,
+>>> e.g. see the whole PFNMAP snafu.  KVM cares about the pfn<->gfn mappings, and
+>>> that's reflected in the infrastructure.  E.g. KVM relies on the mmu_notifiers
+>>> to handle mprotect()/munmap()/etc...
+>>
+>> Right, and for the existing use cases this worked. But encrypted memory
+>> breaks many assumptions we once made ...
+>>
+>> I have somewhat mixed feelings about pages that are mapped into $WHATEVER
+>> page tables but not actually mapped into user space page tables. There is no
+>> way to reach these via the rmap.
+>>
+>> We have something like that already via vfio. And that is fundamentally
+>> broken when it comes to mmu notifiers, page pinning, page migration, ...
+> 
+> I'm not super familiar with VFIO internals, but the idea with the fd-based
+> approach is that the backing-store would be in direct communication with KVM and
+> would handle those operations through that direct channel.
+
+Right. The problem I am seeing is that e.g., try_to_unmap() might not be 
+able to actually fully unmap a page, because some non-synchronized KVM 
+MMU still maps a page. It would be great to evaluate how the fd 
+callbacks would fit into the whole picture, including the current rmap.
+
+I guess I'm missing the bigger picture how it all fits together on the 
+!KVM side.
+
+> 
+>>> As is, I don't think KVM would get any kind of notification if userpaces unmaps
+>>> the VMA for a private memslot that does not have any entries in the host page
+>>> tables.   I'm sure it's a solvable problem, e.g. by ensuring at least one page
+>>> is touched by the backing store, but I don't think the end result would be any
+>>> prettier than a dedicated API for KVM to consume.
+>>>
+>>> Relying on VMAs, and thus the mmu_notifiers, also doesn't provide line of sight
+>>> to page migration or swap.  For those types of operations, KVM currently just
+>>> reacts to invalidation notifications by zapping guest PTEs, and then gets the
+>>> new pfn when the guest re-faults on the page.  That sequence doesn't work for
+>>> TDX or SEV-SNP because the trusteday agent needs to do the memcpy() of the page
+>>> contents, i.e. the host needs to call into KVM for the actual migration.
+>>
+>> Right, but I still think this is a kernel internal. You can do such
+>> handshake later in the kernel IMHO.
+> 
+> It is kernel internal, but AFAICT it will be ugly because KVM "needs" to do the
+> migration and that would invert the mmu_notifer API, e.g. instead of "telling"
+> secondary MMUs to invalidate/change a mappings, the mm would be "asking"
+> secondary MMus "can you move this?".  More below.
+
+In my thinking, the the rmap via mmu notifiers would do the unmapping 
+just as we know it (from primary MMU -> secondary MMU). Once 
+try_to_unmap() succeeded, the fd provider could kick-off the migration 
+via whatever callback.
+
+> 
+>> But I also already thought: is it really KVM that is to perform the
+>> migration or is it the fd-provider that performs the migration? Who says
+>> memfd_encrypted() doesn't default to a TDX "backend" on Intel CPUs that just
+>> knows how to migrate such a page?
+>>
+>> I'd love to have some details on how that's supposed to work, and which
+>> information we'd need to migrate/swap/... in addition to the EPFN and a new
+>> SPFN.
+> 
+> KVM "needs" to do the migration.  On TDX, the migration will be a SEAMCALL,
+> a post-VMXON instruction that transfers control to the TDX-Module, that at
+> minimum needs a per-VM identifier, the gfn, and the page table level.  The call
+
+The per-VM identifier and the GFN would be easy to grab. Page table 
+level, not so sure -- do you mean the general page table depth? Or if 
+it's mapped as 4k vs. 2M ... ? The latter could be answered by the fd 
+provider already I assume.
+
+Does the page still have to be mapped into the secondary MMU when 
+performing the migration via TDX? I assume not, which would simplify 
+things a lot.
+
+> into the TDX-Module would also need to take a KVM lock (probably KVM's mmu_lock)
+> to satisfy TDX's concurrency requirement, e.g. to avoid "spurious" errors due to
+> the backing-store attempting to migrate memory that KVM is unmapping due to a
+> memslot change.
+
+Something like that might be handled by fixing private memory slots 
+similar to in my draft, right?
+
+> 
+> The per-VM identifier may not apply to SEV-SNP, but I believe everything else
+> holds true.
+
+Thanks!
 
 -- 
 Thanks,
