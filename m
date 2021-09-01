@@ -1,52 +1,52 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE0F3FC1
-	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 07:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5703FC1
+	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 07:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1630482569;
+	s=mimecast20190719; t=1630482681;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QVyzY7plwjcHWFuBExDhEE+9lobSCXwllAQa8rm7VKg=;
-	b=cMQqSNYWSfMIN0pWDgqb7WYYr9Dm1ifhyJ1/k4Lb01Z6oRyL1EBvVS5Gyi3GBbPYlH2vpD
-	k1edxDVk3NfpO0ZmMLBqy6/tnlb5r3XEItMQP25TV9NWpz1kycWmZmkId9YmqgbF5W2C7u
-	VxNrxptGjXecn8BsdEQgyaZII/QBhz4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-594-0DGFqysGP0iGy7bNLW997w-1; Wed, 01 Sep 2021 03:49:28 -0400
-X-MC-Unique: 0DGFqysGP0iGy7bNLW997w-1
-Received: by mail-wm1-f71.google.com with SMTP id z18-20020a1c7e120000b02902e69f6fa2e0so678358wmc.9
-        for <linux-coco@lists.linux.dev>; Wed, 01 Sep 2021 00:49:27 -0700 (PDT)
+	bh=5/n4oX+wgvboyZg/iFTnmBK58XCroGgLcRn2/A07gOQ=;
+	b=Oc4EzyZOaFGKcO9FtwKX35hqRDwqlVH2Sk9gQ3CCvgMpo1K4VTWrxBvXvT/aP0dp6Jmfih
+	tXAttoPieJQLgsHlIZmef4513r8x0g6fvxRi/yG0p+PjXBADIR5spZMpjUiKTrYRPw+Yfy
+	NyrBWIAr2FdVtXtfgYFCsNH5dHdZU4c=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-500-9_5cXIbEN8arC-ko-Mn5zg-1; Wed, 01 Sep 2021 03:51:20 -0400
+X-MC-Unique: 9_5cXIbEN8arC-ko-Mn5zg-1
+Received: by mail-wr1-f69.google.com with SMTP id d10-20020adffbca000000b00157bc86d94eso484084wrs.20
+        for <linux-coco@lists.linux.dev>; Wed, 01 Sep 2021 00:51:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:organization
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=QVyzY7plwjcHWFuBExDhEE+9lobSCXwllAQa8rm7VKg=;
-        b=NCXw06D6gr+g+3qi/TTf6eUlTCiQUBgHOozlZ1q6s1O50WWVOcOpWdCK/YtuQrm9Px
-         pb2p3cBQkP5m/9qZ5Z4iixYdBTIuyGmcT2mKQs+zipLmtLDByDq5nu/TGocDAKa/27wm
-         r228fcF4iis22YbzN5ZGIpQw4js17jAJRar7JAXgLHhRI3DdWuGF6mPeu2wgJvpXjXLC
-         bXJ2NF9ZLcQTbasDeRbk7n2V/lT3fbAbxAeyFT/zUHOzkAFPt3WnIAHl4L+AfrYtY+Cy
-         o/K5rut9ceCKht8pr9ZeN+d5RB7AVhFBhmL4evu6I3fkmbJlKF4KXZ7t1O9jpyQ7fnHc
-         C9ug==
-X-Gm-Message-State: AOAM532/azKXZ+3CZs9g1oCXMEQIUdnkQbFM7xgMdB9qR2GR0OeuFavD
-	IxUv4HDSI0JJqwq97VGLKWkknUhJ+vqK7R/Es0OnALlZeYCMOJgRcPtd631ohYNxB0i1n1ru6vF
-	egTAHaJgemTqIQLZeZTe1uw==
-X-Received: by 2002:adf:e702:: with SMTP id c2mr35401831wrm.397.1630482566712;
-        Wed, 01 Sep 2021 00:49:26 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwcDFTNqPQv4PA+mv40IOil7uYNBfULQ1hV01psnoZhed1wBFZsx6IbJrJ8es3otfAeEglN1A==
-X-Received: by 2002:adf:e702:: with SMTP id c2mr35401803wrm.397.1630482566458;
-        Wed, 01 Sep 2021 00:49:26 -0700 (PDT)
+        bh=5/n4oX+wgvboyZg/iFTnmBK58XCroGgLcRn2/A07gOQ=;
+        b=CGnfi3YvCylbHxtqmur4gGz/dql1slRcFklr/PYU/C8Y38BeftpzNYJ/TxwfU6f3i8
+         DGRaCm2pZZnyuRFBhjqP2SZXvuqxnNkLLokMSpQkeVP9OMpjJTfuWyCz6ozwi40lLNx9
+         Y9cTRqRLCs2YJsZJm9g1lHDj1VvWqL26hdYgH7U60PQsVOfybaQec50nf/35hZOcG3o9
+         2OYd4qR6gFtaSAIKJCcUQuH/D/GAVIW1JxildmD3wz3plYThYt6YbQ0vwbiJjjyvEOxC
+         J6YRUFlaDlQdQ5+GEQ2IfdKFBBPHM3ls2VUjuxEFFlP0biAg2xZaBmxqvxcM94GbSlMr
+         IYtQ==
+X-Gm-Message-State: AOAM533pm0E910f3lwBtWsBn+ZBejXPFauxpZvetfsYrrODRBblQ9HSU
+	JJz02ScFnABU8KAe+SybIQ+Ou3ZgmFm0E9PVQqzEk4ArOFdWc2ztrd6sfDMEN+eTCVy9bF1Gzjt
+	lTsNwL+0nl2kbUR5YKWqGvg==
+X-Received: by 2002:a5d:6909:: with SMTP id t9mr34318587wru.44.1630482678972;
+        Wed, 01 Sep 2021 00:51:18 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxMTvey89SA3DoF/1V8U6PpKmCzoHc/KiiggH+ZLjefcj776vc8ndYgcBGPfQkb8V+1P+tq7Q==
+X-Received: by 2002:a5d:6909:: with SMTP id t9mr34318566wru.44.1630482678787;
+        Wed, 01 Sep 2021 00:51:18 -0700 (PDT)
 Received: from [192.168.3.132] (p4ff23f71.dip0.t-ipconnect.de. [79.242.63.113])
-        by smtp.gmail.com with ESMTPSA id e26sm21532884wrc.6.2021.09.01.00.49.24
+        by smtp.gmail.com with ESMTPSA id v13sm21108768wrf.55.2021.09.01.00.51.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Sep 2021 00:49:26 -0700 (PDT)
+        Wed, 01 Sep 2021 00:51:18 -0700 (PDT)
 Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
  memory
-To: Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
+To: Sean Christopherson <seanjc@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
  Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
  kvm list <kvm@vger.kernel.org>,
@@ -66,13 +66,16 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Dave Hansen <dave.hansen@intel.com>, Yu Zhang <yu.c.zhang@linux.intel.com>
 References: <20210824005248.200037-1-seanjc@google.com>
  <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
- <YSlkzLblHfiiPyVM@google.com>
- <61ea53ce-2ba7-70cc-950d-ca128bcb29c5@redhat.com>
- <ccff0e92-ee24-48e3-ab1f-85a253bb787c@www.fastmail.com>
+ <40af9d25-c854-8846-fdab-13fe70b3b279@kernel.org>
+ <cfe75e39-5927-c02a-b8bc-4de026bb7b3b@redhat.com>
+ <73319f3c-6f5e-4f39-a678-7be5fddd55f2@www.fastmail.com>
+ <YSlnJpWh8fdpddTA@google.com>
+ <949e6d95-266d-0234-3b86-6bd3c5267333@redhat.com>
+ <YS6U1u/p+nOXVEfS@google.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-Message-ID: <db9b12c1-ba10-879c-61fb-9f711eafaf73@redhat.com>
-Date: Wed, 1 Sep 2021 09:49:24 +0200
+Message-ID: <a21fc9cf-0775-2c70-0ad6-61bb1363e2d0@redhat.com>
+Date: Wed, 1 Sep 2021 09:51:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 Precedence: bulk
@@ -81,7 +84,7 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <ccff0e92-ee24-48e3-ab1f-85a253bb787c@www.fastmail.com>
+In-Reply-To: <YS6U1u/p+nOXVEfS@google.com>
 Authentication-Results: relay.mimecast.com;
 	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
 X-Mimecast-Spam-Score: 0
@@ -90,44 +93,72 @@ Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On 01.09.21 06:58, Andy Lutomirski wrote:
-> On Tue, Aug 31, 2021, at 12:07 PM, David Hildenbrand wrote:
->> On 28.08.21 00:18, Sean Christopherson wrote:
->>> On Thu, Aug 26, 2021, David Hildenbrand wrote:
->>>> You'll end up with a VMA that corresponds to the whole file in a single
->>>> process only, and that cannot vanish, not even in parts.
+On 31.08.21 22:45, Sean Christopherson wrote:
+> On Tue, Aug 31, 2021, David Hildenbrand wrote:
+>> On 28.08.21 00:28, Sean Christopherson wrote:
+>>> On Fri, Aug 27, 2021, Andy Lutomirski wrote:
+>>>>
+>>>> On Thu, Aug 26, 2021, at 2:26 PM, David Hildenbrand wrote:
+>>>>> On 26.08.21 19:05, Andy Lutomirski wrote:
+>>>>
+>>>>>> Oof.  That's quite a requirement.  What's the point of the VMA once all
+>>>>>> this is done?
+>>>>>
+>>>>> You can keep using things like mbind(), madvise(), ... and the GUP code
+>>>>> with a special flag might mostly just do what you want. You won't have
+>>>>> to reinvent too many wheels on the page fault logic side at least.
 >>>
->>> How would userspace tell the kernel to free parts of memory that it doesn't want
->>> assigned to the guest, e.g. to free memory that the guest has converted to
->>> not-private?
+>>> Ya, Kirill's RFC more or less proved a special GUP flag would indeed Just Work.
+>>> However, the KVM page fault side of things would require only a handful of small
+>>> changes to send private memslots down a different path.  Compared to the rest of
+>>> the enabling, it's quite minor.
+>>>
+>>> The counter to that is other KVM architectures would need to learn how to use the
+>>> new APIs, though I suspect that there will be a fair bit of arch enabling regardless
+>>> of what route we take.
+>>>
+>>>> You can keep calling the functions.  The implementations working is a
+>>>> different story: you can't just unmap (pte_numa-style or otherwise) a private
+>>>> guest page to quiesce it, move it with memcpy(), and then fault it back in.
+>>>
+>>> Ya, I brought this up in my earlier reply.  Even the initial implementation (without
+>>> real NUMA support) would likely be painful, e.g. the KVM TDX RFC/PoC adds dedicated
+>>> logic in KVM to handle the case where NUMA balancing zaps a _pinned_ page and then
+>>> KVM fault in the same pfn.  It's not thaaat ugly, but it's arguably more invasive
+>>> to KVM's page fault flows than a new fd-based private memslot scheme.
 >>
->> I'd guess one possibility could be fallocate(FALLOC_FL_PUNCH_HOLE).
->>
->> Questions are: when would it actually be allowed to perform such a
->> destructive operation? Do we have to protect from that? How would KVM
->> protect from user space replacing private pages by shared pages in any
->> of the models we discuss?
->>
+>> I might have a different mindset, but less code churn doesn't necessarily
+>> translate to "better approach".
 > 
-> What do you mean?  If userspace maliciously replaces a shared page by a private page, then the guest crashes.
-
-Assume we have private pages in a fd and fallocate(FALLOC_FL_PUNCH_HOLE) 
-random pages the guest is still using. If we "only" crash the guest, 
-everything is fine.
-
+> I wasn't referring to code churn.  By "invasive" I mean number of touchpoints in
+> KVM as well as the nature of the touchpoints.  E.g. poking into how KVM uses
+> available bits in its shadow PTEs and adding multiple checks through KVM's page
+> fault handler, versus two callbacks to get the PFN and page size.
 > 
-> (The actual meaning here is a bit different on SNP-ES vs TDX.  In SNP-ES, a given GPA can be shared, private, or nonexistent.  A guest accesses it with a special bit set in the guest page tables to indicate whether it expects shared or private, and the CPU will produce an appropriate error if the bit doesn't match the page.
+>> I'm certainly not pushing for what I proposed (it's a rough, broken sketch).
+>> I'm much rather trying to come up with alternatives that try solving the
+>> same issue, handling the identified requirements.
+>>
+>> I have a gut feeling that the list of requirements might not be complete
+>> yet. For example, I wonder if we have to protect against user space
+>> replacing private pages by shared pages or punishing random holes into the
+>> encrypted memory fd.
+> 
+> Replacing a private page with a shared page for a given GFN is very much a
+> requirement as it's expected behavior for all VMM+guests when converting guest
+> memory between shared and private.
+> 
+> Punching holes is a sort of optional requirement.  It's a "requirement" in that
+> it's allowed if the backing store supports such a behavior, optional in that
+> support wouldn't be strictly necessary and/or could come with constraints.  The
+> expected use case is that host userspace would punch a hole to free unreachable
+> private memory, e.g. after the corresponding GFN(s) is converted to shared, so
+> that it doesn't consume 2x memory for the guest.
+> 
 
-Rings a bell, thanks for reminding me.
-
-  In TDX, there is actually an entirely separate shared vs private 
-address space, and, in theory, a given "GPA" can exist as shared and as 
-private at once.  The full guest n-bit GPA plus the shared/private bit 
-is logically an N+1 bit address, and it's possible to map all of it at 
-once, half shared, and half private.  In practice, the defined 
-guest->host APIs don't really support that usage.
-
-Thanks, that explains a lot.
+Okay, that matches my understanding then. I was rather thinking about 
+"what happens if we punch a hole where private memory was not converted 
+to shared yet". AFAIU, we will simply crash the guest then.
 
 -- 
 Thanks,
