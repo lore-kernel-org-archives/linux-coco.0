@@ -1,225 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B596A3FC1
-	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 08:09:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1630483751;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xehwNc5m+0VkuxXN2ywY3KTZndfyL4hPEsZFfPwosyo=;
-	b=Gqfb2DC+SIKh/b+m6HsvIL3HWsTUEAqJJSW2rK3DlHaTqe96lAqoF3Rq3eIYDM3KTx4fwW
-	E87coeCpedqZBVkRDI8yScIb8dwADF5OukhyJGyRtjVJ5eoE0fdITGv2uGDTVVYSA6K5xU
-	ML6wStMWTLjrZzsij1G2yqu12QwdPoc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-373-P04eN1DoOiaq4RvE5hc6gA-1; Wed, 01 Sep 2021 04:09:10 -0400
-X-MC-Unique: P04eN1DoOiaq4RvE5hc6gA-1
-Received: by mail-wr1-f72.google.com with SMTP id j1-20020adff541000000b001593715d384so139458wrp.1
-        for <linux-coco@lists.linux.dev>; Wed, 01 Sep 2021 01:09:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=xehwNc5m+0VkuxXN2ywY3KTZndfyL4hPEsZFfPwosyo=;
-        b=VoSVp+/ufD18PTZ9Zux6iIUoUjykBOcO936hvz3uVH8aSjtDBkuXiMnlghgPQAw3rb
-         yKcWSlmE25gRVtY3cQ6bcL7BVYiUS0OREA6BZRt9ycV6AxlRkBZ0ikiGIqyPd1DVHaic
-         OXBpucmzntWjDW8mhODOw29bRJhSxkyRgijxWbR/jEkDT29QXqIJVaxK5sz/XHL/BhAO
-         fP0o1OQey1yXaqvifeYsKwTLyQtram6/oumONaYBMvXvlCohHz5I43q6FwhQH7WCNMfs
-         Jlr9aN/UEXJW4BjsJP63o12WA7SGRHj0jkEeEZii5Gq0/WvH7AiUfNn98SJXw/hl5o+3
-         pxqg==
-X-Gm-Message-State: AOAM531bI141jxsHUn0//WrZ0gUz3J4cTRI1gaUjj43K7f1a5UDPLNqr
-	GOXgVJatvlBi+BrsxyD8GJFU3xM0rN88C6SrFCubuDJ+3Px+U3lOC/F2dbJcfxG8dF78ujkK8J1
-	o52NSjBKslxeFi8Eb5Whosg==
-X-Received: by 2002:a1c:2684:: with SMTP id m126mr8402714wmm.65.1630483749480;
-        Wed, 01 Sep 2021 01:09:09 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxVg9SDEJVZUq3nbvsMK7CWfSbicB1cKUcx7fhtGFdGrRsx3YALb8TPN4qumsd3be+NY8b/Lw==
-X-Received: by 2002:a1c:2684:: with SMTP id m126mr8402689wmm.65.1630483749203;
-        Wed, 01 Sep 2021 01:09:09 -0700 (PDT)
-Received: from [192.168.3.132] (p4ff23f71.dip0.t-ipconnect.de. [79.242.63.113])
-        by smtp.gmail.com with ESMTPSA id o7sm4481973wmc.46.2021.09.01.01.09.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Sep 2021 01:09:08 -0700 (PDT)
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Andi Kleen <ak@linux.intel.com>, David Rientjes <rientjes@google.com>,
- Vlastimil Babka <vbabka@suse.cz>, Tom Lendacky <thomas.lendacky@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>,
- Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Dave Hansen <dave.hansen@intel.com>, Yu Zhang <yu.c.zhang@linux.intel.com>
-References: <20210824005248.200037-1-seanjc@google.com>
- <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
- <YSlkzLblHfiiPyVM@google.com>
- <61ea53ce-2ba7-70cc-950d-ca128bcb29c5@redhat.com>
- <YS6lIg6kjNPI1EgF@google.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
- memory
-Message-ID: <f413cc20-66fc-cf1e-47ab-b8f099c89583@redhat.com>
-Date: Wed, 1 Sep 2021 10:09:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9073472
+	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 08:32:39 +0000 (UTC)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 18184TuB074153;
+	Wed, 1 Sep 2021 04:32:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=wTyTfHd7TSM/j7teZCQHStIyAgYflYh980W3yUujmzg=;
+ b=SVINeSCnKJpQrAlY+H4xBh8erXH2sN7GVXnodgx9IzfdrpxNYhlGq6fghQ4ZTj5LHsRr
+ Ik7lAq5lLx/HL5BOtshhXth9mmxANfSm3dEwofBrp6BQngzAIXPwUuwTRtThk7u0j2US
+ ba+9lJzgZFKqP83zI1zZfoQ63KDMvsQCVLG7CGlXFZMpeEKUSGKBjOnGOrUBHf6rUX1E
+ fdWijevJljsT6qOT4vdnPGFzXqqFkvm9wjcqez7jVG0Cjc6WpsYVmnoTSCJ4x+dxKlJT
+ NEQUtFjJj/ytvh4MiggMAhRT5E3yy7nBMgf+qnQ3DZ9Q7ZGocoiI1IaqqBz3Rns6x7zm mg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 3at3gdux57-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Sep 2021 04:32:19 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18184U8F074175;
+	Wed, 1 Sep 2021 04:32:18 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 3at3gdux4k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Sep 2021 04:32:18 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1818GlCb002939;
+	Wed, 1 Sep 2021 08:32:17 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+	by ppma04wdc.us.ibm.com with ESMTP id 3aqcsca136-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Sep 2021 08:32:17 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1818WGew21102968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Sep 2021 08:32:16 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 82B55C6057;
+	Wed,  1 Sep 2021 08:32:16 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 525B0C6061;
+	Wed,  1 Sep 2021 08:32:10 +0000 (GMT)
+Received: from [9.148.12.157] (unknown [9.148.12.157])
+	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Sep 2021 08:32:10 +0000 (GMT)
+Subject: Re: [PATCH Part1 v5 38/38] virt: sevguest: Add support to get
+ extended report
+To: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson
+ <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen
+ <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tobin Feldman-Fitzthum
+ <tobin@ibm.com>,
+        Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen
+ <ak@linux.intel.com>, tony.luck@intel.com,
+        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+        Dov Murik <dovmurik@linux.ibm.com>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-39-brijesh.singh@amd.com>
+ <bd5b2d47-2f66-87d9-ce1e-dfe717741d22@linux.ibm.com>
+ <e7e35408-9336-2b89-6028-c201b406f5f3@amd.com>
+From: Dov Murik <dovmurik@linux.ibm.com>
+Message-ID: <a49bafa9-e00c-7dec-ec07-08f4dfd6400f@linux.ibm.com>
+Date: Wed, 1 Sep 2021 11:32:08 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YS6lIg6kjNPI1EgF@google.com>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <e7e35408-9336-2b89-6028-c201b406f5f3@amd.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5JSPlWLptOL7Dhu_Di7WHkrO4hX69CiQ
+X-Proofpoint-GUID: 7QaYGXi0QrcH-JVSb44dmDj7gh7m4Utd
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-09-01_02:2021-08-31,2021-09-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ mlxscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 spamscore=0 priorityscore=1501
+ mlxlogscore=986 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2107140000 definitions=main-2109010045
 
->> Do we have to protect from that? How would KVM protect from user space
->> replacing private pages by shared pages in any of the models we discuss?
+
+
+On 01/09/2021 0:11, Brijesh Singh wrote:
 > 
-> The overarching rule is that KVM needs to guarantee a given pfn is never mapped[*]
-> as both private and shared, where "shared" also incorporates any mapping from the
-> host.  Essentially it boils down to the kernel ensuring that a pfn is unmapped
-> before it's converted to/from private, and KVM ensuring that it honors any
-> unmap notifications from the kernel, e.g. via mmu_notifier or via a direct callback
-> as proposed in this RFC.
-
-Okay, so the fallocate(PUNCHHOLE) from user space could trigger the 
-respective unmapping and freeing of backing storage.
-
 > 
-> As it pertains to PUNCH_HOLE, the responsibilities are no different than when the
-> backing-store is destroyed; the backing-store needs to notify downstream MMUs
-> (a.k.a. KVM) to unmap the pfn(s) before freeing the associated memory.
-
-Right.
-
-> 
-> [*] Whether or not the kernel's direct mapping needs to be removed is debatable,
->      but my argument is that that behavior is not visible to userspace and thus
->      out of scope for this discussion, e.g. zapping/restoring the direct map can
->      be added/removed without impacting the userspace ABI.
-
-Right. Removing it shouldn't also be requited IMHO. There are other ways 
-to teach the kernel to not read/write some online pages (filter 
-/proc/kcore, disable hibernation, strict access checks for /dev/mem ...).
-
-> 
->>>> Define "ordinary" user memory slots as overlay on top of "encrypted" memory
->>>> slots.  Inside KVM, bail out if you encounter such a VMA inside a normal
->>>> user memory slot. When creating a "encryped" user memory slot, require that
->>>> the whole VMA is covered at creation time. You know the VMA can't change
->>>> later.
->>>
->>> This can work for the basic use cases, but even then I'd strongly prefer not to
->>> tie memslot correctness to the VMAs.  KVM doesn't truly care what lies behind
->>> the virtual address of a memslot, and when it does care, it tends to do poorly,
->>> e.g. see the whole PFNMAP snafu.  KVM cares about the pfn<->gfn mappings, and
->>> that's reflected in the infrastructure.  E.g. KVM relies on the mmu_notifiers
->>> to handle mprotect()/munmap()/etc...
+> On 8/31/21 3:22 PM, Dov Murik wrote:
+>> Hi Brijesh,
 >>
->> Right, and for the existing use cases this worked. But encrypted memory
->> breaks many assumptions we once made ...
+>> On 20/08/2021 18:19, Brijesh Singh wrote:
+>>> Version 2 of GHCB specification defines NAE to get the extended guest
+>>> request. It is similar to the SNP_GET_REPORT ioctl. The main difference
+>>> is related to the additional data that be returned. The additional
+>>> data returned is a certificate blob that can be used by the SNP guest
+>>> user.
 >>
->> I have somewhat mixed feelings about pages that are mapped into $WHATEVER
->> page tables but not actually mapped into user space page tables. There is no
->> way to reach these via the rmap.
+>> It seems like the SNP_GET_EXT_REPORT ioctl does everything that the
+>> SNP_GET_REPORT ioctl does, and more.  Why expose SNP_GET_REPORT to
+>> userspace at all?
 >>
->> We have something like that already via vfio. And that is fundamentally
->> broken when it comes to mmu notifiers, page pinning, page migration, ...
-> 
-> I'm not super familiar with VFIO internals, but the idea with the fd-based
-> approach is that the backing-store would be in direct communication with KVM and
-> would handle those operations through that direct channel.
-
-Right. The problem I am seeing is that e.g., try_to_unmap() might not be 
-able to actually fully unmap a page, because some non-synchronized KVM 
-MMU still maps a page. It would be great to evaluate how the fd 
-callbacks would fit into the whole picture, including the current rmap.
-
-I guess I'm missing the bigger picture how it all fits together on the 
-!KVM side.
-
-> 
->>> As is, I don't think KVM would get any kind of notification if userpaces unmaps
->>> the VMA for a private memslot that does not have any entries in the host page
->>> tables.   I'm sure it's a solvable problem, e.g. by ensuring at least one page
->>> is touched by the backing store, but I don't think the end result would be any
->>> prettier than a dedicated API for KVM to consume.
->>>
->>> Relying on VMAs, and thus the mmu_notifiers, also doesn't provide line of sight
->>> to page migration or swap.  For those types of operations, KVM currently just
->>> reacts to invalidation notifications by zapping guest PTEs, and then gets the
->>> new pfn when the guest re-faults on the page.  That sequence doesn't work for
->>> TDX or SEV-SNP because the trusteday agent needs to do the memcpy() of the page
->>> contents, i.e. the host needs to call into KVM for the actual migration.
 >>
->> Right, but I still think this is a kernel internal. You can do such
->> handshake later in the kernel IMHO.
 > 
-> It is kernel internal, but AFAICT it will be ugly because KVM "needs" to do the
-> migration and that would invert the mmu_notifer API, e.g. instead of "telling"
-> secondary MMUs to invalidate/change a mappings, the mm would be "asking"
-> secondary MMus "can you move this?".  More below.
-
-In my thinking, the the rmap via mmu notifiers would do the unmapping 
-just as we know it (from primary MMU -> secondary MMU). Once 
-try_to_unmap() succeeded, the fd provider could kick-off the migration 
-via whatever callback.
-
+> Since both of these options are provided by the GHCB protocol so I
+> exposed it. Its possible that some applications may not care about the
+> extended certificate blob. And in those case, if the hypervisor is
+> programmed with the extended certificate blob and caller does not supply
+> the enough number of pages to copy the blob then command should fail.
+> This will enforce a new requirement on that guest application to
+> allocate an extra memory. e.g:
 > 
->> But I also already thought: is it really KVM that is to perform the
->> migration or is it the fd-provider that performs the migration? Who says
->> memfd_encrypted() doesn't default to a TDX "backend" on Intel CPUs that just
->> knows how to migrate such a page?
->>
->> I'd love to have some details on how that's supposed to work, and which
->> information we'd need to migrate/swap/... in addition to the EPFN and a new
->> SPFN.
+> 1. Hypervisor is programmed with a system wide certificate blob using
+> the SNP_SET_EXT_CONFIG ioctl().
 > 
-> KVM "needs" to do the migration.  On TDX, the migration will be a SEAMCALL,
-> a post-VMXON instruction that transfers control to the TDX-Module, that at
-> minimum needs a per-VM identifier, the gfn, and the page table level.  The call
-
-The per-VM identifier and the GFN would be easy to grab. Page table 
-level, not so sure -- do you mean the general page table depth? Or if 
-it's mapped as 4k vs. 2M ... ? The latter could be answered by the fd 
-provider already I assume.
-
-Does the page still have to be mapped into the secondary MMU when 
-performing the migration via TDX? I assume not, which would simplify 
-things a lot.
-
-> into the TDX-Module would also need to take a KVM lock (probably KVM's mmu_lock)
-> to satisfy TDX's concurrency requirement, e.g. to avoid "spurious" errors due to
-> the backing-store attempting to migrate memory that KVM is unmapping due to a
-> memslot change.
-
-Something like that might be handled by fixing private memory slots 
-similar to in my draft, right?
-
+> 2. Guest wants to get the report but does not care about the certificate
+> blob.
 > 
-> The per-VM identifier may not apply to SEV-SNP, but I believe everything else
-> holds true.
+> 3. Guest issues a extended guest report with the npages = 0. The command
+> will fail with invalid length and number of pages will be returned in
+> the response.
+> 
+> 4. Guest will not need to allocate memory to hold the certificate and
+> reissue the command.
+> 
+> The #4 is unnecessary for a guest which does not want to get. In this
+> case, a guest can simply call the attestation report without asking for
+> certificate blob. Please see the GHCB spec for more details.
+> 
 
-Thanks!
+OK.  Originally I thought that by passing certs_address=NULL and
+certs_len=0 the user program can say "I don't want this extra data"; but
+now I understand that this will return an error (invalid length) with
+number of pages needed.
 
--- 
-Thanks,
-
-David / dhildenb
-
+-Dov
