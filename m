@@ -1,161 +1,117 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9073472
-	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 08:32:39 +0000 (UTC)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 18184TuB074153;
-	Wed, 1 Sep 2021 04:32:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=wTyTfHd7TSM/j7teZCQHStIyAgYflYh980W3yUujmzg=;
- b=SVINeSCnKJpQrAlY+H4xBh8erXH2sN7GVXnodgx9IzfdrpxNYhlGq6fghQ4ZTj5LHsRr
- Ik7lAq5lLx/HL5BOtshhXth9mmxANfSm3dEwofBrp6BQngzAIXPwUuwTRtThk7u0j2US
- ba+9lJzgZFKqP83zI1zZfoQ63KDMvsQCVLG7CGlXFZMpeEKUSGKBjOnGOrUBHf6rUX1E
- fdWijevJljsT6qOT4vdnPGFzXqqFkvm9wjcqez7jVG0Cjc6WpsYVmnoTSCJ4x+dxKlJT
- NEQUtFjJj/ytvh4MiggMAhRT5E3yy7nBMgf+qnQ3DZ9Q7ZGocoiI1IaqqBz3Rns6x7zm mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 3at3gdux57-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Sep 2021 04:32:19 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 18184U8F074175;
-	Wed, 1 Sep 2021 04:32:18 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 3at3gdux4k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Sep 2021 04:32:18 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1818GlCb002939;
-	Wed, 1 Sep 2021 08:32:17 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-	by ppma04wdc.us.ibm.com with ESMTP id 3aqcsca136-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Sep 2021 08:32:17 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1818WGew21102968
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Sep 2021 08:32:16 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 82B55C6057;
-	Wed,  1 Sep 2021 08:32:16 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 525B0C6061;
-	Wed,  1 Sep 2021 08:32:10 +0000 (GMT)
-Received: from [9.148.12.157] (unknown [9.148.12.157])
-	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Sep 2021 08:32:10 +0000 (GMT)
-Subject: Re: [PATCH Part1 v5 38/38] virt: sevguest: Add support to get
- extended report
-To: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson
- <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen
- <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Tobin Feldman-Fitzthum
- <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen
- <ak@linux.intel.com>, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-39-brijesh.singh@amd.com>
- <bd5b2d47-2f66-87d9-ce1e-dfe717741d22@linux.ibm.com>
- <e7e35408-9336-2b89-6028-c201b406f5f3@amd.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-Message-ID: <a49bafa9-e00c-7dec-ec07-08f4dfd6400f@linux.ibm.com>
-Date: Wed, 1 Sep 2021 11:32:08 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB7672
+	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 10:24:51 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10093"; a="304283665"
+X-IronPort-AV: E=Sophos;i="5.84,369,1620716400"; 
+   d="scan'208";a="304283665"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 03:24:50 -0700
+X-IronPort-AV: E=Sophos;i="5.84,369,1620716400"; 
+   d="scan'208";a="645686130"
+Received: from zhibosun-mobl2.ccr.corp.intel.com (HELO localhost) ([10.255.31.93])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 03:24:40 -0700
+Date: Wed, 1 Sep 2021 18:24:37 +0800
+From: Yu Zhang <yu.c.zhang@linux.intel.com>
+To: Andy Lutomirski <luto@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
+	kvm list <kvm@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	the arch/x86 maintainers <x86@kernel.org>, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
+ private memory
+Message-ID: <20210901102437.g5wrgezmrjqn3mvy@linux.intel.com>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
+ <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
+ <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <e7e35408-9336-2b89-6028-c201b406f5f3@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5JSPlWLptOL7Dhu_Di7WHkrO4hX69CiQ
-X-Proofpoint-GUID: 7QaYGXi0QrcH-JVSb44dmDj7gh7m4Utd
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-09-01_02:2021-08-31,2021-09-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- mlxscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0
- impostorscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- mlxlogscore=986 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2107140000 definitions=main-2109010045
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
+User-Agent: NeoMutt/20171215
 
-
-
-On 01/09/2021 0:11, Brijesh Singh wrote:
+On Tue, Aug 31, 2021 at 09:53:27PM -0700, Andy Lutomirski wrote:
 > 
 > 
-> On 8/31/21 3:22 PM, Dov Murik wrote:
->> Hi Brijesh,
->>
->> On 20/08/2021 18:19, Brijesh Singh wrote:
->>> Version 2 of GHCB specification defines NAE to get the extended guest
->>> request. It is similar to the SNP_GET_REPORT ioctl. The main difference
->>> is related to the additional data that be returned. The additional
->>> data returned is a certificate blob that can be used by the SNP guest
->>> user.
->>
->> It seems like the SNP_GET_EXT_REPORT ioctl does everything that the
->> SNP_GET_REPORT ioctl does, and more.  Why expose SNP_GET_REPORT to
->> userspace at all?
->>
->>
+> On Thu, Aug 26, 2021, at 7:31 PM, Yu Zhang wrote:
+> > On Thu, Aug 26, 2021 at 12:15:48PM +0200, David Hildenbrand wrote:
 > 
-> Since both of these options are provided by the GHCB protocol so I
-> exposed it. Its possible that some applications may not care about the
-> extended certificate blob. And in those case, if the hypervisor is
-> programmed with the extended certificate blob and caller does not supply
-> the enough number of pages to copy the blob then command should fail.
-> This will enforce a new requirement on that guest application to
-> allocate an extra memory. e.g:
+> > Thanks a lot for this summary. A question about the requirement: do we or
+> > do we not have plan to support assigned device to the protected VM?
+> > 
+> > If yes. The fd based solution may need change the VFIO interface as well(
+> > though the fake swap entry solution need mess with VFIO too). Because:
+> > 
+> > 1> KVM uses VFIO when assigning devices into a VM.
+> > 
+> > 2> Not knowing which GPA ranges may be used by the VM as DMA buffer, all
+> > guest pages will have to be mapped in host IOMMU page table to host pages,
+> > which are pinned during the whole life cycle fo the VM.
+> > 
+> > 3> IOMMU mapping is done during VM creation time by VFIO and IOMMU driver,
+> > in vfio_dma_do_map().
+> > 
+> > 4> However, vfio_dma_do_map() needs the HVA to perform a GUP to get the HPA
+> > and pin the page. 
+> > 
+> > But if we are using fd based solution, not every GPA can have a HVA, thus
+> > the current VFIO interface to map and pin the GPA(IOVA) wont work. And I
+> > doubt if VFIO can be modified to support this easily.
+> > 
+> > 
 > 
-> 1. Hypervisor is programmed with a system wide certificate blob using
-> the SNP_SET_EXT_CONFIG ioctl().
+> Do you mean assigning a normal device to a protected VM or a hypothetical protected-MMIO device?
 > 
-> 2. Guest wants to get the report but does not care about the certificate
-> blob.
+> If the former, it should work more or less like with a non-protected VM. mmap the VFIO device, set up a memslot, and use it.  I'm not sure whether anyone will actually do this, but it should be possible, at least in principle.  Maybe someone will want to assign a NIC to a TDX guest.  An NVMe device with the understanding that the guest can't trust it wouldn't be entirely crazy ether.
 > 
-> 3. Guest issues a extended guest report with the npages = 0. The command
-> will fail with invalid length and number of pages will be returned in
-> the response.
-> 
-> 4. Guest will not need to allocate memory to hold the certificate and
-> reissue the command.
-> 
-> The #4 is unnecessary for a guest which does not want to get. In this
-> case, a guest can simply call the attestation report without asking for
-> certificate blob. Please see the GHCB spec for more details.
+> If the latter, AFAIK there is no spec for how it would work even in principle. Presumably it wouldn't work quite like VFIO -- instead, the kernel could have a protection-virtual-io-fd mechanism, and that fd could be bound to a memslot in whatever way we settle on for binding secure memory to a memslot.
 > 
 
-OK.  Originally I thought that by passing certs_address=NULL and
-certs_len=0 the user program can say "I don't want this extra data"; but
-now I understand that this will return an error (invalid length) with
-number of pages needed.
+Thanks Andy. I was asking the first scenario.
 
--Dov
+Well, I agree it is doable if someone really want some assigned
+device in TD guest. As Kevin mentioned in his reply, HPA can be
+generated, by extending VFIO with a new mapping protocol which
+uses fd+offset, instead of HVA. 
+
+Another issue is current TDX does not support DMA encryption, and
+only shared GPA memory shall be mapped in the VT-d. So to support
+this, KVM may need to work with VFIO to dynamically program host
+IOPT(IOMMU Page Table) when TD guest notifies a shared GFN range(e.g.,
+with a MAP_GPA TDVMCALL), instead of prepopulating the IOPT at VM
+creation time, by mapping entire GFN ranges of a guest.
+
+So my inclination would be to just disallow using of VFIO device in
+TDX first, until we have real requirement(with above enabling work
+finished). 
+
+B.R.
+Yu
