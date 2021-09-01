@@ -1,167 +1,224 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F0B3FC2
-	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 05:33:57 +0000 (UTC)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 18153fgS134449;
-	Wed, 1 Sep 2021 01:33:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=w/8qMkCsZDkfkQ3Aww/zSfJ2vYvHc6uHfqVFAXK6anI=;
- b=YSoa9ViR8owy6FYW5J04AucsFH18U+Dgb81Fh8nNvd64TQtXlWVd1NlkFwkv8Y6F8ike
- x1BdwGXgx+WuMneWlyUyXfPYOKLoFOfOEjG619BnT9um52Wl349EFSWmiSFNraDKjYCs
- kVy5yB/PFqxwvYaITAKNqKL9NGzD1D/OQd6DDueH1ULYkYxOpYG0F0InPgXI1H5mXqJK
- xbWRS+bXlU8i2IWHlz6qnKsCCO/HPTpvwPxNB6k5Gl60LYDw72iJF0U+Krip4ucoJ5i0
- 2x25sSkBH+0bn2gXx0OnIXQmv3wEJ0OvkV4rR1Jgu1tF1yqbUXwaC9Gwea2iKYf4CUwW MA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3at1p0tdu3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Sep 2021 01:33:26 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1815CVL3170574;
-	Wed, 1 Sep 2021 01:33:25 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3at1p0tdtb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Sep 2021 01:33:25 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1815QhD0019602;
-	Wed, 1 Sep 2021 05:33:23 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
-	by ppma05wdc.us.ibm.com with ESMTP id 3aqcscxxsy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 Sep 2021 05:33:23 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1815XMaH37290252
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Sep 2021 05:33:22 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9463D7806E;
-	Wed,  1 Sep 2021 05:33:22 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E265478067;
-	Wed,  1 Sep 2021 05:33:13 +0000 (GMT)
-Received: from [9.65.248.250] (unknown [9.65.248.250])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Sep 2021 05:33:13 +0000 (GMT)
-Subject: Re: [PATCH Part1 v5 37/38] virt: sevguest: Add support to derive key
-To: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson
- <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen
- <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Tobin Feldman-Fitzthum
- <tobin@ibm.com>,
-        Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen
- <ak@linux.intel.com>, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-38-brijesh.singh@amd.com>
- <a6841be9-a2ca-8d92-3346-af8513b528fc@linux.ibm.com>
- <fd9fadae-a493-1d8d-6777-e1c789a5113f@amd.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-Message-ID: <55df11df-bf30-171e-9774-e6a6d380802a@linux.ibm.com>
-Date: Wed, 1 Sep 2021 08:33:11 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576F73FC1
+	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 07:12:58 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10093"; a="279667014"
+X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
+   d="scan'208";a="279667014"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 00:12:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
+   d="scan'208";a="460594601"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmsmga007.fm.intel.com with ESMTP; 01 Sep 2021 00:12:25 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12; Wed, 1 Sep 2021 00:12:25 -0700
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.10; Wed, 1 Sep 2021 00:12:24 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2242.12 via Frontend Transport; Wed, 1 Sep 2021 00:12:24 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2242.10; Wed, 1 Sep 2021 00:12:24 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OaGVt8NDQ1oepWOqMng+E9rp9nFRzHtmgKuDdWg0SxTU7AlN9rIsra3okto1cHDRYVX/az/TvtAHrfnAlF1pg3YiP8hKuoSMz4PFFw7/hKPj/3p0mhYi0KfzDjoKLmgNEDg6cXgsd0dezIN6VREbo7Tui5Sss/lIT24i4BQTffYHubWkcFBGhKroTgSxelRSEl7shaixdBTvacY6eFZ34Tv7e/SDeI8odqjZYKRPqddMzgkuToIGfNWxxSyoztdnty+1VdwW7pJ4U2XBAAiGY9VsnQ9L5KXCH0aJ11cO1t/06g5OxXI7+u2vBZ1f0S81D82spmGbsJqNPcVh/VdK5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=5ymi2hYP+gQ3CUGVfT0uT+hWJtZkzQFcrDY/cqYuuRU=;
+ b=VEAqnOpmrvYMSDbleW1KwH9pEA8SNpMRQLRB7JD+nhpHmVHIk6A0l62H/Wwf1KixYdgNrp1pqOIFUsROQjC1YI+vwALO0OaeVjq1xmQ3YpnqUA58eRosHyznjK7DQFeRpDx3ZBiI0Ql4SWzTx2zw1tkOJYUXj2dV7+pXOByBbMshopPzo9AMXEZvI+ghAQx8ZmKOMpwHRFVoTW16Vr20wesQudXJZ/FeafAK31j7zmrvjXICEqAXEZqjaKCxcIOqkmLAxSLG1Vp5fktGq5EMVe45e1cVShgjsTYWyisPUEyhQWPMbWx9Dt4bORVKnTVOfS73uj8meBgQDs/WobC6bQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5ymi2hYP+gQ3CUGVfT0uT+hWJtZkzQFcrDY/cqYuuRU=;
+ b=JsOeqDMSGLe8bEQepLTHoa7u56Pqg/5lz+2Z/TdndJPC+/0eRSzLK+jSdwTomy1z1ev5ENxu+x6n3CdQzFYPycs6fuBVk9ETICMA5v4GWqi8IAuqOuL6IBOfHMtS3zd+vdbXi9W6yuHqq1Dt0iXFJU4WRMz8iLCRg88SwlcWfiA=
+Received: from BN9PR11MB5433.namprd11.prod.outlook.com (2603:10b6:408:11e::13)
+ by BN6PR1101MB2146.namprd11.prod.outlook.com (2603:10b6:405:50::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.17; Wed, 1 Sep
+ 2021 07:12:23 +0000
+Received: from BN9PR11MB5433.namprd11.prod.outlook.com
+ ([fe80::ddb7:fa7f:2cc:45df]) by BN9PR11MB5433.namprd11.prod.outlook.com
+ ([fe80::ddb7:fa7f:2cc:45df%7]) with mapi id 15.20.4457.025; Wed, 1 Sep 2021
+ 07:12:23 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: "Lutomirski, Andy" <luto@kernel.org>, Yu Zhang
+	<yu.c.zhang@linux.intel.com>, David Hildenbrand <david@redhat.com>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li
+	<wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, Joerg Roedel
+	<joro@8bytes.org>, kvm list <kvm@vger.kernel.org>, Linux Kernel Mailing List
+	<linux-kernel@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, Andrew Morton
+	<akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, Andi Kleen
+	<ak@linux.intel.com>, David Rientjes <rientjes@google.com>, Vlastimil Babka
+	<vbabka@suse.cz>, Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+	<tglx@linutronix.de>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, "Ingo
+ Molnar" <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>, "Dario
+ Faggioli" <dfaggioli@suse.com>, the arch/x86 maintainers <x86@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "Kirill A. Shutemov"
+	<kirill.shutemov@linux.intel.com>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>, Sathyanarayanan Kuppuswamy
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "Hansen, Dave"
+	<dave.hansen@intel.com>
+Subject: RE: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
+ memory
+Thread-Topic: [RFC] KVM: mm: fd-based approach for supporting KVM guest
+ private memory
+Thread-Index: AQHXmIJyggQQp5tSKEWVAVM9VOlCiKuFlagAgAEQtACACAM5gIAAI4JQ
+Date: Wed, 1 Sep 2021 07:12:22 +0000
+Message-ID: <BN9PR11MB5433876DE6B6B92F9B50E3A58CCD9@BN9PR11MB5433.namprd11.prod.outlook.com>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
+ <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
+ <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
+In-Reply-To: <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+dlp-version: 11.5.1.3
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c47e7d03-c9a8-4c7e-fbc6-08d96d17d84c
+x-ms-traffictypediagnostic: BN6PR1101MB2146:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <BN6PR1101MB214608076D8ABD39DB9E05B18CCD9@BN6PR1101MB2146.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: b9OrkwlfHX/afUilYDdhvh/fcXk/HYKd6xvI+mRsO6YwIdtER43xxNcmyqA1J/lEYRayB8tUvY4anRRLG4LgVmrudVzRrSxQVD5JyvzDd6AzDRYIjgkts+f4ExQJ0QR6pp73S2oP7pXk6nFlfH3tASlC0IQji7p/9JcGPD8L32FjW+3ZQ17/6U3+Ip+ntwJymD/hb0PlCcNhnUSx/8aUBWMFUT5YsFBowKBPF5a88bADp99/yK5XCDxJJVMzSCB3z97WO+ewbmOsJ4fnsCIGAOrbZjej4vAEYdXsYih29SMX4LRRl/MVqfZHLs9atzrB93MJzLj28OYrLZP52g4SDxSyFTbAxfekqBlHGQTafPRjtAKXcQMWeGRSYlyuWp84boZq4ZQt1VyEqqVyWppcvz+LcL1k93W5aJTJh5x+ZxZCwEFQycfbxzwLpsvQ1tiVidmWC3+mT1GQEncuWknevPyiymW+3eI6MxupW/ixvcC9JBABMUW9KKb9V8kth9kvu9zXpUXJmughnARqmE0gt5oS9OATxpJZOFI+/b+wp/sL5LE1jUOVeXZXCyivSyPq/vKFICOHuZhpcx7P3pZ0xk/Usvqp4JgrgnsVDgGs9p9qMCtpPBE1uUtvDI74nus/gXYymKdYjQM0OePLVZC+8BdVZLA/BzwBSoVFRj0m/jCaV4hfTF8+R3uxm4N4moq5d8vO/NeO70dQliWyKoKMriGlH2YgIrOBJFCBdRzfd3pNegnm4pDjaNkdQKvB8/nxZl3ZKb7sS1qiPEmDbcPKEUXYutAUwHqnHVRPyVFRxpQ=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5433.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(39860400002)(366004)(376002)(396003)(346002)(7416002)(8676002)(316002)(7696005)(86362001)(5660300002)(83380400001)(9686003)(52536014)(110136005)(54906003)(2906002)(71200400001)(4326008)(8936002)(33656002)(186003)(64756008)(66446008)(122000001)(38070700005)(66946007)(66556008)(66476007)(6506007)(26005)(76116006)(55016002)(45080400002)(38100700002)(478600001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?9HJ8zlZvIT+pD8Kd7x41TU+Ur+R2lIwltLvxIZKIcc/PgVMRMBTTKFcypyM6?=
+ =?us-ascii?Q?qYJ6mts2CzXv8ThT/TqfTE5e6aAg1lfwOKFWg4DU385nsNj3VqYzzpoBEyKF?=
+ =?us-ascii?Q?Qwg7JzQFFccU9Y3GR2+B1LCEr6FdWxJhVqeySixh2SWUzx1AxHQzkkjQpCZW?=
+ =?us-ascii?Q?VZ1mZMYRfYsrso2fdKGb2irimTzKgLtuWSx1ouRl//00wabcfs4v9BQx+lDK?=
+ =?us-ascii?Q?6cPu9LJ9NLKLXe9ncWm47UR3le72NdSNIUkVpYLRaA4aIeIsGymUtNGwkkhO?=
+ =?us-ascii?Q?ncW9GGOErSj+ofAvVKsjjMugRCZXzQyMhsjb69iv2qHpPP7/6UKNP/9IGKlm?=
+ =?us-ascii?Q?VQDCzWy9X0e4uTJLzi9FNzUcAQHbOtH2LIGg+K2UD8PoE9PZ4otRrEvRsL9m?=
+ =?us-ascii?Q?d1TX5CCQJ/iJWitehG3o8OvhQJCXiRVnjFGkSw2Zhex9qHeNgW33Rwsi9gjP?=
+ =?us-ascii?Q?YEnFYbdYJQVR12JBkb+zGzzA4YrZKpdTRzJ+TGUGumaoq7oPVWp4jiFv2Hfa?=
+ =?us-ascii?Q?DatoBGDaYiNUMRJw6J85WLQFrVRVv1wr1o74XANHmI/c6xyC894hMeB+ZcSH?=
+ =?us-ascii?Q?W7AYU0CoaMhkgnbDmGwDnoiIAVuER6pz/t1O0cEb0Nx/tQD/BkrCq3Db9Tm7?=
+ =?us-ascii?Q?O0RLOT4e3wPn5c1QAchFq/XmIQxNEV/xy/bm8+yrBTdxJYCTXIxG/cXmoZME?=
+ =?us-ascii?Q?hg7DC0Lgd+R/fZAeCbowC4gxUPETmkbRkobfUI0afUhatiXs6IiM2lHXLn5O?=
+ =?us-ascii?Q?sb+KdN/jhuyC20otZPPHsRLv8Sd8Kj0ONk8S3spIbDBhNMjZR7sUd0b111Tm?=
+ =?us-ascii?Q?WOSkorNQYuYaqj9vYJZHhS5oUM8VAEYEIO+5z/H74cTImzGZsoMQHDDL3eOc?=
+ =?us-ascii?Q?AlWNjBLCDxPTRo7s/h9zo8LwZgnDk+q42KktxZuZOUIoZ0+mmaOUuG6aXI0F?=
+ =?us-ascii?Q?I+fXAi11objmEtvmHOhf3HKx62hTLCz9DvF2DemMEu9VG/anc8hI1owmKMKE?=
+ =?us-ascii?Q?7lOKzf43dmkYv+xSShiDrZZ86AcxgwcHqJ1ZlC54vMeSZ/mzwGFCREGgrqwt?=
+ =?us-ascii?Q?gyxoiGWaC+A0cYzs9WbbZnRg04x8Lkg/dtDXleCtsOg+OefHn+oBJwrPhjFu?=
+ =?us-ascii?Q?SZc5TXkTC3sf1Mh0ZPvsXYID8J1NMlFLhZBVAGzI23a4xyVtXCbWW8TEUCtk?=
+ =?us-ascii?Q?+WP3zOb4D4VrjvuxdcEu60Tv4HSiUvshBprcAhVOHKfaQf9kvqYcRiIksHxJ?=
+ =?us-ascii?Q?8/qrpbf7eRRs1PO07QdGb0Yddf/A5enHw8n+q8LeiTeH26VQbkkAGp9KGY73?=
+ =?us-ascii?Q?ITpBgrekNT+HE3JZSdts4jwf?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <fd9fadae-a493-1d8d-6777-e1c789a5113f@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: VtNtiwnrUaraj9V-sE0mBNx1ZR9ze6u5
-X-Proofpoint-ORIG-GUID: h7LxjRRoKWqtuCZrvNqMelbALA8Fm4AA
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-09-01_01:2021-08-31,2021-09-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- clxscore=1015 malwarescore=0 mlxscore=0 priorityscore=1501 bulkscore=0
- impostorscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2109010027
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5433.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c47e7d03-c9a8-4c7e-fbc6-08d96d17d84c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2021 07:12:22.8482
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SuGnQJqlFBY9HOZEp2euyzlKQ/SXRwcTZpRYFwG8KmMlRV3wkVB/yrX3SJOYUkCeejnXsESKW7RmsqQaep+dgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR1101MB2146
+X-OriginatorOrg: intel.com
 
+> From: Andy Lutomirski <luto@kernel.org>
+> Sent: Wednesday, September 1, 2021 12:53 PM
+>=20
+> On Thu, Aug 26, 2021, at 7:31 PM, Yu Zhang wrote:
+> > On Thu, Aug 26, 2021 at 12:15:48PM +0200, David Hildenbrand wrote:
+>=20
+> > Thanks a lot for this summary. A question about the requirement: do we =
+or
+> > do we not have plan to support assigned device to the protected VM?
+> >
+> > If yes. The fd based solution may need change the VFIO interface as wel=
+l(
+> > though the fake swap entry solution need mess with VFIO too). Because:
+> >
+> > 1> KVM uses VFIO when assigning devices into a VM.
+> >
+> > 2> Not knowing which GPA ranges may be used by the VM as DMA buffer,
+> all
+> > guest pages will have to be mapped in host IOMMU page table to host
+> pages,
+> > which are pinned during the whole life cycle fo the VM.
+> >
+> > 3> IOMMU mapping is done during VM creation time by VFIO and IOMMU
+> driver,
+> > in vfio_dma_do_map().
+> >
+> > 4> However, vfio_dma_do_map() needs the HVA to perform a GUP to get
+> the HPA
+> > and pin the page.
+> >
+> > But if we are using fd based solution, not every GPA can have a HVA, th=
+us
+> > the current VFIO interface to map and pin the GPA(IOVA) wont work. And =
+I
+> > doubt if VFIO can be modified to support this easily.
+> >
+> >
+>=20
+> Do you mean assigning a normal device to a protected VM or a hypothetical
+> protected-MMIO device?
+>=20
+> If the former, it should work more or less like with a non-protected VM.
+> mmap the VFIO device, set up a memslot, and use it.  I'm not sure whether
+> anyone will actually do this, but it should be possible, at least in prin=
+ciple.
+> Maybe someone will want to assign a NIC to a TDX guest.  An NVMe device
+> with the understanding that the guest can't trust it wouldn't be entirely=
+ crazy
+> ether.
+>=20
+> If the latter, AFAIK there is no spec for how it would work even in princ=
+iple.
+> Presumably it wouldn't work quite like VFIO -- instead, the kernel could =
+have
+> a protection-virtual-io-fd mechanism, and that fd could be bound to a
+> memslot in whatever way we settle on for binding secure memory to a
+> memslot.
 
+FYI the iommu logic in VFIO is being refactored out into an unified /dev/io=
+mmu
+framework [1]. Currently it plans to support the same DMA mapping semantics
+as what VFIO provides today (HVA-based). in the future it could be extended
+to support another mapping protocol which accepts fd+offset instead of HVA=
+=20
+and then calls the helper function from whatever backing store which can he=
+lp=20
+translate fd+offset to HPA instead of using GUP.
 
-On 01/09/2021 0:04, Brijesh Singh wrote:
-> Hi Dov,
-> 
-> 
-> On 8/31/21 1:59 PM, Dov Murik wrote:
->>> +
->>> +    /*
->>> +     * The intermediate response buffer is used while decrypting the
->>> +     * response payload. Make sure that it has enough space to cover
->>> the
->>> +     * authtag.
->>> +     */
->>> +    resp_len = sizeof(resp->data) + crypto->a_len;
->>> +    resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
->>
->> The length of resp->data is 64 bytes; I assume crypto->a_len is not a
->> lot more (and probably known in advance for AES GCM).  Maybe use a
->> buffer on the stack instead of allocating and freeing?
->>
-> 
-> The authtag size can be up to 16 bytes, so I guess I can allocate 80
-> bytes on stack and avoid the kzalloc().
-> 
->>
->>> +    if (!resp)
->>> +        return -ENOMEM;
->>> +
->>> +    /* Issue the command to get the attestation report */
->>> +    rc = handle_guest_request(snp_dev, req.msg_version,
->>> SNP_MSG_KEY_REQ,
->>> +                  &req.data, sizeof(req.data), resp->data, resp_len,
->>> +                  &arg->fw_err);
->>> +    if (rc)
->>> +        goto e_free;
->>> +
->>> +    /* Copy the response payload to userspace */
->>> +    if (copy_to_user((void __user *)arg->resp_data, resp,
->>> sizeof(*resp)))
->>> +        rc = -EFAULT;
->>> +
->>> +e_free:
->>> +    kfree(resp);
->>
->> Since resp contains key material, I think you should explicit_memzero()
->> it before freeing, so the key bytes don't linger around in unused
->> memory.  I'm not sure if any copies are made inside the
->> handle_guest_request call above; maybe zero these as well.
->>
-> 
-> I can do that, but I guess I am trying to find a reason for it. The resp
-> buffer is encrypted page, so, the key is protected from the hypervisor
-> access. Are you thinking about an attack within the VM guest OS ?
-> 
+Thanks
+Kevin
 
-Yes, that's the concern, specifically with sensitive buffers (keys).
-You don't want many copies floating around in unused memory.
-
--Dov
+[1]https://lore.kernel.org/kvm/BN9PR11MB5433B1E4AE5B0480369F97178C189@BN9PR=
+11MB5433.namprd11.prod.outlook.com/
