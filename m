@@ -1,170 +1,96 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2052.outbound.protection.outlook.com [40.107.92.52])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A960572
-	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 01:17:11 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OqABQwOT56ilksc1BhxYT44RxmWqtvuqg/b31fpOI81o+tRprPNk73L6gBMofiKpUE2bbJ0b+LloFFfIUrnzx586RRjhKEzYQb1gXJhDQxaXgps8OuSss001mYWRkSdErLS0CdlgfXbhNxf6+iPUc5cfOJ/V3Mg/uON6pVc5mPuBkckb68xyjHByElUgJCh6uldkvJLRjCmGf72aF6i+pOBE7VSrs92JmLYj7s4xi5dprgfVMLeMx79x3PqPF9R2BH+i7KdT1TiiNKc0KhPpuYOqpqPwKd2pktC57iCP/3VIiDURUj5rthv9GP/CHFgjQ0bRo/St6i4uc364E08OfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1yelLIWaMCkgIfaz4DqO6DMFkOWziwSNxaALSIEaMLY=;
- b=YntwTCVlDt1LuzKs8w4uRtj0aI6vQbD5Pd29E+e8sYRpU47cReakihlrZaU5WpASyxyq4oPu7BqC22tte74UYFHj4YqghRR0leAHhKoHwiBvR8ajdpdYZAst0krb83NuBzJjvCugMdH/FV4rS7+S3LCgWfrWxzUUintKz/O7S/2enjCX4K6cYrV/eCex/YnthHhVg4SjsZXWtEQv/54j7RlKnUaMI5Iufj7e3lc/u2j/T50eMyiAvVwXFihWBIlemNgpwXTnxnD9VwBP40jL7iTgXCWQjmpqGPMF65YNg5GYDBzAJU+bmkuCcAJ2V2h1zk+7zyJ26rqBdTqc1wMaDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1yelLIWaMCkgIfaz4DqO6DMFkOWziwSNxaALSIEaMLY=;
- b=coTwRjk/raNWdXUrFaIGJHfuj7bxChPWg1ZcsiS5cd6zf+CHHy5l/dPns0EModNyxzTZKOBq+EhY+hr0ESsZfbjKP6WX4nghR7wxBZEAfk+8XVvFp11W6xVyUxks+BjMnHQZbsVSoeLzxT5xgqZILNIPwjm4Tvk94e11tbf/SM4=
-Authentication-Results: alien8.de; dkim=none (message not signed)
- header.d=none;alien8.de; dmarc=none action=none header.from=amd.com;
-Received: from CH2PR12MB4133.namprd12.prod.outlook.com (2603:10b6:610:7a::13)
- by CH2PR12MB3959.namprd12.prod.outlook.com (2603:10b6:610:28::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.17; Wed, 1 Sep
- 2021 01:17:07 +0000
-Received: from CH2PR12MB4133.namprd12.prod.outlook.com
- ([fe80::f5af:373a:5a75:c353]) by CH2PR12MB4133.namprd12.prod.outlook.com
- ([fe80::f5af:373a:5a75:c353%6]) with mapi id 15.20.4457.024; Wed, 1 Sep 2021
- 01:17:07 +0000
-Date: Tue, 31 Aug 2021 20:16:58 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4553FC3
+	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 03:34:45 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10093"; a="218331715"
+X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
+   d="scan'208";a="218331715"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2021 20:34:41 -0700
+X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
+   d="scan'208";a="531657052"
+Received: from zhibosun-mobl2.ccr.corp.intel.com (HELO localhost) ([10.255.31.93])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2021 20:34:32 -0700
+Date: Wed, 1 Sep 2021 11:34:29 +0800
+From: Yu Zhang <yu.c.zhang@linux.intel.com>
+To: Andi Kleen <ak@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>,
 	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 32/38] x86/sev: enable SEV-SNP-validated CPUID
- in #VC handlers
-Message-ID: <20210901011658.s4hgmvbptgseqcm3@amd.com>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-33-brijesh.singh@amd.com>
- <YSkCWVTd0ZEvphlx@zn.tnic>
- <20210827183240.f7zvo3ujkeohmlrt@amd.com>
- <YS5XVBNrASp7Zrig@zn.tnic>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YS5XVBNrASp7Zrig@zn.tnic>
-X-ClientProxiedBy: SN6PR01CA0031.prod.exchangelabs.com (2603:10b6:805:b6::44)
- To CH2PR12MB4133.namprd12.prod.outlook.com (2603:10b6:610:7a::13)
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
+ private memory
+Message-ID: <20210901033429.4c2dh5cwlppjvz2h@linux.intel.com>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
+ <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
+ <243bc6a3-b43b-cd18-9cbb-1f42a5de802f@redhat.com>
+ <765e9bbe-2df5-3dcc-9329-347770dc091d@linux.intel.com>
+ <4677f310-5987-0c13-5caf-fd3b625b4344@redhat.com>
+ <cf24c39e-2e87-f596-4375-9368ed8ef813@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost (165.204.77.1) by SN6PR01CA0031.prod.exchangelabs.com (2603:10b6:805:b6::44) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.19 via Frontend Transport; Wed, 1 Sep 2021 01:17:06 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: cefba45e-34cf-4c81-0dff-08d96ce636c5
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3959:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS:
-	<CH2PR12MB39593FEA145F92F918A9081795CD9@CH2PR12MB3959.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	t7TX3NCRV+ATbmgQaGqaaq9dXFxLUvt9u3o6/PQQ5V/9SErHr+sw9kUmxOgcMErJH/Cbc3++qiRyEfC6sJ6Q02XapSazQp1es8xLZqQ+f188Jm7F8Z7v4IafO29r7437ZmhEwYLpTluuaRcKi/BXZqN3T5uK27YivGnBsafO+aLobvGt19W43d+E8hEGqYw4gGRwAbohLfhoRVjMYavMFVe8nb9c/RQwswqSo4osIG24EwFJIPLo5cSZYMfubn3P8rhD+dGmRe1M2AlHf/e0gIfnTDUPHL+ffqQcqtXbxUhAhrgAmk6F3S+0nWbbv61EPZ5z1+fnC/0KoD8q+0DIQAWgrW9mTW3eT8MEhIdM6mWgcFudGxqnunaf1laAoOvDlqyGmpAZvff/APAGVZTrmhWr5lorPsShrlhQSZYjRS+OmYWi2wUVsrpTAZaGc6KnoHCT418MEfjx+DWz9PtNpM18K/M4rtppG7wlJkyK6pQaPRZE3yTLn6UMaAux5ynbFhEIkllT686PjcXx0OQ9GHjT7/Bz1XqczKWbLeH/vWcNi4Vvd5YBtUt6LLxVYm/fCUUEGpxzYtfsw8I0A8o1HjGDLeSJ306ZCgYZ6GYKClb3VJtBbTfZv1rjE77x/lSUPMoV8KQM6rWxQ+db/GE55hRfFoFAxfQVLQsoBIqHbmwt2NLnXJgQPwi0UhbE8zto1RNxxC/P+TxT0izdRrKQ+52bbBCOXT8jDaaL/pem8RLuvSfMFv5eezNb0s4hk0SNMFQ+xTbsS+raP0sLzMclxw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB4133.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(39860400002)(136003)(346002)(366004)(376002)(36756003)(66946007)(66476007)(54906003)(6496006)(44832011)(45080400002)(52116002)(8676002)(1076003)(4326008)(26005)(186003)(83380400001)(6666004)(478600001)(956004)(6486002)(86362001)(2616005)(38350700002)(2906002)(966005)(7416002)(7406005)(5660300002)(8936002)(38100700002)(66556008)(316002)(6916009);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9ekcKrei8q6JG5V9Q+w0zYk2jLj9ZHBVYI3E6glVzu5H87g7A6coir5XqqRu?=
- =?us-ascii?Q?1Xodn6T7SoBIfvLEKnyPx7HfA6sOndQl+j4+3uq8HH/cXJn/Ca8GdiHUMTAi?=
- =?us-ascii?Q?HXcviPwBxInoWHNKNU/vqqF2kaE538VBA30rCbyY6vrZFoH9l314nVMIkkf0?=
- =?us-ascii?Q?arfl4e6RCTNdlkeeA09XFZXBwC0pIaa8sMHxNoIloPoj4LSpdYjQ6iYkygQ3?=
- =?us-ascii?Q?1M8OPJ9VxtrlA+F1YVvv84rDZTA70zSZmYftQvcNYJjCkMsg53jw+J7qyMsU?=
- =?us-ascii?Q?uGqpvoYwkPH/KhEaYSRZ0XdUX2tX+XPauSRFOIJxva1DRFz8vg3gXpBBIfEo?=
- =?us-ascii?Q?i5kYetmDE4YyYyLFlUbE7TBBo6zAmsdqSWrqZrdOBTCqVDdfplEdYavDIcYe?=
- =?us-ascii?Q?5ZLSxdPRtPUFotFRYzaFKd3X+X75MXEM4E9dLMS5K7jAwbAf0yZYQ/aW5gSV?=
- =?us-ascii?Q?yvi568rZYz7amZGXfTO6FlNJEDQWeyhVtV2x6acctMWWbtEHBObK4HXPndrr?=
- =?us-ascii?Q?hN96570yeBGkUciytSrVC+S9DCjDU2sZlYNpv+q+tIB7+23helb50NVldcDW?=
- =?us-ascii?Q?6SsxrRf9kyzFc5Vs/HdyDt8ZiqTAk3egOR53uNU6gTlJdB9hSkPx7YrRTPjl?=
- =?us-ascii?Q?qMg71AJFYbl36f+5zuOVLIklDflYwbgBLXrGp8N39kZbw7xc+Q8uj2PHHMC6?=
- =?us-ascii?Q?3HFYtDl+3fPUNPBA+h+FhvjMAyQGV89DFLk1LBboVarMv9uHSQxJ4mgiRkHf?=
- =?us-ascii?Q?Dij0Zex9ZR/2KH+wQK01Zw8cGTBGUpJbI8Q5aHgdRJfU3ZTufJOIqvI6niLM?=
- =?us-ascii?Q?Cl1eUxVAmQtLbX2WKuxKsBEfP+34Jc0G9IZmd4Eh890T0HxWgdSiClafSHLM?=
- =?us-ascii?Q?/GEYjhghRK8erj05gaI/07Pr6nMCk7goD46vCnoOTfdIlhJqABLNP06fJW9u?=
- =?us-ascii?Q?cL0/zUPIqexBNHU/wewelsF9qLTsoIG3p6evwxR1hoMYT3yav4/LEsackP9k?=
- =?us-ascii?Q?iXm9QXL0kVWkB7nWVUW4UA3hVQPjvqYKeKlln9EMPqD7gPMXhyIHuLRCgqck?=
- =?us-ascii?Q?fxPR3qrSNGAeEZHRAQT6JvTdqjVr+LvBdWUmZnklY7Pmfz7/999jMyzJHUUA?=
- =?us-ascii?Q?VyFAbHLmOa7eo5hYmIdDT2vRezsgXy7ZewBy9PNjE9ThePlivrqJVhTXOWlF?=
- =?us-ascii?Q?5jK+A+Shzvcjo8rhd1nh+GKohHAESMsdpbMsVXO1dRAuDxhSMNrk9jMQAMgg?=
- =?us-ascii?Q?azsv+g9yUIsQ7pExkcVeC+tS+jUAwHYLKkeofU8Ad+fZ80unh65S/3S6/uyh?=
- =?us-ascii?Q?V+gXu0+DZZZaXei5mJg5HB8C?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cefba45e-34cf-4c81-0dff-08d96ce636c5
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB4133.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2021 01:17:06.9047
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /98pKlYnxJxdyxazVQ0oysgGsstB19EgXyYso3eABL7e8exl/r4LEQHkeD62y3eTBdvLAf7kJujpa+gcZuOtTw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3959
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cf24c39e-2e87-f596-4375-9368ed8ef813@linux.intel.com>
+User-Agent: NeoMutt/20171215
 
-On Tue, Aug 31, 2021 at 06:22:44PM +0200, Borislav Petkov wrote:
-> On Fri, Aug 27, 2021 at 01:32:40PM -0500, Michael Roth wrote:
-> > If the memory is allocated in boot/compressed/mem_encrypt.S, wouldn't
-> > kernel proper still need to create a static buffer for its copy?
+On Tue, Aug 31, 2021 at 01:39:31PM -0700, Andi Kleen wrote:
 > 
-> Just like the other variables like sme_me_mask etc that file allocates
-> at the bottom. Or do you have a better idea?
-
-What did you think of the suggestion of defining it in sev-shared.c
-as a static buffer/struct as __ro_after_init? It would be nice to
-declare/reserve the memory in one place. Another benefit is it doesn't
-need to be exported, and could just be local with all the other
-snp_cpuid* helpers that access it in sev-shared.c
-
+> On 8/31/2021 1:15 PM, David Hildenbrand wrote:
+> > On 31.08.21 22:01, Andi Kleen wrote:
+> > > 
+> > > > > Thanks a lot for this summary. A question about the requirement: do
+> > > > > we or
+> > > > > do we not have plan to support assigned device to the protected VM?
+> > > > 
+> > > > Good question, I assume that is stuff for the far far future.
+> > > 
+> > > It is in principle possible with the current TDX, but not secure. But
+> > > someone might decide to do it. So it would be good to have basic support
+> > > at least.
+> > 
+> > Can you elaborate the "not secure" part? Do you mean, making the device
+> > only access "shared" memory, not secure/encrypted/whatsoever?
 > 
-> > Would that be a reasonable approach for v6?
 > 
-> I don't like the ifdeffery one bit, TBH. I guess you should split it
-> and have a boot/compressed page and a kernel proper one and keep 'em
-> separate. That should make everything nice and clean at the cost of 2*4K
-> which is nothing nowadays.
+> Yes that's right. It can only access shared areas.
 
-I think I can address the ifdeffery by splitting the boot/proper routines
-into separate self-contained routines (and maybe move them out into
-boot/compressed/sev.c and kernel/sev.c, respectively), then having them
-just initialize the table pointer and create the copy using a common setter
-function, e.g.
+Thanks, Andy & David.
 
-  snp_cpuid_table_create(cc_blob, fixup_offset)
+Actually, enabling of device assinment needs quite some effort, e.g.,
+to guarantee only shared pages are mapped in IOMMU page table (using
+shared GFNs). And the buffer copying inside TD is still unavoidable,
+thus not much performance benefit.
 
-and for boot/compressed.c fixup_offset would just be passed in as 0.
+Maybe we should just *disable* VFIO device in TDX first. 
 
-> 
-> Thx.
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7CMichael.Roth%40amd.com%7Cb4adf700d33e42ffe4be08d96c9b7fe6%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637660237404006013%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=nVGIpG0WAcqcHZWXK1%2BQoaPBoeCLwtkqgs8Mfgz%2Fr04%3D&amp;reserved=0
+As to the fd-based private memory, enventually we will have to tolerate
+its impact on any place where GUP is needed in virtualization. :)
+
+B.R.
+Yu
