@@ -1,117 +1,133 @@
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466503FD3
-	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 19:26:10 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10094"; a="218899782"
-X-IronPort-AV: E=Sophos;i="5.84,370,1620716400"; 
-   d="scan'208";a="218899782"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 12:26:09 -0700
-X-IronPort-AV: E=Sophos;i="5.84,370,1620716400"; 
-   d="scan'208";a="690853274"
-Received: from davidj-mobl1.amr.corp.intel.com (HELO [10.212.161.93]) ([10.212.161.93])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 12:26:07 -0700
-Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
- memory
-To: jejb@linux.ibm.com, Andy Lutomirski <luto@kernel.org>,
- David Hildenbrand <david@redhat.com>, Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
- kvm list <kvm@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>,
- Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>,
- Dario Faggioli <dfaggioli@suse.com>,
- the arch/x86 maintainers <x86@kernel.org>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Yu Zhang <yu.c.zhang@linux.intel.com>
-References: <20210824005248.200037-1-seanjc@google.com>
- <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
- <YSlkzLblHfiiPyVM@google.com>
- <61ea53ce-2ba7-70cc-950d-ca128bcb29c5@redhat.com>
- <YS6lIg6kjNPI1EgF@google.com>
- <f413cc20-66fc-cf1e-47ab-b8f099c89583@redhat.com>
- <9ec3636a-6434-4c98-9d8d-addc82858c41@www.fastmail.com>
- <bd22ef54224d15ee89130728c408f70da0516eaa.camel@linux.ibm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <cb3b2281-8651-672a-53e0-d0c7a9407643@intel.com>
-Date: Wed, 1 Sep 2021 12:26:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773693FCD
+	for <linux-coco@lists.linux.dev>; Wed,  1 Sep 2021 21:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1630530167;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nBI2ltINoLF2WMdaOQSg8GJs4aIarAV4j3nj9NG4RCY=;
+	b=Qz3bt+7mnUgtAUaB7g2iTn7kabdgWBKKfSWKyBeydjfxqousPKVbu4cbNzExd7M/sKOr8b
+	8YsKrb96CsvlyeGeKIA3Etq+HY0/lkfte0T/+gwvfeYkCgBDMyr+mDDOJbv+FAyjc0O23S
+	YOrYLnov/wH9+3Kzte6/FuOxT4O5MKs=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-450-ODXnPVevMR-b0tGBBVfyhg-1; Wed, 01 Sep 2021 17:02:44 -0400
+X-MC-Unique: ODXnPVevMR-b0tGBBVfyhg-1
+Received: by mail-oo1-f71.google.com with SMTP id x7-20020a4aea07000000b0028b880a3cd3so464662ood.15
+        for <linux-coco@lists.linux.dev>; Wed, 01 Sep 2021 14:02:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nBI2ltINoLF2WMdaOQSg8GJs4aIarAV4j3nj9NG4RCY=;
+        b=J6MQDodZ0tLcLY7TI1n8QVkB61vHKHjMHVSet0NWJbQBs50iGpkk2zjlYzm1brI6wv
+         bf6h7V/U/XGOT/2Bevnf6DkcceuJxf+1BTHDKAMUIfzH0u5HjYPUQYG2ymL7x6cDtseB
+         WZhwUJlIZzDogT8q61yhymdu3q5aSaqY8mZLT38f/qWCQfVBRGCfTjRTepRz8Gtb7/Er
+         cgkJai+RS8PaUFIcZ2JGw5DiL+6PvOp84oAZlDgfcenzxRCmskYgRFCkKUJ+g/B2y53e
+         rUhBrN3GSyLWPzQawvxOnz16DLFYTCHjr7Kj/MkLQbsZ2mC6Ahu3bw6fuR01pt5MjHv1
+         prTg==
+X-Gm-Message-State: AOAM530MeWgPmQ41ch9gHdkQVV7npvTDV+4YrtgN2IrBjf8GW0hIDoH7
+	S5j9J4KtzAZ0f8auRe3cNPvzLcA6xK5r7NEK6M25HMY2X1ro47f5ujOf6/kDNCP6EbU00+QX3yQ
+	LboeialafUbfo/yyQaojByA==
+X-Received: by 2002:a9d:2278:: with SMTP id o111mr1184933ota.229.1630530163663;
+        Wed, 01 Sep 2021 14:02:43 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxVUSuG9t8V3EY9ijjDut6hzkV3I1FofZCKPV4YLZB5pOCffAS8WhHs+T2fCeGtw9DYBKnfGw==
+X-Received: by 2002:a9d:2278:: with SMTP id o111mr1184892ota.229.1630530163442;
+        Wed, 01 Sep 2021 14:02:43 -0700 (PDT)
+Received: from [192.168.0.112] (ip68-102-24-81.ks.ok.cox.net. [68.102.24.81])
+        by smtp.gmail.com with ESMTPSA id q26sm160065otf.39.2021.09.01.14.02.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 01 Sep 2021 14:02:43 -0700 (PDT)
+Subject: Re: [PATCH Part2 v5 17/45] crypto: ccp: Add the
+ SNP_{SET,GET}_EXT_CONFIG command
+To: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
+ <ak@linux.intel.com>, tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, tfanelli@redhat.com
+References: <20210820155918.7518-1-brijesh.singh@amd.com>
+ <20210820155918.7518-18-brijesh.singh@amd.com>
+From: Connor Kuehl <ckuehl@redhat.com>
+Message-ID: <2b07b160-48af-4682-1a4b-2716cd13fb65@redhat.com>
+Date: Wed, 1 Sep 2021 16:02:40 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <bd22ef54224d15ee89130728c408f70da0516eaa.camel@linux.ibm.com>
+In-Reply-To: <20210820155918.7518-18-brijesh.singh@amd.com>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=ckuehl@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 9/1/21 9:18 AM, James Bottomley wrote:
->> So I think there are literally zero code paths that currently call
->> try_to_unmap() that will actually work like that on TDX.  If we run
->> out of memory on a TDX host, we can kill the guest completely and
->> reclaim all of its memory (which probably also involves killing QEMU
->> or whatever other user program is in charge), but that's really our
->> only option.
-> I think our only option for swap is guest co-operation.
+On 8/20/21 10:58 AM, Brijesh Singh wrote:
+> +2.4 SNP_SET_EXT_CONFIG
+> +----------------------
+> +:Technology: sev-snp
+> +:Type: hypervisor ioctl cmd
+> +:Parameters (in): struct sev_data_snp_ext_config
+> +:Returns (out): 0 on success, -negative on error
+> +
+> +The SNP_SET_EXT_CONFIG is used to set the system-wide configuration such as
+> +reported TCB version in the attestation report. The command is similar to
+> +SNP_CONFIG command defined in the SEV-SNP spec. The main difference is the
+> +command also accepts an additional certificate blob defined in the GHCB
+> +specification.
+> +
+> +If the certs_address is zero, then previous certificate blob will deleted.
+> +For more information on the certificate blob layout, see the GHCB spec
+> +(extended guest request message).
 
-Yes, today that's the only choice.  Both TDX and SEV-SNP can
-*theoretically* extend their architectures to enable swap with
-uncooperative guests.  But, frankly, nobody has been asking for it.
+Hi Brijesh,
 
-If you care, please ask Intel and AMD to fix this gap.
+Just to be clear, is the documentation you're referring to regarding the
+layout of the certificate blob specified on page 47 of the GHCB spec?
+More specifically, is it the `struct cert_table` on that page?
+
+https://developer.amd.com/wp-content/resources/56421.pdf
+
+If so, where is the VCEK certificate layout documented?
+
+Connor
+
+> +/**
+> + * struct sev_data_snp_ext_config - system wide configuration value for SNP.
+> + *
+> + * @config_address: address of the struct sev_user_data_snp_config or 0 when
+> + *		reported_tcb does not need to be updated.
+> + * @certs_address: address of extended guest request certificate chain or
+> + *              0 when previous certificate should be removed on SNP_SET_EXT_CONFIG.
+> + * @certs_len: length of the certs
+> + */
+> +struct sev_user_data_ext_snp_config {
+> +	__u64 config_address;		/* In */
+> +	__u64 certs_address;		/* In */
+> +	__u32 certs_len;		/* In */
+> +};
+
