@@ -1,172 +1,118 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BD83FD3
-	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 20:33:36 +0000 (UTC)
-Received: by mail-pl1-f181.google.com with SMTP id e1so1933359plt.11
-        for <linux-coco@lists.linux.dev>; Thu, 02 Sep 2021 13:33:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=WMHDe+B/QHVMoa6rzQQS13DP0+l51/+I+Sfw7Tx2c/8=;
-        b=rU2L1mZSAHYMoZJ9gx9fZ91xkckimo09OPTE0gqMS7Xt9llxRz8dWEliJLHFe0VUtc
-         CV0cRPvDAGqhFJB/M4vPk84e9RDhSPHo6MxOWGJqT6rTHYXdHyo2ijjSzRMKCaWZidwO
-         dJc8l4NXLqQtC3KdHmt8jFIDH8V8W8n2W/5rc543HwKliUSDjztK61jDECFyZBfVKSHR
-         V3gd6WTwubm5l0jqKsrfywccKMkKsg0oVFjjQOOzizDSKLfGAaSq8JFfHaKLJt8yuLyf
-         76O2oKXEJ8E9dh+fW9yxDy8nkUUKGvB/4wxwpwPzPFKMhCoZm4zNobShGYCOxTEMd4He
-         8xYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=WMHDe+B/QHVMoa6rzQQS13DP0+l51/+I+Sfw7Tx2c/8=;
-        b=FaKuKrSrn5hrh3JVQJAo9c4IVbC4IBG4WbZeHV1EZjfjBdx0ZZcWh2RbMkbch5BHwi
-         RZs9BS8/5aJQc2x58ZeBfAvaCTxUoVIKAkwfV8jWjAFqujqASdbVa1cM/wVILkmD1T8c
-         MObHrzkSbLZyODeD5Iez1bauft5oUuKDz6VEHEiepBavzIpdOHfvjVCM8PVX+M1dlxE0
-         TY9F2EXXIEUc51sBZinWHMh8K4XVm+ATmtr63AUxF+eVGGA2U+ErMcOWOoouSDXO3aq4
-         bhuLSXm1i8J5WJicvZStjgDomXidyJiIypQbCtmBOYTW2fNwt8rsjlECeDBhoKZbDmDS
-         ldtA==
-X-Gm-Message-State: AOAM530zdF+zCcyEojkmJ/kC8BbveqDCQJfAlOcKxgjPuPcDELUrmQqZ
-	xRWpPk3LA+Dmxm/X8/cbFHNNVw==
-X-Google-Smtp-Source: ABdhPJxLz/XT64uf0+1+MuPI8Eym0X/T+avXyPeyqXI2R65veOt3faGcHH5VXlwnHl9DQOZieYUIqA==
-X-Received: by 2002:a17:902:e790:b0:12c:c0f3:605c with SMTP id cp16-20020a170902e79000b0012cc0f3605cmr4540065plb.70.1630614816161;
-        Thu, 02 Sep 2021 13:33:36 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id d17sm3055927pfn.110.2021.09.02.13.33.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Sep 2021 13:33:35 -0700 (PDT)
-Date: Thu, 2 Sep 2021 20:33:31 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Yu Zhang <yu.c.zhang@linux.intel.com>
-Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
- private memory
-Message-ID: <YTE1GzPimvUB1FOF@google.com>
-References: <20210824005248.200037-1-seanjc@google.com>
- <20210902184711.7v65p5lwhpr2pvk7@box.shutemov.name>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E2B3FD3
+	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 20:42:56 +0000 (UTC)
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 31A8060FDA;
+	Thu,  2 Sep 2021 20:42:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1630615376;
+	bh=rWIymJXj+z/ROnyg3o5j/Hn6mBCszau7W/Lim8edb4A=;
+	h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
+	b=lZl9S5JcZecn4dzUrXeaGD0pBee4WU3gjZKJ9NXRJHcTEniagn6SEmZxstuB5eUYl
+	 5wAz9oPTsLg9hfa9mRCybTd4mx5lnFrV3u67dSjhAgAbvUuujLItVNR0VJNj2DAfCf
+	 khdOwzp21TM1TaI0k+8W5Eowdi9bbXTMG86RxVufzK/X4hA3RDIoNDg1/ykUBCnddm
+	 q02AOxZoXCPnsuQggYahQoRN590utXvDFJrPskDSzB4+9NyjVoPBqP3Ofq/1hQbM7k
+	 HSH3JJ9S2fEEBd9o5AaDjfmJRwMN6phbq8X+qsPG8NsgPmKPMMMnyEePgeAOwcLNQo
+	 p6biWSMye4b7A==
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 4B85727C0054;
+	Thu,  2 Sep 2021 16:42:53 -0400 (EDT)
+Received: from imap2 ([10.202.2.52])
+  by compute6.internal (MEProxy); Thu, 02 Sep 2021 16:42:53 -0400
+X-ME-Sender: <xms:STcxYXELiZptWKXuifzlO5zbzy63ylvm9raSa9yKctg3SnsvfaHBIw>
+    <xme:STcxYUWBw76fkb8Xlaqdhq1zNgxN21O_kiDtviOTM8avEB5TDjDvcGUJSamtw8G9K
+    bRAJdsqMW0mRuxQxug>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddruddvhedgudehvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvufgtsehttdertderreejnecuhfhrohhmpedftehn
+    ugihucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqnecugg
+    ftrfgrthhtvghrnhepgeejgffhtdelvdefgeefleevtdfgveekuefgkeffvdevfeefteei
+    heeuteevkeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homheprghnugihodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduudeiudek
+    heeifedvqddvieefudeiiedtkedqlhhuthhopeepkhgvrhhnvghlrdhorhhgsehlihhnuh
+    igrdhluhhtohdruhhs
+X-ME-Proxy: <xmx:SjcxYZJgXti8WB1x2l19F3OIFYUE13lO1jgoHUoZaDnnSYPhQreNlg>
+    <xmx:SjcxYVG2bdIxaH_ChYxQy-PuEaaiuec56bk-Uk-49bsMYlzuxbp7Lw>
+    <xmx:SjcxYdUqc7dih4AB7UGjaiNrmkm2OZAEeDEixjNeKnyBP9vGhoBJ6A>
+    <xmx:TTcxYQqdAbs8fIfe0Z8hXr-CAoBmRNw3DLbfD2cyfDH9oW7X3qFLjRw4sEc>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id E78B2A002E4; Thu,  2 Sep 2021 16:42:49 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.5.0-alpha0-1126-g6962059b07-fm-20210901.001-g6962059b
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210902184711.7v65p5lwhpr2pvk7@box.shutemov.name>
+Mime-Version: 1.0
+Message-Id: <a979ba51-8693-43a0-bebb-b8b1938ff74c@www.fastmail.com>
+In-Reply-To: <ef14702f-4f31-8784-8583-0b79bb7d0a07@intel.com>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
+ <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
+ <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
+ <20210901102437.g5wrgezmrjqn3mvy@linux.intel.com>
+ <f37a61ba-b7ef-c789-5763-f7f237ae41cc@kernel.org> <YTCZAjdci5yx+n6l@suse.de>
+ <b10b09b0-d5ea-b72a-106a-4e1b0df4dc66@kernel.org>
+ <YTEei9RBDHnRfe/B@google.com>
+ <ef14702f-4f31-8784-8583-0b79bb7d0a07@intel.com>
+Date: Thu, 02 Sep 2021 13:42:28 -0700
+From: "Andy Lutomirski" <luto@kernel.org>
+To: "Dave Hansen" <dave.hansen@intel.com>,
+ "Sean Christopherson" <seanjc@google.com>
+Cc: "Joerg Roedel" <jroedel@suse.de>,
+ "Yu Zhang" <yu.c.zhang@linux.intel.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Vitaly Kuznetsov" <vkuznets@redhat.com>,
+ "Wanpeng Li" <wanpengli@tencent.com>,
+ "Jim Mattson" <jmattson@google.com>, "Joerg Roedel" <joro@8bytes.org>,
+ "kvm list" <kvm@vger.kernel.org>,
+ "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Andi Kleen" <ak@linux.intel.com>,
+ "David Rientjes" <rientjes@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Tom Lendacky" <thomas.lendacky@amd.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ "Ingo Molnar" <mingo@redhat.com>, "Varad Gautam" <varad.gautam@suse.com>,
+ "Dario Faggioli" <dfaggioli@suse.com>,
+ "the arch/x86 maintainers" <x86@kernel.org>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ "Sathyanarayanan Kuppuswamy"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: =?UTF-8?Q?Re:_[RFC]_KVM:_mm:_fd-based_approach_for_supporting_KVM_guest_?=
+ =?UTF-8?Q?private_memory?=
+Content-Type: text/plain
 
-On Thu, Sep 02, 2021, Kirill A. Shutemov wrote:
-> Hi folks,
+
+
+On Thu, Sep 2, 2021, at 12:07 PM, Dave Hansen wrote:
+> On 9/2/21 11:57 AM, Sean Christopherson wrote:
+> > On Thu, Sep 02, 2021, Andy Lutomirski wrote:
+> >> On 9/2/21 2:27 AM, Joerg Roedel wrote:
+> >>> On Wed, Sep 01, 2021 at 09:07:59AM -0700, Andy Lutomirski wrote:
+> >>>> In principle, you could actually initialize a TDX guest with all of its
+> >>>> memory shared and all of it mapped in the host IOMMU.
+> >>> Not sure how this works in TDX, but in SEV code fetches are always
+> >>> treated as encrypted. So this approach would not work with SEV, not to
+> >>> speak about attestation, which will not work with this approach either
+> >>> :)
+> >>>
+> >> Oof.
+> > TDX is kinda similar.  _All_ accesses are private if paging is disabled because
+> > the shared bit is either bit 48 or bit 51 in the GPA, i.e. can't be reached if
+> > paging is disabled.  The vCPU is hardcoded to start in unpaged protected mode,
+> > so at least some amount of guest memory needs to be private.
 > 
-> I try to sketch how the memfd changes would look like.
+> That's a rule we should definitely add to our page table checker.  Just
+> like how we can look for W+X, we should also look for Shared+X.
 > 
-> I've added F_SEAL_GUEST. The new seal is only allowed if there's no
-> pre-existing pages in the fd (i_mapping->nrpages check) and there's
-> no existing mapping of the file (RB_EMPTY_ROOT(&i_mapping->i_mmap.rb_root check).
-> 
-> After the seal is set, no read/write/mmap from userspace is allowed.
-> 
-> Although it's not clear how to serialize read check vs. seal setup: seal
-> is protected with inode_lock() which we don't hold in read path because it
-> is expensive. I don't know yet how to get it right. For TDX, it's okay to
-> allow read as it cannot trigger #MCE. Maybe we can allow it?
 
-Would requiring the size to be '0' at F_SEAL_GUEST time solve that problem?
-
-> Truncate and punch hole are tricky.
-> 
-> We want to allow it to save memory if substantial range is converted to
-> shared. Partial truncate and punch hole effectively writes zeros to
-> partially truncated page and may lead to #MCE. We can reject any partial
-> truncate/punch requests, but it doesn't help the situation with THPs.
-> 
-> If we truncate to the middle of THP page, we try to split it into small
-> pages and proceed as usual for small pages. But split is allowed to fail.
-> If it happens we zero part of THP.
-> I guess we may reject truncate if split fails. It should work fine if we
-> only use it for saving memory.
-
-FWIW, splitting a THP will also require a call into KVM to demote the huge page
-to the equivalent small pages.
-
-> We need to modify truncation/punch path to notify kvm that pages are about
-> to be freed. I think we will register callback in the memfd on adding the
-> fd to KVM memslot that going to be called for the notification. That means
-> 1:1 between memfd and memslot. I guess it's okay.
-
-Hmm, 1:1 memfd to memslot will be problematic as that would prevent punching a
-hole in KVM's memslots, e.g. to convert a subset to shared.  It would also
-disallow backing guest memory with a single memfd that's split across two
-memslots for <4gb and >4gb.
-
-But I don't think we need a 1:1 relationship.  To keep KVM sane, we can require
-each private memslot to be wholly contained in a single memfd, I can't think of
-any reason that would be problematic for userspace.
-
-For the callbacks, I believe the rule should be 1:1 between memfd and KVM instance.
-That would allow mapping multiple memslots to a single memfd so long as they're
-all coming from the same KVM instance.
-
-> Migration going to always fail on F_SEAL_GUEST for now. Can be modified to
-> use a callback in the future.
-> 
-> Swapout will also always fail on F_SEAL_GUEST. It seems trivial. Again, it
-> can be a callback in the future.
-> 
-> For GPA->PFN translation KVM could use vm_ops->fault(). Semantically it is
-> a good fit, but we don't have any VMAs around and ->mmap is forbidden for
-> F_SEAL_GUEST.
-> Other option is call shmem_getpage() directly, but it looks like a
-> layering violation to me. And it's not available to modules :/
-
-My idea for this was to have the memfd:KVM exchange callbacks, i.e. memfd would
-have callbacks into KVM, but KVM would also have callbacks into memfd.  To avoid
-circular refcounts, KVM would hold a reference to the memfd (since it's the
-instigator) and KVM would be responsible for unregistering itself before freeing
-it's reference to the memfd.
-
-The memfd callbacks would be tracked per private memslot, which meshes nicely
-without how KVM uses memslots to translate gfn->pfn.  In effect, the ops pointer
-in the memslots replaces the host virtual address that's used to get the pfn for
-non-private memslots.
-
-@@ -2428,8 +2453,12 @@ kvm_pfn_t __gfn_to_pfn_memslot(struct kvm_memory_slot *slot, gfn_t gfn,
-                               bool atomic, bool *async, bool write_fault,
-                               bool *writable, hva_t *hva)
- {
--       unsigned long addr = __gfn_to_hva_many(slot, gfn, NULL, write_fault);
-+       unsigned long addr;
-
-+       if (memslot_is_private(slot))
-+               return slot->private_ops->gfn_to_pfn(...);
-+
-+       addr = __gfn_to_hva_many(slot, gfn, NULL, write_fault);
-        if (hva)
-                *hva = addr;
-
-> 
-> Any comments?
-> 
-> -- 
->  Kirill A. Shutemov
+The only case I can thing of where the TDX vs SEV rule matters is for some mildly crazy user who wants to run user code out of an unencrypted DAX device (or virtio-fs, I guess).  We can save that for another year :)
