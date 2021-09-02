@@ -1,121 +1,322 @@
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam07on2079.outbound.protection.outlook.com [40.107.212.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457A63FCD
-	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 19:08:15 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10095"; a="198767348"
-X-IronPort-AV: E=Sophos;i="5.85,263,1624345200"; 
-   d="scan'208";a="198767348"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2021 12:07:58 -0700
-X-IronPort-AV: E=Sophos;i="5.85,263,1624345200"; 
-   d="scan'208";a="499947252"
-Received: from kflowers-mobl1.amr.corp.intel.com (HELO [10.212.129.126]) ([10.212.129.126])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2021 12:07:56 -0700
-Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest private
- memory
-To: Sean Christopherson <seanjc@google.com>, Andy Lutomirski <luto@kernel.org>
-Cc: Joerg Roedel <jroedel@suse.de>, Yu Zhang <yu.c.zhang@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A673FCD
+	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 19:58:16 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MHqGCxMb49QPJMT3P3fds06ejrxc8JpLXhZETeYocXPr4+LTX65lkZqcAcjAiGd9X3KFPYQ6JpFirWx5gXSYO2EOIBJ3gl8Y6QEuPa/u6O/I0zxyfIQC/WaIt6dl1HVrWOWxszh0BHMs+iNH2oOYmx3jWB4aXqwQAqUyz7OCNSNXRktmE6KyxkT9lIG4OeL8/zeMhDYZeQPZLGa5bCwAx/HDpEcuxxKnqFcY7h31UrIVBbdE5WHXa1WUrgyt6uygGhTHWTPFmDBaEMlQ3+/I+yVnJUx5qwESd7XaQxVIyT4TIPQugtDL0Hz+mUMPMoD06tIHPAdm0V1ps/+3Fe2m1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=akTcLH0xyVsnbrJwZSmmka2JWwRXl69BnJ7k/ieocBI=;
+ b=YlXPfBRhHLwQsCqVM1GezIMKEFFgpxptrR8p6jPPYcSuAPKr/st61FlSfkKmetgUr4IlXzBMIkt5GCSB6rl+diY8pd3Pmq/xzdjMNTmyZzrPvBmS5Y3sbzJLgw4dGQpR+l7cfwYZQMxUahYwB4BThc0RX2G4JDq5E4qaH6pkr0rxml75aOgkZfQNl/upfz9pAJRh/pIUBLCbRrmdhhOmZS9onldY+9MElpzi1VSKDqkftUhMKu3pFvQPaSb224zvCjWrQaSGJ2cJfuvmeEm3WJPbd4JLwPR9IwU2W3G2aXZS0fv6AxdxGT1VLJvm6/H8fmqrg0WEmS9uZ4ReKHObwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=akTcLH0xyVsnbrJwZSmmka2JWwRXl69BnJ7k/ieocBI=;
+ b=EUWHoquAdmcFvkmjrgl3TSEkL9iKTDvR731aDYPUnlQkcrE9t74X7S77PEjrn9cOTAewvGP2n6Zmi4ATh8TDiZLA3DHd7hYjyF946D+50MbdFuJQtgnfy4xjuL1raxwr/+dSs6tVEABKk4JCklMyCKb21K/dC/vTI90u9MN59ao=
+Authentication-Results: linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN1PR12MB2511.namprd12.prod.outlook.com (2603:10b6:802:23::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.19; Thu, 2 Sep
+ 2021 19:58:13 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4478.021; Thu, 2 Sep 2021
+ 19:58:13 +0000
+Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
- kvm list <kvm@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>,
- Andi Kleen <ak@linux.intel.com>, David Rientjes <rientjes@google.com>,
- Vlastimil Babka <vbabka@suse.cz>, Tom Lendacky <thomas.lendacky@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>,
- Dario Faggioli <dfaggioli@suse.com>,
- the arch/x86 maintainers <x86@kernel.org>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-References: <20210824005248.200037-1-seanjc@google.com>
- <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
- <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
- <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
- <20210901102437.g5wrgezmrjqn3mvy@linux.intel.com>
- <f37a61ba-b7ef-c789-5763-f7f237ae41cc@kernel.org> <YTCZAjdci5yx+n6l@suse.de>
- <b10b09b0-d5ea-b72a-106a-4e1b0df4dc66@kernel.org>
- <YTEei9RBDHnRfe/B@google.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <ef14702f-4f31-8784-8583-0b79bb7d0a07@intel.com>
-Date: Thu, 2 Sep 2021 12:07:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+ <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part1 v5 35/38] x86/sev: Register SNP guest request
+ platform device
+To: Borislav Petkov <bp@alien8.de>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-36-brijesh.singh@amd.com> <YTD+go747TIU6k9g@zn.tnic>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <5428d654-a24d-7d8b-489c-b666d72043c1@amd.com>
+Date: Thu, 2 Sep 2021 14:58:11 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
+In-Reply-To: <YTD+go747TIU6k9g@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA9PR13CA0173.namprd13.prod.outlook.com
+ (2603:10b6:806:28::28) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YTEei9RBDHnRfe/B@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: from [10.236.31.95] (165.204.77.1) by SA9PR13CA0173.namprd13.prod.outlook.com (2603:10b6:806:28::28) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.4 via Frontend Transport; Thu, 2 Sep 2021 19:58:12 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 76874350-8662-4b76-a8b8-08d96e4bff01
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2511:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS:
+	<SN1PR12MB2511F7177E788180A1C0ABC5E5CE9@SN1PR12MB2511.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	i4kuJ3YWuVogLQy8ZvqSasI6CbT2JPGV8KKecHBv/5/QxG7oExHKoPHn5x2V6kSGq9Ez9VBR+R+ZaWCFvDkCWQU/YZX3ubwj4xNfiyYetxew3KskcEgQvLdPjQKOODjFUqD4EgrqivYGBcAJViq6Rm3lbTgnQ3kCgyMjSTt/bSMWWoldWSZIcy92k2ZjfxPDj9ryHvA8bsqHkSfnP572Y+ZOlZuq0/6/KZ1LUrSU+UIyojKkWK6fFLJC5ZAeWck4KMFOQSu1JG0UrSv6ZW6z+70tv1qHLJBVF2Namnla2r+F5EECPU232+0YdwKoQmvoEAOHpNRr+0DAwpVsUc1BUy7rFHHDQiGiKulQrz+XrWuVPeDsw/XNkRTlbEVjuJixprm9Y9FVUpsrZPwzPkrzHAx3mgzPqvR71y5zr9Fv8wG2TGRq6IvaER+W6XNL99Jk8BAnSj2fUt6i7z5HPzxa7vjWApcZcxEIDZDQfqwDODOE0jXHJ3BW/9pcMObjm8xC38MrE3xtD6APUc/iRdFKLpJ3M1+jUdCQ3QOA6TvqSce79MA6Xsyx8lxVCuRcJpSFgkK8H2MAFu7ypyMfSH3jkBiSNJoKCbx4bfrjK2kljIZGO659WukvI78Cdj7ieAV2KIsVkeKlUpnRSept9C5OHF36SuQCBB4Wq2nJZkIx63MutBkDBn+U9Z5z2dxcF7Zp3alVckUfPJ1dk04wPIeqTQHCGckOTCBHvE5j28uwSBOfm7MEM9wKDx8L6LgzwOFHgK4fpMPB8otNnVunUpuvVg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(376002)(346002)(396003)(366004)(136003)(316002)(66946007)(66556008)(66476007)(38350700002)(36756003)(52116002)(6916009)(8676002)(31696002)(16576012)(54906003)(5660300002)(31686004)(38100700002)(8936002)(478600001)(86362001)(2906002)(53546011)(7416002)(7406005)(2616005)(26005)(186003)(6486002)(956004)(44832011)(4326008)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZDZDQmszbEVjTjVwN0lrcDhKdWJ6YU1hUnZaLytMck9qenJ1bDEwazlmWXpO?=
+ =?utf-8?B?OWNsbVNVblZ5VHJTNDE4SHRaemhzOWFQK1pEcUp2TUNLNHc0dU5XR0YwYjc3?=
+ =?utf-8?B?VGx3NGZML0FCMjE2aVg2VUkxS2VRU041WGY4MHQ4U0FJdklXR1VMekZYcGNV?=
+ =?utf-8?B?bDJGZG1MaHRtd3dmMy9id2NqbHUxMUhYWFVna0t4WThSanBOV2xQbmxDKzQr?=
+ =?utf-8?B?c2VpbGl2ODNRU1NOL2lvVWwzRlhRTzVPZDNnTnRta1V1OTZVcm5FR2w5Wjkv?=
+ =?utf-8?B?cGsvZTZxSlZ3QVU3UTkyYTFsMkVxNWMrdjJINzJYZjZwSHJndEVEWHRsQ01V?=
+ =?utf-8?B?Zm13VVlYTHVObFBNdmNwWXVmRE1GeWx2K21WMWtXZUNYYTcxWVN6ZGJOZnlq?=
+ =?utf-8?B?OEtFR3Nsalk2V3dubmlFVnkyRWR1K3ZTL2VBWTQ3SWFGV1R3QWhNQmlMNXcx?=
+ =?utf-8?B?LytwL1FyREFLanltVkd3ZmZWWFZJN2oxN3QrdVNBS3lIUUFpR3UwWGNCaGhM?=
+ =?utf-8?B?cGYwb2JNZDhyRGdFKzNaN2xvSjlRVXl6WVRTazJWazBxWkd5ZlBLUkJ5a3F0?=
+ =?utf-8?B?d3FLdnFqN2hKK3VpcjFyNUtvUHlnK2pXeUs1UTc4TzcxOUp1bExxQzdMbGVz?=
+ =?utf-8?B?YUxTOHFQbG8yZHBJV1MzSjVQRmRYRTE1K0NQeTdlYWloMnlXYTlOR1lTRC9L?=
+ =?utf-8?B?dEdNdHQwb2NKalJtWUUzR3pSYnp4MCtVdGJHcTVTTVA2eGlVNWc0OHQ4Y2ZU?=
+ =?utf-8?B?UmhaeWJWQkdiNURjekUxWWpxbmltUGVGZmwveGlqVXkyQUh4a1U2N2xZcHFV?=
+ =?utf-8?B?bVFJa0pCaWVacjJpUWFSSlZ3ZUFDWHduMjArWWp2UVJpeEYvdnV2Y0ZQWjN6?=
+ =?utf-8?B?VFpJMTJNNFVGaytRdVQwSlZISi9TTnQ3ODdSZkRzRnBPWUhNQnFYVkl0S2Y1?=
+ =?utf-8?B?alRqS1g4aFEyckgzY2ZvZzVETjY3U3ZmWDk2bjZnNWpzVkJaMCtRdmRQZU44?=
+ =?utf-8?B?LytZL1lYcGlMOVMwbUtYSlUzOElPYUNlTkZ5MG9XdGtXSWVZa2xLaGZxRXFv?=
+ =?utf-8?B?Qng5L1N3S041cEhDOTlpZy9MV0wyREtaUmIrdWdsa0QrKzk3bmlubTA5dEpj?=
+ =?utf-8?B?QWFjYzFRUDRPdmpoZUsyb3NaaWxaZWZPMnp6QmhROUdIWG9XbnV6MlF1STRh?=
+ =?utf-8?B?NVUwU2Fpd29sZmVYTkp6OHRoQ0JMcGpSS1h0NUEyTk90cmxlQjlyaEtqV0o1?=
+ =?utf-8?B?Tjl5QU5xQnRhVUNpRkFLRktaN0lEc1RwWTFxeVF6ZlpoTVE5OHk5cTRnRS83?=
+ =?utf-8?B?MXd0WFc2TTFQb254WFhKak80cUQzdEZMRXpleWpzUCsvLzZob2lhZHBWQ2g3?=
+ =?utf-8?B?eVBjYXNIQ1UzaEErUXNMRUxDVjV3dExiVy9pVXMwYmpsT25XZUxmK2VDWmlC?=
+ =?utf-8?B?S1Q2VXNCOUE4S3ByUVdoT0V3Q1RYWkRuOGp4OFJnbUtDai9jMWNKQXYwaFRy?=
+ =?utf-8?B?a1JXTExsYUJZS3pPS1p4VVU1UXRUZ3IzVVlPSWk1aHlkYWdMVVZ6cFFkSTE0?=
+ =?utf-8?B?dWptWHg1MFdaOXhNTzAreURGNW9YajJwS2JSVU9jdUJ0cjRWMGJDdlpidExW?=
+ =?utf-8?B?Z3k3RzdNOG4wUmZqU0dRRmpETEQzanh2MUtmYTBQaDF0bmdUbXlDREJodDlZ?=
+ =?utf-8?B?Y3lqaUpuWjU0S1B6WnZvZ1k4Z09zcjlsUldNaHR1bTVBUXVpaWhPcGYrb2Zv?=
+ =?utf-8?Q?Lad/egsVQOYEGvlYzA9waj98IlfNtRPPq7xnNTA?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76874350-8662-4b76-a8b8-08d96e4bff01
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2021 19:58:13.2275
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fe/o2v03R/8HqmeUQC36QTtd4g6URpR3Phojwk8IDP/ycH3tSAkjaQOyEPToMcoTh22GS5c6PJzldL12DyKVLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2511
 
-On 9/2/21 11:57 AM, Sean Christopherson wrote:
-> On Thu, Sep 02, 2021, Andy Lutomirski wrote:
->> On 9/2/21 2:27 AM, Joerg Roedel wrote:
->>> On Wed, Sep 01, 2021 at 09:07:59AM -0700, Andy Lutomirski wrote:
->>>> In principle, you could actually initialize a TDX guest with all of its
->>>> memory shared and all of it mapped in the host IOMMU.
->>> Not sure how this works in TDX, but in SEV code fetches are always
->>> treated as encrypted. So this approach would not work with SEV, not to
->>> speak about attestation, which will not work with this approach either
->>> :)
->>>
->> Oof.
-> TDX is kinda similar.  _All_ accesses are private if paging is disabled because
-> the shared bit is either bit 48 or bit 51 in the GPA, i.e. can't be reached if
-> paging is disabled.  The vCPU is hardcoded to start in unpaged protected mode,
-> so at least some amount of guest memory needs to be private.
 
-That's a rule we should definitely add to our page table checker.  Just
-like how we can look for W+X, we should also look for Shared+X.
+
+On 9/2/21 11:40 AM, Borislav Petkov wrote:
+> On Fri, Aug 20, 2021 at 10:19:30AM -0500, Brijesh Singh wrote:
+>> Version 2 of GHCB specification provides NAEs that can be used by the SNP
+> 
+> Resolve the "NAE" abbreviation here so that it is clear what this means.
+> 
+Noted.
+
+>> guest to communicate with the PSP without risk from a malicious hypervisor
+>> who wishes to read, alter, drop or replay the messages sent.
+> 
+> This here says "malicious hypervisor" from which we protect from...
+> 
+>> In order to communicate with the PSP, the guest need to locate the secrets
+>> page inserted by the hypervisor during the SEV-SNP guest launch. The
+> 
+> ... but this here says the secrets page is inserted by the same
+> hypervisor from which we're actually protecting.
+> 
+
+The content of the secret page is populated by the PSP. Hypervisor 
+cannot alter the contents; all it can do tell the guest where the 
+secrets page is present in the memory. The guest will read the secrets 
+page to get the VM communication key and use that key to encrypt the 
+message send between the PSP and guest.
+
+
+> You wanna rephrase that to explain what exactly happens so that it
+> doesn't sound like we're really trusting the HV with the secrets page.
+> 
+
+Sure, I will expand it a bit more.
+
+>> secrets page contains the communication keys used to send and receive the
+>> encrypted messages between the guest and the PSP. The secrets page location
+>> is passed through the setup_data.
+>>
+>> Create a platform device that the SNP guest driver can bind to get the
+>> platform resources such as encryption key and message id to use to
+>> communicate with the PSP. The SNP guest driver can provide userspace
+>> interface to get the attestation report, key derivation, extended
+>> attestation report etc.
+>>
+>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>> ---
+>>   arch/x86/kernel/sev.c     | 68 +++++++++++++++++++++++++++++++++++++++
+>>   include/linux/sev-guest.h |  5 +++
+>>   2 files changed, 73 insertions(+)
+> 
+> ...
+> 
+>> +static u64 find_secrets_paddr(void)
+>> +{
+>> +	u64 pa_data = boot_params.cc_blob_address;
+>> +	struct cc_blob_sev_info info;
+>> +	void *map;
+>> +
+>> +	/*
+>> +	 * The CC blob contains the address of the secrets page, check if the
+>> +	 * blob is present.
+>> +	 */
+>> +	if (!pa_data)
+>> +		return 0;
+>> +
+>> +	map = early_memremap(pa_data, sizeof(info));
+>> +	memcpy(&info, map, sizeof(info));
+>> +	early_memunmap(map, sizeof(info));
+>> +
+>> +	/* Verify that secrets page address is passed */
+> 
+> That's hardly verifying something - if anything, it should say
+> 
+> 	/* smoke-test the secrets page passed */
+> 
+Noted.
+
+>> +	if (info.secrets_phys && info.secrets_len == PAGE_SIZE)
+>> +		return info.secrets_phys;
+> 
+> ... which begs the question: how do we verify the HV is not passing some
+> garbage instead of an actual secrets page?
+> 
+
+Unfortunately, the secrets page does not contain a magic header or uuid 
+which a guest can read to verify that the page is actually populated by 
+the PSP. But since the page is encrypted before the launch so this page 
+is always accessed encrypted. If hypervisor is tricking us then all that 
+means is guest OS will get a wrong key and will not be able to 
+communicate with the PSP to get the attestation reports etc.
+
+
+> I guess it is that:
+> 
+> "SNP_LAUNCH_UPDATE can insert two special pages into the guest’s
+> memory: the secrets page and the CPUID page. The secrets page contains
+> encryption keys used by the guest to interact with the firmware. Because
+> the secrets page is encrypted with the guest’s memory encryption
+> key, the hypervisor cannot read the keys. The CPUID page contains
+> hypervisor provided CPUID function values that it passes to the guest.
+> The firmware validates these values to ensure the hypervisor is not
+> providing out-of-range values."
+> 
+>  From "4.5 Launching a Guest" in the SNP FW ABI spec.
+> 
+> I think that explanation above is very important wrt to explaining the
+> big picture how this all works with those pages injected into the guest
+> so I guess somewhere around here a comment should say
+> 
+
+I will add more explanation.
+
+> "See section 4.5 Launching a Guest in the SNP FW ABI spec for details
+> about those special pages."
+> 
+> or so.
+> 
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int __init add_snp_guest_request(void)
+> 
+> If anything, that should be called
+> 
+> init_snp_platform_device()
+> 
+> or so.
+> 
+
+Noted.
+
+>> +{
+>> +	struct snp_secrets_page_layout *layout;
+>> +	struct snp_guest_platform_data data;
+>> +
+>> +	if (!sev_feature_enabled(SEV_SNP))
+>> +		return -ENODEV;
+>> +
+>> +	snp_secrets_phys = find_secrets_paddr();
+>> +	if (!snp_secrets_phys)
+>> +		return -ENODEV;
+>> +
+>> +	layout = snp_map_secrets_page();
+>> +	if (!layout)
+>> +		return -ENODEV;
+>> +
+>> +	/*
+>> +	 * The secrets page contains three VMPCK that can be used for
+> 
+> What's VMPCK?
+> 
+
+VM platform communication key.
+
+>> +	 * communicating with the PSP. We choose the VMPCK0 to encrypt guest
+> 
+> "We" is?
+> 
+>> +	 * messages send and receive by the Linux. Provide the key and
+> 
+> "... by the Linux."?! That sentence needs more love.
+> 
+
+I will expand comment a bit more.
+
+>> +	 * id through the platform data to the driver.
+>> +	 */
+>> +	data.vmpck_id = 0;
+>> +	memcpy_fromio(data.vmpck, layout->vmpck0, sizeof(data.vmpck));
+>> +
+>> +	iounmap(layout);
+>> +
+>> +	platform_device_add_data(&guest_req_device, &data, sizeof(data));
+> 
+> Oh look, that function can return an error.
+> 
+
+Yes, after seeing Dov comment I am adding more checks and return failure.
+
+
+>> +
+>> +	if (!platform_device_register(&guest_req_device))
+>> +		dev_info(&guest_req_device.dev, "secret phys 0x%llx\n", snp_secrets_phys);
+> 
+> Make that message human-readable - not a debug one.
+> 
+
+Sure.
+
+thank
