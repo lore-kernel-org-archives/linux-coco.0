@@ -1,44 +1,46 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3972
-	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 09:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566F272
+	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 10:18:11 +0000 (UTC)
 Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D91A0225DE;
-	Thu,  2 Sep 2021 09:27:32 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A1A4B225D4;
+	Thu,  2 Sep 2021 10:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1630574852; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1630577889; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bjaQEerT4+CdbjFrLgaMt67gvVqUKw1V0kBH85jwObA=;
-	b=Iyn0nfUSi9DyIsyI1gBQuzUE1Uz2REQy193mUGHVbITVS3Qo6JvXCBHz7sBNiwKScDqSAW
-	SfOfvkNmdDZRikzvvW5NAPY3hFooiKddfQQKC+dYW1pMoSN4yFqRisT/DjTYBLiavrx2gN
-	W3SFXMHwTxK2FMS+LtA8ihgfSWIjtVM=
+	bh=o5wTXqNvuSJEwCeDL192rJBmN+9+D3ngDikxglpjpZ4=;
+	b=WlWETb8uX6gQQE+aJZkft+x4OWzC7Ka2YDRDnhqW9avPQ6g1UABlehUmtDua4fYkAouMgi
+	Yh6mS4ot3MbWgknmvRTYf5IC7xPzm5OKMCb8wK7YHiZs+vJsWt3GYjqnFqqViUTMuxtngS
+	xUxnj1Zur5aW02GMtQvqR6WQVhT5sWo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1630574852;
+	s=susede2_ed25519; t=1630577889;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bjaQEerT4+CdbjFrLgaMt67gvVqUKw1V0kBH85jwObA=;
-	b=prIjHJhKs6+qfeR9s7/JeP4Iw+aXOzwEYrtkuB1R/a2P+97wxWrsQXysD4IvI7RoLDRSFr
-	kwl/mXUICTSwWxBw==
+	bh=o5wTXqNvuSJEwCeDL192rJBmN+9+D3ngDikxglpjpZ4=;
+	b=u9LCFdZjeyVY6ogWowGjOZf3Ps3MMJioDzIwEtNZGnu4ahoXy52InCdqyFfKJaO9lR0bNZ
+	8KBNjTgbzGwhnkBA==
 Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id D9FE813887;
-	Thu,  2 Sep 2021 09:27:31 +0000 (UTC)
+	by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id A5CB413424;
+	Thu,  2 Sep 2021 10:18:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap1.suse-dmz.suse.de with ESMTPSA
-	id xHPQMgOZMGEnWAAAGKfGzw
-	(envelope-from <jroedel@suse.de>); Thu, 02 Sep 2021 09:27:31 +0000
-Date: Thu, 2 Sep 2021 11:27:30 +0200
+	id XWkQJuCkMGF2ZAAAGKfGzw
+	(envelope-from <jroedel@suse.de>); Thu, 02 Sep 2021 10:18:08 +0000
+Date: Thu, 2 Sep 2021 12:18:06 +0200
 From: Joerg Roedel <jroedel@suse.de>
 To: Andy Lutomirski <luto@kernel.org>
-Cc: Yu Zhang <yu.c.zhang@linux.intel.com>,
+Cc: James Bottomley <jejb@linux.ibm.com>,
 	David Hildenbrand <david@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -63,34 +65,41 @@ Cc: Yu Zhang <yu.c.zhang@linux.intel.com>,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Dave Hansen <dave.hansen@intel.com>
+	Dave Hansen <dave.hansen@intel.com>,
+	Yu Zhang <yu.c.zhang@linux.intel.com>
 Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
  private memory
-Message-ID: <YTCZAjdci5yx+n6l@suse.de>
+Message-ID: <YTCk3hME4QyOPOD4@suse.de>
 References: <20210824005248.200037-1-seanjc@google.com>
  <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
- <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
- <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
- <20210901102437.g5wrgezmrjqn3mvy@linux.intel.com>
- <f37a61ba-b7ef-c789-5763-f7f237ae41cc@kernel.org>
+ <YSlkzLblHfiiPyVM@google.com>
+ <61ea53ce-2ba7-70cc-950d-ca128bcb29c5@redhat.com>
+ <YS6lIg6kjNPI1EgF@google.com>
+ <f413cc20-66fc-cf1e-47ab-b8f099c89583@redhat.com>
+ <9ec3636a-6434-4c98-9d8d-addc82858c41@www.fastmail.com>
+ <bd22ef54224d15ee89130728c408f70da0516eaa.camel@linux.ibm.com>
+ <85b1dabf-f7be-490a-a856-28227a85ab3a@www.fastmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f37a61ba-b7ef-c789-5763-f7f237ae41cc@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <85b1dabf-f7be-490a-a856-28227a85ab3a@www.fastmail.com>
 
-On Wed, Sep 01, 2021 at 09:07:59AM -0700, Andy Lutomirski wrote:
-> In principle, you could actually initialize a TDX guest with all of its
-> memory shared and all of it mapped in the host IOMMU.
+On Wed, Sep 01, 2021 at 10:08:33AM -0700, Andy Lutomirski wrote:
+> I asked David, and he said the PSP offers a swapping mechanism for
+> SEV-ES.  I haven’t read the details, but they should all be public.
 
-Not sure how this works in TDX, but in SEV code fetches are always
-treated as encrypted. So this approach would not work with SEV, not to
-speak about attestation, which will not work with this approach either
-:)
+Right, the details are here:
+
+	https://www.amd.com/system/files/TechDocs/55766_SEV-KM_API_Specification.pdf
+
+Namely section 6.25 and 6.26 which describe the SWAP_OUT and SWAP_IN
+commands.
 
 Regards,
 
