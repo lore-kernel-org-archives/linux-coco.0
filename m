@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31602FAE
-	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 11:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE393FCD
+	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 11:05:16 +0000 (UTC)
 Received: from zn.tnic (p200300ec2f0ed100d115725f57e7001c.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:d100:d115:725f:57e7:1c])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 40DE61EC054C;
-	Thu,  2 Sep 2021 12:53:18 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 400421EC0528;
+	Thu,  2 Sep 2021 13:05:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1630579998;
+	t=1630580711;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=8MEGxmWQPn7vM1CQz7iBVTV01OFVHRNCMyD18pnrHMU=;
-	b=hBCT8Uo/0yz1DU5li4Hs9UtPsjlEm8FmUlzn/tonYVYiGIN/T/kboq1BgbTUZuSI2ukhRi
-	Ws+JOgMzpu2KMb4rGDb6V3inGADA7TGs2Zvh2CjBVtAvObOz+yYSkJumbV2g10a+Mw6cqi
-	6ZQcJMuehyqettHsgGfQCeAU+K9g0Io=
-Date: Thu, 2 Sep 2021 12:53:54 +0200
+	bh=qrih5nOxCt8KX8+xxQwcW009cmgk6NbkNVdkRjjSG0s=;
+	b=Uo+t/oIfbI8rJlB3MWNOvzZBGwQz2x6Er54vJvC277hf/75pt4jxpEm/nVpzSFsIiiCVRj
+	X+1ltV5NAxwh0jq60Oy/XIYQGVQJUYNxs/WGRGxHh4CvYPmfUojTxRx0jeCLu0+AMj3jyX
+	TFzVyb8+6qw4WI6Pkct1YFlXl2Gfz4w=
+Date: Thu, 2 Sep 2021 13:05:45 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Michael Roth <michael.roth@amd.com>
 Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
@@ -45,15 +45,15 @@ Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 28/38] x86/compressed/64: enable
- SEV-SNP-validated CPUID in #VC handler
-Message-ID: <YTCtQmxGaYSL+ZqZ@zn.tnic>
+Subject: Re: [PATCH Part1 v5 32/38] x86/sev: enable SEV-SNP-validated CPUID
+ in #VC handlers
+Message-ID: <YTCwCZr5KZXd8bsG@zn.tnic>
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-29-brijesh.singh@amd.com>
- <YSaXtpKT+iE7dxYq@zn.tnic>
- <20210827164601.fzr45veg7a6r4lbp@amd.com>
- <YS3+saDefHwkYwny@zn.tnic>
- <20210901010325.3nqw7d44vhsdzryb@amd.com>
+ <20210820151933.22401-33-brijesh.singh@amd.com>
+ <YSkCWVTd0ZEvphlx@zn.tnic>
+ <20210827183240.f7zvo3ujkeohmlrt@amd.com>
+ <YS5XVBNrASp7Zrig@zn.tnic>
+ <20210901011658.s4hgmvbptgseqcm3@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -62,20 +62,16 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210901010325.3nqw7d44vhsdzryb@amd.com>
+In-Reply-To: <20210901011658.s4hgmvbptgseqcm3@amd.com>
 
-On Tue, Aug 31, 2021 at 08:03:25PM -0500, Michael Roth wrote:
-> It was used previously in kernel proper to get at the secrets page later,
-> but now it's obtained via the cached entry in boot_params.cc_blob_address.
-> Unfortunately it uses EFI_GUID() macro, so maybe efi.c or misc.h where
-> it makes more sense to add a copy of the macro?
+On Tue, Aug 31, 2021 at 08:16:58PM -0500, Michael Roth wrote:
+> What did you think of the suggestion of defining it in sev-shared.c
+> as a static buffer/struct as __ro_after_init? It would be nice to
+> declare/reserve the memory in one place. Another benefit is it doesn't
+> need to be exported, and could just be local with all the other
+> snp_cpuid* helpers that access it in sev-shared.c
 
-A copy?
-
-arch/x86/boot/compressed/efi.c already includes linux/efi.h where that
-macro is defined.
-
-That ship has already sailed. ;-\
+Yap.
 
 -- 
 Regards/Gruss,
