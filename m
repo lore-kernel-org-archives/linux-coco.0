@@ -1,151 +1,425 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2066.outbound.protection.outlook.com [40.107.96.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155C13FCD
-	for <linux-coco@lists.linux.dev>; Fri,  3 Sep 2021 12:08:13 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Iqt4MceP1730montdzBkxrZ5GOggPVva7O0Vwe2TLu/0au36Wdn4E3u4RtjbCS9OdUD/drMHfak1lQeX+jW3nujgf7FXqkmxoOBJmflMs5Ataiez5NfH3c035Jh8PMdN2+MvNp1NhCn2s1UvTbY4nvB4iRUEZ/ur3g96Iwp2L2HHYmy2YhfSs+BQNmTpDHCwsAmdSIZ73N8PQ5KurPLKcSzd0HMCzDpWovFV1EG+slL9kldaKppR/GojsG/O8A3YeSuQkullu4N++cZTW0issFR6qaRMuUafT/LPewg6jwhG0RWkuHpz9a+OfcPO1fe7SlDFqvz+d60t8HtyK+FFNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=bneLOLThWC+MYdJPDsERPwwBE/lRHAXqxiY8hlJoOOo=;
- b=Y/H2LCcLWNfdr28fPzHeluIs1SwAnW42oov3HXiFwSaoKSOhbbGvlWBxNaLxJGMPZMb/Cz5IG+LfGdhDjJXCFxAh7YXMaDyCJzP2xywB7vfnVIyTiZ8GdVOklHEfQYJKfv14kGaDTDv6q0W30Y8rQIhqSDDncSEO9mxxmAa27ltaiCi7asmKTCna2gcS6WdGNssUg9ha6Gl2XforOY3Uk6iLPirCpYlllaRHqUwM+2hZJlU+/Bv1Sye4TZBSZsw8+wKvwItKizpcMsiRlyqT3f59dSlCn4JqtpsW2kDIdxcV147ag/B4XSOukKP6mJ93mRycguKF/htX/Sj/dwr2Rg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bneLOLThWC+MYdJPDsERPwwBE/lRHAXqxiY8hlJoOOo=;
- b=5oIHjlVgrTWAz57FWeOCXqBxKRljjvIvc1WUKqGvi5lAInki/fqy4WhkSjyEqFxQOz+Trjf+d/qnMBk4T/cX6TAoigWDZOIZXFRY04FkP6rk+05LGXrgw4vwPyKroKlsPT/64gTvFMS491huu8fkjBcw0qgNqZf8BG4PvYVsZCk=
-Authentication-Results: linux.intel.com; dkim=none (message not signed)
- header.d=none;linux.intel.com; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SA0PR12MB4446.namprd12.prod.outlook.com (2603:10b6:806:71::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.19; Fri, 3 Sep
- 2021 12:08:09 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4478.021; Fri, 3 Sep 2021
- 12:08:09 +0000
-Subject: Re: [PATCH Part1 v5 35/38] x86/sev: Register SNP guest request
- platform device
-To: Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@alien8.de>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
- Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Tobin Feldman-Fitzthum
- <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
- <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>,
- tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-36-brijesh.singh@amd.com> <YTD+go747TIU6k9g@zn.tnic>
- <5428d654-a24d-7d8b-489c-b666d72043c1@amd.com>
- <287db163-aaac-4cc1-522f-380f97197b3d@linux.ibm.com>
-From: Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <a42c782c-1de4-6c9f-4e97-cc4e1e48b358@amd.com>
-Date: Fri, 3 Sep 2021 07:08:06 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.13.0
-In-Reply-To: <287db163-aaac-4cc1-522f-380f97197b3d@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-ClientProxiedBy: SN4PR0201CA0014.namprd02.prod.outlook.com
- (2603:10b6:803:2b::24) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7E63FD5
+	for <linux-coco@lists.linux.dev>; Fri,  3 Sep 2021 19:14:15 +0000 (UTC)
+Received: by mail-lj1-f180.google.com with SMTP id m4so358073ljq.8
+        for <linux-coco@lists.linux.dev>; Fri, 03 Sep 2021 12:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=xLSw66OAAWw+ZBe/zEI2ozn92/Q+hqpgUOCe6P3aHvM=;
+        b=0Ol5wGaLmLCy/W95qtECqEstiHoEtM3Qbv3mrRTm5yb/9sY8R38YRQ3Hz3XjbrILSY
+         9LFoAd5ucSo2zocpjSSHq8CUzHgQU0oRUq8unZkZKWMLVX1Qh9bIMk4KZ2ZnBHT0rYct
+         pQEQsjKVDcQE6Hr7TnCy4EFJgunnhZhNGfOjhQ09L6392jkZ2nFbyXNPCBolTB2kNsuG
+         8fqmIl+wyI2WOONauP1omdNJtcgI7ar6JYvYpad5sYZAwgwniGwZ0U9MfPTcd0lE2GY+
+         f8UOFrrIgD/KW8pvFj6gkGMhLdbFIlpNEP5VmEuipL0b5F2pxDi1bPgLHaFCztaObH4r
+         FuxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=xLSw66OAAWw+ZBe/zEI2ozn92/Q+hqpgUOCe6P3aHvM=;
+        b=lrjHkEqMxELyNJmCmqZzpl+ljhO8Y+MSQSJ5P5iKheN9Vp+nPL+TMHjVRi+rDO50qT
+         bK4mNfGPX1ULPKvM90rD9kJlsRmb0rN7X5TF7Wpo2uB5M7HRJkBwbEstCieSfzwQ+UEM
+         /Ay7R+tF+zfG9BZxttN0ONGu5rGfMGZz4gaguDDAxXvUQm1lQy00LR+cnKafaFgcPOMn
+         ZynAuY/AnMJn09LpojLAK9n+WBpy4W/Yt2j1F5TuoSDV7IjMG9pbhp1PNG5mk76sQYf8
+         0CNgdiWtOUnM1nzieWIqsfFncb860HS6TAlCJlUvUQxA6dlXY9zRjFP04f+9xjnQtQRJ
+         pHDw==
+X-Gm-Message-State: AOAM53072PMbKt1687JZ6lu7Ax3aoZJyPj9WMh4fc9QkvuhrfNvUJEM7
+	RW8oX/UmcXyA+lPfiUAEqje5/g==
+X-Google-Smtp-Source: ABdhPJy6QUnVLAYByBZjhO+2QHiuXyS/kQV5ZHDoZVhz2cOHas9ztvbOoLvD5566Am7BgnWK8oO1tA==
+X-Received: by 2002:a2e:2283:: with SMTP id i125mr366177lji.485.1630696453685;
+        Fri, 03 Sep 2021 12:14:13 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id b2sm27501lfi.283.2021.09.03.12.14.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Sep 2021 12:14:12 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 5AAEF102F10; Fri,  3 Sep 2021 22:14:14 +0300 (+03)
+Date: Fri, 3 Sep 2021 22:14:14 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Yu Zhang <yu.c.zhang@linux.intel.com>
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
+ private memory
+Message-ID: <20210903191414.g7tfzsbzc7tpkx37@box.shutemov.name>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <20210902184711.7v65p5lwhpr2pvk7@box.shutemov.name>
+ <YTE1GzPimvUB1FOF@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SN4PR0201CA0014.namprd02.prod.outlook.com (2603:10b6:803:2b::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.19 via Frontend Transport; Fri, 3 Sep 2021 12:08:08 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6588ae69-cfdf-4bb0-88c5-08d96ed37ecf
-X-MS-TrafficTypeDiagnostic: SA0PR12MB4446:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS:
-	<SA0PR12MB4446BFF596381FC4AD925C4EE5CF9@SA0PR12MB4446.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	IgRFo+R00yXFS88/J1lN9ciaw+1ulmuk59vFsc6gqEoMcQK+V97OM/sZrACm069uOKM6EzhFq7su3TWHhDD1ShACwMl/hJ24S2Lm4D9KSqG00VjO7xYtGT9bGN1+wYrlHBEtXUEZ1A9dF5ly3iIc7YpHGB/weXG0NQF+xpw09PGPM8hR8g8WTJWe4mdXsD0wT7PO9BsGmy9qB2OJHOJs0aoAi/vSC3JF7eZdoVLUIb3yXvBu3jgiiZ/FvI2s3d3gV9ib4FzyUCpW619Q7QrTC0dwD7Go29NIUUiAKcZiyQfcwUidK0yUJslecRzHRdpSlgZ5N9ut7TNfIURDe2IcRZBaoO0wmgGr1d9pLx6yYEDgdB0LNlLcdaBBucDj/T+IqQPmeoYdn68Thuk2ipGbE92QkiQggiQHtf5ZGSVP+oeD73z01AYEq9qUzaSk+eg2AbXMXl3TDk2bJxs9XHePABo/p7SG6QYBCpO/rSM9O0M7n4Y4k5C7gQhzTdNxx1EkVPaDO/6Hnh3R/Ieqm5Eb1qvCmwt4RLtlBbSOYs5JLSwsYCWZLQiB/tLewT0qKWVA6lTSeTRXW01v0dVWEqNvrBQACV0+plxzFOow4D2wmK6mV2WoWVOcgqm0xXkL3OvrQHWR3kzCcBxHmTqC3iigcS6w3+g5wO9uXfBggeFj/Tb5qRvk55cgUFU/xEEEcCyVEpFtvymqnjWR5NmDhbMycI2LjNu0NMwseC0yLFu3BJLoSskDMDBI7PbIzlDDGXPvRcgorAtrYshUgfFCR55yhQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(39860400002)(396003)(346002)(366004)(136003)(53546011)(44832011)(26005)(2906002)(5660300002)(52116002)(86362001)(956004)(7406005)(83380400001)(2616005)(6506007)(6486002)(8936002)(7416002)(66946007)(4744005)(4326008)(6512007)(54906003)(110136005)(186003)(8676002)(31696002)(316002)(66476007)(478600001)(31686004)(38350700002)(66556008)(36756003)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VElEM3p5ZDJZaGswMnUzWGJxajBtd0p3UTYvbGFJbXBlSHlPQVpaN0lhREx0?=
- =?utf-8?B?eFBLMERPQkhhZGFqRjliQnIrd05MWUh6V2VzQWVzYnJGSFJFZzRhcHFVWWM1?=
- =?utf-8?B?Y3dZZitMelNiQnNBMnZGYkxic1IyNDF4VDlrQnFvbzFESlZacUgxVG5OMHlQ?=
- =?utf-8?B?RG1QeStFanBPVWhNYllqVjFTbnZGQ2xkUWgvRVpJN2pBbUxJb0F1dUh5YzBr?=
- =?utf-8?B?SzJzaHZrNjZDeUdxSG4wb2N1ZG9tSDNJbWx5SFgxMm8wYUthdGZTeXhXRC9m?=
- =?utf-8?B?Z1RmWWdnUy9XRzRxMmVPaUhLeDdtMGhzZThyTVJIU0JJdDUxUUFaUFhVd21h?=
- =?utf-8?B?cnNoU0taMnhhQ3ZyQ3U2Q1Ntb3pxMEh4d3QwTTkzMUhaZDZ4WFdIb2dURkRx?=
- =?utf-8?B?SldJbXBKWElQYjlWR00zbmhhVXQ3TDB4djZyUkl6MVRKbWNyN3U4bVhMWUZK?=
- =?utf-8?B?aTBaS3R6MHFheDVBcTJGVHRrdS9rMXRrTy9UTE16QU00RlBBNUR3bjhHUGJX?=
- =?utf-8?B?ajZqUythMXFlbWpUZkZRQlpSdTJMOE1kb3haWnp1Ulk5bWRNT2VWbWJLUDZP?=
- =?utf-8?B?R0pHVzRmTW5aMytKWklEemZjSVRTR0J5L0JhQUlRak1FVFJoeGRKZlRyTlRv?=
- =?utf-8?B?YzdGcTBJQ1hYTmd6U1o4bUYvSVRPUVVEdGZWMHdUNVh5cnN2MHluc3k0bmlF?=
- =?utf-8?B?L0xLYUJqWDlvSGdNQzUxRERSQjBjQnhTZjlScVlPR295aE15K2hCeWF0UmZI?=
- =?utf-8?B?S2tlV1lOdFdyQmlzbjlhd0RCamZQYit5a3hmNkdzVnlHUmlCQzhLVlZ4cExL?=
- =?utf-8?B?czllY1hCNXFKZklUVVBsemd5YjFsT0xNTm92bkRWWE1obGVNb0FqRW0xSXZG?=
- =?utf-8?B?Q1hQNElkVHFwMHZ0b2Z1U2ZsT2szZE5wL2lwVmFZbmlFSGsvRmdvZS92RXJN?=
- =?utf-8?B?YzFIRklZU2gxWm13VFVhWmdLY2FPKzFoemZWaVR3REY4MnRDYXk4ZU9qblFu?=
- =?utf-8?B?Mk9ySFd1YWZ4N2JUdER3aHZ0TWE2M0t3cXJNcTh5M1M5dDEwYStYcEM2OFNP?=
- =?utf-8?B?UHhiaUFiRlRmN1ZFOGVSdlo2VnhTRzYxeWE2NnhZT2l0bmxBdkd1Z1BXWTdr?=
- =?utf-8?B?bGM5ZVp4K1RGRjhFTlV6WVhsMFRBTFJBOXhudjdCaUFpUW8xN3pMK0hraHh6?=
- =?utf-8?B?SU9zbFhnTmpHMUVzRlZiNGhKSUlHcmJrSFVkMFdDZEhoeVEzWjAxY0c0eEx3?=
- =?utf-8?B?dXlabXhHWjRTNGN0UXAzZmtobVM4bUpqelY3RG5TT2RZQTBVYll1NjdDUWo1?=
- =?utf-8?B?ZHlDV3E0U21hK1FxNlVhWUJjUjZ3UCtTSW1wQm1HUk9rVHJKRXB0TUEvaXlk?=
- =?utf-8?B?V2poSSt3bm9nTS9QdUxBY2UrNFA4N1R6VUNzRjd2Z1NiM1VRa2VibllPT25v?=
- =?utf-8?B?UEtuNko4dzVCWXZ3T0dFNFVERWNDWSttYVNOU005aU82Vjl5QlhObWwwTTMx?=
- =?utf-8?B?UU0yT2Q5SFp1Q0tZdytmOEJJNkJRMWJ4RXNrYStuL0VBaklwYy9iM1BBbDAz?=
- =?utf-8?B?VWY3WkdKM0l4bllHa1hPbXE2N3c2RGhUaGYvMVNWaVJ0Z21DemRxNkhzWFRL?=
- =?utf-8?B?QmJQWkE5YUFlOEJ1c2R6ZlBFbXR2eFI4L290aDdiUWdCbStWMC8wamVPU2Nk?=
- =?utf-8?B?VEozWTFsclRHcUxhWTgxUTgzc3d1Wml4bHlkTURXVFA2NU5EQWJEQngrMng2?=
- =?utf-8?Q?fL3h1wbwkk7LO6I8NT9qrR/zvkxeLIqwXB7rTFM?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6588ae69-cfdf-4bb0-88c5-08d96ed37ecf
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2021 12:08:09.6799
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HsLLWfIuhX7BAoaozSkURIPI5H0rZPPpq4LTyCkldvKI8r3w47ONPFeBMLFO+g1wqGQSl99CTTESgNvu2hqOUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4446
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YTE1GzPimvUB1FOF@google.com>
 
+On Thu, Sep 02, 2021 at 08:33:31PM +0000, Sean Christopherson wrote:
+> Would requiring the size to be '0' at F_SEAL_GUEST time solve that problem?
 
-On 9/3/21 3:15 AM, Dov Murik wrote:
->> Unfortunately, the secrets page does not contain a magic header or uuid
->> which a guest can read to verify that the page is actually populated by
->> the PSP. 
-> In the SNP FW ABI document section 8.14.2.5 there's a Table 61 titled
-> Secrets Page Format, which states that the first field in that page is a
-> u32 VERSION field which should equal 2h.
->
-> While not as strict as GUID header, this can help detect early that the
-> content of the SNP secrets page is invalid.
+I guess. Maybe we would need a WRITE_ONCE() on set. I donno. I will look
+closer into locking next.
 
-The description indicates that the field is a version number of the
-secrets page format; it will get bumped every time the spec steals the
-reserved bytes for something new. IMHO, we should not depend on the
-version number.
+> FWIW, splitting a THP will also require a call into KVM to demote the huge page
+> to the equivalent small pages.
 
-thanks
+But will it though? Even if the page got split we still don't allow
+migration so EPT can stay 2M. Or do I miss something?
 
+For truncate/punch I disallowed non-page aligned operations. I ignore
+failed split. Yes, we zero the truncated parts, but these parts are
+already removed from KVM, so it should be safe.
+
+> > We need to modify truncation/punch path to notify kvm that pages are about
+> > to be freed. I think we will register callback in the memfd on adding the
+> > fd to KVM memslot that going to be called for the notification. That means
+> > 1:1 between memfd and memslot. I guess it's okay.
+> 
+> Hmm, 1:1 memfd to memslot will be problematic as that would prevent punching a
+> hole in KVM's memslots, e.g. to convert a subset to shared.  It would also
+> disallow backing guest memory with a single memfd that's split across two
+> memslots for <4gb and >4gb.
+> 
+> But I don't think we need a 1:1 relationship.  To keep KVM sane, we can require
+> each private memslot to be wholly contained in a single memfd, I can't think of
+> any reason that would be problematic for userspace.
+> 
+> For the callbacks, I believe the rule should be 1:1 between memfd and KVM instance.
+> That would allow mapping multiple memslots to a single memfd so long as they're
+> all coming from the same KVM instance.
+
+Okay, I've added guest_owner field that I check on registering guest. I
+don't think we want to tie it directly to kvm, so I left it just void *.
+
+> 
+> > Migration going to always fail on F_SEAL_GUEST for now. Can be modified to
+> > use a callback in the future.
+> > 
+> > Swapout will also always fail on F_SEAL_GUEST. It seems trivial. Again, it
+> > can be a callback in the future.
+> > 
+> > For GPA->PFN translation KVM could use vm_ops->fault(). Semantically it is
+> > a good fit, but we don't have any VMAs around and ->mmap is forbidden for
+> > F_SEAL_GUEST.
+> > Other option is call shmem_getpage() directly, but it looks like a
+> > layering violation to me. And it's not available to modules :/
+> 
+> My idea for this was to have the memfd:KVM exchange callbacks, i.e. memfd would
+> have callbacks into KVM, but KVM would also have callbacks into memfd.  To avoid
+> circular refcounts, KVM would hold a reference to the memfd (since it's the
+> instigator) and KVM would be responsible for unregistering itself before freeing
+> it's reference to the memfd.
+
+Okay I went this path. This callback exchange looks wierd to me, but I
+suppose it works.
+
+Below is how I see it can look like. It only compile-tested and might be
+broken in many ways.
+
+I have not found a right abstaction for shmem_test_guest(). Maybe it has
+to be a new inode operation? I donno.
+For initial prototyping we can call it directly.
+
+Any comments?
+
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index 8e775ce517bb..6f94fc46a3b1 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -10,6 +10,17 @@
+ #include <linux/xattr.h>
+ #include <linux/fs_parser.h>
+ 
++struct guest_ops {
++	void (*invalidate_page_range)(struct inode *inode,
++				      pgoff_t start, pgoff_t end);
++};
++
++struct guest_mem_ops {
++	unsigned long (*get_lock_pfn)(struct inode *inode, pgoff_t offset);
++	void (*put_unlock_pfn)(unsigned long pfn);
++
++};
++
+ /* inode in-kernel data */
+ 
+ struct shmem_inode_info {
+@@ -24,6 +35,8 @@ struct shmem_inode_info {
+ 	struct simple_xattrs	xattrs;		/* list of xattrs */
+ 	atomic_t		stop_eviction;	/* hold when working on inode */
+ 	struct inode		vfs_inode;
++	void			*guest_owner;
++	const struct guest_ops	*guest_ops;
+ };
+ 
+ struct shmem_sb_info {
+diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
+index 2f86b2ad6d7e..c79bc8572721 100644
+--- a/include/uapi/linux/fcntl.h
++++ b/include/uapi/linux/fcntl.h
+@@ -43,6 +43,7 @@
+ #define F_SEAL_GROW	0x0004	/* prevent file from growing */
+ #define F_SEAL_WRITE	0x0008	/* prevent writes */
+ #define F_SEAL_FUTURE_WRITE	0x0010  /* prevent future writes while mapped */
++#define F_SEAL_GUEST		0x0020
+ /* (1U << 31) is reserved for signed error codes */
+ 
+ /*
+diff --git a/mm/memfd.c b/mm/memfd.c
+index 081dd33e6a61..ccaa4edb21f7 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -134,7 +134,8 @@ static unsigned int *memfd_file_seals_ptr(struct file *file)
+ 		     F_SEAL_SHRINK | \
+ 		     F_SEAL_GROW | \
+ 		     F_SEAL_WRITE | \
+-		     F_SEAL_FUTURE_WRITE)
++		     F_SEAL_FUTURE_WRITE | \
++		     F_SEAL_GUEST)
+ 
+ static int memfd_add_seals(struct file *file, unsigned int seals)
+ {
+@@ -203,10 +204,27 @@ static int memfd_add_seals(struct file *file, unsigned int seals)
+ 		}
+ 	}
+ 
++	if (seals & F_SEAL_GUEST) {
++		i_mmap_lock_read(inode->i_mapping);
++
++		if (!RB_EMPTY_ROOT(&inode->i_mapping->i_mmap.rb_root)) {
++			error = -EBUSY;
++			goto unlock;
++		}
++
++		if (i_size_read(inode)) {
++			error = -EBUSY;
++			goto unlock;
++		}
++	}
++
+ 	*file_seals |= seals;
+ 	error = 0;
+ 
+ unlock:
++	if (seals & F_SEAL_GUEST)
++		i_mmap_unlock_read(inode->i_mapping);
++
+ 	inode_unlock(inode);
+ 	return error;
+ }
+diff --git a/mm/shmem.c b/mm/shmem.c
+index dacda7463d54..761cf4e2152e 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -883,6 +883,17 @@ static bool shmem_punch_compound(struct page *page, pgoff_t start, pgoff_t end)
+ 	return split_huge_page(page) >= 0;
+ }
+ 
++static void guest_invalidate_page(struct inode *inode,
++				  struct page *page, pgoff_t start, pgoff_t end)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++
++	start = max(start, page->index);
++	end = min(end, page->index + HPAGE_PMD_NR) - 1;
++
++	info->guest_ops->invalidate_page_range(inode, start, end);
++}
++
+ /*
+  * Remove range of pages and swap entries from page cache, and free them.
+  * If !unfalloc, truncate or punch hole; if unfalloc, undo failed fallocate.
+@@ -923,6 +934,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, loff_t lend,
+ 			}
+ 			index += thp_nr_pages(page) - 1;
+ 
++			guest_invalidate_page(inode, page, start, end);
++
+ 			if (!unfalloc || !PageUptodate(page))
+ 				truncate_inode_page(mapping, page);
+ 			unlock_page(page);
+@@ -999,6 +1012,9 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, loff_t lend,
+ 					index--;
+ 					break;
+ 				}
++
++				guest_invalidate_page(inode, page, start, end);
++
+ 				VM_BUG_ON_PAGE(PageWriteback(page), page);
+ 				if (shmem_punch_compound(page, start, end))
+ 					truncate_inode_page(mapping, page);
+@@ -1074,6 +1090,9 @@ static int shmem_setattr(struct user_namespace *mnt_userns,
+ 		    (newsize > oldsize && (info->seals & F_SEAL_GROW)))
+ 			return -EPERM;
+ 
++		if ((info->seals & F_SEAL_GUEST) && (newsize & ~PAGE_MASK))
++			return -EINVAL;
++
+ 		if (newsize != oldsize) {
+ 			error = shmem_reacct_size(SHMEM_I(inode)->flags,
+ 					oldsize, newsize);
+@@ -1348,6 +1367,8 @@ static int shmem_writepage(struct page *page, struct writeback_control *wbc)
+ 		goto redirty;
+ 	if (!total_swap_pages)
+ 		goto redirty;
++	if (info->seals & F_SEAL_GUEST)
++		goto redirty;
+ 
+ 	/*
+ 	 * Our capabilities prevent regular writeback or sync from ever calling
+@@ -2274,6 +2295,9 @@ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	if (ret)
+ 		return ret;
+ 
++	if (info->seals & F_SEAL_GUEST)
++		return -EPERM;
++
+ 	/* arm64 - allow memory tagging on RAM-based files */
+ 	vma->vm_flags |= VM_MTE_ALLOWED;
+ 
+@@ -2471,12 +2495,14 @@ shmem_write_begin(struct file *file, struct address_space *mapping,
+ 	pgoff_t index = pos >> PAGE_SHIFT;
+ 
+ 	/* i_mutex is held by caller */
+-	if (unlikely(info->seals & (F_SEAL_GROW |
+-				   F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))) {
++	if (unlikely(info->seals & (F_SEAL_GROW | F_SEAL_WRITE |
++				    F_SEAL_FUTURE_WRITE | F_SEAL_GUEST))) {
+ 		if (info->seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))
+ 			return -EPERM;
+ 		if ((info->seals & F_SEAL_GROW) && pos + len > inode->i_size)
+ 			return -EPERM;
++		if (info->seals & F_SEAL_GUEST)
++			return -EPERM;
+ 	}
+ 
+ 	return shmem_getpage(inode, index, pagep, SGP_WRITE);
+@@ -2530,6 +2556,8 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 	ssize_t retval = 0;
+ 	loff_t *ppos = &iocb->ki_pos;
+ 
++	if (SHMEM_I(inode)->seals & F_SEAL_GUEST)
++		return -EPERM;
+ 	/*
+ 	 * Might this read be for a stacking filesystem?  Then when reading
+ 	 * holes of a sparse file, we actually need to allocate those pages,
+@@ -2675,6 +2703,12 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 			goto out;
+ 		}
+ 
++		if ((info->seals & F_SEAL_GUEST) &&
++		    (offset & ~PAGE_MASK || len & ~PAGE_MASK)) {
++			error = -EINVAL;
++			goto out;
++		}
++
+ 		shmem_falloc.waitq = &shmem_falloc_waitq;
+ 		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
+ 		shmem_falloc.next = (unmap_end + 1) >> PAGE_SHIFT;
+@@ -3761,6 +3795,20 @@ static void shmem_destroy_inodecache(void)
+ 	kmem_cache_destroy(shmem_inode_cachep);
+ }
+ 
++#ifdef CONFIG_MIGRATION
++int shmem_migrate_page(struct address_space *mapping,
++		struct page *newpage, struct page *page,
++		enum migrate_mode mode)
++{
++	struct inode *inode = mapping->host;
++	struct shmem_inode_info *info = SHMEM_I(inode);
++
++	if (info->seals & F_SEAL_GUEST)
++		return -ENOTSUPP;
++	return migrate_page(mapping, newpage, page, mode);
++}
++#endif
++
+ const struct address_space_operations shmem_aops = {
+ 	.writepage	= shmem_writepage,
+ 	.set_page_dirty	= __set_page_dirty_no_writeback,
+@@ -3769,12 +3817,57 @@ const struct address_space_operations shmem_aops = {
+ 	.write_end	= shmem_write_end,
+ #endif
+ #ifdef CONFIG_MIGRATION
+-	.migratepage	= migrate_page,
++	.migratepage	= shmem_migrate_page,
+ #endif
+ 	.error_remove_page = generic_error_remove_page,
+ };
+ EXPORT_SYMBOL(shmem_aops);
+ 
++static unsigned long shmem_get_lock_pfn(struct inode *inode, pgoff_t offset)
++{
++	struct page *page;
++	int ret;
++
++	ret = shmem_getpage(inode, offset, &page, SGP_WRITE);
++	if (ret)
++		return ret;
++
++	return page_to_pfn(page);
++}
++
++static void shmem_put_unlock_pfn(unsigned long pfn)
++{
++	struct page *page = pfn_to_page(pfn);
++
++	VM_BUG_ON_PAGE(!PageLocked(page), page);
++
++	set_page_dirty(page);
++	unlock_page(page);
++	put_page(page);
++}
++
++static const struct guest_mem_ops shmem_guest_ops = {
++	.get_lock_pfn = shmem_get_lock_pfn,
++	.put_unlock_pfn = shmem_put_unlock_pfn,
++};
++
++int shmem_register_guest(struct inode *inode, void *owner,
++			 const struct guest_ops *guest_ops,
++			 const struct guest_mem_ops **guest_mem_ops)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++
++	if (!owner)
++		return -EINVAL;
++
++	if (info->guest_owner && info->guest_owner != owner)
++		return -EPERM;
++
++	info->guest_ops = guest_ops;
++	*guest_mem_ops = &shmem_guest_ops;
++	return 0;
++}
++
+ static const struct file_operations shmem_file_operations = {
+ 	.mmap		= shmem_mmap,
+ 	.get_unmapped_area = shmem_get_unmapped_area,
+-- 
+ Kirill A. Shutemov
