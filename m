@@ -1,118 +1,193 @@
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E2B3FD3
-	for <linux-coco@lists.linux.dev>; Thu,  2 Sep 2021 20:42:56 +0000 (UTC)
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 31A8060FDA;
-	Thu,  2 Sep 2021 20:42:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1630615376;
-	bh=rWIymJXj+z/ROnyg3o5j/Hn6mBCszau7W/Lim8edb4A=;
-	h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
-	b=lZl9S5JcZecn4dzUrXeaGD0pBee4WU3gjZKJ9NXRJHcTEniagn6SEmZxstuB5eUYl
-	 5wAz9oPTsLg9hfa9mRCybTd4mx5lnFrV3u67dSjhAgAbvUuujLItVNR0VJNj2DAfCf
-	 khdOwzp21TM1TaI0k+8W5Eowdi9bbXTMG86RxVufzK/X4hA3RDIoNDg1/ykUBCnddm
-	 q02AOxZoXCPnsuQggYahQoRN590utXvDFJrPskDSzB4+9NyjVoPBqP3Ofq/1hQbM7k
-	 HSH3JJ9S2fEEBd9o5AaDjfmJRwMN6phbq8X+qsPG8NsgPmKPMMMnyEePgeAOwcLNQo
-	 p6biWSMye4b7A==
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id 4B85727C0054;
-	Thu,  2 Sep 2021 16:42:53 -0400 (EDT)
-Received: from imap2 ([10.202.2.52])
-  by compute6.internal (MEProxy); Thu, 02 Sep 2021 16:42:53 -0400
-X-ME-Sender: <xms:STcxYXELiZptWKXuifzlO5zbzy63ylvm9raSa9yKctg3SnsvfaHBIw>
-    <xme:STcxYUWBw76fkb8Xlaqdhq1zNgxN21O_kiDtviOTM8avEB5TDjDvcGUJSamtw8G9K
-    bRAJdsqMW0mRuxQxug>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvtddruddvhedgudehvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvufgtsehttdertderreejnecuhfhrohhmpedftehn
-    ugihucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqnecugg
-    ftrfgrthhtvghrnhepgeejgffhtdelvdefgeefleevtdfgveekuefgkeffvdevfeefteei
-    heeuteevkeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homheprghnugihodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduudeiudek
-    heeifedvqddvieefudeiiedtkedqlhhuthhopeepkhgvrhhnvghlrdhorhhgsehlihhnuh
-    igrdhluhhtohdruhhs
-X-ME-Proxy: <xmx:SjcxYZJgXti8WB1x2l19F3OIFYUE13lO1jgoHUoZaDnnSYPhQreNlg>
-    <xmx:SjcxYVG2bdIxaH_ChYxQy-PuEaaiuec56bk-Uk-49bsMYlzuxbp7Lw>
-    <xmx:SjcxYdUqc7dih4AB7UGjaiNrmkm2OZAEeDEixjNeKnyBP9vGhoBJ6A>
-    <xmx:TTcxYQqdAbs8fIfe0Z8hXr-CAoBmRNw3DLbfD2cyfDH9oW7X3qFLjRw4sEc>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id E78B2A002E4; Thu,  2 Sep 2021 16:42:49 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-1126-g6962059b07-fm-20210901.001-g6962059b
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E793FC5
+	for <linux-coco@lists.linux.dev>; Fri,  3 Sep 2021 08:16:03 +0000 (UTC)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 18388u2k120999;
+	Fri, 3 Sep 2021 04:15:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=LeBFR5NxS59Up7fXyEdw+xXLB76JpsgZixl/tUzPLRA=;
+ b=qegV+v9YgCr0H7ILmPi0n6AmFrk8Qi54Lw0ltVSn0osPDcmxBCYMA8Bpi/cRwiMql+yU
+ w7KVrCynhQIePfvw4tWvFeegpay7VQlQLQ0n7J/d7mTXJo5UJsRHDcNEPMWIuHow6IOt
+ hLq/1mUhRsD7QCWEjFQxlGsk3pTsoV6GR0F/yhgHJZLLN9uUZ400ito0cJ/XJy711O+k
+ p0cLPFRXM0CKhCUumISYMCuAu7nA/u0UzSZ8fYyl2G5IPgEywz608PHXpeFuj84OyO90
+ RFxVykOfSNdjJEFH4WOtRqJLVobNOT5c+qmh5xs9609FH34rVyQ8APghEcycBhTXWzdK Fw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 3aufcdgxsg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Sep 2021 04:15:39 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 183891fA121397;
+	Fri, 3 Sep 2021 04:15:38 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 3aufcdgxry-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Sep 2021 04:15:38 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 18388p1B002414;
+	Fri, 3 Sep 2021 08:15:37 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+	by ppma01wdc.us.ibm.com with ESMTP id 3au6pjgy58-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 Sep 2021 08:15:37 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1838FaQ133948086
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 3 Sep 2021 08:15:36 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 462D7C6063;
+	Fri,  3 Sep 2021 08:15:36 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 657F6C6062;
+	Fri,  3 Sep 2021 08:15:28 +0000 (GMT)
+Received: from [9.65.84.185] (unknown [9.65.84.185])
+	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Fri,  3 Sep 2021 08:15:28 +0000 (GMT)
+Subject: Re: [PATCH Part1 v5 35/38] x86/sev: Register SNP guest request
+ platform device
+To: Brijesh Singh <brijesh.singh@amd.com>, Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson
+ <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen
+ <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tobin Feldman-Fitzthum
+ <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov"
+ <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+        Dov Murik <dovmurik@linux.ibm.com>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-36-brijesh.singh@amd.com> <YTD+go747TIU6k9g@zn.tnic>
+ <5428d654-a24d-7d8b-489c-b666d72043c1@amd.com>
+From: Dov Murik <dovmurik@linux.ibm.com>
+Message-ID: <287db163-aaac-4cc1-522f-380f97197b3d@linux.ibm.com>
+Date: Fri, 3 Sep 2021 11:15:26 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Message-Id: <a979ba51-8693-43a0-bebb-b8b1938ff74c@www.fastmail.com>
-In-Reply-To: <ef14702f-4f31-8784-8583-0b79bb7d0a07@intel.com>
-References: <20210824005248.200037-1-seanjc@google.com>
- <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
- <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
- <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
- <20210901102437.g5wrgezmrjqn3mvy@linux.intel.com>
- <f37a61ba-b7ef-c789-5763-f7f237ae41cc@kernel.org> <YTCZAjdci5yx+n6l@suse.de>
- <b10b09b0-d5ea-b72a-106a-4e1b0df4dc66@kernel.org>
- <YTEei9RBDHnRfe/B@google.com>
- <ef14702f-4f31-8784-8583-0b79bb7d0a07@intel.com>
-Date: Thu, 02 Sep 2021 13:42:28 -0700
-From: "Andy Lutomirski" <luto@kernel.org>
-To: "Dave Hansen" <dave.hansen@intel.com>,
- "Sean Christopherson" <seanjc@google.com>
-Cc: "Joerg Roedel" <jroedel@suse.de>,
- "Yu Zhang" <yu.c.zhang@linux.intel.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- "Vitaly Kuznetsov" <vkuznets@redhat.com>,
- "Wanpeng Li" <wanpengli@tencent.com>,
- "Jim Mattson" <jmattson@google.com>, "Joerg Roedel" <joro@8bytes.org>,
- "kvm list" <kvm@vger.kernel.org>,
- "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Andi Kleen" <ak@linux.intel.com>,
- "David Rientjes" <rientjes@google.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Tom Lendacky" <thomas.lendacky@amd.com>,
- "Thomas Gleixner" <tglx@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "Ingo Molnar" <mingo@redhat.com>, "Varad Gautam" <varad.gautam@suse.com>,
- "Dario Faggioli" <dfaggioli@suse.com>,
- "the arch/x86 maintainers" <x86@kernel.org>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- "Sathyanarayanan Kuppuswamy"
- <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: =?UTF-8?Q?Re:_[RFC]_KVM:_mm:_fd-based_approach_for_supporting_KVM_guest_?=
- =?UTF-8?Q?private_memory?=
-Content-Type: text/plain
+MIME-Version: 1.0
+In-Reply-To: <5428d654-a24d-7d8b-489c-b666d72043c1@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dwanS7qPhIIegVkAiJ4GNPDy_wPCRRKN
+X-Proofpoint-GUID: EFCovUVGi0-Gh9ye25R_ko_qCm0WJHiI
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
+ definitions=2021-09-03_02:2021-09-03,2021-09-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
+ mlxscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2108310000 definitions=main-2109030048
 
 
 
-On Thu, Sep 2, 2021, at 12:07 PM, Dave Hansen wrote:
-> On 9/2/21 11:57 AM, Sean Christopherson wrote:
-> > On Thu, Sep 02, 2021, Andy Lutomirski wrote:
-> >> On 9/2/21 2:27 AM, Joerg Roedel wrote:
-> >>> On Wed, Sep 01, 2021 at 09:07:59AM -0700, Andy Lutomirski wrote:
-> >>>> In principle, you could actually initialize a TDX guest with all of its
-> >>>> memory shared and all of it mapped in the host IOMMU.
-> >>> Not sure how this works in TDX, but in SEV code fetches are always
-> >>> treated as encrypted. So this approach would not work with SEV, not to
-> >>> speak about attestation, which will not work with this approach either
-> >>> :)
-> >>>
-> >> Oof.
-> > TDX is kinda similar.  _All_ accesses are private if paging is disabled because
-> > the shared bit is either bit 48 or bit 51 in the GPA, i.e. can't be reached if
-> > paging is disabled.  The vCPU is hardcoded to start in unpaged protected mode,
-> > so at least some amount of guest memory needs to be private.
+On 02/09/2021 22:58, Brijesh Singh wrote:
 > 
-> That's a rule we should definitely add to our page table checker.  Just
-> like how we can look for W+X, we should also look for Shared+X.
 > 
+> On 9/2/21 11:40 AM, Borislav Petkov wrote:
 
-The only case I can thing of where the TDX vs SEV rule matters is for some mildly crazy user who wants to run user code out of an unencrypted DAX device (or virtio-fs, I guess).  We can save that for another year :)
+[...]
+
+>>
+>>> +static u64 find_secrets_paddr(void)
+>>> +{
+>>> +    u64 pa_data = boot_params.cc_blob_address;
+>>> +    struct cc_blob_sev_info info;
+>>> +    void *map;
+>>> +
+>>> +    /*
+>>> +     * The CC blob contains the address of the secrets page, check
+>>> if the
+>>> +     * blob is present.
+>>> +     */
+>>> +    if (!pa_data)
+>>> +        return 0;
+>>> +
+>>> +    map = early_memremap(pa_data, sizeof(info));
+>>> +    memcpy(&info, map, sizeof(info));
+>>> +    early_memunmap(map, sizeof(info));
+>>> +
+>>> +    /* Verify that secrets page address is passed */
+>>
+>> That's hardly verifying something - if anything, it should say
+>>
+>>     /* smoke-test the secrets page passed */
+>>
+> Noted.
+> 
+>>> +    if (info.secrets_phys && info.secrets_len == PAGE_SIZE)
+>>> +        return info.secrets_phys;
+>>
+>> ... which begs the question: how do we verify the HV is not passing some
+>> garbage instead of an actual secrets page?
+>>
+> 
+> Unfortunately, the secrets page does not contain a magic header or uuid
+> which a guest can read to verify that the page is actually populated by
+> the PSP. 
+
+In the SNP FW ABI document section 8.14.2.5 there's a Table 61 titled
+Secrets Page Format, which states that the first field in that page is a
+u32 VERSION field which should equal 2h.
+
+While not as strict as GUID header, this can help detect early that the
+content of the SNP secrets page is invalid.
+
+-Dov
+
+> But since the page is encrypted before the launch so this page
+> is always accessed encrypted. If hypervisor is tricking us then all that
+> means is guest OS will get a wrong key and will not be able to
+> communicate with the PSP to get the attestation reports etc.
+> 
+> 
+>> I guess it is that:
+>>
+>> "SNP_LAUNCH_UPDATE can insert two special pages into the guest’s
+>> memory: the secrets page and the CPUID page. The secrets page contains
+>> encryption keys used by the guest to interact with the firmware. Because
+>> the secrets page is encrypted with the guest’s memory encryption
+>> key, the hypervisor cannot read the keys. The CPUID page contains
+>> hypervisor provided CPUID function values that it passes to the guest.
+>> The firmware validates these values to ensure the hypervisor is not
+>> providing out-of-range values."
+>>
+>>  From "4.5 Launching a Guest" in the SNP FW ABI spec.
+>>
+>> I think that explanation above is very important wrt to explaining the
+>> big picture how this all works with those pages injected into the guest
+>> so I guess somewhere around here a comment should say
+>>
+> 
+> I will add more explanation.
+> 
+>> "See section 4.5 Launching a Guest in the SNP FW ABI spec for details
+>> about those special pages."
+>>
+>> or so.
+>>
