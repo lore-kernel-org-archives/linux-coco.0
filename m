@@ -1,146 +1,309 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2060.outbound.protection.outlook.com [40.107.243.60])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648D13FC1
-	for <linux-coco@lists.linux.dev>; Sun,  5 Sep 2021 13:59:51 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NG2BPWhG5XbOOcbu/j1PMIIoF3nvkWs0ONV4SlxFVGcMuaQRuYawn0zsU64YXGdA80OEZ4c1J3GXigAvFYVyq+jcfjicb5+OJgU9Xz6Nnms/ehg+L05PxHMf+YzTwHU3FB/jLioLSpnHHzq/W/zPHrgVPXCHy8irow7kG8JjxqPJ1bTMr+CLzxHS83k/Eo0G6+z+/BZUEDLDV+IgtrGLDfkF/QhoYF1NRq/Ys5DwkoYVomSzrJ1c/siP+vba5n88Q8+lDz9QDxbRg7K6SrwETU2n6CQam+vFtuPiKzRAGUVvRNFw3IyTB/vJ8C7upzs603ooOeJXPMqqV2ZPPXzMrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=3ndnraWYtquLoJOxdG/D7wPrtuwjqsxsSBhDtKTV0gY=;
- b=O3wnwe8GqB39HedT9CfSzv+dbYBtp04VybQV16GFF3XGEUuHPkJynZW4t2bvKLWjCBGMYjpcqwOlvq6JVvesbtDYK9DW6/OonXSK6Y0oifKp3JFOIcnNY2yTQALZRDrHNKm95U68lYgbm28WU9vwXH+m/82NTciZiAqbhzIdMzkxzmPO8iqkAXsuLkLTDyEoOaM5AnIBSKWKspQ/No4VxtihcEqnB8BM52k6IJdnnoA3nR3IfDmzm7Q51GgVn9iloK0wPePux0KKLoNYFvW6MNA0bMynBHAGVzwKlXmoJcZmikVTbDIsqrOelA8ZqgUQXFrJsf7IrFTY4/Om6awyYg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3ndnraWYtquLoJOxdG/D7wPrtuwjqsxsSBhDtKTV0gY=;
- b=bUCcnTH6GmwpB7inMiZO80NqbGBs+PrSDEH0DoWFSpZEeEtsEL3PIvbx1lYavBDM6g3UY7wA2v4y9coI2rfFfp0VD6FmszW3j/wvVWRw/PLKQKONtEPr6oFScdTA/GGRBcISkW2CtS9rC5FzhpBbacGYOJSrDJjj8cvgn2jUlZg=
-Authentication-Results: amd.com; dkim=none (message not signed)
- header.d=none;amd.com; dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by SN6PR12MB2717.namprd12.prod.outlook.com (2603:10b6:805:68::29) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.19; Sun, 5 Sep
- 2021 13:59:45 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4478.025; Sun, 5 Sep 2021
- 13:59:45 +0000
-Subject: Re: [PATCH Part2 v5 23/45] KVM: SVM: Add KVM_SNP_INIT command
-To: Dov Murik <dovmurik@linux.ibm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
- Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Tobin Feldman-Fitzthum
- <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
- Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
- "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
- <ak@linux.intel.com>, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com,
- Pavan Kumar Paluri <papaluri@amd.com>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-24-brijesh.singh@amd.com>
- <66c9694a-bd1a-0a12-8c1d-326d34daaac2@linux.ibm.com>
-From: Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <dbc82551-4b10-90ae-3a89-97c418049408@amd.com>
-Date: Sun, 5 Sep 2021 08:59:42 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.13.0
-In-Reply-To: <66c9694a-bd1a-0a12-8c1d-326d34daaac2@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-ClientProxiedBy: SN4PR0501CA0027.namprd05.prod.outlook.com
- (2603:10b6:803:40::40) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6C072
+	for <linux-coco@lists.linux.dev>; Mon,  6 Sep 2021 17:38:29 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0c240054be6003e2b88cf4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:2400:54be:6003:e2b8:8cf4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 36C451EC04DF;
+	Mon,  6 Sep 2021 19:38:17 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1630949897;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=Ic9idha1eNRSeBbKjXxejnqYa8Nsdxsy/xZxuh1y44E=;
+	b=PPM9iAzRTqGs9JPf6ALMDL2Vgz1dUv1TO1PLsi8TBnLEGNydqiBXeH71rVHga/8DD9iDnS
+	wRmuA8ywktfe9FKU9LtxfmbGBqTZ8c/6KxLqToTiI6fRf3s9ig5kXgJmpDyBMtn0CyzenZ
+	+/XaZvLq7O0pvAJ06c5tURTgK4zgBoE=
+Date: Mon, 6 Sep 2021 19:38:08 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part1 v5 36/38] virt: Add SEV-SNP guest driver
+Message-ID: <YTZSAB5H9EC2uk8z@zn.tnic>
+References: <20210820151933.22401-1-brijesh.singh@amd.com>
+ <20210820151933.22401-37-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SN4PR0501CA0027.namprd05.prod.outlook.com (2603:10b6:803:40::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.9 via Frontend Transport; Sun, 5 Sep 2021 13:59:43 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 71fca138-9d3c-456b-4c37-08d970756a55
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2717:
-X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS:
-	<SN6PR12MB271700164E2AF7FF628788B5E5D19@SN6PR12MB2717.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2150;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	+2L+0iBvn8VYQVk3bHz+N65i6WG3I7BiMS0FSEV9tyJsrhmYH34iySWqV8yNDnLtDUIU/4vwYIkysSX4e0Gwg5vbeDi6kjTwCxfADIFgxoVd+ymTujxgq2toEzt3XEYFM59ChJ6U2D1FY+KUma+qgIOAGFFyze0HOmhytv9iA94FWxuRZWz+dvSs6r6haQbfSWQ7eNfbGDq1g/OC/sp3MRunRKbU8NLNS2MKLyCFM8i1QX/8unX3Akn6NXTkUHL3BJiXn7xS4cgvuTDvtIoLO7+9p2+JuP87LhRxWe0vdkqyIXHObfOJS9k6yKvwGsSJjzVAFhGysV+q4Hq1PZGEa4VHTPkT8gfq/zbPilccJ8++3T5soSbJn9TuOwNLzonH4AsCLXZB52TpjYyz+DWft9Yj+xyv0GWvLOy0YkAD4G95gL8dZl5rxmiK4AFZgTXl0YBITztXhT/yKNpgmnbRx8EoVjZMKeAN7wcgvRYoCnd2oAQftW/6EiWkb96x2GOge8yXPEsezuizEpSF/GAZQIKPUK+ARmPDUoAzTMqz06cYdbL0hD6rgbWORbSvGiZHRbBaWvK4phc88KTp3NKK/IzqVYiCyYDNqSnF1svrcbW7vStKVMlFQcR6My49hUlM4L7WUz3iiLSxlkfH00ThZQ1d3A/NgfGPnacDizRxevj/7Usosp8ud/iHE6wJfcAi2qB0BNqda8VAJAqDzZ1SRCBNaj3wisasZ0Oxht7veLSMQ5jzwT8Eg2bSs1uqF96I6kioCEQCkP5eLawp4d66WQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(136003)(366004)(39860400002)(396003)(956004)(2616005)(44832011)(54906003)(36756003)(186003)(6512007)(316002)(31686004)(38350700002)(7406005)(7416002)(8936002)(6486002)(86362001)(2906002)(38100700002)(66946007)(26005)(66556008)(6506007)(4744005)(66476007)(31696002)(8676002)(478600001)(53546011)(52116002)(5660300002)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ajVaaVlBV3lKUlJBVE1ucWhyTXBpa1RpWDZETXhBTFNrVG1jVVVUVm5ndWtS?=
- =?utf-8?B?U05pTG56c2RNMFlBTVhPN2lnOEtUR1Z5TTFlWi9ONlJaTDVvdzRIU01uQTV6?=
- =?utf-8?B?Y1dxNGJhYW9nSWMwOUU2NWN3alJOUWF2bnpzeWhuRjBKbE9HTFc2WDhaMzFj?=
- =?utf-8?B?a093eWpBam91TVZHQ3JpWU5xS3dMbmZUWnkyaDV2NjhKeHZnMlFuL1ZlMzNX?=
- =?utf-8?B?TEl0M0RqL2dmV2tPWFh2Z0hVVWpYNUlKOHQ0Z3NsWmhxcHc3Rk1laFdQU21Z?=
- =?utf-8?B?ZFhjOGNTeFJES3BkQmJ2ditqcmxudXZhcUpmWXgyUHFNSklQVmtxR0g1TVI2?=
- =?utf-8?B?OFhRTHVTZlgzKzROZTRJajM3TWprZ294L0ZJL0trVDJ1MUJZNXlzTU1jNWd5?=
- =?utf-8?B?LzRqZTR3OWJGalBXWVRSQnQrcGo1ZkpXUFVPMGVCci91cTJocEJtNmdWZUJZ?=
- =?utf-8?B?OE5UT2JUSk1IMlIwMm8rQkhQMzJpcjZRUEUxQlZBblJndVN0WDhmTzUzZkdr?=
- =?utf-8?B?Sk5UT3dJa0xhQmhLdWdxa3FvRkdidi9TcU1FN3pPY29OQktLaE9ZeUlCaHNM?=
- =?utf-8?B?clZDdDJlbGFxNjRSbUdhOUN5NVVURUJKTE1zRmVubVAwNHJWc3NGYjZ6TnZ2?=
- =?utf-8?B?YmE3anNwdGxaV2hPMFdxNk95ZUw1Um9nSWMxNGdISncrU3pwbWNNeHVhc0pu?=
- =?utf-8?B?SFA1NStabFBSa3RFNXNCM08yOW1zOTBVTFl0VzdRZ05TSTJ2V1o3Yjh3YWJV?=
- =?utf-8?B?Ni9QYnBMTFZmNUJQODdHU3o3SXJXTlhKMkxJVWF4VG8rSmU2L2hheHJhcUJ0?=
- =?utf-8?B?OWlOM2UvbUQ2djhjMUdkYmlDdGhQKzFrVHFBMzg2UGxpZDlhVXNMVDRkSEkz?=
- =?utf-8?B?Rk9ZWVVNWnZ2cDNPdFhHVVRDdWlaVjZENnF4blE4WHQ2ZTIzOUJ1b1dhQ2VU?=
- =?utf-8?B?S3g2ekhvOWJRd3dOK2t5VUpCZzBBOEduZEtQU0I5NzVvQ2lxUENPRUxPcXl0?=
- =?utf-8?B?QXVGLzBJTjBsWWpRL2FsdnNjQ041RVlvbU9RUW10MFIxMXZqTjdNVFVJUENB?=
- =?utf-8?B?Vm5yd1B0QXVkeWJwOHFvRUxpSHhra2Fqa0w3clFXR1JRbHRqekt4N0l0dWdT?=
- =?utf-8?B?d2dTY3huMzhqZGZHeFozUWpURFlDL1FCRGp1RTVDcE9uMGVLR2RScGtnU0ZB?=
- =?utf-8?B?SWZkY2FkWmFJUHgvMUhIN0RiN0VZMkU2REZEWFRseDhMclRtK3pLbkpVOENY?=
- =?utf-8?B?WVRIemR2Q2FrVXpIWk1EMC9vZU1iRXNIbVZRalNad3RlREhWRDRTYks4b3By?=
- =?utf-8?B?Wktxb0lvbG52dmo3eDd2V0VoRjJJNmprMDgzcndoaktWaHZ5MnIyYVc5U0V4?=
- =?utf-8?B?NUQzNmFZTGljeHR0RjZPNVJwTDhSZTI4YlI1NlF5amI2aDYveTZUMFBJWUpr?=
- =?utf-8?B?UDZ6S21kcCtEMEcxZnR1QXFZNFFwSm4xWlN2enRNeTYweUtZZks5ZVZlQ3Bl?=
- =?utf-8?B?RnYrY3BZYkdnR3grV0cyZnpENVNycWkyQ3hwemNPT1RsRzlidkoyaTVNOVEv?=
- =?utf-8?B?YmR0ZTdRNzRSdVZDUHRINGpBWnZDOVVTcTFVSjZZbTBVSC9aTjVEdjBKckk0?=
- =?utf-8?B?ekp0RjNEMWNmUU1ReUx2VHJwbUdYYzJydk9OYWlpZHdaUmh3MXIzV1Vzd2Fr?=
- =?utf-8?B?QkVpSFZpVUdIVkdIbmZubnpmUWp0TnZxRnl6b0lPZVkvajF1NC80cmx4cE5Y?=
- =?utf-8?Q?gfm8d0alQCeTi0tOxpHDBDFG9k1O8jxcAu36QrB?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71fca138-9d3c-456b-4c37-08d970756a55
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2021 13:59:44.9573
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RSFC7mtBuKJIdKyKHwl2AMsTZqUYtA0vGw5hSTe3FA6s9OGlHrduqm2HMiZPH+KavhJz0ddLRa/e2r868xrhOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2717
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210820151933.22401-37-brijesh.singh@amd.com>
 
-Hi Dov,
+On Fri, Aug 20, 2021 at 10:19:31AM -0500, Brijesh Singh wrote:
+> +===================================================================
+> +The Definitive SEV Guest API Documentation
+> +===================================================================
+> +
+> +1. General description
+> +======================
+> +
+> +The SEV API is a set of ioctls that are issued to by the guest or
 
+issued to by?
 
-On 9/5/21 1:56 AM, Dov Murik wrote:
-> + /* enable the restricted injection */
->> +   #define KVM_SEV_SNP_RESTRICTED_INJET   (1<<0)
->> +
->> +   /* enable the restricted injection timer */
->> +   #define KVM_SEV_SNP_RESTRICTED_TIMER_INJET   (1<<1)
-> Typo in these flags: s/INJET/INJECT/
->
-> Also in the actual .h file below.
+Issued by the guest or hypervisor, you mean..
 
-Noted. thanks
+> +hypervisor to get or set certain aspect of the SEV virtual machine.
+> +The ioctls belong to the following classes:
+> +
+> + - Hypervisor ioctls: These query and set global attributes which affect the
+> +   whole SEV firmware.  These ioctl is used by platform provision tools.
 
+"These ioctls are used ... "
+
+> +
+> + - Guest ioctls: These query and set attribute of the SEV virtual machine.
+
+"... attributes... "
+
+> +
+> +2. API description
+> +==================
+> +
+> +This section describes ioctls that can be used to query or set SEV guests.
+> +For each ioctl, the following information is provided along with a
+> +description:
+> +
+> +  Technology:
+> +      which SEV techology provides this ioctl. sev, sev-es, sev-snp or all.
+> +
+> +  Type:
+> +      hypervisor or guest. The ioctl can be used inside the guest or the
+> +      hypervisor.
+> +
+> +  Parameters:
+> +      what parameters are accepted by the ioctl.
+> +
+> +  Returns:
+> +      the return value.  General error numbers (ENOMEM, EINVAL)
+> +      are not detailed, but errors with specific meanings are.
+> +
+> +The guest ioctl should be called to /dev/sev-guest device. The ioctl accepts
+
+s/called to/issued on a file descriptor of the/
+
+> +struct snp_user_guest_request. The input and output structure is specified
+> +through the req_data and resp_data field respectively. If the ioctl fails
+> +to execute due to the firmware error, then fw_err code will be set.
+
+"... due to a ... "
+
+> +
+> +::
+> +        struct snp_user_guest_request {
+
+So you said earlier:
+
+> I followed the naming convension you recommended during the initial SEV driver
+> developement. IIRC, the main reason for us having to add "user" in it because
+> we wanted to distinguious that this structure is not exactly same as the what
+> is defined in the SEV-SNP firmware spec.
+
+but looking at the current variant in the code, the structure in the SNP spec is
+
+Table 91. Layout of the CMDBUF_SNP_GUEST_REQUEST Structure
+
+which corresponds to struct snp_guest_request_data so you can call this one:
+
+	struct snp_guest_request_ioctl
+
+and then it is perfectly clear what is what.
+
+> +                /* Request and response structure address */
+> +                __u64 req_data;
+> +                __u64 resp_data;
+> +
+> +                /* firmware error code on failure (see psp-sev.h) */
+> +                __u64 fw_err;
+> +        };
+> +
+> +2.1 SNP_GET_REPORT
+> +------------------
+> +
+> +:Technology: sev-snp
+> +:Type: guest ioctl
+> +:Parameters (in): struct snp_report_req
+> +:Returns (out): struct snp_report_resp on success, -negative on error
+> +
+> +The SNP_GET_REPORT ioctl can be used to query the attestation report from the
+> +SEV-SNP firmware. The ioctl uses the SNP_GUEST_REQUEST (MSG_REPORT_REQ) command
+> +provided by the SEV-SNP firmware to query the attestation report.
+> +
+> +On success, the snp_report_resp.data will contains the report. The report
+
+"... will contain... "
+
+> +format is described in the SEV-SNP specification. See the SEV-SNP specification
+> +for further details.
+
+"... which can be found at https://developer.amd.com/sev/."
+
+assuming that URL will keep its validity in the foreseeable future.
+
+> +static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+> +{
+> +	struct snp_guest_dev *snp_dev = to_snp_dev(file);
+> +	void __user *argp = (void __user *)arg;
+> +	struct snp_user_guest_request input;
+> +	int ret = -ENOTTY;
+> +
+> +	if (copy_from_user(&input, argp, sizeof(input)))
+> +		return -EFAULT;
+> +
+> +	mutex_lock(&snp_cmd_mutex);
+> +
+> +	switch (ioctl) {
+> +	case SNP_GET_REPORT: {
+> +		ret = get_report(snp_dev, &input);
+> +		break;
+> +	}
+
+No need for those {} brackets around the case.
+
+> +	default:
+> +		break;
+> +	}
+> +
+> +	mutex_unlock(&snp_cmd_mutex);
+> +
+> +	if (copy_to_user(argp, &input, sizeof(input)))
+> +		return -EFAULT;
+> +
+> +	return ret;
+> +}
+> +
+> +static void free_shared_pages(void *buf, size_t sz)
+> +{
+> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +
+> +	/* If fail to restore the encryption mask then leak it. */
+> +	if (set_memory_encrypted((unsigned long)buf, npages))
+
+Hmm, this sounds like an abnormal condition about which we should at
+least warn...
+
+> +		return;
+> +
+> +	__free_pages(virt_to_page(buf), get_order(sz));
+> +}
+> +
+> +static void *alloc_shared_pages(size_t sz)
+> +{
+> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +	struct page *page;
+> +	int ret;
+> +
+> +	page = alloc_pages(GFP_KERNEL_ACCOUNT, get_order(sz));
+> +	if (IS_ERR(page))
+> +		return NULL;
+> +
+> +	ret = set_memory_decrypted((unsigned long)page_address(page), npages);
+> +	if (ret) {
+> +		__free_pages(page, get_order(sz));
+> +		return NULL;
+> +	}
+> +
+> +	return page_address(page);
+> +}
+> +
+> +static const struct file_operations snp_guest_fops = {
+> +	.owner	= THIS_MODULE,
+> +	.unlocked_ioctl = snp_guest_ioctl,
+> +};
+> +
+> +static int __init snp_guest_probe(struct platform_device *pdev)
+> +{
+> +	struct snp_guest_platform_data *data;
+> +	struct device *dev = &pdev->dev;
+> +	struct snp_guest_dev *snp_dev;
+> +	struct miscdevice *misc;
+> +	int ret;
+> +
+> +	if (!dev->platform_data)
+> +		return -ENODEV;
+> +
+> +	data = (struct snp_guest_platform_data *)dev->platform_data;
+> +	vmpck_id = data->vmpck_id;
+> +
+> +	snp_dev = devm_kzalloc(&pdev->dev, sizeof(struct snp_guest_dev), GFP_KERNEL);
+> +	if (!snp_dev)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, snp_dev);
+> +	snp_dev->dev = dev;
+> +
+> +	snp_dev->crypto = init_crypto(snp_dev, data->vmpck, sizeof(data->vmpck));
+> +	if (!snp_dev->crypto)
+> +		return -EIO;
+
+I guess you should put the crypto init...
+
+> +
+> +	/* Allocate the shared page used for the request and response message. */
+> +	snp_dev->request = alloc_shared_pages(sizeof(struct snp_guest_msg));
+> +	if (IS_ERR(snp_dev->request)) {
+> +		ret = PTR_ERR(snp_dev->request);
+> +		goto e_free_crypto;
+> +	}
+> +
+> +	snp_dev->response = alloc_shared_pages(sizeof(struct snp_guest_msg));
+> +	if (IS_ERR(snp_dev->response)) {
+> +		ret = PTR_ERR(snp_dev->response);
+> +		goto e_free_req;
+> +	}
+
+... here, after the page allocation to save yourself all the setup work
+if the shared pages allocation fails.
+
+> +
+> +	misc = &snp_dev->misc;
+> +	misc->minor = MISC_DYNAMIC_MINOR;
+> +	misc->name = DEVICE_NAME;
+> +	misc->fops = &snp_guest_fops;
+> +
+> +	return misc_register(misc);
+> +
+> +e_free_req:
+> +	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
+> +
+> +e_free_crypto:
+> +	deinit_crypto(snp_dev->crypto);
+> +
+> +	return ret;
+> +}
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
