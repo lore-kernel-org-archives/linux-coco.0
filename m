@@ -1,309 +1,223 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6C072
-	for <linux-coco@lists.linux.dev>; Mon,  6 Sep 2021 17:38:29 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0c240054be6003e2b88cf4.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:2400:54be:6003:e2b8:8cf4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 36C451EC04DF;
-	Mon,  6 Sep 2021 19:38:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1630949897;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=Ic9idha1eNRSeBbKjXxejnqYa8Nsdxsy/xZxuh1y44E=;
-	b=PPM9iAzRTqGs9JPf6ALMDL2Vgz1dUv1TO1PLsi8TBnLEGNydqiBXeH71rVHga/8DD9iDnS
-	wRmuA8ywktfe9FKU9LtxfmbGBqTZ8c/6KxLqToTiI6fRf3s9ig5kXgJmpDyBMtn0CyzenZ
-	+/XaZvLq7O0pvAJ06c5tURTgK4zgBoE=
-Date: Mon, 6 Sep 2021 19:38:08 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE97A3FC0
+	for <linux-coco@lists.linux.dev>; Tue,  7 Sep 2021 01:49:18 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10099"; a="305632958"
+X-IronPort-AV: E=Sophos;i="5.85,273,1624345200"; 
+   d="scan'208";a="305632958"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2021 18:49:18 -0700
+X-IronPort-AV: E=Sophos;i="5.85,273,1624345200"; 
+   d="scan'208";a="546485659"
+Received: from yzhao56-desk.sh.intel.com ([10.239.13.16])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2021 18:49:11 -0700
+Date: Tue, 7 Sep 2021 09:33:59 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Yu Zhang <yu.c.zhang@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, David Hildenbrand <david@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
+	kvm list <kvm@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	the arch/x86 maintainers <x86@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part1 v5 36/38] virt: Add SEV-SNP guest driver
-Message-ID: <YTZSAB5H9EC2uk8z@zn.tnic>
-References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-37-brijesh.singh@amd.com>
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
+ private memory
+Message-ID: <20210907013341.GA17522@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <307d385a-a263-276f-28eb-4bc8dd287e32@redhat.com>
+ <20210827023150.jotwvom7mlsawjh4@linux.intel.com>
+ <8f3630ff-bd6d-4d57-8c67-6637ea2c9560@www.fastmail.com>
+ <20210901102437.g5wrgezmrjqn3mvy@linux.intel.com>
+ <f37a61ba-b7ef-c789-5763-f7f237ae41cc@kernel.org>
+ <20210902081923.lertnjsgnskegkmn@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210820151933.22401-37-brijesh.singh@amd.com>
+In-Reply-To: <20210902081923.lertnjsgnskegkmn@linux.intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Fri, Aug 20, 2021 at 10:19:31AM -0500, Brijesh Singh wrote:
-> +===================================================================
-> +The Definitive SEV Guest API Documentation
-> +===================================================================
-> +
-> +1. General description
-> +======================
-> +
-> +The SEV API is a set of ioctls that are issued to by the guest or
+On Thu, Sep 02, 2021 at 04:19:23PM +0800, Yu Zhang wrote:
+> On Wed, Sep 01, 2021 at 09:07:59AM -0700, Andy Lutomirski wrote:
+> > On 9/1/21 3:24 AM, Yu Zhang wrote:
+> > > On Tue, Aug 31, 2021 at 09:53:27PM -0700, Andy Lutomirski wrote:
+> > >>
+> > >>
+> > >> On Thu, Aug 26, 2021, at 7:31 PM, Yu Zhang wrote:
+> > >>> On Thu, Aug 26, 2021 at 12:15:48PM +0200, David Hildenbrand wrote:
+> > >>
+> > >>> Thanks a lot for this summary. A question about the requirement: do we or
+> > >>> do we not have plan to support assigned device to the protected VM?
+> > >>>
+> > >>> If yes. The fd based solution may need change the VFIO interface as well(
+> > >>> though the fake swap entry solution need mess with VFIO too). Because:
+> > >>>
+> > >>> 1> KVM uses VFIO when assigning devices into a VM.
+> > >>>
+> > >>> 2> Not knowing which GPA ranges may be used by the VM as DMA buffer, all
+> > >>> guest pages will have to be mapped in host IOMMU page table to host pages,
+> > >>> which are pinned during the whole life cycle fo the VM.
+> > >>>
+> > >>> 3> IOMMU mapping is done during VM creation time by VFIO and IOMMU driver,
+> > >>> in vfio_dma_do_map().
+> > >>>
+> > >>> 4> However, vfio_dma_do_map() needs the HVA to perform a GUP to get the HPA
+> > >>> and pin the page. 
+> > >>>
+> > >>> But if we are using fd based solution, not every GPA can have a HVA, thus
+> > >>> the current VFIO interface to map and pin the GPA(IOVA) wont work. And I
+> > >>> doubt if VFIO can be modified to support this easily.
+> > >>>
+> > >>>
+> > >>
+> > >> Do you mean assigning a normal device to a protected VM or a hypothetical protected-MMIO device?
+> > >>
+> > >> If the former, it should work more or less like with a non-protected VM. mmap the VFIO device, set up a memslot, and use it.  I'm not sure whether anyone will actually do this, but it should be possible, at least in principle.  Maybe someone will want to assign a NIC to a TDX guest.  An NVMe device with the understanding that the guest can't trust it wouldn't be entirely crazy ether.
+> > >>
+> > >> If the latter, AFAIK there is no spec for how it would work even in principle. Presumably it wouldn't work quite like VFIO -- instead, the kernel could have a protection-virtual-io-fd mechanism, and that fd could be bound to a memslot in whatever way we settle on for binding secure memory to a memslot.
+> > >>
+> > > 
+> > > Thanks Andy. I was asking the first scenario.
+> > > 
+> > > Well, I agree it is doable if someone really want some assigned
+> > > device in TD guest. As Kevin mentioned in his reply, HPA can be
+> > > generated, by extending VFIO with a new mapping protocol which
+> > > uses fd+offset, instead of HVA. 
+> > 
+> > I'm confused.  I don't see why any new code is needed for this at all.
+> > Every proposal I've seen for handling TDX memory continues to handle TDX
+> > *shared* memory exactly like regular guest memory today.  The only
+> > differences are that more hole punching will be needed, which will
+> > require lightweight memslots (to have many of them), memslots with
+> > holes, or mappings backing memslots with holes (which can be done with
+> > munmap() on current kernels).
+> 
+> Thanks for pointing this out. And yes, for DMAs not capable of encryption(
+> which is the case in current TDX). GUP shall work as it is in VFIO. :)
+> 
+> > 
+> > So you can literally just mmap a VFIO device and expect it to work,
+> > exactly like it does right now.  Whether the guest will be willing to
+> > use the device will depend on the guest security policy (all kinds of
+> > patches about that are flying around), but if the guest tries to use it,
+> > it really should just work.
+> > 
+> 
+> But I think there's still problem. For now,
+> 
+> 1> Qemu mmap()s all GPAs into its HVA space, when the VM is created.
+> 2> With no idea which part of guest memory shall be shared, VFIO will just
+> set up the IOPT, by mapping whole GPA ranges in IOPT. 
+actually, it's not GPA in IOPT. It's IOVA in IOPT, and the IOVA is equal
+to GPA in this case.
 
-issued to by?
+> 3> And those GPAs are actually private ones, with no shared-bit set.
+> 
+in Guest, IOVA is set to GPA (without shared bit) for shared memory in
+TDX now.
 
-Issued by the guest or hypervisor, you mean..
+> Later when guest tries to perform a DMA(using a shared GPA), IO page fault
+> shall happen.
+So, this situation should not happen.
 
-> +hypervisor to get or set certain aspect of the SEV virtual machine.
-> +The ioctls belong to the following classes:
-> +
-> + - Hypervisor ioctls: These query and set global attributes which affect the
-> +   whole SEV firmware.  These ioctl is used by platform provision tools.
 
-"These ioctls are used ... "
 
-> +
-> + - Guest ioctls: These query and set attribute of the SEV virtual machine.
+> > > 
+> > > Another issue is current TDX does not support DMA encryption, and
+> > > only shared GPA memory shall be mapped in the VT-d. So to support
+> > > this, KVM may need to work with VFIO to dynamically program host
+> > > IOPT(IOMMU Page Table) when TD guest notifies a shared GFN range(e.g.,
+> > > with a MAP_GPA TDVMCALL), instead of prepopulating the IOPT at VM
+> > > creation time, by mapping entire GFN ranges of a guest.
+> > 
+> > Given that there is no encrypted DMA support, shouldn't the only IOMMU
+> > mappings (real host-side IOMMU) that point at guest memory be for
+> > non-encrypted DMA?  I don't see how this interacts at all.  If the guest
+> > tries to MapGPA to turn a shared MMIO page into private, the host should
+> > fail the hypercall because the operation makes no sense.
+> > 
+> > It is indeed the case that, with a TDX guest, MapGPA shared->private to
+> > a page that was previously used for unencrypted DMA will need to avoid
+> > having IOPT entries to the new private page, but even that doesn't seem
+> > particularly bad.  The fd+special memslot proposal for private memory
+> > means that shared *backing store* pages never actually transition
+> > between shared and private without being completely freed.
+> > 
+> > As far as I can tell, the actual problem you're referring to is:
+> > 
+> > >>> 2> Not knowing which GPA ranges may be used by the VM as DMA buffer, all
+> > >>> guest pages will have to be mapped in host IOMMU page table to host
+> > pages,
+> > >>> which are pinned during the whole life cycle fo the VM.
+> 
+> Yes. That's the primary concern. :)
+> 
+> > 
+> > In principle, you could actually initialize a TDX guest with all of its
+> > memory shared and all of it mapped in the host IOMMU.  When a guest
+> > turns some pages private, user code could punch a hole in the memslot,
+> > allocate private memory at that address, but leave the shared backing
+> > store in place and still mapped in the host IOMMU.  The result would be
+> > that guest-initiated DMA to the previously shared address would actually
+> > work but would hit pages that are invisible to the guest.  And a whole
+> > bunch of memory would be waste, but the whole system should stll work.
+> 
+> Do you mean to let VFIO & IOMMU to treat all guest memory as shared first,
+> and then just allocate the private pages in another backing store? I guess
+just a curious question.
+what if this shared->private conversion is on MMIO ranges that are mapped
+into the device?
+do you have enough info to get MMIO hpa for the private mapping?
 
-"... attributes... "
+Thanks
+Yan
 
-> +
-> +2. API description
-> +==================
-> +
-> +This section describes ioctls that can be used to query or set SEV guests.
-> +For each ioctl, the following information is provided along with a
-> +description:
-> +
-> +  Technology:
-> +      which SEV techology provides this ioctl. sev, sev-es, sev-snp or all.
-> +
-> +  Type:
-> +      hypervisor or guest. The ioctl can be used inside the guest or the
-> +      hypervisor.
-> +
-> +  Parameters:
-> +      what parameters are accepted by the ioctl.
-> +
-> +  Returns:
-> +      the return value.  General error numbers (ENOMEM, EINVAL)
-> +      are not detailed, but errors with specific meanings are.
-> +
-> +The guest ioctl should be called to /dev/sev-guest device. The ioctl accepts
 
-s/called to/issued on a file descriptor of the/
-
-> +struct snp_user_guest_request. The input and output structure is specified
-> +through the req_data and resp_data field respectively. If the ioctl fails
-> +to execute due to the firmware error, then fw_err code will be set.
-
-"... due to a ... "
-
-> +
-> +::
-> +        struct snp_user_guest_request {
-
-So you said earlier:
-
-> I followed the naming convension you recommended during the initial SEV driver
-> developement. IIRC, the main reason for us having to add "user" in it because
-> we wanted to distinguious that this structure is not exactly same as the what
-> is defined in the SEV-SNP firmware spec.
-
-but looking at the current variant in the code, the structure in the SNP spec is
-
-Table 91. Layout of the CMDBUF_SNP_GUEST_REQUEST Structure
-
-which corresponds to struct snp_guest_request_data so you can call this one:
-
-	struct snp_guest_request_ioctl
-
-and then it is perfectly clear what is what.
-
-> +                /* Request and response structure address */
-> +                __u64 req_data;
-> +                __u64 resp_data;
-> +
-> +                /* firmware error code on failure (see psp-sev.h) */
-> +                __u64 fw_err;
-> +        };
-> +
-> +2.1 SNP_GET_REPORT
-> +------------------
-> +
-> +:Technology: sev-snp
-> +:Type: guest ioctl
-> +:Parameters (in): struct snp_report_req
-> +:Returns (out): struct snp_report_resp on success, -negative on error
-> +
-> +The SNP_GET_REPORT ioctl can be used to query the attestation report from the
-> +SEV-SNP firmware. The ioctl uses the SNP_GUEST_REQUEST (MSG_REPORT_REQ) command
-> +provided by the SEV-SNP firmware to query the attestation report.
-> +
-> +On success, the snp_report_resp.data will contains the report. The report
-
-"... will contain... "
-
-> +format is described in the SEV-SNP specification. See the SEV-SNP specification
-> +for further details.
-
-"... which can be found at https://developer.amd.com/sev/."
-
-assuming that URL will keep its validity in the foreseeable future.
-
-> +static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
-> +{
-> +	struct snp_guest_dev *snp_dev = to_snp_dev(file);
-> +	void __user *argp = (void __user *)arg;
-> +	struct snp_user_guest_request input;
-> +	int ret = -ENOTTY;
-> +
-> +	if (copy_from_user(&input, argp, sizeof(input)))
-> +		return -EFAULT;
-> +
-> +	mutex_lock(&snp_cmd_mutex);
-> +
-> +	switch (ioctl) {
-> +	case SNP_GET_REPORT: {
-> +		ret = get_report(snp_dev, &input);
-> +		break;
-> +	}
-
-No need for those {} brackets around the case.
-
-> +	default:
-> +		break;
-> +	}
-> +
-> +	mutex_unlock(&snp_cmd_mutex);
-> +
-> +	if (copy_to_user(argp, &input, sizeof(input)))
-> +		return -EFAULT;
-> +
-> +	return ret;
-> +}
-> +
-> +static void free_shared_pages(void *buf, size_t sz)
-> +{
-> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
-> +
-> +	/* If fail to restore the encryption mask then leak it. */
-> +	if (set_memory_encrypted((unsigned long)buf, npages))
-
-Hmm, this sounds like an abnormal condition about which we should at
-least warn...
-
-> +		return;
-> +
-> +	__free_pages(virt_to_page(buf), get_order(sz));
-> +}
-> +
-> +static void *alloc_shared_pages(size_t sz)
-> +{
-> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
-> +	struct page *page;
-> +	int ret;
-> +
-> +	page = alloc_pages(GFP_KERNEL_ACCOUNT, get_order(sz));
-> +	if (IS_ERR(page))
-> +		return NULL;
-> +
-> +	ret = set_memory_decrypted((unsigned long)page_address(page), npages);
-> +	if (ret) {
-> +		__free_pages(page, get_order(sz));
-> +		return NULL;
-> +	}
-> +
-> +	return page_address(page);
-> +}
-> +
-> +static const struct file_operations snp_guest_fops = {
-> +	.owner	= THIS_MODULE,
-> +	.unlocked_ioctl = snp_guest_ioctl,
-> +};
-> +
-> +static int __init snp_guest_probe(struct platform_device *pdev)
-> +{
-> +	struct snp_guest_platform_data *data;
-> +	struct device *dev = &pdev->dev;
-> +	struct snp_guest_dev *snp_dev;
-> +	struct miscdevice *misc;
-> +	int ret;
-> +
-> +	if (!dev->platform_data)
-> +		return -ENODEV;
-> +
-> +	data = (struct snp_guest_platform_data *)dev->platform_data;
-> +	vmpck_id = data->vmpck_id;
-> +
-> +	snp_dev = devm_kzalloc(&pdev->dev, sizeof(struct snp_guest_dev), GFP_KERNEL);
-> +	if (!snp_dev)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, snp_dev);
-> +	snp_dev->dev = dev;
-> +
-> +	snp_dev->crypto = init_crypto(snp_dev, data->vmpck, sizeof(data->vmpck));
-> +	if (!snp_dev->crypto)
-> +		return -EIO;
-
-I guess you should put the crypto init...
-
-> +
-> +	/* Allocate the shared page used for the request and response message. */
-> +	snp_dev->request = alloc_shared_pages(sizeof(struct snp_guest_msg));
-> +	if (IS_ERR(snp_dev->request)) {
-> +		ret = PTR_ERR(snp_dev->request);
-> +		goto e_free_crypto;
-> +	}
-> +
-> +	snp_dev->response = alloc_shared_pages(sizeof(struct snp_guest_msg));
-> +	if (IS_ERR(snp_dev->response)) {
-> +		ret = PTR_ERR(snp_dev->response);
-> +		goto e_free_req;
-> +	}
-
-... here, after the page allocation to save yourself all the setup work
-if the shared pages allocation fails.
-
-> +
-> +	misc = &snp_dev->misc;
-> +	misc->minor = MISC_DYNAMIC_MINOR;
-> +	misc->name = DEVICE_NAME;
-> +	misc->fops = &snp_guest_fops;
-> +
-> +	return misc_register(misc);
-> +
-> +e_free_req:
-> +	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
-> +
-> +e_free_crypto:
-> +	deinit_crypto(snp_dev->crypto);
-> +
-> +	return ret;
-> +}
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> that could work, but with the cost of allocating roughly 2x physical pages
+> of the guest RAM size. After all, the shared pages shall be only a small
+> part of guest memory.
+> 
+> If device assignment is desired in current TDX. My understanding of the 
+> enabling work would be like this:
+> 1> Change qemu to not trigger VFIO_IOMMU_MAP_DMA for the TD, thus no IOPT
+> prepopulated, and no physical page allocated.
+> 2> KVM forwards MapGPA(private -> shared) request to Qemu.
+> 3> Qemu asks VFIO to pin and map the shared GPAs.
+> 
+> For private -> shared transitions, the memslot punching, IOPT unmapping,
+> and iotlb flushing are necessary. Possibly new interface between VFIO and
+> KVM is needed.
+> 
+> But actually I am not sure if people really want assigned device in current
+> TDX. Bottleneck of the performance should be the copying to/from swiotlb
+> buffers.
+> 
+> B.R.
+> Yu
+> 
