@@ -1,283 +1,668 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5E43FC2
-	for <linux-coco@lists.linux.dev>; Fri, 10 Sep 2021 03:32:12 +0000 (UTC)
-Received: by mail-ot1-f42.google.com with SMTP id l16-20020a9d6a90000000b0053b71f7dc83so473677otq.7
-        for <linux-coco@lists.linux.dev>; Thu, 09 Sep 2021 20:32:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0EF3FC2
+	for <linux-coco@lists.linux.dev>; Fri, 10 Sep 2021 17:18:14 +0000 (UTC)
+Received: by mail-lf1-f52.google.com with SMTP id l10so5467692lfg.4
+        for <linux-coco@lists.linux.dev>; Fri, 10 Sep 2021 10:18:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FTubphutJfpMKMW3kXBRjbHgk7H7eKdTsmgTS6nxpsM=;
-        b=YF9eMCcNiZ4/bfxHMYH0NMKmZLSBtZIwpGUwKb/uT9ZI+Hp5Yda/I8QH63+nb/rxHq
-         N8XhktvRqWFPrhUlj7iLbbJCrLOVzRjtMq04fj5UkkxA04JehtZJY5rc4m6IAP2cCYIr
-         4a6pHkGnldF2VcVIDuEORIZtm1rfkXlu4z1zQ5CXxU8U+fw3mrMTq/X7zXtucW9USd8X
-         kiYFxOJMWGTAaEfth5F3dZbdWIhXNEQ4Mo+WVX9Oqrb5ksriUCUSp32HkWtFcdCFq5c8
-         01y6/4WAgSwxDZg35zT5Bs8prGK+oUn8bdQEnaQxLgTnhuMSXufzpKtsKDB2akHgQJqT
-         W9NA==
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=qcjllYF++W26syAeA+jBC8DEh4Ux0RDmheFF73T+L7Q=;
+        b=zMQHA53TNazFgJjtixFtJrDHeR+YPeq8SWqXo+jUhDcnlu9n3RZ/YRpmtFtF3t3qSk
+         FlaBDqqGDfOGLC6dhh2qRU3SBEePsDmO6updJpSTqVo6UC3aoUJl08JgUKXwQ8gKeAni
+         +Ben0sGccxL3DPvQGJcGJCNSf4eX9V4XLMUhlBPeWpW7czHtvpA6QawOjhCeI2DT0p4u
+         U22gyEecGF8KPRcEtCGCzlsvf7lMUTSoGkS9NcEMYwkOFUOlIdXe/J36mIna/KUJHHQ+
+         WTlR8wUiikrcfMhnMSf/nk1jrWfCMsV/LVbWe4ZssFcVjzqi8UQJYoFsePk7O8wYn+xd
+         xQOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FTubphutJfpMKMW3kXBRjbHgk7H7eKdTsmgTS6nxpsM=;
-        b=pV+2WuLrQWRcet/31tdK/kf2tfRll5Tk9QOPXYlpmg76N5RG+9dXkkX9JUskFu4xCu
-         z45DEQCY/qQHwkYeFtsag6nK4KUP9FUgUbq1m3jvySxYMhknenemiMgvY4KMoRuXRszT
-         WOY4gupbeICMQw6MTrVAgEKOasTAda9OkGnoAXzF/1QGBXGiJC94Cx+EbH/wImshfjQj
-         Kpg+0+GsRsVewti+lN0PTd5AdPm50ppy+alPlDFcqg32/nYaPUj5dwuAT+E+qDOECncN
-         19I6PMz+VR/uAG/AA9A765bdiWf6brTMoarPiPhtSOVVhyx7yp8yEOlRsISyJjF21FpN
-         76ug==
-X-Gm-Message-State: AOAM532T68aO9TqiCemYuxkkehAjXSUsJDTzDxS5p0eirv566wRx9w9z
-	aOa7BATcdaOsOoLQfZEE5RZePVhB+/DFv1o7Um5WyQLkjtyvPkFI
-X-Google-Smtp-Source: ABdhPJzXMqIEjRiSAl5H2lkG9W9hXRQKPxAE5V0R9C0YMiw7TFT6eEGMJmxLYO5sK3QeGSyFMsPzR/qKeYk8XwoPbeQ=
-X-Received: by 2002:a05:6830:349c:: with SMTP id c28mr2883661otu.35.1631244731817;
- Thu, 09 Sep 2021 20:32:11 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=qcjllYF++W26syAeA+jBC8DEh4Ux0RDmheFF73T+L7Q=;
+        b=tABtkr4wwWFXJgVTgZIyv1PhPK10M3VNUfr7rk+fvkN90PlJkBPNV1Orx/obYDrLyv
+         EKcjNwJp+a1WXpXq8p7LAFCGHd6hxTWcCRo3XGFp5a+k7HR47uhccW5D7t7w/vWrAXYK
+         6gqoca0YmyTti7wBndjq7otvUpBkHzEscnsAWJbz+nhQXNbe4rQZuOUMCHgIGLSqNPyb
+         dgURXEtcj6jG7d90Tb0CvlGbUMfPGxKKNLMnNeBqmfUt59yBRgynlk8G6z84xppmtSQW
+         ejE/6ah/S4PBH2zErBINhAgUn9BXCyZc+EcTTw49RemjbVgndW/iZHhEWVCvPlZFhA5R
+         ydjQ==
+X-Gm-Message-State: AOAM530KsbqxFzBngzeqvCdjx8Uh++y5OBysO7VbSinvmJXvsf+UeyP8
+	XiiPpzX8kgGdMtzvqwBNIEdmKQ==
+X-Google-Smtp-Source: ABdhPJzpbHEtfXuuL/PT73n42yDDRqsYqSHeEwf4qCDjTm17wjqdRvdTXhayD6eBPAtVmNgLN7VChg==
+X-Received: by 2002:ac2:58c9:: with SMTP id u9mr3731641lfo.680.1631294292512;
+        Fri, 10 Sep 2021 10:18:12 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id t17sm75201lft.296.2021.09.10.10.18.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Sep 2021 10:18:11 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 9C7B4102880; Fri, 10 Sep 2021 20:18:11 +0300 (+03)
+Date: Fri, 10 Sep 2021 20:18:11 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Andy Lutomirski <luto@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Borislav Petkov <bp@alien8.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Yu Zhang <yu.c.zhang@linux.intel.com>
+Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
+ private memory
+Message-ID: <20210910171811.xl3lms6xoj3kx223@box.shutemov.name>
+References: <20210824005248.200037-1-seanjc@google.com>
+ <20210902184711.7v65p5lwhpr2pvk7@box.shutemov.name>
+ <YTE1GzPimvUB1FOF@google.com>
+ <20210903191414.g7tfzsbzc7tpkx37@box.shutemov.name>
+ <02806f62-8820-d5f9-779c-15c0e9cd0e85@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-24-brijesh.singh@amd.com>
-In-Reply-To: <20210820155918.7518-24-brijesh.singh@amd.com>
-From: Marc Orr <marcorr@google.com>
-Date: Thu, 9 Sep 2021 20:32:00 -0700
-Message-ID: <CAA03e5GaROVunr9JkBeULx2KN5kkE8TU_sjBANtAj7E-V6sN_w@mail.gmail.com>
-Subject: Re: [PATCH Part2 v5 23/45] KVM: SVM: Add KVM_SNP_INIT command
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, 
-	Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, 
-	Pavan Kumar Paluri <papaluri@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/mixed; boundary="5xgu7omaz7zhq4al"
+Content-Disposition: inline
+In-Reply-To: <02806f62-8820-d5f9-779c-15c0e9cd0e85@kernel.org>
 
-On Fri, Aug 20, 2021 at 9:00 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
->
-> The KVM_SNP_INIT command is used by the hypervisor to initialize the
-> SEV-SNP platform context. In a typical workflow, this command should be the
-> first command issued. When creating SEV-SNP guest, the VMM must use this
-> command instead of the KVM_SEV_INIT or KVM_SEV_ES_INIT.
->
-> The flags value must be zero, it will be extended in future SNP support to
-> communicate the optional features (such as restricted INT injection etc).
->
-> Co-developed-by: Pavan Kumar Paluri <papaluri@amd.com>
-> Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  .../virt/kvm/amd-memory-encryption.rst        | 27 ++++++++++++
->  arch/x86/include/asm/svm.h                    |  2 +
->  arch/x86/kvm/svm/sev.c                        | 44 ++++++++++++++++++-
->  arch/x86/kvm/svm/svm.h                        |  4 ++
->  include/uapi/linux/kvm.h                      | 13 ++++++
->  5 files changed, 88 insertions(+), 2 deletions(-)
->
-> diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
-> index 5c081c8c7164..7b1d32fb99a8 100644
-> --- a/Documentation/virt/kvm/amd-memory-encryption.rst
-> +++ b/Documentation/virt/kvm/amd-memory-encryption.rst
-> @@ -427,6 +427,33 @@ issued by the hypervisor to make the guest ready for execution.
->
->  Returns: 0 on success, -negative on error
->
-> +18. KVM_SNP_INIT
-> +----------------
-> +
-> +The KVM_SNP_INIT command can be used by the hypervisor to initialize SEV-SNP
-> +context. In a typical workflow, this command should be the first command issued.
-> +
-> +Parameters (in/out): struct kvm_snp_init
-> +
-> +Returns: 0 on success, -negative on error
-> +
-> +::
-> +
-> +        struct kvm_snp_init {
-> +                __u64 flags;
-> +        };
-> +
-> +The flags bitmap is defined as::
-> +
-> +   /* enable the restricted injection */
-> +   #define KVM_SEV_SNP_RESTRICTED_INJET   (1<<0)
-> +
-> +   /* enable the restricted injection timer */
-> +   #define KVM_SEV_SNP_RESTRICTED_TIMER_INJET   (1<<1)
-> +
-> +If the specified flags is not supported then return -EOPNOTSUPP, and the supported
-> +flags are returned.
-> +
->  References
->  ==========
->
-> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-> index 44a3f920f886..a39e31845a33 100644
-> --- a/arch/x86/include/asm/svm.h
-> +++ b/arch/x86/include/asm/svm.h
-> @@ -218,6 +218,8 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
->  #define SVM_NESTED_CTL_SEV_ENABLE      BIT(1)
->  #define SVM_NESTED_CTL_SEV_ES_ENABLE   BIT(2)
->
-> +#define SVM_SEV_FEAT_SNP_ACTIVE                BIT(0)
-> +
->  struct vmcb_seg {
->         u16 selector;
->         u16 attrib;
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 50fddbe56981..93da463545ef 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -235,10 +235,30 @@ static void sev_unbind_asid(struct kvm *kvm, unsigned int handle)
->         sev_decommission(handle);
->  }
->
-> +static int verify_snp_init_flags(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> +{
-> +       struct kvm_snp_init params;
-> +       int ret = 0;
-> +
-> +       if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
-> +               return -EFAULT;
-> +
-> +       if (params.flags & ~SEV_SNP_SUPPORTED_FLAGS)
-> +               ret = -EOPNOTSUPP;
-> +
-> +       params.flags = SEV_SNP_SUPPORTED_FLAGS;
-> +
-> +       if (copy_to_user((void __user *)(uintptr_t)argp->data, &params, sizeof(params)))
-> +               ret = -EFAULT;
-> +
-> +       return ret;
-> +}
-> +
->  static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  {
-> +       bool es_active = (argp->id == KVM_SEV_ES_INIT || argp->id == KVM_SEV_SNP_INIT);
->         struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> -       bool es_active = argp->id == KVM_SEV_ES_INIT;
-> +       bool snp_active = argp->id == KVM_SEV_SNP_INIT;
->         int asid, ret;
->
->         if (kvm->created_vcpus)
-> @@ -249,12 +269,22 @@ static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
->                 return ret;
->
->         sev->es_active = es_active;
-> +       sev->snp_active = snp_active;
->         asid = sev_asid_new(sev);
->         if (asid < 0)
->                 goto e_no_asid;
->         sev->asid = asid;
->
-> -       ret = sev_platform_init(&argp->error);
-> +       if (snp_active) {
-> +               ret = verify_snp_init_flags(kvm, argp);
-> +               if (ret)
-> +                       goto e_free;
-> +
-> +               ret = sev_snp_init(&argp->error);
-> +       } else {
-> +               ret = sev_platform_init(&argp->error);
-> +       }
-> +
->         if (ret)
->                 goto e_free;
->
-> @@ -600,6 +630,10 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
->         save->pkru = svm->vcpu.arch.pkru;
->         save->xss  = svm->vcpu.arch.ia32_xss;
->
-> +       /* Enable the SEV-SNP feature */
-> +       if (sev_snp_guest(svm->vcpu.kvm))
-> +               save->sev_features |= SVM_SEV_FEAT_SNP_ACTIVE;
-> +
->         return 0;
->  }
->
-> @@ -1532,6 +1566,12 @@ int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
->         }
->
->         switch (sev_cmd.id) {
-> +       case KVM_SEV_SNP_INIT:
-> +               if (!sev_snp_enabled) {
-> +                       r = -ENOTTY;
-> +                       goto out;
-> +               }
-> +               fallthrough;
->         case KVM_SEV_ES_INIT:
->                 if (!sev_es_enabled) {
->                         r = -ENOTTY;
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 01953522097d..57c3c404b0b3 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -69,6 +69,9 @@ enum {
->  /* TPR and CR2 are always written before VMRUN */
->  #define VMCB_ALWAYS_DIRTY_MASK ((1U << VMCB_INTR) | (1U << VMCB_CR2))
->
-> +/* Supported init feature flags */
-> +#define SEV_SNP_SUPPORTED_FLAGS                0x0
-> +
->  struct kvm_sev_info {
->         bool active;            /* SEV enabled guest */
->         bool es_active;         /* SEV-ES enabled guest */
-> @@ -81,6 +84,7 @@ struct kvm_sev_info {
->         u64 ap_jump_table;      /* SEV-ES AP Jump Table address */
->         struct kvm *enc_context_owner; /* Owner of copied encryption context */
->         struct misc_cg *misc_cg; /* For misc cgroup accounting */
-> +       u64 snp_init_flags;
 
-This field never gets set anywhere. Should it get set in
-`verify_snp_init_flags()`?
+--5xgu7omaz7zhq4al
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->  };
->
->  struct kvm_svm {
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index d9e4aabcb31a..944e2bf601fe 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1712,6 +1712,9 @@ enum sev_cmd_id {
->         /* Guest Migration Extension */
->         KVM_SEV_SEND_CANCEL,
->
-> +       /* SNP specific commands */
-> +       KVM_SEV_SNP_INIT,
-> +
->         KVM_SEV_NR_MAX,
->  };
->
-> @@ -1808,6 +1811,16 @@ struct kvm_sev_receive_update_data {
->         __u32 trans_len;
->  };
->
-> +/* enable the restricted injection */
-> +#define KVM_SEV_SNP_RESTRICTED_INJET   (1 << 0)
-> +
-> +/* enable the restricted injection timer */
-> +#define KVM_SEV_SNP_RESTRICTED_TIMER_INJET   (1 << 1)
-> +
-> +struct kvm_snp_init {
-> +       __u64 flags;
-> +};
-> +
->  #define KVM_DEV_ASSIGN_ENABLE_IOMMU    (1 << 0)
->  #define KVM_DEV_ASSIGN_PCI_2_3         (1 << 1)
->  #define KVM_DEV_ASSIGN_MASK_INTX       (1 << 2)
-> --
-> 2.17.1
->
->
+On Fri, Sep 03, 2021 at 12:15:51PM -0700, Andy Lutomirski wrote:
+> On 9/3/21 12:14 PM, Kirill A. Shutemov wrote:
+> > On Thu, Sep 02, 2021 at 08:33:31PM +0000, Sean Christopherson wrote:
+> >> Would requiring the size to be '0' at F_SEAL_GUEST time solve that problem?
+> > 
+> > I guess. Maybe we would need a WRITE_ONCE() on set. I donno. I will look
+> > closer into locking next.
+> 
+> We can decisively eliminate this sort of failure by making the switch
+> happen at open time instead of after.  For a memfd-like API, this would
+> be straightforward.  For a filesystem, it would take a bit more thought.
+
+I think it should work fine as long as we check seals after i_size in the
+read path. See the comment in shmem_file_read_iter().
+
+Below is updated version. I think it should be good enough to start
+integrate with KVM.
+
+I also attach a test-case that consists of kernel patch and userspace
+program. It demonstrates how it can be integrated into KVM code.
+
+One caveat I noticed is that guest_ops::invalidate_page_range() can be
+called after the owner (struct kvm) has being freed. It happens because
+memfd can outlive KVM. So the callback has to check if such owner exists,
+than check that there's a memslot with such inode.
+
+I guess it should be okay: we have vm_list we can check owner against.
+We may consider replace vm_list with something more scalable if number of
+VMs will get too high.
+
+Any comments?
+
+diff --git a/include/linux/memfd.h b/include/linux/memfd.h
+index 4f1600413f91..3005e233140a 100644
+--- a/include/linux/memfd.h
++++ b/include/linux/memfd.h
+@@ -4,13 +4,34 @@
+ 
+ #include <linux/file.h>
+ 
++struct guest_ops {
++	void (*invalidate_page_range)(struct inode *inode, void *owner,
++				      pgoff_t start, pgoff_t end);
++};
++
++struct guest_mem_ops {
++	unsigned long (*get_lock_pfn)(struct inode *inode, pgoff_t offset);
++	void (*put_unlock_pfn)(unsigned long pfn);
++
++};
++
+ #ifdef CONFIG_MEMFD_CREATE
+ extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned long arg);
++
++extern inline int memfd_register_guest(struct inode *inode, void *owner,
++				       const struct guest_ops *guest_ops,
++				       const struct guest_mem_ops **guest_mem_ops);
+ #else
+ static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned long a)
+ {
+ 	return -EINVAL;
+ }
++static inline int memfd_register_guest(struct inode *inode, void *owner,
++				       const struct guest_ops *guest_ops,
++				       const struct guest_mem_ops **guest_mem_ops)
++{
++	return -EINVAL;
++}
+ #endif
+ 
+ #endif /* __LINUX_MEMFD_H */
+diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+index 8e775ce517bb..265d0c13bc5e 100644
+--- a/include/linux/shmem_fs.h
++++ b/include/linux/shmem_fs.h
+@@ -12,6 +12,9 @@
+ 
+ /* inode in-kernel data */
+ 
++struct guest_ops;
++struct guest_mem_ops;
++
+ struct shmem_inode_info {
+ 	spinlock_t		lock;
+ 	unsigned int		seals;		/* shmem seals */
+@@ -24,6 +27,8 @@ struct shmem_inode_info {
+ 	struct simple_xattrs	xattrs;		/* list of xattrs */
+ 	atomic_t		stop_eviction;	/* hold when working on inode */
+ 	struct inode		vfs_inode;
++	void			*guest_owner;
++	const struct guest_ops	*guest_ops;
+ };
+ 
+ struct shmem_sb_info {
+@@ -90,6 +95,10 @@ extern unsigned long shmem_swap_usage(struct vm_area_struct *vma);
+ extern unsigned long shmem_partial_swap_usage(struct address_space *mapping,
+ 						pgoff_t start, pgoff_t end);
+ 
++extern int shmem_register_guest(struct inode *inode, void *owner,
++				const struct guest_ops *guest_ops,
++				const struct guest_mem_ops **guest_mem_ops);
++
+ /* Flag allocation requirements to shmem_getpage */
+ enum sgp_type {
+ 	SGP_READ,	/* don't exceed i_size, don't allocate page */
+diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
+index 2f86b2ad6d7e..c79bc8572721 100644
+--- a/include/uapi/linux/fcntl.h
++++ b/include/uapi/linux/fcntl.h
+@@ -43,6 +43,7 @@
+ #define F_SEAL_GROW	0x0004	/* prevent file from growing */
+ #define F_SEAL_WRITE	0x0008	/* prevent writes */
+ #define F_SEAL_FUTURE_WRITE	0x0010  /* prevent future writes while mapped */
++#define F_SEAL_GUEST		0x0020
+ /* (1U << 31) is reserved for signed error codes */
+ 
+ /*
+diff --git a/mm/memfd.c b/mm/memfd.c
+index 081dd33e6a61..ae43454789f4 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -130,11 +130,24 @@ static unsigned int *memfd_file_seals_ptr(struct file *file)
+ 	return NULL;
+ }
+ 
++int memfd_register_guest(struct inode *inode, void *owner,
++			 const struct guest_ops *guest_ops,
++			 const struct guest_mem_ops **guest_mem_ops)
++{
++	if (shmem_mapping(inode->i_mapping)) {
++		return shmem_register_guest(inode, owner,
++					    guest_ops, guest_mem_ops);
++	}
++
++	return -EINVAL;
++}
++
+ #define F_ALL_SEALS (F_SEAL_SEAL | \
+ 		     F_SEAL_SHRINK | \
+ 		     F_SEAL_GROW | \
+ 		     F_SEAL_WRITE | \
+-		     F_SEAL_FUTURE_WRITE)
++		     F_SEAL_FUTURE_WRITE | \
++		     F_SEAL_GUEST)
+ 
+ static int memfd_add_seals(struct file *file, unsigned int seals)
+ {
+@@ -203,10 +216,27 @@ static int memfd_add_seals(struct file *file, unsigned int seals)
+ 		}
+ 	}
+ 
++	if (seals & F_SEAL_GUEST) {
++		i_mmap_lock_read(inode->i_mapping);
++
++		if (!RB_EMPTY_ROOT(&inode->i_mapping->i_mmap.rb_root)) {
++			error = -EBUSY;
++			goto unlock;
++		}
++
++		if (i_size_read(inode)) {
++			error = -EBUSY;
++			goto unlock;
++		}
++	}
++
+ 	*file_seals |= seals;
+ 	error = 0;
+ 
+ unlock:
++	if (seals & F_SEAL_GUEST)
++		i_mmap_unlock_read(inode->i_mapping);
++
+ 	inode_unlock(inode);
+ 	return error;
+ }
+diff --git a/mm/shmem.c b/mm/shmem.c
+index dacda7463d54..54c213b7b42a 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -80,6 +80,7 @@ static struct vfsmount *shm_mnt;
+ #include <linux/userfaultfd_k.h>
+ #include <linux/rmap.h>
+ #include <linux/uuid.h>
++#include <linux/memfd.h>
+ 
+ #include <linux/uaccess.h>
+ 
+@@ -883,6 +884,18 @@ static bool shmem_punch_compound(struct page *page, pgoff_t start, pgoff_t end)
+ 	return split_huge_page(page) >= 0;
+ }
+ 
++static void guest_invalidate_page(struct inode *inode,
++				  struct page *page, pgoff_t start, pgoff_t end)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++
++	start = max(start, page->index);
++	end = min(end, page->index + HPAGE_PMD_NR) - 1;
++
++	info->guest_ops->invalidate_page_range(inode, info->guest_owner,
++					       start, end);
++}
++
+ /*
+  * Remove range of pages and swap entries from page cache, and free them.
+  * If !unfalloc, truncate or punch hole; if unfalloc, undo failed fallocate.
+@@ -923,6 +936,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, loff_t lend,
+ 			}
+ 			index += thp_nr_pages(page) - 1;
+ 
++			guest_invalidate_page(inode, page, start, end);
++
+ 			if (!unfalloc || !PageUptodate(page))
+ 				truncate_inode_page(mapping, page);
+ 			unlock_page(page);
+@@ -999,6 +1014,9 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, loff_t lend,
+ 					index--;
+ 					break;
+ 				}
++
++				guest_invalidate_page(inode, page, start, end);
++
+ 				VM_BUG_ON_PAGE(PageWriteback(page), page);
+ 				if (shmem_punch_compound(page, start, end))
+ 					truncate_inode_page(mapping, page);
+@@ -1074,6 +1092,9 @@ static int shmem_setattr(struct user_namespace *mnt_userns,
+ 		    (newsize > oldsize && (info->seals & F_SEAL_GROW)))
+ 			return -EPERM;
+ 
++		if ((info->seals & F_SEAL_GUEST) && (newsize & ~PAGE_MASK))
++			return -EINVAL;
++
+ 		if (newsize != oldsize) {
+ 			error = shmem_reacct_size(SHMEM_I(inode)->flags,
+ 					oldsize, newsize);
+@@ -1348,6 +1369,8 @@ static int shmem_writepage(struct page *page, struct writeback_control *wbc)
+ 		goto redirty;
+ 	if (!total_swap_pages)
+ 		goto redirty;
++	if (info->seals & F_SEAL_GUEST)
++		goto redirty;
+ 
+ 	/*
+ 	 * Our capabilities prevent regular writeback or sync from ever calling
+@@ -2274,6 +2297,9 @@ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	if (ret)
+ 		return ret;
+ 
++	if (info->seals & F_SEAL_GUEST)
++		return -EPERM;
++
+ 	/* arm64 - allow memory tagging on RAM-based files */
+ 	vma->vm_flags |= VM_MTE_ALLOWED;
+ 
+@@ -2471,12 +2497,14 @@ shmem_write_begin(struct file *file, struct address_space *mapping,
+ 	pgoff_t index = pos >> PAGE_SHIFT;
+ 
+ 	/* i_mutex is held by caller */
+-	if (unlikely(info->seals & (F_SEAL_GROW |
+-				   F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))) {
++	if (unlikely(info->seals & (F_SEAL_GROW | F_SEAL_WRITE |
++				    F_SEAL_FUTURE_WRITE | F_SEAL_GUEST))) {
+ 		if (info->seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))
+ 			return -EPERM;
+ 		if ((info->seals & F_SEAL_GROW) && pos + len > inode->i_size)
+ 			return -EPERM;
++		if (info->seals & F_SEAL_GUEST)
++			return -EPERM;
+ 	}
+ 
+ 	return shmem_getpage(inode, index, pagep, SGP_WRITE);
+@@ -2550,6 +2578,20 @@ static ssize_t shmem_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 		end_index = i_size >> PAGE_SHIFT;
+ 		if (index > end_index)
+ 			break;
++
++		/*
++		 * inode_lock protects setting up seals as well as write to
++		 * i_size. Setting F_SEAL_GUEST only allowed with i_size == 0.
++		 *
++		 * Check F_SEAL_GUEST after i_size. It effectively serialize
++		 * read vs. setting F_SEAL_GUEST without taking inode_lock in
++		 * read path.
++		 */
++		if (SHMEM_I(inode)->seals & F_SEAL_GUEST) {
++			error = -EPERM;
++			break;
++		}
++
+ 		if (index == end_index) {
+ 			nr = i_size & ~PAGE_MASK;
+ 			if (nr <= offset)
+@@ -2675,6 +2717,12 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 			goto out;
+ 		}
+ 
++		if ((info->seals & F_SEAL_GUEST) &&
++		    (offset & ~PAGE_MASK || len & ~PAGE_MASK)) {
++			error = -EINVAL;
++			goto out;
++		}
++
+ 		shmem_falloc.waitq = &shmem_falloc_waitq;
+ 		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
+ 		shmem_falloc.next = (unmap_end + 1) >> PAGE_SHIFT;
+@@ -3761,6 +3809,20 @@ static void shmem_destroy_inodecache(void)
+ 	kmem_cache_destroy(shmem_inode_cachep);
+ }
+ 
++#ifdef CONFIG_MIGRATION
++int shmem_migrate_page(struct address_space *mapping,
++		struct page *newpage, struct page *page,
++		enum migrate_mode mode)
++{
++	struct inode *inode = mapping->host;
++	struct shmem_inode_info *info = SHMEM_I(inode);
++
++	if (info->seals & F_SEAL_GUEST)
++		return -ENOTSUPP;
++	return migrate_page(mapping, newpage, page, mode);
++}
++#endif
++
+ const struct address_space_operations shmem_aops = {
+ 	.writepage	= shmem_writepage,
+ 	.set_page_dirty	= __set_page_dirty_no_writeback,
+@@ -3769,12 +3831,57 @@ const struct address_space_operations shmem_aops = {
+ 	.write_end	= shmem_write_end,
+ #endif
+ #ifdef CONFIG_MIGRATION
+-	.migratepage	= migrate_page,
++	.migratepage	= shmem_migrate_page,
+ #endif
+ 	.error_remove_page = generic_error_remove_page,
+ };
+ EXPORT_SYMBOL(shmem_aops);
+ 
++static unsigned long shmem_get_lock_pfn(struct inode *inode, pgoff_t offset)
++{
++	struct page *page;
++	int ret;
++
++	ret = shmem_getpage(inode, offset, &page, SGP_WRITE);
++	if (ret)
++		return ret;
++
++	return page_to_pfn(page);
++}
++
++static void shmem_put_unlock_pfn(unsigned long pfn)
++{
++	struct page *page = pfn_to_page(pfn);
++
++	VM_BUG_ON_PAGE(!PageLocked(page), page);
++
++	set_page_dirty(page);
++	unlock_page(page);
++	put_page(page);
++}
++
++static const struct guest_mem_ops shmem_guest_ops = {
++	.get_lock_pfn = shmem_get_lock_pfn,
++	.put_unlock_pfn = shmem_put_unlock_pfn,
++};
++
++int shmem_register_guest(struct inode *inode, void *owner,
++			 const struct guest_ops *guest_ops,
++			 const struct guest_mem_ops **guest_mem_ops)
++{
++	struct shmem_inode_info *info = SHMEM_I(inode);
++
++	if (!owner)
++		return -EINVAL;
++
++	if (info->guest_owner && info->guest_owner != owner)
++		return -EPERM;
++
++	info->guest_ops = guest_ops;
++	*guest_mem_ops = &shmem_guest_ops;
++	return 0;
++}
++
+ static const struct file_operations shmem_file_operations = {
+ 	.mmap		= shmem_mmap,
+ 	.get_unmapped_area = shmem_get_unmapped_area,
+-- 
+ Kirill A. Shutemov
+
+--5xgu7omaz7zhq4al
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment; filename="test-case.patch"
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 54c213b7b42a..78d07299ef04 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -81,6 +81,7 @@ static struct vfsmount *shm_mnt;
+ #include <linux/rmap.h>
+ #include <linux/uuid.h>
+ #include <linux/memfd.h>
++#include <linux/debugfs.h>
+ 
+ #include <linux/uaccess.h>
+ 
+@@ -3882,6 +3883,85 @@ int shmem_register_guest(struct inode *inode, void *owner,
+ 	return 0;
+ }
+ 
++static void test_guest_invalidate_page_range(struct inode *inode, void *owner,
++					     pgoff_t start, pgoff_t end)
++{
++	/*
++	 * XXX: We can get here after the owner no longer exists. Need to check
++	 * somehow if the owner is still alive.
++	 */
++
++	printk("invalidate: %#lx-%#lx\n", start, end);
++}
++
++static const struct guest_ops guest_ops = {
++	.invalidate_page_range = test_guest_invalidate_page_range,
++};
++
++#define GUEST_MEM_REGISTER	_IOW('m', 1, int)
++#define GUEST_MEM_UNREGISTER	_IOW('m', 2, int)
++#define GUEST_MEM_GET_PFN	_IOW('m', 3, unsigned long)
++
++static long guest_mem_test_ioctl(struct file *file,
++				 unsigned int cmd, unsigned long arg)
++{
++	static struct file *memfd_file = NULL;
++	static const struct guest_mem_ops *guest_mem_ops = NULL;
++
++	switch (cmd) {
++	case GUEST_MEM_REGISTER: {
++		struct fd memfd = fdget(arg);
++
++		if (memfd_file)
++			return -EBUSY;
++
++		if (!memfd.file)
++			return -EINVAL;
++
++		memfd_file = memfd.file;
++		return memfd_register_guest(memfd_file->f_inode, file,
++					    &guest_ops, &guest_mem_ops);
++	}
++	case GUEST_MEM_UNREGISTER: {
++		if (!memfd_file)
++			return -EINVAL;
++
++		fput(memfd_file);
++		memfd_file = NULL;
++		guest_mem_ops = NULL;
++		return 0;
++	}
++	case GUEST_MEM_GET_PFN: {
++		unsigned long pfn;
++		printk("guest_mem_ops: %px\n", guest_mem_ops);
++		pfn = guest_mem_ops->get_lock_pfn(memfd_file->f_inode, 0);
++		printk("pfn: %#lx\n");
++		if (pfn < 0)
++			return pfn;
++		guest_mem_ops->put_unlock_pfn(pfn);
++		return 0;
++	}
++	default:
++		return -EINVAL;
++	}
++
++	return -EINVAL;
++}
++
++static const struct file_operations guest_mem_test_fops = {
++	.owner	 = THIS_MODULE,
++	.unlocked_ioctl = guest_mem_test_ioctl,
++	.llseek  = no_llseek,
++};
++
++static int __init guest_mem_test(void)
++{
++	debugfs_create_file("guest_mem_test", 0200, NULL, NULL,
++			    &guest_mem_test_fops);
++	return 0;
++}
++late_initcall(guest_mem_test);
++
+ static const struct file_operations shmem_file_operations = {
+ 	.mmap		= shmem_mmap,
+ 	.get_unmapped_area = shmem_get_unmapped_area,
+
+--5xgu7omaz7zhq4al
+Content-Type: text/x-c; charset=us-ascii
+Content-Disposition: attachment; filename="memfd_guest.c"
+
+#define _GNU_SOURCE
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+
+#define GUEST_MEM_REGISTER	_IOW('m', 1, int)
+#define GUEST_MEM_UNREGISTER	_IOW('m', 2, int)
+#define GUEST_MEM_GET_PFN	_IOW('m', 3, unsigned long)
+
+#define errExit(msg)    do { perror(msg); exit(EXIT_FAILURE); } while (0)
+
+#define F_SEAL_GUEST	0x0020
+
+int main(int argc, char *argv[])
+{
+	int fd, test_fd;
+	char buf[4];
+
+	/* Create an anonymous file in tmpfs; allow seals to be
+	   placed on the file. */
+
+	fd = memfd_create("memfd_guest", MFD_ALLOW_SEALING);
+	if (fd == -1)
+		errExit("memfd_create");
+
+#if 0
+	if (write(fd, "test", 4) != 4)
+		errExit("write");
+#endif
+
+#if 0
+	if (ftruncate(fd, 4096) == -1)
+		errExit("ftruncate");
+#endif
+
+#if 0
+	if (mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd, 0) == MAP_FAILED)
+		errExit("mmap");
+#endif
+
+	if (fcntl(fd, F_ADD_SEALS, F_SEAL_GUEST) == -1)
+		errExit("fcntl");
+
+	if (ftruncate(fd, 2UL << 20) == -1)
+		errExit("ftruncate");
+
+	/* Expected to fail */
+	if (write(fd, "test", 4) != -1)
+		errExit("write");
+
+	if (read(fd, buf, 4) != -1)
+		errExit("read");
+
+	if (mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd, 0) != MAP_FAILED)
+		errExit("mmap");
+
+	test_fd = open("/sys/kernel/debug/guest_mem_test", O_RDWR);
+	if (fd == -1)
+		errExit("open");
+
+	if (ioctl(test_fd, GUEST_MEM_REGISTER, fd) == -1)
+		errExit("ioctl");
+
+	if (ioctl(test_fd, GUEST_MEM_GET_PFN, 0x100) == -1)
+		errExit("ioctl");
+
+	if (ioctl(test_fd, GUEST_MEM_GET_PFN, 0x1) == -1)
+		errExit("ioctl");
+
+	if (ftruncate(fd, 0))
+		errExit("ftruncate");
+
+	if (ioctl(test_fd, GUEST_MEM_UNREGISTER, fd) == -1)
+		errExit("ioctl");
+
+	return 0;
+}
+
+--5xgu7omaz7zhq4al--
