@@ -1,24 +1,25 @@
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CE63FD0
-	for <linux-coco@lists.linux.dev>; Mon, 13 Sep 2021 16:02:52 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10105"; a="285411180"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5638C3FD0
+	for <linux-coco@lists.linux.dev>; Mon, 13 Sep 2021 16:21:32 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10106"; a="285416425"
 X-IronPort-AV: E=Sophos;i="5.85,290,1624345200"; 
-   d="scan'208";a="285411180"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2021 09:02:42 -0700
+   d="scan'208";a="285416425"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2021 09:21:31 -0700
 X-IronPort-AV: E=Sophos;i="5.85,290,1624345200"; 
-   d="scan'208";a="551736777"
+   d="scan'208";a="609068367"
 Received: from holdensm-mobl.amr.corp.intel.com (HELO [10.212.147.16]) ([10.212.147.16])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2021 09:02:40 -0700
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2021 09:21:30 -0700
 Subject: Re: [PATCH v2 00/12] x86/sev: KEXEC/KDUMP support for SEV-ES guests
-To: Joerg Roedel <joro@8bytes.org>, x86@kernel.org
-Cc: Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
- Joerg Roedel <jroedel@suse.de>, hpa@zytor.com,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>,
- Jiri Slaby <jslaby@suse.cz>, Dan Williams <dan.j.williams@intel.com>,
+To: Joerg Roedel <jroedel@suse.de>
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+ Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
+ hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+ Dan Williams <dan.j.williams@intel.com>,
  Tom Lendacky <thomas.lendacky@amd.com>, Juergen Gross <jgross@suse.com>,
  Kees Cook <keescook@chromium.org>, David Rientjes <rientjes@google.com>,
  Cfir Cohen <cfir@google.com>, Erdem Aktas <erdemaktas@google.com>,
@@ -29,6 +30,7 @@ Cc: Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
  linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  virtualization@lists.linux-foundation.org
 References: <20210913155603.28383-1-joro@8bytes.org>
+ <4e033293-b81d-1e21-6fd6-f507b6821d3c@intel.com> <YT941raolZvGTVR/@suse.de>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -73,8 +75,8 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <4e033293-b81d-1e21-6fd6-f507b6821d3c@intel.com>
-Date: Mon, 13 Sep 2021 09:02:38 -0700
+Message-ID: <9aa5c10b-56ee-8b26-56d5-870c44e6fbcc@intel.com>
+Date: Mon, 13 Sep 2021 09:21:27 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 Precedence: bulk
@@ -83,17 +85,26 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20210913155603.28383-1-joro@8bytes.org>
+In-Reply-To: <YT941raolZvGTVR/@suse.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/13/21 8:55 AM, Joerg Roedel wrote:
-> This does not work under SEV-ES, because the hypervisor has no access
-> to the vCPU registers and can't make modifications to them. So an
-> SEV-ES guest needs to reset the vCPU itself and park it using the
-> AP-reset-hold protocol. Upon wakeup the guest needs to jump to
-> real-mode and to the reset-vector configured in the AP-Jump-Table.
+On 9/13/21 9:14 AM, Joerg Roedel wrote:
+> On Mon, Sep 13, 2021 at 09:02:38AM -0700, Dave Hansen wrote:
+>> On 9/13/21 8:55 AM, Joerg Roedel wrote:
+>>> This does not work under SEV-ES, because the hypervisor has no access
+>>> to the vCPU registers and can't make modifications to them. So an
+>>> SEV-ES guest needs to reset the vCPU itself and park it using the
+>>> AP-reset-hold protocol. Upon wakeup the guest needs to jump to
+>>> real-mode and to the reset-vector configured in the AP-Jump-Table.
+>> How does this end up looking to an end user that tries to kexec() from a
+>> an SEV-ES kernel?  Does it just hang?
+> Yes, the kexec will just hang. This patch-set contains code to disable
+> the kexec syscalls in situations where it would not work for that
+> reason.
 
-How does this end up looking to an end user that tries to kexec() from a
-an SEV-ES kernel?  Does it just hang?
+Got it.  The end-user-visible symptom just wasn't obvious.  If you
+revise these, it might be nice to add that so that folks who cherry-pick
+stable patches or update to new stable kernels have an idea what this
+might fix.
