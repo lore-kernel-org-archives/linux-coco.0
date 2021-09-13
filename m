@@ -1,13 +1,13 @@
 Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D1D3FD0
-	for <linux-coco@lists.linux.dev>; Mon, 13 Sep 2021 15:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8B43FDA
+	for <linux-coco@lists.linux.dev>; Mon, 13 Sep 2021 15:56:29 +0000 (UTC)
 Received: from cap.home.8bytes.org (p549ad441.dip0.t-ipconnect.de [84.154.212.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id CC69CFCF;
-	Mon, 13 Sep 2021 17:56:18 +0200 (CEST)
+	by theia.8bytes.org (Postfix) with ESMTPSA id 5DC2810B2;
+	Mon, 13 Sep 2021 17:56:24 +0200 (CEST)
 From: Joerg Roedel <joro@8bytes.org>
 To: x86@kernel.org
 Cc: Eric Biederman <ebiederm@xmission.com>,
@@ -35,9 +35,9 @@ Cc: Eric Biederman <ebiederm@xmission.com>,
 	linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: [PATCH v2 04/12] x86/sev: Do not hardcode GHCB protocol version
-Date: Mon, 13 Sep 2021 17:55:55 +0200
-Message-Id: <20210913155603.28383-5-joro@8bytes.org>
+Subject: [PATCH v2 12/12] x86/sev: Support kexec under SEV-ES with AP Jump Table blob
+Date: Mon, 13 Sep 2021 17:56:03 +0200
+Message-Id: <20210913155603.28383-13-joro@8bytes.org>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210913155603.28383-1-joro@8bytes.org>
 References: <20210913155603.28383-1-joro@8bytes.org>
@@ -51,69 +51,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Joerg Roedel <jroedel@suse.de>
 
-Introduce the sev_get_ghcb_proto_ver() which will return the negotiated
-GHCB protocol version and use it to set the version field in the GHCB.
+When the AP Jump Table blob is installed the kernel can hand over the
+APs from the old to the new kernel. Enable kexec when the AP Jump
+Table blob has been installed.
 
 Signed-off-by: Joerg Roedel <jroedel@suse.de>
 ---
- arch/x86/boot/compressed/sev.c | 5 +++++
- arch/x86/kernel/sev-shared.c   | 5 ++++-
- arch/x86/kernel/sev.c          | 5 +++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/sev.h         |  2 ++
+ arch/x86/kernel/machine_kexec_64.c |  6 +++++-
+ arch/x86/kernel/sev.c              | 12 ++++++++++++
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 1a2e49730f8b..101e08c67296 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -119,6 +119,11 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- /* Include code for early handlers */
- #include "../../kernel/sev-shared.c"
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index cd14b6e10f12..61910caf2a0d 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -87,6 +87,7 @@ static __always_inline void sev_es_stop_this_cpu(void)
+ 	if (static_branch_unlikely(&sev_es_enable_key))
+ 		__sev_es_stop_this_cpu();
+ }
++bool sev_kexec_supported(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -94,6 +95,7 @@ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { ret
+ static inline void sev_es_nmi_complete(void) { }
+ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
+ static inline void sev_es_stop_this_cpu(void) { }
++static bool sev_kexec_supported(void) { return true; }
+ #endif
  
-+static u64 sev_get_ghcb_proto_ver(void)
-+{
-+	return GHCB_PROTOCOL_MAX;
-+}
-+
- static bool early_setup_sev_es(void)
+ #endif
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index a8e16a411b40..06ff51b2b3fb 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -26,6 +26,7 @@
+ #include <asm/kexec-bzimage64.h>
+ #include <asm/setup.h>
+ #include <asm/set_memory.h>
++#include <asm/sev.h>
+ 
+ #ifdef CONFIG_ACPI
+ /*
+@@ -597,5 +598,8 @@ void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages)
+  */
+ bool arch_kexec_supported(void)
  {
- 	if (!sev_es_negotiate_protocol(NULL))
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 73eeb5897d16..36eaac2773ed 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -28,6 +28,9 @@ struct sev_ghcb_protocol_info {
- 	unsigned int vm_proto;
- };
- 
-+/* Returns the negotiated GHCB Protocol version */
-+static u64 sev_get_ghcb_proto_ver(void);
+-	return !sev_es_active();
++	if (!sev_kexec_supported())
++		return false;
 +
- static bool __init sev_es_check_cpu_features(void)
- {
- 	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
-@@ -122,7 +125,7 @@ static enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
- 	enum es_result ret;
- 
- 	/* Fill in protocol and format specifiers */
--	ghcb->protocol_version = GHCB_PROTOCOL_MAX;
-+	ghcb->protocol_version = sev_get_ghcb_proto_ver();
- 	ghcb->ghcb_usage       = GHCB_DEFAULT_USAGE;
- 
- 	ghcb_set_sw_exit_code(ghcb, exit_code);
++	return true;
+ }
 diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 8084bfd7cce1..5d3422e8b25e 100644
+index 5d4b1d317317..8c7f1ad69185 100644
 --- a/arch/x86/kernel/sev.c
 +++ b/arch/x86/kernel/sev.c
-@@ -498,6 +498,11 @@ static enum es_result vc_slow_virt_to_phys(struct ghcb *ghcb, struct es_em_ctxt
- /* Negotiated GHCB protocol version */
- static struct sev_ghcb_protocol_info ghcb_protocol_info __ro_after_init;
+@@ -901,6 +901,18 @@ static int __init sev_es_setup_ap_jump_table_blob(void)
+ }
+ core_initcall(sev_es_setup_ap_jump_table_blob);
  
-+static u64 sev_get_ghcb_proto_ver(void)
++bool sev_kexec_supported(void)
 +{
-+	return ghcb_protocol_info.vm_proto;
++	/*
++	 * KEXEC with SEV-ES and more than one CPU is only supported
++	 * when the AP Jump Table is installed.
++	 */
++	if (num_possible_cpus() > 1)
++		return !sev_es_active() || sev_ap_jumptable_blob_installed;
++	else
++		return true;
 +}
 +
- static noinstr void __sev_put_ghcb(struct ghcb_state *state)
+ static void __init alloc_runtime_data(int cpu)
  {
  	struct sev_es_runtime_data *data;
 -- 
