@@ -1,358 +1,206 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2067.outbound.protection.outlook.com [40.107.96.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7772C3FC3
-	for <linux-coco@lists.linux.dev>; Wed, 15 Sep 2021 10:02:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1631700132;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T7eYhM+mNQgmtkp4huwTGvse0/UecO0jjpzbRrCPdJE=;
-	b=cJYCzjS8rrp5IJ8g1wSd5q+ieD+UHnT31Gcs7++X/WabEh7oG0qvRUfMjsNcJIbNPJ1jHY
-	B9IYjg1keKrZYOwM14f7UcoF2Ytv3pOIiPnBTeXPeFIN8MbZ9qJDD0/6xywD2k2VUS/rjn
-	MDX2iV326V0OivtXYvmQmSJBb2NJpQ8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-426-DZ9qW-JcPj2MtU52SJIsCA-1; Wed, 15 Sep 2021 06:02:11 -0400
-X-MC-Unique: DZ9qW-JcPj2MtU52SJIsCA-1
-Received: by mail-wm1-f69.google.com with SMTP id 17-20020a05600c029100b00305eac9f29aso367329wmk.1
-        for <linux-coco@lists.linux.dev>; Wed, 15 Sep 2021 03:02:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=T7eYhM+mNQgmtkp4huwTGvse0/UecO0jjpzbRrCPdJE=;
-        b=xn6VGddcwaoH/7VtaEDzqZJl/KvuhAOcd1a8fbZYsrKf4ONVl70xvSRpCoMWXZ+79U
-         NduRuJw9N9uFCYPAWfqByIDAN1oLdhaZ1IHXN42Qb9DfmhBULNkvt8MzAb40MgSwuev+
-         NmI2Fu57gqh7oTNPlQf648FLx/SnK0JGA92jsvTDrphYvlVvFK5o7gumK26atO/b/EnL
-         p34dqYgucg6mY0nM56fMUupJ8RZ/UPFI3+cg7Pl4YK1JMVxivkNs+KFtBGL5btQlc88L
-         llGavAXqOSvldWaVkNKHMGmFQUrDYQ01LrjcyNL5CogOUesFtD8bMuPTYW3v/7Z3LaZU
-         g90g==
-X-Gm-Message-State: AOAM532sZmzwr25ghNheMWqLAysFFfX1qrsuBxIVH+jv2cCO+liL5tap
-	T86Nm60Rtm+vM2hEf1By6BD2/DePbsdw8nt7iXsd/pt5BvoCRM9PJlTSC90i032R81hXrXiaFRF
-	amSa8e+zhg+fUvmsqc2ow6g==
-X-Received: by 2002:adf:fe44:: with SMTP id m4mr4151069wrs.206.1631700129463;
-        Wed, 15 Sep 2021 03:02:09 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw+vesNYqkbvKmnGn0DYPdg1QzoVRvbyOCGWnlcCErhvrjU+9MMk6+cZQT4KhTefn5/6tlZ1g==
-X-Received: by 2002:adf:fe44:: with SMTP id m4mr4150976wrs.206.1631700128848;
-        Wed, 15 Sep 2021 03:02:08 -0700 (PDT)
-Received: from work-vm (cpc109021-salf6-2-0-cust453.10-2.cable.virginm.net. [82.29.237.198])
-        by smtp.gmail.com with ESMTPSA id x5sm3818031wmk.32.2021.09.15.03.02.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Sep 2021 03:02:08 -0700 (PDT)
-Date: Wed, 15 Sep 2021 11:02:05 +0100
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32FD3FC9
+	for <linux-coco@lists.linux.dev>; Wed, 15 Sep 2021 11:46:43 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cyOjGZedECRJI36RVz3fMX4CGneT1+uMvRDWBMye9FmWD3j4IAcMXkhQ+u7rIM7p2Xxc8SE04bWHeM/DB+99ItCVCGUdGkFtUiNGQcJMTzhfCZsgwsP8DHZyt1sxq6QcZD3xymThBFmvOLICDYXhnKPDaZ1jtgdSrbqrYyv3kSB+hL0kKfFhDC51DDEA71x3tQ6T55fbp13UiG7ufc5O2mzBHXYMHqupDunFlxuY0hraHFeRxXj4N9wltkvUHiJsxAM6MXnPWo6prp/1GCUwf612bLJKJl0gYZNy9joWYyar1X9byMDQjpV8F4bP1gkmjW22ijdfvR2wUifqtJP3TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=m2WnJNX03slbaWSrkxam1qa+Zp8IWSMOevG99AoRAB0=;
+ b=eF4iJ75IV9atsMmFxPPmXmcEP7Uu17ZyRXucsUcSJqpt1YZtvNVrxPfHDVqxd7526jiUDLJM3CtgoNPapaTs4BErW0eW1XatXuVE8+gJ4cXLDrMQ9yYTN08q42j7fZjRCa4wWntHgqV82OmOkeVDrMgyDpEUQm4SATSeWDZnfcY+hNsWP7se10oKsXPhLxvrlPpQ4MUg9W0v1fpklgGESUXUH7vD5BUtciOGis2npO8KIRKY+svnxgz7zrXST24VNiNyyRf3JkQYrRv4TKN9ln/R0w4aQifataqTyYQ5B9ACoyS43BuT3O0ZUw3vnjxBcS9KToFVlWu3NGrhHLvOgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m2WnJNX03slbaWSrkxam1qa+Zp8IWSMOevG99AoRAB0=;
+ b=MjBIMQc0M/TqfqtBSk8qtOBQqTxLh1WQiN0UHKr+UXFBuEbCiUIYQe1qoUieKxghl/V2yOzXchFCXtonpJgfFRv5CHK576FI8Gb+cae85qbyKucl8Jfodu3A79DkyioVLMqjmhy4OnHlKALOBLzmmLrripEtI3hhhC6JkXDzkH8=
+Authentication-Results: linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN6PR12MB2768.namprd12.prod.outlook.com (2603:10b6:805:72::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.14; Wed, 15 Sep
+ 2021 11:46:37 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4500.019; Wed, 15 Sep 2021
+ 11:46:37 +0000
 Subject: Re: [PATCH Part1 v5 38/38] virt: sevguest: Add support to get
  extended report
-Message-ID: <YUHEnTDKEiSySY4a@work-vm>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+ <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
 References: <20210820151933.22401-1-brijesh.singh@amd.com>
- <20210820151933.22401-39-brijesh.singh@amd.com>
+ <20210820151933.22401-39-brijesh.singh@amd.com> <YTj4kZCTudDauIn1@zn.tnic>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <0e15e6e4-38f6-75fd-1c8f-0dd5a81e54f4@amd.com>
+Date: Wed, 15 Sep 2021 06:46:34 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
+In-Reply-To: <YTj4kZCTudDauIn1@zn.tnic>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-ClientProxiedBy: SA9PR13CA0063.namprd13.prod.outlook.com
+ (2603:10b6:806:23::8) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20210820151933.22401-39-brijesh.singh@amd.com>
-User-Agent: Mutt/2.0.7 (2021-05-04)
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: from Brijeshs-MacBook-Pro.local (70.112.153.56) by SA9PR13CA0063.namprd13.prod.outlook.com (2603:10b6:806:23::8) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.9 via Frontend Transport; Wed, 15 Sep 2021 11:46:35 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 1e539707-3755-4c5b-db44-08d9783e796a
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2768:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS:
+	<SN6PR12MB27684F26DFC7F29CEC9571B0E5DB9@SN6PR12MB2768.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	vcDdjgjls7SxbtSxL7CkNBISV3yn2iGCElg7yi1E7RQDDifR2/CfTB2aDHMdrf68Nzgj9X7fagb6tKMsm+vSWJH1pBKYvNmOIKSDWxVSIvqJEC3atP1T6807dWxObf12I3XD/wPt8uXsekB5SOoPmvwlmiipE/oT5Wzbbb/baChSrTigUlnBv2RtUVQwx0+6aVstIwRvrj5twW6EGqjJUxvrg/0YWnfwRegpxaRJsRe39Dwwf3POfM5vOXjWDVzB1ZnTDaKAWagPzn5VsPnxZIN/PJOeUFqwRQcft4pzVJxZP9XFiUdP5g8wpj6eymEBcQfWlKxE4RZV3DJ/L0AWvj/hqaMi4tnDRRpo/lYYpzh2FcxY9eK0PWCKcwdehHiIe4mYb2GUCw3Ehh8MPTRB+6u/dHnan+Kjybeo1m5O4dAMDs8RKU+5Pb4zvpAkz/dEVy0N23oN1FNCV6atEI1z3A9pgq3ipp25OmRqBqDoMUlwx9/WtR8D7DfgpN5kE8d8x3KoaAH1h1HdyTy9lbRZicBucPz3+DyW2O42L3X2lBlxJCdwp7Cpv73QYcFWB6uQ+nrmVtNfjfx9SKmjpwwnzcT0sn3cvYNeeqHjuhHG7fqCQHmmWkg+gOjhqkRFkLc3dsLpU5KUd5pLNlb0H5ueSk5CsYsqKMQqroCzXEAOEvhBQojKua5fgsHQ8oDWryuLPYI4UYigf1Q9mHDdBUOPjgapFBVIYzu6fF53rYkWkNOXsZ8QwlWQGs1T41dVAha1VqcQPGikeUBBm9cM3coACw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(346002)(396003)(376002)(366004)(136003)(39860400002)(38100700002)(66556008)(66476007)(38350700002)(6506007)(53546011)(52116002)(2906002)(2616005)(5660300002)(31686004)(26005)(44832011)(956004)(31696002)(478600001)(6486002)(4326008)(83380400001)(186003)(66946007)(86362001)(54906003)(8936002)(316002)(6512007)(7406005)(8676002)(7416002)(36756003)(6916009)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?T1hzSmR0VGcyTE9RTXdCSEVqMDk3NVZ0UGQxMGFJb1ZjcTJ0SXcvTDEyMnpu?=
+ =?utf-8?B?R2hBcHRScjJ0OVpqZXdveDJ2R3hadkp2TE5TdmRRR1drU0JKUmdtNWlWNW1I?=
+ =?utf-8?B?SFVib1F4NGJqaVB4SVYyMmlGVUR5NmQ0ajQySVNuZk14M3dsSjF3VUcxOFBD?=
+ =?utf-8?B?Zm4rOGFDTTB6cWJMcTJJQWdmcnNiTFZrbHZRZjhqQ2xMd3p2cURYM1VNZnlL?=
+ =?utf-8?B?d3BiclJWellXb2M4bDcrZFErVDZ1Y1FiUzdnRWRyTm5uNDZTTWlMcWhzVmZW?=
+ =?utf-8?B?WDlNY2g4NWdobXROZ1pYV1ovZTNIVzQ3RFRpbEVqaEZLYUpJaDUyWEtmN01E?=
+ =?utf-8?B?Uzl2NDBkQ1htQU9qZjduMWIvVTFJVCsvZVRQMHZyUDVyaE9KQW9SU0VKcVRE?=
+ =?utf-8?B?U0ZheDNJNUJiTUYzY2RvVFpaK3BNY2F5d3QxZnZmVkZrOXRDV0EvQ1RURFNW?=
+ =?utf-8?B?VXVUTzR0UXNoVW1JMjk1eHh4NW1nc2NTWEp6VmpJenBnUFNhOWhlWGpYZk81?=
+ =?utf-8?B?TmtwbUNTUUcrT0lmMVVPMTFLVVlTTTBSNEkwSENsTzVvM1BtWjV2ODdDdTNx?=
+ =?utf-8?B?eHNEOTFUblh6N09qZnVqL0ZSN3hvdG5ieGUrdVRXWllMVVI5eUtralFRNmVP?=
+ =?utf-8?B?aGZ2Um1RTXduTFBJMjc5OWNnTWtUMk1pU0hjM3ZuUUkrMjVQc3FSUElkcGhR?=
+ =?utf-8?B?RVF2N2p6Z1BMV0ZwMFdoTjZNcVNLZlZ3SEE0MFl5RkpGTXFBZWpQMG1Vcmkz?=
+ =?utf-8?B?UlB4d3BXM0VqVmFhZVJ2OWdnYmRpbmxxSDhrVzAxY0pmdjlxZ3lPMEpnY1ZQ?=
+ =?utf-8?B?czVGbVBpa1h4ZnN4Qis4dEN3aGFnbWZTRVJqR3ltSkJUUkJqeVoyaC9QdXdO?=
+ =?utf-8?B?UG43SWppT3F6b0xlWjloUEpmL1VuSXQ5bXl1WWFkM2JHZUZzMVVOUkVjYkx0?=
+ =?utf-8?B?UTJCZ2tFTUxjRmNWS01jUDlPQ3FSMHFnaXh1L2M1VHZyWkpuZE16ZWN5dnJv?=
+ =?utf-8?B?ZFFFN1ErYTdoMHI3VCtKM0xxQS80Q0dvYkQrRjY4WjhPUHFFd1dnU0hacEtS?=
+ =?utf-8?B?cFUxUEl6R2VvYUY5dWRPc013QWYxNkMrU29UcDRMYmNJMUg1Q2xnY0t4T0N5?=
+ =?utf-8?B?Z2l1ck1JSVBSV3lud3NmVVQ3WXQvZURyQkdYYmwzaUpONlpwUkFFYThPdnU5?=
+ =?utf-8?B?VTE1MzhlZzJNMXdkVGFnVUZiQzUyUjd1ektQb2dSb0lXUTh1alB5VnhpVU92?=
+ =?utf-8?B?MVFNeXV6TFpJTXM3NkRJUlpkL3RPc0QzMFozRUR2YW96WnRGWVRlWllGTzdY?=
+ =?utf-8?B?WGpyWnJ2UElKbVVwWHhUaE52VDdYVmpEU0YzajF4eUhBNFFidUt2cW1POGtl?=
+ =?utf-8?B?TGo0dFlvakhMaGgxTzRZRk1MV29HMVExUEdmbFJFV2tUTkk4MWtqMm5aMVY3?=
+ =?utf-8?B?endyMlV6VjYwSGlrVnhwQmd6ZWxGbW5KZURCVGI1ajdQSHFzZmc0L0R3Rk1K?=
+ =?utf-8?B?eGJsa0R2Y0JqWlNIVlRPUTNzckgzR3F5MjFwMjNUdG4yVExhUlBoUlpKNDc1?=
+ =?utf-8?B?NDZ1cFRSUGdHbEE4TlZIRFpCejZHNUVlODkzVTRaVjl3dGJnUnFCTmlPOUds?=
+ =?utf-8?B?aWlBRHE3ZitKWUdmVW0yN21vYkJoeldFT1J5SHQ0aXI5VWo0ZEZzdEdOaWFC?=
+ =?utf-8?B?blJjSHVlak9lMlhaV0crK3V3NDA0Mk5lZS9mYjFiTk5xdTQyTFczaGFTZlY3?=
+ =?utf-8?Q?ruGFDNWfDeYe4xaaG+lYlGh9UhJe5axqx+rIyTX?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e539707-3755-4c5b-db44-08d9783e796a
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2021 11:46:37.2835
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UhEfhxZsXHYEzpARnutjTjo2eEy/u41VW2lhmuaX0faiu4iN0BIuyzCGp3BgR8AK/Pc5xrAZ4w5B90eU0G29hg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR12MB2768
 
-* Brijesh Singh (brijesh.singh@amd.com) wrote:
-> Version 2 of GHCB specification defines NAE to get the extended guest
-> request. It is similar to the SNP_GET_REPORT ioctl. The main difference
-
-^^^^^^^^^ is that 'report' not request?
-
-> is related to the additional data that be returned. The additional
-> data returned is a certificate blob that can be used by the SNP guest
-> user. The certificate blob layout is defined in the GHCB specification.
-> The driver simply treats the blob as a opaque data and copies it to
-> userspace.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-
-I'm confused by snp_dev->certs_data - who writes to that, and when?
-I see it's allocated as shared by the probe function but then passed in
-input data in get_ext_report - but get_ext_report memset's it.
-What happens if two threads were to try and get an extended report at
-the same time?
-
-Dave
+Hi Boris,
 
 
-> ---
->  Documentation/virt/coco/sevguest.rst  |  22 +++++
->  drivers/virt/coco/sevguest/sevguest.c | 126 ++++++++++++++++++++++++++
->  include/uapi/linux/sev-guest.h        |  13 +++
->  3 files changed, 161 insertions(+)
-> 
-> diff --git a/Documentation/virt/coco/sevguest.rst b/Documentation/virt/coco/sevguest.rst
-> index 25446670d816..7acb8696fca4 100644
-> --- a/Documentation/virt/coco/sevguest.rst
-> +++ b/Documentation/virt/coco/sevguest.rst
-> @@ -85,3 +85,25 @@ on the various fileds passed in the key derivation request.
->  
->  On success, the snp_derived_key_resp.data will contains the derived key
->  value.
-> +
-> +2.2 SNP_GET_EXT_REPORT
-> +----------------------
-> +:Technology: sev-snp
-> +:Type: guest ioctl
-> +:Parameters (in/out): struct snp_ext_report_req
-> +:Returns (out): struct snp_report_resp on success, -negative on error
-> +
-> +The SNP_GET_EXT_REPORT ioctl is similar to the SNP_GET_REPORT. The difference is
-> +related to the additional certificate data that is returned with the report.
-> +The certificate data returned is being provided by the hypervisor through the
-> +SNP_SET_EXT_CONFIG.
-> +
-> +The ioctl uses the SNP_GUEST_REQUEST (MSG_REPORT_REQ) command provided by the SEV-SNP
-> +firmware to get the attestation report.
-> +
-> +On success, the snp_ext_report_resp.data will contains the attestation report
-> +and snp_ext_report_req.certs_address will contains the certificate blob. If the
-> +length of the blob is lesser than expected then snp_ext_report_req.certs_len will
-> +be updated with the expected value.
-> +
-> +See GHCB specification for further detail on how to parse the certificate blob.
-> diff --git a/drivers/virt/coco/sevguest/sevguest.c b/drivers/virt/coco/sevguest/sevguest.c
-> index 621b1c5a9cfc..d978eb432c4c 100644
-> --- a/drivers/virt/coco/sevguest/sevguest.c
-> +++ b/drivers/virt/coco/sevguest/sevguest.c
-> @@ -39,6 +39,7 @@ struct snp_guest_dev {
->  	struct device *dev;
->  	struct miscdevice misc;
->  
-> +	void *certs_data;
->  	struct snp_guest_crypto *crypto;
->  	struct snp_guest_msg *request, *response;
->  };
-> @@ -347,6 +348,117 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_user_guest_
->  	return rc;
->  }
->  
-> +static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_user_guest_request *arg)
-> +{
-> +	struct snp_guest_crypto *crypto = snp_dev->crypto;
-> +	struct snp_guest_request_data input = {};
-> +	struct snp_ext_report_req req;
-> +	int ret, npages = 0, resp_len;
-> +	struct snp_report_resp *resp;
-> +	struct snp_report_req *rreq;
-> +	unsigned long fw_err = 0;
-> +
-> +	if (!arg->req_data || !arg->resp_data)
-> +		return -EINVAL;
-> +
-> +	/* Copy the request payload from the userspace */
-> +	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-> +		return -EFAULT;
-> +
-> +	rreq = &req.data;
-> +
-> +	/* Message version must be non-zero */
-> +	if (!rreq->msg_version)
-> +		return -EINVAL;
-> +
-> +	if (req.certs_len) {
-> +		if (req.certs_len > SEV_FW_BLOB_MAX_SIZE ||
-> +		    !IS_ALIGNED(req.certs_len, PAGE_SIZE))
-> +			return -EINVAL;
-> +	}
-> +
-> +	if (req.certs_address && req.certs_len) {
-> +		if (!access_ok(req.certs_address, req.certs_len))
-> +			return -EFAULT;
-> +
-> +		/*
-> +		 * Initialize the intermediate buffer with all zero's. This buffer
-> +		 * is used in the guest request message to get the certs blob from
-> +		 * the host. If host does not supply any certs in it, then we copy
-> +		 * zeros to indicate that certificate data was not provided.
-> +		 */
-> +		memset(snp_dev->certs_data, 0, req.certs_len);
-> +
-> +		input.data_gpa = __pa(snp_dev->certs_data);
-> +		npages = req.certs_len >> PAGE_SHIFT;
-> +	}
-> +
-> +	/*
-> +	 * The intermediate response buffer is used while decrypting the
-> +	 * response payload. Make sure that it has enough space to cover the
-> +	 * authtag.
-> +	 */
-> +	resp_len = sizeof(resp->data) + crypto->a_len;
-> +	resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
-> +	if (!resp)
-> +		return -ENOMEM;
-> +
-> +	if (copy_from_user(resp, (void __user *)arg->resp_data, sizeof(*resp))) {
-> +		ret = -EFAULT;
-> +		goto e_free;
-> +	}
-> +
-> +	/* Encrypt the userspace provided payload */
-> +	ret = enc_payload(snp_dev, rreq->msg_version, SNP_MSG_REPORT_REQ,
-> +			  &rreq->user_data, sizeof(rreq->user_data));
-> +	if (ret)
-> +		goto e_free;
-> +
-> +	/* Call firmware to process the request */
-> +	input.req_gpa = __pa(snp_dev->request);
-> +	input.resp_gpa = __pa(snp_dev->response);
-> +	input.data_npages = npages;
-> +	memset(snp_dev->response, 0, sizeof(*snp_dev->response));
-> +	ret = snp_issue_guest_request(EXT_GUEST_REQUEST, &input, &fw_err);
-> +
-> +	/* Popogate any firmware error to the userspace */
-> +	arg->fw_err = fw_err;
-> +
-> +	/* If certs length is invalid then copy the returned length */
-> +	if (arg->fw_err == SNP_GUEST_REQ_INVALID_LEN) {
-> +		req.certs_len = input.data_npages << PAGE_SHIFT;
-> +
-> +		if (copy_to_user((void __user *)arg->req_data, &req, sizeof(req)))
-> +			ret = -EFAULT;
-> +
-> +		goto e_free;
-> +	}
-> +
-> +	if (ret)
-> +		goto e_free;
-> +
-> +	/* Decrypt the response payload */
-> +	ret = verify_and_dec_payload(snp_dev, resp->data, resp_len);
-> +	if (ret)
-> +		goto e_free;
-> +
-> +	/* Copy the certificate data blob to userspace */
-> +	if (req.certs_address &&
-> +	    copy_to_user((void __user *)req.certs_address, snp_dev->certs_data,
-> +			 req.certs_len)) {
-> +		ret = -EFAULT;
-> +		goto e_free;
-> +	}
-> +
-> +	/* Copy the response payload to userspace */
-> +	if (copy_to_user((void __user *)arg->resp_data, resp, sizeof(*resp)))
-> +		ret = -EFAULT;
-> +
-> +e_free:
-> +	kfree(resp);
-> +	return ret;
-> +}
-> +
->  static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
->  {
->  	struct snp_guest_dev *snp_dev = to_snp_dev(file);
-> @@ -368,6 +480,10 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
->  		ret = get_derived_key(snp_dev, &input);
->  		break;
->  	}
-> +	case SNP_GET_EXT_REPORT: {
-> +		ret = get_ext_report(snp_dev, &input);
-> +		break;
-> +	}
->  	default:
->  		break;
->  	}
-> @@ -453,6 +569,12 @@ static int __init snp_guest_probe(struct platform_device *pdev)
->  		goto e_free_req;
->  	}
->  
-> +	snp_dev->certs_data = alloc_shared_pages(SEV_FW_BLOB_MAX_SIZE);
-> +	if (IS_ERR(snp_dev->certs_data)) {
-> +		ret = PTR_ERR(snp_dev->certs_data);
-> +		goto e_free_resp;
-> +	}
-> +
->  	misc = &snp_dev->misc;
->  	misc->minor = MISC_DYNAMIC_MINOR;
->  	misc->name = DEVICE_NAME;
-> @@ -460,6 +582,9 @@ static int __init snp_guest_probe(struct platform_device *pdev)
->  
->  	return misc_register(misc);
->  
-> +e_free_resp:
-> +	free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
-> +
->  e_free_req:
->  	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
->  
-> @@ -475,6 +600,7 @@ static int __exit snp_guest_remove(struct platform_device *pdev)
->  
->  	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
->  	free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
-> +	free_shared_pages(snp_dev->certs_data, SEV_FW_BLOB_MAX_SIZE);
->  	deinit_crypto(snp_dev->crypto);
->  	misc_deregister(&snp_dev->misc);
->  
-> diff --git a/include/uapi/linux/sev-guest.h b/include/uapi/linux/sev-guest.h
-> index 621a9167df7a..23659215fcfb 100644
-> --- a/include/uapi/linux/sev-guest.h
-> +++ b/include/uapi/linux/sev-guest.h
-> @@ -57,6 +57,16 @@ struct snp_derived_key_resp {
->  	__u8 data[64];
->  };
->  
-> +struct snp_ext_report_req {
-> +	struct snp_report_req data;
-> +
-> +	/* where to copy the certificate blob */
-> +	__u64 certs_address;
-> +
-> +	/* length of the certificate blob */
-> +	__u32 certs_len;
-> +};
-> +
->  #define SNP_GUEST_REQ_IOC_TYPE	'S'
->  
->  /* Get SNP attestation report */
-> @@ -65,4 +75,7 @@ struct snp_derived_key_resp {
->  /* Get a derived key from the root */
->  #define SNP_GET_DERIVED_KEY _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x1, struct snp_user_guest_request)
->  
-> +/* Get SNP extended report as defined in the GHCB specification version 2. */
-> +#define SNP_GET_EXT_REPORT _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x2, struct snp_user_guest_request)
-> +
->  #endif /* __UAPI_LINUX_SEV_GUEST_H_ */
-> -- 
-> 2.17.1
-> 
-> 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+On 9/8/21 12:53 PM, Borislav Petkov wrote:
 
+>> +
+>> +	/* If certs length is invalid then copy the returned length */
+>> +	if (arg->fw_err == SNP_GUEST_REQ_INVALID_LEN) {
+>> +		req.certs_len = input.data_npages << PAGE_SHIFT;
+>> +
+>> +		if (copy_to_user((void __user *)arg->req_data, &req, sizeof(req)))
+>> +			ret = -EFAULT;
+>> +
+>> +		goto e_free;
+>> +	}
+>> +
+>> +	if (ret)
+>> +		goto e_free;
+> This one is really confusing. You assign ret in the if branch
+> above but then you test ret outside too, just in case the
+> snp_issue_guest_request() call above has failed.
+>
+> But then if that call has failed, you still go and do some cleanup work
+> for invalid certs length...
+>
+> So that get_ext_report() function is doing too many things at once and
+> is crying to be split.
+I will try to see what I can come up with to make it easy to read.
+>
+> For example, the glue around snp_issue_guest_request() is already carved
+> out in handle_guest_request(). Why aren't you calling that function here
+> too?
+
+The handle_guest_request() uses the VMGEXIT_GUEST_REQUEST which does not
+require the memory for the certificate blobs etc. But based on your
+earlier comment that we should let the driver use the VMGEXIT code
+rather than enum will help in this case. I will be reworking
+handle_guest_request() so that it can be used for both the cases (with
+and without certificate).
+
+
+> That'll keep the enc, request, dec payload game separate and then the
+> rest of the logic can remain in get_ext_report()...
+>
+> ...
+>
+>>  static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+>>  {
+>>  	struct snp_guest_dev *snp_dev = to_snp_dev(file);
+>> @@ -368,6 +480,10 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
+>>  		ret = get_derived_key(snp_dev, &input);
+>>  		break;
+>>  	}
+>> +	case SNP_GET_EXT_REPORT: {
+>> +		ret = get_ext_report(snp_dev, &input);
+>> +		break;
+>> +	}
+>>  	default:
+>>  		break;
+>>  	}
+>> @@ -453,6 +569,12 @@ static int __init snp_guest_probe(struct platform_device *pdev)
+>>  		goto e_free_req;
+>>  	}
+>>  
+>> +	snp_dev->certs_data = alloc_shared_pages(SEV_FW_BLOB_MAX_SIZE);
+>> +	if (IS_ERR(snp_dev->certs_data)) {
+>> +		ret = PTR_ERR(snp_dev->certs_data);
+>> +		goto e_free_resp;
+>> +	}
+> Same comments here as for patch 37.
+>
+>> +
+>>  	misc = &snp_dev->misc;
+>>  	misc->minor = MISC_DYNAMIC_MINOR;
+>>  	misc->name = DEVICE_NAME;
+>
