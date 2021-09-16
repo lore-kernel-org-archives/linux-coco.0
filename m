@@ -1,48 +1,22 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C6D3FC9
-	for <linux-coco@lists.linux.dev>; Wed, 15 Sep 2021 20:04:51 +0000 (UTC)
-Received: by mail-lf1-f49.google.com with SMTP id m3so7167817lfu.2
-        for <linux-coco@lists.linux.dev>; Wed, 15 Sep 2021 13:04:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=PJmcziiXmV8RIDbZ5D5UGsw521UNmkikWzjsy2xatzI=;
-        b=qYfsUO72jzT4TWWeJIe6bnU4+xaGNqkuwhxq7qPUJWGcVmmE5nrH7w4PwgOVP/45i6
-         D6JCUo6tVAYsJy51Xvn+OiLGsnYNha2MvjzXv8QYcO3NdMMAV2fcBogsClVqHnnVc+HB
-         EUuJGikXwdM6Ga3rUvHG502bJiXyBCWfkOnQ1JuFr5XXVCh+Zxfk9Q1F10pmP0vagj41
-         bHQvOeDYwZh2UkF9bB58Wc/gHQwSTrRs4iZLWMinpicl1khA6fit3JvQSwMDRvmXheqF
-         wkLv1G99JxZdvfklwZSY6QAuLXEdLfO2HVMQvfBXlR4G/HjFD5sqRF1Ow6kcW2PlrVYg
-         +AZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=PJmcziiXmV8RIDbZ5D5UGsw521UNmkikWzjsy2xatzI=;
-        b=bNgWoDBKARLEDx5cNGdSE80RipsHguhn7iq/zBtunHOeOzJsDkQg+iuIfNI29P+AE7
-         qpkWRazPao7iNkS1o9rmxey2xuUiGPeIngdAZ9hjg+FppRChrwiRyGYM0S/FlEcHuAn4
-         vmnO6TE/mjXbgqDkb2e+xMTtqjAZLFZDqC3ZeOcPirtywkGacEL92++JBZpqvR7i3xBM
-         j9OzP1K8aV5u61JWChGwhtQmmZnUxqW/28hapEgh9tALc46Coh13p6w+jIgaJhMs2JpZ
-         z2paHNkvEQeFcNzzYmh8ME0e4C2MPOqoecf5EeVihae5GTtFgEtjeO2iYY+RHXwtExIs
-         ElGw==
-X-Gm-Message-State: AOAM533IlYJmjPGPIKw9jShV7VheYs1vvdZw1DoJkdAiscQqmp/ya9+F
-	cb8toSVeg0JWM/MUkSHSCDRyag==
-X-Google-Smtp-Source: ABdhPJxjPfwH2g9ak/eK9haf/qlkdtExND36Ul9ulD+4sIjr7HF+ctNlv6IsgFBwf9d9RA8jxd6Xjg==
-X-Received: by 2002:a05:6512:1329:: with SMTP id x41mr1241997lfu.9.1631736289779;
-        Wed, 15 Sep 2021 13:04:49 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id t15sm93908ljo.102.2021.09.15.13.04.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Sep 2021 13:04:48 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-	id 26905102F9E; Wed, 15 Sep 2021 23:04:52 +0300 (+03)
-Date: Wed, 15 Sep 2021 23:04:52 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: David Hildenbrand <david@redhat.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E643FC3
+	for <linux-coco@lists.linux.dev>; Thu, 16 Sep 2021 07:37:00 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10108"; a="308051093"
+X-IronPort-AV: E=Sophos;i="5.85,297,1624345200"; 
+   d="scan'208";a="308051093"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2021 00:36:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.85,297,1624345200"; 
+   d="scan'208";a="472680027"
+Received: from chaop.bj.intel.com (HELO localhost) ([10.240.192.135])
+  by orsmga007.jf.intel.com with ESMTP; 16 Sep 2021 00:36:28 -0700
+Date: Thu, 16 Sep 2021 15:36:27 +0800
+From: Chao Peng <chao.p.peng@linux.intel.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
 	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
@@ -63,11 +37,13 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
 	Dave Hansen <dave.hansen@intel.com>,
 	Yu Zhang <yu.c.zhang@linux.intel.com>
 Subject: Re: [RFC] KVM: mm: fd-based approach for supporting KVM guest
  private memory
-Message-ID: <20210915200452.wp6ippdvjz6zpv6a@box.shutemov.name>
+Message-ID: <20210916073627.GA18399@chaop.bj.intel.com>
+Reply-To: Chao Peng <chao.p.peng@linux.intel.com>
 References: <20210824005248.200037-1-seanjc@google.com>
  <20210902184711.7v65p5lwhpr2pvk7@box.shutemov.name>
  <YTE1GzPimvUB1FOF@google.com>
@@ -75,104 +51,122 @@ References: <20210824005248.200037-1-seanjc@google.com>
  <02806f62-8820-d5f9-779c-15c0e9cd0e85@kernel.org>
  <20210910171811.xl3lms6xoj3kx223@box.shutemov.name>
  <20210915195857.GA52522@chaop.bj.intel.com>
- <51a6f74f-6c05-74b9-3fd7-b7cd900fb8cc@redhat.com>
- <20210915142921.bxxsap6xktkt4bek@black.fi.intel.com>
- <ca80775c-6bcb-f7c2-634b-237bc0ded52a@redhat.com>
+ <20210915141147.s4mgtcfv3ber5fnt@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=gb2312
 Content-Disposition: inline
-In-Reply-To: <ca80775c-6bcb-f7c2-634b-237bc0ded52a@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210915141147.s4mgtcfv3ber5fnt@black.fi.intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-On Wed, Sep 15, 2021 at 04:59:46PM +0200, David Hildenbrand wrote:
-> 
-> > > I don't think we are, it still feels like we are in the early prototype
-> > > phase (even way before a PoC). I'd be happy to see something "cleaner" so to
-> > > say -- it still feels kind of hacky to me, especially there seem to be many
-> > > pieces of the big puzzle missing so far. Unfortunately, this series hasn't
-> > > caught the attention of many -MM people so far, maybe because other people
-> > > miss the big picture as well and are waiting for a complete design proposal.
+On Wed, Sep 15, 2021 at 05:11:47PM +0300, Kirill A. Shutemov wrote:
+> On Wed, Sep 15, 2021 at 07:58:57PM +0000, Chao Peng wrote:
+> > On Fri, Sep 10, 2021 at 08:18:11PM +0300, Kirill A. Shutemov wrote:
+> > > On Fri, Sep 03, 2021 at 12:15:51PM -0700, Andy Lutomirski wrote:
+> > > > On 9/3/21 12:14 PM, Kirill A. Shutemov wrote:
+> > > > > On Thu, Sep 02, 2021 at 08:33:31PM +0000, Sean Christopherson wrote:
+> > > > >> Would requiring the size to be '0' at F_SEAL_GUEST time solve that problem?
+> > > > > 
+> > > > > I guess. Maybe we would need a WRITE_ONCE() on set. I donno. I will look
+> > > > > closer into locking next.
+> > > > 
+> > > > We can decisively eliminate this sort of failure by making the switch
+> > > > happen at open time instead of after.  For a memfd-like API, this would
+> > > > be straightforward.  For a filesystem, it would take a bit more thought.
 > > > 
-> > > For example, what's unclear to me: we'll be allocating pages with
-> > > GFP_HIGHUSER_MOVABLE, making them land on MIGRATE_CMA or ZONE_MOVABLE; then
-> > > we silently turn them unmovable, which breaks these concepts. Who'd migrate
-> > > these pages away just like when doing long-term pinning, or how is that
-> > > supposed to work?
+> > > I think it should work fine as long as we check seals after i_size in the
+> > > read path. See the comment in shmem_file_read_iter().
+> > > 
+> > > Below is updated version. I think it should be good enough to start
+> > > integrate with KVM.
+> > > 
+> > > I also attach a test-case that consists of kernel patch and userspace
+> > > program. It demonstrates how it can be integrated into KVM code.
+> > > 
+> > > One caveat I noticed is that guest_ops::invalidate_page_range() can be
+> > > called after the owner (struct kvm) has being freed. It happens because
+> > > memfd can outlive KVM. So the callback has to check if such owner exists,
+> > > than check that there's a memslot with such inode.
 > > 
-> > That's fair point. We can fix it by changing mapping->gfp_mask.
+> > Would introducing memfd_unregister_guest() fix this?
 > 
-> That's essentially what secretmem does when setting up a file.
+> I considered this, but it get complex quickly.
 > 
+> At what point it gets called? On KVM memslot destroy?
+
+I meant when the VM gets destroyed.
+
+> 
+> What if multiple KVM slot share the same memfd? Add refcount into memfd on
+> how many times the owner registered the memfd?
+> 
+> It would leave us in strange state: memfd refcount owners (struct KVM) and
+> KVM memslot pins the struct file. Weird refcount exchnage program.
+> 
+> I hate it.
+
+But yes agree things will get much complex in practice.
+
+> 
+> > > I guess it should be okay: we have vm_list we can check owner against.
+> > > We may consider replace vm_list with something more scalable if number of
+> > > VMs will get too high.
+> > > 
+> > > Any comments?
+> > > 
+> > > diff --git a/include/linux/memfd.h b/include/linux/memfd.h
+> > > index 4f1600413f91..3005e233140a 100644
+> > > --- a/include/linux/memfd.h
+> > > +++ b/include/linux/memfd.h
+> > > @@ -4,13 +4,34 @@
+> > >  
+> > >  #include <linux/file.h>
+> > >  
+> > > +struct guest_ops {
+> > > +	void (*invalidate_page_range)(struct inode *inode, void *owner,
+> > > +				      pgoff_t start, pgoff_t end);
+> > > +};
 > > 
-> > > Also unclear to me is how refcount and mapcount will be handled to prevent
-> > > swapping,
+> > I can see there are two scenarios to invalidate page(s), when punching a
+> > hole or ftruncating to 0, in either cases KVM should already been called
+> > with necessary information from usersapce with memory slot punch hole
+> > syscall or memory slot delete syscall, so wondering this callback is
+> > really needed.
+> 
+> So what you propose? Forbid truncate/punch from userspace and make KVM
+> handle punch hole/truncate from within kernel? I think it's layering
+> violation.
+
+As far as I understand the flow for punch hole/truncate in this design,
+there will be two steps for userspace:
+  1. punch hole/delete kvm memory slot, and then
+  2. puncn hole/truncate on the memory backing store fd.
+
+In concept we can do whatever needed for invalidation in either steps.
+If we can do the invalidation in step 1 then we don¡¯t need bothering
+this callback. This is what I mean but agree the current callback can
+also work.
+
+> 
+> > > +
+> > > +struct guest_mem_ops {
+> > > +	unsigned long (*get_lock_pfn)(struct inode *inode, pgoff_t offset);
+> > > +	void (*put_unlock_pfn)(unsigned long pfn);
 > > 
-> > refcount and mapcount are unchanged. Pages not pinned per se. Swapping
-> > prevented with the change in shmem_writepage().
+> > Same as above, I¡¯m not clear on which time put_unlock_pfn() would be
+> > called, I¡¯m thinking the page can be put_and_unlock when userspace
+> > punching a hole or ftruncating to 0 on the fd.
 > 
-> So when mapping into the guest, we'd increment the refcount but not the
-> mapcount I assume?
+> No. put_unlock_pfn() has to be called after the pfn is in SEPT. This way
+> we close race between SEPT population and truncate/punch. get_lock_pfn()
+> would stop truncate untile put_unlock_pfn() called.
 
-No. The only refcount hold page cache. But we inform KVM via callback
-before removing the page from the page cache. It is similar to
-mmu_notifier scheme KVM uses at the moment.
+Okay, makes sense.
 
-> 
-> > 
-> > > who will actually do some kind of gfn-epfn etc. mapping, how we'll
-> > > forbid access to this memory e.g., via /proc/kcore or when dumping memory
-> > 
-> > It's not aimed to prevent root to shoot into his leg. Root do root.
-> 
-> IMHO being root is not an excuse to read some random file (actually used in
-> production environments) to result in the machine crashing. Not acceptable
-> for distributions.
-
-Reading does not cause problems. Writing does.
-
-> I'm still missing the whole gfn-epfn 1:1 mapping discussion we identified as
-> requirements. Is that supposed to be done by KVM? How?
-
-KVM memslots that represents a range of GFNs refers to memfd (and holds
-file pin) plus offset in the file. This info enough to calculate offset in
-the file and find PFN. memfd tied 1:1 to struct kvm and KVM would make
-sure that there's only one possible gfn for a file offset.
-
-> > > ... and how it would ever work with migration/swapping/rmap (it's clearly
-> > > future work, but it's been raised that this would be the way to make it
-> > > work, I don't quite see how it would all come together).
-> > 
-> > Given that hardware supports it migration and swapping can be implemented
-> > by providing new callbacks in guest_ops. Like ->migrate_page would
-> > transfer encrypted data between pages and ->swapout would provide
-> > encrypted blob that can be put on disk or handled back to ->swapin to
-> > bring back to memory.
-> 
-> Again, I'm missing the complete picture. To make swapping decisions vmscan
-> code needs track+handle dirty+reference information. How would we be able to
-> track references? Does the hardware allow for temporary unmapping of
-> encrypted memory and faulting on it? How would page_referenced() continue
-> working? "we can add callbacks" is not a satisfying answer, at least for me.
-> Especially, when it comes to eventual locking problems and races.
-
-HW doesn't support swapping yet, so details will be just speculation.
-IIUC, there's an accessed bit in EPT that can be used for tracking.
-
-> Maybe saying "migration+swap is not supported" is clearer than "we can add
-> callbacks" and missing some details on the bigger picture.
-> 
-> Again, a complete design proposal would be highly valuable, especially to
-> get some more review from other -MM folks. Otherwise there is a high chance
-> that this will be rejected late when trying to upstream and -MM people
-> stumbling over it (we've had some similar thing happening just recently
-> unfortunately ...).
-
-I only work on core-mm side of the story. We will definitely need to look
-at whole picture again once all pieces are somewhat ready.
-
--- 
- Kirill A. Shutemov
+Thanks,
+Chao
