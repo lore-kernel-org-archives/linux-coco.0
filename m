@@ -1,96 +1,230 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7265272
-	for <linux-coco@lists.linux.dev>; Mon, 20 Sep 2021 16:10:48 +0000 (UTC)
-Received: by mail-pg1-f174.google.com with SMTP id u18so17918752pgf.0
-        for <linux-coco@lists.linux.dev>; Mon, 20 Sep 2021 09:10:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RHPENS35TK70dwgRtuqMxqQYFvEywydxESq3g0YeWeY=;
-        b=a+D32SSgnrOzLf2jTTB3XXObCufAjGVIs0SqMoiQUV7ljWXr4dz4YtA+HOcz+prtgm
-         5s8aG0yU5rTM2wmxo1wlsWi2IjIAIOCC4wS5T7rT7gl1MLstD6X4zH3J3dUDcYaSScIi
-         pU9yWEXihPjBpN0472qyPrL1LIwtZEzBsxcu7521ETNdy555l/L+OPfvWyDwtrHwq3KX
-         5Yy5s2XogiXel6mGab+Mgl8BANm7UD4s9PtRVksaZ5w5DICYmKnWrTmAAXHR0ky9MUUx
-         +O4cfzZADqj+nhpcUB8vMDH2T6+CjBTupY76CQsuFUD2muVBVp6hp+KUgJ2PISB3B/j8
-         wrwQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE083FCB
+	for <linux-coco@lists.linux.dev>; Wed, 22 Sep 2021 17:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1632332133;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xWIShvsg2b/ofTSKntT8mh5AyqIJnIP55cDcnHuZNYU=;
+	b=U81ggE0obh6Z97cGZOXxe0r07vD59KYGhqIokDdDx989s1OJlk2u37riPE2XfJKkUkNXhU
+	CEjrgx9N0KwGocI11gL+sYwgwL3yJ+GdmazbBxwa4ngXxh3tIydSy+Wu8S6mmCJLDi9rw0
+	EVfTWg3Whdojr27Jxjpgix5fHMNhiiA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-584-bIeeDM5DMk2VujhOzDpA6g-1; Wed, 22 Sep 2021 13:35:32 -0400
+X-MC-Unique: bIeeDM5DMk2VujhOzDpA6g-1
+Received: by mail-wr1-f69.google.com with SMTP id v15-20020adff68f000000b0015df51efa18so2811171wrp.16
+        for <linux-coco@lists.linux.dev>; Wed, 22 Sep 2021 10:35:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RHPENS35TK70dwgRtuqMxqQYFvEywydxESq3g0YeWeY=;
-        b=KXbZHjJ1uBxKY9iZgvmPwp7AvXjCiXZJvKUZmqaG0CIsSHAgELcB5jY8piylbrWncP
-         b+64ESKnASV8bEEKVrvN2MuwGc25DjAE+u8t5mWHHLK1sVjCM6zuVmBoZ7A3OHgvx7aj
-         rClMIhP0nCyLOC7Tv2MZ+YHC5qoEoypqWNztqublRxnLUjhJq9wR06R0Lbk8NgF6JXpP
-         gK2nfuAftTh/l0Hw1g3cEPM/dLKSvn9zVQR27PwzKlsZp3+MtCanYxMAleWWmlNcgkvh
-         bPjGNMEcY/DgvHgfvIKxBrc4bO0oQNwbBBBW/iKIvGlEPxS36h+2uiVLYgU9lOe+PrYb
-         0yhw==
-X-Gm-Message-State: AOAM530X4E9aDkxA0drRcqvQlOCMMJZ0s5qVfOpnR0YoZVC4GBQ1XaFf
-	DPPFZGCtVXO/Xd6qpx9GTrvzdA==
-X-Google-Smtp-Source: ABdhPJx5qH4XRk3aI1atwoaavXlPJ3g+FMogcSusD/ahOJ1VHNmO+V2cxDDuhPlNlaQNjZaeRkUToQ==
-X-Received: by 2002:a63:7402:: with SMTP id p2mr24070517pgc.472.1632154247688;
-        Mon, 20 Sep 2021 09:10:47 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id j6sm15420414pgq.0.2021.09.20.09.10.47
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=xWIShvsg2b/ofTSKntT8mh5AyqIJnIP55cDcnHuZNYU=;
+        b=h+EdxRmLarA3fWCFqvgkHc5XgT11t5Xv+Q/ObaBDTQLNjSiyFhMQkijnjO0RA10l8a
+         hDP7cVRnQuDM7ZdeaCl76gGJ8Wovy5f/VLi+flFT8Kt3rFBu8UY6+YdFMJJOm1Csg1OZ
+         o7hXh32P2AN8hdJT6Z4GKOb9wfIkJYf7d28+OlG0h++wd3EPhXlvkk/FWmR0p6fczgZp
+         TbZJN0/rDv6BeRKZbxpU/LC24/ijMNikT6V8jFYr6TJes6bXI7m91jl55gTqtmNXvT1+
+         VPEtHOhE7O/9p6BVLRlg7bKy9+G8AKMd1GdRAE5+2Uz7Z67qI0WI4yj/ugJmAZr9dSDp
+         VRYA==
+X-Gm-Message-State: AOAM533/wP1O6Gg8U97UhtShQgbjh+qU136ArkWWUWGq7zWWGgNrbmo9
+	u+1L/FfrG22VztTBLsg0Az6MfnqVc0T+xnJAjs6OAzkLLmDPq8FRCC8YHFoOyn9mZJjWwFe9v4G
+	BUcK4K/DPdkkATI0RIEtEpA==
+X-Received: by 2002:a1c:2289:: with SMTP id i131mr9625628wmi.179.1632332131375;
+        Wed, 22 Sep 2021 10:35:31 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyqnKL+ZgwiMxGzSCfu4ZAfHm1Q0SKHjEzyTgy3FjXj67OFQileopxoY1xHtq3c4ytxH2PgRA==
+X-Received: by 2002:a1c:2289:: with SMTP id i131mr9625602wmi.179.1632332131154;
+        Wed, 22 Sep 2021 10:35:31 -0700 (PDT)
+Received: from work-vm (cpc109011-salf6-2-0-cust1562.10-2.cable.virginm.net. [82.29.118.27])
+        by smtp.gmail.com with ESMTPSA id s15sm2876783wrb.22.2021.09.22.10.35.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Sep 2021 09:10:47 -0700 (PDT)
-Date: Mon, 20 Sep 2021 16:10:43 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Joerg Roedel <joro@8bytes.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
+        Wed, 22 Sep 2021 10:35:30 -0700 (PDT)
+Date: Wed, 22 Sep 2021 18:35:27 +0100
+From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Wanpeng Li <wanpengli@tencent.com>,
 	Jim Mattson <jmattson@google.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH v2 1/4] KVM: SVM: Get rid of *ghcb_msr_bits() functions
-Message-ID: <YUiyg1W1cDxVbgzs@google.com>
-References: <20210722115245.16084-1-joro@8bytes.org>
- <20210722115245.16084-2-joro@8bytes.org>
- <YS/sqmgbS6ACRfSD@google.com>
- <YToM5akzNrlqHTJz@8bytes.org>
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part2 v5 16/45] crypto: ccp: Add the SNP_PLATFORM_STATUS
+ command
+Message-ID: <YUtpX5q7WQ9RJISf@work-vm>
+References: <20210820155918.7518-1-brijesh.singh@amd.com>
+ <20210820155918.7518-17-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <20210820155918.7518-17-brijesh.singh@amd.com>
+User-Agent: Mutt/2.0.7 (2021-05-04)
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YToM5akzNrlqHTJz@8bytes.org>
 
-On Thu, Sep 09, 2021, Joerg Roedel wrote:
-> On Wed, Sep 01, 2021 at 09:12:10PM +0000, Sean Christopherson wrote:
-> > On Thu, Jul 22, 2021, Joerg Roedel wrote:
-> > >  	case GHCB_MSR_TERM_REQ: {
-> > >  		u64 reason_set, reason_code;
-> > >  
-> > > -		reason_set = get_ghcb_msr_bits(svm,
-> > > -					       GHCB_MSR_TERM_REASON_SET_MASK,
-> > > -					       GHCB_MSR_TERM_REASON_SET_POS);
-> > > -		reason_code = get_ghcb_msr_bits(svm,
-> > > -						GHCB_MSR_TERM_REASON_MASK,
-> > > -						GHCB_MSR_TERM_REASON_POS);
-> > > +		reason_set  = GHCB_MSR_TERM_REASON_SET(control->ghcb_gpa);
-> > > +		reason_code = GHCB_MSR_TERM_REASON(control->ghcb_gpa);
-> > > +
-> > >  		pr_info("SEV-ES guest requested termination: %#llx:%#llx\n",
-> > >  			reason_set, reason_code);
-> > > +
-> > >  		fallthrough;
-> > 
-> > Not related to this patch, but why use fallthrough and more importantly, why is
-> > this an -EINVAL return?  Why wouldn't KVM forward the request to userspace instead
-> > of returning an opaque -EINVAL?
+* Brijesh Singh (brijesh.singh@amd.com) wrote:
+> The command can be used by the userspace to query the SNP platform status
+> report. See the SEV-SNP spec for more details.
 > 
-> I guess it is to signal an error condition up the call-chain to get the
-> guest terminated, like requested.
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  Documentation/virt/coco/sevguest.rst | 27 +++++++++++++++++
+>  drivers/crypto/ccp/sev-dev.c         | 45 ++++++++++++++++++++++++++++
+>  include/uapi/linux/psp-sev.h         |  1 +
+>  3 files changed, 73 insertions(+)
+> 
+> diff --git a/Documentation/virt/coco/sevguest.rst b/Documentation/virt/coco/sevguest.rst
+> index 7acb8696fca4..7c51da010039 100644
+> --- a/Documentation/virt/coco/sevguest.rst
+> +++ b/Documentation/virt/coco/sevguest.rst
+> @@ -52,6 +52,22 @@ to execute due to the firmware error, then fw_err code will be set.
+>                  __u64 fw_err;
+>          };
+>  
+> +The host ioctl should be called to /dev/sev device. The ioctl accepts command
+> +id and command input structure.
+> +
+> +::
+> +        struct sev_issue_cmd {
+> +                /* Command ID */
+> +                __u32 cmd;
+> +
+> +                /* Command request structure */
+> +                __u64 data;
+> +
+> +                /* firmware error code on failure (see psp-sev.h) */
+> +                __u32 error;
+> +        };
+> +
+> +
+>  2.1 SNP_GET_REPORT
+>  ------------------
+>  
+> @@ -107,3 +123,14 @@ length of the blob is lesser than expected then snp_ext_report_req.certs_len wil
+>  be updated with the expected value.
+>  
+>  See GHCB specification for further detail on how to parse the certificate blob.
+> +
+> +2.3 SNP_PLATFORM_STATUS
+> +-----------------------
+> +:Technology: sev-snp
+> +:Type: hypervisor ioctl cmd
+> +:Parameters (in): struct sev_data_snp_platform_status
+> +:Returns (out): 0 on success, -negative on error
+> +
+> +The SNP_PLATFORM_STATUS command is used to query the SNP platform status. The
+> +status includes API major, minor version and more. See the SEV-SNP
+> +specification for further details.
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index 4cd7d803a624..16c6df5d412c 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -1394,6 +1394,48 @@ static int sev_ioctl_do_pdh_export(struct sev_issue_cmd *argp, bool writable)
+>  	return ret;
+>  }
+>  
+> +static int sev_ioctl_snp_platform_status(struct sev_issue_cmd *argp)
+> +{
+> +	struct sev_device *sev = psp_master->sev_data;
+> +	struct sev_data_snp_platform_status_buf buf;
+> +	struct page *status_page;
+> +	void *data;
+> +	int ret;
+> +
+> +	if (!sev->snp_inited || !argp->data)
+> +		return -EINVAL;
+> +
+> +	status_page = alloc_page(GFP_KERNEL_ACCOUNT);
+> +	if (!status_page)
+> +		return -ENOMEM;
+> +
+> +	data = page_address(status_page);
+> +	if (snp_set_rmp_state(__pa(data), 1, true, true, false)) {
+> +		__free_pages(status_page, 0);
+> +		return -EFAULT;
+> +	}
+> +
+> +	buf.status_paddr = __psp_pa(data);
+> +	ret = __sev_do_cmd_locked(SEV_CMD_SNP_PLATFORM_STATUS, &buf, &argp->error);
+> +
+> +	/* Change the page state before accessing it */
+> +	if (snp_set_rmp_state(__pa(data), 1, false, true, true)) {
+> +		snp_leak_pages(__pa(data) >> PAGE_SHIFT, 1);
+> +		return -EFAULT;
+> +	}
 
-Yes, but it's odd bizarre/unfortunate that KVM doesn't take this opportunity to
-forward the termination info to the VMM.  The above pr_info() should not exist.
-If that information is relevant then it should be handed to the VMM directly, not
-dumped to dmesg.
+Could we find a way of returning some of these errors into the output,
+rather than interepreting them from errno values?
+
+Dave
+
+> +	if (ret)
+> +		goto cleanup;
+> +
+> +	if (copy_to_user((void __user *)argp->data, data,
+> +			 sizeof(struct sev_user_data_snp_status)))
+> +		ret = -EFAULT;
+> +
+> +cleanup:
+> +	__free_pages(status_page, 0);
+> +	return ret;
+> +}
+> +
+>  static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+>  {
+>  	void __user *argp = (void __user *)arg;
+> @@ -1445,6 +1487,9 @@ static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+>  	case SEV_GET_ID2:
+>  		ret = sev_ioctl_do_get_id2(&input);
+>  		break;
+> +	case SNP_PLATFORM_STATUS:
+> +		ret = sev_ioctl_snp_platform_status(&input);
+> +		break;
+>  	default:
+>  		ret = -EINVAL;
+>  		goto out;
+> diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
+> index bed65a891223..ffd60e8b0a31 100644
+> --- a/include/uapi/linux/psp-sev.h
+> +++ b/include/uapi/linux/psp-sev.h
+> @@ -28,6 +28,7 @@ enum {
+>  	SEV_PEK_CERT_IMPORT,
+>  	SEV_GET_ID,	/* This command is deprecated, use SEV_GET_ID2 */
+>  	SEV_GET_ID2,
+> +	SNP_PLATFORM_STATUS,
+>  
+>  	SEV_MAX,
+>  };
+> -- 
+> 2.17.1
+> 
+> 
+-- 
+Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+
