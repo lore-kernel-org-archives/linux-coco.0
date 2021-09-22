@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE083FCB
-	for <linux-coco@lists.linux.dev>; Wed, 22 Sep 2021 17:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE1D3FC9
+	for <linux-coco@lists.linux.dev>; Wed, 22 Sep 2021 18:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1632332133;
+	s=mimecast20190719; t=1632336942;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xWIShvsg2b/ofTSKntT8mh5AyqIJnIP55cDcnHuZNYU=;
-	b=U81ggE0obh6Z97cGZOXxe0r07vD59KYGhqIokDdDx989s1OJlk2u37riPE2XfJKkUkNXhU
-	CEjrgx9N0KwGocI11gL+sYwgwL3yJ+GdmazbBxwa4ngXxh3tIydSy+Wu8S6mmCJLDi9rw0
-	EVfTWg3Whdojr27Jxjpgix5fHMNhiiA=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-584-bIeeDM5DMk2VujhOzDpA6g-1; Wed, 22 Sep 2021 13:35:32 -0400
-X-MC-Unique: bIeeDM5DMk2VujhOzDpA6g-1
-Received: by mail-wr1-f69.google.com with SMTP id v15-20020adff68f000000b0015df51efa18so2811171wrp.16
-        for <linux-coco@lists.linux.dev>; Wed, 22 Sep 2021 10:35:32 -0700 (PDT)
+	bh=5cjz37tnSj3P18g8I99+DqVwuBzNML5WhZ/C6tpw5rE=;
+	b=fpT0XLePJx8SCMMtf3To7WZ0du9JvyHcl2J5e09ZYKvcukQTXATikmKzH7RpABA45AATOx
+	JVhMQg0Ww/pOHcbLJ/e0JPzuf/hNn8apL/Xq+wrdNj1BVUWjvkbAwvkFcHlYyk3lVAvJUb
+	Gsk3Q8MXTPPUI+Lr5024uU2LgxCtwK4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-568-U4Lsu5SKNjyI8MrsrbKNyg-1; Wed, 22 Sep 2021 14:55:41 -0400
+X-MC-Unique: U4Lsu5SKNjyI8MrsrbKNyg-1
+Received: by mail-wr1-f71.google.com with SMTP id c15-20020a5d4ccf000000b0015dff622f39so2986951wrt.21
+        for <linux-coco@lists.linux.dev>; Wed, 22 Sep 2021 11:55:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xWIShvsg2b/ofTSKntT8mh5AyqIJnIP55cDcnHuZNYU=;
-        b=h+EdxRmLarA3fWCFqvgkHc5XgT11t5Xv+Q/ObaBDTQLNjSiyFhMQkijnjO0RA10l8a
-         hDP7cVRnQuDM7ZdeaCl76gGJ8Wovy5f/VLi+flFT8Kt3rFBu8UY6+YdFMJJOm1Csg1OZ
-         o7hXh32P2AN8hdJT6Z4GKOb9wfIkJYf7d28+OlG0h++wd3EPhXlvkk/FWmR0p6fczgZp
-         TbZJN0/rDv6BeRKZbxpU/LC24/ijMNikT6V8jFYr6TJes6bXI7m91jl55gTqtmNXvT1+
-         VPEtHOhE7O/9p6BVLRlg7bKy9+G8AKMd1GdRAE5+2Uz7Z67qI0WI4yj/ugJmAZr9dSDp
-         VRYA==
-X-Gm-Message-State: AOAM533/wP1O6Gg8U97UhtShQgbjh+qU136ArkWWUWGq7zWWGgNrbmo9
-	u+1L/FfrG22VztTBLsg0Az6MfnqVc0T+xnJAjs6OAzkLLmDPq8FRCC8YHFoOyn9mZJjWwFe9v4G
-	BUcK4K/DPdkkATI0RIEtEpA==
-X-Received: by 2002:a1c:2289:: with SMTP id i131mr9625628wmi.179.1632332131375;
-        Wed, 22 Sep 2021 10:35:31 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyqnKL+ZgwiMxGzSCfu4ZAfHm1Q0SKHjEzyTgy3FjXj67OFQileopxoY1xHtq3c4ytxH2PgRA==
-X-Received: by 2002:a1c:2289:: with SMTP id i131mr9625602wmi.179.1632332131154;
-        Wed, 22 Sep 2021 10:35:31 -0700 (PDT)
+        bh=5cjz37tnSj3P18g8I99+DqVwuBzNML5WhZ/C6tpw5rE=;
+        b=NxU9B8XB0p4wkYW20zpP78N/TcSXbFRwZ+HcPRuGa0fZS3aVgKNnDjr4c6LeyDmath
+         KsPm8JwKl/oIGb5xxe9SMqXqX1CG7jtKODkgef1+QGpmjsUVpwvR+isbNawUQytiVuyj
+         hEFPid/z8LZSc5F1G8/SPpYOg6mEFPrkvEMZy2cB8ENCll3f5q3CuIJunAIusr5W9nGi
+         /iz9hhNuZ4pKancoIHUVxq5KrrRL86mk+POVGk7wazaD+tRnVbDTxZdmB9ulWCKIGNfq
+         ogdt6d1tcdvBxjF9f4v13+HV0m2XinasMG7uLhKfq5O0CU1125rlwvyLh0PzNL/98AD+
+         yz4Q==
+X-Gm-Message-State: AOAM530ezaVIW7gnePVhRNWOJFk0ZycB47D5VkhaWbPEoPFrJorbMsjC
+	RdG1ZV8iPNAs0J6fEMh8WI5h6mIhIqq0Cmv+5+LtWr3WsUxNdWZy7y+dEmYMDz83bjw2uCGkR5M
+	wB7izdtYJESNOrqE3wlbXTA==
+X-Received: by 2002:a05:600c:2109:: with SMTP id u9mr638723wml.6.1632336939851;
+        Wed, 22 Sep 2021 11:55:39 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzx++mJlJo8Ud6dJxeU6+JTLQqLX2UZep4XZkQy1hlkTcc2qcI/o0h1c08tRRLAfmQXFgwqFA==
+X-Received: by 2002:a05:600c:2109:: with SMTP id u9mr638703wml.6.1632336939658;
+        Wed, 22 Sep 2021 11:55:39 -0700 (PDT)
 Received: from work-vm (cpc109011-salf6-2-0-cust1562.10-2.cable.virginm.net. [82.29.118.27])
-        by smtp.gmail.com with ESMTPSA id s15sm2876783wrb.22.2021.09.22.10.35.29
+        by smtp.gmail.com with ESMTPSA id y6sm3004554wrp.46.2021.09.22.11.55.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Sep 2021 10:35:30 -0700 (PDT)
-Date: Wed, 22 Sep 2021 18:35:27 +0100
+        Wed, 22 Sep 2021 11:55:39 -0700 (PDT)
+Date: Wed, 22 Sep 2021 19:55:36 +0100
 From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -68,18 +68,18 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 16/45] crypto: ccp: Add the SNP_PLATFORM_STATUS
- command
-Message-ID: <YUtpX5q7WQ9RJISf@work-vm>
+Subject: Re: [PATCH Part2 v5 21/45] KVM: SVM: Make AVIC backing, VMSA and
+ VMCB memory allocation SNP safe
+Message-ID: <YUt8KOiwTwwa6xZK@work-vm>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-17-brijesh.singh@amd.com>
+ <20210820155918.7518-22-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20210820155918.7518-17-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-22-brijesh.singh@amd.com>
 User-Agent: Mutt/2.0.7 (2021-05-04)
 Authentication-Results: relay.mimecast.com;
 	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
@@ -89,138 +89,187 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 * Brijesh Singh (brijesh.singh@amd.com) wrote:
-> The command can be used by the userspace to query the SNP platform status
-> report. See the SEV-SNP spec for more details.
+> Implement a workaround for an SNP erratum where the CPU will incorrectly
+> signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
+> RMP entry of a VMCB, VMSA or AVIC backing page.
 > 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  Documentation/virt/coco/sevguest.rst | 27 +++++++++++++++++
->  drivers/crypto/ccp/sev-dev.c         | 45 ++++++++++++++++++++++++++++
->  include/uapi/linux/psp-sev.h         |  1 +
->  3 files changed, 73 insertions(+)
-> 
-> diff --git a/Documentation/virt/coco/sevguest.rst b/Documentation/virt/coco/sevguest.rst
-> index 7acb8696fca4..7c51da010039 100644
-> --- a/Documentation/virt/coco/sevguest.rst
-> +++ b/Documentation/virt/coco/sevguest.rst
-> @@ -52,6 +52,22 @@ to execute due to the firmware error, then fw_err code will be set.
->                  __u64 fw_err;
->          };
->  
-> +The host ioctl should be called to /dev/sev device. The ioctl accepts command
-> +id and command input structure.
-> +
-> +::
-> +        struct sev_issue_cmd {
-> +                /* Command ID */
-> +                __u32 cmd;
-> +
-> +                /* Command request structure */
-> +                __u64 data;
-> +
-> +                /* firmware error code on failure (see psp-sev.h) */
-> +                __u32 error;
-> +        };
-> +
-> +
->  2.1 SNP_GET_REPORT
->  ------------------
->  
-> @@ -107,3 +123,14 @@ length of the blob is lesser than expected then snp_ext_report_req.certs_len wil
->  be updated with the expected value.
->  
->  See GHCB specification for further detail on how to parse the certificate blob.
-> +
-> +2.3 SNP_PLATFORM_STATUS
-> +-----------------------
-> +:Technology: sev-snp
-> +:Type: hypervisor ioctl cmd
-> +:Parameters (in): struct sev_data_snp_platform_status
-> +:Returns (out): 0 on success, -negative on error
-> +
-> +The SNP_PLATFORM_STATUS command is used to query the SNP platform status. The
-> +status includes API major, minor version and more. See the SEV-SNP
-> +specification for further details.
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index 4cd7d803a624..16c6df5d412c 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -1394,6 +1394,48 @@ static int sev_ioctl_do_pdh_export(struct sev_issue_cmd *argp, bool writable)
->  	return ret;
->  }
->  
-> +static int sev_ioctl_snp_platform_status(struct sev_issue_cmd *argp)
-> +{
-> +	struct sev_device *sev = psp_master->sev_data;
-> +	struct sev_data_snp_platform_status_buf buf;
-> +	struct page *status_page;
-> +	void *data;
-> +	int ret;
-> +
-> +	if (!sev->snp_inited || !argp->data)
-> +		return -EINVAL;
-> +
-> +	status_page = alloc_page(GFP_KERNEL_ACCOUNT);
-> +	if (!status_page)
-> +		return -ENOMEM;
-> +
-> +	data = page_address(status_page);
-> +	if (snp_set_rmp_state(__pa(data), 1, true, true, false)) {
-> +		__free_pages(status_page, 0);
-> +		return -EFAULT;
-> +	}
-> +
-> +	buf.status_paddr = __psp_pa(data);
-> +	ret = __sev_do_cmd_locked(SEV_CMD_SNP_PLATFORM_STATUS, &buf, &argp->error);
-> +
-> +	/* Change the page state before accessing it */
-> +	if (snp_set_rmp_state(__pa(data), 1, false, true, true)) {
-> +		snp_leak_pages(__pa(data) >> PAGE_SHIFT, 1);
-> +		return -EFAULT;
-> +	}
+> When SEV-SNP is globally enabled, the CPU marks the VMCB, VMSA, and AVIC
+> backing   pages as "in-use" in the RMP after a successful VMRUN.  This is
+> done for _all_ VMs, not just SNP-Active VMs.
 
-Could we find a way of returning some of these errors into the output,
-rather than interepreting them from errno values?
+Can you explain what 'globally enabled' means?
+
+Or more specifically, can we trip this bug on public hardware that has
+the SNP enabled in the bios, but no SNP init in the host OS?
 
 Dave
 
-> +	if (ret)
-> +		goto cleanup;
+> If the hypervisor accesses an in-use page through a writable translation,
+> the CPU will throw an RMP violation #PF.  On early SNP hardware, if an
+> in-use page is 2mb aligned and software accesses any part of the associated
+> 2mb region with a hupage, the CPU will incorrectly treat the entire 2mb
+> region as in-use and signal a spurious RMP violation #PF.
+> 
+> The recommended is to not use the hugepage for the VMCB, VMSA or
+> AVIC backing page. Add a generic allocator that will ensure that the page
+> returns is not hugepage (2mb or 1gb) and is safe to be used when SEV-SNP
+> is enabled.
+> 
+> Co-developed-by: Marc Orr <marcorr@google.com>
+> Signed-off-by: Marc Orr <marcorr@google.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>  arch/x86/include/asm/kvm_host.h    |  1 +
+>  arch/x86/kvm/lapic.c               |  5 ++++-
+>  arch/x86/kvm/svm/sev.c             | 35 ++++++++++++++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c             | 16 ++++++++++++--
+>  arch/x86/kvm/svm/svm.h             |  1 +
+>  6 files changed, 56 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index a12a4987154e..36a9c23a4b27 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -122,6 +122,7 @@ KVM_X86_OP_NULL(enable_direct_tlbflush)
+>  KVM_X86_OP_NULL(migrate_timers)
+>  KVM_X86_OP(msr_filter_changed)
+>  KVM_X86_OP_NULL(complete_emulated_msr)
+> +KVM_X86_OP(alloc_apic_backing_page)
+>  
+>  #undef KVM_X86_OP
+>  #undef KVM_X86_OP_NULL
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 974cbfb1eefe..5ad6255ff5d5 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1453,6 +1453,7 @@ struct kvm_x86_ops {
+>  	int (*complete_emulated_msr)(struct kvm_vcpu *vcpu, int err);
+>  
+>  	void (*vcpu_deliver_sipi_vector)(struct kvm_vcpu *vcpu, u8 vector);
+> +	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+>  };
+>  
+>  struct kvm_x86_nested_ops {
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index ba5a27879f1d..05b45747b20b 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -2457,7 +2457,10 @@ int kvm_create_lapic(struct kvm_vcpu *vcpu, int timer_advance_ns)
+>  
+>  	vcpu->arch.apic = apic;
+>  
+> -	apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+> +	if (kvm_x86_ops.alloc_apic_backing_page)
+> +		apic->regs = static_call(kvm_x86_alloc_apic_backing_page)(vcpu);
+> +	else
+> +		apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+>  	if (!apic->regs) {
+>  		printk(KERN_ERR "malloc apic regs error for vcpu %x\n",
+>  		       vcpu->vcpu_id);
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 1644da5fc93f..8771b878193f 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2703,3 +2703,38 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector)
+>  		break;
+>  	}
+>  }
 > +
-> +	if (copy_to_user((void __user *)argp->data, data,
-> +			 sizeof(struct sev_user_data_snp_status)))
-> +		ret = -EFAULT;
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
+> +{
+> +	unsigned long pfn;
+> +	struct page *p;
 > +
-> +cleanup:
-> +	__free_pages(status_page, 0);
-> +	return ret;
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +
+> +	/*
+> +	 * Allocate an SNP safe page to workaround the SNP erratum where
+> +	 * the CPU will incorrectly signal an RMP violation  #PF if a
+> +	 * hugepage (2mb or 1gb) collides with the RMP entry of VMCB, VMSA
+> +	 * or AVIC backing page. The recommeded workaround is to not use the
+> +	 * hugepage.
+> +	 *
+> +	 * Allocate one extra page, use a page which is not 2mb aligned
+> +	 * and free the other.
+> +	 */
+> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
+> +	if (!p)
+> +		return NULL;
+> +
+> +	split_page(p, 1);
+> +
+> +	pfn = page_to_pfn(p);
+> +	if (IS_ALIGNED(__pfn_to_phys(pfn), PMD_SIZE)) {
+> +		pfn++;
+> +		__free_page(p);
+> +	} else {
+> +		__free_page(pfn_to_page(pfn + 1));
+> +	}
+> +
+> +	return pfn_to_page(pfn);
+> +}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 25773bf72158..058eea8353c9 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -1368,7 +1368,7 @@ static int svm_create_vcpu(struct kvm_vcpu *vcpu)
+>  	svm = to_svm(vcpu);
+>  
+>  	err = -ENOMEM;
+> -	vmcb01_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +	vmcb01_page = snp_safe_alloc_page(vcpu);
+>  	if (!vmcb01_page)
+>  		goto out;
+>  
+> @@ -1377,7 +1377,7 @@ static int svm_create_vcpu(struct kvm_vcpu *vcpu)
+>  		 * SEV-ES guests require a separate VMSA page used to contain
+>  		 * the encrypted register state of the guest.
+>  		 */
+> -		vmsa_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +		vmsa_page = snp_safe_alloc_page(vcpu);
+>  		if (!vmsa_page)
+>  			goto error_free_vmcb_page;
+>  
+> @@ -4539,6 +4539,16 @@ static int svm_vm_init(struct kvm *kvm)
+>  	return 0;
+>  }
+>  
+> +static void *svm_alloc_apic_backing_page(struct kvm_vcpu *vcpu)
+> +{
+> +	struct page *page = snp_safe_alloc_page(vcpu);
+> +
+> +	if (!page)
+> +		return NULL;
+> +
+> +	return page_address(page);
 > +}
 > +
->  static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
->  {
->  	void __user *argp = (void __user *)arg;
-> @@ -1445,6 +1487,9 @@ static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
->  	case SEV_GET_ID2:
->  		ret = sev_ioctl_do_get_id2(&input);
->  		break;
-> +	case SNP_PLATFORM_STATUS:
-> +		ret = sev_ioctl_snp_platform_status(&input);
-> +		break;
->  	default:
->  		ret = -EINVAL;
->  		goto out;
-> diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-> index bed65a891223..ffd60e8b0a31 100644
-> --- a/include/uapi/linux/psp-sev.h
-> +++ b/include/uapi/linux/psp-sev.h
-> @@ -28,6 +28,7 @@ enum {
->  	SEV_PEK_CERT_IMPORT,
->  	SEV_GET_ID,	/* This command is deprecated, use SEV_GET_ID2 */
->  	SEV_GET_ID2,
-> +	SNP_PLATFORM_STATUS,
+>  static struct kvm_x86_ops svm_x86_ops __initdata = {
+>  	.hardware_unsetup = svm_hardware_teardown,
+>  	.hardware_enable = svm_hardware_enable,
+> @@ -4667,6 +4677,8 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+>  	.complete_emulated_msr = svm_complete_emulated_msr,
 >  
->  	SEV_MAX,
+>  	.vcpu_deliver_sipi_vector = svm_vcpu_deliver_sipi_vector,
+> +
+> +	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
 >  };
+>  
+>  static struct kvm_x86_init_ops svm_init_ops __initdata = {
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index d1f1512a4b47..e40800e9c998 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -575,6 +575,7 @@ void sev_es_create_vcpu(struct vcpu_svm *svm);
+>  void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+>  void sev_es_prepare_guest_switch(struct vcpu_svm *svm, unsigned int cpu);
+>  void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
+>  
+>  /* vmenter.S */
+>  
 > -- 
 > 2.17.1
 > 
