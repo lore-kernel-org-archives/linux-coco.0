@@ -1,23 +1,23 @@
-Received: from mail.skyhub.de (unknown [5.9.137.197])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3743FC8
-	for <linux-coco@lists.linux.dev>; Fri, 24 Sep 2021 08:58:28 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0dd600c2485b7778a62ff5.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:d600:c248:5b77:78a6:2ff5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A34D3FC8
+	for <linux-coco@lists.linux.dev>; Fri, 24 Sep 2021 09:50:04 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0dd600d43e805889b23e24.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:d600:d43e:8058:89b2:3e24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9AB971EC0301;
-	Fri, 24 Sep 2021 10:58:09 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7CF6F1EC0545;
+	Fri, 24 Sep 2021 11:49:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1632473889;
+	t=1632476998;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=zbrXJ+Aq13n8UVfal2GI8gct0tLpzbzh+GqS6QUuaMw=;
-	b=aFqyiPJTWFX5uUkQhS+kBmP+bUUPiLH8EjyILF4GTVdoFvA6b2u+Fv6jA7UrmTcZtlIX5Q
-	4iumgmzRgLKaqra0iHWdvpo5TmojDNzXZzOw02VdVjtF8sF2j1qAGy4+Xp/2xHgrNCj+d5
-	reS24NO3h3kwUNszgz2e0/+E0rMt9nE=
-Date: Fri, 24 Sep 2021 10:58:03 +0200
+	bh=BUpgk3dKEy8b32WZnzp1rzB730dZntv9H5UAz8bOGWk=;
+	b=lBrUymj/1QmZ4FQNJqYn/gxECEVEdHAREMp+ape5AjP0I4nJev+JIBIrOD29llxaI00Fe2
+	P14LnS7io2ZUdJ2JtgJTB2P4u9GLS4VrR09dA9mKUHmwTDVTTtQQMzpkB/jRIc6iuVq8/S
+	HyIw7qYuftFTRUW4mi2RTSTAobe14Do=
+Date: Fri, 24 Sep 2021 11:49:52 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -44,11 +44,10 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 03/45] x86/sev: Add the host SEV-SNP
- initialization support
-Message-ID: <YU2TGxrpwMD8QLnk@zn.tnic>
+Subject: Re: [PATCH Part2 v5 04/45] x86/sev: Add RMP entry lookup helpers
+Message-ID: <YU2fQMgw+PIBzSE4@zn.tnic>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-4-brijesh.singh@amd.com>
+ <20210820155918.7518-5-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,119 +56,151 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210820155918.7518-4-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-5-brijesh.singh@amd.com>
 
-On Fri, Aug 20, 2021 at 10:58:36AM -0500, Brijesh Singh wrote:
-> @@ -542,6 +544,10 @@
->  #define MSR_AMD64_SYSCFG		0xc0010010
->  #define MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT	23
->  #define MSR_AMD64_SYSCFG_MEM_ENCRYPT	BIT_ULL(MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT)
-> +#define MSR_AMD64_SYSCFG_SNP_EN_BIT		24
-> +#define MSR_AMD64_SYSCFG_SNP_EN		BIT_ULL(MSR_AMD64_SYSCFG_SNP_EN_BIT)
-> +#define MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT	25
-> +#define MSR_AMD64_SYSCFG_SNP_VMPL_EN	BIT_ULL(MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT)
+On Fri, Aug 20, 2021 at 10:58:37AM -0500, Brijesh Singh wrote:
+> +struct __packed rmpentry {
+> +	union {
+> +		struct {
+> +			u64	assigned	: 1,
+> +				pagesize	: 1,
+> +				immutable	: 1,
+> +				rsvd1		: 9,
+> +				gpa		: 39,
+> +				asid		: 10,
+> +				vmsa		: 1,
+> +				validated	: 1,
+> +				rsvd2		: 1;
+> +		} info;
+> +		u64 low;
+> +	};
+> +	u64 high;
+> +};
 
-While you're here, move all defines that belong to that MSR which
-we decided it is architectural after all, above the definition of
-MSR_AMD64_NB_CFG above.
+__packed goes at the end of the struct definition.
 
->  #define MSR_K8_INT_PENDING_MSG		0xc0010055
->  /* C1E active bits in int pending message */
->  #define K8_INTP_C1E_ACTIVE_MASK		0x18000000
+> +
+> +#define rmpentry_assigned(x)	((x)->info.assigned)
+> +#define rmpentry_pagesize(x)	((x)->info.pagesize)
+
+Inline functions pls so that you can get typechecking too.
+
+>  
+>  #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
+>  
 > diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index ab17c93634e9..7936c8139c74 100644
+> index 7936c8139c74..f383d2a89263 100644
 > --- a/arch/x86/kernel/sev.c
 > +++ b/arch/x86/kernel/sev.c
-> @@ -24,6 +24,8 @@
->  #include <linux/sev-guest.h>
->  #include <linux/platform_device.h>
->  #include <linux/io.h>
-> +#include <linux/cpumask.h>
-> +#include <linux/iommu.h>
+> @@ -54,6 +54,8 @@
+>   * bookkeeping, the range need to be added during the RMP entry lookup.
+>   */
+>  #define RMPTABLE_CPU_BOOKKEEPING_SZ	0x4000
+> +#define RMPENTRY_SHIFT			8
+> +#define rmptable_page_offset(x)	(RMPTABLE_CPU_BOOKKEEPING_SZ + (((unsigned long)x) >> RMPENTRY_SHIFT))
 >  
->  #include <asm/cpu_entry_area.h>
->  #include <asm/stacktrace.h>
-> @@ -40,11 +42,19 @@
->  #include <asm/efi.h>
->  #include <asm/cpuid.h>
->  #include <asm/setup.h>
-> +#include <asm/apic.h>
-> +#include <asm/iommu.h>
->  
->  #include "sev-internal.h"
->  
->  #define DR7_RESET_VALUE        0x400
->  
-> +/*
-> + * The first 16KB from the RMP_BASE is used by the processor for the
-
-s/for the/for/
-
-> + * bookkeeping, the range need to be added during the RMP entry lookup.
-
-s/need/needs/ ... s/during the/during /
-
-> + */
-> +#define RMPTABLE_CPU_BOOKKEEPING_SZ	0x4000
-
-Too long: just call it RMP_BASE_OFFSET.
-
-> +static bool get_rmptable_info(u64 *start, u64 *len)
+>  /* For early boot hypervisor communication in SEV-ES enabled guests */
+>  static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+> @@ -2376,3 +2378,44 @@ static int __init snp_rmptable_init(void)
+>   * available after subsys_initcall().
+>   */
+>  fs_initcall(snp_rmptable_init);
+> +
+> +static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
 > +{
-> +	u64 calc_rmp_sz, rmp_sz, rmp_base, rmp_end, nr_pages;
+> +	unsigned long vaddr, paddr = pfn << PAGE_SHIFT;
+> +	struct rmpentry *entry, *large_entry;
 > +
-> +	rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
-> +	rdmsrl(MSR_AMD64_RMP_END, rmp_end);
+> +	if (!pfn_valid(pfn))
+> +		return ERR_PTR(-EINVAL);
 > +
-> +	if (!rmp_base || !rmp_end) {
-> +		pr_info("Memory for the RMP table has not been reserved by BIOS\n");
-> +		return false;
-> +	}
-> +
-> +	rmp_sz = rmp_end - rmp_base + 1;
-> +
-> +	/*
-> +	 * Calculate the amount the memory that must be reserved by the BIOS to
-> +	 * address the full system RAM. The reserved memory should also cover the
-> +	 * RMP table itself.
-> +	 *
-> +	 * See PPR Family 19h Model 01h, Revision B1 section 2.1.5.2 for more
-> +	 * information on memory requirement.
-> +	 */
-> +	nr_pages = totalram_pages();
-> +	calc_rmp_sz = (((rmp_sz >> PAGE_SHIFT) + nr_pages) << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return ERR_PTR(-ENXIO);
 
-use totalram_pages() directly here - nr_pages is assigned to only once.
+I think that check should happen first.
 
 > +
-> +	if (calc_rmp_sz > rmp_sz) {
-> +		pr_info("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
-> +			calc_rmp_sz, rmp_sz);
-> +		return false;
-> +	}
+> +	vaddr = rmptable_start + rmptable_page_offset(paddr);
+> +	if (unlikely(vaddr > rmptable_end))
+> +		return ERR_PTR(-ENXIO);
+
+Maybe the above -E should be -ENOENT instead so that you have unique
+error types for each check to facilitate debugging.
+
 > +
-> +	*start = rmp_base;
-> +	*len = rmp_sz;
+> +	entry = (struct rmpentry *)vaddr;
 > +
-> +	pr_info("RMP table physical address 0x%016llx - 0x%016llx\n", rmp_base, rmp_end);
+> +	/* Read a large RMP entry to get the correct page level used in RMP entry. */
 
-		"RMP table physical address range: [ ... - ... ]\n", ...
+That comment needs rewriting.
 
-...
-
+> +	vaddr = rmptable_start + rmptable_page_offset(paddr & PMD_MASK);
+> +	large_entry = (struct rmpentry *)vaddr;
+> +	*level = RMP_TO_X86_PG_LEVEL(rmpentry_pagesize(large_entry));
+> +
+> +	return entry;
+> +}
+> +
 > +/*
-> + * This must be called after the PCI subsystem. This is because before enabling
-> + * the SNP feature we need to ensure that IOMMU supports the SEV-SNP feature.
-
-"... it needs to be ensured that... "
-
-> + * The iommu_sev_snp_support() is used for checking the feature, and it is
-> + * available after subsys_initcall().
+> + * Return 1 if the RMP entry is assigned, 0 if it exists but is not assigned,
+> + * and -errno if there is no corresponding RMP entry.
 > + */
-> +fs_initcall(snp_rmptable_init);
+
+kernel-doc format since it is being exported.
+
+> +int snp_lookup_rmpentry(u64 pfn, int *level)
+> +{
+> +	struct rmpentry *e;
+> +
+> +	e = __snp_lookup_rmpentry(pfn, level);
+> +	if (IS_ERR(e))
+> +		return PTR_ERR(e);
+> +
+> +	return !!rmpentry_assigned(e);
+> +}
+> +EXPORT_SYMBOL_GPL(snp_lookup_rmpentry);
+
+This export is for kvm, I presume?
+
+> diff --git a/include/linux/sev.h b/include/linux/sev.h
+> new file mode 100644
+> index 000000000000..1a68842789e1
+> --- /dev/null
+> +++ b/include/linux/sev.h
+> @@ -0,0 +1,30 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * AMD Secure Encrypted Virtualization
+> + *
+> + * Author: Brijesh Singh <brijesh.singh@amd.com>
+> + */
+> +
+> +#ifndef __LINUX_SEV_H
+> +#define __LINUX_SEV_H
+> +
+> +/* RMUPDATE detected 4K page and 2MB page overlap. */
+> +#define RMPUPDATE_FAIL_OVERLAP		7
+> +
+> +#ifdef CONFIG_AMD_MEM_ENCRYPT
+> +int snp_lookup_rmpentry(u64 pfn, int *level);
+> +int psmash(u64 pfn);
+> +int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable);
+> +int rmp_make_shared(u64 pfn, enum pg_level level);
+> +#else
+> +static inline int snp_lookup_rmpentry(u64 pfn, int *level) { return 0; }
+> +static inline int psmash(u64 pfn) { return -ENXIO; }
+> +static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid,
+> +				   bool immutable)
+> +{
+> +	return -ENODEV;
+> +}
+> +static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENODEV; }
+> +
+> +#endif /* CONFIG_AMD_MEM_ENCRYPT */
+> +#endif /* __LINUX_SEV_H */
 > -- 
-> 2.17.1
-> 
+
+What is going to use this linux/ namespace header?
 
 -- 
 Regards/Gruss,
