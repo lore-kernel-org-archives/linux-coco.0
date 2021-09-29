@@ -1,210 +1,366 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE0572
-	for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 18:38:37 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0bd10085b5178de8b08a0e.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:d100:85b5:178d:e8b0:8a0e])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2F3AD1EC0136;
-	Wed, 29 Sep 2021 20:38:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1632940715;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=Bo+gAEaB3c3ilgMX8OgreD8PMGNiwY4UFgAUH1GnA0M=;
-	b=BX2CAl3ohCbYKJL64okCa2H8GmBJcotMMGimHp4e44UXgDWZIafY5Ao8UiKadDFMQALdAS
-	gIdU97e8g1oAMrREVviFDVlwyhtq/V1wr/uhEtNyNGYdP92oJjJPdwINQnMqgBCa8WEObR
-	NziEBHyhnhpkYJ/9PGQskFQSTwbjg00=
-Date: Wed, 29 Sep 2021 20:38:31 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 09/45] x86/fault: Add support to dump RMP entry
- on fault
-Message-ID: <YVSyp0emhzQeMzI4@zn.tnic>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-10-brijesh.singh@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E631D2FAF
+	for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 21:33:20 +0000 (UTC)
+Received: by mail-lf1-f51.google.com with SMTP id y26so16449829lfa.11
+        for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 14:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Db6sq5b/zoZ7Ckw0MsC3401ruyMn9GYqskLXtTDWY1U=;
+        b=YdD0IEPWfMh3400z3lZO/rXLrtkQdQQzT6E5rNYfIx/1o1+K+Sfq8GEGo2o9PK3SVa
+         6ODe3xygpnglVPfJK7LbN0wS38dxtDpecAWVPMXikimHtBJ6+YhqM650fFsJ4+zlyuU6
+         9LdRaIjGBfhkgktm2Zm1XsMhVMBMCExPjVbSkA2RfiB4vFvaKHbIN2Yfy4WmYZIsuTPO
+         t/CXw8yCyg+AjLGDWtdP023ISv/OzvDjJW0JDYwn17qtSF78jWMSGOVPzGSQJetv5aIO
+         KGaP4EhF/uc/epmRf4no4+MwopbE3RlK0tnZh6R9UZgx5fpSGZ5Lpd1gjB1ahUYuUFKz
+         ayaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Db6sq5b/zoZ7Ckw0MsC3401ruyMn9GYqskLXtTDWY1U=;
+        b=NSzOWKpLSJtib9FQx6kIcphq9Fiagi9MmOlhTDHNw8NArJywhMJtpwY/5V9J6ixVPw
+         c3W9yoz6fwIVCD5o5E8PEnmHzQox+AeVgFEcilKs2QamBZsHj7LJs6OTwkChTAj02FZl
+         vxplOwmG5bo/ofVMJlpEP3HPB24w9o+NdJp/fcuyAm4cmx8GFBu7RBppoMr4Dvmwl4uf
+         U89esbImA15qAR6LUhyoKSO7RXNLr/skkZvvwz9LLgT0W9ybmwADIPp+H6iy5jI8hgMa
+         /rEApRRA12G5onvkVxHZtSt21p8WD114Z+CoeJbP/57nXh2G2JcxTcV23nNalw7r+tPr
+         8F5A==
+X-Gm-Message-State: AOAM530TQBFn7EoRU09cFsO83se+p15Zz2CbHfW2AfdbRtM+vyQBQxOT
+	03T7MdRW+E7Vk6rsWZn+u6LHwlPfSx27HGCFxeJOhg==
+X-Google-Smtp-Source: ABdhPJzhCoDwFynfAd1TEDbYhSvAM8Evozq3qMnqQMfeskozU8Jk++cf4vW2wdpliQwTatEGUSw7odWrZm7W1h6plVw=
+X-Received: by 2002:a05:651c:3c2:: with SMTP id f2mr2269532ljp.282.1632951198592;
+ Wed, 29 Sep 2021 14:33:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20210820155918.7518-10-brijesh.singh@amd.com>
+References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-43-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-43-brijesh.singh@amd.com>
+From: Peter Gonda <pgonda@google.com>
+Date: Wed, 29 Sep 2021 15:33:07 -0600
+Message-ID: <CAMkAt6rzFvscq46CKYrhcf3d8VCGzy3tiM_SycnDRr9gVwXOSA@mail.gmail.com>
+Subject: Re: [PATCH Part2 v5 42/45] KVM: SVM: Provide support for
+ SNP_GUEST_REQUEST NAE event
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, 
+	Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Sergio Lopez <slp@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com, 
+	Marc Orr <marcorr@google.com>, sathyanarayanan.kuppuswamy@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 20, 2021 at 10:58:42AM -0500, Brijesh Singh wrote:
-> When SEV-SNP is enabled globally, a write from the host goes through the
-> RMP check. If the hardware encounters the check failure, then it raises
-> the #PF (with RMP set). Dump the RMP entry at the faulting pfn to help
-> the debug.
-> 
+On Fri, Aug 20, 2021 at 10:01 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
+>
+> Version 2 of GHCB specification added the support for two SNP Guest
+> Request Message NAE events. The events allows for an SEV-SNP guest to
+> make request to the SEV-SNP firmware through hypervisor using the
+> SNP_GUEST_REQUEST API define in the SEV-SNP firmware specification.
+>
+> The SNP_EXT_GUEST_REQUEST is similar to SNP_GUEST_REQUEST with the
+> difference of an additional certificate blob that can be passed through
+> the SNP_SET_CONFIG ioctl defined in the CCP driver. The CCP driver
+> provides snp_guest_ext_guest_request() that is used by the KVM to get
+> both the report and certificate data at once.
+>
 > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
->  arch/x86/include/asm/sev.h |  7 +++++++
->  arch/x86/kernel/sev.c      | 43 ++++++++++++++++++++++++++++++++++++++
->  arch/x86/mm/fault.c        | 17 +++++++++++----
->  include/linux/sev.h        |  2 ++
->  4 files changed, 65 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index 92ced9626e95..569294f687e6 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -106,6 +106,11 @@ struct __packed rmpentry {
->  
->  #define rmpentry_assigned(x)	((x)->info.assigned)
->  #define rmpentry_pagesize(x)	((x)->info.pagesize)
-> +#define rmpentry_vmsa(x)	((x)->info.vmsa)
-> +#define rmpentry_asid(x)	((x)->info.asid)
-> +#define rmpentry_validated(x)	((x)->info.validated)
-> +#define rmpentry_gpa(x)		((unsigned long)(x)->info.gpa)
-> +#define rmpentry_immutable(x)	((x)->info.immutable)
-
-If some of those accessors are going to be used only in dump_rmpentry(),
-then you don't really need them.
-
->  
->  #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
->  
-> @@ -165,6 +170,7 @@ void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op
->  void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
->  void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
->  void snp_set_wakeup_secondary_cpu(void);
-> +void dump_rmpentry(u64 pfn);
->  #ifdef __BOOT_COMPRESSED
->  bool sev_snp_enabled(void);
->  #else
-> @@ -188,6 +194,7 @@ static inline void snp_set_memory_shared(unsigned long vaddr, unsigned int npage
->  static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npages) { }
->  static inline void snp_set_wakeup_secondary_cpu(void) { }
->  static inline void sev_snp_cpuid_init(struct boot_params *bp) { }
-> +static inline void dump_rmpentry(u64 pfn) {}
->  #ifdef __BOOT_COMPRESSED
->  static inline bool sev_snp_enabled { return false; }
->  #else
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index bad41deb8335..8b3e83e50468 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -2404,6 +2404,49 @@ static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
->  	return entry;
+>  arch/x86/kvm/svm/sev.c | 197 +++++++++++++++++++++++++++++++++++++++--
+>  arch/x86/kvm/svm/svm.h |   2 +
+>  2 files changed, 193 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 712e8907bc39..81ccad412e55 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/trace_events.h>
+>  #include <linux/sev.h>
+>  #include <linux/ksm.h>
+> +#include <linux/sev-guest.h>
+>  #include <asm/fpu/internal.h>
+>
+>  #include <asm/pkru.h>
+> @@ -338,6 +339,7 @@ static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>
+>                 init_srcu_struct(&sev->psc_srcu);
+>                 ret = sev_snp_init(&argp->error);
+> +               mutex_init(&sev->guest_req_lock);
+>         } else {
+>                 ret = sev_platform_init(&argp->error);
+>         }
+> @@ -1602,23 +1604,39 @@ static int sev_receive_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>
+>  static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>  {
+> +       void *context = NULL, *certs_data = NULL, *resp_page = NULL;
+> +       struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+>         struct sev_data_snp_gctx_create data = {};
+> -       void *context;
+>         int rc;
+>
+> +       /* Allocate memory used for the certs data in SNP guest request */
+> +       certs_data = kmalloc(SEV_FW_BLOB_MAX_SIZE, GFP_KERNEL_ACCOUNT);
+> +       if (!certs_data)
+> +               return NULL;
+> +
+>         /* Allocate memory for context page */
+>         context = snp_alloc_firmware_page(GFP_KERNEL_ACCOUNT);
+>         if (!context)
+> -               return NULL;
+> +               goto e_free;
+> +
+> +       /* Allocate a firmware buffer used during the guest command handling. */
+> +       resp_page = snp_alloc_firmware_page(GFP_KERNEL_ACCOUNT);
+> +       if (!resp_page)
+> +               goto e_free;
+>
+>         data.gctx_paddr = __psp_pa(context);
+>         rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_GCTX_CREATE, &data, &argp->error);
+> -       if (rc) {
+> -               snp_free_firmware_page(context);
+> -               return NULL;
+> -       }
+> +       if (rc)
+> +               goto e_free;
+> +
+> +       sev->snp_certs_data = certs_data;
+>
+>         return context;
+> +
+> +e_free:
+> +       snp_free_firmware_page(context);
+> +       kfree(certs_data);
+> +       return NULL;
 >  }
->  
-> +void dump_rmpentry(u64 pfn)
-
-snp_dump_rmpentry()
-
+>
+>  static int snp_bind_asid(struct kvm *kvm, int *error)
+> @@ -2248,6 +2266,8 @@ static int snp_decommission_context(struct kvm *kvm)
+>         snp_free_firmware_page(sev->snp_context);
+>         sev->snp_context = NULL;
+>
+> +       kfree(sev->snp_certs_data);
+> +
+>         return 0;
+>  }
+>
+> @@ -2746,6 +2766,8 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm, u64 *exit_code)
+>         case SVM_VMGEXIT_UNSUPPORTED_EVENT:
+>         case SVM_VMGEXIT_HV_FEATURES:
+>         case SVM_VMGEXIT_PSC:
+> +       case SVM_VMGEXIT_GUEST_REQUEST:
+> +       case SVM_VMGEXIT_EXT_GUEST_REQUEST:
+>                 break;
+>         default:
+>                 goto vmgexit_err;
+> @@ -3161,6 +3183,155 @@ static unsigned long snp_handle_page_state_change(struct vcpu_svm *svm)
+>         return rc ? map_to_psc_vmgexit_code(rc) : 0;
+>  }
+>
+> +static unsigned long snp_setup_guest_buf(struct vcpu_svm *svm,
+> +                                        struct sev_data_snp_guest_request *data,
+> +                                        gpa_t req_gpa, gpa_t resp_gpa)
 > +{
-> +	unsigned long pfn_end;
-> +	struct rmpentry *e;
-> +	int level;
+> +       struct kvm_vcpu *vcpu = &svm->vcpu;
+> +       struct kvm *kvm = vcpu->kvm;
+> +       kvm_pfn_t req_pfn, resp_pfn;
+> +       struct kvm_sev_info *sev;
 > +
-> +	e = __snp_lookup_rmpentry(pfn, &level);
-> +	if (!e) {
-> +		pr_alert("failed to read RMP entry pfn 0x%llx\n", pfn);
-> +		return;
-> +	}
+> +       sev = &to_kvm_svm(kvm)->sev_info;
 > +
-> +	if (rmpentry_assigned(e)) {
-> +		pr_alert("RMPEntry paddr 0x%llx [assigned=%d immutable=%d pagesize=%d gpa=0x%lx"
-> +			" asid=%d vmsa=%d validated=%d]\n", pfn << PAGE_SHIFT,
-
-WARNING: quoted string split across lines
-#174: FILE: arch/x86/kernel/sev.c:2421:
-+		pr_alert("RMPEntry paddr 0x%llx [assigned=%d immutable=%d pagesize=%d gpa=0x%lx"
-+			" asid=%d vmsa=%d validated=%d]\n", pfn << PAGE_SHIFT,
-
-> +			rmpentry_assigned(e), rmpentry_immutable(e), rmpentry_pagesize(e),
-> +			rmpentry_gpa(e), rmpentry_asid(e), rmpentry_vmsa(e),
-> +			rmpentry_validated(e));
-> +		return;
-> +	}
+> +       if (!IS_ALIGNED(req_gpa, PAGE_SIZE) || !IS_ALIGNED(resp_gpa, PAGE_SIZE))
+> +               return SEV_RET_INVALID_PARAM;
 > +
-> +	/*
-> +	 * If the RMP entry at the faulting pfn was not assigned, then we do not
-> +	 * know what caused the RMP violation. To get some useful debug information,
-> +	 * let iterate through the entire 2MB region, and dump the RMP entries if
-> +	 * one of the bit in the RMP entry is set.
-> +	 */
-> +	pfn = pfn & ~(PTRS_PER_PMD - 1);
-> +	pfn_end = pfn + PTRS_PER_PMD;
+> +       req_pfn = gfn_to_pfn(kvm, gpa_to_gfn(req_gpa));
+> +       if (is_error_noslot_pfn(req_pfn))
+> +               return SEV_RET_INVALID_ADDRESS;
 > +
-> +	while (pfn < pfn_end) {
-> +		e = __snp_lookup_rmpentry(pfn, &level);
-> +		if (!e)
-> +			return;
-
-return? You mean "continue;" ?
-
+> +       resp_pfn = gfn_to_pfn(kvm, gpa_to_gfn(resp_gpa));
+> +       if (is_error_noslot_pfn(resp_pfn))
+> +               return SEV_RET_INVALID_ADDRESS;
 > +
-> +		if (e->low || e->high)
-> +			pr_alert("RMPEntry paddr 0x%llx: [high=0x%016llx low=0x%016llx]\n",
-> +				 pfn << PAGE_SHIFT, e->high, e->low);
-> +		pfn++;
-> +	}
+> +       if (rmp_make_private(resp_pfn, 0, PG_LEVEL_4K, 0, true))
+> +               return SEV_RET_INVALID_ADDRESS;
+> +
+> +       data->gctx_paddr = __psp_pa(sev->snp_context);
+> +       data->req_paddr = __sme_set(req_pfn << PAGE_SHIFT);
+> +       data->res_paddr = __sme_set(resp_pfn << PAGE_SHIFT);
+> +
+> +       return 0;
 > +}
-> +EXPORT_SYMBOL_GPL(dump_rmpentry);
-
-Why is that exported? Some module will be calling it too?
-
 > +
->  /*
->   * Return 1 if the RMP entry is assigned, 0 if it exists but is not assigned,
->   * and -errno if there is no corresponding RMP entry.
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index f2d543b92f43..9cd33169dfb5 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -33,6 +33,7 @@
->  #include <asm/pgtable_areas.h>		/* VMALLOC_START, ...		*/
->  #include <asm/kvm_para.h>		/* kvm_handle_async_pf		*/
->  #include <asm/vdso.h>			/* fixup_vdso_exception()	*/
-> +#include <asm/sev.h>			/* dump_rmpentry()		*/
->  
->  #define CREATE_TRACE_POINTS
->  #include <asm/trace/exceptions.h>
-> @@ -289,7 +290,7 @@ static bool low_pfn(unsigned long pfn)
->  	return pfn < max_low_pfn;
->  }
->  
-> -static void dump_pagetable(unsigned long address)
-> +static void dump_pagetable(unsigned long address, bool show_rmpentry)
+> +static void snp_cleanup_guest_buf(struct sev_data_snp_guest_request *data, unsigned long *rc)
+> +{
+> +       u64 pfn = __sme_clr(data->res_paddr) >> PAGE_SHIFT;
+> +       int ret;
+> +
+> +       ret = snp_page_reclaim(pfn);
+> +       if (ret)
+> +               *rc = SEV_RET_INVALID_ADDRESS;
+> +
+> +       ret = rmp_make_shared(pfn, PG_LEVEL_4K);
+> +       if (ret)
+> +               *rc = SEV_RET_INVALID_ADDRESS;
+> +}
+> +
+> +static void snp_handle_guest_request(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_gpa)
+> +{
+> +       struct sev_data_snp_guest_request data = {0};
+> +       struct kvm_vcpu *vcpu = &svm->vcpu;
+> +       struct kvm *kvm = vcpu->kvm;
+> +       struct kvm_sev_info *sev;
+> +       unsigned long rc;
+> +       int err;
+> +
+> +       if (!sev_snp_guest(vcpu->kvm)) {
+> +               rc = SEV_RET_INVALID_GUEST;
+> +               goto e_fail;
+> +       }
+> +
+> +       sev = &to_kvm_svm(kvm)->sev_info;
+> +
+> +       mutex_lock(&sev->guest_req_lock);
+> +
+> +       rc = snp_setup_guest_buf(svm, &data, req_gpa, resp_gpa);
+> +       if (rc)
+> +               goto unlock;
+> +
+> +       rc = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &err);
+> +       if (rc)
+> +               /* use the firmware error code */
+> +               rc = err;
+> +
+> +       snp_cleanup_guest_buf(&data, &rc);
+> +
+> +unlock:
+> +       mutex_unlock(&sev->guest_req_lock);
+> +
+> +e_fail:
+> +       svm_set_ghcb_sw_exit_info_2(vcpu, rc);
+> +}
+> +
+> +static void snp_handle_ext_guest_request(struct vcpu_svm *svm, gpa_t req_gpa, gpa_t resp_gpa)
+> +{
+> +       struct sev_data_snp_guest_request req = {0};
+> +       struct kvm_vcpu *vcpu = &svm->vcpu;
+> +       struct kvm *kvm = vcpu->kvm;
+> +       unsigned long data_npages;
+> +       struct kvm_sev_info *sev;
+> +       unsigned long rc, err;
+> +       u64 data_gpa;
+> +
+> +       if (!sev_snp_guest(vcpu->kvm)) {
+> +               rc = SEV_RET_INVALID_GUEST;
+> +               goto e_fail;
+> +       }
+> +
+> +       sev = &to_kvm_svm(kvm)->sev_info;
+> +
+> +       data_gpa = vcpu->arch.regs[VCPU_REGS_RAX];
+> +       data_npages = vcpu->arch.regs[VCPU_REGS_RBX];
+> +
+> +       if (!IS_ALIGNED(data_gpa, PAGE_SIZE)) {
+> +               rc = SEV_RET_INVALID_ADDRESS;
+> +               goto e_fail;
+> +       }
+> +
+> +       /* Verify that requested blob will fit in certificate buffer */
+> +       if ((data_npages << PAGE_SHIFT) > SEV_FW_BLOB_MAX_SIZE) {
+> +               rc = SEV_RET_INVALID_PARAM;
+> +               goto e_fail;
+> +       }
+> +
+> +       mutex_lock(&sev->guest_req_lock);
+> +
+> +       rc = snp_setup_guest_buf(svm, &req, req_gpa, resp_gpa);
+> +       if (rc)
+> +               goto unlock;
+> +
+> +       rc = snp_guest_ext_guest_request(&req, (unsigned long)sev->snp_certs_data,
+> +                                        &data_npages, &err);
+> +       if (rc) {
+> +               /*
+> +                * If buffer length is small then return the expected
+> +                * length in rbx.
+> +                */
+> +               if (err == SNP_GUEST_REQ_INVALID_LEN)
+> +                       vcpu->arch.regs[VCPU_REGS_RBX] = data_npages;
+> +
+> +               /* pass the firmware error code */
+> +               rc = err;
+> +               goto cleanup;
+> +       }
+> +
+> +       /* Copy the certificate blob in the guest memory */
+> +       if (data_npages &&
+> +           kvm_write_guest(kvm, data_gpa, sev->snp_certs_data, data_npages << PAGE_SHIFT))
+> +               rc = SEV_RET_INVALID_ADDRESS;
+> +
+> +cleanup:
+> +       snp_cleanup_guest_buf(&req, &rc);
+> +
+> +unlock:
+> +       mutex_unlock(&sev->guest_req_lock);
+> +
+> +e_fail:
+> +       svm_set_ghcb_sw_exit_info_2(vcpu, rc);
+> +}
+> +
+>  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+>  {
+>         struct vmcb_control_area *control = &svm->vmcb->control;
+> @@ -3404,6 +3575,20 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+>                 svm_set_ghcb_sw_exit_info_2(vcpu, rc);
+>                 break;
+>         }
+> +       case SVM_VMGEXIT_GUEST_REQUEST: {
+> +               snp_handle_guest_request(svm, control->exit_info_1, control->exit_info_2);
+> +
+> +               ret = 1;
+> +               break;
+> +       }
+> +       case SVM_VMGEXIT_EXT_GUEST_REQUEST: {
+> +               snp_handle_ext_guest_request(svm,
+> +                                            control->exit_info_1,
+> +                                            control->exit_info_2);
+> +
+> +               ret = 1;
+> +               break;
+> +       }
 
-I think passing in error_code and testing X86_PF_RMP inside should
-make this a bit more palatable than simply "grafting" SNP-specific
-functionality to generic paths.
+Don't we need some sort of rate limiting here? Since the PSP is a
+shared resource that the host needs access to as well as other guests
+it seems a little dangerous to let the guest spam this interface.
 
-Thx. 
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>         case SVM_VMGEXIT_UNSUPPORTED_EVENT:
+>                 vcpu_unimpl(vcpu,
+>                             "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 280072995306..71fe46a778f3 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -92,6 +92,8 @@ struct kvm_sev_info {
+>         u64 snp_init_flags;
+>         void *snp_context;      /* SNP guest context page */
+>         struct srcu_struct psc_srcu;
+> +       void *snp_certs_data;
+> +       struct mutex guest_req_lock;
+>  };
+>
+>  struct kvm_svm {
+> --
+> 2.17.1
+>
