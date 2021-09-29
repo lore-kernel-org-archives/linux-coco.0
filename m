@@ -1,37 +1,37 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E631D2FAF
-	for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 21:33:20 +0000 (UTC)
-Received: by mail-lf1-f51.google.com with SMTP id y26so16449829lfa.11
-        for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 14:33:20 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AE12FAF
+	for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 22:01:01 +0000 (UTC)
+Received: by mail-lf1-f53.google.com with SMTP id b20so16886188lfv.3
+        for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 15:01:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Db6sq5b/zoZ7Ckw0MsC3401ruyMn9GYqskLXtTDWY1U=;
-        b=YdD0IEPWfMh3400z3lZO/rXLrtkQdQQzT6E5rNYfIx/1o1+K+Sfq8GEGo2o9PK3SVa
-         6ODe3xygpnglVPfJK7LbN0wS38dxtDpecAWVPMXikimHtBJ6+YhqM650fFsJ4+zlyuU6
-         9LdRaIjGBfhkgktm2Zm1XsMhVMBMCExPjVbSkA2RfiB4vFvaKHbIN2Yfy4WmYZIsuTPO
-         t/CXw8yCyg+AjLGDWtdP023ISv/OzvDjJW0JDYwn17qtSF78jWMSGOVPzGSQJetv5aIO
-         KGaP4EhF/uc/epmRf4no4+MwopbE3RlK0tnZh6R9UZgx5fpSGZ5Lpd1gjB1ahUYuUFKz
-         ayaw==
+        bh=rdNmIzWKakz8cj8ZaSAXUzCuWcNLQWisf1ex7FteUGQ=;
+        b=PPso02+776dwkmm8ALWWPxWmz4nRQIbW7M1z8hqb2aLiBvFDgTMd6dJuCtG2yZYkHn
+         Pv4U4mB1oqeQ1BCe8bWDQcMM9m9cXLYQX+NHaz2cEBv+8QbrI46x75oB1M96CXDBw2ke
+         T2Fkkd8TaADsVCHdhEbfwnu3i4KbeWJRNQxmhCQE+7Yks/ariqPEtAMq/fJsoOORfSFs
+         FFITahN0QMQbLYGyNuVN+qYWj1aA9WjCn7FLW23q2L0C2hTwP9EYv/pNbKkFFFntCyWm
+         NZmt+iY3rbqIArYKTHaL1qbv1TiRyfQGRQFvqJ2jvv8LZ7RR732fuk2J3Eo8SG1LCqMM
+         x3Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Db6sq5b/zoZ7Ckw0MsC3401ruyMn9GYqskLXtTDWY1U=;
-        b=NSzOWKpLSJtib9FQx6kIcphq9Fiagi9MmOlhTDHNw8NArJywhMJtpwY/5V9J6ixVPw
-         c3W9yoz6fwIVCD5o5E8PEnmHzQox+AeVgFEcilKs2QamBZsHj7LJs6OTwkChTAj02FZl
-         vxplOwmG5bo/ofVMJlpEP3HPB24w9o+NdJp/fcuyAm4cmx8GFBu7RBppoMr4Dvmwl4uf
-         U89esbImA15qAR6LUhyoKSO7RXNLr/skkZvvwz9LLgT0W9ybmwADIPp+H6iy5jI8hgMa
-         /rEApRRA12G5onvkVxHZtSt21p8WD114Z+CoeJbP/57nXh2G2JcxTcV23nNalw7r+tPr
-         8F5A==
-X-Gm-Message-State: AOAM530TQBFn7EoRU09cFsO83se+p15Zz2CbHfW2AfdbRtM+vyQBQxOT
-	03T7MdRW+E7Vk6rsWZn+u6LHwlPfSx27HGCFxeJOhg==
-X-Google-Smtp-Source: ABdhPJzhCoDwFynfAd1TEDbYhSvAM8Evozq3qMnqQMfeskozU8Jk++cf4vW2wdpliQwTatEGUSw7odWrZm7W1h6plVw=
-X-Received: by 2002:a05:651c:3c2:: with SMTP id f2mr2269532ljp.282.1632951198592;
- Wed, 29 Sep 2021 14:33:18 -0700 (PDT)
+        bh=rdNmIzWKakz8cj8ZaSAXUzCuWcNLQWisf1ex7FteUGQ=;
+        b=S1e10oPCjDv8gVdArT9W38tP0Mj8nAgwGaTTIpM0lApo3TakWQHStlyZQE9kG889XH
+         pb1PAo2zLMVrNkxAbqg+P9sApnc4VTm/o0BWVuZ7nU2+JRrrvPqODgUSjkNbe7q7AKEL
+         LDc/9/9fcEVnTgciEhTG+trhBH3fnTbQmNv4dM84iUIoQacdy2y0AnP8fxRJYQnJqsiD
+         ZBFurdroEmgJwzGul1HvSMtHOPgsLRKXSJrd26dtATs/k0Ij4fBhWsMCqdTQlTlbLjdI
+         1NBd6PIRvZq+/aCHncddhm14afCEqoxV4WsZvc+r1LQNV7zYnsMD6lv5Vqpff++oo+OB
+         Z4rQ==
+X-Gm-Message-State: AOAM533gjwrQI48Jl+2NjWvj1CspVnVcieWF+mnybYeCU25iDzvHUMRE
+	TrwBIknFsgDcdQ6HcP1e6yNwtrQ7wicM2du+REcKzg==
+X-Google-Smtp-Source: ABdhPJwQW5OAYUmzDfM22Rl2KwZk2gL0jM5bvoqIaiIHSm1+/37jQlqWK8lQcELmfm3xuQOYXQJVXtek/PNAEPMkpZM=
+X-Received: by 2002:a05:651c:3c2:: with SMTP id f2mr2386774ljp.282.1632952859387;
+ Wed, 29 Sep 2021 15:00:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,8 +41,8 @@ MIME-Version: 1.0
 References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-43-brijesh.singh@amd.com>
 In-Reply-To: <20210820155918.7518-43-brijesh.singh@amd.com>
 From: Peter Gonda <pgonda@google.com>
-Date: Wed, 29 Sep 2021 15:33:07 -0600
-Message-ID: <CAMkAt6rzFvscq46CKYrhcf3d8VCGzy3tiM_SycnDRr9gVwXOSA@mail.gmail.com>
+Date: Wed, 29 Sep 2021 16:00:47 -0600
+Message-ID: <CAMkAt6rZOkLofBNQqfutryGjJ6Mp4wD4EKEOo=fD1gCcT81+=g@mail.gmail.com>
 Subject: Re: [PATCH Part2 v5 42/45] KVM: SVM: Provide support for
  SNP_GUEST_REQUEST NAE event
 To: Brijesh Singh <brijesh.singh@amd.com>
@@ -291,6 +291,13 @@ On Fri, Aug 20, 2021 at 10:01 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
 > +
 > +       rc = snp_guest_ext_guest_request(&req, (unsigned long)sev->snp_certs_data,
 > +                                        &data_npages, &err);
+
+What's the point of caching the certs from the sev_device in the
+sev_info struct if the snp_guest_ext_guest_request() function always
+seems to re-copy the certs back into |sev->snp_certs_data| on every
+call? I am probably missing something.
+
+
 > +       if (rc) {
 > +               /*
 > +                * If buffer length is small then return the expected
@@ -340,11 +347,6 @@ On Fri, Aug 20, 2021 at 10:01 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
 > +               ret = 1;
 > +               break;
 > +       }
-
-Don't we need some sort of rate limiting here? Since the PSP is a
-shared resource that the host needs access to as well as other guests
-it seems a little dangerous to let the guest spam this interface.
-
 >         case SVM_VMGEXIT_UNSUPPORTED_EVENT:
 >                 vcpu_unimpl(vcpu,
 >                             "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
