@@ -1,48 +1,24 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4DC3FC3
-	for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 12:25:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1632918304;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BAA29CA
+	for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 12:56:57 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0bd1007899710aba6f35e5.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:d100:7899:710a:ba6f:35e5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DAA481EC0570;
+	Wed, 29 Sep 2021 14:56:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1632920216;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=waQ4HTSs8qPq9K3TVNjz+sz8qTXsPiA0So8ONix0NBI=;
-	b=VXvZZHIfZBDeGLBs3aAgax5de0v2DCCYy+4xXDZXoffvF7hYBzGGkJe/ZHCD8fQd9swIf/
-	3iUUKsOfZyL1IFClfa/09zGL459NUGD0j8tCjM3Z76JI/8WeIO05J9migLEMN/yo80+61X
-	U9Nm+D30kKFH4xLUaLLbmaxrRQ63ATc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-572-X0NTShY3NMWMoetgBe_mOQ-1; Wed, 29 Sep 2021 08:25:01 -0400
-X-MC-Unique: X0NTShY3NMWMoetgBe_mOQ-1
-Received: by mail-wm1-f72.google.com with SMTP id o28-20020a05600c511c00b0030cdce826f9so769242wms.5
-        for <linux-coco@lists.linux.dev>; Wed, 29 Sep 2021 05:25:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=waQ4HTSs8qPq9K3TVNjz+sz8qTXsPiA0So8ONix0NBI=;
-        b=KxaJ7eoOyLYx/hqxj1+1G4U81Wij+h/XfyaeEbVfE2ZlG7RpnKQGKrKDfwcUqPAGHl
-         gB0tO0Z05Hi/uYK0fMddekf6xF69K410ZW84xL0wZ0YTmRj0cDfKZfb+iC4J0pAL4tL6
-         kXFr3k9vlqFi2V1ydhcZe3usx1ys4pZkSQEVPDPZhDfq07I4ObcI/t9nQcLdRics/V5H
-         mlz1roam80jhtRilo6DlqvRFnYmclDeZuISH9OoVQ9QqFRWFWYKHLZGoA4AWly9Lhjsa
-         XtyepR+FUKlkpvmeCkiv4bWmcB1lkXy5CZ+WSgpYZ4u/Z3zj0qIzrkLrUHHPhmO8X5WP
-         ldnQ==
-X-Gm-Message-State: AOAM5311I1/OnY7QL1PMnhBue+L+coj4ziwdr8m5XI9RE+XqB1MhwvTB
-	8OrDzgLKrQojz+weHqvTcwmRH+pjZSGoi5VawfpO/utm5DxdpopkJfp8qM6AnXyY4Bl69kbr3Cr
-	vtQmazWPrl8v68xNlWAUKHg==
-X-Received: by 2002:a1c:a78d:: with SMTP id q135mr10183680wme.36.1632918299927;
-        Wed, 29 Sep 2021 05:24:59 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyuN07HZpQF+5EFnsByLLu6j846FqRf2eW0h8MjJcBxzkrJaUI5JIyYXuTYzLs4OoebKilRLA==
-X-Received: by 2002:a1c:a78d:: with SMTP id q135mr10183645wme.36.1632918299729;
-        Wed, 29 Sep 2021 05:24:59 -0700 (PDT)
-Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net. [82.30.61.225])
-        by smtp.gmail.com with ESMTPSA id y197sm1786287wmc.18.2021.09.29.05.24.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Sep 2021 05:24:56 -0700 (PDT)
-Date: Wed, 29 Sep 2021 13:24:53 +0100
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=2BP/UXowSthxUNPAy3ZuvlIlMNxQstja9jGS9Mw4h+Q=;
+	b=nrMuwfMvh0EJaU3jF7q6cS/9YbvzmA9n+Rmh931iVSFZWHQ+k+EmvHUF9nnWWKLL62ybpG
+	8/dGU8a2XKqRUgFNbyXdkHTVfd2SRK/F93Ag45XxqoGuDS3Ocr8xrh1u5ColtvHMDTpSs0
+	xV6X1ElJQzk8fuMsivGo0JSKoCDwn20=
+Date: Wed, 29 Sep 2021 14:56:46 +0200
+From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
@@ -63,182 +39,40 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	David Rientjes <rientjes@google.com>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 41/45] KVM: SVM: Add support to handle the RMP
- nested page fault
-Message-ID: <YVRbFVQlTHOM9iTX@work-vm>
+Subject: Re: [PATCH Part2 v5 04/45] x86/sev: Add RMP entry lookup helpers
+Message-ID: <YVRijqnxzd8y7gcD@zn.tnic>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-42-brijesh.singh@amd.com>
+ <20210820155918.7518-5-brijesh.singh@amd.com>
+ <YU2fQMgw+PIBzSE4@zn.tnic>
+ <a5be6103-f643-fed2-b01a-d0310f447d7a@amd.com>
+ <2041d0d2-a0f8-d063-13c0-79b5bbcc8b83@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20210820155918.7518-42-brijesh.singh@amd.com>
-User-Agent: Mutt/2.0.7 (2021-05-04)
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <2041d0d2-a0f8-d063-13c0-79b5bbcc8b83@amd.com>
 
-* Brijesh Singh (brijesh.singh@amd.com) wrote:
-> When SEV-SNP is enabled in the guest, the hardware places restrictions on
-> all memory accesses based on the contents of the RMP table. When hardware
-> encounters RMP check failure caused by the guest memory access it raises
-> the #NPF. The error code contains additional information on the access
-> type. See the APM volume 2 for additional information.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 76 ++++++++++++++++++++++++++++++++++++++++++
->  arch/x86/kvm/svm/svm.c | 14 +++++---
->  arch/x86/kvm/svm/svm.h |  1 +
->  3 files changed, 87 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 65b578463271..712e8907bc39 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -3651,3 +3651,79 @@ void sev_post_unmap_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int token)
->  
->  	srcu_read_unlock(&sev->psc_srcu, token);
->  }
-> +
-> +void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
-> +{
-> +	int rmp_level, npt_level, rc, assigned;
-> +	struct kvm *kvm = vcpu->kvm;
-> +	gfn_t gfn = gpa_to_gfn(gpa);
-> +	bool need_psc = false;
-> +	enum psc_op psc_op;
-> +	kvm_pfn_t pfn;
-> +	bool private;
-> +
-> +	write_lock(&kvm->mmu_lock);
-> +
-> +	if (unlikely(!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level)))
-> +		goto unlock;
-> +
-> +	assigned = snp_lookup_rmpentry(pfn, &rmp_level);
-> +	if (unlikely(assigned < 0))
-> +		goto unlock;
-> +
-> +	private = !!(error_code & PFERR_GUEST_ENC_MASK);
-> +
-> +	/*
-> +	 * If the fault was due to size mismatch, or NPT and RMP page level's
-> +	 * are not in sync, then use PSMASH to split the RMP entry into 4K.
-> +	 */
-> +	if ((error_code & PFERR_GUEST_SIZEM_MASK) ||
-> +	    (npt_level == PG_LEVEL_4K && rmp_level == PG_LEVEL_2M && private)) {
-> +		rc = snp_rmptable_psmash(kvm, pfn);
-> +		if (rc)
-> +			pr_err_ratelimited("psmash failed, gpa 0x%llx pfn 0x%llx rc %d\n",
-> +					   gpa, pfn, rc);
-> +		goto out;
-> +	}
-> +
-> +	/*
-> +	 * If it's a private access, and the page is not assigned in the
-> +	 * RMP table, create a new private RMP entry. This can happen if
-> +	 * guest did not use the PSC VMGEXIT to transition the page state
-> +	 * before the access.
-> +	 */
-> +	if (!assigned && private) {
-> +		need_psc = 1;
-> +		psc_op = SNP_PAGE_STATE_PRIVATE;
-> +		goto out;
-> +	}
-> +
-> +	/*
-> +	 * If it's a shared access, but the page is private in the RMP table
-> +	 * then make the page shared in the RMP table. This can happen if
-> +	 * the guest did not use the PSC VMGEXIT to transition the page
-> +	 * state before the access.
-> +	 */
-> +	if (assigned && !private) {
-> +		need_psc = 1;
-> +		psc_op = SNP_PAGE_STATE_SHARED;
-> +	}
-> +
-> +out:
-> +	write_unlock(&kvm->mmu_lock);
-> +
-> +	if (need_psc)
-> +		rc = __snp_handle_page_state_change(vcpu, psc_op, gpa, PG_LEVEL_4K);
+On Mon, Sep 27, 2021 at 11:04:04AM -0500, Brijesh Singh wrote:
+> Currently, we have only x86 drivers using it, are you thinking to move
+> this to arch/x86/include/asm/ ?
 
-That 'rc' never goes anywhere - should it?
+arch/x86/include/asm/sev.h, yap.
 
-> +	/*
-> +	 * The fault handler has updated the RMP pagesize, zap the existing
-> +	 * rmaps for large entry ranges so that nested page table gets rebuilt
-> +	 * with the updated RMP pagesize.
-> +	 */
-> +	gfn = gpa_to_gfn(gpa) & ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
-> +	kvm_zap_gfn_range(kvm, gfn, gfn + PTRS_PER_PMD);
-> +	return;
-> +
-> +unlock:
-> +	write_unlock(&kvm->mmu_lock);
-> +}
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 3784d389247b..3ba62f21b113 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -1933,15 +1933,21 @@ static int pf_interception(struct kvm_vcpu *vcpu)
->  static int npf_interception(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_svm *svm = to_svm(vcpu);
-> +	int rc;
->  
->  	u64 fault_address = svm->vmcb->control.exit_info_2;
->  	u64 error_code = svm->vmcb->control.exit_info_1;
->  
->  	trace_kvm_page_fault(fault_address, error_code);
-> -	return kvm_mmu_page_fault(vcpu, fault_address, error_code,
-> -			static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
-> -			svm->vmcb->control.insn_bytes : NULL,
-> -			svm->vmcb->control.insn_len);
-> +	rc = kvm_mmu_page_fault(vcpu, fault_address, error_code,
-> +				static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
-> +				svm->vmcb->control.insn_bytes : NULL,
-> +				svm->vmcb->control.insn_len);
+We can always create it later if needed by other architectures.
 
-If kvm_mmu_page_fault failed, (rc!=0) do you still want to call your
-handler?
+Thx.
 
-Dave
-
-> +	if (error_code & PFERR_GUEST_RMP_MASK)
-> +		handle_rmp_page_fault(vcpu, fault_address, error_code);
-> +
-> +	return rc;
->  }
->  
->  static int db_interception(struct kvm_vcpu *vcpu)
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index ff91184f9b4a..280072995306 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -626,6 +626,7 @@ struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
->  void sev_rmp_page_level_adjust(struct kvm *kvm, kvm_pfn_t pfn, int *level);
->  int sev_post_map_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int *token);
->  void sev_post_unmap_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int token);
-> +void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
->  
->  /* vmenter.S */
->  
-> -- 
-> 2.17.1
-> 
-> 
 -- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
