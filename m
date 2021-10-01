@@ -1,27 +1,27 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F34E2FAE
-	for <linux-coco@lists.linux.dev>; Fri,  1 Oct 2021 11:06:14 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0e8e0006425ffdb1062ac0.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:8e00:642:5ffd:b106:2ac0])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E16A3FCA
+	for <linux-coco@lists.linux.dev>; Fri,  1 Oct 2021 13:03:02 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0e8e00c9205f48360a92d6.dip0.t-ipconnect.de [IPv6:2003:ec:2f0e:8e00:c920:5f48:360a:92d6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7CBB61EC0419;
-	Fri,  1 Oct 2021 13:06:12 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4DFB81EC05BF;
+	Fri,  1 Oct 2021 15:03:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1633086372;
+	t=1633093380;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JCBAeXE9Fm2/4A8nfF4qlTElC4omNaQJNghTb8YDddM=;
-	b=kTtfe1X/X1Cm8CiF7sqgmxJbnYSVBHwhUxmVIQWx22i7VqsRKC6EEWMxmDVCD+9RF7VzG5
-	QJBTrSVvQeE27As7XeJBpiyoxWoEGP1nFgkKyx5GnB9alDDmJT1lAjv2TqZFpTt2XpnmBK
-	KSzCimg6oBTl41PghKnK15OZssLqRMo=
-Date: Fri, 1 Oct 2021 13:06:08 +0200
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=Pww6+dMpzZfasK3x5P00rVcRmv+YdyobAl7XmL8o1hQ=;
+	b=UPoCccmafl2kj4ZfjkRANSs2qzDvdnHfjG51lKFvLOwkF4ENeK9ENX3ewAMPoJY36xSu1g
+	s+vucdZRWDPD9eq8FW57/jUSDnwGFsRUHn9t6CMr+f71s76rhviCESLb4QpZWHhAnhg015
+	UUFkcN2vhdLDHQriiIKjCj6JDq5eIQI=
+Date: Fri, 1 Oct 2021 15:03:01 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To: Marc Orr <marcorr@google.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, x86 <x86@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
@@ -44,14 +44,13 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 06/45] x86/sev: Invalid pages from direct map
- when adding it to RMP table
-Message-ID: <YVbroJ5RGWa5kZ6J@zn.tnic>
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part2 v5 32/45] KVM: x86: Define RMP page fault error
+ bits for #NPF
+Message-ID: <YVcHBQA602iCOo+J@zn.tnic>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-7-brijesh.singh@amd.com>
- <YVR5cOQOJxy12DcR@zn.tnic>
- <60d6a70d-22ab-9e17-b243-7f5669b4b70d@amd.com>
+ <20210820155918.7518-33-brijesh.singh@amd.com>
+ <CAA03e5G-UX761uBAFLS3e1NuYZOh2v8b=UkrX+rZUviegyWVGQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,32 +59,28 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <60d6a70d-22ab-9e17-b243-7f5669b4b70d@amd.com>
+In-Reply-To: <CAA03e5G-UX761uBAFLS3e1NuYZOh2v8b=UkrX+rZUviegyWVGQ@mail.gmail.com>
 
-On Thu, Sep 30, 2021 at 09:19:52AM -0700, Brijesh Singh wrote:
-> . The thought process is if in the future 
-> set_direct_map_default_noflush() is improved to restore the large
-> mapping then it will all work transparently.
+On Thu, Sep 30, 2021 at 04:41:54PM -0700, Marc Orr wrote:
+> On Fri, Aug 20, 2021 at 9:00 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
+> >
+> > When SEV-SNP is enabled globally, the hardware places restrictions on all
+> > memory accesses based on the RMP entry, whether the hypervisor or a VM,
+> > performs the accesses. When hardware encounters an RMP access violation
+> > during a guest access, it will cause a #VMEXIT(NPF).
+> >
+> > See APM2 section 16.36.10 for more details.
+> 
+> nit: Section # should be 15.36.10 (rather than 16.36.10). Also, is it
+> better to put section headings, rather than numbers in the commit logs
+> and comments? Someone mentioned to me that the section numbering in
+> APM and SDM can move around over time, but the section titles tend to
+> be more stable. I'm not sure how true this is, so feel free to
+> disregard this comment.
 
-That's only scratching the surface of the *why* this is done so please
-explain why this dance is being done in a comment above the code so that
-it is clear.
-
-It is not really obvious why that hiding from the direct map is being
-done.
-
-Good reason from that memfd_secret mail are:
-
-"* Prevent cross-process secret userspace memory exposures. Once the secret
-memory is allocated, the user can't accidentally pass it into the kernel to
-be transmitted somewhere. The secreremem pages cannot be accessed via the
-direct map and they are disallowed in GUP."
-
-and in general hiding RMP pages from the direct map is a nice additional
-protection.
-
-Thx.
+No, that comment is correct, please make it unambiguous so that if
+someone's looking later, someone can find the section even in future
+docs. (I'm hoping they don't change headings, that is...).
 
 -- 
 Regards/Gruss,
