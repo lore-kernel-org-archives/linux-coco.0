@@ -1,133 +1,116 @@
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7AE2C85
-	for <linux-coco@lists.linux.dev>; Thu,  7 Oct 2021 13:49:26 +0000 (UTC)
-X-IronPort-AV: E=McAfee;i="6200,9189,10130"; a="225024920"
-X-IronPort-AV: E=Sophos;i="5.85,354,1624345200"; 
-   d="scan'208";a="225024920"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:48:57 -0700
-X-IronPort-AV: E=Sophos;i="5.85,354,1624345200"; 
-   d="scan'208";a="488997557"
-Received: from likanto-mobl.amr.corp.intel.com (HELO [10.209.99.172]) ([10.209.99.172])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:48:57 -0700
-Subject: Re: [PATCH v2 4/4] virt: Add sev_secret module to expose confidential
- computing secrets
-To: Dov Murik <dovmurik@linux.ibm.com>, linux-efi@vger.kernel.org
-Cc: Borislav Petkov <bp@suse.de>, Ashish Kalra <ashish.kalra@amd.com>,
- Brijesh Singh <brijesh.singh@amd.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Andi Kleen <ak@linux.intel.com>, Greg KH <gregkh@linuxfoundation.org>,
- Andrew Scull <ascull@google.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- James Bottomley <jejb@linux.ibm.com>,
- Tobin Feldman-Fitzthum <tobin@linux.ibm.com>, Jim Cadden <jcadden@ibm.com>,
- Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
- linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B962C81
+	for <linux-coco@lists.linux.dev>; Thu,  7 Oct 2021 16:18:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1633623479;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=blEAPOI+nF0owA6gNBYFWO1A41DzHlnw6VWPwMJ/+zM=;
+	b=Y9zVBL7vTMGRWFRzNfprRpivPIZY+gaKkDtu563JI/xRaRo1A5C+UfOCOFYa9/DBWRtYZZ
+	el703Nd7vDBAHyN5YqqeibP+sG4be8npCtvMP4M6yXO44YnCpjjQyVDfVX/a6oBOExggGe
+	s/WqMRnfUPagzbED9oQHbzwt1XZP2tU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-517-8R_8IALuO5CtxmWOV8eCYQ-1; Thu, 07 Oct 2021 12:17:58 -0400
+X-MC-Unique: 8R_8IALuO5CtxmWOV8eCYQ-1
+Received: by mail-wr1-f69.google.com with SMTP id l9-20020adfc789000000b00160111fd4e8so5141939wrg.17
+        for <linux-coco@lists.linux.dev>; Thu, 07 Oct 2021 09:17:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=blEAPOI+nF0owA6gNBYFWO1A41DzHlnw6VWPwMJ/+zM=;
+        b=WiPkIJ39Wf54GCxAH9z6fWyZSbYt3aK0fK4p7K4EAIiJL9HjM6ghJGDFBhcCMihsQn
+         fwSS9GzIglI/wJIWYDiCX75LxXbGoTMKTVLL7okLgyNITcxHHdYwvXwSoLFcPk2XrS5p
+         B2RIXNXD/1z49jOiIfPOs9qb1UHAsFT9JwaZhCGSYSZVDixXCv2XfEb1vccDbH6bso4S
+         Xyk2X7Ne1ZPcuLi6wRAr7iAl8jhyWbMH0bLHTwDetEMUxNU0ig5cq4mV4v8nbE0PAXyq
+         C/3DpFd1FMzZcgEebDjc41I/96L+hCOyIOKMqU175hZDLxaOXFAG5I2gns+JvZlmtMW2
+         BJrg==
+X-Gm-Message-State: AOAM5336uExg1vtUlfIBMg5BYvlszE3uYSiZlQaKSNpN0/Kb+mwDHDad
+	GXJEb7rM8XhZ+YcLsovM1pxQzyH2q2wvKth+AOwUcQ1saoziforcRPwLWlSRcaFqT95kIwy4Z9z
+	Vx8rITdk5VIyqE0yLeCPwxA==
+X-Received: by 2002:a5d:59ae:: with SMTP id p14mr6853079wrr.278.1633623477620;
+        Thu, 07 Oct 2021 09:17:57 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzrADigG00ZrKN1jM1AZoSZzR3uxS9vfFO2wr7+DM1JoV/qmvfoFSceMTUWkIHap1R4hsOMQg==
+X-Received: by 2002:a5d:59ae:: with SMTP id p14mr6853057wrr.278.1633623477478;
+        Thu, 07 Oct 2021 09:17:57 -0700 (PDT)
+Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net. [82.30.61.225])
+        by smtp.gmail.com with ESMTPSA id k17sm9320224wmj.0.2021.10.07.09.17.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Oct 2021 09:17:56 -0700 (PDT)
+Date: Thu, 7 Oct 2021 17:17:54 +0100
+From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Dov Murik <dovmurik@linux.ibm.com>, linux-efi@vger.kernel.org,
+	Borislav Petkov <bp@suse.de>, Ashish Kalra <ashish.kalra@amd.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Andrew Scull <ascull@google.com>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+	Jim Cadden <jcadden@ibm.com>,
+	Daniele Buono <dbuono@linux.vnet.ibm.com>,
+	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] virt: Add sev_secret module to expose
+ confidential computing secrets
+Message-ID: <YV8dsl+qgbIH6z8F@work-vm>
 References: <20211007061838.1381129-1-dovmurik@linux.ibm.com>
  <20211007061838.1381129-5-dovmurik@linux.ibm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <290c21a8-a68f-0826-2754-1480f79a081d@intel.com>
-Date: Thu, 7 Oct 2021 06:48:54 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ <7e2a4595-3f9c-6d65-34e3-af7c1d6da196@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20211007061838.1381129-5-dovmurik@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <7e2a4595-3f9c-6d65-34e3-af7c1d6da196@intel.com>
+User-Agent: Mutt/2.0.7 (2021-05-04)
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 10/6/21 11:18 PM, Dov Murik wrote:
-> +static void wipe_memory(void *addr, size_t size)
-> +{
-> +	memzero_explicit(addr, size);
-> +	clean_cache_range(addr, size);
-> +}
+* Dave Hansen (dave.hansen@intel.com) wrote:
+> On 10/6/21 11:18 PM, Dov Murik wrote:
+> > +static int sev_secret_map_area(void)
+> > +{
+> > +	struct sev_secret *s = sev_secret_get();
+> > +	struct linux_efi_coco_secret_area *secret_area;
+> > +	u32 secret_area_size;
+> > +
+> > +	if (efi.coco_secret == EFI_INVALID_TABLE_ADDR) {
+> > +		pr_err("Secret area address is not available\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	secret_area = memremap(efi.coco_secret, sizeof(*secret_area), MEMREMAP_WB);
+> > +	if (secret_area == NULL) {
+> > +		pr_err("Could not map secret area header\n");
+> > +		return -ENOMEM;
+> > +	}
+> 
+> There doesn't seem to be anything truly SEV-specific in here at all.
+> Isn't this more accurately called "efi_secret" or something?  What's to
+> prevent Intel or an ARM vendor from implementing this?
 
-What's the purpose of the clean_cache_range()?  It's backed in a CLWB
-instruction on x86 which seems like an odd choice.  I guess the point is
-that the memzero_explicit() will overwrite the contents, but might have
-dirty lines in the cache.  The CLWB will ensure that the lines are
-actually written back to memory, clearing the secret out of memory.
-Without the CLWB, the secret might live in memory until the dirtied
-cachelines are written back.
+I don't think anything; although the last discussion I remember on list
+with Intel was that Intel preferred some interface with an ioctl to read
+the secrets and stuff.  I'm not quite sure if the attestation/secret
+delivery order makes sense with TDX, but if it does, then if you could
+persuade someone to standardise on this it would be great.
 
-Could you document this, please?  It would also be nice to include some
-of this motivation in the patch that exports clean_cache_range() in the
-first place.
+Dave
 
-I also think clean_cache_range() an odd choice.  If it were me, I
-probably would have just used the already-exported
-clflush_cache_range().  The practical difference between writing back
-and flushing the cachelines is basically zero.  The lines will never be
-reused.
+-- 
+Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
-*If* we export anything from x86 code, I think it should be something
-which is specific to the task at hand, like arch_invalidate_pmem() is.
-
-Also, when you are modifying x86 code, including exports, it would be
-nice to include (all of) the x86 maintainers.  The relevant ones for
-this series would probably be:
-
-X86 ARCHITECTURE (32-BIT AND 64-BIT)
-M:      Thomas Gleixner <tglx@linutronix.de>
-M:      Ingo Molnar <mingo@redhat.com>
-M:      Borislav Petkov <bp@alien8.de>
-M:      x86@kernel.org
-
-X86 MM
-M:      Dave Hansen <dave.hansen@linux.intel.com>
-M:      Andy Lutomirski <luto@kernel.org>
-M:      Peter Zijlstra <peterz@infradead.org>
-
-There's also the handy dandy scripts/get_maintainer.pl to help.
