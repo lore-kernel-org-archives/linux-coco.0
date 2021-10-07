@@ -1,332 +1,550 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD162C86
-	for <linux-coco@lists.linux.dev>; Tue,  5 Oct 2021 15:01:56 +0000 (UTC)
-Received: by mail-lf1-f41.google.com with SMTP id i24so37597139lfj.13
-        for <linux-coco@lists.linux.dev>; Tue, 05 Oct 2021 08:01:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=42G3scgpWAbOtgxef+InMFnEa34BVWcCFN53mKIikV0=;
-        b=HaQ73Zp2P266ypuNKElq+jGbVlRIzMQ71XS7qQ2exXnMK2YWPRGvke9i4gh75sOsHE
-         AaUeLPa93afxOCNwDZ4rZXLseWBCcrIfDV+lcMPL8MqJOAs+FWh2d7is2HYq78mBQQgY
-         ZsYMsSpe8OkVrFv2+9XCEJSlWRawQCTaHtx3wCgLF/QdyXZ8UIbGcWs6yj/t+XvrMku9
-         N7Q4tFJpL31ePVP6Ed4OYRuJ0y7Yai1ntz96WQrNjMKAqmokUP+uPW//gqWd7n6iNAgs
-         srNj0nk5DBhe5iGveSfa7mXy7iSJxoZ7n5flMapZuomGAFyxyG0oTyLq+ZCevbABcV4Y
-         K3EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=42G3scgpWAbOtgxef+InMFnEa34BVWcCFN53mKIikV0=;
-        b=lthIwz7zSqaJCyy+3Wt9e4HDVPc+goSx1AeghxfbzqF5/tGCwJqPQVb1rOi013a/tV
-         kiEP+pbjz/bCN1jiTKY+XMPuvqfWK3co+X+z96ieO8erDHH4S1/vztQSq0KaR6I1D6w3
-         aR5wKfBIpknkXapmjo0ppq+us0kDX2DxjKX8Zcv8o0n0bxRrN3ver8PSGZHc/hRw6DaO
-         74Lo9mNGJlvIjGu3Joqavr9/6W385Zwu96Epif4rxP342AGc1bCSNGL/6E9JTEr/rVDI
-         YyX/8vlZhOXOvH7UZqrMP1s1h3QAKGbCzELHaYf4iy90io9CDRweZsT/+FKx7nyRTj4c
-         oxtA==
-X-Gm-Message-State: AOAM532EgoQg8BXAPsWA0oEDOGO53JwAQXI8hmwhiQVdcEBnz8+OpXyG
-	JwmhAenV+p6Y0YMCAwVihdclXofmpTRRfNPE3S7eEA==
-X-Google-Smtp-Source: ABdhPJwfIVQtcMQUnNx8RT4h/VH+mgd9JIEGGedHljgEqbQmJLD/tT2gzhFnJVT7XW0mk42MFtXlb2TKsV03h7OLuhU=
-X-Received: by 2002:a2e:8787:: with SMTP id n7mr21556614lji.278.1633446087421;
- Tue, 05 Oct 2021 08:01:27 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9132C88
+	for <linux-coco@lists.linux.dev>; Thu,  7 Oct 2021 06:19:58 +0000 (UTC)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1976A7Ig001345;
+	Thu, 7 Oct 2021 02:18:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=O6A3vLwmHhIkoPRZiGSBMyKtpC5xvDsFZGKzeCLL6Jc=;
+ b=EvMfcRnqLv0pO9TrSgnbEOgFNCSBlawpbUFyqAZ3mc1x+rlDIDP1UMW63KebQiyGT47u
+ xhI3FaFQK4aOYkNW0U8R6h3Td6qmuUTocDjPzHtBVJ2GoMl6ygh3XlfgDAqB0AJS64/k
+ p4ZF5n68RSu50MOBKBXXZ7Z5Ock4Y26efoW9UGvJ13kz7lrGlFrh2S349idfWrBuGd13
+ C1TY295GkTSMqDvFFMsLPZOQBi2HvYXLuXFyaE75MT8V5JBuLiW20d7WuXbwdfNf4FEG
+ lodDkXAQmbQxpnirWEp9f+9Nbh13lgoH7ysnfU94aY9/q496nrWhc8aeGPXANTt9RSwB eg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3bh2t6170g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Oct 2021 02:18:47 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1976B3Dl005433;
+	Thu, 7 Oct 2021 02:18:46 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3bh2t61705-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Oct 2021 02:18:45 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1976IDA8026459;
+	Thu, 7 Oct 2021 06:18:44 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+	by ppma01dal.us.ibm.com with ESMTP id 3bef2efmfu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Oct 2021 06:18:44 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
+	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1976IgMu46006630
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 Oct 2021 06:18:42 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD86FAE05C;
+	Thu,  7 Oct 2021 06:18:42 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 63F00AE066;
+	Thu,  7 Oct 2021 06:18:42 +0000 (GMT)
+Received: from amdrome3.watson.ibm.com (unknown [9.2.130.16])
+	by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+	Thu,  7 Oct 2021 06:18:42 +0000 (GMT)
+From: Dov Murik <dovmurik@linux.ibm.com>
+To: linux-efi@vger.kernel.org
+Cc: Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
+        Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>,
+        Greg KH <gregkh@linuxfoundation.org>, Andrew Scull <ascull@google.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 4/4] virt: Add sev_secret module to expose confidential computing secrets
+Date: Thu,  7 Oct 2021 06:18:38 +0000
+Message-Id: <20211007061838.1381129-5-dovmurik@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20211007061838.1381129-1-dovmurik@linux.ibm.com>
+References: <20211007061838.1381129-1-dovmurik@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-26-brijesh.singh@amd.com>
- <CAMkAt6qsZNJPM97Y6_8b7QmLv=n0MaDs7hThi3thFEee4P10pA@mail.gmail.com> <e5a47417-2f2e-7055-71ad-850b509f3876@amd.com>
-In-Reply-To: <e5a47417-2f2e-7055-71ad-850b509f3876@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Tue, 5 Oct 2021 09:01:15 -0600
-Message-ID: <CAMkAt6pJQmgzbpfxbXF_aJobszG8OU=rfVw8Xk9SMqC6050G6g@mail.gmail.com>
-Subject: Re: [PATCH Part2 v5 25/45] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_UPDATE command
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, 
-	Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Sergio Lopez <slp@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com, 
-	Marc Orr <marcorr@google.com>, sathyanarayanan.kuppuswamy@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: oOheJ8YoSQWwcvHU0B3MBjXJFNTRLnGC
+X-Proofpoint-GUID: N426yvYS7aM6ZUceUJU6FoCXpVaxsrx2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
+ definitions=2021-10-06_04,2021-10-07_01,2020-04-07_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2109230001 definitions=main-2110070039
 
-On Mon, Sep 27, 2021 at 1:33 PM Brijesh Singh <brijesh.singh@amd.com> wrote:
->
->
->
-> On 9/27/21 11:43 AM, Peter Gonda wrote:
-> ...
-> >>
-> >> +static bool is_hva_registered(struct kvm *kvm, hva_t hva, size_t len)
-> >> +{
-> >> +       struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> >> +       struct list_head *head = &sev->regions_list;
-> >> +       struct enc_region *i;
-> >> +
-> >> +       lockdep_assert_held(&kvm->lock);
-> >> +
-> >> +       list_for_each_entry(i, head, list) {
-> >> +               u64 start = i->uaddr;
-> >> +               u64 end = start + i->size;
-> >> +
-> >> +               if (start <= hva && end >= (hva + len))
-> >> +                       return true;
-> >> +       }
-> >> +
-> >> +       return false;
-> >> +}
-> >
-> > Internally we actually register the guest memory in chunks for various
-> > reasons. So for our largest SEV VM we have 768 1 GB entries in
-> > |sev->regions_list|. This was OK before because no look ups were done.
-> > Now that we are performing a look ups a linked list with linear time
-> > lookups seems not ideal, could we switch the back data structure here
-> > to something more conducive too fast lookups?
-> >> +
->
-> Interesting, for qemu we had very few number of regions so there was no
-> strong reason for me to think something otherwise. Do you have any
-> preference on what data structure you will use ?
+The new sev_secret module exposes the confidential computing (coco)
+secret area via securityfs interface.
 
-Chatted offline. I think this is fine for now, we won't want to use
-our userspace demand pinning with SNP yet.
+When the module is loaded (and securityfs is mounted, typically under
+/sys/kernel/security), a "coco/sev_secret" directory is created in
+securityfs.  In it, a file is created for each secret entry.  The name
+of each such file is the GUID of the secret entry, and its content is
+the secret data.
 
->
-> >> +static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> >> +{
-> >> +       struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> >> +       struct sev_data_snp_launch_update data = {0};
-> >> +       struct kvm_sev_snp_launch_update params;
-> >> +       unsigned long npages, pfn, n = 0;
-> >
-> > Could we have a slightly more descriptive name for |n|? nprivate
-> > maybe? Also why not zero in the loop below?
-> >
->
-> Sure, I will pick a better name and no need to zero above. I will fix it.
->
-> > for (i = 0, n = 0; i < npages; ++i)
-> >
-> >> +       int *error = &argp->error;
-> >> +       struct page **inpages;
-> >> +       int ret, i, level;
-> >
-> > Should |i| be an unsigned long since it can is tracked in a for loop
-> > with "i < npages" npages being an unsigned long? (|n| too)
-> >
->
-> Noted.
->
-> >> +       u64 gfn;
-> >> +
-> >> +       if (!sev_snp_guest(kvm))
-> >> +               return -ENOTTY;
-> >> +
-> >> +       if (!sev->snp_context)
-> >> +               return -EINVAL;
-> >> +
-> >> +       if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
-> >> +               return -EFAULT;
-> >> +
-> >> +       /* Verify that the specified address range is registered. */
-> >> +       if (!is_hva_registered(kvm, params.uaddr, params.len))
-> >> +               return -EINVAL;
-> >> +
-> >> +       /*
-> >> +        * The userspace memory is already locked so technically we don't
-> >> +        * need to lock it again. Later part of the function needs to know
-> >> +        * pfn so call the sev_pin_memory() so that we can get the list of
-> >> +        * pages to iterate through.
-> >> +        */
-> >> +       inpages = sev_pin_memory(kvm, params.uaddr, params.len, &npages, 1);
-> >> +       if (!inpages)
-> >> +               return -ENOMEM;
-> >> +
-> >> +       /*
-> >> +        * Verify that all the pages are marked shared in the RMP table before
-> >> +        * going further. This is avoid the cases where the userspace may try
-> >
-> > This is *too* avoid cases...
-> >
-> Noted
->
-> >> +        * updating the same page twice.
-> >> +        */
-> >> +       for (i = 0; i < npages; i++) {
-> >> +               if (snp_lookup_rmpentry(page_to_pfn(inpages[i]), &level) != 0) {
-> >> +                       sev_unpin_memory(kvm, inpages, npages);
-> >> +                       return -EFAULT;
-> >> +               }
-> >> +       }
-> >> +
-> >> +       gfn = params.start_gfn;
-> >> +       level = PG_LEVEL_4K;
-> >> +       data.gctx_paddr = __psp_pa(sev->snp_context);
-> >> +
-> >> +       for (i = 0; i < npages; i++) {
-> >> +               pfn = page_to_pfn(inpages[i]);
-> >> +
-> >> +               ret = rmp_make_private(pfn, gfn << PAGE_SHIFT, level, sev_get_asid(kvm), true);
-> >> +               if (ret) {
-> >> +                       ret = -EFAULT;
-> >> +                       goto e_unpin;
-> >> +               }
-> >> +
-> >> +               n++;
-> >> +               data.address = __sme_page_pa(inpages[i]);
-> >> +               data.page_size = X86_TO_RMP_PG_LEVEL(level);
-> >> +               data.page_type = params.page_type;
-> >> +               data.vmpl3_perms = params.vmpl3_perms;
-> >> +               data.vmpl2_perms = params.vmpl2_perms;
-> >> +               data.vmpl1_perms = params.vmpl1_perms;
-> >> +               ret = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE, &data, error);
-> >> +               if (ret) {
-> >> +                       /*
-> >> +                        * If the command failed then need to reclaim the page.
-> >> +                        */
-> >> +                       snp_page_reclaim(pfn);
-> >> +                       goto e_unpin;
-> >> +               }
-> >
-> > Hmm if this call fails after the first iteration of this loop it will
-> > lead to a hard to reproduce LaunchDigest right? Say if we are
-> > SnpLaunchUpdating just 2 pages A and B. If we first call this ioctl
-> > and A is SNP_LAUNCH_UPDATED'd but B fails, we then make A shared again
-> > in the RMP. So we must call the ioctl with 2 pages again, after fixing
-> > the issue with page B. Now the Launch digest has something like
-> > Hash(A) then HASH(A & B) right (overly simplified) so A will be
-> > included twice right? I am not sure if anything better can be done
-> > here but might be worth documenting IIUC.
-> >
->
-> I can add a comment in documentation that if a LAUNCH_UPDATE fails then
-> user need to destroy the existing context and start from the beginning.
-> I am not sure if we want to support the partial update cases. But in
-> case we have two choices a) decommission the context on failure or b)
-> add a new command to destroy the existing context.
->
+This allows applications running in a confidential computing setting to
+read secrets provided by the guest owner via a secure secret injection
+mechanism (such as AMD SEV's LAUNCH_SECRET command).
 
-Agreed supporting the partial update case seems very tricky.
+Removing (unlinking) files in the "coco/sev_secret" directory will zero
+out the secret in memory, and remove the filesystem entry.  If the
+module is removed and loaded again, that secret will not appear in the
+filesystem.
 
->
-> >> +
-> >> +               gfn++;
-> >> +       }
-> >> +
-> >> +e_unpin:
-> >> +       /* Content of memory is updated, mark pages dirty */
-> >> +       for (i = 0; i < n; i++) {
-> >> +               set_page_dirty_lock(inpages[i]);
-> >> +               mark_page_accessed(inpages[i]);
-> >> +
-> >> +               /*
-> >> +                * If its an error, then update RMP entry to change page ownership
-> >> +                * to the hypervisor.
-> >> +                */
-> >> +               if (ret)
-> >> +                       host_rmp_make_shared(pfn, level, true);
-> >> +       }
-> >> +
-> >> +       /* Unlock the user pages */
-> >> +       sev_unpin_memory(kvm, inpages, npages);
-> >> +
-> >> +       return ret;
-> >> +}
-> >> +
-> >>   int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
-> >>   {
-> >>          struct kvm_sev_cmd sev_cmd;
-> >> @@ -1712,6 +1873,9 @@ int svm_mem_enc_op(struct kvm *kvm, void __user *argp)
-> >>          case KVM_SEV_SNP_LAUNCH_START:
-> >>                  r = snp_launch_start(kvm, &sev_cmd);
-> >>                  break;
-> >> +       case KVM_SEV_SNP_LAUNCH_UPDATE:
-> >> +               r = snp_launch_update(kvm, &sev_cmd);
-> >> +               break;
-> >>          default:
-> >>                  r = -EINVAL;
-> >>                  goto out;
-> >> @@ -1794,6 +1958,29 @@ find_enc_region(struct kvm *kvm, struct kvm_enc_region *range)
-> >>   static void __unregister_enc_region_locked(struct kvm *kvm,
-> >>                                             struct enc_region *region)
-> >>   {
-> >> +       unsigned long i, pfn;
-> >> +       int level;
-> >> +
-> >> +       /*
-> >> +        * The guest memory pages are assigned in the RMP table. Unassign it
-> >> +        * before releasing the memory.
-> >> +        */
-> >> +       if (sev_snp_guest(kvm)) {
-> >> +               for (i = 0; i < region->npages; i++) {
-> >> +                       pfn = page_to_pfn(region->pages[i]);
-> >> +
-> >> +                       if (!snp_lookup_rmpentry(pfn, &level))
-> >> +                               continue;
-> >> +
-> >> +                       cond_resched();
-> >> +
-> >> +                       if (level > PG_LEVEL_4K)
-> >> +                               pfn &= ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
-> >> +
-> >> +                       host_rmp_make_shared(pfn, level, true);
-> >> +               }
-> >> +       }
-> >> +
-> >>          sev_unpin_memory(kvm, region->pages, region->npages);
-> >>          list_del(&region->list);
-> >>          kfree(region);
-> >> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> >> index e6416e58cd9a..0681be4bdfdf 100644
-> >> --- a/include/uapi/linux/kvm.h
-> >> +++ b/include/uapi/linux/kvm.h
-> >> @@ -1715,6 +1715,7 @@ enum sev_cmd_id {
-> >>          /* SNP specific commands */
-> >>          KVM_SEV_SNP_INIT,
-> >>          KVM_SEV_SNP_LAUNCH_START,
-> >> +       KVM_SEV_SNP_LAUNCH_UPDATE,
-> >>
-> >>          KVM_SEV_NR_MAX,
-> >>   };
-> >> @@ -1831,6 +1832,24 @@ struct kvm_sev_snp_launch_start {
-> >>          __u8 pad[6];
-> >>   };
-> >>
-> >> +#define KVM_SEV_SNP_PAGE_TYPE_NORMAL           0x1
-> >> +#define KVM_SEV_SNP_PAGE_TYPE_VMSA             0x2
-> >> +#define KVM_SEV_SNP_PAGE_TYPE_ZERO             0x3
-> >> +#define KVM_SEV_SNP_PAGE_TYPE_UNMEASURED       0x4
-> >> +#define KVM_SEV_SNP_PAGE_TYPE_SECRETS          0x5
-> >> +#define KVM_SEV_SNP_PAGE_TYPE_CPUID            0x6
-> >> +
-> >> +struct kvm_sev_snp_launch_update {
-> >> +       __u64 start_gfn;
-> >> +       __u64 uaddr;
-> >> +       __u32 len;
-> >> +       __u8 imi_page;
-> >> +       __u8 page_type;
-> >> +       __u8 vmpl3_perms;
-> >> +       __u8 vmpl2_perms;
-> >> +       __u8 vmpl1_perms;
-> >> +};
-> >> +
-> >>   #define KVM_DEV_ASSIGN_ENABLE_IOMMU    (1 << 0)
-> >>   #define KVM_DEV_ASSIGN_PCI_2_3         (1 << 1)
-> >>   #define KVM_DEV_ASSIGN_MASK_INTX       (1 << 2)
-> >> --
-> >> 2.17.1
-> >>
-> >>
+Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
+---
+ .../ABI/testing/securityfs-coco-sev_secret    |  49 +++
+ drivers/virt/Kconfig                          |   3 +
+ drivers/virt/Makefile                         |   1 +
+ drivers/virt/coco/sev_secret/Kconfig          |  11 +
+ drivers/virt/coco/sev_secret/Makefile         |   2 +
+ drivers/virt/coco/sev_secret/sev_secret.c     | 320 ++++++++++++++++++
+ 6 files changed, 386 insertions(+)
+ create mode 100644 Documentation/ABI/testing/securityfs-coco-sev_secret
+ create mode 100644 drivers/virt/coco/sev_secret/Kconfig
+ create mode 100644 drivers/virt/coco/sev_secret/Makefile
+ create mode 100644 drivers/virt/coco/sev_secret/sev_secret.c
+
+diff --git a/Documentation/ABI/testing/securityfs-coco-sev_secret b/Documentation/ABI/testing/securityfs-coco-sev_secret
+new file mode 100644
+index 000000000000..3db1a66ff5c4
+--- /dev/null
++++ b/Documentation/ABI/testing/securityfs-coco-sev_secret
+@@ -0,0 +1,49 @@
++What:		security/coco/sev_secret
++Date:		October 2021
++Contact:	Dov Murik <dovmurik@linux.ibm.com>
++Description:
++		Exposes SEV confidential computing (coco) secrets to
++		userspace via securityfs.
++
++		AMD SEV and SEV-ES allow the Guest Owner to inject secrets
++		during VM's launch.  The secrets are encrypted by the Guest
++		Owner and decrypted by the AMD-SP (secure processor), and
++		therefore are not readable by the untrusted host.
++
++		The sev_secret module exposes the secrets to userspace.  Each
++		secret appears as a file under <securityfs>/coco/sev_secret,
++		where the filename is the GUID of the entry in the secrets
++		table.
++
++		Two operations are supported for the files: read and unlink.
++		Reading the file returns the content of secret entry.
++		Unlinking the file overwrites the secret data with zeroes and
++		removes the entry from the filesystem.  A secret cannot be read
++		after it has been unlinked.
++
++		For example, listing the available secrets::
++
++		  # modprobe sev_secret
++		  # ls -l /sys/kernel/security/coco/sev_secret
++		  -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
++		  -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
++		  -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
++		  -r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
++
++		Reading the secret data by reading a file::
++
++		  # cat /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
++		  the-content-of-the-secret-data
++
++		Wiping a secret by unlinking a file::
++
++		  # rm /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
++		  # ls -l /sys/kernel/security/coco/sev_secret
++		  -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
++		  -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
++		  -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
++
++		Note: The binary format of the secrets table injected by the
++		Guest Owner is described in
++		drivers/virt/coco/sev_secret/sev_secret.c under "Structure of
++		the SEV secret area".
+diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
+index 8061e8ef449f..6f73672f593f 100644
+--- a/drivers/virt/Kconfig
++++ b/drivers/virt/Kconfig
+@@ -36,4 +36,7 @@ source "drivers/virt/vboxguest/Kconfig"
+ source "drivers/virt/nitro_enclaves/Kconfig"
+ 
+ source "drivers/virt/acrn/Kconfig"
++
++source "drivers/virt/coco/sev_secret/Kconfig"
++
+ endif
+diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
+index 3e272ea60cd9..2a7d472478bd 100644
+--- a/drivers/virt/Makefile
++++ b/drivers/virt/Makefile
+@@ -8,3 +8,4 @@ obj-y				+= vboxguest/
+ 
+ obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
+ obj-$(CONFIG_ACRN_HSM)		+= acrn/
++obj-$(CONFIG_AMD_SEV_SECRET)	+= coco/sev_secret/
+diff --git a/drivers/virt/coco/sev_secret/Kconfig b/drivers/virt/coco/sev_secret/Kconfig
+new file mode 100644
+index 000000000000..76cfb4f405e0
+--- /dev/null
++++ b/drivers/virt/coco/sev_secret/Kconfig
+@@ -0,0 +1,11 @@
++# SPDX-License-Identifier: GPL-2.0-only
++config AMD_SEV_SECRET
++	tristate "AMD SEV secret area securityfs support"
++	depends on AMD_MEM_ENCRYPT && EFI
++	select SECURITYFS
++	help
++	  This is a driver for accessing the AMD SEV secret area via
++	  securityfs.
++
++	  To compile this driver as a module, choose M here.
++	  The module will be called sev_secret.
+diff --git a/drivers/virt/coco/sev_secret/Makefile b/drivers/virt/coco/sev_secret/Makefile
+new file mode 100644
+index 000000000000..dca0ed3f8f94
+--- /dev/null
++++ b/drivers/virt/coco/sev_secret/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_AMD_SEV_SECRET) += sev_secret.o
+diff --git a/drivers/virt/coco/sev_secret/sev_secret.c b/drivers/virt/coco/sev_secret/sev_secret.c
+new file mode 100644
+index 000000000000..3c83aa80f981
+--- /dev/null
++++ b/drivers/virt/coco/sev_secret/sev_secret.c
+@@ -0,0 +1,320 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * sev_secret module
++ *
++ * Copyright (C) 2021 IBM Corporation
++ * Author: Dov Murik <dovmurik@linux.ibm.com>
++ */
++
++/**
++ * DOC: sev_secret: Allow reading confidential computing (coco) secret area via
++ * securityfs interface.
++ *
++ * When the module is loaded (and securityfs is mounted, typically under
++ * /sys/kernel/security), a "coco/sev_secret" directory is created in
++ * securityfs.  In it, a file is created for each secret entry.  The name of
++ * each such file is the GUID of the secret entry, and its content is the
++ * secret data.
++ */
++
++#include <linux/seq_file.h>
++#include <linux/fs.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/io.h>
++#include <linux/security.h>
++#include <linux/efi.h>
++#include <asm/cacheflush.h>
++
++#define SEV_SECRET_NUM_FILES 64
++
++#define EFI_SEVSECRET_TABLE_HEADER_GUID \
++	EFI_GUID(0x1e74f542, 0x71dd, 0x4d66, 0x96, 0x3e, 0xef, 0x42, 0x87, 0xff, 0x17, 0x3b)
++
++struct sev_secret {
++	struct dentry *coco_dir;
++	struct dentry *fs_dir;
++	struct dentry *fs_files[SEV_SECRET_NUM_FILES];
++	struct linux_efi_coco_secret_area *secret_area;
++};
++
++/*
++ * Structure of the SEV secret area
++ *
++ * Offset   Length
++ * (bytes)  (bytes)  Usage
++ * -------  -------  -----
++ *       0       16  Secret table header GUID (must be 1e74f542-71dd-4d66-963e-ef4287ff173b)
++ *      16        4  Length of bytes of the entire secret area
++ *
++ *      20       16  First secret entry's GUID
++ *      36        4  First secret entry's length in bytes (= 16 + 4 + x)
++ *      40        x  First secret entry's data
++ *
++ *    40+x       16  Second secret entry's GUID
++ *    56+x        4  Second secret entry's length in bytes (= 16 + 4 + y)
++ *    60+x        y  Second secret entry's data
++ *
++ * (... and so on for additional entries)
++ *
++ * The GUID of each secret entry designates the usage of the secret data.
++ */
++
++/**
++ * struct secret_header - Header of entire secret area; this should be followed
++ * by instances of struct secret_entry.
++ * @guid:	Must be EFI_SEVSECRET_TABLE_HEADER_GUID
++ * @len:	Length in bytes of entire secret area, including header
++ */
++struct secret_header {
++	efi_guid_t guid;
++	u32 len;
++} __attribute((packed));
++
++/**
++ * struct secret_entry - Holds one secret entry
++ * @guid:	Secret-specific GUID (or NULL_GUID if this secret entry was deleted)
++ * @len:	Length of secret entry, including its guid and len fields
++ * @data:	The secret data (full of zeros if this secret entry was deleted)
++ */
++struct secret_entry {
++	efi_guid_t guid;
++	u32 len;
++	u8 data[];
++} __attribute((packed));
++
++static size_t secret_entry_data_len(struct secret_entry *e)
++{
++	return e->len - sizeof(*e);
++}
++
++static struct sev_secret the_sev_secret;
++
++static inline struct sev_secret *sev_secret_get(void)
++{
++	return &the_sev_secret;
++}
++
++static int sev_secret_bin_file_show(struct seq_file *file, void *data)
++{
++	struct secret_entry *e = file->private;
++
++	if (e)
++		seq_write(file, e->data, secret_entry_data_len(e));
++
++	return 0;
++}
++DEFINE_SHOW_ATTRIBUTE(sev_secret_bin_file);
++
++static void wipe_memory(void *addr, size_t size)
++{
++	memzero_explicit(addr, size);
++	clean_cache_range(addr, size);
++}
++
++static int sev_secret_unlink(struct inode *dir, struct dentry *dentry)
++{
++	struct sev_secret *s = sev_secret_get();
++	struct inode *inode = d_inode(dentry);
++	struct secret_entry *e = (struct secret_entry *)inode->i_private;
++	int i;
++
++	if (e) {
++		/* Zero out the secret data */
++		wipe_memory(e->data, secret_entry_data_len(e));
++		e->guid = NULL_GUID;
++	}
++
++	inode->i_private = NULL;
++
++	for (i = 0; i < SEV_SECRET_NUM_FILES; i++)
++		if (s->fs_files[i] == dentry)
++			s->fs_files[i] = NULL;
++
++	/*
++	 * securityfs_remove tries to lock the directory's inode, but we reach
++	 * the unlink callback when it's already locked
++	 */
++	inode_unlock(dir);
++	securityfs_remove(dentry);
++	inode_lock(dir);
++
++	return 0;
++}
++
++static const struct inode_operations sev_secret_dir_inode_operations = {
++	.lookup         = simple_lookup,
++	.unlink         = sev_secret_unlink,
++};
++
++static int sev_secret_map_area(void)
++{
++	struct sev_secret *s = sev_secret_get();
++	struct linux_efi_coco_secret_area *secret_area;
++	u32 secret_area_size;
++
++	if (efi.coco_secret == EFI_INVALID_TABLE_ADDR) {
++		pr_err("Secret area address is not available\n");
++		return -EINVAL;
++	}
++
++	secret_area = memremap(efi.coco_secret, sizeof(*secret_area), MEMREMAP_WB);
++	if (secret_area == NULL) {
++		pr_err("Could not map secret area header\n");
++		return -ENOMEM;
++	}
++
++	secret_area_size = sizeof(*secret_area) + secret_area->size;
++	memunmap(secret_area);
++
++	secret_area = memremap(efi.coco_secret, secret_area_size, MEMREMAP_WB);
++	if (secret_area == NULL) {
++		pr_err("Could not map secret area\n");
++		return -ENOMEM;
++	}
++
++	s->secret_area = secret_area;
++	return 0;
++}
++
++static void sev_secret_securityfs_teardown(void)
++{
++	struct sev_secret *s = sev_secret_get();
++	int i;
++
++	for (i = (SEV_SECRET_NUM_FILES - 1); i >= 0; i--) {
++		securityfs_remove(s->fs_files[i]);
++		s->fs_files[i] = NULL;
++	}
++
++	securityfs_remove(s->fs_dir);
++	s->fs_dir = NULL;
++
++	securityfs_remove(s->coco_dir);
++	s->coco_dir = NULL;
++
++	pr_debug("Removed sev_secret securityfs entries\n");
++}
++
++static int sev_secret_securityfs_setup(void)
++{
++	efi_guid_t tableheader_guid = EFI_SEVSECRET_TABLE_HEADER_GUID;
++	struct sev_secret *s = sev_secret_get();
++	int ret = 0, i = 0, bytes_left;
++	unsigned char *ptr;
++	struct secret_header *h;
++	struct secret_entry *e;
++	struct dentry *dent;
++	char guid_str[EFI_VARIABLE_GUID_LEN + 1];
++
++	s->coco_dir = NULL;
++	s->fs_dir = NULL;
++	memset(s->fs_files, 0, sizeof(s->fs_files));
++
++	dent = securityfs_create_dir("coco", NULL);
++	if (IS_ERR(dent)) {
++		pr_err("Error creating coco securityfs directory entry err=%ld\n", PTR_ERR(dent));
++		return PTR_ERR(dent);
++	}
++	s->coco_dir = dent;
++
++	dent = securityfs_create_dir("sev_secret", s->coco_dir);
++	if (IS_ERR(dent)) {
++		pr_err("Error creating SEV secret securityfs directory entry err=%ld\n",
++		       PTR_ERR(dent));
++		return PTR_ERR(dent);
++	}
++	d_inode(dent)->i_op = &sev_secret_dir_inode_operations;
++	s->fs_dir = dent;
++
++	ptr = s->secret_area->area;
++	h = (struct secret_header *)ptr;
++	if (memcmp(&h->guid, &tableheader_guid, sizeof(h->guid))) {
++		pr_err("SEV secret area does not start with correct GUID\n");
++		ret = -EINVAL;
++		goto err_cleanup;
++	}
++	if (h->len < sizeof(*h)) {
++		pr_err("SEV secret area reported length is too small\n");
++		ret = -EINVAL;
++		goto err_cleanup;
++	}
++
++	bytes_left = h->len - sizeof(*h);
++	ptr += sizeof(*h);
++	while (bytes_left >= (int)sizeof(*e) && i < SEV_SECRET_NUM_FILES) {
++		e = (struct secret_entry *)ptr;
++		if (e->len < sizeof(*e) || e->len > (unsigned int)bytes_left) {
++			pr_err("SEV secret area is corrupted\n");
++			ret = -EINVAL;
++			goto err_cleanup;
++		}
++
++		/* Skip deleted entries (which will have NULL_GUID) */
++		if (efi_guidcmp(e->guid, NULL_GUID)) {
++			efi_guid_to_str(&e->guid, guid_str);
++
++			dent = securityfs_create_file(guid_str, 0440, s->fs_dir, (void *)e,
++						      &sev_secret_bin_file_fops);
++			if (IS_ERR(dent)) {
++				pr_err("Error creating SEV secret securityfs entry\n");
++				ret = PTR_ERR(dent);
++				goto err_cleanup;
++			}
++
++			s->fs_files[i++] = dent;
++		}
++		ptr += e->len;
++		bytes_left -= e->len;
++	}
++
++	pr_debug("Created %d entries in sev_secret securityfs\n", i);
++	return 0;
++
++err_cleanup:
++	sev_secret_securityfs_teardown();
++	return ret;
++}
++
++static void sev_secret_unmap_area(void)
++{
++	struct sev_secret *s = sev_secret_get();
++
++	if (s->secret_area) {
++		memunmap(s->secret_area);
++		s->secret_area = NULL;
++	}
++}
++
++static int __init sev_secret_init(void)
++{
++	int ret;
++
++	ret = sev_secret_map_area();
++	if (ret)
++		return ret;
++
++	ret = sev_secret_securityfs_setup();
++	if (ret)
++		goto err_unmap;
++
++	return ret;
++
++err_unmap:
++	sev_secret_unmap_area();
++	return ret;
++}
++
++static void __exit sev_secret_exit(void)
++{
++	sev_secret_securityfs_teardown();
++	sev_secret_unmap_area();
++}
++
++module_init(sev_secret_init);
++module_exit(sev_secret_exit);
++
++MODULE_DESCRIPTION("AMD SEV confidential computing secret area access");
++MODULE_AUTHOR("IBM");
++MODULE_LICENSE("GPL");
+-- 
+2.25.1
+
