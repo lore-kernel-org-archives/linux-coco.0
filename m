@@ -1,207 +1,110 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5376E2C80
-	for <linux-coco@lists.linux.dev>; Thu,  7 Oct 2021 06:55:29 +0000 (UTC)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1975douw019084;
-	Thu, 7 Oct 2021 02:18:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=g3OfHoJPvrV8tRdPiXlhQT3CLKaqzhip7yaVidL+hG0=;
- b=e+VLBKQ2XO2evYBqYGqPDwEukY1vxt4yc1BIUmtDGkMQ6cL5YaLXmIMO/e7DB/Jf4DMD
- llVU1NbDQiaDejg18rvk9bD5V3llvjJ3wsVFqMElC8fQGT4z56LN6ZVdNEVPYG1jYlTB
- hnyO157xbnS9B0JqPqOs9oiX34fbB40/OeztohGOUEPFpXWGl5udUC6CiZVPDqCKbapZ
- hLCcfy2lEXwftMmLDmGoBlrlcWQKtEd15uAqJIIYRcqU00SwXXTNWycBEpzBWB63oqId
- V17qtGZwVqxKVGAxKak3KOp2tiZ0oWbvzMjUdet2chDWGBjJM7Hg6iEXODSW+mTbrxPv 2A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3bhp04eck6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Oct 2021 02:18:45 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1975wlwK017115;
-	Thu, 7 Oct 2021 02:18:44 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3bhp04ecjv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Oct 2021 02:18:44 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1976IEXJ026505;
-	Thu, 7 Oct 2021 06:18:43 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-	by ppma01dal.us.ibm.com with ESMTP id 3bef2efmfe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Oct 2021 06:18:43 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-	by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1976If7e41353714
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Oct 2021 06:18:41 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FC19AE062;
-	Thu,  7 Oct 2021 06:18:41 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AE71AAE05C;
-	Thu,  7 Oct 2021 06:18:40 +0000 (GMT)
-Received: from amdrome3.watson.ibm.com (unknown [9.2.130.16])
-	by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu,  7 Oct 2021 06:18:40 +0000 (GMT)
-From: Dov Murik <dovmurik@linux.ibm.com>
-To: linux-efi@vger.kernel.org
-Cc: Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>, Andrew Scull <ascull@google.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/4] Allow access to confidential computing secret area in SEV guests
-Date: Thu,  7 Oct 2021 06:18:34 +0000
-Message-Id: <20211007061838.1381129-1-dovmurik@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vrzvuigXL_kjcBhWCQLVlf-tx_m249zl
-X-Proofpoint-ORIG-GUID: kFaosjDh9HkQJ35h7nn0vFc0USuGC6RD
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8B32C85
+	for <linux-coco@lists.linux.dev>; Thu,  7 Oct 2021 13:32:57 +0000 (UTC)
+X-IronPort-AV: E=McAfee;i="6200,9189,10129"; a="213387663"
+X-IronPort-AV: E=Sophos;i="5.85,354,1624345200"; 
+   d="scan'208";a="213387663"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:32:44 -0700
+X-IronPort-AV: E=Sophos;i="5.85,354,1624345200"; 
+   d="scan'208";a="488990424"
+Received: from likanto-mobl.amr.corp.intel.com (HELO [10.209.99.172]) ([10.209.99.172])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2021 06:32:44 -0700
+Subject: Re: [PATCH v2 4/4] virt: Add sev_secret module to expose confidential
+ computing secrets
+To: Dov Murik <dovmurik@linux.ibm.com>, linux-efi@vger.kernel.org
+Cc: Borislav Petkov <bp@suse.de>, Ashish Kalra <ashish.kalra@amd.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Andi Kleen <ak@linux.intel.com>, Greg KH <gregkh@linuxfoundation.org>,
+ Andrew Scull <ascull@google.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ James Bottomley <jejb@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@linux.ibm.com>, Jim Cadden <jcadden@ibm.com>,
+ Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
+ linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20211007061838.1381129-1-dovmurik@linux.ibm.com>
+ <20211007061838.1381129-5-dovmurik@linux.ibm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <7e2a4595-3f9c-6d65-34e3-af7c1d6da196@intel.com>
+Date: Thu, 7 Oct 2021 06:32:41 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.182.1,Aquarius:18.0.790,Hydra:6.0.391,FMLib:17.0.607.475
- definitions=2021-10-06_04,2021-10-07_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 impostorscore=0 phishscore=0 mlxscore=0 suspectscore=0
- priorityscore=1501 mlxlogscore=999 spamscore=0 bulkscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2109230001 definitions=main-2110070039
+In-Reply-To: <20211007061838.1381129-5-dovmurik@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-Virtualization) allows guest owners to inject secrets into the VMs
-memory without the host/hypervisor being able to read them.  In SEV,
-secret injection is performed early in the VM launch process, before the
-guest starts running.
+On 10/6/21 11:18 PM, Dov Murik wrote:
+> +static int sev_secret_map_area(void)
+> +{
+> +	struct sev_secret *s = sev_secret_get();
+> +	struct linux_efi_coco_secret_area *secret_area;
+> +	u32 secret_area_size;
+> +
+> +	if (efi.coco_secret == EFI_INVALID_TABLE_ADDR) {
+> +		pr_err("Secret area address is not available\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	secret_area = memremap(efi.coco_secret, sizeof(*secret_area), MEMREMAP_WB);
+> +	if (secret_area == NULL) {
+> +		pr_err("Could not map secret area header\n");
+> +		return -ENOMEM;
+> +	}
 
-OVMF already reserves designated area for secret injection (in its
-AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
-Sev Secret area using a configuration table" [1]), but the secrets were
-not available in the guest kernel.
-
-The patch series copies the secrets from the EFI-provided memory to
-kernel reserved memory, and optionally exposes them to userspace via
-securityfs using a new sev_secret kernel module.
-
-Patch 1 exports the clean_cache_range function which will be used in
-patch 4.  Patch 2 in efi/libstub copies the secret area from the EFI
-memory to specially allocated memory; patch 3 reserves that
-memory block.  Finally, patch 4 introduces the new sev_secret module
-that exposes the content of the secret entries as securityfs files, and
-allows clearing out secrets with a file unlink interface.
-
-As a usage example, consider a guest performing computations on
-encrypted files.  The Guest Owner provides the decryption key (= secret)
-using the secret injection mechanism.  The guest application reads the
-secret from the sev_secret filesystem and proceeds to decrypt the files
-into memory and then performs the needed computations on the content.
-
-In this example, the host can't read the files from the disk image
-because they are encrypted.  Host can't read the decryption key because
-it is passed using the secret injection mechanism (= secure channel).
-Host can't read the decrypted content from memory because it's a
-confidential (memory-encrypted) guest.
-
-This has been tested with AMD SEV and SEV-ES guests, but the kernel side
-of handling the secret area has no SEV-specific dependencies, and
-therefore might be usable (perhaps with minor changes) for any
-confidential computing hardware that can publish the secret area via the
-standard EFI config table entry.
-
-Here is a simple example for usage of the sev_secret module in a guest
-to which a secret are with 4 secrets was injected during launch:
-
-# modprobe sev_secret
-# ls -la /sys/kernel/security/coco/sev_secret
-total 0
-drwxr-xr-x 2 root root 0 Jun 28 11:54 .
-drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
--r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
--r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
--r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
--r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
-
-# xxd /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-00000000: 7468 6573 652d 6172 652d 7468 652d 6b61  these-are-the-ka
-00000010: 7461 2d73 6563 7265 7473 0001 0203 0405  ta-secrets......
-00000020: 0607                                     ..
-
-# rm /sys/kernel/security/coco/sev_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-
-# ls -la /sys/kernel/security/coco/sev_secret
-total 0
-drwxr-xr-x 2 root root 0 Jun 28 11:55 .
-drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
--r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
--r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
--r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
-
-
-[1] https://github.com/tianocore/edk2/commit/01726b6d23d4
-
----
-
-v2 changes:
- - Export clean_cache_range()
- - When deleteing a secret, call clean_cache_range() after explicit_memzero
- - Add Documentation/ABI/testing/securityfs-coco-sev_secret
-
-v1: https://lore.kernel.org/linux-coco/20210809190157.279332-1-dovmurik@linux.ibm.com/
-
-RFC: https://lore.kernel.org/linux-coco/20210628183431.953934-1-dovmurik@linux.ibm.com/
-
-
-Dov Murik (4):
-  x86: Export clean_cache_range()
-  efi/libstub: Copy confidential computing secret area
-  efi: Reserve confidential computing secret area
-  virt: Add sev_secret module to expose confidential computing secrets
-
- .../ABI/testing/securityfs-coco-sev_secret    |  49 +++
- arch/x86/include/asm/cacheflush.h             |   1 +
- arch/x86/lib/usercopy_64.c                    |  21 --
- arch/x86/mm/pat/set_memory.c                  |  30 ++
- arch/x86/platform/efi/efi.c                   |   1 +
- drivers/firmware/efi/Makefile                 |   2 +-
- drivers/firmware/efi/coco.c                   |  41 +++
- drivers/firmware/efi/efi.c                    |   3 +
- drivers/firmware/efi/libstub/Makefile         |   2 +-
- drivers/firmware/efi/libstub/coco.c           |  68 ++++
- drivers/firmware/efi/libstub/efi-stub.c       |   2 +
- drivers/firmware/efi/libstub/efistub.h        |   2 +
- drivers/firmware/efi/libstub/x86-stub.c       |   2 +
- drivers/virt/Kconfig                          |   3 +
- drivers/virt/Makefile                         |   1 +
- drivers/virt/coco/sev_secret/Kconfig          |  11 +
- drivers/virt/coco/sev_secret/Makefile         |   2 +
- drivers/virt/coco/sev_secret/sev_secret.c     | 320 ++++++++++++++++++
- include/linux/efi.h                           |   9 +
- 19 files changed, 547 insertions(+), 23 deletions(-)
- create mode 100644 Documentation/ABI/testing/securityfs-coco-sev_secret
- create mode 100644 drivers/firmware/efi/coco.c
- create mode 100644 drivers/firmware/efi/libstub/coco.c
- create mode 100644 drivers/virt/coco/sev_secret/Kconfig
- create mode 100644 drivers/virt/coco/sev_secret/Makefile
- create mode 100644 drivers/virt/coco/sev_secret/sev_secret.c
-
-
-base-commit: 60a9483534ed0d99090a2ee1d4bb0b8179195f51
--- 
-2.25.1
-
+There doesn't seem to be anything truly SEV-specific in here at all.
+Isn't this more accurately called "efi_secret" or something?  What's to
+prevent Intel or an ARM vendor from implementing this?
