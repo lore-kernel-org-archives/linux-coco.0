@@ -1,33 +1,33 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2080.outbound.protection.outlook.com [40.107.237.80])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2053.outbound.protection.outlook.com [40.107.96.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090062C94
-	for <linux-coco@lists.linux.dev>; Fri,  8 Oct 2021 18:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7C32C88
+	for <linux-coco@lists.linux.dev>; Fri,  8 Oct 2021 18:05:30 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RRe+pvqwsyyDnRtMt3RROOkjPuDzMEKRgkYvtsEcSGn/V+iuNAn4SjcP0V6ni8186Xm3yx0gwd3LIbzLizpsTLixKIRNxUII0SpJKjy1FllIWbQBjSQjXis35bIxWITR+N7WgcfZRklWzmVsEVHNezykCuzNaw14BmoRSSLsUnXcF+m0TL3nosCVBk8WIubuCA008aKyVfYfyjTFpmCLexWquDcA/i7ZYnDgfUjNxHBuks0DTL/5YU5u01mfyGTVvS9kR5+tYN6KSxqX0x67/ZbBwVEzGfsIW0G3eXedeJZVOgbwCM2hEG0vVMASot5QzHh1hE+knDUKkx1ok/U3MQ==
+ b=P5b9OytHeiJ9twg3KzQV9hQXwIAAP4H6MHfj7/BFZ+K8450DPEHVhBxOotVlSO6ITj1AUOlpbinlWeSuJ+OU5C/4zZS/rYrori7E6IAXG07ab1e2CQBMxHqZJTl4ZAnq44WgAnmiR9H4HmSXHfcSzS/5zmptpDeH/CrKITM5bGcm3Y3cpgnjKwcd0PuocYyih/83VnHRQIP5MZzN+g/Vwf4xf53tMdIrMzalliIBUg4B7/ksvpDM9lD+Y0wmUgmZ1yRRcTChQrNz/WN8K9EebfrGgn0xousjN3BtZIKo3dDBPsxuZv3PZtkFoN0TQLVv3YqGTKmviMXWNiIqhOyrCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xaaqkM4lgL7Esve0BEb/StBrhPYTXZw5tyafWAwKLtI=;
- b=PXfQMPoRD2lOwKF09xXPJbY0kAoK7DAQ8ETQagOD5IaFgIfGBIc9Kd9lBQ3667PcTa2FIi5+aBIDHToBp9EEhsKE6ZS5PTTp4a4uyynr6dWwmPd7zgGKikGLqGW8h7rabMj67KDrwUukbxtbgq84AhXzLdQ33jRaiRFd7yX3B4f0EQNNHF8zH/0ltw5JvPVHKJZ7loK2PVurAZ16maYmxxVYIe0AdaD1SCVKIy6Vv08bLBxo3F8WKGbKgmVdYx0mfP5n1lV3d4CWacWf3tHS0rBkAyu7VNlVxJds/YMsSA/yTt1eLOdvs+h73LlnWWAJVw8NVot8OrIA7lAAokenhg==
+ bh=xz2VXvg4Nrl5H7oHp37nvNURGsmq7u5DooAtxMsCTZI=;
+ b=GxI1fyWkPMFkmRESzHpp+H0CUPmvE0EdZJiy5dcUTis3zUkvFk8sbo4Qh8060Q9rU87/0mRYmyEagAZ2hwt7I8eQulMSE3s6b0Pz57wX2ZYkFF4njBFexibXhlDrmlMxnDQkwL5KFnQAGWHQsuT28oUnRX6DmoU89hGJhsE5AWGtaiAhKs6RG0Ynja9AtdIv1nIbajZkWuLFTI/ZYDmwOAq3tPu6SPYdok2Kq/Whu6jwSZ784FKCt0UETT7XcjvHtiZLrb1nsa3/vM5vsC8oRVskjs/kkSqiBVfrBfEOUaIqjdcuHqixwF7R5UQgDydxXGHeTmI+t7sibswld68Pqw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xaaqkM4lgL7Esve0BEb/StBrhPYTXZw5tyafWAwKLtI=;
- b=pck95LE0Vzxs0kF1Y8m5OIKsHc04B3lr+Flmr7hQyJun04jPPOPYusGuhvx8aANNRn8fpmx9x1b+GXD+S21QXBlSaBdFZPmyKGKUuGnhxl1v14MIm3gSWz+FAswSugbfbs8TN00zzPHwdPWs5QAVryWKBcKmtotOSEXC9WrhB7M=
-Received: from MW4P223CA0018.NAMP223.PROD.OUTLOOK.COM (2603:10b6:303:80::23)
- by MN2PR12MB3535.namprd12.prod.outlook.com (2603:10b6:208:105::11) with
+ bh=xz2VXvg4Nrl5H7oHp37nvNURGsmq7u5DooAtxMsCTZI=;
+ b=nqow43rQTifqGv85goG/dpnVwktLK3Q8hDqlzX/1cmbsbR/H1WCSIacP0F0Wq3mYVAIGZ3uoDgxVOhYCwf1iRNe/sCahBVcPHLMB4chXGI4vkxihOpn/mD24quZfjlQgDqADuRHc6pOrGrFs61fOwCW5j0B9vSCxwu/OAAaW+Kw=
+Received: from MWHPR15CA0059.namprd15.prod.outlook.com (2603:10b6:301:4c::21)
+ by MN2PR12MB3101.namprd12.prod.outlook.com (2603:10b6:208:c4::26) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.22; Fri, 8 Oct
- 2021 18:05:19 +0000
-Received: from CO1NAM11FT039.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:80:cafe::e0) by MW4P223CA0018.outlook.office365.com
- (2603:10b6:303:80::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.20; Fri, 8 Oct
+ 2021 18:05:25 +0000
+Received: from CO1NAM11FT048.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:301:4c:cafe::db) by MWHPR15CA0059.outlook.office365.com
+ (2603:10b6:301:4c::21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.19 via Frontend
- Transport; Fri, 8 Oct 2021 18:05:19 +0000
+ Transport; Fri, 8 Oct 2021 18:05:25 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
@@ -35,13 +35,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT039.mail.protection.outlook.com (10.13.174.110) with Microsoft SMTP
+ CO1NAM11FT048.mail.protection.outlook.com (10.13.175.148) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:05:19 +0000
+ 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:05:25 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Fri, 8 Oct 2021
- 13:05:16 -0500
+ 13:05:22 -0500
 From: Brijesh Singh <brijesh.singh@amd.com>
 To: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
@@ -60,11 +60,11 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
 	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, "Dr . David Alan
  Gilbert" <dgilbert@redhat.com>, <tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, Borislav Petkov <bp@suse.de>,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v6 04/42] x86/head64: Carve out the guest encryption postprocessing into a helper
-Date: Fri, 8 Oct 2021 13:04:15 -0500
-Message-ID: <20211008180453.462291-5-brijesh.singh@amd.com>
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, Brijesh Singh
+	<brijesh.singh@amd.com>
+Subject: [PATCH v6 07/42] x86/sev: Add support for hypervisor feature VMGEXIT
+Date: Fri, 8 Oct 2021 13:04:18 -0500
+Message-ID: <20211008180453.462291-8-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211008180453.462291-1-brijesh.singh@amd.com>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
@@ -81,128 +81,148 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a51d2e90-7c2b-4d66-66a4-08d98a86307c
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3535:
+X-MS-Office365-Filtering-Correlation-Id: a2a6dc50-805c-402c-aa17-08d98a863417
+X-MS-TrafficTypeDiagnostic: MN2PR12MB3101:
 X-Microsoft-Antispam-PRVS:
-	<MN2PR12MB3535230E1AF9216DEC7F2B84E5B29@MN2PR12MB3535.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;
+	<MN2PR12MB31011941996C13E6FCD21DC3E5B29@MN2PR12MB3101.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3826;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	RY4XK6v8CxPo2OpCraQ4Uo4iGRZDbMG5koLM57oQEXlLVgkAiejpuN+DUSsLWD3Rtg/UWaaOQgB66hcDPIMiz0t1xymFUnK2Vy8bEBFQzbB77TJXA44tbbaTp5tcu9oY//I27sxLBhZzKM/Ezfb2d64zU847DvfnYxOmIgefxshZ+4F99Ww1BIpOBByVUUiOJPu39rGC8F82ckwEzyiiruYh5NqAfhw04saT4SSV7M4kxcRM+tFm/344jNEtCRO06nGcH5LJez6ePVt+pkZIo8Zn9btJl7E1DRWFW02TI5aW2waIX3tVXik4YBkskjtC8nA0Jf/KLtvrJ0CzrJ7m/KKRqI12BcMKm8DQoiNKdGqoRQh1/oWdtjCCQKdBl0pol9kezvkMLCIXTycJePAHA2MHUf+YN2dKKDCh1TyLVOJI6L8zGo4uuSrrO/wDu+m+PxX1sQWKLAfXyFy4pKm9f2uTwlH0Vh3Pc533g6uXqOLnqPo+VADA9O/lPcKWDct8Hn52jljtFimh1K7GJAg1yDOjyzw2bADy7pd26prCEAe7Tvd0l8f0Su7AxynRy0g5cVKq43ZO7UbU+HsbxPzqj8ONUsazAKKTXamTzsvguW+9Ng/zF5ZGqTsHLz6ziECBEHtKkvu7FhR12D4Lkv2ZzRklzQp/CnmPZLCJfv4UQqmxdgpnE5dAPTFc3Ul5OJBEt+tcp3xLCXe41TfVyvpd60pEIgDkk0nQITxfx/W7n87Xus5lV/05lo4UYtfcMsDT
+	ITiSXKgSygPMjaXP0E6okn6zY8mjdfVrKUKpI4kFXFDUejqpvvdOIJdzs+AgDmTcJINjFhIG+BDOI4AWcc9czP4RNAF0cX3XJFgvXI92lpYPkuguBKFfegc+DNEsN2DeFnue6f1usF0bX4YYJ6GktWsgK8F/qyVwG0WPWVjBGDzuckXlRzKd3Tk/AttraD9FA4ioyplT68ZXCXW6wxyBKrcfDzZB0bCwd4jiNT9utdE0IukJGOAAZEG7aZ5w0rM3LwnEBODxHH5oPicjBDfKTNkqvPz4laRy1J0gHBcjVxexlXfJdNK8MQ41aSbyT5pldiHOr5c8DMVKce+snXpebPgpW8PSysp0zkW39/OmU1ABWg3VlGTYuMD2HoojX1ycZTwMX0Ovd0l95KPF+7/uIQnMMlUratUEo+dkfIeH/8oqxNB3634uzoAW9wH3bZRfhJCKtStecOtE292XhBQZMc2ICJKAF/jGt4ZpCZLlnbRA7xjdbfbhEYeIcETt3o1F+o1clq9NeIkjtLZBrCYd8bwVxenBfVmBpvlQsvEw4yBKk79yFbQKBTNfyN76OZHd3PGJ/69xI+nHwa/jQfAQvTrIt61Jj+lpvMUTLuuwN+gB8pwAqVThEzoYrRMeA3nylLD21IYwonePA3EUk8q7RxGMPm/9qr4IVbTL4mXVmfTH0fyLrFVvuqLePrZltny6eD7RhHswBxcpZ1kYAGtY/2MUMF2XmJzgwyzSrPOLFpPlfXNPi8pzw8BO6LfHN2Da
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(8676002)(2616005)(47076005)(2906002)(110136005)(54906003)(81166007)(82310400003)(426003)(1076003)(5660300002)(356005)(36756003)(336012)(316002)(4326008)(508600001)(70206006)(36860700001)(8936002)(86362001)(70586007)(26005)(83380400001)(44832011)(7696005)(7416002)(16526019)(186003)(7406005)(2101003)(36900700001);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(44832011)(54906003)(82310400003)(336012)(7416002)(8936002)(2616005)(508600001)(7406005)(4326008)(1076003)(426003)(36756003)(5660300002)(36860700001)(6666004)(110136005)(7696005)(86362001)(81166007)(70206006)(186003)(26005)(47076005)(16526019)(70586007)(2906002)(356005)(83380400001)(8676002)(316002)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:05:19.1916
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:05:25.2213
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a51d2e90-7c2b-4d66-66a4-08d98a86307c
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2a6dc50-805c-402c-aa17-08d98a863417
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CO1NAM11FT039.eop-nam11.prod.protection.outlook.com
+	CO1NAM11FT048.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3535
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3101
 
-From: Borislav Petkov <bp@suse.de>
+Version 2 of GHCB specification introduced advertisement of a features
+that are supported by the hypervisor. Add support to query the HV
+features on boot.
 
-Carve it out so that it is abstracted out of the main boot path. All
-other encrypted guest-relevant processing should be placed in there.
+Version 2 of GHCB specification adds several new NAEs, most of them are
+optional except the hypervisor feature. Now that hypervisor feature NAE
+is implemented, so bump the GHCB maximum support protocol version.
 
-No functional changes.
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/kernel/head64.c | 60 +++++++++++++++++++++-------------------
- 1 file changed, 31 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/sev-common.h |  3 +++
+ arch/x86/include/asm/sev.h        |  2 +-
+ arch/x86/include/uapi/asm/svm.h   |  2 ++
+ arch/x86/kernel/sev-shared.c      | 30 ++++++++++++++++++++++++++++++
+ 4 files changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index fc5371a7e9d1..3be9dd213dad 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -126,6 +126,36 @@ static bool __head check_la57_support(unsigned long physaddr)
- }
- #endif
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 3278ee578937..891569c07ed7 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -60,6 +60,9 @@
+ /* GHCB Hypervisor Feature Request/Response */
+ #define GHCB_MSR_HV_FT_REQ		0x080
+ #define GHCB_MSR_HV_FT_RESP		0x081
++#define GHCB_MSR_HV_FT_RESP_VAL(v)			\
++	/* GHCBData[63:12] */				\
++	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
  
-+static unsigned long sme_postprocess_startup(struct boot_params *bp, pmdval_t *pmd)
+ #define GHCB_MSR_TERM_REQ		0x100
+ #define GHCB_MSR_TERM_REASON_SET_POS	12
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 7ec91b1359df..134a7c9d91b6 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -13,7 +13,7 @@
+ #include <asm/sev-common.h>
+ 
+ #define GHCB_PROTOCOL_MIN	1ULL
+-#define GHCB_PROTOCOL_MAX	1ULL
++#define GHCB_PROTOCOL_MAX	2ULL
+ #define GHCB_DEFAULT_USAGE	0ULL
+ 
+ #define	VMGEXIT()			{ asm volatile("rep; vmmcall\n\r"); }
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index efa969325ede..b0ad00f4c1e1 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -108,6 +108,7 @@
+ #define SVM_VMGEXIT_AP_JUMP_TABLE		0x80000005
+ #define SVM_VMGEXIT_SET_AP_JUMP_TABLE		0
+ #define SVM_VMGEXIT_GET_AP_JUMP_TABLE		1
++#define SVM_VMGEXIT_HV_FEATURES			0x8000fffd
+ #define SVM_VMGEXIT_UNSUPPORTED_EVENT		0x8000ffff
+ 
+ /* Exit code reserved for hypervisor/software use */
+@@ -218,6 +219,7 @@
+ 	{ SVM_VMGEXIT_NMI_COMPLETE,	"vmgexit_nmi_complete" }, \
+ 	{ SVM_VMGEXIT_AP_HLT_LOOP,	"vmgexit_ap_hlt_loop" }, \
+ 	{ SVM_VMGEXIT_AP_JUMP_TABLE,	"vmgexit_ap_jump_table" }, \
++	{ SVM_VMGEXIT_HV_FEATURES,	"vmgexit_hypervisor_feature" }, \
+ 	{ SVM_EXIT_ERR,         "invalid_guest_state" }
+ 
+ 
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index 0eb22528ec87..8ee27d07c1cd 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -23,6 +23,9 @@
+  */
+ static u16 __ro_after_init ghcb_version;
+ 
++/* Bitmap of SEV features supported by the hypervisor */
++static u64 __ro_after_init sev_hv_features;
++
+ static bool __init sev_es_check_cpu_features(void)
+ {
+ 	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
+@@ -48,6 +51,30 @@ static void __noreturn sev_es_terminate(unsigned int set, unsigned int reason)
+ 		asm volatile("hlt\n" : : : "memory");
+ }
+ 
++/*
++ * The hypervisor features are available from GHCB version 2 onward.
++ */
++static bool get_hv_features(void)
 +{
-+	unsigned long vaddr, vaddr_end;
-+	int i;
++	u64 val;
 +
-+	/* Encrypt the kernel and related (if SME is active) */
-+	sme_encrypt_kernel(bp);
++	sev_hv_features = 0;
 +
-+	/*
-+	 * Clear the memory encryption mask from the .bss..decrypted section.
-+	 * The bss section will be memset to zero later in the initialization so
-+	 * there is no need to zero it after changing the memory encryption
-+	 * attribute.
-+	 */
-+	if (sme_get_me_mask()) {
-+		vaddr = (unsigned long)__start_bss_decrypted;
-+		vaddr_end = (unsigned long)__end_bss_decrypted;
-+		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-+			i = pmd_index(vaddr);
-+			pmd[i] -= sme_get_me_mask();
-+		}
-+	}
++	if (ghcb_version < 2)
++		return false;
 +
-+	/*
-+	 * Return the SME encryption mask (if SME is active) to be used as a
-+	 * modifier for the initial pgdir entry programmed into CR3.
-+	 */
-+	return sme_get_me_mask();
++	sev_es_wr_ghcb_msr(GHCB_MSR_HV_FT_REQ);
++	VMGEXIT();
++
++	val = sev_es_rd_ghcb_msr();
++	if (GHCB_RESP_CODE(val) != GHCB_MSR_HV_FT_RESP)
++		return false;
++
++	sev_hv_features = GHCB_MSR_HV_FT_RESP_VAL(val);
++
++	return true;
 +}
 +
- /* Code in __startup_64() can be relocated during execution, but the compiler
-  * doesn't have to generate PC-relative relocations when accessing globals from
-  * that function. Clang actually does not generate them, which leads to
-@@ -135,7 +165,6 @@ static bool __head check_la57_support(unsigned long physaddr)
- unsigned long __head __startup_64(unsigned long physaddr,
- 				  struct boot_params *bp)
+ static bool sev_es_negotiate_protocol(void)
  {
--	unsigned long vaddr, vaddr_end;
- 	unsigned long load_delta, *p;
- 	unsigned long pgtable_flags;
- 	pgdval_t *pgd;
-@@ -276,34 +305,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	 */
- 	*fixup_long(&phys_base, physaddr) += load_delta - sme_get_me_mask();
+ 	u64 val;
+@@ -66,6 +93,9 @@ static bool sev_es_negotiate_protocol(void)
  
--	/* Encrypt the kernel and related (if SME is active) */
--	sme_encrypt_kernel(bp);
--
--	/*
--	 * Clear the memory encryption mask from the .bss..decrypted section.
--	 * The bss section will be memset to zero later in the initialization so
--	 * there is no need to zero it after changing the memory encryption
--	 * attribute.
--	 *
--	 * This is early code, use an open coded check for SME instead of
--	 * using cc_platform_has(). This eliminates worries about removing
--	 * instrumentation or checking boot_cpu_data in the cc_platform_has()
--	 * function.
--	 */
--	if (sme_get_me_mask()) {
--		vaddr = (unsigned long)__start_bss_decrypted;
--		vaddr_end = (unsigned long)__end_bss_decrypted;
--		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
--			i = pmd_index(vaddr);
--			pmd[i] -= sme_get_me_mask();
--		}
--	}
--
--	/*
--	 * Return the SME encryption mask (if SME is active) to be used as a
--	 * modifier for the initial pgdir entry programmed into CR3.
--	 */
--	return sme_get_me_mask();
-+	return sme_postprocess_startup(bp, pmd);
+ 	ghcb_version = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
+ 
++	if (!get_hv_features())
++		return false;
++
+ 	return true;
  }
  
- unsigned long __startup_secondary_64(void)
 -- 
 2.25.1
 
