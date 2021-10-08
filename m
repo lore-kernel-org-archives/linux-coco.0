@@ -1,33 +1,33 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2054.outbound.protection.outlook.com [40.107.96.54])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2078.outbound.protection.outlook.com [40.107.237.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8764A2C94
-	for <linux-coco@lists.linux.dev>; Fri,  8 Oct 2021 18:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF6E2C9F
+	for <linux-coco@lists.linux.dev>; Fri,  8 Oct 2021 18:06:22 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OfJD3MO0gzghNGrl7bJ9PXS3hj7sns/HSsOxVbEKetNbcDUlOBjvnWYZANurMRkOL9c6PZIIzRHCwAQSIPyem+YSfvFRhJFSCq87FgdXmcK4+I/DFqwfuxnE10XgW/wWe9OwU/7QeHvXUTVm9ZwdFj8ANYXdL+LeLe+0iYaOrm7g0IhPkexVY+1VyDP4KdlN/OVmr1CHNh4hb7t4eh4YTQMSP7Mcm0fjsGw/kYBoJbG93GdbvkPn93X8eWDAPpv/1AvE0pNU0cX2NhXIn84JY1/qX7WxF+yB11VAfhHUySnK68tmBBbZ59AVMJO2BZ2Ca1fzcrFlO2fU3p+JJt60jQ==
+ b=elhYqJj2mtxTJ8vEuU+V9KouKbcAZ9cfpAEeyL4W42/uH6A+2erlmexCZCh75MeLYJwU1gc38DQzkv4yD1RYSAswvf/BGsrZa9uAf7HNiMBzBGBCHsp3kFoCslyjhFdSj8NM9PrsVqb8NIFDlDzxjacPTAkVDHyDz02EoerkQtrGP7vNeRtGhHUl2f1fi7stczlTxgquHijXVNA40FCVeuXnn1hR5BnCIWUceeXq0HIbYtNY1ayfViVHbQ5reyO4Hr2VFSm0uSDuIwRb7wHjyR+1qKYJk4fOx1PY4g8B3RDUdIweocM+Ua9/9Zi2QSmOV/ILXDCx4ta95t92ZCuIlg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=p6xL5QK6byaBGUxccg9UtjZ8m7Gy1jhDNdrR0YIktjE=;
- b=WHLvg6TanHciD8n0aLoM6NGpczgAZfgive7bkGX0oTxkaBRqguMUjf7w2GP2JnG+5i5eNPKetJ+4a9kVlx10U/R2PJn7CVyOhzxlwzNNIllvKcvnAxI4Hg1D//CFRRiuAyg5bhF1+zYgMcWXlO28M18XkwTrecVliH9tADVUSOxZHYpMtic2cWV4eKas7gyX3sPjWT8vRRZqTJ6ui9Opu2RLVWOrGKeZLIvkLw5IaYdFJCK3bENrNrdc9N7zC4ywQlySqmj1g+SXCZg09WOqp9x+gBweX+KAGRwaPvtkL0OL2pw/ToCUALhTVgXAXykHAn2ErS84KgMF//qeknYD8Q==
+ bh=ZPT5/8VjFAcJVkFhinAFXAQ9kj0d8tWXd896Kug0eFs=;
+ b=Wmnr5geXk9a8s3tc5WteESD8KSpcHDCYJ3oCxD/5M7rZ2qKX4XwVg3xKoCYZ79sQqbn2hGqbR0cvXNXP2lJ1biHfOVNpi1+gcvf9UwoRMgPD+6v+G+GP+OvSKjv90pKDvuPt03OE3iNY4zHoTyKumQv3R+d7VdPhORlNvaIJtmOhjwGNQ+Cr85H7+O82MKBoTzCLE6V4IjlsFml+xY6eN+iabup/ySWTXsf87VwYlGhZntIXV8U+RS2gXoOTdc9UNkkHU4qwhjHzS5COgyOP1sUdiVQpmW5z7ykjB+S1ygGdAJNnR/QywkuqaVyi0J29WiW48EtgGL5drriSGIv2JA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=p6xL5QK6byaBGUxccg9UtjZ8m7Gy1jhDNdrR0YIktjE=;
- b=zgCnVM0PlIkgPURyYrZDtHB6WpysdFZhZmfvmknVmpQHj6w1uBiQRLbi0jYhVzqCTOS2XrsKxJbHnQuxuiCIA55uZ2Tz7dK566f1Dp+wNG0YmGLke02zLJ2joLnT37S3vWnyTBRd3x9ZHCnZP3ztnEMDvtPjCIt2+6Th5598ae4=
-Received: from MWHPR20CA0033.namprd20.prod.outlook.com (2603:10b6:300:ed::19)
- by BYAPR12MB2710.namprd12.prod.outlook.com (2603:10b6:a03:68::11) with
+ bh=ZPT5/8VjFAcJVkFhinAFXAQ9kj0d8tWXd896Kug0eFs=;
+ b=P6BbvzvNreKAUiTCEjms9zkLp3e03WMAs/Ai1OQ5ms0IG58teAnS1GyQTV2v6QbNCb6DeiN7sFGfDnOtXfUxZW2+q0Wb11JNnOMyqDh+DwUAIW63eJbILzH0ZkLNAL3PctW6iKm3TWfakJZDmqcjZvVaI2Mk8XTyG3Mu5r2UeLY=
+Received: from MW4PR04CA0053.namprd04.prod.outlook.com (2603:10b6:303:6a::28)
+ by DM4PR12MB5280.namprd12.prod.outlook.com (2603:10b6:5:39d::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18; Fri, 8 Oct
- 2021 18:06:16 +0000
-Received: from CO1NAM11FT044.eop-nam11.prod.protection.outlook.com
- (2603:10b6:300:ed:cafe::59) by MWHPR20CA0033.outlook.office365.com
- (2603:10b6:300:ed::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.18 via Frontend
- Transport; Fri, 8 Oct 2021 18:06:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.20; Fri, 8 Oct
+ 2021 18:06:19 +0000
+Received: from CO1NAM11FT063.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:6a:cafe::df) by MW4PR04CA0053.outlook.office365.com
+ (2603:10b6:303:6a::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4566.22 via Frontend
+ Transport; Fri, 8 Oct 2021 18:06:19 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; kernel.org; dkim=none (message not signed)
  header.d=none;kernel.org; dmarc=pass action=none header.from=amd.com;
@@ -35,13 +35,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT044.mail.protection.outlook.com (10.13.175.188) with Microsoft SMTP
+ CO1NAM11FT063.mail.protection.outlook.com (10.13.175.37) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:06:15 +0000
+ 15.20.4587.18 via Frontend Transport; Fri, 8 Oct 2021 18:06:18 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Fri, 8 Oct 2021
- 13:06:04 -0500
+ 13:06:11 -0500
 From: Brijesh Singh <brijesh.singh@amd.com>
 To: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
@@ -62,9 +62,9 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Gilbert" <dgilbert@redhat.com>, <tony.luck@intel.com>, <marcorr@google.com>,
 	<sathyanarayanan.kuppuswamy@linux.intel.com>, Brijesh Singh
 	<brijesh.singh@amd.com>
-Subject: [PATCH v6 32/42] x86/compressed/64: add support for SEV-SNP CPUID table in #VC handlers
-Date: Fri, 8 Oct 2021 13:04:43 -0500
-Message-ID: <20211008180453.462291-33-brijesh.singh@amd.com>
+Subject: [PATCH v6 36/42] x86/compressed/64: add identity mapping for Confidential Computing blob
+Date: Fri, 8 Oct 2021 13:04:47 -0500
+Message-ID: <20211008180453.462291-37-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20211008180453.462291-1-brijesh.singh@amd.com>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
@@ -81,453 +81,131 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5c3e0f26-2e1d-4330-178e-08d98a865241
-X-MS-TrafficTypeDiagnostic: BYAPR12MB2710:
+X-MS-Office365-Filtering-Correlation-Id: 142dfe3a-96fe-4fa4-feea-08d98a86540c
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5280:
 X-Microsoft-Antispam-PRVS:
-	<BYAPR12MB271067F2B06BD21D2988B794E5B29@BYAPR12MB2710.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3383;
+	<DM4PR12MB528036B766CA9C658425846AE5B29@DM4PR12MB5280.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	P/UencLad3+2XT9+pEq57ZTVwdYbAgAe1uJyL3IemOedUFL5iWbEQX0otOiSVAvMcLW569SlTrAPeQcXOg4aJh0nOxcemYVxP00U88u1W0Z+cukBuVRjE3/3XYoUzFKAwd6A83Glgf7tom8kFAHqcMkjX+jbz/sMFZxmFnVd1vMKOkCyVbrNRelk4+JOBT0ZsmApWQiYp8l/9gnn5tLKhyy7kIGyoTKfutjwCN7y6emcCXY0ZFtHJuW5jm42GFoWC+WjAGH/1mCdXFBb/wFHB+gaUlcPQpH3oRbWcrYSe+aKxXfd92A5m95OZMTOsjsSsW5Z+ouJfzBokWwCiE7Y0Dbx52Bq1x/QQhHs16FvczViPZdt2Uw1LmfrB8ROlF42XiACDkO4pm83+5EQcfZr51j2gqPkSyd12X7oeF+j53ysmUahZWtoTCFllqItGmSC0PvX5zsoKzSOnXsRrBSbQfKbUE2JYR7jE3ljVH0CuMuqJsgxdl7qqEpYC8iJIPLiAL34KJ80YuefBJcbqaMt6YdnR5ptnh/NyBt8zog2b63K4/uBn6k9Kobkwic56cJtQPJcGNQN858i1OCyTGgba7mdebMRn03cJrPSxXjECud7yYGQcRxkLQ1aQTksb7jNbsJQrqAiVLZ5c4XgB3jt40dwqMJLa+c9f92UimZOBIopelVeW7AlLFuxrfBz/wAfSu8bcbCCwdKZKUuVKsb0PTsfSn5F0mpJOKnknK4+bvfr+5qXF+4y5/XF4WMh8aSLeGzkoJWPBMUsqGux/E6rsA1lwIow0WY5oeXgi9lJV60=
+	N96+EH+SlT4ldGYGcydQ9QvNKmJt2GvB2ubc7L6dN93C2zjsF1uBawi5cVX9vrVd7MPQg/ovlaZDLnQGc874vIorpj8giKA/Qw1Rz6r2zPWi25tXNHo+PU93alVsYnlP7cyq8GmKNh2bVdT+o1FWaEmiupfY/c5HVK4q+Q5mxD8w8Kz6t1UNObdr49dfmjCyrLWPyvFaBlVcf+1lJ+9FjBnBoDGgDzG6Hf5gGVFbCA9cCJZBz4bku4EUQt7fUgbVLcNMHObwC73S1s1Y/udzso5xnv4eKnZ7NRs46dAa0UUV5PsBO563mvxAmOwDuvWW8iPSI3h2fLFMMxiKIGA+Fa74xgmVX7qvn9hDMS1IjD5S3xFGlxE7deilf36/0DK2SQKidkFyersmRew1Q3AN06xghQYD2NX9U4xQ2/ep28N6rpdHUqEqM1Lk7WaSFma/hN3ZBkXe7bdwvHpq006H90RZ/lCS01a+Unc4v3kJRbvL2LNhTB9xjyOv8FytdVxmCKeglYnugwHxGtL546CGiQM0YRS2XP1zD1TkDOlnlFhsvqAsXwQAwSRRUOaU8+ToFXAG6/U1NMywZvoDYj9SZzdXm5tBTrdi0i1wlJj5OzEAIhiSP8lDnQkGMbgC93dnJVjkxrcXuprCU6PGSVXmhVUJ7AqvL7dxpVzb6PHZ0S+DENrNyJF4G9FzZ+VsckCDv/kKLwpMD8+jRY/AQ90vTov0gTeFj3flVPynSo9/QT0LiCeYyoQHWCG44fLCU+sp
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(7406005)(7416002)(8936002)(30864003)(4326008)(83380400001)(70586007)(508600001)(70206006)(336012)(81166007)(36860700001)(356005)(2906002)(186003)(16526019)(8676002)(426003)(47076005)(5660300002)(26005)(1076003)(82310400003)(86362001)(7696005)(54906003)(36756003)(110136005)(316002)(6666004)(2616005)(44832011)(36900700001)(2101003)(309714004);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(36840700001)(46966006)(47076005)(316002)(336012)(508600001)(8676002)(7696005)(83380400001)(2616005)(4326008)(44832011)(1076003)(426003)(6666004)(82310400003)(186003)(26005)(356005)(36860700001)(54906003)(16526019)(7416002)(5660300002)(81166007)(70206006)(8936002)(70586007)(36756003)(2906002)(7406005)(86362001)(110136005)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:06:15.8355
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2021 18:06:18.8375
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c3e0f26-2e1d-4330-178e-08d98a865241
+X-MS-Exchange-CrossTenant-Network-Message-Id: 142dfe3a-96fe-4fa4-feea-08d98a86540c
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CO1NAM11FT044.eop-nam11.prod.protection.outlook.com
+	CO1NAM11FT063.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2710
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5280
 
 From: Michael Roth <michael.roth@amd.com>
 
-CPUID instructions generate a #VC exception for SEV-ES/SEV-SNP guests,
-for which early handlers are currently set up to handle. In the case
-of SEV-SNP, guests can use a configurable location in guest memory
-that has been pre-populated with a firmware-validated CPUID table to
-look up the relevant CPUID values rather than requesting them from
-hypervisor via a VMGEXIT. Add the various hooks in the #VC handlers to
-allow CPUID instructions to be handled via the table. The code to
-actually configure/enable the table will be added in a subsequent
-commit.
+The run-time kernel will need to access the Confidential Computing
+blob very early in boot to access the CPUID table it points to. At
+that stage of boot it will be relying on the identity-mapped page table
+set up by boot/compressed kernel, so make sure the blob and the CPUID
+table it points to are mapped in advance.
 
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/boot/compressed/sev.c    |   1 +
- arch/x86/include/asm/sev-common.h |   2 +
- arch/x86/kernel/sev-shared.c      | 308 ++++++++++++++++++++++++++++++
- arch/x86/kernel/sev.c             |   1 +
- 4 files changed, 312 insertions(+)
+ arch/x86/boot/compressed/ident_map_64.c | 26 ++++++++++++++++++++++++-
+ arch/x86/boot/compressed/misc.h         |  2 ++
+ arch/x86/boot/compressed/sev.c          |  2 +-
+ 3 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index e8308ada610d..11c459809d4c 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -20,6 +20,7 @@
- #include <asm/fpu/xcr.h>
- #include <asm/ptrace.h>
- #include <asm/svm.h>
-+#include <asm/cpuid.h>
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 3cf7a7575f5c..10ecbc53f8bc 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -37,6 +37,8 @@
+ #include <asm/setup.h>	/* For COMMAND_LINE_SIZE */
+ #undef _SETUP
  
- #include "error.h"
++#include <asm/sev.h> /* For ConfidentialComputing blob */
++
+ extern unsigned long get_cmd_line_ptr(void);
  
-diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-index c380aba9fc8d..45c535eb75f1 100644
---- a/arch/x86/include/asm/sev-common.h
-+++ b/arch/x86/include/asm/sev-common.h
-@@ -152,6 +152,8 @@ struct snp_psc_desc {
- #define GHCB_TERM_PSC			1	/* Page State Change failure */
- #define GHCB_TERM_PVALIDATE		2	/* Pvalidate failure */
- #define GHCB_TERM_NOT_VMPL0		3	/* SNP guest is not running at VMPL-0 */
-+#define GHCB_TERM_CPUID			4	/* CPUID-validation failure */
-+#define GHCB_TERM_CPUID_HV		5	/* CPUID failure during hypervisor fallback */
+ /* Used by PAGE_KERN* macros: */
+@@ -106,6 +108,27 @@ static void add_identity_map(unsigned long start, unsigned long end)
+ 		error("Error: kernel_ident_mapping_init() failed\n");
+ }
  
- #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
++void sev_prep_identity_maps(void)
++{
++	/*
++	 * The ConfidentialComputing blob is used very early in uncompressed
++	 * kernel to find the in-memory cpuid table to handle cpuid
++	 * instructions. Make sure an identity-mapping exists so it can be
++	 * accessed after switchover.
++	 */
++	if (sev_snp_enabled()) {
++		struct cc_blob_sev_info *cc_info =
++			(void *)(unsigned long)boot_params->cc_blob_address;
++
++		add_identity_map((unsigned long)cc_info,
++				 (unsigned long)cc_info + sizeof(*cc_info));
++		add_identity_map((unsigned long)cc_info->cpuid_phys,
++				 (unsigned long)cc_info->cpuid_phys + cc_info->cpuid_len);
++	}
++
++	sev_verify_cbit(top_level_pgt);
++}
++
+ /* Locates and clears a region for a new top level page table. */
+ void initialize_identity_maps(void *rmode)
+ {
+@@ -163,8 +186,9 @@ void initialize_identity_maps(void *rmode)
+ 	cmdline = get_cmd_line_ptr();
+ 	add_identity_map(cmdline, cmdline + COMMAND_LINE_SIZE);
  
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 402b19f1c75d..193ca49a1689 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -14,6 +14,41 @@
- #define has_cpuflag(f)	boot_cpu_has(f)
++	sev_prep_identity_maps();
++
+ 	/* Load the new page-table. */
+-	sev_verify_cbit(top_level_pgt);
+ 	write_cr3(top_level_pgt);
+ }
+ 
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 9b66a8bf336e..ce1a884e8322 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -125,6 +125,7 @@ extern bool sev_es_check_ghcb_fault(unsigned long address);
+ void snp_set_page_private(unsigned long paddr);
+ void snp_set_page_shared(unsigned long paddr);
+ void snp_cpuid_init_boot(struct boot_params *bp);
++bool sev_snp_enabled(void);
+ 
+ #else
+ static inline void sev_es_shutdown_ghcb(void) { }
+@@ -135,6 +136,7 @@ static inline bool sev_es_check_ghcb_fault(unsigned long address)
+ static inline void snp_set_page_private(unsigned long paddr) { }
+ static inline void snp_set_page_shared(unsigned long paddr) { }
+ static inline void snp_cpuid_init_boot(struct boot_params *bp) { }
++static inline bool sev_snp_enabled(void) { return false; }
+ 
  #endif
  
-+/*
-+ * Individual entries of the SEV-SNP CPUID table, as defined by the SEV-SNP
-+ * Firmware ABI, Revision 0.9, Section 7.1, Table 14. Note that the XCR0_IN
-+ * and XSS_IN are denoted here as __unused/__unused2, since they are not
-+ * needed for the current guest implementation, where the size of the buffers
-+ * needed to store enabled XSAVE-saved features are calculated rather than
-+ * encoded in the CPUID table for each possible combination of XCR0_IN/XSS_IN
-+ * to save space.
-+ */
-+struct snp_cpuid_fn {
-+	u32 eax_in;
-+	u32 ecx_in;
-+	u64 __unused;
-+	u64 __unused2;
-+	u32 eax;
-+	u32 ebx;
-+	u32 ecx;
-+	u32 edx;
-+	u64 __reserved;
-+} __packed;
-+
-+/*
-+ * SEV-SNP CPUID table header, as defined by the SEV-SNP Firmware ABI,
-+ * Revision 0.9, Section 8.14.2.6. Also noted there is the SEV-SNP
-+ * firmware-enforced limit of 64 entries per CPUID table.
-+ */
-+#define SNP_CPUID_COUNT_MAX 64
-+
-+struct snp_cpuid_info {
-+	u32 count;
-+	u32 __reserved1;
-+	u64 __reserved2;
-+	struct snp_cpuid_fn fn[SNP_CPUID_COUNT_MAX];
-+} __packed;
-+
- /*
-  * Since feature negotiation related variables are set early in the boot
-  * process they must reside in the .data section so as not to be zeroed
-@@ -26,6 +61,28 @@ static u16 __ro_after_init ghcb_version;
- /* Bitmap of SEV features supported by the hypervisor */
- static u64 __ro_after_init sev_hv_features;
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 9d6a2ecb609f..1b77b819ddb4 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -120,7 +120,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+ /* Include code for early handlers */
+ #include "../../kernel/sev-shared.c"
  
-+/*
-+ * These are stored in .data section to avoid the need to re-parse boot_params
-+ * and regenerate the CPUID table/pointer when .bss is cleared.
-+ */
-+
-+/*
-+ * The CPUID info can't always be referenced directly due to the need for
-+ * pointer fixups during initial startup phase of kernel proper, so access must
-+ * be done through this pointer, which will be fixed up as-needed during boot.
-+ */
-+static const struct snp_cpuid_info *cpuid_info __ro_after_init;
-+
-+/*
-+ * These will be initialized based on CPUID table so that non-present
-+ * all-zero leaves (for sparse tables) can be differentiated from
-+ * invalid/out-of-range leaves. This is needed since all-zero leaves
-+ * still need to be post-processed.
-+ */
-+u32 cpuid_std_range_max __ro_after_init;
-+u32 cpuid_hyp_range_max __ro_after_init;
-+u32 cpuid_ext_range_max __ro_after_init;
-+
- static bool __init sev_es_check_cpu_features(void)
+-static inline bool sev_snp_enabled(void)
++bool sev_snp_enabled(void)
  {
- 	if (!has_cpuflag(X86_FEATURE_RDRAND)) {
-@@ -245,6 +302,224 @@ static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
- 	return 0;
+ 	return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
  }
- 
-+static inline bool snp_cpuid_active(void)
-+{
-+	return !!cpuid_info;
-+}
-+
-+static int snp_cpuid_calc_xsave_size(u64 xfeatures_en, u32 base_size,
-+				     u32 *xsave_size, bool compacted)
-+{
-+	u32 xsave_size_total = base_size;
-+	u64 xfeatures_found = 0;
-+	int i;
-+
-+	for (i = 0; i < cpuid_info->count; i++) {
-+		const struct snp_cpuid_fn *fn = &cpuid_info->fn[i];
-+
-+		if (!(fn->eax_in == 0xD && fn->ecx_in > 1 && fn->ecx_in < 64))
-+			continue;
-+		if (!(xfeatures_en & (BIT_ULL(fn->ecx_in))))
-+			continue;
-+		if (xfeatures_found & (BIT_ULL(fn->ecx_in)))
-+			continue;
-+
-+		xfeatures_found |= (BIT_ULL(fn->ecx_in));
-+
-+		if (compacted)
-+			xsave_size_total += fn->eax;
-+		else
-+			xsave_size_total = max(xsave_size_total,
-+					       fn->eax + fn->ebx);
-+	}
-+
-+	/*
-+	 * Either the guest set unsupported XCR0/XSS bits, or the corresponding
-+	 * entries in the CPUID table were not present. This is not a valid
-+	 * state to be in.
-+	 */
-+	if (xfeatures_found != (xfeatures_en & GENMASK_ULL(63, 2)))
-+		return -EINVAL;
-+
-+	*xsave_size = xsave_size_total;
-+
-+	return 0;
-+}
-+
-+static void snp_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx, u32 *ecx,
-+			 u32 *edx)
-+{
-+	/*
-+	 * MSR protocol does not support fetching indexed subfunction, but is
-+	 * sufficient to handle current fallback cases. Should that change,
-+	 * make sure to terminate rather than ignoring the index and grabbing
-+	 * random values. If this issue arises in the future, handling can be
-+	 * added here to use GHCB-page protocol for cases that occur late
-+	 * enough in boot that GHCB page is available.
-+	 */
-+	if (cpuid_function_is_indexed(func) && subfunc)
-+		sev_es_terminate(1, GHCB_TERM_CPUID_HV);
-+
-+	if (sev_cpuid_hv(func, 0, eax, ebx, ecx, edx))
-+		sev_es_terminate(1, GHCB_TERM_CPUID_HV);
-+}
-+
-+static bool
-+snp_cpuid_find_validated_func(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
-+			      u32 *ecx, u32 *edx)
-+{
-+	int i;
-+
-+	for (i = 0; i < cpuid_info->count; i++) {
-+		const struct snp_cpuid_fn *fn = &cpuid_info->fn[i];
-+
-+		if (fn->eax_in != func)
-+			continue;
-+
-+		if (cpuid_function_is_indexed(func) && fn->ecx_in != subfunc)
-+			continue;
-+
-+		*eax = fn->eax;
-+		*ebx = fn->ebx;
-+		*ecx = fn->ecx;
-+		*edx = fn->edx;
-+
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+static bool snp_cpuid_check_range(u32 func)
-+{
-+	if (func <= cpuid_std_range_max ||
-+	    (func >= 0x40000000 && func <= cpuid_hyp_range_max) ||
-+	    (func >= 0x80000000 && func <= cpuid_ext_range_max))
-+		return true;
-+
-+	return false;
-+}
-+
-+static int snp_cpuid_postprocess(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
-+				 u32 *ecx, u32 *edx)
-+{
-+	u32 ebx2, ecx2, edx2;
-+
-+	switch (func) {
-+	case 0x1:
-+		snp_cpuid_hv(func, subfunc, NULL, &ebx2, NULL, &edx2);
-+
-+		/* initial APIC ID */
-+		*ebx = (ebx2 & GENMASK(31, 24)) | (*ebx & GENMASK(23, 0));
-+		/* APIC enabled bit */
-+		*edx = (edx2 & BIT(9)) | (*edx & ~BIT(9));
-+
-+		/* OSXSAVE enabled bit */
-+		if (native_read_cr4() & X86_CR4_OSXSAVE)
-+			*ecx |= BIT(27);
-+		break;
-+	case 0x7:
-+		/* OSPKE enabled bit */
-+		*ecx &= ~BIT(4);
-+		if (native_read_cr4() & X86_CR4_PKE)
-+			*ecx |= BIT(4);
-+		break;
-+	case 0xB:
-+		/* extended APIC ID */
-+		snp_cpuid_hv(func, 0, NULL, NULL, NULL, edx);
-+		break;
-+	case 0xD: {
-+		bool compacted = false;
-+		u64 xcr0 = 1, xss = 0;
-+		u32 xsave_size;
-+
-+		if (subfunc != 0 && subfunc != 1)
-+			return 0;
-+
-+		if (native_read_cr4() & X86_CR4_OSXSAVE)
-+			xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
-+		if (subfunc == 1) {
-+			/* Get XSS value if XSAVES is enabled. */
-+			if (*eax & BIT(3)) {
-+				unsigned long lo, hi;
-+
-+				asm volatile("rdmsr" : "=a" (lo), "=d" (hi)
-+						     : "c" (MSR_IA32_XSS));
-+				xss = (hi << 32) | lo;
-+			}
-+
-+			/*
-+			 * The PPR and APM aren't clear on what size should be
-+			 * encoded in 0xD:0x1:EBX when compaction is not enabled
-+			 * by either XSAVEC (feature bit 1) or XSAVES (feature
-+			 * bit 3) since SNP-capable hardware has these feature
-+			 * bits fixed as 1. KVM sets it to 0 in this case, but
-+			 * to avoid this becoming an issue it's safer to simply
-+			 * treat this as unsupported for SEV-SNP guests.
-+			 */
-+			if (!(*eax & (BIT(1) | BIT(3))))
-+				return -EINVAL;
-+
-+			compacted = true;
-+		}
-+
-+		if (snp_cpuid_calc_xsave_size(xcr0 | xss, *ebx, &xsave_size,
-+					      compacted))
-+			return -EINVAL;
-+
-+		*ebx = xsave_size;
-+		}
-+		break;
-+	case 0x8000001E:
-+		/* extended APIC ID */
-+		snp_cpuid_hv(func, subfunc, eax, &ebx2, &ecx2, NULL);
-+		/* compute ID */
-+		*ebx = (*ebx & GENMASK(31, 8)) | (ebx2 & GENMASK(7, 0));
-+		/* node ID */
-+		*ecx = (*ecx & GENMASK(31, 8)) | (ecx2 & GENMASK(7, 0));
-+		break;
-+	default:
-+		/* No fix-ups needed, use values as-is. */
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Returns -EOPNOTSUPP if feature not enabled. Any other return value should be
-+ * treated as fatal by caller.
-+ */
-+static int snp_cpuid(u32 func, u32 subfunc, u32 *eax, u32 *ebx, u32 *ecx,
-+		     u32 *edx)
-+{
-+	if (!snp_cpuid_active())
-+		return -EOPNOTSUPP;
-+
-+	if (!snp_cpuid_find_validated_func(func, subfunc, eax, ebx, ecx, edx)) {
-+		/*
-+		 * Some hypervisors will avoid keeping track of CPUID entries
-+		 * where all values are zero, since they can be handled the
-+		 * same as out-of-range values (all-zero). This is useful here
-+		 * as well as it allows virtually all guest configurations to
-+		 * work using a single SEV-SNP CPUID table.
-+		 *
-+		 * To allow for this, there is a need to distinguish between
-+		 * out-of-range entries and in-range zero entries, since the
-+		 * CPUID table entries are only a template that may need to be
-+		 * augmented with additional values for things like
-+		 * CPU-specific information during post-processing. So if it's
-+		 * not in the table, but is still in the valid range, proceed
-+		 * with the post-processing. Otherwise, just return zeros.
-+		 */
-+		*eax = *ebx = *ecx = *edx = 0;
-+		if (!snp_cpuid_check_range(func))
-+			return 0;
-+	}
-+
-+	return snp_cpuid_postprocess(func, subfunc, eax, ebx, ecx, edx);
-+}
-+
- /*
-  * Boot VC Handler - This is the first VC handler during boot, there is no GHCB
-  * page yet, so it only supports the MSR based communication with the
-@@ -252,8 +527,10 @@ static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
-  */
- void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
- {
-+	unsigned int subfn = lower_bits(regs->cx, 32);
- 	unsigned int fn = lower_bits(regs->ax, 32);
- 	u32 eax, ebx, ecx, edx;
-+	int ret;
- 
- 	/* Only CPUID is supported via MSR protocol */
- 	if (exit_code != SVM_EXIT_CPUID)
-@@ -273,9 +550,17 @@ void __init do_vc_no_ghcb(struct pt_regs *regs, unsigned long exit_code)
- 		sev_status = (hi << 32) | lo;
- 	}
- 
-+	ret = snp_cpuid(fn, subfn, &eax, &ebx, &ecx, &edx);
-+	if (ret == 0)
-+		goto cpuid_done;
-+
-+	if (ret != -EOPNOTSUPP)
-+		goto fail;
-+
- 	if (sev_cpuid_hv(fn, 0, &eax, &ebx, &ecx, &edx))
- 		goto fail;
- 
-+cpuid_done:
- 	regs->ax = eax;
- 	regs->bx = ebx;
- 	regs->cx = ecx;
-@@ -569,12 +854,35 @@ static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- 	return ret;
- }
- 
-+static int vc_handle_cpuid_snp(struct pt_regs *regs)
-+{
-+	u32 eax, ebx, ecx, edx;
-+	int ret;
-+
-+	ret = snp_cpuid(regs->ax, regs->cx, &eax, &ebx, &ecx, &edx);
-+	if (ret == 0) {
-+		regs->ax = eax;
-+		regs->bx = ebx;
-+		regs->cx = ecx;
-+		regs->dx = edx;
-+	}
-+
-+	return ret;
-+}
-+
- static enum es_result vc_handle_cpuid(struct ghcb *ghcb,
- 				      struct es_em_ctxt *ctxt)
- {
- 	struct pt_regs *regs = ctxt->regs;
- 	u32 cr4 = native_read_cr4();
- 	enum es_result ret;
-+	int snp_cpuid_ret;
-+
-+	snp_cpuid_ret = vc_handle_cpuid_snp(regs);
-+	if (snp_cpuid_ret == 0)
-+		return ES_OK;
-+	if (snp_cpuid_ret != -EOPNOTSUPP)
-+		return ES_VMM_ERROR;
- 
- 	ghcb_set_rax(ghcb, regs->ax);
- 	ghcb_set_rcx(ghcb, regs->cx);
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index dfb5b2920933..d348ad027df8 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -33,6 +33,7 @@
- #include <asm/smp.h>
- #include <asm/cpu.h>
- #include <asm/apic.h>
-+#include <asm/cpuid.h>
- 
- #define DR7_RESET_VALUE        0x400
- 
 -- 
 2.25.1
 
