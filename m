@@ -1,23 +1,23 @@
-Received: from mail.skyhub.de (unknown [5.9.137.197])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC872C81
-	for <linux-coco@lists.linux.dev>; Mon, 11 Oct 2021 08:48:47 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f08bb008041f0293f2a9501.dip0.t-ipconnect.de [IPv6:2003:ec:2f08:bb00:8041:f029:3f2a:9501])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EB02C85
+	for <linux-coco@lists.linux.dev>; Mon, 11 Oct 2021 13:15:25 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f08bb00608dded251e09f1b.dip0.t-ipconnect.de [IPv6:2003:ec:2f08:bb00:608d:ded2:51e0:9f1b])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8ED011EC01CE;
-	Mon, 11 Oct 2021 10:48:32 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 161DB1EC01B7;
+	Mon, 11 Oct 2021 15:15:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1633942112;
+	t=1633958123;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=WX7Mv16IItiWUhDYtgsQ58XhYcnYoY2/nQSVZ23QgEg=;
-	b=Ue70iMsndjsy737r0a//5qQ1NU65dolZ0oHJYGSTMEMzKT3itfDJfBtMRSqYuWrKViHFS3
-	2eZO2GQS2SA1qZ6pyQ0CvE9ttnnQNX3/j6ygLUtSzi8mRTaSJD9CRoohuRLpaGHYGxN4Xf
-	nQqfHtGyOog15JWmfroRpy+iRXtWPqk=
-Date: Mon, 11 Oct 2021 10:48:28 +0200
+	bh=jCMoAF/G6nShUACG0ht2kXTNSZwdTajCxjyuJX54Kmg=;
+	b=YYMwvqngYlD0Vfggl3CGG7j1wno7aGftVm86pVdEvkTAF2WXsZE2p2el+RlGwnWjVc0fby
+	GquYSnZklcwTHOg48URxTs3OP3g5iMplqm4VaBPmavEfPooaN4YjC5+G+/LTjCr6nO4Gqc
+	kGH+HsmjZ5ZCvNsQqE25noSASoHWfvA=
+Date: Mon, 11 Oct 2021 15:15:23 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -46,11 +46,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com,
-	Borislav Petkov <bp@suse.de>
-Subject: Re: [PATCH v6 03/42] x86/sev: Get rid of excessive use of defines
-Message-ID: <YWP6XDbbqyWalbSa@zn.tnic>
+	Venu Busireddy <venu.busireddy@oracle.com>
+Subject: Re: [PATCH v6 02/42] x86/sev: Shorten GHCB terminate macro names
+Message-ID: <YWQ4694RuZUY3TaU@zn.tnic>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
- <20211008180453.462291-4-brijesh.singh@amd.com>
+ <20211008180453.462291-3-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,27 +59,25 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211008180453.462291-4-brijesh.singh@amd.com>
+In-Reply-To: <20211008180453.462291-3-brijesh.singh@amd.com>
 
-On Fri, Oct 08, 2021 at 01:04:14PM -0500, Brijesh Singh wrote:
-> From: Borislav Petkov <bp@suse.de>
-> 
-> Remove all the defines of masks and bit positions for the GHCB MSR
-> protocol and use comments instead which correspond directly to the spec
-> so that following those can be a lot easier and straightforward with the
-> spec opened in parallel to the code.
-> 
-> Aligh vertically while at it.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Borislav Petkov <bp@suse.de>
+On Fri, Oct 08, 2021 at 01:04:13PM -0500, Brijesh Singh wrote:
 
-When you handle someone else's patch, you need to add your SOB
-underneath to state that fact. I'll add it now but don't forget rule as
-it is important to be able to show how a patch found its way upstream.
+Yeah, let's add a trivial commit message here anyway:
 
-Like you've done for the next patch. :)
+<-- "Shorten macro names for improved readability."
+
+> Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
+> Suggested-by: Borislav Petkov <bp@suse.de>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/boot/compressed/sev.c    | 6 +++---
+>  arch/x86/include/asm/sev-common.h | 4 ++--
+>  arch/x86/kernel/sev-shared.c      | 2 +-
+>  arch/x86/kernel/sev.c             | 4 ++--
+>  4 files changed, 8 insertions(+), 8 deletions(-)
+
+...
 
 -- 
 Regards/Gruss,
