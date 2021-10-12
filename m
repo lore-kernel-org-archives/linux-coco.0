@@ -1,35 +1,53 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EB02C85
-	for <linux-coco@lists.linux.dev>; Mon, 11 Oct 2021 13:15:25 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f08bb00608dded251e09f1b.dip0.t-ipconnect.de [IPv6:2003:ec:2f08:bb00:608d:ded2:51e0:9f1b])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 161DB1EC01B7;
-	Mon, 11 Oct 2021 15:15:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1633958123;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=jCMoAF/G6nShUACG0ht2kXTNSZwdTajCxjyuJX54Kmg=;
-	b=YYMwvqngYlD0Vfggl3CGG7j1wno7aGftVm86pVdEvkTAF2WXsZE2p2el+RlGwnWjVc0fby
-	GquYSnZklcwTHOg48URxTs3OP3g5iMplqm4VaBPmavEfPooaN4YjC5+G+/LTjCr6nO4Gqc
-	kGH+HsmjZ5ZCvNsQqE25noSASoHWfvA=
-Date: Mon, 11 Oct 2021 15:15:23 +0200
-From: Borislav Petkov <bp@alien8.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174902C81
+	for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 18:47:03 +0000 (UTC)
+Received: by mail-pj1-f53.google.com with SMTP id lk8-20020a17090b33c800b001a0a284fcc2so2595394pjb.2
+        for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 11:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=DfbFY8+dvVdayrpl/HC8aWmEL5nQTdONvOQ8G8k3sdI=;
+        b=btrJZ/IPtSJJEbgCzV6kLMKqVSQRPFad9W9idPv/BiZkJlo6bd8G81Kds8V+qlts68
+         3bQnjkeOOxKIBW56arcH1rokJD7Au9TeVsJ8TJ+Z5zeMOmbsetfD1dwwfcHcz6Ypn0kq
+         hM+nYHme6i+QiLuXnZc+fGlxFT9/zcx8u8iqhQ/6sSEjE12Dj53FwHia2CePuYV1/jkO
+         faSxpMuKmvLzs/e1NY8UN9zkG/5P75+JRJbV8MPR8oi6a1W0SYyP6vgly4sUvh4UQEoP
+         yGCsAs4zCy+iTJ0jhrZEFAcP5DBJ4XPOou6hakCEZOKj2fxsyuBfwVLPCkTnrkbgSqTq
+         H41g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=DfbFY8+dvVdayrpl/HC8aWmEL5nQTdONvOQ8G8k3sdI=;
+        b=CLs310UbBoM6fDdjgBZqBsiq5YONpN846CNgtdiD+uM2fUvq3AWglgTpjj9yLH1Jdk
+         E5tBT/zTb3Oj5guppBfG8IOPBQO7GjAFd5KLKYNOCJjIm8kBG9M0ShjGtVD+0F6Nx2XU
+         tUjTHo5XWsjLpA6w9aATyWGo+iPQJsTI1qOIFsi3g3hh5nvuVl0H6UkBb11kV8z+8KAq
+         oYxpedPR5M3iVDJHJJvghAZ6g2BNS2FONCpi4CRKxQECuIn6UOf6vGo1mZTNJf/N6mZr
+         V227wGHc6lyQ0eaZsxwRug4ho1829/Pk5DPSDoACcvHsB21nPyjGPVIU6Pu4C8ppV64v
+         u2yg==
+X-Gm-Message-State: AOAM530Uyeiedjxb9HAB8Nh2ZNOIrgTFQ65ynx6paobl2zZNVn5X0rIe
+	VOMDKca3sXhH81gbFMAXP1YAwQ==
+X-Google-Smtp-Source: ABdhPJw+X5MZoBakEaHZNsLbsAa4QxFgESLNxqGtJNcguDnKmi32hzC66ItirwvCxHpvHxMp0faMyQ==
+X-Received: by 2002:a17:902:a710:b029:12b:9b9f:c461 with SMTP id w16-20020a170902a710b029012b9b9fc461mr31769695plq.59.1634064422208;
+        Tue, 12 Oct 2021 11:47:02 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id w2sm11975808pfq.207.2021.10.12.11.47.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Oct 2021 11:47:01 -0700 (PDT)
+Date: Tue, 12 Oct 2021 18:46:57 +0000
+From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
 	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -39,48 +57,112 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	David Rientjes <rientjes@google.com>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
+	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	Venu Busireddy <venu.busireddy@oracle.com>
-Subject: Re: [PATCH v6 02/42] x86/sev: Shorten GHCB terminate macro names
-Message-ID: <YWQ4694RuZUY3TaU@zn.tnic>
-References: <20211008180453.462291-1-brijesh.singh@amd.com>
- <20211008180453.462291-3-brijesh.singh@amd.com>
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part2 v5 26/45] KVM: SVM: Mark the private vma unmerable
+ for SEV-SNP guests
+Message-ID: <YWXYIWuK2T8Kejng@google.com>
+References: <20210820155918.7518-1-brijesh.singh@amd.com>
+ <20210820155918.7518-27-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211008180453.462291-3-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-27-brijesh.singh@amd.com>
 
-On Fri, Oct 08, 2021 at 01:04:13PM -0500, Brijesh Singh wrote:
+On Fri, Aug 20, 2021, Brijesh Singh wrote:
+> When SEV-SNP is enabled, the guest private pages are added in the RMP
+> table; while adding the pages, the rmp_make_private() unmaps the pages
+> from the direct map. If KSM attempts to access those unmapped pages then
+> it will trigger #PF (page-not-present).
+> 
+> Encrypted guest pages cannot be shared between the process, so an
+> userspace should not mark the region mergeable but to be safe, mark the
+> process vma unmerable before adding the pages in the RMP table.
 
-Yeah, let's add a trivial commit message here anyway:
+To be safe from what?  Does the !PRESENT #PF crash the kernel?
 
-<-- "Shorten macro names for improved readability."
-
-> Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
-> Suggested-by: Borislav Petkov <bp@suse.de>
 > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
->  arch/x86/boot/compressed/sev.c    | 6 +++---
->  arch/x86/include/asm/sev-common.h | 4 ++--
->  arch/x86/kernel/sev-shared.c      | 2 +-
->  arch/x86/kernel/sev.c             | 4 ++--
->  4 files changed, 8 insertions(+), 8 deletions(-)
+>  arch/x86/kvm/svm/sev.c | 32 ++++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 4b126598b7aa..dcef0ae5f8e4 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -18,11 +18,13 @@
+>  #include <linux/processor.h>
+>  #include <linux/trace_events.h>
+>  #include <linux/sev.h>
+> +#include <linux/ksm.h>
+>  #include <asm/fpu/internal.h>
+>  
+>  #include <asm/pkru.h>
+>  #include <asm/trapnr.h>
+>  #include <asm/sev.h>
+> +#include <asm/mman.h>
+>  
+>  #include "x86.h"
+>  #include "svm.h"
+> @@ -1683,6 +1685,30 @@ static bool is_hva_registered(struct kvm *kvm, hva_t hva, size_t len)
+>  	return false;
+>  }
+>  
+> +static int snp_mark_unmergable(struct kvm *kvm, u64 start, u64 size)
+> +{
+> +	struct vm_area_struct *vma;
+> +	u64 end = start + size;
+> +	int ret;
+> +
+> +	do {
+> +		vma = find_vma_intersection(kvm->mm, start, end);
+> +		if (!vma) {
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +
+> +		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> +				  MADV_UNMERGEABLE, &vma->vm_flags);
+> +		if (ret)
+> +			break;
+> +
+> +		start = vma->vm_end;
+> +	} while (end > vma->vm_end);
+> +
+> +	return ret;
+> +}
+> +
+>  static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>  {
+>  	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> @@ -1707,6 +1733,12 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>  	if (!is_hva_registered(kvm, params.uaddr, params.len))
+>  		return -EINVAL;
+>  
+> +	mmap_write_lock(kvm->mm);
+> +	ret = snp_mark_unmergable(kvm, params.uaddr, params.len);
+> +	mmap_write_unlock(kvm->mm);
 
-...
+This does not, and practically speaking cannot, work.  There are multiple TOCTOU
+bugs, here and in __snp_handle_page_state_change().  Userspace can madvise() the
+range at any later point, munmap()/mmap() the entire range, mess with the memslots
+in the PSC case, and so on and so forth.  Relying on MADV_UNMERGEABLE for functional
+correctness simply cannot work in KVM, barring mmu_notifier and a big pile of code.
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> +	if (ret)
+> +		return -EFAULT;
+> +
+>  	/*
+>  	 * The userspace memory is already locked so technically we don't
+>  	 * need to lock it again. Later part of the function needs to know
+> -- 
+> 2.17.1
+> 
