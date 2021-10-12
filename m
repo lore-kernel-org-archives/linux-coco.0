@@ -1,42 +1,42 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26282C83
-	for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 20:38:28 +0000 (UTC)
-Received: by mail-pj1-f52.google.com with SMTP id g13-20020a17090a3c8d00b00196286963b9so2774600pjc.3
-        for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 13:38:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546802C83
+	for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 20:44:51 +0000 (UTC)
+Received: by mail-pj1-f51.google.com with SMTP id qe4-20020a17090b4f8400b0019f663cfcd1so2802643pjb.1
+        for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 13:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=iQnV3pt8J3jb8XA6czy73gblHf036TthPcOfsFMgiAY=;
-        b=VmKr4djT+eqIEmZtZWL/uW23lpthSKvp46povfujuU5koUN0k2iuu4zk8fTFWoyLek
-         xpw22TK1jbHQL8sXVE0iUIVhrmJXLIOIbJJUuuiR8cb//6SfE3loeS+snUlzKo8i0C5H
-         IyQ8c7mPWtWrvZexQJZrYG/+7szuXLBwrSBcc5dKOOSk4tFaHzrBU5p6nRxiqKt4YzzY
-         WA/tWjRyZ/wTkg8ElxFt5drpv2naK6CTtp2EEHUkArCNVvzfyqHWzfu3HG8fAY6QFaYG
-         IO9caj2gd1uNngxOa2QmiBaQ8Wske7hixXerdAZj+iv4tLnKqK0vy9fjkfMHzAV/Brly
-         sRHQ==
+        bh=8ViV5/pFsBw3tEZCSEbQNY/kwVRna/LjOJ8u3cbMomY=;
+        b=IfAyv/ESGEJl3OXMAEkUu+1eEAYJA1DTprmw/n6iHXk1vORtYBH6NWmjsICnrglySW
+         u7p6FjmJtFivP7gXm0vB/abB4I9+1WFQe5HLQ7V6ApO4BHTChuG7TZwTup3PbhpP8ORf
+         s7pIkXdxhoHubE0p2y27bbwtAdXnhW7ucmiFnOoUJVSXDtwTQssYCtr0rcS6WZ0ZELOv
+         nzEycl41/WtD5NbUjilm5cJSac15mm8pJixeptm3CRTrdN+dtG/LP7GPimIBGI0IfkHa
+         y8ld4AZNzIcxoppNzAgiSpotsMxXw8q20/UigY5MJ624DjAJsU+N/ypOQ4SWeJaHz8u0
+         pl/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=iQnV3pt8J3jb8XA6czy73gblHf036TthPcOfsFMgiAY=;
-        b=C5pDven6SmJwMtHSpxYt+1llp9JI1YNaF1fH9zrtXOM3UWiN9WamLjFQN6gBTfLqEh
-         HTLJ2G/9TIkTYge5vAH18sz6T2TqDFgsPMumzdj80CIVmUG9YrLf61sIw6IJPzMN/BsD
-         97g08UJTlzvGtxF11MRcTZnKsgmNivUOKVRAMFczq2xM016S97U3bBnHOG+qINffYt8u
-         Ih9JedyCczs/0B7eNhTULSireQLZodYGu8Xl+rS4hqW+WCaeFM2gDYZBcQTGuQM0PMyA
-         0cVNe+76P4FdPz779Fa2q8hIm3bPKhKHZxhjLHwGdHueGcybOvdXARfT8FBplw/7z6q+
-         GRKQ==
-X-Gm-Message-State: AOAM532JsDGuPbZTbGksD8jD9mSmM46sTajLFhmSHWmcG7K14YyyDtrs
-	tzkaauI3PmeFMapuFk8mNaRoqQ==
-X-Google-Smtp-Source: ABdhPJwYuhpc+lnXyndFKFciOEGuFZvuJcxPeEVd9f4TxExIiDdwxtqOt5MEIvEjc6zXAi/TKh1zKw==
-X-Received: by 2002:a17:90a:7d11:: with SMTP id g17mr8685244pjl.150.1634071108038;
-        Tue, 12 Oct 2021 13:38:28 -0700 (PDT)
+        bh=8ViV5/pFsBw3tEZCSEbQNY/kwVRna/LjOJ8u3cbMomY=;
+        b=OTfAafhSGBqFOqQCL588EmJ8pumVLm0r4fE3eTS/3SqAYwL4faDajaAI8Tx6df2oQF
+         qQAA9gjFCuIIUMoBRkPacBsLPXxoPsZ2xD+Ahug/VB2Qlr5JrMiOkxgaaEqD20CvlX9m
+         d5vHydtkEQpCO6aSYxlVUliYwG14HePqP9afO/OS5mjEF2caBDBWGhPLa78QJZZFT2wC
+         IuVIf7AOBAJxVUgLSLbdlX4RMRYYq28Mf7Z8xg6/iwrs9DG9Arb9xhzkvmRZ21YMw9M5
+         63/sFseVOaDnhPQO25CVOU6wKcaxtKhmWpzY2X9hrh309rzCMq8PEY20oeVlO3c77YJb
+         DUrA==
+X-Gm-Message-State: AOAM530416B5aJihiR+8bLRD9HuNVsuIochbBqtDUijU4ComGCzOMIO6
+	KQIIHUBLKHBB+3v1hbwTkv1H+Q==
+X-Google-Smtp-Source: ABdhPJxwGw5yVkX9qLympbpNPYa4ihCOPDnJEFbWRsVu8t6dvIwYQRRToQPlei3MyDTRcSYspl6LPA==
+X-Received: by 2002:a17:903:2303:b0:13f:e63:e27d with SMTP id d3-20020a170903230300b0013f0e63e27dmr28278411plh.84.1634071490561;
+        Tue, 12 Oct 2021 13:44:50 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id oj1sm3997435pjb.49.2021.10.12.13.38.27
+        by smtp.gmail.com with ESMTPSA id w17sm10177165pff.191.2021.10.12.13.44.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Oct 2021 13:38:27 -0700 (PDT)
-Date: Tue, 12 Oct 2021 20:38:23 +0000
+        Tue, 12 Oct 2021 13:44:49 -0700 (PDT)
+Date: Tue, 12 Oct 2021 20:44:46 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -62,11 +62,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 20/45] KVM: SVM: Provide the Hypervisor Feature
- support VMGEXIT
-Message-ID: <YWXyP9E228aQSB5j@google.com>
+Subject: Re: [PATCH Part2 v5 21/45] KVM: SVM: Make AVIC backing, VMSA and
+ VMCB memory allocation SNP safe
+Message-ID: <YWXzvhuE9/iCcqxZ@google.com>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-21-brijesh.singh@amd.com>
+ <20210820155918.7518-22-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,77 +75,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210820155918.7518-21-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-22-brijesh.singh@amd.com>
 
 On Fri, Aug 20, 2021, Brijesh Singh wrote:
-> Version 2 of the GHCB specification introduced advertisement of features
-> that are supported by the Hypervisor.
-> 
-> Now that KVM supports version 2 of the GHCB specification, bump the
-> maximum supported protocol version.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/sev-common.h |  2 ++
->  arch/x86/kvm/svm/sev.c            | 14 ++++++++++++++
->  arch/x86/kvm/svm/svm.h            |  3 ++-
->  3 files changed, 18 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-> index d70a19000953..779c7e8f836c 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -97,6 +97,8 @@ enum psc_op {
->  /* GHCB Hypervisor Feature Request/Response */
->  #define GHCB_MSR_HV_FT_REQ		0x080
->  #define GHCB_MSR_HV_FT_RESP		0x081
-> +#define GHCB_MSR_HV_FT_POS		12
-> +#define GHCB_MSR_HV_FT_MASK		GENMASK_ULL(51, 0)
->  #define GHCB_MSR_HV_FT_RESP_VAL(v)			\
->  	/* GHCBData[63:12] */				\
->  	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 0ca5b5b9aeef..1644da5fc93f 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2184,6 +2184,7 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
->  	case SVM_VMGEXIT_AP_HLT_LOOP:
->  	case SVM_VMGEXIT_AP_JUMP_TABLE:
->  	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
-> +	case SVM_VMGEXIT_HV_FEATURES:
->  		break;
->  	default:
->  		goto vmgexit_err;
-> @@ -2438,6 +2439,13 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  				  GHCB_MSR_INFO_MASK,
->  				  GHCB_MSR_INFO_POS);
->  		break;
-> +	case GHCB_MSR_HV_FT_REQ: {
+> Implement a workaround for an SNP erratum where the CPU will incorrectly
+> signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
+> RMP entry of a VMCB, VMSA or AVIC backing page.
 
-Unnecessary braces.
+...
 
-> +		set_ghcb_msr_bits(svm, GHCB_HV_FT_SUPPORTED,
-> +				  GHCB_MSR_HV_FT_MASK, GHCB_MSR_HV_FT_POS);
-> +		set_ghcb_msr_bits(svm, GHCB_MSR_HV_FT_RESP,
-> +				  GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
-> +		break;
-> +	}
->  	case GHCB_MSR_TERM_REQ: {
->  		u64 reason_set, reason_code;
+> @@ -4539,6 +4539,16 @@ static int svm_vm_init(struct kvm *kvm)
+>  	return 0;
+>  }
 >  
-> @@ -2553,6 +2561,12 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
->  		ret = 1;
->  		break;
->  	}
-> +	case SVM_VMGEXIT_HV_FEATURES: {
-
-Same here.
-
-> +		ghcb_set_sw_exit_info_2(ghcb, GHCB_HV_FT_SUPPORTED);
+> +static void *svm_alloc_apic_backing_page(struct kvm_vcpu *vcpu)
+> +{
+> +	struct page *page = snp_safe_alloc_page(vcpu);
 > +
-> +		ret = 1;
-> +		break;
-> +	}
->  	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
->  		vcpu_unimpl(vcpu,
->  			    "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
+> +	if (!page)
+> +		return NULL;
+> +
+> +	return page_address(page);
+> +}
+> +
+>  static struct kvm_x86_ops svm_x86_ops __initdata = {
+>  	.hardware_unsetup = svm_hardware_teardown,
+>  	.hardware_enable = svm_hardware_enable,
+> @@ -4667,6 +4677,8 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+>  	.complete_emulated_msr = svm_complete_emulated_msr,
+>  
+>  	.vcpu_deliver_sipi_vector = svm_vcpu_deliver_sipi_vector,
+> +
+> +	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
+
+IMO, this should be guarded by a module param or X86_BUG_* to make it clear that
+this is a bug and not working as intended.
+
+And doesn't the APIC page need these shenanigans iff AVIC is enabled? (the module
+param, not necessarily in the VM)
+
+>  };
+>  
+>  static struct kvm_x86_init_ops svm_init_ops __initdata = {
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index d1f1512a4b47..e40800e9c998 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -575,6 +575,7 @@ void sev_es_create_vcpu(struct vcpu_svm *svm);
+>  void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+>  void sev_es_prepare_guest_switch(struct vcpu_svm *svm, unsigned int cpu);
+>  void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
+>  
+>  /* vmenter.S */
+>  
+> -- 
+> 2.17.1
+> 
