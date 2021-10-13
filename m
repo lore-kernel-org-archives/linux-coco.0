@@ -1,43 +1,42 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5392C87
-	for <linux-coco@lists.linux.dev>; Wed, 13 Oct 2021 20:10:21 +0000 (UTC)
-Received: by mail-pj1-f44.google.com with SMTP id ls14-20020a17090b350e00b001a00e2251c8so3117367pjb.4
-        for <linux-coco@lists.linux.dev>; Wed, 13 Oct 2021 13:10:21 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652312C87
+	for <linux-coco@lists.linux.dev>; Wed, 13 Oct 2021 20:16:54 +0000 (UTC)
+Received: by mail-pg1-f177.google.com with SMTP id r2so3385971pgl.10
+        for <linux-coco@lists.linux.dev>; Wed, 13 Oct 2021 13:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=x1LbBin+3giaISRnECjj9ym7k3KwVa5JtFi86EOVr/U=;
-        b=QDCwnlgrMzfzTJO2pUJLtu7nG00gr1hza14ldZPiMdaKHgFwF4SXNeVU3mY98HXsC9
-         OU26/0D3oks/kHUGsc3RYZWTSkdbVJMH3cqGsg6S/kOLm5uGSlbA7uGRO9InDb8rJOp/
-         zZfaVSpfjeMg6nZbHv1OH1ZzJ8Kk0q0yEs616ejBQv6HQdTG8KQolJJMZVNxGy8nFDAm
-         INdYjQnMguxFHMCCQSXWtn/GZC7cbbuz/iVozreHj2rq5G3TmpjIZEf9A233O1t6TRlX
-         4SwX0YAYtJPOvzVN5QrMQ10zrnlQK0gvhrWH1H6fXXQf5HuB8G5naQ115F+0a9umJB9e
-         LXdQ==
+         :content-disposition:in-reply-to;
+        bh=5yhRH7ZIJi4Rd6WTmMMqH8HhEZQLNXc5e/9FRtAhMOI=;
+        b=RPhDaWnpurS4y7tVtRZqV2m7TT/CvyExa80zu6eKOfi+Uxq6OHkuPWKuzBu6usovry
+         1r5rS6U2o3QdPYKrrldUS3PG46VJM5XJ2jtd33eGezktpZLITFB62sVzB1xF+QWmQaYs
+         4lw6stQbe55qE7qBX+H95iI+3MJ7iWrKq5aThQoS+CDOFbq9aHteipRRBoAwV4uM/anD
+         EZ86zFuK/mnrh84e5NkEyIliobHoUE58WGdSy5se484Rd0wh2bLKfWmvsE6lHQ/99GMd
+         jfvaDnPWztORPtxmDG6KJGEGfMa2WvnYpQvEZrq/5p6G0eQupghkiidJ69V+q6DshQJJ
+         eHpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=x1LbBin+3giaISRnECjj9ym7k3KwVa5JtFi86EOVr/U=;
-        b=QtAH5tx0aj15ZNgV1NMF/cFydsLxwEC+m6i63TIExpzmUAhmz48Dyxl2WQfb6m6Gxa
-         24p57nMdlVz5is+uCH/6KF/0RiWAL7eWwiXtzji3KTfv+kTeM6vXPGNtZurhTY2o+SyT
-         Z0KHDPr0ywkwKAXvSGZ3d75FLzgnxWHPlF58cc/EEr+lcoDREc+tl17OZ4h+hx53eMvK
-         22POJcYnqGMF6E0sbHCpLKrN/DEXjgNAWLqH5iU+hIjxUpLuO+360Ns+LeZrPOTbTcVG
-         TP6y6MLn2KeZb/15WfB8FGlc/ah6TmxGJ3pWivgiIAYo4GhKRz4xUFqBwVm/Stwrqii3
-         2rjQ==
-X-Gm-Message-State: AOAM533si6WbriyJaA1lHV5x7Up/VZzuGXQTMj7/K72Cd4YcOVh0KLGB
-	wp9n8gSy4a6GQeWq+AS2kambKQ==
-X-Google-Smtp-Source: ABdhPJwrMztjMpB1VLcp74m0YwjBj8njZMHQfsLZuHu+FNwvxHkPE/McM+Eqb0ufZNt4AIE6TMKqNg==
-X-Received: by 2002:a17:90a:d190:: with SMTP id fu16mr1564938pjb.14.1634155821020;
-        Wed, 13 Oct 2021 13:10:21 -0700 (PDT)
+         :mime-version:content-disposition:in-reply-to;
+        bh=5yhRH7ZIJi4Rd6WTmMMqH8HhEZQLNXc5e/9FRtAhMOI=;
+        b=bcxq8Jxx86MTWQspb8Cfder5Se48ay4jfRFeRwI07JdCYgzmfxrjeAxxBsVu0/8cVL
+         ZX/P4Na23n5tgiYF79BJFcQrLTbwABY3EyjNz12TZd5XOQJAAkcT4HxIE12Bx8QcEhJW
+         +SzLmEnpXfwf/WRe2po8i7kWkzH6U1ksbE8+aICXya8qqdsuPGeqfNFFI4WcEEvg8pkb
+         jIoMAOMzcNvr8fKZbQ9E7a3gosrQGySiZvTwtFwGerUuC8PDcnNe4wPs7NHk2nzLQEUw
+         cHPPGEwOfJD7KfjndxyvsDI5YbAtcaVL36OR9U9qmi+ubilYV4upgZRaqhIUJ/GTQxVs
+         zoVA==
+X-Gm-Message-State: AOAM532Nkuhewgp3jmYij9acu54DPc+ytzDlPoVJGBqGP8T1A7UjBVEv
+	3+Pn1enxnbV5/jicGKjHjDQdZg==
+X-Google-Smtp-Source: ABdhPJydTqRd+TbelV+KMJzjHnbhI2cqYnqRbRh8getW270LAhsuC1uWiMUAmXUve3gaAGCtai4VyQ==
+X-Received: by 2002:a63:7c5b:: with SMTP id l27mr393227pgn.227.1634156213632;
+        Wed, 13 Oct 2021 13:16:53 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id kb15sm330965pjb.43.2021.10.13.13.10.20
+        by smtp.gmail.com with ESMTPSA id y3sm334520pjg.7.2021.10.13.13.16.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Oct 2021 13:10:20 -0700 (PDT)
-Date: Wed, 13 Oct 2021 20:10:16 +0000
+        Wed, 13 Oct 2021 13:16:53 -0700 (PDT)
+Date: Wed, 13 Oct 2021 20:16:49 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -65,115 +64,43 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
  map and unmap
-Message-ID: <YWc9KL8gghEiI48h@google.com>
+Message-ID: <YWc+sRwHxEmcZZxB@google.com>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
  <20210820155918.7518-40-brijesh.singh@amd.com>
  <YWYm/Gw8PbaAKBF0@google.com>
- <94128da2-c9f7-d990-2508-5a56f6cf16e7@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <94128da2-c9f7-d990-2508-5a56f6cf16e7@amd.com>
+In-Reply-To: <YWYm/Gw8PbaAKBF0@google.com>
 
-On Wed, Oct 13, 2021, Brijesh Singh wrote:
+On Wed, Oct 13, 2021, Sean Christopherson wrote:
+> On Fri, Aug 20, 2021, Brijesh Singh wrote:
+> > When SEV-SNP is enabled in the guest VM, the guest memory pages can
+> > either be a private or shared. A write from the hypervisor goes through
+> > the RMP checks. If hardware sees that hypervisor is attempting to write
+> > to a guest private page, then it triggers an RMP violation #PF.
+> > 
+> > To avoid the RMP violation, add post_{map,unmap}_gfn() ops that can be
+> > used to verify that its safe to map a given guest page. Use the SRCU to
+> > protect against the page state change for existing mapped pages.
 > 
-> On 10/12/21 5:23 PM, Sean Christopherson wrote:
-> > On Fri, Aug 20, 2021, Brijesh Singh wrote:
-> >> When SEV-SNP is enabled in the guest VM, the guest memory pages can
-> >> either be a private or shared. A write from the hypervisor goes through
-> >> the RMP checks. If hardware sees that hypervisor is attempting to write
-> >> to a guest private page, then it triggers an RMP violation #PF.
-> >>
-> >> To avoid the RMP violation, add post_{map,unmap}_gfn() ops that can be
-> >> used to verify that its safe to map a given guest page. Use the SRCU to
-> >> protect against the page state change for existing mapped pages.
-> > SRCU isn't protecting anything.  The synchronize_srcu_expedited() in the PSC code
-> > forces it to wait for existing maps to go away, but it doesn't prevent new maps
-> > from being created while the actual RMP updates are in-flight.  Most telling is
-> > that the RMP updates happen _after_ the synchronize_srcu_expedited() call.
-> >
-> > This also doesn't handle kvm_{read,write}_guest_cached().
-> 
-> Hmm, I thought the kvm_{read_write}_guest_cached() uses the
-> copy_{to,from}_user(). Writing to the private will cause a #PF and will
-> fail the copy_to_user(). Am I missing something?
+> SRCU isn't protecting anything.  The synchronize_srcu_expedited() in the PSC code
+> forces it to wait for existing maps to go away, but it doesn't prevent new maps
+> from being created while the actual RMP updates are in-flight.  Most telling is
+> that the RMP updates happen _after_ the synchronize_srcu_expedited() call.
 
-Doh, right you are.  I was thinking they cached the kmap, but it's just the
-gpa->hva that gets cached.
+Argh, another goof on my part.  Rereading prior feedback, I see that I loosely
+suggested SRCU as a possible solution.  That was a bad, bad suggestion.  I think
+(hope) I made it offhand without really thinking it through.  SRCU can't work in
+this case, because the whole premise of Read-Copy-Update is that there can be
+multiple copies of the data.  That simply can't be true for the RMP as hardware
+operates on a single table.
 
-> > I can't help but note that the private memslots idea[*] would handle this gracefully,
-> > e.g. the memslot lookup would fail, and any change in private memslots would
-> > invalidate the cache due to a generation mismatch.
-> >
-> > KSM is another mess that would Just Work.
-> >
-> > I'm not saying that SNP should be blocked on support for unmapping guest private
-> > memory, but I do think we should strongly consider focusing on that effort rather
-> > than trying to fix things piecemeal throughout KVM.  I don't think it's too absurd
-> > to say that it might actually be faster overall.  And I 100% think that having a
-> > cohesive design and uABI for SNP and TDX would be hugely beneficial to KVM.
-> >
-> > [*] https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flkml.kernel.org%2Fr%2F20210824005248.200037-1-seanjc%40google.com&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7Cd1717d511a1f473cedc408d98ddfb027%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637696814148744591%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=3LF77%2BcqmpUdiP6YAk7LpImisBzjRGUzdI3raqjJxl0%3D&amp;reserved=0
-> >
-> >> +int sev_post_map_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int *token)
-> >> +{
-> >> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> >> +	int level;
-> >> +
-> >> +	if (!sev_snp_guest(kvm))
-> >> +		return 0;
-> >> +
-> >> +	*token = srcu_read_lock(&sev->psc_srcu);
-> >> +
-> >> +	/* If pfn is not added as private then fail */
-> > This comment and the pr_err() are backwards, and confused the heck out of me.
-> > snp_lookup_rmpentry() returns '1' if the pfn is assigned, a.k.a. private.  That
-> > means this code throws an error if the page is private, i.e. requires the page
-> > to be shared.  Which makes sense given the use cases, it's just incredibly
-> > confusing.
-> Actually I followed your recommendation from the previous feedback that
-> snp_lookup_rmpentry() should return 1 for the assigned page, 0 for the
-> shared and -negative for invalid. I can clarify it here  again.
->
-> >> +	if (snp_lookup_rmpentry(pfn, &level) == 1) {
-> > Any reason not to provide e.g. rmp_is_shared() and rmp_is_private() so that
-> > callers don't have to care as much about the return values?  The -errno/0/1
-> > semantics are all but guarantee to bite us in the rear at some point.
-> 
-> If we look at the previous series, I had a macro rmp_is_assigned() for
-> exactly the same purpose but the feedback was to drop those macros and
-> return the state indirectly through the snp_lookup_rmpentry(). I can
-> certainly add a helper rmp_is_{shared,private}() if it makes code more
-> readable.
-
-Ah rats.  Bad communication on my side.  I didn't intended to have non-RMP code
-directly consume snp_lookup_rmpentry() for simple checks.  The goal behind the
-helper was to bury "struct rmpentry" so that it wasn't visible to the kernel at
-large.  I.e. my objection was that rmp_assigned() was looking directly at a
-non-architectural struct.
-
-My full thought for snp_lookup_rmpentry() was that it _could_ be consumed directly
-without exposing "struct rmpentry", but that simple, common use cases would provide
-wrappers, e.g.
-
-static inline snp_is_rmp_private(...)
-{
-	return snp_lookup_rmpentry(...) == 1;
-}
-
-static inline snp_is_rmp_shared(...)
-{
-	return snp_lookup_rmpentry(...) < 1;
-}
-
-
-Side topic, what do you think about s/assigned/private for the "public" APIs, as
-suggested/implied above?  I actually like the terminology when talking specifically
-about the RMP, but it doesn't fit the abstractions that tend to be used when talking
-about these things in other contexts, e.g. in KVM.
+In the future, please don't hesitate to push back on and/or question suggestions,
+especially those that are made without concrete examples, i.e. are likely off the
+cuff.  My goal isn't to set you up for failure :-/
