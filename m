@@ -1,42 +1,42 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9302C83
-	for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 21:48:35 +0000 (UTC)
-Received: by mail-pg1-f179.google.com with SMTP id q5so355034pgr.7
-        for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 14:48:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D51B2C80
+	for <linux-coco@lists.linux.dev>; Wed, 13 Oct 2021 00:23:29 +0000 (UTC)
+Received: by mail-pj1-f41.google.com with SMTP id ls18-20020a17090b351200b001a00250584aso3092658pjb.4
+        for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 17:23:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=oA9FzDgVqTGdx1czSwXl6ZrYbBDAr0EIMvOhvwuaTdk=;
-        b=CqXvJIe1amTWYFrjVyrniAq7PVrDTlXlO26WSeLMWq3KizYEx/D9ZiWiZyoiyxTFPF
-         h1TIXxH8RiIwsOLn973g0lSt+QPUmJT8wRSn33ndyjy7Z08dshauEfN9CdUNtq84b8Z9
-         TZsxHsXxZvBrON/kvKX9wHpV7hygzzVGzVMsGIM9qvaOoD5X9NHWN+2a6MG+7jKVLq3A
-         EmmeVK7+f+8rxwjcZVkNNs1+/L/dIGHZfJVyP4FVX0fOjMUUCPhOAru4KjMj1wv6mdRv
-         2+8t19Mnpt3sPjbqhyc1y0WnQXGRFJFIn0m0q4b0UmxO7zQ7AJ/13kcXM0VLKU8xqim6
-         dkgA==
+        bh=nNn+UC9/cpHxaqXZcUQl1BrWnaOK7ya+9AekxpxnqsI=;
+        b=bdidJxg0jUARvsCBaeu3CeAv/AxMHtqGox7Vw3htO3XcEp8pH0N4F01G7pgZ2yNGrY
+         3jkTn1wx6FkK4CeEv2VpIKlIrocztMIS4vjxog0azQviZFmOhBMjWzF2I6AYgut4P+Jq
+         wGKSniQfk/e7V5M7x0ZQv+XWg6Ao/WbjQg6pdrBkqDEUXcaoo3l/mHISseVJgDz4JiQj
+         GZPyJUhqrlmf8EvlBE8hMZHu1I19WJ+fQ4uJL/m71vriEf9TRgf2pen9yYTC95UHd20x
+         jxgw5qZuFGKwx4l6ccUt+rcFrIyMJugk8Q5Q7Tr/f/qRPad5wL6xqsjN0WNsDMJ2yRYc
+         YuaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=oA9FzDgVqTGdx1czSwXl6ZrYbBDAr0EIMvOhvwuaTdk=;
-        b=ruyExczQzS5P/D4mPwM1T/bjvKJ3QwBKXQRHrOLy48ct5rywJUnfNkEyWyQj09BQbT
-         NMZ+HWujmeDJKbH63laKCCJ5G56oJPThsDBHd5IinzIkN4l/q0Z3dRzdiqDEMmkJvXdr
-         wjjUdNyuRo+mNerSCgwJJG2Az0rVLida48KI/BqNkyrliRvJLeqNwd7vAdH+HjgbGwy3
-         4lH2pNRWE1oZ/LTlCrizSy7Ilr7iitVFgnWQ9sv7K82wTdvW2PH8GAUTiVTxhrPvEfyE
-         4IZmWsec5vgXqkU80Zw1B2R9Wr8BzmZ6kI9Oe9IlOPixBiJgbnZ98y+mWtPpLaSM8VnD
-         5xiA==
-X-Gm-Message-State: AOAM530b/3JQz8kNaqvF1xXfRdFeoggOUkR6eiG+mnX48zcUXT2meRzS
-	w73XvWXaAbZasKDYnh+e0zk9AQ==
-X-Google-Smtp-Source: ABdhPJzd5yePVpqBRc8WNbyxjJrkNRvPG8x67xR2B5rO/fbOYFQteZXzaITE7pxN672MCRHF03Ynig==
-X-Received: by 2002:a62:7506:0:b0:44c:efe8:4167 with SMTP id q6-20020a627506000000b0044cefe84167mr22378776pfc.59.1634075314208;
-        Tue, 12 Oct 2021 14:48:34 -0700 (PDT)
+        bh=nNn+UC9/cpHxaqXZcUQl1BrWnaOK7ya+9AekxpxnqsI=;
+        b=GIhKoXUzI70eMNsRiXY3XLTcQvWUoB+PqYxOjxJ3fMW3m5NoqREEkrSXJtrnefxhVh
+         L/k2OpesnS3/XfZTQ2NsYjT+dyfEdsGyrQYqoe7TR7cJWNQM6uEXer2zltx9C49Nwj6q
+         +0u2LuZAsevh6tZfpDUT/aVaQSjfTuYLdmXtSyyvcoYv9YsAyN/7e8PCQtvl8DLlcQvU
+         RnAj4PStZnErEOjsuJhzdoLl5i8maxN54xfHVGdanIRIRBu5szFd5DamVUjImfIegy4e
+         AtdB2pFcprGgZzCrYArscBFSU3ESzdhhYgJxwcYHuR1ee2z0YwmWqWPsm5XS/H8kHYgR
+         FLYw==
+X-Gm-Message-State: AOAM531KQgSfLsX2BY5L7tJ25VTI7rUYcXwpFGr3Uvt04YEaVaknJcsH
+	QytnhEOmLZ4diddqlJBnf9UMaQ==
+X-Google-Smtp-Source: ABdhPJxaRLNJrBS6tXom7VBegOlMNlwQPmcEbezV0bmx1DzR9C9l5P18IIb0pLw5I26UbkJ7cmzQoA==
+X-Received: by 2002:a17:90a:9f44:: with SMTP id q4mr9553649pjv.136.1634084609231;
+        Tue, 12 Oct 2021 17:23:29 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id o6sm12062004pfp.79.2021.10.12.14.48.33
+        by smtp.gmail.com with ESMTPSA id oa4sm314443pjb.13.2021.10.12.17.23.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Oct 2021 14:48:33 -0700 (PDT)
-Date: Tue, 12 Oct 2021 21:48:29 +0000
+        Tue, 12 Oct 2021 17:23:28 -0700 (PDT)
+Date: Wed, 13 Oct 2021 00:23:24 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -62,11 +62,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 37/45] KVM: SVM: Add support to handle MSR based
- Page State Change VMGEXIT
-Message-ID: <YWYCrQX4ZzwUVZCe@google.com>
+Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
+ map and unmap
+Message-ID: <YWYm/Gw8PbaAKBF0@google.com>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-38-brijesh.singh@amd.com>
+ <20210820155918.7518-40-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,280 +75,120 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210820155918.7518-38-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-40-brijesh.singh@amd.com>
 
 On Fri, Aug 20, 2021, Brijesh Singh wrote:
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 991b8c996fc1..6d9483ec91ab 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -31,6 +31,7 @@
->  #include "svm_ops.h"
->  #include "cpuid.h"
->  #include "trace.h"
-> +#include "mmu.h"
->  
->  #define __ex(x) __kvm_handle_fault_on_reboot(x)
->  
-> @@ -2905,6 +2906,181 @@ static void set_ghcb_msr(struct vcpu_svm *svm, u64 value)
->  	svm->vmcb->control.ghcb_gpa = value;
->  }
->  
-> +static int snp_rmptable_psmash(struct kvm *kvm, kvm_pfn_t pfn)
+> When SEV-SNP is enabled in the guest VM, the guest memory pages can
+> either be a private or shared. A write from the hypervisor goes through
+> the RMP checks. If hardware sees that hypervisor is attempting to write
+> to a guest private page, then it triggers an RMP violation #PF.
+> 
+> To avoid the RMP violation, add post_{map,unmap}_gfn() ops that can be
+> used to verify that its safe to map a given guest page. Use the SRCU to
+> protect against the page state change for existing mapped pages.
+
+SRCU isn't protecting anything.  The synchronize_srcu_expedited() in the PSC code
+forces it to wait for existing maps to go away, but it doesn't prevent new maps
+from being created while the actual RMP updates are in-flight.  Most telling is
+that the RMP updates happen _after_ the synchronize_srcu_expedited() call.
+
+This also doesn't handle kvm_{read,write}_guest_cached().
+
+I can't help but note that the private memslots idea[*] would handle this gracefully,
+e.g. the memslot lookup would fail, and any change in private memslots would
+invalidate the cache due to a generation mismatch.
+
+KSM is another mess that would Just Work.
+
+I'm not saying that SNP should be blocked on support for unmapping guest private
+memory, but I do think we should strongly consider focusing on that effort rather
+than trying to fix things piecemeal throughout KVM.  I don't think it's too absurd
+to say that it might actually be faster overall.  And I 100% think that having a
+cohesive design and uABI for SNP and TDX would be hugely beneficial to KVM.
+
+[*] https://lkml.kernel.org/r/20210824005248.200037-1-seanjc@google.com
+
+> +int sev_post_map_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int *token)
 > +{
-> +	pfn = pfn & ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
+> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> +	int level;
 > +
-> +	return psmash(pfn);
-> +}
-> +
-> +static int snp_make_page_shared(struct kvm *kvm, gpa_t gpa, kvm_pfn_t pfn, int level)
-> +{
-> +	int rc, rmp_level;
-> +
-> +	rc = snp_lookup_rmpentry(pfn, &rmp_level);
-> +	if (rc < 0)
-> +		return -EINVAL;
-> +
-> +	/* If page is not assigned then do nothing */
-> +	if (!rc)
+> +	if (!sev_snp_guest(kvm))
 > +		return 0;
 > +
-> +	/*
-> +	 * Is the page part of an existing 2MB RMP entry ? Split the 2MB into
-> +	 * multiple of 4K-page before making the memory shared.
-> +	 */
-> +	if (level == PG_LEVEL_4K && rmp_level == PG_LEVEL_2M) {
-> +		rc = snp_rmptable_psmash(kvm, pfn);
-> +		if (rc)
-> +			return rc;
-> +	}
+> +	*token = srcu_read_lock(&sev->psc_srcu);
 > +
-> +	return rmp_make_shared(pfn, level);
-> +}
-> +
-> +static int snp_check_and_build_npt(struct kvm_vcpu *vcpu, gpa_t gpa, int level)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	int rc, npt_level;
-> +	kvm_pfn_t pfn;
-> +
-> +	/*
-> +	 * Get the pfn and level for the gpa from the nested page table.
-> +	 *
-> +	 * If the tdp walk fails, then its safe to say that there is no
-> +	 * valid mapping for this gpa. Create a fault to build the map.
-> +	 */
-> +	write_lock(&kvm->mmu_lock);
+> +	/* If pfn is not added as private then fail */
 
-SEV (or any vendor code for that matter) should not be taking mmu_lock.  All of
-KVM has somewhat fungible borders between the various components, but IMO this
-crosses firmly into "this belongs in the MMU" territory.
+This comment and the pr_err() are backwards, and confused the heck out of me.
+snp_lookup_rmpentry() returns '1' if the pfn is assigned, a.k.a. private.  That
+means this code throws an error if the page is private, i.e. requires the page
+to be shared.  Which makes sense given the use cases, it's just incredibly
+confusing.
 
-For example, I highly doubt this actually need to take mmu_lock for write.  More
-below.
+> +	if (snp_lookup_rmpentry(pfn, &level) == 1) {
 
-> +	rc = kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level);
-> +	write_unlock(&kvm->mmu_lock);
+Any reason not to provide e.g. rmp_is_shared() and rmp_is_private() so that
+callers don't have to care as much about the return values?  The -errno/0/1
+semantics are all but guarantee to bite us in the rear at some point.
 
-What's the point of this walk?  As soon as mmu_lock is dropped, all bets are off.
-At best this is a strong hint.  It doesn't hurt anything per se, it's just a waste
-of cycles.
+Actually, peeking at other patches, I think it already has.  This usage in
+__unregister_enc_region_locked() is wrong:
 
-> +	if (!rc) {
-> +		pfn = kvm_mmu_map_tdp_page(vcpu, gpa, PFERR_USER_MASK, level);
+	/*
+	 * The guest memory pages are assigned in the RMP table. Unassign it
+	 * before releasing the memory.
+	 */
+	if (sev_snp_guest(kvm)) {
+		for (i = 0; i < region->npages; i++) {
+			pfn = page_to_pfn(region->pages[i]);
 
-Same here.
+			if (!snp_lookup_rmpentry(pfn, &level))  <-- attempts make_shared() on non-existent entry
+				continue;
 
-> +		if (is_error_noslot_pfn(pfn))
-> +			return -EINVAL;
+			cond_resched();
+
+			if (level > PG_LEVEL_4K)
+				pfn &= ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
+
+			host_rmp_make_shared(pfn, level, true);
+		}
+	}
+
+
+> +		srcu_read_unlock(&sev->psc_srcu, *token);
+> +		pr_err_ratelimited("failed to map private gfn 0x%llx pfn 0x%llx\n", gfn, pfn);
+> +		return -EBUSY;
 > +	}
 > +
 > +	return 0;
 > +}
+>  static struct kvm_x86_init_ops svm_init_ops __initdata = {
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index d10f7166b39d..ff91184f9b4a 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -76,16 +76,22 @@ struct kvm_sev_info {
+>  	bool active;		/* SEV enabled guest */
+>  	bool es_active;		/* SEV-ES enabled guest */
+>  	bool snp_active;	/* SEV-SNP enabled guest */
 > +
-> +static int snp_gpa_to_hva(struct kvm *kvm, gpa_t gpa, hva_t *hva)
-> +{
-> +	struct kvm_memory_slot *slot;
-> +	gfn_t gfn = gpa_to_gfn(gpa);
-> +	int idx;
+>  	unsigned int asid;	/* ASID used for this guest */
+>  	unsigned int handle;	/* SEV firmware handle */
+>  	int fd;			/* SEV device fd */
 > +
-> +	idx = srcu_read_lock(&kvm->srcu);
-> +	slot = gfn_to_memslot(kvm, gfn);
-> +	if (!slot) {
-> +		srcu_read_unlock(&kvm->srcu, idx);
-> +		return -EINVAL;
-> +	}
+>  	unsigned long pages_locked; /* Number of pages locked */
+>  	struct list_head regions_list;  /* List of registered regions */
 > +
-> +	/*
-> +	 * Note, using the __gfn_to_hva_memslot() is not solely for performance,
-> +	 * it's also necessary to avoid the "writable" check in __gfn_to_hva_many(),
-> +	 * which will always fail on read-only memslots due to gfn_to_hva() assuming
-> +	 * writes.
-> +	 */
-> +	*hva = __gfn_to_hva_memslot(slot, gfn);
-> +	srcu_read_unlock(&kvm->srcu, idx);
-
-*hva is effectively invalidated the instance kvm->srcu is unlocked, e.g. a pending
-memslot update can complete immediately after and delete/move the backing memslot.
-
+>  	u64 ap_jump_table;	/* SEV-ES AP Jump Table address */
 > +
-> +	return 0;
-> +}
+>  	struct kvm *enc_context_owner; /* Owner of copied encryption context */
+>  	struct misc_cg *misc_cg; /* For misc cgroup accounting */
 > +
-> +static int __snp_handle_page_state_change(struct kvm_vcpu *vcpu, enum psc_op op, gpa_t gpa,
-> +					  int level)
-> +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(vcpu->kvm)->sev_info;
-> +	struct kvm *kvm = vcpu->kvm;
-> +	int rc, npt_level;
-> +	kvm_pfn_t pfn;
-> +	gpa_t gpa_end;
-> +
-> +	gpa_end = gpa + page_level_size(level);
-> +
-> +	while (gpa < gpa_end) {
-> +		/*
-> +		 * If the gpa is not present in the NPT then build the NPT.
-> +		 */
-> +		rc = snp_check_and_build_npt(vcpu, gpa, level);
-> +		if (rc)
-> +			return -EINVAL;
-> +
-> +		if (op == SNP_PAGE_STATE_PRIVATE) {
-> +			hva_t hva;
-> +
-> +			if (snp_gpa_to_hva(kvm, gpa, &hva))
-> +				return -EINVAL;
-> +
-> +			/*
-> +			 * Verify that the hva range is registered. This enforcement is
-> +			 * required to avoid the cases where a page is marked private
-> +			 * in the RMP table but never gets cleanup during the VM
-> +			 * termination path.
-> +			 */
-> +			mutex_lock(&kvm->lock);
-> +			rc = is_hva_registered(kvm, hva, page_level_size(level));
 
-This will get a false negative if a hva+size spans two contiguous regions.
+Unrelated whitespace changes.
 
-Also, storing a boolean return in a variable that is an int _and_ was already used
-for the kernel's standard 
-
-> +			mutex_unlock(&kvm->lock);
-
-This is also subject to races, e.g. userspace unregisters the hva immediately
-after this check, before KVM makes whatever conversion it makes below.
-
-A linear walk through a list to find a range is also a bad idea, e.g. pathological
-worst case scenario is that userspace has created tens of thousands of individual
-regions.  There is no restriction on the number of regions, just the number of
-pages that can be pinned.
-
-I dislike the svm_(un)register_enc_region() scheme in general, but at least for
-SEV and SEV-ES the code is isolated, e.g. KVM is little more than a dump pipe to
-let userspace pin pages.  I would like to go the opposite direction and work towards
-eliminating regions_list (or at least making it optional), not build more stuff
-on top.
-
-The more I look at this, the more strongly I feel that private <=> shared conversions
-belong in the MMU, and that KVM's SPTEs should be the single source of truth for
-shared vs. private.  E.g. add a SPTE_TDP_PRIVATE_MASK in the software available bits.
-I believe the only hiccup is the snafu where not zapping _all_ SPTEs on memslot
-deletion breaks QEMU+VFIO+GPU, i.e. KVM would lose its canonical info on unrelated
-memslot deletion.
-
-But that is a solvable problem.  Ideally the bug, wherever it is, would be root
-caused and fixed.  I believe Peter (and Marc?) is going to work on reproducing
-the bug.
-
-If we are unable to root cause and fix the bug, I think a viable workaround would
-be to clear the hardware present bit in unrelated SPTEs, but keep the SPTEs
-themselves.  The idea mostly the same as the ZAPPED_PRIVATE concept from the initial
-TDX RFC.  MMU notifier invalidations, memslot removal, RMP restoration, etc... would
-all continue to work since the SPTEs is still there, and KVM's page fault handler
-could audit any "blocked" SPTE when it's refaulted (I'm pretty sure it'd be
-impossible for the PFN to change, since any PFN change would require a memslot
-update or mmu_notifier invalidation).
-
-The downside to that approach is that it would require walking all SPTEs to do a
-memslot deletion, i.e. we'd lose the "fast zap" behavior.  If that's a performance
-issue, the behavior could be opt-in (but not for SNP/TDX).
-
-> +			if (!rc)
-> +				return -EINVAL;
-> +
-> +			/*
-> +			 * Mark the userspace range unmerable before adding the pages
-> +			 * in the RMP table.
-> +			 */
-> +			mmap_write_lock(kvm->mm);
-> +			rc = snp_mark_unmergable(kvm, hva, page_level_size(level));
-> +			mmap_write_unlock(kvm->mm);
-
-As mentioned in an earlier patch, this simply cannot work.
-
-> +			if (rc)
-> +				return -EINVAL;
-> +		}
-> +
-> +		write_lock(&kvm->mmu_lock);
-> +
-> +		rc = kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level);
-
-Same comment about the bool into int. Though in this case I'd say have
-kvm_mmu_get_tdp_walk() return 0/-errno, not a bool.  Boolean returns for helpers
-without "is_", "test_", etc... are generally confusing.
-
-> +		if (!rc) {
-> +			/*
-> +			 * This may happen if another vCPU unmapped the page
-> +			 * before we acquire the lock. Retry the PSC.
-> +			 */
-> +			write_unlock(&kvm->mmu_lock);
-> +			return 0;
-
-How will the caller (guest?) know to retry the PSC if KVM returns "success"?
-
-> +		}
-> +
-> +		/*
-> +		 * Adjust the level so that we don't go higher than the backing
-> +		 * page level.
-> +		 */
-> +		level = min_t(size_t, level, npt_level);
-> +
-> +		trace_kvm_snp_psc(vcpu->vcpu_id, pfn, gpa, op, level);
-> +
-> +		switch (op) {
-> +		case SNP_PAGE_STATE_SHARED:
-> +			rc = snp_make_page_shared(kvm, gpa, pfn, level);
-> +			break;
-> +		case SNP_PAGE_STATE_PRIVATE:
-> +			rc = rmp_make_private(pfn, gpa, level, sev->asid, false);
-> +			break;
-> +		default:
-> +			rc = -EINVAL;
-
-Not that it really matters, because I don't think the MADV_* approach is viable,
-but this neglects to undo snp_mark_unmergable() on failure.
-
-> +			break;
-> +		}
-> +
-> +		write_unlock(&kvm->mmu_lock);
-> +
-> +		if (rc) {
-> +			pr_err_ratelimited("Error op %d gpa %llx pfn %llx level %d rc %d\n",
-> +					   op, gpa, pfn, level, rc);
-> +			return rc;
-> +		}
-> +
-> +		gpa = gpa + page_level_size(level);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  {
->  	struct vmcb_control_area *control = &svm->vmcb->control;
+>  	u64 snp_init_flags;
+>  	void *snp_context;      /* SNP guest context page */
+> +	struct srcu_struct psc_srcu;
+>  };
