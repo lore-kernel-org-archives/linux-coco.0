@@ -1,194 +1,208 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2069.outbound.protection.outlook.com [40.107.93.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D51B2C80
-	for <linux-coco@lists.linux.dev>; Wed, 13 Oct 2021 00:23:29 +0000 (UTC)
-Received: by mail-pj1-f41.google.com with SMTP id ls18-20020a17090b351200b001a00250584aso3092658pjb.4
-        for <linux-coco@lists.linux.dev>; Tue, 12 Oct 2021 17:23:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=nNn+UC9/cpHxaqXZcUQl1BrWnaOK7ya+9AekxpxnqsI=;
-        b=bdidJxg0jUARvsCBaeu3CeAv/AxMHtqGox7Vw3htO3XcEp8pH0N4F01G7pgZ2yNGrY
-         3jkTn1wx6FkK4CeEv2VpIKlIrocztMIS4vjxog0azQviZFmOhBMjWzF2I6AYgut4P+Jq
-         wGKSniQfk/e7V5M7x0ZQv+XWg6Ao/WbjQg6pdrBkqDEUXcaoo3l/mHISseVJgDz4JiQj
-         GZPyJUhqrlmf8EvlBE8hMZHu1I19WJ+fQ4uJL/m71vriEf9TRgf2pen9yYTC95UHd20x
-         jxgw5qZuFGKwx4l6ccUt+rcFrIyMJugk8Q5Q7Tr/f/qRPad5wL6xqsjN0WNsDMJ2yRYc
-         YuaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=nNn+UC9/cpHxaqXZcUQl1BrWnaOK7ya+9AekxpxnqsI=;
-        b=GIhKoXUzI70eMNsRiXY3XLTcQvWUoB+PqYxOjxJ3fMW3m5NoqREEkrSXJtrnefxhVh
-         L/k2OpesnS3/XfZTQ2NsYjT+dyfEdsGyrQYqoe7TR7cJWNQM6uEXer2zltx9C49Nwj6q
-         +0u2LuZAsevh6tZfpDUT/aVaQSjfTuYLdmXtSyyvcoYv9YsAyN/7e8PCQtvl8DLlcQvU
-         RnAj4PStZnErEOjsuJhzdoLl5i8maxN54xfHVGdanIRIRBu5szFd5DamVUjImfIegy4e
-         AtdB2pFcprGgZzCrYArscBFSU3ESzdhhYgJxwcYHuR1ee2z0YwmWqWPsm5XS/H8kHYgR
-         FLYw==
-X-Gm-Message-State: AOAM531KQgSfLsX2BY5L7tJ25VTI7rUYcXwpFGr3Uvt04YEaVaknJcsH
-	QytnhEOmLZ4diddqlJBnf9UMaQ==
-X-Google-Smtp-Source: ABdhPJxaRLNJrBS6tXom7VBegOlMNlwQPmcEbezV0bmx1DzR9C9l5P18IIb0pLw5I26UbkJ7cmzQoA==
-X-Received: by 2002:a17:90a:9f44:: with SMTP id q4mr9553649pjv.136.1634084609231;
-        Tue, 12 Oct 2021 17:23:29 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id oa4sm314443pjb.13.2021.10.12.17.23.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Oct 2021 17:23:28 -0700 (PDT)
-Date: Wed, 13 Oct 2021 00:23:24 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
- map and unmap
-Message-ID: <YWYm/Gw8PbaAKBF0@google.com>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-40-brijesh.singh@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561E272
+	for <linux-coco@lists.linux.dev>; Wed, 13 Oct 2021 11:37:21 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MByG3BaFlxiqinJ69cItnYaQUlb0Sxgg98YMx+j8lucvTl43MdS/O3fjlBrQmOdOkfpUZFpffHr753YD6LMcqzqFa8LnGmaEGDU7ZeSb1jfAFq00NiMTnOS9OZznupGQfK+EQer9l4iuS1QYLdWVMVIfWkmUesnBOW5TDEXf1E4+wzw1DYVMVFwGHySw+s4yYObCL7CRmPekHHD0CtJQyp7RUHYuMnhfiAO5/klOf3LvU1kxx9Ka3/srpPQXCNBs691Wog7alkEx0ebg6IlPmtLBzmGL8FfjWn+7k/IUYdVXAVVPF/Xxgxz8/rH00lb0OQ452oijTzyg/KRwynQGsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o72d6f9MtTST+DT7w4aH3pv4TTM9Qgt9DsVlI5dGPxI=;
+ b=hs8Bj43UZ/K5gD9DmjfvWUD2swn6tjL2JpGIaMH8ZqG5WkNVBO5y2YcO1q4WNz+7ZWn9lgGo5RGuQEwhDsG5V1WltXofiiGgVjPNvpsPX/U9ptnmtRBEDBYBkY3ic6T1Pa5CEatnkfE4+OMakSxHHT1E2Ln5nPdA7cjSkiFbuhAxlEMPY6n1gzIsxCMYvrL6GMZQqrR172cS7V32YcmKyadzSOjUpZbipp2xW5W20cirPqVYldTqCFtV+yks/J1PrX7skzqex58CFrkhAdSoX5ANcZRGIvory1dnz67TapyCpKjG0d9HXgp1GqB3ZB/aDeBVYIq3dhd593qkaA3jXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o72d6f9MtTST+DT7w4aH3pv4TTM9Qgt9DsVlI5dGPxI=;
+ b=TtnaLjiV7vuMcjdqHOictik3WC2Ev5iplklGMmYW4lEEkRwSU51OehmZMbP53lQHsK8/IEfzKz7fmhalmrNKJta7maoj9s8u/3cIi519FX3Q6K6PAnWVmdVD/FK+CUqW7Tz7UenwAhaEPY6dmexGPoPQErFHdWl2RWnXRS+XOhg=
+Authentication-Results: linux.intel.com; dkim=none (message not signed)
+ header.d=none;linux.intel.com; dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SA0PR12MB4559.namprd12.prod.outlook.com (2603:10b6:806:9e::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4587.22; Wed, 13 Oct
+ 2021 11:37:17 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::78b7:7336:d363:9be3%6]) with mapi id 15.20.4587.026; Wed, 13 Oct 2021
+ 11:37:17 +0000
+Cc: brijesh.singh@amd.com, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Tobin Feldman-Fitzthum
+ <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
+ <ak@linux.intel.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v6 40/42] virt: Add SEV-SNP guest driver
+To: Dov Murik <dovmurik@linux.ibm.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org
+References: <20211008180453.462291-1-brijesh.singh@amd.com>
+ <20211008180453.462291-41-brijesh.singh@amd.com>
+ <b79cfdfa-6482-70ab-3520-f76387fe4c27@linux.ibm.com>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <ecf55de1-94c7-4f86-2578-141d6dfbe348@amd.com>
+Date: Wed, 13 Oct 2021 06:37:12 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
+In-Reply-To: <b79cfdfa-6482-70ab-3520-f76387fe4c27@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-ClientProxiedBy: SA0PR11CA0128.namprd11.prod.outlook.com
+ (2603:10b6:806:131::13) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210820155918.7518-40-brijesh.singh@amd.com>
+Received: from Brijeshs-MacBook-Pro.local (165.204.77.11) by SA0PR11CA0128.namprd11.prod.outlook.com (2603:10b6:806:131::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.16 via Frontend Transport; Wed, 13 Oct 2021 11:37:14 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0205290e-619f-41cd-bcc9-08d98e3dcf0b
+X-MS-TrafficTypeDiagnostic: SA0PR12MB4559:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS:
+	<SA0PR12MB45592AE1EA82E36545DA944FE5B79@SA0PR12MB4559.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:2331;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	qvDn56x2zCGqTLm8hnpJ31WVNCyL2zske6UEL+II7gS69RCqk1Sv37cWPeJ89IdQ6N5Yh/HxtTjkW2HoKhkua/buwM9PbloXOHRN15HHivRpw/gQjEeQ3XXdsdlemypFFMTjtpWdX0lpYuhXN3ewjKLD93n8sscqIPrsICMhcgb8ewLKdSpoYbJ4A7pCTkzQHKBH3QzWBkFSdM3+JRzhEMoTy8FrR4KTUwVF+QvaJ+yJmJavOjRTfa1pjMDBVzkuQaZRVrdK6rewIDsh0+VqPOgf7+SCPvygIXB7SczupIWUQ4VK5YBYsJgvrhnrvijEz07sBzLtmUMTasF5VYajSUaD72uEDJ/uQBClJ1Po1WD7cXkihJrrNhqzkXutnGQgBICxtgJLiu1CCrTQ6p9l4rhobDpbJSM72mzimhCNEnukTr4yji8kdOq8thhao1FdwNHLOOdXkXQ2REWLLSXDHc45jvfXFkPa4A8nBG9Rq+mi6hzjvGtkVul/ECioQiXUHKYV9VeT9CuW46FIDZPJQTAAv8SXmYVuT5frmRyGKAa1E/Lzi8alegErxoeHNRZqO6HDgdXXCI6RJfPHowjNpa4inVW5qmVhcpS0p8iEQs/hzCpL4Rg2FjRX7SuEv0Yy34JKLvkCZpV97I7/dc+BPIi9zlyd+aldE7Fo/e8h3e3X9pRKcnAB6xdFOFg6tfeRK5p+29D+DEZ6ooL1CZTmuoJoHoP4ceyvBLu1N8B9uHs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(956004)(5660300002)(83380400001)(8676002)(31696002)(54906003)(6512007)(8936002)(86362001)(2616005)(36756003)(26005)(316002)(66556008)(53546011)(6486002)(7406005)(44832011)(31686004)(2906002)(6506007)(66476007)(38100700002)(66946007)(508600001)(186003)(7416002)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TEZKbUlnU2xIdFRRRG96VGtTbExlbFl6TC9abVE3a3lCM3dtVnhHS3pxSms1?=
+ =?utf-8?B?N0JBczVudlJ0bys3aWFqaGVieVM4QncyTlBRWjRUT24yNnMwVEdUc3k1MWZy?=
+ =?utf-8?B?RUxmejl6VmtmWURZS0R0dFY0ZTNxTEdDa21ra2dMSVJBNTlUMGF4YXRDcnlw?=
+ =?utf-8?B?cFN4dzFOeVRSUTkvS1g3U1hpQ2VNZ29OblVzckdkMTlkelNHOHZoNzM4WEtR?=
+ =?utf-8?B?ZC92bGIrcmJyaUU2OWxjZ1ptZWFCSk5peG4xQjc2VFRqUWJqNFVoMXNXdTdT?=
+ =?utf-8?B?YnJCL3FqMkExL2VDNWk5ZG1wVVlSUmJIeFdhTzdwTU0yT0dyQVlLM0V1T1Ri?=
+ =?utf-8?B?MG5BeklDTEovTzhpdEpoU2E3dE5zM0JTT2R1NUFvbkVneldnWDFZQzRoUW9R?=
+ =?utf-8?B?Rmlld2xYUnZGRHFnNkVHWUZhVGpzWEU1NUlpRWYxT0swNlNQczcrdjhrTGNL?=
+ =?utf-8?B?R1NmTCtHd3RIT2tzTTNzSGk3dERKZmFJRVhKNTlwSDBDVHNoaUQ5dXowbXQ1?=
+ =?utf-8?B?a1hjeEtBRFJ4bXM3SVVtTmxqYnlsaEZHMWJ6dkhVZjIrUmhFMGM2WE1FbEpj?=
+ =?utf-8?B?MGxpcHl6MmhydWoyUm1KR09obUo2anZzeHRWM29NcCtGVk4yL01nRmRLbHZv?=
+ =?utf-8?B?dTdKSkhFQTlsODhadkJnM2FLWWx4dk03TU1QK3RGL1VPeklSU2ZJd0IvTFlW?=
+ =?utf-8?B?a0lBd0M3R2RxMXk3aTBMdExkcURwQTEvbzhqSFlpNW9IUm5jRUVvRlVOK1Rs?=
+ =?utf-8?B?SnB4dFZpcXlxUWExWlhJS2c5Vk5tK2drOUdOTkhHd3RqYzV6VzZ1amdLdnFW?=
+ =?utf-8?B?aDNOOWt4L3RTNUQ1S1UyQm9XZ28yMHVaekFOU3NibmhBZ25EZVVHNitVWlFQ?=
+ =?utf-8?B?a0E1N3BKN2cvNzRwVmt2TW9YQmtWQzJxajNMdjkwRVF6OEhqTWQxaFU3UEMz?=
+ =?utf-8?B?cDRoK3EwaGFkdENmbEF1ODZIMXQwd3pJY3hzSTRXRTh1OUdKZ1hzUTR6QWhm?=
+ =?utf-8?B?QUZheTZlVXc1bk95WGV0bWcya0k4eFpzcnQvdmZqT0I0N2g2Q1ZzeWtVaTh6?=
+ =?utf-8?B?MHFSbjFkTzFIdTIxM2g1SThZTEtEYTNVYmRubm53K3J5d0tjMG1WY3VzMWQ2?=
+ =?utf-8?B?b1ZibGY1NXJWTHpqdzRrUG1PMm01M3E4T1VNckhhTmVvWFFnZFhRWERhNERT?=
+ =?utf-8?B?dDlESklJVFJhVGUyd1g1TG5sdHRORVdLdjVxcURTdmxaTUM4RDV3eXFFcnlk?=
+ =?utf-8?B?VEJkVWg4VEZqY2Nsc3A3RGw1ZkxOdVJLajdwTmVzUlpqNm5iVEdkTTBuM2VF?=
+ =?utf-8?B?NDNYVFhEbzV2aU9MOEFhL2g2WHppRWhMaVNZd1dWSGZZdXhNQ0JaMGJzMnpo?=
+ =?utf-8?B?bXlaS0lWRWNDa2xxa0dVYWYzWXRaUWI5ZjRBR0pKRXBIMTVuc2pxUy93WWZR?=
+ =?utf-8?B?dzBHSUJxVmRscjhSSzArTVRQOVBJYVFYaDVUcGkybStyRnM3R3RvUUZkcmFE?=
+ =?utf-8?B?M0JUS2hyRWdUWjNwNlZvenZmVjVhMW0wd2lRL0JuOGwyamlCRkdERDNlYkwr?=
+ =?utf-8?B?MmVIa2s1ZjAzMERHeDZnaHhVK1lNVFZJTnhKNUR3aDdPRE9ic1JReWxXNSt4?=
+ =?utf-8?B?VlJiUjZnK3dEU0xDbjl2Y1VhY1NyRUVEZ04zcDR6bmNqYXU5SWNGRk1TYnkx?=
+ =?utf-8?B?bUxZZmpHS2RSTVIxYU5kbXVYaFJETEhUQmlKY3N6d0FMWFdCRFBobm5JQUpN?=
+ =?utf-8?Q?QeKx4+c63bjbBIo6PybfREWA2nC7KXUOdi5S4Ov?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0205290e-619f-41cd-bcc9-08d98e3dcf0b
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2021 11:37:16.9926
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tMsVDuUPOlElvKn8Yf+Y4P8bNgKFV+sobDAmunNfeWPqmnR/DiPQEGCjzNI5GDeI4Ws0AMO3/7yLV3v+u17TBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4559
 
-On Fri, Aug 20, 2021, Brijesh Singh wrote:
-> When SEV-SNP is enabled in the guest VM, the guest memory pages can
-> either be a private or shared. A write from the hypervisor goes through
-> the RMP checks. If hardware sees that hypervisor is attempting to write
-> to a guest private page, then it triggers an RMP violation #PF.
-> 
-> To avoid the RMP violation, add post_{map,unmap}_gfn() ops that can be
-> used to verify that its safe to map a given guest page. Use the SRCU to
-> protect against the page state change for existing mapped pages.
+Hi Dov,
 
-SRCU isn't protecting anything.  The synchronize_srcu_expedited() in the PSC code
-forces it to wait for existing maps to go away, but it doesn't prevent new maps
-from being created while the actual RMP updates are in-flight.  Most telling is
-that the RMP updates happen _after_ the synchronize_srcu_expedited() call.
-
-This also doesn't handle kvm_{read,write}_guest_cached().
-
-I can't help but note that the private memslots idea[*] would handle this gracefully,
-e.g. the memslot lookup would fail, and any change in private memslots would
-invalidate the cache due to a generation mismatch.
-
-KSM is another mess that would Just Work.
-
-I'm not saying that SNP should be blocked on support for unmapping guest private
-memory, but I do think we should strongly consider focusing on that effort rather
-than trying to fix things piecemeal throughout KVM.  I don't think it's too absurd
-to say that it might actually be faster overall.  And I 100% think that having a
-cohesive design and uABI for SNP and TDX would be hugely beneficial to KVM.
-
-[*] https://lkml.kernel.org/r/20210824005248.200037-1-seanjc@google.com
-
-> +int sev_post_map_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int *token)
-> +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	int level;
-> +
-> +	if (!sev_snp_guest(kvm))
-> +		return 0;
-> +
-> +	*token = srcu_read_lock(&sev->psc_srcu);
-> +
-> +	/* If pfn is not added as private then fail */
-
-This comment and the pr_err() are backwards, and confused the heck out of me.
-snp_lookup_rmpentry() returns '1' if the pfn is assigned, a.k.a. private.  That
-means this code throws an error if the page is private, i.e. requires the page
-to be shared.  Which makes sense given the use cases, it's just incredibly
-confusing.
-
-> +	if (snp_lookup_rmpentry(pfn, &level) == 1) {
-
-Any reason not to provide e.g. rmp_is_shared() and rmp_is_private() so that
-callers don't have to care as much about the return values?  The -errno/0/1
-semantics are all but guarantee to bite us in the rear at some point.
-
-Actually, peeking at other patches, I think it already has.  This usage in
-__unregister_enc_region_locked() is wrong:
-
-	/*
-	 * The guest memory pages are assigned in the RMP table. Unassign it
-	 * before releasing the memory.
-	 */
-	if (sev_snp_guest(kvm)) {
-		for (i = 0; i < region->npages; i++) {
-			pfn = page_to_pfn(region->pages[i]);
-
-			if (!snp_lookup_rmpentry(pfn, &level))  <-- attempts make_shared() on non-existent entry
-				continue;
-
-			cond_resched();
-
-			if (level > PG_LEVEL_4K)
-				pfn &= ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
-
-			host_rmp_make_shared(pfn, level, true);
-		}
-	}
+On 10/10/21 10:51 AM, Dov Murik wrote:
+> Hi Brijesh,
+>
+> On 08/10/2021 21:04, Brijesh Singh wrote:
+>> SEV-SNP specification provides the guest a mechanisum to communicate with
+>> the PSP without risk from a malicious hypervisor who wishes to read, alter,
+>> drop or replay the messages sent. The driver uses snp_issue_guest_request()
+>> to issue GHCB SNP_GUEST_REQUEST or SNP_EXT_GUEST_REQUEST NAE events to
+>> submit the request to PSP.
+>>
+>> The PSP requires that all communication should be encrypted using key
+>> specified through the platform_data.
+>>
+>> The userspace can use SNP_GET_REPORT ioctl() to query the guest
+>> attestation report.
+>>
+>> See SEV-SNP spec section Guest Messages for more details.
+>>
+>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>> ---
+>>  Documentation/virt/coco/sevguest.rst  |  77 ++++
+>>  drivers/virt/Kconfig                  |   3 +
+>>  drivers/virt/Makefile                 |   1 +
+>>  drivers/virt/coco/sevguest/Kconfig    |   9 +
+>>  drivers/virt/coco/sevguest/Makefile   |   2 +
+>>  drivers/virt/coco/sevguest/sevguest.c | 561 ++++++++++++++++++++++++++
+>>  drivers/virt/coco/sevguest/sevguest.h |  98 +++++
+>>  include/uapi/linux/sev-guest.h        |  44 ++
+>>  8 files changed, 795 insertions(+)
+>>  create mode 100644 Documentation/virt/coco/sevguest.rst
+>>  create mode 100644 drivers/virt/coco/sevguest/Kconfig
+>>  create mode 100644 drivers/virt/coco/sevguest/Makefile
+>>  create mode 100644 drivers/virt/coco/sevguest/sevguest.c
+>>  create mode 100644 drivers/virt/coco/sevguest/sevguest.h
+>>  create mode 100644 include/uapi/linux/sev-guest.h
+>>
+> [...]
+>
+>
+>> +
+>> +static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno)
+>> +{
+>> +	u8 *key = NULL;
+>> +
+>> +	switch (id) {
+>> +	case 0:
+>> +		*seqno = &layout->os_area.msg_seqno_0;
+>> +		key = layout->vmpck0;
+>> +		break;
+>> +	case 1:
+>> +		*seqno = &layout->os_area.msg_seqno_1;
+>> +		key = layout->vmpck1;
+>> +		break;
+>> +	case 2:
+>> +		*seqno = &layout->os_area.msg_seqno_2;
+>> +		key = layout->vmpck2;
+>> +		break;
+>> +	case 3:
+>> +		*seqno = &layout->os_area.msg_seqno_3;
+>> +		key = layout->vmpck3;
+>> +		break;
+>> +	default:
+>> +		break;
+>> +	}
+>> +
+>> +	return NULL;
+> This should be 'return key', right?
 
 
-> +		srcu_read_unlock(&sev->psc_srcu, *token);
-> +		pr_err_ratelimited("failed to map private gfn 0x%llx pfn 0x%llx\n", gfn, pfn);
-> +		return -EBUSY;
-> +	}
-> +
-> +	return 0;
-> +}
->  static struct kvm_x86_init_ops svm_init_ops __initdata = {
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index d10f7166b39d..ff91184f9b4a 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -76,16 +76,22 @@ struct kvm_sev_info {
->  	bool active;		/* SEV enabled guest */
->  	bool es_active;		/* SEV-ES enabled guest */
->  	bool snp_active;	/* SEV-SNP enabled guest */
-> +
->  	unsigned int asid;	/* ASID used for this guest */
->  	unsigned int handle;	/* SEV firmware handle */
->  	int fd;			/* SEV device fd */
-> +
->  	unsigned long pages_locked; /* Number of pages locked */
->  	struct list_head regions_list;  /* List of registered regions */
-> +
->  	u64 ap_jump_table;	/* SEV-ES AP Jump Table address */
-> +
->  	struct kvm *enc_context_owner; /* Owner of copied encryption context */
->  	struct misc_cg *misc_cg; /* For misc cgroup accounting */
-> +
+Yes, I did caught that during my testing and the hunk to fix it is in
+42/42. I missed merging the hunk in this patch and will take care in
+next rev. thanks
 
-Unrelated whitespace changes.
 
->  	u64 snp_init_flags;
->  	void *snp_context;      /* SNP guest context page */
-> +	struct srcu_struct psc_srcu;
->  };
