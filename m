@@ -1,42 +1,42 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE91C2C83
-	for <linux-coco@lists.linux.dev>; Fri, 15 Oct 2021 18:58:43 +0000 (UTC)
-Received: by mail-pg1-f177.google.com with SMTP id s136so6138308pgs.4
-        for <linux-coco@lists.linux.dev>; Fri, 15 Oct 2021 11:58:43 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A232C83
+	for <linux-coco@lists.linux.dev>; Fri, 15 Oct 2021 19:50:25 +0000 (UTC)
+Received: by mail-pj1-f51.google.com with SMTP id om14so7916711pjb.5
+        for <linux-coco@lists.linux.dev>; Fri, 15 Oct 2021 12:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=TQM6iseqNr527XMaI35HFwel5PilmxiFDRjsypqPjJY=;
-        b=OWTVpv7FF2Ibi9JFu8PskmJJXobmWCskKm13NYVXbiD1hh6KL51VFSmJ6MbJbWtQA2
-         L3y+YLr3YYr5u1dNm/ZbLKZIYjxIuDeGnTF4yR2kPBwTo98FZNh9lN0vRR6mf4YSGdYg
-         OjKQn7XkYoD1m1UZ1fk8JA2Nvl709DHiWTxtZpbGclYN5l0Lq5XDMVN3rFndlv3X4zdJ
-         Znat97o7ahqtZ3IFR8Znsqs7FR9dYuKbAtSZa9rM4UoKyN7N/HcFoQtLEL6TobpdavVO
-         30UwYM/ReX1Nrybgj4EzVstae47oOfiIo678d3bZiHDwtKtfkklUcguMl56tPWgGAxo9
-         CbBw==
+        bh=fpAPb87Hk9o66Grt82T0IufVe0UlC3v7GuLijQHjsuM=;
+        b=s91UAFdZ0ieUkVMi/2y1gV171XFmSagz9DzrdkjBllPoja6oY6pH31eOBDMBpWYX5w
+         7ond1lSxAgtYPO7AzQS55a0Xu7anIxMM0spq0lk55KPDwoxsdRnzN2qF1L6qNoDp2bCE
+         SXX+P3tBGs5Rak0EdqIDzqU0IG8o9HO0LXMkGMMZ5O/3TYk+sfSyOyZoSQDBdAsin+2x
+         IGVIpcWOOn7Fq5839UCSH/bMEiImuB5a9H8wB0Ldj/AMJMR9JiUYDjPywVWM3ZCbaqVy
+         jzOVIPu8q4tuFiYHJjYXUDQM2EG1b6ImUItGu5T32tP1wb+rxesFRBTGDINtJ2ll/4SA
+         PTeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=TQM6iseqNr527XMaI35HFwel5PilmxiFDRjsypqPjJY=;
-        b=DUZaxMpbnx4xUhEU6Nu+C9zhDcsU/c79MSJgRRTz+4vpO+aR4W7Xu8vetjK18xXhtF
-         Bi0qmyxLEMpIakrEZs9xP5Y5l+UE2fxTTjXZidrB7n4lXXBJAMw+pwpLLvKRY55e1qXn
-         vSt2gEYvrVk/pL2SEEnXpnaKJyBKz2sC8UJqgKNKRd/2WfjZCc1rb8rKfpgBa/6YCxap
-         0mqLWrSXITxC/fzSNxM5bx9R8S/SZSoJz3W9ycX1/gtmlYHnIx3f1hhdKYJ09aCXNJSC
-         wWbY0dypRG9gx3bWEkqP4f2p6Z57dIDoEw2d+mbGyH63MIjjiz90tN6NRZOVYk4AGLre
-         +4ZA==
-X-Gm-Message-State: AOAM5325Dw9RJff4DkDjbwRaHDrPEU2swca6kYE4KfyxCq2er9NEcmgY
-	2BgJnxzLPdAlrCJEHRhFcIb4hw==
-X-Google-Smtp-Source: ABdhPJz11NQ8k8O3sx0w8Jmw/mT7h0gCT45pHlT7hh3N0P78+0UiDdOgcHDso4OmHjjXvEL1tZbORQ==
-X-Received: by 2002:a63:3714:: with SMTP id e20mr10506241pga.50.1634324322967;
-        Fri, 15 Oct 2021 11:58:42 -0700 (PDT)
+        bh=fpAPb87Hk9o66Grt82T0IufVe0UlC3v7GuLijQHjsuM=;
+        b=yaRntYNFi3EbIIpf+NTXgYR7Wf8ECvaV6+obR/pUMT4lIhT8O/rwnooB91gyNwozgf
+         Q3Hai7lhev3P5AClLqsK6eQ7JLBTHfDkkOxs7fx3htkJFNTnPbUXB/UwdPfhpJLogf2G
+         jSxYSiBgyfSCuwd/4sw1h99Q0tNuk1GHSNVb0GTU+CKPmcCRkeBMPL+QLKN7HxtxBZ26
+         tvXWFpqcCGVVgDhtSBo4HEMOw1PKjhKULaQHCrlBcClts4GOXOumZV349wDA/ca7tilL
+         45HtDNr6ZyB6YOj7YLSOzYbcnAaCRsPQCarhpEqvaojohamYlJENarjJYWYt5Z/x6h1k
+         oZfA==
+X-Gm-Message-State: AOAM533Hrj82180k09tOvUMRIK02WCxOPuKOv2nFz+gMmNWWuAwtSlVk
+	2XeSi8p/a+UMc2Oz45t9AyUd4g==
+X-Google-Smtp-Source: ABdhPJw2G9y/Z/b0IraYD7/qreyNrdK0v+KRIhDIt2ZDYy6P8l5hjLFaShTRRqYo0lpwUn+42CFScg==
+X-Received: by 2002:a17:90b:17ce:: with SMTP id me14mr15754357pjb.112.1634327424985;
+        Fri, 15 Oct 2021 12:50:24 -0700 (PDT)
 Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id 66sm5517324pfu.185.2021.10.15.11.58.42
+        by smtp.gmail.com with ESMTPSA id f30sm5819571pfq.142.2021.10.15.12.50.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Oct 2021 11:58:42 -0700 (PDT)
-Date: Fri, 15 Oct 2021 18:58:38 +0000
+        Fri, 15 Oct 2021 12:50:24 -0700 (PDT)
+Date: Fri, 15 Oct 2021 19:50:20 +0000
 From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -62,11 +62,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 43/45] KVM: SVM: Use a VMSA physical address
- variable for populating VMCB
-Message-ID: <YWnPXmB4BkEO7Yrb@google.com>
+Subject: Re: [PATCH Part2 v5 44/45] KVM: SVM: Support SEV-SNP AP Creation NAE
+ event
+Message-ID: <YWnbfCet84Vup6q9@google.com>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-44-brijesh.singh@amd.com>
+ <20210820155918.7518-45-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,62 +75,97 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20210820155918.7518-44-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-45-brijesh.singh@amd.com>
 
 On Fri, Aug 20, 2021, Brijesh Singh wrote:
 > From: Tom Lendacky <thomas.lendacky@amd.com>
 > 
-> In preparation to support SEV-SNP AP Creation, use a variable that holds
-> the VMSA physical address rather than converting the virtual address.
-> This will allow SEV-SNP AP Creation to set the new physical address that
-> will be used should the vCPU reset path be taken.
+> Add support for the SEV-SNP AP Creation NAE event. This allows SEV-SNP
+> guests to alter the register state of the APs on their own. This allows
+> the guest a way of simulating INIT-SIPI.
+> 
+> A new event, KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, is created and used
+> so as to avoid updating the VMSA pointer while the vCPU is running.
+> 
+> For CREATE
+>   The guest supplies the GPA of the VMSA to be used for the vCPU with the
+>   specified APIC ID. The GPA is saved in the svm struct of the target
+>   vCPU, the KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event is added to the
+>   vCPU and then the vCPU is kicked.
+> 
+> For CREATE_ON_INIT:
+>   The guest supplies the GPA of the VMSA to be used for the vCPU with the
+>   specified APIC ID the next time an INIT is performed. The GPA is saved
+>   in the svm struct of the target vCPU.
+> 
+> For DESTROY:
+>   The guest indicates it wishes to stop the vCPU. The GPA is cleared from
+>   the svm struct, the KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event is added
+>   to vCPU and then the vCPU is kicked.
+> 
+> 
+> The KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event handler will be invoked as
+> a result of the event or as a result of an INIT. The handler sets the vCPU
+> to the KVM_MP_STATE_UNINITIALIZED state, so that any errors will leave the
+> vCPU as not runnable. Any previous VMSA pages that were installed as
+> part of an SEV-SNP AP Creation NAE event are un-pinned. If a new VMSA is
+> to be installed, the VMSA guest page is pinned and set as the VMSA in the
+> vCPU VMCB and the vCPU state is set to KVM_MP_STATE_RUNNABLE. If a new
+> VMSA is not to be installed, the VMSA is cleared in the vCPU VMCB and the
+> vCPU state is left as KVM_MP_STATE_UNINITIALIZED to prevent it from being
+> run.
 
-The use of "variable" in the changelog and shortlog is really confusing.  I read
-them multiple times and still didn't fully understand the change until I sussed
-out that the change is to track the PA in vcpu_svm separately from vcpu_svm.vmsa.
+LOL, this part of the GHCB is debatable, though I guess it does say "may"...
 
-It's somewhat of a moot point though, because I think this can and should be
-simplified.
+  Using VMGEXIT SW_EXITCODE 0x8000_0013, an SEV-SNP guest can create or update the
+  vCPU state of an AP, which may allow for a simpler and more secure method of
+                                             ^^^^^^^
+  booting an AP.
 
-In the SEV-ES case, svm->vmcb->control.vmsa_pa is always __pa(svm->vmsa).  And
-in the SNP case, svm->vmcb->control.vmsa_pa defaults to __pa(svm->vmsa), but is
-not changed on INIT.  Rather than do this crazy 3-way dance, simply don't write
-svm->vmcb->control.vmsa_pa on INIT.  Then SNP can change it at will without having
-an unnecessary and confusing field.
+> +	if (VALID_PAGE(svm->snp_vmsa_pfn)) {
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 1e8b26b93b4f..0bec0b71577e 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2593,13 +2593,6 @@ void sev_es_init_vmcb(struct vcpu_svm *svm)
-        svm->vmcb->control.nested_ctl |= SVM_NESTED_CTL_SEV_ES_ENABLE;
-        svm->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+KVM's VMSA page should be freed on a successful "switch", because AFAICT it's
+incorrect for KVM to ever go back to the original VMSA.
 
--       /*
--        * An SEV-ES guest requires a VMSA area that is a separate from the
--        * VMCB page. Do not include the encryption mask on the VMSA physical
--        * address since hardware will access it using the guest key.
--        */
--       svm->vmcb->control.vmsa_pa = __pa(svm->vmsa);
--
-        /* Can't intercept CR register access, HV can't modify CR registers */
-        svm_clr_intercept(svm, INTERCEPT_CR0_READ);
-        svm_clr_intercept(svm, INTERCEPT_CR4_READ);
-@@ -2633,6 +2626,13 @@ void sev_es_init_vmcb(struct vcpu_svm *svm)
+> +		/*
+> +		 * The snp_vmsa_pfn fields holds the hypervisor physical address
+> +		 * of the about to be replaced VMSA which will no longer be used
+> +		 * or referenced, so un-pin it.
+> +		 */
+> +		kvm_release_pfn_dirty(svm->snp_vmsa_pfn);
+> +		svm->snp_vmsa_pfn = INVALID_PAGE;
+> +	}
+> +
+> +	if (VALID_PAGE(svm->snp_vmsa_gpa)) {
+> +		/*
+> +		 * The VMSA is referenced by the hypervisor physical address,
+> +		 * so retrieve the PFN and pin it.
+> +		 */
+> +		pfn = gfn_to_pfn(vcpu->kvm, gpa_to_gfn(svm->snp_vmsa_gpa));
 
- void sev_es_vcpu_reset(struct vcpu_svm *svm)
- {
-+       /*
-+        * An SEV-ES guest requires a VMSA area that is a separate from the
-+        * VMCB page. Do not include the encryption mask on the VMSA physical
-+        * address since hardware will access it using the guest key.
-+        */
-+       svm->vmcb->control.vmsa_pa = __pa(svm->vmsa);
-+
-        /*
-         * Set the GHCB MSR value as per the GHCB specification when emulating
-         * vCPU RESET for an SEV-ES guest.
+Oh yay, a gfn.  That means that the page is subject to memslot movement.  I don't
+think the code will break per se, but it's a wrinkle that's not handled.
 
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+I'm also pretty sure the page will effectively be leaked, I don't see a
 
-This needs your SoB.
+	kvm_release_pfn_dirty(svm->snp_vmsa_pfn);
+
+in vCPU teardown.
+
+Furthermore, letting the guest specify the page would open up to exploits of the
+erratum where a spurious RMP violation is signaled if an in-use page, a.k.a. VMSA
+page, is 2mb aligned.  That also means the _guest_ needs to be somehow be aware
+of the erratum.
+
+And digging through the guest patches, this gives the guest _full_ control over
+the VMSA contents.  That is bonkers.  At _best_ it gives the guest the ability to
+fuzz VMRUN ucode by stuffing garbage into the VMSA.
+
+Honestly, why should KVM even support guest-provided VMSAs?  It's far, far simpler
+to handle this fully in the guest with a BIOS<=>kernel mailbox; see the MP wakeup
+protocol being added for TDX.  That would allow improving the security for SEV-ES
+as well, though I'm guessing no one actually cares about that in practice.
+
+IIUC, the use case for VMPLs is that VMPL0 would be fully trusted by both the host
+and guest, i.e. attacks via the VMSA are out-of-scope.  That is very much not the
+case here.
