@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6373E2C85
-	for <linux-coco@lists.linux.dev>; Wed, 20 Oct 2021 18:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8082C85
+	for <linux-coco@lists.linux.dev>; Wed, 20 Oct 2021 18:08:37 +0000 (UTC)
 Received: from zn.tnic (p200300ec2f0db300f8abf0ed14d647a3.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:b300:f8ab:f0ed:14d6:47a3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A2FA61EC036B;
-	Wed, 20 Oct 2021 20:01:08 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1A9E31EC036B;
+	Wed, 20 Oct 2021 20:08:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1634752868;
+	t=1634753316;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=/4U7+bVpmBPJ7gV+r1bdTzVoBWatHcmArzH+WpFLVX0=;
-	b=LQb5wxNMBVSSlO4PGPVoSe/7fkJf0JVygFKVgj3YJxWvdH223GLeJBRVogaHJsXpgELkDZ
-	aR2X2C7ns1benSbZXA3zSmx/zXmFDxNO1jhKOrJ2xoKPbM5W4/RCaen8vWDcaktwbP3Uoo
-	bofa4W9GEGyxWkwSaRWxf1JrdO63uX8=
-Date: Wed, 20 Oct 2021 20:01:07 +0200
+	bh=jC3IIcX0cpZuqY0H2u9GhNd5u8aIp5yIQPOEtcJKGGo=;
+	b=Fv/bEf23sip2dsKp0aTcrrQ8e95rLhknRPX8YOBcNb//Di/45TckOpf89nFJgzyT9QQW0g
+	CtrSP7psUhdJ3naFMgZ3cTRYiE7rzVXMbnPa+0jja/L3J+CeCkXPKS8HqcJogo7nNq2X6D
+	+PvCzKzMXVmjjgAuNAIrWRZRmfySjKc=
+Date: Wed, 20 Oct 2021 20:08:39 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Michael Roth <michael.roth@amd.com>
 Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
@@ -48,7 +48,7 @@ Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
  within #VC handler
-Message-ID: <YXBZYws8NnxiQJD7@zn.tnic>
+Message-ID: <YXBbJwd2M03Ssq6I@zn.tnic>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
  <20211008180453.462291-9-brijesh.singh@amd.com>
  <YW2EsxcqBucuyoal@zn.tnic>
@@ -66,51 +66,56 @@ Content-Disposition: inline
 In-Reply-To: <20211020161023.hzbj53ehmzjrt4xd@amd.com>
 
 On Wed, Oct 20, 2021 at 11:10:23AM -0500, Michael Roth wrote:
-> [Sorry for the wall of text, just trying to work through everything.]
+> > 1. Code checks SME/SEV support leaf. HV lies and says there's none. So
+> > guest doesn't boot encrypted. Oh well, not a big deal, the cloud vendor
+> > won't be able to give confidentiality to its users => users go away or
+> > do unencrypted like now.
+> > 
+> > Problem is solved by political and economical pressure.
+> > 
+> > 2. Check SEV and SME bit. HV lies here. Oh well, same as the above.
+> 
+> I'd be worried about the possibility that, through some additional exploits
+> or failures in the attestation flow,
 
-And I'm going to respond in a couple of mails just for my own sanity.
+Well, that puts forward an important question: how do you verify
+*reliably* that this is an SNP guest?
 
-> I'm not sure if this is pertaining to using the CPUID table prior to
-> sme_enable(), or just the #VC-based SEV MSR read. The following comments
-> assume the former. If that assumption is wrong you can basically ignore
-> the rest of this email :)
+- attestation?
 
-This is pertaining to me wanting to show you that the design of this SNP
-support needs to be sane and maintainable and every function needs to
-make sense not only now but in the future.
+- CPUID?
 
-In this particular example, we should set sev_status *once*, *before*
-anything accesses it so that it is prepared when something needs it. Not
-do a #VC and go, "oh, btw, is sev_status set? No? Ok, lemme set it."
-which basically means our design is seriously lacking.
+- anything else?
 
-And I had suggested a similar thing for TDX and tglx was 100% right in
-shooting it down because we do properly designed things - not, get stuff
-in so that vendor is happy and then, once the vendor programmers have
-disappeared to do their next enablement task, the maintainers get to mop
-up and maintain it forever.
+I don't see this written down anywhere. Because this assumption will
+guide the design in the kernel.
 
-Because this mopping up doesn't scale - trust me.
+> a guest owner was tricked into booting unencrypted on a compromised
+> host and exposing their secrets. Their attestation process might even
+> do some additional CPUID sanity checks, which would at the point
+> be via the SNP CPUID table and look legitimate, unaware that the
+> kernel didn't actually use the SNP CPUID table until after 0x8000001F
+> was parsed (if we were to only initialize it after/as-part-of
+> sme_enable()).
 
-> [The #VC-based SEV MSR read is not necessary for anything in sme_enable(),
-> it's simply a way to determine whether the guest is an SNP guest, without
-> any reliance on CPUID, which seemed useful in the context of doing some
-> additional sanity checks against the SNP CPUID table and determining that
-> it's appropriate to use it early on (rather than just trust that this is an
-> SNP guest by virtue of the CC blob being present, and then failing later
-> once sme_enable() checks for the SNP feature bits through the normal
-> mechanism, as was done in v5).]
+So what happens with that guest owner later?
 
-So you need to make up your mind here design-wise, what you wanna do.
+How is she to notice that she booted unencrypted?
 
-The proper thing to do would be, to detect *everything*, detect whether
-this is an SNP guest, yadda yadda, everything your code is going to need
-later on, and then be done with it.
+> Fortunately in this scenario I think the guest kernel actually would fail to
+> boot due to the SNP hardware unconditionally treating code/page tables as
+> encrypted pages. I tested some of these scenarios just to check, but not
+> all, and I still don't feel confident enough about it to say that there's
+> not some way to exploit this by someone who is more clever/persistant than
+> me.
 
-Then you continue with the boot and now your other code queries
-everything that has been detected up til now and uses it.
+All this design needs to be preceded with: "We protect against cases A,
+B and C and not against D, E, etc."
 
-End of mail 1.
+So that it is clear to all parties involved what we're working with and
+what we're protecting against and what we're *not* protecting against.
+
+End of mail 2, more later.
 
 -- 
 Regards/Gruss,
