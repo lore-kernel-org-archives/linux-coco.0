@@ -1,49 +1,25 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A302C81
-	for <linux-coco@lists.linux.dev>; Thu, 21 Oct 2021 17:13:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1634836379;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EABD2C85
+	for <linux-coco@lists.linux.dev>; Thu, 21 Oct 2021 17:37:05 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f1912009d2c3fdc96041a10.dip0.t-ipconnect.de [IPv6:2003:ec:2f19:1200:9d2c:3fdc:9604:1a10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8838A1EC0298;
+	Thu, 21 Oct 2021 19:37:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1634837823;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XK8lsFGIy7ux6qnbNN7kYySECN4eAp1hXXWqZfwXvfI=;
-	b=XOZwm+cAhEm6MExP9mohWBEYmnN/6OBUcEo2xe3y3AQiHma8gxnw0taNxDZZAyI/aw61/A
-	VXaM61iTm4IuIBemzd0CxeC4KSzXmERfkbpft5dsfpewapJQP44vywuUax6BPtJn9pw6B1
-	2ud0MmiPfBS5bYfsej5n8sRJklAxJts=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-444-Cd9qBMm9PIu6S6-Heof8ZA-1; Thu, 21 Oct 2021 13:12:58 -0400
-X-MC-Unique: Cd9qBMm9PIu6S6-Heof8ZA-1
-Received: by mail-wr1-f70.google.com with SMTP id v15-20020adfa1cf000000b00160940b17a2so106910wrv.19
-        for <linux-coco@lists.linux.dev>; Thu, 21 Oct 2021 10:12:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=XK8lsFGIy7ux6qnbNN7kYySECN4eAp1hXXWqZfwXvfI=;
-        b=jYHtR301PjaRr4DV/EEPvFqspxT0fobWRDbeTV35YHUVt5ZKqpqCcZe5Dv321CxU3+
-         mWheNsYaoW5Ukh0ZpVckoFIBzne6sVBNEWRk8Q375Y4mGpERsIcAB/RoTUNevPFWjmgD
-         JxUv/bnuv2kKDZmQ+CWNOnV7avMmoZ19+M9SBUO5FKXL4Due73a8w3iODoMVnNTEuXwb
-         V2Z94mOjiO48f8VvP6KRUBq+8ZyYLX4girzwkK+EqNvt79c6oUg7P9/EE8vaYr/Bcmcy
-         JSZ/D7PI+qwrMy6GIoWVpQBTGyWF9U0fH+OM3Qas+36m4OHlBgpAG6VmwSduLJnq4sRV
-         cWPQ==
-X-Gm-Message-State: AOAM531cTXdUazbkzTuuzdmARTjyjs7qKy/51bHw3ynvSZ0n3geuGo/M
-	u/FVIveEYh72BfAFVyBEWfFlNgDETPQrEnpl8eCG3Hb61elZjEsRHgi1ZRHwMepjSR5Bxm6ZH5J
-	blhonpwSApU3gLu9bMRFngA==
-X-Received: by 2002:adf:d84d:: with SMTP id k13mr9086397wrl.276.1634836377358;
-        Thu, 21 Oct 2021 10:12:57 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyIz2xc4dlFybQ+Itlm8MuVX7/TKhmdXDokBG8vkqS60XCLS5Pa1uXT6kLyhVWWxhAy7jGivg==
-X-Received: by 2002:adf:d84d:: with SMTP id k13mr9086349wrl.276.1634836377142;
-        Thu, 21 Oct 2021 10:12:57 -0700 (PDT)
-Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net. [82.30.61.225])
-        by smtp.gmail.com with ESMTPSA id d1sm5657617wrr.72.2021.10.21.10.12.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Oct 2021 10:12:56 -0700 (PDT)
-Date: Thu, 21 Oct 2021 18:12:53 +0100
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Borislav Petkov <bp@alien8.de>
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=00cbYgpw2dYSkF28MjWjljWuNsD4cmUAI68U4oIyQGk=;
+	b=D7PSMCkJQL+v+1ot4TxJ+1kfVS4aSDOp1t/3Qw7drrEY4xHhy8cXgf4p4PWGAEFQUcfMEM
+	BrHQk3X/xxlgVn8o+Ho9se8qQoRiD84RfQDQQ3aUXdbtb0MXUbHVtEBXogaegim8IH3/U+
+	eYTYjhcKwS9RFw0qUW7F9IQPdqpiYlM=
+Date: Thu, 21 Oct 2021 19:37:01 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
 Cc: Michael Roth <michael.roth@amd.com>,
 	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -71,7 +47,7 @@ Cc: Michael Roth <michael.roth@amd.com>,
 	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
  within #VC handler
-Message-ID: <YXGflXdrAXH5fE5H@work-vm>
+Message-ID: <YXGlPf5OTPzp09qr@zn.tnic>
 References: <20211008180453.462291-1-brijesh.singh@amd.com>
  <20211008180453.462291-9-brijesh.singh@amd.com>
  <YW2EsxcqBucuyoal@zn.tnic>
@@ -81,72 +57,42 @@ References: <20211008180453.462291-1-brijesh.singh@amd.com>
  <YXF9sCbPDsLwlm42@zn.tnic>
  <YXGNmeR/C33HvaBi@work-vm>
  <YXGbcqN2IRh9YJk9@zn.tnic>
+ <YXGflXdrAXH5fE5H@work-vm>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YXGbcqN2IRh9YJk9@zn.tnic>
-User-Agent: Mutt/2.0.7 (2021-05-04)
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <YXGflXdrAXH5fE5H@work-vm>
 
-* Borislav Petkov (bp@alien8.de) wrote:
-> On Thu, Oct 21, 2021 at 04:56:09PM +0100, Dr. David Alan Gilbert wrote:
-> > I can imagine a malicious hypervisor trying to return different cpuid
-> > answers to different threads or even the same thread at different times.
+On Thu, Oct 21, 2021 at 06:12:53PM +0100, Dr. David Alan Gilbert wrote:
+> OK, so that bit is 8...21 Eax ext2eax bit 6 page 1-109
 > 
-> Haha, I guess that will fail not because of SEV* but because of the
-> kernel not really being able to handle heterogeneous CPUIDs.
-
-My worry is if it fails cleanly or fails in a way an evil hypervisor can
-exploit.
-
-> > Well, the spec (AMD 56860 SEV spec) says:
-> > 
-> >   'If firmware encounters a CPUID function that is in the standard or extended ranges, then the
-> > firmware performs a check to ensure that the provided output would not lead to an insecure guest
-> > state'
-> > 
-> > so I take that 'firmware' to be the PSP; that wording doesn't say that
-> > it checks that the CPUID is identical, just that it 'would not lead to
-> > an insecure guest' - so a hypervisor could hide any 'no longer affected
-> > by' flag for all the CPUs in it's migration pool and the firmware
-> > shouldn't complain; so it should be OK to pessimise.
+> then 2.1.5.3 CPUID policy enforcement shows 8...21 EAX as
+> 'bitmask'
+> 'bits set in the GuestVal must also be set in HostVal.
+> This is often applied to feature fields where each bit indicates
+> support for a feature'
 > 
-> AFAIU this, I think this would depend on "[t]he policy used by the
-> firmware to assess CPUID function output can be found in [PPR]."
-> 
-> So if the HV sets the "no longer affected by" flag but the firmware
-> deems this set flag as insecure, I'm assuming the firmare will clear
-> it when it returns the CPUID leafs. I guess I need to go find that
-> policy...
+> So that's right isn't it?
 
-<digs - ppr_B1_pub_1 55898 rev 0.50 >
+Yap, AFAIRC, it would fail the check if:
 
-OK, so that bit is 8...21 Eax ext2eax bit 6 page 1-109
+(GuestVal & HostVal) != GuestVal
 
-then 2.1.5.3 CPUID policy enforcement shows 8...21 EAX as
-'bitmask'
-'bits set in the GuestVal must also be set in HostVal.
-This is often applied to feature fields where each bit indicates
-support for a feature'
+and GuestVal is "the CPUID result value created by the hypervisor that
+it wants to give to the guest". Let's say it clears bit 6 there.
 
-So that's right isn't it?
+Then HostVal comes in which is "the actual CPUID result value specified
+in this PPR" and there the guest catches the HV lying its *ss off.
 
-Dave
+:-)
 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> https://people.kernel.org/tglx/notes-about-netiquette
-> 
 -- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
