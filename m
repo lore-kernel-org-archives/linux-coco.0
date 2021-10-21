@@ -1,107 +1,217 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam08on2073.outbound.protection.outlook.com [40.107.100.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EE62C80
-	for <linux-coco@lists.linux.dev>; Wed, 20 Oct 2021 23:01:31 +0000 (UTC)
-Received: by mail-pj1-f54.google.com with SMTP id t5-20020a17090a4e4500b001a0a284fcc2so1687339pjl.2
-        for <linux-coco@lists.linux.dev>; Wed, 20 Oct 2021 16:01:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=h+RFC7eotFhOqFJGWOoMWVQg50r4LBG0z2sivzZSrgk=;
-        b=pma9xTPAAozGlLfkB9sflNKGCaUTlYDPKd78LbYcHoBUpBRdiQpZNG/Cc1nZw9vI4s
-         VTSD/474dW5dlNqhL8p1TXmulQIJQRdwQd35Hq/TvTJHLS+D754q5dwalnSMpnNallp6
-         QEE6REP3UMdDQd9t5/eTDAwqCT3kSq7TIRlSMz5dG+F3C0cAQG5Of9T0co/dFDVodtCw
-         LDtGnlp14OoIc4w9aY2VNUN730bG1epxV1fC8y0RW9O5Yzg6agArEPev3CeYeo6QWUHe
-         cjwF0FLqkskp8GARImJVl4T0BDlhURPzNIkeGgRFvjb/C72VmjO4rjSXV0a8d2SsN1L+
-         DK7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=h+RFC7eotFhOqFJGWOoMWVQg50r4LBG0z2sivzZSrgk=;
-        b=SZZVNSHMkXxYpYYU1jMltl8nIGAIdsZwnPfFAVxIZ59coQFdOPN91mxquliRa/rwKJ
-         wH5f8lYqQt4mJnROGmxnJdYXg16fosAfxRdlN0ECLmcr5jaXwBYWBqESwR8SljIiP1Yy
-         vXBB1kLs3bKl1s+xdWPflf81aZMMjnrTDeYCZejuYo+5jQmQGyAozWM7nUNCGaPKa+df
-         xSKTmqZhVzPoITZ2+OHPu3MsvxZ6WSxcyVz6Jx7vPRfrGgYvXLw7v/1sLWBgfkN1NaXa
-         /tpd7FTY24izeyeo6gBbICZeOO0vJTTbdyhs8M7cS76VgCRwlqy4ranS4l+7q6b9LeC2
-         OcRQ==
-X-Gm-Message-State: AOAM531RN5dpKYeMjloPT1z3YCuNFbR4K5jMc+gFabXkxowEw1EI2Aa3
-	0Y9GuQp0CsDk+zc5GvS76EEF9A==
-X-Google-Smtp-Source: ABdhPJwAYmwtedqpowu2BAnkunIqrQX+jLSp7mbf/jJKomExPMM30rDS5HiPAzzKOhqXTZ7V/PFb/Q==
-X-Received: by 2002:a17:90a:b314:: with SMTP id d20mr2168217pjr.174.1634770891214;
-        Wed, 20 Oct 2021 16:01:31 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id k1sm3356698pjj.54.2021.10.20.16.01.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Oct 2021 16:01:30 -0700 (PDT)
-Date: Wed, 20 Oct 2021 23:01:27 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 44/45] KVM: SVM: Support SEV-SNP AP Creation NAE
- event
-Message-ID: <YXCfxyfQBix8+As+@google.com>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-45-brijesh.singh@amd.com>
- <YWnbfCet84Vup6q9@google.com>
- <a7944441-f279-a809-8817-2e4b38a0e309@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EA52C81
+	for <linux-coco@lists.linux.dev>; Thu, 21 Oct 2021 02:08:16 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AqlP9gJx5CG+tNku7+cXJQlAi+DpiOaP0l4DHhMJ+5MkjZozGKiPt8kvXCtvhdwAap7BK80aQ7VsymLNgGo8DSvUcf3yPv9JY5zHzYClENQAxToUQQq/9L1WqZbx/XfkUL51ARmcITUqlKnmK5v7Digcs4GxBG9aXXKYZ8rl2QzWF+3oPEbvONsd3t6zl5ddw25mFwNqNLc3UImeNXLmdvGyd66oWcwBc4vx4stbju3bpL98d7uXbFkeIgA6tKUxEAfAW7w3TxBvIEHRp3hvbJ1le4nDxFa4Hz3K+w9HqwTnGBU7g7xeAsG5Vwc3xEqEZ31w69bB6hJPMdgYu0C5Sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Ux9BOYNEyMVH0JGeaQSURCQ2XHuVTURqkZqfAJbqPY=;
+ b=mbDwWpRfI295Ls9yIYbwkYmS9qZVPTbmfddtowV/ODjZbqkT0W86Yog0lQk+uNccc2fNXD/7O7CnkRcj3yhV42ay2OKYmMlPtxECNrFpErcAZ6CDWzEBvfxoMcg/tnzg+muMwdgWDJydb/6W7PfF9ldgkRcqez/zLKkjcpIClFvFK+sFJToQ9kMh8OOSxBINy6yTwdjqVMSIvXWY3tS+uUDKQOGMYm2zl7NC22gZXL0LvFMRpgl43b6/7EZ+sXjC8kh5b8Oijkkid2Q1DhVw6hhYNfel7BwoO8/419cBXZA4iHn2vg1zzX1TArqDLt7/xtUmsOudWXPvEnpepnXF8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Ux9BOYNEyMVH0JGeaQSURCQ2XHuVTURqkZqfAJbqPY=;
+ b=V/ywVRJHTysu9LvTmR7OwhlyJcdNoczRZBw5Gu/TKzWW1MQ7j9m34/yuo+TlvtArUdbjOPBuLVtqPEB/0hbDtvejheAHVrl6aLZmpwqOaSdlF6phut05Y95AD5yfx+hFJSKiYSSFpM/Ond70UcTubhreB0xKzj8uzsIsBTIF30E=
+Received: from BN9PR03CA0345.namprd03.prod.outlook.com (2603:10b6:408:f6::20)
+ by BY5PR12MB3825.namprd12.prod.outlook.com (2603:10b6:a03:1a2::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4608.17; Thu, 21 Oct
+ 2021 02:08:11 +0000
+Received: from BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:f6:cafe::52) by BN9PR03CA0345.outlook.office365.com
+ (2603:10b6:408:f6::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4628.16 via Frontend
+ Transport; Thu, 21 Oct 2021 02:08:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; alien8.de; dkim=none (message not signed)
+ header.d=none;alien8.de; dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT048.mail.protection.outlook.com (10.13.177.117) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4628.16 via Frontend Transport; Thu, 21 Oct 2021 02:08:11 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.15; Wed, 20 Oct
+ 2021 21:08:10 -0500
+Date: Wed, 20 Oct 2021 19:35:35 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel
+	<jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin"
+	<hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Vitaly
+ Kuznetsov" <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, "Andy
+ Lutomirski" <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, "Dr . David Alan
+ Gilbert" <dgilbert@redhat.com>, <tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
+ within #VC handler
+Message-ID: <20211021003535.ic35p6nnxdmavw35@amd.com>
+References: <20211008180453.462291-1-brijesh.singh@amd.com>
+ <20211008180453.462291-9-brijesh.singh@amd.com>
+ <YW2EsxcqBucuyoal@zn.tnic>
+ <20211018184003.3ob2uxcpd2rpee3s@amd.com>
+ <YW3IdfMs61191qnU@zn.tnic>
+ <20211020161023.hzbj53ehmzjrt4xd@amd.com>
+ <YXBZYws8NnxiQJD7@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <a7944441-f279-a809-8817-2e4b38a0e309@amd.com>
+In-Reply-To: <YXBZYws8NnxiQJD7@zn.tnic>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: e343eeaa-339e-4e51-a57e-08d99437a208
+X-MS-TrafficTypeDiagnostic: BY5PR12MB3825:
+X-Microsoft-Antispam-PRVS:
+	<BY5PR12MB3825392BED027E5BF663FB9B95BF9@BY5PR12MB3825.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	DN5uywu4hMsLx9JqZvOI1/D4Ep8BajYYcXxW3oRIdn1jJnZD+V/cNlaoV34gpF6pR5hRCznXXJokyduW36qPiF1p7cdKPXBRy4iThsrLZ041eUlcyKFejEqOsNgs0mjAKF7VnfMpxE3jEJNZvlAWDBtGp9zjWD6I5tj0t9jz02DQbjVQZfZIyW1ZLmedP5kF3EbCUgSzBG9bFIZPK5ShCCKOoKDHDvR2kfp/ez1AhTLHLwAx0HXB4WLvuNBf+c/c9L8YrGnUpuwS6bQ+39oyk12EhmOXXWaJt3cPSVYC1rEMj4tmqDDr6XTJ2xeFdYmJ2ZIUAiK1rnKBnDighOLDyp3P3PjRp3OD43nlayJhFQN8ak5JQgI+r3OVeUbMwatR+gINtnSr1qI4fjyW73X3IHysypIvRmvn/HjuYZ4+IdIjA+U1xIBiVo4Yn2lpe03JVIk+wijN0yiODAMEM1b4MmBNc0zn0lZRcS8F36k6FfKMEsgjqEU6/48JFtCdFTxFtU4YdjlifdwlLqnwJAJFNXO7MUFlCeQYD6ADvFM6yrC6hbjVmszSRMp5zqsa7HXl0M5QRf4AeCgBqZLSXO4GasbdN+NFcPL1a+uqHxDOZwHRu6Uxr3Y2loPhllh3fLn9l/3HmcsFO5AEPzrTfn8CPT9FJD8OZyPNyVXCrfwqKHqAF8Gumf8dRwucr1wR7WIhdIi+sCpaSHx7cR9CH7Xvh3UKiW51p1b3OLwQ9GNzIjJq9JTS+E5Yhto+mkoozn+TS7fB2WvZl2mOG53XOyC07oDAkIWThxJDT/ToRJFo+NwuSf7fPo2P9FGDX0Mwohwh
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(356005)(44832011)(186003)(7416002)(16526019)(2616005)(6916009)(70586007)(70206006)(426003)(2906002)(1076003)(6666004)(5660300002)(36860700001)(83380400001)(47076005)(4326008)(316002)(336012)(8936002)(45080400002)(7406005)(54906003)(81166007)(966005)(8676002)(86362001)(36756003)(508600001)(82310400003)(26005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2021 02:08:11.1144
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e343eeaa-339e-4e51-a57e-08d99437a208
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB3825
 
-On Wed, Oct 20, 2021, Brijesh Singh wrote:
+On Wed, Oct 20, 2021 at 08:01:07PM +0200, Borislav Petkov wrote:
+> On Wed, Oct 20, 2021 at 11:10:23AM -0500, Michael Roth wrote:
+> > [Sorry for the wall of text, just trying to work through everything.]
 > 
-> On 10/15/21 2:50 PM, Sean Christopherson wrote:
-> > And digging through the guest patches, this gives the guest _full_ control over
-> > the VMSA contents.  That is bonkers.  At _best_ it gives the guest the ability to
-> > fuzz VMRUN ucode by stuffing garbage into the VMSA.
+> And I'm going to respond in a couple of mails just for my own sanity.
 > 
-> If guest puts garbage in VMSA then VMRUN will fail. I am sure ucode is
-> doing all kind of sanity checks to ensure that VMSA does not contain
-> invalid value before the run.
+> > I'm not sure if this is pertaining to using the CPUID table prior to
+> > sme_enable(), or just the #VC-based SEV MSR read. The following comments
+> > assume the former. If that assumption is wrong you can basically ignore
+> > the rest of this email :)
+> 
+> This is pertaining to me wanting to show you that the design of this SNP
+> support needs to be sane and maintainable and every function needs to
+> make sense not only now but in the future.
 
-Oh, I'm well aware of the number of sanity checks that are in VM-Enter ucode, and
-that's precisely why I'm of the opinion that letting the guest fuzz VMRUN is a
-non-trivial security risk for the host.  I know of at least at least two VMX bugs
-(one erratum that I could find, one that must have been fixed with a ucode patch?)
-where ucode failed to detect invalid state.  Those were "benign" in that they
-caused a missed VM-Fail but didn't corrupt CPU state, but it's not a stretch to
-imagine a ucode bug that leads to corruption of CPU state and a system crash.
+Absolutely.
 
-The sheer number of checks involved, combined with the fact that there likely
-hasn't been much fuzzing of VM-Enter outside of the hardware vendor's own
-validation, means I'm not exactly brimming with confidence that VMRUN's ucode
-is perfect.
+> 
+> In this particular example, we should set sev_status *once*, *before*
+> anything accesses it so that it is prepared when something needs it. Not
+> do a #VC and go, "oh, btw, is sev_status set? No? Ok, lemme set it."
+> which basically means our design is seriously lacking.
 
-I fully acknowledge that the host kernel obviously "trusts" CPU ucode to a great
-extent.  My point here is that the design exposes the host to unnecessary risk.
+Yes, taking a step back there are some things that could probably be
+improved upon there.
+
+currently:
+
+  - boot kernel initializes sev_status in set_sev_encryption_mask()
+  - run-time kernel initializes sev_status in sme_enable()
+
+with this series the following are introduced:
+
+  - boot kernel initializes sev_status on-demand in sev_snp_enabled()
+    - initially used by snp_cpuid_init_boot(), which happens before
+      set_sev_encryption_mask()
+  - run-time kernel initializes sev_status on-demand via #VC handler
+    - initially used by snp_cpuid_init(), which happens before
+      sme_enable()
+
+Fortunately, all the code makes use of sev_status to get at the SEV MSR
+bits, so breaking the appropriate bits out of sme_enable() into an earlier
+sev_init() routine that's the exclusive writer of sev_status sounds like a
+promising approach.
+
+It makes sense to do it immediately after the first #VC handler is set
+up, so CPUID is available, and since that's where SNP CPUID table
+initialization would need to happen if it's to be made available in
+#VC handler.
+
+It may even be similar enough between boot/compressed and run-time kernel
+that it could be a shared routine in sev-shared.c. But then again it also
+sounds like the appropriate place to move the snp_cpuid_init*() calls,
+and locating the cc_blob, and since there's differences there it might make
+sense to keep the boot/compressed and kernel proper sev_init() routines
+separate to avoid #ifdeffery).
+
+Not to get ahead of myself though. Just seems like a good starting point
+for how to consolidate the various users.
+
+> 
+> And I had suggested a similar thing for TDX and tglx was 100% right in
+> shooting it down because we do properly designed things - not, get stuff
+> in so that vendor is happy and then, once the vendor programmers have
+> disappeared to do their next enablement task, the maintainers get to mop
+> up and maintain it forever.
+> 
+> Because this mopping up doesn't scale - trust me.
+
+Got it, and my apologies if I've given you that impression as it's
+certainly not my intent. (though I'm sure you've heard that before.)
+
+> 
+> > [The #VC-based SEV MSR read is not necessary for anything in sme_enable(),
+> > it's simply a way to determine whether the guest is an SNP guest, without
+> > any reliance on CPUID, which seemed useful in the context of doing some
+> > additional sanity checks against the SNP CPUID table and determining that
+> > it's appropriate to use it early on (rather than just trust that this is an
+> > SNP guest by virtue of the CC blob being present, and then failing later
+> > once sme_enable() checks for the SNP feature bits through the normal
+> > mechanism, as was done in v5).]
+> 
+> So you need to make up your mind here design-wise, what you wanna do.
+> 
+> The proper thing to do would be, to detect *everything*, detect whether
+> this is an SNP guest, yadda yadda, everything your code is going to need
+> later on, and then be done with it.
+> 
+> Then you continue with the boot and now your other code queries
+> everything that has been detected up til now and uses it.
+
+Agreed, if we need to check SEV MSR early for the purposes of SNP it makes
+sense to move the overall SEV feature detection code earlier as well. I
+should have looked into that aspect more closely before introducing the
+changes.
+
+> 
+> End of mail 1.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7Cmichael.roth%40amd.com%7C1f46689b40da4a700a6308d993f3993a%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637703496776826912%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=Kdi9h%2FTzuzoLn64BRsRMLWHkew14BxZHR28QsORsSxs%3D&amp;reserved=0
