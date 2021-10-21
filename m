@@ -1,75 +1,116 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5AD2C94
-	for <linux-coco@lists.linux.dev>; Thu, 21 Oct 2021 08:14:25 +0000 (UTC)
-Received: from cap.home.8bytes.org (p4ff2b5b0.dip0.t-ipconnect.de [79.242.181.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BA02C81
+	for <linux-coco@lists.linux.dev>; Thu, 21 Oct 2021 14:28:09 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f1912003b8abe7004197216.dip0.t-ipconnect.de [IPv6:2003:ec:2f19:1200:3b8a:be70:419:7216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id E8E227F;
-	Thu, 21 Oct 2021 10:08:36 +0200 (CEST)
-From: Joerg Roedel <joro@8bytes.org>
-To: x86@kernel.org
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	hpa@zytor.com,
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CD0101EC0554;
+	Thu, 21 Oct 2021 16:28:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1634826487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=rcU9vPUUzI5swHp7U/1X5pUaXTmEfV+1ihJzmOdAcOM=;
+	b=qMTa8TKwojdJWcWHU4iWnSB3q3yU5q61pMpG8GDVfyoMftwa8AJp8ju65Ond55BqBrHHZr
+	FaxndF/cbJqIyuqXkmPXxt8wD/vwcy/4fnPFK5VBwgfOiZMy6w8afPcPqpDhCVTNOfExBW
+	fnUfImp1INRySM74yPeOVphMoiw8cy0=
+Date: Thu, 21 Oct 2021 16:28:07 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <keescook@chromium.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Marc Orr <marcorr@google.com>,
-	Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	Xinyang Ge <xing@microsoft.com>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: [PATCH 0/2] x86/sev: Two fixes for SEV-ES VC stack handling
-Date: Thu, 21 Oct 2021 10:08:31 +0200
-Message-Id: <20211021080833.30875-1-joro@8bytes.org>
-X-Mailer: git-send-email 2.33.1
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v6 08/42] x86/sev-es: initialize sev_status/features
+ within #VC handler
+Message-ID: <YXF4914AczWoN8TK@zn.tnic>
+References: <20211008180453.462291-1-brijesh.singh@amd.com>
+ <20211008180453.462291-9-brijesh.singh@amd.com>
+ <YW2EsxcqBucuyoal@zn.tnic>
+ <20211018184003.3ob2uxcpd2rpee3s@amd.com>
+ <YW3IdfMs61191qnU@zn.tnic>
+ <20211020161023.hzbj53ehmzjrt4xd@amd.com>
+ <YXBZYws8NnxiQJD7@zn.tnic>
+ <20211021003535.ic35p6nnxdmavw35@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211021003535.ic35p6nnxdmavw35@amd.com>
 
-From: Joerg Roedel <jroedel@suse.de>
+On Wed, Oct 20, 2021 at 07:35:35PM -0500, Michael Roth wrote:
+> Fortunately, all the code makes use of sev_status to get at the SEV MSR
+> bits, so breaking the appropriate bits out of sme_enable() into an earlier
+> sev_init() routine that's the exclusive writer of sev_status sounds like a
+> promising approach.
 
-Hi,
+Ack.
 
-here are two fixes for recently discovered issues in the handling of
-VC handler stack.
+> It makes sense to do it immediately after the first #VC handler is set
+> up, so CPUID is available, and since that's where SNP CPUID table
+> initialization would need to happen if it's to be made available in
+> #VC handler.
 
-Please review.
+Right, and you can do all your init/CPUID prep there.
 
-Thanks,
+> It may even be similar enough between boot/compressed and run-time kernel
+> that it could be a shared routine in sev-shared.c.
 
-	Joerg
+Uuh, bonus points! :-)
 
-Joerg Roedel (2):
-  x86/sev: Fix stack type check in vc_switch_off_ist()
-  x86/sev: Allow #VC exceptions on the VC2 stack
+> But then again it also sounds like the appropriate place to move the
+> snp_cpuid_init*() calls, and locating the cc_blob, and since there's
+> differences there it might make sense to keep the boot/compressed and
+> kernel proper sev_init() routines separate to avoid #ifdeffery).
+>
+> Not to get ahead of myself though. Just seems like a good starting point
+> for how to consolidate the various users.
 
- arch/x86/kernel/sev.c   | 21 +++++++++++++++++----
- arch/x86/kernel/traps.c |  2 +-
- 2 files changed, 18 insertions(+), 5 deletions(-)
+I like how you're thinking. :)
 
+> Got it, and my apologies if I've given you that impression as it's
+> certainly not my intent. (though I'm sure you've heard that before.)
 
-base-commit: 519d81956ee277b4419c723adfb154603c2565ba
+Nothing to apologize - all good.
+
+> Agreed, if we need to check SEV MSR early for the purposes of SNP it makes
+> sense to move the overall SEV feature detection code earlier as well. I
+> should have looked into that aspect more closely before introducing the
+> changes.
+
+Thx.
+
 -- 
-2.33.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
