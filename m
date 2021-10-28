@@ -1,146 +1,104 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AB62C9F
-	for <linux-coco@lists.linux.dev>; Wed, 27 Oct 2021 21:15:40 +0000 (UTC)
-Received: by mail-lf1-f44.google.com with SMTP id j2so9003267lfg.3
-        for <linux-coco@lists.linux.dev>; Wed, 27 Oct 2021 14:15:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZUzj8OdRUyoCesvY9oYCJsi3ZMdPAltpXbUySPTyBuc=;
-        b=ZIKZfwDyLiBXM4FTpiIdXUlr5R+dGI4KZkzsZUVmNpqPvYo82Eg9+mHUocDVdvsZRp
-         bHC9ooluOVD3eOGj7LPilAH9no8kzTwRRuYP+1gemifBf9EmDbJHIc5OrlyAX3AErpYL
-         rCUkbQ4oC/0/RC8tdZ8NSo7568axnml9rN/sSJ5mA2MGDa5CgiyJRlLuhtN1U3Q4WSCG
-         AnMNeoEa0RpKePUuZlZiGhzIsuYPu5BLCjJhMGzARP7vYLxtIXT7UyovYQkTwrt82WqU
-         9RBNxTpyNJrocw3u98bizPwdzQxbEvMV670aQO7grbt5qAOhoDZmzAPqEDsUVxS/KD76
-         ZNrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZUzj8OdRUyoCesvY9oYCJsi3ZMdPAltpXbUySPTyBuc=;
-        b=jzJjhnSZdxXK3sZv9Mzb0LYwr5ZrEGGLiD589May4llrlNABMSyMLfKca43y5U4Tb5
-         11Ol8bGAzJwRgB8DJKFtdQkFRG/dAA3KHBXv+2okr7EMW+PxeCXKXZb2niaCOxz2FGID
-         s7jp459tKOl6lXrm3zA9ykve4ng/6wwXbGGbRwnMdwO8VTgfIkKnB3J4BBLd6r2v0nuV
-         dDpKfLKgfB458skILts0MM53CfjKFJpzNn+VVKOdL53DzL7LRhxsHqQPw1MwJ3us/9Z7
-         jzRXsBgXkl/oOWiOQeXD0Ms4LKh62t/yn/s+GPuLqTSJuUu0F+istogs/AYWbVxzJEyM
-         ClEg==
-X-Gm-Message-State: AOAM531B5OiTNvbi6xzRyCSjXrrrNr9WECJsvMFBCTUZ5V9shX89KCPH
-	iidM0VjQr7NyGSCg3h46l4VZlg2bdMJ71iR0naUD3w==
-X-Google-Smtp-Source: ABdhPJybiFy4oIGNhhlBmd8VY61nM798zr2vK1FyUgViR6EzKUCgaGgxcLv7n9sV9CUY4RPDWZNVBYEO2FFLs9wKsoY=
-X-Received: by 2002:a05:6512:39d1:: with SMTP id k17mr95057lfu.79.1635369338308;
- Wed, 27 Oct 2021 14:15:38 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57272C82
+	for <linux-coco@lists.linux.dev>; Thu, 28 Oct 2021 15:07:12 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f13a70087f257aa50e887e8.dip0.t-ipconnect.de [IPv6:2003:ec:2f13:a700:87f2:57aa:50e8:87e8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 949121EC066A;
+	Thu, 28 Oct 2021 17:07:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1635433622;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=J04OyLRjmP/Bb50HHEZHiheIH7udus/52nzjDQ9g+3E=;
+	b=VaGwp2OPxwdjgKaxM7E+eksULkuJb7cCcbi4a60aTInd/N+MvwhVeTu4DVX0rswnJY0h8g
+	9pIIL/v19aDofBPs1LcMHiGfoFG6Dfzu/M/fJROUeBI7vWamyEn02d9fikieFvfH2VWi37
+	KENovLjUyCmLl1N20a7v1V9B1DFCIE0=
+Date: Thu, 28 Oct 2021 17:07:00 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v6 11/42] x86/sev: Check the vmpl level
+Message-ID: <YXq8lJHDa+Rdnizt@zn.tnic>
+References: <20211008180453.462291-1-brijesh.singh@amd.com>
+ <20211008180453.462291-12-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20211008180453.462291-1-brijesh.singh@amd.com>
- <20211008180453.462291-41-brijesh.singh@amd.com> <CAMkAt6rPVsJpvdzwG3Keu3gv=n0hmYdDpYJMVoDP7XgwzvH7vQ@mail.gmail.com>
- <bf55b53c-cc3d-f2c3-cf21-df6fb4882e13@amd.com> <CAMkAt6pCSNZiB7zVXp=70fF-qORZT0D5KCSY=GrJU0iiLZN_Mw@mail.gmail.com>
- <943a1b7d-d867-5daa-e2e7-f0d91de37103@amd.com> <CAMkAt6qPHtOy8ONBtjn4V28P5F5qqQtnP2sD5YrBjbe_Uwkdcg@mail.gmail.com>
- <ecfe3b3a-0a7d-86e7-08fb-f693bfa9255b@amd.com>
-In-Reply-To: <ecfe3b3a-0a7d-86e7-08fb-f693bfa9255b@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Wed, 27 Oct 2021 15:15:26 -0600
-Message-ID: <CAMkAt6pgXJ5vop5j7BNF_FQ6ZbWKWCCfUmic2yx3kk0Z1AvJwA@mail.gmail.com>
-Subject: Re: [PATCH v6 40/42] virt: Add SEV-SNP guest driver
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-	kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Joerg Roedel <jroedel@suse.de>, Tom Lendacky <Thomas.Lendacky@amd.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>, tony.luck@intel.com, Marc Orr <marcorr@google.com>, 
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211008180453.462291-12-brijesh.singh@amd.com>
 
-On Wed, Oct 27, 2021 at 3:13 PM Brijesh Singh <brijesh.singh@amd.com> wrote:
->
->
->
-> On 10/27/21 4:05 PM, Peter Gonda wrote:
-> ....
->
-> >>>>>
-> >>>>> Thanks for updating this sequence number logic. But I still have some
-> >>>>> concerns. In verify_and_dec_payload() we check the encryption header
-> >>>>> but all these fields are accessible to the hypervisor, meaning it can
-> >>>>> change the header and cause this sequence number to not get
-> >>>>> incremented. We then will reuse the sequence number for the next
-> >>>>> command, which isn't great for AES GCM. It seems very hard to tell if
-> >>>>> the FW actually got our request and created a response there by
-> >>>>> incrementing the sequence number by 2, or if the hypervisor is acting
-> >>>>> in bad faith. It seems like to be safe we need to completely stop
-> >>>>> using this vmpck if we cannot confirm the PSP has gotten our request
-> >>>>> and created a response. Thoughts?
-> >>>>>
-> >>>>
-> >>>> Very good point, I think we can detect this condition by rearranging the
-> >>>> checks. The verify_and_dec_payload() is called only after the command is
-> >>>> succesful and does the following checks
-> >>>>
-> >>>> 1) Verifies the header
-> >>>> 2) Decrypts the payload
-> >>>> 3) Later we increment the sequence
-> >>>>
-> >>>> If we arrange to the below order then we can avoid this condition.
-> >>>> 1) Decrypt the payload
-> >>>> 2) Increment the sequence number
-> >>>> 3) Verify the header
-> >>>>
-> >>>> The descryption will succeed only if PSP constructed the payload.
-> >>>>
-> >>>> Does this make sense ?
-> >>>
-> >>> Either ordering seems fine to me. I don't think it changes much though
-> >>> since the header (bytes 30-50 according to the spec) are included in
-> >>> the authenticated data of the encryption. So any hypervisor modictions
-> >>> will lead to a decryption failure right?
-> >>>
-> >>> Either case if we do fail the decryption, what are your thoughts on
-> >>> not allowing further use of that VMPCK?
-> >>>
-> >>
-> >> We have limited number of VMPCK (total 3). I am not sure switching to
-> >> different will change much. HV can quickly exaust it. Once we have SVSM
-> >> in-place then its possible that SVSM may use of the VMPCK. If the
-> >> decryption failed, then maybe its safe to erase the key from the secrets
-> >> page (in other words guest OS cannot use that key for any further
-> >> communication). A guest can reload the driver will different VMPCK id
-> >> and try again.
-> >
-> > SNP cannot really cover DOS at all since the VMM could just never
-> > schedule the VM. In this case we know that the hypervisor is trying to
-> > mess with the guest, so my preference would be to stop sending guest
-> > messages to prevent that duplicated IV usage. If one caller gets an
-> > EBADMSG it knows its in this case but the rest of userspace has no
-> > idea. Maybe log an error?
-> >
-> >>
->
-> Yap, we cannot protect against the DOS. This is why I was saying that we
-> zero the key from secrets page so that guest cannot use that key for any
-> future communication (whether its from rest of userspace or kexec
-> kernel). I can update the driver to log the message and ensure that
-> future messages will *not* use that key. The VMPCK ID is a module
-> params, so a guest can reload the driver to use different VMPCK.
+On Fri, Oct 08, 2021 at 01:04:22PM -0500, Brijesh Singh wrote:
+> +static bool is_vmpl0(void)
+> +{
+> +	u64 attrs, va;
 
-Duh! Sorry I thought you said we needed a VMPL0 SVSM to do that. That
-sounds great.
+That local variable va is not needed.
 
->
->
-> >> thanks
+> +	int err;
+> +
+> +	/*
+> +	 * There is no straightforward way to query the current VMPL level. The
+> +	 * simplest method is to use the RMPADJUST instruction to change a page
+> +	 * permission to a VMPL level-1, and if the guest kernel is launched at
+> +	 * a level <= 1, then RMPADJUST instruction will return an error.
+> +	 */
+> +	attrs = 1;
+> +
+> +	/*
+> +	 * Any page aligned virtual address is sufficent to test the VMPL level.
+
+"page-aligned" ... 				"sufficient"
+
+> +	 * The boot_ghcb_page is page aligned memory, so lets use for the test.
+> +	 */
+> +	va = (u64)&boot_ghcb_page;
+> +
+> +	/* Instruction mnemonic supported in binutils versions v2.36 and later */
+> +	asm volatile (".byte 0xf3,0x0f,0x01,0xfe\n\t"
+> +		      : "=a" (err)
+> +		      : "a" (va), "c" (RMP_PG_SIZE_4K), "d" (attrs)
+> +		      : "memory", "cc");
+
+You're adding a separate rmpadjust() primitive function in patch 24.
+In order to avoid duplication, define that primitive first, just like
+you've done for PVALIDATE in the previous patch and use said primitive
+at both call sites.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
