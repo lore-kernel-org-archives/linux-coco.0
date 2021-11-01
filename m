@@ -1,55 +1,48 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mail.skyhub.de (unknown [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57272C82
-	for <linux-coco@lists.linux.dev>; Thu, 28 Oct 2021 15:07:12 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f13a70087f257aa50e887e8.dip0.t-ipconnect.de [IPv6:2003:ec:2f13:a700:87f2:57aa:50e8:87e8])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB82468
+	for <linux-coco@lists.linux.dev>; Mon,  1 Nov 2021 16:10:46 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0cfa005d2c15110524cf3f.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:fa00:5d2c:1511:524:cf3f])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 949121EC066A;
-	Thu, 28 Oct 2021 17:07:02 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E3EEA1EC0399;
+	Mon,  1 Nov 2021 17:10:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1635433622;
+	t=1635783032;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=J04OyLRjmP/Bb50HHEZHiheIH7udus/52nzjDQ9g+3E=;
-	b=VaGwp2OPxwdjgKaxM7E+eksULkuJb7cCcbi4a60aTInd/N+MvwhVeTu4DVX0rswnJY0h8g
-	9pIIL/v19aDofBPs1LcMHiGfoFG6Dfzu/M/fJROUeBI7vWamyEn02d9fikieFvfH2VWi37
-	KENovLjUyCmLl1N20a7v1V9B1DFCIE0=
-Date: Thu, 28 Oct 2021 17:07:00 +0200
+	bh=cNsdwN4kKqk3161ajpvhRVfJcWO0W7ga/sbEAeYvU0A=;
+	b=gM5qhsjPBTvrmKdXG/5HtueWzax3vGYxTRXR2FVKwwYSC4zZS6r3n2C2iGcZoX8XODyiPL
+	UDWJGYDmI+8ncxmpPCjc9XdxdOETd6fEDqfkkkm/7QTOA5nK6A0sOPB0QozLxu0T4iS7VJ
+	XR0HA2rgVU8uUt/+0SAC+yykmI6XvT8=
+Date: Mon, 1 Nov 2021 17:10:25 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
+To: Eric Biederman <ebiederm@xmission.com>
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+	kexec@lists.infradead.org, Joerg Roedel <jroedel@suse.de>,
+	stable@vger.kernel.org, hpa@zytor.com,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v6 11/42] x86/sev: Check the vmpl level
-Message-ID: <YXq8lJHDa+Rdnizt@zn.tnic>
-References: <20211008180453.462291-1-brijesh.singh@amd.com>
- <20211008180453.462291-12-brijesh.singh@amd.com>
+	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v2 01/12] kexec: Allow architecture code to opt-out at
+ runtime
+Message-ID: <YYARccITlowHABg1@zn.tnic>
+References: <20210913155603.28383-1-joro@8bytes.org>
+ <20210913155603.28383-2-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -58,44 +51,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211008180453.462291-12-brijesh.singh@amd.com>
+In-Reply-To: <20210913155603.28383-2-joro@8bytes.org>
 
-On Fri, Oct 08, 2021 at 01:04:22PM -0500, Brijesh Singh wrote:
-> +static bool is_vmpl0(void)
-> +{
-> +	u64 attrs, va;
+On Mon, Sep 13, 2021 at 05:55:52PM +0200, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
+> 
+> Allow a runtime opt-out of kexec support for architecture code in case
+> the kernel is running in an environment where kexec is not properly
+> supported yet.
+> 
+> This will be used on x86 when the kernel is running as an SEV-ES
+> guest. SEV-ES guests need special handling for kexec to hand over all
+> CPUs to the new kernel. This requires special hypervisor support and
+> handling code in the guest which is not yet implemented.
+> 
+> Cc: stable@vger.kernel.org # v5.10+
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> ---
+>  include/linux/kexec.h |  1 +
+>  kernel/kexec.c        | 14 ++++++++++++++
+>  kernel/kexec_file.c   |  9 +++++++++
+>  3 files changed, 24 insertions(+)
 
-That local variable va is not needed.
+I guess I can take this through the tip tree along with the next one.
 
-> +	int err;
-> +
-> +	/*
-> +	 * There is no straightforward way to query the current VMPL level. The
-> +	 * simplest method is to use the RMPADJUST instruction to change a page
-> +	 * permission to a VMPL level-1, and if the guest kernel is launched at
-> +	 * a level <= 1, then RMPADJUST instruction will return an error.
-> +	 */
-> +	attrs = 1;
-> +
-> +	/*
-> +	 * Any page aligned virtual address is sufficent to test the VMPL level.
-
-"page-aligned" ... 				"sufficient"
-
-> +	 * The boot_ghcb_page is page aligned memory, so lets use for the test.
-> +	 */
-> +	va = (u64)&boot_ghcb_page;
-> +
-> +	/* Instruction mnemonic supported in binutils versions v2.36 and later */
-> +	asm volatile (".byte 0xf3,0x0f,0x01,0xfe\n\t"
-> +		      : "=a" (err)
-> +		      : "a" (va), "c" (RMP_PG_SIZE_4K), "d" (attrs)
-> +		      : "memory", "cc");
-
-You're adding a separate rmpadjust() primitive function in patch 24.
-In order to avoid duplication, define that primitive first, just like
-you've done for PVALIDATE in the previous patch and use said primitive
-at both call sites.
+Eric?
 
 -- 
 Regards/Gruss,
