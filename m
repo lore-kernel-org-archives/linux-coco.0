@@ -1,103 +1,92 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B67668
-	for <linux-coco@lists.linux.dev>; Tue,  2 Nov 2021 16:37:18 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4875068
+	for <linux-coco@lists.linux.dev>; Tue,  2 Nov 2021 16:53:22 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0f6200599060f0a067c463.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:6200:5990:60f0:a067:c463])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9297A212C8;
-	Tue,  2 Nov 2021 16:37:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1635871036; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7nyVmI1mw9hsrpGGFASoS9zmXwbZwXMt3G3NBwpCKoI=;
-	b=oxpUqcVUqOdx58uNgbc5N6ILlWgD3iJ5JPVwc2mdzgH+1mj50dvEB5b+/uhhjl1TRp4gBu
-	LqFrZ2K4t2GlUf0LdITJXWcCqKYJmqnEd8YJ6PgxhFZwI0AAMs5q04OFKDqkXCyB+mTm9w
-	KVRl2sit9AWi35m02eH2qPy1jDHOqoQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1635871036;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7nyVmI1mw9hsrpGGFASoS9zmXwbZwXMt3G3NBwpCKoI=;
-	b=ap4V+wyZXiSnHi24Hqmm/NJJvV092FZptqOKrb38V8qzI3Vs9bcV3t1Y6DRPVnoyqcb2wL
-	AceBPKZEc9ueKnCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 949F313BB8;
-	Tue,  2 Nov 2021 16:37:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id i3BsIjtpgWGhcQAAMHmgww
-	(envelope-from <jroedel@suse.de>); Tue, 02 Nov 2021 16:37:15 +0000
-Date: Tue, 2 Nov 2021 17:37:13 +0100
-From: Joerg Roedel <jroedel@suse.de>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Borislav Petkov <bp@alien8.de>, Joerg Roedel <joro@8bytes.org>,
-	x86@kernel.org, kexec@lists.infradead.org, stable@vger.kernel.org,
-	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F2C4D1EC0532;
+	Tue,  2 Nov 2021 17:53:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1635872001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=edrm3R3EEsBQR1D6gAzpHHTA03yLJ3qMQOUPmrVmSFM=;
+	b=eEDc+58iPJ1KEK5RLv3j8dCETvgVFTaSsrzR7pOdy3VmF7evYjnsJqxOiUibHXeetZf9IZ
+	xeLB0+L9Ka9uKeIjLpvQCSEWbp5E+bOJzk6g31SWdUqzALJiSOaft2W9zfN90hdCFQZWU8
+	VlrsoegkGI4LYkNqaMdK2ReBGgMAbQo=
+Date: Tue, 2 Nov 2021 17:53:15 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v2 01/12] kexec: Allow architecture code to opt-out at
- runtime
-Message-ID: <YYFpOfovSN2Af+ux@suse.de>
-References: <20210913155603.28383-1-joro@8bytes.org>
- <20210913155603.28383-2-joro@8bytes.org>
- <YYARccITlowHABg1@zn.tnic>
- <87pmrjbmy9.fsf@disp2133>
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v6 14/42] x86/sev: Register GHCB memory when SEV-SNP is
+ active
+Message-ID: <YYFs+5UUMfyDgh/a@zn.tnic>
+References: <20211008180453.462291-1-brijesh.singh@amd.com>
+ <20211008180453.462291-15-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87pmrjbmy9.fsf@disp2133>
+In-Reply-To: <20211008180453.462291-15-brijesh.singh@amd.com>
 
-On Mon, Nov 01, 2021 at 04:11:42PM -0500, Eric W. Biederman wrote:
-> I seem to remember the consensus when this was reviewed that it was
-> unnecessary and there is already support for doing something like
-> this at a more fine grained level so we don't need a new kexec hook.
+On Fri, Oct 08, 2021 at 01:04:25PM -0500, Brijesh Singh wrote:
+> +	/* SEV-SNP guest requires that GHCB must be registered. */
+> +	if (cc_platform_has(CC_ATTR_SEV_SNP))
+> +		snp_register_ghcb(data, __pa(ghcb));
 
-It was a discussion, no consenus :)
+This looks like more of that "let's register a GHCB at the time the
+first #VC fires".
 
-I still think it is better to solve this in generic code for everybody
-to re-use than with an hack in the architecture hooks.
+And there already is setup_ghcb() which is called in the #VC handler.
+And that thing registers a GHCB GPA.
 
-More and more platforms which enable confidential computing features
-may need this hook in the future.
+But then you have to do it here again.
 
-Regards,
+I think this should be changed together with the CPUID page detection
+stuff we talked about earlier, where, after you've established that this
+is an SNP guest, you call setup_ghcb() *once* and after that you have
+everything set up, including the GHCB GPA. And then the #VC exceptions
+can come.
+
+Right?
+
+Or is there a chicken-and-an-egg issue here which I'm not thinking
+about?
 
 -- 
-Jörg Rödel
-jroedel@suse.de
+Regards/Gruss,
+    Boris.
 
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5
-90409 Nürnberg
-Germany
- 
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Ivo Totev
+https://people.kernel.org/tglx/notes-about-netiquette
