@@ -1,25 +1,25 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C9F2C96
-	for <linux-coco@lists.linux.dev>; Wed,  3 Nov 2021 14:27:25 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f13290006136262b125c835.dip0.t-ipconnect.de [IPv6:2003:ec:2f13:2900:613:6262:b125:c835])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADD52C85
+	for <linux-coco@lists.linux.dev>; Wed,  3 Nov 2021 16:05:11 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f132900b6e7f8d38363ddad.dip0.t-ipconnect.de [IPv6:2003:ec:2f13:2900:b6e7:f8d3:8363:ddad])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 127091EC0567;
-	Wed,  3 Nov 2021 15:27:24 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 28F7F1EC0521;
+	Wed,  3 Nov 2021 17:05:10 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1635949644;
+	t=1635955510;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=PN13d60ZQ5g2G8iEXh3tkIMCVCu0bXX1/VFUYwMyhZo=;
-	b=hRLfXtHgTs4/Lm9rNp+SY306FCQskMF/7tpsnJV3kuA2NqDuTzGrs+Bjpdfm1FnKyEzrBI
-	uuDrkCL5NNlFxWSJ0YptWv30kTilcRNvxBXYdwApFSD4DYkUsQyysd1uuiAl7uqSlEYbm+
-	4WjnKmhIKmrbObBfRMq3Z6Hgu8bgyFI=
-Date: Wed, 3 Nov 2021 15:27:23 +0100
+	bh=hczvJZzWas23wFyZUVNmvw9Zj8/3CUViJtfJTHijkGQ=;
+	b=WuWqnChJtaZfbIdyIaFRlTP9ebA7RI0nBVfGARrUjHnzHhhAdFqR2tPRRtiG8E7t+2syA9
+	itIB92r5S6cLtEFpG2guTyITWprCY3GkvFvecGQssemG8oGFgu2Jlb8pOLgjKUw2ria9Fd
+	51DxGVfysKW9auz+L2byXY0CXAmsoXM=
+Date: Wed, 3 Nov 2021 17:05:04 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: Joerg Roedel <joro@8bytes.org>
+To: Joerg Roedel <joro@8bytes.org>, Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, Eric Biederman <ebiederm@xmission.com>,
 	kexec@lists.infradead.org, Joerg Roedel <jroedel@suse.de>,
 	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
@@ -37,11 +37,11 @@ Cc: x86@kernel.org, Eric Biederman <ebiederm@xmission.com>,
 	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v2 03/12] x86/sev: Save and print negotiated GHCB
- protocol version
-Message-ID: <YYKcS2OIzAV+MTzr@zn.tnic>
+Subject: Re: [PATCH v2 05/12] x86/sev: Use GHCB protocol version 2 if
+ supported
+Message-ID: <YYKzMMyhI1M72YIQ@zn.tnic>
 References: <20210913155603.28383-1-joro@8bytes.org>
- <20210913155603.28383-4-joro@8bytes.org>
+ <20210913155603.28383-6-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,28 +50,39 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20210913155603.28383-4-joro@8bytes.org>
+In-Reply-To: <20210913155603.28383-6-joro@8bytes.org>
 
-On Mon, Sep 13, 2021 at 05:55:54PM +0200, Joerg Roedel wrote:
+On Mon, Sep 13, 2021 at 05:55:56PM +0200, Joerg Roedel wrote:
 > From: Joerg Roedel <jroedel@suse.de>
 > 
-> Save the results of the GHCB protocol negotiation into a data structure
-> and print information about versions supported and used to the kernel
-> log.
+> Check whether the hypervisor supports GHCB version 2 and use it if
+> available.
+> 
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> ---
+>  arch/x86/boot/compressed/sev.c | 10 ++++++++--
+>  arch/x86/include/asm/sev.h     |  4 ++--
+>  arch/x86/kernel/sev-shared.c   | 17 ++++++++++++++---
+>  3 files changed, 24 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+> index 101e08c67296..7f8416f76be7 100644
+> --- a/arch/x86/boot/compressed/sev.c
+> +++ b/arch/x86/boot/compressed/sev.c
+> @@ -119,16 +119,22 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
+>  /* Include code for early handlers */
+>  #include "../../kernel/sev-shared.c"
+>  
+> +static unsigned int ghcb_protocol;
 
-Which is useful for?
+I guess you need to sync up with Brijesh on what to use:
 
-> +/*
-> + * struct sev_ghcb_protocol_info - Used to return GHCB protocol
-> + *				   negotiation details.
-> + *
-> + * @hv_proto_min:	Minimum GHCB protocol version supported by Hypervisor
-> + * @hv_proto_max:	Maximum GHCB protocol version supported by Hypervisor
-> + * @vm_proto:		Protocol version the VM (this kernel) will use
-> + */
-> +struct sev_ghcb_protocol_info {
+https://lore.kernel.org/r/20211008180453.462291-7-brijesh.singh@amd.com
 
-Too long a name - ghcb_info is perfectly fine.
+And if ghcb_version there is __ro_after_init I think that's perfectly
+fine and doesn't need an accessor...
+
+Thx.
 
 -- 
 Regards/Gruss,
