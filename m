@@ -1,70 +1,87 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EDE2C96
-	for <linux-coco@lists.linux.dev>; Thu,  4 Nov 2021 16:03:20 +0000 (UTC)
-Received: from [127.0.0.1] (dynamic-046-114-037-055.46.114.pool.telefonica.de [46.114.37.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE7C2C96
+	for <linux-coco@lists.linux.dev>; Mon,  8 Nov 2021 18:14:20 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f3311008f2ddbd2a2570897.dip0.t-ipconnect.de [IPv6:2003:ec:2f33:1100:8f2d:dbd2:a257:897])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E61611EC03AD;
-	Thu,  4 Nov 2021 17:03:18 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3AAEC1EC03F0;
+	Mon,  8 Nov 2021 19:14:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1636041799;
+	t=1636395258;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a4evrOHd0IfTyrs3k9/fwX+W/P75BgRT5NqUyOT/QhA=;
-	b=MfYrIi/NzQzu7+bUg8+JE8a/TjdlOnIxd1Ge1UeACXOJRNorLjOjCGPP2/IX3XfM4XWYch
-	J+HgUXwKITXMoxJV2gESgaK97zM9aRSiRhSnUzToelJvc4z36gX3fHpH5mvFXVlQXFcdzp
-	cs5LiiOtD9sx6+Z9xuk74MSKNsFALDI=
-Date: Thu, 04 Nov 2021 16:03:15 +0000
-From: Boris Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-CC: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-efi@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- Andy Lutomirski <luto@kernel.org>, Sergio Lopez <slp@redhat.com>,
- platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
- Joerg Roedel <jroedel@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
- Ingo Molnar <mingo@redhat.com>, tony.luck@intel.com,
- Thomas Gleixner <tglx@linutronix.de>, Jim Mattson <jmattson@google.com>,
- Ard Biesheuvel <ardb@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Gonda <pgonda@google.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
- Sean Christopherson <seanjc@google.com>, Michael Roth <michael.roth@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Tobin Feldman-Fitzthum <tobin@ibm.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, marcorr@google.com,
- Andi Kleen <ak@linux.intel.com>, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v6_14/42=5D_x86/sev=3A_Regist?= =?US-ASCII?Q?er_GHCB_memory_when_SEV-SNP_is_active?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <47815dd4-f9ac-b141-2852-8f48c8299a5e@amd.com>
-References: <20211008180453.462291-1-brijesh.singh@amd.com> <20211008180453.462291-15-brijesh.singh@amd.com> <YYFs+5UUMfyDgh/a@zn.tnic> <aea0e0c8-7f03-b9db-3084-f487a233c50b@amd.com> <YYGGv6EtWrw7cnLA@zn.tnic> <a975dfbf-f9bb-982e-9814-7259bc075b71@amd.com> <YYPnGeW+8tlNgW34@zn.tnic> <47815dd4-f9ac-b141-2852-8f48c8299a5e@amd.com>
-Message-ID: <C01A4C34-D84A-4489-A2D0-91003B9B564C@alien8.de>
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=+HGdXgtqs75JzplHr1fw8l9R7E0Ax8B0+CMXZj7tYjw=;
+	b=JOTcUpAORtYs0vDLl0qwwB7gRevj19RPVQHhG0QnjV5H/+dFLUvZBr9eW8eD4MBeAbTe8q
+	N1UJwyZcsZojb6gTtwokrIVzEF5ZNpa4bsRYBo2kogWFnFZ3eJK+CGqccZzTKdVImeb73m
+	cRq530yqjggDJ4iaaeEGU22Nz6iYaRk=
+Date: Mon, 8 Nov 2021 19:14:12 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Eric Biederman <ebiederm@xmission.com>,
+	kexec@lists.infradead.org, Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v2 06/12] x86/sev: Cache AP Jump Table Address
+Message-ID: <YYlo9IhvDNr2FvK4@zn.tnic>
+References: <20210913155603.28383-1-joro@8bytes.org>
+ <20210913155603.28383-7-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210913155603.28383-7-joro@8bytes.org>
 
-On November 4, 2021 3:26:56 PM UTC, Brijesh Singh <brijesh=2Esingh@amd=2Eco=
-m> wrote:
->Of course, the current patch does not suffer with it=2E Let me know your=
-=20
->preference=2E
+On Mon, Sep 13, 2021 at 05:55:57PM +0200, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
+> 
+> Store the physical address of the AP Jump Table in kernel memory so
+> that it does not need to be fetched from the Hypervisor again.
+> 
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> ---
+>  arch/x86/kernel/sev.c | 26 ++++++++++++++------------
+>  1 file changed, 14 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 5d3422e8b25e..eedba56b6bac 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -42,6 +42,9 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>   */
+>  static struct ghcb __initdata *boot_ghcb;
+>  
+> +/* Cached AP Jump Table Address */
+> +static phys_addr_t sev_es_jump_table_pa;
 
-Whatever keeps the code simpler=2E
+This is static, so "jump_table_pa" should be enough.
 
-Thx=2E
+Also, to the prefixes, everything which is not SEV-ES only, should be
+simply prefixed with "sev_" if externally visible.
 
---=20
-Sent from a small device: formatting sux and brevity is inevitable=2E 
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
