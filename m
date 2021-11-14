@@ -1,123 +1,190 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D7E2C82
-	for <linux-coco@lists.linux.dev>; Sat, 13 Nov 2021 18:34:57 +0000 (UTC)
-Received: by mail-pg1-f170.google.com with SMTP id e65so10872240pgc.5
-        for <linux-coco@lists.linux.dev>; Sat, 13 Nov 2021 10:34:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1799A72
+	for <linux-coco@lists.linux.dev>; Sun, 14 Nov 2021 07:41:23 +0000 (UTC)
+Received: by mail-ot1-f43.google.com with SMTP id a23-20020a9d4717000000b0056c15d6d0caso14337029otf.12
+        for <linux-coco@lists.linux.dev>; Sat, 13 Nov 2021 23:41:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=zSxj8eRX0cnZYbcOeH01JUaZh5KPAX40UEWt0+2IJiM=;
-        b=NGgVBK0eIHprea6mvLCk+5HiStmbJEiIRPJQRX+o5aC3tSlJkXN3kamK5bFgym//aa
-         6KOd4p512Oy5/fNf3MbduQ39nKhukOr7CCnKpuyi3YhCyWaEAc6Dd2TIM9s0HuaItkbq
-         vNfddajdmOPiGl0PyNKqY2hon4hYsuQHJvhuqfG5uxdLPfAW6rOrZBLLlaSWlNhQss1q
-         BCI7DLCqDKJv+wkROMwzJQ+xn2NZF6njWm8eA0hhyzjuuElnSrWIsaN92o+K/j7sRM3v
-         bcz/TnaZabI69pok77atryvFxVbqUynR3hethfIzf4yQMntzJm86GsFwEMwKmoogd9Em
-         tdfQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GEl8pUyPdu8dWglxcmM2AFwvu3sjrwE52t1dq7OvmyI=;
+        b=GTfhVUMILBRMcmbX0uDr3r96tVbHG888gOAidYX8RaKrS4MvB2MgTxshS/RmkPdVCZ
+         RdgglUUfb65voHbEv/tuZFy3+tfwO6vRghjwsCW7vZ8cGrOYr4urxYowWa85qJ/EyVUn
+         bbmod8GxmXTo+r1ViIFnklNEP3EkrAOKZwbNa/hh1E0GVqM2FMIsstoU3EcpMGztE3GV
+         Rxr336bgKkh9AKX+OVM9kvzKYFf2ZNBiBJnB9gSLvINhiFTL7Igz52+EsexoKZg1V3lT
+         dmutXkZcHmaQ6FZ6WKp3WDfUKbZOVLUz0geXPdnoavu6+Ou2eXY5/Nz0C4mSiU3b7Kc8
+         OgPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=zSxj8eRX0cnZYbcOeH01JUaZh5KPAX40UEWt0+2IJiM=;
-        b=NOLkIxUzg6z726fFeBcOJXt06DcrFbhk8aPbysbE9kZuffXt7DR9/UxfV59PcKjNef
-         Zq7p0xvJpb4WuAzC5OzXswFs0PXBy+tA7SYX+PlfvWH0r7FvIzJFiK4M6z4+3IdNaJEJ
-         PuXNsfBeRlraNc/R8OniaQRrWXvb6U8metzHVJqSEwbr8yfEJ70nP9ksIsfV3X4safxE
-         quSEhAPLmSs6oakb7azknYpqJ4NqqEjHf6OUFwrkBtnudgVsbTHEAd63Rp3s5/3/1zjO
-         KM5i8QIyydrjAEAVCRdAytLfb9y08kN3JbXWBto41xk0/ilMsug2K+Qxv+XnItIvhuLl
-         L0Vg==
-X-Gm-Message-State: AOAM530RA3fLwnYBqyn0BSpCbTTNGXJkbPn+TYfrK6Wh6fJe9/xOzBYt
-	+wMMmmK59B0jaM+TtFtZUkPdww==
-X-Google-Smtp-Source: ABdhPJxeDdCpGqvSMmznYnDhqmjUQVZ7YRfHUv6xQxIKfIgqzs5xPqbn0hQnNT4ChktEWJKfOne+lQ==
-X-Received: by 2002:a63:86c1:: with SMTP id x184mr14326986pgd.469.1636828496852;
-        Sat, 13 Nov 2021 10:34:56 -0800 (PST)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id ml24sm8101994pjb.16.2021.11.13.10.34.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Nov 2021 10:34:56 -0800 (PST)
-Date: Sat, 13 Nov 2021 18:34:52 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Orr <marcorr@google.com>
-Cc: Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <Thomas.Lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <Michael.Roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
- Hypervisor Support
-Message-ID: <YZAFTBXtC/yS7xtq@google.com>
-References: <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
- <061ccd49-3b9f-d603-bafd-61a067c3f6fa@intel.com>
- <YY6z5/0uGJmlMuM6@zn.tnic>
- <YY7FAW5ti7YMeejj@google.com>
- <YY7I6sgqIPubTrtA@zn.tnic>
- <YY7Qp8c/gTD1rT86@google.com>
- <YY7USItsMPNbuSSG@zn.tnic>
- <CAMkAt6o909yYq3NfRboF3U3V8k-2XGb9p_WcQuvSjOKokmMzMA@mail.gmail.com>
- <YY8AJnMo9nh3tyPB@google.com>
- <CAA03e5G=fY7_qESCuoHW3_VdVbDWekqQxmvLPzWNepBqJjyCXg@mail.gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GEl8pUyPdu8dWglxcmM2AFwvu3sjrwE52t1dq7OvmyI=;
+        b=Ya1YvTgYDoAYeVS0pYYEA6CVbD0zhSbiQNgIQa0TmNvgrRbA0UUfvRWdHogkJUCGbM
+         yGhdoWnNqMhw8nRb+eisGmVpyUysC8WPxbwP2PwR5jvlYD9BZWMEFnTZnFdbxbsUC2OU
+         LOK5swwsabqIjnn+Z/59q0DSH713jM26HfXtlwpZHenpVNIjbOqgiClIWqWUAZc/PnmQ
+         d4lp5CTds66fGeMJ4Ib9nAqfOCOJG6VMnmxNAiTR7XlgVKYiohbsTQcEUNzMgA34pTss
+         O9tcRFKDZStVa0C1MpBZC5uYWhAVT/0iDqYnpTtE5Nc0WgpFxCqz8fxw097oPIDyu/FX
+         CzDA==
+X-Gm-Message-State: AOAM5302VaFoMeKDN0kBPgwMFfK8lhj+xDJXKF4VVECsX4ITm84IEesh
+	pNiOFyleFWM9MXMIfvOW9BVa8Q0ypSlJQzgKP1EcOQ==
+X-Google-Smtp-Source: ABdhPJyvs99INqk1PmO0KDPewAuQ93vzw5FTqPd5+5RTQC48tx1y9C6LKAk3lzClSSsXgAvZf15tBdja15MoM4TeakQ=
+X-Received: by 2002:a9d:644e:: with SMTP id m14mr23277722otl.29.1636875681818;
+ Sat, 13 Nov 2021 23:41:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA03e5G=fY7_qESCuoHW3_VdVbDWekqQxmvLPzWNepBqJjyCXg@mail.gmail.com>
+References: <YY6z5/0uGJmlMuM6@zn.tnic> <YY7FAW5ti7YMeejj@google.com>
+ <YY7I6sgqIPubTrtA@zn.tnic> <YY7Qp8c/gTD1rT86@google.com> <CAA03e5GwHMPYHHq3Nkkq1HnEJUUsw-Vk+5wFCott3pmJY7WuAw@mail.gmail.com>
+ <2cb3217b-8af5-4349-b59f-ca4a3703a01a@www.fastmail.com> <CAA03e5Fw9cRnb=+eJmzEB+0QmdgaGZ7=fPTUYx7f55mGVXLRMA@mail.gmail.com>
+ <CAMkAt6q9Wsw_KYypyZxhA1gkd=kFepk5rC5QeZ6Vo==P6=EAxg@mail.gmail.com>
+ <YY8Mi36N/e4PzGP0@google.com> <CAA03e5F=7T3TcJBksiJ9ovafX65YfzAc0S+uYu5LjfTQ60yC7w@mail.gmail.com>
+ <YZADwHxsx5cZ6m47@google.com>
+In-Reply-To: <YZADwHxsx5cZ6m47@google.com>
+From: Marc Orr <marcorr@google.com>
+Date: Sat, 13 Nov 2021 23:41:10 -0800
+Message-ID: <CAA03e5HwYtn+eG1f5eP-SrZPyE4D2uf0v10=VkVoTNQQk87Kew@mail.gmail.com>
+Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+To: Sean Christopherson <seanjc@google.com>
+Cc: Peter Gonda <pgonda@google.com>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@intel.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	"the arch/x86 maintainers" <x86@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	Tom Lendacky <Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
+	Jim Mattson <jmattson@google.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Sergio Lopez <slp@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, 
+	Michael Roth <Michael.Roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
+	Tony Luck <tony.luck@intel.com>, 
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Nov 12, 2021, Marc Orr wrote:
-> > > > If *it* is the host kernel, then you probably shouldn't do that -
-> > > > otherwise you just killed the host kernel on which all those guests are
-> > > > running.
+On Sat, Nov 13, 2021 at 10:28 AM Sean Christopherson <seanjc@google.com> wrote:
+>
+> On Fri, Nov 12, 2021, Marc Orr wrote:
+> > On Fri, Nov 12, 2021 at 4:53 PM Sean Christopherson <seanjc@google.com> wrote:
+> > > On Fri, Nov 12, 2021, Peter Gonda wrote:
+> > > > Having a way for userspace to lock pages as shared was an idea I just
+> > > > proposed the simplest solution to start the conversation.
 > > >
-> > > I agree, it seems better to terminate the single guest with an issue.
-> > > Rather than killing the host (and therefore all guests). So I'd
-> > > suggest even in this case we do the 'convert to shared' approach or
-> > > just outright terminate the guest.
+> > > Assuming you meant that to read:
 > > >
-> > > Are there already examples in KVM of a KVM bug in servicing a VM's
-> > > request results in a BUG/panic/oops? That seems not ideal ever.
+> > >   Having a way for userspace to lock pages as shared is an alternative idea; I
+> > >   just proposed the simplest solution to start the conversation.
+> > >
+> > > The unmapping[*] guest private memory proposal is essentially that, a way for userspace
+> > > to "lock" the state of a page by requiring all conversions to be initiated by userspace
+> > > and by providing APIs to associate a pfn 1:1 with a KVM instance, i.e. lock a pfn to
+> > > a guest.
+> > >
+> > > Andy's DMA example brings up a very good point though.  If the shared and private
+> > > variants of a given GPA are _not_ required to point at a single PFN, which is the
+> > > case in the current unmapping proposal, userspace doesn't need to do any additional
+> > > juggling to track guest conversions across multiple processes.
+> > >
+> > > Any process that's accessing guest (shared!) memory simply does its locking as normal,
+> > > which as Andy pointed out, is needed for correctness today.  If the guest requests a
+> > > conversion from shared=>private without first ensuring the gfn is unused (by a host
+> > > "device"), the host will side will continue accessing the old, shared memory, which it
+> > > locked, while the guest will be doing who knows what.  And if the guest provides a GPA
+> > > that isn't mapped shared in the VMM's address space, it's conceptually no different
+> > > than if the guest provided a completely bogus GPA, which again needs to be handled today.
+> > >
+> > > In other words, if done properly, differentiating private from shared shouldn't be a
+> > > heavy lift for host userspace.
+> > >
+> > > [*] Actually unmapping memory may not be strictly necessary for SNP because a
+> > >     #PF(RMP) is likely just as good as a #PF(!PRESENT) when both are treated as
+> > >     fatal, but the rest of the proposal that allows KVM to understand the stage
+> > >     of a page and exit to userspace accordingly applies.
 > >
-> > Plenty of examples.  kvm_spurious_fault() is the obvious one.  Any NULL pointer
-> > deref will lead to a BUG, etc...  And it's not just KVM, e.g. it's possible, if
-> > unlikely, for the core kernel to run into guest private memory (e.g. if the kernel
-> > botches an RMP change), and if that happens there's no guarantee that the kernel
-> > can recover.
+> > Thanks for this explanation. When you write "while the guest will be
+> > doing who knows what":
 > >
-> > I fully agree that ideally KVM would have a better sense of self-preservation,
-> > but IMO that's an orthogonal discussion.
-> 
-> I don't think we should treat the possibility of crashing the host
-> with live VMs nonchalantly. It's a big deal. Doing so has big
-> implications on the probability that any cloud vendor wil bee able to
-> deploy this code to production. And aren't cloud vendors one of the
-> main use cases for all of this confidential compute stuff? I'm
-> honestly surprised that so many people are OK with crashing the host.
+> > Isn't that a large weakness of this proposal? To me, it seems better
+> > for debuggability to corrupt the private memory (i.e., convert the
+> > page to shared) so the guest can detect the issue via a PVALIDATE
+> > failure.
+>
+> The behavior is no different than it is today for regular VMs.
 
-I'm not treating it nonchalantly, merely acknowledging that (a) some flavors of kernel
-bugs (or hardware issues!) are inherently fatal to the system, and (b) crashing the
-host may be preferable to continuing on in certain cases, e.g. if continuing on has a
-high probablity of corrupting guest data.
+Isn't this counter to the sketch you laid out earlier where you wrote:
+
+--- QUOTE START ---
+  - if userspace accesses guest private memory, it gets SIGSEGV or whatever.
+  - if kernel accesses guest private memory, it does BUG/panic/oops[*]
+  - if guest accesses memory with the incorrect C/SHARED-bit, it gets killed.
+--- QUOTE END ---
+
+Here, the guest does not get killed. Which seems hard to debug.
+
+> > The main issue I see with corrupting the guest memory is that we may
+> > not know whether the host is at fault or the guest.
+>
+> Yes, one issue is that bugs in the host will result in downstream errors in the
+> guest, as opposed to immediate, synchronous detection in the guest.  IMO that is
+> a significant flaw.
+
+Nobody wants bugs in the host. Once we've hit one -- and we will --
+we're in a bad situation. The question is how will we handle these
+bugs. I'm arguing that we should design the system to be as robust as
+possible.
+
+I agree that immediate, synchronous detection in the guest is ideal.
+But at what cost? Is it worth killing _ALL_ VMs on the system? That's
+what we're doing when we crash host-wide processes, or even worse, the
+kernel itself.
+
+The reality is that guests must be able to detect writes to their
+private memory long after they have occurred. Both SNP and TDX are
+designed this way! For SNP the guest gets a PVALIDATE failure when it
+reads the corrupted memory. For TDX, my understanding is that the
+hardware fails to verify an HMAC over a page when it's read by the
+guest.
+
+The argument I'm making is that the success of confidential VMs -- in
+both SNP and TDX -- depends on the guest being able to detect that its
+private memory has been corrupted in a delayed and asynchronous
+fashion. We should be leveraging this fact to make the entire system
+more robust and reliable.
+
+> Another issue is that the host kernel, which despite being "untrusted", absolutely
+> should be acting in the best interests of the guest.  Allowing userspace to inject
+> #VC, e.g. to attempt to attack the guest by triggering a spurious PVALIDATE, means
+> the kernel is failing miserably on that front.
+
+The host is acting in the best interests of the guest. That's why
+we're having this debate :-). No-one here is trying to write host code
+to sabotage the guest. Quite the opposite.
+
+But what happens when we mess up? That's what this conversation is really about.
+
+If allowing userspace to inject #VC into the guest means that the host
+can continue to serve other guests, that seems like a win. The
+alternative, to blow up the host, essentially expands the blast radius
+from a single guest to all guests.
+
+Also, these attacks go both ways. As we already discussed, the guest
+may try to trick the host into writing its own private memory. Yes,
+the entire idea to literally make that impossible is a good one -- in
+theory. But it's also very complicated. And what happens if we get
+that wrong? Now our entire host is at risk from a single guest.
+
+Leveraging the system-wide design of SNP and TDX -- where a detecting
+writes to private memory asynchronously is table stakes -- increases
+the reliability of the entire system. And, as Peter mentioned earlier
+on, we can always incorporate any future work to make writing private
+memory impossible into SNP, on top of the code to convert the shared
+page to private. This way, we get reliability in depth, and minimize
+the odds of crashing the host -- and its VMs.
