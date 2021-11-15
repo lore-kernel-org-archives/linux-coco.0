@@ -1,130 +1,116 @@
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F48E72
-	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 18:41:27 +0000 (UTC)
-Received: by mail-oi1-f169.google.com with SMTP id w199so3513448oiw.4
-        for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 10:41:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DvmCs80nJQRJulfMPNgITfN/kpc9dv/WOKQeVjWwio4=;
-        b=D2Mt+z865FvjQUumFXEdNURlsU2N9UC/MMmG8rlUqPypkNsBqmKRw0im+95vMwMZt+
-         lOyHOqJBT2Wf61emETZgh/H8MwFKn+7mxNspVDUE3ab/thq8z8MqaNv5E3cFC88Dhb1D
-         kozJOtu5iF3U6ReVV+IClUxB/KJuaaQOSaFzBpZV/RSinsd98IOm4cNGt+PpulbFPi4G
-         fh0anmlEfno22cJKa2/xdP2buGHXZVvlyBs3T5g9PgR1ul84hlgBs7kIQv+hZicSWIx/
-         DFY+BXoYlqwxk1FLb90BO7ox0VLE0OsYnIeGGKqSrw6S20pm4gRfEwAzqEUKSDwO5qAw
-         9xyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DvmCs80nJQRJulfMPNgITfN/kpc9dv/WOKQeVjWwio4=;
-        b=m326YGH3bDmK/fCB4yI8S/7NYe9zkIuuNVxFiNjzUG0iu1O+LdZkbrVGvMjIk4EcVl
-         qjlokRawDVEuHKyHNcfma07BtOmMet+dxsl7yiq60gQQ+OtZrALO2rQ7UEzZPGYUQNCf
-         3BjE0qFN7LWu5c24LC0gmyTRaO5J34fODkaJiZrRP0+Euy0xvekd2UcUKGBtzLYOohK+
-         wTXG5LEyod2V4jF63u39lqcP7mqeT3plfbRjhQf8Gq8orBO6e8IUIg4it4ySffIuYOkD
-         TfJQRjDm3qm0I/Mer+K/fblCrxUHiaNeLk4STcxwSe/kSS6lk+ZXjczWgx+4gasycn33
-         mFIw==
-X-Gm-Message-State: AOAM530hXCTodJCSLv/TOqd67BPqM0OpTMYSneYmeiTqD6PSKm5O3TPT
-	h6BUmN8VBTjyddaE0Ha8Pha0s5gex6JS6J+enjuu5Q==
-X-Google-Smtp-Source: ABdhPJw+kw8Q07aUefBFMr3P/o64UhYLq5zXtIiaN0731ps80GxSYVXnY4M15E2ojpsZr+HhuXIh46aqRnH7y2V4Jys=
-X-Received: by 2002:a54:4515:: with SMTP id l21mr746806oil.15.1637001686230;
- Mon, 15 Nov 2021 10:41:26 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FCF72
+	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 18:44:29 +0000 (UTC)
+Received: from zn.tnic (p200300ec2f0b5600329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:5600:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 786911EC0298;
+	Mon, 15 Nov 2021 19:44:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1637001857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=dw18rrJWiFMio+f81TkozWlG8A/iKVxyS5zqokyoOIY=;
+	b=Dd/Fwrtnl1uGZiaWkMGZr+MuIA+r4cXwdAOsGb4gW5L9WCr54FaUiBJ6ijdhzKVchrkwr7
+	H2euF1CH6Z7Kw63ePiaRIve/VdIpKgUibVEL+06FxH1ktfvFsacTnl/2rzuuM9NPWXUv9f
+	gHdYxW8TqNvuMpNY3T7pHtvAcVRdXpY=
+Date: Mon, 15 Nov 2021 19:44:14 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Eric Biederman <ebiederm@xmission.com>,
+	kexec@lists.infradead.org, Joerg Roedel <jroedel@suse.de>,
+	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v2 09/12] x86/sev: Use AP Jump Table blob to stop CPU
+Message-ID: <YZKqfsZCxCQCyyeb@zn.tnic>
+References: <20210913155603.28383-1-joro@8bytes.org>
+ <20210913155603.28383-10-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20210820155918.7518-1-brijesh.singh@amd.com> <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
- <061ccd49-3b9f-d603-bafd-61a067c3f6fa@intel.com> <YY6z5/0uGJmlMuM6@zn.tnic>
- <YY7FAW5ti7YMeejj@google.com> <YZJTA1NyLCmVtGtY@work-vm> <YZKmSDQJgCcR06nE@google.com>
-In-Reply-To: <YZKmSDQJgCcR06nE@google.com>
-From: Marc Orr <marcorr@google.com>
-Date: Mon, 15 Nov 2021 10:41:15 -0800
-Message-ID: <CAA03e5E3Rvx0t8_ZrbNMZwBkjPivGKOg5HCShSFYwfkKDDHWtA@mail.gmail.com>
-Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
- Hypervisor Support
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@intel.com>, Peter Gonda <pgonda@google.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	Tom Lendacky <Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, 
-	Michael Roth <Michael.Roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20210913155603.28383-10-joro@8bytes.org>
 
-On Mon, Nov 15, 2021 at 10:26 AM Sean Christopherson <seanjc@google.com> wrote:
->
-> On Mon, Nov 15, 2021, Dr. David Alan Gilbert wrote:
-> > * Sean Christopherson (seanjc@google.com) wrote:
-> > > On Fri, Nov 12, 2021, Borislav Petkov wrote:
-> > > > On Fri, Nov 12, 2021 at 09:59:46AM -0800, Dave Hansen wrote:
-> > > > > Or, is there some mechanism that prevent guest-private memory from being
-> > > > > accessed in random host kernel code?
-> > >
-> > > Or random host userspace code...
-> > >
-> > > > So I'm currently under the impression that random host->guest accesses
-> > > > should not happen if not previously agreed upon by both.
-> > >
-> > > Key word "should".
-> > >
-> > > > Because, as explained on IRC, if host touches a private guest page,
-> > > > whatever the host does to that page, the next time the guest runs, it'll
-> > > > get a #VC where it will see that that page doesn't belong to it anymore
-> > > > and then, out of paranoia, it will simply terminate to protect itself.
-> > > >
-> > > > So cloud providers should have an interest to prevent such random stray
-> > > > accesses if they wanna have guests. :)
-> > >
-> > > Yes, but IMO inducing a fault in the guest because of _host_ bug is wrong.
-> >
-> > Would it necessarily have been a host bug?  A guest telling the host a
-> > bad GPA to DMA into would trigger this wouldn't it?
->
-> No, because as Andy pointed out, host userspace must already guard against a bad
-> GPA, i.e. this is just a variant of the guest telling the host to DMA to a GPA
-> that is completely bogus.  The shared vs. private behavior just means that when
-> host userspace is doing a GPA=>HVA lookup, it needs to incorporate the "shared"
-> state of the GPA.  If the host goes and DMAs into the completely wrong HVA=>PFN,
-> then that is a host bug; that the bug happened to be exploited by a buggy/malicious
-> guest doesn't change the fact that the host messed up.
+On Mon, Sep 13, 2021 at 05:56:00PM +0200, Joerg Roedel wrote:
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 134a7c9d91b6..cd14b6e10f12 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -81,12 +81,19 @@ static __always_inline void sev_es_nmi_complete(void)
+>  		__sev_es_nmi_complete();
+>  }
+>  extern int __init sev_es_efi_map_ghcbs(pgd_t *pgd);
+> +void __sev_es_stop_this_cpu(void);
+> +static __always_inline void sev_es_stop_this_cpu(void)
 
-"If the host goes and DMAs into the completely wrong HVA=>PFN, then
-that is a host bug; that the bug happened to be exploited by a
-buggy/malicious guest doesn't change the fact that the host messed
-up."
-^^^
-Again, I'm flabbergasted that you are arguing that it's OK for a guest
-to exploit a host bug to take down host-side processes or the host
-itself, either of which could bring down all other VMs on the machine.
+What's that for?
 
-I'm going to repeat -- this is not OK! Period.
+IOW, the below seems to build too:
 
-Again, if the community wants to layer some orchestration scheme
-between host userspace, host kernel, and guest, on top of the code to
-inject the #VC into the guest, that's fine. This proposal is not
-stopping that. In fact, the two approaches are completely orthogonal
-and compatible.
+---
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 1f16fc907636..398105580862 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -87,12 +87,7 @@ extern enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+ 					  struct es_em_ctxt *ctxt,
+ 					  u64 exit_code, u64 exit_info_1,
+ 					  u64 exit_info_2);
+-void __sev_es_stop_this_cpu(void);
+-static __always_inline void sev_es_stop_this_cpu(void)
+-{
+-	if (static_branch_unlikely(&sev_es_enable_key))
+-		__sev_es_stop_this_cpu();
+-}
++void sev_es_stop_this_cpu(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 39378357dc5a..7a74b3273f1a 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -694,8 +694,11 @@ void __noreturn sev_jumptable_ap_park(void)
+ }
+ STACK_FRAME_NON_STANDARD(sev_jumptable_ap_park);
+ 
+-void __sev_es_stop_this_cpu(void)
++void sev_es_stop_this_cpu(void)
+ {
++	if (!static_branch_unlikely(&sev_es_enable_key))
++		return;
++
+ 	/* Only park in the AP Jump Table when the code has been installed */
+ 	if (!sev_ap_jumptable_blob_installed)
+ 		return;
 
-But so far I have heard zero reasons why injecting a #VC into the
-guest is wrong. Other than just stating that it's wrong.
+---
 
-Again, the guest must be able to detect buggy and malicious host-side
-writes to private memory. Or else "confidential computing" doesn't
-work. Assuming that's not true is not a valid argument to dismiss
-injecting a #VC exception into the guest.
+And as previously mentioned s/sev_es/sev/ if those are going to be used
+on SNP guests too.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
