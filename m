@@ -1,81 +1,192 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD9372
-	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 19:12:18 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0b5600329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ec:2f0b:5600:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 554C21EC03F0;
-	Mon, 15 Nov 2021 20:12:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1637003536;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=aKAAmx6bEVDNLom3zcfrckgJQQ40sRIQp4MM27nHWBs=;
-	b=R+c0JxUKyGPxFJxdCt4BjJlJ3db2k0Ttq2dHHR7PEVohl0GWkePna62vKsPkJspqzX4kpq
-	89RuQB4IhwxJfmRB1cNZ6er7tVBNkWvpWq3noiubXgD4OXgmeH0sQXRYiaVouyj7cuDFQF
-	mafPpqtU/5X5pUBgrl3wX2Ag4J+iBwE=
-Date: Mon, 15 Nov 2021 20:12:09 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D6272
+	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 19:15:12 +0000 (UTC)
+Received: by mail-pj1-f42.google.com with SMTP id o6-20020a17090a0a0600b001a64b9a11aeso670832pjo.3
+        for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 11:15:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Y6OLQ3pmyLU/AZ8mF6RNILhOeEW50lkatnqGQxIhBPM=;
+        b=NE9Q7X3JQ8LUyUWzz9DeIgL8OoW6QfsSl8vnkAy3xBAwWAiJcKASkCUUxhcuo6wGyj
+         z0tTg0V02jsjXd11PJgj5pF2sV6adXai4Cr/YnvZX6P2JywIyZqrgMvIK1o4b4n3CR4U
+         kb1rRvSa9srpZSUM73KrRPAW7WF63brJAF7P+m9rZj00jlEp1gmZnXael/2ixsugtcfF
+         5ypgZuP4pQNZdnFB+tzrTmgfKrUWEuMx2G8v8dc03lWFP5lJXYJ/csad9Fg7klPM3GOB
+         tMQ6yZKMaygcUZXi1oP+i64HY5Cs9C48DJy9vo9/LqSUFte0HE75KGuv45yY5HXtL2KK
+         KeeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Y6OLQ3pmyLU/AZ8mF6RNILhOeEW50lkatnqGQxIhBPM=;
+        b=N2QS+h8zzgwh4h+rNfcnHS03weeKdyUZTWbsqCRS2F9YWR0CKv3Wc8OxKT1eJg2c44
+         ZGutUaCT9XGrbcSTurRtfpqyLXaBBt93aiwPH1Lw82o3kpzopRJqaS8l9PdpU3JQsbyQ
+         B6XIQG9OjfUPPiYY9Xh8mJKkuDo5sXRo1FpmBD+YJl+hmQ0q84B2lfFS0h1YiYXdO31o
+         euRVw7t2BDN12svaoI4kpZx90qZBe5RJH2dwGCom7WT1gEQbYP+rY2HlxkjHEh7jIGLY
+         pLg1ehwGHqvoUUoq9+xgzZzdGz0kVoZfrVOyU5dU/anSrqChlFu1IC7ZpcvC4Ihqypwd
+         sTXw==
+X-Gm-Message-State: AOAM531+NQmyrlRtIm3hQp84x2h/3julJyNXAs7WNEsn5jBOP+tZoZ+K
+	bmbDsd2P6OG/PrRh7ArhcSPIOg==
+X-Google-Smtp-Source: ABdhPJwIFe7bp49F+hbCo4lJVLh4GeyP1ulE3zxQubU+9fPyf7wjxXFI+ZxzYa7IzMeEdwHA9OfIBA==
+X-Received: by 2002:a17:902:f24a:b0:141:c6fc:2e18 with SMTP id j10-20020a170902f24a00b00141c6fc2e18mr38537915plc.55.1637003711772;
+        Mon, 15 Nov 2021 11:15:11 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id h10sm17329094pfc.104.2021.11.15.11.15.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Nov 2021 11:15:11 -0800 (PST)
+Date: Mon, 15 Nov 2021 19:15:07 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Orr <marcorr@google.com>
+Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>,
+	Peter Gonda <pgonda@google.com>,
+	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
+	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
 	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Sergio Lopez <slp@redhat.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
+	Michael Roth <Michael.Roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v7 02/45] x86/sev: detect/setup SEV/SME features earlier
- in boot
-Message-ID: <YZKxCdhaFTTlSHAJ@zn.tnic>
-References: <20211110220731.2396491-1-brijesh.singh@amd.com>
- <20211110220731.2396491-3-brijesh.singh@amd.com>
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	Quentin Perret <qperret@google.com>
+Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Message-ID: <YZKxuxZurFW6BVZJ@google.com>
+References: <20210820155918.7518-1-brijesh.singh@amd.com>
+ <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
+ <061ccd49-3b9f-d603-bafd-61a067c3f6fa@intel.com>
+ <YY6z5/0uGJmlMuM6@zn.tnic>
+ <YY7FAW5ti7YMeejj@google.com>
+ <YZJTA1NyLCmVtGtY@work-vm>
+ <YZKmSDQJgCcR06nE@google.com>
+ <CAA03e5E3Rvx0t8_ZrbNMZwBkjPivGKOg5HCShSFYwfkKDDHWtA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211110220731.2396491-3-brijesh.singh@amd.com>
+In-Reply-To: <CAA03e5E3Rvx0t8_ZrbNMZwBkjPivGKOg5HCShSFYwfkKDDHWtA@mail.gmail.com>
 
-On Wed, Nov 10, 2021 at 04:06:48PM -0600, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
++arm64 KVM folks
+
+On Mon, Nov 15, 2021, Marc Orr wrote:
+> On Mon, Nov 15, 2021 at 10:26 AM Sean Christopherson <seanjc@google.com> wrote:
+> >
+> > On Mon, Nov 15, 2021, Dr. David Alan Gilbert wrote:
+> > > * Sean Christopherson (seanjc@google.com) wrote:
+> > > > On Fri, Nov 12, 2021, Borislav Petkov wrote:
+> > > > > On Fri, Nov 12, 2021 at 09:59:46AM -0800, Dave Hansen wrote:
+> > > > > > Or, is there some mechanism that prevent guest-private memory from being
+> > > > > > accessed in random host kernel code?
+> > > >
+> > > > Or random host userspace code...
+> > > >
+> > > > > So I'm currently under the impression that random host->guest accesses
+> > > > > should not happen if not previously agreed upon by both.
+> > > >
+> > > > Key word "should".
+> > > >
+> > > > > Because, as explained on IRC, if host touches a private guest page,
+> > > > > whatever the host does to that page, the next time the guest runs, it'll
+> > > > > get a #VC where it will see that that page doesn't belong to it anymore
+> > > > > and then, out of paranoia, it will simply terminate to protect itself.
+> > > > >
+> > > > > So cloud providers should have an interest to prevent such random stray
+> > > > > accesses if they wanna have guests. :)
+> > > >
+> > > > Yes, but IMO inducing a fault in the guest because of _host_ bug is wrong.
+> > >
+> > > Would it necessarily have been a host bug?  A guest telling the host a
+> > > bad GPA to DMA into would trigger this wouldn't it?
+> >
+> > No, because as Andy pointed out, host userspace must already guard against a bad
+> > GPA, i.e. this is just a variant of the guest telling the host to DMA to a GPA
+> > that is completely bogus.  The shared vs. private behavior just means that when
+> > host userspace is doing a GPA=>HVA lookup, it needs to incorporate the "shared"
+> > state of the GPA.  If the host goes and DMAs into the completely wrong HVA=>PFN,
+> > then that is a host bug; that the bug happened to be exploited by a buggy/malicious
+> > guest doesn't change the fact that the host messed up.
 > 
-> sme_enable() handles feature detection for both SEV and SME. Future
-> patches will also use it for SEV-SNP feature detection/setup, which
-> will need to be done immediately after the first #VC handler is set up.
-> Move it now in preparation.
+> "If the host goes and DMAs into the completely wrong HVA=>PFN, then
+> that is a host bug; that the bug happened to be exploited by a
+> buggy/malicious guest doesn't change the fact that the host messed
+> up."
+> ^^^
+> Again, I'm flabbergasted that you are arguing that it's OK for a guest
+> to exploit a host bug to take down host-side processes or the host
+> itself, either of which could bring down all other VMs on the machine.
+> 
+> I'm going to repeat -- this is not OK! Period.
 
-I don't mind the move - what I miss is the reason why you're moving it
-up.
+Huh?  At which point did I suggest it's ok to ship software with bugs?  Of course
+it's not ok to introduce host bugs that let the guest crash the host (or host
+processes).  But _if_ someone does ship buggy host software, it's not like we can
+wave a magic wand and stop the guest from exploiting the bug.  That's why they're
+such a big deal.
 
-Thx.
+Yes, in this case a very specific flavor of host userspace bug could be morphed
+into a guest exception, but as mentioned ad nauseum, _if_ host userspace has bug
+where it does not properly validate a GPA=>HVA, then any such bug exists and is
+exploitable today irrespective of SNP.
 
--- 
-Regards/Gruss,
-    Boris.
+> Again, if the community wants to layer some orchestration scheme
+> between host userspace, host kernel, and guest, on top of the code to
+> inject the #VC into the guest, that's fine. This proposal is not
+> stopping that. In fact, the two approaches are completely orthogonal
+> and compatible.
+> 
+> But so far I have heard zero reasons why injecting a #VC into the
+> guest is wrong. Other than just stating that it's wrong.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+It creates a new attack surface, e.g. if the guest mishandles the #VC and does
+PVALIDATE on memory that it previously accepted, then userspace can attack the
+guest by accessing guest private memory to coerce the guest into consuming corrupted
+data.
+
+> Again, the guest must be able to detect buggy and malicious host-side
+> writes to private memory. Or else "confidential computing" doesn't
+> work.
+
+That assertion assumes the host _hypervisor_ is untrusted, which does not hold true
+for all use cases.  The Cc'd arm64 folks are working on a protected VM model where
+the host kernel at large is untrusted, but the "hypervisor" (KVM plus a few other
+bits), is still trusted by the guest.  Because the hypervisor is trusted, the guest
+doesn't need to be hardened against event injection attacks from the host.
+
+Note, SNP already has a similar concept in it's VMPLs.  VMPL3 runs a confidential VM
+that is not hardened in any way, and fully trusts VMPL0 to not inject bogus faults.
+
+And along the lines of arm64's pKVM, I would very much like to get KVM to a point
+where it can remove host userspace from the guest's TCB without relying on hardware.
+Anything that can be in hardware absolutely can be done in the kernel, and likely
+can be done with significantly less performance overhead.  Confidential computing is
+not a binary thing where the only valid use case is removing the host kernel from
+the TCB and trusting only hardware.  There are undoubtedly use cases where trusting
+the host kernel but not host userspace brings tangible value, but the overhead of
+TDX/SNP to get the host kernel out of the TCB is the wrong tradeoff for performance
+vs. security.
+
+> Assuming that's not true is not a valid argument to dismiss
+> injecting a #VC exception into the guest.
