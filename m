@@ -1,213 +1,152 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D372C81
-	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 16:56:15 +0000 (UTC)
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1AFGDSYZ001106;
-	Mon, 15 Nov 2021 16:55:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2021-07-09;
- bh=bGsvSB8tAKNPZ0SePzh+0cs3uJfSeqYRpjqp1bgSqoE=;
- b=t147peuvdN2pQCwekUqe3kqoE/bF1JzVi3FA+hdY2LXH/b/M3YAnukZSJqDUeGoB4daP
- DDklRaHT2NPNzURAvWntQl46bBcLFLVUIAKGmpixl505KBrg3uqlcFkXY6y2HVkpbb1d
- K9BmvFhYOHHD5HheuJQWD6/3mymZ+eo451oWyWaTWVI/PuyRKh1FLbr6u5+TE4715oEz
- wvvhof7LocEzdEh1WVKi60RBDsjgmSae+cfMtjqKhDa4NeLqMnwO4WPK99lRFUZcSin5
- G/q1w90syBLkUcO3BpqycAIRP12yjav9AlHlkchZJCytKJhO9nQWwKXWBZYI9tCqBsKU 2A== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-	by mx0b-00069f02.pphosted.com with ESMTP id 3cbhtvkb6a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Nov 2021 16:55:43 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-	by userp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 1AFGp0wN159479;
-	Mon, 15 Nov 2021 16:55:42 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2169.outbound.protection.outlook.com [104.47.55.169])
-	by userp3020.oracle.com with ESMTP id 3caq4raet9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Nov 2021 16:55:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ikLjAx7YvDBL4NrDds0P5FisS6rD2LWdkjh/PRMtRWgdUUj1U/dnkwL+qMxWb37IkOKfsQm2KEJA7kl6jW4oOQqtKUXOSyNC1IR80ekP9Y7lNTbi8LpklyJbgwC9PTwNCFOhyYGhFHKPP5L2pAdSgG3js8+la/GG/j26FrbktkPUzqwndTVJBmlHQQNALvugcQCMErORJswNDBtY8hfB1JUNxKmSpY7F5s3Oe2qkhnIjwoJCOpbBjRR6oj31QU+FoekzB/fIURMqQZRm4FtO7DMyeWvN+XlODPSI+H6lYZwJ2CAKE6d8Z1XQAC65p5vo/UUjkLfNp1EiKX+Zbq5viQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bGsvSB8tAKNPZ0SePzh+0cs3uJfSeqYRpjqp1bgSqoE=;
- b=XGRcfXjHTpFY7GhjScisWQanYTYkVML6prPWFUNBiC//b7WFrpkeMccExXhjchT6qxq3UL61E3cDh0JPcvOL1IouLJQasYqy4PIaa/TVDIf2oVt3DIAw7EtmREj/vAT5i3X0euUdUWa7Y0365Ta3UzgG/U08PrPXvxxLlY6IC/CF8fqhTOsshHzAKD7/gA35YpqxdvprOdnkdICpdIGxV9gwAPh8SUi4MWo+tq6JGe/BBQY2onNrPsBegaIYlH0XpUVOOSS4UNRLhU9b/NKxR8o3wyNSABnvXsfw5vo3IyaJ519Bzqw0cCSzn03+A/4Lr5RHsL+oekqM4WUJEvYhKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6582C81
+	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 17:16:44 +0000 (UTC)
+Received: by mail-pf1-f176.google.com with SMTP id g18so15603484pfk.5
+        for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 09:16:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bGsvSB8tAKNPZ0SePzh+0cs3uJfSeqYRpjqp1bgSqoE=;
- b=Qkl0txW+nJrpH2WKpPSIP5Sp5YL9e6Hq39HoKvdWCWYAjjdIxHICrq7jGddzxZ6Bs0fRfaRnnClj0CWTsrYjJr6r8BgpKxLsHFf62eAtd/ZwF2jlJgeFswnzEaptCU9k2fSNvDoxUmUttAaYoYCyIq7OgKffRlI5rDYZdhOc0AY=
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
- by SN6PR10MB2719.namprd10.prod.outlook.com (2603:10b6:805:4a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.26; Mon, 15 Nov
- 2021 16:55:39 +0000
-Received: from SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::898:d80:7483:f023]) by SN6PR10MB2576.namprd10.prod.outlook.com
- ([fe80::898:d80:7483:f023%5]) with mapi id 15.20.4690.027; Mon, 15 Nov 2021
- 16:55:39 +0000
-Date: Mon, 15 Nov 2021 10:55:32 -0600
-From: Venu Busireddy <venu.busireddy@oracle.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
-        Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Dr . David Alan Gilbert" <dgilbert@redhat.com>, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v7 00/45] Add AMD Secure Nested Paging (SEV-SNP) Guest
- Support
-Message-ID: <YZKRBOl9UkTJE4jx@dt>
-References: <20211110220731.2396491-1-brijesh.singh@amd.com>
- <YZKDGKOgHKNWq8s2@dt>
- <a631d02a-c99e-a0d6-444a-3574609c7a25@amd.com>
- <YZKMvjEIGarn8RrR@dt>
- <88aa149c-5fbe-b5c4-5979-6b01d4e79bee@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <88aa149c-5fbe-b5c4-5979-6b01d4e79bee@amd.com>
-X-ClientProxiedBy: SA0PR11CA0178.namprd11.prod.outlook.com
- (2603:10b6:806:1bb::33) To SN6PR10MB2576.namprd10.prod.outlook.com
- (2603:10b6:805:44::15)
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3NVKLepWYzLSq9Cpv5qCJO3VSr1f5SzOwcseFg0x0pY=;
+        b=ViN8wyNqVHdH+Hf9uZiVt6rzm1zmo2rrXKAIKjHBt08UAFUv9BJAAWNuMofRgCUGQ3
+         pSvTt7NJ6bDoFBPiaYn8UdmOLOhoCBRC9mz4/pdqJcKbq7uz+rJ0AQkNnz+4KO1DLs0Q
+         HU5a5hhkU5p7C2S0n9dF5y8Mk3j+BCuMBOIblS2P7zdESzvV5Y9HVMDTDykC83v6Qk0i
+         Fn1IMf5XPZ/ppn+OHgMAEheBtO3CvwWvP5wks+OYQAmdJn6WqO2qeWGXP1DoUiP3tBIj
+         0bYE43Iqf38tJRkO+DgbWI4wdtkRUx2Mf6ROzMGAY9Pa79Spx5521xjH6LTLH67cXDFl
+         LNeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3NVKLepWYzLSq9Cpv5qCJO3VSr1f5SzOwcseFg0x0pY=;
+        b=IuCBJbuHHjV6TiVGn3J1YVcT+31DtWDEh0QPybdvf5umwYynVZnvsx1frNWg1nei0N
+         zstRNhZBujXuMYZsZlE70NxdW+1qDCPbk8meN1RmL3tsWYgBC3hs+rXZNolpqwvtKhzX
+         Re4SjSOPqCJyTT8H39Q77YDlP7176wJFlMPmJXKZpnwblNXxGgR1nH7c+82cWaFYUF9w
+         DNdWi2QnGaBZ6WM0m2zpklZnwJICDtDjL09N9QMtWAib//Eq2TsQtxpHYvl8eSjK6C7J
+         xItMYIafvjo9C05jhUX5W6p4FSyKmmz2TjfWKgEhVeYpcFeAR+L4yRgTbk7r0+oQlixs
+         m13A==
+X-Gm-Message-State: AOAM533jrQWBZm6rf56a5yGTitItztjmS9aCD2skA619vBmNkfop8oTB
+	1UmzoQ71NabXcQ3DYs4b1DYf2A==
+X-Google-Smtp-Source: ABdhPJyKc9UQWUIc7Wr3sPqTISPItmNSDSwgcqkezQohZCsJMhsK1Nvfuw30uGNo+HWmOQFuW461xA==
+X-Received: by 2002:a63:4d3:: with SMTP id 202mr328555pge.36.1636996603928;
+        Mon, 15 Nov 2021 09:16:43 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id o28sm3060761pgn.85.2021.11.15.09.16.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Nov 2021 09:16:43 -0800 (PST)
+Date: Mon, 15 Nov 2021 17:16:39 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Orr <marcorr@google.com>
+Cc: Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <Thomas.Lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <Michael.Roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Message-ID: <YZKV9zo25l3LKahi@google.com>
+References: <YY6z5/0uGJmlMuM6@zn.tnic>
+ <YY7FAW5ti7YMeejj@google.com>
+ <YY7I6sgqIPubTrtA@zn.tnic>
+ <YY7Qp8c/gTD1rT86@google.com>
+ <YY7USItsMPNbuSSG@zn.tnic>
+ <CAMkAt6o909yYq3NfRboF3U3V8k-2XGb9p_WcQuvSjOKokmMzMA@mail.gmail.com>
+ <YY8AJnMo9nh3tyPB@google.com>
+ <CAA03e5G=fY7_qESCuoHW3_VdVbDWekqQxmvLPzWNepBqJjyCXg@mail.gmail.com>
+ <YZAFTBXtC/yS7xtq@google.com>
+ <CAA03e5Hhmji-uhv4eh4cgyu0XBf9=C5r8MtGtWcB480eaVGvSg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Received: from dt (138.3.200.60) by SA0PR11CA0178.namprd11.prod.outlook.com (2603:10b6:806:1bb::33) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4690.18 via Frontend Transport; Mon, 15 Nov 2021 16:55:35 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 296e688b-af39-4b73-8911-08d9a858c066
-X-MS-TrafficTypeDiagnostic: SN6PR10MB2719:
-X-Microsoft-Antispam-PRVS: 
-	<SN6PR10MB27194DACB6B9E0FA7F31520BE6989@SN6PR10MB2719.namprd10.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:454;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	rIxGeLzBpwHk8xCFAgsRKmjiPHh5mHULm4RyWqepmr454e02xTN8Hv0TI5WvpZuZ6YWeK6AC/4LYm2+aZ9wZsDcLVabyrXT6uwQFqDrT6g3uHfr3+ppX0bNqlRgLQK1QKce8iS4prY5H1RfJeiqA4/Aqt32t5aprSCg7eGV+9YTLuvrnbmdj0hyL/UpNq1KplnIiQfBlbIwgh/AsAET4NzWsWcgZSkCAhK7bOl5U6x5M2WRixhdKas32cJGHxicjhEu4ySXCHh+hJ+UycIEuuoHyVXIqogi+YcM6nra6fEbGrzNZnlHFdOt38MuWdbBB4oDHIYN51sc7MHt4IBXHzxY6ReuIRNLKMGQReuNY74KKtrJaj6nh6rd8M7qLnIhPBLowmzoo1UZdBCdNYikUJyLfYHjeg0+wO/XFfuwQTQrub8fpUISbJndTVPWvOPNIJaiErue71uZpRABsl7zOAbf/KC5nArOHljb1FZwDVgkFy+BXNRA7xGu/NLzHFP4h3CsVHWUZWRyiOY0Q3tz0sKp8AFCu20rmZtcMNqxHOiW5ZFSuuX9KlxcaO1HSRD+YwI8nCa6RkYVMRwIWeIMpvKt2kPGj1xf5Hs3jd71HtZYIoYBemxsaZPJRYobtOBtREBHsg6LmTyvtw4AfFMKh0LOU4dcZtGehmOgIYCwevousiB5hPOiEy9p2q6OLlvyBBf1EJhkGvr8BwHjhz2KxLr/jFjpHBlVTWpGQzNylDia0nuw7MO4F1bg/dGdmI1FypPcn0RF5HxeNYJmdcnMFag==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(6666004)(316002)(53546011)(86362001)(956004)(44832011)(45080400002)(83380400001)(2906002)(38100700002)(4326008)(66476007)(66946007)(66556008)(8676002)(54906003)(6916009)(55016002)(26005)(9576002)(508600001)(8936002)(33716001)(6496006)(4001150100001)(7416002)(966005)(186003)(5660300002)(7406005)(9686003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?g0onytMseYy941WB0TSy1W4ZxBNWw1J25AYBfGT61/APOiy7jzOkAnXrrDcP?=
- =?us-ascii?Q?ze2r2X4sXopaPBKv8HZ+m7ajNeO5Nh8ET8bVe1gEiLTvRUKOwpsNckowo6Ja?=
- =?us-ascii?Q?X6kWgcso/Je4tBcVfBqkIGmCbQQYouWCDCghEgolItL7LjV7BxsI1evg9FEn?=
- =?us-ascii?Q?/JtMib4VF+UbVd+dTmOuJMFr1VdRyNjkDghMcqeSZYThWvnuLydZHIRPY3z5?=
- =?us-ascii?Q?CUhIbAtrg2XJhy+dhg2J3v7OoU8WYl97EM22rrzyUTK+Yi23TzSV0DkoCS7n?=
- =?us-ascii?Q?lT/gGj7vJRWsvNQRxKDGS95yzLbH+6048V4O/JiiKMZ5Z7hYkEwowygyYBCv?=
- =?us-ascii?Q?V70lAEytFNRmCShb7wy8UhJc+fKb+dIE840nJnGzqbQiEJn+8AshNypZoKuK?=
- =?us-ascii?Q?b9gIgkQQj4Fg2xWIQ4OemSlvLuqdvqO7sijcME2YSBKw/I5IvsAxj2xm4Us/?=
- =?us-ascii?Q?oqm5kqCchofjEEeZHdniWsxgVxl2zPhFYEmuOPm4HnlC6L561/U0GqOO9ExH?=
- =?us-ascii?Q?SAL1Ym8cHwaGLHN3sTav1MZ1NqUlCN8nbDhEKn0jLfFx5E1B+2fEFWS9Cjrd?=
- =?us-ascii?Q?J1LyhxkJFGQiWNIuAWpbytW1Tt7/vXq1JO2qjcCn5AnPQ+nG5QHiG8xsZE0D?=
- =?us-ascii?Q?hYypqaUJRsBBkNQioMjcyBZwjYbzhzCgYOoiNKiM8zuuL5FHSqOWLki/Gz4a?=
- =?us-ascii?Q?rglBakWu66AO0zbSbqRgZhY2Da/so4/qWNsc+WHOhldU4qhkfcugg/1vb6z2?=
- =?us-ascii?Q?xhqPAiePquvU5bSf4SG1IXbSV5RvttuRGGmwvYwE/wV4eutBTIpdMHpPuORN?=
- =?us-ascii?Q?D6vFZVsi1O+24pIhBgcBUO+FE+K+YGdZfFlvNNwT9OmcicxOIs2r5h9xycOT?=
- =?us-ascii?Q?7gkXUG7cstLqfwama6Ps4Kn1pvcV0+jin5MyqAVEx/rLdGUNWM4XNrdsEwLA?=
- =?us-ascii?Q?wz/1BmMbjGJvOh4nIpJhk2drWCXzqbX+Cpw7OKTAhm8ifd9orbPReUTL5l2p?=
- =?us-ascii?Q?tlcFiqRzgJ6t6f6RTBKVj1A6SZfLKoi7ZZw5tqmASKMPXDzxCmAYN6rS+XWh?=
- =?us-ascii?Q?d/YdTXA+BE0MJU4J9ii2xJyZgX2nHmsHaLO7LdTcIV9HktdVMTgReUq2fFTy?=
- =?us-ascii?Q?PWKKPkWC/QphHr59XJdgSIv8CTaDFDAF90dZQk8wFaUPJo4HIAvRXRlkdwF2?=
- =?us-ascii?Q?NrnK4Za8qqhW2IVShuJ/TvBPB0BPmuClDLwnKhmtlJC89ejsPJGQGpwSvNjk?=
- =?us-ascii?Q?8sTa//w44ufoyrQFJnKLMg6VJydddBLp0yx5LGCY/EXlIJxKwvlWnQvAr222?=
- =?us-ascii?Q?CKPrEST0Op+p7jwlmdUzxrGMG39YFKI7FksVtfv3f8XscsqaMTztCuBnFxuG?=
- =?us-ascii?Q?wzl/tPUo2eeIl3XVbEBWaxOXeeNbw5ViXlUjuurEel8BLQfAS+16HA5sxVkz?=
- =?us-ascii?Q?vVd0V0+1aWeH4JBBCzLFsZ0jHYjlidFXUOHrd8NIBP/+kwwGGkUYNjejAFAv?=
- =?us-ascii?Q?d0R7vCjSr4DKlvyKWC5J/0FSfZu0MPkNmAcUH5BDEgKwZjozgInB0JfZv3MP?=
- =?us-ascii?Q?TbOCzdx08Cs+36zi99EBUf2DBM/8Dw1rej/Y9BKFW68UZBv3gzB22FA1coeA?=
- =?us-ascii?Q?OqCQVv0LyRwndBbSJSpvQQYVar4gRau3+1FFNs8YbdIMkq1+SmwH4q5tKt1/?=
- =?us-ascii?Q?XxT2Iw=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 296e688b-af39-4b73-8911-08d9a858c066
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2576.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2021 16:55:38.9618
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6CbsyfYM1TpqM975NMvuVPs9kynn52GgiXbrKnT8OU2SFsSUYNCE/HNYyRdzhTZHCGTdt+smdv6WxZSJ4HJ2nU4wjmRH2RQ40s5D3e6PXHo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR10MB2719
-X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10169 signatures=668683
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 mlxscore=0
- phishscore=0 bulkscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
- definitions=main-2111150087
-X-Proofpoint-GUID: _BCuLooOt8FIRR3hWi5ZAbiUxJVc4EF3
-X-Proofpoint-ORIG-GUID: _BCuLooOt8FIRR3hWi5ZAbiUxJVc4EF3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAA03e5Hhmji-uhv4eh4cgyu0XBf9=C5r8MtGtWcB480eaVGvSg@mail.gmail.com>
 
-On 2021-11-15 10:45:48 -0600, Brijesh Singh wrote:
+On Sat, Nov 13, 2021, Marc Orr wrote:
+> On Sat, Nov 13, 2021 at 10:35 AM Sean Christopherson <seanjc@google.com> wrote:
+> >
+> > On Fri, Nov 12, 2021, Marc Orr wrote:
+> > > > > > If *it* is the host kernel, then you probably shouldn't do that -
+> > > > > > otherwise you just killed the host kernel on which all those guests are
+> > > > > > running.
+> > > > >
+> > > > > I agree, it seems better to terminate the single guest with an issue.
+> > > > > Rather than killing the host (and therefore all guests). So I'd
+> > > > > suggest even in this case we do the 'convert to shared' approach or
+> > > > > just outright terminate the guest.
+> > > > >
+> > > > > Are there already examples in KVM of a KVM bug in servicing a VM's
+> > > > > request results in a BUG/panic/oops? That seems not ideal ever.
+> > > >
+> > > > Plenty of examples.  kvm_spurious_fault() is the obvious one.  Any NULL pointer
+> > > > deref will lead to a BUG, etc...  And it's not just KVM, e.g. it's possible, if
+> > > > unlikely, for the core kernel to run into guest private memory (e.g. if the kernel
+> > > > botches an RMP change), and if that happens there's no guarantee that the kernel
+> > > > can recover.
+> > > >
+> > > > I fully agree that ideally KVM would have a better sense of self-preservation,
+> > > > but IMO that's an orthogonal discussion.
+> > >
+> > > I don't think we should treat the possibility of crashing the host
+> > > with live VMs nonchalantly. It's a big deal. Doing so has big
+> > > implications on the probability that any cloud vendor wil bee able to
+> > > deploy this code to production. And aren't cloud vendors one of the
+> > > main use cases for all of this confidential compute stuff? I'm
+> > > honestly surprised that so many people are OK with crashing the host.
+> >
+> > I'm not treating it nonchalantly, merely acknowledging that (a) some flavors of kernel
+> > bugs (or hardware issues!) are inherently fatal to the system, and (b) crashing the
+> > host may be preferable to continuing on in certain cases, e.g. if continuing on has a
+> > high probablity of corrupting guest data.
 > 
-> 
-> On 11/15/21 10:37 AM, Venu Busireddy wrote:
-> > On 2021-11-15 10:02:24 -0600, Brijesh Singh wrote:
-> > > 
-> > > 
-> > > On 11/15/21 9:56 AM, Venu Busireddy wrote:
-> > > ...
-> > > 
-> > > > > The series is based on tip/master
-> > > > >     ea79c24a30aa (origin/master, origin/HEAD, master) Merge branch 'timers/urgent'
-> > > > 
-> > > > I am looking at
-> > > > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063489322%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=CT%2BZ6Nm6pnvVGY%2B%2FmzK4gG1zxlMNQ1fn7ie6K%2FYueTQ%3D&amp;reserved=0,
-> > > > and I cannot find the commit ea79c24a30aa there. Am I looking at the
-> > > > wrong tree?
-> > > > 
-> > > 
-> > > Yes.
-> > > 
-> > > You should use the tip [1] tree .
-> > > 
-> > > [1] https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftip%2Ftip.git%2F&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063499319%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=XnWIcW62nTrAcDLCkHFpOPv5%2BClg11wfyh0pJ9Dug2c%3D&amp;reserved=0
-> > 
-> > Same problem with tip.git too.
-> > 
-> > bash-4.2$ git remote -v
-> > origin  https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftip%2Ftip.git&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063499319%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=W%2BA8qZwPicXo7OSslFPqL8s8QRxzW9n68TX1B7MXFYQ%3D&amp;reserved=0 (fetch)
-> > origin  https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftip%2Ftip.git&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C566cca1a4ceb44dac52f08d9a85639fd%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637725911063499319%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=W%2BA8qZwPicXo7OSslFPqL8s8QRxzW9n68TX1B7MXFYQ%3D&amp;reserved=0 (push)
-> > bash-4.2$ git branch
-> > * master
-> > bash-4.2$ git log --oneline | grep ea79c24a30aa
-> > bash-4.2$
-> > 
-> > Still missing something?
-> > 
-> 
-> I can see the base commit on my local clone and also on web interface
+> I disagree. Crashing the host -- and _ALL_ of its VMs (including
+> non-confidential VMs) -- is not preferable to crashing a single SNP
+> VM.
 
-But can you see the commit ea79c24a30aa if you clone
-git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git?
+We're in violent agreement.  I fully agree that, when allowed by the architecture,
+injecting an error into the guest is preferable to killing the VM, which is in turn
+preferable to crashing the host.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?id=ea79c24a30aa27ccc4aac26be33f8b73f3f1f59c
+What I'm saying is that there are classes of bugs where injecting an error is not
+allowed/feasible, and where killing an individual VM is not correct/feasible.
 
-The web interface has the weird warning "Notice: this object is not
-reachable from any branch." Don't know what to make of that.
+The canonical example of this escalating behavior is an uncorrectable ECC #MC.  If
+the bad page is guest memory and the guest vCPU model supports MCA, then userspace
+can inject an #MC into the guest so that the guest can take action and hopefully
+not simply die.  If the bad page is in the guest but the guest doesn't support #MC
+injection, the guest effectively gets killed.  And if the #MC is in host kernel
+memory that can't be offlined, e.g. hits the IDT, then the whole system comes
+crashing down.
 
-Venu
+> Especially when that SNP VM is guaranteed to detect the memory corruption and
+> react accordingly.
 
-> 
-> thanks
+For the record, we can make no such guarantees about the SNP VM.  Yes, the VM
+_should_ do the right thing when handed a #VC, but bugs happen, otherwise we
+wouldn't be having this discussion.
