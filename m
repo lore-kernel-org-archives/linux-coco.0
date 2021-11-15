@@ -1,61 +1,105 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B410E2C80
-	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 14:11:26 +0000 (UTC)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-	id D6E13398; Mon, 15 Nov 2021 15:05:47 +0100 (CET)
-Date: Mon, 15 Nov 2021 15:05:41 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C791D2C83
+	for <linux-coco@lists.linux.dev>; Mon, 15 Nov 2021 14:42:49 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E53D3212BE;
+	Mon, 15 Nov 2021 14:42:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1636987367; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CurHMBKJtGDElStoPcZcZiFRey4p43QkUhyCC85DQy8=;
+	b=pxkXvCMQv5Aw/Dwj11Q1Yc61t5roI2OFQiwgMiOI56i7+CFiexIBAJMvBvB1/+c5/vhE/Y
+	s58fOGRNhnOL9UQXVl4FmLw4iXuSY4HwqmtGcxuz5wr/kSfudc/1zFe6x5vr/TCVFhwS+O
+	Pd+yrrNxBVpVig+F0x26RzQJeuoky8E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1636987367;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CurHMBKJtGDElStoPcZcZiFRey4p43QkUhyCC85DQy8=;
+	b=CX/tmvhzVt1su/AdrYGXZ7EY04Z2tin5GBffGXKCePBskL8D1T22oMvRd4mX1yEX2nzdJs
+	b6ak9mMTuAoFh5Aw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 87AC713A66;
+	Mon, 15 Nov 2021 14:42:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id vTH+HuZxkmGXMQAAMHmgww
+	(envelope-from <jroedel@suse.de>); Mon, 15 Nov 2021 14:42:46 +0000
+Date: Mon, 15 Nov 2021 15:42:44 +0100
+From: Joerg Roedel <jroedel@suse.de>
+To: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Peter Gonda <pgonda@google.com>,
+	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
 	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Sergio Lopez <slp@redhat.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v7 15/45] x86/compressed: Register GHCB memory when
- SEV-SNP is active
-Message-ID: <YZJpNZyW8MtNZ44s@8bytes.org>
-References: <20211110220731.2396491-1-brijesh.singh@amd.com>
- <20211110220731.2396491-16-brijesh.singh@amd.com>
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Message-ID: <YZJx5PcBZ/izVg8L@suse.de>
+References: <20210820155918.7518-1-brijesh.singh@amd.com>
+ <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
+ <061ccd49-3b9f-d603-bafd-61a067c3f6fa@intel.com>
+ <YY6z5/0uGJmlMuM6@zn.tnic>
+ <YY7FAW5ti7YMeejj@google.com>
+ <YZJTA1NyLCmVtGtY@work-vm>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211110220731.2396491-16-brijesh.singh@amd.com>
+In-Reply-To: <YZJTA1NyLCmVtGtY@work-vm>
 
-On Wed, Nov 10, 2021 at 04:07:01PM -0600, Brijesh Singh wrote:
-> +static void snp_register_ghcb_early(unsigned long paddr)
+On Mon, Nov 15, 2021 at 12:30:59PM +0000, Dr. David Alan Gilbert wrote:
+> Still; I wonder if it's best to kill the guest - maybe it's best for
+> the host to kill the guest and leave behind diagnostics of what
+> happened; for someone debugging the crash, it's going to be less useful
+> to know that page X was wrongly accessed (which is what the guest would
+> see), and more useful to know that it was the kernel's vhost-... driver
+> that accessed it.
 
-This needs __maybe_unused, otherwise it triggers a warning:
+I is best to let the guest #VC on the page when this happens. If it
+happened because of a guest bug all necessary debugging data is in the
+guest and only the guest owner can obtain it.
 
-arch/x86/kernel/sev-shared.c:78:13: warning: ‘snp_register_ghcb_early’ defined but not used [-Wunused-function]
-   78 | static void snp_register_ghcb_early(unsigned long paddr)
-      |             ^~~~~~~~~~~~~~~~~~~~~~~
+Then the guest owner can do a kdump on this unexpected #VC and collect
+the data to debug the issue. With just killing the guest from the host
+side this data would be lost.
 
+Regards,
+
+	Joerg
