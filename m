@@ -1,86 +1,165 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D638872
-	for <linux-coco@lists.linux.dev>; Tue, 16 Nov 2021 18:39:39 +0000 (UTC)
-Received: by mail-lf1-f49.google.com with SMTP id k37so11193lfv.3
-        for <linux-coco@lists.linux.dev>; Tue, 16 Nov 2021 10:39:39 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BBD72
+	for <linux-coco@lists.linux.dev>; Tue, 16 Nov 2021 20:08:55 +0000 (UTC)
+Received: by mail-pg1-f172.google.com with SMTP id 188so143423pgb.7
+        for <linux-coco@lists.linux.dev>; Tue, 16 Nov 2021 12:08:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=y8BSCacTYyDcVPM5IoKBN/fEmfxWN/lo+RC/ugsV1kA=;
-        b=rYJ0YguBFbcmp1Tg5G/C5elRrhHlqhZPZ9s8Rgi1EyZL/mBO38rP8TLiOW+ATwSvse
-         hx7oPPVfHIuXUqflFoLp78XS17/oAIFNICUc0clQp+DsHzreVloNA65wQQOnbMStJO7L
-         cRJz23BZ68/NRRpFbqz0JWlQ7dBZs4VkbRuFof2ir9z4E3NFYT2j+EcVSEvD7mBaI+7n
-         cayKlHYWqpdyX7SKzf/EHZxBnRiaA/IxQ9tqIztiqPblFl2RiruzS7/DSXEX3z38FmRW
-         AuC05B/4Cg4W+0nfuwbanEM5/q3cutNMoV8HbSx303/tnFRkK8RaZJvdv1FWALYQOU6m
-         tiZQ==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=dT6i/qZSkcfW3Sm2DrxjWBtaFkbKPAwDsa4TWP0ZGP8=;
+        b=c3xWLP/kE/cbpxDROR/8A7dsnqGQXPN3XeRoShkWVLrHb+Oxk7cq2G++jOqgeqAvsR
+         J+BB2FX6ObPHnRRpf4A4w/MOe3aTWYo0JRvjghCEphalnXusUchV6X5YQ79mAT5bSZQN
+         r0nCJTqAfsKTRVWa3TIX2JclEvqgMRqFyd0j2C1DcZcax55ibCUo1EizAosO8HhUURnC
+         CK7XmEEub08KDSrI5qBq0PaXGKrzTK2bP51TA7Fyhs9elcpRUkAkZyeujc27qAioKQa7
+         9lRyz5K27tgIHNUIWpK2qsPaEXWe5IGAtzV1dWGZJ2TTpqvE3Zn3AlMNimL8lclJblGr
+         gPgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=y8BSCacTYyDcVPM5IoKBN/fEmfxWN/lo+RC/ugsV1kA=;
-        b=rq+EjcNhFlhq1lbITDMzeCccifqbocu5JqTVwh31N1b+qKpLlI9iOhfnOIEyf4184V
-         ErMhNakOpbYyAJiGTt3G6Pxn0wr4CXYsMJxUNZN+BPNK+oWtD/wD/vXWca2SMWUKk9Yd
-         xm3C4GN3lYlPSPal8yKFfwGGHqyKBtomYLpr2jqjR2dfOwP+BuV1ojECb2b8rPsj2w4I
-         Ls5zHVbIBvCccZ2Je2K8FCHVLrrOoS4vF5WPuElCgAQcn+40101fmWG4k3eelCopkknE
-         pTvuUUW7xqPoPgMiYdt9bWZvaW1nXNE7Aia8j5E2hneq+epI0BhB/SWNI73fL6vTrTd6
-         M0ww==
-X-Gm-Message-State: AOAM530Y3pRD8h95nrb9jLkP+tswrTFlO5SL7k25Vf81r4o3x3FJiWn9
-	W1SiJpCRbBsNaHBv4Y3VVvWpAe+AP8YIkADyyEgORw==
-X-Google-Smtp-Source: ABdhPJywTYnlEyhOxCxt2a7nHxlAjR09HGR/8hsv2oGiftn1/xaXRUoDkhP1uYAcS9P5PWYcD8g2hetueUBVXSKepCg=
-X-Received: by 2002:a05:6512:3e12:: with SMTP id i18mr8517991lfv.456.1637087977701;
- Tue, 16 Nov 2021 10:39:37 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=dT6i/qZSkcfW3Sm2DrxjWBtaFkbKPAwDsa4TWP0ZGP8=;
+        b=QFAy4ZFBPbj4b505i49RRutqBzHKg19jxQdDH3UWt4njdI7u1ecfrNe2wuDdDl8Kpm
+         qaG+4y+nfzMIejYg1YW6mXdAr5FL85iRdNMzDTWxI9uUHP+np0YE+wxS453ppAsR/WI9
+         3uA5gQ3dq41BaAmLqR3n/QNYQ3W4ymyKtO6TKbf19jVAvWIA1ebUxccP5ySXjNsHl1mp
+         Ivn2yRo2OYwhRpTgTbm7MdRFB0eLxrJ/HF+3OPFOLq5OcyzqnqY2DNKODEKxQNcw+tDA
+         yyIiDz8D7H2w6K5XLeEmmzyPH568eQLZQyRdfXOFbQVi6lPIATL+ldtU/bxh2AS+/ure
+         rh8w==
+X-Gm-Message-State: AOAM53356h4HUBRCsd3gpuggS5J3U9XkvOxJJQsZtzBbm4svtMdFbgEk
+	KD//XNQDkBMkG7FlVpcFQP9h2A==
+X-Google-Smtp-Source: ABdhPJwBsN8U5Krw60xMJJqILBkH8X4VC7je13qIK/kdw/gzDDAA9hIvMF8G/O1BR5V196/SpLhoWQ==
+X-Received: by 2002:a63:354:: with SMTP id 81mr1203571pgd.364.1637093334058;
+        Tue, 16 Nov 2021 12:08:54 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id g21sm20130074pfc.95.2021.11.16.12.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Nov 2021 12:08:53 -0800 (PST)
+Date: Tue, 16 Nov 2021 20:08:49 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Joerg Roedel <jroedel@suse.de>
+Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>,
+	Peter Gonda <pgonda@google.com>,
+	Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Tom Lendacky <Thomas.Lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Message-ID: <YZQP0T5vMiQ/MUOX@google.com>
+References: <20210820155918.7518-1-brijesh.singh@amd.com>
+ <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
+ <061ccd49-3b9f-d603-bafd-61a067c3f6fa@intel.com>
+ <YY6z5/0uGJmlMuM6@zn.tnic>
+ <YY7FAW5ti7YMeejj@google.com>
+ <YZJTA1NyLCmVtGtY@work-vm>
+ <YZKmSDQJgCcR06nE@google.com>
+ <YZOrziJfGWHnBh++@suse.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <061ccd49-3b9f-d603-bafd-61a067c3f6fa@intel.com>
- <YY6z5/0uGJmlMuM6@zn.tnic> <YY7FAW5ti7YMeejj@google.com> <YZJTA1NyLCmVtGtY@work-vm>
- <YZKmSDQJgCcR06nE@google.com> <CAA03e5E3Rvx0t8_ZrbNMZwBkjPivGKOg5HCShSFYwfkKDDHWtA@mail.gmail.com>
- <YZKxuxZurFW6BVZJ@google.com> <CAA03e5GBajwRJBuTJLPjji7o8QD2daEUJU7DpPJBxtWsf-DE8g@mail.gmail.com>
- <8a244d34-2b10-4cf8-894a-1bf12b59cf92@www.fastmail.com> <YZOwbjGVEfa/wLaS@suse.de>
- <YZP31a8acsfD+snJ@google.com>
-In-Reply-To: <YZP31a8acsfD+snJ@google.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Tue, 16 Nov 2021 11:39:25 -0700
-Message-ID: <CAMkAt6o=G4U8iUkLxquT9E2JsyxVASOhNZcA9s7JFnrVPf_hfA@mail.gmail.com>
-Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
- Hypervisor Support
-To: Sean Christopherson <seanjc@google.com>
-Cc: Joerg Roedel <jroedel@suse.de>, Andy Lutomirski <luto@kernel.org>, Marc Orr <marcorr@google.com>, 
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, "the arch/x86 maintainers" <x86@kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Tom Lendacky <Thomas.Lendacky@amd.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
-	Jim Mattson <jmattson@google.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Sergio Lopez <slp@redhat.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	Tony Luck <tony.luck@intel.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Marc Zyngier <maz@kernel.org>, 
-	Will Deacon <will@kernel.org>, Quentin Perret <qperret@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YZOrziJfGWHnBh++@suse.de>
 
-On Tue, Nov 16, 2021 at 11:26 AM Sean Christopherson <seanjc@google.com> wrote:
->
-> On Tue, Nov 16, 2021, Joerg Roedel wrote:
-> > But as Marc already pointed out, the kernel needs a plan B when an RMP
-> > happens anyway due to some bug.
->
-> I don't see why unexpected RMP #PF is a special snowflake that needs a different
-> plan than literally every other type of unexpected #PF in the kernel.
+On Tue, Nov 16, 2021, Joerg Roedel wrote:
+> On Mon, Nov 15, 2021 at 06:26:16PM +0000, Sean Christopherson wrote:
+> > No, because as Andy pointed out, host userspace must already guard against a bad
+> > GPA, i.e. this is just a variant of the guest telling the host to DMA to a GPA
+> > that is completely bogus.  The shared vs. private behavior just means that when
+> > host userspace is doing a GPA=>HVA lookup, it needs to incorporate the "shared"
+> > state of the GPA.  If the host goes and DMAs into the completely wrong HVA=>PFN,
+> > then that is a host bug; that the bug happened to be exploited by a buggy/malicious
+> > guest doesn't change the fact that the host messed up.
+> 
+> The thing is that the usual checking mechanisms can't be applied to
+> guest-private pages. For user-space the GPA is valid if it fits into the
+> guest memory layout user-space set up before. But whether a page is
+> shared or private is the guests business.
 
-When I started this thread I was not trying to say we *need* to do
-something different for RMP faults, but that we *could* improve host
-reliability by doing something. Since it is possible to special case
-an RMP fault and prevent a panic I thought it was with discussing.
+And that's where we fundamentally disagree.  Whether a page is shared or private
+is very much the host's business.  The guest can _ask_ to convert a page, but the
+host ultimately owns the state of a page.  Even in this proposed auto-convert
+approach, the host has final say over the state of the page.
+
+The main difference between auto-converting in the #PF handler and an unmapping
+approach is that, as you note below, the latter requires an explicit action from
+host userspace.  But again, the host kernel has final say over the state of any
+given page.
+
+> And without an expensive reporting/query mechanism user-space doesn't have the
+> information to do the check.
+
+The cost of exiting to userspace isn't all that expensive relative to the cost of
+the RMP update itself, e.g. IIRC updating the RMP is several thousand cycles.
+TDX will have a similar cost to modify S-EPT entries.
+
+Actually updating the backing store (see below) might be relatively expensive, but
+I highly doubt it will be orders of magnitude slower than updating the RMP, or that
+it will have a meaningful impact on guest performance.
+
+> A mechanism to lock pages to shared is also needed, and that creates the
+> next problems:
+
+The most recent proposal for unmapping guest private memory doesn't require new
+locking at the page level.  The high level idea is to treat shared and private
+variations of GPAs as two unrelated addresses from a host memory management
+perspective.  They are only a "single" address in the context of KVM's MMU, i.e.
+the NPT for SNP.
+
+For shared pages, no new locking is required as the PFN associated with a VMA will
+not be freed until all mappings go away.  Any access after all mappings/references
+have been dropped is a nothing more than a use-after-free bug, and the guilty party
+is punished accordingly.
+
+For private pages, the proposed idea is to require that all guest private memory
+be backed by an elightened backing store, e.g. the initial RFC enhances memfd and
+shmem to support sealing the file as guest-only:
+
+  : The new seal is only allowed if there's no pre-existing pages in the fd
+  : and there's no existing mapping of the file. After the seal is set, no
+  : read/write/mmap from userspace is allowed.
+
+It is KVM's responsibility to ensure it doesn't map a shared PFN into a private
+GPA and vice versa, and that TDP entries are unmapped appropriately, e.g. when
+userspace punches a hole in the backing store, but that can all be done using
+existing locks, e.g. KVM's mmu_lock.  No new locking mechanisms are required.
+
+> 	* Who can release the lock, only the process which created it or
+> 	  anyone who has the memory mapped?
+> 
+> 	* What happens when a process has locked guest regions and then
+> 	  dies with SIGSEGV, will its locks on guest memory be released
+> 	  stay around forever?
+
+> And this is only what comes to mind immediatly, I sure there are more
+> problematic details in such an interface.
+
+Please read through this proposal/RFC, more eyeballs would certainly be welcome.
+
+https://lkml.kernel.org/r/20211111141352.26311-1-chao.p.peng@linux.intel.com
