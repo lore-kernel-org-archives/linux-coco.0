@@ -1,75 +1,73 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419E72
-	for <linux-coco@lists.linux.dev>; Tue, 23 Nov 2021 08:55:11 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AB37E21709;
-	Tue, 23 Nov 2021 08:55:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1637657708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZLZuQ6koNaswA+CFy6l66aMDFMx1Xmt74WFtd9eJ/c0=;
-	b=NZNB751fkQLisImTSn25U7tN26nqjh3/ICTqluWuMyK5oS5sqVIqIsjmwUAVw3NgKu78UV
-	ELDic3N1var7dh+IvywCYg/Hm06/eN1ZCrjsXZxaaEV1ALPBn000An1xxVhWTyXdjqyDAI
-	Nynx+GjM0dVOGH/yRwwTLspKGe1WQX0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1637657708;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZLZuQ6koNaswA+CFy6l66aMDFMx1Xmt74WFtd9eJ/c0=;
-	b=GMq9ZhLzZfzykiNQfmW00d7KVJ9pBZnEpvpBjb//lcfh6djgw70wiuzCQPWeKA3ZYmUNIm
-	wbTVDYxI/6fILgDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3C50613B58;
-	Tue, 23 Nov 2021 08:55:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 8ZEGDmysnGEsBgAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Tue, 23 Nov 2021 08:55:08 +0000
-Message-ID: <303c4bb7-ad0f-7686-d4e6-b0640823cbc9@suse.cz>
-Date: Tue, 23 Nov 2021 09:55:07 +0100
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE23F68
+	for <linux-coco@lists.linux.dev>; Tue, 23 Nov 2021 15:36:39 +0000 (UTC)
+Received: by mail-pl1-f174.google.com with SMTP id q17so17359587plr.11
+        for <linux-coco@lists.linux.dev>; Tue, 23 Nov 2021 07:36:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=5VVg5sF/i5gU/ki52+bDwZvmQKpTX8HJeSrAf6kcWFQ=;
+        b=U6HSgDxCZz53CGLYrJ7O5A0XNm09HecVxGKIpmb1gkV3apRWZ25N2jA23Ttyp2MYKZ
+         K7PCL8IziOVl3IGVvcEKWxmZ7N5WFdDKaeFnFWDdTQL8q+kbkqylzTzEvEGM/qub8VsW
+         0kNCx9MqyC2snH1QR5CdErs3MA8OmHVtnhGLtP4QLDC7rwwGeLp30owwNo0TxBfgzp/4
+         z9A4yJ5wtwLQDky0itThd+HFGg3KslkVzZMf+De/ppvd/GGnqEzg8bvzIdr3jjCW1Wdw
+         esOXbQYxDR8uPmd7RrzvIegmxMJgPyMy2od9otejx7jL7aU+uOEan4lmnuCo0jVl028f
+         on6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=5VVg5sF/i5gU/ki52+bDwZvmQKpTX8HJeSrAf6kcWFQ=;
+        b=d+q1A5EcyqOlKCIXCIxmmIzxAQbHdsosPiw0URMPrGe8+rMK3gwk61XGN1hWKLge1o
+         kMQ6vHLQMWrI+DcHwrXH0byvfeKH0Nj96iIlDHd/KrFrwKENHu7lQWng6/9rTfFKL1Rm
+         KOIJokLC++Dnxzui2AR5uPYbiWPciDQbAJGiJT1ieXnh0JnbR7FnKHvDAQ3HxAa17Sdh
+         6UFlslAQrXrXIY1S5185AM48/en0FWF0ni31Fixfdxncghkn0VkmEqr6KKik3nfEYKMr
+         y1X8S9h4VE6C8zz40LyfrDNsydC2kANRbMxAz23truPNvk7bQYnDgE9ZK4ewHTgKGnrk
+         U69w==
+X-Gm-Message-State: AOAM532a9/zVWUi4bRD1OKpDlmIhMKXQi4KvL0SYWT1sJFrk7pPQJjIL
+	rJFvNPbOSqYZ13dnkRRzN77LwQ==
+X-Google-Smtp-Source: ABdhPJzN3VZxkHeunJB6N/YPoYEM/c03A9bU/hzxt4O7jM4g9pvIKKtkf8VdyZ1rwnxZzh/blb4dBw==
+X-Received: by 2002:a17:902:c78a:b0:142:1b7a:930 with SMTP id w10-20020a170902c78a00b001421b7a0930mr7959825pla.8.1637681799124;
+        Tue, 23 Nov 2021 07:36:39 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id k14sm9384097pga.65.2021.11.23.07.36.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Nov 2021 07:36:38 -0800 (PST)
+Date: Tue, 23 Nov 2021 15:36:35 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Peter Gonda <pgonda@google.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <Thomas.Lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
  Hypervisor Support
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>, Brijesh Singh
- <brijesh.singh@amd.com>, Peter Gonda <pgonda@google.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
- Tom Lendacky <Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
- Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
- Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
- Michael Roth <michael.roth@amd.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
- <ak@linux.intel.com>, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com
+Message-ID: <YZ0KgymKvLC2HcIk@google.com>
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
  <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
  <daf5066b-e89b-d377-ed8a-9338f1a04c0d@amd.com>
@@ -78,45 +76,35 @@ References: <20210820155918.7518-1-brijesh.singh@amd.com>
  <5f3b3aab-9ec2-c489-eefd-9136874762ee@intel.com>
  <d83e6668-bec4-8d1f-7f8a-085829146846@amd.com>
  <38282b0c-7eb5-6a91-df19-2f4cfa8549ce@intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <38282b0c-7eb5-6a91-df19-2f4cfa8549ce@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <YZyVx38L6gf689zq@zn.tnic>
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YZyVx38L6gf689zq@zn.tnic>
 
-On 11/22/21 23:51, Dave Hansen wrote:
-> On 11/22/21 12:33 PM, Brijesh Singh wrote:
->>> How do we, for example, prevent ptrace() from inducing a panic()?
->> 
->> In the current approach, this access will induce a panic(). 
+On Tue, Nov 23, 2021, Borislav Petkov wrote:
+> On Mon, Nov 22, 2021 at 02:51:35PM -0800, Dave Hansen wrote:
+> > By "supporting", do you mean doing something functional?  I don't really
+> > care if ptrace() to guest private memory returns -EINVAL or whatever.
+> > The most important thing is not crashing the host.
+> > 
+> > Also, as Sean mentioned, this isn't really about ptrace() itself.  It's
+> > really about ensuring that no kernel or devices accesses to guest
+> > private memory can induce bad behavior.
 > 
-> That needs to get fixed before SEV-SNP is merged, IMNHO.  This behavior
-> would effectively mean that any userspace given access to create SNP
-> guests would panic the kernel.
+> I keep repeating this suggestion of mine that we should treat
+> guest-private pages as hw-poisoned pages which have experienced a
+> uncorrectable error in the past.
 > 
->> In general, supporting the ptrace() for the encrypted VM region is
->> going to be difficult.
-> 
-> By "supporting", do you mean doing something functional?  I don't really
-> care if ptrace() to guest private memory returns -EINVAL or whatever.
-> The most important thing is not crashing the host.
-> 
-> Also, as Sean mentioned, this isn't really about ptrace() itself.  It's
-> really about ensuring that no kernel or devices accesses to guest
-> private memory can induce bad behavior.
+> mm already knows how to stay away from those.
 
-Then we need gup to block any changes from shared to guest private? I assume
-there will be the usual issues of recognizing temporary elevated refcount vs
-long-term gup, etc.
+Kirill posted a few RFCs that did exactly that.  It's definitely a viable approach,
+but it's a bit of a dead end, e.g. doesn't help solve page migration, is limited to
+struct page, doesn't capture which KVM guest owns the memory, etc...
 
->> The upcoming TDX work to unmap the guest memory region from the
->> current process page table can easily extend for the SNP to cover the
->> current limitations.
-
-By "current process page table" you mean userspace page tables?
-
-> My preference would be that we never have SEV-SNP code in the kernel
-> that can panic() the host from guest userspace.  If that means waiting
-> until there's common guest unmapping infrastructure around, then I think
-> we should wait.
-> 
-
+https://lore.kernel.org/kvm/20210416154106.23721-1-kirill.shutemov@linux.intel.com/
