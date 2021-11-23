@@ -1,53 +1,75 @@
-Received: from mail.skyhub.de (unknown [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99522C81
-	for <linux-coco@lists.linux.dev>; Tue, 23 Nov 2021 07:18:46 +0000 (UTC)
-Received: from zn.tnic (p200300ec2f0afc00fb97e1ddac48f93a.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:fc00:fb97:e1dd:ac48:f93a])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2419E72
+	for <linux-coco@lists.linux.dev>; Tue, 23 Nov 2021 08:55:11 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 74C2F1EC0503;
-	Tue, 23 Nov 2021 08:18:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1637651911;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=KqJTOgCp6HK0xHGH7GIW9dclHLRFLBvb7WQynOhv4Zo=;
-	b=J8LWB4M2a2e8olPCNC2yFwCVo2FyCyLjyNvF0yIltKhimu2h8lvvuDckvz0d43x38j5PXn
-	Fcci+px1bFHWiwV3UVCCecTqW5fzZ77yo4D9lYtDWn8TBi4ahZCKf/BZ6p4Jtvcn/2hdjS
-	OxWBvL/fpLbqF+YML+r3YW6GrqG9+To=
-Date: Tue, 23 Nov 2021 08:18:31 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, Peter Gonda <pgonda@google.com>,
-	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <Thomas.Lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AB37E21709;
+	Tue, 23 Nov 2021 08:55:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1637657708; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZLZuQ6koNaswA+CFy6l66aMDFMx1Xmt74WFtd9eJ/c0=;
+	b=NZNB751fkQLisImTSn25U7tN26nqjh3/ICTqluWuMyK5oS5sqVIqIsjmwUAVw3NgKu78UV
+	ELDic3N1var7dh+IvywCYg/Hm06/eN1ZCrjsXZxaaEV1ALPBn000An1xxVhWTyXdjqyDAI
+	Nynx+GjM0dVOGH/yRwwTLspKGe1WQX0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1637657708;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZLZuQ6koNaswA+CFy6l66aMDFMx1Xmt74WFtd9eJ/c0=;
+	b=GMq9ZhLzZfzykiNQfmW00d7KVJ9pBZnEpvpBjb//lcfh6djgw70wiuzCQPWeKA3ZYmUNIm
+	wbTVDYxI/6fILgDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3C50613B58;
+	Tue, 23 Nov 2021 08:55:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 8ZEGDmysnGEsBgAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Tue, 23 Nov 2021 08:55:08 +0000
+Message-ID: <303c4bb7-ad0f-7686-d4e6-b0640823cbc9@suse.cz>
+Date: Tue, 23 Nov 2021 09:55:07 +0100
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.3.2
 Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
  Hypervisor Support
-Message-ID: <YZyVx38L6gf689zq@zn.tnic>
+Content-Language: en-US
+To: Dave Hansen <dave.hansen@intel.com>, Brijesh Singh
+ <brijesh.singh@amd.com>, Peter Gonda <pgonda@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+ Tom Lendacky <Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>,
+ Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Roth <michael.roth@amd.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
+ <ak@linux.intel.com>, tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
 References: <20210820155918.7518-1-brijesh.singh@amd.com>
  <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
  <daf5066b-e89b-d377-ed8a-9338f1a04c0d@amd.com>
@@ -56,17 +78,24 @@ References: <20210820155918.7518-1-brijesh.singh@amd.com>
  <5f3b3aab-9ec2-c489-eefd-9136874762ee@intel.com>
  <d83e6668-bec4-8d1f-7f8a-085829146846@amd.com>
  <38282b0c-7eb5-6a91-df19-2f4cfa8549ce@intel.com>
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+From: Vlastimil Babka <vbabka@suse.cz>
 In-Reply-To: <38282b0c-7eb5-6a91-df19-2f4cfa8549ce@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 22, 2021 at 02:51:35PM -0800, Dave Hansen wrote:
+On 11/22/21 23:51, Dave Hansen wrote:
+> On 11/22/21 12:33 PM, Brijesh Singh wrote:
+>>> How do we, for example, prevent ptrace() from inducing a panic()?
+>> 
+>> In the current approach, this access will induce a panic(). 
+> 
+> That needs to get fixed before SEV-SNP is merged, IMNHO.  This behavior
+> would effectively mean that any userspace given access to create SNP
+> guests would panic the kernel.
+> 
+>> In general, supporting the ptrace() for the encrypted VM region is
+>> going to be difficult.
+> 
 > By "supporting", do you mean doing something functional?  I don't really
 > care if ptrace() to guest private memory returns -EINVAL or whatever.
 > The most important thing is not crashing the host.
@@ -75,14 +104,19 @@ On Mon, Nov 22, 2021 at 02:51:35PM -0800, Dave Hansen wrote:
 > really about ensuring that no kernel or devices accesses to guest
 > private memory can induce bad behavior.
 
-I keep repeating this suggestion of mine that we should treat
-guest-private pages as hw-poisoned pages which have experienced a
-uncorrectable error in the past.
+Then we need gup to block any changes from shared to guest private? I assume
+there will be the usual issues of recognizing temporary elevated refcount vs
+long-term gup, etc.
 
-mm already knows how to stay away from those.
+>> The upcoming TDX work to unmap the guest memory region from the
+>> current process page table can easily extend for the SNP to cover the
+>> current limitations.
 
--- 
-Regards/Gruss,
-    Boris.
+By "current process page table" you mean userspace page tables?
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> My preference would be that we never have SEV-SNP code in the kernel
+> that can panic() the host from guest userspace.  If that means waiting
+> until there's common guest unmapping infrastructure around, then I think
+> we should wait.
+> 
+
