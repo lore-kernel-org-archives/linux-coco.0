@@ -1,236 +1,184 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062.outbound.protection.outlook.com [40.107.220.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63902C80
-	for <linux-coco@lists.linux.dev>; Mon, 29 Nov 2021 11:56:48 +0000 (UTC)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 1ATBfOXO024260;
-	Mon, 29 Nov 2021 11:43:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=Wm8o20KrrN+7621cVhyG+BDWkNngf+zcQkYMNpcNVs4=;
- b=fYGcx0+jln6kRjvCdTP7gy6AKGRfjUOuzVwfwfn7NLUzPb9RYiDUekx6fAMAJTm+Y01j
- shsScP+wCb+PHyexnbjxJ0Bs2ZI0MB5ZKwvZsEsdWpUa5umQFJEOc/i87Qrr7ZcH5CDn
- /5nj2qqE67KN4hU3gC1JR0/vrMsY5C6gsCBGHxtGKuodRRXZbchPF3PtDi/y3YHPIyY4
- gXTSTHBRY6riIyxfpekrvBeOuGwEOLOM/+wUVq7NZSQZ5shb2Dw90Nk8ZjX2+hYh0iuN
- t26SBshgtyW57VkgCj3a7kTPhNyEf5m0q9uHokMb0jQ/QAMdJCbmluxALrJxtMdC2+ay nw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3cmx76r0pn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Nov 2021 11:43:06 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 1ATBh6E3002432;
-	Mon, 29 Nov 2021 11:43:06 GMT
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3cmx76r0nw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Nov 2021 11:43:06 +0000
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-	by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 1ATBWac4019399;
-	Mon, 29 Nov 2021 11:43:04 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma02wdc.us.ibm.com with ESMTP id 3ckcaa7dr0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Nov 2021 11:43:04 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 1ATBh1wl46268858
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Nov 2021 11:43:01 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8184D124072;
-	Mon, 29 Nov 2021 11:43:01 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B39D12405C;
-	Mon, 29 Nov 2021 11:43:01 +0000 (GMT)
-Received: from amdrome3.watson.ibm.com (unknown [9.2.130.16])
-	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
-	Mon, 29 Nov 2021 11:43:01 +0000 (GMT)
-From: Dov Murik <dovmurik@linux.ibm.com>
-To: linux-efi@vger.kernel.org
-Cc: Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>, Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v6 5/5] docs: security: Add coco/efi_secret documentation
-Date: Mon, 29 Nov 2021 11:42:51 +0000
-Message-Id: <20211129114251.3741721-6-dovmurik@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
-References: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: F8TMeZFkqI81PMr8INtpp5VBZsmO1Kk3
-X-Proofpoint-GUID: wwdoCwMBofNXoj0FtHZ-DrdpRRQwJM81
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1912C81
+	for <linux-coco@lists.linux.dev>; Mon, 29 Nov 2021 14:45:01 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=K7jc5Pf1O+/FrpdwuqWbrFY/bXkprR7NqVLLC/B4YWi90eH8RMu4oo/KDGKGAweVLAKQ3bIgzZQLSTi/R3Q2QtsveN4QuWDtldwKp4NMzBuywgkRw0GiPgFH4uQLVBCS6xZY7DqbzU+QHIOEs58KmrE/DIMhbE9Eg/fo1U3Ot2p5XoHZQrVH2cIbOMiuz6oizTwEjGErj3nacevSJUmxu9DRBQYn5NOQ43pWk6k9SZDoYQsGnz+JG5ZndnvYowFFvSN9FesRF9GQMsyrLBjxKW3iDjEKlLYR/j7fvh9ashr49xmuhIuYyaXvtUXMRnb3doj/zfzYurBvy/DsSvtCsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8mEtf7Q6MPRT2cTb6EXT+BOkpnCUPCEIP0dZL216mHo=;
+ b=LtiVwYooOX3Jw842CKLeNZaZR7OYHJws/fuc5UHi5jK98CbFJJSGvQeMOx7bnMBM8Fq/TLTAyMxA8J/OBSaXTzcj5gX32ErAc6wapp8E12k6rageWavH7jhQnEnaOo5g9lSqTukH15g/ys3RvQn4jL+LTuEXPHwhVXCmkAbsQBo3r3uyJNOERKHodyvMIIgiKBm3YBATlFYumBikE8nXoIjgZgto3OOxCBjDQgvnxWVLioB21hy8RbP1PivUO+PAFvN9zDeEhXX3DRwR+3Hhu+XPBVtqgriAB8VgYKl8lxIad5IGNGCCSIWYLAx1qo808iOgn4RCCAXMp2MnvkefHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8mEtf7Q6MPRT2cTb6EXT+BOkpnCUPCEIP0dZL216mHo=;
+ b=FpgZ1tavMnJ7o9sTxR1sFOtCx9Ir3QeeYqCNbbId/ZG3QRxlE+aflLrL1zt//uO+wlKiNHWXYvoEqfiS/8yW2ahzc5mk2vTSnU/O4tV5wVAXBB7f5cORP2dT9Rs9yByQxv3hfJz/Xw0hWv36r8sCmohF/DtIvd3+iCljVU6X3J8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by SN1PR12MB2541.namprd12.prod.outlook.com (2603:10b6:802:24::30) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4713.22; Mon, 29 Nov
+ 2021 14:44:59 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::35:281:b7f8:ed4c]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::35:281:b7f8:ed4c%5]) with mapi id 15.20.4734.024; Mon, 29 Nov 2021
+ 14:44:59 +0000
+Cc: brijesh.singh@amd.com, Peter Gonda <pgonda@google.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Tom Lendacky <Thomas.Lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
+ <ak@linux.intel.com>, tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH Part2 v5 00/45] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+To: Joerg Roedel <jroedel@suse.de>, Dave Hansen <dave.hansen@intel.com>
+References: <20210820155918.7518-1-brijesh.singh@amd.com>
+ <CAMkAt6o0ySn1=iLYsH0LCnNARrUbfaS0cvtxB__y_d+Q6DUzfA@mail.gmail.com>
+ <daf5066b-e89b-d377-ed8a-9338f1a04c0d@amd.com>
+ <d673f082-9023-dafb-e42e-eab32a3ddd0c@intel.com>
+ <f15597a0-e7e0-0a57-39fd-20715abddc7f@amd.com>
+ <5f3b3aab-9ec2-c489-eefd-9136874762ee@intel.com>
+ <d83e6668-bec4-8d1f-7f8a-085829146846@amd.com>
+ <38282b0c-7eb5-6a91-df19-2f4cfa8549ce@intel.com> <YZ5iWJuxjSCmZL5l@suse.de>
+ <bd31abd4-c8a2-bdda-ea74-1c24b29beda7@intel.com> <YZ9gAMHdEo6nQ6a0@suse.de>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <9503ac53-1323-eade-2863-df11a5f36b6a@amd.com>
+Date: Mon, 29 Nov 2021 08:44:54 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
+In-Reply-To: <YZ9gAMHdEo6nQ6a0@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR02CA0011.namprd02.prod.outlook.com
+ (2603:10b6:208:fc::24) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.790,Hydra:6.0.425,FMLib:17.0.607.475
- definitions=2021-11-29_07,2021-11-28_01,2020-04-07_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0
- spamscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
- clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2110150000 definitions=main-2111290058
+Received: from [10.236.30.107] (165.204.77.1) by MN2PR02CA0011.namprd02.prod.outlook.com (2603:10b6:208:fc::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.22 via Frontend Transport; Mon, 29 Nov 2021 14:44:55 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5e45e1f5-249c-48a5-e6e8-08d9b346d124
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2541:
+X-Microsoft-Antispam-PRVS:
+	<SN1PR12MB254154C3013720695CA794ACE5669@SN1PR12MB2541.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	O0UjbKCB038KKYSjG7IXJhijz4UPweSrfOAUGbxRBaZlE1A3M1yTke8+qRQGUmlxX1UfdDhfPFmRRcebxEvVVY5PvsS1zlbCle4nkk3dXYqtUgDCW54G2PcpkEmVxvdfMNcm9stpScr5gaBugyDGdxIcLVy8TSRhRwunJcWGPs51wo7LkE6zQjxGJsPdH+upZm7WbIl3FBfeWVbtiAGIZpj0w2EKhH7332CWuIFyYgh+oa4FVjRSfVhwgG0YDOMUQvjKv/Wi7wwur/OpZ6gnmghfMIrYK8enLhb1E1UECvR4tJMvl7u+1l5+gm6clFgYAxClgbc+ecQx39eZuyTxkaXsmBVou9Kfv3sfsCFbE3wfxttnJX3hjxPKreBxaCzIQ3DI596+tscO39OC1bivg35COwnBPijGKp9LgJD9mvrRofigFybgoX/A9mXhpR5XU99Un9ZkiJ5v3JKlJIBW7y9muipaKRzQ/Vb2sibKNqffR+MjC5aJ/NgQYsBYPOCrB6DLlXlqqwDdmoyD4qginET6+xFa1TZ6+zyclbJNCkxE0bs9RZmQ6/sRGwFxe9VPOHYFs4pskviR0DudjlHBiZxW+Q2joOqZzFJa87zobgDou3YOtnpT9gW35+7s08KQFZJZf4INTLizPJWFfS4D8m7pHjXoNKY0ZlojRNklqQGgCqKeQAyJDVqiW97qMpHpfAVslO3VGcz684wU76mGHVGhiLFpUc4Bx8GqG7t9QOI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(66476007)(16576012)(66556008)(54906003)(7416002)(4326008)(110136005)(316002)(2616005)(508600001)(8936002)(66946007)(36756003)(38100700002)(31696002)(5660300002)(44832011)(8676002)(7406005)(86362001)(2906002)(186003)(956004)(53546011)(31686004)(26005)(83380400001)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eDhIYU02dVh3cWx0WGgycmkvZnBwakJMZC85V1c4bDZHSXA3UkVaTVVxOUli?=
+ =?utf-8?B?d3FDVHpubmp5OEFhcFJBNlVBWVh1R0ZmYU9iSFFRRnhjNHhzUWovQThyQ2ZM?=
+ =?utf-8?B?RXZNQzU3U2ZHaTJ1RVN3aGpBYUFldkF1RnZ3R21MU05MOXAvQ0JGTDdJemJn?=
+ =?utf-8?B?amNjejE1ZGhJNXZocUFWZWRNUmtlSUZlVUtlMzJZK012K1RvTU5MVGROZVpO?=
+ =?utf-8?B?aFVDRjV2eWF5b1dSZXVFZ0VVeFpURXlJUDRWN1kyOGJNVEZNNTJ1cVNZWWFP?=
+ =?utf-8?B?Z3lrQUVvaWFacnhzN2ZTRDg4YTlZc1JlMzhBUEpmb29WcEd3QXMzS3ZXeEJr?=
+ =?utf-8?B?UWZwZW9TVmpUYXJGMVlVMG5LWUduZXdQOVJPaTFseDZMMGJpK0xwWVF6Q1Bj?=
+ =?utf-8?B?R0NCZk1vUjJrajRzSDduYUhQdzBlQ25HRG91cGpvdG4veStUdVlzQkczV2Vp?=
+ =?utf-8?B?clFvaFRCRnQ5WnJFemlMdHo5Y0gwYUNwdzNUeXBiSWx3dnlsNWpSRXNHSW9T?=
+ =?utf-8?B?ZmtqTVJFOGhVekRyWjM2ZEhxbTRuRVg5aTlna0lTOXVIQ09vcUtMTjJrUXNp?=
+ =?utf-8?B?MGlsNnA2WW9LRGNabW5UbDhFT1d6Z1Qxem1velNhOHFTRjRXNkdEb2Y5RjFT?=
+ =?utf-8?B?OE9YdDF4ZWV6YWlWTWdlUHRpdmYrNTQrSlROSkQ5QmJjUEs5VFBrTThZU2R6?=
+ =?utf-8?B?V3p2dXB4czB4Smx6ZzJ3Y1ZaYXIwaC9XUnpzTUFCYnNmTXR1ckw1eU9VTVNy?=
+ =?utf-8?B?UE9GQjZGS01oUDlHMDBXSmdMazJFOGVFNVg4RkIzMXRiYkpKSE14SS9WMkhz?=
+ =?utf-8?B?VWpzcU5nRmg5UVU4TVVjYloxRTc1bWx2ai85T0FhVHdvSGRaTmJLMWlXOURj?=
+ =?utf-8?B?cEttdVMxc2k5Vkg5TVpVM1dwN1dKTWRaaUxsN0grSnYvY2R3bEw2RmJDZ082?=
+ =?utf-8?B?RE5XZ2gwVTNUajN1Z3NySko0V1hzMUh5TndBSWhBcERIcE1rZGF6d1UvVnVX?=
+ =?utf-8?B?TWxEN2YyaVA5RmFpK3RadDZ3SXZDc2pPMFFnU0toV2h0c1ZXZ0taT0ZzN2U4?=
+ =?utf-8?B?SXNaWVlaOWFieUhnVVJUSDh2QmU5OGdUT0JRcXFyeTdGdEt6UmVqTjhaVTVW?=
+ =?utf-8?B?Yi9RN1FHbmdIQnJJYXRvUzAwU2tuckJINS9nSzhEMm9yVlVpU29NMWRjbHdC?=
+ =?utf-8?B?d0R0ZGRkV084SThBcFVqS0pxMXZnTmk0VDNRWFdMeWNycGdhQkQyU2dJZFUy?=
+ =?utf-8?B?b1htWWIrSjQxNG9veVdmbkVqRXZaZW9FWjZCbGpZQWNjcldremJjMDU4QUFL?=
+ =?utf-8?B?UFFKMzJOL1Fyb2l1L0lBd2Q3VS9YSGhJeWVrdTNMQTk5MVJwdTNlWnZxWHo3?=
+ =?utf-8?B?WnpWckpIemJxL2NJOFd5dkhYclN2NTBWbnFJYXFhaTVFRVN0cG93MHhYcS9q?=
+ =?utf-8?B?TmdJRTBnYWJ3SFZjZGVLN0JKQUNqOGFCcXM2QU04bVlwVlptMzR0MzNoYUVu?=
+ =?utf-8?B?NW9RbThzQUVLdlBZRUlUd1UvMG5sZGdtZWtJLzNYZStwRU1Bemc0clN3Um9I?=
+ =?utf-8?B?eFl3MWpnY0dWVlhobTlQd0M4Wmh0bExjamdCK0x6aVFvc1kvSDIwRGNDamhQ?=
+ =?utf-8?B?NlV6U29IU1VEMFYwK0xWY1dQZE1LOVlEdkRvbmNqWWFCTTU4NWV2OTNGR282?=
+ =?utf-8?B?MTB0b2pEVmxjNXBiNEZiUXpvb3ppZkpyUTBVWTJia0dKUTFyN0ZpcXd1VzN5?=
+ =?utf-8?B?eTVIdTk0aFBhZDlObHlncTVCTTlaaENFemZPc1pvbDNYbzZLOWVPZHR5M2VU?=
+ =?utf-8?B?b0RDSzN6MzQ1dDNTbkx5dXRveDFibXlIcmRvMm1CZ01JQnd2T2lwYlJMeVlB?=
+ =?utf-8?B?Z3Q0VGRFU3phbThkaEgwUzhHb2RCSnlnaVU1NW5lK2lXeUplQ05xU3hKOERN?=
+ =?utf-8?B?a2RCWEhNVy9PUUlyeFNTZTFpalVqWkRZYUhJUVlGUUhiWDVYdlNaaytuT21x?=
+ =?utf-8?B?RTUxT3hrYWF6enRsUTVJUzMxejNtUStBcy9vUDdaQ00vem14eDdTYnR3MS9V?=
+ =?utf-8?B?Q0xXOEJSdDhRcE8rbUl4MElCK05BN1A1TVBreTFwMHFhMFVSNGxYS3VmWkZR?=
+ =?utf-8?B?ZlduanUwZUtIYTU0U2pWS2w3UmxDbDdsNlpLS2pKN3R6TFRQeUFYV1Z6cFBI?=
+ =?utf-8?Q?4wMc9MEC0g7ecsgdtdG4j98=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e45e1f5-249c-48a5-e6e8-08d9b346d124
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2021 14:44:59.1782
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UnRT5dbS2AbvapWZl0UBlsFMmLuhU6Y8JfysKbSHtHU32hrYzRwb8GNmijNNfxvATEiBx/pKembRPuGzsGtx9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN1PR12MB2541
 
-Add documentation for the efi_secret module which allows access
-to Confidential Computing injected secrets.
 
-Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
----
- Documentation/security/coco/efi_secret.rst | 102 +++++++++++++++++++++
- Documentation/security/coco/index.rst      |   9 ++
- Documentation/security/index.rst           |   1 +
- 3 files changed, 112 insertions(+)
- create mode 100644 Documentation/security/coco/efi_secret.rst
- create mode 100644 Documentation/security/coco/index.rst
 
-diff --git a/Documentation/security/coco/efi_secret.rst b/Documentation/security/coco/efi_secret.rst
-new file mode 100644
-index 000000000000..fa74899b68a3
---- /dev/null
-+++ b/Documentation/security/coco/efi_secret.rst
-@@ -0,0 +1,102 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+==========
-+EFI secret
-+==========
-+
-+This document describes how Confidential Computing secret injection is handled
-+from the firmware to the operating system, in the EFI driver and the efi_secret
-+kernel module.
-+
-+
-+Introduction
-+============
-+
-+Confidential Computing (coco) hardware such as AMD SEV (Secure Encrypted
-+Virtualization) allows guest owners to inject secrets into the VMs
-+memory without the host/hypervisor being able to read them.  In SEV,
-+secret injection is performed early in the VM launch process, before the
-+guest starts running.
-+
-+The efi_secret kernel module allows userspace applications to access these
-+secrets via securityfs.
-+
-+
-+Secret data flow
-+================
-+
-+The guest firmware may reserve a designated memory area for secret injection,
-+and publish its location (base GPA and length) in the EFI configuration table
-+under a ``LINUX_EFI_COCO_SECRET_AREA_GUID`` entry
-+(``adf956ad-e98c-484c-ae11-b51c7d336447``).  This memory area should be marked
-+by the firmware as ``EFI_RESERVED_TYPE``, and therefore the kernel should not
-+be use it for its own purposes.
-+
-+During the VM's launch, the virtual machine manager may inject a secret to that
-+area.  In AMD SEV and SEV-ES this is performed using the
-+``KVM_SEV_LAUNCH_SECRET`` command (see [sev]_).  The strucutre of the injected
-+Guest Owner secret data should be a GUIDed table of secret values; the binary
-+format is described in ``drivers/virt/coco/efi_secret/efi_secret.c`` under
-+"Structure of the EFI secret area".
-+
-+On kernel start, the kernel's EFI driver saves the location of the secret area
-+(taken from the EFI configuration table) in the ``efi.coco_secret`` field.
-+Later it checks if the secret area is populated: it maps the area and checks
-+whether its content begins with ``EFI_SECRET_TABLE_HEADER_GUID``
-+(``1e74f542-71dd-4d66-963e-ef4287ff173b``).  If the secret area is populated,
-+the EFI driver will autoload the efi_secret kernel module, which exposes the
-+secretes to userspace applications via securityfs.  The details of the
-+efi_secret filesystem interface are in [efi-secret-abi]_.
-+
-+
-+Application usage example
-+=========================
-+
-+Consider a guest performing computations on encrypted files.  The Guest Owner
-+provides the decryption key (= secret) using the secret injection mechanism.
-+The guest application reads the secret from the efi_secret filesystem and
-+proceeds to decrypt the files into memory and then performs the needed
-+computations on the content.
-+
-+In this example, the host can't read the files from the disk image
-+because they are encrypted.  Host can't read the decryption key because
-+it is passed using the secret injection mechanism (= secure channel).
-+Host can't read the decrypted content from memory because it's a
-+confidential (memory-encrypted) guest.
-+
-+Here is a simple example for usage of the efi_secret module in a guest
-+to which an EFI secret area with 4 secrets was injected during launch::
-+
-+	# ls -la /sys/kernel/security/coco/efi_secret
-+	total 0
-+	drwxr-xr-x 2 root root 0 Jun 28 11:54 .
-+	drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-+	-r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-+	-r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-+	-r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
-+	-r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
-+
-+	# xxd /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-+	00000000: 7468 6573 652d 6172 652d 7468 652d 6b61  these-are-the-ka
-+	00000010: 7461 2d73 6563 7265 7473 0001 0203 0405  ta-secrets......
-+	00000020: 0607                                     ..
-+
-+	# rm /sys/kernel/security/coco/efi_secret/e6f5a162-d67f-4750-a67c-5d065f2a9910
-+
-+	# ls -la /sys/kernel/security/coco/efi_secret
-+	total 0
-+	drwxr-xr-x 2 root root 0 Jun 28 11:55 .
-+	drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-+	-r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-+	-r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-+	-r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
-+
-+
-+References
-+==========
-+
-+See [sev-api-spec]_ for more info regarding SEV ``LAUNCH_SECRET`` operation.
-+
-+.. [sev] Documentation/virt/kvm/amd-memory-encryption.rst
-+.. [efi-secret-abi] Documentation/ABI/testing/securityfs-coco-efi_secret
-+.. [sev-api-spec] https://www.amd.com/system/files/TechDocs/55766_SEV-KM_API_Specification.pdf
-diff --git a/Documentation/security/coco/index.rst b/Documentation/security/coco/index.rst
-new file mode 100644
-index 000000000000..56b803d4b33e
---- /dev/null
-+++ b/Documentation/security/coco/index.rst
-@@ -0,0 +1,9 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+====================================
-+Confidential Computing documentation
-+====================================
-+
-+.. toctree::
-+
-+   efi_secret
-diff --git a/Documentation/security/index.rst b/Documentation/security/index.rst
-index 16335de04e8c..3662e93a3eba 100644
---- a/Documentation/security/index.rst
-+++ b/Documentation/security/index.rst
-@@ -17,3 +17,4 @@ Security Documentation
-    tpm/index
-    digsig
-    landlock
-+   coco/index
--- 
-2.25.1
+On 11/25/21 4:05 AM, Joerg Roedel wrote:
+> On Wed, Nov 24, 2021 at 09:48:14AM -0800, Dave Hansen wrote:
+>> That covers things like copy_from_user().  It does not account for
+>> things where kernel mappings are used, like where a
+>> get_user_pages()/kmap() is in play.
+> 
+> The kmap case is guarded by KVM code, which locks the page first so that
+> the guest can't change the page state, then checks the page state, and
+> if it is shared does the kmap and the access.
 
+
+The KVM use-case is well covered in the series, but I believe Dave is 
+highlighting what if the access happens outside of the KVM driver (such 
+as a ptrace() or others).
+
+One possible approach to fix this is to enlighten the kmap/unmap(). 
+Basically, move the per page locking mechanism used by the KVM in the 
+arch-specific code and have kmap/kunmap() call the arch hooks. The arch 
+hooks will do this:
+
+Before the map, check whether the page is added as a shared in the RMP 
+table. If not shared, then error.
+Acquire a per-page map_lock.
+Release the per-page map_lock on the kunmap().
+
+The current patch set provides helpers to change the page from private 
+to shared. Enhance the helpers to check for the per-page map_lock, if 
+the map_lock is held then do not allow changing the page from shared to 
+private.
+
+Thoughts ?
+
+> 
+> This should turn an RMP fault in the kernel which is not covered in the
+> uaccess exception table into a fatal error.
+> 
+> Regards,
+> 
