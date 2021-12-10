@@ -1,32 +1,32 @@
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3149129CA
-	for <linux-coco@lists.linux.dev>; Fri, 10 Dec 2021 19:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A341D29CA
+	for <linux-coco@lists.linux.dev>; Fri, 10 Dec 2021 20:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1639165956; x=1670701956;
+  t=1639167429; x=1670703429;
   h=subject:to:cc:references:from:message-id:date:
    mime-version:in-reply-to:content-transfer-encoding;
-  bh=ZyJEneqN0WLXOkTrJaTlQQALlJ6ix8fsNbk8D7ChUXE=;
-  b=UJKzOTWz5YBlbMHWE28MfsMAOMsIvuAOX3LdU5A0HtpJP7hV3H0IqZwk
-   OGhaCTNxsGe+i0pGK7y4y3oPJ1GMU6SeO5rIls3sgBTjFZRaEPagotw3y
-   IwwQ6f6RYLMokmEQDuAOrrG6n0eVIdSG/dhyNmaMlVV/jRYuRYLfXStcX
-   4ydWs83AX+zuQWqxsaOs2KUUg0CPJcc4x9Lqmcke980G4mUiEtc05NRXd
-   NZKcPX1qVz1CYh/bLsQl6Ti/iD+oxdP38LbOTQWconiGXwyZsaSbEgQiq
-   xqJp/UBVgT+iKvHtr1mlGIcL3te6yKg8xjjPs/YXLNCsCiMWtv6yuzHYU
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="299217182"
+  bh=qlcufQUW7gdsZMSiBDDxV0IWviZXAFDgSbAjc00inmM=;
+  b=G4TtYQmP2v4gJSbHi/9f0Xl1ezIezTUL73h1x82lPYEN58NwLNys/ckt
+   HrAx7AL0Wo/jh/2SbRfmO4og3NmcrU7A16MbjC4NAu1ZgJeSdZL/aiLzv
+   RQwvOt0pPNS4DKb6JOqsCoKbGQ02zc+UA3hz4z3MDSELsdmkdSBhCpz/T
+   PE+K+OqhKtmwm3ZCRJTJNxhW1JQEsRJre+MQasNR5RR/OR+tb8zImRvdI
+   zdtZ2Ot6FJw4/YBsiABv9TIPe8nB3mFUKalepfIJNDR2ytzoQczGzMeDb
+   AvO9qm1FDNRLHYS9cqMdc+FaSCHQftfbxrsYzPZ+IFw+EKD9284RwLWcI
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10194"; a="299224227"
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="299217182"
+   d="scan'208";a="299224227"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 11:52:35 -0800
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 12:17:08 -0800
 X-IronPort-AV: E=Sophos;i="5.88,196,1635231600"; 
-   d="scan'208";a="607617412"
+   d="scan'208";a="607625856"
 Received: from klarson-mobl.amr.corp.intel.com (HELO [10.251.16.229]) ([10.251.16.229])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 11:52:31 -0800
-Subject: Re: [PATCH v8 33/40] x86/compressed/64: add identity mapping for
- Confidential Computing blob
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 12:17:07 -0800
+Subject: Re: [PATCH v8 00/40] Add AMD Secure Nested Paging (SEV-SNP) Guest
+ Support
 To: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
  linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -48,7 +48,6 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  tony.luck@intel.com, marcorr@google.com,
  sathyanarayanan.kuppuswamy@linux.intel.com
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-34-brijesh.singh@amd.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -93,8 +92,8 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <14a7c745-b6c3-8d9c-144f-2d06b80159e6@intel.com>
-Date: Fri, 10 Dec 2021 11:52:28 -0800
+Message-ID: <b22e13f3-aaaa-812f-da8f-838da9cd2e92@intel.com>
+Date: Fri, 10 Dec 2021 12:17:03 -0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 Precedence: bulk
@@ -103,41 +102,23 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20211210154332.11526-34-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-1-brijesh.singh@amd.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 
-On 12/10/21 7:43 AM, Brijesh Singh wrote:
-> +static void sev_prep_identity_maps(void)
-> +{
-> +	/*
-> +	 * The ConfidentialComputing blob is used very early in uncompressed
-> +	 * kernel to find the in-memory cpuid table to handle cpuid
-> +	 * instructions. Make sure an identity-mapping exists so it can be
-> +	 * accessed after switchover.
-> +	 */
-> +	if (sev_snp_enabled()) {
-> +		struct cc_blob_sev_info *cc_info =
-> +			(void *)(unsigned long)boot_params->cc_blob_address;
-> +
-> +		add_identity_map((unsigned long)cc_info,
-> +				 (unsigned long)cc_info + sizeof(*cc_info));
-> +		add_identity_map((unsigned long)cc_info->cpuid_phys,
-> +				 (unsigned long)cc_info->cpuid_phys + cc_info->cpuid_len);
-> +	}
+On 12/10/21 7:42 AM, Brijesh Singh wrote:
+> The series is based on tip/master
+>   7f32a31b0a34 (origin/master, origin/HEAD) Merge branch into tip/master: 'core/entry'
 
-The casting here is pretty ugly.  Also, isn't ->cpuid_phys already a
-u64?  Whats the idea behind casting it?
+FWIW, this is rather useless since tip/master gets rebased all the time.
+ Also, being a merge commit, it's rather impossible to even infer which
+commit this might have been near.
 
-I also have a sneaking suspicion that a single "unsigned long cc_blob"
-could remove virtually all the casting.  Does this work?
-
-	unsigned long cc_blob = boot_params->cc_blob_addres;
-	struct cc_blob_sev_info *cc_info;
-
-	add_identity_map(cc_blob, cc_blob + sizeof(*cc_info));
-
-	cc_info = (struct cc_blob_sev_info *)cc_blob;
-	add_identity_map(cc_info->cpuid_phys,
-			 cc_info->cpuid_phys + cc_info->cpuid_len);
+Personally, I like to take my series', tag them, then throw them out in
+a public git tree somewhere.  That has two advantages.  First, it makes
+it easy for a reviewer to look at the series as a whole in its applied
+state.  Second, it makes it utterly trivial to figure out where the
+series was based because the entire history is there.  The entire
+history will be there even if you based it off some tip branch that got
+rebased away since.
