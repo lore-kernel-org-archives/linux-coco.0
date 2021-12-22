@@ -1,24 +1,23 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mail.skyhub.de (unknown [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F572C9C
-	for <linux-coco@lists.linux.dev>; Tue, 21 Dec 2021 13:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7BD2C9C
+	for <linux-coco@lists.linux.dev>; Wed, 22 Dec 2021 13:16:57 +0000 (UTC)
 Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D8E5D1EC036C;
-	Tue, 21 Dec 2021 14:01:22 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 16E271EC053B;
+	Wed, 22 Dec 2021 14:16:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1640091683;
+	t=1640178998;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1bprDfdvCUTDmFgPeZ/DgEcYMZB8JnU81wIATQ3hdpI=;
-	b=lFD/OZLGP6rpHXQds9Z1P6kCLWylMFdckyx96tcwS7nkgVDi6n6Xe1gwIT6LuyMr3KQ2w9
-	2aqFuN3mm90ztX/32tCYPjfU3fNYZGMDnOrAEZPwHAcxxP8QDlcYmI/rADQSfKzHv+N+XE
-	Lr4sw56igof13tj/+zrymJI8E4fzrvA=
-Date: Tue, 21 Dec 2021 14:01:26 +0100
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=ldBbr5F47BRkNwI3KCFQS/UodY8GZ2FSKRo/NdAeHoA=;
+	b=e69K3Rot7r+DAZgXj9o0t3pGLM4ORQDocgHgt/iL0f+XvQ11GV/SzjuIH9Zjvnw9lvaLp4
+	fmyEq6Rixyg4hGNaZ1bl0Tcga3404uXxPkVRnzjAke6Q6llvGHEkMlJBlaYa+JCKI+w0dv
+	9a0WJ1k2HOZsvuXUs5ZjYmGdvr7X/zs=
+Date: Wed, 22 Dec 2021 14:16:40 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -47,11 +46,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 09/40] x86/compressed: Add helper for validating pages
- in the decompression stage
-Message-ID: <YcHQJqm4iP9/9TjE@zn.tnic>
+Subject: Re: [PATCH v8 11/40] x86/sev: Register GHCB memory when SEV-SNP is
+ active
+Message-ID: <YcMlOOPp2rTFKkeW@zn.tnic>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-10-brijesh.singh@amd.com>
+ <20211210154332.11526-12-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,70 +59,37 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20211210154332.11526-10-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-12-brijesh.singh@amd.com>
 
-On Fri, Dec 10, 2021 at 09:43:01AM -0600, Brijesh Singh wrote:
-> diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
-> index f7213d0943b8..ef77453cc629 100644
-> --- a/arch/x86/boot/compressed/ident_map_64.c
-> +++ b/arch/x86/boot/compressed/ident_map_64.c
-> @@ -275,15 +275,31 @@ static int set_clr_page_flags(struct x86_mapping_info *info,
->  	 * Changing encryption attributes of a page requires to flush it from
->  	 * the caches.
->  	 */
-> -	if ((set | clr) & _PAGE_ENC)
-> +	if ((set | clr) & _PAGE_ENC) {
->  		clflush_page(address);
->  
-> +		/*
-> +		 * If the encryption attribute is being cleared, then change
-> +		 * the page state to shared in the RMP table.
-> +		 */
-> +		if (clr)
-> +			snp_set_page_shared(pte_pfn(*ptep) << PAGE_SHIFT);
+On Fri, Dec 10, 2021 at 09:43:03AM -0600, Brijesh Singh wrote:
+> @@ -652,7 +652,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+>   * This function runs on the first #VC exception after the kernel
+>   * switched to virtual addresses.
+>   */
+> -static bool __init sev_es_setup_ghcb(void)
+> +static bool __init setup_ghcb(void)
+>  {
+>  	/* First make sure the hypervisor talks a supported protocol. */
+>  	if (!sev_es_negotiate_protocol())
 
-You forgot to change that one.
+Ok, let me stare at this for a while:
 
-> +	}
-> +
->  	/* Update PTE */
->  	pte = *ptep;
->  	pte = pte_set_flags(pte, set);
->  	pte = pte_clear_flags(pte, clr);
->  	set_pte(ptep, pte);
->  
-> +	/*
-> +	 * If the encryption attribute is being set, then change the page state to
-> +	 * private in the RMP entry. The page state must be done after the PTE
-                                                   ^
-                                                 change
+This gets called by handle_vc_boot_ghcb() which gets set at build time:
 
-Geez, tell me, why should I be even bothering to review stuff if I have
-to go look at the previous review I did and find that you haven't really
-addressed it?!
+arch/x86/kernel/head_64.S:372:SYM_DATA(initial_vc_handler,      .quad handle_vc_boot_ghcb)
 
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-> index 7ac5842e32b6..a2f956cfafba 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -57,6 +57,32 @@
->  #define GHCB_MSR_AP_RESET_HOLD_REQ	0x006
->  #define GHCB_MSR_AP_RESET_HOLD_RESP	0x007
->  
-> +/*
-> + * SNP Page State Change Operation
-> + *
-> + * GHCBData[55:52] - Page operation:
-> + *   0x0001 – Page assignment, Private
-> + *   0x0002 – Page assignment, Shared
+initial_vc_handler() gets called by vc_boot_ghcb() which gets set in
 
-I wonder how you've achieved that:
+early_setup_idt()
 
-massage_diff: Warning: Unicode char [–] (0x2013) in line: + *   0x0001 – Page assignment, Private
-massage_diff: Warning: Unicode char [–] (0x2013) in line: + *   0x0002 – Page assignment, Shared
+and that function already does sev_snp_register_ghcb().
 
-See https://trojansource.codes/ for some background.
+So why don't you concentrate the work setup_ghcb() does before the first
+#VC and call it in early_setup_idt(), before the IDT is set?
+
+And then you get rid of yet another setup-at-first-use case?
+
+Thx.
 
 -- 
 Regards/Gruss,
