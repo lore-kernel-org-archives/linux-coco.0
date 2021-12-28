@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957C1173
-	for <linux-coco@lists.linux.dev>; Thu, 23 Dec 2021 11:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B732C80
+	for <linux-coco@lists.linux.dev>; Tue, 28 Dec 2021 11:53:14 +0000 (UTC)
 Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 09C2A1EC054E;
-	Thu, 23 Dec 2021 12:50:21 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C55AB1EC01B5;
+	Tue, 28 Dec 2021 12:53:01 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1640260221;
+	t=1640692381;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=cuJ+soGkmwGVdG30YPS/F1N7S/DbyJYTLWnol8x+5u4=;
-	b=Rsvnfq2qxXXOgXEVluwWck3R4Eyw+KHKRdwmXra1wDyjKVwD1FsCFugMErEl59E6zC09t+
-	7CnZ2kUaKkSUR4FmgVCit4Y+JvrquvY0CLpilS0y9xMwmq1YCHGFBnupRwRbzYYqxst3b+
-	O8/fud/q7zcxWW+af8iQXU/ftTyZoOs=
-Date: Thu, 23 Dec 2021 12:50:22 +0100
+	bh=Ob8tswK4Xm0lqN1/jJzLIv0otsbzC1F2WyAvFbY5lPc=;
+	b=q+ro7nFUI1DlQw0f4nLyr6tvHRRotoFlvk/uUPIpj+uYTc8raIwmB6OlkZisHndXAx2dt3
+	6JuMTVgsn22ztBNhvrLdOy7h+5eRFIx2F9yKN5e6kmSFaihbA3sqjo16uYSHHdVoQnYQpO
+	x+jHg8RBLbUn+Km0LuvA9Nmvc35QTOA=
+Date: Tue, 28 Dec 2021 12:53:04 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -46,11 +46,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 12/40] x86/sev: Add helper for validating pages in
- early enc attribute changes
-Message-ID: <YcRifo82cGk+wP+a@zn.tnic>
+Subject: Re: [PATCH v8 13/40] x86/kernel: Make the bss.decrypted section
+ shared in RMP table
+Message-ID: <Ycr6oHww19TCDph9@zn.tnic>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-13-brijesh.singh@amd.com>
+ <20211210154332.11526-14-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,146 +59,18 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-13-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-14-brijesh.singh@amd.com>
 
-On Fri, Dec 10, 2021 at 09:43:04AM -0600, Brijesh Singh wrote:
-> The early_set_memory_{encrypt,decrypt}() are used for changing the
-					^
-					ed()
+On Fri, Dec 10, 2021 at 09:43:05AM -0600, Brijesh Singh wrote:
+> The encryption attribute for the bss.decrypted region is cleared in the
 
+s/region/section/
 
-> page from decrypted (shared) to encrypted (private) and vice versa.
-> When SEV-SNP is active, the page state transition needs to go through
-> additional steps.
-> 
-> If the page is transitioned from shared to private, then perform the
-> following after the encryption attribute is set in the page table:
-> 
-> 1. Issue the page state change VMGEXIT to add the page as a private
->    in the RMP table.
-> 2. Validate the page after its successfully added in the RMP table.
-> 
-> To maintain the security guarantees, if the page is transitioned from
-> private to shared, then perform the following before clearing the
-> encryption attribute from the page table.
-> 
-> 1. Invalidate the page.
-> 2. Issue the page state change VMGEXIT to make the page shared in the
->    RMP table.
-> 
-> The early_set_memory_{encrypt,decrypt} can be called before the GHCB
+s/bss.decrypted/.bss..decrypted/g
 
-ditto.
+if you're going to call it by its name, use the correct one pls.
 
-> is setup, use the SNP page state MSR protocol VMGEXIT defined in the GHCB
-> specification to request the page state change in the RMP table.
-> 
-> While at it, add a helper snp_prep_memory() that can be used outside
-> the sev specific files to change the page state for a specified memory
-
-"outside of the sev specific"? What is that trying to say?
-
-/me goes and looks at the whole patchset...
-
-Right, so that is used only in probe_roms(). So that should say:
-
-"Add a helper ... which will be used in probe_roms(), in a later patch."
-
-> range.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/sev.h |  10 ++++
->  arch/x86/kernel/sev.c      | 102 +++++++++++++++++++++++++++++++++++++
->  arch/x86/mm/mem_encrypt.c  |  51 +++++++++++++++++--
-
-Right, for the next revision, that file is called mem_encrypt_amd.c now.
-
-...
-
-> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
-> index 3ba801ff6afc..5d19aad06670 100644
-> --- a/arch/x86/mm/mem_encrypt.c
-> +++ b/arch/x86/mm/mem_encrypt.c
-> @@ -31,6 +31,7 @@
->  #include <asm/processor-flags.h>
->  #include <asm/msr.h>
->  #include <asm/cmdline.h>
-> +#include <asm/sev.h>
->  
->  #include "mm_internal.h"
->  
-> @@ -49,6 +50,34 @@ EXPORT_SYMBOL_GPL(sev_enable_key);
->  /* Buffer used for early in-place encryption by BSP, no locking needed */
->  static char sme_early_buffer[PAGE_SIZE] __initdata __aligned(PAGE_SIZE);
->  
-> +/*
-> + * When SNP is active, change the page state from private to shared before
-> + * copying the data from the source to destination and restore after the copy.
-> + * This is required because the source address is mapped as decrypted by the
-> + * caller of the routine.
-> + */
-> +static inline void __init snp_memcpy(void *dst, void *src, size_t sz,
-> +				     unsigned long paddr, bool decrypt)
-> +{
-> +	unsigned long npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
-> +
-> +	if (!cc_platform_has(CC_ATTR_SEV_SNP) || !decrypt) {
-
-Yeah, looking at this again, I don't really like this multiplexing.
-Let's do this instead, diff ontop:
-
----
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index c14fd8254198..e3f7a84449bb 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -49,24 +49,18 @@ EXPORT_SYMBOL(sme_me_mask);
- static char sme_early_buffer[PAGE_SIZE] __initdata __aligned(PAGE_SIZE);
- 
- /*
-- * When SNP is active, change the page state from private to shared before
-- * copying the data from the source to destination and restore after the copy.
-- * This is required because the source address is mapped as decrypted by the
-- * caller of the routine.
-+ * SNP-specific routine which needs to additionally change the page state from
-+ * private to shared before copying the data from the source to destination and
-+ * restore after the copy.
-  */
- static inline void __init snp_memcpy(void *dst, void *src, size_t sz,
- 				     unsigned long paddr, bool decrypt)
- {
- 	unsigned long npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
- 
--	if (!cc_platform_has(CC_ATTR_SEV_SNP) || !decrypt) {
--		memcpy(dst, src, sz);
--		return;
--	}
--
- 	/*
--	 * With SNP, the paddr needs to be accessed decrypted, mark the page
--	 * shared in the RMP table before copying it.
-+	 * @paddr needs to be accessed decrypted, mark the page shared in the
-+	 * RMP table before copying it.
- 	 */
- 	early_snp_set_memory_shared((unsigned long)__va(paddr), paddr, npages);
- 
-@@ -124,8 +118,13 @@ static void __init __sme_early_enc_dec(resource_size_t paddr,
- 		 * Use a temporary buffer, of cache-line multiple size, to
- 		 * avoid data corruption as documented in the APM.
- 		 */
--		snp_memcpy(sme_early_buffer, src, len, paddr, enc);
--		snp_memcpy(dst, sme_early_buffer, len, paddr, !enc);
-+		if (cc_platform_has(CC_ATTR_SEV_SNP)) {
-+			snp_memcpy(sme_early_buffer, src, len, paddr, enc);
-+			snp_memcpy(dst, sme_early_buffer, len, paddr, !enc);
-+		} else {
-+			memcpy(sme_early_buffer, src, len);
-+			memcpy(dst, sme_early_buffer, len);
-+		}
- 
- 		early_memunmap(dst, len);
- 		early_memunmap(src, len);
+Ditto in the Subject.
 
 -- 
 Regards/Gruss,
