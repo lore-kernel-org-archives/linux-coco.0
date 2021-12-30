@@ -1,24 +1,43 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1A92C80
-	for <linux-coco@lists.linux.dev>; Thu, 30 Dec 2021 12:19:32 +0000 (UTC)
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C26D81EC052C;
-	Thu, 30 Dec 2021 13:19:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1640866765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=APH2/iSNCeAsFpqhV/dxY2RAhEU+c1m9FWSAYTvjChY=;
-	b=f7yWN15jxBzcx63Nm8aosfVRatqvTarqGLJIf/jooaBZfJnFsZHlCCHAgUBoNO0y/Safju
-	hhpgIms02bEXS/dMZjW2k4O8vui+SjAvGGlgSgHHFpq4akczJjcdZ3jGmmfTJM5M9KqIZT
-	EthJW3Ptis4tIl9mTFVv4d7q+xHtSkY=
-Date: Thu, 30 Dec 2021 13:19:24 +0100
-From: Borislav Petkov <bp@alien8.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD5029CA
+	for <linux-coco@lists.linux.dev>; Thu, 30 Dec 2021 18:52:57 +0000 (UTC)
+Received: by mail-pf1-f177.google.com with SMTP id t123so21981779pfc.13
+        for <linux-coco@lists.linux.dev>; Thu, 30 Dec 2021 10:52:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=7LN0LYaPJq+96WHHrtqpjEIWMUaO4vFF4rfqypL1bR0=;
+        b=rpWu9btVqmQ0QTbmhhUK9Dz89dFgfjXlqrAlod7GAGD11uxF9ibLliA+w90bMIj+yu
+         TIOjH72MZO8MQ7A8vUTAUp8oWRFg8/BipD06png87ugKRx0MKigkwcE4v6Ox7L1hPCRF
+         LbBZaDMOePI/nMwaCJr14Wu2PvJLwtFiw+54GL+KkzIMdHM3FccaqN4+6O48BHw6xq/Q
+         3+12yH+FzOyHGDuAJBoBoI7EUk7q5/X/DE5Ns7fdkWsox8rQ/8JYcof7evWLlW7OBNDI
+         +3dLx/XSBDQ6s6BWy9kD/uLxfdiPVleJt9v5d8jg2rY0ZTdLC080XnqpHl95VAbCakt7
+         +40w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=7LN0LYaPJq+96WHHrtqpjEIWMUaO4vFF4rfqypL1bR0=;
+        b=5+1LMN0ik0NMx65HyM2S40C7VT1BCN2gpK9WdfCp3PR2Lkc7Pnj7PX/nEty/SDOyx4
+         n9wRub9HmiITDOXLh5oXaPNqtZDFnoSBlpqx5dMPyxuRwZK5ZNmJiGugwl0a/2mYeDSa
+         iL/gDYW2/u26b8bME1YCnL2mi6Mk+iXh6waD4P8I5I1eUrhH+HvlMjXiO+ntZX3OFr1t
+         iRmGua4LWolryFYZDIlYVPVg6GzDy0nbS7MX7qN1FGJmgVkq5wocUj8QJaHnCeY3m3o+
+         9DojgAl+lOGaQfPhaoyVr6EqzZXymgPM8fytTrqI/sRXTepJ2zbix4+T8gpDsd1P3RFb
+         ouvw==
+X-Gm-Message-State: AOAM531lsGk/UHQMdQ1WGwld9c8l3QZ9yxz0WIko9Os6MM2oTH/H6S5n
+	MuGCeZR+erskCjuOYqXcat7/qg==
+X-Google-Smtp-Source: ABdhPJzjf15Pudr7gJPrk1rYboV0PPDYswWEE3HKGVacbEvnTAzwn3YOFqw0PNuZsiPShsWRZbt0GA==
+X-Received: by 2002:a05:6a00:21cd:b0:4bc:35e8:eaea with SMTP id t13-20020a056a0021cd00b004bc35e8eaeamr10048326pfj.23.1640890376505;
+        Thu, 30 Dec 2021 10:52:56 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id r7sm20049373pgm.15.2021.12.30.10.52.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Dec 2021 10:52:55 -0800 (PST)
+Date: Thu, 30 Dec 2021 18:52:52 +0000
+From: Sean Christopherson <seanjc@google.com>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -28,7 +47,6 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -39,37 +57,137 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	David Rientjes <rientjes@google.com>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
+	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 17/40] KVM: SVM: Create a separate mapping for the
- SEV-ES save area
-Message-ID: <Yc2jzOunYej4vwSc@zn.tnic>
+Subject: Re: [PATCH v8 22/40] x86/sev: move MSR-based VMGEXITs for CPUID to
+ helper
+Message-ID: <Yc4ABL2EbBlwjma5@google.com>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-18-brijesh.singh@amd.com>
+ <20211210154332.11526-23-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-18-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-23-brijesh.singh@amd.com>
 
-On Fri, Dec 10, 2021 at 09:43:09AM -0600, Brijesh Singh wrote:
-> +/* Save area definition for SEV-ES and SEV-SNP guests */
-> +struct sev_es_save_area {
+On Fri, Dec 10, 2021, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
+> 
+> This code will also be used later for SEV-SNP-validated CPUID code in
+> some cases, so move it to a common helper.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kernel/sev-shared.c | 84 +++++++++++++++++++++++++-----------
+>  1 file changed, 58 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+> index 3aaef1a18ffe..d89481b31022 100644
+> --- a/arch/x86/kernel/sev-shared.c
+> +++ b/arch/x86/kernel/sev-shared.c
+> @@ -194,6 +194,58 @@ enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb, bool set_ghcb_msr,
+>  	return verify_exception_info(ghcb, ctxt);
+>  }
+>  
+> +static int sev_cpuid_hv(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
 
-I'd still call it sev_save_area for simplicity. And
-EXPECTED_SEV_SAVE_AREA_SIZE and so on.
+Having @subfunc, a.k.a. index, in is weird/confusing/fragile because it's not consumed,
+nor is it checked.  Peeking ahead, it looks like all future users pass '0'.  Taking the
+index but dropping it on the floor is asking for future breakage.  Either drop it or
+assert that it's zero.
 
--- 
-Regards/Gruss,
-    Boris.
+> +			u32 *ecx, u32 *edx)
+> +{
+> +	u64 val;
+> +
+> +	if (eax) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EAX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*eax = (val >> 32);
+> +	}
+> +
+> +	if (ebx) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EBX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*ebx = (val >> 32);
+> +	}
+> +
+> +	if (ecx) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_ECX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*ecx = (val >> 32);
+> +	}
+> +
+> +	if (edx) {
+> +		sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, GHCB_CPUID_REQ_EDX));
+> +		VMGEXIT();
+> +		val = sev_es_rd_ghcb_msr();
+> +
+> +		if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+> +			return -EIO;
+> +
+> +		*edx = (val >> 32);
+> +	}
 
-https://people.kernel.org/tglx/notes-about-netiquette
+That's a lot of pasta!  If you add
+
+  static int __sev_cpuid_hv(u32 func, int reg_idx, u32 *reg)
+  {
+	u64 val;
+
+	if (!reg)
+		return 0;
+
+	sev_es_wr_ghcb_msr(GHCB_CPUID_REQ(func, reg_idx));
+	VMGEXIT();
+	val = sev_es_rd_ghcb_msr();
+	if (GHCB_RESP_CODE(val) != GHCB_MSR_CPUID_RESP)
+		return -EIO;
+
+	*reg = (val >> 32);
+	return 0;
+  }
+
+then this helper can become something like:
+
+  static int sev_cpuid_hv(u32 func, u32 *eax, u32 *ebx, u32 *ecx, u32 *edx)
+  {
+	int ret;
+
+	ret = __sev_cpuid_hv(func, GHCB_CPUID_REQ_EAX, eax);
+	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_EBX, ebx);
+	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_ECX, ecx);
+	ret = ret ? : __sev_cpuid_hv(func, GHCB_CPUID_REQ_EDX, edx);
+
+	return ret;
+  }
+
+> +
+> +	return 0;
+> +}
+> +
