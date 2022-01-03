@@ -1,133 +1,104 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39042C80
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jan 2022 18:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679B6173
+	for <linux-coco@lists.linux.dev>; Mon,  3 Jan 2022 18:59:13 +0000 (UTC)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E884A210E8;
-	Mon,  3 Jan 2022 18:10:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1641233458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 612F41F38A;
+	Mon,  3 Jan 2022 18:59:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1641236351; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Op3ImOqOwCCgnIZralyZf3tGTao+t3Y622jP3bRdc3M=;
-	b=C2zVimxxGBkbjHiUPECVcDKFMB2sv4FqZcW8GgohA812H99T/sYphGZEA629myHI1xwfUB
-	EAkGvy3QcUL7w4mnTnl7szW5Fx/6/jwA9fnzECUU2Sma7xvOTmQrTquQlS23TiIHyoVOdi
-	hXjehu5D/56NRpJ+CiRwuwIH541HAPU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1641233458;
+	bh=TdDYxb7brFIwjLIMOPbmEZrjtTPyGQuN72CDxmaZLfg=;
+	b=dWmDaI2oEiMKNQ/h2pK0gxKOhJGVFjqcUfy5WlLeoTMbtoQQlT8wuOTfxE0x54/RsZa+VZ
+	/++EBkwRXtP2t7HGhnoqHczEUh9lk4s3e8BAYaec/1xND8s+vcu8XL+Ce07b2z3U/vd19h
+	El2EFPp6oC8CiFoxXn7gR0qjByjVfrU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1641236351;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Op3ImOqOwCCgnIZralyZf3tGTao+t3Y622jP3bRdc3M=;
-	b=oSr9zFj9HMCbLGX5MoS/SaS6qozzC73ylXqxLdax9DGQnykLDDk2KqDo7iHeTOHc038jY8
-	783kriuIq+Bu45Bg==
+	bh=TdDYxb7brFIwjLIMOPbmEZrjtTPyGQuN72CDxmaZLfg=;
+	b=YY2KJsZYLgiXY7d81omY33Rcs8bANCVR9IR8Ege9ggRmiN7gbjvK84EFOydeMNM37fS8jH
+	d82mn+0A4voKtTAQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7535E13B09;
-	Mon,  3 Jan 2022 18:10:58 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3D3F013B14;
+	Mon,  3 Jan 2022 18:59:11 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id UEjgGzI802FfKwAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Mon, 03 Jan 2022 18:10:58 +0000
-Message-ID: <91eb34b0-ff19-40a3-9744-ad80432d8317@suse.cz>
-Date: Mon, 3 Jan 2022 19:10:58 +0100
+	id Yr13Dn9H02EBPQAAMHmgww
+	(envelope-from <bp@suse.de>); Mon, 03 Jan 2022 18:59:11 +0000
+Date: Mon, 3 Jan 2022 19:59:14 +0100
+From: Borislav Petkov <bp@suse.de>
+To: Dov Murik <dovmurik@linux.ibm.com>
+Cc: linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Andrew Scull <ascull@google.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+	Jim Cadden <jcadden@ibm.com>,
+	Daniele Buono <dbuono@linux.vnet.ibm.com>,
+	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/5] Allow guest access to EFI confidential computing
+ secret area
+Message-ID: <YdNHgtuVoLofL4cW@zn.tnic>
+References: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>, Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
- Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
- Tobin Feldman-Fitzthum <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
- <ak@linux.intel.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-21-brijesh.singh@amd.com> <Yc8jerEP5CrxfFi4@zn.tnic>
-From: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH v8 20/40] x86/sev: Use SEV-SNP AP creation to start
- secondary CPUs
-In-Reply-To: <Yc8jerEP5CrxfFi4@zn.tnic>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
 
-On 12/31/21 16:36, Borislav Petkov wrote:
-> On Fri, Dec 10, 2021 at 09:43:12AM -0600, Brijesh Singh wrote:
->> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
->> index 123a96f7dff2..38c14601ae4a 100644
+On Mon, Nov 29, 2021 at 11:42:46AM +0000, Dov Murik wrote:
+> As a usage example, consider a guest performing computations on
+> encrypted files.  The Guest Owner provides the decryption key (= secret)
+> using the secret injection mechanism.  The guest application reads the
+> secret from the efi_secret filesystem and proceeds to decrypt the files
+> into memory and then performs the needed computations on the content.
 > 
->> +{
->> +	unsigned long pfn;
->> +	struct page *p;
->> +
->> +	/*
->> +	 * Allocate an SNP safe page to workaround the SNP erratum where
->> +	 * the CPU will incorrectly signal an RMP violation  #PF if a
->> +	 * hugepage (2mb or 1gb) collides with the RMP entry of VMSA page.
-> 
-> 		2MB or 1GB
-> 
-> Collides how? The 4K frame is inside the hugepage?
-> 
->> +	 * The recommeded workaround is to not use the large page.
-> 
-> Unknown word [recommeded] in comment, suggestions:
->         ['recommended', 'recommend', 'recommitted', 'commended', 'commandeered']
-> 
->> +	 *
->> +	 * Allocate one extra page, use a page which is not 2mb aligned
-> 
-> 2MB-aligned
-> 
->> +	 * and free the other.
->> +	 */
->> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
->> +	if (!p)
->> +		return NULL;
->> +
->> +	split_page(p, 1);
->> +
->> +	pfn = page_to_pfn(p);
->> +	if (IS_ALIGNED(__pfn_to_phys(pfn), PMD_SIZE)) {
->> +		pfn++;
->> +		__free_page(p);
->> +	} else {
->> +		__free_page(pfn_to_page(pfn + 1));
->> +	}
-> 
-> AFAICT, this is doing all this stuff so that you can make sure you get a
-> non-2M-aligned page. I wonder if there's a way to simply ask mm to give
-> you such page directly.
-> 
-> vbabka?
+> In this example, the host can't read the files from the disk image
+> because they are encrypted.  Host can't read the decryption key because
+> it is passed using the secret injection mechanism (= secure channel).
+> Host can't read the decrypted content from memory because it's a
+> confidential (memory-encrypted) guest.
 
-AFAIK, not, as this is a very unusual constraint. Unless there are more
-places that need it, should be fine to solve it like above. Maybe just also
-be optimistic and try a plain order-0 first and only if it has the undesired
-alignment (which should happen only once per 512 allocations), fallback to
-the above?
+So maybe I don't understand the example properly or something's missing
+but why can't the guest owner simply scp the secrets into the guest? Why
+is this special thing needed?
+
+The secret below says "...kata-secrets" so this sounds like
+something-automated-containers-thing where they'd profit from getting
+secrets automatically supplied to the guest. But I guess there you can
+scp too...
+
+So what am I missing?
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
