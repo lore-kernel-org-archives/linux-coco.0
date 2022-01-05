@@ -1,166 +1,179 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AC22C9C
-	for <linux-coco@lists.linux.dev>; Wed,  5 Jan 2022 11:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1641383013;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vZRqLCV1AQpi4/pbS4HKIi2vod3d/KjNFKlZbvvJOJw=;
-	b=K//lgPD4unB7RRy9kopdUVeaTGXXSRBHBOgflQ0jlx1Q2liMvmZ+hG4O3K8WvnXhBmXH/d
-	KfsUVJiMahE6AtaUuLTdHXMzC7NEBKzfFptXzGF2S9yRmvc8dbLBczMuFgkeCIHjNBIs40
-	5Og4lfGXtbvFMhH7PPsiZkjReWXTA4w=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-462-LURl5Wr5Me-ahzxWnP1twg-1; Wed, 05 Jan 2022 06:43:31 -0500
-X-MC-Unique: LURl5Wr5Me-ahzxWnP1twg-1
-Received: by mail-wr1-f70.google.com with SMTP id v18-20020a5d5912000000b001815910d2c0so12518089wrd.1
-        for <linux-coco@lists.linux.dev>; Wed, 05 Jan 2022 03:43:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=vZRqLCV1AQpi4/pbS4HKIi2vod3d/KjNFKlZbvvJOJw=;
-        b=Ot75sZakTx1Dkuou/AKvSi28DGD3WowZ7bDhi94v6yYM63TJqR8Uf5kt+QdUZzPSak
-         lsc647j8QC8LRaVUgfHd1rmlVYJZbxEYEUFWdFE6+TT1K+a4sZkMzNyWjStHIAOOaFyb
-         sNdA5je3BbvYPwBSfWm9gukY1j0oKtIWBOzCrN88koHBs8xxCMiGiI/dbXl27oKooRST
-         meyn6EFNqxGRdChBQ8mbyYIv61Cu06AKmQ4zYLXsBEX1DU+q+keJhjMjDgeTaPIVMKGy
-         MEM4IEwcRCzJlV9SWuK6pYhKoK4g3oAAkp4U0SmXP9vAQtkaVBj5F3xcyfYrft1OnBry
-         xdSQ==
-X-Gm-Message-State: AOAM532+qF19FmZ8ozS9DKwh5ySPkjZQf80KLjhnX8iTWn3l3yBloxAW
-	ed7oX0LlEXqy2Qsa4JoNkDaVnkskEl9QTLpNdxYSZfdHq5eSzMOjt4oc771/95eyPZiCtd5hKzb
-	KNF9+aFn37nPGWts86mtg+g==
-X-Received: by 2002:a05:6000:10c4:: with SMTP id b4mr45048005wrx.514.1641383010397;
-        Wed, 05 Jan 2022 03:43:30 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJx0ND3sp1KAm9XvjE31Azjsac5utQcfs8uXXLrux4uumEKa2/x8xhMt+qfPbb1B2mJgzhIwuA==
-X-Received: by 2002:a05:6000:10c4:: with SMTP id b4mr45047983wrx.514.1641383010177;
-        Wed, 05 Jan 2022 03:43:30 -0800 (PST)
-Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net. [82.30.61.225])
-        by smtp.gmail.com with ESMTPSA id f8sm43265636wry.16.2022.01.05.03.43.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jan 2022 03:43:29 -0800 (PST)
-Date: Wed, 5 Jan 2022 11:43:25 +0000
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Borislav Petkov <bp@suse.de>
-Cc: Dov Murik <dovmurik@linux.ibm.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, linux-efi@vger.kernel.org,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Andrew Scull <ascull@google.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-	Jim Cadden <jcadden@ibm.com>,
-	Daniele Buono <dbuono@linux.vnet.ibm.com>,
-	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/5] Allow guest access to EFI confidential computing
- secret area
-Message-ID: <YdWEXRt7Ixm6/+Dq@work-vm>
-References: <20211129114251.3741721-1-dovmurik@linux.ibm.com>
- <YdNHgtuVoLofL4cW@zn.tnic>
- <0280e20e-8459-dd35-0b7d-8dbc1e4a274a@linux.ibm.com>
- <YdSRWmqdNY7jRcer@zn.tnic>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F00173
+	for <linux-coco@lists.linux.dev>; Wed,  5 Jan 2022 18:41:54 +0000 (UTC)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 205ILLiY005145;
+	Wed, 5 Jan 2022 18:41:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2021-07-09;
+ bh=0Z2s9qFswC3rfSktebUvbwH/JCgV2vD34hKgsAV886k=;
+ b=uPYQL9iLX4btcXGUofjg4waHdUBxsMTMb1rwzox+8/R4FWovwtWOKT47HFXYUeslpOw5
+ Ryew066k/eHpLuB62kPXC41viKiH3ODTq3L3Fq3X/f3XUONdUgkIlFRXsJxOs7C0DRfO
+ 3ekdqR20D7B/VNF+tZDKuNIMsL1CDn7Dpaap/Mojf7QJJTiFAldtL5wYnwjlwf2Z0cHk
+ Jfy6qcXhFAjuGTT8sSQfSSPv4W92IbttH1IgpXTi5TlScX3XUXO6GZdrcAkof9KoGgML
+ bbYnHKWhYRSw0yz0aao8vABVfr7yYErQS7rsgxZVssoxRcvow/HCX7utFbSsIJm77Dt+ Jw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by mx0b-00069f02.pphosted.com with ESMTP id 3dc40fngmr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 05 Jan 2022 18:41:30 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.1.2/8.16.1.2) with SMTP id 205IFek7053659;
+	Wed, 5 Jan 2022 18:41:29 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2174.outbound.protection.outlook.com [104.47.56.174])
+	by aserp3020.oracle.com with ESMTP id 3daes5kew7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 05 Jan 2022 18:41:29 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VGAeJn0sOdAOlxc6WAtcA/JDcfd2jecbfArlZE6Ta5NBSKzeLdb0bj36RcFfwWDb1nMar4czEp2viDSkB0CPh/hcZQl8YDK+e1xXXYT3V9o54+rXNaCa+APJYkLhJjhwrJopD8cugqD9K4Z3JdvMIIzC8UhkwswwKVj5rR00M4jU9pwe+jGWHb+aAgcHOogca9MLDv1KmMbIMCJKiM5BpZvoM6bYZcd8J9eS+/GZMmw1NkbHphvjbY6AZFPuNoHeBlRldKdSzS6lu5WeDO33C1/bJQxoihiPPFfZz0F/IERfFW8gQ4f9oWk61l4h+7siU8sIPLlVQyYE1kqn1KVZHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0Z2s9qFswC3rfSktebUvbwH/JCgV2vD34hKgsAV886k=;
+ b=V/A9azCGp15pESWsIVKOueJTptuGzoPbVPjd1kGeR+YaeF4yC4yRX1c+lGok47D7VdS9Duh9JISBNsIKYspHTg/ECaW3mz0wtrKpvz9nin7NqZMkGbRIqd/tnwYXgl4lCRngVoTI2DKldep3ByzY3STGw0VRCfMJJ9IPgkxNy5eTTcvugx+06rALEQ7YZ5mLvohExufh5m8Mmpyp/sGZ6sr+wZF9bSZJ5VHX0/2RJsTo/EtFGEDAEMJZWGKnta7ipRNSPPgOyjAmYT6LGN3KuITnC+zKHmOqbpO54yRIMtpWoJoTBCLr5P8d6r4QCKEmpH7bRek6Vlb718vKlQmJcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0Z2s9qFswC3rfSktebUvbwH/JCgV2vD34hKgsAV886k=;
+ b=MaEed9mwo3rf2Ql3tCdtZ0ro621h0EFpYa7YbBjfk0voCylFyuS8pCz1YA8IkLbexp4FP97Q4Jz/B1Utu5aoFCqlKNy9ri/tTcAJixAEMo2N8DQbZdiRJPDZzBeWciDPtuJhfbIbsIuo0hwNjtFrtFXZsEu5Q3umOc9SDdngj5Y=
+Received: from SN6PR10MB2576.namprd10.prod.outlook.com (2603:10b6:805:44::15)
+ by SN6PR10MB2702.namprd10.prod.outlook.com (2603:10b6:805:48::28) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4844.14; Wed, 5 Jan
+ 2022 18:41:27 +0000
+Received: from SN6PR10MB2576.namprd10.prod.outlook.com
+ ([fe80::4c8c:47df:f81e:f412]) by SN6PR10MB2576.namprd10.prod.outlook.com
+ ([fe80::4c8c:47df:f81e:f412%5]) with mapi id 15.20.4867.009; Wed, 5 Jan 2022
+ 18:41:27 +0000
+Date: Wed, 5 Jan 2022 12:41:20 -0600
+From: Venu Busireddy <venu.busireddy@oracle.com>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>, tony.luck@intel.com,
+        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 18/40] KVM: SVM: Create a separate mapping for the
+ GHCB save area
+Message-ID: <YdXmUBHFytjrpZuY@dt>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-19-brijesh.singh@amd.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211210154332.11526-19-brijesh.singh@amd.com>
+X-ClientProxiedBy: BY3PR05CA0026.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::31) To SN6PR10MB2576.namprd10.prod.outlook.com
+ (2603:10b6:805:44::15)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <YdSRWmqdNY7jRcer@zn.tnic>
-User-Agent: Mutt/2.1.3 (2021-09-10)
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dgilbert@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4ce17f64-7bd3-48bf-9178-08d9d07afb14
+X-MS-TrafficTypeDiagnostic: SN6PR10MB2702:EE_
+X-Microsoft-Antispam-PRVS: 
+	<SN6PR10MB2702FB01C77A2D1667633079E64B9@SN6PR10MB2702.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	4L0/33ecekx4LzSVW8FRIntloB+SF16bTDmVihnCUhP1ISdQWhouOAJzpGjsBhI6vjzVrsfeidP/QiYP7h8OiOTak2p4HJBGmDkVYZuS3c5WXlffYnAjypi9aYTjtg64Par8LOjX/+c7pPdyLiEWzbN9XK89udcI6Ul4GrTAeQMjJYW+y70iKG6Lrv+87BkXmZBNVz0R+jxaXOrN9DHKRrhxmGVVyJFopy+entzl2Y0ZsgbdKn7GtSYiK3fbCnR+8hgQzijNobcD/iKapy81uxUyRrvsplV/TPZAZcNb5Q9xCk1bcoCsHtTGXezG60q20M/tN4Y3QZt2QmIYGQE/vCXWJmHsGEdZp+hfTPTPvM65mZqZWWZcvyg7Jh+HqZq2T+lh84BvrBfbsjPzpP5GNhLLbOhdbd+dMSYl22O7qzCQyyN+NftVHzt4SI5USpz17b94YAvMl4VXNwYLzdLwZadmK2gEpsXTUz5xfZy7Mdev6PdBdvwuwgtk0kZN7b5EsOXmPaowBHpxSYmgxOqguxcAiSZQO2mCllvvEYrleCk/40JeQ3Krar7VE4plDNrsLac6g9Q9ot5Wo/YHGsKaW2soEP4r6hZv1V9gaPZMGuGy9l8daG+5q04l+xbdQC7FbNLOeICC3ERfO86oDlKBXw==
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB2576.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(7916004)(366004)(54906003)(316002)(5660300002)(44832011)(8936002)(6916009)(26005)(83380400001)(4001150100001)(33716001)(86362001)(53546011)(7416002)(7406005)(9686003)(4326008)(6486002)(66946007)(8676002)(4744005)(6666004)(6512007)(66556008)(2906002)(38100700002)(6506007)(66476007)(508600001)(186003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?0V4NlFIEraBoTy5hpGuYGw/2WyAu+qqqsrHQxukfZhkP0acTvU/zXedvtHiF?=
+ =?us-ascii?Q?eLBgLiX863y73TTm1n3yr9ZbsVqrQram4Bd/6Ct8bUgh16so6e8ZMWaBKMOj?=
+ =?us-ascii?Q?YUzW/WJ8GxQUdlz+G98rhYWbwCz+rGuJ/N+JsVLbGjyFhJWzPCJbSX/SYzeo?=
+ =?us-ascii?Q?k8z2QQiwbCQ2/lWzkwTCfPTcuU3KIlGPQOx6+k8g1SX6PqG+vkCALdhqpVks?=
+ =?us-ascii?Q?C8lWeb0NgL/Bw4W6EZFt1Lzbs/yRKSwe7H6nS8thlM455D5Yc9EP7ooqIPtK?=
+ =?us-ascii?Q?T/5wYyUyUGONVTsFgS9CYXw7jMsCLMQo0B8+uQs3iYa5Ipfaj0R5Tz/nqDqB?=
+ =?us-ascii?Q?qzKbVS5ixG1VCXrR20GU4kdYmXePXl+vYFW6oi4aMKVowbh680KFgdLYQ7bw?=
+ =?us-ascii?Q?5A1+Ow9VSoy789pNOq27B+HCBLMNZLXlHWshYkE2Ivcv/EHMi9m0xg6u2Y3H?=
+ =?us-ascii?Q?ccIdpyHEqoQcAKOLdaKccD0wFQfE8z6Y7EEq2J4ez57vBpBR8CUeHbU6nYH9?=
+ =?us-ascii?Q?TstpZOQBPuAYnmY6Ozb322sQeHZS01I7WePK7PUIWVTXmuOakE4uqCpgD2wx?=
+ =?us-ascii?Q?3BraWqQ0AGJipZj+yXNg/KDpySYrqjeGCPdFYc6+5gbgca5rqMAoy6iY1N8w?=
+ =?us-ascii?Q?hLZb2N4ZYYUgz5bzfeoYKZHumAT1+7soDyC6sQRnWQ6puXYwKOo3lYglO2f7?=
+ =?us-ascii?Q?nFhBWEPOfVL7MrQFzf1qHA8HvxzdUuhs5TZL2YUvRuDRTNLflhNlgx79Cgqj?=
+ =?us-ascii?Q?fb1ZSqt+xDVa0ybf3hCIlEGBGZv41Uza5wSCAeNRl4JV0eic+JJnbUIn50w2?=
+ =?us-ascii?Q?B+/rGM9KROeTCoUHWoq009pNrxxoTF0mQCjKqKHGTS50iyU2fqjJmUbKz1Zc?=
+ =?us-ascii?Q?oHZFy9AAAP1nfEBpVk0ibVNPQ8J02nYenCY6RleKw47mnRIBOHhNiG6j4+s8?=
+ =?us-ascii?Q?aQWeP64opADz+RrAZreRFvjhF9/7pe0RQU9H0hI8lTMEqSoV9PPTYOwBex18?=
+ =?us-ascii?Q?f2LxlKGCUGftxYP1XOG7Ufl9eSl5Xc2cI7E1mYAQAwRtb5Q06bPQUfkN9VjJ?=
+ =?us-ascii?Q?U6896WvlQyhcthud0sSC5TTo75OFu7JlfAK05HAEQEdBJlCcL/R1nMkuMg+T?=
+ =?us-ascii?Q?yPC8F10kZO/yXVCEkdtbN7ibgy7Q/LcJzpriRqPslwxj9NZQ1WuL4qtJKbVB?=
+ =?us-ascii?Q?NbI4K6ETBFSkSdo5dzKarbrZAVygqS+SjueUg7A6eDDBeDcd61n7s94ilgIY?=
+ =?us-ascii?Q?Pm/52SoV0p5AFNDBcq+6wyiPG6JACO7SVcQUjkHBYvrq57RBKTfCvmjE7cFO?=
+ =?us-ascii?Q?Qpn+Mmw6p8QrEMRb1SNtSAoxw7epReKxAvBPhheMnhk6VB1TCNt3aqDtv7Ur?=
+ =?us-ascii?Q?QcbRkqeAObKvwctUlIvBotd9IJEHkARZIQBPKlzRpmwCNzBN8A+a9FI3m/eh?=
+ =?us-ascii?Q?vPVMqs8MlJ0AQlLJ17BXN+ujp6X4I/5ri/lSUjwQ4Ty6aqklA97JHi8voccW?=
+ =?us-ascii?Q?/eK19/ehEYT2l8CJMHUwVBbPgb3szKsEQJBZFu+BTUapAoKNg7bmbnLNPD49?=
+ =?us-ascii?Q?Dm6+CMneH8azmpck9n6Hzpbsoa5M+HKevKfA80cJQlQTX0+q+DXvY6LnER0X?=
+ =?us-ascii?Q?C5Vj93rAiT416z/bM3tB91Hqp2B6jXPA9cT9QMPG6Zxkx5zt5jB5b4YKISPj?=
+ =?us-ascii?Q?WrbYog=3D=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ce17f64-7bd3-48bf-9178-08d9d07afb14
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB2576.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2022 18:41:26.9221
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bnq8hK3T1WZulPYkuS8IDgDrunZzNnOCtFc1BrdnVCzQmno/wWvrSMhDb0EA2TYMuM3EeSuN90+I4sUW8x/XdW8/uqWnhcVtrv//nxpnmHs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR10MB2702
+X-Proofpoint-Virus-Version: vendor=nai engine=6300 definitions=10218 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
+ spamscore=0 adultscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2110150000
+ definitions=main-2201050119
+X-Proofpoint-ORIG-GUID: VgtPoetv1a6-v94L3EnkmPAqreWd6QyK
+X-Proofpoint-GUID: VgtPoetv1a6-v94L3EnkmPAqreWd6QyK
 
-* Borislav Petkov (bp@suse.de) wrote:
-> On Tue, Jan 04, 2022 at 09:02:03AM +0200, Dov Murik wrote:
-> > If the Guest Owner chooses to inject secrets via scp, it needs
-> > to be sure it is scp-ing to the correct VM - the one that has SEV
-> > enabled and was measured at launch.
+On 2021-12-10 09:43:10 -0600, Brijesh Singh wrote:
+> From: Tom Lendacky <thomas.lendacky@amd.com>
 > 
-> Hmm, I'd expect that to be part of the attestation dance. I admit,
-> though, I have only listened about the whole attestation bla from the
-> sidelines so I'm unclear whether that's part of that protocol. I guess
-> Tom and Brijesh should have a better idea here.
+> The initial implementation of the GHCB spec was based on trying to keep
+> the register state offsets the same relative to the VM save area. However,
+> the save area for SEV-ES has changed within the hardware causing the
+> relation between the SEV-ES save area to change relative to the GHCB save
+> area.
+> 
+> This is the second step in defining the multiple save areas to keep them
+> separate and ensuring proper operation amongst the different types of
+> guests. Create a GHCB save area that matches the GHCB specification.
+> 
+> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 
-There's more than one type of dance; this partially varies
-depending on the system (SEV/TDX etc) and also depends on how you depend
-to boot your VM (separate kernel or VM disk).   Also it's important to
-note that when the dance happens varies - in SEV and SEV-ES this happens
-before the guest executes any code.
-So at the end of the dance, the guest owner hands over that secret - but
-only then does the geust start booting; that secret has to go somewhere
-to be used by something later.
-For example, something might pull out that key and use it to decrypt a
-disk that then has other secrets on it (e.g. your ssh key).
+Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
 
-Dave
-
-> > One way to achieve that would be to inject the guest's SSH private key
+> ---
+>  arch/x86/include/asm/svm.h | 48 +++++++++++++++++++++++++++++++++++---
+>  1 file changed, 45 insertions(+), 3 deletions(-)
 > 
-> Well, is that "one way" or *the way*?
-> 
-> > using the proposed efi_secret mechanism.  This way the Guest Owner is
-> > sure it is talking to the correct guest and not to some other VM that
-> > was started by the untrusted cloud provider (say, with SEV disabled so
-> > the cloud provider can steal its memory content).
-> 
-> Because we would need *some* way of verifying the owner is talking
-> to the correct guest. And if so, this should be made part of the big
-> picture of SEV guest attestation. Or is this part of that attestation
-> dance?
-> 
-> I guess I'm wondering where in the big picture this fits into?
-> 
-> > Indeed this proposed efi_secret module is in use for enabling SEV
-> > confidential containers using Kata containers [1], but there's nothing
-> > specific in the current patch series about containers.  The patch series
-> > just exposes the launch-injected SEV secrets to userspace as virtual files
-> > (under securityfs).
-> > 
-> > [1] https://github.com/confidential-containers/attestation-agent/tree/main/src/kbc_modules/offline_sev_kbc
-> 
-> So one of the aspects for this is to use it in automated deployments.
-> 
-> > It boils down to: the confidential guest needs to have access to a
-> > secret which the untrusted host can't read, and which is essential for
-> > the normal operation of the guest.  This secret can be a decryption key,
-> > an SSH private key, an API key to a Key Management system, etc.  If a
-> > malicious cloud provider tries to start that VM without a secret (or
-> > with the wrong one), the actual workload that the guest is supposed to
-> > run will not execute meaningfully.
-> > 
-> > The proposed patch series exposes the SEV injected secrets as virtual
-> > files, which can later be used as decryption keys (as done in the kata
-> > confidential containers use-case), or SSH private keys, or any other
-> > possible implementation.
-> 
-> Right, and is this going to be the proper way to authenticate SEV guests
-> to their owners or is this just another technique for safely supplying
-> secrets into the guest?
-> 
-> I hope I'm making some sense here...
-> 
-> -- 
-> Regards/Gruss,
->     Boris.
-> 
-> SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
-> 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
-
