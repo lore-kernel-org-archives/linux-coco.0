@@ -1,161 +1,240 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1anam02on2065.outbound.protection.outlook.com [40.107.96.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037FD2C80
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jan 2022 17:10:10 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BlQBnP1aHK9u8bVek6hAOXNSwSNwkF50LXiN1w3BK3uzmo8N9oJyVDFXpUJq0zCyxq2aRnU6NmBJqtLGh0DBwtNOb6Z0WU+KM3/3myP4foxYUFocfA6Um0zZYmxW0FgH0NF/0ca3m8YOvs4g+FLcw1/Y77f5epObAJPKbMaqri6qcbI0z/XZ7cLgL6pmXUtkIlaSitF/voxoRAd8qPwmpefTpjZ8KO9HUJfwNWm/AttkPdlUGrgCbpSMKgSGW6J2X1EoXW4urLx5aU0EiQGhonFf3v17C3LlowmFTR1NZ+dXDJ4x99sgqwR77FL0RE3aByg3pRdxohCilV1S0jgX6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3y+unU2w6ZJnYhINw8WCJtoCJHGgWfl5fK4U+hqFtcc=;
- b=NPTvHr3h2M1LsSVmWq3gFRZ5ExIgUJW8OtRoPw7igyC7xKCGXSJGIMlshlR29GLcQ5SbwyYF4+ZgXtC3pEuP99LxpRujQZaWRS5uPPCOgUMB63gGSyB10c/o57DGu/GqWwTxLvjN9zfe0IS/AWJoHCJrc4esXa+Rkq6eTxudpYAGWWQZo42TmR1t1Jft7JpnD6CreX8yxBK5lfOCPTIU6nghbZJ2zvUmQK2zOZ97lyYHUGWwjDkI3clsJ8LPpavOp7hz7D6bpfMy/kHFYTMg/JRa6dN31eYfkWZNOUEP4rTRjsWEbh8z3SUbHhy+Z9/QB/pFGS2iSqHvbphvEgRSeQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3y+unU2w6ZJnYhINw8WCJtoCJHGgWfl5fK4U+hqFtcc=;
- b=Nr81cyoxqr2UazQaTNxFY1oUF/yqeWCS3xadv/mFvKWsc9L6OZ+CZY3WLMA/TGcIGnHK+0UELvp1RPpJOjGQvagnjFUCCaajjpmGRKYXhYq6Ryro6dn90uBob6QKtV0DNpUsYSqKvpTTm6nkCpFcyee72DAgS9v09QjHIhku+tU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DM4PR12MB5135.namprd12.prod.outlook.com (2603:10b6:5:392::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4867.11; Wed, 12 Jan
- 2022 17:10:09 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::ccd7:e520:c726:d0b]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::ccd7:e520:c726:d0b%5]) with mapi id 15.20.4867.011; Wed, 12 Jan 2022
- 17:10:09 +0000
-Subject: Re: [PATCH v8 20/40] x86/sev: Use SEV-SNP AP creation to start
- secondary CPUs
-To: Brijesh Singh <brijesh.singh@amd.com>, Borislav Petkov <bp@alien8.de>,
- Vlastimil Babka <vbabka@suse.cz>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Joerg Roedel <jroedel@suse.de>, "H. Peter Anvin" <hpa@zytor.com>,
- Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
- Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
- Tobin Feldman-Fitzthum <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen
- <ak@linux.intel.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-21-brijesh.singh@amd.com> <Yc8jerEP5CrxfFi4@zn.tnic>
- <75c0605f-7ed0-abcc-4855-dae5d87d0861@amd.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Message-ID: <346da2f7-220f-83bd-2dbf-29e681fc089b@amd.com>
-Date: Wed, 12 Jan 2022 11:10:04 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <75c0605f-7ed0-abcc-4855-dae5d87d0861@amd.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MN2PR05CA0057.namprd05.prod.outlook.com
- (2603:10b6:208:236::26) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06A4168
+	for <linux-coco@lists.linux.dev>; Wed, 12 Jan 2022 18:30:33 +0000 (UTC)
+Received: by mail-lf1-f44.google.com with SMTP id x7so11169011lfu.8
+        for <linux-coco@lists.linux.dev>; Wed, 12 Jan 2022 10:30:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=6Bd1YSx7ZEJFRVWc4uzIcZsdFSFPDFDvCJzwKAqaE94=;
+        b=IL2tnYqp49KbC4DbWuWuSoApXfOYEWH0Vp5Wq6uLQomte7UH1R8nTj+3IyS8SHhJec
+         qGCQHijVaIHx5YrucE/XyRn7182XVeqJfVWytDDyh/0iVrVgNGamW5WDAr0AiJJjcgY7
+         15idRPC7XKfK8fc8fZTA5gsQOQaYJViFGSJIdjLJ1ZA4EGPFbGAh7h2Fd4/YbKCmsvUM
+         qhxhwlb4e7jPcvZLSx3rabkNI+VWlF1wFSCJ04jQPcZVH0JX1cOAZxO+T2dmzCPlr9nG
+         ZIwLxGDfyEggJelcWJ207CIU88nSi8g9FFbroSHlnCoH2zxwQCBgPfFNLB8RCtez565G
+         rC3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=6Bd1YSx7ZEJFRVWc4uzIcZsdFSFPDFDvCJzwKAqaE94=;
+        b=E8KvnBIgI3j8CsbTAmCKgfznLKFw5m8e89dGd37JNu+AiwR5YXfm1yQE3ykJ/puQ8K
+         GTievNo48MjcXo5P41PUiKQPCs3wqb3hxkEzjwk4DPUiTi72Wsz5C/ewaMz5nJVq83A8
+         SfCXaotsT45HKcra2FdN3sq0f19ikODhvofK43dVLhYhL7UwZBTN3WvbVMlP1xSC9KF0
+         APWZWDxuq78ofk/YmoG/IqFnGV+/9CTxdi3a6IHAdwwMNm1zhhrzqulmUcZix4ixpjgk
+         wRwcGC23Zo7U/H3psz5JW9MmobbAkCgcAQGO0w7/MMtwSoNIH5RO/CSKgau4eBRGji5b
+         5C/w==
+X-Gm-Message-State: AOAM533Zz/bigaSqd1Jqm4m5fmq7UU3PSEp4uA1GBCjzL9SB8K0tD5MD
+	ywUvsfJi+fSL36ZRP3y2X8Wthw==
+X-Google-Smtp-Source: ABdhPJxII84HR55nTUGHpdJymluKJCPa7BHXt9J8snWVXP78Afawiy8EBYuIOyWa2/PzMO0FDVjDWg==
+X-Received: by 2002:a2e:165c:: with SMTP id 28mr565509ljw.309.1642012231881;
+        Wed, 12 Jan 2022 10:30:31 -0800 (PST)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id h10sm38660ljo.95.2022.01.12.10.30.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jan 2022 10:30:30 -0800 (PST)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 5649D103A6D; Wed, 12 Jan 2022 21:30:54 +0300 (+03)
+Date: Wed, 12 Jan 2022 21:30:54 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 1/7] mm: Add support for unaccepted memory
+Message-ID: <20220112183054.uedczc4ldntrj25j@box.shutemov.name>
+References: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
+ <20220111113314.27173-2-kirill.shutemov@linux.intel.com>
+ <3a68fabd-eaff-2164-5609-3a71fd4a7257@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 4905f2d2-9489-47ad-42c0-08d9d5ee62fc
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5135:EE_
-X-Microsoft-Antispam-PRVS:
-	<DM4PR12MB513577F5D235E46ACD7282CEEC529@DM4PR12MB5135.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	/jSwHvidyUxR7IlF4ez7Ge9AjHcnalMsX68WM1wT00ikfQaOvqZ3dFt+JPdjFTmyjx9BBc5IRPXROoX7tqqyhcQarG+l19FPfv7yb/XvTPJ+4n9Td8ZbEmWPWIRG68Gzef6eb/+TteAOYSippsl3SxrIo4gQOJh2t4bDgPEMgbOfsOoUEfnuQFAMMDD27Ic9uVl0GaXt/Vq8UImK6ioTntVrnV1+IHpoQ2yHg/t3MWPwiCdt1b+7VNFj2orO+3GaJE2u3U1MgqhcEkbn14ytQQvlyBuZ67mTjUQtK9MnmhrXDxyJTU6qRRWclNSx600alAPwKTZidjj0eB04KySf4hPsj6QmXQFcU6b4TAJ23yeJq4Ktitxtox5H8WkQMRtblrTwEu2v6IZlyCLHVDn5yZJ9r/RGgYh6VTJeHVLLMKJWCalN1h+KNMAUEipJGkIxjOa8BfMgxxs9ewYvfWZUrEM1dvtHlqRUjHmDsJ7kcIm9O1ORfM2qlwiRXkEaBZqv3GrAR0wYbtImw69MU+PInVJ7AwS1yAAJtcjYdjoK9X8jVpai8FJEF6aq5PR1sBARUD4KU+C9FDikpKL23wKuQgiC1YPgJlJkbyHRf6EK6rjWflJIKM2U5yabSp2A0NFPddxFKWt0/ksfBh3IKdR4MnTrp79lQOXMVCa0bWR2eKnWRzQxChlRImIa5kT96coU/ec389iANs5yNZSfYDmudc9KzD9KqqmPHCQ/pFf9nDkX+SGAey1z3+L/n28VaOSU
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(366004)(5660300002)(31686004)(38100700002)(7416002)(6486002)(66946007)(54906003)(7406005)(66556008)(31696002)(6666004)(66476007)(2906002)(6512007)(316002)(2616005)(4744005)(6506007)(508600001)(86362001)(26005)(36756003)(8676002)(186003)(53546011)(83380400001)(110136005)(4326008)(8936002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NVdsL0UraDlHZkw0SUhkMEU3MGdNeDV6dWF5UUJ1aEQvbWw3OUtxbG1HVFBt?=
- =?utf-8?B?M3lodi9iQ1FvaExsendiOFpFQVRyZm9udG5JaEprQTdnTW5pbVBXbUZwdEVk?=
- =?utf-8?B?QjdzalNjU0FVbmpVVWxuc1E1RnRqZGRScFR2VDkxQlRuWCtiUndJSkNod2Uv?=
- =?utf-8?B?SG9CQlZrMHRuWHhmbElDZ2MvdkkxREJ6Z2pKd0pKalBabUJrL1hqYWdBNnJp?=
- =?utf-8?B?RHFuTU1NcWtGR3dLNkRuNjUyaW9hUzJkenl0eDJYcGM3N0t5MkpXN0ZEd2lj?=
- =?utf-8?B?YlVHMUNZUnJyU3dlbUpYeDJFRzVZdGhIMndZaHVON2JtUXFQTUVwdGRnbCtX?=
- =?utf-8?B?dWlTbTFKM3ZGdE9ReGhUR2h1dUt0c0k1aFBzektNd3JCdm91cHZielBEMjBn?=
- =?utf-8?B?ZmcxTlRibHZXNzNxSXdua2h0dWFLQ1BlUWJ1SFpHOEJOd2MxcWpMTlgxRkpS?=
- =?utf-8?B?a1ZNVlRxdU1zYkZvbTJ2Wm52eHdpUGp1QnFoQzJaYno0ZmpudEVLSW9OTE90?=
- =?utf-8?B?U0dOamdoZzJRRnRMdTUwZURKRGRqS1JYYTFCVFdJZlJ1dGZ3N1QyNWMybnVP?=
- =?utf-8?B?YXVmTUhlYWpscitaM1dUOHpvbGdaYTdZRk9qMjFQL3NyZWlsd29jZi83UmpP?=
- =?utf-8?B?aFFUSXpEb2xyRWxZT3hFUExzN1JyTzV3NE54bWEzWXRJeW1neEtlZlFvdjZk?=
- =?utf-8?B?NDNRTTZ0ZEV6eElSUXRCTE1EWWhJZlBDUGFYTWY5VTRwdm9tU3lwbVRuUXd5?=
- =?utf-8?B?a2hoUmQ5OUxDQk04S1N3L09mUXR0MEZGdU9mckVhaThMSzIyNTJ1SHpXazdN?=
- =?utf-8?B?S2xtcFdaVnd5THJXdENTa2RVeWhDU2JNTXZEYTRhVTlGdGowcDlGcTgvc1N2?=
- =?utf-8?B?RytWN2p3dFd6UkxvMkNhRVdRVTVpRzRLNXAzRkh4M1o4bXg0KzJYV1VVQmcz?=
- =?utf-8?B?Y2ZBMktpVldhVHdDRSt4YWhERFZYOHplSHVVMmpNakNnZExGOEhaM08wTUxx?=
- =?utf-8?B?aWtRQjR1M21XVmJhTnI0MmJEUU1kamZSM29yK2EzRkhuTHlkU3hOcWdxcXVP?=
- =?utf-8?B?enNSaU0ya3NhQTVsNjF1N3hUQldFZEh2N3puRzFyekhVcDJPTHMyYjJyb3R0?=
- =?utf-8?B?NHNUa0lLRkQwTDBzS0MwSnJBcEpNTFNZNjJMZGlZcTN4dGszdFRVWE5sZUJ1?=
- =?utf-8?B?Q0V1WnlEay80akEwd2pIek90Y0plbkpKN3ZYMHRDeGltbGVUVk1YbFFXaVRI?=
- =?utf-8?B?RVJIYmo0VHB0dHNubVlHQ0dselZLMXVzVnZxOTM1Rk1UMWIzTnhjalo5bThF?=
- =?utf-8?B?bTBYSXZHOStKbTN4RTF0L2RIaTVZZHNpaXp2c0kvNGF0NTlOYlAvRWF5MjdW?=
- =?utf-8?B?Y1FPWGpoZmYreXNwWDFhR1I0S0FZSUFsOGZmRHA1S3laNWFKQzJUSUpHNExU?=
- =?utf-8?B?V3pDT2dYOGN4UlhLcW1PU2llbnM4STZZMk4xS291YXM2MzdNV1QwTW55T2lm?=
- =?utf-8?B?WS9hR2ZMbGlZQS9KczBuVVdWa3p1VldBSjhzUXc0NFpXWlpFMGlWVmRWNDNY?=
- =?utf-8?B?QVhZM003QW5hcDBTbDlqbGl6Q2R2YlA5ek1UUVVqKzQwYVI2RWt2eEFSeGNr?=
- =?utf-8?B?SUhSOHlwVGxLYkVnVWJZV2dDN09UUTJmQy84b211YjVkbnNlQThTTit0M0N5?=
- =?utf-8?B?VXFTL1VlS3Awc3Q3MUczMlJMT0lkSFhMNzAzRHlnWjhQU0doUUl2dW1xUEpE?=
- =?utf-8?B?OEczeTI5UTJwM05hS2RldHNYZk55NS9JMVBjZDBVTXNRZFZwL2ZyWW5UYVhT?=
- =?utf-8?B?dEN1SEh2WjlLc1dVWnNmMjdXbmxoWlJRMkNXa3Erd2UwN0VSdWFhY0tGVzNp?=
- =?utf-8?B?bUtOb1hrWlVmQUFCNG5PRXRZelYwZ3RCdTFXNTFXc1FJTU0rWlN3ekNhRVVp?=
- =?utf-8?B?a0MxQ1hKTGQ5TXVWNnBYa1A1Qi9sallxWHpOWHJ3cEY4MjVKZ2M4dVFOeTZp?=
- =?utf-8?B?MCtPSytnVFFHZXVpVHl3b3dreDdUZHdlZFFjSi8xb0NyRStYbE9iaVlySDhD?=
- =?utf-8?B?djdJaDhJaGovUGhMSXVSeTJ5MDczMEtLQVV6T2llYjZUekJtUGxKVmFLd2FG?=
- =?utf-8?B?dkFIeDRnZVFhbk85Y25YbGxDUy91VnBDS1JXL29OZFBoa3I1S2pKWGRsUDla?=
- =?utf-8?Q?G/l7jmVcNFzQ1nNUPkSdXUw=3D?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4905f2d2-9489-47ad-42c0-08d9d5ee62fc
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2022 17:10:09.0986
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4alvji0elOSBFymBLlM/FoUi15rmr1rXWtlfOHFO9O5D3yX+ux7d83PbJysb4xZaN98o8T/+438BR71UEfQwUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5135
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a68fabd-eaff-2164-5609-3a71fd4a7257@intel.com>
 
-On 1/12/22 10:33 AM, Brijesh Singh wrote:
-> On 12/31/21 9:36 AM, Borislav Petkov wrote:
->> On Fri, Dec 10, 2021 at 09:43:12AM -0600, Brijesh Singh wrote:
-
->>> +     * an attempt was done to use the current VMSA with a running vCPU, a
->>> +     * #VMEXIT of that vCPU would wipe out all of the settings being done
->>> +     * here.
->>
->> I don't understand - this is waking up a CPU, how can it ever be a
->> running vCPU which is using the current VMSA?!
-
-Yes, in general. My thought was that nothing is stopping a malicious 
-hypervisor from performing a VMRUN on that vCPU and then the VMSA would be 
-in use.
-
-Thanks,
-Tom
-
->>
->> There is per_cpu(snp_vmsa, cpu), who else can be using that one currently?
->>
+On Tue, Jan 11, 2022 at 11:46:37AM -0800, Dave Hansen wrote:
+> > diff --git a/mm/memblock.c b/mm/memblock.c
+> > index 1018e50566f3..6dfa594192de 100644
+> > --- a/mm/memblock.c
+> > +++ b/mm/memblock.c
+> > @@ -1400,6 +1400,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
+> >   		 */
+> >   		kmemleak_alloc_phys(found, size, 0, 0);
+> > +	accept_memory(found, found + size);
+> >   	return found;
+> >   }
 > 
-> Maybe Tom can expand it bit more?
+> This could use a comment.
+
+How about this:
+
+	/*
+	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
+	 * requiring memory to be accepted before it can be used by the
+	 * guest.
+	 *
+	 * Accept the memory of the allocated buffer.
+	 */
 > 
+> Looking at this, I also have to wonder if accept_memory() is a bit too
+> generic.  Should it perhaps be: cc_accept_memory() or
+> cc_guest_accept_memory()?
+
+I'll rename accept_memory() to cc_accept_memory() and
+accept_and_clear_page_offline() to cc_accept_and_clear_page_offline().
+
+> 
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index c5952749ad40..5707b4b5f774 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -1064,6 +1064,7 @@ static inline void __free_one_page(struct page *page,
+> >   	unsigned int max_order;
+> >   	struct page *buddy;
+> >   	bool to_tail;
+> > +	bool offline = PageOffline(page);
+> >   	max_order = min_t(unsigned int, MAX_ORDER - 1, pageblock_order);
+> > @@ -1097,6 +1098,10 @@ static inline void __free_one_page(struct page *page,
+> >   			clear_page_guard(zone, buddy, order, migratetype);
+> >   		else
+> >   			del_page_from_free_list(buddy, zone, order);
+> > +
+> > +		if (PageOffline(buddy))
+> > +			offline = true;
+> > +
+> >   		combined_pfn = buddy_pfn & pfn;
+> >   		page = page + (combined_pfn - pfn);
+> >   		pfn = combined_pfn;
+> > @@ -1130,6 +1135,9 @@ static inline void __free_one_page(struct page *page,
+> >   done_merging:
+> >   	set_buddy_order(page, order);
+> > +	if (offline)
+> > +		__SetPageOffline(page);
+> > +
+
+I'll add
+
+	/* Mark page PageOffline() if any merged page was PageOffline() */
+
+above the 'if'.
+
+> >   	if (fpi_flags & FPI_TO_TAIL)
+> >   		to_tail = true;
+> >   	else if (is_shuffle_order(order))
+> 
+> This is touching some pretty hot code paths.  You mention both that
+> accepting memory is slow and expensive, yet you're doing it in the core
+> allocator.
+> 
+> That needs at least some discussion in the changelog.
+
+That is page type transfer on page merging. What expensive do you see here?
+The cachelines with both struct pages are hot already.
+
+> > @@ -1155,7 +1163,8 @@ static inline void __free_one_page(struct page *page,
+> >   static inline bool page_expected_state(struct page *page,
+> >   					unsigned long check_flags)
+> >   {
+> > -	if (unlikely(atomic_read(&page->_mapcount) != -1))
+> > +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
+> > +	    !PageOffline(page))
+> >   		return false;
+> 
+> Looking at stuff like this, I can't help but think that a:
+> 
+> 	#define PageOffline PageUnaccepted
+> 
+> and some other renaming would be a fine idea.  I get that the Offline bit
+> can be reused, but I'm not sure that the "Offline" *naming* should be
+> reused.  What you're doing here is logically distinct from existing
+> offlining.
+
+I find the Offline name fitting. In both cases page is not accessible
+without additional preparation.
+
+Why do you want to multiply entities?
+
+> >   	if (unlikely((unsigned long)page->mapping |
+> > @@ -1734,6 +1743,8 @@ void __init memblock_free_pages(struct page *page, unsigned long pfn,
+> >   {
+> >   	if (early_page_uninitialised(pfn))
+> >   		return;
+> > +
+> > +	maybe_set_page_offline(page, order);
+> >   	__free_pages_core(page, order);
+> >   }
+> > @@ -1823,10 +1834,12 @@ static void __init deferred_free_range(unsigned long pfn,
+> >   	if (nr_pages == pageblock_nr_pages &&
+> >   	    (pfn & (pageblock_nr_pages - 1)) == 0) {
+> >   		set_pageblock_migratetype(page, MIGRATE_MOVABLE);
+> > +		maybe_set_page_offline(page, pageblock_order);
+> >   		__free_pages_core(page, pageblock_order);
+> >   		return;
+> >   	}
+> > +	accept_memory(pfn << PAGE_SHIFT, (pfn + nr_pages) << PAGE_SHIFT);
+> >   	for (i = 0; i < nr_pages; i++, page++, pfn++) {
+> >   		if ((pfn & (pageblock_nr_pages - 1)) == 0)
+> >   			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
+> > @@ -2297,6 +2310,9 @@ static inline void expand(struct zone *zone, struct page *page,
+> >   		if (set_page_guard(zone, &page[size], high, migratetype))
+> >   			continue;
+> > +		if (PageOffline(page))
+> > +			__SetPageOffline(&page[size]);
+> 
+> Yeah, this is really begging for comments.  Please add some.
+
+I'll add
+		/* Transfer PageOffline() to newly split pages */
+> 
+> >   		add_to_free_list(&page[size], zone, high, migratetype);
+> >   		set_buddy_order(&page[size], high);
+> >   	}
+> > @@ -2393,6 +2409,9 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+> >   	 */
+> >   	kernel_unpoison_pages(page, 1 << order);
+> > +	if (PageOffline(page))
+> > +		accept_and_clear_page_offline(page, order);
+> > +
+> >   	/*
+> >   	 * As memory initialization might be integrated into KASAN,
+> >   	 * kasan_alloc_pages and kernel_init_free_pages must be
+> 
+> I guess once there are no more PageOffline() pages in the allocator, the
+> only impact from these patches will be a bunch of conditional branches from
+> the "if (PageOffline(page))" that always have the same result.  The branch
+> predictors should do a good job with that.
+> 
+> *BUT*, that overhead is going to be universally inflicted on all users on
+> x86, even those without TDX.  I guess the compiler will save non-x86 users
+> because they'll have an empty stub for accept_and_clear_page_offline() which
+> the compiler will optimize away.
+> 
+> It sure would be nice to have some changelog material about why this is OK,
+> though.  This is especially true since there's a global spinlock hidden in
+> accept_and_clear_page_offline() wrapping a slow and "costly" operation.
+
+Okay, I will come up with an explanation in commit message.
+
+-- 
+ Kirill A. Shutemov
