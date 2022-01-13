@@ -1,135 +1,95 @@
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EC1168
-	for <linux-coco@lists.linux.dev>; Wed, 12 Jan 2022 19:53:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1642017228; x=1673553228;
-  h=to:cc:references:from:subject:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=+z6qhzkY5AZh8lvp5ZYnAbRLSbu3XClV+3f1x7uGg64=;
-  b=g0le1hnUF3MFFo1V06/VmNq86s+CNCuJh0fsKsZYQHwQib0YEzEGeoVc
-   U0+j8iF/+IoDmJtotQK1JamTvlwrovNPS124pYUjzxroIWXLsrcocjhkn
-   NGR+20qnXmeGrVHgA8h1NZbyvPy6bfPUfRHNOwJJJQ7XWC0dbOKM9AfSC
-   B/N/L3vRjTe7gEGjPpPhPvWqbHtHwETpYJD8Q0Sy7r7pCZE5ox/6fQeg1
-   MTamMNsdABKSHEYNmaX5JCEZEc1TjlSmAhw9ytmxxR0cf2CzrsvW1hcwW
-   gscq4UVGpy0l5xX0HTTxWePW40frOakCAy9h3NLRK/WSNy+NQaz7SDlEY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10225"; a="243795685"
-X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
-   d="scan'208";a="243795685"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 11:53:47 -0800
-X-IronPort-AV: E=Sophos;i="5.88,282,1635231600"; 
-   d="scan'208";a="593122646"
-Received: from kumarkan-mobl.amr.corp.intel.com (HELO [10.209.80.194]) ([10.209.80.194])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 11:53:45 -0800
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499FF2C9D
+	for <linux-coco@lists.linux.dev>; Thu, 13 Jan 2022 07:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED3DC36AE3;
+	Thu, 13 Jan 2022 07:42:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1642059735;
+	bh=YhsgT/VGvn7iC/tWrV+hAmkAlLPkGfoehuUgvcT8PxQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=afoWXEa6BISUUp8I9HVzp7qlC7k1nW4vb1wONJSckOZNzpBEk2Oen3EtDwVSw+1El
+	 xx/9f2+bKgCToDN1Ictko8OP+u9pyjh/q/zt+zKsQVvdlXPBCDftMBwEwoY8FPrLl+
+	 mqWoagur7cWNCiXf2mElwp9eAucVF9q6l5MR9tFNzKo9blsdwM6pOUsjwOaE9BcUnH
+	 k6KMX/cJqDVsW+SjUZPwz/hbJWpiqDejLZ1u+472+BTau+8USPjn7TZYy0xCdpZeBl
+	 RjMDP9/liJmWJNYCG6p9FTPgT7dhKIskJ9f0/hvhdygA/icU/xPh7pN+9ce/lyO4zh
+	 GeoIpPIGhXuJw==
+Date: Thu, 13 Jan 2022 09:42:03 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 1/7] mm: Add support for unaccepted memory
+Message-ID: <Yd/Xy+L61YewxE21@kernel.org>
 References: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
- <20220111113314.27173-6-kirill.shutemov@linux.intel.com>
- <3a361a1d-0e14-8884-c5bb-90aeb87e38ef@intel.com>
- <20220112194302.cyxhjypsptr4mtix@box.shutemov.name>
-From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCHv2 5/7] x86/mm: Reserve unaccepted memory bitmap
-Message-ID: <a4b5707f-0f0b-57a8-ccdb-d89f66210b52@intel.com>
-Date: Wed, 12 Jan 2022 11:53:42 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+ <20220111113314.27173-2-kirill.shutemov@linux.intel.com>
+ <3a68fabd-eaff-2164-5609-3a71fd4a7257@intel.com>
+ <20220112183054.uedczc4ldntrj25j@box.shutemov.name>
+ <af7ceba3-c27e-9f18-6c1b-c251428d8da4@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20220112194302.cyxhjypsptr4mtix@box.shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af7ceba3-c27e-9f18-6c1b-c251428d8da4@intel.com>
 
-On 1/12/22 11:43 AM, Kirill A. Shutemov wrote:
-> On Tue, Jan 11, 2022 at 11:10:40AM -0800, Dave Hansen wrote:
->> On 1/11/22 03:33, Kirill A. Shutemov wrote:
->>> Unaccepted memory bitmap is allocated during decompression stage and
->>> handed over to main kernel image via boot_params. The bitmap is used to
->>> track if memory has been accepted.
->>>
->>> Reserve unaccepted memory bitmap has to prevent reallocating memory for
->>> other means.
->>
->> I'm having a hard time parsing that changelog, especially the second
->> paragraph.  Could you give it another shot?
+On Wed, Jan 12, 2022 at 10:40:53AM -0800, Dave Hansen wrote:
+> On 1/12/22 10:30, Kirill A. Shutemov wrote:
+> > On Tue, Jan 11, 2022 at 11:46:37AM -0800, Dave Hansen wrote:
+> > > > diff --git a/mm/memblock.c b/mm/memblock.c
+> > > > index 1018e50566f3..6dfa594192de 100644
+> > > > --- a/mm/memblock.c
+> > > > +++ b/mm/memblock.c
+> > > > @@ -1400,6 +1400,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
+> > > >    		 */
+> > > >    		kmemleak_alloc_phys(found, size, 0, 0);
+> > > > +	accept_memory(found, found + size);
+> > > >    	return found;
+> > > >    }
+> > > 
+> > > This could use a comment.
+> > 
+> > How about this:
+> > 
+> > 	/*
+> > 	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
+> > 	 * requiring memory to be accepted before it can be used by the
+> > 	 * guest.
+> > 	 *
+> > 	 * Accept the memory of the allocated buffer.
+> > 	 */
 > 
-> What about this:
+> I think a one-liner that might cue the reader to go look at accept_memory()
+> itself would be fine.  Maybe:
 > 
-> 	Unaccepted memory bitmap is allocated during decompression stage and
-> 	handed over to main kernel image via boot_params.
-> 
-> 	Kernel tracks what memory has been accepted in the bitmap.
-> 
-> 	Reserve memory where the bitmap is placed to prevent memblock from
-> 	re-allocating the memory for other needs.
-> 
-> ?
+> 	/* Make the memblock usable when running in picky VM guests: */
 
-Ahh, I get what you're trying to say now.  But, it still really lacks a
-coherent problem statement.  How about this?
+I'd s/memblock/found range/ or something like that, memblock is too vague
+IMO
+ 
+> That implies that the memory isn't usable without doing this and also points
+> out that it's related to running in a guest.
 
-	== Problem ==
-
-	A given page of memory can only be accepted once.  The kernel
-	has a need to accept memory both in the early decompression
-	stage and during normal runtime.
-
-	== Solution ==
-
-	Use a bitmap to communicate the acceptance state of each page
-	between the decompression stage and normal runtime.  This
-	eliminates the possibility of attempting to double-accept a
-	page.
-
-	== Details ==
-
-	Allocate the bitmap during decompression stage and hand it over
-	to the main kernel image via boot_params.
-
-	In the runtime kernel, reserve the bitmap's memory to ensure
-	nothing overwrites it.
-
->>> +	/* Mark unaccepted memory bitmap reserved */
->>> +	if (boot_params.unaccepted_memory) {
->>> +		unsigned long size;
->>> +
->>> +		/* One bit per 2MB */
->>> +		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
->>> +				    PMD_SIZE * BITS_PER_BYTE);
->>> +		memblock_reserve(boot_params.unaccepted_memory, size);
->>> +	}
->>
->> Is it OK that the size of the bitmap is inferred from
->> e820__end_of_ram_pfn()?  Is this OK in the presence of mem= and other things
->> that muck with the e820?
-> 
-> Good question. I think we are fine. If kernel is not able to allocate
-> memory from a part of physical address space we don't need the bitmap for
-> it either.
-
-That's a good point.  If the e820 range does a one-way shrink it's
-probably fine.  The only problem would be if the bitmap had space for
-for stuff past e820__end_of_ram_pfn() *and* it later needed to be accepted.
-
-Would it be worth recording the size of the reservation and then
-double-checking against it in the bitmap operations?
+-- 
+Sincerely yours,
+Mike.
