@@ -1,159 +1,93 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F34168
-	for <linux-coco@lists.linux.dev>; Fri, 14 Jan 2022 16:13:42 +0000 (UTC)
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3CBAA1EC04DB;
-	Fri, 14 Jan 2022 17:13:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1642176806;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=T9lVGRMfB0dZ/1pOk6rO2IeX36vPDtdKY83YL0cY2Mo=;
-	b=TK52Th4/+7XvKMFOCryiQRmIwHP79uZD+OIuFZABrKQ7YzkwrV5uKKnsBKj4sUsc/3PKPr
-	+x/fbpLKwQuDO7hIFbx3LuulU5N+oT7pz2XvJ8Adab9yhp1SGJnu0VK+FgU3FEn2KBrS8B
-	qPgoEPJtqSyahyEqWUwxWhGgxHAS2d4=
-Date: Fri, 14 Jan 2022 17:13:30 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474642C82
+	for <linux-coco@lists.linux.dev>; Sat, 15 Jan 2022 18:47:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82A1C36AE5;
+	Sat, 15 Jan 2022 18:47:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1642272457;
+	bh=PxfF8TCrDJEZRPlh4OejGOyk1YzIClKiOQC3iEvEi4w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QgOYeZ6YDGtDusiSwXekCP9ueSZ7jXs1HhzPRrtIPaIq7pXn8YdDIJ1VKicOJY59Y
+	 5N5tWjCjuwvqXhZyaiUaueostvvaikTSyS1iEsT6jUJpN9eoVmgd3DnsXm69dr5DPB
+	 OUabH8whMSW8Wju1x05nG7aR8TmOFJPiw3SplQq4oHDY3oSLLRfKD13cBM9PlFsdAI
+	 2wNt03PV9gEjZonlMlFQjHVJrgH8ybrkhyJD5jzNFaBQAM6R/lcFlrGjXGmkBOLtvp
+	 OEOed0ocnBp2fDWFhtwgh16/a/qa71tL2W0zZAV0bbPOf716SZctUw0ZdXhH8baHC2
+	 ob4k+0VXJqTig==
+Date: Sat, 15 Jan 2022 20:46:57 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
 	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 29/40] x86/compressed/64: add support for SEV-SNP
- CPUID table in #VC handlers
-Message-ID: <YeGhKll2fTcTr2wS@zn.tnic>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-30-brijesh.singh@amd.com>
- <YeAmFePcPjvMoWCP@zn.tnic>
- <20220113163913.phpu4klrmrnedgic@amd.com>
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 5/7] x86/mm: Reserve unaccepted memory bitmap
+Message-ID: <YeMWoTpHoJRRhnoN@kernel.org>
+References: <20220111113314.27173-1-kirill.shutemov@linux.intel.com>
+ <20220111113314.27173-6-kirill.shutemov@linux.intel.com>
+ <3a361a1d-0e14-8884-c5bb-90aeb87e38ef@intel.com>
+ <20220112194302.cyxhjypsptr4mtix@box.shutemov.name>
+ <a4b5707f-0f0b-57a8-ccdb-d89f66210b52@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220113163913.phpu4klrmrnedgic@amd.com>
+In-Reply-To: <a4b5707f-0f0b-57a8-ccdb-d89f66210b52@intel.com>
 
-On Thu, Jan 13, 2022 at 10:39:13AM -0600, Michael Roth wrote:
-> I was thinking a future hypervisor/spec might make use of this field for
-> new functionality, while still wanting to be backward-compatible with
-> existing guests, so it would be better to not enforce 0. The firmware
-> ABI does indeed document it as must-be-zero,
+On Wed, Jan 12, 2022 at 11:53:42AM -0800, Dave Hansen wrote:
+> On 1/12/22 11:43 AM, Kirill A. Shutemov wrote:
+> > On Tue, Jan 11, 2022 at 11:10:40AM -0800, Dave Hansen wrote:
+> >> On 1/11/22 03:33, Kirill A. Shutemov wrote:
+> >>
+> >>> +	/* Mark unaccepted memory bitmap reserved */
+> >>> +	if (boot_params.unaccepted_memory) {
+> >>> +		unsigned long size;
+> >>> +
+> >>> +		/* One bit per 2MB */
+> >>> +		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
+> >>> +				    PMD_SIZE * BITS_PER_BYTE);
+> >>> +		memblock_reserve(boot_params.unaccepted_memory, size);
+> >>> +	}
+> >>
+> >> Is it OK that the size of the bitmap is inferred from
+> >> e820__end_of_ram_pfn()?  Is this OK in the presence of mem= and other things
+> >> that muck with the e820?
+> > 
+> > Good question. I think we are fine. If kernel is not able to allocate
+> > memory from a part of physical address space we don't need the bitmap for
+> > it either.
+> 
+> That's a good point.  If the e820 range does a one-way shrink it's
+> probably fine.  The only problem would be if the bitmap had space for
+> for stuff past e820__end_of_ram_pfn() *and* it later needed to be accepted.
 
-Maybe there's a good reason for that.
+It's unlikely, but e820 can grow because of EFI and because of memmap=.
+To be completely on the safe side, the unaccepted bitmap should be reserved
+after parse_early_param() and efi_memblock_x86_reserve_range().
 
-> by that seems to be more of a constraint on what a hypervisor is
-> currently allowed to place in the CPUID table, rather than something
-> the guest is meant to enforce/rely on.
-
-So imagine whoever creates those, starts putting stuff in those fields.
-Then, in the future, the spec decides to rename those reserved/unused
-fields into something else and starts putting concrete values in them.
-I.e., it starts using them for something.
-
-But, now the spec breaks existing usage because those fields are already
-in use. And by then it doesn't matter what the spec says - existing
-usage makes it an ABI.
-
-So we start doing expensive and ugly workarounds just so that we don't
-break the old, undocumented use which the spec simply silently allowed,
-and accomodate that new feature the spec adds.
-
-So no, what you're thinking is a bad bad idea.
-
-> snp_cpuid_info_create() (which sets snp_cpuid_initialized) only gets
-> called if firmware indicates this is an SNP guests (via the cc_blob), but
-> the #VC handler still needs to know whether or not it should use the SNP
-> CPUID table still SEV-ES will still make use of it, so it uses
-> snp_cpuid_active() to make that determination.
-
-So I went and applied the rest of the series. And I think you mean
-do_vc_no_ghcb() and it doing snp_cpuid().
-
-Then, looking at sev_enable() and it calling snp_init(), you fail
-further init if there's any discrepancy in the supplied data - CPUID,
-SEV status MSR, etc.
-
-So, practically, what you wanna test in all those places is whether
-you're a SNP guest or not. Which we already have:
-
-	sev_status & MSR_AMD64_SEV_SNP_ENABLED
-
-so, unless I'm missing something, you don't need yet another
-<bla>_active() helper.
-
-> This code is calculating the total XSAVE buffer size for whatever
-> features are enabled by the guest's XCR0/XSS registers. Those feature
-> bits correspond to the 0xD subleaves 2-63, which advertise the buffer
-> size for each particular feature. So that check needs to ignore anything
-> outside that range (including 0xD subleafs 0 and 1, which would normally
-> provide this total size dynamically based on current values of XCR0/XSS,
-> but here are instead calculated "manually" since we are not relying on
-> the XCR0_IN/XSS_IN fields in the table (due to the reasons mentioned
-> earlier in this thread).
-
-Yah, the gist of that needs to be as a comment of that line as it is not
-obvious (at least to me).
-
-> Not duplicate entries (though there's technically nothing in the spec
-> that says you can't), but I was more concerned here with multiple
-> entries corresponding to different combination of XCR0_IN/XSS_IN.
-> There's no good reason for a hypervisor to use those fields for anything
-> other than 0xD subleaves 0 and 1, but a hypervisor could in theory encode
-> 1 "duplicate" sub-leaf for each possible combination of XCR0_IN/XSS_IN,
-> similar to what it might do for subleaves 0 and 1, and not violate the
-> spec.
-
-
-Ditto. Also a comment ontop please.
-
-> The current spec is a bit open-ended in some of these areas so the guest
-> code is trying to be as agnostic as possible to the underlying implementation
-> so there's less chance of breakage running on one hypervisor verses
-> another. We're working on updating the spec to encourage better
-> interoperability, but that would likely only be enforceable for future
-> firmware versions/guests.
-
-This has the same theoretical problem as the reserved/unused fields. If
-you don't enforce it, people will do whatever and once it is implemented
-in hypervisors and it has become an ABI, you can't change it anymore.
-
-So I'd very strongly suggest you tighten in up upfront and only allow
-stuff later, when it makes sense. Not the other way around.
-
-Thx.
+Since we anyway do not have memblock allocations before
+e820__memblock_setup(), the simplest thing would be to put the reservation
+first thing in e820__memblock_setup().
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sincerely yours,
+Mike.
