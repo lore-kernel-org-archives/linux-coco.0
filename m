@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D209168
-	for <linux-coco@lists.linux.dev>; Thu, 20 Jan 2022 12:26:09 +0000 (UTC)
-Received: from zn.tnic (dslb-088-067-202-008.088.067.pools.vodafone-ip.de [88.67.202.8])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101392C82
+	for <linux-coco@lists.linux.dev>; Tue, 25 Jan 2022 13:49:07 +0000 (UTC)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A0B6F1EC01B5;
-	Thu, 20 Jan 2022 13:18:28 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 376201EC01B7;
+	Tue, 25 Jan 2022 14:48:56 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1642681108;
+	t=1643118536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=XO6AT+gIfZtH9EDaR1V0c6Fkovljr0vEcHMLtYZNXi0=;
-	b=ZvS9JkdJCYllJDFBD0tsEGn3u9iKtDu9RRyiFn28RlB9ttb3/cSuVBse0GV9xDiAmJXru1
-	G7WhLPYYU8EKqnivp/dBPCdF6YYQ7q3y6G8vJIsVo2jZaCOyhOigOuYlQCmxRcEn/trNns
-	hHEBxqnny4SO9CJxR0abXyH3IFJubqs=
-Date: Thu, 20 Jan 2022 13:18:22 +0100
+	bh=JQN8XD6k6puvlSUuf8A5aQx4ew310N7RwtnuTiZnHb8=;
+	b=EBAYLLI8ZKdEmazAnudhSelafx11VzBXAhRuc9nYJyQhp2LpsI0UmGGAOdRz66aFffbETc
+	hCkJcMLrjFST9eUShtGEQdgddvtR0BF2inaRz6BebGta3+5aTH7+CKm3Dp4uIM8Y6HCT4A
+	SbwvPtfNj63BrzWM1xMA1pzgCEGYiwE=
+Date: Tue, 25 Jan 2022 14:48:51 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -46,11 +46,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 32/40] x86/compressed: use firmware-validated CPUID
- for SEV-SNP guests
-Message-ID: <YelTDp4gsEyscWTI@zn.tnic>
+Subject: Re: [PATCH v8 33/40] x86/compressed/64: add identity mapping for
+ Confidential Computing blob
+Message-ID: <Ye//w6Qm4P6HX870@zn.tnic>
 References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-33-brijesh.singh@amd.com>
+ <20211210154332.11526-34-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,117 +59,39 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-33-brijesh.singh@amd.com>
+In-Reply-To: <20211210154332.11526-34-brijesh.singh@amd.com>
 
-On Fri, Dec 10, 2021 at 09:43:24AM -0600, Brijesh Singh wrote:
-> Subject: Re: [PATCH v8 32/40] x86/compressed: use firmware-validated CPUID for SEV-SNP guests
-									    ^
-									    leafs
-
-or so.
-
-> From: Michael Roth <michael.roth@amd.com>
-> 
-> SEV-SNP guests will be provided the location of special 'secrets'
-> 'CPUID' pages via the Confidential Computing blob. This blob is
-> provided to the boot kernel either through an EFI config table entry,
-> or via a setup_data structure as defined by the Linux Boot Protocol.
-> 
-> Locate the Confidential Computing from these sources and, if found,
-> use the provided CPUID page/table address to create a copy that the
-> boot kernel will use when servicing cpuid instructions via a #VC
-
-CPUID
-
-> handler.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/boot/compressed/sev.c | 13 ++++++++++
->  arch/x86/include/asm/sev.h     |  1 +
->  arch/x86/kernel/sev-shared.c   | 43 ++++++++++++++++++++++++++++++++++
->  3 files changed, 57 insertions(+)
-> 
-> diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-> index 93e125da12cf..29dfb34b5907 100644
-> --- a/arch/x86/boot/compressed/sev.c
-> +++ b/arch/x86/boot/compressed/sev.c
-> @@ -415,6 +415,19 @@ bool snp_init(struct boot_params *bp)
->  	if (!cc_info)
->  		return false;
->  
-> +	/*
-> +	 * If SEV-SNP-specific Confidential Computing blob is present, then
-	     ^
-	     a
-
-
-> +	 * firmware/bootloader have indicated SEV-SNP support. Verifying this
-> +	 * involves CPUID checks which will be more reliable if the SEV-SNP
-> +	 * CPUID table is used. See comments for snp_cpuid_info_create() for
-
-s/for/over/ ?
-
-> +	 * more details.
-> +	 */
-> +	snp_cpuid_info_create(cc_info);
-> +
-> +	/* SEV-SNP CPUID table should be set up now. */
-> +	if (!snp_cpuid_active())
-> +		sev_es_terminate(1, GHCB_TERM_CPUID);
-
-Right, that is not needed now.
-
->  	 * Pass run-time kernel a pointer to CC info via boot_params so EFI
->  	 * config table doesn't need to be searched again during early startup
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index cd189c20bcc4..4fa7ca20d7c9 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -157,6 +157,7 @@ bool snp_init(struct boot_params *bp);
->   * sev-shared.c via #include and these declarations can be dropped.
->   */
->  struct cc_blob_sev_info *snp_find_cc_blob_setup_data(struct boot_params *bp);
-> +void snp_cpuid_info_create(const struct cc_blob_sev_info *cc_info);
->  #else
->  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
->  static inline void sev_es_ist_exit(void) { }
-> diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-> index bd58a4ce29c8..5cb8f87df4b3 100644
-> --- a/arch/x86/kernel/sev-shared.c
-> +++ b/arch/x86/kernel/sev-shared.c
-> @@ -403,6 +403,23 @@ snp_cpuid_find_validated_func(u32 func, u32 subfunc, u32 *eax, u32 *ebx,
->  	return false;
->  }
->  
-> +static void __init snp_cpuid_set_ranges(void)
+On Fri, Dec 10, 2021 at 09:43:25AM -0600, Brijesh Singh wrote:
+> +static void sev_prep_identity_maps(void)
 > +{
-> +	const struct snp_cpuid_info *cpuid_info = snp_cpuid_info_get_ptr();
-> +	int i;
+> +	/*
+> +	 * The ConfidentialComputing blob is used very early in uncompressed
+> +	 * kernel to find the in-memory cpuid table to handle cpuid
+> +	 * instructions. Make sure an identity-mapping exists so it can be
+> +	 * accessed after switchover.
+> +	 */
+> +	if (sev_snp_enabled()) {
+> +		struct cc_blob_sev_info *cc_info =
+> +			(void *)(unsigned long)boot_params->cc_blob_address;
 > +
-> +	for (i = 0; i < cpuid_info->count; i++) {
-> +		const struct snp_cpuid_fn *fn = &cpuid_info->fn[i];
-> +
-> +		if (fn->eax_in == 0x0)
-> +			cpuid_std_range_max = fn->eax;
-> +		else if (fn->eax_in == 0x40000000)
-> +			cpuid_hyp_range_max = fn->eax;
-> +		else if (fn->eax_in == 0x80000000)
-> +			cpuid_ext_range_max = fn->eax;
+> +		add_identity_map((unsigned long)cc_info,
+> +				 (unsigned long)cc_info + sizeof(*cc_info));
+> +		add_identity_map((unsigned long)cc_info->cpuid_phys,
+> +				 (unsigned long)cc_info->cpuid_phys + cc_info->cpuid_len);
 > +	}
+> +
+> +	sev_verify_cbit(top_level_pgt);
 > +}
+> +
 
-Kinda arbitrary to have a separate function which has a single caller.
-You can just as well move the loop into snp_cpuid_info_create() and put
-a comment above it:
+Also, that function can just as well live in compressed/sev.c and
+you can export add_identity_map() instead.
 
-	/* Set CPUID ranges. */
-	for (i = 0; i < cpuid_info->count; i++) {
-		...
-
-Also, snp_cpuid_info_create() should be called snp_setup_cpuid_table()
-which is what this thing does.
+That latter function calls kernel_ident_mapping_init() which is
+already exported. add_identity_map() doesn't do anything special
+and it is limited to the decompressor kernel so nothing stands in
+the way of exporting it in a pre-patch and renaming it there to
+kernel_add_identity_map() or so...
 
 Thx.
 
