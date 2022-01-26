@@ -1,97 +1,106 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5A7168
-	for <linux-coco@lists.linux.dev>; Tue, 25 Jan 2022 18:43:34 +0000 (UTC)
-Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E4F168
+	for <linux-coco@lists.linux.dev>; Wed, 26 Jan 2022 09:27:27 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 760941EC052A;
-	Tue, 25 Jan 2022 19:43:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1643136208;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=wvIvlS2dO1ThS+LV2yQ6h0qiGd4NN+hsLFVW5buEbs0=;
-	b=ejvEMtrV/x1ErR80f7OgCzdqcxU5KzdO9+Ac3btdyfg/CxP+qm/1swhS/pWjt0C92J8iC5
-	uHKxx/bZxLwSU3b8spXf5TW0DlCut6rOPx7VoczJgu0PwancC+Xu1O4NzkoZ9SPpd/thwA
-	1SN8jQOFx0HVOzq0CPayGnJz5UBxBoc=
-Date: Tue, 25 Jan 2022 19:43:23 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8BD54212BF;
+	Wed, 26 Jan 2022 09:27:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1643189245; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KYpEiGK3ZZrbGlIMn1GiimLekwuOkP30FhRWgFzfNL4=;
+	b=KUrcZW+ZrP3PWs1LyFoOmANdJw2sANUUe/xOvO841e19zsRGMrBBr3/yXceRmChglTXu7K
+	j7EDr7CNbv3L4xOWSrU2DDR11kUZvuxMMLkJBLMso6kwFM9sNkL8XRHnawtahVhu0RNpFT
+	P+Aq7sNAD8s0hO0OtUuqsvHU4k0QIa8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1643189245;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KYpEiGK3ZZrbGlIMn1GiimLekwuOkP30FhRWgFzfNL4=;
+	b=eYr7rT7lf9/jXwUJ98PIDo/BEVJVr14oyJxBGtdFFewNToNpRUVXbAWv+agYKUkvuwKGlY
+	VN7deTaKrjC3WpAA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BBEBA13B2B;
+	Wed, 26 Jan 2022 09:27:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id CNwsLPwT8WFmSQAAMHmgww
+	(envelope-from <jroedel@suse.de>); Wed, 26 Jan 2022 09:27:24 +0000
+Date: Wed, 26 Jan 2022 10:27:23 +0100
+From: Joerg Roedel <jroedel@suse.de>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
+	Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
+	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v8 34/40] x86/sev: add SEV-SNP feature detection/setup
-Message-ID: <YfBEy6QD38u9DSrP@zn.tnic>
-References: <20211210154332.11526-1-brijesh.singh@amd.com>
- <20211210154332.11526-35-brijesh.singh@amd.com>
+	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v2 03/12] x86/sev: Save and print negotiated GHCB
+ protocol version
+Message-ID: <YfET+7amPSKLnZWu@suse.de>
+References: <20210913155603.28383-1-joro@8bytes.org>
+ <20210913155603.28383-4-joro@8bytes.org>
+ <YYKcS2OIzAV+MTzr@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20211210154332.11526-35-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <YYKcS2OIzAV+MTzr@zn.tnic>
 
-On Fri, Dec 10, 2021 at 09:43:26AM -0600, Brijesh Singh wrote:
-> +static struct cc_blob_sev_info *snp_find_cc_blob(struct boot_params *bp)
-> +{
-> +	struct cc_blob_sev_info *cc_info;
-> +
-> +	/* Boot kernel would have passed the CC blob via boot_params. */
-> +	if (bp->cc_blob_address) {
-> +		cc_info = (struct cc_blob_sev_info *)
-> +			  (unsigned long)bp->cc_blob_address;
+On Wed, Nov 03, 2021 at 03:27:23PM +0100, Borislav Petkov wrote:
+> On Mon, Sep 13, 2021 at 05:55:54PM +0200, Joerg Roedel wrote:
+> > From: Joerg Roedel <jroedel@suse.de>
+> > 
+> > Save the results of the GHCB protocol negotiation into a data structure
+> > and print information about versions supported and used to the kernel
+> > log.
+> 
+> Which is useful for?
 
-No need to break that line.
+For easier debugging, I added a sentence about that to the changelog.
 
-> +		goto found_cc_info;
-> +	}
-> +
-> +	/*
-> +	 * If kernel was booted directly, without the use of the
-> +	 * boot/decompression kernel, the CC blob may have been passed via
-> +	 * setup_data instead.
-> +	 */
-> +	cc_info = snp_find_cc_blob_setup_data(bp);
-> +	if (!cc_info)
-> +		return NULL;
-> +
-> +found_cc_info:
-> +	if (cc_info->magic != CC_BLOB_SEV_HDR_MAGIC)
-> +		sev_es_terminate(1, GHCB_SNP_UNSUPPORTED);
+> > +struct sev_ghcb_protocol_info {
+> 
+> Too long a name - ghcb_info is perfectly fine.
 
-snp_abort() if you're gonna call it that.
+Changed, thanks.
 
 -- 
-Regards/Gruss,
-    Boris.
+Jörg Rödel
+jroedel@suse.de
 
-https://people.kernel.org/tglx/notes-about-netiquette
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5
+90409 Nürnberg
+Germany
+ 
+(HRB 36809, AG Nürnberg)
+Geschäftsführer: Ivo Totev
+
