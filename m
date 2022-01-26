@@ -1,150 +1,104 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (unknown [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0CB29CA
-	for <linux-coco@lists.linux.dev>; Wed, 26 Jan 2022 14:26:05 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593642CA3
+	for <linux-coco@lists.linux.dev>; Wed, 26 Jan 2022 18:35:28 +0000 (UTC)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3E8002113B;
-	Wed, 26 Jan 2022 14:26:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1643207164; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WLyKhfXHS44+Znkmdw5Wkn13IOJ7HmCc2bqdYmRAEVg=;
-	b=oxNzeR3EjZyJqfzhIUshnheJ0INLWf66MfyocLgT8F2bMmX9rDhOpeOucc8uVnXkZnlwrL
-	N6DmoMYW3MhH5LkEKjNETbnhojlh6h7S2PMJeLFWEUdQHmfizHlU7tRzGWjzCoobQEbKJf
-	Ig3Kn6r6NxAW9MfIjTmTj8hdFAJj694=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1643207164;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WLyKhfXHS44+Znkmdw5Wkn13IOJ7HmCc2bqdYmRAEVg=;
-	b=Zf9Zim80aCa4MDEXnNy318W3kpCJ/XdcZx5iwGuSF2NMAz3RXI1cSFR9dyB9uSO5TpCLIW
-	+YTW2Lzh1DdMS1CA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5A9AA13E1A;
-	Wed, 26 Jan 2022 14:26:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id oZl4FPtZ8WHxegAAMHmgww
-	(envelope-from <jroedel@suse.de>); Wed, 26 Jan 2022 14:26:03 +0000
-Date: Wed, 26 Jan 2022 15:26:01 +0100
-From: Joerg Roedel <jroedel@suse.de>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
-	Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
-	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E87731EC0523;
+	Wed, 26 Jan 2022 19:35:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1643222108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=96A3476Qu+7SjsWY2hSBFw1C0Xznd/Zn6tLR1Pkup4Q=;
+	b=jmiefYcsIsHCM6x1nXxo3vEUg7F1AGEwOS9cHwytrWbNL/9AD1ypRH2QAD6Tl6zikwBu0d
+	aQKA2K0jhIfsl4e3eBUV8VyXS1d6ygLtnULQpASCWSDAmLARaktXvbZlmc1Sv9Cr64YOiX
+	J1apVcrQoag5o9EvKUnS6zi8V7qwRGo=
+Date: Wed, 26 Jan 2022 19:35:04 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v2 07/12] x86/sev: Setup code to park APs in the AP Jump
- Table
-Message-ID: <YfFZ+SRutJhDoAkz@suse.de>
-References: <20210913155603.28383-1-joro@8bytes.org>
- <20210913155603.28383-8-joro@8bytes.org>
- <YYv1TPawuorQv1PR@zn.tnic>
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 35/40] x86/sev: use firmware-validated CPUID for
+ SEV-SNP guests
+Message-ID: <YfGUWLmg82G+l4jU@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-36-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <YYv1TPawuorQv1PR@zn.tnic>
+In-Reply-To: <20211210154332.11526-36-brijesh.singh@amd.com>
 
-On Wed, Nov 10, 2021 at 05:37:32PM +0100, Borislav Petkov wrote:
-> On Mon, Sep 13, 2021 at 05:55:58PM +0200, Joerg Roedel wrote:
-> >  extern unsigned char real_mode_blob[];
-> > diff --git a/arch/x86/include/asm/sev-ap-jumptable.h b/arch/x86/include/asm/sev-ap-jumptable.h
-> > new file mode 100644
-> > index 000000000000..1c8b2ce779e2
-> > --- /dev/null
-> > +++ b/arch/x86/include/asm/sev-ap-jumptable.h
+On Fri, Dec 10, 2021 at 09:43:27AM -0600, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
 > 
-> Why a separate header? arch/x86/include/asm/sev.h looks small enough.
+> SEV-SNP guests will be provided the location of special 'secrets' and
+> 'CPUID' pages via the Confidential Computing blob. This blob is
+> provided to the run-time kernel either through bootparams field that
+						^
+						a
 
-The header is included in assembly, so I made a separate one.
 
-> > +void __init sev_es_setup_ap_jump_table_data(void *base, u32 pa)
+> was initialized by the boot/compressed kernel, or via a setup_data
+> structure as defined by the Linux Boot Protocol.
 > 
-> Why is this a separate function?
-> 
-> It is all part of the jump table setup.
+> Locate the Confidential Computing from these sources and, if found,
+				   ^
+				   blob
 
-Right, but the sev_es_setup_ap_jump_table_blob() function is already
-pretty big and I wanted to keep things readable.
+> use the provided CPUID page/table address to create a copy that the
+> run-time kernel will use when servicing cpuid instructions via a #VC
+					  ^^^^^
 
-> 
-> > +		return 0;
-> 
-> Why are you returning 0 here and below?
+Please capitalize all instruction mnemonics in text.
 
-This is in an initcall and it returns just 0 when the environment is not
-ready to setup the ap jump table. Returning non-zero would create a
-warning message in the caller for something that is not a bug in the
-kernel.
+> +/*
+> + * It is useful from an auditing/testing perspective to provide an easy way
+> + * for the guest owner to know that the CPUID table has been initialized as
+> + * expected, but that initialization happens too early in boot to print any
+> + * sort of indicator, and there's not really any other good place to do it. So
+> + * do it here, and while at it, go ahead and re-verify that nothing strange has
+> + * happened between early boot and now.
+> + */
+> +static int __init snp_cpuid_check_status(void)
 
-> > + * This file contains the source code for the binary blob which gets copied to
-> > + * the SEV-ES AP Jumptable to park APs while offlining CPUs or booting a new
-> 
-> I've seen "Jumptable", "Jump Table" and "jump table" at least. I'd say, do
-> the last one everywhere pls.
-
-Fair, sorry for my english being too german :) I changed everything to
-'jump table'.
-
-> > +	/* Reset remaining registers */
-> > +	movl	$0, %esp
-> > +	movl	$0, %eax
-> > +	movl	$0, %ebx
-> > +	movl	$0, %edx
-> 
-> All 4: use xor
-
-XOR changes EFLAGS, can not use them here.
-
-> > +
-> > +	/* Reset CR0 to get out of protected mode */
-> > +	movl	$0x60000010, %ecx
-> 
-> Another magic naked number.
-
-This is the CR0 reset value. I have updated the comment to make this
-more clear.
-
-Thanks,
+That function's redundant now, I believe, since we terminate the guest
+if there's something wrong with the CPUID page.
 
 -- 
-Jörg Rödel
-jroedel@suse.de
+Regards/Gruss,
+    Boris.
 
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5
-90409 Nürnberg
-Germany
- 
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Ivo Totev
-
+https://people.kernel.org/tglx/notes-about-netiquette
