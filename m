@@ -1,109 +1,148 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21472CA1
-	for <linux-coco@lists.linux.dev>; Thu, 27 Jan 2022 09:01:41 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381E52CA2
+	for <linux-coco@lists.linux.dev>; Thu, 27 Jan 2022 10:11:30 +0000 (UTC)
+Received: from cap.home.8bytes.org (p549ad610.dip0.t-ipconnect.de [84.154.214.16])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 87ABA1F882;
-	Thu, 27 Jan 2022 09:01:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1643274093; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uf6L1U20L42jQ06xefiKuwA7v4ertkV/8P81jUSoYis=;
-	b=VqCRighSWgCkUFJuLikNgA17cNUdoQJUUMG40XffnG266MZ4zbi84gI2NlZBRuFTgJEaa0
-	fELyOdxO5Leeh+/wwz6VwxGtf+BdohVQUq4AQrdEgo3ph2A2b9/RzhSfnndwAtTjMobW1X
-	RTKbzaqsHULmA3qdggTQzuSflnpTVG0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1643274093;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uf6L1U20L42jQ06xefiKuwA7v4ertkV/8P81jUSoYis=;
-	b=vGIapNrOTT3gC/AXlc2MXAoxBVjNtZ5L1hGxECi4SW4qf5MejumWnp/9gYGPfVvWB+VRLl
-	rSXoTgEUWwhr6uAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B85E313CFB;
-	Thu, 27 Jan 2022 09:01:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id 7cJPK2xf8mFaEwAAMHmgww
-	(envelope-from <jroedel@suse.de>); Thu, 27 Jan 2022 09:01:32 +0000
-Date: Thu, 27 Jan 2022 10:01:31 +0100
-From: Joerg Roedel <jroedel@suse.de>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
-	Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
-	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
+	by theia.8bytes.org (Postfix) with ESMTPSA id ACFAC9DD;
+	Thu, 27 Jan 2022 11:11:22 +0100 (CET)
+From: Joerg Roedel <joro@8bytes.org>
+To: x86@kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	Eric Biederman <ebiederm@xmission.com>,
+	kexec@lists.infradead.org,
+	hpa@zytor.com,
+	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jiri Slaby <jslaby@suse.cz>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
-	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>,
+	Cfir Cohen <cfir@google.com>,
 	Erdem Aktas <erdemaktas@google.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mike Stunes <mstunes@vmware.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
 	virtualization@lists.linux-foundation.org
-Subject: Re: [PATCH v2 08/12] x86/sev: Park APs on AP Jump Table with GHCB
- protocol version 2
-Message-ID: <YfJfa955Pkg1y6Gv@suse.de>
-References: <20210913155603.28383-1-joro@8bytes.org>
- <20210913155603.28383-9-joro@8bytes.org>
- <YY6XQfmvmpmUiIGj@zn.tnic>
+Subject: [PATCH v3 07/10] x86/sev: Use AP Jump Table blob to stop CPU
+Date: Thu, 27 Jan 2022 11:10:41 +0100
+Message-Id: <20220127101044.13803-8-joro@8bytes.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220127101044.13803-1-joro@8bytes.org>
+References: <20220127101044.13803-1-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <YY6XQfmvmpmUiIGj@zn.tnic>
 
-On Fri, Nov 12, 2021 at 05:33:05PM +0100, Borislav Petkov wrote:
-> On Mon, Sep 13, 2021 at 05:55:59PM +0200, Joerg Roedel wrote:
-> > +		     "ljmpl	*%0" : :
-> > +		     "m" (real_mode_header->sev_real_ap_park_asm),
-> > +		     "b" (sev_es_jump_table_pa >> 4));
-> 
-> In any case, this asm needs comments: why those regs, why
-> sev_es_jump_table_pa >> 4 in rbx (I found later in the patch why) and so
-> on.
+From: Joerg Roedel <jroedel@suse.de>
 
-Turned out the jump_table_pa is not used in asm code anymore. It was a
-left-over from a previous version of the patch, it is removed now.
+To support kexec under SEV-ES the APs can't be parked with HLT. Upon
+wakeup the AP needs to find its way to execute at the reset vector set
+by the new kernel and in real-mode.
 
-> > +SYM_INNER_LABEL(sev_ap_park_paging_off, SYM_L_GLOBAL)
-> 
-> Global symbol but used only in this file. .L-prefix then?
+This is what the AP jump table blob provides, so stop the APs the
+SEV-ES way by calling the AP-reset-hold VMGEXIT from the AP jump
+table.
 
-It needs to be a global symbol so the pa_ variant can be generated.
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+---
+ arch/x86/include/asm/sev.h |  2 ++
+ arch/x86/kernel/process.c  |  8 ++++++++
+ arch/x86/kernel/sev.c      | 14 +++++++++++++-
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
-Regards,
-
--- 
-Jörg Rödel
-jroedel@suse.de
-
-SUSE Software Solutions Germany GmbH
-Maxfeldstr. 5
-90409 Nürnberg
-Germany
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 09eb2cc6f54f..e342dce3e7a1 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -90,12 +90,14 @@ extern enum es_result sev_es_ghcb_hv_call(struct ghcb *ghcb,
+ 					  struct es_em_ctxt *ctxt,
+ 					  u64 exit_code, u64 exit_info_1,
+ 					  u64 exit_info_2);
++void sev_es_stop_this_cpu(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+ static inline int sev_es_setup_ap_jump_table(struct real_mode_header *rmh) { return 0; }
+ static inline void sev_es_nmi_complete(void) { }
+ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
++static inline void sev_es_stop_this_cpu(void) { }
+ #endif
  
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Ivo Totev
+ #endif
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 81d8ef036637..09982f0fbb87 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -46,6 +46,7 @@
+ #include <asm/proto.h>
+ #include <asm/frame.h>
+ #include <asm/unwind.h>
++#include <asm/sev.h>
+ 
+ #include "process.h"
+ 
+@@ -769,6 +770,13 @@ void stop_this_cpu(void *dummy)
+ 	if (boot_cpu_has(X86_FEATURE_SME))
+ 		native_wbinvd();
+ 	for (;;) {
++		/*
++		 * SEV-ES guests need a special stop routine to support
++		 * kexec. Try this first, if it fails the function will
++		 * return and native_halt() is used.
++		 */
++		sev_es_stop_this_cpu();
++
+ 		/*
+ 		 * Use native_halt() so that memory contents don't change
+ 		 * (stack usage and variables) after possibly issuing the
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index fcff39475fbe..71301016c3ea 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -673,7 +673,6 @@ static bool __init sev_es_setup_ghcb(void)
+ 	return true;
+ }
+ 
+-#ifdef CONFIG_HOTPLUG_CPU
+ void __noreturn sev_jumptable_ap_park(void)
+ {
+ 	local_irq_disable();
+@@ -706,6 +705,19 @@ void __noreturn sev_jumptable_ap_park(void)
+ }
+ STACK_FRAME_NON_STANDARD(sev_jumptable_ap_park);
+ 
++void sev_es_stop_this_cpu(void)
++{
++	if (!static_branch_unlikely(&sev_es_enable_key))
++		return;
++
++	/* Only park in the AP jump table when the code has been installed */
++	if (!sev_ap_jumptable_blob_installed)
++		return;
++
++	sev_jumptable_ap_park();
++}
++
++#ifdef CONFIG_HOTPLUG_CPU
+ static void sev_es_ap_hlt_loop(void)
+ {
+ 	struct ghcb_state state;
+-- 
+2.34.1
 
