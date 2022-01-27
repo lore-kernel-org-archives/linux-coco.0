@@ -1,143 +1,140 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DF02CA8
-	for <linux-coco@lists.linux.dev>; Thu, 27 Jan 2022 10:17:21 +0000 (UTC)
-Received: from cap.home.8bytes.org (p549ad610.dip0.t-ipconnect.de [84.154.214.16])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA693168
+	for <linux-coco@lists.linux.dev>; Thu, 27 Jan 2022 16:21:16 +0000 (UTC)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by theia.8bytes.org (Postfix) with ESMTPSA id D545F960;
-	Thu, 27 Jan 2022 11:11:20 +0100 (CET)
-From: Joerg Roedel <joro@8bytes.org>
-To: x86@kernel.org
-Cc: Joerg Roedel <joro@8bytes.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	Eric Biederman <ebiederm@xmission.com>,
-	kexec@lists.infradead.org,
-	hpa@zytor.com,
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5F39D1EC051E;
+	Thu, 27 Jan 2022 17:21:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1643300470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=JV2DpgJLMt5fK61b8cQw16AJuA9Yd0fzMbdEJ84O1bI=;
+	b=DYVY3w3MlRb/vS+Uoa0UNXjOHvdGQJvfENWZIgRm9CKBGmOIsZB/aUtz6WnHSEiS1BzdPL
+	ZXRMTdQ6KSQIEWzu3DIxLtPvR/68xS1elZsq0cP/EF6jlpKI1Z1Zt5ku4IdgdFMhD8HRbv
+	/OGEY01w0PdI/APwHhVGffqHITSR6Rc=
+Date: Thu, 27 Jan 2022 17:21:06 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Jiri Slaby <jslaby@suse.cz>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Kees Cook <keescook@chromium.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Cfir Cohen <cfir@google.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org
-Subject: [PATCH v3 04/10] x86/sev: Cache AP Jump Table Address
-Date: Thu, 27 Jan 2022 11:10:38 +0100
-Message-Id: <20220127101044.13803-5-joro@8bytes.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220127101044.13803-1-joro@8bytes.org>
-References: <20220127101044.13803-1-joro@8bytes.org>
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v8 36/40] x86/sev: Provide support for SNP guest request
+ NAEs
+Message-ID: <YfLGcp8q5f+OW72p@zn.tnic>
+References: <20211210154332.11526-1-brijesh.singh@amd.com>
+ <20211210154332.11526-37-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20211210154332.11526-37-brijesh.singh@amd.com>
 
-From: Joerg Roedel <jroedel@suse.de>
+On Fri, Dec 10, 2021 at 09:43:28AM -0600, Brijesh Singh wrote:
+> Version 2 of GHCB specification provides SNP_GUEST_REQUEST and
+> SNP_EXT_GUEST_REQUEST NAE that can be used by the SNP guest to communicate
+> with the PSP.
+> 
+> While at it, add a snp_issue_guest_request() helper that can be used by
 
-Store the physical address of the AP jump table in kernel memory so
-that it does not need to be fetched from the Hypervisor again.
+Not "that can" but "that will".
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- arch/x86/kernel/sev.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+> driver or other subsystem to issue the request to PSP.
+> 
+> See SEV-SNP and GHCB spec for more details.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/include/asm/sev-common.h |  3 ++
+>  arch/x86/include/asm/sev.h        | 14 +++++++++
+>  arch/x86/include/uapi/asm/svm.h   |  4 +++
+>  arch/x86/kernel/sev.c             | 51 +++++++++++++++++++++++++++++++
+>  4 files changed, 72 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> index 673e6778194b..346600724b84 100644
+> --- a/arch/x86/include/asm/sev-common.h
+> +++ b/arch/x86/include/asm/sev-common.h
+> @@ -128,6 +128,9 @@ struct snp_psc_desc {
+>  	struct psc_entry entries[VMGEXIT_PSC_MAX_ENTRY];
+>  } __packed;
+>  
+> +/* Guest message request error code */
+> +#define SNP_GUEST_REQ_INVALID_LEN	BIT_ULL(32)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 8a4317fa699a..969ef9855bb5 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -43,6 +43,9 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
-  */
- static struct ghcb __initdata *boot_ghcb;
- 
-+/* Cached AP jump table Address */
-+static phys_addr_t jump_table_pa;
-+
- /* #VC handler runtime per-CPU data */
- struct sev_es_runtime_data {
- 	struct ghcb ghcb_page;
-@@ -523,12 +526,14 @@ void noinstr __sev_es_nmi_complete(void)
- 	__sev_put_ghcb(&state);
- }
- 
--static u64 get_jump_table_addr(void)
-+static phys_addr_t get_jump_table_addr(void)
- {
- 	struct ghcb_state state;
- 	unsigned long flags;
- 	struct ghcb *ghcb;
--	u64 ret = 0;
-+
-+	if (jump_table_pa)
-+		return jump_table_pa;
- 
- 	local_irq_save(flags);
- 
-@@ -544,39 +549,36 @@ static u64 get_jump_table_addr(void)
- 
- 	if (ghcb_sw_exit_info_1_is_valid(ghcb) &&
- 	    ghcb_sw_exit_info_2_is_valid(ghcb))
--		ret = ghcb->save.sw_exit_info_2;
-+		jump_table_pa = (phys_addr_t)ghcb->save.sw_exit_info_2;
- 
- 	__sev_put_ghcb(&state);
- 
- 	local_irq_restore(flags);
- 
--	return ret;
-+	return jump_table_pa;
- }
- 
- int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
- {
- 	u16 startup_cs, startup_ip;
--	phys_addr_t jump_table_pa;
--	u64 jump_table_addr;
- 	u16 __iomem *jump_table;
-+	phys_addr_t pa;
- 
--	jump_table_addr = get_jump_table_addr();
-+	pa = get_jump_table_addr();
- 
- 	/* On UP guests there is no jump table so this is not a failure */
--	if (!jump_table_addr)
-+	if (!pa)
- 		return 0;
- 
--	/* Check if AP Jump Table is page-aligned */
--	if (jump_table_addr & ~PAGE_MASK)
-+	/* Check if AP jump table is page-aligned */
-+	if (pa & ~PAGE_MASK)
- 		return -EINVAL;
- 
--	jump_table_pa = jump_table_addr & PAGE_MASK;
--
- 	startup_cs = (u16)(rmh->trampoline_start >> 4);
- 	startup_ip = (u16)(rmh->sev_es_trampoline_start -
- 			   rmh->trampoline_start);
- 
--	jump_table = ioremap_encrypted(jump_table_pa, PAGE_SIZE);
-+	jump_table = ioremap_encrypted(pa, PAGE_SIZE);
- 	if (!jump_table)
- 		return -EIO;
- 
+SZ_4G is more descriptive, perhaps...
+
+> +int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err)
+> +{
+> +	struct ghcb_state state;
+> +	unsigned long flags;
+> +	struct ghcb *ghcb;
+> +	int ret;
+> +
+> +	if (!cc_platform_has(CC_ATTR_SEV_SNP))
+> +		return -ENODEV;
+> +
+> +	/* __sev_get_ghcb() need to run with IRQs disabled because it using per-cpu GHCB */
+
+			   needs 				it is using a
+
+> +	local_irq_save(flags);
+> +
+> +	ghcb = __sev_get_ghcb(&state);
+> +	if (!ghcb) {
+> +		ret = -EIO;
+> +		goto e_restore_irq;
+> +	}
+> +
+> +	vc_ghcb_invalidate(ghcb);
+> +
+> +	if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST) {
+> +		ghcb_set_rax(ghcb, input->data_gpa);
+> +		ghcb_set_rbx(ghcb, input->data_npages);
+> +	}
+> +
+> +	ret = sev_es_ghcb_hv_call(ghcb, true, NULL, exit_code, input->req_gpa, input->resp_gpa);
+					      ^^^^^
+
+That's ctxt which is accessed without a NULL check in
+verify_exception_info().
+
+Why aren't you allocating a ctxt on stack like the other callers do?
+
+
 -- 
-2.34.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
