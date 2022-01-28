@@ -1,33 +1,33 @@
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EC22CAC
-	for <linux-coco@lists.linux.dev>; Fri, 28 Jan 2022 20:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030172CA0
+	for <linux-coco@lists.linux.dev>; Fri, 28 Jan 2022 20:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1643403545; x=1674939545;
+  t=1643403554; x=1674939554;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RCk8KvAwylLpIO1ZXHi3WJJrNELUMo4JWt7UaBj/k2Q=;
-  b=BfzlYdvKKocgQSyDSrhnyWYgMNZ/QKCvS4hOWoOvyqw2TSD1aXwMDd+d
-   1Z4boN+UbtXv+a0pCi66Sbu0Gk0y+tTDCf4tatrnkQ8KCpzosZjOkbT9s
-   fs+JGQdix3iL7uZ3uYTbQHck5gVfFJh0DeiehT4pNYEic432mc2WF9AKv
-   AfPkKH4yzHoAeohnXbZR/ZCXMQqNh/ELJ8sUCVK/42ov9IIVutHO8HxFF
-   LdDaOaHOdeyYJNLKhCiNkQdndRgJm7WIPqoTJZ62wpfYC6VqnYvuTZMYd
-   PKri6vbk84B9wbzKAl6bdESVvjtsCKlWF+I34U9ggfRXRr4TkzkTRmS+o
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10241"; a="227174085"
+  bh=sPAM/BFzre+OlxESQ1UNn23Z4mlITze1sx4aEFpsPcA=;
+  b=MoSWCPZ8dTj085OW1FRuExzQkkMcH4LkSzPYhegqI70H/OWujXLSyX0V
+   8BeBGrMD+H//hTHHTDbsP+ExMn+PwSH56T/UFqgDio62dK+gGLgoROp1N
+   eyHR6W6m0kowCX9Ixd3AL5F2VgMcpt5iM7+RV6v50e1EqaGDOIaYjUStX
+   7/4UPzu3nIUBmpEMFjfRjGrrQIqgb1AvAaortTj9Ma3I0yO5M0XVMPLzw
+   UIIOqdBPYMY+iUphYjPvqScu6qnJ1mPhuIY+fovEk0t4lJlnGSTD7K2t2
+   5rnVt9w78vVAj6gCMyb9HAc/XEhtwN/fDikji/1e97uzeJEV/mjowXpIO
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10241"; a="227865744"
 X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="227174085"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 12:59:04 -0800
+   d="scan'208";a="227865744"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 12:59:11 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="536287227"
+   d="scan'208";a="533622714"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 28 Jan 2022 12:58:55 -0800
+  by fmsmga007.fm.intel.com with ESMTP; 28 Jan 2022 12:59:03 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 89FD4167; Fri, 28 Jan 2022 22:59:09 +0200 (EET)
+	id D23C5478; Fri, 28 Jan 2022 22:59:09 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -56,9 +56,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv3 1/7] mm: Add support for unaccepted memory
-Date: Fri, 28 Jan 2022 23:59:00 +0300
-Message-Id: <20220128205906.27503-2-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv3 6/7] x86/mm: Provide helpers for unaccepted memory
+Date: Fri, 28 Jan 2022 23:59:05 +0300
+Message-Id: <20220128205906.27503-7-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220128205906.27503-1-kirill.shutemov@linux.intel.com>
 References: <20220128205906.27503-1-kirill.shutemov@linux.intel.com>
@@ -70,229 +70,166 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-UEFI Specification version 2.9 introduces the concept of memory
-acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
-SEV-SNP, requiring memory to be accepted before it can be used by the
-guest. Accepting happens via a protocol specific for the Virtual Machine
-platform.
+Core-mm requires few helpers to support unaccepted memory:
 
-Accepting memory is costly and it makes VMM allocate memory for the
-accepted guest physical address range. It's better to postpone memory
-acceptance until memory is needed. It lowers boot time and reduces
-memory overhead.
+ - accept_memory() checks the range of addresses against the bitmap and
+   accept memory if needed;
 
-Support of such memory requires a few changes in core-mm code:
+ - maybe_set_page_offline() checks the bitmap and marks a page with
+   PageOffline() if memory acceptance required on the first
+   allocation of the page.
 
-  - memblock has to accept memory on allocation;
-
-  - page allocator has to accept memory on the first allocation of the
-    page;
-
-Memblock change is trivial.
-
-The page allocator is modified to accept pages on the first allocation.
-PageBuddyUnaccepted() is used to indicate that the page requires acceptance.
-
-Kernel only need to accept memory once after boot, so during the boot
-and warm up phase there will be a lot of memory acceptance. After things
-are settled down the only price of the feature if couple of checks for
-PageBuddyUnaccepted() in alloc and free paths. The check refers a hot
-variable (that also encodes PageBuddy()), so it is cheap and not visible
-on profiles.
-
-Architecture has to provide three helpers if it wants to support
-unaccepted memory:
-
- - accept_memory() makes a range of physical addresses accepted.
-
- - maybe_mark_page_unaccepted() marks a page PageBuddyUnaccepted() if it
-   requires acceptance. Used during boot to put pages on free lists.
-
- - accept_page() makes a page accepted and clears PageBuddyUnaccepted().
+ - accept_and_clear_page_offline() accepts memory for the page and clears
+   PageOffline().
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- include/linux/page-flags.h | 27 +++++++++++++++++++++++++++
- mm/internal.h              | 15 +++++++++++++++
- mm/memblock.c              |  8 ++++++++
- mm/page_alloc.c            | 23 ++++++++++++++++++++++-
- 4 files changed, 72 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/page.h              |  5 ++
+ arch/x86/include/asm/unaccepted_memory.h |  3 +
+ arch/x86/mm/Makefile                     |  2 +
+ arch/x86/mm/unaccepted_memory.c          | 90 ++++++++++++++++++++++++
+ 4 files changed, 100 insertions(+)
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 1c3b6e5c8bfd..1bdc6b422207 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -871,6 +871,18 @@ static __always_inline void __ClearPage##uname(struct page *page)	\
- 	page->page_type |= PG_##lname;					\
- }
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 4d5810c8fab7..1e56d76ca474 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -19,6 +19,11 @@
+ struct page;
  
-+#define PAGE_TYPE_OPS_FALSE(uname)					\
-+static __always_inline int Page##uname(struct page *page)		\
-+{									\
-+	return false;							\
-+}									\
-+static __always_inline void __SetPage##uname(struct page *page)		\
-+{									\
-+}									\
-+static __always_inline void __ClearPage##uname(struct page *page)	\
-+{									\
-+}
+ #include <linux/range.h>
 +
- /*
-  * PageBuddy() indicates that the page is free and in the buddy system
-  * (see mm/page_alloc.c).
-@@ -901,6 +913,21 @@ PAGE_TYPE_OPS(Buddy, buddy)
-  */
- PAGE_TYPE_OPS(Offline, offline)
- 
-+ /*
-+  * PageBuddyUnaccepted() indicates that the page has to be "accepted" before
-+  * it can be used. Page allocator has to call accept_page() before returning
-+  * the page to the caller.
-+  *
-+  * PageBuddyUnaccepted() encoded with the same bit as PageOffline().
-+  * PageOffline() pages are never on free list of buddy allocator, so there's
-+  * not conflict.
-+  */
 +#ifdef CONFIG_UNACCEPTED_MEMORY
-+PAGE_TYPE_OPS(BuddyUnaccepted, offline)
-+#else
-+PAGE_TYPE_OPS_FALSE(BuddyUnaccepted)
++#include <asm/unaccepted_memory.h>
 +#endif
 +
- extern void page_offline_freeze(void);
- extern void page_offline_thaw(void);
- extern void page_offline_begin(void);
-diff --git a/mm/internal.h b/mm/internal.h
-index d80300392a19..26e5d7cb6aff 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -718,4 +718,19 @@ void vunmap_range_noflush(unsigned long start, unsigned long end);
- int numa_migrate_prep(struct page *page, struct vm_area_struct *vma,
- 		      unsigned long addr, int page_nid, int *flags);
+ extern struct range pfn_mapped[];
+ extern int nr_pfn_mapped;
  
-+#ifndef CONFIG_UNACCEPTED_MEMORY
-+static inline void maybe_mark_page_unaccepted(struct page *page,
-+					      unsigned int order)
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index f1f835d3cd78..0c0ea777809a 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -6,9 +6,12 @@
+ #include <linux/types.h>
+ 
+ struct boot_params;
++struct page;
+ 
+ void mark_unaccepted(struct boot_params *params, u64 start, u64 num);
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end);
+ 
++void maybe_mark_page_unaccepted(struct page *page, unsigned int order);
++void accept_page(struct page *page, unsigned int order);
+ #endif
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index fe3d3061fc11..e327f83e6bbf 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -60,3 +60,5 @@ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
+ 
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_identity.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
++
++obj-$(CONFIG_UNACCEPTED_MEMORY)	+= unaccepted_memory.o
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+new file mode 100644
+index 000000000000..adcac22dfe75
+--- /dev/null
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -0,0 +1,90 @@
++#include <linux/memblock.h>
++#include <linux/mm.h>
++#include <linux/pfn.h>
++#include <linux/spinlock.h>
++
++#include <asm/io.h>
++#include <asm/setup.h>
++#include <asm/unaccepted_memory.h>
++
++static DEFINE_SPINLOCK(unaccepted_memory_lock);
++
++#define PMD_ORDER (PMD_SHIFT - PAGE_SHIFT)
++
++static void __accept_memory(phys_addr_t start, phys_addr_t end)
 +{
++	unsigned long *unaccepted_memory;
++	unsigned int rs, re;
++
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
++	rs = start / PMD_SIZE;
++
++	for_each_set_bitrange_from(rs, re, unaccepted_memory,
++				   DIV_ROUND_UP(end, PMD_SIZE)) {
++		/* Platform-specific memory-acceptance call goes here */
++		panic("Cannot accept memory");
++		bitmap_clear(unaccepted_memory, rs, re - rs);
++	}
 +}
 +
-+static inline void accept_page(struct page *page, unsigned int order)
++void accept_memory(phys_addr_t start, phys_addr_t end)
 +{
++	unsigned long flags;
++	if (!boot_params.unaccepted_memory)
++		return;
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	__accept_memory(start, end);
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
 +}
 +
-+static inline void accept_memory(phys_addr_t start, phys_addr_t end)
++void __init maybe_mark_page_unaccepted(struct page *page, unsigned int order)
 +{
-+}
-+#endif
++	unsigned long *unaccepted_memory;
++	phys_addr_t addr = page_to_phys(page);
++	unsigned long flags;
++	bool unaccepted = false;
++	unsigned int i;
 +
- #endif	/* __MM_INTERNAL_H */
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 1018e50566f3..24ab07c44d4a 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1400,6 +1400,14 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 		 */
- 		kmemleak_alloc_phys(found, size, 0, 0);
- 
-+	/*
-+	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
-+	 * requiring memory to be accepted before it can be used by the
-+	 * guest.
-+	 *
-+	 * Accept the memory of the allocated buffer.
-+	 */
-+	accept_memory(found, found + size);
- 	return found;
- }
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 3589febc6d31..27b9bd20e675 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1077,6 +1077,7 @@ static inline void __free_one_page(struct page *page,
- 	unsigned int max_order;
- 	struct page *buddy;
- 	bool to_tail;
-+	bool unaccepted = PageBuddyUnaccepted(page);
- 
- 	max_order = min_t(unsigned int, MAX_ORDER - 1, pageblock_order);
- 
-@@ -1110,6 +1111,10 @@ static inline void __free_one_page(struct page *page,
- 			clear_page_guard(zone, buddy, order, migratetype);
- 		else
- 			del_page_from_free_list(buddy, zone, order);
++	if (!boot_params.unaccepted_memory)
++		return;
 +
-+		if (PageBuddyUnaccepted(buddy))
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	if (order < PMD_ORDER) {
++		BUG_ON(test_bit(addr / PMD_SIZE, unaccepted_memory));
++		goto out;
++	}
++
++	for (i = 0; i < (1 << (order - PMD_ORDER)); i++) {
++		if (test_bit(addr / PMD_SIZE + i, unaccepted_memory)) {
 +			unaccepted = true;
++			break;
++		}
++	}
 +
- 		combined_pfn = buddy_pfn & pfn;
- 		page = page + (combined_pfn - pfn);
- 		pfn = combined_pfn;
-@@ -1143,6 +1148,10 @@ static inline void __free_one_page(struct page *page,
- done_merging:
- 	set_buddy_order(page, order);
- 
-+	/* Mark page unaccepted if any of merged pages were unaccepted */
++	/* At least part of page is uneccepted */
 +	if (unaccepted)
 +		__SetPageBuddyUnaccepted(page);
++out:
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++}
 +
- 	if (fpi_flags & FPI_TO_TAIL)
- 		to_tail = true;
- 	else if (is_shuffle_order(order))
-@@ -1168,7 +1177,8 @@ static inline void __free_one_page(struct page *page,
- static inline bool page_expected_state(struct page *page,
- 					unsigned long check_flags)
- {
--	if (unlikely(atomic_read(&page->_mapcount) != -1))
-+	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
-+	    !PageBuddyUnaccepted(page))
- 		return false;
- 
- 	if (unlikely((unsigned long)page->mapping |
-@@ -1749,6 +1759,8 @@ void __init memblock_free_pages(struct page *page, unsigned long pfn,
- {
- 	if (early_page_uninitialised(pfn))
- 		return;
++void accept_page(struct page *page, unsigned int order)
++{
++	phys_addr_t addr = round_down(page_to_phys(page), PMD_SIZE);
++	int i;
 +
-+	maybe_mark_page_unaccepted(page, order);
- 	__free_pages_core(page, order);
- }
- 
-@@ -1838,10 +1850,12 @@ static void __init deferred_free_range(unsigned long pfn,
- 	if (nr_pages == pageblock_nr_pages &&
- 	    (pfn & (pageblock_nr_pages - 1)) == 0) {
- 		set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-+		maybe_mark_page_unaccepted(page, pageblock_order);
- 		__free_pages_core(page, pageblock_order);
- 		return;
- 	}
- 
-+	accept_memory(pfn << PAGE_SHIFT, (pfn + nr_pages) << PAGE_SHIFT);
- 	for (i = 0; i < nr_pages; i++, page++, pfn++) {
- 		if ((pfn & (pageblock_nr_pages - 1)) == 0)
- 			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-@@ -2312,6 +2326,10 @@ static inline void expand(struct zone *zone, struct page *page,
- 		if (set_page_guard(zone, &page[size], high, migratetype))
- 			continue;
- 
-+		/* Transfer PageBuddyUnaccepted() to the newly split pages */
-+		if (PageBuddyUnaccepted(page))
-+			__SetPageBuddyUnaccepted(&page[size]);
++	WARN_ON_ONCE(!boot_params.unaccepted_memory);
 +
- 		add_to_free_list(&page[size], zone, high, migratetype);
- 		set_buddy_order(&page[size], high);
- 	}
-@@ -2408,6 +2426,9 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	 */
- 	kernel_unpoison_pages(page, 1 << order);
- 
-+	if (PageBuddyUnaccepted(page))
-+		accept_page(page, order);
++	page = pfn_to_page(addr >> PAGE_SHIFT);
++	if (order < PMD_ORDER)
++		order = PMD_ORDER;
 +
- 	/*
- 	 * As memory initialization might be integrated into KASAN,
- 	 * kasan_alloc_pages and kernel_init_free_pages must be
++	accept_memory(addr, addr + (PAGE_SIZE << order));
++
++	for (i = 0; i < (1 << order); i++) {
++		if (PageBuddyUnaccepted(page + i))
++			__ClearPageBuddyUnaccepted(page + i);
++	}
++}
 -- 
 2.34.1
 
