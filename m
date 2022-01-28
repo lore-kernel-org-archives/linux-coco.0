@@ -1,33 +1,33 @@
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8312CA4
-	for <linux-coco@lists.linux.dev>; Fri, 28 Jan 2022 20:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E242CAA
+	for <linux-coco@lists.linux.dev>; Fri, 28 Jan 2022 20:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1643403543; x=1674939543;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XLFOJ42QSEt64e/fj9dxrEEhNpzUCEMbRZv0ZUhkFsU=;
-  b=iQ4qQrx/o/Qa4gfNMXR00KLN9TqUSFXjItcHSI1jBDkz/EJBlZWGxe7/
-   mqqItKzpYZKHoQatuP1ggv1R7GHuQZhKNNsytPTRLdtJHa4SnmTR1TkmH
-   ph0uE0jkXuNlIUhl896fUfaYAqjSmHm71qGkZ/mx0t+okS7ZPPE8N4tl8
-   JpbN4zv6UZ3VZirVPvcwUcpzQKPuVUrAa2VZgQxvxZqLeCF+p1dOD+cRM
-   AnRfborwcuSL6L00UckxUKS5rXfTq9kvtelQ2VgMFU9p/Y9yZOmuOR5W1
-   /vmHXDaPmH+xUqvRPVPMtTh3UwsehThFGI33X8Y9tJzfcUusLevRVyJba
+  bh=nVF+M8RTdMwspa9mggFBCnaFkVbQys7RLYPFq/hfOHk=;
+  b=E6WnQrTtTSxICSh5NPBfQWn6YuA75zmgTA1lNe7M0PXztzA5FTAj/cKh
+   fwWp6aTS6m7NTMxqmgWsbfY/kUxFY4FrKvHlIqM2Wk956rqg6sMGunvdk
+   pGQx9YOn/SBeqs1JXBzoyYKkvf1OYPiSuKxH9HuUvCwWsAoVOoAJ8b1Mz
+   W3eCMZ6N9KXBaubAjp4jzC1sFdeoY3Rgu90t7JqBqJ55yGNLM9bGKCFqT
+   Z0dgSUSlgQF53ns+LOtcipf5DYA2JZRDbE0BG5qucQQAI+2AHIh0VBwtd
+   TmvFBcwU3t/EtKp3ejn1hYeHHjqQ8vug9dHPrVWscRdf6W8V+yvZ9CuLe
    A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10241"; a="227865700"
+X-IronPort-AV: E=McAfee;i="6200,9189,10241"; a="247145892"
 X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="227865700"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 12:59:02 -0800
+   d="scan'208";a="247145892"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2022 12:59:02 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,324,1635231600"; 
-   d="scan'208";a="618832816"
+   d="scan'208";a="629246298"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 28 Jan 2022 12:58:55 -0800
+  by orsmga004.jf.intel.com with ESMTP; 28 Jan 2022 12:58:56 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 964E8235; Fri, 28 Jan 2022 22:59:09 +0200 (EET)
+	id B8B08469; Fri, 28 Jan 2022 22:59:09 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -56,9 +56,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv3 2/7] efi/x86: Get full memory map in allocate_e820()
-Date: Fri, 28 Jan 2022 23:59:01 +0300
-Message-Id: <20220128205906.27503-3-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv3 4/7] x86/boot/compressed: Handle unaccepted memory
+Date: Fri, 28 Jan 2022 23:59:03 +0300
+Message-Id: <20220128205906.27503-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220128205906.27503-1-kirill.shutemov@linux.intel.com>
 References: <20220128205906.27503-1-kirill.shutemov@linux.intel.com>
@@ -70,81 +70,194 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently allocate_e820() only interested in the size of map and size of
-memory descriptor to determine how many e820 entries the kernel needs.
+Firmware is responsible for accepting memory where compressed kernel
+image and initrd land. But kernel has to accept memory for decompression
+buffer: accept memory just before decompression starts.
 
-UEFI Specification version 2.9 introduces a new memory type --
-unaccepted memory. To track unaccepted memory kernel needs to allocate
-a bitmap. The size of the bitmap is dependent on the maximum physical
-address present in the system. A full memory map is required to find
-the maximum address.
-
-Modify allocate_e820() to get a full memory map.
-
-This is preparation for the next patch that implements handling of
-unaccepted memory in EFI stub.
+KASLR is allowed to use unaccepted memory for the output buffer.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 28 ++++++++++++-------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ arch/x86/boot/compressed/bitmap.c            | 62 ++++++++++++++++++++
+ arch/x86/boot/compressed/kaslr.c             | 14 ++++-
+ arch/x86/boot/compressed/misc.c              | 11 ++++
+ arch/x86/boot/compressed/unaccepted_memory.c | 14 +++++
+ arch/x86/include/asm/unaccepted_memory.h     |  2 +
+ 5 files changed, 101 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 01ddd4502e28..d18cac8ab436 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -569,30 +569,28 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
- }
+diff --git a/arch/x86/boot/compressed/bitmap.c b/arch/x86/boot/compressed/bitmap.c
+index bf58b259380a..ba2de61c0823 100644
+--- a/arch/x86/boot/compressed/bitmap.c
++++ b/arch/x86/boot/compressed/bitmap.c
+@@ -2,6 +2,48 @@
+ /* Taken from lib/string.c */
  
- static efi_status_t allocate_e820(struct boot_params *params,
-+				  struct efi_boot_memmap *map,
- 				  struct setup_data **e820ext,
- 				  u32 *e820ext_size)
+ #include <linux/bitmap.h>
++#include <linux/math.h>
++#include <linux/minmax.h>
++
++unsigned long _find_next_bit(const unsigned long *addr1,
++		const unsigned long *addr2, unsigned long nbits,
++		unsigned long start, unsigned long invert, unsigned long le)
++{
++	unsigned long tmp, mask;
++
++	if (unlikely(start >= nbits))
++		return nbits;
++
++	tmp = addr1[start / BITS_PER_LONG];
++	if (addr2)
++		tmp &= addr2[start / BITS_PER_LONG];
++	tmp ^= invert;
++
++	/* Handle 1st word. */
++	mask = BITMAP_FIRST_WORD_MASK(start);
++	if (le)
++		mask = swab(mask);
++
++	tmp &= mask;
++
++	start = round_down(start, BITS_PER_LONG);
++
++	while (!tmp) {
++		start += BITS_PER_LONG;
++		if (start >= nbits)
++			return nbits;
++
++		tmp = addr1[start / BITS_PER_LONG];
++		if (addr2)
++			tmp &= addr2[start / BITS_PER_LONG];
++		tmp ^= invert;
++	}
++
++	if (le)
++		tmp = swab(tmp);
++
++	return min(start + __ffs(tmp), nbits);
++}
+ 
+ void __bitmap_set(unsigned long *map, unsigned int start, int len)
  {
--	unsigned long map_size, desc_size, map_key;
- 	efi_status_t status;
--	__u32 nr_desc, desc_version;
-+	__u32 nr_desc;
- 
--	/* Only need the size of the mem map and size of each mem descriptor */
--	map_size = 0;
--	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
--			     &desc_size, &desc_version);
--	if (status != EFI_BUFFER_TOO_SMALL)
--		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
--
--	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
-+	status = efi_get_memory_map(map);
-+	if (status != EFI_SUCCESS)
-+		return status;
- 
--	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
--		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
-+	nr_desc = *map->map_size / *map->desc_size;
-+	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
-+		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
-+			EFI_MMAP_NR_SLACK_SLOTS;
- 
- 		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
- 		if (status != EFI_SUCCESS)
--			return status;
-+			goto out;
+@@ -22,3 +64,23 @@ void __bitmap_set(unsigned long *map, unsigned int start, int len)
+ 		*p |= mask_to_set;
  	}
--
-+out:
-+	efi_bs_call(free_pool, *map->map);
- 	return EFI_SUCCESS;
  }
++
++void __bitmap_clear(unsigned long *map, unsigned int start, int len)
++{
++	unsigned long *p = map + BIT_WORD(start);
++	const unsigned int size = start + len;
++	int bits_to_clear = BITS_PER_LONG - (start % BITS_PER_LONG);
++	unsigned long mask_to_clear = BITMAP_FIRST_WORD_MASK(start);
++
++	while (len - bits_to_clear >= 0) {
++		*p &= ~mask_to_clear;
++		len -= bits_to_clear;
++		bits_to_clear = BITS_PER_LONG;
++		mask_to_clear = ~0UL;
++		p++;
++	}
++	if (len) {
++		mask_to_clear &= BITMAP_LAST_WORD_MASK(size);
++		*p &= ~mask_to_clear;
++	}
++}
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index 411b268bc0a2..59db90626042 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -725,10 +725,20 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
+ 		 * but in practice there's firmware where using that memory leads
+ 		 * to crashes.
+ 		 *
+-		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
++		 * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if
++		 * supported) are guaranteed to be free.
+ 		 */
+-		if (md->type != EFI_CONVENTIONAL_MEMORY)
++
++		switch (md->type) {
++		case EFI_CONVENTIONAL_MEMORY:
++			break;
++		case EFI_UNACCEPTED_MEMORY:
++			if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
++				break;
+ 			continue;
++		default:
++			continue;
++		}
  
-@@ -642,7 +640,7 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
- 	priv.boot_params	= boot_params;
- 	priv.efi		= &boot_params->efi_info;
+ 		if (efi_soft_reserve_enabled() &&
+ 		    (md->attribute & EFI_MEMORY_SP))
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index cc47cf239c67..6119d947aac2 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -18,6 +18,7 @@
+ #include "../string.h"
+ #include "../voffset.h"
+ #include <asm/bootparam_utils.h>
++#include <asm/unaccepted_memory.h>
  
--	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
-+	status = allocate_e820(boot_params, &map, &e820ext, &e820ext_size);
- 	if (status != EFI_SUCCESS)
- 		return status;
+ /*
+  * WARNING!!
+@@ -42,6 +43,9 @@
+ /* Functions used by the included decompressor code below. */
+ void *memmove(void *dest, const void *src, size_t n);
  
++#undef __pa
++#define __pa(x)	((unsigned long)(x))
++
+ /*
+  * This is set up by the setup-routine at boot-time
+  */
+@@ -452,6 +456,13 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ #endif
+ 
+ 	debug_putstr("\nDecompressing Linux... ");
++
++	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
++	    boot_params->unaccepted_memory) {
++		debug_putstr("Accepting memory... ");
++		accept_memory(__pa(output), __pa(output) + needed_size);
++	}
++
+ 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
+ 			NULL, error);
+ 	parse_elf(output);
+diff --git a/arch/x86/boot/compressed/unaccepted_memory.c b/arch/x86/boot/compressed/unaccepted_memory.c
+index 35090793fc12..d0de7e88dade 100644
+--- a/arch/x86/boot/compressed/unaccepted_memory.c
++++ b/arch/x86/boot/compressed/unaccepted_memory.c
+@@ -51,3 +51,17 @@ void mark_unaccepted(struct boot_params *params, u64 start, u64 end)
+ 	bitmap_set((unsigned long *)params->unaccepted_memory,
+ 		   start / PMD_SIZE, (end - start) / PMD_SIZE);
+ }
++
++void accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long *unaccepted_memory;
++	unsigned int rs, re;
++
++	unaccepted_memory = (unsigned long *)boot_params->unaccepted_memory;
++	rs = start / PMD_SIZE;
++	for_each_set_bitrange_from(rs, re, unaccepted_memory,
++				   DIV_ROUND_UP(end, PMD_SIZE)) {
++		__accept_memory(rs * PMD_SIZE, re * PMD_SIZE);
++		bitmap_clear(unaccepted_memory, rs, re - rs);
++	}
++}
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index cbc24040b853..f1f835d3cd78 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -9,4 +9,6 @@ struct boot_params;
+ 
+ void mark_unaccepted(struct boot_params *params, u64 start, u64 num);
+ 
++void accept_memory(phys_addr_t start, phys_addr_t end);
++
+ #endif
 -- 
 2.34.1
 
