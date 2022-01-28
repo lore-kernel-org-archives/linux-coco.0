@@ -1,33 +1,33 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2064.outbound.protection.outlook.com [40.107.236.64])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2068.outbound.protection.outlook.com [40.107.243.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F402CA5
-	for <linux-coco@lists.linux.dev>; Fri, 28 Jan 2022 17:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289A12CA8
+	for <linux-coco@lists.linux.dev>; Fri, 28 Jan 2022 17:18:56 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Rd+ImEBAJZgHObn1bkrJ1k4OdAoQLL75Z+ZrkTOeu/kxqtNp7eYNF701ffgyFBxkvJhkhr1myB+osJpy2BIGjMf/oerN7FdB2mteQKZCrNVhgWb/gH+A3Hqf8KRk35MhdT4Vvok4T974lX3HkQB5G9JQ3J/LNtwtfS/mg0y551pQHs0EneRIhmgxwRl1BeAf1XnfdjiY63kHhYVVRA1uEvf6G4J85G5AwZ1Aw+mNlVnpFKWCEzjAIqic5XirNfQ/cjTTCv2enLMNOE31tphTd2VTzCnS51L1EBV7eYT1tbr2dDwNudS4TErPz4xe0Y7VS4bECgkgA1DAoFFuy6RLAQ==
+ b=TePdPM6KHLF2kSAMkxgv2nEn0O4PPkRkqeqpCXSJOLBz98wld9cPb5UZtEhmQI7zjPBEQXrbR34FLwrX2unMNAfWn4tVjm8GziiAO449cQ7jdQF3G4jA+qMh15vhh6rNBilOWN2QJciW4OK0Noi0n/3BjhIsayveZvVWrPYjDwZc88azubFmCqWtbsRA2j6ShP0JgfCxpl2OvD9ETPI6pfkfbsRtyioE0MSBbyVAw+8fAHD7Vx84uvkSysw2YGXi+q32w5b3W3YZRJjyVw5MLkxPomvRJZ82c224fGCUpZc41aPnW/mOxd/UBUl7R8oYKWgadegRuExffhpjoydfxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Dx7EiVfBXl88l7VPonmOi21nBvy9NFaXS1dL6fpY7o=;
- b=IK/AfkrJZOYdV2DKDWfcQDP8e3+oCUqlRPS6oTpulynUX2g0GBvEHgG3Ztnfy/GY5niMt8u8fKf8SHHVfOj4Bov/p/VzIJq1BdML5IUkPthxRzlZdgLBgOrMEckH+gFDVsrjysOzfDOadUWKa1T5F9xONY4ouI6DgTkrugT4RHp3L2Ghagw+qTSLgb4j6jFossRObNfTbrN5uZkvkIjN5LvI6T5HBf95SvPMdQ3Vy+HtvsyN0eNgve/PDQe/8uV258Rk7/bWlrexd6Pu+5CGmQQSVjefdKh/jmo0QUICHNCzcw7RtZ+FcBL45rzy4WcWRhviDyQfp9J0XSGVO+fKJA==
+ bh=dThjTR3l5CFQ3oUuPuINeCmFPgww2232zuNFsrkSW9c=;
+ b=DjZss1EBwumMDL9Fkr6bxnbZlj1VGoGENpl5+sImkMaoIfmpjnflxjGtDoRIxBqtzOkyG/DOx20ecxQYmi3kagZWlYu7yRNPKVL1/au0tfUCCyxoozXD3mRfr8+Jdln8jSC08/+EULODwGoC1fbyPejG0v2bYSyQ2vOVUXt3dl2IiSzV217AC7RMtArjGEnIeHfr8ENLPebwxES3LmGRsdDG41b7WLIzDnHDxLq+mPgoW2hYYt87xZDodbHJ3gpL8TaUgwKMm/xd08/KbqYmDgxfB7YjlCiQ4tmbzIpqKFexqO4bnjAuT1QCI4LPAZp98/+izbP0L747Mo2c3cH0ug==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Dx7EiVfBXl88l7VPonmOi21nBvy9NFaXS1dL6fpY7o=;
- b=Ymk76YMh3Nt7dIP9ot1Jef7pIfch+1qtwXbHoNzvuknQSCLG+bmVLreu30NU15yNt7AT9zcfO1UE+hPLZT6oRja/AvtyFx5GsEDpVJXC+hlunVNDGnwhVw1qG5Zi3DCLzebz2BuuCp+E3XfRflwYu9pO/cRg2I+H2scFBQxQDl0=
-Received: from DM5PR19CA0057.namprd19.prod.outlook.com (2603:10b6:3:116::19)
- by DM6PR12MB2652.namprd12.prod.outlook.com (2603:10b6:5:41::25) with
+ bh=dThjTR3l5CFQ3oUuPuINeCmFPgww2232zuNFsrkSW9c=;
+ b=CpuhmcSW+Gfu6qBjI2zjsS/UkXjLPrbYhQevqK+0VQnCHxnsh6FbOqFJYNsIwLNdxTRGHrcBQkgbacdsy7PqvqH5Ui2ocaQRchUx8/XnClVYVPLo1am5LI0yhgUaK852LK0evJiMxyG/uCeYdIBHyLuSj/qSkmjg8d2hKsHp6h0=
+Received: from DM5PR17CA0071.namprd17.prod.outlook.com (2603:10b6:3:13f::33)
+ by DM5PR1201MB0075.namprd12.prod.outlook.com (2603:10b6:4:54::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4909.17; Fri, 28 Jan
- 2022 17:18:51 +0000
-Received: from DM6NAM11FT036.eop-nam11.prod.protection.outlook.com
- (2603:10b6:3:116:cafe::62) by DM5PR19CA0057.outlook.office365.com
- (2603:10b6:3:116::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4909.13; Fri, 28 Jan
+ 2022 17:18:54 +0000
+Received: from DM6NAM11FT028.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:3:13f:cafe::36) by DM5PR17CA0071.outlook.office365.com
+ (2603:10b6:3:13f::33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4930.18 via Frontend
- Transport; Fri, 28 Jan 2022 17:18:51 +0000
+ Transport; Fri, 28 Jan 2022 17:18:54 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -35,13 +35,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT036.mail.protection.outlook.com (10.13.172.64) with Microsoft SMTP
+ DM6NAM11FT028.mail.protection.outlook.com (10.13.173.140) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.4930.15 via Frontend Transport; Fri, 28 Jan 2022 17:18:51 +0000
+ 15.20.4930.15 via Frontend Transport; Fri, 28 Jan 2022 17:18:53 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Fri, 28 Jan
- 2022 11:18:43 -0600
+ 2022 11:18:51 -0600
 From: Brijesh Singh <brijesh.singh@amd.com>
 To: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
@@ -62,10 +62,10 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Gilbert" <dgilbert@redhat.com>, <brijesh.ksingh@gmail.com>,
 	<tony.luck@intel.com>, <marcorr@google.com>,
 	<sathyanarayanan.kuppuswamy@linux.intel.com>, Brijesh Singh
-	<brijesh.singh@amd.com>, Venu Busireddy <venu.busireddy@oracle.com>
-Subject: [PATCH v9 16/43] x86/sev: Add helper for validating pages in early enc attribute changes
-Date: Fri, 28 Jan 2022 11:17:37 -0600
-Message-ID: <20220128171804.569796-17-brijesh.singh@amd.com>
+	<brijesh.singh@amd.com>
+Subject: [PATCH v9 21/43] x86/head/64: Re-enable stack protection
+Date: Fri, 28 Jan 2022 11:17:42 -0600
+Message-ID: <20220128171804.569796-22-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220128171804.569796-1-brijesh.singh@amd.com>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
@@ -82,300 +82,175 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2fec3972-0fc9-422a-bb0a-08d9e2824126
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2652:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16b803be-c31b-41f3-f4ac-08d9e2824297
+X-MS-TrafficTypeDiagnostic: DM5PR1201MB0075:EE_
 X-Microsoft-Antispam-PRVS:
-	<DM6PR12MB2652E11F5634C4EBA7576304E5229@DM6PR12MB2652.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2657;
+	<DM5PR1201MB0075A55BA1E7918862DF74CAE5229@DM5PR1201MB0075.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	Za4ouy4dDhI+HLievGKix7FnbUj7pZroqgcvJmzxosAorA51HaXhgYWwmdsYRMWRL9P16dGA4Ju+WlluUKiXFSjnqyQYn3wTeeDwjH8AHseZeu/I0bcVCe8kyuXIXkG9Teo0nJ/CgaI4kXDGGgWuLsuuOH3txB1NWhtLHnNUNqtbyxbU6NucoFMau+eEzInwz6kkHqNGSZhA43RwTtn9Vn5kBsbR3LOnfGntVlVLsKoMQRfI+kmgxPqJbWJ3m54xaWJg8M5KniX5gIb3OFnTIVcUrHOGTvX9WrlNpAUzX6tz8z5CGz4fJbFiQQlNW3OZvBgDUQRbpsBdO/iYB0reZ5QtvObZatb9HZYtrgM15+5d5Qjdmj7WndtjwVn4/EQfRXB0xwXXJc4pUy9/cYDvS/8mC9dWnf4ncEwyMQytxP9uiRKAJLdoKd/g+wyAqJZlWlhHahwOvmPcRCRKU5GOgPNZKj3fhru9aLM++5w0ylq9HvbcLIIzazjZT1YS+83+fmjQZrCD+IJSdGLxyCaJJzPNYeq1/UoRe77X1IJmff5Cjf8oBdaYrKi87i88G3XaqVLKm8CH2gphWvQwUNsTLaL3MQ/hx4h3S1QXsswHQeX8q4mz9/i9L34T4EFauYye5Y8JdYJkqLzhNiGWUpuTx388MqmBb1bM0wOIQjRyeG6eXddXIpw3OrWZf1UeQIedLHskDoROzVR110EHNsSQrmC9lyvfYCa7Rof/2GzwmQiCOgqJA3D/9hK/VStjE+txQ9Q+0jo9/ljiP6rn9kUdKV0kIOqMSVowYOxxhluzeNsaa8nO3aporX+7x64JwCvm
+	Met73V/DL8BXn396y0DAItvVVY1oAwUX9qrt3aQ2z8D9hyCQ3qV9rtQQz2fly4TEHc7Z8up9wzm+AvvzLLSnZyoTE+4QckcsFZUsDLiH1L7N280qksPx1mTIzKmJCcjIEGln+rAZ45MbfPrlbfKHxFZyQx0W1NaZ+4zE7MLNy1uEJaTL1gI1zdUR4vTcsQa1VBXRYibXtDetw9ttKynPaSqw+ih92E2nk0D0RSnn09OEa0E7V5ZgLnKkmhiWwCmgcfPGRJq3pyK0HMGhisUJx+4zAQnLyOoa2jRtznzbUTm/i9QqMPjAyUPSync2gQzCLKYQj+uZfDemDxv2DEGo6qtpUv2cXVWgpRMzlybjGiCe0Dtc2kuM/6KZhrmsuEpI78bUJvJXgpDR7M8Ghfkmqeenzv0c0ytExdrDj9iFRGbvgNw5KmbFVKvhAnpJanMQtks8VA8iIsI23dgMVkMiT6feRSgK+Y6sCGiQaxjJZL88qx1/X1iSTteitB7oUg74q+2P1gFwR3ShvT55Y2o0lrrxAxQ1d0yOKiaKn7pf6opD5GtKvmDKeBG8F4/P2dxGCiioQ0yvZEHnBwYgPNkQIFTLG96U0HUroGl3KR6UsLWVcAGyrV8c1T/6CvyaFrRbqc8wHedbssQH8DmwsnQbvGOovYVocgJIaK1gNL8YpjB4tTBof/BrG2eUjWnky5wNVFvN8R5mgf08Xzc1C15u56XVwohLbBr6a98lOWUfy17HW6jClWnfUKwMV0tvmv9YWtuq4ahNPH4drJlhTmqMdCY0Iv1W+rus+n0AsXakspmbSD4hyy2sPNmiwAmIl+1S
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(40470700004)(36840700001)(46966006)(86362001)(7416002)(36756003)(26005)(2616005)(2906002)(70206006)(8676002)(8936002)(186003)(36860700001)(110136005)(426003)(70586007)(54906003)(336012)(40460700003)(16526019)(7406005)(83380400001)(508600001)(44832011)(356005)(47076005)(82310400004)(5660300002)(4326008)(1076003)(316002)(7696005)(81166007)(6666004)(2101003)(36900700001);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(4636009)(46966006)(36840700001)(40470700004)(336012)(6666004)(5660300002)(8676002)(7406005)(4326008)(44832011)(2906002)(47076005)(36756003)(81166007)(186003)(36860700001)(70206006)(16526019)(86362001)(356005)(1076003)(426003)(70586007)(7696005)(82310400004)(7416002)(2616005)(54906003)(8936002)(110136005)(26005)(40460700003)(508600001)(316002)(83380400001)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2022 17:18:51.5225
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2022 17:18:53.9422
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fec3972-0fc9-422a-bb0a-08d9e2824126
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16b803be-c31b-41f3-f4ac-08d9e2824297
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DM6NAM11FT036.eop-nam11.prod.protection.outlook.com
+	DM6NAM11FT028.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2652
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR1201MB0075
 
-The early_set_memory_{encrypted,decrypted}() are used for changing the
-page from decrypted (shared) to encrypted (private) and vice versa.
-When SEV-SNP is active, the page state transition needs to go through
-additional steps.
+From: Michael Roth <michael.roth@amd.com>
 
-If the page is transitioned from shared to private, then perform the
-following after the encryption attribute is set in the page table:
+Due to the following commit:
 
-1. Issue the page state change VMGEXIT to add the page as a private
-   in the RMP table.
-2. Validate the page after its successfully added in the RMP table.
+  103a4908ad4d ("x86/head/64: Disable stack protection for head$(BITS).o")
 
-To maintain the security guarantees, if the page is transitioned from
-private to shared, then perform the following before clearing the
-encryption attribute from the page table.
+kernel/head{32,64}.c are compiled with -fno-stack-protector to allow a
+call to set_bringup_idt_handler(), which would otherwise have stack
+protection enabled with CONFIG_STACKPROTECTOR_STRONG. While sufficient
+for that case, there may still be issues with calls to any external
+functions that were compiled with stack protection enabled that in-turn
+make stack-protected calls, or if the exception handlers set up by
+set_bringup_idt_handler() make calls to stack-protected functions.
 
-1. Invalidate the page.
-2. Issue the page state change VMGEXIT to make the page shared in the
-   RMP table.
+Subsequent patches for SEV-SNP CPUID validation support will introduce
+both such cases. Attempting to disable stack protection for everything
+in scope to address that is prohibitive since much of the code, like
+SEV-ES #VC handler, is shared code that remains in use after boot and
+could benefit from having stack protection enabled. Attempting to inline
+calls is brittle and can quickly balloon out to library/helper code
+where that's not really an option.
 
-The early_set_memory_{encrypted,decrypted} can be called before the
-GHCB is setup, use the SNP page state MSR protocol VMGEXIT defined in
-the GHCB specification to request the page state change in the RMP
-table.
+Instead, re-enable stack protection for head32.c/head64.c and make the
+appropriate changes to ensure the segment used for the stack canary is
+initialized in advance of any stack-protected C calls.
 
-While at it, add a helper snp_prep_memory() which will be used in
-probe_roms(), in a later patch.
+for head64.c:
 
-Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
+- The BSP will enter from startup_64() and call into C code
+  (startup_64_setup_env()) shortly after setting up the stack, which
+  may result in calls to stack-protected code. Set up %gs early to allow
+  for this safely.
+- APs will enter from secondary_startup_64*(), and %gs will be set up
+  soon after. There is one call to C code prior to %gs being setup
+  (__startup_secondary_64()), but it is only to fetch 'sme_me_mask'
+  global, so just load 'sme_me_mask' directly instead, and remove the
+  now-unused __startup_secondary_64() function.
+
+for head32.c:
+
+- BSPs/APs will set %fs to __BOOT_DS prior to any C calls. In recent
+  kernels, the compiler is configured to access the stack canary at
+  %fs:__stack_chk_guard [1], which overlaps with the initial per-cpu
+  '__stack_chk_guard' variable in the initial/"master" .data..percpu
+  area. This is sufficient to allow access to the canary for use
+  during initial startup, so no changes are needed there.
+
+[1] 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
+
+Suggested-by: Joerg Roedel <jroedel@suse.de> #for 64-bit %gs set up
+Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/sev.h    | 10 ++++
- arch/x86/kernel/sev.c         | 99 +++++++++++++++++++++++++++++++++++
- arch/x86/mm/mem_encrypt_amd.c | 58 ++++++++++++++++++--
- 3 files changed, 163 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/setup.h |  1 -
+ arch/x86/kernel/Makefile     |  1 -
+ arch/x86/kernel/head64.c     |  9 ---------
+ arch/x86/kernel/head_64.S    | 24 +++++++++++++++++++++---
+ 4 files changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 48df02713ee0..f65d257e3d4a 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -123,6 +123,11 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
- 	return rc;
- }
- void setup_ghcb(void);
-+void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
-+					 unsigned int npages);
-+void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
-+					unsigned int npages);
-+void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op);
- #else
- static inline void sev_es_ist_enter(struct pt_regs *regs) { }
- static inline void sev_es_ist_exit(void) { }
-@@ -132,6 +137,11 @@ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
- static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
- static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
- static inline void setup_ghcb(void) { }
-+static inline void __init
-+early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr, unsigned int npages) { }
-+static inline void __init
-+early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr, unsigned int npages) { }
-+static inline void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op) { }
- #endif
+diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
+index a12458a7a8d4..72ede9159951 100644
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -49,7 +49,6 @@ extern unsigned long saved_video_mode;
+ extern void reserve_standard_io_resources(void);
+ extern void i386_reserve_resources(void);
+ extern unsigned long __startup_64(unsigned long physaddr, struct boot_params *bp);
+-extern unsigned long __startup_secondary_64(void);
+ extern void startup_64_setup_env(unsigned long physbase);
+ extern void early_setup_idt(void);
+ extern void __init do_early_exception(struct pt_regs *regs, int trapnr);
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 6aef9ee28a39..bd45e5ee6fe3 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -48,7 +48,6 @@ endif
+ # non-deterministic coverage.
+ KCOV_INSTRUMENT		:= n
  
- #endif
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index b86b48b66a44..5ee0fbd98d0d 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -556,6 +556,105 @@ static u64 get_jump_table_addr(void)
- 	return ret;
+-CFLAGS_head$(BITS).o	+= -fno-stack-protector
+ CFLAGS_cc_platform.o	+= -fno-stack-protector
+ 
+ CFLAGS_irq.o := -I $(srctree)/$(src)/../include/asm/trace
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 1239bc104cda..c80952dded32 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -319,15 +319,6 @@ unsigned long __head __startup_64(unsigned long physaddr,
+ 	return sme_postprocess_startup(bp, pmd);
  }
  
-+static void pvalidate_pages(unsigned long vaddr, unsigned int npages, bool validate)
-+{
-+	unsigned long vaddr_end;
-+	int rc;
-+
-+	vaddr = vaddr & PAGE_MASK;
-+	vaddr_end = vaddr + (npages << PAGE_SHIFT);
-+
-+	while (vaddr < vaddr_end) {
-+		rc = pvalidate(vaddr, RMP_PG_SIZE_4K, validate);
-+		if (WARN(rc, "Failed to validate address 0x%lx ret %d", vaddr, rc))
-+			sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PVALIDATE);
-+
-+		vaddr = vaddr + PAGE_SIZE;
-+	}
-+}
-+
-+static void __init early_set_pages_state(unsigned long paddr, unsigned int npages, enum psc_op op)
-+{
-+	unsigned long paddr_end;
-+	u64 val;
-+
-+	paddr = paddr & PAGE_MASK;
-+	paddr_end = paddr + (npages << PAGE_SHIFT);
-+
-+	while (paddr < paddr_end) {
-+		/*
-+		 * Use the MSR protocol because this function can be called before
-+		 * the GHCB is established.
-+		 */
-+		sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
-+		VMGEXIT();
-+
-+		val = sev_es_rd_ghcb_msr();
-+
-+		if (WARN(GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP,
-+			 "Wrong PSC response code: 0x%x\n",
-+			 (unsigned int)GHCB_RESP_CODE(val)))
-+			goto e_term;
-+
-+		if (WARN(GHCB_MSR_PSC_RESP_VAL(val),
-+			 "Failed to change page state to '%s' paddr 0x%lx error 0x%llx\n",
-+			 op == SNP_PAGE_STATE_PRIVATE ? "private" : "shared",
-+			 paddr, GHCB_MSR_PSC_RESP_VAL(val)))
-+			goto e_term;
-+
-+		paddr = paddr + PAGE_SIZE;
-+	}
-+
-+	return;
-+
-+e_term:
-+	sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
-+}
-+
-+void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
-+					 unsigned int npages)
-+{
-+	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-+		return;
-+
-+	 /*
-+	  * Ask the hypervisor to mark the memory pages as private in the RMP
-+	  * table.
-+	  */
-+	early_set_pages_state(paddr, npages, SNP_PAGE_STATE_PRIVATE);
-+
-+	/* Validate the memory pages after they've been added in the RMP table. */
-+	pvalidate_pages(vaddr, npages, true);
-+}
-+
-+void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr,
-+					unsigned int npages)
-+{
-+	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-+		return;
-+
-+	/* Invalidate the memory pages before they are marked shared in the RMP table. */
-+	pvalidate_pages(vaddr, npages, false);
-+
-+	 /* Ask hypervisor to mark the memory pages shared in the RMP table. */
-+	early_set_pages_state(paddr, npages, SNP_PAGE_STATE_SHARED);
-+}
-+
-+void __init snp_prep_memory(unsigned long paddr, unsigned int sz, enum psc_op op)
-+{
-+	unsigned long vaddr, npages;
-+
-+	vaddr = (unsigned long)__va(paddr);
-+	npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
-+
-+	if (op == SNP_PAGE_STATE_PRIVATE)
-+		early_snp_set_memory_private(vaddr, paddr, npages);
-+	else if (op == SNP_PAGE_STATE_SHARED)
-+		early_snp_set_memory_shared(vaddr, paddr, npages);
-+	else
-+		WARN(1, "invalid memory op %d\n", op);
-+}
-+
- int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+-unsigned long __startup_secondary_64(void)
+-{
+-	/*
+-	 * Return the SME encryption mask (if SME is active) to be used as a
+-	 * modifier for the initial pgdir entry programmed into CR3.
+-	 */
+-	return sme_get_me_mask();
+-}
+-
+ /* Wipe all early page tables except for the kernel symbol map */
+ static void __init reset_early_page_tables(void)
  {
- 	u16 startup_cs, startup_ip;
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index 2b2d018ea345..b59be6aac97b 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -31,6 +31,7 @@
- #include <asm/processor-flags.h>
- #include <asm/msr.h>
- #include <asm/cmdline.h>
-+#include <asm/sev.h>
+diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
+index 9c2c3aff5ee4..9e84263bcb94 100644
+--- a/arch/x86/kernel/head_64.S
++++ b/arch/x86/kernel/head_64.S
+@@ -65,6 +65,22 @@ SYM_CODE_START_NOALIGN(startup_64)
+ 	leaq	(__end_init_task - FRAME_SIZE)(%rip), %rsp
  
- #include "mm_internal.h"
- 
-@@ -47,6 +48,36 @@ EXPORT_SYMBOL(sme_me_mask);
- /* Buffer used for early in-place encryption by BSP, no locking needed */
- static char sme_early_buffer[PAGE_SIZE] __initdata __aligned(PAGE_SIZE);
- 
-+/*
-+ * SNP-specific routine which needs to additionally change the page state from
-+ * private to shared before copying the data from the source to destination and
-+ * restore after the copy.
-+ */
-+static inline void __init snp_memcpy(void *dst, void *src, size_t sz,
-+				     unsigned long paddr, bool decrypt)
-+{
-+	unsigned long npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
-+
-+	if (decrypt) {
-+		/*
-+		 * @paddr needs to be accessed decrypted, mark the page shared in
-+		 * the RMP table before copying it.
-+		 */
-+		early_snp_set_memory_shared((unsigned long)__va(paddr), paddr, npages);
-+
-+		memcpy(dst, src, sz);
-+
-+		/* Restore the page state after the memcpy. */
-+		early_snp_set_memory_private((unsigned long)__va(paddr), paddr, npages);
-+	} else {
-+		/*
-+		 * @paddr need to be accessed encrypted, no need for the page state
-+		 * change.
-+		 */
-+		memcpy(dst, src, sz);
-+	}
-+}
-+
- /*
-  * This routine does not change the underlying encryption setting of the
-  * page(s) that map this memory. It assumes that eventually the memory is
-@@ -95,8 +126,13 @@ static void __init __sme_early_enc_dec(resource_size_t paddr,
- 		 * Use a temporary buffer, of cache-line multiple size, to
- 		 * avoid data corruption as documented in the APM.
- 		 */
--		memcpy(sme_early_buffer, src, len);
--		memcpy(dst, sme_early_buffer, len);
-+		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP)) {
-+			snp_memcpy(sme_early_buffer, src, len, paddr, enc);
-+			snp_memcpy(dst, sme_early_buffer, len, paddr, !enc);
-+		} else {
-+			memcpy(sme_early_buffer, src, len);
-+			memcpy(dst, sme_early_buffer, len);
-+		}
- 
- 		early_memunmap(dst, len);
- 		early_memunmap(src, len);
-@@ -318,14 +354,28 @@ static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
- 	clflush_cache_range(__va(pa), size);
- 
- 	/* Encrypt/decrypt the contents in-place */
--	if (enc)
-+	if (enc) {
- 		sme_early_encrypt(pa, size);
--	else
-+	} else {
- 		sme_early_decrypt(pa, size);
- 
-+		/*
-+		 * ON SNP, the page state in the RMP table must happen
-+		 * before the page table updates.
-+		 */
-+		early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
-+	}
-+
- 	/* Change the page encryption mask. */
- 	new_pte = pfn_pte(pfn, new_prot);
- 	set_pte_atomic(kpte, new_pte);
+ 	leaq	_text(%rip), %rdi
 +
 +	/*
-+	 * If page is set encrypted in the page table, then update the RMP table to
-+	 * add this page as private.
++	 * initial_gs points to initial fixed_percpu_data struct with storage for
++	 * the stack protector canary. Global pointer fixups are needed at this
++	 * stage, so apply them as is done in fixup_pointer(), and initialize %gs
++	 * such that the canary can be accessed at %gs:40 for subsequent C calls.
 +	 */
-+	if (enc)
-+		early_snp_set_memory_private((unsigned long)__va(pa), pa, 1);
- }
++	movl	$MSR_GS_BASE, %ecx
++	movq	initial_gs(%rip), %rax
++	movq	$_text, %rdx
++	subq	%rdx, %rax
++	addq	%rdi, %rax
++	movq	%rax, %rdx
++	shrq	$32,  %rdx
++	wrmsr
++
+ 	pushq	%rsi
+ 	call	startup_64_setup_env
+ 	popq	%rsi
+@@ -145,9 +161,11 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
+ 	 * Retrieve the modifier (SME encryption mask if SME is active) to be
+ 	 * added to the initial pgdir entry that will be programmed into CR3.
+ 	 */
+-	pushq	%rsi
+-	call	__startup_secondary_64
+-	popq	%rsi
++#ifdef CONFIG_AMD_MEM_ENCRYPT
++	movq	sme_me_mask, %rax
++#else
++	xorq	%rax, %rax
++#endif
  
- static int __init early_set_memory_enc_dec(unsigned long vaddr,
+ 	/* Form the CR3 value being sure to include the CR3 modifier */
+ 	addq	$(init_top_pgt - __START_KERNEL_map), %rax
 -- 
 2.25.1
 
