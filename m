@@ -1,94 +1,66 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1352F23
-	for <linux-coco@lists.linux.dev>; Wed,  2 Feb 2022 18:57:48 +0000 (UTC)
-Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 609371EC04E2;
-	Wed,  2 Feb 2022 19:57:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1643828262;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=3U8ZC9BzawtxrXmVgjq+VFamXu78o7dgi9QKX8beiZs=;
-	b=MDv7m46t4sdlGD3qdQjScPzNa+EG0UH+UnAFyVxGzAhV3Yw72N/tVvr+2NA3yYhGoDTbJu
-	PE6ls7I9F+5AMJEBl0qU/58v49+c2NkvUKY0vgpJUixC5teLwmC0vBKwC3DIWDQG9Ieuj6
-	xKWLIOdRG/BdhXkeqLw2mxTSMaVUgJk=
-Date: Wed, 2 Feb 2022 19:57:37 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 05/43] x86/compressed/64: Detect/setup SEV/SME
- features earlier in boot
-Message-ID: <YfrUIVv70fTwydZv@zn.tnic>
-References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-6-brijesh.singh@amd.com>
- <Yfl3FaTGPxE7qMCq@zn.tnic>
- <20220201203507.goibbaln6dxyoogv@amd.com>
- <YfmmBykN2s0HsiAJ@zn.tnic>
- <20220202005212.a3fnn6i76ko6u6t5@amd.com>
- <YfogFFOoHvCV+/2Y@zn.tnic>
- <20220202172801.4plsgy5ispu2bi7c@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2F82CA6;
+	Tue,  1 Feb 2022 15:44:03 +0000 (UTC)
+Received: by mail-vs1-f52.google.com with SMTP id x13so16616893vsl.10;
+        Tue, 01 Feb 2022 07:44:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
+        b=XlaBX5xf2kC2PYFh91EO4ufBvcLkfsBOS665OsIpRa9DQkpb7u+LxrdpNGJzxoAnJ0
+         6Zrb97yEFwak4wNM5a0BjH3AdPWqIlAwjxrNKkSzysr8CFAIoYhUPvJm6Qcznt67FGJa
+         7c9Sj9fxgdbh2vhCp424CZvvJ1UrpoZyojJwNagTfy7FdayiBCXf6mVeEEvxUs5vhht/
+         f371R1RqGkTBAQFf/gEHEAhojKs0nS5FarjH5vHJG+n5BYFkMvHQorqXLR+d0iWDZ/HK
+         EHDUCIDj5zcbSEABUPNFWoSmIlD5wghMJe3kzeG7eFpipQf7kXFiZVWg4C44VU3TC3nw
+         cf+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
+        b=zGWqDVvgo3fGsbJUB2qbvIbUvH3FmLFGHUe7O4oCMYpBJrFkJCMIFK//PeeEY27dNW
+         FJVH1D5lPoQIz/HYt1J6kvF3pumRsxJkVeDU4C+xGHfUTDHjzdDZ8Uq1yx/0rOlveP4T
+         OqlidV41qr9eNTbit0xjltpYkU8QE+ls6bENMCclSvCx05KpvL/Ar/ZVXM88n0WgBAsY
+         +GroZfSt5PL4L5Ci1iO9pDFt2A7B9n4uPRi28XozFi78gmHfKEqDBDz/U38CEePTzvPV
+         YgTe9grvQVGyD4R9AUGkfYdVM7kI6c1zcD0gfTmAfx1A0Sbc6mrVYsNFvC/PZCbJDXyr
+         C0EA==
+X-Gm-Message-State: AOAM532vhLytiotCRPAVTS3NkTMQHmEYmql1TzuqJLZI0zqU5xd8LK1I
+	GvHOROknFivWqBaI3vJmXBH7IStEIbb3TxGL5j4yUdNuUQuRxbH4ZY2xgQ==
+X-Google-Smtp-Source: ABdhPJwhlWLLV81lekh4LZE/fQYhJPXbW4owMGw7muEEAo0II3hymR3KzIUfuse9+LlQjTToAGFxAtsFrBNFhnqhg+w=
+X-Received: by 2002:a67:ca0d:: with SMTP id z13mr10443702vsk.9.1643730242915;
+ Tue, 01 Feb 2022 07:44:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220202172801.4plsgy5ispu2bi7c@amd.com>
+From: sanita retan <sanitaretan@gmail.com>
+Date: Tue, 1 Feb 2022 16:43:50 +0100
+Message-ID: <CABLemWhTUqqM=_vEScEc6i=rEAnhtUrQm6-XQOgAxrr3A8p5Qg@mail.gmail.com>
+Subject: subscribe
+To: sanitaretan@gmail.com
+Cc: chrome-platform+subscribe@lists.linux.dev, chrome-platform@lists.linux.dev, 
+	connman+subscribe@lists.linux.dev, connman@lists.linux.dev, 
+	containers+subscribe@lists.linux.dev, containers@lists.linux.dev, 
+	ell+subscribe@lists.linux.dev, ell@lists.linux.dev, 
+	iwd+subscribe@lists.linux.dev, iwd@lists.linux.dev, 
+	ksummit+subscribe@lists.linux.dev, ksummit@lists.linux.dev, 
+	landlock+subscribe@lists.linux.dev, landlock@lists.linux.dev, 
+	linux-coco+subscribe@lists.linux.dev, linux-coco@lists.linux.dev, 
+	linux-staging+subscribe@lists.linux.dev, linux-staging@lists.linux.dev, 
+	linux-sunxi+subscribe@lists.linux.dev, linux-sunxi@lists.linux.dev, 
+	llvm+subscribe@lists.linux.dev, llvm@lists.linux.dev, 
+	mhi+subscribe@lists.linux.dev, mhi@lists.linux.dev, 
+	mptcp+subscribe@lists.linux.dev, mptcp@lists.linux.dev, 
+	ntb+subscribe@lists.linux.dev, ntb@lists.linux.dev, 
+	ntfs3+subscribe@lists.linux.dev, ntfs3@lists.linux.dev, 
+	nvdimm+subscribe@lists.linux.dev, nvdimm@lists.linux.dev, 
+	ofono+subscribe@lists.linux.dev, ofono@lists.linux.dev, 
+	patches+subscribe@lists.linux.dev, patches@lists.linux.dev, 
+	regressions+subscribe@lists.linux.dev, regressions@lists.linux.dev, 
+	linux-somesuch@lists.linux.dev, postmaster@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 02, 2022 at 11:28:01AM -0600, Michael Roth wrote:
-> Indeed... it looks like linux/{elf,io,efi,acpi}.h all end up pulling in
-> kernel proper's rdmsr()/wrmsr() definitions, and pulling them out ends up
-> breaking a bunch of other stuff,
-
-It's a nightmare - just gave it a try. No wonder they call it include
-hell.
-
-> so I think we might be stuck using a different name like
-> rd_msr()/wr_msr() in the meantime.
-
-Ok, but then pls call them boot_rdmsr() and boot_wrmsr() so that there's
-a clear distinction from all the other msr helpers. And put a comment
-above them in arch/x86/boot/msr.h explaining why they're called this
-way.
-
-One fine day I'll have this mess untangled and clean...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+subscribe
