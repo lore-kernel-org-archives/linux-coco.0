@@ -1,77 +1,98 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1E52F25
-	for <linux-coco@lists.linux.dev>; Wed,  2 Feb 2022 08:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1643791761;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836852F24
+	for <linux-coco@lists.linux.dev>; Wed,  2 Feb 2022 10:35:03 +0000 (UTC)
+Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5C3801EC057F;
+	Wed,  2 Feb 2022 11:34:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1643798097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VTjMgxqFw7q3lN61xuKdMsCU7dwv3H2LQch/NOGulyE=;
-	b=EpljswTe8npkRzhFe6lmcBsGIEG++b4BDm4Bp3kVnTKiDMImZGrPgD2+zzky1wiL3Us1la
-	6rm6jinDw9DkoH7xoge2qXZ/ReizZAlfdmLC8pEOLQvwrastNn3Us2h/HY6jNMC5Ox2Ixm
-	UkE6gLgVCGeTNI0fe8Jm+c3l9GWqAMg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-418-e53eU149PTiv7iptKT2yDQ-1; Wed, 02 Feb 2022 03:49:18 -0500
-X-MC-Unique: e53eU149PTiv7iptKT2yDQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8F21D81F002;
-	Wed,  2 Feb 2022 08:49:15 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.47])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id DC5E31F2F9;
-	Wed,  2 Feb 2022 08:49:10 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-	id 396041800397; Wed,  2 Feb 2022 09:49:09 +0100 (CET)
-Date: Wed, 2 Feb 2022 09:49:09 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Dov Murik <dovmurik@linux.ibm.com>
-Cc: linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=vkWy2p/ndu/o+uwPBWE2Sx+Zio2CCup5AcxLwBsCKIo=;
+	b=E1DiM/jmMmw1faOLJ+9vk08hJobgmK5QJeCOlv8fr+flGhrwsbAcAscgJzGskCs2KvjGAc
+	U2AY2ZAy16oscISuR2Hisdaix+fzOE/3vUIwykutoG/w3sY+XqGz+3asWHM3HUbZr4xwTd
+	pycMsV51BhescBJgCvgq/nIwy0PSTNw=
+Date: Wed, 2 Feb 2022 11:34:48 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Andrew Scull <ascull@google.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	Lenny Szubowicz <lszubowi@redhat.com>,
-	Peter Gonda <pgonda@google.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-	Jim Cadden <jcadden@ibm.com>,
-	Daniele Buono <dbuono@linux.vnet.ibm.com>,
-	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 5/5] docs: security: Add coco/efi_secret documentation
-Message-ID: <20220202084909.ancetiuel6xysh2q@sirius.home.kraxel.org>
-References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
- <20220201124413.1093099-6-dovmurik@linux.ibm.com>
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v9 15/43] x86/sev: Register GHCB memory when SEV-SNP is
+ active
+Message-ID: <YfpeSErxB9KHOd7m@zn.tnic>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-16-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220201124413.1093099-6-dovmurik@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+In-Reply-To: <20220128171804.569796-16-brijesh.singh@amd.com>
 
-On Tue, Feb 01, 2022 at 12:44:13PM +0000, Dov Murik wrote:
-> Add documentation for the efi_secret module which allows access
-> to Confidential Computing injected secrets.
+On Fri, Jan 28, 2022 at 11:17:36AM -0600, Brijesh Singh wrote:
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 24df739c9c05..b86b48b66a44 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -41,7 +41,7 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>   * Needs to be in the .data section because we need it NULL before bss is
+>   * cleared
+>   */
+> -static struct ghcb __initdata *boot_ghcb;
+> +static struct ghcb *boot_ghcb __section(".data");
+>  
+>  /* Bitmap of SEV features supported by the hypervisor */
+>  static u64 sev_hv_features __ro_after_init;
+> @@ -161,55 +161,6 @@ void noinstr __sev_es_ist_exit(void)
+>  	this_cpu_write(cpu_tss_rw.x86_tss.ist[IST_INDEX_VC], *(unsigned long *)ist);
+>  }
+>  
+> -/*
+> - * Nothing shall interrupt this code path while holding the per-CPU
+> - * GHCB. The backup GHCB is only for NMIs interrupting this path.
+> - *
+> - * Callers must disable local interrupts around it.
+> - */
+> -static noinstr struct ghcb *__sev_get_ghcb(struct ghcb_state *state)
 
-Looks good, but might need updates when the paths change.
+That move doesn't look like it's needed anymore, does it?
 
-Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+I mean, it builds even without it.
 
-take care,
-  Gerd
+-- 
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
