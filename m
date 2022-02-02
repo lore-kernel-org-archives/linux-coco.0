@@ -1,21 +1,37 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BC72F26
-	for <linux-coco@lists.linux.dev>; Wed,  2 Feb 2022 08:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BF9C340EC;
-	Wed,  2 Feb 2022 08:25:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1643790313;
-	bh=4q6q3iHhl8AMzcgm69qjAxOanc/whgNSTPJ78AIutWg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pIOfWJFr6miaUIIklgbMjhXDGeYaX9aY382BbldQohTE6cdC3pB7AoOz+8SniwnUK
-	 Y9JNGdK73XWnCQROBLp0oC1Rns7ZmBRsNneJWLFFjh3jj8amQDPJSmnyGSLZieKSXa
-	 9pTcUtXRqddWQdGFXWyM4To8wWv8InsanJdv43h8=
-Date: Wed, 2 Feb 2022 09:25:10 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E4F2F25
+	for <linux-coco@lists.linux.dev>; Wed,  2 Feb 2022 08:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1643791023;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0LxRwlZfMqnWt1iARRSy0LPvgy7cUgzWuLb0lOOyGTo=;
+	b=DSmFw+LmtxjlBYRKtZoF+NMq2+xmS6kx5Z/3pMHoZcXwKUME/GYHZebIFfmIzTnoT6zebd
+	OjqERYvLiosMi2YWmeWS2xZFbqp7S6+g1/O6/OGYF3KQwENaOPmZPDRyvfQRSfx2wBnFCq
+	LFDyrh/dqI3LqmRBOsWEqwDb1r6TT4U=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-599-D3Wl-U4bMai7-yURfjTIfw-1; Wed, 02 Feb 2022 03:37:01 -0500
+X-MC-Unique: D3Wl-U4bMai7-yURfjTIfw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 16743839A3F;
+	Wed,  2 Feb 2022 08:36:58 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.47])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 3CB204F86D;
+	Wed,  2 Feb 2022 08:36:56 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id 04BD61800397; Wed,  2 Feb 2022 09:36:54 +0100 (CET)
+Date: Wed, 2 Feb 2022 09:36:53 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
 To: Matthew Garrett <mjg59@srcf.ucam.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, James Bottomley <jejb@linux.ibm.com>,
+Cc: Ard Biesheuvel <ardb@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+	James Bottomley <jejb@linux.ibm.com>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	linux-efi <linux-efi@vger.kernel.org>, Borislav Petkov <bp@suse.de>,
 	Ashish Kalra <ashish.kalra@amd.com>,
@@ -26,7 +42,6 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, James Bottomley <jejb@linux.ibm.com>,
 	Andi Kleen <ak@linux.intel.com>, Andrew Scull <ascull@google.com>,
 	Dave Hansen <dave.hansen@intel.com>,
 	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
 	Lenny Szubowicz <lszubowi@redhat.com>,
 	Peter Gonda <pgonda@google.com>,
 	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
@@ -41,7 +56,7 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, James Bottomley <jejb@linux.ibm.com>,
 	Daniel Axtens <dja@axtens.net>
 Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
  secret area
-Message-ID: <Yfo/5gYgb9Sv24YB@kroah.com>
+Message-ID: <20220202083653.p3cb4w3qdud4e33t@sirius.home.kraxel.org>
 References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
  <Yfk6vEuZFtgtA+G+@kroah.com>
  <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
@@ -61,38 +76,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20220202080401.GA9861@srcf.ucam.org>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 
-On Wed, Feb 02, 2022 at 08:04:01AM +0000, Matthew Garrett wrote:
-> On Wed, Feb 02, 2022 at 08:22:03AM +0100, Ard Biesheuvel wrote:
-> > On Wed, 2 Feb 2022 at 08:10, Matthew Garrett <mjg59@srcf.ucam.org> wrote:
-> > > Which other examples are you thinking of? I think this conversation may
-> > > have accidentally become conflated with a different prior one and now
-> > > we're talking at cross purposes.
-> > 
-> > This came up a while ago during review of one of the earlier revisions
-> > of this patch set.
-> > 
-> > https://lore.kernel.org/linux-efi/YRZuIIVIzMfgjtEl@google.com/
-> > 
-> > which describes another two variations on the theme, for pKVM guests
-> > as well as Android bare metal.
-> 
-> Oh, I see! That makes much more sense - sorry, I wasn't Cc:ed on that, 
-> so thought this was related to the efivars/Power secure boot. My 
-> apologies, sorry for the noise. In that case, given the apparent 
-> agreement between the patch owners that a consistent interface would 
-> work for them, I think I agree with Greg that we should strive for that. 
-> Given the described behaviour of the Google implementation, it feels 
-> like the semantics in this implementation would be sufficient for them 
-> as well, but having confirmation of that would be helpful.
-> 
-> On the other hand, I also agree that a new filesystem for this is 
-> overkill. I did that for efivarfs and I think the primary lesson from 
-> that is that people who aren't familiar with the vfs shouldn't be 
-> writing filesystems. Securityfs seems entirely reasonable, and it's 
-> consistent with other cases where we expose firmware-provided data 
-> that's security relevant.
-> 
+  Hi,
+ 
 > The only thing I personally struggle with here is whether "coco" is the 
 > best name for it, and whether there are reasonable use cases that 
 > wouldn't be directly related to confidential computing (eg, if the 
@@ -105,17 +92,23 @@ On Wed, Feb 02, 2022 at 08:04:01AM +0000, Matthew Garrett wrote:
 > sending patches, it's fine for the code to live in that implementation 
 > and then be abstracted out once we have another.
 
-Well right now the Android code looks the cleanest and should be about
-ready to be merged into my tree.
+The implementation can be sorted later when a second implementation
+shows up, but it'll be better if we don't have to change the naming
+convention.
 
-But I can almost guarantee that that interface is not what anyone else
-wants to use, so if you think somehow that everyone else is going to
-want to deal with a char device node and a simple mmap, with a DT
-description of the thing, hey, I'm all for it :)
+"coco/efi_secrets" doesn't look like a good choice to me, given that it
+is rather likely we see more users for this showing up.
 
-Seriously, people need to come up with something sane or this is going
-to be a total mess.
+Having a "secrets/" directory looks good to me.  Then the individual
+implementations can either add files to the directory, i.e. efi_secrets
+would create "secrets/<guid>" files.  Or each implementation creates a
+subdirectory with the secrets, i.e. "secrets/coco/" and
+"secrets/coco/<guid>".
 
-thanks,
+Longer-term (i.e once we have more than one implementation) we probably
+need a separate module which owns and manages the "secrets/" directory,
+and possibly provides some common helper functions too.
 
-greg k-h
+take care,
+  Gerd
+
