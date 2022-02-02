@@ -1,13 +1,20 @@
-Received: from cavan.codon.org.uk (cavan.codon.org.uk [176.126.240.207])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D9E2F26
-	for <linux-coco@lists.linux.dev>; Wed,  2 Feb 2022 06:54:45 +0000 (UTC)
-Received: by cavan.codon.org.uk (Postfix, from userid 1000)
-	id 87B0840A4A; Wed,  2 Feb 2022 06:54:43 +0000 (GMT)
-Date: Wed, 2 Feb 2022 06:54:43 +0000
-From: Matthew Garrett <mjg59@srcf.ucam.org>
-To: Greg KH <gregkh@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA622C80
+	for <linux-coco@lists.linux.dev>; Wed,  2 Feb 2022 07:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AF7C340EC;
+	Wed,  2 Feb 2022 07:05:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1643785527;
+	bh=coZm+4It0SjWaIfb3t2MkJl7FPFYDrkHgtvlecwJN5M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mVs87BvyssNJyznmo0e3HSuwEwBXAzALSzWcRcNheffVRi6Kf1JR4ut64f5BwbxRL
+	 0zuRUCPC31fUxEJf1CRFr7nm141jlrxB6se24fPrLHYhFx58Np6AE78JgAbusQ6sTQ
+	 FIz2pChVjifI/SZQpkCdf9dRaQKsmn9pnzG5MIBI=
+Date: Wed, 2 Feb 2022 08:05:23 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Matthew Garrett <mjg59@srcf.ucam.org>
 Cc: James Bottomley <jejb@linux.ibm.com>,
 	Dov Murik <dovmurik@linux.ibm.com>, linux-efi@vger.kernel.org,
 	Borislav Petkov <bp@suse.de>, Ashish Kalra <ashish.kalra@amd.com>,
@@ -30,12 +37,13 @@ Cc: James Bottomley <jejb@linux.ibm.com>,
 	linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, dja@axtens.net
 Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
  secret area
-Message-ID: <20220202065443.GA9249@srcf.ucam.org>
+Message-ID: <YfotMyQiQ66xfCOQ@kroah.com>
 References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
  <Yfk6vEuZFtgtA+G+@kroah.com>
  <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
  <20220202040157.GA8019@srcf.ucam.org>
  <YfogOurPZb7+Yelo@kroah.com>
+ <20220202065443.GA9249@srcf.ucam.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -44,29 +52,46 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YfogOurPZb7+Yelo@kroah.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20220202065443.GA9249@srcf.ucam.org>
 
-On Wed, Feb 02, 2022 at 07:10:02AM +0100, Greg KH wrote:
-> On Wed, Feb 02, 2022 at 04:01:57AM +0000, Matthew Garrett wrote:
-> > We're talking about things that have massively different semantics.
+On Wed, Feb 02, 2022 at 06:54:43AM +0000, Matthew Garrett wrote:
+> On Wed, Feb 02, 2022 at 07:10:02AM +0100, Greg KH wrote:
+> > On Wed, Feb 02, 2022 at 04:01:57AM +0000, Matthew Garrett wrote:
+> > > We're talking about things that have massively different semantics.
+> > 
+> > I see lots of different platforms trying to provide access to their
+> > "secure" firmware data to userspace in different ways.  That feels to me
+> > like they are the same thing that userspace would care about in a
+> > unified way.
 > 
-> I see lots of different platforms trying to provide access to their
-> "secure" firmware data to userspace in different ways.  That feels to me
-> like they are the same thing that userspace would care about in a
-> unified way.
+> EFI variables are largely for the OS to provide information to the 
+> firmware, while this patchset is to provide information from the 
+> firmware to the OS. I don't see why we'd expect to use the same userland 
+> tooling for both.
 
-EFI variables are largely for the OS to provide information to the 
-firmware, while this patchset is to provide information from the 
-firmware to the OS. I don't see why we'd expect to use the same userland 
-tooling for both.
+I totally agree, I'm not worried about EFI variables here, I don't know
+why that came up.
 
-In the broader case - I don't think we *can* use the same userland
-tooling for everything. For example, the patches to add support for 
-manipulating the Power secure boot keys originally attempted to make it 
-look like efivars, but the underlying firmware semantics are 
-sufficiently different that even exposing the same kernel interface 
-wouldn't be a sufficient abstraction and userland would still need to 
-behave differently. Exposing an interface that looks consistent but 
-isn't is arguably worse for userland than exposing explicitly distinct 
-interfaces.
+> In the broader case - I don't think we *can* use the same userland
+> tooling for everything. For example, the patches to add support for 
+> manipulating the Power secure boot keys originally attempted to make it 
+> look like efivars, but the underlying firmware semantics are 
+> sufficiently different that even exposing the same kernel interface 
+> wouldn't be a sufficient abstraction and userland would still need to 
+> behave differently. Exposing an interface that looks consistent but 
+> isn't is arguably worse for userland than exposing explicitly distinct 
+> interfaces.
+
+So what does userspace really need here?  Just the ability to find if
+the platform has blobs that it cares about, and how to read/write them.
+
+I see different platform patches trying to stick these blobs in
+different locations and ways to access (securityfs, sysfs, char device
+node), which seems crazy to me.  Why can't we at least pick one way to
+access these to start with, and then have the filesystem layout be
+platform-specific as needed, which will give the correct hints to
+userspace as to what it needs to do here?
+
+thanks,
+
+greg k-h
