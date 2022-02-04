@@ -1,23 +1,23 @@
-Received: from mail.skyhub.de (unknown [5.9.137.197])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47872F29
-	for <linux-coco@lists.linux.dev>; Fri,  4 Feb 2022 16:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402E22F29
+	for <linux-coco@lists.linux.dev>; Fri,  4 Feb 2022 16:22:03 +0000 (UTC)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6DBFE1EC05B0;
-	Fri,  4 Feb 2022 17:09:16 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 918581EC064D;
+	Fri,  4 Feb 2022 17:21:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1643990956;
+	t=1643991715;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=/WmEg/0bwXnxJ545ifL80yx8eNkY6/jtW96OjsOUZpg=;
-	b=hoJyxBuFRMUJlIus0cGraoakoG9cZDq8GT29sfAVwlzoeevOYpAnKxFTBSX9RuRUq+gpin
-	4/bcgfXEh6xVu2u8P1gcd0E/pVxyaTjz1yIdv3Aq6d9Sn3aRlOw+TBzXTHpaGeRS3YZhh+
-	P1/TFqD9PxfPeEWZm45X897n0QCP6Lg=
-Date: Fri, 4 Feb 2022 17:09:11 +0100
+	bh=C3Aiz07fgWzpDuMjml0gbG/sKOww28AvWjFoDlVxnJA=;
+	b=bzscTGd8iNT4OCAu004DCeFYPE77BetHF+Z3Y3dygBfQ17HjWzjsDA+abRsi/Cq94sM42w
+	DaBD7U/xgfvsktQzKLAEHnMUsbJ4QEjn4EcQKkGeyiknG9PKQ7Ue/c7D/3e/V1xDmoTRyE
+	zamWAsnXmQ6R085hO5Os2nfNz0H65C0=
+Date: Fri, 4 Feb 2022 17:21:51 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Brijesh Singh <brijesh.singh@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
@@ -46,11 +46,11 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 28/43] x86/compressed/acpi: Move EFI kexec handling
- into common code
-Message-ID: <Yf1Pp3i4BTuIpTrZ@zn.tnic>
+Subject: Re: [PATCH v9 29/43] x86/boot: Add Confidential Computing type to
+ setup_data
+Message-ID: <Yf1Sn4AdPgIzpih9@zn.tnic>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-29-brijesh.singh@amd.com>
+ <20220128171804.569796-30-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,21 +59,52 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220128171804.569796-29-brijesh.singh@amd.com>
+In-Reply-To: <20220128171804.569796-30-brijesh.singh@amd.com>
 
-On Fri, Jan 28, 2022 at 11:17:49AM -0600, Brijesh Singh wrote:
-> +static struct efi_setup_data *get_kexec_setup_data(struct boot_params *boot_params,
-> +						   enum efi_type et)
-> +{
-> +#ifdef CONFIG_X86_64
-> +	struct efi_setup_data *esd = NULL;
-> +	struct setup_data *data;
-> +	u64 pa_data;
-> +
-> +	if (et != EFI_TYPE_64)
-> +		return NULL;
+On Fri, Jan 28, 2022 at 11:17:50AM -0600, Brijesh Singh wrote:
+> +/*
+> + * AMD SEV Confidential computing blob structure. The structure is
+> + * defined in OVMF UEFI firmware header:
+> + * https://github.com/tianocore/edk2/blob/master/OvmfPkg/Include/Guid/ConfidentialComputingSevSnpBlob.h
 
-Why that check here? That function is called for EFI_TYPE_64 only anyway.
+So looking at that typedef struct CONFIDENTIAL_COMPUTING_SNP_BLOB_LOCATION there:
+
+typedef struct {
+  UINT32    Header;
+  UINT16    Version;
+  UINT16    Reserved1;
+  UINT64    SecretsPhysicalAddress;
+  UINT32    SecretsSize;
+  UINT64    CpuidPhysicalAddress;
+  UINT32    CpuidLSize;
+} CONFIDENTIAL_COMPUTING_SNP_BLOB_LOCATION;
+
+> + */
+> +#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
+> +struct cc_blob_sev_info {
+> +	u32 magic;
+
+That's called "Header" there.
+
+> +	u16 version;
+> +	u16 reserved;
+> +	u64 secrets_phys;
+> +	u32 secrets_len;
+> +	u32 rsvd1;
+
+You've added that member for padding but the fw blob one doesn't have
+it.
+
+But if we get a blob from the firmware and the structure layout differs,
+how is this supposed to even work?
+
+> +	u64 cpuid_phys;
+> +	u32 cpuid_len;
+> +	u32 rsvd2;
+
+That one too.
+
+Or are you going to change the blob layout in ovmf too, to match?
 
 -- 
 Regards/Gruss,
