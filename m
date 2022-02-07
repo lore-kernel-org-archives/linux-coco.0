@@ -1,79 +1,158 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B571C2C9C
-	for <linux-coco@lists.linux.dev>; Mon,  7 Feb 2022 20:28:50 +0000 (UTC)
-Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CD8721EC01A8;
-	Mon,  7 Feb 2022 21:28:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1644265725;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=lsALf0mo+v2UYmS1+2QBtB8DaKBuaxhZCLFlo0oeTIQ=;
-	b=k7oaKTuyKJ87lCuFeqZIkMqyWz8IEMcy+2QTNjOgl1ghLsooBTa98Qbu+mhy6AIBb8kcPK
-	yJrOvR4ku+S1hY0YSV6AkFUDf6xlH6JRVj9e1pR754abzO+lEdJks2btya5uLOiduJRhlH
-	VRuKqBHTMrlMuX4gYR0QMFera0OrpGs=
-Date: Mon, 7 Feb 2022 21:28:43 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: Dov Murik <dovmurik@linux.ibm.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3288E2F25
+	for <linux-coco@lists.linux.dev>; Mon,  7 Feb 2022 22:03:57 +0000 (UTC)
+Received: by mail-pf1-f170.google.com with SMTP id e28so15398571pfj.5
+        for <linux-coco@lists.linux.dev>; Mon, 07 Feb 2022 14:03:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=UPy7lygPxr90ipECLkuZI1hGfjCl5QQ8FuHy0YowhSc=;
+        b=RCgXhswVoMfKJgmEInLACfKtrGVLqOCKWZNQ41sxN5QDiS7VwL/G07y2oU0WB8ztNR
+         Y0S/kH1ShxVpYYabvAnlMUsDkJFODoyyY5dzhb1Fd7mnBLqXM9Rec01w4aj7PGNdeL5n
+         RWuK3IpF25Z9D8lhRsyEZAKgCsMiGAZNHpKo086hki4ByVDihSrUinUl2fJl0XC9tujL
+         PNBkTL6RuaWSjX1S5vLoYvoof4pfeRaDyEpdC+mVVVIu7XPHvEn4en4/Y4pIL4hV6rr1
+         Cdy78LZyRztbpdzjvMGH8T8h9AbVd0QzBozwz2j0qazz4F8EmAc5xBhZNFYgkPpM1Tn/
+         gMUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=UPy7lygPxr90ipECLkuZI1hGfjCl5QQ8FuHy0YowhSc=;
+        b=lBzle+kDpNsrkv86PDy86fuQbfixAapHAI9DfwUv0/QYUqm9j2uOV5d2Dxwyx2lFal
+         Jm9TrWrVXe83uUryVXqPxRZwiUcDxBa4Ebh57E+1jp9bAJeCwv/m2R0VjR+FG28+vjZY
+         V4YiJLr24fttbnx83cCuekMqY49og84p1pakzdvPSnoTuYwk83pdUErz1otE8Hmt3RUa
+         HHNCdhQ5vFQGLWjF01DzuXjNuSraoJxyiOzAn4POpdgf4B4pIOszeA1gt7vho0w6dccl
+         tYKNABOKVX5ReH3C+bBceia2KIsIfzXajUuo+28C0rBCGKnyV7YRKncyfYtJL4E4tHft
+         Dqeg==
+X-Gm-Message-State: AOAM533+K0XHvwRL6veNsRJq1sRs06gZ1J+nfgJrGv9WnpPu7NyVtLOC
+	z5fqUlSobkx8eppbFVk17DU1gw==
+X-Google-Smtp-Source: ABdhPJzbBC9XPXZx1a7sY7aumuFcnEQRXSeGjArZY3492Wqxxm+qGn6UVim4VyXN7pLekEvoM53jAg==
+X-Received: by 2002:a63:2c83:: with SMTP id s125mr1103589pgs.265.1644271436434;
+        Mon, 07 Feb 2022 14:03:56 -0800 (PST)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id q2sm13779245pfj.94.2022.02.07.14.03.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Feb 2022 14:03:55 -0800 (PST)
+Date: Mon, 7 Feb 2022 22:03:52 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Joerg Roedel <joro@8bytes.org>
+Cc: x86@kernel.org, Joerg Roedel <jroedel@suse.de>,
+	Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
+	hpa@zytor.com, Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	Liam Merwick <liam.merwick@oracle.com>
-Subject: Re: [PATCH v9 42/43] virt: sevguest: Add support to derive key
-Message-ID: <YgGA+wiyqPZD0YTj@zn.tnic>
-References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-43-brijesh.singh@amd.com>
- <YgDduR0mrptX5arB@zn.tnic>
- <1cb4fdf5-7c1e-6c8f-1db6-8c976d6437c2@amd.com>
- <ae1644a3-bd2c-6966-4ae3-e26abd77b77b@linux.ibm.com>
- <20ba1ac2-83d1-6766-7821-c9c8184fb59b@amd.com>
+	Peter Zijlstra <peterz@infradead.org>, Jiri Slaby <jslaby@suse.cz>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	David Rientjes <rientjes@google.com>, Cfir Cohen <cfir@google.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mike Stunes <mstunes@vmware.com>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Arvind Sankar <nivedita@alum.mit.edu>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org
+Subject: Re: [PATCH v3 04/10] x86/sev: Cache AP Jump Table Address
+Message-ID: <YgGXSKAsi4aLxFMg@google.com>
+References: <20220127101044.13803-1-joro@8bytes.org>
+ <20220127101044.13803-5-joro@8bytes.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20ba1ac2-83d1-6766-7821-c9c8184fb59b@amd.com>
+In-Reply-To: <20220127101044.13803-5-joro@8bytes.org>
 
-On Mon, Feb 07, 2022 at 02:08:17PM -0600, Brijesh Singh wrote:
-> Boris, let me know if you are okay with it?
+On Thu, Jan 27, 2022, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
+> 
+> Store the physical address of the AP jump table in kernel memory so
+> that it does not need to be fetched from the Hypervisor again.
 
-Yes, most definitely as long as there's a comment explaining why.
+This doesn't explain why the kernel would retrieve the jump table more than once,
+e.g. at this point in the series, this can only ever be called once.
 
-Thx.
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+> ---
+>  arch/x86/kernel/sev.c | 28 +++++++++++++++-------------
+>  1 file changed, 15 insertions(+), 13 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 8a4317fa699a..969ef9855bb5 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -43,6 +43,9 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>   */
+>  static struct ghcb __initdata *boot_ghcb;
+>  
+> +/* Cached AP jump table Address */
+> +static phys_addr_t jump_table_pa;
+> +
+>  /* #VC handler runtime per-CPU data */
+>  struct sev_es_runtime_data {
+>  	struct ghcb ghcb_page;
+> @@ -523,12 +526,14 @@ void noinstr __sev_es_nmi_complete(void)
+>  	__sev_put_ghcb(&state);
+>  }
+>  
+> -static u64 get_jump_table_addr(void)
+> +static phys_addr_t get_jump_table_addr(void)
 
--- 
-Regards/Gruss,
-    Boris.
+Not new, but I believe this can be tagged __init.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+>  {
+>  	struct ghcb_state state;
+>  	unsigned long flags;
+>  	struct ghcb *ghcb;
+> -	u64 ret = 0;
+> +
+> +	if (jump_table_pa)
+> +		return jump_table_pa;
+>  
+>  	local_irq_save(flags);
+>  
+> @@ -544,39 +549,36 @@ static u64 get_jump_table_addr(void)
+>  
+>  	if (ghcb_sw_exit_info_1_is_valid(ghcb) &&
+>  	    ghcb_sw_exit_info_2_is_valid(ghcb))
+> -		ret = ghcb->save.sw_exit_info_2;
+> +		jump_table_pa = (phys_addr_t)ghcb->save.sw_exit_info_2;
+>  
+>  	__sev_put_ghcb(&state);
+>  
+>  	local_irq_restore(flags);
+>  
+> -	return ret;
+> +	return jump_table_pa;
+>  }
+>  
+>  int sev_es_setup_ap_jump_table(struct real_mode_header *rmh)
+
+__init here too.
+
+>  {
+>  	u16 startup_cs, startup_ip;
+> -	phys_addr_t jump_table_pa;
+> -	u64 jump_table_addr;
+>  	u16 __iomem *jump_table;
+> +	phys_addr_t pa;
+>  
+> -	jump_table_addr = get_jump_table_addr();
+> +	pa = get_jump_table_addr();
+>  
+>  	/* On UP guests there is no jump table so this is not a failure */
+
+Does anything actually check that the jump table is valid for SMP guests?
+
+> -	if (!jump_table_addr)
+> +	if (!pa)
+
+Using '0' for "not valid" is funky because '0' isn't technically an illegal GPA,
+and because it means the address (or lack thereof) isn't cached on a single-vCPU
+guest.
