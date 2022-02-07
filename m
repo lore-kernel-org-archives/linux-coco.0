@@ -1,53 +1,53 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3422F26
-	for <linux-coco@lists.linux.dev>; Mon,  7 Feb 2022 18:51:31 +0000 (UTC)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 217IQ4oL001233;
-	Mon, 7 Feb 2022 18:51:02 GMT
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22D52F26
+	for <linux-coco@lists.linux.dev>; Mon,  7 Feb 2022 19:10:11 +0000 (UTC)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 217Ih10O022971;
+	Mon, 7 Feb 2022 19:09:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=6wo3fy8YHuqfHQqrTi4jIFOaNA44Ygv455HTfVt4MkA=;
- b=ZU8Qf2lQT4XRQY7Sa2xDY/EY+8aNtQ2qr+N/+KSN+8sG7uhk2Zcn5x9d4VEIRojSV0zN
- 35hhA3wfHXzkNl9gb5zcTAkADqAXQB2b3g85NAVHbj/UzLfjzT033uvLdO/wL3hn3VUq
- cdjSTzCbhmhuYOwO5oBU9GG/apZ2GmOwUWp/JhfkRbEZeoTO2czcHbNitfAe0svDwQ9L
- v6LBMWpoN3yAXAqIXq6sWj2srx4K3lVYAvXn/mwBlv402xBSvUAM37mThqQr55rmTabN
- hupI+XQjHerJ71HJoL+PSlcnmVpAGGpxDIlkK+8Ph5Ss+sej/1nV+JyA91h9e8mRYSJK wQ== 
+ bh=dyalkAeyKfjg5aHVd6mQRDQDqmWJOUBGs31kbZ3xnMM=;
+ b=XrtWCGa/awBKqiBsbGguRhzFJToZ/S9qxgv9tspsv9dQ1A3oTgwnh0Sm5APDP2+G/6Ea
+ X1bITEatT5H12jAc0i7qzp3CStUafiWQNd8ekLMC0cVhMXtBUIDHfiUv1dypCvAYKZlo
+ FjESWl2LqDxiea9CAV9ovGgzR7FBn2LvGZJWG1PCEOWDZ5zYneaMvxLGSIK2xqbHgDos
+ osRzUE1kwOTprZ6azRE0stdftcW1we3WX8bbRYGHdSAF3GTox8Dr4U+jTEjMg2KR/zve
+ cfw+N2TPcuQykGbNmHS2GF+E237+2aJqSJWqP/dQT6WRt3R0AIAkstmgFETwqIF5OCjE Sg== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3e22st4em4-1
+	by mx0b-001b2d01.pphosted.com with ESMTP id 3e22whhfrf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Feb 2022 18:51:02 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 217IdeJT030526;
-	Mon, 7 Feb 2022 18:51:01 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3e22st4ekm-1
+	Mon, 07 Feb 2022 19:09:41 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 217IrMIw020670;
+	Mon, 7 Feb 2022 19:09:40 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 3e22whhfr4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Feb 2022 18:51:01 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 217Ilb8b011839;
-	Mon, 7 Feb 2022 18:51:00 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-	by ppma03wdc.us.ibm.com with ESMTP id 3e1gvabq8s-1
+	Mon, 07 Feb 2022 19:09:40 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 217J7TCe002298;
+	Mon, 7 Feb 2022 19:09:39 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+	by ppma04wdc.us.ibm.com with ESMTP id 3e2bt9qrfe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Feb 2022 18:51:00 +0000
+	Mon, 07 Feb 2022 19:09:39 +0000
 Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
-	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 217Iovg831785398
+	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 217J9cqi31588632
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Feb 2022 18:50:57 GMT
+	Mon, 7 Feb 2022 19:09:38 GMT
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC80A6E04E;
-	Mon,  7 Feb 2022 18:50:57 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0D37F6E058;
+	Mon,  7 Feb 2022 19:09:38 +0000 (GMT)
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 30BE46E052;
-	Mon,  7 Feb 2022 18:50:51 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 52ED86E059;
+	Mon,  7 Feb 2022 19:09:30 +0000 (GMT)
 Received: from [9.65.240.79] (unknown [9.65.240.79])
 	by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Feb 2022 18:50:50 +0000 (GMT)
-Message-ID: <3387b2e7-0921-cd80-279b-24d13f706443@linux.ibm.com>
-Date: Mon, 7 Feb 2022 20:50:48 +0200
+	Mon,  7 Feb 2022 19:09:30 +0000 (GMT)
+Message-ID: <ae1644a3-bd2c-6966-4ae3-e26abd77b77b@linux.ibm.com>
+Date: Mon, 7 Feb 2022 21:09:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -56,88 +56,75 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.1
-Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
- secret area
+Subject: Re: [PATCH v9 42/43] virt: sevguest: Add support to derive key
 Content-Language: en-US
-To: Matthew Garrett <mjg59@srcf.ucam.org>, Gerd Hoffmann <kraxel@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        linux-efi <linux-efi@vger.kernel.org>, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky
- <thomas.lendacky@amd.com>,
-        James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>, Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Nayna Jain <nayna@linux.ibm.com>, dougmill@linux.vnet.ibm.com,
-        gcwilson@linux.ibm.com, gjoyce@ibm.com,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)"
- <linuxppc-dev@lists.ozlabs.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, Daniel Axtens <dja@axtens.net>,
+To: Brijesh Singh <brijesh.singh@amd.com>, Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson
+ <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Tobin Feldman-Fitzthum
+ <tobin@ibm.com>,
+        Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov"
+ <kirill@shutemov.name>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com,
+        Liam Merwick <liam.merwick@oracle.com>,
         Dov Murik <dovmurik@linux.ibm.com>
-References: <Yfk6vEuZFtgtA+G+@kroah.com>
- <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
- <20220202040157.GA8019@srcf.ucam.org> <YfogOurPZb7+Yelo@kroah.com>
- <20220202065443.GA9249@srcf.ucam.org> <YfotMyQiQ66xfCOQ@kroah.com>
- <20220202071023.GA9489@srcf.ucam.org>
- <CAMj1kXFTyc9KnMsnvs+mt80DbJL8VGKKcQ0J=4NrGYGSAG8sRw@mail.gmail.com>
- <20220202080401.GA9861@srcf.ucam.org>
- <20220202083653.p3cb4w3qdud4e33t@sirius.home.kraxel.org>
- <20220202084534.GA10247@srcf.ucam.org>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-43-brijesh.singh@amd.com> <YgDduR0mrptX5arB@zn.tnic>
+ <1cb4fdf5-7c1e-6c8f-1db6-8c976d6437c2@amd.com>
 From: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <20220202084534.GA10247@srcf.ucam.org>
+In-Reply-To: <1cb4fdf5-7c1e-6c8f-1db6-8c976d6437c2@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kNbeaTLnGVyfzqIU5wFmWGQaLaWnhJPq
-X-Proofpoint-ORIG-GUID: -177XkzI6xzpuOjb3dcnAHyLrUUkx8qg
+X-Proofpoint-GUID: lLM5b9KPIZBForkzNm7IOXi0hUj_4zqC
+X-Proofpoint-ORIG-GUID: PVCYRX9sBn7puUs3---zr3p73u8apODq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
  definitions=2022-02-07_06,2022-02-07_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 spamscore=0 suspectscore=0 malwarescore=0 mlxscore=0
- mlxlogscore=999 impostorscore=0 bulkscore=0 adultscore=0 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202070113
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 mlxlogscore=999 clxscore=1011 priorityscore=1501
+ bulkscore=0 spamscore=0 adultscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2201110000 definitions=main-2202070115
 
 
 
-On 02/02/2022 10:45, Matthew Garrett wrote:
-> On Wed, Feb 02, 2022 at 09:36:53AM +0100, Gerd Hoffmann wrote:
+On 07/02/2022 18:23, Brijesh Singh wrote:
 > 
->> Having a "secrets/" directory looks good to me.  Then the individual
->> implementations can either add files to the directory, i.e. efi_secrets
->> would create "secrets/<guid>" files.  Or each implementation creates a
->> subdirectory with the secrets, i.e. "secrets/coco/" and
->> "secrets/coco/<guid>".
 > 
-> I prefer a subdirectory, on the basis that we could conceivably end up 
-> with more than one implementation on a single device at some point, and 
-> also because it makes it trivial for userland to determine what the 
-> source is which may make a semantic difference under certain 
-> circumstances.
->  
-
-OK, sounds good.  In the next round of the series the module will create
-the files in <securityfs>/secrets/coco/ .
-
-
->> Longer-term (i.e once we have more than one implementation) we probably
->> need a separate module which owns and manages the "secrets/" directory,
->> and possibly provides some common helper functions too.
+> On 2/7/22 2:52 AM, Borislav Petkov wrote:
+>> Those are allocated on stack, why are you clearing them?
 > 
-> Agree.
+> Yep, no need to explicitly clear it. I'll take it out in next rev.
+> 
 
-Yes; one candidate for such helper function is a filesystem that
-implements the "wipe file content from memory on unlink".
+Wait, this is key material generated by PSP and passed to userspace.
+Why leave copies of it floating around kernel memory?  I thought that's
+the whole reason for these memzero_explicit() calls (maybe add a comment?).
+
+As an example, in arch/x86/crypto/aesni-intel_glue.c there are two calls
+to memzero_explicit(), both on stack variables; the only reason for
+these calls (as I understand it) is to avoid some future possible leak
+of this sensitive data (keys, cipher context, etc.).  I'm sure there are
+other examples in the kernel code.
 
 
 -Dov
