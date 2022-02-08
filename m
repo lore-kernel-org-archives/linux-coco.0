@@ -1,136 +1,154 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2060.outbound.protection.outlook.com [40.107.243.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34272F2C
-	for <linux-coco@lists.linux.dev>; Mon,  7 Feb 2022 23:48:16 +0000 (UTC)
-Received: by mail-pj1-f44.google.com with SMTP id m7so14493177pjk.0
-        for <linux-coco@lists.linux.dev>; Mon, 07 Feb 2022 15:48:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=DmAjZsfccwaVaNtes6EmfPZ2rG4blpFc0pyFaBFNy/c=;
-        b=O48QwLhH9/EyfzfbZFDBuyW7NgAxpUfsKFo77vRIIp/J97PxXdR/Nfj2Q5oBXNcuPo
-         Jf+QknfQrGr7pgD1rVD/n/xLnaeB/v8ecoI8tICXQpFrYlc8ZMljeCsh4aBWr+MUr3+G
-         Z+isaq63CF1Tym+PBdMK6+axq9i8a6odmcOzGYnYQtwotEiike8g+3qsd0ovrJL+iHr9
-         IRWBaGik6wVgAJ2agrzQUCGB/xt89X7wnTl3AQVzdoaewv8FDh3sJaMY7Az0F+paU4cv
-         ZGtrP1Ka76pG+mtfqeJGLgKYnsm2YYJsLXjwUbqakndlRzflCo3MlbsGS63DJb4uRxOi
-         pbXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=DmAjZsfccwaVaNtes6EmfPZ2rG4blpFc0pyFaBFNy/c=;
-        b=YI6hJZ6SnNyNTaU0G83gBJsLyS/Txowf61DgsElo1PsEUao8/p+RgBCUwfCzewrbXp
-         be7ST62C1ugHZ7pj/Ka8pKQBUfV8pf99yVBZCiXNnu5L12l03RtFjCST6xgdTrFoyTGf
-         3tzgRURwlEqxB1qiX557rUCU6LjzHogDM8VHpGJcXf2PJRo9A6mha1099FfoblpXgTlS
-         1ya/DXgfArDKN3N8/9X0j0zgKWdCQ4UtVJ/HCvRkicnE4jfHZtmY9zBUq8iFKjyfiJlW
-         4ZEGE9s0Wrw8X0aBql8dgvvmr1cQCPtW8sOUD25aWgbZOjaq3r1weP90YhkFfaweUgG2
-         4WTw==
-X-Gm-Message-State: AOAM531PX6ChN4iq7poI8e/Ga8J6AtxUoM07I3ayrfUiVhE02R8rZUSr
-	VsdTb/rX61QlY2Ni/UnhUxc3hA==
-X-Google-Smtp-Source: ABdhPJxqxfPIQtuam5GkZBepPAbS7V0Q8IGPcsrc+Vbtsq0AWBZ7iKtmXQsqTlN6H1uGOVjInIYmRw==
-X-Received: by 2002:a17:902:d487:: with SMTP id c7mr2089230plg.0.1644277695967;
-        Mon, 07 Feb 2022 15:48:15 -0800 (PST)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id u18sm13306160pfk.14.2022.02.07.15.48.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Feb 2022 15:48:15 -0800 (PST)
-Date: Mon, 7 Feb 2022 23:48:11 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 30/43] KVM: SEV: Add documentation for SEV-SNP CPUID
- Enforcement
-Message-ID: <YgGvu1BsYP9cihwh@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072C129CA
+	for <linux-coco@lists.linux.dev>; Tue,  8 Feb 2022 05:26:17 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q+i8HTM6jxOsgGKNTsashcZbpjcVroqBPLrTrVfwYDPp5uH87cANIWwzRLEXgsQlQNxUp20WPLEnS87GumpV4X4pgUzr8W+unpn9lPBrt1ve9PUTI2mU2tLKtGRUEFBzTLAmsiWBG1gsny9/V7pXX923GtOPHJbU1cpNizzAGNOX2Mamp5t7g5Is4v1PQJgN/SpOqk58QpA2I2czqhvbnzAqmoBh5LqlB50wk1Vq3fMIpMpJhliAYiBbzq8OaNFzeeyLczRyUArW1IDcjxydfunAoklqu/5hqHAx+Dmlxy99W5pKF0X8+xT8ykVeUbO26kJ0uegeQLOV8wtHZMGVqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IF0Y/XpSIShSyUWtXZ65BpYee9yKqoawahQAmu7cGEE=;
+ b=Ko7IkfSPLE8Pgl9WvKsXIhcMKAo7IC59CgVIxBD6XYm2odFfNpkGUrFCBCb0lY+gJ4yYXi49tSkIFYRSyJK53O0ynpfMC8mrqAXLG7ynH8j353zna7c5riks5+yh3+EEQaWpH/jPte5kbglXcCahNdj/uMJNCjSp6ghkb0hNaUEntBgYElIDbSaegyGge/aw/HdndQOPFvpdfBXVU6IZfC8EcCfXPlik0Q+LAkg2eL60n//zlK8bWbaQJmzCvVdXIqcfZlfSVulJ2ycmvMQCblasmWDWddytbXAYa8wSQGNDCsnh1mY1rKy/y+VTqNGD1Ge6on1U+UCIegljRtwHfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IF0Y/XpSIShSyUWtXZ65BpYee9yKqoawahQAmu7cGEE=;
+ b=IeL3iiZj2ugOPnfgN3BuJhdfpLKuAoMlAmfN691RWxrafUPU5GUI0IUDQ8yRSkLfPy+P1evjK2NMZal1SQXPyeO0D7BLiFBqyGukwhe10ogCLCxtsvWZXwFw1YpYl/Hz3ZCGqcoLHd50D0NKGrO4ayclReduFvIwGWYsGYARdEI=
+Received: from DM5PR2201CA0022.namprd22.prod.outlook.com (2603:10b6:4:14::32)
+ by MN2PR12MB4125.namprd12.prod.outlook.com (2603:10b6:208:1d9::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12; Tue, 8 Feb
+ 2022 05:26:15 +0000
+Received: from DM6NAM11FT039.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:4:14:cafe::98) by DM5PR2201CA0022.outlook.office365.com
+ (2603:10b6:4:14::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.19 via Frontend
+ Transport; Tue, 8 Feb 2022 05:26:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT039.mail.protection.outlook.com (10.13.172.83) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4951.12 via Frontend Transport; Tue, 8 Feb 2022 05:26:14 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Feb
+ 2022 23:26:12 -0600
+Date: Mon, 7 Feb 2022 23:25:42 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel
+	<jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin"
+	<hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Vitaly
+ Kuznetsov" <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, "Andy
+ Lutomirski" <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, "Dr . David Alan
+ Gilbert" <dgilbert@redhat.com>, <brijesh.ksingh@gmail.com>,
+	<tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [PATCH v9 37/43] x86/sev: Add SEV-SNP feature detection/setup
+Message-ID: <20220208052542.3g6nskck7uhjnfji@amd.com>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-31-brijesh.singh@amd.com>
+ <20220128171804.569796-38-brijesh.singh@amd.com>
+ <YgAjq3mSudt+G+6Y@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20220128171804.569796-31-brijesh.singh@amd.com>
+In-Reply-To: <YgAjq3mSudt+G+6Y@zn.tnic>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 99bcfef4-6d2d-4b6c-c322-08d9eac3863a
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4125:EE_
+X-Microsoft-Antispam-PRVS:
+	<MN2PR12MB4125F57D91BF52568B297FF7952D9@MN2PR12MB4125.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	EOFBSAcxDw8NpwEhASqBWoAHCYeoykjKce47Z2TrdBlbI9Qvw8BJh9g/bYTZJ9SxP7FlFbcsC5faXjsCj1CMIqbIlYOnvJfZQ/Gk9PM/c1HGgbn8k97485QtS6PododVNvMvIrp8P8iuBwgydKbTPO+cRZXSvs8ekHH4NeNPtcWFwAVLQx9DXO/WTF1cV2eUwZa4H4Ka4K4J3ZUcSnItEfq/FA5Gpn9eeM3fyqeEvk7OXaE8try9KaXCqaanHOR8YVfSODkJ2CQV4MobgNYLnxxK2WiYXVppwWQzszHkI2GSTd3QY5+kQN7aPSLPOXFCCV3WTE58Rlp/v+07e3zzfZzqye2xpNxb1VJuNdYKe6YtOOktCwojBkZUICwyHVI5U1WPBeodDL6Ot7T/UzfGw7ClucL3eLRU8gstILZQbFa42fNDvj51fezBwdXr6PhNXrZ+QMVyl/X6TN/3yZqHAooz++WGp7fkywtg/kqKcpV1lb6XjhNI7N04jUWmlYYVP5IH7qoo/OOdTB+1HCQtJDM/VXyb92uusTFt3TAGK/mAxMlSyXFNcdwRlwCvSSm9NxCEhVvqSFjV85B1gq1nnD1jHnt2vvCERlTId8Rr2mbgr0x6jgblOV2XmEpl6I9VyZ9IuR4olQvfEQzo2cH9YCcHGeDSoeM29b49Tqa9WcZPRm4CkrSNMoKEdRM5OoEtvkHbh+6Cl4FxksLnAfNsIdEBb0qyxitZRI7WkV96gm6lhiO4oft+yO8ppoOmGsohzU4Lj7DJyyJtUDShtgjaVVAby0L4hTsipZcppY2+akQ=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(46966006)(36840700001)(44832011)(356005)(81166007)(36756003)(7406005)(7416002)(5660300002)(508600001)(1076003)(2616005)(2906002)(16526019)(47076005)(83380400001)(26005)(36860700001)(82310400004)(186003)(316002)(8936002)(8676002)(4326008)(70586007)(966005)(70206006)(336012)(54906003)(6666004)(45080400002)(426003)(40460700003)(86362001)(6916009)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2022 05:26:14.0218
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99bcfef4-6d2d-4b6c-c322-08d9eac3863a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM6NAM11FT039.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4125
 
-On Fri, Jan 28, 2022, Brijesh Singh wrote:
-> From: Michael Roth <michael.roth@amd.com>
+On Sun, Feb 06, 2022 at 08:38:19PM +0100, Borislav Petkov wrote:
+> On Fri, Jan 28, 2022 at 11:17:58AM -0600, Brijesh Singh wrote:
+> > +static __init struct cc_blob_sev_info *snp_find_cc_blob(struct boot_params *bp)
+> > +{
+> > +	struct cc_blob_sev_info *cc_info;
+> > +
+> > +	/* Boot kernel would have passed the CC blob via boot_params. */
+> > +	if (bp->cc_blob_address) {
+> > +		cc_info = (struct cc_blob_sev_info *)(unsigned long)bp->cc_blob_address;
+> > +		goto found_cc_info;
+> > +	}
 > 
-> Update the documentation with SEV-SNP CPUID enforcement.
+> What is the difference here, why aren't you looking for the blob in an
+> EFI table?
 > 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  .../virt/kvm/amd-memory-encryption.rst        | 28 +++++++++++++++++++
->  1 file changed, 28 insertions(+)
+> Even if you're booted directly by firmware, there should still be EFI
+> there or?
 > 
-> diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
-> index 1c6847fff304..0c72f44cc11a 100644
-> --- a/Documentation/virt/kvm/amd-memory-encryption.rst
-> +++ b/Documentation/virt/kvm/amd-memory-encryption.rst
+> And if so, then I think you should share some of the code through
+> sev-shared.c so that there's not so much duplication...
 
-This doc is specifically for KVM's host-side implemenation, whereas the below is
-(a) mostly targeted at the guest and (b) has nothing to do with KVM.
+In order to scan EFI this early in the boot of kernel proper, we'd need
+to pull in the helpers from arch/x86/boot/compressed/efi.c, since the
+normal EFI facilities don't get set up until later. It's doable, but
+since any entry via boot/compressed kernel will have already done that
+work and stashed it in boot_params->cc_blob_address, it seems like it
+would only introduce more complexity and potential for breakage.
 
-Documentation/x86/amd-memory-encryption.rst isn't a great fit either.
+For direct entry to kernel proper, our thinking is that it would be for
+things like the PVH entry path:
 
-Since TDX will need a fair bit of documentation, and SEV-ES could retroactively
-use docs as well, what about adding a sub-directory:
+  https://stefano-garzarella.github.io/posts/2019-08-23-qemu-linux-kernel-pvh/
 
-	Documentation/virt/confidential_compute
+which doesn't use EFI, or other container-focused applications which use
+lightweight non-EFI firmwares like qboot. So to support direct entry into
+kernel proper, relying on the CC blob setup_data structure instead seems
+more suited for these cases, so that's why kernel proper only uses the
+setup_data structure and relies on boot/compressed to handle EFI entry.
 
-to match the "cc_platform_has" stuffr, and then we can add sev.rst and tdx.rst
-there?  Or sev-es.rst, sev-snp.rst, etc... if we want to split things up more.
-
-It might be worth extracting the SEV details from x86/amd-memory-encryption.rst
-into virt/ as well.  A big chunk of that file appears to be SEV specific, and it
-appears to have gotten a little out-of-whack.  E.g. this section no longer makes
-sense as the last paragraph below appears to be talking about SME (bit 23 in MSR
-0xc0010010), but walking back "this bit" would reference SEV.  I suspect a
-mostly-standalone sev.rst would be easier to follow than an intertwined SME+SEV.
-
-  If support for SME is present, MSR 0xc00100010 (MSR_AMD64_SYSCFG) can be used to
-  determine if SME is enabled and/or to enable memory encryption::
-
-          0xc0010010:
-                  Bit[23]   0 = memory encryption features are disabled
-                            1 = memory encryption features are enabled
-
-  If SEV is supported, MSR 0xc0010131 (MSR_AMD64_SEV) can be used to determine if
-  SEV is active::
-
-          0xc0010131:
-                  Bit[0]    0 = memory encryption is not active
-                            1 = memory encryption is active
-
-  Linux relies on BIOS to set this bit if BIOS has determined that the reduction
-  in the physical address space as a result of enabling memory encryption (see
-  CPUID information above) will not conflict with the address space resource
-  requirements for the system.  If this bit is not set upon Linux startup then
-  Linux itself will not set it and memory encryption will not be possible.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&amp;data=04%7C01%7Cmichael.roth%40amd.com%7Ccb8e665b2ed14dbd400c08d9e9a841ff%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637797731199858639%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=5Pd7PA4BdfnfWzcXpah8HkrtVfu4h6nUIR8b3mB%2BIxM%3D&amp;reserved=0
