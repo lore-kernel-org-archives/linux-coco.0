@@ -1,25 +1,25 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDB02F21
-	for <linux-coco@lists.linux.dev>; Tue,  8 Feb 2022 15:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BF02F21
+	for <linux-coco@lists.linux.dev>; Tue,  8 Feb 2022 15:11:08 +0000 (UTC)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DE2981EC053F;
-	Tue,  8 Feb 2022 16:02:07 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5F37D1EC0411;
+	Tue,  8 Feb 2022 16:11:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1644332528;
+	t=1644333062;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=PmHLjCv8QPKB/e0+L9sQuWzLs6/HCLu3AQwtoLxemqY=;
-	b=cJ+v1YVsVB5ysTBNNKVmP99U334P0+41QjVaIkHm37ZZu0pzwjEgVIAgukztHCJgE2F/PO
-	hQoUIH1TReaIabKCaPXeoP8tiEZpWM2lFT8soN7USRwTa8yQgE+fdaVrHtV/SUlbm6aVVm
-	K9pkhVbpBPWSCiDhwDpLe4oaZ7nng1U=
-Date: Tue, 8 Feb 2022 16:02:02 +0100
+	bh=20fNodG9qf4g4VuJhp5EaLJ25iZ7/ktv2SFkW6YqUD8=;
+	b=Tce7DR6iKFf5ICqhfmTbs3Q06qKdVny/rdonCpAhTIg1k/dp8soNVrCOTsxrBuGUMiOAk4
+	QeYDCsh9hCE0hjJ4Re5npcNwbDBNjPJJSpknWzbPaVdwXH5ZkOWVklKhDUgQNf8T4hV5rj
+	5MyvquisQqxH50xDI/zLxi9G3NdFZFE=
+Date: Tue, 8 Feb 2022 16:11:01 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
 Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
@@ -29,7 +29,6 @@ Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
 	Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Jim Mattson <jmattson@google.com>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -40,19 +39,19 @@ Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	David Rientjes <rientjes@google.com>,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
 	"Kirill A . Shutemov" <kirill@shutemov.name>,
 	Andi Kleen <ak@linux.intel.com>,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v9 33/43] x86/compressed: Add SEV-SNP feature
- detection/setup
-Message-ID: <YgKF6kzR87WuXj/a@zn.tnic>
+Subject: Re: [PATCH v9 30/43] KVM: SEV: Add documentation for SEV-SNP CPUID
+ Enforcement
+Message-ID: <YgKIBQ7aKqqVoHlf@zn.tnic>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-34-brijesh.singh@amd.com>
- <Yf/6NhnS50UDv4xV@zn.tnic>
- <20220208135009.7rfrau33kxivx5h3@amd.com>
+ <20220128171804.569796-31-brijesh.singh@amd.com>
+ <YgGvu1BsYP9cihwh@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,60 +60,16 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220208135009.7rfrau33kxivx5h3@amd.com>
+In-Reply-To: <YgGvu1BsYP9cihwh@google.com>
 
-On Tue, Feb 08, 2022 at 07:50:09AM -0600, Michael Roth wrote:
-> I'm assuming that would be considered 'non-static' since it would need
-> to be exported if sev-shared.c was compiled separately instead of
-> directly #include'd.
+On Mon, Feb 07, 2022 at 11:48:11PM +0000, Sean Christopherson wrote:
+> It might be worth extracting the SEV details from x86/amd-memory-encryption.rst
+> into virt/ as well.  A big chunk of that file appears to be SEV specific, and it
 
-No, that one can lose the prefix too. We'll cross that bridge when we
-get to it.
+My personal preference would be to keep *all* SEV stuff in a single file
+for easier grepping and have everything together.
 
-> And then there's also these which are static helpers that are only used
-> within sev-shared.c:
-> 
->   snp_cpuid_info_get_ptr()
-
-So looking at that one - and it felt weird reading that code because it
-said "cpuid_info" but that's not an "info" - that should be:
-
-struct snp_cpuid_table {
-        u32 count;
-        u32 __reserved1;
-        u64 __reserved2;
-        struct snp_cpuid_fn fn[SNP_CPUID_COUNT_MAX];
-} __packed;
-
-just call it what it is - a SNP CPUID *table*.
-
-And then you can have
-
-	const struct snp_cpuid_table *cpuid_tbl = snp_cpuid_get_table();
-
-and that makes it crystal clear what this does.
-
->   snp_cpuid_calc_xsave_size()
->   snp_cpuid_get_validated_func()
->
->   snp_cpuid_check_range()
-
-You can merge that small function into its only call site and put a
-comment above the code:
-
-	/* Check function is within the supported CPUID leafs ranges */
-
->   snp_cpuid_hv()
->   snp_cpuid_postprocess()
->   snp_cpuid()
-> 
-> but in those cases it seems useful to keep them grouped under the
-> snp_cpuid_* prefix since they become ambiguous otherwise, and
-> just using cpuid_* as a prefix (or suffix/etc) makes it unclear
-> that they are only used for SNP and not for general CPUID handling.
-> Should we leave those as-is?
-
-Yap, the rest make sense to denote to what functionality they belong to.
+But that's just me.
 
 Thx.
 
