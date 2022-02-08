@@ -1,158 +1,190 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2081.outbound.protection.outlook.com [40.107.223.81])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam07on2088.outbound.protection.outlook.com [40.107.95.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9942F23
-	for <linux-coco@lists.linux.dev>; Tue,  8 Feb 2022 14:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA04A2F21
+	for <linux-coco@lists.linux.dev>; Tue,  8 Feb 2022 14:56:34 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j3WqRiQ9pNdHWrVsFN6M566mup8JhJJrwmVxSP4Xu/k5VtHbK/WlbllK6S3kTTP8HSITlU8b0BvnR6ofxlcl6fIGs0iPvuaWUS8nDqi1utDwHd8tNlk6tlT9lJ+gevgtvknOVmz1q9cfEgtRuziWvLb7J8+escDxFMI6jcOHCWVX9wHpmyOy1eDLbcrvY8xtjT7m59i6nkCT+ijpwziXCSihpuIpa9pMVjf1ahw4ifh7a0x+8fy4JUEE6jJ91VlF+n+omiGXqcY91QpjHnEXibNoMK9n6xRwcoeXfz59xlwYmQoASIh73XMIjTC1jUX/zv4Qyi1T0usjxEF0YbUCAA==
+ b=OXGQ7KH4gBlpNFWAlrAZU7JY1prlLJfojNAEWs9/Jajf9astyvWs9d1MtObyCuuHvu/dwwJNWtzi/bhbAK315fdPCVzWFQi4eZioQSK6NT19W031UL50V3nAvYgR0pSF4UWwrIjHE+ZpPjIIAZO1mJwT/gm7Pxh/78XVNGlbcSdNzbvgtTAPDfoCSyntXnS16dAC9Ro0SRTfL0D8323rsrH2O1Ucy+mBAfNntZN+CA89UAUxGRkYQoqUZjToqMsgbM0xbMFxPfnLIrO74IJXvkHAgeStHiJ9FAESXMEZezwlvHSR5b2lRh5EpRqTjWU3ECk7bhSEX8GLE5Ih3mQbmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5mHsQFbFR+sbg5u8t1MrbfIYwK9sc+L+ereItO0//y4=;
- b=hTNcLPXAq6J7q01IUBzdj0pPSE9ssufxf9jST3teBHSS/v8bQ/YXu2QUrAItysbXBSVquUm9VY03+ZcKZMHLVldR6YZlxLLZMAjd6N9Ztm0urZYrcLS12GRj5G4dyWwb8HVEQEU2HcMjBI7AXK5wYUYTABeb+HJjYwVg87ITl6SrfbsNDoQ0MD//dbEReV4cdZx6YP1SUx8A9cu63Wj1Qg9WBu7AH83p9/RXEJDvXqtc6clKEXTXCEOTYoEGIMUDR7wDante7Yqi8qvLHSnUUIC52hdruI35aDRZU3PnXhYCO38iaET9623wYBUy8Avfsy9uitoRIdS5I2sIwX0PWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
+ bh=kXRe9jIcp7dAgK3TSGQPQmq7ps2tmtQEkFwWgWt2vR4=;
+ b=ZDkYQ9XRlRYVWJvDPeVHF2BabeO35wjp3/+BM+H5+Cf8dtL6QIVuLtTdneukOY5IfRy/m0LKH799m9+KgwnKsLszc4a2vmdwHYULLBNotlarC5IubfT4MgaByBwDhHBkcmDSOiWmz4/esUivZB092qeaPlhsdb9EMO5PdaFY7YAa7EkxCSGNmrl5JMkMy5QLP98ygTZqVQU3MNmq7HX31wC1H8c/BQ8TvNO7+RdOIgNO+0pTuQXBOII0goD+OiCP7cb113FCuySkHd2O7L5MtJI34nfW8GZbz9qRVb8yNIol1/QZTApaa2sqiIQrVUzy/jI7oxiAnzO7DmAV5UhETg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5mHsQFbFR+sbg5u8t1MrbfIYwK9sc+L+ereItO0//y4=;
- b=twWm84XjnAe21DGmLpV2e2FUAUtGnj3Xp3eYGTBfyh4JAslGM+3U88mHO1mzdmj95ipxC/r0YW6rf4yuTH/EIm7FDCTKgBfolYqlt3IMucoU6s6KKIrzh2DE0kny3wQ2CgDwYJjB9wtagCnEDs4U4p1xmu1YQfLuEgtWVShYxCE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
- by DM5PR12MB1929.namprd12.prod.outlook.com (2603:10b6:3:106::9) with
+ bh=kXRe9jIcp7dAgK3TSGQPQmq7ps2tmtQEkFwWgWt2vR4=;
+ b=EgIOyq2hXt2rQPomh5gHfa83z/wwHcpge/mP+YG4Wx+4lD9YdDhMwtohAobOZqinHXYr9odTq6njIFJPuWaUwulKPmcuT2b/HNRIslSpEVsVfF+pUP/10ynO/DFiM+ks9GNkE7Xv9i3+f5GwUCmbklDQR7TSTaV6DAd7chq0id8=
+Received: from BN7PR02CA0032.namprd02.prod.outlook.com (2603:10b6:408:20::45)
+ by DM5PR12MB2440.namprd12.prod.outlook.com (2603:10b6:4:b6::39) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12; Tue, 8 Feb
- 2022 14:14:19 +0000
-Received: from SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::500e:b264:8e8c:1817]) by SN6PR12MB2718.namprd12.prod.outlook.com
- ([fe80::500e:b264:8e8c:1817%5]) with mapi id 15.20.4951.019; Tue, 8 Feb 2022
- 14:14:19 +0000
-Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-efi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>,
- Andy Lutomirski <luto@kernel.org>, Dave Hansen
- <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
- Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Tobin Feldman-Fitzthum
- <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
- <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com,
- tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com,
- Liam Merwick <liam.merwick@oracle.com>
-Subject: Re: [PATCH v9 42/43] virt: sevguest: Add support to derive key
-To: Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@alien8.de>
+ 2022 14:56:31 +0000
+Received: from BN8NAM11FT017.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:20:cafe::c4) by BN7PR02CA0032.outlook.office365.com
+ (2603:10b6:408:20::45) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.12 via Frontend
+ Transport; Tue, 8 Feb 2022 14:56:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT017.mail.protection.outlook.com (10.13.177.93) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.4951.12 via Frontend Transport; Tue, 8 Feb 2022 14:56:31 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Tue, 8 Feb
+ 2022 08:56:30 -0600
+Date: Tue, 8 Feb 2022 08:54:39 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel
+	<jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin"
+	<hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson
+	<jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, Peter Gonda
+	<pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, "Srinivas
+ Pandruvada" <srinivas.pandruvada@linux.intel.com>, David Rientjes
+	<rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>, "Tobin
+ Feldman-Fitzthum" <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, "Vlastimil
+ Babka" <vbabka@suse.cz>, "Kirill A . Shutemov" <kirill@shutemov.name>, "Andi
+ Kleen" <ak@linux.intel.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	<brijesh.ksingh@gmail.com>, <tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [PATCH v9 30/43] KVM: SEV: Add documentation for SEV-SNP CPUID
+ Enforcement
+Message-ID: <20220208145439.ozw4cjhqfvozewl4@amd.com>
 References: <20220128171804.569796-1-brijesh.singh@amd.com>
- <20220128171804.569796-43-brijesh.singh@amd.com> <YgDduR0mrptX5arB@zn.tnic>
- <1cb4fdf5-7c1e-6c8f-1db6-8c976d6437c2@amd.com>
- <ae1644a3-bd2c-6966-4ae3-e26abd77b77b@linux.ibm.com>
- <20ba1ac2-83d1-6766-7821-c9c8184fb59b@amd.com>
- <cd3ef9dd-cfc5-ac8c-d524-d8d4416f5cad@linux.ibm.com>
-From: Brijesh Singh <brijesh.singh@amd.com>
-Message-ID: <cf9359c6-a514-937f-2b6b-5ae1225980f7@amd.com>
-Date: Tue, 8 Feb 2022 08:14:13 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-In-Reply-To: <cd3ef9dd-cfc5-ac8c-d524-d8d4416f5cad@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR18CA0005.namprd18.prod.outlook.com
- (2603:10b6:610:4f::15) To SN6PR12MB2718.namprd12.prod.outlook.com
- (2603:10b6:805:6f::22)
+ <20220128171804.569796-31-brijesh.singh@amd.com>
+ <YgGvu1BsYP9cihwh@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <YgGvu1BsYP9cihwh@google.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 32d2ac49-6fbb-4e9a-8992-08d9eb0d4bde
-X-MS-TrafficTypeDiagnostic: DM5PR12MB1929:EE_
+X-MS-Office365-Filtering-Correlation-Id: 205c953d-9c7d-4b8b-cba8-08d9eb133175
+X-MS-TrafficTypeDiagnostic: DM5PR12MB2440:EE_
 X-Microsoft-Antispam-PRVS:
-	<DM5PR12MB19298B3AD622CD84439EC459E52D9@DM5PR12MB1929.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+	<DM5PR12MB24401F74968EAB8C7F9C6A31952D9@DM5PR12MB2440.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	n17a7llH+9JTU/ar3/Qp9aQjabySdA1qRoMlpmWsCq5n8XFbHGWeD1lesnbVnyRwjggOqvLi7K1ysvrvAl4+mKvt27IrkL9SGAN9bv5HLTDrEV4Impy3OMN/nnJABBknNjk+IXt+9kIh52k8MyS8NHesAm2jGS0rtLq6YO5zTtNZnB1QHOD54pXkqlg3X50WA4+J6iLb5llWHFMA1Yd7gTDFlQ/VisaeqpYLe1eT3nP/s/fUfnqfgYfiM3yldiIVsf0Ky0jZ8adXgFU6PB/Nw7Ze7FR35C2DKXFq8LPs/Isl1WFxrnysuZMZjuCHdRkqYKg6UwkPgrGMxdHVeTXZVmBZrXSpvrvHCAdHpC7miG6BLRsoqDAEyAKsL1oLbKaMeYkrbei3kdOEVGkUInPY41AIxUrF0PlNEi5/9F5Z8b0tL/PD/Zu4fpSFjqZcmKIDexMl3b4TynU5weY7w2XWn7Z3sCjQTejTu0S7Oj6kFRx2CK5AlNp4RrZ08EI71IrnUoQJ197+Cnhr6VeuwnyzHzYJZsu4j7xR/u5qYuDuDGsH0QDGkvf6ofM3tEX+g5LunyA5nkUDsgol+bgKe5/pMDju9wPpRw8/6IcULV+HEihv4jAS6bvgxkzN1KAhJwdbxOGhscgg98b796/TRu8LFQ+Rn0qOWAIpdYeY1184yLl9wxYY2dMf1zC21DD+AWGYAZfmZealCS83DBpCPMRTkWUdb+P6Y23p4pL3W5u+OR8=
+	Zm5m1i8vGRKkfviARu86uzc2jhCDq2LZebGaw0+dx58hOfI6rKHnusDIdnDyLMivdMrJ14FCb7uK9U6ZONlxRUQ2Ww8OkkPHu31nZjJVlsMm1XBAzMwMuYuCrDy+RY6jyYX37zVUTFeu4BFWwKitPg/ILqmd4j26CdhjwFrC6bjaWhim4AuALZSeHf8tOTqPZ9/73eYvSYrmdvbkVJfRfavJyC3310BB+g6+rbjqTimzVEaHNNEJPAPy2YaGnXpdJ4hy5j+z0KS13BYQ5ULzYWY9PvTklCuhoZL/16FEgtPLIiCEPN3EuKH7VBP/wEcnFg8ZxH3851ZWCvqzm9PgT8s8puQyyGMi/lbD87h7zNYH4SmImQqNY1/Jxq0zV4b3j0yyUGatSYJ3cypbAI5I1U3YjUcjLBM41qxqLms86UYeMbEdSeDAlFuFpYIq1IVmcKKiFDcVtZJoqgBq9cZMbCwJVuyxVA3IH+/lVz9tluyptAmjlfydJJQ5vR1Ohwx5q+oZDc9/50Jw7MIq+PMgGNp4Ti1irEHeCW/nzD86Z+10Whjzcww1xC72QEIkudfNyoyaVjokvl/Sk5oXAYcHX33ea2o5vOgzV72/8FASCeN/Mvd3VRbWN0u+nEZu2SrB6SicxFaJJxZUUMH9jtGaEr6bouIO5ttZJrPdX0dwZeD8QX8ts2cXJlVqMbu+61BKb3UKsPldrfU4ZEkm4LgceA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(2906002)(36756003)(186003)(110136005)(6486002)(6666004)(54906003)(316002)(66946007)(7406005)(8676002)(31686004)(26005)(44832011)(7416002)(5660300002)(2616005)(4744005)(31696002)(86362001)(6512007)(38100700002)(8936002)(4326008)(508600001)(6506007)(66556008)(53546011)(66476007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RFMwUDdOUmt5TU9xN2RGR0EzeU50WmVZNWFUdDN4TjlzQVQ0SU43WVo0VUJ5?=
- =?utf-8?B?WWluYzIwdWVscGViS1FJOEsyUC9RVTltUWtnenBvRHRiMWIya0RWMm9Hbm9B?=
- =?utf-8?B?cklGeFh5UFV6MlVyODArTlVxWW8zTlcxbWMxeXFueXdSL0s4aVR2UThzMWpK?=
- =?utf-8?B?UEthT1V4cERXenQzQjUxdFVSaGVnSzZUVlE0WU54NVdqWGFyZWFsWkcwdWc4?=
- =?utf-8?B?Y29SelNvNmFsMXNrWVlQYWVHelFPeWVkOC9hOEh2NTBsUi9XM2dHYmtiall2?=
- =?utf-8?B?eHFqdkVLNzJybzdIL0Z3QnU5MlIyODNEbGg1a29OM21JMVlUTWhZUitiS1hV?=
- =?utf-8?B?WTYvTlkrSmUwaURvbDQ3QlI1WE8xTkZBcHVMVitYcWtXNXNmNGR1N3JiOWM1?=
- =?utf-8?B?MWdub0FTMUpRQzJQek1NVlNJYTlqOEkyZmZ5VEFFbVZ3TjgyQXRQdUNuWkk3?=
- =?utf-8?B?bytLRzYvR2hwclcrelhiQ2tzanU0Z3JaWnR2RHBMRjNWMkE2Z085b1JDYkd6?=
- =?utf-8?B?RTVRT2tWbCtNaEJpZ1pVM1gyaDdRU1g3VG1PS2VGQVdKRExSdUU0UU02cVVY?=
- =?utf-8?B?RytSRTZMbG45VWY4Y29sL3p6Z2pvSVBQYmQ3Z0xvQXBOL0hqVXI3UkRuY1l6?=
- =?utf-8?B?Tm1ZQ3VPV3hSNnJ5WWhyd2ttMUUwT29La25OOG9icjRxTE5mNmRFQjEra2xT?=
- =?utf-8?B?VzBBc1ZmK05XNm80RUdTU0dXMWRFQkFPcWRjSFJIMlhkLzlXckZITm1WUkZU?=
- =?utf-8?B?Z3FUS0QzcSt6WlZWOUxFSnZPUUYzUnlVTkN1RG1FZElTazZUdXFmTEdhY3pE?=
- =?utf-8?B?aDRGV3IxL0V2VDNOMzlEeTl3SzM4eThrTTAyR01WblA1dXptSEV6R2szVTdQ?=
- =?utf-8?B?U1lKK0dBNWJ3bEVkTTRzMFcvcWdqSXp2SFRZOWRlUHF4N3huc3ZISzhFYlNB?=
- =?utf-8?B?dkM1QUduZHR1Wmk0UXpjUjhxMzRXUGY4RVh2am5pZk80bmhCNUpmbXBuUjhL?=
- =?utf-8?B?SE1iNDdmQ2wwenpjYm51OXpYYTR2bTNuQk9WR2I2Y054UXBMMDhGNWtJS1cx?=
- =?utf-8?B?MGpVRE1OeFN5QVJGQ3FWTzRTR2lGWnBJN1RpelVLanc2OUljeVp2TlhLc2c3?=
- =?utf-8?B?R0pqVmVwRXV1WG5zdFppSlhaVlMzMjhQemxpOVZBc3lVZGNIRDVHK2M0dy9k?=
- =?utf-8?B?QXorTjlEQmMrZFZ3dDBlU2VOUWhzM1ZIaTdqb3RIYy9WKzFyVGUzeDlqWEVQ?=
- =?utf-8?B?Nk1uL0crQjlIR2ZtNkJqRUsyMHB0cThhalpjUjRORjBSN1JybE5udUpiWU83?=
- =?utf-8?B?cWgwWlhwbUoweFRxVkxIcG13bXZLSEhxbGd5OUNBNFBmaldHNlZJS2Q0WW5V?=
- =?utf-8?B?Tzd1QU1hMHVaRGxLbWl1NEYwRjRBdlduU29vYW01OVlLS0JyS1V0NVZDY1gw?=
- =?utf-8?B?dmNYRzZKalh6a1ZRcVI2REhCWXArcEZsa2FQSEJtSFNSQnFONEM5SDl5ZGF3?=
- =?utf-8?B?RFEzM1VFaVdFb0gvcUpVdlRibCtUUkgybXFIRkR4QU01VmhYV0QwVUlrVWE0?=
- =?utf-8?B?RlY5R0Z0RGZqaEJMZlhkanMxM0hnODRVK1FwTzhSaklIbGdwRmgvazhZbWZJ?=
- =?utf-8?B?OG4wMzZMTWdtOWdaTFFxbndFRlQ5MUgzYndtRHkxdmRCaEFFSHd3OWp6S0RO?=
- =?utf-8?B?NlJlR3lhSFlSVDgzVWhTam14R3N0UXVEcE1kRThoL0pNaHBNQTBOZWJGYUNR?=
- =?utf-8?B?a2hORy84REVKcTZvdW5PZERDa1BBUnp3KzZIYWhuYUxHYnVML2k4UzQ3OTNx?=
- =?utf-8?B?dVFrdW1jbWxFNm1mdUFPUlkxdGdwOVpXN2FPRmFsQlpzMVM3bllmNXcrM0hP?=
- =?utf-8?B?WWwxZVBTeWtpblhHV0dqdGNXdnNUY1k5OVdCaUdPVVYxQ3g5cnNRSjR4ZEhQ?=
- =?utf-8?B?RGdYLzhkOXp2clR0NlJUOGlxR2d6QjF4c3JrYmluWmpJZmJhVDZvdEROWWhY?=
- =?utf-8?B?dkNXMEluWm9mTmlyRVROSWNteDU5U0lEeVdUVWNMQjlEWGx6NW50dHFKTDR3?=
- =?utf-8?B?RmJ1eVVEdldaQnl5SS9PRnViSGdPYzlMRkgxcG9xRkdPOWRqaWNGR1pUd3Vq?=
- =?utf-8?B?MkRwU01sZnBuZTkvVWlzZEVXUmhSZnJPV3VvclFHMU41WUk3SHU2MzE3eGt0?=
- =?utf-8?Q?CARJqh011gWaew7soFl5GuI=3D?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(40470700004)(36840700001)(46966006)(426003)(186003)(1076003)(508600001)(26005)(16526019)(336012)(36756003)(86362001)(6916009)(36860700001)(47076005)(40460700003)(54906003)(83380400001)(2616005)(7406005)(70586007)(70206006)(8936002)(81166007)(7416002)(5660300002)(4326008)(356005)(8676002)(2906002)(44832011)(316002)(82310400004)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32d2ac49-6fbb-4e9a-8992-08d9eb0d4bde
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2022 14:14:19.1644
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2022 14:56:31.5564
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 205c953d-9c7d-4b8b-cba8-08d9eb133175
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y/rWm9hVVqoX0n0PWL60Oh1LVXxEO/Ywepsl1eqmEEkriCFjuU/+8i7Su2giQ9jKso3R22WJL/t9a8NoAaKSGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB1929
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN8NAM11FT017.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2440
 
+On Mon, Feb 07, 2022 at 11:48:11PM +0000, Sean Christopherson wrote:
+> On Fri, Jan 28, 2022, Brijesh Singh wrote:
+> > From: Michael Roth <michael.roth@amd.com>
+> > 
+> > Update the documentation with SEV-SNP CPUID enforcement.
+> > 
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > ---
+> >  .../virt/kvm/amd-memory-encryption.rst        | 28 +++++++++++++++++++
+> >  1 file changed, 28 insertions(+)
+> > 
+> > diff --git a/Documentation/virt/kvm/amd-memory-encryption.rst b/Documentation/virt/kvm/amd-memory-encryption.rst
+> > index 1c6847fff304..0c72f44cc11a 100644
+> > --- a/Documentation/virt/kvm/amd-memory-encryption.rst
+> > +++ b/Documentation/virt/kvm/amd-memory-encryption.rst
+> 
+> This doc is specifically for KVM's host-side implemenation, whereas the below is
+> (a) mostly targeted at the guest and (b) has nothing to do with KVM.
+> 
+> Documentation/x86/amd-memory-encryption.rst isn't a great fit either.
+> 
+> Since TDX will need a fair bit of documentation, and SEV-ES could retroactively
+> use docs as well, what about adding a sub-directory:
+> 
+> 	Documentation/virt/confidential_compute
 
+There's actually a Documentation/virt/coco/sevguest.rst that was added
+in this series as part of:
 
-On 2/8/22 1:56 AM, Dov Murik wrote:
-...
+  "virt: Add SEV-SNP guest driver"
+
+Maybe that's good choice?
+
+I've been wondering about potentially adding the:
+
+  "Guest/Hypervisor Implementation Notes for SEV-SNP CPUID Enforcement"
+
+document that was sent to SNP mailing list under Documentation/
+somewhere. If we were to do that, it would be a good place to move the
+documentation from this patch into as well. Any thoughts on that?
 
 > 
-> Just to be clear, I didn't mean necessarily "leak the key to the
-> untrusted host" (even if a page is converted back from private to
-> shared, it is encrypted, so host can't read its contents).  But even
-> *inside* the guest, when dealing with sensitive data like keys, we
-> should minimize the amount of copies that float around (I assume this is
-> the reason for most of the uses of memzero_explicit() in the kernel).
+> to match the "cc_platform_has" stuffr, and then we can add sev.rst and tdx.rst
+> there?  Or sev-es.rst, sev-snp.rst, etc... if we want to split things up more.
 > 
+> It might be worth extracting the SEV details from x86/amd-memory-encryption.rst
+> into virt/ as well.  A big chunk of that file appears to be SEV specific, and it
+> appears to have gotten a little out-of-whack.  E.g. this section no longer makes
+> sense as the last paragraph below appears to be talking about SME (bit 23 in MSR
+> 0xc0010010), but walking back "this bit" would reference SEV.  I suspect a
+> mostly-standalone sev.rst would be easier to follow than an intertwined SME+SEV.
+> 
+>   If support for SME is present, MSR 0xc00100010 (MSR_AMD64_SYSCFG) can be used to
+>   determine if SME is enabled and/or to enable memory encryption::
+> 
+>           0xc0010010:
+>                   Bit[23]   0 = memory encryption features are disabled
+>                             1 = memory encryption features are enabled
+> 
+>   If SEV is supported, MSR 0xc0010131 (MSR_AMD64_SEV) can be used to determine if
+>   SEV is active::
+> 
+>           0xc0010131:
+>                   Bit[0]    0 = memory encryption is not active
+>                             1 = memory encryption is active
+> 
+>   Linux relies on BIOS to set this bit if BIOS has determined that the reduction
+>   in the physical address space as a result of enabling memory encryption (see
+>   CPUID information above) will not conflict with the address space resource
+>   requirements for the system.  If this bit is not set upon Linux startup then
+>   Linux itself will not set it and memory encryption will not be possible.
 
-Yap, I agree with your point and will keep the memzero_explicit().
+I'll check with Brijesh on these.
 
--Brijesh
+Thanks!
+
+-Mike
+
+
 
