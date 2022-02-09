@@ -1,226 +1,168 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2070.outbound.protection.outlook.com [40.107.92.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B422F2C
-	for <linux-coco@lists.linux.dev>; Wed,  9 Feb 2022 00:26:04 +0000 (UTC)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 218MLA19005311;
-	Wed, 9 Feb 2022 00:25:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=ZPFpO/s5Ar3lz1CQqNzWAhq5HebnCKhs9fdwrCFRj6s=;
- b=hERzfYX3x/vYEkbd/ZyZEqXst6fgk+SVLVesTOCIVEqpmZWEoSEcdqfXomlJh4B+xPS8
- Vzb0bOHE0SBboQVZKTqTASzVors0Vt8v5CfUlosnaSJvoWvTJSl4t+uZojOxKjGWoxRT
- of8RINXA2/rPj2lSar2yrGVEdry4/zssMABuduj8INl1Yxxoy7095qYfonNriO6lKfz7
- vRXYtG1cpVmnkfl72gA0/5mbjKMVCLo5Ps7KoEBMsW0bXAl410yxqhms9HWaQplEO69m
- QnbOogPtww0qN6SerGrt4sti7B8Gdv1fNeTXrGOtoG4GuYj+fD7RI2K8BL9FZcP1oKsA Xg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3e4182j4x9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Feb 2022 00:25:38 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2190PbTV002111;
-	Wed, 9 Feb 2022 00:25:37 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3e4182j4ww-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Feb 2022 00:25:36 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2190Nh8E026794;
-	Wed, 9 Feb 2022 00:25:35 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma03wdc.us.ibm.com with ESMTP id 3e1gvb7dfy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Feb 2022 00:25:35 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2190PXUA35258666
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Feb 2022 00:25:33 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CB0BC605B;
-	Wed,  9 Feb 2022 00:25:33 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AB8CAC6059;
-	Wed,  9 Feb 2022 00:25:31 +0000 (GMT)
-Received: from [9.211.92.120] (unknown [9.211.92.120])
-	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Wed,  9 Feb 2022 00:25:31 +0000 (GMT)
-Message-ID: <e0309177-123a-18b5-a5c1-3a9266a22de0@linux.vnet.ibm.com>
-Date: Tue, 8 Feb 2022 19:25:31 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v7 0/5] Allow guest access to EFI confidential computing
- secret area
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CF82F26
+	for <linux-coco@lists.linux.dev>; Wed,  9 Feb 2022 15:02:22 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mZBWzu5K7ijYrbUU50AQxKXosYTlLwLq/S0xp4oXJGSXCDokFKj7ec+Ohb548AX3kQZdVBUnQ8Xo21iogs+UBtY8RqnXak8o5rA0hZTjBmCAL7QX4h87+qyKl8KiHIMaQHMrp88YVc5RS7QnSRf2GH1rUpgHvG9WGNZ53uRN4+OC8/BaYpmw1hDAV7bnhkNpx0l5+FMY7CMoeNtrA/udWYCzxWLYWHnPXvDY1TkbqRIXCrhFjARHQn3CzjTHO64IQ8UNzwyDfFp2Spo2YgkrmdXpYHDMqhP04GIUbpDsoo62hLz4XD5kVSJ9EjpEghewzMSItXGzGL9sDzDF8TwDeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LOakBaZT51q+xP3NfPHyn9u2jOfdTHiBRaI4vTwuCgg=;
+ b=nZdphYa6wIzZ0FIm9k1/7aD6IEHTnC+GJK6x1oX8T79Bclpo8Cx271AsL6QJmt7K+FmX6es2QV6KgsnCqVOOb3CsBMNKgFkRKqm7tezWHWawEF0LBBlDF+m8srw8qps4U+IVu06gyTSgoAVmuoYTtJzTRJFknlpHfUYp4ctDbA9gXYRYD5Yd9GHB7WVtoSgNMmCe+JveSMK3Qz8Dun0iKNUXIhWMxb0T0fGfX/cM1D903dt2XXpKh8XxON3sMm83J6dpUZF/sJjdURxUmpEM4QJWDKwDtMK7w34veLafcm2zt7Ic37jCOtpV5MrLVTe888yryrj4kUprjQ45GnR2ew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LOakBaZT51q+xP3NfPHyn9u2jOfdTHiBRaI4vTwuCgg=;
+ b=P50BL4Icq3mOvpCe5LT+Glb4M0qhkGSj3Hu/pL9O+3UnPyRyC+6yiSmvDB3yDQgrtTcZfyWagwRe292dAFo/9tF1i5d4uwIrGFlJ5MvRzLJEBBtU0tusYiajJ9+jaMhMSDEt1YqB4fNytrn4SRldPYJQ+5WdRTJHD/0syYkkrd8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com (2603:10b6:805:6f::22)
+ by DM5PR1201MB0252.namprd12.prod.outlook.com (2603:10b6:4:5b::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4951.14; Wed, 9 Feb
+ 2022 15:02:20 +0000
+Received: from SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::500e:b264:8e8c:1817]) by SN6PR12MB2718.namprd12.prod.outlook.com
+ ([fe80::500e:b264:8e8c:1817%5]) with mapi id 15.20.4951.019; Wed, 9 Feb 2022
+ 15:02:20 +0000
+Cc: brijesh.singh@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, linux-efi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Michael Roth <michael.roth@amd.com>,
+ Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+ <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com,
+ Venu Busireddy <venu.busireddy@oracle.com>
+Subject: Re: [PATCH v9 02/43] KVM: SVM: Create a separate mapping for the
+ SEV-ES save area
+To: Borislav Petkov <bp@alien8.de>
+References: <20220128171804.569796-1-brijesh.singh@amd.com>
+ <20220128171804.569796-3-brijesh.singh@amd.com> <YfkvchuxmkHgnPWT@zn.tnic>
+From: Brijesh Singh <brijesh.singh@amd.com>
+Message-ID: <8fe6224f-3051-8cbd-13d6-5baf888643b6@amd.com>
+Date: Wed, 9 Feb 2022 09:02:14 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+In-Reply-To: <YfkvchuxmkHgnPWT@zn.tnic>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        linux-efi <linux-efi@vger.kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, James Bottomley <jejb@linux.ibm.com>,
-        Dov Murik <dovmurik@linux.ibm.com>, Borislav Petkov <bp@suse.de>,
-        Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
-        Andi Kleen <ak@linux.intel.com>, Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Tobin Feldman-Fitzthum
- <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Nayna Jain <nayna@linux.ibm.com>, dougmill@linux.vnet.ibm.com,
-        gcwilson@linux.ibm.com, gjoyce@ibm.com,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)"
- <linuxppc-dev@lists.ozlabs.org>,
-        Michael Ellerman <mpe@ellerman.id.au>, Daniel Axtens <dja@axtens.net>
-References: <20220201124413.1093099-1-dovmurik@linux.ibm.com>
- <Yfk6vEuZFtgtA+G+@kroah.com>
- <37779659ca96ac9c1f11bcc0ac0665895c795b54.camel@linux.ibm.com>
- <20220202040157.GA8019@srcf.ucam.org> <YfogOurPZb7+Yelo@kroah.com>
- <20220202065443.GA9249@srcf.ucam.org> <YfotMyQiQ66xfCOQ@kroah.com>
- <20220202071023.GA9489@srcf.ucam.org>
- <CAMj1kXFTyc9KnMsnvs+mt80DbJL8VGKKcQ0J=4NrGYGSAG8sRw@mail.gmail.com>
- <20220202080401.GA9861@srcf.ucam.org> <Yfo/5gYgb9Sv24YB@kroah.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <Yfo/5gYgb9Sv24YB@kroah.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: b4UEhf1SnClyxzzgBwDvJSRo4uONgLbd
-X-Proofpoint-GUID: QuzRJnKjQvfnEB4nqGFOkDHaX8mQ0no9
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0270.namprd03.prod.outlook.com
+ (2603:10b6:610:e5::35) To SN6PR12MB2718.namprd12.prod.outlook.com
+ (2603:10b6:805:6f::22)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.62.513
- definitions=2022-02-08_07,2022-02-07_02,2021-12-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- malwarescore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
- clxscore=1015 impostorscore=0 bulkscore=0 spamscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2201110000 definitions=main-2202080136
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 3781f300-173b-4ef5-fdfa-08d9ebdd2b61
+X-MS-TrafficTypeDiagnostic: DM5PR1201MB0252:EE_
+X-Microsoft-Antispam-PRVS:
+	<DM5PR1201MB02522F09B2EB11401D999548E52E9@DM5PR1201MB0252.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	VNbyoEmTeW5fIZbgVkN3QrZIy4GRkUMU6Jm3j1IKWevcU3ie9Mdu0Qr3blyluFWkCL4o7MaoiXaWmLtCiiRMfgjkkyB+3xsYy6PRJbNsqeDsp8zgWwoKpx9whhS6QAvXlW5zOfUNKrY3Cq71lwXGffZHuQ5svU6rnsw1CDo03j03+YlDvyUzwOzkTU459RY2xBc5tqFsnyQUEHzS6TAwfS2RXBvQLrot4XYGusApVtMntVQU26JiZK2cNUM4ZXHzLC2i57JQo5ZEW3y9RKht5rIg7wEOX04I7QfVsXpIixQfhxdfAy9G9w4MnLd1yP7mDznsDKHun1vYHBmr0ZiyKCTKad8l67TZhHLoIhlub9lWY+QElhG/YHktaSsN3jS8wb4NG2Ow14ga/2m7sfKoFR9jmvyJ0M9KY+YNBiXaMUHO7Cte0brje1U9QsLvZu1SV/KQKxON3cyOdHlhzLSOWgHqR1xGOUARPWFT4+TiuQdls1wJBsBdJ9L0z4J4wZ/NAkOTbLWCxoYyZNqps/1yRKcf8J6tYhN12F3JudfZpzU0V2aTJOIKHVc1aiBJ5Ctwpd4eAuxB3E1UCBxo0owFlqZ+hanIW+JyhOB0ne3Y7yRmGX538LMLlGDK2A1XMu48uF/WDJKCdR90zq9aDPtT3LzT8dmy883epQXQC04vAPQaBB6cIriI1C6aqSZfYChfQzR1HAyyirf4um42N6wU1OKvGEhPEyWNwsaepoEBbC1tuF/+3NCRIzxmVcmGU5m33YrKCUZmFYv8v9z7X79cGeGQtrvey731jOEaZKdu6W5RN/LMSGH6tIvctvs961+Y
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2718.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(38100700002)(83380400001)(6486002)(508600001)(7416002)(31686004)(966005)(2906002)(36756003)(2616005)(6666004)(5660300002)(66556008)(53546011)(66476007)(8936002)(54906003)(6916009)(26005)(6512007)(31696002)(7406005)(86362001)(66946007)(45080400002)(316002)(4326008)(186003)(8676002)(44832011)(6506007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OXFUTmpieXR6Q0diYzBuTGZkcnFMNThSMGFUQlJyZUJndzNTWXRkTTlIcmZS?=
+ =?utf-8?B?NnJVbFAxU1puclVEVjliSzBhWTdIUlFtOWI3SDlmU1RHaFhJVVc4VUo4K0ZP?=
+ =?utf-8?B?ZWNDNlhhV2Vla3dacDIzNWQ5S3B0Lzh1NEhHdXVraWFQOUNrNkxNek0rT2VI?=
+ =?utf-8?B?QURKSWdrakc5ZWFBY0p5eEN3c0RWYnRmUDFENkZVVU9xcjhQYkpMS1FDZGdy?=
+ =?utf-8?B?UFhqd1ByeW5KbGRrZkJqVVhNTFpuNndTQm1hN3l4SWVFYlc5VEJkU2hkdmVm?=
+ =?utf-8?B?T1lWNXFnTnA2SGxDTVM2ZTFCdnNEdEkrY3FVSkhMMGVHVlltQjNwV3BCZXU2?=
+ =?utf-8?B?eFhlRnRBK3o1Vzc5UkVzSlhtc3FGY1ZNTDhtdldGMHhteEJ5UWNMZUt5eUFP?=
+ =?utf-8?B?eWhMVnVucll1c2lpdDBSd2V0enFMTG8zVWpDbFJqRERSdVZpbkhWUHNyQm5B?=
+ =?utf-8?B?eUU4aytJNUE2dCsxaXFEVG4wSTVWMzNCdWF3ZDhmQitpb0owZDJmcEJDWjEz?=
+ =?utf-8?B?ZFlpZ3dWSmNvdks5QThoR0orOXVjK3E5Zk96M0VlVGpEWFZIdlRqcFhmMkdL?=
+ =?utf-8?B?czBkN0h0cmp1aCtKdDJhc1hHdlEwTGxKdDNZRUV5MlJ2S3dmWWRnWTl2RS9G?=
+ =?utf-8?B?SlViQVl4UU5IbkJiSXFlemVOL3RkeE9nWGZEcUQ1a1lmdy81M3ZmeG9XSVJ3?=
+ =?utf-8?B?ZklLcG11SUpwTUIwYXovYlRGbkdyUEV0WGxtSjB0YzZIall5Ums1UldoWWts?=
+ =?utf-8?B?MzBTVmJSQldvaGdLZHQ3RkZsckw5ZURYeE04d1ZLNjI4K0hHaFRWekNCZzRT?=
+ =?utf-8?B?Mi91RmEyWUIwbW1nMWM3VVI5WFNMVWJiNkRQaEVrNVcvYk9kWTlLQWx5UnBp?=
+ =?utf-8?B?RlNKVVp6bHZlM1dwMngzYlBvcFdVYzBCUnAxUmc5bWZrRkZ3QTAyY0kzQ0F4?=
+ =?utf-8?B?VnVtSHRHVVNKeitxdmF1bEtkdEQ5QklMZUhMUi9XSHdISHFReFRydHpjdGww?=
+ =?utf-8?B?SFJSSGFFaFAwbUFUUXM2NkV4a1lsait1OTFCeFBaRFM3b1ErUGxBS2VLdXRM?=
+ =?utf-8?B?NUxpTTdDOHR5YWNHMER4aHBaODFhVDYxcTVwOUE3dUQvd056WEhlcVQ0NUtS?=
+ =?utf-8?B?V0puNUJzMHh1ZkhzdkRMWHJTRmVSNDQrTytia3NoSHhMNysxclJVYW9vZVBV?=
+ =?utf-8?B?YVhCeHZ2WTlsdWNXazVVT2lvNlR1Q3doT2l4TkZXc2RVOGRlc1U4dHVzdloy?=
+ =?utf-8?B?STQ2K0hIcWRqZzNrTWZwWW1UVjU1V0Z4SDJGZ1hrUmNadzNCWXR1ZXJ0bU53?=
+ =?utf-8?B?QzI3SXNqMHh5TFZzaUQrWlc5eE9KaEZVTFRNdWxiWkErTzFxOVF6NGJaemgr?=
+ =?utf-8?B?QmEzVXl0SGV4WCtzRjFYaVZMYUNabzc0ZWw0VXhiM2Zpb2kydURGU3hFbkx6?=
+ =?utf-8?B?ZzBQYzN4QkxuTHJiYjEvM3pOSW5JN21lWE9uZUFpWXVOalRwS3VzNUtDaHpG?=
+ =?utf-8?B?ZVRGdFAydGFlb3B1MDFjNnVFOFBHWlplUTNCWmFiNklPWHVweHg5bVkycm1x?=
+ =?utf-8?B?RXFDYXFNdUROcDg3a0dma01BanNsVm9OTGZLRjlidElNQmwvWnlUblN0K2lr?=
+ =?utf-8?B?a3VHK1gyVnhxRTNLQ01jZ0puZmxSbGw1bUd4RDI3bmYzaWhKUkR0a0dKY2dV?=
+ =?utf-8?B?VmFWYnUwdGpyeVFsaWNuLzB5dS9hMUhKSUFjaDFBZUpnK0dxSFlaTmJaYnVr?=
+ =?utf-8?B?Tmk1UGtacGJMRDQrTUxoRzZENGhLZGtmYm0wcFVsV1hFaUFNMGZ5TDlaMk9X?=
+ =?utf-8?B?YzRHZ0pVTHo1dXc0b3h3VkNtQXVDMzhPUGZrQ0VmdkhrRHZQRjdISDMwVDdI?=
+ =?utf-8?B?Ym04OHVNR1dWVW9RMXd6RnZ0ZTlwVXhqRXNDMW5sZ2FlRHQvM0hJa05LZUZh?=
+ =?utf-8?B?UFBJUXVCeHVLcjFsLzc0REdXOHhObEkxTm81WE00T2hNV0l5ZTJ0NlZjQ2Ux?=
+ =?utf-8?B?ZEdrMzM3elhnelNTNUtLQyt4VFhGZWlzeUszVVdIUWFabFp4QVZSZ2lKODVJ?=
+ =?utf-8?B?Mndxa2JDaFdwdDNWdGxFUFJSR1Jjb0cyK243MWZzQi9JY01UcUZDblBQeDBU?=
+ =?utf-8?B?SE9QK0dWMll6OTlTV3JaRm5CQkUyNVQ2eDZNYWN2bW1IR3kwL0FvNTZreTF5?=
+ =?utf-8?Q?4j/osD1Yho8iyT5NvAZmfb4=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3781f300-173b-4ef5-fdfa-08d9ebdd2b61
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2718.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2022 15:02:20.0277
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hVnSz+fMIgWOFPhReaY92GqrMXe7ClVduqhFjR9WQGP29xpkXLKcH8JPuhCpvXRJTMyxjrwEc+B6mWqisn20Bw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR1201MB0252
 
 
-On 2/2/22 03:25, Greg KH wrote:
-> On Wed, Feb 02, 2022 at 08:04:01AM +0000, Matthew Garrett wrote:
->> On Wed, Feb 02, 2022 at 08:22:03AM +0100, Ard Biesheuvel wrote:
->>> On Wed, 2 Feb 2022 at 08:10, Matthew Garrett <mjg59@srcf.ucam.org> wrote:
->>>> Which other examples are you thinking of? I think this conversation may
->>>> have accidentally become conflated with a different prior one and now
->>>> we're talking at cross purposes.
->>> This came up a while ago during review of one of the earlier revisions
->>> of this patch set.
->>>
->>> https://lore.kernel.org/linux-efi/YRZuIIVIzMfgjtEl@google.com/
->>>
->>> which describes another two variations on the theme, for pKVM guests
->>> as well as Android bare metal.
->> Oh, I see! That makes much more sense - sorry, I wasn't Cc:ed on that,
->> so thought this was related to the efivars/Power secure boot. My
->> apologies, sorry for the noise. In that case, given the apparent
->> agreement between the patch owners that a consistent interface would
->> work for them, I think I agree with Greg that we should strive for that.
->> Given the described behaviour of the Google implementation, it feels
->> like the semantics in this implementation would be sufficient for them
->> as well, but having confirmation of that would be helpful.
+
+On 2/1/22 7:02 AM, Borislav Petkov wrote:
+> On Fri, Jan 28, 2022 at 11:17:23AM -0600, Brijesh Singh wrote:
+>> From: Tom Lendacky <thomas.lendacky@amd.com>
 >>
->> On the other hand, I also agree that a new filesystem for this is
->> overkill. I did that for efivarfs and I think the primary lesson from
->> that is that people who aren't familiar with the vfs shouldn't be
->> writing filesystems. Securityfs seems entirely reasonable, and it's
->> consistent with other cases where we expose firmware-provided data
->> that's security relevant.
+>> The save area for SEV-ES/SEV-SNP guests, as used by the hardware, is
+>> different from the save area of a non SEV-ES/SEV-SNP guest.
 >>
->> The only thing I personally struggle with here is whether "coco" is the
->> best name for it, and whether there are reasonable use cases that
->> wouldn't be directly related to confidential computing (eg, if the
->> firmware on a bare-metal platform had a mechanism for exposing secrets
->> to the OS based on some specific platform security state, it would seem
->> reasonable to expose it via this mechanism but it may not be what we'd
->> normally think of as Confidential Computing).
+>> This is the first step in defining the multiple save areas to keep them
+>> separate and ensuring proper operation amongst the different types of
+>> guests. Create an SEV-ES/SEV-SNP save area and adjust usage to the new
+>> save area definition where needed.
 >>
->> But I'd also say that while we only have one implementation currently
->> sending patches, it's fine for the code to live in that implementation
->> and then be abstracted out once we have another.
-> Well right now the Android code looks the cleanest and should be about
-> ready to be merged into my tree.
->
-> But I can almost guarantee that that interface is not what anyone else
-> wants to use, so if you think somehow that everyone else is going to
-> want to deal with a char device node and a simple mmap, with a DT
-> description of the thing, hey, I'm all for it :)
->
-> Seriously, people need to come up with something sane or this is going
-> to be a total mess.
->
+>> Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
+>> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>> ---
+>>   arch/x86/include/asm/svm.h | 87 +++++++++++++++++++++++++++++---------
+>>   arch/x86/kvm/svm/sev.c     | 24 +++++------
+>>   arch/x86/kvm/svm/svm.h     |  2 +-
+>>   3 files changed, 80 insertions(+), 33 deletions(-)
+> 
+> https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2FYc2jzOunYej4vwSc%40zn.tnic&amp;data=04%7C01%7Cbrijesh.singh%40amd.com%7C909b88bb6fb14010859508d9e583268e%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C637793173738404187%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=uOR2wyzO1%2B6K%2B%2FhZCkwlRrfQutFqpSzXKh8RVbub9cA%3D&amp;reserved=0
+> 
 
-Thanks for adding us to this discussion. I think somehow my last post 
-got html content and didn't make to mailing list, so am posting it 
-again. Sorry to those who are receiving it twice.
+The rename may touch more files in KVM subsystem, so, I'll work on this 
+feedback while adding the SNP host support, and will submit it as a 
+per-requisite for the host support.
 
-If I have understood the discussion right, the key idea discussed here 
-is to unify multiple different interfaces(this one, and [1]) exposing 
-secrets for confidential computing usecase via securityfs.
-
-And the suggestion is to see if the proposed pseries interface [2] can 
-unify with the coco interface.
-
-At high level, pseries interface is reading/writing/adding/deleting 
-variables using the sysfs interface, but the underlying semantics and 
-actual usecases are quite different.
-
-The variables exposed via pseries proposed interface are:
-
-* Variables owned by firmware as read-only.
-* Variables owned by bootloader as read-only.
-* Variables owned by OS and get updated as signed updates. These support 
-both read/write.
-* Variables owned by OS and get directly updated(unsigned) eg config 
-information or some boot variables. These support both read/write.
-
-It can be extended to support variables which contain secrets like 
-symmetric keys, are owned by OS and stored in platform keystore.
-
-Naming convention wise also, there are differences like pseries 
-variables do not use GUIDs.
-
-The initial patchset discusses secure boot usecase, but it would be 
-extended for other usecases as well.
-
-First, I feel the purpose itself is different here. If we still 
-continue, I fear if we will get into similar situation as Matthew 
-mentioned in context of efivars -
-
-"the patches to add support for
-manipulating the Power secure boot keys originally attempted to make it
-look like efivars, but the underlying firmware semantics are
-sufficiently different that even exposing the same kernel interface
-wouldn't be a sufficient abstraction and userland would still need to
-behave differently. Exposing an interface that looks consistent but
-isn't is arguably worse for userland than exposing explicitly distinct
-interfaces."
-
-With that, I believe the scope of pseries interface is different and 
-much broader than being discussed here. So, I wonder if it would be 
-better to still keep pseries interface separate from this and have its 
-own platform specific interface.
-
-I would be happy to hear the ideas.
-
-[1] https://lore.kernel.org/linux-efi/YRZuIIVIzMfgjtEl@google.com/
-
-[2] https://lore.kernel.org/all/20220122005637.28199-1-nayna@linux.ibm.com/
-
-Thanks & Regards,
-
-      - Nayna
-
+-Brijesh
