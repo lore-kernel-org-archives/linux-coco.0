@@ -1,25 +1,26 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17492C80
-	for <linux-coco@lists.linux.dev>; Thu, 10 Feb 2022 16:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9B92F23
+	for <linux-coco@lists.linux.dev>; Fri, 11 Feb 2022 14:55:28 +0000 (UTC)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9FBA21EC05DD;
-	Thu, 10 Feb 2022 17:48:53 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1DF131EC03E3;
+	Fri, 11 Feb 2022 15:55:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1644511733;
+	t=1644591322;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=nkwdvv/kN4X+IUhmjyxPM+gWIWhdYINS6ChexlWbNOI=;
-	b=arLbkOX2S7ry/YFU6kZeY6npGAVqVq1czzxbl6Wg3TeXcm/yLbTXBtO0kpBPLau3TR8IRL
-	C1bHBb8f4K4p/UXHzOWeMiXb31DiA221T/eEqZ1tyzLSmbyajDlsAJaCg/NFezPoi0TNfR
-	lSxt6sAQAeC+Yx4YlN0cZnq7X7/nx2o=
-Date: Thu, 10 Feb 2022 17:48:55 +0100
+	bh=cDkjTWDqKQNWnc/zCRpQ/YG8Cct/yEFoBc7JQrQMptw=;
+	b=JuSz00olsVVdWRlZ0j1y2KYv7/pjY9O+lx/jUcm2MLE2qjB8yQXePonn3SHNbDbdw+b92L
+	q8/zE+9levcBrHllOIfG1/b/etAeXOIKwIAZRBCVMm3S1h+8pWO4OEjcSOBWWsX7cIz4NS
+	tl3iyhz39QI5sYRgPGS35NyMFJC7+oI=
+Date: Fri, 11 Feb 2022 15:55:23 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
+To: Brijesh Singh <brijesh.singh@amd.com>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
@@ -40,15 +41,13 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	Dov Murik <dovmurik@linux.ibm.com>,
 	Tobin Feldman-Fitzthum <tobin@ibm.com>,
 	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Andi Kleen <ak@linux.intel.com>,
 	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
 	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH v10 21/45] x86/mm: Add support to validate memory when
  changing C-bit
-Message-ID: <YgVB94suNJLjzalt@zn.tnic>
+Message-ID: <YgZ427v95xcdOKSC@zn.tnic>
 References: <20220209181039.1262882-1-brijesh.singh@amd.com>
  <20220209181039.1262882-22-brijesh.singh@amd.com>
 Precedence: bulk
@@ -61,45 +60,69 @@ Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <20220209181039.1262882-22-brijesh.singh@amd.com>
 
++ Kirill.
+
 On Wed, Feb 09, 2022 at 12:10:15PM -0600, Brijesh Singh wrote:
-> The set_memory_{encrypted,decrypted}() are used for changing the pages
-> from decrypted (shared) to encrypted (private) and vice versa.
-> When SEV-SNP is active, the page state transition needs to go through
-> additional steps done by the guest.
-> 
-> If the page is transitioned from shared to private, then perform the
-> following after the encryption attribute is set in the page table:
-> 
-> 1. Issue the page state change VMGEXIT to add the memory region in
->    the RMP table.
-> 2. Validate the memory region after the RMP entry is added.
-> 
-> To maintain the security guarantees, if the page is transitioned from
-> private to shared, then perform the following before encryption attribute
-> is removed from the page table:
-> 
-> 1. Invalidate the page.
-> 2. Issue the page state change VMGEXIT to remove the page from RMP table.
-> 
-> To change the page state in the RMP table, use the Page State Change
-> VMGEXIT defined in the GHCB specification.
-> 
-> The GHCB specification provides the flexibility to use either 4K or 2MB
-> page size in during the page state change (PSC) request. For now use the
-> 4K page size for all the PSC until RMP page size tracking is supported
-> in the kernel.
+> @@ -2012,8 +2013,22 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+>  	 */
+>  	cpa_flush(&cpa, !this_cpu_has(X86_FEATURE_SME_COHERENT));
+>  
+> +	/*
+> +	 * To maintain the security guarantees of SEV-SNP guests, make sure
+> +	 * to invalidate the memory before clearing the encryption attribute.
+> +	 */
+> +	if (!enc)
+> +		snp_set_memory_shared(addr, numpages);
+> +
+>  	ret = __change_page_attr_set_clr(&cpa, 1);
+>  
+> +	/*
+> +	 * Now that memory is mapped encrypted in the page table, validate it
+> +	 * so that it is consistent with the above page state.
+> +	 */
+> +	if (!ret && enc)
+> +		snp_set_memory_private(addr, numpages);
+> +
+>  	/*
+>  	 * After changing the encryption attribute, we need to flush TLBs again
+>  	 * in case any speculative TLB caching occurred (but no need to flush
+> -- 
 
-This commit message sounds familiar because I've read it before - patch
-18 - and it looks copied. So I've turned into a simple one which says it
-all:
+Right, as tglx rightfully points out here:
 
-    x86/mm: Validate memory when changing the C-bit
+https://lore.kernel.org/r/875ypyvz07.ffs@tglx
 
-    Add the needed functionality to change pages state from shared
-    to private and vice-versa using the Page State Change VMGEXIT as
-    documented in the GHCB spec.
+this piece of code needs careful coordinated design so that it is clean
+for both SEV and TDX.
 
-Thx.
+First, as we've said here:
+
+https://lore.kernel.org/r/1d77e91c-e151-7846-6cd4-6264236ca5ae@intel.com
+
+we'd need generic functions which turn a pgprot into an encrypted or
+decrypted pgprot on both SEV and TDX so we could do:
+
+cc_pgprot_enc()
+cc_pgprot_dec()
+
+which does the required conversion on each guest type.
+
+Also, I think adding required functions to x86_platform.guest. is a very
+nice way to solve the ugly if (guest_type) querying all over the place.
+
+Also, I was thinking of sme_me_mask and the corresponding
+tdx_shared_mask I threw into the mix here:
+
+https://lore.kernel.org/r/YgFIaJ8ijgQQ04Nv@zn.tnic
+
+and we should simply add those without ifdeffery but unconditionally.
+
+Simply have them always present. They will have !0 values on the
+respective guest types and 0 otherwise. This should simplify a lot of
+code and another unconditionally present u64 won't be the end of the
+world.
+
+Any other aspect I'm missing?
 
 -- 
 Regards/Gruss,
