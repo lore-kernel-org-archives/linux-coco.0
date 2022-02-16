@@ -1,27 +1,27 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD3D1576
-	for <linux-coco@lists.linux.dev>; Tue, 15 Feb 2022 14:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E42F28F5
+	for <linux-coco@lists.linux.dev>; Wed, 16 Feb 2022 13:32:46 +0000 (UTC)
 Received: from zn.tnic (dslb-088-067-221-104.088.067.pools.vodafone-ip.de [88.67.221.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 165F71EC0518;
-	Tue, 15 Feb 2022 15:41:09 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D0CDE1EC050F;
+	Wed, 16 Feb 2022 14:32:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1644936069;
+	t=1645018352;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=SHIy0JOracxSZUX44JRM2zOEiCF50L0BbqI7lPnq/lg=;
-	b=D+daksFOoyoSLR0f2z09XUHDSNPn8LQA3tsgm5xo8bZfaH0AXftJ1PbhtIB8uFRTlDgeN3
-	IhZrPaWjYY55BMCz3b9qcWUAeCmuhJ5xY1m5uq066+kwXprdzCQI0pJsdrNDTp0Rcll5OI
-	qAHnm6YoNPR0BXK0WMHqnRqjx57sXwA=
-Date: Tue, 15 Feb 2022 15:41:10 +0100
+	bh=JN8ROYzRXXLe/Rb2ENS9kb3VYdbDLeypkZRBnD2gAtc=;
+	b=K8M/99Amrj/s+w/DF9qiSpgHOY86lkghNmuYmi4X9PE+w/EmXNako513oa/ie6xcxJOkIl
+	747EnG7ncpAKd+kCoi4B+JSS4BIfWxy/oj1SPKII08u3VOCs2ZUQTQfnqj2dDKRwWfWYxw
+	fnzO+V0heq0JVG/T+iH6Gdh0XlaX+mQ=
+Date: Wed, 16 Feb 2022 14:32:34 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To: Brijesh Singh <brijesh.singh@amd.com>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
 	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -47,15 +47,10 @@ Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
 	sathyanarayanan.kuppuswamy@linux.intel.com
 Subject: Re: [PATCH v10 21/45] x86/mm: Add support to validate memory when
  changing C-bit
-Message-ID: <Ygu7hotAeHAFWn6Y@zn.tnic>
+Message-ID: <Ygz88uacbwuTTNat@zn.tnic>
 References: <20220209181039.1262882-1-brijesh.singh@amd.com>
  <20220209181039.1262882-22-brijesh.singh@amd.com>
  <YgZ427v95xcdOKSC@zn.tnic>
- <0242e383-5406-7504-ff3d-cf2e8dfaf8a3@amd.com>
- <Ygj2Wx6jtNEEmbh9@zn.tnic>
- <20220215124331.i4vgww733fv5owrx@box.shutemov.name>
- <YguimA5Au4t2A4oj@zn.tnic>
- <20220215131522.l3xytgmy4ufrgnlb@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -64,28 +59,135 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220215131522.l3xytgmy4ufrgnlb@box.shutemov.name>
+In-Reply-To: <YgZ427v95xcdOKSC@zn.tnic>
 
-On Tue, Feb 15, 2022 at 04:15:22PM +0300, Kirill A. Shutemov wrote:
-> I have no problem with cc_vendor idea. It looks good.
+On Fri, Feb 11, 2022 at 03:55:23PM +0100, Borislav Petkov wrote:
+> Also, I think adding required functions to x86_platform.guest. is a very
+> nice way to solve the ugly if (guest_type) querying all over the place.
 
-Good.
+So I guess something like below. It builds here...
 
-> Regarding the masks, if we want to have common ground here we can add two
-> mask: cc_enc_mask and cc_dec_mask. And then
+---
+ arch/x86/include/asm/set_memory.h |  1 -
+ arch/x86/include/asm/sev.h        |  2 ++
+ arch/x86/include/asm/x86_init.h   | 12 ++++++++++++
+ arch/x86/kernel/sev.c             |  2 ++
+ arch/x86/mm/mem_encrypt_amd.c     |  6 +++---
+ arch/x86/mm/pat/set_memory.c      |  2 +-
+ 6 files changed, 20 insertions(+), 5 deletions(-)
 
-If we do two masks, then we can just as well leave the SME and TDX
-masks. The point of the whole exercise is to have simpler code and less
-ifdeffery.
-
-If you "hide" how the mask works on each vendor in the respective
-functions - and yes, cc_pgprot_dec/enc() reads better - then it doesn't
-matter how the mask is defined.
-
-Because you don't need two masks to encrypt/decrypt pages - you need a
-single mask but apply it differently.
-
-Thx.
+diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+index ff0f2d90338a..ce8dd215f5b3 100644
+--- a/arch/x86/include/asm/set_memory.h
++++ b/arch/x86/include/asm/set_memory.h
+@@ -84,7 +84,6 @@ int set_pages_rw(struct page *page, int numpages);
+ int set_direct_map_invalid_noflush(struct page *page);
+ int set_direct_map_default_noflush(struct page *page);
+ bool kernel_page_present(struct page *page);
+-void notify_range_enc_status_changed(unsigned long vaddr, int npages, bool enc);
+ 
+ extern int kernel_set_to_readonly;
+ 
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index ec060c433589..2435b0ca6cfc 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -95,4 +95,6 @@ static inline void sev_es_nmi_complete(void) { }
+ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
+ #endif
+ 
++void amd_notify_range_enc_status_changed(unsigned long vaddr, int npages, bool enc);
++
+ #endif
+diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+index 22b7412c08f6..226663e2d769 100644
+--- a/arch/x86/include/asm/x86_init.h
++++ b/arch/x86/include/asm/x86_init.h
+@@ -141,6 +141,17 @@ struct x86_init_acpi {
+ 	void (*reduced_hw_early_init)(void);
+ };
+ 
++/**
++ * struct x86_guest - Functions used by misc guest incarnations like SEV, TDX,
++ * etc.
++ *
++ * @enc_status_change		Notify HV about change of encryption status of a
++ *				range of pages
++ */
++struct x86_guest {
++	void (*enc_status_change)(unsigned long vaddr, int npages, bool enc);
++};
++
+ /**
+  * struct x86_init_ops - functions for platform specific setup
+  *
+@@ -287,6 +298,7 @@ struct x86_platform_ops {
+ 	struct x86_legacy_features legacy;
+ 	void (*set_legacy_features)(void);
+ 	struct x86_hyper_runtime hyper;
++	struct x86_guest guest;
+ };
+ 
+ struct x86_apic_ops {
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index e6d316a01fdd..e645e868a49b 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -766,6 +766,8 @@ void __init sev_es_init_vc_handling(void)
+ 	if (!sev_es_check_cpu_features())
+ 		panic("SEV-ES CPU Features missing");
+ 
++	x86_platform.guest.enc_status_change = amd_notify_range_enc_status_changed;
++
+ 	/* Enable SEV-ES special handling */
+ 	static_branch_enable(&sev_es_enable_key);
+ 
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index 2b2d018ea345..7038a9f7ae55 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -256,7 +256,7 @@ static unsigned long pg_level_to_pfn(int level, pte_t *kpte, pgprot_t *ret_prot)
+ 	return pfn;
+ }
+ 
+-void notify_range_enc_status_changed(unsigned long vaddr, int npages, bool enc)
++void amd_notify_range_enc_status_changed(unsigned long vaddr, int npages, bool enc)
+ {
+ #ifdef CONFIG_PARAVIRT
+ 	unsigned long sz = npages << PAGE_SHIFT;
+@@ -392,7 +392,7 @@ static int __init early_set_memory_enc_dec(unsigned long vaddr,
+ 
+ 	ret = 0;
+ 
+-	notify_range_enc_status_changed(start, PAGE_ALIGN(size) >> PAGE_SHIFT, enc);
++	amd_notify_range_enc_status_changed(start, PAGE_ALIGN(size) >> PAGE_SHIFT, enc);
+ out:
+ 	__flush_tlb_all();
+ 	return ret;
+@@ -410,7 +410,7 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
+ 
+ void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
+ {
+-	notify_range_enc_status_changed(vaddr, npages, enc);
++	amd_notify_range_enc_status_changed(vaddr, npages, enc);
+ }
+ 
+ void __init mem_encrypt_free_decrypted_mem(void)
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index b4072115c8ef..0acc52a3a5b7 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2027,7 +2027,7 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+ 	 * Notify hypervisor that a given memory range is mapped encrypted
+ 	 * or decrypted.
+ 	 */
+-	notify_range_enc_status_changed(addr, numpages, enc);
++	x86_platform.guest.enc_status_change(addr, numpages, enc);
+ 
+ 	return ret;
+ }
+-- 
+2.29.2
 
 -- 
 Regards/Gruss,
