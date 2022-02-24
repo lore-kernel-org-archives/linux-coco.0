@@ -1,33 +1,32 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2049.outbound.protection.outlook.com [40.107.223.49])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2048.outbound.protection.outlook.com [40.107.244.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0A71B73
-	for <linux-coco@lists.linux.dev>; Thu, 24 Feb 2022 16:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B6E1B71
+	for <linux-coco@lists.linux.dev>; Thu, 24 Feb 2022 16:59:22 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j7tv2w2W/ln3EbKZILx5h89ubwtzc9VJpHSJ/EIpcrK5fyI5Mx/mPRvqtoCDUzNdhLZoH0Ao7aW0N1RNQ1bBlXdrV0SjufMnc7hxBOzVaC9Yj0X+/mz8H5k/do6SEa3m57cjIZnHpcH/U+NqUor204sNUyL6Fg5zO2jlY3Zvtb7Xr3dNbIijiMTcMzF9H5k5SiCZ8nJbhDW7YhOTM8AKf3O3oAPpkfrpfoWf3idX9O/Tc0h/VwJCdVJpI0icA7OtNi83lWZz85ouswq/XsvEUbPdJfeOQOq9ZdO8eav4AILzgARsrMoq2UQrQny/wGrN6Iof1RJA2H2BjHEa9PlLZw==
+ b=Dit+vW+5iu044MEhSDEmHIHFE9ha7l1DUz7gszTIOqOGAlRoO/3CnCXLYWMTX83kK91JHiDMFKar1YqfVG6RzDM5n/JRSax8po7ZOmyv9s22WtGEyLM/8sTycQbH5H/GBcc642KeHdiBVy9R/7M/OWCu+X1QcCz3uXqxragUthg5VVrwCZstuTgILGcK/pIuuEVVz/qoLLbcRlFm9N6+y3nqfXQ/8Bm71+6VvvZuUaY0274BmGFtXYSrwJ09/wfNOGhBvgMO/wuQAJE4aFZOSso067EM3PhaosPFd5Bt3paosap/DiHgrgTIBtJ+bjNmnfzvGVqZ6Xaw5gWa8rC/DQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jhswYmnERXxICUPqhZGTbKwdFlBe4HJkgbVgye8BLO0=;
- b=PVZFkpcnhSOzMZ30sa2CLCrSAne0eYY0EMa3TboXGzrLAfWOHoOg49zZTNdghDZQNCnMs6BrCL9tcV0crCL8mng0kOYl2jlvn+8bil+kTXJwH+W5HAd0rN4yMiGgRngc2nGeMtPGJfirKuS5PB5Aa1m2NodfFXDn35V2Z/M1l4tcGqId+W1QIrSxDS+203J/eyQKmpz18jTLy8h5EC2EUGO6oadQoIDHNFDwFaFtsvnLzz2P1dFX36GdsOM+cJP0ueKmcVln4KJ3xHE2fc39NGLzr4ddk6A1G17U+5Ytkapl8mHIjEb3VnE7eMzJRnQbycivm+FRATgrOyt+0zi9bw==
+ bh=3aKEuSUTt64QlCEgDXA5vFTsBM2Qkqih8aCiCwyPQ/Q=;
+ b=YcpBPXsVt/waqHOxarJhNC7CVNwcYGuoQBXDdBM4hAoNnOhawuZ1BzhBCGlaDF0ax3PFTO6hs8PYIy8mUAobs/nYi+moyo9v4AEmfayMdbU1+tuI5VWdPw7uSTqM9UPQdWSZ7euY2F2j4hxHa4tK5t6lFJv2GBbqgxjnYrknKKVX+EfKHNjyZI4jnUqOLJRX+BhEaF+/Nba3YClIDFiZWob+rrsX1wvLXfHZTHSxB+faFkZevrFRMbABrwtQEoHaY44QOpgxFIghPR9L4JbTj1qgBf/8v6NBhSKj4GZNYJYOb6iLfv8HOoeHL8haTkMJ0WNc/5EAm65L4aBrXSegAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jhswYmnERXxICUPqhZGTbKwdFlBe4HJkgbVgye8BLO0=;
- b=jGg4UYbDQsb9Cf1Z1hKDIfHEn79pg3NX6iKAz8KQyohe+S2xWfqA6YJTkKpQaJ+2RrZaDC8oRmGUaly9AXj33tJumM+LjFnDw89TWurgGr03Dn1sv9MS9p9PVN9HaQS77KT7yzy1I6dQGdD2WBWR1kTrGp1YUhxq/LL+ZPQIBxM=
-Received: from DM3PR14CA0146.namprd14.prod.outlook.com (2603:10b6:0:53::30) by
- MN2PR12MB3309.namprd12.prod.outlook.com (2603:10b6:208:106::29) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.21; Thu, 24 Feb
- 2022 16:59:13 +0000
-Received: from DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
- (2603:10b6:0:53:cafe::b8) by DM3PR14CA0146.outlook.office365.com
- (2603:10b6:0:53::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.21 via Frontend
- Transport; Thu, 24 Feb 2022 16:59:13 +0000
+ bh=3aKEuSUTt64QlCEgDXA5vFTsBM2Qkqih8aCiCwyPQ/Q=;
+ b=JLfRU8JQ31p3IUB80pj7LSNEgnw86dABOHoi1zjsTb3NBPaBomZZ1K1GJJlqSazrH8seIigDdpuwYUAirb7zETIFUDmOeujLmX7e/1iYHT3Md7Tsu8w7mVym4xGuXZNVNAniM3cLksF/SUHHJYuPVcyga7aLHx5utyBFlhCN+r4=
+Received: from DM5PR13CA0043.namprd13.prod.outlook.com (2603:10b6:3:7b::29) by
+ BN8PR12MB3123.namprd12.prod.outlook.com (2603:10b6:408:42::28) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5017.22; Thu, 24 Feb 2022 16:59:10 +0000
+Received: from DM6NAM11FT034.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:3:7b:cafe::e) by DM5PR13CA0043.outlook.office365.com
+ (2603:10b6:3:7b::29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.9 via Frontend
+ Transport; Thu, 24 Feb 2022 16:59:09 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -35,13 +34,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT024.mail.protection.outlook.com (10.13.172.159) with Microsoft SMTP
+ DM6NAM11FT034.mail.protection.outlook.com (10.13.173.47) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5017.22 via Frontend Transport; Thu, 24 Feb 2022 16:59:13 +0000
+ 15.20.5017.22 via Frontend Transport; Thu, 24 Feb 2022 16:59:09 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Thu, 24 Feb
- 2022 10:59:09 -0600
+ 2022 10:58:59 -0600
 From: Brijesh Singh <brijesh.singh@amd.com>
 To: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
@@ -63,9 +62,9 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	<tony.luck@intel.com>, <marcorr@google.com>,
 	<sathyanarayanan.kuppuswamy@linux.intel.com>, Brijesh Singh
 	<brijesh.singh@amd.com>
-Subject: [PATCH v11 44/45] virt: sevguest: Add support to get extended report
-Date: Thu, 24 Feb 2022 10:56:24 -0600
-Message-ID: <20220224165625.2175020-45-brijesh.singh@amd.com>
+Subject: [PATCH v11 38/45] x86/sev: Add SEV-SNP feature detection/setup
+Date: Thu, 24 Feb 2022 10:56:18 -0600
+Message-ID: <20220224165625.2175020-39-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220224165625.2175020-1-brijesh.singh@amd.com>
 References: <20220224165625.2175020-1-brijesh.singh@amd.com>
@@ -82,256 +81,246 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 5d0324a6-6d32-41b1-177a-08d9f7b6fc10
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3309:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5bcaa3f6-e3f8-4a5f-e495-08d9f7b6f9b8
+X-MS-TrafficTypeDiagnostic: BN8PR12MB3123:EE_
 X-Microsoft-Antispam-PRVS:
-	<MN2PR12MB3309D1F3E7B758138B937A6DE53D9@MN2PR12MB3309.namprd12.prod.outlook.com>
+	<BN8PR12MB3123D709FF0DAB43B628C76BE53D9@BN8PR12MB3123.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	8zE7SZuRFfEub9lzE4ts7qa5hbr6V9lQsfGidLrYkM7T+CxpjoAH57cnKRULYCxYB4TnVvngKD82yJV2kiuFoLaSdfjVSBjksJLqWrUeK/IGXGKlP2Ei0M6HdD3sdjlddJyuN+VHFhrUv/MlxQCQvJLv7L1m+7LihcbnOsAYHSHfmsUgy6MNgYUKJSiQ3Nwq1iSTT4ZUumQxG6RaA1Kklh8ul4YX2md/G2OTTkdePcef1EmjEDk6XJi55jsyCPj+rif2fWfgJ5a76uapZxZbxxNsgzf1pf0Fy9XCEgW+zxJwQnkJ13/sTXNNJcZ1L5lf3FSk+uRMnupa1qxRKE/orWxQDbWaebztSoekaJCKSbVv4nQF0qmXSJ6HrIlyD+2mBhyfKZKUjudmf5dlmTdUiommLl4wUa9XyHCaWQsj4mCbvLqoIzmi03ywy01ns1O4J0VDrf5XI33Q9N3EW6TeXpb+XYXXynSs1Orzy81s8rSpMS0w8xvlaUCzIBx4eie8Iev9CkblqH+gvbStV/BEr6efpmUJxcNhf9r/PoL9ONDbYP0n5KavVKkZYJlvsCuMLeLDfvuhWHGPlD/UO2sKrCgHMQ3sew1/2E9Op53P3SQrAaRkSWTIyZgPLS5hJ+L/3AXSUQqLixglG/DPVVR6pE83xNPAltTuW/YDroVgQdowThx2K00+E0arwmz/5VFrHHw2sXTbm6IN2l9psFGOyRRAIPcsKPDsH+/lK7AEGNA=
+	//ymav3jpkjZlgBhyrpdqUYOhEiyXG5PcwbdmbqaB+vLKspEHGR7Up1D4VCYx92QQZ28dbq7ArUuMUX+rWJW9CSJAdyAKyUXlYoBjbePPdWGLQa5AuFyIqiHX3MayyNzRIU7D/fAl0/LGEjd35RrenIOtwi/fI22cVr886MG3j4PL+ow1tL4cJDA4D/ptjBhUns5x3BtYuAEAw0QB9/+heMRRQXCDbIfn91lgubrRv4PlHkBvQnSECSiOsAuZ9z2nXzYzpqm5RomQMQFSH10NshonINVBvdIiBXouhg9BGC1c14ghfmvGi8SGYMAabC1mfSsmcOFIB2vaf529k+fBsDG3fI+jIoiVLq2jWWT1pveaW0+j7xpziJ716h6sUyTjMvCDklw6rdT3wQDQYI1CseQ6xtcFMmBTPhP78rCqQUC6NDCbg8chxnkNsKPy+YRdPsip2mwCDTRM4wY8MvgTIf/DwdQGc4ih/uXD4n6RT7qwZg17rlteGoaOh9ahzma8TGQDlXVFQAoHx806C649QJh3RzbxHxcHN4PZYIfViOKCQAR3vLYcPsPts0G36mODWgc3ShsIxl0skGBAEimy9h2dCE496BAVDV50crNCAph/+uF5iFeNNP/LTaNFhoGLwGra8a/iTtcwr6mDYs7U+Jcz2lk4n8/C/BlZlSLA8k3A398tK6awTK/Hf+YKopIEBUxoKODhyfXdJfaSBMS0u8e64dE+qkUawYnBxiYan0=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(86362001)(70206006)(8676002)(82310400004)(54906003)(70586007)(4326008)(356005)(47076005)(81166007)(110136005)(36860700001)(316002)(83380400001)(8936002)(1076003)(26005)(5660300002)(6666004)(7696005)(16526019)(2616005)(44832011)(7406005)(40460700003)(336012)(426003)(36756003)(186003)(7416002)(508600001)(2906002)(36900700001)(2101003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(46966006)(36840700001)(40470700004)(6666004)(70206006)(36860700001)(508600001)(356005)(86362001)(40460700003)(47076005)(70586007)(7696005)(8676002)(81166007)(36756003)(4326008)(7406005)(2616005)(5660300002)(82310400004)(16526019)(336012)(426003)(8936002)(1076003)(7416002)(26005)(110136005)(186003)(316002)(44832011)(2906002)(54906003)(83380400001)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2022 16:59:13.3563
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2022 16:59:09.4294
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5d0324a6-6d32-41b1-177a-08d9f7b6fc10
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5bcaa3f6-e3f8-4a5f-e495-08d9f7b6f9b8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DM6NAM11FT024.eop-nam11.prod.protection.outlook.com
+	DM6NAM11FT034.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3309
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR12MB3123
 
-Version 2 of GHCB specification defines Non-Automatic-Exit(NAE) to get
-the extended guest report. It is similar to the SNP_GET_REPORT ioctl.
-The main difference is related to the additional data that will be
-returned. The additional data returned is a certificate blob that can
-be used by the SNP guest user. The certificate blob layout is defined
-in the GHCB specification. The driver simply treats the blob as a opaque
-data and copies it to userspace.
+From: Michael Roth <michael.roth@amd.com>
 
+Initial/preliminary detection of SEV-SNP is done via the Confidential
+Computing blob. Check for it prior to the normal SEV/SME feature
+initialization, and add some sanity checks to confirm it agrees with
+SEV-SNP CPUID/MSR bits.
+
+Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- Documentation/virt/coco/sevguest.rst  | 23 +++++++
- drivers/virt/coco/sevguest/sevguest.c | 93 ++++++++++++++++++++++++++-
- include/uapi/linux/sev-guest.h        | 13 ++++
- 3 files changed, 127 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/sev.c     | 27 -------------
+ arch/x86/include/asm/sev.h         |  2 +
+ arch/x86/kernel/sev-shared.c       | 27 +++++++++++++
+ arch/x86/kernel/sev.c              | 64 ++++++++++++++++++++++++++++++
+ arch/x86/mm/mem_encrypt_identity.c |  8 ++++
+ 5 files changed, 101 insertions(+), 27 deletions(-)
 
-diff --git a/Documentation/virt/coco/sevguest.rst b/Documentation/virt/coco/sevguest.rst
-index ae2e76f59435..0f352056572d 100644
---- a/Documentation/virt/coco/sevguest.rst
-+++ b/Documentation/virt/coco/sevguest.rst
-@@ -95,6 +95,29 @@ on the various fields passed in the key derivation request.
- On success, the snp_derived_key_resp.data contains the derived key value. See
- the SEV-SNP specification for further details.
- 
-+
-+2.3 SNP_GET_EXT_REPORT
-+----------------------
-+:Technology: sev-snp
-+:Type: guest ioctl
-+:Parameters (in/out): struct snp_ext_report_req
-+:Returns (out): struct snp_report_resp on success, -negative on error
-+
-+The SNP_GET_EXT_REPORT ioctl is similar to the SNP_GET_REPORT. The difference is
-+related to the additional certificate data that is returned with the report.
-+The certificate data returned is being provided by the hypervisor through the
-+SNP_SET_EXT_CONFIG.
-+
-+The ioctl uses the SNP_GUEST_REQUEST (MSG_REPORT_REQ) command provided by the SEV-SNP
-+firmware to get the attestation report.
-+
-+On success, the snp_ext_report_resp.data will contain the attestation report
-+and snp_ext_report_req.certs_address will contain the certificate blob. If the
-+length of the blob is smaller than expected then snp_ext_report_req.certs_len will
-+be updated with the expected value.
-+
-+See GHCB specification for further detail on how to parse the certificate blob.
-+
- Reference
- ---------
- 
-diff --git a/drivers/virt/coco/sevguest/sevguest.c b/drivers/virt/coco/sevguest/sevguest.c
-index 2062f94fdc38..b840cf426f38 100644
---- a/drivers/virt/coco/sevguest/sevguest.c
-+++ b/drivers/virt/coco/sevguest/sevguest.c
-@@ -41,6 +41,7 @@ struct snp_guest_dev {
- 	struct device *dev;
- 	struct miscdevice misc;
- 
-+	void *certs_data;
- 	struct snp_guest_crypto *crypto;
- 	struct snp_guest_msg *request, *response;
- 	struct snp_secrets_page_layout *layout;
-@@ -431,6 +432,83 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 	return rc;
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index 2a48f3a3f372..2911137bf37f 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -352,33 +352,6 @@ static struct cc_blob_sev_info *find_cc_blob_efi(struct boot_params *bp)
+ 								EFI_CC_BLOB_GUID);
  }
  
-+static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+-struct cc_setup_data {
+-	struct setup_data header;
+-	u32 cc_blob_address;
+-};
+-
+-/*
+- * Search for a Confidential Computing blob passed in as a setup_data entry
+- * via the Linux Boot Protocol.
+- */
+-static struct cc_blob_sev_info *find_cc_blob_setup_data(struct boot_params *bp)
+-{
+-	struct cc_setup_data *sd = NULL;
+-	struct setup_data *hdr;
+-
+-	hdr = (struct setup_data *)bp->hdr.setup_data;
+-
+-	while (hdr) {
+-		if (hdr->type == SETUP_CC_BLOB) {
+-			sd = (struct cc_setup_data *)hdr;
+-			return (struct cc_blob_sev_info *)(unsigned long)sd->cc_blob_address;
+-		}
+-		hdr = (struct setup_data *)hdr->next;
+-	}
+-
+-	return NULL;
+-}
+-
+ /*
+  * Initial set up of SNP relies on information provided by the
+  * Confidential Computing blob, which can be passed to the boot kernel
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 4e3909042001..219abb4590f2 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -153,6 +153,7 @@ void snp_set_memory_shared(unsigned long vaddr, unsigned int npages);
+ void snp_set_memory_private(unsigned long vaddr, unsigned int npages);
+ void snp_set_wakeup_secondary_cpu(void);
+ bool snp_init(struct boot_params *bp);
++void snp_abort(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -171,6 +172,7 @@ static inline void snp_set_memory_shared(unsigned long vaddr, unsigned int npage
+ static inline void snp_set_memory_private(unsigned long vaddr, unsigned int npages) { }
+ static inline void snp_set_wakeup_secondary_cpu(void) { }
+ static inline bool snp_init(struct boot_params *bp) { return false; }
++static inline void snp_abort(void) { }
+ #endif
+ 
+ #endif
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index 0f1375164ff0..a7a1c0fb298e 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -937,3 +937,30 @@ static enum es_result vc_handle_rdtsc(struct ghcb *ghcb,
+ 
+ 	return ES_OK;
+ }
++
++struct cc_setup_data {
++	struct setup_data header;
++	u32 cc_blob_address;
++};
++
++/*
++ * Search for a Confidential Computing blob passed in as a setup_data entry
++ * via the Linux Boot Protocol.
++ */
++static struct cc_blob_sev_info *find_cc_blob_setup_data(struct boot_params *bp)
 +{
-+	struct snp_guest_crypto *crypto = snp_dev->crypto;
-+	struct snp_ext_report_req req = {0};
-+	struct snp_report_resp *resp;
-+	int ret, npages = 0, resp_len;
++	struct cc_setup_data *sd = NULL;
++	struct setup_data *hdr;
 +
-+	lockdep_assert_held(&snp_cmd_mutex);
++	hdr = (struct setup_data *)bp->hdr.setup_data;
 +
-+	if (!arg->req_data || !arg->resp_data)
-+		return -EINVAL;
-+
-+	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-+		return -EFAULT;
-+
-+	if (req.certs_len) {
-+		if (req.certs_len > SEV_FW_BLOB_MAX_SIZE ||
-+		    !IS_ALIGNED(req.certs_len, PAGE_SIZE))
-+			return -EINVAL;
++	while (hdr) {
++		if (hdr->type == SETUP_CC_BLOB) {
++			sd = (struct cc_setup_data *)hdr;
++			return (struct cc_blob_sev_info *)(unsigned long)sd->cc_blob_address;
++		}
++		hdr = (struct setup_data *)hdr->next;
 +	}
 +
-+	if (req.certs_address && req.certs_len) {
-+		if (!access_ok(req.certs_address, req.certs_len))
-+			return -EFAULT;
++	return NULL;
++}
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index b876b1d989eb..a79ddacf0478 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -1984,3 +1984,67 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+ 	while (true)
+ 		halt();
+ }
 +
-+		/*
-+		 * Initialize the intermediate buffer with all zeros. This buffer
-+		 * is used in the guest request message to get the certs blob from
-+		 * the host. If host does not supply any certs in it, then copy
-+		 * zeros to indicate that certificate data was not provided.
-+		 */
-+		memset(snp_dev->certs_data, 0, req.certs_len);
++/*
++ * Initial set up of SNP relies on information provided by the
++ * Confidential Computing blob, which can be passed to the kernel
++ * in the following ways, depending on how it is booted:
++ *
++ * - when booted via the boot/decompress kernel:
++ *   - via boot_params
++ *
++ * - when booted directly by firmware/bootloader (e.g. CONFIG_PVH):
++ *   - via a setup_data entry, as defined by the Linux Boot Protocol
++ *
++ * Scan for the blob in that order.
++ */
++static __init struct cc_blob_sev_info *find_cc_blob(struct boot_params *bp)
++{
++	struct cc_blob_sev_info *cc_info;
 +
-+		npages = req.certs_len >> PAGE_SHIFT;
++	/* Boot kernel would have passed the CC blob via boot_params. */
++	if (bp->cc_blob_address) {
++		cc_info = (struct cc_blob_sev_info *)(unsigned long)bp->cc_blob_address;
++		goto found_cc_info;
 +	}
 +
 +	/*
-+	 * The intermediate response buffer is used while decrypting the
-+	 * response payload. Make sure that it has enough space to cover the
-+	 * authtag.
++	 * If kernel was booted directly, without the use of the
++	 * boot/decompression kernel, the CC blob may have been passed via
++	 * setup_data instead.
 +	 */
-+	resp_len = sizeof(resp->data) + crypto->a_len;
-+	resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
-+	if (!resp)
-+		return -ENOMEM;
++	cc_info = find_cc_blob_setup_data(bp);
++	if (!cc_info)
++		return NULL;
 +
-+	snp_dev->input.data_npages = npages;
-+	ret = handle_guest_request(snp_dev, SVM_VMGEXIT_EXT_GUEST_REQUEST, arg->msg_version,
-+				   SNP_MSG_REPORT_REQ, &req.data,
-+				   sizeof(req.data), resp->data, resp_len, &arg->fw_err);
++found_cc_info:
++	if (cc_info->magic != CC_BLOB_SEV_HDR_MAGIC)
++		snp_abort();
 +
-+	/* If certs length is invalid then copy the returned length */
-+	if (arg->fw_err == SNP_GUEST_REQ_INVALID_LEN) {
-+		req.certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
-+
-+		if (copy_to_user((void __user *)arg->req_data, &req, sizeof(req)))
-+			ret = -EFAULT;
-+	}
-+
-+	if (ret)
-+		goto e_free;
-+
-+	if (req.certs_address && req.certs_len &&
-+	    copy_to_user((void __user *)req.certs_address, snp_dev->certs_data,
-+			 req.certs_len)) {
-+		ret = -EFAULT;
-+		goto e_free;
-+	}
-+
-+	if (copy_to_user((void __user *)arg->resp_data, resp, sizeof(*resp)))
-+		ret = -EFAULT;
-+
-+e_free:
-+	kfree(resp);
-+	return ret;
++	return cc_info;
 +}
 +
- static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
- {
- 	struct snp_guest_dev *snp_dev = to_snp_dev(file);
-@@ -463,6 +541,9 @@ static long snp_guest_ioctl(struct file *file, unsigned int ioctl, unsigned long
- 	case SNP_GET_DERIVED_KEY:
- 		ret = get_derived_key(snp_dev, &input);
- 		break;
-+	case SNP_GET_EXT_REPORT:
-+		ret = get_ext_report(snp_dev, &input);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -590,10 +671,14 @@ static int __init snp_guest_probe(struct platform_device *pdev)
- 	if (!snp_dev->response)
- 		goto e_free_request;
- 
-+	snp_dev->certs_data = alloc_shared_pages(SEV_FW_BLOB_MAX_SIZE);
-+	if (!snp_dev->certs_data)
-+		goto e_free_response;
++bool __init snp_init(struct boot_params *bp)
++{
++	struct cc_blob_sev_info *cc_info;
 +
- 	ret = -EIO;
- 	snp_dev->crypto = init_crypto(snp_dev, snp_dev->vmpck, VMPCK_KEY_LEN);
- 	if (!snp_dev->crypto)
--		goto e_free_response;
-+		goto e_free_cert_data;
- 
- 	misc = &snp_dev->misc;
- 	misc->minor = MISC_DYNAMIC_MINOR;
-@@ -603,14 +688,17 @@ static int __init snp_guest_probe(struct platform_device *pdev)
- 	/* initial the input address for guest request */
- 	snp_dev->input.req_gpa = __pa(snp_dev->request);
- 	snp_dev->input.resp_gpa = __pa(snp_dev->response);
-+	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
- 
- 	ret =  misc_register(misc);
- 	if (ret)
--		goto e_free_response;
-+		goto e_free_cert_data;
- 
- 	dev_info(dev, "Initialized SNP guest driver (using vmpck_id %d)\n", vmpck_id);
- 	return 0;
- 
-+e_free_cert_data:
-+	free_shared_pages(snp_dev->certs_data, SEV_FW_BLOB_MAX_SIZE);
- e_free_response:
- 	free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
- e_free_request:
-@@ -624,6 +712,7 @@ static int __exit snp_guest_remove(struct platform_device *pdev)
- {
- 	struct snp_guest_dev *snp_dev = platform_get_drvdata(pdev);
- 
-+	free_shared_pages(snp_dev->certs_data, SEV_FW_BLOB_MAX_SIZE);
- 	free_shared_pages(snp_dev->response, sizeof(struct snp_guest_msg));
- 	free_shared_pages(snp_dev->request, sizeof(struct snp_guest_msg));
- 	deinit_crypto(snp_dev->crypto);
-diff --git a/include/uapi/linux/sev-guest.h b/include/uapi/linux/sev-guest.h
-index 598367f12064..256aaeff7e65 100644
---- a/include/uapi/linux/sev-guest.h
-+++ b/include/uapi/linux/sev-guest.h
-@@ -56,6 +56,16 @@ struct snp_guest_request_ioctl {
- 	__u64 fw_err;
- };
- 
-+struct snp_ext_report_req {
-+	struct snp_report_req data;
++	if (!bp)
++		return false;
 +
-+	/* where to copy the certificate blob */
-+	__u64 certs_address;
++	cc_info = find_cc_blob(bp);
++	if (!cc_info)
++		return false;
 +
-+	/* length of the certificate blob */
-+	__u32 certs_len;
-+};
++	/*
++	 * The CC blob will be used later to access the secrets page. Cache
++	 * it here like the boot kernel does.
++	 */
++	bp->cc_blob_address = (u32)(unsigned long)cc_info;
 +
- #define SNP_GUEST_REQ_IOC_TYPE	'S'
++	return true;
++}
++
++void __init snp_abort(void)
++{
++	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
++}
+diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
+index b43bc24d2bb6..f415498d3175 100644
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -45,6 +45,7 @@
+ #include <asm/sections.h>
+ #include <asm/cmdline.h>
+ #include <asm/coco.h>
++#include <asm/sev.h>
  
- /* Get SNP attestation report */
-@@ -64,4 +74,7 @@ struct snp_guest_request_ioctl {
- /* Get a derived key from the root */
- #define SNP_GET_DERIVED_KEY _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x1, struct snp_guest_request_ioctl)
+ #include "mm_internal.h"
  
-+/* Get SNP extended report as defined in the GHCB specification version 2. */
-+#define SNP_GET_EXT_REPORT _IOWR(SNP_GUEST_REQ_IOC_TYPE, 0x2, struct snp_guest_request_ioctl)
+@@ -509,8 +510,11 @@ void __init sme_enable(struct boot_params *bp)
+ 	bool active_by_default;
+ 	unsigned long me_mask;
+ 	char buffer[16];
++	bool snp;
+ 	u64 msr;
+ 
++	snp = snp_init(bp);
 +
- #endif /* __UAPI_LINUX_SEV_GUEST_H_ */
+ 	/* Check for the SME/SEV support leaf */
+ 	eax = 0x80000000;
+ 	ecx = 0;
+@@ -542,6 +546,10 @@ void __init sme_enable(struct boot_params *bp)
+ 	sev_status   = __rdmsr(MSR_AMD64_SEV);
+ 	feature_mask = (sev_status & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
+ 
++	/* The SEV-SNP CC blob should never be present unless SEV-SNP is enabled. */
++	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
++		snp_abort();
++
+ 	/* Check if memory encryption is enabled */
+ 	if (feature_mask == AMD_SME_BIT) {
+ 		/*
 -- 
 2.25.1
 
