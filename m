@@ -1,223 +1,346 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2054.outbound.protection.outlook.com [40.107.244.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9939D1B85
-	for <linux-coco@lists.linux.dev>; Thu, 24 Feb 2022 19:38:39 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TPkfA/pH6/3BlXc0qiPle44eYjpEXOzi3g7xcVbzZkyRV+69Z/q6VHjxOxtH3GNV9mNru3kOXSZiNuHGKonC4UNIFHi3Pk2zAjD7JHT89z3XSGR0kyNr1sH4HX5HeZH2TWmB1bBwd+g99RJMjmUZFFvd11Wr7eAgfbF7smhGPVo0Q6KlFyL+knMMA5j+ckJD9uSDjMNl3ijESXAJYM7cBLOGxXqqppwHE/LZ4BXzqz4OkceFGQ509ZnjCt3ChZZf0FFKykL9RDcSnkwVwBgeCdyRw5WWUul/G0WCKsZHRFGBDH//2nxiWuaP49/ih8U/O000/8lCh4IANYWwxTuIXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rRdrowPuPlJM8WroD+RtmGgyU/lVCHztNflgZuhsH1o=;
- b=Q5EaljyAnHLyvS5gudqWokJW8yJkEqzw+uv/Y64T61MBEvm9Nai3RxbESksaeGWm6SIe/k7Izc6pWdAnR/OCkd3hzA5HJPQXaMwe+WqT1k6ib8WWg3u3AYc43chVxw3TYiq9surksanohye4DndeJ+DIXAZ7Wr0Or8EX741ETmatkMGHM/4VBdACJ4ZYF5qN9pczUYGTr8jCqQcMXipIPnaOboNqW51OJhgExDaWh84SuyAlp+lLo32d6wT45xkyatqAJ6jR71U/Z3a2nHdOKuv7gKbBawB2Fu+kbgKSkgHympmmKp3xHRDQD0kB7t0O1D8FGVgVIn0dNTiAlNV48g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rRdrowPuPlJM8WroD+RtmGgyU/lVCHztNflgZuhsH1o=;
- b=NqCRyCIo9h84jsw+HW0qBx1qwzAVDE2JAOevCFk2VliM50g+viZWb1pP4uNK61VnvXqlPo7X0wYSo/1aTiwUV9qiF/mj7Yq/4CDSwVIWbIzeVuRV8QVkKbcGWm9xyMLniySa9Wp2h46735HAXEMKsUp/DnNiY4B56r5yMieQzrE=
-Received: from BN6PR16CA0047.namprd16.prod.outlook.com (2603:10b6:405:14::33)
- by DM5PR12MB2358.namprd12.prod.outlook.com (2603:10b6:4:b3::34) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.25; Thu, 24 Feb
- 2022 19:38:33 +0000
-Received: from BN8NAM11FT009.eop-nam11.prod.protection.outlook.com
- (2603:10b6:405:14:cafe::d7) by BN6PR16CA0047.outlook.office365.com
- (2603:10b6:405:14::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4995.26 via Frontend
- Transport; Thu, 24 Feb 2022 19:38:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT009.mail.protection.outlook.com (10.13.176.65) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5017.22 via Frontend Transport; Thu, 24 Feb 2022 19:38:32 +0000
-Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Thu, 24 Feb
- 2022 13:38:30 -0600
-From: Brijesh Singh <brijesh.singh@amd.com>
-To: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>, "H.
- Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Vitaly
- Kuznetsov" <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, "Andy
- Lutomirski" <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, "Peter
- Zijlstra" <peterz@infradead.org>, Srinivas Pandruvada
-	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
-	<kirill.shutemov@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, "Dr .
- David Alan Gilbert" <dgilbert@redhat.com>, <brijesh.ksingh@gmail.com>,
-	<tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, Venu Busireddy
-	<venu.busireddy@oracle.com>, Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v11 3.1/45] KVM: SVM: Create a separate mapping for the GHCB save area
-Date: Thu, 24 Feb 2022 13:38:17 -0600
-Message-ID: <20220224193818.2187605-1-brijesh.singh@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220224165625.2175020-4-brijesh.singh@amd.com>
-References: <20220224165625.2175020-4-brijesh.singh@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAE923DF
+	for <linux-coco@lists.linux.dev>; Fri, 25 Feb 2022 18:03:55 +0000 (UTC)
+Received: by mail-il1-f174.google.com with SMTP id 9so4876856ily.11
+        for <linux-coco@lists.linux.dev>; Fri, 25 Feb 2022 10:03:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nxVYU0Y/GX1SztxwLmOsWDvnyHY9aIhX+L7yaSSKSyA=;
+        b=iT2Ku5SRK/+MrntnqGD8a7Hrq8vnN/uWl0vlnMPbnwOkqua7BA+0Q3PtNH+UNpuTBU
+         XPI9heL5fA7lCT+6vt7ocs2GdRAuZIPBZ5mHoioV2PC1+F49hCDfL2pFWLGhvYoViJqm
+         xtJXHhoInvmOpf+W8u8n0v2UhobZpXZXV9jNB8u+KU4IIcM5YKsA8VWBq/P0kS2dT0nS
+         1LToYoUo20javOTYbvaEaxRef8Ju8YI1MwaBrLMEFuQzr7s7uHyTzTAhyQwUunkEECPy
+         oLenMYy8BRmMGxL9VMzKCLGHFIMl0n240NtSkomLvDsHBCdrDYG5Cpgm6nQfsTkcc7oZ
+         EXoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nxVYU0Y/GX1SztxwLmOsWDvnyHY9aIhX+L7yaSSKSyA=;
+        b=yzm1iLtpjfrOCsYguk5lSE2YHXQq4JlKdE5duwJcV1YIMDMzagandxXO3Dt1BHEvbF
+         VonobIqwNITQtGqCCrmPt7QocngMJ+jK8hvADsyqykW4uECD4FBks8OYG4h13+h/D0Q3
+         uT6TZllvt9Z273bKG7bQ/GI2euKx6A2HG24Arzjv/dkNJGK+3axGxmeeh28fPr01gi+a
+         YT9cSoGKECxXwLfwbkrxe4EoYxS7HoNo1R+5pzw9MMdcZTaWRhLAwia8F1T5zCX8f3qG
+         keChzeuR2Sy0gurMmz75Yukd8HFONHclBpeoryYtbt9mdfFexh1wt+0EXlsuWz68VfGp
+         63Mg==
+X-Gm-Message-State: AOAM532RUBKkjpHGZ/IkJlSazDKOStSoIrldmsvZcBBQPEwtgt9cobRw
+	Z8bMDROml3KpdgZaBjPEvW9el+qFK/a5SPHuGq+qZw==
+X-Google-Smtp-Source: ABdhPJwrKVAUmn1Ancbw20/NQBK86nBHASxQkJw/VYqDyFsL1Tiy5QWwoyWW5QGl4lF1cRGJJ2F4lsbV+aodx11kXDo=
+X-Received: by 2002:a05:6e02:1529:b0:2c1:e960:9d4 with SMTP id
+ i9-20020a056e02152900b002c1e96009d4mr7458780ilu.115.1645812234218; Fri, 25
+ Feb 2022 10:03:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: fe46b429-7e57-48dc-3576-08d9f7cd3df2
-X-MS-TrafficTypeDiagnostic: DM5PR12MB2358:EE_
-X-Microsoft-Antispam-PRVS:
-	<DM5PR12MB2358451DF8B7F78871537727E53D9@DM5PR12MB2358.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	y4vKBslPHUuYp+IVwpQifuuK2z9OhTTOYG7KEkTz7Vmv3A0PE+TKtrBZPzT7AXnnGkcGkirrM9aMgKO+FTH73NlixB1PGCSc2JxFrkW3uVag8s2hpbd29jL19F1PVMSF4/biigw+Kc2pOS5IIXuGCD4P+fQlSpNIGHjVvYiLgo1jEz3PgHc/DGufE8oBboi3FaJwwDOS9dLtyFvc5mZiu680VHl/yITrhCYlLTOu50HjQMdR4kOTT/D5KyvnTDpNSM/A1R1F4DOtWzBkM83yE1I+7E20hWCDpfbSIWdDXCU/ZlABYuvqNiQvTuK+euQ8G5+j/AmiDE8LRmPIrq57FArSfXC9QU/nNkvzQ6FDCd8IxztKgxmaU7Fti/WhqSwf8te8/QJu5uBrLN5awgtxdugHxX/zXVooqT7MxO0yvo7Y2BA6j7Tu4erbSSMsuOteBb5C/Uxl4td9hRZ/1VJYJs9z2G9jbjL8mPUPeq8+F40NcDDw/WrDCVzvRg14VCM1F/T9qQYBRT7yKLWyOtN9J2QJJyQ/gR1SR8NNafYEzbtgrVlxvzxnGokJ1AGKX4rbFDzLgnalqeddOuDI0R4GUZgvDFzWPByQ13eiK6waJ8obFkr+A5l0892ucZOMierJ69HBDeZU07VBNITwQcAkb30JqK45LOK6naWBvmPgIDoDh4Wj1XaOqmC7hABdAPWMqbCtgTuHNQEQUGfMTnO/NZYCX7s/zBFa7/DTHYC5/9E=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(2906002)(7416002)(7406005)(82310400004)(7696005)(8936002)(6666004)(81166007)(44832011)(356005)(86362001)(83380400001)(54906003)(110136005)(426003)(508600001)(5660300002)(40460700003)(26005)(186003)(47076005)(2616005)(36756003)(336012)(8676002)(70206006)(70586007)(4326008)(316002)(36860700001)(1076003)(16526019)(2101003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2022 19:38:32.8494
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe46b429-7e57-48dc-3576-08d9f7cd3df2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT009.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2358
+References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-15-brijesh.singh@amd.com>
+In-Reply-To: <20210820155918.7518-15-brijesh.singh@amd.com>
+From: Alper Gun <alpergun@google.com>
+Date: Fri, 25 Feb 2022 10:03:42 -0800
+Message-ID: <CABpDEu=jm43jHhv2mA+C1Sz00xuzH_C-Cn9fRYrFkOCM_em1Fw@mail.gmail.com>
+Subject: Re: [PATCH Part2 v5 14/45] crypto: ccp: Handle the legacy TMR
+ allocation when SNP is enabled
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, 
+	Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com, 
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+On Fri, Aug 20, 2021 at 9:00 AM Brijesh Singh <brijesh.singh@amd.com> wrote:
+>
+> The behavior and requirement for the SEV-legacy command is altered when
+> the SNP firmware is in the INIT state. See SEV-SNP firmware specification
+> for more details.
+>
+> Allocate the Trusted Memory Region (TMR) as a 2mb sized/aligned region
+> when SNP is enabled to satify new requirements for the SNP. Continue
+> allocating a 1mb region for !SNP configuration.
+>
+> While at it, provide API that can be used by others to allocate a page
+> that can be used by the firmware. The immediate user for this API will
+> be the KVM driver. The KVM driver to need to allocate a firmware context
+> page during the guest creation. The context page need to be updated
+> by the firmware. See the SEV-SNP specification for further details.
+>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  drivers/crypto/ccp/sev-dev.c | 169 ++++++++++++++++++++++++++++++++++-
+>  include/linux/psp-sev.h      |  11 +++
+>  2 files changed, 176 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index 01edad9116f2..34dc358b13b9 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -62,6 +62,14 @@ static int psp_timeout;
+>  #define SEV_ES_TMR_SIZE                (1024 * 1024)
+>  static void *sev_es_tmr;
+>
+> +/* When SEV-SNP is enabled the TMR needs to be 2MB aligned and 2MB size. */
+> +#define SEV_SNP_ES_TMR_SIZE    (2 * 1024 * 1024)
+> +
+> +static size_t sev_es_tmr_size = SEV_ES_TMR_SIZE;
+> +
+> +static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret);
+> +static int sev_do_cmd(int cmd, void *data, int *psp_ret);
+> +
+>  static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
+>  {
+>         struct sev_device *sev = psp_master->sev_data;
+> @@ -159,6 +167,156 @@ static int sev_cmd_buffer_len(int cmd)
+>         return 0;
+>  }
+>
+> +static void snp_leak_pages(unsigned long pfn, unsigned int npages)
+> +{
+> +       WARN(1, "psc failed, pfn 0x%lx pages %d (leaking)\n", pfn, npages);
+> +       while (npages--) {
+> +               memory_failure(pfn, 0);
+> +               dump_rmpentry(pfn);
+> +               pfn++;
+> +       }
+> +}
+> +
+> +static int snp_reclaim_pages(unsigned long pfn, unsigned int npages, bool locked)
+> +{
+> +       struct sev_data_snp_page_reclaim data;
+> +       int ret, err, i, n = 0;
+> +
+> +       for (i = 0; i < npages; i++) {
+> +               memset(&data, 0, sizeof(data));
+> +               data.paddr = pfn << PAGE_SHIFT;
+> +
+> +               if (locked)
+> +                       ret = __sev_do_cmd_locked(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+> +               else
+> +                       ret = sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+> +               if (ret)
+> +                       goto cleanup;
+> +
+> +               ret = rmp_make_shared(pfn, PG_LEVEL_4K);
+> +               if (ret)
+> +                       goto cleanup;
+> +
+> +               pfn++;
+> +               n++;
+> +       }
+> +
+> +       return 0;
+> +
+> +cleanup:
+> +       /*
+> +        * If failed to reclaim the page then page is no longer safe to
+> +        * be released, leak it.
+> +        */
+> +       snp_leak_pages(pfn, npages - n);
+> +       return ret;
+> +}
+> +
+> +static inline int rmp_make_firmware(unsigned long pfn, int level)
+> +{
+> +       return rmp_make_private(pfn, 0, level, 0, true);
+> +}
+> +
+> +static int snp_set_rmp_state(unsigned long paddr, unsigned int npages, bool to_fw, bool locked,
+> +                            bool need_reclaim)
+> +{
+> +       unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT; /* Cbit maybe set in the paddr */
+> +       int rc, n = 0, i;
+> +
+> +       for (i = 0; i < npages; i++) {
+> +               if (to_fw)
+> +                       rc = rmp_make_firmware(pfn, PG_LEVEL_4K);
+> +               else
+> +                       rc = need_reclaim ? snp_reclaim_pages(pfn, 1, locked) :
+> +                                           rmp_make_shared(pfn, PG_LEVEL_4K);
+> +               if (rc)
+> +                       goto cleanup;
+> +
+> +               pfn++;
+> +               n++;
+> +       }
+> +
+> +       return 0;
+> +
+> +cleanup:
+> +       /* Try unrolling the firmware state changes */
+> +       if (to_fw) {
+> +               /*
+> +                * Reclaim the pages which were already changed to the
+> +                * firmware state.
+> +                */
+> +               snp_reclaim_pages(paddr >> PAGE_SHIFT, n, locked);
+> +
+> +               return rc;
+> +       }
+> +
+> +       /*
+> +        * If failed to change the page state to shared, then its not safe
+> +        * to release the page back to the system, leak it.
+> +        */
+> +       snp_leak_pages(pfn, npages - n);
+> +
+> +       return rc;
+> +}
+> +
+> +static struct page *__snp_alloc_firmware_pages(gfp_t gfp_mask, int order, bool locked)
+> +{
+> +       unsigned long npages = 1ul << order, paddr;
+> +       struct sev_device *sev;
+> +       struct page *page;
+> +
+> +       if (!psp_master || !psp_master->sev_data)
+> +               return ERR_PTR(-EINVAL);
+> +
+> +       page = alloc_pages(gfp_mask, order);
+> +       if (!page)
+> +               return NULL;
+> +
+> +       /* If SEV-SNP is initialized then add the page in RMP table. */
+> +       sev = psp_master->sev_data;
+> +       if (!sev->snp_inited)
+> +               return page;
+> +
+> +       paddr = __pa((unsigned long)page_address(page));
+> +       if (snp_set_rmp_state(paddr, npages, true, locked, false))
+> +               return NULL;
+> +
+> +       return page;
+> +}
+> +
+> +void *snp_alloc_firmware_page(gfp_t gfp_mask)
+> +{
+> +       struct page *page;
+> +
+> +       page = __snp_alloc_firmware_pages(gfp_mask, 0, false);
+> +
+> +       return page ? page_address(page) : NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(snp_alloc_firmware_page);
+> +
+> +static void __snp_free_firmware_pages(struct page *page, int order, bool locked)
+> +{
+> +       unsigned long paddr, npages = 1ul << order;
+> +
+> +       if (!page)
+> +               return;
+> +
+> +       paddr = __pa((unsigned long)page_address(page));
+> +       if (snp_set_rmp_state(paddr, npages, false, locked, true))
+> +               return;
+> +
+> +       __free_pages(page, order);
+> +}
+> +
+> +void snp_free_firmware_page(void *addr)
+> +{
+> +       if (!addr)
+> +               return;
+> +
+> +       __snp_free_firmware_pages(virt_to_page(addr), 0, false);
+> +}
+> +EXPORT_SYMBOL(snp_free_firmware_page);
+> +
+>  static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret)
+>  {
+>         struct psp_device *psp = psp_master;
+> @@ -281,7 +439,7 @@ static int __sev_platform_init_locked(int *error)
+>
+>                 data.flags |= SEV_INIT_FLAGS_SEV_ES;
+>                 data.tmr_address = tmr_pa;
+> -               data.tmr_len = SEV_ES_TMR_SIZE;
+> +               data.tmr_len = sev_es_tmr_size;
+>         }
+>
+>         rc = __sev_do_cmd_locked(SEV_CMD_INIT, &data, error);
+> @@ -638,6 +796,8 @@ static int __sev_snp_init_locked(int *error)
+>         sev->snp_inited = true;
+>         dev_dbg(sev->dev, "SEV-SNP firmware initialized\n");
+>
+> +       sev_es_tmr_size = SEV_SNP_ES_TMR_SIZE;
+> +
+>         return rc;
+>  }
+>
+> @@ -1161,8 +1321,9 @@ static void sev_firmware_shutdown(struct sev_device *sev)
+>                 /* The TMR area was encrypted, flush it from the cache */
+>                 wbinvd_on_all_cpus();
+>
+> -               free_pages((unsigned long)sev_es_tmr,
+> -                          get_order(SEV_ES_TMR_SIZE));
+> +               __snp_free_firmware_pages(virt_to_page(sev_es_tmr),
+> +                                         get_order(sev_es_tmr_size),
+> +                                         false);
+Shouldn't there be a check here for snp_inited before calling rmpupdate.
+TMR page can exist even if the SNP is not supported.
 
-The initial implementation of the GHCB spec was based on trying to keep
-the register state offsets the same relative to the VM save area. However,
-the save area for SEV-ES has changed within the hardware causing the
-relation between the SEV-ES save area to change relative to the GHCB save
-area.
-
-This is the second step in defining the multiple save areas to keep them
-separate and ensuring proper operation amongst the different types of
-guests. Create a GHCB save area that matches the GHCB specification.
-
-Reviewed-by: Venu Busireddy <venu.busireddy@oracle.com>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
----
-
-Changes since v11:
- * Add missing GHCB xss accessor
-
- arch/x86/include/asm/svm.h | 49 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 46 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index e748aa33c355..138db4e1b07d 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -390,11 +390,51 @@ struct sev_es_save_area {
- 	u64 x87_state_gpa;
- } __packed;
- 
-+struct ghcb_save_area {
-+	u8 reserved_1[203];
-+	u8 cpl;
-+	u8 reserved_2[116];
-+	u64 xss;
-+	u8 reserved_3[24];
-+	u64 dr7;
-+	u8 reserved_4[16];
-+	u64 rip;
-+	u8 reserved_5[88];
-+	u64 rsp;
-+	u8 reserved_6[24];
-+	u64 rax;
-+	u8 reserved_7[264];
-+	u64 rcx;
-+	u64 rdx;
-+	u64 rbx;
-+	u8 reserved_8[8];
-+	u64 rbp;
-+	u64 rsi;
-+	u64 rdi;
-+	u64 r8;
-+	u64 r9;
-+	u64 r10;
-+	u64 r11;
-+	u64 r12;
-+	u64 r13;
-+	u64 r14;
-+	u64 r15;
-+	u8 reserved_9[16];
-+	u64 sw_exit_code;
-+	u64 sw_exit_info_1;
-+	u64 sw_exit_info_2;
-+	u64 sw_scratch;
-+	u8 reserved_10[56];
-+	u64 xcr0;
-+	u8 valid_bitmap[16];
-+	u64 x87_state_gpa;
-+} __packed;
-+
- #define GHCB_SHARED_BUF_SIZE	2032
- 
- struct ghcb {
--	struct sev_es_save_area save;
--	u8 reserved_save[2048 - sizeof(struct sev_es_save_area)];
-+	struct ghcb_save_area save;
-+	u8 reserved_save[2048 - sizeof(struct ghcb_save_area)];
- 
- 	u8 shared_buffer[GHCB_SHARED_BUF_SIZE];
- 
-@@ -405,6 +445,7 @@ struct ghcb {
- 
- 
- #define EXPECTED_VMCB_SAVE_AREA_SIZE		740
-+#define EXPECTED_GHCB_SAVE_AREA_SIZE		1032
- #define EXPECTED_SEV_ES_SAVE_AREA_SIZE		1032
- #define EXPECTED_VMCB_CONTROL_AREA_SIZE		1024
- #define EXPECTED_GHCB_SIZE			PAGE_SIZE
-@@ -412,6 +453,7 @@ struct ghcb {
- static inline void __unused_size_checks(void)
- {
- 	BUILD_BUG_ON(sizeof(struct vmcb_save_area)	!= EXPECTED_VMCB_SAVE_AREA_SIZE);
-+	BUILD_BUG_ON(sizeof(struct ghcb_save_area)	!= EXPECTED_GHCB_SAVE_AREA_SIZE);
- 	BUILD_BUG_ON(sizeof(struct sev_es_save_area)	!= EXPECTED_SEV_ES_SAVE_AREA_SIZE);
- 	BUILD_BUG_ON(sizeof(struct vmcb_control_area)	!= EXPECTED_VMCB_CONTROL_AREA_SIZE);
- 	BUILD_BUG_ON(sizeof(struct ghcb)		!= EXPECTED_GHCB_SIZE);
-@@ -482,7 +524,7 @@ struct vmcb {
- /* GHCB Accessor functions */
- 
- #define GHCB_BITMAP_IDX(field)							\
--	(offsetof(struct sev_es_save_area, field) / sizeof(u64))
-+	(offsetof(struct ghcb_save_area, field) / sizeof(u64))
- 
- #define DEFINE_GHCB_ACCESSORS(field)						\
- 	static inline bool ghcb_##field##_is_valid(const struct ghcb *ghcb)	\
-@@ -531,5 +573,6 @@ DEFINE_GHCB_ACCESSORS(sw_exit_info_1)
- DEFINE_GHCB_ACCESSORS(sw_exit_info_2)
- DEFINE_GHCB_ACCESSORS(sw_scratch)
- DEFINE_GHCB_ACCESSORS(xcr0)
-+DEFINE_GHCB_ACCESSORS(xss)
- 
- #endif
--- 
-2.25.1
-
+>                 sev_es_tmr = NULL;
+>         }
+>
+> @@ -1233,7 +1394,7 @@ void sev_pci_init(void)
+>         }
+>
+>         /* Obtain the TMR memory area for SEV-ES use */
+> -       tmr_page = alloc_pages(GFP_KERNEL, get_order(SEV_ES_TMR_SIZE));
+> +       tmr_page = __snp_alloc_firmware_pages(GFP_KERNEL, get_order(sev_es_tmr_size), false);
+>         if (tmr_page) {
+>                 sev_es_tmr = page_address(tmr_page);
+>         } else {
+> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+> index f2105a8755f9..00bd684dc094 100644
+> --- a/include/linux/psp-sev.h
+> +++ b/include/linux/psp-sev.h
+> @@ -12,6 +12,8 @@
+>  #ifndef __PSP_SEV_H__
+>  #define __PSP_SEV_H__
+>
+> +#include <linux/sev.h>
+> +
+>  #include <uapi/linux/psp-sev.h>
+>
+>  #ifdef CONFIG_X86
+> @@ -919,6 +921,8 @@ int snp_guest_page_reclaim(struct sev_data_snp_page_reclaim *data, int *error);
+>  int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *error);
+>
+>  void *psp_copy_user_blob(u64 uaddr, u32 len);
+> +void *snp_alloc_firmware_page(gfp_t mask);
+> +void snp_free_firmware_page(void *addr);
+>
+>  #else  /* !CONFIG_CRYPTO_DEV_SP_PSP */
+>
+> @@ -960,6 +964,13 @@ static inline int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *erro
+>         return -ENODEV;
+>  }
+>
+> +static inline void *snp_alloc_firmware_page(gfp_t mask)
+> +{
+> +       return NULL;
+> +}
+> +
+> +static inline void snp_free_firmware_page(void *addr) { }
+> +
+>  #endif /* CONFIG_CRYPTO_DEV_SP_PSP */
+>
+>  #endif /* __PSP_SEV_H__ */
+> --
+> 2.17.1
+>
+>
