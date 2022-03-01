@@ -1,95 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE24E559D
-	for <linux-coco@lists.linux.dev>; Mon, 28 Feb 2022 13:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75675C340FD
-	for <linux-coco@lists.linux.dev>; Mon, 28 Feb 2022 13:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1646054150;
-	bh=XC7q336p+3yz9SXS9ZVHG+qns5z7lvEURk+VZZRcFRw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cbQVeAU4fSucwMwELJ2chTApjPOmF9JV0Bq5ZQ+SLVOeuzaOEKn8OCD86frbDeTUk
-	 178U9AVLlTn39ViS32nJUTew0lzqS0jEupKT5cWc6LEotoNepUDqIRFs1QMgCAZqwx
-	 lSVS7McGv8T6ZJozZAKgUq3qSTypblHzo+rQT6jKX2qMjcv7/BzzwzRNf/ehHJsFwy
-	 TrYWKm3uuTvPQeKUbg0ZQ9XNnfYzV08QCcZMEqRtap0GeIWlSA8b2rEJ86yhe++kUc
-	 iwE1ZQoB7T4QjP+wBxCAa7/jzm60j0NngX0Od+S4/ZGoOHVCr+6Ed/e/QbPitjMKnv
-	 8eVyCwaim79Rg==
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-2d07ae0b1bfso107431207b3.6
-        for <linux-coco@lists.linux.dev>; Mon, 28 Feb 2022 05:15:50 -0800 (PST)
-X-Gm-Message-State: AOAM532t+aWiOIaIEq9oqsio6WIZdDN99tW8cpNjukA5CqV9awoV6b1q
-	IFKa6s97F7bAIutKtfo3WIHSxCILqz8bzmJTgqM=
-X-Google-Smtp-Source: ABdhPJzcscw84x/z6KkT11IgEGwYFMOpSyj0Psgek7g+cza2KTS9W2gr/p1yvNnykksnbs2/Yvgyve+4H8UgCXvYcdU=
-X-Received: by 2002:a81:7d04:0:b0:2d0:d0e2:126f with SMTP id
- y4-20020a817d04000000b002d0d0e2126fmr19559172ywc.485.1646054149209; Mon, 28
- Feb 2022 05:15:49 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55AA5A03
+	for <linux-coco@lists.linux.dev>; Tue,  1 Mar 2022 09:48:25 +0000 (UTC)
+Received: from nazgul.tnic (dynamic-002-247-255-128.2.247.pool.telefonica.de [2.247.255.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D0F961EC053F;
+	Tue,  1 Mar 2022 10:48:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1646128093;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=+RtOrO/V2Xe6RcjueTstlwPFpZ/tJZ3H1GqzoLfZj+A=;
+	b=OPbNuA9icMYBNiferdOC7ortcT5oZV9YAZskyMI7sFPTGqS8LEmY5QpfDR9THz/YxPWsFF
+	inqKgkiWexXbOIrklEPVbvjnazRVt0Nos7EYErANwlPbl7Wqq2Jmwfp1Z4k+GL1YVv6wmn
+	wPXeKMLtkxReL6gHIl8+ZGMbAzjzEcE=
+Date: Tue, 1 Mar 2022 10:48:16 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v11 29/45] x86/boot: Add Confidential Computing type to
+ setup_data
+Message-ID: <Yh3r1PSx/fjqoBB3@nazgul.tnic>
+References: <20220224165625.2175020-1-brijesh.singh@amd.com>
+ <20220224165625.2175020-30-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
- <20220228114254.1099945-4-dovmurik@linux.ibm.com> <CAMj1kXFybkGtxH2U6oAi_Qeqe-i_kH-hZjUZKY3-UzPHUg55vg@mail.gmail.com>
- <f3de6cd9-9f58-7db3-e367-a6a5a5d826e2@linux.ibm.com>
-In-Reply-To: <f3de6cd9-9f58-7db3-e367-a6a5a5d826e2@linux.ibm.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 28 Feb 2022 14:15:38 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEKh-Ve3iPDnNTxi10=hcARN4ntpyQOrmb=B+4DpC24vQ@mail.gmail.com>
-Message-ID: <CAMj1kXEKh-Ve3iPDnNTxi10=hcARN4ntpyQOrmb=B+4DpC24vQ@mail.gmail.com>
-Subject: Re: [PATCH v8 3/4] efi: Load efi_secret module if EFI secret area is populated
-To: Dov Murik <dovmurik@linux.ibm.com>
-Cc: linux-efi <linux-efi@vger.kernel.org>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Borislav Petkov <bp@suse.de>, Ashish Kalra <ashish.kalra@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, Andrew Scull <ascull@google.com>, 
-	Dave Hansen <dave.hansen@intel.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, 
-	Lenny Szubowicz <lszubowi@redhat.com>, Peter Gonda <pgonda@google.com>, 
-	Matthew Garrett <mjg59@srcf.ucam.org>, James Bottomley <jejb@linux.ibm.com>, 
-	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>, Jim Cadden <jcadden@ibm.com>, 
-	Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev, 
-	linux-security-module@vger.kernel.org, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220224165625.2175020-30-brijesh.singh@amd.com>
 
-On Mon, 28 Feb 2022 at 14:07, Dov Murik <dovmurik@linux.ibm.com> wrote:
->
->
->
-> On 28/02/2022 14:49, Ard Biesheuvel wrote:
-> > On Mon, 28 Feb 2022 at 12:43, Dov Murik <dovmurik@linux.ibm.com> wrote:
-> >>
-> >> If the efi_secret module is built, register a late_initcall in the EFI
-> >> driver which checks whether the EFI secret area is available and
-> >> populated, and then requests to load the efi_secret module.
-> >>
-> >> This will cause the <securityfs>/secrets/coco directory to appear in
-> >> guests into which secrets were injected; in other cases, the module is
-> >> not loaded.
-> >>
-> >> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
-> >> Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
-> >
-> > It would be better to simply expose a platform device and associated
-> > driver, instead of hooking into the module machinery directly.
-> >
-> > We already do something similar for the EFI rtc and the efivars
-> > subsystem, using platform_device_register_simple()
-> >
->
-> Thanks Ard, I'll look into this.
->
-> I hope the mechanism you suggest allows me to perform complex check to
-> see if the device is really there (in this case: check for an efi
-> variable, map memory as encrypted, verify it starts with a specific GUID
-> -- everything before request_module() in the code below).
->
+On Thu, Feb 24, 2022 at 10:56:09AM -0600, Brijesh Singh wrote:
+> +/*
+> + * AMD SEV Confidential computing blob structure. The structure is
+> + * defined in OVMF UEFI firmware header:
+> + * https://github.com/tianocore/edk2/blob/master/OvmfPkg/Include/Guid/ConfidentialComputingSevSnpBlob.h
+> + */
+> +#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
+> +struct cc_blob_sev_info {
+> +	u32 magic;
+	^^^^^^^^^^^^
 
-There is the device part and the driver part. Some of this belongs in
-the core code that registers the platform device, and some of it
-belongs in the driver. At this point, it probably does not matter that
-much which side does what, as the platform driver simply probes and
-can perform whatever check it needs, as long as it can back out
-gracefully (although I understand that, in this particular case, there
-are reasons why the driver may decide to wipe the secret)
+You said you wanted to rename this:
+
+https://lore.kernel.org/all/12b945a0-b18c-7f2a-52c7-5e22a944d7f5@amd.com/
+
+and further code is checking magic so I'm guessing you wanna rename the
+OVMF definition to "Magic" too?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
