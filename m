@@ -1,86 +1,90 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55AA5A03
-	for <linux-coco@lists.linux.dev>; Tue,  1 Mar 2022 09:48:25 +0000 (UTC)
-Received: from nazgul.tnic (dynamic-002-247-255-128.2.247.pool.telefonica.de [2.247.255.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D0F961EC053F;
-	Tue,  1 Mar 2022 10:48:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1646128093;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7D55A12
+	for <linux-coco@lists.linux.dev>; Tue,  1 Mar 2022 12:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1646137481;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=+RtOrO/V2Xe6RcjueTstlwPFpZ/tJZ3H1GqzoLfZj+A=;
-	b=OPbNuA9icMYBNiferdOC7ortcT5oZV9YAZskyMI7sFPTGqS8LEmY5QpfDR9THz/YxPWsFF
-	inqKgkiWexXbOIrklEPVbvjnazRVt0Nos7EYErANwlPbl7Wqq2Jmwfp1Z4k+GL1YVv6wmn
-	wPXeKMLtkxReL6gHIl8+ZGMbAzjzEcE=
-Date: Tue, 1 Mar 2022 10:48:16 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	 in-reply-to:in-reply-to:references:references;
+	bh=px8h7rOi4DLdnxTseE4yd2HQ+w2dXi8TPIQasAQ9aI0=;
+	b=dYLd+zJIKZOaIdU6A5dcX9wWbMrdvDhHTrDb4hVKYlvIK9mO3nUFQDLiidGDtkbAXOAEO7
+	w6V/pnTsUm2xwdGdfwMa/5gP+wXbvkFf9DQEYg5R41H9ljWjqML6vwwAXOWqA6QXfWb4BI
+	8co7NChr92x6nIVSqdQIt+9YFOSljnM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-665-YRBarv4rOMm5-u5ymqgweQ-1; Tue, 01 Mar 2022 07:24:37 -0500
+X-MC-Unique: YRBarv4rOMm5-u5ymqgweQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 851865200;
+	Tue,  1 Mar 2022 12:24:34 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.195.81])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 8EC8C84945;
+	Tue,  1 Mar 2022 12:24:33 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id B993D180039D; Tue,  1 Mar 2022 13:24:31 +0100 (CET)
+Date: Tue, 1 Mar 2022 13:24:31 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Dov Murik <dovmurik@linux.ibm.com>
+Cc: linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
 	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v11 29/45] x86/boot: Add Confidential Computing type to
- setup_data
-Message-ID: <Yh3r1PSx/fjqoBB3@nazgul.tnic>
-References: <20220224165625.2175020-1-brijesh.singh@amd.com>
- <20220224165625.2175020-30-brijesh.singh@amd.com>
+	Greg KH <gregkh@linuxfoundation.org>,
+	Andrew Scull <ascull@google.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	Lenny Szubowicz <lszubowi@redhat.com>,
+	Peter Gonda <pgonda@google.com>,
+	Matthew Garrett <mjg59@srcf.ucam.org>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+	Jim Cadden <jcadden@ibm.com>,
+	Daniele Buono <dbuono@linux.vnet.ibm.com>,
+	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/4] virt: Add efi_secret module to expose
+ confidential computing secrets
+Message-ID: <20220301122431.xcsuneftshiibvst@sirius.home.kraxel.org>
+References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
+ <20220228114254.1099945-3-dovmurik@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220224165625.2175020-30-brijesh.singh@amd.com>
+In-Reply-To: <20220228114254.1099945-3-dovmurik@linux.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 
-On Thu, Feb 24, 2022 at 10:56:09AM -0600, Brijesh Singh wrote:
-> +/*
-> + * AMD SEV Confidential computing blob structure. The structure is
-> + * defined in OVMF UEFI firmware header:
-> + * https://github.com/tianocore/edk2/blob/master/OvmfPkg/Include/Guid/ConfidentialComputingSevSnpBlob.h
-> + */
-> +#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
-> +struct cc_blob_sev_info {
-> +	u32 magic;
-	^^^^^^^^^^^^
+On Mon, Feb 28, 2022 at 11:42:52AM +0000, Dov Murik wrote:
+> The new efi_secret module exposes the confidential computing (coco)
+> EFI secret area via securityfs interface.
+> 
+> When the module is loaded (and securityfs is mounted, typically under
+> /sys/kernel/security), a "secrets/coco" directory is created in
+> securityfs.  In it, a file is created for each secret entry.  The name
+> of each such file is the GUID of the secret entry, and its content is
+> the secret data.
+> 
+> This allows applications running in a confidential computing setting to
+> read secrets provided by the guest owner via a secure secret injection
+> mechanism (such as AMD SEV's LAUNCH_SECRET command).
+> 
+> Removing (unlinking) files in the "secrets/coco" directory will zero out
+> the secret in memory, and remove the filesystem entry.  If the module is
+> removed and loaded again, that secret will not appear in the filesystem.
+> 
+> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
 
-You said you wanted to rename this:
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
 
-https://lore.kernel.org/all/12b945a0-b18c-7f2a-52c7-5e22a944d7f5@amd.com/
-
-and further code is checking magic so I'm guessing you wanna rename the
-OVMF definition to "Magic" too?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
