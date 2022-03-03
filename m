@@ -1,80 +1,75 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100197A
-	for <linux-coco@lists.linux.dev>; Wed,  2 Mar 2022 16:14:58 +0000 (UTC)
-Received: from nazgul.tnic (nat0.nue.suse.com [IPv6:2001:67c:2178:4000::1111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 765761EC03AD;
-	Wed,  2 Mar 2022 17:14:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1646237692;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=awylhfIR8fI0vfB+Q4tGaWL6X/Z9qgE2EUHkemQv5MY=;
-	b=fvEIawZRy1ItnJXYqlVf415zSrdtK2Tt/7zQyoUxd71Lzc/DXKG+G31uKqqugg+TVr1B84
-	DvvCmJccsylPfqGkz1z2eNFkIxtZITxjPP2y3eMK+pHEq16soA5qz0IECP9042vAqkl3Ww
-	d2v50azdyWX5Dx+ruad9aYUz4bWprcs=
-Date: Wed, 2 Mar 2022 17:14:57 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v11 00/45] Add AMD Secure Nested Paging (SEV-SNP) Guest
- Support
-Message-ID: <Yh+YAWu3K4xBillV@nazgul.tnic>
-References: <20220224165625.2175020-1-brijesh.singh@amd.com>
- <Yh99pBI/RwZY1yf7@nazgul.tnic>
- <519f5e8e-18d1-43ac-ef90-0320d21c3a55@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47F87A
+	for <linux-coco@lists.linux.dev>; Thu,  3 Mar 2022 09:22:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C1AC340F7
+	for <linux-coco@lists.linux.dev>; Thu,  3 Mar 2022 09:22:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1646299329;
+	bh=iXq0ELG0V7/AnDh81T6u19yP5MwiSYcM6qTcBJBe4OA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BLN8UtJxH2XlmmKj6rKAbVrjo3Pon/hgpSka8U3+lkFp83NAiJPVWDlenOAuu40Zu
+	 JshkUbmydrKwtwN8VZjMUeRtJFeaXG0VX7bKkd27RGXG1TIIX1EGU1hvag1kRwT0dO
+	 E6fyVvn4RzWjt772MSVPyl8GRYpowkXv+cDAXglgV7lXIUDniyBoKZGqNxd7Ln1MYP
+	 fiOzU2YuRWuEZIdSGi/E3OfTjycqqkYll8bP7dIPybg4wEJvvf70/RD5md268T6fPC
+	 yoHz3VHHbQzueVLBvJTt8aB5F8/zNasWgOh1BQhZukuND+2NmCgKw38T22Tlvt39pr
+	 IZpNbHU7B909w==
+Received: by mail-yb1-f173.google.com with SMTP id g26so8881555ybj.10
+        for <linux-coco@lists.linux.dev>; Thu, 03 Mar 2022 01:22:09 -0800 (PST)
+X-Gm-Message-State: AOAM531nU9OF5SrP6ePUxUAYt15ernUc7eWmUtkz1/kWA+9KPSsMlx+j
+	/Xwn6PHmNTaq4MrVHVPZgfBQoGjzvr0NhwgPTa8=
+X-Google-Smtp-Source: ABdhPJzGxW9K6XK02dNQgFGymwfkQglSqb+hdrqFixJgS607dC1+UsEFXJMQe/H318w5RYW/Cg+KjYeLPNx5dYV37BA=
+X-Received: by 2002:a25:585:0:b0:628:9860:39da with SMTP id
+ 127-20020a250585000000b00628986039damr7949048ybf.383.1646299328178; Thu, 03
+ Mar 2022 01:22:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <519f5e8e-18d1-43ac-ef90-0320d21c3a55@redhat.com>
+References: <20220224165625.2175020-1-brijesh.singh@amd.com>
+ <20220224165625.2175020-30-brijesh.singh@amd.com> <Yh3r1PSx/fjqoBB3@nazgul.tnic>
+ <671a6137-0d45-3a8c-433a-32448019961f@amd.com> <Yh+Jc20ed82Vyxge@nazgul.tnic>
+In-Reply-To: <Yh+Jc20ed82Vyxge@nazgul.tnic>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 3 Mar 2022 09:21:57 +0000
+X-Gmail-Original-Message-ID: <CAMj1kXH7vYQ4yjVUpB3wur9UkRxWf=1DEiX8TArk1vpm-8KPuQ@mail.gmail.com>
+Message-ID: <CAMj1kXH7vYQ4yjVUpB3wur9UkRxWf=1DEiX8TArk1vpm-8KPuQ@mail.gmail.com>
+Subject: Re: [PATCH v11 29/45] x86/boot: Add Confidential Computing type to setup_data
+To: Borislav Petkov <bp@alien8.de>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, X86 ML <x86@kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, KVM list <kvm@vger.kernel.org>, 
+	linux-efi <linux-efi@vger.kernel.org>, platform-driver-x86@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Linux Memory Management List <linux-mm@kvack.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, 
+	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, 
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com, 
+	Tony Luck <tony.luck@intel.com>, marcorr@google.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Mar 02, 2022 at 05:09:34PM +0100, Paolo Bonzini wrote:
-> Sure: https://git.kernel.org/pub/scm/virt/kvm/kvm.git, branch svm-for-snp.
-> 
-> $ git log -4 --oneline --reverse
-> 3c95d3fab229 KVM: SVM: Define sev_features and vmpl field in the VMSA
-> 0c86f9cf27f7 KVM: SVM: Create a separate mapping for the SEV-ES save area
-> c5e0ec4c742d KVM: SVM: Create a separate mapping for the GHCB save area
-> 88c955d1fc93 (HEAD -> kvm/svm-for-snp) KVM: SVM: Update the SEV-ES save area mapping
+On Wed, 2 Mar 2022 at 15:13, Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Wed, Mar 02, 2022 at 08:25:45AM -0600, Brijesh Singh wrote:
+> > Yep, I am waiting for Linux patches to finalize and then sync OVMF with it.
+> > I will rename the field to magic in OVMF to keep both of them in sync.
+>
+> Ok, thx.
+>
+> Btw, Ard, ACK for the EFI hunk?
+>
 
-Thanks!
+Yep,
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
