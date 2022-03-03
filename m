@@ -1,32 +1,32 @@
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D972F21
-	for <linux-coco@lists.linux.dev>; Thu,  3 Mar 2022 17:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBEA2F21
+	for <linux-coco@lists.linux.dev>; Thu,  3 Mar 2022 17:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1646327413; x=1677863413;
+  t=1646328828; x=1677864828;
   h=message-id:date:mime-version:to:cc:references:from:
    subject:in-reply-to:content-transfer-encoding;
-  bh=vaOGjw7VdBKeP6eHbl1iLmTW0NFWNNn5qWcGsk5ZbQE=;
-  b=RBNkJOVZXp94FkIVrhZelpegPQHK9mVUaiNZLYEyCojb7o9ZNj8QPHQ6
-   vti5NyEoYngUtYCWb/Qeqpfnuaf6CkDDSIwMO2RStvFARGu8ayZq1nYGz
-   nIjWnSkW33DOsijF1YRpTJz+t+sTf43g/Lnv77gtvu92fEXqt9JqJL3Oo
-   79Vamx0CyOpQoCfofNv5JH2zJ6YorT2Db0LZAf1dk9TIDyt8sfZcEFf3/
-   z7oudHLEbNCz1kRLT1k+srU4nuYHzUUCHT9BOMRgniGCYS4698/nQODCH
-   nj1Qtue2CYIMcF1DfWmhJ629CnjwXmJzYBTJ3WTLRcVd8V4M8ma+Dtc63
-   Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10275"; a="278419758"
+  bh=/6BWrWtvMDgxG3GRtmu6+t9kH9b6E5eZZRPbC6t9AzU=;
+  b=JYMrLkv7yKJlhiGS77Uea0+2fxGDbjwVhHefPfZTIVtDrzGhl3GQM1nZ
+   e3yefVeALKeERJmIGHCTzIIKll7h5U7Q34YDfs21st4PGmEZrebUyeW50
+   osOf5Q2i55SULRrp89FSqBFzBaX+pWsmno4s0P2LeoMrrfPoYrgXt1PDi
+   l7+nSh31R0cpjVEpoKBt2kVUQtir8WL7+DtIBRKnSZZMTHG0AtOiXaDZE
+   JIkrydtquFJedlU/nDQHXGsK8NU5rLpaNmgAQQdgwG7J6Y+4j6n1v/uR6
+   hfHlVT0LcBGbvv2L6lBISbg3qAlJ8jbf9Dog3IZZ1Jtzf4qMhXOkPsGMF
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10275"; a="278429410"
 X-IronPort-AV: E=Sophos;i="5.90,151,1643702400"; 
-   d="scan'208";a="278419758"
+   d="scan'208";a="278429410"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2022 09:09:44 -0800
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2022 09:33:48 -0800
 X-IronPort-AV: E=Sophos;i="5.90,151,1643702400"; 
-   d="scan'208";a="642184867"
+   d="scan'208";a="642197252"
 Received: from eabada-mobl2.amr.corp.intel.com (HELO [10.209.6.252]) ([10.209.6.252])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2022 09:09:43 -0800
-Message-ID: <5ca2583b-a873-fc5d-ece6-d4bdbd133a89@intel.com>
-Date: Thu, 3 Mar 2022 09:09:37 -0800
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2022 09:33:45 -0800
+Message-ID: <c85259c5-996c-902b-42b6-6b812282ee25@intel.com>
+Date: Thu, 3 Mar 2022 09:33:40 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -58,55 +58,82 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  tony.luck@intel.com, marcorr@google.com,
  sathyanarayanan.kuppuswamy@linux.intel.com
 References: <20220224165625.2175020-1-brijesh.singh@amd.com>
- <20220224165625.2175020-23-brijesh.singh@amd.com>
+ <20220224165625.2175020-43-brijesh.singh@amd.com>
 From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH v11 22/45] x86/sev: Use SEV-SNP AP creation to start
- secondary CPUs
-In-Reply-To: <20220224165625.2175020-23-brijesh.singh@amd.com>
+Subject: Re: [PATCH v11 42/45] virt: Add SEV-SNP guest driver
+In-Reply-To: <20220224165625.2175020-43-brijesh.singh@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/24/22 08:56, Brijesh Singh wrote:
+> +++ b/drivers/virt/coco/sevguest/Kconfig
+> @@ -0,0 +1,12 @@
+> +config SEV_GUEST
+> +	tristate "AMD SEV Guest driver"
+> +	default m
+> +	depends on AMD_MEM_ENCRYPT && CRYPTO_AEAD2
+> +	help
+> +	  SEV-SNP firmware provides the guest a mechanism to communicate with
+> +	  the PSP without risk from a malicious hypervisor who wishes to read,
+> +	  alter, drop or replay the messages sent. The driver provides
+> +	  userspace interface to communicate with the PSP to request the
+> +	  attestation report and more.
+> +
+> +	  If you choose 'M' here, this module will be called sevguest.
+...
+> +/* Return a non-zero on success */
+> +static u64 snp_get_msg_seqno(struct snp_guest_dev *snp_dev)
+> +{
+> +	u64 count = __snp_get_msg_seqno(snp_dev);
+> +
 > +	/*
-> +	 * Allocate VMSA page to work around the SNP erratum where the CPU will
-> +	 * incorrectly signal an RMP violation #PF if a large page (2MB or 1GB)
-> +	 * collides with the RMP entry of VMSA page. The recommended workaround
-> +	 * is to not use a large page.
-> +	 *
-> +	 * Allocate one extra page, use a page which is not 2MB-aligned
-> +	 * and free the other.
+> +	 * The message sequence counter for the SNP guest request is a  64-bit
+> +	 * value but the version 2 of GHCB specification defines a 32-bit storage
+> +	 * for it. If the counter exceeds the 32-bit value then return zero.
+> +	 * The caller should check the return value, but if the caller happens to
+> +	 * not check the value and use it, then the firmware treats zero as an
+> +	 * invalid number and will fail the  message request.
 > +	 */
-> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
-> +	if (!p)
-> +		return NULL;
-> +
-> +	split_page(p, 1);
-> +
-> +	pfn = page_to_pfn(p);
-> +	if (IS_ALIGNED(__pfn_to_phys(pfn), PMD_SIZE)) {
-> +		pfn++;
-> +		__free_page(p);
-> +	} else {
-> +		__free_page(pfn_to_page(pfn + 1));
+> +	if (count >= UINT_MAX) {
+> +		pr_err_ratelimited("request message sequence counter overflow\n");
+> +		return 0;
 > +	}
 > +
-> +	return page_address(pfn_to_page(pfn));
+> +	return count;
 > +}
 
-This can be simplified.  There's no need for all the sill pfn_to_page()
-conversions or even an alignment check.  The second page (page[1]) of an
-order-1 page is never 2M/1G aligned.  Just use that:
+I didn't see a pr_fmt defined anywhere.  But, for a "driver", should
+this be a dev_err()?
 
-	// Alloc an 8k page which is also 8k-aligned:
-	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
-	if (!p)
-		return NULL;
+...
+> +static void free_shared_pages(void *buf, size_t sz)
+> +{
+> +	unsigned int npages = PAGE_ALIGN(sz) >> PAGE_SHIFT;
+> +
+> +	if (!buf)
+> +		return;
+> +
+> +	if (WARN_ONCE(set_memory_encrypted((unsigned long)buf, npages),
+> +		      "failed to restore encryption mask (leak it)\n"))
+> +		return;
+> +
+> +	__free_pages(virt_to_page(buf), get_order(sz));
+> +}
 
-	split_page(p, 1);
+Nit: It's a bad practice to do important things inside a WARN_ON() _or_
+and if().  This should be:
 
-	// Free the first 4k.  This page _may_
-	// be 2M/1G aligned and can not be used:
-	__free_page(p);
+	int ret;
+
+	...
+
+	ret = set_memory_encrypted((unsigned long)buf, npages));
+
+	if (ret) {
+		WARN_ONCE(...);
+		return;
+	}
 	
-	// Return the unaligned page:
-	return page_address(p+1);
+BTW, this look like a generic allocator thingy.  But it's only ever used
+to allocate a 'struct snp_guest_msg'.  Why all the trouble to allocate
+and free one fixed-size structure?  The changelog and comments don't
+shed any light.
