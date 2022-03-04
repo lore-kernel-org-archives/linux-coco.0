@@ -1,101 +1,83 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7227A
-	for <linux-coco@lists.linux.dev>; Fri,  4 Mar 2022 14:07:00 +0000 (UTC)
-Received: from nazgul.tnic (dynamic-002-247-252-111.2.247.pool.telefonica.de [2.247.252.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BA9F91EC032C;
-	Fri,  4 Mar 2022 15:06:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1646402809;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=neT0UiN3Ufi1LjeuMTNM4SQxn8WU0bORQpO1LvG3ruw=;
-	b=ChTyt7PGK//kdRXY9IGRBXoPzoUFM3dYdgso/XV4M9ByjglGyB+yHbrK5Cd1ZZDGeVz6zh
-	2c1Uy5t+zgwzRCehtxV4Nav/6NYzlEarmnYDzMm4iqTg4moW2c5FxAr+romAataWivvaiP
-	ZUu7NoPkX5UaB9oYsHkQGxYhEHBIIV8=
-Date: Fri, 4 Mar 2022 15:06:49 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v11 44/45] virt: sevguest: Add support to get extended
- report
-Message-ID: <YiIc7aliqChnWThP@nazgul.tnic>
-References: <20220224165625.2175020-1-brijesh.singh@amd.com>
- <20220224165625.2175020-45-brijesh.singh@amd.com>
- <YiDegxDviQ81VH0H@nazgul.tnic>
- <7c562d34-27cd-6e63-a0fb-35b13104d41f@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38073C7C
+	for <linux-coco@lists.linux.dev>; Fri,  4 Mar 2022 15:23:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1646407422; x=1677943422;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=8+CEXWwRwOMrbbF77tgElxSqFXtFdC2qH4kdmgKvO/8=;
+  b=UTIQHEEzqRvU/mDEycmvPSzWA1d9Hq4///kvZbzOWtfQyzT5FvVuVTBB
+   kt+zzORouIkgevgCUQHOngvADtey2pdJaoSByARd5mKxE34+Bngbcsfkr
+   dDzyH+79xIcrsM/vXkT0Q/t7fSBVjf9wmkO4k80a/MKIcFe2D/G4aE3uh
+   KIu7ns4Q5Fgvwut/bmS5+If4bYwJJ6lDqAoX/JPvTeBI8Dw0ach+BAZO/
+   6bTDqXGueP4ga2TQTK2x6nah7YIbnC8FcpMSQFqywKXvt6e4tL5XzCLJ0
+   BaYec37ydYzNC/OIgSo+3gnQaqlqLExztZgZojNwxSmwSGT9fkIkCQOj5
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10276"; a="251570279"
+X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
+   d="scan'208";a="251570279"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 07:23:36 -0800
+X-IronPort-AV: E=Sophos;i="5.90,155,1643702400"; 
+   d="scan'208";a="640610291"
+Received: from eabada-mobl2.amr.corp.intel.com (HELO [10.209.6.252]) ([10.209.6.252])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2022 07:23:34 -0800
+Message-ID: <bd52a9ed-c44f-989f-60a0-f15dd4260e09@intel.com>
+Date: Fri, 4 Mar 2022 07:23:28 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7c562d34-27cd-6e63-a0fb-35b13104d41f@amd.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Content-Language: en-US
+To: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>,
+ Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>,
+ Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Andi Kleen <ak@linux.intel.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com
+References: <20220224165625.2175020-1-brijesh.singh@amd.com>
+ <20220224165625.2175020-43-brijesh.singh@amd.com>
+ <c85259c5-996c-902b-42b6-6b812282ee25@intel.com>
+ <9c075b36-e450-831b-0ae2-3b680686beb4@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v11 42/45] virt: Add SEV-SNP guest driver
+In-Reply-To: <9c075b36-e450-831b-0ae2-3b680686beb4@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 03, 2022 at 10:47:20AM -0600, Brijesh Singh wrote:
-> I did not fail on !req.cert_len, because my read of the GHCB spec says that
-> additional data (certificate blob) is optional. A user could call
-> SNP_GET_EXT_REPORT without asking for the extended certificate. In this
-> case, SNP_GET_EXT_REPORT == SNP_GET_REPORT.
-> 
-> Text from the GHCB spec section 4.1.8
-> ---------------
-> https://developer.amd.com/wp-content/resources/56421.pdf
-> 
-> The SNP Extended Guest Request NAE event is very similar to the SNP Guest
-> Request NAE event. The difference is related to the additional data that can
-> be returned based on the guest request. Any SNP Guest Request that does not
-> support returning additional data must execute as if invoked as an SNP Guest
-> Request.
-> --------------
+On 3/4/22 05:17, Brijesh Singh wrote:
+>> BTW, this look like a generic allocator thingy.  But it's only ever used
+>> to allocate a 'struct snp_guest_msg'.  Why all the trouble to allocate
+>> and free one fixed-size structure?  The changelog and comments don't
+>> shed any light.
+> The GHCB specification says that a guest must use shared memory for
+> request, response, and certificate blob. In this patch, you are seeing
+> that {alloc,free}_shared_pages() used only to alloc/free the request and
+> response page. In the last patch, we used the same generic function to
+> allocate the certificate blob with a different size (~16K) than 'struct
+> snp_guest_msg.'
 
-Sorry, it is still not clear to me how
-
-"without asking for the extended certificate" == !req.certs_len
-
-That's not explained in the help text either. And ->certs_len is part of
-the input structure but nowhere does it say that when that thing is 0,
-the request will be downgraded to a SNP_GET_REPORT.
-
-How is the user of this supposed to know?
-
-And regardless, you can still streamline the code as in the example I
-gave so that it is clear which values are checked and for which does the
-request get failed...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+It sounds like it's worth a sentence or two in the changelog to explain
+this new "allocator" and its future uses.
