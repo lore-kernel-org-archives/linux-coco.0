@@ -1,33 +1,33 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam08on2050.outbound.protection.outlook.com [40.107.101.50])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5440D435F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84D64360
 	for <linux-coco@lists.linux.dev>; Mon,  7 Mar 2022 21:35:05 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aL1O0JbXUfKHw/9bRKs0qKu3oDNQ/1RtPh7c/C9Y5/uFpFs0c/fqeEJsyyvQFJUNaAAiNq2EGKrIjsLKeTVsTI9MUYDqCTDM+FTboDyJOEpMcpBrHRWwGTpi18ybZPD4YAzDbLVJg8KOVlalKJFUU0IK4kRsj8/U2umruBnvW5rHZqyE5ui+o0CX7h5ATfb9/hg5M5EWFrhSaAGSKQsfa0tXjUsPXJhaczn33m49irmnrbglbw2N/yMDpMjc9CcQg4UA3DUh5r1UHfuXMNq6tNKTM4Id9vx075VHFeNKIK0skASFUktZYRib62BpQ3VaR5PJAaqSc9FQrfmb+usPcg==
+ b=nC4nZxNTqCLo9IiunEngGNejLNXql/F6kcmDvSbk/DBRtKpnNLIJ4fUUfz7Gvceallrl/K410ytz59K8Un9kUhJxejZxt2Z0iIeuJt4MfexjFmVh5TKN9bCF3DnKcjNJovF0C+TqmtQQBSVQh0qfD+hAetiCbHS2o/F6nolrklKEwCWANmVfhQJ9u5MoGLEW8f+4+0eFgnHbee8Q9Gpv0+JAXzNO8a/P176Un+wgAGdp611mNuHAB86m9e1do7xm6netBEnEFmCtk33ach++ZL+Lwu4faP03BwXSHfTppRqUNMnP+cJiusCj70/IasZhPfknwQCj+ywtvqok1lD/uQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pw4Dxy+VsWZLyerTWYMAsDC0yjmiPAW8pTtX9HntsIs=;
- b=jKj63/5bJpz87LEiRWhsqHB/8s3c7OZCkSwZrfdC98Fsh3pLwr+FwD0sHhRQu7oGSUVMfShFXOT4YFBGwgAR/oZhwvFFxpHjBfrNBVt8PErIJrEsX4BVTktrEIA1w5zFnes5u8kodsN+prV6bbjSyf2JYL7BXnTLHiOQOZVbnoTTFJbhLTshKOTo2XmZEw2u0zxloIVCmLaaDiNj6I70zHPQovQ6K9aeqMa8oNzVyTscrQgpGiRxTzb341pGdghoQwSlb6kvpM9TPGb2wq3ghi9X5+qUuo1XanXUTDlbGwXGikHmGN0kCa8VdKyuY4gyiqeU/6Y3PKTEDR2II3zEEg==
+ bh=0IeNR3dE235Aur/W4uNaSSGW5/OsmrS029NUXjkxG0A=;
+ b=MIC8SspNj+taq2l+ZqY5rnJxp7NHlCE66TKDuzwTWfay6Ogok5pR0XtTwPf7WhcDBFc3jEYxndGlK6jms9oAXDPMmed/76f30sAyM/VbkVP86vSXYVTtxkwrai01InroRK28ihIoK1iUNTp23AK2RlzaiSa295qe7ZW539OX3froXFLruO4T1tqszaF0m4iFzXTP47Ul9zE6b8oFuJY+n3VIuULTFj6Otvcvw1gLjMjHdVgltMhGHSyb4SOymGCO41M2L4K/IYpALSjwDKz5Raf+oabGrAQAOJKJpPYqXuK6GLv3KPxqzjXKuSAXt0h4NhiA+OwXc4SsCfgeHbOcJw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pw4Dxy+VsWZLyerTWYMAsDC0yjmiPAW8pTtX9HntsIs=;
- b=uZvo8vZ7TOOsJLH53AC7vrGPv5ArjEAwhFADk4oHSSZ73M9vxrWa0v0Gi++XmMbKWvtn5M572ZTAg32E5mbCQqdvGV5aKGx/MCsdDXNhTHWSCkvsrIXoFwT9WYqqaWTYFhuTeN4Ga1JPJt+mG5L0j24Eqqu+gH4ZrWS4eW6y4/o=
-Received: from BN9PR03CA0363.namprd03.prod.outlook.com (2603:10b6:408:f7::8)
- by MN2PR12MB3117.namprd12.prod.outlook.com (2603:10b6:208:d1::22) with
+ bh=0IeNR3dE235Aur/W4uNaSSGW5/OsmrS029NUXjkxG0A=;
+ b=qlcKtXBvk7nnxN4+E9s7A39L1j/1i/O1ezXwF/ort2zC2E77JAehUgC6ltaqHJjPgpMWJgnILpr80o+QxTPR2Y2csfipkEkKGskyc5+NIZ7suGuEtq4nK5jlIlr6sGQD+43/D8DHckjafP/cFamrvPzpJVJEEXdBJHabO8gogmg=
+Received: from BN0PR10CA0025.namprd10.prod.outlook.com (2603:10b6:408:143::22)
+ by MW4PR12MB5668.namprd12.prod.outlook.com (2603:10b6:303:16b::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Mon, 7 Mar
- 2022 21:35:00 +0000
-Received: from BN8NAM11FT031.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:f7:cafe::94) by BN9PR03CA0363.outlook.office365.com
- (2603:10b6:408:f7::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.21; Mon, 7 Mar
+ 2022 21:34:57 +0000
+Received: from BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:143:cafe::93) by BN0PR10CA0025.outlook.office365.com
+ (2603:10b6:408:143::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14 via Frontend
- Transport; Mon, 7 Mar 2022 21:35:00 +0000
+ Transport; Mon, 7 Mar 2022 21:34:56 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -35,13 +35,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT031.mail.protection.outlook.com (10.13.177.25) with Microsoft SMTP
+ BN8NAM11FT048.mail.protection.outlook.com (10.13.177.117) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:35:00 +0000
+ 15.20.5038.14 via Frontend Transport; Mon, 7 Mar 2022 21:34:56 +0000
 Received: from sbrijesh-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Mon, 7 Mar
- 2022 15:34:57 -0600
+ 2022 15:34:47 -0600
 From: Brijesh Singh <brijesh.singh@amd.com>
 To: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-efi@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
@@ -63,9 +63,9 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	<tony.luck@intel.com>, <marcorr@google.com>,
 	<sathyanarayanan.kuppuswamy@linux.intel.com>, Brijesh Singh
 	<brijesh.singh@amd.com>
-Subject: [PATCH v12 23/46] x86/head/64: Re-enable stack protection
-Date: Mon, 7 Mar 2022 15:33:33 -0600
-Message-ID: <20220307213356.2797205-24-brijesh.singh@amd.com>
+Subject: [PATCH v12 17/46] x86/sev: Register GHCB memory when SEV-SNP is active
+Date: Mon, 7 Mar 2022 15:33:27 -0600
+Message-ID: <20220307213356.2797205-18-brijesh.singh@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220307213356.2797205-1-brijesh.singh@amd.com>
 References: <20220307213356.2797205-1-brijesh.singh@amd.com>
@@ -82,175 +82,197 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ed9d8c91-9c8b-4073-c4a0-08da00825560
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3117:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b305bd5-18f5-4614-512f-08da0082532e
+X-MS-TrafficTypeDiagnostic: MW4PR12MB5668:EE_
 X-Microsoft-Antispam-PRVS:
-	<MN2PR12MB311783E4F5AD7C83BD93E439E5089@MN2PR12MB3117.namprd12.prod.outlook.com>
+	<MW4PR12MB5668A25A6D7C2317E89D6493E5089@MW4PR12MB5668.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	YAXic2TkWsbm2xJ/SlMMqj1LJqrQPLDtJX9a0AOgunA5yBLeHOUDYk80IX42YI6VulPD3XClXVPRNO52mWmStSqi8tW5SrI6+7vylc7xlBs5zgMdsyDSK+pkO3ZAL4vOTXy18DsMKO2vPJDNApKBkg962cijtUOi3/v1Hivrt2l8jG+A5C/qpSmSCvrzYZRkbtf4DoQwl3r7BkenfW40HgGEIEqYbCkVIk2prB1cIw/zES6IKqxwxogchGS48oOWJoUt2lOPFSoHmk7cMgw5UfZudjZomlMKIJDy1ouJewIAumqTf4SMhWxx4XjSTEh3T65+kX2jIPNi4eszeJKvxnD+MypaDVwYpX8h5J4SY7egGMcnF0KMcpIUC1vKOC037zHODQNqktA6OyQ5SAGtZd7AIAeYcWKy92Ev292cL6j0oL91p5EKGKgbV5PjOQWJXnokqTBaKTgt3N+TrlX/ZsIQIPi3Va/i0WUp/IvhWcd/9cxpVEjOibx4n5vTPzKz3hmi5AfismnDHdrl5UKAQ3cLaCf8qdQ7uQJ0WVf04NO/LDNB9ZWmFt2eHdwgw3YVSHFUISSJSVBQErAhA28IAeR8LN8xppns0u+aCKNzokGMkrjZ0o3DKlbG88zOhgI8c09FmZ1tQ2GbtfA5P7gctqnAuCrsFxet2z/UG7ahIp3ZGqgrb3M1b2OOP1bChrGkMkE4KIxx4Yzzu+pj7qpu0Ffg0ftTVvyV5FqQiKFMKoA=
+	QtwUkbo5RiXatxgjUSiztKiwGZ2kCxWSLMLjGZjUuVsbAj6IcQCE1hZwLQPMd97rcVlb4WCbXURm6o6WUVyIs+RlmcxR3VRqVbLIdum+PQ31XI6BWbhbb8PB3VvrWNfzcsZNiby0V3+3JZsH/ClMmGjJ915OJiUhuPkxaLVlWB3C04fcTZBB5px/GYKPpCTdR6MhFfLKmgZpcngSazJsXhpCwARzVpVWUz9syOHqqIgydrtfcAFrXVob0umeM3D1kkGZ5Uc/Pf7lujt1wyOGXxxI2VJ63MxDsK1B8yuCIkid7ZinbDgxb/6sB+A8X023fVLHEwxE5a0HxfCYZdXkfIlZBBPP66IolRzQ9R/c80jqZ2/FdKt4ukSYz4nQhCdY54Z+at7xUdOdaUIs0skwXfr61rjx2YSKFLjaxZp3IXXh+VGxSxi3a5fAdTlHebKbr/tdECLQ+4vPmQ1cTcKUnOT0aBnwN5x6wK43m5sLhCs2NWCcwtXglUZeWIuQnETqN/42P441TtkE0gKWTw7lvkUKcLK9JSxPZaTz7qphat64F8BReSSMxnIYsLWFuBswmn5r7CIr0qnSnfQdxst2tQGnHJ5DqywERyThFoGJQDUn5WL4dcGrgo247RqAdslsKgYxffTMtjnShkUSRPxFIPIn/qPJqfrWFh0e7y1FRvzI3Xtn2uk3gnRTILSTHq93qNoPle/zI3YOZ5oGBvaH6xPkdX5ZKtcyf2oO8zSVt5I=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(40460700003)(7406005)(54906003)(8676002)(5660300002)(110136005)(8936002)(2616005)(186003)(316002)(16526019)(1076003)(81166007)(356005)(26005)(36756003)(7416002)(70586007)(70206006)(508600001)(6666004)(82310400004)(36860700001)(44832011)(47076005)(4326008)(86362001)(83380400001)(336012)(2906002)(426003)(7696005)(36900700001)(2101003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(36840700001)(40470700004)(46966006)(336012)(40460700003)(8936002)(356005)(81166007)(82310400004)(5660300002)(7406005)(7416002)(36860700001)(70586007)(16526019)(47076005)(70206006)(44832011)(4326008)(83380400001)(8676002)(86362001)(36756003)(26005)(316002)(186003)(54906003)(6666004)(7696005)(1076003)(110136005)(2616005)(2906002)(508600001)(426003)(2101003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:35:00.3718
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2022 21:34:56.7014
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed9d8c91-9c8b-4073-c4a0-08da00825560
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b305bd5-18f5-4614-512f-08da0082532e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT031.eop-nam11.prod.protection.outlook.com
+	BN8NAM11FT048.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3117
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5668
 
-From: Michael Roth <michael.roth@amd.com>
+The SEV-SNP guest is required by the GHCB spec to register the GHCB's
+Guest Physical Address (GPA). This is because the hypervisor may prefer
+that a guest use a consistent and/or specific GPA for the GHCB associated
+with a vCPU. For more information, see the GHCB specification section
+"GHCB GPA Registration".
 
-Due to commit 103a4908ad4d ("x86/head/64: Disable stack protection for
-head$(BITS).o"), kernel/head{32,64}.c are compiled with
--fno-stack-protector to allow a call to set_bringup_idt_handler(), which
-would otherwise have stack protection enabled with
-CONFIG_STACKPROTECTOR_STRONG.
-
-While sufficient for that case, there may still be issues with calls to
-any external functions that were compiled with stack protection enabled
-that in-turn make stack-protected calls, or if the exception handlers
-set up by set_bringup_idt_handler() make calls to stack-protected
-functions.
-
-Subsequent patches for SEV-SNP CPUID validation support will introduce
-both such cases. Attempting to disable stack protection for everything
-in scope to address that is prohibitive since much of the code, like
-SEV-ES #VC handler, is shared code that remains in use after boot and
-could benefit from having stack protection enabled. Attempting to inline
-calls is brittle and can quickly balloon out to library/helper code
-where that's not really an option.
-
-Instead, re-enable stack protection for head32.c/head64.c, and make the
-appropriate changes to ensure the segment used for the stack canary is
-initialized in advance of any stack-protected C calls.
-
-For head64.c:
-
-- The BSP will enter from startup_64() and call into C code
-  (startup_64_setup_env()) shortly after setting up the stack, which
-  may result in calls to stack-protected code. Set up %gs early to allow
-  for this safely.
-- APs will enter from secondary_startup_64*(), and %gs will be set up
-  soon after. There is one call to C code prior to %gs being setup
-  (__startup_secondary_64()), but it is only to fetch 'sme_me_mask'
-  global, so just load 'sme_me_mask' directly instead, and remove the
-  now-unused __startup_secondary_64() function.
-
-For head32.c:
-
-- BSPs/APs will set %fs to __BOOT_DS prior to any C calls. In recent
-  kernels, the compiler is configured to access the stack canary at
-  %fs:__stack_chk_guard [1], which overlaps with the initial per-cpu
-  '__stack_chk_guard' variable in the initial/"master" .data..percpu
-  area. This is sufficient to allow access to the canary for use
-  during initial startup, so no changes are needed there.
-
-[1] commit 3fb0fdb3bbe7 ("x86/stackprotector/32: Make the canary into a regular percpu variable")
-
-Suggested-by: Joerg Roedel <jroedel@suse.de> #for 64-bit %gs set up
-Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 ---
- arch/x86/include/asm/setup.h |  1 -
- arch/x86/kernel/Makefile     |  2 --
- arch/x86/kernel/head64.c     |  9 ---------
- arch/x86/kernel/head_64.S    | 24 +++++++++++++++++++++---
- 4 files changed, 21 insertions(+), 15 deletions(-)
+ arch/x86/include/asm/sev.h   |  2 ++
+ arch/x86/kernel/cpu/common.c |  4 +++
+ arch/x86/kernel/head64.c     |  4 ++-
+ arch/x86/kernel/sev-shared.c |  2 +-
+ arch/x86/kernel/sev.c        | 47 +++++++++++++++++++++++++++---------
+ 5 files changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index a12458a7a8d4..72ede9159951 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -49,7 +49,6 @@ extern unsigned long saved_video_mode;
- extern void reserve_standard_io_resources(void);
- extern void i386_reserve_resources(void);
- extern unsigned long __startup_64(unsigned long physaddr, struct boot_params *bp);
--extern unsigned long __startup_secondary_64(void);
- extern void startup_64_setup_env(unsigned long physbase);
- extern void early_setup_idt(void);
- extern void __init do_early_exception(struct pt_regs *regs, int trapnr);
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 6462e3dd98f4..ff4da5784d63 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -46,8 +46,6 @@ endif
- # non-deterministic coverage.
- KCOV_INSTRUMENT		:= n
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index e37451849165..48df02713ee0 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -122,6 +122,7 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
  
--CFLAGS_head$(BITS).o	+= -fno-stack-protector
--
- CFLAGS_irq.o := -I $(srctree)/$(src)/../include/asm/trace
+ 	return rc;
+ }
++void setup_ghcb(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -130,6 +131,7 @@ static inline void sev_es_nmi_complete(void) { }
+ static inline int sev_es_efi_map_ghcbs(pgd_t *pgd) { return 0; }
+ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate) { return 0; }
+ static inline int rmpadjust(unsigned long vaddr, bool rmp_psize, unsigned long attrs) { return 0; }
++static inline void setup_ghcb(void) { }
+ #endif
  
- obj-y			:= process_$(BITS).o signal.o
+ #endif
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 64deb7727d00..2e0dd7f4018e 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -59,6 +59,7 @@
+ #include <asm/cpu_device_id.h>
+ #include <asm/uv/uv.h>
+ #include <asm/sigframe.h>
++#include <asm/sev.h>
+ 
+ #include "cpu.h"
+ 
+@@ -2067,6 +2068,9 @@ void cpu_init_exception_handling(void)
+ 
+ 	load_TR_desc();
+ 
++	/* GHCB need to be setup to handle #VC. */
++	setup_ghcb();
++
+ 	/* Finally load the IDT */
+ 	load_current_idt();
+ }
 diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 656d2f3e2cf0..c185f4831498 100644
+index cbc285ddc4ac..83514b9827e6 100644
 --- a/arch/x86/kernel/head64.c
 +++ b/arch/x86/kernel/head64.c
-@@ -318,15 +318,6 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	return sme_postprocess_startup(bp, pmd);
+@@ -597,8 +597,10 @@ static void startup_64_load_idt(unsigned long physbase)
+ void early_setup_idt(void)
+ {
+ 	/* VMM Communication Exception */
+-	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
++	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
++		setup_ghcb();
+ 		set_bringup_idt_handler(bringup_idt_table, X86_TRAP_VC, vc_boot_ghcb);
++	}
+ 
+ 	bringup_idt_descr.address = (unsigned long)bringup_idt_table;
+ 	native_load_idt(&bringup_idt_descr);
+diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
+index e9ff13cd90b0..3aaef1a18ffe 100644
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -68,7 +68,7 @@ static u64 get_hv_features(void)
+ 	return GHCB_MSR_HV_FT_RESP_VAL(val);
  }
  
--unsigned long __startup_secondary_64(void)
--{
--	/*
--	 * Return the SME encryption mask (if SME is active) to be used as a
--	 * modifier for the initial pgdir entry programmed into CR3.
--	 */
--	return sme_get_me_mask();
--}
--
- /* Wipe all early page tables except for the kernel symbol map */
- static void __init reset_early_page_tables(void)
+-static void __maybe_unused snp_register_ghcb_early(unsigned long paddr)
++static void snp_register_ghcb_early(unsigned long paddr)
  {
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 9c2c3aff5ee4..9e84263bcb94 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -65,6 +65,22 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	leaq	(__end_init_task - FRAME_SIZE)(%rip), %rsp
+ 	unsigned long pfn = paddr >> PAGE_SHIFT;
+ 	u64 val;
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index cb20fb0c608e..cc382c4f89ef 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -41,7 +41,7 @@ static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+  * Needs to be in the .data section because we need it NULL before bss is
+  * cleared
+  */
+-static struct ghcb __initdata *boot_ghcb;
++static struct ghcb *boot_ghcb __section(".data");
  
- 	leaq	_text(%rip), %rdi
+ /* Bitmap of SEV features supported by the hypervisor */
+ static u64 sev_hv_features __ro_after_init;
+@@ -647,15 +647,40 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ 	return ret;
+ }
+ 
+-/*
+- * This function runs on the first #VC exception after the kernel
+- * switched to virtual addresses.
+- */
+-static bool __init sev_es_setup_ghcb(void)
++static void snp_register_per_cpu_ghcb(void)
+ {
++	struct sev_es_runtime_data *data;
++	struct ghcb *ghcb;
++
++	data = this_cpu_read(runtime_data);
++	ghcb = &data->ghcb_page;
++
++	snp_register_ghcb_early(__pa(ghcb));
++}
++
++void setup_ghcb(void)
++{
++	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++		return;
++
+ 	/* First make sure the hypervisor talks a supported protocol. */
+ 	if (!sev_es_negotiate_protocol())
+-		return false;
++		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
 +
 +	/*
-+	 * initial_gs points to initial fixed_percpu_data struct with storage for
-+	 * the stack protector canary. Global pointer fixups are needed at this
-+	 * stage, so apply them as is done in fixup_pointer(), and initialize %gs
-+	 * such that the canary can be accessed at %gs:40 for subsequent C calls.
++	 * Check whether the runtime #VC exception handler is active.
++	 * The runtime exception handler uses the per-CPU GHCB page, and
++	 * the GHCB page would be setup by sev_es_init_vc_handling().
++	 *
++	 * If SNP is active, then register the per-CPU GHCB page so that
++	 * the runtime exception handler can use it.
 +	 */
-+	movl	$MSR_GS_BASE, %ecx
-+	movq	initial_gs(%rip), %rax
-+	movq	$_text, %rdx
-+	subq	%rdx, %rax
-+	addq	%rdi, %rax
-+	movq	%rax, %rdx
-+	shrq	$32,  %rdx
-+	wrmsr
++	if (initial_vc_handler == (unsigned long)kernel_exc_vmm_communication) {
++		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++			snp_register_per_cpu_ghcb();
 +
- 	pushq	%rsi
- 	call	startup_64_setup_env
- 	popq	%rsi
-@@ -145,9 +161,11 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	 * Retrieve the modifier (SME encryption mask if SME is active) to be
- 	 * added to the initial pgdir entry that will be programmed into CR3.
- 	 */
--	pushq	%rsi
--	call	__startup_secondary_64
--	popq	%rsi
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	movq	sme_me_mask, %rax
-+#else
-+	xorq	%rax, %rax
-+#endif
++		return;
++	}
  
- 	/* Form the CR3 value being sure to include the CR3 modifier */
- 	addq	$(init_top_pgt - __START_KERNEL_map), %rax
+ 	/*
+ 	 * Clear the boot_ghcb. The first exception comes in before the bss
+@@ -666,7 +691,9 @@ static bool __init sev_es_setup_ghcb(void)
+ 	/* Alright - Make the boot-ghcb public */
+ 	boot_ghcb = &boot_ghcb_page;
+ 
+-	return true;
++	/* SNP guest requires that GHCB GPA must be registered. */
++	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		snp_register_ghcb_early(__pa(&boot_ghcb_page));
+ }
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+@@ -1397,10 +1424,6 @@ bool __init handle_vc_boot_ghcb(struct pt_regs *regs)
+ 	struct es_em_ctxt ctxt;
+ 	enum es_result result;
+ 
+-	/* Do initial setup or terminate the guest */
+-	if (unlikely(boot_ghcb == NULL && !sev_es_setup_ghcb()))
+-		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+-
+ 	vc_ghcb_invalidate(boot_ghcb);
+ 
+ 	result = vc_init_em_ctxt(&ctxt, regs, exit_code);
 -- 
 2.25.1
 
