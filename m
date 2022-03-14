@@ -1,84 +1,142 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E902B1B73
-	for <linux-coco@lists.linux.dev>; Mon, 14 Mar 2022 15:37:16 +0000 (UTC)
-Received: by mail-lj1-f176.google.com with SMTP id q5so22469346ljb.11
-        for <linux-coco@lists.linux.dev>; Mon, 14 Mar 2022 08:37:16 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB137A
+	for <linux-coco@lists.linux.dev>; Mon, 14 Mar 2022 17:34:56 +0000 (UTC)
+Received: by mail-lf1-f54.google.com with SMTP id b28so16823495lfc.4
+        for <linux-coco@lists.linux.dev>; Mon, 14 Mar 2022 10:34:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kVfmtFDSCvEKnN5uVHIJTuQQYlsxOsGyYkf8pyY+0/Q=;
-        b=ly6VgkyE/N2DilB66OlGgTRs7XW4ikkdeCj07AHpzwPTXmBvg/eY2zam8ApFTRlOR5
-         nYovovt0CjCv0mVFSdNNRfD1GBVc98xUTH+4hYovxh5gLLysSq2wur504PTEG7cXYGzk
-         +jkPBUqOQv7lTNsllfuiADSGF2qWM+CK0jYEiKkOeZX+chYHMrRb45BRHJrBu4Jf8w6g
-         g8K5/Gotpcv8hvk7q9iB5jA2GHMwmm9zGE4Zz7n+REZaUOmbpBXU/YkfD9h+I400cL5l
-         XV0ZgIKwTM1nv/8HsVU0lty08o+lppZiLyPoP2ZAWtdnBTDuHImmVUyRAagMg+LpSgsO
-         R1yg==
+         :cc:content-transfer-encoding;
+        bh=8A3cxPbkf5/imDcGfqUsgEkAZ/Yq4pAldU3s8K2mQzc=;
+        b=tfX+LbUtQWULAhzeWtmsYWPMAURZzqdsjSM/aDGl+qglrfZ5bNzfGleMtHFaTt3jZv
+         3UyQ5yndXqQ8IyXR6tjdhKwpYv9aaculLUgdA6PMil4v28IhdiEX2uhZI0KYNH460tQ6
+         GKcfKXGVcGVxcLcjPvKm3Y+xr7jKp0lTmNP15knWHThq1yVvN8ocGYyB/el//U+71WsO
+         9kxkVPpZ6bjpiPklFVZMRSxBgbjd89SZz6rNYPQo0Uto/u5sjUUJwJwIeOikglGO6VNE
+         lvYLAnfBrGRNUOM81j19C9LApg+tiwD55XcFvJbf4tDEynsa5BMJpjgefQARvNRiNVXn
+         Zf9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kVfmtFDSCvEKnN5uVHIJTuQQYlsxOsGyYkf8pyY+0/Q=;
-        b=5ja2kEYt+DtNW/5DTu70Hbo3wID9f6LKpnNGG5ZTAQ2MvSMRAwAH81ktMHMSQw/I1w
-         /sBSlePE7vBNoYQBgzVSyYG/TlJCFY9AxLWsW3tQAixKnLfUFHH+7d38R736Yer6lAaF
-         x3RbxgprAwAL2SqlUkkHSbAoiWvMJIYRA4VLL63FPEeyoKfqq3xzkZxbLscdiNZ47cKW
-         9xw1yvaw6LE5B3luVl0cokIvf7u/uvve+meOodP/VKPoRsUFj48hwIdqn9eBWjHKFcYE
-         QkMx98ovf7NbxSV86LUB1G+g2v/0N7yz1oQQsVMl/oEDlhi6SZz7cK2arxklz79WlM3r
-         TF2Q==
-X-Gm-Message-State: AOAM530y+V3jLfXxCL8lyE9VCP2xb9wKnNTwh4L1CX437KUAJymGK7mX
-	LkXSInGLfG0osST6qAB1dIQr6b7CBf9LPpw9TCM3Aw==
-X-Google-Smtp-Source: ABdhPJypcCytiOSWiftk8g5xIcm1i6Q4xC23lRZ00aVkchh307Y/e92ibN4O2ilaRQP1fEwUjwULABkE209J2py0EZQ=
-X-Received: by 2002:a2e:9654:0:b0:244:bb3f:6555 with SMTP id
- z20-20020a2e9654000000b00244bb3f6555mr14586391ljh.282.1647272234801; Mon, 14
- Mar 2022 08:37:14 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=8A3cxPbkf5/imDcGfqUsgEkAZ/Yq4pAldU3s8K2mQzc=;
+        b=aV+pptTwIdQ3W+DZCUXEF06wFq1FdJPSwPdbXix2KxP2Gul8F6fojyiL5VeQdHfUcU
+         OYQxzcPQ5rzTRv4xAHFvcSLciu339DjCpE+hx+UxpAyc7/rFgH3XqmpOCXWDE57SPi94
+         iXYxCAK2MX37wjet36Cs0RGMGxOzcbKabDldQwN+cKGFOuQ2U2oukeWYcGEW9eq7ev+2
+         IcoBQlVHmFhf/w1jVWyXcRPyaQU97fKloKwIABynOoahm9w3mFg7lQVx8gBBbDTWxm6A
+         mRe1Bv6AVrU9FiIcGCuQ9U+MOWsFxhMLVThl9n+Ay2z9xrxFYZAvjrGFWxjFfcu2vwwK
+         Pf3w==
+X-Gm-Message-State: AOAM532k4JXZvOJwgh64/359a9a9+oDmRCcA63yOp86J+pQL9f/aW9x1
+	HKXvXy3k0Wa6RcF2E8mPV9brk8ilVmQnxA8z09qpCw==
+X-Google-Smtp-Source: ABdhPJwyJUQnuBymc31Rm47cQ/NdVZrkI9p8VQjPdQxJrZbxv7kE4yinBibZy7OcE53BDtGYf0q134NUBFysmwbOxgc=
+X-Received: by 2002:a19:ca07:0:b0:448:7eab:f1a with SMTP id
+ a7-20020a19ca07000000b004487eab0f1amr7790394lfg.456.1647279294144; Mon, 14
+ Mar 2022 10:34:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20220307213356.2797205-1-brijesh.singh@amd.com> <20220307213356.2797205-47-brijesh.singh@amd.com>
-In-Reply-To: <20220307213356.2797205-47-brijesh.singh@amd.com>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com>
+ <20220307213356.2797205-33-brijesh.singh@amd.com> <CAMkAt6pO0xZb2pye-VEKdFQ_dYFgLA21fkYmnYPTWo8mzPrKDQ@mail.gmail.com>
+ <20220310212504.2kt6sidexljh2s6p@amd.com> <YiuBqZnjEUyMfBMu@suse.de>
+In-Reply-To: <YiuBqZnjEUyMfBMu@suse.de>
 From: Peter Gonda <pgonda@google.com>
-Date: Mon, 14 Mar 2022 09:37:03 -0600
-Message-ID: <CAMkAt6pTwo0e6deCtdY7zjEi7-45Mb_Pr7R0uK8WL8uUZAadRw@mail.gmail.com>
-Subject: Re: [PATCH v12 46/46] virt: sevguest: Add documentation for SEV-SNP
- CPUID Enforcement
-To: Brijesh Singh <brijesh.singh@amd.com>
-Cc: "the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+Date: Mon, 14 Mar 2022 11:34:42 -0600
+Message-ID: <CAMkAt6r==_=U4Ha6ZTmii-JL3htJ3-dD4tc+QBqN7dVt711N2A@mail.gmail.com>
+Subject: Re: [PATCH v12 32/46] x86/compressed/64: Add support for SEV-SNP
+ CPUID table in #VC handlers
+To: Joerg Roedel <jroedel@suse.de>
+Cc: Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	"the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
 	kvm list <kvm@vger.kernel.org>, linux-efi@vger.kernel.org, 
 	platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev, 
 	linux-mm@kvack.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
 	Peter Zijlstra <peterz@infradead.org>, 
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
 	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, 
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com, 
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, 
+	Andi Kleen <ak@linux.intel.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com, 
 	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
 	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 7, 2022 at 2:35 PM Brijesh Singh <brijesh.singh@amd.com> wrote:
+On Fri, Mar 11, 2022 at 10:06 AM Joerg Roedel <jroedel@suse.de> wrote:
 >
-> From: Michael Roth <michael.roth@amd.com>
+> On Thu, Mar 10, 2022 at 03:25:04PM -0600, Michael Roth wrote:
+> > Joerg, do you have more background on that? Would it make sense, outsid=
+e
+> > of this series, to change it to a terminate? Maybe with a specific set
+> > of error codes for ES_{OK,UNSUPPORTED,VMM_ERROR,DECODE_FAILED}?
 >
-> Update the documentation with information regarding SEV-SNP CPUID
-> Enforcement details and what sort of assurances it provides to guests.
+> This seems to be a left over from development of the SEV-ES guest
+> patch-set. I wanted to see whether the VM crashed due to a triple fault
+> or an error in the #VC handler. The halt loop can be replaced by
+> termination request now.
 >
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > > I am still working on why the early_printk()s in that function are no=
+t
+> > > working, it seems that they lead to a different halt.
+> >
+> > I don't see a different halt. They just don't seem to print anything.
+> > (keep in mind you still need to advance the IP or else the guest is
+> > still gonna end up spinning here, even if you're removing the halt loop
+> > for testing purposes)
+>
+> The early_printks() also cause #VC exceptions, and if that handling is
+> broken for some reason nothing will be printed.
+>
+> >
+> > > working, it seems that they lead to a different halt. Have you tested
+> > > any of those error paths manually? For example if you set your CPUID
+> > > bits to explicitly fail here do you see the expected printks?
+> >
+> > I think at that point in the code, when the XSAVE stuff is setup, the
+> > console hasn't been enabled yet, so messages would get buffered until t=
+hey
+> > get flushed later (which won't happen since there's halt loop after). I
+> > know in some cases devs will dump the log buffer from memory instead to=
+ get
+> > at the error messages for early failures. (Maybe that's also why Joerg
+> > decided to use a halt loop there instead of terminating?)
+>
+> It is hard to dump the log-buffer from encrypted memory :) But I
+> remember having seen messages from these early_printks under SEV-ES for
+> different bugs. Not sure why they don't appear in this situation.
+>
+> > So maybe reworking the error handling in handle_vc_boot_ghcb() to use
+> > sev_es_terminate() might be warranted, but probably worth checking with
+> > Joerg first, and should be done as a separate series since it is not
+> > SNP-related.
+>
+> I am fine with this change.
 
-Tested-by: Peter Gonda <pgonda@google.com>
+I'll send a patch out for that.
 
-I've booted these V12 patches on our internal KVM stack and then
-tested these new driver ioctls with some basic usage. Feel free to add
-this tag to all the driver patches, I am not sure if a basic boot test
-qualifies this for the entire series though.
+I was also thinking about adding a vcpu run exit reason for
+termination. It would be nice to get a more informative exit reason
+than -EINVAL in userspace. Thoughts?
+
+>
+> Regards,
+>
+> --
+> J=C3=B6rg R=C3=B6del
+> jroedel@suse.de
+>
+> SUSE Software Solutions Germany GmbH
+> Maxfeldstr. 5
+> 90409 N=C3=BCrnberg
+> Germany
+>
+> (HRB 36809, AG N=C3=BCrnberg)
+> Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev
+>
