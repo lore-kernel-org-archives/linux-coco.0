@@ -1,86 +1,84 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2FF2F36
-	for <linux-coco@lists.linux.dev>; Thu, 17 Mar 2022 13:11:37 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7DE9A1F38D;
-	Thu, 17 Mar 2022 13:11:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1647522690; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GvO+RA/zs1DpQeEsRi/ZP4j6ZeSIQjHSJwuJ153Rf3w=;
-	b=jGpIYhyXi/D9eAEdLR8J7hITGu1XjTKfh+W1wVTZTt58Hp/BmrWlh4q2KnJRmyGRa/I9SU
-	vJgvTUNvAXvTMDkcBbG8Bys2iZ5qldetivZkYcqf3efpIGwGudGjOH3aRLThvvX3p/fqGF
-	nI/W/9Wr+0/XSVgPMW1P6lyBOe7aw9U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1647522690;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GvO+RA/zs1DpQeEsRi/ZP4j6ZeSIQjHSJwuJ153Rf3w=;
-	b=iEDCfo3fck1MScC4WHdS0jyL0VazxFMLAuGLLqw6FpaDjwTYrd852IK3+UvuHO6nraQ+DY
-	aF3Fl+w78/gOF1BA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4ED5313B64;
-	Thu, 17 Mar 2022 13:11:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id EoYKE4IzM2I+CAAAMHmgww
-	(envelope-from <bp@suse.de>); Thu, 17 Mar 2022 13:11:30 +0000
-Date: Thu, 17 Mar 2022 13:11:27 +0000
-From: Boris Petkov <bp@suse.de>
-To: Peter Gonda <pgonda@google.com>, Joerg Roedel <jroedel@suse.de>
-CC: Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>,
- the arch/x86 maintainers <x86@kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- kvm list <kvm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- platform-driver-x86@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
- Sergio Lopez <slp@redhat.com>, linux-efi@vger.kernel.org,
- linux-coco@lists.linux.dev, Ingo Molnar <mingo@redhat.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>,
- linux-mm@kvack.org, Jim Mattson <jmattson@google.com>,
- Ard Biesheuvel <ardb@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, David Rientjes <rientjes@google.com>,
- Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
- Sean Christopherson <seanjc@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Paolo Bonzini <pbonzini@redhat.com>, Andi Kleen <ak@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, brijesh.ksingh@gmail.com,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Marc Orr <marcorr@google.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v12_32/46=5D_x86/compressed/64=3A_Add_s?= =?US-ASCII?Q?upport_for_SEV-SNP_CPUID_table_in_=23VC_handlers?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAMkAt6r==_=U4Ha6ZTmii-JL3htJ3-dD4tc+QBqN7dVt711N2A@mail.gmail.com>
-References: <20220307213356.2797205-1-brijesh.singh@amd.com> <20220307213356.2797205-33-brijesh.singh@amd.com> <CAMkAt6pO0xZb2pye-VEKdFQ_dYFgLA21fkYmnYPTWo8mzPrKDQ@mail.gmail.com> <20220310212504.2kt6sidexljh2s6p@amd.com> <YiuBqZnjEUyMfBMu@suse.de> <CAMkAt6r==_=U4Ha6ZTmii-JL3htJ3-dD4tc+QBqN7dVt711N2A@mail.gmail.com>
-Message-ID: <23728EEA-37B8-478E-9576-DBFD6FE2A294@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9084A84
+	for <linux-coco@lists.linux.dev>; Thu, 17 Mar 2022 20:20:49 +0000 (UTC)
+Received: by mail-lj1-f178.google.com with SMTP id s25so8766760lji.5
+        for <linux-coco@lists.linux.dev>; Thu, 17 Mar 2022 13:20:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ByaGDxG5X1KUgztH3SIHl92iZntE1/kLAfg0SkefsmM=;
+        b=EjumO/osdajILuAhSqSQ/Da7QJir8FzyqTQFbc4UpDaN9fXvRfiv40LZLT+eA7gkRB
+         3vrFp/3jfymjknQthDrJSkB7xwoAOJvsz5Di0hyjlAaE9gN3uxJTEwY9XyMaCjozjoVc
+         HJC0mUBHn0IlY0e7CK/wBrjxwXuJPdYWxPSteqHXsHHQSWOZ0f9MLWUtNY1JHrSc3gJ9
+         oxFmp2K8l/AnAaP3yd3LR+9tPCxgtg+5YNpkIsyFWyvAdd/pDdzg6/VBo/pOHywTahXB
+         bZW50vBFEwtpEAkIYgnseTsBUvSdfqcEbIBWmWkh9gGTDgrOtN0oRmFiO3hBahEVXDEB
+         ijZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ByaGDxG5X1KUgztH3SIHl92iZntE1/kLAfg0SkefsmM=;
+        b=TNLqNZ+qbb3J4jSjZQCue+a9kZtOyawH9yh8bkgKp3OGU+4hb6RzCHong9CHhqnVq1
+         jn0W5K/re+JZT8b/e27G698pSABntKo12vwmSvAj5p9biVIUg7BgcQPXdytc75mLLpc9
+         r6eLxs6GoAYL/tJolO7kuaPhYnKCCRxeK1/rx+VE6v20zh9D2f/wDcPx+pCrWgGW0Z8M
+         QLigQSFG8naCUYtSrACgOecoX/+oFrUQnu+SI2wJEnzdY9NQdm0q9vSUsUGh0kRtrmmt
+         TO6w47toGUBzfTQ7jAeyNYmq9Fm0xS1j0gC4tvCSDAeZA11mrR+f9faSckJhzOSQEIpf
+         XJnA==
+X-Gm-Message-State: AOAM5302pnYx5Jbz/53e54n6qwEANUTJ79NP5Kh7KJrEUo4qwr1OtJOT
+	byBbY/Cv//HhCGFju1OU5JE+785beYLk83xzS5fcTw==
+X-Google-Smtp-Source: ABdhPJwDEfWHv2pGVJTBNzJFj6FyJ5V3aLxhQdKByl4OEnifeiYrk0bX3nPrSRiG85pauGo4XpR1S23j9NY/aPe/dHg=
+X-Received: by 2002:a2e:9e81:0:b0:248:7c35:385a with SMTP id
+ f1-20020a2e9e81000000b002487c35385amr4103253ljk.527.1647548447219; Thu, 17
+ Mar 2022 13:20:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20220307213356.2797205-1-brijesh.singh@amd.com>
+ <20220307213356.2797205-33-brijesh.singh@amd.com> <CAMkAt6pO0xZb2pye-VEKdFQ_dYFgLA21fkYmnYPTWo8mzPrKDQ@mail.gmail.com>
+ <20220310212504.2kt6sidexljh2s6p@amd.com> <YiuBqZnjEUyMfBMu@suse.de>
+ <CAMkAt6r==_=U4Ha6ZTmii-JL3htJ3-dD4tc+QBqN7dVt711N2A@mail.gmail.com> <23728EEA-37B8-478E-9576-DBFD6FE2A294@suse.de>
+In-Reply-To: <23728EEA-37B8-478E-9576-DBFD6FE2A294@suse.de>
+From: Peter Gonda <pgonda@google.com>
+Date: Thu, 17 Mar 2022 14:20:35 -0600
+Message-ID: <CAMkAt6qeSYbsGCsgu0+mfYoYVxS25OMoRYzhEebFvfZzNkxOaA@mail.gmail.com>
+Subject: Re: [PATCH v12 32/46] x86/compressed/64: Add support for SEV-SNP
+ CPUID table in #VC handlers
+To: Boris Petkov <bp@suse.de>
+Cc: Joerg Roedel <jroedel@suse.de>, Michael Roth <michael.roth@amd.com>, 
+	Brijesh Singh <brijesh.singh@amd.com>, "the arch/x86 maintainers" <x86@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, kvm list <kvm@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, platform-driver-x86@vger.kernel.org, 
+	Andy Lutomirski <luto@kernel.org>, Sergio Lopez <slp@redhat.com>, linux-efi@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Ingo Molnar <mingo@redhat.com>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Tony Luck <tony.luck@intel.com>, linux-mm@kvack.org, Jim Mattson <jmattson@google.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, 
+	Sean Christopherson <seanjc@google.com>, Vlastimil Babka <vbabka@suse.cz>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Andi Kleen <ak@linux.intel.com>, Borislav Petkov <bp@alien8.de>, brijesh.ksingh@gmail.com, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Marc Orr <marcorr@google.com>, 
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On March 14, 2022 5:34:42 PM UTC, Peter Gonda <pgonda@google=2Ecom> wrote:
->I was also thinking about adding a vcpu run exit reason for
->termination=2E It would be nice to get a more informative exit reason
->than -EINVAL in userspace=2E Thoughts?
+On Thu, Mar 17, 2022 at 7:11 AM Boris Petkov <bp@suse.de> wrote:
+>
+> On March 14, 2022 5:34:42 PM UTC, Peter Gonda <pgonda@google.com> wrote:
+> >I was also thinking about adding a vcpu run exit reason for
+> >termination. It would be nice to get a more informative exit reason
+> >than -EINVAL in userspace. Thoughts?
+>
+> Absolutely - it should be unambiguously clear why we're terminating.
+>
+> --
+> Sent from a small device: formatting sux and brevity is inevitable.
 
-Absolutely - it should be unambiguously clear why we're terminating=2E=20
-
---=20
-Sent from a small device: formatting sux and brevity is inevitable=2E 
+Great, I can work on that too.
