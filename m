@@ -1,84 +1,127 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9084A84
-	for <linux-coco@lists.linux.dev>; Thu, 17 Mar 2022 20:20:49 +0000 (UTC)
-Received: by mail-lj1-f178.google.com with SMTP id s25so8766760lji.5
-        for <linux-coco@lists.linux.dev>; Thu, 17 Mar 2022 13:20:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ByaGDxG5X1KUgztH3SIHl92iZntE1/kLAfg0SkefsmM=;
-        b=EjumO/osdajILuAhSqSQ/Da7QJir8FzyqTQFbc4UpDaN9fXvRfiv40LZLT+eA7gkRB
-         3vrFp/3jfymjknQthDrJSkB7xwoAOJvsz5Di0hyjlAaE9gN3uxJTEwY9XyMaCjozjoVc
-         HJC0mUBHn0IlY0e7CK/wBrjxwXuJPdYWxPSteqHXsHHQSWOZ0f9MLWUtNY1JHrSc3gJ9
-         oxFmp2K8l/AnAaP3yd3LR+9tPCxgtg+5YNpkIsyFWyvAdd/pDdzg6/VBo/pOHywTahXB
-         bZW50vBFEwtpEAkIYgnseTsBUvSdfqcEbIBWmWkh9gGTDgrOtN0oRmFiO3hBahEVXDEB
-         ijZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ByaGDxG5X1KUgztH3SIHl92iZntE1/kLAfg0SkefsmM=;
-        b=TNLqNZ+qbb3J4jSjZQCue+a9kZtOyawH9yh8bkgKp3OGU+4hb6RzCHong9CHhqnVq1
-         jn0W5K/re+JZT8b/e27G698pSABntKo12vwmSvAj5p9biVIUg7BgcQPXdytc75mLLpc9
-         r6eLxs6GoAYL/tJolO7kuaPhYnKCCRxeK1/rx+VE6v20zh9D2f/wDcPx+pCrWgGW0Z8M
-         QLigQSFG8naCUYtSrACgOecoX/+oFrUQnu+SI2wJEnzdY9NQdm0q9vSUsUGh0kRtrmmt
-         TO6w47toGUBzfTQ7jAeyNYmq9Fm0xS1j0gC4tvCSDAeZA11mrR+f9faSckJhzOSQEIpf
-         XJnA==
-X-Gm-Message-State: AOAM5302pnYx5Jbz/53e54n6qwEANUTJ79NP5Kh7KJrEUo4qwr1OtJOT
-	byBbY/Cv//HhCGFju1OU5JE+785beYLk83xzS5fcTw==
-X-Google-Smtp-Source: ABdhPJwDEfWHv2pGVJTBNzJFj6FyJ5V3aLxhQdKByl4OEnifeiYrk0bX3nPrSRiG85pauGo4XpR1S23j9NY/aPe/dHg=
-X-Received: by 2002:a2e:9e81:0:b0:248:7c35:385a with SMTP id
- f1-20020a2e9e81000000b002487c35385amr4103253ljk.527.1647548447219; Thu, 17
- Mar 2022 13:20:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86137E
+	for <linux-coco@lists.linux.dev>; Thu, 24 Mar 2022 16:33:24 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A80BC210DE;
+	Thu, 24 Mar 2022 16:33:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1648139596; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dbhz+ybJt4D/7rvN1XiATlgmvR6Aewf7ESgiyrrZ7Yw=;
+	b=kyFS+QmrdikOIAyu85pf34IM7NTSPRzvhyEohUDKptM40CJb4HZV8vkaUKwC+5GBuuI/u4
+	BdbnHKjZVlx5+V/WOQNlec7FfLgJ26UMTE3LgMRaFVxvrnKgAAKEdWcZGpeBa9B94HPCx2
+	gDLj/FR61nkJYUBKAuMTVPVZCXUiohU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1648139596;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dbhz+ybJt4D/7rvN1XiATlgmvR6Aewf7ESgiyrrZ7Yw=;
+	b=7/mvJ+Xgdou9td6wINIMvnPyezFvoELByPAGONf6IWHYhUjJRbtWHeIEI77pdLj6NAF/dw
+	8r/NnEt3LcHFjhBg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9897C132E9;
+	Thu, 24 Mar 2022 16:33:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id O6czJUydPGI2QwAAMHmgww
+	(envelope-from <bp@suse.de>); Thu, 24 Mar 2022 16:33:16 +0000
+Date: Thu, 24 Mar 2022 17:33:12 +0100
+From: Borislav Petkov <bp@suse.de>
+To: Dov Murik <dovmurik@linux.ibm.com>
+Cc: linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Andrew Scull <ascull@google.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Lenny Szubowicz <lszubowi@redhat.com>,
+	Peter Gonda <pgonda@google.com>,
+	Matthew Garrett <mjg59@srcf.ucam.org>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+	Jim Cadden <jcadden@ibm.com>,
+	Daniele Buono <dbuono@linux.vnet.ibm.com>,
+	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 0/4] Allow guest access to EFI confidential computing
+ secret area
+Message-ID: <YjydSNnG6EJ1KWx0@zn.tnic>
+References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-33-brijesh.singh@amd.com> <CAMkAt6pO0xZb2pye-VEKdFQ_dYFgLA21fkYmnYPTWo8mzPrKDQ@mail.gmail.com>
- <20220310212504.2kt6sidexljh2s6p@amd.com> <YiuBqZnjEUyMfBMu@suse.de>
- <CAMkAt6r==_=U4Ha6ZTmii-JL3htJ3-dD4tc+QBqN7dVt711N2A@mail.gmail.com> <23728EEA-37B8-478E-9576-DBFD6FE2A294@suse.de>
-In-Reply-To: <23728EEA-37B8-478E-9576-DBFD6FE2A294@suse.de>
-From: Peter Gonda <pgonda@google.com>
-Date: Thu, 17 Mar 2022 14:20:35 -0600
-Message-ID: <CAMkAt6qeSYbsGCsgu0+mfYoYVxS25OMoRYzhEebFvfZzNkxOaA@mail.gmail.com>
-Subject: Re: [PATCH v12 32/46] x86/compressed/64: Add support for SEV-SNP
- CPUID table in #VC handlers
-To: Boris Petkov <bp@suse.de>
-Cc: Joerg Roedel <jroedel@suse.de>, Michael Roth <michael.roth@amd.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, "the arch/x86 maintainers" <x86@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, kvm list <kvm@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, platform-driver-x86@vger.kernel.org, 
-	Andy Lutomirski <luto@kernel.org>, Sergio Lopez <slp@redhat.com>, linux-efi@vger.kernel.org, 
-	linux-coco@lists.linux.dev, Ingo Molnar <mingo@redhat.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Tony Luck <tony.luck@intel.com>, linux-mm@kvack.org, Jim Mattson <jmattson@google.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, 
-	Sean Christopherson <seanjc@google.com>, Vlastimil Babka <vbabka@suse.cz>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Andi Kleen <ak@linux.intel.com>, Borislav Petkov <bp@alien8.de>, brijesh.ksingh@gmail.com, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Marc Orr <marcorr@google.com>, 
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
 
-On Thu, Mar 17, 2022 at 7:11 AM Boris Petkov <bp@suse.de> wrote:
->
-> On March 14, 2022 5:34:42 PM UTC, Peter Gonda <pgonda@google.com> wrote:
-> >I was also thinking about adding a vcpu run exit reason for
-> >termination. It would be nice to get a more informative exit reason
-> >than -EINVAL in userspace. Thoughts?
->
-> Absolutely - it should be unambiguously clear why we're terminating.
->
-> --
-> Sent from a small device: formatting sux and brevity is inevitable.
+On Mon, Feb 28, 2022 at 11:42:50AM +0000, Dov Murik wrote:
+> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
+> Virtualization) allows guest owners to inject secrets into the VMs
+> memory without the host/hypervisor being able to read them.  In SEV,
+> secret injection is performed early in the VM launch process, before the
+> guest starts running.
+> 
+> OVMF already reserves designated area for secret injection (in its
+> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
+> Sev Secret area using a configuration table" [1]), but the secrets were
+> not available in the guest kernel.
+> 
+> The patch series keeps the address of the EFI-provided memory for
+> injected secrets, and exposes the secrets to userspace via securityfs
+> using a new efi_secret kernel module.  The module is autoloaded (by the
+> EFI driver) if the secret area is populated.
 
-Great, I can work on that too.
+Right, so this thing.
+
+Tom and I were talking about SEV* guest debugging today and I believe
+there might be another use case for this: SEV-ES guests cannot find out
+from an attestation report - like SNP guests can - whether they're being
+debugged or not so it would be very helpful if the fact that a -ES guest
+is being debugged, could be supplied through such a secrets blob.
+
+Because then, when I'm singlestepping the guest with gdb over the
+gdbstub, the guest could determine based on those guest-owner previously
+injected secrets whether it should allow debugging or not.
+
+And this is where your set comes in.
+
+However, I'm wondering if - instead of defining your own secrets structs
+etc - you could use the SNP confidential computing blob machinery the
+SNP set is adding. In particular:
+
+https://lore.kernel.org/all/20220307213356.2797205-30-brijesh.singh@amd.com/
+
+And you're adding another GUID but maybe you could simply use the SNP
+thing called EFI_CC_BLOB_GUID and mimick that layout.
+
+That should unify things more. And then guest kernel code could query
+the blob also for debugging policy and so on.
+
+Thoughts, opinions?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+SUSE Software Solutions Germany GmbH, GF: Ivo Totev, HRB 36809, AG Nürnberg
