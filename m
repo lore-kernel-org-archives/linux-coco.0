@@ -1,69 +1,76 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86137E
-	for <linux-coco@lists.linux.dev>; Thu, 24 Mar 2022 16:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFD123AD
+	for <linux-coco@lists.linux.dev>; Fri, 25 Mar 2022 09:24:57 +0000 (UTC)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A80BC210DE;
-	Thu, 24 Mar 2022 16:33:16 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 250B01F745;
+	Fri, 25 Mar 2022 09:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1648139596; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1648200296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Dbhz+ybJt4D/7rvN1XiATlgmvR6Aewf7ESgiyrrZ7Yw=;
-	b=kyFS+QmrdikOIAyu85pf34IM7NTSPRzvhyEohUDKptM40CJb4HZV8vkaUKwC+5GBuuI/u4
-	BdbnHKjZVlx5+V/WOQNlec7FfLgJ26UMTE3LgMRaFVxvrnKgAAKEdWcZGpeBa9B94HPCx2
-	gDLj/FR61nkJYUBKAuMTVPVZCXUiohU=
+	bh=dvN7myr0MDfmtMFkdZ1k/72coAzlBsKoPtLN6KtQ1CQ=;
+	b=v7ByO0o1ZIbFE5mwJyFIHpW2wINXiMWRB8n9NTThT5QJklwm6VB3tMgmaRuw+BNeQ0mIaN
+	Jra5pct2F+ssPqGHTFKPmuvlUlbIXuuHfP7ZhD13c++eR5WgQH6r+oHxYAsW3qQmYfS9EK
+	fRwHZZabz/9vqllHvpg8l/abeRokoCA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1648139596;
+	s=susede2_ed25519; t=1648200296;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Dbhz+ybJt4D/7rvN1XiATlgmvR6Aewf7ESgiyrrZ7Yw=;
-	b=7/mvJ+Xgdou9td6wINIMvnPyezFvoELByPAGONf6IWHYhUjJRbtWHeIEI77pdLj6NAF/dw
-	8r/NnEt3LcHFjhBg==
+	bh=dvN7myr0MDfmtMFkdZ1k/72coAzlBsKoPtLN6KtQ1CQ=;
+	b=QRumQzO+afwTgRwYz9SpOF+rQLK40HkIs3BRJSzs/Q2UZ3AYLDcTAHwYgb+zNjJPFOPBGT
+	mt53x2Wzp/5juLAQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9897C132E9;
-	Thu, 24 Mar 2022 16:33:16 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 12EAE132E9;
+	Fri, 25 Mar 2022 09:24:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id O6czJUydPGI2QwAAMHmgww
-	(envelope-from <bp@suse.de>); Thu, 24 Mar 2022 16:33:16 +0000
-Date: Thu, 24 Mar 2022 17:33:12 +0100
+	id TmabBGiKPWIRfwAAMHmgww
+	(envelope-from <bp@suse.de>); Fri, 25 Mar 2022 09:24:56 +0000
+Date: Fri, 25 Mar 2022 10:24:50 +0100
 From: Borislav Petkov <bp@suse.de>
-To: Dov Murik <dovmurik@linux.ibm.com>
-Cc: linux-efi@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
 	Andi Kleen <ak@linux.intel.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Andrew Scull <ascull@google.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	Gerd Hoffmann <kraxel@redhat.com>,
-	Lenny Szubowicz <lszubowi@redhat.com>,
-	Peter Gonda <pgonda@google.com>,
-	Matthew Garrett <mjg59@srcf.ucam.org>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-	Jim Cadden <jcadden@ibm.com>,
-	Daniele Buono <dbuono@linux.vnet.ibm.com>,
-	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 0/4] Allow guest access to EFI confidential computing
- secret area
-Message-ID: <YjydSNnG6EJ1KWx0@zn.tnic>
-References: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v12 40/46] x86/sev: add sev=debug cmdline option to dump
+ SNP CPUID table
+Message-ID: <Yj2KYsdvz7NOtF7w@zn.tnic>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com>
+ <20220307213356.2797205-41-brijesh.singh@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,52 +80,158 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220228114254.1099945-1-dovmurik@linux.ibm.com>
+In-Reply-To: <20220307213356.2797205-41-brijesh.singh@amd.com>
 
-On Mon, Feb 28, 2022 at 11:42:50AM +0000, Dov Murik wrote:
-> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-> Virtualization) allows guest owners to inject secrets into the VMs
-> memory without the host/hypervisor being able to read them.  In SEV,
-> secret injection is performed early in the VM launch process, before the
-> guest starts running.
+On Mon, Mar 07, 2022 at 03:33:50PM -0600, Brijesh Singh wrote:
+> From: Michael Roth <michael.roth@amd.com>
 > 
-> OVMF already reserves designated area for secret injection (in its
-> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
-> Sev Secret area using a configuration table" [1]), but the secrets were
-> not available in the guest kernel.
+> For debugging purposes it is very useful to have a way to see the full
+> contents of the SNP CPUID table provided to a guest. Add an sev=debug
+> kernel command-line option to do so.
 > 
-> The patch series keeps the address of the EFI-provided memory for
-> injected secrets, and exposes the secrets to userspace via securityfs
-> using a new efi_secret kernel module.  The module is autoloaded (by the
-> EFI driver) if the secret area is populated.
+> Also introduce some infrastructure so that additional options can be
+> specified via sev=option1[,option2] over time in a consistent manner.
+> 
+> Suggested-by: Borislav Petkov <bp@alien8.de>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  .../admin-guide/kernel-parameters.txt         |  2 +
+>  Documentation/x86/x86_64/boot-options.rst     | 14 +++++
+>  arch/x86/kernel/sev.c                         | 58 +++++++++++++++++++
+>  3 files changed, 74 insertions(+)
 
-Right, so this thing.
+I simplified the string parsing:
 
-Tom and I were talking about SEV* guest debugging today and I believe
-there might be another use case for this: SEV-ES guests cannot find out
-from an attestation report - like SNP guests can - whether they're being
-debugged or not so it would be very helpful if the fact that a -ES guest
-is being debugged, could be supplied through such a secrets blob.
+---
+From: Michael Roth <michael.roth@amd.com>
+Date: Mon, 7 Mar 2022 15:33:50 -0600
+Subject: [PATCH] x86/sev: Add a sev= cmdline option
 
-Because then, when I'm singlestepping the guest with gdb over the
-gdbstub, the guest could determine based on those guest-owner previously
-injected secrets whether it should allow debugging or not.
+For debugging purposes it is very useful to have a way to see the full
+contents of the SNP CPUID table provided to a guest. Add an sev=debug
+kernel command-line option to do so.
 
-And this is where your set comes in.
+Also introduce some infrastructure so that additional options can be
+specified via sev=option1[,option2] over time in a consistent manner.
 
-However, I'm wondering if - instead of defining your own secrets structs
-etc - you could use the SNP confidential computing blob machinery the
-SNP set is adding. In particular:
+  [ bp: Massage, simplify string parsing. ]
 
-https://lore.kernel.org/all/20220307213356.2797205-30-brijesh.singh@amd.com/
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220307213356.2797205-41-brijesh.singh@amd.com
+---
+ .../admin-guide/kernel-parameters.txt         |  2 +
+ Documentation/x86/x86_64/boot-options.rst     | 14 ++++++
+ arch/x86/kernel/sev.c                         | 44 +++++++++++++++++++
+ 3 files changed, 60 insertions(+)
 
-And you're adding another GUID but maybe you could simply use the SNP
-thing called EFI_CC_BLOB_GUID and mimick that layout.
-
-That should unify things more. And then guest kernel code could query
-the blob also for debugging policy and so on.
-
-Thoughts, opinions?
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 7123524a86b8..5f7fa7c141dc 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5229,6 +5229,8 @@
+ 
+ 	serialnumber	[BUGS=X86-32]
+ 
++	sev=option[,option...] [X86-64] See Documentation/x86/x86_64/boot-options.rst
++
+ 	shapers=	[NET]
+ 			Maximal number of shapers.
+ 
+diff --git a/Documentation/x86/x86_64/boot-options.rst b/Documentation/x86/x86_64/boot-options.rst
+index ccb7e86bf8d9..eaecb5d89167 100644
+--- a/Documentation/x86/x86_64/boot-options.rst
++++ b/Documentation/x86/x86_64/boot-options.rst
+@@ -317,3 +317,17 @@ Miscellaneous
+     Do not use GB pages for kernel direct mappings.
+   gbpages
+     Use GB pages for kernel direct mappings.
++
++
++AMD SEV (Secure Encrypted Virtualization)
++=========================================
++Options relating to AMD SEV, specified via the following format:
++
++::
++
++   sev=option1[,option2]
++
++The available options are:
++
++   debug
++     Enable debug messages.
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index c8733725d8bf..70ecc6e2f251 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -112,6 +112,13 @@ DEFINE_STATIC_KEY_FALSE(sev_es_enable_key);
+ 
+ static DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
+ 
++struct sev_config {
++	__u64 debug		: 1,
++	      __reserved	: 63;
++};
++
++static struct sev_config sev_cfg __read_mostly;
++
+ static __always_inline bool on_vc_stack(struct pt_regs *regs)
+ {
+ 	unsigned long sp = regs->sp;
+@@ -2042,6 +2049,23 @@ void __init snp_abort(void)
+ 	sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+ }
+ 
++static void dump_cpuid_table(void)
++{
++	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
++	int i = 0;
++
++	pr_info("count=%d reserved=0x%x reserved2=0x%llx\n",
++		cpuid_table->count, cpuid_table->__reserved1, cpuid_table->__reserved2);
++
++	for (i = 0; i < SNP_CPUID_COUNT_MAX; i++) {
++		const struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
++
++		pr_info("index=%3d fn=0x%08x subfn=0x%08x: eax=0x%08x ebx=0x%08x ecx=0x%08x edx=0x%08x xcr0_in=0x%016llx xss_in=0x%016llx reserved=0x%016llx\n",
++			i, fn->eax_in, fn->ecx_in, fn->eax, fn->ebx, fn->ecx,
++			fn->edx, fn->xcr0_in, fn->xss_in, fn->__reserved);
++	}
++}
++
+ /*
+  * It is useful from an auditing/testing perspective to provide an easy way
+  * for the guest owner to know that the CPUID table has been initialized as
+@@ -2059,6 +2083,26 @@ static int __init report_cpuid_table(void)
+ 	pr_info("Using SNP CPUID table, %d entries present.\n",
+ 		cpuid_table->count);
+ 
++	if (sev_cfg.debug)
++		dump_cpuid_table();
++
+ 	return 0;
+ }
+ arch_initcall(report_cpuid_table);
++
++static int __init init_sev_config(char *str)
++{
++	char *s;
++
++	while ((s = strsep(&str, ","))) {
++		if (!strcmp(s, "debug")) {
++			sev_cfg.debug = true;
++			continue;
++		}
++
++		pr_info("SEV command-line option '%s' was not recognized\n", s);
++	}
++
++	return 1;
++}
++__setup("sev=", init_sev_config);
+-- 
+2.35.1
 
 -- 
 Regards/Gruss,
