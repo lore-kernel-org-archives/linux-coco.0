@@ -1,138 +1,86 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D9BEBF
-	for <linux-coco@lists.linux.dev>; Fri,  1 Apr 2022 05:15:23 +0000 (UTC)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2314gsKV028760;
-	Fri, 1 Apr 2022 05:15:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=xzugCTuDJ0DLdgI8DOvKnnfZwyRwVxfvDJEJohli1d4=;
- b=YMMaguZdGAmNKLxNmLs8aFbS9wEvvwd8SEsuHhU3DTUQnYxEYXDprwFgjibt5XDTVAz+
- o1pyOlCcIibSwQAI7o2CnClE8IRFWbzldFNDyIfX6ZfahThwq0PRXi+mZOSzi7mcKJdk
- aUE16mMYTa1GmMf633dP+ejh7WnkA1NuflGqlum9XOzetJ/xWOAbp6rmi445NIWgDC33
- /lQXlzTgJ31uw9ev9uChngZI1iCjLpNFZ+f1yek8cPG6nW0IMKUs4sp9wVMyE6cXf0FO
- brP4R4+CNJhCx8Q0Rzce26qIi7XpHOnt/SaQGt3mfYOc9MDEUb9aVT1dpdXD/Tw6Cfe0 PA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3f51hw70uv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Apr 2022 05:15:12 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2314tD79032212;
-	Fri, 1 Apr 2022 05:15:12 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3f51hw70u9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Apr 2022 05:15:11 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2315E71K021074;
-	Fri, 1 Apr 2022 05:15:10 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-	by ppma04wdc.us.ibm.com with ESMTP id 3f1tfaa2yd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Apr 2022 05:15:10 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2315F9sh26476990
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Apr 2022 05:15:09 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9317A112064;
-	Fri,  1 Apr 2022 05:15:09 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0EA3A11206F;
-	Fri,  1 Apr 2022 05:15:05 +0000 (GMT)
-Received: from [9.160.79.229] (unknown [9.160.79.229])
-	by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Apr 2022 05:15:04 +0000 (GMT)
-Message-ID: <3b590f05-ff48-8cad-8e2d-e4ea339daf9c@linux.ibm.com>
-Date: Fri, 1 Apr 2022 08:15:03 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288D07A
+	for <linux-coco@lists.linux.dev>; Sun,  3 Apr 2022 22:46:42 +0000 (UTC)
+Received: from zn.tnic (p2e55dff8.dip0.t-ipconnect.de [46.85.223.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2F42A1EC0391;
+	Mon,  4 Apr 2022 00:36:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1649025394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=eMvdZnfzb84eh5dWY4TzFYh9Frtp7zqamDf5CXupNkM=;
+	b=qLYRjOZFCK73aydb1ooMD6X4B+P98cVazZIfNLdnYyD7gZFRuAbpHOpLeeAM9FEC823+Fh
+	5jZdiwZChRI+Kq3SqLnpSFMdOa9MydIt6EBGltDndX67UbC9WN48YxzmySIKGht2KnZXaR
+	iOJvH6NqgbcHyTTjT+kWS3n+QUTvJ9k=
+Date: Mon, 4 Apr 2022 00:36:30 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v11 00/45] Add AMD Secure Nested Paging (SEV-SNP) Guest
+ Support
+Message-ID: <YkohbveUq3lItqpl@zn.tnic>
+References: <20220224165625.2175020-1-brijesh.singh@amd.com>
+ <Yh99pBI/RwZY1yf7@nazgul.tnic>
+ <519f5e8e-18d1-43ac-ef90-0320d21c3a55@redhat.com>
+ <Yh+YAWu3K4xBillV@nazgul.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v9 3/4] efi: Register efi_secret platform device if EFI
- secret area is declared
-Content-Language: en-US
-To: linux-efi@vger.kernel.org
-Cc: Borislav Petkov <bp@suse.de>, Ashish Kalra <ashish.kalra@amd.com>,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Tom Lendacky
- <thomas.lendacky@amd.com>,
-        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>,
-        Greg KH <gregkh@linuxfoundation.org>, Andrew Scull <ascull@google.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Lenny Szubowicz <lszubowi@redhat.com>, Peter Gonda <pgonda@google.com>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        Jim Cadden <jcadden@ibm.com>,
-        Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20220331215607.3182232-1-dovmurik@linux.ibm.com>
- <20220331215607.3182232-4-dovmurik@linux.ibm.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <20220331215607.3182232-4-dovmurik@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7SLh08xS3MLEo0C0hEY3XB2npW34po2y
-X-Proofpoint-ORIG-GUID: dZv0h6uPCKdzaMmc1D9kK-AMpfghoIQA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-31_06,2022-03-31_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 phishscore=0 impostorscore=0
- adultscore=0 mlxscore=0 suspectscore=0 clxscore=1015 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204010022
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Yh+YAWu3K4xBillV@nazgul.tnic>
 
-
-
-On 01/04/2022 0:56, Dov Murik wrote:
-> During efi initialization, check if coco_secret is defined in the EFI
-> configuration table; in such case, register platform device
-> "efi_secret".  This allows udev to automatically load the efi_secret
-> module (platform driver), which in turn will populate the
-> <securityfs>/secrets/coco directory in guests into which secrets were
-> injected.
+On Wed, Mar 02, 2022 at 05:14:57PM +0100, Borislav Petkov wrote:
+> On Wed, Mar 02, 2022 at 05:09:34PM +0100, Paolo Bonzini wrote:
+> > Sure: https://git.kernel.org/pub/scm/virt/kvm/kvm.git, branch svm-for-snp.
+> > 
+> > $ git log -4 --oneline --reverse
+> > 3c95d3fab229 KVM: SVM: Define sev_features and vmpl field in the VMSA
+> > 0c86f9cf27f7 KVM: SVM: Create a separate mapping for the SEV-ES save area
+> > c5e0ec4c742d KVM: SVM: Create a separate mapping for the GHCB save area
+> > 88c955d1fc93 (HEAD -> kvm/svm-for-snp) KVM: SVM: Update the SEV-ES save area mapping
 > 
-> Note that a declared address of an EFI secret area doesn't mean that
-> secrets where indeed injected to that area; if the secret area is not
-> populated, the driver will not load (but the platform device will still
-> be registered).
-> 
-> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
-> ---
->  drivers/firmware/efi/efi.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-> index 378d044b2463..b92eabc554e6 100644
-> --- a/drivers/firmware/efi/efi.c
-> +++ b/drivers/firmware/efi/efi.c
-> @@ -425,6 +425,9 @@ static int __init efisubsys_init(void)
->  	if (efi_enabled(EFI_DBG) && efi_enabled(EFI_PRESERVE_BS_REGIONS))
->  		efi_debugfs_init();
->  
-> +	if (efi.coco_secret != EFI_INVALID_TABLE_ADDR)
-> +		platform_device_register_simple("efi_secret", 0, NULL, 0);
+> Thanks!
 
-These two lines should be wrapped by #ifdef CONFIG_EFI_COCO_SECRET .
-I'll fix that for the next round.
+Err, wasn't this supposed to go to Linus this merge window?
 
--Dov
+I don't see it...
 
-> +
->  	return 0;
->  
->  err_remove_group:
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
