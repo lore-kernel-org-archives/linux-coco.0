@@ -1,33 +1,33 @@
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC8633C1
-	for <linux-coco@lists.linux.dev>; Tue,  5 Apr 2022 23:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310733C2
+	for <linux-coco@lists.linux.dev>; Tue,  5 Apr 2022 23:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649202528; x=1680738528;
+  t=1649202529; x=1680738529;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RyShgqLY7MIPXh/I0xSRyqWdn3IGjezVnvsj+/bA36c=;
-  b=MMKZZrCmkLO/DYlZLapTIl0q98dgciw48KnEQdU+c+H+zrPIzszLCdlA
-   BCV17ZIe5hQ8t9d3rIxAFufUGLqdaZkeJDk7T2xkArsbhHthB3n0x3v0f
-   Deyarcla9sCwboBHkdTLHqaIeEk3VlcnE+AEc72q2nZrU2x/A/2zRBYsJ
-   TLg80mxQPTbZkZLiYTjjML0+eRSNyxlrsg2gv/48HzSrpGi8dupdBALO4
-   I5vUqkdjJcMxUg7lZFPH59qRnkSHyAd46vsElovLVOLVHeWcLJnzmc1ml
-   Dv1o5fnm9XkV5cfgQoN4GwvNeqtfai7SfOkDh066ZkoUojKFRLVyFWL0A
-   g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10308"; a="321589719"
+  bh=/1nyzn7F+fmd6VP9tbO0wCXT9G8b1V0YmZnfceU20K8=;
+  b=h25z0TFijo+4JF25FBPbtbcNki0j9n6BMT63r/GmHzTQjbPF9dcLRz8K
+   QaMZ2QEOnAbRp6PGMXlZjkR1BoqZNQF7kU8tGS3PtyrEe0vlyg1DEVZs2
+   S4QxZNmCulyK85AlA8yKEWg4xKeQr3KpA633MdWy7h67jWvTby683/+bf
+   dEVay/0XQOzRxTX8hRJnCDbUpHl0Q+LQGZqwlIIR36dxQoiUt42N4ddri
+   7vFBqdk/AZ9u23gY2BSFzNbBOT1J8JYkGARJb4n7drl2Br3VmkjFKslWl
+   1xZL8TYhTW07WRCjkMTpxjI5lM+lR/6feRx0FzmEkCVox5Ku3NqTbYZ2N
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10308"; a="240827987"
 X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
-   d="scan'208";a="321589719"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 16:48:48 -0700
+   d="scan'208";a="240827987"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 16:48:48 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
-   d="scan'208";a="641817585"
+   d="scan'208";a="588141278"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 05 Apr 2022 16:48:41 -0700
+  by orsmga001.jf.intel.com with ESMTP; 05 Apr 2022 16:48:41 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E93DB62E; Wed,  6 Apr 2022 02:43:47 +0300 (EEST)
+	id C1FE05AA; Wed,  6 Apr 2022 02:43:47 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -55,10 +55,11 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv4 8/8] mm/vmstat: Add counter for memory accepting
-Date: Wed,  6 Apr 2022 02:43:43 +0300
-Message-Id: <20220405234343.74045-9-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Mike Rapoport <rppt@linux.ibm.com>
+Subject: [PATCHv4 5/8] x86/mm: Reserve unaccepted memory bitmap
+Date: Wed,  6 Apr 2022 02:43:40 +0300
+Message-Id: <20220405234343.74045-6-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
@@ -70,58 +71,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The counter increased every time kernel accepts a memory region.
+A given page of memory can only be accepted once.  The kernel has a need
+to accept memory both in the early decompression stage and during normal
+runtime.
 
-The counter allows to see if memory acceptation is still ongoing and
-contributes to memory allocation latency.
+A bitmap used to communicate the acceptance state of each page between the
+decompression stage and normal runtime.  This eliminates the possibility of
+attempting to double-accept a page.
+
+The bitmap is allocated in EFI stub, decompression stage updates the state
+of pages used for the kernel and initrd and hands the bitmap over to the
+main kernel image via boot_params.
+
+In the runtime kernel, reserve the bitmap's memory to ensure nothing
+overwrites it.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/x86/mm/unaccepted_memory.c | 1 +
- include/linux/vm_event_item.h   | 3 +++
- mm/vmstat.c                     | 3 +++
- 3 files changed, 7 insertions(+)
+ arch/x86/kernel/e820.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 2f1c3c0375cd..7cfe0bd8d2be 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -32,6 +32,7 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 		else
- 			panic("Cannot accept memory");
- 		bitmap_clear(unaccepted_memory, rs, re - rs);
-+		count_vm_events(ACCEPT_MEMORY, PMD_SIZE / PAGE_SIZE);
- 	}
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 16a0a4fd000b..6a468164a2f9 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -136,6 +136,9 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- #ifdef CONFIG_X86
- 		DIRECT_MAP_LEVEL2_SPLIT,
- 		DIRECT_MAP_LEVEL3_SPLIT,
-+#endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+		ACCEPT_MEMORY,
- #endif
- 		NR_VM_EVENT_ITEMS
- };
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index b75b1a64b54c..4c9197f32406 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1397,6 +1397,9 @@ const char * const vmstat_text[] = {
- 	"direct_map_level2_splits",
- 	"direct_map_level3_splits",
- #endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+	"accept_memory",
-+#endif
- #endif /* CONFIG_VM_EVENT_COUNTERS || CONFIG_MEMCG */
- };
- #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA || CONFIG_MEMCG */
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index f267205f2d5a..22d1fe48dcba 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -1316,6 +1316,16 @@ void __init e820__memblock_setup(void)
+ 	int i;
+ 	u64 end;
+ 
++	/* Mark unaccepted memory bitmap reserved */
++	if (boot_params.unaccepted_memory) {
++		unsigned long size;
++
++		/* One bit per 2MB */
++		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
++				    PMD_SIZE * BITS_PER_BYTE);
++		memblock_reserve(boot_params.unaccepted_memory, size);
++	}
++
+ 	/*
+ 	 * The bootstrap memblock region count maximum is 128 entries
+ 	 * (INIT_MEMBLOCK_REGIONS), but EFI might pass us more E820 entries
 -- 
 2.35.1
 
