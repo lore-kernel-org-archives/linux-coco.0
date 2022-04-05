@@ -1,33 +1,33 @@
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310733C2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0A533C1
 	for <linux-coco@lists.linux.dev>; Tue,  5 Apr 2022 23:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1649202529; x=1680738529;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/1nyzn7F+fmd6VP9tbO0wCXT9G8b1V0YmZnfceU20K8=;
-  b=h25z0TFijo+4JF25FBPbtbcNki0j9n6BMT63r/GmHzTQjbPF9dcLRz8K
-   QaMZ2QEOnAbRp6PGMXlZjkR1BoqZNQF7kU8tGS3PtyrEe0vlyg1DEVZs2
-   S4QxZNmCulyK85AlA8yKEWg4xKeQr3KpA633MdWy7h67jWvTby683/+bf
-   dEVay/0XQOzRxTX8hRJnCDbUpHl0Q+LQGZqwlIIR36dxQoiUt42N4ddri
-   7vFBqdk/AZ9u23gY2BSFzNbBOT1J8JYkGARJb4n7drl2Br3VmkjFKslWl
-   1xZL8TYhTW07WRCjkMTpxjI5lM+lR/6feRx0FzmEkCVox5Ku3NqTbYZ2N
-   w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10308"; a="240827987"
+  bh=olocThm3w1DRSupMBiWIGBr2Nhg3m7XH5eFavATvzHQ=;
+  b=dmwnhRsmAbGFeKbgiWuukgUaCyQceP67P5NBCMCHfK3ZeOb7reDFyq04
+   LpMuwPo6NQ86tLnEfkWScVXT9pInYsHFOlY2mF7mitJPhYeK3kzIIA2+v
+   wt3f94UO9jovkcRz3g61jZeWeqIGIv45nwKpd23sByAboRWQOiH5lLIqP
+   8N7ZAKSE+O0Sqn910r+yaq9PS58d4H+5u38528Vbz81vKmYVzkOkjjBxz
+   2BpbQ7lH3DswfIKI5onnPY2ZQUxDnWRmTeU3cfo7dRnv+KdbATDmJPJCR
+   25DgeYpDa5Va3oRvUBl58GB0+hbDRPAQEn77MZ6LI0tvVVlQxKe9tWdUv
+   A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10308"; a="324066481"
 X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
-   d="scan'208";a="240827987"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 16:48:48 -0700
+   d="scan'208";a="324066481"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2022 16:48:49 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,238,1643702400"; 
-   d="scan'208";a="588141278"
+   d="scan'208";a="851044908"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga001.jf.intel.com with ESMTP; 05 Apr 2022 16:48:41 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 05 Apr 2022 16:48:41 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id C1FE05AA; Wed,  6 Apr 2022 02:43:47 +0300 (EEST)
+	id CEF3260A; Wed,  6 Apr 2022 02:43:47 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -55,11 +55,10 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCHv4 5/8] x86/mm: Reserve unaccepted memory bitmap
-Date: Wed,  6 Apr 2022 02:43:40 +0300
-Message-Id: <20220405234343.74045-6-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv4 6/8] x86/mm: Provide helpers for unaccepted memory
+Date: Wed,  6 Apr 2022 02:43:41 +0300
+Message-Id: <20220405234343.74045-7-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
@@ -71,48 +70,119 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A given page of memory can only be accepted once.  The kernel has a need
-to accept memory both in the early decompression stage and during normal
-runtime.
+Core-mm requires few helpers to support unaccepted memory:
 
-A bitmap used to communicate the acceptance state of each page between the
-decompression stage and normal runtime.  This eliminates the possibility of
-attempting to double-accept a page.
+ - accept_memory() checks the range of addresses against the bitmap and
+   accept memory if needed.
 
-The bitmap is allocated in EFI stub, decompression stage updates the state
-of pages used for the kernel and initrd and hands the bitmap over to the
-main kernel image via boot_params.
-
-In the runtime kernel, reserve the bitmap's memory to ensure nothing
-overwrites it.
+ - memory_is_unaccepted() check if anything within the range requires
+   acceptance.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/x86/kernel/e820.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/include/asm/page.h              |  5 +++
+ arch/x86/include/asm/unaccepted_memory.h |  1 +
+ arch/x86/mm/Makefile                     |  2 +
+ arch/x86/mm/unaccepted_memory.c          | 53 ++++++++++++++++++++++++
+ 4 files changed, 61 insertions(+)
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index f267205f2d5a..22d1fe48dcba 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -1316,6 +1316,16 @@ void __init e820__memblock_setup(void)
- 	int i;
- 	u64 end;
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 9cc82f305f4b..9ae0064f97e5 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -19,6 +19,11 @@
+ struct page;
  
-+	/* Mark unaccepted memory bitmap reserved */
-+	if (boot_params.unaccepted_memory) {
-+		unsigned long size;
+ #include <linux/range.h>
 +
-+		/* One bit per 2MB */
-+		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
-+				    PMD_SIZE * BITS_PER_BYTE);
-+		memblock_reserve(boot_params.unaccepted_memory, size);
++#ifdef CONFIG_UNACCEPTED_MEMORY
++#include <asm/unaccepted_memory.h>
++#endif
++
+ extern struct range pfn_mapped[];
+ extern int nr_pfn_mapped;
+ 
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index f1f835d3cd78..a8d12ef1bda8 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -10,5 +10,6 @@ struct boot_params;
+ void mark_unaccepted(struct boot_params *params, u64 start, u64 num);
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end);
++bool memory_is_unaccepted(phys_addr_t start, phys_addr_t end);
+ 
+ #endif
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index fe3d3061fc11..e327f83e6bbf 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -60,3 +60,5 @@ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
+ 
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_identity.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
++
++obj-$(CONFIG_UNACCEPTED_MEMORY)	+= unaccepted_memory.o
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+new file mode 100644
+index 000000000000..3588a7cb954c
+--- /dev/null
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/memblock.h>
++#include <linux/mm.h>
++#include <linux/pfn.h>
++#include <linux/spinlock.h>
++
++#include <asm/io.h>
++#include <asm/setup.h>
++#include <asm/unaccepted_memory.h>
++
++static DEFINE_SPINLOCK(unaccepted_memory_lock);
++
++void accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long *unaccepted_memory;
++	unsigned long flags;
++	unsigned int rs, re;
++
++	if (!boot_params.unaccepted_memory)
++		return;
++
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
++	rs = start / PMD_SIZE;
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	for_each_set_bitrange_from(rs, re, unaccepted_memory,
++				   DIV_ROUND_UP(end, PMD_SIZE)) {
++		/* Platform-specific memory-acceptance call goes here */
++		panic("Cannot accept memory");
++		bitmap_clear(unaccepted_memory, rs, re - rs);
 +	}
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++}
 +
- 	/*
- 	 * The bootstrap memblock region count maximum is 128 entries
- 	 * (INIT_MEMBLOCK_REGIONS), but EFI might pass us more E820 entries
++bool memory_is_unaccepted(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long *unaccepted_memory = __va(boot_params.unaccepted_memory);
++	unsigned long flags;
++	bool ret = false;
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	while (start < end) {
++		if (test_bit(start / PMD_SIZE, unaccepted_memory)) {
++			ret = true;
++			break;
++		}
++
++		start += PMD_SIZE;
++	}
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++
++	return ret;
++}
 -- 
 2.35.1
 
