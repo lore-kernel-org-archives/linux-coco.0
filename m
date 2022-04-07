@@ -1,88 +1,93 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D19533FC
-	for <linux-coco@lists.linux.dev>; Wed,  6 Apr 2022 21:26:55 +0000 (UTC)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1649279951;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AEB20E9
+	for <linux-coco@lists.linux.dev>; Thu,  7 Apr 2022 10:36:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1649327770;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y8SeU3wIhBoeYg7O06WKEKrA4HPJDtvr9Gis/MAZTmI=;
-	b=MLzO5I0IR0N1SxXnmGyWHwGV2iWkw6A9eb3tTTrbkGMIxlRgqU8Po7woPcdBYUuDoHEKEr
-	92f+6YsWblCo1mKaliU8gQwfP35xrK3myi5DCY3W7jaeceJ35gA7WieL7KebeVOi/+5lKw
-	niVGpJlYrViWa3+rb72yomVxAZrPl6TyrpN5cndq5lQXD5etRJ5JQ0VRDINI1p1A4ohAE2
-	AlMqDX1wseUo+JKcg5mz2fDxlVikZYfdYCcZSRWKtL14Qvh7yFzd2n4F2ZZpfL36I6IzvQ
-	akbIf/DNJ/QsmWTZ+XPflGdo93X6vDZu90BF0a5A/NHY0R15rxV+kviTjACo9g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1649279951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y8SeU3wIhBoeYg7O06WKEKrA4HPJDtvr9Gis/MAZTmI=;
-	b=2D2fm0lxQUIYq6XYbxZsgZiUd7zv3McBsk8mNlzCW6WXEAoZN85C2NJ9ovtskLZgmxGd7x
-	JFchuSQLhASDCnDQ==
-To: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org
-Cc: Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, Tom
- Lendacky <thomas.lendacky@amd.com>, "H.
- Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo
- Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
- Vitaly
- Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, Andy
- Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, Peter
- Zijlstra <peterz@infradead.org>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, David Rientjes
- <rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>, Tobin
- Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, Michael
- Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, "Kirill A .
- Shutemov" <kirill.shutemov@linux.intel.com>, Andi Kleen
- <ak@linux.intel.com>, "Dr .
- David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com,
- tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, Brijesh Singh
- <brijesh.singh@amd.com>
-Subject: Re: [PATCH v12 29/46] x86/boot: Add Confidential Computing type to
- setup_data
-In-Reply-To: <20220307213356.2797205-30-brijesh.singh@amd.com>
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-30-brijesh.singh@amd.com>
-Date: Wed, 06 Apr 2022 23:19:10 +0200
-Message-ID: <87v8vlzz8x.ffs@tglx>
+	bh=9tmb94Vnr/m1iiTombsEjR+CsqwafFX61UIDruzVV9I=;
+	b=A1ayr8DrsDphmbjhCwAYaGbnZRlnMd8dlzm1DefV4UuJCR7zgQoh1crxft+TPAJFhsKcom
+	TtmMKayK6LWSbpgsUhU8Eyr+3HX9ohkM1ZdlNXkTxgApTWk6rwll4kl0d+eD69seXj5ZBw
+	coGKgANGzUmcFUrhvFLXSaMUIMA+6zo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-479-m1pDVn1JM7SgfIYbB3R6ug-1; Thu, 07 Apr 2022 06:36:06 -0400
+X-MC-Unique: m1pDVn1JM7SgfIYbB3R6ug-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24CE11066680;
+	Thu,  7 Apr 2022 10:36:05 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.9])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 74C117B7C;
+	Thu,  7 Apr 2022 10:36:04 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+	id 0721218000B3; Thu,  7 Apr 2022 12:36:03 +0200 (CEST)
+Date: Thu, 7 Apr 2022 12:36:02 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Dov Murik <dovmurik@linux.ibm.com>
+Cc: linux-efi@vger.kernel.org, Borislav Petkov <bp@suse.de>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Andrew Scull <ascull@google.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	Lenny Szubowicz <lszubowi@redhat.com>,
+	Peter Gonda <pgonda@google.com>,
+	Matthew Garrett <mjg59@srcf.ucam.org>,
+	James Bottomley <jejb@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+	Jim Cadden <jcadden@ibm.com>,
+	Daniele Buono <dbuono@linux.vnet.ibm.com>,
+	linux-coco@lists.linux.dev, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 2/4] virt: Add efi_secret module to expose
+ confidential computing secrets
+Message-ID: <20220407103602.5hblcyz4zzocjgcw@sirius.home.kraxel.org>
+References: <20220331215607.3182232-1-dovmurik@linux.ibm.com>
+ <20220331215607.3182232-3-dovmurik@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220331215607.3182232-3-dovmurik@linux.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
 
-On Mon, Mar 07 2022 at 15:33, Brijesh Singh wrote:
->  
-> +/*
-> + * AMD SEV Confidential computing blob structure. The structure is
-> + * defined in OVMF UEFI firmware header:
-> + * https://github.com/tianocore/edk2/blob/master/OvmfPkg/Include/Guid/ConfidentialComputingSevSnpBlob.h
-> + */
-> +#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
-> +struct cc_blob_sev_info {
-> +	u32 magic;
-> +	u16 version;
-> +	u16 reserved;
-> +	u64 secrets_phys;
-> +	u32 secrets_len;
-> +	u32 rsvd1;
-> +	u64 cpuid_phys;
-> +	u32 cpuid_len;
-> +	u32 rsvd2;
-> +};
+On Thu, Mar 31, 2022 at 09:56:05PM +0000, Dov Murik wrote:
+> The new efi_secret module exposes the confidential computing (coco)
+> EFI secret area via securityfs interface.
+> 
+> When the module is loaded (and securityfs is mounted, typically under
+> /sys/kernel/security), a "secrets/coco" directory is created in
+> securityfs.  In it, a file is created for each secret entry.  The name
+> of each such file is the GUID of the secret entry, and its content is
+> the secret data.
+> 
+> This allows applications running in a confidential computing setting to
+> read secrets provided by the guest owner via a secure secret injection
+> mechanism (such as AMD SEV's LAUNCH_SECRET command).
+> 
+> Removing (unlinking) files in the "secrets/coco" directory will zero out
+> the secret in memory, and remove the filesystem entry.  If the module is
+> removed and loaded again, that secret will not appear in the filesystem.
+> 
+> Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
 
-Shouldn't this be packed?
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
 
-Thanks,
+take care,
+  Gerd
 
-        tglx
