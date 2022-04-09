@@ -1,44 +1,44 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C55A31
-	for <linux-coco@lists.linux.dev>; Sat,  9 Apr 2022 17:50:41 +0000 (UTC)
-Received: by mail-lf1-f45.google.com with SMTP id u7so2913104lfs.8
-        for <linux-coco@lists.linux.dev>; Sat, 09 Apr 2022 10:50:41 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1449FA47
+	for <linux-coco@lists.linux.dev>; Sat,  9 Apr 2022 19:40:08 +0000 (UTC)
+Received: by mail-lj1-f175.google.com with SMTP id a30so15424409ljq.13
+        for <linux-coco@lists.linux.dev>; Sat, 09 Apr 2022 12:40:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20210112.gappssmtp.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=2BJwi+4MUHVrKX308NfOg46ABCdrEGwFNuCfJTM4PEA=;
-        b=MN50HswbicjFFL7K5mQ5CImChULXEkQz0FzkiaI3+yYKdPBrcrNzQMylJQdy8TjEQf
-         5wcmnqtlY6cIWr4Xwwhf9qfp8YDXgnNp89sliELF/wPXIOODX3w4yMpkdZo4HBh1nycu
-         HS84zY9faBsIE5HwW8AqridmwGGbjA8ZCFMdSkmf8q+yET0bkKRsutZOyVTnJxI0XK0X
-         zT8+sXdketeYf0lWkZ/JTEURmbHJhouPvYqBYKM/lXukoPLyzU99u0RB86e6XN0moGGi
-         Y5ih3+OSgtBEuDPI8SUkl+4qC2exssdnliXZ71YfnkSnuCm5gudeyMUsppD01fj1gAeH
-         0xFg==
+        bh=LRK5NCYhQ3Fmmdu1Nq/r6lgNA/het1WCzf4tV6aXNNc=;
+        b=rlKEJbZpAwy8y3TZiwpi3c3SwsbVjgoFxEqjcACdj/mOh4cfZri7DmsaMJPvpV0cio
+         QpRL1BHjj6CXRt2yW94jjtWHvG5uoCoPWnaiixTb9kDlKgeglHpMB9P8jPSj0116hqSH
+         zjZVGR5j13019vnHrS7oOeLOdeD6WLovtUdXUPySrb8s5/iL987igaUaowCX+zP/zIv6
+         FUR4e5T+qm5tWF5RBKW+oJ2DEx6sCpGc6NGkbS+fXWfFWa8XfZKPI+wCRUcObFmUwmE6
+         4ikdDMOUmMnap6wChuC1gmROJhGeiJ1MT3Jf26uaPPYu6X+hhPKsO7ECxfO8PC16iBXT
+         mFRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=2BJwi+4MUHVrKX308NfOg46ABCdrEGwFNuCfJTM4PEA=;
-        b=xwXEzicgIcr3RCcgfryJrbKUgSHtxHDoUerJMntoEnDy4zXBZxMV4wox8VNRKWBwIB
-         KAfkXV+1vJ22Jm5jGMnFLKupZSsZwk4GRzZgoBgK190SjcWHn8ym2ZV9udIh+7qqaNaG
-         cmJ5JRgMQzXynfWq9rIWKG2dUjnJ8I2yJBZQYSwhh36k/0cqEo8+PzOhs6kwOAICRvVY
-         Mj641E8MqQZsG8ZcyPglir5v/y1Nd9uGK4i0T5Tvha5cVMEDk0Fz308Qj6H146enCTlF
-         vWsMFtwq5g7avaUGDGuhEpqaPwk37ev7ntO8xfjl/oylADc3cH6RhVn4pJw6JaymPTWD
-         YlZA==
-X-Gm-Message-State: AOAM532jw4bmU8gxMvxVFO3skNDfsRYx2V1zGMJCRJjh+Tb7q5xkbuy7
-	fD+zuBn6l4ZYhkmFf41rSc1f2Q==
-X-Google-Smtp-Source: ABdhPJyiKDi7TSfRV/vRqhjM4G5p2LRlKpj4VTzoGYJmpsDau3aBPPbEKGpuhXEfzoNTsoN8W7+JPw==
-X-Received: by 2002:a05:6512:ac1:b0:46b:8fd0:b030 with SMTP id n1-20020a0565120ac100b0046b8fd0b030mr2977704lfu.372.1649526639318;
-        Sat, 09 Apr 2022 10:50:39 -0700 (PDT)
+        bh=LRK5NCYhQ3Fmmdu1Nq/r6lgNA/het1WCzf4tV6aXNNc=;
+        b=UwUvtl/p4FNp8BYxc8KZAV9NIuIt9Gtjbylo9/geowjFCgVn7PdOdjhMd/j+YLZMZU
+         n6Hq6qU14TGNqCVkJqDkzzifaUviMfI21jcW3JnTIue9MTD541zMHvJBY1kSiEhiSk1B
+         IfIqfDRg5vOG6H9hhyT/o3r5lmA3q7wi6t1duKqOif97xNRVyXhrOLMSc4Kequgsy1sw
+         A6z+vG7AbQ8lVg2jp4+KhENoQmBv1RLmgm7KpYioQndf90Uv+D0m6QGR9HeIkZpXWZ6b
+         OMwd+6J9jd9XbtE1+FooPq20tLPsLZTk+yUwRmsUl9FAxe86hYrScd2w4nV97sfa4TzZ
+         ypZQ==
+X-Gm-Message-State: AOAM531qaz+axL85pzzVaWLygKWasM9ggIdIHktK7eyoy0OK+qWSsRml
+	u3Q+GqOKt0dzPucd6zeKnL88Xw==
+X-Google-Smtp-Source: ABdhPJxeKGBViGlrj5LsAbQbGRDtUjUXzGUPQv/lXHzeqUlJMXodiQjFo1rWxw8q5suEmdOPa+PGVw==
+X-Received: by 2002:a05:651c:1a21:b0:249:8ccf:65eb with SMTP id by33-20020a05651c1a2100b002498ccf65ebmr16035500ljb.166.1649533206875;
+        Sat, 09 Apr 2022 12:40:06 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id h24-20020a19ca58000000b0046b9dbfc809sm65098lfj.56.2022.04.09.10.50.38
+        by smtp.gmail.com with ESMTPSA id i23-20020a198c57000000b0045dcb4816d3sm1621742lfj.35.2022.04.09.12.40.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Apr 2022 10:50:38 -0700 (PDT)
+        Sat, 09 Apr 2022 12:40:05 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 1747B1039DB; Sat,  9 Apr 2022 20:52:10 +0300 (+03)
-Date: Sat, 9 Apr 2022 20:52:10 +0300
+	id 0C2EA1039DB; Sat,  9 Apr 2022 22:41:37 +0300 (+03)
+Date: Sat, 9 Apr 2022 22:41:37 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -60,13 +60,12 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-Message-ID: <20220409175210.xik3ue3shpagskvi@box.shutemov.name>
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
+Message-ID: <20220409194137.yui73qnno5bd45xn@box.shutemov.name>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+ <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
+ <c4b987d5-00d3-40ea-4c20-bf82b7512dec@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,68 +74,116 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+In-Reply-To: <c4b987d5-00d3-40ea-4c20-bf82b7512dec@intel.com>
 
-On Fri, Apr 08, 2022 at 12:11:58PM -0700, Dave Hansen wrote:
+On Fri, Apr 08, 2022 at 10:26:14AM -0700, Dave Hansen wrote:
 > On 4/5/22 16:43, Kirill A. Shutemov wrote:
-> > Kernel only needs to accept memory once after boot, so during the boot
-> > and warm up phase there will be a lot of memory acceptance. After things
-> > are settled down the only price of the feature if couple of checks for
-> > PageUnaccepted() in allocate and free paths. The check refers a hot
-> > variable (that also encodes PageBuddy()), so it is cheap and not visible
-> > on profiles.
+> > +void mark_unaccepted(struct boot_params *params, u64 start, u64 end)
+> > +{
+> > +	/*
+> > +	 * The accepted memory bitmap only works at PMD_SIZE granularity.
+> > +	 * If a request comes in to mark memory as unaccepted which is not
+> > +	 * PMD_SIZE-aligned, simply accept the memory now since it can not be
+> > +	 * *marked* as unaccepted.
+> > +	 */
+> > +
+> > +	/*
+> > +	 * Accept small regions that might not be able to be represented
+> > +	 * in the bitmap:
+> > +	 */
+> > +	if (end - start < 2 * PMD_SIZE) {
+> > +		__accept_memory(start, end);
+> > +		return;
+> > +	}
 > 
-> Let's also not sugar-coat this.  Page acceptance is hideously slow.
-> It's agonizingly slow.  To boot, it's done holding a global spinlock
-> with interrupts disabled (see patch 6/8).  At the very, very least, each
-> acceptance operation involves a couple of what are effectively ring
-> transitions, a 2MB memset(), and a bunch of cache flushing.
+> This is not my first time looking at this code and I still had to think
+> about this a bit.  That's not good.  That pathological case here is
+> actually something like this:
 > 
-> The system is going to be downright unusable during this time, right?
+> | 4k | 2044k + 2044k | 4k |
+> ^ 0x0 	     ^ 2MB	  ^ 4MB
+> 
+> Where we have a 2MB-aligned 4k accepted area, a 4088k unaccepted area,
+> then another 4k accepted area.  That will not result in any bits being
+> set in the accepted memory bitmap because no 2MB region is fully accepted.
+> 
+> The one oddball case is this:
+> 
+> | 4k | 2044k |    2048k   |
+> ^ 0x0 	     ^ 2MB	  ^ 4MB
+> 
+> Which would fall into the if() above, but *can* have part of its range
+> marked in the bitmap.
+> 
+> Maybe we need something more like this:
+> 
+> 	/*
+> 	 * Accept small regions that might not be able to be represented
+> 	 * in the bitmap.  This is a bit imprecise and may accept some
+> 	 * areas that could have been represented in the bitmap instead.
+> 	 * But, the imprecision makes the code simpler by ensuring that
+> 	 * at least one bit will be set int the bitmap below.
+> 	 */
 
-Well, yes. The CPU that doing accepting is completely blocked by it.
-But other CPUs may proceed until in in its turn steps onto memory
-accepting.
+Okay, will change.
 
-> Sure, it's *temporary* and only happens once at boot.  But, it's going
-> to suck.
+> > diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> > index 2c3dac5ecb36..b17ceec757d0 100644
+> > --- a/drivers/firmware/efi/Kconfig
+> > +++ b/drivers/firmware/efi/Kconfig
+> > @@ -243,6 +243,21 @@ config EFI_DISABLE_PCI_DMA
+> >  	  options "efi=disable_early_pci_dma" or "efi=no_disable_early_pci_dma"
+> >  	  may be used to override this option.
+> >  
+> > +config UNACCEPTED_MEMORY
+> > +	bool
+> > +	depends on EFI_STUB
+> > +	depends on !KEXEC_CORE
 > 
-> Am I over-stating this in any way?
-> 
-> The ACCEPT_MEMORY vmstat is good to have around.  Thanks for adding it.
->  But, I think we should also write down some guidance like:
-> 
-> 	If your TDX system seems as slow as snail after boot, look at
-> 	the "accept_memory" counter in /proc/vmstat.  If it is
-> 	incrementing, then TDX memory acceptance is likely to blame.
+> The changelog should probably say something about how the kexec()
+> incompatibility is going to be rectified in the future.
 
-Sure. Will add to commit message.
+Okay.
 
-> Do we need anything more discrete to tell users when acceptance is over?
+> > +	help
+> > +	   Some Virtual Machine platforms, such as Intel TDX, require
+> > +	   some memory to be "accepted" by the guest before it can be used.
+> > +	   This mechanism helps prevent malicious hosts from making changes
+> > +	   to guest memory.
+> > +
+> > +	   UEFI specification v2.9 introduced EFI_UNACCEPTED_MEMORY memory type.
+> > +
+> > +	   This option adds support for unaccepted memory and makes such memory
+> > +	   usable by kernel.
+> > +
+> >  endmenu
+> 
+> BTW, what happens if this is compiled out?  Do TDX guests just lose all
+> the unaccepted memory?
 
-I can imagine setups that where acceptance is never over. A VM running
-a workload with fixed dataset can have planty of memory unaccepted.
+No. It will not have access to unaccepted memory and will only use memory
+accepted by BIOS.
 
-I don't think "make it over" should be the goal.
+> Should TDX be selecting this or something?
 
->  For instance, maybe they run something and it goes really slow, they
-> watch "accept_memory" until it stops.  They rejoice at their good
-> fortune!  Then, memory allocation starts falling over to a new node and
-> the agony beings anew.
-> 
-> I can think of dealing with this in two ways:
-> 
-> 	cat /sys/.../unaccepted_pages_left
-> 
-> which just walks the bitmap and counts the amount of pages remaining. or
-> something like:
-> 
-> 	echo 1 > /sys/devices/system/node/node0/make_the_pain_stop
-> 
-> Which will, well, make the pain stop on node0.
+Yes, it should and we do this.
 
-Sure we can add handles. But API is hard. Maybe we should wait and see
-what is actually needed. (Yes, I'm lazy.:)
+> > @@ -504,6 +506,13 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
+> >  			e820_type = E820_TYPE_PMEM;
+> >  			break;
+> >  
+> > +		case EFI_UNACCEPTED_MEMORY:
+> > +			if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
+> > +				continue;
+> 
+> This seems worthy of a pr_info().  We're effectively throwing away
+> memory with this "continue", right?
+
+Yes. In this case we threat unaccepted as reserved and inaccessible to
+kernel.
+
+Maybe pr_warn() is more appropriate.
+
 
 -- 
  Kirill A. Shutemov
