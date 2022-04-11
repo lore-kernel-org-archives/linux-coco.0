@@ -1,91 +1,222 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5189A20
-	for <linux-coco@lists.linux.dev>; Sat,  9 Apr 2022 23:43:29 +0000 (UTC)
-Received: by mail-lj1-f173.google.com with SMTP id r2so543282ljd.10
-        for <linux-coco@lists.linux.dev>; Sat, 09 Apr 2022 16:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SbKyvpQHPm0kNgMAVs494Hgh1ccd/JUvncGHbdpX/0c=;
-        b=FVJ72+0uXZ5+QgDax7JJqXVRky+XwJa7ewjqDd/F/ZjzrzjSF1n3eornqoh6nwYCS7
-         THynzhfPinFJoP9K+AMKDfno5noxszxwgU6YNMBbY0Hsu3Oa7os7ckim5xqlQfP58HGC
-         MwwxoeL8n//yaUuXIBoyf0guUcccIvA+GYmYvMk50cs+jI+mLGHuK3u1xQzF6veUt1Da
-         mKOeKE9vaYsdtntOhAfR2iebc53jt3mcDeYPKXhnILhRLGPwScjSk1TsdhNzirzWxfjH
-         pEBYYb6TBLF51dR1kKXHTQSX3S7hCkznxwVZKy4WA+fCiGx/O+Awq+mcjLnHK21ZEgxG
-         ruJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SbKyvpQHPm0kNgMAVs494Hgh1ccd/JUvncGHbdpX/0c=;
-        b=31HPaijdhlBPY/difVQKYPg/XRn36JtWZrZdxz291iX1KHIxZY9sG8bmvvB1vKr5iu
-         sx85w8FwVhZNyAMUvdpFcoKYMibDQaeSTh4eEYe52mJ4eOJqWQ7ceK2f+tVvDkYPybxi
-         oxNea3GxUkmgG5s7+yfjnxKgvTMRSfFUiXC7yhClCW1LW0ndm0x7IN88YXGWkczinV+D
-         FloaJkuoTU58tWkxqjAkQvuOEbWaZkCHxdXhylig6YBy66Hn8WUtHX95XVED4QrRuF0m
-         S9cLehry+5aCauHSxTKXJj9vkEPGPhyvrL9HdJSvcGS8gmm5pV6pMC+GOXaxwmZaMg2E
-         0dLQ==
-X-Gm-Message-State: AOAM533Df+dNw+F9XTigwbFakyJmIIBCNv47xMmiKHx6WAE5T6apUi6F
-	hE6PX7Q0E4h9QibIhD1HI1by1Q==
-X-Google-Smtp-Source: ABdhPJxS1PCp/vzN2dy3Ii8M1UVX5LPIaKWjRgkLRSdf248ssxYFzHzDsfML9N16/gwWJwDQ1SZ02g==
-X-Received: by 2002:a2e:99da:0:b0:24b:4607:d6e7 with SMTP id l26-20020a2e99da000000b0024b4607d6e7mr8814324ljj.519.1649547807704;
-        Sat, 09 Apr 2022 16:43:27 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id o17-20020a2e90d1000000b0024b54a20cdcsm486775ljg.7.2022.04.09.16.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Apr 2022 16:43:26 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-	id 2BB96103FB7; Sun, 10 Apr 2022 02:44:58 +0300 (+03)
-Date: Sun, 10 Apr 2022 02:44:58 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv4 0/8] mm, x86/cc: Implement support for unaccepted memory
-Message-ID: <20220409234458.ysisolzd7hktpfjc@box.shutemov.name>
-References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <95eabe79-a13b-79b1-1196-407920531f20@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A75510EC
+	for <linux-coco@lists.linux.dev>; Mon, 11 Apr 2022 06:38:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649659102; x=1681195102;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=uARV/jTosTxQq4l76DhMLrvvCZEgajnIMtFFAQBCWU4=;
+  b=hBjPvb/CZr6BWf7348ddsoHlUxGxhwjS0sG0AiglXXeT3YYHJvECfEEC
+   y5353W2hbkgzRiBzNSggLYyLw2ZynqZNByfaxomWZFGJGEtZmkTCGW4N2
+   u+s81lDEFCp4SN1Yw32p5UdjxkUtGxZSsyyOXIrVWHehEs00TWuKX8qTI
+   VD58I5jdthCHxFvWzlBXHe3+Yz+G3K5QTvIoKglU+E8uQqitOn0svhVLc
+   xuUZ5y4RJUuVf2xP+ATKlDmsxRhiolal/tRmKjdxjJQEmUpj7EOYMsF+A
+   FGC1FboTNnwesAxrBiBqrR/LjzIODkHUGh28KGP1Ci2/rHGATvmNPnxNr
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10313"; a="262225227"
+X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
+   d="scan'208";a="262225227"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2022 23:38:21 -0700
+X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
+   d="scan'208";a="525311978"
+Received: from srkondle-mobl.amr.corp.intel.com (HELO [10.212.113.6]) ([10.212.113.6])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2022 23:38:03 -0700
+Message-ID: <6c976344-fdd6-95cd-2cb0-b0e817bf0392@intel.com>
+Date: Sun, 10 Apr 2022 23:38:08 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95eabe79-a13b-79b1-1196-407920531f20@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@redhat.com>, x86@kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
+ <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
+From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+In-Reply-To: <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 08, 2022 at 10:02:13AM -0700, Dave Hansen wrote:
-> On 4/5/22 16:43, Kirill A. Shutemov wrote:
-> > Patches 1-6/7 are generic and don't have any dependencies on TDX. They
-> > should serve AMD SEV needs as well. TDX-specific code isolated in the
-> > last patch.
+On 4/9/22 08:54, Kirill A. Shutemov wrote:
+> On Fri, Apr 08, 2022 at 11:55:43AM -0700, Dave Hansen wrote:
+>>> The page allocator is modified to accept pages on the first allocation.
+>>> PageUnaccepted() is used to indicate that the page requires acceptance.
+>>
+>> Does this consume an actual page flag or is it aliased?
 > 
-> Oh, that's quite nice.  Are the SEV-SNP folks planning on using this?
-> If they are, acks/reviews would be much appreciated.
+> It is encoded as a page type in mapcount of unallocated memory. It is not
+> aliased with PageOffline() as I did before.
+> 
+> I will mention that it is a new page type.
 
-AMD folks tested one of previous revision and reported that it works, but
-I don't remember seeing the code that hook ups AMD implementation.
+Guess I should have looked at the code. :)
 
--- 
- Kirill A. Shutemov
+Are we just increasingly using the StudlyNames() for anything to do with
+pages?
+
+>>> + /*
+>>> +  * PageUnaccepted() indicates that the page has to be "accepted" before it can
+>>> +  * be used. Page allocator has to call accept_page() before returning the page
+>>> +  * to the caller.
+>>> +  */
+>>
+>> Let's talk about "used" with a bit more detail.  Maybe:
+>>
+>> /*
+>>  * PageUnaccepted() indicates that the page has to be "accepted" before
+>>  * it can be read or written.  The page allocator must to call
+>>  * accept_page() before touching the page or returning it to the caller.
+>>  */
+> 
+> I guess s/must to call/must call/, right?
+
+Yep.
+
+...
+>>> +	/*
+>>> +	 * Check if the page needs to be marked as PageUnaccepted().
+>>> +	 * Used for the new pages added to the buddy allocator for the first
+>>> +	 * time.
+>>> +	 */
+>>> +	if (!unaccepted && (fpi_flags & FPI_UNACCEPTED))
+>>> +		unaccepted = page_is_unaccepted(page, order);
+>>
+>> 	if (page_needs_acceptance && (fpi_flags & FPI_UNACCEPTED))
+>> 		page_needs_acceptance = page_is_unaccepted(page, order);
+>>
+>>> +	if (unaccepted)
+>>> +		__SetPageUnaccepted(page);
+>>
+>> This is getting hard for me to follow.
+>>
+>> There are:
+>> 1. Pages that come in here with PageUnaccepted()==1
+>> 2. Pages that come in here with PageUnaccepted()==0, but a buddy that
+>>    was PageUnaccepted()==1
+>>
+>> In either of those cases, the bitmap will be consulted to see if the
+>> page is *truly* unaccepted or not.  But, I'm struggling to figure out
+>> how a page could end up in one of those scenarios and *not* be
+>> page_is_unaccepted().
+>>
+>> There are three pieces of information that come in:
+>> 1. PageUnaccepted(page)
+>> 2. PageUnaccepted(buddies[])
+>> 3. the bitmap
+> 
+> 1 and 2 are the same conceptionally: merged-in pieces of the resulting page.
+> 
+>>
+>> and one piece of information going out:
+>>
+>> PageUnaccepted(page);
+>>
+>> I think I need a more coherent description of how those four things fit
+>> together.
+> 
+> The page gets marked as PageUnaccepted() if any of merged-in pages is
+> PageUnaccepted().
+> 
+> For new pages, just being added to buddy allocator, consult
+> page_is_unaccepted(). FPI_UNACCEPTED indicates that the page is new and
+> page_is_unaccepted() check is required.
+> 
+> Avoid calling page_is_unaccepted() if it is known that the page needs
+> acceptance anyway. It can be costly.
+> 
+> Is it good enough explanation?
+
+Yeah, elaborating on the slow and fast paths makes a lot of sense.
+
+> FPI_UNACCEPTED is not a good name. Any help with a better one?
+> FPI_CHECK_UNACCEPTED?
+
+Maybe even something like FPI_UNACCEPTED_SLOWPATH.  Then you can say
+that when this is passed in the pages might not have PageUnaccepted()
+set and the slow bitmap needs to be consulted.
+
+>>>  	if (fpi_flags & FPI_TO_TAIL)
+>>>  		to_tail = true;
+>>>  	else if (is_shuffle_order(order))
+>>> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
+>>>  static inline bool page_expected_state(struct page *page,
+>>>  					unsigned long check_flags)
+>>>  {
+>>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
+>>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
+>>> +	    !PageUnaccepted(page))
+>>>  		return false;
+>>
+>> That probably deserves a comment, and maybe its own if() statement.
+> 
+> Own if does not work. PageUnaccepted() is encoded in _mapcount.
+> 
+> What about this:
+> 
+> 	/*
+> 	 * page->_mapcount is expected to be -1.
+> 	 *
+> 	 * There is an exception for PageUnaccepted(). The page type can be set
+> 	 * for pages on free list. Page types are encoded in _mapcount.
+> 	 *
+> 	 * PageUnaccepted() will get cleared in post_alloc_hook().
+> 	 */
+> 	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
+> 		return false;
+> 
+> ?
+
+That's better.  But, aren't the PG_* names usually reserved for real
+page->flags bits?  That naming might be part of my confusion.
+
+>>>  		add_to_free_list(&page[size], zone, high, migratetype);
+>>>  		set_buddy_order(&page[size], high);
+>>>  	}
+>>> @@ -2396,6 +2446,9 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
+>>>  	 */
+>>>  	kernel_unpoison_pages(page, 1 << order);
+>>>  
+>>> +	if (PageUnaccepted(page))
+>>> +		accept_page(page, order);
+>>> +
+>>>  	/*
+>>>  	 * As memory initialization might be integrated into KASAN,
+>>>  	 * KASAN unpoisoning and memory initializion code must be
+>>
+>> Is accepted memory guaranteed to be zeroed?  Do we want to skip the
+>> __GFP_ZERO behavior later in this function?  Or is that just a silly
+>> over-optimization?
+> 
+> For TDX, it is true that the memory gets cleared on acceptance, but I
+> don't we can say the same for any possible implementation.
+> 
+> I would rather leave __GFP_ZERO for peace of mind. Clearing the cache-hot
+> page for the second time shouldn't be a big deal comparing to acceptance
+> cost.
+
+Sure, fair enough.
