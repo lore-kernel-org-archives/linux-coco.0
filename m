@@ -1,32 +1,51 @@
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E72110EC
-	for <linux-coco@lists.linux.dev>; Mon, 11 Apr 2022 06:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649659790; x=1681195790;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to:content-transfer-encoding;
-  bh=Im18RwYdvETKIFnmTzUmsr5SNvinw0XNRdaj7/G9hPU=;
-  b=C4p1o3LGVJb12GtHbcy1LyyrGDeazfm6Lr8SfjBBgtGQmBDOUPO3AtT3
-   CnLeUIS6wAl5aHAuPQcmrPlmqn6WBofsDTWO9/TDmxFuxmbVt5FGw8Ux0
-   HLhf+4hlCT5jMvMU8i82A2jRLIkkQ1CCow/uOsLFtJ7UXlvoAPRyvjn2g
-   gWsq5CEKGABdqIms7idIIqrvq5ubzrjbqjOotFURto8xc+m5pgybY11s8
-   EOxlaar/xVJHn97YqnUTx6rgAgf2O3Bc35NTRt42mdMCANukUZMdOZ/AI
-   FiBix5MFzTgceBl48PNhfC4yIybF4VFi5cZUBAY5pRp909/ohyKkChRbv
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10313"; a="249327975"
-X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
-   d="scan'208";a="249327975"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2022 23:49:49 -0700
-X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; 
-   d="scan'208";a="525318292"
-Received: from srkondle-mobl.amr.corp.intel.com (HELO [10.212.113.6]) ([10.212.113.6])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2022 23:49:47 -0700
-Message-ID: <a8e79d89-ec91-8f04-88b5-be932e9fb020@intel.com>
-Date: Sun, 10 Apr 2022 23:49:52 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42D710EB
+	for <linux-coco@lists.linux.dev>; Mon, 11 Apr 2022 08:47:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1649666858;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xO5/uXu6trmQnelozguxiW34fXYut6Mlb4fdD2t6SEU=;
+	b=EMfGSGoEPUa57MHJNNJL/lS2d/NUBXqM8TtRYzwA8NeUSSeIPotQmq/epZDYUrUvXHdj0k
+	ruUICm5dt5XkOrofTRT6MJtXsZ1SsT6vEPCcYnOL0K3HIOLiuBu9y29ZUO0By14vtp+Bqv
+	0E+BVEByp95EPWkJiHByXVSV7xAdUTE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-633-eunntkDBM8G4E1Oz5eDgOQ-1; Mon, 11 Apr 2022 04:47:37 -0400
+X-MC-Unique: eunntkDBM8G4E1Oz5eDgOQ-1
+Received: by mail-wr1-f72.google.com with SMTP id f9-20020adf9f49000000b00207a6d8b67cso509956wrg.8
+        for <linux-coco@lists.linux.dev>; Mon, 11 Apr 2022 01:47:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:organization:in-reply-to
+         :content-transfer-encoding;
+        bh=xO5/uXu6trmQnelozguxiW34fXYut6Mlb4fdD2t6SEU=;
+        b=XnSSnOytYFKXZY30H75fXQABElqRW6u0V2IDQhYB3JMRZDJetKFJ0xbmPwb83WaxV0
+         oMQFaGC4zW9vW36NmXlxKB0hwAfrlyPyHbgxSvkJU4znPGbIVMK8+kHIxLjwComVbK8a
+         ArISCDqQevnHw/zATcEsNQf/CODsDeX+4kInO01jnwsJaCuqXIxuElXSNQi+A1FupMUW
+         E4dnVMeNvXnY+D+Q5ZsSqHRn1UhQdYfskmFDcqtAkx+pQ/vZvHl1kvhQ6zzTJop+Lo8f
+         Al+ZlJub1ne+fEaii0miILLxGnZtpzh2icZ+BXt79JldAOk9JyEF4JTe71sOnU5/Q7QH
+         MWug==
+X-Gm-Message-State: AOAM531wdyGCHl6MjPOwMuS8FIw1wNlUUpqcMTmyZL8j7Y89VuNW8lMj
+	c1PGG2UlB8IEHN77PH0TIZUDLH7AWAC3e0riJLFWaIupxdzmX8QpD3Ei2fQcsS0iC7RIcCFsVVP
+	OYAC8tBp7gL+KLjQWzXC80w==
+X-Received: by 2002:adf:db86:0:b0:205:bccf:8cbf with SMTP id u6-20020adfdb86000000b00205bccf8cbfmr23524566wri.346.1649666856072;
+        Mon, 11 Apr 2022 01:47:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwU4i8tDZK4R8SDfWHRx/HMVMKbJaFD0rR9CAx62zvu90I37i9CuXip3i2xbgqxkZ/aEv7AAg==
+X-Received: by 2002:adf:db86:0:b0:205:bccf:8cbf with SMTP id u6-20020adfdb86000000b00205bccf8cbfmr23524547wri.346.1649666855817;
+        Mon, 11 Apr 2022 01:47:35 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c703:aa00:2064:15bd:222d:3a02? (p200300cbc703aa00206415bd222d3a02.dip0.t-ipconnect.de. [2003:cb:c703:aa00:2064:15bd:222d:3a02])
+        by smtp.gmail.com with ESMTPSA id c4-20020a056000184400b00207a55f712asm3352085wri.37.2022.04.11.01.47.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Apr 2022 01:47:35 -0700 (PDT)
+Message-ID: <1837b625-c63d-9feb-ec98-3b4c7b0040b4@redhat.com>
+Date: Mon, 11 Apr 2022 10:47:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -34,9 +53,10 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
+ Thunderbird/91.6.2
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+To: "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Dave Hansen <dave.hansen@intel.com>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
  Sean Christopherson <seanjc@google.com>,
@@ -49,103 +69,61 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
  Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
  Brijesh Singh <brijesh.singh@amd.com>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@redhat.com>, x86@kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-5-kirill.shutemov@linux.intel.com>
- <043469ae-427c-b2bb-89ff-db8975894266@intel.com>
- <20220409202035.plaiekzuihov4kvq@box.shutemov.name>
-From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCHv4 4/8] x86/boot/compressed: Handle unaccepted memory
-In-Reply-To: <20220409202035.plaiekzuihov4kvq@box.shutemov.name>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
+ <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/9/22 13:20, Kirill A. Shutemov wrote:
-> On Fri, Apr 08, 2022 at 10:57:17AM -0700, Dave Hansen wrote:
-...
->> It's a real shame that we have to duplicate this code.  Is there
->> anything crazy we could do here like
+>>>  	if (fpi_flags & FPI_TO_TAIL)
+>>>  		to_tail = true;
+>>>  	else if (is_shuffle_order(order))
+>>> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
+>>>  static inline bool page_expected_state(struct page *page,
+>>>  					unsigned long check_flags)
+>>>  {
+>>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
+>>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
+>>> +	    !PageUnaccepted(page))
+>>>  		return false;
 >>
->> #include "../../../lib/find_bit.c"
->>
->> ?
+>> That probably deserves a comment, and maybe its own if() statement.
 > 
-> Well, it would require fracturing source files on the kernel side.
+> Own if does not work. PageUnaccepted() is encoded in _mapcount.
 > 
-> __bitmap_set() and __bitmap_clear() are now in lib/bitmap.c.
+> What about this:
 > 
-> _find_next_bit() is in lib/find_bit.c.
+> 	/*
+> 	 * page->_mapcount is expected to be -1.
+> 	 *
+> 	 * There is an exception for PageUnaccepted(). The page type can be set
+> 	 * for pages on free list. Page types are encoded in _mapcount.
+> 	 *
+> 	 * PageUnaccepted() will get cleared in post_alloc_hook().
+> 	 */
+> 	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
+> 		return false;
 > 
-> Both lib/bitmap.c and lib/find_bit.c have a lot of stuff that are not used
-> here. I guess we would need to split them into few pieces to make it in
-> sane way. Do you want me to go this path?
-
-I'd be curious if others have any sane ideas for how to do it.
-
-One idea would be to stick most of the implementation in a header that
-we can #include.  Then, lib/find_bit.c #includes that header and does
-something simple like:
-
-#include "header.h"
-int _find_next_bit(...)
-{
-	return _find_next_bit_from_header();
-}
-EXPORT_SYMBOL(_find_next_bit);
-
-
->>> diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
->>> index fa8969fad011..c1d9d71a6615 100644
->>> --- a/arch/x86/boot/compressed/misc.c
->>> +++ b/arch/x86/boot/compressed/misc.c
->>> @@ -18,6 +18,7 @@
->>>  #include "../string.h"
->>>  #include "../voffset.h"
->>>  #include <asm/bootparam_utils.h>
->>> +#include <asm/unaccepted_memory.h>
->>>  
->>>  /*
->>>   * WARNING!!
->>> @@ -43,6 +44,9 @@
->>>  void *memmove(void *dest, const void *src, size_t n);
->>>  #endif
->>>  
->>> +#undef __pa
->>> +#define __pa(x)	((unsigned long)(x))
->>
->> Those #undef's always worry me.  Why is this one needed?
+> ?
 > 
-> arch/x86/boot/compressed/misc.c:47:9: warning: '__pa' macro redefined [-Wmacro-redefined]
-> #define __pa(x) ((unsigned long)(x))
->         ^
-> arch/x86/include/asm/page.h:47:9: note: previous definition is here
-> #define __pa(x)         __phys_addr((unsigned long)(x))
-> 
-> Note that sev.c does the same. At least we are consistent :)
 
-Ugh.  Please do look into fixing this properly.  The SEV folks will
-thank you. :)
+Please don't. Keep the usage of PG_* details inside page-flags.h
 
->>> +void accept_memory(phys_addr_t start, phys_addr_t end)
->>> +{
->>> +	unsigned long *unaccepted_memory;
->>> +	unsigned int rs, re;
->>> +
->>> +	unaccepted_memory = (unsigned long *)boot_params->unaccepted_memory;
->>> +	rs = start / PMD_SIZE;
->>
->> OK, so start is a physical address, PMD_SIZE is 2^21, and 'rs' is an
->> unsigned int.  That means 'rs' can, at most, represent a physical
->> address at 2^(21+32), or 2^53.  That's cutting it a *bit* close, don't
->> you think?
->>
->> Could we please just give 'rs' and 're' real names and make them
->> 'unsigned long's, please?  It will surely save at least one other person
->> from doing math.  The find_next_bit() functions seem to take ulongs anyway.
-> 
-> Okay. 'range_start' and 'range_end' are good enough names?
 
-Yep, works for me.
+-- 
+Thanks,
+
+David / dhildenb
 
