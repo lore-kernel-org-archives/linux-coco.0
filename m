@@ -1,26 +1,28 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9481363
-	for <linux-coco@lists.linux.dev>; Mon, 11 Apr 2022 10:07:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD17FC385A4;
-	Mon, 11 Apr 2022 10:07:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1649671660;
-	bh=7d4Fz2YovE5nbd9DXkYQpMdwcvwOp0v8/bguDOqmFSY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BFtbQd/iq+rlCNPGaxfC3Ir2HvIQQgsq/Vp2+3JtHAGSDwgjp8Xd5w2caZTe8PAXA
-	 eHsQqWA1+krPxZyVFaVbYdrqMp8DMvGob+k/4ZGEKf29Ahye/B2GdlV92VVfWYnr8m
-	 l0ULaiEvF5/6bu/SR0XQZK85N7o0i8G8+zOPUcz2ilXYjPcdgecr+7alIM6T1xg4PH
-	 zYWXQRqH1KSvIhFvCdaJkxSgZKH7wHaLOTRaePBuQBkjmpSc8p0VPiM5Bh9Ds4ELGd
-	 g8uGUUGlAY7+59ndecOzR57Fv6XdUEPFsDhoy6VyqJ301LTYFhzVY8yH9yzSysRmHQ
-	 GiefvKC1Z25dw==
-Date: Mon, 11 Apr 2022 13:07:29 +0300
-From: Mike Rapoport <rppt@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108527B
+	for <linux-coco@lists.linux.dev>; Mon, 11 Apr 2022 15:55:47 +0000 (UTC)
+Received: from zn.tnic (p2e55dff8.dip0.t-ipconnect.de [46.85.223.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1A6C51EC051F;
+	Mon, 11 Apr 2022 17:55:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1649692534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=+qm6xxaKZ1LEXRx+Q8w+uMhxMAISclspO9iaopSo6C4=;
+	b=EpI4AFGUegZ/8pATs/HB27ODf/aTQFNOqs1L5bF6c/6VW28wW7C07qKtAn1UY6hIcAHcqr
+	X7cTScH/818ZNmY/9bhit78ZT54ChEl1N9WwhrbGljuJj/DpDeSeqIHo5Pi7dhyevmonbB
+	rZUXmrNhqpuaAEtbh5J7J4E8ZeivFhY=
+Date: Mon, 11 Apr 2022 17:55:33 +0200
+From: Borislav Petkov <bp@alien8.de>
 To: Dave Hansen <dave.hansen@intel.com>
 Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
@@ -35,70 +37,40 @@ Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
 	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>,
 	Brijesh Singh <brijesh.singh@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Mike Rapoport <rppt@linux.ibm.com>
 Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-Message-ID: <YlP94T1ACwxKTgep@kernel.org>
+Message-ID: <YlRPdQP5c1DQqZeN@zn.tnic>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
  <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
- <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
- <6c976344-fdd6-95cd-2cb0-b0e817bf0392@intel.com>
+ <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+ <20220409175210.xik3ue3shpagskvi@box.shutemov.name>
+ <adc87911-e1f2-4e2a-2394-17ee9213ae3e@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6c976344-fdd6-95cd-2cb0-b0e817bf0392@intel.com>
+In-Reply-To: <adc87911-e1f2-4e2a-2394-17ee9213ae3e@intel.com>
 
-On Sun, Apr 10, 2022 at 11:38:08PM -0700, Dave Hansen wrote:
-> On 4/9/22 08:54, Kirill A. Shutemov wrote:
-> > On Fri, Apr 08, 2022 at 11:55:43AM -0700, Dave Hansen wrote:
-> 
-> >>>  	if (fpi_flags & FPI_TO_TAIL)
-> >>>  		to_tail = true;
-> >>>  	else if (is_shuffle_order(order))
-> >>> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
-> >>>  static inline bool page_expected_state(struct page *page,
-> >>>  					unsigned long check_flags)
-> >>>  {
-> >>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
-> >>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
-> >>> +	    !PageUnaccepted(page))
-> >>>  		return false;
-> >>
-> >> That probably deserves a comment, and maybe its own if() statement.
-> > 
-> > Own if does not work. PageUnaccepted() is encoded in _mapcount.
-> > 
-> > What about this:
-> > 
-> > 	/*
-> > 	 * page->_mapcount is expected to be -1.
-> > 	 *
-> > 	 * There is an exception for PageUnaccepted(). The page type can be set
-> > 	 * for pages on free list. Page types are encoded in _mapcount.
-> > 	 *
-> > 	 * PageUnaccepted() will get cleared in post_alloc_hook().
-> > 	 */
-> > 	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
+On Sun, Apr 10, 2022 at 11:41:57PM -0700, Dave Hansen wrote:
+> Let's just call out the possible (probable?) need for new ABI here.
+> Maybe it will cue folks who care to speak up.
 
-Maybe I'm missing something, but isn't this true for any PageType?
+Err, why would you teach the user to go poke at some arbitrary sysfs
+nodes when the accepting code can simply issue a printk from time to
+time
 
-> > 		return false;
-> > 
-> > ?
-> 
-> That's better.  But, aren't the PG_* names usually reserved for real
-> page->flags bits?  That naming might be part of my confusion.
-
-We use them for PageType as well like PG_buddy, PG_offline, PG_Table.
+  "Guest unnaccepted memory progress: XX%. This slows down operations at the moment."
 
 -- 
-Sincerely yours,
-Mike.
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
