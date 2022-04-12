@@ -1,88 +1,128 @@
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6811FC6
-	for <linux-coco@lists.linux.dev>; Tue, 12 Apr 2022 16:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1649780424; x=1681316424;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to:content-transfer-encoding;
-  bh=0rhW/syVVmAH9bt4RVUxl07dFxjacizqjOlvBoRg8/g=;
-  b=fznSP2bUn7v4Ce0vpBCs82h78w1kZi6hb3wnYbGSkKWm7LXLfuM8jlTj
-   Ba7c+7aEjvEk8un7JwB1UoZYYehZtq2OUzRBtMbqUZQagCSgz80RJY4PQ
-   rsjkx18NpD/iJd2bbITej4HRK0ZgJcr69DDTQMYggfLzgkwT0KtA18+uF
-   Ms46StGsai17O+vdc/E9/SNQzC4gcaf2KU23Sr5kBQBi9lrwI/cPikW0m
-   I4+AKNtlVo0GNcf/ldoVHElfmx/AkeOdeSOgqseemge5i4yKhNHeCErav
-   f9s3xZ+uqk3DaKcp5tZoeoETHLBR9JCV/L54UNCB8YgqhdVV4/VMVvFZa
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10315"; a="262597755"
-X-IronPort-AV: E=Sophos;i="5.90,254,1643702400"; 
-   d="scan'208";a="262597755"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 09:08:39 -0700
-X-IronPort-AV: E=Sophos;i="5.90,254,1643702400"; 
-   d="scan'208";a="551773930"
-Received: from vtelkarx-mobl.amr.corp.intel.com (HELO [10.209.191.73]) ([10.209.191.73])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2022 09:08:37 -0700
-Message-ID: <ebf3ccef-e6fe-62d5-74e8-91e30e7c2642@intel.com>
-Date: Tue, 12 Apr 2022 09:08:43 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FB43D86
+	for <linux-coco@lists.linux.dev>; Tue, 12 Apr 2022 21:21:58 +0000 (UTC)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23CIq6ti008918;
+	Tue, 12 Apr 2022 21:21:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=aIldCVQRoNdnC3Z1iVnCtTVi9LvUbjghv4ynjTs66E4=;
+ b=Vz3Kp5UD1OsNmMvfPmC9OJ+lamGQ148Kar2OiY4KFBhai/5u9psrBB7g4JLrvVrqjL9o
+ 90jscwMAun2+KdArjyx0fK50DfHsblmYy22jn7/uuwQ9X1KXo84ZOPBxyP7lnIh6wVes
+ G++tGOhA0pySmpof0Ih/Nj0I5+XsmtXNqYeejNOTEV0tzKRzL29I6G4lObIgH73Mik7N
+ PlG8GppIJba1CvgZB+f5wSWct8yiOpRJdaylCHECcTF5B/vaxB4rZ1NKnbmgup9uVzlL
+ 1ULKW+Gz65C/oK8I4fnNnRLRn6eADoenEIkO7h2kHtOCnk+PGB7fJQtuoIFePgVLss7p hw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3fdf30aubm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Apr 2022 21:21:44 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 23CLEPmZ012122;
+	Tue, 12 Apr 2022 21:21:43 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3fdf30aubc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Apr 2022 21:21:43 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+	by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23CLDUWx025013;
+	Tue, 12 Apr 2022 21:21:42 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+	by ppma04wdc.us.ibm.com with ESMTP id 3fb1s9u3x2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Apr 2022 21:21:42 +0000
+Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 23CLLfq912976668
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Apr 2022 21:21:41 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A334B13604F;
+	Tue, 12 Apr 2022 21:21:41 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BEF66136053;
+	Tue, 12 Apr 2022 21:21:39 +0000 (GMT)
+Received: from amdrome3.watson.ibm.com (unknown [9.2.130.16])
+	by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Tue, 12 Apr 2022 21:21:39 +0000 (GMT)
+From: Dov Murik <dovmurik@linux.ibm.com>
+To: linux-efi@vger.kernel.org
+Cc: Dov Murik <dovmurik@linux.ibm.com>, Gerd Hoffmann <kraxel@redhat.com>,
+        Borislav Petkov <bp@suse.de>, Ashish Kalra <ashish.kalra@amd.com>,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>,
+        Greg KH <gregkh@linuxfoundation.org>, Andrew Scull <ascull@google.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        Lenny Szubowicz <lszubowi@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        Jim Cadden <jcadden@ibm.com>,
+        Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v10 3/4] efi: Register efi_secret platform device if EFI secret area is declared
+Date: Tue, 12 Apr 2022 21:21:26 +0000
+Message-Id: <20220412212127.154182-4-dovmurik@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220412212127.154182-1-dovmurik@linux.ibm.com>
+References: <20220412212127.154182-1-dovmurik@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Brijesh Singh <brijesh.singh@amd.com>, Mike Rapoport <rppt@kernel.org>,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>
-References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
- <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-In-Reply-To: <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: u2uTO1zImiDvv4PXQBKeJLTtOesbo-J2
+X-Proofpoint-ORIG-GUID: xXX4t1_Acjk5qWhE6wrxt_BfOhH5jdEX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-04-12_06,2022-04-12_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ clxscore=1015 adultscore=0 spamscore=0 mlxlogscore=999 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2204120097
 
-On 4/12/22 01:15, David Hildenbrand wrote:
-> Can we simply automate this using a kthread or smth like that, which
-> just traverses the free page lists and accepts pages (similar, but
-> different to free page reporting)?
+During efi initialization, check if coco_secret is defined in the EFI
+configuration table; in such case, register platform device
+"efi_secret".  This allows udev to automatically load the efi_secret
+module (platform driver), which in turn will populate the
+<securityfs>/secrets/coco directory in guests into which secrets were
+injected.
 
-That's definitely doable.
+Note that a declared address of an EFI secret area doesn't mean that
+secrets where indeed injected to that area; if the secret area is not
+populated, the driver will not load (but the platform device will still
+be registered).
 
-The downside is that this will force premature consumption of physical
-memory resources that the guest may never use.  That's a particular
-problem on TDX systems since there is no way for a VMM to reclaim guest
-memory short of killing the guest.
+Signed-off-by: Dov Murik <dovmurik@linux.ibm.com>
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ drivers/firmware/efi/efi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-In other words, I can see a good argument either way:
-1. The kernel should accept everything to avoid the perf nastiness
-2. The kernel should accept only what it needs in order to reduce memory
-   use
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 378d044b2463..b8e68a121119 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -425,6 +425,11 @@ static int __init efisubsys_init(void)
+ 	if (efi_enabled(EFI_DBG) && efi_enabled(EFI_PRESERVE_BS_REGIONS))
+ 		efi_debugfs_init();
+ 
++#ifdef CONFIG_EFI_COCO_SECRET
++	if (efi.coco_secret != EFI_INVALID_TABLE_ADDR)
++		platform_device_register_simple("efi_secret", 0, NULL, 0);
++#endif
++
+ 	return 0;
+ 
+ err_remove_group:
+-- 
+2.25.1
 
-I'm kinda partial to #1 though, if I had to pick only one.
-
-The other option might be to tie this all to DEFERRED_STRUCT_PAGE_INIT.
- Have the rule that everything that gets a 'struct page' must be
-accepted.  If you want to do delayed acceptance, you do it via
-DEFERRED_STRUCT_PAGE_INIT.
