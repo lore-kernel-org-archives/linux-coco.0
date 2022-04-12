@@ -1,173 +1,166 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2084.outbound.protection.outlook.com [40.107.243.84])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E971840
-	for <linux-coco@lists.linux.dev>; Mon, 11 Apr 2022 18:55:29 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WDSvZGPgYZNM9yv0u5QCBUma4G33eW5fO92Sd4v6Gfe6lYAFrP/4vTnc7+XAw/bzLtiLZ1jzXew+x8kNz2H5v98hbeYYwHx16C2A22dPF4eyqzxxevU+ZLFg69YdtUxNWzoSCEwrH2UCFbs/JLANMvDj5F5d2sR+M3Z4FD6it7G/4gy51zDvvbLrF8C6h9v9ZfwCfa12aKmzfprG7XrSDgdzizXibL5Rs0EDfW7Y1nCVuCIB+8SPEXkw899T+kcWFk7TQD8LTYpYtmllGQVCartpHads3xtzLwLhIFaUBiGeX6je4O//oUkRGG1v+wFQZGNlRZqcNAfdPLkUjI6G2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oz3Ab3ZvOzc82UVaAfCiGzhOGxr5z7MSw3fYf5ItRmU=;
- b=XDizi/IrSvI6lxCioQ1MCcYYuDaYxgBNkzP3obK7U+Fnp0VUK5GWVQzS99lnffk3/hR4vM4jSNLgND+ZbobrnoGLC3BDDY+IUHXlOmqPq5iItgUsO5n64VZXjHySCGbTIf8fhrCfatGhNBEhxNl/cU82G6coYHasRWYRsYot4nseLP26jrWcWnjVvukAVDYTmHWdPybnn/8KntPxfcGhcgr1iXs/2c08lDqE/qCv/LLxTkRl6Q+ekC6+LWmdZabc9/2OV4Um70zQnfgqOxavkcmvnHqo36rqy+JxwTGacKV0seA+2c9NPCN+9yjjmfF6u5ajT5JV/nk43sqa5gqyKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oz3Ab3ZvOzc82UVaAfCiGzhOGxr5z7MSw3fYf5ItRmU=;
- b=lXr17CNWLRPasEDfahSzlwxMp/4BKOtDyFn2yqf8JPUTAbwPds4WwNYQB8qBAjR4FWHMFkFIhjcKSEhoz0S2xyuuqJobH6o+s3WmIyLQPPfkSkBqC4Jl87kdLbRz8B0W/xJhTkMZYtN/e86NV2GH+mh2To2fGWmytVq7ItV25yE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by MN2PR12MB4271.namprd12.prod.outlook.com (2603:10b6:208:1d7::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5144.29; Mon, 11 Apr
- 2022 18:55:25 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::1092:2d0b:9aa4:30]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::1092:2d0b:9aa4:30%5]) with mapi id 15.20.5144.029; Mon, 11 Apr 2022
- 18:55:25 +0000
-Message-ID: <b33c1fbe-a7b5-f5b0-5dc6-f017f5cfc7f4@amd.com>
-Date: Mon, 11 Apr 2022 13:55:20 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Brijesh Singh <brijesh.singh@amd.com>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@redhat.com>, x86@kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
- <20220409175210.xik3ue3shpagskvi@box.shutemov.name>
- <adc87911-e1f2-4e2a-2394-17ee9213ae3e@intel.com> <YlRPdQP5c1DQqZeN@zn.tnic>
- <fae338db-f892-b234-6918-227219e45cbe@intel.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <fae338db-f892-b234-6918-227219e45cbe@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR19CA0032.namprd19.prod.outlook.com
- (2603:10b6:208:178::45) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05B846AD
+	for <linux-coco@lists.linux.dev>; Tue, 12 Apr 2022 08:15:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1649751315;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8HjmZzAIO50unb7pGZAQpRPqJO313RFErJC/+pOp/R0=;
+	b=iKzXnDoLIcATeO1qukJjLuqfl4LeC0wGYWMGd7r97A4Pr6/bDqF91RyLBw9wC2eqK2K4pr
+	Urc7gBRxbFp38F4UitrDv6yeUAIuwsfebezA0r/cdIWU9TwOVUTTwVtjQw2zAr9oF0C+3Z
+	cEJlgy74N6/rtSlA9v0GlHLtqWcAUpc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-589-Q4Q77xJtOrWxjla6q4wTLA-1; Tue, 12 Apr 2022 04:15:11 -0400
+X-MC-Unique: Q4Q77xJtOrWxjla6q4wTLA-1
+Received: by mail-wm1-f69.google.com with SMTP id q25-20020a1ce919000000b0038ead791083so934649wmc.6
+        for <linux-coco@lists.linux.dev>; Tue, 12 Apr 2022 01:15:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent
+         :content-language:to:cc:references:from:organization:subject
+         :in-reply-to:content-transfer-encoding;
+        bh=8HjmZzAIO50unb7pGZAQpRPqJO313RFErJC/+pOp/R0=;
+        b=KodgiKNkZ37I4KMj+47DUA9p1PJ34rTp34kUAyqq+heoSbCIE6/yVOFxcVaNq4Q/kK
+         thvbqDMpcNmtVzwZHKcSSP9/44Xol1WrtT6StEVUTOmS05/rovqf9A5PFyDgfgRbwiOH
+         tXxN3QfTyB574hSYkb7FxCo/DfLjCyPJt4lIdEd9SNqOlv4SuwY94jE5pZ6u3pi3xCoq
+         xU1kVSn/Pfz0YrNrhO+ajmSpypcjxQIL1WT2DB6/ghMogdqUxwquptLIyDycshykZX8e
+         CTgu2Dh4ITc/IydIp1wZpGhJooe/4BGDIGJF372Z/GoREqI/7nkYkS9iU5tktYPGn1yq
+         b1fg==
+X-Gm-Message-State: AOAM531nG8RM2AWic1Bcn6q8qR2UmYB0RwPKdgzQnOwRmP4u8EK7cm92
+	qxPmYOUX/vDU4Z4OGVOhaxNexBxq5rma6cDjQcv6uG9HMYC6rABPAR0Sq0eruLKglFeCneXc32N
+	Gjreli3BwhOXGkHhSgFkxlQ==
+X-Received: by 2002:adf:ed8b:0:b0:206:1771:e373 with SMTP id c11-20020adfed8b000000b002061771e373mr28461581wro.84.1649751310602;
+        Tue, 12 Apr 2022 01:15:10 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxZYmHGzijmWq4j1QgvJKMtTI4uehpfCeAgJZFkKQ0wTIJR1ucWkaH70j+SivEpEn8AXTnKWA==
+X-Received: by 2002:adf:ed8b:0:b0:206:1771:e373 with SMTP id c11-20020adfed8b000000b002061771e373mr28461563wro.84.1649751310358;
+        Tue, 12 Apr 2022 01:15:10 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c707:1800:7c14:16cc:5291:a9f3? (p200300cbc70718007c1416cc5291a9f3.dip0.t-ipconnect.de. [2003:cb:c707:1800:7c14:16cc:5291:a9f3])
+        by smtp.gmail.com with ESMTPSA id b14-20020a7bc24e000000b003899c8053e1sm1814456wmj.41.2022.04.12.01.15.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Apr 2022 01:15:09 -0700 (PDT)
+Message-ID: <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
+Date: Tue, 12 Apr 2022 10:15:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2e60ab51-3eb8-4557-1811-08da1becd605
-X-MS-TrafficTypeDiagnostic: MN2PR12MB4271:EE_
-X-Microsoft-Antispam-PRVS:
-	<MN2PR12MB4271FB90AA253B1CDCB66C43ECEA9@MN2PR12MB4271.namprd12.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	8JzhQk6FIwJV08TejMPuL6xEibSWYUOFEvYncujv3SYEgGLXU9ZvLW1MpJPWnE+Hm/Ub2GP7F47NWFGMLwDgyDIgB2v/jRcXyiYGboOubfdkN93D8pU0PkQkczSyjK6eqWzSo6dkRQ84q8iZH9l6lDpQSJdeR8k/NS7BKXrF2iK8ZRrgFqHv1BRE3C4Ei+BeQagWytxP+qu18ih2FlUsFd2/jH/T0MOFcotHxImGNznbHkgQ/0wNZ0pwvcdG4mo0Z+Z9MQuCdR1iMJwDZq1S2YPXW094eXUHDFDuXCSIbOcFccr0SF58TI5UicnCq7cdW8czaqwjtDoKWTBU+UrndEd1YWyx8KW+ONav21xrdgc8vOr2gQfXBD6IOJxIAXLfMK9lzbEFky7a1C0gnx0l5DeMeR+h+sabOJjzmvNaBLmiAgbYQgV7WgPhFgXXdNhxwl+0URnbEr/sjcvz2gawNawdWmK+TduL1/gdyFSiVaiO8U8eaC8uqt0cQFvu7Q3CloSfk0SQJBVRpTQruCCdJip1l29htcui4S0UkpUuUf15qv5T9nkHbK8ia+nOeP2ekrYOnlKnkSDDRa0hTrBs2KNFDZh4jKjqSzd1oOhYhCrMveWcPlrcfs+W+o0aBwO1WjMRdejGoV2xMNhIxr9wWEUR1wL4KTtSVsktaoyY/Iwg7y2Q9jtcMcv4Y6iOxD1S+X4XO90v/T0EiEQgv5PjYQE3rqVH5y4BZ6fX50z10bLCk1KGqzpRqiZbwrp9RfyN
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(8936002)(66556008)(66476007)(66946007)(8676002)(38100700002)(7416002)(186003)(86362001)(31696002)(5660300002)(2906002)(83380400001)(6666004)(6506007)(6512007)(53546011)(26005)(4326008)(2616005)(6486002)(316002)(110136005)(54906003)(36756003)(508600001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjJZaDhMUXdpeTNieUlYTUt4VkJtM1pXcG4rb1ovZnJ1UkIvNGY2eHNLVm5s?=
- =?utf-8?B?RVdZbzkreE1kbktqT1RuVmUzSWxnR3dleU5GMElpRUlhNTJRdHZqSjZFa2hK?=
- =?utf-8?B?YzJWVUJOSkJyam9ob2l5UXR6QU5razBDeTdwMWhpRHp4U01DZmEzS2N2VXEy?=
- =?utf-8?B?V2hoSEZVTWhGT1ZSU09Jdit2QlltK01wOWxMUXB2ckpDSU8wU21wNW01YWtz?=
- =?utf-8?B?Zm92eEVVWWhTZlN0Wnplb1VTbnZhOVJ6enZpQnhoQloyVnZRa3NPdmd3UjR0?=
- =?utf-8?B?SXRHOHk5V2lKMnkvZmpIM2ZWaGRwV25qOXpScXBPWk14MnNNL3NpQkZ1TkFh?=
- =?utf-8?B?NkR0VmFZVUJydWZ5ak9TRS9tM1pCN1VWSTY1M3hzWFMwTG8vTWRYQnV3K1JS?=
- =?utf-8?B?VUNleTgrSGNyL0NnVisvMTBGV2pWL2JGdzdoK0owVDNUeU1ObTZ2U2dhT0ln?=
- =?utf-8?B?Zk5BSG03U21jRmpWNGZGNnVzU0xoK2pXZlBycC8zMVV1aWZ3SmZudHdScWVV?=
- =?utf-8?B?dnYxaWhXaXNxODRpVStMSDBmZGZCSmJWb29tek1sNDNnRXBOMk9UMytaSnk5?=
- =?utf-8?B?VjltK0RBMm9qWGlMYjNiS2ptbllyUGpUVnBiK0x4eWh0eGFOd2tReUZZQ3M1?=
- =?utf-8?B?OXRRL05PVi83bzlYVmR6d0dYaStBSkdzeHhubVIwbHk4Ty81NWd4R1hHMEU5?=
- =?utf-8?B?RStkN3N5bjVyRVI5eFcwVUNNYWpDZDRJUDcwK25Ic3pocCt1SW1yajlxVkFp?=
- =?utf-8?B?TEM5bys2RzFCY3NncTBxUks0c25QSkV0UXJwWXhqU3FkUjIvcmp2OWwxUHU1?=
- =?utf-8?B?TGJZd1FDUmlGRHZyZjRwTzVlUEVVdXFEa1Q1Qkl1eEN1bkxTYnVaSE1pKzd6?=
- =?utf-8?B?ZVZYUEE2TEVKcG5QOGpzNEdES0VmbUVEbFE0TWdoVXh2TWo2QUxuVXZ4ZDNz?=
- =?utf-8?B?VWxwOEE0Y2dBQTNibG1oa0R3OFZydXhkS0NCS1dwajRXWlljOUNwNWRlREg0?=
- =?utf-8?B?WjFQcVFIVVJFN2JnRm5WcVV3b25MSWo2M1ByNHBUeE52R2hRclFIVHdoVlpG?=
- =?utf-8?B?b3U2c1UzQ0RZdjRRSVdVdTEya1dYQmhqd0FIRnYweCtLQmM5RmMzazFUNStY?=
- =?utf-8?B?eHlodU1ac3Z1c2JCZmxOZ1F2cUhoN01GcGpsR214ZjdpYTR6V0pHRFVYa0Vq?=
- =?utf-8?B?REVZd3REdzRTSFVyMzMvbS9Yc1FqQ1pzc2t2Z2VlelRwMW1oZS91SmZyc1c4?=
- =?utf-8?B?eWUvdlVoRlIyeVdEaFU0QjNDeDRYY054Y1dBVXlRWG9qUHQ1TFBLUlpsYTN5?=
- =?utf-8?B?TzZJN2t6Z2Zaa2xDeTdFT2hQZ1JrZzJFVVpzbU9UTFdwSWNBbW9VVTNCTFpB?=
- =?utf-8?B?TGJ2QUJ3NTU3Y29vMFlaNzBEdjZXRytXYnNuajl0NXR6MFYzaW9OSkJIQlIw?=
- =?utf-8?B?dmp0YVNKRzFYamduQklEclVSdnRWK3ZiM1phOFQyaHUzVU11a091SjgvSE5l?=
- =?utf-8?B?Qm0yOEVtZXVJQ0pUOEx0KzVFZWZ1RTZBYkkwMCtZK0F1YkJ4ODAxeWdGdDVR?=
- =?utf-8?B?Z2xOOUsxdGNWUTNPMENmcFI2OTUxUFRRRWlYUnRwQkx2VjcrYTZJbmszVWZF?=
- =?utf-8?B?YVlEUlVVL1VZTjdCdWcrMHkxOWpIVTQ4dkZpdEF6YUk5YlBwMG90aVBJMXlI?=
- =?utf-8?B?dk5wUzVreGRXMFkvRkxUcGpEalE1MFJOKzBIL3orQk1xeEVYV1FpTzF4RnFy?=
- =?utf-8?B?ZGxSMkYwaHhCRWZ0blZ6MW4ycTZZNkRrMEoyMnFwNGgzWDZubklKQTdZclNI?=
- =?utf-8?B?WTVQM2piN0JSa3VaSHJScGt1cm9hRnNIbmF3MVU0RkNOL1RLWEt3VHBzWnVQ?=
- =?utf-8?B?aUlnR0dYSmdua3JWUnJvanpqYlNkdFY1Yng4S2VrcGFOeldzdDZHSmRteDZL?=
- =?utf-8?B?S1pydkhhMDNscXBveGZRVDc3QmtKc2VyTWlzNUZoN24waG5waHlLWkREbCtm?=
- =?utf-8?B?NDVpcHpnVXZQeDBRb1djdFFNYTFuc2ZkVlloL2hZRXdNZjZDc09SME1ZMWVL?=
- =?utf-8?B?ZWswcGFoSko2czdoUTZXb0krS0xoSk1IemxhNi91Z2RFUGVrcTBJUWhFZm9O?=
- =?utf-8?B?OGVqVDdSUnJSOW5yN0VLcDF2SEp1cGxBb1o0VGlQd2RBUTAvNCs2MHo5L1ds?=
- =?utf-8?B?Y0tjc2lYREsyKzVPNXJpTmQ0ZXRVR2phOU9DSW9ma2xZRlhCb2xLWENVSFNk?=
- =?utf-8?B?dFhudEY5NHhIZ1JTSUREbUpKWUpLUmQ3bkxlQTR6SGlwWGFrV1VZaFg3dzMr?=
- =?utf-8?B?T1RxN09BKzI2SnFkR2xvbmN2RElBZVM0TzZGY2owMUYydFRPdWU2UT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e60ab51-3eb8-4557-1811-08da1becd605
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2022 18:55:25.1216
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mtTUfUagcansPbCRXDxWyIdVCVhSOHCYLWEAHAKwkwQcrtlIXvFyciqCzc+SPpUlgOlhbFOYbNKoodkcdrmIMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4271
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+To: Dave Hansen <dave.hansen@intel.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Ard Biesheuvel <ardb@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, Mike Rapoport <rppt@kernel.org>,
+ x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+In-Reply-To: <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 4/11/22 11:27, Dave Hansen wrote:
-> On 4/11/22 08:55, Borislav Petkov wrote:
->> On Sun, Apr 10, 2022 at 11:41:57PM -0700, Dave Hansen wrote:
->>> Let's just call out the possible (probable?) need for new ABI here.
->>> Maybe it will cue folks who care to speak up.
->> Err, why would you teach the user to go poke at some arbitrary sysfs
->> nodes when the accepting code can simply issue a printk from time to
->> time
->>
->>    "Guest unnaccepted memory progress: XX%. This slows down operations at the moment."
+On 08.04.22 21:11, Dave Hansen wrote:
+> On 4/5/22 16:43, Kirill A. Shutemov wrote:
+>> Kernel only needs to accept memory once after boot, so during the boot
+>> and warm up phase there will be a lot of memory acceptance. After things
+>> are settled down the only price of the feature if couple of checks for
+>> PageUnaccepted() in allocate and free paths. The check refers a hot
+>> variable (that also encodes PageBuddy()), so it is cheap and not visible
+>> on profiles.
 > 
-> I guess that's not a horrible place to start.  It's also not *horribly*
-> different from how guests work today.  If hosts lazily allocate RAM,
-> they'll see largely the same kind of behavior.
+> Let's also not sugar-coat this.  Page acceptance is hideously slow.
+> It's agonizingly slow.  To boot, it's done holding a global spinlock
+> with interrupts disabled (see patch 6/8).  At the very, very least, each
+> acceptance operation involves a couple of what are effectively ring
+> transitions, a 2MB memset(), and a bunch of cache flushing.
 > 
-> What ends up determining how much memory is pre-accepted versus being
-> done from the guest?  Is that just a normal part of setting up a TDX
-> guest, like from the qemu cmdline?  Or, is there some convention with
-> the virtual firmware?
+> The system is going to be downright unusable during this time, right?
+> 
+> Sure, it's *temporary* and only happens once at boot.  But, it's going
+> to suck.
+> 
+> Am I over-stating this in any way?
+> 
+> The ACCEPT_MEMORY vmstat is good to have around.  Thanks for adding it.
+>  But, I think we should also write down some guidance like:
+> 
+> 	If your TDX system seems as slow as snail after boot, look at
+> 	the "accept_memory" counter in /proc/vmstat.  If it is
+> 	incrementing, then TDX memory acceptance is likely to blame.
+> 
+> Do we need anything more discrete to tell users when acceptance is over?
+>  For instance, maybe they run something and it goes really slow, they
+> watch "accept_memory" until it stops.  They rejoice at their good
+> fortune!  Then, memory allocation starts falling over to a new node and
+> the agony beings anew.
+> 
+> I can think of dealing with this in two ways:
+> 
+> 	cat /sys/.../unaccepted_pages_left
+> 
+> which just walks the bitmap and counts the amount of pages remaining. or
+> something like:
+> 
+> 	echo 1 > /sys/devices/system/node/node0/make_the_pain_stop
+> 
+> Which will, well, make the pain stop on node0.
+> 
 
-With SNP, some memory will be accepted as part of the LAUNCH_UPDATE 
-sequences that the hypervisor performs, but that is not all of the guest 
-memory. Once the guest is started, the (initial implementation of) OVMF 
-SNP support will accept (PVALIDATE) all of the remaining guest memory. 
-When the kernel boots, there isn't any unaccepted memory.
+Either I'm missing something important or the random pain might just
+take a really long time to stop?
 
-Once support is available in the kernel for unaccepted memory, then OVMF 
-could be updated to only accept a limited amount of memory and pass the 
-information about the unaccepted memory to the kernel through the EFI 
-memory map.
+I mean, we tend to reallocate the memory first that we freed last
+(putting it to the head of the freelist when freeing and picking from
+the head when allocating).
 
-The approaches would have to be measured to see which ends up being the 
-best one. The GHCB specification allows for lots of memory to be accepted 
-in a single VMGEXIT (world switch) vs performing a VMGEXIT for each 2MB of 
-memory being accepted.
+So unless your kernel goes crazy and allocates each and every page right
+after boot, essentially accepting all memory, you might have random
+unaccepted pages lurking at the tail of the freelists.
 
+So if the VM is running for 355 days without significant memory
+pressure, you can still run into unaccepted pages at day 356 that
+results in a random delay due to acceptance of memory.
+
+
+I think we most certainly want some way to make the random pain stop, or
+to make the random pain go away after boot quickly. The
+"unaccepted_pages_left" indicator would just be a "hey, there might be
+random delays, but you cannot do anything about it". Magic toggles like
+"make_the_pain_stop" are not so nice.
+
+Can we simply automate this using a kthread or smth like that, which
+just traverses the free page lists and accepts pages (similar, but
+different to free page reporting)?
+
+-- 
 Thanks,
-Tom
+
+David / dhildenb
+
