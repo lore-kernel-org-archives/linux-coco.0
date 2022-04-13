@@ -1,49 +1,48 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5231D28EE
-	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 11:38:30 +0000 (UTC)
-Received: by mail-lf1-f52.google.com with SMTP id p10so2937321lfa.12
-        for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 04:38:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BE428EE
+	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 11:43:52 +0000 (UTC)
+Received: by mail-lj1-f172.google.com with SMTP id o16so1853842ljp.3
+        for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 04:43:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20210112.gappssmtp.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=ZsUJ2NINlf/YGW3oKuUtDCOd4WHYH6lv9r94E8nLe7k=;
-        b=uxdU90BlQLxm0jDBpwT7ZMBvjlYIIiuIeQRT3hGbatcT1HUweuug/AHiWZ/ufhqwGo
-         mVAjin2rGuacjH0++numKLzwazoDwfSff0NMvZVnuAPgoMJbqvDy1edfuAy40M8BFC/x
-         a3laDOVAcLJR3IqFtnn+Amrp1MEceVLZ4500Kf78sVczEg4lQrTkzpiTM7sGu7TF/IL1
-         MrG+dTFhVE/Z0ag7oNkra0VOAz8vP+9DIsrR7yV5mXS7nXj3rXbXcUt96Tg/WxcJ5oe7
-         D66RiJa98VTqhO3o+k7IwlPhz5/uW8Mzr89bUA/hjNBYKp6JqGfad4ttcKn8J102HYgP
-         mZKg==
+        bh=zEOvVQ8ODptnK3WwFBWfeYgjoqgGL18PHLUqQQVknZE=;
+        b=IbDWQ6exmcYIF5xlYm/WQBVMxiI8gzxIlrURJHj4gun+Tfehojc623NglyuXPeXtem
+         s3kj95CbN5IpEZiShOZ3p7KWR6T1IoH8Vve+GD9QG5gDR+5bRDwWfyK3ITy5zWsiBXXA
+         OClXS6PkEVcFzkwMiMHnkuffDW2E3/DZN0BKFCw6B5FpphArioxoqdyai/uUZbJshTQY
+         UxLKrifaPneqZ6/twcwWr+6+uR4Uw0E+Tmq9sBS9A0B1B5p1Ou835VDKJ3PdD3aX+Jza
+         YPiSrtykL2uJOyQxThOQ0kd3qKwpkxfSZFANqbL7zFkBJBPclnW6dbKo1eZuEPcXqeUR
+         451Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=ZsUJ2NINlf/YGW3oKuUtDCOd4WHYH6lv9r94E8nLe7k=;
-        b=5XShseKM5lpvRMAynwZmPH42B17QI/xemwii7H1JrZjcwRnGdglFoX5e12605IG0hj
-         yTmaXVaXnEyFn+ILCe9E3lMH3gKDIJuzEX8P8aWxWmtnKMALxPbzWRjK7ymW5L3Sb/Do
-         YKKf/jmhMBdWO7fBB6abg00EXKbP7mS/Nq4Fl/rYWC8hHc0KFhmHXtf4VQZfJOaWliCU
-         EydrNeJI6jsNFVivPaeweewWj+DR1Rd/VxHDMPwM9aYsGg5q03sVSORsChm7Fvj8nAtk
-         2CCZCtha72jGfQ1ir+32ty0SL3JdbeAB2cfruj2A5iOgIHfJuyPIjUxFrhET3ge+SrSm
-         3yaA==
-X-Gm-Message-State: AOAM530Id2ue9cLD65XbxBmJQgDWBho3BgTbgdzzPMHoHOZXsuHnFuTl
-	8YtpfVKjtUKB3+qMJohFrPJUGg==
-X-Google-Smtp-Source: ABdhPJyqOiwPXY3JcLiTivxhds7PtI4vfS0IEt8zlViK9HOGTpUtfBt/VR8j//JV+OX1VzpzOxSuGQ==
-X-Received: by 2002:a19:4953:0:b0:46b:bdc2:860a with SMTP id l19-20020a194953000000b0046bbdc2860amr4567387lfj.6.1649849908414;
-        Wed, 13 Apr 2022 04:38:28 -0700 (PDT)
+        bh=zEOvVQ8ODptnK3WwFBWfeYgjoqgGL18PHLUqQQVknZE=;
+        b=7hNpYz75b3Wta7BaXApr5WP3utiF/y3uQ2KA+XAJugRVY+qUHUgU9CXP1UTiYc5nL+
+         UntXfhq9ALQ1OoBVvvToNY4sZ+gmBirGv81Kjznay9qDkROVzraSjek2ifkV5vrswjdg
+         4l/IyQaCiM5FJbPUW17ZDlALZlMwS9nLCwhkUawnBtrE19zMj4tNfJsosZh5Xnq5kzOK
+         38fRaLLyxB2ffgd7mRhD9CKeAJz00L92Qfj3g0T8E3QmzUQwYdKv6i8Vwg3v68Zhvg5y
+         bxqrOt88h9w9fAncAi/MXTvDNL5yfnK8uN2fioXWmZ63WLYHy7NEgH4vdv3PAdmD8sWC
+         3CpQ==
+X-Gm-Message-State: AOAM531du5ixQr/tsSEQaMVN6juNarmSI+RPBqMFuc8hgS90IoXfvVKF
+	VzrtGy3p/JvHVYbiokkZTfJaxw==
+X-Google-Smtp-Source: ABdhPJxSc2DiuJ8ztlJC/7du5pH7HUiYvKu1fv1sdTG2x0jctLC+Bp5dpszyE0eMhivO+pDlpFDILQ==
+X-Received: by 2002:a05:651c:1781:b0:247:daa7:4358 with SMTP id bn1-20020a05651c178100b00247daa74358mr25671523ljb.477.1649850230444;
+        Wed, 13 Apr 2022 04:43:50 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id k5-20020a196f05000000b0046b94269595sm1503056lfc.169.2022.04.13.04.38.27
+        by smtp.gmail.com with ESMTPSA id j4-20020a05651231c400b0044ac20061ecsm4099397lfe.128.2022.04.13.04.43.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 04:38:28 -0700 (PDT)
+        Wed, 13 Apr 2022 04:43:49 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id DF1E510369B; Wed, 13 Apr 2022 14:40:01 +0300 (+03)
-Date: Wed, 13 Apr 2022 14:40:01 +0300
+	id B7F8010369B; Wed, 13 Apr 2022 14:45:23 +0300 (+03)
+Date: Wed, 13 Apr 2022 14:45:23 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
@@ -57,19 +56,17 @@ Cc: Dave Hansen <dave.hansen@intel.com>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
 	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
 	Brijesh Singh <brijesh.singh@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-Message-ID: <20220413114001.wdsi2xrm4btrghms@box.shutemov.name>
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 2/8] efi/x86: Get full memory map in allocate_e820()
+Message-ID: <20220413114523.5si2ywl7zlgestz5@box.shutemov.name>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
- <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
- <6c976344-fdd6-95cd-2cb0-b0e817bf0392@intel.com>
- <YlP94T1ACwxKTgep@kernel.org>
+ <20220405234343.74045-3-kirill.shutemov@linux.intel.com>
+ <Ylae+bejPzRMPrDw@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -78,55 +75,68 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YlP94T1ACwxKTgep@kernel.org>
+In-Reply-To: <Ylae+bejPzRMPrDw@zn.tnic>
 
-On Mon, Apr 11, 2022 at 01:07:29PM +0300, Mike Rapoport wrote:
-> On Sun, Apr 10, 2022 at 11:38:08PM -0700, Dave Hansen wrote:
-> > On 4/9/22 08:54, Kirill A. Shutemov wrote:
-> > > On Fri, Apr 08, 2022 at 11:55:43AM -0700, Dave Hansen wrote:
-> > 
-> > >>>  	if (fpi_flags & FPI_TO_TAIL)
-> > >>>  		to_tail = true;
-> > >>>  	else if (is_shuffle_order(order))
-> > >>> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
-> > >>>  static inline bool page_expected_state(struct page *page,
-> > >>>  					unsigned long check_flags)
-> > >>>  {
-> > >>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
-> > >>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
-> > >>> +	    !PageUnaccepted(page))
-> > >>>  		return false;
-> > >>
-> > >> That probably deserves a comment, and maybe its own if() statement.
-> > > 
-> > > Own if does not work. PageUnaccepted() is encoded in _mapcount.
-> > > 
-> > > What about this:
-> > > 
-> > > 	/*
-> > > 	 * page->_mapcount is expected to be -1.
-> > > 	 *
-> > > 	 * There is an exception for PageUnaccepted(). The page type can be set
-> > > 	 * for pages on free list. Page types are encoded in _mapcount.
-> > > 	 *
-> > > 	 * PageUnaccepted() will get cleared in post_alloc_hook().
-> > > 	 */
-> > > 	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
+On Wed, Apr 13, 2022 at 11:59:21AM +0200, Borislav Petkov wrote:
+> On Wed, Apr 06, 2022 at 02:43:37AM +0300, Kirill A. Shutemov wrote:
+> > diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> > index 01ddd4502e28..d18cac8ab436 100644
+> > --- a/drivers/firmware/efi/libstub/x86-stub.c
+> > +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> > @@ -569,30 +569,28 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
+> >  }
+> >  
+> >  static efi_status_t allocate_e820(struct boot_params *params,
+> > +				  struct efi_boot_memmap *map,
+> >  				  struct setup_data **e820ext,
+> >  				  u32 *e820ext_size)
+> >  {
+> > -	unsigned long map_size, desc_size, map_key;
+> >  	efi_status_t status;
+> > -	__u32 nr_desc, desc_version;
+> > +	__u32 nr_desc;
+> >  
+> > -	/* Only need the size of the mem map and size of each mem descriptor */
+> > -	map_size = 0;
+> > -	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+> > -			     &desc_size, &desc_version);
+> > -	if (status != EFI_BUFFER_TOO_SMALL)
+> > -		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+> > -
+> > -	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
+> > +	status = efi_get_memory_map(map);
+> > +	if (status != EFI_SUCCESS)
+> > +		return status;
+> >  
+> > -	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+> > -		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
+> > +	nr_desc = *map->map_size / *map->desc_size;
+> > +	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
+> > +		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
+> > +			EFI_MMAP_NR_SLACK_SLOTS;
+> >  
+> >  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+> >  		if (status != EFI_SUCCESS)
+> > -			return status;
+> > +			goto out;
 > 
-> Maybe I'm missing something, but isn't this true for any PageType?
+> This looks weird. With the goto out of the way, this code turns into:
 > 
-> > > 		return false;
-> > > 
-> > > ?
-> > 
-> > That's better.  But, aren't the PG_* names usually reserved for real
-> > page->flags bits?  That naming might be part of my confusion.
+>   		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+> 		if (status != EFI_SUCCESS) {
+> 			efi_bs_call(free_pool, *map->map);
+> 			return EFI_SUCCESS;
+> 		}
 > 
-> We use them for PageType as well like PG_buddy, PG_offline, PG_Table.
+> I think you want to return status as above after having called
+> 
+> 	efi_bs_call(free_pool, *map->map);
+> 
+> ...
 
-PG_buddy gets clear on remove from the free list, before the chec.
+Ah. Right. I actually fix this in the next patch.
 
-PG_offline and PG_table pages are never on free lists.
+Will move it here.
 
 -- 
  Kirill A. Shutemov
