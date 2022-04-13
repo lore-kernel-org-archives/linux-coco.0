@@ -1,156 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A477B
-	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 16:48:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBDAC385B0
-	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 16:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D722F32
+	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 20:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BE4C385A3;
+	Wed, 13 Apr 2022 20:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1649868514;
-	bh=W5Rf60oEFjgZFRko4gvOWE22lbGgMYC79qcAyl6Bjeg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=L75BlIuyCHjaQA4HE7L2QX1kjx7k7yMTESX1l9XEcRsUGtwiiU80X2IVM92A8GCp7
-	 3l2EVJbbFLfUCD+OTKr1U6uDCYqdwzhgLnzfsgmG3rc8rEe8HonznGLtvH0ic1icRG
-	 lV6VX9vnSe6oqwJJG4t/yQeWE0HW/MzBXwJJfIyccB4eyaoIx2KA7hIepMJYx5BO79
-	 7Gl40lh54niuprVWr90ykPKhxdr8RsVTjuoV2tqa/kDb9CywcfBlIOlDYltF42n1Sh
-	 5OPDgkueHMdvScuzJ23S94/qO9phhEagxL2+3nOpreKl0PrPYN/hNqm87UU1z0JyGv
-	 7ML4DPNzhkjXQ==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-ddfa38f1c1so2572349fac.11
-        for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 09:48:34 -0700 (PDT)
-X-Gm-Message-State: AOAM533wpftUWDZaSRpzjSQXhdTAGA+vc8UCqQABIHtVQH6Zos5kF6sN
-	gbjpoWtxDHYnGXFtYYJWH/L0dCC0ZnUdrFkvyGc=
-X-Google-Smtp-Source: ABdhPJwvWPaFmaZO9HwJqmqb82Kyqfurf4iagadp+RDPFOZFqf24kux+lbZxjGE6wAO6Limf6s0sASYqCfxTaRnVklo=
-X-Received: by 2002:a05:6870:eaa5:b0:da:b3f:2b45 with SMTP id
- s37-20020a056870eaa500b000da0b3f2b45mr4914280oap.228.1649868513679; Wed, 13
- Apr 2022 09:48:33 -0700 (PDT)
+	s=k20201202; t=1649880420;
+	bh=1lv0TYn1rI0bZiX2xcJLC6rgxIwufGUuDS8PwYZgZZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oxeoUVNxqagKDTCoBhEg0ZjenI8HlagF6DUcw+G/PXtILlsb/+4C9pEpvNlD3uf3p
+	 E1v+kxYnRb8b20Y1YbQOvYk79efC+87JQDK3EzvaIg4gX5CtXbi6K6Z8Gfj7QI0Dop
+	 TYMDAmgwT9qN1CC287v6xLZf9RDalh20LNPvfCIJPDQlgqB5MU43zs16zcyjJp3bps
+	 aJhxG6La5MxAlJFcJ8YkEprju0ttd6mReGFuXZKsED7A7qu3OrktN/MXqtX+Y6z9Vh
+	 jaJNTthb2d6e3Adq6vTyH+gxu4FVqcgI5SXduICpNWFjEqDM466H4gwBr7tIY6rfE8
+	 zQR8zc24UsmKQ==
+Date: Wed, 13 Apr 2022 23:06:46 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	David Hildenbrand <david@redhat.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+Message-ID: <YlctVvp5V1OpgKJW@kernel.org>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
+ <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
+ <6c976344-fdd6-95cd-2cb0-b0e817bf0392@intel.com>
+ <YlP94T1ACwxKTgep@kernel.org>
+ <20220413114001.wdsi2xrm4btrghms@box.shutemov.name>
+ <YlbiqdqCH+j7TK80@kernel.org>
+ <20220413151517.tzd76kzja3424lqu@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20220412212127.154182-1-dovmurik@linux.ibm.com>
-In-Reply-To: <20220412212127.154182-1-dovmurik@linux.ibm.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 13 Apr 2022 18:48:22 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFJaC-wdy1_ExOzP9UvGV_Ht+-SF_ySGzyzjd8aD92=BQ@mail.gmail.com>
-Message-ID: <CAMj1kXFJaC-wdy1_ExOzP9UvGV_Ht+-SF_ySGzyzjd8aD92=BQ@mail.gmail.com>
-Subject: Re: [PATCH v10 0/4] Allow guest access to EFI confidential computing
- secret area
-To: Dov Murik <dovmurik@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-efi <linux-efi@vger.kernel.org>, Borislav Petkov <bp@suse.de>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Andi Kleen <ak@linux.intel.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, Andrew Scull <ascull@google.com>, 
-	Dave Hansen <dave.hansen@intel.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, 
-	Gerd Hoffmann <kraxel@redhat.com>, Lenny Szubowicz <lszubowi@redhat.com>, Peter Gonda <pgonda@google.com>, 
-	Matthew Garrett <mjg59@srcf.ucam.org>, James Bottomley <jejb@linux.ibm.com>, 
-	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>, Jim Cadden <jcadden@ibm.com>, 
-	Daniele Buono <dbuono@linux.vnet.ibm.com>, linux-coco@lists.linux.dev, 
-	linux-security-module@vger.kernel.org, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220413151517.tzd76kzja3424lqu@box.shutemov.name>
 
-(cc Jon for the Documentation/ changes)
+On Wed, Apr 13, 2022 at 06:15:17PM +0300, Kirill A. Shutemov wrote:
+> On Wed, Apr 13, 2022 at 05:48:09PM +0300, Mike Rapoport wrote:
+> > On Wed, Apr 13, 2022 at 02:40:01PM +0300, Kirill A. Shutemov wrote:
+> > > On Mon, Apr 11, 2022 at 01:07:29PM +0300, Mike Rapoport wrote:
+> > > > On Sun, Apr 10, 2022 at 11:38:08PM -0700, Dave Hansen wrote:
+> > > > > On 4/9/22 08:54, Kirill A. Shutemov wrote:
+> > > > > > On Fri, Apr 08, 2022 at 11:55:43AM -0700, Dave Hansen wrote:
+> > > > > 
+> > > > > >>>  	if (fpi_flags & FPI_TO_TAIL)
+> > > > > >>>  		to_tail = true;
+> > > > > >>>  	else if (is_shuffle_order(order))
+> > > > > >>> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
+> > > > > >>>  static inline bool page_expected_state(struct page *page,
+> > > > > >>>  					unsigned long check_flags)
+> > > > > >>>  {
+> > > > > >>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
+> > > > > >>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
+> > > > > >>> +	    !PageUnaccepted(page))
+> > > > > >>>  		return false;
+> > > > > >>
+> > > > > >> That probably deserves a comment, and maybe its own if() statement.
+> > > > > > 
+> > > > > > Own if does not work. PageUnaccepted() is encoded in _mapcount.
+> > > > > > 
+> > > > > > What about this:
+> > > > > > 
+> > > > > > 	/*
+> > > > > > 	 * page->_mapcount is expected to be -1.
+> > > > > > 	 *
+> > > > > > 	 * There is an exception for PageUnaccepted(). The page type can be set
+> > > > > > 	 * for pages on free list. Page types are encoded in _mapcount.
+> > > > > > 	 *
+> > > > > > 	 * PageUnaccepted() will get cleared in post_alloc_hook().
+> > > > > > 	 */
+> > > > > > 	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
+> > > > 
+> > > > Maybe I'm missing something, but isn't this true for any PageType?
+> > > 
+> > > PG_buddy gets clear on remove from the free list, before the chec.
+> > > 
+> > > PG_offline and PG_table pages are never on free lists.
+> > 
+> > Right, this will work 'cause PageType is inverted. I still think this
+> > condition is hard to parse and I liked the old variant with
+> > !PageUnaccepted() better.
+> 
+> Well the old way to deal with PageUnaccepted() had a flaw: if the page is
+> PageUnaccepted() it will allow any other page types to pass here. Like
+> PG_unaccepted + PG_buddy will slide here.
 
-On Tue, 12 Apr 2022 at 23:21, Dov Murik <dovmurik@linux.ibm.com> wrote:
->
-> Confidential computing (coco) hardware such as AMD SEV (Secure Encrypted
-> Virtualization) allows guest owners to inject secrets into the VMs
-> memory without the host/hypervisor being able to read them.  In SEV,
-> secret injection is performed early in the VM launch process, before the
-> guest starts running.
->
-> OVMF already reserves designated area for secret injection (in its
-> AmdSev package; see edk2 commit 01726b6d23d4 "OvmfPkg/AmdSev: Expose the
-> Sev Secret area using a configuration table" [1]), but the secrets were
-> not available in the guest kernel.
->
-> The patch series keeps the address of the EFI-provided memory for
-> injected secrets, and exposes the secrets to userspace via securityfs
-> using a new efi_secret kernel module.  The module is autoloaded (by the
-> EFI driver) if the secret area is populated.
->
-> The first patch in EFI keeps the address of the secret area as passed in
-> the EFI configuration table.  The second patch introduces the new
-> efi_secret module that exposes the content of the secret entries as
-> securityfs files, and allows clearing out secrets with a file unlink
-> interface.  The third patch auto-loads the efi_secret module during
-> startup if the injected secrets area is populated.  The last patch
-> documents the data flow of confidential computing secret injection.
->
-> As a usage example, consider a guest performing computations on
-> encrypted files.  The Guest Owner provides the decryption key (= secret)
-> using the secret injection mechanism.  The guest application reads the
-> secret from the efi_secret filesystem and proceeds to decrypt the files
-> into memory and then performs the needed computations on the content.
->
-> In this example, the host can't read the files from the disk image
-> because they are encrypted.  Host can't read the decryption key because
-> it is passed using the secret injection mechanism (= secure channel).
-> Host can't read the decrypted content from memory because it's a
-> confidential (memory-encrypted) guest.
->
-> This has been tested with AMD SEV and SEV-ES guests, but the kernel side
-> of handling the secret area has no SEV-specific dependencies, and
-> therefore might be usable (perhaps with minor changes) for any
-> confidential computing hardware that can publish the secret area via the
-> standard EFI config table entry.
->
-> To enable this functionality, set CONFIG_EFI_SECRET=m when building the
-> guest kernel.
->
-> Here is a simple example for usage of the efi_secret module in a guest
-> to which an EFI secret area with 4 secrets was injected during launch:
->
-> ...
-> [    0.000000] efi: EFI v2.70 by EDK II
-> [    0.000000] efi: CocoSecret=0x7f222680 SMBIOS=0x7f541000 ACPI=0x7f77e000 ACPI 2.0=0x7f77e014 MEMATTR=0x7ea16418
-> ...
-> [    1.127627] Run /init as init process
-> Loading, please wait...
-> Starting version 245.4-4ubuntu3.15
-> ...
-> [    0.763204] efi_secret efi_secret.0: Created 4 entries in securityfs secrets/coco
-> ...
->
-> # ls -la /sys/kernel/security/secrets/coco
-> total 0
-> drwxr-xr-x 2 root root 0 Jun 28 11:54 .
-> drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-> -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-> -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-> -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
-> -r--r----- 1 root root 0 Jun 28 11:54 e6f5a162-d67f-4750-a67c-5d065f2a9910
->
-> # hd /sys/kernel/security/secrets/coco/e6f5a162-d67f-4750-a67c-5d065f2a9910
-> 00000000  74 68 65 73 65 2d 61 72  65 2d 74 68 65 2d 6b 61  |these-are-the-ka|
-> 00000010  74 61 2d 73 65 63 72 65  74 73 00 01 02 03 04 05  |ta-secrets......|
-> 00000020  06 07                                             |..|
-> 00000022
->
-> # rm /sys/kernel/security/secrets/coco/e6f5a162-d67f-4750-a67c-5d065f2a9910
->
-> # ls -la /sys/kernel/security/secrets/coco
-> total 0
-> drwxr-xr-x 2 root root 0 Jun 28 11:55 .
-> drwxr-xr-x 3 root root 0 Jun 28 11:54 ..
-> -r--r----- 1 root root 0 Jun 28 11:54 736870e5-84f0-4973-92ec-06879ce3da0b
-> -r--r----- 1 root root 0 Jun 28 11:54 83c83f7f-1356-4975-8b7e-d3a0b54312c6
-> -r--r----- 1 root root 0 Jun 28 11:54 9553f55d-3da2-43ee-ab5d-ff17f78864d2
->
->
-> [1] https://github.com/tianocore/edk2/commit/01726b6d23d4
->
->
-> ---
->
-> v10 changes:
-> - Add #ifdef CONFIG_EFI_COCO_SECRET to platform device registration in
->   patch 3.
->
+It seems to me that there was an implicit assumption that page types are
+exclusive and PG_unaccepted would break it.
+ 
+> > Maybe if we wrap the whole construct in a helper it will be less eye
+> > hurting.
+> 
+> Hm. Any suggestion how such helper could look like? Cannot think of
+> anything sane.
 
-I have queued this up in efi/next. Jon, is that ok with you?
+Me neither :(
 
-Thanks all,
+How about updating the comment to be
+
+	/*
+	 * The page must not be mapped to userspace and must not have a
+	 * PageType other than PageUnaccepted.
+	 * This means that page->_mapcount must be -1 or have only
+	 * PG_unaccepted bit cleared.
+	 */
+	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
+ 
+> -- 
+>  Kirill A. Shutemov
+
+-- 
+Sincerely yours,
+Mike.
