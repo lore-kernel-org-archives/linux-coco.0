@@ -1,141 +1,110 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CD423AE
-	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 15:13:45 +0000 (UTC)
-Received: by mail-lf1-f51.google.com with SMTP id o2so4080582lfu.13
-        for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 08:13:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RAAc5fa4F90WsSmMhyXG1BxDYmJJkdC+jeev0xBh19I=;
-        b=xX5d3iFAgBwcsG6s5J2C4/fLi6LlyCP196z7KBeTpn4ttNrT/0VeBmqpZrVANXjtIM
-         c+eUxPnL6kXEYJbv4Wu711Aji9cUBck5mBk5FPqthYuLmchh9cr8gy0oZMXvZNReQYj1
-         BmLMVOWE8WynJFd75yYTUjAO/Z5R88LGTxqx1qVZW03UaLpsXNPqkOogT9Y2TBkZffCD
-         kTujj7PajUDP5BlNSVjQYaWeEt4OYUyRNCaRGxL2QE+H9R4IxgqWYQ+E1oV5KFlds+wv
-         /9WiANG5JdMNnpyoOWRq/uIjvdTdz6N+UOz8yvngBhyX3YddzCFyhpeCtSDAgX0tVIoE
-         Upcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RAAc5fa4F90WsSmMhyXG1BxDYmJJkdC+jeev0xBh19I=;
-        b=qwhnNZePn+hZUZ4M2HfR8qRj1xDXFQXoL7Qn5elqD9WoS4cuhjIfzBcdXX8C00GWhk
-         ZoRX1NlV79Cc6bL6SOvTIApt9MOES4mMgVUcWXONbY5PYCl26Tq+9xW1QkeCuOsTadjI
-         ZDKCBpGqh7pjsSTRje9QdBzLfNPl2b4K8iID8O7tMCqKfzTv2sy9nX1ur9nor/DSOJHc
-         DC54bfi2g8kbAtNrA6P6rhX0oVu6gXUiyldvrXjDIpP9CxTFLqmJlzqnP2TK2XNUWg30
-         Eq5/IxYjzg0hWXw0ZgMD0iSivpLq4TnOdtI44CTCML9kneWJ/bD56aGiqHwN7D2YGGdG
-         Fegg==
-X-Gm-Message-State: AOAM531XHO8KGscYAwBJVuXla0ZFwvoPg42GhnegTvIetCMbdq7YyZ/k
-	AvoF1OYeI8cj73lopJLl6613Fg==
-X-Google-Smtp-Source: ABdhPJzGMpUSiE9GVIjXl9oR+9/sm+CrqfOI2L7c3sX8hQf2neNKEahVQsBzUzo5C7G8Z/yzmwf7dQ==
-X-Received: by 2002:a19:da12:0:b0:46b:926f:d34b with SMTP id r18-20020a19da12000000b0046b926fd34bmr15227644lfg.646.1649862824074;
-        Wed, 13 Apr 2022 08:13:44 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id bj8-20020a2eaa88000000b0024b6abfc2ddsm741396ljb.114.2022.04.13.08.13.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 08:13:43 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-	id 0929910369B; Wed, 13 Apr 2022 18:15:17 +0300 (+03)
-Date: Wed, 13 Apr 2022 18:15:17 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	David Hildenbrand <david@redhat.com>, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-Message-ID: <20220413151517.tzd76kzja3424lqu@box.shutemov.name>
-References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
- <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
- <6c976344-fdd6-95cd-2cb0-b0e817bf0392@intel.com>
- <YlP94T1ACwxKTgep@kernel.org>
- <20220413114001.wdsi2xrm4btrghms@box.shutemov.name>
- <YlbiqdqCH+j7TK80@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480FE290C
+	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 15:36:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1649864209; x=1681400209;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=oIiCjJKpo00HkSNcMJpuGaaA17RzsSWMzH4oj7iHyy8=;
+  b=iaZGa5Of1F9NtoV2k2W3QwpWRV9g0fb5vvkCvsyZcRW2hdPqewsEt4yg
+   1XeEIDz0WR0Uyur+ZSLbC3Lj0TN+HHyrSMDu9+gSj5Un1e8V4a7uIyh0E
+   LYH0zbdfDeZmS13BtfLZ8JqSvfCWMXfum1JE9Wr5I4FIpsX04nqjbixF1
+   245pH+eCxW/0Ocn0w2Owr5T2iSSXZkSXK5flAeoqfiCR/V74QrQmAs7i7
+   4psv28IIxBey5Tp6YeEu1WFKMzbs4EPHho8DS8s4CiT5enxamLRYCyaG1
+   Ljw7vNoaM/jkfITCs7/ChYyJDOXF/CjTxH+BRph2Q3PrqvHvHvg5z/hAU
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10316"; a="243286233"
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="243286233"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 08:36:48 -0700
+X-IronPort-AV: E=Sophos;i="5.90,257,1643702400"; 
+   d="scan'208";a="559791794"
+Received: from jmsepko-mobl.amr.corp.intel.com (HELO [10.212.61.150]) ([10.212.61.150])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Apr 2022 08:36:45 -0700
+Message-ID: <cfcf9f82-7e5f-58b6-7b47-9ac552832596@intel.com>
+Date: Wed, 13 Apr 2022 08:36:52 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YlbiqdqCH+j7TK80@kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill@shutemov.name>,
+ David Hildenbrand <david@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Brijesh Singh <brijesh.singh@amd.com>, Mike Rapoport <rppt@kernel.org>,
+ x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
+ <93a7cfdf-02e6-6880-c563-76b01c9f41f5@intel.com>
+ <ff9e0bad-be9a-97ac-ae88-d22bcfbe80d4@redhat.com>
+ <ebf3ccef-e6fe-62d5-74e8-91e30e7c2642@intel.com>
+ <a458c13f-9994-b227-ff61-bfdfec10bc27@redhat.com>
+ <20220413113024.ycvocn6ynerl3b7m@box.shutemov.name>
+From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
+In-Reply-To: <20220413113024.ycvocn6ynerl3b7m@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 13, 2022 at 05:48:09PM +0300, Mike Rapoport wrote:
-> On Wed, Apr 13, 2022 at 02:40:01PM +0300, Kirill A. Shutemov wrote:
-> > On Mon, Apr 11, 2022 at 01:07:29PM +0300, Mike Rapoport wrote:
-> > > On Sun, Apr 10, 2022 at 11:38:08PM -0700, Dave Hansen wrote:
-> > > > On 4/9/22 08:54, Kirill A. Shutemov wrote:
-> > > > > On Fri, Apr 08, 2022 at 11:55:43AM -0700, Dave Hansen wrote:
-> > > > 
-> > > > >>>  	if (fpi_flags & FPI_TO_TAIL)
-> > > > >>>  		to_tail = true;
-> > > > >>>  	else if (is_shuffle_order(order))
-> > > > >>> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
-> > > > >>>  static inline bool page_expected_state(struct page *page,
-> > > > >>>  					unsigned long check_flags)
-> > > > >>>  {
-> > > > >>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
-> > > > >>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
-> > > > >>> +	    !PageUnaccepted(page))
-> > > > >>>  		return false;
-> > > > >>
-> > > > >> That probably deserves a comment, and maybe its own if() statement.
-> > > > > 
-> > > > > Own if does not work. PageUnaccepted() is encoded in _mapcount.
-> > > > > 
-> > > > > What about this:
-> > > > > 
-> > > > > 	/*
-> > > > > 	 * page->_mapcount is expected to be -1.
-> > > > > 	 *
-> > > > > 	 * There is an exception for PageUnaccepted(). The page type can be set
-> > > > > 	 * for pages on free list. Page types are encoded in _mapcount.
-> > > > > 	 *
-> > > > > 	 * PageUnaccepted() will get cleared in post_alloc_hook().
-> > > > > 	 */
-> > > > > 	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
-> > > 
-> > > Maybe I'm missing something, but isn't this true for any PageType?
-> > 
-> > PG_buddy gets clear on remove from the free list, before the chec.
-> > 
-> > PG_offline and PG_table pages are never on free lists.
-> 
-> Right, this will work 'cause PageType is inverted. I still think this
-> condition is hard to parse and I liked the old variant with
-> !PageUnaccepted() better.
+On 4/13/22 04:30, Kirill A. Shutemov wrote:
+>> 2) Fast boot; after boot, all memory will slowly but steadily get
+>>    accepted in the background. After a while, all memory is accepted and
+>>    can be signaled to user space.
+...
+> Frankly, I think option 2 is the worst one. You still CPU cycles from the
+> workload after boot to do the job that may or may not be needed. It is an
+> half-measure that helps nobody.
 
-Well the old way to deal with PageUnaccepted() had a flaw: if the page is
-PageUnaccepted() it will allow any other page types to pass here. Like
-PG_unaccepted + PG_buddy will slide here.
+Let's not be too hyperbolic here.  "Worst" is entirely subjective and it
+totally depends on your perspective and what you care about.
 
-> Maybe if we wrap the whole construct in a helper it will be less eye
-> hurting.
+There are basically four options:
 
-Hm. Any suggestion how such helper could look like? Cannot think of
-anything sane.
+ * Accept everything in early boot
+ * Accept with deferred page free
+ * Accept with kthread after boot
+ * Accept on demand
 
--- 
- Kirill A. Shutemov
+and four things that matter:
+
+ * Code complexity
+ * Time to a shell prompt
+ * CPU/Memory waste
+ * Deterministic overhead
+
+Did I miss any?
+
+News flash: none of the options wins on all the things that matter.
+We're going to have to pick one (or maybe two).  I'm also not horribly
+convinced that there's a problem here worth solving, especially one that
+requires surgery in the core of the buddy allocator.
+
+This is essentially making a performance argument: it takes too long to
+boot if we go with a simpler solution.  Yet, I haven't seen any data.  I
+think we need to go with the simplest approach(es) until there's some
+actual data to guide us here.
+
+Here's another way to look at it:
+
+> https://docs.google.com/spreadsheets/d/1Fpv0Yp0CTF5_JXHR2pywvNtImTwUVGTxDMlJ5t8qiis/edit?usp=sharing
+
