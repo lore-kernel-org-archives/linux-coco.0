@@ -1,26 +1,27 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D722F32
-	for <linux-coco@lists.linux.dev>; Wed, 13 Apr 2022 20:07:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BE4C385A3;
-	Wed, 13 Apr 2022 20:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1649880420;
-	bh=1lv0TYn1rI0bZiX2xcJLC6rgxIwufGUuDS8PwYZgZZE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oxeoUVNxqagKDTCoBhEg0ZjenI8HlagF6DUcw+G/PXtILlsb/+4C9pEpvNlD3uf3p
-	 E1v+kxYnRb8b20Y1YbQOvYk79efC+87JQDK3EzvaIg4gX5CtXbi6K6Z8Gfj7QI0Dop
-	 TYMDAmgwT9qN1CC287v6xLZf9RDalh20LNPvfCIJPDQlgqB5MU43zs16zcyjJp3bps
-	 aJhxG6La5MxAlJFcJ8YkEprju0ttd6mReGFuXZKsED7A7qu3OrktN/MXqtX+Y6z9Vh
-	 jaJNTthb2d6e3Adq6vTyH+gxu4FVqcgI5SXduICpNWFjEqDM466H4gwBr7tIY6rfE8
-	 zQR8zc24UsmKQ==
-Date: Wed, 13 Apr 2022 23:06:46 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F8F7A
+	for <linux-coco@lists.linux.dev>; Thu, 14 Apr 2022 15:55:24 +0000 (UTC)
+Received: from zn.tnic (p2e55d808.dip0.t-ipconnect.de [46.85.216.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 759C11EC05DE;
+	Thu, 14 Apr 2022 17:55:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1649951713;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=BnxseTuJTt1+13p8Bbf/z4p5KH4GXzkEM2LCA1Q+mSA=;
+	b=ixFitl7wM62yP+tsOhRPxZgD1GGIJbFmMnv4ijIg0DwOt7uNBbOiVF/p3MS/LJIVEGBucc
+	4pk4WW3iNkwnJkqFQRuoBJCBSvipRW7EeUgE0xnTA+AkwB6Djac1YLUlxLGZVj/8HRPOrC
+	lZInPgtYZWtEqj2EdCfyVGijnb0AN+U=
+Date: Thu, 14 Apr 2022 17:55:13 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
@@ -35,105 +36,53 @@ Cc: Dave Hansen <dave.hansen@intel.com>,
 	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>,
 	Brijesh Singh <brijesh.singh@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv4 1/8] mm: Add support for unaccepted memory
-Message-ID: <YlctVvp5V1OpgKJW@kernel.org>
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
+Message-ID: <YlhD4fajtABnLNvw@zn.tnic>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-2-kirill.shutemov@linux.intel.com>
- <767c2100-c171-1fd3-6a92-0af2e4bf3067@intel.com>
- <20220409155423.iv2arckmvavvpegt@box.shutemov.name>
- <6c976344-fdd6-95cd-2cb0-b0e817bf0392@intel.com>
- <YlP94T1ACwxKTgep@kernel.org>
- <20220413114001.wdsi2xrm4btrghms@box.shutemov.name>
- <YlbiqdqCH+j7TK80@kernel.org>
- <20220413151517.tzd76kzja3424lqu@box.shutemov.name>
+ <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
+ <c4b987d5-00d3-40ea-4c20-bf82b7512dec@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220413151517.tzd76kzja3424lqu@box.shutemov.name>
+In-Reply-To: <c4b987d5-00d3-40ea-4c20-bf82b7512dec@intel.com>
 
-On Wed, Apr 13, 2022 at 06:15:17PM +0300, Kirill A. Shutemov wrote:
-> On Wed, Apr 13, 2022 at 05:48:09PM +0300, Mike Rapoport wrote:
-> > On Wed, Apr 13, 2022 at 02:40:01PM +0300, Kirill A. Shutemov wrote:
-> > > On Mon, Apr 11, 2022 at 01:07:29PM +0300, Mike Rapoport wrote:
-> > > > On Sun, Apr 10, 2022 at 11:38:08PM -0700, Dave Hansen wrote:
-> > > > > On 4/9/22 08:54, Kirill A. Shutemov wrote:
-> > > > > > On Fri, Apr 08, 2022 at 11:55:43AM -0700, Dave Hansen wrote:
-> > > > > 
-> > > > > >>>  	if (fpi_flags & FPI_TO_TAIL)
-> > > > > >>>  		to_tail = true;
-> > > > > >>>  	else if (is_shuffle_order(order))
-> > > > > >>> @@ -1149,7 +1192,8 @@ static inline void __free_one_page(struct page *page,
-> > > > > >>>  static inline bool page_expected_state(struct page *page,
-> > > > > >>>  					unsigned long check_flags)
-> > > > > >>>  {
-> > > > > >>> -	if (unlikely(atomic_read(&page->_mapcount) != -1))
-> > > > > >>> +	if (unlikely(atomic_read(&page->_mapcount) != -1) &&
-> > > > > >>> +	    !PageUnaccepted(page))
-> > > > > >>>  		return false;
-> > > > > >>
-> > > > > >> That probably deserves a comment, and maybe its own if() statement.
-> > > > > > 
-> > > > > > Own if does not work. PageUnaccepted() is encoded in _mapcount.
-> > > > > > 
-> > > > > > What about this:
-> > > > > > 
-> > > > > > 	/*
-> > > > > > 	 * page->_mapcount is expected to be -1.
-> > > > > > 	 *
-> > > > > > 	 * There is an exception for PageUnaccepted(). The page type can be set
-> > > > > > 	 * for pages on free list. Page types are encoded in _mapcount.
-> > > > > > 	 *
-> > > > > > 	 * PageUnaccepted() will get cleared in post_alloc_hook().
-> > > > > > 	 */
-> > > > > > 	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
-> > > > 
-> > > > Maybe I'm missing something, but isn't this true for any PageType?
-> > > 
-> > > PG_buddy gets clear on remove from the free list, before the chec.
-> > > 
-> > > PG_offline and PG_table pages are never on free lists.
-> > 
-> > Right, this will work 'cause PageType is inverted. I still think this
-> > condition is hard to parse and I liked the old variant with
-> > !PageUnaccepted() better.
+On Fri, Apr 08, 2022 at 10:26:14AM -0700, Dave Hansen wrote:
+> > +	/*
+> > +	 * Accept small regions that might not be able to be represented
+> > +	 * in the bitmap:
+> > +	 */
+> > +	if (end - start < 2 * PMD_SIZE) {
+> > +		__accept_memory(start, end);
+> > +		return;
+> > +	}
 > 
-> Well the old way to deal with PageUnaccepted() had a flaw: if the page is
-> PageUnaccepted() it will allow any other page types to pass here. Like
-> PG_unaccepted + PG_buddy will slide here.
-
-It seems to me that there was an implicit assumption that page types are
-exclusive and PG_unaccepted would break it.
- 
-> > Maybe if we wrap the whole construct in a helper it will be less eye
-> > hurting.
+> This is not my first time looking at this code and I still had to think
+> about this a bit.  That's not good.  That pathological case here is
+> actually something like this:
 > 
-> Hm. Any suggestion how such helper could look like? Cannot think of
-> anything sane.
+> | 4k | 2044k + 2044k | 4k |
+> ^ 0x0 	     ^ 2MB	  ^ 4MB
+> 
+> Where we have a 2MB-aligned 4k accepted area, a 4088k unaccepted area,
+> then another 4k accepted area.  That will not result in any bits being
+> set in the accepted memory bitmap because no 2MB region is fully accepted.
 
-Me neither :(
+I could use that ascii art very well in a comment above it instead of
+having to paint it in my mind each time.
 
-How about updating the comment to be
-
-	/*
-	 * The page must not be mapped to userspace and must not have a
-	 * PageType other than PageUnaccepted.
-	 * This means that page->_mapcount must be -1 or have only
-	 * PG_unaccepted bit cleared.
-	 */
-	if (unlikely((atomic_read(&page->_mapcount) | PG_unaccepted) != -1))
- 
-> -- 
->  Kirill A. Shutemov
+Thx.
 
 -- 
-Sincerely yours,
-Mike.
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
