@@ -1,25 +1,46 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5FAA29
-	for <linux-coco@lists.linux.dev>; Mon, 18 Apr 2022 16:39:03 +0000 (UTC)
-Received: from zn.tnic (p200300ea971b58fe329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:58fe:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1188D1EC032C;
-	Mon, 18 Apr 2022 18:38:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1650299937;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=oej/f1X9fcL38mCIYYKYA2X6taoESV0tpCWvTijPE1Y=;
-	b=EjQpq8SbHnY7wyfCBF21dDs+DWQkHOJBxTzKXKwdF/fY44dG9E82HlJrL+9S38NL6uTat4
-	iRCqom1TwEuFW+cVv6nwZQYGp/VEamF5P1S5lZ/r7PZwoA0N5LRrLhBdYV+lW5fBXiqChC
-	MMfAynX1oFVxy0VW0wPKK+rmHxnVRSc=
-Date: Mon, 18 Apr 2022 18:38:52 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EFFA41
+	for <linux-coco@lists.linux.dev>; Mon, 18 Apr 2022 20:22:57 +0000 (UTC)
+Received: by mail-lf1-f48.google.com with SMTP id g19so12065954lfv.2
+        for <linux-coco@lists.linux.dev>; Mon, 18 Apr 2022 13:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=mLWlEzJdMk6tuaRzUj9I+DP1OAyBtJ6ETvbVsO93HOU=;
+        b=yZIHcmsAVppuK5qGX6G7Ih1KsaYwCGYPWcLwUZ27iXpxzXC8ZDAaHgGx5sYhn9MaCP
+         xmLMaguzDZIuQDxf+3nkkYN3A5yqEEx48BjaZ0e6az1nMfgAklIa3Os763c4R+X+N6el
+         QaYjjkSK2R8mjyRoG2lpWhBp5IOolBIOsRov4CLNh+OfkZDYKvgvTneU6MFu+rau3Wk5
+         bkLeeQKm54yRp+3IuYfgQdJwuNhEovhToYoM9FNb4pNcSLZ+NSYUtbPsqQS1mvxdlUPN
+         2InIBy8S//cm7hYkWhSU5Hk0FsYBts2vpIF6rafJ0L7gGOIfM+MEvGH3gfvM57loO7W9
+         SFwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=mLWlEzJdMk6tuaRzUj9I+DP1OAyBtJ6ETvbVsO93HOU=;
+        b=ffzhDho+mq2E9S4UKb59NiYaexkuVZoFI4XaU15U46u8j1kuqYUGgymWUVic99sDNf
+         i3Ki8fArvfQrnmp4jrrwLO1CvLxtv/+asRsXNR35po2llBXT2iU3HE0dlmaBPw4ZADQo
+         /wb+wgQhkjV6maogNmewahpJAHDVm8NBhJt0l8bumXRhJ3Q3Pj8Z0o3euq1IA2nQW9F8
+         7Xhql4LLW70/cD4wpFsP58crLBcdVUSV/f4qL74GmAe4N3n7YfhUnQTLqt5j8FYGsrjT
+         7zY5/6yBH/j7fOznTRh5OmI7LGO4ByNOH9WtYcRf2nS1zc3zj4uDN6jISblJSFzSIWyA
+         oJow==
+X-Gm-Message-State: AOAM530rY7xkIaWt4510Yxc17dRs5gp3rdbgqWKaCE/eoDkC9s/10CwO
+	7cESMrj21Vcx6y4cbVBbppTn9Q==
+X-Google-Smtp-Source: ABdhPJznQzqX7bRzuIcLKDjKwu+NX1wiOv40zQz/yldUBixOb1SSMsMrFJrGumBZeV0L5NkatxL6aw==
+X-Received: by 2002:a05:6512:ac9:b0:470:e6d0:1bd8 with SMTP id n9-20020a0565120ac900b00470e6d01bd8mr7300071lfu.614.1650313375515;
+        Mon, 18 Apr 2022 13:22:55 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id z1-20020a0565120c0100b00447a7c10e4dsm1313059lfu.31.2022.04.18.13.22.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Apr 2022 13:22:54 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 64BF5103A61; Mon, 18 Apr 2022 23:24:31 +0300 (+03)
+Date: Mon, 18 Apr 2022 23:24:31 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Borislav Petkov <bp@alien8.de>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
@@ -42,102 +63,91 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
-Message-ID: <Yl2UHOQ4iZJ29k0q@zn.tnic>
+Message-ID: <20220418202431.whvql4w57c7l5vpw@box.shutemov.name>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
  <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
  <Ylnwmvygp796+qcA@zn.tnic>
  <20220418155545.a567xnxa6elglapl@box.shutemov.name>
+ <Yl2UHOQ4iZJ29k0q@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220418155545.a567xnxa6elglapl@box.shutemov.name>
+In-Reply-To: <Yl2UHOQ4iZJ29k0q@zn.tnic>
 
-On Mon, Apr 18, 2022 at 06:55:45PM +0300, Kirill A. Shutemov wrote:
-> I'm confused here. What is wrong with linux/ include namespace?
-
-The problem is that you need all kinds of workarounds so that the
-decompressor builds. Just look at the beginning of
-
-arch/x86/boot/compressed/misc.h
-
-Even you had to do them:
-
-/* cpu_feature_enabled() cannot be used this early */
-#define USE_EARLY_PGTABLE_L5
-
-That thing sprinkled everywhere is not a clean solution.
-
-> Yes, we had story with <asm/io.h> that actually caused issue in
-> decompression code, but linux/ has a lot of perfectly portable
-> library-like stuff.
-
-Yes, those are fine except that not everything that leaks into the
-decompressor code through includes is perfectly portable.
-
-> Could you explain what rules are?
-
-Library-like stuff like types.h, linkage.h, etc we could include for now
-but including linux/kernel.h which pulls in everything but the kitchen
-sink is bad.
-
-So I'd like for the decompressor to be completely separate from kernel
-proper because it is a whole different thing and I want for us to be
-able to include headers in it without ugly workarounds just so that
-kernel proper include changes do not influence the decompressor.
-
-> Hm. accept_or_mark_unaccepted()?
-
-What's wrong with early_accept_memory()?
-
-> > Immediately? As opposed to delayed?
+On Mon, Apr 18, 2022 at 06:38:52PM +0200, Borislav Petkov wrote:
+> > Could you explain what rules are?
 > 
-> Yes. Otherwise accept is delayed until the first allocation of the memory.
+> Library-like stuff like types.h, linkage.h, etc we could include for now
+> but including linux/kernel.h which pulls in everything but the kitchen
+> sink is bad.
 
-Yes, put that in the comment pls.
+<linux/bitmap> doesn't include <linux/kernel.h> or similar things.
+Is it okay for now?
 
-> Memory encryption can be a reason to have unaccepted memory, but it is not
-> 1:1 match. Unaccepted memory can be present without memory ecnryption if
-> data secruty and integrity guaranteed by other means.
 
-Really?
-
-Please elaborate. I thought memory acceptance is a feature solely for
-TDX and SNP guests to use.
-
-> <asm/mem_encrypt.h> is very AMD SME/SEV centric.
-
-So?
-
-> I'm not sure it need to exist in the way it is now.
-
-I'm not sure what your argument actually is for having yet another
-separate header vs putting it in a header which already deals with that
-stuff.
-
-> Okay, I will move it into a separate function, but it has to be called
-> from allocate_e820() because it allocates and free the map.
-
-You mean, you want for allocate_e820() to call this new function because
-both allocate and free?
-
-Might have to explain what you mean here exactly.
-
-> > And you're saying that that efi_allocate_pages() below can really give a
-> > 256M contiguous chunk?
+> > Hm. accept_or_mark_unaccepted()?
 > 
-> Yes, that's assumption. Is it too high ask to deal with 4PiB of PA?
+> What's wrong with early_accept_memory()?
 
-From my experience, asking firmware to do stuff for ya is always a risky
-thing. I guess such a huge allocation, when it fails, will be caught
-early in platform verification so whatever...
+But the goal of the function is not to accept the memory, but mark it
+as unaccepted in the bitmap. Your proposal is more confusing, not less.
+
+> > > Immediately? As opposed to delayed?
+> > 
+> > Yes. Otherwise accept is delayed until the first allocation of the memory.
+> 
+> Yes, put that in the comment pls.
+
+Okay.
+
+> memory, but it is not
+> > 1:1 match. Unaccepted memory can be present without memory ecnryption if
+> > data secruty and integrity guaranteed by other means.
+> 
+> Really?
+> 
+> Please elaborate. I thought memory acceptance is a feature solely for
+> TDX and SNP guests to use.
+
+Conceptionally, it is just memory that requires additional action before
+it can be accessed. Yes, at the moment TDX and SEV are the only users.
+It is implementation detail that TDX and SEV use memory encryption.
+
+> > <asm/mem_encrypt.h> is very AMD SME/SEV centric.
+> 
+> So?
+> 
+> > I'm not sure it need to exist in the way it is now.
+> 
+> I'm not sure what your argument actually is for having yet another
+> separate header vs putting it in a header which already deals with that
+> stuff.
+
+Because I don't think it is a good fit. Frankly, even <asm/coco.h> fits
+better, although I'm no a fan either.
+
+Do we have file shortage? I would rather keep it separate.
+
+> > Okay, I will move it into a separate function, but it has to be called
+> > from allocate_e820() because it allocates and free the map.
+> 
+> You mean, you want for allocate_e820() to call this new function because
+> both allocate and free?
+> 
+> Might have to explain what you mean here exactly.
+
+Both allocate_e820() and handling unaccepted memory requires access to the
+efi memory map. We only need the size of memory map for e820, while
+unaccepted memory requires walking the map. We can serve both by
+requesting the map from the firmware once. It requires allocation and
+freeing memory for the map.
+
+Makes sense?
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+ Kirill A. Shutemov
