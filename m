@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45FC1385
-	for <linux-coco@lists.linux.dev>; Tue, 19 Apr 2022 19:23:57 +0000 (UTC)
-Received: from zn.tnic (p200300ea971b5839329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:5839:329c:23ff:fea6:a903])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB681FA2
+	for <linux-coco@lists.linux.dev>; Thu, 21 Apr 2022 12:26:18 +0000 (UTC)
+Received: from zn.tnic (p200300ea971b581b329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:581b:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 94A9C1EC0559;
-	Tue, 19 Apr 2022 21:23:51 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C2BB51EC013E;
+	Thu, 21 Apr 2022 14:26:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1650396231;
+	t=1650543966;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=29ILHsZsLNI1cHkGwMzPc7ayyznGcYHN5+bzv1pE4pk=;
-	b=aOCYh/K44Q0EvpEMzkaAkbuIouuG5B+e3XnIHMcNGSqGDlq43m1JcEwpdibQBrvwv4q3/4
-	lpCszkih78a7WOxtjAwh9GrByUAHbvIgTuaQBP/HCbisa1Dwtwg3qHo3J0+uWJAwYS2ems
-	JD2I1GH9VQDeinJxeKVOZFTVW7jM0CA=
-Date: Tue, 19 Apr 2022 21:23:48 +0200
+	bh=xyKJnAeN7yKmid38WcQJNn0eWYl8gpGj0iKqWc+guSU=;
+	b=eWY+KoZMJAriDXLApTF7jtqT13LYR6DBbS+OI9+ktsNcZGrfoDK97t/4GvoI3jnBJSHUND
+	5QmrHwCIk9Yem4NI9RM8smqSmPMrprfoigMlmwcsXPzrvW7EvtpMF95mvVNpSuOPKp9nmp
+	fTAMVttTaHotKycHa4tGe+XfM9IYWqA=
+Date: Thu, 21 Apr 2022 14:26:02 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill@shutemov.name>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -42,7 +42,7 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
-Message-ID: <Yl8MRA6MxgNiLYv3@zn.tnic>
+Message-ID: <YmFNWnZ91a4n5Il3@zn.tnic>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
  <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
  <Ylnwmvygp796+qcA@zn.tnic>
@@ -52,7 +52,6 @@ References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
  <Yl3RmPhdZieSr8W2@zn.tnic>
  <20220418235015.mnujtlmmlyin7y6m@box.shutemov.name>
  <Yl5nSSC4HpSWqfY7@zn.tnic>
- <20220419153002.ffh2ybdl7x2mm7zw@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,34 +60,16 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220419153002.ffh2ybdl7x2mm7zw@box.shutemov.name>
+In-Reply-To: <Yl5nSSC4HpSWqfY7@zn.tnic>
 
-On Tue, Apr 19, 2022 at 06:30:02PM +0300, Kirill A. Shutemov wrote:
-> Hm. Dave was worried about having copies of _find_next_bit() and
-> __bitmap_*() inside compressed/.
+On Tue, Apr 19, 2022 at 09:39:53AM +0200, Borislav Petkov wrote:
+> I find it really weird that you feel so strongly about it. If I would
+> have been asked to do it, I would've done it without even considering
+> it. But ok, since you feel so strongly about it, I've asked what the
+> other maintainers think.
 
-That's fine.
-
-> How do we rectify code duplication and making decompresser self-contained?
-
-Also fine - as long as the decompressor and kernel-proper are
-independent.
-
-> Do we care about multiple copies of the same code in the kernel?
-
-The copied versions in the decompressor should be simply sufficient for
-its use. And there shouldn't be that much of duplication.
-
-Note that we're using the same strategy with perf tool - it does copy
-kernel facilities when it needs them.
-
-> Do we care about keeping them in sync?
-
-Nope - as long as they're sufficient for the decompressor. My
-expectation here is that the decompressor won't need too many
-facilities.
-
-Thx.
+Ok, Dave thinks separate files are better so let's leave it at that. We
+can always change things later.
 
 -- 
 Regards/Gruss,
