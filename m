@@ -1,26 +1,29 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB681FA2
-	for <linux-coco@lists.linux.dev>; Thu, 21 Apr 2022 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D8E1FA2
+	for <linux-coco@lists.linux.dev>; Thu, 21 Apr 2022 12:29:07 +0000 (UTC)
 Received: from zn.tnic (p200300ea971b581b329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:581b:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C2BB51EC013E;
-	Thu, 21 Apr 2022 14:26:06 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CB2C81EC013E;
+	Thu, 21 Apr 2022 14:29:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1650543966;
+	t=1650544141;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=xyKJnAeN7yKmid38WcQJNn0eWYl8gpGj0iKqWc+guSU=;
-	b=eWY+KoZMJAriDXLApTF7jtqT13LYR6DBbS+OI9+ktsNcZGrfoDK97t/4GvoI3jnBJSHUND
-	5QmrHwCIk9Yem4NI9RM8smqSmPMrprfoigMlmwcsXPzrvW7EvtpMF95mvVNpSuOPKp9nmp
-	fTAMVttTaHotKycHa4tGe+XfM9IYWqA=
-Date: Thu, 21 Apr 2022 14:26:02 +0200
+	bh=rpANVynhcG144hvijIFDyM1O4oiCFkqKYsRr7ZIqYwU=;
+	b=OH4G7xGXALG7wCEGOI/kzTVXZWpoXlYUzCe1NPX2OMKEVd/nr+szvIV0KGAbMtARNINPnD
+	Wa8xdBQ3ddmnVoJ0qzvL8K0/Xto1drh11cFCZSQ8QUV4xcfP7VTp7o0kLsoVNtwiFFbH9V
+	C3Z+oWf9ngW2zLanijYUOe0+sh50M7Y=
+Date: Thu, 21 Apr 2022 14:29:01 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+To: "Kirill A. Shutemov" <kirill@shutemov.name>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -29,29 +32,21 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
 	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>,
-	Dave Hansen <dave.hansen@intel.com>,
 	Brijesh Singh <brijesh.singh@amd.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
-Message-ID: <YmFNWnZ91a4n5Il3@zn.tnic>
+Subject: Re: [PATCHv4 0/8] mm, x86/cc: Implement support for unaccepted memory
+Message-ID: <YmFODfWn8pBiSjFn@zn.tnic>
 References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
- <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
- <Ylnwmvygp796+qcA@zn.tnic>
- <20220418155545.a567xnxa6elglapl@box.shutemov.name>
- <Yl2UHOQ4iZJ29k0q@zn.tnic>
- <20220418202431.whvql4w57c7l5vpw@box.shutemov.name>
- <Yl3RmPhdZieSr8W2@zn.tnic>
- <20220418235015.mnujtlmmlyin7y6m@box.shutemov.name>
- <Yl5nSSC4HpSWqfY7@zn.tnic>
+ <95eabe79-a13b-79b1-1196-407920531f20@intel.com>
+ <20220409234458.ysisolzd7hktpfjc@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,16 +55,22 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Yl5nSSC4HpSWqfY7@zn.tnic>
+In-Reply-To: <20220409234458.ysisolzd7hktpfjc@box.shutemov.name>
 
-On Tue, Apr 19, 2022 at 09:39:53AM +0200, Borislav Petkov wrote:
-> I find it really weird that you feel so strongly about it. If I would
-> have been asked to do it, I would've done it without even considering
-> it. But ok, since you feel so strongly about it, I've asked what the
-> other maintainers think.
+On Sun, Apr 10, 2022 at 02:44:58AM +0300, Kirill A. Shutemov wrote:
+> On Fri, Apr 08, 2022 at 10:02:13AM -0700, Dave Hansen wrote:
+> > On 4/5/22 16:43, Kirill A. Shutemov wrote:
+> > > Patches 1-6/7 are generic and don't have any dependencies on TDX. They
+> > > should serve AMD SEV needs as well. TDX-specific code isolated in the
+> > > last patch.
+> > 
+> > Oh, that's quite nice.  Are the SEV-SNP folks planning on using this?
+> > If they are, acks/reviews would be much appreciated.
+> 
+> AMD folks tested one of previous revision and reported that it works, but
+> I don't remember seeing the code that hook ups AMD implementation.
 
-Ok, Dave thinks separate files are better so let's leave it at that. We
-can always change things later.
+Yes, they will be using this eventually.
 
 -- 
 Regards/Gruss,
