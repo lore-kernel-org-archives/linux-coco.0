@@ -1,74 +1,126 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E595D7A
-	for <linux-coco@lists.linux.dev>; Thu, 21 Apr 2022 13:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1650547222;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to; bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=X2Y0viypo6ArsoPS4knD0ZkT6H++PkEzt76EP8F4DzAZQgmlgwc/1q9/izZQAIWLn4ASjy
-	1tUJts1vLY10QcwDsItl7yXXzb4giDsplGaBa3fTgZu5mo5B37I4cM40FNIhHkE1QaLvYe
-	fWs/UJr9X+91t2enKamdA8HNt0efGqg=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-320-hlUo4x6rO66JkBq9x3vENA-1; Thu, 21 Apr 2022 09:20:13 -0400
-X-MC-Unique: hlUo4x6rO66JkBq9x3vENA-1
-Received: by mail-pg1-f200.google.com with SMTP id n1-20020a654881000000b003a367d46721so2803192pgs.4
-        for <linux-coco@lists.linux.dev>; Thu, 21 Apr 2022 06:20:13 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9F11FBA
+	for <linux-coco@lists.linux.dev>; Fri, 22 Apr 2022 00:19:49 +0000 (UTC)
+Received: by mail-lj1-f172.google.com with SMTP id q22so7647489ljh.10
+        for <linux-coco@lists.linux.dev>; Thu, 21 Apr 2022 17:19:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=cN9ZhLUrf8Ngv6pdmP79a/DexlpcMLtixNmmzcyV9hA=;
+        b=LArRVF1L5S+exersvD6njieFFNEV7araYOj8gZPObmLO8klh3ABsCS7aDto0KIkFkA
+         gryZTmKRKKRbeKGinEDIvMghJVBVWVhHFoTru2RteUmqEI9N4Qz86WJJ+xBMxpWYi2hj
+         X6UQcrAo0+Nsqn+uEsdJ3rb1t2r6SS1RjuGdi3XRhqWYu0EBuWptIuWdI3dqWciJWBw7
+         /601VPw5EC1WGlFgW7XG5/aOrD1ePUtb0cDN+nHXaQZnZS0QWmDy96aKVGUQRrDsCZSI
+         a523+6DyR7nRYI63ugyMN4sQCCgdAbFrdJqwQxTm4KL/NiPBAzv7T6N5wmNRJcQvXVK1
+         18QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:in-reply-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=WNmr7Jkbw8+R9GgbGPUCFDywNRS2dYBzUtuqfvZqcMqJxIdlbdELL2Hs8pR73XOkpn
-         kEAqkkQ9f3jdyKDNVjXUTNTIsjjbtztXjWGIJJyWvuJ9kbbmOh+Rs4bqXkx4MbvTkHw/
-         8LKJ382a1yNQ1kfwD2OFaap4Medt8E9NDa31vSATUEb1BE0wg53nMfELcCrxOl3xlDDe
-         jGPjlR+ELnYNsA1s+3MZZ9fwwmqPadUs8BsiqYzGgd2uhxLTiaAMis8bpK7I4kHmAs+l
-         pvTASHo9fIpehuZ70dJ9Rm8+foit5u9JEs2yFeVua/Rm0Ec45iomk8SZ6IMeTpZJmbZ8
-         Zrjw==
-X-Gm-Message-State: AOAM532gjBqtgI3ECspL/Tb6xttb57Ut5laFiVpjULYtMKh1rJspMFx8
-	OKsDv6+hk9OGGyfzwKQUkrQLybM/yioRJbdMmUQusRhVL0VZNIJ0hPOUpj7YQ/uYyAxgcMAUfxv
-	eWfMhXHall7g14QW1R3Isvg==
-X-Received: by 2002:a05:6a00:ccf:b0:50a:db82:4ae5 with SMTP id b15-20020a056a000ccf00b0050adb824ae5mr3581856pfv.59.1650547212328;
-        Thu, 21 Apr 2022 06:20:12 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyEg/XKr6Ui9gwh2MQYBfHjjkLlJhmxTVmRmjaeYiITKwKssa5krUtFdDxn4eFPTWFfCNVNig==
-X-Received: by 2002:a05:6a00:ccf:b0:50a:db82:4ae5 with SMTP id b15-20020a056a000ccf00b0050adb824ae5mr3581819pfv.59.1650547211962;
-        Thu, 21 Apr 2022 06:20:11 -0700 (PDT)
-Received: from localhost.localdomain ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id lw3-20020a17090b180300b001cd4989fecesm2984649pjb.26.2022.04.21.06.20.02
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=cN9ZhLUrf8Ngv6pdmP79a/DexlpcMLtixNmmzcyV9hA=;
+        b=vvesbuQf2Kas+iESNJLf++2qdOby2D+/XmiwcLtFyvLZ8Pj5lQgB2WRzS0SvIXHqdC
+         37C9T9pD6EsK/PezDKDL1KLwijQiLafdaZH6pav1yKp01v0oGESVRWcKSfSbYNlGYQYF
+         Z6fO2WZotJIfre9ifckpnbzwNv2Y3fNSHftG+XYcoTF/LW4tSN90ZFfjof+/hVbu3C/i
+         K0hmfwlikXggr+M3MJE0j1Y93lDP5E6LgIOFt1UVxonjltqsH0+5uBSBa8Ak9N0TEUzh
+         JaSIznLKsfhrpaPUepA4QwjJsmFxXlCj15jRLNs7rTKmkBY5dATUlvfyThUHUfiGOjMc
+         ai9Q==
+X-Gm-Message-State: AOAM530/gmTz0OGtlL7swovTDcwHKKDki6Qs1ZSgI7QRIyyn/Ooscq2t
+	7XR2Fcir5cvGx8PHT3qJAlUBxw==
+X-Google-Smtp-Source: ABdhPJzMTYxtDeWJy9+XjUrtkBWIIe2HSlGBUf31nW/YAGzyb6TtF4NhfgICChBTw+MWha7yN0hDJQ==
+X-Received: by 2002:a05:651c:12c1:b0:249:7e8c:d5fc with SMTP id 1-20020a05651c12c100b002497e8cd5fcmr1203744lje.33.1650586786839;
+        Thu, 21 Apr 2022 17:19:46 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id u25-20020a197919000000b0046b4f7553dcsm50363lfc.295.2022.04.21.17.19.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Apr 2022 06:20:11 -0700 (PDT)
-Date: Thu, 21 Apr 2022 21:20:00 +0800
-From: Tao Liu <ltao@redhat.com>
-To: joro@8bytes.org
-Cc: cfir@google.com, dan.j.williams@intel.com, dave.hansen@linux.intel.com,
-	ebiederm@xmission.com, erdemaktas@google.com, hpa@zytor.com,
-	jgross@suse.com, jroedel@suse.de, jslaby@suse.cz,
-	keescook@chromium.org, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, luto@kernel.org,
-	martin.b.radev@gmail.com, mhiramat@kernel.org, mstunes@vmware.com,
-	nivedita@alum.mit.edu, peterz@infradead.org, rientjes@google.com,
-	seanjc@google.com, stable@vger.kernel.org, thomas.lendacky@amd.com,
-	virtualization@lists.linux-foundation.org, x86@kernel.org
-Subject: Re: [PATCH 01/12] kexec: Allow architecture code to opt-out at
- runtime
-Message-ID: <YmFaAFcQPhSWNEFz@localhost.localdomain>
+        Thu, 21 Apr 2022 17:19:46 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 67241104429; Fri, 22 Apr 2022 03:21:24 +0300 (+03)
+Date: Fri, 22 Apr 2022 03:21:24 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 3/8] efi/x86: Implement support for unaccepted memory
+Message-ID: <20220422002124.lwd7b56zko24gbll@box.shutemov.name>
+References: <20220405234343.74045-1-kirill.shutemov@linux.intel.com>
+ <20220405234343.74045-4-kirill.shutemov@linux.intel.com>
+ <Ylnwmvygp796+qcA@zn.tnic>
+ <20220418155545.a567xnxa6elglapl@box.shutemov.name>
+ <Yl2UHOQ4iZJ29k0q@zn.tnic>
+ <20220418202431.whvql4w57c7l5vpw@box.shutemov.name>
+ <Yl3RmPhdZieSr8W2@zn.tnic>
+ <20220418235015.mnujtlmmlyin7y6m@box.shutemov.name>
+ <Yl5nSSC4HpSWqfY7@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20210721142015.1401-2-joro@8bytes.org>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=ltao@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <Yl5nSSC4HpSWqfY7@zn.tnic>
 
+On Tue, Apr 19, 2022 at 09:39:53AM +0200, Borislav Petkov wrote:
+> On Tue, Apr 19, 2022 at 02:50:15AM +0300, Kirill A. Shutemov wrote:
+> > I find it strange that you go after <linux/bitmap.h> which has limited
+> > exposure while <linux/acpi.h> and <linux/efi.h> are there already.
+> 
+> Funny you should mention that:
+> 
+> https://lore.kernel.org/r/YlCKWhMJEMUgJmjF@zn.tnic
 
+There's still #include <linux/efi.h> in misc.h. You removed one, but
+there's a second one for some reason.
+
+Any plans for <linux/acpi.h>? It includes <linux/bitmap.h>:
+
+In file included from ./include/linux/cpumask.h:12,
+                 from ./include/linux/smp.h:13,
+                 from ./include/linux/lockdep.h:14,
+                 from ./include/linux/mutex.h:17,
+                 from ./include/linux/kernfs.h:11,
+                 from ./include/linux/sysfs.h:16,
+                 from ./include/linux/kobject.h:20,
+                 from ./include/linux/of.h:17,
+                 from ./include/linux/irqdomain.h:35,
+                 from ./include/linux/acpi.h:13,
+                 from arch/x86/boot/compressed/misc.h:3
+
+We will get name conflicts if we try to copy <linux/bitmap.h> stuff.
+Hm.
+
+I also underesitmated what is required to be copied because of the
+indirect include. The list was only to compile bitmap.c. mem.c (former
+unaccepted_memory.c) would require more.
+
+BTW, do we have a white list of linux/ includes that allowed? minmax.h?
+math.h? What is the line.
+
+Maybe allow what is included directly or indirectly now? (Yes, it is my
+poor attempt to slide under closing door.)
+
+-- 
+ Kirill A. Shutemov
