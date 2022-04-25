@@ -1,33 +1,33 @@
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1ED220EE
-	for <linux-coco@lists.linux.dev>; Mon, 25 Apr 2022 03:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A34720ED
+	for <linux-coco@lists.linux.dev>; Mon, 25 Apr 2022 03:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1650857985; x=1682393985;
+  t=1650857989; x=1682393989;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uq7WbkY0GvTQhFT7oa2kwzHtvnsgmaIdyx/9kdIYCD0=;
-  b=Q0yuugJD1zEcFR5/bxN4om/zuXW5hNRVTTFJ0nCV1aDexVB7dcID7tSi
-   JPwEAVsEfKFjYL7h82g3dAdqnUNm5NS61ltAAtXurZoxL11KZuV2LJ0dG
-   C/0+h8pkh+SRLSHASC1bRC8t0VgjsXJLXo14+3Cx1gx4nXAaLrSEj1Quj
-   ufe0cvk2+hYtnyG7zNNF35FztlBygzUC1X8XTaDGfpCBQJ4qFODrwQUYJ
-   rePyQT4qiwDasIkkHMjuctJDqa7IPFaeurcfdEhhddvW6T1hwxI4vf4Y2
-   7ItJ/Yw6ttBOLNZnTvSWRb83+rd2OMDZ+J60Ueuos9BqTHUTyKYWmme+V
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10327"; a="245055677"
+  bh=Sj6Lg0REiZlYfnrUdKJKfc9AWEWiW+hzQ+rfnwkYy1o=;
+  b=W3rQbsZaUSMTMNLE8gDXeVVOlmPfQ6Srd9F5RNZff/wSk8HYk9lLmbEj
+   cW/0CR+QnjCJEKwBiMHpoA6TylUFeJZ3glBR0XYpUua08cXD79dggpWbs
+   IIjxncFID8Tg3c1AlmSxd4YZeRMv/Jc3tKsWu+Q/dlmjzhaRrY5eHOSKx
+   JHT6aLOyN0Gk9U9EAiCYss+HZ+5/tiT7wj9yhK/nY9Um2F+1cyThAg6DZ
+   Dy5FZNGR0Tr4Lzq4koJvgj7yB0NG6yVuELqJIKc+PNwtQvbScUCTy+zLN
+   ubJ19ZufqCWhTBz9bzWi24qP+XlAykHzHzCF5GVYCk37C1ceTL8UDZfZ7
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10327"; a="245055705"
 X-IronPort-AV: E=Sophos;i="5.90,287,1643702400"; 
-   d="scan'208";a="245055677"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2022 20:39:42 -0700
+   d="scan'208";a="245055705"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2022 20:39:49 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.90,287,1643702400"; 
-   d="scan'208";a="729520378"
+   d="scan'208";a="579045721"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga005.jf.intel.com with ESMTP; 24 Apr 2022 20:39:35 -0700
+  by orsmga008.jf.intel.com with ESMTP; 24 Apr 2022 20:39:42 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id A608B3A8; Mon, 25 Apr 2022 06:39:35 +0300 (EEST)
+	id CF5F9595; Mon, 25 Apr 2022 06:39:35 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -56,9 +56,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv5 03/12] efi/x86: Get full memory map in allocate_e820()
-Date: Mon, 25 Apr 2022 06:39:25 +0300
-Message-Id: <20220425033934.68551-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv5 06/12] x86/boot/compressed: Handle unaccepted memory
+Date: Mon, 25 Apr 2022 06:39:28 +0300
+Message-Id: <20220425033934.68551-7-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
@@ -70,83 +70,146 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently allocate_e820() only interested in the size of map and size of
-memory descriptor to determine how many e820 entries the kernel needs.
+The firmware will pre-accept the memory used to run the stub. But, the
+stub is responsible for accepting the memory into which it decompresses
+the main kernel. Accept memory just before decompression starts.
 
-UEFI Specification version 2.9 introduces a new memory type --
-unaccepted memory. To track unaccepted memory kernel needs to allocate
-a bitmap. The size of the bitmap is dependent on the maximum physical
-address present in the system. A full memory map is required to find
-the maximum address.
-
-Modify allocate_e820() to get a full memory map.
-
-This is preparation for the next patch that implements handling of
-unaccepted memory in EFI stub.
+The stub is also responsible for choosing a physical address in which to
+place the decompressed kernel image. The KASLR mechanism will randomize
+this physical address. Since the unaccepted memory region is relatively
+small, KASLR would be quite ineffective if it only used the pre-accepted
+area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
+entire physical address space by also including EFI_UNACCEPTED_MEMOR
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 30 ++++++++++++-------------
- 1 file changed, 14 insertions(+), 16 deletions(-)
+ arch/x86/boot/compressed/Makefile        |  2 +-
+ arch/x86/boot/compressed/kaslr.c         | 14 ++++++++++++--
+ arch/x86/boot/compressed/mem.c           | 21 +++++++++++++++++++++
+ arch/x86/boot/compressed/misc.c          |  9 +++++++++
+ arch/x86/include/asm/unaccepted_memory.h |  2 ++
+ 5 files changed, 45 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 01ddd4502e28..5401985901f5 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -569,31 +569,29 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
- }
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 7f672f7e2fea..b59007e57cbf 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -102,7 +102,7 @@ endif
  
- static efi_status_t allocate_e820(struct boot_params *params,
-+				  struct efi_boot_memmap *map,
- 				  struct setup_data **e820ext,
- 				  u32 *e820ext_size)
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+ vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
+-vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/mem.o
++vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
+ 
+ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
+ efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index 411b268bc0a2..59db90626042 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -725,10 +725,20 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
+ 		 * but in practice there's firmware where using that memory leads
+ 		 * to crashes.
+ 		 *
+-		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
++		 * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if
++		 * supported) are guaranteed to be free.
+ 		 */
+-		if (md->type != EFI_CONVENTIONAL_MEMORY)
++
++		switch (md->type) {
++		case EFI_CONVENTIONAL_MEMORY:
++			break;
++		case EFI_UNACCEPTED_MEMORY:
++			if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
++				break;
+ 			continue;
++		default:
++			continue;
++		}
+ 
+ 		if (efi_soft_reserve_enabled() &&
+ 		    (md->attribute & EFI_MEMORY_SP))
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index 415df0d3bc81..b5058c975d26 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -3,12 +3,15 @@
+ #include "../cpuflags.h"
+ #include "bitmap.h"
+ #include "error.h"
++#include "find.h"
+ #include "math.h"
+ 
+ #define PMD_SHIFT	21
+ #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
+ #define PMD_MASK	(~(PMD_SIZE - 1))
+ 
++extern struct boot_params *boot_params;
++
+ static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
  {
--	unsigned long map_size, desc_size, map_key;
- 	efi_status_t status;
--	__u32 nr_desc, desc_version;
-+	__u32 nr_desc;
- 
--	/* Only need the size of the mem map and size of each mem descriptor */
--	map_size = 0;
--	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
--			     &desc_size, &desc_version);
--	if (status != EFI_BUFFER_TOO_SMALL)
--		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
--
--	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
-+	status = efi_get_memory_map(map);
-+	if (status != EFI_SUCCESS)
-+		return status;
- 
--	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
--		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
-+	nr_desc = *map->map_size / *map->desc_size;
-+	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
-+		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
-+			EFI_MMAP_NR_SLACK_SLOTS;
- 
- 		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
- 		if (status != EFI_SUCCESS)
--			return status;
-+			goto out;
- 	}
--
--	return EFI_SUCCESS;
-+out:
-+	efi_bs_call(free_pool, *map->map);
-+	return status;
+ 	/* Platform-specific memory-acceptance call goes here */
+@@ -66,3 +69,21 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
+ 	bitmap_set((unsigned long *)params->unaccepted_memory,
+ 		   start / PMD_SIZE, (end - start) / PMD_SIZE);
  }
++
++void accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long range_start, range_end;
++	unsigned long *unaccepted_memory;
++	unsigned long bitmap_size;
++
++	unaccepted_memory = (unsigned long *)boot_params->unaccepted_memory;
++	range_start = start / PMD_SIZE;
++	bitmap_size = DIV_ROUND_UP(end, PMD_SIZE);
++
++	for_each_set_bitrange_from(range_start, range_end,
++				   unaccepted_memory, bitmap_size) {
++		__accept_memory(range_start * PMD_SIZE, range_end * PMD_SIZE);
++		bitmap_clear(unaccepted_memory,
++			     range_start, range_end - range_start);
++	}
++}
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index fa8969fad011..285b37e28074 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -18,6 +18,7 @@
+ #include "../string.h"
+ #include "../voffset.h"
+ #include <asm/bootparam_utils.h>
++#include <asm/unaccepted_memory.h>
  
- struct exit_boot_struct {
-@@ -642,7 +640,7 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
- 	priv.boot_params	= boot_params;
- 	priv.efi		= &boot_params->efi_info;
+ /*
+  * WARNING!!
+@@ -451,6 +452,14 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ #endif
  
--	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
-+	status = allocate_e820(boot_params, &map, &e820ext, &e820ext_size);
- 	if (status != EFI_SUCCESS)
- 		return status;
+ 	debug_putstr("\nDecompressing Linux... ");
++
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	if (boot_params->unaccepted_memory) {
++		debug_putstr("Accepting memory... ");
++		accept_memory(__pa(output), __pa(output) + needed_size);
++	}
++#endif
++
+ 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
+ 			NULL, error);
+ 	parse_elf(output);
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index df0736d32858..41fbfc798100 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -7,4 +7,6 @@ struct boot_params;
  
+ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
+ 
++void accept_memory(phys_addr_t start, phys_addr_t end);
++
+ #endif
 -- 
 2.35.1
 
