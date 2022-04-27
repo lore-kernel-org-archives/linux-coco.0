@@ -1,48 +1,26 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5437A3B
-	for <linux-coco@lists.linux.dev>; Wed, 27 Apr 2022 14:17:35 +0000 (UTC)
-Received: by mail-lj1-f172.google.com with SMTP id 17so2859042lji.1
-        for <linux-coco@lists.linux.dev>; Wed, 27 Apr 2022 07:17:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=x/04ExZsssyHqK3ybhx4YVkpwU+WO3WPNrqX7DTqXG4=;
-        b=KcoQA4RUPwVoun+6cZl/pmYQbIgxcoqRYDMq1MFkIwR5zf/Z/nxThQRqsAXpO6fHl8
-         KIomzfKhTflfdyS3w9NrdfMQKGTVAnQBz25Pe3HQItAotLqhUfYkS1qxfbzk3sUS9duR
-         BFHXvCs1zMAiB27DkIhE0/vCtJMXpOFFAamo/+d1lmWh492Ftkv8Pm986gpCZzvuSn4y
-         ERQB0kCCij3s2rkuRuKB+Bc3jQrBnKaKTc5O6mddoYlQo+M5eKoU2+gi1W9epBhTqajZ
-         w6bW9WYrXOrScM6YsoZwQGiinAiJsHOebdQqSSZIfkdfg5JzYK5Qmpp4pvfSJhW+zZsP
-         iZZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=x/04ExZsssyHqK3ybhx4YVkpwU+WO3WPNrqX7DTqXG4=;
-        b=PBtlGrW+j6MxWM5yN135oj80lGEgr5XZpeeQy/0xWt/YrkPfJMV33yATkD4djunAXf
-         yQl43B0iksfZ+O1u7HhOO2vefVANbLXJAgr2qdmPHDAEh8y9dc723euktCq4Qiqmp1WR
-         BMkuqadDv5Nm/w741DRQDgJzfBow/idd44qGRi5/FQGCXXj0CK/n27Z56E+HeOcm2yTf
-         NW1bobYqRLumP/czMieREZvHIjRBEIFYguOjvZ0OsoPAoow+rHbRBqadah7+9c3PMt28
-         z8yYPDqAzs+uNtuvJfqgzFvtkdfD/OnyjGXF2NyMpFuChdFvUhSefsO46ekH5PP2+Xdj
-         shgA==
-X-Gm-Message-State: AOAM530NLQsYLtlvwxNrQ5aSQ/2PtIaGaHPR4wD5mYiRAQjim5BCOT5A
-	LrpJVwsHuscUjsX+syj2xZOA7Q==
-X-Google-Smtp-Source: ABdhPJxVjTj0vQFFkI6C0mpp7oyTSf4B40Jzv5S29tPlaFcLkO/RSz/P1O/faKPD1SWNzxgEvPAecQ==
-X-Received: by 2002:a05:651c:887:b0:247:f630:d069 with SMTP id d7-20020a05651c088700b00247f630d069mr18602831ljq.514.1651069053766;
-        Wed, 27 Apr 2022 07:17:33 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id t17-20020a192d51000000b0047212cead69sm633986lft.253.2022.04.27.07.17.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Apr 2022 07:17:32 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-	id 4FE48103716; Wed, 27 Apr 2022 17:19:14 +0300 (+03)
-Date: Wed, 27 Apr 2022 17:19:14 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Michael Roth <michael.roth@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0A033E5
+	for <linux-coco@lists.linux.dev>; Wed, 27 Apr 2022 20:25:21 +0000 (UTC)
+Received: from zn.tnic (p5de8eeb4.dip0.t-ipconnect.de [93.232.238.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B4EC91EC0494;
+	Wed, 27 Apr 2022 22:25:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1651091114;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=p7e7y4U72pX1k0JV9DJGLjX/ZB6VPKh+920c8wxQ69Y=;
+	b=kGPTidYcAhLq7g882RDOr7ocQ1hwsPqncJq5vLderGzSWrvKThdIrUb73tjEv2tu7yTuAv
+	kD6mRsioraWGmp45IBix5vUcuK9B9LWtzy8xmaJ/pLTBTFXuFuvhrLK/zEhKnS9xp9B5hV
+	tDfvUs8zGpi5TWu4b+Q/fXgbtczXk2E=
+Date: Wed, 27 Apr 2022 22:25:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
@@ -62,104 +40,85 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 06/12] x86/boot/compressed: Handle unaccepted memory
-Message-ID: <20220427141914.s7y7lhlaau473mu7@box.shutemov.name>
+Subject: Re: [PATCHv5 03/12] efi/x86: Get full memory map in allocate_e820()
+Message-ID: <YmmmpxVDyc3R5K2t@zn.tnic>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-7-kirill.shutemov@linux.intel.com>
- <20220427001756.xefhkwwc7uhxuusk@amd.com>
+ <20220425033934.68551-4-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220427001756.xefhkwwc7uhxuusk@amd.com>
+In-Reply-To: <20220425033934.68551-4-kirill.shutemov@linux.intel.com>
 
-On Tue, Apr 26, 2022 at 07:17:56PM -0500, Michael Roth wrote:
-> On Mon, Apr 25, 2022 at 06:39:28AM +0300, Kirill A. Shutemov wrote:
-> > The firmware will pre-accept the memory used to run the stub. But, the
-> > stub is responsible for accepting the memory into which it decompresses
-> > the main kernel. Accept memory just before decompression starts.
-> > 
-> > The stub is also responsible for choosing a physical address in which to
-> > place the decompressed kernel image. The KASLR mechanism will randomize
-> > this physical address. Since the unaccepted memory region is relatively
-> > small, KASLR would be quite ineffective if it only used the pre-accepted
-> > area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
-> > entire physical address space by also including EFI_UNACCEPTED_MEMOR
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >  arch/x86/boot/compressed/Makefile        |  2 +-
-> >  arch/x86/boot/compressed/kaslr.c         | 14 ++++++++++++--
-> >  arch/x86/boot/compressed/mem.c           | 21 +++++++++++++++++++++
-> >  arch/x86/boot/compressed/misc.c          |  9 +++++++++
-> >  arch/x86/include/asm/unaccepted_memory.h |  2 ++
-> >  5 files changed, 45 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> > index 7f672f7e2fea..b59007e57cbf 100644
-> > --- a/arch/x86/boot/compressed/Makefile
-> > +++ b/arch/x86/boot/compressed/Makefile
-> > @@ -102,7 +102,7 @@ endif
-> >  
-> >  vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
-> >  vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
-> > -vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/mem.o
-> > +vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
-> 
-> Since it's possible to have CONFIG_UNACCEPTED_MEMORY=y while
-> CONFIG_INTEL_TDX_GUEST=n (e.g. for SNP-only guest kernels), this can
-> result in mem.o reporting linker errors due to tdx_accept_memory() not
-> being defined. I think it needs a stub for !CONFIG_INTEL_TDX_GUEST, or
-> something along that line.
+On Mon, Apr 25, 2022 at 06:39:25AM +0300, Kirill A. Shutemov wrote:
+>  static efi_status_t allocate_e820(struct boot_params *params,
+> +				  struct efi_boot_memmap *map,
+>  				  struct setup_data **e820ext,
+>  				  u32 *e820ext_size)
+>  {
+> -	unsigned long map_size, desc_size, map_key;
+>  	efi_status_t status;
+> -	__u32 nr_desc, desc_version;
+> +	__u32 nr_desc;
+>  
+> -	/* Only need the size of the mem map and size of each mem descriptor */
+> -	map_size = 0;
+> -	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+> -			     &desc_size, &desc_version);
+> -	if (status != EFI_BUFFER_TOO_SMALL)
+> -		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+> -
+> -	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
+> +	status = efi_get_memory_map(map);
+> +	if (status != EFI_SUCCESS)
+> +		return status;
+>  
+> -	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+> -		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
+> +	nr_desc = *map->map_size / *map->desc_size;
+> +	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
+> +		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
+> +			EFI_MMAP_NR_SLACK_SLOTS;
+>  
+>  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+>  		if (status != EFI_SUCCESS)
+> -			return status;
+> +			goto out;
 
-Fair enough. This would do the trick:
+Still silly, that label is useless then. Pasting the whole, simplified
+function below.
 
-diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index 539fff27de49..4a49a2438180 100644
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -19,6 +19,9 @@ static bool is_tdx_guest(void)
- 	static bool once;
- 	static bool is_tdx;
+It looks like it all boils down to propagating the retval up the chain...
 
-+	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
-+	    return false;
-+
- 	if (!once) {
- 		u32 eax, sig[3];
+static efi_status_t allocate_e820(struct boot_params *params,
+                                  struct efi_boot_memmap *map,
+                                  struct setup_data **e820ext,
+                                  u32 *e820ext_size)
+{
+        efi_status_t status;
+        __u32 nr_desc;
 
-> >  vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
-> >  efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
-> > diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-> > index 411b268bc0a2..59db90626042 100644
-> > --- a/arch/x86/boot/compressed/kaslr.c
-> > +++ b/arch/x86/boot/compressed/kaslr.c
-> > @@ -725,10 +725,20 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
-> >  		 * but in practice there's firmware where using that memory leads
-> >  		 * to crashes.
-> >  		 *
-> > -		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
-> > +		 * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if
-> > +		 * supported) are guaranteed to be free.
-> >  		 */
-> > -		if (md->type != EFI_CONVENTIONAL_MEMORY)
-> > +
-> > +		switch (md->type) {
-> > +		case EFI_CONVENTIONAL_MEMORY:
-> > +			break;
-> > +		case EFI_UNACCEPTED_MEMORY:
-> 
-> Just FYI, but with latest tip boot/compressed now relies on a separate header
-> in arch/x86/boot/compressed/efi.h where this need to be defined again.
+        status = efi_get_memory_map(map);
+        if (status != EFI_SUCCESS)
+                return status;
 
-Right.
+        nr_desc = *map->map_size / *map->desc_size;
+        if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
+                u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) + EFI_MMAP_NR_SLACK_SLOTS;
 
-Borislav, how do you want to handle this? Do you want me to rebase the
-tree to a specific branch?
+                status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+        }
+
+        efi_bs_call(free_pool, *map->map);
+        return status;
+}
 
 -- 
- Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
