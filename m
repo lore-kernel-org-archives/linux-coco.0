@@ -1,262 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382B71365
-	for <linux-coco@lists.linux.dev>; Fri, 29 Apr 2022 09:06:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1651223191;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2201385
+	for <linux-coco@lists.linux.dev>; Fri, 29 Apr 2022 10:53:44 +0000 (UTC)
+Received: from zn.tnic (p5de8eeb4.dip0.t-ipconnect.de [93.232.238.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3F48C1EC0453;
+	Fri, 29 Apr 2022 12:53:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1651229613;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CSY6Y/4T7bj919shOHPZmVkZxJI0FlIHDXbOp9cSNBI=;
-	b=isrZazxXHGelKTGed6eRxHFj7TTcXRkHYu02E12tTbNMKybOkbe+pOrCAzzwQ6wvRWUSQx
-	nia22GHxIMz2X6qy0qExR59yRuA0Tp+Zw9+dXhuX8e3na0V347kZzIsdsrMkjVqxvCKgen
-	01lxA1XwbCBw45eotAG4yyOFwUHxNf0=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-625-_Ci1SRK0NsmzCNKeZmQivA-1; Fri, 29 Apr 2022 05:06:29 -0400
-X-MC-Unique: _Ci1SRK0NsmzCNKeZmQivA-1
-Received: by mail-pg1-f198.google.com with SMTP id s68-20020a637747000000b003aaff19b95bso3592392pgc.1
-        for <linux-coco@lists.linux.dev>; Fri, 29 Apr 2022 02:06:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=CSY6Y/4T7bj919shOHPZmVkZxJI0FlIHDXbOp9cSNBI=;
-        b=uloAs7JD/T9oNQa5sbjvzllh27WAnPaQJel9f074Ym7n08kh3LZu1MJyb7xJqYEvpl
-         UpekTDSOXa7KdbrL4AYaMIGhzZTqytA/YcaPq/Wklv6H+dngAV0V35upji4jOzsOwAO5
-         uaCWztVa3yzPDmqCiTRhIt392nQPC1hrO+QsBdn32xux43mOrUNMCO88vf7L79rhg1Jp
-         bSYsnnt9mAno9BYNH38V/FwbU201+AY+EWHslrsJ2Ueu9Qbm9BTHZ8F2Itw0soZO78sg
-         1ke3ERJfFNn1ZXCcjHaoM8nIa1mcpMoxpto1fMHBudKOhmVXD+bj+XWGvYjS77RdRONU
-         WzBw==
-X-Gm-Message-State: AOAM533G2HEDTyLsLnql4HPg1wPPjWlzKWokat9AwQEPznjcBgh8tbV3
-	xVu/r3fTo+c8l3B5SaEJ4VHARxCgPSZGjHWa+5s8BU2dXXGjrN+O1wv7KAa7Wip11RJBHFoxzRo
-	ryQC+NHMNIFIyvmzVXcgsmA==
-X-Received: by 2002:a17:90b:4b07:b0:1db:c488:7394 with SMTP id lx7-20020a17090b4b0700b001dbc4887394mr2752458pjb.21.1651223188449;
-        Fri, 29 Apr 2022 02:06:28 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxInccOofVf0pMBnkfTHELvYv2tsj7NcfRqjmjun+/PYmdLLstBer0yOapb0B4/7T00673t9w==
-X-Received: by 2002:a17:90b:4b07:b0:1db:c488:7394 with SMTP id lx7-20020a17090b4b0700b001dbc4887394mr2752409pjb.21.1651223188050;
-        Fri, 29 Apr 2022 02:06:28 -0700 (PDT)
-Received: from localhost.localdomain ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id x126-20020a628684000000b0050d3f600ed0sm2331365pfd.40.2022.04.29.02.06.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Apr 2022 02:06:27 -0700 (PDT)
-Date: Fri, 29 Apr 2022 17:06:17 +0800
-From: Tao Liu <ltao@redhat.com>
-To: Joerg Roedel <joro@8bytes.org>
-Cc: x86@kernel.org, kvm@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	virtualization@lists.linux-foundation.org,
-	Arvind Sankar <nivedita@alum.mit.edu>, hpa@zytor.com,
-	Jiri Slaby <jslaby@suse.cz>, David Rientjes <rientjes@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Martin Radev <martin.b.radev@gmail.com>,
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=CLBqjruz6nJNNoK+VEKQerL5OsRHm91OkA4ph7LgujU=;
+	b=oBhT0oDPQYoYhiq3M57NHR0kwDtbkzESqpviQ6APK17N8rFapqRG6H81FABgqsajB/8ox2
+	GRf4rKs7ZFj/oNjq2sjGDOJh1REdBXtekFAUxNixxIG18p65MA0Z67tsCvyzGJslJ8ZgZg
+	HltjJpVIS2I8CthlPc6405WOuqTXOiY=
+Date: Fri, 29 Apr 2022 12:53:30 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	Joerg Roedel <jroedel@suse.de>, Kees Cook <keescook@chromium.org>,
-	Cfir Cohen <cfir@google.com>, linux-coco@lists.linux.dev,
-	Andy Lutomirski <luto@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Juergen Gross <jgross@suse.com>, Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Eric Biederman <ebiederm@xmission.com>,
-	Erdem Aktas <erdemaktas@google.com>
-Subject: Re: [PATCH v3 00/10] x86/sev: KEXEC/KDUMP support for SEV-ES guests
-Message-ID: <YmuqifsJltdh7rpv@localhost.localdomain>
-References: <20220127101044.13803-1-joro@8bytes.org>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv5 05/12] efi/x86: Implement support for unaccepted memory
+Message-ID: <YmvDqgcyKOgLYNrT@zn.tnic>
+References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
+ <20220425033934.68551-6-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20220127101044.13803-1-joro@8bytes.org>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=ltao@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+In-Reply-To: <20220425033934.68551-6-kirill.shutemov@linux.intel.com>
 
-On Thu, Jan 27, 2022 at 11:10:34AM +0100, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
-> 
-> Hi,
-> 
-> here are changes to enable kexec/kdump in SEV-ES guests. The biggest
-> problem for supporting kexec/kdump under SEV-ES is to find a way to
-> hand the non-boot CPUs (APs) from one kernel to another.
-> 
-> Without SEV-ES the first kernel parks the CPUs in a HLT loop until
-> they get reset by the kexec'ed kernel via an INIT-SIPI-SIPI sequence.
-> For virtual machines the CPU reset is emulated by the hypervisor,
-> which sets the vCPU registers back to reset state.
-> 
-> This does not work under SEV-ES, because the hypervisor has no access
-> to the vCPU registers and can't make modifications to them. So an
-> SEV-ES guest needs to reset the vCPU itself and park it using the
-> AP-reset-hold protocol. Upon wakeup the guest needs to jump to
-> real-mode and to the reset-vector configured in the AP-Jump-Table.
-> 
-> The code to do this is the main part of this patch-set. It works by
-> placing code on the AP Jump-Table page itself to park the vCPU and for
-> jumping to the reset vector upon wakeup. The code on the AP Jump Table
-> runs in 16-bit protected mode with segment base set to the beginning
-> of the page. The AP Jump-Table is usually not within the first 1MB of
-> memory, so the code can't run in real-mode.
-> 
-> The AP Jump-Table is the best place to put the parking code, because
-> the memory is owned, but read-only by the firmware and writeable by
-> the OS. Only the first 4 bytes are used for the reset-vector, leaving
-> the rest of the page for code/data/stack to park a vCPU. The code
-> can't be in kernel memory because by the time the vCPU wakes up the
-> memory will be owned by the new kernel, which might have overwritten it
-> already.
-> 
-> The other patches add initial GHCB Version 2 protocol support, because
-> kexec/kdump need the MSR-based (without a GHCB) AP-reset-hold VMGEXIT,
-> which is a GHCB protocol version 2 feature.
-> 
-> The kexec'ed kernel is also entered via the decompressor and needs
-> MMIO support there, so this patch-set also adds MMIO #VC support to
-> the decompressor and support for handling CLFLUSH instructions.
-> 
-> Finally there is also code to disable kexec/kdump support at runtime
-> when the environment does not support it (e.g. no GHCB protocol
-> version 2 support or AP Jump Table over 4GB).
-> 
-> The diffstat looks big, but most of it is moving code for MMIO #VC
-> support around to make it available to the decompressor.
-> 
-> The previous version of this patch-set can be found here:
-> 
-> 	https://lore.kernel.org/lkml/20210913155603.28383-1-joro@8bytes.org/
-> 
-> Please review.
-> 
-> Thanks,
-> 
-> 	Joerg
-> 
-> Changes v2->v3:
-> 
-> 	- Rebased to v5.17-rc1
-> 	- Applied most review comments by Boris
-> 	- Use the name 'AP jump table' consistently
-> 	- Make kexec-disabling for unsupported guests x86-specific
-> 	- Cleanup and consolidate patches to detect GHCB v2 protocol
-> 	  support
-> 
-> Joerg Roedel (10):
->   x86/kexec/64: Disable kexec when SEV-ES is active
->   x86/sev: Save and print negotiated GHCB protocol version
->   x86/sev: Set GHCB data structure version
->   x86/sev: Cache AP Jump Table Address
->   x86/sev: Setup code to park APs in the AP Jump Table
->   x86/sev: Park APs on AP Jump Table with GHCB protocol version 2
->   x86/sev: Use AP Jump Table blob to stop CPU
->   x86/sev: Add MMIO handling support to boot/compressed/ code
->   x86/sev: Handle CLFLUSH MMIO events
->   x86/kexec/64: Support kexec under SEV-ES with AP Jump Table Blob
-> 
->  arch/x86/boot/compressed/sev.c          |  45 +-
->  arch/x86/include/asm/insn-eval.h        |   1 +
->  arch/x86/include/asm/realmode.h         |   5 +
->  arch/x86/include/asm/sev-ap-jumptable.h |  29 +
->  arch/x86/include/asm/sev.h              |  11 +-
->  arch/x86/kernel/machine_kexec_64.c      |  12 +
->  arch/x86/kernel/process.c               |   8 +
->  arch/x86/kernel/sev-shared.c            | 233 +++++-
->  arch/x86/kernel/sev.c                   | 404 +++++------
->  arch/x86/lib/insn-eval-shared.c         | 913 ++++++++++++++++++++++++
->  arch/x86/lib/insn-eval.c                | 909 +----------------------
->  arch/x86/realmode/Makefile              |   9 +-
->  arch/x86/realmode/rm/Makefile           |  11 +-
->  arch/x86/realmode/rm/header.S           |   3 +
->  arch/x86/realmode/rm/sev.S              |  85 +++
->  arch/x86/realmode/rmpiggy.S             |   6 +
->  arch/x86/realmode/sev/Makefile          |  33 +
->  arch/x86/realmode/sev/ap_jump_table.S   | 131 ++++
->  arch/x86/realmode/sev/ap_jump_table.lds |  24 +
->  19 files changed, 1730 insertions(+), 1142 deletions(-)
->  create mode 100644 arch/x86/include/asm/sev-ap-jumptable.h
->  create mode 100644 arch/x86/lib/insn-eval-shared.c
->  create mode 100644 arch/x86/realmode/rm/sev.S
->  create mode 100644 arch/x86/realmode/sev/Makefile
->  create mode 100644 arch/x86/realmode/sev/ap_jump_table.S
->  create mode 100644 arch/x86/realmode/sev/ap_jump_table.lds
-> 
-> 
-> base-commit: e783362eb54cd99b2cac8b3a9aeac942e6f6ac07
-> -- 
-> 2.34.1
->
+On Mon, Apr 25, 2022 at 06:39:27AM +0300, Kirill A. Shutemov wrote:
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index 5401985901f5..f9b88174209e 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -15,6 +15,7 @@
+>  #include <asm/setup.h>
+>  #include <asm/desc.h>
+>  #include <asm/boot.h>
+> +#include <asm/unaccepted_memory.h>
+>  
+>  #include "efistub.h"
+>  
+> @@ -504,6 +505,17 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
+>  			e820_type = E820_TYPE_PMEM;
+>  			break;
+>  
+> +		case EFI_UNACCEPTED_MEMORY:
+> +			if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
+> +				efi_warn_once("The system has unaccepted memory,"
+> +					     " but kernel does not support it\n");
+> +				efi_warn_once("Consider enabling UNACCEPTED_MEMORY\n");
 
-Hi Joerg,
+CONFIG_UNACCEPTED_MEMORY
 
-I tried the patch set with 5.17.0-rc1 kernel, and I have a few questions:
+> +				continue;
+> +			}
+> +			e820_type = E820_TYPE_RAM;
+> +			process_unaccepted_memory(params, d->phys_addr,
+> +					d->phys_addr + PAGE_SIZE * d->num_pages);
 
-1) Is it a bug or should qemu-kvm 6.2.0 be patched with specific patch? Because
-   I found it will exit with 0 when I tried to reboot the VM with sev-es enabled.
-   However with only sev enabled, the VM can do reboot with no problem:
+Align arguments on the opening brace.
 
-[root@dell-per7525-03 ~]# virsh start TW-SEV-ES --console
-....
-Fedora Linux 35 (Server Edition)
-Kernel 5.17.0-rc1 on an x86_64 (ttyS0)
-....
-[root@fedora ~]# reboot
-.....
-[   48.077682] reboot: Restarting system
-[   48.078109] reboot: machine restart
-                       ^^^^^^^^^^^^^^^ guest vm reached restart
-[root@dell-per7525-03 ~]# echo $?
-0
-^^^ qemu-kvm exit with 0, no reboot back to normal VM kernel
-[root@dell-per7525-03 ~]#
+> +			break;
+>  		default:
+>  			continue;
+>  		}
+> @@ -568,6 +580,59 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
+>  	return status;
+>  }
+>  
+> +static efi_status_t allocate_unaccepted_memory(struct boot_params *params,
+> +					       __u32 nr_desc,
+> +					       struct efi_boot_memmap *map)
+> +{
+> +	unsigned long *mem = NULL;
+> +	u64 size, max_addr = 0;
+> +	efi_status_t status;
+> +	bool found = false;
+> +	int i;
+> +
+> +	/* Check if there's any unaccepted memory and find the max address */
+> +	for (i = 0; i < nr_desc; i++) {
+> +		efi_memory_desc_t *d;
+> +
+> +		d = efi_early_memdesc_ptr(*map->map, *map->desc_size, i);
+> +		if (d->type == EFI_UNACCEPTED_MEMORY)
+> +			found = true;
+> +		if (d->phys_addr + d->num_pages * PAGE_SIZE > max_addr)
+> +			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
+> +	}
+> +
+> +	if (!found) {
+> +		params->unaccepted_memory = 0;
+> +		return EFI_SUCCESS;
+> +	}
+> +
+> +	/*
+> +	 * If unaccepted memory is present allocate a bitmap to track what
+> +	 * memory has to be accepted before access.
+> +	 *
+> +	 * One bit in the bitmap represents 2MiB in the address space:
+> +	 * A 4k bitmap can track 64GiB of physical address space.
+> +	 *
+> +	 * In the worst case scenario -- a huge hole in the middle of the
+> +	 * address space -- It needs 256MiB to handle 4PiB of the address
+> +	 * space.
+> +	 *
+> +	 * TODO: handle situation if params->unaccepted_memory has already set.
 
-2) With sev-es enabled and the 2 patch sets applied: A) [PATCH v3 00/10] x86/sev:
-KEXEC/KDUMP support for SEV-ES guests, and B) [PATCH v6 0/7] KVM: SVM: Add initial
-GHCB protocol version 2 support. I can enable kdump and have vmcore generated:
+"... is already set."
 
-[root@fedora ~]# dmesg|grep -i sev
-[    0.030600] SEV: Hypervisor GHCB protocol version support: min=1 max=2
-[    0.030602] SEV: Using GHCB protocol version 2
-[    0.296144] AMD Memory Encryption Features active: SEV SEV-ES
-[    0.450991] SEV: AP jump table Blob successfully set up
-[root@fedora ~]# kdumpctl status
-kdump: Kdump is operational
+And when is that TODO taken care of? Later patch or patchset?
 
-However without the 2 patch sets, I can also enable kdump and have vmcore generated:
+Thx.
 
-[root@fedora ~]# dmesg|grep -i sev
-[    0.295754] AMD Memory Encryption Features active: SEV SEV-ES
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ patch set A & B 
-	       not applied, so only have this string.
-[root@fedora ~]# echo c > /proc/sysrq-trigger
-...
-[    2.759403] kdump[549]: saving vmcore-dmesg.txt to /sysroot/var/crash/127.0.0.1-2022-04-18-05:58:50/
-[    2.804355] kdump[555]: saving vmcore-dmesg.txt complete
-[    2.806915] kdump[557]: saving vmcore
-                           ^^^^^^^^^^^^^ vmcore can still be generated
-...
-[    7.068981] reboot: Restarting system
-[    7.069340] reboot: machine restart
+-- 
+Regards/Gruss,
+    Boris.
 
-[root@dell-per7525-03 ~]# echo $?
-0
-^^^ same exit issue as question 1.
-
-I doesn't have a complete technical background of the patch set, but isn't
-it the issue which this patch set is trying to solve? Or I missed something?
-
-Thanks,
-Tao Liu
- 
-> _______________________________________________
-> Virtualization mailing list
-> Virtualization@lists.linux-foundation.org
-> https://lists.linuxfoundation.org/mailman/listinfo/virtualization
-
+https://people.kernel.org/tglx/notes-about-netiquette
