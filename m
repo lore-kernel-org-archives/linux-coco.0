@@ -1,48 +1,48 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BD628E0
-	for <linux-coco@lists.linux.dev>; Mon,  2 May 2022 13:36:29 +0000 (UTC)
-Received: by mail-lf1-f43.google.com with SMTP id bq30so25322087lfb.3
-        for <linux-coco@lists.linux.dev>; Mon, 02 May 2022 06:36:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB5E28E0
+	for <linux-coco@lists.linux.dev>; Mon,  2 May 2022 13:38:50 +0000 (UTC)
+Received: by mail-lf1-f45.google.com with SMTP id w19so25276291lfu.11
+        for <linux-coco@lists.linux.dev>; Mon, 02 May 2022 06:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20210112.gappssmtp.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=sPNChsGYk7kHE/rCDooMX11EJCDPE+Ox4AJuqojjAS4=;
-        b=oMyzTIQDDDkGSqMMk6jcH3Jg3mOWazFOFwqR8EyExlL855INKMIuaBkCZwvdgRpQSD
-         biuD4BmyhgnU+ANzhEkwdNHyFuPiASTFGfXH7JoHfMhBtseilEctTctKHd1Z5QYpIeyh
-         XCBKI9nH1N78fYzf8GPhsTsXjmLO8rakFYZrfwhEpi9DGSBHuyM7Kyzd7RCTX53lpQV2
-         AAgicbO0zVpm57tZpTUKqHTOhO/EJQ9lQ16JCpzBQasFSbKey6Q9NKDvke2t9g+Su53U
-         XrVFnmOMFo0w1Fu6ajlfu9QgB04IgkrRWFpyWkdh+dnaXEjEmg6QDV7a4CYqhpLi/K7r
-         jzBA==
+        bh=DcMGZbv7z3p/v1eaiOcddW90mQtWVDMmjqmh18TpdpI=;
+        b=UGAWAyJUXoavkDZu/6uiyPyXQTdFJov3kbe74IyPdqB8tJNB1DkzhUq18MRTgb7Geg
+         J1Vpjhyolal+iggBoo5jcEznptqbOvyFBOWCfImJ+5EcVzC20xDOZ8Ve6PAuXTafyIas
+         0pLWBUR2ievavlNtXwDxDcP5QZFb8k6nNyibG8HKsPGqBEmZSMaWqKSz1uoFDUkiT22v
+         N8nqHaek4ehCqRhJn6rBX30mRbm3knHnTzXmMrPhz5xXFRSI2jjOtq9zbx2ILyrGQagv
+         yQRRnzHGMfswyQfLASHEEUMggmLvmdnRge0KT78jvbMsxyU29Cy5spwAxnapnip9DhJQ
+         UXKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=sPNChsGYk7kHE/rCDooMX11EJCDPE+Ox4AJuqojjAS4=;
-        b=5rnijV8KlLzLIG3YynpIW6aq6xmwLla7Vt14YQ8GopkbJPmf7tgNL9ddJjlZJE0A0r
-         dOdwBwlFzvNgC8cHaSRk2NciRCunsxXOUwsdAo6eocVGHVuPXFuMEVk9t00+ogDSkrFd
-         GrNUgCygrGs/6PugrxNXynw5VNGjAVt53IikAeMMgoOtE/cN5UIf+waYSO6X1ZXP6xDZ
-         JVFankCMQGhdLRSbePlIR05vbMfkVEa1PxdRhAdsS+rWrtHq6ko7XmvLqKhkZ7/M8FxK
-         2tkq3E7ztjsR8BfhTEmfpqkhkAhtnBTmg0TyPHTv16cFbuAcH6ozNDR2iXKqiCsp0J3f
-         v27A==
-X-Gm-Message-State: AOAM531y6YzQVdjC6KRukTtdQWNd18gFEXvETiycErSbDAUbuiGGEhuD
-	Lm6ckZSnHgiaYbiJ5tCpKwh2EA==
-X-Google-Smtp-Source: ABdhPJxn5B/JuXc6CCfatjGdv/+EBL9v9FlbJORmKz12IPtE+wybn1otAHjNPLgeBTtopFpf2dEoaA==
-X-Received: by 2002:a05:6512:3986:b0:472:4f5:33a0 with SMTP id j6-20020a056512398600b0047204f533a0mr8679514lfu.341.1651498587285;
-        Mon, 02 May 2022 06:36:27 -0700 (PDT)
+        bh=DcMGZbv7z3p/v1eaiOcddW90mQtWVDMmjqmh18TpdpI=;
+        b=f8r+Lz6ZVoUldq9dBC7jl5zYQN76yl6+JGRVXPiun9MmO3Y9NpdqUNV6k2eWTcAx66
+         +EEwAojdXb4SC4e6kQo7CD5gjNq4LoFUNEUYILRs4TUc7PxIS3EmO6aYLml+pRrUQnq4
+         ymm9QCWc98vbPWTV1GSZf3r3Qknc3IAhZrW0czJG5Grxylfy1WgMCTXPd6QBYeA9a4H9
+         cyVx8NUk75wqe952pX2UyyplOzL4LX2d2gasw18O4JkqHC6LqlMTVcuk7ZV2AoimxcUv
+         QuIrQhJ7QniMpKxpgsaBSrn4pwUiJbBabhX6vjTsdsXVhaIFPxKcExn3iNA0pRt29i+I
+         PIAg==
+X-Gm-Message-State: AOAM533WRvn0LMOseDcD9tcTCBPGT+IMQGcB3BS+mtC0D8Zx+sIEjltC
+	fm+H1EZZrVOlsHv0lC/mjzxTsw==
+X-Google-Smtp-Source: ABdhPJwKLan9oIQwmL4/yFUO5pWv5jwZqmLJ0VZW89luPSjNXnrV7OWnfCjA79YKn2buk4EZYnbTPw==
+X-Received: by 2002:a05:6512:400e:b0:450:e09d:c9a6 with SMTP id br14-20020a056512400e00b00450e09dc9a6mr9413485lfb.243.1651498728392;
+        Mon, 02 May 2022 06:38:48 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id h18-20020ac25d72000000b0047255d210e2sm704383lft.17.2022.05.02.06.36.26
+        by smtp.gmail.com with ESMTPSA id n21-20020a2e86d5000000b0024cac53a82csm1046025ljj.0.2022.05.02.06.38.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 May 2022 06:36:26 -0700 (PDT)
+        Mon, 02 May 2022 06:38:47 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 6096C104AD8; Mon,  2 May 2022 16:38:10 +0300 (+03)
-Date: Mon, 2 May 2022 16:38:10 +0300
+	id F1167104AD8; Mon,  2 May 2022 16:40:31 +0300 (+03)
+Date: Mon, 2 May 2022 16:40:31 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Wander Lairson Costa <wander@redhat.com>
+To: Borislav Petkov <bp@alien8.de>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
@@ -62,12 +62,11 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 04/12] x86/boot: Add infrastructure required for
- unaccepted memory support
-Message-ID: <20220502133810.gvmaqxvspzdvzrhv@box.shutemov.name>
+Subject: Re: [PATCHv5 05/12] efi/x86: Implement support for unaccepted memory
+Message-ID: <20220502134031.roylivc3icazuk5h@box.shutemov.name>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-5-kirill.shutemov@linux.intel.com>
- <YmvExncBpvDdfTjd@fedora>
+ <20220425033934.68551-6-kirill.shutemov@linux.intel.com>
+ <YmvDqgcyKOgLYNrT@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -76,16 +75,27 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YmvExncBpvDdfTjd@fedora>
+In-Reply-To: <YmvDqgcyKOgLYNrT@zn.tnic>
 
-On Fri, Apr 29, 2022 at 07:58:14AM -0300, Wander Lairson Costa wrote:
-> On Mon, Apr 25, 2022 at 06:39:26AM +0300, Kirill A. Shutemov wrote:
+On Fri, Apr 29, 2022 at 12:53:30PM +0200, Borislav Petkov wrote:
+> > +	/*
+> > +	 * If unaccepted memory is present allocate a bitmap to track what
+> > +	 * memory has to be accepted before access.
+> > +	 *
+> > +	 * One bit in the bitmap represents 2MiB in the address space:
+> > +	 * A 4k bitmap can track 64GiB of physical address space.
+> > +	 *
+> > +	 * In the worst case scenario -- a huge hole in the middle of the
+> > +	 * address space -- It needs 256MiB to handle 4PiB of the address
+> > +	 * space.
+> > +	 *
+> > +	 * TODO: handle situation if params->unaccepted_memory has already set.
 > 
-> [snip]
+> "... is already set."
+> 
+> And when is that TODO taken care of? Later patch or patchset?
 
-As I said in the commit message, all that code added by the patch is copy
-of the battle-tested code from the main kernel. I'm not sure what the
-value of these review comment. Hm?
+No, not yet. kexec is not a priority at the moment. It will come later.
 
 -- 
  Kirill A. Shutemov
