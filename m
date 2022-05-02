@@ -1,34 +1,48 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B027F7B
-	for <linux-coco@lists.linux.dev>; Fri, 29 Apr 2022 13:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1651238385;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uC80K2JcwhpHl9wyzV7n0RzilJpR226HPF0HUL7DEq0=;
-	b=DOb4WmIICtSjZr/Kb2YmU27KjaDmnSrXZ6MSoLa7X0j8Es36ZsiaqU6ns/p/1U24zdnw3N
-	mnjcoLIwt9+679Zhl/heIEgqyhGd4QNALG1dJ5sByf89dE5YnTm3BGIE4O2O5Ztrmc6fDB
-	xTsGrjDkYotxv7Y9XMmWrAWjMwzCQJk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-634-vk82ltftOA6cWk439Qv-Jg-1; Fri, 29 Apr 2022 09:19:40 -0400
-X-MC-Unique: vk82ltftOA6cWk439Qv-Jg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8BC2F8002B2;
-	Fri, 29 Apr 2022 13:19:39 +0000 (UTC)
-Received: from fedora (unknown [10.22.16.76])
-	by smtp.corp.redhat.com (Postfix) with SMTP id BF50B2166B4D;
-	Fri, 29 Apr 2022 13:19:13 +0000 (UTC)
-Date: Fri, 29 Apr 2022 10:19:12 -0300
-From: Wander Lairson Costa <wander@redhat.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BD628E0
+	for <linux-coco@lists.linux.dev>; Mon,  2 May 2022 13:36:29 +0000 (UTC)
+Received: by mail-lf1-f43.google.com with SMTP id bq30so25322087lfb.3
+        for <linux-coco@lists.linux.dev>; Mon, 02 May 2022 06:36:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=sPNChsGYk7kHE/rCDooMX11EJCDPE+Ox4AJuqojjAS4=;
+        b=oMyzTIQDDDkGSqMMk6jcH3Jg3mOWazFOFwqR8EyExlL855INKMIuaBkCZwvdgRpQSD
+         biuD4BmyhgnU+ANzhEkwdNHyFuPiASTFGfXH7JoHfMhBtseilEctTctKHd1Z5QYpIeyh
+         XCBKI9nH1N78fYzf8GPhsTsXjmLO8rakFYZrfwhEpi9DGSBHuyM7Kyzd7RCTX53lpQV2
+         AAgicbO0zVpm57tZpTUKqHTOhO/EJQ9lQ16JCpzBQasFSbKey6Q9NKDvke2t9g+Su53U
+         XrVFnmOMFo0w1Fu6ajlfu9QgB04IgkrRWFpyWkdh+dnaXEjEmg6QDV7a4CYqhpLi/K7r
+         jzBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=sPNChsGYk7kHE/rCDooMX11EJCDPE+Ox4AJuqojjAS4=;
+        b=5rnijV8KlLzLIG3YynpIW6aq6xmwLla7Vt14YQ8GopkbJPmf7tgNL9ddJjlZJE0A0r
+         dOdwBwlFzvNgC8cHaSRk2NciRCunsxXOUwsdAo6eocVGHVuPXFuMEVk9t00+ogDSkrFd
+         GrNUgCygrGs/6PugrxNXynw5VNGjAVt53IikAeMMgoOtE/cN5UIf+waYSO6X1ZXP6xDZ
+         JVFankCMQGhdLRSbePlIR05vbMfkVEa1PxdRhAdsS+rWrtHq6ko7XmvLqKhkZ7/M8FxK
+         2tkq3E7ztjsR8BfhTEmfpqkhkAhtnBTmg0TyPHTv16cFbuAcH6ozNDR2iXKqiCsp0J3f
+         v27A==
+X-Gm-Message-State: AOAM531y6YzQVdjC6KRukTtdQWNd18gFEXvETiycErSbDAUbuiGGEhuD
+	Lm6ckZSnHgiaYbiJ5tCpKwh2EA==
+X-Google-Smtp-Source: ABdhPJxn5B/JuXc6CCfatjGdv/+EBL9v9FlbJORmKz12IPtE+wybn1otAHjNPLgeBTtopFpf2dEoaA==
+X-Received: by 2002:a05:6512:3986:b0:472:4f5:33a0 with SMTP id j6-20020a056512398600b0047204f533a0mr8679514lfu.341.1651498587285;
+        Mon, 02 May 2022 06:36:27 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id h18-20020ac25d72000000b0047255d210e2sm704383lft.17.2022.05.02.06.36.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 May 2022 06:36:26 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id 6096C104AD8; Mon,  2 May 2022 16:38:10 +0300 (+03)
+Date: Mon, 2 May 2022 16:38:10 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Wander Lairson Costa <wander@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
@@ -47,12 +61,13 @@ Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv5 07/12] x86/mm: Reserve unaccepted memory bitmap
-Message-ID: <Ymvl0N7umDfcjfMb@fedora>
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv5 04/12] x86/boot: Add infrastructure required for
+ unaccepted memory support
+Message-ID: <20220502133810.gvmaqxvspzdvzrhv@box.shutemov.name>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-8-kirill.shutemov@linux.intel.com>
+ <20220425033934.68551-5-kirill.shutemov@linux.intel.com>
+ <YmvExncBpvDdfTjd@fedora>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -61,17 +76,16 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220425033934.68551-8-kirill.shutemov@linux.intel.com>
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
+In-Reply-To: <YmvExncBpvDdfTjd@fedora>
 
-On Mon, Apr 25, 2022 at 06:39:29AM +0300, Kirill A. Shutemov wrote:
-> A given page of memory can only be accepted once. The kernel has a need
-> to accept memory both in the early decompression stage and during normal
-> runtime.
+On Fri, Apr 29, 2022 at 07:58:14AM -0300, Wander Lairson Costa wrote:
+> On Mon, Apr 25, 2022 at 06:39:26AM +0300, Kirill A. Shutemov wrote:
 > 
-> A bitmap used to communicate the acceptance state of each page between the
+> [snip]
 
-nit: s/bitmap used/bitmap is used/
+As I said in the commit message, all that code added by the patch is copy
+of the battle-tested code from the main kernel. I'm not sure what the
+value of these review comment. Hm?
 
-[snip]
-
+-- 
+ Kirill A. Shutemov
