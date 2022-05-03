@@ -1,48 +1,26 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB5E28E0
-	for <linux-coco@lists.linux.dev>; Mon,  2 May 2022 13:38:50 +0000 (UTC)
-Received: by mail-lf1-f45.google.com with SMTP id w19so25276291lfu.11
-        for <linux-coco@lists.linux.dev>; Mon, 02 May 2022 06:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=DcMGZbv7z3p/v1eaiOcddW90mQtWVDMmjqmh18TpdpI=;
-        b=UGAWAyJUXoavkDZu/6uiyPyXQTdFJov3kbe74IyPdqB8tJNB1DkzhUq18MRTgb7Geg
-         J1Vpjhyolal+iggBoo5jcEznptqbOvyFBOWCfImJ+5EcVzC20xDOZ8Ve6PAuXTafyIas
-         0pLWBUR2ievavlNtXwDxDcP5QZFb8k6nNyibG8HKsPGqBEmZSMaWqKSz1uoFDUkiT22v
-         N8nqHaek4ehCqRhJn6rBX30mRbm3knHnTzXmMrPhz5xXFRSI2jjOtq9zbx2ILyrGQagv
-         yQRRnzHGMfswyQfLASHEEUMggmLvmdnRge0KT78jvbMsxyU29Cy5spwAxnapnip9DhJQ
-         UXKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=DcMGZbv7z3p/v1eaiOcddW90mQtWVDMmjqmh18TpdpI=;
-        b=f8r+Lz6ZVoUldq9dBC7jl5zYQN76yl6+JGRVXPiun9MmO3Y9NpdqUNV6k2eWTcAx66
-         +EEwAojdXb4SC4e6kQo7CD5gjNq4LoFUNEUYILRs4TUc7PxIS3EmO6aYLml+pRrUQnq4
-         ymm9QCWc98vbPWTV1GSZf3r3Qknc3IAhZrW0czJG5Grxylfy1WgMCTXPd6QBYeA9a4H9
-         cyVx8NUk75wqe952pX2UyyplOzL4LX2d2gasw18O4JkqHC6LqlMTVcuk7ZV2AoimxcUv
-         QuIrQhJ7QniMpKxpgsaBSrn4pwUiJbBabhX6vjTsdsXVhaIFPxKcExn3iNA0pRt29i+I
-         PIAg==
-X-Gm-Message-State: AOAM533WRvn0LMOseDcD9tcTCBPGT+IMQGcB3BS+mtC0D8Zx+sIEjltC
-	fm+H1EZZrVOlsHv0lC/mjzxTsw==
-X-Google-Smtp-Source: ABdhPJwKLan9oIQwmL4/yFUO5pWv5jwZqmLJ0VZW89luPSjNXnrV7OWnfCjA79YKn2buk4EZYnbTPw==
-X-Received: by 2002:a05:6512:400e:b0:450:e09d:c9a6 with SMTP id br14-20020a056512400e00b00450e09dc9a6mr9413485lfb.243.1651498728392;
-        Mon, 02 May 2022 06:38:48 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id n21-20020a2e86d5000000b0024cac53a82csm1046025ljj.0.2022.05.02.06.38.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 May 2022 06:38:47 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-	id F1167104AD8; Mon,  2 May 2022 16:40:31 +0300 (+03)
-Date: Mon, 2 May 2022 16:40:31 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9DC2FB3
+	for <linux-coco@lists.linux.dev>; Tue,  3 May 2022 14:13:08 +0000 (UTC)
+Received: from zn.tnic (p5de8eeb4.dip0.t-ipconnect.de [93.232.238.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D04111EC0258;
+	Tue,  3 May 2022 16:12:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1651587176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=x202iZNl5Y0R60gL0lXqXi/nN/reLshg7nG0X1MPp9g=;
+	b=K6cLKFCQeaOKb+YdQBpE/BYk6yBSDBhZn8S12WAdaU3UXW/1JfqkoKxWUb1CzNMDt8pwsD
+	o2p3YV5EUQK839YcBccjLUx/DkpbVlEk2mM0JKUkjCPn7tYPRf2kzP2C6fmxWLqEVr4fa8
+	06usPfyoNJfP8ot3Amzhq67J/n8PEt4=
+Date: Tue, 3 May 2022 16:12:55 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
@@ -62,40 +40,102 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 05/12] efi/x86: Implement support for unaccepted memory
-Message-ID: <20220502134031.roylivc3icazuk5h@box.shutemov.name>
+Subject: Re: [PATCHv5 06/12] x86/boot/compressed: Handle unaccepted memory
+Message-ID: <YnE4ZzzVrxUnr3Uv@zn.tnic>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-6-kirill.shutemov@linux.intel.com>
- <YmvDqgcyKOgLYNrT@zn.tnic>
+ <20220425033934.68551-7-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <YmvDqgcyKOgLYNrT@zn.tnic>
+In-Reply-To: <20220425033934.68551-7-kirill.shutemov@linux.intel.com>
 
-On Fri, Apr 29, 2022 at 12:53:30PM +0200, Borislav Petkov wrote:
-> > +	/*
-> > +	 * If unaccepted memory is present allocate a bitmap to track what
-> > +	 * memory has to be accepted before access.
-> > +	 *
-> > +	 * One bit in the bitmap represents 2MiB in the address space:
-> > +	 * A 4k bitmap can track 64GiB of physical address space.
-> > +	 *
-> > +	 * In the worst case scenario -- a huge hole in the middle of the
-> > +	 * address space -- It needs 256MiB to handle 4PiB of the address
-> > +	 * space.
-> > +	 *
-> > +	 * TODO: handle situation if params->unaccepted_memory has already set.
-> 
-> "... is already set."
-> 
-> And when is that TODO taken care of? Later patch or patchset?
+On Mon, Apr 25, 2022 at 06:39:28AM +0300, Kirill A. Shutemov wrote:
+> diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+> index 411b268bc0a2..59db90626042 100644
+> --- a/arch/x86/boot/compressed/kaslr.c
+> +++ b/arch/x86/boot/compressed/kaslr.c
+> @@ -725,10 +725,20 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
+>  		 * but in practice there's firmware where using that memory leads
+>  		 * to crashes.
+>  		 *
+> -		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
+> +		 * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if
+> +		 * supported) are guaranteed to be free.
+>  		 */
+> -		if (md->type != EFI_CONVENTIONAL_MEMORY)
+> +
+> +		switch (md->type) {
+> +		case EFI_CONVENTIONAL_MEMORY:
+> +			break;
+> +		case EFI_UNACCEPTED_MEMORY:
+> +			if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
+> +				break;
+>  			continue;
+> +		default:
+> +			continue;
+> +		}
 
-No, not yet. kexec is not a priority at the moment. It will come later.
+Is there any special reason for this to be a switch-case or can it
+simply be a compound conditional if (bla...) ?
+
+> @@ -66,3 +69,21 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
+>  	bitmap_set((unsigned long *)params->unaccepted_memory,
+>  		   start / PMD_SIZE, (end - start) / PMD_SIZE);
+>  }
+> +
+> +void accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +	unsigned long range_start, range_end;
+> +	unsigned long *unaccepted_memory;
+
+Please shorten that name so that you don't have to break the lines below.
+
+> +	unsigned long bitmap_size;
+> +
+> +	unaccepted_memory = (unsigned long *)boot_params->unaccepted_memory;
+> +	range_start = start / PMD_SIZE;
+> +	bitmap_size = DIV_ROUND_UP(end, PMD_SIZE);
+> +
+> +	for_each_set_bitrange_from(range_start, range_end,
+> +				   unaccepted_memory, bitmap_size) {
+> +		__accept_memory(range_start * PMD_SIZE, range_end * PMD_SIZE);
+> +		bitmap_clear(unaccepted_memory,
+> +			     range_start, range_end - range_start);
+> +	}
+> +}
+> diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+> index fa8969fad011..285b37e28074 100644
+> --- a/arch/x86/boot/compressed/misc.c
+> +++ b/arch/x86/boot/compressed/misc.c
+> @@ -18,6 +18,7 @@
+>  #include "../string.h"
+>  #include "../voffset.h"
+>  #include <asm/bootparam_utils.h>
+> +#include <asm/unaccepted_memory.h>
+>  
+>  /*
+>   * WARNING!!
+> @@ -451,6 +452,14 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+>  #endif
+>  
+>  	debug_putstr("\nDecompressing Linux... ");
+> +
+> +#ifdef CONFIG_UNACCEPTED_MEMORY
+
+IS_ENABLED() perhaps?
+
+> +	if (boot_params->unaccepted_memory) {
+
+Also, that ->unaccepted_memory will be set only when
+ACONFIG_UNACCEPTED_MEMORY is set, FAICT.
 
 -- 
- Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
