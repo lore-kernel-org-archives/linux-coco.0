@@ -1,44 +1,44 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B627F
-	for <linux-coco@lists.linux.dev>; Fri,  6 May 2022 16:12:15 +0000 (UTC)
-Received: by mail-lj1-f177.google.com with SMTP id 4so9808030ljw.11
-        for <linux-coco@lists.linux.dev>; Fri, 06 May 2022 09:12:15 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993B2620
+	for <linux-coco@lists.linux.dev>; Fri,  6 May 2022 20:42:40 +0000 (UTC)
+Received: by mail-lj1-f178.google.com with SMTP id g16so10590041lja.3
+        for <linux-coco@lists.linux.dev>; Fri, 06 May 2022 13:42:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20210112.gappssmtp.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=3LVCF+EC61p3SRHqy5+HBfYg8g8sBVA6E2RSjLMm3ic=;
-        b=71gELqa8e3JZdAR40f88qYRAendRWwJy32RDkq6jbbgAR1oFpqUnUAh7JDtx9eVM4b
-         hXnwylvyfzfwO1l5pR5a8tj6McjLg1BgMlPCXYajEuS9KSDUdhDD4IEadqjiXDqkc5MN
-         jgRnaEFuE4vFyEl8fmIM9iQXW9RSsk/YvT+UGEyx56ucVrRD6B9KQ/k3MQeUHryYIjuD
-         6HSmA9SD2cmqfM/Rtv+U/n0Ew972cSEgHdE7tNtlrRWpD4u3DVdtKECy53If23SgbnzR
-         xej7+9vB9kXXhnte6xgRsD1WPNIKMmy+MI5P0vF2w3FABpNop43zQpwmMAvrts8IUo6u
-         Ay6Q==
+        bh=WtV9FrLQYyZtXe46LaQb9LPuwmtg8D3WYzq8Ywi2Rkc=;
+        b=N4Sy3cr417X7gTyi/jzF4jbOx1PdALBB1qmNLFKVM655vPRoBDb/dDru9J6w4iCmSt
+         e5yzvKDqlVR0Kh/trkPl8sV7cNAAO7Kfd+CaddS4/N7LGANiX0FfytiCxquqreuy2IXe
+         Hf63lAEMZtEntPmPSim7HL/SQH7O4Wf0jpRM/a++KmYKrwsWiuKMcc9BPDRxIIow6PK1
+         aIOnk9acK4ruSjRVwxXOncEu2UFzk7LCzbpGjxBa2GKJxXw4hxHLVOufLQKM9WgYBBYx
+         unkUb0o6uRuGNNMTEfYH/nsxdqagfyA1AKjVLqTdt2mNZ8CaMjVrQS2CP18doR+kGA5F
+         /ziA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=3LVCF+EC61p3SRHqy5+HBfYg8g8sBVA6E2RSjLMm3ic=;
-        b=VN5is8Q3kN8jBk/q8F3HBtNlfuqIoxsKrbVLW/sOVOW5FvXxRfneVRsx2ppARoA12k
-         9DBmKjn+qFsiCcvvSGuWCBiUX4GWPz03St1zudJuzbK3KN6aNVB7g+i1l/fgFK/wrFHt
-         +r91z08AAi3IX/cP6x5SM1cYwUkWxstT8/1EMDYTs7xhsnP36VLPPH1kF/6MqOE3pRdd
-         Ql/5fEoaq9xhK5VJrvlFhkwJaEQRPFdKpwWAgV9knTENzrIlMaagnxTPNDZz26st6rhw
-         2gAVdyU8fklGJbicsHavQ03n9cEY75Octx/YtpLxgDMgBsgiVFzz4Zu30nZ2JHovIwBG
-         /0fw==
-X-Gm-Message-State: AOAM531wPvqsrRCPZikNGcY6pUHwHXescvpWr767TJOevikx/wcAsgQh
-	yQpuosnENtCRV7jtMam6svA+8Q==
-X-Google-Smtp-Source: ABdhPJxcoFt3N3AtHGRW62qNedg2H/hvHQ56BxLep0ct05gnPOlLMPFLw3EGV7t5IJpESnjqgxaHQQ==
-X-Received: by 2002:a2e:b6c6:0:b0:24f:3919:5923 with SMTP id m6-20020a2eb6c6000000b0024f39195923mr2365023ljo.398.1651853533664;
-        Fri, 06 May 2022 09:12:13 -0700 (PDT)
+        bh=WtV9FrLQYyZtXe46LaQb9LPuwmtg8D3WYzq8Ywi2Rkc=;
+        b=uQyonm8TKXtTRDy+8dvrCCMQQuN8gY26/+bx3A+8Lqj/OXfc5DOglknZmiV2OHVhbr
+         Ajzpp2Ww59Eva0BxKP5yH8Leuw0q7G3WeLgrGSFuVZpygztj4RYOa8pV+xmjv0d8CG+q
+         KRqMEYWnlVl3/uD8thJMrS5DcjXMkiIj2NAZDtRvz+k94dny0YA71quWyC+RygZjGBIf
+         1nT2yFc2Iwq1wTqw3dwJU9z1Km6ExBNxOehTSJdfoAxoKIHJ5U9cknRAh+aZT8ggOYZi
+         hDSnLXpFhwBU9K6hNrFLw0hgosdW9dNVmBZpAWr4U1eWhl7aBwmnvN1LfyTJaWg7bOz9
+         2QCA==
+X-Gm-Message-State: AOAM532efb6W4K2Ntj1+iwh3wxWXZo0fgwNcjAnp2mjCCv7NBNMxMOib
+	Tw8iju3XwGuYzLoffN1nu2fu/g==
+X-Google-Smtp-Source: ABdhPJxm6aGfrziXHLhrP7hFj3fqkgrHGeEILn849GvvYrO0IDonOm3YYXUizUV/au4Ng8QSFyCIvg==
+X-Received: by 2002:a05:651c:510:b0:24f:545c:9362 with SMTP id o16-20020a05651c051000b0024f545c9362mr3062343ljp.263.1651869758424;
+        Fri, 06 May 2022 13:42:38 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id v17-20020a2e9611000000b0024f3d1daed9sm680999ljh.97.2022.05.06.09.12.12
+        by smtp.gmail.com with ESMTPSA id k15-20020a2e920f000000b002502e691b05sm743637ljg.136.2022.05.06.13.42.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 May 2022 09:12:13 -0700 (PDT)
+        Fri, 06 May 2022 13:42:37 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 27825104AFD; Fri,  6 May 2022 19:13:59 +0300 (+03)
-Date: Fri, 6 May 2022 19:13:59 +0300
+	id 07B9C104AFD; Fri,  6 May 2022 23:44:24 +0300 (+03)
+Date: Fri, 6 May 2022 23:44:23 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Borislav Petkov <bp@alien8.de>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -62,11 +62,11 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 08/12] x86/mm: Provide helpers for unaccepted memory
-Message-ID: <20220506161359.4j5j5fxrw53fdbyr@box.shutemov.name>
+Subject: Re: [PATCHv5 10/12] x86/tdx: Unaccepted memory support
+Message-ID: <20220506204423.gu6jrb53kmuxze5r@box.shutemov.name>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-9-kirill.shutemov@linux.intel.com>
- <YnJfhiiHn+48H2vb@zn.tnic>
+ <20220425033934.68551-11-kirill.shutemov@linux.intel.com>
+ <YnOjJB8h3ZUR9sLX@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,48 +75,369 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YnJfhiiHn+48H2vb@zn.tnic>
+In-Reply-To: <YnOjJB8h3ZUR9sLX@zn.tnic>
 
-On Wed, May 04, 2022 at 01:12:06PM +0200, Borislav Petkov wrote:
-> On Mon, Apr 25, 2022 at 06:39:30AM +0300, Kirill A. Shutemov wrote:
-> > +	unaccepted_memory = __va(boot_params.unaccepted_memory);
-> > +	range_start = start / PMD_SIZE;
-> > +
-> > +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-> > +	for_each_set_bitrange_from(range_start, range_end, unaccepted_memory,
-> > +				   DIV_ROUND_UP(end, PMD_SIZE)) {
-> > +		unsigned long len = range_end - range_start;
-> > +
-> > +		/* Platform-specific memory-acceptance call goes here */
-> > +		panic("Cannot accept memory");
+On Thu, May 05, 2022 at 12:12:52PM +0200, Borislav Petkov wrote:
+> On Mon, Apr 25, 2022 at 06:39:32AM +0300, Kirill A. Shutemov wrote:
+> > Subject: [PATCHv5 10/12] x86/tdx: Unaccepted memory support
 > 
-> Yeah, no, WARN_ON_ONCE() pls.
+> Patch subject needs a verb:
+> 
+> "Add ... "
+> 
+> > All preparations are complete.
+> 
+> Drop this sentence.
+> 
+> > Hookup TDX-specific code to accept memory.
+> > 
+> > Accepting the memory is the same process as converting memory from
+> > shared to private: kernel notifies VMM with MAP_GPA hypercall and then
+> > accept pages with ACCEPT_PAGE module call.
+> > 
+> > The implementation in core kernel uses tdx_enc_status_changed(). It
+> > already used for converting memory to shared and back for I/O
+> > transactions.
+> > 
+> > Boot stub provides own implementation of tdx_accept_memory(). It is
+> > similar in structure to tdx_enc_status_changed(), but only cares about
+> > converting memory to private.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  arch/x86/Kconfig                  |  1 +
+> >  arch/x86/boot/compressed/mem.c    | 24 ++++++++-
+> >  arch/x86/boot/compressed/tdx.c    | 85 +++++++++++++++++++++++++++++++
+> >  arch/x86/coco/tdx/tdx.c           | 31 +++++++----
+> >  arch/x86/include/asm/shared/tdx.h |  2 +
+> >  arch/x86/mm/unaccepted_memory.c   |  9 +++-
+> >  6 files changed, 141 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > index 7021ec725dd3..e4c31dbea6d7 100644
+> > --- a/arch/x86/Kconfig
+> > +++ b/arch/x86/Kconfig
+> > @@ -885,6 +885,7 @@ config INTEL_TDX_GUEST
+> >  	select ARCH_HAS_CC_PLATFORM
+> >  	select X86_MEM_ENCRYPT
+> >  	select X86_MCE
+> > +	select UNACCEPTED_MEMORY
+> 
+> WARNING: unmet direct dependencies detected for UNACCEPTED_MEMORY
+>   Depends on [n]: EFI [=y] && EFI_STUB [=y] && !KEXEC_CORE [=y]
+>   Selected by [y]:
+>   - INTEL_TDX_GUEST [=y] && HYPERVISOR_GUEST [=y] && X86_64 [=y] && CPU_SUP_INTEL [=y] && X86_X2APIC [=y]
+> 
+> WARNING: unmet direct dependencies detected for UNACCEPTED_MEMORY
+>   Depends on [n]: EFI [=y] && EFI_STUB [=y] && !KEXEC_CORE [=y]
+>   Selected by [y]:
+>   - INTEL_TDX_GUEST [=y] && HYPERVISOR_GUEST [=y] && X86_64 [=y] && CPU_SUP_INTEL [=y] && X86_X2APIC [=y]
 
-Failure to accept the memory is fatal. Why pretend it is not?
+Ughh. Any ideas how to get around it? (Except for implementing kexec
+support right away?)
+> 
+> 
+> > diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+> > index b5058c975d26..539fff27de49 100644
+> > --- a/arch/x86/boot/compressed/mem.c
+> > +++ b/arch/x86/boot/compressed/mem.c
+> > @@ -5,6 +5,8 @@
+> >  #include "error.h"
+> >  #include "find.h"
+> >  #include "math.h"
+> > +#include "tdx.h"
+> > +#include <asm/shared/tdx.h>
+> >  
+> >  #define PMD_SHIFT	21
+> >  #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
+> > @@ -12,10 +14,30 @@
+> >  
+> >  extern struct boot_params *boot_params;
+> >  
+> > +static bool is_tdx_guest(void)
+> 
+> There is arch/x86/boot/compressed/tdx.c which already looks at that leaf
+> and detects crap. Why is that hastily slapped here too?
 
-For TDX it will result in a crash on the first access. Prolonging the
-suffering just make it harder to understand what happened.
+I'm not happhy with this too.
 
-> > +	unsigned long flags;
-> > +	bool ret = false;
+process_unaccepted_memory() called form EFI stub that called before
+decompression code.
+
+I'm not sure how to structure code that it makes sense.
+
+Call early_tdx_detect() from efi_main() in libstub/x86-stub.c?
+It would require to include tdx.h from decompression code there which is
+non-sense.
+
+I would appreciate an idea.
+
+> > +{
+> > +	static bool once;
+> > +	static bool is_tdx;
 > > +
-> > +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> > +	if (!once) {
+> > +		u32 eax, sig[3];
+> > +
+> > +		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
+> > +			    &sig[0], &sig[2],  &sig[1]);
+> > +		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
+> > +		once = true;
+> > +	}
+> > +
+> > +	return is_tdx;
+> > +}
+> > +
+> >  static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
+> >  {
+> >  	/* Platform-specific memory-acceptance call goes here */
+> > -	error("Cannot accept memory");
+> > +	if (is_tdx_guest())
+> > +		tdx_accept_memory(start, end);
+> > +	else
+> > +		error("Cannot accept memory");
+> 
+> What is that supposed to catch?
+
+Booting on a platform that uses unaccepted memory, but kernel doesn't not
+support it.
+
+> > diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+> > index 918a7606f53c..57fd2bf28484 100644
+> > --- a/arch/x86/boot/compressed/tdx.c
+> > +++ b/arch/x86/boot/compressed/tdx.c
+> > @@ -3,12 +3,14 @@
+> >  #include "../cpuflags.h"
+> >  #include "../string.h"
+> >  #include "../io.h"
+> > +#include "align.h"
+> >  #include "error.h"
+> >  
+> >  #include <vdso/limits.h>
+> >  #include <uapi/asm/vmx.h>
+> >  
+> >  #include <asm/shared/tdx.h>
+> > +#include <asm/page_types.h>
+> >  
+> >  /* Called from __tdx_hypercall() for unrecoverable failure */
+> >  void __tdx_hypercall_failed(void)
+> > @@ -75,3 +77,86 @@ void early_tdx_detect(void)
+> >  	pio_ops.f_outb = tdx_outb;
+> >  	pio_ops.f_outw = tdx_outw;
+> >  }
+> > +
+> > +enum pg_level {
+> > +	PG_LEVEL_4K,
+> > +	PG_LEVEL_2M,
+> > +	PG_LEVEL_1G,
+> > +};
+> > +
+> > +#define PTE_SHIFT 9
+> 
+> At least stick those in a header.
+> 
+> > +static bool try_accept_one(phys_addr_t *start, unsigned long len,
+> > +			  enum pg_level pg_level)
+> 
+> No need to break that line.
+> 
+> Also, it doesn't need to be bool - you can simply return accept_size on
+> success and 0 on error so that you don't have an I/O argument.
+
+So on the calling side it would look like:
+
+	accepted = try_accept_one(start, len, PG_LEVEL_1G)
+	if (accepted) {
+		start += accepted;
+		continue;
+	}
+
+And the similar for other levels. Is it really better?
+
+> 
+> Ditto for the copy in coco/tdx/tdx.c
+> 
+> > +{
+> > +	unsigned long accept_size = PAGE_SIZE << (pg_level * PTE_SHIFT);
+> > +	u64 tdcall_rcx;
+> > +	u8 page_size;
+> > +
+> > +	if (!IS_ALIGNED(*start, accept_size))
+> > +		return false;
+> > +
+> > +	if (len < accept_size)
+> > +		return false;
+> > +
+> > +	/*
+> > +	 * Pass the page physical address to the TDX module to accept the
+> > +	 * pending, private page.
+> > +	 *
+> > +	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
+> > +	 */
+> > +	switch (pg_level) {
+> > +	case PG_LEVEL_4K:
+> > +		page_size = 0;
+> > +		break;
+> > +	case PG_LEVEL_2M:
+> > +		page_size = 1;
+> > +		break;
+> > +	case PG_LEVEL_1G:
+> > +		page_size = 2;
+> > +		break;
+> > +	default:
+> > +		return false;
+> > +	}
+> > +
+> > +	tdcall_rcx = *start | page_size;
+> > +	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
+> > +		return false;
+> > +
+> > +	*start += accept_size;
+> > +	return true;
+> > +}
+> > +
+> > +void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
+> > +{
+> > +	/*
+> > +	 * Notify the VMM about page mapping conversion. More info about ABI
+> > +	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
+> > +	 * section "TDG.VP.VMCALL<MapGPA>"
+> > +	 */
+> > +	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
+> > +		error("Accepting memory failed\n");
+> > +	/*
+> > +	 * For shared->private conversion, accept the page using
+> > +	 * TDX_ACCEPT_PAGE TDX module call.
+> > +	 */
 > > +	while (start < end) {
-> > +		if (test_bit(start / PMD_SIZE, unaccepted_memory)) {
-> > +			ret = true;
+> > +		unsigned long len = end - start;
+> > +
+> > +		/*
+> > +		 * Try larger accepts first. It gives chance to VMM to keep
+> > +		 * 1G/2M SEPT entries where possible and speeds up process by
 > 
-> Wait, what?
+> "SEPT"?
+
+Secure EPT. EPT for private memory in TDX.
+
+> > +		 * cutting number of hypercalls (if successful).
+> > +		 */
+> > +
+> > +		if (try_accept_one(&start, len, PG_LEVEL_1G))
+> > +			continue;
+> > +
+> > +		if (try_accept_one(&start, len, PG_LEVEL_2M))
+> > +			continue;
+> > +
+> > +		if (!try_accept_one(&start, len, PG_LEVEL_4K))
+> > +			error("Accepting memory failed\n");
+> > +	}
+> > +}
+> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> > index ddb60a87b426..ab4deb897942 100644
+> > --- a/arch/x86/coco/tdx/tdx.c
+> > +++ b/arch/x86/coco/tdx/tdx.c
+> > @@ -580,16 +580,9 @@ static bool try_accept_one(phys_addr_t *start, unsigned long len,
+> >  	return true;
+> >  }
+> >  
+> > -/*
+> > - * Inform the VMM of the guest's intent for this physical page: shared with
+> > - * the VMM or private to the guest.  The VMM is expected to change its mapping
+> > - * of the page in response.
+> > - */
+> > -static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+> > +static bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end,
 > 
-> That thing is lying: it'll return true for *some* PMD which is accepted
-> but not the whole range of [start, end].
+> Why? is tdx_enc_status_changed_virt() coming too?
 
-That's true. Note also that the check is inherently racy. Other CPU can
-get the range or subrange accepted just after spin_unlock().
+tdx_enc_status_changed() deals with virtual addresses.
 
-The check indicates that accept_memory() has to be called on the range
-before first access.
+> > +					bool enc)
+> >  {
+> > -	phys_addr_t start = __pa(vaddr);
+> > -	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
+> > -
+> >  	if (!enc) {
+> >  		/* Set the shared (decrypted) bits: */
+> >  		start |= cc_mkdec(0);
+> > @@ -634,6 +627,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+> >  	return true;
+> >  }
+> >  
+> > +void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
+> > +{
+> > +	if (!tdx_enc_status_changed_phys(start, end, true))
+> > +		panic("Accepting memory failed\n");
+> > +}
+> > +
+> > +/*
+> > + * Inform the VMM of the guest's intent for this physical page: shared with
+> > + * the VMM or private to the guest.  The VMM is expected to change its mapping
+> > + * of the page in response.
+> > + */
+> > +static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+> > +{
+> > +	phys_addr_t start = __pa(vaddr);
+> > +	phys_addr_t end = __pa(vaddr + numpages * PAGE_SIZE);
+> > +
+> > +	return tdx_enc_status_changed_phys(start, end, enc);
+> > +}
+> > +
+> >  void __init tdx_early_init(void)
+> >  {
+> >  	u64 cc_mask;
+> > @@ -645,6 +657,7 @@ void __init tdx_early_init(void)
+> >  		return;
+> >  
+> >  	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
+> > +	setup_clear_cpu_cap(X86_FEATURE_MCE);
+> 
+> What, no comment? Why does TDX need to disable MCE?
 
-Do you have problem with a name? Maybe has_unaccepted_memory()?
+It doesn't not suppose to be here. Sorry.
+
+> 
+> >  	cc_set_vendor(CC_VENDOR_INTEL);
+> >  	cc_mask = get_cc_mask();
+> > diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+> > index 956ced04c3be..97534c334473 100644
+> > --- a/arch/x86/include/asm/shared/tdx.h
+> > +++ b/arch/x86/include/asm/shared/tdx.h
+> > @@ -81,5 +81,7 @@ struct tdx_module_output {
+> >  u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
+> >  		      struct tdx_module_output *out);
+> >  
+> > +void tdx_accept_memory(phys_addr_t start, phys_addr_t end);
+> > +
+> >  #endif /* !__ASSEMBLY__ */
+> >  #endif /* _ASM_X86_SHARED_TDX_H */
+> > diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+> > index 1327f64d5205..de0790af1824 100644
+> > --- a/arch/x86/mm/unaccepted_memory.c
+> > +++ b/arch/x86/mm/unaccepted_memory.c
+> > @@ -6,6 +6,7 @@
+> >  
+> >  #include <asm/io.h>
+> >  #include <asm/setup.h>
+> > +#include <asm/shared/tdx.h>
+> >  #include <asm/unaccepted_memory.h>
+> >  
+> >  /* Protects unaccepted memory bitmap */
+> > @@ -29,7 +30,13 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+> >  		unsigned long len = range_end - range_start;
+> >  
+> >  		/* Platform-specific memory-acceptance call goes here */
+> > -		panic("Cannot accept memory");
+> > +		if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+> > +			tdx_accept_memory(range_start * PMD_SIZE,
+> > +					  range_end * PMD_SIZE);
+> > +		} else {
+> > +			panic("Cannot accept memory");
+> 
+> Why panic here? A WARN_ONCE() should suffice, methinks.
+
+As I said before, memory accept failure is fatal.
 
 -- 
  Kirill A. Shutemov
