@@ -1,44 +1,44 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0287F
-	for <linux-coco@lists.linux.dev>; Fri,  6 May 2022 15:28:30 +0000 (UTC)
-Received: by mail-lf1-f43.google.com with SMTP id i10so13149271lfg.13
-        for <linux-coco@lists.linux.dev>; Fri, 06 May 2022 08:28:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B627F
+	for <linux-coco@lists.linux.dev>; Fri,  6 May 2022 16:12:15 +0000 (UTC)
+Received: by mail-lj1-f177.google.com with SMTP id 4so9808030ljw.11
+        for <linux-coco@lists.linux.dev>; Fri, 06 May 2022 09:12:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20210112.gappssmtp.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=Zft6jLRsO2R4fi/u6eN2DfU9nqCVAT62ZsK14nFpt1E=;
-        b=XDOiXFe386wjEOozpamYgEKo6bjtMbmjBf6MAneBln9fKLJlP6D2htacG8pzD1PGag
-         BDq35Fa8Jpg8S9B46om+RPRvalMJRvhTP12mCthVw04+GIgsTZZ7yVjRl0C2uaZpdQHC
-         8OpoKg0LwaxmGb/ePwtsDwYTb3jaSpG+mwpzDih1r/KU1JVhv8MR88J3nqjoxUySV0OI
-         5N4XU13sXdHYAnCl7C6y700kjlTOas6pb2SdDml26o3R7qJD6Z+elI87woyqaQY5fKXw
-         jj2vMHlsbxuxthwiM0wNModQBoVRqRPRT7CB8psqAq0/tw5mU99TYQsucmHQg68j/agn
-         GQaw==
+        bh=3LVCF+EC61p3SRHqy5+HBfYg8g8sBVA6E2RSjLMm3ic=;
+        b=71gELqa8e3JZdAR40f88qYRAendRWwJy32RDkq6jbbgAR1oFpqUnUAh7JDtx9eVM4b
+         hXnwylvyfzfwO1l5pR5a8tj6McjLg1BgMlPCXYajEuS9KSDUdhDD4IEadqjiXDqkc5MN
+         jgRnaEFuE4vFyEl8fmIM9iQXW9RSsk/YvT+UGEyx56ucVrRD6B9KQ/k3MQeUHryYIjuD
+         6HSmA9SD2cmqfM/Rtv+U/n0Ew972cSEgHdE7tNtlrRWpD4u3DVdtKECy53If23SgbnzR
+         xej7+9vB9kXXhnte6xgRsD1WPNIKMmy+MI5P0vF2w3FABpNop43zQpwmMAvrts8IUo6u
+         Ay6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=Zft6jLRsO2R4fi/u6eN2DfU9nqCVAT62ZsK14nFpt1E=;
-        b=hNf798MgoBgBskFTwIWhTlgHNEB0+C8kerkc7+3Kl6/rM9cbY38qm2At8OLFY8ScgI
-         7YI8YOi3acNrOTtFpUO1heaJ1t0r+lAeAA9Z0Va6M6dKnalHfwgkyKPzWNOkIYKZtZQi
-         rwi8QMqX5/TzXIIrz4KL0ci2xZG3JlOtAO52+F/LlKtE+/BRWlHwsNnaUUQWLLVbAL1g
-         JkBM3siYKG5/H1fgPfJhdp+8qN5H85pDKsa2Vwdf2sqA2co2szY1XrfREmcE7fqAHrGR
-         +fEG/0HBGgSw/hJVbsIn5Feg8oDpMP0vcL2HHkFu/2SOR0Y+K8I38QXOG6tLAlv+CKb2
-         n1yA==
-X-Gm-Message-State: AOAM533neCiFKMtVSVzutjIIbK3I2+kJfKapa0seCvHaHys6ijqz6tnN
-	/dZpCQ52+O6wxph6y66SkuNciQ==
-X-Google-Smtp-Source: ABdhPJzSks1evkqP1ANajMwXUMiRnp5YNHTtlO8WobyEatT1ULtkq78uH626+6mTFAvCVPK3HC3lUw==
-X-Received: by 2002:a05:6512:12c9:b0:473:c4c1:5558 with SMTP id p9-20020a05651212c900b00473c4c15558mr2929618lfg.75.1651850908074;
-        Fri, 06 May 2022 08:28:28 -0700 (PDT)
+        bh=3LVCF+EC61p3SRHqy5+HBfYg8g8sBVA6E2RSjLMm3ic=;
+        b=VN5is8Q3kN8jBk/q8F3HBtNlfuqIoxsKrbVLW/sOVOW5FvXxRfneVRsx2ppARoA12k
+         9DBmKjn+qFsiCcvvSGuWCBiUX4GWPz03St1zudJuzbK3KN6aNVB7g+i1l/fgFK/wrFHt
+         +r91z08AAi3IX/cP6x5SM1cYwUkWxstT8/1EMDYTs7xhsnP36VLPPH1kF/6MqOE3pRdd
+         Ql/5fEoaq9xhK5VJrvlFhkwJaEQRPFdKpwWAgV9knTENzrIlMaagnxTPNDZz26st6rhw
+         2gAVdyU8fklGJbicsHavQ03n9cEY75Octx/YtpLxgDMgBsgiVFzz4Zu30nZ2JHovIwBG
+         /0fw==
+X-Gm-Message-State: AOAM531wPvqsrRCPZikNGcY6pUHwHXescvpWr767TJOevikx/wcAsgQh
+	yQpuosnENtCRV7jtMam6svA+8Q==
+X-Google-Smtp-Source: ABdhPJxcoFt3N3AtHGRW62qNedg2H/hvHQ56BxLep0ct05gnPOlLMPFLw3EGV7t5IJpESnjqgxaHQQ==
+X-Received: by 2002:a2e:b6c6:0:b0:24f:3919:5923 with SMTP id m6-20020a2eb6c6000000b0024f39195923mr2365023ljo.398.1651853533664;
+        Fri, 06 May 2022 09:12:13 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id o11-20020ac2494b000000b0047255d2118dsm721772lfi.188.2022.05.06.08.28.27
+        by smtp.gmail.com with ESMTPSA id v17-20020a2e9611000000b0024f3d1daed9sm680999ljh.97.2022.05.06.09.12.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 May 2022 08:28:27 -0700 (PDT)
+        Fri, 06 May 2022 09:12:13 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 8AB91104AFD; Fri,  6 May 2022 18:30:13 +0300 (+03)
-Date: Fri, 6 May 2022 18:30:13 +0300
+	id 27825104AFD; Fri,  6 May 2022 19:13:59 +0300 (+03)
+Date: Fri, 6 May 2022 19:13:59 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Borislav Petkov <bp@alien8.de>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -62,11 +62,11 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 06/12] x86/boot/compressed: Handle unaccepted memory
-Message-ID: <20220506153013.e6v4q2qhuhqumfiu@box.shutemov.name>
+Subject: Re: [PATCHv5 08/12] x86/mm: Provide helpers for unaccepted memory
+Message-ID: <20220506161359.4j5j5fxrw53fdbyr@box.shutemov.name>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-7-kirill.shutemov@linux.intel.com>
- <YnE4ZzzVrxUnr3Uv@zn.tnic>
+ <20220425033934.68551-9-kirill.shutemov@linux.intel.com>
+ <YnJfhiiHn+48H2vb@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,47 +75,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YnE4ZzzVrxUnr3Uv@zn.tnic>
+In-Reply-To: <YnJfhiiHn+48H2vb@zn.tnic>
 
-On Tue, May 03, 2022 at 04:12:55PM +0200, Borislav Petkov wrote:
-> On Mon, Apr 25, 2022 at 06:39:28AM +0300, Kirill A. Shutemov wrote:
-> > diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-> > index 411b268bc0a2..59db90626042 100644
-> > --- a/arch/x86/boot/compressed/kaslr.c
-> > +++ b/arch/x86/boot/compressed/kaslr.c
-> > @@ -725,10 +725,20 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
-> >  		 * but in practice there's firmware where using that memory leads
-> >  		 * to crashes.
-> >  		 *
-> > -		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
-> > +		 * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if
-> > +		 * supported) are guaranteed to be free.
-> >  		 */
-> > -		if (md->type != EFI_CONVENTIONAL_MEMORY)
+On Wed, May 04, 2022 at 01:12:06PM +0200, Borislav Petkov wrote:
+> On Mon, Apr 25, 2022 at 06:39:30AM +0300, Kirill A. Shutemov wrote:
+> > +	unaccepted_memory = __va(boot_params.unaccepted_memory);
+> > +	range_start = start / PMD_SIZE;
 > > +
-> > +		switch (md->type) {
-> > +		case EFI_CONVENTIONAL_MEMORY:
-> > +			break;
-> > +		case EFI_UNACCEPTED_MEMORY:
-> > +			if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY))
-> > +				break;
-> >  			continue;
-> > +		default:
-> > +			continue;
-> > +		}
+> > +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> > +	for_each_set_bitrange_from(range_start, range_end, unaccepted_memory,
+> > +				   DIV_ROUND_UP(end, PMD_SIZE)) {
+> > +		unsigned long len = range_end - range_start;
+> > +
+> > +		/* Platform-specific memory-acceptance call goes here */
+> > +		panic("Cannot accept memory");
 > 
-> Is there any special reason for this to be a switch-case or can it
-> simply be a compound conditional if (bla...) ?
+> Yeah, no, WARN_ON_ONCE() pls.
 
-The equivalent 'if' statement is something like:
+Failure to accept the memory is fatal. Why pretend it is not?
 
-		if (md->type != EFI_CONVENTIONAL_MEMORY &&
-		    !(md->type == EFI_UNACCEPTED_MEMORY && IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)))
-		    continue;
+For TDX it will result in a crash on the first access. Prolonging the
+suffering just make it harder to understand what happened.
 
-I find it harder to follow.
+> > +	unsigned long flags;
+> > +	bool ret = false;
+> > +
+> > +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> > +	while (start < end) {
+> > +		if (test_bit(start / PMD_SIZE, unaccepted_memory)) {
+> > +			ret = true;
+> 
+> Wait, what?
+> 
+> That thing is lying: it'll return true for *some* PMD which is accepted
+> but not the whole range of [start, end].
 
-Do you want me to change to the 'if' anyway?
+That's true. Note also that the check is inherently racy. Other CPU can
+get the range or subrange accepted just after spin_unlock().
+
+The check indicates that accept_memory() has to be called on the range
+before first access.
+
+Do you have problem with a name? Maybe has_unaccepted_memory()?
 
 -- 
  Kirill A. Shutemov
