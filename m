@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFA917C4
-	for <linux-coco@lists.linux.dev>; Wed, 11 May 2022 09:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390A317C4
+	for <linux-coco@lists.linux.dev>; Wed, 11 May 2022 09:13:07 +0000 (UTC)
 Received: from zn.tnic (p5de8eeb4.dip0.t-ipconnect.de [93.232.238.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 34D2C1EC053F;
-	Wed, 11 May 2022 11:07:05 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 408B51EC053F;
+	Wed, 11 May 2022 11:13:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1652260025;
+	t=1652260381;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=L16i6BF0FXuXjMhQ9rYFWCKSc1fETQHwnQIemH2KAqE=;
-	b=rAaK1zqfEck/5icveUj2Kh7QRdsXXRN8aV1/Cia8BRr8YqrY4hzYFaUyQX7oM6KII2VXom
-	1fD0b5W1NSwWtaxJyhh76lABcEHPDCic2ga6FZ+pEK/6wQ7TTKNMBvYZBvI457v8gj4CGI
-	Ey6/R6Af0dbOKhS8N/wYlrD1OGi55uI=
-Date: Wed, 11 May 2022 11:07:08 +0200
+	bh=Rl96LlwUayMVLB9Ox0K7EFk+HS7SAZNt7K1olPYN8Qo=;
+	b=Duquyg3rKjp+y7ODQUAjIdw8MyLoXi0PtGqN9Uvp4Q6iFjDWDtrtKTTdeGNAvniLJ9Yglw
+	25CwXIBrlMwP35/M1L3iIu0onVeccf45hNzVh0tgHL+95xHX3ecuBTMkr6TQyNcv+z2bui
+	rRAljZNtex98qUrJvHyAQ1/s7zMfbAk=
+Date: Wed, 11 May 2022 11:13:08 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill@shutemov.name>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -41,14 +41,13 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	David Hildenbrand <david@redhat.com>, x86@kernel.org,
 	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 08/12] x86/mm: Provide helpers for unaccepted memory
-Message-ID: <Ynt8vDY78/YeXO99@zn.tnic>
+Subject: Re: [PATCHv5 10/12] x86/tdx: Unaccepted memory support
+Message-ID: <Ynt+JCu9TP0FetUg@zn.tnic>
 References: <20220425033934.68551-1-kirill.shutemov@linux.intel.com>
- <20220425033934.68551-9-kirill.shutemov@linux.intel.com>
- <YnJfhiiHn+48H2vb@zn.tnic>
- <20220506161359.4j5j5fxrw53fdbyr@box.shutemov.name>
- <Ynqvtyjp77ywiI6f@zn.tnic>
- <20220511011535.or73rm6oviwa5niy@box.shutemov.name>
+ <20220425033934.68551-11-kirill.shutemov@linux.intel.com>
+ <YnOjJB8h3ZUR9sLX@zn.tnic>
+ <20220506204423.gu6jrb53kmuxze5r@box.shutemov.name>
+ <20220511011906.el4m54fns7ilh7fr@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,42 +56,26 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220511011535.or73rm6oviwa5niy@box.shutemov.name>
+In-Reply-To: <20220511011906.el4m54fns7ilh7fr@box.shutemov.name>
 
-On Wed, May 11, 2022 at 04:15:35AM +0300, Kirill A. Shutemov wrote:
-> Okay. Fair enough. I will change it to
+On Wed, May 11, 2022 at 04:19:06AM +0300, Kirill A. Shutemov wrote:
+> JFYI, I've reworked it as
 > 
-> 			panic("Cannot accept memory: unknown platform.");
+> 		accepted = try_accept_one(start, len, PG_LEVEL_1G);
+> 		if (!accepted)
+> 			accepted = try_accept_one(start, len, PG_LEVEL_2M);
+> 		if (!accepted)
+> 			accepted = try_accept_one(start, len, PG_LEVEL_4K);
+> 		if (!accepted)
+> 			return false;
+> 		start += accepted;
 
-So I haven't went all the way in the patchset but what I see is:
+s/accepted/accpt_size/
 
-                /* Platform-specific memory-acceptance call goes here */
-                if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-                        tdx_accept_memory(range_start * PMD_SIZE,
-                                          range_end * PMD_SIZE);
-                } else {
-                        panic("Cannot accept memory");
-                }
+and then it is perfectly clear what that variable contains.
 
-so how would you decide for some other platform that it should panic?
-
-TDX should panic, that I get. But you can just as well WARN_ONCE() here
-so that it gets fixed. Panicking is counterproductive.
-
-> It checks if the range of memory requires accept_memory() call before it
-> can be accessed.
-> 
-> If any part of the range is not accepted, the call is required.
-> accept_memory() knows what exactly has to be done. Note that
-> accept_memory() call is harmless for any valid memory range.
-> It can be called on already accepted memory.
-
-Aaah, so that's what I was missing. So this function definitely needs a
-comment ontop of it. And a name change to something like
-
-	range_contains_unaccepted_memory()
-
-or so to actually state what it does.
+But it seems you're preparing a new version so I'll continue looking at
+there.
 
 -- 
 Regards/Gruss,
