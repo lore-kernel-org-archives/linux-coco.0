@@ -1,33 +1,33 @@
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B18184B
-	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EB1184B
+	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652801698; x=1684337698;
+  t=1652801700; x=1684337700;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=TuB9N0D83owE/U55Jex9lq/daP4SM+pgdQj2IofDJgc=;
-  b=O33gMu5VU7CTrLOX176y2jRb+5J034DqXcby/USjggnmBMrYcT4LYfYw
-   7v2cRTMJ4twE2691HWJeYfS5A0OJKt5wtK4EISZY9pNqURsPjdscQikR2
-   /lKazatoG3gkmmp2PlgyPyjbOnhI6yROEe2Z673q8S3Isau3TURH4ZUil
-   shG/j8+tJ+zOWpVK2bCoN9WTVRHlM0LNxZJyO6OSz0neZjY/wV6s1D2wQ
-   X2CHFWXQfQ6ZwxjUtQ1X7YIXL8txWuN8MEkqza/3ltzXMtq91DZajuoyt
-   k1GI6gyS+9rU1fHUlohvb/rrmETmYTBMl+AuhpSN9acy+UgYnEjl/6ipO
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="270041609"
+  bh=cjIhhBNmMg3rAyBhnGeB4/sD2KLKXglIHIAjstpNJxM=;
+  b=LmO8DQkVdmhFGrytY+aWvUeBQsCT0GMDAietMDIi7gjPGvcQs0Ach+pi
+   fPqHijr4nRYRzVjcIY34VXoOJFl1fExqzDdk0yFVXJCStQN8HN/kkFfV8
+   MEoY6+Bg7w3N30mVJAzJCXo5jqnySkvt/7LLKvZ/JtGlXEZ1w/g0gfwma
+   x5PFPM2OXwwP0twUXOV//uJLiDrIbcEhPlDbmVpzQiJPzYCytgTqSEbPt
+   c5hPlZIK37FjkVY8lcL6DjrT/s4G2znnZASqH7YBtgFKBKHoABOnDZhT1
+   1cNmQbfycup40p+KilAXkkIiAwQr+MJ5FzCFuWG6dWEqgGab4n1587C+Y
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="270041611"
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="270041609"
+   d="scan'208";a="270041611"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:34:57 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:34:58 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="700105195"
+   d="scan'208";a="700105197"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orsmga004.jf.intel.com with ESMTP; 17 May 2022 08:34:50 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 5A90A352; Tue, 17 May 2022 18:34:50 +0300 (EEST)
+	id 7028618B; Tue, 17 May 2022 18:34:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -58,11 +58,10 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCHv6 02/15] mm: Add support for unaccepted memory
-Date: Tue, 17 May 2022 18:34:31 +0300
-Message-Id: <20220517153444.11195-3-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 04/15] x86/boot: Add infrastructure required for unaccepted memory support
+Date: Tue, 17 May 2022 18:34:33 +0300
+Message-Id: <20220517153444.11195-5-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
 References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
@@ -74,342 +73,554 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-UEFI Specification version 2.9 introduces the concept of memory
-acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
-SEV-SNP, require memory to be accepted before it can be used by the
-guest. Accepting happens via a protocol specific to the Virtual Machine
-platform.
+Pull functionality from the main kernel headers and lib/ that is
+required for unaccepted memory support.
 
-There are several ways kernel can deal with unaccepted memory:
-
- 1. Accept all the memory during the boot. It is easy to implement and
-    it doesn't have runtime cost once the system is booted. The downside
-    is very long boot time.
-
-    Accept can be parallelized to multiple CPUs to keep it manageable
-    (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
-    memory bandwidth and does not scale beyond the point.
-
- 2. Accept a block of memory on the first use. It requires more
-    infrastructure and changes in page allocator to make it work, but
-    it provides good boot time.
-
-    On-demand memory accept means latency spikes every time kernel steps
-    onto a new memory block. The spikes will go away once workload data
-    set size gets stabilized or all memory gets accepted.
-
- 3. Accept all memory in background. Introduce a thread (or multiple)
-    that gets memory accepted proactively. It will minimize time the
-    system experience latency spikes on memory allocation while keeping
-    low boot time.
-
-    This approach cannot function on its own. It is an extension of #2:
-    background memory acceptance requires functional scheduler, but the
-    page allocator may need to tap into unaccepted memory before that.
-
-    The downside of the approach is that these threads also steal CPU
-    cycles and memory bandwidth from the user's workload and may hurt
-    user experience.
-
-Implement #2 for now. It is a reasonable default. Some workloads may
-want to use #1 or #3 and they can be implemented later based on user's
-demands.
-
-Support of unaccepted memory requires a few changes in core-mm code:
-
-  - memblock has to accept memory on allocation;
-
-  - page allocator has to accept memory on the first allocation of the
-    page;
-
-Memblock change is trivial.
-
-The page allocator is modified to accept pages on the first allocation.
-The new page type (encoded in the _mapcount) -- PageUnaccepted() -- is
-used to indicate that the page requires acceptance.
-
-Architecture has to provide two helpers if it wants to support
-unaccepted memory:
-
- - accept_memory() makes a range of physical addresses accepted.
-
- - memory_is_unaccepted() checks anything within the range of physical
-   addresses requires acceptance.
+This is preparatory patch. The users for the functionality will come in
+following patches.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
 ---
- include/linux/page-flags.h | 31 ++++++++++++++
- mm/internal.h              | 12 ++++++
- mm/memblock.c              |  9 ++++
- mm/page_alloc.c            | 87 +++++++++++++++++++++++++++++++++++++-
- 4 files changed, 137 insertions(+), 2 deletions(-)
+ arch/x86/boot/bitops.h                   | 40 ++++++++++++
+ arch/x86/boot/compressed/align.h         | 14 +++++
+ arch/x86/boot/compressed/bitmap.c        | 43 +++++++++++++
+ arch/x86/boot/compressed/bitmap.h        | 49 +++++++++++++++
+ arch/x86/boot/compressed/bits.h          | 36 +++++++++++
+ arch/x86/boot/compressed/compiler.h      |  9 +++
+ arch/x86/boot/compressed/find.c          | 54 ++++++++++++++++
+ arch/x86/boot/compressed/find.h          | 80 ++++++++++++++++++++++++
+ arch/x86/boot/compressed/math.h          | 37 +++++++++++
+ arch/x86/boot/compressed/minmax.h        | 61 ++++++++++++++++++
+ arch/x86/boot/compressed/pgtable_types.h | 25 ++++++++
+ 11 files changed, 448 insertions(+)
+ create mode 100644 arch/x86/boot/compressed/align.h
+ create mode 100644 arch/x86/boot/compressed/bitmap.c
+ create mode 100644 arch/x86/boot/compressed/bitmap.h
+ create mode 100644 arch/x86/boot/compressed/bits.h
+ create mode 100644 arch/x86/boot/compressed/compiler.h
+ create mode 100644 arch/x86/boot/compressed/find.c
+ create mode 100644 arch/x86/boot/compressed/find.h
+ create mode 100644 arch/x86/boot/compressed/math.h
+ create mode 100644 arch/x86/boot/compressed/minmax.h
+ create mode 100644 arch/x86/boot/compressed/pgtable_types.h
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 9d8eeaa67d05..7f21267366a9 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -928,6 +928,14 @@ static inline bool is_page_hwpoison(struct page *page)
- #define PG_offline	0x00000100
- #define PG_table	0x00000200
- #define PG_guard	0x00000400
-+#define PG_unaccepted	0x00000800
+diff --git a/arch/x86/boot/bitops.h b/arch/x86/boot/bitops.h
+index 02e1dea11d94..61eb820ee402 100644
+--- a/arch/x86/boot/bitops.h
++++ b/arch/x86/boot/bitops.h
+@@ -41,4 +41,44 @@ static inline void set_bit(int nr, void *addr)
+ 	asm("btsl %1,%0" : "+m" (*(u32 *)addr) : "Ir" (nr));
+ }
+ 
++static __always_inline void __set_bit(long nr, volatile unsigned long *addr)
++{
++	asm volatile(__ASM_SIZE(bts) " %1,%0" : : "m" (*(volatile long *) addr),
++		     "Ir" (nr) : "memory");
++}
 +
-+/*
-+ * Page types allowed at page_expected_state()
++static __always_inline void __clear_bit(long nr, volatile unsigned long *addr)
++{
++	asm volatile(__ASM_SIZE(btr) " %1,%0" : : "m" (*(volatile long *) addr),
++		     "Ir" (nr) : "memory");
++}
++
++/**
++ * __ffs - find first set bit in word
++ * @word: The word to search
 + *
-+ * PageUnaccepted() will get cleared in post_alloc_hook().
++ * Undefined if no bit exists, so code should check against 0 first.
 + */
-+#define PAGE_TYPES_EXPECTED	PG_unaccepted
- 
- #define PageType(page, flag)						\
- 	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
-@@ -953,6 +961,18 @@ static __always_inline void __ClearPage##uname(struct page *page)	\
- 	page->page_type |= PG_##lname;					\
- }
- 
-+#define PAGE_TYPE_OPS_FALSE(uname)					\
-+static __always_inline int Page##uname(struct page *page)		\
-+{									\
-+	return false;							\
-+}									\
-+static __always_inline void __SetPage##uname(struct page *page)		\
-+{									\
-+}									\
-+static __always_inline void __ClearPage##uname(struct page *page)	\
-+{									\
++static __always_inline unsigned long __ffs(unsigned long word)
++{
++	asm("rep; bsf %1,%0"
++		: "=r" (word)
++		: "rm" (word));
++	return word;
 +}
 +
- /*
-  * PageBuddy() indicates that the page is free and in the buddy system
-  * (see mm/page_alloc.c).
-@@ -983,6 +1003,17 @@ PAGE_TYPE_OPS(Buddy, buddy)
-  */
- PAGE_TYPE_OPS(Offline, offline)
- 
-+/*
-+ * PageUnaccepted() indicates that the page has to be "accepted" before it can
-+ * be read or written. The page allocator must call accept_page() before
-+ * touching the page or returning it to the caller.
++/**
++ * ffz - find first zero bit in word
++ * @word: The word to search
++ *
++ * Undefined if no zero exists, so code should check against ~0UL first.
 + */
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+PAGE_TYPE_OPS(Unaccepted, unaccepted)
++static __always_inline unsigned long ffz(unsigned long word)
++{
++	asm("rep; bsf %1,%0"
++		: "=r" (word)
++		: "r" (~word));
++	return word;
++}
++
+ #endif /* BOOT_BITOPS_H */
+diff --git a/arch/x86/boot/compressed/align.h b/arch/x86/boot/compressed/align.h
+new file mode 100644
+index 000000000000..7ccabbc5d1b8
+--- /dev/null
++++ b/arch/x86/boot/compressed/align.h
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef BOOT_ALIGN_H
++#define BOOT_ALIGN_H
++#define _LINUX_ALIGN_H /* Inhibit inclusion of <linux/align.h> */
++
++/* @a is a power of 2 value */
++#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
++#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
++#define __ALIGN_MASK(x, mask)	__ALIGN_KERNEL_MASK((x), (mask))
++#define PTR_ALIGN(p, a)		((typeof(p))ALIGN((unsigned long)(p), (a)))
++#define PTR_ALIGN_DOWN(p, a)	((typeof(p))ALIGN_DOWN((unsigned long)(p), (a)))
++#define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
++
++#endif
+diff --git a/arch/x86/boot/compressed/bitmap.c b/arch/x86/boot/compressed/bitmap.c
+new file mode 100644
+index 000000000000..789ecadeb521
+--- /dev/null
++++ b/arch/x86/boot/compressed/bitmap.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include "bitmap.h"
++
++void __bitmap_set(unsigned long *map, unsigned int start, int len)
++{
++	unsigned long *p = map + BIT_WORD(start);
++	const unsigned int size = start + len;
++	int bits_to_set = BITS_PER_LONG - (start % BITS_PER_LONG);
++	unsigned long mask_to_set = BITMAP_FIRST_WORD_MASK(start);
++
++	while (len - bits_to_set >= 0) {
++		*p |= mask_to_set;
++		len -= bits_to_set;
++		bits_to_set = BITS_PER_LONG;
++		mask_to_set = ~0UL;
++		p++;
++	}
++	if (len) {
++		mask_to_set &= BITMAP_LAST_WORD_MASK(size);
++		*p |= mask_to_set;
++	}
++}
++
++void __bitmap_clear(unsigned long *map, unsigned int start, int len)
++{
++	unsigned long *p = map + BIT_WORD(start);
++	const unsigned int size = start + len;
++	int bits_to_clear = BITS_PER_LONG - (start % BITS_PER_LONG);
++	unsigned long mask_to_clear = BITMAP_FIRST_WORD_MASK(start);
++
++	while (len - bits_to_clear >= 0) {
++		*p &= ~mask_to_clear;
++		len -= bits_to_clear;
++		bits_to_clear = BITS_PER_LONG;
++		mask_to_clear = ~0UL;
++		p++;
++	}
++	if (len) {
++		mask_to_clear &= BITMAP_LAST_WORD_MASK(size);
++		*p &= ~mask_to_clear;
++	}
++}
+diff --git a/arch/x86/boot/compressed/bitmap.h b/arch/x86/boot/compressed/bitmap.h
+new file mode 100644
+index 000000000000..35357f5feda2
+--- /dev/null
++++ b/arch/x86/boot/compressed/bitmap.h
+@@ -0,0 +1,49 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef BOOT_BITMAP_H
++#define BOOT_BITMAP_H
++#define __LINUX_BITMAP_H /* Inhibit inclusion of <linux/bitmap.h> */
++
++#include "../bitops.h"
++#include "../string.h"
++#include "align.h"
++
++#define BITMAP_MEM_ALIGNMENT 8
++#define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)
++
++#define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
++#define BITMAP_LAST_WORD_MASK(nbits) (~0UL >> (-(nbits) & (BITS_PER_LONG - 1)))
++
++#define BIT_WORD(nr)		((nr) / BITS_PER_LONG)
++
++void __bitmap_set(unsigned long *map, unsigned int start, int len);
++void __bitmap_clear(unsigned long *map, unsigned int start, int len);
++
++static __always_inline void bitmap_set(unsigned long *map, unsigned int start,
++		unsigned int nbits)
++{
++	if (__builtin_constant_p(nbits) && nbits == 1)
++		__set_bit(start, map);
++	else if (__builtin_constant_p(start & BITMAP_MEM_MASK) &&
++		 IS_ALIGNED(start, BITMAP_MEM_ALIGNMENT) &&
++		 __builtin_constant_p(nbits & BITMAP_MEM_MASK) &&
++		 IS_ALIGNED(nbits, BITMAP_MEM_ALIGNMENT))
++		memset((char *)map + start / 8, 0xff, nbits / 8);
++	else
++		__bitmap_set(map, start, nbits);
++}
++
++static __always_inline void bitmap_clear(unsigned long *map, unsigned int start,
++		unsigned int nbits)
++{
++	if (__builtin_constant_p(nbits) && nbits == 1)
++		__clear_bit(start, map);
++	else if (__builtin_constant_p(start & BITMAP_MEM_MASK) &&
++		 IS_ALIGNED(start, BITMAP_MEM_ALIGNMENT) &&
++		 __builtin_constant_p(nbits & BITMAP_MEM_MASK) &&
++		 IS_ALIGNED(nbits, BITMAP_MEM_ALIGNMENT))
++		memset((char *)map + start / 8, 0, nbits / 8);
++	else
++		__bitmap_clear(map, start, nbits);
++}
++
++#endif
+diff --git a/arch/x86/boot/compressed/bits.h b/arch/x86/boot/compressed/bits.h
+new file mode 100644
+index 000000000000..b0ffa007ee19
+--- /dev/null
++++ b/arch/x86/boot/compressed/bits.h
+@@ -0,0 +1,36 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef BOOT_BITS_H
++#define BOOT_BITS_H
++#define __LINUX_BITS_H /* Inhibit inclusion of <linux/bits.h> */
++
++#ifdef __ASSEMBLY__
++#define _AC(X,Y)	X
++#define _AT(T,X)	X
 +#else
-+PAGE_TYPE_OPS_FALSE(Unaccepted)
++#define __AC(X,Y)	(X##Y)
++#define _AC(X,Y)	__AC(X,Y)
++#define _AT(T,X)	((T)(X))
 +#endif
 +
- extern void page_offline_freeze(void);
- extern void page_offline_thaw(void);
- extern void page_offline_begin(void);
-diff --git a/mm/internal.h b/mm/internal.h
-index cf16280ce132..3fd5d8f90492 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -758,4 +758,16 @@ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags);
- 
- DECLARE_PER_CPU(struct per_cpu_nodestat, boot_nodestats);
- 
-+#ifndef CONFIG_UNACCEPTED_MEMORY
-+static inline bool range_contains_unaccepted_memory(phys_addr_t start,
-+						    phys_addr_t end)
++#define _UL(x)		(_AC(x, UL))
++#define _ULL(x)		(_AC(x, ULL))
++#define UL(x)		(_UL(x))
++#define ULL(x)		(_ULL(x))
++
++#define BIT(nr)			(UL(1) << (nr))
++#define BIT_ULL(nr)		(ULL(1) << (nr))
++#define BIT_MASK(nr)		(UL(1) << ((nr) % BITS_PER_LONG))
++#define BIT_WORD(nr)		((nr) / BITS_PER_LONG)
++#define BIT_ULL_MASK(nr)	(ULL(1) << ((nr) % BITS_PER_LONG_LONG))
++#define BIT_ULL_WORD(nr)	((nr) / BITS_PER_LONG_LONG)
++#define BITS_PER_BYTE		8
++
++#define GENMASK(h, l) \
++	(((~UL(0)) - (UL(1) << (l)) + 1) & \
++	 (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
++
++#define GENMASK_ULL(h, l) \
++	(((~ULL(0)) - (ULL(1) << (l)) + 1) & \
++	 (~ULL(0) >> (BITS_PER_LONG_LONG - 1 - (h))))
++
++#endif
+diff --git a/arch/x86/boot/compressed/compiler.h b/arch/x86/boot/compressed/compiler.h
+new file mode 100644
+index 000000000000..452c4c0844b9
+--- /dev/null
++++ b/arch/x86/boot/compressed/compiler.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef BOOT_COMPILER_H
++#define BOOT_COMPILER_H
++#define __LINUX_COMPILER_H /* Inhibit inclusion of <linux/compiler.h> */
++
++# define likely(x)	__builtin_expect(!!(x), 1)
++# define unlikely(x)	__builtin_expect(!!(x), 0)
++
++#endif
+diff --git a/arch/x86/boot/compressed/find.c b/arch/x86/boot/compressed/find.c
+new file mode 100644
+index 000000000000..839be91aae52
+--- /dev/null
++++ b/arch/x86/boot/compressed/find.c
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include "bitmap.h"
++#include "find.h"
++#include "math.h"
++#include "minmax.h"
++
++static __always_inline unsigned long swab(const unsigned long y)
 +{
-+	return false;
++#if __BITS_PER_LONG == 64
++	return __builtin_bswap32(y);
++#else /* __BITS_PER_LONG == 32 */
++	return __builtin_bswap64(y);
++#endif
 +}
 +
-+static inline void accept_memory(phys_addr_t start, phys_addr_t end)
++unsigned long _find_next_bit(const unsigned long *addr1,
++		const unsigned long *addr2, unsigned long nbits,
++		unsigned long start, unsigned long invert, unsigned long le)
 +{
++	unsigned long tmp, mask;
++
++	if (unlikely(start >= nbits))
++		return nbits;
++
++	tmp = addr1[start / BITS_PER_LONG];
++	if (addr2)
++		tmp &= addr2[start / BITS_PER_LONG];
++	tmp ^= invert;
++
++	/* Handle 1st word. */
++	mask = BITMAP_FIRST_WORD_MASK(start);
++	if (le)
++		mask = swab(mask);
++
++	tmp &= mask;
++
++	start = round_down(start, BITS_PER_LONG);
++
++	while (!tmp) {
++		start += BITS_PER_LONG;
++		if (start >= nbits)
++			return nbits;
++
++		tmp = addr1[start / BITS_PER_LONG];
++		if (addr2)
++			tmp &= addr2[start / BITS_PER_LONG];
++		tmp ^= invert;
++	}
++
++	if (le)
++		tmp = swab(tmp);
++
++	return min(start + __ffs(tmp), nbits);
 +}
+diff --git a/arch/x86/boot/compressed/find.h b/arch/x86/boot/compressed/find.h
+new file mode 100644
+index 000000000000..799176972ebc
+--- /dev/null
++++ b/arch/x86/boot/compressed/find.h
+@@ -0,0 +1,80 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef BOOT_FIND_H
++#define BOOT_FIND_H
++#define __LINUX_FIND_H /* Inhibit inclusion of <linux/find.h> */
++
++#include "../bitops.h"
++#include "align.h"
++#include "bits.h"
++#include "compiler.h"
++
++unsigned long _find_next_bit(const unsigned long *addr1,
++		const unsigned long *addr2, unsigned long nbits,
++		unsigned long start, unsigned long invert, unsigned long le);
++
++/**
++ * find_next_bit - find the next set bit in a memory region
++ * @addr: The address to base the search on
++ * @offset: The bitnumber to start searching at
++ * @size: The bitmap size in bits
++ *
++ * Returns the bit number for the next set bit
++ * If no bits are set, returns @size.
++ */
++static inline
++unsigned long find_next_bit(const unsigned long *addr, unsigned long size,
++			    unsigned long offset)
++{
++	if (small_const_nbits(size)) {
++		unsigned long val;
++
++		if (unlikely(offset >= size))
++			return size;
++
++		val = *addr & GENMASK(size - 1, offset);
++		return val ? __ffs(val) : size;
++	}
++
++	return _find_next_bit(addr, NULL, size, offset, 0UL, 0);
++}
++
++/**
++ * find_next_zero_bit - find the next cleared bit in a memory region
++ * @addr: The address to base the search on
++ * @offset: The bitnumber to start searching at
++ * @size: The bitmap size in bits
++ *
++ * Returns the bit number of the next zero bit
++ * If no bits are zero, returns @size.
++ */
++static inline
++unsigned long find_next_zero_bit(const unsigned long *addr, unsigned long size,
++				 unsigned long offset)
++{
++	if (small_const_nbits(size)) {
++		unsigned long val;
++
++		if (unlikely(offset >= size))
++			return size;
++
++		val = *addr | ~GENMASK(size - 1, offset);
++		return val == ~0UL ? size : ffz(val);
++	}
++
++	return _find_next_bit(addr, NULL, size, offset, ~0UL, 0);
++}
++
++/**
++ * for_each_set_bitrange_from - iterate over all set bit ranges [b; e)
++ * @b: bit offset of start of current bitrange (first set bit); must be initialized
++ * @e: bit offset of end of current bitrange (first unset bit)
++ * @addr: bitmap address to base the search on
++ * @size: bitmap size in number of bits
++ */
++#define for_each_set_bitrange_from(b, e, addr, size)		\
++	for ((b) = find_next_bit((addr), (size), (b)),		\
++	     (e) = find_next_zero_bit((addr), (size), (b) + 1);	\
++	     (b) < (size);					\
++	     (b) = find_next_bit((addr), (size), (e) + 1),	\
++	     (e) = find_next_zero_bit((addr), (size), (b) + 1))
++#endif
+diff --git a/arch/x86/boot/compressed/math.h b/arch/x86/boot/compressed/math.h
+new file mode 100644
+index 000000000000..f7eede84bbc2
+--- /dev/null
++++ b/arch/x86/boot/compressed/math.h
+@@ -0,0 +1,37 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef BOOT_MATH_H
++#define BOOT_MATH_H
++#define __LINUX_MATH_H /* Inhibit inclusion of <linux/math.h> */
++
++/*
++ *
++ * This looks more complex than it should be. But we need to
++ * get the type for the ~ right in round_down (it needs to be
++ * as wide as the result!), and we want to evaluate the macro
++ * arguments just once each.
++ */
++#define __round_mask(x, y) ((__typeof__(x))((y)-1))
++
++/**
++ * round_up - round up to next specified power of 2
++ * @x: the value to round
++ * @y: multiple to round up to (must be a power of 2)
++ *
++ * Rounds @x up to next multiple of @y (which must be a power of 2).
++ * To perform arbitrary rounding up, use roundup() below.
++ */
++#define round_up(x, y) ((((x)-1) | __round_mask(x, y))+1)
++
++/**
++ * round_down - round down to next specified power of 2
++ * @x: the value to round
++ * @y: multiple to round down to (must be a power of 2)
++ *
++ * Rounds @x down to next multiple of @y (which must be a power of 2).
++ * To perform arbitrary rounding down, use rounddown() below.
++ */
++#define round_down(x, y) ((x) & ~__round_mask(x, y))
++
++#define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
++
++#endif
+diff --git a/arch/x86/boot/compressed/minmax.h b/arch/x86/boot/compressed/minmax.h
+new file mode 100644
+index 000000000000..4efd05673260
+--- /dev/null
++++ b/arch/x86/boot/compressed/minmax.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef BOOT_MINMAX_H
++#define BOOT_MINMAX_H
++#define __LINUX_MINMAX_H /* Inhibit inclusion of <linux/minmax.h> */
++
++/*
++ * This returns a constant expression while determining if an argument is
++ * a constant expression, most importantly without evaluating the argument.
++ * Glory to Martin Uecker <Martin.Uecker@med.uni-goettingen.de>
++ */
++#define __is_constexpr(x) \
++	(sizeof(int) == sizeof(*(8 ? ((void *)((long)(x) * 0l)) : (int *)8)))
++
++/*
++ * min()/max()/clamp() macros must accomplish three things:
++ *
++ * - avoid multiple evaluations of the arguments (so side-effects like
++ *   "x++" happen only once) when non-constant.
++ * - perform strict type-checking (to generate warnings instead of
++ *   nasty runtime surprises). See the "unnecessary" pointer comparison
++ *   in __typecheck().
++ * - retain result as a constant expressions when called with only
++ *   constant expressions (to avoid tripping VLA warnings in stack
++ *   allocation usage).
++ */
++#define __typecheck(x, y) \
++	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
++
++#define __no_side_effects(x, y) \
++		(__is_constexpr(x) && __is_constexpr(y))
++
++#define __safe_cmp(x, y) \
++		(__typecheck(x, y) && __no_side_effects(x, y))
++
++#define __cmp(x, y, op)	((x) op (y) ? (x) : (y))
++
++#define __cmp_once(x, y, unique_x, unique_y, op) ({	\
++		typeof(x) unique_x = (x);		\
++		typeof(y) unique_y = (y);		\
++		__cmp(unique_x, unique_y, op); })
++
++#define __careful_cmp(x, y, op) \
++	__builtin_choose_expr(__safe_cmp(x, y), \
++		__cmp(x, y, op), \
++		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
++
++/**
++ * min - return minimum of two values of the same or compatible types
++ * @x: first value
++ * @y: second value
++ */
++#define min(x, y)	__careful_cmp(x, y, <)
++
++/**
++ * max - return maximum of two values of the same or compatible types
++ * @x: first value
++ * @y: second value
++ */
++#define max(x, y)	__careful_cmp(x, y, >)
++
++#endif
+diff --git a/arch/x86/boot/compressed/pgtable_types.h b/arch/x86/boot/compressed/pgtable_types.h
+new file mode 100644
+index 000000000000..8f1d87a69efc
+--- /dev/null
++++ b/arch/x86/boot/compressed/pgtable_types.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef BOOT_COMPRESSED_PGTABLE_TYPES_H
++#define BOOT_COMPRESSED_PGTABLE_TYPES_H
++#define _ASM_X86_PGTABLE_DEFS_H /* Inhibit inclusion of <asm/pgtable_types.h> */
++
++#define PAGE_SHIFT	12
++
++#ifdef CONFIG_X86_64
++#define PTE_SHIFT	9
++#elif defined CONFIG_X86_PAE
++#define PTE_SHIFT	9
++#else /* 2-level */
++#define PTE_SHIFT	10
 +#endif
 +
- #endif	/* __MM_INTERNAL_H */
-diff --git a/mm/memblock.c b/mm/memblock.c
-index e4f03a6e8e56..a1f7f8b304d5 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1405,6 +1405,15 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 		 */
- 		kmemleak_alloc_phys(found, size, 0, 0);
- 
-+	/*
-+	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
-+	 * require memory to be accepted before it can be used by the
-+	 * guest.
-+	 *
-+	 * Accept the memory of the allocated buffer.
-+	 */
-+	accept_memory(found, found + size);
++enum pg_level {
++	PG_LEVEL_NONE,
++	PG_LEVEL_4K,
++	PG_LEVEL_2M,
++	PG_LEVEL_1G,
++	PG_LEVEL_512G,
++	PG_LEVEL_NUM
++};
 +
- 	return found;
- }
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0e42038382c1..c8b6e29f4402 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -121,6 +121,12 @@ typedef int __bitwise fpi_t;
-  */
- #define FPI_SKIP_KASAN_POISON	((__force fpi_t)BIT(2))
- 
-+/*
-+ * Check if the page needs to be marked as PageUnaccepted().
-+ * Used for the new pages added to the buddy allocator for the first time.
-+ */
-+#define FPI_UNACCEPTED_SLOWPATH	((__force fpi_t)BIT(3))
-+
- /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
- static DEFINE_MUTEX(pcp_batch_high_lock);
- #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
-@@ -1023,6 +1029,32 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
- 	return page_is_buddy(higher_page, higher_buddy, order + 1);
- }
- 
-+/*
-+ * Page acceptance can be very slow. Do not call under critical locks.
-+ */
-+static void accept_page(struct page *page, unsigned int order)
-+{
-+	phys_addr_t start = page_to_phys(page);
-+	int i;
-+
-+	accept_memory(start, start + (PAGE_SIZE << order));
-+	__ClearPageUnaccepted(page);
-+
-+	/* Assert that there is no PageUnaccepted() on tail pages */
-+	if (IS_ENABLED(CONFIG_DEBUG_VM)) {
-+		for (i = 1; i < (1 << order); i++)
-+			VM_BUG_ON_PAGE(PageUnaccepted(page + i), page + i);
-+	}
-+}
-+
-+static bool page_is_unaccepted(struct page *page, unsigned int order)
-+{
-+	phys_addr_t start = page_to_phys(page);
-+	phys_addr_t end = start + (PAGE_SIZE << order);
-+
-+	return range_contains_unaccepted_memory(start, end);
-+}
-+
- /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -1058,6 +1090,7 @@ static inline void __free_one_page(struct page *page,
- 	unsigned long combined_pfn;
- 	struct page *buddy;
- 	bool to_tail;
-+	bool page_needs_acceptance = false;
- 
- 	VM_BUG_ON(!zone_is_initialized(zone));
- 	VM_BUG_ON_PAGE(page->flags & PAGE_FLAGS_CHECK_AT_PREP, page);
-@@ -1069,6 +1102,11 @@ static inline void __free_one_page(struct page *page,
- 	VM_BUG_ON_PAGE(pfn & ((1 << order) - 1), page);
- 	VM_BUG_ON_PAGE(bad_range(zone, page), page);
- 
-+	if (PageUnaccepted(page)) {
-+		page_needs_acceptance = true;
-+		__ClearPageUnaccepted(page);
-+	}
-+
- continue_merging:
- 	while (order < max_order) {
- 		if (compaction_capture(capc, page, order, migratetype)) {
-@@ -1089,6 +1127,13 @@ static inline void __free_one_page(struct page *page,
- 			clear_page_guard(zone, buddy, order, migratetype);
- 		else
- 			del_page_from_free_list(buddy, zone, order);
-+
-+		/* Mark page unaccepted if any of merged pages were unaccepted */
-+		if (PageUnaccepted(buddy)) {
-+			page_needs_acceptance = true;
-+			__ClearPageUnaccepted(buddy);
-+		}
-+
- 		combined_pfn = buddy_pfn & pfn;
- 		page = page + (combined_pfn - pfn);
- 		pfn = combined_pfn;
-@@ -1124,6 +1169,23 @@ static inline void __free_one_page(struct page *page,
- done_merging:
- 	set_buddy_order(page, order);
- 
-+	/*
-+	 * The page gets marked as PageUnaccepted() if any of merged-in pages
-+	 * is PageUnaccepted().
-+	 *
-+	 * New pages, just being added to buddy allocator, do not have
-+	 * PageUnaccepted() set. FPI_UNACCEPTED_SLOWPATH indicates that the
-+	 * page is new and page_is_unaccepted() check is required to
-+	 * determinate if acceptance is required.
-+	 *
-+	 * Avoid calling page_is_unaccepted() if it is known that the page
-+	 * needs acceptance. It can be costly.
-+	 */
-+	if (!page_needs_acceptance && (fpi_flags & FPI_UNACCEPTED_SLOWPATH))
-+		page_needs_acceptance = page_is_unaccepted(page, order);
-+	if (page_needs_acceptance)
-+		__SetPageUnaccepted(page);
-+
- 	if (fpi_flags & FPI_TO_TAIL)
- 		to_tail = true;
- 	else if (is_shuffle_order(order))
-@@ -1149,7 +1211,13 @@ static inline void __free_one_page(struct page *page,
- static inline bool page_expected_state(struct page *page,
- 					unsigned long check_flags)
- {
--	if (unlikely(atomic_read(&page->_mapcount) != -1))
-+	/*
-+	 * The page must not be mapped to userspace and must not have
-+	 * a PageType other than listed in PAGE_TYPES_EXPECTED.
-+	 *
-+	 * Note, bit cleared means the page type is set.
-+	 */
-+	if (unlikely((atomic_read(&page->_mapcount) | PAGE_TYPES_EXPECTED) != -1))
- 		return false;
- 
- 	if (unlikely((unsigned long)page->mapping |
-@@ -1654,7 +1722,9 @@ void __free_pages_core(struct page *page, unsigned int order)
- 	 * Bypass PCP and place fresh pages right to the tail, primarily
- 	 * relevant for memory onlining.
- 	 */
--	__free_pages_ok(page, order, FPI_TO_TAIL | FPI_SKIP_KASAN_POISON);
-+	__free_pages_ok(page, order,
-+			FPI_TO_TAIL | FPI_SKIP_KASAN_POISON |
-+			FPI_UNACCEPTED_SLOWPATH);
- }
- 
- #ifdef CONFIG_NUMA
-@@ -1807,6 +1877,9 @@ static void __init deferred_free_range(unsigned long pfn,
- 		return;
- 	}
- 
-+	/* Accept chunks smaller than page-block upfront */
-+	accept_memory(pfn << PAGE_SHIFT, (pfn + nr_pages) << PAGE_SHIFT);
-+
- 	for (i = 0; i < nr_pages; i++, page++, pfn++) {
- 		if ((pfn & (pageblock_nr_pages - 1)) == 0)
- 			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-@@ -2266,6 +2339,13 @@ static inline void expand(struct zone *zone, struct page *page,
- 		if (set_page_guard(zone, &page[size], high, migratetype))
- 			continue;
- 
-+		/*
-+		 * Transfer PageUnaccepted() to the newly split pages so
-+		 * they can be accepted after dropping the zone lock.
-+		 */
-+		if (PageUnaccepted(page))
-+			__SetPageUnaccepted(&page[size]);
-+
- 		add_to_free_list(&page[size], zone, high, migratetype);
- 		set_buddy_order(&page[size], high);
- 	}
-@@ -2396,6 +2476,9 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	 */
- 	kernel_unpoison_pages(page, 1 << order);
- 
-+	if (PageUnaccepted(page))
-+		accept_page(page, order);
-+
- 	/*
- 	 * As memory initialization might be integrated into KASAN,
- 	 * KASAN unpoisoning and memory initializion code must be
++#endif
 -- 
 2.35.1
 
