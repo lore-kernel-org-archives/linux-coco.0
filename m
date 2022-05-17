@@ -1,33 +1,33 @@
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8E91848
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC411847
 	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1652801705; x=1684337705;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=dQmG2pBx6efTJZuUSuJPwLK2pMKYkkt2bP5q7lj134c=;
-  b=iyXkf4ZtgJuoyyQDF38VHPhsXRyhStGUekD8WQMePxDGSbF3dPfAlYT6
-   IM5nAbuz5H5gJwq9NLX54rv61Alt2O7htQJAPJbEm1XPaVgha8yRSIn0E
-   qdubu9zC4AIFz757rgkEYpPv2IQp9dBTZaKnw6vOW6+BE43NK0HeBcJOa
-   AnvqLAPIvT6AoqDOiEktb/+hJUWQnekJKlnPD0QGMGUiQduydnJFhnLyO
-   mEmlzxAMZisepXUa2bmDyqllpNe5qvO/+xOprvS1SYrR9xgFh3CbWFazK
-   5Aoso3/O0XMXPHHwXvseHY2bjPLyv++KOzUjHvPZEfaBQ1ncRsblXBzeq
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="268803729"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=CodHwoZ2rLYrhqQ6ze00eaB7F0xVPSzWsLToYorZfcA=;
+  b=FxvpsOhg/HnC2W/ocvqbFhhpxVOFAghT0z/zZk6ehSUggr0qd2rcyZJE
+   c6L322KKiRRsWZXKns7qhzndvA3CDQm3LZ0uCmtPxqJUOj2goNkd90gON
+   CTp3ulac+blHUJ97vyO1km5UVODBeHsz2CIhd5jWT1U5MjRw9mHjo5Do8
+   AzPw6qxEJo8pAuURWAG7xuzLE/Z5FJH8udb4dHIMERr1X6FM0dHQzoU+h
+   VwN7UKBUoQ5NySGVKiy4CPwc3e4tyEKVXQnOgpqmVqM46Y5KNMCkbyM/E
+   V9G7QMU0zfjPHcbn59eXyvF36YjDuAR5A5IoQK9aKYnMq7yUke36679gg
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="271167705"
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="268803729"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:34:56 -0700
+   d="scan'208";a="271167705"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:35:04 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="713901584"
+   d="scan'208";a="672905579"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 17 May 2022 08:34:50 -0700
+  by fmsmga002.fm.intel.com with ESMTP; 17 May 2022 08:34:57 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 48B97159; Tue, 17 May 2022 18:34:50 +0300 (EEST)
+	id 8C404862; Tue, 17 May 2022 18:34:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -59,168 +59,202 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv6 00/15] mm, x86/cc: Implement support for unaccepted memory
-Date: Tue, 17 May 2022 18:34:29 +0300
-Message-Id: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 06/15] x86/boot/compressed: Handle unaccepted memory
+Date: Tue, 17 May 2022 18:34:35 +0300
+Message-Id: <20220517153444.11195-7-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
+References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-UEFI Specification version 2.9 introduces the concept of memory
-acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
-SEV-SNP, requiring memory to be accepted before it can be used by the
-guest. Accepting happens via a protocol specific for the Virtual
-Machine platform.
+The firmware will pre-accept the memory used to run the stub. But, the
+stub is responsible for accepting the memory into which it decompresses
+the main kernel. Accept memory just before decompression starts.
 
-Accepting memory is costly and it makes VMM allocate memory for the
-accepted guest physical address range. It's better to postpone memory
-acceptance until memory is needed. It lowers boot time and reduces
-memory overhead.
+The stub is also responsible for choosing a physical address in which to
+place the decompressed kernel image. The KASLR mechanism will randomize
+this physical address. Since the unaccepted memory region is relatively
+small, KASLR would be quite ineffective if it only used the pre-accepted
+area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
+entire physical address space by also including EFI_UNACCEPTED_MEMORY.
 
-The kernel needs to know what memory has been accepted. Firmware
-communicates this information via memory map: a new memory type --
-EFI_UNACCEPTED_MEMORY -- indicates such memory.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/boot/compressed/Makefile        |  2 +-
+ arch/x86/boot/compressed/efi.h           |  1 +
+ arch/x86/boot/compressed/kaslr.c         | 35 ++++++++++++++++--------
+ arch/x86/boot/compressed/mem.c           | 18 ++++++++++++
+ arch/x86/boot/compressed/misc.c          |  6 ++++
+ arch/x86/boot/compressed/misc.h          |  6 ++++
+ arch/x86/include/asm/unaccepted_memory.h |  2 ++
+ 7 files changed, 57 insertions(+), 13 deletions(-)
 
-Range-based tracking works fine for firmware, but it gets bulky for
-the kernel: e820 has to be modified on every page acceptance. It leads
-to table fragmentation, but there's a limited number of entries in the
-e820 table
-
-Another option is to mark such memory as usable in e820 and track if the
-range has been accepted in a bitmap. One bit in the bitmap represents
-2MiB in the address space: one 4k page is enough to track 64GiB or
-physical address space.
-
-In the worst-case scenario -- a huge hole in the middle of the
-address space -- It needs 256MiB to handle 4PiB of the address
-space.
-
-Any unaccepted memory that is not aligned to 2M gets accepted upfront.
-
-The approach lowers boot time substantially. Boot to shell is ~2.5x
-faster for 4G TDX VM and ~4x faster for 64G.
-
-TDX-specific code isolated from the core of unaccepted memory support. It
-supposed to help to plug-in different implementation of unaccepted memory
-such as SEV-SNP.
-
-The tree can be found here:
-
-https://github.com/intel/tdx.git guest-unaccepted-memory
-
-v6:
- - Fix load_unaligned_zeropad() on machine with unaccepted memory;
- - Clear PageUnaccepted() on merged pages, leaving it only on head;
- - Clarify error handling in allocate_e820();
- - Fix build with CONFIG_UNACCEPTED_MEMORY=y, but without TDX;
- - Disable kexec at boottime instead of build conflict;
- - Rebased to tip/master;
- - Spelling fixes;
- - Add Reviewed-by from Mike and David;
-v5:
- - Updates comments and commit messages;
-   + Explain options for unaccepted memory handling;
- - Expose amount of unaccepted memory in /proc/meminfo
- - Adjust check in page_expected_state();
- - Fix error code handling in allocate_e820();
- - Centralize __pa()/__va() definitions in the boot stub;
- - Avoid includes from the main kernel in the boot stub;
- - Use an existing hole in boot_param for unaccepted_memory, instead of adding
-   to the end of the structure;
- - Extract allocate_unaccepted_memory() form allocate_e820();
- - Complain if there's unaccepted memory, but kernel does not support it;
- - Fix vmstat counter;
- - Split up few preparatory patches;
- - Random readability adjustments;
-v4:
- - PageBuddyUnaccepted() -> PageUnaccepted;
- - Use separate page_type, not shared with offline;
- - Rework interface between core-mm and arch code;
- - Adjust commit messages;
- - Ack from Mike;
-Kirill A. Shutemov (15):
-  x86/boot: Centralize __pa()/__va() definitions
-  mm: Add support for unaccepted memory
-  efi/x86: Get full memory map in allocate_e820()
-  x86/boot: Add infrastructure required for unaccepted memory support
-  efi/x86: Implement support for unaccepted memory
-  x86/boot/compressed: Handle unaccepted memory
-  x86/mm: Reserve unaccepted memory bitmap
-  x86/mm: Provide helpers for unaccepted memory
-  x86/mm: Avoid load_unaligned_zeropad() stepping into unaccepted memory
-  x86/mm: Report unaccepted memory in /proc/meminfo
-  x86: Disable kexec if system has unaccepted memory
-  x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in
-    boot stub
-  x86/tdx: Refactor try_accept_one()
-  x86/tdx: Add unaccepted memory support
-  mm/vmstat: Add counter for memory accepting
-
- Documentation/x86/zero-page.rst          |   1 +
- arch/x86/Kconfig                         |   1 +
- arch/x86/boot/bitops.h                   |  40 +++++++
- arch/x86/boot/compressed/Makefile        |   1 +
- arch/x86/boot/compressed/align.h         |  14 +++
- arch/x86/boot/compressed/bitmap.c        |  43 +++++++
- arch/x86/boot/compressed/bitmap.h        |  49 ++++++++
- arch/x86/boot/compressed/bits.h          |  36 ++++++
- arch/x86/boot/compressed/compiler.h      |   9 ++
- arch/x86/boot/compressed/efi.h           |   1 +
- arch/x86/boot/compressed/find.c          |  54 +++++++++
- arch/x86/boot/compressed/find.h          |  80 +++++++++++++
- arch/x86/boot/compressed/ident_map_64.c  |   8 --
- arch/x86/boot/compressed/kaslr.c         |  35 ++++--
- arch/x86/boot/compressed/math.h          |  37 ++++++
- arch/x86/boot/compressed/mem.c           | 111 +++++++++++++++++
- arch/x86/boot/compressed/minmax.h        |  61 ++++++++++
- arch/x86/boot/compressed/misc.c          |   6 +
- arch/x86/boot/compressed/misc.h          |  15 +++
- arch/x86/boot/compressed/pgtable_types.h |  25 ++++
- arch/x86/boot/compressed/sev.c           |   2 -
- arch/x86/boot/compressed/tdx.c           |  78 ++++++++++++
- arch/x86/coco/tdx/tdx.c                  |  94 +++++++--------
- arch/x86/include/asm/page.h              |   3 +
- arch/x86/include/asm/set_memory.h        |   2 +
- arch/x86/include/asm/shared/tdx.h        |  47 ++++++++
- arch/x86/include/asm/tdx.h               |  19 ---
- arch/x86/include/asm/unaccepted_memory.h |  25 ++++
- arch/x86/include/uapi/asm/bootparam.h    |   2 +-
- arch/x86/kernel/e820.c                   |  10 ++
- arch/x86/mm/Makefile                     |   2 +
- arch/x86/mm/init.c                       |   8 ++
- arch/x86/mm/pat/set_memory.c             |   2 +-
- arch/x86/mm/unaccepted_memory.c          | 144 +++++++++++++++++++++++
- drivers/firmware/efi/Kconfig             |  14 +++
- drivers/firmware/efi/efi.c               |   1 +
- drivers/firmware/efi/libstub/x86-stub.c  | 103 +++++++++++++---
- include/linux/efi.h                      |   3 +-
- include/linux/page-flags.h               |  31 +++++
- include/linux/vm_event_item.h            |   3 +
- mm/internal.h                            |  12 ++
- mm/memblock.c                            |   9 ++
- mm/page_alloc.c                          |  87 +++++++++++++-
- mm/vmstat.c                              |   3 +
- 44 files changed, 1215 insertions(+), 116 deletions(-)
- create mode 100644 arch/x86/boot/compressed/align.h
- create mode 100644 arch/x86/boot/compressed/bitmap.c
- create mode 100644 arch/x86/boot/compressed/bitmap.h
- create mode 100644 arch/x86/boot/compressed/bits.h
- create mode 100644 arch/x86/boot/compressed/compiler.h
- create mode 100644 arch/x86/boot/compressed/find.c
- create mode 100644 arch/x86/boot/compressed/find.h
- create mode 100644 arch/x86/boot/compressed/math.h
- create mode 100644 arch/x86/boot/compressed/mem.c
- create mode 100644 arch/x86/boot/compressed/minmax.h
- create mode 100644 arch/x86/boot/compressed/pgtable_types.h
- create mode 100644 arch/x86/include/asm/unaccepted_memory.h
- create mode 100644 arch/x86/mm/unaccepted_memory.c
-
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 67732478323f..85a631f5cdff 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -102,7 +102,7 @@ endif
+ 
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+ vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
+-vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/mem.o
++vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
+ 
+ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
+ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
+index 7db2f41b54cd..cf475243b6d5 100644
+--- a/arch/x86/boot/compressed/efi.h
++++ b/arch/x86/boot/compressed/efi.h
+@@ -32,6 +32,7 @@ typedef	struct {
+ } efi_table_hdr_t;
+ 
+ #define EFI_CONVENTIONAL_MEMORY		 7
++#define EFI_UNACCEPTED_MEMORY		15
+ 
+ #define EFI_MEMORY_MORE_RELIABLE \
+ 				((u64)0x0000000000010000ULL)	/* higher reliability */
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index 4a3f223973f4..a42264b0b2f5 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -671,6 +671,28 @@ static bool process_mem_region(struct mem_vector *region,
+ }
+ 
+ #ifdef CONFIG_EFI
++
++/*
++ * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if supported) are
++ * guaranteed to be free.
++ *
++ * It is more conservative in picking free memory than the EFI spec allows:
++ *
++ * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also free memory
++ * and thus available to place the kernel image into, but in practice there's
++ * firmware where using that memory leads to crashes.
++ */
++static inline bool memory_type_is_free(efi_memory_desc_t *md)
++{
++	if (md->type == EFI_CONVENTIONAL_MEMORY)
++		return true;
++
++	if (md->type == EFI_UNACCEPTED_MEMORY)
++		return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY);
++
++	return false;
++}
++
+ /*
+  * Returns true if we processed the EFI memmap, which we prefer over the E820
+  * table if it is available.
+@@ -715,18 +737,7 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
+ 	for (i = 0; i < nr_desc; i++) {
+ 		md = efi_early_memdesc_ptr(pmap, e->efi_memdesc_size, i);
+ 
+-		/*
+-		 * Here we are more conservative in picking free memory than
+-		 * the EFI spec allows:
+-		 *
+-		 * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also
+-		 * free memory and thus available to place the kernel image into,
+-		 * but in practice there's firmware where using that memory leads
+-		 * to crashes.
+-		 *
+-		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
+-		 */
+-		if (md->type != EFI_CONVENTIONAL_MEMORY)
++		if (!memory_type_is_free(md))
+ 			continue;
+ 
+ 		if (efi_soft_reserve_enabled() &&
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index 415df0d3bc81..b45458af00ca 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -3,12 +3,15 @@
+ #include "../cpuflags.h"
+ #include "bitmap.h"
+ #include "error.h"
++#include "find.h"
+ #include "math.h"
+ 
+ #define PMD_SHIFT	21
+ #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
+ #define PMD_MASK	(~(PMD_SIZE - 1))
+ 
++extern struct boot_params *boot_params;
++
+ static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
+ {
+ 	/* Platform-specific memory-acceptance call goes here */
+@@ -66,3 +69,18 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
+ 	bitmap_set((unsigned long *)params->unaccepted_memory,
+ 		   start / PMD_SIZE, (end - start) / PMD_SIZE);
+ }
++
++void accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long range_start, range_end;
++	unsigned long *bitmap, bitmap_size;
++
++	bitmap = (unsigned long *)boot_params->unaccepted_memory;
++	range_start = start / PMD_SIZE;
++	bitmap_size = DIV_ROUND_UP(end, PMD_SIZE);
++
++	for_each_set_bitrange_from(range_start, range_end, bitmap, bitmap_size) {
++		__accept_memory(range_start * PMD_SIZE, range_end * PMD_SIZE);
++		bitmap_clear(bitmap, range_start, range_end - range_start);
++	}
++}
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index cf690d8712f4..c41a87b0ec06 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -454,6 +454,12 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ #endif
+ 
+ 	debug_putstr("\nDecompressing Linux... ");
++
++	if (boot_params->unaccepted_memory) {
++		debug_putstr("Accepting memory... ");
++		accept_memory(__pa(output), __pa(output) + needed_size);
++	}
++
+ 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
+ 			NULL, error);
+ 	parse_elf(output);
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 245cf8f2a0bd..da7ef45133b9 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -235,4 +235,10 @@ static inline unsigned long efi_find_vendor_table(struct boot_params *bp,
+ }
+ #endif /* CONFIG_EFI */
+ 
++#ifdef CONFIG_UNACCEPTED_MEMORY
++void accept_memory(phys_addr_t start, phys_addr_t end);
++#else
++static inline void accept_memory(phys_addr_t start, phys_addr_t end) {}
++#endif
++
+ #endif /* BOOT_COMPRESSED_MISC_H */
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index df0736d32858..41fbfc798100 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -7,4 +7,6 @@ struct boot_params;
+ 
+ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
+ 
++void accept_memory(phys_addr_t start, phys_addr_t end);
++
+ #endif
 -- 
 2.35.1
 
