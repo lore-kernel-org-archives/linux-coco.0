@@ -1,33 +1,33 @@
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CFA184B
-	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE0F1850
+	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652801709; x=1684337709;
+  t=1652801710; x=1684337710;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HVjMB3MvnvnUL83RU6E0S1pRWzbakqXi101UVCGUEjg=;
-  b=nOnsZLMC0TPyl0Rwd+TFoZVUNoMK1igs6xvEouSE9wYMENnaHv8VTR3M
-   Y1PeyYESy4p5pxycKdMxBAgcVsZjbx3ZAwXGMwRlIFfgZ265fdV+nFsV7
-   B9htLE0Ttfr8EPa980skQJ20ocPdO3DuxNSBP3IDjcEWHRl4tsCny3TO7
-   w3j5uciAVuIPbmxkz6QuCU5DY6rSm2uPd0WjkoKQ8hqexfp9Vax8LVkoP
-   ytPEcqMLz625CZKoCJNno8OOPSAHjj2paZKRlEdy5dRHJEhnSA+eRdi/h
-   9aN13e+iPoB0LItoristvfFJ6jPJRyDRepVIH58hyIOZMimIna+zIBcNY
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="334265660"
+  bh=ba5aaba6CYtwjhjErhM4Hq7HhJDf0ny+Fwb4XqWMwfA=;
+  b=aFr+PMl+T16YVwb/Db9hsAtFmr4N1wZa1z6M/JbkzQcMaxeJz3RonE/G
+   wmseet6hNWrfvxCF0O7cFoF4129ncCP6PibxxJvQ0WP8aX4CcC58c195a
+   FgMuwnPlYMzk7gZKYTRxr6I5jX895XsAxFbFb+lDJ4q8ezsfGPpYM5AWn
+   E6hTGTWALjEnWz5tgzVJON6dSwwxYmODf3xTrhXBimUexfyFgALkxJujH
+   h68NLcwUx5v74YoNjjAzeSSxpKEXV3v2+5n3FkC4Q1g6DF1SvlTsTaKMV
+   HD1smsjaD3RCqXmj4YKa68gRJya3RmrvupZ7mAbnMzJlTuUG1p3Mm6kXi
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="334265659"
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="334265660"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+   d="scan'208";a="334265659"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
   by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:35:05 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="574566799"
+   d="scan'208";a="660661437"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga007.fm.intel.com with ESMTP; 17 May 2022 08:34:58 -0700
+  by FMSMGA003.fm.intel.com with ESMTP; 17 May 2022 08:34:58 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id BA7B7CE3; Tue, 17 May 2022 18:34:50 +0300 (EEST)
+	id D232269F; Tue, 17 May 2022 18:34:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -59,9 +59,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv6 10/15] x86/mm: Report unaccepted memory in /proc/meminfo
-Date: Tue, 17 May 2022 18:34:39 +0300
-Message-Id: <20220517153444.11195-11-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 12/15] x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in boot stub
+Date: Tue, 17 May 2022 18:34:41 +0300
+Message-Id: <20220517153444.11195-13-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
 References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
@@ -73,151 +73,164 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Track amount of unaccepted memory and report it in /proc/meminfo.
+Memory acceptance requires a hypercall and one or multiple module calls.
+
+Make helpers for the calls available in boot stub. It has to accept
+memory where kernel image and initrd are placed.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/include/asm/set_memory.h        |  2 ++
- arch/x86/include/asm/unaccepted_memory.h |  9 ++++++
- arch/x86/mm/init.c                       |  8 ++++++
- arch/x86/mm/pat/set_memory.c             |  2 +-
- arch/x86/mm/unaccepted_memory.c          | 36 +++++++++++++++++++++++-
- 5 files changed, 55 insertions(+), 2 deletions(-)
+ arch/x86/coco/tdx/tdx.c           | 26 ------------------
+ arch/x86/include/asm/shared/tdx.h | 45 +++++++++++++++++++++++++++++++
+ arch/x86/include/asm/tdx.h        | 19 -------------
+ 3 files changed, 45 insertions(+), 45 deletions(-)
 
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index 78ca53512486..e467f3941d22 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -86,6 +86,8 @@ bool kernel_page_present(struct page *page);
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 5fbdda2f2b86..6a62d3950619 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -14,14 +14,6 @@
+ #include <asm/trapnr.h>
+ #include <asm/extable.h>
  
- extern int kernel_set_to_readonly;
+-/* TDX module Call Leaf IDs */
+-#define TDX_GET_INFO			1
+-#define TDX_GET_VEINFO			3
+-#define TDX_ACCEPT_PAGE			6
+-
+-/* TDX hypercall Leaf IDs */
+-#define TDVMCALL_MAP_GPA		0x10001
+-
+ /* MMIO direction */
+ #define EPT_READ	0
+ #define EPT_WRITE	1
+@@ -36,24 +28,6 @@
+ #define VE_GET_PORT_NUM(e)	((e) >> 16)
+ #define VE_IS_IO_STRING(e)	((e) & BIT(4))
  
-+void direct_map_meminfo(struct seq_file *m);
+-/*
+- * Wrapper for standard use of __tdx_hypercall with no output aside from
+- * return code.
+- */
+-static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
+-{
+-	struct tdx_hypercall_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = fn,
+-		.r12 = r12,
+-		.r13 = r13,
+-		.r14 = r14,
+-		.r15 = r15,
+-	};
+-
+-	return __tdx_hypercall(&args, 0);
+-}
+-
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void)
+ {
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index e53f26228fbb..956ced04c3be 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -13,6 +13,14 @@
+ #define TDX_CPUID_LEAF_ID	0x21
+ #define TDX_IDENT		"IntelTDX    "
+ 
++/* TDX module Call Leaf IDs */
++#define TDX_GET_INFO			1
++#define TDX_GET_VEINFO			3
++#define TDX_ACCEPT_PAGE			6
 +
- #ifdef CONFIG_X86_64
++/* TDX hypercall Leaf IDs */
++#define TDVMCALL_MAP_GPA		0x10001
++
+ #ifndef __ASSEMBLY__
+ 
  /*
-  * Prevent speculative access to the page by either unmapping
-diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
-index 89fc91c61560..d8622d952212 100644
---- a/arch/x86/include/asm/unaccepted_memory.h
-+++ b/arch/x86/include/asm/unaccepted_memory.h
-@@ -3,7 +3,10 @@
- #ifndef _ASM_X86_UNACCEPTED_MEMORY_H
- #define _ASM_X86_UNACCEPTED_MEMORY_H
+@@ -33,8 +41,45 @@ struct tdx_hypercall_args {
+ /* Used to request services from the VMM */
+ u64 __tdx_hypercall(struct tdx_hypercall_args *args, unsigned long flags);
  
-+#include <linux/types.h>
-+
- struct boot_params;
-+struct seq_file;
- 
- void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
- 
-@@ -12,5 +15,11 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
- void accept_memory(phys_addr_t start, phys_addr_t end);
- bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end);
- 
-+void unaccepted_meminfo(struct seq_file *m);
-+
-+#else
-+
-+static inline void unaccepted_meminfo(struct seq_file *m) {}
-+
- #endif
- #endif
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index d8cfce221275..7e92a9d93994 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -1065,3 +1065,11 @@ unsigned long max_swapfile_size(void)
- 	return pages;
- }
- #endif
-+
-+#ifdef CONFIG_PROC_FS
-+void arch_report_meminfo(struct seq_file *m)
++/*
++ * Wrapper for standard use of __tdx_hypercall with no output aside from
++ * return code.
++ */
++static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
 +{
-+	direct_map_meminfo(m);
-+	unaccepted_meminfo(m);
-+}
-+#endif
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 0656db33574d..f08881c4b8ee 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -105,7 +105,7 @@ static void split_page_count(int level)
- 	direct_pages_count[level - 1] += PTRS_PER_PTE;
- }
- 
--void arch_report_meminfo(struct seq_file *m)
-+void direct_map_meminfo(struct seq_file *m)
- {
- 	seq_printf(m, "DirectMap4k:    %8lu kB\n",
- 			direct_pages_count[PG_LEVEL_4K] << 2);
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 33bf70592a46..1ca71eb98c24 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -2,14 +2,17 @@
- #include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/pfn.h>
-+#include <linux/seq_file.h>
- #include <linux/spinlock.h>
- 
-+#include <asm/e820/api.h>
- #include <asm/io.h>
- #include <asm/setup.h>
- #include <asm/unaccepted_memory.h>
- 
--/* Protects unaccepted memory bitmap */
-+/* Protects unaccepted memory bitmap and nr_unaccepted */
- static DEFINE_SPINLOCK(unaccepted_memory_lock);
-+static unsigned long nr_unaccepted;
- 
- void accept_memory(phys_addr_t start, phys_addr_t end)
- {
-@@ -63,6 +66,12 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 		/* Platform-specific memory-acceptance call goes here */
- 		panic("Cannot accept memory: unknown platform\n");
- 		bitmap_clear(bitmap, range_start, len);
++	struct tdx_hypercall_args args = {
++		.r10 = TDX_HYPERCALL_STANDARD,
++		.r11 = fn,
++		.r12 = r12,
++		.r13 = r13,
++		.r14 = r14,
++		.r15 = r15,
++	};
 +
-+		/* In early boot nr_unaccepted is not yet initialized */
-+		if (nr_unaccepted) {
-+			WARN_ON(nr_unaccepted < len);
-+			nr_unaccepted -= len;
-+		}
- 	}
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
- }
-@@ -90,3 +99,28 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
- 
- 	return ret;
- }
-+
-+void unaccepted_meminfo(struct seq_file *m)
-+{
-+	seq_printf(m, "UnacceptedMem:  %8lu kB\n",
-+		   (READ_ONCE(nr_unaccepted) * PMD_SIZE) >> 10);
++	return __tdx_hypercall(&args, 0);
 +}
 +
-+static int __init unaccepted_init(void)
-+{
-+	unsigned long *unaccepted_memory;
-+	unsigned long flags, bitmap_size;
 +
-+	if (!boot_params.unaccepted_memory)
-+		return 0;
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void);
+ 
++/*
++ * Used in __tdx_module_call() to gather the output registers' values of the
++ * TDCALL instruction when requesting services from the TDX module. This is a
++ * software only structure and not part of the TDX module/VMM ABI
++ */
++struct tdx_module_output {
++	u64 rcx;
++	u64 rdx;
++	u64 r8;
++	u64 r9;
++	u64 r10;
++	u64 r11;
++};
 +
-+	bitmap_size = e820__end_of_ram_pfn() * PAGE_SIZE / PMD_SIZE;
-+	unaccepted_memory = __va(boot_params.unaccepted_memory);
++/* Used to communicate with the TDX module */
++u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
++		      struct tdx_module_output *out);
 +
-+	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-+	nr_unaccepted = bitmap_weight(unaccepted_memory, bitmap_size);
-+	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-+
-+	return 0;
-+}
-+fs_initcall(unaccepted_init);
+ #endif /* !__ASSEMBLY__ */
+ #endif /* _ASM_X86_SHARED_TDX_H */
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 020c81a7c729..d9106d3e89f8 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -20,21 +20,6 @@
+ 
+ #ifndef __ASSEMBLY__
+ 
+-/*
+- * Used to gather the output registers values of the TDCALL and SEAMCALL
+- * instructions when requesting services from the TDX module.
+- *
+- * This is a software only structure and not part of the TDX module/VMM ABI.
+- */
+-struct tdx_module_output {
+-	u64 rcx;
+-	u64 rdx;
+-	u64 r8;
+-	u64 r9;
+-	u64 r10;
+-	u64 r11;
+-};
+-
+ /*
+  * Used by the #VE exception handler to gather the #VE exception
+  * info from the TDX module. This is a software only structure
+@@ -55,10 +40,6 @@ struct ve_info {
+ 
+ void __init tdx_early_init(void);
+ 
+-/* Used to communicate with the TDX module */
+-u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
+-		      struct tdx_module_output *out);
+-
+ void tdx_get_ve_info(struct ve_info *ve);
+ 
+ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
 -- 
 2.35.1
 
