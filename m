@@ -1,33 +1,33 @@
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938681847
-	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CFA184B
+	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652801708; x=1684337708;
+  t=1652801709; x=1684337709;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ZlxeDiZ2Ogy8lAspacIgsZZ/Yy5DPmqPGpLnxSiDxx8=;
-  b=kopZf7OJlAUFjCbI7XO8+/ktdbT/HAdg4UzUTL2lvAyE7YYrNt1vcaDH
-   eGF9RZI1xWcuEg087GqthEttrF6kb2wlV/2Z5UWYImsI/X3QHr0sWhvct
-   8pmrmYcRqDVyPmRYbvXXWPpUISWj2oO+whejuxes+dgsXgPmoxpX1bd4m
-   X6ZyV5K1XoCf1YAR0J/tyac6ewkBsG8oP2jUCkeSyTL0Q2ShyPdWjzV0k
-   l4UtH5L2yMv9vT1bnc1UFrboIJLo3TRbs9nOVw6Zkeg4pmQkUV4RDHNC1
-   vuCaeri7lKqpXKQUWyElw3IFEJGQNTEbhRLx+k86KMePkm9Gl2qLTzc+1
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="271167714"
+  bh=HVjMB3MvnvnUL83RU6E0S1pRWzbakqXi101UVCGUEjg=;
+  b=nOnsZLMC0TPyl0Rwd+TFoZVUNoMK1igs6xvEouSE9wYMENnaHv8VTR3M
+   Y1PeyYESy4p5pxycKdMxBAgcVsZjbx3ZAwXGMwRlIFfgZ265fdV+nFsV7
+   B9htLE0Ttfr8EPa980skQJ20ocPdO3DuxNSBP3IDjcEWHRl4tsCny3TO7
+   w3j5uciAVuIPbmxkz6QuCU5DY6rSm2uPd0WjkoKQ8hqexfp9Vax8LVkoP
+   ytPEcqMLz625CZKoCJNno8OOPSAHjj2paZKRlEdy5dRHJEhnSA+eRdi/h
+   9aN13e+iPoB0LItoristvfFJ6jPJRyDRepVIH58hyIOZMimIna+zIBcNY
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="334265660"
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="271167714"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:35:05 -0700
+   d="scan'208";a="334265660"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:35:05 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="672905589"
+   d="scan'208";a="574566799"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 17 May 2022 08:34:58 -0700
+  by fmsmga007.fm.intel.com with ESMTP; 17 May 2022 08:34:58 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E3A8BD7B; Tue, 17 May 2022 18:34:50 +0300 (EEST)
+	id BA7B7CE3; Tue, 17 May 2022 18:34:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -59,9 +59,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv6 13/15] x86/tdx: Refactor try_accept_one()
-Date: Tue, 17 May 2022 18:34:42 +0300
-Message-Id: <20220517153444.11195-14-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 10/15] x86/mm: Report unaccepted memory in /proc/meminfo
+Date: Tue, 17 May 2022 18:34:39 +0300
+Message-Id: <20220517153444.11195-11-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
 References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
@@ -73,96 +73,151 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rework try_accept_one() to return accepted size instead of modifying
-'start' inside the helper. It makes 'start' in-only argumaent and
-streamlines code on the caller side.
+Track amount of unaccepted memory and report it in /proc/meminfo.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Suggested-by: Borislav Petkov <bp@alien8.de>
 ---
- arch/x86/coco/tdx/tdx.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ arch/x86/include/asm/set_memory.h        |  2 ++
+ arch/x86/include/asm/unaccepted_memory.h |  9 ++++++
+ arch/x86/mm/init.c                       |  8 ++++++
+ arch/x86/mm/pat/set_memory.c             |  2 +-
+ arch/x86/mm/unaccepted_memory.c          | 36 +++++++++++++++++++++++-
+ 5 files changed, 55 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 6a62d3950619..90237700a942 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -561,18 +561,18 @@ static bool tdx_cache_flush_required(void)
- 	return true;
- }
+diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+index 78ca53512486..e467f3941d22 100644
+--- a/arch/x86/include/asm/set_memory.h
++++ b/arch/x86/include/asm/set_memory.h
+@@ -86,6 +86,8 @@ bool kernel_page_present(struct page *page);
  
--static bool try_accept_one(phys_addr_t *start, unsigned long len,
--			  enum pg_level pg_level)
-+static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
-+				    enum pg_level pg_level)
- {
- 	unsigned long accept_size = page_level_size(pg_level);
- 	u64 tdcall_rcx;
- 	u8 page_size;
+ extern int kernel_set_to_readonly;
  
--	if (!IS_ALIGNED(*start, accept_size))
--		return false;
-+	if (!IS_ALIGNED(start, accept_size))
-+		return 0;
- 
- 	if (len < accept_size)
--		return false;
-+		return 0;
- 
- 	/*
- 	 * Pass the page physical address to the TDX module to accept the
-@@ -591,15 +591,14 @@ static bool try_accept_one(phys_addr_t *start, unsigned long len,
- 		page_size = 2;
- 		break;
- 	default:
--		return false;
-+		return 0;
- 	}
- 
--	tdcall_rcx = *start | page_size;
-+	tdcall_rcx = start | page_size;
- 	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
--		return false;
-+		return 0;
- 
--	*start += accept_size;
--	return true;
-+	return accept_size;
- }
- 
++void direct_map_meminfo(struct seq_file *m);
++
+ #ifdef CONFIG_X86_64
  /*
-@@ -636,21 +635,22 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 	 */
- 	while (start < end) {
- 		unsigned long len = end - start;
-+		unsigned long accept_size;
+  * Prevent speculative access to the page by either unmapping
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index 89fc91c61560..d8622d952212 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -3,7 +3,10 @@
+ #ifndef _ASM_X86_UNACCEPTED_MEMORY_H
+ #define _ASM_X86_UNACCEPTED_MEMORY_H
  
- 		/*
- 		 * Try larger accepts first. It gives chance to VMM to keep
--		 * 1G/2M SEPT entries where possible and speeds up process by
--		 * cutting number of hypercalls (if successful).
-+		 * 1G/2M Secure EPT entries where possible and speeds up
-+		 * process by cutting number of hypercalls (if successful).
- 		 */
++#include <linux/types.h>
++
+ struct boot_params;
++struct seq_file;
  
--		if (try_accept_one(&start, len, PG_LEVEL_1G))
--			continue;
--
--		if (try_accept_one(&start, len, PG_LEVEL_2M))
--			continue;
--
--		if (!try_accept_one(&start, len, PG_LEVEL_4K))
-+		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
-+		if (!accept_size)
- 			return false;
-+		start += accept_size;
+ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
+ 
+@@ -12,5 +15,11 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
+ void accept_memory(phys_addr_t start, phys_addr_t end);
+ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end);
+ 
++void unaccepted_meminfo(struct seq_file *m);
++
++#else
++
++static inline void unaccepted_meminfo(struct seq_file *m) {}
++
+ #endif
+ #endif
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index d8cfce221275..7e92a9d93994 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -1065,3 +1065,11 @@ unsigned long max_swapfile_size(void)
+ 	return pages;
+ }
+ #endif
++
++#ifdef CONFIG_PROC_FS
++void arch_report_meminfo(struct seq_file *m)
++{
++	direct_map_meminfo(m);
++	unaccepted_meminfo(m);
++}
++#endif
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 0656db33574d..f08881c4b8ee 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -105,7 +105,7 @@ static void split_page_count(int level)
+ 	direct_pages_count[level - 1] += PTRS_PER_PTE;
+ }
+ 
+-void arch_report_meminfo(struct seq_file *m)
++void direct_map_meminfo(struct seq_file *m)
+ {
+ 	seq_printf(m, "DirectMap4k:    %8lu kB\n",
+ 			direct_pages_count[PG_LEVEL_4K] << 2);
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+index 33bf70592a46..1ca71eb98c24 100644
+--- a/arch/x86/mm/unaccepted_memory.c
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -2,14 +2,17 @@
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
++#include <linux/seq_file.h>
+ #include <linux/spinlock.h>
+ 
++#include <asm/e820/api.h>
+ #include <asm/io.h>
+ #include <asm/setup.h>
+ #include <asm/unaccepted_memory.h>
+ 
+-/* Protects unaccepted memory bitmap */
++/* Protects unaccepted memory bitmap and nr_unaccepted */
+ static DEFINE_SPINLOCK(unaccepted_memory_lock);
++static unsigned long nr_unaccepted;
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end)
+ {
+@@ -63,6 +66,12 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 		/* Platform-specific memory-acceptance call goes here */
+ 		panic("Cannot accept memory: unknown platform\n");
+ 		bitmap_clear(bitmap, range_start, len);
++
++		/* In early boot nr_unaccepted is not yet initialized */
++		if (nr_unaccepted) {
++			WARN_ON(nr_unaccepted < len);
++			nr_unaccepted -= len;
++		}
  	}
+ 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+ }
+@@ -90,3 +99,28 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
  
- 	return true;
+ 	return ret;
+ }
++
++void unaccepted_meminfo(struct seq_file *m)
++{
++	seq_printf(m, "UnacceptedMem:  %8lu kB\n",
++		   (READ_ONCE(nr_unaccepted) * PMD_SIZE) >> 10);
++}
++
++static int __init unaccepted_init(void)
++{
++	unsigned long *unaccepted_memory;
++	unsigned long flags, bitmap_size;
++
++	if (!boot_params.unaccepted_memory)
++		return 0;
++
++	bitmap_size = e820__end_of_ram_pfn() * PAGE_SIZE / PMD_SIZE;
++	unaccepted_memory = __va(boot_params.unaccepted_memory);
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	nr_unaccepted = bitmap_weight(unaccepted_memory, bitmap_size);
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++
++	return 0;
++}
++fs_initcall(unaccepted_init);
 -- 
 2.35.1
 
