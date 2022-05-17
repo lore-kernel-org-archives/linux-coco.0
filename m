@@ -1,33 +1,33 @@
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7131850
-	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAAA1847
+	for <linux-coco@lists.linux.dev>; Tue, 17 May 2022 15:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1652801712; x=1684337712;
+  t=1652801719; x=1684337719;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OKRcLw6QsuGpSKY4/BO13xavP65NgCLYIODNZJ7MeM4=;
-  b=dbtZI3y2Y3r1LRtyGe7F6r22+6KEO/uVKXb3/58OMsyr+2xKpq2fOt+V
-   4bZxkLl2gvxvRAw9oozwdrEDziQhlcQlsQyIED95MT4c1zNjeYldPEXxT
-   PZDzBFBt6SI9FNDzM4xfHxmHdMcNPDI3iuCkNC4b78kfLCzWUW/5ptSRJ
-   +CpeB2agYD6t+7LLlSV5jEF5r3VG+MtSfNLsToQFxQhrJ0Ofma0K1W1NU
-   TIB8/SqaKr1TcNCX+eAGxPYuRNXbk3Lf43UEEiVxX+PO8/RqnN5p6m06m
-   ebQbbAg87i+MfsYpYvh6V58k3ub5RqnVy4o2lzCZMgnxXvb4NQ8M73kJG
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="296502110"
+  bh=xF84dLhyksFpMyCb7NPvfM3NGwTlY5bjd8sAol6pl90=;
+  b=BcDjdB5lxZ32SyGkAlwY7g971/5l/ZvovIoW3Xu2ryuHdw3+Cx9zwSIc
+   vkl0TKZF3QD5DfGIqBW90oTVZcGJHdBJphZhycfntL41W2e8231cmdeTu
+   0K3EiIvPTkC4hs01pkcs1ifBtTRaQHzobqKvrSHv3J8O5w3VJoR/woQQJ
+   Cz6iIAJPMhNxV068WqvzrQ5twQQTuSnf5k+7huVM4zlIBaiht7yfuVnMg
+   Ao+RYeHAMcSXD58H/EKv5Z1u5YOi42flAV6v9bx/pV0JtP2MBjwj9mzuo
+   7V+qAg0AEcli6FwyhdwvhhjPRAwggByfH4IDf8Rj0ddmcImrCVHHbcJS7
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="253270622"
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="296502110"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:35:11 -0700
+   d="scan'208";a="253270622"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2022 08:35:05 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; 
-   d="scan'208";a="672905613"
+   d="scan'208";a="555823109"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 17 May 2022 08:35:05 -0700
+  by orsmga002.jf.intel.com with ESMTP; 17 May 2022 08:34:58 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 03686EAF; Tue, 17 May 2022 18:34:50 +0300 (EEST)
+	id CBC23D38; Tue, 17 May 2022 18:34:50 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -59,9 +59,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv6 15/15] mm/vmstat: Add counter for memory accepting
-Date: Tue, 17 May 2022 18:34:44 +0300
-Message-Id: <20220517153444.11195-16-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 11/15] x86: Disable kexec if system has unaccepted memory
+Date: Tue, 17 May 2022 18:34:40 +0300
+Message-Id: <20220517153444.11195-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
 References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
@@ -73,58 +73,45 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The counter increased every time kernel accepts a memory region.
+On kexec, the target kernel has to know what memory has been accepted.
+Information in EFI map is out of date and cannot be used.
 
-The counter allows to see if memory acceptation is still ongoing and
-contributes to memory allocation latency.
+boot_params.unaccepted_memory can be used to pass the bitmap between two
+kernels on kexec, but the use-case is not yet implemented.
+
+Disable kexec on machines with unaccepted memory for now.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/mm/unaccepted_memory.c | 1 +
- include/linux/vm_event_item.h   | 3 +++
- mm/vmstat.c                     | 3 +++
- 3 files changed, 7 insertions(+)
+ arch/x86/mm/unaccepted_memory.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 6ecd79101922..fe1dabfae326 100644
+index 1ca71eb98c24..b4c43e6089b0 100644
 --- a/arch/x86/mm/unaccepted_memory.c
 +++ b/arch/x86/mm/unaccepted_memory.c
-@@ -74,6 +74,7 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 		}
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++#include <linux/kexec.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+@@ -114,6 +115,15 @@ static int __init unaccepted_init(void)
+ 	if (!boot_params.unaccepted_memory)
+ 		return 0;
  
- 		bitmap_clear(bitmap, range_start, len);
-+		count_vm_events(ACCEPT_MEMORY, len * PMD_SIZE / PAGE_SIZE);
++#ifdef CONFIG_KEXEC_CORE
++	/*
++	 * TODO: Information on memory acceptance status has to be communicated
++	 * between kernel.
++	 */
++	pr_warn("Disable kexec: not yet supported on systems with unaccepted memory\n");
++	kexec_load_disabled = 1;
++#endif
++
+ 	bitmap_size = e820__end_of_ram_pfn() * PAGE_SIZE / PMD_SIZE;
+ 	unaccepted_memory = __va(boot_params.unaccepted_memory);
  
- 		/* In early boot nr_unaccepted is not yet initialized */
- 		if (nr_unaccepted) {
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 16a0a4fd000b..6a468164a2f9 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -136,6 +136,9 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- #ifdef CONFIG_X86
- 		DIRECT_MAP_LEVEL2_SPLIT,
- 		DIRECT_MAP_LEVEL3_SPLIT,
-+#endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+		ACCEPT_MEMORY,
- #endif
- 		NR_VM_EVENT_ITEMS
- };
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index b75b1a64b54c..4c9197f32406 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1397,6 +1397,9 @@ const char * const vmstat_text[] = {
- 	"direct_map_level2_splits",
- 	"direct_map_level3_splits",
- #endif
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+	"accept_memory",
-+#endif
- #endif /* CONFIG_VM_EVENT_COUNTERS || CONFIG_MEMCG */
- };
- #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA || CONFIG_MEMCG */
 -- 
 2.35.1
 
