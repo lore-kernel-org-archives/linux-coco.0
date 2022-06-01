@@ -1,137 +1,163 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052692562
-	for <linux-coco@lists.linux.dev>; Wed,  1 Jun 2022 14:39:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1654094364;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qlU0tkzpCjcg/jU3LgCOcXpRFl3qkGqk9lVl6FW9S+g=;
-	b=IiaxLnkzl09OU8QL1+gL/VMiH3zdlsa0C5BSfpkh61xG65nJ+wu2Q1uMp1O8HgqjoYJbhq
-	ecCbr88QHeTEjxLgJSGMI5j3fHwVkdWRifN48XF1gc/k6mWsxoNGBdcwF5IvKI32/9s2ro
-	zYy9L0/Bw465yUGje4/3i75XFuM0H5M=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-479-QRF6Qa-FM9qS8M_eKwY1Eg-1; Wed, 01 Jun 2022 10:39:21 -0400
-X-MC-Unique: QRF6Qa-FM9qS8M_eKwY1Eg-1
-Received: by mail-wr1-f70.google.com with SMTP id i10-20020a5d55ca000000b002103d76ffcaso346458wrw.17
-        for <linux-coco@lists.linux.dev>; Wed, 01 Jun 2022 07:39:20 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C366A2562
+	for <linux-coco@lists.linux.dev>; Wed,  1 Jun 2022 14:39:52 +0000 (UTC)
+Received: by mail-lf1-f45.google.com with SMTP id a15so3085155lfb.9
+        for <linux-coco@lists.linux.dev>; Wed, 01 Jun 2022 07:39:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20210112.gappssmtp.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=31EA6vRKdwEKuRnjDw/ZYtreHn9B2KdDbzd1nRyYZOQ=;
+        b=uVWoHyvzgsqsVh284rkDPfCaL4cl8DXc+3JtebyZYXNFjjb1aE1cOGO5YW3d3b9k/N
+         a3ltGR3Y7zIGFrrS/RmfqjlGFcCB/CkOHIxJizEb9PrGL1PTkLMNOHTrSTpisovoaN4Y
+         KCbz/HRuA6d0ftXtT8uo8zptAsflNcNJN8UkjpkShiQC8oR9R1R1VOj52hJrV/BNFVZk
+         6TwTVl7LwVVGHdLYwk1fPaFlCMNqXftkg6X7Lrq0B72xuOah6kabVgQ2/PhVIj5Foway
+         dA59fZwUd4i+MY5O0zc0w3f4zQVGVOeYBwb0gvlPnmRkhkrVrcoG4Ocjk1Ddg0yelLl4
+         D9Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:organization:in-reply-to
-         :content-transfer-encoding;
-        bh=qlU0tkzpCjcg/jU3LgCOcXpRFl3qkGqk9lVl6FW9S+g=;
-        b=jkhZpUJAs5n+FHyoh5U/GfZ7cR5KMo+uN0KiHWQJ2XKZNx0HMA1tgQ8ykh903/jE2B
-         mIBZPOffkgZcLYGOuhntMweaLOolWxjcOb6mVXnqR1UopssF8cdlDXdlp6pE9g23XIMG
-         Qr6TdJ+tROg+DL3v+pcCWwtNv4mKB/xcmMsf+XP0SvNgybFY5kqlm32RmcfP2iqm2u80
-         Miruvg/HtEouXq5K0oa19nrrbO/7XNeJ6DQkXXyOLHdXXODLBfQ4xqt2et1OxYccFc+3
-         xOaLVCuJfOyCRSfliOWVks16f+qSYAMvTMzA3rCPdamiRA1zD7r7SGb6NGUEOWbMJolN
-         ss2g==
-X-Gm-Message-State: AOAM532JX0/ONXEQbLW7XLfSjE9xbS9k54UM2d/D2RNucuFziSJfp5Qw
-	QixfRsQ7xcFqch2EToK1IF+/dJSX1naELzdLwtCBIhnB8oWhdN8CXf64+PhEiu6koh33V0YNRa2
-	NqLCjQghGrI0Ffg///nGJ8A==
-X-Received: by 2002:a05:600c:1d99:b0:397:482b:429 with SMTP id p25-20020a05600c1d9900b00397482b0429mr28614915wms.130.1654094359707;
-        Wed, 01 Jun 2022 07:39:19 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwZmvS/ySSMSACfcbs5N8wx4zgU89IJgDAitfH9pT2OXqot4AKsgn1nc41biOJdFJqGw1r+Pw==
-X-Received: by 2002:a05:600c:1d99:b0:397:482b:429 with SMTP id p25-20020a05600c1d9900b00397482b0429mr28614883wms.130.1654094359401;
-        Wed, 01 Jun 2022 07:39:19 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c705:2600:951d:63df:c091:3b45? (p200300cbc7052600951d63dfc0913b45.dip0.t-ipconnect.de. [2003:cb:c705:2600:951d:63df:c091:3b45])
-        by smtp.gmail.com with ESMTPSA id t22-20020a05600c41d600b00397550b387bsm2720288wmh.23.2022.06.01.07.39.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jun 2022 07:39:18 -0700 (PDT)
-Message-ID: <116f7be4-7b75-a83b-899b-c23b52534b30@redhat.com>
-Date: Wed, 1 Jun 2022 16:39:16 +0200
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=31EA6vRKdwEKuRnjDw/ZYtreHn9B2KdDbzd1nRyYZOQ=;
+        b=HdUpVi9pDUFrBeZPxv2bMS71dW4Gnj/D7kyd/Refsnr0FXQ9qmMrL/7DeNDRJY306Q
+         DoDpycsOuAhC38GQI5Bm+cH91Pyr+77QZmYYDzcTf4bt6MYXmY+OuK1jPCej+6+d7vDU
+         VsmOHD8XZr0lQCCIbOHGtvDaDgCZw4zfmWL/LR60Uwxz63+/2M49WYuCrT5v1taTTyXl
+         AyHnk8E7Sc6rpdCJGaScIxjkzBLWDdm8ge76IKciGXhv61xwIxHjj414p6Q4sKnyv0dx
+         QxUyiz0xNDC3ZOuLaSo16ytkbTHQxP+GowOdyJTWGxzGql36Azk0HfHtq36N+VNZsjLv
+         cOSg==
+X-Gm-Message-State: AOAM530gJic/OamxFD0Rk49xYcT389F0SkAcsOUvz6LhDhXyw+kKB5Y/
+	GrqQDE9yua8BuLygi1DhUv2GGQ==
+X-Google-Smtp-Source: ABdhPJytzV7/7pe53tLyOeHlbGNCloSYChNpAaJazKo2Ow7frOawx90Wzg5h4MwOnTDSTluYhB+amg==
+X-Received: by 2002:a05:6512:2255:b0:478:da8f:e2e3 with SMTP id i21-20020a056512225500b00478da8fe2e3mr43581lfu.50.1654094390799;
+        Wed, 01 Jun 2022 07:39:50 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id q23-20020a2e9157000000b002554d2a5ea1sm353365ljg.10.2022.06.01.07.39.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jun 2022 07:39:50 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+	id A464F109789; Wed,  1 Jun 2022 17:41:48 +0300 (+03)
+Date: Wed, 1 Jun 2022 17:41:48 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: David Hildenbrand <david@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com, khalid.elmously@canonical.com,
+	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv6 15/15] mm/vmstat: Add counter for memory accepting
+Message-ID: <20220601144148.2saee3gw7jgvusgt@box.shutemov.name>
+References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
+ <20220517153444.11195-16-kirill.shutemov@linux.intel.com>
+ <76adccb2-2925-e102-db6f-529492d885c7@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCHv6 03/15] efi/x86: Get full memory map in allocate_e820()
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Dave Hansen <dave.hansen@intel.com>, Mike Rapoport <rppt@kernel.org>,
- marcelo.cerri@canonical.com, tim.gardner@canonical.com,
- khalid.elmously@canonical.com, philip.cox@canonical.com, x86@kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20220517153444.11195-1-kirill.shutemov@linux.intel.com>
- <20220517153444.11195-4-kirill.shutemov@linux.intel.com>
- <b9a0eb0a-ce27-5306-a12f-79d196445254@redhat.com>
- <20220601143515.iavmtysdchirbtel@box.shutemov.name>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20220601143515.iavmtysdchirbtel@box.shutemov.name>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <76adccb2-2925-e102-db6f-529492d885c7@redhat.com>
 
-On 01.06.22 16:35, Kirill A. Shutemov wrote:
-> On Wed, Jun 01, 2022 at 11:00:23AM +0200, David Hildenbrand wrote:
->> On 17.05.22 17:34, Kirill A. Shutemov wrote:
->>> Currently allocate_e820() only interested in the size of map and size of
->>> memory descriptor to determine how many e820 entries the kernel needs.
->>>
->>> UEFI Specification version 2.9 introduces a new memory type --
->>> unaccepted memory. To track unaccepted memory kernel needs to allocate
->>> a bitmap. The size of the bitmap is dependent on the maximum physical
->>> address present in the system. A full memory map is required to find
->>> the maximum address.
->>>
->>> Modify allocate_e820() to get a full memory map.
->>
->> Usually we use max_pfn, if we want to know the maximum pfn that's
->> present in the system (well, IIRC, excluding hotunplug).
->>
->> How exactly will this (different?) maximum from UEFI for the bitmap
->> interact with
->>
->> max_pfn = e820__end_of_ram_pfn();
->>
->> from e820 in existing code
->>
->> ?
+On Wed, Jun 01, 2022 at 11:05:40AM +0200, David Hildenbrand wrote:
+> On 17.05.22 17:34, Kirill A. Shutemov wrote:
+> > The counter increased every time kernel accepts a memory region.
+> > 
+> > The counter allows to see if memory acceptation is still ongoing and
+> > contributes to memory allocation latency.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  arch/x86/mm/unaccepted_memory.c | 1 +
+> >  include/linux/vm_event_item.h   | 3 +++
+> >  mm/vmstat.c                     | 3 +++
+> >  3 files changed, 7 insertions(+)
+> > 
+> > diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+> > index 6ecd79101922..fe1dabfae326 100644
+> > --- a/arch/x86/mm/unaccepted_memory.c
+> > +++ b/arch/x86/mm/unaccepted_memory.c
+> > @@ -74,6 +74,7 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+> >  		}
+> >  
+> >  		bitmap_clear(bitmap, range_start, len);
+> > +		count_vm_events(ACCEPT_MEMORY, len * PMD_SIZE / PAGE_SIZE);
+> >  
 > 
-> I'm not sure I understand the question.
+> It's a bit weird that this is accounted from arch code
 
-Essentially, if the PFN you calculate here for the bitmap size will
-essentially match later max_pfn.
+That's very serialization happens.
 
-> 
-> On EFI system, E820 is constructed based on EFI memory map and size of
-> bitmap calculated based of EFI memmap will always be enough to address all
-> memory. e820__end_of_ram_pfn() can be smaller than what what we calculate
-> as size of memory here, if kernel reserve very top of the memory, but it
-> will never be larger.
-> 
-> Later during the boot we use e820__end_of_ram_pfn() to infer size of
-> bitmap and it is safe.
-> 
+We can do it in the core mm if we can tolerate sporious vmcount bump.
+Otherwise it has to happen under the lock in the arch code.
 
+> Also, I'm a bit
+> confused about the granularity here (PMD_SIZE).
+
+That's how we track it in x86. The count itself is in pages. Different
+arch can choose different granularity.
+
+> >  		/* In early boot nr_unaccepted is not yet initialized */
+> >  		if (nr_unaccepted) {
+> > diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+> > index 16a0a4fd000b..6a468164a2f9 100644
+> > --- a/include/linux/vm_event_item.h
+> > +++ b/include/linux/vm_event_item.h
+> > @@ -136,6 +136,9 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+> >  #ifdef CONFIG_X86
+> >  		DIRECT_MAP_LEVEL2_SPLIT,
+> >  		DIRECT_MAP_LEVEL3_SPLIT,
+> > +#endif
+> > +#ifdef CONFIG_UNACCEPTED_MEMORY
+> > +		ACCEPT_MEMORY,
+> >  #endif
+> >  		NR_VM_EVENT_ITEMS
+> >  };
+> > diff --git a/mm/vmstat.c b/mm/vmstat.c
+> > index b75b1a64b54c..4c9197f32406 100644
+> > --- a/mm/vmstat.c
+> > +++ b/mm/vmstat.c
+> > @@ -1397,6 +1397,9 @@ const char * const vmstat_text[] = {
+> >  	"direct_map_level2_splits",
+> >  	"direct_map_level3_splits",
+> >  #endif
+> > +#ifdef CONFIG_UNACCEPTED_MEMORY
+> > +	"accept_memory",
+> > +#endif
+> >  #endif /* CONFIG_VM_EVENT_COUNTERS || CONFIG_MEMCG */
+> >  };
+> >  #endif /* CONFIG_PROC_FS || CONFIG_SYSFS || CONFIG_NUMA || CONFIG_MEMCG */
+> 
+> How exactly would I be able to figure out if "memory acceptation is
+> still ongoing" if there is one last remaining page stuck at the tail of
+> the freelist?
+
+"still ongoing" in sense it is happening now, like if it increases system
+does memory accept.
+
+> Wouldn't it make more sense to actually count the number of unaccepted
+> pages in the buddy? Once that number drops to 0, one knows that there is
+> no unaccepted memory left in the buddy.
+
+Patch 10/15 does this, but not in buddy.
 
 -- 
-Thanks,
-
-David / dhildenb
-
+ Kirill A. Shutemov
