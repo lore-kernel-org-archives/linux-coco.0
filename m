@@ -1,136 +1,153 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09F21376
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jun 2022 00:46:43 +0000 (UTC)
-Received: by mail-pg1-f169.google.com with SMTP id 123so7081950pgb.5
-        for <linux-coco@lists.linux.dev>; Mon, 13 Jun 2022 17:46:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=s2FWD/PtgY9oueUwTZqKdyU1Zetmw+d/ZG43eXlDlcM=;
-        b=YgSLK9gviQctEV72wBcPKr3rDhijCNprOQ+gp2fOSYMwl+z8m/ywJFJNdRTPfdRN6x
-         iDRg42v/QZUmhq4AMxM+546r3kFUi55RAc+j47EeF+C6skbeoGymucTmWpWLGBIjymwN
-         uCP4s+WQkriW77kbjxxgNIF7QaYBwwsZzcUDKSti8Czi1gIsPCEV4pAVmZvrc7Ueaqhw
-         lOHhx1muh9QhVGl7UTGDpBBFbxdvLgwbahBIYa67KFXU4u9bWvK0IQr6jEiB+VXErtmh
-         6ToX5gd8nYLLeOC0TQ5G60KE/adZglCpxc3QxuFm4VL16SHCtIdEzNaKBM/HaQhyF4O5
-         +Rww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=s2FWD/PtgY9oueUwTZqKdyU1Zetmw+d/ZG43eXlDlcM=;
-        b=ZWXgI7o0l3r/TFQypuWybNTCwJx+oWhc3QJPRF1hbxOYt4yuZUGP7YDOajZlJOybCX
-         6f+w9uL2E0XrMjUZmMrYn/rOuKruv4w4W7zhugkJOUjuFwURlTRrgy0ZnxNnaCCtddPd
-         OxRjoLevVzM+QUnsNh2dRXfr/ZjYf99fOIrSACJhuV2vRwJqmCSwvmHe7vr+kuQxJg0T
-         vE3xDeDZCvb14ILL0mfbGauYdt+Ugx59wtc/JzuEeXY0uhFcxSsxd+YtEA9UaAbvSozL
-         3BUC+dCCI930szNirm7Hh9li1CXNAMNzRVFu4AZrEwpvfrGr5vx6iH2O/5G7Fjv4zG8y
-         NpPg==
-X-Gm-Message-State: AOAM533OJwQ1CFgOwMKMH3aMw1jZjVQDEbeBt/Jm5zj5Ni90Qkx2paom
-	tYjuaDueOk6WD1hnFKhH0fUplQ==
-X-Google-Smtp-Source: ABdhPJyqpKu6p1u5KzVVLMZAfN9ra4WcAcLZdMNT/RwAJ4w3TWcPwfXbJl2ut/OvLAU1lo600eJCYA==
-X-Received: by 2002:a05:6a00:179b:b0:51b:f51f:992e with SMTP id s27-20020a056a00179b00b0051bf51f992emr2018667pfg.60.1655167602802;
-        Mon, 13 Jun 2022 17:46:42 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id u4-20020a17090a2b8400b001e31fea8c85sm8035481pjd.14.2022.06.13.17.46.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 17:46:42 -0700 (PDT)
-Date: Tue, 14 Jun 2022 00:46:38 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3383F7C
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jun 2022 12:02:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655208156; x=1686744156;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=z3vk4MiFaMowdZHoqTpUcMK79OckKcSoieuVm3Gi93o=;
+  b=ky3RaF4EmmAnUZNGSbxuoxsdS8YEX7+RCp7nD6jah/6yxNCq6nuaA2dq
+   VMUc8V6xSJhKbETzAHXyZLKrJzVYQztrVqyvDKnGWSr+pjtEX2qQKCBaE
+   JJZmV9pt566MQVddgyDKYQ2Q0VWeCmSQXW0g1CTB+19UI99TARPjLtiaL
+   peOgIhfza6qi1Y8fzKhpVsxGsA3c+YnRah0Wo87dxMmvoD6t1nZiNuR9e
+   VWQXGYO7aKZzeswjJ7DFDaLep0k2q0+L+HAg1to9maWCaZFcetmD0LqpQ
+   IE6luplQVtgWcVMPA4gfISzg/FS++Ec534RjPX/QkXjByBOv1DT4eCoF/
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="277380180"
+X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
+   d="scan'208";a="277380180"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:02:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
+   d="scan'208";a="652001263"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 14 Jun 2022 05:02:28 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 9CB1660E; Tue, 14 Jun 2022 15:02:32 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>,
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>,
 	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v12 19/46] x86/kernel: Make the .bss..decrypted section
- shared in RMP table
-Message-ID: <YqfabnTRxFSM+LoX@google.com>
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-20-brijesh.singh@amd.com>
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com,
+	khalid.elmously@canonical.com,
+	philip.cox@canonical.com,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv7 04/14] efi/x86: Get full memory map in allocate_e820()
+Date: Tue, 14 Jun 2022 15:02:21 +0300
+Message-Id: <20220614120231.48165-5-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220307213356.2797205-20-brijesh.singh@amd.com>
+Content-Transfer-Encoding: 8bit
 
-s/Brijesh/Michael
+Currently allocate_e820() only interested in the size of map and size of
+memory descriptor to determine how many e820 entries the kernel needs.
 
-On Mon, Mar 07, 2022, Brijesh Singh wrote:
-> The encryption attribute for the .bss..decrypted section is cleared in the
-> initial page table build. This is because the section contains the data
-> that need to be shared between the guest and the hypervisor.
-> 
-> When SEV-SNP is active, just clearing the encryption attribute in the
-> page table is not enough. The page state need to be updated in the RMP
-> table.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kernel/head64.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-> index 83514b9827e6..656d2f3e2cf0 100644
-> --- a/arch/x86/kernel/head64.c
-> +++ b/arch/x86/kernel/head64.c
-> @@ -143,7 +143,20 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp, pmdv
->  	if (sme_get_me_mask()) {
->  		vaddr = (unsigned long)__start_bss_decrypted;
->  		vaddr_end = (unsigned long)__end_bss_decrypted;
-> +
->  		for (; vaddr < vaddr_end; vaddr += PMD_SIZE) {
-> +			/*
-> +			 * On SNP, transition the page to shared in the RMP table so that
-> +			 * it is consistent with the page table attribute change.
-> +			 *
-> +			 * __start_bss_decrypted has a virtual address in the high range
-> +			 * mapping (kernel .text). PVALIDATE, by way of
-> +			 * early_snp_set_memory_shared(), requires a valid virtual
-> +			 * address but the kernel is currently running off of the identity
-> +			 * mapping so use __pa() to get a *currently* valid virtual address.
-> +			 */
-> +			early_snp_set_memory_shared(__pa(vaddr), __pa(vaddr), PTRS_PER_PMD);
+UEFI Specification version 2.9 introduces a new memory type --
+unaccepted memory. To track unaccepted memory kernel needs to allocate
+a bitmap. The size of the bitmap is dependent on the maximum physical
+address present in the system. A full memory map is required to find
+the maximum address.
 
-This breaks SME on Rome and Milan when compiling with clang-13.  I haven't been
-able to figure out exactly what goes wrong.  printk isn't functional at this point,
-and interactive debug during boot on our test systems is beyond me.  I can't even
-verify that the bug is specific to clang because the draconian build system for our
-test systems apparently is stuck pointing at gcc-4.9.
+Modify allocate_e820() to get a full memory map.
 
-I suspect the issue is related to relocation and/or encrypting memory, as skipping
-the call to early_snp_set_memory_shared() if SNP isn't active masks the issue.
-I've dug through the assembly and haven't spotted a smoking gun, e.g. no obvious
-use of absolute addresses.
+This is preparation for the next patch that implements handling of
+unaccepted memory in EFI stub.
 
-Forcing a VM through the same path doesn't fail.  I can't test an SEV guest at the
-moment because INIT_EX is also broken.
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ drivers/firmware/efi/libstub/x86-stub.c | 28 +++++++++++--------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
-The crash incurs a very, very slow reboot, and I was out of cycles to work on this
-about three hours ago.  If someone on the AMD side can repro, it would be much
-appreciated.
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 05ae8bcc9d67..504955368934 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -672,31 +672,27 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
+ }
+ 
+ static efi_status_t allocate_e820(struct boot_params *params,
++				  struct efi_boot_memmap *map,
+ 				  struct setup_data **e820ext,
+ 				  u32 *e820ext_size)
+ {
+-	unsigned long map_size, desc_size, map_key;
+ 	efi_status_t status;
+-	__u32 nr_desc, desc_version;
++	__u32 nr_desc;
+ 
+-	/* Only need the size of the mem map and size of each mem descriptor */
+-	map_size = 0;
+-	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+-			     &desc_size, &desc_version);
+-	if (status != EFI_BUFFER_TOO_SMALL)
+-		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+-
+-	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
++	status = efi_get_memory_map(map);
++	if (status != EFI_SUCCESS)
++		return status;
+ 
+-	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+-		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
++	nr_desc = *map->map_size / *map->desc_size;
++	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
++		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
++			EFI_MMAP_NR_SLACK_SLOTS;
+ 
+ 		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+-		if (status != EFI_SUCCESS)
+-			return status;
+ 	}
+ 
+-	return EFI_SUCCESS;
++	efi_bs_call(free_pool, *map->map);
++	return status;
+ }
+ 
+ struct exit_boot_struct {
+@@ -745,7 +741,7 @@ static efi_status_t exit_boot(struct boot_params *boot_params, void *handle)
+ 	priv.boot_params	= boot_params;
+ 	priv.efi		= &boot_params->efi_info;
+ 
+-	status = allocate_e820(boot_params, &e820ext, &e820ext_size);
++	status = allocate_e820(boot_params, &map, &e820ext, &e820ext_size);
+ 	if (status != EFI_SUCCESS)
+ 		return status;
+ 
+-- 
+2.35.1
+
