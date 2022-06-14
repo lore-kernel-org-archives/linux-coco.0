@@ -1,33 +1,33 @@
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D202A7C
-	for <linux-coco@lists.linux.dev>; Tue, 14 Jun 2022 12:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557ED7C
+	for <linux-coco@lists.linux.dev>; Tue, 14 Jun 2022 12:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655208190; x=1686744190;
+  t=1655208194; x=1686744194;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9Eut4IV6xmO4iZzDBiLqTTFy9q7BW5oKpCzB2UrofAU=;
-  b=bgkDA6U2wAbGOVNClrk+/nf6Gs11zc5kXlDKVC4FjcKC7ujPSZRO3Y/E
-   1IY0Mzf+uH9qlyZaUAo9FO+St+DW637NzMw2/40pKIvikvUe1EUYPhKxU
-   Sk5mseeuhMPjQk8Fz3+Z9XfYMFSgw8AF0+X5WITFL39qUVsFlC1Fhb+wY
-   cO5tJiGJX5OKXKNA9GN/hUh+TWs2EuRXShMd0j63HK6WF0J3vMBZG2JyU
-   5BMprcmdJHNh/XWnA3oAGIYnuSkKv7TR5sG88KhRqIQYRO3OjfTLTMakU
-   labJqFvHsKy7hMevXBibdiHJJ/S1YKZTY71e5Cp+XQBM4rlSvASdUpv8T
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="279312561"
+  bh=CodHwoZ2rLYrhqQ6ze00eaB7F0xVPSzWsLToYorZfcA=;
+  b=cEUtTyy9uFcktR9w9JKck2MBrHkEtMUaapPrT0jWVdVAaEubo0SD4qfl
+   e7hoDyjIXY/3Gj2sHqJC5bupfHFpU1Zl6X+NR1vTFYEjc0QgoGaOlGrrA
+   ifkBRfyKNFgnKknJysCbVRZbWf+4FFIsmiGR4PCfI/zFDw5LjHJgFmKyb
+   TDL4DNtUs/FP07Eihmu/Z4ciDfdhuI4iQzgUJEw5d2ShhBIsvNE/eAYPF
+   q4g3LsHnHsdocXpUSGw+zNajqtYDuLqEIm1YNfm7Sef2N+hVo+Nq82jeY
+   ipZOaRbWzYU8ab6FwaztTXyt8jd5Mj4c4xc36hhasahWuMfKyHNT47MPJ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="279312625"
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="279312561"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:02:37 -0700
+   d="scan'208";a="279312625"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:02:45 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="726791038"
+   d="scan'208";a="761936303"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 14 Jun 2022 05:02:28 -0700
+  by orsmga005.jf.intel.com with ESMTP; 14 Jun 2022 05:02:36 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 8CDD5506; Tue, 14 Jun 2022 15:02:32 +0300 (EEST)
+	id B8724793; Tue, 14 Jun 2022 15:02:32 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -58,11 +58,10 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Date: Tue, 14 Jun 2022 15:02:19 +0300
-Message-Id: <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv7 07/14] x86/boot/compressed: Handle unaccepted memory
+Date: Tue, 14 Jun 2022 15:02:24 +0300
+Message-Id: <20220614120231.48165-8-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
@@ -74,345 +73,188 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-UEFI Specification version 2.9 introduces the concept of memory
-acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
-SEV-SNP, require memory to be accepted before it can be used by the
-guest. Accepting happens via a protocol specific to the Virtual Machine
-platform.
+The firmware will pre-accept the memory used to run the stub. But, the
+stub is responsible for accepting the memory into which it decompresses
+the main kernel. Accept memory just before decompression starts.
 
-There are several ways kernel can deal with unaccepted memory:
-
- 1. Accept all the memory during the boot. It is easy to implement and
-    it doesn't have runtime cost once the system is booted. The downside
-    is very long boot time.
-
-    Accept can be parallelized to multiple CPUs to keep it manageable
-    (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
-    memory bandwidth and does not scale beyond the point.
-
- 2. Accept a block of memory on the first use. It requires more
-    infrastructure and changes in page allocator to make it work, but
-    it provides good boot time.
-
-    On-demand memory accept means latency spikes every time kernel steps
-    onto a new memory block. The spikes will go away once workload data
-    set size gets stabilized or all memory gets accepted.
-
- 3. Accept all memory in background. Introduce a thread (or multiple)
-    that gets memory accepted proactively. It will minimize time the
-    system experience latency spikes on memory allocation while keeping
-    low boot time.
-
-    This approach cannot function on its own. It is an extension of #2:
-    background memory acceptance requires functional scheduler, but the
-    page allocator may need to tap into unaccepted memory before that.
-
-    The downside of the approach is that these threads also steal CPU
-    cycles and memory bandwidth from the user's workload and may hurt
-    user experience.
-
-Implement #2 for now. It is a reasonable default. Some workloads may
-want to use #1 or #3 and they can be implemented later based on user's
-demands.
-
-Support of unaccepted memory requires a few changes in core-mm code:
-
-  - memblock has to accept memory on allocation;
-
-  - page allocator has to accept memory on the first allocation of the
-    page;
-
-Memblock change is trivial.
-
-The page allocator is modified to accept pages on the first allocation.
-The new page type (encoded in the _mapcount) -- PageUnaccepted() -- is
-used to indicate that the page requires acceptance.
-
-Architecture has to provide two helpers if it wants to support
-unaccepted memory:
-
- - accept_memory() makes a range of physical addresses accepted.
-
- - range_contains_unaccepted_memory() checks anything within the range
-   of physical addresses requires acceptance.
+The stub is also responsible for choosing a physical address in which to
+place the decompressed kernel image. The KASLR mechanism will randomize
+this physical address. Since the unaccepted memory region is relatively
+small, KASLR would be quite ineffective if it only used the pre-accepted
+area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
+entire physical address space by also including EFI_UNACCEPTED_MEMORY.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
-Reviewed-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/page-flags.h | 31 +++++++++++++
- mm/internal.h              | 12 +++++
- mm/memblock.c              |  9 ++++
- mm/page_alloc.c            | 89 +++++++++++++++++++++++++++++++++++++-
- 4 files changed, 139 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/Makefile        |  2 +-
+ arch/x86/boot/compressed/efi.h           |  1 +
+ arch/x86/boot/compressed/kaslr.c         | 35 ++++++++++++++++--------
+ arch/x86/boot/compressed/mem.c           | 18 ++++++++++++
+ arch/x86/boot/compressed/misc.c          |  6 ++++
+ arch/x86/boot/compressed/misc.h          |  6 ++++
+ arch/x86/include/asm/unaccepted_memory.h |  2 ++
+ 7 files changed, 57 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index e66f7aa3191d..444ba8f4bfa0 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -942,6 +942,14 @@ static inline bool is_page_hwpoison(struct page *page)
- #define PG_offline	0x00000100
- #define PG_table	0x00000200
- #define PG_guard	0x00000400
-+#define PG_unaccepted	0x00000800
-+
-+/*
-+ * Page types allowed at page_expected_state()
-+ *
-+ * PageUnaccepted() will get cleared in post_alloc_hook().
-+ */
-+#define PAGE_TYPES_EXPECTED	PG_unaccepted
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 67732478323f..85a631f5cdff 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -102,7 +102,7 @@ endif
  
- #define PageType(page, flag)						\
- 	((page->page_type & (PAGE_TYPE_BASE | flag)) == PAGE_TYPE_BASE)
-@@ -967,6 +975,18 @@ static __always_inline void __ClearPage##uname(struct page *page)	\
- 	page->page_type |= PG_##lname;					\
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+ vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
+-vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/mem.o
++vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
+ 
+ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
+ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
+index 7db2f41b54cd..cf475243b6d5 100644
+--- a/arch/x86/boot/compressed/efi.h
++++ b/arch/x86/boot/compressed/efi.h
+@@ -32,6 +32,7 @@ typedef	struct {
+ } efi_table_hdr_t;
+ 
+ #define EFI_CONVENTIONAL_MEMORY		 7
++#define EFI_UNACCEPTED_MEMORY		15
+ 
+ #define EFI_MEMORY_MORE_RELIABLE \
+ 				((u64)0x0000000000010000ULL)	/* higher reliability */
+diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+index 4a3f223973f4..a42264b0b2f5 100644
+--- a/arch/x86/boot/compressed/kaslr.c
++++ b/arch/x86/boot/compressed/kaslr.c
+@@ -671,6 +671,28 @@ static bool process_mem_region(struct mem_vector *region,
  }
  
-+#define PAGE_TYPE_OPS_FALSE(uname)					\
-+static __always_inline int Page##uname(struct page *page)		\
-+{									\
-+	return false;							\
-+}									\
-+static __always_inline void __SetPage##uname(struct page *page)		\
-+{									\
-+}									\
-+static __always_inline void __ClearPage##uname(struct page *page)	\
-+{									\
-+}
+ #ifdef CONFIG_EFI
 +
- /*
-  * PageBuddy() indicates that the page is free and in the buddy system
-  * (see mm/page_alloc.c).
-@@ -997,6 +1017,17 @@ PAGE_TYPE_OPS(Buddy, buddy)
-  */
- PAGE_TYPE_OPS(Offline, offline)
- 
 +/*
-+ * PageUnaccepted() indicates that the page has to be "accepted" before it can
-+ * be read or written. The page allocator must call accept_page() before
-+ * touching the page or returning it to the caller.
++ * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if supported) are
++ * guaranteed to be free.
++ *
++ * It is more conservative in picking free memory than the EFI spec allows:
++ *
++ * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also free memory
++ * and thus available to place the kernel image into, but in practice there's
++ * firmware where using that memory leads to crashes.
 + */
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+PAGE_TYPE_OPS(Unaccepted, unaccepted)
-+#else
-+PAGE_TYPE_OPS_FALSE(Unaccepted)
-+#endif
-+
- extern void page_offline_freeze(void);
- extern void page_offline_thaw(void);
- extern void page_offline_begin(void);
-diff --git a/mm/internal.h b/mm/internal.h
-index c0f8fbe0445b..7c1a653edfc8 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -861,4 +861,16 @@ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags);
- 
- DECLARE_PER_CPU(struct per_cpu_nodestat, boot_nodestats);
- 
-+#ifndef CONFIG_UNACCEPTED_MEMORY
-+static inline bool range_contains_unaccepted_memory(phys_addr_t start,
-+						    phys_addr_t end)
++static inline bool memory_type_is_free(efi_memory_desc_t *md)
 +{
++	if (md->type == EFI_CONVENTIONAL_MEMORY)
++		return true;
++
++	if (md->type == EFI_UNACCEPTED_MEMORY)
++		return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY);
++
 +	return false;
 +}
 +
-+static inline void accept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+}
-+#endif
-+
- #endif	/* __MM_INTERNAL_H */
-diff --git a/mm/memblock.c b/mm/memblock.c
-index e4f03a6e8e56..a1f7f8b304d5 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1405,6 +1405,15 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 		 */
- 		kmemleak_alloc_phys(found, size, 0, 0);
- 
-+	/*
-+	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
-+	 * require memory to be accepted before it can be used by the
-+	 * guest.
-+	 *
-+	 * Accept the memory of the allocated buffer.
-+	 */
-+	accept_memory(found, found + size);
-+
- 	return found;
- }
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index e008a3df0485..279c2746aaa8 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -122,6 +122,12 @@ typedef int __bitwise fpi_t;
-  */
- #define FPI_SKIP_KASAN_POISON	((__force fpi_t)BIT(2))
- 
-+/*
-+ * Check if the page needs to be marked as PageUnaccepted().
-+ * Used for the new pages added to the buddy allocator for the first time.
-+ */
-+#define FPI_UNACCEPTED_SLOWPATH	((__force fpi_t)BIT(3))
-+
- /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
- static DEFINE_MUTEX(pcp_batch_high_lock);
- #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
-@@ -993,6 +999,35 @@ buddy_merge_likely(unsigned long pfn, unsigned long buddy_pfn,
- 			NULL) != NULL;
- }
- 
-+/*
-+ * Page acceptance can be very slow. Do not call under critical locks.
-+ */
-+static void accept_page(struct page *page, unsigned int order)
-+{
-+	phys_addr_t start = page_to_phys(page);
-+	int i;
-+
-+	if (!PageUnaccepted(page))
-+		return;
-+
-+	accept_memory(start, start + (PAGE_SIZE << order));
-+	__ClearPageUnaccepted(page);
-+
-+	/* Assert that there is no PageUnaccepted() on tail pages */
-+	if (IS_ENABLED(CONFIG_DEBUG_VM)) {
-+		for (i = 1; i < (1 << order); i++)
-+			VM_BUG_ON_PAGE(PageUnaccepted(page + i), page + i);
-+	}
-+}
-+
-+static bool page_contains_unaccepted(struct page *page, unsigned int order)
-+{
-+	phys_addr_t start = page_to_phys(page);
-+	phys_addr_t end = start + (PAGE_SIZE << order);
-+
-+	return range_contains_unaccepted_memory(start, end);
-+}
-+
  /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -1027,6 +1062,7 @@ static inline void __free_one_page(struct page *page,
- 	unsigned long combined_pfn;
- 	struct page *buddy;
- 	bool to_tail;
-+	bool page_needs_acceptance = false;
+  * Returns true if we processed the EFI memmap, which we prefer over the E820
+  * table if it is available.
+@@ -715,18 +737,7 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
+ 	for (i = 0; i < nr_desc; i++) {
+ 		md = efi_early_memdesc_ptr(pmap, e->efi_memdesc_size, i);
  
- 	VM_BUG_ON(!zone_is_initialized(zone));
- 	VM_BUG_ON_PAGE(page->flags & PAGE_FLAGS_CHECK_AT_PREP, page);
-@@ -1038,6 +1074,11 @@ static inline void __free_one_page(struct page *page,
- 	VM_BUG_ON_PAGE(pfn & ((1 << order) - 1), page);
- 	VM_BUG_ON_PAGE(bad_range(zone, page), page);
- 
-+	if (PageUnaccepted(page)) {
-+		page_needs_acceptance = true;
-+		__ClearPageUnaccepted(page);
-+	}
-+
- 	while (order < MAX_ORDER - 1) {
- 		if (compaction_capture(capc, page, order, migratetype)) {
- 			__mod_zone_freepage_state(zone, -(1 << order),
-@@ -1072,6 +1113,13 @@ static inline void __free_one_page(struct page *page,
- 			clear_page_guard(zone, buddy, order, migratetype);
- 		else
- 			del_page_from_free_list(buddy, zone, order);
-+
-+		/* Mark page unaccepted if any of merged pages were unaccepted */
-+		if (PageUnaccepted(buddy)) {
-+			page_needs_acceptance = true;
-+			__ClearPageUnaccepted(buddy);
-+		}
-+
- 		combined_pfn = buddy_pfn & pfn;
- 		page = page + (combined_pfn - pfn);
- 		pfn = combined_pfn;
-@@ -1081,6 +1129,23 @@ static inline void __free_one_page(struct page *page,
- done_merging:
- 	set_buddy_order(page, order);
- 
-+	/*
-+	 * The page gets marked as PageUnaccepted() if any of merged-in pages
-+	 * is PageUnaccepted().
-+	 *
-+	 * New pages, just being added to buddy allocator, do not have
-+	 * PageUnaccepted() set. FPI_UNACCEPTED_SLOWPATH indicates that the
-+	 * page is new and page_contains_unaccepted() check is required to
-+	 * determinate if acceptance is required.
-+	 *
-+	 * Avoid calling page_contains_unaccepted() if it is known that the page
-+	 * needs acceptance. It can be costly.
-+	 */
-+	if (!page_needs_acceptance && (fpi_flags & FPI_UNACCEPTED_SLOWPATH))
-+		page_needs_acceptance = page_contains_unaccepted(page, order);
-+	if (page_needs_acceptance)
-+		__SetPageUnaccepted(page);
-+
- 	if (fpi_flags & FPI_TO_TAIL)
- 		to_tail = true;
- 	else if (is_shuffle_order(order))
-@@ -1164,7 +1229,13 @@ int split_free_page(struct page *free_page,
- static inline bool page_expected_state(struct page *page,
- 					unsigned long check_flags)
- {
--	if (unlikely(atomic_read(&page->_mapcount) != -1))
-+	/*
-+	 * The page must not be mapped to userspace and must not have
-+	 * a PageType other than listed in PAGE_TYPES_EXPECTED.
-+	 *
-+	 * Note, bit cleared means the page type is set.
-+	 */
-+	if (unlikely((atomic_read(&page->_mapcount) | PAGE_TYPES_EXPECTED) != -1))
- 		return false;
- 
- 	if (unlikely((unsigned long)page->mapping |
-@@ -1669,7 +1740,9 @@ void __free_pages_core(struct page *page, unsigned int order)
- 	 * Bypass PCP and place fresh pages right to the tail, primarily
- 	 * relevant for memory onlining.
- 	 */
--	__free_pages_ok(page, order, FPI_TO_TAIL | FPI_SKIP_KASAN_POISON);
-+	__free_pages_ok(page, order,
-+			FPI_TO_TAIL | FPI_SKIP_KASAN_POISON |
-+			FPI_UNACCEPTED_SLOWPATH);
- }
- 
- #ifdef CONFIG_NUMA
-@@ -1822,6 +1895,9 @@ static void __init deferred_free_range(unsigned long pfn,
- 		return;
- 	}
- 
-+	/* Accept chunks smaller than page-block upfront */
-+	accept_memory(PFN_PHYS(pfn), PFN_PHYS(pfn + nr_pages));
-+
- 	for (i = 0; i < nr_pages; i++, page++, pfn++) {
- 		if ((pfn & (pageblock_nr_pages - 1)) == 0)
- 			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
-@@ -2281,6 +2357,13 @@ static inline void expand(struct zone *zone, struct page *page,
- 		if (set_page_guard(zone, &page[size], high, migratetype))
+-		/*
+-		 * Here we are more conservative in picking free memory than
+-		 * the EFI spec allows:
+-		 *
+-		 * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also
+-		 * free memory and thus available to place the kernel image into,
+-		 * but in practice there's firmware where using that memory leads
+-		 * to crashes.
+-		 *
+-		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
+-		 */
+-		if (md->type != EFI_CONVENTIONAL_MEMORY)
++		if (!memory_type_is_free(md))
  			continue;
  
-+		/*
-+		 * Transfer PageUnaccepted() to the newly split pages so
-+		 * they can be accepted after dropping the zone lock.
-+		 */
-+		if (PageUnaccepted(page))
-+			__SetPageUnaccepted(&page[size]);
-+
- 		add_to_free_list(&page[size], zone, high, migratetype);
- 		set_buddy_order(&page[size], high);
- 	}
-@@ -2411,6 +2494,8 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	 */
- 	kernel_unpoison_pages(page, 1 << order);
+ 		if (efi_soft_reserve_enabled() &&
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index 415df0d3bc81..b45458af00ca 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -3,12 +3,15 @@
+ #include "../cpuflags.h"
+ #include "bitmap.h"
+ #include "error.h"
++#include "find.h"
+ #include "math.h"
  
-+	accept_page(page, order);
+ #define PMD_SHIFT	21
+ #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
+ #define PMD_MASK	(~(PMD_SIZE - 1))
+ 
++extern struct boot_params *boot_params;
 +
- 	/*
- 	 * As memory initialization might be integrated into KASAN,
- 	 * KASAN unpoisoning and memory initializion code must be
+ static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
+ {
+ 	/* Platform-specific memory-acceptance call goes here */
+@@ -66,3 +69,18 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
+ 	bitmap_set((unsigned long *)params->unaccepted_memory,
+ 		   start / PMD_SIZE, (end - start) / PMD_SIZE);
+ }
++
++void accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long range_start, range_end;
++	unsigned long *bitmap, bitmap_size;
++
++	bitmap = (unsigned long *)boot_params->unaccepted_memory;
++	range_start = start / PMD_SIZE;
++	bitmap_size = DIV_ROUND_UP(end, PMD_SIZE);
++
++	for_each_set_bitrange_from(range_start, range_end, bitmap, bitmap_size) {
++		__accept_memory(range_start * PMD_SIZE, range_end * PMD_SIZE);
++		bitmap_clear(bitmap, range_start, range_end - range_start);
++	}
++}
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index cf690d8712f4..c41a87b0ec06 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -454,6 +454,12 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ #endif
+ 
+ 	debug_putstr("\nDecompressing Linux... ");
++
++	if (boot_params->unaccepted_memory) {
++		debug_putstr("Accepting memory... ");
++		accept_memory(__pa(output), __pa(output) + needed_size);
++	}
++
+ 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
+ 			NULL, error);
+ 	parse_elf(output);
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 245cf8f2a0bd..da7ef45133b9 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -235,4 +235,10 @@ static inline unsigned long efi_find_vendor_table(struct boot_params *bp,
+ }
+ #endif /* CONFIG_EFI */
+ 
++#ifdef CONFIG_UNACCEPTED_MEMORY
++void accept_memory(phys_addr_t start, phys_addr_t end);
++#else
++static inline void accept_memory(phys_addr_t start, phys_addr_t end) {}
++#endif
++
+ #endif /* BOOT_COMPRESSED_MISC_H */
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index df0736d32858..41fbfc798100 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -7,4 +7,6 @@ struct boot_params;
+ 
+ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
+ 
++void accept_memory(phys_addr_t start, phys_addr_t end);
++
+ #endif
 -- 
 2.35.1
 
