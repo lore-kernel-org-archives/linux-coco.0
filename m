@@ -1,33 +1,33 @@
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5E9185F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD721861
 	for <linux-coco@lists.linux.dev>; Tue, 14 Jun 2022 12:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1655208163; x=1686744163;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bd6faJOVW2FfIjzDQn03hQW9BQt9XmcRmtaVqSAHsus=;
-  b=L7DGIs7LNsUbxlNPk7Ueu50FKg00qjzJql6VoiLHmavSxpOij0j6TOgx
-   qyYoSGLZAlOkxLChHUQqlEt4GZBL2OZ5e/9GXJ0UK8Uc6RW6UVJWhVaoQ
-   XksgE3NLfBmxGLZ9MoG2I+Q9zhXPlmUgSSEJm9CZa6yiIX0DtN9QME9Le
-   5fH6nVL0jN0heJef0tHgSCOQOVaRvztSZsX7M9+ulRKd0adfesyLGlm52
-   KPMJTRlP422AHOk1Ku/K3y+6ladQVXPNb08FN74a+gL4nGRcc6e3/eoAr
-   +KQLjU9ohE67O1WOHgruV1vRfDoFemCkD3u7kAHVZbqumfJHtW8IC6hUB
+  bh=ifzU/1O3tKgZxe0qDTIUj1kc7Q7SWbzosWaglEBdNsA=;
+  b=K0YBibIwXDqfSnscdTMIohWVIoCkrrSjH77Rv0B2RWny2pgumGClihSa
+   lX7MvCgHhamTBRZ1fFyLeolfT9lWetbqKHB/u7n/8oW7aSs8FJuf1XTNh
+   ldLQ7LHKD7R+3pJ//iDB4xbecLPQcXUBoPV8v4VaiwaTflUfAhDhl+UI2
+   8x68dCAB2Tdzyuz//2gDc9gM8uKsDi7d6RbPaYTVHF/aNbayVpJ0Dl1qk
+   VBn6wVRaTt12zP/Ar0n1ZP73FMTT6BCkXScIvJKeG7qtMHDCB/XeoajmB
+   MX/RKH0GxUJgTwSXLmnvg31OlBVQr0MHWwFGehHSvT+otLdyOjvQnrOaE
    Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="261626127"
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="278636133"
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="261626127"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:02:43 -0700
+   d="scan'208";a="278636133"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2022 05:02:43 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.91,300,1647327600"; 
-   d="scan'208";a="535534975"
+   d="scan'208";a="673838645"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 14 Jun 2022 05:02:36 -0700
+  by FMSMGA003.fm.intel.com with ESMTP; 14 Jun 2022 05:02:36 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id D40B792D; Tue, 14 Jun 2022 15:02:32 +0300 (EEST)
+	id EB0E69E6; Tue, 14 Jun 2022 15:02:32 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -59,9 +59,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping into unaccepted memory
-Date: Tue, 14 Jun 2022 15:02:27 +0300
-Message-Id: <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv7 12/14] x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in boot stub
+Date: Tue, 14 Jun 2022 15:02:29 +0300
+Message-Id: <20220614120231.48165-13-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
@@ -71,121 +71,166 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
-The unwanted loads are typically harmless. But, they might be made to
-totally unrelated or even unmapped memory. load_unaligned_zeropad()
-relies on exception fixup (#PF, #GP and now #VE) to recover from these
-unwanted loads.
+Memory acceptance requires a hypercall and one or multiple module calls.
 
-But, this approach does not work for unaccepted memory. For TDX, a load
-from unaccepted memory will not lead to a recoverable exception within
-the guest. The guest will exit to the VMM where the only recourse is to
-terminate the guest.
-
-There are three parts to fix this issue and comprehensively avoid access
-to unaccepted memory. Together these ensure that an extra “guard” page
-is accepted in addition to the memory that needs to be used.
-
-1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-   checks up to end+2M if ‘end’ is aligned on a 2M boundary.
-2. Implicitly extend accept_memory(start, end) to end+2M if ‘end’ is
-   aligned on a 2M boundary.
-3. Set PageUnaccepted() on both memory that itself needs to be accepted
-   *and* memory where the next page needs to be accepted. Essentially,
-   make PageUnaccepted(page) a marker for whether work needs to be done
-   to make ‘page’ usable. That work might include accepting pages in
-   addition to ‘page’ itself.
-
-Side note: This leads to something strange. Pages which were accepted
-	   at boot, marked by the firmware as accepted and will never
-	   _need_ to be accepted might have PageUnaccepted() set on
-	   them. PageUnaccepted(page) is a cue to ensure that the next
-	   page is accepted before ‘page’ can be used.
-
-This is an actual, real-world problem which was discovered during TDX
-testing.
+Make helpers for the calls available in boot stub. It has to accept
+memory where kernel image and initrd are placed.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/mm/unaccepted_memory.c         | 36 +++++++++++++++++++++++++
- drivers/firmware/efi/libstub/x86-stub.c |  7 +++++
- 2 files changed, 43 insertions(+)
+ arch/x86/coco/tdx/tdx.c           | 26 ------------------
+ arch/x86/include/asm/shared/tdx.h | 45 +++++++++++++++++++++++++++++++
+ arch/x86/include/asm/tdx.h        | 19 -------------
+ 3 files changed, 45 insertions(+), 45 deletions(-)
 
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 1df918b21469..bcd56fe82b9e 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -23,6 +23,38 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 	bitmap = __va(boot_params.unaccepted_memory);
- 	range_start = start / PMD_SIZE;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 3bcaf2170ede..b75fe670032b 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -12,14 +12,6 @@
+ #include <asm/insn-eval.h>
+ #include <asm/pgtable.h>
  
-+	/*
-+	 * load_unaligned_zeropad() can lead to unwanted loads across page
-+	 * boundaries. The unwanted loads are typically harmless. But, they
-+	 * might be made to totally unrelated or even unmapped memory.
-+	 * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
-+	 * #VE) to recover from these unwanted loads.
-+	 *
-+	 * But, this approach does not work for unaccepted memory. For TDX, a
-+	 * load from unaccepted memory will not lead to a recoverable exception
-+	 * within the guest. The guest will exit to the VMM where the only
-+	 * recourse is to terminate the guest.
-+	 *
-+	 * There are three parts to fix this issue and comprehensively avoid
-+	 * access to unaccepted memory. Together these ensure that an extra
-+	 * “guard” page is accepted in addition to the memory that needs to be
-+	 * used:
-+	 *
-+	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-+	 *    checks up to end+2M if ‘end’ is aligned on a 2M boundary.
-+	 *
-+	 * 2. Implicitly extend accept_memory(start, end) to end+2M if ‘end’ is
-+	 *    aligned on a 2M boundary.
-+	 *
-+	 * 3. Set PageUnaccepted() on both memory that itself needs to be
-+	 *    accepted *and* memory where the next page needs to be accepted.
-+	 *    Essentially, make PageUnaccepted(page) a marker for whether work
-+	 *    needs to be done to make ‘page’ usable. That work might include
-+	 *    accepting pages in addition to ‘page’ itself.
-+	 */
-+	if (!(end % PMD_SIZE))
-+		end += PMD_SIZE;
+-/* TDX module Call Leaf IDs */
+-#define TDX_GET_INFO			1
+-#define TDX_GET_VEINFO			3
+-#define TDX_ACCEPT_PAGE			6
+-
+-/* TDX hypercall Leaf IDs */
+-#define TDVMCALL_MAP_GPA		0x10001
+-
+ /* MMIO direction */
+ #define EPT_READ	0
+ #define EPT_WRITE	1
+@@ -34,24 +26,6 @@
+ #define VE_GET_PORT_NUM(e)	((e) >> 16)
+ #define VE_IS_IO_STRING(e)	((e) & BIT(4))
+ 
+-/*
+- * Wrapper for standard use of __tdx_hypercall with no output aside from
+- * return code.
+- */
+-static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
+-{
+-	struct tdx_hypercall_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = fn,
+-		.r12 = r12,
+-		.r13 = r13,
+-		.r14 = r14,
+-		.r15 = r15,
+-	};
+-
+-	return __tdx_hypercall(&args, 0);
+-}
+-
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void)
+ {
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index e53f26228fbb..956ced04c3be 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -13,6 +13,14 @@
+ #define TDX_CPUID_LEAF_ID	0x21
+ #define TDX_IDENT		"IntelTDX    "
+ 
++/* TDX module Call Leaf IDs */
++#define TDX_GET_INFO			1
++#define TDX_GET_VEINFO			3
++#define TDX_ACCEPT_PAGE			6
 +
- 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
- 	for_each_set_bitrange_from(range_start, range_end, bitmap,
- 				   DIV_ROUND_UP(end, PMD_SIZE)) {
-@@ -46,6 +78,10 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
- 
- 	bitmap = __va(boot_params.unaccepted_memory);
- 
-+	/* See comment on load_unaligned_zeropad() in accept_memory() */
-+	if (!(end % PMD_SIZE))
-+		end += PMD_SIZE;
++/* TDX hypercall Leaf IDs */
++#define TDVMCALL_MAP_GPA		0x10001
 +
- 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
- 	while (start < end) {
- 		if (test_bit(start / PMD_SIZE, bitmap)) {
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index b91c89100b2d..bc1110509de4 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -709,6 +709,13 @@ static efi_status_t allocate_unaccepted_memory(struct boot_params *params,
- 		return EFI_SUCCESS;
- 	}
+ #ifndef __ASSEMBLY__
  
-+	/*
-+	 * range_contains_unaccepted_memory() may need to check one 2M chunk
-+	 * beyond the end of RAM to deal with load_unaligned_zeropad(). Make
-+	 * sure that the bitmap is large enough handle it.
-+	 */
-+	max_addr += PMD_SIZE;
+ /*
+@@ -33,8 +41,45 @@ struct tdx_hypercall_args {
+ /* Used to request services from the VMM */
+ u64 __tdx_hypercall(struct tdx_hypercall_args *args, unsigned long flags);
+ 
++/*
++ * Wrapper for standard use of __tdx_hypercall with no output aside from
++ * return code.
++ */
++static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
++{
++	struct tdx_hypercall_args args = {
++		.r10 = TDX_HYPERCALL_STANDARD,
++		.r11 = fn,
++		.r12 = r12,
++		.r13 = r13,
++		.r14 = r14,
++		.r15 = r15,
++	};
 +
- 	/*
- 	 * If unaccepted memory is present allocate a bitmap to track what
- 	 * memory has to be accepted before access.
++	return __tdx_hypercall(&args, 0);
++}
++
++
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void);
+ 
++/*
++ * Used in __tdx_module_call() to gather the output registers' values of the
++ * TDCALL instruction when requesting services from the TDX module. This is a
++ * software only structure and not part of the TDX module/VMM ABI
++ */
++struct tdx_module_output {
++	u64 rcx;
++	u64 rdx;
++	u64 r8;
++	u64 r9;
++	u64 r10;
++	u64 r11;
++};
++
++/* Used to communicate with the TDX module */
++u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
++		      struct tdx_module_output *out);
++
+ #endif /* !__ASSEMBLY__ */
+ #endif /* _ASM_X86_SHARED_TDX_H */
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 020c81a7c729..d9106d3e89f8 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -20,21 +20,6 @@
+ 
+ #ifndef __ASSEMBLY__
+ 
+-/*
+- * Used to gather the output registers values of the TDCALL and SEAMCALL
+- * instructions when requesting services from the TDX module.
+- *
+- * This is a software only structure and not part of the TDX module/VMM ABI.
+- */
+-struct tdx_module_output {
+-	u64 rcx;
+-	u64 rdx;
+-	u64 r8;
+-	u64 r9;
+-	u64 r10;
+-	u64 r11;
+-};
+-
+ /*
+  * Used by the #VE exception handler to gather the #VE exception
+  * info from the TDX module. This is a software only structure
+@@ -55,10 +40,6 @@ struct ve_info {
+ 
+ void __init tdx_early_init(void);
+ 
+-/* Used to communicate with the TDX module */
+-u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
+-		      struct tdx_module_output *out);
+-
+ void tdx_get_ve_info(struct ve_info *ve);
+ 
+ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
 -- 
 2.35.1
 
