@@ -1,249 +1,332 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2042.outbound.protection.outlook.com [40.107.101.42])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2083.outbound.protection.outlook.com [40.107.95.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975924C84
-	for <linux-coco@lists.linux.dev>; Fri, 17 Jun 2022 20:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9083237
+	for <linux-coco@lists.linux.dev>; Mon, 20 Jun 2022 22:56:36 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BxCGGce+61W5IXnpFr2Dbpw3eh/3QztDnEN1L0Mg8POR297ytNZxyK4DwkGoh1NiCgL5GKLKAmZpEoWeKeb1rNLbF5iHqve5ZLRVUkV6Bk8YeXL2Kt2nEGlwhGs+SU31jpH/RkB2Z8rWWJvmwydQK3uxrn5knJjm6tDSn5xHtIQNk+PC2+hyFpSbWW/0jtKQ4714Da3fwwD8NHmKvIKaBJnwW79bbBbjSUC2J+2IRwgR+WivtJvqH6val9Lx/rCJrQX3LBk1rkExkp83E6T45FI/XjqF3JCzCMNHHLJ933jqKAlVwxIbqASPXSrGYeR85fTXlAD/VRtgb9Db0niqbw==
+ b=BZjOURGjcNxY6x1b8cuoGQ4mbcGGMSzc3wuB7sm4oJEfnsBVNg12FnE15NBELd1ctw7vgjseeUWQuTj0MUMh8b7DtqSSu/6gHJ0x3pl3TDuETDBIwO5kMIkQdoFErP4S/OjL4Gd8KfjhsgX5JCpOLpIollXlJxlsNfzxOnVmvm0f7bXXAj823SXoETKKsnEqciu/xHXQxJ6TLCDIJ6zRssmhYbLnG8vScQYbgi6l5D2h5RAeXxpic9Y5Zlq89EBhpbDrAS6WlSDkXTVdu1HdTRgd544vfRUEutqaJQWYfU83XKm88+UKILG1MKAwFHj6f2uFJ23RU3TZUNeaXk6/WQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T6CGEExG2ia6hlfkCJo49L5b5uztRGb502RJwuxLAuI=;
- b=WnLVGCMXm/iArx1UMFJRpKU8euBrYbFXcREdOwXgjN3/D46Eg8CFom7nnDQUPdMMnNK/lopk9MWN0sNmEmSKB+1m17gK1siAzNCfJB+wbRceC2le1you3YAQtqPm/zTDn7a2TY1/rIzwj4D3pV2O3NKkeuLlovYuUtz41JtTfeSinZ9zLfdmnLzbpe55UZkBtuzmo5h/xlQuw/FaKX+48bdVLqijR7LZuQiok00IE22B3eujTHIgOY505GFScPkxDrXjsllC5wGJ/LXZzo7erdo8YDuyh0QQRkFwt/FFsKMBKqJLkHbxPwxaz081pjXdDebicjuz/mwYGVsz3rCVBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=GoqyPYAFEPrUGFwl0WHdlFmF70C6y6inBBjVyVgC8O0=;
+ b=OpF7xnr0OT7A7V4ecrwjKG5ve8i3Gwtn13ejHZurSne/sXUqp/8Q3E6Iq6qK8MDdT3pXOhX+V6CHVmE9+yAd0rknv/pFyBu+HPds1w4OEa9+EgjE+LLMS+bOhfsLqHDqSGn2U1IbF/bVXd/x0qwyL3Tpv7VLONCvwxDaAjzt6c3ftL69l+gOf2toc+q2CrPzVhStwdM7QHY6ygKJSiNDRyY5kXz2+Zo+CXOG79Rd+pj155qcTEUmbOlbLuCNzL25fSxvTKM6CUaiehCuMp/EIr6L7Dgv18oOrZ9Ob1T/LaesoOGlhc8aBbrLQqLaMJyQceiF8zB3jvS8Cfv9P4ZsNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T6CGEExG2ia6hlfkCJo49L5b5uztRGb502RJwuxLAuI=;
- b=1/j/3P50w4hyDlN6QDDP2EBvItakQGJyQxpxhagEP8/h+tGs0BtkNqfO0tENqeB/bQQCKesarTDSE6OCM2x4yisk2bAy4RlSGXWS56iOWusO7Q46nFRDmuwjnjdFW7vOUT0vZGjPNajcaOUn/Aznm7exLGQ+1Qc1Y//JCh7fr5Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by BN6PR12MB1892.namprd12.prod.outlook.com (2603:10b6:404:108::10) with
+ bh=GoqyPYAFEPrUGFwl0WHdlFmF70C6y6inBBjVyVgC8O0=;
+ b=gAHiP+FeJ1Pj5oY23qewdAlU0zxXCB3A1PEnCbjtSC1KxztWZ4phmmjFn7gW7LTjiI5W3UvNXR0ua2IYnEdlqkwjCLx5kRylFiH4rSAjHKp4+W1Jw0v3XUFCc5otf71zCxaCITzicTSatczzViSxvjqMfyQVs+j7uvnrT+c+pAc=
+Received: from BN9PR03CA0473.namprd03.prod.outlook.com (2603:10b6:408:139::28)
+ by BY5PR12MB4099.namprd12.prod.outlook.com (2603:10b6:a03:20f::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.14; Fri, 17 Jun
- 2022 20:53:47 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::9084:a97b:ab5c:6642]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::9084:a97b:ab5c:6642%6]) with mapi id 15.20.5353.018; Fri, 17 Jun 2022
- 20:53:47 +0000
-Message-ID: <7c4834e6-5d87-80ed-06c1-6f4c8aa489cf@amd.com>
-Date: Fri, 17 Jun 2022 15:53:43 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Content-Language: en-US
-From: Tom Lendacky <thomas.lendacky@amd.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Dave Hansen <dave.hansen@intel.com>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
- tim.gardner@canonical.com, khalid.elmously@canonical.com,
- philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Michael Roth <michael.roth@amd.com>, Ashish Kalra <Ashish.Kalra@amd.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <af8038c6-d14e-a327-7685-14bcee778c96@amd.com>
-In-Reply-To: <af8038c6-d14e-a327-7685-14bcee778c96@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0053.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:2d0::27) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.14; Mon, 20 Jun
+ 2022 22:56:33 +0000
+Received: from BN8NAM11FT013.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:139:cafe::8) by BN9PR03CA0473.outlook.office365.com
+ (2603:10b6:408:139::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.18 via Frontend
+ Transport; Mon, 20 Jun 2022 22:56:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN8NAM11FT013.mail.protection.outlook.com (10.13.176.182) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5353.14 via Frontend Transport; Mon, 20 Jun 2022 22:56:33 +0000
+Received: from ashkalraubuntuserver.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Mon, 20 Jun 2022 17:56:31 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>
+CC: <tglx@linutronix.de>, <mingo@redhat.com>, <jroedel@suse.de>,
+	<thomas.lendacky@amd.com>, <hpa@zytor.com>, <ardb@kernel.org>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <vkuznets@redhat.com>,
+	<wanpengli@tencent.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<bp@alien8.de>, <michael.roth@amd.com>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<alpergun@google.com>, <dgilbert@redhat.com>, <jarkko@kernel.org>
+Subject: [PATCH Part2 v6 00/49] Add AMD Secure Nested Paging (SEV-SNP)
+Date: Mon, 20 Jun 2022 22:56:13 +0000
+Message-ID: <cover.1655761627.git.ashish.kalra@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 75efbeb5-ac4d-4a87-b9ad-08da50a378f7
-X-MS-TrafficTypeDiagnostic: BN6PR12MB1892:EE_
+X-MS-Office365-Filtering-Correlation-Id: 202b9676-1bb9-40b4-dc35-08da53101f36
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4099:EE_
 X-Microsoft-Antispam-PRVS:
-	<BN6PR12MB1892CBB2C4241D68E9B97CD1ECAF9@BN6PR12MB1892.namprd12.prod.outlook.com>
+	<BY5PR12MB4099D73E5DDA995F1CD49CD28EB09@BY5PR12MB4099.namprd12.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	Kg1kuzsD6XKo8IXGJB/tonaxzZPFxtLBmNJsAu4xdlPj3gKBDNHGybmLXD8INjNBO8XCwyM5034UlIqIbYEBuA3QvoG7YJN224O1QbheKfPx1Cb0oSc4wxHzc4mmai0/aF54Gcy9ha8TLJo2yr3ihlQBwbfulYtUdwMr0rz2iwT+D03Ngz2pPrWCnkaqLPEr3N8vT2dxS/TVvmue71xl3JBhkZ3qJGTWAhNxIWZYBfx41VPQLKws8iBevQe3HKNrwlvxu0PDMdXlTNzLUZ1zX6LsOGuFyHUG18+Uda9HLJum8XPlRG20WNiwce4tvnV5tVTrSzf7OyO+p8lEOXKuofmU41Ah2vRO/gONFg5P8vzy8mweUrdf+t8bPECpbKrK6pX0VDqRvH3ZBx9rd70KYBxxIYUlM+tCThAGflmWIiYFfQpwL+P2JPA7sVSU1K4gIpkyRe6WHYjlMv0/GG2DVC1MGMh618GgBdpF7R85VBwjyYxfc4dUiOv2X7ZApKDSsbVsL/vcxLv4GeddrcmfE9EptumqS61RaegRyqhnoJlg2hpsHBO4JV6h8ytqzW1V9h85bK5fXFYbBFVqAuw3D3AP/Dm89i8mjLMUdTpCKY5KGV3azuClaH4K9oMlIny5l8V48O2ow2H3pYwqjteFz8lyFWruaW0wlgjEEBfrCD6lTzFDkVL0m2UqgMrPg98Yx5QHi8U9gAJQjQjcf0A0JIWwJW1ud073Fd/d0uOTeTFsAmuQDC/w3KbnrMOXxf9T
+	WRpARwGZGEfnBooT4GMuBkKwCGmXKI00CHu7gTYqhTGUfnGT9F7ldIW5pyzQXML3C7SuviVurz876gU9OVU8rmJeS9G96y4A0Goa1Cgxu6jzhcZ2PnJKk9awznQG54CGl+nLHUhES4VvNi06dtT+jCUiGfa9norvWjpoP+PJnm2ibDjZ2r3IBbxxgmGFTSoSW7C2Z2SxL/Z4oZdi0oeD0VF99coYOBMZEpIdGt1ly2PvntuO8GAeNQVBujqZBGHk8x55gOemuY+0ymlb6xrn0Cyib5iOpuoNb8SNI8ANT8YbAqclV7PaNcqhq4jkXnrHiDJ6zozE+R926PlH/5mFO04sXG/6SO5byrzoQy84YfKW7m9B42FPg1cPL4DyAWSoLNSQ1edd3pIcXw6B7srUXR/fQTY3ofHN1GQiDh5OtFnfAvsYC9dvPPT0ge+TUmdpvST56JcWeB7vZT8/V7VCAOPGXqHb6q4MZmQgVLDiRZKsFygI0SVkfGW6MbVNcs39D0Bq8lMz2PdXTRhe/UMEKmfVBOjR2BLqXkwKsNDsqwH4EeIaAFwSACVaH1B6fEmkLKrCRif7ZeWEqzbkjhgrMD9YH8ZxcvwJYfu3yyDoXMgeRcuQXC2xb45x/gdWWPKn4vGB4/OKruTutht7enWoDx1KG+158VahJ+se/WZgN0mHpGdaluP5r7O+0bBrKZ6RizTxmOrzsYYCu7DEInr+zp2BCD844mhMmTmapRvTtzSYgiygzYazoDT1kJBhSyC5xPUG+chhpJstCpRv4KaaraBlChktyTBmMFVPpvD9ZD1qlnYVNOAAXc7odwHD6inGWRAcIS0x0C1hEofYQA+1EbatGkQZoCUv/+IF00i4ubaF3qjpB0i3R0Ql6OGGH5X+
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(7406005)(86362001)(36756003)(31686004)(31696002)(8676002)(7416002)(6486002)(66946007)(66476007)(66556008)(4326008)(8936002)(5660300002)(110136005)(2906002)(316002)(54906003)(26005)(498600001)(6506007)(53546011)(186003)(2616005)(83380400001)(38100700002)(6512007)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?STVSbkFTRTJZNytmYzBEK29BQVdUZERQUnN4d2phVG1OYlI1SWd5L1ZrWVcy?=
- =?utf-8?B?YVFiMkNWYUdGZ1hkb2xmaHJVTkhlK3E4NGZuOWoxODIwQlcvUjZta0Z5OGNr?=
- =?utf-8?B?M3VXSkk4R1B1TklJTExWV1Q2TU53M01PUC82ckovQU44ZXExakxjd1VSUnJR?=
- =?utf-8?B?bWI4MTRyQ3cveUo5dWpHNG41QjJnNys2enhHQWhrMTMzbGptRW9RK1RyNGdM?=
- =?utf-8?B?VlFiT2c0M2VsNVhUZkQvUnNOd3ZVb1ZTYUt3SFRibUl3OS9XTlRQcmcrZ21y?=
- =?utf-8?B?aTF4azJ5bnRwdEJZQXNwRXdLM1pOckdhUnc2UHA4Znlxdi81cjVZTGtEK0Jm?=
- =?utf-8?B?bXM0WWg5Y2VlSFJIbzlFNXlES0dBMHJQQ0I2bXE5UVB0NkVZMVJyOEtraXFS?=
- =?utf-8?B?UitLcTZVNVJXdnpQS043QlVLRHgwVDh2Zkd1M29jaXY0NGJwV2FJc2RXdHNu?=
- =?utf-8?B?aUhDaGkvaGhLZEVQVGNsbjh4NzAyV2RsV09Pdk40NGg1TXpWRDVQNW9xOUhB?=
- =?utf-8?B?bUpveHJxY1IzaUNYWXBWa0JjTy80bHp6VmIyWmtGS1dGMzRLSUsxMlVCU1Np?=
- =?utf-8?B?TTFlSHFEaXZzc04zKy92OHBIcGxveWRwSEY4WmgyNHhpZnJDOCtsdy8rOEZQ?=
- =?utf-8?B?ZFhZZm84UmoxQ1hGZlJkQ1NrRnNvU0xoanV0WS9zSHBZMEJDWERIWGNGblBO?=
- =?utf-8?B?a1hnc1I3SVpWbldCcm1iWTFYSW5lODdFZXkxWGxmQ05hRTE4WWE4VENqaGs4?=
- =?utf-8?B?aGNLQ281Q01TZjh4N3lnSmEybUdKYTIwMVhzLzQ5TEJtMUd5Y1R3c3d2WSs1?=
- =?utf-8?B?enZqc1ZaQnFTbUdzSzV4NGFZVlhsZEQvMkVONk1wcGN1QmFpTytkQjV4SlJa?=
- =?utf-8?B?VGJQK1VSNmFsdkJxNDFyaTk1T1FPQ1VESzNCaTIwYjdLN1U5eUp4M050RFBi?=
- =?utf-8?B?NTY0ZmVobFB3KzNiZmJ2MW1WSFE2VHN3aXBjeGNONHNFUmZtYVRmbENBeGJO?=
- =?utf-8?B?cU9sdzk5dDBIZFc0WGVyTXJodi9jK2RtUmtaWmp3cTRTU0g4L1A5R2hudlV1?=
- =?utf-8?B?Vk1EbUhPTGVsK2FKMlRoZTkvb2tkYVdlU2lRTXhPOG5IVzlqcXMvUTNOMWtz?=
- =?utf-8?B?b3N4dWNyenMvS29GeWVzQXdYTXNhVWJmcUUzTkU3VkJWTGdON2U4ZHJacW5D?=
- =?utf-8?B?bngwK0VoQXVLYmhURDJ6YnZCdlp6VkFHYXllellhSGFlM0EyTllWQXp0c3Mz?=
- =?utf-8?B?K3lJbXpRY3crcWhOaEhsbVZUdjduU2pKd2lYaDAwekYxNnpuam9DRXRjWisv?=
- =?utf-8?B?Y0pLZ2M1Z0w1UlpwUWs3NTZTaU1aOHpWeWNscFFOdW9oN2ZscHczQnM2QzR4?=
- =?utf-8?B?bHpNckg4aG5iNnJ0UnVqaVVzOGs1bHpLUDg2L0pEYnBsN2ZYUXg4ZlM0MHBB?=
- =?utf-8?B?c1QwVENrVVVkcmpoRlVvZHRldWlORTBSL0NnRWRxOFozL3pPYkNVMklhZWdk?=
- =?utf-8?B?TmFkYVYwVVNsNWVzdFZWaXYyVWh4UlNSaXpLUzFNN3NlbEZrUHkxaVpNTEVs?=
- =?utf-8?B?OElkM2w0OFRGOFJZK0JQZktsT3IwNTZKbVhKaUVqNkk5RE1ocmdZSzRJUjdK?=
- =?utf-8?B?ckl6NnhCSkR3bG4zbWtzcW9vR3psM2JnMVNPKysxcEZHM2ZZenFyRHVFdUp1?=
- =?utf-8?B?YjV0Q2F5WEFzZlAyZitUZU9BRE9KQ3RHNkZHRGtkZ1ZoN2g3UTRsdFRWN2Rm?=
- =?utf-8?B?bmJXWkJPZENFcDl0VXNTSGhPbm5XNHhiU0VyR2RHQmsyeEM5aGRCOTNjYjBh?=
- =?utf-8?B?c0pKWDZVbzhHN2NZSUpndmpDdGdrb25jUFBpYlVES2wxRzVyemV4V1lSU2VP?=
- =?utf-8?B?U0JDVzdIQWF2MitBb1pIYThNNnFFSkE4NklkWkRHQVZhTXdVUE56OWUyZHIr?=
- =?utf-8?B?Q1J6a0Fta2pXOWdOYWc1Y0FpTkNmb3FKZGxLTXdIWHF4a1RiQ1pTTHFZZmp1?=
- =?utf-8?B?TDR5dDIvMld5RkRhSWNiTitGeVl0YVM3OHNxMmFkcGJkL1FUcEJmS3hMcVNT?=
- =?utf-8?B?OFdwNWt3RDJUaDBBTmsxcDFiMlFpQUJVR3dmTDhscGo5QUs4MWYvQ0s3RUNn?=
- =?utf-8?B?RFBPVTlCc3Q3elNVVS85NzFyZmJyWklZRm9yVkt2Rng4bVcxL2xBbmx5KzBJ?=
- =?utf-8?B?dkYyTFdkSlFXMG1CZzhXYkVMZm1PK0tUZGNCTFNzYmgycGtRQXorM0NKWEdh?=
- =?utf-8?B?aExtNG8zcDdTVzlDY0VlUzNkN1h6ZVA0cFNZcDZOYzZBKzk3L05QUDdLaGda?=
- =?utf-8?B?ZzRaQlR6NHd2WS85SW1PbEFIaWRpK0xvbGIrTjVxMlVSS2N6RGpVUT09?=
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230016)(4636009)(346002)(376002)(136003)(396003)(39860400002)(46966006)(40470700004)(36840700001)(8936002)(70586007)(8676002)(478600001)(5660300002)(54906003)(110136005)(6666004)(4326008)(36860700001)(316002)(966005)(7406005)(70206006)(40480700001)(7416002)(82310400005)(36756003)(30864003)(86362001)(2906002)(356005)(82740400003)(7696005)(186003)(336012)(16526019)(81166007)(83380400001)(26005)(2616005)(426003)(41300700001)(47076005)(40460700003)(36900700001)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75efbeb5-ac4d-4a87-b9ad-08da50a378f7
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2022 20:53:46.7613
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2022 22:56:33.3836
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 202b9676-1bb9-40b4-dc35-08da53101f36
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gE9HrcRG3VmTEieu/02vNAUpWx0n3LSLwUmNONBBu5Fn6Tku6l8TVdRagc4X2a9lC3h5suASnqr3WD7vMM15IA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR12MB1892
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN8NAM11FT013.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4099
 
-On 6/17/22 14:28, Tom Lendacky wrote:
-> On 6/14/22 07:02, Kirill A. Shutemov wrote:
->> UEFI Specification version 2.9 introduces the concept of memory
->> acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
->> SEV-SNP, require memory to be accepted before it can be used by the
->> guest. Accepting happens via a protocol specific to the Virtual Machine
->> platform.
->>
->> There are several ways kernel can deal with unaccepted memory:
->>
->>   1. Accept all the memory during the boot. It is easy to implement and
->>      it doesn't have runtime cost once the system is booted. The downside
->>      is very long boot time.
->>
->>      Accept can be parallelized to multiple CPUs to keep it manageable
->>      (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
->>      memory bandwidth and does not scale beyond the point.
->>
->>   2. Accept a block of memory on the first use. It requires more
->>      infrastructure and changes in page allocator to make it work, but
->>      it provides good boot time.
->>
->>      On-demand memory accept means latency spikes every time kernel steps
->>      onto a new memory block. The spikes will go away once workload data
->>      set size gets stabilized or all memory gets accepted.
->>
->>   3. Accept all memory in background. Introduce a thread (or multiple)
->>      that gets memory accepted proactively. It will minimize time the
->>      system experience latency spikes on memory allocation while keeping
->>      low boot time.
->>
->>      This approach cannot function on its own. It is an extension of #2:
->>      background memory acceptance requires functional scheduler, but the
->>      page allocator may need to tap into unaccepted memory before that.
->>
->>      The downside of the approach is that these threads also steal CPU
->>      cycles and memory bandwidth from the user's workload and may hurt
->>      user experience.
->>
->> Implement #2 for now. It is a reasonable default. Some workloads may
->> want to use #1 or #3 and they can be implemented later based on user's
->> demands.
->>
->> Support of unaccepted memory requires a few changes in core-mm code:
->>
->>    - memblock has to accept memory on allocation;
->>
->>    - page allocator has to accept memory on the first allocation of the
->>      page;
->>
->> Memblock change is trivial.
->>
->> The page allocator is modified to accept pages on the first allocation.
->> The new page type (encoded in the _mapcount) -- PageUnaccepted() -- is
->> used to indicate that the page requires acceptance.
->>
->> Architecture has to provide two helpers if it wants to support
->> unaccepted memory:
->>
->>   - accept_memory() makes a range of physical addresses accepted.
->>
->>   - range_contains_unaccepted_memory() checks anything within the range
->>     of physical addresses requires acceptance.
->>
->> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
->> Acked-by: Mike Rapoport <rppt@linux.ibm.com>    # memblock
->> Reviewed-by: David Hildenbrand <david@redhat.com>
->> ---
->>   include/linux/page-flags.h | 31 +++++++++++++
->>   mm/internal.h              | 12 +++++
->>   mm/memblock.c              |  9 ++++
->>   mm/page_alloc.c            | 89 +++++++++++++++++++++++++++++++++++++-
->>   4 files changed, 139 insertions(+), 2 deletions(-)
->>
-> 
->> diff --git a/mm/memblock.c b/mm/memblock.c
->> index e4f03a6e8e56..a1f7f8b304d5 100644
->> --- a/mm/memblock.c
->> +++ b/mm/memblock.c
->> @@ -1405,6 +1405,15 @@ phys_addr_t __init 
->> memblock_alloc_range_nid(phys_addr_t size,
->>            */
->>           kmemleak_alloc_phys(found, size, 0, 0);
->> +    /*
->> +     * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
->> +     * require memory to be accepted before it can be used by the
->> +     * guest.
->> +     *
->> +     * Accept the memory of the allocated buffer.
->> +     */
->> +    accept_memory(found, found + size);
-> 
-> The SNP support will kmalloc a descriptor that can be used to supply the 
-> range to the hypervisor using the GHCB/VMGEXIT. But kmalloc won't work 
-> when called this early, so we are likely to need an early_accept_memory or 
-> some kind of flag to know whether this is an early call or not in order to 
-> use a static descriptor in the file.
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-Then again, the accept_memory() call from mm/page_alloc.c can also be 
-early... maybe I can check system_state and make a determination as to 
-which SNP page state change mechanism to use (GHCB vs MSR protocol). It 
-might not be performance optimal, though, as the MSR protocol is one 4K 
-page at a time.
+This part of the Secure Encrypted Paging (SEV-SNP) series focuses on the
+changes required in a host OS for SEV-SNP support. The series builds upon
+SEV-SNP Guest Support now part of mainline.
 
-Thanks,
-Tom
+This series provides the basic building blocks to support booting the SEV-SNP
+VMs, it does not cover all the security enhancement introduced by the SEV-SNP
+such as interrupt protection.
 
-> 
-> Thanks,
-> Tom
-> 
->> +
->>       return found;
->>   }
+The CCP driver is enhanced to provide new APIs that use the SEV-SNP
+specific commands defined in the SEV-SNP firmware specification. The KVM
+driver uses those APIs to create and managed the SEV-SNP guests.
+
+The GHCB specification version 2 introduces new set of NAE's that is
+used by the SEV-SNP guest to communicate with the hypervisor. The series
+provides support to handle the following new NAE events:
+- Register GHCB GPA
+- Page State Change Request
+- Hypevisor feature
+- Guest message request
+
+The RMP check is enforced as soon as SEV-SNP is enabled. Not every memory
+access requires an RMP check. In particular, the read accesses from the
+hypervisor do not require RMP checks because the data confidentiality is
+already protected via memory encryption. When hardware encounters an RMP
+checks failure, it raises a page-fault exception. If RMP check failure
+is due to the page-size mismatch, then split the large page to resolve
+the fault.
+
+The series does not provide support for the interrupt security and migration
+and those feature will be added after the base support.
+
+Please note that some areas, such as how private guest pages are 
+managed/pinned/protected, are likely to change once Unmapped Private Memory
+support is further along in development/design and can be incorporated
+into this series. We are posting these patches without UPM support for now
+to hopefully get some review on other aspects of the series in the meantime.
+
+Here is a link to latest UPM v6 patches: 
+https://lore.kernel.org/linux-mm/20220519153713.819591-1-chao.p.peng@linux.intel.com/
+
+A branch containing these patches is available here:
+https://github.com/AMDESE/linux/tree/sev-snp-5.18-rc3-v3
+
+Changes since v5:
+ * Rebase to 5.18.0-rc3, these patches are just for review so they
+   are based on 5.18.0-rc3 linux-next release as this included the
+   SNP guest patches which weren't in mainline then.
+ * Using kvm_write_guest() to sync the GHCB scratch buffer can fail
+   due to host mapping being 2M, but RMP being 4K. The page fault
+   handling in do_user_addr_fault() fails to split the 2M page to handle
+   RMP fault due it being called in a non-preemptible context. Instead, 
+   use the already kernel mapped ghcb to sync the scratch buffer when
+   the scratch buffer is contained within the GHCB.
+ * warn and retry failed rmpupdates.
+ * Fix for stale per-cpu pointer due to cond_resched due during 
+   ghcb mapping.
+ * Multiple fixes for SEV-SNP AP Creation.
+ * Remove SRCU to synchronize the PSC and gfn mapping replacing it
+   with a spinlock. 
+ * Remove generic post_{map,unmap}_gfn ops, need to revisit these
+   later with respect to UPM support.
+ * Fix kvm_mmu_get_tdp_walk() to handle "suspicious RCU usage" 
+   warning.
+ * Fix sev_snp_init() to do WBINVD/DF_FLUSH command after SNP_INIT
+   command has been issued.
+ * Fix sev_free_vcpu() to flush the VMSA page after it is transitioned
+   back to hypervisor state and restored in the kernel direct map.
+
+Changes since v4:
+ * Move the RMP entry definition to x86 specific header file.
+ * Move the dump RMP entry function to SEV specific file.
+ * Use BIT_ULL while defining the #PF bit fields.
+ * Add helper function to check the IOMMU support for SEV-SNP feature.
+ * Add helper functions for the page state transition.
+ * Map and unmap the pages from the direct map after page is added or
+   removed in RMP table.
+ * Enforce the minimum SEV-SNP firmware version.
+ * Extend the LAUNCH_UPDATE to accept the base_gfn and remove the
+   logic to calculate the gfn from the hva.
+ * Add a check in LAUNCH_UPDATE to ensure that all the pages are
+   shared before calling the PSP.
+ * Mark the memory failure when failing to remove the page from the
+   RMP table or clearing the immutable bit.
+ * Exclude the encrypted hva range from the KSM.
+ * Remove the gfn tracking during the kvm_gfn_map() and use SRCU to
+   syncronize the PSC and gfn mapping.
+ * Allow PSC on the registered hva range only.
+ * Add support for the Preferred GPA VMGEXIT.
+ * Simplify the PSC handling routines.
+ * Use the static_call() for the newly added kvm_x86_ops.
+ * Remove the long-lived GHCB map.
+ * Move the snp enable module parameter to the end of the file.
+ * Remove the kvm_x86_op for the RMP fault handling. Call the
+   fault handler directly from the #NPF interception.
+
+Changes since v3:
+ * Add support for extended guest message request.
+ * Add ioctl to query the SNP Platform status.
+ * Add ioctl to get and set the SNP config.
+ * Add check to verify that memory reserved for the RMP covers the full system RAM.
+ * Start the SNP specific commands from 256 instead of 255.
+ * Multiple cleanup and fixes based on the review feedback.
+
+Changes since v2:
+ * Add AP creation support.
+ * Drop the patch to handle the RMP fault for the kernel address.
+ * Add functions to track the write access from the hypervisor.
+ * Do not enable the SNP feature when IOMMU is disabled or is in passthrough mode.
+ * Dump the RMP entry on RMP violation for the debug.
+ * Shorten the GHCB macro names.
+ * Start the SNP_INIT command id from 255 to give some gap for the legacy SEV.
+ * Sync the header with the latest 0.9 SNP spec.
+
+Changes since v1:
+ * Add AP reset MSR protocol VMGEXIT NAE.
+ * Add Hypervisor features VMGEXIT NAE.
+ * Move the RMP table initialization and RMPUPDATE/PSMASH helper in
+   arch/x86/kernel/sev.c.
+ * Add support to map/unmap SEV legacy command buffer to firmware state when
+   SNP is active.
+ * Enhance PSP driver to provide helper to allocate/free memory used for the
+   firmware context page.
+ * Add support to handle RMP fault for the kernel address.
+ * Add support to handle GUEST_REQUEST NAE event for attestation.
+ * Rename RMP table lookup helper.
+ * Drop typedef from rmpentry struct definition.
+ * Drop SNP static key and use cpu_feature_enabled() to check whether SEV-SNP
+   is active.
+ * Multiple cleanup/fixes to address Boris review feedback.
+
+
+Ashish Kalra (1):
+  KVM: SVM: Sync the GHCB scratch buffer using already mapped ghcb
+
+Brijesh Singh (42):
+  x86/cpufeatures: Add SEV-SNP CPU feature
+  iommu/amd: Introduce function to check SEV-SNP support
+  x86/sev: Add the host SEV-SNP initialization support
+  x86/sev: set SYSCFG.MFMD
+  x86/sev: Add RMP entry lookup helpers
+  x86/sev: Add helper functions for RMPUPDATE and PSMASH instruction
+  x86/sev: Invalid pages from direct map when adding it to RMP table
+  x86/traps: Define RMP violation #PF error code
+  x86/fault: Add support to handle the RMP fault for user address
+  x86/fault: Add support to dump RMP entry on fault
+  crypto:ccp: Define the SEV-SNP commands
+  crypto: ccp: Add support to initialize the AMD-SP for SEV-SNP
+  crypto:ccp: Provide APIs to issue SEV-SNP commands
+  crypto: ccp: Handle the legacy TMR allocation when SNP is enabled
+  crypto: ccp: Handle the legacy SEV command when SNP is enabled
+  crypto: ccp: Add the SNP_PLATFORM_STATUS command
+  crypto: ccp: Add the SNP_{SET,GET}_EXT_CONFIG command
+  crypto: ccp: Provide APIs to query extended attestation report
+  KVM: SVM: Provide the Hypervisor Feature support VMGEXIT
+  KVM: SVM: Make AVIC backing, VMSA and VMCB memory allocation SNP safe
+  KVM: SVM: Add initial SEV-SNP support
+  KVM: SVM: Add KVM_SNP_INIT command
+  KVM: SVM: Add KVM_SEV_SNP_LAUNCH_START command
+  KVM: SVM: Disallow registering memory range from HugeTLB for SNP guest
+  KVM: SVM: Add KVM_SEV_SNP_LAUNCH_UPDATE command
+  KVM: SVM: Mark the private vma unmerable for SEV-SNP guests
+  KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH command
+  KVM: X86: Keep the NPT and RMP page level in sync
+  KVM: x86: Introduce kvm_mmu_get_tdp_walk() for SEV-SNP use
+  KVM: x86: Define RMP page fault error bits for #NPF
+  KVM: x86: Update page-fault trace to log full 64-bit error code
+  KVM: SVM: Do not use long-lived GHCB map while setting scratch area
+  KVM: SVM: Remove the long-lived GHCB host map
+  KVM: SVM: Add support to handle GHCB GPA register VMGEXIT
+  KVM: SVM: Add support to handle MSR based Page State Change VMGEXIT
+  KVM: SVM: Add support to handle Page State Change VMGEXIT
+  KVM: SVM: Introduce ops for the post gfn map and unmap
+  KVM: x86: Export the kvm_zap_gfn_range() for the SNP use
+  KVM: SVM: Add support to handle the RMP nested page fault
+  KVM: SVM: Provide support for SNP_GUEST_REQUEST NAE event
+  KVM: SVM: Add module parameter to enable the SEV-SNP
+  ccp: add support to decrypt the page
+
+Michael Roth (2):
+  *fix for stale per-cpu pointer due to cond_resched  during ghcb
+    mapping
+  *debug: warn and retry failed rmpupdates
+
+Sean Christopherson (1):
+  KVM: x86/mmu: Introduce kvm_mmu_map_tdp_page() for use by TDX and SNP
+
+Tom Lendacky (3):
+  KVM: SVM: Add support to handle AP reset MSR protocol
+  KVM: SVM: Use a VMSA physical address variable for populating VMCB
+  KVM: SVM: Support SEV-SNP AP Creation NAE event
+
+ Documentation/virt/coco/sevguest.rst          |   54 +
+ .../virt/kvm/x86/amd-memory-encryption.rst    |  102 +
+ arch/x86/include/asm/cpufeatures.h            |    1 +
+ arch/x86/include/asm/disabled-features.h      |    8 +-
+ arch/x86/include/asm/kvm-x86-ops.h            |    2 +
+ arch/x86/include/asm/kvm_host.h               |   15 +
+ arch/x86/include/asm/msr-index.h              |    9 +
+ arch/x86/include/asm/sev-common.h             |   28 +
+ arch/x86/include/asm/sev.h                    |   45 +
+ arch/x86/include/asm/svm.h                    |    6 +
+ arch/x86/include/asm/trap_pf.h                |   18 +-
+ arch/x86/kernel/cpu/amd.c                     |    3 +-
+ arch/x86/kernel/sev.c                         |  400 ++++
+ arch/x86/kvm/lapic.c                          |    5 +-
+ arch/x86/kvm/mmu.h                            |    7 +-
+ arch/x86/kvm/mmu/mmu.c                        |   90 +
+ arch/x86/kvm/svm/sev.c                        | 1703 ++++++++++++++++-
+ arch/x86/kvm/svm/svm.c                        |   62 +-
+ arch/x86/kvm/svm/svm.h                        |   75 +-
+ arch/x86/kvm/trace.h                          |   40 +-
+ arch/x86/kvm/x86.c                            |   10 +-
+ arch/x86/mm/fault.c                           |   84 +-
+ drivers/crypto/ccp/sev-dev.c                  |  908 ++++++++-
+ drivers/crypto/ccp/sev-dev.h                  |   17 +
+ drivers/iommu/amd/init.c                      |   30 +
+ include/linux/iommu.h                         |    9 +
+ include/linux/mm.h                            |    3 +-
+ include/linux/mm_types.h                      |    3 +
+ include/linux/psp-sev.h                       |  346 ++++
+ include/linux/sev.h                           |   32 +
+ include/uapi/linux/kvm.h                      |   56 +
+ include/uapi/linux/psp-sev.h                  |   60 +
+ mm/memory.c                                   |   13 +
+ tools/arch/x86/include/asm/cpufeatures.h      |    1 +
+ 34 files changed, 4090 insertions(+), 155 deletions(-)
+ create mode 100644 include/linux/sev.h
+
+-- 
+2.25.1
+
