@@ -1,465 +1,272 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2081.outbound.protection.outlook.com [40.107.94.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696E1747E
-	for <linux-coco@lists.linux.dev>; Tue, 21 Jun 2022 18:11:30 +0000 (UTC)
-Received: by mail-lf1-f52.google.com with SMTP id w20so23684554lfa.11
-        for <linux-coco@lists.linux.dev>; Tue, 21 Jun 2022 11:11:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2OSsNJ8sjhHVo8wfzEftOtkr5HcPtOIMNqFox2iufIY=;
-        b=KfpRIF7uvdbQP1hWnFLJ+wpZPfbpqsrugXnGuBN4Y2LuuBPaadL720Ip9F4FODWsdT
-         VM2j0PB8vjwQRVjuQToTj6i29KrZVTNE+QMAvS3+6HqT9yurtX34jlaqW6+JLTqkHKPa
-         skmol3spbDfgOnTVWWODiSdu/2ZDcdYZhc0h5mQBzLxrzbKg2HAM8W4laB/s5SWWc9VM
-         iBFc1MaF6aaxT4b8v1GCvc9D1YL01eGPpZyzbtsnzaZBQRZTYWCcih8VNdNv1wdRcaKP
-         uA2sE9f38hN0pSnYgZaS3peHv6Gu5t6F6GktqAdvmdJS19+hl6JgNbGekkmN2ZsCd2Z/
-         sDMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2OSsNJ8sjhHVo8wfzEftOtkr5HcPtOIMNqFox2iufIY=;
-        b=vSNC5WTbG7FfMssQz+2coVObFqLvx3VvAsxKjHsTW1SDERS6W0zKMOPyYnU6hxCIMz
-         bPMOcrTwnz8E8LG0fjs67rULsYrKXs9XV3XEIgipEDE4noiGYSTmVCDzj6/4cig6ah0D
-         yfYlTgVw4OCiQmQeThH/2Rvf1xsgn0YvQFYAHLTZSbX77ZJ9HDv9SvinZumHcD/Da0ER
-         DzYRF19lCJ7nRBAVD6OaMjF1bcPsI65016xD/gmoGPG/FW0oz95TWNjsPDomJk1zYDy4
-         NgaWhRnmp0+iR2lahVMEOAHeW8vELC3EDTuIS/TZg2DQG9/PHTp1/vNOdOApwmDprpK6
-         p8ig==
-X-Gm-Message-State: AJIora8UukeEjpyLL7esg2HKt2TLBCyAjcG9KDWJaIimj9/MaOGezfH4
-	chTvzMHEtroodnc21aEczOqb2anDJM+pL2IZkxKckg==
-X-Google-Smtp-Source: AGRyM1u3cNzkcdbb03ARGSv06yGgZax05RL/7AWsD9zEB9NhJk5fSjh68eGxcM8/9z7NrHB5xxdny2TUaHEWAkam0zc=
-X-Received: by 2002:a05:6512:401a:b0:47f:6ea5:dace with SMTP id
- br26-20020a056512401a00b0047f6ea5dacemr6981952lfb.402.1655835088052; Tue, 21
- Jun 2022 11:11:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8259B2F47
+	for <linux-coco@lists.linux.dev>; Tue, 21 Jun 2022 20:17:18 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ctVlgznizxfgVoD8+tJ7yYEftRN06MbFf9yNEoMM4f2D/g35ksmrGKxdiDKHFhbrP77YyF3xYUdYmuwNymsWYJlUPCEptAUkZzmR5ip8pfR15W1XYX3XNo3x0j5IL2IjovRFBZbunPDu0ZNRFdtvQQTk9z1dcUbCWSPh50oGKcyXYEIwDXPletXIw3045xOGKUdKIiDObNrIKFrBzrP8h5UwjWzSYR+KBuFPz7kE0W9thp2AUgb8czxXlGrJF7EHSj71be1HPiNjEKL9X46H/EtXNkfl9ohHEOM8IKdy+y+NtqoPI3gF0eOPpPOTSotPHcpKwn0hD9lIKr0Zg3d0/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NkOlL6k/8gXpWMU958lgZu4PhxJ57T5r9KoyhnsKKJg=;
+ b=JygLAZ0TQpqygaTkBzolOAhom4A6kGfKXV1vxWF96jL+x7XtXD3xYxbVsk3VB0GpCxSYuLPrJ9JJbYO1Dyhbg5sd4RWBCLf4WJZoG1O0lpaMDdptM3JNjKWua2nhjLGSnIsTLViWBZ+aQYPrS0w5abICW/Mf3h+dvzw/YHfJZzteJ9omyddQhGcv2QZSoomMamKZeOeWfM0Cklh/GPrrlm/XHw1bAEVYmZ8B8LdHse9vlbAwDaKgiFTfS6JEREt+G3dJTh33U3XNDt2OQoPBL8jF3J3mCZYlqjuWYwDNl/io5yfvQdHlBm9oWtOrDZkw3IeK75tlVcQaFh8jQqez+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NkOlL6k/8gXpWMU958lgZu4PhxJ57T5r9KoyhnsKKJg=;
+ b=wnM71+eXDJ4dk6c0D/f/i2i5+7rnT4M0OO3y9tbUUx8fWIIlFxuWMyMR6NCDi4Or2oe0bWPMc7vHT1K08gK8e7PKcBLir3mnfLIY0k8skzEtMIHaMWMRqIilVB3hIPdIGr20AEB41K8HXH2bkO8KYiPTyZQc2RXQdjjDol4tg0w=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by BN9PR12MB5052.namprd12.prod.outlook.com (2603:10b6:408:135::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.15; Tue, 21 Jun
+ 2022 20:17:15 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::810a:e508:3491:1b93]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::810a:e508:3491:1b93%2]) with mapi id 15.20.5353.022; Tue, 21 Jun 2022
+ 20:17:15 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Peter Gonda <pgonda@google.com>
+CC: the arch/x86 maintainers <x86@kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, Linux Crypto Mailing List
+	<linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, "Lendacky, Thomas"
+	<Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel
+	<ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson
+	<jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, Peter Zijlstra
+	<peterz@infradead.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>, "Roth, Michael" <Michael.Roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, Tony Luck
+	<tony.luck@intel.com>, Marc Orr <marcorr@google.com>, Sathyanarayanan
+ Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Alper Gun
+	<alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: RE: [PATCH Part2 v6 14/49] crypto: ccp: Handle the legacy TMR
+ allocation when SNP is enabled
+Thread-Topic: [PATCH Part2 v6 14/49] crypto: ccp: Handle the legacy TMR
+ allocation when SNP is enabled
+Thread-Index: AQHYhZpY+tOs5rhl/E63aZQgkZ9Qqa1aQYRA
+Date: Tue, 21 Jun 2022 20:17:15 +0000
+Message-ID:
+ <SN6PR12MB276722570164ECD120BA4D628EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <3a51840f6a80c87b39632dc728dbd9b5dd444cd7.1655761627.git.ashish.kalra@amd.com>
+ <CAMkAt6ruxMazN3NmWHsemDNQj6Uj0PhCVeaxw2unCxU=YZFRWw@mail.gmail.com>
+In-Reply-To:
+ <CAMkAt6ruxMazN3NmWHsemDNQj6Uj0PhCVeaxw2unCxU=YZFRWw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=true;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2022-06-21T19:40:20Z;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public-AIP 2.0;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ActionId=25b415e6-13f3-4207-9342-ca3d7c21768e;
+ MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=1
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_enabled: true
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_setdate: 2022-06-21T20:17:13Z
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_method: Privileged
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_name: Public-AIP 2.0
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_actionid:
+ cc1f3d52-50cb-4506-9c6d-af57c945b07d
+msip_label_d4243a53-6221-4f75-8154-e4b33a5707a1_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 65f7ffdf-7775-43d4-04de-08da53c308cc
+x-ms-traffictypediagnostic: BN9PR12MB5052:EE_
+x-microsoft-antispam-prvs:
+ <BN9PR12MB5052DED06A26991D4ACB3DD38EB39@BN9PR12MB5052.namprd12.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ wwP/8ofCPxXWDOvivGng4TdCeO9ljkzLjhySESYbS5W98ytEVG6j6NCHwm0oJVeFsC+NCo38Oq59xjuklpkWCIn+8GKONNdMVkFG6/ZumdnIME213SbwFUdWOrqzHbdDbq45wPWkz+ITjPUhH287QSn67g5Xrh1yyeqi+ropyjZVxB+UzZ8m/TbcmCG0WSPf38PBhyFLxclDwAbe4AjBzZegk80DQArSv3k6uvfSb9FjJ7wfWzGr094CwTBs9P1ipCwac5FkmqcYNoDxGd5X1xBfkwEaVBXKyhIulJ9+3nSZeGJbkg3BwlJAX/oALTm1uP7zbi8kU2g/uAlE/ow6ZHmFqaF6XW11x7CDUFiEoF10PJ1DZQAy7QKfbY/gDSsD0yK8yl0DPGTtilgTtmW/776ac/YSbjsMyfk5y83xWZKZWNbglOdCOLg+O/Ah7iR41zcuUHVqY2ek+5iwePNPiJKzM7XTjYdOPFFF7KXp/PnYg/46tYfV5AY0m/2HGqP9GEuXHHtLkyhCKz44pZ+sh5lYgAyZviv6ciF7Oxj2qjp5BeH1aZsqhyMEcs+xVtepyfg4W4zbRBlF7uHuox7U1PG3vpm56CS7f7EshlmViIO0lYeZl6sGl2ucevtgk4SRFk0+CRk9daJzX+vcVw4hbDrvhAMckVgjJMP6G30J3t3bp4Yo3yxG+qZ6eppywfdU4oOKAzWoASyoA+ub1uCXSQ==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(346002)(376002)(39860400002)(396003)(366004)(4326008)(66556008)(71200400001)(66446008)(122000001)(54906003)(478600001)(316002)(64756008)(38070700005)(6916009)(8676002)(76116006)(66476007)(66946007)(186003)(83380400001)(86362001)(26005)(41300700001)(33656002)(9686003)(7696005)(38100700002)(5660300002)(7416002)(8936002)(55016003)(52536014)(6506007)(2906002)(7406005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?UEp3bFR6V3ZTcTNPenhycWlad2FJVVFKWUpWb3g5YzZJbmdrcWZvaDg2RldM?=
+ =?utf-8?B?ZERabzFqeEVwNE85NHJNNURZQ1ZTZWh6b3lRSVkvbExORVF4dWR6alN0QVc4?=
+ =?utf-8?B?anBwWlU3R3ZCQkNReThKalc1MTJkNGU0eGhEeXJyYU8zRDNMQ2x0WmNCeTZy?=
+ =?utf-8?B?cWQ4Q01sVlJ0djJSWVZFa2NldlBsbDhkenZTMTJiT09uVDRMUjBRM04xL0JK?=
+ =?utf-8?B?UGxOT2lwN2orMGtwNm8zb25wOUVBT01PRGd3U0NaeVJWWWtUYU5SSnJLeUVO?=
+ =?utf-8?B?b3JrNU9IL2tQcWV4U2lxVHhkVm5HUWw4R25haVdNQ1RoRS8rUEI2enZxR3Uw?=
+ =?utf-8?B?R2FVUHV6cGoxMjFLNWVGbnk3Q0hNOEx0Q2ZHeVZtQUtCYzJFRGdWakdKUVJm?=
+ =?utf-8?B?NVZHZk9iU0xSOHRVUTl6YmJRV2xVOWptOXdLVFJpUWRnRDVEOURIRlU2Rm44?=
+ =?utf-8?B?UnU4ckZJbys0Vzd4VGt1VW4rWm4xenJST1V2L1FDb3JpZ0JxcitlYmNUNHA4?=
+ =?utf-8?B?RUMrZDZURkJSZzdMazBFYzNMbnZobUNUOWhJSUE1OFZ5MXJNZytmVlVYRWYw?=
+ =?utf-8?B?NElidy9mY3V3STNJSHM2RVRGZW1VVVVsQUZ0cHJ2TUhETy9Zb1hjQ3pHdEdF?=
+ =?utf-8?B?OUdGZHhTR1lzRUVWYzBvdzNxZlJFS2wyZzhrYnBuUWIxd3lpcW45bU1hYVNs?=
+ =?utf-8?B?TElYSEs5SnBLaWRlYjFlSmtsVlFPZ1MxZUR4NDhMSDVRLzF2QktnTCtVOXFq?=
+ =?utf-8?B?aWJ0Qk5mcjQ1RWYrSVRGMTZ6dlhFclBJQ3JVWndWWFBCdXIzb0dkU3granFR?=
+ =?utf-8?B?ZUpsZzd4NURlSVZPekZhV2pYbDNtQUJoZkpWRDFSOGQvYzA1djhzOCtOOUxE?=
+ =?utf-8?B?M3oyNW9McUxVbkpXdFh2aG14TURLUWpJemU3c1gyY0R5anA5SERyN2NrREpN?=
+ =?utf-8?B?bDdtY1Y5Y3VublU4Z3l5OExDVkt4cmg2NGJ6ZUIwa2Uxdjl3dnZqK1NoLy81?=
+ =?utf-8?B?dnlZNlowdGliZ2ZSc3RpOFJIRWxwS0dvQWNsS1dCRTBqTmROQU5naW5GcEQx?=
+ =?utf-8?B?N1k0d0lxeTM1aiswNmo1NjB1YS96UW11ZDh4L29wWTl4cFZmQ3dQdG9xbUJ2?=
+ =?utf-8?B?NGt3S3F3QUZKU1UzaVA4WWJkT1VmUVgrcmZ3aTJndUxCSUVFdDU4M054Q2Nq?=
+ =?utf-8?B?d1NOQzVHZDJoY3JFZmIxKzNGcEJZSWRiT044ZTB3MzNOK2dQb0VBK3dPaXlq?=
+ =?utf-8?B?Mk5Wb05wWHFLYkdJUDF6MEc4MTNZNGxka2xBUllyVHV2Y2JwUmtjWld5RDZZ?=
+ =?utf-8?B?dUN4NDhBV3lPK0VJcjFCNVhib1RjaXBVeEhsdkZLK3NrU01RanY4SkdxRWp3?=
+ =?utf-8?B?c0tzTjlLL2xaMW13dk5SbG9ZL05QcUR6Q2RYbHNaQVZVNnVudFFhRUpnRHdJ?=
+ =?utf-8?B?bGJFT2haMkI3U2p3akVrKzdUSVBBbytTcEk2dktndEpkb3lvTWlMaXdjZzBj?=
+ =?utf-8?B?TVhIWTNkb3hNMTlyRnNTTkRKeStoUnZSVGgyZjdJbXhQMm94QlFzZFlQajhz?=
+ =?utf-8?B?bDBKZkdpeHgxL1ZHVHp2MHR6K01EWnRuVS8wSk9wQ2R0WXErdGE4Znp0U2Z2?=
+ =?utf-8?B?WVZIS0FiWjR1TVNjU3JRVzgrbHBybHp2ZHlGekNCVWp1NGx0R0lLOVJqOFVl?=
+ =?utf-8?B?TkJ1STlUU3FyaUZDOFJxVi91VmNwL2JqY1NYelNnbnc4VS9vUXJWQnRLazZV?=
+ =?utf-8?B?ZkZjb0toZGgxcnhBcktkN2RKbWt3WXhQSkw2RmZmb0tCWU5RU3ROa2xNWDZW?=
+ =?utf-8?B?dm80anpVQUVEVHg1SFNyYWViOWlEQVVoWDYzMHdRZVZvSnplRlNCb2hsNk45?=
+ =?utf-8?B?b1NHTnBpRzcwUUtlellob0NrUGJ3dFJJWElha05odnVocHh0ZEx6NTdER01h?=
+ =?utf-8?B?QVpyWkFwTjFrb2lCb0t0UDJmdDMxQ25zODJsZElmeTAzMGV3bDNpYnlCZUFH?=
+ =?utf-8?B?U0MvYXRTaWl2MGdVZVIvZVFzR2lpZTl2OHhGdjlWV0JTUVEzaWpKUTFOaXU3?=
+ =?utf-8?B?UktQZC95UktueStqQWNiNnJDd255ZWJ5dDFMSlQ3aHVDYldjajNGYzZmOERN?=
+ =?utf-8?B?SDB6YURZUjZQSXlxbkQyTFJ2YlJmajh5SzFKbmd4c1JPMmZ6RTBSaXU2VC9k?=
+ =?utf-8?B?Q0g5RnF4ZWhUckNDd24wVmJNVnBZQmNNUjdoMG5EVGlTWWZveXFtMzJZclFQ?=
+ =?utf-8?B?ODdLak9ZVGU3Qklhay9iS3NhaVlpZGxJMitxZTVHakVpcXF0d2p6UFJuVEdN?=
+ =?utf-8?Q?qopmJDbH8aGA/LqXHb?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1655761627.git.ashish.kalra@amd.com> <3a51840f6a80c87b39632dc728dbd9b5dd444cd7.1655761627.git.ashish.kalra@amd.com>
-In-Reply-To: <3a51840f6a80c87b39632dc728dbd9b5dd444cd7.1655761627.git.ashish.kalra@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Tue, 21 Jun 2022 12:11:16 -0600
-Message-ID: <CAMkAt6ruxMazN3NmWHsemDNQj6Uj0PhCVeaxw2unCxU=YZFRWw@mail.gmail.com>
-Subject: Re: [PATCH Part2 v6 14/49] crypto: ccp: Handle the legacy TMR
- allocation when SNP is enabled
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: "the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	"Lendacky, Thomas" <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Alper Gun <alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, jarkko@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65f7ffdf-7775-43d4-04de-08da53c308cc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jun 2022 20:17:15.7662
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4b/+SVDMzB4L3GCh3Lo3cBR930j9t3HShUZ2RiauQnK0bCXIOlPALQy/+QGQL0z2IUquwuthA2iSjU/G4+cMWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5052
 
-On Mon, Jun 20, 2022 at 5:05 PM Ashish Kalra <Ashish.Kalra@amd.com> wrote:
->
-> From: Brijesh Singh <brijesh.singh@amd.com>
->
-> The behavior and requirement for the SEV-legacy command is altered when
-> the SNP firmware is in the INIT state. See SEV-SNP firmware specification
-> for more details.
->
-> Allocate the Trusted Memory Region (TMR) as a 2mb sized/aligned region
-> when SNP is enabled to satify new requirements for the SNP. Continue
-
-satisfy
-
-> allocating a 1mb region for !SNP configuration.
->
-> While at it, provide API that can be used by others to allocate a page
-> that can be used by the firmware. The immediate user for this API will
-> be the KVM driver. The KVM driver to need to allocate a firmware context
-> page during the guest creation. The context page need to be updated
-> by the firmware. See the SEV-SNP specification for further details.
->
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  drivers/crypto/ccp/sev-dev.c | 173 +++++++++++++++++++++++++++++++++--
->  include/linux/psp-sev.h      |  11 +++
->  2 files changed, 178 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index 35d76333e120..0dbd99f29b25 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -79,6 +79,14 @@ static void *sev_es_tmr;
->  #define NV_LENGTH (32 * 1024)
->  static void *sev_init_ex_buffer;
->
-> +/* When SEV-SNP is enabled the TMR needs to be 2MB aligned and 2MB size. */
-> +#define SEV_SNP_ES_TMR_SIZE    (2 * 1024 * 1024)
-> +
-> +static size_t sev_es_tmr_size = SEV_ES_TMR_SIZE;
-
-Why not keep all this TMR stuff together near the SEV_ES_TMR_SIZE define?
-
-> +
-> +static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret);
-> +static int sev_do_cmd(int cmd, void *data, int *psp_ret);
-> +
->  static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
->  {
->         struct sev_device *sev = psp_master->sev_data;
-> @@ -177,11 +185,161 @@ static int sev_cmd_buffer_len(int cmd)
->         return 0;
->  }
->
-> +static void snp_leak_pages(unsigned long pfn, unsigned int npages)
-> +{
-> +       WARN(1, "psc failed, pfn 0x%lx pages %d (leaking)\n", pfn, npages);
-> +       while (npages--) {
-> +               memory_failure(pfn, 0);
-> +               dump_rmpentry(pfn);
-> +               pfn++;
-> +       }
-> +}
-> +
-> +static int snp_reclaim_pages(unsigned long pfn, unsigned int npages, bool locked)
-> +{
-> +       struct sev_data_snp_page_reclaim data;
-> +       int ret, err, i, n = 0;
-> +
-> +       for (i = 0; i < npages; i++) {
-
-What about setting |n| here too, also the other increments.
-
-for (i = 0, n = 0; i < npages; i++, n++, pfn++)
-
-> +               memset(&data, 0, sizeof(data));
-> +               data.paddr = pfn << PAGE_SHIFT;
-> +
-> +               if (locked)
-> +                       ret = __sev_do_cmd_locked(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
-> +               else
-> +                       ret = sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
-
-Can we change `sev_cmd_mutex` to some sort of nesting lock type? That
-could clean up this if (locked) code.
-
-> +               if (ret)
-> +                       goto cleanup;
-> +
-> +               ret = rmp_make_shared(pfn, PG_LEVEL_4K);
-> +               if (ret)
-> +                       goto cleanup;
-> +
-> +               pfn++;
-> +               n++;
-> +       }
-> +
-> +       return 0;
-> +
-> +cleanup:
-> +       /*
-> +        * If failed to reclaim the page then page is no longer safe to
-> +        * be released, leak it.
-> +        */
-> +       snp_leak_pages(pfn, npages - n);
-> +       return ret;
-> +}
-> +
-> +static inline int rmp_make_firmware(unsigned long pfn, int level)
-> +{
-> +       return rmp_make_private(pfn, 0, level, 0, true);
-> +}
-> +
-> +static int snp_set_rmp_state(unsigned long paddr, unsigned int npages, bool to_fw, bool locked,
-> +                            bool need_reclaim)
-
-This function can do a lot and when I read the call sites its hard to
-see what its doing since we have a combination of arguments which tell
-us what behavior is happening, some of which are not valid (ex: to_fw
-== true and need_reclaim == true is an invalid argument combination).
-Also this for loop over |npages| is duplicated from
-snp_reclaim_pages(). One improvement here is that on the current
-snp_reclaim_pages() if we fail to reclaim a page we assume we cannot
-reclaim the next pages, this may cause us to snp_leak_pages() more
-pages than we actually need too.
-
-What about something like this?
-
-static snp_leak_page(u64 pfn, enum pg_level level)
-{
-   memory_failure(pfn, 0);
-   dump_rmpentry(pfn);
-}
-
-static int snp_reclaim_page(u64 pfn, enum pg_level level)
-{
-  int ret;
-  struct sev_data_snp_page_reclaim data;
-
-  ret = sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
-  if (ret)
-    goto cleanup;
-
-  ret = rmp_make_shared(pfn, level);
-  if (ret)
-    goto cleanup;
-
-return 0;
-
-cleanup:
-    snp_leak_page(pfn, level)
-}
-
-typedef int (*rmp_state_change_func) (u64 pfn, enum pg_level level);
-
-static int snp_set_rmp_state(unsigned long paddr, unsigned int npages,
-rmp_state_change_func state_change, rmp_state_change_func cleanup)
-{
-  struct sev_data_snp_page_reclaim data;
-  int ret, err, i, n = 0;
-
-  for (i = 0, n = 0; i < npages; i++, n++, pfn++) {
-    ret = state_change(pfn, PG_LEVEL_4K)
-    if (ret)
-      goto cleanup;
-  }
-
-  return 0;
-
-cleanup:
-  for (; i>= 0; i--, n--, pfn--) {
-    cleanup(pfn, PG_LEVEL_4K);
-  }
-
-  return ret;
-}
-
-Then inside of __snp_alloc_firmware_pages():
-
-snp_set_rmp_state(paddr, npages, rmp_make_firmware, snp_reclaim_page);
-
-And inside of __snp_free_firmware_pages():
-
-snp_set_rmp_state(paddr, npages, snp_reclaim_page, snp_leak_page);
-
-Just a suggestion feel free to ignore. The readability comment could
-be addressed much less invasively by just making separate functions
-for each valid combination of arguments here. Like
-snp_set_rmp_fw_state(), snp_set_rmp_shared_state(),
-snp_set_rmp_release_state() or something.
-
-> +{
-> +       unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT; /* Cbit maybe set in the paddr */
-> +       int rc, n = 0, i;
-> +
-> +       for (i = 0; i < npages; i++) {
-> +               if (to_fw)
-> +                       rc = rmp_make_firmware(pfn, PG_LEVEL_4K);
-> +               else
-> +                       rc = need_reclaim ? snp_reclaim_pages(pfn, 1, locked) :
-> +                                           rmp_make_shared(pfn, PG_LEVEL_4K);
-> +               if (rc)
-> +                       goto cleanup;
-> +
-> +               pfn++;
-> +               n++;
-> +       }
-> +
-> +       return 0;
-> +
-> +cleanup:
-> +       /* Try unrolling the firmware state changes */
-> +       if (to_fw) {
-> +               /*
-> +                * Reclaim the pages which were already changed to the
-> +                * firmware state.
-> +                */
-> +               snp_reclaim_pages(paddr >> PAGE_SHIFT, n, locked);
-> +
-> +               return rc;
-> +       }
-> +
-> +       /*
-> +        * If failed to change the page state to shared, then its not safe
-> +        * to release the page back to the system, leak it.
-> +        */
-> +       snp_leak_pages(pfn, npages - n);
-> +
-> +       return rc;
-> +}
-> +
-> +static struct page *__snp_alloc_firmware_pages(gfp_t gfp_mask, int order, bool locked)
-> +{
-> +       unsigned long npages = 1ul << order, paddr;
-> +       struct sev_device *sev;
-> +       struct page *page;
-> +
-> +       if (!psp_master || !psp_master->sev_data)
-> +               return NULL;
-> +
-> +       page = alloc_pages(gfp_mask, order);
-> +       if (!page)
-> +               return NULL;
-> +
-> +       /* If SEV-SNP is initialized then add the page in RMP table. */
-> +       sev = psp_master->sev_data;
-> +       if (!sev->snp_inited)
-> +               return page;
-> +
-> +       paddr = __pa((unsigned long)page_address(page));
-> +       if (snp_set_rmp_state(paddr, npages, true, locked, false))
-> +               return NULL;
-
-So what about the case where snp_set_rmp_state() fails but we were
-able to reclaim all the pages? Should we be able to signal that to
-callers so that we could free |page| here? But given this is an error
-path already maybe we can optimize this in a follow up series.
-
-> +
-> +       return page;
-> +}
-> +
-> +void *snp_alloc_firmware_page(gfp_t gfp_mask)
-> +{
-> +       struct page *page;
-> +
-> +       page = __snp_alloc_firmware_pages(gfp_mask, 0, false);
-> +
-> +       return page ? page_address(page) : NULL;
-> +}
-> +EXPORT_SYMBOL_GPL(snp_alloc_firmware_page);
-> +
-> +static void __snp_free_firmware_pages(struct page *page, int order, bool locked)
-> +{
-> +       unsigned long paddr, npages = 1ul << order;
-> +
-> +       if (!page)
-> +               return;
-> +
-> +       paddr = __pa((unsigned long)page_address(page));
-> +       if (snp_set_rmp_state(paddr, npages, false, locked, true))
-> +               return;
-
-Here we may be able to free some of |page| depending how where inside
-of snp_set_rmp_state() we failed. But again given this is an error
-path already maybe we can optimize this in a follow up series.
-
-
-
-> +
-> +       __free_pages(page, order);
-> +}
-> +
-> +void snp_free_firmware_page(void *addr)
-> +{
-> +       if (!addr)
-> +               return;
-> +
-> +       __snp_free_firmware_pages(virt_to_page(addr), 0, false);
-> +}
-> +EXPORT_SYMBOL(snp_free_firmware_page);
-> +
->  static void *sev_fw_alloc(unsigned long len)
->  {
->         struct page *page;
->
-> -       page = alloc_pages(GFP_KERNEL, get_order(len));
-> +       page = __snp_alloc_firmware_pages(GFP_KERNEL, get_order(len), false);
->         if (!page)
->                 return NULL;
->
-> @@ -393,7 +551,7 @@ static int __sev_init_locked(int *error)
->                 data.tmr_address = __pa(sev_es_tmr);
->
->                 data.flags |= SEV_INIT_FLAGS_SEV_ES;
-> -               data.tmr_len = SEV_ES_TMR_SIZE;
-> +               data.tmr_len = sev_es_tmr_size;
->         }
->
->         return __sev_do_cmd_locked(SEV_CMD_INIT, &data, error);
-> @@ -421,7 +579,7 @@ static int __sev_init_ex_locked(int *error)
->                 data.tmr_address = __pa(sev_es_tmr);
->
->                 data.flags |= SEV_INIT_FLAGS_SEV_ES;
-> -               data.tmr_len = SEV_ES_TMR_SIZE;
-> +               data.tmr_len = sev_es_tmr_size;
->         }
->
->         return __sev_do_cmd_locked(SEV_CMD_INIT_EX, &data, error);
-> @@ -818,6 +976,8 @@ static int __sev_snp_init_locked(int *error)
->         sev->snp_inited = true;
->         dev_dbg(sev->dev, "SEV-SNP firmware initialized\n");
->
-> +       sev_es_tmr_size = SEV_SNP_ES_TMR_SIZE;
-> +
->         return rc;
->  }
->
-> @@ -1341,8 +1501,9 @@ static void sev_firmware_shutdown(struct sev_device *sev)
->                 /* The TMR area was encrypted, flush it from the cache */
->                 wbinvd_on_all_cpus();
->
-> -               free_pages((unsigned long)sev_es_tmr,
-> -                          get_order(SEV_ES_TMR_SIZE));
-> +               __snp_free_firmware_pages(virt_to_page(sev_es_tmr),
-> +                                         get_order(sev_es_tmr_size),
-> +                                         false);
->                 sev_es_tmr = NULL;
->         }
->
-> @@ -1430,7 +1591,7 @@ void sev_pci_init(void)
->         }
->
->         /* Obtain the TMR memory area for SEV-ES use */
-> -       sev_es_tmr = sev_fw_alloc(SEV_ES_TMR_SIZE);
-> +       sev_es_tmr = sev_fw_alloc(sev_es_tmr_size);
->         if (!sev_es_tmr)
->                 dev_warn(sev->dev,
->                          "SEV: TMR allocation failed, SEV-ES support unavailable\n");
-> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-> index 9f921d221b75..a3bb792bb842 100644
-> --- a/include/linux/psp-sev.h
-> +++ b/include/linux/psp-sev.h
-> @@ -12,6 +12,8 @@
->  #ifndef __PSP_SEV_H__
->  #define __PSP_SEV_H__
->
-> +#include <linux/sev.h>
-> +
->  #include <uapi/linux/psp-sev.h>
->
->  #ifdef CONFIG_X86
-> @@ -940,6 +942,8 @@ int snp_guest_page_reclaim(struct sev_data_snp_page_reclaim *data, int *error);
->  int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *error);
->
->  void *psp_copy_user_blob(u64 uaddr, u32 len);
-> +void *snp_alloc_firmware_page(gfp_t mask);
-> +void snp_free_firmware_page(void *addr);
->
->  #else  /* !CONFIG_CRYPTO_DEV_SP_PSP */
->
-> @@ -981,6 +985,13 @@ static inline int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *erro
->         return -ENODEV;
->  }
->
-> +static inline void *snp_alloc_firmware_page(gfp_t mask)
-> +{
-> +       return NULL;
-> +}
-> +
-> +static inline void snp_free_firmware_page(void *addr) { }
-> +
->  #endif /* CONFIG_CRYPTO_DEV_SP_PSP */
->
->  #endif /* __PSP_SEV_H__ */
-> --
-> 2.25.1
->
+W1B1YmxpY10NCg0KSGVsbG8gUGV0ZXIsDQoNCj4+ICtzdGF0aWMgaW50IHNucF9yZWNsYWltX3Bh
+Z2VzKHVuc2lnbmVkIGxvbmcgcGZuLCB1bnNpZ25lZCBpbnQgbnBhZ2VzLCANCj4+ICtib29sIGxv
+Y2tlZCkgew0KPj4gKyAgICAgICBzdHJ1Y3Qgc2V2X2RhdGFfc25wX3BhZ2VfcmVjbGFpbSBkYXRh
+Ow0KPj4gKyAgICAgICBpbnQgcmV0LCBlcnIsIGksIG4gPSAwOw0KPj4gKw0KPj4gKyAgICAgICBm
+b3IgKGkgPSAwOyBpIDwgbnBhZ2VzOyBpKyspIHsNCg0KPldoYXQgYWJvdXQgc2V0dGluZyB8bnwg
+aGVyZSB0b28sIGFsc28gdGhlIG90aGVyIGluY3JlbWVudHMuDQoNCj5mb3IgKGkgPSAwLCBuID0g
+MDsgaSA8IG5wYWdlczsgaSsrLCBuKyssIHBmbisrKQ0KDQpZZXMgdGhhdCBpcyBzaW1wbGVyLg0K
+DQo+PiArICAgICAgICAgICAgICAgbWVtc2V0KCZkYXRhLCAwLCBzaXplb2YoZGF0YSkpOw0KPj4g
+KyAgICAgICAgICAgICAgIGRhdGEucGFkZHIgPSBwZm4gPDwgUEFHRV9TSElGVDsNCj4+ICsNCj4+
+ICsgICAgICAgICAgICAgICBpZiAobG9ja2VkKQ0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAg
+cmV0ID0gX19zZXZfZG9fY21kX2xvY2tlZChTRVZfQ01EX1NOUF9QQUdFX1JFQ0xBSU0sICZkYXRh
+LCAmZXJyKTsNCj4+ICsgICAgICAgICAgICAgICBlbHNlDQo+PiArICAgICAgICAgICAgICAgICAg
+ICAgICByZXQgPSBzZXZfZG9fY21kKFNFVl9DTURfU05QX1BBR0VfUkVDTEFJTSwgDQo+PiArICZk
+YXRhLCAmZXJyKTsNCg0KPiBDYW4gd2UgY2hhbmdlIGBzZXZfY21kX211dGV4YCB0byBzb21lIHNv
+cnQgb2YgbmVzdGluZyBsb2NrIHR5cGU/IFRoYXQgY291bGQgY2xlYW4gdXAgdGhpcyBpZiAobG9j
+a2VkKSBjb2RlLg0KDQo+ICtzdGF0aWMgaW5saW5lIGludCBybXBfbWFrZV9maXJtd2FyZSh1bnNp
+Z25lZCBsb25nIHBmbiwgaW50IGxldmVsKSB7DQo+ICsgICAgICAgcmV0dXJuIHJtcF9tYWtlX3By
+aXZhdGUocGZuLCAwLCBsZXZlbCwgMCwgdHJ1ZSk7IH0NCj4gKw0KPiArc3RhdGljIGludCBzbnBf
+c2V0X3JtcF9zdGF0ZSh1bnNpZ25lZCBsb25nIHBhZGRyLCB1bnNpZ25lZCBpbnQgbnBhZ2VzLCBi
+b29sIHRvX2Z3LCBib29sIGxvY2tlZCwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICBi
+b29sIG5lZWRfcmVjbGFpbSkNCg0KPlRoaXMgZnVuY3Rpb24gY2FuIGRvIGEgbG90IGFuZCB3aGVu
+IEkgcmVhZCB0aGUgY2FsbCBzaXRlcyBpdHMgaGFyZCB0byBzZWUgd2hhdCBpdHMgZG9pbmcgc2lu
+Y2Ugd2UgaGF2ZSBhIGNvbWJpbmF0aW9uIG9mIGFyZ3VtZW50cyB3aGljaCB0ZWxsIHVzIHdoYXQg
+YmVoYXZpb3IgaXMgaGFwcGVuaW5nLCBzb21lIG9mIHdoaWNoIGFyZSBub3QgdmFsaWQgKGV4OiB0
+b19mdyA9PSB0cnVlIGFuZCBuZWVkX3JlY2xhaW0gPT0gdHJ1ZSBpcyBhbiA+aW52YWxpZCBhcmd1
+bWVudCBjb21iaW5hdGlvbikuDQoNCnRvX2Z3IGlzIHVzZWQgdG8gbWFrZSBhIGZpcm13YXJlIHBh
+Z2UgYW5kIG5lZWRfcmVjbGFpbSBpcyBmb3IgZnJlZWluZyB0aGUgZmlybXdhcmUgcGFnZSwgc28g
+dGhleSBhcmUgZ29pbmcgdG8gYmUgbXV0dWFsbHkgZXhjbHVzaXZlLiANCg0KSSBhY3R1YWxseSBj
+YW4gY29ubmVjdCB3aXRoIGl0IHF1aXRlIGxvZ2ljYWxseSB3aXRoIHRoZSBjYWxsZXJzIDoNCnNu
+cF9hbGxvY19maXJtd2FyZV9wYWdlcyB3aWxsIGNhbGwgd2l0aCB0b19mdyA9IHRydWUgYW5kIG5l
+ZWRfcmVjbGFpbSA9IGZhbHNlDQphbmQgc25wX2ZyZWVfZmlybXdhcmVfcGFnZXMgd2lsbCBkbyB0
+aGUgb3Bwb3NpdGUsIHRvX2Z3ID0gZmFsc2UgYW5kIG5lZWRfcmVjbGFpbSA9IHRydWUuDQoNClRo
+YXQgc2VlbXMgc3RyYWlnaHRmb3J3YXJkIHRvIGxvb2sgYXQuDQoNCj5BbHNvIHRoaXMgZm9yIGxv
+b3Agb3ZlciB8bnBhZ2VzfCBpcyBkdXBsaWNhdGVkIGZyb20gc25wX3JlY2xhaW1fcGFnZXMoKS4g
+T25lIGltcHJvdmVtZW50IGhlcmUgaXMgdGhhdCBvbiB0aGUgY3VycmVudA0KPnNucF9yZWNsYWlt
+X3BhZ2VzKCkgaWYgd2UgZmFpbCB0byByZWNsYWltIGEgcGFnZSB3ZSBhc3N1bWUgd2UgY2Fubm90
+IHJlY2xhaW0gdGhlIG5leHQgcGFnZXMsIHRoaXMgbWF5IGNhdXNlIHVzIHRvIHNucF9sZWFrX3Bh
+Z2VzKCkgbW9yZSBwYWdlcyB0aGFuIHdlIGFjdHVhbGx5IG5lZWQgdG9vLg0KDQpZZXMgdGhhdCBp
+cyB0cnVlLg0KDQo+V2hhdCBhYm91dCBzb21ldGhpbmcgbGlrZSB0aGlzPw0KDQo+c3RhdGljIHNu
+cF9sZWFrX3BhZ2UodTY0IHBmbiwgZW51bSBwZ19sZXZlbCBsZXZlbCkgew0KPiAgIG1lbW9yeV9m
+YWlsdXJlKHBmbiwgMCk7DQo+ICAgZHVtcF9ybXBlbnRyeShwZm4pOw0KPn0NCg0KPnN0YXRpYyBp
+bnQgc25wX3JlY2xhaW1fcGFnZSh1NjQgcGZuLCBlbnVtIHBnX2xldmVsIGxldmVsKSB7DQo+ICBp
+bnQgcmV0Ow0KPiAgc3RydWN0IHNldl9kYXRhX3NucF9wYWdlX3JlY2xhaW0gZGF0YTsNCg0KPiAg
+cmV0ID0gc2V2X2RvX2NtZChTRVZfQ01EX1NOUF9QQUdFX1JFQ0xBSU0sICZkYXRhLCAmZXJyKTsN
+Cj4gIGlmIChyZXQpDQo+ICAgIGdvdG8gY2xlYW51cDsNCg0KPiAgcmV0ID0gcm1wX21ha2Vfc2hh
+cmVkKHBmbiwgbGV2ZWwpOw0KPiAgaWYgKHJldCkNCj4gICAgZ290byBjbGVhbnVwOw0KDQo+IHJl
+dHVybiAwOw0KDQo+Y2xlYW51cDoNCj4gICAgc25wX2xlYWtfcGFnZShwZm4sIGxldmVsKQ0KPn0N
+Cg0KPnR5cGVkZWYgaW50ICgqcm1wX3N0YXRlX2NoYW5nZV9mdW5jKSAodTY0IHBmbiwgZW51bSBw
+Z19sZXZlbCBsZXZlbCk7DQoNCj5zdGF0aWMgaW50IHNucF9zZXRfcm1wX3N0YXRlKHVuc2lnbmVk
+IGxvbmcgcGFkZHIsIHVuc2lnbmVkIGludCBucGFnZXMsIHJtcF9zdGF0ZV9jaGFuZ2VfZnVuYyBz
+dGF0ZV9jaGFuZ2UsIHJtcF9zdGF0ZV9jaGFuZ2VfZnVuYyBjbGVhbnVwKSB7DQo+ICBzdHJ1Y3Qg
+c2V2X2RhdGFfc25wX3BhZ2VfcmVjbGFpbSBkYXRhOw0KPiAgaW50IHJldCwgZXJyLCBpLCBuID0g
+MDsNCg0KPiAgZm9yIChpID0gMCwgbiA9IDA7IGkgPCBucGFnZXM7IGkrKywgbisrLCBwZm4rKykg
+ew0KPiAgICByZXQgPSBzdGF0ZV9jaGFuZ2UocGZuLCBQR19MRVZFTF80SykNCj4gICAgaWYgKHJl
+dCkNCj4gICAgICBnb3RvIGNsZWFudXA7DQo+ICB9DQoNCj4gIHJldHVybiAwOw0KDQo+IGNsZWFu
+dXA6DQo+ICBmb3IgKDsgaT49IDA7IGktLSwgbi0tLCBwZm4tLSkgew0KPiAgICBjbGVhbnVwKHBm
+biwgUEdfTEVWRUxfNEspOw0KPiAgfQ0KDQo+ICByZXR1cm4gcmV0Ow0KPn0NCg0KPlRoZW4gaW5z
+aWRlIG9mIF9fc25wX2FsbG9jX2Zpcm13YXJlX3BhZ2VzKCk6DQoNCj5zbnBfc2V0X3JtcF9zdGF0
+ZShwYWRkciwgbnBhZ2VzLCBybXBfbWFrZV9maXJtd2FyZSwgc25wX3JlY2xhaW1fcGFnZSk7DQoN
+Cj5BbmQgaW5zaWRlIG9mIF9fc25wX2ZyZWVfZmlybXdhcmVfcGFnZXMoKToNCg0KPnNucF9zZXRf
+cm1wX3N0YXRlKHBhZGRyLCBucGFnZXMsIHNucF9yZWNsYWltX3BhZ2UsIHNucF9sZWFrX3BhZ2Up
+Ow0KDQo+SnVzdCBhIHN1Z2dlc3Rpb24gZmVlbCBmcmVlIHRvIGlnbm9yZS4gVGhlIHJlYWRhYmls
+aXR5IGNvbW1lbnQgY291bGQgYmUgYWRkcmVzc2VkIG11Y2ggbGVzcyBpbnZhc2l2ZWx5IGJ5IGp1
+c3QgbWFraW5nIHNlcGFyYXRlIGZ1bmN0aW9ucyBmb3IgZWFjaCB2YWxpZCBjb21iaW5hdGlvbiBv
+ZiBhcmd1bWVudHMgaGVyZS4gTGlrZSBzbnBfc2V0X3JtcF9md19zdGF0ZSgpLCBzbnBfc2V0X3Jt
+cF9zaGFyZWRfc3RhdGUoKSwNCj5zbnBfc2V0X3JtcF9yZWxlYXNlX3N0YXRlKCkgb3Igc29tZXRo
+aW5nLg0KDQo+PiArc3RhdGljIHN0cnVjdCBwYWdlICpfX3NucF9hbGxvY19maXJtd2FyZV9wYWdl
+cyhnZnBfdCBnZnBfbWFzaywgaW50IA0KPj4gK29yZGVyLCBib29sIGxvY2tlZCkgew0KPj4gKyAg
+ICAgICB1bnNpZ25lZCBsb25nIG5wYWdlcyA9IDF1bCA8PCBvcmRlciwgcGFkZHI7DQo+PiArICAg
+ICAgIHN0cnVjdCBzZXZfZGV2aWNlICpzZXY7DQo+PiArICAgICAgIHN0cnVjdCBwYWdlICpwYWdl
+Ow0KPj4gKw0KPj4gKyAgICAgICBpZiAoIXBzcF9tYXN0ZXIgfHwgIXBzcF9tYXN0ZXItPnNldl9k
+YXRhKQ0KPj4gKyAgICAgICAgICAgICAgIHJldHVybiBOVUxMOw0KPj4gKw0KPj4gKyAgICAgICBw
+YWdlID0gYWxsb2NfcGFnZXMoZ2ZwX21hc2ssIG9yZGVyKTsNCj4+ICsgICAgICAgaWYgKCFwYWdl
+KQ0KPj4gKyAgICAgICAgICAgICAgIHJldHVybiBOVUxMOw0KPj4gKw0KPj4gKyAgICAgICAvKiBJ
+ZiBTRVYtU05QIGlzIGluaXRpYWxpemVkIHRoZW4gYWRkIHRoZSBwYWdlIGluIFJNUCB0YWJsZS4g
+Ki8NCj4+ICsgICAgICAgc2V2ID0gcHNwX21hc3Rlci0+c2V2X2RhdGE7DQo+PiArICAgICAgIGlm
+ICghc2V2LT5zbnBfaW5pdGVkKQ0KPj4gKyAgICAgICAgICAgICAgIHJldHVybiBwYWdlOw0KPj4g
+Kw0KPj4gKyAgICAgICBwYWRkciA9IF9fcGEoKHVuc2lnbmVkIGxvbmcpcGFnZV9hZGRyZXNzKHBh
+Z2UpKTsNCj4+ICsgICAgICAgaWYgKHNucF9zZXRfcm1wX3N0YXRlKHBhZGRyLCBucGFnZXMsIHRy
+dWUsIGxvY2tlZCwgZmFsc2UpKQ0KPj4gKyAgICAgICAgICAgICAgIHJldHVybiBOVUxMOw0KDQo+
+U28gd2hhdCBhYm91dCB0aGUgY2FzZSB3aGVyZSBzbnBfc2V0X3JtcF9zdGF0ZSgpIGZhaWxzIGJ1
+dCB3ZSB3ZXJlIGFibGUgdG8gcmVjbGFpbSBhbGwgdGhlIHBhZ2VzPyBTaG91bGQgd2UgYmUgYWJs
+ZSB0byBzaWduYWwgdGhhdCB0byBjYWxsZXJzIHNvIHRoYXQgd2UgY291bGQgZnJlZSB8cGFnZXwg
+aGVyZT8gQnV0IGdpdmVuIHRoaXMgaXMgYW4gZXJyb3IgcGF0aCBhbHJlYWR5IG1heWJlIHdlIGNh
+biBvcHRpbWl6ZSB0aGlzIGluIGEgPmZvbGxvdyB1cCBzZXJpZXMuDQoNClllcywgd2Ugc2hvdWxk
+IGFjdHVhbGx5IHRpZSBpbiB0byBzbnBfcmVjbGFpbV9wYWdlcygpIHN1Y2Nlc3Mgb3IgZmFpbHVy
+ZSBoZXJlIGluIHRoZSBjYXNlIHdlIHdlcmUgYWJsZSB0byBzdWNjZXNzZnVsbHkgdW5yb2xsIHNv
+bWUgb3IgYWxsIG9mIHRoZSBmaXJtd2FyZSBzdGF0ZSBjaGFuZ2UuDQoNCj4gKw0KPiArICAgICAg
+IHJldHVybiBwYWdlOw0KPiArfQ0KPiArDQo+ICt2b2lkICpzbnBfYWxsb2NfZmlybXdhcmVfcGFn
+ZShnZnBfdCBnZnBfbWFzaykgew0KPiArICAgICAgIHN0cnVjdCBwYWdlICpwYWdlOw0KPiArDQo+
+ICsgICAgICAgcGFnZSA9IF9fc25wX2FsbG9jX2Zpcm13YXJlX3BhZ2VzKGdmcF9tYXNrLCAwLCBm
+YWxzZSk7DQo+ICsNCj4gKyAgICAgICByZXR1cm4gcGFnZSA/IHBhZ2VfYWRkcmVzcyhwYWdlKSA6
+IE5VTEw7IH0gDQo+ICtFWFBPUlRfU1lNQk9MX0dQTChzbnBfYWxsb2NfZmlybXdhcmVfcGFnZSk7
+DQo+ICsNCj4gK3N0YXRpYyB2b2lkIF9fc25wX2ZyZWVfZmlybXdhcmVfcGFnZXMoc3RydWN0IHBh
+Z2UgKnBhZ2UsIGludCBvcmRlciwgDQo+ICtib29sIGxvY2tlZCkgew0KPiArICAgICAgIHVuc2ln
+bmVkIGxvbmcgcGFkZHIsIG5wYWdlcyA9IDF1bCA8PCBvcmRlcjsNCj4gKw0KPiArICAgICAgIGlm
+ICghcGFnZSkNCj4gKyAgICAgICAgICAgICAgIHJldHVybjsNCj4gKw0KPiArICAgICAgIHBhZGRy
+ID0gX19wYSgodW5zaWduZWQgbG9uZylwYWdlX2FkZHJlc3MocGFnZSkpOw0KPiArICAgICAgIGlm
+IChzbnBfc2V0X3JtcF9zdGF0ZShwYWRkciwgbnBhZ2VzLCBmYWxzZSwgbG9ja2VkLCB0cnVlKSkN
+Cj4gKyAgICAgICAgICAgICAgIHJldHVybjsNCg0KPiBIZXJlIHdlIG1heSBiZSBhYmxlIHRvIGZy
+ZWUgc29tZSBvZiB8cGFnZXwgZGVwZW5kaW5nIGhvdyB3aGVyZSBpbnNpZGUgb2Ygc25wX3NldF9y
+bXBfc3RhdGUoKSB3ZSBmYWlsZWQuIEJ1dCBhZ2FpbiBnaXZlbiB0aGlzIGlzIGFuIGVycm9yIHBh
+dGggYWxyZWFkeSBtYXliZSB3ZSBjYW4gb3B0aW1pemUgdGhpcyBpbiBhIGZvbGxvdyB1cCBzZXJp
+ZXMuDQoNClllcywgd2UgcHJvYmFibHkgc2hvdWxkIGJlIGFibGUgdG8gZnJlZSBzb21lIG9mIHRo
+ZSBwYWdlKHMpIGRlcGVuZGluZyBvbiBob3cgbWFueSBwYWdlKHMpIGdvdCByZWNsYWltZWQgaW4g
+c25wX3NldF9ybXBfc3RhdGUoKS4NCkJ1dCB0aGVzZSByZWNsYW1hdGlvbiBmYWlsdXJlcyBtYXkg
+bm90IGJlIHZlcnkgY29tbW9uLCBzbyBhbnkgZmFpbHVyZSBpcyBpbmRpY2F0aXZlIG9mIGEgYmln
+Z2VyIGlzc3VlLCBpdCBtaWdodCBiZSB0aGUgY2FzZSB3aGVuIHRoZXJlIGlzIGEgc2luZ2xlIHBh
+Z2UgcmVjbGFtYXRpb24gZXJyb3IgaXQgbWlnaHQgaGFwcGVuIHdpdGggYWxsIHRoZSBzdWJzZXF1
+ZW50DQpwYWdlcyBhbmQgc28gZm9sbG93IGEgc2ltcGxlIHJlY292ZXJ5IHByb2NlZHVyZSwgdGhl
+biBoYW5kbGluZyBhIG1vcmUgY29tcGxleCByZWNvdmVyeSBmb3IgYSBjaHVuayBvZiBwYWdlcyBi
+ZWluZyByZWNsYWltZWQgYW5kIGFub3RoZXIgY2h1bmsgbm90LiANCg0KVGhhbmtzLA0KQXNoaXNo
+DQoNCg0KDQo=
