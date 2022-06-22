@@ -1,93 +1,268 @@
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07361C3B
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jun 2022 14:29:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655908195; x=1687444195;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=PtAWVcHQ/OeCLHQhF7OJWPRZK21owRko6PYyYGt05D0=;
-  b=cEPKL6M/C2M7C33Fz3bnzH0KWkuxaHNQA9zsXMNQkMpAzjO1zA40fBxr
-   3birVHA+HF5/4fB7+4gY8dDH/iVf7UZbd6iZ2XDgRyD0me8y3RjiA35Tm
-   cKODAsKUI8072NQC/+WX9PPcClOuYS0NY3C/DWYj18Tu7d4IsY5sIFKLU
-   UxXm6uIQpYYIuk6uNH55c/3uAk0nrSDRANdcFiMXLmjgnhmVMLmJeK3sa
-   OH8SyA4zt4mwie7Kt2XONjkKZmwPFyHrjGkyrIFiytOAKRCVBtla7XBFW
-   r1CK2+x3qVXIZExcaEwFjs0pQ3AA8f6/zYP6R1Y+FobSteQ2QkLXgSW3s
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="344421288"
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="344421288"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 07:29:51 -0700
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="677571663"
-Received: from bshakya-mobl.amr.corp.intel.com (HELO [10.212.188.76]) ([10.212.188.76])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 07:29:49 -0700
-Message-ID: <25be3068-be13-a451-86d4-ff4cc12ddb23@intel.com>
-Date: Wed, 22 Jun 2022 07:29:31 -0700
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0207110FD
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jun 2022 14:33:16 +0000 (UTC)
+Received: from jpiotrowski-Surface-Book-3 (ip-037-201-214-204.um10.pools.vodafone-ip.de [37.201.214.204])
+	by linux.microsoft.com (Postfix) with ESMTPSA id F368F20C5A72;
+	Wed, 22 Jun 2022 07:33:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F368F20C5A72
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1655908396;
+	bh=ALGB76keBASr4hY7hNxpqQX9PoomTfBUh9uHAgUzoZ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TQuQbeqWbRyJqyFmVhgUuEJoBS5K/iwNUxkPx+opP5jeWVfpzXQI4KzNOllCIS2zh
+	 mU8FnTjBX9ClQRIxHfXEKNV839Uq5DWJzew4nztCg0vmsZJ+56JSnTEpM4fqmceN0D
+	 tXbZpMynZVvEgvrwBOTlSQAdtEXVMixKZZIm5rYI=
+Date: Wed, 22 Jun 2022 16:33:04 +0200
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	bp@alien8.de, michael.roth@amd.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 10/49] x86/fault: Add support to dump RMP entry
+ on fault
+Message-ID: <YrMoIOv3U+vehi/D@jpiotrowski-Surface-Book-3>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <af381cc88410c0e2c48fda5732741edd0d7609ac.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
-Content-Language: en-US
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>, "x86@kernel.org"
- <x86@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
- "mingo@redhat.com" <mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
- "Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "hpa@zytor.com"
- <hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "slp@redhat.com" <slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
- "rientjes@google.com" <rientjes@google.com>,
- "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
- "tobin@ibm.com" <tobin@ibm.com>, "bp@alien8.de" <bp@alien8.de>,
- "Roth, Michael" <Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
- "kirill@shutemov.name" <kirill@shutemov.name>,
- "ak@linux.intel.com" <ak@linux.intel.com>,
- "tony.luck@intel.com" <tony.luck@intel.com>,
- "marcorr@google.com" <marcorr@google.com>,
- "sathyanarayanan.kuppuswamy@linux.intel.com"
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "alpergun@google.com" <alpergun@google.com>,
- "dgilbert@redhat.com" <dgilbert@redhat.com>,
- "jarkko@kernel.org" <jarkko@kernel.org>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <8f63961f00fd170ba0e561f499292175f3155d26.1655761627.git.ashish.kalra@amd.com>
- <cc0c6bd1-a1e3-82ee-8148-040be21cad5c@intel.com>
- <BYAPR12MB2759A8F48D6D68EE879EEF648EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <BYAPR12MB2759A8F48D6D68EE879EEF648EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af381cc88410c0e2c48fda5732741edd0d7609ac.1655761627.git.ashish.kalra@amd.com>
 
-On 6/22/22 07:22, Kalra, Ashish wrote:
-> As I replied previously on the same subject: Architectural implies
-> that it is defined in the APM and shouldn't change in such a way as
-> to not be backward compatible. I probably think the wording here
-> should be architecture independent or more precisely platform
-> independent.
-Yeah, arch-independent and non-architectural are quite different concepts.
+On Mon, Jun 20, 2022 at 11:03:58PM +0000, Ashish Kalra wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
+> 
+> When SEV-SNP is enabled globally, a write from the host goes through the
+> RMP check. If the hardware encounters the check failure, then it raises
+> the #PF (with RMP set). Dump the RMP entry at the faulting pfn to help
+> the debug.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/include/asm/sev.h |  7 +++++++
+>  arch/x86/kernel/sev.c      | 43 ++++++++++++++++++++++++++++++++++++++
+>  arch/x86/mm/fault.c        | 17 +++++++++++----
+>  include/linux/sev.h        |  2 ++
+>  4 files changed, 65 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 6ab872311544..c0c4df817159 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -113,6 +113,11 @@ struct __packed rmpentry {
+>  
+>  #define rmpentry_assigned(x)	((x)->info.assigned)
+>  #define rmpentry_pagesize(x)	((x)->info.pagesize)
+> +#define rmpentry_vmsa(x)	((x)->info.vmsa)
+> +#define rmpentry_asid(x)	((x)->info.asid)
+> +#define rmpentry_validated(x)	((x)->info.validated)
+> +#define rmpentry_gpa(x)		((unsigned long)(x)->info.gpa)
+> +#define rmpentry_immutable(x)	((x)->info.immutable)
+>  
+>  #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
+>  
+> @@ -205,6 +210,7 @@ void snp_set_wakeup_secondary_cpu(void);
+>  bool snp_init(struct boot_params *bp);
+>  void snp_abort(void);
+>  int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err);
+> +void dump_rmpentry(u64 pfn);
+>  #else
+>  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+>  static inline void sev_es_ist_exit(void) { }
+> @@ -229,6 +235,7 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
+>  {
+>  	return -ENOTTY;
+>  }
+> +static inline void dump_rmpentry(u64 pfn) {}
+>  #endif
+>  
+>  #endif
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 734cddd837f5..6640a639fffc 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -2414,6 +2414,49 @@ static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
+>  	return entry;
+>  }
+>  
+> +void dump_rmpentry(u64 pfn)
+> +{
+> +	unsigned long pfn_end;
+> +	struct rmpentry *e;
+> +	int level;
+> +
+> +	e = __snp_lookup_rmpentry(pfn, &level);
+> +	if (!e) {
 
-At Intel, at least, when someone says "not architectural" mean that the
-behavior is implementation-specific.  That, combined with the
-model/family/stepping gave me the wrong impression about what was going on.
+__snp_lookup_rmpentry may return -errno so this should be:
 
-Some more clarity would be greatly appreciated.
+  if (e != 1)
+
+> +		pr_alert("failed to read RMP entry pfn 0x%llx\n", pfn);
+> +		return;
+> +	}
+> +
+> +	if (rmpentry_assigned(e)) {
+> +		pr_alert("RMPEntry paddr 0x%llx [assigned=%d immutable=%d pagesize=%d gpa=0x%lx"
+> +			" asid=%d vmsa=%d validated=%d]\n", pfn << PAGE_SHIFT,
+> +			rmpentry_assigned(e), rmpentry_immutable(e), rmpentry_pagesize(e),
+> +			rmpentry_gpa(e), rmpentry_asid(e), rmpentry_vmsa(e),
+> +			rmpentry_validated(e));
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * If the RMP entry at the faulting pfn was not assigned, then we do not
+> +	 * know what caused the RMP violation. To get some useful debug information,
+> +	 * let iterate through the entire 2MB region, and dump the RMP entries if
+> +	 * one of the bit in the RMP entry is set.
+> +	 */
+> +	pfn = pfn & ~(PTRS_PER_PMD - 1);
+> +	pfn_end = pfn + PTRS_PER_PMD;
+> +
+> +	while (pfn < pfn_end) {
+> +		e = __snp_lookup_rmpentry(pfn, &level);
+> +		if (!e)
+
+  if (e != 1)
+
+> +			return;
+> +
+> +		if (e->low || e->high)
+> +			pr_alert("RMPEntry paddr 0x%llx: [high=0x%016llx low=0x%016llx]\n",
+> +				 pfn << PAGE_SHIFT, e->high, e->low);
+> +		pfn++;
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(dump_rmpentry);
+> +
+>  /*
+>   * Return 1 if the RMP entry is assigned, 0 if it exists but is not assigned,
+>   * and -errno if there is no corresponding RMP entry.
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index f5de9673093a..25896a6ba04a 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -34,6 +34,7 @@
+>  #include <asm/kvm_para.h>		/* kvm_handle_async_pf		*/
+>  #include <asm/vdso.h>			/* fixup_vdso_exception()	*/
+>  #include <asm/irq_stack.h>
+> +#include <asm/sev.h>			/* dump_rmpentry()		*/
+>  
+>  #define CREATE_TRACE_POINTS
+>  #include <asm/trace/exceptions.h>
+> @@ -290,7 +291,7 @@ static bool low_pfn(unsigned long pfn)
+>  	return pfn < max_low_pfn;
+>  }
+>  
+> -static void dump_pagetable(unsigned long address)
+> +static void dump_pagetable(unsigned long address, bool show_rmpentry)
+>  {
+>  	pgd_t *base = __va(read_cr3_pa());
+>  	pgd_t *pgd = &base[pgd_index(address)];
+> @@ -346,10 +347,11 @@ static int bad_address(void *p)
+>  	return get_kernel_nofault(dummy, (unsigned long *)p);
+>  }
+>  
+> -static void dump_pagetable(unsigned long address)
+> +static void dump_pagetable(unsigned long address, bool show_rmpentry)
+>  {
+>  	pgd_t *base = __va(read_cr3_pa());
+>  	pgd_t *pgd = base + pgd_index(address);
+> +	unsigned long pfn;
+>  	p4d_t *p4d;
+>  	pud_t *pud;
+>  	pmd_t *pmd;
+> @@ -367,6 +369,7 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(p4d))
+>  		goto bad;
+>  
+> +	pfn = p4d_pfn(*p4d);
+>  	pr_cont("P4D %lx ", p4d_val(*p4d));
+>  	if (!p4d_present(*p4d) || p4d_large(*p4d))
+>  		goto out;
+> @@ -375,6 +378,7 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(pud))
+>  		goto bad;
+>  
+> +	pfn = pud_pfn(*pud);
+>  	pr_cont("PUD %lx ", pud_val(*pud));
+>  	if (!pud_present(*pud) || pud_large(*pud))
+>  		goto out;
+> @@ -383,6 +387,7 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(pmd))
+>  		goto bad;
+>  
+> +	pfn = pmd_pfn(*pmd);
+>  	pr_cont("PMD %lx ", pmd_val(*pmd));
+>  	if (!pmd_present(*pmd) || pmd_large(*pmd))
+>  		goto out;
+> @@ -391,9 +396,13 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(pte))
+>  		goto bad;
+>  
+> +	pfn = pte_pfn(*pte);
+>  	pr_cont("PTE %lx", pte_val(*pte));
+>  out:
+>  	pr_cont("\n");
+> +
+> +	if (show_rmpentry)
+> +		dump_rmpentry(pfn);
+>  	return;
+>  bad:
+>  	pr_info("BAD\n");
+> @@ -579,7 +588,7 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long ad
+>  		show_ldttss(&gdt, "TR", tr);
+>  	}
+>  
+> -	dump_pagetable(address);
+> +	dump_pagetable(address, error_code & X86_PF_RMP);
+>  }
+>  
+>  static noinline void
+> @@ -596,7 +605,7 @@ pgtable_bad(struct pt_regs *regs, unsigned long error_code,
+>  
+>  	printk(KERN_ALERT "%s: Corrupted page table at address %lx\n",
+>  	       tsk->comm, address);
+> -	dump_pagetable(address);
+> +	dump_pagetable(address, false);
+>  
+>  	if (__die("Bad pagetable", regs, error_code))
+>  		sig = 0;
+> diff --git a/include/linux/sev.h b/include/linux/sev.h
+> index 1a68842789e1..734b13a69c54 100644
+> --- a/include/linux/sev.h
+> +++ b/include/linux/sev.h
+> @@ -16,6 +16,7 @@ int snp_lookup_rmpentry(u64 pfn, int *level);
+>  int psmash(u64 pfn);
+>  int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable);
+>  int rmp_make_shared(u64 pfn, enum pg_level level);
+> +void dump_rmpentry(u64 pfn);
+>  #else
+>  static inline int snp_lookup_rmpentry(u64 pfn, int *level) { return 0; }
+>  static inline int psmash(u64 pfn) { return -ENXIO; }
+> @@ -25,6 +26,7 @@ static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int as
+>  	return -ENODEV;
+>  }
+>  static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENODEV; }
+> +static inline void dump_rmpentry(u64 pfn) { }
+>  
+>  #endif /* CONFIG_AMD_MEM_ENCRYPT */
+>  #endif /* __LINUX_SEV_H */
+> -- 
+> 2.25.1
+> 
