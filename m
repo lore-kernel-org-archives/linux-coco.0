@@ -1,281 +1,193 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA7610FD
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jun 2022 14:42:57 +0000 (UTC)
-Received: from jpiotrowski-Surface-Book-3 (ip-037-201-214-204.um10.pools.vodafone-ip.de [37.201.214.204])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 02ADF20C636D;
-	Wed, 22 Jun 2022 07:42:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 02ADF20C636D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1655908976;
-	bh=3p9ZjAM7sex59sizUKu6QYDFUGr8EeBgiFOquCcUwkM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NrPWRQQBC2o9oajSPE53nnlzATXfEgf2dHagcUN5LS60Ha4Ezvaot2T5Wvu8C10g0
-	 CHJNf3C+lOyYd+OCx34K+ndvZuVfuqQtRBHXe7I3O+OzymGWnyTO5o3t6LiWs6voaT
-	 SSnTy1rlZf9JbY4YZH3R4tktCGmleekxZdzRoF5o=
-Date: Wed, 22 Jun 2022 16:42:45 +0200
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	bp@alien8.de, michael.roth@amd.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 10/49] x86/fault: Add support to dump RMP entry
- on fault
-Message-ID: <YrMqZUfZl1b5I/ud@jpiotrowski-Surface-Book-3>
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2058.outbound.protection.outlook.com [40.107.223.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42691869
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jun 2022 18:04:44 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gMhZka+qkzeK2jmg5G4ONPXC0zy7yNolgDWsOUJgyZaYisIRDP6gi//sxmYpVI3hVabJwRlTIhKIjIGIifqQzduB+w2g96SeRCkBc2DoGuQRawlsaDeiDMb9KxEt+gAdZnPLNkSbqoZCwZiLhC8NetEy5crGLHJ5JW2EyInoLUU5HKniYNdcw3s5KN4//Ga7uLS/7dHZ8mWDW3iH4WiGRLdMszFTQibkOQjmank9yAvBfzuGq4TpjjPYcyuLOCAgY7nDvu8K/5IhLOEt9HDB9bRoRz1dwQAQAUZh1cS/U8+gl6abG1o/SUIoHkIF5beYPkvo85lFbMsv+48YRfbuGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p7wCI4PkoDJydKuKDSHeTV5Lr8aQfPIKL+jScXwD9Pk=;
+ b=fVNTVlVpR+KNdRP2es9aenUTwpWMBUUcnHCeZtPqz/HNyJrCJABWmYsOveTyOr40J/td3uqK77W4hDH6PXLSnQrojkTQCUzhB4+gYcWLh2ks/+vYh28zxHxMofp8su2deI+Xd98jwNrmy5/82bi0yCKTICyySM4Qt35wm73FY5dorc3wn0Cj88BVkgdzyNj33Y+OVG9xow/0w266zqcVnsU5WH7n00eWUEk6lzAdpXQ0JwYwBVlS0vNyj9/63BMAQ+7a3NqRJVpurBkBsiwWdnfH5lJhT8P2uLky6TmujEPxt2wKLdztVuntQe5awQGI+opByTu0ysSI8RRohiECQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p7wCI4PkoDJydKuKDSHeTV5Lr8aQfPIKL+jScXwD9Pk=;
+ b=hjnzAEJ+T3mA3ic+FmkVTw8X9iROZjnVCzeDuXEPcmrsSV/whDW38S35dmu55CWmS3z9rvhY8Wgh8zhuPiBU6wl4F8wwpxhoEG9am1fdDWeNYnnerxrOTju1fJ236RmHCeBGi7mjSALeOC5XF9bwKykNS8jPddKTE9bk7HqyjsI=
+Received: from BYAPR12MB2759.namprd12.prod.outlook.com (2603:10b6:a03:61::32)
+ by CH2PR12MB3847.namprd12.prod.outlook.com (2603:10b6:610:2f::27) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.18; Wed, 22 Jun
+ 2022 18:04:40 +0000
+Received: from BYAPR12MB2759.namprd12.prod.outlook.com
+ ([fe80::a0be:c49b:ef2c:e588]) by BYAPR12MB2759.namprd12.prod.outlook.com
+ ([fe80::a0be:c49b:ef2c:e588%5]) with mapi id 15.20.5353.022; Wed, 22 Jun 2022
+ 18:04:40 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Dave Hansen <dave.hansen@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
+CC: "tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>, "Lendacky, Thomas"
+	<Thomas.Lendacky@amd.com>, "hpa@zytor.com" <hpa@zytor.com>, "ardb@kernel.org"
+	<ardb@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"seanjc@google.com" <seanjc@google.com>, "vkuznets@redhat.com"
+	<vkuznets@redhat.com>, "jmattson@google.com" <jmattson@google.com>,
+	"luto@kernel.org" <luto@kernel.org>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "slp@redhat.com" <slp@redhat.com>,
+	"pgonda@google.com" <pgonda@google.com>, "peterz@infradead.org"
+	<peterz@infradead.org>, "srinivas.pandruvada@linux.intel.com"
+	<srinivas.pandruvada@linux.intel.com>, "rientjes@google.com"
+	<rientjes@google.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+	"tobin@ibm.com" <tobin@ibm.com>, "bp@alien8.de" <bp@alien8.de>, "Roth,
+ Michael" <Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>, "ak@linux.intel.com"
+	<ak@linux.intel.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "alpergun@google.com"
+	<alpergun@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: RE: [PATCH Part2 v6 06/49] x86/sev: Add helper functions for
+ RMPUPDATE and PSMASH instruction
+Thread-Topic: [PATCH Part2 v6 06/49] x86/sev: Add helper functions for
+ RMPUPDATE and PSMASH instruction
+Thread-Index: AQHYhkQRulHh/HmbIUq97K70l/FApa1bt/Ag
+Date: Wed, 22 Jun 2022 18:04:40 +0000
+Message-ID:
+ <BYAPR12MB27599015C77E3F1E164C01F48EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
 References: <cover.1655761627.git.ashish.kalra@amd.com>
- <af381cc88410c0e2c48fda5732741edd0d7609ac.1655761627.git.ashish.kalra@amd.com>
- <YrMoIOv3U+vehi/D@jpiotrowski-Surface-Book-3>
+ <e4643e9d37fcb025d0aec9080feefaae5e9245d5.1655761627.git.ashish.kalra@amd.com>
+ <d89c695e-7d45-160f-5e28-fee5ee576104@intel.com>
+In-Reply-To: <d89c695e-7d45-160f-5e28-fee5ee576104@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-06-22T18:02:29Z;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=cd616676-b5d1-4f33-8618-61bf6ccaa0ef;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-06-22T18:04:37Z
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
+ 6c98adc2-3ee7-4516-aac8-f296d0849895
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c517c317-ec30-44ff-f207-08da5479ad69
+x-ms-traffictypediagnostic: CH2PR12MB3847:EE_
+x-microsoft-antispam-prvs:
+ <CH2PR12MB3847392472478874B215B8BB8EB29@CH2PR12MB3847.namprd12.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ kkUjkF7RMjvVn7N4RHI/P1fJ+1eTtPi6Pq3D/FnjNNP6Fra6cpRuY2xx8ooJ6a18ohXNruDsK2zc3YzHcesGt9KVu0wlyqY8hFw57W+kB7/tEi6BlfJKK9Ex08jgpoJkBq7qE/nmff8PETJWsCSlGEMw/MEplysw4bXPP/JsVZqTicitsKb4Imfn1kgf01RP7h1eNN2b9Nm/FMo/t47oAjmxHJyqGQjCFuCiRpXZh4bNRSM7+cuHFvatzu5WH9eBihADQtV5df/wvTeJOMjL1cuevqRu2JlHu4N3C3HsbzzV8Ea2wgNIjfd2odqHMBkMrp63E6Ze1yl2VIYhRvHawM8xmhvfQ0XsS2vgaQhS2JOn/wTyM61EE66L62i53dyqiK+HnWH1mE1XHiiFo7y1C7cJrOlQCM7DG8cJNooqRCN10QVmHTVX43DOTRShubiOHOYkD0kYNpGkCkF4QyjLPJ4PjvNgWXlouXqWGmgiDX5s9YLZhVDJSDnOvZhPzmKnHxNuOKG060xKdFFLbzB83WsRvUikSsFXPr33diqt2A5SBxwYwTQEidsS0oJ+UALIjc1ccLrbZdHAoYnaBlH24Zty6EHcysdw6wVy3dXk5Jwi3rvP+eeSPbqNJwRkirEGRiitG/4gTSjMIZFXY/c4dXOim09CLbFkCMwM7D/lfGAslCG06Lf+vxav9mflV4Un+3KbvmJNvmKk/IVdeXlv6A16RHUHy2FTBAW5U4KDABYVYmDvUgW8oOI+TBIgd1rqF/V+uGAROx2Q7Bq2UioZAg==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR12MB2759.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(39860400002)(376002)(366004)(346002)(396003)(71200400001)(478600001)(83380400001)(8936002)(316002)(9686003)(52536014)(33656002)(54906003)(186003)(110136005)(86362001)(41300700001)(38070700005)(26005)(5660300002)(2906002)(6506007)(4326008)(8676002)(66556008)(64756008)(66446008)(76116006)(66946007)(66476007)(7696005)(55016003)(122000001)(7406005)(7416002)(38100700002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?OGMvbit3ZC9qeW9NOG5GSUJJSE1lTlR5bWVzS0dERDBKQ1k2clg0UE9XdWRp?=
+ =?utf-8?B?eWM1WmEvc0V6UUVTdkJycytGL21Eb1FDYm5nUXhZWE4zMkVzT3RNaFRjTUVz?=
+ =?utf-8?B?S0JIOEJ5M01GOFQwQmhqZ1FXY3NDRkNtYmE3akJXVmlSUyszaUwyWEphczdL?=
+ =?utf-8?B?Ylp5b1BvVm1kalFUTDQ1eTkzYUNhdWovTy9TK01Wa0ZTTmx6bExCRDFTclpp?=
+ =?utf-8?B?a3h1RjdkeEIwN0s5eXZ1bmMzbUJIb0pYdjhEbS92cDFLcGxWQndENlBsWWx1?=
+ =?utf-8?B?UWt4MUJNaEF0RmlFdzBPblg2TjlzcmNlMjhIOUt2WWx4UkF4ZjFoOXBSR25P?=
+ =?utf-8?B?cHR2SGpUUWdOS0dsMWR5VWZ2ZUpiVjkrd3ZzNnU1bjU3cHRvc2pMVkR1eStK?=
+ =?utf-8?B?U1A2dEZac21hLzZqcEIraU9jTDNqcFBYc3V0bGY2d1dzRWdDMVBGZWN0OUFE?=
+ =?utf-8?B?bG45Zm8yZzM1UWdVNlhHWXlUT3o1RnpmczNISUZ1RHBuSzU2QXRBTWpSS0Zv?=
+ =?utf-8?B?S0RJUVpycWd3YVRteGlqa2JFTmJNT2JpMlEwQmhtRlEyNHAyRnl0cFI2TTJv?=
+ =?utf-8?B?VmhFUlJvbmp3ZWdsVTFpYkphbU1jSFFTcE5QbEE2QVh5blZyTGNGallVQXh0?=
+ =?utf-8?B?S1ZRRWhlM3llcmZ3SE1YTGhqSE9lMUpVdEVGNllxRUlVeGIxbUJOY0J3bzJk?=
+ =?utf-8?B?WjJCeXZ4ZVlZUXRJZkthakg5cXpkYVNQU2JmZ3R4ZG1lZW1odHVUT2ViNUJQ?=
+ =?utf-8?B?bzczVTBFdnVUak5BSUtLbjM2ZmFIaVY4OVZybzNNeDN2TlZEQWpONDlxWjJr?=
+ =?utf-8?B?VThQSzg0UzUrSGFpZG5FMFpPV1U1UmdTYU5hcFBLSzRiOXlDMm5nTGdsRXNE?=
+ =?utf-8?B?QVRWZSs0Ykd0SVFMcEN1T05NU2FjK1hpVXJJUktWMmFScXZzeFJzeEJrejZj?=
+ =?utf-8?B?UUc5SHBIaW55NUFOUHBJOVhrZTEzeHFvL1ErRjFpQ1RHckxXTXJ5UUZCU0Ex?=
+ =?utf-8?B?TzA4a1hKTkpJYWhzdVJoWjlHeFl6VTdmRzAzQ0VobVQ2cDlJcHpFdUpGUXM2?=
+ =?utf-8?B?aFV2QW5zaXJDb0h4cHVLWVYvV0NOdkpWczBMVC9FalNRQ205anRKeHJoODM0?=
+ =?utf-8?B?eStLTWJBdVFYQmJWck1iL1k2dkZNYUxjWS84MVZmR3JjOGliSlNEYWNjNlFW?=
+ =?utf-8?B?MFdnTzVYeEY1VHJub2JoNW5udG5zeTEvUkZtR1kzcWxoQUFlbERSRkdXd2lX?=
+ =?utf-8?B?eVNRN0d6bXNmNWZsQkRpSGd5MTBINWJnai84Tm53UkRyUlhibDdTcHJvNlRq?=
+ =?utf-8?B?elJoSHpKSWpWUFFMM1U0QTZnandBYUV4bVltTU5nZFIxdC83NWpQM1hLaVlI?=
+ =?utf-8?B?UlV1cVhuM0U1V0REczVKcUxBTmFlaGZBN2JMZ1p6TEJmRko3NDdQUTFlNVhz?=
+ =?utf-8?B?SklhbzUxSzA2dEorQWJPbzNGdzQwd1paekQ0anNnMzM4RkFvVDJJQk1WVGJo?=
+ =?utf-8?B?dEpDRUJGZzV2Qi80WGYwQnZHeXp0eEdFSXl0eDh1VFlyU29GYWwwS0xGNkcz?=
+ =?utf-8?B?c21uVzI0dkVIOEtRMHFCVGxhT2VhQkJUdXBjV3AxUDRDYURqSG5UVFFBaVFQ?=
+ =?utf-8?B?QVpzNFVJR05aOVVsSEh4RW1yZUE5WU5pSDBabWFVWWdvSFhmT0ZSMG9sbnRO?=
+ =?utf-8?B?b1Fqd253dTR1L05hZXJnYjNEbUkrSE5FVG9reU9NMVhvUzdxRVBxRUY4UTZE?=
+ =?utf-8?B?MEd5QUUrS2g3WWJ5YWg1Y0R2cnlZOGxYQmlMM1JqblNMQTFvL1FWalBtL2F5?=
+ =?utf-8?B?U3RIaGJQOFlJZTVTMy84NkNSYUhLUXBURjFXZ1dJNVcwT2kxRVdiK2loRGJP?=
+ =?utf-8?B?VnZNS0VQK0dJTlorazdvdlFmQURiZHBDdjVsRGdkK2s0RVVOZGtyTkhGRlVt?=
+ =?utf-8?B?OVlWWDF1QkN0ZHBVZHJ2dW9WWjEvQUlJc1FlUTh1Mm1ZWTlYbnpJbFI3ZGta?=
+ =?utf-8?B?QmNocFVYTlJZZ1lZc00vMkZ5VEpZZnduL0NlcEVWbUFOUWF3TzZ2NitqYzc4?=
+ =?utf-8?B?SFdDaXlSRUtRckw1UU1tN3dCZTJneHZhUXlmMWhyOUxXTlVNc1hyOU0rVnZB?=
+ =?utf-8?B?aFZtREFjZDhpVTFXbWVUbFB0ZDBTTlYrandsOGd4eFJnK0tRb3J1Mms4WCtB?=
+ =?utf-8?B?MTV6RHZLNmJncGZYM1lXaFIvVjdZV0QvY3crcE9STVpjT1pyT3pFTUgxY1Zo?=
+ =?utf-8?B?a0lmMDR2Mzc2S3oxRUVlUGlIenl4TEx3aW5rSkZsY0h1V1U1T01IYXVmb3VW?=
+ =?utf-8?Q?7brjrOsIQ/kOppATB7?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YrMoIOv3U+vehi/D@jpiotrowski-Surface-Book-3>
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR12MB2759.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c517c317-ec30-44ff-f207-08da5479ad69
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2022 18:04:40.3367
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dSdif/BpCLND6CO0+FE/xt3+1Upgv6STfNHPDDAFK/n2w1C3Hb3OYcHavpY6CEKFlK8sv32QiFs28wD3dTB7Qg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3847
 
-On Wed, Jun 22, 2022 at 04:33:04PM +0200, Jeremi Piotrowski wrote:
-> On Mon, Jun 20, 2022 at 11:03:58PM +0000, Ashish Kalra wrote:
-> > From: Brijesh Singh <brijesh.singh@amd.com>
-> > 
-> > When SEV-SNP is enabled globally, a write from the host goes through the
-> > RMP check. If the hardware encounters the check failure, then it raises
-> > the #PF (with RMP set). Dump the RMP entry at the faulting pfn to help
-> > the debug.
-> > 
-> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> > ---
-> >  arch/x86/include/asm/sev.h |  7 +++++++
-> >  arch/x86/kernel/sev.c      | 43 ++++++++++++++++++++++++++++++++++++++
-> >  arch/x86/mm/fault.c        | 17 +++++++++++----
-> >  include/linux/sev.h        |  2 ++
-> >  4 files changed, 65 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> > index 6ab872311544..c0c4df817159 100644
-> > --- a/arch/x86/include/asm/sev.h
-> > +++ b/arch/x86/include/asm/sev.h
-> > @@ -113,6 +113,11 @@ struct __packed rmpentry {
-> >  
-> >  #define rmpentry_assigned(x)	((x)->info.assigned)
-> >  #define rmpentry_pagesize(x)	((x)->info.pagesize)
-> > +#define rmpentry_vmsa(x)	((x)->info.vmsa)
-> > +#define rmpentry_asid(x)	((x)->info.asid)
-> > +#define rmpentry_validated(x)	((x)->info.validated)
-> > +#define rmpentry_gpa(x)		((unsigned long)(x)->info.gpa)
-> > +#define rmpentry_immutable(x)	((x)->info.immutable)
-> >  
-> >  #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
-> >  
-> > @@ -205,6 +210,7 @@ void snp_set_wakeup_secondary_cpu(void);
-> >  bool snp_init(struct boot_params *bp);
-> >  void snp_abort(void);
-> >  int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err);
-> > +void dump_rmpentry(u64 pfn);
-> >  #else
-> >  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
-> >  static inline void sev_es_ist_exit(void) { }
-> > @@ -229,6 +235,7 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
-> >  {
-> >  	return -ENOTTY;
-> >  }
-> > +static inline void dump_rmpentry(u64 pfn) {}
-> >  #endif
-> >  
-> >  #endif
-> > diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> > index 734cddd837f5..6640a639fffc 100644
-> > --- a/arch/x86/kernel/sev.c
-> > +++ b/arch/x86/kernel/sev.c
-> > @@ -2414,6 +2414,49 @@ static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
-> >  	return entry;
-> >  }
-> >  
-> > +void dump_rmpentry(u64 pfn)
-> > +{
-> > +	unsigned long pfn_end;
-> > +	struct rmpentry *e;
-> > +	int level;
-> > +
-> > +	e = __snp_lookup_rmpentry(pfn, &level);
-> > +	if (!e) {
-> 
-> __snp_lookup_rmpentry may return -errno so this should be:
-> 
->   if (e != 1)
-
-Sorry, actually it should be:
-
-  if (IS_ERR_OR_NULL(e)) {
-
-> 
-> > +		pr_alert("failed to read RMP entry pfn 0x%llx\n", pfn);
-> > +		return;
-> > +	}
-> > +
-> > +	if (rmpentry_assigned(e)) {
-> > +		pr_alert("RMPEntry paddr 0x%llx [assigned=%d immutable=%d pagesize=%d gpa=0x%lx"
-> > +			" asid=%d vmsa=%d validated=%d]\n", pfn << PAGE_SHIFT,
-> > +			rmpentry_assigned(e), rmpentry_immutable(e), rmpentry_pagesize(e),
-> > +			rmpentry_gpa(e), rmpentry_asid(e), rmpentry_vmsa(e),
-> > +			rmpentry_validated(e));
-> > +		return;
-> > +	}
-> > +
-> > +	/*
-> > +	 * If the RMP entry at the faulting pfn was not assigned, then we do not
-> > +	 * know what caused the RMP violation. To get some useful debug information,
-> > +	 * let iterate through the entire 2MB region, and dump the RMP entries if
-> > +	 * one of the bit in the RMP entry is set.
-> > +	 */
-> > +	pfn = pfn & ~(PTRS_PER_PMD - 1);
-> > +	pfn_end = pfn + PTRS_PER_PMD;
-> > +
-> > +	while (pfn < pfn_end) {
-> > +		e = __snp_lookup_rmpentry(pfn, &level);
-> > +		if (!e)
-> 
->   if (e != 1)
-> 
-
-and this too:
-
-  if (IS_ERR_OR_NULL(e))
-
-
-> > +			return;
-> > +
-> > +		if (e->low || e->high)
-> > +			pr_alert("RMPEntry paddr 0x%llx: [high=0x%016llx low=0x%016llx]\n",
-> > +				 pfn << PAGE_SHIFT, e->high, e->low);
-> > +		pfn++;
-> > +	}
-> > +}
-> > +EXPORT_SYMBOL_GPL(dump_rmpentry);
-> > +
-> >  /*
-> >   * Return 1 if the RMP entry is assigned, 0 if it exists but is not assigned,
-> >   * and -errno if there is no corresponding RMP entry.
-> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> > index f5de9673093a..25896a6ba04a 100644
-> > --- a/arch/x86/mm/fault.c
-> > +++ b/arch/x86/mm/fault.c
-> > @@ -34,6 +34,7 @@
-> >  #include <asm/kvm_para.h>		/* kvm_handle_async_pf		*/
-> >  #include <asm/vdso.h>			/* fixup_vdso_exception()	*/
-> >  #include <asm/irq_stack.h>
-> > +#include <asm/sev.h>			/* dump_rmpentry()		*/
-> >  
-> >  #define CREATE_TRACE_POINTS
-> >  #include <asm/trace/exceptions.h>
-> > @@ -290,7 +291,7 @@ static bool low_pfn(unsigned long pfn)
-> >  	return pfn < max_low_pfn;
-> >  }
-> >  
-> > -static void dump_pagetable(unsigned long address)
-> > +static void dump_pagetable(unsigned long address, bool show_rmpentry)
-> >  {
-> >  	pgd_t *base = __va(read_cr3_pa());
-> >  	pgd_t *pgd = &base[pgd_index(address)];
-> > @@ -346,10 +347,11 @@ static int bad_address(void *p)
-> >  	return get_kernel_nofault(dummy, (unsigned long *)p);
-> >  }
-> >  
-> > -static void dump_pagetable(unsigned long address)
-> > +static void dump_pagetable(unsigned long address, bool show_rmpentry)
-> >  {
-> >  	pgd_t *base = __va(read_cr3_pa());
-> >  	pgd_t *pgd = base + pgd_index(address);
-> > +	unsigned long pfn;
-> >  	p4d_t *p4d;
-> >  	pud_t *pud;
-> >  	pmd_t *pmd;
-> > @@ -367,6 +369,7 @@ static void dump_pagetable(unsigned long address)
-> >  	if (bad_address(p4d))
-> >  		goto bad;
-> >  
-> > +	pfn = p4d_pfn(*p4d);
-> >  	pr_cont("P4D %lx ", p4d_val(*p4d));
-> >  	if (!p4d_present(*p4d) || p4d_large(*p4d))
-> >  		goto out;
-> > @@ -375,6 +378,7 @@ static void dump_pagetable(unsigned long address)
-> >  	if (bad_address(pud))
-> >  		goto bad;
-> >  
-> > +	pfn = pud_pfn(*pud);
-> >  	pr_cont("PUD %lx ", pud_val(*pud));
-> >  	if (!pud_present(*pud) || pud_large(*pud))
-> >  		goto out;
-> > @@ -383,6 +387,7 @@ static void dump_pagetable(unsigned long address)
-> >  	if (bad_address(pmd))
-> >  		goto bad;
-> >  
-> > +	pfn = pmd_pfn(*pmd);
-> >  	pr_cont("PMD %lx ", pmd_val(*pmd));
-> >  	if (!pmd_present(*pmd) || pmd_large(*pmd))
-> >  		goto out;
-> > @@ -391,9 +396,13 @@ static void dump_pagetable(unsigned long address)
-> >  	if (bad_address(pte))
-> >  		goto bad;
-> >  
-> > +	pfn = pte_pfn(*pte);
-> >  	pr_cont("PTE %lx", pte_val(*pte));
-> >  out:
-> >  	pr_cont("\n");
-> > +
-> > +	if (show_rmpentry)
-> > +		dump_rmpentry(pfn);
-> >  	return;
-> >  bad:
-> >  	pr_info("BAD\n");
-> > @@ -579,7 +588,7 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long ad
-> >  		show_ldttss(&gdt, "TR", tr);
-> >  	}
-> >  
-> > -	dump_pagetable(address);
-> > +	dump_pagetable(address, error_code & X86_PF_RMP);
-> >  }
-> >  
-> >  static noinline void
-> > @@ -596,7 +605,7 @@ pgtable_bad(struct pt_regs *regs, unsigned long error_code,
-> >  
-> >  	printk(KERN_ALERT "%s: Corrupted page table at address %lx\n",
-> >  	       tsk->comm, address);
-> > -	dump_pagetable(address);
-> > +	dump_pagetable(address, false);
-> >  
-> >  	if (__die("Bad pagetable", regs, error_code))
-> >  		sig = 0;
-> > diff --git a/include/linux/sev.h b/include/linux/sev.h
-> > index 1a68842789e1..734b13a69c54 100644
-> > --- a/include/linux/sev.h
-> > +++ b/include/linux/sev.h
-> > @@ -16,6 +16,7 @@ int snp_lookup_rmpentry(u64 pfn, int *level);
-> >  int psmash(u64 pfn);
-> >  int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable);
-> >  int rmp_make_shared(u64 pfn, enum pg_level level);
-> > +void dump_rmpentry(u64 pfn);
-> >  #else
-> >  static inline int snp_lookup_rmpentry(u64 pfn, int *level) { return 0; }
-> >  static inline int psmash(u64 pfn) { return -ENXIO; }
-> > @@ -25,6 +26,7 @@ static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int as
-> >  	return -ENODEV;
-> >  }
-> >  static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENODEV; }
-> > +static inline void dump_rmpentry(u64 pfn) { }
-> >  
-> >  #endif /* CONFIG_AMD_MEM_ENCRYPT */
-> >  #endif /* __LINUX_SEV_H */
-> > -- 
-> > 2.25.1
-> > 
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCj4+ICtpbnQgcHNtYXNoKHU2NCBw
+Zm4pDQo+PiArew0KPj4gKwl1bnNpZ25lZCBsb25nIHBhZGRyID0gcGZuIDw8IFBBR0VfU0hJRlQ7
+DQo+PiArCWludCByZXQ7DQo+PiArDQo+PiArCWlmICghcGZuX3ZhbGlkKHBmbikpDQo+PiArCQly
+ZXR1cm4gLUVJTlZBTDsNCj4+ICsNCj4+ICsJaWYgKCFjcHVfZmVhdHVyZV9lbmFibGVkKFg4Nl9G
+RUFUVVJFX1NFVl9TTlApKQ0KPj4gKwkJcmV0dXJuIC1FTlhJTzsNCj4+ICsNCj4+ICsJLyogQmlu
+dXRpbHMgdmVyc2lvbiAyLjM2IHN1cHBvcnRzIHRoZSBQU01BU0ggbW5lbW9uaWMuICovDQo+PiAr
+CWFzbSB2b2xhdGlsZSgiLmJ5dGUgMHhGMywgMHgwRiwgMHgwMSwgMHhGRiINCj4+ICsJCSAgICAg
+IDogIj1hIihyZXQpDQo+PiArCQkgICAgICA6ICJhIihwYWRkcikNCj4+ICsJCSAgICAgIDogIm1l
+bW9yeSIsICJjYyIpOw0KPj4gKw0KPj4gKwlyZXR1cm4gcmV0Ow0KPj4gK30NCj4+ICtFWFBPUlRf
+U1lNQk9MX0dQTChwc21hc2gpOw0KDQo+SWYgYSBmdW5jdGlvbiBnZXRzIGFuIEVYUE9SVF9TWU1C
+T0xfR1BMKCksIHRoZSBsZWFzdCB3ZSBjYW4gZG8gaXMgcmVhc29uYWJseSBkb2N1bWVudCBpdC4g
+IFdlIGRvbid0IG5lZWQgZnVsbCBrZXJuZWxkb2Mgbm9uc2Vuc2UsIGJ1dCBhIG9uZS1saW5lIGFi
+b3V0IHdoYXQgdGhpcyBkb2VzIHdvdWxkIGJlIHF1aXRlIGhlbHBmdWwuICBUaGF0IGdvZXMgZm9y
+IGFsbCB0aGUgZnVuY3Rpb25zIGhlcmUuDQoNCj5JdCB3b3VsZCBhbHNvIGJlIGV4dHJlbWVseSBo
+ZWxwZnVsIHRvIGhhdmUgdGhlIGNoYW5nZWxvZyBleHBsYWluIHdoeSB0aGVzZSBmdW5jdGlvbnMg
+YXJlIGV4cG9ydGVkIGFuZCBob3cgdGhlIGV4cG9ydHMgd2lsbCBiZSB1c2VkLg0KDQpJIHdpbGwg
+YWRkIGJhc2ljIGRlc2NyaXB0aW9ucyBmb3IgYWxsIHRoZXNlIGV4cG9ydGVkIGZ1bmN0aW9ucy4N
+Cg0KVGhhbmtzLA0KQXNoaXNoDQoNCj5BcyBhIGdlbmVyYWwgcnVsZSwgcGxlYXNlIHB1c2ggY3B1
+X2ZlYXR1cmVfZW5hYmxlZCgpIGNoZWNrcyBhcyBlYXJseSBhcyB5b3UgcmVhc29uYWJseSBjYW4u
+ICBUaGV5IGFyZSAqVkVSWSogY2hlYXAgYW5kIGNhbiBldmVuIGVuYWJsZSB0aGUgY29tcGlsZXIg
+dG8gY29tcGxldGVseSB6YXAgY29kZSBsaWtlIGFuICNpZmRlZi4NCg0KVGhlcmUgYWxzbyBzZWVt
+IHRvIGJlIGEgbG90IG9mIHBmbl92YWxpZCgpIGNoZWNrcyBpbiBoZXJlIHRoYXQgYXJlbid0IHZl
+cnkgd2VsbCB0aG91Z2h0IG91dC4gIEZvciBpbnN0YW5jZSwgdGhlcmUncyBhIHBmbl92YWxpZCgp
+IGNoZWNrIGhlcmU6DQoNCg0KK2ludCBybXBfbWFrZV9zaGFyZWQodTY0IHBmbiwgZW51bSBwZ19s
+ZXZlbCBsZXZlbCkgew0KKwlzdHJ1Y3Qgcm1wdXBkYXRlIHZhbDsNCisNCisJaWYgKCFwZm5fdmFs
+aWQocGZuKSkNCisJCXJldHVybiAtRUlOVkFMOw0KLi4uDQorCXJldHVybiBybXB1cGRhdGUocGZu
+LCAmdmFsKTsNCit9DQoNCmFuZCBpbiBybXB1cGRhdGUoKToNCg0KK3N0YXRpYyBpbnQgcm1wdXBk
+YXRlKHU2NCBwZm4sIHN0cnVjdCBybXB1cGRhdGUgKnZhbCkgew0KKwl1bnNpZ25lZCBsb25nIHBh
+ZGRyID0gcGZuIDw8IFBBR0VfU0hJRlQ7DQorCWludCByZXQ7DQorDQorCWlmICghcGZuX3ZhbGlk
+KHBmbikpDQorCQlyZXR1cm4gLUVJTlZBTDsNCi4uLg0KDQoNClRoaXMgaXMgKGF0IGJlc3QpIHdh
+c3RlZnVsLiAgQ291bGQgaXQgYmUgcmVmYWN0b3JlZD8NCg==
