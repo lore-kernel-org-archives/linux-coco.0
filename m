@@ -1,32 +1,32 @@
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579833C00
-	for <linux-coco@lists.linux.dev>; Wed, 22 Jun 2022 19:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7B33C00
+	for <linux-coco@lists.linux.dev>; Wed, 22 Jun 2022 19:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655927414; x=1687463414;
+  t=1655927938; x=1687463938;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=jK+Ip8TKjyJwk/sGYsCBvnwDGqA6k0xPk+0Grxe5TNg=;
-  b=BXZpENKY+rJrR+VfKiqf7NOHzEepXTqytenoF9CMDvaSgJnHAfpg204C
-   106+g8OdpjWYCycoRs8Lj3Hs/2z/ndvx4GFyBVaWfzqipGbJ7ZDnu0KOh
-   0771n+xdm6I88vVJBT6CUR1Jh0mmBFK/qa+SuYjp+d8/qmynBR6Ifea0X
-   i9BmCz7iW1oMwHAcZl1fi1POuc95H7fIg1WiPWn8bg87TEgQZawWFpgIq
-   FtAJ67Az6jJstPXcQS27z4d+U2kTctOlh6FojPxdOk7RrequM3e0sw42u
-   R/JR+SEKc9vbQ8vCq0HnwXikf/Wm/6nZHftItJWgSIXGoe/qPwkFBFna+
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="280576075"
+  bh=/AkwmRb71k4NSPIVIddCWDYPziSccddt8BBoov0zW9c=;
+  b=HCbR0t8H227ex0h5xoXchTVpXzTT0GKm1sO1f5C5ExtLEa9NpS2AW7Rx
+   Hyyc58mc6J3+uHQyfrS0+/inE8YAYBynI8srmeJhZh1ot6A4d2/CgvVKO
+   zd/FODI45XUeeCdEUFDoer2dom6p2YWWz4PpCjH8USadiwqfUM5IE68tt
+   4tPNM3oMCinARLz2pjtwHBmGLpBgH0c0worDh7BJ898TCdjF11EFq9Mys
+   mMoh0IwIzemkgLEiJpB0YhSuU65HAI1lWhPzJSgZ4RFBjv8PPXabJoMvT
+   MibRSdo8yuguNa3+zx7GssXg6oIKkemBE7nufPxOtNEPe8N2wpfE7HPeG
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="281259171"
 X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="280576075"
+   d="scan'208";a="281259171"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 12:50:13 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 12:58:58 -0700
 X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="677720725"
+   d="scan'208";a="677723423"
 Received: from bshakya-mobl.amr.corp.intel.com (HELO [10.212.188.76]) ([10.212.188.76])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 12:50:11 -0700
-Message-ID: <5db37cc2-4fb1-7a73-c39a-3531260414d0@intel.com>
-Date: Wed, 22 Jun 2022 12:49:52 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 12:58:56 -0700
+Message-ID: <0f139dac-dabf-d6c0-21cf-e680ff2bddf6@intel.com>
+Date: Wed, 22 Jun 2022 12:58:36 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,65 +35,205 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
+Subject: Re: [PATCHv7 06/14] efi/x86: Implement support for unaccepted memory
 Content-Language: en-US
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>, "x86@kernel.org"
- <x86@kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
- "mingo@redhat.com" <mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
- "Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "hpa@zytor.com"
- <hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "slp@redhat.com" <slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
- "rientjes@google.com" <rientjes@google.com>,
- "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
- "tobin@ibm.com" <tobin@ibm.com>, "bp@alien8.de" <bp@alien8.de>,
- "Roth, Michael" <Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
- "kirill@shutemov.name" <kirill@shutemov.name>,
- "ak@linux.intel.com" <ak@linux.intel.com>,
- "tony.luck@intel.com" <tony.luck@intel.com>,
- "marcorr@google.com" <marcorr@google.com>,
- "sathyanarayanan.kuppuswamy@linux.intel.com"
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "alpergun@google.com" <alpergun@google.com>,
- "dgilbert@redhat.com" <dgilbert@redhat.com>,
- "jarkko@kernel.org" <jarkko@kernel.org>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <8f63961f00fd170ba0e561f499292175f3155d26.1655761627.git.ashish.kalra@amd.com>
- <cc0c6bd1-a1e3-82ee-8148-040be21cad5c@intel.com>
- <BYAPR12MB2759A8F48D6D68EE879EEF648EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <25be3068-be13-a451-86d4-ff4cc12ddb23@intel.com>
- <BYAPR12MB27599BCEA9F692E173911C3B8EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <681e4e45-eff1-600c-9b81-1fa9bdf24232@intel.com>
- <BYAPR12MB27595CF4328B15F0F9573D188EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <99d72d58-a9bb-d75c-93af-79d497dfe176@intel.com>
- <BYAPR12MB275984F14B1E103935A103D98EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Ard Biesheuvel <ardb@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
+ marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+ khalid.elmously@canonical.com, philip.cox@canonical.com, x86@kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-7-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <BYAPR12MB275984F14B1E103935A103D98EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+In-Reply-To: <20220614120231.48165-7-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 6/22/22 12:43, Kalra, Ashish wrote:
->> I think that needs to be fixed.  It should be as simple as a
->> model/family check, though.  If someone (for example) attempts to
->> use SNP (and thus snp_lookup_rmpentry() and dump_rmpentry()) code
->> on a newer CPU, the kernel should refuse.
-> More specifically I am thinking of adding RMP entry field accessors
-> so that they can do this cpu model/family check and return the
-> correct field as per processor architecture.
+On 6/14/22 05:02, Kirill A. Shutemov wrote:
+...
+> +/*
+> + * The accepted memory bitmap only works at PMD_SIZE granularity. If a request
+> + * comes in to mark memory as unaccepted which is not PMD_SIZE-aligned, simply
+> + * accept the memory now since it can not be *marked* as unaccepted.
+> + */
 
-That will be helpful down the road when there's more than one format.
-But, the real issue is that the kernel doesn't *support* a different RMP
-format.  So, the SNP support should be disabled when encountering a
-model/family other than the known good one.
+/*
+ * The accepted memory bitmap only works at PMD_SIZE granularity.  This
+ * function takes unaligned start/end addresses and either:
+ *  1. Accepts the memory immediately and in its entirety
+ *  2. Accepts unaligned parts, and marks *some* aligned part unaccepted
+ *
+ * The function will never reach the bitmap_set() with zero bits to set.
+ */
+
+
+> +void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
+> +{
+> +	/*
+> +	 * Accept small regions that might not be able to be represented
+> +	 * in the bitmap.  This is a bit imprecise and may accept some
+> +	 * areas that could have been represented in the bitmap instead.
+
+	/*
+	 * Ensure that at least one bit will be set in the bitmap by
+	 * immediately accepting all regions under 2*PMD_SIZE.  This is
+	 * imprecise and may immediately accept some areas that could
+	 * have been represented in the bitmap.  But, results in simpler
+	 * code below.
+
+> +	 * Consider case like this:
+> +	 *
+> +	 * | 4k | 2044k |    2048k   |
+> +	 * ^ 0x0        ^ 2MB        ^ 4MB
+> +	 *
+> +	 * all memory in the range is unaccepted, except for the first 4k.
+> +	 * The second 2M can be represented in the bitmap, but kernel accept it
+> +	 * right away. The imprecision makes the code simpler by ensuring that
+> +	 * at least one bit will be set int the bitmap below.
+> +	 */
+
+	...
+	* Only the first 4k has been accepted.  The 0MB->2MB region can
+	* not be represented in the bitmap.  The 2MB->4MB region can be
+	* represented in the bitmap.  But, the 0MB->4MB region is
+	* <2*PMD_SIZE and will be immediately accepted in its entirety.
+	*/
+
+> +	if (end - start < 2 * PMD_SIZE) {
+> +		__accept_memory(start, end);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * No matter how the start and end are aligned, at least one unaccepted
+> +	 * PMD_SIZE area will remain.
+> +	 */
+
+I'd probably add:
+
+	... to be marked in the bitmap
+
+
+<snip>
+> @@ -607,6 +608,17 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
+>  			e820_type = E820_TYPE_PMEM;
+>  			break;
+>  
+> +		case EFI_UNACCEPTED_MEMORY:
+> +			if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
+> +				efi_warn_once("The system has unaccepted memory,"
+> +					     " but kernel does not support it\n");
+> +				efi_warn_once("Consider enabling CONFIG_UNACCEPTED_MEMORY\n");
+> +				continue;
+> +			}
+> +			e820_type = E820_TYPE_RAM;
+> +			process_unaccepted_memory(params, d->phys_addr,
+> +						  d->phys_addr + PAGE_SIZE * d->num_pages);
+> +			break;
+>  		default:
+>  			continue;
+>  		}
+> @@ -671,6 +683,59 @@ static efi_status_t alloc_e820ext(u32 nr_desc, struct setup_data **e820ext,
+>  	return status;
+>  }
+>  
+> +static efi_status_t allocate_unaccepted_memory(struct boot_params *params,
+> +					       __u32 nr_desc,
+> +					       struct efi_boot_memmap *map)
+
+I think this is misnamed.  This function is allocating a bitmap, not
+"unaccepted_memory" itself.  Right?
+
+> +{
+> +	unsigned long *mem = NULL;
+> +	u64 size, max_addr = 0;
+> +	efi_status_t status;
+> +	bool found = false;
+> +	int i;
+> +
+> +	/* Check if there's any unaccepted memory and find the max address */
+> +	for (i = 0; i < nr_desc; i++) {
+> +		efi_memory_desc_t *d;
+> +
+> +		d = efi_early_memdesc_ptr(*map->map, *map->desc_size, i);
+> +		if (d->type == EFI_UNACCEPTED_MEMORY)
+> +			found = true;
+> +		if (d->phys_addr + d->num_pages * PAGE_SIZE > max_addr)
+> +			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
+> +	}
+> +
+> +	if (!found) {
+> +		params->unaccepted_memory = 0;
+> +		return EFI_SUCCESS;
+> +	}
+> +
+> +	/*
+> +	 * If unaccepted memory is present allocate a bitmap to track what
+			
+					  ^ comma
+
+> +	 * memory has to be accepted before access.
+> +	 *
+> +	 * One bit in the bitmap represents 2MiB in the address space:
+> +	 * A 4k bitmap can track 64GiB of physical address space.
+> +	 *
+> +	 * In the worst case scenario -- a huge hole in the middle of the
+> +	 * address space -- It needs 256MiB to handle 4PiB of the address
+> +	 * space.
+> +	 *
+> +	 * TODO: handle situation if params->unaccepted_memory is already set.
+> +	 * It's required to deal with kexec.
+> +	 *
+> +	 * The bitmap will be populated in setup_e820() according to the memory
+> +	 * map after efi_exit_boot_services().
+> +	 */
+> +	size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
+> +	status = efi_allocate_pages(size, (unsigned long *)&mem, ULONG_MAX);
+> +	if (status == EFI_SUCCESS) {
+> +		memset(mem, 0, size);
+> +		params->unaccepted_memory = (unsigned long)mem;
+> +	}
+> +
+> +	return status;
+> +}
+> +
+>  static efi_status_t allocate_e820(struct boot_params *params,
+>  				  struct efi_boot_memmap *map,
+>  				  struct setup_data **e820ext,
+> @@ -691,6 +756,9 @@ static efi_status_t allocate_e820(struct boot_params *params,
+>  		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+>  	}
+>  
+> +	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) && status == EFI_SUCCESS)
+> +		status = allocate_unaccepted_memory(params, nr_desc, map);
+> +
+>  	efi_bs_call(free_pool, *map->map);
+>  	return status;
+>  }
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 7d9b0bb47eb3..9c2fa94f2f93 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -108,7 +108,8 @@ typedef	struct {
+>  #define EFI_MEMORY_MAPPED_IO_PORT_SPACE	12
+>  #define EFI_PAL_CODE			13
+>  #define EFI_PERSISTENT_MEMORY		14
+> -#define EFI_MAX_MEMORY_TYPE		15
+> +#define EFI_UNACCEPTED_MEMORY		15
+> +#define EFI_MAX_MEMORY_TYPE		16
+>  
+>  /* Attribute values: */
+>  #define EFI_MEMORY_UC		((u64)0x0000000000000001ULL)	/* uncached */
+
