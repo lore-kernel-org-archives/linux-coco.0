@@ -1,32 +1,32 @@
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EEB1FB2
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jun 2022 17:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87991FB2
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jun 2022 17:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656005503; x=1687541503;
+  t=1656005906; x=1687541906;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=zIaYVEomzwgXfaMMISVY2yLjmfGKJg5F3MdqvIB4X34=;
-  b=jiu4WhghWVoO+CJw3j+r04gCOrFpYzjVqv/m8qb5VxLW60/Zd04drlql
-   /35KVBnvkrYEZpzIJC9J8eMiU5uFNCyTvu4//FgEcgDJsMnwnfkbJgu4H
-   leTBmjqG0Ik7RK4dCtcpRYib0CK83VLf0N9FfV3PKUR0JvEk8wgxgksLR
-   Vu0vdBNFtzrkj7VbDJ6pPLgmSzc9oE678AjTlrvD9DuN4EAlhp//C7MOt
-   bZlpmNGrBJZfAZ2QmTJT3ja1zdcIKDrXdiZsjRqm/ZoijwNAkPax1LEY8
-   9QHDTps85JrYMGdbTZrEt+GikWeEA1FaYiV3tHXUWzXfmCUkkyVqaIoKB
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10387"; a="280834161"
+  bh=ge8OT7HLhcFlVbvHiA8m+7kVqj79aSFXytPp7Abwn4s=;
+  b=KTAG1de30dwoAycsXKYsU+JlTZJoZXWk77qY8AoxEknbM5ibLsITinKW
+   hsLxqlgUQWefCwHAqZ/CeTnyj+USWnjIUQmN8qrRKbOBSZDoN/Fjzab+1
+   zQ7R5y28amKIOFEdEyGvxT2eHseI7ht+PcD1yW6AHTNOqy+kL80QgISuG
+   IEuyCIWqDQt6p2fqxbc7rm36reKedlsloUrxn+4vlivlLTAIibnyyvSV9
+   gZRxLOwes8zTegTpnQsd879o1bQ1v4T34myS06ddLyQo5FCnWFxzfHcBO
+   TKDjaARDmCbugatgkGDv4H811IcsBVPjMH2YeZ90MDTWoP4gg/j9MWtQU
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10387"; a="344780410"
 X-IronPort-AV: E=Sophos;i="5.92,216,1650956400"; 
-   d="scan'208";a="280834161"
+   d="scan'208";a="344780410"
 Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:31:33 -0700
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:38:26 -0700
 X-IronPort-AV: E=Sophos;i="5.92,216,1650956400"; 
-   d="scan'208";a="563533778"
+   d="scan'208";a="563536244"
 Received: from ckeane-mobl1.amr.corp.intel.com (HELO [10.209.81.98]) ([10.209.81.98])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:31:31 -0700
-Message-ID: <9b350e82-9fcf-b871-ed6c-92848dfa484e@intel.com>
-Date: Thu, 23 Jun 2022 10:31:05 -0700
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:38:25 -0700
+Message-ID: <6321fc25-ea69-df76-208b-856daf81afe6@intel.com>
+Date: Thu, 23 Jun 2022 10:37:59 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -35,7 +35,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [PATCHv7 13/14] x86/tdx: Refactor try_accept_one()
+Subject: Re: [PATCHv7 01/14] x86/boot: Centralize __pa()/__va() definitions
 Content-Language: en-US
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
@@ -53,27 +53,24 @@ Cc: Andi Kleen <ak@linux.intel.com>,
  marcelo.cerri@canonical.com, tim.gardner@canonical.com,
  khalid.elmously@canonical.com, philip.cox@canonical.com, x86@kernel.org,
  linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-14-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-2-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20220614120231.48165-14-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20220614120231.48165-2-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/14/22 05:02, Kirill A. Shutemov wrote:
-> Rework try_accept_one() to return accepted size instead of modifying
-> 'start' inside the helper. It makes 'start' in-only argumaent and
-
-							^ argument
-
-> streamlines code on the caller side.
+> Replace multiple __pa()/__va() definitions with a single one in misc.h.
 > 
 > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Suggested-by: Borislav Petkov <bp@alien8.de>
-
-I'm not sure how much it actually streamlines things.  The line count
-looks pretty similar.  But, I do generally dislike implicit return
-values, so with that typo fixed:
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/x86/boot/compressed/ident_map_64.c | 8 --------
+>  arch/x86/boot/compressed/misc.h         | 9 +++++++++
+>  arch/x86/boot/compressed/sev.c          | 2 --
+>  3 files changed, 9 insertions(+), 10 deletions(-)
 
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
