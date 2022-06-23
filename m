@@ -1,76 +1,344 @@
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87991FB2
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jun 2022 17:38:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656005906; x=1687541906;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ge8OT7HLhcFlVbvHiA8m+7kVqj79aSFXytPp7Abwn4s=;
-  b=KTAG1de30dwoAycsXKYsU+JlTZJoZXWk77qY8AoxEknbM5ibLsITinKW
-   hsLxqlgUQWefCwHAqZ/CeTnyj+USWnjIUQmN8qrRKbOBSZDoN/Fjzab+1
-   zQ7R5y28amKIOFEdEyGvxT2eHseI7ht+PcD1yW6AHTNOqy+kL80QgISuG
-   IEuyCIWqDQt6p2fqxbc7rm36reKedlsloUrxn+4vlivlLTAIibnyyvSV9
-   gZRxLOwes8zTegTpnQsd879o1bQ1v4T34myS06ddLyQo5FCnWFxzfHcBO
-   TKDjaARDmCbugatgkGDv4H811IcsBVPjMH2YeZ90MDTWoP4gg/j9MWtQU
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10387"; a="344780410"
-X-IronPort-AV: E=Sophos;i="5.92,216,1650956400"; 
-   d="scan'208";a="344780410"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:38:26 -0700
-X-IronPort-AV: E=Sophos;i="5.92,216,1650956400"; 
-   d="scan'208";a="563536244"
-Received: from ckeane-mobl1.amr.corp.intel.com (HELO [10.209.81.98]) ([10.209.81.98])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2022 10:38:25 -0700
-Message-ID: <6321fc25-ea69-df76-208b-856daf81afe6@intel.com>
-Date: Thu, 23 Jun 2022 10:37:59 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB8C23A8
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jun 2022 20:48:43 +0000 (UTC)
+Received: by mail-oi1-f174.google.com with SMTP id w83so1058393oiw.1
+        for <linux-coco@lists.linux.dev>; Thu, 23 Jun 2022 13:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ghBL8B+VYZnSMGW+02Rnd6WA6Oi+9/f0M5wCqFvghoc=;
+        b=I9cx70w3Sipdo0o6uZKXEUMrdV3T9V9/ZX8sHn3O+6S/yQCOtShpuI5fGHWVJhe336
+         Sd9hvaUatZk8dcRCKJzrK2r03U0fEEd2ZXfi+8LgFDC4UrT3wsS5tDiu7zFu4ay0LJ6O
+         nza81P3M6EWdtEm8MkjNp1/ZY9uRZnyM0IGXPvck5eNqh96r/wXuNlpmPlK/U77E7uqK
+         qUB210+F4cpA0GZqiHqbiTb4AVMsQiR2ZhWknTQbWEfDj9gvBHXr4jl3NusX2YUgJTRs
+         EMB7H6mRNPu1NhC9bwE54cEQe1/0A2kIyWnuPCXdlb+FX07YNO8Ly5aluWVj6q6zbz3Y
+         Dktw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ghBL8B+VYZnSMGW+02Rnd6WA6Oi+9/f0M5wCqFvghoc=;
+        b=Vzha4hft66i8u/EJj0QJbmqJBxwCjEgr5ykQ1Xj7X3uO40FWPlCRGcJzZCWAeJJVCd
+         drsDux0eiCkiJAd0BzOBPeHtRss+cUVD5dYlKfkh2HMeCcBcicJVwCmppotLuoEMdDam
+         AKgbQnUbqSTWMzJS+LWVPA/o6qMDHgA+JlAYFhrmGasB+VJ2OdWnTPbYdakkL4GNKBkb
+         kVFjti9mw/Z11iovd9C2cvmEeS/bhAgEQTGOvQ17erHZ8kwmF8QFXrS0V0dQDB/1wpaW
+         zxG+o9/b0b61SqsjXSgF2pqSagONpPDUyH4T/9po+F0b3WNSNeJ8lVwQ+dW5JXaoV64p
+         f5gg==
+X-Gm-Message-State: AJIora9Ghr4PuHjXZoGiIrSe7nDxezL0JPueuVaxwoIfVWGKAE3ZrwAY
+	ye7MK5zYNN2DC1fQiMHEiIQKO6VP17/HPO5SFQdkTw==
+X-Google-Smtp-Source: AGRyM1tZUukGk0WYWTaAZndO4B+WbhHEg6ly52tuKeWVNEAYvaI1LeACu0B1pFOWVO8T/AOqt/jklnrY6m4gzyywiXA=
+X-Received: by 2002:a05:6808:140b:b0:335:30a3:25df with SMTP id
+ w11-20020a056808140b00b0033530a325dfmr2262308oiv.110.1656017322863; Thu, 23
+ Jun 2022 13:48:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCHv7 01/14] x86/boot: Centralize __pa()/__va() definitions
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- marcelo.cerri@canonical.com, tim.gardner@canonical.com,
- khalid.elmously@canonical.com, philip.cox@canonical.com, x86@kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-2-kirill.shutemov@linux.intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20220614120231.48165-2-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <cover.1655761627.git.ashish.kalra@amd.com> <8f4eef289aba5067582d0d3535299c22a4e5c4c4.1655761627.git.ashish.kalra@amd.com>
+In-Reply-To: <8f4eef289aba5067582d0d3535299c22a4e5c4c4.1655761627.git.ashish.kalra@amd.com>
+From: Marc Orr <marcorr@google.com>
+Date: Thu, 23 Jun 2022 13:48:31 -0700
+Message-ID: <CAA03e5FgfVQbz=pvMeBpOHENe5Rf_7UvE3iAqcgm=9nmwGEEBw@mail.gmail.com>
+Subject: Re: [PATCH Part2 v6 03/49] x86/sev: Add the host SEV-SNP
+ initialization support
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	"Lendacky, Thomas" <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
+	Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	"Roth, Michael" <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
+	Tony Luck <tony.luck@intel.com>, 
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Alper Gun <alpergun@google.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>, jarkko@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/14/22 05:02, Kirill A. Shutemov wrote:
-> Replace multiple __pa()/__va() definitions with a single one in misc.h.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
+On Mon, Jun 20, 2022 at 4:02 PM Ashish Kalra <Ashish.Kalra@amd.com> wrote:
+>
+> From: Brijesh Singh <brijesh.singh@amd.com>
+>
+> The memory integrity guarantees of SEV-SNP are enforced through a new
+> structure called the Reverse Map Table (RMP). The RMP is a single data
+> structure shared across the system that contains one entry for every 4K
+> page of DRAM that may be used by SEV-SNP VMs. The goal of RMP is to
+> track the owner of each page of memory. Pages of memory can be owned by
+> the hypervisor, owned by a specific VM or owned by the AMD-SP. See APM2
+> section 15.36.3 for more detail on RMP.
+>
+> The RMP table is used to enforce access control to memory. The table itself
+> is not directly writable by the software. New CPU instructions (RMPUPDATE,
+> PVALIDATE, RMPADJUST) are used to manipulate the RMP entries.
+>
+> Based on the platform configuration, the BIOS reserves the memory used
+> for the RMP table. The start and end address of the RMP table must be
+> queried by reading the RMP_BASE and RMP_END MSRs. If the RMP_BASE and
+> RMP_END are not set then disable the SEV-SNP feature.
+>
+> The SEV-SNP feature is enabled only after the RMP table is successfully
+> initialized.
+>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > ---
->  arch/x86/boot/compressed/ident_map_64.c | 8 --------
->  arch/x86/boot/compressed/misc.h         | 9 +++++++++
->  arch/x86/boot/compressed/sev.c          | 2 --
->  3 files changed, 9 insertions(+), 10 deletions(-)
+>  arch/x86/include/asm/disabled-features.h |   8 +-
+>  arch/x86/include/asm/msr-index.h         |   6 +
+>  arch/x86/kernel/sev.c                    | 144 +++++++++++++++++++++++
+>  3 files changed, 157 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
+> index 36369e76cc63..c1be3091a383 100644
+> --- a/arch/x86/include/asm/disabled-features.h
+> +++ b/arch/x86/include/asm/disabled-features.h
+> @@ -68,6 +68,12 @@
+>  # define DISABLE_TDX_GUEST     (1 << (X86_FEATURE_TDX_GUEST & 31))
+>  #endif
+>
+> +#ifdef CONFIG_AMD_MEM_ENCRYPT
+> +# define DISABLE_SEV_SNP       0
+> +#else
+> +# define DISABLE_SEV_SNP       (1 << (X86_FEATURE_SEV_SNP & 31))
+> +#endif
+> +
+>  /*
+>   * Make sure to add features to the correct mask
+>   */
+> @@ -91,7 +97,7 @@
+>                          DISABLE_ENQCMD)
+>  #define DISABLED_MASK17        0
+>  #define DISABLED_MASK18        0
+> -#define DISABLED_MASK19        0
+> +#define DISABLED_MASK19        (DISABLE_SEV_SNP)
+>  #define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 20)
+>
+>  #endif /* _ASM_X86_DISABLED_FEATURES_H */
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> index 9e2e7185fc1d..57a8280e283a 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -507,6 +507,8 @@
+>  #define MSR_AMD64_SEV_ENABLED          BIT_ULL(MSR_AMD64_SEV_ENABLED_BIT)
+>  #define MSR_AMD64_SEV_ES_ENABLED       BIT_ULL(MSR_AMD64_SEV_ES_ENABLED_BIT)
+>  #define MSR_AMD64_SEV_SNP_ENABLED      BIT_ULL(MSR_AMD64_SEV_SNP_ENABLED_BIT)
+> +#define MSR_AMD64_RMP_BASE             0xc0010132
+> +#define MSR_AMD64_RMP_END              0xc0010133
+>
+>  #define MSR_AMD64_VIRT_SPEC_CTRL       0xc001011f
+>
+> @@ -581,6 +583,10 @@
+>  #define MSR_AMD64_SYSCFG               0xc0010010
+>  #define MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT       23
+>  #define MSR_AMD64_SYSCFG_MEM_ENCRYPT   BIT_ULL(MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT)
+> +#define MSR_AMD64_SYSCFG_SNP_EN_BIT            24
+> +#define MSR_AMD64_SYSCFG_SNP_EN                BIT_ULL(MSR_AMD64_SYSCFG_SNP_EN_BIT)
+> +#define MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT       25
+> +#define MSR_AMD64_SYSCFG_SNP_VMPL_EN   BIT_ULL(MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT)
 
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+nit: The alignment here looks off. The rest of the file left-aligns
+the macro definition column under a comment header. The bad alignment
+can be viewed on the github version of this patch:
+https://github.com/AMDESE/linux/commit/5101daef92f448c046207b701c0c420b1fce3eaf
+
+>  #define MSR_K8_INT_PENDING_MSG         0xc0010055
+>  /* C1E active bits in int pending message */
+>  #define K8_INTP_C1E_ACTIVE_MASK                0x18000000
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index f01f4550e2c6..3a233b5d47c5 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -22,6 +22,8 @@
+>  #include <linux/efi.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/io.h>
+> +#include <linux/cpumask.h>
+> +#include <linux/iommu.h>
+>
+>  #include <asm/cpu_entry_area.h>
+>  #include <asm/stacktrace.h>
+> @@ -38,6 +40,7 @@
+>  #include <asm/apic.h>
+>  #include <asm/cpuid.h>
+>  #include <asm/cmdline.h>
+> +#include <asm/iommu.h>
+>
+>  #define DR7_RESET_VALUE        0x400
+>
+> @@ -57,6 +60,12 @@
+>  #define AP_INIT_CR0_DEFAULT            0x60000010
+>  #define AP_INIT_MXCSR_DEFAULT          0x1f80
+>
+> +/*
+> + * The first 16KB from the RMP_BASE is used by the processor for the
+> + * bookkeeping, the range need to be added during the RMP entry lookup.
+> + */
+> +#define RMPTABLE_CPU_BOOKKEEPING_SZ    0x4000
+> +
+>  /* For early boot hypervisor communication in SEV-ES enabled guests */
+>  static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
+>
+> @@ -69,6 +78,10 @@ static struct ghcb *boot_ghcb __section(".data");
+>  /* Bitmap of SEV features supported by the hypervisor */
+>  static u64 sev_hv_features __ro_after_init;
+>
+> +static unsigned long rmptable_start __ro_after_init;
+> +static unsigned long rmptable_end __ro_after_init;
+> +
+> +
+>  /* #VC handler runtime per-CPU data */
+>  struct sev_es_runtime_data {
+>         struct ghcb ghcb_page;
+> @@ -2218,3 +2231,134 @@ static int __init snp_init_platform_device(void)
+>         return 0;
+>  }
+>  device_initcall(snp_init_platform_device);
+> +
+> +#undef pr_fmt
+> +#define pr_fmt(fmt)    "SEV-SNP: " fmt
+> +
+> +static int __snp_enable(unsigned int cpu)
+> +{
+> +       u64 val;
+> +
+> +       if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +               return 0;
+> +
+> +       rdmsrl(MSR_AMD64_SYSCFG, val);
+> +
+> +       val |= MSR_AMD64_SYSCFG_SNP_EN;
+> +       val |= MSR_AMD64_SYSCFG_SNP_VMPL_EN;
+> +
+> +       wrmsrl(MSR_AMD64_SYSCFG, val);
+> +
+> +       return 0;
+> +}
+> +
+> +static __init void snp_enable(void *arg)
+> +{
+> +       __snp_enable(smp_processor_id());
+> +}
+> +
+> +static bool get_rmptable_info(u64 *start, u64 *len)
+> +{
+> +       u64 calc_rmp_sz, rmp_sz, rmp_base, rmp_end, nr_pages;
+> +
+> +       rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
+> +       rdmsrl(MSR_AMD64_RMP_END, rmp_end);
+> +
+> +       if (!rmp_base || !rmp_end) {
+> +               pr_info("Memory for the RMP table has not been reserved by BIOS\n");
+> +               return false;
+> +       }
+> +
+> +       rmp_sz = rmp_end - rmp_base + 1;
+> +
+> +       /*
+> +        * Calculate the amount the memory that must be reserved by the BIOS to
+> +        * address the full system RAM. The reserved memory should also cover the
+> +        * RMP table itself.
+> +        *
+> +        * See PPR Family 19h Model 01h, Revision B1 section 2.1.4.2 for more
+> +        * information on memory requirement.
+> +        */
+> +       nr_pages = totalram_pages();
+> +       calc_rmp_sz = (((rmp_sz >> PAGE_SHIFT) + nr_pages) << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
+> +
+> +       if (calc_rmp_sz > rmp_sz) {
+> +               pr_info("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
+> +                       calc_rmp_sz, rmp_sz);
+> +               return false;
+> +       }
+> +
+> +       *start = rmp_base;
+> +       *len = rmp_sz;
+> +
+> +       pr_info("RMP table physical address 0x%016llx - 0x%016llx\n", rmp_base, rmp_end);
+> +
+> +       return true;
+> +}
+> +
+> +static __init int __snp_rmptable_init(void)
+> +{
+> +       u64 rmp_base, sz;
+> +       void *start;
+> +       u64 val;
+> +
+> +       if (!get_rmptable_info(&rmp_base, &sz))
+> +               return 1;
+> +
+> +       start = memremap(rmp_base, sz, MEMREMAP_WB);
+> +       if (!start) {
+> +               pr_err("Failed to map RMP table 0x%llx+0x%llx\n", rmp_base, sz);
+> +               return 1;
+> +       }
+> +
+> +       /*
+> +        * Check if SEV-SNP is already enabled, this can happen if we are coming from
+> +        * kexec boot.
+> +        */
+> +       rdmsrl(MSR_AMD64_SYSCFG, val);
+> +       if (val & MSR_AMD64_SYSCFG_SNP_EN)
+> +               goto skip_enable;
+> +
+> +       /* Initialize the RMP table to zero */
+> +       memset(start, 0, sz);
+> +
+> +       /* Flush the caches to ensure that data is written before SNP is enabled. */
+> +       wbinvd_on_all_cpus();
+> +
+> +       /* Enable SNP on all CPUs. */
+> +       on_each_cpu(snp_enable, NULL, 1);
+> +
+> +skip_enable:
+> +       rmptable_start = (unsigned long)start;
+> +       rmptable_end = rmptable_start + sz;
+> +
+> +       return 0;
+> +}
+> +
+> +static int __init snp_rmptable_init(void)
+> +{
+> +       if (!boot_cpu_has(X86_FEATURE_SEV_SNP))
+> +               return 0;
+> +
+> +       if (!iommu_sev_snp_supported())
+> +               goto nosnp;
+> +
+> +       if (__snp_rmptable_init())
+> +               goto nosnp;
+> +
+> +       cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/rmptable_init:online", __snp_enable, NULL);
+> +
+> +       return 0;
+> +
+> +nosnp:
+> +       setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
+> +       return 1;
+
+Seems odd that we're returning 1 here, rather than 0. I tried to
+figure out how the initcall return values are used and failed. My
+impression was 0 means success and a negative number means failure.
+But maybe this is normal.
+
+> +}
+> +
+> +/*
+> + * This must be called after the PCI subsystem. This is because before enabling
+> + * the SNP feature we need to ensure that IOMMU supports the SEV-SNP feature.
+> + * The iommu_sev_snp_support() is used for checking the feature, and it is
+> + * available after subsys_initcall().
+> + */
+> +fs_initcall(snp_rmptable_init);
+> --
+> 2.25.1
+>
