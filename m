@@ -1,141 +1,177 @@
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2076.outbound.protection.outlook.com [40.107.93.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24272468C
-	for <linux-coco@lists.linux.dev>; Thu, 23 Jun 2022 21:49:37 +0000 (UTC)
-Received: from in02.mta.xmission.com ([166.70.13.52]:50126)
-	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1o4Uhd-00DJj7-3e; Thu, 23 Jun 2022 15:49:29 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:57444 helo=email.froward.int.ebiederm.org.xmission.com)
-	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1o4Uhb-0022ce-V4; Thu, 23 Jun 2022 15:49:28 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,  Borislav Petkov
- <bp@alien8.de>,  Andy Lutomirski <luto@kernel.org>,  Sean Christopherson
- <seanjc@google.com>,  Andrew Morton <akpm@linux-foundation.org>,  Joerg
- Roedel <jroedel@suse.de>,  Ard Biesheuvel <ardb@kernel.org>,  Andi Kleen
- <ak@linux.intel.com>,  Kuppuswamy Sathyanarayanan
- <sathyanarayanan.kuppuswamy@linux.intel.com>,  David Rientjes
- <rientjes@google.com>,  Vlastimil Babka <vbabka@suse.cz>,  Tom Lendacky
- <thomas.lendacky@amd.com>,  Thomas Gleixner <tglx@linutronix.de>,  Peter
- Zijlstra <peterz@infradead.org>,  Paolo Bonzini <pbonzini@redhat.com>,
-  Ingo Molnar <mingo@redhat.com>,  Varad Gautam <varad.gautam@suse.com>,
-  Dario Faggioli <dfaggioli@suse.com>,  Mike Rapoport <rppt@kernel.org>,
-  David Hildenbrand <david@redhat.com>,  marcelo.cerri@canonical.com,
-  tim.gardner@canonical.com,  khalid.elmously@canonical.com,
-  philip.cox@canonical.com,  x86@kernel.org,  linux-mm@kvack.org,
-  linux-coco@lists.linux.dev,  linux-efi@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  kexec@lists.infradead.org
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
-	<20220614120231.48165-12-kirill.shutemov@linux.intel.com>
-	<6be29d38-5c93-7cc9-0de7-235d3f83773c@intel.com>
-Date: Thu, 23 Jun 2022 16:48:59 -0500
-In-Reply-To: <6be29d38-5c93-7cc9-0de7-235d3f83773c@intel.com> (Dave Hansen's
-	message of "Thu, 23 Jun 2022 10:23:59 -0700")
-Message-ID: <87a6a3aw50.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96A1468C
+	for <linux-coco@lists.linux.dev>; Thu, 23 Jun 2022 22:22:55 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SRuVS1yFZWES8AYnUjAsQTWJ1ChPB8iaonCac9ELJ+KmJ6wpvEWsjHtxJ9mU+QkeHdeh4mLS1ccFUxEZ8EInOlltJomm9r3OiE4Tmq/c9v3ZId98izIMkKDH0+13vH81diicH9sjlVMgnDMiaLw3EhqCsXrJsUwtKIrUSug8lEyHamSWdpQFwWNauk9qscET4ewYIEQYmFzHATBJuFRV8nYEK8eNkGn5L2m4gwaCbEAqfKQpVFV7BfEmLFhLl70GvQrTfxy6m4IBe5xZy0VD6Djx7RwauW1HElKP/JHSMEa1wUpMDGS48m/llrcokdwrn7vBVkPS/vm0AhobBdJLjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AH81Z2QrHJiFevRWk1nXMam6jNQmbermNSXNbIycy5k=;
+ b=NGw/Ku6GpjaNM53vvKHwHG0QqYIXk6Gvo/undxu4r//aXMynAfAald5lAL+QPfeSL6tqfuRzHdRXpQEfuk5bWLgqrd0mgVf7036jXIqKD7uq8k2em/T1KtlV3ukcJvf4HJQo44/3Hk63qtaA0OTCGP/3wVSiGo0lt3A+RDxCuBklwZQ3BoEQ77tynk3bzImfvI8H9d/gjB1mzMLW00YkCVMd7Ais0SfYOIsJAmkyJVlauQ6nx4JCTBtMLrIS+9pSHmX3xNsPioIXCT4C0qO/nYkzG4sowLXr0vOFKyjCOVn1mXrHQ8hTm0O2UaEUWbFFImGuHBBuHnlt6mZo/pe4zA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AH81Z2QrHJiFevRWk1nXMam6jNQmbermNSXNbIycy5k=;
+ b=A+DP8iNBBtNExlemi8+FD5QIWTkOLQFPIYpoF+mSMAnPvKvOyUQ1Dfowlxo9s3bLwx9ke6Eo8tY4iiaSwZ1GDK8uuj48L70QIoAv0OXQ2WVR5rEWn0Upj9Ee7ZmZy9Asq2OigAmD2tpWes6qQNFF/sfeZoa6VFt0nuQXV4pmmMg=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by DM5PR12MB2391.namprd12.prod.outlook.com (2603:10b6:4:b3::27) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.20; Thu, 23 Jun
+ 2022 22:22:53 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d%7]) with mapi id 15.20.5373.015; Thu, 23 Jun 2022
+ 22:22:52 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Marc Orr <marcorr@google.com>
+CC: x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, kvm list
+	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel
+	<jroedel@suse.de>, "Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, Vitaly
+ Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, Andy
+ Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>, Peter
+ Zijlstra <peterz@infradead.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>, "Roth, Michael" <Michael.Roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, Tony Luck
+	<tony.luck@intel.com>, Sathyanarayanan Kuppuswamy
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, Alper Gun
+	<alpergun@google.com>, "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: RE: [PATCH Part2 v6 03/49] x86/sev: Add the host SEV-SNP
+ initialization support
+Thread-Topic: [PATCH Part2 v6 03/49] x86/sev: Add the host SEV-SNP
+ initialization support
+Thread-Index: AQHYh0KYcxQqbwBTdUCpGH+ovKgAp61dj73A
+Date: Thu, 23 Jun 2022 22:22:52 +0000
+Message-ID:
+ <SN6PR12MB27672239E54FD0DD98A68EFB8EB59@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <8f4eef289aba5067582d0d3535299c22a4e5c4c4.1655761627.git.ashish.kalra@amd.com>
+ <CAA03e5FgfVQbz=pvMeBpOHENe5Rf_7UvE3iAqcgm=9nmwGEEBw@mail.gmail.com>
+In-Reply-To:
+ <CAA03e5FgfVQbz=pvMeBpOHENe5Rf_7UvE3iAqcgm=9nmwGEEBw@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-06-23T22:18:14Z;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=a347d247-b0e0-4cfd-a7e5-2ef85ac56a85;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-06-23T22:22:50Z
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
+ 22e73bdd-a8ca-4747-8ebb-1fa4601d7963
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 8676fb36-0964-48e2-694e-08da5566ea1d
+x-ms-traffictypediagnostic: DM5PR12MB2391:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 1NBy9r2meVsP102DbaNY9pEE4UHkzOQPLVtcz4D39Mx8Ngf1r/hkbucpLMk5Uqj+FqWFuqbU79MZo/iPufdiqdqidsAeak9i0i1lQxi102aww7EH/g9pkNfipzJ6izuezKgkgIZYaiLmC7DyuS6UdVhN/RCWP1shoxQjg1oIbiTdswxctefkuX9njlqnxmVbroPRX6lPJ3V8h4UBvnHtcvP6zA8Pq7CRdggOkbZViZdOwHeUFe/u/jzOPrOE/7SVsiPtx8hU+eokiROl0YtkC8fYzfQOeRjc+dnNkAm5GeTPWzyN5kvytIJxSQyop65X949lRfIVBnjDEUnNA4SW8Vpvo3PdvhXZIZ7JZM5fH1hWVx8vGOwprUeGLeVRtGkp4Y/Uneam8HlO4OAf8EvexjX0NYzDpCGhg5Z514enHYMYNvHFkACTMdY6K8ZYOcMVhSkj8ysgRDx54G3FjJCS7xuFC5KUJ61jyH5/q+kmPp4WF2nc1RH+QAKI+okGpu++4y8TDRiJnShj9qR+z8YrKBUcba0TwDCVc6LQ7tGkw2NOd9cGIDc8ZFZoK4azwRsEfYgHQns4AVUdPSFtWFB2DTZDiWQ+afVqxO8Cn/F/MwatliOwN6xJc7PnvGKlPDxmchyjv2oFSq1LO5DR5Ntztcynj/RC86SZ75Q9VMsqw1jQHec2pnFLi2UtveMy7DzQ8Y/89aRg4+TBn0Gnk3lmzXzd7QiVh7NH3PSHgK9Cu+8WRWfqDvrQpqOynFzIGHEB+Bo93m6QfaYeXIsLDgIShtjB0UOfHq9PJfati4fzJoE=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(39860400002)(346002)(136003)(366004)(396003)(376002)(2906002)(33656002)(86362001)(38100700002)(7416002)(8936002)(5660300002)(52536014)(316002)(122000001)(4744005)(7406005)(66446008)(4326008)(76116006)(71200400001)(7696005)(6506007)(66476007)(55016003)(64756008)(6916009)(478600001)(186003)(66556008)(83380400001)(41300700001)(38070700005)(9686003)(66946007)(26005)(8676002)(54906003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?MoupNYrVcgukKJAOv1zcmDWoeqE7wxD3vYkXatqNHVemthevkr//OSR7un3Y?=
+ =?us-ascii?Q?ea8AT5kClIVI49EWLIk2q/wHwfN29/HIV8VOcQmosc2qMpp86RbLdC7Nq2WA?=
+ =?us-ascii?Q?dthoOdCnRDb3vMTNPL4SNYPSWsNcvEbD8vD8pgG6IT3tTjo3z5tiGub4lMMS?=
+ =?us-ascii?Q?AmlOFPknxlRdBLIiTdQWYHtq5AoIha5y6654QvA0pYP67gq+WrJE439Jglmc?=
+ =?us-ascii?Q?s7zQnawFoe5dJ6VYpNgeZUl3Y4EuJEzvxW+n6/+oMnoKsCSv2wHZLeNYAvYJ?=
+ =?us-ascii?Q?lzAMu70BXYrxC0SaaNvZS6yMIspueh8SQZvvwd/usTyc4bhaeUqXeeHcC0Xm?=
+ =?us-ascii?Q?WFBcsTMi4chEde64uZ11RiIgRfGI4DW3scJz5RxoF127uF3hSoeC+nG+zOOU?=
+ =?us-ascii?Q?NL3zSJd3Ny82i8K5M2N8wh/GttyD9buNihrph4jhsDzNPbEUA6YAnElb2cRq?=
+ =?us-ascii?Q?mlfgvTgkQGhHYqQ8iIQebKcIBSbCOPSY4QvxVPcWHZJ4TMHwrxrn8N47hyw7?=
+ =?us-ascii?Q?FgH5nrJ5kJgzJmyVkn4AWH8STNOLpURQv3lmvzbxADlIk1yUBR4/0aLjaE8l?=
+ =?us-ascii?Q?z3cl4jjpZRk/1/e5h5UJjFy/T95NEc96aBq64ONPj56t1KtI1pVJA/gizsqy?=
+ =?us-ascii?Q?SWmlG45is9t/FpKhM0zCMY5U6susteZhtfJaEBPAfo4NQqy0Ww91sJEp+xUT?=
+ =?us-ascii?Q?OleqXZnU0YIomRwuFj2mYgVqi8ylZJNtBGtLxf9OdEWFeJL9dd60YsTHBCNo?=
+ =?us-ascii?Q?XJ9uq5tYESKAbqZ5gCfpnrgvAQ1WqDM/syoOisAaXPKn8bgieToUTK7HUiEr?=
+ =?us-ascii?Q?sZ6sJVKo38zO9Ekr6GH8Hv7tHMzLD7HV2hveNif1+XyQbnbB1tAfTgl5RAuf?=
+ =?us-ascii?Q?+J4SGOLeIGx5z2ZBtuLvBFjNnM3ekJWxQfdRyYYGIZZHNXop1BiqF4BrHKKh?=
+ =?us-ascii?Q?/Fpe4xypBSZxhl8SNnyLxrHrQyOextigsk1XL4cfYo1mx+EdoEkfxdNtZY21?=
+ =?us-ascii?Q?i7eqbreXXEgqFkkFyiM1v7q+AkeAbQFKWJaBEV2vQw9mEjJYDgPZ4LttwtEr?=
+ =?us-ascii?Q?QdG8T+qDKHTUeV4Bn+Kq6iFbUzf+G/W/XognDpFxyZUsz7BgLhHMHq7byVf5?=
+ =?us-ascii?Q?xaaJyfWlg97ZCjcW9Z8mHrXTBsVhQ0VIOXcLzo8QnBr12Ax1NdMe2he2PeVw?=
+ =?us-ascii?Q?Ds+gY/a49HuwiqfwauYMYCUhjiR6ufeeve7y/gB9jjZHlUococArnUPiBYGb?=
+ =?us-ascii?Q?2wvlP4fnB7kvwvHmhorJk91OL8y1ZZMQA+ozIVA5loQllj29zu4RcSJK7M8C?=
+ =?us-ascii?Q?V0RDKr/D6UJ2lETK/FBXcsL1IiKja1VvmqaIV+MWzte+fi9eqc2YcHJjnAfw?=
+ =?us-ascii?Q?H8AT73dR/nlLV2lgm4BIyGGQ0BO8Yz++4OvFZMePMSNxoXSrZypikWK9Ly6q?=
+ =?us-ascii?Q?SNZ/LIte8p4koajP/2y2/p7EU7eGk1i5NEh/8iOIMBBZTM9vQTlyHA4kWV0g?=
+ =?us-ascii?Q?GTPy+DcWA6z1Q2BBL68Qhk7UAZsjmz5ru1SjzJGJ0N54BoCSGwFfVQPJe0IR?=
+ =?us-ascii?Q?DPzfo8sXoBptYqSIEa4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1o4Uhb-0022ce-V4;;;mid=<87a6a3aw50.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
-X-XM-AID: U2FsdGVkX18FcaF4uvLQyjo+A0LkxE1aFqSrnDlgmHM=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa07.xmission.com
-X-Spam-Level: ***
-X-Spam-Status: No, score=3.0 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-	DCC_CHECK_NEGATIVE,T_SCC_BODY_TEXT_LINE,T_TM2_M_HEADER_IN_MSG,
-	XMSubLong,XM_SPF_SoftFail autolearn=disabled version=3.4.2
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-	*      [score: 0.5000]
-	*  0.7 XMSubLong Long Subject
-	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-	*      [sa07 1397; Body=1 Fuz1=1 Fuz2=1]
-	*  2.5 XM_SPF_SoftFail SPF-SoftFail
-	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ***;Dave Hansen <dave.hansen@intel.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 559 ms - load_scoreonly_sql: 0.06 (0.0%),
-	signal_user_changed: 11 (2.0%), b_tie_ro: 10 (1.8%), parse: 0.99
-	(0.2%), extract_message_metadata: 24 (4.3%), get_uri_detail_list: 1.45
-	(0.3%), tests_pri_-1000: 23 (4.2%), tests_pri_-950: 1.75 (0.3%),
-	tests_pri_-900: 1.46 (0.3%), tests_pri_-90: 154 (27.5%), check_bayes:
-	150 (26.8%), b_tokenize: 14 (2.4%), b_tok_get_all: 10 (1.8%),
-	b_comp_prob: 3.4 (0.6%), b_tok_touch_all: 117 (20.9%), b_finish: 1.45
-	(0.3%), tests_pri_0: 322 (57.6%), check_dkim_signature: 0.74 (0.1%),
-	check_dkim_adsp: 2.7 (0.5%), poll_dns_idle: 0.45 (0.1%), tests_pri_10:
-	2.1 (0.4%), tests_pri_500: 12 (2.1%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCHv7 11/14] x86: Disable kexec if system has unaccepted memory
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8676fb36-0964-48e2-694e-08da5566ea1d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2022 22:22:52.8698
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Gak1Su4/aLrTPLoHQX5DSQtKPSjalqucegjBN9Vb6pSPguTJwlvbXojrcgTUhynAtOgbD1REn4cP5g5mU3qzgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2391
 
-Dave Hansen <dave.hansen@intel.com> writes:
+[AMD Official Use Only - General]
 
-> ... adding kexec folks
->
-> On 6/14/22 05:02, Kirill A. Shutemov wrote:
->> On kexec, the target kernel has to know what memory has been accepted.
->> Information in EFI map is out of date and cannot be used.
->> 
->> boot_params.unaccepted_memory can be used to pass the bitmap between two
->> kernels on kexec, but the use-case is not yet implemented.
->> 
->> Disable kexec on machines with unaccepted memory for now.
-> ...
->> +static int __init unaccepted_init(void)
->> +{
->> +	if (!boot_params.unaccepted_memory)
->> +		return 0;
+>> +static int __init snp_rmptable_init(void) {
+>> +       if (!boot_cpu_has(X86_FEATURE_SEV_SNP))
+>> +               return 0;
 >> +
->> +#ifdef CONFIG_KEXEC_CORE
->> +	/*
->> +	 * TODO: Information on memory acceptance status has to be communicated
->> +	 * between kernel.
->> +	 */
->> +	pr_warn("Disable kexec: not yet supported on systems with unaccepted memory\n");
->> +	kexec_load_disabled = 1;
->> +#endif
->
-> This looks to be the *only* in-kernel user tweaking kexec_load_disabled.
->  It doesn't feel great to just be disabling kexec like this.  Why not
-> just fix it properly?
->
-> What do the kexec folks think?
+>> +       if (!iommu_sev_snp_supported())
+>> +               goto nosnp;
+>> +
+>> +       if (__snp_rmptable_init())
+>> +               goto nosnp;
+>> +
+>> +       cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,=20
+>> + "x86/rmptable_init:online", __snp_enable, NULL);
+>> +
+>> +       return 0;
+>> +
+>> +nosnp:
+>> +       setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
+>> +       return 1;
 
-I didn't realized someone had implemented kexec_load_disabled.  I am not
-particularly happy about that.  It looks like an over-broad stick that
-we will have to support forever.
+>Seems odd that we're returning 1 here, rather than 0. I tried to figure ou=
+t how the initcall return values are used and failed. My impression was 0 m=
+eans success and a negative number means failure.
+>But maybe this is normal.
 
-This change looks like it just builds on that bad decision.
+I think that initcall values are typically ignored, but it should return 0 =
+on success and negative on error. So probably should fix this to return som=
+ething like -ENOSYS instead of 1.
 
-If people don't want to deal with this situation right now, then I
-recommend they make this new code and KEXEC conflict at the Kconfig
-level.  That would give serious incentive to adding the missing
-implementation.
-
-If there is some deep and fundamental why this can not be supported
-then it probably makes sense to put some code in the arch_kexec_load
-hook that verifies that deep and fundamental reason is present.
-
-With the kexec code all we have to verify it works is a little testing
-and careful code review.  Something like this makes code review much
-harder because the entire kernel has to be checked to see if some random
-driver without locking changed a variable.  Rather than having it
-apparent that this special case exists when reading through the kexec
-code.
-
-Eric
-
+Thanks,
+Ashish
