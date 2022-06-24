@@ -1,38 +1,38 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9F77C
-	for <linux-coco@lists.linux.dev>; Fri, 24 Jun 2022 17:16:07 +0000 (UTC)
-Received: by mail-lj1-f180.google.com with SMTP id j22so3545842ljg.0
-        for <linux-coco@lists.linux.dev>; Fri, 24 Jun 2022 10:16:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503877C
+	for <linux-coco@lists.linux.dev>; Fri, 24 Jun 2022 17:19:19 +0000 (UTC)
+Received: by mail-oi1-f171.google.com with SMTP id w83so4429273oiw.1
+        for <linux-coco@lists.linux.dev>; Fri, 24 Jun 2022 10:19:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=h7TLEeCFth7PheP9Vjw0eOfwGgWMcwKrKSrdpGrebWY=;
-        b=IU3rG809nvHZOZvyEcynZb5cx8uhkr0QKQGEbHpM7aM3INwbrTUi+sJoYs+poBe5yp
-         SUxlrL0gk2U5l9Tl1uRgX2Nvd+9OoDaDB+rrpLWMA0+YwmNGiX1IXzrNmkjxDMe9VIPF
-         DJpA0UjxRjtbScKgaEKHhW7ppvN09yvXNsrNVzUhjEdkni1H9IjXu4Cqtxh2Dm8+7aRH
-         LmaYAiHtbI1K235l7U6bwe38YtQjXSw1g0zhcNTQaALYl2nxJaEA70C6ZTI3HaFVPIiB
-         80IC0gWVvBSre5Xp3FBbIEwP1uT9dAn+VU8gMLbLK3/QoV2/fGqIq9mRE892Iuk4TWZS
-         FE2A==
+        bh=oNiiFv53teFu3CRex5rCry8QLqLkd97P3Hj9fAhbeYc=;
+        b=kFAUNKf1rEgkt+OYkPh8tB9E+HPlRDJ57kjd7aaOhWKcIYCN/ZjVerEUwL1D4UqEy6
+         jNB2akz9JlmI2z3ciS9Jkc2XEeGMl3dvnEZrG1QqRu/ya7j4cL/8FovPHxIwC5EW6es7
+         Ghq27j3amQkzIckOMXvVOxDa7HU8mwaHoI3RREC2uB5mU26z2mV8kUwNG56nJSMHMRqc
+         7XxJo0dYVvBtJQS7ebwKtCv1V87zEy9YAPcRV8rTLCfAJuZvL7bdAFhpoy8DPcdAukCV
+         I/VMctopfL4nnKopG199aqN6z+kRpGu+YbvvSx5/icPAGuQh+9wvM0ZMI9vQVocoE5BI
+         2jZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=h7TLEeCFth7PheP9Vjw0eOfwGgWMcwKrKSrdpGrebWY=;
-        b=A6gjmdYP8LGrs1/72blYJv8hwJm0y5uiVZpQvVnTYYQ6ZRwMOIYgb39DPUsS5lLFsI
-         P88IMDx3IFirqookSFZQVwA2lTSUqj94xosxJ3ds/R9eh1sejLQMhIcKJar3fX+xf/lK
-         DjgjwtUNFRH7PkFJsDyGwMTIyXkXJi/nJk85fQCBcDCggREvACtZ5qPjAQYLUGgywX6x
-         7zNcjaIilGkf7BJ6xFkSaxwU38e0PZ7ESAtip58Quofwwx59CpCKu5vc0YlXDTCStaCg
-         yP9/3f/DAPxFBLpNxkcBfN6yKETWjWtdFBF+jKQEBHbPjV9z8D1MLnONeNzEPKGiHUDL
-         7RhA==
-X-Gm-Message-State: AJIora867nrMtbXCSqncSfsLo7hELQkc8ZvPR5jXkRVU39P4JoXhzl6Z
-	zxnTR7iUlQKv9tIbhsZTKO4YR5YR0rGc9DjLL6hpFA==
-X-Google-Smtp-Source: AGRyM1t8yYXv52NYU8Eipze+F/p8oqSexP7qPbPFFLxQEI0Uh3d5+Lj1NFdceTfhcMwRr7ETcSSU7a0q88R1auWwSy8=
-X-Received: by 2002:a2e:b911:0:b0:25a:9942:4171 with SMTP id
- b17-20020a2eb911000000b0025a99424171mr9602ljb.426.1656090965474; Fri, 24 Jun
- 2022 10:16:05 -0700 (PDT)
+        bh=oNiiFv53teFu3CRex5rCry8QLqLkd97P3Hj9fAhbeYc=;
+        b=DY0eJPCq85fv/AdzVe4adoOc3mQsqFT9dADHmNyW6h4DoiqkCQffOQbBVp0NH9p/1Q
+         eeTevL+Q3GindaEXRIx2+EEp4PjdY7QWQR20KuU9opkbUDF9N7//cKBveNCanqcr7zPn
+         j9LS7tBTuHVTxAw+378Vv6D5sCd8LSr/iH3MyqUyhPNLosEtifCTqHd7JSGGuq235OzH
+         vIQbQAn4GqpUrm9T19bcOFfs6lMWNRFZu+a6/gE6PkY+hzhWDEDaMWgb5Fq5zDg81MpF
+         VjfhJNFn16MphUOXUqThEK+7aiWzORmVmj5/t4byw0IE9t1RxQfA1RcCevaqFBExJ7NX
+         TeAw==
+X-Gm-Message-State: AJIora9WKhj/1fX1otzwfvca9vX94uqOBHAsvwXcEOksauHwI0pbbLGJ
+	7TaEUnLOVUK/SJhstEW9adCfQPfyVkV7vAh5g5RYTw==
+X-Google-Smtp-Source: AGRyM1vH1Tmei+FucmqSWTWHKYA82g8W5CxsahmZ6gIJ+zkpr7Odp70Gu50EcpESE80fWGtWYk5jJ9pFsVncC/eeohY=
+X-Received: by 2002:a05:6808:179a:b0:32f:2b07:e733 with SMTP id
+ bg26-20020a056808179a00b0032f2b07e733mr2572280oib.218.1656091158204; Fri, 24
+ Jun 2022 10:19:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -44,12 +44,12 @@ References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
  <5af19000-4482-7eb9-f158-0a461891f087@intel.com> <CAA03e5F480=psSECDAkXQEvNKk3une-4dJV57Hde4z4MMzh=1A@mail.gmail.com>
  <e09dae40-d269-cfed-d048-3e62275c1bb7@intel.com>
 In-Reply-To: <e09dae40-d269-cfed-d048-3e62275c1bb7@intel.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Fri, 24 Jun 2022 11:15:53 -0600
-Message-ID: <CAMkAt6qNkwOPpsqLjvB+FaQRpySYBJYb5sm7nj8khO7Um5EQ5g@mail.gmail.com>
+From: Marc Orr <marcorr@google.com>
+Date: Fri, 24 Jun 2022 10:19:07 -0700
+Message-ID: <CAA03e5HxiLkOUbOrsgbzVdAUNZvnnryuNcqrz1ZWECtWLwKMXA@mail.gmail.com>
 Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
 To: Dave Hansen <dave.hansen@intel.com>
-Cc: Marc Orr <marcorr@google.com>, 
+Cc: Peter Gonda <pgonda@google.com>, 
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
 	Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
@@ -67,22 +67,7 @@ Cc: Marc Orr <marcorr@google.com>,
 	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
->> > Peter, is your enter key broken?  You seem to be typing all your text in
->> > a single unreadable paragraph.
-
-Sorry I will try to format better in the future.
-
->> > You're saying that firmware basically has two choices:
->> > 1. Accept all the memory up front and boot slowly, but reliably
->> > 2. Use thus "unaccepted memory" mechanism, boot fast, but risk that the
->> >    VM loses a bunch of memory.
-
-That's right. Given that the first round of SNP guest patches are in
-but this work to support unaccepted memory for SNP is not we assume we
-will have distros that support SNP without this "unaccepted memory"
-feature.
-
-On Fri, Jun 24, 2022 at 11:10 AM Dave Hansen <dave.hansen@intel.com> wrote:
+On Fri, Jun 24, 2022 at 10:10 AM Dave Hansen <dave.hansen@intel.com> wrote:
 >
 > On 6/24/22 10:06, Marc Orr wrote:
 > > I think Peter's point is a little more nuanced than that. Once lazy
@@ -105,18 +90,9 @@ On Fri, Jun 24, 2022 at 11:10 AM Dave Hansen <dave.hansen@intel.com> wrote:
 >
 > In other words, are we talking about "fails to boot" or "can't see all
 > the RAM"?
->
 
-Yes, I'm sorry I was mistaken. If FW uses unaccepted memory but the
-kernel doesn't support it the VM should still boot but will fail to
-utilize all of its given RAM.
-
->> > If the customer screws up, they lose a bunch of the RAM they paid for.
->> > That seems like a rather self-correcting problem to me.
-
-Providing customers with an easy to use product is a problem for us
-the cloud provider, encoding foot-guns doesn't sound like what's best
-for the user here. I wanted to bring this up here since it seems like
-a problem most vendors/users of SNP and TDX would run into. We can of
-course figure this out internally if no one else sees this as an
-issue.
+Ah... yeah, you're right, Dave -- I guess it's the latter. The guest
+won't have access to all of the memory that the customer is paying
+for. But that's still bad. If the customer buys a 96 GB VM and can
+only see 4GB because they're kernel doesn't have these patches they're
+going to be confused and frustrated.
