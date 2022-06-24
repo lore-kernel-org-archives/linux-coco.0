@@ -1,89 +1,122 @@
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA5C7C
-	for <linux-coco@lists.linux.dev>; Fri, 24 Jun 2022 17:10:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656090601; x=1687626601;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bgbQFlCVdpCMNcHSrhnw0vtteZ74+vzwjmr94U9FKJs=;
-  b=jQveDnjZZGcqNSEGA8EV3I+jQmertwQ/wUCRfohxa1/V1a4ZRr5UIkTQ
-   5WfaAy9jU9f1kQn/pjd3FYsN7HURM8BA0/hxdnp/C6DGcP6xCfS5ItvzD
-   89DRsYCUOkFbzn7K6kURrSpCwYRTREpiWg2mOOR39hFVVpCTpuPLmEuGf
-   c56bUruJYo15OkRfxroyFLxqwnaWzccn4UmD0+UZpAfwbDWeXzTH2T9A2
-   vk9/OzVhAxmab8benNWv53eQPbzfa6Dbtv3nNHkjpT4kwaw4eCEQIXQpE
-   5sQdNLWdMuoGnCO6QKQiYlhpmiz/7oTAdO9991YkLLJS+lA8cC0o2jF5s
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10388"; a="342733827"
-X-IronPort-AV: E=Sophos;i="5.92,218,1650956400"; 
-   d="scan'208";a="342733827"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2022 10:10:00 -0700
-X-IronPort-AV: E=Sophos;i="5.92,218,1650956400"; 
-   d="scan'208";a="731398263"
-Received: from mdedeogl-mobl.amr.corp.intel.com (HELO [10.209.126.186]) ([10.209.126.186])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2022 10:09:59 -0700
-Message-ID: <e09dae40-d269-cfed-d048-3e62275c1bb7@intel.com>
-Date: Fri, 24 Jun 2022 10:09:24 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9F77C
+	for <linux-coco@lists.linux.dev>; Fri, 24 Jun 2022 17:16:07 +0000 (UTC)
+Received: by mail-lj1-f180.google.com with SMTP id j22so3545842ljg.0
+        for <linux-coco@lists.linux.dev>; Fri, 24 Jun 2022 10:16:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=h7TLEeCFth7PheP9Vjw0eOfwGgWMcwKrKSrdpGrebWY=;
+        b=IU3rG809nvHZOZvyEcynZb5cx8uhkr0QKQGEbHpM7aM3INwbrTUi+sJoYs+poBe5yp
+         SUxlrL0gk2U5l9Tl1uRgX2Nvd+9OoDaDB+rrpLWMA0+YwmNGiX1IXzrNmkjxDMe9VIPF
+         DJpA0UjxRjtbScKgaEKHhW7ppvN09yvXNsrNVzUhjEdkni1H9IjXu4Cqtxh2Dm8+7aRH
+         LmaYAiHtbI1K235l7U6bwe38YtQjXSw1g0zhcNTQaALYl2nxJaEA70C6ZTI3HaFVPIiB
+         80IC0gWVvBSre5Xp3FBbIEwP1uT9dAn+VU8gMLbLK3/QoV2/fGqIq9mRE892Iuk4TWZS
+         FE2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=h7TLEeCFth7PheP9Vjw0eOfwGgWMcwKrKSrdpGrebWY=;
+        b=A6gjmdYP8LGrs1/72blYJv8hwJm0y5uiVZpQvVnTYYQ6ZRwMOIYgb39DPUsS5lLFsI
+         P88IMDx3IFirqookSFZQVwA2lTSUqj94xosxJ3ds/R9eh1sejLQMhIcKJar3fX+xf/lK
+         DjgjwtUNFRH7PkFJsDyGwMTIyXkXJi/nJk85fQCBcDCggREvACtZ5qPjAQYLUGgywX6x
+         7zNcjaIilGkf7BJ6xFkSaxwU38e0PZ7ESAtip58Quofwwx59CpCKu5vc0YlXDTCStaCg
+         yP9/3f/DAPxFBLpNxkcBfN6yKETWjWtdFBF+jKQEBHbPjV9z8D1MLnONeNzEPKGiHUDL
+         7RhA==
+X-Gm-Message-State: AJIora867nrMtbXCSqncSfsLo7hELQkc8ZvPR5jXkRVU39P4JoXhzl6Z
+	zxnTR7iUlQKv9tIbhsZTKO4YR5YR0rGc9DjLL6hpFA==
+X-Google-Smtp-Source: AGRyM1t8yYXv52NYU8Eipze+F/p8oqSexP7qPbPFFLxQEI0Uh3d5+Lj1NFdceTfhcMwRr7ETcSSU7a0q88R1auWwSy8=
+X-Received: by 2002:a2e:b911:0:b0:25a:9942:4171 with SMTP id
+ b17-20020a2eb911000000b0025a99424171mr9602ljb.426.1656090965474; Fri, 24 Jun
+ 2022 10:16:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Content-Language: en-US
-To: Marc Orr <marcorr@google.com>
-Cc: Peter Gonda <pgonda@google.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- Marcelo <marcelo.cerri@canonical.com>, tim.gardner@canonical.com,
- Khalid ElMously <khalid.elmously@canonical.com>, philip.cox@canonical.com,
- the arch/x86 maintainers <x86@kernel.org>, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
  <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com>
- <5af19000-4482-7eb9-f158-0a461891f087@intel.com>
- <CAA03e5F480=psSECDAkXQEvNKk3une-4dJV57Hde4z4MMzh=1A@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <CAA03e5F480=psSECDAkXQEvNKk3une-4dJV57Hde4z4MMzh=1A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <5af19000-4482-7eb9-f158-0a461891f087@intel.com> <CAA03e5F480=psSECDAkXQEvNKk3une-4dJV57Hde4z4MMzh=1A@mail.gmail.com>
+ <e09dae40-d269-cfed-d048-3e62275c1bb7@intel.com>
+In-Reply-To: <e09dae40-d269-cfed-d048-3e62275c1bb7@intel.com>
+From: Peter Gonda <pgonda@google.com>
+Date: Fri, 24 Jun 2022 11:15:53 -0600
+Message-ID: <CAMkAt6qNkwOPpsqLjvB+FaQRpySYBJYb5sm7nj8khO7Um5EQ5g@mail.gmail.com>
+Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Marc Orr <marcorr@google.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
+	Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
+	Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>, 
+	Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Marcelo <marcelo.cerri@canonical.com>, 
+	tim.gardner@canonical.com, Khalid ElMously <khalid.elmously@canonical.com>, 
+	philip.cox@canonical.com, "the arch/x86 maintainers" <x86@kernel.org>, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/24/22 10:06, Marc Orr wrote:
-> I think Peter's point is a little more nuanced than that. Once lazy
-> accept goes into the guest firmware -- without the feature negotiation
-> that Peter is suggesting -- cloud providers now have a bookkeeping
-> problem. Which images have kernels that can boot from a guest firmware
-> that doesn't pre-validate all the guest memory?
+>> > Peter, is your enter key broken?  You seem to be typing all your text in
+>> > a single unreadable paragraph.
 
-Hold on a sec though...
+Sorry I will try to format better in the future.
 
-Is this a matter of
+>> > You're saying that firmware basically has two choices:
+>> > 1. Accept all the memory up front and boot slowly, but reliably
+>> > 2. Use thus "unaccepted memory" mechanism, boot fast, but risk that the
+>> >    VM loses a bunch of memory.
 
-	can boot from a guest firmware that doesn't pre-validate all the
-	guest memory?
+That's right. Given that the first round of SNP guest patches are in
+but this work to support unaccepted memory for SNP is not we assume we
+will have distros that support SNP without this "unaccepted memory"
+feature.
 
-or
+On Fri, Jun 24, 2022 at 11:10 AM Dave Hansen <dave.hansen@intel.com> wrote:
+>
+> On 6/24/22 10:06, Marc Orr wrote:
+> > I think Peter's point is a little more nuanced than that. Once lazy
+> > accept goes into the guest firmware -- without the feature negotiation
+> > that Peter is suggesting -- cloud providers now have a bookkeeping
+> > problem. Which images have kernels that can boot from a guest firmware
+> > that doesn't pre-validate all the guest memory?
+>
+> Hold on a sec though...
+>
+> Is this a matter of
+>
+>         can boot from a guest firmware that doesn't pre-validate all the
+>         guest memory?
+>
+> or
+>
+>         can boot from a guest firmware that doesn't pre-validate all the
+>         guest memory ... with access to all of that guest's RAM?
+>
+> In other words, are we talking about "fails to boot" or "can't see all
+> the RAM"?
+>
 
-	can boot from a guest firmware that doesn't pre-validate all the
-	guest memory ... with access to all of that guest's RAM?
+Yes, I'm sorry I was mistaken. If FW uses unaccepted memory but the
+kernel doesn't support it the VM should still boot but will fail to
+utilize all of its given RAM.
 
-In other words, are we talking about "fails to boot" or "can't see all
-the RAM"?
+>> > If the customer screws up, they lose a bunch of the RAM they paid for.
+>> > That seems like a rather self-correcting problem to me.
+
+Providing customers with an easy to use product is a problem for us
+the cloud provider, encoding foot-guns doesn't sound like what's best
+for the user here. I wanted to bring this up here since it seems like
+a problem most vendors/users of SNP and TDX would run into. We can of
+course figure this out internally if no one else sees this as an
+issue.
