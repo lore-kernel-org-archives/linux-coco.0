@@ -1,38 +1,28 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE9B33E4
-	for <linux-coco@lists.linux.dev>; Mon, 27 Jun 2022 16:17:44 +0000 (UTC)
-Received: by mail-lj1-f174.google.com with SMTP id bx13so2986343ljb.1
-        for <linux-coco@lists.linux.dev>; Mon, 27 Jun 2022 09:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IFCSeMWa9h9GX5PoDNQOnkciA1SMKLpehV1m9QrYxug=;
-        b=sH054xMJMWAdWEQgNnIeDaI9aRGZam9yTrCSC25x7I92aDv5SqHaKk2Pa/VnQl6gP8
-         hmPPwdPRdI8pGMC2ajGI6dabju8PRmFnla72eH4OnSDS7NdJPkHGiisBfiQhOjy5Td8W
-         pm4/RzsdVvsQSvTAuuEfcwpjZ2OYiAktQ3UQdLwHQDXnhM7LKdBCw9UMSNb3QWHNePTz
-         Lyupfd+C7UYPCqWan8PIhebM/OHO4oPumZBBNR5lCH42XHcSSZtpzwSradM39VjliALk
-         3krX/fpzeDB9di9ABbqT2rYyoHgIVw1dMN5fcFbki3C117cxcMnLwDZPPexy3vygsRVv
-         ED3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IFCSeMWa9h9GX5PoDNQOnkciA1SMKLpehV1m9QrYxug=;
-        b=y8oeTtM++eKsfnMZ/gsDk+T0cT7uh6V2WLN/xsWpD+QhSjJ3ji4+tYs53D6dZfJ8dM
-         EzLSWFm1Fers4MT3EpHtBrRm9OmYrkT1FqzfIItTa57kOhbDAx2fLcTn08DH9WedPnzD
-         TFKlN7uxakQ8vL4giLjTkIVBO5IMQsIYpHoObB2MVS/FcJPIxALfZ6khj2f068NFSD6L
-         3/X/cy5pcbpxAgI8K5fwjVJxH2j9vp4aq6RWwLVV4oTJZArkHeDvBc6wwdnnhyPVbTBj
-         zImhQ9vUmxrEyDuzu/WBy8N0J+eeXKxW7Np1eqe+fxdqGzIFcdp//SsPyeRb6ixTDBfC
-         yOBA==
-X-Gm-Message-State: AJIora/FtsSoK+klqznCvhbNh8PLjXMrzYxGPLr7Q+5pRMqYbbELrs5o
-	zpIlhUbZxM9oEdL4ymVpmUsTPbjxuaynhfCyaB3R3w==
-X-Google-Smtp-Source: AGRyM1vc1fb6tmRtoRk2eM/MqjNyTJsbg6uxDwz3tmaaoZLLhGU4yZSRiGKND6kPOWF/35tdb79NK/jTJhNQx6rZTQc=
-X-Received: by 2002:a2e:1f01:0:b0:25a:5960:3c39 with SMTP id
- f1-20020a2e1f01000000b0025a59603c39mr7162503ljf.282.1656346662295; Mon, 27
- Jun 2022 09:17:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C752F2A
+	for <linux-coco@lists.linux.dev>; Mon, 27 Jun 2022 16:34:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76179C341D7
+	for <linux-coco@lists.linux.dev>; Mon, 27 Jun 2022 16:34:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656347643;
+	bh=/SrPj904ouZSQFbqV4kyfH3imhY4twalKi5RBsFEDXg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hOiOupAlz0TGohr1zjOI5lFppGqzRMTEsnXwUTjo+AoOMM6Gpog71SfivxPwIX7NV
+	 iXB4scHnRb8F21nU9UWDw3UJPTycIN4itNmgWilRZJoxPN/ykb4KNUwBCASRz2g8B5
+	 ozEcRcl0G9O6t24gpWsacxQyuRb82ttrYlvzpT5chxphOl/fxEh/ZzLG6Iwp5yyJBa
+	 I6G7FBcxCOwrsgR4to3Kezu+lQsavJbnz+NbIJG4Iin/YGpbkXyITEBWjaEAY7wjGG
+	 zm3V3Dpkg2/z1CzyK/M+yUiv7tHtUQTptE2M+6o50uuxDkrnO+NPnVCHt0JoBNBozO
+	 Fy8qOM9M2nZGg==
+Received: by mail-oi1-f170.google.com with SMTP id w83so13583782oiw.1
+        for <linux-coco@lists.linux.dev>; Mon, 27 Jun 2022 09:34:03 -0700 (PDT)
+X-Gm-Message-State: AJIora+05q7OBLmJOeIWZvQ/CQubJusb4Tsnq94y4RN/GsrhihRm0yvk
+	OJUPbhnae6tgjj79HSCodooQc+Uq7GugMmAKNYY=
+X-Google-Smtp-Source: AGRyM1vx0evnQKAh1ZRdKNDvgSVxe65OJG5sTTVLkDoO84Dm1BfKlU9Oq5kS74fbNmzzvJd58LGrRlW4KWp06rIXVKM=
+X-Received: by 2002:a05:6808:300e:b0:32c:425e:df34 with SMTP id
+ ay14-20020a056808300e00b0032c425edf34mr8224110oib.126.1656347642388; Mon, 27
+ Jun 2022 09:34:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -42,16 +32,18 @@ MIME-Version: 1.0
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
  <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com>
  <20220627113019.3q62luiay7izhehr@black.fi.intel.com> <CAMj1kXHD5XBAS1aBjzg1RCeK6qgtanUSED_xyTZ0v1j+UShMKw@mail.gmail.com>
- <20220627122230.7eetepoufd5w3lxd@black.fi.intel.com>
-In-Reply-To: <20220627122230.7eetepoufd5w3lxd@black.fi.intel.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Mon, 27 Jun 2022 10:17:30 -0600
-Message-ID: <CAMkAt6oJJaRM_dy=y2BP99VziPriVuA4jAmMc=G7njwJYKFgyg@mail.gmail.com>
+ <20220627122230.7eetepoufd5w3lxd@black.fi.intel.com> <CAMkAt6oJJaRM_dy=y2BP99VziPriVuA4jAmMc=G7njwJYKFgyg@mail.gmail.com>
+In-Reply-To: <CAMkAt6oJJaRM_dy=y2BP99VziPriVuA4jAmMc=G7njwJYKFgyg@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 27 Jun 2022 18:33:51 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHpS2B9Q7AaQ1euGidZUEyR6gfi=e+t1J_Cr8bmK_9mTw@mail.gmail.com>
+Message-ID: <CAMj1kXHpS2B9Q7AaQ1euGidZUEyR6gfi=e+t1J_Cr8bmK_9mTw@mail.gmail.com>
 Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>, 
+To: Peter Gonda <pgonda@google.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
+	Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
+	Andi Kleen <ak@linux.intel.com>, 
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
 	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
@@ -65,102 +57,104 @@ Cc: Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, Andy Lutom
 	linux-efi <linux-efi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jun 27, 2022 at 6:22 AM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
+On Mon, 27 Jun 2022 at 18:17, Peter Gonda <pgonda@google.com> wrote:
 >
-> On Mon, Jun 27, 2022 at 01:54:45PM +0200, Ard Biesheuvel wrote:
-> > On Mon, 27 Jun 2022 at 13:30, Kirill A. Shutemov
-> > <kirill.shutemov@linux.intel.com> wrote:
-> > >
-> > > On Fri, Jun 24, 2022 at 10:37:10AM -0600, Peter Gonda wrote:
-> > > > On Tue, Jun 14, 2022 at 6:03 AM Kirill A. Shutemov
-> > > > <kirill.shutemov@linux.intel.com> wrote:
-> > > > >
-> > > > > UEFI Specification version 2.9 introduces the concept of memory
-> > > > > acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
-> > > > > SEV-SNP, requiring memory to be accepted before it can be used by the
-> > > > > guest. Accepting happens via a protocol specific for the Virtual
-> > > > > Machine platform.
-> > > > >
-> > > > > Accepting memory is costly and it makes VMM allocate memory for the
-> > > > > accepted guest physical address range. It's better to postpone memory
-> > > > > acceptance until memory is needed. It lowers boot time and reduces
-> > > > > memory overhead.
-> > > > >
-> > > > > The kernel needs to know what memory has been accepted. Firmware
-> > > > > communicates this information via memory map: a new memory type --
-> > > > > EFI_UNACCEPTED_MEMORY -- indicates such memory.
-> > > > >
-> > > > > Range-based tracking works fine for firmware, but it gets bulky for
-> > > > > the kernel: e820 has to be modified on every page acceptance. It leads
-> > > > > to table fragmentation, but there's a limited number of entries in the
-> > > > > e820 table
-> > > > >
-> > > > > Another option is to mark such memory as usable in e820 and track if the
-> > > > > range has been accepted in a bitmap. One bit in the bitmap represents
-> > > > > 2MiB in the address space: one 4k page is enough to track 64GiB or
-> > > > > physical address space.
-> > > > >
-> > > > > In the worst-case scenario -- a huge hole in the middle of the
-> > > > > address space -- It needs 256MiB to handle 4PiB of the address
-> > > > > space.
-> > > > >
-> > > > > Any unaccepted memory that is not aligned to 2M gets accepted upfront.
-> > > > >
-> > > > > The approach lowers boot time substantially. Boot to shell is ~2.5x
-> > > > > faster for 4G TDX VM and ~4x faster for 64G.
-> > > > >
-> > > > > TDX-specific code isolated from the core of unaccepted memory support. It
-> > > > > supposed to help to plug-in different implementation of unaccepted memory
-> > > > > such as SEV-SNP.
-> > > > >
-> > > > > The tree can be found here:
-> > > > >
-> > > > > https://github.com/intel/tdx.git guest-unaccepted-memory
-> > > >
-> > > > Hi Kirill,
-> > > >
-> > > > I have a couple questions about this feature mainly about how cloud
-> > > > customers can use this, I assume since this is a confidential compute
-> > > > feature a large number of the users of these patches will be cloud
-> > > > customers using TDX and SNP. One issue I see with these patches is how
-> > > > do we as a cloud provider know whether a customer's linux image
-> > > > supports this feature, if the image doesn't have these patches UEFI
-> > > > needs to fully validate the memory, if the image does we can use this
-> > > > new protocol. In GCE we supply our VMs with a version of the EDK2 FW
-> > > > and the customer doesn't input into which UEFI we run, as far as I can
-> > > > tell from the Azure SNP VM documentation it seems very similar. We
-> > > > need to somehow tell our UEFI in the VM what to do based on the image.
-> > > > The current way I can see to solve this issue would be to have our
-> > > > customers give us metadata about their VM's image but this seems kinda
-> > > > burdensome on our customers (I assume we'll have more features which
-> > > > both UEFI and kernel need to both support inorder to be turned on like
-> > > > this one) and error-prone, if a customer incorrectly labels their
-> > > > image it may fail to boot.. Has there been any discussion about how to
-> > > > solve this? My naive thoughts were what if UEFI and Kernel had some
-> > > > sort of feature negotiation. Maybe that could happen via an extension
-> > > > to exit boot services or a UEFI runtime driver, I'm not sure what's
-> > > > best here just some ideas.
-> > >
-> > > Just as an idea, we can put info into UTS_VERSION which can be read from
-> > > the built bzImage. We have info on SMP and preeption there already.
-> > >
+> On Mon, Jun 27, 2022 at 6:22 AM Kirill A. Shutemov
+> <kirill.shutemov@linux.intel.com> wrote:
 > >
-> > Instead of hacking this into the binary, couldn't we define a protocol
-> > that the kernel will call from the EFI stub (before EBS()) to identify
-> > itself as an image that understands unaccepted memory, and knows how
-> > to deal with it?
+> > On Mon, Jun 27, 2022 at 01:54:45PM +0200, Ard Biesheuvel wrote:
+> > > On Mon, 27 Jun 2022 at 13:30, Kirill A. Shutemov
+> > > <kirill.shutemov@linux.intel.com> wrote:
+> > > >
+> > > > On Fri, Jun 24, 2022 at 10:37:10AM -0600, Peter Gonda wrote:
+> > > > > On Tue, Jun 14, 2022 at 6:03 AM Kirill A. Shutemov
+> > > > > <kirill.shutemov@linux.intel.com> wrote:
+> > > > > >
+> > > > > > UEFI Specification version 2.9 introduces the concept of memory
+> > > > > > acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
+> > > > > > SEV-SNP, requiring memory to be accepted before it can be used by the
+> > > > > > guest. Accepting happens via a protocol specific for the Virtual
+> > > > > > Machine platform.
+> > > > > >
+> > > > > > Accepting memory is costly and it makes VMM allocate memory for the
+> > > > > > accepted guest physical address range. It's better to postpone memory
+> > > > > > acceptance until memory is needed. It lowers boot time and reduces
+> > > > > > memory overhead.
+> > > > > >
+> > > > > > The kernel needs to know what memory has been accepted. Firmware
+> > > > > > communicates this information via memory map: a new memory type --
+> > > > > > EFI_UNACCEPTED_MEMORY -- indicates such memory.
+> > > > > >
+> > > > > > Range-based tracking works fine for firmware, but it gets bulky for
+> > > > > > the kernel: e820 has to be modified on every page acceptance. It leads
+> > > > > > to table fragmentation, but there's a limited number of entries in the
+> > > > > > e820 table
+> > > > > >
+> > > > > > Another option is to mark such memory as usable in e820 and track if the
+> > > > > > range has been accepted in a bitmap. One bit in the bitmap represents
+> > > > > > 2MiB in the address space: one 4k page is enough to track 64GiB or
+> > > > > > physical address space.
+> > > > > >
+> > > > > > In the worst-case scenario -- a huge hole in the middle of the
+> > > > > > address space -- It needs 256MiB to handle 4PiB of the address
+> > > > > > space.
+> > > > > >
+> > > > > > Any unaccepted memory that is not aligned to 2M gets accepted upfront.
+> > > > > >
+> > > > > > The approach lowers boot time substantially. Boot to shell is ~2.5x
+> > > > > > faster for 4G TDX VM and ~4x faster for 64G.
+> > > > > >
+> > > > > > TDX-specific code isolated from the core of unaccepted memory support. It
+> > > > > > supposed to help to plug-in different implementation of unaccepted memory
+> > > > > > such as SEV-SNP.
+> > > > > >
+> > > > > > The tree can be found here:
+> > > > > >
+> > > > > > https://github.com/intel/tdx.git guest-unaccepted-memory
+> > > > >
+> > > > > Hi Kirill,
+> > > > >
+> > > > > I have a couple questions about this feature mainly about how cloud
+> > > > > customers can use this, I assume since this is a confidential compute
+> > > > > feature a large number of the users of these patches will be cloud
+> > > > > customers using TDX and SNP. One issue I see with these patches is how
+> > > > > do we as a cloud provider know whether a customer's linux image
+> > > > > supports this feature, if the image doesn't have these patches UEFI
+> > > > > needs to fully validate the memory, if the image does we can use this
+> > > > > new protocol. In GCE we supply our VMs with a version of the EDK2 FW
+> > > > > and the customer doesn't input into which UEFI we run, as far as I can
+> > > > > tell from the Azure SNP VM documentation it seems very similar. We
+> > > > > need to somehow tell our UEFI in the VM what to do based on the image.
+> > > > > The current way I can see to solve this issue would be to have our
+> > > > > customers give us metadata about their VM's image but this seems kinda
+> > > > > burdensome on our customers (I assume we'll have more features which
+> > > > > both UEFI and kernel need to both support inorder to be turned on like
+> > > > > this one) and error-prone, if a customer incorrectly labels their
+> > > > > image it may fail to boot.. Has there been any discussion about how to
+> > > > > solve this? My naive thoughts were what if UEFI and Kernel had some
+> > > > > sort of feature negotiation. Maybe that could happen via an extension
+> > > > > to exit boot services or a UEFI runtime driver, I'm not sure what's
+> > > > > best here just some ideas.
+> > > >
+> > > > Just as an idea, we can put info into UTS_VERSION which can be read from
+> > > > the built bzImage. We have info on SMP and preeption there already.
+> > > >
+> > >
+> > > Instead of hacking this into the binary, couldn't we define a protocol
+> > > that the kernel will call from the EFI stub (before EBS()) to identify
+> > > itself as an image that understands unaccepted memory, and knows how
+> > > to deal with it?
+> > >
+> > > That way, the firmware can accept all the memory on behalf of the OS
+> > > at ExitBootServices() time, unless the OS has indicated there is no
+> > > need to do so.
 > >
-> > That way, the firmware can accept all the memory on behalf of the OS
-> > at ExitBootServices() time, unless the OS has indicated there is no
-> > need to do so.
+> > I agree it would be better. But I think it would require change to EFI
+> > spec, no?
 >
-> I agree it would be better. But I think it would require change to EFI
-> spec, no?
-
-Could this somehow be amended on to the UEFI Specification version 2.9
-change which added all of the unaccepted memory features?
-
+> Could this somehow be amended on to the UEFI Specification version 2.9
+> change which added all of the unaccepted memory features?
 >
-> --
->  Kirill A. Shutemov
+
+Why would this need a change in the EFI spec? Not every EFI protocol
+needs to be in the spec.
