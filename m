@@ -1,110 +1,190 @@
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07AA7A
-	for <linux-coco@lists.linux.dev>; Tue, 28 Jun 2022 19:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5EB33D6
+	for <linux-coco@lists.linux.dev>; Tue, 28 Jun 2022 23:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656443084; x=1687979084;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=N1AIQgmubreattzHLRnM0HT3Yc8fAoLHRwgDBlBS8LA=;
-  b=VHS+RJwDI+KcZ9uXXLcKfjF8faaFRG/l0XQvsCaWXKwlW1x5ZaY0iH2v
-   NNh6KGSIr+W7CVP6Fmnx13j4jcHiqkpkv5M6brC2VSNCLYt8CTibCi0x4
-   CiYiFyJrEhIKy/mhdnt097oeht0B1aMYnewAp7p/fMR59QwOml/YmZdsq
-   VkXAJQR/UrO9KlFEr+qJe7rsreBLBt3iuZltfYq2+xm3rNer4rbsFJ4gZ
-   QV5jJfaO3Op8d2+jCpIJxf7tK+RHyneutpVp0TU77jnC3bA22YDAJnNsj
-   sihrkprmfclvi8V00y20UQ9eaoW9NlGegolkPFJ9miuncpmKIj5UEHSt1
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10392"; a="264865522"
-X-IronPort-AV: E=Sophos;i="5.92,229,1650956400"; 
-   d="scan'208";a="264865522"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 12:04:44 -0700
-X-IronPort-AV: E=Sophos;i="5.92,229,1650956400"; 
-   d="scan'208";a="587977804"
-Received: from staibmic-mobl1.amr.corp.intel.com (HELO [10.209.67.166]) ([10.209.67.166])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 12:04:43 -0700
-Message-ID: <33e38ba3-0865-8a9f-0739-af25a63d0beb@intel.com>
-Date: Tue, 28 Jun 2022 12:03:38 -0700
+  t=1656460267; x=1687996267;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dI3HshvmacGZNIxLwiGqhbPCAPM3w/IVmJ97bcAXWCk=;
+  b=hhjVFAynyHs9OpKy+aVFKi2I3K3ni/ar5bQhJP9UuCcz9l3J3BfpElNz
+   lKv1EKUX2x+/a73+6gZAC+a6AsIgwTR3maTO/oCPvud7nwsQSX6pyqgxA
+   IlBUfZvu65JCSb5iGnqQhefc04RI1zVc77FMXljvPhk1tZYuDsEXltKbY
+   S8VZQLARDcJzDjHvDSf+NMbFdumF2xxymFcrvsJrtIjYrqzfPNOFv8bYJ
+   uo6+58jdxFaO5mJV7BcogMDLAo/YHi2iswD2T74tyaKNJAhddoHCb8f0P
+   FQd4EbRvpnggXvGoJ5kN5CopNQqbZ+dXkzKROcMjVgRk03BsJnAx/Q/3a
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10392"; a="280639818"
+X-IronPort-AV: E=Sophos;i="5.92,230,1650956400"; 
+   d="scan'208";a="280639818"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 16:51:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,230,1650956400"; 
+   d="scan'208";a="617363723"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga008.jf.intel.com with ESMTP; 28 Jun 2022 16:50:59 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 95514CE; Wed, 29 Jun 2022 02:51:05 +0300 (EEST)
+Date: Wed, 29 Jun 2022 02:51:05 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com, khalid.elmously@canonical.com,
+	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kexec@lists.infradead.org
+Subject: Re: [PATCHv7 11/14] x86: Disable kexec if system has unaccepted
+ memory
+Message-ID: <20220628235105.z6ytdzxofrdkjti4@black.fi.intel.com>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-12-kirill.shutemov@linux.intel.com>
+ <6be29d38-5c93-7cc9-0de7-235d3f83773c@intel.com>
+ <87a6a3aw50.fsf@email.froward.int.ebiederm.org>
+ <20220624020005.txpxlsbjbebf6oq4@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH Part2 v6 06/49] x86/sev: Add helper functions for
- RMPUPDATE and PSMASH instruction
-Content-Language: en-US
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc: "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "mingo@redhat.com" <mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
- "Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "hpa@zytor.com"
- <hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "jmattson@google.com" <jmattson@google.com>,
- "luto@kernel.org" <luto@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "slp@redhat.com" <slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
- "rientjes@google.com" <rientjes@google.com>,
- "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
- "tobin@ibm.com" <tobin@ibm.com>, "bp@alien8.de" <bp@alien8.de>,
- "Roth, Michael" <Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
- "kirill@shutemov.name" <kirill@shutemov.name>,
- "ak@linux.intel.com" <ak@linux.intel.com>,
- "tony.luck@intel.com" <tony.luck@intel.com>,
- "marcorr@google.com" <marcorr@google.com>,
- "sathyanarayanan.kuppuswamy@linux.intel.com"
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "alpergun@google.com" <alpergun@google.com>,
- "jarkko@kernel.org" <jarkko@kernel.org>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <e4643e9d37fcb025d0aec9080feefaae5e9245d5.1655761627.git.ashish.kalra@amd.com>
- <YrH0ca3Sam7Ru11c@work-vm>
- <SN6PR12MB2767FBF0848B906B9F0284D28EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
- <BYAPR12MB2759910E715C69D1027CCE678EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <Yrrc/6x70wa14c5t@work-vm>
- <SN6PR12MB27677062FBBF9D62C7BF41D88EB89@SN6PR12MB2767.namprd12.prod.outlook.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <SN6PR12MB27677062FBBF9D62C7BF41D88EB89@SN6PR12MB2767.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220624020005.txpxlsbjbebf6oq4@black.fi.intel.com>
 
-On 6/28/22 10:57, Kalra, Ashish wrote:
-> +       /*
-> +        * RMP table entry format is not architectural and it can vary by processor and
-> +        * is defined by the per-processor PPR. Restrict SNP support on the known CPU
-> +        * model and family for which the RMP table entry format is currently defined for.
-> +        */
-> +       if (family != 0x19 || model > 0xaf)
-> +               goto nosnp;
-> +
+On Fri, Jun 24, 2022 at 05:00:05AM +0300, Kirill A. Shutemov wrote:
+> > If there is some deep and fundamental why this can not be supported
+> > then it probably makes sense to put some code in the arch_kexec_load
+> > hook that verifies that deep and fundamental reason is present.
 > 
-> This way SNP will only be enabled specifically on the platforms for which this RMP entry
-> format is defined in those processor's PPR. This will work for Milan and Genoa as of now.
+> Sounds straight-forward. I can do this.
 
-At some point, it would be really nice if the AMD side of things could
-work to kick the magic number habit on these things.  This:
+What about the patch below?
 
-	arch/x86/include/asm/intel-family.h
+From 0b758600e1eef5525f2a46630ab3559f118a272a Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Tue, 10 May 2022 19:02:18 +0300
+Subject: [PATCH] x86: Disable kexec if system has unaccepted memory
 
-has been really handy.  It lets you do things like
+On kexec, the target kernel has to know what memory has been accepted.
+Information in EFI map is out of date and cannot be used.
 
-	grep INTEL_FAM6_SKYLAKE arch/x86
+boot_params.unaccepted_memory can be used to pass the bitmap between two
+kernels on kexec, but the use-case is not yet implemented.
 
-That's a *LOT* more precise than:
+Disable kexec on machines with unaccepted memory for now.
 
-	egrep -i '0x5E|94' arch/x86
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/mm/unaccepted_memory.c | 16 ++++++++++++++++
+ include/linux/kexec.h           |  2 ++
+ kernel/kexec.c                  |  4 ++++
+ kernel/kexec_core.c             |  5 +++++
+ kernel/kexec_file.c             |  4 ++++
+ 5 files changed, 31 insertions(+)
+
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+index 566c3a72aee8..529c3fd1dab3 100644
+--- a/arch/x86/mm/unaccepted_memory.c
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++#include <linux/kexec.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+@@ -98,3 +99,18 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
+ 
+ 	return ret;
+ }
++
++#ifdef CONFIG_KEXEC_CORE
++int arch_kexec_load(void)
++{
++	if (!boot_params.unaccepted_memory)
++		return 0;
++
++	/*
++	 * TODO: Information on memory acceptance status has to be communicated
++	 * between kernel.
++	 */
++	pr_warn_once("Disable kexec: not yet supported on systems with unaccepted memory\n");
++	return -EOPNOTSUPP;
++}
++#endif
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index ce6536f1d269..dfd9493d0b4b 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -396,6 +396,8 @@ void crash_free_reserved_phys_range(unsigned long begin, unsigned long end);
+ void arch_kexec_protect_crashkres(void);
+ void arch_kexec_unprotect_crashkres(void);
+ 
++int arch_kexec_load(void);
++
+ #ifndef page_to_boot_pfn
+ static inline unsigned long page_to_boot_pfn(struct page *page)
+ {
+diff --git a/kernel/kexec.c b/kernel/kexec.c
+index b5e40f069768..352b3742f07a 100644
+--- a/kernel/kexec.c
++++ b/kernel/kexec.c
+@@ -195,6 +195,10 @@ static inline int kexec_load_check(unsigned long nr_segments,
+ {
+ 	int result;
+ 
++	result = arch_kexec_load();
++	if (result)
++		return result;
++
+ 	/* We only trust the superuser with rebooting the system. */
+ 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
+ 		return -EPERM;
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index 4d34c78334ce..4d51b9271f6b 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -1238,3 +1238,8 @@ void __weak arch_kexec_protect_crashkres(void)
+ 
+ void __weak arch_kexec_unprotect_crashkres(void)
+ {}
++
++int __weak arch_kexec_load(void)
++{
++	return 0;
++}
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 145321a5e798..d531df94ffbb 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -324,6 +324,10 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, int, initrd_fd,
+ 	int ret = 0, i;
+ 	struct kimage **dest_image, *image;
+ 
++	ret = arch_kexec_load();
++	if (ret)
++		return ret;
++
+ 	/* We only trust the superuser with rebooting the system. */
+ 	if (!capable(CAP_SYS_BOOT) || kexec_load_disabled)
+ 		return -EPERM;
+-- 
+ Kirill A. Shutemov
