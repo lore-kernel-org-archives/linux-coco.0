@@ -1,44 +1,63 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA8910E8
-	for <linux-coco@lists.linux.dev>; Fri,  1 Jul 2022 10:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811873C14
+	for <linux-coco@lists.linux.dev>; Fri,  1 Jul 2022 16:51:23 +0000 (UTC)
 Received: from zn.tnic (p200300ea970ff648329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:970f:f648:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 856321EC059D;
-	Fri,  1 Jul 2022 12:42:39 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 43EFA1EC064A;
+	Fri,  1 Jul 2022 18:51:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1656672159;
+	t=1656694277;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=SWhCxOJUAdsvqOpxyv8QTMa/YznelRxtMa+3KCBAmCU=;
-	b=VfMj79baSekma4xFxVrkmV7L+rj6Z2maopnfrFmPEjLleGOALxaW+uTtB/VaB/rc6JrFGe
-	QSa+TzpouUp17YdzBr1v5gYQ4aUh8yCBG2g5HBWefZ4qFd+8Jf7s7Vy21LRImaayFJasOj
-	mDBhXy2Dcy9SCUdJdWZpwx/+FjBmdwc=
-Date: Fri, 1 Jul 2022 12:42:35 +0200
+	bh=LsRagpxJ0d6m6LED7HHfWRzzrUzw8aGp7k8R8oF5VaQ=;
+	b=kVgbaLHTIsuv3Te5Rsh4ZkmUq+hTiJvlWYa0pGnkSJ1yBJNazGmA2MlsU8d0LXoBgXZDOs
+	BK/Mwzu4AfZefSG/tFTr/kXyg/+2uZlvmUlaGKGG9Ycsc+noYabQkfcWzq5iRgMug9P5/h
+	w9QwkfALpCmGSrcjBNsjLmOwQ/3hJ1w=
+Date: Fri, 1 Jul 2022 18:51:13 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+To: Sean Christopherson <seanjc@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
 	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, michael.roth@amd.com,
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 02/49] iommu/amd: Introduce function to check
- SEV-SNP support
-Message-ID: <Yr7Pm/E9WsAjirV0@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <12df64394b1788156c8a3c2ee8dfd62b51ab3a81.1655761627.git.ashish.kalra@amd.com>
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>,
+	Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: Re: [PATCH v12 19/46] x86/kernel: Make the .bss..decrypted section
+ shared in RMP table
+Message-ID: <Yr8mARnQT+VZK0iy@zn.tnic>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com>
+ <20220307213356.2797205-20-brijesh.singh@amd.com>
+ <YqfabnTRxFSM+LoX@google.com>
+ <YqistMvngNKEJu2o@google.com>
+ <daaf7a84-4204-48ca-e40c-7ba296b4789c@amd.com>
+ <YqizrTCk460kov/X@google.com>
+ <6db51d45-e17a-38dd-131d-e43132c55dfb@amd.com>
+ <Yqjm/b3deMlxxePh@google.com>
+ <9abe9a71-242d-91d5-444a-b56c8b9b6d90@amd.com>
+ <YqtdIf7OSivLxFL0@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -47,40 +66,32 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <12df64394b1788156c8a3c2ee8dfd62b51ab3a81.1655761627.git.ashish.kalra@amd.com>
+In-Reply-To: <YqtdIf7OSivLxFL0@google.com>
 
-On Mon, Jun 20, 2022 at 10:59:19PM +0000, Ashish Kalra wrote:
-> +bool iommu_sev_snp_supported(void)
-> +{
-> +	struct amd_iommu *iommu;
-> +
-> +	/*
-> +	 * The SEV-SNP support requires that IOMMU must be enabled, and is
-> +	 * not configured in the passthrough mode.
-> +	 */
-> +	if (no_iommu || iommu_default_passthrough()) {
-> +		pr_err("SEV-SNP: IOMMU is either disabled or configured in passthrough mode.\n");
-> +		return false;
-> +	}
-> +
-> +	/*
-> +	 * Iterate through all the IOMMUs and verify the SNPSup feature is
-> +	 * enabled.
-> +	 */
-> +	for_each_iommu(iommu) {
-> +		if (!iommu_feature(iommu, FEATURE_SNP)) {
-> +			pr_err("SNPSup is disabled (devid: %02x:%02x.%x)\n",
-> +			       PCI_BUS_NUM(iommu->devid), PCI_SLOT(iommu->devid),
-> +			       PCI_FUNC(iommu->devid));
-> +			return false;
-> +		}
-> +	}
-> +
-> +	return true;
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_sev_snp_supported);
+On Thu, Jun 16, 2022 at 04:41:05PM +0000, Sean Christopherson wrote:
+> > I worry that another use of cc_platform_has() could creep in at some point
+> > and cause the same issue. Not sure how bad it would be, performance-wise, to
+> > remove the jump table optimization for arch/x86/coco/core.c.
 
-Why is this function exported?
+Is there a gcc switch for that?
+
+> One thought would be to initialize "vendor" to a bogus value, disallow calls to
+> cc_set_vendor() until after the kernel as gotten to a safe point, and then WARN
+> (or panic?) if cc_platform_has() is called before "vendor" is explicitly set.
+> New calls can still get in, but they'll be much easier to detect and less likely
+> to escape initial testing.
+
+The invalid vendor thing makes sense but I don't think it'll help in
+this case.
+
+We set vendor in sme_enable() which comes before the
+
+__startup_64 -> sme_postprocess_startup
+
+path you're hitting.
+
+We could do only the aspect of checking whether it hasn't been set yet
+and warn then, in order to make the usage more robust...
 
 -- 
 Regards/Gruss,
