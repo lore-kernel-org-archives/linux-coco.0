@@ -1,100 +1,114 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811873C14
-	for <linux-coco@lists.linux.dev>; Fri,  1 Jul 2022 16:51:23 +0000 (UTC)
-Received: from zn.tnic (p200300ea970ff648329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:970f:f648:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 43EFA1EC064A;
-	Fri,  1 Jul 2022 18:51:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1656694277;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE8B15A3
+	for <linux-coco@lists.linux.dev>; Mon,  4 Jul 2022 07:19:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1656919177;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=LsRagpxJ0d6m6LED7HHfWRzzrUzw8aGp7k8R8oF5VaQ=;
-	b=kVgbaLHTIsuv3Te5Rsh4ZkmUq+hTiJvlWYa0pGnkSJ1yBJNazGmA2MlsU8d0LXoBgXZDOs
-	BK/Mwzu4AfZefSG/tFTr/kXyg/+2uZlvmUlaGKGG9Ycsc+noYabQkfcWzq5iRgMug9P5/h
-	w9QwkfALpCmGSrcjBNsjLmOwQ/3hJ1w=
-Date: Fri, 1 Jul 2022 18:51:13 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>,
-	brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Subject: Re: [PATCH v12 19/46] x86/kernel: Make the .bss..decrypted section
- shared in RMP table
-Message-ID: <Yr8mARnQT+VZK0iy@zn.tnic>
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-20-brijesh.singh@amd.com>
- <YqfabnTRxFSM+LoX@google.com>
- <YqistMvngNKEJu2o@google.com>
- <daaf7a84-4204-48ca-e40c-7ba296b4789c@amd.com>
- <YqizrTCk460kov/X@google.com>
- <6db51d45-e17a-38dd-131d-e43132c55dfb@amd.com>
- <Yqjm/b3deMlxxePh@google.com>
- <9abe9a71-242d-91d5-444a-b56c8b9b6d90@amd.com>
- <YqtdIf7OSivLxFL0@google.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=XZvdib+oo3lvrA14EYB6RpofmfTNnpFnXxq1/Do0txY=;
+	b=b3tKUYRoybgZvcPSOfu9ibl01Ps/XINtxhxJMVESc/J/w6okkl891HLjD07k66rRDoJhPP
+	tojbc0f9qeCLN0W0P/FzcmslMsNjYBKgAOZSHOZ/kj9UTrfqUKDmjSedq+gbu5KHXk0ChZ
+	2kkAYMa+8Hs/1CjkyEoX027dxv7YmMQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-298-dU2GBFZcNmWoVtHJbU3CVQ-1; Mon, 04 Jul 2022 03:19:06 -0400
+X-MC-Unique: dU2GBFZcNmWoVtHJbU3CVQ-1
+Received: by mail-wm1-f69.google.com with SMTP id i5-20020a1c3b05000000b003a02b027e53so6984838wma.7
+        for <linux-coco@lists.linux.dev>; Mon, 04 Jul 2022 00:19:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XZvdib+oo3lvrA14EYB6RpofmfTNnpFnXxq1/Do0txY=;
+        b=UDDPpWkDGlCIQdsxVlHST6l2MUpLmELXCoqeBic9wkWmf1GuPRYrQk/FXOUJxc4iq4
+         /j6r3oV8FTFRaGuo2RQxadfVype1G/gJGXlkr+mlI3p6ZS+7TsEIH/TaxCqpua5UMrgZ
+         7pmBdyy8ClDOizyL1J/okDmNL8bg6wP+fO6KFp/Sh1yGLWRN/bQ5n3bqbr3Z+0vbg+rL
+         lunSasfM5KyzSGdQhNTFfgqAucBOON5ONkj/XeFJRUXKfA8fylSLxtDuuP/gkcsyJ5D+
+         KEMJ/eE2QzELPoKbjM81L21kge8WDVRMgOtXU5+WOm4xwAlraU5WAZxKTZQLbqZ6K5dM
+         FE6g==
+X-Gm-Message-State: AJIora8hSo7cmGTFPuMYg9Vr6f2Ge7EqLXmdQiBFfYLYF0bVL5UX5msW
+	qR07Nnf8ZWpiC+8g3ll1TzanCt9n1p8goaouzd2Dy2hxy62I6z+BWyNotAYWOBWMAACuZKRKddJ
+	0t0uY/q5y2zcXhPVRF0yBqllXAHLKYGWxQbO82g==
+X-Received: by 2002:a7b:cd08:0:b0:3a0:37f9:6e5d with SMTP id f8-20020a7bcd08000000b003a037f96e5dmr29297872wmj.167.1656919145687;
+        Mon, 04 Jul 2022 00:19:05 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1tkdZbo2UPOn3erwRwVBiaO/vhxvuXgkMCqyD6lyQOAT9BAwU6xS4YUbV77VaB9q2ElZmkyOxqjB6Wsp4Bc8ZM=
+X-Received: by 2002:a7b:cd08:0:b0:3a0:37f9:6e5d with SMTP id
+ f8-20020a7bcd08000000b003a037f96e5dmr29297854wmj.167.1656919145478; Mon, 04
+ Jul 2022 00:19:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <YqtdIf7OSivLxFL0@google.com>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-12-kirill.shutemov@linux.intel.com> <6be29d38-5c93-7cc9-0de7-235d3f83773c@intel.com>
+ <87a6a3aw50.fsf@email.froward.int.ebiederm.org> <20220624020005.txpxlsbjbebf6oq4@black.fi.intel.com>
+ <20220628235105.z6ytdzxofrdkjti4@black.fi.intel.com> <88fe385c-fe40-d659-5081-7f3cdd9493e4@intel.com>
+ <20220629005915.gieli3dbjzvjbk5i@black.fi.intel.com>
+In-Reply-To: <20220629005915.gieli3dbjzvjbk5i@black.fi.intel.com>
+From: Dave Young <dyoung@redhat.com>
+Date: Mon, 4 Jul 2022 15:18:54 +0800
+Message-ID: <CALu+AoQdEGpecj1wm9U2MpKqPbN5UmFF6+w3JaJSvddeRwf0dw@mail.gmail.com>
+Subject: Re: [PATCHv7 11/14] x86: Disable kexec if system has unaccepted memory
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, "Eric W. Biederman" <ebiederm@xmission.com>, 
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
+	Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>, 
+	Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com, tim.gardner@canonical.com, 
+	khalid.elmously@canonical.com, philip.cox@canonical.com, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, linux-mm@kvack.org, linux-coco@lists.linux.dev, 
+	linux-efi@vger.kernel.org, 
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>, kexec@lists.infradead.org
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=ruyang@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jun 16, 2022 at 04:41:05PM +0000, Sean Christopherson wrote:
-> > I worry that another use of cc_platform_has() could creep in at some point
-> > and cause the same issue. Not sure how bad it would be, performance-wise, to
-> > remove the jump table optimization for arch/x86/coco/core.c.
+On Wed, 29 Jun 2022 at 08:59, Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
+>
+> On Tue, Jun 28, 2022 at 05:10:56PM -0700, Dave Hansen wrote:
+> > On 6/28/22 16:51, Kirill A. Shutemov wrote:
+> > > On Fri, Jun 24, 2022 at 05:00:05AM +0300, Kirill A. Shutemov wrote:
+> > >>> If there is some deep and fundamental why this can not be supported
+> > >>> then it probably makes sense to put some code in the arch_kexec_load
+> > >>> hook that verifies that deep and fundamental reason is present.
+> > ...
+> > > +   /*
+> > > +    * TODO: Information on memory acceptance status has to be communicated
+> > > +    * between kernel.
+> > > +    */
+> >
+> > So, the deep and fundamental reason is... drum roll... you haven't
+> > gotten around to implementing bitmap passing yet?!?!?   I have the
+> > feeling that wasn't what Eric was looking for.
+>
+> The deep fundamental reason is that everything cannot be implemented and
+> upstreamed at once.
 
-Is there a gcc switch for that?
+If the only thing is to pass bitmap to kexec kernel, since you have
+reserved the bitmap memory I guess it is straightforward to set the
+kexec bootparams.unaccepted_memory as the old value.  Not sure if
+there are problems when the decompress code accepts memory again
+though.
+for kernel kexec_file_load, refer to function setup_boot_parameters()
+in arch/x86/kernel/kexec-bzimage64.c for kexec_file_load,
+for kexec-tools kexec_load code refer to
+setup_linux_system_parameters() kexec/arch/i386/x86-linux-setup.c
 
-> One thought would be to initialize "vendor" to a bogus value, disallow calls to
-> cc_set_vendor() until after the kernel as gotten to a safe point, and then WARN
-> (or panic?) if cc_platform_has() is called before "vendor" is explicitly set.
-> New calls can still get in, but they'll be much easier to detect and less likely
-> to escape initial testing.
+Thanks
+Dave
 
-The invalid vendor thing makes sense but I don't think it'll help in
-this case.
-
-We set vendor in sme_enable() which comes before the
-
-__startup_64 -> sme_postprocess_startup
-
-path you're hitting.
-
-We could do only the aspect of checking whether it hasn't been set yet
-and warn then, in order to make the usage more robust...
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
