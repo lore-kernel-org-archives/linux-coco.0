@@ -1,330 +1,215 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2088.outbound.protection.outlook.com [40.107.237.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9457A
-	for <linux-coco@lists.linux.dev>; Mon, 11 Jul 2022 14:05:22 +0000 (UTC)
-Received: by mail-lf1-f53.google.com with SMTP id a9so8851101lfk.11
-        for <linux-coco@lists.linux.dev>; Mon, 11 Jul 2022 07:05:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/q0quOUBTZl2gZ3/jAMDJM6IbzyCJBTglBZNVpNLFAg=;
-        b=OrD3qzvjeeLGTBMraqT2BYvr0yduEBgTKuhSk/E0kxg3vkZv4jX3EyewouXwf6dCCq
-         uAZcyX19ccZNhJbindes8nJi5AREvwTXp/PkgH0V5RLCa4wS04W6iJBQbwc1qikmv6Ta
-         Oz1p8LhqQQO+Py50NrAt8cB689pHX13B3jg5rFLqNz8UpUvIApkpkukZUoeooUYiH5KF
-         hK9vTeGXNomKC2l94M8dS1+yOkcyMfFW19eS4TJwdJ0hHjY5FpX0PrTLl2RXLSq61YEl
-         hPeThgGZKETyFHA8MHZH6KiEG6SLlx/sbWBFsthhH1WHZBM0ngdsToPFTuVlYj2mfk+g
-         CepQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/q0quOUBTZl2gZ3/jAMDJM6IbzyCJBTglBZNVpNLFAg=;
-        b=mCR5fsu1VPLV5BAK3ZvDV8cQcl1mcQ61xrhj0/s0nh1xloNKwLaiQq2Lj0hsSkHkoY
-         gQhEdqVvfapdAqCBXZlDmLvKTU3Mcal6HvA8B8YUbS39NmuZyPUsrfmkvvL03SH7Hm55
-         Ifx2bNVVpTDECbpzCMpuScRKyA+kOVKv5FejMDq+w0vvnt6Cbx5tbi5HsGxItOYAvmad
-         hP15HFOA2bNw8AUM+ljbmcbpxwVVynwXD9p0Bt39UCJV902KNuZDs1N+qLZFXjWp5CDQ
-         5NVrls6OpB+9GpSf82Nv6Onig8Es/KMxNH1yGZ2ufOrL29MTYceeTDE73WRKQ4b/3zGE
-         mZfg==
-X-Gm-Message-State: AJIora+9Uq0DUkpjDJlF/5N1jhVbjHoRGmtGGOyq6hfUbH3roXG2N3Jb
-	kngz2RpHSP06OPEqCEmNkDJx/Lr1PiGZbgfln/VXxw==
-X-Google-Smtp-Source: AGRyM1vr9Y62NuaJJYfkorIddGjcA9PSwfY28vd8Oaa2IQe6aGGNvRjDvJ+WHbbexoWMRT+ZRh4z37GhWYBnUZQ0IZo=
-X-Received: by 2002:a05:6512:32c5:b0:481:1822:c41f with SMTP id
- f5-20020a05651232c500b004811822c41fmr12289097lfg.373.1657548319052; Mon, 11
- Jul 2022 07:05:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1892F29
+	for <linux-coco@lists.linux.dev>; Mon, 11 Jul 2022 22:41:37 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aKE+FMMZKVL6SfmObCAWf3IgnXA7AMhM4dBNtwsoGc2jNExn8xRmzWoAIxYfiMpGZK8hcxV4ZVpQHkfNpsu7zIjP9UUxJaia1afn7IdqticO/MCMvCaE2Vg8v5WfUJaNwvdZHULbb2p/7QG4gbppi5NJVtDjMC+qrQATcAMYl8NqpdJ2COZDuoRzXCkuMpknCeg18o8diY1qssQA4bDHn+5eRea+BSYtQ//pC2bIj3cTS8hUDsFlnE3QA1uoNOhk9AL7GBfrAcBC/p/cwjXArs7qWsWcTO+qokl8OUnDS0tBgmmfXlYoV60TgPJiKjTQk5VlNST/CyOW+B1yzfmzPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OtVpm/MxpE14sKaaNhhD1KQzVZFTzeDA+mZMpl/ND3k=;
+ b=DB0Fz3iWszSMc2umwhzyw2XUaDXvy5hL+E+4XWhfi0gGYr+bIHzg59RdOH27FElSiUb5efH36zx3f4Pnlw6hZqz8OJqOy+NT8YTw7gsWgqLYEzVPKWAv7wU7iP5GCUs231Kzk1+dGMP33RIPY9ReLJjeNUvBe6sw1w+u3Mgmd6Gf+mLEBHP1yuacIcY8ecVFVf9mn8txQ2N1PBdW0o8N8okVUegt35rP81BuWW/tuKZkWvlPfddNfolJ3EpBEg1bR8q13H0jvCuJahdN7KOpRf+IoMt5+6jndEfwdSIcIzRT3/9iVpucSrbVQVcGCy7SHzM41Ong7mGk6k8EzW3m6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OtVpm/MxpE14sKaaNhhD1KQzVZFTzeDA+mZMpl/ND3k=;
+ b=YyRaEKwW1unGr279ht9YRif3X3R7FQF9xYbU6XvMgR2C5IojZQKzHh2XLRc44nlQn6vFIJ4uyY6jEI0oTSI2g8oj+6jU/vWT8pQgSOYJ0SUIwExBKQhCp2i6S7HM9573oy4Y/e4OWD8MC5VzI9P4V2w6hGfiOZK/Ddo/2bsGYvk=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by BN9PR12MB5209.namprd12.prod.outlook.com (2603:10b6:408:11a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5417.20; Mon, 11 Jul
+ 2022 22:41:35 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d%7]) with mapi id 15.20.5417.016; Mon, 11 Jul 2022
+ 22:41:35 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Peter Gonda <pgonda@google.com>
+CC: the arch/x86 maintainers <x86@kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Linux Memory
+ Management List <linux-mm@kvack.org>, Linux Crypto Mailing List
+	<linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, "Lendacky, Thomas"
+	<Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel
+	<ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson
+	<jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, Peter Zijlstra
+	<peterz@infradead.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>, "Roth, Michael" <Michael.Roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, Tony Luck
+	<tony.luck@intel.com>, Marc Orr <marcorr@google.com>, Sathyanarayanan
+ Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Alper Gun
+	<alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: RE: [PATCH Part2 v6 28/49] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH
+ command
+Thread-Topic: [PATCH Part2 v6 28/49] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH
+ command
+Thread-Index: AQHYlS9F8Lv7wrs5NE6SmQ1dqRz5cK15oJ+w
+Date: Mon, 11 Jul 2022 22:41:35 +0000
+Message-ID:
+ <SN6PR12MB27672AA31E96179256235C338E879@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
+ <CAMkAt6obGwyiJh7J34Vt8tC+XXMNm8YPrv4gV=TVoF2Xga5GjQ@mail.gmail.com>
+In-Reply-To:
+ <CAMkAt6obGwyiJh7J34Vt8tC+XXMNm8YPrv4gV=TVoF2Xga5GjQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-07-11T20:33:37Z;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=c4c7b04a-7635-4db7-927f-1c57d5cc5f3a;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-07-11T22:41:33Z
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
+ 2d22016b-3d85-4fea-9347-ae5b8e6bb5f8
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 70541fe2-f9bf-44e9-ac3b-08da638e8278
+x-ms-traffictypediagnostic: BN9PR12MB5209:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ HMmjAVTGVvXuJviqe0bzYQvwG9wg5hcKNnVYVDuc3kpXbAOUVHe7fScTeQM2lhUeCUe/jVnjJIIw+ghVONuR/cv0pRfbqxtQR/6/jfpIsFKhIf4B4+yjgbbts/zI5EkAZVrVybsoFlc+hewuSZmvo7pwyvZDNfTqbEtLh6ulMq/UlOqbid2Lf1G1ga40n2iyYmnG5bQnHdpa8TXAsvUahvCSzvbOiGjcT1wbpsbSb2sg/93WKGqyoLVprm0E9yvTGtACxANaKdpJukL6OqVfLeVGMhiLLDduu+7v3F/xSdt4IJR0vyCHs4e2IaYWGWGHxYBMTQg23tLUkEJJz4AZWYF4oV29HSrnfPzLf29gXFEP17kato+JTmUbuZwiXPiotQhf4n7YU9n24hQxs4WSUyT+RUN8wvEzNQ+pmcbozKKS4zgoEKKdI1Ovr56ah2Xw6dmaxH8Sz/G3haD0sCwaKZU3xIvTnU8alTqGnKeI+LWz+RpCplm/+Q3A6DPiwcPBwqqQJSMrgRLte0xE7FkKR0ZGnAJUYIf37kwOT/B59sIDSHkVnhOERGmMOXeH1omqCX0Kf84196by74kG5iYm+OFz4CEhIeXUZIdqv0NDibczzO51y7BfKM1lKo/jJ9Top1pThXYM7wTNzUT7C7lMLMptbnsIWYOjhIo9AA+11FWRnNfUHRrViNl5qhxb+LDDYpb4BMDwphaOGESoJryf+D2jBCnfpXhgKZjHLxgUqOasYkY33MUxfbCd2LN6x6qNa8BcQiECUJTIRUXNXv2Ui8u68EW35Ye0u4OaCQjWz94wchqsdYVAvgxlGmMaYz4q
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(346002)(39860400002)(366004)(136003)(396003)(6506007)(7696005)(54906003)(9686003)(8936002)(26005)(41300700001)(76116006)(83380400001)(5660300002)(71200400001)(7416002)(64756008)(66476007)(316002)(66946007)(66556008)(186003)(2906002)(52536014)(7406005)(6916009)(4326008)(38070700005)(55016003)(8676002)(66446008)(86362001)(38100700002)(478600001)(33656002)(122000001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?NXJOYkltbUhUUmprMXBvbnJZaWRnOHJ5S21RSXltRnVDdkN2TFNVSDlwL01O?=
+ =?utf-8?B?cWZxMVgvV0N5Nk1BUEY3OEtoakxXU0ltVmRGQkcrd1BRVjc5cE9kbUNOdjJZ?=
+ =?utf-8?B?N0hDc3R5SXRvUlhoTmhDbXM0N09ETEpZWGExeTVIOFExQnFuNHdTL3VuWCtU?=
+ =?utf-8?B?aUdyemk2QTFKZENjcHZtUVhnL2dxS01NYWFQcms5S1pRYUIvUUpQakZ5d3dQ?=
+ =?utf-8?B?TmVKeU1EUjhocko0TU15YkFDSll0OHFyU2dsU0d5cTBodXFwdi9JL1AwMnZ6?=
+ =?utf-8?B?aEcyUEV2cU82cDRFd3B1TUVEZi95S2FCdW9rN0s2eVpFUTU2RVYxNFNjRFlZ?=
+ =?utf-8?B?UGp0aEhKRWNPRjlOSkREcVJLZ043MDJ2TTN2VkM3azBRZ0g2emMrMUR5UWFM?=
+ =?utf-8?B?TTZlL3pmbDg5ZTdvcENZY1pVVEtlZUt1dFNGSVRpVjBDWVZLYnNxNUU3ejF2?=
+ =?utf-8?B?MWlvNzVrc3lRbzhwdEhrYlNZaldsYnZsandpUVhPaUwvOW8wK2xmWDZaOHFy?=
+ =?utf-8?B?aGZuNFJlOGFCeWQwbDIrMXNZOVoweEdkellsV2d5aTN5MlJqb0VGR3BVU2hN?=
+ =?utf-8?B?V1RWcVVwSDJnVG9WSDJjTzNVVFRxZGhhdDVuVUF5eWVqRHhmanNqblBobG1m?=
+ =?utf-8?B?S2JyS3E3YlE0L3FnRlp1S0NYVFd3MjlCWXliNWxpandnUzhyeXgzRS8vR1lu?=
+ =?utf-8?B?RW5CS25pVzlZNWEvS0hEcWZscmdHQndzTytDbURHdTh0TVRDcG03Umg4NWFk?=
+ =?utf-8?B?bUNJajljb21ub2hFYm1IUFdqZytZVlYwZ0RhYUFrOVRRS0dOUHdkdWxaOGdp?=
+ =?utf-8?B?b1dlZndUN2Nhd0xiMWF6T3YvWmUvd3hKY2x6eFBPU3NYWGVuRkk1ZHRvQy9h?=
+ =?utf-8?B?ZG9JTkJWRitmYVBKTEdwMENsNXZ1aGVaMWxiZVEyVFpzRWVpeHR2Q1lGTEwr?=
+ =?utf-8?B?ZldQZlM0eTZFYnExbXhmWkJFREFQN3NKV3VZc2hFelVIU0FLbDRNV2tvek9a?=
+ =?utf-8?B?N2FLNG9XQWNJR1ZyMXNpNXQ4VTZCVHNDSWE5eVRoU0VuTnF6M2hFZnJtRVIv?=
+ =?utf-8?B?eWZhYXNNR1kvRkdmb28vWWRiRlh0U1B0Q0FYNEJPOEVNTTNsWDgycVRWWC9S?=
+ =?utf-8?B?Zm45Vk1KcmZrZ3BsV3RhR3dMUy8veVZlc0hEMFBRSDg2ajVFdU1DYjhDQTVW?=
+ =?utf-8?B?UU5Zb0VUQmJ1ZjlodjhQN0FjMkhlQXVpWDlTRE5CaU9VMnQzUVMxQnU5Y3NQ?=
+ =?utf-8?B?L3UvM09zVkFTVnNTYzlBZ20rVlEzOW9wWjl4UWR5RzJRUXlPN3ZneDlKM0h4?=
+ =?utf-8?B?L3FCU1hkT0ZqbDVjNk1DT2Q4dWNrNGhaSEt0Zm1UYUxnT0dHYnVBVGtKY2tF?=
+ =?utf-8?B?MW13UFRvdHBaREhLdFhBNkJvUmtZZWZyNmFvRWR1R3VUanM0RGU3dmpsdzFy?=
+ =?utf-8?B?d3dZV2JuYzJ3dmZyTUwxNmtpd0hJM0NDZ2lFWFdPb1BIVlF5QWtOSHhHcWI5?=
+ =?utf-8?B?TWQ2czNSQjdXd0xHNnhEYUQ0UTBsWW54a2FLMXkxS3gzcHlySDlwNTRGNGwy?=
+ =?utf-8?B?TDZaa0laUFJkSmxPSFF3U3cvRFF0aWJQamZBemxpenlTVmtTVUtDbFh3WWdS?=
+ =?utf-8?B?dGNWTGsyaUZkSFBFZStHTVFyOW45VE5JNXdjRUVvajhKOSs1TDVjL1ZCdzBk?=
+ =?utf-8?B?dGoyWVMyYW9PZGJDQlNaWkRDdEtiMmFlQjN4Q01kVmtFS1l6dGZsNzlld2RS?=
+ =?utf-8?B?QjdVSnQ5aXBoTFNWOWR5S0NIOWY1dnFZbTUvYVVQU3pac0Ruc0RSRTlFaTF1?=
+ =?utf-8?B?bDhjTlhMcnVsRjZrTVVaSnl3eEVSK0lGVTBtd05hczlkOGt3UUlaZjk5Sk5T?=
+ =?utf-8?B?bWEzOWh2NjUyd2FzelpLQXJuUmtaSk1iMVVVakl2c242a05JTldhOHJrZW9p?=
+ =?utf-8?B?Nnk3eldoWlZEMlBmVlg0eWJTTmgzdit5d0R1RXVmVndxQmZqc3dHOWhEdEo3?=
+ =?utf-8?B?K3IyTVhWRlJ1M2FvUGdTMThTajAwVVRiMGhjOXRoa0ViS3EvWTE0NWlncWhj?=
+ =?utf-8?B?d1MwSWNWWnIvY3lRZitlMk0xR1B1WUFNOVpnT2ZIcytVVWVGRlRoTmluRHhK?=
+ =?utf-8?Q?fSLw=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1655761627.git.ashish.kalra@amd.com> <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
-In-Reply-To: <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Mon, 11 Jul 2022 08:05:07 -0600
-Message-ID: <CAMkAt6obGwyiJh7J34Vt8tC+XXMNm8YPrv4gV=TVoF2Xga5GjQ@mail.gmail.com>
-Subject: Re: [PATCH Part2 v6 28/49] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH command
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: "the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	"Lendacky, Thomas" <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Alper Gun <alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, jarkko@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70541fe2-f9bf-44e9-ac3b-08da638e8278
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jul 2022 22:41:35.1330
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: u2B8AAgnkaNV2w+5Hjzqmz8SpRBcfrGQtGs+ixnl8KaHG7zN22P5ak2v47WrIK6oi49C88dYMMpWGb3hzZKqtg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5209
 
-On Mon, Jun 20, 2022 at 5:08 PM Ashish Kalra <Ashish.Kalra@amd.com> wrote:
->
-> From: Brijesh Singh <brijesh.singh@amd.com>
->
-> The KVM_SEV_SNP_LAUNCH_FINISH finalize the cryptographic digest and stores
-> it as the measurement of the guest at launch.
->
-> While finalizing the launch flow, it also issues the LAUNCH_UPDATE command
-> to encrypt the VMSA pages.
->
-> If its an SNP guest, then VMSA was added in the RMP entry as
-> a guest owned page and also removed from the kernel direct map
-> so flush it later after it is transitioned back to hypervisor
-> state and restored in the direct map.
-
-Given the guest uses the SNP NAE AP boot protocol we were expecting
-that there would be some option to add vCPUs to the VM but mark them
-as "pending AP boot creation protocol" state. This would allow the
-LaunchDigest of a VM doesn't change just because its vCPU count
-changes. Would it be possible to add a new add an argument to
-KVM_SNP_LAUNCH_FINISH to tell it which vCPUs to LAUNCH_UPDATE VMSA
-pages for or similarly a new argument for KVM_CREATE_VCPU?
-
->
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  .../virt/kvm/x86/amd-memory-encryption.rst    |  22 ++++
->  arch/x86/kvm/svm/sev.c                        | 119 ++++++++++++++++++
->  include/uapi/linux/kvm.h                      |  14 +++
->  3 files changed, 155 insertions(+)
->
-> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> index 62abd5c1f72b..750162cff87b 100644
-> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> @@ -514,6 +514,28 @@ Returns: 0 on success, -negative on error
->  See the SEV-SNP spec for further details on how to build the VMPL permission
->  mask and page type.
->
-> +21. KVM_SNP_LAUNCH_FINISH
-> +-------------------------
-> +
-> +After completion of the SNP guest launch flow, the KVM_SNP_LAUNCH_FINISH command can be
-> +issued to make the guest ready for the execution.
-> +
-> +Parameters (in): struct kvm_sev_snp_launch_finish
-> +
-> +Returns: 0 on success, -negative on error
-> +
-> +::
-> +
-> +        struct kvm_sev_snp_launch_finish {
-> +                __u64 id_block_uaddr;
-> +                __u64 id_auth_uaddr;
-> +                __u8 id_block_en;
-> +                __u8 auth_key_en;
-> +                __u8 host_data[32];
-> +        };
-> +
-> +
-> +See SEV-SNP specification for further details on launch finish input parameters.
->
->  References
->  ==========
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index a9461d352eda..a5b90469683f 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2095,6 +2095,106 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
->         return ret;
->  }
->
-> +static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> +{
-> +       struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +       struct sev_data_snp_launch_update data = {};
-> +       int i, ret;
-> +
-> +       data.gctx_paddr = __psp_pa(sev->snp_context);
-> +       data.page_type = SNP_PAGE_TYPE_VMSA;
-> +
-> +       for (i = 0; i < kvm->created_vcpus; i++) {
-> +               struct vcpu_svm *svm = to_svm(xa_load(&kvm->vcpu_array, i));
-
-Why are we iterating over |created_vcpus| rather than using kvm_for_each_vcpu?
-
-> +               u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
-> +
-> +               /* Perform some pre-encryption checks against the VMSA */
-> +               ret = sev_es_sync_vmsa(svm);
-> +               if (ret)
-> +                       return ret;
-
-Do we need to take the 'vcpu->mutex' lock before modifying the
-vcpu,like we do for SEV-ES in sev_launch_update_vmsa()?
-
-> +
-> +               /* Transition the VMSA page to a firmware state. */
-> +               ret = rmp_make_private(pfn, -1, PG_LEVEL_4K, sev->asid, true);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               /* Issue the SNP command to encrypt the VMSA */
-> +               data.address = __sme_pa(svm->sev_es.vmsa);
-> +               ret = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE,
-> +                                     &data, &argp->error);
-> +               if (ret) {
-> +                       snp_page_reclaim(pfn);
-> +                       return ret;
-> +               }
-> +
-> +               svm->vcpu.arch.guest_state_protected = true;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> +{
-> +       struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +       struct sev_data_snp_launch_finish *data;
-> +       void *id_block = NULL, *id_auth = NULL;
-> +       struct kvm_sev_snp_launch_finish params;
-> +       int ret;
-> +
-> +       if (!sev_snp_guest(kvm))
-> +               return -ENOTTY;
-> +
-> +       if (!sev->snp_context)
-> +               return -EINVAL;
-> +
-> +       if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
-> +               return -EFAULT;
-> +
-> +       /* Measure all vCPUs using LAUNCH_UPDATE before we finalize the launch flow. */
-> +       ret = snp_launch_update_vmsa(kvm, argp);
-> +       if (ret)
-> +               return ret;
-> +
-> +       data = kzalloc(sizeof(*data), GFP_KERNEL_ACCOUNT);
-> +       if (!data)
-> +               return -ENOMEM;
-> +
-> +       if (params.id_block_en) {
-> +               id_block = psp_copy_user_blob(params.id_block_uaddr, KVM_SEV_SNP_ID_BLOCK_SIZE);
-> +               if (IS_ERR(id_block)) {
-> +                       ret = PTR_ERR(id_block);
-> +                       goto e_free;
-> +               }
-> +
-> +               data->id_block_en = 1;
-> +               data->id_block_paddr = __sme_pa(id_block);
-> +       }
-> +
-> +       if (params.auth_key_en) {
-> +               id_auth = psp_copy_user_blob(params.id_auth_uaddr, KVM_SEV_SNP_ID_AUTH_SIZE);
-> +               if (IS_ERR(id_auth)) {
-> +                       ret = PTR_ERR(id_auth);
-> +                       goto e_free_id_block;
-> +               }
-> +
-> +               data->auth_key_en = 1;
-> +               data->id_auth_paddr = __sme_pa(id_auth);
-> +       }
-> +
-> +       data->gctx_paddr = __psp_pa(sev->snp_context);
-> +       ret = sev_issue_cmd(kvm, SEV_CMD_SNP_LAUNCH_FINISH, data, &argp->error);
-> +
-> +       kfree(id_auth);
-> +
-> +e_free_id_block:
-> +       kfree(id_block);
-> +
-> +e_free:
-> +       kfree(data);
-> +
-> +       return ret;
-> +}
-> +
->  int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
->  {
->         struct kvm_sev_cmd sev_cmd;
-> @@ -2191,6 +2291,9 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
->         case KVM_SEV_SNP_LAUNCH_UPDATE:
->                 r = snp_launch_update(kvm, &sev_cmd);
->                 break;
-> +       case KVM_SEV_SNP_LAUNCH_FINISH:
-> +               r = snp_launch_finish(kvm, &sev_cmd);
-> +               break;
->         default:
->                 r = -EINVAL;
->                 goto out;
-> @@ -2696,11 +2799,27 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
->
->         svm = to_svm(vcpu);
->
-> +       /*
-> +        * If its an SNP guest, then VMSA was added in the RMP entry as
-> +        * a guest owned page. Transition the page to hypervisor state
-> +        * before releasing it back to the system.
-> +        * Also the page is removed from the kernel direct map, so flush it
-> +        * later after it is transitioned back to hypervisor state and
-> +        * restored in the direct map.
-> +        */
-> +       if (sev_snp_guest(vcpu->kvm)) {
-> +               u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
-> +
-> +               if (host_rmp_make_shared(pfn, PG_LEVEL_4K, false))
-> +                       goto skip_vmsa_free;
-
-Why not call host_rmp_make_shared with leak==true? This old VMSA page
-is now unusable IIUC.
-
-
-
-> +       }
-> +
->         if (vcpu->arch.guest_state_protected)
->                 sev_flush_encrypted_page(vcpu, svm->sev_es.vmsa);
->
->         __free_page(virt_to_page(svm->sev_es.vmsa));
->
-> +skip_vmsa_free:
->         if (svm->sev_es.ghcb_sa_free)
->                 kvfree(svm->sev_es.ghcb_sa);
->  }
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 9b36b07414ea..5a4662716b6a 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1814,6 +1814,7 @@ enum sev_cmd_id {
->         KVM_SEV_SNP_INIT,
->         KVM_SEV_SNP_LAUNCH_START,
->         KVM_SEV_SNP_LAUNCH_UPDATE,
-> +       KVM_SEV_SNP_LAUNCH_FINISH,
->
->         KVM_SEV_NR_MAX,
->  };
-> @@ -1948,6 +1949,19 @@ struct kvm_sev_snp_launch_update {
->         __u8 vmpl1_perms;
->  };
->
-> +#define KVM_SEV_SNP_ID_BLOCK_SIZE      96
-> +#define KVM_SEV_SNP_ID_AUTH_SIZE       4096
-> +#define KVM_SEV_SNP_FINISH_DATA_SIZE   32
-> +
-> +struct kvm_sev_snp_launch_finish {
-> +       __u64 id_block_uaddr;
-> +       __u64 id_auth_uaddr;
-> +       __u8 id_block_en;
-> +       __u8 auth_key_en;
-> +       __u8 host_data[KVM_SEV_SNP_FINISH_DATA_SIZE];
-> +       __u8 pad[6];
-> +};
-> +
->  #define KVM_DEV_ASSIGN_ENABLE_IOMMU    (1 << 0)
->  #define KVM_DEV_ASSIGN_PCI_2_3         (1 << 1)
->  #define KVM_DEV_ASSIGN_MASK_INTX       (1 << 2)
-> --
-> 2.25.1
->
+W0FNRCBPZmZpY2lhbCBVc2UgT25seSAtIEdlbmVyYWxdDQoNCkhlbGxvIFBldGVyLA0KDQo+PiBU
+aGUgS1ZNX1NFVl9TTlBfTEFVTkNIX0ZJTklTSCBmaW5hbGl6ZSB0aGUgY3J5cHRvZ3JhcGhpYyBk
+aWdlc3QgYW5kIA0KPj4gc3RvcmVzIGl0IGFzIHRoZSBtZWFzdXJlbWVudCBvZiB0aGUgZ3Vlc3Qg
+YXQgbGF1bmNoLg0KPj4NCj4+IFdoaWxlIGZpbmFsaXppbmcgdGhlIGxhdW5jaCBmbG93LCBpdCBh
+bHNvIGlzc3VlcyB0aGUgTEFVTkNIX1VQREFURSANCj4+IGNvbW1hbmQgdG8gZW5jcnlwdCB0aGUg
+Vk1TQSBwYWdlcy4NCg0KPkdpdmVuIHRoZSBndWVzdCB1c2VzIHRoZSBTTlAgTkFFIEFQIGJvb3Qg
+cHJvdG9jb2wgd2Ugd2VyZSBleHBlY3RpbmcgdGhhdCB0aGVyZSB3b3VsZCBiZSBzb21lIG9wdGlv
+biB0byBhZGQgdkNQVXMgdG8gdGhlIFZNIGJ1dCBtYXJrIHRoZW0gYXMgInBlbmRpbmcgQVAgYm9v
+dCBjcmVhdGlvbiBwcm90b2NvbCIgc3RhdGUuIFRoaXMgd291bGQgYWxsb3cgdGhlIExhdW5jaERp
+Z2VzdCBvZiBhIFZNIGRvZXNuJ3QgY2hhbmdlID5qdXN0IGJlY2F1c2UgaXRzIHZDUFUgY291bnQg
+Y2hhbmdlcy4gV291bGQgaXQgYmUgcG9zc2libGUgdG8gYWRkIGEgbmV3IGFkZCBhbiBhcmd1bWVu
+dCB0byBLVk1fU05QX0xBVU5DSF9GSU5JU0ggdG8gdGVsbCBpdCB3aGljaCB2Q1BVcyB0byBMQVVO
+Q0hfVVBEQVRFIFZNU0EgcGFnZXMgZm9yIG9yIHNpbWlsYXJseSBhIG5ldyBhcmd1bWVudCBmb3Ig
+S1ZNX0NSRUFURV9WQ1BVPw0KDQpCdXQgZG9uJ3Qgd2Ugd2FudC9uZWVkIHRvIG1lYXN1cmUgYWxs
+IHZDUFVzIHVzaW5nIExBVU5DSF9VUERBVEVfVk1TQSBiZWZvcmUgd2UgaXNzdWUgU05QX0xBVU5D
+SF9GSU5JU0ggY29tbWFuZCA/DQoNCklmIHdlIGFyZSBnb2luZyB0byBhZGQgdkNQVXMgYW5kIG1h
+cmsgdGhlbSBhcyAicGVuZGluZyBBUCBib290IGNyZWF0aW9uIiBzdGF0ZSB0aGVuIGhvdyBhcmUg
+d2UgZ29pbmcgdG8gZG8gTEFVTkNIX1VQREFURV9WTVNBcyBmb3IgdGhlbSBhZnRlciBTTlBfTEFV
+TkNIX0ZJTklTSCA/DQoNCmludCBzbnBfbGF1bmNoX3VwZGF0ZV92bXNhKHN0cnVjdCBrdm0gKmt2
+bSwgc3RydWN0IGt2bV9zZXZfY21kIA0KPj4gKyphcmdwKSB7DQo+PiArICAgICAgIHN0cnVjdCBr
+dm1fc2V2X2luZm8gKnNldiA9ICZ0b19rdm1fc3ZtKGt2bSktPnNldl9pbmZvOw0KPj4gKyAgICAg
+ICBzdHJ1Y3Qgc2V2X2RhdGFfc25wX2xhdW5jaF91cGRhdGUgZGF0YSA9IHt9Ow0KPj4gKyAgICAg
+ICBpbnQgaSwgcmV0Ow0KPj4gKw0KPj4gKyAgICAgICBkYXRhLmdjdHhfcGFkZHIgPSBfX3BzcF9w
+YShzZXYtPnNucF9jb250ZXh0KTsNCj4+ICsgICAgICAgZGF0YS5wYWdlX3R5cGUgPSBTTlBfUEFH
+RV9UWVBFX1ZNU0E7DQo+PiArDQo+PiArICAgICAgIGZvciAoaSA9IDA7IGkgPCBrdm0tPmNyZWF0
+ZWRfdmNwdXM7IGkrKykgew0KPj4gKyAgICAgICAgICAgICAgIHN0cnVjdCB2Y3B1X3N2bSAqc3Zt
+ID0gDQo+PiArIHRvX3N2bSh4YV9sb2FkKCZrdm0tPnZjcHVfYXJyYXksIGkpKTsNCg0KPiBXaHkg
+YXJlIHdlIGl0ZXJhdGluZyBvdmVyIHxjcmVhdGVkX3ZjcHVzfCByYXRoZXIgdGhhbiB1c2luZyBr
+dm1fZm9yX2VhY2hfdmNwdT8NCg0KWWVzIHdlIHNob3VsZCBiZSB1c2luZyBrdm1fZm9yX2VhY2hf
+dmNwdSgpLCB0aGF0IHdpbGwgYWxzbyBoZWxwIGF2b2lkIHRvdWNoaW5nIGltcGxlbWVudGF0aW9u
+DQpzcGVjaWZpYyBkZXRhaWxzIGFuZCBoaWRlIGNvbXBsZXhpdGllcyBzdWNoIGFzIHhhX2xvYWQo
+KSwgbG9ja2luZyByZXF1aXJlbWVudHMsIGV0Yy4NCg0KQWRkaXRpb25hbGx5LCBrdm1fZm9yX2Vh
+Y2hfdmNwdSgpIHdvcmtzIG9uIG9ubGluZV9jcHVzLCBidXQgSSB0aGluayB0aGF0IGlzIHdoYXQg
+d2Ugc2hvdWxkDQpiZSBjb25zaWRlcmluZyBhdCBMQVVOQ0hfVVBEQVRFX1ZNU0EgdGltZSwgdmlh
+LWEtdmlzIGNyZWF0ZWRfdmNwdXMuDQoNCj4+ICsgICAgICAgICAgICAgICB1NjQgcGZuID0gX19w
+YShzdm0tPnNldl9lcy52bXNhKSA+PiBQQUdFX1NISUZUOw0KPj4gKw0KPj4gKyAgICAgICAgICAg
+ICAgIC8qIFBlcmZvcm0gc29tZSBwcmUtZW5jcnlwdGlvbiBjaGVja3MgYWdhaW5zdCB0aGUgVk1T
+QSAqLw0KPj4gKyAgICAgICAgICAgICAgIHJldCA9IHNldl9lc19zeW5jX3Ztc2Eoc3ZtKTsNCj4+
+ICsgICAgICAgICAgICAgICBpZiAocmV0KQ0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgcmV0
+dXJuIHJldDsNCg0KPkRvIHdlIG5lZWQgdG8gdGFrZSB0aGUgJ3ZjcHUtPm11dGV4JyBsb2NrIGJl
+Zm9yZSBtb2RpZnlpbmcgdGhlIHZjcHUsbGlrZSB3ZSBkbyBmb3IgU0VWLUVTIGluIHNldl9sYXVu
+Y2hfdXBkYXRlX3Ztc2EoKT8NCg0KVGhpcyBpcyB1c2luZyB0aGUgcGVyLWNwdSB2Y3B1X3N2bSBz
+dHJ1Y3R1cmUsICBidXQgd2UgbWF5IG5lZWQgdG8gZ3VhcmQgYWdhaW5zdCB0aGUgS1ZNIHZDUFUg
+aW9jdGwgcmVxdWVzdHMsIHNvIHllcyBpdCBpcw0Kc2FmZXIgdG8gdGFrZSB0aGUgJ3ZjcHUtPm11
+dGV4JyBsb2NrIGhlcmUuIA0KDQo+PiArICAgICAgIC8qDQo+PiArICAgICAgICAqIElmIGl0cyBh
+biBTTlAgZ3Vlc3QsIHRoZW4gVk1TQSB3YXMgYWRkZWQgaW4gdGhlIFJNUCBlbnRyeSBhcw0KPj4g
+KyAgICAgICAgKiBhIGd1ZXN0IG93bmVkIHBhZ2UuIFRyYW5zaXRpb24gdGhlIHBhZ2UgdG8gaHlw
+ZXJ2aXNvciBzdGF0ZQ0KPj4gKyAgICAgICAgKiBiZWZvcmUgcmVsZWFzaW5nIGl0IGJhY2sgdG8g
+dGhlIHN5c3RlbS4NCj4+ICsgICAgICAgICogQWxzbyB0aGUgcGFnZSBpcyByZW1vdmVkIGZyb20g
+dGhlIGtlcm5lbCBkaXJlY3QgbWFwLCBzbyBmbHVzaCBpdA0KPj4gKyAgICAgICAgKiBsYXRlciBh
+ZnRlciBpdCBpcyB0cmFuc2l0aW9uZWQgYmFjayB0byBoeXBlcnZpc29yIHN0YXRlIGFuZA0KPj4g
+KyAgICAgICAgKiByZXN0b3JlZCBpbiB0aGUgZGlyZWN0IG1hcC4NCj4+ICsgICAgICAgICovDQo+
+PiArICAgICAgIGlmIChzZXZfc25wX2d1ZXN0KHZjcHUtPmt2bSkpIHsNCj4+ICsgICAgICAgICAg
+ICAgICB1NjQgcGZuID0gX19wYShzdm0tPnNldl9lcy52bXNhKSA+PiBQQUdFX1NISUZUOw0KPj4g
+Kw0KPj4gKyAgICAgICAgICAgICAgIGlmIChob3N0X3JtcF9tYWtlX3NoYXJlZChwZm4sIFBHX0xF
+VkVMXzRLLCBmYWxzZSkpDQo+PiArICAgICAgICAgICAgICAgICAgICAgICBnb3RvIHNraXBfdm1z
+YV9mcmVlOw0KDQo+V2h5IG5vdCBjYWxsIGhvc3Rfcm1wX21ha2Vfc2hhcmVkIHdpdGggbGVhaz09
+dHJ1ZT8gVGhpcyBvbGQgVk1TQSBwYWdlIGlzIG5vdyB1bnVzYWJsZSBJSVVDLg0KDQpZZXMgdGhl
+IG9sZCBWTVNBIHBhZ2UgaXMgbm93IHVuYXZhaWxhYmxlIGFuZCBsb3N0LCBzbyBtYWtlcyBzZW5z
+ZSB0byBjYWxsIGhvc3Rfcm1wX21ha2Vfc2hhcmVkKCkgd2l0aCBsZWFrPT10cnVlLg0KDQpUaGFu
+a3MsDQpBc2hpc2gNCg==
