@@ -1,138 +1,204 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A7F4414
-	for <linux-coco@lists.linux.dev>; Tue, 12 Jul 2022 16:04:20 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id o7so14696898lfq.9
-        for <linux-coco@lists.linux.dev>; Tue, 12 Jul 2022 09:04:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=c0RcQSLjeYCnLvxH8el7ACbuvLKqs4ymAPhMSssf3fo=;
-        b=rgy8GpGjigNewPkDfawGIyJhs5SthypU/zUHIYssEnhqMMiqNAKc4ezJ19mpUkfSMy
-         nHlnPMccqvaAAhX/ySaXKSzNEJ+RUL0TBhSHaW0HqHGvmgX2wxKuTd+jA0VHIQPZ9QFF
-         a6LEAvMbeWy1+vmRd8d6u+JJ7f13B0rTgQTdohwT7+APFsOdcZJnmvacai86xywgvwxZ
-         kEZYabnYpVeCuAKxSwQRmTLVQyoTaFQAZoagdzVEMYGEcN4G14TusnppOWvHU3N4UMpc
-         t6xNmt5QTEm/TElgI+kc11twOzYFn1L/5P2tE2Iy6Q0EvlpQEc4560MbpDvwkPfROLHC
-         yEdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=c0RcQSLjeYCnLvxH8el7ACbuvLKqs4ymAPhMSssf3fo=;
-        b=7wsd6FjXEFtPGdmUFJcC4CikuaBWnq2r0TQgXrq3I0f36cyhmmgwm4Rp8ckQHD/1aI
-         knVwF7Ou9f0bA4u4CigqBPk/DljmRnTt5Uj/eDA5BayNcGEcSzC44XhHFbvOimeFjcJy
-         7+CEYuAQFtoim7GRHgyOKQjZ5BIfLTzxhUkuk/6Ag6fauEcRFx3idGqGhOn6oCUavc1P
-         nQkWnJaEdSZ76BKKaZ1OOpYVvMs6jRcRiHdEacemWhgLZP5KBFjn6Lya5iFUYbnfmtGD
-         hr6l5f0J0hjNCFqvCjryr8GjHGD+yJIKeQ3XRQgfx/UlfGmcaXMAlnT/P6GxtkAJcPX3
-         uyFw==
-X-Gm-Message-State: AJIora8JTk1Nwt4GTGVrgRgQKH4Qn/qLaLDmklYL7MG61j2iZCv4U7er
-	iVoOQrzzLhc8+ddq/GLl5zZnT45ocQY2dpkq9j+p+A==
-X-Google-Smtp-Source: AGRyM1ve5bKkRgY91JODr6G0KYNj14IUXmUe2XTmEOY9UMxbgvLVrQb6DVioXtQ4vfZSOB7V9pobKh55jgw4lPONCfA=
-X-Received: by 2002:a05:6512:32c5:b0:481:1822:c41f with SMTP id
- f5-20020a05651232c500b004811822c41fmr16158485lfg.373.1657641857910; Tue, 12
- Jul 2022 09:04:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF7D29AD
+	for <linux-coco@lists.linux.dev>; Tue, 12 Jul 2022 16:44:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB16C3411C;
+	Tue, 12 Jul 2022 16:44:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1657644297;
+	bh=A9wVtPl9xSGq+0nbgHMGXdDdz52JColikvRDP/5TqlE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XXX4SivkRl90RB6ZxgtEMS08z8/6YjIM5XA75D7z1E9vNByWl7rCmFp5eVcgVf4Nx
+	 UKBnlg6BV1w9O29ltCPFR/NAby6C/mX8oHYedjNesUTLy6VPIHNXon8JXxKtK5f4K6
+	 fMF9e6tqTy+L0n8cEbTXok+izu3bdKO1Om51m2mqyyW9SmenkxbH9hAqZlVKUp+apk
+	 0WrCii8LqESl3x32sCaiT5f46qfz9/do8S2tCCNH8u8rXj/hsvwZeQXEXkHgoFEFJD
+	 oJj3JRasbFoXgwJM+qQwvqtkD9a9AsjwNSdKwLrkjz1eTSBQZ/PqUs3GHDgpGo+j9T
+	 rah9KjVLyKZaQ==
+Date: Tue, 12 Jul 2022 19:44:54 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	bp@alien8.de, michael.roth@amd.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com
+Subject: Re: [PATCH Part2 v6 29/49] KVM: X86: Keep the NPT and RMP page level
+ in sync
+Message-ID: <Ys2lBp03iuvuvTmG@kernel.org>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <ae4475bc740eb0b9d031a76412b0117339794139.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1655761627.git.ashish.kalra@amd.com> <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
- <CAMkAt6obGwyiJh7J34Vt8tC+XXMNm8YPrv4gV=TVoF2Xga5GjQ@mail.gmail.com>
- <SN6PR12MB27672AA31E96179256235C338E879@SN6PR12MB2767.namprd12.prod.outlook.com>
- <CAMkAt6ryLr6a5iQnwZQT3hqwEpZpb7bn-T8SDY6=5zYs_5NBow@mail.gmail.com> <SN6PR12MB2767D8C552388D438D9F88268E869@SN6PR12MB2767.namprd12.prod.outlook.com>
-In-Reply-To: <SN6PR12MB2767D8C552388D438D9F88268E869@SN6PR12MB2767.namprd12.prod.outlook.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Tue, 12 Jul 2022 10:04:05 -0600
-Message-ID: <CAMkAt6pO3knGsvctewCC1z0K0c5jfgpTzGhB3Ujvc-xCYcEojQ@mail.gmail.com>
-Subject: Re: [PATCH Part2 v6 28/49] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH command
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-Cc: "the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	kvm list <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	"Roth, Michael" <Michael.Roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Alper Gun <alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, 
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae4475bc740eb0b9d031a76412b0117339794139.1655761627.git.ashish.kalra@amd.com>
 
-On Tue, Jul 12, 2022 at 9:22 AM Kalra, Ashish <Ashish.Kalra@amd.com> wrote:
->
-> [AMD Official Use Only - General]
->
-> Hello Peter,
->
-> >> >Given the guest uses the SNP NAE AP boot protocol we were expecting t=
-hat there would be some option to add vCPUs to the VM but mark them as "pen=
-ding AP boot creation protocol" state. This would allow the LaunchDigest of=
- a VM doesn't change >just because its vCPU count changes. Would it be poss=
-ible to add a new add an argument to KVM_SNP_LAUNCH_FINISH to tell it which=
- vCPUs to LAUNCH_UPDATE VMSA pages for or similarly a new argument for KVM_=
-CREATE_VCPU?
-> >>
-> >> But don't we want/need to measure all vCPUs using LAUNCH_UPDATE_VMSA b=
-efore we issue SNP_LAUNCH_FINISH command ?
-> >>
-> >> If we are going to add vCPUs and mark them as "pending AP boot creatio=
-n" state then how are we going to do LAUNCH_UPDATE_VMSAs for them after SNP=
-_LAUNCH_FINISH ?
->
-> >If I understand correctly we don't need or even want the APs to be LAUNC=
-H_UPDATE_VMSA'd. LAUNCH_UPDATEing all the VMSAs causes VMs with different n=
-umbers of vCPUs to have different launch digests. Its my understanding the =
-SNP AP >Creation protocol was to solve this so that VMs with different vcpu=
- counts have the same launch digest.
->
-> >Looking at patch "[Part2,v6,44/49] KVM: SVM: Support SEV-SNP AP Creation=
- NAE event" and section "4.1.9 SNP AP Creation" of the GHCB spec. There is =
-no need to mark the LAUNCH_UPDATE the AP's VMSA or mark the vCPUs runnable.=
- Instead we >can do that only for the BSP. Then in the guest UEFI the BSP c=
-an: create new VMSAs from guest pages, RMPADJUST them into the RMP state VM=
-SA, then use the SNP AP Creation NAE to get the hypervisor to mark them run=
-nable. I believe this is all >setup in the UEFI patch:
-> >https://nam11.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwww.=
-mail-archive.com%2Fdevel%40edk2.groups.io%2Fmsg38460.html&amp;data=3D05%7C0=
-1%7CAshish.Kalra%40amd.com%7Ca40178ac6f284a9e33aa08da64152baa%>7C3dd8961fe4=
-884e608e11a82d994e183d%7C0%7C0%7C637932339382401133%7CUnknown%7CTWFpbGZsb3d=
-8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%=
-7C%7C%7C&amp;sdata=3DZaiHHo9S24f9BB6E%>2FjexOt5TdKJQXxQDJI5QoYdDDHc%3D&amp;=
-reserved=3D0.
->
-> Yes, I discussed the same with Tom, and this will be supported going forw=
-ard, only the BSP will need to go through the LAUNCH_UPDATE_VMSA and at run=
-time the guest can dynamically create more APs using the SNP AP Creation NA=
-E event.
->
-> Now, coming back to the original question, why do we need a separate vCPU=
- count argument for SNP_LAUNCH_FINISH, won't the statically created vCPUs i=
-n kvm->created_vcpus/online_vcpus be sufficient for that, any dynamically c=
-reated
-> vCPU's won't be part of the initial measurement or LaunchDigest of the VM=
-, right ?
+s/X86/x86/
 
-Are you suggesting that QEMU will KVM_CREATE_VCPU the BSP, then
-LAUNCH_FINISH, then KVM_CREATE_VCPU all the APs to their VMSAs were
-not LAUNCH_UPDATED? If so, it seems annoying to have to create vCPUs
-at different times to get their VMSAs into different states. That's
-why I was suggesting some other mechanism so we can continue to
-KVM_CREATE_VCPU all the vCPUs at the same time.
+On Mon, Jun 20, 2022 at 11:08:57PM +0000, Ashish Kalra wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
+> 
+> When running an SEV-SNP VM, the sPA used to index the RMP entry is
+> obtained through the NPT translation (gva->gpa->spa). The NPT page
+> level is checked against the page level programmed in the RMP entry.
+> If the page level does not match, then it will cause a nested page
+> fault with the RMP bit set to indicate the RMP violation.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>  arch/x86/include/asm/kvm_host.h    |  1 +
+>  arch/x86/kvm/mmu/mmu.c             |  5 ++++
+>  arch/x86/kvm/svm/sev.c             | 46 ++++++++++++++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c             |  1 +
+>  arch/x86/kvm/svm/svm.h             |  1 +
+>  6 files changed, 55 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index a66292dae698..e0068e702692 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -129,6 +129,7 @@ KVM_X86_OP(complete_emulated_msr)
+>  KVM_X86_OP(vcpu_deliver_sipi_vector)
+>  KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+>  KVM_X86_OP(alloc_apic_backing_page)
+> +KVM_X86_OP_OPTIONAL(rmp_page_level_adjust)
+>  
+>  #undef KVM_X86_OP
+>  #undef KVM_X86_OP_OPTIONAL
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 0205e2944067..2748c69609e3 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1514,6 +1514,7 @@ struct kvm_x86_ops {
+>  	unsigned long (*vcpu_get_apicv_inhibit_reasons)(struct kvm_vcpu *vcpu);
+>  
+>  	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+> +	void (*rmp_page_level_adjust)(struct kvm *kvm, kvm_pfn_t pfn, int *level);
+>  };
+>  
+>  struct kvm_x86_nested_ops {
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index c623019929a7..997318ecebd1 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -43,6 +43,7 @@
+>  #include <linux/hash.h>
+>  #include <linux/kern_levels.h>
+>  #include <linux/kthread.h>
+> +#include <linux/sev.h>
+>  
+>  #include <asm/page.h>
+>  #include <asm/memtype.h>
+> @@ -2824,6 +2825,10 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>  	if (unlikely(!pte))
+>  		return PG_LEVEL_4K;
+>  
+> +	/* Adjust the page level based on the SEV-SNP RMP page level. */
+> +	if (kvm_x86_ops.rmp_page_level_adjust)
+> +		static_call(kvm_x86_rmp_page_level_adjust)(kvm, pfn, &level);
+> +
+>  	return level;
+>  }
+>  
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index a5b90469683f..91d3d24e60d2 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3597,3 +3597,49 @@ struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
+>  
+>  	return pfn_to_page(pfn);
+>  }
+> +
+> +static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
+> +{
+> +	int level;
+> +
+> +	while (end > start) {
+> +		if (snp_lookup_rmpentry(start, &level) != 0)
+> +			return false;
+> +		start++;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +void sev_rmp_page_level_adjust(struct kvm *kvm, kvm_pfn_t pfn, int *level)
 
->
-> Thanks,
-> Ashish
+Would not do harm to document this, given that it is not a static
+fuction.
+
+> +{
+> +	int rmp_level, assigned;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return;
+> +
+> +	assigned = snp_lookup_rmpentry(pfn, &rmp_level);
+> +	if (unlikely(assigned < 0))
+> +		return;
+> +
+> +	if (!assigned) {
+> +		/*
+> +		 * If all the pages are shared then no need to keep the RMP
+> +		 * and NPT in sync.
+> +		 */
+> +		pfn = pfn & ~(PTRS_PER_PMD - 1);
+> +		if (is_pfn_range_shared(pfn, pfn + PTRS_PER_PMD))
+> +			return;
+> +	}
+> +
+> +	/*
+> +	 * The hardware installs 2MB TLB entries to access to 1GB pages,
+> +	 * therefore allow NPT to use 1GB pages when pfn was added as 2MB
+> +	 * in the RMP table.
+> +	 */
+> +	if (rmp_level == PG_LEVEL_2M && (*level == PG_LEVEL_1G))
+> +		return;
+> +
+> +	/* Adjust the level to keep the NPT and RMP in sync */
+> +	*level = min_t(size_t, *level, rmp_level);
+> +}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index b4bd64f94d3a..18e2cd4d9559 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -4734,6 +4734,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+>  	.vcpu_get_apicv_inhibit_reasons = avic_vcpu_get_apicv_inhibit_reasons,
+>  
+>  	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
+> +	.rmp_page_level_adjust = sev_rmp_page_level_adjust,
+>  };
+>  
+>  /*
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 71c011af098e..7782312a1cda 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -673,6 +673,7 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+>  void sev_es_prepare_switch_to_guest(struct sev_es_save_area *hostsa);
+>  void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+>  struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
+> +void sev_rmp_page_level_adjust(struct kvm *kvm, kvm_pfn_t pfn, int *level);
+>  
+>  /* vmenter.S */
+>  
+> -- 
+> 2.25.1
+> 
+
+
+BR, Jarkko
