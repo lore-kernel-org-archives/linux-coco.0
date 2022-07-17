@@ -1,144 +1,98 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from terminus.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516074681
-	for <linux-coco@lists.linux.dev>; Wed, 13 Jul 2022 14:59:52 +0000 (UTC)
-Received: by mail-lf1-f47.google.com with SMTP id bu42so19577416lfb.0
-        for <linux-coco@lists.linux.dev>; Wed, 13 Jul 2022 07:59:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=6Y8GbLmVYsqOjAmk1Y1MFoYDRm1tANijToQSxmqM/Z0=;
-        b=Zy2W9NCe+isY/WHx1n36fgDq35tWZP4AnyK3U5sdhE0Expg9sXawpS8p6vOHWmV/Kp
-         8QTdb8LrYvSXfxOiA0OYH0n/v4ioxsiAtO98MdBHw1uUuLUS6b39WggfSytIvPzWLCbx
-         nXxQuEi/C/ziDw4cgxp0ryFFbb+OfTmx0iP94pfR4Y8qOhojY+IE/IXIeXFGKoZtXvkz
-         8KF+XiU0aYlnu3Q67hg8V6jDk7EG5mNQQdaYrFVFdVKrV2O43A3pYJ+afvW7ZMAgX9R/
-         rQvnY5DLaLEjmCaN3+K2aY1QDY3CvXszw0mOHJKjzXb4ZBbcU29+byDR9nBIT6szJKIy
-         xUrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=6Y8GbLmVYsqOjAmk1Y1MFoYDRm1tANijToQSxmqM/Z0=;
-        b=i15DE9K+tH7x9C9OMfzcXSYHfxfOaZtETZt1/mKkSVp3gEGn5hi0C5AoWa4zOsA1fN
-         eXZiuVpp5MtGuvNZ4bIZhjz4YcMcJLH2EauLjnwLn3atS8UGnHlKiOUIMyjwzbJ+61zl
-         Fbrmpc2ddwY+FiCwXuqdNjZzSUUYIFSXJN5sA02UcIv03buTbkuktNozALSKF3kHyfGL
-         45R7MHdxrQ5fS1SwRlzAQnMT6tCCc0W1JzjcW4FEOlUl8niV4qHIVg6tCA6bDwqS9pLm
-         ArHykF3Hhsrbd7qzb2HNFIckTS84M8ZipPhtR21F7j5GC+xmdzGZf/7IlIRvcIx5OSBB
-         LVNw==
-X-Gm-Message-State: AJIora8jkmronwvrfr+kLCNTLhMBhsdKXcGJh3N/MCnlL0so5ibK1Pop
-	0EblmGhFXz3FJLY+tWslK7PDPeyGxBJdYyKmDitXkA==
-X-Google-Smtp-Source: AGRyM1uZws6zrw+EwRedSRLPe8kTBrDm1VGX+neUwHH+c4FgJ6hUI0BWQ33Rc/4Gx1bXbbzdU+TXBZWZajnle0ErRnE=
-X-Received: by 2002:a05:6512:32c5:b0:481:1822:c41f with SMTP id
- f5-20020a05651232c500b004811822c41fmr2320675lfg.373.1657724389943; Wed, 13
- Jul 2022 07:59:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F44B65C
+	for <linux-coco@lists.linux.dev>; Sun, 17 Jul 2022 05:31:41 +0000 (UTC)
+Received: from [IPv6:::1] ([IPv6:2601:646:8600:40c1:ae5e:3057:2e2c:7f5b])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.1/8.15.2) with ESMTPSA id 26H5FeWZ725281
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Sat, 16 Jul 2022 22:15:40 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 26H5FeWZ725281
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2022070501; t=1658034943;
+	bh=2oBoSTWNfbYjfQp5I53ct47lO8uP5kHvPPZlw0O0iT4=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=x9NX+33NijYF6F4JSe2y1tPLDO3Vv0GKcb2L66yq+xscfClCQYR3I0FKpfj+dnHXH
+	 d7BHMb3RN1f+jpj5lZyLsoxAvENnGI+BDriJ+MekMAcKOf8oXYP1/DI2qZrnXiAx/Z
+	 1rKyWVEzlND39q2MTT55L2fCG4Xgvvnuglu7tQmZQMuieim0Ipe+aGD3a+ItWQdWeI
+	 z74RwIF3MX13sn9vkrl54IpGsQMq5Tzpwm9MsMLf1vYfqUDpx7xFiNEB+gftJHYS31
+	 YIb/nb6phxefYclwPAukUrvcU4CzYiEdYMrl8b7K7w9pi6jthuuMt5zEeWk9DaBXCv
+	 EfPsfdx3helig==
+Date: Sat, 16 Jul 2022 22:08:09 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Brijesh Singh <brijesh.singh@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org
+CC: brijesh.singh@amd.com, Ingo Molnar <mingo@redhat.com>,
+        Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+        Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        David Rientjes <rientjes@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>,
+        Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+        brijesh.ksingh@gmail.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v12_29/46=5D_x86/boot=3A_Add_Co?= =?US-ASCII?Q?nfidential_Computing_type_to_setup=5Fdata?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <91ed3c18-6cff-c6d4-a628-81f1f71b21dc@amd.com>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com> <20220307213356.2797205-30-brijesh.singh@amd.com> <87v8vlzz8x.ffs@tglx> <91ed3c18-6cff-c6d4-a628-81f1f71b21dc@amd.com>
+Message-ID: <496A3732-C91B-48B0-9DBB-126108174D93@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1655761627.git.ashish.kalra@amd.com> <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
- <CAMkAt6obGwyiJh7J34Vt8tC+XXMNm8YPrv4gV=TVoF2Xga5GjQ@mail.gmail.com>
- <SN6PR12MB27672AA31E96179256235C338E879@SN6PR12MB2767.namprd12.prod.outlook.com>
- <CAMkAt6ryLr6a5iQnwZQT3hqwEpZpb7bn-T8SDY6=5zYs_5NBow@mail.gmail.com> <c3b80f5d-a0e6-ad5d-1c28-c08aded21a11@amd.com>
-In-Reply-To: <c3b80f5d-a0e6-ad5d-1c28-c08aded21a11@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Wed, 13 Jul 2022 08:59:37 -0600
-Message-ID: <CAMkAt6q2ff8pZ2n_j5O59OrH5jWCdU6FUDxy5sS4x+9tkyiTEw@mail.gmail.com>
-Subject: Re: [PATCH Part2 v6 28/49] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH command
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: "Kalra, Ashish" <Ashish.Kalra@amd.com>, "the arch/x86 maintainers" <x86@kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	"Roth, Michael" <Michael.Roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Alper Gun <alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, 
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 12, 2022 at 11:40 AM Tom Lendacky <thomas.lendacky@amd.com> wro=
-te:
+On April 7, 2022 7:57:22 AM PDT, Brijesh Singh <brijesh=2Esingh@amd=2Ecom> =
+wrote:
 >
-> On 7/12/22 09:45, Peter Gonda wrote:
-> > On Mon, Jul 11, 2022 at 4:41 PM Kalra, Ashish <Ashish.Kalra@amd.com> wr=
-ote:
-> >>
-> >> [AMD Official Use Only - General]
-> >>
-> >> Hello Peter,
-> >>
-> >>>> The KVM_SEV_SNP_LAUNCH_FINISH finalize the cryptographic digest and
-> >>>> stores it as the measurement of the guest at launch.
-> >>>>
-> >>>> While finalizing the launch flow, it also issues the LAUNCH_UPDATE
-> >>>> command to encrypt the VMSA pages.
-> >>
-> >>> Given the guest uses the SNP NAE AP boot protocol we were expecting t=
-hat there would be some option to add vCPUs to the VM but mark them as "pen=
-ding AP boot creation protocol" state. This would allow the LaunchDigest of=
- a VM doesn't change >just because its vCPU count changes. Would it be poss=
-ible to add a new add an argument to KVM_SNP_LAUNCH_FINISH to tell it which=
- vCPUs to LAUNCH_UPDATE VMSA pages for or similarly a new argument for KVM_=
-CREATE_VCPU?
-> >>
-> >> But don't we want/need to measure all vCPUs using LAUNCH_UPDATE_VMSA b=
-efore we issue SNP_LAUNCH_FINISH command ?
-> >>
-> >> If we are going to add vCPUs and mark them as "pending AP boot creatio=
-n" state then how are we going to do LAUNCH_UPDATE_VMSAs for them after SNP=
-_LAUNCH_FINISH ?
-> >
-> > If I understand correctly we don't need or even want the APs to be
-> > LAUNCH_UPDATE_VMSA'd. LAUNCH_UPDATEing all the VMSAs causes VMs with
-> > different numbers of vCPUs to have different launch digests. Its my
-> > understanding the SNP AP Creation protocol was to solve this so that
-> > VMs with different vcpu counts have the same launch digest.
-> >
-> > Looking at patch "[Part2,v6,44/49] KVM: SVM: Support SEV-SNP AP
-> > Creation NAE event" and section "4.1.9 SNP AP Creation" of the GHCB
-> > spec. There is no need to mark the LAUNCH_UPDATE the AP's VMSA or mark
-> > the vCPUs runnable. Instead we can do that only for the BSP. Then in
-> > the guest UEFI the BSP can: create new VMSAs from guest pages,
-> > RMPADJUST them into the RMP state VMSA, then use the SNP AP Creation
-> > NAE to get the hypervisor to mark them runnable. I believe this is all
-> > setup in the UEFI patch:
-> > https://www.mail-archive.com/devel@edk2.groups.io/msg38460.html.
 >
-> Not quite...  there isn't a way to (easily) retrieve the APIC IDs for all
-> of the vCPUs, which are required in order to use the AP Create event.
+>On 4/6/22 16:19, Thomas Gleixner wrote:
+>> On Mon, Mar 07 2022 at 15:33, Brijesh Singh wrote:
+>>>  =20
+>>> +/*
+>>> + * AMD SEV Confidential computing blob structure=2E The structure is
+>>> + * defined in OVMF UEFI firmware header:
+>>> + * https://github=2Ecom/tianocore/edk2/blob/master/OvmfPkg/Include/Gu=
+id/ConfidentialComputingSevSnpBlob=2Eh
+>>> + */
+>>> +#define CC_BLOB_SEV_HDR_MAGIC	0x45444d41
+>>> +struct cc_blob_sev_info {
+>>> +	u32 magic;
+>>> +	u16 version;
+>>> +	u16 reserved;
+>>> +	u64 secrets_phys;
+>>> +	u32 secrets_len;
+>>> +	u32 rsvd1;
+>>> +	u64 cpuid_phys;
+>>> +	u32 cpuid_len;
+>>> +	u32 rsvd2;
+>>> +};
+>>=20
+>> Shouldn't this be packed?
+>>=20
 >
-> For this version of SNP, all of the vCPUs are measured and started by OVM=
-F
-> in the same way as SEV-ES. However, once the vCPUs have run, we now have
-> the APIC ID associated with each vCPU and the AP Create event can be used
-> going forward.
+>Yep, to avoid any additional compiler alignment we should pack it=2E
 >
-> The SVSM support will introduce a new NAE event to the GHCB spec to
-> retrieve all of the APIC IDs from the hypervisor. With that, then you
-> would be able be required to perform a LAUNCH_UPDATE_VMSA against the BSP=
-.
+>thanks
 
-Thank you Tom I missed that we needed to run the APs to set up their
-APIC IDs for OVMF. Is there any reason we need to wait for the SVSM to
-do what you describe? Couldn't the OVMF use an NAE to get all the APIC
-IDs?
-
->
-> Thanks,
-> Tom
->
+It shouldn't be *necessary*, any more than it is necessary for kernel-user=
+ space structures, since EFI is a C-based ABI=2E On x86 it doesn't hurt, ei=
+ther, though, so might as well=2E
