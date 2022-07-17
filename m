@@ -1,43 +1,54 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADC07F6
-	for <linux-coco@lists.linux.dev>; Sun, 17 Jul 2022 10:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927887E5
+	for <linux-coco@lists.linux.dev>; Sun, 17 Jul 2022 17:16:43 +0000 (UTC)
 Received: from zn.tnic (p200300ea97297694329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7694:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 07EB11EC04E4;
-	Sun, 17 Jul 2022 12:02:03 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 213E61EC00F8;
+	Sun, 17 Jul 2022 19:16:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658052124;
+	t=1658078197;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=pMBoFPf5zDKeGeoUjhUKzQOtOyWqwWe2PwvFxR7Ybz0=;
-	b=VBdnYo50dmMvcVd+D94GdtPzBbGMJ6NxpJQtZVPOezfqfXJ6M5R3i+e/n8S9lpC18Nsq6u
-	5uaMHBVqABfE/H2QVzI55teoCuxVFSn4P6jMP1ac/cgA13L9mu8cPoPjU16avwZutPkzQ6
-	6+Mw4Wb1O6LHny7Va6tY063Rqcor2Og=
-Date: Sun, 17 Jul 2022 12:01:59 +0200
+	bh=YMyRMtPkAHFEJeFlvvh7As/CmA56O06Fs8vTb9G0On4=;
+	b=NjA9bS4O6bVxhNEDGAr9WgB6eGW0WbnqYgLiVPeKtwN7ATIzlWyhQOvcxnxfqJ6yoEX2XE
+	Bh8d+arMLXrlPA7tVeGKYc+VD5FScRS0U3BhUUovD/2iMNW2PwiCT9Xp3Q2fEZNkJKwtEd
+	R1JtfB7Btx8JubJXOlp3JKhR+eTf0yQ=
+Date: Sun, 17 Jul 2022 19:16:32 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 03/49] x86/sev: Add the host SEV-SNP
- initialization support
-Message-ID: <YtPeF0r69UbwNTMJ@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <8f4eef289aba5067582d0d3535299c22a4e5c4c4.1655761627.git.ashish.kalra@amd.com>
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com, khalid.elmously@canonical.com,
+	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 05/14] x86/boot: Add infrastructure required for
+ unaccepted memory support
+Message-ID: <YtRD8MJGTJLzRRV2@zn.tnic>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-6-kirill.shutemov@linux.intel.com>
+ <YqmyQZa4CTHkH3gT@hirez.programming.kicks-ass.net>
+ <20220615150534.ylkref3runa4kmyj@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -46,187 +57,20 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8f4eef289aba5067582d0d3535299c22a4e5c4c4.1655761627.git.ashish.kalra@amd.com>
+In-Reply-To: <20220615150534.ylkref3runa4kmyj@box.shutemov.name>
 
-On Mon, Jun 20, 2022 at 11:02:01PM +0000, Ashish Kalra wrote:
-> +/*
-> + * The first 16KB from the RMP_BASE is used by the processor for the
-> + * bookkeeping, the range need to be added during the RMP entry lookup.
+On Wed, Jun 15, 2022 at 06:05:34PM +0300, Kirill A. Shutemov wrote:
+> It also sounds painfully similar to uapi/ project. I'm not sure we want to
+> go this path.
 
-needs
+It is the same path perf tool is taking - see first paragraph:
 
-> +static int __snp_enable(unsigned int cpu)
-> +{
-> +	u64 val;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return 0;
-> +
-> +	rdmsrl(MSR_AMD64_SYSCFG, val);
-> +
-> +	val |= MSR_AMD64_SYSCFG_SNP_EN;
-> +	val |= MSR_AMD64_SYSCFG_SNP_VMPL_EN;
-> +
-> +	wrmsrl(MSR_AMD64_SYSCFG, val);
-> +
-> +	return 0;
-> +}
-> +
-> +static __init void snp_enable(void *arg)
-> +{
-> +	__snp_enable(smp_processor_id());
-> +}
+https://lore.kernel.org/r/YtQM40VmiLTkPND2@kernel.org
 
-Get rid of that silly wrapper - you're not even using that @cpu argument.
-
-> +static bool get_rmptable_info(u64 *start, u64 *len)
-> +{
-> +	u64 calc_rmp_sz, rmp_sz, rmp_base, rmp_end, nr_pages;
-> +
-> +	rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
-> +	rdmsrl(MSR_AMD64_RMP_END, rmp_end);
-> +
-> +	if (!rmp_base || !rmp_end) {
-> +		pr_info("Memory for the RMP table has not been reserved by BIOS\n");
-
-pr_err
-
-> +		return false;
-> +	}
-> +
-> +	rmp_sz = rmp_end - rmp_base + 1;
-> +
-> +	/*
-> +	 * Calculate the amount the memory that must be reserved by the BIOS to
-> +	 * address the full system RAM. The reserved memory should also cover the
-
-"... address the whole RAM."
-
-> +	 * RMP table itself.
-> +	 *
-> +	 * See PPR Family 19h Model 01h, Revision B1 section 2.1.4.2 for more
-> +	 * information on memory requirement.
-
-That section number will change over time - if you want to refer to some
-section just use its title so that people can at least grep for the
-relevant text.
-
-> +	 */
-> +	nr_pages = totalram_pages();
-> +	calc_rmp_sz = (((rmp_sz >> PAGE_SHIFT) + nr_pages) << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
-
-use totalram_pages() directly and get rid of nr_pages.
-
-> +
-> +	if (calc_rmp_sz > rmp_sz) {
-> +		pr_info("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
-> +			calc_rmp_sz, rmp_sz);
-
-pr_err
-
-> +		return false;
-> +	}
-> +
-> +	*start = rmp_base;
-> +	*len = rmp_sz;
-> +
-> +	pr_info("RMP table physical address 0x%016llx - 0x%016llx\n", rmp_base, rmp_end);
-
-"RMP table physical address range: ...[0x.. - 0x..]"
-
-> +
-> +	return true;
-> +}
-> +
-> +static __init int __snp_rmptable_init(void)
-
-s/int/bool/
-
-> +{
-> +	u64 rmp_base, sz;
-> +	void *start;
-> +	u64 val;
-> +
-> +	if (!get_rmptable_info(&rmp_base, &sz))
-> +		return 1;
-> +
-> +	start = memremap(rmp_base, sz, MEMREMAP_WB);
-> +	if (!start) {
-> +		pr_err("Failed to map RMP table 0x%llx+0x%llx\n", rmp_base, sz);
-							^^^^^^
-
-either write the size in decimal or do a normal interval.
-
-> +		return 1;
-> +	}
-> +
-> +	/*
-> +	 * Check if SEV-SNP is already enabled, this can happen if we are coming from
-
-Who is "we"?
-
-Pls get rid of all "we" in the comments and use passive formulations.
-
-> +	 * kexec boot.
-> +	 */
-> +	rdmsrl(MSR_AMD64_SYSCFG, val);
-> +	if (val & MSR_AMD64_SYSCFG_SNP_EN)
-> +		goto skip_enable;
-> +
-> +	/* Initialize the RMP table to zero */
-> +	memset(start, 0, sz);
-
-Do I understand it correctly that in the kexec case the second, kexec-ed
-kernel is reusing the previous kernel's RMP table so it should not be
-cleared?
-
-> +
-> +	/* Flush the caches to ensure that data is written before SNP is enabled. */
-> +	wbinvd_on_all_cpus();
-> +
-> +	/* Enable SNP on all CPUs. */
-> +	on_each_cpu(snp_enable, NULL, 1);
-> +
-> +skip_enable:
-> +	rmptable_start = (unsigned long)start;
-> +	rmptable_end = rmptable_start + sz;
-> +
-> +	return 0;
-> +}
-> +
-> +static int __init snp_rmptable_init(void)
-> +{
-> +	if (!boot_cpu_has(X86_FEATURE_SEV_SNP))
-
-cpu_feature_enabled
-
-> +		return 0;
-> +
-> +	if (!iommu_sev_snp_supported())
-> +		goto nosnp;
-> +
-> +	if (__snp_rmptable_init())
-> +		goto nosnp;
-> +
-> +	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/rmptable_init:online", __snp_enable, NULL);
-> +
-> +	return 0;
-> +
-> +nosnp:
-> +	setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
-> +	return 1;
-> +}
-> +
-> +/*
-> + * This must be called after the PCI subsystem. This is because before enabling
-> + * the SNP feature we need to ensure that IOMMU supports the SEV-SNP feature.
-> + * The iommu_sev_snp_support() is used for checking the feature, and it is
-> + * available after subsys_initcall().
-
-I'd much more appreciate here a short formulation explaining why is
-IOMMU needed for SNP rather than the obvious.
-
-Thx.
+I don't want to deal with the regular breakages or hacks to
+boot/compressed/ just because little duplication. We copy the header
+once and that's it - it doesn't even have to get updated like perf tool
+does from time to time.
 
 -- 
 Regards/Gruss,
