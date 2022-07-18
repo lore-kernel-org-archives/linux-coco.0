@@ -1,136 +1,120 @@
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2927133CC
-	for <linux-coco@lists.linux.dev>; Mon, 18 Jul 2022 17:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658164918; x=1689700918;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XQ2y1/VlwCd334Ie2B6PhFqb8Le129sl7rpEk9foass=;
-  b=gAgSRBCQzzC9j6cR1plmLy25MLLwlDHshlQkliuOVHmulqpCPxO/GGot
-   GG1BGDdK5kOIrTgunO2N3h+DNnk+UORdAkj+O3BCh81jBOHcF29dHPldE
-   9xwHneDrSpCDqYviA4AryTwUUtU2wkgt4v8clTUa2avcoYCfeXMshE/kZ
-   WESbclShyltkm4vn3PxB7B9BXhvskxjr9v2kE+9ytYYu/OXN8G4Jfafkm
-   6hYvnhYe2H1wgreWmL83Uo5ABN3dcJ3OkaZuBFDcjAX8UaIshZGT6p+hX
-   dC6c5oAde3HPVpyfqjh2rCJlKNwbnZOIshAZBVzn0O7zeOmRluCChWFE9
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10412"; a="350235844"
-X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
-   d="scan'208";a="350235844"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2022 10:21:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,281,1650956400"; 
-   d="scan'208";a="655374923"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga008.fm.intel.com with ESMTP; 18 Jul 2022 10:21:50 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 4FE9410E; Mon, 18 Jul 2022 20:21:59 +0300 (EEST)
-Date: Mon, 18 Jul 2022 20:21:59 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Marcelo Cerri <marcelo.cerri@canonical.com>,
-	tim.gardner@canonical.com,
-	Khalid ElMously <khalid.elmously@canonical.com>,
-	philip.cox@canonical.com, the arch/x86 maintainers <x86@kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Message-ID: <20220718172159.4vwjzrfthelovcty@black.fi.intel.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com>
- <20220627113019.3q62luiay7izhehr@black.fi.intel.com>
- <CAMj1kXHD5XBAS1aBjzg1RCeK6qgtanUSED_xyTZ0v1j+UShMKw@mail.gmail.com>
- <20220627122230.7eetepoufd5w3lxd@black.fi.intel.com>
- <CAMkAt6oJJaRM_dy=y2BP99VziPriVuA4jAmMc=G7njwJYKFgyg@mail.gmail.com>
- <CAMj1kXHpS2B9Q7AaQ1euGidZUEyR6gfi=e+t1J_Cr8bmK_9mTw@mail.gmail.com>
- <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com>
- <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86DA4A20
+	for <linux-coco@lists.linux.dev>; Mon, 18 Jul 2022 23:32:29 +0000 (UTC)
+Received: by mail-yb1-f178.google.com with SMTP id l11so23657676ybu.13
+        for <linux-coco@lists.linux.dev>; Mon, 18 Jul 2022 16:32:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=hfhcfJEtIEOv5/RbP8aWxiUol5MH91cRjA0pRO3p2Do=;
+        b=E8GPGArYRequLjAGkGzJuo7mmPtrq2YvlPe8RRaQ8b8rHsTNcJ8RfueX4LgVDgm4aB
+         iO9UmGQn2mkxNk75LsxjucgwIuj7WI7+50bQj4vRV7NWIgEJ25kU4RkKRLX/qW9+H+td
+         SuNhtFNytaFKBe644W3MoZryHUqLCIcz8SW/Qqq/KlVak4gkMqO7GM9zsRXI2zoVgdTJ
+         qc9r/Whf+qyeEeohUc+mvkoClakUllk5GMENmp9gPNkIv8k/q3mimTiabzRrUIC6nY4i
+         ri43dSa+JABF0B+eibe17SQ0ixXgj6uuTesCdN0QN+7Ncsv70PQvaX9oxjrYuglZQD25
+         Q/og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=hfhcfJEtIEOv5/RbP8aWxiUol5MH91cRjA0pRO3p2Do=;
+        b=bcKlIqZYa1+IeV4IUmZQLXb2t8/uyjGVyRDmIneZsv0HPQu67t6FeQwFZyPfmBpGKC
+         EkTejnwuha4/37IqjJ8pCyoapi7D68pICa3CUZ2p8Cgi8LqbN0sJGVtQYX3DFoAiYIJg
+         8EWL+Dr6GAf7bmbNKn+dsuPqXRzGUEpIM5Mqw/GBkSIUuO9Qw3lomuf75Qu//LS+Pzxc
+         ZsY/z5YYLDYWKsRNyu9hiARgfY6sAYk2qF7mUX08I+fS5qY+HlhYmDNWBNqZlaFf2JcD
+         ucxHXi1E3aNHn75zaNIc9Rb8toYFUJ28Dc+1QULp+jpOCDhRG7XXK4ML6D6Csj4db2zS
+         fkZA==
+X-Gm-Message-State: AJIora8BgIFGkh9NNDW5uzsBpDhIct+G28IP+c0HVR23lGaf13R1G4tI
+	6aF6aY7KU6v+b6S/v3YU8whlnJDA41xbwBwcYd98UQ==
+X-Google-Smtp-Source: AGRyM1uDqGJkW/LK2CJC2GR49ze3EpqjvilYu7i365psCPTzr/cZIWgOxjMR3E5AbePYdQJr4Xq1laFNiwWUOrzg3oE=
+X-Received: by 2002:a25:3b95:0:b0:66e:316c:159 with SMTP id
+ i143-20020a253b95000000b0066e316c0159mr30295992yba.297.1658187148646; Mon, 18
+ Jul 2022 16:32:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <CAMkAt6osbEGBFrgn=y1=x4mDHC1aL40BwaW0NdGHF8qmWd7ktA@mail.gmail.com>
+ <20220627113019.3q62luiay7izhehr@black.fi.intel.com> <CAMj1kXHD5XBAS1aBjzg1RCeK6qgtanUSED_xyTZ0v1j+UShMKw@mail.gmail.com>
+ <20220627122230.7eetepoufd5w3lxd@black.fi.intel.com> <CAMkAt6oJJaRM_dy=y2BP99VziPriVuA4jAmMc=G7njwJYKFgyg@mail.gmail.com>
+ <CAMj1kXHpS2B9Q7AaQ1euGidZUEyR6gfi=e+t1J_Cr8bmK_9mTw@mail.gmail.com>
+ <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com> <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
+ <20220718172159.4vwjzrfthelovcty@black.fi.intel.com>
+In-Reply-To: <20220718172159.4vwjzrfthelovcty@black.fi.intel.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Mon, 18 Jul 2022 16:32:17 -0700
+Message-ID: <CAAH4kHYR+VkSJ5J8eWmeaEvstuRz_EuqVQqPfwmp5dhNGRyJwQ@mail.gmail.com>
+Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
+	Andi Kleen <ak@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>, 
+	Dario Faggioli <dfaggioli@suse.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>, 
+	Marcelo Cerri <marcelo.cerri@canonical.com>, tim.gardner@canonical.com, 
+	Khalid ElMously <khalid.elmously@canonical.com>, philip.cox@canonical.com, 
+	"the arch/x86 maintainers" <x86@kernel.org>, Linux Memory Management List <linux-mm@kvack.org>, linux-coco@lists.linux.dev, 
+	linux-efi <linux-efi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	"Yao, Jiewen" <jiewen.yao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jun 28, 2022 at 07:17:00PM +0200, Ard Biesheuvel wrote:
-> On Tue, 28 Jun 2022 at 00:38, Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> >
-> > On Mon, Jun 27, 2022 at 06:33:51PM +0200, Ard Biesheuvel wrote:
-> > > > > > >
-> > > > > > > Just as an idea, we can put info into UTS_VERSION which can be read from
-> > > > > > > the built bzImage. We have info on SMP and preeption there already.
-> > > > > > >
-> > > > > >
-> > > > > > Instead of hacking this into the binary, couldn't we define a protocol
-> > > > > > that the kernel will call from the EFI stub (before EBS()) to identify
-> > > > > > itself as an image that understands unaccepted memory, and knows how
-> > > > > > to deal with it?
-> > > > > >
-> > > > > > That way, the firmware can accept all the memory on behalf of the OS
-> > > > > > at ExitBootServices() time, unless the OS has indicated there is no
-> > > > > > need to do so.
-> > > > >
-> > > > > I agree it would be better. But I think it would require change to EFI
-> > > > > spec, no?
-> > > >
-> > > > Could this somehow be amended on to the UEFI Specification version 2.9
-> > > > change which added all of the unaccepted memory features?
-> > > >
-> > >
-> > > Why would this need a change in the EFI spec? Not every EFI protocol
-> > > needs to be in the spec.
-> >
-> > My EFI knowledge is shallow. Do we do this in other cases?
-> >
-> 
-> The E in EFI means 'extensible' and the whole design of a protocol
-> database using GUIDs as identifiers (which will not collide and
-> therefore need no a priori coordination when defining them) is
-> intended to allow extensions to be defined and implemented in a
-> distributed manner.
-> 
-> Of course, it would be fantastic if we can converge on a protocol that
-> all flavors of confidential compute can use, across different OSes, so
-> it is generally good if a protocol is defined in *some* shared
-> specification. But this doesn't have to be the EFI spec.
+> I've talked with our firmware expert today and I think we have a problem
+> with the approach when kernel declaries support of unaccepted memory.
+>
 
-I've talked with our firmware expert today and I think we have a problem
-with the approach when kernel declaries support of unaccepted memory.
+Is this Jiewen Yao? I've been trying to design the UEFI spec change
+with him. The bootloader problem he commented with this morning was
+something I wasn't fully considering.
 
-This apporach doesn't work if we include bootloader into the picture: if
-EBS() called by bootloader we still cannot know if target kernel supports
-unaccepted memory and we return to the square 1.
+> This apporach doesn't work if we include bootloader into the picture: if
+> EBS() called by bootloader we still cannot know if target kernel supports
+> unaccepted memory and we return to the square 1.
+>
+> I think we should make it obvious from a kernel image if it supports
+> unaccepted memory (with UTS_VERSION or other way).
+>
+> Any comments?
 
-I think we should make it obvious from a kernel image if it supports
-unaccepted memory (with UTS_VERSION or other way).
+Is this binary parsing trick already used in EDK2? If not, I wouldn't
+want to introduce an ABI-solidifying requirement like that.
 
-Any comments?
+A bit more cumbersome, but more flexible way to enable the feature is
+an idea I had in a meeting today:
+Make unaccepted memory support a feature-enabling EFI driver installed
+to the EFI system partition.
+
+* The first time you boot (setup mode), you install an EFI driver that
+just sets a feature Pcd to true (using a custom protocol as Ard had
+suggested above).
+* The second time you boot, if the feature Pcd is true, then the UEFI
+is free to not accept memory and use the unaccepted memory type. The
+bootloader will run after unaccepted memory has been allowed already,
+so there is no accept-all event.
+
+The default behavior will be to accept all memory when GetMemoryMap is
+called unless the feature pcd is set to true.
+
+We can then say this driver isn't needed once some new generation of
+this technology comes along and we can require unaccepted memory
+support as part of that technology's baseline, or we manage to update
+the UEFI spec to have GetMemoryMapEx which has unaccepted memory
+support baked in and the bootloaders all know to use it.
+
+The cloud experience will be, "is boot slow? Install this EFI driver
+from the cloud service provider" to tell the UEFI to enable unaccepted
+memory.
 
 -- 
- Kirill A. Shutemov
+-Dionna Glaze, PhD (she/her)
