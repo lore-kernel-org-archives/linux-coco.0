@@ -1,54 +1,63 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273F84C75
-	for <linux-coco@lists.linux.dev>; Tue, 19 Jul 2022 21:23:36 +0000 (UTC)
-Received: from zn.tnic (p200300ea97297609329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7609:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E629F1EC0644;
-	Tue, 19 Jul 2022 23:23:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658265808;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=9enq0fgxD5G4aG3v4Ve8uLcTEh3C8HVLu42xXwSENQs=;
-	b=Nepl+HfvfnIeaiJV3nAMnxEVX+rd09745zFNBMV7IvHW/EAVv0blS62razb3b9KTO9qOoA
-	S28eL2neJFYrwuoZl4vDQ+2PrCE5Ie0OcYUc+Ru6rBXZFKh1iPj+qp5/MuPLDQJf/1U2Me
-	Lr2aHQ7qIx0xQpAbilMYQxlmcvQYAPk=
-Date: Tue, 19 Jul 2022 23:23:19 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Peter Gonda <pgonda@google.com>, Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Marcelo Cerri <marcelo.cerri@canonical.com>,
-	tim.gardner@canonical.com,
-	Khalid ElMously <khalid.elmously@canonical.com>,
-	philip.cox@canonical.com, the arch/x86 maintainers <x86@kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	"Yao, Jiewen" <jiewen.yao@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37554C75
+	for <linux-coco@lists.linux.dev>; Tue, 19 Jul 2022 21:39:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1658266747; x=1689802747;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lZfxsCoZwidUXvUg1h38BCfji1GHOSEqDIubN9Z3IFE=;
+  b=LuVjm/E1Ate/De+fSQE6GnDR3XEPQddQIM1fGDQ92xqQbt9gsVN5kS09
+   Y48sJj9lJ3avBxIRfM2oTuJhHuDOch/lYs2vK8pKmtIvBHXlmoZZ7JA7V
+   lSLmbd6kCO4OlmuhkqFyl7WOdgEeI7ceqMnEUOpe1ALJ/07Ll+Qil1CJi
+   vryxUnfuO7Icq/wisv8+f5sdWdLzFq4Qy7sn6obadNEKS0KhwiRk6v5YM
+   E4OJDV9y5uP4FCIZ4TsUDSFCouLWua0lsnjVCgVwlFkOf4DYhFl7Ypeq9
+   dtj/Qz8i0047K3/JnnQRm4aN1XFvgjgCRrlYiTuLlyR6VAHEJukkn2aCY
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10413"; a="312306308"
+X-IronPort-AV: E=Sophos;i="5.92,285,1650956400"; 
+   d="scan'208";a="312306308"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2022 14:35:47 -0700
+X-IronPort-AV: E=Sophos;i="5.92,285,1650956400"; 
+   d="scan'208";a="687272611"
+Received: from twliston-mobl1.amr.corp.intel.com (HELO [10.212.132.190]) ([10.212.132.190])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2022 14:35:45 -0700
+Message-ID: <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
+Date: Tue, 19 Jul 2022 14:35:45 -0700
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
 Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
  memory
-Message-ID: <YtcgxxMyFTReuuRw@zn.tnic>
+Content-Language: en-US
+To: Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Peter Gonda <pgonda@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
+ Marcelo Cerri <marcelo.cerri@canonical.com>, tim.gardner@canonical.com,
+ Khalid ElMously <khalid.elmously@canonical.com>, philip.cox@canonical.com,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, "Yao, Jiewen" <jiewen.yao@intel.com>
 References: <CAMkAt6oJJaRM_dy=y2BP99VziPriVuA4jAmMc=G7njwJYKFgyg@mail.gmail.com>
  <CAMj1kXHpS2B9Q7AaQ1euGidZUEyR6gfi=e+t1J_Cr8bmK_9mTw@mail.gmail.com>
  <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com>
@@ -59,39 +68,62 @@ References: <CAMkAt6oJJaRM_dy=y2BP99VziPriVuA4jAmMc=G7njwJYKFgyg@mail.gmail.com>
  <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
  <YtcCWfCQuEsVhH6W@zn.tnic>
  <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
+ <YtcgxxMyFTReuuRw@zn.tnic>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <YtcgxxMyFTReuuRw@zn.tnic>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 19, 2022 at 10:45:06PM +0200, Ard Biesheuvel wrote:
-> So let's define a way for the EFI stub to signal to the firmware
-> (before EBS()) that it will take control of accepting memory. The
-> 'bootloader that calls EBS()' case can invent something along the
-> lines of what has been proposed in this thread to infer the
-> capabilities of the kernel (and decide what to signal to the
-> firmware). But we have no need for this additional complexity on
-> Linux.
+On 7/19/22 14:23, Borislav Petkov wrote:
+> On Tue, Jul 19, 2022 at 10:45:06PM +0200, Ard Biesheuvel wrote:
+>> So let's define a way for the EFI stub to signal to the firmware
+>> (before EBS()) that it will take control of accepting memory. The
+>> 'bootloader that calls EBS()' case can invent something along the
+>> lines of what has been proposed in this thread to infer the
+>> capabilities of the kernel (and decide what to signal to the
+>> firmware). But we have no need for this additional complexity on
+>> Linux.
+> To tell you the truth, I've been perusing this thread from the sidelines
+> and am wondering why does this need this special dance at all?
+> 
+> If EFI takes control of accepting memory, then when the guest kernel
+> boots, it'll find all memory accepted and not do anything.
+> 
+> If EFI doesn't accept memory, then the guest kernel will boot and do the
+> accepting itself.
+> 
+> So either I'm missing something or we're overengineering this for no
+> good reason...
 
-To tell you the truth, I've been perusing this thread from the sidelines
-and am wondering why does this need this special dance at all?
+They're trying to design something that can (forever) handle guests that
+might not be able to accept memory.  It's based on the idea that
+*something* needs to assume control and EFI doesn't have enough
+information to assume control.
 
-If EFI takes control of accepting memory, then when the guest kernel
-boots, it'll find all memory accepted and not do anything.
+I wish we didn't need all this complexity, though.
 
-If EFI doesn't accept memory, then the guest kernel will boot and do the
-accepting itself.
+There are three entities that can influence how much memory is accepted:
 
-So either I'm missing something or we're overengineering this for no
-good reason...
+1. The host
+2. The guest firmware
+3. The guest kernel (or bootloader or something after the firmware)
 
--- 
-Regards/Gruss,
-    Boris.
+This whole thread is about how #2 and #3 talk to each other and make
+sure *someone* does it.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+I kinda think we should just take the guest firmware out of the picture.
+ There are only going to be a few versions of the kernel that can boot
+under TDX (or SEV-SNP) and *can't* handle unaccepted memory.  It seems a
+bit silly to design this whole interface for a few versions of the OS
+that TDX folks tell me can't be used anyway.
+
+I think we should just say if you want to run an OS that doesn't have
+unaccepted memory support, you can either:
+
+1. Deal with that at the host level configuration
+2. Boot some intermediate thing like a bootloader that does acceptance
+   before running the stupid^Wunenlightended OS
+3. Live with the 4GB of pre-accepted memory you get with no OS work.
+
+Yeah, this isn't convenient for some hosts.  But, really, this is
+preferable to doing an EFI/OS dance until the end of time.
