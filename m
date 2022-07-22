@@ -1,102 +1,96 @@
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06AD6AD4
-	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 19:30:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658518240; x=1690054240;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yiC+//i7K9IE9d4hXO9yECQl7g97rBdGulNv7h3t0vA=;
-  b=Yx3C8iMVLGaLqYcqha0/m41u2dhHrsR7I+lifvfEoZ4eTK6RZRp5hfKv
-   0Pg/RzNsVWUZ7SlEbYR0xK/JE7FbhAq6EUMQ7STWxv1B+PyYYkbbuLFGO
-   tc9FF4n7UpnI11VKwddKU99NxVciGUitF7PDl7PR4lqE1+2M2Hrh+WGoE
-   vpsOp4oQn9jNCcvFGpJ7OAF6lOZX+6iqtnAGsZ0qcFrX3Wuj4bjh5df03
-   bSrgCEONl01sF2gawYCPuvZzMrO31LVV5div9tWjHjr1oAdVUdFwEo5lQ
-   5vCDOM76D+SgSQL7uOK3IOXytlHKbishopMRt8MAHGPsZQjj3zFTD0BQB
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10416"; a="286151803"
-X-IronPort-AV: E=Sophos;i="5.93,186,1654585200"; 
-   d="scan'208";a="286151803"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2022 12:30:39 -0700
-X-IronPort-AV: E=Sophos;i="5.93,186,1654585200"; 
-   d="scan'208";a="926161928"
-Received: from jnoah-mobl.amr.corp.intel.com (HELO [10.209.71.211]) ([10.209.71.211])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2022 12:30:37 -0700
-Message-ID: <707ca113-c2a2-8fe2-a22c-5be13adc7bb4@intel.com>
-Date: Fri, 22 Jul 2022 12:30:36 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8DF6AD4
+	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 19:38:14 +0000 (UTC)
+Received: from zn.tnic (p200300ea97297665329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7665:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A74851EC0666;
+	Fri, 22 Jul 2022 21:38:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1658518688;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=oqMlhQ+9AS8F60PcU1q78Rrrk17ahXV0byauFO5z1UU=;
+	b=pfCUktwvWkG8U+aXBptEc75Naz9avVy8tj8mgVyoRbOzAP4tbeOUfcsyB1cEHRJQiRYHNN
+	OszJAzeSOi6AAD3WDUvaBlLpfBrkiXm9Br3wdsTCPfwl/qdjJMF6lwdg4DjjaBwlGllUqz
+	9n5XyBv4JtYXEaGzrdzUq78AGYDJkNM=
+Date: Fri, 22 Jul 2022 21:38:04 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Sean Christopherson <seanjc@google.com>
+Cc: "Kalra, Ashish" <Ashish.Kalra@amd.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"jroedel@suse.de" <jroedel@suse.de>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"jmattson@google.com" <jmattson@google.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"slp@redhat.com" <slp@redhat.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+	"tobin@ibm.com" <tobin@ibm.com>,
+	"Roth, Michael" <Michael.Roth@amd.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>,
+	"ak@linux.intel.com" <ak@linux.intel.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"alpergun@google.com" <alpergun@google.com>,
+	"dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
+Message-ID: <Ytr8nCL6pa2Q1kWy@zn.tnic>
+References: <BYAPR12MB27595CF4328B15F0F9573D188EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <99d72d58-a9bb-d75c-93af-79d497dfe176@intel.com>
+ <BYAPR12MB275984F14B1E103935A103D98EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <5db37cc2-4fb1-7a73-c39a-3531260414d0@intel.com>
+ <BYAPR12MB2759AA368C8B6A5F1C31642F8EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <YrTq3WfOeA6ehsk6@google.com>
+ <SN6PR12MB276743CBEAD5AFE9033AFE558EB59@SN6PR12MB2767.namprd12.prod.outlook.com>
+ <YtqLhHughuh3KDzH@zn.tnic>
+ <Ytr0t119QrZ8PUBB@google.com>
+ <Ytr5ndnlOQvqWdPP@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- marcelo.cerri@canonical.com, tim.gardner@canonical.com,
- khalid.elmously@canonical.com, philip.cox@canonical.com, x86@kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <YtltYRuL+2uQkYUK@zn.tnic> <ebcf2979-45fc-8d41-cc28-ac8da0d24245@intel.com>
- <Ytr4FCV2xPGUBLqs@zn.tnic>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <Ytr4FCV2xPGUBLqs@zn.tnic>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Ytr5ndnlOQvqWdPP@zn.tnic>
 
-On 7/22/22 12:18, Borislav Petkov wrote:
-> On Thu, Jul 21, 2022 at 08:49:31AM -0700, Dave Hansen wrote:
->> So, those (effective) 2MB clflush+memset's (plus a few thousand cycles
->> for the hypercall/tdcall transitions)
-> 
-> So this sounds strange - page validation on AMD - judging by the
-> pseudocode of the PVALIDATE insn - does a bunch of sanity checks on the
-> gVA of the page and then installs it into the RMP and also "PVALIDATE
-> performs the same segmentation and paging checks as a 1-byte read.
-> PVALIDATE does not invalidate TLB caches."
-> 
-> But that still sounds a lot less work than what the TDX module needs to
-> do...
+Btw,
 
-Sure does...  *Something* has to manage the cache coherency so that old
-physical aliases of the converted memory don't write back and clobber
-new data.  But, maybe the hardware is doing that now.
+what could work is to spec only a *version* field somewhere in the HW or
+FW which says which version the RMP header has.
 
+Then, OS would check that field and if it doesn't support that certain
+version, it'll bail.
 
->> If you have a few hundred CPUs all trying to allocate memory (say,
->> doing the first kernel compile after a reboot), this is going to be
->> very, very painful for a while.
->>
->> That said, I think this is the right place to _start_. There is going
->> to need to be some kind of follow-on solution (likely background
->> acceptance of some kind). But, even with that solution, *this* code
->> is still needed to handle the degenerate case where the background
->> accepter can't keep up with foreground memory needs.
-> 
-> I'm still catering to the view that it should be a two-tier thing: you
-> validate during boot a certain amount - say 4G - a size for which the
-> boot delay is acceptable and you do the rest on-demand along with a
-> background accepter.
-> 
-> That should give you the best of both worlds...
+I'd need to talk to folks first, though, what the whole story is behind
+not spec-ing the RMP format...
 
-Yeah, that two-tier system is the way it's happening today from what I
-understand.  This whole conversation is about how to handle the >4GB memory.
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
