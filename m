@@ -1,140 +1,136 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7E233C4
-	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 15:07:24 +0000 (UTC)
-Received: from zn.tnic (p200300ea97297665329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7665:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DCB0B1EC04E4;
-	Fri, 22 Jul 2022 17:07:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658502438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=3Hc0Vuv3k27qn5hRTK62cKaY/chLQcEx0JaH2giHRug=;
-	b=fFn7fCbE9fzF8IoOrgQ/x1EoTFvBSRPNJLjiw+qpNnOmbOf65mkhNsyc0cETIHlUak1sm/
-	qOkO8NF/s4BDSD8YxmO71pol1top4QIOpBgu/2bqpyTZC67PPk7hajToBOT++7Gm1GT4fO
-	nwOhQ/PnGxR+T4CmEfYCAQnMLgFMbSM=
-Date: Fri, 22 Jul 2022 17:07:13 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Marc Orr <marcorr@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Peter Gonda <pgonda@google.com>, Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Marcelo Cerri <marcelo.cerri@canonical.com>,
-	tim.gardner@canonical.com,
-	Khalid ElMously <khalid.elmously@canonical.com>,
-	philip.cox@canonical.com, the arch/x86 maintainers <x86@kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	"Yao, Jiewen" <jiewen.yao@intel.com>
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Message-ID: <Ytq9IWopJS4EGqEq@zn.tnic>
-References: <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
- <YtcCWfCQuEsVhH6W@zn.tnic>
- <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
- <YtcgxxMyFTReuuRw@zn.tnic>
- <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
- <YtcnQbiRgZPtR+rQ@zn.tnic>
- <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
- <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
- <YteWPj7HytPrcplB@zn.tnic>
- <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFD36AD4
+	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 19:04:30 +0000 (UTC)
+Received: by mail-pg1-f177.google.com with SMTP id bh13so5143423pgb.4
+        for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 12:04:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=PY64yvYmGtR5KBgIEH0kskaa/Mhm9isORQuQT/+qOTg=;
+        b=B2Av3DaoGRaE0kFsKvMfcCX99AkXfypknaWDXFb9SFwhHEv5JLdnDSAkfaX11dJGqo
+         38jEKQz554GRe3APlFdff074TrX3y2o35LNMi0grD5vMsxZBSdK8XPybeBXqrlkLioaF
+         6dFZxQQc7eoqXr6kzGWGceR/t4+aNbOPCNPgCd2lRG+Lahkdc1kih3rCqlEs45lXTpOh
+         Z0Cq8DQqwON7l2Qh/AaLS8smpDrui6seUrMpJBw93tUooNboZt18afPmk4fle6cJ+lIW
+         7UDCjbm12Ec/v9+695QP6sQLn8d6aYLp3cOOPmBGmXKyuKSpihx4qvYz3VBRIr2q1/la
+         F6LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=PY64yvYmGtR5KBgIEH0kskaa/Mhm9isORQuQT/+qOTg=;
+        b=NF8x+BZ9CbSeACCguq+T8FeblXhEmD3x33qbNDQOemEji+9opKYMwwyczjNEas/qF1
+         YEjXCxqobT0nzm+EDqRnXjGhFENgCwN+RbmpVzfiXO04apIQ6mHIhIZGDiPmbruN2zD8
+         pAKQZRWtCJ+GRjR9Q5BB0VegNFw66wLAASh/6pNyaAC5rIPpClwa+lXuLYX0V4fXvx0Y
+         F2Qj7h/uzDA84U0POis3e+Mg2YP9zuNK8RKWLsJct17rc3DphPnEbjSLpUwjLzu/exsN
+         WAHHLx2b8ighvm7zAcBTjl9kxThWTG5ufo94GqJWpmID78umWcKDnkesGQGhfiUxhhcs
+         v3kA==
+X-Gm-Message-State: AJIora9TK1NYVQTtFXZzCScCW+kOa0E90kgLF8/+g7+QH4EwpeJzBub5
+	53ZtGZN123VLQ3BN9nIx8lDw/w==
+X-Google-Smtp-Source: AGRyM1tXJ6+8d199UVPj6kD7+qncEimaUl/b0ptp5tdmerCUqKDRy2ff6UYP5+QOI8loO5mEiiiOrQ==
+X-Received: by 2002:a05:6a00:e8f:b0:528:a1c7:3d00 with SMTP id bo15-20020a056a000e8f00b00528a1c73d00mr1329285pfb.25.1658516670031;
+        Fri, 22 Jul 2022 12:04:30 -0700 (PDT)
+Received: from google.com (123.65.230.35.bc.googleusercontent.com. [35.230.65.123])
+        by smtp.gmail.com with ESMTPSA id 186-20020a6215c3000000b0052536c695c0sm4365547pfv.170.2022.07.22.12.04.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Jul 2022 12:04:28 -0700 (PDT)
+Date: Fri, 22 Jul 2022 19:04:23 +0000
+From: Sean Christopherson <seanjc@google.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Kalra, Ashish" <Ashish.Kalra@amd.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"jroedel@suse.de" <jroedel@suse.de>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"jmattson@google.com" <jmattson@google.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"slp@redhat.com" <slp@redhat.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+	"tobin@ibm.com" <tobin@ibm.com>,
+	"Roth, Michael" <Michael.Roth@amd.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>,
+	"ak@linux.intel.com" <ak@linux.intel.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"alpergun@google.com" <alpergun@google.com>,
+	"dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
+Message-ID: <Ytr0t119QrZ8PUBB@google.com>
+References: <BYAPR12MB27599BCEA9F692E173911C3B8EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <681e4e45-eff1-600c-9b81-1fa9bdf24232@intel.com>
+ <BYAPR12MB27595CF4328B15F0F9573D188EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <99d72d58-a9bb-d75c-93af-79d497dfe176@intel.com>
+ <BYAPR12MB275984F14B1E103935A103D98EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <5db37cc2-4fb1-7a73-c39a-3531260414d0@intel.com>
+ <BYAPR12MB2759AA368C8B6A5F1C31642F8EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <YrTq3WfOeA6ehsk6@google.com>
+ <SN6PR12MB276743CBEAD5AFE9033AFE558EB59@SN6PR12MB2767.namprd12.prod.outlook.com>
+ <YtqLhHughuh3KDzH@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
+In-Reply-To: <YtqLhHughuh3KDzH@zn.tnic>
 
-On Wed, Jul 20, 2022 at 10:03:40AM -0700, Marc Orr wrote:
-> Generally, no. But the problem with tags is that distros tag their
-> images wrong sometimes. And that leads to problems. For example, I
-> just got a bug assigned to me yesterday about some ARM image tagged as
-> SEV_CAPABLE. Oops. Lol :-). (Though, I'm pretty sure we won't try to
-> boot an ARM image on a non-ARM host anyway; but it's still wrong...)
-
-Yeah, even if, let it crash'n'burn - people will notice pretty quickly.
-
-> That being said, this lazy accept problem is sort of a special case,
-> since it requires deploying code to the guest FW and the guest kernel.
-> I'm still relatively new at all of this, but other than the
-> SNP/TDX-enlightenment patches themselves,  I haven't really seen any
-> other examples of this. So that goes back to my previous question. Is
-> this going to happen a lot more?
-
-Good question.
-
-Unfortunately, not even the architects of coco could give you an answer
-because, as you see yourself, those additional features like memory
-acceptance, live migration, etc keep changing - the whole coco thing is
-pretty much a moving target.
-
-For example, if someone comes along and says, err, see, I have this live
-migration helper and that thing runs as an EFI executable and it is so
-much better...
-
-Not saying it'll happen but it could. I hope you're catching my drift.
-
-> If not, I can definitely see value in the argument to skip the
-> complexity of the FW/kernel feature negotiation.
->
-> Another thing I thought of since my last reply, that's mostly an
-> internal solution to this problem on our side: Going back to Dave's
-> 10k-foot view of the different angles of how to solve this. For "1.
-> Deal with that at the host level configuration", I'm thinking we could
-> tag the images with their internal guest kernel version. For example,
-> if an image has a 5.15 kernel, then we could have a `KERNEL_5_15` tag.
-> This would then allow us to have logic in the guest FW like:
+On Fri, Jul 22, 2022, Borislav Petkov wrote:
+> On Thu, Jun 23, 2022 at 10:43:40PM +0000, Kalra, Ashish wrote:
+> > Yes, that's a nice way to hide it from the rest of the kernel which
+> > does not require access to this structure anyway, in essence, it
+> > becomes a private structure.
 > 
-> if (guest_kernel_is_at_least(/*major=*/5, /*minor=*/15)
->      enable_lazy_accept = true;
+> So this whole discussion whether there should be a model check or not
+> in case a new RMP format gets added in the future is moot - when a new
+> model format comes along, *then* the distinction should be done and
+> added in code - not earlier.
 
-Well, I don't want to spoil your idea but imagine distros like SLE or
-others backport features into old kernels. All of a sudden 5.14 or older
-can do memory acceptance too. And then that version-based scheme falls
-apart.
+I disagree.  Running an old kernel on new hardware with a different RMP layout
+should refuse to use SNP, not read/write garbage and likely corrupt the RMP and/or
+host memory.
 
-So I'm guessing it would probably be better to explicitly tag distro
-images. Thing is, once all needed support gets in, you can drop the tags
-and simply say, you don't support those old images anymore and assume
-all required support is there and implicit...
+And IMO, hiding the non-architectural RMP format in SNP-specific code so that we
+don't have to churn a bunch of call sites that don't _need_ access to the raw RMP
+format is a good idea regardless of whether we want to be optimistic or pessimistic
+about future formats.
 
-> Also, tagging images with their underlying kernel versions still seems
-> susceptible to mis-labeling. But this seems like it can be mostly
-> "fixed" via automation (e.g., write a tool to boot the guest and ask
-> it what it's kernel version is and use the result to attach the tag).
-
-I'll do you one better: boot the image and check for all required
-features and produce tags. Or do not accept the image as a possible coco
-image. And so on.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> This is nothing else but normal CPU enablement work - it should be done
+> when it is really needed.
+> 
+> Because the opposite can happen: you can add a model check which
+> excludes future model X, future model X comes along but does *not*
+> change the RMP format and then you're going to have to relax that model
+> check again to fix SNP on the new model X.
+> 
+> So pls add the model checks only when really needed.
+> 
+> Thx.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
