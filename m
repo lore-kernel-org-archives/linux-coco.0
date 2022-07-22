@@ -1,87 +1,107 @@
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F214690
-	for <linux-coco@lists.linux.dev>; Thu, 21 Jul 2022 17:13:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658423612; x=1689959612;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2VsP1VnPxrhHVMrqEWBHwDQJS/BpBEhQECyvetxj8xs=;
-  b=lE5S84nYCoDjTAr2k44MWJK6XP00uvn7lRH61Oo2WxbxJaqGBOwDBnjw
-   KKPhqm0ebW3xyV7oOVvv9yY+gYbA2M10SZPAXrgswaWb2CDB/WszcTMKZ
-   pki9bY8D1r8LcPkwmktb9KSeypu3qU7t4D9RWAKjDJ2J0+X5awWF914GM
-   oqEAM4cFkI5o2+AxNF+eQR2nNHei9MWNKYojW21MAi3+y4M331dP8wunB
-   quA5A2ncYTACxtrLvHWG3NlcUCgfOLmXjhiejfBJ3VbqPKPwRVYVyZU9o
-   aGWVN5XqLLOwfNnGvLq+Kp2sjgMZsid8xvVJzLFnTVNSHPtkrGZw3VshX
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10415"; a="273963708"
-X-IronPort-AV: E=Sophos;i="5.93,183,1654585200"; 
-   d="scan'208";a="273963708"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2022 10:12:17 -0700
-X-IronPort-AV: E=Sophos;i="5.93,183,1654585200"; 
-   d="scan'208";a="573825972"
-Received: from vasantgx-mobl.amr.corp.intel.com (HELO [10.212.244.191]) ([10.212.244.191])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2022 10:12:15 -0700
-Message-ID: <ffb4ae72-7fd4-d2a0-df10-3969cf8ca07f@intel.com>
-Date: Thu, 21 Jul 2022 10:12:14 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7EC4432
+	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 11:35:43 +0000 (UTC)
+Received: from zn.tnic (p200300ea97297665329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7665:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E5EF91EC04E4;
+	Fri, 22 Jul 2022 13:35:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1658489738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=iA4hF9kkPlWcq5B8sNQx2XUmWFJBZdfDGxazbgtSxSs=;
+	b=Gfc3qmAZEapfyhMcE8YqM23jtcCxb3f562sZrP/kg89pc7XVy8A0voe5xVEINVUjkO8ZaW
+	m4rhZaFIc53CaGiUZGsfxI0n7W63uo5tIJG6Ml78lhKPPuk10M76vzqvHbod4qaMEiPiSw
+	UGND80nYqOiUPTj4DE81rtyPQKffhqE=
+Date: Fri, 22 Jul 2022 13:35:32 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"jroedel@suse.de" <jroedel@suse.de>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"jmattson@google.com" <jmattson@google.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"slp@redhat.com" <slp@redhat.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+	"tobin@ibm.com" <tobin@ibm.com>,
+	"Roth, Michael" <Michael.Roth@amd.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>,
+	"ak@linux.intel.com" <ak@linux.intel.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"alpergun@google.com" <alpergun@google.com>,
+	"dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
+Message-ID: <YtqLhHughuh3KDzH@zn.tnic>
+References: <25be3068-be13-a451-86d4-ff4cc12ddb23@intel.com>
+ <BYAPR12MB27599BCEA9F692E173911C3B8EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <681e4e45-eff1-600c-9b81-1fa9bdf24232@intel.com>
+ <BYAPR12MB27595CF4328B15F0F9573D188EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <99d72d58-a9bb-d75c-93af-79d497dfe176@intel.com>
+ <BYAPR12MB275984F14B1E103935A103D98EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <5db37cc2-4fb1-7a73-c39a-3531260414d0@intel.com>
+ <BYAPR12MB2759AA368C8B6A5F1C31642F8EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <YrTq3WfOeA6ehsk6@google.com>
+ <SN6PR12MB276743CBEAD5AFE9033AFE558EB59@SN6PR12MB2767.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
- memory
-Content-Language: en-US
-To: Marc Orr <marcorr@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Peter Gonda <pgonda@google.com>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- Marcelo Cerri <marcelo.cerri@canonical.com>, tim.gardner@canonical.com,
- Khalid ElMously <khalid.elmously@canonical.com>, philip.cox@canonical.com,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, "Yao, Jiewen" <jiewen.yao@intel.com>
-References: <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com>
- <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
- <20220718172159.4vwjzrfthelovcty@black.fi.intel.com>
- <CAAH4kHYR+VkSJ5J8eWmeaEvstuRz_EuqVQqPfwmp5dhNGRyJwQ@mail.gmail.com>
- <CAAH4kHaHJo4NUb72tHeica4a34hq5u_QP6d6Vuzngf6EqTJ8Aw@mail.gmail.com>
- <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
- <YtcCWfCQuEsVhH6W@zn.tnic>
- <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
- <YtcgxxMyFTReuuRw@zn.tnic> <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
- <YtcnQbiRgZPtR+rQ@zn.tnic> <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
- <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <SN6PR12MB276743CBEAD5AFE9033AFE558EB59@SN6PR12MB2767.namprd12.prod.outlook.com>
 
-On 7/19/22 17:26, Marc Orr wrote:
-> - Dave's suggestion to "2. Boot some intermediate thing like a
-> bootloader that does acceptance ..." is pretty clever! So if upstream
-> thinks this FW-kernel negotiation is not a good direction, maybe we
-> (Google) can pursue this idea to avoid introducing yet another tag on
-> our images.
+On Thu, Jun 23, 2022 at 10:43:40PM +0000, Kalra, Ashish wrote:
+> Yes, that's a nice way to hide it from the rest of the kernel which
+> does not require access to this structure anyway, in essence, it
+> becomes a private structure.
 
-I'm obviously speaking only for myself here and not for "upstream" as a
-whole, but I clearly don't like the FW/kernel negotiation thing.  It's a
-permanent pain in our necks to solve a very temporary problem.
+So this whole discussion whether there should be a model check or not
+in case a new RMP format gets added in the future is moot - when a new
+model format comes along, *then* the distinction should be done and
+added in code - not earlier.
+
+This is nothing else but normal CPU enablement work - it should be done
+when it is really needed.
+
+Because the opposite can happen: you can add a model check which
+excludes future model X, future model X comes along but does *not*
+change the RMP format and then you're going to have to relax that model
+check again to fix SNP on the new model X.
+
+So pls add the model checks only when really needed.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
