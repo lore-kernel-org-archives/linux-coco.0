@@ -1,42 +1,64 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAB44432
-	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 11:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7E233C4
+	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 15:07:24 +0000 (UTC)
 Received: from zn.tnic (p200300ea97297665329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7665:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 44D461EC0666;
-	Fri, 22 Jul 2022 13:43:31 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DCB0B1EC04E4;
+	Fri, 22 Jul 2022 17:07:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658490211;
+	t=1658502438;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=ksPuM1kYKnp5lVqg/WP+CGQc5Ka79BDAGC9xOepY/I8=;
-	b=mW4n+A9CpNvcdQwAqKcXgvmWOsDSsNK3ZD5SmnfCZUkjkfe4FTPiMGByOVdN9xu29mX4vg
-	pFroZSFFP4rbGAhPtmfUnFmR9JtI+IhRnclmU7b32N1MUY18t1EisNbMnXk5rhk37BO1X8
-	3cSBJR8ssvT+wIkx5YmH4eak7buGyi4=
-Date: Fri, 22 Jul 2022 13:43:30 +0200
+	bh=3Hc0Vuv3k27qn5hRTK62cKaY/chLQcEx0JaH2giHRug=;
+	b=fFn7fCbE9fzF8IoOrgQ/x1EoTFvBSRPNJLjiw+qpNnOmbOf65mkhNsyc0cETIHlUak1sm/
+	qOkO8NF/s4BDSD8YxmO71pol1top4QIOpBgu/2bqpyTZC67PPk7hajToBOT++7Gm1GT4fO
+	nwOhQ/PnGxR+T4CmEfYCAQnMLgFMbSM=
+Date: Fri, 22 Jul 2022 17:07:13 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
-Message-ID: <YtqNYudg6uj6Rlem@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <8f63961f00fd170ba0e561f499292175f3155d26.1655761627.git.ashish.kalra@amd.com>
+To: Marc Orr <marcorr@google.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Peter Gonda <pgonda@google.com>, Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Marcelo Cerri <marcelo.cerri@canonical.com>,
+	tim.gardner@canonical.com,
+	Khalid ElMously <khalid.elmously@canonical.com>,
+	philip.cox@canonical.com, the arch/x86 maintainers <x86@kernel.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	"Yao, Jiewen" <jiewen.yao@intel.com>
+Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted
+ memory
+Message-ID: <Ytq9IWopJS4EGqEq@zn.tnic>
+References: <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
+ <YtcCWfCQuEsVhH6W@zn.tnic>
+ <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
+ <YtcgxxMyFTReuuRw@zn.tnic>
+ <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
+ <YtcnQbiRgZPtR+rQ@zn.tnic>
+ <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
+ <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
+ <YteWPj7HytPrcplB@zn.tnic>
+ <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -45,97 +67,71 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8f63961f00fd170ba0e561f499292175f3155d26.1655761627.git.ashish.kalra@amd.com>
+In-Reply-To: <CAA03e5H8-n23eZ5sMWLQADpJ+AQCrhMoDng_aiw3-C5cPHEwnA@mail.gmail.com>
 
-On Mon, Jun 20, 2022 at 11:02:33PM +0000, Ashish Kalra wrote:
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index 25c7feb367f6..59e7ec6b0326 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -65,6 +65,8 @@
->   * bookkeeping, the range need to be added during the RMP entry lookup.
->   */
->  #define RMPTABLE_CPU_BOOKKEEPING_SZ	0x4000
-> +#define RMPENTRY_SHIFT			8
-> +#define rmptable_page_offset(x)	(RMPTABLE_CPU_BOOKKEEPING_SZ + (((unsigned long)x) >> RMPENTRY_SHIFT))
->  
->  /* For early boot hypervisor communication in SEV-ES enabled guests */
->  static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
-> @@ -2386,3 +2388,44 @@ static int __init snp_rmptable_init(void)
->   * available after subsys_initcall().
->   */
->  fs_initcall(snp_rmptable_init);
-> +
-> +static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
-> +{
-> +	unsigned long vaddr, paddr = pfn << PAGE_SHIFT;
-> +	struct rmpentry *entry, *large_entry;
-> +
-> +	if (!pfn_valid(pfn))
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return ERR_PTR(-ENXIO);
+On Wed, Jul 20, 2022 at 10:03:40AM -0700, Marc Orr wrote:
+> Generally, no. But the problem with tags is that distros tag their
+> images wrong sometimes. And that leads to problems. For example, I
+> just got a bug assigned to me yesterday about some ARM image tagged as
+> SEV_CAPABLE. Oops. Lol :-). (Though, I'm pretty sure we won't try to
+> boot an ARM image on a non-ARM host anyway; but it's still wrong...)
 
-That test should happen first.
+Yeah, even if, let it crash'n'burn - people will notice pretty quickly.
 
-> +	vaddr = rmptable_start + rmptable_page_offset(paddr);
+> That being said, this lazy accept problem is sort of a special case,
+> since it requires deploying code to the guest FW and the guest kernel.
+> I'm still relatively new at all of this, but other than the
+> SNP/TDX-enlightenment patches themselves,  I haven't really seen any
+> other examples of this. So that goes back to my previous question. Is
+> this going to happen a lot more?
 
-Wait, what does that macro do?
+Good question.
 
-It takes the physical address and gives the offset from the beginning of
-the RMP table in VA space?
+Unfortunately, not even the architects of coco could give you an answer
+because, as you see yourself, those additional features like memory
+acceptance, live migration, etc keep changing - the whole coco thing is
+pretty much a moving target.
 
-So why don't you do
+For example, if someone comes along and says, err, see, I have this live
+migration helper and that thing runs as an EFI executable and it is so
+much better...
 
-	entry = rmptable_entry(paddr)
+Not saying it'll happen but it could. I hope you're catching my drift.
 
-instead which simply gives you directly the entry in the RMP table with
-which you can work further?
+> If not, I can definitely see value in the argument to skip the
+> complexity of the FW/kernel feature negotiation.
+>
+> Another thing I thought of since my last reply, that's mostly an
+> internal solution to this problem on our side: Going back to Dave's
+> 10k-foot view of the different angles of how to solve this. For "1.
+> Deal with that at the host level configuration", I'm thinking we could
+> tag the images with their internal guest kernel version. For example,
+> if an image has a 5.15 kernel, then we could have a `KERNEL_5_15` tag.
+> This would then allow us to have logic in the guest FW like:
+> 
+> if (guest_kernel_is_at_least(/*major=*/5, /*minor=*/15)
+>      enable_lazy_accept = true;
 
-Instead of this macro doing half the work and then callers having to add
-the RMP start address and cast.
+Well, I don't want to spoil your idea but imagine distros like SLE or
+others backport features into old kernels. All of a sudden 5.14 or older
+can do memory acceptance too. And then that version-based scheme falls
+apart.
 
-And make it small function so that you can have typechecking too, while
-at it.
+So I'm guessing it would probably be better to explicitly tag distro
+images. Thing is, once all needed support gets in, you can drop the tags
+and simply say, you don't support those old images anymore and assume
+all required support is there and implicit...
 
-> +	if (unlikely(vaddr > rmptable_end))
-> +		return ERR_PTR(-ENXIO);
-> +
-> +	entry = (struct rmpentry *)vaddr;
-> +
-> +	/* Read a large RMP entry to get the correct page level used in RMP entry. */
-> +	vaddr = rmptable_start + rmptable_page_offset(paddr & PMD_MASK);
-> +	large_entry = (struct rmpentry *)vaddr;
-> +	*level = RMP_TO_X86_PG_LEVEL(rmpentry_pagesize(large_entry));
-> +
-> +	return entry;
-> +}
-> +
-> +/*
-> + * Return 1 if the RMP entry is assigned, 0 if it exists but is not assigned,
-> + * and -errno if there is no corresponding RMP entry.
-> + */
-> +int snp_lookup_rmpentry(u64 pfn, int *level)
-> +{
-> +	struct rmpentry *e;
-> +
-> +	e = __snp_lookup_rmpentry(pfn, level);
-> +	if (IS_ERR(e))
-> +		return PTR_ERR(e);
-> +
-> +	return !!rmpentry_assigned(e);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_lookup_rmpentry);
-> diff --git a/include/linux/sev.h b/include/linux/sev.h
-> new file mode 100644
-> index 000000000000..1a68842789e1
-> --- /dev/null
-> +++ b/include/linux/sev.h
+> Also, tagging images with their underlying kernel versions still seems
+> susceptible to mis-labeling. But this seems like it can be mostly
+> "fixed" via automation (e.g., write a tool to boot the guest and ask
+> it what it's kernel version is and use the result to attach the tag).
 
-Why is this header in the linux/ namespace and not in arch/x86/ ?
+I'll do you one better: boot the image and check for all required
+features and produce tags. Or do not accept the image as a possible coco
+image. And so on.
 
-All that stuff in here doesn't have any meaning outside of x86...
+Thx.
 
 -- 
 Regards/Gruss,
