@@ -1,104 +1,97 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F25B5C88
-	for <linux-coco@lists.linux.dev>; Fri, 22 Jul 2022 22:25:53 +0000 (UTC)
-Received: from zn.tnic (p200300ea97297621329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:7621:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DFCE81EC02E4;
-	Sat, 23 Jul 2022 00:25:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658528746;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=emiawl0ZNbUbhwPd8wD23nmKvXFNPldjeUy0zLg0tu8=;
-	b=eNQANAVlpHoclXI7HJ9Le6r1ZbS/iErXCHKwynRvmd73vdwfp6eQVw1ymNnEsRmPAaXC4w
-	Ebxz9VE60nC3MAtQQzpMQMj0daKH8XQ/n7m6f6fADdwGeLsIYGC2St44DA/pIqrE+sewKM
-	48fmPx4N0N76V4OTDJSFL8YTsgIDDfo=
-Date: Sat, 23 Jul 2022 00:25:41 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Kalra, Ashish" <Ashish.Kalra@amd.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"jroedel@suse.de" <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"slp@redhat.com" <slp@redhat.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
-	"tobin@ibm.com" <tobin@ibm.com>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>,
-	"ak@linux.intel.com" <ak@linux.intel.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"alpergun@google.com" <alpergun@google.com>,
-	"dgilbert@redhat.com" <dgilbert@redhat.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
-Message-ID: <Ytsj5Wi0clIR6p9l@zn.tnic>
-References: <99d72d58-a9bb-d75c-93af-79d497dfe176@intel.com>
- <BYAPR12MB275984F14B1E103935A103D98EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <5db37cc2-4fb1-7a73-c39a-3531260414d0@intel.com>
- <BYAPR12MB2759AA368C8B6A5F1C31642F8EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <YrTq3WfOeA6ehsk6@google.com>
- <SN6PR12MB276743CBEAD5AFE9033AFE558EB59@SN6PR12MB2767.namprd12.prod.outlook.com>
- <YtqLhHughuh3KDzH@zn.tnic>
- <Ytr0t119QrZ8PUBB@google.com>
- <Ytr5ndnlOQvqWdPP@zn.tnic>
- <Ytshp+D+IT8eaevH@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98ABC7E
+	for <linux-coco@lists.linux.dev>; Sat, 23 Jul 2022 11:14:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F419C341D6
+	for <linux-coco@lists.linux.dev>; Sat, 23 Jul 2022 11:14:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1658574859;
+	bh=unUMya6BPYpKOwprp7McozAEYE9y437U/0E90Qn/PR4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Idm4+tMyOetJHMHm/JAVCocTOpDhH/4+H8/qgaG+NFgUICBZPSdxOWI37JM3gj4jD
+	 V/OvQrda6hV48GHEYYyJr2xsCS8G0WxITIICAUzHNOeUZHGM8byaEfem/GklOYd5gH
+	 JvghH3cTxQxj28q6wqE6BgHdL5BWoCOKeQD8R3DFh9Y9y2hrqspCAFre0Q7odymkit
+	 PbfzEelwOOQoCJa+SsljsBScBGvZh0aG6+dBH7mGbVmOQ0OV1xq+h5inC3QVGFjkIl
+	 B3CNOrcxJO9NYFM0Lzb9ojZddR7wJ5tbrspEtad7+ovslybBfnYDXxmHSdkrls8L8o
+	 /yiwejtDXqhMA==
+Received: by mail-ot1-f42.google.com with SMTP id br15-20020a056830390f00b0061c9d73b8bdso5130000otb.6
+        for <linux-coco@lists.linux.dev>; Sat, 23 Jul 2022 04:14:19 -0700 (PDT)
+X-Gm-Message-State: AJIora+rFV0blEg2rXZY0AwbwVRzO8J/pN+/AT7JNo1IbOZN/kABqloo
+	poN3A0RI/qbDfGFw/TDflHP7aM8Gz2GqVPMpW04=
+X-Google-Smtp-Source: AGRyM1toSHzLLGvC9FLzuNt3t1myK6Yjo1zRCx/Yq65wM9j6V/TSj8mKNgSzLkZMi7xH4yhMSuJHvm32vnmmswjz4II=
+X-Received: by 2002:a05:6830:441f:b0:61c:a5bb:9c6a with SMTP id
+ q31-20020a056830441f00b0061ca5bb9c6amr1524623otv.265.1658574858208; Sat, 23
+ Jul 2022 04:14:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Ytshp+D+IT8eaevH@google.com>
+References: <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com>
+ <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
+ <20220718172159.4vwjzrfthelovcty@black.fi.intel.com> <CAAH4kHYR+VkSJ5J8eWmeaEvstuRz_EuqVQqPfwmp5dhNGRyJwQ@mail.gmail.com>
+ <CAAH4kHaHJo4NUb72tHeica4a34hq5u_QP6d6Vuzngf6EqTJ8Aw@mail.gmail.com>
+ <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
+ <YtcCWfCQuEsVhH6W@zn.tnic> <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
+ <YtcgxxMyFTReuuRw@zn.tnic> <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
+ <YtcnQbiRgZPtR+rQ@zn.tnic> <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
+ <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com> <ffb4ae72-7fd4-d2a0-df10-3969cf8ca07f@intel.com>
+In-Reply-To: <ffb4ae72-7fd4-d2a0-df10-3969cf8ca07f@intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sat, 23 Jul 2022 13:14:07 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHEc=vEt=CtfdiPEsUe2i8QogAi+jvtY6h1awo7GZ-nRg@mail.gmail.com>
+Message-ID: <CAMj1kXHEc=vEt=CtfdiPEsUe2i8QogAi+jvtY6h1awo7GZ-nRg@mail.gmail.com>
+Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Marc Orr <marcorr@google.com>, Borislav Petkov <bp@alien8.de>, 
+	Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Peter Gonda <pgonda@google.com>, 
+	Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
+	Andi Kleen <ak@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>, 
+	Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Marcelo Cerri <marcelo.cerri@canonical.com>, 
+	tim.gardner@canonical.com, Khalid ElMously <khalid.elmously@canonical.com>, 
+	philip.cox@canonical.com, "the arch/x86 maintainers" <x86@kernel.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, linux-coco@lists.linux.dev, 
+	linux-efi <linux-efi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	"Yao, Jiewen" <jiewen.yao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jul 22, 2022 at 10:16:07PM +0000, Sean Christopherson wrote:
-> Yar, just wanted to be make sure we're all on the same page, I wasn't entirely
-> sure what was get nacked :-)
+On Thu, 21 Jul 2022 at 19:13, Dave Hansen <dave.hansen@intel.com> wrote:
+>
+> On 7/19/22 17:26, Marc Orr wrote:
+> > - Dave's suggestion to "2. Boot some intermediate thing like a
+> > bootloader that does acceptance ..." is pretty clever! So if upstream
+> > thinks this FW-kernel negotiation is not a good direction, maybe we
+> > (Google) can pursue this idea to avoid introducing yet another tag on
+> > our images.
+>
+> I'm obviously speaking only for myself here and not for "upstream" as a
+> whole, but I clearly don't like the FW/kernel negotiation thing.  It's a
+> permanent pain in our necks to solve a very temporary problem.
 
-Not nacked - we're all just talking here. :-)
+EFI is basically our existing embodiment of this fw/kernel negotiation
+thing, and iff we need it, I have no objection to using it for this
+purpose, i.e., to allow the firmware to infer whether or not it should
+accept all available memory on behalf of the OS before exiting boot
+services. But if we don't need this, even better.
 
-> Heh, you're definitely more optimistic than me.  I can just see something truly
-> ridiculous happening like moving the page size bit and then getting weird behavior
-> only when KVM happens to need the page size for some edge case.
-> 
-> Anyways, it's not a sticking point, and I certainly am not volunteering to
-> maintain the FMS list...
+What I strongly object to is inventing a new bespoke way for the
+firmware to make inferences about the capabilities of the image by
+inspecting fields in the file representation of the image (which is
+not guaranteed by EFI to be identical to its in-memory representation,
+as, e.g., the PE/COFF header could be omitted by a loader without
+violating the spec)
 
-Yeah, no need for it to be a sticking point because a pretty reliable
-birdie just told me that we're worrying for nothing and it all will
-solve itself.
-
-:-)
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+As for the intermediate thing: yes, that would be a valuable thing to
+have in OVMF (and I will gladly take EDK2 patches that implement
+this). However, I'm not sure how you decide whether or not this thing
+should be active or not, doesn't that just move the problem around?
