@@ -1,43 +1,51 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C472C1372
-	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 14:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCC04C61
+	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 21:34:00 +0000 (UTC)
 Received: from zn.tnic (p200300ea972976f8329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:76f8:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DCF841EC0554;
-	Mon, 25 Jul 2022 16:36:58 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7C0A11EC066B;
+	Mon, 25 Jul 2022 23:33:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658759818;
+	t=1658784834;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=Ukq4Ju25HfOtxA6MIzJPkc7+yNzn1aszkw7wxTvzP54=;
-	b=Tmx9olaPmHkwLBrBL1vEE/sWkEe+Zs2j9FDsF2GEiz9TIkJg5v9gxUBFF7nY3RpzGfVTcG
-	i92eMw4KSOayT98YDkbl34LR/hryxsZsVOdUuFY6MEdwNLXpQkcqnwpwbyrr0B97Sxaxh2
-	YogDp8c2pbWrktu9FED9q/LKngw0f5E=
-Date: Mon, 25 Jul 2022 16:36:58 +0200
+	bh=tM8JUMtEE64JXkhTJ4ySfqBHIh3ADZoigQa1MJo3G4U=;
+	b=LV4sXBKB3O2V9Z+TYlZrs4devz/A7P7EV/+9RZZaM0/UWOJTvOVB7O+tz44YDcrtzt+Lrg
+	436oXGQr+h+F7FBTKhUfrMTCKW53r5CSKrI1XpwNIPlmGLWGoiWu4exdlwM4sNqPgVW6Yg
+	+vpbZx5Brb1Jso25md+CtU13tLW9rgo=
+Date: Mon, 25 Jul 2022 23:33:48 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 06/49] x86/sev: Add helper functions for
- RMPUPDATE and PSMASH instruction
-Message-ID: <Yt6qit4al5/eM7YO@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <e4643e9d37fcb025d0aec9080feefaae5e9245d5.1655761627.git.ashish.kalra@amd.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com, khalid.elmously@canonical.com,
+	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 05/14] x86/boot: Add infrastructure required for
+ unaccepted memory support
+Message-ID: <Yt8MPGzmILwNkV+X@zn.tnic>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-6-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -46,41 +54,27 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e4643e9d37fcb025d0aec9080feefaae5e9245d5.1655761627.git.ashish.kalra@amd.com>
+In-Reply-To: <20220614120231.48165-6-kirill.shutemov@linux.intel.com>
 
-On Mon, Jun 20, 2022 at 11:02:52PM +0000, Ashish Kalra wrote:
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index cb16f0e5b585..6ab872311544 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -85,7 +85,9 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
->  
->  /* RMP page size */
->  #define RMP_PG_SIZE_4K			0
-> +#define RMP_PG_SIZE_2M			1
->  #define RMP_TO_X86_PG_LEVEL(level)	(((level) == RMP_PG_SIZE_4K) ? PG_LEVEL_4K : PG_LEVEL_2M)
-> +#define X86_TO_RMP_PG_LEVEL(level)	(((level) == PG_LEVEL_4K) ? RMP_PG_SIZE_4K : RMP_PG_SIZE_2M)
->  
->  /*
->   * The RMP entry format is not architectural. The format is defined in PPR
-> @@ -126,6 +128,15 @@ struct snp_guest_platform_data {
->  	u64 secrets_gpa;
->  };
->  
-> +struct rmpupdate {
-
-Why is there a struct rmpupdate *and* a struct rmpentry?!
-
-One should be enough.
-
-> +	u64 gpa;
-> +	u8 assigned;
-> +	u8 pagesize;
-> +	u8 immutable;
-> +	u8 rsvd;
-> +	u32 asid;
-> +} __packed;
+On Tue, Jun 14, 2022 at 03:02:22PM +0300, Kirill A. Shutemov wrote:
+> diff --git a/arch/x86/boot/compressed/compiler.h b/arch/x86/boot/compressed/compiler.h
+> new file mode 100644
+> index 000000000000..452c4c0844b9
+> --- /dev/null
+> +++ b/arch/x86/boot/compressed/compiler.h
+> @@ -0,0 +1,9 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef BOOT_COMPILER_H
+> +#define BOOT_COMPILER_H
+> +#define __LINUX_COMPILER_H /* Inhibit inclusion of <linux/compiler.h> */
 > +
+> +# define likely(x)	__builtin_expect(!!(x), 1)
+> +# define unlikely(x)	__builtin_expect(!!(x), 0)
+> +
+> +#endif
+
+I guess that header is not really needed - simply drop the annotations
+from the code too.
 
 -- 
 Regards/Gruss,
