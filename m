@@ -1,117 +1,87 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27B363B
-	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 11:19:29 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCF263B
+	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 12:23:29 +0000 (UTC)
+Received: from zn.tnic (p200300ea972976f8329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:76f8:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C9DD237784;
-	Mon, 25 Jul 2022 11:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1658747967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fsGXEvpXgpa8MJd9I5kGhBSqRiO/o6Xz4MHAqkV7RDk=;
-	b=Gz71EENsDg6dNC88X0BdB9GDBrjspBCS9qbzDEOQ/iWz0SiagzJivwYHMaMeD41PQ+dlI+
-	VHsHpr0zFlH6d8P8n6f1sU2dUl9yslL+1EaJe+/Sh+n1ohih6dj7woa2MyYq86/ACCNjDA
-	5KAODZQYHvrt8J14qJDocRHImGDT9do=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1658747967;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fsGXEvpXgpa8MJd9I5kGhBSqRiO/o6Xz4MHAqkV7RDk=;
-	b=6rKjRPkY2Y/kcUjOc6t9q/asPWGv1DEJ7cIAFX4WwWDU5cWaY9XiR/3aYOhnWbAtwNH/Rk
-	/FythNPbFou+dkBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5997D13ABB;
-	Mon, 25 Jul 2022 11:19:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id t8RXFT983mLUQgAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Mon, 25 Jul 2022 11:19:27 +0000
-Message-ID: <a0774cc5-17f8-94ca-a490-1a06a5dec1fd@suse.cz>
-Date: Mon, 25 Jul 2022 13:19:27 +0200
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EE7341EC0646;
+	Mon, 25 Jul 2022 14:23:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1658751804;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=Sn5hmQQVaS9IivV+qbBQot02DE7Tn3rjLFedQjB87Z8=;
+	b=YSaLt6rMmx//TZ9X4tE5W2zr6O5WXLi/77suixSs0FK1W3MtTiHr4HGB++dUuUruuskSyE
+	hguBTrv+vOf/SXueqGd6fzgOc9nzLCrUwg5m5drkiVP6EgsqV6kYJL3nE0hUWrrOlHMpRG
+	yOpRsGwmx+YWM5mWRadfubTwOQ2IdZs=
+Date: Mon, 25 Jul 2022 14:23:20 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com, khalid.elmously@canonical.com,
+	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Message-ID: <Yt6LOD9Ae2NqyG1N@zn.tnic>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
+ <YtltYRuL+2uQkYUK@zn.tnic>
+ <ebcf2979-45fc-8d41-cc28-ac8da0d24245@intel.com>
+ <Ytr4FCV2xPGUBLqs@zn.tnic>
+ <707ca113-c2a2-8fe2-a22c-5be13adc7bb4@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH Part2 v6 33/49] KVM: x86: Update page-fault trace to log
- full 64-bit error code
-Content-Language: en-US
-To: Ashish Kalra <Ashish.Kalra@amd.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, michael.roth@amd.com,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <a937386611dc7d38981c8a08255c4a71f1295d9a.1655761627.git.ashish.kalra@amd.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <a937386611dc7d38981c8a08255c4a71f1295d9a.1655761627.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <707ca113-c2a2-8fe2-a22c-5be13adc7bb4@intel.com>
 
-On 6/21/22 01:10, Ashish Kalra wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
-> 
-> The #NPT error code is a 64-bit value but the trace prints only the
-> lower 32-bits. Some of the fault error code (e.g PFERR_GUEST_FINAL_MASK)
-> are available in the upper 32-bits.
-> 
-> Cc: <stable@kernel.org>
+On Fri, Jul 22, 2022 at 12:30:36PM -0700, Dave Hansen wrote:
+> Sure does...  *Something* has to manage the cache coherency so that old
+> physical aliases of the converted memory don't write back and clobber
+> new data.  But, maybe the hardware is doing that now.
 
-Why stable?
+Let's hope.
 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/kvm/trace.h | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
-> index e3a24b8f04be..9b9bc5468103 100644
-> --- a/arch/x86/kvm/trace.h
-> +++ b/arch/x86/kvm/trace.h
-> @@ -383,12 +383,12 @@ TRACE_EVENT(kvm_inj_exception,
->   * Tracepoint for page fault.
->   */
->  TRACE_EVENT(kvm_page_fault,
-> -	TP_PROTO(unsigned long fault_address, unsigned int error_code),
-> +	TP_PROTO(unsigned long fault_address, u64 error_code),
->  	TP_ARGS(fault_address, error_code),
->  
->  	TP_STRUCT__entry(
->  		__field(	unsigned long,	fault_address	)
-> -		__field(	unsigned int,	error_code	)
-> +		__field(	u64,		error_code	)
->  	),
->  
->  	TP_fast_assign(
-> @@ -396,7 +396,7 @@ TRACE_EVENT(kvm_page_fault,
->  		__entry->error_code	= error_code;
->  	),
->  
-> -	TP_printk("address %lx error_code %x",
-> +	TP_printk("address %lx error_code %llx",
->  		  __entry->fault_address, __entry->error_code)
->  );
->  
+> Yeah, that two-tier system is the way it's happening today from what
+> I understand. This whole conversation is about how to handle the >4GB
+> memory.
 
+Would it be possible to pre-accept a bunch of mem - think "pre-fault" -
+from userspace?
+
+I.e., I'm thinking some huge process is going to start in the VM, VM
+userspace goes and causes a chunk of memory to be pre-accepted and then
+the process starts and runs more-or-less smoothly as the majority of its
+memory has already been "prepared".
+
+Or does that not make any sense from mm perspective?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
