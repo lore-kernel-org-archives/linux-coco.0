@@ -1,61 +1,117 @@
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2FF62D
-	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 09:55:55 +0000 (UTC)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-	id BCA1246B; Mon, 25 Jul 2022 11:55:46 +0200 (CEST)
-Date: Mon, 25 Jul 2022 11:55:45 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	linux-sgx@vger.kernel.org
-Cc: Andi Kleen <ak@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	David Kaplan <David.Kaplan@amd.com>,
-	David Rientjes <rientjes@google.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Marc Orr <marcorr@google.com>, Mike Rapoport <rppt@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Peter Gonda <pgonda@google.com>,
-	Sathya Kuppuswamy <sathyanarayanan.kuppuswamy@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [CLOSED] Re: [CFP LPC 2022] Confidential Computing Microconference
-Message-ID: <Yt5ooTl8w4CFh4U3@8bytes.org>
-References: <Yoe4QZr8dqy1hrU1@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27B363B
+	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 11:19:29 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C9DD237784;
+	Mon, 25 Jul 2022 11:19:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1658747967; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fsGXEvpXgpa8MJd9I5kGhBSqRiO/o6Xz4MHAqkV7RDk=;
+	b=Gz71EENsDg6dNC88X0BdB9GDBrjspBCS9qbzDEOQ/iWz0SiagzJivwYHMaMeD41PQ+dlI+
+	VHsHpr0zFlH6d8P8n6f1sU2dUl9yslL+1EaJe+/Sh+n1ohih6dj7woa2MyYq86/ACCNjDA
+	5KAODZQYHvrt8J14qJDocRHImGDT9do=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1658747967;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fsGXEvpXgpa8MJd9I5kGhBSqRiO/o6Xz4MHAqkV7RDk=;
+	b=6rKjRPkY2Y/kcUjOc6t9q/asPWGv1DEJ7cIAFX4WwWDU5cWaY9XiR/3aYOhnWbAtwNH/Rk
+	/FythNPbFou+dkBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5997D13ABB;
+	Mon, 25 Jul 2022 11:19:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id t8RXFT983mLUQgAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Mon, 25 Jul 2022 11:19:27 +0000
+Message-ID: <a0774cc5-17f8-94ca-a490-1a06a5dec1fd@suse.cz>
+Date: Mon, 25 Jul 2022 13:19:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Yoe4QZr8dqy1hrU1@8bytes.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH Part2 v6 33/49] KVM: x86: Update page-fault trace to log
+ full 64-bit error code
+Content-Language: en-US
+To: Ashish Kalra <Ashish.Kalra@amd.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, michael.roth@amd.com,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <a937386611dc7d38981c8a08255c4a71f1295d9a.1655761627.git.ashish.kalra@amd.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <a937386611dc7d38981c8a08255c4a71f1295d9a.1655761627.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi again,
-
-On Fri, May 20, 2022 at 05:48:18PM +0200, Jörg Rödel wrote:
-> Please submit your proposals on the LPC website at:
+On 6/21/22 01:10, Ashish Kalra wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> 	https://lpc.events/event/16/abstracts/
+> The #NPT error code is a 64-bit value but the trace prints only the
+> lower 32-bits. Some of the fault error code (e.g PFERR_GUEST_FINAL_MASK)
+> are available in the upper 32-bits.
+> 
+> Cc: <stable@kernel.org>
 
-Thanks a lot for the numerous topic submissions! I am very exicted and I
-am looking forward to great discussions at this microconference. As of
-now we already have more submissions than we can fit in the 3.5 hour
-slot. Therefore the CfP for this MC is now closed and further
-submissions will not be considered.
+Why stable?
 
-If there are still other topics that need discussion please reach out to
-me via email, maybe we can organize a BoF around additional topics.
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kvm/trace.h | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+> index e3a24b8f04be..9b9bc5468103 100644
+> --- a/arch/x86/kvm/trace.h
+> +++ b/arch/x86/kvm/trace.h
+> @@ -383,12 +383,12 @@ TRACE_EVENT(kvm_inj_exception,
+>   * Tracepoint for page fault.
+>   */
+>  TRACE_EVENT(kvm_page_fault,
+> -	TP_PROTO(unsigned long fault_address, unsigned int error_code),
+> +	TP_PROTO(unsigned long fault_address, u64 error_code),
+>  	TP_ARGS(fault_address, error_code),
+>  
+>  	TP_STRUCT__entry(
+>  		__field(	unsigned long,	fault_address	)
+> -		__field(	unsigned int,	error_code	)
+> +		__field(	u64,		error_code	)
+>  	),
+>  
+>  	TP_fast_assign(
+> @@ -396,7 +396,7 @@ TRACE_EVENT(kvm_page_fault,
+>  		__entry->error_code	= error_code;
+>  	),
+>  
+> -	TP_printk("address %lx error_code %x",
+> +	TP_printk("address %lx error_code %llx",
+>  		  __entry->fault_address, __entry->error_code)
+>  );
+>  
 
-Thanks a lot,
-
-       Joerg
