@@ -1,70 +1,42 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B3D1375
-	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 13:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37331181
+	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 14:32:14 +0000 (UTC)
 Received: from zn.tnic (p200300ea972976f8329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:76f8:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B0B301EC067C;
-	Mon, 25 Jul 2022 15:24:36 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DA9011EC0554;
+	Mon, 25 Jul 2022 16:32:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658755476;
+	t=1658759527;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=6AT8Zd6HwL3AiZs+hVZ03j4gMl4EdeI7g5LHD0WVY6c=;
-	b=reBNqb8TBfK88JijG2GZF3ExFDhuXvx6UCJ+L4ncIaQQMbNHAnw46ziQDqR027wg/Pf545
-	gHmETb4hT1AQSnH+5tSTjZoNfWdm1nfBkVX2XX488+Z84i2aM4CdrsUtaA7n4u1Rx/f9vc
-	KB+srz/jIG2tKwpZor+3FWqijTbmBTc=
-Date: Mon, 25 Jul 2022 15:24:31 +0200
+	bh=eFkyFfYwzdjMe2TFbK6JN+UuA/fBO6Fgi7kfcYlY0nc=;
+	b=RxNdjRWIDGQmYeYuo2H9YlPOtj+XPvvNc9IkCJlRaohNd1UK1e+L6ZmctWEneBEvOBjGn4
+	M8/4UarWyUZRy359qf45+k4Q2Vubx9mXD/e3xYgsKBfpWybZWR1/FofQAFJO8sfT3+ZeWZ
+	P33CncvQHT0Y4iyE2NZLgmcUsCCrjG4=
+Date: Mon, 25 Jul 2022 16:32:02 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"jroedel@suse.de" <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"slp@redhat.com" <slp@redhat.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
-	"tobin@ibm.com" <tobin@ibm.com>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>,
-	"ak@linux.intel.com" <ak@linux.intel.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"alpergun@google.com" <alpergun@google.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 06/49] x86/sev: Add helper functions for
- RMPUPDATE and PSMASH instruction
-Message-ID: <Yt6ZjzCSqPv6BKfH@zn.tnic>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 05/49] x86/sev: Add RMP entry lookup helpers
+Message-ID: <Yt6pYu1D28DPatcK@zn.tnic>
 References: <cover.1655761627.git.ashish.kalra@amd.com>
- <e4643e9d37fcb025d0aec9080feefaae5e9245d5.1655761627.git.ashish.kalra@amd.com>
- <YrH0ca3Sam7Ru11c@work-vm>
- <SN6PR12MB2767FBF0848B906B9F0284D28EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
- <BYAPR12MB2759910E715C69D1027CCE678EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <Yrrc/6x70wa14c5t@work-vm>
- <SN6PR12MB27677062FBBF9D62C7BF41D88EB89@SN6PR12MB2767.namprd12.prod.outlook.com>
+ <8f63961f00fd170ba0e561f499292175f3155d26.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -73,21 +45,35 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <SN6PR12MB27677062FBBF9D62C7BF41D88EB89@SN6PR12MB2767.namprd12.prod.outlook.com>
+In-Reply-To: <8f63961f00fd170ba0e561f499292175f3155d26.1655761627.git.ashish.kalra@amd.com>
 
-On Tue, Jun 28, 2022 at 05:57:41PM +0000, Kalra, Ashish wrote:
-> Yes, I will be adding a check for CPU family/model as following :
+On Mon, Jun 20, 2022 at 11:02:33PM +0000, Ashish Kalra wrote:
+> +/*
+> + * The RMP entry format is not architectural. The format is defined in PPR
+> + * Family 19h Model 01h, Rev B1 processor.
+> + */
+> +struct __packed rmpentry {
 
-Why if the PPR is already kinda spelling the already architectural
-pieces of the RMP entry?
+That __packed goes...
 
-"In order to assist software" it says.
+> +	union {
+> +		struct {
+> +			u64	assigned	: 1,
+> +				pagesize	: 1,
+> +				immutable	: 1,
+> +				rsvd1		: 9,
+> +				gpa		: 39,
+> +				asid		: 10,
+> +				vmsa		: 1,
+> +				validated	: 1,
+> +				rsvd2		: 1;
+> +		} info;
+> +		u64 low;
+> +	};
+> +	u64 high;
+> +};
 
-So you call the specified ones by their name and the rest is __rsvd.
-
-No need for model checks at all.
-
-Right?
+... here, at the end.
 
 -- 
 Regards/Gruss,
