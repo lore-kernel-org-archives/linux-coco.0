@@ -1,56 +1,70 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FE41375
-	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 13:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B3D1375
+	for <linux-coco@lists.linux.dev>; Mon, 25 Jul 2022 13:24:42 +0000 (UTC)
 Received: from zn.tnic (p200300ea972976f8329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9729:76f8:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 875791EC0676;
-	Mon, 25 Jul 2022 15:05:50 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B0B301EC067C;
+	Mon, 25 Jul 2022 15:24:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658754350;
+	t=1658755476;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=52Qsfzz/eK6LL+bUeQnS882u4becLcvnVA9HncA22sc=;
-	b=LD8LsHoPHH/NL3lqbbPiC+sLdVADfY6h4+j9KI1QvSpaGuAiXBemvCuUiGfRkFkhRk2Hs1
-	OtqFWry/URmUcMVPQQ50FnkfmEBvp/gW8ace4cIgK2IPfAH+Ybjuvvl3GCfbrlICpDH09M
-	TkF7z8DGAOYH3LmJHyCMc+nhnw2KGEY=
-Date: Mon, 25 Jul 2022 15:05:50 +0200
+	bh=6AT8Zd6HwL3AiZs+hVZ03j4gMl4EdeI7g5LHD0WVY6c=;
+	b=reBNqb8TBfK88JijG2GZF3ExFDhuXvx6UCJ+L4ncIaQQMbNHAnw46ziQDqR027wg/Pf545
+	gHmETb4hT1AQSnH+5tSTjZoNfWdm1nfBkVX2XX488+Z84i2aM4CdrsUtaA7n4u1Rx/f9vc
+	KB+srz/jIG2tKwpZor+3FWqijTbmBTc=
+Date: Mon, 25 Jul 2022 15:24:31 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
-	tim.gardner@canonical.com, khalid.elmously@canonical.com,
-	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Message-ID: <Yt6VLnsqedRnxb1g@zn.tnic>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <YtltYRuL+2uQkYUK@zn.tnic>
- <ebcf2979-45fc-8d41-cc28-ac8da0d24245@intel.com>
- <Ytr4FCV2xPGUBLqs@zn.tnic>
- <707ca113-c2a2-8fe2-a22c-5be13adc7bb4@intel.com>
- <Yt6LOD9Ae2NqyG1N@zn.tnic>
- <Yt6T3vlbTZ5z0nZ/@kernel.org>
+To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"jroedel@suse.de" <jroedel@suse.de>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>,
+	"jmattson@google.com" <jmattson@google.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"slp@redhat.com" <slp@redhat.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+	"tobin@ibm.com" <tobin@ibm.com>,
+	"Roth, Michael" <Michael.Roth@amd.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>,
+	"ak@linux.intel.com" <ak@linux.intel.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"alpergun@google.com" <alpergun@google.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: Re: [PATCH Part2 v6 06/49] x86/sev: Add helper functions for
+ RMPUPDATE and PSMASH instruction
+Message-ID: <Yt6ZjzCSqPv6BKfH@zn.tnic>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <e4643e9d37fcb025d0aec9080feefaae5e9245d5.1655761627.git.ashish.kalra@amd.com>
+ <YrH0ca3Sam7Ru11c@work-vm>
+ <SN6PR12MB2767FBF0848B906B9F0284D28EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
+ <BYAPR12MB2759910E715C69D1027CCE678EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
+ <Yrrc/6x70wa14c5t@work-vm>
+ <SN6PR12MB27677062FBBF9D62C7BF41D88EB89@SN6PR12MB2767.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -59,25 +73,21 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Yt6T3vlbTZ5z0nZ/@kernel.org>
+In-Reply-To: <SN6PR12MB27677062FBBF9D62C7BF41D88EB89@SN6PR12MB2767.namprd12.prod.outlook.com>
 
-On Mon, Jul 25, 2022 at 04:00:14PM +0300, Mike Rapoport wrote:
-> An application in the VM can do mlock() or mmap(..., MAP_POPULATE, ...) and
-> this will essentially force acceptance of that memory.
+On Tue, Jun 28, 2022 at 05:57:41PM +0000, Kalra, Ashish wrote:
+> Yes, I will be adding a check for CPU family/model as following :
 
-Ah, cool, that's what I meant.
+Why if the PPR is already kinda spelling the already architectural
+pieces of the RMP entry?
 
-> But there's no sysctl or something for that.
+"In order to assist software" it says.
 
-Yeah, no need.
+So you call the specified ones by their name and the rest is __rsvd.
 
-I was simply wondering whether one can relocate the acceptance work to
-the moment prior to starting the process so that it can run smoothly
-once started and doesn't cause spikes due to on-demand acceptance.
+No need for model checks at all.
 
-At least not too many.
-
-Thx.
+Right?
 
 -- 
 Regards/Gruss,
