@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DAC7A
-	for <linux-coco@lists.linux.dev>; Tue, 26 Jul 2022 09:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A607A
+	for <linux-coco@lists.linux.dev>; Tue, 26 Jul 2022 10:21:59 +0000 (UTC)
 Received: from zn.tnic (p200300ea970f4ff2329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:970f:4ff2:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 85EDD1EC056D;
-	Tue, 26 Jul 2022 11:07:18 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B337F1EC0752;
+	Tue, 26 Jul 2022 12:21:52 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658826438;
+	t=1658830912;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=YvKICD3C3EkdneDF/q9lFJXRTdW4l8BIH7qdHQLIvtU=;
-	b=Yo9S+umsUXGkd2N2+EJPjWHBFHulzSwL9NmkQdv/cdl2EDyyA6myeHNDdQLkmsXhTX+CJa
-	hFis4wDZIQh1r/G1t6t4646L8o8ZrbZ6R6AKgLpZktkblMeH0IzdFc8vIR0hlPqJd3EAMk
-	hjdt9RuEmy2kI+NqvDzu3VR2K45AYbc=
-Date: Tue, 26 Jul 2022 11:07:14 +0200
+	bh=/P1wM6FgHkzkzzeSWlInZ0RYBV1gb4eC4ZgQi5olGm4=;
+	b=PbdzczJDeQ8LLlXksk7hVHQ+T2TLNFi5/od1iAPMkG/SpwqVeFVPeMxAGLmG4UGEhQRHBY
+	MH7M/FAFaHUptHivgNBeijb6YkGj2olR1lf7jAUeVa2FbhM0+IWqiX+5sOgMNZthnBHYx4
+	La2ARG9vO/kG+snwBdh4BAuY1+QQX74=
+Date: Tue, 26 Jul 2022 12:21:40 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>,
@@ -40,11 +40,12 @@ Cc: Andy Lutomirski <luto@kernel.org>,
 	tim.gardner@canonical.com, khalid.elmously@canonical.com,
 	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
 	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv7 08/14] x86/mm: Reserve unaccepted memory bitmap
-Message-ID: <Yt+uwhfA57WBrozb@zn.tnic>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping
+ into unaccepted memory
+Message-ID: <Yt/ANO5usdV+JSSW@zn.tnic>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-9-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,37 +54,22 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220614120231.48165-9-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
 
-On Tue, Jun 14, 2022 at 03:02:25PM +0300, Kirill A. Shutemov wrote:
-> diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-> index f267205f2d5a..22d1fe48dcba 100644
-> --- a/arch/x86/kernel/e820.c
-> +++ b/arch/x86/kernel/e820.c
-> @@ -1316,6 +1316,16 @@ void __init e820__memblock_setup(void)
->  	int i;
->  	u64 end;
->  
-> +	/* Mark unaccepted memory bitmap reserved */
-> +	if (boot_params.unaccepted_memory) {
-> +		unsigned long size;
-> +
-> +		/* One bit per 2MB */
-> +		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
-> +				    PMD_SIZE * BITS_PER_BYTE);
-> +		memblock_reserve(boot_params.unaccepted_memory, size);
-> +	}
-> +
+On Tue, Jun 14, 2022 at 03:02:27PM +0300, Kirill A. Shutemov wrote:
+> But, this approach does not work for unaccepted memory. For TDX, a load
+> from unaccepted memory will not lead to a recoverable exception within
+> the guest. The guest will exit to the VMM where the only recourse is to
+> terminate the guest.
 
-Hmm, I don't like how this is dropped right in the middle of a unrelated
-function.
+FTR, this random-memory-access-to-unaccepted-memory-is-deadly thing is
+really silly. We should be able to handle such cases - because they do
+happen often - in a more resilient way. Just look at the complex dance
+this patch needs to do just to avoid this.
 
-You're adding arch/x86/mm/unaccepted_memory.c later. Why don't you put
-that chunk in a function there which is called by early_reserve_memory()
-which does exactly what you want - reserve memory early, before memblock
-allocations?
+IOW, this part of the coco technology needs improvement.
 
-Hmm.
+Just sayin...
 
 -- 
 Regards/Gruss,
