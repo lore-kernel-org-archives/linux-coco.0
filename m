@@ -1,23 +1,24 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE1A2590
-	for <linux-coco@lists.linux.dev>; Tue, 26 Jul 2022 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7784538E
+	for <linux-coco@lists.linux.dev>; Tue, 26 Jul 2022 17:25:19 +0000 (UTC)
 Received: from zn.tnic (p200300ea970f4ff2329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:970f:4ff2:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9EC801EC0622;
-	Tue, 26 Jul 2022 16:51:24 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7E2BA1EC0373;
+	Tue, 26 Jul 2022 19:25:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1658847084;
+	t=1658856313;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=NGpnmZ5jm4nrbHTpdSQDfmfUGgLHgWESSBLxxIVaizU=;
-	b=dHkIi2g4b9g7z5bsQlPX2NowyqkPzJCGlMi4Ufh5hsv5Tfj5YHiwctLroQfN+dGTx85G+h
-	Y92PR06Yd9CQXG5YcmHOCRurUVgl9eoGkpiaLVvTWuZzeuhHEeBgIFSgFWv/jh0Uw+Amz0
-	0zRyMO9OBx+eb+9HGQ3kDZx/AIN1LPA=
-Date: Tue, 26 Jul 2022 16:51:16 +0200
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zc808cWbuiJ1LaEmAlRr5AvsxdqrezqcJtLhbo5Uy7g=;
+	b=ql/OkaR/2POULdFAydeXv9SQYYLAW2Oguhc/zysyKU429tW8xTTiXOcCVj73rfKKSdqrp9
+	S2n5W66hmjC11W1t+j5O+pllUu0utmqWbzKTSg7rCsEUxTCKefdk+G0CusKKEjYT9YMGhP
+	1I2mP9ZoAv/WhylmeLh+Gcmv8J0BS9Q=
+Date: Tue, 26 Jul 2022 19:25:09 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>,
@@ -41,10 +42,11 @@ Cc: Andy Lutomirski <luto@kernel.org>,
 	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
 	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 14/14] x86/tdx: Add unaccepted memory support
-Message-ID: <Yt//ZMrxtTwtKBqu@zn.tnic>
+Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping
+ into unaccepted memory
+Message-ID: <YuAjdYESLDIYFj8x@zn.tnic>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-15-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,109 +55,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20220614120231.48165-15-kirill.shutemov@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
 
-On Tue, Jun 14, 2022 at 03:02:31PM +0300, Kirill A. Shutemov wrote:
-> +static bool is_tdx_guest(void)
-> +{
-> +	static bool once;
-> +	static bool is_tdx;
-> +
-> +	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
-> +		return false;
-> +
-> +	if (!once) {
-> +		u32 eax, sig[3];
-> +
-> +		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
-> +			    &sig[0], &sig[2],  &sig[1]);
-> +		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
-> +		once = true;
-> +	}
-> +
-> +	return is_tdx;
-> +}
-
-early_tdx_detect() already calls this CPUID function. It assigns
-function pointers too.
-
-So why can't you assign an accept_memory() function pointer there and
-get rid of this sprinkled if (tdx) everywhere?
-
-> diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-> index 918a7606f53c..8518a75e5dd5 100644
-> --- a/arch/x86/boot/compressed/tdx.c
-> +++ b/arch/x86/boot/compressed/tdx.c
-> @@ -3,12 +3,15 @@
->  #include "../cpuflags.h"
->  #include "../string.h"
->  #include "../io.h"
-> +#include "align.h"
->  #include "error.h"
-> +#include "pgtable_types.h"
+On Tue, Jun 14, 2022 at 03:02:27PM +0300, Kirill A. Shutemov wrote:
+> diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+> index 1df918b21469..bcd56fe82b9e 100644
+> --- a/arch/x86/mm/unaccepted_memory.c
+> +++ b/arch/x86/mm/unaccepted_memory.c
+> @@ -23,6 +23,38 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+>  	bitmap = __va(boot_params.unaccepted_memory);
+>  	range_start = start / PMD_SIZE;
 >  
->  #include <vdso/limits.h>
->  #include <uapi/asm/vmx.h>
->  
->  #include <asm/shared/tdx.h>
-> +#include <asm/page_types.h>
->  
->  /* Called from __tdx_hypercall() for unrecoverable failure */
->  void __tdx_hypercall_failed(void)
-> @@ -75,3 +78,78 @@ void early_tdx_detect(void)
->  	pio_ops.f_outb = tdx_outb;
->  	pio_ops.f_outw = tdx_outw;
->  }
-> +
-> +static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
-> +				    enum pg_level level)
-
-That's pretty much a copy of the same function in arch/x86/coco/tdx/tdx.c.
-
-Yeah, you need a tdx-shared.c which you include in both places just like
-it is done with sev-shared.c
-
-...
-
-> +void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
-
-That one too.
-
-> +{
 > +	/*
-> +	 * Notify the VMM about page mapping conversion. More info about ABI
-> +	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
-> +	 * section "TDG.VP.VMCALL<MapGPA>"
-> +	 */
-> +	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
-> +		error("Accepting memory failed\n");
-> +
-> +	/*
-> +	 * For shared->private conversion, accept the page using
-> +	 * TDX_ACCEPT_PAGE TDX module call.
-> +	 */
-> +	while (start < end) {
-> +		unsigned long len = end - start;
-> +		unsigned long accept_size;
-> +
-> +		/*
-> +		 * Try larger accepts first. It gives chance to VMM to keep
-> +		 * 1G/2M Secure EPT entries where possible and speeds up
-> +		 * process by cutting number of hypercalls (if successful).
-> +		 */
-> +
-> +		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
-> +		if (!accept_size)
-> +			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
-> +		if (!accept_size)
-> +			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
-> +		if (!accept_size)
-> +			error("Accepting memory failed\n");
-> +		start += accept_size;
+> +	 * load_unaligned_zeropad() can lead to unwanted loads across page
+> +	 * boundaries. The unwanted loads are typically harmless. But, they
+> +	 * might be made to totally unrelated or even unmapped memory.
+> +	 * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
+> +	 * #VE) to recover from these unwanted loads.
+> +	 *
+> +	 * But, this approach does not work for unaccepted memory. For TDX, a
+> +	 * load from unaccepted memory will not lead to a recoverable exception
+> +	 * within the guest. The guest will exit to the VMM where the only
+> +	 * recourse is to terminate the guest.
+> +	 *
+> +	 * There are three parts to fix this issue and comprehensively avoid
+> +	 * access to unaccepted memory. Together these ensure that an extra
+> +	 * “guard” page is accepted in addition to the memory that needs to be
+> +	 * used:
+> +	 *
+> +	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
+> +	 *    checks up to end+2M if ‘end’ is aligned on a 2M boundary.
+> +	 *
+> +	 * 2. Implicitly extend accept_memory(start, end) to end+2M if ‘end’ is
+> +	 *    aligned on a 2M boundary.
 
-This series of calls to try_accept_one() appear in at least three
-places. Please carve them out into a separate function can put it in
-tdx-shared.c.
+Why do we need those unicode quotes and backticks in there?
+
+verify_diff: Warning: Unicode char [“] (0x8220 in line: +	 * “guard” page is accepted in addition to the memory that needs to be
+verify_diff: Warning: Unicode char [‘] (0x8216 in line: +	 *    checks up to end+2M if ‘end’ is aligned on a 2M boundary.
+verify_diff: Warning: Unicode char [‘] (0x8216 in line: +	 * 2. Implicitly extend accept_memory(start, end) to end+2M if ‘end’ is
+verify_diff: Warning: Unicode char [‘] (0x8216 in line: +	 *    needs to be done to make ‘page’ usable. That work might include
+verify_diff: Warning: Unicode char [‘] (0x8216 in line: +	 *    accepting pages in addition to ‘page’ itself.
 
 -- 
 Regards/Gruss,
