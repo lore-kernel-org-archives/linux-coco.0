@@ -1,106 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3363601C
-	for <linux-coco@lists.linux.dev>; Tue, 26 Jul 2022 20:17:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277ACC433B5;
-	Tue, 26 Jul 2022 20:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1658866659;
-	bh=GIbzRLMc9lrNfJDLat0Hlv7hVWiWNwlnlBD/YoWm7qk=;
-	h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
-	b=HUgoqY2e9W43NpWGppKfLxqPT6/YHFWqQPaWTnFvfuupCtEEEighHCoWgZkclwHVw
-	 8AqhJMfX+te8UwJm4gMUuKSx8n+GXYBzLffSEANnsXLwSol0V+QNQXyx/g6t5kzThs
-	 onAwtDCafnKiMzQqr23be8U8Wc+OZApDBGF5KWcE5XWncQTJ8seJxWH7Nx4iFwVPIU
-	 OA4kZ/A/sDYa3cr9SrTD06uJ5l1tgypf9VGGppBUF7fiwzgnug8UK9Gt4fuZZvNx3j
-	 gT1UYbxAndS/v6xebtRaMF0OHeIYE3sb/dG/el95rgE8BHFreVM4ORt5eQoi5i+hbL
-	 dwVDq+WOW3mkA==
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailauth.nyi.internal (Postfix) with ESMTP id E625C27C0054;
-	Tue, 26 Jul 2022 16:17:36 -0400 (EDT)
-Received: from imap48 ([10.202.2.98])
-  by compute2.internal (MEProxy); Tue, 26 Jul 2022 16:17:36 -0400
-X-ME-Sender: <xms:3kvgYpARSMhj5VmUmkVurT4f9xIAbHMjszDAsk4s7T_ZDEAnZEkIIw>
-    <xme:3kvgYnj2LF_o1PLtJkx6eKicevIJ0clraa1BkE-gW0pLj_FIhm4YY3MSBzxUOKhNc
-    qZdmQ6EZUjiY0lqW_4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrvddutddgudegkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
-    tehnugihucfnuhhtohhmihhrshhkihdfuceolhhuthhosehkvghrnhgvlhdrohhrgheqne
-    cuggftrfgrthhtvghrnhepudevffdvgedvfefhgeejjeelgfdtffeukedugfekuddvtedv
-    udeileeugfejgefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomheprghnugihodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduudei
-    udekheeifedvqddvieefudeiiedtkedqlhhuthhopeepkhgvrhhnvghlrdhorhhgsehlih
-    hnuhigrdhluhhtohdruhhs
-X-ME-Proxy: <xmx:3kvgYkkZlSnTU32WZ_55gKqv5cIe7D964TqhbVuzL27aabuDTxKoFw>
-    <xmx:3kvgYjzGYouhLPqDLXVDOuV8KE_sgB1ywcMsUliOZTPqL2TCFgGRLw>
-    <xmx:3kvgYuQTvBqwlKuScxo52TwDLjHx0G3L6F5Uc0misveIhuFHKWG6LA>
-    <xmx:4EvgYpk51w0Q1qFeRijHIUCHVuwPtaZDWCkAVAH3NfYUJT4uI259qA>
-Feedback-ID: ieff94742:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id C5B1A31A0062; Tue, 26 Jul 2022 16:17:34 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-757-gc3ad9c75d3-fm-20220722.001-gc3ad9c75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CE02566
+	for <linux-coco@lists.linux.dev>; Wed, 27 Jul 2022 17:01:49 +0000 (UTC)
+Received: from zn.tnic (p200300ea970f4fe3329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:970f:4fe3:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id F050F1EC04DA;
+	Wed, 27 Jul 2022 19:01:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1658941298;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=RWJzFBq0WyV6tQ+ZqLZ1AEB5KdQiAYWTFZnp9js+IYk=;
+	b=E1jfg4k4GTyDy4tx4WSwNylGy++reaewl6nh/UZAIdvOu54O6BrtIP6SOogm1scyjOXkAm
+	8OhwlXGLsnG/RMNgmC8aGcjmXcdcrTMVKMEdygb4vDnz8FHsZzd0q5O65TP4M8EaAActq7
+	gUMbQ6dBJ9jj5WGbPtQGg33bagoOLwQ=
+Date: Wed, 27 Jul 2022 19:01:34 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 07/49] x86/sev: Invalid pages from direct map
+ when adding it to RMP table
+Message-ID: <YuFvbm/Zck9Tr5pq@zn.tnic>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <243778c282cd55a554af9c11d2ecd3ff9ea6820f.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Message-Id: <7cec93c5-3db4-409b-8c1e-bc1f10dd68fc@www.fastmail.com>
-In-Reply-To: <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
-Date: Tue, 26 Jul 2022 13:17:13 -0700
-From: "Andy Lutomirski" <luto@kernel.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- "Borislav Petkov" <bp@alien8.de>, "Sean Christopherson" <seanjc@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Joerg Roedel" <jroedel@suse.de>, "Ard Biesheuvel" <ardb@kernel.org>
-Cc: "Andi Kleen" <ak@linux.intel.com>,
- "Sathyanarayanan Kuppuswamy" <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "David Rientjes" <rientjes@google.com>, "Vlastimil Babka" <vbabka@suse.cz>,
- "Tom Lendacky" <thomas.lendacky@amd.com>,
- "Thomas Gleixner" <tglx@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "Paolo Bonzini" <pbonzini@redhat.com>, "Ingo Molnar" <mingo@redhat.com>,
- "Varad Gautam" <varad.gautam@suse.com>,
- "Dario Faggioli" <dfaggioli@suse.com>, "Dave Hansen" <dave.hansen@intel.com>,
- "Mike Rapoport" <rppt@kernel.org>, "David Hildenbrand" <david@redhat.com>,
- "Marcelo Henrique Cerri" <marcelo.cerri@canonical.com>,
- tim.gardner@canonical.com, khalid.elmously@canonical.com,
- philip.cox@canonical.com, "the arch/x86 maintainers" <x86@kernel.org>,
- linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- "Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping into
- unaccepted memory
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <243778c282cd55a554af9c11d2ecd3ff9ea6820f.1655761627.git.ashish.kalra@amd.com>
 
+On Mon, Jun 20, 2022 at 11:03:07PM +0000, Ashish Kalra wrote:
 
+> Subject: x86/sev: Invalid pages from direct map when adding it to RMP table
 
-On Tue, Jun 14, 2022, at 5:02 AM, Kirill A. Shutemov wrote:
-> load_unaligned_zeropad() can lead to unwanted loads across page bounda=
-ries.
-> The unwanted loads are typically harmless. But, they might be made to
-> totally unrelated or even unmapped memory. load_unaligned_zeropad()
-> relies on exception fixup (#PF, #GP and now #VE) to recover from these
-> unwanted loads.
->
-> But, this approach does not work for unaccepted memory. For TDX, a load
-> from unaccepted memory will not lead to a recoverable exception within
-> the guest. The guest will exit to the VMM where the only recourse is to
-> terminate the guest.
+"...: Invalidate pages from the direct map when adding them to the RMP table"
 
-Why is unaccepted memory marked present in the direct map in the first p=
-lace?
+> +static int restore_direct_map(u64 pfn, int npages)
+> +{
+> +	int i, ret = 0;
+> +
+> +	for (i = 0; i < npages; i++) {
+> +		ret = set_direct_map_default_noflush(pfn_to_page(pfn + i));
 
-Having kernel code assume that every valid address is followed by severa=
-l bytes of memory that may be read without side effects other than #PF a=
-lso seems like a mistake, but I probably won=E2=80=99t win that fight. B=
-ut sticking guard pages in front of definitely-not-logically present pag=
-es seems silly to me.  Let=E2=80=99s just not map it.
+set_memory_p() ?
 
-(What if MMIO memory is mapped next to regular memory?  Doing random una=
-ligned reads that cross into MMIO seems unwise.)
+> +		if (ret)
+> +			goto cleanup;
+> +	}
+> +
+> +cleanup:
+> +	WARN(ret > 0, "Failed to restore direct map for pfn 0x%llx\n", pfn + i);
+
+Warn for each pfn?!
+
+That'll flood dmesg mightily.
+
+> +	return ret;
+> +}
+> +
+> +static int invalid_direct_map(unsigned long pfn, int npages)
+> +{
+> +	int i, ret = 0;
+> +
+> +	for (i = 0; i < npages; i++) {
+> +		ret = set_direct_map_invalid_noflush(pfn_to_page(pfn + i));
+
+As above, set_memory_np() doesn't work here instead of looping over each
+page?
+
+> @@ -2462,11 +2494,38 @@ static int rmpupdate(u64 pfn, struct rmpupdate *val)
+>  	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+>  		return -ENXIO;
+>  
+> +	level = RMP_TO_X86_PG_LEVEL(val->pagesize);
+> +	npages = page_level_size(level) / PAGE_SIZE;
+> +
+> +	/*
+> +	 * If page is getting assigned in the RMP table then unmap it from the
+> +	 * direct map.
+> +	 */
+> +	if (val->assigned) {
+> +		if (invalid_direct_map(pfn, npages)) {
+> +			pr_err("Failed to unmap pfn 0x%llx pages %d from direct_map\n",
+
+"Failed to unmap %d pages at pfn 0x... from the direct map\n"
+
+> +			       pfn, npages);
+> +			return -EFAULT;
+> +		}
+> +	}
+> +
+>  	/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
+>  	asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
+>  		     : "=a"(ret)
+>  		     : "a"(paddr), "c"((unsigned long)val)
+>  		     : "memory", "cc");
+> +
+> +	/*
+> +	 * Restore the direct map after the page is removed from the RMP table.
+> +	 */
+> +	if (!ret && !val->assigned) {
+> +		if (restore_direct_map(pfn, npages)) {
+> +			pr_err("Failed to map pfn 0x%llx pages %d in direct_map\n",
+
+"Failed to map %d pages at pfn 0x... into the direct map\n"
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
