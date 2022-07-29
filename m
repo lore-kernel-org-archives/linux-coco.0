@@ -1,116 +1,234 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A97B7A
-	for <linux-coco@lists.linux.dev>; Thu, 28 Jul 2022 22:02:05 +0000 (UTC)
-Received: by mail-yb1-f178.google.com with SMTP id y127so5401901yby.8
-        for <linux-coco@lists.linux.dev>; Thu, 28 Jul 2022 15:02:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KKJMz2p0fMbqbmhUA2NRK8taNgQHWFCPCykk0R/nVkQ=;
-        b=BIAqjFwuvscZyaQvaO2Pp5Tm2K8Fcr9ETnXvpU5e3wVsse21Jc6+b/sSURRzcM4QRX
-         f+AUZdMnE7et9mw5oGUM8bOIP7AqPCPEFZ5JFqKRH4odWmwDZ0FjP8rMMLUG8y3aCwAh
-         lwgedBwQkhfs5enr6DiCZ/gKqdYfyYsGa6781lN44ppqnMvdnKWZaI1L0KYuIh0w3h/W
-         Ex4VAWe01YlKol56ws7q0/gUwiDhufvbMAS97qfg8YmOtZ7iNvuxcaVvr0OuapoWpqSG
-         zk5SMyBnMxjyNUeOtF5G284TFqrCbKyKwnrUsp1SvrzycKfu/wMWOIfliAogPsiP7m2l
-         e2ug==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA304400
+	for <linux-coco@lists.linux.dev>; Fri, 29 Jul 2022 10:28:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1659090504;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=as0dSaDJ9Kz1ka/wV5ZX8Zqed6rUUwP8w5uBz6jTo54=;
+	b=Cx4FItA8GTlzS2V+4B/VuSwlcaJ32WcyUZnb2BGIjaiNm3flr6y5sS0/Qu20BV7OqM/kJc
+	YiDfAhx4eFMeusDEqKdbMIsRKiy/D1EUgCaRjQCX2p8xemTHVTCkk6t6yqs7DVzfWX0Sit
+	TNLgsihCjE4LWGD7ycp4Pgr0YEkyPXI=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-157-xoLL0tfOPi2mTVpNc3xcDw-1; Fri, 29 Jul 2022 06:28:23 -0400
+X-MC-Unique: xoLL0tfOPi2mTVpNc3xcDw-1
+Received: by mail-pj1-f72.google.com with SMTP id q30-20020a17090a17a100b001f31cc4ccfbso2233435pja.9
+        for <linux-coco@lists.linux.dev>; Fri, 29 Jul 2022 03:28:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KKJMz2p0fMbqbmhUA2NRK8taNgQHWFCPCykk0R/nVkQ=;
-        b=pDL+CNqnAfxk9m6FK5+qFF8yJMmFQsDrEJsnC/rT/QcAdCEgElRn8VGObfraUx2231
-         JORm7Qy6zQOrHjTclnPwitRYJWkdOfGo908H4tfmzICWNx7hx4qTTVLCblIMhk+XJf0n
-         9PJEoQwqzjnw2q1o9JR0DlZB9obg2LXyW4ecokWmdxmwcujr0GuZJuCM8iakeqlM3VqS
-         9J8INIwn9aSvnzfDmFTU+42WDFYxufuNvpxnea9DTKpYe3/8XCuLN+b4nRRe3sJOyA6f
-         2nnaYfItmZSvR5wDxDwAqfxtrMRZAAmYaF16wGCovFB5iMxqq3vOKnYKP+7+fgTsgKzg
-         DVzg==
-X-Gm-Message-State: ACgBeo3B0MItKd96GGFT/omi2ZFTTfn1cb37RjiaTpfOLs/VqKsGhKCp
-	kuSngzFaYPo3hKl2QJnacHbyQkzs9bET1PBJFP+HaA==
-X-Google-Smtp-Source: AA6agR6CsM1GKbxoIN8NWcO7GQfLofiour4J2FuUY6Juif22kb1aJ6rJGRSLyGPjmgf+UOW6vfxySZ2NKkNcgLC9zMk=
-X-Received: by 2002:a05:6902:128d:b0:670:9009:f859 with SMTP id
- i13-20020a056902128d00b006709009f859mr549949ybu.321.1659045723977; Thu, 28
- Jul 2022 15:02:03 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=as0dSaDJ9Kz1ka/wV5ZX8Zqed6rUUwP8w5uBz6jTo54=;
+        b=Su+Sj7vReAtQ75yZvXGoP6Ah5nzALdcGvGmtbKNjOx20dvJrcPQj2g9AiXquCQbwGS
+         l57mTK9GpJ7BJPWyC8207T+5lwIlxxURfiPCIAWSfAg5hjZwhrEWwvcQziKtTXG+N24/
+         bgetsotbXWNEjw76kCMndHiZC+elHl3zrG29PNYeU/Fdbi7io0yn5lxQYaySUTmBX6LP
+         H29djcAxx4u9MIw940gVM2//lY1ao+kOnlBPBBvYuTPR7+e6nEfRxSyq8Xo8a5lvfJ5Z
+         /yBptrd/N8vLzUedjq2eFEYgEKwGT9U1SYtJxaw/H27PEZzqX2/3FYGhbIaTQuGK8Gad
+         ziWw==
+X-Gm-Message-State: ACgBeo0RlNcn6Tt97rw/qUOg4QKzXuHa3inGem3D9THp752cUYIPsLaJ
+	0M4zbNFhvXvgyQxqqYPDvDTy4ikd8Wr7GzqStd2HL1zmyhkXiQDGL/eKYjhexvFTTXGUVw/cCC8
+	fisuzL+jh0GpSUfOpM4MAsw==
+X-Received: by 2002:a17:902:b948:b0:16d:93c8:403a with SMTP id h8-20020a170902b94800b0016d93c8403amr3216212pls.45.1659090501910;
+        Fri, 29 Jul 2022 03:28:21 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR5hAd0t3DvlQMWZfOHeSmTJlLymjssvgghLzSj+panQJWzipIbxqyehtkXAIZsMvvBYYnvbCA==
+X-Received: by 2002:a17:902:b948:b0:16d:93c8:403a with SMTP id h8-20020a170902b94800b0016d93c8403amr3216163pls.45.1659090501513;
+        Fri, 29 Jul 2022 03:28:21 -0700 (PDT)
+Received: from localhost.localdomain ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id d14-20020aa797ae000000b005289eafbd08sm2618289pfq.18.2022.07.29.03.28.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Jul 2022 03:28:20 -0700 (PDT)
+Date: Fri, 29 Jul 2022 18:28:09 +0800
+From: Tao Liu <ltao@redhat.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, kvm@vger.kernel.org,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	virtualization@lists.linux-foundation.org,
+	Arvind Sankar <nivedita@alum.mit.edu>, hpa@zytor.com,
+	Jiri Slaby <jslaby@suse.cz>, David Rientjes <rientjes@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Martin Radev <martin.b.radev@gmail.com>,
+	Joerg Roedel <jroedel@suse.de>, Kees Cook <keescook@chromium.org>,
+	Cfir Cohen <cfir@google.com>, linux-coco@lists.linux.dev,
+	Andy Lutomirski <luto@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Juergen Gross <jgross@suse.com>, Mike Stunes <mstunes@vmware.com>,
+	Sean Christopherson <seanjc@google.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Eric Biederman <ebiederm@xmission.com>,
+	Erdem Aktas <erdemaktas@google.com>
+Subject: Re: [PATCH v3 00/10] x86/sev: KEXEC/KDUMP support for SEV-ES guests
+Message-ID: <YuO2OUp4OmnXoqUa@localhost.localdomain>
+References: <20220127101044.13803-1-joro@8bytes.org>
+ <YmuqifsJltdh7rpv@localhost.localdomain>
+ <46b27b72-aabf-f37d-7304-29debeefd8ae@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20220627223808.ihgy3epdx6ofll43@black.fi.intel.com>
- <CAMj1kXEdS9SzFZZ4WGH6sR0WDCOgYDZ3Geg6X2sqSnQ-CXXpZA@mail.gmail.com>
- <20220718172159.4vwjzrfthelovcty@black.fi.intel.com> <CAAH4kHYR+VkSJ5J8eWmeaEvstuRz_EuqVQqPfwmp5dhNGRyJwQ@mail.gmail.com>
- <CAAH4kHaHJo4NUb72tHeica4a34hq5u_QP6d6Vuzngf6EqTJ8Aw@mail.gmail.com>
- <CAAH4kHaB2tL+sAn0NAciu5DQeX5hpNkDees=n=f83S=Ph9Y6tw@mail.gmail.com>
- <YtcCWfCQuEsVhH6W@zn.tnic> <CAMj1kXEKtcieycyyFMyuLKJK61FgaDwtLieC0N47W1Sa5LaBsA@mail.gmail.com>
- <YtcgxxMyFTReuuRw@zn.tnic> <bb7479df-7871-9861-600d-c2fed783b659@intel.com>
- <YtcnQbiRgZPtR+rQ@zn.tnic> <22d54786-bc12-ecc5-2b37-cbaa56090aa8@intel.com>
- <CAA03e5FMEyswDhoXRJ5U_n9RG4QM524aQYpF4473ydnAVJr1PA@mail.gmail.com>
- <ffb4ae72-7fd4-d2a0-df10-3969cf8ca07f@intel.com> <CAMj1kXHEc=vEt=CtfdiPEsUe2i8QogAi+jvtY6h1awo7GZ-nRg@mail.gmail.com>
-In-Reply-To: <CAMj1kXHEc=vEt=CtfdiPEsUe2i8QogAi+jvtY6h1awo7GZ-nRg@mail.gmail.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Thu, 28 Jul 2022 15:01:52 -0700
-Message-ID: <CAAH4kHYGZ179eYREi-YcYNd4Xd8gTPa2WX0iphr=Kiz6-A7hnQ@mail.gmail.com>
-Subject: Re: [PATCHv7 00/14] mm, x86/cc: Implement support for unaccepted memory
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, Marc Orr <marcorr@google.com>, 
-	Borislav Petkov <bp@alien8.de>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	Peter Gonda <pgonda@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ingo Molnar <mingo@redhat.com>, Varad Gautam <varad.gautam@suse.com>, 
-	Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Marcelo Cerri <marcelo.cerri@canonical.com>, 
-	tim.gardner@canonical.com, Khalid ElMously <khalid.elmously@canonical.com>, 
-	philip.cox@canonical.com, "the arch/x86 maintainers" <x86@kernel.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, linux-coco@lists.linux.dev, 
-	linux-efi <linux-efi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	"Yao, Jiewen" <jiewen.yao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <46b27b72-aabf-f37d-7304-29debeefd8ae@amd.com>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=ltao@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
->
-> What I strongly object to is inventing a new bespoke way for the
-> firmware to make inferences about the capabilities of the image by
-> inspecting fields in the file representation of the image (which is
-> not guaranteed by EFI to be identical to its in-memory representation,
-> as, e.g., the PE/COFF header could be omitted by a loader without
-> violating the spec)
->
-> As for the intermediate thing: yes, that would be a valuable thing to
-> have in OVMF (and I will gladly take EDK2 patches that implement
-> this). However, I'm not sure how you decide whether or not this thing
-> should be active or not, doesn't that just move the problem around?
+Hi Tom,
 
-This does just move the problem around, but it makes correct behavior
-the default instead of silently ignoring most of the VM's memory and
-booting regularly. I have the driver mostly written to change the
-behavior to accept all by default unless a driver has been installed
-to set a particular boolean to make it not. Still that's yet another
-thing as you say.
+On Fri, Apr 29, 2022 at 08:08:28AM -0500, Tom Lendacky wrote:
+> On 4/29/22 04:06, Tao Liu wrote:
+> > On Thu, Jan 27, 2022 at 11:10:34AM +0100, Joerg Roedel wrote:
+> 
+> > 
+> > Hi Joerg,
+> > 
+> > I tried the patch set with 5.17.0-rc1 kernel, and I have a few questions:
+> > 
+> > 1) Is it a bug or should qemu-kvm 6.2.0 be patched with specific patch? Because
+> >     I found it will exit with 0 when I tried to reboot the VM with sev-es enabled.
+> >     However with only sev enabled, the VM can do reboot with no problem:
+> 
+> Qemu was specifically patched to exit on reboot with SEV-ES guests. Qemu
+> performs a reboot by resetting the vCPU state, which can't be done with an
+> SEV-ES guest because the vCPU state is encrypted.
+> 
 
-I agree with everyone that this situation just stinks. "Can't you just
-boot it?" was asked before, and yes we can, but at the scale of a CSP
-managing anybody's image uploads, that not-insignificant cost has to
-be paid by someone. It's a hard problem to route the image to the
-right kind of machine that's expected to be able to run it... it's a
-big ol' mess.
+Sorry for the late response, and thank you for the explanation!
 
-One thing is for sure: these patches shouldn't be blocked by the "how
-do we detect it" question. I'm glad to see so much engagement with
-this problem, but I fear I might have delayed its progress towards a
-merge. I know AMD has a follow-up to add SEV-SNP accept_memory support
-to finish this all up.
+> > 
+> > [root@dell-per7525-03 ~]# virsh start TW-SEV-ES --console
+> > ....
+> > Fedora Linux 35 (Server Edition)
+> > Kernel 5.17.0-rc1 on an x86_64 (ttyS0)
+> > ....
+> > [root@fedora ~]# reboot
+> > .....
+> > [   48.077682] reboot: Restarting system
+> > [   48.078109] reboot: machine restart
+> >                         ^^^^^^^^^^^^^^^ guest vm reached restart
+> > [root@dell-per7525-03 ~]# echo $?
+> > 0
+> > ^^^ qemu-kvm exit with 0, no reboot back to normal VM kernel
+> > [root@dell-per7525-03 ~]#
+> > 
+> > 2) With sev-es enabled and the 2 patch sets applied: A) [PATCH v3 00/10] x86/sev:
+> > KEXEC/KDUMP support for SEV-ES guests, and B) [PATCH v6 0/7] KVM: SVM: Add initial
+> > GHCB protocol version 2 support. I can enable kdump and have vmcore generated:
+> > 
+> > [root@fedora ~]# dmesg|grep -i sev
+> > [    0.030600] SEV: Hypervisor GHCB protocol version support: min=1 max=2
+> > [    0.030602] SEV: Using GHCB protocol version 2
+> > [    0.296144] AMD Memory Encryption Features active: SEV SEV-ES
+> > [    0.450991] SEV: AP jump table Blob successfully set up
+> > [root@fedora ~]# kdumpctl status
+> > kdump: Kdump is operational
+> > 
+> > However without the 2 patch sets, I can also enable kdump and have vmcore generated:
+> > 
+> > [root@fedora ~]# dmesg|grep -i sev
+> > [    0.295754] AMD Memory Encryption Features active: SEV SEV-ES
+> >                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ patch set A & B
+> > 	       not applied, so only have this string.
+> > [root@fedora ~]# echo c > /proc/sysrq-trigger
+> > ...
+> > [    2.759403] kdump[549]: saving vmcore-dmesg.txt to /sysroot/var/crash/127.0.0.1-2022-04-18-05:58:50/
+> > [    2.804355] kdump[555]: saving vmcore-dmesg.txt complete
+> > [    2.806915] kdump[557]: saving vmcore
+> >                             ^^^^^^^^^^^^^ vmcore can still be generated
+> > ...
+> > [    7.068981] reboot: Restarting system
+> > [    7.069340] reboot: machine restart
+> > 
+> > [root@dell-per7525-03 ~]# echo $?
+> > 0
+> > ^^^ same exit issue as question 1.
+> > 
+> > I doesn't have a complete technical background of the patch set, but isn't
+> > it the issue which this patch set is trying to solve? Or I missed something?
+> 
+> The main goal of this patch set is to really to solve the ability to perform
+> a kexec. I would expect kdump to work since kdump shuts down all but the
+> executing vCPU and performs its operations before "rebooting" (which will
+> exit Qemu as I mentioned above). But kexec requires the need to restart the
+> APs from within the guest after they have been stopped. That requires
+> specific support and actions on the part of the guest kernel in how the APs
+> are stopped and restarted.
 
-I'll try to get the ear of all the distributions that are tracking
-towards providing SEV-SNP-supported images for CSPs to get them on the
-release that includes these patches. I'll also see about upstreaming
-that EFI driver and EDK2 changes in case there's a slip in the kernel
-release and we need this workaround.
---
--Dionna Glaze, PhD (she/her)
+Recently I got one sev-es flaged machine borrowed and retested the patch, which
+worked fine for kexec when sev-es enabled. With the patchset applied in 5.17.0-rc1, 
+kexec'ed kernel can bring up all APs with no problem.
+
+However as for kdump, I find one issue. Although kdump kernel can work well on one
+cpu, but we can still enable multi-cpus by removing the "nr_cpus=1" kernel parameter
+in kdump sysconfig. I was expecting kdump kernel can bring up all APs as kexec did,
+however:
+
+[    0.000000] Command line: elfcorehdr=0x5b000000 BOOT_IMAGE=(hd0,gpt2)/vmlinuz-5.17.0-rc1+ ro resume=/dev/mapper/rhel-swap biosdevname=0 net.ifnames=0 console=ttyS0 irqpoll reset_devices cgroup_disable=memory mce=off numa=off udev.children-max=2 panic=10 rootflags=nofail acpi_no_memhotplug transparent_hugepage=never nokaslr novmcoredd hest_disable disable_cpu_apicid=0 iTCO_wdt.pretimeout=0
+...
+[    0.376663] smp: Bringing up secondary CPUs ...
+[    0.377599] x86: Booting SMP configuration:
+[    0.378342] .... node  #0, CPUs:      #1
+[   10.377698] smpboot: do_boot_cpu failed(-1) to wakeup CPU#1
+[   10.379882]  #2
+[   20.379645] smpboot: do_boot_cpu failed(-1) to wakeup CPU#2
+[   20.380648] smp: Brought up 1 node, 1 CPU
+[   20.381600] smpboot: Max logical packages: 4
+[   20.382597] smpboot: Total of 1 processors activated (4192.00 BogoMIPS)
+
+Turns out for kdump, the APs were not stopped properly, so I modified the following code:
+
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -26,6 +26,7 @@
+ #include <asm/cpu.h>
+ #include <asm/nmi.h>
+ #include <asm/smp.h>
++#include <asm/sev.h>
+ 
+ #include <linux/ctype.h>
+ #include <linux/mc146818rtc.h>
+@@ -821,6 +822,7 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
+ 
+        atomic_dec(&waiting_for_crash_ipi);
+        /* Assume hlt works */
++       sev_es_stop_this_cpu();
+        halt();
+        for (;;)
+                cpu_relax();
+
+[    0.000000] Command line: elfcorehdr=0x5b000000 BOOT_IMAGE=(hd0,gpt2)/vmlinuz-5.17.0-rc1-hack+ ro resume=/dev/mapper/rhel-swap biosdevname=0 net.ifnames=0 console=ttyS0 irqpoll reset_devices cgroup_disable=memory mce=off numa=off udev.children-max=2 panic=10 rootflags=nofail acpi_no_memhotplug transparent_hugepage=never nokaslr novmcoredd hest_disable disable_cpu_apicid=0 iTCO_wdt.pretimeout=0
+...
+[    0.402618] smp: Bringing up secondary CPUs ...
+[    0.403308] x86: Booting SMP configuration:
+[    0.404171] .... node  #0, CPUs:      #1 #2 #3
+[    0.407362] smp: Brought up 1 node, 4 CPUs
+[    0.408907] smpboot: Max logical packages: 4
+[    0.409172] smpboot: Total of 4 processors activated (16768.01 BogoMIPS)
+
+Now all APs can work in kdump kernel.
+
+Thanks,
+Tao Liu
+
+> 
+> Thanks,
+> Tom
+> 
+> > 
+> > Thanks,
+> > Tao Liu
+> > > _______________________________________________
+> > > Virtualization mailing list
+> > > Virtualization@lists.linux-foundation.org
+> > > https://lists.linuxfoundation.org/mailman/listinfo/virtualization
+> > 
+> 
+
