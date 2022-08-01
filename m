@@ -1,234 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2089.outbound.protection.outlook.com [40.107.237.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA304400
-	for <linux-coco@lists.linux.dev>; Fri, 29 Jul 2022 10:28:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1659090504;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=as0dSaDJ9Kz1ka/wV5ZX8Zqed6rUUwP8w5uBz6jTo54=;
-	b=Cx4FItA8GTlzS2V+4B/VuSwlcaJ32WcyUZnb2BGIjaiNm3flr6y5sS0/Qu20BV7OqM/kJc
-	YiDfAhx4eFMeusDEqKdbMIsRKiy/D1EUgCaRjQCX2p8xemTHVTCkk6t6yqs7DVzfWX0Sit
-	TNLgsihCjE4LWGD7ycp4Pgr0YEkyPXI=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-157-xoLL0tfOPi2mTVpNc3xcDw-1; Fri, 29 Jul 2022 06:28:23 -0400
-X-MC-Unique: xoLL0tfOPi2mTVpNc3xcDw-1
-Received: by mail-pj1-f72.google.com with SMTP id q30-20020a17090a17a100b001f31cc4ccfbso2233435pja.9
-        for <linux-coco@lists.linux.dev>; Fri, 29 Jul 2022 03:28:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=as0dSaDJ9Kz1ka/wV5ZX8Zqed6rUUwP8w5uBz6jTo54=;
-        b=Su+Sj7vReAtQ75yZvXGoP6Ah5nzALdcGvGmtbKNjOx20dvJrcPQj2g9AiXquCQbwGS
-         l57mTK9GpJ7BJPWyC8207T+5lwIlxxURfiPCIAWSfAg5hjZwhrEWwvcQziKtTXG+N24/
-         bgetsotbXWNEjw76kCMndHiZC+elHl3zrG29PNYeU/Fdbi7io0yn5lxQYaySUTmBX6LP
-         H29djcAxx4u9MIw940gVM2//lY1ao+kOnlBPBBvYuTPR7+e6nEfRxSyq8Xo8a5lvfJ5Z
-         /yBptrd/N8vLzUedjq2eFEYgEKwGT9U1SYtJxaw/H27PEZzqX2/3FYGhbIaTQuGK8Gad
-         ziWw==
-X-Gm-Message-State: ACgBeo0RlNcn6Tt97rw/qUOg4QKzXuHa3inGem3D9THp752cUYIPsLaJ
-	0M4zbNFhvXvgyQxqqYPDvDTy4ikd8Wr7GzqStd2HL1zmyhkXiQDGL/eKYjhexvFTTXGUVw/cCC8
-	fisuzL+jh0GpSUfOpM4MAsw==
-X-Received: by 2002:a17:902:b948:b0:16d:93c8:403a with SMTP id h8-20020a170902b94800b0016d93c8403amr3216212pls.45.1659090501910;
-        Fri, 29 Jul 2022 03:28:21 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR5hAd0t3DvlQMWZfOHeSmTJlLymjssvgghLzSj+panQJWzipIbxqyehtkXAIZsMvvBYYnvbCA==
-X-Received: by 2002:a17:902:b948:b0:16d:93c8:403a with SMTP id h8-20020a170902b94800b0016d93c8403amr3216163pls.45.1659090501513;
-        Fri, 29 Jul 2022 03:28:21 -0700 (PDT)
-Received: from localhost.localdomain ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id d14-20020aa797ae000000b005289eafbd08sm2618289pfq.18.2022.07.29.03.28.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Jul 2022 03:28:20 -0700 (PDT)
-Date: Fri, 29 Jul 2022 18:28:09 +0800
-From: Tao Liu <ltao@redhat.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Joerg Roedel <joro@8bytes.org>, x86@kernel.org, kvm@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	virtualization@lists.linux-foundation.org,
-	Arvind Sankar <nivedita@alum.mit.edu>, hpa@zytor.com,
-	Jiri Slaby <jslaby@suse.cz>, David Rientjes <rientjes@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Martin Radev <martin.b.radev@gmail.com>,
-	Joerg Roedel <jroedel@suse.de>, Kees Cook <keescook@chromium.org>,
-	Cfir Cohen <cfir@google.com>, linux-coco@lists.linux.dev,
-	Andy Lutomirski <luto@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Juergen Gross <jgross@suse.com>, Mike Stunes <mstunes@vmware.com>,
-	Sean Christopherson <seanjc@google.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Eric Biederman <ebiederm@xmission.com>,
-	Erdem Aktas <erdemaktas@google.com>
-Subject: Re: [PATCH v3 00/10] x86/sev: KEXEC/KDUMP support for SEV-ES guests
-Message-ID: <YuO2OUp4OmnXoqUa@localhost.localdomain>
-References: <20220127101044.13803-1-joro@8bytes.org>
- <YmuqifsJltdh7rpv@localhost.localdomain>
- <46b27b72-aabf-f37d-7304-29debeefd8ae@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B617F
+	for <linux-coco@lists.linux.dev>; Mon,  1 Aug 2022 21:17:05 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=U87ljznhDGPVTKJwI9LxlGuoTDdDwR6gW8OkRGMnAei4MmERwVnU+73o7Kb7VFycsPgus2LUuvl9QHVbWWiw2ag9/S5InwKsM0FaN5g2tmzmYTT1dTTETO3bfU7QdKfEAYHQWSNbmwGtcsKIAZBXIHEy1f8n+EZcaJQAtQxN4R1ioTCM/siNFv8I3kJdXHrun/G0pNw5mecrb+Zr2jqabqAG/H84fA4WmnchVI85HkvckuVQ5P71EANrELuZarCzSwf2010mnHpvHM3g8Q5jJx4m8DfvYrYyoNLz8bK39G48kj2CesdtMDpS62qiR9iCFbj65zCJAC+Z5WKOSzIFzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BpqQd22bqrTvEROt+OEccsZUZ8yQcjTls+8kkrcp0rM=;
+ b=hVGtwpenp1sWIe8hLMoMFhME5pXVT0IpqAVK6ntLKquLzZA0GmW2pKjoC9ZD56SSPI1GXyCKgnH5MKVWuG2fM7GEQlrKJBc8rijdnY0NaZHfTXZvU2G2j/asRo9jGmahU3yjZel8EdBQS96+BQyHEli6GI2MH4KUskqCYNsLlSE/lvHMoeT5PwF399UNBhQA33WWJZpo7NxSwePCMLMwVMg6//MsqYGG2IzaF4s2xoOiDj06OMLjpgJkvzicxhfnEFqPpxqz4fLgO+kg0qaQj/Yjk15gAKjqcLiXLGxg4eBklYH0pJnvTMaPcNy3So8F1PdNrlOPWbgQeBNGTzgcHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BpqQd22bqrTvEROt+OEccsZUZ8yQcjTls+8kkrcp0rM=;
+ b=wR8HIxJA4V8YKIbM2IIr0N5bkuJnnjChsQHC84Fq8JwLJRbUZ1v1OJBaNZG+NYzY34AgX5kbXhWJBN67h0oAs/mo/jFhqCaddGfZRe7YhuJJvoZinsIJ1jcmzeNrgX9yUUm69LnhrLnuMX1MDrIuKAiDoIh3rFydGiJDQvdfuXI=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by DM5PR12MB2582.namprd12.prod.outlook.com (2603:10b6:4:b5::37) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5482.11; Mon, 1 Aug
+ 2022 21:16:59 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d%7]) with mapi id 15.20.5482.016; Mon, 1 Aug 2022
+ 21:16:59 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "seanjc@google.com" <seanjc@google.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>, "jmattson@google.com"
+	<jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "slp@redhat.com"
+	<slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"rientjes@google.com" <rientjes@google.com>, "dovmurik@linux.ibm.com"
+	<dovmurik@linux.ibm.com>, "tobin@ibm.com" <tobin@ibm.com>, "Roth, Michael"
+	<Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>, "ak@linux.intel.com"
+	<ak@linux.intel.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "alpergun@google.com"
+	<alpergun@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: RE: [PATCH Part2 v6 04/49] x86/sev: set SYSCFG.MFMD
+Thread-Topic: [PATCH Part2 v6 04/49] x86/sev: set SYSCFG.MFMD
+Thread-Index: AQHYnPUTHKwH72twn0SonkZJNWcjVa2anSoQ
+Date: Mon, 1 Aug 2022 21:16:59 +0000
+Message-ID:
+ <SN6PR12MB276752B7FA83BC454F0C3CAA8E9A9@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <c933e87762d78e5dce78e9bbf9c41aa0b30ddba2.1655761627.git.ashish.kalra@amd.com>
+ <Ytk4fWCC3feXdAPW@zn.tnic>
+In-Reply-To: <Ytk4fWCC3feXdAPW@zn.tnic>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-08-01T21:13:27Z;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=7c8e1507-c73c-4d53-930a-7390f7667733;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-08-01T21:16:58Z
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
+ c264213b-7005-471d-8b86-69a196b44eac
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ffe6f863-fe81-4bd6-5a84-08da74032be0
+x-ms-traffictypediagnostic: DM5PR12MB2582:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 3nPnNHdT0hTJG3T+CvLnRvyR8A06pKFnxvVTr43Klj0l/sPH2CM6blWo889sfYywczdqYYB7g37v6/X3b/FZ5eQnGB76nL5tsdqDo10t273GJl17JRml8lBot6yzPU5UH3TbL8lAHfdu9hiS+fimodAz1avn1trs155RByuQ1Jp9Be5CDutNttTYYECTY8I5CDtxUpxx4ROSytsVOPPG+MCGNlLZQNO3HvLdPxGeGVqV11r55kohdUxZGokQ0b8enuYIis80Qk6f2x9l7J9uWl4tb7IqYpv3Q7b/ak/YyBRy3Soc2a+ORaY4Lu5Dbz0TP+seBrPozoxT02OYN5CQ2COhi4q0GupeP+QjfhN7X3npdFa6qz6xIZeDHRBjEpuzZFLYMCaIhfr/6heXW88A/r4wdalyTefXX9+SU0smu3kDv4GNRi/EwHwV+Drf+0Lk1p5NDaj/RH3H97FzaR9Mwuve1RneKxfsCFaFOc3EMnjRxC6yGmJfR1usWXs9hgr/yv1W/OpRx6qJgn+hqbZt1YJtJywe/YEMFlFtV59Q11aJtBOyRVFYe6uk0JEptViuj+pbsq3/CRk8vQ/UuV7Y6+lMtHqfV+aHpPmsebwDjKhqNCFawsEMboQr9JSOCBHc718WhIMWLi0h9Bqp5DigGLA4eYZmrpkFUzb5t2lo7K3a64AFCjOxM6lv+LPdb77e3z51jJTzmRrf/1ikIdZDl1dSWJzX7o0QaNhW6jjV9zx973AoKXhHyvXYssBRKe+KhnWZVInWe/rNir/Biy9JDUC5DXbnVz6BQW+yZjqEIy3ljKLJyynrubWB9ci+6an1
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(366004)(396003)(136003)(39860400002)(346002)(33656002)(38100700002)(8676002)(4326008)(478600001)(86362001)(7696005)(6506007)(2906002)(71200400001)(55016003)(41300700001)(54906003)(6916009)(5660300002)(52536014)(7416002)(7406005)(4744005)(9686003)(26005)(8936002)(316002)(38070700005)(186003)(122000001)(83380400001)(66946007)(76116006)(66476007)(66446008)(64756008)(66556008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ylOO3wyrAz5VgpK8dICy6D/QdTY/RMyFZjc26caj3mmrfeoWZk/S1gPccStV?=
+ =?us-ascii?Q?KeQUJgwZEGUsOmMteRfNhu2RwQ0L2jfI2fSXlKHnUHT0/oezPFgBUNTXKCS/?=
+ =?us-ascii?Q?ELXWIHYdv0ck2sgnfE7aYh01I5yNdgGc1hbZT85AVMpu73FZ2uptYXX4y2Om?=
+ =?us-ascii?Q?ztcLH2wknk7qPDOrOIxla9lz3iilwLTYmli3e2lWkQ9oRVxs5c7vkS922mPo?=
+ =?us-ascii?Q?ltNo7ysg2HIpvP/YNgqC6NyIXFUlj4OqPdnUP5eD1SSmORnN4Xd02iaHrlSH?=
+ =?us-ascii?Q?7cafMJVtyUWXfjtN7lAPiS7zuJQwtf+2CTyrKF2BkvD76aQ7PdOYUCwzF+Em?=
+ =?us-ascii?Q?tjdWId79K3nQZSJRnxdHa97r/eNI84PdmmsCmbS97CkFGJiVr22ChqbcI0xC?=
+ =?us-ascii?Q?y0IfglczJOuwdg6JVR68myFRTAoKO3BQ9DXks1F8rKKzxT7nEZSfR7/xogIC?=
+ =?us-ascii?Q?0WNZ8TbuY7Z5h7gKrnar3iakm1Zct8WJT29FLyD5V8+PvSKD5PREN+Zl5z6E?=
+ =?us-ascii?Q?6aHhN2h46rJTgyg0bXdqQYpgrNha+WYI1iujp5BM055hxyHdJoQNpXjOSHps?=
+ =?us-ascii?Q?isTYBXIeylF4D8uQF0aq7yKXHDhZ2ML98QHPhJxRgGVtTko7YGnnlKap+AIe?=
+ =?us-ascii?Q?Vkg8ydv5DSNMNRAPpV8rhuPWGEqIqpbx8FgTiutkXBemdvjsxcAXFmTvOwn7?=
+ =?us-ascii?Q?jscMr/lokBwAEhL9FokhJ3xHaVInIoRaoG6anQ2pTnIAM+VFEiLaCLz73RCz?=
+ =?us-ascii?Q?npuaspCLy9Tu20eVFgJnVhS1qulJjFhvI4MTx34lD/H1WPquQvI8yt/GaR5k?=
+ =?us-ascii?Q?r4phh/2GnDrAnAhukxzI1t0WKC6GKr/SC7tbSMrg7ux9haq0sL+qXUBl5/Af?=
+ =?us-ascii?Q?D30bNzg0z5uWpDzq4rCcD9Ac++tuNdqMMzXkLhzAjdWlgMsE0e/yE7aARwcD?=
+ =?us-ascii?Q?OOuVHmXguG/WeiXdST1kLzStLA7VvfW3BbvaV67yUHTb9k5wY7AWkRkOGaiV?=
+ =?us-ascii?Q?0fZvNTjA0xtOBeSBbAmeb2+gCV6J6l9m+RH7h9xO1WMrJWFas74EkXqX2CmW?=
+ =?us-ascii?Q?SDP2zz7u0V1Pq4UXtYmbI90kP3oQcSpCgzeZYD5QrWGqy8+x7au0YuD01lq6?=
+ =?us-ascii?Q?r3TTRjTcmqi1k8nvJEf+Wn6w9zN2a7lUGdsuqFkG673guFlaKFFZFPoz21Pd?=
+ =?us-ascii?Q?rbhLBwJWuhnrs+BNhcsAvNPJ2bkrDe3ZVHQM21u9Of0b4YDTh2zR1/5pT8Fz?=
+ =?us-ascii?Q?96QPWDIcCid3Oqehmkbpm4h9d6RJVPreXhxUXIn/W+VzMb3kVz/HjbY8LqUX?=
+ =?us-ascii?Q?73yGqgLC05425VBJsO06Hsc2LRII4LQzaDCxE66pnj+jfBSs0+EJoGmUnm51?=
+ =?us-ascii?Q?U6WDLA0px5HSMmyRk5J5ywoV+qu4Un7Uwz51UOYrwPExJLe/lUAl1jCyd2iB?=
+ =?us-ascii?Q?d+yKrFCy2Kg2cjZ/gq+NOYWz8qp9SZAZahrotXd3s2PhY22QBPODKafxJLZO?=
+ =?us-ascii?Q?TbDnP85+3l+buZ2JuVh069jv+u0wrQJ5re0fSndBh/O1jpkNF8V6ZDT0VKKY?=
+ =?us-ascii?Q?OWL8XQh9NzH+nHbvw84=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <46b27b72-aabf-f37d-7304-29debeefd8ae@amd.com>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=ltao@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffe6f863-fe81-4bd6-5a84-08da74032be0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Aug 2022 21:16:59.5725
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EXdQpSkzeeqihVpNCdRUlEehXYhM0Fw/c852HFGnUX0XjXMojPBflQTChRv4KyZ1gzNAEUvOw8e1s+4V0TXwkw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR12MB2582
 
-Hi Tom,
+[AMD Official Use Only - General]
 
-On Fri, Apr 29, 2022 at 08:08:28AM -0500, Tom Lendacky wrote:
-> On 4/29/22 04:06, Tao Liu wrote:
-> > On Thu, Jan 27, 2022 at 11:10:34AM +0100, Joerg Roedel wrote:
-> 
-> > 
-> > Hi Joerg,
-> > 
-> > I tried the patch set with 5.17.0-rc1 kernel, and I have a few questions:
-> > 
-> > 1) Is it a bug or should qemu-kvm 6.2.0 be patched with specific patch? Because
-> >     I found it will exit with 0 when I tried to reboot the VM with sev-es enabled.
-> >     However with only sev enabled, the VM can do reboot with no problem:
-> 
-> Qemu was specifically patched to exit on reboot with SEV-ES guests. Qemu
-> performs a reboot by resetting the vCPU state, which can't be done with an
-> SEV-ES guest because the vCPU state is encrypted.
-> 
+Hello Boris,
 
-Sorry for the late response, and thank you for the explanation!
+>> Subject: [PATCH Part2 v6 04/49] x86/sev: set SYSCFG.MFMD
 
-> > 
-> > [root@dell-per7525-03 ~]# virsh start TW-SEV-ES --console
-> > ....
-> > Fedora Linux 35 (Server Edition)
-> > Kernel 5.17.0-rc1 on an x86_64 (ttyS0)
-> > ....
-> > [root@fedora ~]# reboot
-> > .....
-> > [   48.077682] reboot: Restarting system
-> > [   48.078109] reboot: machine restart
-> >                         ^^^^^^^^^^^^^^^ guest vm reached restart
-> > [root@dell-per7525-03 ~]# echo $?
-> > 0
-> > ^^^ qemu-kvm exit with 0, no reboot back to normal VM kernel
-> > [root@dell-per7525-03 ~]#
-> > 
-> > 2) With sev-es enabled and the 2 patch sets applied: A) [PATCH v3 00/10] x86/sev:
-> > KEXEC/KDUMP support for SEV-ES guests, and B) [PATCH v6 0/7] KVM: SVM: Add initial
-> > GHCB protocol version 2 support. I can enable kdump and have vmcore generated:
-> > 
-> > [root@fedora ~]# dmesg|grep -i sev
-> > [    0.030600] SEV: Hypervisor GHCB protocol version support: min=1 max=2
-> > [    0.030602] SEV: Using GHCB protocol version 2
-> > [    0.296144] AMD Memory Encryption Features active: SEV SEV-ES
-> > [    0.450991] SEV: AP jump table Blob successfully set up
-> > [root@fedora ~]# kdumpctl status
-> > kdump: Kdump is operational
-> > 
-> > However without the 2 patch sets, I can also enable kdump and have vmcore generated:
-> > 
-> > [root@fedora ~]# dmesg|grep -i sev
-> > [    0.295754] AMD Memory Encryption Features active: SEV SEV-ES
-> >                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ patch set A & B
-> > 	       not applied, so only have this string.
-> > [root@fedora ~]# echo c > /proc/sysrq-trigger
-> > ...
-> > [    2.759403] kdump[549]: saving vmcore-dmesg.txt to /sysroot/var/crash/127.0.0.1-2022-04-18-05:58:50/
-> > [    2.804355] kdump[555]: saving vmcore-dmesg.txt complete
-> > [    2.806915] kdump[557]: saving vmcore
-> >                             ^^^^^^^^^^^^^ vmcore can still be generated
-> > ...
-> > [    7.068981] reboot: Restarting system
-> > [    7.069340] reboot: machine restart
-> > 
-> > [root@dell-per7525-03 ~]# echo $?
-> > 0
-> > ^^^ same exit issue as question 1.
-> > 
-> > I doesn't have a complete technical background of the patch set, but isn't
-> > it the issue which this patch set is trying to solve? Or I missed something?
-> 
-> The main goal of this patch set is to really to solve the ability to perform
-> a kexec. I would expect kdump to work since kdump shuts down all but the
-> executing vCPU and performs its operations before "rebooting" (which will
-> exit Qemu as I mentioned above). But kexec requires the need to restart the
-> APs from within the guest after they have been stopped. That requires
-> specific support and actions on the part of the guest kernel in how the APs
-> are stopped and restarted.
+>That subject title needs to be made human readable.
+Ok.
 
-Recently I got one sev-es flaged machine borrowed and retested the patch, which
-worked fine for kexec when sev-es enabled. With the patchset applied in 5.17.0-rc1, 
-kexec'ed kernel can bring up all APs with no problem.
+>> SEV-SNP FW >=3D 1.51 requires that SYSCFG.MFMD must be set.
 
-However as for kdump, I find one issue. Although kdump kernel can work well on one
-cpu, but we can still enable multi-cpus by removing the "nr_cpus=1" kernel parameter
-in kdump sysconfig. I was expecting kdump kernel can bring up all APs as kexec did,
-however:
+>Because?
+This is a FW requirement.
 
-[    0.000000] Command line: elfcorehdr=0x5b000000 BOOT_IMAGE=(hd0,gpt2)/vmlinuz-5.17.0-rc1+ ro resume=/dev/mapper/rhel-swap biosdevname=0 net.ifnames=0 console=ttyS0 irqpoll reset_devices cgroup_disable=memory mce=off numa=off udev.children-max=2 panic=10 rootflags=nofail acpi_no_memhotplug transparent_hugepage=never nokaslr novmcoredd hest_disable disable_cpu_apicid=0 iTCO_wdt.pretimeout=0
-...
-[    0.376663] smp: Bringing up secondary CPUs ...
-[    0.377599] x86: Booting SMP configuration:
-[    0.378342] .... node  #0, CPUs:      #1
-[   10.377698] smpboot: do_boot_cpu failed(-1) to wakeup CPU#1
-[   10.379882]  #2
-[   20.379645] smpboot: do_boot_cpu failed(-1) to wakeup CPU#2
-[   20.380648] smp: Brought up 1 node, 1 CPU
-[   20.381600] smpboot: Max logical packages: 4
-[   20.382597] smpboot: Total of 1 processors activated (4192.00 BogoMIPS)
+>Also, commit message needs to be human-readable and not pseudocode.
 
-Turns out for kdump, the APs were not stopped properly, so I modified the following code:
+>> @@ -2325,6 +2346,9 @@ static __init int __snp_rmptable_init(void)
+>>  	/* Flush the caches to ensure that data is written before SNP is enabl=
+ed. */
+>>  	wbinvd_on_all_cpus();
+>> =20
+>> +	/* MFDM must be enabled on all the CPUs prior to enabling SNP. */
+>> +	on_each_cpu(mfdm_enable, NULL, 1);
+>> +
+>>  	/* Enable SNP on all CPUs. */
+>>  	on_each_cpu(snp_enable, NULL, 1);
 
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -26,6 +26,7 @@
- #include <asm/cpu.h>
- #include <asm/nmi.h>
- #include <asm/smp.h>
-+#include <asm/sev.h>
- 
- #include <linux/ctype.h>
- #include <linux/mc146818rtc.h>
-@@ -821,6 +822,7 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
- 
-        atomic_dec(&waiting_for_crash_ipi);
-        /* Assume hlt works */
-+       sev_es_stop_this_cpu();
-        halt();
-        for (;;)
-                cpu_relax();
+>No, not two IPI generating function calls - one and do everything in it.
+>I.e., what Marc said.
 
-[    0.000000] Command line: elfcorehdr=0x5b000000 BOOT_IMAGE=(hd0,gpt2)/vmlinuz-5.17.0-rc1-hack+ ro resume=/dev/mapper/rhel-swap biosdevname=0 net.ifnames=0 console=ttyS0 irqpoll reset_devices cgroup_disable=memory mce=off numa=off udev.children-max=2 panic=10 rootflags=nofail acpi_no_memhotplug transparent_hugepage=never nokaslr novmcoredd hest_disable disable_cpu_apicid=0 iTCO_wdt.pretimeout=0
-...
-[    0.402618] smp: Bringing up secondary CPUs ...
-[    0.403308] x86: Booting SMP configuration:
-[    0.404171] .... node  #0, CPUs:      #1 #2 #3
-[    0.407362] smp: Brought up 1 node, 4 CPUs
-[    0.408907] smpboot: Max logical packages: 4
-[    0.409172] smpboot: Total of 4 processors activated (16768.01 BogoMIPS)
-
-Now all APs can work in kdump kernel.
+Ok got that.
 
 Thanks,
-Tao Liu
-
-> 
-> Thanks,
-> Tom
-> 
-> > 
-> > Thanks,
-> > Tao Liu
-> > > _______________________________________________
-> > > Virtualization mailing list
-> > > Virtualization@lists.linux-foundation.org
-> > > https://lists.linuxfoundation.org/mailman/listinfo/virtualization
-> > 
-> 
-
+Ashish
