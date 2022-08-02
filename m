@@ -1,93 +1,104 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0CE7F
-	for <linux-coco@lists.linux.dev>; Tue,  2 Aug 2022 14:15:02 +0000 (UTC)
-Received: from zn.tnic (p57969665.dip0.t-ipconnect.de [87.150.150.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C3AC51EC0426;
-	Tue,  2 Aug 2022 16:14:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1659449690;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=Z8jwOPcUdOFzx8T/2N02LE8NjUGzajYNLDv9kHr1wy4=;
-	b=IG0mK8KrzQhKoW9wNbACe1dk+XLWRIv0NS5AZcL0Y0Bzp8OxAhzA5yHTwyPGqkaTcQVWUb
-	2lAr6YhEGZvc2T2HLUq0Z553eO6RzeCJoDWoFdQ6TqRdBSDWouWaRJTjeZHO6wePdHw7c8
-	pnWfqeATNMAHkT9Xava/TNZYo2rOwOE=
-Date: Tue, 2 Aug 2022 16:14:45 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"jroedel@suse.de" <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"slp@redhat.com" <slp@redhat.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
-	"tobin@ibm.com" <tobin@ibm.com>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>,
-	"ak@linux.intel.com" <ak@linux.intel.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"alpergun@google.com" <alpergun@google.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 06/49] x86/sev: Add helper functions for
- RMPUPDATE and PSMASH instruction
-Message-ID: <YukxVYPiiBo6xH9c@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <e4643e9d37fcb025d0aec9080feefaae5e9245d5.1655761627.git.ashish.kalra@amd.com>
- <YrH0ca3Sam7Ru11c@work-vm>
- <SN6PR12MB2767FBF0848B906B9F0284D28EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
- <BYAPR12MB2759910E715C69D1027CCE678EB29@BYAPR12MB2759.namprd12.prod.outlook.com>
- <Yrrc/6x70wa14c5t@work-vm>
- <SN6PR12MB27677062FBBF9D62C7BF41D88EB89@SN6PR12MB2767.namprd12.prod.outlook.com>
- <Yt6ZjzCSqPv6BKfH@zn.tnic>
- <SN6PR12MB2767FDC22657E683F7467F9A8E9A9@SN6PR12MB2767.namprd12.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503107F
+	for <linux-coco@lists.linux.dev>; Tue,  2 Aug 2022 23:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1659483999; x=1691019999;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6rXGmJONj6b+nIwOClpJuGcxiMNJkmRdeSvTUzrRYKw=;
+  b=ewQmNbUhWJEhDFRchni37SDkuFJYWwsO549xArF+m0avudCnxywe/ej6
+   wO1oivLgr+mEPgwMMF6r5LakoxYArgLJfDYQg1hR7JfbK5gADVw/27t1X
+   6o5LtJhoHsH2AZOewI0V2dVZxIoDjJFLif8ehE3AIweiMfY1lbxswj41w
+   aWAyK9nifE0bnl4YlPiwlc95z2Cz/i4T7nXuxzrPsLPmE0ke5xJAzlimj
+   fIj1KEozGPklLWa0JBWcwXXc1wln5pQP7cG54n1kb/d2Vt2F8WYrz3Sfd
+   48kIbt9+L2QtRAWmnaOjpQUm3LPN6oAfkeloEVYYzoHmOJVkjvAB261oB
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10427"; a="272591650"
+X-IronPort-AV: E=Sophos;i="5.93,212,1654585200"; 
+   d="scan'208";a="272591650"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2022 16:46:38 -0700
+X-IronPort-AV: E=Sophos;i="5.93,212,1654585200"; 
+   d="scan'208";a="630919269"
+Received: from ywagle-mobl.amr.corp.intel.com (HELO [10.209.29.213]) ([10.209.29.213])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2022 16:46:38 -0700
+Message-ID: <80cc204b-a24f-684f-ec66-1361b69cae39@intel.com>
+Date: Tue, 2 Aug 2022 16:46:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SN6PR12MB2767FDC22657E683F7467F9A8E9A9@SN6PR12MB2767.namprd12.prod.outlook.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping
+ into unaccepted memory
+Content-Language: en-US
+To: Borislav Petkov <bp@alien8.de>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Sean Christopherson
+ <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+ Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Varad Gautam <varad.gautam@suse.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
+ marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+ khalid.elmously@canonical.com, philip.cox@canonical.com, x86@kernel.org,
+ linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
+ <Yt/ANO5usdV+JSSW@zn.tnic>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <Yt/ANO5usdV+JSSW@zn.tnic>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 01, 2022 at 11:32:21PM +0000, Kalra, Ashish wrote:
-> But we can't use this struct on a core/platform which has a different
-> layout, so aren't the model checks required ?
+On 7/26/22 03:21, Borislav Petkov wrote:
+> On Tue, Jun 14, 2022 at 03:02:27PM +0300, Kirill A. Shutemov wrote:
+>> But, this approach does not work for unaccepted memory. For TDX, a load
+>> from unaccepted memory will not lead to a recoverable exception within
+>> the guest. The guest will exit to the VMM where the only recourse is to
+>> terminate the guest.
+> FTR, this random-memory-access-to-unaccepted-memory-is-deadly thing is
+> really silly. We should be able to handle such cases - because they do
+> happen often - in a more resilient way. Just look at the complex dance
+> this patch needs to do just to avoid this.
+> 
+> IOW, this part of the coco technology needs improvement.
 
-That would be a problem only if the already specified fields move or get
-resized.
+This particular wound is self-inflicted.  The hardware can *today*
+generate a #VE for these accesses.  But, to make writing the #VE code
+more straightforward, we asked that the hardware not even bother
+delivering the exception.  At the time, nobody could come up with a case
+why there would ever be a legitimate, non-buggy access to unaccepted memory.
 
-If their offset and size don't change, you're good.
+We learned about load_unaligned_zeropad() the hard way.  I never ran
+into it and never knew it was there.  Dangit.
 
--- 
-Regards/Gruss,
-    Boris.
+We _could_ go back to the way it was originally.  We could add
+load_unaligned_zeropad() support to the #VE handler, and there's little
+risk of load_unaligned_zeropad() itself being used in the
+interrupts-disabled window early in the #VE handler.  That would get rid
+of all the nasty adjacent page handling in the unaccepted memory code.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+But, that would mean that we can land in the #VE handler from more
+contexts.  Any normal, non-buggy use of load_unaligned_zeropad() can end
+up there, obviously.  We would, for instance, need to be more careful
+about #VE recursion.  We'd also have to make sure that _bugs_ that land
+in the #VE handler can still be handled in a sane way.
+
+To sum it all up, I'm not happy with the complexity of the page
+acceptance code either but I'm not sure that it's bad tradeoff compared
+to greater #VE complexity or fragility.
+
+Does anyone think we should go back and really reconsider this?
