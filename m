@@ -1,115 +1,116 @@
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2C83C3E
-	for <linux-coco@lists.linux.dev>; Mon,  8 Aug 2022 15:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1659974109; x=1691510109;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=adBjDflubgueY7hGEhT8HFxQtuN3PdKVUrGiUqSnREU=;
-  b=ZKY3sE+voQDRg8jaDisg2APrpdcyM+mavKdPhIvrPUjN1XyIjo1edLeA
-   m+e1yhKdZLDauRs3Vaq79FGFXNEVL6bkdybRMFrRsNMzVD+abhnVwvXSm
-   mCzsZ55OYIQZ5b0+S9sLDMHyARrLoNdcsyPgBxVyxiVe1EBPeUKfzRlcX
-   JOfvUW6nTljMZfbVlAf8gYimeQ2hwQX8/aCviKCNWU2esZxKAWCgaRzbt
-   Ymh38kZOGc9cC8MN86JtNza+dQC/0yA0o/+K95jQmFO5lKa04deofN2sx
-   gwXWSfzgsKnlps0ktQZdCmcvIeAXYmJNdREU/zaAp6GqJiKLPlATHSJ7p
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10433"; a="270402287"
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="270402287"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 08:55:09 -0700
-X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
-   d="scan'208";a="604416918"
-Received: from sankarka-mobl1.amr.corp.intel.com (HELO [10.212.251.15]) ([10.212.251.15])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 08:55:08 -0700
-Message-ID: <4992c5b3-b9a9-b4ff-b09c-1383faf1ea6f@intel.com>
-Date: Mon, 8 Aug 2022 08:55:09 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE457A
+	for <linux-coco@lists.linux.dev>; Mon,  8 Aug 2022 19:27:54 +0000 (UTC)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-328a1cff250so91318447b3.6
+        for <linux-coco@lists.linux.dev>; Mon, 08 Aug 2022 12:27:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=KBxnTL7K25Hs8Wv1cjszwJQN73tLNnDr4U0ROfrziZM=;
+        b=bmhDQvAoVXlswYykpII5N+dpGoKRhyIPQd6917OIYRgTBKCDiocZ8hBciok/W8LUze
+         EIjX5hN3yiimne61Nb3aTNlb9nBZQmslL5TCM0d1LA7i2zQ/H/4aTTagUPnTlBHd7NNH
+         jp49XCAYeppQJH6DZPAkhkhwaPCdGbr5LzxpBy1SPKkfFCpwOrhcOT7IXsuqUQ7ZkHXk
+         2EN9b/GFRVyKWz6SZA4dRgUqR4NSQvsXiltm/yl8BfV5WDZTRhGGdA6KVukBUihgBOyH
+         55C0EgVneBrxf/TZZbWXKThHVk8W/icGPUW+SM47rOw7socQV2WRJvnbyYLErUkfE5Gt
+         l21w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=KBxnTL7K25Hs8Wv1cjszwJQN73tLNnDr4U0ROfrziZM=;
+        b=lhfHld9zxt/HJPTWdeuMn7hvsdJdGNNXVE+fuCAAi6VYfqWdiKhBj6/nGbUTDoDSv4
+         FjMHkJdBfWkSh2bAJeKNaKX/Tow2dgLBxXeAwfl91b/oT0h9YJvR2JioZueudBpeG1b7
+         EzINzSdLUwKN8jYTo6/BeBL80HkF937Iu5Apx6ENJF92laNa1GriYkhKrzK3C+MY8x2v
+         7mYtPl4bNHq+Gh8ARDTDROuXIal9W3HIgaxKilEczKMkThqyNcKBvfPdQ+cZNSvJC+6O
+         1m1+BppS1yiclprJoBncSUserb8gBcheV/W5gCI9w0TlUGAoedse+CIYJ1hCKnTxXzqH
+         rnfw==
+X-Gm-Message-State: ACgBeo33CxyRECnyL7vTZ02S2SuBpU4QQ5kkBovxeGU1oRV3gtB+o+Cm
+	3+oqQJm17tF9NjDvBqC4NF0WZT09RqpQqE590RyU2Q==
+X-Google-Smtp-Source: AA6agR4CqP2bI2zng0Vr3lzhitvUH2Let9QUGzmufNUJrDlFIezoBA22p9QF8TCyK0rnYyUKBgURyaJWteXCXsvKjg8=
+X-Received: by 2002:a0d:da41:0:b0:329:91e7:fd06 with SMTP id
+ c62-20020a0dda41000000b0032991e7fd06mr10086726ywe.436.1659986873539; Mon, 08
+ Aug 2022 12:27:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Content-Language: en-US
-To: Vlastimil Babka <vbabka@suse.cz>, David Hildenbrand <david@redhat.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, marcelo.cerri@canonical.com,
- tim.gardner@canonical.com, khalid.elmously@canonical.com,
- philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
- <cb9d3310-3bc0-8ecf-5e71-becce980235f@redhat.com>
- <f936b024-43e1-5390-e33f-ad7d355a2802@suse.cz>
- <eb83fcd9-f331-4d54-1ab9-78db106ee66d@intel.com>
- <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <cover.1655761627.git.ashish.kalra@amd.com> <d325cb5d7961f015400999dda7ee8e08e4ca2ec6.1655761627.git.ashish.kalra@amd.com>
+ <YukZFKpAO5o5MLA1@kernel.org>
+In-Reply-To: <YukZFKpAO5o5MLA1@kernel.org>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Mon, 8 Aug 2022 12:27:42 -0700
+Message-ID: <CAAH4kHazh_S4zTLimL3Bch7yo3zL2wv86j=w3f2n74O-joWLQQ@mail.gmail.com>
+Subject: Re: [PATCH Part2 v6 17/49] crypto: ccp: Add the SNP_{SET,GET}_EXT_CONFIG
+ command
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, "the arch/x86 maintainers" <x86@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, 
+	"open list:X86 KVM CPUs" <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, linux-crypto@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	"Lendacky, Thomas" <thomas.lendacky@amd.com>, hpa@zytor.com, Ard Biesheuvel <ardb@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, vkuznets@redhat.com, 
+	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, dave.hansen@linux.intel.com, 
+	slp@redhat.com, Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	srinivas.pandruvada@linux.intel.com, David Rientjes <rientjes@google.com>, 
+	dovmurik@linux.ibm.com, tobin@ibm.com, Borislav Petkov <bp@alien8.de>, 
+	"Roth, Michael" <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A. Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com, 
+	Marc Orr <marcorr@google.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Alper Gun <alpergun@google.com>, dgilbert@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/5/22 11:17, Vlastimil Babka wrote:
->> 3. Pull the page off the 2M/4M lists, drop the zone lock, accept it,
->>    then put it back.
-> Worth trying, IMHO. Perhaps easier to manage if the lists are distinct from
-> the normal ones, as I suggested.
+To preface, I don't want to delay this patch set, only have the
+conversation at the most appropriate place.
 
-I was playing with another series recently where I did this, momentarily
-taking pages off some of the high-order lists and dropping the zone lock.
+>
+> > The SEV-SNP firmware provides the SNP_CONFIG command used to set the
+> > system-wide configuration value for SNP guests. The information includes
+> > the TCB version string to be reported in guest attestation reports.
+>
 
-Kirill, if you go looking at this, just make sure that you don't let
-this happen to too much memory at once.  You might end up yanking memory
-out of the allocator that's not reflected in NR_FREE_PAGES.
+The system-wide aspect of this makes me wonder if we can also have a
+VM instance-specific extension. This is important for the use case
+that we may see secure boot variables included in the launch
+measurement, making offline signing of the UEFI image impossible. We
+can't sign the cross-product of all UEFI builds and every user's EFI
+variables. We'd like to include an instance-specific certificate that
+specifies the platform-endorsed golden measurement of the UEFI.
 
-You might, for instance want to make sure that only a small number of
-threads can have pulled memory off the free lists at once.  Something
-*logically* like this:
+An alternative that doesn't require a change to the kernel is to just
+make this certificate fetchable from a FAMILY_ID-keyed, predetermined
+URL prefix + IMAGE_ID + '.crt', but this requires a download (and
+continuous hosting) to do something as routine as collecting an
+attestation report. It's up to the upstream community to determine if
+that is an acceptable cost to keep the complexity of a certificate
+table merge operation out of the kernel.
 
-// Limit to two threads at once:
-atomic_t nr_accepting_threads = ATOMIC_INIT(2);
+The SNP API specification gives an interpretation to the data blob
+here as a table of GUID/offset pairs followed by data blobs that
+presumably are at the appropriate offsets into the data pages. The
+spec allows for the host to add any number of GUID/offset pairs it
+wants, with 3 specific GUIDs recommended for the AMD PSP certificate
+chain.
 
-	page = del_page_from_free_list();
-	if (!PageAccepted(page)) {
-		if (atomic_dec_and_test(&nr_accepting_threads)) {
-			// already at the thread limit
-			add_page_from_free_list(page, ...);
-			spin_unlock_irq(&zone->lock);
-			// wait for a slot...
-			spin_lock_irq(&zone->lock);
-			goto retry;
-		} else {
-			spin_unlock_irq(&zone->lock);
-			accept_page(page);
-			spin_lock_irq(&zone->lock);
-			add_page_from_free_list(page, ...);
-			// do merging if it was a 2M page
-		}
-	}
+The snp_guest_ext_guest_request function in ccp is what passes back
+the certificate data that was previously stored, so I'm wondering if
+it can take an extra (pointer,len) pair of VM instance certificate
+data to merge with the host certificate data before returning to the
+guest. The new required length is the sum total of both the header
+certs and instance certs. The operation to copy the data is no longer
+a memcpy but a header merge that tracks the offset shifts caused by a
+larger header and other certificates in the remaining data pages.
 
-It's a little nasty because the whole thing is not a sleepable context.
- I also know that the merging code needs some refactoring if you want to
-do merging with 2M pages here.  It might all get easier if you move all
-the page allocator stuff to only work at the 4M granularity.
+I can propose my own patch on top of this v6 patch set that adds a KVM
+ioctl like KVM_{GET,SET}_INSTANCE_SNP_EXT_CONFIG and then pass along
+the stored certificate blob in the request call. I'd prefer to have
+the design agreed upon upfront though.
 
-In any case, I'm not trying to dissuade anyone from listening to the
-other reviewer feedback.  Just trying to save you a few cycles on a
-similar problem I was looking at recently.
+-- 
+-Dionna Glaze, PhD (she/her)
