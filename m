@@ -1,90 +1,115 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C267C
-	for <linux-coco@lists.linux.dev>; Mon,  8 Aug 2022 13:13:24 +0000 (UTC)
-Received: from zn.tnic (p200300ea971b98cb329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98cb:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 590671EC0324;
-	Mon,  8 Aug 2022 15:13:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1659964393;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=fMS7xVNFh3Y0DjyDY0WIgzKl0DxlBVb3xHKu0mYYgrw=;
-	b=AzKfFbWBrPNIIgSbaUIvdZnU1hPajXBtY+5GZoxuBRLQAknp8MtBF5WpaCsRBLmSl1TuLC
-	bmesbqCcUOLx5D1WJh4T1rV+uNWZLUSHHiU1rISjx4ARJRVahvtdvvUMnzwPVlaexl7vhZ
-	UPWiZatlfigojXzDUj8TrS+zwo0+vQc=
-Date: Mon, 8 Aug 2022 15:13:08 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 08/49] x86/traps: Define RMP violation #PF error
- code
-Message-ID: <YvEL5CxHXoE1fWU3@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <5328a76b3fab1f20b3ffc400ca2402bec19d9700.1655761627.git.ashish.kalra@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2C83C3E
+	for <linux-coco@lists.linux.dev>; Mon,  8 Aug 2022 15:55:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1659974109; x=1691510109;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=adBjDflubgueY7hGEhT8HFxQtuN3PdKVUrGiUqSnREU=;
+  b=ZKY3sE+voQDRg8jaDisg2APrpdcyM+mavKdPhIvrPUjN1XyIjo1edLeA
+   m+e1yhKdZLDauRs3Vaq79FGFXNEVL6bkdybRMFrRsNMzVD+abhnVwvXSm
+   mCzsZ55OYIQZ5b0+S9sLDMHyARrLoNdcsyPgBxVyxiVe1EBPeUKfzRlcX
+   JOfvUW6nTljMZfbVlAf8gYimeQ2hwQX8/aCviKCNWU2esZxKAWCgaRzbt
+   Ymh38kZOGc9cC8MN86JtNza+dQC/0yA0o/+K95jQmFO5lKa04deofN2sx
+   gwXWSfzgsKnlps0ktQZdCmcvIeAXYmJNdREU/zaAp6GqJiKLPlATHSJ7p
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10433"; a="270402287"
+X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
+   d="scan'208";a="270402287"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 08:55:09 -0700
+X-IronPort-AV: E=Sophos;i="5.93,222,1654585200"; 
+   d="scan'208";a="604416918"
+Received: from sankarka-mobl1.amr.corp.intel.com (HELO [10.212.251.15]) ([10.212.251.15])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2022 08:55:08 -0700
+Message-ID: <4992c5b3-b9a9-b4ff-b09c-1383faf1ea6f@intel.com>
+Date: Mon, 8 Aug 2022 08:55:09 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5328a76b3fab1f20b3ffc400ca2402bec19d9700.1655761627.git.ashish.kalra@amd.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Content-Language: en-US
+To: Vlastimil Babka <vbabka@suse.cz>, David Hildenbrand <david@redhat.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Ard Biesheuvel <ardb@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, marcelo.cerri@canonical.com,
+ tim.gardner@canonical.com, khalid.elmously@canonical.com,
+ philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+ Mel Gorman <mgorman@techsingularity.net>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
+ <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+ <cb9d3310-3bc0-8ecf-5e71-becce980235f@redhat.com>
+ <f936b024-43e1-5390-e33f-ad7d355a2802@suse.cz>
+ <eb83fcd9-f331-4d54-1ab9-78db106ee66d@intel.com>
+ <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 20, 2022 at 11:03:27PM +0000, Ashish Kalra wrote:
-> @@ -12,15 +14,17 @@
->   *   bit 4 ==				1: fault was an instruction fetch
->   *   bit 5 ==				1: protection keys block access
->   *   bit 15 ==				1: SGX MMU page-fault
-> + *   bit 31 ==				1: fault was due to RMP violation
->   */
->  enum x86_pf_error_code {
-> -	X86_PF_PROT	=		1 << 0,
-> -	X86_PF_WRITE	=		1 << 1,
-> -	X86_PF_USER	=		1 << 2,
-> -	X86_PF_RSVD	=		1 << 3,
-> -	X86_PF_INSTR	=		1 << 4,
-> -	X86_PF_PK	=		1 << 5,
-> -	X86_PF_SGX	=		1 << 15,
-> +	X86_PF_PROT	=		BIT_ULL(0),
-> +	X86_PF_WRITE	=		BIT_ULL(1),
-> +	X86_PF_USER	=		BIT_ULL(2),
-> +	X86_PF_RSVD	=		BIT_ULL(3),
-> +	X86_PF_INSTR	=		BIT_ULL(4),
-> +	X86_PF_PK	=		BIT_ULL(5),
-> +	X86_PF_SGX	=		BIT_ULL(15),
-> +	X86_PF_RMP	=		BIT_ULL(31),
+On 8/5/22 11:17, Vlastimil Babka wrote:
+>> 3. Pull the page off the 2M/4M lists, drop the zone lock, accept it,
+>>    then put it back.
+> Worth trying, IMHO. Perhaps easier to manage if the lists are distinct from
+> the normal ones, as I suggested.
 
-Yeah, I remember dhansen asked for those to use the BIT() macro but the
-_ULL is an overkill. Those PF flags are 32 and they fit in an unsigned
-int.
+I was playing with another series recently where I did this, momentarily
+taking pages off some of the high-order lists and dropping the zone lock.
 
-But we don't have BUT_UI() so I guess the next best thing - BIT() -
-which uses UL internally, should be good enough.
+Kirill, if you go looking at this, just make sure that you don't let
+this happen to too much memory at once.  You might end up yanking memory
+out of the allocator that's not reflected in NR_FREE_PAGES.
 
-So pls use BIT() here - not BIT_ULL().
+You might, for instance want to make sure that only a small number of
+threads can have pulled memory off the free lists at once.  Something
+*logically* like this:
 
-Thx.
+// Limit to two threads at once:
+atomic_t nr_accepting_threads = ATOMIC_INIT(2);
 
--- 
-Regards/Gruss,
-    Boris.
+	page = del_page_from_free_list();
+	if (!PageAccepted(page)) {
+		if (atomic_dec_and_test(&nr_accepting_threads)) {
+			// already at the thread limit
+			add_page_from_free_list(page, ...);
+			spin_unlock_irq(&zone->lock);
+			// wait for a slot...
+			spin_lock_irq(&zone->lock);
+			goto retry;
+		} else {
+			spin_unlock_irq(&zone->lock);
+			accept_page(page);
+			spin_lock_irq(&zone->lock);
+			add_page_from_free_list(page, ...);
+			// do merging if it was a 2M page
+		}
+	}
 
-https://people.kernel.org/tglx/notes-about-netiquette
+It's a little nasty because the whole thing is not a sleepable context.
+ I also know that the merging code needs some refactoring if you want to
+do merging with 2M pages here.  It might all get easier if you move all
+the page allocator stuff to only work at the 4M granularity.
+
+In any case, I'm not trying to dissuade anyone from listening to the
+other reviewer feedback.  Just trying to save you a few cycles on a
+similar problem I was looking at recently.
