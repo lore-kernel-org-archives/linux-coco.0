@@ -1,122 +1,90 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4A02563
-	for <linux-coco@lists.linux.dev>; Fri,  5 Aug 2022 18:24:00 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C267C
+	for <linux-coco@lists.linux.dev>; Mon,  8 Aug 2022 13:13:24 +0000 (UTC)
+Received: from zn.tnic (p200300ea971b98cb329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:98cb:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EBF34349FD;
-	Fri,  5 Aug 2022 18:17:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1659723472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IzpiBFPwlBSeiyCmg4i8g32ALBSJCReWlJys+QhxFS8=;
-	b=HEvQrK0z2flbkWu3D4bi6Huu9V6B98l37hfFD6hspbwEp6re5HjF/Yu81/d71Yyh/aa1F+
-	I7BNV4EpToX8myv1isx7IZTxjYrhx+NnCFVLAfX32A2r8QXYROHSvRxSbFf4KLV/2UsIuJ
-	ZVrU4VJ7qbcrVA8P4y+TSLkNjlt7Y+g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1659723472;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IzpiBFPwlBSeiyCmg4i8g32ALBSJCReWlJys+QhxFS8=;
-	b=U1lAlK/bqMUOrKEDOATRLkf3iu/ZOAEGHfjjcQhARV8Kqz/D1wQ4Em8MU/QEXhid1WfmII
-	3k0L6l4IM75ob6Dg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7B519133B5;
-	Fri,  5 Aug 2022 18:17:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id vqNoHdBe7WKZFQAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Fri, 05 Aug 2022 18:17:52 +0000
-Message-ID: <cecbaa10-6d0a-8925-004b-ff53d9f56e83@suse.cz>
-Date: Fri, 5 Aug 2022 20:17:52 +0200
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 590671EC0324;
+	Mon,  8 Aug 2022 15:13:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1659964393;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=fMS7xVNFh3Y0DjyDY0WIgzKl0DxlBVb3xHKu0mYYgrw=;
+	b=AzKfFbWBrPNIIgSbaUIvdZnU1hPajXBtY+5GZoxuBRLQAknp8MtBF5WpaCsRBLmSl1TuLC
+	bmesbqCcUOLx5D1WJh4T1rV+uNWZLUSHHiU1rISjx4ARJRVahvtdvvUMnzwPVlaexl7vhZ
+	UPWiZatlfigojXzDUj8TrS+zwo0+vQc=
+Date: Mon, 8 Aug 2022 15:13:08 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 08/49] x86/traps: Define RMP violation #PF error
+ code
+Message-ID: <YvEL5CxHXoE1fWU3@zn.tnic>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <5328a76b3fab1f20b3ffc400ca2402bec19d9700.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.0.3
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Content-Language: en-US
-To: Dave Hansen <dave.hansen@intel.com>, David Hildenbrand
- <david@redhat.com>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, marcelo.cerri@canonical.com,
- tim.gardner@canonical.com, khalid.elmously@canonical.com,
- philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
- Mel Gorman <mgorman@techsingularity.net>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
- <cb9d3310-3bc0-8ecf-5e71-becce980235f@redhat.com>
- <f936b024-43e1-5390-e33f-ad7d355a2802@suse.cz>
- <eb83fcd9-f331-4d54-1ab9-78db106ee66d@intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <eb83fcd9-f331-4d54-1ab9-78db106ee66d@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5328a76b3fab1f20b3ffc400ca2402bec19d9700.1655761627.git.ashish.kalra@amd.com>
 
-On 8/5/22 16:41, Dave Hansen wrote:
-> On 8/5/22 06:38, Vlastimil Babka wrote:
->>> I'm sure we could optimize for the !unaccepted memory via static keys
->>> also in this version with some checks at the right places if we find
->>> this to hurt performance?
->> It would be great if we would at least somehow hit the necessary code only
->> when dealing with a >=pageblock size block. The bitmap approach and
->> accepting everything smaller uprofront actually seems rather compatible. Yet
->> in the current patch we e.g. check PageUnaccepted(buddy) on every buddy size
->> while merging.
-> 
-> Needing to check PageUnaccepted() during the merge is fallout from
-> moving the acceptance to post_alloc_hook().  I _think_ an earlier
-> version of this did page acceptance under the zone lock, closer to where
-> the page comes off the 2M/4M lists.
-> 
-> But, page acceptance is horribly slow, so I asked Kirill to move it out
-> from under the zone lock.  Doing it in post_alloc_hook() (after the zone
-> lock is dropped) makes a lot of sense since we do zeroing in there and
-> zeroing is also nice and slow.
-> 
-> But, post_alloc_hook() is long after the 2M page has been split and that
-> means that we have to deal with potentially unaccepted pages during merges.
-> 
-> I think there are three basic options:
-> 
-> 1. This patch: Do acceptance after the zone lock is dropped and deal
->    with mixed-acceptance merges
-> 2. Do acceptance under the zone lock as pages come off the 2M/4M lists,
->    but before the page is split.
+On Mon, Jun 20, 2022 at 11:03:27PM +0000, Ashish Kalra wrote:
+> @@ -12,15 +14,17 @@
+>   *   bit 4 ==				1: fault was an instruction fetch
+>   *   bit 5 ==				1: protection keys block access
+>   *   bit 15 ==				1: SGX MMU page-fault
+> + *   bit 31 ==				1: fault was due to RMP violation
+>   */
+>  enum x86_pf_error_code {
+> -	X86_PF_PROT	=		1 << 0,
+> -	X86_PF_WRITE	=		1 << 1,
+> -	X86_PF_USER	=		1 << 2,
+> -	X86_PF_RSVD	=		1 << 3,
+> -	X86_PF_INSTR	=		1 << 4,
+> -	X86_PF_PK	=		1 << 5,
+> -	X86_PF_SGX	=		1 << 15,
+> +	X86_PF_PROT	=		BIT_ULL(0),
+> +	X86_PF_WRITE	=		BIT_ULL(1),
+> +	X86_PF_USER	=		BIT_ULL(2),
+> +	X86_PF_RSVD	=		BIT_ULL(3),
+> +	X86_PF_INSTR	=		BIT_ULL(4),
+> +	X86_PF_PK	=		BIT_ULL(5),
+> +	X86_PF_SGX	=		BIT_ULL(15),
+> +	X86_PF_RMP	=		BIT_ULL(31),
 
-Rather not, as acceptance can be slow and we shouldn't hog the zone lock
-while doing it.
+Yeah, I remember dhansen asked for those to use the BIT() macro but the
+_ULL is an overkill. Those PF flags are 32 and they fit in an unsigned
+int.
 
-> 3. Pull the page off the 2M/4M lists, drop the zone lock, accept it,
->    then put it back.
+But we don't have BUT_UI() so I guess the next best thing - BIT() -
+which uses UL internally, should be good enough.
 
-Worth trying, IMHO. Perhaps easier to manage if the lists are distinct from
-the normal ones, as I suggested.
+So pls use BIT() here - not BIT_ULL().
 
-> I'm not sure any of those other options are better.
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
