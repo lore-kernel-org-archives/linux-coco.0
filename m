@@ -1,124 +1,153 @@
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F474428
-	for <linux-coco@lists.linux.dev>; Tue,  9 Aug 2022 13:56:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1660053382; x=1691589382;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=odYNCkcIAQcBKQptQexLin/WRKzdil3fPD/Uqu4HkkI=;
-  b=aEFzcalQ97hAG4bs2JdRqWh1VYvGCJfnHi664tJe/d/FqlvKXVw2DGNF
-   0sl4Mb77jMqaH3pw2ip5ztIa2t/6kYAuQ4kVNeWE0WSFPGYG3tWmustKj
-   S1MyZYCrFhh3nnAJx34sgJL686GkGPuP7OCHq+najECXbN6sNphKBVeTe
-   U=;
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1a-b09d0114.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2022 13:56:08 +0000
-Received: from EX13D24EUC003.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-	by email-inbound-relay-iad-1a-b09d0114.us-east-1.amazon.com (Postfix) with ESMTPS id 35EAD80383;
-	Tue,  9 Aug 2022 13:55:58 +0000 (UTC)
-Received: from dev-dsk-sabrapan-1c-164a86ac.eu-west-1.amazon.com
- (10.43.162.227) by EX13D24EUC003.ant.amazon.com (10.43.164.217) with
- Microsoft SMTP Server (TLS) id 15.0.1497.36; Tue, 9 Aug 2022 13:55:48 +0000
-From: Sabin Rapan <sabrapan@amazon.com>
-To: <ashish.kalra@amd.com>
-CC: <ak@linux.intel.com>, <alpergun@google.com>, <ardb@kernel.org>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <dgilbert@redhat.com>,
-	<dovmurik@linux.ibm.com>, <hpa@zytor.com>, <jarkko@kernel.org>,
-	<jmattson@google.com>, <jroedel@suse.de>, <kirill@shutemov.name>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <luto@kernel.org>, <marcorr@google.com>,
-	<michael.roth@amd.com>, <mingo@redhat.com>, <pbonzini@redhat.com>,
-	<peterz@infradead.org>, <pgonda@google.com>, <rientjes@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <seanjc@google.com>,
-	<slp@redhat.com>, <srinivas.pandruvada@linux.intel.com>,
-	<tglx@linutronix.de>, <thomas.lendacky@amd.com>, <tobin@ibm.com>,
-	<tony.luck@intel.com>, <vbabka@suse.cz>, <vkuznets@redhat.com>,
-	<x86@kernel.org>
-Subject: Re: [PATCH Part2 v6 26/49] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_UPDATE command 
-Date: Tue, 9 Aug 2022 13:55:35 +0000
-Message-ID: <20220809135535.88234-1-sabrapan@amazon.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <fdf036c1e2fdf770da8238b31056206be08a7c1b.1655761627.git.ashish.kalra@amd.com>
-References: <fdf036c1e2fdf770da8238b31056206be08a7c1b.1655761627.git.ashish.kalra@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA924682
+	for <linux-coco@lists.linux.dev>; Tue,  9 Aug 2022 16:55:59 +0000 (UTC)
+Received: from zn.tnic (p200300ea971b9800329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9800:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 846E71EC04DA;
+	Tue,  9 Aug 2022 18:55:47 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1660064147;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=i7kJIpddtAemUYbgwpjR+4WVlcQgX2AjGxouk8jTwJY=;
+	b=blu9wbGO3QfuTP67zh1c5NXyUm2UZXKneyuQAV4DlBW+3FkBSt5IQS+Wsj9rXAky4XiOeq
+	PddJJlBMbTiPpLXr3YFUe18BbIi8o3W2ISdjJoFT1eyE/B449QmkPRcoLI2WIAsad/DRrv
+	igZVfxy8u8RHoHuNCxklMtQTvkICyCA=
+Date: Tue, 9 Aug 2022 18:55:43 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
+ fault for user address
+Message-ID: <YvKRjxgipxLSNCLe@zn.tnic>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Originating-IP: [10.43.162.227]
-X-ClientProxiedBy: EX13D40UWC003.ant.amazon.com (10.43.162.246) To
- EX13D24EUC003.ant.amazon.com (10.43.164.217)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
 
-> +static bool is_hva_registered(struct kvm *kvm, hva_t hva, size_t len)
+On Mon, Jun 20, 2022 at 11:03:43PM +0000, Ashish Kalra wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
+> 
+> When SEV-SNP is enabled globally, a write from the host goes through the
+
+globally?
+
+Can SNP be even enabled any other way?
+
+I see the APM talks about it being enabled globally, I guess this means
+the RMP represents *all* system memory?
+
+> @@ -1209,6 +1210,60 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
+>  }
+>  NOKPROBE_SYMBOL(do_kern_addr_fault);
+>  
+> +static inline size_t pages_per_hpage(int level)
 > +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	struct list_head *head = &sev->regions_list;
-> +	struct enc_region *i;
-> +
-> +	lockdep_assert_held(&kvm->lock);
-> +
-> +	list_for_each_entry(i, head, list) {
-> +		u64 start = i->uaddr;
-> +		u64 end = start + i->size;
-> +
-> +		if (start <= hva && end >= (hva + len))
-> +			return true;
-> +	}
-> +
-> +	return false;
+> +	return page_level_size(level) / PAGE_SIZE;
 > +}
-
-Since KVM_MEMORY_ENCRYPT_REG_REGION should be called for every memory region the user gives to kvm,
-is the regions_list any different from kvm's memslots?
-
 > +
-> +static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> +/*
+> + * Return 1 if the caller need to retry, 0 if it the address need to be split
+> + * in order to resolve the fault.
+> + */
+
+Magic numbers.
+
+Pls do instead:
+
+enum rmp_pf_ret {
+	RMP_PF_SPLIT	= 0,
+	RMP_PF_RETRY	= 1,
+};
+
+and use those instead.
+
+> +static int handle_user_rmp_page_fault(struct pt_regs *regs, unsigned long error_code,
+> +				      unsigned long address)
 > +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	struct sev_data_snp_launch_update data = {0};
-> +	struct kvm_sev_snp_launch_update params;
-> +	unsigned long npages, pfn, n = 0;
-> +	int *error = &argp->error;
-> +	struct page **inpages;
-> +	int ret, i, level;
-> +	u64 gfn;
+> +	int rmp_level, level;
+> +	pte_t *pte;
+> +	u64 pfn;
 > +
-> +	if (!sev_snp_guest(kvm))
-> +		return -ENOTTY;
-> +
-> +	if (!sev->snp_context)
-> +		return -EINVAL;
-> +
-> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	/* Verify that the specified address range is registered. */
-> +	if (!is_hva_registered(kvm, params.uaddr, params.len))
-> +		return -EINVAL;
+> +	pte = lookup_address_in_mm(current->mm, address, &level);
 > +
 > +	/*
-> +	 * The userspace memory is already locked so technically we don't
-> +	 * need to lock it again. Later part of the function needs to know
-> +	 * pfn so call the sev_pin_memory() so that we can get the list of
-> +	 * pages to iterate through.
+> +	 * It can happen if there was a race between an unmap event and
+> +	 * the RMP fault delivery.
 > +	 */
-> +	inpages = sev_pin_memory(kvm, params.uaddr, params.len, &npages, 1);
-> +	if (!inpages)
-> +		return -ENOMEM;
 
-sev_pin_memory will call pin_user_pages() which fails for PFNMAP vmas that you
-would get if you use memory allocated from an IO driver.
-Using gfn_to_pfn instead will make this work with vmas backed by pages or raw
-pfn mappings.
+You need to elaborate more here: a RMP fault can happen and then the
+page can get unmapped? What is the exact scenario here?
 
+> +	if (!pte || !pte_present(*pte))
+> +		return 1;
+> +
+> +	pfn = pte_pfn(*pte);
+> +
+> +	/* If its large page then calculte the fault pfn */
+> +	if (level > PG_LEVEL_4K) {
+> +		unsigned long mask;
+> +
+> +		mask = pages_per_hpage(level) - pages_per_hpage(level - 1);
+> +		pfn |= (address >> PAGE_SHIFT) & mask;
 
+Oh boy, this is unnecessarily complicated. Isn't this
 
+	pfn |= pud_index(address);
 
-Amazon Development Center (Romania) S.R.L. registered office: 27A Sf. Lazar Street, UBC5, floor 2, Iasi, Iasi County, 700045, Romania. Registered in Romania. Registration number J22/2621/2005.
+or
+	pfn |= pmd_index(address);
 
+depending on the level?
+
+I think it is but it needs more explaining.
+
+In any case, those are two static masks exactly and they don't need to
+be computed for each #PF.
+
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 7274f2b52bca..c2187ffcbb8e 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4945,6 +4945,15 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
+>  	return 0;
+>  }
+>  
+> +static int handle_split_page_fault(struct vm_fault *vmf)
+> +{
+> +	if (!IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
+> +		return VM_FAULT_SIGBUS;
+
+Yah, this looks weird: generic code implies that page splitting after a
+#PF makes sense only when SEV is present and none otherwise.
+
+Why?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
