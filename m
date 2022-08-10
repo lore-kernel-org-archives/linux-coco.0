@@ -1,38 +1,29 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from outbound-smtp62.blacknight.com (outbound-smtp62.blacknight.com [46.22.136.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7789D5CBE
-	for <linux-coco@lists.linux.dev>; Wed, 10 Aug 2022 10:27:55 +0000 (UTC)
-Received: from zn.tnic (p200300ea971b9870329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9870:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5A5281EC026E;
-	Wed, 10 Aug 2022 12:27:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1660127266;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=4FPWiU4gGPgYZQ57WyTp515pej7v1tzRkjqKMPPHjxg=;
-	b=FXRlQtXc+sI27QXqQRS0GG4i0HOpv6C1KzFrYnk7gV43TQ1zf/lG0eSIT+CRAzA9Uwerjm
-	r3xBfk04iDtK/G1z7a/nDjpB60/p54Y0AvS8RgYBJS1pncCcZrW9nlcVcdSne9B7qYDIaK
-	eux2D/zycmUYML3dXdIKvkidqBWLH0w=
-Date: Wed, 10 Aug 2022 12:27:42 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7301C15DA
+	for <linux-coco@lists.linux.dev>; Wed, 10 Aug 2022 14:31:13 +0000 (UTC)
+Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
+	by outbound-smtp62.blacknight.com (Postfix) with ESMTPS id 14F4AFA8F3
+	for <linux-coco@lists.linux.dev>; Wed, 10 Aug 2022 15:23:33 +0100 (IST)
+Received: (qmail 10887 invoked from network); 10 Aug 2022 14:23:32 -0000
+Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 10 Aug 2022 14:23:32 -0000
+Date: Wed, 10 Aug 2022 15:19:59 +0100
+From: Mel Gorman <mgorman@techsingularity.net>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
 	Andi Kleen <ak@linux.intel.com>,
 	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Varad Gautam <varad.gautam@suse.com>,
 	Dario Faggioli <dfaggioli@suse.com>,
 	Dave Hansen <dave.hansen@intel.com>,
 	Mike Rapoport <rppt@kernel.org>,
@@ -40,34 +31,130 @@ Cc: Andy Lutomirski <luto@kernel.org>,
 	tim.gardner@canonical.com, khalid.elmously@canonical.com,
 	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
 	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv7 14/14] x86/tdx: Add unaccepted memory support
-Message-ID: <YvOIHkJsT6xQZRBg@zn.tnic>
+	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+Message-ID: <20220810141959.ictqchz7josyd7pt@techsingularity.net>
 References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-15-kirill.shutemov@linux.intel.com>
- <Yt//ZMrxtTwtKBqu@zn.tnic>
- <20220809114544.q4f7cetqgv2gj5tx@box.shutemov.name>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
+ <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20220809114544.q4f7cetqgv2gj5tx@box.shutemov.name>
+In-Reply-To: <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
 
-On Tue, Aug 09, 2022 at 02:45:44PM +0300, Kirill A. Shutemov wrote:
-> This code called from EFI stub which runs before decompressor code and
-> therefore before early_tdx_detect().
+On Fri, Aug 05, 2022 at 01:49:41PM +0200, Vlastimil Babka wrote:
+> On 6/14/22 14:02, Kirill A. Shutemov wrote:
+> > UEFI Specification version 2.9 introduces the concept of memory
+> > acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
+> > SEV-SNP, require memory to be accepted before it can be used by the
+> > guest. Accepting happens via a protocol specific to the Virtual Machine
+> > platform.
+> > 
+> > There are several ways kernel can deal with unaccepted memory:
+> > 
+> >  1. Accept all the memory during the boot. It is easy to implement and
+> >     it doesn't have runtime cost once the system is booted. The downside
+> >     is very long boot time.
+> > 
+> >     Accept can be parallelized to multiple CPUs to keep it manageable
+> >     (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
+> >     memory bandwidth and does not scale beyond the point.
+> > 
+> >  2. Accept a block of memory on the first use. It requires more
+> >     infrastructure and changes in page allocator to make it work, but
+> >     it provides good boot time.
+> > 
+> >     On-demand memory accept means latency spikes every time kernel steps
+> >     onto a new memory block. The spikes will go away once workload data
+> >     set size gets stabilized or all memory gets accepted.
+> > 
+> >  3. Accept all memory in background. Introduce a thread (or multiple)
+> >     that gets memory accepted proactively. It will minimize time the
+> >     system experience latency spikes on memory allocation while keeping
+> >     low boot time.
+> > 
+> >     This approach cannot function on its own. It is an extension of #2:
+> >     background memory acceptance requires functional scheduler, but the
+> >     page allocator may need to tap into unaccepted memory before that.
+> > 
+> >     The downside of the approach is that these threads also steal CPU
+> >     cycles and memory bandwidth from the user's workload and may hurt
+> >     user experience.
+> > 
+> > Implement #2 for now. It is a reasonable default. Some workloads may
+> > want to use #1 or #3 and they can be implemented later based on user's
+> > demands.
+> > 
+> > Support of unaccepted memory requires a few changes in core-mm code:
+> > 
+> >   - memblock has to accept memory on allocation;
+> > 
+> >   - page allocator has to accept memory on the first allocation of the
+> >     page;
+> > 
+> > Memblock change is trivial.
+> > 
+> > The page allocator is modified to accept pages on the first allocation.
+> > The new page type (encoded in the _mapcount) -- PageUnaccepted() -- is
+> > used to indicate that the page requires acceptance.
+> > 
+> > Architecture has to provide two helpers if it wants to support
+> > unaccepted memory:
+> > 
+> >  - accept_memory() makes a range of physical addresses accepted.
+> > 
+> >  - range_contains_unaccepted_memory() checks anything within the range
+> >    of physical addresses requires acceptance.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
+> > Reviewed-by: David Hildenbrand <david@redhat.com>
+> 
+> Hmm I realize it's not ideal to raise this at v7, and maybe it was discussed
+> before, but it's really not great how this affects the core page allocator
+> paths. Wouldn't it be possible to only release pages to page allocator when
+> accepted, and otherwise use some new per-zone variables together with the
+> bitmap to track how much exactly is where to accept? Then it could be hooked
+> in get_page_from_freelist() similarly to CONFIG_DEFERRED_STRUCT_PAGE_INIT -
+> if we fail zone_watermark_fast() and there are unaccepted pages in the zone,
+> accept them and continue. With a static key to flip in case we eventually
+> accept everything. Because this is really similar scenario to the deferred
+> init and that one was solved in a way that adds minimal overhead.
+> 
 
-Then pls call that function early_is_tdx_guest() and slap a comment
-above it explaining why it needs to be a separate thing.
+I think it might be more straight-forward to always accept pages in the
+size of the pageblock. Smaller ranges should matter because they have been
+accepted in deferred_free_range. In expand, if PageUnaccepted is set on
+a pageblock-sized page, take it off the list, drop the zone->lock leaving
+IRQs disabled, accept the memory and reacquire the lock to split the page
+into the required order.
 
-Thx.
+IRQs being left disabled is unfortunate but even if the acceptance is slow,
+it's presumably not so slow to cause major problems. This would would reduce
+and probably eliminate the need to do the assert check in accept_page. It
+might also simplify __free_one_page if it's known that a pageblock range
+of pages are either all accepted or unaccepted.
+
+Lastly, the default behaviour should probably be "accept all memory at
+boot" and use Kconfig to allow acceptable be deferred or overridden by
+command line. There are at least two reasons for this. Even though this
+is a virtual machine, there still may be latency sensitive applications
+running early in boot using pinned vcpu->pcpu and no memory overcommit.
+The unpredictable performance of the application early in boot may be
+unacceptable and unavoidable. It might take a long time but it could
+eventually generate bug reports about "unpredictable performance early
+in boot" that will be hard to track down unless accept_memory is observed
+using perf at the right time. Even when that does happen, there will need
+to be an option to turn it off if the unpredictable performance cannot
+be tolerated. Second, any benchmarking done early in boot is likely to
+be disrupted making the series a potential bisection magnet that masks a
+performance bug elsewhere in the merge window.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Mel Gorman
+SUSE Labs
