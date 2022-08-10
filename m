@@ -1,160 +1,218 @@
-Received: from outbound-smtp62.blacknight.com (outbound-smtp62.blacknight.com [46.22.136.251])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2066.outbound.protection.outlook.com [40.107.94.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7301C15DA
-	for <linux-coco@lists.linux.dev>; Wed, 10 Aug 2022 14:31:13 +0000 (UTC)
-Received: from mail.blacknight.com (pemlinmail04.blacknight.ie [81.17.254.17])
-	by outbound-smtp62.blacknight.com (Postfix) with ESMTPS id 14F4AFA8F3
-	for <linux-coco@lists.linux.dev>; Wed, 10 Aug 2022 15:23:33 +0100 (IST)
-Received: (qmail 10887 invoked from network); 10 Aug 2022 14:23:32 -0000
-Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.198.246])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 10 Aug 2022 14:23:32 -0000
-Date: Wed, 10 Aug 2022 15:19:59 +0100
-From: Mel Gorman <mgorman@techsingularity.net>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
-	tim.gardner@canonical.com, khalid.elmously@canonical.com,
-	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Message-ID: <20220810141959.ictqchz7josyd7pt@techsingularity.net>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4E24680
+	for <linux-coco@lists.linux.dev>; Wed, 10 Aug 2022 22:01:00 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d/HIMreSVw7VccGmgokRAUMsTbLZOOE65tg/5agEoB6jxQRa0oxC3lZiXP/pcNJt4P2jUXSznUD2AJyAVw920iM4I+0/WTzU1D1B8sFKLopVJvFqpYP4LlV2rB1buO1Ymh7XHTBIkcVWR2JFc/0vXw7LLodu/YVGjUoilP7LJQay4jZpX/g0aL6x0n4cjXGni7vYoGyCuCL5EE0MDuVOeNSNhTHEQKsIPz1OoRcr18AfmAcAK67qmoxQLY+EbRtf2IsQ/Uk93VIetEj9FY2SizfBMNyzx2b1j4rwW5i/sd2pxMt0duevuWIhkmCxAcSgP0XkkhvWaNXNXGKeXl1Biw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W+Ob/J9ZqjTLEI83b2M0E8Ga5wwOCgL/H6UI4F+W3UE=;
+ b=JGgR+By4VR/ikYcoq7TuhYfFJZ/CpWWoLAxCREqr2z1r45dxrmtTSa4mJlmcGkOZWKSq9mcie0DcS6t1ZhbOdCp4K0FALgISQ9Qyj8yuQXeQ8pCNBPZZtuy8kiBeOhwmhnUdCgZ0ptsiXM+agxLXjcPp9LM9mMyJBaDbneoxZNbxMJzj/4P1UqUYcHfRAgpxieyyOmCYrD9yPChb3Zs+O54EKn+xpHq6sTNt2Z4ZHco7ZszcnHkUDTpQo2N3mA8iX9flEr5QYyCs6BltrH3l4/1GvXy01MGFociZTEUtqazXovqDCRuYB4Ei5eFEuv6u8nMrclGdqXF7/bs90z6jfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W+Ob/J9ZqjTLEI83b2M0E8Ga5wwOCgL/H6UI4F+W3UE=;
+ b=zTUJNMt2lfvxEpamjLsbOyDJa/tOHc2GnROE9qmPHgp9PWJAEsLlnB3A2YiEN/g7gEv6YszSyvTNEkcvGbnw3CqgWwyzf1fcuaco3MdukDV6Qqxn0dbgXLQ09aHiwb9JE8+TSg72HXDcjHEv8F17R8HxqWZu6t8LBXlGY6MIYaM=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by SA0PR12MB4382.namprd12.prod.outlook.com (2603:10b6:806:9a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.11; Wed, 10 Aug
+ 2022 22:00:57 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8953:6baa:97bb:a15d%7]) with mapi id 15.20.5525.011; Wed, 10 Aug 2022
+ 22:00:57 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "seanjc@google.com" <seanjc@google.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>, "jmattson@google.com"
+	<jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "slp@redhat.com"
+	<slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"rientjes@google.com" <rientjes@google.com>, "dovmurik@linux.ibm.com"
+	<dovmurik@linux.ibm.com>, "tobin@ibm.com" <tobin@ibm.com>, "Roth, Michael"
+	<Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>, "ak@linux.intel.com"
+	<ak@linux.intel.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "alpergun@google.com"
+	<alpergun@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: RE: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
+ fault for user address
+Thread-Topic: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
+ fault for user address
+Thread-Index: AQHYrBDc30zm/ve2UUW13wSedLDd3a2nIMnggADB+gCAAMFX8A==
+Date: Wed, 10 Aug 2022 22:00:57 +0000
+Message-ID:
+ <SN6PR12MB2767A87F12B8E704EB80CC458E659@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
+ <YvKRjxgipxLSNCLe@zn.tnic>
+ <SN6PR12MB2767322F8C573EDFA1C20AD78E659@SN6PR12MB2767.namprd12.prod.outlook.com>
+ <YvN9bKQ0XtUVJE7z@zn.tnic>
+In-Reply-To: <YvN9bKQ0XtUVJE7z@zn.tnic>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-08-10T21:14:04Z;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=39eeec9b-b36e-48b8-a410-dbbaae721fe1;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-08-10T22:00:55Z
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
+ 961b4e90-7d6e-4ea6-8fdb-8dcc54a590f4
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 39aaeda1-a224-4c4b-d061-08da7b1bcdf9
+x-ms-traffictypediagnostic: SA0PR12MB4382:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ XNKNOYM91dtAh8hDHQdL8HYnXt7pY2Y55Z8ToyP3dJ1UHBv2fOA7Nkx2KDA4O06I0hb2L1rr1k1t2fHJh0c1/YXDDeFm4AhTSWG1XGj2C6/kITels8/VgcN9vFNPgB9+YWbWqhLN2UkAsUk51seMalFW1nKYbJEKOpfPu5GFkkK2XXodlVNNPOFMtypp6KKEMAIyVgO3pYvASEbxeaAjh4snrXQWZffTGkSbank7+3Ubu8ZJm210sgFJleOotFXixjM3zGQRsJcxDD+oqwLn62cYYIXN8dT1daN4bBWUXM3zuf8clcMKfLfibNZXcqBPK6xO4WYoGrOypeJsm5nBd19M+jMMMaMNKgJaVhgtP//v48AWsE+VXqlLpRAu3w96SnLxq7u+F46gC2hzgVo+Gc262NAAaFb5K86BBBpih/jXcBXR0WP786nO/09CNre7lgqJQa2IewZev5g9d1AK/e+kbhUWeZp4Ei8Lrc6snu5PJKSxWZC2x+tOojI+FzZ6K5W3YB5gO/5ZZZK4hXUI51Hk+jlt4AKUZx1rPb9kQfFHfIQDQ6r/ZRKvgCKArKe34UvJ8MBBKWIPhcP4ta7k7Qzcnqyr7Slr1IJGCxNXuVvBzIsOViQ2IsrSlIm/S76tmV1Ph88QpAldxamcNoksLBf1YpuIR2Q04Q236D3KJiPpceBgC2OL4amwvzRV7LzhZWTBap0/NbmxUup2IGVV0IWSwg14fxHWZ8Uww5ofPmwOCN9fqjWp3vJeD9kaNe2wcGAf8ajfMdYC9jPBEFgkRMrTTdNq/bpQE8VW2ylgBzI=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(39860400002)(346002)(366004)(396003)(136003)(66446008)(66556008)(66476007)(71200400001)(66946007)(4326008)(38070700005)(6916009)(8676002)(76116006)(316002)(54906003)(64756008)(86362001)(5660300002)(186003)(7406005)(33656002)(8936002)(52536014)(83380400001)(7416002)(7696005)(6506007)(2906002)(26005)(9686003)(38100700002)(122000001)(478600001)(55016003)(41300700001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?DBGKUm6/yuC27IFtl0LuEPRbF6/PbIWZF57DqcQloPC0YBGbk3v/v90VcHLq?=
+ =?us-ascii?Q?rP64MujOu+H0WkYjDdpk23IZPgwcNrJ2bqBgHAEHqTQtw6fzlm8GlHVD7R98?=
+ =?us-ascii?Q?8ueUGgyoGQ0AlfimAbh5l0Kyw2oWPLUtMlEhv5Jp1E2GD020dCq3gID1OsIN?=
+ =?us-ascii?Q?W0DRyMbs3nck+pDoT0e5Q0Oqq48XicbLzWTDtxh13R4YMilwo+HeRwWdBJfD?=
+ =?us-ascii?Q?0WhcP2kWd3ebwnRs8J8bLlxPVrcSdjyLcMaH1A4gk78CLGCtX9Zy+Zq23j+I?=
+ =?us-ascii?Q?ZssagwrbE/Ic6bAtbhZ+0Vk/0s7hLtvTxc9QlmI4DNKFVSxmodxIcgaVcRi8?=
+ =?us-ascii?Q?1u0CzDEgiPUFCNY0Da/4YoozCVrIplASjBGQPqkRfL8canKoz5HFs9me+L5b?=
+ =?us-ascii?Q?ElRFRpGNcsENdiSfCEW9tPCNxRtj6vNpYtEElYpDKXELOpmRMx2ZlEaG6FjV?=
+ =?us-ascii?Q?0NiMQ+EW5YK3iEH2XzrE3C7ZlnilbLRRjIsjfVXxkrJWybfpgGJbxNgRW4u7?=
+ =?us-ascii?Q?on7xBNZKH9yPwXhQJ/Q57Trr9lIPHsnogyYJXa5kqOGOEsbbhRxGaHO1nZ/S?=
+ =?us-ascii?Q?9sOtzxVaArfj4QGPtJ0qhWFsQfDplfS3OXqyI0cl295FXmjlpZHXSqopj90x?=
+ =?us-ascii?Q?DzsrtmE/2PaownzyoKxxxB4W82Mo3hOEx07UWRUwOCWRsNpKN3HGOqGN/zMS?=
+ =?us-ascii?Q?T4L8TUC/jRuOC9aT0oi0bxZ8ZOIjCfagu7LBEoqw7UcYh/CiY2hoZxBQaHmH?=
+ =?us-ascii?Q?jvS5id8lP2mEwhynGKAQXZhFgKMcXC6gSApOKH0kO+CvM+RcioUZWMxJnjYt?=
+ =?us-ascii?Q?E01T+nTN1w0wb2Z1244zVx2EnKt9ZZTr0wm9fqLz8WCWCG90psd4Agb8izud?=
+ =?us-ascii?Q?6BZVKLOAiwInY1kywR2Rjm39CEIkFsyWcN+0VEQOLuHsfCCpCf5kUWQHjHcd?=
+ =?us-ascii?Q?+bzCYV0kD47opkE+TL00RSueG3kCpIFjTAQdN2Alm/nLP7+VOQx25ANjQDOB?=
+ =?us-ascii?Q?vkgzgCNs7CY3HKHctn/hkFc7kP8B6UzNzX7wo3s83OA0geLpHi+221AANebw?=
+ =?us-ascii?Q?24HmTkf5xKXi+MizSDYB+PmUdJJwMe6pUGHaHLkfjB6FK74VBt81fxKel0Ck?=
+ =?us-ascii?Q?FVqEk7rv+LHGCQ7RS1J5YCScRqsr7omFo3l1rCQauXKZ3oXUQNfoyHJqIBiC?=
+ =?us-ascii?Q?3EH2ivWFMKUqDIR0ewn58JxhRb8ucAT+55h2nog8/G/K3vwlSJrY3vsCuo0H?=
+ =?us-ascii?Q?c0K0sWDZsBJkXZVbvVCKrdJ/WQjb/F27kXa4RfC+CYv03a7PM4uuXdXP4sGe?=
+ =?us-ascii?Q?4JGnP1DwIxudPDLYeuUsqeEKmQbR3uNWLd/9WgNuoIjIUBeMcTmdumHQTqgP?=
+ =?us-ascii?Q?40SW1iYCtdQ0vaj7tFhYL6U2+EtD1m34iW//dNO+fpIpTOa614FpTVOqo4gs?=
+ =?us-ascii?Q?0MLPMd74p5ELiZo1MXTmqoFXgGggH6YnL+18or9xDJObXO4vvGO2N5/tvcSS?=
+ =?us-ascii?Q?fkzHH7TEHHjYXjEZbPVlWE0qvyz2DeP8xLzcsNvy/40NGkiV6uk7uzo7EEiT?=
+ =?us-ascii?Q?PlQA2lga6zwh7qMRYpU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-In-Reply-To: <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39aaeda1-a224-4c4b-d061-08da7b1bcdf9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2022 22:00:57.5756
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uPEFhntQ0jnnQpl2+X+pkQgxEYZ1r309ZCktccAeoLkEZxPRr96kmokOAjHZx0nzBNDThT438UIhG03XdrzCEQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4382
 
-On Fri, Aug 05, 2022 at 01:49:41PM +0200, Vlastimil Babka wrote:
-> On 6/14/22 14:02, Kirill A. Shutemov wrote:
-> > UEFI Specification version 2.9 introduces the concept of memory
-> > acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
-> > SEV-SNP, require memory to be accepted before it can be used by the
-> > guest. Accepting happens via a protocol specific to the Virtual Machine
-> > platform.
-> > 
-> > There are several ways kernel can deal with unaccepted memory:
-> > 
-> >  1. Accept all the memory during the boot. It is easy to implement and
-> >     it doesn't have runtime cost once the system is booted. The downside
-> >     is very long boot time.
-> > 
-> >     Accept can be parallelized to multiple CPUs to keep it manageable
-> >     (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
-> >     memory bandwidth and does not scale beyond the point.
-> > 
-> >  2. Accept a block of memory on the first use. It requires more
-> >     infrastructure and changes in page allocator to make it work, but
-> >     it provides good boot time.
-> > 
-> >     On-demand memory accept means latency spikes every time kernel steps
-> >     onto a new memory block. The spikes will go away once workload data
-> >     set size gets stabilized or all memory gets accepted.
-> > 
-> >  3. Accept all memory in background. Introduce a thread (or multiple)
-> >     that gets memory accepted proactively. It will minimize time the
-> >     system experience latency spikes on memory allocation while keeping
-> >     low boot time.
-> > 
-> >     This approach cannot function on its own. It is an extension of #2:
-> >     background memory acceptance requires functional scheduler, but the
-> >     page allocator may need to tap into unaccepted memory before that.
-> > 
-> >     The downside of the approach is that these threads also steal CPU
-> >     cycles and memory bandwidth from the user's workload and may hurt
-> >     user experience.
-> > 
-> > Implement #2 for now. It is a reasonable default. Some workloads may
-> > want to use #1 or #3 and they can be implemented later based on user's
-> > demands.
-> > 
-> > Support of unaccepted memory requires a few changes in core-mm code:
-> > 
-> >   - memblock has to accept memory on allocation;
-> > 
-> >   - page allocator has to accept memory on the first allocation of the
-> >     page;
-> > 
-> > Memblock change is trivial.
-> > 
-> > The page allocator is modified to accept pages on the first allocation.
-> > The new page type (encoded in the _mapcount) -- PageUnaccepted() -- is
-> > used to indicate that the page requires acceptance.
-> > 
-> > Architecture has to provide two helpers if it wants to support
-> > unaccepted memory:
-> > 
-> >  - accept_memory() makes a range of physical addresses accepted.
-> > 
-> >  - range_contains_unaccepted_memory() checks anything within the range
-> >    of physical addresses requires acceptance.
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
-> > Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
-> Hmm I realize it's not ideal to raise this at v7, and maybe it was discussed
-> before, but it's really not great how this affects the core page allocator
-> paths. Wouldn't it be possible to only release pages to page allocator when
-> accepted, and otherwise use some new per-zone variables together with the
-> bitmap to track how much exactly is where to accept? Then it could be hooked
-> in get_page_from_freelist() similarly to CONFIG_DEFERRED_STRUCT_PAGE_INIT -
-> if we fail zone_watermark_fast() and there are unaccepted pages in the zone,
-> accept them and continue. With a static key to flip in case we eventually
-> accept everything. Because this is really similar scenario to the deferred
-> init and that one was solved in a way that adds minimal overhead.
-> 
+[AMD Official Use Only - General]
 
-I think it might be more straight-forward to always accept pages in the
-size of the pageblock. Smaller ranges should matter because they have been
-accepted in deferred_free_range. In expand, if PageUnaccepted is set on
-a pageblock-sized page, take it off the list, drop the zone->lock leaving
-IRQs disabled, accept the memory and reacquire the lock to split the page
-into the required order.
+Hello Boris,
 
-IRQs being left disabled is unfortunate but even if the acceptance is slow,
-it's presumably not so slow to cause major problems. This would would reduce
-and probably eliminate the need to do the assert check in accept_page. It
-might also simplify __free_one_page if it's known that a pageblock range
-of pages are either all accepted or unaccepted.
+>> >You need to elaborate more here: a RMP fault can happen and then the=20
+>> >page can get unmapped? What is the exact scenario here?
+>>
+>> Yes, if the page gets unmapped while the RMP fault was being handled,=20
+>> will add more explanation here.
 
-Lastly, the default behaviour should probably be "accept all memory at
-boot" and use Kconfig to allow acceptable be deferred or overridden by
-command line. There are at least two reasons for this. Even though this
-is a virtual machine, there still may be latency sensitive applications
-running early in boot using pinned vcpu->pcpu and no memory overcommit.
-The unpredictable performance of the application early in boot may be
-unacceptable and unavoidable. It might take a long time but it could
-eventually generate bug reports about "unpredictable performance early
-in boot" that will be hard to track down unless accept_memory is observed
-using perf at the right time. Even when that does happen, there will need
-to be an option to turn it off if the unpredictable performance cannot
-be tolerated. Second, any benchmarking done early in boot is likely to
-be disrupted making the series a potential bisection magnet that masks a
-performance bug elsewhere in the merge window.
+>So what's the logic here to return 1, i.e., retry?
 
--- 
-Mel Gorman
-SUSE Labs
+>Why should a fault for a page that gets unmapped be retried? The fault in =
+that case should be ignored, IMO. It'll have the same effect to return from=
+ do_user_addr_fault() there, without splitting but you need to have a separ=
+ate return value >definition so that it is clear what needs to happen. And =
+that return value should be !=3D 0 so that the current check still works.
+
+if (!pte || !pte_present(*pte))
+                return 1;
+
+This is more like a sanity check and returning 1 will cause the fault handl=
+er to return and ignore the fault for current #PF case.
+If the page got unmapped, the fault will not happen again and there will be=
+ no retry, so the fault in this case is
+being ignored.
+The other case where 1 is returned is RMP table lookup failure, in that cas=
+e the faulting process is being terminated,
+that resolves the fault.=20
+
+>> Actually, the above computes an index into the RMP table.
+
+>What index in the RMP table?
+
+>> It is basically an index into the 4K page within the hugepage mapped=20
+>> in the RMP table or in other words an index into the RMP table entry=20
+>> for 4K page(s) corresponding to a hugepage.
+
+>So pte_index(address) and for 1G pages, pmd_index(address).
+
+>So no reinventing the wheel if we already have helpers for that.
+
+Yes that makes sense and pte_index(address) is exactly what is
+required for 2M hugepages.
+
+Will use pte_index() for 2M pages and pmd_index() for 1G pages.=20
+
+>> It is mainly a wrapper around__split_huge_pmd() for SNP use case where=20
+>> the host hugepage is split to be in sync with the RMP table.
+
+>I see what it is. And I'm saying this looks wrong. You're enforcing page s=
+plitting to be a valid thing to do only for SEV machines. Why?
+
+>Why is
+
+>        if (!IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
+>                return VM_FAULT_SIGBUS;
+
+>there at all?
+
+>This is generic code you're touching - not arch/x86/.
+
+Ok, so you are suggesting that we remove this check and simply keep this fu=
+nction wrapping around __split_huge_pmd().=20
+This becomes a generic utility function.=20
+
+Thanks,
+Ashish
