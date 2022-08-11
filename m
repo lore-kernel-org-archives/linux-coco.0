@@ -1,218 +1,131 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2066.outbound.protection.outlook.com [40.107.94.66])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4E24680
-	for <linux-coco@lists.linux.dev>; Wed, 10 Aug 2022 22:01:00 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d/HIMreSVw7VccGmgokRAUMsTbLZOOE65tg/5agEoB6jxQRa0oxC3lZiXP/pcNJt4P2jUXSznUD2AJyAVw920iM4I+0/WTzU1D1B8sFKLopVJvFqpYP4LlV2rB1buO1Ymh7XHTBIkcVWR2JFc/0vXw7LLodu/YVGjUoilP7LJQay4jZpX/g0aL6x0n4cjXGni7vYoGyCuCL5EE0MDuVOeNSNhTHEQKsIPz1OoRcr18AfmAcAK67qmoxQLY+EbRtf2IsQ/Uk93VIetEj9FY2SizfBMNyzx2b1j4rwW5i/sd2pxMt0duevuWIhkmCxAcSgP0XkkhvWaNXNXGKeXl1Biw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W+Ob/J9ZqjTLEI83b2M0E8Ga5wwOCgL/H6UI4F+W3UE=;
- b=JGgR+By4VR/ikYcoq7TuhYfFJZ/CpWWoLAxCREqr2z1r45dxrmtTSa4mJlmcGkOZWKSq9mcie0DcS6t1ZhbOdCp4K0FALgISQ9Qyj8yuQXeQ8pCNBPZZtuy8kiBeOhwmhnUdCgZ0ptsiXM+agxLXjcPp9LM9mMyJBaDbneoxZNbxMJzj/4P1UqUYcHfRAgpxieyyOmCYrD9yPChb3Zs+O54EKn+xpHq6sTNt2Z4ZHco7ZszcnHkUDTpQo2N3mA8iX9flEr5QYyCs6BltrH3l4/1GvXy01MGFociZTEUtqazXovqDCRuYB4Ei5eFEuv6u8nMrclGdqXF7/bs90z6jfg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W+Ob/J9ZqjTLEI83b2M0E8Ga5wwOCgL/H6UI4F+W3UE=;
- b=zTUJNMt2lfvxEpamjLsbOyDJa/tOHc2GnROE9qmPHgp9PWJAEsLlnB3A2YiEN/g7gEv6YszSyvTNEkcvGbnw3CqgWwyzf1fcuaco3MdukDV6Qqxn0dbgXLQ09aHiwb9JE8+TSg72HXDcjHEv8F17R8HxqWZu6t8LBXlGY6MIYaM=
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by SA0PR12MB4382.namprd12.prod.outlook.com (2603:10b6:806:9a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.11; Wed, 10 Aug
- 2022 22:00:57 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::8953:6baa:97bb:a15d]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::8953:6baa:97bb:a15d%7]) with mapi id 15.20.5525.011; Wed, 10 Aug 2022
- 22:00:57 +0000
-From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-crypto@vger.kernel.org"
-	<linux-crypto@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>, "jmattson@google.com"
-	<jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "slp@redhat.com"
-	<slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>, "dovmurik@linux.ibm.com"
-	<dovmurik@linux.ibm.com>, "tobin@ibm.com" <tobin@ibm.com>, "Roth, Michael"
-	<Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>, "ak@linux.intel.com"
-	<ak@linux.intel.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "alpergun@google.com"
-	<alpergun@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: RE: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
- fault for user address
-Thread-Topic: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
- fault for user address
-Thread-Index: AQHYrBDc30zm/ve2UUW13wSedLDd3a2nIMnggADB+gCAAMFX8A==
-Date: Wed, 10 Aug 2022 22:00:57 +0000
-Message-ID:
- <SN6PR12MB2767A87F12B8E704EB80CC458E659@SN6PR12MB2767.namprd12.prod.outlook.com>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
- <YvKRjxgipxLSNCLe@zn.tnic>
- <SN6PR12MB2767322F8C573EDFA1C20AD78E659@SN6PR12MB2767.namprd12.prod.outlook.com>
- <YvN9bKQ0XtUVJE7z@zn.tnic>
-In-Reply-To: <YvN9bKQ0XtUVJE7z@zn.tnic>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-08-10T21:14:04Z;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=39eeec9b-b36e-48b8-a410-dbbaae721fe1;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-08-10T22:00:55Z
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
- 3dd8961f-e488-4e60-8e11-a82d994e183d
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
- 961b4e90-7d6e-4ea6-8fdb-8dcc54a590f4
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 39aaeda1-a224-4c4b-d061-08da7b1bcdf9
-x-ms-traffictypediagnostic: SA0PR12MB4382:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- XNKNOYM91dtAh8hDHQdL8HYnXt7pY2Y55Z8ToyP3dJ1UHBv2fOA7Nkx2KDA4O06I0hb2L1rr1k1t2fHJh0c1/YXDDeFm4AhTSWG1XGj2C6/kITels8/VgcN9vFNPgB9+YWbWqhLN2UkAsUk51seMalFW1nKYbJEKOpfPu5GFkkK2XXodlVNNPOFMtypp6KKEMAIyVgO3pYvASEbxeaAjh4snrXQWZffTGkSbank7+3Ubu8ZJm210sgFJleOotFXixjM3zGQRsJcxDD+oqwLn62cYYIXN8dT1daN4bBWUXM3zuf8clcMKfLfibNZXcqBPK6xO4WYoGrOypeJsm5nBd19M+jMMMaMNKgJaVhgtP//v48AWsE+VXqlLpRAu3w96SnLxq7u+F46gC2hzgVo+Gc262NAAaFb5K86BBBpih/jXcBXR0WP786nO/09CNre7lgqJQa2IewZev5g9d1AK/e+kbhUWeZp4Ei8Lrc6snu5PJKSxWZC2x+tOojI+FzZ6K5W3YB5gO/5ZZZK4hXUI51Hk+jlt4AKUZx1rPb9kQfFHfIQDQ6r/ZRKvgCKArKe34UvJ8MBBKWIPhcP4ta7k7Qzcnqyr7Slr1IJGCxNXuVvBzIsOViQ2IsrSlIm/S76tmV1Ph88QpAldxamcNoksLBf1YpuIR2Q04Q236D3KJiPpceBgC2OL4amwvzRV7LzhZWTBap0/NbmxUup2IGVV0IWSwg14fxHWZ8Uww5ofPmwOCN9fqjWp3vJeD9kaNe2wcGAf8ajfMdYC9jPBEFgkRMrTTdNq/bpQE8VW2ylgBzI=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(39860400002)(346002)(366004)(396003)(136003)(66446008)(66556008)(66476007)(71200400001)(66946007)(4326008)(38070700005)(6916009)(8676002)(76116006)(316002)(54906003)(64756008)(86362001)(5660300002)(186003)(7406005)(33656002)(8936002)(52536014)(83380400001)(7416002)(7696005)(6506007)(2906002)(26005)(9686003)(38100700002)(122000001)(478600001)(55016003)(41300700001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?DBGKUm6/yuC27IFtl0LuEPRbF6/PbIWZF57DqcQloPC0YBGbk3v/v90VcHLq?=
- =?us-ascii?Q?rP64MujOu+H0WkYjDdpk23IZPgwcNrJ2bqBgHAEHqTQtw6fzlm8GlHVD7R98?=
- =?us-ascii?Q?8ueUGgyoGQ0AlfimAbh5l0Kyw2oWPLUtMlEhv5Jp1E2GD020dCq3gID1OsIN?=
- =?us-ascii?Q?W0DRyMbs3nck+pDoT0e5Q0Oqq48XicbLzWTDtxh13R4YMilwo+HeRwWdBJfD?=
- =?us-ascii?Q?0WhcP2kWd3ebwnRs8J8bLlxPVrcSdjyLcMaH1A4gk78CLGCtX9Zy+Zq23j+I?=
- =?us-ascii?Q?ZssagwrbE/Ic6bAtbhZ+0Vk/0s7hLtvTxc9QlmI4DNKFVSxmodxIcgaVcRi8?=
- =?us-ascii?Q?1u0CzDEgiPUFCNY0Da/4YoozCVrIplASjBGQPqkRfL8canKoz5HFs9me+L5b?=
- =?us-ascii?Q?ElRFRpGNcsENdiSfCEW9tPCNxRtj6vNpYtEElYpDKXELOpmRMx2ZlEaG6FjV?=
- =?us-ascii?Q?0NiMQ+EW5YK3iEH2XzrE3C7ZlnilbLRRjIsjfVXxkrJWybfpgGJbxNgRW4u7?=
- =?us-ascii?Q?on7xBNZKH9yPwXhQJ/Q57Trr9lIPHsnogyYJXa5kqOGOEsbbhRxGaHO1nZ/S?=
- =?us-ascii?Q?9sOtzxVaArfj4QGPtJ0qhWFsQfDplfS3OXqyI0cl295FXmjlpZHXSqopj90x?=
- =?us-ascii?Q?DzsrtmE/2PaownzyoKxxxB4W82Mo3hOEx07UWRUwOCWRsNpKN3HGOqGN/zMS?=
- =?us-ascii?Q?T4L8TUC/jRuOC9aT0oi0bxZ8ZOIjCfagu7LBEoqw7UcYh/CiY2hoZxBQaHmH?=
- =?us-ascii?Q?jvS5id8lP2mEwhynGKAQXZhFgKMcXC6gSApOKH0kO+CvM+RcioUZWMxJnjYt?=
- =?us-ascii?Q?E01T+nTN1w0wb2Z1244zVx2EnKt9ZZTr0wm9fqLz8WCWCG90psd4Agb8izud?=
- =?us-ascii?Q?6BZVKLOAiwInY1kywR2Rjm39CEIkFsyWcN+0VEQOLuHsfCCpCf5kUWQHjHcd?=
- =?us-ascii?Q?+bzCYV0kD47opkE+TL00RSueG3kCpIFjTAQdN2Alm/nLP7+VOQx25ANjQDOB?=
- =?us-ascii?Q?vkgzgCNs7CY3HKHctn/hkFc7kP8B6UzNzX7wo3s83OA0geLpHi+221AANebw?=
- =?us-ascii?Q?24HmTkf5xKXi+MizSDYB+PmUdJJwMe6pUGHaHLkfjB6FK74VBt81fxKel0Ck?=
- =?us-ascii?Q?FVqEk7rv+LHGCQ7RS1J5YCScRqsr7omFo3l1rCQauXKZ3oXUQNfoyHJqIBiC?=
- =?us-ascii?Q?3EH2ivWFMKUqDIR0ewn58JxhRb8ucAT+55h2nog8/G/K3vwlSJrY3vsCuo0H?=
- =?us-ascii?Q?c0K0sWDZsBJkXZVbvVCKrdJ/WQjb/F27kXa4RfC+CYv03a7PM4uuXdXP4sGe?=
- =?us-ascii?Q?4JGnP1DwIxudPDLYeuUsqeEKmQbR3uNWLd/9WgNuoIjIUBeMcTmdumHQTqgP?=
- =?us-ascii?Q?40SW1iYCtdQ0vaj7tFhYL6U2+EtD1m34iW//dNO+fpIpTOa614FpTVOqo4gs?=
- =?us-ascii?Q?0MLPMd74p5ELiZo1MXTmqoFXgGggH6YnL+18or9xDJObXO4vvGO2N5/tvcSS?=
- =?us-ascii?Q?fkzHH7TEHHjYXjEZbPVlWE0qvyz2DeP8xLzcsNvy/40NGkiV6uk7uzo7EEiT?=
- =?us-ascii?Q?PlQA2lga6zwh7qMRYpU=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97D52FB2
+	for <linux-coco@lists.linux.dev>; Thu, 11 Aug 2022 11:26:59 +0000 (UTC)
+Received: from zn.tnic (p200300ea971b9854329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9854:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 247F21EC056D;
+	Thu, 11 Aug 2022 13:26:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1660217204;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=UY0huCcMksTkB4oLQLF5MAgiiZEs9HuLdo2XFb9uvQw=;
+	b=rmFZk2nFgA8PrMSlwDnyIhuf8Azrn/VmdGgQEjg3g7nzV/uXykxOaiNeOXhEuPPb5Y8Xna
+	OomDtJMKKThisqRUyqWX9k0TBb4IO3OpJ68MEGE5BLGOuTXKJt46Pm+o7a6J8CqM8/Q/A5
+	rNB4EJb0S/cMZ6BULpUInSoHeE/W8AI=
+Date: Thu, 11 Aug 2022 13:26:40 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Varad Gautam <varad.gautam@suse.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com, khalid.elmously@canonical.com,
+	philip.cox@canonical.com, x86@kernel.org, linux-mm@kvack.org,
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv7 10/14] x86/mm: Avoid load_unaligned_zeropad() stepping
+ into unaccepted memory
+Message-ID: <YvTncOa6KSr8EIuE@zn.tnic>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-11-kirill.shutemov@linux.intel.com>
+ <Yt/ANO5usdV+JSSW@zn.tnic>
+ <80cc204b-a24f-684f-ec66-1361b69cae39@intel.com>
+ <073c5a97-272c-c5a0-19f2-c3f14f916c72@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39aaeda1-a224-4c4b-d061-08da7b1bcdf9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2022 22:00:57.5756
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: uPEFhntQ0jnnQpl2+X+pkQgxEYZ1r309ZCktccAeoLkEZxPRr96kmokOAjHZx0nzBNDThT438UIhG03XdrzCEQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4382
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <073c5a97-272c-c5a0-19f2-c3f14f916c72@intel.com>
 
-[AMD Official Use Only - General]
+On Wed, Aug 03, 2022 at 07:02:31AM -0700, Dave Hansen wrote:
+> One other thing I remembered as I re-read my write up on this.
+> 
+> In the "new" mode, guests never get #VE's for unaccepted memory.  They
+> just exit to the host and can never be reentered.  They must be killed.
 
-Hello Boris,
+Yeah, this is the part which I think is really silly.
 
->> >You need to elaborate more here: a RMP fault can happen and then the=20
->> >page can get unmapped? What is the exact scenario here?
->>
->> Yes, if the page gets unmapped while the RMP fault was being handled,=20
->> will add more explanation here.
+OSes, in their execution lifetime, can - erroneously or not - but it
+happens pretty often in real life, touch some unrelated memory. And this
+has never been a big deal - #PF, that's it.
 
->So what's the logic here to return 1, i.e., retry?
+But now they don't even get a chance to correct their mistake - VMEXIT,
+die.
 
->Why should a fault for a page that gets unmapped be retried? The fault in =
-that case should be ignored, IMO. It'll have the same effect to return from=
- do_user_addr_fault() there, without splitting but you need to have a separ=
-ate return value >definition so that it is clear what needs to happen. And =
-that return value should be !=3D 0 so that the current check still works.
+load_unaligned_zeropad() is just one case.
 
-if (!pte || !pte_present(*pte))
-                return 1;
+Imagine the user loads some buggy driver in the guest and that driver
+starts doing stray memory accesses through a wild pointer into the
+fields. Guest dies immediately.
 
-This is more like a sanity check and returning 1 will cause the fault handl=
-er to return and ignore the fault for current #PF case.
-If the page got unmapped, the fault will not happen again and there will be=
- no retry, so the fault in this case is
-being ignored.
-The other case where 1 is returned is RMP table lookup failure, in that cas=
-e the faulting process is being terminated,
-that resolves the fault.=20
+Dunno bit it all feels a bit too harsh and unfriendly to me.
 
->> Actually, the above computes an index into the RMP table.
+Sure, if that user is really unlucky, those stray accesses can kill
+his OS on baremetal too. So maybe you could argue here that such stray
+accesses are actually a good thing. :)
 
->What index in the RMP table?
+All I know is, there should be a more resilient way to handle those.
 
->> It is basically an index into the 4K page within the hugepage mapped=20
->> in the RMP table or in other words an index into the RMP table entry=20
->> for 4K page(s) corresponding to a hugepage.
+> In the "old" mode, I _believe_ that the guest always gets a #VE for
+> non-EPT-present memory.  The #VE is basically the same no matter if the
+> page is unaccepted or if the host goes out and makes a
+> previously-accepted page non-present.
+> 
+> One really nasty implication of this "old" mode is that the host can
+> remove *accepted* pages that are used in the syscall gap.  That means
+> that the #VE handler would need to be of the paranoid variety which
+> opens up all kinds of other fun.
 
->So pte_index(address) and for 1G pages, pmd_index(address).
+Yeah, I believe this needs to be dealt with anyway, for SNP at least.
+But on AMD it would simply cause an exception and it'll be handled in
+the #VC thing. And there's some ugly code to deal with the gap too.
 
->So no reinventing the wheel if we already have helpers for that.
+>  * "Old" - #VE's can happen in the syscall gap
+>  * "New" - #VE's happen at better-defined times.  Unexpected ones are
+>    fatal.
+> 
+> There's a third option which I proposed but doesn't yet exist.  The TDX
+> module _could_ separate the behavior of unaccepted memory #VE's and
+> host-induced #VEs.  This way, we could use load_unaligned_zeropad() with
+> impunity and handle it in the #VE handler.  At the same time, the host
+> would not be allowed to remove accepted memory and cause problems in the
+> syscall gap.  Kinda the best of both worlds.
 
-Yes that makes sense and pte_index(address) is exactly what is
-required for 2M hugepages.
+I like that. This should've been the default from the get-go. Oh well,
+what's it called in English, hindsight is 20 20...?
 
-Will use pte_index() for 2M pages and pmd_index() for 1G pages.=20
+> But, I'm not sure how valuable that would be now that we have the
+> (admittedly squirrelly) code to avoid load_unaligned_zeropad() #VE's.
 
->> It is mainly a wrapper around__split_huge_pmd() for SNP use case where=20
->> the host hugepage is split to be in sync with the RMP table.
+I think you should push for the bestest solution and one day we can kill
+those ugly workarounds.
 
->I see what it is. And I'm saying this looks wrong. You're enforcing page s=
-plitting to be a valid thing to do only for SEV machines. Why?
+Thx.
 
->Why is
+-- 
+Regards/Gruss,
+    Boris.
 
->        if (!IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
->                return VM_FAULT_SIGBUS;
-
->there at all?
-
->This is generic code you're touching - not arch/x86/.
-
-Ok, so you are suggesting that we remove this check and simply keep this fu=
-nction wrapping around __split_huge_pmd().=20
-This becomes a generic utility function.=20
-
-Thanks,
-Ashish
+https://people.kernel.org/tglx/notes-about-netiquette
