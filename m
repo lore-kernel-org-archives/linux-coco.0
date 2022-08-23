@@ -1,168 +1,196 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDE8182
-	for <linux-coco@lists.linux.dev>; Fri, 19 Aug 2022 16:54:20 +0000 (UTC)
-Received: by mail-lj1-f175.google.com with SMTP id l19so1894719ljg.8
-        for <linux-coco@lists.linux.dev>; Fri, 19 Aug 2022 09:54:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=AhTWQcbRqLOHVkblJK8G++davTd8BoOGzTOxaJ8TciQ=;
-        b=rev22bDg/B6huypKjaBYCvhEdROPXhJKo6JY54CN/6HsfbGiAmHcmqz0iheKnDiDLv
-         60YvV6ZgPfqwgXaYULb+bIH7ZUt/NgGkDRQU23y78EYAPdOVenEvDyqxPyto7nYBPA5Z
-         XlpbPeRjdVjAuHZy974y8RZepwILZP8uJ4UkB1YMCBrCslXjf4MRg873773Fs2FkUMHK
-         QsqKpT37JjGP63hwvjmwKtKwirueKtOXcEQSrq4+c6X+2pNdYciqCszqJ9gyzTHHe95s
-         UwY4K0fEdTOLITGsLhKh/abM38uMi95xw1SFJtkj7Ko+Jzi2+qbqPO7SOVvFC9NsTxRy
-         n2IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=AhTWQcbRqLOHVkblJK8G++davTd8BoOGzTOxaJ8TciQ=;
-        b=3OvRCSoxsJLbqoVKggXswmpagzsXuTVzRBf8Hxycmj+fFpGzKWxsQBWvbSmiKQOajV
-         WBDqtTvEH2kAx3hTqWBd7QWPD3uQhLr0ikshiF02JAO5UW+sGHDkZADw2Vqd+DE3bid6
-         r1x+MMIIjiWc1caI0h+6qWdZ5hGavGLreNzrdWofY9mfekXCn9sKlh6tFde9T0CLDaux
-         cqG4N7pEXMArpT1Dk1mhhACMv4F29f/5my4NCay3rnjxGZHuf/mPaunxTE4Tqs0tl3r8
-         TVjT9OsGJibMEt5YVV9a/aP54zwISiE9HQkqCdx4tbTNayKjtVSRvfmW/15BDDLbThIB
-         79Kg==
-X-Gm-Message-State: ACgBeo29aVfLuSv72vbTp/n6ViKQE2Oz1JrKepTfvc8AJhKhIIkUOsXz
-	aJsIgy6aPsPWX17Jz93CQ3MqykuCM81ja2ipluZ0zA==
-X-Google-Smtp-Source: AA6agR58K2GJzQfDZi+FO4kcRkjUmKJQPNXIQiTuu2Go1eedCUceiwNYBAb48mJhSiTtK1OeQXqSY4hu6BiWgBiZhe4=
-X-Received: by 2002:a05:651c:1787:b0:261:c1ff:4407 with SMTP id
- bn7-20020a05651c178700b00261c1ff4407mr340249ljb.257.1660928058082; Fri, 19
- Aug 2022 09:54:18 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD8256E
+	for <linux-coco@lists.linux.dev>; Tue, 23 Aug 2022 13:21:45 +0000 (UTC)
+Received: from zn.tnic (p200300ea971b9893329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9893:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CA7901EC059D;
+	Tue, 23 Aug 2022 15:21:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1661260893;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=88b9dtw5SGZz9ByR4SVq5jtelPnssUL5tht/iXbNMr0=;
+	b=pdIFFaLF2Q5y9bCJ1IXNDS6T4Wx4YgPc/b9z/mTBbXwTqFdUzRZMyThTsuC8nQblA+NIw+
+	yLDo4nIEPl/nfBvIJrqm5PSxkopiA4U0cqHMfliR6HYmWQcLLLGLR9WlAvXHJ9LuGWac95
+	qZyJxJ6DZFrPdZlQdErBqscKg5MLx5I=
+Date: Tue, 23 Aug 2022 15:21:29 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 10/49] x86/fault: Add support to dump RMP entry
+ on fault
+Message-ID: <YwTUWUkDVW+936VR@zn.tnic>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <af381cc88410c0e2c48fda5732741edd0d7609ac.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1655761627.git.ashish.kalra@amd.com> <78e30b5a25c926fcfdcaafea3d484f1bb25f20b9.1655761627.git.ashish.kalra@amd.com>
-In-Reply-To: <78e30b5a25c926fcfdcaafea3d484f1bb25f20b9.1655761627.git.ashish.kalra@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Fri, 19 Aug 2022 10:54:06 -0600
-Message-ID: <CAMkAt6rrGJ5DYTAJKFUTagN9i_opS8u5HPw5c_8NoyEjK7rYzA@mail.gmail.com>
-Subject: Re: [PATCH Part2 v6 37/49] KVM: SVM: Add support to handle MSR based
- Page State Change VMGEXIT
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: "the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	kvm list <kvm@vger.kernel.org>, linux-coco@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	"Lendacky, Thomas" <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Alper Gun <alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, jarkko@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <af381cc88410c0e2c48fda5732741edd0d7609ac.1655761627.git.ashish.kalra@amd.com>
 
-> +
-> +static int __snp_handle_page_state_change(struct kvm_vcpu *vcpu, enum psc_op op, gpa_t gpa,
-> +                                         int level)
+On Mon, Jun 20, 2022 at 11:03:58PM +0000, Ashish Kalra wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
+> 
+> When SEV-SNP is enabled globally, a write from the host goes through the
+> RMP check. If the hardware encounters the check failure, then it raises
+> the #PF (with RMP set). Dump the RMP entry at the faulting pfn to help
+> the debug.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/include/asm/sev.h |  7 +++++++
+>  arch/x86/kernel/sev.c      | 43 ++++++++++++++++++++++++++++++++++++++
+>  arch/x86/mm/fault.c        | 17 +++++++++++----
+>  include/linux/sev.h        |  2 ++
+>  4 files changed, 65 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index 6ab872311544..c0c4df817159 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -113,6 +113,11 @@ struct __packed rmpentry {
+>  
+>  #define rmpentry_assigned(x)	((x)->info.assigned)
+>  #define rmpentry_pagesize(x)	((x)->info.pagesize)
+> +#define rmpentry_vmsa(x)	((x)->info.vmsa)
+> +#define rmpentry_asid(x)	((x)->info.asid)
+> +#define rmpentry_validated(x)	((x)->info.validated)
+> +#define rmpentry_gpa(x)		((unsigned long)(x)->info.gpa)
+> +#define rmpentry_immutable(x)	((x)->info.immutable)
+
+If you're going to do that, use inline functions pls so that it checks
+the argument at least.
+
+Also, add such functions only when they're called multiple times - no
+need to add one for every field if you're going to access that field
+only once in the whole kernel.
+
+>  
+>  #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
+>  
+> @@ -205,6 +210,7 @@ void snp_set_wakeup_secondary_cpu(void);
+>  bool snp_init(struct boot_params *bp);
+>  void snp_abort(void);
+>  int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err);
+> +void dump_rmpentry(u64 pfn);
+>  #else
+>  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+>  static inline void sev_es_ist_exit(void) { }
+> @@ -229,6 +235,7 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
+>  {
+>  	return -ENOTTY;
+>  }
+> +static inline void dump_rmpentry(u64 pfn) {}
+>  #endif
+>  
+>  #endif
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index 734cddd837f5..6640a639fffc 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -2414,6 +2414,49 @@ static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
+>  	return entry;
+>  }
+>  
+> +void dump_rmpentry(u64 pfn)
+
+External function - it better belong to a namespace:
+
+sev_dump_rmpentry()
+
 > +{
-> +       struct kvm_sev_info *sev = &to_kvm_svm(vcpu->kvm)->sev_info;
-> +       struct kvm *kvm = vcpu->kvm;
-> +       int rc, npt_level;
-> +       kvm_pfn_t pfn;
-> +       gpa_t gpa_end;
+> +	unsigned long pfn_end;
+> +	struct rmpentry *e;
+> +	int level;
 > +
-> +       gpa_end = gpa + page_level_size(level);
-> +
-> +       while (gpa < gpa_end) {
-> +               /*
-> +                * If the gpa is not present in the NPT then build the NPT.
-> +                */
-> +               rc = snp_check_and_build_npt(vcpu, gpa, level);
-> +               if (rc)
-> +                       return -EINVAL;
-> +
-> +               if (op == SNP_PAGE_STATE_PRIVATE) {
-> +                       hva_t hva;
-> +
-> +                       if (snp_gpa_to_hva(kvm, gpa, &hva))
-> +                               return -EINVAL;
-> +
-> +                       /*
-> +                        * Verify that the hva range is registered. This enforcement is
-> +                        * required to avoid the cases where a page is marked private
-> +                        * in the RMP table but never gets cleanup during the VM
-> +                        * termination path.
-> +                        */
-> +                       mutex_lock(&kvm->lock);
-> +                       rc = is_hva_registered(kvm, hva, page_level_size(level));
-> +                       mutex_unlock(&kvm->lock);
-> +                       if (!rc)
-> +                               return -EINVAL;
-> +
-> +                       /*
-> +                        * Mark the userspace range unmerable before adding the pages
-> +                        * in the RMP table.
-> +                        */
-> +                       mmap_write_lock(kvm->mm);
-> +                       rc = snp_mark_unmergable(kvm, hva, page_level_size(level));
-> +                       mmap_write_unlock(kvm->mm);
-> +                       if (rc)
-> +                               return -EINVAL;
-> +               }
-> +
-> +               write_lock(&kvm->mmu_lock);
-> +
-> +               rc = kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level);
-> +               if (!rc) {
-> +                       /*
-> +                        * This may happen if another vCPU unmapped the page
-> +                        * before we acquire the lock. Retry the PSC.
-> +                        */
-> +                       write_unlock(&kvm->mmu_lock);
-> +                       return 0;
-> +               }
+> +	e = __snp_lookup_rmpentry(pfn, &level);
+> +	if (!e) {
+> +		pr_alert("failed to read RMP entry pfn 0x%llx\n", pfn);
 
-I think we want to return -EAGAIN or similar if we want the caller to
-retry, right? I think returning 0 here hides the error.
+Why alert?
 
+Dumping stuff is either pr_debug or pr_info...
+
+> +		return;
+> +	}
 > +
-> +               /*
-> +                * Adjust the level so that we don't go higher than the backing
-> +                * page level.
-> +                */
-> +               level = min_t(size_t, level, npt_level);
+> +	if (rmpentry_assigned(e)) {
+> +		pr_alert("RMPEntry paddr 0x%llx [assigned=%d immutable=%d pagesize=%d gpa=0x%lx"
+> +			" asid=%d vmsa=%d validated=%d]\n", pfn << PAGE_SHIFT,
+> +			rmpentry_assigned(e), rmpentry_immutable(e), rmpentry_pagesize(e),
+> +			rmpentry_gpa(e), rmpentry_asid(e), rmpentry_vmsa(e),
+> +			rmpentry_validated(e));
+> +		return;
+> +	}
 > +
-> +               trace_kvm_snp_psc(vcpu->vcpu_id, pfn, gpa, op, level);
+> +	/*
+> +	 * If the RMP entry at the faulting pfn was not assigned, then we do not
+
+Who's "we"?
+
+> +	 * know what caused the RMP violation. To get some useful debug information,
+> +	 * let iterate through the entire 2MB region, and dump the RMP entries if
+> +	 * one of the bit in the RMP entry is set.
+> +	 */
+> +	pfn = pfn & ~(PTRS_PER_PMD - 1);
+> +	pfn_end = pfn + PTRS_PER_PMD;
 > +
-> +               switch (op) {
-> +               case SNP_PAGE_STATE_SHARED:
-> +                       rc = snp_make_page_shared(kvm, gpa, pfn, level);
-> +                       break;
-> +               case SNP_PAGE_STATE_PRIVATE:
-> +                       rc = rmp_make_private(pfn, gpa, level, sev->asid, false);
-> +                       break;
-> +               default:
-> +                       rc = -EINVAL;
-> +                       break;
-> +               }
+> +	while (pfn < pfn_end) {
+> +		e = __snp_lookup_rmpentry(pfn, &level);
+> +		if (!e)
+> +			return;
 > +
-> +               write_unlock(&kvm->mmu_lock);
-> +
-> +               if (rc) {
-> +                       pr_err_ratelimited("Error op %d gpa %llx pfn %llx level %d rc %d\n",
-> +                                          op, gpa, pfn, level, rc);
-> +                       return rc;
-> +               }
-> +
-> +               gpa = gpa + page_level_size(level);
-> +       }
-> +
-> +       return 0;
-> +}
-> +
+> +		if (e->low || e->high)
+
+This is going to confuse people because they're going to miss a zero
+entry. Just dump the whole thing.
+
+...
+
+> @@ -579,7 +588,7 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long ad
+>  		show_ldttss(&gdt, "TR", tr);
+>  	}
+>  
+> -	dump_pagetable(address);
+> +	dump_pagetable(address, error_code & X86_PF_RMP);
+
+Eww.
+
+I'd prefer to see
+
+	pfn = dump_pagetable(address);
+
+	if (error_code & X86_PF_RMP)
+		sev_dump_rmpentry(pfn);
+
+instead of passing around this SEV-specific arg in generic x86 fault code.
+
+The change to return the pfn from dump_pagetable() should be a pre-patch ofc.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
