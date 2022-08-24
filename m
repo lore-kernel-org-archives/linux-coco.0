@@ -1,196 +1,107 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD8256E
-	for <linux-coco@lists.linux.dev>; Tue, 23 Aug 2022 13:21:45 +0000 (UTC)
-Received: from zn.tnic (p200300ea971b9893329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971b:9893:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CA7901EC059D;
-	Tue, 23 Aug 2022 15:21:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1661260893;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=88b9dtw5SGZz9ByR4SVq5jtelPnssUL5tht/iXbNMr0=;
-	b=pdIFFaLF2Q5y9bCJ1IXNDS6T4Wx4YgPc/b9z/mTBbXwTqFdUzRZMyThTsuC8nQblA+NIw+
-	yLDo4nIEPl/nfBvIJrqm5PSxkopiA4U0cqHMfliR6HYmWQcLLLGLR9WlAvXHJ9LuGWac95
-	qZyJxJ6DZFrPdZlQdErBqscKg5MLx5I=
-Date: Tue, 23 Aug 2022 15:21:29 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 10/49] x86/fault: Add support to dump RMP entry
- on fault
-Message-ID: <YwTUWUkDVW+936VR@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <af381cc88410c0e2c48fda5732741edd0d7609ac.1655761627.git.ashish.kalra@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F846719
+	for <linux-coco@lists.linux.dev>; Wed, 24 Aug 2022 18:01:29 +0000 (UTC)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-335624d1e26so481526717b3.4
+        for <linux-coco@lists.linux.dev>; Wed, 24 Aug 2022 11:01:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=DGuV+oKzfmFfApe8NxA2paN6tKmjViwBVg9JpKKUVew=;
+        b=aK7CLkv5P2RcCIQ4lBOyr8TSYIWgo/S7IAXUY+CksZwIzy0GAUD2JwRUYl1mFSlNy1
+         AlZYZ+MSnfLOvbuZkVTyk5hYpkNwyfw7XjHdVZIEBzoniE+PdMWI3Dkur8HhBI1VH++3
+         zG2zC0bKMzKEiqxXi/wzfVrA6uOVxHU694jVkzxalWH/7oz6JhUVaNQgLaUVbsF4Ja+t
+         m3unpH32vONLlCtLiTtPrym5TcCuV3jdyoTEvGYk3Tv3xyUaF9kJPtsQZ62M2XcawYY2
+         /Xq7h71eB0GYT/81B4VArgq0LRAgwploebcVMZfOKDuGJ6M4fYqAWEeqcb1m1QMMjszm
+         Wn2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=DGuV+oKzfmFfApe8NxA2paN6tKmjViwBVg9JpKKUVew=;
+        b=pLkYvCu5YxHakpTuTGQtLViijEk2wj0rUovMKTAIyCDnGrJjutpmEFK3fWvxJM05U7
+         kqWau5nQgUNvYoaPVmVEq4rnXVdTXI2hmuHBaHtyj6A1vPOVkZk1fYKbfutV99xgMxRL
+         Rzz7yKH5LpDDH9LcRTX69zIJBmI4We2WCEYdoQcg5FZxTc+zYFT14xteyUXt+eHZjGF9
+         AnzeKzrtqxFaOdwVIsXx9n3bKh/imJs4JPwguELMVAODtmD2n79O1QcFR9WbaAdxC9/n
+         4mpM4XuMfNhFxpxaARyL+W29KzZ4yTHcn8JoDv6pPF1S1fqUFMX10c3aAw+RG0KAClnh
+         jf3Q==
+X-Gm-Message-State: ACgBeo3cEwfWzgHut6xG/hbfBS/JmQCsWmAfzDMS2XJBab4/Hv9x4uOi
+	f7wMEiU/Ftc7KZc1Mw/57BM/ppR04ui1SxuNq6sGgw==
+X-Google-Smtp-Source: AA6agR4krDxQhq5Y+22wT3eQhzuO1h8jJucGBjy3TIVyLauaMRohf/vMydVZsogFXj4WyTvzKkerLZ1BkZP/rZzLJXI=
+X-Received: by 2002:a81:6f43:0:b0:335:9e7e:ad25 with SMTP id
+ k64-20020a816f43000000b003359e7ead25mr347464ywc.518.1661364087931; Wed, 24
+ Aug 2022 11:01:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <af381cc88410c0e2c48fda5732741edd0d7609ac.1655761627.git.ashish.kalra@amd.com>
+References: <20220307213356.2797205-1-brijesh.singh@amd.com> <20220307213356.2797205-44-brijesh.singh@amd.com>
+In-Reply-To: <20220307213356.2797205-44-brijesh.singh@amd.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Wed, 24 Aug 2022 11:01:16 -0700
+Message-ID: <CAAH4kHYm1BhjJXUMH12kzR0Xun=fUTj-3Hy6At0XR_09Bf0Ccw@mail.gmail.com>
+Subject: Re: [PATCH v12 43/46] virt: Add SEV-SNP guest driver
+To: Brijesh Singh <brijesh.singh@amd.com>
+Cc: "the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	"open list:X86 KVM CPUs" <kvm@vger.kernel.org>, linux-efi <linux-efi@vger.kernel.org>, 
+	platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Linux Memory Management List <linux-mm@kvack.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Joerg Roedel <jroedel@suse.de>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
+	Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, 
+	"Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com, tony.luck@intel.com, 
+	Marc Orr <marcorr@google.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jun 20, 2022 at 11:03:58PM +0000, Ashish Kalra wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
-> 
-> When SEV-SNP is enabled globally, a write from the host goes through the
-> RMP check. If the hardware encounters the check failure, then it raises
-> the #PF (with RMP set). Dump the RMP entry at the faulting pfn to help
-> the debug.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> ---
->  arch/x86/include/asm/sev.h |  7 +++++++
->  arch/x86/kernel/sev.c      | 43 ++++++++++++++++++++++++++++++++++++++
->  arch/x86/mm/fault.c        | 17 +++++++++++----
->  include/linux/sev.h        |  2 ++
->  4 files changed, 65 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-> index 6ab872311544..c0c4df817159 100644
-> --- a/arch/x86/include/asm/sev.h
-> +++ b/arch/x86/include/asm/sev.h
-> @@ -113,6 +113,11 @@ struct __packed rmpentry {
->  
->  #define rmpentry_assigned(x)	((x)->info.assigned)
->  #define rmpentry_pagesize(x)	((x)->info.pagesize)
-> +#define rmpentry_vmsa(x)	((x)->info.vmsa)
-> +#define rmpentry_asid(x)	((x)->info.asid)
-> +#define rmpentry_validated(x)	((x)->info.validated)
-> +#define rmpentry_gpa(x)		((unsigned long)(x)->info.gpa)
-> +#define rmpentry_immutable(x)	((x)->info.immutable)
+Apologies for the necropost, but I noticed strange behavior testing my
+own Golang-based wrapper around the /dev/sev-guest driver.
 
-If you're going to do that, use inline functions pls so that it checks
-the argument at least.
-
-Also, add such functions only when they're called multiple times - no
-need to add one for every field if you're going to access that field
-only once in the whole kernel.
-
->  
->  #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
->  
-> @@ -205,6 +210,7 @@ void snp_set_wakeup_secondary_cpu(void);
->  bool snp_init(struct boot_params *bp);
->  void snp_abort(void);
->  int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned long *fw_err);
-> +void dump_rmpentry(u64 pfn);
->  #else
->  static inline void sev_es_ist_enter(struct pt_regs *regs) { }
->  static inline void sev_es_ist_exit(void) { }
-> @@ -229,6 +235,7 @@ static inline int snp_issue_guest_request(u64 exit_code, struct snp_req_data *in
->  {
->  	return -ENOTTY;
->  }
-> +static inline void dump_rmpentry(u64 pfn) {}
->  #endif
->  
->  #endif
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index 734cddd837f5..6640a639fffc 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -2414,6 +2414,49 @@ static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
->  	return entry;
->  }
->  
-> +void dump_rmpentry(u64 pfn)
-
-External function - it better belong to a namespace:
-
-sev_dump_rmpentry()
-
+> +
+> +static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, int msg_ver,
+> +                               u8 type, void *req_buf, size_t req_sz, void *resp_buf,
+> +                               u32 resp_sz, __u64 *fw_err)
 > +{
-> +	unsigned long pfn_end;
-> +	struct rmpentry *e;
-> +	int level;
+> +       unsigned long err;
+> +       u64 seqno;
+> +       int rc;
 > +
-> +	e = __snp_lookup_rmpentry(pfn, &level);
-> +	if (!e) {
-> +		pr_alert("failed to read RMP entry pfn 0x%llx\n", pfn);
-
-Why alert?
-
-Dumping stuff is either pr_debug or pr_info...
-
-> +		return;
-> +	}
+> +       /* Get message sequence and verify that its a non-zero */
+> +       seqno = snp_get_msg_seqno(snp_dev);
+> +       if (!seqno)
+> +               return -EIO;
 > +
-> +	if (rmpentry_assigned(e)) {
-> +		pr_alert("RMPEntry paddr 0x%llx [assigned=%d immutable=%d pagesize=%d gpa=0x%lx"
-> +			" asid=%d vmsa=%d validated=%d]\n", pfn << PAGE_SHIFT,
-> +			rmpentry_assigned(e), rmpentry_immutable(e), rmpentry_pagesize(e),
-> +			rmpentry_gpa(e), rmpentry_asid(e), rmpentry_vmsa(e),
-> +			rmpentry_validated(e));
-> +		return;
-> +	}
+> +       memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
 > +
-> +	/*
-> +	 * If the RMP entry at the faulting pfn was not assigned, then we do not
-
-Who's "we"?
-
-> +	 * know what caused the RMP violation. To get some useful debug information,
-> +	 * let iterate through the entire 2MB region, and dump the RMP entries if
-> +	 * one of the bit in the RMP entry is set.
-> +	 */
-> +	pfn = pfn & ~(PTRS_PER_PMD - 1);
-> +	pfn_end = pfn + PTRS_PER_PMD;
+> +       /* Encrypt the userspace provided payload */
+> +       rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
+> +       if (rc)
+> +               return rc;
 > +
-> +	while (pfn < pfn_end) {
-> +		e = __snp_lookup_rmpentry(pfn, &level);
-> +		if (!e)
-> +			return;
+> +       /* Call firmware to process the request */
+> +       rc = snp_issue_guest_request(exit_code, &snp_dev->input, &err);
+> +       if (fw_err)
+> +               *fw_err = err;
 > +
-> +		if (e->low || e->high)
+> +       if (rc)
+> +               return rc;
+> +
 
-This is going to confuse people because they're going to miss a zero
-entry. Just dump the whole thing.
+The fw_err is written back regardless of rc, so since err is
+uninitialized, you can end up with garbage written back. I've worked
+around this by only caring about fw_err when the result is -EIO, but
+thought that I should bring this up.
 
-...
-
-> @@ -579,7 +588,7 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long ad
->  		show_ldttss(&gdt, "TR", tr);
->  	}
->  
-> -	dump_pagetable(address);
-> +	dump_pagetable(address, error_code & X86_PF_RMP);
-
-Eww.
-
-I'd prefer to see
-
-	pfn = dump_pagetable(address);
-
-	if (error_code & X86_PF_RMP)
-		sev_dump_rmpentry(pfn);
-
-instead of passing around this SEV-specific arg in generic x86 fault code.
-
-The change to return the pfn from dump_pagetable() should be a pre-patch ofc.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+--
+-Dionna Glaze, PhD (she/her)
