@@ -1,243 +1,184 @@
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2089.outbound.protection.outlook.com [40.107.93.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405743D72
-	for <linux-coco@lists.linux.dev>; Thu, 25 Aug 2022 20:09:39 +0000 (UTC)
-Received: by mail-vs1-f54.google.com with SMTP id k2so21982926vsk.8
-        for <linux-coco@lists.linux.dev>; Thu, 25 Aug 2022 13:09:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=/o5u98fJkAPGGPRvZ0JnL9MrzWUgTcXH/oohHXk3MD8=;
-        b=Ezi3cLxl5SBn+0WFQppba1X7+DdHeAZwd+3+8yyHBkZ8p32tIpXd4owl1HlE83sJlO
-         35tGqyLcydDFnVxl+CllN9bqMX9roI42WPfmwop0omLlw8YncOW+c8HsYJX/9B/vbTyJ
-         G0ggnVxnzwnyWSTVI870+xJVwDivl/otgYRGldLDtzhFC+NR8TQKY25dlVrK2AY5pxqg
-         j8+1wMEzuZoPbCH0bnMmY/aShcHogX5ZkHm8OOmT0W1plozwcVxwRnNem25RQcP/v+8v
-         cOYAMOSYJKqvLMMxImuVQpmqla9mEyo5zBXp/yPnp1NiDw1AX/9F/iOoYCV+y7vg+ryK
-         bZNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=/o5u98fJkAPGGPRvZ0JnL9MrzWUgTcXH/oohHXk3MD8=;
-        b=5vN62FtAI5ngsZUcGymtXpAy2fHT2dxCDI7YcARhcJGgmWqjOvTKhycoAEO46Ete6S
-         yUrjioN8pZW6UMzQ8iQult9cHLpDwihraqS2PEjI5nxvLudjnx92+XL7iGukmxWXtlbU
-         eHoe1csYRzOUrti6+UCq0+sxflrlm2uViOQiw83+ufCSJB5AvG9vxkvt6AUP2meGS/iG
-         DQTIGoIR4kJ8E7Qopknio8f6zBSSYU+wDl5Zan3QXYi3NfM/8HzjLAIREp5JkDLdcH52
-         CRKVfQRyFNMOWhhSw4j1rAQEXzh4Ikuij2GZVuqug6SUHPVYthAkfwHwtPCFvsRaO41j
-         +d9g==
-X-Gm-Message-State: ACgBeo3XsTpPQSjl02uCAQtzdXCDmtudHcLxCf3qXp8CfUXGH/8J2QWO
-	1aYZufWrsrTo+OJ+fvf4oveLz9dpOgkCZ1P5toM4WQ==
-X-Google-Smtp-Source: AA6agR7nyEzEvgpeTs849VA7+3zgZ0xGJ1Pxf0VO2EuGO24TVf9MLwl1oV6f4IzTsrHTAKLU/CRN4th7Cmzsf8Yp7TA=
-X-Received: by 2002:a67:fd0e:0:b0:390:1d9a:2455 with SMTP id
- f14-20020a67fd0e000000b003901d9a2455mr2104726vsr.78.1661458177919; Thu, 25
- Aug 2022 13:09:37 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAF9441B
+	for <linux-coco@lists.linux.dev>; Fri, 26 Aug 2022 18:54:18 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kwyKXSAf6QciXywyKla37NH02WqNYzeDjVYAqK7iR7UL3qTQ4OmBnlaBQoZa81bZQ8Kk3jbBKqjHXDC3r/VVm+ATDakVUcZSJhFxvRRap5lR+HUAEFLpKb/7Pu6fNw4Yz8RQF/xhbb78WDA+00OzgpuVUsHiJwn2/qgGJBmyh+YE2XmMYhJcBus/vWFbvFkK78KszOB/QsM6byymKoojgFs2lmQKAoUDLo70LjtK1hl2MjPywk39zLCRPbI7G54YFpfs8DfgMnGRdCVkDamV8/1G0vzL6EopyCCjnl73FXxQIoezzYZ/okoDS8vsp+jzxmSmds0PsZ9XS4JVnMKsYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gneMpFXbSfSSGxFzBh6BzQ8YVboIqIR9/wGD3KPAYGI=;
+ b=fm2uGlp+plueiGUoDnmIInFAu7bxKzYdwydLfu44Wowj3KSaEgU3tB7h2q+Z90cbAp1pvtbpRIW3xm67m0W3N8qYlAsMAx+hlgn19TXciCP+08QH96LAci2OBXeFRYPoQmAO8cS4qyZx3AFRb1e1UOKDVDx3LKQRNk1v/6/O5qP6PX8L6xQfSPfEIthdzZi2rZEhhOOq2CFw7NQNhc68YOj6hjiCJseDLQ9h4biNDYxl399/Vo2WS7YYjTPQ8T+jap4YEzQp3Yzi58iYQRTQXeT9s5xMn6teT5GxhSVLesnAObyK7VyWzf8nZ1k63eCrmoyG8PiTmODuhA148qc0Sw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gneMpFXbSfSSGxFzBh6BzQ8YVboIqIR9/wGD3KPAYGI=;
+ b=tY/cFMmXGrMVLcDki9VsR+cpnqO8Ahkk1DksgG7j6IFKQgA63ia78HXGi5wDb9XrHjom/qJPHTreAGbrXdeYOUQozAPhN6QldlI3K3n8X0mrU51ZOGdCFiIjGF7XNuPAN6S0+tq7fMJJMpwaWfBsIz0LBIC2lzRnfElm39HjH0I=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by BL1PR12MB5334.namprd12.prod.outlook.com (2603:10b6:208:31d::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Fri, 26 Aug
+ 2022 18:54:16 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::fc65:3a28:fdd0:ce9f]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::fc65:3a28:fdd0:ce9f%7]) with mapi id 15.20.5566.015; Fri, 26 Aug 2022
+ 18:54:16 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, Peter Gonda <pgonda@google.com>
+CC: the arch/x86 maintainers <x86@kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, Linux Crypto Mailing List
+	<linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, "Lendacky, Thomas"
+	<Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel
+	<ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+	<seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li
+	<wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, Andy Lutomirski
+	<luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez
+	<slp@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Srinivas Pandruvada
+	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
+	Borislav Petkov <bp@alien8.de>, "Roth, Michael" <Michael.Roth@amd.com>,
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
+	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, Tony Luck
+	<tony.luck@intel.com>, Marc Orr <marcorr@google.com>, Sathyanarayanan
+ Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Alper Gun
+	<alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+Subject: RE: [PATCH Part2 v6 02/49] iommu/amd: Introduce function to check
+ SEV-SNP support
+Thread-Topic: [PATCH Part2 v6 02/49] iommu/amd: Introduce function to check
+ SEV-SNP support
+Thread-Index: AQHYhYN//Jq12JdNiEyvNHxMVTEAQ61aILsggAADK4CAZRTwgIAAAKeAgAK0CKA=
+Date: Fri, 26 Aug 2022 18:54:16 +0000
+Message-ID:
+ <SN6PR12MB27678E2944605E11B37267CC8E759@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <12df64394b1788156c8a3c2ee8dfd62b51ab3a81.1655761627.git.ashish.kalra@amd.com>
+ <CAMkAt6r+WSYXLZj-Bs5jpo4CR3+H5cpND0GHjsmgPacBK1GH_Q@mail.gmail.com>
+ <SN6PR12MB2767A51D40E7F53395770DE58EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
+ <CAMkAt6qorwbAXaPaCaSm0SC9o2uQ9ZQzB6s1kBkvAv2D4tkUug@mail.gmail.com>
+ <YwbQKeDRQF0XGWo7@kernel.org> <YwbQtaaCkBwezpB+@kernel.org>
+In-Reply-To: <YwbQtaaCkBwezpB+@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-08-26T18:47:21Z;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=01131e74-f26b-4805-aa08-cfbb5956557d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-08-26T18:54:14Z
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
+ 29ebba62-13a9-4b86-8b1b-a974f6f5188d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fc5bf462-8a5f-4767-6e92-08da87946010
+x-ms-traffictypediagnostic: BL1PR12MB5334:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ Jthyv26BinNazs79ZmJ5P8A58XuiV68hlnvcWLUb9YPe0/j8jN/OCKhSW5m2ub1Yi/xWj/x/D5NFU2ai6YBmmq0ftcgqidwB/e3SLteBfBNOpDFjE7E7/WBH8VGJbRfX2XeOxsiam8lRqBeKCMWkMtQwuHhlRt7R+nj11FVuPn7HfyNj7Pop6t20ndBaoQRFsyHPqUm5LQS96tHtUhsxv5d4IlouQiI+p9yT1pApQRsz3+btiv2Too+zTjJC1VPpemolo5rHtXKP6ZW1sI2NgOkGVvaDB/TFpvYYuRETmylW9OzHQ3VCtCE3sZsA9cfwlNG7jR0VWfQre/A6ylUrqrPaTl6kwJN5otk/iWtLzNVb5jGZTd5T0bI3PLbDNmsWdY0XAf+lkn27GWRkEsKdQ3Q9wy9wNZfX+4oba1IWS5zAtLZXyc1fNMomxXSCmmOCDDsWgwJ7gRvaKbayivm6Z/xLdjYDRLA173WVsh2ap8F2dSx7+0078xC3mEtpbq7HHrv6cmN8umz20eZZSRKfaov1D4i2PP5yRt1xPCCzlZ9THL9VyZlFBvcGF650fMhxxyHpxe0u5Lj+O+zvbl9MkLI/eLd1EjH5AuvbiJ6V8uCR20tsKuePI0N08SBDKoBZHu9Xn8DN7iVRevS7Pq54kI1HytIXbU/FhrQf0V4IRijXfD9o8a0irsPUgwITuTTLtj2FniS/ohb8OyTPkxO0fjdrXGVIDD9SK7M6BTZe06P/BdAmXFFpYXQASIiXx0L3GF4uHiwKyYQ5HPvJazsSiA==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(346002)(366004)(39860400002)(376002)(136003)(396003)(86362001)(38070700005)(122000001)(54906003)(316002)(110136005)(76116006)(52536014)(38100700002)(186003)(2906002)(7416002)(7406005)(66946007)(66556008)(66476007)(66446008)(64756008)(8676002)(4326008)(5660300002)(83380400001)(478600001)(55016003)(71200400001)(6506007)(26005)(9686003)(7696005)(41300700001)(8936002)(33656002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?lR8URrnwzDvQxGRI+gqh5IjjdsASRCFUZvwqNMJOZWakYWJ2RX9G7vQIwB4R?=
+ =?us-ascii?Q?wmEOhFRNUx0ziSLQ+PxGDDGaL0YCN7q5Y8rTuxesns+BHt1ICRqCgrY94FBy?=
+ =?us-ascii?Q?zHj+wVny1XjytwXNGwl7cPP/kA8Aqg03fbV/nloqd0e7wEb/dYFMFAWkdeDk?=
+ =?us-ascii?Q?OObASgkdsCi3KPMgGEdyNgTBf1BWOWIRDRQzNhgWGy3oMmDXUDHMvTe62skK?=
+ =?us-ascii?Q?F7fD3o9oLcOZMGApQ49OJ0ZuZYZOWTDMvVZS52I3VQZFyCRinPM6oORXBnQW?=
+ =?us-ascii?Q?d9XovvO6ELzYDw5d8gDCrRrZ/kETppC0ZJcAcZMaZHeJyt0FH1aZYYEJWjiu?=
+ =?us-ascii?Q?vIIgv9yk1CWWW/zkFVq8Naj/JwkE965+UfF6nNqYjBy8UgY6+ndfXWqw3poq?=
+ =?us-ascii?Q?bPT90NL0jSRZqQNEixoRa7IN6cjkbYmuBWrcmt4MuY6K6roXVRGJBZWZ9LcD?=
+ =?us-ascii?Q?NFIYqMDKsZnkxrjaonsAKYFYD+ItuetZRzkHSxXjRd8aeB67KHafhxUB5wDM?=
+ =?us-ascii?Q?v0exyxM9Itvnbwbts0XHS07mvxwo3Yi2hhuEsFg4YaEw9I6JDkAdYYd9CwAC?=
+ =?us-ascii?Q?H72kfcMRKk0RsIXrwifvDS8MbI1OGuNF6hNaAA66CgAg8XxFWZrfkd5BxmbI?=
+ =?us-ascii?Q?K8X1i3Y3KGjwNonkAern6k/OImYXi9tw8olKJK77QxSHaCWtl48bB+d3yN1X?=
+ =?us-ascii?Q?B1yFdAMHlypXaHkb4Djf2cQtpRHo5W7JJIakDfVpiRBcyh95LOLJzT6AEpa/?=
+ =?us-ascii?Q?bJubg7to5VyBXPks0iEJrlkc8jWF/hwAKlyVXzrNujm6M69TMqJ4cYZBKHm4?=
+ =?us-ascii?Q?412XWS8SNczXCuhn11Sg1f9TB3roiwKGWsM2hxj36xwGUTkc58VVCYv4lvKJ?=
+ =?us-ascii?Q?C7aklXUEYWW+5SoVVqJVYJT0opyOObvlmSxTrtO8eL/OJ2kEsEKJfQ1MNaXl?=
+ =?us-ascii?Q?mH7YdYDpVGMPPZGQJUrwV4oygSnyCqabnVEcsJFHwMusqCcKLkCYxsf0BESG?=
+ =?us-ascii?Q?QMftIUehCVfxUzx4QWvx3c+uy3qUAGCD7sKG9QF9iFEQhfZxUoD0/QQgWd8m?=
+ =?us-ascii?Q?AsnTeqa4Q29wx6bay0qGPgtsYegRq8xrMYvGgktjXl6aGCLZ1CxXrFv8ev/l?=
+ =?us-ascii?Q?zcq1LAIao0i8/AkH0WpVmlrnMF0ItWL2+c98RSpSdQOzeToccVunSD4MyXZs?=
+ =?us-ascii?Q?6bQ/5PHzUadJdYZsgm1F7kNJschN4OrWXooNlkIpPmWLlSBN5pzqVGSvX/Qy?=
+ =?us-ascii?Q?gN9Q1TI4dAtgERMdRN+ACG61HHRvVOy2VLpFJCcVrcyidUIayowqdtcYHm5T?=
+ =?us-ascii?Q?UQSB/jRRXq5s8k4hVL00ltajBxAaa52bLtTfm3Low95DhrqTHE9CiY3wrfHi?=
+ =?us-ascii?Q?G6wjycdA2n6dHWO/IRSxJyVYIecJejzT0NntdON3qq5jP2FEecnW73Vn61K6?=
+ =?us-ascii?Q?oAx2vdatZa3kxb7n+mwyqmhpXh9vXaz34WBrO0XEgX2bcvZEsWSyR3pYmhrv?=
+ =?us-ascii?Q?yJlxp5LmoIMG3RBaAAMSIZqHYKA4xU47iXaNYwLC9kVMCh+RlGzCqIRinjo/?=
+ =?us-ascii?Q?2ur3BTwpSJZfvasUw0k=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20220307213356.2797205-1-brijesh.singh@amd.com>
- <20220307213356.2797205-44-brijesh.singh@amd.com> <CAAH4kHYm1BhjJXUMH12kzR0Xun=fUTj-3Hy6At0XR_09Bf0Ccw@mail.gmail.com>
- <CAMkAt6oKQ3CnmNdrJLMWreExkN56t9vs=B883_JD+HtiNYw9HA@mail.gmail.com> <51298b17-9e12-7a08-7322-594deac52f53@amd.com>
-In-Reply-To: <51298b17-9e12-7a08-7322-594deac52f53@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Thu, 25 Aug 2022 14:09:26 -0600
-Message-ID: <CAMkAt6qBd7uoR-9NW7HbcE-N7w++3vGsviGLkhmVbnZ5TH3ZOg@mail.gmail.com>
-Subject: Re: [PATCH v12 43/46] virt: Add SEV-SNP guest driver
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	"the arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	"open list:X86 KVM CPUs" <kvm@vger.kernel.org>, linux-efi <linux-efi@vger.kernel.org>, 
-	platform-driver-x86@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Linux Memory Management List <linux-mm@kvack.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Joerg Roedel <jroedel@suse.de>, "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Sergio Lopez <slp@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, 
-	"Dr . David Alan Gilbert" <dgilbert@redhat.com>, brijesh.ksingh@gmail.com, 
-	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc5bf462-8a5f-4767-6e92-08da87946010
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2022 18:54:16.2633
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UroD/I0WsGYZZCb/6XOqTlndwb1wq8INQAVry840mSLb/8eVTaNiimKyz1DOsagqBzdIqaEPtEGYiq5EUX0U9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5334
 
-On Thu, Aug 25, 2022 at 12:54 PM Tom Lendacky <thomas.lendacky@amd.com> wrote:
->
-> On 8/24/22 14:28, Peter Gonda wrote:
-> > On Wed, Aug 24, 2022 at 12:01 PM Dionna Amalie Glaze
-> > <dionnaglaze@google.com> wrote:
-> >>
-> >> Apologies for the necropost, but I noticed strange behavior testing my
-> >> own Golang-based wrapper around the /dev/sev-guest driver.
-> >>
-> >>> +
-> >>> +static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, int msg_ver,
-> >>> +                               u8 type, void *req_buf, size_t req_sz, void *resp_buf,
-> >>> +                               u32 resp_sz, __u64 *fw_err)
-> >>> +{
-> >>> +       unsigned long err;
-> >>> +       u64 seqno;
-> >>> +       int rc;
-> >>> +
-> >>> +       /* Get message sequence and verify that its a non-zero */
-> >>> +       seqno = snp_get_msg_seqno(snp_dev);
-> >>> +       if (!seqno)
-> >>> +               return -EIO;
-> >>> +
-> >>> +       memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
-> >>> +
-> >>> +       /* Encrypt the userspace provided payload */
-> >>> +       rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
-> >>> +       if (rc)
-> >>> +               return rc;
-> >>> +
-> >>> +       /* Call firmware to process the request */
-> >>> +       rc = snp_issue_guest_request(exit_code, &snp_dev->input, &err);
-> >>> +       if (fw_err)
-> >>> +               *fw_err = err;
-> >>> +
-> >>> +       if (rc)
-> >>> +               return rc;
-> >>> +
-> >>
-> >> The fw_err is written back regardless of rc, so since err is
-> >> uninitialized, you can end up with garbage written back. I've worked
-> >> around this by only caring about fw_err when the result is -EIO, but
-> >> thought that I should bring this up.
-> >
-> > I also noticed that we use a u64 in snp_guest_request_ioctl.fw_err and
-> > u32 in sev_issue_cmd.error when these should be errors from the
-> > sev_ret_code enum IIUC.
->
-> The reason for the u64 is that the Extended Guest Request can return a
-> firmware error or a hypervisor error. To distinguish between the two, a
-> firmware error is contained in the lower 32-bits, while a hypervisor error
-> is contained in the upper 32-bits (e.g. when not enough contiguous pages
-> of memory have been supplied).
+[AMD Official Use Only - General]
 
-Ah, makes sense. I was trying to think of a way to codify the state
-described above where we error so early in the IOCTL or call that the
-PSP is never called, something like below. I think using UINT32_MAX
-still works with how u64 of Extended Guest Request is spec'd. Is this
-interesting to clean up the PSP driver and internal calls, and the new
-sev-guest driver?
+Hello Jarkko,
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 63dc626627a0..d1e605567d5e 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -22,6 +22,7 @@
- #include <linux/efi.h>
- #include <linux/platform_device.h>
- #include <linux/io.h>
-+#include <linux/psp-sev.h>
+>>=20
+>> It really should be, in order to have any practical use:
+>>=20
+>> 	if (no_iommu) {
+>> 		pr_err("SEV-SNP: IOMMU is disabled.\n");
+>> 		return false;
+>> 	}
+>>=20
+>> 	if (iommu_default_passthrough()) {
+>> 		pr_err("SEV-SNP: IOMMU is configured in passthrough mode.\n");
+>> 		return false;
+>> 	}
+>>=20
+>> The comment is *completely* redundant, it absolutely does not serve=20
+>> any sane purpose. It just tells what the code already clearly stating.
+>>=20
+>> The combo error message on the other hand leaves you to the question=20
+>> "which one was it", and for that reason combining the checks leaves=20
+>> you to a louse debugging experience.
 
- #include <asm/cpu_entry_area.h>
- #include <asm/stacktrace.h>
-@@ -2177,6 +2178,8 @@ int snp_issue_guest_request(u64 exit_code,
-struct snp_req_data *input, unsigned
-        if (!fw_err)
-                return -EINVAL;
+>Also, are those really *errors*? That implies that there is something wron=
+g.
 
-+       fw_err = SEV_RET_NO_FW_CALL;
-+
-        /*
-         * __sev_get_ghcb() needs to run with IRQs disabled because it is using
-         * a per-CPU GHCB.
-@@ -2209,6 +2212,8 @@ int snp_issue_guest_request(u64 exit_code,
-struct snp_req_data *input, unsigned
-                *fw_err = ghcb->save.sw_exit_info_2;
+>Since you can have a legit configuration, IMHO they should be either warn =
+or info. What do you think?
 
-                ret = -EIO;
-+       } else {
-+               *fw_err = 0;
-        }
+>They are definitely not errors
 
- e_put:
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 9f588c9728f8..e71d6e39aa2b 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -439,7 +439,7 @@ static int __sev_platform_init_locked(int *error)
- {
-        struct psp_device *psp = psp_master;
-        struct sev_device *sev;
--       int rc, psp_ret = -1;
-+       int rc, psp_ret = SEV_RET_NO_FW_CALL;
-        int (*init_function)(int *error);
+Yes, they can be warn or info, but as I mentioned above this patch is now p=
+art of IOMMU + SNP series,
+so these comments are now relevant for that.
 
-        if (!psp || !psp->sev_data)
-diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-index 91b4c63d5cbf..b8f2c129d63d 100644
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -36,6 +36,11 @@ enum {
-  * SEV Firmware status code
-  */
-...skipping...
-
- #include <asm/cpu_entry_area.h>
- #include <asm/stacktrace.h>
-@@ -2177,6 +2178,8 @@ int snp_issue_guest_request(u64 exit_code,
-struct snp_req_data *input, unsigned
-        if (!fw_err)
-                return -EINVAL;
-
-+       fw_err = SEV_RET_NO_FW_CALL;
-+
-        /*
-         * __sev_get_ghcb() needs to run with IRQs disabled because it is using
-         * a per-CPU GHCB.
-@@ -2209,6 +2212,8 @@ int snp_issue_guest_request(u64 exit_code,
-struct snp_req_data *input, unsigned
-                *fw_err = ghcb->save.sw_exit_info_2;
-
-                ret = -EIO;
-+       } else {
-+               *fw_err = 0;
-        }
-
- e_put:
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 9f588c9728f8..e71d6e39aa2b 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -439,7 +439,7 @@ static int __sev_platform_init_locked(int *error)
- {
-        struct psp_device *psp = psp_master;
-        struct sev_device *sev;
--       int rc, psp_ret = -1;
-+       int rc, psp_ret = SEV_RET_NO_FW_CALL;
-        int (*init_function)(int *error);
-
-        if (!psp || !psp->sev_data)
-diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-index 91b4c63d5cbf..b8f2c129d63d 100644
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -36,6 +36,11 @@ enum {
-  * SEV Firmware status code
-  */
- typedef enum {
-+       /*
-+        * This error code is not in the SEV spec but is added to convey that
-+        * there was an error that prevented the SEV Firmware from being called.
-+        */
-+       SEV_RET_NO_FW_CALL = -1,
-        SEV_RET_SUCCESS = 0,
-        SEV_RET_INVALID_PLATFORM_STATE,
-        SEV_RET_INVALID_GUEST_STATE,
-
-
-
-
-> >
-> >>
-> >> --
-> >> -Dionna Glaze, PhD (she/her)
+Thanks,
+Ashish
