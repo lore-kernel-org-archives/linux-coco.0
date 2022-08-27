@@ -1,184 +1,163 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2089.outbound.protection.outlook.com [40.107.93.89])
+Received: from mx0b-0019e102.pphosted.com (mx0b-0019e102.pphosted.com [67.231.157.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAF9441B
-	for <linux-coco@lists.linux.dev>; Fri, 26 Aug 2022 18:54:18 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kwyKXSAf6QciXywyKla37NH02WqNYzeDjVYAqK7iR7UL3qTQ4OmBnlaBQoZa81bZQ8Kk3jbBKqjHXDC3r/VVm+ATDakVUcZSJhFxvRRap5lR+HUAEFLpKb/7Pu6fNw4Yz8RQF/xhbb78WDA+00OzgpuVUsHiJwn2/qgGJBmyh+YE2XmMYhJcBus/vWFbvFkK78KszOB/QsM6byymKoojgFs2lmQKAoUDLo70LjtK1hl2MjPywk39zLCRPbI7G54YFpfs8DfgMnGRdCVkDamV8/1G0vzL6EopyCCjnl73FXxQIoezzYZ/okoDS8vsp+jzxmSmds0PsZ9XS4JVnMKsYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gneMpFXbSfSSGxFzBh6BzQ8YVboIqIR9/wGD3KPAYGI=;
- b=fm2uGlp+plueiGUoDnmIInFAu7bxKzYdwydLfu44Wowj3KSaEgU3tB7h2q+Z90cbAp1pvtbpRIW3xm67m0W3N8qYlAsMAx+hlgn19TXciCP+08QH96LAci2OBXeFRYPoQmAO8cS4qyZx3AFRb1e1UOKDVDx3LKQRNk1v/6/O5qP6PX8L6xQfSPfEIthdzZi2rZEhhOOq2CFw7NQNhc68YOj6hjiCJseDLQ9h4biNDYxl399/Vo2WS7YYjTPQ8T+jap4YEzQp3Yzi58iYQRTQXeT9s5xMn6teT5GxhSVLesnAObyK7VyWzf8nZ1k63eCrmoyG8PiTmODuhA148qc0Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gneMpFXbSfSSGxFzBh6BzQ8YVboIqIR9/wGD3KPAYGI=;
- b=tY/cFMmXGrMVLcDki9VsR+cpnqO8Ahkk1DksgG7j6IFKQgA63ia78HXGi5wDb9XrHjom/qJPHTreAGbrXdeYOUQozAPhN6QldlI3K3n8X0mrU51ZOGdCFiIjGF7XNuPAN6S0+tq7fMJJMpwaWfBsIz0LBIC2lzRnfElm39HjH0I=
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by BL1PR12MB5334.namprd12.prod.outlook.com (2603:10b6:208:31d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.15; Fri, 26 Aug
- 2022 18:54:16 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::fc65:3a28:fdd0:ce9f]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::fc65:3a28:fdd0:ce9f%7]) with mapi id 15.20.5566.015; Fri, 26 Aug 2022
- 18:54:16 +0000
-From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Peter Gonda <pgonda@google.com>
-CC: the arch/x86 maintainers <x86@kernel.org>, LKML
-	<linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, Linux Crypto Mailing List
-	<linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, "Lendacky, Thomas"
-	<Thomas.Lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel
-	<ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
-	<seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li
-	<wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, Andy Lutomirski
-	<luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez
-	<slp@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Srinivas Pandruvada
-	<srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, "Roth, Michael" <Michael.Roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov"
-	<kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, Tony Luck
-	<tony.luck@intel.com>, Marc Orr <marcorr@google.com>, Sathyanarayanan
- Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Alper Gun
-	<alpergun@google.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Subject: RE: [PATCH Part2 v6 02/49] iommu/amd: Introduce function to check
- SEV-SNP support
-Thread-Topic: [PATCH Part2 v6 02/49] iommu/amd: Introduce function to check
- SEV-SNP support
-Thread-Index: AQHYhYN//Jq12JdNiEyvNHxMVTEAQ61aILsggAADK4CAZRTwgIAAAKeAgAK0CKA=
-Date: Fri, 26 Aug 2022 18:54:16 +0000
-Message-ID:
- <SN6PR12MB27678E2944605E11B37267CC8E759@SN6PR12MB2767.namprd12.prod.outlook.com>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <12df64394b1788156c8a3c2ee8dfd62b51ab3a81.1655761627.git.ashish.kalra@amd.com>
- <CAMkAt6r+WSYXLZj-Bs5jpo4CR3+H5cpND0GHjsmgPacBK1GH_Q@mail.gmail.com>
- <SN6PR12MB2767A51D40E7F53395770DE58EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
- <CAMkAt6qorwbAXaPaCaSm0SC9o2uQ9ZQzB6s1kBkvAv2D4tkUug@mail.gmail.com>
- <YwbQKeDRQF0XGWo7@kernel.org> <YwbQtaaCkBwezpB+@kernel.org>
-In-Reply-To: <YwbQtaaCkBwezpB+@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-08-26T18:47:21Z;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=01131e74-f26b-4805-aa08-cfbb5956557d;
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-08-26T18:54:14Z
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
- 3dd8961f-e488-4e60-8e11-a82d994e183d
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
- 29ebba62-13a9-4b86-8b1b-a974f6f5188d
-msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: fc5bf462-8a5f-4767-6e92-08da87946010
-x-ms-traffictypediagnostic: BL1PR12MB5334:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- Jthyv26BinNazs79ZmJ5P8A58XuiV68hlnvcWLUb9YPe0/j8jN/OCKhSW5m2ub1Yi/xWj/x/D5NFU2ai6YBmmq0ftcgqidwB/e3SLteBfBNOpDFjE7E7/WBH8VGJbRfX2XeOxsiam8lRqBeKCMWkMtQwuHhlRt7R+nj11FVuPn7HfyNj7Pop6t20ndBaoQRFsyHPqUm5LQS96tHtUhsxv5d4IlouQiI+p9yT1pApQRsz3+btiv2Too+zTjJC1VPpemolo5rHtXKP6ZW1sI2NgOkGVvaDB/TFpvYYuRETmylW9OzHQ3VCtCE3sZsA9cfwlNG7jR0VWfQre/A6ylUrqrPaTl6kwJN5otk/iWtLzNVb5jGZTd5T0bI3PLbDNmsWdY0XAf+lkn27GWRkEsKdQ3Q9wy9wNZfX+4oba1IWS5zAtLZXyc1fNMomxXSCmmOCDDsWgwJ7gRvaKbayivm6Z/xLdjYDRLA173WVsh2ap8F2dSx7+0078xC3mEtpbq7HHrv6cmN8umz20eZZSRKfaov1D4i2PP5yRt1xPCCzlZ9THL9VyZlFBvcGF650fMhxxyHpxe0u5Lj+O+zvbl9MkLI/eLd1EjH5AuvbiJ6V8uCR20tsKuePI0N08SBDKoBZHu9Xn8DN7iVRevS7Pq54kI1HytIXbU/FhrQf0V4IRijXfD9o8a0irsPUgwITuTTLtj2FniS/ohb8OyTPkxO0fjdrXGVIDD9SK7M6BTZe06P/BdAmXFFpYXQASIiXx0L3GF4uHiwKyYQ5HPvJazsSiA==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(346002)(366004)(39860400002)(376002)(136003)(396003)(86362001)(38070700005)(122000001)(54906003)(316002)(110136005)(76116006)(52536014)(38100700002)(186003)(2906002)(7416002)(7406005)(66946007)(66556008)(66476007)(66446008)(64756008)(8676002)(4326008)(5660300002)(83380400001)(478600001)(55016003)(71200400001)(6506007)(26005)(9686003)(7696005)(41300700001)(8936002)(33656002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?lR8URrnwzDvQxGRI+gqh5IjjdsASRCFUZvwqNMJOZWakYWJ2RX9G7vQIwB4R?=
- =?us-ascii?Q?wmEOhFRNUx0ziSLQ+PxGDDGaL0YCN7q5Y8rTuxesns+BHt1ICRqCgrY94FBy?=
- =?us-ascii?Q?zHj+wVny1XjytwXNGwl7cPP/kA8Aqg03fbV/nloqd0e7wEb/dYFMFAWkdeDk?=
- =?us-ascii?Q?OObASgkdsCi3KPMgGEdyNgTBf1BWOWIRDRQzNhgWGy3oMmDXUDHMvTe62skK?=
- =?us-ascii?Q?F7fD3o9oLcOZMGApQ49OJ0ZuZYZOWTDMvVZS52I3VQZFyCRinPM6oORXBnQW?=
- =?us-ascii?Q?d9XovvO6ELzYDw5d8gDCrRrZ/kETppC0ZJcAcZMaZHeJyt0FH1aZYYEJWjiu?=
- =?us-ascii?Q?vIIgv9yk1CWWW/zkFVq8Naj/JwkE965+UfF6nNqYjBy8UgY6+ndfXWqw3poq?=
- =?us-ascii?Q?bPT90NL0jSRZqQNEixoRa7IN6cjkbYmuBWrcmt4MuY6K6roXVRGJBZWZ9LcD?=
- =?us-ascii?Q?NFIYqMDKsZnkxrjaonsAKYFYD+ItuetZRzkHSxXjRd8aeB67KHafhxUB5wDM?=
- =?us-ascii?Q?v0exyxM9Itvnbwbts0XHS07mvxwo3Yi2hhuEsFg4YaEw9I6JDkAdYYd9CwAC?=
- =?us-ascii?Q?H72kfcMRKk0RsIXrwifvDS8MbI1OGuNF6hNaAA66CgAg8XxFWZrfkd5BxmbI?=
- =?us-ascii?Q?K8X1i3Y3KGjwNonkAern6k/OImYXi9tw8olKJK77QxSHaCWtl48bB+d3yN1X?=
- =?us-ascii?Q?B1yFdAMHlypXaHkb4Djf2cQtpRHo5W7JJIakDfVpiRBcyh95LOLJzT6AEpa/?=
- =?us-ascii?Q?bJubg7to5VyBXPks0iEJrlkc8jWF/hwAKlyVXzrNujm6M69TMqJ4cYZBKHm4?=
- =?us-ascii?Q?412XWS8SNczXCuhn11Sg1f9TB3roiwKGWsM2hxj36xwGUTkc58VVCYv4lvKJ?=
- =?us-ascii?Q?C7aklXUEYWW+5SoVVqJVYJT0opyOObvlmSxTrtO8eL/OJ2kEsEKJfQ1MNaXl?=
- =?us-ascii?Q?mH7YdYDpVGMPPZGQJUrwV4oygSnyCqabnVEcsJFHwMusqCcKLkCYxsf0BESG?=
- =?us-ascii?Q?QMftIUehCVfxUzx4QWvx3c+uy3qUAGCD7sKG9QF9iFEQhfZxUoD0/QQgWd8m?=
- =?us-ascii?Q?AsnTeqa4Q29wx6bay0qGPgtsYegRq8xrMYvGgktjXl6aGCLZ1CxXrFv8ev/l?=
- =?us-ascii?Q?zcq1LAIao0i8/AkH0WpVmlrnMF0ItWL2+c98RSpSdQOzeToccVunSD4MyXZs?=
- =?us-ascii?Q?6bQ/5PHzUadJdYZsgm1F7kNJschN4OrWXooNlkIpPmWLlSBN5pzqVGSvX/Qy?=
- =?us-ascii?Q?gN9Q1TI4dAtgERMdRN+ACG61HHRvVOy2VLpFJCcVrcyidUIayowqdtcYHm5T?=
- =?us-ascii?Q?UQSB/jRRXq5s8k4hVL00ltajBxAaa52bLtTfm3Low95DhrqTHE9CiY3wrfHi?=
- =?us-ascii?Q?G6wjycdA2n6dHWO/IRSxJyVYIecJejzT0NntdON3qq5jP2FEecnW73Vn61K6?=
- =?us-ascii?Q?oAx2vdatZa3kxb7n+mwyqmhpXh9vXaz34WBrO0XEgX2bcvZEsWSyR3pYmhrv?=
- =?us-ascii?Q?yJlxp5LmoIMG3RBaAAMSIZqHYKA4xU47iXaNYwLC9kVMCh+RlGzCqIRinjo/?=
- =?us-ascii?Q?2ur3BTwpSJZfvasUw0k=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B018D46B2
+	for <linux-coco@lists.linux.dev>; Sat, 27 Aug 2022 21:42:52 +0000 (UTC)
+Received: from pps.filterd (m0074417.ppops.net [127.0.0.1])
+	by mx0b-0019e102.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27RHDSsJ025157
+	for <linux-coco@lists.linux.dev>; Sat, 27 Aug 2022 21:10:22 GMT
+Received: from mqueue.dsn (localhost [127.0.0.1])
+	by mx0b-0019e102.pphosted.com (PPS) with ESMTPS id 3j7bft31bv-76
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <linux-coco@lists.linux.dev>; Sat, 27 Aug 2022 21:10:22 +0000
+Received: from localhost (localhost)
+	by mx0b-0019e102.pphosted.com (8.17.1.5/8.17.1.5) id 27RL3E6Q013083;
+	Sat, 27 Aug 2022 21:03:14 GMT
+Date: Sat, 27 Aug 2022 21:03:14 GMT
+From: Mail Delivery Subsystem <MAILER-DAEMON@mx0b-0019e102.pphosted.com>
+Message-Id: <202208272103.27RL3E6Q013083@mx0b-0019e102.pphosted.com>
+To: <linux-coco@lists.linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc5bf462-8a5f-4767-6e92-08da87946010
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2022 18:54:16.2633
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UroD/I0WsGYZZCb/6XOqTlndwb1wq8INQAVry840mSLb/8eVTaNiimKyz1DOsagqBzdIqaEPtEGYiq5EUX0U9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5334
+Content-Type: multipart/report; report-type=delivery-status;
+	boundary="27RL3E6Q013083.1661634194/mx0b-0019e102.pphosted.com"
+Subject: Returned mail: see transcript for details
+Auto-Submitted: auto-generated (failure)
+X-Proofpoint-GUID: SeWRtmHabjHJUJqAsFNRQB9Uk-cP8LgS
+X-Proofpoint-ORIG-GUID: SeWRtmHabjHJUJqAsFNRQB9Uk-cP8LgS
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0 spamscore=0
+ mlxscore=0 adultscore=0 lowpriorityscore=0 ndrscore=0 suspectscore=0
+ adjustscore=0 impostorscore=0 clxscore=1012 phishscore=0
+ priorityscore=1501 mlxlogscore=364 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2207270000 definitions=main-2208270079
 
-[AMD Official Use Only - General]
+This is a MIME-encapsulated message
 
-Hello Jarkko,
+--27RL3E6Q013083.1661634194/mx0b-0019e102.pphosted.com
 
->>=20
->> It really should be, in order to have any practical use:
->>=20
->> 	if (no_iommu) {
->> 		pr_err("SEV-SNP: IOMMU is disabled.\n");
->> 		return false;
->> 	}
->>=20
->> 	if (iommu_default_passthrough()) {
->> 		pr_err("SEV-SNP: IOMMU is configured in passthrough mode.\n");
->> 		return false;
->> 	}
->>=20
->> The comment is *completely* redundant, it absolutely does not serve=20
->> any sane purpose. It just tells what the code already clearly stating.
->>=20
->> The combo error message on the other hand leaves you to the question=20
->> "which one was it", and for that reason combining the checks leaves=20
->> you to a louse debugging experience.
+The original message was received at Sat, 27 Aug 2022 21:03:14 GMT
+from m0074417.ppops.net [127.0.0.1]
 
->Also, are those really *errors*? That implies that there is something wron=
-g.
+   ----- The following addresses had permanent fatal errors -----
+<pelcoservice-shanghai@pelco.com>
+    (reason: 550-5.1.1 The email account that you tried to reach does not exist. Please try)
 
->Since you can have a legit configuration, IMHO they should be either warn =
-or info. What do you think?
+   ----- Transcript of session follows -----
+... while talking to aspmx.l.google.com.:
+>>> DATA
+<<< 550-5.1.1 The email account that you tried to reach does not exist. Please try
+<<< 550-5.1.1 double-checking the recipient's email address for typos or
+<<< 550-5.1.1 unnecessary spaces. Learn more at
+<<< 550 5.1.1  https://support.google.com/mail/?p=NoSuchUser y195-20020a814bcc000000b00340c82a1872si1084437ywa.317 - gsmtp
+550 5.1.1 <pelcoservice-shanghai@pelco.com>... User unknown
+<<< 503 5.5.1 RCPT first. y195-20020a814bcc000000b00340c82a1872si1084437ywa.317 - gsmtp
 
->They are definitely not errors
+--27RL3E6Q013083.1661634194/mx0b-0019e102.pphosted.com
+Content-Type: message/delivery-status
 
-Yes, they can be warn or info, but as I mentioned above this patch is now p=
-art of IOMMU + SNP series,
-so these comments are now relevant for that.
+Reporting-MTA: dns; mx0b-0019e102.pphosted.com
+Received-From-MTA: DNS; m0074417.ppops.net
+Arrival-Date: Sat, 27 Aug 2022 21:03:14 GMT
 
-Thanks,
-Ashish
+Final-Recipient: RFC822; pelcoservice-shanghai@pelco.com
+X-Actual-Recipient: rfc822; pelcoservice-shanghai@pelco.com
+Action: failed
+Status: 5.1.1
+Remote-MTA: DNS; aspmx.l.google.com
+Diagnostic-Code: SMTP; 550-5.1.1 The email account that you tried to reach does not exist. Please try
+Last-Attempt-Date: Sat, 27 Aug 2022 21:03:14 GMT
+
+--27RL3E6Q013083.1661634194/mx0b-0019e102.pphosted.com
+Content-Type: message/rfc822
+
+Return-Path: <linux-coco@lists.linux.dev>
+Received: from pps.filterd (m0074417.ppops.net [127.0.0.1])
+	by mx0b-0019e102.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27RGpMNM025263
+	for <pelcoservice-shanghai@pelco.com>; Sat, 27 Aug 2022 21:03:14 GMT
+Authentication-Results: ppops.net;
+	spf=softfail smtp.mailfrom=linux-coco@lists.linux.dev;
+	dmarc=fail header.from=lists.linux.dev
+Received: from lists.linux.dev ([106.110.86.109])
+	by mx0b-0019e102.pphosted.com (PPS) with ESMTP id 3j7bft30pt-1
+	for <PelcoService-Shanghai@pelco.com>; Sat, 27 Aug 2022 21:03:14 +0000
+X-GUID: 6EC3BEB5-DF32-4374-A001-7A69FE4688FE
+X-Has-Attach: no
+From: "4C9f00e" <linux-coco@lists.linux.dev>
+To: "PelcoService-Shanghai" <PelcoService-Shanghai@pelco.com>
+MIME-Version: 1.0
+Date: Sun, 28 Aug 2022 05:03:14 +0800
+Message-Id: <202208280503119295000@lists.linux.dev>
+X-Mailer: Foxmail 7, 2, 5, 140[cn]
+Content-Type: text/html; charset="GB2312"
+Content-Transfer-Encoding: base64
+X-Proofpoint-GUID: J3Ahm4muEYRTP1GFu4a0dNEPigxbKgdR
+X-Proofpoint-ORIG-GUID: J3Ahm4muEYRTP1GFu4a0dNEPigxbKgdR
+X-CLX-Shades: Junk
+X-CLX-Response: 1TFkXBx4ZGxEKWUQXaFJielBoQWZ4Z18RClhYF2teGWRDBV15QG5DEQp4Thd gW0N7El9DeX9PeREKeUwXbQV9c0d/E2hrYkYRCkNIFwcSGxEKQ1kXBxgaEQpDSRcaBBoaGhEKWU 0XYF9EQREKWUkXBxkccRsGBx0bdwYHGxwdBhoGBxsaGkIfBgcbGQYacRoQGncGGgYHGxoaBhoGB
+ xsfBhoGGnEaEBp3BhoRClleF2hjeREKSUYXR0VeRVhFRkt1QkVZXk9OGBEKSUcXeE9NEQpDThdg GWtCRx5HX29zeH56G21sXx5LGk5kb3pDTVJIYU1OeBEKWFwXHwQaBBgcGQUbGgQbGxoEHQQbGRg QGx4aHxoRCl5ZF0t7aVleEQpNXBcHGBwRCkxaF2gaYUVyYxEKRVkXaBEKTF8XegUFBQUFBQUFBV
+ IRCk1OF2lpEQpMRhdoa2tra2sRCkJPF2BbQ3sSX0N5f095EQpDWhcbGhwEGxsaBBIcBBsaExEKQ l4XGxEKQkUXb09Jbk1PWEdtX0sRCkJOF2BbQ3sSX0N5f095EQpCTBdrXhlkQwVdeUBuQxEKQmwX aUB4XnBvT2Vpb2sRCkJYF3pCeRwebmFkRWYSEQpNXhcHGxEKcGgXbU4ZBRhuWH1FaG8QBxsbExE
+ KcGgXelhzT1xpExx5E0YQBxsfGREKcGgXawUbbGMdZH1BS3wQBxsfHhEKcGgXYntdZkxpT1NmcG YQBxsfHhEKcGgXZB1tZnJNHR8cTm8QBxsfHhEKcGgXYWIcQBlmWVxfUHMQBxsfHBEKcGgXZ1tDY X9/aXtNQ1AQBxkaEQpwaBdnZkRYY0RSZWJFHBAHGRoRCnBsF24YXG1AbWlHE09SEAcZGhEKbX4X BxsRClhNF0sRIA==
+
+PHA+DQoJPGltZyBzcmM9ImRhdGE6aW1hZ2UvO2Jhc2U2NCxSMGxHT0RkaEp3RmFBSGNBQUN3QUFB
+QUFKd0ZhQUljQUFBQ0FBQUFBZ0FDQWdBQUFBSUNBQUlBQWdJREF3TURBM01DbXl2QUFBQUQ2K3Zy
+TDVuaElHaWh2VUxFSUFCUUFBQUJyRWN3cVNWREw0M2dBQUFCckFCUUlBQlRMNFFnQUFBTEw0UWpM
+NDR3QUFBQUFBQUlBQUFBNkFFU2JBRnhHWHBSd0FDNW5BRzRBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUNBTEFBL0w0eEJCWlR6TDR3aHZWWlVBQURz
+QUFDQUFBQUQzQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFFQUNDQUFBQUdRQUFBQUFBQUJn
+cENBQUFBQUFBQUJCWlNnQ0FBQUFBQWdBQUFJQUFBSnY5aWtBQUVBQ0FBQUNBZGdBQURRQ2E3UU1B
+QUJCWnRBQ2E3QUFBRnpMNHl4dlV2NEFFV2lNN0FVTUFBREw0elJ3M2NKQlp1d0FBQUFBQUFBQUFB
+akw0MHlsRjlGQlp1d0FBQ0FBQUFETDVuakw1akNsRmtnQUFBREw2T2kydHJDbEZtRUFBQUFBRVdn
+T0FBNHFTVWdPQUE0cVNWWXFTVWdBQUFBV0FCUklHaWdBQUFBQUFBQUFBQUFBQUFETDVuZ0FBQUFB
+QUd3QUFCZ0FBQURMNDJ3QUFFQUFBQUFBQUFBQUFBQUFBQUFEWk1yWXVoalBVRURZdWxJRFpNcll1
+aGhxUkhqWXVoZ0FEWFVBQUFBQUVBQUFBQUFBQUNBQUFBNEFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUNiQUFCR1hwUndBQzVuQUc0QUFHUUFBQjBBQURwVHB4Z0FBQUFBQUFIM21DQUFBQUVBQWdJ
+QS8vOEFBQUwzQUFENkFBSUNBQUFBQUFELysvQ2dvS1NBZ0lEL0FBQUEvd0QvL3dBQUFQLy9BUDhB
+Ly8vLy8vOEkvd0FCQ0J4SXNLREJnd2dUS2x6SXNLSERoeEFqU3B4SXNhTEZpeGd6YXR6SXNhUEhq
+eUJEaWh4SnNxVEpreWhUcWx6SnNxWExsekJqeXB4SnM2Yk5temh6NnR6SnM2ZlBuMENEQ2gxS3RP
+akpCUW9YSUJXb0ZFRFRuaytOUm53YVZhWFNxMWl6RnF5YWtLdlhwVTY1SXJ6YWRTbFpzVnZSVGdY
+TGxHM2JzSERSWnAxTDhPdFl0MkxuMHEzck5peGJ2Vm8zVmlYTGwrbEFxbmpCNmoyTTlHeGlzNEFW
+Ui80TG1mRkN0UkMvUHRhYWR6TGx0SDM5V2didHVUQm94cDVEVXh4c2x6RGl0S2podG0xY0dYWm55
+WkZucDRhY1dtTFQwbjRkQis1dGViZHgwVzlueHo2TmVySkc1NFVYeXk0ZEZURmcwOHpqdXFhTU5U
+bjJqTmY1R3YvZkRqMzhjb1BiZFVNUFhwNDR4dXJkeFM5Ty8xdTZjTy9zUTQrUHY3ZXp4L3I4N1pi
+Y2NXLzFCNkIydFJGSVdIWUVYZ1JmWUxybFJ4OXRFRG8yV25SMDdUZGhickp4eE5wQjdVbkk0WWZN
+R2FqZWlISTk2RjVGOE9XSG4xcjFTUmhoaTdhOVJsNkhPQjZJSTM3UGZVYWFmYmh4K0dKZnJGbDQ0
+blhkTGFoa2c2dk5aK0I2eDhYM1hZRVo2bWdla09pcHh1SitvbEc0SkpSUnhzaWVmT0VGZUo1eVJ6
+cm9KWVVEcXRZaWdHS0thT0tFd1RWSEhwczc1bWxSZ0pJZHlSdDNLRnAzNFpnUnlvbGxtMEd1QjU2
+Z3NIbjM1cHB0WmlrcG5ZWXVpR0NaV203cHFIVlZGaW5rZExobGgxeWx3L1dKSEpPTG5ybnBoVEdX
+eW1PZWNCci9TV3FmNlRYcUlhUkZiZ3FvZVpmU2xxV0tkZ3FaSW5lcjl2aWdwSFYyMkdxU3I5a2Fy
+SzBINm9nZ2o1WmVsdW1nRU1xWXJKOVM1dGl0aTN0eG14aUl1U29iNUVUZFZrdW1wUTM2SnlwMjBl
+STU3WTZZa2R1UXA1cjl5U21ZNnk3SG1YRExtdmxyamVGK2UrOXRQeWJxcTUzSVRsbHRwd0wyK3Ft
+MTF5TEttN2hyS3ZpbmN1emlhMnF5K0s2TGFiM3ZHVHdxdVJXWHJLRzh6akpFc29nSmJ4enN5cHBs
+Tm01ZHZtWDc3OHRTOWF3bWVqNC9SSExLUVJkdDlORklKNjMwMGlieHpQVFRPNFdwc1krbUtRcXZp
+aE5EcmJWZ0FuSkpMNUUwdTRxeHVsdVh2ZVhVZ1RMN1pJZ0FmeWdsMFdiSFRYSFhkRmQyckdIVXNY
+emJ1WEwzLzQzdWVMUGltYTZZN2RXZHRkK0lXMnVveEVqdU8zTnYwdTZkYmVLVU82U28xSkhLeURh
+TktFOWUrZWNpNXlZMW42ZG1iT2FLZk1JTnV0bGhBMjd1NjRYZkdITzRxNjgrdXV0WUY0ZGk2UjRm
+WGp2aVRINHAzcXVQWXNyN1ptTTYvZnZXUmtvTDgvQ3dLZ3drY0RONnZqemx6Yk9jNXN3Tkc1NTlj
+eHlUZlgzZjJhc05lYk5QSHIvWnJpT3JQcjdTNWQrSnZHOW9UbTV3NmplL243aWI3ci8zbi9MNkM2
+QUFCMGpBQWhyd2dBZ0UzcFVBbU1BRzNpcHI4bU9ncUdoSEtCZEJyMThXekdBRk15Z2RCNFlFTTdV
+U244c0d0NjJIUmU1Ykpyd1lxQzRtUE5sNWtDVERTbC9PVE1hNzdqbE9WVFVzVWFpV2hLWVhqZ1NF
+NkxPTDVmOWcxS3dMZW90cTMwSFk2MFpWUkI4K2tIb2hGT0xCOU1Nb1o1WHJWZDVpMEFrRjF6OG41
+dXd1NWR0VHlQeFV2eXRxamtRYjFGbUZyT2ZGa29HeFZGM0VZWjNNdDcwZTRnK0pJTFBTZmVUVHhv
+N0VNRUVTTk9Md2hOY3dKbUlOajFUYUllZW0xRWViMFN5SFRkTFNGZ2QySnJjaGNsNVVFdVRKR2lu
+R3ppMXNnNDRFbzY0S2ViSmp1UkJEaWh3a0l6blpwTEo4Y28xQ00rV05vdmdZNk4xSGRyUGM0NGJp
+eU1xV1liQ0N5dXZZNElTcHhHZWR5SmpIVEtaNmVuazJFYXBSaE15TXBqU25TYzFxV3ZPYTJNeW1O
+cmZKelc1Njg1dlo3Q0QzL2piTUw1SE5uTVhVb1AzWUNNNFpxckJRMEhSbERtbEpTUmV1VVlWNzNH
+UTcxVlRVeTAzR0UwU0RwQkVlU1dleHU0R0tWYnpjcDcyUWxhSlZKaVZPZWhvakd1M29JNEVHVXFF
+bzh5UVZQelpFZWFsTG9nWTFwQ0s1aUZGamFUU2prU3hqelpKNXB3dTJGSmdVTEdrc04zck9peEx6
+YlMwOHBCa2J4OFYzeW5TbUo2V2tJek1GTEpYZTVWMm9qTTFFZnpyRWhUWjBMVU9UbWJoSTZVeVBR
+dlNpSlUxaEQ3ZmFVWXBoVVpQK0pLSlZyY3JVR1ZZeXBIb0NxeTZqeXNKaXJuV1MveXpycjlaSlFi
+YXVUWG9yQmVWV24zblRoTXAxVzNQOWF4dlp5RTdCR3Zhd2lFMnNZaGZMMk1ZNjlyR1FqYXhrSi92
+VGdBQUFPdz09Ij4NCjwvcD4NCjxwPg0KCTxiciAvPg0KPC9wPg0K
+
+
+--27RL3E6Q013083.1661634194/mx0b-0019e102.pphosted.com--
+
