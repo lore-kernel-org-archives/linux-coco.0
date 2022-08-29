@@ -1,118 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330FF7C
-	for <linux-coco@lists.linux.dev>; Sun, 28 Aug 2022 04:18:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A00DC433D6;
-	Sun, 28 Aug 2022 04:18:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1661660289;
-	bh=b1DxuemUuHqOzbSQHotO5yGNBJEyQ9fNAcJWznoBnHo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nmqpvICagbOYzuUK7zRSHuKWYR4Q6wHz8Z9BkMNnSLOBbT3S9p5jf0P52D7k/ZA34
-	 bP6vV99xNBskD3SnyAx9kgBAXl7RZWs0v8z8zyi4DZ49GSquJa1D52Nop6T5IsWn9b
-	 50PJkZjDYXCr5OT1/m3MiZSXOT4WN1QSb+9RZEawAlQPjul2E9aPJSWl0qAp/0zVP0
-	 TLRINEII6KF7d2AcAPgWVRhqFhnirzGoVeJ73gOpnN7pybKLs78LO5I1El23pKyXGq
-	 jPA+f4DkI4LJcocNVCzvyeTM7yQdnYM+rQTA8bHrXCWMPlN69lDOPDJAvOETpgzis/
-	 8N8bc3zBd4WMw==
-Date: Sun, 28 Aug 2022 07:18:02 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-Cc: Peter Gonda <pgonda@google.com>,
-	the arch/x86 maintainers <x86@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, Tony Luck <tony.luck@intel.com>,
-	Marc Orr <marcorr@google.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Alper Gun <alpergun@google.com>,
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Subject: Re: [PATCH Part2 v6 02/49] iommu/amd: Introduce function to check
- SEV-SNP support
-Message-ID: <YwrseptOq4tFPylD@kernel.org>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <12df64394b1788156c8a3c2ee8dfd62b51ab3a81.1655761627.git.ashish.kalra@amd.com>
- <CAMkAt6r+WSYXLZj-Bs5jpo4CR3+H5cpND0GHjsmgPacBK1GH_Q@mail.gmail.com>
- <SN6PR12MB2767A51D40E7F53395770DE58EB39@SN6PR12MB2767.namprd12.prod.outlook.com>
- <CAMkAt6qorwbAXaPaCaSm0SC9o2uQ9ZQzB6s1kBkvAv2D4tkUug@mail.gmail.com>
- <YwbQKeDRQF0XGWo7@kernel.org>
- <YwbQtaaCkBwezpB+@kernel.org>
- <SN6PR12MB27678E2944605E11B37267CC8E759@SN6PR12MB2767.namprd12.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A8653A4
+	for <linux-coco@lists.linux.dev>; Mon, 29 Aug 2022 16:02:55 +0000 (UTC)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-32a09b909f6so207991597b3.0
+        for <linux-coco@lists.linux.dev>; Mon, 29 Aug 2022 09:02:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=8Usi9Hh1KvrJmXEusctcdOFszMM7+qvg9UBwUxClRh0=;
+        b=P63R/tJ1/yc2xe/SYPTrGdLCylhF8Yq/+kzrso3A2VDilTv0adUYIPWvD/PV8NImJF
+         rvP+8ZABp8nUF1fbgcAf4+5O5JPVD7egARXdeRN7M8thmFgzEEcGdam2RaoZaz7SHCPi
+         Ws92dnROdr+EUTrMzw6dPkZFbmHzFWZP6l+r1gQDVO3qkwLPGfevPjuOb+We6iXKTDYl
+         tNpS+apxMlkRoa1XuSVaEByTnXLeRgx4OwVpM1JcBEi/X1wA0qYpX2cVMjcn39Q+NLDe
+         OQeCLFZ+h7GW6hFG2icL9huyDGj4Dzmm6aqgWJYXAz1DCtPWiMwXFxvyVjtCuC4p+lge
+         NjuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=8Usi9Hh1KvrJmXEusctcdOFszMM7+qvg9UBwUxClRh0=;
+        b=rSWH8XPYV8byXmJ5Pyq5IS/g/swmDFd060N2dlpC8IfOP9WrGiGvmfQ5CwKYJJVXgl
+         gTfA0P7EvfO8MMaucwollLXP+udkUVIxOXGV8WwgjDRwRs9fcaWb7n6D0rxVy68qLDfw
+         l1Qo6jkAavlUdR4PMyA15UFwfVyYyMKIoDBjPNmCpJvXdTQRZ1th0TMPfjHrks5onCW6
+         Y/ul1Zu/E+JBKiKLTCCj+vELYElWpFg3gM+ITfNpPCwPbr6I04jS38KQ6+dTKlLikulC
+         9j3n+qPuU3/pSIfwgXMHLLQgVGjfrUYkMGdLzDQIrjDtqz/l2gjUBnxnMIOsB8wDzHx2
+         4FTA==
+X-Gm-Message-State: ACgBeo3UYpiRPnAi7oQ7s5ojWuda9oWgdOaA8/8xn20quEd5/JdTi2JU
+	/d4T4kp70hiFd23/3FoCrIUcDb8CuTbQm4koUS3oQQ==
+X-Google-Smtp-Source: AA6agR7/KN4/eHAqKBzu8Y1ODKrUf87PVyGKXZruOIOILGQ04PmnXodL6U9rRi2s20C9/A8QbHpYKGVUuhl+ceHb/GM=
+X-Received: by 2002:a0d:da41:0:b0:329:91e7:fd06 with SMTP id
+ c62-20020a0dda41000000b0032991e7fd06mr10477748ywe.436.1661788974863; Mon, 29
+ Aug 2022 09:02:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN6PR12MB27678E2944605E11B37267CC8E759@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com> <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+ <20220810141959.ictqchz7josyd7pt@techsingularity.net> <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
+ <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
+In-Reply-To: <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Mon, 29 Aug 2022 09:02:43 -0700
+Message-ID: <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
+	Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
+	Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>, 
+	Dave Hansen <dave.hansen@intel.com>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Marcelo Cerri <marcelo.cerri@canonical.com>, 
+	tim.gardner@canonical.com, Khalid ElMously <khalid.elmously@canonical.com>, 
+	philip.cox@canonical.com, "the arch/x86 maintainers" <x86@kernel.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, linux-coco@lists.linux.dev, 
+	linux-efi <linux-efi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Mike Rapoport <rppt@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 26, 2022 at 06:54:16PM +0000, Kalra, Ashish wrote:
-> [AMD Official Use Only - General]
-> 
-> Hello Jarkko,
-> 
-> >> 
-> >> It really should be, in order to have any practical use:
-> >> 
-> >> 	if (no_iommu) {
-> >> 		pr_err("SEV-SNP: IOMMU is disabled.\n");
-> >> 		return false;
-> >> 	}
-> >> 
-> >> 	if (iommu_default_passthrough()) {
-> >> 		pr_err("SEV-SNP: IOMMU is configured in passthrough mode.\n");
-> >> 		return false;
-> >> 	}
-> >> 
-> >> The comment is *completely* redundant, it absolutely does not serve 
-> >> any sane purpose. It just tells what the code already clearly stating.
-> >> 
-> >> The combo error message on the other hand leaves you to the question 
-> >> "which one was it", and for that reason combining the checks leaves 
-> >> you to a louse debugging experience.
-> 
-> >Also, are those really *errors*? That implies that there is something wrong.
-> 
-> >Since you can have a legit configuration, IMHO they should be either warn or info. What do you think?
-> 
-> >They are definitely not errors
-> 
-> Yes, they can be warn or info, but as I mentioned above this patch is now part of IOMMU + SNP series,
-> so these comments are now relevant for that.
+> > The stack track is in mm/page_alloc.c. I've done a little
+> > investigation, but I can't account for why there's a hard cutoff of
+> > correctness at 256GB
+> >
+> > [    0.065563] RIP: 0010:memmap_init_range+0x108/0x173
+> > [    0.066309] Code: 77 16 f6 42 10 02 74 10 48 03 42 08 48 c1 e8 0c
+> > 48 89 c3 e9 3a ff ff ff 48 89 df 48 c1 e7 06 48 03 3d d9 a2 66 ff 48
+> > 8d 47 08 <c7> 47 34 01 00 00 00 48 c7 47 38 00 00 00 00 c7 47 30 ff ff
+> > ff ff
+> > [    0.069108] RSP: 0000:ffffffffad603dc8 EFLAGS: 00010082 ORIG_RAX:
+> > 0000000000000404
+> > [    0.070193] RAX: ffffdba740000048 RBX: 0000000000000001 RCX: 0000000000000000
+> > [    0.071170] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffdba740000040
+> > [    0.072224] RBP: 0000000000000000 R08: 0000000000001000 R09: 0000000000000000
+> > [    0.073283] R10: 0000000000000001 R11: ffffffffad645c60 R12: 0000000000000000
+> > [    0.074304] R13: 00000000000000a0 R14: 0000000000000000 R15: 0000000000000000
+> > [    0.075285] FS:  0000000000000000(0000) GS:ffffffffadd6c000(0000)
+> > knlGS:0000000000000000
+> > [    0.076365] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [    0.077194] CR2: ffffdba740000074 CR3: 0008001ee3a0c000 CR4: 00000000000606b0
+> > [    0.078209] Call Trace:
+> > [    0.078524]  <TASK>
+> > [    0.078887]  ? free_area_init+0x5c1/0x66c
+> > [    0.079417]  ? zone_sizes_init+0x52/0x6c
+> > [    0.079934]  ? setup_arch+0xa55/0xb6d
+> > [    0.080417]  ? start_kernel+0x64/0x65a
+> > [    0.080897]  ? secondary_startup_64_no_verify+0xd6/0xdb
+> > [    0.081620]  </TASK>
+>
+> Note that there is a bug in Brijesh's version of the patch and it will
+> almost exclusively use the MSR protocol. Please try the version of the
+> patch that I recently sent up based on the current unaccepted memory tree
+> from Kirill.
+>
 
-Yeah, warn/info/error is less relevant than the
-second point I was making.
+I've now tested this patch set with Tom's new patch set, and it
+appears to be that the problem with 256GB is more likely to be due to
+this unaccepted memory patch set rather than something AMD-specific.
 
-It's a good idea to spit out two instead of one
-to make best of spitting out anything in the first
-place :-) That way you make no mistake interpreting
-what does the log message connect to, which can
-sometimes make a difference while debugging a
-kernel issue.
+Kirill, do you see any problems with 256GB on TDX? It seems there is
+some unaccepted memory getting touched in memmap_init_range when the
+VM's memory size is at least 256GB
 
-BR, Jarkko
+-- 
+-Dionna Glaze, PhD (she/her)
