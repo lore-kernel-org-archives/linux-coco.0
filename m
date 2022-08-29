@@ -1,123 +1,136 @@
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2063.outbound.protection.outlook.com [40.107.94.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9FE53A4
-	for <linux-coco@lists.linux.dev>; Mon, 29 Aug 2022 16:24:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661790278; x=1693326278;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=k1Bydfd+WyOURaZCkIr7Wq133wz3qjLUnS9McjzhzJY=;
-  b=ESz2tNDREPeDdxhnf3xDEL/4vIk3nW9Ky9uG1C+Z67iOOlZgNbEFfNNo
-   ubqm23vl325elD5ZrA5oFBEwYBxBb9/9Koa+rS2xLlwpRPWTMZNUgvXuQ
-   60mi9lc/U5X/XIx0I7uZ3xgERbySB+wGjZ9qIx16FbdHIFqTCvj8iVjhZ
-   Arl2plC3R9Ch95evuilfz9Y+4twaPjLKy0ZNm6eiDo/cppFtpIXHjn0KZ
-   +ht2Y5l5UURpSbbOfNQDNZoUp4+Zf5LSvzD9/tPEKnc3F7czizkTl0XwG
-   07B73clm099RtSUfYgZq/xM+dW0CCJ3g7E3NFbUyQChWZS6DZ0q3/9q35
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10454"; a="281907462"
-X-IronPort-AV: E=Sophos;i="5.93,272,1654585200"; 
-   d="scan'208";a="281907462"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2022 09:19:31 -0700
-X-IronPort-AV: E=Sophos;i="5.93,272,1654585200"; 
-   d="scan'208";a="611342635"
-Received: from rlacadex-mobl.amr.corp.intel.com (HELO [10.209.116.122]) ([10.209.116.122])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2022 09:19:30 -0700
-Message-ID: <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
-Date: Mon, 29 Aug 2022 09:19:27 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577E633F5
+	for <linux-coco@lists.linux.dev>; Mon, 29 Aug 2022 22:34:38 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PiYHo1wDT3/zAPOBNSYMbgLyxy0YZBIKJYhzvRjERxa489pZRNv3/4mHssvTfruWIM6PH2RBW4wFKiZ6OhDdG1DyHZdzP5tef8BBi/KEICJm4oZZuL7Dtwo9JDyzoFBXqslEa3IEtdAocG1icY8I1l/YW586kPdkgyXyLbfePBgpsGtJEqiwRDQgYLibzMBGeUJTcYYIbSew9ML+0P/mQoD7XFittGgOt6Ce47+r+ySlpbntr7awnrukIc9OtiiMRjk1LIa2B12cfS04+gad4mM5c4PGfG+AAV10eDqCj6WeBBN/CiUnYbk+9x6W8aWDf6jK6iKveOM4S9qp72kCXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wqbbdN5jY9Ld8iZ7bPk0Msrcpv9HFRcj8Z7hWFEzc/o=;
+ b=QznvyzREyI1ufoUUCH1UgP6hNztGcR8M36Zueo7yQWXB3LS67+1Se5HmWi3HgSXagUrSoKekBUYWaqUKiDJ5LRM8RUiYozGG8Ht+LzAh8gxbFfskuj7jp35fcFxIV2z+oRyVdMyLOJipyS6jaO0z08YH3YCL85qmHH6TG8Uu+mzQItQQGzzTRxK+K+715E/3uVqrIPVozGd1tqCY2T3ZqeznXFRv4+DcF4i+9cEUHCJw7eCDNCwxsWcj47i293jLKQ7M8DWoh4ZRWTksRQusdOgVSeyJSamLvkB/bi5tlGQHM67BXkY4igDiwVUQjJroInDM79fSYZ4uilzxWYLX9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wqbbdN5jY9Ld8iZ7bPk0Msrcpv9HFRcj8Z7hWFEzc/o=;
+ b=J2ZjuMjUe67fyrsfC/Tv24gV1CuHAV6R3fV61ov8r5p/8EbQOnqoMcPYxtY+sb8I+GGbpRUGUKeT3RFgIC3Rq8e6moERjsadaGwiiiDKNNe7yuWLewHFW0hRVdOqUsYXunvwnCVGX82FmbTMX1W2c7zelYHNSeTM9I4PhkuUrfQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com (2603:10b6:208:396::17)
+ by BL3PR12MB6596.namprd12.prod.outlook.com (2603:10b6:208:38f::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.21; Mon, 29 Aug
+ 2022 22:34:36 +0000
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::e0b2:85b6:dddd:2e21]) by BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::e0b2:85b6:dddd:2e21%6]) with mapi id 15.20.5566.021; Mon, 29 Aug 2022
+ 22:34:36 +0000
+Message-ID: <59442cb6-0869-5986-9c2b-e9d713eb7145@amd.com>
+Date: Mon, 29 Aug 2022 17:34:34 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Content-Language: en-US
+To: linux-coco@lists.linux.dev
+Cc: "Lendacky, Thomas" <Thomas.Lendacky@amd.com>
+From: Carlos Bilbao <carlos.bilbao@amd.com>
+Subject: x86/sev: Announcing Linux SVSM (Secure VM Service Module)
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0347.namprd13.prod.outlook.com
+ (2603:10b6:208:2c6::22) To BL1PR12MB5874.namprd12.prod.outlook.com
+ (2603:10b6:208:396::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Content-Language: en-US
-To: Dionna Amalie Glaze <dionnaglaze@google.com>,
- Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>, Vlastimil Babka
- <vbabka@suse.cz>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- Marcelo Cerri <marcelo.cerri@canonical.com>, tim.gardner@canonical.com,
- Khalid ElMously <khalid.elmously@canonical.com>, philip.cox@canonical.com,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Mike Rapoport <rppt@linux.ibm.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
- <20220810141959.ictqchz7josyd7pt@techsingularity.net>
- <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
- <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
- <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 9a132a54-dd23-4512-9f1c-08da8a0ea6eb
+X-MS-TrafficTypeDiagnostic: BL3PR12MB6596:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	zWd+nPSLmfRiF2O8St1dXKq8tp3WzxdtDXHILk9qRKvTVeWPSFUBFIAmoRrQM7umLqdqmz9GUxVCbHyCNZZ98gcLtHAGaXn3mWqLslkCYINCPZ0gNvjtCuJQfgfGkrYS/zrhbJxOukQGiHFyY3hE3St7D95MLHVtxCP/X+HyhvOc+edW2Jj4jh3oqPCmW4265dW+OTqZgkYdM77vVVe0ZDTFx4nCTMDlPFFBniFyTn3GB0Jvh5Rtj1OoO8K4+Xnxp+Xrbas4dbkZ3rz9invIxI1GHXG/tJQmmM1Dl0TcmzGil6COhVsaidt7nx2vIACNb7S/RHfNaPkd1Ei26fL9Bd5ZZ4ejSHCsG35fSywIBU5FJwqVEGeQHgGWRrVlRL250jsKpOGXTlEDXfCfmkbSY18smroHBx2/PaUq3NI0bxo0CyqrysYrgsynW1rJfHFpFtl16SZC9G3lAoYGw23EjkaNpS4IqAf+1iQgl2awcI6ScocIQtXkTSUeqJMVLOw6d6EipTynZhzWHEBbn93Cu+Nao5kKHHgELBG8QWK65XjYdCgfEV91ZAmmOPJHW7Q/1wWmAUN69bdbHRHeST7qwpyifluo1wKLngPUzSv0xcCiwaqQu7guxrT59DbBhZYsYAaaLIvybUrYQglVv7en+OUhR8QbcZWETOWgprqzuR0+mFOxdqbvfFm5pYakRfVXI11aSCouAyH5FM7snIUpfc/v5MnfoX+qLIE/UD7IMsZ0yPnx2sAxg4TOwqk29LEZnC88npid64B6IeeciTYrc2b3jwYXd7tPqgGNiXPaIlS6OqFsCSCKUyStzkImRHHZ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5874.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(396003)(376002)(346002)(136003)(39860400002)(478600001)(86362001)(966005)(31696002)(66556008)(66476007)(66946007)(8676002)(4326008)(8936002)(41300700001)(6486002)(38100700002)(5660300002)(316002)(6916009)(31686004)(186003)(2616005)(26005)(6512007)(6506007)(2906002)(83380400001)(44832011)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V0ExZGp5ZDBuZytmay9ZcWp4a1Rib3RoQXhvZmZFVjVHKzF5VkhCbVJJa21F?=
+ =?utf-8?B?TFNzSlNyWFUyZnMwTERPdGlkZzFRS0w1Q3E1SVNZbnlyOW4xbGZjY2syQmhJ?=
+ =?utf-8?B?cmdESkRSUXJyU3BSekRnWDhDVzZGSGJ2YXpjVlg4OGlFNlNHc0FORXpTWFY4?=
+ =?utf-8?B?ejV3a2EyUlFSQi9nRWRhZnUwbjdnai9sdDZ4UTNEcFVlYldsTGE5OEVuNDda?=
+ =?utf-8?B?SnRkNm83ditVZEJkeDZoKzVLb0JxQUN4dGdwUURiTytySld5Q1ZrZ0lPNmhT?=
+ =?utf-8?B?ZlJmeERLTERLQ0RjMTZoTHlxQVB4NjQzT0xud01HZDF5NFhRK3lGWkMwNHJM?=
+ =?utf-8?B?RXliYmMvS0x6UzllK0JScm9KVWs1WnI4RTRYelYzaTlUTmg3MXI0QnlSVVZT?=
+ =?utf-8?B?M0c2SC9Zd1VybXBzSnVWZjJ5Vnk0aHRwQ3pPb2F1b3pXYmN4bVkxV0MxeC9S?=
+ =?utf-8?B?NHlpQjlBMmk3aDFuK29RUXN3QkRQRFBYQWtoaSt4WG5LZnByamVDOUllY3V4?=
+ =?utf-8?B?d0Z4bkx3ME1XMlVML2hlKzRzS0I0aFQwRzNleXlYdGRsRmYza0R3cGpFM000?=
+ =?utf-8?B?Rjl3YUNBNlc3Mzd5R0p5KzFuWGNMUWJCWmNXQ1lJRFFRMm4zYi95WStYYWE4?=
+ =?utf-8?B?OVlaKy8wZ1o1S3dQS3J6aklaSnBTbmxndzFNZWFscUNLejVlTEw3OHA5TkFV?=
+ =?utf-8?B?SUpYUTBiN0VMS1l3cWMvZTV6Y1VsZlpWMnJ4MUZUQ3BpT3BaajJHdjh3ajJP?=
+ =?utf-8?B?SFR4dlNOa0VJSEFHVHRPc0ZXWmRRR3ZEeHBiOVVrVUYyQmljeVVMcyt5ZWhE?=
+ =?utf-8?B?Qkl5ZlA3WTVyb0NGL0ZpV3JCRUIrWkV4QXlJT0V4Nm9vcHJUWDBBMWpoSlBL?=
+ =?utf-8?B?ck00aGZ0YWV2ZTZoQjY5T2FkTTdQbjd5bUVKd3RPYWpZSTlEOVp5NS9vQjdI?=
+ =?utf-8?B?VXZNbGt2UGphbXlvUE4reUczRTIvL2xYZEo0UmJibENydWhOMWZEU0RIdy9p?=
+ =?utf-8?B?eTNpWnNUekF6aWVMWUpjNmphbllSUkplVnBBUURhRmdFcjl6WGxQSUZIRkEr?=
+ =?utf-8?B?ZE5kTWxkTkRhcUxiTnZ4b3cxNnV2aHRhZUN3YnJXWGVZTmpiRTV0bkllaTNN?=
+ =?utf-8?B?NWFKSlQ5cWgvZ3YwWHR3TmRmdXhJVTc5ZnFadHIzYklLN1BZLzdSbkg5c01s?=
+ =?utf-8?B?dWRLa0wvY3JYVE90aWRLOUg4MTFRd0xiSUZLaU50cHNHMy96aUpEdmRKZFM1?=
+ =?utf-8?B?d1BQbGswUVZldzRPcXFkUGt6d2tnaWo3RlhldWk4emEyeEdlTGJxTDI5dDg4?=
+ =?utf-8?B?K1hNWVF5bWdUN2Q4aGVUL3c4aysrUi9mTVVJTGpiZjFLcndHUzVKUjBLMkVw?=
+ =?utf-8?B?blU0NncwUFFUWWdJUjhlK3k2bTlTS2VkczhCSGxGaHBYUzg1aDhzcDdMRXgz?=
+ =?utf-8?B?TmVrNzFFajVkL1poNnpla0VnVHBoNVdUTUJsTkQ0dnZSN09xVWRoeWttN0VC?=
+ =?utf-8?B?QXVIVEdaanovaUZQbTEwL1NybFlsZEErKzk2OHlGb0NWOFhWZnZWOWh4NEl6?=
+ =?utf-8?B?VEg1MElHNkYzYjd5YlJMcVA1QjdpRm12Rnd1dTIxOWN6ZkpubGgxVEUrbUts?=
+ =?utf-8?B?R2JTTGJIbkRkR1kzd0d4a3NFbmJBcmxjejdvdVdjclVDK0RPT0NReWpteU9S?=
+ =?utf-8?B?NUlrbkxNV2RMQkx0dTNZMFB5WFpVTkd2b0pYdFpCVjlSNEgwQmdtSk5VRXhF?=
+ =?utf-8?B?QnRDU3IwSk03ZWFPYUhHdEJ5dHhGT2tPcjU3Q2pjeTZPU2YvclZ6UEpTcHlB?=
+ =?utf-8?B?eHJhNy9tc0xOeUdxUGpDRUU1bmNXU3RJdWxaaTBKU2VSY3BnS2pKMXBhNmpN?=
+ =?utf-8?B?dEJXLzNxSnJBcFRrVmNCSDdaekdieXFmOHhaODNNcTRmYmFUaUtXcURKeWxI?=
+ =?utf-8?B?RHRWaTQzejlrT2VUSGw5bFZGUFdTVjNlYlFCcFV1UUZZUktrUnpEYUxqR1ls?=
+ =?utf-8?B?Z1JNcEdDSWlIVmFHNUJHcGN4dkl1L0QzNWZWTGQxWXBUcE1JVloxQi9SenMr?=
+ =?utf-8?B?VlE2b0NyS3J1cjgxV09LVSsvQURvdmpNUnNiaGtOT2tVVHNXWEE3cGhhckxt?=
+ =?utf-8?Q?q2vCNjs9MPHrrLSC9YJ3bxb7S?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a132a54-dd23-4512-9f1c-08da8a0ea6eb
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5874.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2022 22:34:36.2231
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AKvFpDRbay5cWIsYfLAGyc9/ZbFJE9NYvJzWiwPf8s9Gf486Z2+MZEPFbJJBGfsbk/MgXlDG7qZaVAlyj5UFtQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6596
 
-On 8/29/22 09:02, Dionna Amalie Glaze wrote:
->>> The stack track is in mm/page_alloc.c. I've done a little
->>> investigation, but I can't account for why there's a hard cutoff of
->>> correctness at 256GB
->>>
->>> [    0.065563] RIP: 0010:memmap_init_range+0x108/0x173
->>> [    0.066309] Code: 77 16 f6 42 10 02 74 10 48 03 42 08 48 c1 e8 0c
->>> 48 89 c3 e9 3a ff ff ff 48 89 df 48 c1 e7 06 48 03 3d d9 a2 66 ff 48
->>> 8d 47 08 <c7> 47 34 01 00 00 00 48 c7 47 38 00 00 00 00 c7 47 30 ff ff
->>> ff ff
->>> [    0.069108] RSP: 0000:ffffffffad603dc8 EFLAGS: 00010082 ORIG_RAX:
->>> 0000000000000404
->>> [    0.070193] RAX: ffffdba740000048 RBX: 0000000000000001 RCX: 0000000000000000
->>> [    0.071170] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffdba740000040
->>> [    0.072224] RBP: 0000000000000000 R08: 0000000000001000 R09: 0000000000000000
->>> [    0.073283] R10: 0000000000000001 R11: ffffffffad645c60 R12: 0000000000000000
->>> [    0.074304] R13: 00000000000000a0 R14: 0000000000000000 R15: 0000000000000000
->>> [    0.075285] FS:  0000000000000000(0000) GS:ffffffffadd6c000(0000)
->>> knlGS:0000000000000000
->>> [    0.076365] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->>> [    0.077194] CR2: ffffdba740000074 CR3: 0008001ee3a0c000 CR4: 00000000000606b0
->>> [    0.078209] Call Trace:
->>> [    0.078524]  <TASK>
->>> [    0.078887]  ? free_area_init+0x5c1/0x66c
->>> [    0.079417]  ? zone_sizes_init+0x52/0x6c
->>> [    0.079934]  ? setup_arch+0xa55/0xb6d
->>> [    0.080417]  ? start_kernel+0x64/0x65a
->>> [    0.080897]  ? secondary_startup_64_no_verify+0xd6/0xdb
->>> [    0.081620]  </TASK>
->> Note that there is a bug in Brijesh's version of the patch and it will
->> almost exclusively use the MSR protocol. Please try the version of the
->> patch that I recently sent up based on the current unaccepted memory tree
->> from Kirill.
->>
-> I've now tested this patch set with Tom's new patch set, and it
-> appears to be that the problem with 256GB is more likely to be due to
-> this unaccepted memory patch set rather than something AMD-specific.
-> 
-> Kirill, do you see any problems with 256GB on TDX? It seems there is
-> some unaccepted memory getting touched in memmap_init_range when the
-> VM's memory size is at least 256GB
+Hello all,
 
-It really helps this kind of stuff if you can post the *actual* error.
-I assume this was a page fault, so there should have been some other
-stuff before the RIP:...
+We would like to announce the publication of our Rust open source project
+Linux SVSM (Secure VM Service Module). Linux SVSM leverages AMD's SEV-SNP
+technologies (hereafter referred to as just SNP).
 
-Another thing that's really nice is to do the disassembly of the "Code:"
-or share disassembly of memmap_init_range.  Even nicer would be to give
-an faddr2line of the RIP value and track down which C code was actually
-at fault.
+SNP provides Virtual Machine Privilege Levels (VMPLs) for enhanced
+security control. VMPL0 is the highest level of privilege. Linux SVSM boots
+at VMPL 0, to then run guest BIOS/OVMF and Linux kernel at VMPL1. Certain
+operations are only allowed to be performed at VMPL0 (e.g. use of the
+PVALIDATE instruction and certain forms of RMPADJUST). The privilege
+separation model of Linux SVSM will also be able to provide other services
+such as live VM migration; and a virtual Trusted Platform Module (vTPM).
 
-It's *possible* to look into these things from what you posted, but it's
-just slow.  I'm sure Kirill will appreciate the help.
+The link to the public repository is:
+
+https://github.com/AMDESE/linux-svsm
+
+It is our hope that the linux-coco mailing list will be used to answer
+technical questions not covered by the available documentation.
+
+Contributors to this open source project will be received with open arms!
+
+Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
+Tom Lendacky <thomas.lendacky@amd.com>
+
