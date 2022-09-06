@@ -1,132 +1,106 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BDB1360
-	for <linux-coco@lists.linux.dev>; Sun,  4 Sep 2022 06:37:08 +0000 (UTC)
-Received: from nazgul.tnic (dynamic-002-247-250-198.2.247.pool.telefonica.de [2.247.250.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 609571EC03EA;
-	Sun,  4 Sep 2022 08:37:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1662273421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A/yg6xLScDG3nkcrMuFvwn0cTlwl9YzQi+dbx7SZXE4=;
-	b=pN97dF0fDmXybRWJ/KRiBRIBo09g3o8gogusERQNNw/JE8r+lwYvwNsl/Jei5OIwVjhq/B
-	b4JnlpbPeLY2hOK5QXqEsipafAphSpvCQIRejvFSC4daKFKQhmr2vc9Y4uQKMLfCCpLJxz
-	kn63o730nFrlWU4nmmHm95lGJS7I//U=
-Date: Sun, 4 Sep 2022 08:37:08 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-Cc: "x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"slp@redhat.com" <slp@redhat.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"ak@linux.intel.com" <ak@linux.intel.com>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"alpergun@google.com" <alpergun@google.com>,
-	"jroedel@suse.de" <jroedel@suse.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
-	"tobin@ibm.com" <tobin@ibm.com>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"kirill@shutemov.name" <kirill@shutemov.name>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"dgilbert@redhat.com" <dgilbert@redhat.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
- fault for user address
-Message-ID: <YxRHfzN1AV7GZf8o@nazgul.tnic>
-References: <YvN9bKQ0XtUVJE7z@zn.tnic>
- <SN6PR12MB2767A87F12B8E704EB80CC458E659@SN6PR12MB2767.namprd12.prod.outlook.com>
- <SN6PR12MB27672B74D1A6A6E920F364A78E7B9@SN6PR12MB2767.namprd12.prod.outlook.com>
- <YxGoBzOFT+sfwr4w@nazgul.tnic>
- <SN6PR12MB2767E95BA3A99A6263F1F9AE8E7A9@SN6PR12MB2767.namprd12.prod.outlook.com>
- <YxLXJk36EKxldC1S@nazgul.tnic>
- <SN6PR12MB276767FDF3528BC1849EEA0A8E7D9@SN6PR12MB2767.namprd12.prod.outlook.com>
- <SN6PR12MB2767074DEB38477356A3C0F98E7D9@SN6PR12MB2767.namprd12.prod.outlook.com>
- <BC747219-7808-4C39-A17C-A76B35DD6CB3@alien8.de>
- <SN6PR12MB2767C4C296281D25306885A78E7D9@SN6PR12MB2767.namprd12.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43418163
+	for <linux-coco@lists.linux.dev>; Tue,  6 Sep 2022 02:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662431423; x=1693967423;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=G15JBOOK8EI0eKdSgCyHHPZ83FHdpeAzR9JiZNu8Z80=;
+  b=ctWO8hLyA7EwoykAyUfgcO7CLnzbn5WXDrrbhGZhd9Bh0ocUdSu4K02W
+   RdufqUSzCKyzvj5vFYndAxxGBNqUj7qkKE8ZlgnKmQinBmU0E0roafWrq
+   FQ6FpyVGD5HLAW1+rOxD4QWuX1sFfnJzwbqAiXyULtCYo2/cfSLxdGuxX
+   yj7bkeRYJYxZLDN6/ol0+UkIlpoqyUrXRp2PBqCRs5WW6YqD0iDC4Uipo
+   INMvloUCaGJX73bLh6EvRV2o+RHORxKwweoU9lAsQGog+SwlWVjKQqnqI
+   JdoKywYJJtI4ZLESDFsaGN5qb/jMOJbG5HWA72Ln6/6YJSCaIfvXNQGjl
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10461"; a="279499843"
+X-IronPort-AV: E=Sophos;i="5.93,292,1654585200"; 
+   d="scan'208";a="279499843"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2022 19:30:22 -0700
+X-IronPort-AV: E=Sophos;i="5.93,292,1654585200"; 
+   d="scan'208";a="643983689"
+Received: from chenchar-mobl1.amr.corp.intel.com (HELO [10.212.193.190]) ([10.212.193.190])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2022 19:30:22 -0700
+Message-ID: <0ce441af-c825-3061-ad92-c360c339e924@intel.com>
+Date: Mon, 5 Sep 2022 19:30:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <SN6PR12MB2767C4C296281D25306885A78E7D9@SN6PR12MB2767.namprd12.prod.outlook.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
+ fault for user address
+Content-Language: en-US
+To: Ashish Kalra <Ashish.Kalra@amd.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, michael.roth@amd.com,
+ vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ dgilbert@redhat.com, jarkko@kernel.org
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Sep 03, 2022 at 05:30:28PM +0000, Kalra, Ashish wrote:
-> There is 1 64-bit RMP entry for every physical 4k page of DRAM, so
-> essentially every 4K page of DRAM is represented by a RMP entry.
+On 6/20/22 16:03, Ashish Kalra wrote:
+> 
+> When SEV-SNP is enabled globally, a write from the host goes through the
+> RMP check. When the host writes to pages, hardware checks the following
+> conditions at the end of page walk:
+> 
+> 1. Assigned bit in the RMP table is zero (i.e page is shared).
+> 2. If the page table entry that gives the sPA indicates that the target
+>    page size is a large page, then all RMP entries for the 4KB
+>    constituting pages of the target must have the assigned bit 0.
+> 3. Immutable bit in the RMP table is not zero.
+> 
+> The hardware will raise page fault if one of the above conditions is not
+> met. Try resolving the fault instead of taking fault again and again. If
+> the host attempts to write to the guest private memory then send the
+> SIGBUS signal to kill the process. If the page level between the host and
+> RMP entry does not match, then split the address to keep the RMP and host
+> page levels in sync.
 
-Before we get to the rest - this sounds wrong to me. My APM has:
+When you're working on this changelog for Borislav, I'd like to make one
+other suggestion:  Please write it more logically and _less_ about what
+the hardware is doing.  We don't need about the internal details of what
+hardware is doing in the changelog.  Mentioning whether an RMP bit is 0
+or 1 is kinda silly unless it matters to the code.
 
-"PSMASH	Page Smash
+For instance, what does the immutable bit have to do with all of this?
+There's no specific handling for it.  There are really only faults that
+you can handle and faults that you can't.
 
-Expands a 2MB-page RMP entry into a corresponding set of contiguous
-4KB-page RMP entries. The 2MB page’s system physical address is
-specified in the RAX register. The new entries inherit the attributes
-of the original entry. Upon completion, a return code is stored in EAX.
-rFLAGS bits OF, ZF, AF, PF and SF are set based on this return code..."
+There's also some major missing context here about how it guarantees
+that pages that can't be handled *CAN* be split.  I think it has to do
+with disallowing hugetlbfs which implies that the only pages that might
+need splitting are THP's.+	/*
+> +	 * If its an RMP violation, try resolving it.
+> +	 */
+> +	if (error_code & X86_PF_RMP) {
+> +		if (handle_user_rmp_page_fault(regs, error_code, address))
+> +			return;
+> +
+> +		/* Ask to split the page */
+> +		flags |= FAULT_FLAG_PAGE_SPLIT;
+> +	}
 
-So there *are* 2M entries in the RMP table.
-
-> So even if host page is 1G and underlying (smashed/split) RMP
-> entries are 2M, the RMP table entry has to be indexed to a 4K entry
-> corresponding to that.
-
-So if there are 2M entries in the RMP table, how does that indexing with
-4K entries is supposed to work?
-
-Hell, even PSMASH pseudocode shows how you go and write all those 512 4K
-entries using the 2M entry as a template. So *before* you have smashed
-that 2M entry, it *is* an *actual* 2M entry.
-
-So if you fault on a page which is backed by that 2M RMP entry, you will
-get that 2M RMP entry.
-
-> If it was simply a 2M entry in the RMP table, then pmd_index() will
-> work correctly.
-
-Judging by the above text, it *can* *be* a 2M RMP entry!
-
-By reading your example you're trying to tell me that a RMP #PF will
-always need to work on 4K entries. Which would then need for a 2M entry
-as above to be PSMASHed in order to get the 4K thing. But that would be
-silly - RMP PFs will this way gradually break all 2M pages and degrage
-performance for no real reason.
-
-So this still looks real wrong to me.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+This also needs some chatter about why any failure to handle the fault
+automatically means splitting a page.
