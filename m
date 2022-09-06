@@ -1,106 +1,145 @@
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43418163
-	for <linux-coco@lists.linux.dev>; Tue,  6 Sep 2022 02:30:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662431423; x=1693967423;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=G15JBOOK8EI0eKdSgCyHHPZ83FHdpeAzR9JiZNu8Z80=;
-  b=ctWO8hLyA7EwoykAyUfgcO7CLnzbn5WXDrrbhGZhd9Bh0ocUdSu4K02W
-   RdufqUSzCKyzvj5vFYndAxxGBNqUj7qkKE8ZlgnKmQinBmU0E0roafWrq
-   FQ6FpyVGD5HLAW1+rOxD4QWuX1sFfnJzwbqAiXyULtCYo2/cfSLxdGuxX
-   yj7bkeRYJYxZLDN6/ol0+UkIlpoqyUrXRp2PBqCRs5WW6YqD0iDC4Uipo
-   INMvloUCaGJX73bLh6EvRV2o+RHORxKwweoU9lAsQGog+SwlWVjKQqnqI
-   JdoKywYJJtI4ZLESDFsaGN5qb/jMOJbG5HWA72Ln6/6YJSCaIfvXNQGjl
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10461"; a="279499843"
-X-IronPort-AV: E=Sophos;i="5.93,292,1654585200"; 
-   d="scan'208";a="279499843"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2022 19:30:22 -0700
-X-IronPort-AV: E=Sophos;i="5.93,292,1654585200"; 
-   d="scan'208";a="643983689"
-Received: from chenchar-mobl1.amr.corp.intel.com (HELO [10.212.193.190]) ([10.212.193.190])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2022 19:30:22 -0700
-Message-ID: <0ce441af-c825-3061-ad92-c360c339e924@intel.com>
-Date: Mon, 5 Sep 2022 19:30:21 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1759E2F2F
+	for <linux-coco@lists.linux.dev>; Tue,  6 Sep 2022 10:25:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475E7C433D6;
+	Tue,  6 Sep 2022 10:25:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1662459910;
+	bh=fwdWXxkOf6zObdpX0HJXuD+AM10SlVrcgsu8arlimOY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I4vqn6fRvpLmiK+9XggeElm/6brM7RrBg3cG40WM+1bkNPPcmJfhVUAb49TkfniC0
+	 XPzBWsHGEiciIt7g+d28/sqf5bVQ2095mLIy4OxV+Q+1oQCpcwiyvfuhJORifZrGHk
+	 QSHUhJsmFGoQkukjOeDA77hAuz2UbnXWTAaY6c0OIk+ja24XqYmi2fuWb7t3Rz47wy
+	 DqbaWdTioguMGY4a+uJt/EuGsCkYiOA7+33IKVxqzZUL7dMsCRagbbswpjyONxz/MA
+	 zS+97k8SHoaLObL7HkjBbB3ogxOAQhiHPXET4r0h4OvwCWiwpH4CQTRRZZAZS0/Hli
+	 6lNOSxYpCQHgg==
+Date: Tue, 6 Sep 2022 13:25:06 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com
+Subject: Re: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
+ fault for user address
+Message-ID: <YxcgAk7AHWZVnSCJ@kernel.org>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
+ <YvKRjxgipxLSNCLe@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH Part2 v6 09/49] x86/fault: Add support to handle the RMP
- fault for user address
-Content-Language: en-US
-To: Ashish Kalra <Ashish.Kalra@amd.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, michael.roth@amd.com,
- vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
- tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- dgilbert@redhat.com, jarkko@kernel.org
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <0ecb0a4781be933fcadeb56a85070818ef3566e7.1655761627.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="R9s2JRGVgaAiidpN"
+Content-Disposition: inline
+In-Reply-To: <YvKRjxgipxLSNCLe@zn.tnic>
 
-On 6/20/22 16:03, Ashish Kalra wrote:
+
+--R9s2JRGVgaAiidpN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Aug 09, 2022 at 06:55:43PM +0200, Borislav Petkov wrote:
+> On Mon, Jun 20, 2022 at 11:03:43PM +0000, Ashish Kalra wrote:
+> > +	pfn = pte_pfn(*pte);
+> > +
+> > +	/* If its large page then calculte the fault pfn */
+> > +	if (level > PG_LEVEL_4K) {
+> > +		unsigned long mask;
+> > +
+> > +		mask = pages_per_hpage(level) - pages_per_hpage(level - 1);
+> > +		pfn |= (address >> PAGE_SHIFT) & mask;
 > 
-> When SEV-SNP is enabled globally, a write from the host goes through the
-> RMP check. When the host writes to pages, hardware checks the following
-> conditions at the end of page walk:
+> Oh boy, this is unnecessarily complicated. Isn't this
 > 
-> 1. Assigned bit in the RMP table is zero (i.e page is shared).
-> 2. If the page table entry that gives the sPA indicates that the target
->    page size is a large page, then all RMP entries for the 4KB
->    constituting pages of the target must have the assigned bit 0.
-> 3. Immutable bit in the RMP table is not zero.
+> 	pfn |= pud_index(address);
 > 
-> The hardware will raise page fault if one of the above conditions is not
-> met. Try resolving the fault instead of taking fault again and again. If
-> the host attempts to write to the guest private memory then send the
-> SIGBUS signal to kill the process. If the page level between the host and
-> RMP entry does not match, then split the address to keep the RMP and host
-> page levels in sync.
+> or
+> 	pfn |= pmd_index(address);
 
-When you're working on this changelog for Borislav, I'd like to make one
-other suggestion:  Please write it more logically and _less_ about what
-the hardware is doing.  We don't need about the internal details of what
-hardware is doing in the changelog.  Mentioning whether an RMP bit is 0
-or 1 is kinda silly unless it matters to the code.
+I played with this a bit and ended up with
 
-For instance, what does the immutable bit have to do with all of this?
-There's no specific handling for it.  There are really only faults that
-you can handle and faults that you can't.
+        pfn = pte_pfn(*pte) | PFN_DOWN(address & page_level_mask(level - 1));
 
-There's also some major missing context here about how it guarantees
-that pages that can't be handled *CAN* be split.  I think it has to do
-with disallowing hugetlbfs which implies that the only pages that might
-need splitting are THP's.+	/*
-> +	 * If its an RMP violation, try resolving it.
-> +	 */
-> +	if (error_code & X86_PF_RMP) {
-> +		if (handle_user_rmp_page_fault(regs, error_code, address))
-> +			return;
-> +
-> +		/* Ask to split the page */
-> +		flags |= FAULT_FLAG_PAGE_SPLIT;
-> +	}
+Unless I got something terribly wrong, this should do the
+same (see the attached patch) as the existing calculations.
 
-This also needs some chatter about why any failure to handle the fault
-automatically means splitting a page.
+BR, Jarkko
+
+--R9s2JRGVgaAiidpN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment;
+	filename="0001-x86-fault-Simplify-PFN-calculation-in-handle_user_rm.patch"
+
+From c92522f6199055cd609ddd785dc9d8e85153e3b4 Mon Sep 17 00:00:00 2001
+From: Jarkko Sakkinen <jarkko@profian.com>
+Date: Tue, 6 Sep 2022 09:51:59 +0300
+Subject: [PATCH] x86/fault: Simplify PFN calculation in
+ handle_user_rmp_fault()
+
+Use functions in asm/pgtable.h to calculate the PFN for the address inside
+PTE's page directory. PG_LEVEL_4K PTE's obviously do not have a page
+directory but it is not an issue as:
+
+	page_level_mask(PG_LEVEL_4K - 1) ==
+	page_level_mask(PG_LEVEL_NONE) ==
+	0
+
+Signed-off-by: Jarkko Sakkinen <jarkko@profian.com>
+---
+ arch/x86/mm/fault.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
+
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 6404ef73eb56..28b3f80611a3 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1219,11 +1219,6 @@ do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
+ }
+ NOKPROBE_SYMBOL(do_kern_addr_fault);
+ 
+-static inline size_t pages_per_hpage(int level)
+-{
+-	return page_level_size(level) / PAGE_SIZE;
+-}
+-
+ /*
+  * Return 1 if the caller need to retry, 0 if it the address need to be split
+  * in order to resolve the fault.
+@@ -1248,15 +1243,8 @@ static int handle_user_rmp_page_fault(struct pt_regs *regs, unsigned long error_
+ 	if (!pte || !pte_present(*pte))
+ 		return 1;
+ 
+-	pfn = pte_pfn(*pte);
+-
+-	/* If its large page then calculte the fault pfn */
+-	if (level > PG_LEVEL_4K) {
+-		unsigned long mask;
+-
+-		mask = pages_per_hpage(level) - pages_per_hpage(level - 1);
+-		pfn |= (address >> PAGE_SHIFT) & mask;
+-	}
++	/*  Calculate PFN inside the page directory: */
++	pfn = pte_pfn(*pte) | PFN_DOWN(address & page_level_mask(level - 1));
+ 
+ 	/*
+ 	 * If its a guest private page, then the fault cannot be resolved.
+-- 
+2.37.2
+
+
+--R9s2JRGVgaAiidpN--
