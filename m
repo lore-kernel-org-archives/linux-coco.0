@@ -1,88 +1,42 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DA65CA6
-	for <linux-coco@lists.linux.dev>; Thu,  8 Sep 2022 19:29:39 +0000 (UTC)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 288JGgSZ031350;
-	Thu, 8 Sep 2022 19:28:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=XB8wq8cmJM3W2D3bgGyLOpFPHA6N5NVNF91TxaAI+Bw=;
- b=fkM+7ixS5mOnOm+BtRuSbY3ZT6Gpq9BpqwSsVa5B0+bbDFKrR5E19L2NI+KkWhub56n+
- uu4Xy2/kxOUiq9ncgE+WsF/QH4cef59ervtUKxnD1DuvowAxfyyfnA7iIeBShyWCUx2A
- fFw/9JHn32bHEJrbCeK1StNa1YLuGVPblssgYU/22J6goDwpS+HeHLKPaKQEok/6Im7x
- Byub8qop3LlT6IRUwqaDlGsv5d40lNX9rtaD1AK7kxYMZQPdx8NsfhkpjoN+Txvp3c7r
- ECECxku9q7+Gp48LvOx2rTQqV53TY2Wo7M8tms4XfCBe0hl1xfBNK6sNGmADWL2oayFB Mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfpdnrd2e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 19:28:52 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 288JI54T036616;
-	Thu, 8 Sep 2022 19:28:51 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jfpdnrd1m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 19:28:51 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 288JNUuO011438;
-	Thu, 8 Sep 2022 19:28:48 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma06fra.de.ibm.com with ESMTP id 3jbx6hw72v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 19:28:48 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 288JPDSv33423776
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Sep 2022 19:25:13 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 36CB4AE045;
-	Thu,  8 Sep 2022 19:28:46 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 87EFDAE04D;
-	Thu,  8 Sep 2022 19:28:43 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.145.32.24])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Thu,  8 Sep 2022 19:28:43 +0000 (GMT)
-Date: Thu, 8 Sep 2022 22:28:41 +0300
-From: Mike Rapoport <rppt@linux.ibm.com>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Marcelo Cerri <marcelo.cerri@canonical.com>, tim.gardner@canonical.com,
-        Khalid ElMously <khalid.elmously@canonical.com>,
-        philip.cox@canonical.com, the arch/x86 maintainers <x86@kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Message-ID: <YxpCaQARczhZQmq2@linux.ibm.com>
-References: <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
- <20220810141959.ictqchz7josyd7pt@techsingularity.net>
- <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
- <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
- <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
- <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
- <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
- <YxncAElGrPEGRYg1@linux.ibm.com>
- <CAAH4kHaP8JUh0Z4rF83=2RZTGMATT5MHot6rAnAwt79PL64mVQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFD789CB
+	for <linux-coco@lists.linux.dev>; Thu,  8 Sep 2022 20:34:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED387C433D7;
+	Thu,  8 Sep 2022 20:34:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1662669253;
+	bh=xznb1RKBZH/nj2qdZlu+dotoTsJWwyQbwBXQt70aXfQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aV+WCP9SeYQN9/uvhmG0jzovy09Muqg0xuGb1GoH0fy5inl2zw+gC/19rPaudjVTv
+	 Qo4D2iAs145mScERTpLbx1ipWCp42F1k/TmKYdEy0zVX8N2TouAtODomu711xjWyyD
+	 r9zQKKZ27c8aU4m3/zaqB9d16l6a5SYVEuT/4IV/FCkJUxcUY0YgLo8BJCuW6f9VQX
+	 SB8uDzPG7QdXAZeSI7QoeSMtFbkxk8pQEpN/3ZBzrva2lAA61x0+Ohiq6EBiMBLKOe
+	 nujTj0rT4LvIcE38NM7aHZJ+TkhKsXHyavZoABrPJK+f/GAXRulwXDrepG26zyYclo
+	 zR1K6o6wyldXw==
+Date: Thu, 8 Sep 2022 23:34:07 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Harald Hoyer <harald@profian.com>, ashish.kalra@amd.com,
+	ak@linux.intel.com, alpergun@google.com, ardb@kernel.org,
+	bp@alien8.de, dave.hansen@linux.intel.com, dgilbert@redhat.com,
+	dovmurik@linux.ibm.com, hpa@zytor.com, jmattson@google.com,
+	jroedel@suse.de, kirill@shutemov.name, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org,
+	marcorr@google.com, michael.roth@amd.com, mingo@redhat.com,
+	pbonzini@redhat.com, peterz@infradead.org, pgonda@google.com,
+	rientjes@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	slp@redhat.com, srinivas.pandruvada@linux.intel.com,
+	tglx@linutronix.de, thomas.lendacky@amd.com, tobin@ibm.com,
+	tony.luck@intel.com, vbabka@suse.cz, vkuznets@redhat.com,
+	x86@kernel.org
+Subject: Re: [[PATCH for v6]] KVM: SEV: fix snp_launch_finish
+Message-ID: <YxpRv14+glaFpGsF@kernel.org>
+References: <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
+ <20220908145557.1912158-1-harald@profian.com>
+ <YxoGItJDTEjfctaS@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -91,36 +45,22 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAAH4kHaP8JUh0Z4rF83=2RZTGMATT5MHot6rAnAwt79PL64mVQ@mail.gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nN1RgLu1rMJ3m3ZEc6DjIOZxZ6m46gbw
-X-Proofpoint-GUID: lBIoRw29rMgak1wV_9EoP1zBzLH4qjei
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-08_11,2022-09-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 malwarescore=0 adultscore=0
- bulkscore=0 mlxscore=0 mlxlogscore=999 clxscore=1015 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209080068
+In-Reply-To: <YxoGItJDTEjfctaS@google.com>
 
-On Thu, Sep 08, 2022 at 09:23:07AM -0700, Dionna Amalie Glaze wrote:
-> >
-> > Looks like the first access to the memory map fails, although I think
-> > it's not in INIT_LIST_HEAD() but rather in init_page_count().
-> >
-> > I'd start with making sure that page_alloc::memmap_alloc() actually returns
-> > accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
-> > will poisoned in this function, so my guess is it'd crash there.
-> >
+On Thu, Sep 08, 2022 at 03:11:30PM +0000, Sean Christopherson wrote:
+> On Thu, Sep 08, 2022, Harald Hoyer wrote:
+> > The `params.auth_key_en` indicator does _not_ specify, whether an
+> > ID_AUTH struct should be sent or not, but, wheter the ID_AUTH struct
+> > contains an author key or not. The firmware always expects an ID_AUTH block.
+> > 
+> > Link: https://lore.kernel.org/all/cover.1655761627.git.ashish.kalra@amd.com/
 > 
-> That's a wonderful hint, thank you! I did not run this test
-> CONFIG_DEBUG_VM set, but you think it's possible it could still be
-> here?
+> Please provide feedback by directly responding to whatever patch/email is buggy.
+> Or if that's too complicated for some reason (unlikely in this case), provide the
+> fixup patch to the author *off-list*.
 
-It depends on how you configured your kernel. Say, defconfig does not set
-it.
+I'd guess that'd be:
 
--- 
-Sincerely yours,
-Mike.
+https://lore.kernel.org/all/6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com/
+
+BR, Jarkko
