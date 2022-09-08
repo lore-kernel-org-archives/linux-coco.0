@@ -1,310 +1,131 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1427C
-	for <linux-coco@lists.linux.dev>; Thu,  8 Sep 2022 12:12:52 +0000 (UTC)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 288CBNn6024282;
-	Thu, 8 Sep 2022 12:11:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=cQUxEEvtY42rnvliSYVrfH8pPCm/s+CgvwVFD5Mqd/k=;
- b=onhlL1zJiTW92SAmb8PPmt8A5UhyMvPJEMMVUBdBh5xe+Im69yFa2Ne2FjeZmefv3vUn
- B7Z3ChigLr0kj+N8oZbtj2AYwLhsVL9XNXfp0EVm16p3ysjh7TnPDWmJghM9y7SHPRcL
- C9qxv75jfwYXS9el/Ts8Y1icf9++kNDfr15gUizL4CqMpjzIBP9GO0c0gJFKXzdqlinj
- GHKXAezN5jR2yi74/NLMLdjZB18FU0zQ8cj0+ONDfwY8xo0ImJVIYLS5IAfoHaZNFlji
- nyxieHay+Li2/UnilpMOEEsGsS1XO5D4I7vS3QccxEutHX30DR22p2zMSz/PkARtjaMA mQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jffwcghv8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 12:11:56 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 288BstON026076;
-	Thu, 8 Sep 2022 12:11:56 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jffwcghtb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 12:11:55 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 288C6w3j018062;
-	Thu, 8 Sep 2022 12:11:52 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma06fra.de.ibm.com with ESMTP id 3jbx6hvvge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Sep 2022 12:11:52 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 288CBoGx38535658
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Sep 2022 12:11:50 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 034E1AE055;
-	Thu,  8 Sep 2022 12:11:50 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C479BAE045;
-	Thu,  8 Sep 2022 12:11:46 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.145.44.9])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Thu,  8 Sep 2022 12:11:46 +0000 (GMT)
-Date: Thu, 8 Sep 2022 15:11:44 +0300
-From: Mike Rapoport <rppt@linux.ibm.com>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <seanjc@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        David Rientjes <rientjes@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        Marcelo Cerri <marcelo.cerri@canonical.com>, tim.gardner@canonical.com,
-        Khalid ElMously <khalid.elmously@canonical.com>,
-        philip.cox@canonical.com, the arch/x86 maintainers <x86@kernel.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Message-ID: <YxncAElGrPEGRYg1@linux.ibm.com>
-References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
- <20220614120231.48165-3-kirill.shutemov@linux.intel.com>
- <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
- <20220810141959.ictqchz7josyd7pt@techsingularity.net>
- <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
- <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
- <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
- <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
- <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F2B3C0F
+	for <linux-coco@lists.linux.dev>; Thu,  8 Sep 2022 14:56:03 +0000 (UTC)
+Received: by mail-wm1-f47.google.com with SMTP id i129-20020a1c3b87000000b003b332a7acbcso1198682wma.1
+        for <linux-coco@lists.linux.dev>; Thu, 08 Sep 2022 07:56:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=profian-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=ryNqK5MU3hvexcP0lqXzZYDdmqazm1TBDaWSc1Bec88=;
+        b=A+h3uk/z3zVLJRHckmNM4YxWpnH5mOtpniwEZgYBiShH8dX2ke8mlhluujBLTZaei9
+         rjyudPZLRVKoqa/kHk9XhTDRWTKV43CDnaG0QLijNIyvSfrtjtiEVrj0kxDbfaY+ExKT
+         S5DCBpVsRIsn3n7OmhoxhBZ2HYrO2tv189HgUJWmO7wCJcpLLgs+TXtdnwB89i7oREl+
+         bVaCOFRUFvKec6ZZ+32wyYO5lcjci9ktt29wYfSloA1IuJ9BrNjvCjoFwkZh/k/OZ9rQ
+         TWACHfJtoez2REps42w6sKBP7786aGnvKGae62AysmEoW9BUPSijQNuBTaWxzHhysHeb
+         AAdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=ryNqK5MU3hvexcP0lqXzZYDdmqazm1TBDaWSc1Bec88=;
+        b=CPrCQzTjgOBY5GSHVYdXMGgR7WKx6X1FgHqZzSbpiN7/EnYqCy7q1sKjMWubIVE4lG
+         HV/D8TcFxPQKJxkNJGnXaGd+TZDWy/JY1teXdjxcfSxKtWJRZ5JwVWad15/nWVPNMofw
+         4bfcg85W29XKCz4O1oiCXC8oZDpLZxzUsLAn5QPGz1cNQr4aD8zVee/kwyQcWXYMLSHx
+         sPcM1JvdtlMXmdXelHYvuI6bnWUuhmjgbwufedkjTl/klf4nDvxFHMCcrbsXNOd3ZiIq
+         lbqGQzGLevQ11BVu6EsADzLrN09zUHWDi7qWbHJ6ifOReb004xxsF/3kaSI+uioFzbb4
+         ITRw==
+X-Gm-Message-State: ACgBeo0ePLSXjqawdwmD2AlkiMfHCSENVaxSt2dyyW2avZ09hQnLJaB/
+	GG6WPGQ1VcM7LSKroZtQD0SR7Q==
+X-Google-Smtp-Source: AA6agR60ZmA7z2Rw4x/+vVZJ8ouM6ug3aiG0VoToRr4xXb6X+ui1JU9//Z03osUcjGe8LanO+R1DlA==
+X-Received: by 2002:a05:600c:1d1e:b0:3a5:4f8d:743f with SMTP id l30-20020a05600c1d1e00b003a54f8d743fmr2501614wms.121.1662648961741;
+        Thu, 08 Sep 2022 07:56:01 -0700 (PDT)
+Received: from fedora.fritz.box (p200300c1c7162d00e01b57df2fb57c15.dip0.t-ipconnect.de. [2003:c1:c716:2d00:e01b:57df:2fb5:7c15])
+        by smtp.gmail.com with ESMTPSA id fc15-20020a05600c524f00b003a5260b8392sm3440304wmb.23.2022.09.08.07.56.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Sep 2022 07:56:01 -0700 (PDT)
+From: Harald Hoyer <harald@profian.com>
+To: ashish.kalra@amd.com
+Cc: ak@linux.intel.com,
+	alpergun@google.com,
+	ardb@kernel.org,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	dgilbert@redhat.com,
+	dovmurik@linux.ibm.com,
+	hpa@zytor.com,
+	jarkko@kernel.org,
+	jmattson@google.com,
+	jroedel@suse.de,
+	kirill@shutemov.name,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	luto@kernel.org,
+	marcorr@google.com,
+	michael.roth@amd.com,
+	mingo@redhat.com,
+	pbonzini@redhat.com,
+	peterz@infradead.org,
+	pgonda@google.com,
+	rientjes@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	seanjc@google.com,
+	slp@redhat.com,
+	srinivas.pandruvada@linux.intel.com,
+	tglx@linutronix.de,
+	thomas.lendacky@amd.com,
+	tobin@ibm.com,
+	tony.luck@intel.com,
+	vbabka@suse.cz,
+	vkuznets@redhat.com,
+	x86@kernel.org,
+	Harald Hoyer <harald@profian.com>
+Subject: [[PATCH for v6]] KVM: SEV: fix snp_launch_finish
+Date: Thu,  8 Sep 2022 16:55:57 +0200
+Message-Id: <20220908145557.1912158-1-harald@profian.com>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
+References: <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qSL_nur78EluDLR562g80kI3RtspyslK
-X-Proofpoint-ORIG-GUID: 9Er7uB6wnl9ON5v0i9MVXp1u0tqvaTbt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-08_08,2022-09-07_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- bulkscore=0 clxscore=1011 mlxlogscore=820 adultscore=0 spamscore=0
- impostorscore=0 phishscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209080044
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 06, 2022 at 10:50:42AM -0700, Dionna Amalie Glaze wrote:
-> >
-> > It really helps this kind of stuff if you can post the *actual* error.
-> > I assume this was a page fault, so there should have been some other
-> > stuff before the RIP:...
-> >
-> 
-> I posted the error on August 15th.  I was bumping in my last post
-> since I confirmed with Tom Lendacky that it wasn't AMD's patches at
-> fault.
-> Here's a new dump below that matches the disassembly:
-> 
-> [    0.043137] Faking a node at [mem 0x0000000000000000-0x000000403fffffff]
-> [    0.044018] NODE_DATA(0) allocated [mem 0x403fffc000-0x403fffffff]
-> [    0.044922] Zone ranges:
-> [    0.045250]   DMA      [mem 0x0000000000001000-0x0000000000ffffff]
-> [    0.046039]   DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
-> [    0.046828]   Normal   [mem 0x0000000100000000-0x000000403fffffff]
-> [    0.047657] Movable zone start for each node
-> [    0.048201] Early memory node ranges
-> [    0.048674]   node   0: [mem 0x0000000000001000-0x000000000009ffff]
-> [    0.049474]   node   0: [mem 0x0000000000100000-0x000000000080cfff
-> [    0.050274]   node   0: [mem 0x000000000080f000-0x00000000beceefff]
-> [    0.051074]   node   0: [mem 0x00000000befff000-0x00000000bfbb0fff]
-> [    0.051874]   node   0: [mem 0x00000000bfbb2000-0x00000000bffdbfff]
-> [    0.052674]   node   0: [mem 0x0000000100000000-0x000000403fffffff]
-> [    0.053530] Initmem setup node 0 [mem 0x0000000000001000-0x000000403fffffff]
-> PANIC: Unsupported exit-code 0x404 in early #VC exception (IP:
-> 0xfffffffface0cdd0)
-> [    0.056667] CPU: 0 PID: 0 Comm: swapper Not tainted
-> 5.17.0-rc6-173762-gffb12b02c6d7-dirty #1
-> [    0.057744] Hardware name: Google Google Compute Engine/Google
-> Compute Engine, BIOS Google 01/01/2011
-> [    0.058920] RIP: 0010:memmap_init_range+0x11d/0x188
-> [    0.059686] Code: 77 16 f6 42 10 02 74 10 48 03 42 08 48 c1 e8 0c
-> 48 89 c3 e9 3a ff ff ff 48 89 df 48 c1 e7 06 48 03 3d a4 1e 65 ff 48
-> 8d 47 08 <c7> 47 34 01 00 00 00 48 c7 47 38 00 00 00 00 c7 47 30 ff ff
-> ff ff
-> [    0.062121] RSP: 0000:ffffffffac603dc0 EFLAGS: 00010082 ORIG_RAX:
-> 0000000000000404
-> [    0.063087] RAX: ffffda1ac0000048 RBX: 0000000000000001 RCX: 0000000000000000
-> [    0.063998] RDX: 0300000000000000 RSI: 0000000000000000 RDI: ffffda1ac000004
-> [    0.064944] RBP: 0000000000000000 R08: 0000000000001000 R09: 0000000000000000
-> [    0.065873] R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-> [    0.066782] R13: 00000000000000a0 R14: 0000000000000000 R15: 0000000000000000
-> [    0.067695] FS:  0000000000000000(0000) GS:ffffffffacd88000(0000)
-> knlGS:0000000000000000
-> [    0.068727] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    0.069488] CR2: ffffda1ac0000074 CR3: 00080020b680c000 CR4: 00000000000606b0
-> [    0.070397] Call Trace:
-> [    0.070710]  <TASK>
-> [    0.070976]  ? free_area_init+0x724/0x7d4
-> [    0.071486]  ? zone_sizes_init+0x52/0x6c
-> [    0.071986]  ? setup_arch+0xa55/0xb77
-> [    0.072453]  ? start_kernel+0x64/0x65f
-> [    0.072931]  ? secondary_startup_64_no_verify+0xd6/0xdb
-> [    0.073598]  </TASK>
-> 
-> Note this is a crash in SEV-SNP, but I assume we'd get the same #VE in TDX.
-> 
-> > Another thing that's really nice is to do the disassembly of the "Code:"
-> > or share disassembly of memmap_init_range.
-> 
-> 0000000000000172 <memmap_init_range>:
->  172:   41 56                   push   %r14
->  174:   89 f0                   mov    %esi,%eax
->  176:   45 89 ce                mov    %r9d,%r14d
->  179:   41 55                   push   %r13
->  17b:   4c 8d 2c 39             lea    (%rcx,%rdi,1),%r13
->  17f:   41 54                   push   %r12
->  181:   49 89 d4                mov    %rdx,%r12
->  184:   49 8d 55 ff             lea    -0x1(%r13),%rdx
->  188:   48 3b 15 00 00 00 00    cmp    0x0(%rip),%rdx        # 18f
-> <memmap_init_range+0x1d>
->  18f:   55                      push   %rbp
->  190:   53                      push   %rbx
->  191:   48 89 cb                mov    %rcx,%rbx
->  194:   76 07                   jbe    19d <memmap_init_range+0x2b>
->  196:   48 89 15 00 00 00 00    mov    %rdx,0x0(%rip)        # 19d
-> <memmap_init_range+0x2b>
->  19d:   4c 89 e5                mov    %r12,%rbp
->  1a0:   ba 03 00 00 00          mov    $0x3,%edx
->  1a5:   48 c1 e0 3a             shl    $0x3a,%rax
->  1a9:   48 c1 e5 38             shl    $0x38,%rbp
->  1ad:   48 c1 e2 38             shl    $0x38,%rdx
->  1b1:   48 21 d5                and    %rdx,%rbp
->  1b4:   48 09 c5                or     %rax,%rbp
->  1b7:   49 39 dd                cmp    %rbx,%r13
->  1ba:   0f 86 31 01 00 00       jbe    2f1 <memmap_init_range+0x17f>
->  1c0:   45 85 f6                test   %r14d,%r14d
->  1c3:   0f 85 b4 00 00 00       jne    27d <memmap_init_range+0x10b>
->  1c9:   49 83 fc 03             cmp    $0x3,%r12
->  1cd:   0f 94 c1                sete   %cl
->  1d0:   22 0d 00 00 00 00       and    0x0(%rip),%cl        # 1d6
-> <memmap_init_range+0x64>
->  1d6:   0f 84 a1 00 00 00       je     27d <memmap_init_range+0x10b>
->  1dc:   48 8b 15 00 00 00 00    mov    0x0(%rip),%rdx        # 1e3
-> <memmap_init_range+0x71>
->  1e3:   48 85 d2                test   %rdx,%rdx
->  1e6:   74 10                   je     1f8 <memmap_init_range+0x86>
->  1e8:   48 8b 42 08             mov    0x8(%rdx),%rax
->  1ec:   48 03 02                add    (%rdx),%rax
->  1ef:   48 c1 e8 0c             shr    $0xc,%rax
->  1f3:   48 39 d8                cmp    %rbx,%rax
->  1f6:   77 55                   ja     24d <memmap_init_range+0xdb>
->  1f8:   48 8b 05 00 00 00 00    mov    0x0(%rip),%rax        # 1ff
-> <memmap_init_range+0x8d>
->  1ff:   4c 6b 05 00 00 00 00    imul   $0x18,0x0(%rip),%r8        #
-> 207 <memmap_init_range+0x95>
->  206:   18
->  207:   31 f6                   xor    %esi,%esi
->  209:   48 89 05 00 00 00 00    mov    %rax,0x0(%rip)        # 210
-> <memmap_init_range+0x9e>
->  210:   49 01 c0                add    %rax,%r8
->  213:   48 89 c7                mov    %rax,%rdi
->  216:   4c 39 c0                cmp    %r8,%rax
->  219:   73 26                   jae    241 <memmap_init_range+0xcf>
->  21b:   48 8b 57 08             mov    0x8(%rdi),%rdx
->  21f:   48 03 17                add    (%rdi),%rdx
->  222:   48 83 c0 18             add    $0x18,%rax
->  226:   48 c1 ea 0c             shr    $0xc,%rdx
->  22a:   48 39 da                cmp    %rbx,%rdx
->  22d:   76 0e                   jbe    23d <memmap_init_range+0xcb>
->  22f:   40 84 f6                test   %sil,%sil
->  232:   74 19                   je     24d <memmap_init_range+0xdb>
->  234:   48 89 3d 00 00 00 00    mov    %rdi,0x0(%rip)        # 23b
-> <memmap_init_range+0xc9>
->  23b:   eb 10                   jmp    24d <memmap_init_range+0xdb>
->  23d:   89 ce                   mov    %ecx,%esi
->  23f:   eb d2                   jmp    213 <memmap_init_range+0xa1>
->  241:   40 84 f6                test   %sil,%sil
->  244:   74 07                   je     24d <memmap_init_range+0xdb>
->  246:   48 89 05 00 00 00 00    mov    %rax,0x0(%rip)        # 24d
-> <memmap_init_range+0xdb>
->  24d:   48 8b 15 00 00 00 00    mov    0x0(%rip),%rdx        # 254
-> <memmap_init_range+0xe2>
->  254:   48 8b 02                mov    (%rdx),%rax
->  257:   48 8d 88 ff 0f 00 00    lea    0xfff(%rax),%rcx
->  25e:   48 c1 e9 0c             shr    $0xc,%rcx
->  262:   48 39 d9                cmp    %rbx,%rcx
->  265:   77 16                   ja     27d <memmap_init_range+0x10b>
->  267:   f6 42 10 02             testb  $0x2,0x10(%rdx)
->  26b:   74 10                   je     27d <memmap_init_range+0x10b>
->  26d:   48 03 42 08             add    0x8(%rdx),%rax
->  271:   48 c1 e8 0c             shr    $0xc,%rax
->  275:   48 89 c3                mov    %rax,%rbx
->  278:   e9 3a ff ff ff          jmp    1b7 <memmap_init_range+0x45>
->  27d:   48 89 df                mov    %rbx,%rdi
->  280:   48 c1 e7 06             shl    $0x6,%rdi
->  284:   48 03 3d 00 00 00 00    add    0x0(%rip),%rdi        # 28b
-> <memmap_init_range+0x119>
->  28b:   48 8d 47 08             lea    0x8(%rdi),%rax
->  28f:   c7 47 34 01 00 00 00    movl   $0x1,0x34(%rdi)    # Here's
-> where the crash RIP is.
->  296:   48 c7 47 38 00 00 00    movq   $0x0,0x38(%rdi)
->  29d:   00
->  29e:   c7 47 30 ff ff ff ff    movl   $0xffffffff,0x30(%rdi)
->  2a5:   48 c7 47 28 00 00 00    movq   $0x0,0x28(%rdi)
->  2ac:   00
->  2ad:   48 c7 47 20 00 00 00    movq   $0x0,0x20(%rdi)
->  2b4:   00
->  2b5:   48 c7 47 18 00 00 00    movq   $0x0,0x18(%rdi)
->  2bc:   00
->  2bd:   48 89 2f                mov    %rbp,(%rdi)
->  2c0:   48 89 47 08             mov    %rax,0x8(%rdi)
->  2c4:   48 89 47 10             mov    %rax,0x10(%rdi)
->  2c8:   41 83 fe 01             cmp    $0x1,%r14d
->  2cc:   75 05                   jne    2d3 <memmap_init_range+0x161>
->  2ce:   48 0f ba 2f 0c          btsq   $0xc,(%rdi)
->  2d3:   f7 c3 ff 01 00 00       test   $0x1ff,%ebx
->  2d9:   75 0e                   jne    2e9 <memmap_init_range+0x177>
->  2db:   8b 74 24 38             mov    0x38(%rsp),%esi
->  2df:   e8 00 00 00 00          call   2e4 <memmap_init_range+0x172>
->  2e4:   e8 00 00 00 00          call   2e9 <memmap_init_range+0x177>
->  2e9:   48 ff c3                inc    %rbx
->  2ec:   e9 c6 fe ff ff          jmp    1b7 <memmap_init_range+0x45>
->  2f1:   5b                      pop    %rbx
->  2f2:   5d                      pop    %rbp
->  2f3:   41 5c                   pop    %r12
->  2f5:   41 5d                   pop    %r13
->  2f7:   41 5e                   pop    %r14
->  2f9:   c3                      ret
-> 
-> > Even nicer would be to give
-> > an faddr2line of the RIP value and track down which C code was actually
-> > at fault.
-> 
-> arch_atomic_set
-> arch/x86/include/asm/atomic.h:41
-> 
-> of INIT_LIST_HEAD in __init_single_page, called from memmap_init_range.
+The `params.auth_key_en` indicator does _not_ specify, whether an
+ID_AUTH struct should be sent or not, but, wheter the ID_AUTH struct
+contains an author key or not. The firmware always expects an ID_AUTH block.
 
-Looks like the first access to the memory map fails, although I think
-it's not in INIT_LIST_HEAD() but rather in init_page_count().
+Link: https://lore.kernel.org/all/cover.1655761627.git.ashish.kalra@amd.com/
+Signed-off-by: Harald Hoyer <harald@profian.com>
+---
+ arch/x86/kvm/svm/sev.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-I'd start with making sure that page_alloc::memmap_alloc() actually returns
-accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
-will poisoned in this function, so my guess is it'd crash there.
-
-> --
-> -Dionna Glaze, PhD (she/her)
-
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 85357dc4d231..5cf4be6a33ba 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2242,17 +2242,18 @@ static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ 
+ 		data->id_block_en = 1;
+ 		data->id_block_paddr = __sme_pa(id_block);
+-	}
+ 
+-	if (params.auth_key_en) {
+ 		id_auth = psp_copy_user_blob(params.id_auth_uaddr, KVM_SEV_SNP_ID_AUTH_SIZE);
+ 		if (IS_ERR(id_auth)) {
+ 			ret = PTR_ERR(id_auth);
+ 			goto e_free_id_block;
+ 		}
+ 
+-		data->auth_key_en = 1;
+ 		data->id_auth_paddr = __sme_pa(id_auth);
++
++		if (params.auth_key_en) {
++			data->auth_key_en = 1;
++		}
+ 	}
+ 
+ 	data->gctx_paddr = __psp_pa(sev->snp_context);
 -- 
-Sincerely yours,
-Mike.
+2.37.1
+
