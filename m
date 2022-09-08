@@ -1,117 +1,91 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940163C0F
-	for <linux-coco@lists.linux.dev>; Thu,  8 Sep 2022 15:11:35 +0000 (UTC)
-Received: by mail-pf1-f172.google.com with SMTP id c198so8360591pfc.13
-        for <linux-coco@lists.linux.dev>; Thu, 08 Sep 2022 08:11:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD33D3D65
+	for <linux-coco@lists.linux.dev>; Thu,  8 Sep 2022 16:23:20 +0000 (UTC)
+Received: by mail-ej1-f53.google.com with SMTP id go34so4242519ejc.2
+        for <linux-coco@lists.linux.dev>; Thu, 08 Sep 2022 09:23:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=aTBij0MKfHujyUmk5AcvjcEPDYsuhsMOVk1UDlCpwHM=;
-        b=M8sDj3UF6N8I7JnxOD5qpHcBpkICJr+jJbnZkTKusip2DzAxWgiNLQ6mj7h8OEkpD6
-         7fubBL7T9kK7c3AohI7ypbXz811/OZvC5CTxzgbqPwOybqN9tFi6uw95Zcd5vSciyPK4
-         S+W7qD3SR4im8zMU0XHmJV/sA6tAILo//CEVix9HLeB9cKQUbxOKii2rsTpxve1LMRmx
-         5FFykgBQ2jC1ECefm4B0Xb/aBy+8hjxOghGPi8x3hmyqP5wIoPkS8aXgm2XC5x1Dnxt4
-         BPW0xb5jRAoqOXGUXO/9jXwGdfBAV11vjdL1x2Ewj6q4oFlLSU6ZWuyxR/86W9GK6GRG
-         dpvw==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=bdMeN6FnqK1npcK6VCQhFv3779r/x2/CSa4ry5MamXU=;
+        b=jM4kqEGLo0x4c9SugkK2RZKbi8J75NwCzwL+WzDAvgOr3Awyy2M5reAUlyKUIwSmVQ
+         J9BI623JbDsn4hxWXBzGM83644hklSb/eJHFal/qOnvs0cA5VWs+JZrHroKPGVlfzABE
+         QM900Eal8QIX1v9trvzd3GY/4kUfcnb02cpp+9UP+vtuyX7zS4gRkhFcNNcpX4EOp1t5
+         KVrLCi1YIyLUM44gXELwOOnu8pLYGYFBJo7roHRlNiMDIxL9Nd9BiMUzAjSEqOPoCp7r
+         BJxtczTXopJ0WpmOUI5eQgMgYSP427DqVjx3c6Ov43PItJTNHC8ZNQdB7GqzQYkfhnxz
+         qxNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=aTBij0MKfHujyUmk5AcvjcEPDYsuhsMOVk1UDlCpwHM=;
-        b=MiodBCNsIbusOC80ngXlvX4y0GYLR+/RV0OGrNDOvwtOBQ3m83NJFVVEUozCKua4Jl
-         gBNJaK6sGIAuFQcS2+x3v0aeAS0PXuXU5iM5e7RaiiRbYu1yCaerFO1fqIYusiUCNNFl
-         dmMH9Y0jNQulZxS1vXxqA/BAhDHALpsV5SyxL3+yHby8g1u7U843Q3HzZCBBYbU4mNCa
-         /hx4W6964QpnXbVSYC6lDV3FKLb1jjzLujbMkMJWUkKzIvZE9Quq8fie+6oM0s7WIvx8
-         iagGPKzqtuUZrw2BamMqWZLyfCkMT3hzQQ8fwjByUKzKpVhRWOVZ9wJF7T5sC4QwrsA4
-         ojnA==
-X-Gm-Message-State: ACgBeo1gi6ev1anePXa624p33Z6sGM1NCKdb2vurjP3ECsDwPPUTNRO/
-	/FudbvF3URWQ/sLfrPaWKmk+ug==
-X-Google-Smtp-Source: AA6agR52H9GqkwF66V9j3sYZCEhIamP67gNhXAIhkPKoFl7VQPznDhLiYGxoAwhmixzGU+O0GNIEfA==
-X-Received: by 2002:a05:6a00:2395:b0:536:8296:51d5 with SMTP id f21-20020a056a00239500b00536829651d5mr9625772pfc.84.1662649894875;
-        Thu, 08 Sep 2022 08:11:34 -0700 (PDT)
-Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id jc3-20020a17090325c300b00174abcb02d6sm10263695plb.235.2022.09.08.08.11.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Sep 2022 08:11:34 -0700 (PDT)
-Date: Thu, 8 Sep 2022 15:11:30 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Harald Hoyer <harald@profian.com>
-Cc: ashish.kalra@amd.com, ak@linux.intel.com, alpergun@google.com,
-	ardb@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com,
-	dgilbert@redhat.com, dovmurik@linux.ibm.com, hpa@zytor.com,
-	jarkko@kernel.org, jmattson@google.com, jroedel@suse.de,
-	kirill@shutemov.name, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org,
-	marcorr@google.com, michael.roth@amd.com, mingo@redhat.com,
-	pbonzini@redhat.com, peterz@infradead.org, pgonda@google.com,
-	rientjes@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	slp@redhat.com, srinivas.pandruvada@linux.intel.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, tobin@ibm.com,
-	tony.luck@intel.com, vbabka@suse.cz, vkuznets@redhat.com,
-	x86@kernel.org
-Subject: Re: [[PATCH for v6]] KVM: SEV: fix snp_launch_finish
-Message-ID: <YxoGItJDTEjfctaS@google.com>
-References: <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
- <20220908145557.1912158-1-harald@profian.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=bdMeN6FnqK1npcK6VCQhFv3779r/x2/CSa4ry5MamXU=;
+        b=fkQamxw/dR/kjqMYkccz2FUWUYjDmYpP05AgrYf3g46ex0DqzFGFOFeL/OPdjYUlRY
+         feZnB8ylOb3vptIkzE6Ezo5qD9yU24DmrXByxbIYxe4xebqIBBUfZy+oMC9eziinzZuM
+         A5scUFhT0Kyova0SomnWgKGr8jspTRvvm+xxDY9eo/EM4sCfXHnZeZmSxCI38UrJKTW1
+         mH5VupfbP+WCmiGwv/D0On57mRoO0Y7PExLnTYfpnCmKy0xjuMlh3a3cY5lmwIQzbMe7
+         zUeSUdIZesJGx04Yv8bOFnCRhXPrQyp1EN7uzEAEnJeZztndxgxel2DGwLih42l99oZ1
+         PdVA==
+X-Gm-Message-State: ACgBeo1TKem1ezBN1GkwZZRn0NftZSUa1vs1J2GvRWaY9+KRiDX5PJBM
+	+M7Fif0F0F7uGZ8LuuGPcdWTXPq801sTi2SPBBm7BA==
+X-Google-Smtp-Source: AA6agR5TviwaWPrrPIjyGF6zpvI4oDr1TURdLxrCAE9HpPDgDYml5qDeUiGF2d+s09eD9ex7BL2ntp4DzywuHlwtCbg=
+X-Received: by 2002:a17:907:948f:b0:770:639:fbd1 with SMTP id
+ dm15-20020a170907948f00b007700639fbd1mr6304073ejc.255.1662654198886; Thu, 08
+ Sep 2022 09:23:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220908145557.1912158-1-harald@profian.com>
+References: <20220614120231.48165-1-kirill.shutemov@linux.intel.com>
+ <20220614120231.48165-3-kirill.shutemov@linux.intel.com> <8cf143e7-2b62-1a1e-de84-e3dcc6c027a4@suse.cz>
+ <20220810141959.ictqchz7josyd7pt@techsingularity.net> <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
+ <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com> <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
+ <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com> <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
+ <YxncAElGrPEGRYg1@linux.ibm.com>
+In-Reply-To: <YxncAElGrPEGRYg1@linux.ibm.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Thu, 8 Sep 2022 09:23:07 -0700
+Message-ID: <CAAH4kHaP8JUh0Z4rF83=2RZTGMATT5MHot6rAnAwt79PL64mVQ@mail.gmail.com>
+Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
+To: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Mel Gorman <mgorman@techsingularity.net>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
+	Andy Lutomirski <luto@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>, 
+	Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Marcelo Cerri <marcelo.cerri@canonical.com>, 
+	tim.gardner@canonical.com, Khalid ElMously <khalid.elmously@canonical.com>, 
+	philip.cox@canonical.com, "the arch/x86 maintainers" <x86@kernel.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, linux-coco@lists.linux.dev, 
+	linux-efi <linux-efi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 08, 2022, Harald Hoyer wrote:
-> The `params.auth_key_en` indicator does _not_ specify, whether an
-> ID_AUTH struct should be sent or not, but, wheter the ID_AUTH struct
-> contains an author key or not. The firmware always expects an ID_AUTH block.
-> 
-> Link: https://lore.kernel.org/all/cover.1655761627.git.ashish.kalra@amd.com/
+>
+> Looks like the first access to the memory map fails, although I think
+> it's not in INIT_LIST_HEAD() but rather in init_page_count().
+>
+> I'd start with making sure that page_alloc::memmap_alloc() actually returns
+> accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
+> will poisoned in this function, so my guess is it'd crash there.
+>
 
-Please provide feedback by directly responding to whatever patch/email is buggy.
-Or if that's too complicated for some reason (unlikely in this case), provide the
-fixup patch to the author *off-list*.
+That's a wonderful hint, thank you! I did not run this test
+CONFIG_DEBUG_VM set, but you think it's possible it could still be
+here?
 
-> Signed-off-by: Harald Hoyer <harald@profian.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 85357dc4d231..5cf4be6a33ba 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2242,17 +2242,18 @@ static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  
->  		data->id_block_en = 1;
->  		data->id_block_paddr = __sme_pa(id_block);
-> -	}
->  
-> -	if (params.auth_key_en) {
->  		id_auth = psp_copy_user_blob(params.id_auth_uaddr, KVM_SEV_SNP_ID_AUTH_SIZE);
->  		if (IS_ERR(id_auth)) {
->  			ret = PTR_ERR(id_auth);
->  			goto e_free_id_block;
->  		}
->  
-> -		data->auth_key_en = 1;
->  		data->id_auth_paddr = __sme_pa(id_auth);
-> +
-> +		if (params.auth_key_en) {
+> --
+> Sincerely yours,
+> Mike.
 
-While I'm here though...  Single line if-statements don't need curly braces.
 
-> +			data->auth_key_en = 1;
-> +		}
->  	}
->  
->  	data->gctx_paddr = __psp_pa(sev->snp_context);
-> -- 
-> 2.37.1
-> 
+
+-- 
+-Dionna Glaze, PhD (she/her)
