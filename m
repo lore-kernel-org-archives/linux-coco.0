@@ -1,296 +1,305 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2040.outbound.protection.outlook.com [40.107.237.40])
+Received: from hoyer.xyz (hoyer.xyz [85.25.100.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655C3610E
-	for <linux-coco@lists.linux.dev>; Thu,  8 Sep 2022 22:29:03 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oIc77U9v3JGymKPalKEEooIlQBBmDGaA5kfbJc1PxnTZhPncpAUP+lG614Pdkd1Z3v3ZBiP8SWAphK+wMgJsN8BgKBUSN68sXLlvlD0S/hGf7I62go/N2DVy1VC5WuWpswDaytpVAS7GhuwfPIwjdwG49tQssEN0TQm7DFGaS/z2BEwi01TCPxvGaELl89KQkKbrcdmUCa9d9TIEpCnQ1PNVx0Dt+TXNaBltAc67NDwqUqDtKqeinhNcuiMpCmNkIwU3fhtSeseZbD+0ry5PuO8n4VgnPiPc1u9UhWb+Xn+UdhFoTIJYywKMiLmPOhuEdzwbDlSOWZLzMYaW0CslPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3b4KL6z5FWhyrR8E6jExBB8Ta3XF8MB+Evt/Hg6x8Ew=;
- b=NV+QIHFOE8VvMGkVVaTWaxz2zSaKTGlWFWpMeuZACiRo63T7q43vKF0kDMarLDWqSGI+RHr5Ph4QPm4CiE3qWU990eOa6IlYg8UgZLlpTgmUdu8B9q4khjzC58Q0TTtBwCwheulvZPOHOEeXXIGTMb7juapNHk+kK5WqW/XBNpaZ2ZZUyku8iSRjZWJ4whKCSbO+M9NEynZZd2nvMibGRua83EaifKWMY6/Cz4GAZZKzlSMgLjbHs+MKjQOe5Jz8ktmbKkXhz2l4Tc2vhV9k/CqtHIT302z2QzuCU2eoMlCE4CJ5IyJYk1CCt49qn/a5eCzFfKGXMwMWqzhjPqM09w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3b4KL6z5FWhyrR8E6jExBB8Ta3XF8MB+Evt/Hg6x8Ew=;
- b=g44DKDBndEDc6H0YCnACy2Wz2eHMfq4qmm7d6glpUHeBrmpGgANBCGmXdKGeKli8gKObt/Llnsj5valuNua3t4qNHDZCreA+PGH/kqz9V9m4qU8BSp1ZoeGnVcdmgn9YKaxvT4w2mCyuPapZEazbV9PVc9erklNju3ZTf8eWp5o=
-Received: from BN0PR10CA0021.namprd10.prod.outlook.com (2603:10b6:408:143::24)
- by BL0PR12MB5009.namprd12.prod.outlook.com (2603:10b6:208:1c2::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.14; Thu, 8 Sep
- 2022 22:29:00 +0000
-Received: from BN8NAM11FT068.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:143:cafe::6b) by BN0PR10CA0021.outlook.office365.com
- (2603:10b6:408:143::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5612.12 via Frontend
- Transport; Thu, 8 Sep 2022 22:29:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT068.mail.protection.outlook.com (10.13.177.69) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5612.13 via Frontend Transport; Thu, 8 Sep 2022 22:29:00 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Thu, 8 Sep
- 2022 17:28:58 -0500
-Date: Thu, 8 Sep 2022 17:28:43 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Brijesh Singh <brijesh.singh@amd.com>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
- Molnar" <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, Tom Lendacky
-	<thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel
-	<ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov
-	<vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, Jim Mattson
-	<jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, Peter Gonda
-	<pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, "Srinivas
- Pandruvada" <srinivas.pandruvada@linux.intel.com>, David Rientjes
-	<rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>, "Tobin
- Feldman-Fitzthum" <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, "Vlastimil
- Babka" <vbabka@suse.cz>, "Kirill A . Shutemov" <kirill@shutemov.name>, "Andi
- Kleen" <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <jarkko@profian.com>
-Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
- map and unmap
-Message-ID: <20220908222843.x6jort7kaw4qnft3@amd.com>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-40-brijesh.singh@amd.com>
- <YWYm/Gw8PbaAKBF0@google.com>
- <YWc+sRwHxEmcZZxB@google.com>
- <4e41dcff-7c7b-cf36-434a-c7732e7e8ff2@amd.com>
- <YWm3bOFcUSlyZjNb@google.com>
- <20220908212114.sqne7awimfwfztq7@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC997E3
+	for <linux-coco@lists.linux.dev>; Fri,  9 Sep 2022 08:23:09 +0000 (UTC)
+Received: from [192.168.178.157] (p5b0acefd.dip0.t-ipconnect.de [91.10.206.253])
+	(authenticated bits=0)
+	by hoyer.xyz (8.16.1/8.15.2) with ESMTPSA id 28984EOS3014416
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 9 Sep 2022 10:04:14 +0200
+Message-ID: <a6a01e3f-da3e-84a0-ba0d-fd00cd5e6a2a@hoyer.xyz>
+Date: Fri, 9 Sep 2022 10:04:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20220908212114.sqne7awimfwfztq7@amd.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT068:EE_|BL0PR12MB5009:EE_
-X-MS-Office365-Filtering-Correlation-Id: e149aba8-cd9c-4a46-7691-08da91e98703
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	mbDWHgK2utvKJzReekh8PiY+8tEEZXHST6isJHFYZkW2qEomLZHsdzSojyGeQABiOT4lghUM1oD/+Q3r6Q74ccBQGFaQ5gmwOs2NuE48I/a7m8niM2KDzcO7T0WpV2ig4hKkzbq0cFz2xBX2AHufeM6r+LQNiLuIiV6sqU+OBD5RPLEVNPgvAnCjRSDFgSvZgycXnJ6zxa00uaJ0f7Ey8glmcprh5aJPZ/biWxIxPTjOHAgfkEbXM8WJAelUSVtW3xNlikSR9n9WQ9Trs4pu9KOlzS3CduqDuFJDRSAOoRiKUTSddKSnkKgLZb8/JtHqZnweeqkTOTvuFbI6uqMJJ37oUOz6/dxWulrhjMLzrdQywHe/NxS19u/eYCH9zo9EfX+zkPMeVNjn/v5ck9wNnSQ4josbSeYvliPJ7eIHl71db6NXpDcnuG+RAnoCpaKt3pxggMBKVUz6R+D8GT9wflyvqJdSp1C/KMPeELQKBAPjbqPi75LBaZ0MAK9/0w6bjtMBbya0gIa20j55h7TlVAi2G0OaqoiLypkBAsafLVLkSnkDlV8YqELkR/fzcI0kdfmm6xzoJbgBjBd95cV2m3vLWQy9lEBHNvp3Fpzj1kJl7SIxSHcJpuM6mkRMOPbDLTuEFEoVTywcguZX9bh8IlPTDQOrfknsg5eYkxqQ+NymqjbrQVC3mG3LS6lLyUCAJv3scX4btEYHkVJfhEXnHZRO3UJVp+g3/3JVm7Kya5mK5oEwdZb+CPzSxjkt8tZyBOdYMPREcGKPPqomM2+VdrT9DKXNCj3bNV35CrNJ+XdMDjCjOU44QxYyvy+A9fFp
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230016)(4636009)(39860400002)(136003)(376002)(346002)(396003)(36840700001)(40470700004)(46966006)(1076003)(41300700001)(426003)(47076005)(2616005)(6666004)(16526019)(478600001)(26005)(186003)(40480700001)(53546011)(336012)(82310400005)(86362001)(40460700003)(81166007)(356005)(82740400003)(83380400001)(36756003)(5660300002)(70206006)(316002)(36860700001)(7406005)(70586007)(4326008)(2906002)(8676002)(7416002)(8936002)(6916009)(44832011)(54906003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2022 22:29:00.4123
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e149aba8-cd9c-4a46-7691-08da91e98703
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT068.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB5009
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH Part2 v6 28/49] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_FINISH
+ command
+Content-Language: en-US
+To: Ashish Kalra <Ashish.Kalra@amd.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+        thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+        pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+        jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+        slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+        srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+        dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de,
+        michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+        ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+        dgilbert@redhat.com, jarkko@kernel.org
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
+From: Harald Hoyer <harald@hoyer.xyz>
+In-Reply-To: <6a513cf79bf71c479dbd72165faf1d804d77b3af.1655761627.git.ashish.kalra@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+	DATE_IN_FUTURE_24_48,FROM_SUSPICIOUS_NTLD,NICE_REPLY_A,
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on hoyer.xyz
 
-On Thu, Sep 08, 2022 at 04:21:14PM -0500, Michael Roth wrote:
-> On Fri, Oct 15, 2021 at 05:16:28PM +0000, Sean Christopherson wrote:
-> > On Fri, Oct 15, 2021, Brijesh Singh wrote:
-> > > 
-> > > On 10/13/21 1:16 PM, Sean Christopherson wrote:
-> > > > On Wed, Oct 13, 2021, Sean Christopherson wrote:
-> > > >> On Fri, Aug 20, 2021, Brijesh Singh wrote:
-> > > >>> When SEV-SNP is enabled in the guest VM, the guest memory pages can
-> > > >>> either be a private or shared. A write from the hypervisor goes through
-> > > >>> the RMP checks. If hardware sees that hypervisor is attempting to write
-> > > >>> to a guest private page, then it triggers an RMP violation #PF.
-> > > >>>
-> > > >>> To avoid the RMP violation, add post_{map,unmap}_gfn() ops that can be
-> > > >>> used to verify that its safe to map a given guest page. Use the SRCU to
-> > > >>> protect against the page state change for existing mapped pages.
-> > > >> SRCU isn't protecting anything.  The synchronize_srcu_expedited() in the PSC code
-> > > >> forces it to wait for existing maps to go away, but it doesn't prevent new maps
-> > > >> from being created while the actual RMP updates are in-flight.  Most telling is
-> > > >> that the RMP updates happen _after_ the synchronize_srcu_expedited() call.
-> > > > Argh, another goof on my part.  Rereading prior feedback, I see that I loosely
-> > > > suggested SRCU as a possible solution.  That was a bad, bad suggestion.  I think
-> > > > (hope) I made it offhand without really thinking it through.  SRCU can't work in
-> > > > this case, because the whole premise of Read-Copy-Update is that there can be
-> > > > multiple copies of the data.  That simply can't be true for the RMP as hardware
-> > > > operates on a single table.
-> > > >
-> > > > In the future, please don't hesitate to push back on and/or question suggestions,
-> > > > especially those that are made without concrete examples, i.e. are likely off the
-> > > > cuff.  My goal isn't to set you up for failure :-/
-> > > 
-> > > What do you think about going back to my initial proposal of per-gfn
-> > > tracking [1] ? We can limit the changes to just for the kvm_vcpu_map()
-> > > and let the copy_to_user() take a fault and return an error (if it
-> > > attempt to write to guest private). If PSC happen while lock is held
-> > > then simplify return and let the guest retry PSC.
-> > 
-> > That approach is also broken as it doesn't hold a lock when updating host_write_track,
-> > e.g. the count can be corrupted if writers collide, and nothing blocks writers on
-> > in-progress readers.
-> > 
-> > I'm not opposed to a scheme that blocks PSC while KVM is reading, but I don't want
-> > to spend time iterating on the KVM case until consensus has been reached on how
-> > exactly RMP updates will be handled, and in general how the kernel will manage
-> > guest private memory.
-> 
-> Hi Sean,
-> 
-> (Sorry in advance for the long read, but it touches on a couple
-> inter-tangled topics that I think are important for this series.)
-> 
-> While we do still remain committed to working with community toward
-> implementing a UPM solution, we would still like to have a 'complete'
-> solution in the meantime, if at the very least to use as a basis for
-> building out other parts of the stack, or for enabling early adopters
-> downstream doing the same.
-> 
-> Toward that end, there are a couple areas that need to be addressed,
-> (and remain unaddressed with v6, since we were planning to leverage UPM
-> to handle them and so left them as open TODOs at the time):
-> 
->  1) this issue of guarding against shared->private conversions for pages
->     that are in-use by kernel
->  2) how to deal with unmapping/splitting the direct map
-> 
-> (These 2 things end up being fairly tightly coupled, which is why I'm
-> trying to cover them both in this email. Will explain more in a bit)
-> 
-> You mentioned elsewhere how 1) would be nicely addressed with UPM, since
-> the conversion would only point the guest to an entirely new page, while
-> leaving the shared page intact (at least until the normal notifiers do
-> their thing in response to any subsequent discard operations from
-> userspace). If the guest breaks because it doesn't see the write, that's
-> okay, because it's not supposed to be switching in-use shared pages to
-> private while they are being used. (though the pKVM folks did note in v7
-> of private memslot patches that they actually use the same physical page
-> for both shared/private, so I'm not sure if that approach will still
-> stack up in that context, if it ends up being needed there)
-> 
-> So in the context of this interim solution, we're trying to look for a
-> solution that's simple enough that it can be used reliably, without
-> introducing too much additional complexity into KVM. There is one
-> approach that seems to fit that bill, that Brijesh attempted in an
-> earlier version of this series (I'm not sure what exactly was the
-> catalyst to changing the approach, as I wasn't really in the loop at
-> the time, but AIUI there weren't any showstoppers there, but please
-> correct me if I'm missing anything):
-> 
->  - if the host is writing to a page that it thinks is supposed to be
->    shared, and the guest switches it to private, we get an RMP fault
->    (actually, we will get a !PRESENT fault, since as of v5 we now
->    remove the mapping from the directmap as part of conversion)
->  - in the host #PF handler, if we see that the page is marked private
->    in the RMP table, simply switch it back to shared
->  - if this was a bug on the part of the host, then the guest will see
->    the validated bit was cleared, and get a #VC where it can
->    terminate accordingly
->  - if this was a bug (or maliciousness) on the part of the guest,
->    then the behavior is unexpected anyway, and it will be made
->    aware this by the same mechanism
-> 
-> We've done some testing with this approach and it seems to hold up,
-> but since we also need the handler to deal with the !PRESENT case
-> (because of the current approach of nuking directmap entry for
-> private pages), there's a situation that can't be easily resolved
-> with this approach:
-> 
->   # CASE1: recoverable
->   
->     THREAD 1              THREAD 2
->     - #PF(!PRESENT)       - #PF(!PRESENT)
->     - restore directmap
->     - RMPUPDATE(shared)
->                           - not private? okay to retry since maybe it was
->                             fixed up already
->   
->   # CASE2: unrecoverable
->   
->     THREAD 1
->     - broken kernel breaks directmap/init-mm, not related to SEV
->     - #PF(!PRESENT)
->     - not private? we should oops, since retrying might cause a loop
->   
-> The reason we can't distinguish between recoverable/unrecoverable is
-> because the kernel #PF handling here needs to happen for both !PRESENT
-> and for RMP violations. This is due to how we unmap from directmap as
-> part of shared->private conversion.
-> 
-> So we have to take the pessimistic approach due to CASE2, which
-> means that if CASE1 pops up, we'll still have a case where guest can
-> cause a crash/loop.
-> 
-> That where 2) comes into play. If we go back to the original approach
-> (as of v4) of simply splitting the directmap when we do shared->private
-> conversions, then we can limit the #PF handling to only have to deal
-> with cases where there's an RMP violation and X86_PF_RMP is set, which
-> makes it safe to retry to handle spurious cases like case #1.
-> 
-> AIUI, this is still sort of an open question, but you noted how nuking
-> the directmap without any formalized interface for letting the kernel
-> know about it could be problematic down the road, which also sounds
-> like the sort of thing more suited for having UPM address at a more
-> general level, since there are similar requirements for TDX as well.
-> 
-> AIUI there are 2 main arguments against splitting the directmap:
->  a) we can't easily rebuild it atm
->  b) things like KSM might still tries to access private pages
-> 
-> But unmapping also suffers from a), since we still end up splitting the
-> directmap unless we remove pages in blocks of 2M. But nothing prevents
-> a guest from switching a single 4K page to private, in which case we
-> are forced to split. That would be normal behavior on the part of the
-> guest for setting up GHCB pages/etc, so we still end up splitting the
-> directmap over time.
+Replying inline to the patch (and not with a in-reply-to patch, as nitted by Sean Christopherson).
 
-One more thing to note here, is with the splitting approach, we also
-have the option of doing all the splitting when the region is registered
-via KVM_MEMORY_ENCRYPT_REG_REGION. If unsplitting becomes possible in
-the future, we could then handle that in KVM_MEMORY_ENCRYPT_UNREG_REGION
-all at once which, where we'd have a bit more flexibility for going
-about that.
+Am 21.06.22 um 01:08 schrieb Ashish Kalra:
+> From: Brijesh Singh <brijesh.singh@amd.com>
+> 
+> The KVM_SEV_SNP_LAUNCH_FINISH finalize the cryptographic digest and stores
+> it as the measurement of the guest at launch.
+> 
+> While finalizing the launch flow, it also issues the LAUNCH_UPDATE command
+> to encrypt the VMSA pages.
+> 
+> If its an SNP guest, then VMSA was added in the RMP entry as
+> a guest owned page and also removed from the kernel direct map
+> so flush it later after it is transitioned back to hypervisor
+> state and restored in the direct map.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>   .../virt/kvm/x86/amd-memory-encryption.rst    |  22 ++++
+>   arch/x86/kvm/svm/sev.c                        | 119 ++++++++++++++++++
+>   include/uapi/linux/kvm.h                      |  14 +++
+>   3 files changed, 155 insertions(+)
+> 
+> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> index 62abd5c1f72b..750162cff87b 100644
+> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> @@ -514,6 +514,28 @@ Returns: 0 on success, -negative on error
+>   See the SEV-SNP spec for further details on how to build the VMPL permission
+>   mask and page type.
+>   
+> +21. KVM_SNP_LAUNCH_FINISH
+> +-------------------------
+> +
+> +After completion of the SNP guest launch flow, the KVM_SNP_LAUNCH_FINISH command can be
+> +issued to make the guest ready for the execution.
+> +
+> +Parameters (in): struct kvm_sev_snp_launch_finish
+> +
+> +Returns: 0 on success, -negative on error
+> +
+> +::
+> +
+> +        struct kvm_sev_snp_launch_finish {
+> +                __u64 id_block_uaddr;
+> +                __u64 id_auth_uaddr;
+> +                __u8 id_block_en;
+> +                __u8 auth_key_en;
+> +                __u8 host_data[32];
+> +        };
+> +
+> +
+> +See SEV-SNP specification for further details on launch finish input parameters.
+>   
+>   References
+>   ==========
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index a9461d352eda..a5b90469683f 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2095,6 +2095,106 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>   	return ret;
+>   }
+>   
+> +static int snp_launch_update_vmsa(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> +{
+> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> +	struct sev_data_snp_launch_update data = {};
+> +	int i, ret;
+> +
+> +	data.gctx_paddr = __psp_pa(sev->snp_context);
+> +	data.page_type = SNP_PAGE_TYPE_VMSA;
+> +
+> +	for (i = 0; i < kvm->created_vcpus; i++) {
+> +		struct vcpu_svm *svm = to_svm(xa_load(&kvm->vcpu_array, i));
+> +		u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
+> +
+> +		/* Perform some pre-encryption checks against the VMSA */
+> +		ret = sev_es_sync_vmsa(svm);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Transition the VMSA page to a firmware state. */
+> +		ret = rmp_make_private(pfn, -1, PG_LEVEL_4K, sev->asid, true);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Issue the SNP command to encrypt the VMSA */
+> +		data.address = __sme_pa(svm->sev_es.vmsa);
+> +		ret = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_UPDATE,
+> +				      &data, &argp->error);
+> +		if (ret) {
+> +			snp_page_reclaim(pfn);
+> +			return ret;
+> +		}
+> +
+> +		svm->vcpu.arch.guest_state_protected = true;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> +{
+> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> +	struct sev_data_snp_launch_finish *data;
+> +	void *id_block = NULL, *id_auth = NULL;
+> +	struct kvm_sev_snp_launch_finish params;
+> +	int ret;
+> +
+> +	if (!sev_snp_guest(kvm))
+> +		return -ENOTTY;
+> +
+> +	if (!sev->snp_context)
+> +		return -EINVAL;
+> +
+> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
+> +		return -EFAULT;
+> +
+> +	/* Measure all vCPUs using LAUNCH_UPDATE before we finalize the launch flow. */
+> +	ret = snp_launch_update_vmsa(kvm, argp);
 
--Mike
+This poses a real problem for those, who want to precalculate the digest beforehand and sign their TEE without loading the TEE:
+1. We don't know the contents of the VMSA, nor the hash of it.
+2. Who guarantees, that future kernels have the same VMSA contents?
 
-> 
-> And for b), as you noted, this is already something that SEV/SEV-ES
-> need to deal with, and at least in the case of SNP guest things are
-> a bit better since:
-> 
->   -  if some kernel thread tried to write to private memory, they
->      would notice if some errant kernel thread tried to write to guest
->      memory, since #PF handler with flip the page and unset the
->      validated bit on that memory.
-> 
->   - for reads, they will get ciphertext, which isn't any worse than
->     reading unencrypted guest memory for anything outside of KVM that
->     specifically knows what it is expecting to read there (KSM being
->     one exception, since it'll waste cycles cmp'ing ciphertext, but
->     there's no way to make it work anyway, and we would be fine with
->     requiring it to be disabled if that is a concern)
-> 
-> So that's sort of the context for why we're considering these 2 changes.
-> Any input on these is welcome, but at the very least wanted to provide
-> our rationale for past reviewers.
-> 
-> Thanks!
-> 
-> -Mike
+I would propose at least one additional ioctl parameter specifying the final VMSA for the SNP_PAGE_TYPE_VMSA snp_launch_update_vmsa.
+This parameter could specify to use:
+- the current VMSA
+- or a VMSA resembling the CPU state on reset, where the contents is guaranteed to never change and have a defined digest
+- or a user provided VMSA
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	data = kzalloc(sizeof(*data), GFP_KERNEL_ACCOUNT);
+> +	if (!data)
+> +		return -ENOMEM;
+> +
+> +	if (params.id_block_en) {
+> +		id_block = psp_copy_user_blob(params.id_block_uaddr, KVM_SEV_SNP_ID_BLOCK_SIZE);
+> +		if (IS_ERR(id_block)) {
+> +			ret = PTR_ERR(id_block);
+> +			goto e_free;
+> +		}
+> +
+> +		data->id_block_en = 1;
+> +		data->id_block_paddr = __sme_pa(id_block);
+> +	}
+> +
+> +	if (params.auth_key_en) {
+
+The `params.auth_key_en` indicator does _not_ specify, whether an ID_AUTH struct should be sent or not,
+but wheter the ID_AUTH struct contains an author key or not. The firmware always expects an ID_AUTH block.
+
+So, please move the upper `if` to enclose only `data->auth_key_en = 1;`, or use my patch sent in-reply to this mail yesterday.
+
+> +		id_auth = psp_copy_user_blob(params.id_auth_uaddr, KVM_SEV_SNP_ID_AUTH_SIZE);
+> +		if (IS_ERR(id_auth)) {
+> +			ret = PTR_ERR(id_auth);
+> +			goto e_free_id_block;
+> +		}
+> +
+> +		data->auth_key_en = 1;
+> +		data->id_auth_paddr = __sme_pa(id_auth);
+> +	}
+> +
+> +	data->gctx_paddr = __psp_pa(sev->snp_context);
+> +	ret = sev_issue_cmd(kvm, SEV_CMD_SNP_LAUNCH_FINISH, data, &argp->error);
+> +
+> +	kfree(id_auth);
+> +
+> +e_free_id_block:
+> +	kfree(id_block);
+> +
+> +e_free:
+> +	kfree(data);
+> +
+> +	return ret;
+> +}
+> +
+>   int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
+>   {
+>   	struct kvm_sev_cmd sev_cmd;
+> @@ -2191,6 +2291,9 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
+>   	case KVM_SEV_SNP_LAUNCH_UPDATE:
+>   		r = snp_launch_update(kvm, &sev_cmd);
+>   		break;
+> +	case KVM_SEV_SNP_LAUNCH_FINISH:
+> +		r = snp_launch_finish(kvm, &sev_cmd);
+> +		break;
+>   	default:
+>   		r = -EINVAL;
+>   		goto out;
+> @@ -2696,11 +2799,27 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
+>   
+>   	svm = to_svm(vcpu);
+>   
+> +	/*
+> +	 * If its an SNP guest, then VMSA was added in the RMP entry as
+> +	 * a guest owned page. Transition the page to hypervisor state
+> +	 * before releasing it back to the system.
+> +	 * Also the page is removed from the kernel direct map, so flush it
+> +	 * later after it is transitioned back to hypervisor state and
+> +	 * restored in the direct map.
+> +	 */
+> +	if (sev_snp_guest(vcpu->kvm)) {
+> +		u64 pfn = __pa(svm->sev_es.vmsa) >> PAGE_SHIFT;
+> +
+> +		if (host_rmp_make_shared(pfn, PG_LEVEL_4K, false))
+> +			goto skip_vmsa_free;
+> +	}
+> +
+>   	if (vcpu->arch.guest_state_protected)
+>   		sev_flush_encrypted_page(vcpu, svm->sev_es.vmsa);
+>   
+>   	__free_page(virt_to_page(svm->sev_es.vmsa));
+>   
+> +skip_vmsa_free:
+>   	if (svm->sev_es.ghcb_sa_free)
+>   		kvfree(svm->sev_es.ghcb_sa);
+>   }
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 9b36b07414ea..5a4662716b6a 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -1814,6 +1814,7 @@ enum sev_cmd_id {
+>   	KVM_SEV_SNP_INIT,
+>   	KVM_SEV_SNP_LAUNCH_START,
+>   	KVM_SEV_SNP_LAUNCH_UPDATE,
+> +	KVM_SEV_SNP_LAUNCH_FINISH,
+>   
+>   	KVM_SEV_NR_MAX,
+>   };
+> @@ -1948,6 +1949,19 @@ struct kvm_sev_snp_launch_update {
+>   	__u8 vmpl1_perms;
+>   };
+>   
+> +#define KVM_SEV_SNP_ID_BLOCK_SIZE	96
+> +#define KVM_SEV_SNP_ID_AUTH_SIZE	4096
+> +#define KVM_SEV_SNP_FINISH_DATA_SIZE	32
+> +
+> +struct kvm_sev_snp_launch_finish {
+> +	__u64 id_block_uaddr;
+> +	__u64 id_auth_uaddr;
+> +	__u8 id_block_en;
+> +	__u8 auth_key_en;
+> +	__u8 host_data[KVM_SEV_SNP_FINISH_DATA_SIZE];
+> +	__u8 pad[6];
+> +};
+> +
+>   #define KVM_DEV_ASSIGN_ENABLE_IOMMU	(1 << 0)
+>   #define KVM_DEV_ASSIGN_PCI_2_3		(1 << 1)
+>   #define KVM_DEV_ASSIGN_MASK_INTX	(1 << 2)
+
