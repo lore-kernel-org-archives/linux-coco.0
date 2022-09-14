@@ -1,163 +1,181 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D053FC2
-	for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 16:15:33 +0000 (UTC)
-Received: by mail-pj1-f46.google.com with SMTP id q3so15062058pjg.3
-        for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 09:15:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A92815A9
+	for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 16:32:20 +0000 (UTC)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-349c4310cf7so21584437b3.3
+        for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 09:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=8A1QBrYdNqwfKSHedR+VNWdvV9LDIo8DjOKUwjNPjrY=;
-        b=mvQUfDz6ojr7ZAMyHwdFbIr04Tib8sObkLdz585rF4NjcanR41FcX6tQ1gqbYu4Ttl
-         Fu0XNYqOA8b4p4ooruVgUBMH4SpJKWDKtJPt3NmQ5qog6dHoc6uVRsUrx/4AJhyTV8BP
-         hwwv0WhgV9E9N1JqLQqd/gOzzw/SfL68NBvgFd2yeSjoSquzbymUv9jmX+bDZCpbrcqE
-         IWV85+8F1DZwNxLu7gvOFZS12gaZb6YWoH30BucapjCD5UHnBfWByH/12R4gijybVh8Z
-         6rzxzDR1nASgbMYDhAOKQnFfdGeCOT2I1IGFSdLfRmwD7NpQfKB6kdhW0x/vCA2l/emH
-         spRg==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=TLSZ0fG4jkVsKxHaOJUp349np8FVF8YfoTMtMUTuG8A=;
+        b=lYAYteHJi3IbnOFnnIGskPJm4LFXQyIlElbzGWypdvdmuOzPYj/pxEWqsuDYmXdtDT
+         +J1fUhuR0nhJSF9vE2IpcB6JMQQVhOxL1FrdrpmKfq/+Pf/0NtZGKAKyIJNPCIIbB3kj
+         vWi4nL+PVud7ZLGOFm7hlsQsP4WGqcGQY5y652IsMJt0X4Satpn4pwnGti6aqOjR7WNb
+         b5tss/uSLmxVOvAGyxZK6jMqSNUzxkIwbjBSIb/bf0uu+j7cYjltNEAMKT0SrlRij08o
+         vO6mJbmXCXzYCHWU2jM86xagKPMTdIsdFaNh0fAXa8lsKrIt9q1/gcJSJ01jSLIuS/+g
+         IKcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=8A1QBrYdNqwfKSHedR+VNWdvV9LDIo8DjOKUwjNPjrY=;
-        b=yK0S/3Js+2q3gCHr1vhXp5/F+k6JyS3uVC/ArDefnyvYOvD+D6J6fBd7TecrQR7PCw
-         pH6G00z0QtFdBJajo3UAFXLS447gSz1T4F4XnK1vVGYWvHe6zF2fECg9rrAs1S2JnGjB
-         heW1eRV9C/8/oOCXpULjYBcxk2mwS5987BSr99ueAtcD/Zx6+PsWUCAWHZp3YNOCLc3p
-         aGKPmZiics1gNhh5zaSW5jExzUTESD40Q6dP9pLIZgMxODX9PCH+oDZImrIkmH7MwugQ
-         OyLBDsHXPHWYXmfnyrIsjX+tDruHvyIIE1PbxI1W1kFEUv2ZnYjv+9FFKThEp0xHaLd4
-         5pUA==
-X-Gm-Message-State: ACrzQf0kZvrkMt3IxBQDmK2um6b2NW7/U0ICWs5CIZwC5J7qzJ4gm3x7
-	ja8nLRM7idZLcPco5Y/5fsk0pw==
-X-Google-Smtp-Source: AMsMyM6ZMbUkdU2hvrYoAOYSfAQjC5fDqY7KXcHPFAReC2+/kiHDQz57mmIFmmqzXPEbSlfzjbs+eA==
-X-Received: by 2002:a17:90b:1e0d:b0:202:91ec:e167 with SMTP id pg13-20020a17090b1e0d00b0020291ece167mr5542131pjb.174.1663172132830;
-        Wed, 14 Sep 2022 09:15:32 -0700 (PDT)
-Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id m3-20020a638c03000000b0042bd73400b6sm9925334pgd.87.2022.09.14.09.15.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Sep 2022 09:15:32 -0700 (PDT)
-Date: Wed, 14 Sep 2022 16:15:28 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Orr <marcorr@google.com>
-Cc: Michael Roth <michael.roth@amd.com>,
-	Brijesh Singh <brijesh.singh@amd.com>, x86 <x86@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>,
-	linux-coco@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, Tony Luck <tony.luck@intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	jarkko@profian.com
-Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
- map and unmap
-Message-ID: <YyH+IGpBBsjfHdDC@google.com>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-40-brijesh.singh@amd.com>
- <YWYm/Gw8PbaAKBF0@google.com>
- <YWc+sRwHxEmcZZxB@google.com>
- <4e41dcff-7c7b-cf36-434a-c7732e7e8ff2@amd.com>
- <YWm3bOFcUSlyZjNb@google.com>
- <20220908212114.sqne7awimfwfztq7@amd.com>
- <YyGLXXkFCmxBfu5U@google.com>
- <CAA03e5H-V+axMiXTLXi7bf+mBs8ZMvaFZTSHSfktZDTSfu=HZQ@mail.gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=TLSZ0fG4jkVsKxHaOJUp349np8FVF8YfoTMtMUTuG8A=;
+        b=dDTf4RdlDtEkyep2ho15HDetCa8GEPx43+7QPm+hS6IHtPFKp3gIARLxcwvJQxG68p
+         U9MX/MeOHRF4d1kHGggfcApT8izM3MXxXdgI2IYsX/tVLavPPmK8F1/53B+CYjpu5NLt
+         UaKuMpDsyxPm8ePRlZAecQt/J+T31/ik3JBot1sPwm6sFGX4OcvDl+VfpRPTZGIMYhWC
+         Fpa8IKltaPrRd1bXmOKfcySoaDE1GIrUpvotKqoD2WQ9FpJA6yYwjiMeSmtd8mX47gNj
+         0GqdWD1f2ESLXZEtG/xkdJ9JAGWlzempt+QBJmw16lUkl1YA9K1UoA0bBaOg5VgL0nKn
+         Crsg==
+X-Gm-Message-State: ACgBeo1n1h0zjV8l59dMRXCVXprw6VlmlcL/fjS/fkg/tjNORFIHmVI2
+	CFyE82DmgZv3PqypzGfMG+n32tB19NVDxI6Vi7bsvw==
+X-Google-Smtp-Source: AA6agR5JyKlU4G6TTbmq/f1TwUurqwIm3Dn+pMyu//jmSXVD3ZQAN3lmbo6PGjQVmw+oTh1R9/QR0RnFraMNNxG5k98=
+X-Received: by 2002:a81:7cd7:0:b0:345:221c:5671 with SMTP id
+ x206-20020a817cd7000000b00345221c5671mr30574218ywc.297.1663173139128; Wed, 14
+ Sep 2022 09:32:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA03e5H-V+axMiXTLXi7bf+mBs8ZMvaFZTSHSfktZDTSfu=HZQ@mail.gmail.com>
+References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-40-brijesh.singh@amd.com>
+ <YWYm/Gw8PbaAKBF0@google.com> <YWc+sRwHxEmcZZxB@google.com>
+ <4e41dcff-7c7b-cf36-434a-c7732e7e8ff2@amd.com> <YWm3bOFcUSlyZjNb@google.com>
+ <20220908212114.sqne7awimfwfztq7@amd.com> <YyGLXXkFCmxBfu5U@google.com>
+ <CAA03e5H-V+axMiXTLXi7bf+mBs8ZMvaFZTSHSfktZDTSfu=HZQ@mail.gmail.com> <YyH+IGpBBsjfHdDC@google.com>
+In-Reply-To: <YyH+IGpBBsjfHdDC@google.com>
+From: Marc Orr <marcorr@google.com>
+Date: Wed, 14 Sep 2022 17:32:08 +0100
+Message-ID: <CAA03e5FndJnwSXQVg9RCvEqAsx4o52h59mBAEWatkyZHzT3T2g@mail.gmail.com>
+Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
+ map and unmap
+To: Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, x86 <x86@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>, 
+	linux-coco@lists.linux.dev, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
+	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
+	Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
+	Tony Luck <tony.luck@intel.com>, 
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, jarkko@profian.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Sep 14, 2022, Marc Orr wrote:
-> On Wed, Sep 14, 2022 at 9:05 AM Sean Christopherson <seanjc@google.com> wrote:
-> >
-> > On Thu, Sep 08, 2022, Michael Roth wrote:
-> > > On Fri, Oct 15, 2021 at 05:16:28PM +0000, Sean Christopherson wrote:
-> > > So in the context of this interim solution, we're trying to look for a
-> > > solution that's simple enough that it can be used reliably, without
-> > > introducing too much additional complexity into KVM. There is one
-> > > approach that seems to fit that bill, that Brijesh attempted in an
-> > > earlier version of this series (I'm not sure what exactly was the
-> > > catalyst to changing the approach, as I wasn't really in the loop at
-> > > the time, but AIUI there weren't any showstoppers there, but please
-> > > correct me if I'm missing anything):
+On Wed, Sep 14, 2022 at 5:15 PM Sean Christopherson <seanjc@google.com> wrote:
+>
+> On Wed, Sep 14, 2022, Marc Orr wrote:
+> > On Wed, Sep 14, 2022 at 9:05 AM Sean Christopherson <seanjc@google.com> wrote:
 > > >
-> > >  - if the host is writing to a page that it thinks is supposed to be
-> > >    shared, and the guest switches it to private, we get an RMP fault
-> > >    (actually, we will get a !PRESENT fault, since as of v5 we now
-> > >    remove the mapping from the directmap as part of conversion)
-> > >  - in the host #PF handler, if we see that the page is marked private
-> > >    in the RMP table, simply switch it back to shared
-> > >  - if this was a bug on the part of the host, then the guest will see
+> > > On Thu, Sep 08, 2022, Michael Roth wrote:
+> > > > On Fri, Oct 15, 2021 at 05:16:28PM +0000, Sean Christopherson wrote:
+> > > > So in the context of this interim solution, we're trying to look for a
+> > > > solution that's simple enough that it can be used reliably, without
+> > > > introducing too much additional complexity into KVM. There is one
+> > > > approach that seems to fit that bill, that Brijesh attempted in an
+> > > > earlier version of this series (I'm not sure what exactly was the
+> > > > catalyst to changing the approach, as I wasn't really in the loop at
+> > > > the time, but AIUI there weren't any showstoppers there, but please
+> > > > correct me if I'm missing anything):
+> > > >
+> > > >  - if the host is writing to a page that it thinks is supposed to be
+> > > >    shared, and the guest switches it to private, we get an RMP fault
+> > > >    (actually, we will get a !PRESENT fault, since as of v5 we now
+> > > >    remove the mapping from the directmap as part of conversion)
+> > > >  - in the host #PF handler, if we see that the page is marked private
+> > > >    in the RMP table, simply switch it back to shared
+> > > >  - if this was a bug on the part of the host, then the guest will see
+> > >
+> > > As discussed off-list, attempting to fix up RMP violations in the host #PF handler
+> > > is not a viable approach.  There was also extensive discussion on-list a while back:
+> > >
+> > > https://lore.kernel.org/all/8a244d34-2b10-4cf8-894a-1bf12b59cf92@www.fastmail.com
 > >
-> > As discussed off-list, attempting to fix up RMP violations in the host #PF handler
-> > is not a viable approach.  There was also extensive discussion on-list a while back:
+> > I mentioned this during Mike's talk at the micro-conference: For pages
+> > mapped in by the kernel can we disallow them to be converted to
+> > private?
+>
+> In theory, yes.  Do we want to do something like this?  No.  kmap() does something
+> vaguely similar for 32-bit PAE/PSE kernels, but that's a lot of complexity and
+> overhead to take on.  And this issue goes far beyond a kmap(); when the kernel gup()s
+> a page, the kernel expects the pfn to be available, no exceptions (pun intended).
+>
+> > Note, userspace accesses are already handled by UPM.
+>
+> I'm confused by the UPM comment.  Isn't the gist of this thread about the ability
+> to merge SNP _without_ UPM?  Or am I out in left field?
+
+I think that was the overall gist: yes. But it's not what I was trying
+to comment on :-).
+
+HOWEVER, thinking about this more: I was confused when I wrote out my
+last reply. I had thought that the issue that Michael brought up
+applied even with UPM. That is, I was thinking it was still possibly
+for a guest to maliciously convert a page to private mapped in by the
+kernel and assumed to be shared.
+
+But I now realize that is not what will actually happen. To be
+concrete, let's assume the GHCB page. What will happen is:
+- KVM has GHCB page mapped in. GHCB is always assumed to be shared. So
+far so good.
+- Malicious guest converts GHCB page to private (e.g., via Page State
+Change request)
+- Guest exits to KVM
+- KVM exits to userspace VMM
+- Userspace VM allocates page in private FD.
+
+Now, what happens here depends on how UPM works. If we allow double
+allocation then our host kernel is safe. However, now we have the
+"double allocation problem".
+
+If on the other hand, we deallocate the page in the shared FD, the
+host kernel can segfault. And now we actually do have essentially the
+same problem Michael was describing that we have without UPM. Because
+we'll end up in fault.c in the kernel context and likely panic the
+host.
+
+I hope I got this right this time. Sorry for the confusion on my last reply.
+
+> > In pseudo-code, I'm thinking something like this:
 > >
-> > https://lore.kernel.org/all/8a244d34-2b10-4cf8-894a-1bf12b59cf92@www.fastmail.com
-> 
-> I mentioned this during Mike's talk at the micro-conference: For pages
-> mapped in by the kernel can we disallow them to be converted to
-> private?
+> > kmap_helper() {
+> >   // And all other interfaces where the kernel can map a GPA
+> >   // into the kernel page tables
+> >   mapped_into_kernel_mem_set[hpa] = true;
+> > }
+> >
+> > kunmap_helper() {
+> >   // And all other interfaces where the kernel can unmap a GPA
+> >   // into the kernel page tables
+> >   mapped_into_kernel_mem_set[hpa] = false;
+> >
+> >   // Except it's not this simple because we probably need ref counting
+> >   // for multiple mappings. Sigh. But you get the idea.
+>
+> A few issues off the top of my head:
+>
+>   - It's not just refcounting, there would also likely need to be locking to
+>     guarantee sane behavior.
+>   - kmap() isn't allowed to fail and RMPUPDATE isn't strictly guaranteed to succeed,
+>     which is problematic if the kernel attempts to kmap() a page that's already
+>     private, especially for kmap_atomic(), which isn't allowed to sleep.
+>   - Not all kernel code is well behaved and bounces through kmap(); undoubtedly
+>     some of the 1200+ users of page_address() will be problematic.
+>
+>     $ git grep page_address | wc -l
+>     1267
+>   - It's not sufficient for TDX.  Merging something this complicated when we know
+>     we still need UPM would be irresponsible from a maintenance perspective.
+>   - KVM would need to support two separate APIs for SNP, which I very much don't
+>     want to do.
 
-In theory, yes.  Do we want to do something like this?  No.  kmap() does something
-vaguely similar for 32-bit PAE/PSE kernels, but that's a lot of complexity and
-overhead to take on.  And this issue goes far beyond a kmap(); when the kernel gup()s
-a page, the kernel expects the pfn to be available, no exceptions (pun intended).
-
-> Note, userspace accesses are already handled by UPM.
-
-I'm confused by the UPM comment.  Isn't the gist of this thread about the ability
-to merge SNP _without_ UPM?  Or am I out in left field?
-
-> In pseudo-code, I'm thinking something like this:
-> 
-> kmap_helper() {
->   // And all other interfaces where the kernel can map a GPA
->   // into the kernel page tables
->   mapped_into_kernel_mem_set[hpa] = true;
-> }
-> 
-> kunmap_helper() {
->   // And all other interfaces where the kernel can unmap a GPA
->   // into the kernel page tables
->   mapped_into_kernel_mem_set[hpa] = false;
-> 
->   // Except it's not this simple because we probably need ref counting
->   // for multiple mappings. Sigh. But you get the idea.
-
-A few issues off the top of my head:
-
-  - It's not just refcounting, there would also likely need to be locking to
-    guarantee sane behavior.
-  - kmap() isn't allowed to fail and RMPUPDATE isn't strictly guaranteed to succeed,
-    which is problematic if the kernel attempts to kmap() a page that's already
-    private, especially for kmap_atomic(), which isn't allowed to sleep.
-  - Not all kernel code is well behaved and bounces through kmap(); undoubtedly
-    some of the 1200+ users of page_address() will be problematic.
-    
-    $ git grep page_address | wc -l
-    1267
-  - It's not sufficient for TDX.  Merging something this complicated when we know
-    we still need UPM would be irresponsible from a maintenance perspective.
-  - KVM would need to support two separate APIs for SNP, which I very much don't
-    want to do.
+Ack on merging without UPM. I wasn't trying to chime in on merging
+before/after UPM. See my other comment above. Sorry for the confusion.
+Ack on other concerns about "enlightening kmap" as well. I agree.
