@@ -1,134 +1,121 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F212F2C
-	for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 08:05:54 +0000 (UTC)
-Received: by mail-pl1-f177.google.com with SMTP id iw17so14380660plb.0
-        for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 01:05:54 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EC03D61
+	for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 11:02:36 +0000 (UTC)
+Received: by mail-yb1-f170.google.com with SMTP id y82so22119224yby.6
+        for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 04:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=BqUhxcUOvv8EZWeVoadoEfAKAvxiKy4DFaV8F/F3nRo=;
-        b=Y45pldWaU7msnCMC3mB1XfdqYiXenh8aXHlb6P8wpifZtyvVUiC/Pmw9QwKSxvKaE1
-         5vCUZeWVnXL53VuRrWpqC7y1PQSe7vOrfidrlH914Nd9vnCG1aZejYGhPNdsgrnD5Smm
-         /VxtyFzzPQwbhCVzigMHS4tQiLksGnaZozE5ratC2Nr12jt2UGbq7KuGY95gkkT5Nr7P
-         QlAkTCyt4TIEYQ/FCiD1d6HvKJE59tarY+ga+VyyyjxeDhsob2/t6Uozzfn0gmp2BAea
-         2ebCdl6bZD9HrQpesANzLn3iVJ0t6GeI0W0uEcAhhlKoQjbI4C09YKx4Cw7P/AIku5Wn
-         77lA==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=/x00XsnVTU+kUzsYJrpklCSNRK/9eB/Ro0omNgHKcjw=;
+        b=Ac+HILwHqFFR2pInEWD80qd2Hhz+KfnP4ARhZ3KyCXTpvJHHyDr5V77NYqhoryvKQF
+         dJl70OsGI0lKszgDLTBOZms3/5pvkgfdBUsbSMNSOIBlxaFsdc7cgn5psSKITP8kpB8V
+         xOzwhPJMSYAUctwdpFGlbaEV8SCKDjuEChL+pePwijO8xIoqVkrcYcsRV3btirYx+tku
+         aJU0WUO414C/Wxp0Pun9MOzwXxccxG7OLsrzTyXTmPxK4MXbny48p17mxgOF8jpFZlSC
+         vn7QRQpNrCPXxTAfiA2XvFNUXAO+i9LMxAgMQkBRd9WFAiYeZLTuesMC0akB+54eK5HU
+         ub8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=BqUhxcUOvv8EZWeVoadoEfAKAvxiKy4DFaV8F/F3nRo=;
-        b=4IByhb6ITf67Yx7KxPXypRzz/fHsWSjbCQTQAa/ge1XCw5BGp+EW5VccMCIDTXSpxj
-         5BBn4jmC1MaBZ/vG/smN194TktbhVqEOiNo5DuJxD9IvvFM7HOGR8vmu+Prvsfj7aJtY
-         3QDqD6HX8N4LW0YfKIICQ/IY5thNWuolkDvzDvElFEWbAcbqdOtTx39Y9cpCd8Efpdel
-         9D9RDRPllr3NYQob+Rx8gRoE9+wqFoxFMAmXRj/2j/WergWmMsndLbenNQl8hVO6dCXU
-         JUpQyBCMU0XLecBRisHfEtg6MTQueo8NMhBORTw/qYcw53HoZD5AGmNKMONtF+sPQvqh
-         +8+w==
-X-Gm-Message-State: ACgBeo3FK9OROy/zn/zyQunvoQiT7kRITWbz/8RBdKsx0cay87544kQo
-	r6KRFObzVHMd3RliXeLM/ogFzQ==
-X-Google-Smtp-Source: AA6agR4UATq2gDShvsXLljJKEJB7uvGsKLNEqlognTMeRcIxtphBnWCa23O0u7Vyr0cktSSkh1HKog==
-X-Received: by 2002:a17:90a:d804:b0:202:f247:91b0 with SMTP id a4-20020a17090ad80400b00202f24791b0mr3530610pjv.8.1663142753759;
-        Wed, 14 Sep 2022 01:05:53 -0700 (PDT)
-Received: from google.com (7.104.168.34.bc.googleusercontent.com. [34.168.104.7])
-        by smtp.gmail.com with ESMTPSA id d8-20020a17090a6a4800b001fd7e56da4csm8460240pjm.39.2022.09.14.01.05.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Sep 2022 01:05:53 -0700 (PDT)
-Date: Wed, 14 Sep 2022 08:05:49 +0000
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>,
-	Jim Mattson <jmattson@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Gonda <pgonda@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Dov Murik <dovmurik@linux.ibm.com>,
-	Tobin Feldman-Fitzthum <tobin@ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Vlastimil Babka <vbabka@suse.cz>,
-	"Kirill A . Shutemov" <kirill@shutemov.name>,
-	Andi Kleen <ak@linux.intel.com>, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	jarkko@profian.com
-Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
- map and unmap
-Message-ID: <YyGLXXkFCmxBfu5U@google.com>
-References: <20210820155918.7518-1-brijesh.singh@amd.com>
- <20210820155918.7518-40-brijesh.singh@amd.com>
- <YWYm/Gw8PbaAKBF0@google.com>
- <YWc+sRwHxEmcZZxB@google.com>
- <4e41dcff-7c7b-cf36-434a-c7732e7e8ff2@amd.com>
- <YWm3bOFcUSlyZjNb@google.com>
- <20220908212114.sqne7awimfwfztq7@amd.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=/x00XsnVTU+kUzsYJrpklCSNRK/9eB/Ro0omNgHKcjw=;
+        b=MXVxrKXdR4pAiBzdxeJVU1rDlhNu1WLBrn/IxAbAN9Z3KVx0QdMx0njNfvzwmH3+0a
+         sb/7uMITORcJoKCWO8/TzQnsHuGwPUXJoyDMIwS7SxD9VH1iEbFJNtzZwYrTklgGqT84
+         O72b0PY1s8r62ldXKMWbMftVPKDa9FOGqLPM4c6UTZ71Z8tGhe8mzm/t34Zs4KxA0pZQ
+         3jdktJttztWJJ9JxlAeqJO0rGkH36BJnUx9bvojBH/cpz2u4PJd8p8WjmpQl5+x7tEaw
+         16tmjmRKavDgvFNNg6SU4W1/CVozcfntVexrOpRPTgqzFz1Rf1zL69DL1G/KzGlwBzJZ
+         mApg==
+X-Gm-Message-State: ACrzQf3hWVrqIPv5sa2IdJjMgQpJyquIMGVUdQHMeg5FfSr2uCvAJXqz
+	GTeXN9sbY95r+0mfyuWBIKPo6EFGnzp+8BPCOSjSkQ==
+X-Google-Smtp-Source: AMsMyM6fR7f9+1MEXCI5QuGuGovnipYhYRAJTAwDI0qsEJj/bJnJPP8LwBKgS1imITQ25V5RZaRZfc6YC0GybpIkiZM=
+X-Received: by 2002:a25:720b:0:b0:6b0:4b3:c121 with SMTP id
+ n11-20020a25720b000000b006b004b3c121mr1725545ybc.473.1663153355073; Wed, 14
+ Sep 2022 04:02:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220908212114.sqne7awimfwfztq7@amd.com>
+References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-40-brijesh.singh@amd.com>
+ <YWYm/Gw8PbaAKBF0@google.com> <YWc+sRwHxEmcZZxB@google.com>
+ <4e41dcff-7c7b-cf36-434a-c7732e7e8ff2@amd.com> <YWm3bOFcUSlyZjNb@google.com>
+ <20220908212114.sqne7awimfwfztq7@amd.com> <YyGLXXkFCmxBfu5U@google.com>
+In-Reply-To: <YyGLXXkFCmxBfu5U@google.com>
+From: Marc Orr <marcorr@google.com>
+Date: Wed, 14 Sep 2022 12:02:24 +0100
+Message-ID: <CAA03e5H-V+axMiXTLXi7bf+mBs8ZMvaFZTSHSfktZDTSfu=HZQ@mail.gmail.com>
+Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
+ map and unmap
+To: Sean Christopherson <seanjc@google.com>
+Cc: Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, x86 <x86@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>, 
+	linux-coco@lists.linux.dev, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
+	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
+	Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
+	Tony Luck <tony.luck@intel.com>, 
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, jarkko@profian.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Sep 08, 2022, Michael Roth wrote:
-> On Fri, Oct 15, 2021 at 05:16:28PM +0000, Sean Christopherson wrote:
-> So in the context of this interim solution, we're trying to look for a
-> solution that's simple enough that it can be used reliably, without
-> introducing too much additional complexity into KVM. There is one
-> approach that seems to fit that bill, that Brijesh attempted in an
-> earlier version of this series (I'm not sure what exactly was the
-> catalyst to changing the approach, as I wasn't really in the loop at
-> the time, but AIUI there weren't any showstoppers there, but please
-> correct me if I'm missing anything):
-> 
->  - if the host is writing to a page that it thinks is supposed to be
->    shared, and the guest switches it to private, we get an RMP fault
->    (actually, we will get a !PRESENT fault, since as of v5 we now
->    remove the mapping from the directmap as part of conversion)
->  - in the host #PF handler, if we see that the page is marked private
->    in the RMP table, simply switch it back to shared
->  - if this was a bug on the part of the host, then the guest will see
+On Wed, Sep 14, 2022 at 9:05 AM Sean Christopherson <seanjc@google.com> wrote:
+>
+> On Thu, Sep 08, 2022, Michael Roth wrote:
+> > On Fri, Oct 15, 2021 at 05:16:28PM +0000, Sean Christopherson wrote:
+> > So in the context of this interim solution, we're trying to look for a
+> > solution that's simple enough that it can be used reliably, without
+> > introducing too much additional complexity into KVM. There is one
+> > approach that seems to fit that bill, that Brijesh attempted in an
+> > earlier version of this series (I'm not sure what exactly was the
+> > catalyst to changing the approach, as I wasn't really in the loop at
+> > the time, but AIUI there weren't any showstoppers there, but please
+> > correct me if I'm missing anything):
+> >
+> >  - if the host is writing to a page that it thinks is supposed to be
+> >    shared, and the guest switches it to private, we get an RMP fault
+> >    (actually, we will get a !PRESENT fault, since as of v5 we now
+> >    remove the mapping from the directmap as part of conversion)
+> >  - in the host #PF handler, if we see that the page is marked private
+> >    in the RMP table, simply switch it back to shared
+> >  - if this was a bug on the part of the host, then the guest will see
+>
+> As discussed off-list, attempting to fix up RMP violations in the host #PF handler
+> is not a viable approach.  There was also extensive discussion on-list a while back:
+>
+> https://lore.kernel.org/all/8a244d34-2b10-4cf8-894a-1bf12b59cf92@www.fastmail.com
 
-As discussed off-list, attempting to fix up RMP violations in the host #PF handler
-is not a viable approach.  There was also extensive discussion on-list a while back:
+I mentioned this during Mike's talk at the micro-conference: For pages
+mapped in by the kernel can we disallow them to be converted to
+private? Note, userspace accesses are already handled by UPM.
 
-https://lore.kernel.org/all/8a244d34-2b10-4cf8-894a-1bf12b59cf92@www.fastmail.com
+In pseudo-code, I'm thinking something like this:
 
-> AIUI, this is still sort of an open question, but you noted how nuking
-> the directmap without any formalized interface for letting the kernel
-> know about it could be problematic down the road, which also sounds
-> like the sort of thing more suited for having UPM address at a more
-> general level, since there are similar requirements for TDX as well.
-> 
-> AIUI there are 2 main arguments against splitting the directmap:
->  a) we can't easily rebuild it atm
->  b) things like KSM might still tries to access private pages
-> 
-> But unmapping also suffers from a), since we still end up splitting the
-> directmap unless we remove pages in blocks of 2M.
+kmap_helper() {
+  // And all other interfaces where the kernel can map a GPA
+  // into the kernel page tables
+  mapped_into_kernel_mem_set[hpa] = true;
+}
 
-But for UPM, it's easy to rebuild the direct map since there will be an explicit,
-kernel controlled point where the "inaccesible" memfd releases the private page.
+kunmap_helper() {
+  // And all other interfaces where the kernel can unmap a GPA
+  // into the kernel page tables
+  mapped_into_kernel_mem_set[hpa] = false;
 
-> But nothing prevents a guest from switching a single 4K page to private, in
-> which case we are forced to split. That would be normal behavior on the part
-> of the guest for setting up GHCB pages/etc, so we still end up splitting the
-> directmap over time.
+  // Except it's not this simple because we probably need ref counting
+  // for multiple mappings. Sigh. But you get the idea.
+}
 
-The host actually isn't _forced_ to split with UPM.  One option would be to refuse
-to split the direct map and instead force userspace to eat the 2mb allocation even
-though it only wants to map a single 4kb chunk into the guest.  I don't know that
-that's a _good_ option, but it is an option.
+rmpupdate_helper() {
+  if (conversion = SHARED_TO_PRIVATE && mapped_into_kernel_mem_set[hpa])
+    return -EINVAL;  // Or whatever the appropriate error code here is.
+}
