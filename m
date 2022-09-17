@@ -1,150 +1,149 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailforward.mailhostbox.com (mailforward.mailhostbox.com [162.222.225.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F123FF9
-	for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 16:39:29 +0000 (UTC)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-3450a7358baso187146617b3.13
-        for <linux-coco@lists.linux.dev>; Wed, 14 Sep 2022 09:39:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=qw5c1rQO9auXlb1weto/2p+w4wwBPYYtzhiHNjVL//I=;
-        b=OAZPO49RrJRJ1iDc42pcPY8eoQOr9U6LI/jzWl/t/qHJGAwMcmrdHEHcTpZAoEhple
-         vmC5s4DomwuO1+aqLB8TMmpmXa4+GKx8HHg3AY/pPl/n26W8L7+GLOtWsIv2AVaWwP4Z
-         ZQNaQeralnxC2np7lvsaONpxNi6tvum3IDZggIXPXTJp9vOigUhfQMvo1WFRSQ0ovgeY
-         ysF+7Rn8+Te/7o66UPvqNQsZr8wJVkRGpZa/Wk186u5fYhn8lQ0jDLw/f7B7H6UMAQRs
-         exEGbIfuANJwGK8IU+YFusPFqhFGXGudweKXCFkCPqfbQuIl49QspG/wobLqsnBjfOE1
-         UjPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=qw5c1rQO9auXlb1weto/2p+w4wwBPYYtzhiHNjVL//I=;
-        b=KXWJ/kdzYH/3OpoecWhV2ocws5EmHBpCMhb380+Z9a+UkWdfn+bhS8eP1nx8ypr4Ni
-         tWdayc9F569gZvKeLrod+6ayrxCnGQJdmh7C5I2tj2TxpktcrPteHE4ZLbKp95JZrjTd
-         wV8LxV0HplMCvOntlZHAiUNeI72Z/OHiBR9XpHL6IkwuC+qLo9edQbNZB6XWzNLkh8HX
-         h0pNDYjVOBw1h9T/AJgxyP697N5MNLs22/DeuoU1oebTVCU7WRI0Onoc4MG7t/8FSdXv
-         CFSegKTp8XtAiIlGlIUEj7u58VTKO3lXpqdvMOfVu66WtOVbOIssjwVRiusJTqt42Wnn
-         YMEA==
-X-Gm-Message-State: ACgBeo3Jgk2EwrtNdz0gwKIsMkFa1Ab+4NbrxWRbTwlM9gvNa5EVTiJq
-	NKiIsAkjCEXmTaGHRhaV3CI9LsFCxf/mTcyD95IxwA==
-X-Google-Smtp-Source: AA6agR4ZwapujsKhSGBJ8nLTDmAGCZkhuO0sc3uJlAZUs5ydbGgLq/Slr/TreGV6Rcw8FLrJapUcRgU+ddTrKrUYAUQ=
-X-Received: by 2002:a81:c30a:0:b0:328:4a6c:bc89 with SMTP id
- r10-20020a81c30a000000b003284a6cbc89mr31170890ywk.29.1663173568737; Wed, 14
- Sep 2022 09:39:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203D7C
+	for <linux-coco@lists.linux.dev>; Sat, 17 Sep 2022 15:21:48 +0000 (UTC)
+Received: from mx1.mailhostbox.com (unknown [10.25.144.155])
+	by mailforward.mailhostbox.com (Postfix) with ESMTP id 6A2F2AE043D
+	for <linux-coco@lists.linux.dev>; Sat, 17 Sep 2022 15:03:45 +0000 (UTC)
+Received: by mx1.mailhostbox.com (Postfix)
+	id 0701F740005; Sat, 17 Sep 2022 15:03:47 +0000 (UTC)
+Date: Sat, 17 Sep 2022 15:03:47 +0000 (UTC)
+From: Mail Delivery System <MAILER-DAEMON@mx1.mailhostbox.com>
+Subject: Undelivered Mail Returned to Sender
+To: linux-coco@lists.linux.dev
+Auto-Submitted: auto-replied
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20210820155918.7518-1-brijesh.singh@amd.com> <20210820155918.7518-40-brijesh.singh@amd.com>
- <YWYm/Gw8PbaAKBF0@google.com> <YWc+sRwHxEmcZZxB@google.com>
- <4e41dcff-7c7b-cf36-434a-c7732e7e8ff2@amd.com> <YWm3bOFcUSlyZjNb@google.com>
- <20220908212114.sqne7awimfwfztq7@amd.com> <YyGLXXkFCmxBfu5U@google.com>
- <CAA03e5H-V+axMiXTLXi7bf+mBs8ZMvaFZTSHSfktZDTSfu=HZQ@mail.gmail.com>
- <YyH+IGpBBsjfHdDC@google.com> <CAA03e5FndJnwSXQVg9RCvEqAsx4o52h59mBAEWatkyZHzT3T2g@mail.gmail.com>
-In-Reply-To: <CAA03e5FndJnwSXQVg9RCvEqAsx4o52h59mBAEWatkyZHzT3T2g@mail.gmail.com>
-From: Marc Orr <marcorr@google.com>
-Date: Wed, 14 Sep 2022 17:39:18 +0100
-Message-ID: <CAA03e5EdmtXdxpy02vsGRwUKjH+Y5+BT2yKXwhu-bb=ZKELo+w@mail.gmail.com>
-Subject: Re: [PATCH Part2 v5 39/45] KVM: SVM: Introduce ops for the post gfn
- map and unmap
-To: Sean Christopherson <seanjc@google.com>
-Cc: Michael Roth <michael.roth@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, x86 <x86@kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>, 
-	linux-coco@lists.linux.dev, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, 
-	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
-	Peter Gonda <pgonda@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
-	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
-	Tony Luck <tony.luck@intel.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, jarkko@profian.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/report; report-type=delivery-status;
+	boundary="7BD5C740009.1663427027/mx1.mailhostbox.com"
+Message-Id: <20220917150347.0701F740005@mx1.mailhostbox.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=QuE9YX+d c=1 sm=1 tr=0 ts=6325e1d1
+	a=QA1LnN7VZJoQSo8y4F5VnA==:117 a=KiCxJD0x+Pe5VASQKmYoJrcyuOo=:19
+	a=xOM3xZuef0cA:10 a=jmdcTMp_Gj4A:10 a=vX-N2HuyvEP-EhXdXtwA:9
+	a=3Dzyz0-DHSkwotuOlBgA:9 a=CjuIK1q_8ugA:10 a=kYAKq41dIhMA:10
+	a=UamvwlVmDbAA:10 a=XRDiakNQvk7WknZVcW0A:9 a=Chem_lP59DzjqG9EU6EA:9
 
-On Wed, Sep 14, 2022 at 5:32 PM Marc Orr <marcorr@google.com> wrote:
->
-> On Wed, Sep 14, 2022 at 5:15 PM Sean Christopherson <seanjc@google.com> wrote:
-> >
-> > On Wed, Sep 14, 2022, Marc Orr wrote:
-> > > On Wed, Sep 14, 2022 at 9:05 AM Sean Christopherson <seanjc@google.com> wrote:
-> > > >
-> > > > On Thu, Sep 08, 2022, Michael Roth wrote:
-> > > > > On Fri, Oct 15, 2021 at 05:16:28PM +0000, Sean Christopherson wrote:
-> > > > > So in the context of this interim solution, we're trying to look for a
-> > > > > solution that's simple enough that it can be used reliably, without
-> > > > > introducing too much additional complexity into KVM. There is one
-> > > > > approach that seems to fit that bill, that Brijesh attempted in an
-> > > > > earlier version of this series (I'm not sure what exactly was the
-> > > > > catalyst to changing the approach, as I wasn't really in the loop at
-> > > > > the time, but AIUI there weren't any showstoppers there, but please
-> > > > > correct me if I'm missing anything):
-> > > > >
-> > > > >  - if the host is writing to a page that it thinks is supposed to be
-> > > > >    shared, and the guest switches it to private, we get an RMP fault
-> > > > >    (actually, we will get a !PRESENT fault, since as of v5 we now
-> > > > >    remove the mapping from the directmap as part of conversion)
-> > > > >  - in the host #PF handler, if we see that the page is marked private
-> > > > >    in the RMP table, simply switch it back to shared
-> > > > >  - if this was a bug on the part of the host, then the guest will see
-> > > >
-> > > > As discussed off-list, attempting to fix up RMP violations in the host #PF handler
-> > > > is not a viable approach.  There was also extensive discussion on-list a while back:
-> > > >
-> > > > https://lore.kernel.org/all/8a244d34-2b10-4cf8-894a-1bf12b59cf92@www.fastmail.com
-> > >
-> > > I mentioned this during Mike's talk at the micro-conference: For pages
-> > > mapped in by the kernel can we disallow them to be converted to
-> > > private?
-> >
-> > In theory, yes.  Do we want to do something like this?  No.  kmap() does something
-> > vaguely similar for 32-bit PAE/PSE kernels, but that's a lot of complexity and
-> > overhead to take on.  And this issue goes far beyond a kmap(); when the kernel gup()s
-> > a page, the kernel expects the pfn to be available, no exceptions (pun intended).
-> >
-> > > Note, userspace accesses are already handled by UPM.
-> >
-> > I'm confused by the UPM comment.  Isn't the gist of this thread about the ability
-> > to merge SNP _without_ UPM?  Or am I out in left field?
->
-> I think that was the overall gist: yes. But it's not what I was trying
-> to comment on :-).
->
-> HOWEVER, thinking about this more: I was confused when I wrote out my
-> last reply. I had thought that the issue that Michael brought up
-> applied even with UPM. That is, I was thinking it was still possibly
-> for a guest to maliciously convert a page to private mapped in by the
-> kernel and assumed to be shared.
->
-> But I now realize that is not what will actually happen. To be
-> concrete, let's assume the GHCB page. What will happen is:
-> - KVM has GHCB page mapped in. GHCB is always assumed to be shared. So
-> far so good.
-> - Malicious guest converts GHCB page to private (e.g., via Page State
-> Change request)
-> - Guest exits to KVM
-> - KVM exits to userspace VMM
-> - Userspace VM allocates page in private FD.
->
-> Now, what happens here depends on how UPM works. If we allow double
-> allocation then our host kernel is safe. However, now we have the
-> "double allocation problem".
->
-> If on the other hand, we deallocate the page in the shared FD, the
-> host kernel can segfault. And now we actually do have essentially the
-> same problem Michael was describing that we have without UPM. Because
-> we'll end up in fault.c in the kernel context and likely panic the
-> host.
+This is a MIME-encapsulated message.
 
-Thinking about this even more... Even if we deallocate in the
-userspace VMM's shared FD, the kernel has its own page tables --
-right? So maybe we are actually 100% OK under UPM then regardless of
-the userspace VMM's policy around managing the private and shared FDs.
+--7BD5C740009.1663427027/mx1.mailhostbox.com
+Content-Description: Notification
+Content-Type: text/plain; charset=us-ascii
+
+This is the mail system at host mx1.mailhostbox.com.
+
+I'm sorry to have to inform you that your message could not
+be delivered to one or more recipients. It's attached below.
+
+For further assistance, please send mail to postmaster.
+
+If you do so, please include this problem report. You can
+delete your own text from the attached returned message.
+
+                   The mail system
+
+<apac-lb-mktg@endurance.com> (expanded from <marketing@logicboxes.com>): host
+    mf-active.dlls-tx.mailhostbox.com[10.25.144.162] said: 550-5.7.1 This
+    message is rejected by our SPAM filters. Please refer
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    more information 550 5.7.1 Please see
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    explanation of the problem. (in reply to end of DATA command)
+
+<premang.bhuta@newfold.com> (expanded from <marketing@logicboxes.com>): host
+    mf-active.dlls-tx.mailhostbox.com[10.25.144.162] said: 550-5.7.1 This
+    message is rejected by our SPAM filters. Please refer
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    more information 550 5.7.1 Please see
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    explanation of the problem. (in reply to end of DATA command)
+
+<rajiv.barretto@newfold.com> (expanded from <marketing@logicboxes.com>): host
+    mf-active.dlls-tx.mailhostbox.com[10.25.144.162] said: 550-5.7.1 This
+    message is rejected by our SPAM filters. Please refer
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    more information 550 5.7.1 Please see
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    explanation of the problem. (in reply to end of DATA command)
+
+--7BD5C740009.1663427027/mx1.mailhostbox.com
+Content-Description: Delivery report
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns; mx1.mailhostbox.com
+X-Postfix-Queue-ID: 7BD5C740009
+X-Postfix-Sender: rfc822; linux-coco@lists.linux.dev
+Arrival-Date: Sat, 17 Sep 2022 15:03:18 +0000 (UTC)
+
+Final-Recipient: rfc822; apac-lb-mktg@endurance.com
+Original-Recipient: rfc822;marketing@logicboxes.com
+Action: failed
+Status: 5.7.1
+Remote-MTA: dns; mf-active.dlls-tx.mailhostbox.com
+Diagnostic-Code: smtp; 550-5.7.1 This message is rejected by our SPAM filters.
+    Please refer
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    more information 550 5.7.1 Please see
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    explanation of the problem.
+
+Final-Recipient: rfc822; premang.bhuta@newfold.com
+Original-Recipient: rfc822;marketing@logicboxes.com
+Action: failed
+Status: 5.7.1
+Remote-MTA: dns; mf-active.dlls-tx.mailhostbox.com
+Diagnostic-Code: smtp; 550-5.7.1 This message is rejected by our SPAM filters.
+    Please refer
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    more information 550 5.7.1 Please see
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    explanation of the problem.
+
+Final-Recipient: rfc822; rajiv.barretto@newfold.com
+Original-Recipient: rfc822;marketing@logicboxes.com
+Action: failed
+Status: 5.7.1
+Remote-MTA: dns; mf-active.dlls-tx.mailhostbox.com
+Diagnostic-Code: smtp; 550-5.7.1 This message is rejected by our SPAM filters.
+    Please refer
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    more information 550 5.7.1 Please see
+    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
+    explanation of the problem.
+
+--7BD5C740009.1663427027/mx1.mailhostbox.com
+Content-Description: Undelivered Message Headers
+Content-Type: text/rfc822-headers
+
+Return-Path: <linux-coco@lists.linux.dev>
+X-Spam-Subject: YES
+Authentication-Results: mx1.mailhostbox.com; dkim=none; dkim-atps=neutral
+Received: from lists.linux.dev (unknown [27.159.184.95])
+	by mx1.mailhostbox.com (Postfix) with ESMTP id 7BD5C740009
+	for <marketing@logicboxes.com>; Sat, 17 Sep 2022 15:03:18 +0000 (UTC)
+X-GUID: 20338768-B1B2-4769-B706-DEA3C14B2F36
+X-Has-Attach: yes
+From: "otRuYZ9" <linux-coco@lists.linux.dev>
+Subject:
+ =?GB2312?B?0bDV0tPF1sq5qdOmycwgXHUzMUY4XHUzMUZBXHUzMUZGpbZcdTMwRkako1x1?=
+ =?GB2312?B?MzFGOFx1MzFGRA==?=
+To: "marketing" <marketing@logicboxes.com>
+Content-Type: multipart/mixed; charset=GB2312; boundary="----=_109_NextPart291787988959_=----"
+MIME-Version: 1.0
+Date: Sat, 17 Sep 2022 23:03:18 +0800
+Message-Id: <202209172303063298938@lists.linux.dev>
+X-Mailer: Foxmail 7, 2, 5, 140[cn]
+X-Spam-Status: Yes
+X-CMAE-Score: 100
+X-CMAE-Analysis: v=2.4 cv=Bqj+fab5 c=0 sm=1 tr=0 ts=6325e1d2
+	p=RWFpqWw0UN7ExjxadxwA:9 a=0Yqdtqbm28Mhw849ueC99w==:117
+	a=0Yqdtqbm28Mhw849ueC99w==:17 a=_l4uJm6h9gAA:10 a=evnznIMVyloA:10
+	a=9DvhAHx2yrWFMPxQWpQA:9 a=G1lE-UZ1LTSZLYKq9pgA:9 a=lqcHg5cX4UMA:10
+	a=mFyHDrcPJccA:10
+
+--7BD5C740009.1663427027/mx1.mailhostbox.com--
