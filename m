@@ -1,149 +1,183 @@
-Received: from mailforward.mailhostbox.com (mailforward.mailhostbox.com [162.222.225.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203D7C
-	for <linux-coco@lists.linux.dev>; Sat, 17 Sep 2022 15:21:48 +0000 (UTC)
-Received: from mx1.mailhostbox.com (unknown [10.25.144.155])
-	by mailforward.mailhostbox.com (Postfix) with ESMTP id 6A2F2AE043D
-	for <linux-coco@lists.linux.dev>; Sat, 17 Sep 2022 15:03:45 +0000 (UTC)
-Received: by mx1.mailhostbox.com (Postfix)
-	id 0701F740005; Sat, 17 Sep 2022 15:03:47 +0000 (UTC)
-Date: Sat, 17 Sep 2022 15:03:47 +0000 (UTC)
-From: Mail Delivery System <MAILER-DAEMON@mx1.mailhostbox.com>
-Subject: Undelivered Mail Returned to Sender
-To: linux-coco@lists.linux.dev
-Auto-Submitted: auto-replied
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179356AA2
+	for <linux-coco@lists.linux.dev>; Mon, 19 Sep 2022 17:54:02 +0000 (UTC)
+Received: by mail-il1-f182.google.com with SMTP id g6so35710ild.6
+        for <linux-coco@lists.linux.dev>; Mon, 19 Sep 2022 10:54:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=/cf7B/KTsLD75IcdMZipBXm6ofpyaTAcEkMwbp5iR00=;
+        b=R8mhDvftQzWNGK0iyvTa9nSIWZrFtnkIInr7JSr2ggsBoL0OTaAAJ8tWbpkuAvy5uz
+         /KUqKCF6s6xS0GQg0bWo7WW2V5rhJSdcyvJdj3QJ8g7jcGbxnddmPgRlFFig95paopv9
+         JJitEjoyNVAtyNOz4042FtJmsLF6F0qY3daW/gDjQH/PduCqhXQvCb4a4wsPlcIyO9d2
+         OO/7Mv1YzGbaTOiX3ImsaQ+5viwPfIzfyLecupDW8Q+rHJrno580i7K6KH0ODQsvfAYl
+         5W6sni6L8cuSeTVcAsYL23+NoDAUfHl1n82XX047aOmMYGSl7IPD6AXuHbyOys0rn2Ji
+         ZM2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=/cf7B/KTsLD75IcdMZipBXm6ofpyaTAcEkMwbp5iR00=;
+        b=IttXSLpXVAQ7ATcmq7ORTPbTJiLFHM/JMN1PSxarMl+hizI0JBZa4a+ZnfIwnjKXGP
+         JuzDXkakru/WaEuJobiHC8k8YM5LyNFsGvMmeiTZlmGznZ5fwSyp9tRpZ6FjP4W3Z3JL
+         RO5tn+0HKEzFh2MPRESFuswptnAjcaRDNpusJFamdYkY87QWMcnKuW7Dgbal94CXngma
+         wYQCOz7vLrDcwys8FuOGChO4VGTk3xIU/0pJSs9xekzRMbzarhOQmMzMXYF4QXfx9U/N
+         kpMkhK9dgZW/bnOCmIL3G/hzYFVr+PVarEUbCOeSh6znfSV6e3nV54a5sodsqjyoaL90
+         bhQA==
+X-Gm-Message-State: ACrzQf0mqYXv23nKqst5whkLLqWSVF1o2UlZy8MB1dOF86lxNimJfXuB
+	2Lhn7oy233SAClsY26Ti7rayVyZo03meT94jOs368Q==
+X-Google-Smtp-Source: AMsMyM7ZwbCCz+Lnjmmlji90t5P++0wvHrAVUqDM1acb+Y9g6sLPifzlN/Q3k34EEoZMwTLsTTl3wGgSyLZbbRAEbkE=
+X-Received: by 2002:a92:ca49:0:b0:2f5:30:bfc1 with SMTP id q9-20020a92ca49000000b002f50030bfc1mr6478814ilo.224.1663610040996;
+ Mon, 19 Sep 2022 10:54:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/report; report-type=delivery-status;
-	boundary="7BD5C740009.1663427027/mx1.mailhostbox.com"
-Message-Id: <20220917150347.0701F740005@mx1.mailhostbox.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.4 cv=QuE9YX+d c=1 sm=1 tr=0 ts=6325e1d1
-	a=QA1LnN7VZJoQSo8y4F5VnA==:117 a=KiCxJD0x+Pe5VASQKmYoJrcyuOo=:19
-	a=xOM3xZuef0cA:10 a=jmdcTMp_Gj4A:10 a=vX-N2HuyvEP-EhXdXtwA:9
-	a=3Dzyz0-DHSkwotuOlBgA:9 a=CjuIK1q_8ugA:10 a=kYAKq41dIhMA:10
-	a=UamvwlVmDbAA:10 a=XRDiakNQvk7WknZVcW0A:9 a=Chem_lP59DzjqG9EU6EA:9
+References: <cover.1655761627.git.ashish.kalra@amd.com> <78e30b5a25c926fcfdcaafea3d484f1bb25f20b9.1655761627.git.ashish.kalra@amd.com>
+ <CAMkAt6rrGJ5DYTAJKFUTagN9i_opS8u5HPw5c_8NoyEjK7rYzA@mail.gmail.com>
+In-Reply-To: <CAMkAt6rrGJ5DYTAJKFUTagN9i_opS8u5HPw5c_8NoyEjK7rYzA@mail.gmail.com>
+From: Alper Gun <alpergun@google.com>
+Date: Mon, 19 Sep 2022 10:53:49 -0700
+Message-ID: <CABpDEum157s5+yQvikjwQRaOcxau27NkMzX9eCs9=HFOW5FYnA@mail.gmail.com>
+Subject: Re: [PATCH Part2 v6 37/49] KVM: SVM: Add support to handle MSR based
+ Page State Change VMGEXIT
+To: Peter Gonda <pgonda@google.com>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, "the arch/x86 maintainers" <x86@kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, kvm list <kvm@vger.kernel.org>, 
+	linux-coco@lists.linux.dev, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, 
+	"Lendacky, Thomas" <thomas.lendacky@amd.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Jim Mattson <jmattson@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Sergio Lopez <slp@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes <rientjes@google.com>, 
+	Dov Murik <dovmurik@linux.ibm.com>, Tobin Feldman-Fitzthum <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, 
+	Michael Roth <michael.roth@amd.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	"Kirill A . Shutemov" <kirill@shutemov.name>, Andi Kleen <ak@linux.intel.com>, 
+	Tony Luck <tony.luck@intel.com>, Marc Orr <marcorr@google.com>, 
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>, jarkko@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-This is a MIME-encapsulated message.
+On Fri, Aug 19, 2022 at 9:54 AM Peter Gonda <pgonda@google.com> wrote:
+>
+> > +
+> > +static int __snp_handle_page_state_change(struct kvm_vcpu *vcpu, enum psc_op op, gpa_t gpa,
+> > +                                         int level)
+> > +{
+> > +       struct kvm_sev_info *sev = &to_kvm_svm(vcpu->kvm)->sev_info;
+> > +       struct kvm *kvm = vcpu->kvm;
+> > +       int rc, npt_level;
+> > +       kvm_pfn_t pfn;
+> > +       gpa_t gpa_end;
+> > +
+> > +       gpa_end = gpa + page_level_size(level);
+> > +
+> > +       while (gpa < gpa_end) {
+> > +               /*
+> > +                * If the gpa is not present in the NPT then build the NPT.
+> > +                */
+> > +               rc = snp_check_and_build_npt(vcpu, gpa, level);
+> > +               if (rc)
+> > +                       return -EINVAL;
+> > +
+> > +               if (op == SNP_PAGE_STATE_PRIVATE) {
+> > +                       hva_t hva;
+> > +
+> > +                       if (snp_gpa_to_hva(kvm, gpa, &hva))
+> > +                               return -EINVAL;
+> > +
+> > +                       /*
+> > +                        * Verify that the hva range is registered. This enforcement is
+> > +                        * required to avoid the cases where a page is marked private
+> > +                        * in the RMP table but never gets cleanup during the VM
+> > +                        * termination path.
+> > +                        */
+> > +                       mutex_lock(&kvm->lock);
+> > +                       rc = is_hva_registered(kvm, hva, page_level_size(level));
+> > +                       mutex_unlock(&kvm->lock);
+> > +                       if (!rc)
+> > +                               return -EINVAL;
+> > +
+> > +                       /*
+> > +                        * Mark the userspace range unmerable before adding the pages
+> > +                        * in the RMP table.
+> > +                        */
+> > +                       mmap_write_lock(kvm->mm);
+> > +                       rc = snp_mark_unmergable(kvm, hva, page_level_size(level));
+> > +                       mmap_write_unlock(kvm->mm);
+> > +                       if (rc)
+> > +                               return -EINVAL;
+> > +               }
+> > +
+> > +               write_lock(&kvm->mmu_lock);
+> > +
+> > +               rc = kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level);
+> > +               if (!rc) {
+> > +                       /*
+> > +                        * This may happen if another vCPU unmapped the page
+> > +                        * before we acquire the lock. Retry the PSC.
+> > +                        */
+> > +                       write_unlock(&kvm->mmu_lock);
+> > +                       return 0;
+> > +               }
+>
+> I think we want to return -EAGAIN or similar if we want the caller to
+> retry, right? I think returning 0 here hides the error.
+>
 
---7BD5C740009.1663427027/mx1.mailhostbox.com
-Content-Description: Notification
-Content-Type: text/plain; charset=us-ascii
+The problem here is that the caller(linux guest kernel) doesn't retry
+if PSC fails. The current implementation in the guest kernel is that
+if a page state change request fails, it terminates the VM with
+GHCB_TERM_PSC reason.
+Returning 0 here is not a good option because it will fail the PSC
+silently and will probably cause a nested RMP fault later. Returning
+an error also terminates the guest immediately with current guest
+implementation. I think the best approach here is adding a retry logic
+to this function. Retrying without returning an error should help it
+work because snp_check_and_build_npt will be called again and in the
+second attempt this should work.
 
-This is the mail system at host mx1.mailhostbox.com.
-
-I'm sorry to have to inform you that your message could not
-be delivered to one or more recipients. It's attached below.
-
-For further assistance, please send mail to postmaster.
-
-If you do so, please include this problem report. You can
-delete your own text from the attached returned message.
-
-                   The mail system
-
-<apac-lb-mktg@endurance.com> (expanded from <marketing@logicboxes.com>): host
-    mf-active.dlls-tx.mailhostbox.com[10.25.144.162] said: 550-5.7.1 This
-    message is rejected by our SPAM filters. Please refer
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    more information 550 5.7.1 Please see
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    explanation of the problem. (in reply to end of DATA command)
-
-<premang.bhuta@newfold.com> (expanded from <marketing@logicboxes.com>): host
-    mf-active.dlls-tx.mailhostbox.com[10.25.144.162] said: 550-5.7.1 This
-    message is rejected by our SPAM filters. Please refer
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    more information 550 5.7.1 Please see
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    explanation of the problem. (in reply to end of DATA command)
-
-<rajiv.barretto@newfold.com> (expanded from <marketing@logicboxes.com>): host
-    mf-active.dlls-tx.mailhostbox.com[10.25.144.162] said: 550-5.7.1 This
-    message is rejected by our SPAM filters. Please refer
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    more information 550 5.7.1 Please see
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    explanation of the problem. (in reply to end of DATA command)
-
---7BD5C740009.1663427027/mx1.mailhostbox.com
-Content-Description: Delivery report
-Content-Type: message/delivery-status
-
-Reporting-MTA: dns; mx1.mailhostbox.com
-X-Postfix-Queue-ID: 7BD5C740009
-X-Postfix-Sender: rfc822; linux-coco@lists.linux.dev
-Arrival-Date: Sat, 17 Sep 2022 15:03:18 +0000 (UTC)
-
-Final-Recipient: rfc822; apac-lb-mktg@endurance.com
-Original-Recipient: rfc822;marketing@logicboxes.com
-Action: failed
-Status: 5.7.1
-Remote-MTA: dns; mf-active.dlls-tx.mailhostbox.com
-Diagnostic-Code: smtp; 550-5.7.1 This message is rejected by our SPAM filters.
-    Please refer
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    more information 550 5.7.1 Please see
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    explanation of the problem.
-
-Final-Recipient: rfc822; premang.bhuta@newfold.com
-Original-Recipient: rfc822;marketing@logicboxes.com
-Action: failed
-Status: 5.7.1
-Remote-MTA: dns; mf-active.dlls-tx.mailhostbox.com
-Diagnostic-Code: smtp; 550-5.7.1 This message is rejected by our SPAM filters.
-    Please refer
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    more information 550 5.7.1 Please see
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    explanation of the problem.
-
-Final-Recipient: rfc822; rajiv.barretto@newfold.com
-Original-Recipient: rfc822;marketing@logicboxes.com
-Action: failed
-Status: 5.7.1
-Remote-MTA: dns; mf-active.dlls-tx.mailhostbox.com
-Diagnostic-Code: smtp; 550-5.7.1 This message is rejected by our SPAM filters.
-    Please refer
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    more information 550 5.7.1 Please see
-    http://support.mailhostbox.com/email-administrators-guide-error-codes/ for
-    explanation of the problem.
-
---7BD5C740009.1663427027/mx1.mailhostbox.com
-Content-Description: Undelivered Message Headers
-Content-Type: text/rfc822-headers
-
-Return-Path: <linux-coco@lists.linux.dev>
-X-Spam-Subject: YES
-Authentication-Results: mx1.mailhostbox.com; dkim=none; dkim-atps=neutral
-Received: from lists.linux.dev (unknown [27.159.184.95])
-	by mx1.mailhostbox.com (Postfix) with ESMTP id 7BD5C740009
-	for <marketing@logicboxes.com>; Sat, 17 Sep 2022 15:03:18 +0000 (UTC)
-X-GUID: 20338768-B1B2-4769-B706-DEA3C14B2F36
-X-Has-Attach: yes
-From: "otRuYZ9" <linux-coco@lists.linux.dev>
-Subject:
- =?GB2312?B?0bDV0tPF1sq5qdOmycwgXHUzMUY4XHUzMUZBXHUzMUZGpbZcdTMwRkako1x1?=
- =?GB2312?B?MzFGOFx1MzFGRA==?=
-To: "marketing" <marketing@logicboxes.com>
-Content-Type: multipart/mixed; charset=GB2312; boundary="----=_109_NextPart291787988959_=----"
-MIME-Version: 1.0
-Date: Sat, 17 Sep 2022 23:03:18 +0800
-Message-Id: <202209172303063298938@lists.linux.dev>
-X-Mailer: Foxmail 7, 2, 5, 140[cn]
-X-Spam-Status: Yes
-X-CMAE-Score: 100
-X-CMAE-Analysis: v=2.4 cv=Bqj+fab5 c=0 sm=1 tr=0 ts=6325e1d2
-	p=RWFpqWw0UN7ExjxadxwA:9 a=0Yqdtqbm28Mhw849ueC99w==:117
-	a=0Yqdtqbm28Mhw849ueC99w==:17 a=_l4uJm6h9gAA:10 a=evnznIMVyloA:10
-	a=9DvhAHx2yrWFMPxQWpQA:9 a=G1lE-UZ1LTSZLYKq9pgA:9 a=lqcHg5cX4UMA:10
-	a=mFyHDrcPJccA:10
-
---7BD5C740009.1663427027/mx1.mailhostbox.com--
+> > +
+> > +               /*
+> > +                * Adjust the level so that we don't go higher than the backing
+> > +                * page level.
+> > +                */
+> > +               level = min_t(size_t, level, npt_level);
+> > +
+> > +               trace_kvm_snp_psc(vcpu->vcpu_id, pfn, gpa, op, level);
+> > +
+> > +               switch (op) {
+> > +               case SNP_PAGE_STATE_SHARED:
+> > +                       rc = snp_make_page_shared(kvm, gpa, pfn, level);
+> > +                       break;
+> > +               case SNP_PAGE_STATE_PRIVATE:
+> > +                       rc = rmp_make_private(pfn, gpa, level, sev->asid, false);
+> > +                       break;
+> > +               default:
+> > +                       rc = -EINVAL;
+> > +                       break;
+> > +               }
+> > +
+> > +               write_unlock(&kvm->mmu_lock);
+> > +
+> > +               if (rc) {
+> > +                       pr_err_ratelimited("Error op %d gpa %llx pfn %llx level %d rc %d\n",
+> > +                                          op, gpa, pfn, level, rc);
+> > +                       return rc;
+> > +               }
+> > +
+> > +               gpa = gpa + page_level_size(level);
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+> > +
