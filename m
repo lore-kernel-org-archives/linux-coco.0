@@ -1,91 +1,148 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707321C34
-	for <linux-coco@lists.linux.dev>; Tue, 20 Sep 2022 14:04:14 +0000 (UTC)
-Received: from zn.tnic (p200300ea9733e791329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e791:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 42A471EC00F4;
-	Tue, 20 Sep 2022 16:04:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1663682644;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=UxdIT3N09KsqckiSbe/NvyvNSdoIMMBwrOEJCizvJpo=;
-	b=OG8msomfvFRFV9h3zLBfUDcULQo18fC9SQfmUXStEGVHnVEZfxdSTH1x+T966I7DiYxTNI
-	zqviVHAhV/iBK8leiTrSHyB1VB7J+QX88UY2i3mug6eBVVaSVnM1xzd9XIwgSSFLkOQomr
-	6qM4pMYQXH7yq+Z49OOoOIov0lQVJYA=
-Date: Tue, 20 Sep 2022 16:04:00 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-Cc: "x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"jroedel@suse.de" <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"slp@redhat.com" <slp@redhat.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
-	"tobin@ibm.com" <tobin@ibm.com>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>,
-	"ak@linux.intel.com" <ak@linux.intel.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"alpergun@google.com" <alpergun@google.com>,
-	"dgilbert@redhat.com" <dgilbert@redhat.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 11/49] crypto:ccp: Define the SEV-SNP commands
-Message-ID: <YynIUOoAxZyBi+Iu@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <f5dec307d246096768afd770d16a26be25fa28b3.1655761627.git.ashish.kalra@amd.com>
- <Yym6Ob2tPYeb0Kq1@zn.tnic>
- <SN6PR12MB2767213C998077DFE8D52CAE8E4C9@SN6PR12MB2767.namprd12.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E0A7C
+	for <linux-coco@lists.linux.dev>; Tue, 20 Sep 2022 20:29:23 +0000 (UTC)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28KK9fYa002235;
+	Tue, 20 Sep 2022 20:29:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date : to :
+ from : cc : subject : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=vRG2+7LNEOHYJKjmqt/jfyRt1/vulWysKiUMjbYYcDg=;
+ b=X3dCryrzJe4ZVaGtDvFY8byQtXfyKV01GrlIsstsx2MgiAaRU7xkswFDWkx5xPIruwQM
+ lu3us3f/iAGG+e4TQOvuNYJq+uzqL42432aalJBSQTOg4DzDvDUabL4OgMuTOyacrCC1
+ uVVyk5EaZm+UdDrShhNXtndDoyHhoiVCAQR9m5bOHmvOOMfSWd+XVibTvVjIW6KV9e+F
+ PlcxDGOMlXK1RKAd9J0XXEr0VhsudDJvx4i+U1P1m3nVTzwSCOBnjLUpGure7VyWYnR3
+ st2biGqt8Stz6jvAbd88/iylgMiVT7CYJpGqKsi9cTpbhuBIjKD85uzoq3XlQ4vWeLKr KA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqm6g0q65-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Sep 2022 20:29:22 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28KKKLY3010675;
+	Tue, 20 Sep 2022 20:29:22 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqm6g0q5q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Sep 2022 20:29:22 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28KKKHxa011436;
+	Tue, 20 Sep 2022 20:28:21 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+	by ppma01dal.us.ibm.com with ESMTP id 3jn5v9uaxu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Sep 2022 20:28:21 +0000
+Received: from smtpav01.dal12v.mail.ibm.com ([9.208.128.133])
+	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28KKSIws37945700
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Sep 2022 20:28:19 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 61D6658057;
+	Tue, 20 Sep 2022 20:28:19 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC8EB58059;
+	Tue, 20 Sep 2022 20:28:17 +0000 (GMT)
+Received: from [9.160.86.51] (unknown [9.160.86.51])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Sep 2022 20:28:17 +0000 (GMT)
+Message-ID: <84d6ee10-ff8a-a121-d62f-19becf400e75@linux.ibm.com>
+Date: Tue, 20 Sep 2022 23:28:15 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Content-Language: en-US
+To: linux-coco@lists.linux.dev
+From: Dov Murik <dovmurik@linux.ibm.com>
+Cc: Dov Murik <dovmurik@linux.ibm.com>,
+        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>, amd-sev-snp@lists.suse.com,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Subject: Secure vTPMs for confidential VMs
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: MOHvVG8U0wF3AFtNFrxsGWbzxd0G5Fkb
+X-Proofpoint-GUID: 5oKJRQF68MgthLhGMLQO-O32Mv_B83E7
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SN6PR12MB2767213C998077DFE8D52CAE8E4C9@SN6PR12MB2767.namprd12.prod.outlook.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-20_10,2022-09-20_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 impostorscore=0
+ bulkscore=0 malwarescore=0 suspectscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2209130000 definitions=main-2209200121
 
-On Tue, Sep 20, 2022 at 01:46:25PM +0000, Kalra, Ashish wrote:
-> These are structure definitions as per SNP Firmware API
-> specifications, and they match the SNP Firmware commands and required
-> arguments.
+Hello,
 
-Yes, I have the spec.
+Tobin and I gave a talk in KVM Forum 2022 last week about Unifying
+Confidential Attestation [1].  During the KVM Forum and Linux Plumbers
+2022 we had several conversations with various attendees about using
+secure virtual TPMs to attest confidential VMs.
 
-> Isn't it better to have 1:1 mapping between specification and
-> structure definitions here ?
+We want to use the linux-coco mailing list to start community discussion
+about various options and tradeoffs for implementing secure vTPMs.
 
-Why would it be better if you can have a single struct serving multiple
-purposes and thus less code to stare at and deal with?
+Emulating hardware TPMs has an advantage that guest software already
+uses TPM devices to measure boot sequence components (firmware,
+bootloader, kernel, initrd) and runtime events (IMA in Linux).  We know
+that this currently works with vTPMs backed by the VMM implementation,
+such as QEMU's tpm device which is connected to swtpm running on the
+host.
 
--- 
-Regards/Gruss,
-    Boris.
+As far as we know, current vTPM solutions are insecure in the
+confidential computing setting, because the TPM code is running on the
+untrusted host, and communication between the guest and the TPM
+component is visible and modifiable by the untrusted host.  This allows
+the untrusted host to fake measurements or steal sensitive keys from the
+TPM memory/NVDATA.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+We so far recognized three issues that should be further researched in
+order to implement secure vTPMs for confidential VMs; these are TPM
+provisioning, implementations in TEEs, and guest enlightment.
+
+* TPM provisioning: The TPM contains sensitive information such as EK
+private key which should not be accessible to the host and to the guest.
+How should such information be delivered to the vTPM when starting a new
+VM?  If we provision encrypted NVDATA, who has the key to decrypt it?
+If we provision it with "classic" TEE secret injection, we need to do it
+quite early in the VM launch sequence (even before the firmware starts?).
+
+One suggestion is to use an ephemeral EK, generated at launch by the
+vTPM.  The system may start to boot using such a TPM, but once we want
+to unseal secrets (for example, to unlock a LUKS partition), we need
+something persistent inside the TPM (or re-seal the key for each TPM).
+Ephemeral TPMs might be a useful first step.
+
+* Implementation in TEEs: SNP introduced VPMLs, and AMD's linux-SVSM
+running in VPML0 can also run vTPM code to handle TPM requests from the
+guest running in VMPL1.  Such a solution is not applicable as-is to
+other TEEs (SEV, TDX).  People suggested running vTPMs in a separate
+confidential VMs, and somehow connect the tenant's guest to the TPM VM;
+but we'll need a way to secure this communication channel.
+
+* Guest enlightment: Guest software currently interacts with the TPM by
+writing commands to a memory-mapped IO page (GPA 0xfed40000) and reading
+responses from that page.  We want such writes to trigger the code of
+our vTPM (for whatever implementation we choose).  Our current early
+experience with TPM running in linux-SVSM required adding "exit-guest"
+calls after writing commands to the IO page, in order to allow the SVSM
+to run and recognize the incoming command.  Ideally, we'd like a
+solution that doesn't require modifying all the TPM drivers out there
+(in Linux, Windows, OVMF, grub, ...).
+
+We're sure there are other issues as well, but these are the main ones
+we encountered so far.  We'd like to hear the community's feedback and
+ideas as early as possible.
+
+
+Thanks,
+Tobin and Dov.
+
+[1] https://static.sched.com/hosted_files/kvmforum2022/02/Unifying-Confidential-Attestation-KVM-Forum-2022.pdf
