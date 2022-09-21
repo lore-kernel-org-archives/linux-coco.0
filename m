@@ -1,148 +1,118 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E0A7C
-	for <linux-coco@lists.linux.dev>; Tue, 20 Sep 2022 20:29:23 +0000 (UTC)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28KK9fYa002235;
-	Tue, 20 Sep 2022 20:29:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date : to :
- from : cc : subject : content-type : content-transfer-encoding :
- mime-version; s=pp1; bh=vRG2+7LNEOHYJKjmqt/jfyRt1/vulWysKiUMjbYYcDg=;
- b=X3dCryrzJe4ZVaGtDvFY8byQtXfyKV01GrlIsstsx2MgiAaRU7xkswFDWkx5xPIruwQM
- lu3us3f/iAGG+e4TQOvuNYJq+uzqL42432aalJBSQTOg4DzDvDUabL4OgMuTOyacrCC1
- uVVyk5EaZm+UdDrShhNXtndDoyHhoiVCAQR9m5bOHmvOOMfSWd+XVibTvVjIW6KV9e+F
- PlcxDGOMlXK1RKAd9J0XXEr0VhsudDJvx4i+U1P1m3nVTzwSCOBnjLUpGure7VyWYnR3
- st2biGqt8Stz6jvAbd88/iylgMiVT7CYJpGqKsi9cTpbhuBIjKD85uzoq3XlQ4vWeLKr KA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqm6g0q65-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Sep 2022 20:29:22 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 28KKKLY3010675;
-	Tue, 20 Sep 2022 20:29:22 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jqm6g0q5q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Sep 2022 20:29:22 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 28KKKHxa011436;
-	Tue, 20 Sep 2022 20:28:21 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-	by ppma01dal.us.ibm.com with ESMTP id 3jn5v9uaxu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 20 Sep 2022 20:28:21 +0000
-Received: from smtpav01.dal12v.mail.ibm.com ([9.208.128.133])
-	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 28KKSIws37945700
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Sep 2022 20:28:19 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 61D6658057;
-	Tue, 20 Sep 2022 20:28:19 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC8EB58059;
-	Tue, 20 Sep 2022 20:28:17 +0000 (GMT)
-Received: from [9.160.86.51] (unknown [9.160.86.51])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 20 Sep 2022 20:28:17 +0000 (GMT)
-Message-ID: <84d6ee10-ff8a-a121-d62f-19becf400e75@linux.ibm.com>
-Date: Tue, 20 Sep 2022 23:28:15 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Content-Language: en-US
-To: linux-coco@lists.linux.dev
-From: Dov Murik <dovmurik@linux.ibm.com>
-Cc: Dov Murik <dovmurik@linux.ibm.com>,
-        Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>, amd-sev-snp@lists.suse.com,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Subject: Secure vTPMs for confidential VMs
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: MOHvVG8U0wF3AFtNFrxsGWbzxd0G5Fkb
-X-Proofpoint-GUID: 5oKJRQF68MgthLhGMLQO-O32Mv_B83E7
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821AA7C
+	for <linux-coco@lists.linux.dev>; Wed, 21 Sep 2022 08:49:38 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EDA261F747;
+	Wed, 21 Sep 2022 08:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1663750170; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=98fih9GUwu8XeLPCG3O+3miy41iGa0MQojjCHci4ZVg=;
+	b=2GURPhpaBUr9/FFPv0hDEUgIu4i4O+ECIvoI3qbRxh4/sRHnAuWvADJ10NfuDl4zE6P6c9
+	ge3vSPDUStG3Jo92Lbu5pBW8B67VqkPts34uTMvhzgfhNgftfecsrCbWt114dXmyxb1QRH
+	ZGoc5R+Kutu4VzLOEdeuXUDu/ar2XaU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1663750170;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=98fih9GUwu8XeLPCG3O+3miy41iGa0MQojjCHci4ZVg=;
+	b=te9cC631zabG2tmjGu4teZwDJPVqYr5Sv5So7vGSttGuiwMJQc3sfF/DUENXPt5NDZpOGO
+	/oMK6ua7qvPzQqBg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B95B513A89;
+	Wed, 21 Sep 2022 08:49:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id nM27KxrQKmOrNAAAMHmgww
+	(envelope-from <jroedel@suse.de>); Wed, 21 Sep 2022 08:49:30 +0000
+Date: Wed, 21 Sep 2022 10:49:29 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: Dov Murik <dovmurik@linux.ibm.com>
+Cc: linux-coco@lists.linux.dev,
+	Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+	Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
+	amd-sev-snp@lists.suse.com
+Subject: Re: Secure vTPMs for confidential VMs
+Message-ID: <YyrQGXO34ZRxSbgl@suse.de>
+References: <84d6ee10-ff8a-a121-d62f-19becf400e75@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-20_10,2022-09-20_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 adultscore=0 lowpriorityscore=0 impostorscore=0
- bulkscore=0 malwarescore=0 suspectscore=0 mlxscore=0 spamscore=0
- mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2209130000 definitions=main-2209200121
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <84d6ee10-ff8a-a121-d62f-19becf400e75@linux.ibm.com>
 
-Hello,
+Hi Dov,
 
-Tobin and I gave a talk in KVM Forum 2022 last week about Unifying
-Confidential Attestation [1].  During the KVM Forum and Linux Plumbers
-2022 we had several conversations with various attendees about using
-secure virtual TPMs to attest confidential VMs.
+On Tue, Sep 20, 2022 at 11:28:15PM +0300, Dov Murik wrote:
+> * Implementation in TEEs: SNP introduced VPMLs, and AMD's linux-SVSM
+> running in VPML0 can also run vTPM code to handle TPM requests from the
+> guest running in VMPL1.  Such a solution is not applicable as-is to
+> other TEEs (SEV, TDX).  People suggested running vTPMs in a separate
+> confidential VMs, and somehow connect the tenant's guest to the TPM VM;
+> but we'll need a way to secure this communication channel.
 
-We want to use the linux-coco mailing list to start community discussion
-about various options and tradeoffs for implementing secure vTPMs.
+Yes, so for SEV-SNP the way to implement a vTPM is via a Secure VM
+Service Module (SVSM) running at VMPL0.
 
-Emulating hardware TPMs has an advantage that guest software already
-uses TPM devices to measure boot sequence components (firmware,
-bootloader, kernel, initrd) and runtime events (IMA in Linux).  We know
-that this currently works with vTPMs backed by the VMM implementation,
-such as QEMU's tpm device which is connected to swtpm running on the
-host.
+I not sure how much we should care about the variant of running a vTPM
+in a separate trusted VM. In the long run SEV and SEV-ES will be
+replaced by SEV-SNP, and for TDX it would be best if Intel just adds a
+software TPM into their SEAM module. IIRC TDX already has some TPM-like
+features, e.g. PCRs, implemented there. A full vTPM seems to be doable.
 
-As far as we know, current vTPM solutions are insecure in the
-confidential computing setting, because the TPM code is running on the
-untrusted host, and communication between the guest and the TPM
-component is visible and modifiable by the untrusted host.  This allows
-the untrusted host to fake measurements or steal sensitive keys from the
-TPM memory/NVDATA.
+> * Guest enlightment: Guest software currently interacts with the TPM by
+> writing commands to a memory-mapped IO page (GPA 0xfed40000) and reading
+> responses from that page.  We want such writes to trigger the code of
+> our vTPM (for whatever implementation we choose).  Our current early
+> experience with TPM running in linux-SVSM required adding "exit-guest"
+> calls after writing commands to the IO page, in order to allow the SVSM
+> to run and recognize the incoming command.  Ideally, we'd like a
+> solution that doesn't require modifying all the TPM drivers out there
+> (in Linux, Windows, OVMF, grub, ...).
 
-We so far recognized three issues that should be further researched in
-order to implement secure vTPMs for confidential VMs; these are TPM
-provisioning, implementations in TEEs, and guest enlightment.
+It will not be that easy to emulate a vTPM at VMPL0 which has the same
+interface as memory mapped TPMs. That would mean marking the page as
+MMIO, but that will trigger a VC exception in the OS (or OVMF, Grub,
+...), which would then need to forward the MMIO access to the SVSM. So
+either way, OVMF and Grub need modification to work with a vTPM running
+at a lower VMPL.
 
-* TPM provisioning: The TPM contains sensitive information such as EK
-private key which should not be accessible to the host and to the guest.
-How should such information be delivered to the vTPM when starting a new
-VM?  If we provision encrypted NVDATA, who has the key to decrypt it?
-If we provision it with "classic" TEE secret injection, we need to do it
-quite early in the VM launch sequence (even before the firmware starts?).
+An alternative is using the ReflectVC feature to get the VC directed to
+the lower VMPL, but that has much wider implications and is not
+justified for only emulating a vTPM.
 
-One suggestion is to use an ephemeral EK, generated at launch by the
-vTPM.  The system may start to boot using such a TPM, but once we want
-to unseal secrets (for example, to unlock a LUKS partition), we need
-something persistent inside the TPM (or re-seal the key for each TPM).
-Ephemeral TPMs might be a useful first step.
+The current plan is to have VMPL1 talk to the VMPL0 vTPM via
+standardised SVSM commands. This requires new TPM drivers for all VMPL1
+components. At least unless someone comes up with a better idea :)
 
-* Implementation in TEEs: SNP introduced VPMLs, and AMD's linux-SVSM
-running in VPML0 can also run vTPM code to handle TPM requests from the
-guest running in VMPL1.  Such a solution is not applicable as-is to
-other TEEs (SEV, TDX).  People suggested running vTPMs in a separate
-confidential VMs, and somehow connect the tenant's guest to the TPM VM;
-but we'll need a way to secure this communication channel.
+Regards,
 
-* Guest enlightment: Guest software currently interacts with the TPM by
-writing commands to a memory-mapped IO page (GPA 0xfed40000) and reading
-responses from that page.  We want such writes to trigger the code of
-our vTPM (for whatever implementation we choose).  Our current early
-experience with TPM running in linux-SVSM required adding "exit-guest"
-calls after writing commands to the IO page, in order to allow the SVSM
-to run and recognize the incoming command.  Ideally, we'd like a
-solution that doesn't require modifying all the TPM drivers out there
-(in Linux, Windows, OVMF, grub, ...).
+-- 
+Jörg Rödel
+jroedel@suse.de
 
-We're sure there are other issues as well, but these are the main ones
-we encountered so far.  We'd like to hear the community's feedback and
-ideas as early as possible.
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
 
+(HRB 36809, AG Nürnberg)
+Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
 
-Thanks,
-Tobin and Dov.
-
-[1] https://static.sched.com/hosted_files/kvmforum2022/02/Unifying-Confidential-Attestation-KVM-Forum-2022.pdf
