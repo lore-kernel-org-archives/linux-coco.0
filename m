@@ -1,36 +1,25 @@
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED427B
-	for <linux-coco@lists.linux.dev>; Sat, 24 Sep 2022 01:03:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663981392; x=1695517392;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OBLqHu4HrfxZrshSMCaixAcofJF9yzq0ARl2qAoeSc8=;
-  b=IaK6lJuBlyv1yFE6WKSNewwcNklMZOU+dDbn+dyJsIze8u33GW0q3cnt
-   44yGqHSrd2FlotsJ8glsAE1aFPzAmMH7PijkOXC+4VH9EUtiXQe2FHFJi
-   d7NitaJ4nkDzv8yfTQxAOBatp3Ek1oIIJietz8qtIY2tbBS+2arZJM1cB
-   TnNpN9syFusVk9SlZZicvUNU5p5U5DZpr6oHleX6xq23ywyX/P7RjH1q0
-   HeLIOxIqB205ycw4zwYTu/8flQgiN82Y6y8jrlGqMNRT9wIScuARTqBKD
-   A/PFCIGx5XYOI++QxU/sjcdcInC6Ut9IiWmMGLnu8xHhHtCrB8iqsEc7B
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10479"; a="283840599"
-X-IronPort-AV: E=Sophos;i="5.93,340,1654585200"; 
-   d="scan'208";a="283840599"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 18:03:11 -0700
-X-IronPort-AV: E=Sophos;i="5.93,340,1654585200"; 
-   d="scan'208";a="724350159"
-Received: from pameiner-mobl2.amr.corp.intel.com (HELO box.shutemov.name) ([10.252.58.236])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2022 18:03:05 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id D7FE51028F1; Sat, 24 Sep 2022 04:03:02 +0300 (+03)
-Date: Sat, 24 Sep 2022 04:03:02 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262758F6A
+	for <linux-coco@lists.linux.dev>; Sat, 24 Sep 2022 09:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCC7C433C1;
+	Sat, 24 Sep 2022 09:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1664012193;
+	bh=OUuAuEMHOOoW2UUphtHEcJFzOd5jzmKbeMgag01UxIA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MaL/dLau/5/WSqjg4siwpxCmhAP5uMcabVH4UVhiJmA5hJU4pY/EMFC2ZLQOUIYt9
+	 nBidURuV0BQ2whZCjUUeB4H3eiNVTkiRLHyBQ66+/vxDre6nLPp3uoDujGWRinvM/t
+	 frEK4ii6zJj9MuJEuQkkiW/dKzyIJQIBz/Snf2qSAYQaGq5yAHzEQywEmWBopjDB/+
+	 o1wa0++gwS1fdzdSOsttOI+kmDx4Iu3ZMxipqkhUdMrv4X0/7CGjjCh2dXUwKS+S2r
+	 Fx15OFTbQtaYDBm4kTqvTA7XPCeNRfv9UPDVtYO50XtQ2KAQCl1YNKBYybg9px/QkP
+	 E6nbHXIsB67rw==
+Date: Sat, 24 Sep 2022 12:36:12 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
 	Dave Hansen <dave.hansen@intel.com>,
 	Mel Gorman <mgorman@techsingularity.net>,
 	Vlastimil Babka <vbabka@suse.cz>, Borislav Petkov <bp@alien8.de>,
@@ -45,7 +34,6 @@ Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
 	Dario Faggioli <dfaggioli@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
 	David Hildenbrand <david@redhat.com>,
 	Marcelo Cerri <marcelo.cerri@canonical.com>,
 	tim.gardner@canonical.com,
@@ -56,9 +44,8 @@ Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
 	LKML <linux-kernel@vger.kernel.org>,
 	Mike Rapoport <rppt@linux.ibm.com>
 Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Message-ID: <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
-References: <20220810141959.ictqchz7josyd7pt@techsingularity.net>
- <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
+Message-ID: <Yy7PjEXfHoR4PYdC@kernel.org>
+References: <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
  <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
  <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
  <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
@@ -67,6 +54,7 @@ References: <20220810141959.ictqchz7josyd7pt@techsingularity.net>
  <CAAH4kHaP8JUh0Z4rF83=2RZTGMATT5MHot6rAnAwt79PL64mVQ@mail.gmail.com>
  <YxpCaQARczhZQmq2@linux.ibm.com>
  <f72f7325-adc6-89d5-7cbc-647442308233@amd.com>
+ <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -75,43 +63,89 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f72f7325-adc6-89d5-7cbc-647442308233@amd.com>
+In-Reply-To: <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
 
-On Thu, Sep 22, 2022 at 09:31:12AM -0500, Tom Lendacky wrote:
-> On 9/8/22 14:28, Mike Rapoport wrote:
-> > On Thu, Sep 08, 2022 at 09:23:07AM -0700, Dionna Amalie Glaze wrote:
+On Sat, Sep 24, 2022 at 04:03:02AM +0300, Kirill A. Shutemov wrote:
+> On Thu, Sep 22, 2022 at 09:31:12AM -0500, Tom Lendacky wrote:
+> > On 9/8/22 14:28, Mike Rapoport wrote:
+> > > On Thu, Sep 08, 2022 at 09:23:07AM -0700, Dionna Amalie Glaze wrote:
+> > > > > 
+> > > > > Looks like the first access to the memory map fails, although I think
+> > > > > it's not in INIT_LIST_HEAD() but rather in init_page_count().
+> > > > > 
+> > > > > I'd start with making sure that page_alloc::memmap_alloc() actually returns
+> > > > > accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
+> > > > > will poisoned in this function, so my guess is it'd crash there.
+> > > > > 
 > > > > 
-> > > > Looks like the first access to the memory map fails, although I think
-> > > > it's not in INIT_LIST_HEAD() but rather in init_page_count().
-> > > > 
-> > > > I'd start with making sure that page_alloc::memmap_alloc() actually returns
-> > > > accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
-> > > > will poisoned in this function, so my guess is it'd crash there.
-> > > > 
+> > > > That's a wonderful hint, thank you! I did not run this test
+> > > > CONFIG_DEBUG_VM set, but you think it's possible it could still be
+> > > > here?
 > > > 
-> > > That's a wonderful hint, thank you! I did not run this test
-> > > CONFIG_DEBUG_VM set, but you think it's possible it could still be
-> > > here?
+> > > It depends on how you configured your kernel. Say, defconfig does not set
+> > > it.
+> > > 
 > > 
-> > It depends on how you configured your kernel. Say, defconfig does not set
-> > it.
+> > I also hit the issue at 256GB. My config is using CONFIG_SPARSEMEM_VMEMMAP
+> > and fails in memmap_init_range() when attempting to add the first PFN. It
+> > looks like the underlying page that is backing the vmemmap has not been
+> > accepted (I receive a #VC 0x404 => page not validated).
 > > 
+> > Kirill, is this a path that you've looked at? It would appear that somewhere
+> > in the vmemmap_populate_hugepages() path, some memory acceptance needs to be
+> > done for the pages that are used to back vmemmap. I'm not very familiar with
+> > this code, so I'm not sure why everything works for a guest with 255GB of
+> > memory, but then fails for a guest with 256GB of memory.
 > 
-> I also hit the issue at 256GB. My config is using CONFIG_SPARSEMEM_VMEMMAP
-> and fails in memmap_init_range() when attempting to add the first PFN. It
-> looks like the underlying page that is backing the vmemmap has not been
-> accepted (I receive a #VC 0x404 => page not validated).
+> Hm. I don't have machine that large at hands at the moment. And I have not
+> looked at the codepath before.
 > 
-> Kirill, is this a path that you've looked at? It would appear that somewhere
-> in the vmemmap_populate_hugepages() path, some memory acceptance needs to be
-> done for the pages that are used to back vmemmap. I'm not very familiar with
-> this code, so I'm not sure why everything works for a guest with 255GB of
-> memory, but then fails for a guest with 256GB of memory.
+> I will try to look into the issue.
 
-Hm. I don't have machine that large at hands at the moment. And I have not
-looked at the codepath before.
+I'd add some printks to verify we actually try to accept the allocated
+memory. E.g. something like the patch below:
 
-I will try to look into the issue.
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+index 9ec2304272dc..8f00639facc4 100644
+--- a/arch/x86/mm/unaccepted_memory.c
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -22,6 +22,9 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 	if (!boot_params.unaccepted_memory)
+ 		return;
+ 
++	if (system_state == SYSTEM_BOOTING)
++		pr_info("%s: start: %pa end: %pa %pS\n", __func__, &start, &end, (void *)_RET_IP_);
++
+ 	bitmap = __va(boot_params.unaccepted_memory);
+ 	range_start = start / PMD_SIZE;
+ 
+diff --git a/mm/memblock.c b/mm/memblock.c
+index a1f7f8b304d5..029dd520102d 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1535,7 +1535,7 @@ void * __init memblock_alloc_exact_nid_raw(
+ 			phys_addr_t min_addr, phys_addr_t max_addr,
+ 			int nid)
+ {
+-	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
++	pr_info("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
+ 		     __func__, (u64)size, (u64)align, nid, &min_addr,
+ 		     &max_addr, (void *)_RET_IP_);
+ 
+@@ -1567,7 +1567,7 @@ void * __init memblock_alloc_try_nid_raw(
+ 			phys_addr_t min_addr, phys_addr_t max_addr,
+ 			int nid)
+ {
+-	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
++	pr_info("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
+ 		     __func__, (u64)size, (u64)align, nid, &min_addr,
+ 		     &max_addr, (void *)_RET_IP_);
+ 
+ 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
+> 
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sincerely yours,
+Mike.
