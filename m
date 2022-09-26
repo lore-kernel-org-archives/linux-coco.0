@@ -1,151 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01olkn2045.outbound.protection.outlook.com [40.92.98.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262758F6A
-	for <linux-coco@lists.linux.dev>; Sat, 24 Sep 2022 09:36:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCC7C433C1;
-	Sat, 24 Sep 2022 09:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1664012193;
-	bh=OUuAuEMHOOoW2UUphtHEcJFzOd5jzmKbeMgag01UxIA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MaL/dLau/5/WSqjg4siwpxCmhAP5uMcabVH4UVhiJmA5hJU4pY/EMFC2ZLQOUIYt9
-	 nBidURuV0BQ2whZCjUUeB4H3eiNVTkiRLHyBQ66+/vxDre6nLPp3uoDujGWRinvM/t
-	 frEK4ii6zJj9MuJEuQkkiW/dKzyIJQIBz/Snf2qSAYQaGq5yAHzEQywEmWBopjDB/+
-	 o1wa0++gwS1fdzdSOsttOI+kmDx4Iu3ZMxipqkhUdMrv4X0/7CGjjCh2dXUwKS+S2r
-	 Fx15OFTbQtaYDBm4kTqvTA7XPCeNRfv9UPDVtYO50XtQ2KAQCl1YNKBYybg9px/QkP
-	 E6nbHXIsB67rw==
-Date: Sat, 24 Sep 2022 12:36:12 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Vlastimil Babka <vbabka@suse.cz>, Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	David Hildenbrand <david@redhat.com>,
-	Marcelo Cerri <marcelo.cerri@canonical.com>,
-	tim.gardner@canonical.com,
-	Khalid ElMously <khalid.elmously@canonical.com>,
-	philip.cox@canonical.com, the arch/x86 maintainers <x86@kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-coco@lists.linux.dev, linux-efi <linux-efi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCHv7 02/14] mm: Add support for unaccepted memory
-Message-ID: <Yy7PjEXfHoR4PYdC@kernel.org>
-References: <CAAH4kHa6s3sBRySNu-TZG_6vOaN4KheVy4kvxG5s=wOTDGy2=Q@mail.gmail.com>
- <2981e25e-9cda-518a-9750-b8694f2356b5@amd.com>
- <CAAH4kHbcfnVWNQHf6Mrg__bSFT6196Sx4kno6o0Zo7hsgOgnNw@mail.gmail.com>
- <984e07ed-914f-93ca-a141-3fc8677878e0@intel.com>
- <CAAH4kHawguTEuDVyz1ysSbH0X_mT=SvxLi=UhwEzXM0abbWefg@mail.gmail.com>
- <YxncAElGrPEGRYg1@linux.ibm.com>
- <CAAH4kHaP8JUh0Z4rF83=2RZTGMATT5MHot6rAnAwt79PL64mVQ@mail.gmail.com>
- <YxpCaQARczhZQmq2@linux.ibm.com>
- <f72f7325-adc6-89d5-7cbc-647442308233@amd.com>
- <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C467B
+	for <linux-coco@lists.linux.dev>; Mon, 26 Sep 2022 10:52:20 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EX+DA7/+KVKbc38+pX5kYYCFyv8Wc8FAaH14KXTes5zw3VkZgR1vt/L9PWg3EYj/VTevUTxfMywgNzTzTZQ3/LgOW05AuaZtGwcsHsEEaSktWOO350rQcuzC6xYMDWan9SAoHJyXDul6jeMuFuG1XQO9itUmjvaIXvB1gGlJOOK1m/XRuvWEAEI5/MKEEZLU+DNYMucVfuPrAdLfBfnXpNo4qcrgp09pdBLN++/1DebNwA1j7o/K+VZGc7Hd7h09lJ+Ku8XMW4cktTj0fCgx2TCsvcsqbJ9BfdA++C3TOSPW71dM2khamhHWc2PJhOpYpSZNZD6ozGtXGpB698+llA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UDY4+LTi0PDN2TuCGruIoEHyLEOW7nAW2UV/QpdiK5A=;
+ b=EAyeeO+NjAhYS3T+l2YArtS6EVSQI0UkWvmPuEUu5daNePVf4l2gUk2CPsoStL3Y3i131rte6j6coe7l9fdj15bEdTwCPHcNdo7rClq4Qq/aLHROhV4LLA6mqmBujyM8Ejb/IEBVloLzvnr2hdJvr6Bgd/UqDvMvy4pwb52DQU+MAYxUU/58vUSFTcWtV4UqSpVSEbBVljheLKeSQaUPtrVO4OTce8GBt0smOpX6Rm6r8eGh6yE19TufoCUszOAlIE0eyNSiME78aYdkg+JA4ijHQdWuY0Zl4XDH5cuqIC27wpymVoJxYUOsM6E9EMPM4smgYMp8JMno6hiq+DRV0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UDY4+LTi0PDN2TuCGruIoEHyLEOW7nAW2UV/QpdiK5A=;
+ b=cynjm7gINTWgQMlPawXrquiAV7I7PNKhIs4zMjgBPqX/+8lLqrtVije5cLk+/FzBwuT+q9CBX/pneYC4xjJGfw4IWtPc+nP4lv3cNtNs9C6NRLfu1OAggv5Teoe6+WBKyUoJ/EWkFTW+Tfhov2SDe9Ngfa75EMwiUH8UZbmBZDmbebitW92f+SfrXZMqtfub30cV0oPgkhp9lcW9ch+IYUFN0NInbm8RGCN3zmsMTjE2uyQJHFVT7ENRfJmgSyiU4NbjLqtJwG7CbVWBCDF8WoQ0xxNSzoCWspdtqzCG1eGffkrqGclQB+fos63Wqw69gG7gVcx8B5eaoV6KBD5i1Q==
+Received: from OSYP286MB0103.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:83::12)
+ by OS3P286MB1640.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:161::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.19; Mon, 26 Sep
+ 2022 10:52:18 +0000
+Received: from OSYP286MB0103.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::8b83:8fb9:2676:a925]) by OSYP286MB0103.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::8b83:8fb9:2676:a925%9]) with mapi id 15.20.5654.025; Mon, 26 Sep 2022
+ 10:52:18 +0000
+From: =?gb2312?B?1cUg1PPT7g==?= <zeyuzhang07@outlook.com>
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject:
+Thread-Index: AQHY0ZYIAT3oPckznUGJpAOPrOUHzw==
+Date: Mon, 26 Sep 2022 10:52:18 +0000
+Message-ID:
+ <OSYP286MB0103938E452BF5018D4EF780B2529@OSYP286MB0103.JPNP286.PROD.OUTLOOK.COM>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-tmn: [+TifF/VSwqPRk0l95zSIQx9E16pybyaL]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OSYP286MB0103:EE_|OS3P286MB1640:EE_
+x-ms-office365-filtering-correlation-id: fb3868e9-ebad-4b0c-fc96-08da9fad2e7d
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ oGScoPVeO51y65H8GFxefCSNhw1XaskOWCB6UWCJ5ea7p0u8QUz2EHdSZCtug7t12UtNPrA3Zg034wcUPb2NMJYvIVJfBsjDv/yhSo0ZkBmkJLPnKvAXda4cdZxp1CaaqKzCEzk/aGdqm7hP777V/9aoyL6D16yJY8iyxufTV5/S9XX1blDCp3aPL6+zWtzK2ep3Ph3d7LWGA5JFRjvI4QDw3u8pgGa3rGF1jRXET2zwhiTcUuQq0JVbQFANdWTRMjxC1qfzaRJehiEPpw1yA2rXDJ5uVSBLuyKztUu06Bi9HZus8YQZ/AvrTPU1VLpiLxkOfKVIaqemEJ7ensa+ZyGTUCM9XtqCeha/M54ECB6Pw/i7zjGg9474l1dfkGr+4yLI/UpMTAp9POhEWz108WtdsE6sP5FxV2BuZ+5STaTCjVgFD/AulApkXJih4pd1a7ezsISj3svfifi1FqHNcQ5BepbAccwVP8bhcuA4pioExVaWM4pDKYlj7ekcF41NAOSd95Pf7MtIbwOUjGqOlZtGGbMNQO6PH1CxYpzF8IN42kc92LNYIl2CV2xuV1wFK8HP67//wEBHG5DIEqX46gRXWTzs6aPQD1z9LONj4aauwR33RFcQJFzv8b98QR8nZwp40xLQ9GekcC7YU1YCyg==
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?gb2312?B?MnZkS1E2ZkZxcE1ZMFBpaitxQjFZTEJseGFXbE16Y3ZlQUFNViswYkU2TExV?=
+ =?gb2312?B?TEtoWE1zOUJwbm1tSVFHSmdmY01iVHp0czBFNDhINGp0MmJqQ3dzcXpndkwr?=
+ =?gb2312?B?azd1aDN0bFBvWktEK3JkQ0poMjJlTmJzNWFhZ3RrREZuSFVscEdQSE9zQkdJ?=
+ =?gb2312?B?T0kzTkpjSmVnTkQyUEpaejUrUTA1QU9GMzdVb0FTdW90WDJDbnlrWUpKWWk1?=
+ =?gb2312?B?clJmQnVxUzNtTWVQS3ZVZXBYM3hEdzJsdFA1bjhiTzgvdGZjL2hSL3pIN1d4?=
+ =?gb2312?B?Y3R4WE11UEF2b2JuUUl6VnptYXZrSmd6cGlEei9NNnE4eXNmZWJONjlBTnJN?=
+ =?gb2312?B?RUtvNVkyY3pSN2V6UG1KRXdFMVIxRTVQVUxVcWJSVDBBaXgrSjc2NGVZaUpi?=
+ =?gb2312?B?WUtzbEVKa2MyOGdsaFcvUGJ2eEdXTEFpdEhVVExHSUoxcE5RQlA3MWlBYy92?=
+ =?gb2312?B?SkRBdFBnQ1lUT3pscHhpZzlielRpR2ltRmd4SkpmRm1GcEo0ZHhpckI2RDFN?=
+ =?gb2312?B?TFZwQURXR2loc1JiQ0VVOHFVaHJsYmxUVlVCUFgyZFYyclRYQm1pOUZ5WVNX?=
+ =?gb2312?B?enl0N3RPK1RoaFhLeDVKbmZUcS9VZ2JLMTdxOCszc2tvVUZKNEFUTjlhVWtZ?=
+ =?gb2312?B?MlNGTmNRVi9qb0ZRdHNLK2lBdGJBQlFTaWcxdnRMalJIYzh5OGlpcGRzNlpF?=
+ =?gb2312?B?UytQTnRZNlRMTnRoY084cGEzQ0t4ZHpVallqeEkrcWlXMG1qNFVFTWJXWUZn?=
+ =?gb2312?B?ZDZ4V3dVcGRNQXV1VSt0c2F5emwrZS94QnpQMHZxUEFRSWpPR1A0enFqN3hw?=
+ =?gb2312?B?Ny9RVGdYbVNWSlREZHVsc3k0NytIamQ4Y3ZBMzZTRDdxSUZZS1oxZ29ObXZq?=
+ =?gb2312?B?WXF2UTFBcy9VNlA1OGxEYzRGK3FmRFJOVFJIRmw2TzF3OFAxTG9zYkxqZTNw?=
+ =?gb2312?B?dHMrQ1I5aVNWek1UR1p2SG0rRmUvQThodDRkRk0xK2lZQ3JiTjIxaTR4VU5G?=
+ =?gb2312?B?WkU5MXZGdGx5ZzBTb003SkJJeVdFQ0pKemliVzJnTWdnTXMwaklTYkZJTGts?=
+ =?gb2312?B?aitKYXdXS2NoUXZmM0VINHo1bXJFbjExU3lDOGp2cEQ4RGJQT3c3NWlGOGpR?=
+ =?gb2312?B?M04yVXRpWTlIMHVQZTM2ekx1SkxXQ3dqYUhSbHlLYWdOUGlJTDBZZWdmUXVI?=
+ =?gb2312?B?MytCUEtVNkN0VjVyK0xEK0FnM25YckE5UFlFZTdyMUtlclhQOWI5UnpQVnk2?=
+ =?gb2312?B?SUJkd3NYTTlobHVOTVFxRDBzZ3dpaWw2a3ZMLzllUDJGZWJtaVJ2dlQyT2s3?=
+ =?gb2312?B?S2pWbzc4dmV2RmRJK2ZoeGlvTWNmOEVEcUhTVklNMkVURmp4dGJVL2kyeHZZ?=
+ =?gb2312?B?OGR1M2VoVmJtbFlnRWprUHZPd01MdWl3UjJkRkxRMlIyVjBZMm91M0pYa2c4?=
+ =?gb2312?B?bGsrNmFndm1EVDhxU1JvQ1NXOVRpS3NMTHh2K2VWZDlyR0hwZ3FQNjQvd1ha?=
+ =?gb2312?B?MXFQY1VWVUplVVhQWHVRRFRNQ1NkQjhFRTVQU2xBWkk3Q2NNTnRTci9LVVRs?=
+ =?gb2312?B?TTBicnRKMmlPUHNyTnpxUE1sb0pUOWlkbHlEN0pkcnZkdmozOWFGQS9BL0Ev?=
+ =?gb2312?B?NVBNdHlRM0tSSDk4MFNXdVZZZHRGYnRBR2h6d3JVVVJZeWl3WHdsdk11SjVx?=
+ =?gb2312?B?L1VyVURUQ1d5QTdNUk9BQzhFNGRlWEI2QWVDT01MSVhZZ2tDVWpDcElnPT0=?=
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220924010302.bwas4zbro37rrxai@box.shutemov.name>
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OSYP286MB0103.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb3868e9-ebad-4b0c-fc96-08da9fad2e7d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2022 10:52:18.3888
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3P286MB1640
 
-On Sat, Sep 24, 2022 at 04:03:02AM +0300, Kirill A. Shutemov wrote:
-> On Thu, Sep 22, 2022 at 09:31:12AM -0500, Tom Lendacky wrote:
-> > On 9/8/22 14:28, Mike Rapoport wrote:
-> > > On Thu, Sep 08, 2022 at 09:23:07AM -0700, Dionna Amalie Glaze wrote:
-> > > > > 
-> > > > > Looks like the first access to the memory map fails, although I think
-> > > > > it's not in INIT_LIST_HEAD() but rather in init_page_count().
-> > > > > 
-> > > > > I'd start with making sure that page_alloc::memmap_alloc() actually returns
-> > > > > accepted memory. If you build kernel with CONFIG_DEBUG_VM=y the memory map
-> > > > > will poisoned in this function, so my guess is it'd crash there.
-> > > > > 
-> > > > 
-> > > > That's a wonderful hint, thank you! I did not run this test
-> > > > CONFIG_DEBUG_VM set, but you think it's possible it could still be
-> > > > here?
-> > > 
-> > > It depends on how you configured your kernel. Say, defconfig does not set
-> > > it.
-> > > 
-> > 
-> > I also hit the issue at 256GB. My config is using CONFIG_SPARSEMEM_VMEMMAP
-> > and fails in memmap_init_range() when attempting to add the first PFN. It
-> > looks like the underlying page that is backing the vmemmap has not been
-> > accepted (I receive a #VC 0x404 => page not validated).
-> > 
-> > Kirill, is this a path that you've looked at? It would appear that somewhere
-> > in the vmemmap_populate_hugepages() path, some memory acceptance needs to be
-> > done for the pages that are used to back vmemmap. I'm not very familiar with
-> > this code, so I'm not sure why everything works for a guest with 255GB of
-> > memory, but then fails for a guest with 256GB of memory.
-> 
-> Hm. I don't have machine that large at hands at the moment. And I have not
-> looked at the codepath before.
-> 
-> I will try to look into the issue.
-
-I'd add some printks to verify we actually try to accept the allocated
-memory. E.g. something like the patch below:
-
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 9ec2304272dc..8f00639facc4 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -22,6 +22,9 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 	if (!boot_params.unaccepted_memory)
- 		return;
- 
-+	if (system_state == SYSTEM_BOOTING)
-+		pr_info("%s: start: %pa end: %pa %pS\n", __func__, &start, &end, (void *)_RET_IP_);
-+
- 	bitmap = __va(boot_params.unaccepted_memory);
- 	range_start = start / PMD_SIZE;
- 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index a1f7f8b304d5..029dd520102d 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1535,7 +1535,7 @@ void * __init memblock_alloc_exact_nid_raw(
- 			phys_addr_t min_addr, phys_addr_t max_addr,
- 			int nid)
- {
--	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
-+	pr_info("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
- 		     __func__, (u64)size, (u64)align, nid, &min_addr,
- 		     &max_addr, (void *)_RET_IP_);
- 
-@@ -1567,7 +1567,7 @@ void * __init memblock_alloc_try_nid_raw(
- 			phys_addr_t min_addr, phys_addr_t max_addr,
- 			int nid)
- {
--	memblock_dbg("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
-+	pr_info("%s: %llu bytes align=0x%llx nid=%d from=%pa max_addr=%pa %pS\n",
- 		     __func__, (u64)size, (u64)align, nid, &min_addr,
- 		     &max_addr, (void *)_RET_IP_);
- 
- 
-> -- 
->   Kiryl Shutsemau / Kirill A. Shutemov
-> 
-
--- 
-Sincerely yours,
-Mike.
+dW5zdWJzY3JpYmU=
