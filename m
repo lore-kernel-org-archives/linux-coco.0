@@ -1,230 +1,194 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2073.outbound.protection.outlook.com [40.107.223.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A4517C1
-	for <linux-coco@lists.linux.dev>; Mon,  3 Oct 2022 07:43:09 +0000 (UTC)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2937Iws0009199;
-	Mon, 3 Oct 2022 07:43:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=DnVddkJzPowxaG4HQs+6VvurJqMs78Edy2usS2A83ws=;
- b=qGpalnlAgKVK5MNMH6ihDKaynGLAqyWSrBT6DZAzyyf7zR/bhRNGIvuIT8bcb/oryZOY
- Vva9xjabBSVLnqXqlIizHA3f2EpuOVTlrMvaWu9xwiiKLL0wDaD80QBa2N5M8TUmRzJr
- lqN20vAzn47SQBBXHR3uEKeyUbIc66pQSMhxv9rrFeYIHMLzxwF37IdQoAbajXa1ygHG
- w1ktCXm32TeJklEZDNd2RKJliOdIt2Y+/lV9ogaK4z8rihD7z1T0QCTI24zCJOGvVKvW
- bl2AkrH2O9T1ginlVq+SH8KQN5xoOgq7dy24bXZc8ka8PDnYOEPeAZwt1m200u7cWiRj kQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jyu80gpks-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Oct 2022 07:43:03 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2937JgEF011243;
-	Mon, 3 Oct 2022 07:43:02 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jyu80gpkb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Oct 2022 07:43:02 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2937aUhL028725;
-	Mon, 3 Oct 2022 07:43:01 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
-	by ppma01wdc.us.ibm.com with ESMTP id 3jyqads8gn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Oct 2022 07:43:01 +0000
-Received: from smtpav03.dal12v.mail.ibm.com ([9.208.128.129])
-	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2937h08P11272876
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Oct 2022 07:43:01 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D09CB58056;
-	Mon,  3 Oct 2022 07:42:59 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4DEC95803F;
-	Mon,  3 Oct 2022 07:42:58 +0000 (GMT)
-Received: from [9.148.12.134] (unknown [9.148.12.134])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Oct 2022 07:42:58 +0000 (GMT)
-Message-ID: <15bbd65d-6d63-3346-831f-3fddfcc37bee@linux.ibm.com>
-Date: Mon, 3 Oct 2022 10:42:55 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7611E7C
+	for <linux-coco@lists.linux.dev>; Mon,  3 Oct 2022 14:38:45 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hCDSLrTomzhoIPYI5Qz9p86sy2QvCQh5RGGw3REWEHJKBkakSXHmdUWinUjfAd7gAR5dBh1NUWley/8D2oHRVTrhiXBptc8X7rJURDbIodyRbhE3N4aHVzR0VjQZkL5cVtvg51ney4SVB7ycB1gBdjL63BqgT6E+nc9c+0xcVHATr7aJTmukl/sEosWDK/KOj2OfVwM4ziZkvYfBOcKwW21kiyfnSg6SxMCH12AsJsE7maav/V9SP5BU0nZYRW8W/YlW1hqO8Fph/5/e65FSPnJEIsz5ydwAIYFX3e1k2+y/c5qLAQie99GgnX9UOEvc5DyspS/2RGvF12pp2gfbvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZRq3sLCvZw9hJNxdmXtsh0wRhJIztjSxDaNJRkomM5k=;
+ b=XjsAsbvsHnY/+KjNfjW5gCZO/G+r9P7WA9IMm8j2RZicBBhnj7zVpA7s4ec2YGgMs3C/hrRlJZW/kkviX0hFCnG8hgNwcAfCEWNvPPuA3bRq7HzwPgeo2tfu/L8Vil205bw76YgJ4OkASS51pNF5+1B51DZsJSTMuhtGhImACC3SsAUDq2bj0BRc2bS3zPmF9uMo9/N8QaealsEBSUX8+wBIQR/CP4jVc+kCb41v16TyjdhYRrl4puCoylZ8c0A42Vh5u7A6uyAwqsTjRCMovok8fEjM8mUTLuaUQ8jkpwa9QanCIH9P01IeXoWCv3ApAjuXML/Q/RVvla2x1ej5aQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZRq3sLCvZw9hJNxdmXtsh0wRhJIztjSxDaNJRkomM5k=;
+ b=SBH/ifRuI128FGoXXUc2JuFmw6ICaKsb74zj4+Z4w44Vc+tkh35aSQvqOTkkEE2dEmWeNcDnORzfSz6D/EelQzrMQHiPAIYkeeuIRFWRabp9h8dLRwfmPo4JCKMqSAZnSztMQsZso6ca5JycJprLWfAaElmGSR5u29TS+J5xtF4=
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by IA1PR12MB7495.namprd12.prod.outlook.com (2603:10b6:208:419::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.25; Mon, 3 Oct
+ 2022 14:38:42 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8588:d2f4:2eb9:7021]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::8588:d2f4:2eb9:7021%4]) with mapi id 15.20.5676.024; Mon, 3 Oct 2022
+ 14:38:42 +0000
+From: "Kalra, Ashish" <Ashish.Kalra@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
+	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "seanjc@google.com" <seanjc@google.com>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>, "jmattson@google.com"
+	<jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "slp@redhat.com"
+	<slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"rientjes@google.com" <rientjes@google.com>, "dovmurik@linux.ibm.com"
+	<dovmurik@linux.ibm.com>, "tobin@ibm.com" <tobin@ibm.com>, "Roth, Michael"
+	<Michael.Roth@amd.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"kirill@shutemov.name" <kirill@shutemov.name>, "ak@linux.intel.com"
+	<ak@linux.intel.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"marcorr@google.com" <marcorr@google.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "alpergun@google.com"
+	<alpergun@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"jarkko@kernel.org" <jarkko@kernel.org>
+Subject: RE: [PATCH Part2 v6 13/49] crypto:ccp: Provide APIs to issue SEV-SNP
+ commands
+Thread-Topic: [PATCH Part2 v6 13/49] crypto:ccp: Provide APIs to issue SEV-SNP
+ commands
+Thread-Index: AQHY1dLd4Juks83jB0yfjCsoLH1Lj638u9DQ
+Date: Mon, 3 Oct 2022 14:38:41 +0000
+Message-ID:
+ <SN6PR12MB2767062CAD241C0BAFB7FAD98E5B9@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <a63de5e687c530849312099ee02007089b67e92f.1655761627.git.ashish.kalra@amd.com>
+ <YzigaOHddWU706H5@zn.tnic>
+In-Reply-To: <YzigaOHddWU706H5@zn.tnic>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels: MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2022-10-03T14:23:40Z;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=6c9d99ab-8204-458e-b6ae-f52dc09a2107;
+ MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=1
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_enabled: true
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_setdate: 2022-10-03T14:38:39Z
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_method: Standard
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_name: General
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_siteid:
+ 3dd8961f-e488-4e60-8e11-a82d994e183d
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_actionid:
+ 2f4894f9-e22c-41f3-923d-52071c9dd7a4
+msip_label_4342314e-0df4-4b58-84bf-38bed6170a0f_contentbits: 0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR12MB2767:EE_|IA1PR12MB7495:EE_
+x-ms-office365-filtering-correlation-id: debf990d-b16e-483f-d3a4-08daa54cf7db
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ XFyyvnnxmgBE1MGIAEh9TrzckZXV7Fut5B2ZztzYgRV3q5bRXpTeoWUQRodlivmkWdpkIYbhedzBX+XMHIRO9/2oaUyKlQLbSfnhW+KLxDlH2RxrWWglGp7cUZZgbFwsRFvbLbFpVbtvZvOFk3QVT/Ihp997mYAmEA9/N0IltCSGuT5/EG8TijdG7BPyvD+gavszLma8qyOUMYgQMhIOiLTjIxG7V8ZlZ3z+GO/ybvhEXs/G75nZtfyFssbwR+jLBsUof7vRvvQIUoxOEBlDqSFmPkgB9RsxgVf2hY+1oUDaHC2+5Uya5zYTZO0clKJraDPshqq/28n3W53taeG2FO9xMA4dCr897lDzgigzedKtgRGfjs+2rniGXcpW8rg8JLb4UZtwzV20U3OV/VORu7STd8OfpO4bOqJR17k4AyaE0l5ZL7rXaA2UmU2i36SV9QpT0SXgxwb14MHwo7CZqYOpI6Uxv/qZwar8Dff5WxkN6N+5ElHttAuzsws1Xxxo/h5LFBzEc79fmGN9+VeqIhF2qaKP/aa3+vkL/A1RvaJRF6nmMXJzuoNXsRKA/EUk7Eva55XcoT2PLGfhNNAuhETWBuduBkWIlDbRT2EA8b7UVXbQUPqhf8n0D8IXRunNKHnqKcee4jfpUviwJf9FwQ0K+fuh026gndUUl9f1oYUMcphk8swH9higykqwlB3ysSPIL3UDEIEQHXvIMCy7yR9gbKjFrpPWAWbiX7mJX/TK1g5NXqVBtcnF2MyWIjpvi0EjaJU+6H5oHWbh/J7cUw==
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(376002)(136003)(346002)(366004)(39860400002)(451199015)(66946007)(33656002)(5660300002)(66556008)(83380400001)(52536014)(38100700002)(66476007)(7406005)(38070700005)(2906002)(122000001)(86362001)(26005)(478600001)(186003)(41300700001)(64756008)(6506007)(9686003)(4326008)(7416002)(76116006)(7696005)(66446008)(71200400001)(316002)(8676002)(55016003)(6916009)(54906003)(8936002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?crf7EkXiTgFbX2KtyqY2CMirIBQgcr96YmHxfNJM/8UVC4aQ7AgB4H9Zak6v?=
+ =?us-ascii?Q?Ch4vgSQbpkwpjhluAe5mqncD2DVM1eEKrHaqPggTu1chtqsnnaG/7OfVSNA1?=
+ =?us-ascii?Q?3TfVvZH1kF1rY127Xj8OXOG/v7+Vgmj0jqW1O9Z6VsmoXABuoCrTxA2Bgiuy?=
+ =?us-ascii?Q?gNteCRNJCwc5Mr44EJLjsXXsR6Sbu3uvHIwFMkiMikoRYNF8zOj+/WwVuHVB?=
+ =?us-ascii?Q?k4TI57OUCVCG8aw9oa6TR5b3MGx3egf0oSb9d1g4TnH1Ti2mrvzDA1HslXu+?=
+ =?us-ascii?Q?7+984bBYlXoA8Gc4Vc7xFO4pu9aUwFZSJK6LlpOiSAqlFFzMADRJAYQrAADi?=
+ =?us-ascii?Q?MXGxwKyrHD62bJYyjhek9U5LXRRJ8BYUbc+R9P+toZKsUQoLhQeJ2ZYKqnXc?=
+ =?us-ascii?Q?dtjOty8nhPFQ/Ny+LqO6//1Nkg3bWfLwXOEOi/3VRUBr05tE02sLDVzf4FO0?=
+ =?us-ascii?Q?zegobpmsWV1twFjRF5ltYahAYgso57w/a++HGpzt+E2bPqORiWEuWy3c/16Z?=
+ =?us-ascii?Q?mAwwkFnoS8HMT/2H3nu55IrKtP0H49jN8r+uwTXniS3sdB884eB9QNk9Tlbo?=
+ =?us-ascii?Q?mjvDoQQxwsFdLlAGFPDOiX6V5mnAiLtDkP71dJuiyrEjKphVVqNRW1pLxs+1?=
+ =?us-ascii?Q?vtg6tnV5A+sGoEKJc6dq0AAaQ1L3EzzH0TZ/8nWvxiOAGOSQL229oCYpp5Qc?=
+ =?us-ascii?Q?iBoaDatIQf9VWlDEewn7BuyUJtzffTYN0uSINlScX49u41r7JPWFGd+n1AeL?=
+ =?us-ascii?Q?UX5BJQPhyTDbr31b8jOr5qFrmAGT1FO70gnlrDMEGSFGl4TBPSDHKqGyJ0mB?=
+ =?us-ascii?Q?aPG6pkTiP4PT9MJDb+5EmRO+T42OUqnIH0I970U4h0ouyMge4IiUyVeZKgAQ?=
+ =?us-ascii?Q?0DZrhnbpkYKs019ra+Px2H+BmkktubKVOcysDgCDYB5nfTWnTAcu7slwlaWi?=
+ =?us-ascii?Q?fh+t4o82YwYj/K9XT7bRCdJnyMTErUytGQ5k9wevhGRy8Ncz5lym7vgB82BR?=
+ =?us-ascii?Q?dUTSznQjkhp8dcpETvwe28D4OTMzEuYYZeCsmZnyq5JAKHfA5nSTLqSHX0Gv?=
+ =?us-ascii?Q?BmeMVTotn5HNyb5bp/TszINuM5yvlQcTOrb4TBAHzq0InHajTBJTxIK6PJ9h?=
+ =?us-ascii?Q?bbqVLTXvnJDoe+VRGCqIHpmDIaBLrC+see/4Zip+f/CSBk5aUIN0PbOzLLH+?=
+ =?us-ascii?Q?DIeHy1BefgaGfkeZ/LtDLEITnLxH675+JsANHLo2cB0UWMU9D9hTFiLF6d4i?=
+ =?us-ascii?Q?PCzw1R/DTKXa9bKz0xQ1Ee3qr+k/u+vInkuIujbxYN3Ie5EpfJDE5t2Nm6Cy?=
+ =?us-ascii?Q?vzKYCI68UNfaSDLT0Ivpc0bTfHOu3qF8WncPtP2IK9frJkaxfreAT7qFDLyx?=
+ =?us-ascii?Q?Vej+EweaheUCBvH09H80iim+0zGvFu0KF5sS3ZWLZzd/WjYobIMg/m2y0Oqc?=
+ =?us-ascii?Q?3cvT6/xbdeulHTfaMsFt4WZmXx4RnjJjqeosrZlldaD7raVvUM9dft14/waA?=
+ =?us-ascii?Q?7FDC3xUyGlWNa5IQcnSR8Syijr6eJXTS6Ysj2BndUNfj8cWRHZeoQfeAC0p1?=
+ =?us-ascii?Q?2Csc8xkaJrx4wfYfwNg=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: Secure vTPMs for confidential VMs
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: linux-coco@lists.linux.dev, Tobin Feldman-Fitzthum <tobin@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>, amd-sev-snp@lists.suse.com,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <84d6ee10-ff8a-a121-d62f-19becf400e75@linux.ibm.com>
- <YyrbDbB1HJ9juGV1@redhat.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <YyrbDbB1HJ9juGV1@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HdVpDT-DBYnPFaFxRyFf67h6ogPRPVlj
-X-Proofpoint-GUID: ZjQAAV5GqmEHNQJ8fKlQti8uvVYRE44_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-03_02,2022-09-29_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- phishscore=0 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- mlxlogscore=999 malwarescore=0 spamscore=0 bulkscore=0 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210030044
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: debf990d-b16e-483f-d3a4-08daa54cf7db
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2022 14:38:42.0354
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: taqll9eGHzbMKcHUBsQ1smMa2yRwIes1TdcwnFGyTZb20FP32YHXU8ZHKiL1RTpEwuGaq1pAQqHjmkY4XwelQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7495
 
+[AMD Official Use Only - General]
 
+Hello Boris,
 
-On 21/09/2022 12:36, Daniel P. Berrangé wrote:
-> On Tue, Sep 20, 2022 at 11:28:15PM +0300, Dov Murik wrote:
->> Emulating hardware TPMs has an advantage that guest software already
->> uses TPM devices to measure boot sequence components (firmware,
->> bootloader, kernel, initrd) and runtime events (IMA in Linux).  We know
->> that this currently works with vTPMs backed by the VMM implementation,
->> such as QEMU's tpm device which is connected to swtpm running on the
->> host.
-> 
-> Leveraging pre-existing support in guest OS feels pretty compelling.
-> It is apparent that there is alot of maintainer activity across pieces
-> of the Linux software/distro stack in relation to improving support
-> for SecureBoot and (v)TPMs in general. Being able to take advantage of
-> this would be good for confidential computing, by reducing the burden
-> on software/distro maintainers, and giving users technology that they
-> are (in theory) at least somewhat familiar with already.
-> 
+>> +int snp_guest_decommission(struct sev_data_snp_decommission *data,=20
+>> +int *error) {
+>> +	return sev_do_cmd(SEV_CMD_SNP_DECOMMISSION, data, error); }=20
+>> +EXPORT_SYMBOL_GPL(snp_guest_decommission);
+>> +
+>> +int snp_guest_df_flush(int *error)
+>> +{
+>> +	return sev_do_cmd(SEV_CMD_SNP_DF_FLUSH, NULL, error); }=20
+>> +EXPORT_SYMBOL_GPL(snp_guest_df_flush);
+>> +
+>> +int snp_guest_page_reclaim(struct sev_data_snp_page_reclaim *data,=20
+>> +int *error) {
+>> +	return sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, data, error); }=20
+>> +EXPORT_SYMBOL_GPL(snp_guest_page_reclaim);
+>> +
+>> +int snp_guest_dbg_decrypt(struct sev_data_snp_dbg *data, int *error)=20
+>> +{
+>> +	return sev_do_cmd(SEV_CMD_SNP_DBG_DECRYPT, data, error); }=20
+>> +EXPORT_SYMBOL_GPL(snp_guest_dbg_decrypt);
 
-We see from discussions here that there are several layers in which we
-can leverage pre-existing support in guest OS.  One would be to emulate
-the TPM behaviour at the MMIO level, so writes from the OS to the MMIO
-page will be captured and handled by the SVSM vTPM.  Another approach
-would be to add another TPM low-level driver to the guest OS, which will
-use proper guest-to-SVSM communication.  Maybe there are other ways.
+>So this mindless repetition is getting annoying. I see ~70 SEV commands.
+>Adding ~70 functions which parrot all the same call to sev_do_cmd() is jus=
+t insane.
 
-In both cases, most of the OS code is unchanged: for example the use of
-TPM in IMA and in trusted-keys.
+>I think you should simply export sev_do_cmd() and call it instead.
 
+>Yes, when it turns out that a command and the preparation to issue it befo=
+re it starts repeating pretty often, you could do a helper. But adding thos=
+e silly wrappers doesn't bring anything besides confusion and code bloat.
 
+There are actually only 8 functions in total which are simply calling sev_d=
+o_cmd(), all other functions calling sev_do_cmd() have a lot of other speci=
+fic functionality in them.
 
-> If we can drive the confidential compute specific bits, including
-> the attestation of the confidential hardware, from the guest firmware,
-> then it ought to make it easier for guest OS images to be agnostic as
-> to whether they're running a non-confidential or confidential VM.
-> 
-> It becomes more of a deployment decision for the user of whether to
-> use a confidential VM or not at any launch attempt. eg they could
-> have 1 image and run it in a non-confidential VM on their internal
-> cloud, while using a confidential VM on public cloud when needing
-> to scale their resources.
-> 
-> 
-> This would not be so straightforward with some of the alternative
-> proposals for confidential VM disk images. For example another
-> proposal has been to have a bootloader like grub embedded in the
-> firmware, such that even /boot is encrypted in the disk image and
-> gets keys provided for unlock prior to the OS being launched.
-> 
-> This would make that disk image inherantly incompatible with use
-> in non-confidential VM, as well as requiring OS vendors to ship
-> even more different cloud disk image variants, and support different
-> boot processes in their software stack.
-> 
-> 
-> So overall I'm heavily attracted to re-using existing technology
-> to the greatest extent that is practical. It makes confidential
-> computing "normal" and will facilitate its uptake.
-> 
->> We so far recognized three issues that should be further researched in
->> order to implement secure vTPMs for confidential VMs; these are TPM
->> provisioning, implementations in TEEs, and guest enlightment.
->>
->> * TPM provisioning: The TPM contains sensitive information such as EK
->> private key which should not be accessible to the host and to the guest.
->> How should such information be delivered to the vTPM when starting a new
->> VM?  If we provision encrypted NVDATA, who has the key to decrypt it?
->> If we provision it with "classic" TEE secret injection, we need to do it
->> quite early in the VM launch sequence (even before the firmware starts?).
-> 
-> For it to be transparent to the guest OS, then the vTPM state would
-> need to be unlocked prior to the guest OS being launched. This points
-> towards the confidential VM firmware triggering an initial call to the
-> attestation service, and receiving a key to unlock the vTPM state
-> as a response.
-> 
+Those are the earlier - sev_platform_status(), sev_guest_deactivate(), sev_=
+guest_decomission() and sev_guest_df_flush().
 
-Indeed.  Implementing this requires very early communication with the
-Guest Owner's Key Broker Service, which will probably need to be routed
-through the host with the VMM's help.  We've previously discussed ways
-to do this for SEV's pre-launch attestation flow (I think you suggested
-using libvirt as part of the proxying solution); it seems that similar
-mechanisms would be needed for SNP/TDX as well if we need to communicate
-with the Guest Owner before the guest OS starts and sets up its network
-stack.
+And the 4 functions added in this patch - snp_guest_decomission(), snp_gues=
+t_df_flush(), snp_guest_page_reclaim(), and snp_guest_dbg_decrypt().=20
 
-Maybe a vsock would be helpful here to communicate with the host, but
-AFAIK OVMF doesn't currently have a virtio-vsock driver... Another
-approach is to define a shared page for guest-host communication, and
-maybe even use the existing QEMU SEV commands for retrieving the
-attestation and injecting the secrets (but with a different underlying
-implementation).
-
--Dov
-
-> It is likely that the guest OS owner would want the option to perform
-> another attestation later in boot, to validate the broader OS userspace
-> boot status.  IOW, the firmware initiated attestation handles aspects
-> specific to bootstrapping the confidential VM environment, while an OS
-> initiated attestation would handle the generic (pre-existing) use cases
-> for OS state validation, familiar to anyone already using (v)TPMs.
-> 
->> One suggestion is to use an ephemeral EK, generated at launch by the
->> vTPM.  The system may start to boot using such a TPM, but once we want
->> to unseal secrets (for example, to unlock a LUKS partition), we need
->> something persistent inside the TPM (or re-seal the key for each TPM).
->> Ephemeral TPMs might be a useful first step.
-> 
-> If the motivation for using vTPMs is to take advantage of pre-existing
-> TPM support in guest OS, then IMHO we should be aiming for the vTPM to
-> be on a par with a vTPM from a non-confidential VM / bare metal.  An
-> ephemeral only vTPM would loose some (but not all) of the benefit of
-> targetting pre-existing TPM support in guests.
-> 
-> 
->> * Implementation in TEEs: SNP introduced VPMLs, and AMD's linux-SVSM
->> running in VPML0 can also run vTPM code to handle TPM requests from the
->> guest running in VMPL1.  Such a solution is not applicable as-is to
->> other TEEs (SEV, TDX).  People suggested running vTPMs in a separate
->> confidential VMs, and somehow connect the tenant's guest to the TPM VM;
->> but we'll need a way to secure this communication channel.
-> 
-> TDX is obviously an important target, but I'm not sure its worth
-> worrying too much about SEV/SEV-ES as that generation is inherantly
-> limited & flawed compared to current SEV-SNP. The ony thing in favour
-> of SEV/SEV-ES is broader hardware availability today, but that will be
-> a time limited advantage that's eroded as SEV-SNP deployment expands. 
-> 
->> * Guest enlightment: Guest software currently interacts with the TPM by
->> writing commands to a memory-mapped IO page (GPA 0xfed40000) and reading
->> responses from that page.  We want such writes to trigger the code of
->> our vTPM (for whatever implementation we choose).  Our current early
->> experience with TPM running in linux-SVSM required adding "exit-guest"
->> calls after writing commands to the IO page, in order to allow the SVSM
->> to run and recognize the incoming command.  Ideally, we'd like a
->> solution that doesn't require modifying all the TPM drivers out there
->> (in Linux, Windows, OVMF, grub, ...).
-> 
-> As best I could tell looking at the public Ubuntu confidential VM
-> image published in Azure, there were no modifications to TPM related
-> pieces of the stack. So theoretically it appears possible to achieve,
-> but I have no idea how they do so at a technical level.
-> 
-> 
-> With regards,
-> Daniel
+Thanks,
+Ashish
