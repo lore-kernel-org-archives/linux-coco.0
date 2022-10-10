@@ -1,108 +1,220 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9654323C8
-	for <linux-coco@lists.linux.dev>; Mon,  3 Oct 2022 18:53:17 +0000 (UTC)
-Received: from zn.tnic (p200300ea9733e749329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e749:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4A9B01EC058A;
-	Mon,  3 Oct 2022 20:53:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1664823191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=R8bHmrtFMiDIGq/QDSvn//OjvCHTj3nynX4H2L7IKDg=;
-	b=JY+iFR6LUw+2j+0kMallGnKBGDHCjF+lgNzTN3txyaOzftDklFB2GvXuUJukhnchiePllQ
-	sV+c7qUoVvlDQabhBI/2RqaNEGsXSNIrbI11MX41/YV8frNwvKhUBua1ovz1bx28kdcLJ3
-	JXwlTMZd7GEm5zLD0jhYmmL4vFCupuU=
-Date: Mon, 3 Oct 2022 20:53:07 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <Ashish.Kalra@amd.com>
-Cc: Peter Gonda <pgonda@google.com>, "x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"jroedel@suse.de" <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"slp@redhat.com" <slp@redhat.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
-	"tobin@ibm.com" <tobin@ibm.com>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>,
-	"ak@linux.intel.com" <ak@linux.intel.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"alpergun@google.com" <alpergun@google.com>,
-	"dgilbert@redhat.com" <dgilbert@redhat.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 13/49] crypto:ccp: Provide APIs to issue SEV-SNP
- commands
-Message-ID: <Yzsvk7zFJrnNPUek@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <a63de5e687c530849312099ee02007089b67e92f.1655761627.git.ashish.kalra@amd.com>
- <YzigaOHddWU706H5@zn.tnic>
- <SN6PR12MB2767062CAD241C0BAFB7FAD98E5B9@SN6PR12MB2767.namprd12.prod.outlook.com>
- <YzsK+szsWoAlMsrR@zn.tnic>
- <SN6PR12MB276753083B811B1055FDE6408E5B9@SN6PR12MB2767.namprd12.prod.outlook.com>
- <YzsfroL1/6D8rVTF@zn.tnic>
- <CAMkAt6pnqWWA8pc6uY5g1o076VLgjy1K1ZagDOgcuQfh=hnf3Q@mail.gmail.com>
- <YzsnB0Evh5NeRzOh@zn.tnic>
- <SN6PR12MB2767CD108EBA7BE5D027330D8E5B9@SN6PR12MB2767.namprd12.prod.outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4A85CB0
+	for <linux-coco@lists.linux.dev>; Mon, 10 Oct 2022 22:03:54 +0000 (UTC)
+Received: by mail-io1-f45.google.com with SMTP id y4so4904523iof.3
+        for <linux-coco@lists.linux.dev>; Mon, 10 Oct 2022 15:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=fKZdTQMzzJSnzVJZ8hLWVq3L0BSUs/tEyhk7a/do8K4=;
+        b=WxDKd5BvqL9kT1Jet4RhjFC6yGMGc3mced78+CfwGKId3ww05jzO36LeEufsKar+lo
+         +fDMHNapDAks5GcOLiIMtMfSZcL8gyMDGMwAYDOC2/2pGLp5qp/twRUeQemKSBxePGSx
+         XcEboBj5crslENf3cZeSDgHZVgNgLxjbW01u0WFSY+Q7ANnRf0JlO7HSaydKto3RtE/H
+         Q0SI9e3SqYDKVtwZnqNUM841E9Xrk97ZR5lqfpnF2XXJn0a4XVcQPkT0Ss3gNTg/k9Wx
+         HZLatx8cAX04dyehDV1UXiHobl4JDGEKWrZ795tpn+qM02w6faV+GMzj25+/x1ezmt0Z
+         SA6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fKZdTQMzzJSnzVJZ8hLWVq3L0BSUs/tEyhk7a/do8K4=;
+        b=sKgXQyi7r5U2uH+UnO4R7bqzs68+uqnuPOxPEIT1ztIzBqeEyxRuOjKIU+NcZA0l5x
+         iRZeQ9bmztTIaubSOxGN67HQKM9fMgfG34i0pAt0NV+oat2xM5E/Q4icGXLi4A/givqk
+         agWf3+gxYxJ+erXtxWmgqTmjO6yto08nJYM/vNl7EgaIkyY5gCFnYfOHD0T8Cy7biTl1
+         BiVP8SK+e2nRph/LPWuInK8WWRQBzflSD/U8zD3W/1e2zYlCdpN8MEo30Ocgmi5e82dD
+         JOzUNa65Z2X6XYoeUElQstZ6j2StXlUbJIRYTKEIER4x+KXXM64rk5nyeX1zCjxH1GqB
+         sdWw==
+X-Gm-Message-State: ACrzQf3OvEZT/DkG0R474zXhe5rsmGPjydLcdg80SNBM/s8zBb3XXF7W
+	+l/5BzB03nCdX3YdoDqAfAl0QW/EI0Yy+/8XNs04bA==
+X-Google-Smtp-Source: AMsMyM7gzbkuy10hQ8nXQ841/5BxEOsf4/QAVkHVBZB0Pg0d/o6dJSUlByL4oEySL3aNmXuJTAbUv3dneghOF8W55ss=
+X-Received: by 2002:a05:6638:4086:b0:363:c34a:74b0 with SMTP id
+ m6-20020a056638408600b00363c34a74b0mr2256500jam.221.1665439433957; Mon, 10
+ Oct 2022 15:03:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <SN6PR12MB2767CD108EBA7BE5D027330D8E5B9@SN6PR12MB2767.namprd12.prod.outlook.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com> <d7decd3cb48d962da086afb65feb94a124e5c537.1655761627.git.ashish.kalra@amd.com>
+In-Reply-To: <d7decd3cb48d962da086afb65feb94a124e5c537.1655761627.git.ashish.kalra@amd.com>
+From: Alper Gun <alpergun@google.com>
+Date: Mon, 10 Oct 2022 15:03:42 -0700
+Message-ID: <CABpDEukNp9eH8jXpv6+Dun+e943AbEMA6G68uQu=TrOLSvh_oA@mail.gmail.com>
+Subject: Re: [PATCH Part2 v6 41/49] KVM: SVM: Add support to handle the RMP
+ nested page fault
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name, 
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, dgilbert@redhat.com, 
+	jarkko@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 03, 2022 at 06:43:08PM +0000, Kalra, Ashish wrote:
-> probably it is nice to have an abstracted interface,
+On Mon, Jun 20, 2022 at 4:13 PM Ashish Kalra <Ashish.Kalra@amd.com> wrote:
+>
+> From: Brijesh Singh <brijesh.singh@amd.com>
+>
+> When SEV-SNP is enabled in the guest, the hardware places restrictions on
+> all memory accesses based on the contents of the RMP table. When hardware
+> encounters RMP check failure caused by the guest memory access it raises
+> the #NPF. The error code contains additional information on the access
+> type. See the APM volume 2 for additional information.
+>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> ---
+>  arch/x86/kvm/svm/sev.c | 76 ++++++++++++++++++++++++++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c | 14 +++++---
+>  2 files changed, 86 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 4ed90331bca0..7fc0fad87054 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -4009,3 +4009,79 @@ void sev_post_unmap_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn)
+>
+>         spin_unlock(&sev->psc_lock);
+>  }
+> +
+> +void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+> +{
+> +       int rmp_level, npt_level, rc, assigned;
+> +       struct kvm *kvm = vcpu->kvm;
+> +       gfn_t gfn = gpa_to_gfn(gpa);
+> +       bool need_psc = false;
+> +       enum psc_op psc_op;
+> +       kvm_pfn_t pfn;
+> +       bool private;
+> +
+> +       write_lock(&kvm->mmu_lock);
+> +
+> +       if (unlikely(!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level)))
+> +               goto unlock;
+> +
+> +       assigned = snp_lookup_rmpentry(pfn, &rmp_level);
+> +       if (unlikely(assigned < 0))
+> +               goto unlock;
+> +
+> +       private = !!(error_code & PFERR_GUEST_ENC_MASK);
+> +
+> +       /*
+> +        * If the fault was due to size mismatch, or NPT and RMP page level's
+> +        * are not in sync, then use PSMASH to split the RMP entry into 4K.
+> +        */
+> +       if ((error_code & PFERR_GUEST_SIZEM_MASK) ||
+> +           (npt_level == PG_LEVEL_4K && rmp_level == PG_LEVEL_2M && private)) {
+> +               rc = snp_rmptable_psmash(kvm, pfn);
 
-Why is it "probably nice" to have an abstracted interface?
 
-Is the hypervisor allowed to issue only a subset of the commands?
+Regarding this case:
+RMP level is 4K
+Page table level is 2M
 
-Do you want to control the arguments the hypervisor is supposed to send
-down to the firmware?
+Does this also cause a page fault with size mismatch? If so, we
+shouldn't try psmash because the rmp entry is already 4K.
 
-There must be a reason why one would do an abstracted interface. Not
-just because and probably.
+I see these errors in our tests and I think it may be happening
+because rmp size is already 4K.
 
-Because from where I'm standing this looks like adding a bunch of random
-wrappers without any logic to it.
+[ 1848.752952] psmash failed, gpa 0x191560000 pfn 0x536cd60 rc 7
+[ 2922.879635] psmash failed, gpa 0x102830000 pfn 0x37c8230 rc 7
+[ 3010.983090] psmash failed, gpa 0x104220000 pfn 0x6cf1e20 rc 7
+[ 3170.792050] psmash failed, gpa 0x108a80000 pfn 0x20e0080 rc 7
+[ 3345.955147] psmash failed, gpa 0x11b480000 pfn 0x1545e480 rc 7
 
-So, if you wanna have an interface, you should think this through and
-design it properly and explain why it is there and how it is supposed to
-be used.
+Shouldn't we use AND instead of OR in the if statement?
 
-Don't get me wrong - a properly designed interface to control what the
-HV issues to the firmware is not a bad idea. But it needs to be properly
-designed.
+if ((error_code & PFERR_GUEST_SIZEM_MASK) && ...
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> +               if (rc)
+> +                       pr_err_ratelimited("psmash failed, gpa 0x%llx pfn 0x%llx rc %d\n",
+> +                                          gpa, pfn, rc);
+> +               goto out;
+> +       }
+> +
+> +       /*
+> +        * If it's a private access, and the page is not assigned in the
+> +        * RMP table, create a new private RMP entry. This can happen if
+> +        * guest did not use the PSC VMGEXIT to transition the page state
+> +        * before the access.
+> +        */
+> +       if (!assigned && private) {
+> +               need_psc = 1;
+> +               psc_op = SNP_PAGE_STATE_PRIVATE;
+> +               goto out;
+> +       }
+> +
+> +       /*
+> +        * If it's a shared access, but the page is private in the RMP table
+> +        * then make the page shared in the RMP table. This can happen if
+> +        * the guest did not use the PSC VMGEXIT to transition the page
+> +        * state before the access.
+> +        */
+> +       if (assigned && !private) {
+> +               need_psc = 1;
+> +               psc_op = SNP_PAGE_STATE_SHARED;
+> +       }
+> +
+> +out:
+> +       write_unlock(&kvm->mmu_lock);
+> +
+> +       if (need_psc)
+> +               rc = __snp_handle_page_state_change(vcpu, psc_op, gpa, PG_LEVEL_4K);
+> +
+> +       /*
+> +        * The fault handler has updated the RMP pagesize, zap the existing
+> +        * rmaps for large entry ranges so that nested page table gets rebuilt
+> +        * with the updated RMP pagesize.
+> +        */
+> +       gfn = gpa_to_gfn(gpa) & ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
+> +       kvm_zap_gfn_range(kvm, gfn, gfn + PTRS_PER_PMD);
+> +       return;
+> +
+> +unlock:
+> +       write_unlock(&kvm->mmu_lock);
+> +}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 1c8e035ba011..7742bc986afc 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -1866,15 +1866,21 @@ static int pf_interception(struct kvm_vcpu *vcpu)
+>  static int npf_interception(struct kvm_vcpu *vcpu)
+>  {
+>         struct vcpu_svm *svm = to_svm(vcpu);
+> +       int rc;
+>
+>         u64 fault_address = svm->vmcb->control.exit_info_2;
+>         u64 error_code = svm->vmcb->control.exit_info_1;
+>
+>         trace_kvm_page_fault(fault_address, error_code);
+> -       return kvm_mmu_page_fault(vcpu, fault_address, error_code,
+> -                       static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
+> -                       svm->vmcb->control.insn_bytes : NULL,
+> -                       svm->vmcb->control.insn_len);
+> +       rc = kvm_mmu_page_fault(vcpu, fault_address, error_code,
+> +                               static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
+> +                               svm->vmcb->control.insn_bytes : NULL,
+> +                               svm->vmcb->control.insn_len);
+> +
+> +       if (error_code & PFERR_GUEST_RMP_MASK)
+> +               handle_rmp_page_fault(vcpu, fault_address, error_code);
+> +
+> +       return rc;
+>  }
+>
+>  static int db_interception(struct kvm_vcpu *vcpu)
+> --
+> 2.25.1
+>
+>
