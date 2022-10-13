@@ -1,185 +1,172 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from sender4-of-o51.zoho.com (sender4-of-o51.zoho.com [136.143.188.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F684416
-	for <linux-coco@lists.linux.dev>; Thu, 13 Oct 2022 19:20:49 +0000 (UTC)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29DHfKo9028727;
-	Thu, 13 Oct 2022 19:20:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=k2AxUxhE5N3XVEBRFjY3zS4s6dYlQzIhpKHMd0v5qSU=;
- b=Y6Ajfo1BjWQ786FGgYJVYFagCFqE2Lc4rQ3pWps0gKP535AqBN5zKaeEsCOMu/irw2hT
- Pj2A/RCM2xC29KR9Jby+hhPyh2x7DPAuogqugPYPm2Nbwq4iKexdTlSzKs/w5GlGHHz/
- v1EIsOIbU8UtO7Kptlrfy9m8hHMt/2V+C75HTNVSDuykmdS3dATn8MfLKI95Pbig7aCc
- +HIxBBRnNptfYf6uEkqgztqaMZscfPLFuIcdmA9Curz+oW3pz5cxAjbYdIoD7gMIViI0
- S3K17VxHNvlclsC8Rrhpl5XLFotdIGk52BxkQbAo/ibwAHgeYNaP+JxoKjvRRg3Y0Q8D bg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k6gp906hn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Oct 2022 19:20:41 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29DHr0DY009041;
-	Thu, 13 Oct 2022 19:20:41 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3k6gp906ha-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Oct 2022 19:20:41 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29DJ50wj020975;
-	Thu, 13 Oct 2022 19:20:40 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
-	by ppma01wdc.us.ibm.com with ESMTP id 3k30ua1njq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Oct 2022 19:20:40 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29DJKfeK42991982
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Oct 2022 19:20:41 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 163D27805E;
-	Thu, 13 Oct 2022 19:56:01 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 48F467805C;
-	Thu, 13 Oct 2022 19:56:00 +0000 (GMT)
-Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [9.211.81.164])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Oct 2022 19:55:59 +0000 (GMT)
-Message-ID: <294b08e11e53cff01607004737f6f20c6784c40b.camel@linux.ibm.com>
-Subject: Re: SVSM vTPM specification
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: Tom Lendacky <thomas.lendacky@amd.com>,
-        "Dr. David Alan Gilbert"
-	 <dgilbert@redhat.com>
-Cc: "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
-        "linux-coco@lists.linux.dev"
-	 <linux-coco@lists.linux.dev>
-Date: Thu, 13 Oct 2022 15:20:37 -0400
-In-Reply-To: <820ddc4a-ac48-00a1-d284-23d08899f1cc@amd.com>
-References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
-	 <Y0b6cDIMlKijT95S@work-vm>
-	 <b6b22a1f4741a29c68dbdfae59e3fb201e3aa5e8.camel@linux.ibm.com>
-	 <820ddc4a-ac48-00a1-d284-23d08899f1cc@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: C9q-zlyYA6dTwxEcHAE_SM49_lon8nNl
-X-Proofpoint-GUID: F3Cp32BsmbYp9PFEsjZOBoJFe1C935LK
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC88C4429
+	for <linux-coco@lists.linux.dev>; Thu, 13 Oct 2022 20:54:19 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1665694454; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DAHZdBA0Kdop2VlXBm3Xo5DhJtqpHLwv43Qxv38f6vdqBVudNptPwcvwdxzXX0itgSxGG43mwZwK8U6NWN0eWFZjR0iUGvx+rTn5UEkaH/H9wB+s/b24y1ULGg9yA7ZNAP9vGWM76FZhqibqChUvCMD0AyOoe9ktRoxlE/cIL2c=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1665694454; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+	bh=oj7F1/FyinQ2Z6P3c+98gOI9jW2RKbKf+jP/zifHWmQ=; 
+	b=F7G93+R8wMjKzhQUkwMLhxTOHMxYmVCiadyt8iVdwIRwB2UdIm0plxTzGHFmpwCHlztSUIKRlXvmqwt5S/NG/Mc8eql/JIY3jnXpYBG0E2lz9gq0HMGrYxmkVvo/xRztb9bDJdvWnVW98ThE5VjSE+7mt5uZJM/fnTyj/dID8ws=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=apertussolutions.com;
+	spf=pass  smtp.mailfrom=dpsmith@apertussolutions.com;
+	dmarc=pass header.from=<dpsmith@apertussolutions.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1665694454;
+	s=zoho; d=apertussolutions.com; i=dpsmith@apertussolutions.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=oj7F1/FyinQ2Z6P3c+98gOI9jW2RKbKf+jP/zifHWmQ=;
+	b=h4Uo7Z1AluG2f1d1XKc5d9DPo4R0Sv/RUGzEw3I5IMqLc7CvMCoYA1t9yzeKzKm4
+	wRYJE1aAroPSBsVvALBFE+kr+sbNSv/ID9nzJVRK0LxEWE7+aSFAk9u/rf4G2GedIUN
+	+NTige/R6G7WzMDO23DmDGW4h6R1QyUZ3ELR+R3M=
+Received: from [192.168.165.135] (mobile-166-171-58-80.mycingular.net [166.171.58.80]) by mx.zohomail.com
+	with SMTPS id 1665694451979669.514696194052; Thu, 13 Oct 2022 13:54:11 -0700 (PDT)
+Message-ID: <3474b28c-2de2-db95-9ecf-6b7c1a59d860@apertussolutions.com>
+Date: Thu, 13 Oct 2022 16:54:05 -0400
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-13_08,2022-10-13_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 spamscore=0 mlxscore=0 suspectscore=0 clxscore=1015
- malwarescore=0 phishscore=0 mlxlogscore=999 adultscore=0 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210130108
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: SVSM vTPM specification
+Content-Language: en-US
+To: jejb@linux.ibm.com, Tom Lendacky <thomas.lendacky@amd.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+Cc: "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ Stuart Yoder <stuart.yoder@arm.com>,
+ Andrew Cooper <andrew.cooper3@citrix.com>
+References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
+ <Y0b6cDIMlKijT95S@work-vm>
+ <b6b22a1f4741a29c68dbdfae59e3fb201e3aa5e8.camel@linux.ibm.com>
+ <820ddc4a-ac48-00a1-d284-23d08899f1cc@amd.com>
+ <294b08e11e53cff01607004737f6f20c6784c40b.camel@linux.ibm.com>
+From: "Daniel P. Smith" <dpsmith@apertussolutions.com>
+In-Reply-To: <294b08e11e53cff01607004737f6f20c6784c40b.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Thu, 2022-10-13 at 13:54 -0500, Tom Lendacky wrote:
-> On 10/12/22 14:05, James Bottomley wrote:
-> > On Wed, 2022-10-12 at 18:33 +0100, Dr. David Alan Gilbert wrote:
-> > > * Tom Lendacky (thomas.lendacky@amd.com) wrote:
-> ...
-> > It is theoretically possible to emulate a CRB TPM with just a
-> > single
-> > communication page and an ACPI entry (the Linux CRB driver is ACPI
-> > only
-> > at this time and responds to the "MSFT0101" ACPI entry).
-> > 
-> > The CRB device responds to a very compact MMIO region (0x30 bytes
-> > long)
-> > described in the CRB spec:
-> > 
-> > https://trustedcomputinggroup.org/resource/tpm-2-0-mobile-command-response-buffer-interface-specification/
-> > 
-> > In theory we could use a page that keeps trapping to the SVSM for
-> > this,
-> > but the problem is that the CRB driver polls a register in the MMIO
-> > region to check command completion, so even a single TPM command is
-> > going to generate a huge number of such traps.  So while it's
-> > theoretically possible to generate a SVSM emulation of the CRB
-> > device,
-> > it would likely be too expensive in terms of traps, particularly if
-> > we're using the SVSM vTPM for runtime measurements like IMA.
-> > 
-> > If we're going to do a new driver, I think basing it off the CRB
-> > spec
-> > would be fine (the spec envisages command request/response being
-> > via
-> > areas outside the MMIO region) and we could simply do a new driver
-> > that
-> > plumbs directly into the nine operations in the tpm_class_ops
-> > structure
-> > 
+Pardon the interjection.
+
+On 10/13/22 15:20, James Bottomley wrote:
+> On Thu, 2022-10-13 at 13:54 -0500, Tom Lendacky wrote:
+>> On 10/12/22 14:05, James Bottomley wrote:
+>>> On Wed, 2022-10-12 at 18:33 +0100, Dr. David Alan Gilbert wrote:
+>>>> * Tom Lendacky (thomas.lendacky@amd.com) wrote:
+>> ...
+>>> It is theoretically possible to emulate a CRB TPM with just a
+>>> single
+>>> communication page and an ACPI entry (the Linux CRB driver is ACPI
+>>> only
+>>> at this time and responds to the "MSFT0101" ACPI entry).
+>>>
+>>> The CRB device responds to a very compact MMIO region (0x30 bytes
+>>> long)
+>>> described in the CRB spec:
+>>>
+>>> https://trustedcomputinggroup.org/resource/tpm-2-0-mobile-command-response-buffer-interface-specification/
+
+IMHO I would not use the mobile CRB, which was designed as a doorbell 
+solution for ARM where trapping a page was not possible. Since it is 
+possible to trap on page access, this makes it possible to implement the 
+PC Client MMIO interface and enables implementations to provide the 
+complete set of TPM capabilities, e.g. localities.
+
+>>> In theory we could use a page that keeps trapping to the SVSM for
+>>> this,
+>>> but the problem is that the CRB driver polls a register in the MMIO
+>>> region to check command completion, so even a single TPM command is
+>>> going to generate a huge number of such traps.  So while it's
+>>> theoretically possible to generate a SVSM emulation of the CRB
+>>> device,
+>>> it would likely be too expensive in terms of traps, particularly if
+>>> we're using the SVSM vTPM for runtime measurements like IMA.
+>>>
+>>> If we're going to do a new driver, I think basing it off the CRB
+>>> spec
+>>> would be fine (the spec envisages command request/response being
+>>> via
+>>> areas outside the MMIO region) and we could simply do a new driver
+>>> that
+>>> plumbs directly into the nine operations in the tpm_class_ops
+>>> structure
+>>>
+>>
+>> This sounds good. I think we can model an API call to the SVSM vTPM
+>> using
+>> this. We can provide a struct that looks similar to the CRB Control
+>> Area
+>> and supply the GPA of this struct in RCX to the SVSM for the vTPM to
+>> perform the operation:
+>>
+>>       - Command GPA
+>>       - Command Size
+>>       - Response GPA
+>>       - Response Size
+>>       - Status
 > 
-> This sounds good. I think we can model an API call to the SVSM vTPM
-> using 
-> this. We can provide a struct that looks similar to the CRB Control
-> Area 
-> and supply the GPA of this struct in RCX to the SVSM for the vTPM to 
-> perform the operation:
+> Realistically, I think all TPM2 command/response actions can be packed
+> into
 > 
->      - Command GPA
->      - Command Size
->      - Response GPA
->      - Response Size
->      - Status
+> u32 TPM2_action(u64 command_gpa, u32 command_len, u64 response_gpa, u32
+> *response_len)
+> 
+> Where the u32 return would be the status (although if the SVSM has
+> trouble with the return status, we could add it as an extra modified
+> variable).
+> 
+> The way the current TPM driver interface works is shown in the
+> tpm_class_ops structure:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/tpm.h
+> 
+> we can shim all the non-ignorable calls into the above.  The standard
+> way of sending a command is tpm_try_transmit in
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/char/tpm/tpm-interface.c
+> 
+> I think we can emulate an interrupt driven tpm (set TPM_CHIP_FLAG_IRQ
+> in the driver) and it will simply do a ->send() ->receive() pair, which
+> works for us since the thread of execution in ->send() will pass into
+> the SVSM and return with the result which we can then copy over in
+> ->recv
+> 
+> Also note that tpm_try_transmit() uses the same buffer for send and
+> receive, so it is possible to reduce the number of parameters in
+> TPM2_action() above if that's the route people want to go.
+> 
+>> Anything else that would go in the struct? Locality?
+> 
+> Well, this is a question.  CRB devices are actually allowed not to have
+> a locality at all, so ignoring it is perfectly legal.  On the other
+> hand, locality is used to allow or deny certain accesses.
+> Traditionally you allow firmware access at locality 4 as the trusted
+> hardware component.  However, the problem with implementing localities
+> is how does the SVSM know where we're calling from?  If it's unable to
+> bar access at certain localities, there's not much point implementing
+> them.  For reference the TIS TPM implements separate memory maps of its
+> registers, one for each locality and firmware bars access to the OS by
+> unmapping a range and refusing to allow the OS to map it back.
 
-Realistically, I think all TPM2 command/response actions can be packed
-into
+If a guest were to attempt the SKINIT instruction, it should result in a 
+NAE VMEXIT with reason being SKINIT. I haven't looked in-depth at VMPLs 
+in detail yet but I would like to believe this would provide the 
+necessary context of who made the call.
 
-u32 TPM2_action(u64 command_gpa, u32 command_len, u64 response_gpa, u32
-*response_len)
+This is of particular interest to the TrenchBoot community as we have 
+long had on our roadmap the desire to provide vDRTM for guests that is 
+coupled with vTPM instances to provide for nested/deep attestation.
 
-Where the u32 return would be the status (although if the SVSM has
-trouble with the return status, we could add it as an extra modified
-variable).
+> I suspect we'd get on faster by being pejorative and saying we won't
+> implement locality since we can't police it.
+> 
+> James
 
-The way the current TPM driver interface works is shown in the
-tpm_class_ops structure:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/tpm.h
-
-we can shim all the non-ignorable calls into the above.  The standard
-way of sending a command is tpm_try_transmit in
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/char/tpm/tpm-interface.c
-
-I think we can emulate an interrupt driven tpm (set TPM_CHIP_FLAG_IRQ
-in the driver) and it will simply do a ->send() ->receive() pair, which
-works for us since the thread of execution in ->send() will pass into
-the SVSM and return with the result which we can then copy over in
-->recv
-
-Also note that tpm_try_transmit() uses the same buffer for send and
-receive, so it is possible to reduce the number of parameters in
-TPM2_action() above if that's the route people want to go.
-
-> Anything else that would go in the struct? Locality?
-
-Well, this is a question.  CRB devices are actually allowed not to have
-a locality at all, so ignoring it is perfectly legal.  On the other
-hand, locality is used to allow or deny certain accesses. 
-Traditionally you allow firmware access at locality 4 as the trusted
-hardware component.  However, the problem with implementing localities
-is how does the SVSM know where we're calling from?  If it's unable to
-bar access at certain localities, there's not much point implementing
-them.  For reference the TIS TPM implements separate memory maps of its
-registers, one for each locality and firmware bars access to the OS by
-unmapping a range and refusing to allow the OS to map it back.
-
-I suspect we'd get on faster by being pejorative and saying we won't
-implement locality since we can't police it.
-
-James
- 
-
+V/r,
+Daniel
