@@ -1,346 +1,262 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2058.outbound.protection.outlook.com [40.107.223.58])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2062.outbound.protection.outlook.com [40.107.94.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A218233DF
-	for <linux-coco@lists.linux.dev>; Wed, 12 Oct 2022 22:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F5033C5
+	for <linux-coco@lists.linux.dev>; Thu, 13 Oct 2022 15:00:59 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Io3q2jwQ8MO1+xn0BTi59o3v08G1MnkTrQBrYGqO4g+X2fDSwsG1vMCbw0dmecl7FWYu2OvcHW6KlMvbwMZdmvkQfIY7AQw/mNVhaYh1gsvVsuI0hbVigG5XBpsUMlT6E4f27ZuncKl6hlCCcWT/VU9ej/+GWP9xiSNGDBJ8eYJ7CP0DQJcMTR7RD1avBns6lGo/TPCthKUT9xVmJ5maA618FyrK9cYM8oRvYo0UQK9p11k0sZZ0YIYPDLEAHagwfoWTvcW84qhK2M0WdIZnKT0xjRERSdjrMYdQiU7sipxoBdQCi2vYcKiqr5/zMU+cDDS5zLDSVbGObMWzfDX49A==
+ b=Q+Y2W15TkUNywiHr9XIWAST37KvSVytwQaHw6rMDIJs+K3rEDx1zNr3TIFENHJFjXNMVbkAUgDdC4aGvgd3fOZkaNesRDu4xRtJvJa0qwTFiTMDFOTAs91OLybJGqu9xj5XTl9ddv2oa9/EpPEKUyiH5WYQ39Z7WLbdlxMhjDvptRidrTVRySD6sHHQM7XxHfdoCrTYzmXyhzH5r0obIx4ZcQ1137GnOtqzpSC4nxDW+hCdUCcw2YyLazPVnlpvW0LJqBqRcSuch0l/GHjebnZTdlzKYIstQKvUL40dFlTyNm1KWSrWdCWg3r1JeCdDzkKbI8IMrgRU1H1XcpNub1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NoiPAXbycVc2JvqIJ0QHKmjoUU6vT0Oot4s+R0A+FYU=;
- b=npM2+yk9IULo0GTsjVpI4yOd19mZmyL2+skSiDKeCeYIXkeny4CWMQcdOXgsUnog4NhRLUdx+nGoEqOb+4GalCYRe8l9eEwkMExFnwqpfAanQEGJVsv/iU97WmagEUksm0RcShUhJq+6OaC27uLK9gqBO3tmzKEFe5Sb2+TW4aPV0Ts4y1hxhMo0X4wkcyhkdlJYSgkhAyWPRr4FjJgqJkvyxkSKPFRS+1SyJD/cf5xPA7jaUQxVvbQzNvaZOtfMwZktFrrNYQiIMlrIDzwt9TeQxkWUb4z/O3Wx2JaxvDiMhG9xpwArKGfRITlRtSXzD0F8vRiKJ2RXxt+/JD3+WA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=KHwS9YLdqFBBh+1b3GNUkIYE40pPi50wbowpa8OGkMk=;
+ b=P4f+YJBZlfBeCnfd3LT23gdcsQ8erEZUhbzY9YeFbaIK5DfruqCsci8QciURrdINCTZN3hzxkGHTnuOfqftuYqq5fsS1ZWjfJs+YUmvpVlmaEcLN8U2i07pwa3aMH0Ssz16dsO/d+ZDgSw+mb3oGu4gj+UhiHpZ1kwmh59myYlp8uVPUliynCItzxMmFjF8BWMjgNLA2iU8bmPBKe+zzZ3tuUX0Ta+qPp+ZwypRe0gkNFDUSv4aRRs7atCHmGSKPhdBF6tqtSFA/jEf78YqM4cRrdcRjF9nxXG7ZzhWCntE3r/Z0OUoFK0ptcfoeL0s/Rtjrm9KrDF/1YIShcVLaSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NoiPAXbycVc2JvqIJ0QHKmjoUU6vT0Oot4s+R0A+FYU=;
- b=kayLj/AJX/j8TInYGZJu58CtT9M6S05aRso8vQUOUU4Hfk5xMYBxP4yimKHpgpEQHgnd7iO8BVRyo7UDWNQBpdqcKs+H6zkqs2SCJGHWoG4YUSc9JCrKIlSwJ7h7wLzZkEgtbfH3ByeOJ5r+MnjDnDzHT0XJ9jvJ4sGaXKP5uIU=
-Received: from DM6PR07CA0068.namprd07.prod.outlook.com (2603:10b6:5:74::45) by
- CY5PR12MB6549.namprd12.prod.outlook.com (2603:10b6:930:43::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5709.15; Wed, 12 Oct 2022 22:58:02 +0000
-Received: from DM6NAM11FT055.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:74:cafe::25) by DM6PR07CA0068.outlook.office365.com
- (2603:10b6:5:74::45) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.21 via Frontend
- Transport; Wed, 12 Oct 2022 22:58:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT055.mail.protection.outlook.com (10.13.173.103) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.5723.20 via Frontend Transport; Wed, 12 Oct 2022 22:58:02 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Wed, 12 Oct
- 2022 17:58:01 -0500
-Date: Wed, 12 Oct 2022 17:57:42 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-CC: Peter Gonda <pgonda@google.com>, Ashish Kalra <ashkalra@amd.com>, "Tom
- Lendacky" <thomas.lendacky@amd.com>, Alper Gun <alpergun@google.com>, "the
- arch/x86 maintainers" <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-	kvm list <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, "Linux Memory
- Management List" <linux-mm@kvack.org>, Linux Crypto Mailing List
-	<linux-crypto@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
- Molnar" <mingo@redhat.com>, Joerg Roedel <jroedel@suse.de>, "H. Peter Anvin"
-	<hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, Paolo Bonzini
-	<pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, "Vitaly
- Kuznetsov" <vkuznets@redhat.com>, Jim Mattson <jmattson@google.com>, "Andy
- Lutomirski" <luto@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Sergio Lopez <slp@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, David Rientjes
-	<rientjes@google.com>, Dov Murik <dovmurik@linux.ibm.com>, "Tobin
- Feldman-Fitzthum" <tobin@ibm.com>, Borislav Petkov <bp@alien8.de>, "Vlastimil
- Babka" <vbabka@suse.cz>, "Kirill A . Shutemov" <kirill@shutemov.name>, "Andi
- Kleen" <ak@linux.intel.com>, Tony Luck <tony.luck@intel.com>, Marc Orr
-	<marcorr@google.com>, Sathyanarayanan Kuppuswamy
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "Dr. David Alan Gilbert"
-	<dgilbert@redhat.com>, <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 37/49] KVM: SVM: Add support to handle MSR based
- Page State Change VMGEXIT
-Message-ID: <20221012225742.hirj4kfovrs4cumq@amd.com>
+ bh=KHwS9YLdqFBBh+1b3GNUkIYE40pPi50wbowpa8OGkMk=;
+ b=OxbAC1MyiyOl89GDvASqgbGita1CuXRe2h19gGorTLVx3OI0EbJ90XRlImQi4RucnbB9zUlTd52UoCMtt6/B+L93Sns0MQpPtCsbVt+cSuCzJx69njlypcQfIgwt7cGhY+PgWwObKWjK574pf2l4igYCdTUfxZEgusKDQ0iO9Js=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by MN0PR12MB6150.namprd12.prod.outlook.com (2603:10b6:208:3c6::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.32; Thu, 13 Oct
+ 2022 15:00:56 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6dad:12a0:10d6:5967]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6dad:12a0:10d6:5967%7]) with mapi id 15.20.5723.026; Thu, 13 Oct 2022
+ 15:00:56 +0000
+Message-ID: <087931d7-4639-afde-fce3-bf916201ec3e@amd.com>
+Date: Thu, 13 Oct 2022 10:00:49 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH Part2 v6 41/49] KVM: SVM: Add support to handle the RMP
+ nested page fault
+Content-Language: en-US
+To: Alper Gun <alpergun@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, michael.roth@amd.com,
+ vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, dgilbert@redhat.com,
+ jarkko@kernel.org
 References: <cover.1655761627.git.ashish.kalra@amd.com>
- <78e30b5a25c926fcfdcaafea3d484f1bb25f20b9.1655761627.git.ashish.kalra@amd.com>
- <CAMkAt6rrGJ5DYTAJKFUTagN9i_opS8u5HPw5c_8NoyEjK7rYzA@mail.gmail.com>
- <CABpDEum157s5+yQvikjwQRaOcxau27NkMzX9eCs9=HFOW5FYnA@mail.gmail.com>
- <0716365f-3572-638b-e841-fcce7d30571a@amd.com>
- <CABpDEu=quPsv6cXfbvpsGS2N+5Pcw7inCfmv=sx3-VaK0UE76g@mail.gmail.com>
- <8113b5d4-31c6-012c-fc0c-78a9bdbb1e69@amd.com>
- <31c1b2bb-b43a-709a-2b7e-0e945b9e8bb7@amd.com>
- <CAMkAt6o=G7W3pRgVYiBKK5RjQskMfzL_9me2Hcr7_e9rTHuStw@mail.gmail.com>
- <53010b89-ae47-0065-9238-0ab065b70a44@amd.com>
+ <d7decd3cb48d962da086afb65feb94a124e5c537.1655761627.git.ashish.kalra@amd.com>
+ <CABpDEukNp9eH8jXpv6+Dun+e943AbEMA6G68uQu=TrOLSvh_oA@mail.gmail.com>
+ <318682c1-34a5-44e3-a15e-ef71067d4fd7@amd.com>
+ <CABpDEun0KTeWXqRS0Xj5mDTajix_xGt5DTpqtK_wfGcSH3Cu1Q@mail.gmail.com>
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <CABpDEun0KTeWXqRS0Xj5mDTajix_xGt5DTpqtK_wfGcSH3Cu1Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR11CA0007.namprd11.prod.outlook.com
+ (2603:10b6:610:54::17) To SN6PR12MB2767.namprd12.prod.outlook.com
+ (2603:10b6:805:75::23)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <53010b89-ae47-0065-9238-0ab065b70a44@amd.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT055:EE_|CY5PR12MB6549:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38aa3887-8453-4066-c677-08daaca5377f
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|MN0PR12MB6150:EE_
+X-MS-Office365-Filtering-Correlation-Id: 960c526d-2362-4805-284d-08daad2bbb58
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	16Wzrbt8r0rJkOZeuL/0kd7H+1AaqkrWQ0OP6/aYa126+DMqSmsVrWcJXVQWIylF5grww8MVD/p3Fg5hglwKt9QvFM2g9Q/cAA+DR5zVywjBKnm7350bJn6q2hY6M0t4qJDVT7MbrNeV0e/uLMZtep8+MfYK7juqqp1uK2Ccc+COQC7/9p5nGQBbDz4mTq4pLSpZIwZrpWjPfWUq8e2F2NADQw+G3R5rDZKcSSFIUwLK5HmbNDwxosrgxKRopGrA008VXfwC3kJy2WydckHNXfnm/4QOdjnVge1BusDQLowZx52QL6POOBQEvh2Sk5K4tFUt4YWBXYoY2Y/JgHh4B/uGRKV+x+RWIBbKA2uI10GIiO0Joe+Ox+6NKeG+oJrShZN4GVS9j7hKhoAbl3F7AP++x+xLTykFggVxhVb4bmLZSIHWUbgYrcweNRKdYA2uzspAJMs2hV9k0C1s3Ek+LYWi8A884zMPzRzrTQ5Z7pHf8e3hhHh8QIg1q6v35Bf5P0UXvttYmmnkzS41t8ejJ3u3Gg+keaDO66XO1brN4zRLqHzNlry5BvDMjckGyuUgKdCvqNQB736gvFcaxba5MaOpuMR87FpNlcD3h2gMgQ3FdBMB71p5zCqFQfDO2gYWj4b79SXuEhiOhw/65uFE1p41AyclDBMSLPpN8YyKqCZXIhXSEjuvHuKXjdHJ0Qv2b9txZ8gM+WbyGurLYRKzgAlRbaHCt7L5r+3WevvYQEtWT/3EcsEkPvxdc7uuYBn+VdyjddgdBBJe7GC+TpuonjR3cpFy504fD7iVxggey49b/VAFm9Fe1YWrGyB2HQUQ
+	E1G9NkIFTJ/jxAKfCyiETleGpLCLiUkGqNveKCmAVOO3CbR/TuejS3NXafTaycbeNdiDy2efiREFl8gkcz6+WA+jC+sdwhexBwLaGgqM2SU0V5Cb8h7bMkQi/hEaDEYrOVr8BgHTTCslsItYxutySwHhV+GjIz9d7xJt0T4VsO9cRMCPLZCjQm4BUSCokkJa8WMXP/nyMblf6t6CnO8nlJ5YVIfy3ixUiG4upkuzQltDj/ukIIncld349rf3j69qRRtIMsW4hy0AfU3QsR1IMtjt+D7vBegRr+u/t5jI2yiOs7a8Shl5HI12c/19dYupnCYUiwuJRI2xs6IFEmSaroUOUpYn25UaE4yLsA2NuOBb4YmJAPfies6i64iCViriIxv7/ujnMgeMsJ0/fvT7xS/RRyL7inlUWUggj/mj4Gk9L69w/lhwVBVH8NVPhPwoyKp+/itLoxDZpC9xEkW4feHJzLFsZ76tOndaU96nNhc/kDptctP1TUJmu6VPaxhesTwwrkjVtZ1Zdt5LD0viIZfzSAmOd0iJorcS/DIqVYTkd8Zy9s1Pp7zI1/4g7XTookvr9WlUaoyr3pCUiIILg+hXrdsMnDH3EByUXFa4kKpwy2TzCe0bqjdYXxaKwGNi877HxTtzLUeEBkwLts2HFPmxf9P2scdffyewqB6KzO2nFI58TqRvPOCU7fpPrPr+1jJAL1JQlNp9+zXK7bPmhFblZc0DlbEtfZ7KMzrzedOAiEVsuB8aNMTPt5BPsO0XyeX9sMHeZajBwZejDQK2dkbT8PlXKglEOcl2uzYu/Xw=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(396003)(376002)(346002)(39860400002)(136003)(451199015)(46966006)(40470700004)(36840700001)(66899015)(26005)(36860700001)(37006003)(54906003)(8676002)(6636002)(316002)(36756003)(82740400003)(356005)(40480700001)(40460700003)(86362001)(478600001)(2616005)(6666004)(336012)(83380400001)(5660300002)(426003)(1076003)(7406005)(7416002)(53546011)(47076005)(16526019)(4326008)(8936002)(6862004)(2906002)(81166007)(186003)(41300700001)(44832011)(70586007)(70206006)(82310400005)(36900700001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(346002)(39860400002)(376002)(366004)(396003)(451199015)(6486002)(31686004)(6916009)(316002)(31696002)(478600001)(38100700002)(86362001)(186003)(36756003)(26005)(6666004)(6512007)(2616005)(8936002)(7406005)(4326008)(83380400001)(2906002)(7416002)(8676002)(6506007)(53546011)(66476007)(66556008)(5660300002)(66946007)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjBCZ2Nua0NPU29QcnhtUjZ5V3lHazRBQjZ6bWd3YkE5UG5MTDl1YzYvUXhF?=
+ =?utf-8?B?TnJTa01hRlVQYWprSVk4MlZEbldNREZOOWc5RkVWKzRzdzhneW9XT3FtZTNn?=
+ =?utf-8?B?S2ZnbjJwNmdiU2VrVUI1am5EOGEvQXVGdThyUEdIREdEbllTcjRiY0Rab2xI?=
+ =?utf-8?B?ZGxmczNmU3phdXlzNENzaGdNRzVKRUNMbFp0U3RkRGhnS3d3Y3hJaWRVSGZk?=
+ =?utf-8?B?S3EzU1RHYVVURGNCWCt1V0lwbHJtUDlNdjFVeWJpNXpCYy91NkhEdWFwd0FH?=
+ =?utf-8?B?dmo3d2pXNzh6RlhPS0pkWEtsek1pNCtITlBWbUNneGJOMXUyd3BRWnNmN3Ru?=
+ =?utf-8?B?ZlFnTXVFcXd6RTlHQVNMMWdpNkErSXpURlM1YW1aTnkxTDdPYlNuVEZGUEhW?=
+ =?utf-8?B?Q0R6VVcxbjN5R1FJajVjd3VCTHljVWdhQTNjcTREL3FkQVhpemYyZHpubTIv?=
+ =?utf-8?B?bHBMWi9CZ0RHL0tOM0dTMEZZbFVkVWtaSUJYMEM0d2oxdG0vMDgzWTBLaGNx?=
+ =?utf-8?B?c3NhSDR5RWVpU1diZHhxWGwxVU9TbS96dHh3V1VoUWFyMVBVZTl0ckxKRG95?=
+ =?utf-8?B?YmxmV1ZWem5nR3NWOVgxdXRLNEtXY1JRWG9uL1hMT2FGNzlNOU90WUpHcS94?=
+ =?utf-8?B?STZ0WVVvMHdieHlLUUp4TXFjS3l5ek9vUE5yVCtOMEtjUVZjb2h4OENDb2Mr?=
+ =?utf-8?B?c0lBVG9iSkhibW9ydXZWT3dOajBodXpwSElOME1vejdQbTc3V20zVWZGT3Uv?=
+ =?utf-8?B?T0R4M2lYYTJ0MzhOdmg1cHZEUlYzcEpESXhtSzV3V1B0N2pTelk2Vi9uTU9D?=
+ =?utf-8?B?R1FsNkNtanovTTZUdXpTd2YvM0p3alZPT1l0b2VKSUJGSjNQVTR0ckdFaGFa?=
+ =?utf-8?B?OUlUREI5TS9xdFRjbmhPRUMvTE8wb3MyaS9xYnZQdjJWU2p5UXhJRzd3MG5Y?=
+ =?utf-8?B?aENuMjBpT3JDSWhaVjVoaVNhL0RKSlo3ZWMycXh0c2txczB4TU5qamdYTnEv?=
+ =?utf-8?B?UFlNcFpzOTd3RjFoY3hFWndsNmx0YW5OV3N1K2x5c2hYL2F6ZWpyQisxd3Bs?=
+ =?utf-8?B?T083c3AzeDkwSTU3OG5TaUtSWVNLM1dOenZkbjZMdkNLenZBSi9adFV4dnFE?=
+ =?utf-8?B?ekxXQmt5Y1Y4WDM5RytGNS9PZDVqZUVzR0J6TzE0MjJpUVdaR0g4Yy9FbWRa?=
+ =?utf-8?B?Q2U3WjNNSUR3dkdhU3dIU2x1N2xYRVIwV1dzNlZwSFRnV1c2NEcvdHdoWDdI?=
+ =?utf-8?B?cUgyMTBaS2gwWGR3WGhTckxFNWh6RjU2V283QWtrYzE1dXQzZml3U1VSSW5u?=
+ =?utf-8?B?dnIvOE5icTB5RVpmZHRPYXBPSmVsbjZqUGhURThFd2JPZFFnQjlpZEhUdmVU?=
+ =?utf-8?B?MjFPMHdIWDQ5WmNXVGlwQWpDbmtxQTZQOS9Nb1FILy9HSzJXQTJXNTA3NEIy?=
+ =?utf-8?B?a3NZNFB6cE5NUHN1SUs4UDdxNUJOVm1USWRGc1NqZVBQcFp0dnZicVlNR2FS?=
+ =?utf-8?B?OUtIelhCckFYSDdEVDBNbEJlWTlPTGhJUHNQbDdYZGxUcjlFNU9xeVlLVHVV?=
+ =?utf-8?B?enJQZSs5K0RtTVNqUzhqVTJIRlB5alJMQkdHSWFuaTVGOFIrRnhVZFlmdUs1?=
+ =?utf-8?B?ajZaVUNQNnhzTGFscm9ZQWRrRWhBK0Y2YW1wS2lPNHRvMU0xUXJjdW85b2FO?=
+ =?utf-8?B?eEhEMDZ5ZUNzMUtia0Rqc1dYUFlpY3l5UlNscld2dnZnUnR3ckluRjhKUVFo?=
+ =?utf-8?B?dk5iTjcxczV1c2k1ZjZRZ3kxc0hxekpVYTFEaGtIN1VlNFE2bzB4Rno4d2NJ?=
+ =?utf-8?B?YVVIMlI2bm1QZzdaYUZrSngzK1lZNjZicGwvRFNkcXMwTnNQSkFTQkhMYjhj?=
+ =?utf-8?B?WXNIczBCWDcvcG5FTDU3RE9jQTZMc0h3N2NuTnZwRmpHUFR5MWZWK0ZmWGY1?=
+ =?utf-8?B?UnA4UHBPNHJibXBjVERuSjk2UjNpOEJOaVNjakZkQzFrS29CK0MxTyt1ZjJx?=
+ =?utf-8?B?K0VBenJTc1hhRnZQamYxcm1HUlRCN3hab0Erc002RHZLcjVIOFFRcEJ3TGdZ?=
+ =?utf-8?B?Nk53dlB2czFtTjZVZEhuNVdkbGRqTG9yLzRoZWlERlBBVFlFWVJueTRWOE00?=
+ =?utf-8?Q?wURBnu8nnQF98FGXCHkVzvdY9?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2022 22:58:02.5642
+X-MS-Exchange-CrossTenant-Network-Message-Id: 960c526d-2362-4805-284d-08daad2bbb58
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2022 15:00:56.7630
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38aa3887-8453-4066-c677-08daaca5377f
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DM6NAM11FT055.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6549
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Adg5HvlSdDo8CFrmPrRVs2fDZKr7NqrNSM2DCQHQCe5jhAyosnFD6Jrxp2wEsnOA2wkHK85coULIeaQM13qD1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6150
 
-On Wed, Oct 12, 2022 at 03:15:15PM -0500, Kalra, Ashish wrote:
-> On 9/26/2022 10:19 AM, Peter Gonda wrote:
-> > On Mon, Sep 19, 2022 at 5:47 PM Ashish Kalra <ashkalra@amd.com> wrote:
-> > > 
-> > > 
-> > > On 9/19/22 22:18, Tom Lendacky wrote:
-> > > > On 9/19/22 17:02, Alper Gun wrote:
-> > > > > On Mon, Sep 19, 2022 at 2:38 PM Tom Lendacky
-> > > > > <thomas.lendacky@amd.com> wrote:
-> > > > > > 
-> > > > > > On 9/19/22 12:53, Alper Gun wrote:
-> > > > > > > On Fri, Aug 19, 2022 at 9:54 AM Peter Gonda <pgonda@google.com> wrote:
-> > > > > > > > 
-> > > > > > > > > +
-> > > > > > > > > +static int __snp_handle_page_state_change(struct kvm_vcpu *vcpu,
-> > > > > > > > > enum psc_op op, gpa_t gpa,
-> > > > > > > > > +                                         int level)
-> > > > > > > > > +{
-> > > > > > > > > +       struct kvm_sev_info *sev = &to_kvm_svm(vcpu->kvm)->sev_info;
-> > > > > > > > > +       struct kvm *kvm = vcpu->kvm;
-> > > > > > > > > +       int rc, npt_level;
-> > > > > > > > > +       kvm_pfn_t pfn;
-> > > > > > > > > +       gpa_t gpa_end;
-> > > > > > > > > +
-> > > > > > > > > +       gpa_end = gpa + page_level_size(level);
-> > > > > > > > > +
-> > > > > > > > > +       while (gpa < gpa_end) {
-> > > > > > > > > +               /*
-> > > > > > > > > +                * If the gpa is not present in the NPT then
-> > > > > > > > > build the NPT.
-> > > > > > > > > +                */
-> > > > > > > > > +               rc = snp_check_and_build_npt(vcpu, gpa, level);
-> > > > > > > > > +               if (rc)
-> > > > > > > > > +                       return -EINVAL;
-> > > > > > > > > +
-> > > > > > > > > +               if (op == SNP_PAGE_STATE_PRIVATE) {
-> > > > > > > > > +                       hva_t hva;
-> > > > > > > > > +
-> > > > > > > > > +                       if (snp_gpa_to_hva(kvm, gpa, &hva))
-> > > > > > > > > +                               return -EINVAL;
-> > > > > > > > > +
-> > > > > > > > > +                       /*
-> > > > > > > > > +                        * Verify that the hva range is
-> > > > > > > > > registered. This enforcement is
-> > > > > > > > > +                        * required to avoid the cases where a
-> > > > > > > > > page is marked private
-> > > > > > > > > +                        * in the RMP table but never gets
-> > > > > > > > > cleanup during the VM
-> > > > > > > > > +                        * termination path.
-> > > > > > > > > +                        */
-> > > > > > > > > +                       mutex_lock(&kvm->lock);
-> > > > > > > > > +                       rc = is_hva_registered(kvm, hva,
-> > > > > > > > > page_level_size(level));
-> > > > > > > > > +                       mutex_unlock(&kvm->lock);
-> > > > > > > > > +                       if (!rc)
-> > > > > > > > > +                               return -EINVAL;
-> > > > > > > > > +
-> > > > > > > > > +                       /*
-> > > > > > > > > +                        * Mark the userspace range unmerable
-> > > > > > > > > before adding the pages
-> > > > > > > > > +                        * in the RMP table.
-> > > > > > > > > +                        */
-> > > > > > > > > +                       mmap_write_lock(kvm->mm);
-> > > > > > > > > +                       rc = snp_mark_unmergable(kvm, hva,
-> > > > > > > > > page_level_size(level));
-> > > > > > > > > +                       mmap_write_unlock(kvm->mm);
-> > > > > > > > > +                       if (rc)
-> > > > > > > > > +                               return -EINVAL;
-> > > > > > > > > +               }
-> > > > > > > > > +
-> > > > > > > > > +               write_lock(&kvm->mmu_lock);
-> > > > > > > > > +
-> > > > > > > > > +               rc = kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn,
-> > > > > > > > > &npt_level);
-> > > > > > > > > +               if (!rc) {
-> > > > > > > > > +                       /*
-> > > > > > > > > +                        * This may happen if another vCPU
-> > > > > > > > > unmapped the page
-> > > > > > > > > +                        * before we acquire the lock. Retry the
-> > > > > > > > > PSC.
-> > > > > > > > > +                        */
-> > > > > > > > > + write_unlock(&kvm->mmu_lock);
-> > > > > > > > > +                       return 0;
-> > > > > > > > > +               }
-> > > > > > > > 
-> > > > > > > > I think we want to return -EAGAIN or similar if we want the caller to
-> > > > > > > > retry, right? I think returning 0 here hides the error.
-> > > > > > > > 
-> > > > > > > 
-> > > > > > > The problem here is that the caller(linux guest kernel) doesn't retry
-> > > > > > > if PSC fails. The current implementation in the guest kernel is that
-> > > > > > > if a page state change request fails, it terminates the VM with
-> > > > > > > GHCB_TERM_PSC reason.
-> > > > > > > Returning 0 here is not a good option because it will fail the PSC
-> > > > > > > silently and will probably cause a nested RMP fault later. Returning
-> > > > > > 
-> > > > > > Returning 0 here is ok because the PSC current index into the PSC
-> > > > > > structure will not be updated and the guest will then retry (see the
-> > > > > > loop
-> > > > > > in vmgexit_psc() in arch/x86/kernel/sev.c).
-> > > > > > 
-> > > > > > Thanks,
-> > > > > > Tom
-> > > > > 
-> > > > > But the host code updates the index. It doesn't leave the loop because
-> > > > > rc is 0. The guest will think that it is successful.
-> > > > > rc = __snp_handle_page_state_change(vcpu, op, gpa, level);
-> > > > > if (rc)
-> > > > > goto out;
-> > > > > 
-> > > > > Also the page state change request with MSR is not retried. It
-> > > > > terminates the VM if the MSR request fails.
-> > > > 
-> > > > Ah, right. I see what you mean. It should probably return a -EAGAIN
-> > > > instead of 0 and then the if (rc) check should be modified to
-> > > > specifically look for -EAGAIN and goto out after setting rc to 0.
-> > > > 
-> > > > But that does leave the MSR protocol open to the problem that you
-> > > > mention, so, yes, retry logic in snp_handle_page_state_change() for a
-> > > > -EAGAIN seems reasonable.
-> > > > 
-> > > > Thanks,
-> > > > Tom
-> > > 
-> > > I believe it makes more sense to add the retry logic within
-> > > __snp_handle_page_state_change() itself, as that will make it work for
-> > > both the GHCB MSR protocol and the GHCB VMGEXIT requests.
-> > 
-> > You are suggesting we just retry 'kvm_mmu_get_tdp_walk' inside of
-> > __snp_handle_page_state_change()? That should work but how many times
-> > do we retry? If we return EAGAIN or error we can leave it up to the
-> > caller
-> > 
+On 10/12/2022 5:53 PM, Alper Gun wrote:
+> On Mon, Oct 10, 2022 at 7:32 PM Kalra, Ashish <ashish.kalra@amd.com> wrote:
+>>
+>> Hello Alper,
+>>
+>> On 10/10/2022 5:03 PM, Alper Gun wrote:
+>>> On Mon, Jun 20, 2022 at 4:13 PM Ashish Kalra <Ashish.Kalra@amd.com> wrote:
+>>>>
+>>>> From: Brijesh Singh <brijesh.singh@amd.com>
+>>>>
+>>>> When SEV-SNP is enabled in the guest, the hardware places restrictions on
+>>>> all memory accesses based on the contents of the RMP table. When hardware
+>>>> encounters RMP check failure caused by the guest memory access it raises
+>>>> the #NPF. The error code contains additional information on the access
+>>>> type. See the APM volume 2 for additional information.
+>>>>
+>>>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>>>> ---
+>>>>    arch/x86/kvm/svm/sev.c | 76 ++++++++++++++++++++++++++++++++++++++++++
+>>>>    arch/x86/kvm/svm/svm.c | 14 +++++---
+>>>>    2 files changed, 86 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+>>>> index 4ed90331bca0..7fc0fad87054 100644
+>>>> --- a/arch/x86/kvm/svm/sev.c
+>>>> +++ b/arch/x86/kvm/svm/sev.c
+>>>> @@ -4009,3 +4009,79 @@ void sev_post_unmap_gfn(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn)
+>>>>
+>>>>           spin_unlock(&sev->psc_lock);
+>>>>    }
+>>>> +
+>>>> +void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+>>>> +{
+>>>> +       int rmp_level, npt_level, rc, assigned;
+>>>> +       struct kvm *kvm = vcpu->kvm;
+>>>> +       gfn_t gfn = gpa_to_gfn(gpa);
+>>>> +       bool need_psc = false;
+>>>> +       enum psc_op psc_op;
+>>>> +       kvm_pfn_t pfn;
+>>>> +       bool private;
+>>>> +
+>>>> +       write_lock(&kvm->mmu_lock);
+>>>> +
+>>>> +       if (unlikely(!kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level)))
+>>>> +               goto unlock;
+>>>> +
+>>>> +       assigned = snp_lookup_rmpentry(pfn, &rmp_level);
+>>>> +       if (unlikely(assigned < 0))
+>>>> +               goto unlock;
+>>>> +
+>>>> +       private = !!(error_code & PFERR_GUEST_ENC_MASK);
+>>>> +
+>>>> +       /*
+>>>> +        * If the fault was due to size mismatch, or NPT and RMP page level's
+>>>> +        * are not in sync, then use PSMASH to split the RMP entry into 4K.
+>>>> +        */
+>>>> +       if ((error_code & PFERR_GUEST_SIZEM_MASK) ||
+>>>> +           (npt_level == PG_LEVEL_4K && rmp_level == PG_LEVEL_2M && private)) {
+>>>> +               rc = snp_rmptable_psmash(kvm, pfn);
+>>>
+>>>
+>>> Regarding this case:
+>>> RMP level is 4K
+>>> Page table level is 2M
+>>>
+>>> Does this also cause a page fault with size mismatch? If so, we
+>>> shouldn't try psmash because the rmp entry is already 4K.
+>>>
+>>> I see these errors in our tests and I think it may be happening
+>>> because rmp size is already 4K.
+>>>
+>>> [ 1848.752952] psmash failed, gpa 0x191560000 pfn 0x536cd60 rc 7
+>>> [ 2922.879635] psmash failed, gpa 0x102830000 pfn 0x37c8230 rc 7
+>>> [ 3010.983090] psmash failed, gpa 0x104220000 pfn 0x6cf1e20 rc 7
+>>> [ 3170.792050] psmash failed, gpa 0x108a80000 pfn 0x20e0080 rc 7
+>>> [ 3345.955147] psmash failed, gpa 0x11b480000 pfn 0x1545e480 rc 7
+>>>
+>>> Shouldn't we use AND instead of OR in the if statement?
+>>>
+>>
+>> I believe this we can't do, looking at the typical usage case below :
+>>
+>> [   37.243969] #VMEXIT (NPF) - SIZEM, err 0xc80000005 npt_level 2,
+>> rmp_level 2, private 1
+>> [   37.243973] trying psmash gpa 0x7f790000 pfn 0x1f5d90
+>>
+>> This is typically the case with #VMEXIT(NPF) with SIZEM error code, when
+>> the guest tries to do PVALIDATE on 4K GHCB pages, in this case both the
+>> RMP table and NPT will be optimally setup to 2M hugepage as can be seen.
+>>
+>> Is it possible to investigate in more depth, when is the this case being
+>> observed:
 > 
-> Ok, we return -EAGAIN here and then let the caller in
-> snp_handle_page_state_change() or sev_handle_vmgexit_msr_protocol()
-> (in case of GHCB MSR protocol) do the retries.
+> Yes, I added more logs and I can see that these errors happen when RMP
+> level is 4K and NPT level is 2M.
+> psmash fails as expected. I think it is just a log, there is no real
+> issue but the best is not trying psmash if rmp level is 4K.
 > 
-> But, the question still remains, how may retry attempts should the caller
-> attempt ?
 
-With UPM I don't think we need to deal with this particular case, since we
-don't need to walk the NPT to determine the PFN. The PSC will simply get
-forward to userspace, and userspace will (generally):
+Now, the SIZEM bit is only set when PVALIDATE or RMPADJUST fails due to
+guest attempting to validate a 4K page that is backed by a 2MB RMP 
+entry, which is not the case here as RMP level is 4K.
 
- for shared->private:
-   - deallocate page in shared pool
-   - allocate page in private pool
-   - issue KVM_MEM_ENCRYPT_REG_REGION on the GFN to switch it to private
-     in the KVM xarray and RMP table (and zap current NPT mapping)
-   - resume guest
-   - guest faults on GFN and KVM MMU sees that it is private and maps the GFN
-     to the corresponding PFN in the private pool, which should be reliably
-     obtainable since it is pinned
+Also, this does not fall into the second case for the same reason.
 
- for private->shared:
-   - deallocate page in private pool (which will switch it to shared in
-     RMP table so it can be safely released back to host)
-   - allocate page in shared pool
-   - issue KVM_MEM_ENCRYPT_UNREG_REGION on the GFN to switch it to
-     shared in the KVM xarray (and zap current NPT mapping)
-   - resume guest
-   - guest faults on GFN and KVM MMU sees that it is shared and handles it
-     just like it would a normal non-SEV guest, so we don't ever need to
-     acquire the specific PFN backing the HVA since they are implicitly
-     shared, so no need anymore for kvm_mmu_get_tdp_walk() helper
+#NPF will happen during Guest page table walk if RMP checks fail
+for 2M nested page and RMP.SubPage_Count !=0 OR
+RMP.PageSize != Nested table page size, but then that shouldn't have
+the SIZEM fault bit set.
 
-     (also no need for pre-mapping into TDP via kvm_mmu_map_tdp_page() in
-     this case, but not sure that was needed even without UPM, seems more like
-     an optimization to avoid a 2nd #NPF. I guess we still have the option with
-     UPM though if it seems justified, but it would likely happen in
-     {REG,UNREG}_REGION in that case rather than SNP-specific hooks)
+This raises concern about some existing race condition, it probably
+can race with
+snp_handle_page_state_change()->snp_make_page_shared()->snp_rmptable_psmash(),
+but that code path seems to be protected from this nested RMP #PF 
+handler as they both acquire the kvm->mmu_lock.
 
-There may be some other edge cases to consider, but I'm not aware of any
-sequences that aren't clearly misbehavior on the part of userspace/guest,
-in which case terminating at the host/guest level seems reasonable.
+So, this still needs more investigation.
 
--Mike
+Can you share what kind of tests are you running to reproduce this
+issue ?
 
-> 
-> Thanks,
-> Ashish
-> 
-> > > > 
-> > > > > 
-> > > > > > 
-> > > > > > > an error also terminates the guest immediately with current guest
-> > > > > > > implementation. I think the best approach here is adding a retry logic
-> > > > > > > to this function. Retrying without returning an error should help it
-> > > > > > > work because snp_check_and_build_npt will be called again and in the
-> > > > > > > second attempt this should work.
-> > > > > > > 
-> > > > > > > > > +
-> > > > > > > > > +               /*
-> > > > > > > > > +                * Adjust the level so that we don't go higher
-> > > > > > > > > than the backing
-> > > > > > > > > +                * page level.
-> > > > > > > > > +                */
-> > > > > > > > > +               level = min_t(size_t, level, npt_level);
-> > > > > > > > > +
-> > > > > > > > > +               trace_kvm_snp_psc(vcpu->vcpu_id, pfn, gpa, op,
-> > > > > > > > > level);
-> > > > > > > > > +
-> > > > > > > > > +               switch (op) {
-> > > > > > > > > +               case SNP_PAGE_STATE_SHARED:
-> > > > > > > > > +                       rc = snp_make_page_shared(kvm, gpa, pfn,
-> > > > > > > > > level);
-> > > > > > > > > +                       break;
-> > > > > > > > > +               case SNP_PAGE_STATE_PRIVATE:
-> > > > > > > > > +                       rc = rmp_make_private(pfn, gpa, level,
-> > > > > > > > > sev->asid, false);
-> > > > > > > > > +                       break;
-> > > > > > > > > +               default:
-> > > > > > > > > +                       rc = -EINVAL;
-> > > > > > > > > +                       break;
-> > > > > > > > > +               }
-> > > > > > > > > +
-> > > > > > > > > +               write_unlock(&kvm->mmu_lock);
-> > > > > > > > > +
-> > > > > > > > > +               if (rc) {
-> > > > > > > > > +                       pr_err_ratelimited("Error op %d gpa %llx
-> > > > > > > > > pfn %llx level %d rc %d\n",
-> > > > > > > > > +                                          op, gpa, pfn, level, rc);
-> > > > > > > > > +                       return rc;
-> > > > > > > > > +               }
-> > > > > > > > > +
-> > > > > > > > > +               gpa = gpa + page_level_size(level);
-> > > > > > > > > +       }
-> > > > > > > > > +
-> > > > > > > > > +       return 0;
-> > > > > > > > > +}
-> > > > > > > > > +
+Thanks,
+Ashish
+
+>> RMP level is 4K
+>> Page table level is 2M
+>> We shouldn't try psmash because the rmp entry is already 4K.
+>>
+>> Thanks,
+>> Ashish
+>>
+>>> if ((error_code & PFERR_GUEST_SIZEM_MASK) && ...
+>>>
