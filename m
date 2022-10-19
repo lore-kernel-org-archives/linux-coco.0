@@ -1,203 +1,221 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FDD5386
-	for <linux-coco@lists.linux.dev>; Tue, 18 Oct 2022 20:45:48 +0000 (UTC)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29IKCmfo021611;
-	Tue, 18 Oct 2022 20:45:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=lg2+4uKWQ2vLNLVKbiq1JBCk1fW19uVVM25CJMCZj68=;
- b=PRP91mb8qjubCrC3kQbCgmQeGQiOm3xtYBpfdRSTeC5oVuid4focpUQ/VMWiIVxPFwEg
- 1Gi/podzhAvhaPMNmj0dTbZhf2Np+BeUy0vNNnRJ3wnStrTXYH6dk1AizS2xwHZp4p3O
- e7e/Tm+xcuc3Sd8Tj/r34C5VXynkFA1TMsk22GPaNviRllW6C0BO+E7D0UQp4CqYMfdJ
- o9cbHXvAEWCfumqC0iq6bUgQTHj1FKUVjxqgNEAvY+zsPpxFyAb1SgESAH2s+PFgI0wx
- MkgFA4nq4GIFZQQQBMtGziwE9YE1i1OICRWPG8M4HTNA8/ERe4qJidRSLQDikqu+FvYa dw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ka2yxrxyx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Oct 2022 20:45:40 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29IKKPUW023908;
-	Tue, 18 Oct 2022 20:45:40 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ka2yxrxyh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Oct 2022 20:45:39 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29IKaMYZ021579;
-	Tue, 18 Oct 2022 20:45:39 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-	by ppma03dal.us.ibm.com with ESMTP id 3k7mg9v5gy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Oct 2022 20:45:39 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com ([9.208.128.117])
-	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29IKjbH47996138
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Oct 2022 20:45:38 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5EDD758053;
-	Tue, 18 Oct 2022 20:45:37 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A386958065;
-	Tue, 18 Oct 2022 20:45:35 +0000 (GMT)
-Received: from [9.160.89.171] (unknown [9.160.89.171])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Oct 2022 20:45:35 +0000 (GMT)
-Message-ID: <4a5bde7e-c473-0fdc-3c3f-e08321e0b911@linux.ibm.com>
-Date: Tue, 18 Oct 2022 23:45:45 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: SVSM vTPM specification
-Content-Language: en-US
-To: jejb@linux.ibm.com, Tom Lendacky <thomas.lendacky@amd.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc: "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
- <Y0b6cDIMlKijT95S@work-vm>
- <b6b22a1f4741a29c68dbdfae59e3fb201e3aa5e8.camel@linux.ibm.com>
- <820ddc4a-ac48-00a1-d284-23d08899f1cc@amd.com>
- <294b08e11e53cff01607004737f6f20c6784c40b.camel@linux.ibm.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <294b08e11e53cff01607004737f6f20c6784c40b.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4fZq-wl-ek-sMpIqDInCcoUj5biausws
-X-Proofpoint-GUID: TygyBKKnlblrwdPfq_TaJM1mqt6lWA3F
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1EE23A7
+	for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 05:47:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1666158466;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TKc2Q9arEpg/4CdAPnO49yltd8SF+V7OEfHdz121TrA=;
+	b=QHyqJwxaoeJ1MWuflJQ3UN3KwbU+YYziOMXCGI21U1ZG+fn1lqPAppmCK8iGqSN5zYo+GV
+	OXWEo58U1WIPZPLD3iWaFxuqCkJBOz7+KEN+m69FbfYHzf/Xx8Gad9s7mWVIx5ewMJIubc
+	mqCYlB3Kp5n8PbmSlxu9Qllf1NJa41U=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-606-xXsvXSsqO8ORpYK20HxKsw-1; Wed, 19 Oct 2022 01:47:45 -0400
+X-MC-Unique: xXsvXSsqO8ORpYK20HxKsw-1
+Received: by mail-wm1-f72.google.com with SMTP id c130-20020a1c3588000000b003b56be513e1so10354713wma.0
+        for <linux-coco@lists.linux.dev>; Tue, 18 Oct 2022 22:47:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mDMb+QGFMhWPO7syvhsNQ6vAlGWCWf8MGS1tfoB/URg=;
+        b=orKLNyM8pTwwFzlmEvnC8z1kRBEPMV4OHa6d88rblD9sd6YbJWGKXBVFnTyfSM7XTh
+         KhpDAIcOJnJH24s+visHcc8QafovRiYXnmGXtKw6VJYS3ACCv7M8lEtu5qOAQtF7RVgW
+         5DvLtQrs6AtNytEJ4JIwdtldRlaklUyl6HLBFLZQHcLZaYTsg+ZAXgi9bbv3cLPjNsgm
+         +cen9lnVz3peOXqNXbNxOZeAUZON5XVP6oWqHmdNCpkAudE9CEl8za+SXd0RGwkQz/F0
+         EWVSKSiHICph4KA7DwF+wdTCz0dL3Qm7ymex6F5599S71z5kn+doU/KAiGIQ7c1e+gfr
+         s/mA==
+X-Gm-Message-State: ACrzQf3y6rXvUxhjYk7yQFSuo8iOyxukZgsXe3IBUFRHRKwHjSTENTQH
+	J4NouDmSj9eYhAdvWnSKZ0tVt8B4GRqAGsN1wsQHQJrLbCvBVBlipDB6v4fxCkg5ykG3q2grGAU
+	tHoo0p3PeKXXkmjUUBqxGmw==
+X-Received: by 2002:a05:600c:35cc:b0:3c6:fb3b:2075 with SMTP id r12-20020a05600c35cc00b003c6fb3b2075mr7389231wmq.86.1666158463347;
+        Tue, 18 Oct 2022 22:47:43 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM53DXjnD+yr4XfeDbHmqVyDJCHxJYMlxOrOTkT+6soJNVxNogjhAOLG9+Dg6xLhQCF6z9x3XA==
+X-Received: by 2002:a05:600c:35cc:b0:3c6:fb3b:2075 with SMTP id r12-20020a05600c35cc00b003c6fb3b2075mr7389219wmq.86.1666158463008;
+        Tue, 18 Oct 2022 22:47:43 -0700 (PDT)
+Received: from smtpclient.apple ([2a01:e0a:834:5aa0:2dca:b9bb:3ae8:b742])
+        by smtp.gmail.com with ESMTPSA id m2-20020adfe0c2000000b0022e6178bd84sm13245463wri.8.2022.10.18.22.47.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 18 Oct 2022 22:47:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-18_07,2022-10-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
- mlxlogscore=999 bulkscore=0 priorityscore=1501 impostorscore=0
- phishscore=0 lowpriorityscore=0 mlxscore=0 suspectscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210180115
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.1\))
+Subject: Re: SVSM vTPM specification
+From: Christophe de Dinechin <cdupontd@redhat.com>
+In-Reply-To: <155c7303-3027-7d93-263f-f42ea159f855@linux.ibm.com>
+Date: Wed, 19 Oct 2022 07:47:41 +0200
+Cc: jejb@linux.ibm.com,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Message-Id: <679C87ED-6D21-4D0A-9537-9910A6F802ED@redhat.com>
+References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
+ <Y0b6cDIMlKijT95S@work-vm>
+ <a23e15cda00ee6a1c15f0d499deffd38b0593a78.camel@linux.ibm.com>
+ <b5a2985a-3717-7d4b-0c8a-52fdcbc7c6b7@amd.com>
+ <58caad5df212e620c6840f2c2f16514674893dfa.camel@linux.ibm.com>
+ <155c7303-3027-7d93-263f-f42ea159f855@linux.ibm.com>
+To: Dov Murik <dovmurik@linux.ibm.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.1)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 
 
-On 13/10/2022 22:20, James Bottomley wrote:
-> On Thu, 2022-10-13 at 13:54 -0500, Tom Lendacky wrote:
->> On 10/12/22 14:05, James Bottomley wrote:
->>> On Wed, 2022-10-12 at 18:33 +0100, Dr. David Alan Gilbert wrote:
->>>> * Tom Lendacky (thomas.lendacky@amd.com) wrote:
->> ...
->>> It is theoretically possible to emulate a CRB TPM with just a
->>> single
->>> communication page and an ACPI entry (the Linux CRB driver is ACPI
->>> only
->>> at this time and responds to the "MSFT0101" ACPI entry).
->>>
->>> The CRB device responds to a very compact MMIO region (0x30 bytes
->>> long)
->>> described in the CRB spec:
->>>
->>> https://trustedcomputinggroup.org/resource/tpm-2-0-mobile-command-response-buffer-interface-specification/
->>>
->>> In theory we could use a page that keeps trapping to the SVSM for
->>> this,
->>> but the problem is that the CRB driver polls a register in the MMIO
->>> region to check command completion, so even a single TPM command is
->>> going to generate a huge number of such traps.  So while it's
->>> theoretically possible to generate a SVSM emulation of the CRB
->>> device,
->>> it would likely be too expensive in terms of traps, particularly if
->>> we're using the SVSM vTPM for runtime measurements like IMA.
->>>
->>> If we're going to do a new driver, I think basing it off the CRB
->>> spec
->>> would be fine (the spec envisages command request/response being
->>> via
->>> areas outside the MMIO region) and we could simply do a new driver
->>> that
->>> plumbs directly into the nine operations in the tpm_class_ops
->>> structure
->>>
->>
->> This sounds good. I think we can model an API call to the SVSM vTPM
->> using 
->> this. We can provide a struct that looks similar to the CRB Control
->> Area 
->> and supply the GPA of this struct in RCX to the SVSM for the vTPM to 
->> perform the operation:
->>
->>      - Command GPA
->>      - Command Size
->>      - Response GPA
->>      - Response Size
->>      - Status
-> 
-> Realistically, I think all TPM2 command/response actions can be packed
-> into
-> 
-> u32 TPM2_action(u64 command_gpa, u32 command_len, u64 response_gpa, u32
-> *response_len)
-> 
-> Where the u32 return would be the status (although if the SVSM has
-> trouble with the return status, we could add it as an extra modified
-> variable).
-> 
-> The way the current TPM driver interface works is shown in the
-> tpm_class_ops structure:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/tpm.h
-> 
-> we can shim all the non-ignorable calls into the above.  The standard
-> way of sending a command is tpm_try_transmit in
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/char/tpm/tpm-interface.c
-> 
-> I think we can emulate an interrupt driven tpm (set TPM_CHIP_FLAG_IRQ
-> in the driver) and it will simply do a ->send() ->receive() pair, which
-> works for us since the thread of execution in ->send() will pass into
-> the SVSM and return with the result which we can then copy over in
-> ->recv
+> On 18 Oct 2022, at 22:22, Dov Murik <dovmurik@linux.ibm.com> wrote:
+>=20
+>=20
+>=20
+> On 13/10/2022 18:30, James Bottomley wrote:
+>> On Thu, 2022-10-13 at 10:14 -0500, Tom Lendacky wrote:
+>>> On 10/12/22 13:44, James Bottomley wrote:
+>>>> On Wed, 2022-10-12 at 18:33 +0100, Dr. David Alan Gilbert wrote:
+>>>>> * Tom Lendacky (thomas.lendacky@amd.com) wrote:
+>>>> [...]
+>>>>> It's important that the VMPL level in the attestation report
+>>>>> reflects the side asking for the attestation; in particular one
+>>>>> TPM story goes that the firmware (in VMPL0) would ask for an
+>>>>> attestation and the attestor would return the vTPM stored
+>>>>> state.  It's important that the state could only be returned to
+>>>>> the vTPM not the guest, so the attestor would check that the VMPL
+>>>>> level in the attestation was 0; any guest attestation would have
+>>>>> a VMPL>0 and so the attestor wouldn't hand it the vTPM state.
+>>>>> Hmm or are you saying such a report would be triggered by the
+>>>>> guest rather than the firmware, but it would be protected by
+>>>>> VMPCK0 so the guest wouldn't be able to read it?
+>>>=20
+>>> No, the VMPCK0 key is just used for communication with the PSP.
+>>>=20
+>>> While the SVSM would request the attestation report from the PSP,
+>>> the guest would need to request it from the SVSM.
+>>=20
+>> I think this is fine.  The SVSM would do the attestation as it starts
+>> the TPM but the guest would be able to retrieve it at any time.=20
+>> Essentially, if you use something like keylime, the agent would request
+>> it on start up to prove it should trust the vTPM, but that could occur
+>> way after VM boot.
+>>=20
+>>>=20
+>>>>> I think one of the vTPMs keys should be in the SNP attestation
+>>>>> report (the EK???) - I think that would allow you to attest that
+>>>>> the vTPM you're talking to is a vTPM running in an SNP protected
+>>>>> firmware.
+>>>>=20
+>>>> Traditionally the TPM identity is the public EK, so that should
+>>>> definitely be in the report.  Ideally, I think the public storage
+>>>> root key (key derived from the owner seed) should be in there two
+>>>> because it makes it easy to create keys that can only be read by
+>>>> the TPM (keys should be in the owner hierarchy which means they
+>>>> have to be encrypted to the storage seed, so we need to know what a
+>>>> public key corresponding to it is).
+>>>>=20
+>>>> One wrinkle of the above is that, when provisioned, the TPM will
+>>>> only have the seeds, not the keys (the keys are derived from the
+>>>> seeds via a TPM2_CreatePrimary command).  The current TPM
+>>>> provisioning guidance:
+>>>>=20
+>>>> https://trustedcomputinggroup.org/resource/tcg-tpm-v2-0-provisioning-g=
+uidance/
+>>>>=20
+>>>> Says that the EK should be at permanent handle
+>>>>=20
+>>>> 81010001
+>>>>=20
+>>>> And there's an update saying that should be the RSA-2048 key and
+>>>> there should be an EC (NIST-P256) one at 81010002.  The
+>>>> corresponding storage keys should be at 81000001 and 81000002
+>>>> respectively.  I think when the SVSM provisions the TPM, it should
+>>>> run TPM2_CreatePrimary for those four keys and put them into the
+>>>> persistent indexes, then insert the EC keys only for EK and SRK
+>>>> into the attestation report.
+>>>=20
+>>> We only have 512 bits to work with for the SVSM-provided data, so
+>>> would hashes of the keys be ok?
+>>=20
+>> Well, if you put the hashes in, the consuming entity would then have to
+>> find out via an additional channel what the actual keys were because
+>> you can't reverse the hash (it's possible, just more effort).  If you
+>> use point compression, an EC key (for the NIST p-256 curve) is only 32
+>> bytes anyway, so it's the same size as a sha256 hash, so I'd say place
+>> the actual public keys into the report to give complete and usable
+>> information
+>>=20
+>=20
+> Do we need to leave room for a Guest-Owner-provided nonce?  Guest owner
+> will provide it to the guest OS which will provide it to the SVSM to be
+> included in REPORT_DATA of the VMPL0 attestation report.
+>=20
+I think it=E2=80=99s a good idea, but I=E2=80=99m not clear on which compon=
+ent in the
+guest would be responsible for that exchange.
 
-Yep, the ftpm driver [1] stores the TPM response at the end of ->send()
-and then just copies it over in ->recv(), like you said.
+You need a functioning networking stack, and you need a way to know what
+attestation server to talk to.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/char/tpm/tpm_ftpm_tee.c
+IIUC, at this stage, we have no valid storage yet, since that would
+require having received the response from the attestation server.
+So the only storage we have is host storage managed by the hypervisor,
+plus whatever fits in your SVSM-provided data.
 
-> 
-> Also note that tpm_try_transmit() uses the same buffer for send and
-> receive, so it is possible to reduce the number of parameters in
-> TPM2_action() above if that's the route people want to go.
+Can we send this data without additional encryption since it=E2=80=99s alre=
+ady
+cyphertext? Or do we want additional mechanisms, and if so, what root
+certificates do we use? Where do we get them from without guest storage?
 
-I think that the leftover space in the SVSM's Calling Area (svsm_caa.svsm_buf:
-4088 bytes) should be enough for the CRB struct and the command+response data buffer.
-Using it might simplify the kernel driver a bit (reduce alloc/free calls).
-
--Dov
+Do we rely on guest networking being up at that point? Or do we need
+to provide additional mechanisms in the hypervisor to perform this
+initial exchange on behalf of the guest?
 
 
-> 
->> Anything else that would go in the struct? Locality?
-> 
-> Well, this is a question.  CRB devices are actually allowed not to have
-> a locality at all, so ignoring it is perfectly legal.  On the other
-> hand, locality is used to allow or deny certain accesses. 
-> Traditionally you allow firmware access at locality 4 as the trusted
-> hardware component.  However, the problem with implementing localities
-> is how does the SVSM know where we're calling from?  If it's unable to
-> bar access at certain localities, there's not much point implementing
-> them.  For reference the TIS TPM implements separate memory maps of its
-> registers, one for each locality and firmware bars access to the OS by
-> unmapping a range and refusing to allow the OS to map it back.
-> 
-> I suspect we'd get on faster by being pejorative and saying we won't
-> implement locality since we can't police it.
-> 
-> James
->  
-> 
+
+> If we don't add a nonce not, how can the guest owner verify the
+> freshness of the report?  Maybe the pub-EK is enough because it signs
+> the rest of the TPM-report and the guest-owner can somehow verify its
+> freshness?
+
+I think that would work for transient vTPMs. If we want a long-lived
+vTPM, then we=E2=80=99d need a mechanism for the guest owner to tell, ahead=
+ of
+time, when to regenerate a new vTPM state, and to independently get
+that state. In that case, the policy of when to update the vTPM state
+would be deferred to some external server, and the process would be:
+
+- Day 1: External server requests a new TPM state, stores state
+- Day N: Guest boots, uses that TPM state, which is then verified
+  by the external server
+- Day M: External server decides to refresh the TPM state, will now
+  only accept boots with fresher state
+
+
+>=20
+>=20
+> It looks like REPORT_DATA needs to be
+>=20
+> SHA512(guest_owner_nonce || pub_EK || pub_SRK)
+>=20
+> And the guest does this:
+>=20
+> 1. Receive nonce from guest owner
+> 2. Calls SVSM_GET_TPM_PUB_KEYS
+> 3. Constructs report_data=3Dsha512(guest_owner_nonce || pub_EK || pub_SRK=
+)
+> 4. Calls SVSM_GET_SNP_ATTESTATION_REPORT(report_data)
+> 5. Send back both the report and pub_* to guest owner
+>=20
+>=20
+> -Dov
+
