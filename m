@@ -1,43 +1,59 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA4E7E
-	for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 08:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFC428E8
+	for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 11:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1666166904;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=mimecast20190719; t=1666178515;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HT2RUS++9+g6B5dEx7OyBLKke//PvVNhc4F8YyVczmo=;
-	b=gu0aw6CeNPVrEVOriO/BK/TnelkBIYNxESn2XhqFlleF4tGKZ68GCmlHEnu3HX4rGRLV1w
-	XD2+uY+LOZw83u7nTnZKNiZjcKW+bY8xiDEHamvbYismjFAOdAkozmwLEujOjNHCP7xZIH
-	dNtOkbGOgtQMRLmmKH/b0cihkwVF3Xs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-441-LqX5FGTRPuWjtXbTLqnwxw-1; Wed, 19 Oct 2022 04:08:21 -0400
-X-MC-Unique: LqX5FGTRPuWjtXbTLqnwxw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0D3B6101B44C;
-	Wed, 19 Oct 2022 08:08:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.33.36.69])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id CC3DA90A11;
-	Wed, 19 Oct 2022 08:08:19 +0000 (UTC)
-Date: Wed, 19 Oct 2022 09:08:17 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+	bh=Ao5o+W9qFWQdIeSmWCeYOYCK8cnRtd8K8BjiH0EjSCk=;
+	b=N5b2+X7WfIQ7w58HHIebf1bHFCIxrGdzZT4L4b7hqt5hixnLmKB+cixkPuj08ScGolLxB2
+	x0P6tIPrISMNakzpcX0X5VJPpdDBgRBmM7V9bKwtVs0BBu5lcO3fXFD1JEW0wPtAke+wmf
+	MDgnfKHVlU0DRQYf5f5zcQR5eagJVdk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-619-4Cbiek1XOJCEzpwueR1ACw-1; Wed, 19 Oct 2022 07:21:54 -0400
+X-MC-Unique: 4Cbiek1XOJCEzpwueR1ACw-1
+Received: by mail-wm1-f69.google.com with SMTP id k22-20020a05600c0b5600b003c6cf5c5592so7784625wmr.3
+        for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 04:21:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ao5o+W9qFWQdIeSmWCeYOYCK8cnRtd8K8BjiH0EjSCk=;
+        b=BYx11OESTcCYSR1BDWNNfpZIhBmxhikVfeaYndbrn9CA5uE7pK/0trfPzW+FngMLaK
+         zW8LTLwWFvFv5C8/dlriA9q0qV+rDv2MrCb8rSZ3FejgD4F7Z1N3UNws7zi7JO8pJIsC
+         aSmMf9/g7v8YU9fxi5BuFG2kfp+BfixU/dptLcAtRuQYGJ7d+KtPpqkiIYqSNdBrPLBO
+         zqqNPWf7WKJQXkpgeaOn56q25bqCzrxmLs6ner678pK4NvzP5hQwHGs9D0J2EX95A0fM
+         ZjbyuYTfJA+SLPix9DqVTydtDDp+4ehb5bDRtSUhQK+Onap8AhDgh3v4enSXwC7xPFIg
+         DeLA==
+X-Gm-Message-State: ACrzQf08RrbBjfuBQbVXQMskdge4iPJtkwMOEz5gOfp4q62oU6PqOMDb
+	yl9x2IOc9aQdx+e/7n6VHGaKtON4uxf22Rd4+Ibfaj3rmOolVzeWNr+iDMBKWD1RP3JAIjrglHL
+	Wz274tSy9+dBaIsFakH04pA==
+X-Received: by 2002:adf:fb43:0:b0:22b:64:8414 with SMTP id c3-20020adffb43000000b0022b00648414mr4875962wrs.70.1666178512804;
+        Wed, 19 Oct 2022 04:21:52 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM5Kwaf9CHvPGSdyrT2RHsDSGZUChq0Y7APr9fM5/4Hrtsf4lHZfvaeZk22OmoKVGuvo2NA+4g==
+X-Received: by 2002:adf:fb43:0:b0:22b:64:8414 with SMTP id c3-20020adffb43000000b0022b00648414mr4875938wrs.70.1666178512443;
+        Wed, 19 Oct 2022 04:21:52 -0700 (PDT)
+Received: from work-vm (cpc109025-salf6-2-0-cust480.10-2.cable.virginm.net. [82.30.61.225])
+        by smtp.gmail.com with ESMTPSA id t9-20020a05600c198900b003b4fe03c881sm22334218wmq.48.2022.10.19.04.21.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Oct 2022 04:21:51 -0700 (PDT)
+Date: Wed, 19 Oct 2022 12:21:50 +0100
+From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
 To: Christophe de Dinechin <cdupontd@redhat.com>
 Cc: Dov Murik <dovmurik@linux.ibm.com>, jejb@linux.ibm.com,
 	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
 	"amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
 Subject: Re: SVSM vTPM specification
-Message-ID: <Y0+wcWgcRFTiDTNk@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Message-ID: <Y0/dzjGHnLUFgDQP@work-vm>
 References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
  <Y0b6cDIMlKijT95S@work-vm>
  <a23e15cda00ee6a1c15f0d499deffd38b0593a78.camel@linux.ibm.com>
@@ -53,14 +69,13 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 In-Reply-To: <679C87ED-6D21-4D0A-9537-9910A6F802ED@redhat.com>
 User-Agent: Mutt/2.2.7 (2022-08-07)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 19, 2022 at 07:47:41AM +0200, Christophe de Dinechin wrote:
+* Christophe de Dinechin (cdupontd@redhat.com) wrote:
 > 
 > 
 > > On 18 Oct 2022, at 22:22, Dov Murik <dovmurik@linux.ibm.com> wrote:
@@ -71,6 +86,32 @@ On Wed, Oct 19, 2022 at 07:47:41AM +0200, Christophe de Dinechin wrote:
 > >> On Thu, 2022-10-13 at 10:14 -0500, Tom Lendacky wrote:
 > >>> On 10/12/22 13:44, James Bottomley wrote:
 > >>>> On Wed, 2022-10-12 at 18:33 +0100, Dr. David Alan Gilbert wrote:
+> >>>>> * Tom Lendacky (thomas.lendacky@amd.com) wrote:
+> >>>> [...]
+> >>>>> It's important that the VMPL level in the attestation report
+> >>>>> reflects the side asking for the attestation; in particular one
+> >>>>> TPM story goes that the firmware (in VMPL0) would ask for an
+> >>>>> attestation and the attestor would return the vTPM stored
+> >>>>> state.  It's important that the state could only be returned to
+> >>>>> the vTPM not the guest, so the attestor would check that the VMPL
+> >>>>> level in the attestation was 0; any guest attestation would have
+> >>>>> a VMPL>0 and so the attestor wouldn't hand it the vTPM state.
+> >>>>> Hmm or are you saying such a report would be triggered by the
+> >>>>> guest rather than the firmware, but it would be protected by
+> >>>>> VMPCK0 so the guest wouldn't be able to read it?
+> >>> 
+> >>> No, the VMPCK0 key is just used for communication with the PSP.
+> >>> 
+> >>> While the SVSM would request the attestation report from the PSP,
+> >>> the guest would need to request it from the SVSM.
+> >> 
+> >> I think this is fine.  The SVSM would do the attestation as it starts
+> >> the TPM but the guest would be able to retrieve it at any time. 
+> >> Essentially, if you use something like keylime, the agent would request
+> >> it on start up to prove it should trust the vTPM, but that could occur
+> >> way after VM boot.
+> >> 
+> >>> 
 > >>>>> I think one of the vTPMs keys should be in the SNP attestation
 > >>>>> report (the EK???) - I think that would allow you to attest that
 > >>>>> the vTPM you're talking to is a vTPM running in an SNP protected
@@ -121,7 +162,15 @@ On Wed, Oct 19, 2022 at 07:47:41AM +0200, Christophe de Dinechin wrote:
 > > 
 > I think it’s a good idea, but I’m not clear on which component in the
 > guest would be responsible for that exchange.
-> 
+
+Hang on; we're mixing a few levels here.
+
+To go back to Dov's question; the only reason to worry about 'leaving
+room' for a nonce is James's idea of including actual keys and taking
+all the space up.  IMHO that sounds delicate, and dependent on the key
+type etc - where as if you include a hash, then you can mix a nonce in
+as well.
+
 > You need a functioning networking stack, and you need a way to know what
 > attestation server to talk to.
 > 
@@ -138,54 +187,59 @@ On Wed, Oct 19, 2022 at 07:47:41AM +0200, Christophe de Dinechin wrote:
 > to provide additional mechanisms in the hypervisor to perform this
 > initial exchange on behalf of the guest?
 
-I'd be inclined to not rely on guest networking, and probably even
-strictly decouple what the SVSM does to communicate, from any specific
-attestation server connection protocol or details.
+One question is :
 
-Implementing a network stack in SVSM looks like a very large piece of
-work. It is conceivable that the guest network device is connected to
-an entirely private network that can only communicate with other VMs
-belonging to that guest owner. IOW, we can't assume the guest NIC has
-the ability to route to the attestation server. I don't think we want
-to be adding a 2nd NIC just for firmware phase attestation either.
+  'When is the first time we need to use any of the stored
+   keys or policy in the vTPM'
 
-Further if SVSM uses networking, and talks directly to the remote
-attestation service, we can expect that attestation server will be
-using normal best practice and exposing its service over TLS with
-x509 server certs to be validated. That brings even more software
-complexity into the SVSM. It would need to be told what attestation
-server URL to use, though that is likely the easiest bit of the
-problem since fw_cfg can supply that. If any aspect of the
-attestation service protocol ever needs to change, then we also
-need to update SVSM to match.
+because as long as we don't need stored TPM state until later in the
+boot process, we don't need to perform the attestation/load of the vTPM
+state until then;  we *do* need to maintain the PCRs from startup,
+but everything else can wait.    With SNP I think we can hold off doing
+the attestation until that later point?
 
+Perhaps that means we can wait until EFI is up to actually do the load
+of the vTPM state?
 
-AFAICS, what SVSM needs to do for attestation is very straightforward.
-It sends a blob of data, and then blocks further execution until it
-gets another blob of data back in response.
+Dave
 
-From the POV of SVSM, conceptually this does not even need connection
-based semantics in its communication method. So while we could use
-virtio-vsock instead of a NIC, even that could be considered overkill.
-An even simpler option to implement could be merely virtio-serial.
-There's a possible question of whether we want a mechanism that is
-cleanly separated from any device intended for guest OS usage. That
-might motivate doing something separate from any existing virtual
-device, that is dedicated just to SVSM attestation needs.
-
-Whatever comms mechanism is exposed to the SVSM for early attestation
-I think should only communicate with the hypervisor. A proxy on the
-hypervisor would be responsible for receiving the attestation report
-from SVSM, and opening up a connection to whatever attestation server
-is required, getting the response and feeding it back to SVSM. We
-thus rely entirely on existing hypervisor network stack, and all
-knowledge about the attestation server is isolated from SVSM.
-
-
-With regards,
-Daniel
+> 
+> 
+> > If we don't add a nonce not, how can the guest owner verify the
+> > freshness of the report?  Maybe the pub-EK is enough because it signs
+> > the rest of the TPM-report and the guest-owner can somehow verify its
+> > freshness?
+> 
+> I think that would work for transient vTPMs. If we want a long-lived
+> vTPM, then we’d need a mechanism for the guest owner to tell, ahead of
+> time, when to regenerate a new vTPM state, and to independently get
+> that state. In that case, the policy of when to update the vTPM state
+> would be deferred to some external server, and the process would be:
+> 
+> - Day 1: External server requests a new TPM state, stores state
+> - Day N: Guest boots, uses that TPM state, which is then verified
+>   by the external server
+> - Day M: External server decides to refresh the TPM state, will now
+>   only accept boots with fresher state
+> 
+> 
+> > 
+> > 
+> > It looks like REPORT_DATA needs to be
+> > 
+> > SHA512(guest_owner_nonce || pub_EK || pub_SRK)
+> > 
+> > And the guest does this:
+> > 
+> > 1. Receive nonce from guest owner
+> > 2. Calls SVSM_GET_TPM_PUB_KEYS
+> > 3. Constructs report_data=sha512(guest_owner_nonce || pub_EK || pub_SRK)
+> > 4. Calls SVSM_GET_SNP_ATTESTATION_REPORT(report_data)
+> > 5. Send back both the report and pub_* to guest owner
+> > 
+> > 
+> > -Dov
+> 
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
