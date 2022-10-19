@@ -1,218 +1,192 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5507E
-	for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 15:20:28 +0000 (UTC)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29JFIr83021766;
-	Wed, 19 Oct 2022 15:20:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=kGrdJg3HMQD9/4JyM2hDQPHIr0AtiPOe8VkO62ctxAM=;
- b=Yfd0aDpjKsDu+jO99I+a3NHM6ehKhPztUti0o9SUFsyCoVxhW71/I18ni/4lZHSPQOCe
- 4R1L/YVFpvj6L01RYaNJ5S+fq9RT0QI177FVdrSRHhpdIj4gVcw5ixZIAHi/12c8ATJE
- 8Ka2Kj4xmuB2kq+W1NQ+mg7e2tz+HyHLpj+KDNO0UAF5WjV/xK4j8fvJTvydyiQtls9N
- Hmt71cpvyXLvEFaUSf6s4EGpHeWCg90CyG8fD9Vf9qVpNX1xh8yP298tF7h14jSqc+y2
- Uli+YB+K2FIcHHsNwgygpGnPssD86eom4SZ+IAQEkQgnULe0Y9lWeuUqMxRJ7M6QAjPT zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kaks3r19h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Oct 2022 15:20:25 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29JFKPlX029137;
-	Wed, 19 Oct 2022 15:20:25 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3kaks3r18k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Oct 2022 15:20:25 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29JF95bA005205;
-	Wed, 19 Oct 2022 15:20:24 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-	by ppma01dal.us.ibm.com with ESMTP id 3k7mg9bdhw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Oct 2022 15:20:24 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29JFKKZm40829608
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Oct 2022 15:20:21 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B7F2D7805E;
-	Wed, 19 Oct 2022 15:59:46 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 826FC7805C;
-	Wed, 19 Oct 2022 15:59:45 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.85.162])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Oct 2022 15:59:45 +0000 (GMT)
-Message-ID: <b488a79617beed8913df61186e8e263c40f2330b.camel@linux.ibm.com>
-Subject: Re: SVSM vTPM specification
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: Tom Lendacky <thomas.lendacky@amd.com>,
-        "Daniel P."
-	=?ISO-8859-1?Q?Berrang=E9?=
-	 <berrange@redhat.com>
-Cc: Christophe de Dinechin <cdupontd@redhat.com>,
-        Dov Murik
-	 <dovmurik@linux.ibm.com>,
-        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        "amd-sev-snp@lists.suse.com"
-	 <amd-sev-snp@lists.suse.com>,
-        "linux-coco@lists.linux.dev"
-	 <linux-coco@lists.linux.dev>
-Date: Wed, 19 Oct 2022 11:20:20 -0400
-In-Reply-To: <e895e706-ffb1-a801-91cd-ba04f4e639c2@amd.com>
-References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
-	 <Y0b6cDIMlKijT95S@work-vm>
-	 <a23e15cda00ee6a1c15f0d499deffd38b0593a78.camel@linux.ibm.com>
-	 <b5a2985a-3717-7d4b-0c8a-52fdcbc7c6b7@amd.com>
-	 <58caad5df212e620c6840f2c2f16514674893dfa.camel@linux.ibm.com>
-	 <155c7303-3027-7d93-263f-f42ea159f855@linux.ibm.com>
-	 <679C87ED-6D21-4D0A-9537-9910A6F802ED@redhat.com>
-	 <Y0+wcWgcRFTiDTNk@redhat.com>
-	 <b8f0c4cc9207a516f63958c53a5a57148606cc45.camel@linux.ibm.com>
-	 <Y0/2D93P/xgp1sU9@redhat.com>
-	 <e895e706-ffb1-a801-91cd-ba04f4e639c2@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DD628ED
+	for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 18:48:57 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RhP1UfS4a8P2Ys/htG1wUq9lz9xJzA/OfKLLXst38m1reaOgrqGik0qlCzsBTMJpA7rlUYtRmnORq4hmrqYtbyLF/Nrkz6KRDvbR15YhcJ5hHmFPN4O6n7xIrrSYqjq1ZOSMge5zrQXKdZJxloiLPcmEUva1K8gOJyXiUmoHyJgAR9rFbCnWCKWlvKfcv2Fi/iBjTz0vq0ps5l/GJP5Tbp/5gC2VPIAxA24vdtmacUuyWjogjyUHEl53Dt9V6/wTlduh28AUTs5oyzD2yGoEcl5pL5GMMtZufUH3ifnUO0iaT4CBX1+zEwnak/a8ZKT6glSDfxauF9UEgDfVzjcfnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oeuHJ5ix0QerSQILlXdrXnTORdS2TPIk5iiyBcbHJPk=;
+ b=iiiS3msUyiltGMRw+7jfhFc/l/JAbdVigjjdRiKCsjEChkpKUY9y0edxEaVIXOZ+RB8aC3xEdgx9wxU8X2GHVv5+aGwd2xsdbuhL4Fs1qHrWGjii2Y7HIE2+pY6jwVOZm1SCh/DdiJf39qr0sU5tBaXObTupMXRxS6FzotjYl0BHRAWrw/sgpEBCSWRRkO10QKZDdQwvHAHYN28RclKuV+McaNLFvWGpKqQeRHAVYhLOosDEHrDntoaGUSZtcl6evExd9lGl22hxOUxDGD6YTyAM/Nm7fARzb7zoiL7MXgrGD46U6GRvPiXT1V4ekIS17ZwlDjHYuO+hyVuVLWF0bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oeuHJ5ix0QerSQILlXdrXnTORdS2TPIk5iiyBcbHJPk=;
+ b=E3GZcH7dO0YEL+dI+SeiMv7zaDfPMT0jhMdIDe7PsLyLFVvmxlp4/lk15iM+21rlWIRJg+7x9ZTYPqcj9F8aTq2jKaWR8gOUqEr1T/7hWXtg5JC/Tu1lV1G7uIAgY2abxUpYb7z+R+sWyOO9a3T8QPjFYtyO8Pv9xQyiUAOSg5Q=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by SA0PR12MB4366.namprd12.prod.outlook.com (2603:10b6:806:72::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.33; Wed, 19 Oct
+ 2022 18:48:55 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6dad:12a0:10d6:5967]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6dad:12a0:10d6:5967%7]) with mapi id 15.20.5723.033; Wed, 19 Oct 2022
+ 18:48:55 +0000
+Message-ID: <d3ab29c8-8f22-28eb-dfe3-6100a8f16e4b@amd.com>
+Date: Wed, 19 Oct 2022 13:48:48 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH Part2 v6 12/49] crypto: ccp: Add support to initialize the
+ AMD-SP for SEV-SNP
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, michael.roth@amd.com, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <87a0481526e66ddd5f6192cbb43a50708aee2883.1655761627.git.ashish.kalra@amd.com>
+ <Yzh558vy+rJfsBBq@zn.tnic> <f997dd38-a615-e343-44cd-a7aeb9447a1e@amd.com>
+In-Reply-To: <f997dd38-a615-e343-44cd-a7aeb9447a1e@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MN2PR03CA0022.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::27) To SN6PR12MB2767.namprd12.prod.outlook.com
+ (2603:10b6:805:75::23)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EhDIJwMSwebh4ssHw34eq_lMIsTe-VaD
-X-Proofpoint-ORIG-GUID: 02npaK6NXSehEXfV-p_eEpf8zzF_0CV1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-19_09,2022-10-19_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 phishscore=0 suspectscore=0 adultscore=0 bulkscore=0
- mlxscore=0 impostorscore=0 mlxlogscore=999 clxscore=1015 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210190081
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|SA0PR12MB4366:EE_
+X-MS-Office365-Filtering-Correlation-Id: 768a53b1-f975-4c87-c832-08dab20292af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	veh7vrUsvQnYm3IXZo7QVtFOYP9uR8k/BiV5zNsVVUM0qWiqoy16wfTwzPBX03STiqHb7qYI/0GaD6W8sQu6TT4OwabN15CHON3J4RoliBGYGo65B54PNoPAx6u0QzuXHLzTm9XI+syN+/1mXMtQnDjWjSEJ7JvE/I8GzyKS1sXxiRTOcD6RykMotLDaaoo3fDITWRf9flwaYJLsM+8Z9GIpsrsORSCDvl6FWnXV8eLs5m2T51Xswqn642JHxYvnTLJ17sY0rCR/tZDwIBhDw6pNMQ7xi66tMmhClweK6bRrC347eC11JiChgly2RoaqIJl75vs3n5ntV5X7CiZs0faG8VlZ9m2apoX0F27QNb1I6KWzMRW+2H4x0HQ/HO8SbkmPzmn9VnHVbQBFz6molpf6kdUky8+PS8f41cTGkAbNZaSk6NQwJZotwHi3pWz0CMrG3iVLIDyHDdC5y0IZ9Kw2eCHLffT/M8aq8BPB9AYVRGmfVkJCU4fmB+dqepxb5zcYWsYos5UoOog+fuahHn/5EwroGiIDFOCrBHFMT7zgF+bi6gKp3M4M/J3x1sWTD2Lc56mlo6OhGOW8wB0CHNkfirmbiEzg8EMDfTzekqasqbaeHBKdyrLGaQybekD4WC0U66mOjvNOprODNO9ZpvaBn01OU4P25eA0m4LZP4k1NnaFbIWkyndqXmEchWu/7cVK1Gm6/YtqYl1xN72Oz7wMBv+AuYY5o2P1YtE1/x55z15DHGTNJdhgoQDoDWg9dTFfLcxloTBr+5elWNeRZ4bNU/PwGwaAij9ipbfuTJsh/qu1cxcRB7kRDV/TGvwg
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(136003)(39860400002)(396003)(346002)(366004)(451199015)(66556008)(31686004)(36756003)(186003)(86362001)(41300700001)(38100700002)(6666004)(83380400001)(2616005)(6506007)(66476007)(5660300002)(2906002)(478600001)(6916009)(6486002)(7416002)(31696002)(8936002)(316002)(4326008)(8676002)(26005)(7406005)(66946007)(6512007)(43740500002)(45980500001)(134885004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SUttbFRyTThVWXVKUzhaaHdUQW5MZm4vS3N6VDA5by9scWVXSEZtYmRObzlP?=
+ =?utf-8?B?aWtjdFV2Vlo2aGcvc0ZvZHkyZWtFUG1LYlJ1d1RtbDNxZ1l0ZkVvVGRKU2Rl?=
+ =?utf-8?B?SmpKckk1TzJJWjlEeENFZnJKYW80YnBtNTRuWXhhNnN3TEMwYUtyRGlUaTRH?=
+ =?utf-8?B?OHFuSEMxd0pqeFNkSEVCL3pvM0x6S1ZxUmhPQ3lodjUrUWN3UmgwOXFQZjIr?=
+ =?utf-8?B?dlBXT3pxdDJzL2duNjNBRVRIZG9oc2V3SWtKZENGL0pua3FIYU5QQ1NJaTVo?=
+ =?utf-8?B?N3BhYzhWc20zUjhTejd2bERkc21KekNDbndXQzZWTzUyV3RtRlVHVVRoeVBy?=
+ =?utf-8?B?dVQzU1NoQng5ZnozcnpXUDRNd1lsZm1RNUg1alZXc0dvcHVLZjkzMmhIdDBV?=
+ =?utf-8?B?NnVMcTFTdG9mQkROT2pWdE4yWFAzUFdiamd3YytJTzRlN1IrUHpOWG1EZHNQ?=
+ =?utf-8?B?QzZFMkpzN2dUcjFQRXZjMTBrNUhBS25TZFQxV0E4T0gyZmZCWk9hQjgrRDZW?=
+ =?utf-8?B?VWlwWGo4NmNQZ2hGOWRSOWxqcXdjQlNDdDk0aVNnb1BtUTQzckRncHBSUVZ1?=
+ =?utf-8?B?eW1laVFrb3laUm5MWmJjMk1sdGUvVWNrV21XWXl4dWRsWGx6YzNyZmMvVXAy?=
+ =?utf-8?B?WGROanlxSVdrcXY2cjNMZWo2VVpraXp0UmtCMko4ZzJPTVBoWHZZbm5IcmRt?=
+ =?utf-8?B?a2ZFOFpPbVdZRFFGYXFCN2l4My9iRVdCVm5vbEF0OG03OHFqT0w5cWlodkJU?=
+ =?utf-8?B?c243NXNWbjNURzg3Rlc3UnNDS3luWWVUL2VsaUpla2tIaUFrMDQzUDFGUXlB?=
+ =?utf-8?B?Z1M1SU9wNXYyZlhnVkxMRkR0QUE2V3Y2K00xTmpqcnZreFVBV3Rta25QQkFa?=
+ =?utf-8?B?N1l5TVlqTEdxVmgxZ0oyWEZvQzN6bStGQU54VUkrNGU5b1NESDl0a29uZjhT?=
+ =?utf-8?B?RWpJNlBYVjBqemFCeUl6ZE1XMmdzU3hFOWVYZm1XVkVGM21Fa0gvWTlTQzFU?=
+ =?utf-8?B?L1EwUGxaUGhMdGUvc09HZC83bmljVER0U0p1S1pWMkoyRzJZMkExSTFwZ2x5?=
+ =?utf-8?B?OHB4dkQzbHkvOEE3Yk91eG1sTGh4MHlNM0VZS2l2N0hEYjl1VXJDTmRKaTNr?=
+ =?utf-8?B?d1h4SE9Fc2gvclZtV0dEaVBmMmM2YlFUTSszYUVZUkpqeHZOcmRWclltbFlR?=
+ =?utf-8?B?TGFHL2taK1N2Q2ZlTmlETDJSbmJGRHFFVUhuaUtXYTVPWWlVYTZkOUdpWmxw?=
+ =?utf-8?B?ZXJpOURkQWpYM1NOSUNRYlUzQ2tOV2Flc0drU2NSamV6ejN1eFZsWTBmNFZ6?=
+ =?utf-8?B?WWY2STBWUk9VRi9JZlJpUmxlRWloV3hxUThvRTZQUWpNNTVGd3pRQys1c25V?=
+ =?utf-8?B?b0JoeFpQd3IrZHRyU1dabWhJWm84Zm1GSkJadUFRdmtOVFF5UzJCQVVKMFVG?=
+ =?utf-8?B?Sk9vN2Jzdk9xTHJwQ3lxUkk0Nm5kRFBHVGtpT1RkUkdiN21IS3NsMVFBQ1dy?=
+ =?utf-8?B?eUY0OTY1cElZWkthQ01sV1RqUGNNVGpDNXM4dmV6L2liVk9aWlU5U3V1UEVr?=
+ =?utf-8?B?ZjBzU05NbUJ6OWFSZ1A0VzJzeExxV054c1RScFBvS3hPdHM3d2dBOTFrR05q?=
+ =?utf-8?B?SnJxRTlUZzNwRUpsV2VoN3NEV1RzZFJjbkkwcGYzMTdoOUxqaFptVFJsSGlE?=
+ =?utf-8?B?Ym13ZEhVV2pwOGZJdWg5U21SMkFKT2tFR2txSzAveFE1am1LN2l3dUtNNHRP?=
+ =?utf-8?B?cjgvMHEwbGdUTTU0OUtQY1Q4QVFRY25lNUNiNXZwSStjZVV3Y0xKNnJ5dG1z?=
+ =?utf-8?B?QWhLbG9DSEJoNXkwQW4wdFllYTBOcjlPUWtmYjYrSCtQVjkyTVdMdWhkSXBZ?=
+ =?utf-8?B?d295YjhiM1Y1UU02dXM3MHlUenhsak1zeTlvWlhGREVRR3IxY1k5S08zQ3dx?=
+ =?utf-8?B?Q1VPYkNHYlRJaHJDRGtnbW1HTVdmejVKL1hsK0FEMktKamJRMnhGUjdlWWNR?=
+ =?utf-8?B?Mlp5bWZ4c2ZjRUJsMkdlRW9ia1pWSk8wMkRSU041QTZSSXA4UEw2eS9tNVJT?=
+ =?utf-8?B?b21xRk81SzkzZU1LVC9sbWkxcFEwUXl5a0Z5WGFKVEJNRjNlWVVvb1VIdlVp?=
+ =?utf-8?Q?kpFkybzNYqW0p5V6+J+tTrPaO?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 768a53b1-f975-4c87-c832-08dab20292af
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2022 18:48:54.9518
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OjqqwdMU7mK9EQ6DuooJ4DhAXUJvIdfJFLr/H/MA9o4AnEntg1z/7BznUbFPVLxdJqtSXQRSxJtysJxFu3s/xQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4366
 
-On Wed, 2022-10-19 at 09:43 -0500, Tom Lendacky wrote:
-> On 10/19/22 08:05, Daniel P. Berrangé wrote:
-> > On Wed, Oct 19, 2022 at 08:38:19AM -0400, James Bottomley wrote:
-> > > On Wed, 2022-10-19 at 09:08 +0100, Daniel P. Berrangé wrote:
-> > > > I'd be inclined to not rely on guest networking, and probably
-> > > > even strictly decouple what the SVSM does to communicate, from
-> > > > any specific attestation server connection protocol or details.
-> > > 
-> > > I think we should be clear: if you need a secret at start of day,
-> > > before the guest boots, then you need to retrieve an attestation
-> > > from the SVSM and inject a secret.  If you can delay needing the
-> > > secret until after boot (say for data volumes) then you can use
-> > > the cloud standard methods we have today (which actually do
-> > > mostly operate over the guest network path) and a TPM which
-> > > manufactures on boot.
-> > > 
-> > > However, the above mechanism is out of scope for the vTPM
-> > > project. This is simply about putting a vTPM into the SVSM which
-> > > appears in the guest as a TPM and providing a guest API to
-> > > retrieve its attestation. So the scope of the project ends there.
-> > > 
-> > > If we want a TPM with persistent state, then the state has to be
-> > > injected pre-boot but that is the same pre-boot problem as all
-> > > secret injection.  I think there should be a separate project
-> > > working on this and we'll make sure they interlock correctly.
-> > > 
-> > > So I think there are three pieces
-> > > 
-> > >     1. Ephemeral vTPM with attestation retrieved from guest
-> > >     2. Attestation and injection API from SVSM to host/guest end
-> > > point
-> > >     3. SVSM API for saving TPM state
-> > > 
-> > > We'll work initially on 1. Someone else can work on 2. but we'll
-> > > make
-> > > sure they fit together.  3. would be required for full TPM
-> > > emulation,
-> > > but might not be required if all we want is persistence of the
-> > > seeds of
-> > > the TPM, so this would be evaluated when we have 1+2.
-> > 
-> > Yes, that all makes sense to me as a division of concepts & work.
+Another follow up:
+
+>>>   int sev_platform_init(int *error);
+>>> +/**
+>>> + * sev_snp_init - perform SEV SNP_INIT command
+>>> + *
+>>> + * @error: SEV command return code
+>>> + *
+>>> + * Returns:
+>>> + * 0 if the SEV successfully processed the command
+>>> + * -%ENODEV    if the SEV device is not available
+>>> + * -%ENOTSUPP  if the SEV does not support SEV
+>>> + * -%ETIMEDOUT if the SEV command timed out
+>>> + * -%EIO       if the SEV returned a non-zero return code
+>>
+>> Something's weird with those args. I think it should be
+>>
+>>     %-ENODEV
+>>
+>> and so on...
+>>
 > 
-> There was some offline talk about possibly putting the attestation
-> report in the TPM NV area and allowing it to be pulled via TPM
-> commands. However,  if we want to be able to supply a new NONCE each
-> time, I think, instead, that calls for it's own function in the SVSM
-> vTPM protocol.
+> Yes, off course %-<errno>
 > 
-> Currently, there are two functions in the vTPM protocol:
-> 
->    1. An attestation report function
->       - Input:
->           - NONCE GPA (RCX)
->           - NONCE size (RDX)
->           - Report destination GPA (R8)
->           - Report destination size (R9)
->       - Output:
->           - Result code (RAX)
-> 
->       NONCE copied to SNP MSG_REPORT_REQ:REPORT_DATA[511:256].
-> 
->       SHA-256 (EK Public Key | SRK Public Key) copied to SNP
->       MSG_REPORT_REQ:REPORT_DATA[255:0].
 
-You still have to define *which* public key here.  Recall the TPM
-internally has a seed.  First you have to derive the public key from
-that seed.  I'd still favour using the NIST-P256 derivation of the
-public key according to the TCG template, because NIST is going to
-deprecate RSA-2048 at some point.
+I see that other drivers are also using the same convention:
 
-> 
->       On success, the report is present at Report Destination GPA.
-> 
->       If a new way of creating REPORT_DATA is needed in the future,
-> the
->       protocol could be extended with a new attestation report
-> function
+include/linux/regset.h:
+..
+/**
+  * user_regset_set_fn - type of @set function in &struct user_regset
+  * @target:     thread being examined
+  * @regset:     regset being examined
+  * @pos:        offset into the regset data to access, in bytes
+  * @count:      amount of data to copy, in bytes
+  * @kbuf:       if not %NULL, a kernel-space pointer to copy from
+  * @ubuf:       if @kbuf is %NULL, a user-space pointer to copy from
+  *
+  * Store register values.  Return %0 on success; -%EIO or -%ENODEV
+  * are usual failure returns.  The @pos and @count values are in
+...
 
+include/linux/psp-tee.h:
+..
+/**
+  * psp_tee_process_cmd() - Process command in Trusted Execution Environment
+  * @cmd_id:     TEE command ID (&enum tee_cmd_id)
+  * @buf:        Command buffer for TEE processing. On success, is updated
+  *              with the response
+  * @len:        Length of command buffer in bytes
+  * @status:     On success, holds the TEE command execution status
+  *
+  * This function submits a command to the Trusted OS for processing in the
+  * TEE environment and waits for a response or until the command times out.
+  *
+  * Returns:
+  * 0 if TEE successfully processed the command
+  * -%ENODEV    if PSP device not available
+  * -%EINVAL    if invalid input
+  * -%ETIMEDOUT if TEE command timed out
+  * -%EBUSY     if PSP device is not responsive
+  */
+...
 
-One thing we have to remember is that if we add any additional
-attestation APIs, they can't allow them ever be used to generate a
-report that looks like a vTPM attestation.  So if that's likely we'll
-need multiple types of data put into the report, should we steal a byte
-of the report data to specify what type of report (0 for TPM, 1 for the
-next type and so on).
-
-That way a consumer could rely on the fact that if the first byte was 0
-this must be a vTPM report and nothing else could fake it.
-
->    2. A vTPM operation function
->       - Input:
->           - Command GPA (RCX)
->           - Command size (RDX)
->           - Response GPA (R8)
->           - Response size (R9)
->       - Output:
->           - Result code (RAX)
-> 
->       On success, the result is present at Response GPA.
-> 
->       @James Bottomley, I noticed in an earlier response that you had
-> the
->       Response size as a possible output, is that needed? The
-> response
->       output (header) contains the actual length of the response.
-
-I think we can get away with just command GPA and size and put the
-response back into the command buffer, given that's the way the linux
-driver will work.  We will still need to return the response size since
-it may be less than the command size.  I think the function definition
-will have to specify that at least a page is available for writing at
-RCX so we can cope with response size > command size.  The current ms
-tpm defines the values MAX_COMMAND_SIZE and MAX_RESPONSE_SIZE and
-they're currently hard coded to 4096, so we can rely on this value for
-a while.
-
-James
-
-
+Thanks,
+Ashish
