@@ -1,43 +1,43 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2065.outbound.protection.outlook.com [40.107.237.65])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2040.outbound.protection.outlook.com [40.107.94.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30C42F33
-	for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 21:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724132F33
+	for <linux-coco@lists.linux.dev>; Wed, 19 Oct 2022 22:05:02 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fyMDQuiGbYdZjKMf8hhDw5b/kjSEHi5Ilv4jb5JO1G16EUcVJWXPfPDBs31syJ4eh/zQ59P5J9GAgIvWRz9HZIhB+lHyyUnCGy3H6uPy2JqRXZjIhYzavCtdQLGBr+Ei0fyeNpbwr5PPnM/R1udByDGvOt7YeK8Wta0M3htJOoA6E7rMNgnUOlMW1zk/c5Oetf154B7EYzPQUpCcgvqPKUi4Z8UAu2HZJ/zNSiKxpqyfq7BYurgrme9KSfj/rj3fCS/R159vig99FJ0+usRzuRxDH1Gv3m7ouHgPg6jBYXhsU5f/PIhBA4atGLeGiGL1Hf1XCfuWG9ohBvZXFkiKkA==
+ b=OnS4tjRRvxTqLfduNyDxc83eJE/lNnrk7lvNvMK2GxXRCM5i0nSe2JEwi+R1eymiHT/eAD/G7psUX5pwk/MldhSq5paua2ohE1zD4cH5HB96iqpVXmg+ApTDm6nC1d4gP2etYv834wGBqFavOR6xonH1DV+WuJEDPzJ4jL7MeHVHgoUkfLoF7QS/fIfYFlyZHUarS+1SIVjoXrecheOVJgK0RcNC4GtsxXVBgK4fBKYZGjTkssRFC7MrELE0h5ICjHn2xM94msGI4NfU+vF3LXhQ9v/GIpj78pAZCuEpwpEFQzBX0G/lDDLjPjrd5qlMzbnopD+4ldKKG1KDYYXx+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9Oh1MBxa4z41w80fefB/vOrzwvCJaXVLMQTvfgybeZk=;
- b=ncCQnKCj+BE3nXwbFk20a+DxjBRJPFcQzqfUAuJUKD2ikgsQx40sJ8v2RUm+q0o7IgTqGzTwAB6XRaLs7RRViyqwpmd2U1sjxSc5/DnMlr6Ee7oRj5uHcAqlz3ovobnedet26mc/fQdp/cAKlurS5kMid9HpKzjnRqf28MByVg0lz9lE8/e3pxIO1ZuoxxlVvsMBlwG15CkqXWbsiAbuteiL3lIsssAsyGz/qHV76VWRGK78fYxMvYTAMKhFaKffJcasbD4HlvLcD97CKqE3d/7h4nwpIwR6tWfEqhMRLDf53wlgaL8duR5ukvy1CvEcY16ibkqj1DIbJHVrjmnliQ==
+ bh=qFdqezsb+XOM00lBOkqy9u0dnmmCcU27lEEzkprEhHg=;
+ b=lLDzyyHsl5PXpI6ol7n7Qjspu71+AVKcf5LoBh+POWphrFHF0yfd5bBLqGUFpdmepdhdlSjpNeHVt6ExXVkfxxHIqgDUogLsHYI64CTD73o3ZjP4LXBcrjjl/Q1UlQjYEyuvKSRx/XRvZGxSRxRENmzwufOW8+ORhHh0ghXDMDr72jBSV4AwAFGs4AFS1H6HG8HtIHEgrKW72vt45gIAsBeTGk1+JNWhThMLtrG0uBJieraBNxuwyUB6ER8Y3HmKymlskyEEJY+vtLBmuExQJsF9hSSG/yJ6OfGlryMqnpNUnvw+VrVX3LuP0xRl+8D2TfBiL64HmTCe4ExJDt0BcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9Oh1MBxa4z41w80fefB/vOrzwvCJaXVLMQTvfgybeZk=;
- b=bjlnKiUlQVthfdL7hDb6yfrtSEAP8Mo2C1/XTXoKhQhhNO5iV9Cp6C/5fdAzd4QI65CcDTod1B3metnj+HJO9EA0grd8OFHPRr1ztS74lWX7/ay+MiW3y4dZgwTBbg8zjEjyoygBUzvkeK7F+tFL1e/5EvmyhS7mGVkLavGp2nY=
+ bh=qFdqezsb+XOM00lBOkqy9u0dnmmCcU27lEEzkprEhHg=;
+ b=Pplga7DMR+IlsQWhnpPJXGsXRkU7Iiax5YZHGXMYzQgbiWdjWnS6lG/YL14J3EdrerwK9Cg1hfD9mcqDGeCX4dkDIwJDxl3RGUMLQhrx9TcJzpkTKHCArD93S13lxVgryAqJohqh+5mNAqZSpCzXexyf9SMrVbPdRUKNY/bvnwM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by DS0PR12MB7770.namprd12.prod.outlook.com (2603:10b6:8:138::18) with
+ by SJ0PR12MB5609.namprd12.prod.outlook.com (2603:10b6:a03:42c::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.29; Wed, 19 Oct
- 2022 21:58:15 +0000
+ 2022 22:05:00 +0000
 Received: from DM4PR12MB5229.namprd12.prod.outlook.com
  ([fe80::4da8:e3eb:20eb:f00]) by DM4PR12MB5229.namprd12.prod.outlook.com
  ([fe80::4da8:e3eb:20eb:f00%2]) with mapi id 15.20.5723.033; Wed, 19 Oct 2022
- 21:58:15 +0000
-Message-ID: <b5edbfd3-79f4-99fa-bfc3-2dab44a7aef6@amd.com>
-Date: Wed, 19 Oct 2022 16:58:13 -0500
+ 22:04:59 +0000
+Message-ID: <58b2bcdb-583b-ccc5-cffb-500ade7fbdab@amd.com>
+Date: Wed, 19 Oct 2022 17:04:57 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.2
 Subject: Re: SVSM vTPM specification
 Content-Language: en-US
-To: jejb@linux.ibm.com, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>
+To: Dov Murik <dovmurik@linux.ibm.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ James Bottomley <jejb@linux.ibm.com>
 Cc: Christophe de Dinechin <cdupontd@redhat.com>,
- Dov Murik <dovmurik@linux.ibm.com>,
  "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
  "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
  "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
@@ -51,13 +51,13 @@ References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
  <Y0+wcWgcRFTiDTNk@redhat.com>
  <b8f0c4cc9207a516f63958c53a5a57148606cc45.camel@linux.ibm.com>
  <Y0/2D93P/xgp1sU9@redhat.com> <e895e706-ffb1-a801-91cd-ba04f4e639c2@amd.com>
- <b488a79617beed8913df61186e8e263c40f2330b.camel@linux.ibm.com>
+ <8080a626-114e-b358-bb36-a7b5583ff2f0@linux.ibm.com>
 From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <b488a79617beed8913df61186e8e263c40f2330b.camel@linux.ibm.com>
+In-Reply-To: <8080a626-114e-b358-bb36-a7b5583ff2f0@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH0PR03CA0007.namprd03.prod.outlook.com
- (2603:10b6:610:b0::12) To DM4PR12MB5229.namprd12.prod.outlook.com
+X-ClientProxiedBy: CH0P220CA0007.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:610:ef::15) To DM4PR12MB5229.namprd12.prod.outlook.com
  (2603:10b6:5:398::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -66,205 +66,193 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|DS0PR12MB7770:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd39c911-04dd-4fa3-2ff2-08dab21d05ec
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|SJ0PR12MB5609:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69168b23-9cc2-4632-6e43-08dab21df705
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	xeNK/Pmv7eVZbACjWmtyvbl616M0xhFoD9N5AUqtRCXey/BEikWFnqXuETADzbk0dXRYWjKfenvwCUdws8kIAIOmOjGX4IZNyapBtKTUDjqWKV/zcQhZjmVbpyyb7/sATZUWIvyvfHpX78sPGaUQSHzYXienwBbA0DHVWRk1MddThhe79++pLuw9QWtyw1UVnm8RK8w5jCsPdZOW5E+Uj/tEo293qKzC2zfjUgnXFxjwOTJJZXrBdxvq1hneqEj4/J5X+VOCxZcBVoB6nL91BViPFqJaIqd7mHi/BHWOWGntHaO5/f8DopyeZSlM4BNKw/p/EaT3MhnM4un3HAhYmeF/qWy0IItCeL87N/VKIoN1eO4fBocc0PLGOHSwXsmkRLLryderosX/8R94EGDDjJX7uTZFOneneUrVEu8wZvKKgPXOPqZCotFqXZnYSrVbzhuKHaN2dSs/CJRGfYt7NQ00kkpY93gtPCXD78krBHNSHTiVzv2gwaImeGNKDBvZDLi5SN3Nw8AwOr75DMM72vJDMlzQr5cfO7wIYR6Y2PwwgcgKYlT/lgLBxFwJ9VQUBVWWaMKCux23kdbxJsnFMJKF+8KVQXFwi7T0tD94NUAdP1guY/rri4wfeN4EgOXoMQYrE7FGDl6nJ7Y8uuEqKAKleD6jdkkz9fDJH2LraqxJs3ZX3TqPpp4t7OiNS7rfWTjjodJ6vE+P0/1NC41/Bs25Hl6gMeV/302lad51mjqSfSBNpT2XxClgZv9pzqNJzpaGtHcb85//El0TLgcArCN/v3BrEgtvD2aS7VRg1fU=
+	KXqCEJTo5Cnq/V1u5dbGI13a81GXFPAsRY99jhzNDC6lsISNbrjpsXBBxqWuWPl6LkhWoyD5phqCIKURuw6leJYX3Ifqesr4kUPt6ikW75DmHA5PCY6qtYuDDmO1FYq4fYWt/cQfEJvtgzaSmSXVDkdVqjuMKFidDk45exvSmNmWOBpt7CF+XcotI40M9wdYgpndZQrUlRJOUba5ptgpEjqIyB/ruQ00H9/7sm2tviZzv6OHZfHDiCmARqGNnf0DPIJOVNcP/IINIv2kXi1bQTLqL3Fs8gcs5+K706MHPlyZNIPaj0iTJTt8xE1nGLCsd352s10tTVobC15bG0H1PnRrwat/1SLC3RASXlv3blts/jNyK9iHCkUpbHa+PyoauAIeYTwIqOrOUtLCCi/JTlKtraJRXIqBZscjUZo+1/Am242AAcL1xFdky+Qlq5917/GjwmSB4nMVqeN+Qr0vX2BOjdx4AAnzf2w9XNnzrbOUZnXJdng1Lvou5WrO/cm4NAzqDWtl/fP/FCWPwetroHc+DAODRUIPqKyqBc3zwqI+ck91cfFJ3PgzsfFzz9bHpSvNYCoOzWP7nMYZEneTrw4L4ucSLhkxhzsmCgVmEa0bfWntOjHjunSoSPdn2Wgf54Q6Yo6BtjjovFtKOIk3HdLY3TinWrlgnSWUK5W3IUCr0tC4RCIzI69EUWEOMJ3erSPFda35KpqNHx0y63acq2B/WnPZ2SN/LB9IyjXdlIUGki+HQ1bD4fKRtgk/tBqq/NMHBpkgaG5PDMtIW+kPcTnEB4tK/kd2pzfiTOFFFYE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(396003)(39860400002)(376002)(366004)(451199015)(4001150100001)(5660300002)(38100700002)(6506007)(7116003)(66476007)(4326008)(66946007)(6916009)(316002)(8936002)(41300700001)(6512007)(8676002)(53546011)(26005)(66556008)(2616005)(36756003)(2906002)(186003)(31696002)(86362001)(6486002)(83380400001)(3480700007)(54906003)(31686004)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(346002)(396003)(136003)(366004)(39860400002)(451199015)(186003)(4001150100001)(2906002)(83380400001)(31696002)(36756003)(3480700007)(38100700002)(31686004)(86362001)(54906003)(6486002)(6506007)(110136005)(5660300002)(7116003)(41300700001)(53546011)(316002)(478600001)(66476007)(26005)(8936002)(2616005)(6512007)(66556008)(8676002)(66946007)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RlNxS1pNWXdjQm1TbElzZWFVVDZSOE5sRlRvdFd4UWtNRUpCZ1J5WlZwUzVz?=
- =?utf-8?B?aXpMQ3ZOdWFDbHd0SWIwdlBvWmFSYzRtV01FOGNCWFc1dVlUZEIzSExyMEFh?=
- =?utf-8?B?R2N4VkM0b0orRktSKzVZUWNXYVZsdFJ3dHkvRkkzN0J1NWNpc01Dci9OWFhu?=
- =?utf-8?B?YmNoK2JMSU0rcktyZDhwRGVaamRRWnlOSm9lSmxMNWtEMzY0NDBMbzRJU0NX?=
- =?utf-8?B?YmpTbGt1bjhNalVxdDdKeGxrU2ZjR0VPdGlua0UybFlRSkhHeWQ3Nm9ZSit6?=
- =?utf-8?B?ZlY5MlYwVkhPTFB6VHkyQWF0Rlhia0k0UHRpN08zbTArUTEzdnZ3bWpteTM1?=
- =?utf-8?B?UC9XS0VMNzFDSGt4NnE5WGRNdGtaWi9Vd0RlSUpkSWFHMXE5VmdIL3ozU0Zt?=
- =?utf-8?B?UjBBQ1Z5ZlVmKzFYR2hISXMvODZ4MzRIN2JqbWdweEVRN1duNERNNzZ0Tito?=
- =?utf-8?B?S2ZRKzkzNWtuMU93VlJRaWt4dFd1eXdwOVNGVzV4UWh5L1lXbHR1VUloZXFT?=
- =?utf-8?B?cFhYOUt2VVdUWW9QcEphY2JtL0wyV0puei8zQXhmeU9Hc3pOUTVFTWlDb1ZI?=
- =?utf-8?B?a09mQWhVUVNqajQ2Z0lTb3BIR1FFMitUOFdpUHdvMGFCV093ZFpSQ3orek1W?=
- =?utf-8?B?TW9EVlRqK2lpdlFEZU9FY291VEE4RlVqdGduUEpXL2hDMUgrSlhwQVFvakJO?=
- =?utf-8?B?dUNqU2hwNmY0eGNmQXB3cG40UnNjZHFkSnBzMWR5MGlzNVVhR2FFWldhanFG?=
- =?utf-8?B?b0t3SFl5S0NxVDQ4NkpqdWhWK09ySXRKN1FVYTdZQTQ4MWtRRXE1VzBMUjFl?=
- =?utf-8?B?UjhxT01GSnNQMW9RT2pyUkx1ckIzRzdxTzFBMVNsQzRvZlVtTFB6MENvdkF5?=
- =?utf-8?B?WnMwL2lsZkR1eEhvVFpnYS9IQ3JmNUlPSGJycmRJV2FCcVNrYVg4QVg3ejZ3?=
- =?utf-8?B?T2NiNG5ZWXVuRTJOa3Y1T25ES01rSysxTHVoREd1OGdyWmI0U1lGVWdtbHo0?=
- =?utf-8?B?MEF6QndFYU10NjhiV3ZyYUxCUGRzQ0NSMWpDQzI4UkhXYlg3WEhBTEZTVUJl?=
- =?utf-8?B?eGZTc2xVR2NjaUEzQitLRmVzbTVXRThoR1RQaUg2dFpyR3VPbitsbFpnZzQz?=
- =?utf-8?B?TUFjNWdGZkpMQVd0a0FIekFTUkxSTEtuUmNRM1BPTGNHS0Ywam5reGc4eHVL?=
- =?utf-8?B?MldQUzFFb25hdUI2dUVFZXI1Sm5TQjVHdm9JckYvK0dyNTdVNEpKOEwzbU9q?=
- =?utf-8?B?bmNLK2NpVU1iUDJ5aW5tbnRpMzVrNkVDMDN0N1dRY3BDTWxySUplWTkwUHJQ?=
- =?utf-8?B?YVFCZFhqZ0tQSFlzeU8yLzdXeWFtYkdQcXRJeW11NHZ3NnJGOTNhSUV3d3cw?=
- =?utf-8?B?RkdTVUppL0U3QkFocE10aVRDc0tPY2JDL3IyYVh6b1Nnc0ZJSlNIOEZvcUh1?=
- =?utf-8?B?a282NXdVcHhiUnk1ajdxSU50ekxXOVIwMWp2MmtzbXdEcWJrVW5SR0p6ZkJ3?=
- =?utf-8?B?aE5pNEFVYnJoazluQ003NjJSN2tPSGYyd1VZVUYvNmc5NG9yNEVpc2Voa2lJ?=
- =?utf-8?B?OENhYm5NUnZCYnZ3TWo2YjdGQmtraXRwZmFQdUR0c0pMZHNHQzJCTkF4cWkx?=
- =?utf-8?B?VDNxYy9wcU5IZUpQWmpjMHlzVzkvcm0vTVM2Tk90NjFwZHpPTk5xTUxFK29s?=
- =?utf-8?B?UnZJbmtTREsxSysvOVVaY0duNWx3SG00bjc3NGJhanpjaFRCdzYrVy8yRWM5?=
- =?utf-8?B?L3hwbS93cEticEJzWFZmUXF4UmRISitkcUg0V1ljZFpINmpsNkpBQ2FFZEdW?=
- =?utf-8?B?R0NUWXAxMUlBbjU4R3hlRm9iajVoZCtvNmtVYjNJVVAyS3hQeU9lUHVEWGp4?=
- =?utf-8?B?YlBESCtKS1JKSms0c1JmbUtFSS9xMUpLYUhUbEdHbmF4M0RyT2dCWnlGSW1q?=
- =?utf-8?B?eTk5NDBBY0ovWWtaOXNxcE15QnlrZFRxY0w4dWpXRDlxM2UvVjZ4SXRDaXJx?=
- =?utf-8?B?TEQwbWxvTHhNc3lPRnFtRjBSSUZOTFdxVFhEU2l1MDFRRHZESHAzcHpVK2dl?=
- =?utf-8?B?dHdPbzVDTFE1c28zKzlvVXJudlByMFQxV0F0VnE2SU9DdXg2anp4SGVvZlVC?=
- =?utf-8?Q?0tnRhXqXDCaXzvTKHBbuT7Nd5?=
+	=?utf-8?B?blcweFV5WlF5QlhkMGdYaGtBZ3RNb3hJdEt6QVR5OEhsblVibkh3UGRqcGRC?=
+ =?utf-8?B?T3JaYzUrVmtVY2JUNG5OTFZnbTJMdnBSaGo2N0V6WHJkbEQ2WE0yRm5ReHNl?=
+ =?utf-8?B?WGxobkJKT2MxS1VuYko1d2t3UWVNei9kYnFkRGdtM29pNXg3ZjRJdzFHcU1J?=
+ =?utf-8?B?ekpienVNMWkrVlNPNHNCVlFVbFpIMXN4WHNzdm9MaStPam42emVBRjdQeW5T?=
+ =?utf-8?B?Uzd1cW0yRHNmU3BHWm5PNzA3K2N6ZjBVYzdIdjRqWU9WSWNwcUx5U3UyRmNi?=
+ =?utf-8?B?dVNFU2tvbnlVcVA4dG5aNmFjMGtNTm8vRk00UDZMbnJjb1hZOTlldCtOWlln?=
+ =?utf-8?B?bTg3amdaYlJSaThpU1lXYXh6Mk1EZ2tPMmxRT2lzNTVWb2VOdVE5akpOckVT?=
+ =?utf-8?B?K2I3ZWtiUHgweEw5bm01UEo3c0trT1EyK002bkYzREorMzIvZzNOaGtUNTlF?=
+ =?utf-8?B?RGhmNkUwUjZGVkc2Q2R5V2hPc09rS1RaMXloOUhBN0lySDY5RmlKcDJNYWxn?=
+ =?utf-8?B?d2ZRYTA4U240Z0w0TlIxT0ZqTS9sbE52S045djhFM3RtTGNUdktpZHBQMGh0?=
+ =?utf-8?B?UEtoQ3J5dEJ4dGM4Z1ZHMXFRcVRYYXFJK2hoUHc1bWJYQVBReTJLcytjcjRF?=
+ =?utf-8?B?T2NPS3dUaFZyTzNLTUwrbmVXTkhmcmFHT0p5MldlcDBvcEJHQlJ4eU5XSGFE?=
+ =?utf-8?B?TTB1azM1Tlo4QzFyY2YwU0w4Y2NKenhpYjFBd1dTWmYyd0NqcWJnT1pjU3Fi?=
+ =?utf-8?B?bk5aK3RXZUpMc0RNOU9VN3hIaFFqRnM5L1lJUHJac09JR1o3MEhuR09tWlpI?=
+ =?utf-8?B?YXMzc3ZHRFpXZHVqdHltQkNyb2Q4RTZuUm51eWRGQXlSTTl4dm12VWpFeHdY?=
+ =?utf-8?B?NHZnUTdoVmhIZzhHMlBoaVEzZzZYNDFkU3dmaWEreVNjNkVndUZBQWZsL2lG?=
+ =?utf-8?B?MVlCbGFHQkcyRytUNkV3YzF3L1RVYU5pMlhWa2I5VVNpQWlQT0lBMk5LZzFh?=
+ =?utf-8?B?cHhtcGpmRmlCcy95WWNZdTdjRHhFUlRaVEYxTmVXQ3NFbm5PV1BFQVhOc2Nh?=
+ =?utf-8?B?SWhUcGJhcnRDRUI0WGlYWFZoZlM5QWVzaFI3UTZuYno2MjR1U2hrOUlheXN0?=
+ =?utf-8?B?Y2RoNjV2T0pHbEVvNHB0Z01rSlBkWHE4OGo2Njh0SWxnT2VmMlVPSk1EU2kx?=
+ =?utf-8?B?emZRT0hoMytiazZlVFNTQ0x5bmVyaEtXWkZYYkJGQitoalY1dVV5TStyamFG?=
+ =?utf-8?B?SzJydCtLL2lhbmdjdXRweU5TV1lxSmxqUWlTVEw5YWJuNGVYdUdpWXYySklo?=
+ =?utf-8?B?b2FBMTRlZ0syWWdwblpJcFF6VXh4dnc2VlVEMUxxcExsVTFKbGx2dXcrZ1N2?=
+ =?utf-8?B?RHlkSkVGYysyK056L01UajlWcGhpL3hCNWtlRU5ScWpEOWlEVXY0ekw3bW9i?=
+ =?utf-8?B?S08vbWMzTnRIZkRkemZyeUl6UUJmWGQ0bDZRSVJqYjBMT2RTVE5kUFl3OTFP?=
+ =?utf-8?B?dmo3NVBEMlRtRVUwT0ZGSXcxR2xzL0dNY21CTHNQYkM2enVKdTlCR2tSTUhO?=
+ =?utf-8?B?bDhzZ0YyTEIwWGxWeUI3VXNoTFlHa3QxRUNsMFRRWkwzdG51ckxlUDdHdXVn?=
+ =?utf-8?B?Ym5CMlVyQ0c0eElMNTB6QUw3dWpjdUNST0cvUDBXc1V1dHlSamZkb3hjUzFX?=
+ =?utf-8?B?MG5mQ1hlVi9ReGZnY25tQzNSOVhpUnloRTl4REZGZC8vSG9ScW5GbVVPcnhp?=
+ =?utf-8?B?MGdjZDRjSEJGZmRjUmZoMmlqWXlqMUp5Yjk0WDMzQmMvc1U2czRvSVIzaHhy?=
+ =?utf-8?B?bHNTWUVSaUt3NU1ibC95UlpmRzR2TUZWNGZmT1JpRHBzTzJDQ2xtelRNaGRQ?=
+ =?utf-8?B?YVZLdCszbnVuaWpzOTVyc3RCKytpTGJSRmRPSFA5d3d2LzNxdGd0aFdRZzlK?=
+ =?utf-8?B?SmxCaG5acTJHYmtRS0ZuWEJta2pRaTRFc0NIVWQ0VHFFRXNZYmp1M1VzS3R2?=
+ =?utf-8?B?R2srb2N6Q2hOeURqeDZNQWdVaXJ0aklMTkRQUExNYk1tQmdBWWJSTjQvWWZt?=
+ =?utf-8?B?azZUVGZsdWRIOFgrNWxzYzIzdENvRCs5WENnUkFvb0NDcldqWFplSlFKcjVB?=
+ =?utf-8?Q?UqHSxL+7Og6l2zLqTAVRn8qH/?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd39c911-04dd-4fa3-2ff2-08dab21d05ec
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69168b23-9cc2-4632-6e43-08dab21df705
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2022 21:58:15.1225
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2022 22:04:59.5563
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ClagMEVPIt70Jc5z4zMNWxf2/t45Fj3UDi+4eSufmHVx61qEAX7Jw/poUBCtHjazupWPQgwVi+gOdsTwJ/ReuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7770
+X-MS-Exchange-CrossTenant-UserPrincipalName: O4o55JmYIcX9yfLBtMbZUFiLLeUpp0OACfcafOpDaKBOALeRKrqMCQ/33uqirdPbcAbm3WO+TylogdNlT4jRRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5609
 
-On 10/19/22 10:20, James Bottomley wrote:
-> On Wed, 2022-10-19 at 09:43 -0500, Tom Lendacky wrote:
+On 10/19/22 15:57, Dov Murik wrote:
+> 
+> 
+> On 19/10/2022 17:43, Tom Lendacky wrote:
 >> On 10/19/22 08:05, Daniel P. Berrangé wrote:
 >>> On Wed, Oct 19, 2022 at 08:38:19AM -0400, James Bottomley wrote:
 >>>> On Wed, 2022-10-19 at 09:08 +0100, Daniel P. Berrangé wrote:
->>>>> I'd be inclined to not rely on guest networking, and probably
->>>>> even strictly decouple what the SVSM does to communicate, from
->>>>> any specific attestation server connection protocol or details.
+>>>>> I'd be inclined to not rely on guest networking, and probably even
+>>>>> strictly decouple what the SVSM does to communicate, from any
+>>>>> specific attestation server connection protocol or details.
 >>>>
 >>>> I think we should be clear: if you need a secret at start of day,
->>>> before the guest boots, then you need to retrieve an attestation
->>>> from the SVSM and inject a secret.  If you can delay needing the
->>>> secret until after boot (say for data volumes) then you can use
->>>> the cloud standard methods we have today (which actually do
->>>> mostly operate over the guest network path) and a TPM which
->>>> manufactures on boot.
+>>>> before the guest boots, then you need to retrieve an attestation from
+>>>> the SVSM and inject a secret.  If you can delay needing the secret
+>>>> until after boot (say for data volumes) then you can use the cloud
+>>>> standard methods we have today (which actually do mostly operate over
+>>>> the guest network path) and a TPM which manufactures on boot.
 >>>>
->>>> However, the above mechanism is out of scope for the vTPM
->>>> project. This is simply about putting a vTPM into the SVSM which
->>>> appears in the guest as a TPM and providing a guest API to
->>>> retrieve its attestation. So the scope of the project ends there.
+>>>> However, the above mechanism is out of scope for the vTPM project.
+>>>> This is simply about putting a vTPM into the SVSM which appears in the
+>>>> guest as a TPM and providing a guest API to retrieve its attestation.
+>>>> So the scope of the project ends there.
 >>>>
 >>>> If we want a TPM with persistent state, then the state has to be
->>>> injected pre-boot but that is the same pre-boot problem as all
->>>> secret injection.  I think there should be a separate project
->>>> working on this and we'll make sure they interlock correctly.
+>>>> injected pre-boot but that is the same pre-boot problem as all secret
+>>>> injection.  I think there should be a separate project working on this
+>>>> and we'll make sure they interlock correctly.
 >>>>
 >>>> So I think there are three pieces
 >>>>
->>>>      1. Ephemeral vTPM with attestation retrieved from guest
->>>>      2. Attestation and injection API from SVSM to host/guest end
->>>> point
->>>>      3. SVSM API for saving TPM state
+>>>>      1. Ephemeral vTPM with attestation retrieved from guest
+>>>>      2. Attestation and injection API from SVSM to host/guest end point
+>>>>      3. SVSM API for saving TPM state
 >>>>
->>>> We'll work initially on 1. Someone else can work on 2. but we'll
->>>> make
->>>> sure they fit together.  3. would be required for full TPM
->>>> emulation,
->>>> but might not be required if all we want is persistence of the
->>>> seeds of
+>>>> We'll work initially on 1. Someone else can work on 2. but we'll make
+>>>> sure they fit together.  3. would be required for full TPM emulation,
+>>>> but might not be required if all we want is persistence of the seeds of
 >>>> the TPM, so this would be evaluated when we have 1+2.
 >>>
 >>> Yes, that all makes sense to me as a division of concepts & work.
 >>
 >> There was some offline talk about possibly putting the attestation
->> report in the TPM NV area and allowing it to be pulled via TPM
->> commands. However,  if we want to be able to supply a new NONCE each
->> time, I think, instead, that calls for it's own function in the SVSM
->> vTPM protocol.
+>> report in the TPM NV area and allowing it to be pulled via TPM commands.
+>> However, if we want to be able to supply a new NONCE each time, I think,
+>> instead, that calls for it's own function in the SVSM vTPM protocol.
 >>
 >> Currently, there are two functions in the vTPM protocol:
 >>
->>     1. An attestation report function
->>        - Input:
->>            - NONCE GPA (RCX)
->>            - NONCE size (RDX)
->>            - Report destination GPA (R8)
->>            - Report destination size (R9)
->>        - Output:
->>            - Result code (RAX)
->>
->>        NONCE copied to SNP MSG_REPORT_REQ:REPORT_DATA[511:256].
->>
->>        SHA-256 (EK Public Key | SRK Public Key) copied to SNP
->>        MSG_REPORT_REQ:REPORT_DATA[255:0].
+>>    1. An attestation report function
+>>       - Input:
+>>           - NONCE GPA (RCX)
+>>           - NONCE size (RDX)
 > 
-> You still have to define *which* public key here.  Recall the TPM
-> internally has a seed.  First you have to derive the public key from
-> that seed.  I'd still favour using the NIST-P256 derivation of the
-> public key according to the TCG template, because NIST is going to
-> deprecate RSA-2048 at some point.
+> NONCE size must be 32 (bytes)?
+> or 31 if we use the initial type byte (See below).
+> 
+>>           - Report destination GPA (R8)
+>>           - Report destination size (R9)
+>>       - Output:
+>>           - Result code (RAX)
+>>
+>>       NONCE copied to SNP MSG_REPORT_REQ:REPORT_DATA[511:256].
+> 
+> James suggested:
+> 
+> [511:504] - type byte 0x00 = vtpm attestation report
+> [503:256] - 31 bytes nonce
 
-Right, so it will be the EC EK and EC SRK.
-
-Do you have a pointer to the TCG template you're referring too?
+Sound good.
 
 > 
 >>
->>        On success, the report is present at Report Destination GPA.
+>>       SHA-256 (EK Public Key | SRK Public Key) copied to SNP
+>>       MSG_REPORT_REQ:REPORT_DATA[255:0].
 >>
->>        If a new way of creating REPORT_DATA is needed in the future,
->> the
->>        protocol could be extended with a new attestation report
->> function
-> 
-> 
-> One thing we have to remember is that if we add any additional
-> attestation APIs, they can't allow them ever be used to generate a
-> report that looks like a vTPM attestation.  So if that's likely we'll
-> need multiple types of data put into the report, should we steal a byte
-> of the report data to specify what type of report (0 for TPM, 1 for the
-> next type and so on).
-
-That sounds pretty reasonable.
-
-> 
-> That way a consumer could rely on the fact that if the first byte was 0
-> this must be a vTPM report and nothing else could fake it.
-> 
->>     2. A vTPM operation function
->>        - Input:
->>            - Command GPA (RCX)
->>            - Command size (RDX)
->>            - Response GPA (R8)
->>            - Response size (R9)
->>        - Output:
->>            - Result code (RAX)
+>>       On success, the report is present at Report Destination GPA.
 >>
->>        On success, the result is present at Response GPA.
->>
->>        @James Bottomley, I noticed in an earlier response that you had
->> the
->>        Response size as a possible output, is that needed? The
->> response
->>        output (header) contains the actual length of the response.
+>>       If a new way of creating REPORT_DATA is needed in the future, the
+>>       protocol could be extended with a new attestation report function
+>>       (following the SVSM Core Protocol design of being additive).
 > 
-> I think we can get away with just command GPA and size and put the
-> response back into the command buffer, given that's the way the linux
-> driver will work.  We will still need to return the response size since
+> 
+> It's just a bit weird that the SNP attestation report function is part
+> of the vTPM protocol; but I guess that it is needed so we can
+> distinguish it from other future types of attestation reports (with
+> James's suggested "type" byte, which must never be user-controlled; it
+> must be set inside the SVSM).
+> 
+> 
+> 
+> Hmm, do we need also something like SNP_GET_EXT_REPORT which also
+> returns the cert-chain stored in the host kernel? Or modify this call to
+> also return the certs?
 
-But it may not be how other drivers would prefer to work. The spec has to 
-be OS agnostic, so I'd prefer to keep both. The Linux driver could just 
-set them to the same address.
-
-The response has to include the tpm_header, which contains the length, 
-correct? If we don't have to return the length back I'd prefer not to.
-
-> it may be less than the command size.  I think the function definition
-> will have to specify that at least a page is available for writing at
-> RCX so we can cope with response size > command size.  The current ms
-> tpm defines the values MAX_COMMAND_SIZE and MAX_RESPONSE_SIZE and
-> they're currently hard coded to 4096, so we can rely on this value for
-> a while.
-
-Sounds good.
+Yes, good catch. I believe we do. Adding two more parameters (maybe change 
+this to a struct now?) for Cert Data GPA and Cert Data size is the way to 
+go. We want the Cert Data that is associated with the attestation report 
+that was generated, in an "atomic" way. Once live migration is available, 
+the VM could theoretically be migrated in between two functions calls and 
+then the VCEK wouldn't match.
 
 Thanks,
 Tom
 
 > 
-> James
 > 
 > 
+>>
+>>    2. A vTPM operation function
+>>       - Input:
+>>           - Command GPA (RCX)
+>>           - Command size (RDX)
+>>           - Response GPA (R8)
+>>           - Response size (R9)
+>>       - Output:
+>>           - Result code (RAX)
+>>
+>>       On success, the result is present at Response GPA.
+>>
+>>       @James Bottomley, I noticed in an earlier response that you had the
+>>       Response size as a possible output, is that needed? The response
+>>       output (header) contains the actual length of the response.
+>>
+>> Are there any other functions that are needed?
+>>
+> 
+> Looks good to me.  I think this is what we have in our prototype as well.
+> 
+> (But see my thought about equivalent of SNP_GET_EXT_REPORT.)
+> 
+> -Dov
