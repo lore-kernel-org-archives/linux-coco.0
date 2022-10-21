@@ -1,81 +1,84 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3478F5E
-	for <linux-coco@lists.linux.dev>; Fri, 21 Oct 2022 12:31:24 +0000 (UTC)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29LCIWRI040036;
-	Fri, 21 Oct 2022 12:31:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=TWaXiHFx1TQMpvTpwxGbLd0FcacMsU5rQNyKlRckNVw=;
- b=oMDcQdQQxiC4qvnWJXvHh8fL7mg9FTfuHuN+l7lw8qLp8zhxD8Zo0i/LJOvV3B9dV775
- b27GVpmE+R7765hlBa0TTL5x9XzEB10vpxL0oG5ZM7pTyExBQU746BjVSzpn3Pzsaj5q
- Wl1xT+iZy004taAAxZrUU3By2QqsjqVfvQnPHw0fmL1OKyzYoqeHGRSsRGGaUsFX6cmB
- rONS2iD9SY1nfTTc4ys4HcnlQoI8ewaK/BqAytNZPMgofAUfNucm62gg8Ir9Zi3Rhy/c
- zp5YkwxIXYwlxS/FlWRfyJBbfUOqO364+gBDTxu1SvJ6d6G2wn1s/h4fCHFjPrA/r29s Ng== 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76E48F71
+	for <linux-coco@lists.linux.dev>; Fri, 21 Oct 2022 13:05:24 +0000 (UTC)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29LCfhvC023384;
+	Fri, 21 Oct 2022 13:05:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : from :
+ reply-to : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding : subject; s=pp1;
+ bh=EcJCh836lgEyDVmuYoVf6+o0ddN8j8cSRlVcsDTgULI=;
+ b=RvrF4ja8Hquo+bSUXzdAhWHVRzhJlbLSETtVjHiI041Acl16sr+BM6Wy7aq5eHHQ7lj6
+ f5s1VPDbngdcZNgzAsrzKJRBBmdmhkX6LjQ+SISOgQ/N5nIyAlZEoqPzE6xQGeKKa4N6
+ pAfzTux2ii6tauxGeZMm9wHuEcDd4I+b9dhu4vDi4dzKNsBLEzYUL8v2LGPpbnBwmp8I
+ 4PIaXmCxM3v0ezdav6x3s9XYykbT77DdMaCkWMt97KLuggBYV7p6odC75q29NdN4MmyR
+ r9SiGddy6zVqiBOY+LfWl+WTFh4pL09iZpEd2InjLmh0bM1SDgvdS+yDye9DUaHjF/FC 9w== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kbu8drkab-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kbund9227-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Oct 2022 12:31:18 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29LCK0uY006877;
-	Fri, 21 Oct 2022 12:31:18 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kbu8drk9y-1
+	Fri, 21 Oct 2022 13:05:15 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29LCgZiu028349;
+	Fri, 21 Oct 2022 13:04:47 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3kbund90ba-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Oct 2022 12:31:17 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29LCLXA4024084;
-	Fri, 21 Oct 2022 12:31:17 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-	by ppma03dal.us.ibm.com with ESMTP id 3kapd5hrfs-1
+	Fri, 21 Oct 2022 13:04:46 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+	by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 29LCoGX3018698;
+	Fri, 21 Oct 2022 13:04:16 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+	by ppma05wdc.us.ibm.com with ESMTP id 3k7mgah3j7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Oct 2022 12:31:17 +0000
+	Fri, 21 Oct 2022 13:04:16 +0000
 Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29LCVEkW23593520
+	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 29LD4E3f9372168
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Oct 2022 12:31:14 GMT
+	Fri, 21 Oct 2022 13:04:14 GMT
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A3EC7805E;
-	Fri, 21 Oct 2022 13:11:58 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 975A77805E;
+	Fri, 21 Oct 2022 13:44:58 +0000 (GMT)
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C4AE17805C;
-	Fri, 21 Oct 2022 13:11:56 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 66CEC7805C;
+	Fri, 21 Oct 2022 13:44:57 +0000 (GMT)
 Received: from [IPv6:2601:5c4:4300:c551:a71:90ff:fec2:f05b] (unknown [9.211.85.162])
 	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Fri, 21 Oct 2022 13:11:56 +0000 (GMT)
-Message-ID: <0b8ffaa483e0f79f241b415202a16645addff920.camel@linux.ibm.com>
-Subject: Re: SVSM vTPM specification
+	Fri, 21 Oct 2022 13:44:57 +0000 (GMT)
+Message-ID: <7e67f33577aaebe09205c9a93597de9f742fd08f.camel@linux.ibm.com>
 From: James Bottomley <jejb@linux.ibm.com>
 Reply-To: jejb@linux.ibm.com
-To: "Daniel P. Smith" <dpsmith@apertussolutions.com>,
-        Tom Lendacky
-	 <thomas.lendacky@amd.com>,
-        Stuart Yoder <stuart.yoder@arm.com>,
-        "Dr. David
-	Alan Gilbert" <dgilbert@redhat.com>
-Cc: "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
+To: Jon Lange <jlange@microsoft.com>,
+        David Altobelli
+	 <David.Altobelli@microsoft.com>,
+        Steve Rutherford <srutherford@google.com>
+Cc: "Daniel P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
+        Christophe de Dinechin <cdupontd@redhat.com>,
         "linux-coco@lists.linux.dev"
-	 <linux-coco@lists.linux.dev>,
-        Andrew Cooper <andrew.cooper3@citrix.com>
-Date: Fri, 21 Oct 2022 08:31:13 -0400
-In-Reply-To: <94f85fe8-4001-108d-1962-e2cd75ee0c36@apertussolutions.com>
+ <linux-coco@lists.linux.dev>,
+        "amd-sev-snp@lists.suse.com"
+ <amd-sev-snp@lists.suse.com>
+Date: Fri, 21 Oct 2022 09:04:12 -0400
+In-Reply-To: <MN0PR21MB3072186C88BB26EA883F8612CA2D9@MN0PR21MB3072.namprd21.prod.outlook.com>
 References: <3e11fa26-b644-c214-c8e8-492113523f95@amd.com>
 	 <Y0b6cDIMlKijT95S@work-vm>
-	 <b6b22a1f4741a29c68dbdfae59e3fb201e3aa5e8.camel@linux.ibm.com>
-	 <820ddc4a-ac48-00a1-d284-23d08899f1cc@amd.com>
-	 <294b08e11e53cff01607004737f6f20c6784c40b.camel@linux.ibm.com>
-	 <3474b28c-2de2-db95-9ecf-6b7c1a59d860@apertussolutions.com>
-	 <a77148556d530d6b6983d8fb1c6d8bdaf81cb695.camel@linux.ibm.com>
-	 <b51ea7a5-256e-5138-d956-ddacd4148f9c@apertussolutions.com>
-	 <ce89a3298963f4fa234e46ae9fe00da66e2ff819.camel@linux.ibm.com>
-	 <0a0f3b57-13c6-8161-8674-1dbcf3ca9ddc@arm.com>
-	 <a08770c2-c925-3f1a-cdb0-dc4bab5e42fe@amd.com>
-	 <485fd3eb-5547-6688-cb6f-007c0c08af2c@apertussolutions.com>
-	 <fb7d5aa64187daff6e61cdcfe7084a5eef7e0153.camel@linux.ibm.com>
-	 <94f85fe8-4001-108d-1962-e2cd75ee0c36@apertussolutions.com>
+	 <a23e15cda00ee6a1c15f0d499deffd38b0593a78.camel@linux.ibm.com>
+	 <b5a2985a-3717-7d4b-0c8a-52fdcbc7c6b7@amd.com>
+	 <58caad5df212e620c6840f2c2f16514674893dfa.camel@linux.ibm.com>
+	 <155c7303-3027-7d93-263f-f42ea159f855@linux.ibm.com>
+	 <679C87ED-6D21-4D0A-9537-9910A6F802ED@redhat.com>
+	 <Y0+wcWgcRFTiDTNk@redhat.com>
+	 <b8f0c4cc9207a516f63958c53a5a57148606cc45.camel@linux.ibm.com>
+	 <Y0/2D93P/xgp1sU9@redhat.com>
+	 <e895e706-ffb1-a801-91cd-ba04f4e639c2@amd.com>
+	 <8080a626-114e-b358-bb36-a7b5583ff2f0@linux.ibm.com>
+	 <58b2bcdb-583b-ccc5-cffb-500ade7fbdab@amd.com>
+	 <SJ0PR21MB132342D2808DF609F37D6018E92B9@SJ0PR21MB1323.namprd21.prod.outlook.com>
+	 <CABayD+cYCj=uOtC5h1d781jh_B6XqxmZNfR69taEex7yvkizRw@mail.gmail.com>
+	 <SJ0PR21MB132378C080FFED1E283B4051E92A9@SJ0PR21MB1323.namprd21.prod.outlook.com>
+	 <f9af0f4b95ea6fe3e488d24f5070ab71c2da3eb4.camel@linux.ibm.com>
+	 <MN0PR21MB3072186C88BB26EA883F8612CA2D9@MN0PR21MB3072.namprd21.prod.outlook.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.34.4 
 Precedence: bulk
@@ -84,98 +87,64 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: K7vMJnx9YgdFfngXsg0LEeicYfKF6WAQ
-X-Proofpoint-ORIG-GUID: jhdug6AgI4XDMyOMD7B_LEuGVUo-GvCI
+X-Proofpoint-GUID: -gdRRIp4DvHX17rvRbqKM7ffvtL6VFU5
+X-Proofpoint-ORIG-GUID: e_6Wf2P2cwbBqv-FKrOKqMH8aPVXvBfZ
+Subject: RE: SVSM vTPM specification
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-10-21_04,2022-10-21_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=828 adultscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 mlxscore=0 clxscore=1015 bulkscore=0 phishscore=0
- suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2209130000 definitions=main-2210210071
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 adultscore=0 clxscore=1011
+ priorityscore=1501 mlxlogscore=714 impostorscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210210078
 
-On Fri, 2022-10-21 at 07:54 -0400, Daniel P. Smith wrote:
-> 
-> On 10/16/22 12:44, James Bottomley wrote:
-> > On Sun, 2022-10-16 at 12:29 -0400, Daniel P. Smith wrote:
-> > > If enlightened guest/driver is acceptable, then why not adopt the
-> > > pv-vTPM protocol, Xen's vTPM driver, for which there is already a
-> > > driver present in the kernel, was designed for deep attestation,
-> > > and does not inhibit/block features such as locality?
-> > 
-> > Erm, because it requires the Xen bus for discovery and
-> > communication ... the KVM people might not be so keen on adding
-> > that.  The other problem, even if we were to write a virtio
-> > equivalent (which KVM doesn't have today because it relies on TIS
-> > or CRB emulations), is that for all these virtual drivers, the back
-> > endpoint is in the host and we want to terminate it in the SVSM,
-> > which is the guest.
-> 
-> This is why I stated protocol and not transport. The Xen paravirt
-> vTPM protocol is designed to go over a shared memory buffer using a
-> doorbell notification, ie the transport mechanism under
-> consideration. In addition the protocol defined a series of non-
-> standard TPM command ordinals to interact with vTPM, more to deal
-> with deep attestation. This approach could be leverage to access
-> localities instead of trying to mimic a capability designed more for
-> register access using a doorbell  which introduces the possibility of
-> synchronicity issues. This work could then serve as a basis for a
-> "Enlightened" vTPM TCG specification to enable cross-implementation
-> compatibility.
+On Fri, 2022-10-21 at 00:02 +0000, Jon Lange wrote:
+> Surely the primary value of a document hash is to prove its
+> authenticity, not to determine whether two documents reflect
+> identical information.  I understand your concern that two
+> "canonical" representations of the same data may result in different
+> JSON encodings and therefore produce different hashes, but as long as
+> each document can be authenticated by its hash, does it really matter
+> if the hashes of the two documents are different?
 
-The question under consideration was whether we could get an efficient
-virtual TPM implementation for free (as in attach to an existing
-driver).  The blocker to this for xen-tpmfront is the xenbus discovery.
-If we're writing a new driver, we might as well do one that simply
-attaches to the SVSM single call interface.  Since the CPU thread
-passes into the VTPM and then returns with the result.  There's also no
-current need to define non-standard ordinals, but if a need arises
-nothing prevents layering them after the fact since they go down this
-call interface.  This same is true of localities.  Since the locality
-has to be deduced by the vTPM depending on environmental and physical
-input nothing prevents them from being layered in later (when someone
-figures out how to do localities in VMs).
+If you only have an AMD-SNP attestation report and access to the vTPM,
+you have to query the TPM properties then construct and hash the
+document yourself to verify the report.  I sometimes think half the
+history of security protocol implementation consists of one engineer
+struggling to reproduce the hash created and signed by another, which
+is why I have a preference for it being exactly specified and simple.
 
-> > To be clear, the current KVM drivers do emulate localites, it's
-> > just that they're unused by the OS and Firmware.  If you look at
-> > the TPM emulators themselves, they have the concept of locality,
-> > but when they need it, they indirect via an additional platform
-> > call (in the ms-tpm, which the current IBM prototype uses, it's a
-> > stubbed call to __plat__LocalityGet/Set) ... the locality isn't
-> > provided as part of the main TPM command processor, which is why we
-> > don't need to worry about it in the initial prototype.  That means
-> > if anyone ever does figure out how to do dynamic launch for virtual
-> > machines, and requires localities, we can simply add handlers for
-> > the stub routines.
-> 
-> Just as a last little 2₵, I would just highlight that the Mobile CRB 
-> committee likely never considered that mobile processors like Arm
-> would add a dynamic launch capability that would require the usage
-> of localities. Yet today Arm now has a DRTM specification which is
-> trying to deal with the fact that the Mobile CRB specification has no
-> locality support. Sometimes making adjustments with forethought over
-> expediency will save a lot of pain, like having to come up with
-> migrations plans with minimal disruptions to customers because
-> wholesale replacement of a solution becomes necessary for something
-> that was known/raised at the  beginning.
+> There is a ton of discussion here about vTPM because it's an
+> important problem, and it is valuable to recognize that a vTPM
+> implementation will likely require some sort of SVSM-issued document
+> to describe that vTPM.  There's no reason to back away from defining
+> the structure of such an SVSM-issued document.  But we should also
+> expect that in the next 2-3 years, we're going to invent other
+> valuable functionality that an SVSM can implement that will also
+> require the SVSM to issue some sort of authenticated statement.  If
+> we marry the SVSM report information to a vTPM, then it's going to be
+> really hard to add that new functionality, and if we don't anticipate
+> the need for extensibility, then we're going to wind up in a future
+> where an SVSM will issue different kinds of authenticated information
+> (vTPM on one hand and new feature on the other) and the relying party
+> won't be able to know which is which.  I don't see how we can avoid
+> the problem of defining an extensible document schema now that we can
+> extend in the future as the role of the SVSM expands.  JSON is an
+> extremely attractive syntax for such a schema - certainly much more
+> so than XML, and also likely to fare much better than any binary
+> standard.
 
-The point of doing a CRB interface (if we do one) is to allow
-attachment to an existing driver without too much trap overhead.  The
-CRB interface is the one that fits this bill in the current linux
-driver form regardless of what the design committee were or weren't
-thinking.
+Allowing the relying party to know what type of authentication was why
+I proposed a type prefix to the guest data in the report.  The reason I
+like the type in the guest data and not the hash is so the bare report
+is self identifying even if it costs us a byte or two of the nonce.
 
-You've studiously avoided sketching out what a dynamic launch might
-look like for a confidential VM, but I'd have to guess it would be
-facilitated and measured by the SVSM itself, being the trusted element.
-Following this logic, anything written to the PCRs by the SVSM itself
-would occur at a different locality from anything written through the
-SVSM call interface ... the net result being only the SVSM could
-control the privileged locality for the DRTM.  This would all work
-regardless of the vagaries of the emulation presented beyond the SVSM.
+There are 2^32-1 possible SVSM protocols, so nothing in the above
+precludes adding a json based hash call if a need arises (or indeed
+many other binary/json/xml ones if that's what people prefer).
 
 James
 
