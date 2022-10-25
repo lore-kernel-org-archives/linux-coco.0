@@ -1,79 +1,105 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470C1468B
-	for <linux-coco@lists.linux.dev>; Mon, 24 Oct 2022 19:18:28 +0000 (UTC)
-Received: by mail-ej1-f45.google.com with SMTP id sc25so7241574ejc.12
-        for <linux-coco@lists.linux.dev>; Mon, 24 Oct 2022 12:18:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iW9VP26spPfXaZ2mheZkEjEoMacNnC/LuneeKmV+IqU=;
-        b=e/jwPieedvWB+Fns1B8rTwV3lDPdo7cFHoLK9Eja7rOjs1QUeDNvWc36Bv5USCsGKn
-         zJOMoQXyDUfeEq06NvJLGjGir/c9WcXoUvaCTOavgHrprwC1++qa5EsV5TNL7oRryhXN
-         aQ5zPSbbHZ+aXyXkIfTp8Wo+cIjEx84UQGAqUbiTnmQ9i9xVicEpSt/IgTY1Syz0nW6N
-         4ybAY2nq60fRiIZJKdoR9CQDWKiNrV0gWWwlcRmEtcexWPEYtixW7fwZrp4aEurpO6sd
-         QS/ShMyZrMj38ByN2rAj8d50OB9R+4Pnn2cnpawVsnGXs8dmhczrQYbhTOrhLg6fFyDR
-         okcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iW9VP26spPfXaZ2mheZkEjEoMacNnC/LuneeKmV+IqU=;
-        b=VSKnoJtZEHdzs/uKsgBVpKrdBc4B04+KxA00VBZDHDstpywe1+02eIcWhn/aMFIDhW
-         DRc3FlpeVLwCp+qm7u0DFQ/afgmV5FWM16REhYrJFHAPYW+6XAW2XxqbwmjID5bUBHpi
-         Sg17+1DJKBDRMv9Vfv2rYO9doihjgFatI0KVhgWhGclBv/6eV1BjpgadGDgyV9ZC0tfb
-         6PFloHLRAw3rfzexciE0xKGIQZUMz6Zhl9mFki9ElbvIX521FHAW3KdFnHO9AiUuSDt8
-         MdmtiuO82tiZjkmOGIN1K53rUCuum3e/9tGtoJsqlU5yxKDbdfjmz4weR68QcH8x2mlw
-         6ZJw==
-X-Gm-Message-State: ACrzQf38KZVVO5iRy4hH48NfNFpCM0xLhDEKs3O9mBx+4TIfGvvgl+nI
-	9PFLVS11+u1QtF+JXW/jiPzd8GXxpbSZInesqPvv0g==
-X-Google-Smtp-Source: AMsMyM7vHsjUNVa4STHEuT1RNRyvZPhoNZfHor3g3DaX0+VVpstG8kG4vDFEWNM5doDET2ORaCPM2Km1rrk6hp4iqGk=
-X-Received: by 2002:a17:907:628f:b0:72f:58fc:3815 with SMTP id
- nd15-20020a170907628f00b0072f58fc3815mr29246891ejc.719.1666639106428; Mon, 24
- Oct 2022 12:18:26 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991D67E2
+	for <linux-coco@lists.linux.dev>; Tue, 25 Oct 2022 08:31:02 +0000 (UTC)
+Received: from zn.tnic (p200300ea9733e753329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e753:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 457331EC064C;
+	Tue, 25 Oct 2022 10:31:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1666686660;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=SsCnaY6vsw/dlWcb5dAlVwUs2sKUOOm4xMSiV3vNbVc=;
+	b=erN1LR4tBXE7W+2GQ21IylqAaTg3ibHJFZBzxlPhJR2N+B40rgmHY8IbEnrxZgvdUnmZ7l
+	2UrDoeUh/cI1b94V/yzn43xMsPQmRb0CJ3ZlOSF+QMqruxwiiwQZQ1KUHCYTUNrZjImCG+
+	Mjw1VpelZAdMyy4Xjpx0d5aG9UwNN0c=
+Date: Tue, 25 Oct 2022 10:30:56 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 12/49] crypto: ccp: Add support to initialize
+ the AMD-SP for SEV-SNP
+Message-ID: <Y1eewE4wj7MwXpFz@zn.tnic>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <87a0481526e66ddd5f6192cbb43a50708aee2883.1655761627.git.ashish.kalra@amd.com>
+ <Yzh558vy+rJfsBBq@zn.tnic>
+ <f997dd38-a615-e343-44cd-a7aeb9447a1e@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <e895e706-ffb1-a801-91cd-ba04f4e639c2@amd.com> <8080a626-114e-b358-bb36-a7b5583ff2f0@linux.ibm.com>
- <58b2bcdb-583b-ccc5-cffb-500ade7fbdab@amd.com> <SJ0PR21MB132342D2808DF609F37D6018E92B9@SJ0PR21MB1323.namprd21.prod.outlook.com>
- <CABayD+cYCj=uOtC5h1d781jh_B6XqxmZNfR69taEex7yvkizRw@mail.gmail.com>
- <SJ0PR21MB132378C080FFED1E283B4051E92A9@SJ0PR21MB1323.namprd21.prod.outlook.com>
- <f9af0f4b95ea6fe3e488d24f5070ab71c2da3eb4.camel@linux.ibm.com>
- <MN0PR21MB3072186C88BB26EA883F8612CA2D9@MN0PR21MB3072.namprd21.prod.outlook.com>
- <7e67f33577aaebe09205c9a93597de9f742fd08f.camel@linux.ibm.com>
- <MN0PR21MB307280C94C1C54497ADDEFCECA2D9@MN0PR21MB3072.namprd21.prod.outlook.com>
- <Y1ZwJvNvky6Wst7k@work-vm> <d8b21444-7829-5f5c-41dd-b103ae3a52fa@linux.ibm.com>
- <682a4227-aa79-298c-2ced-5f401c9d4339@amd.com>
-In-Reply-To: <682a4227-aa79-298c-2ced-5f401c9d4339@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 24 Oct 2022 12:18:15 -0700
-Message-ID: <CAAH4kHZqmKfnSB3p1VJ+-iD2fAFgYpzt5a5Lqy=tB8E=MWaq2w@mail.gmail.com>
-Subject: Re: SVSM vTPM specification
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dov Murik <dovmurik@linux.ibm.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, 
-	Jon Lange <jlange@microsoft.com>, James Bottomley <jejb@linux.ibm.com>, 
-	=?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
-	David Altobelli <David.Altobelli@microsoft.com>, 
-	Christophe de Dinechin <cdupontd@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <f997dd38-a615-e343-44cd-a7aeb9447a1e@amd.com>
 
-> Having said that, JSON can be represented a number of ways and so
-> canonicalizing the output would be necessary. I found RFC 8785
-> (https://www.rfc-editor.org/info/rfc8785) but I'm not sure it's truly a
-> standard. Are there any better document formats that would be better?
+On Fri, Oct 14, 2022 at 04:09:11PM -0500, Kalra, Ashish wrote:
+> Yes, we need to do:
+> 
+> wbinvd_on_all_cpus();
+> SNP_DF_FLUSH
+> 
+> Need to ensure all the caches are clear before launching the first guest and
+> this has to be a combination of WBINVD and SNP_DF_FLUSH command.
+
+Ok.
+
+> > Why isn't this retval checked?
+> 
+> From the SNP FW ABI specs, for the SNP_SHUTDOWN command:
+> 
+> Firmware checks for every encryption capable ASID that the ASID is not in
+> use by a guest and a DF_FLUSH is not required. If a DF_FLUSH is required,
+> the firmware returns DFFLUSH_REQUIRED.
 >
+> Considering that SNP_SHUTDOWN command will check if DF_FLUSH was
+> required and if so, and not invoked before that command, returns
+> an error indicating that DFFLUSH is required.
+> 
+> This way, we can cleverly avoid taking the error code path for
+> DF_FLUSH command here and instead let the SNP_SHUTDOWN command
+> failure below indicate if DF_FLUSH command failed.
+> 
+> This also ensures that we always invoke SNP_SHUTDOWN command,
+> irrespective of SNP_DF_FLUSH command failure as SNP_DF_FLUSH may
+> actually not be required by the SHUTDOWN command.
 
-CBOR is used for this kind of purpose in Nitro enclaves, the Open DICE
-profile, and the CoRIM standard from IETF uses CBOR for representing
-SBOM-kinds of things.
+This all sounds just silly. The proper way to do this is:
+
+retry:
+        ret = __sev_do_cmd_locked(SEV_CMD_SNP_SHUTDOWN, NULL, error);
+        if (ret == DFFLUSH_REQUIRED) {
+		ret = __sev_do_cmd_locked(SEV_CMD_SNP_DF_FLUSH, NULL, NULL);
+		if (ret)
+			"... DF_FLUSH failed...";
+
+		goto retry;
+	}
+
+I'm assuming here the firmware is smart enough to not keep returning
+DFFLUSH_REQUIRED constantly and cause an endless loop.
+
+Thx.
 
 -- 
--Dionna Glaze, PhD (she/her)
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
