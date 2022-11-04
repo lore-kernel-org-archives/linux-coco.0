@@ -1,67 +1,70 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE69B803
-	for <linux-coco@lists.linux.dev>; Fri,  4 Nov 2022 20:43:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1667594586;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QLfNlA1GCQXJ7R842kayw5n0l6+Ih1F81EObg8YgABk=;
-	b=COL6YFt/X6csDd1wEc2nEHpPyvCGS/msPxEjtVk6vShlN9tz1cygf40x8infO3I53F+0vF
-	2rVOlNYzA1/pg0YsxcuBrFEBULFf53RhW+Q2MK68GLeF8kUYhpqPEVmw2goCj/vy4KFddJ
-	BIpaiz7OMY4IzzxRkJuLBXo0MJ5PCLU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-350-FrGLllYoPnO_hKdqC4zyTw-1; Fri, 04 Nov 2022 16:43:02 -0400
-X-MC-Unique: FrGLllYoPnO_hKdqC4zyTw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691A4803
+	for <linux-coco@lists.linux.dev>; Fri,  4 Nov 2022 20:53:31 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADAFC29AB41F;
-	Fri,  4 Nov 2022 20:43:01 +0000 (UTC)
-Received: from worklaptop.redhat.com (unknown [10.22.10.76])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6605D492B0D;
-	Fri,  4 Nov 2022 20:43:01 +0000 (UTC)
-From: Cole Robinson <crobinso@redhat.com>
-To: linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: thomas.lendacky@amd.com,
-	brijesh.singh@amd.com,
-	bp@suse.de,
-	Cole Robinson <crobinso@redhat.com>
-Subject: [PATCH] virt: sev-guest: Add MODULE_ALIAS
-Date: Fri,  4 Nov 2022 16:42:45 -0400
-Message-Id: <ff480c5e688eb0a72a4db0a29c7b1bb54c45bfd4.1667594253.git.crobinso@redhat.com>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 13B132190B;
+	Fri,  4 Nov 2022 20:53:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1667595204; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2VGxdoks4hueLjmIZRrAT3uj+72PShV24wAI74aXoz8=;
+	b=oG7gCD+J1Vc2wg59KPkQVeUimeKUvjTDr8cA2LeHJH4CWz5MyRmZp1h279kfhVqR2abCPu
+	jQwSPsO7iJfhiImDBf6bdcBHnVp9sO0SiaOol00H0XYGWU/51HkP9bNbGYK6aoPS6AORtX
+	9DxRlgbICO6zzzwXYD7OTY5oevtoxl4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1667595204;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2VGxdoks4hueLjmIZRrAT3uj+72PShV24wAI74aXoz8=;
+	b=IwhAtvrRE3k/WXZdA1PLcInQmHDsGdmmqMQ8mlViN8UISlgRQ2BmZLS62p5aNZtBIV/B8n
+	2xOl9CTadK7SbUCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 070481346F;
+	Fri,  4 Nov 2022 20:53:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id uEWwAcR7ZWNNdAAAMHmgww
+	(envelope-from <bp@suse.de>); Fri, 04 Nov 2022 20:53:24 +0000
+Date: Fri, 4 Nov 2022 21:53:23 +0100
+From: Borislav Petkov <bp@suse.de>
+To: Cole Robinson <crobinso@redhat.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	thomas.lendacky@amd.com, brijesh.singh@amd.com
+Subject: Re: [PATCH] virt: sev-guest: Add MODULE_ALIAS
+Message-ID: <Y2V7w6PCUV/IxLBl@zn.tnic>
+References: <ff480c5e688eb0a72a4db0a29c7b1bb54c45bfd4.1667594253.git.crobinso@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+In-Reply-To: <ff480c5e688eb0a72a4db0a29c7b1bb54c45bfd4.1667594253.git.crobinso@redhat.com>
 
-This fixes driver autoloading
+On Fri, Nov 04, 2022 at 04:42:45PM -0400, Cole Robinson wrote:
+> This fixes driver autoloading
 
-Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
-Signed-off-by: Cole Robinson <crobinso@redhat.com>
----
- drivers/virt/coco/sev-guest/sev-guest.c | 1 +
- 1 file changed, 1 insertion(+)
+What is the scenario where this needs to be autoloaded?
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index f422f9c58ba7..4c426dbcd166 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -744,3 +744,4 @@ MODULE_AUTHOR("Brijesh Singh <brijesh.singh@amd.com>");
- MODULE_LICENSE("GPL");
- MODULE_VERSION("1.0.0");
- MODULE_DESCRIPTION("AMD SEV Guest Driver");
-+MODULE_ALIAS("platform:sev-guest");
 -- 
-2.37.3
+Regards/Gruss,
+    Boris.
 
+SUSE Software Solutions Germany GmbH
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Martje Boudien Moerman
+(HRB 36809, AG Nürnberg)
