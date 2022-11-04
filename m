@@ -1,100 +1,67 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6426E801
-	for <linux-coco@lists.linux.dev>; Wed,  2 Nov 2022 11:27:36 +0000 (UTC)
-Received: from zn.tnic (p200300ea9733e741329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e741:329c:23ff:fea6:a903])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3F6BC1EC059D;
-	Wed,  2 Nov 2022 12:27:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1667388454;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE69B803
+	for <linux-coco@lists.linux.dev>; Fri,  4 Nov 2022 20:43:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1667594586;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=yICoADaQMVMzDnnLd9qSZOhWGA6H9/WvnEz/OK5eX7Q=;
-	b=S1atLxaEuLaJ/+CK/dqlknDpST2LhW/3u+eYKdl6ClrAKnMqw61jNH8w4PO0e02jNHS0kC
-	shBVTW4qpXJJb1k4DRNQ3FgDYM6DOQm9H+b1PuFSSlhAjdFm16bl5Ochou662KZCkO3wp4
-	04JhwBQACZ1QdCH14YrOC+MY7cKm4Hg=
-Date: Wed, 2 Nov 2022 12:27:33 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: "x86@kernel.org" <x86@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"jroedel@suse.de" <jroedel@suse.de>,
-	"Lendacky, Thomas" <Thomas.Lendacky@amd.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"ardb@kernel.org" <ardb@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"jmattson@google.com" <jmattson@google.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"slp@redhat.com" <slp@redhat.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
-	"tobin@ibm.com" <tobin@ibm.com>,
-	"Roth, Michael" <Michael.Roth@amd.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>,
-	"ak@linux.intel.com" <ak@linux.intel.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"marcorr@google.com" <marcorr@google.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"alpergun@google.com" <alpergun@google.com>,
-	"dgilbert@redhat.com" <dgilbert@redhat.com>,
-	"jarkko@kernel.org" <jarkko@kernel.org>
-Subject: Re: [PATCH Part2 v6 07/49] x86/sev: Invalid pages from direct map
- when adding it to RMP table
-Message-ID: <Y2JUJfKLS/ghCP0R@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <243778c282cd55a554af9c11d2ecd3ff9ea6820f.1655761627.git.ashish.kalra@amd.com>
- <YuFvbm/Zck9Tr5pq@zn.tnic>
- <SN6PR12MB27676E6CEDF242F2D33CA2AB8E9A9@SN6PR12MB2767.namprd12.prod.outlook.com>
- <Yuu3ZK+/hL+saV27@zn.tnic>
- <6e9f3d48-1777-6710-cb1d-3f2f38c0328e@amd.com>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QLfNlA1GCQXJ7R842kayw5n0l6+Ih1F81EObg8YgABk=;
+	b=COL6YFt/X6csDd1wEc2nEHpPyvCGS/msPxEjtVk6vShlN9tz1cygf40x8infO3I53F+0vF
+	2rVOlNYzA1/pg0YsxcuBrFEBULFf53RhW+Q2MK68GLeF8kUYhpqPEVmw2goCj/vy4KFddJ
+	BIpaiz7OMY4IzzxRkJuLBXo0MJ5PCLU=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-350-FrGLllYoPnO_hKdqC4zyTw-1; Fri, 04 Nov 2022 16:43:02 -0400
+X-MC-Unique: FrGLllYoPnO_hKdqC4zyTw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADAFC29AB41F;
+	Fri,  4 Nov 2022 20:43:01 +0000 (UTC)
+Received: from worklaptop.redhat.com (unknown [10.22.10.76])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 6605D492B0D;
+	Fri,  4 Nov 2022 20:43:01 +0000 (UTC)
+From: Cole Robinson <crobinso@redhat.com>
+To: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: thomas.lendacky@amd.com,
+	brijesh.singh@amd.com,
+	bp@suse.de,
+	Cole Robinson <crobinso@redhat.com>
+Subject: [PATCH] virt: sev-guest: Add MODULE_ALIAS
+Date: Fri,  4 Nov 2022 16:42:45 -0400
+Message-Id: <ff480c5e688eb0a72a4db0a29c7b1bb54c45bfd4.1667594253.git.crobinso@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6e9f3d48-1777-6710-cb1d-3f2f38c0328e@amd.com>
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 
-On Tue, Nov 01, 2022 at 10:12:35PM -0500, Kalra, Ashish wrote:
-> Following up on this, now, set_memory_present() is a static interface,
-> so will need do add a new external API like set_memory_p() similar
-> to set_memory_np().
+This fixes driver autoloading
 
-It is called set_memory_p() now and you can "un-static" it. :)
+Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
+Signed-off-by: Cole Robinson <crobinso@redhat.com>
+---
+ drivers/virt/coco/sev-guest/sev-guest.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> So currently there is no interface defined for changing the attribute of a
-> range to present or restoring the range in the direct map.
-
-No?
-
-static int set_memory_p(unsigned long *addr, int numpages)
-{
-        return change_page_attr_set(addr, numpages, __pgprot(_PAGE_PRESENT), 0);
-}
-
-:-)
-
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index f422f9c58ba7..4c426dbcd166 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -744,3 +744,4 @@ MODULE_AUTHOR("Brijesh Singh <brijesh.singh@amd.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_VERSION("1.0.0");
+ MODULE_DESCRIPTION("AMD SEV Guest Driver");
++MODULE_ALIAS("platform:sev-guest");
 -- 
-Regards/Gruss,
-    Boris.
+2.37.3
 
-https://people.kernel.org/tglx/notes-about-netiquette
