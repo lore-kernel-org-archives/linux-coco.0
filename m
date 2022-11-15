@@ -1,27 +1,28 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EF3AD47
-	for <linux-coco@lists.linux.dev>; Tue, 15 Nov 2022 14:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69FBAD5B
+	for <linux-coco@lists.linux.dev>; Tue, 15 Nov 2022 15:22:39 +0000 (UTC)
 Received: from zn.tnic (p200300ea9733e7da329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e7da:329c:23ff:fea6:a903])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 865261EC050D;
-	Tue, 15 Nov 2022 15:26:42 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AFEEB1EC02F2;
+	Tue, 15 Nov 2022 16:22:37 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1668522402;
+	t=1668525757;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=mSkPxqdKIqJjoCwL26RYPkRZ1rkw1woL6hZqVtjIER8=;
-	b=Rk6ExyGQg6KpnHG67DqmVpaDPDRg4H6/QXSTwRysN4jwjMHW0j1f8H90Ud4rRe4XVUHICo
-	KAl9r8Ns4EWBwJHHqrnr6BtRxTCdWwd8AKcARDRslAmMG4qgyJHZS2ZYypcBGzWYw8RQ28
-	88jMHnryUdQFUtdIEzmJ8MUzujt8q8k=
-Date: Tue, 15 Nov 2022 15:26:38 +0100
+	bh=B64mdOFdT9uTOfYjl9ll3tHMRZvvBJ1CeVd454LiI/w=;
+	b=pFcmHugbADL2DSRItZt5Vs6GYiAwP5C4H7GwzbzykfoflNfCHtY31ltt1srrkXZ8fdm5CM
+	qCtoY3uier2iX7TxnpLGBJO3tX/QDKE70/Wc34RhyUpm6UC0WfS6wgMW5ahFVGVMMa+DnH
+	NpK0pB/JVpKsAKoozrLB9VdwGTq4fEU=
+Date: Tue, 15 Nov 2022 16:22:37 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: vbabka@suse.cz, x86@kernel.org, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: "Kalra, Ashish" <ashish.kalra@amd.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
 	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
 	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
@@ -33,12 +34,14 @@ Cc: vbabka@suse.cz, x86@kernel.org, linux-kernel@vger.kernel.org,
 	tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
 	dgilbert@redhat.com, jarkko@kernel.org,
-	"Kaplan, David" <David.Kaplan@amd.com>
+	"Kaplan, David" <David.Kaplan@amd.com>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Oscar Salvador <osalvador@suse.de>
 Subject: Re: [PATCH Part2 v6 14/49] crypto: ccp: Handle the legacy TMR
  allocation when SNP is enabled
-Message-ID: <Y3OhnmRxpqm6Yc8n@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <3a51840f6a80c87b39632dc728dbd9b5dd444cd7.1655761627.git.ashish.kalra@amd.com>
+Message-ID: <Y3OuvXCjttfFh++w@zn.tnic>
+References: <3a51840f6a80c87b39632dc728dbd9b5dd444cd7.1655761627.git.ashish.kalra@amd.com>
  <Y0grhk1sq2tf/tUl@zn.tnic>
  <380c9748-1c86-4763-ea18-b884280a3b60@amd.com>
  <Y1e5oC9QyDlKpxZ9@zn.tnic>
@@ -47,6 +50,7 @@ References: <cover.1655761627.git.ashish.kalra@amd.com>
  <dc89b2f4-1053-91ac-aeac-bb3b25f9ebc7@amd.com>
  <Y2JS7kn8Q9P4rXso@zn.tnic>
  <c2ce6317-aa51-2a2b-2d75-ad1fd269f3fa@amd.com>
+ <7882353e-2b13-d35a-b462-cef35ee56f51@suse.cz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,35 +59,20 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c2ce6317-aa51-2a2b-2d75-ad1fd269f3fa@amd.com>
+In-Reply-To: <7882353e-2b13-d35a-b462-cef35ee56f51@suse.cz>
 
-On Mon, Nov 14, 2022 at 05:36:29PM -0600, Kalra, Ashish wrote:
-> But there is still added complexity of handling hugepages as part of
-> reclamation failures (both HugeTLB and transparent hugepages) and that
+On Tue, Nov 15, 2022 at 04:14:42PM +0100, Vlastimil Babka wrote:
+>  but maybe we could just put the pages on some leaked lists without
+> special page? The only thing that should matter is not to free the
+> pages to the page allocator so they would be reused by something else.
 
-Why?
+As said on IRC, I like this a *lot*. This perfectly represents what
+those leaked pages are: leaked, cannot be used and lost. Certainly not
+hwpoisoned.
 
-You want to offline pfns of 4K pages. What hugepages?
+Yeah, that's much better.
 
-> means calling more static functions in mm/memory_failure.c
-> 
-> There is probably a more appropriate handler in mm/memory-failure.c:
-> 
-> soft_offline_page() - this will mark the page as HWPoisoned and also has
-> handling for hugepages. And we can avoid adding a new page flag too.
-
-So if some other code wants to dump the amount of all hwpoisoned pages,
-it'll dump those too.
-
-Don't you see what is wrong with this picture?
-
-And btw, reusing the hwpoison flag
-
-	PG_offlimits = PG_hwpoison
-
-like previously suggested doesn't help here either.
-
-IOW, I really don't like this lumping of semantics together. ;-\
+Thx.
 
 -- 
 Regards/Gruss,
