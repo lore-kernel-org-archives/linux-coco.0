@@ -1,254 +1,91 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A908F4C
-	for <linux-coco@lists.linux.dev>; Thu, 17 Nov 2022 21:36:21 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QWmHyyX9AX8IIlFcyvBv9XF7Xp4a76J7U5Y6kidT0MGayK6pWNhpALBqmPL6N2cS/d6u06soVjObZnDEBBRbes+tJWFuWOBtTNDJHmwTn5GbbsG3KvbX6M4TZH/cTaRdbGnq/Ri6GzoO2w0whBLMlNGmjS78pTXXoSFN2d+MnD1nuZirumUgqMl0oaiw+iibxs3iGpSt4zLTePo5wzv139sBu2hwHjjvMXHWeXiEERzMxZyQWdG2won1EWw0YcB/T/k8RdrELmKdX1rDYNacJ3kdxHPqEGYyONR1wVYHmaf13jwoGoD0BXRJlq/vIM3erK1EOIPyYptKAjQCQNWTiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+0aOgCvPsuqfDzJ5+FmmA7f5qvsKVWAt2/MZcu5CvcM=;
- b=crx0WbuO4lRkfjgti+/s1zx45u90c2sARqfOFiuTsSC33LfEuow1QkIrdkbP1tATp1C4kbFe8WEVYxPOLoo6pAQledvTbx/HT0IaG8Sm+VVmSLS9d7ABM7THgZis4QvGpiF/OztVtBBwoyuyhbnIcFvhoLQy9ridVeXcdw7Aj1buaPdnF39KSDdhDOapjpmtxipODYEcx9Xeb1eEqo2U+FV0KPb1mZI/Lnm+DfEjx4MztbBmI6x9zB72uolYAq5Iw8WhjwzIN8/MvcyYTBptYmksUwBJxwxg3v9ZsNU0ucKkkEH5PQr9+fOVAp0Pjan4W87itJUB2GTJkj+xWA5ZAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+0aOgCvPsuqfDzJ5+FmmA7f5qvsKVWAt2/MZcu5CvcM=;
- b=MFSqkqkyEuxhbWXj89W3W9zhOnw2P+JXiAYemH14dkIPDTOpibrtH/SXEz4aJxu306AgNe8Tmj2XtQG6vIFk4H6Fsc60eJ97egU4GTXRi8EovvvH4YsEb4LO0MbXSFekVfA4BFo2Pn7PCslhdfc5P00P8OhPpUvlsDGdtPR8vO8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by BY5PR12MB4259.namprd12.prod.outlook.com (2603:10b6:a03:202::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.19; Thu, 17 Nov
- 2022 21:36:15 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::395:21e6:abfd:7894]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::395:21e6:abfd:7894%6]) with mapi id 15.20.5813.018; Thu, 17 Nov 2022
- 21:36:15 +0000
-Message-ID: <8d93df43-f45f-4934-550d-845aa9493e4b@amd.com>
-Date: Thu, 17 Nov 2022 15:36:09 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH Part2 v6 39/49] KVM: SVM: Introduce ops for the post gfn
- map and unmap
-Content-Language: en-US
-To: Peter Gonda <pgonda@google.com>, Alper Gun <alpergun@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040F480B
+	for <linux-coco@lists.linux.dev>; Sun, 20 Nov 2022 21:44:45 +0000 (UTC)
+Received: from zn.tnic (p200300ea9733e725329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:9733:e725:329c:23ff:fea6:a903])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C6D581EC02FE;
+	Sun, 20 Nov 2022 22:34:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1668980051;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=MU/mPOtQaxPIEiXZaqef4n2ESApESPnWFV9ksNgEQU0=;
+	b=gFsAknCC944e+v3lSc/yaLPJAy9TZ++t5KLypK6/QtbQQV1+nSewg1M/XPNPbe7udjUoKY
+	XkJYWm7M3S2B55bQ82gf5JmgRLTzx9o51DwMSbzF90QR2CE4t51TA++ITub8kM89vDlwYj
+	WqVsyvDAGl5XDyti2GFZL3qEqoO94ZU=
+Date: Sun, 20 Nov 2022 22:34:06 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
 Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
- rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de,
- michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
- ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, dgilbert@redhat.com,
- jarkko@kernel.org
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	michael.roth@amd.com, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org
+Subject: Re: [PATCH Part2 v6 14/49] crypto: ccp: Handle the legacy TMR
+ allocation when SNP is enabled
+Message-ID: <Y3qdTuZQoDZxUgbw@zn.tnic>
 References: <cover.1655761627.git.ashish.kalra@amd.com>
- <34246866043db7bab34a92fe22f359667ab155a0.1655761627.git.ashish.kalra@amd.com>
- <CABpDEukAEGwb9w12enO=fhSbHbchypsOdO2dkR4Jei3wDW6NWg@mail.gmail.com>
- <CAMkAt6oOB5xG7OnKn58Z-oLNBd091yAajZhrWDtXyu3UCiJNfA@mail.gmail.com>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <CAMkAt6oOB5xG7OnKn58Z-oLNBd091yAajZhrWDtXyu3UCiJNfA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0PR03CA0210.namprd03.prod.outlook.com
- (2603:10b6:610:e4::35) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+ <3a51840f6a80c87b39632dc728dbd9b5dd444cd7.1655761627.git.ashish.kalra@amd.com>
+ <Y0grhk1sq2tf/tUl@zn.tnic>
+ <380c9748-1c86-4763-ea18-b884280a3b60@amd.com>
+ <b712bc81-4446-9be4-fd59-d08981d13475@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|BY5PR12MB4259:EE_
-X-MS-Office365-Filtering-Correlation-Id: b1ce9e7d-b755-4493-e4af-08dac8e3c150
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	RidmtcVjM8eFRuCDQ2cU0QTYFU9XGZwVqva4unu8S8m5yDpgeSubuspR9AwsZlyk9l1LcAYFizG6+C8xCUVd3DCxAWUt3uekLR1EZrAlX6waWf8KS4iahaegfiKA1QNMNmkTZwcACAfvdCjQdbuFbyfSgM3JNAhmk6SsXs7osyvJpeTLTPyVlXr6Vyyz0R1fcZ6Ef7KiGRErumf37ZqY0anpdy58jQqu4VExikF2kr6vzYNVYvquN7p2aMDYBCulskTMkgTzDmF61RCtXkvbD0Gk+ITt2foNrQbcdlGkDbLTmbCtVNm4XcQElxwObVPNcNtXyfeVqMfHcfa3sJSX1k3rLQxTnbzNe7rEBuC2C9UK00HaMhJKa0sDoYcWP2o0hPPgx5KcdN/r8WezqA372AM2vAam15XfIGo+ZB5s3vLzSUpP+6Eio7mjMVbLhPavxHx4JqONsa+oYYd0X9+68R3MhgIBQa2R1q2kLa1eJL9tVwKMvfujwy0W0eCcOYyWzfYs0Ilcx3PCY9BXImYP7CVrOpY2HIkYVYNDLS9WB9r+6C2pNuGmNUBHAuHyeaKQSd//BGjrxq0Ag8JLLo73+gq6nrWhKidHiKwkCFBPlGJ63gqxgDR3Vu2427aTx3w6xgb+R3Q02FbXHF1crLjM34+uL8UgZ2Q+PByJ0aKG7ewvXylHznu3WKgRrJsthUH9Wo1bS1VqjC6edrUFraPNFMdC/ltzBph4kAvYBtsTSjY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(346002)(366004)(136003)(39860400002)(396003)(451199015)(31696002)(8676002)(83380400001)(86362001)(66476007)(66946007)(66556008)(4326008)(5660300002)(7416002)(7406005)(41300700001)(8936002)(38100700002)(6512007)(26005)(2616005)(6486002)(6506007)(186003)(478600001)(53546011)(316002)(6666004)(110136005)(36756003)(31686004)(2906002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZHdVc0gvazRZNDdjblNVRDBQTHNqaHhWRVh5RDh2TUdoZnhPcDRRS1luTnkx?=
- =?utf-8?B?YSszV3NDam8rdDBxYXlJZUpyWituYkZvRllTd0N3YTkrTEpVbHV3THRYRFZv?=
- =?utf-8?B?WStEdzFJWm1rNDNYMXRSMzJCSkVjNVczaW1aUHRMbHFRTXR6MlFxaWMzM0JS?=
- =?utf-8?B?c0dzL3YrWW5sQi9iUjJaZHdXdy92dXVEVi9LMFFSZmNBb2tTeC9BUVFOazds?=
- =?utf-8?B?Wmw0Yk0wQzdEVTFCT1VZSTg1OXkvMXRwbjhTT2xJVkhQZFFwYW10U2s5WDlF?=
- =?utf-8?B?djN4a3l5anpTeTlwbVZPZTN4Vy9leUdQUWxRd1BYb3pjdVcxSEpVVTc1MUlP?=
- =?utf-8?B?aXBHeXh0QVpKTEhUWi9ocWhhY2s2RkkyS1lBME9YWXdCekVzcEJMUi9Sbkl6?=
- =?utf-8?B?dVdFYys5dFh0UWJjNEIySDlxTE1yNmQzMnFrSzBLL1ZsOEZsM1NJb24ydFpD?=
- =?utf-8?B?alVMbXJuYTBZcDRUWGVJTVpTSGw3ZkhMcjN2Y0ZoNEVJREoyQnVZVzQxYlM0?=
- =?utf-8?B?SnNmSXp2UTJTTWJGZnNmSm4rNTE4VVZ6U0tQSTJ1VFNGZm5WVlcvaFp1T0l3?=
- =?utf-8?B?eGpBYkk4SUpyNW52SzUybFAzUnM0S2EyM0M0blZRSy9EVDF2T1MzbEhVN2hR?=
- =?utf-8?B?NDg1czBFL1FLa2xjNGV1MUJkdHo4VzRZVFZJUzdyNStwaFk3K1ZhaDJBUUNm?=
- =?utf-8?B?R3k0RTBNSC9JL3VGNWczOFhVMzlvRmJEVERHWUJlbjNtT1VNekx3ckxpTW9R?=
- =?utf-8?B?Nk43R1pFWkFidkd4TEpuNk5PMnhibVhoVWR4eHhRMW9QL21QeVVER1czczR5?=
- =?utf-8?B?Rzhtclp0Nzl1SHdqVWJwV3hkMWttNnFseTlJTDhhWUF6TFZkczE0NGVQQ2tl?=
- =?utf-8?B?SVFNWVgya2x1aGNkWGphTnFMdnBzdFE5S2hEVWZvL1Z2amV2ZmpzTnNnMFNH?=
- =?utf-8?B?a2Z3R21jY1d0eGRIMWlCdW1kUVp2YjQ4bXF6bGtna3ZxN2VEaFdBMUpUNXpw?=
- =?utf-8?B?cVl1VWhwSHpmM2EzY0xId1BWay95YWxtcWNTa05ncFYySFlsbThUUVJQNDlL?=
- =?utf-8?B?czYzTGlHMXJNS0NzTkdRNHRkQnJWRGF6QU1XZ1ZyLzJCZzUrYjYvajJuMUVQ?=
- =?utf-8?B?YW51QjJNbXBFejhTOVBBeUg2MTRpRkMzSENzRlRtalZqc3BneHUvbk1URyty?=
- =?utf-8?B?L1Q5WE92ei93RGJZaGxESXJpYjZYQUFNRjFGeFJuK0xjMWNLTi8yQ2UwVzNO?=
- =?utf-8?B?TnJxSnlZUVRjVXJObGNpS205M01xQit3TmdtMnNzVHZnMU02UUpueWtVbVhQ?=
- =?utf-8?B?R00wanAxZHVzOTg2U0ptQ0U2RHpuMDljaHMyb3ErSE45MU5SOUgyQlZwREIw?=
- =?utf-8?B?MWRtY2swOEsrOW9SL3pUMFN1RkFKa2VORTJmWGMyWlR5Zkk4ci9QRkx2bEhM?=
- =?utf-8?B?RUNwdzZrZm1MV003RnB3Y1l6Y2hONHJEVjh4by9NZXpKMmsyTElSNzcwbHhU?=
- =?utf-8?B?azVUOFlmWVBsb21VaHpJMHp4R0hxN09GRlhCaC8xbVpQbThNUllzOWUrSFUw?=
- =?utf-8?B?MTBhS3hjaFdsa0thL1FDcnU2S2pSOFhGOHBncDkvTlBCcElLc05NNnRDZjBw?=
- =?utf-8?B?aWE3MkdJY2JFWXYvaGgyYU5udWdLY3RJQnRDeVRhdmg1V0ozK2NTeGlRTEtM?=
- =?utf-8?B?ZXhnSkFIRXNwS1BDMDZ0T3MyTTJLSFh2VHdTV1hvVHJKb2ZoZGRNUXlqb3N6?=
- =?utf-8?B?UnRKOWRteVV6U2M1M2hWZ3dDcGpHaVYwMmRJT1Y5TWtDY1VwNVV6RDhTdFlk?=
- =?utf-8?B?RzY0SHIwZW1lNGJKZnNNdS9nMTh4SFpPemt1V3l5aDZxd3JWb1p3QWxOa21i?=
- =?utf-8?B?UGhMVEExK3ExdHFOUUtuRXorSml0dFhEdmlPcVhYV2pqWnVWWE1va1RPMTlB?=
- =?utf-8?B?ejFBb3pLMDI4UmRDK3JFQWo0WFhUNWRENHlISW8zVzFPT0ZoWU9TKytIUGR1?=
- =?utf-8?B?WU9VS05oS2FZaE9yS284dVUzaE0ydlN0WHlCSDZlNXRyZHgyekVhS0thdEUx?=
- =?utf-8?B?NlVEMm50alFWcWZXbHV3TjZuSDRqQnBXci9UeVpOUXA3UlRVamNHTkg4dU1z?=
- =?utf-8?Q?IkUrnCvkU0GajNSzZsncxN8Nw?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1ce9e7d-b755-4493-e4af-08dac8e3c150
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2022 21:36:15.5125
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sJWIuThQ9PdcTCW0dLB1ojJPjicc6vGYxTDejqpELjhM8uI+5Wq5iiB+1usGkO8dlMVPhn/w6aK6/tzguywqxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4259
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b712bc81-4446-9be4-fd59-d08981d13475@amd.com>
 
-On 11/17/2022 2:18 PM, Peter Gonda wrote:
-> On Wed, Aug 17, 2022 at 9:47 PM Alper Gun <alpergun@google.com> wrote:
->>
->> On Mon, Jun 20, 2022 at 4:12 PM Ashish Kalra <Ashish.Kalra@amd.com> wrote:
->>>
->>> From: Brijesh Singh <brijesh.singh@amd.com>
->>>
->>> When SEV-SNP is enabled in the guest VM, the guest memory pages can
->>> either be a private or shared. A write from the hypervisor goes through
->>> the RMP checks. If hardware sees that hypervisor is attempting to write
->>> to a guest private page, then it triggers an RMP violation #PF.
->>>
->>> To avoid the RMP violation with GHCB pages, added new post_{map,unmap}_gfn
->>> functions to verify if its safe to map GHCB pages.  Uses a spinlock to
->>> protect against the page state change for existing mapped pages.
->>>
->>> Need to add generic post_{map,unmap}_gfn() ops that can be used to verify
->>> that its safe to map a given guest page in the hypervisor.
->>>
->>> This patch will need to be revisited later after consensus is reached on
->>> how to manage guest private memory as probably UPM private memslots will
->>> be able to handle this page state change more gracefully.
->>>
->>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
->>> Signed-off by: Ashish Kalra <ashish.kalra@amd.com>
->>> ---
->>>   arch/x86/include/asm/kvm-x86-ops.h |  1 +
->>>   arch/x86/include/asm/kvm_host.h    |  3 ++
->>>   arch/x86/kvm/svm/sev.c             | 48 ++++++++++++++++++++++++++++--
->>>   arch/x86/kvm/svm/svm.c             |  3 ++
->>>   arch/x86/kvm/svm/svm.h             | 11 +++++++
->>>   5 files changed, 64 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
->>> index e0068e702692..2dd2bc0cf4c3 100644
->>> --- a/arch/x86/include/asm/kvm-x86-ops.h
->>> +++ b/arch/x86/include/asm/kvm-x86-ops.h
->>> @@ -130,6 +130,7 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
->>>   KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
->>>   KVM_X86_OP(alloc_apic_backing_page)
->>>   KVM_X86_OP_OPTIONAL(rmp_page_level_adjust)
->>> +KVM_X86_OP(update_protected_guest_state)
->>>
->>>   #undef KVM_X86_OP
->>>   #undef KVM_X86_OP_OPTIONAL
->>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
->>> index 49b217dc8d7e..8abc0e724f5c 100644
->>> --- a/arch/x86/include/asm/kvm_host.h
->>> +++ b/arch/x86/include/asm/kvm_host.h
->>> @@ -1522,7 +1522,10 @@ struct kvm_x86_ops {
->>>          unsigned long (*vcpu_get_apicv_inhibit_reasons)(struct kvm_vcpu *vcpu);
->>>
->>>          void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
->>> +
->>>          void (*rmp_page_level_adjust)(struct kvm *kvm, kvm_pfn_t pfn, int *level);
->>> +
->>> +       int (*update_protected_guest_state)(struct kvm_vcpu *vcpu);
->>>   };
->>>
->>>   struct kvm_x86_nested_ops {
->>> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->>> index cb2d1bbb862b..4ed90331bca0 100644
->>> --- a/arch/x86/kvm/svm/sev.c
->>> +++ b/arch/x86/kvm/svm/sev.c
->>> @@ -341,6 +341,7 @@ static int sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp)
->>>                  if (ret)
->>>                          goto e_free;
->>>
->>> +               spin_lock_init(&sev->psc_lock);
->>>                  ret = sev_snp_init(&argp->error);
->>>          } else {
->>>                  ret = sev_platform_init(&argp->error);
->>> @@ -2828,19 +2829,28 @@ static inline int svm_map_ghcb(struct vcpu_svm *svm, struct kvm_host_map *map)
->>>   {
->>>          struct vmcb_control_area *control = &svm->vmcb->control;
->>>          u64 gfn = gpa_to_gfn(control->ghcb_gpa);
->>> +       struct kvm_vcpu *vcpu = &svm->vcpu;
->>>
->>> -       if (kvm_vcpu_map(&svm->vcpu, gfn, map)) {
->>> +       if (kvm_vcpu_map(vcpu, gfn, map)) {
->>>                  /* Unable to map GHCB from guest */
->>>                  pr_err("error mapping GHCB GFN [%#llx] from guest\n", gfn);
->>>                  return -EFAULT;
->>>          }
->>>
->>> +       if (sev_post_map_gfn(vcpu->kvm, map->gfn, map->pfn)) {
->>> +               kvm_vcpu_unmap(vcpu, map, false);
->>> +               return -EBUSY;
->>> +       }
->>> +
->>>          return 0;
->>>   }
->>>
->>>   static inline void svm_unmap_ghcb(struct vcpu_svm *svm, struct kvm_host_map *map)
->>>   {
->>> -       kvm_vcpu_unmap(&svm->vcpu, map, true);
->>> +       struct kvm_vcpu *vcpu = &svm->vcpu;
->>> +
->>> +       kvm_vcpu_unmap(vcpu, map, true);
->>> +       sev_post_unmap_gfn(vcpu->kvm, map->gfn, map->pfn);
->>>   }
->>>
->>>   static void dump_ghcb(struct vcpu_svm *svm)
->>> @@ -3383,6 +3393,8 @@ static int __snp_handle_page_state_change(struct kvm_vcpu *vcpu, enum psc_op op,
->>>                                  return PSC_UNDEF_ERR;
->>>                  }
->>>
->>> +               spin_lock(&sev->psc_lock);
->>> +
->>>                  write_lock(&kvm->mmu_lock);
->>>
->>>                  rc = kvm_mmu_get_tdp_walk(vcpu, gpa, &pfn, &npt_level);
->>> @@ -3417,6 +3429,8 @@ static int __snp_handle_page_state_change(struct kvm_vcpu *vcpu, enum psc_op op,
->>>
->>>                  write_unlock(&kvm->mmu_lock);
->>>
->>> +               spin_unlock(&sev->psc_lock);
->>
->> There is a corner case where the psc_lock is not released. If
->> kvm_mmu_get_tdp_walk fails, the lock will be kept and will cause soft
->> lockup.
->>
+On Thu, Nov 17, 2022 at 02:56:47PM -0600, Kalra, Ashish wrote:
+> So we need to be able to reclaim all the pages or none.
 
-This is also already fixed for v7.
+/me goes and looks at SNP_PAGE_RECLAIM's retvals:
 
-Thanks,
-Ashish
+- INVALID_PLATFORM_STATE - platform is not in INIT state. That's
+certainly not a reason to leak pages.
+
+- INVALID_ADDRESS - PAGE_PADDR is not a valid system physical address.
+That's botched command buffer but not a broken page so no reason to leak
+them either.
+
+- INVALID_PAGE_STATE - the page is neither of those types: metadata,
+firmware, pre-guest nor pre-swap. So if you issue page reclaim on the
+wrong range of pages that looks again like a user error but no need to
+leak pages.
+
+- INVALID_PAGE_SIZE - a size mismatch. Still sounds to me like a user
+error of sev-guest instead of anything wrong deeper in the FW or HW.
+
+So in all those, if you end up supplying the wrong range of addresses,
+you most certainly will end up leaking the wrong pages.
+
+So it sounds to me like you wanna say: "Error reclaiming range, check
+your driver" instead of punishing any innocent pages.
+
+Now, if the retval from the fw were FIRMWARE_INTERNAL_ERROR or so, then
+sure, by all means. But not for the above. All the error conditions
+above sound like the kernel has supplied the wrong range/botched command
+buffer to the firmware so there's no need to leak pages.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
