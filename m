@@ -1,33 +1,33 @@
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE700383
-	for <linux-coco@lists.linux.dev>; Wed,  7 Dec 2022 01:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56CD376
+	for <linux-coco@lists.linux.dev>; Wed,  7 Dec 2022 01:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670377794; x=1701913794;
+  t=1670377799; x=1701913799;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wTnYWmM1Z8lnXpkf3CCIP9h4eff3UeEwYWr89BwyTuQ=;
-  b=U1JBKhaX5QPDBIQ3osbIXIbq+2sAlttoZ8R+ccTQaRjB5t+hnmOgmieY
-   ZKGq32L0nhxTbT8L1emWe1LE8hiy8JpXUJM3nayJLhZBiq+ysNvGVSQYU
-   J/v5p3ysogGJejiUcc0BUdXVVnFEvH1ge6hggXFQ4ReMXmZWM5i30i9iy
-   BCXHzm/SzoaXHjcrsI1VlKFHSPS6kMt4t1gpKoxzMMo8ze0OTqIveepE4
-   UDfa7t6B+rOUC5QLUcOjWKBbSTsHF1yqa0GTNjaQ6hwhrnaIMqrmdnjq8
-   E+MEj8/P1HTXbTf6lKF0ZFSSRoPtQFBaX3x0WmITLIL12kC/B0XmzFca0
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="315494458"
+  bh=oBiSIOxE3eoLPk40ExcpaFUWqTkEiCbV0j2bGnDI4n8=;
+  b=dJ6Kf+p7pq7OVLXdCIMJbKhO9G4PToMylfvLhXRMcImC4dSLwgiQDvhd
+   Z0seE+3buo/iSbVFIOo/gZeLrKziE4t137pa1bvvaiyO7P9x45Y0ONGUY
+   096PCQQJMYEgrstWbWbk0GKICCr0FclPRydatuMaUMKl8zLrlQjhY2xBD
+   qy9TIy3BMD97sdAFUHwW1vejSQGKz+ooqfBJ+gscqzvoJRfMMxuoms13N
+   NZJ0djf7YePuHBTCulncAjGncCgFVhDU0JRFHWQjjFAFHjUIEP+wLDFWh
+   QUAlV4yXyz9Ag9d60Cjd/UY86bXGc8zIutJZtQisCM+36Q6ZFW88i4hhz
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="316794406"
 X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="315494458"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:51 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="646427602"
+   d="scan'208";a="316794406"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:59 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="640082279"
 X-IronPort-AV: E=Sophos;i="5.96,223,1665471600"; 
-   d="scan'208";a="646427602"
+   d="scan'208";a="640082279"
 Received: from puneets1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.38.123])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:41 -0800
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 17:49:51 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 35405109C85; Wed,  7 Dec 2022 04:49:39 +0300 (+03)
+	id 814A0109C8C; Wed,  7 Dec 2022 04:49:39 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -61,11 +61,10 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Mike Rapoport <rppt@linux.ibm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCHv8 01/14] x86/boot: Centralize __pa()/__va() definitions
-Date: Wed,  7 Dec 2022 04:49:20 +0300
-Message-Id: <20221207014933.8435-2-kirill.shutemov@linux.intel.com>
+	Mike Rapoport <rppt@linux.ibm.com>
+Subject: [PATCHv8 08/14] x86/mm: Reserve unaccepted memory bitmap
+Date: Wed,  7 Dec 2022 04:49:27 +0300
+Message-Id: <20221207014933.8435-9-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.38.0
 In-Reply-To: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
 References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
@@ -77,71 +76,60 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace multiple __pa()/__va() definitions with a single one in misc.h.
+A given page of memory can only be accepted once. The kernel has to
+accept memory both in the early decompression stage and during normal
+runtime.
+
+A bitmap is used to communicate the acceptance state of each page
+between the decompression stage and normal runtime.
+
+boot_params is used to communicate location of the bitmap throughout
+the boot. The bitmap is allocated and initially populated in EFI stub.
+Decompression stage accepts pages required for kernel/initrd and marks
+these pages accordingly in the bitmap. The main kernel picks up the
+bitmap from the same boot_params and uses it to determine what has to
+be accepted on allocation.
+
+In the runtime kernel, reserve the bitmap's memory to ensure nothing
+overwrites it.
+
+The size of bitmap is determined with e820__end_of_ram_pfn() which
+relies on setup_e820() marking unaccepted memory as E820_TYPE_RAM.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Mike Rapoport <rppt@linux.ibm.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/x86/boot/compressed/ident_map_64.c | 8 --------
- arch/x86/boot/compressed/misc.h         | 9 +++++++++
- arch/x86/boot/compressed/sev.c          | 2 --
- 3 files changed, 9 insertions(+), 10 deletions(-)
+ arch/x86/kernel/e820.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
-index d4a314cc50d6..56550f289118 100644
---- a/arch/x86/boot/compressed/ident_map_64.c
-+++ b/arch/x86/boot/compressed/ident_map_64.c
-@@ -8,14 +8,6 @@
-  * Copyright (C)      2016  Kees Cook
-  */
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 9dac24680ff8..62068956bb76 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -1316,6 +1316,23 @@ void __init e820__memblock_setup(void)
+ 	int i;
+ 	u64 end;
  
--/*
-- * Since we're dealing with identity mappings, physical and virtual
-- * addresses are the same, so override these defines which are ultimately
-- * used by the headers in misc.h.
-- */
--#define __pa(x)  ((unsigned long)(x))
--#define __va(x)  ((void *)((unsigned long)(x)))
--
- /* No PAGE_TABLE_ISOLATION support needed either: */
- #undef CONFIG_PAGE_TABLE_ISOLATION
- 
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 62208ec04ca4..d37d612a6390 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -19,6 +19,15 @@
- /* cpu_feature_enabled() cannot be used this early */
- #define USE_EARLY_PGTABLE_L5
- 
-+/*
-+ * Boot stub deals with identity mappings, physical and virtual addresses are
-+ * the same, so override these defines.
-+ *
-+ * <asm/page.h> will not define them if they are already defined.
-+ */
-+#define __pa(x)  ((unsigned long)(x))
-+#define __va(x)  ((void *)((unsigned long)(x)))
++	/*
++	 * Mark unaccepted memory bitmap reserved.
++	 *
++	 * This kind of reservation usually done from early_reserve_memory(),
++	 * but early_reserve_memory() called before e820__memory_setup(), so
++	 * e820_table is not finalized and e820__end_of_ram_pfn() cannot be
++	 * used to get correct RAM size.
++	 */
++	if (boot_params.unaccepted_memory) {
++		unsigned long size;
 +
- #include <linux/linkage.h>
- #include <linux/screen_info.h>
- #include <linux/elf.h>
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index c93930d5ccbd..e4d3a2da2eb9 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -104,9 +104,7 @@ static enum es_result vc_read_mem(struct es_em_ctxt *ctxt,
- }
- 
- #undef __init
--#undef __pa
- #define __init
--#define __pa(x)	((unsigned long)(x))
- 
- #define __BOOT_COMPRESSED
- 
++		/* One bit per 2MB */
++		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
++				    PMD_SIZE * BITS_PER_BYTE);
++		memblock_reserve(boot_params.unaccepted_memory, size);
++	}
++
+ 	/*
+ 	 * The bootstrap memblock region count maximum is 128 entries
+ 	 * (INIT_MEMBLOCK_REGIONS), but EFI might pass us more E820 entries
 -- 
 2.38.0
 
