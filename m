@@ -1,33 +1,33 @@
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FAE2F3D
-	for <linux-coco@lists.linux.dev>; Fri,  9 Dec 2022 15:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF01B63B7
+	for <linux-coco@lists.linux.dev>; Fri,  9 Dec 2022 15:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670600578; x=1702136578;
+  t=1670600802; x=1702136802;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ZectTi6kVmIzE23BoUwfhpoNIuw94kGDjFMTqeER7Jw=;
-  b=Pcgw1TA8uBmqSDFOB5bjnAElv2+sFglQJYh6cpfU7/Qv/bt5L8wM0UvZ
-   pf7fuuNJRHSPvoGJMDqYYx2dJBC2doTqYbY4o2WCCD2O3Ozqe5+WFH1cF
-   /QJ0/Tg2DsXR6iEmR7T/gz/1Wnsxq8IGlODsE7WXdXV9NMh1DC/6ykJ1j
-   5+yCEdiA/OZe8jLMg6YNgc/LT3wW/7MWrAB7ix30IrPbOdl5FJuGt19Tn
-   P7rYYqCClyTxteJvNmNQ14cfbjsrI4vr6ZZNoPmW1uteX3kpjpNgdVknq
-   DjkAFgf5SMiprEJzArQcGFxw9z+CWcUJwDKPjoGwr+//DzvqgxhQKnSZ1
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10556"; a="403735886"
+  bh=q8N2XjMXM6I+jsDrrd5PF9tR+Xb8pSXqIisIGUSW73s=;
+  b=CrC/mO40Z3gTzhoxcSXzFlwAmuX0dE6SN9rWcnpJIWo4sKOyiw2Q8h1N
+   owXuZLGNrIvhdpIdV9gBMD3ZO0vuRezlUc+35Lx+Z3eWg75Iq5OqGMzRP
+   FmgO8s+PgQAg4YyEH+fd5Xrk2TR+IU78J8UCfKPDUNHPxlnWvXoRJgTFK
+   MjQuDaS/4qhA5g+AtlWXr212YCWFye0ZKOVcykbbZXKMfwkUYG8mv2nfV
+   7am98SbySGIcRDRWG5m1DTjs/FbrKWed7NqB6CuQPTd5mSdsn/7wgACe5
+   bEiqHvbOnWn3Jzwi2vbiPLmviGDDIHFhmz00vuK+z2XBmY0DELxBUO2HF
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10556"; a="297163538"
 X-IronPort-AV: E=Sophos;i="5.96,230,1665471600"; 
-   d="scan'208";a="403735886"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2022 07:42:57 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10556"; a="892708369"
+   d="scan'208";a="297163538"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2022 07:45:35 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10556"; a="679964637"
 X-IronPort-AV: E=Sophos;i="5.96,230,1665471600"; 
-   d="scan'208";a="892708369"
+   d="scan'208";a="679964637"
 Received: from rrode-mobl1.amr.corp.intel.com (HELO [10.251.24.37]) ([10.251.24.37])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2022 07:42:57 -0800
-Message-ID: <e79c4b97-5718-9a60-406f-1df994ba089c@linux.intel.com>
-Date: Fri, 9 Dec 2022 07:42:56 -0800
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2022 07:45:35 -0800
+Message-ID: <acef3c81-635e-6753-577e-3905117823b9@linux.intel.com>
+Date: Fri, 9 Dec 2022 07:45:34 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -36,8 +36,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.4.2
-Subject: Re: [PATCH 2/4] x86/tdx: Use ReportFatalError to report missing
- SEPT_VE_DISABLE
+Subject: Re: [PATCH 3/4] x86/tdx: Relax SEPT_VE_DISABLE check for debug TD
 Content-Language: en-US
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>,
@@ -46,95 +45,71 @@ Cc: Thomas Gleixner <tglx@linutronix.de>,
  Elena Reshetova <elena.reshetova@intel.com>, x86@kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20221209132524.20200-1-kirill.shutemov@linux.intel.com>
- <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
+ <20221209132524.20200-4-kirill.shutemov@linux.intel.com>
 From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20221209132524.20200-4-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
 On 12/9/22 5:25 AM, Kirill A. Shutemov wrote:
-> The check for SEPT_VE_DISABLE happens early in the kernel boot where
-> earlyprintk is not yet functional. Kernel successfully detect broken
-> TD configuration and stops the kernel with panic(), but it cannot
-> communicate the reason to the user.
+> SEPT_VE_DISABLE check is required to keep the TD protected from VMM
+> attacks, but it makes harder to debug guest kernel bugs. If guest
+> touches unaccepted memory the TD will get terminated without any
+> traces on what has happened.
 > 
-> Use TDG.VP.VMCALL<ReportFatalError> to report the error. The hypercall
-> can encode message up to 64 bytes in eight registers.
+> Relax the SEPT_VE_DISABLE check to warning on debug TD and panic() in
+> the #VE handler on EPT-violation on private memory. It will produce
+> useful backtrace.
 > 
 > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > ---
->  arch/x86/coco/tdx/tdx.c | 38 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 37 insertions(+), 1 deletion(-)
+>  arch/x86/coco/tdx/tdx.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
 > 
 > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index cfd4c95b9f04..8ad04d101270 100644
+> index 8ad04d101270..0e47846ff8ff 100644
 > --- a/arch/x86/coco/tdx/tdx.c
 > +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -22,6 +22,7 @@
+> @@ -38,6 +38,7 @@
+>  #define VE_GET_PORT_NUM(e)	((e) >> 16)
+>  #define VE_IS_IO_STRING(e)	((e) & BIT(4))
 >  
->  /* TDX hypercall Leaf IDs */
->  #define TDVMCALL_MAP_GPA		0x10001
-> +#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
+> +#define ATTR_DEBUG		BIT(0)
+>  #define ATTR_SEPT_VE_DISABLE	BIT(28)
 >  
->  /* MMIO direction */
->  #define EPT_READ	0
-> @@ -140,6 +141,41 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
->  }
->  EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
->  
-> +static void __noreturn tdx_panic(const char *msg)
-> +{
-> +	struct tdx_hypercall_args args = {
-> +		.r10 = TDX_HYPERCALL_STANDARD,
-> +		.r11 = TDVMCALL_REPORT_FATAL_ERROR,
-> +		.r12 = 0, /* Error code: 0 is Panic */
-> +	};
-> +	union {
-> +		/* Define register order according to the GHCI */
-> +		struct { u64 r14, r15, rbx, rdi, rsi, r8, r9, rdx; };
-> +
-> +		char str[64];
-> +	} message;
-> +
-> +	/* VMM assumes '\0' in byte 65, if the message took all 64 bytes */
-> +	strncpy(message.str, msg, 64);
-> +
-> +	args.r8  = message.r8;
-> +	args.r9  = message.r9;
-> +	args.r14 = message.r14;
-> +	args.r15 = message.r15;
-> +	args.rdi = message.rdi;
-> +	args.rsi = message.rsi;
-> +	args.rbx = message.rbx;
-> +	args.rdx = message.rdx;
-> +
-> +	/*
-> +	 * Keep calling the hypercall in case VMM did not terminated
-> +	 * the TD as it must.
-> +	 */
-> +	while (1) {
-> +		__tdx_hypercall(&args, 0);
-> +	}
-
-Instead of an infinite loop, I'm wondering if the guest should panic after
-retrying for few times.
-
-> +}
-> +
->  static void tdx_parse_tdinfo(u64 *cc_mask)
->  {
->  	struct tdx_module_output out;
-> @@ -172,7 +208,7 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
+>  /* TDX Module call error codes */
+> @@ -207,8 +208,15 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
+>  	 * TD-private memory.  Only VMM-shared memory (MMIO) will #VE.
 >  	 */
 >  	td_attr = out.rdx;
->  	if (!(td_attr & ATTR_SEPT_VE_DISABLE))
-> -		panic("TD misconfiguration: SEPT_VE_DISABLE attibute must be set.\n");
-> +		tdx_panic("TD misconfiguration: SEPT_VE_DISABLE attribute must be set.");
+> -	if (!(td_attr & ATTR_SEPT_VE_DISABLE))
+> -		tdx_panic("TD misconfiguration: SEPT_VE_DISABLE attribute must be set.");
+> +	if (!(td_attr & ATTR_SEPT_VE_DISABLE)) {
+> +		const char *msg = "TD misconfiguration: SEPT_VE_DISABLE attribute must be set.";
+> +
+> +		/* Relax SEPT_VE_DISABLE check for debug TD. */
+> +		if (td_attr & ATTR_DEBUG)
+> +			pr_warn("%s\n", msg);
+> +		else
+> +			tdx_panic(msg);
+> +	}
 >  }
 >  
 >  /*
+> @@ -682,6 +690,8 @@ static int virt_exception_kernel(struct pt_regs *regs, struct ve_info *ve)
+>  	case EXIT_REASON_CPUID:
+>  		return handle_cpuid(regs, ve);
+>  	case EXIT_REASON_EPT_VIOLATION:
+> +		if (ve->gpa != cc_mkdec(ve->gpa))
+> +			panic("Unexpected EPT-violation on private memory.");
+
+Why add this change part of TD debug check? Should this be a separate patch?
+
+>  		return handle_mmio(regs, ve);
+>  	case EXIT_REASON_IO_INSTRUCTION:
+>  		return handle_io(regs, ve);
 
 -- 
 Sathyanarayanan Kuppuswamy
