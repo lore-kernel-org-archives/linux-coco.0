@@ -1,33 +1,33 @@
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3D52F28
-	for <linux-coco@lists.linux.dev>; Mon, 12 Dec 2022 16:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A93B323B
+	for <linux-coco@lists.linux.dev>; Tue, 13 Dec 2022 22:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670863182; x=1702399182;
+  t=1670971469; x=1702507469;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=wPTexe2W3vdVcSg64N0TBuqy/SADOm3ZABVUT/xq5Qs=;
-  b=nBEoc77aJ2ocLgS4OmcNGvbGvj5oKGK00l6YIkJmVAXy5LUeEqWZlqNO
-   MYWjoOnXw3awsViKIG+IGp4/2Ms3LKMfbtpcyY04LY1oiwD6j+FwGBm4X
-   RqiGWjVojsBF5lUYqTH054lbj2y83rHeLEaAhvDNqx35hSEBgvCBM8HK5
-   mwIhEpCKyRNbMggLq51IpTtg1XsFfrKEau90IxqMr3w61KeyyrUzv3BJP
-   ilLsZRp6YaeOl1Iq3GoqfiF+f+hcUst9V7nfKqI06f+IijhMKYKaZXbc+
-   eO9KtiYjqAAVuuF9llur65j2psk7sI6013JZW4AwyfRQzCm6LsB3nmALY
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10559"; a="298247552"
-X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
-   d="scan'208";a="298247552"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 08:39:41 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10559"; a="711745078"
-X-IronPort-AV: E=Sophos;i="5.96,238,1665471600"; 
-   d="scan'208";a="711745078"
-Received: from iprasad-mobl.amr.corp.intel.com (HELO [10.212.182.78]) ([10.212.182.78])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2022 08:39:41 -0800
-Message-ID: <7815a2f0-1ce0-b0d9-6559-a10f13e88a54@intel.com>
-Date: Mon, 12 Dec 2022 08:39:40 -0800
+  bh=c+9YkiDCKG1HcuHGaSW/UZ3+yOPPib+maJicYy8Yu2w=;
+  b=UW0gxbZg0rvG3OttJ0mueJyrQmtZr7c8sLEk5M84BgxlaVZAAaPcEe+c
+   RYeZY8tKZmkfdJxxJS/XSIghzGUw2+iZr5Lnl+MGjc7pxp1WdrqAem9Wc
+   z7tLXaZswS65hqHoF+Qn/zRF3hzTzn+Aks8+WV4Lj8vdG/DGZLAU1dgqT
+   jF0/IywZtxob97WA8e7c6MBJZ5FMYkSS/kZkaSuE93F+pKlRpqzMuQ5Yh
+   a54j5l8vKwJOr3+6gokYGkTbnQhmoXYOIyRBPebdVMcI1nJ2xQCmq9unu
+   acGOhDpX4nkj08Ah26vhXJJF9k33fdh9dMYtHj8Mb/rd4HGSHoO+Y/H9u
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="380463008"
+X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
+   d="scan'208";a="380463008"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 14:44:28 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="977595516"
+X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
+   d="scan'208";a="977595516"
+Received: from snjones-mobl1.amr.corp.intel.com (HELO [10.212.218.27]) ([10.212.218.27])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 14:44:27 -0800
+Message-ID: <7d2a1ae7-56cf-a83d-4883-b2f8631a5e3d@intel.com>
+Date: Tue, 13 Dec 2022 14:44:27 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -36,50 +36,41 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH 2/4] x86/tdx: Use ReportFatalError to report missing
- SEPT_VE_DISABLE
+Subject: Re: [PATCH 1/4] x86/tdx: Expand __tdx_hypercall() to handle more
+ arguments
 Content-Language: en-US
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>,
  Elena Reshetova <elena.reshetova@intel.com>, x86@kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20221209132524.20200-1-kirill.shutemov@linux.intel.com>
- <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
- <e79c4b97-5718-9a60-406f-1df994ba089c@linux.intel.com>
- <20221209170647.r32yjyc3hsqtnffo@box.shutemov.name>
- <2e305bb5-9595-3531-6134-24344ff5c797@linux.intel.com>
- <e13331b2-a68c-c823-d02f-ba50949214cb@intel.com>
- <f1937bd1-0400-608d-3cda-b9597c0e4393@linux.intel.com>
+ <20221209132524.20200-2-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <f1937bd1-0400-608d-3cda-b9597c0e4393@linux.intel.com>
+In-Reply-To: <20221209132524.20200-2-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/12/22 08:37, Sathyanarayanan Kuppuswamy wrote:
-> On 12/12/22 8:10 AM, Dave Hansen wrote:
->> On 12/9/22 12:51, Sathyanarayanan Kuppuswamy wrote:
->>>>>> +	while (1) {
->>>>>> +		__tdx_hypercall(&args, 0);
->>>>>> +	}
->>>>> Instead of an infinite loop, I'm wondering if the guest should panic after
->>>>> retrying for few times.
->>>> Hm. What difference would it make?
->>> IIUC, the goal of this patch is to report the fatal error to VMM and panic.
->>> But, if VMM does not terminate the guest as we expect, rather than trying 
->>> continuously, isn't it better to panic ourselves? That way the behavior
->>> will be similar to what we have currently.
->> What does "panic ourselves" mean exactly?  What is the current behavior
->> which that would match?
-> I meant directly calling panic(). Before this patch, if the SEPT VE DISABLE
-> attribute was not set, we would call panic(). In this patch, we try to report
-> the error to VMM and wait for it to terminate the guest in the same case.
-> But after reporting the error, if VMM does not terminate the guest as expected,
-> I thought instead of retrying continuously, we can call panic() directly after
-> some retries. 
+On 12/9/22 05:25, Kirill A. Shutemov wrote:
+> So far __tdx_hypercall() only handles six arguments for VMCALL.
+> Expanding it to six more register would allow to cover more use-cases.
 
-Could you explain how panic() is better than retrying?
+like...
 
-You might also want to go look at the original changelog for this patch.
+> Using RDI and RSI as VMCALL arguments requires more register shuffling.
+> RAX is used to hold tdx_hypercall_args pointer and RBP stores flags.
+> 
+> While there, fix typo in the comment on panic branch.
+
+This isn't the world's largest patch, but it doing at least three or
+four different logical things.  Ideally, you'd do the restructuring in a
+couple of patches and then the last one would just add the six new
+registers.
+
+Could you take 20 minutes and see if you can break this down into three
+or four patches?
+
+It looks _ok_.  I'd almost ack it as-is, but it should be pretty simple
+to break down.
+
