@@ -1,33 +1,33 @@
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8802323B
-	for <linux-coco@lists.linux.dev>; Tue, 13 Dec 2022 23:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FA48472
+	for <linux-coco@lists.linux.dev>; Tue, 13 Dec 2022 23:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1670972782; x=1702508782;
+  t=1670973225; x=1702509225;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=CCUnzEyGEKLvz2QKxpZRU55Orhdnz4fyaad5thE9it0=;
-  b=jY1seP8XoK0hFfcgn2oF132Cu1pn/JxRLvgQTltR5WPTI6zg/i5GsZKB
-   Mjy8eTw8taXvg9b3zDuIRx4q9iOG9adA/6UoGTcB/0dcvELGoFGYYsZgO
-   XkJpb/U2sitVsr34nS9LslHgPdi2UYn4UNb7KPuF+Bm7b8bqCmvzeS47K
-   MLROzDh2NpKrzfcC5VKCXG93jVC6unUuAVEW9W9On03+nlqGyPcRl7uMc
-   1UD3xS8gyo+jbDJ8sweOTJBYHt1QeYfGjIwKBH0EGMXtJvfWzdoKBwNVQ
-   vqhkMPG34NKPUFlTH/M1PJsyEA+Mt4LDjwadlNytXjONyLrOhxSGw3p9d
+  bh=bhHTeRftPavsWtwdAURnlzeya5sIPgv+TpvVOQO96to=;
+  b=GkUye/dkfXy5LnPIuBncK8lD9i/173pR+XFul5kptYRPGiviJgaA93Yk
+   eQaXCLGe3GMiHGLUrQM7SLss2AFaMVd002z8BV3qxygzu/qHij50EHdw/
+   Fnx9opbhNZw39f52hjwQqTnE7rVH/M8wepcKDY0W7agwkkJC1ZcapOEuc
+   wzDgZg/RSACOYBglk6KwxP1cIeV8jgeHfsz+ZQbY77qmCOq6rAsw1c/o3
+   8nUUq7mMfFxr6jCc9AAccuF7QP8ulGDzqxEbEgBnT8oXUMpRS+CqTg5xd
+   uMve5bjTCSYGNM6M6XxClEcLHoZeEBTUT/aOIkF2pS8L6LFUNXOGDXVvR
    Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="305898783"
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="305900712"
 X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
-   d="scan'208";a="305898783"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 15:06:22 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="648731771"
+   d="scan'208";a="305900712"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 15:13:44 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="791106051"
 X-IronPort-AV: E=Sophos;i="5.96,242,1665471600"; 
-   d="scan'208";a="648731771"
+   d="scan'208";a="791106051"
 Received: from snjones-mobl1.amr.corp.intel.com (HELO [10.212.218.27]) ([10.212.218.27])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 15:06:07 -0800
-Message-ID: <3121847d-d334-67fc-43d8-0670c08c64b6@intel.com>
-Date: Tue, 13 Dec 2022 15:06:07 -0800
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2022 15:13:43 -0800
+Message-ID: <4e595e75-2c5f-e114-9c2c-37689870639c@intel.com>
+Date: Tue, 13 Dec 2022 15:13:43 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -36,8 +36,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH 2/4] x86/tdx: Use ReportFatalError to report missing
- SEPT_VE_DISABLE
+Subject: Re: [PATCH 3/4] x86/tdx: Relax SEPT_VE_DISABLE check for debug TD
 Content-Language: en-US
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>
@@ -46,137 +45,86 @@ Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
  Elena Reshetova <elena.reshetova@intel.com>, x86@kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20221209132524.20200-1-kirill.shutemov@linux.intel.com>
- <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
+ <20221209132524.20200-4-kirill.shutemov@linux.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20221209132524.20200-4-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 12/9/22 05:25, Kirill A. Shutemov wrote:
-> The check for SEPT_VE_DISABLE happens early in the kernel boot where
-> earlyprintk is not yet functional. Kernel successfully detect broken
-> TD configuration and stops the kernel with panic(), but it cannot
-> communicate the reason to the user.
+> SEPT_VE_DISABLE check is required to keep the TD protected from VMM
+> attacks, but it makes harder to debug guest kernel bugs. If guest
+> touches unaccepted memory the TD will get terminated without any
+> traces on what has happened.
 
-Linux TDX guests require that the SEPT_VE_DISABLE "attribute" be set.
-If it is not set, the kernel is theoretically required to handle
-exceptions anywhere that kernel memory is accessed, including places
-like NMI handlers and in the syscall entry gap.
-
-Rather than even try to handle these exceptions, the kernel refuses to
-run if SEPT_VE_DISABLE is unset.
-
-However, the SEPT_VE_DISABLE detection and refusal code happens very
-early in boot, even before earlyprintk runs.  Calling panic() will
-effectively just hang the system.
-
-Instead, call a TDX-specific panic() function.  This makes a very simple
-TDVMCALL which gets a short error string out to the hypervisor without
-any console infrastructure.
+This is a bit sparse.
 
 --
 
-Is that better?
+A "SEPT #VE" occurs when a TDX guest touches memory that is not properly
+mapped into the "secure EPT".  This can be the result of hypervisor
+attacks or bugs, *OR* guest bugs.  Most notably, buggy guests might
+touch unaccepted memory for lots of different memory safety bugs like
+buffer overflows.
 
-Also, are you sure we want to do this?  Is there any way to do this
-inside of panic() itself to get panic() itself to call tdx_panic() and
-get a short error message out to the hypervisor?
+TDX guests do not want to continue in the face of hypervisor attacks or
+hypervisor bugs.  They want to terminate as fast and safely as possible.
+ SEPT_VE_DISABLE ensures that TDX guests *can't* continue in the face of
+these kinds of issues.
 
-Getting *all* users of panic this magic ability would be a lot better
-than giving it to one call-site of panic().
+But, that causes a problem.  TDX guests that can't continue can't spit
+out oopses or other debugging info.  In essence SEPT_VE_DISABLE=1 guests
+are not debuggable.  That's a problem.
 
-I'm all for making the panic() path as short and simple as possible, but
-it would be nice if this fancy hypercall would get used in more than one
-spot.
+--
 
-> Use TDG.VP.VMCALL<ReportFatalError> to report the error. The hypercall
-> can encode message up to 64 bytes in eight registers.
+Eh?
+
+> Relax the SEPT_VE_DISABLE check to warning on debug TD and panic() in
+> the #VE handler on EPT-violation on private memory. It will produce
+> useful backtrace.
 > 
 > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > ---
->  arch/x86/coco/tdx/tdx.c | 38 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 37 insertions(+), 1 deletion(-)
+>  arch/x86/coco/tdx/tdx.c | 14 ++++++++++++--
+>  1 file changed, 12 insertions(+), 2 deletions(-)
 > 
 > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index cfd4c95b9f04..8ad04d101270 100644
+> index 8ad04d101270..0e47846ff8ff 100644
 > --- a/arch/x86/coco/tdx/tdx.c
 > +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -22,6 +22,7 @@
+> @@ -38,6 +38,7 @@
+>  #define VE_GET_PORT_NUM(e)	((e) >> 16)
+>  #define VE_IS_IO_STRING(e)	((e) & BIT(4))
 >  
->  /* TDX hypercall Leaf IDs */
->  #define TDVMCALL_MAP_GPA		0x10001
-> +#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
+> +#define ATTR_DEBUG		BIT(0)
+>  #define ATTR_SEPT_VE_DISABLE	BIT(28)
 >  
->  /* MMIO direction */
->  #define EPT_READ	0
-> @@ -140,6 +141,41 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
->  }
->  EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
->  
-> +static void __noreturn tdx_panic(const char *msg)
-> +{
-> +	struct tdx_hypercall_args args = {
-> +		.r10 = TDX_HYPERCALL_STANDARD,
-> +		.r11 = TDVMCALL_REPORT_FATAL_ERROR,
-> +		.r12 = 0, /* Error code: 0 is Panic */
-> +	};
-> +	union {
-> +		/* Define register order according to the GHCI */
-> +		struct { u64 r14, r15, rbx, rdi, rsi, r8, r9, rdx; };
-> +
-> +		char str[64];
-> +	} message;
-> +
-> +	/* VMM assumes '\0' in byte 65, if the message took all 64 bytes */
-> +	strncpy(message.str, msg, 64);
-> +
-> +	args.r8  = message.r8;
-> +	args.r9  = message.r9;
-> +	args.r14 = message.r14;
-> +	args.r15 = message.r15;
-> +	args.rdi = message.rdi;
-> +	args.rsi = message.rsi;
-> +	args.rbx = message.rbx;
-> +	args.rdx = message.rdx;
-
-I dunno.  Is that struct/union better, or would something like this be
-more readable:
-
-	args.r8  = *(u64 *)&message[48];
-	args.r9  = *(u64 *)&message[56];
-
-and just hard-code the offsets.
-
-> +	/*
-> +	 * Keep calling the hypercall in case VMM did not terminated
-
-							terminate^
-
-> +	 * the TD as it must.
-> +	 */
-> +	while (1) {
-> +		__tdx_hypercall(&args, 0);
-> +	}
-> +}
-> +
->  static void tdx_parse_tdinfo(u64 *cc_mask)
->  {
->  	struct tdx_module_output out;
-> @@ -172,7 +208,7 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
+>  /* TDX Module call error codes */
+> @@ -207,8 +208,15 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
+>  	 * TD-private memory.  Only VMM-shared memory (MMIO) will #VE.
 >  	 */
 >  	td_attr = out.rdx;
->  	if (!(td_attr & ATTR_SEPT_VE_DISABLE))
-> -		panic("TD misconfiguration: SEPT_VE_DISABLE attibute must be set.\n");
-> +		tdx_panic("TD misconfiguration: SEPT_VE_DISABLE attribute must be set.");
+> -	if (!(td_attr & ATTR_SEPT_VE_DISABLE))
+> -		tdx_panic("TD misconfiguration: SEPT_VE_DISABLE attribute must be set.");
+> +	if (!(td_attr & ATTR_SEPT_VE_DISABLE)) {
+> +		const char *msg = "TD misconfiguration: SEPT_VE_DISABLE attribute must be set.";
+> +
+> +		/* Relax SEPT_VE_DISABLE check for debug TD. */
+> +		if (td_attr & ATTR_DEBUG)
+> +			pr_warn("%s\n", msg);
+> +		else
+> +			tdx_panic(msg);
+> +	}
 >  }
+>  
+>  /*
+> @@ -682,6 +690,8 @@ static int virt_exception_kernel(struct pt_regs *regs, struct ve_info *ve)
+>  	case EXIT_REASON_CPUID:
+>  		return handle_cpuid(regs, ve);
+>  	case EXIT_REASON_EPT_VIOLATION:
+> +		if (ve->gpa != cc_mkdec(ve->gpa))
+> +			panic("Unexpected EPT-violation on private memory.");
 
-Would it be worth making it more clear when the message is truncated?
-Maybe something like:
+What's the cc_mkdec() doing?
 
-	if (strlen(msg) > 64) {
-		len = 64
-		strncpy(&msg[61], "...", 3);
-	}
-
-I'm sure I have five off-by-one bugs in there, but you get the idea.
-Can we stick a "..." at the end of things that get truncated?
