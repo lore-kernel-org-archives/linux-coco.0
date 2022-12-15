@@ -1,130 +1,142 @@
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD2E7C
-	for <linux-coco@lists.linux.dev>; Thu, 15 Dec 2022 01:01:26 +0000 (UTC)
-Received: by mail-oi1-f170.google.com with SMTP id m204so4112793oib.6
-        for <linux-coco@lists.linux.dev>; Wed, 14 Dec 2022 17:01:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+AXpgMmuL3NSvfn8iBTUkD9z8GYz9GV/xJMhFU7McSc=;
-        b=Hj80HcFk1+wGgWdM0qYtfoEP118g7pnbDZ1iaONKLRyq7ALD/XEV7vVSxyeyG5C332
-         DuC73/7jKGMCEB1dULH+KLHOKSeumpkwpUW+GG68qvMmQss4v6sir0gMkHngJ4x1PdNs
-         8vdv6ESeeyQvXXjiXz48kEds4m3Lm1jtvmFWcha7pPVkxpn+OyzTG9/53OGVegS45kva
-         5BafxskuHY7iVDaqjM/QPv26NHNdJ8WRDt4flC21tJbgAsNeqEiTNTWmog0Muzakrg+B
-         VTXrP+16m5YsUQA7uxS09XE7vABC6lHuib020amhH4dBXy3QWuaWt/Jwty6r6MYSoUQT
-         6e1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+AXpgMmuL3NSvfn8iBTUkD9z8GYz9GV/xJMhFU7McSc=;
-        b=4Qia7LfIL1mtN36xmHORPhPRMfRg6pLa9X3aOnwarKFbxVrJ08NA4VV6RTu1KJ02AI
-         UCUl3w+saRLfpxov3JhDgpXdRKUrvPtCj8AgBOjP9lIEP4a6yx7r8mKrRnGLjM4eSklT
-         EzCBQd5u7EKbrrpyQsiOx/Mu+4b5tQqv+0z6hspjbMNnYSR81dTrdaCLwtRMprYG95Rs
-         P9jYkFG6o8G+5sIkRb7JCercWvGcpsgjJEShKs6hYMyQbW0E/4FmGeFPK4JXsQB5PZPv
-         4AkxO9Oytdkn38sljHNHcYUIXyyJlNkd+W1pSIb+nSk/svLbbFuBCYrfxtcJ+ssY8GWe
-         uIgw==
-X-Gm-Message-State: ANoB5pmioMYC/RvGWtnImIHFAn5KElgp7LVXYvZvZKie5cebaDoaSSo0
-	GoqmM57MVz+7It3ttEfanA/j1w==
-X-Google-Smtp-Source: AA0mqf7KxsTUFtO5GJXQhQPOFp5+C1dzmEUY6YPXNbXSdYOeKDPdD1PHkb69Ov9jtK9L5BUY7Y7G2Q==
-X-Received: by 2002:a05:6808:2387:b0:35e:9bb3:b8fa with SMTP id bp7-20020a056808238700b0035e9bb3b8famr7121698oib.51.1671066085845;
-        Wed, 14 Dec 2022 17:01:25 -0800 (PST)
-Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id i8-20020a05620a404800b006feea093006sm11137891qko.124.2022.12.14.17.01.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Dec 2022 17:01:24 -0800 (PST)
-Date: Wed, 14 Dec 2022 17:01:13 -0800 (PST)
-From: Hugh Dickins <hughd@google.com>
-X-X-Sender: hugh@ripple.attlocal.net
-To: Michael Roth <michael.roth@amd.com>
-cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-    linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-    tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-    thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
-    pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com, 
-    wanpengli@tencent.com, jmattson@google.com, luto@kernel.org, 
-    dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-    peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-    rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-    vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, 
-    tony.luck@intel.com, marcorr@google.com, 
-    sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-    dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com, 
-    harald@profian.com, Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH RFC v7 21/64] x86/fault: fix handle_split_page_fault()
- to work with memfd backed pages
-In-Reply-To: <20221214194056.161492-22-michael.roth@amd.com>
-Message-ID: <7f2228c4-1586-2934-7b92-1a9d23b6046@google.com>
-References: <20221214194056.161492-1-michael.roth@amd.com> <20221214194056.161492-22-michael.roth@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3192190
+	for <linux-coco@lists.linux.dev>; Thu, 15 Dec 2022 15:41:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671118879; x=1702654879;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2spTJNDqOA3JU359JYb+gDTvNuuQDCTXFiO+1qLec6I=;
+  b=PWYkJbq8/w6mQnM53DqomSotMI6s5mb9cRHoh/5oZ+n9t2u0fICJZKGt
+   uCZdIzo1cpzUgDBQEEQpNBLQV+Ed6DhxFaL71EwkqNvwAF9TAgOYJ1RDu
+   ZPQ3WHYb5fubDVU81kITp2LSPqRfA9J+PeXisl4VCY+oaCOmLvDu6qH4v
+   TzZxIQQJ4uqTiDeYaqJJl+9v+IZ9iO3n8rWHZbT47tQDWwWPL7f9fLJ5w
+   2rtmw4iJzIdxGEZ+DcCEI3/X8U5EPKNHIuDSC8ySNQfmqF7uJYYJFkOlC
+   NIsmraDEiV7ZwRKXMh6Xl098CN/B4lVz4du5xBWvuDvdCrTWdLAwWCRty
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10562"; a="319872882"
+X-IronPort-AV: E=Sophos;i="5.96,247,1665471600"; 
+   d="scan'208";a="319872882"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2022 07:40:23 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10562"; a="642962422"
+X-IronPort-AV: E=Sophos;i="5.96,247,1665471600"; 
+   d="scan'208";a="642962422"
+Received: from milawils-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.217.73])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2022 07:40:21 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 48A1E109448; Thu, 15 Dec 2022 18:40:18 +0300 (+03)
+Date: Thu, 15 Dec 2022 18:40:18 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Elena Reshetova <elena.reshetova@intel.com>, x86@kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] x86/tdx: Relax SEPT_VE_DISABLE check for debug TD
+Message-ID: <20221215154018.dyoce56wfpvlihxt@box.shutemov.name>
+References: <20221209132524.20200-1-kirill.shutemov@linux.intel.com>
+ <20221209132524.20200-4-kirill.shutemov@linux.intel.com>
+ <4e595e75-2c5f-e114-9c2c-37689870639c@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4e595e75-2c5f-e114-9c2c-37689870639c@intel.com>
 
-On Wed, 14 Dec 2022, Michael Roth wrote:
-> From: Hugh Dickins <hughd@google.com>
+On Tue, Dec 13, 2022 at 03:13:43PM -0800, Dave Hansen wrote:
+> On 12/9/22 05:25, Kirill A. Shutemov wrote:
+> > SEPT_VE_DISABLE check is required to keep the TD protected from VMM
+> > attacks, but it makes harder to debug guest kernel bugs. If guest
+> > touches unaccepted memory the TD will get terminated without any
+> > traces on what has happened.
 > 
-> When the address is backed by a memfd, the code to split the page does
-> nothing more than remove the PMD from the page tables. So immediately
-> install a PTE to ensure that any other pages in that 2MB region are
-> brought back as in 4K pages.
+> This is a bit sparse.
 > 
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> Cc: Hugh Dickins <hughd@google.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-
-Hah, it's good to see this again, but it was "Suggested-by" me, not
-"Signed-off-by" me.  And was a neat pragmatic one-liner workaround
-for the immediate problem we had, but came with caveats.
-
-The problem is that we have one wind blowing in the split direction,
-and another wind (khugepaged) blowing in the collapse direction, and
-who wins for how long depends on factors I've not fully got to grips
-with (and is liable to differ between kernel releases).
-
-Good and bad timing to see it.  I was just yesterday reviewing a patch
-to the collapsing wind, which reminded me of an improvement yet to be
-made there, thinking I'd like to try it sometime; but recallng that
-someone somewhere relies on the splitting wind, and doesn't want the
-collapsing wind to blow any harder - now you remind me who!
-
-Bad timing in that I don't have any quick answer on the right thing
-to do instead, and can't give it the thought it needs at the moment -
-perhaps others can chime in more usefully.
-
-Hugh
-
-p.s. I don't know where "handle_split_page_fault" comes in, but
-"x86/fault" in the subject looks wrong, since this appears to be
-in generic code; and "memfd" seems inappropriate too, but perhaps you
-have a situation where only memfds can reach handle_split_page_fault().
-
-> ---
->  mm/memory.c | 5 +++++
->  1 file changed, 5 insertions(+)
+> --
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index e68da7e403c6..33c9020ba1f8 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4999,6 +4999,11 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
->  static int handle_split_page_fault(struct vm_fault *vmf)
->  {
->  	__split_huge_pmd(vmf->vma, vmf->pmd, vmf->address, false, NULL);
-> +	/*
-> +	 * Install a PTE immediately to ensure that any other pages in
-> +	 * this 2MB region are brought back in as 4K pages.
-> +	 */
-> +	__pte_alloc(vmf->vma->vm_mm, vmf->pmd);
->  	return 0;
->  }
->  
-> -- 
-> 2.25.1
+> A "SEPT #VE" occurs when a TDX guest touches memory that is not properly
+> mapped into the "secure EPT".  This can be the result of hypervisor
+> attacks or bugs, *OR* guest bugs.  Most notably, buggy guests might
+> touch unaccepted memory for lots of different memory safety bugs like
+> buffer overflows.
+> 
+> TDX guests do not want to continue in the face of hypervisor attacks or
+> hypervisor bugs.  They want to terminate as fast and safely as possible.
+>  SEPT_VE_DISABLE ensures that TDX guests *can't* continue in the face of
+> these kinds of issues.
+> 
+> But, that causes a problem.  TDX guests that can't continue can't spit
+> out oopses or other debugging info.  In essence SEPT_VE_DISABLE=1 guests
+> are not debuggable.  That's a problem.
+> 
+> --
+> 
+> Eh?
+
+Thanks!
+
+> > Relax the SEPT_VE_DISABLE check to warning on debug TD and panic() in
+> > the #VE handler on EPT-violation on private memory. It will produce
+> > useful backtrace.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  arch/x86/coco/tdx/tdx.c | 14 ++++++++++++--
+> >  1 file changed, 12 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> > index 8ad04d101270..0e47846ff8ff 100644
+> > --- a/arch/x86/coco/tdx/tdx.c
+> > +++ b/arch/x86/coco/tdx/tdx.c
+> > @@ -38,6 +38,7 @@
+> >  #define VE_GET_PORT_NUM(e)	((e) >> 16)
+> >  #define VE_IS_IO_STRING(e)	((e) & BIT(4))
+> >  
+> > +#define ATTR_DEBUG		BIT(0)
+> >  #define ATTR_SEPT_VE_DISABLE	BIT(28)
+> >  
+> >  /* TDX Module call error codes */
+> > @@ -207,8 +208,15 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
+> >  	 * TD-private memory.  Only VMM-shared memory (MMIO) will #VE.
+> >  	 */
+> >  	td_attr = out.rdx;
+> > -	if (!(td_attr & ATTR_SEPT_VE_DISABLE))
+> > -		tdx_panic("TD misconfiguration: SEPT_VE_DISABLE attribute must be set.");
+> > +	if (!(td_attr & ATTR_SEPT_VE_DISABLE)) {
+> > +		const char *msg = "TD misconfiguration: SEPT_VE_DISABLE attribute must be set.";
+> > +
+> > +		/* Relax SEPT_VE_DISABLE check for debug TD. */
+> > +		if (td_attr & ATTR_DEBUG)
+> > +			pr_warn("%s\n", msg);
+> > +		else
+> > +			tdx_panic(msg);
+> > +	}
+> >  }
+> >  
+> >  /*
+> > @@ -682,6 +690,8 @@ static int virt_exception_kernel(struct pt_regs *regs, struct ve_info *ve)
+> >  	case EXIT_REASON_CPUID:
+> >  		return handle_cpuid(regs, ve);
+> >  	case EXIT_REASON_EPT_VIOLATION:
+> > +		if (ve->gpa != cc_mkdec(ve->gpa))
+> > +			panic("Unexpected EPT-violation on private memory.");
+> 
+> What's the cc_mkdec() doing?
+
+Checks if the GPA is private. I will move it to helper. Like this:
+
+static inline bool is_private_gpa(u64 gpa)
+{
+	return gpa == cc_mkenc(gpa);
+}
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
