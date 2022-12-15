@@ -1,116 +1,88 @@
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3282F35
-	for <linux-coco@lists.linux.dev>; Thu, 15 Dec 2022 18:51:50 +0000 (UTC)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id D41925C0079;
-	Thu, 15 Dec 2022 13:51:49 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Thu, 15 Dec 2022 13:51:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1671130309; x=1671216709; bh=gh
-	kLpsx4RVJFulZAnepSibSNEi4jgDCi32YDUQU5Qss=; b=O7iW25V/+pmJyCrBrm
-	1Zy7RdjlXF/8i+lzOHGlppw2aHl8ur6WVcCumXltUv64PxqcGw1LsIgZYch/F2Z/
-	q97kBphvczZK7+2wTuKzY0K+Jw6hsgcmNurBjFIEXvjCl0RGZ0ZQ+NTw3w97F/28
-	N8s/pbxv0y/2fpoJnIomaxQKOLSRITKmDZdZ/pQy7Gk4Jni89ljFLPTJgTnClkOe
-	FmMMzcWzIcr+8rA7McBerG1vjerIslOZHlQeqqZoluaYCIsiUyp/ufXBM05/uIzU
-	nGqHXZJ6jQ3aRzyvrYth/sbF2wVhEZaLOsnIQzQh1eWwijCNavfB4Rp5Chc2ND+3
-	9ltw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1671130309; x=1671216709; bh=ghkLpsx4RVJFulZAnepSibSNEi4j
-	gDCi32YDUQU5Qss=; b=V0eOit6Getpt72uLPPaO8/T2U8uzlLzFkyQ1gZqd/y8h
-	Gz04z3W9CC6PjEC/RPPcEuhTXpv5DGa6Hit70Acobyd2Q3+NMmeeh9OV1RpeY9Y3
-	c2WsrQOT1niINSylO/6RLOg06WN1j/stOplZnwb4/fGJwERVy6qusW9n/3H9CRpo
-	tRkU04G5Jmrnbb6nITJnOOboXzIv1sr1hUDhEKp4e8OW1TMHqJIemr8eLZpqh2ZD
-	y+WRIdZbq06uBqHTgLl7e00f+vB52ZJzBsJDmiEmPT262qbWU9RBxcfgJKM4uBvu
-	lOy78SFZCg078cDXRCmOQgQ+jWEw5UORDyqNgBMtfQ==
-X-ME-Sender: <xms:xWybYzP_8dwpbAbTFbczqMI-MzZPj0bGfXciwt5gZEv9wtj4cgoUQg>
-    <xme:xWybY9-WS0MvwMrnnXZ0PL7svt5Re0okRXNpAgRQml62QxM2rCA38OdBXRg-cSSst
-    QcZCtFl62w0sjrFxFU>
-X-ME-Received: <xmr:xWybYyTvr__tNV3f3gwCqW95EZbm_FNTd6bcqCbrBpteiuz7GlRwEuKYD16AlchbFA_EXQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehgdduudeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepfdfmihhr
-    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
-    grmhgvqeenucggtffrrghtthgvrhhnpeekvddvjeffheetgedtvdfgieejiedvgeejieet
-    jeehieehveffueekfeehffdvveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:xWybY3uW1uDxH46W2sNUklEq8XydVdvvJTz5zUkwfNm9l1Evb6zZeA>
-    <xmx:xWybY7dYOCbbZjAqQ5qiePRhvVOP2LNf5TKn5q23uj_yVY9-ayp18A>
-    <xmx:xWybYz3MTOEEJDyP7c9dZT-SsOdr4eRadL6Hnvbd1sr7Qh74eIv9xA>
-    <xmx:xWybY6zoiF9WqwHL2QXLrKSKaZnQt19eP8hCt2s5esIHa63fPDaW5w>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Dec 2022 13:51:48 -0500 (EST)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 5074D109EB3; Thu, 15 Dec 2022 21:51:44 +0300 (+03)
-Date: Thu, 15 Dec 2022 21:51:44 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Elena Reshetova <elena.reshetova@intel.com>, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] x86/tdx: Use ReportFatalError to report missing
- SEPT_VE_DISABLE
-Message-ID: <20221215185144.tjctmkwp5vodep3u@box>
-References: <20221209132524.20200-1-kirill.shutemov@linux.intel.com>
- <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
- <3121847d-d334-67fc-43d8-0670c08c64b6@intel.com>
- <20221215171254.3v4maexfhkdnbfk2@box.shutemov.name>
- <795d6e1d-c79c-b079-3412-69ca2f8ee874@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3310613F
+	for <linux-coco@lists.linux.dev>; Thu, 15 Dec 2022 21:09:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1671138552; x=1702674552;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=fYu3VSMSVSFNCj8pshMBFs+p2fAnlKCwaMc/dyMskqk=;
+  b=NYeTcw9cTNABQ4ANHNTSfnRdu+C9WulJOrmb7nMF2A4VvHbdNEx3a+RW
+   R1zeLVSgT2p8GI6KeIB0ouAEnKbP6PmCfL0LZ5UAXiMkMclXycTqMweA5
+   aISqCM0gGFXjNGSQQcYJVS8bLz6jVtitJiHrNuOj5EUfQuHL/pP6jdscj
+   2NoJENEcNQRIdO45l7XDWWQOm9Dhk5ltWOx+ywfCFyBneVYnK46Nabhs0
+   K5H0th8/V7fImTM9tM6yijkvA0nxMsQC5yittOsr6l9lHHMGbm5adGuY4
+   8vdyS/iyqOr3Wqwp0tzXtSXTWVPqnyRBhuYJ/3TXgHVukDj4HDDMb1lgY
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10562"; a="299144428"
+X-IronPort-AV: E=Sophos;i="5.96,248,1665471600"; 
+   d="scan'208";a="299144428"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2022 13:09:11 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10562"; a="756495436"
+X-IronPort-AV: E=Sophos;i="5.96,248,1665471600"; 
+   d="scan'208";a="756495436"
+Received: from ajanssen-mobl.amr.corp.intel.com (HELO [10.209.22.168]) ([10.209.22.168])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2022 13:09:11 -0800
+Message-ID: <b19600bd-d5cf-3359-60d8-1ecd9c1ff4f5@intel.com>
+Date: Thu, 15 Dec 2022 13:09:10 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <795d6e1d-c79c-b079-3412-69ca2f8ee874@intel.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH 2/4] x86/tdx: Use ReportFatalError to report missing
+ SEPT_VE_DISABLE
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Elena Reshetova <elena.reshetova@intel.com>, x86@kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20221209132524.20200-1-kirill.shutemov@linux.intel.com>
+ <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
+ <3121847d-d334-67fc-43d8-0670c08c64b6@intel.com>
+ <20221215171254.3v4maexfhkdnbfk2@box.shutemov.name>
+ <795d6e1d-c79c-b079-3412-69ca2f8ee874@intel.com>
+ <20221215185144.tjctmkwp5vodep3u@box>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <20221215185144.tjctmkwp5vodep3u@box>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 15, 2022 at 10:18:24AM -0800, Dave Hansen wrote:
-> On 12/15/22 09:12, Kirill A. Shutemov wrote:
-> >> Getting *all* users of panic this magic ability would be a lot better
-> >> than giving it to one call-site of panic().
-> >>
-> >> I'm all for making the panic() path as short and simple as possible, but
-> >> it would be nice if this fancy hypercall would get used in more than one
-> >> spot.
-> > Well, I don't see an obvious way to integrate this into panic().
-> > 
-> > There is panic_notifier_list and it kinda/sorta works, see the patch
-> > below.
-> > 
-> > But it breaks panic_notifier_list contract: the callback will never return
-> > and no other callback will be able to do their stuff. panic_timeout is
-> > also broken.
-> > 
-> > So ReportFatalError() is no good for the task. And I don't have anything
-> > else :/
-> 
-> Do we *really* have to do a hard stop when SEPT_VE_DISABLE is missing?
-> 
-> Wouldn't it be simpler to just defer the check until we can spit out a
-> sane error message about it?
-> 
-> Or is there too much security exposure by continuing?
+On 12/15/22 10:51, Kirill A. Shutemov wrote:
+>>> So ReportFatalError() is no good for the task. And I don't have anything
+>>> else :/
+>> Do we *really* have to do a hard stop when SEPT_VE_DISABLE is missing?
+>>
+>> Wouldn't it be simpler to just defer the check until we can spit out a
+>> sane error message about it?
+>>
+>> Or is there too much security exposure by continuing?
+> Well, I guess we can. We always have attestation as a backstop. No
+> sensitive user data has to be exposed to the TD before it passed
+> the attestation.
 
-Well, I guess we can. We always have attestation as a backstop. No
-sensitive user data has to be exposed to the TD before it passed
-the attestation.
+OK, so let's just pretend that SEPT_VE_DISABLE=0 is a blatant root hole
+that lets the VMM compromise the TDX guest (I know it's not, but let's
+just pretend it is).
 
-Do you prefer to have a separate initcall just to check SEPT_VE_DISABLE?
+The guest starts up, the VMM compromises it after the attestation has
+run.  The now compromised guest send along its report.  But, since the
+report contains (or implies???) SEPT_VE_DISABLE=0, the guest will be
+assumed to be compromised and won't get any secrets provisioned?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+That assumes that the attestation service knows that SEPT_VE_DISABLE==0
+plus Linux is bad.  Is that a good assumption?
+
+> Do you prefer to have a separate initcall just to check SEPT_VE_DISABLE?
+
+I don't feel strongly about where the check should be as long as it can
+get a message out to the console.
