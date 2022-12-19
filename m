@@ -1,198 +1,201 @@
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9688836
-	for <linux-coco@lists.linux.dev>; Fri, 16 Dec 2022 15:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671204141; x=1702740141;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=b/QYAMRDoHLNxPj+jJGU474QqWGmT33OleMftb3HFfw=;
-  b=aRFTFg/kKFXjgEurBE0kTA51YUo7Qulsd43M2RA0rnvq7qKiCUF/JDul
-   NIyM+f74whBMfcvlkhv8KZR+gf2Zgun5ROQCy3uIUlCRx3sDzGlDQ0X8s
-   QdEPN4j2Dcy67R4NdX4mbzWSdpkxLNDyhkR06YuVqM7nQcZA1uJeKAVnP
-   ihQgKWTaqvzJmXS+1SsmBurRM76/BGQo+Jn3t3AuvcmmQvz20xDvCVXjR
-   kwgwjOs3aSKZ3c9J66mGafTe1MgTJnoxDgvxnpsO4TkhAH4U2IDJi9kr6
-   mCr+81PS6F/2dFye78UmQQZA+WAGOr0iAtxCpHqTNyuwirg4WD6BAfrkk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10563"; a="381207586"
-X-IronPort-AV: E=Sophos;i="5.96,249,1665471600"; 
-   d="scan'208";a="381207586"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2022 07:22:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10563"; a="713285097"
-X-IronPort-AV: E=Sophos;i="5.96,249,1665471600"; 
-   d="scan'208";a="713285097"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga008.fm.intel.com with ESMTP; 16 Dec 2022 07:22:20 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16; Fri, 16 Dec 2022 07:22:19 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.16 via Frontend Transport; Fri, 16 Dec 2022 07:22:19 -0800
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.42) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.16; Fri, 16 Dec 2022 07:22:19 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6543217
+	for <linux-coco@lists.linux.dev>; Mon, 19 Dec 2022 15:01:40 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UymjCmLr/nDOegwEZYpch6YdEAirqVLWtJdBghOG8ZFc0w9tv7II1KEYhtp/YikPtcH5zExCbImFvSJ2LE7Tar5vwZveb3eeEHB4wc269XAI2eO3StS2N/JkleNeJoOwx/BbBhMQj0j03EUmpX8DKM0NqWts8QsCelfmR7WBsv8amiveKBJ8foQKW5CczbioMKxQmrGBHOMwP6tip5sKx42KFztFSPh3gyy9ry5tt6f9SAZD45x3ltFwaXO3jLFN7BnFG/vIh5P33hxomL00rKlLv7/2iTNkPutblmGnHr5PwNQcgXwR0br2Czbi50XmljHW9BhO0FddxL37nlPSUw==
+ b=Q6YVd4xMvUoIq2Wx9WV2h35FJy8uA4ZCtWgyaqaZYq2r7ihZ4DYTu7dseZ6rADG7wD484h+Jje14lhCyb44pUGrLfOdfRBWHP8CZrKw5ICx81UDiwKgGD7j1YyA3Arc+nNCSqAJLKWCVflk8rcbs/Zg1cJgAowLpMLdtYCBP03JgyuWCw4wGuXy+OUzGGc/t3xAOs/Jpp64UISLJXbT5jZ7scUZOL2eBIPo9kDTPTgfqFhUU36hfNEqf7iJ6cEc4auqhULjWr6hrvuOMx/3va4QLy87ll6AdtttDUYy+M7YzAKpyaGvEVUgp5bjHc64olvxLn6hRLzYtU8Jy2Ys2aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b/QYAMRDoHLNxPj+jJGU474QqWGmT33OleMftb3HFfw=;
- b=KK4eM2v+Nr4vUOzb9+xTk+Fak8aAaO0hbMh3QPCz3M0Efjq3Ok250dArn0LsM1pzdi01oglLescLB6lBSUSaECwanrKH4M85uDL1XOaVHVR/q1Jjq+R5NCeVtZewvUjPFt4NrtPo1fpLqE7Wn8uXfeV9ZHXJ/7N4AzHBLv6TC26oInTOCTlnOjdNuYEskF+HDFmEVfaECrnH0drWQUtVKGNoyUs5qU59ddrLiYDY6xuUmzGC0rmfsomH6J4hcCi2ZN/bnJ7E3kZE8ym8la2QNfb51CUJr6jPgj048NrcysgdorxWZkvlnjeLbz97TAXszG99GPcoi5YV4gKRodjc9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM8PR11MB5750.namprd11.prod.outlook.com (2603:10b6:8:11::17) by
- CH0PR11MB5265.namprd11.prod.outlook.com (2603:10b6:610:e0::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5924.12; Fri, 16 Dec 2022 15:22:15 +0000
-Received: from DM8PR11MB5750.namprd11.prod.outlook.com
- ([fe80::4e05:a2f4:1f34:d790]) by DM8PR11MB5750.namprd11.prod.outlook.com
- ([fe80::4e05:a2f4:1f34:d790%7]) with mapi id 15.20.5880.019; Fri, 16 Dec 2022
- 15:22:15 +0000
-From: "Reshetova, Elena" <elena.reshetova@intel.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, "Hansen, Dave"
-	<dave.hansen@intel.com>
-CC: "Kirill A. Shutemov" <kirill@shutemov.name>, Borislav Petkov
-	<bp@alien8.de>, "Lutomirski, Andy" <luto@kernel.org>, "Kuppuswamy
- Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>, "Thomas
- Gleixner" <tglx@linutronix.de>, "x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 2/4] x86/tdx: Use ReportFatalError to report missing
- SEPT_VE_DISABLE
-Thread-Topic: [PATCH 2/4] x86/tdx: Use ReportFatalError to report missing
- SEPT_VE_DISABLE
-Thread-Index: AQHZC9HD8iLiGN2F4Eiy10+8ePcwSq5sd1OAgALB+QCAABJNAIAACVAAgAAmZgCAAFwRgIAA0uKg
-Date: Fri, 16 Dec 2022 15:22:15 +0000
-Message-ID: <DM8PR11MB5750B5E74AFEAB83D8A7170BE7E69@DM8PR11MB5750.namprd11.prod.outlook.com>
-References: <20221209132524.20200-1-kirill.shutemov@linux.intel.com>
- <20221209132524.20200-3-kirill.shutemov@linux.intel.com>
- <3121847d-d334-67fc-43d8-0670c08c64b6@intel.com>
- <20221215171254.3v4maexfhkdnbfk2@box.shutemov.name>
- <795d6e1d-c79c-b079-3412-69ca2f8ee874@intel.com>
- <20221215185144.tjctmkwp5vodep3u@box>
- <b19600bd-d5cf-3359-60d8-1ecd9c1ff4f5@intel.com>
- <20221216023841.g7ebxefl2zglagek@box.shutemov.name>
-In-Reply-To: <20221216023841.g7ebxefl2zglagek@box.shutemov.name>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR11MB5750:EE_|CH0PR11MB5265:EE_
-x-ms-office365-filtering-correlation-id: 8555d6e4-25ea-4bf4-1273-08dadf795006
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: +s3jP5TZWqfXlS2VoeWWPo74HGX7/t0omTvBbb5PAEX82PWkIRBa+YK8hd/2Jpw78wdWRGVTiDRwWgNG21FkCmJbqzk6k7yMIPpt68ZzyEzeMIj2fnbbiR6/Vc/2VxG94EnWRcQP0p+tQ/K3ik8Y0nuO4rFk/+reEUS1pvbUVMn4vHqhLOT4FL686QWcdQ2Y57i3XC7W1AqZuefHYv0+wLrP1wAHBKG/2P61ehiuXogeOQUawf62shcKd4tNA3A3oRZaQj947Bp4ml3D8aQ75i6kXcDLufTH524Ztb4zd4s6/NobR5Q7xTAOtEa9u58n/vXL22f4Rkktbil4LLALxqC6dQ5xJVRUKJakerlBXGXZ+1F5jbXyeWm/uM2DEqn7BHFUfv3IZ/AtlHO6LDk7Y3PZ2JTqvf2jisD7T4BzvBQQ1GStX04VlG7Y70NlQZj+yz2XhLyPa6HxgRlBqBuG3qd4ezAeSjFdWCWujfb/iiShjoUC4pdrizVyUt5FfckkcAPK2EGN0Lsg9jIvyijbNUbzHcR5wzyxuvddxXtJQNj88MQTs1Q8baATlHGBsdSbdK0sNlkDSfksoJFlbmzNxUDOgwjTBDOhlTGb3bDjHLGJq2qPrS+5UogJzAG//iEp+lLESTt3ryT1QH2RSiDyu+HoKmCMoUWMUI+laAxyvuNWFgQE/zq3GVOmg56mvvxYEffcRape2iWjL6uFT1d7iQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR11MB5750.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(39860400002)(346002)(366004)(136003)(376002)(396003)(451199015)(82960400001)(52536014)(4326008)(66946007)(8676002)(66556008)(64756008)(66476007)(5660300002)(122000001)(76116006)(41300700001)(66446008)(38100700002)(478600001)(7696005)(83380400001)(316002)(6636002)(110136005)(54906003)(38070700005)(2906002)(33656002)(71200400001)(53546011)(26005)(186003)(9686003)(6506007)(8936002)(86362001)(55016003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VUZiSTJJWFBDeitqMS8rTWd3WkY3WlBVRmowVXV6azNpSDIwRS9XQnZtd1hx?=
- =?utf-8?B?VEt0UDdHL3laNzNVNHFNRHl1TWZ0NjZrTFh3WlQ4WFFRLzhwN3pBbExhdE1t?=
- =?utf-8?B?WjZLZ0xxMFVuUk1DV0duNS94TDNheXgrQk82YWRKazEwbWMrN3MwNVpKTlBY?=
- =?utf-8?B?b0ZaQXBlaGtJNC9CL205QlVUQ0w4TUtscU5hajR2bTZ3Nmk5OTQ0SzBvYUNH?=
- =?utf-8?B?ZkxteS9BV3FLb2RIcy9oVjdSOWF6bmhJbVRKdUh5eFJSajRxWUwvY0xyOGQ2?=
- =?utf-8?B?UW5ydWxEZkM5V3UveEpuaEJHU0VJRDdFMGliZnRXOWgxQzhGUU5EV2hLWUla?=
- =?utf-8?B?RDVjdE9VampZV3o2R0dmaWRwQ2xicXVNMDRTdDA5NEFmQkh4TnhuTzE5eEpo?=
- =?utf-8?B?VXFFMG5KTFYvKzBFN3BrTnpZQ2NUZWRoQy9peEppWlNuZnExRU5leEx3blMz?=
- =?utf-8?B?SWM0MTJpWGJuTC9OcUYvdWxoQkFGUVlvRTh3QitzNHFCeTJLL1BEb0xJMHdo?=
- =?utf-8?B?SndJMWhTYzRXZHhIQVRNVjYxR1A3eWlGZGFzYWN5U1hWUmpWR0FiMTFGRzVL?=
- =?utf-8?B?a2hXYy85WUdwblhvY2d3eVh0ajBVbEV2NGhZS2hDN0czYkw3WS9HaFhXbGpP?=
- =?utf-8?B?ZFNaSGpRZThrRUpGdlhnWTB2R202cHJQYXpMUm80Yk9LT1BrRVN0eWV2WUZa?=
- =?utf-8?B?VTRjdkRsVWphdGM5ZEFkOUJ3ZjlkSVMxU042T29OTW05OVhEKzlrdHlJbjZt?=
- =?utf-8?B?dmV0czJUaEhHenl3WUhhNC8wcFE0bGU2U1ppcy80cGR6clRqenVpSTZLajJK?=
- =?utf-8?B?d25KVFhXNTBEYWVjRmV0QW5ubUM0bnBaRlpSRTZvZzJ1V2VGK3dLeEJxOXls?=
- =?utf-8?B?SnY2QThvM1krZUl3UUJQS3BHT1F5cmpnMms4Y0ZQc3ZoWWxWUTlxMEZ6SkJB?=
- =?utf-8?B?dm83NGEzb2VjWThRbkpPRGlYR0tKM2FRVURLTExXRU8yYVNuSXEraFBnQTZr?=
- =?utf-8?B?Sm12WVlMNGk5VUJBUWxaVEptR0dybVIwZisvMUhRM2ozbUlQVFQ0WUxWL1Nk?=
- =?utf-8?B?Z0gwNjNFVWUzMENZd2wvRnc4bVl2bnc3ZjdmNzV3TGp2RGNHZ1VFYUMvUkdp?=
- =?utf-8?B?YkJrTFFzK20wWjBNNjVJRVdZQ1NDZXNKQVYrRVk1ZHVLcVVHZE9ESEFucGJW?=
- =?utf-8?B?ZlJtMjRxbXpTZjROTU1mamhWVm43U1RXSHhlMTVMMnM5d3RzY2xNSWdmTFNE?=
- =?utf-8?B?NjZPOStJaDd6dkpBb3U5U3dUQ25BcE8rQkNNc1ZqU1hqR2xOQW9oM1RCV2lB?=
- =?utf-8?B?Nm15QWFsMTJoS3ZNeHk5NFQwcjAyR1N1bDdCYWZwdGpHSjlGUHNjaHZLREkz?=
- =?utf-8?B?b01KcjNpTGdieGNxQjFES05MR3ZSWmxhZ0RWU0ViNGwrSHRuRlYxNHFvd044?=
- =?utf-8?B?SFp6eldpTExUS25weE42Yzg4dEUwK1NpaDFDaGdYODlFelI2d1cxTFd4cUlU?=
- =?utf-8?B?WHhvcVJSOFk5VHNRUzNKWEdhckJhakljQjAxbmhBaDNsdnd5dEJiUHgxd3Z0?=
- =?utf-8?B?djhFL2lHS2tPbzh1K3BWSm5KaE1XUkk2Y2srT0dDdDVnVnZpejd3eDFDUTNG?=
- =?utf-8?B?SzBudHlpSXZKdFBBeHpXbDVDbHZkTmpJRnFHM1gxMzE3b0hGUGhCa1BhTjZy?=
- =?utf-8?B?WW5vdkJtTml4T2N3b2N1K0hQOGZNM1Z4VWVJRWV0Qm9rcHpOMk1qMVRaU0JZ?=
- =?utf-8?B?d3JZa0VDY21zbVgrelJEN0VpbU9XTmg5ekk1eHN6RWw1MHVXMXYyRFQ4MEph?=
- =?utf-8?B?YkxKYXhySldlZUcxL0xuOUhBU1Y4TGJMS29ma3lvUG5mOGdqcm16bEZPYTJC?=
- =?utf-8?B?QW5nRUZUbVQ0aU9UMEs5YUMzaXlTZ3FCMVJ5ZTY4SEdib2pWQmxWWXpHcVQz?=
- =?utf-8?B?ZnQ1SVJkWTR5U3BjKzBCdU5SRC8zZ2RkZTFEVXVJTU55SnliWksxbThtNjVK?=
- =?utf-8?B?MDVPeCtKVEJuUTh2UEl5aFJKZ2JzT0hhMUZySHdxRVNscXZFSjB2eEVNTXQy?=
- =?utf-8?B?OXhFL1VhOTlVWVZNL1BHNW9tV2NDRzRJZUVSSjdMZzZaRHVmblM5U20vaDZS?=
- =?utf-8?Q?CkcJL2XW1FjA8X/HgjX6Xyuvx?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ bh=6ig2iSgdvV3uLbGe83tM3u1cZ6pMnlDn3IGSbdiQ7yY=;
+ b=Rbr1D5rEwP4+Hb9h/yjW2cIIz6mde+4y37GGaJ/w+or4wgtsi3bdYHIcko1BgyLf2flnkrIUxtxA4XjeDC/c3Ob9CkBnl7alPx/chD2W9BZp4spGgtLOe/KZtPPkd5/PNKK1tEVyZxCsBZR3aJSlnIf6Xs3AROaUuWyFYTSpqj1zflXdqQvHO9dY2qtCJTxdzziX20hsUq1GpOmXLi5NHDIkOzQbJJAeCENqSngpexnvbPTWWg2sbt9xx/RmO8e+i1BuqbqjsAfQbdnHiqBIOtd2y9jIUOWLsg7xH7i8MBrzz/XLIonCYcmGbfhLXTF6aOUXMzoz47cBb8KAoUlVbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6ig2iSgdvV3uLbGe83tM3u1cZ6pMnlDn3IGSbdiQ7yY=;
+ b=OhMjh3VXPYNz8RYoa7DRJzOj5aZjpvuhEdDDKeCr/PdBgUtg0J9ww+UTOCWemYi7BtCwfTYZxC1hJJYGBnykO53PE1lVwJJsDaUxuNohBxoZuV5pK1bBViv4EGY6Hcug1WV6Y2TIVoOSxNqCaMSOl+hcomjEmRRTu7aRddimFKc=
+Received: from MN2PR11CA0027.namprd11.prod.outlook.com (2603:10b6:208:23b::32)
+ by MN0PR12MB6344.namprd12.prod.outlook.com (2603:10b6:208:3d3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.21; Mon, 19 Dec
+ 2022 15:01:38 +0000
+Received: from BL02EPF00010209.namprd05.prod.outlook.com
+ (2603:10b6:208:23b:cafe::58) by MN2PR11CA0027.outlook.office365.com
+ (2603:10b6:208:23b::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.20 via Frontend
+ Transport; Mon, 19 Dec 2022 15:01:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF00010209.mail.protection.outlook.com (10.167.241.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5944.8 via Frontend Transport; Mon, 19 Dec 2022 15:00:44 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 19 Dec
+ 2022 09:00:43 -0600
+Date: Mon, 19 Dec 2022 09:00:26 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Ashish Kalra <Ashish.Kalra@amd.com>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<vbabka@suse.cz>, <kirill@shutemov.name>, <ak@linux.intel.com>,
+	<tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<dgilbert@redhat.com>, <jarkko@kernel.org>
+Subject: Re: [PATCH Part2 v6 07/49] x86/sev: Invalid pages from direct map
+ when adding it to RMP table
+Message-ID: <20221219150026.bltiyk72pmdc2ic3@amd.com>
+References: <cover.1655761627.git.ashish.kalra@amd.com>
+ <243778c282cd55a554af9c11d2ecd3ff9ea6820f.1655761627.git.ashish.kalra@amd.com>
+ <YuFvbm/Zck9Tr5pq@zn.tnic>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5750.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8555d6e4-25ea-4bf4-1273-08dadf795006
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Dec 2022 15:22:15.2646
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <YuFvbm/Zck9Tr5pq@zn.tnic>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00010209:EE_|MN0PR12MB6344:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a3d93a4-984a-447d-486b-08dae1d1ebad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Sn+iN0EOHrZbPtlTuU6uoHqSN7Wf81Q4S9116CuzH/V2P7pWEab1sSrnTqFnQGFP79aOHV+FVEbDOfaFglpFP6cJzNT3+OutSPPuNVD51zrNt0+qr5Ahr19cIImZTDRglJe82ydiUtqne61wUB6YjbD9v9ZNwWNgxlZq810GbO3magv7dV0YFzz+5oFhI9DhXgnoa17FoCEMSZNBQ9obTyZrYorhq8oD3y7gZ25A/5NSHH/cEgUZmeTLbwrnUfS0HH9BwBf6tuWbeaT2LsPV/zLr2Ss40tK1RR3e94KM9hk9d5yqBvFKPSOet5Nlfp3lcGwOO7B1LbN9yrt9ntjxwFBTY7CUR+pCyOFUyJeE/l7bAk0XztUV2xeUxo3cB2umNaeMMCQyqWditN8Nst9rjlmwX26j/rdOKNwp/c+Iq1sgcgv91uw18HqqNItg2kK7/c/Pa603WBjQwRD1acsLZrGtoBZoYLBpGlYcx7RDt0ar4bQlpSQWWz3m8CEJOSETAi7mz0yCWsHUFfaaVR/7irjh5XM9G50YLYWCtzvlWRZf/EdRXAG6NeCvyLw8M5QjETbpKs3j+D1xBdxYHNIwrGcLMS3Vg3WsZpBCvnF6qzXc8QUbz9s9lAF8YMvaWFp7LpBG9UnAK43AhaoGpUZcr0gnHkckQsFACNjnfhd7hXtK97aQm78BcICnUNWbnNTIEIiSiIL4DtmsnQ4tbDKKanpBXAYsU1kFHfWcSHXWzvsOHtJePILKrTqr7K16wcV8nMz17g+Hd66IkXlQYgFyvw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(136003)(346002)(396003)(376002)(451199015)(46966006)(40470700004)(36840700001)(2906002)(2616005)(16526019)(186003)(6916009)(36756003)(6666004)(40480700001)(26005)(4326008)(1076003)(8676002)(36860700001)(356005)(7406005)(70586007)(70206006)(7416002)(5660300002)(86362001)(41300700001)(47076005)(81166007)(82740400003)(336012)(426003)(54906003)(83380400001)(316002)(8936002)(40460700003)(82310400005)(478600001)(44832011)(966005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2022 15:00:44.8038
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 23B3c3snq40q39ItI5Zmj5heMwNaITgWPkL9Wx+8XkFw0jplDh6rEi0iWc+FuDQNCrhixjZkaP6rDcQWbNecE5+flcBwJaUNiBcjaH3WAqQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5265
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a3d93a4-984a-447d-486b-08dae1d1ebad
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF00010209.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6344
 
-DQo+IA0KPiBPbiBUaHUsIERlYyAxNSwgMjAyMiBhdCAwMTowOToxMFBNIC0wODAwLCBEYXZlIEhh
-bnNlbiB3cm90ZToNCj4gPiBPbiAxMi8xNS8yMiAxMDo1MSwgS2lyaWxsIEEuIFNodXRlbW92IHdy
-b3RlOg0KPiA+ID4+PiBTbyBSZXBvcnRGYXRhbEVycm9yKCkgaXMgbm8gZ29vZCBmb3IgdGhlIHRh
-c2suIEFuZCBJIGRvbid0IGhhdmUgYW55dGhpbmcNCj4gPiA+Pj4gZWxzZSA6Lw0KPiA+ID4+IERv
-IHdlICpyZWFsbHkqIGhhdmUgdG8gZG8gYSBoYXJkIHN0b3Agd2hlbiBTRVBUX1ZFX0RJU0FCTEUg
-aXMgbWlzc2luZz8NCj4gPiA+Pg0KPiA+ID4+IFdvdWxkbid0IGl0IGJlIHNpbXBsZXIgdG8ganVz
-dCBkZWZlciB0aGUgY2hlY2sgdW50aWwgd2UgY2FuIHNwaXQgb3V0IGENCj4gPiA+PiBzYW5lIGVy
-cm9yIG1lc3NhZ2UgYWJvdXQgaXQ/DQo+ID4gPj4NCj4gPiA+PiBPciBpcyB0aGVyZSB0b28gbXVj
-aCBzZWN1cml0eSBleHBvc3VyZSBieSBjb250aW51aW5nPw0KPiA+ID4gV2VsbCwgSSBndWVzcyB3
-ZSBjYW4uIFdlIGFsd2F5cyBoYXZlIGF0dGVzdGF0aW9uIGFzIGEgYmFja3N0b3AuIE5vDQo+ID4g
-PiBzZW5zaXRpdmUgdXNlciBkYXRhIGhhcyB0byBiZSBleHBvc2VkIHRvIHRoZSBURCBiZWZvcmUg
-aXQgcGFzc2VkDQo+ID4gPiB0aGUgYXR0ZXN0YXRpb24uDQo+ID4NCj4gPiBPSywgc28gbGV0J3Mg
-anVzdCBwcmV0ZW5kIHRoYXQgU0VQVF9WRV9ESVNBQkxFPTAgaXMgYSBibGF0YW50IHJvb3QgaG9s
-ZQ0KPiA+IHRoYXQgbGV0cyB0aGUgVk1NIGNvbXByb21pc2UgdGhlIFREWCBndWVzdCAoSSBrbm93
-IGl0J3Mgbm90LCBidXQgbGV0J3MNCj4gPiBqdXN0IHByZXRlbmQgaXQgaXMpLg0KPiA+DQo+ID4g
-VGhlIGd1ZXN0IHN0YXJ0cyB1cCwgdGhlIFZNTSBjb21wcm9taXNlcyBpdCBhZnRlciB0aGUgYXR0
-ZXN0YXRpb24gaGFzDQo+ID4gcnVuLiAgVGhlIG5vdyBjb21wcm9taXNlZCBndWVzdCBzZW5kIGFs
-b25nIGl0cyByZXBvcnQuICBCdXQsIHNpbmNlIHRoZQ0KPiA+IHJlcG9ydCBjb250YWlucyAob3Ig
-aW1wbGllcz8/PykgU0VQVF9WRV9ESVNBQkxFPTAsIHRoZSBndWVzdCB3aWxsIGJlDQo+ID4gYXNz
-dW1lZCB0byBiZSBjb21wcm9taXNlZCBhbmQgd29uJ3QgZ2V0IGFueSBzZWNyZXRzIHByb3Zpc2lv
-bmVkPw0KPiA+DQo+ID4gVGhhdCBhc3N1bWVzIHRoYXQgdGhlIGF0dGVzdGF0aW9uIHNlcnZpY2Ug
-a25vd3MgdGhhdCBTRVBUX1ZFX0RJU0FCTEU9PTANCj4gPiBwbHVzIExpbnV4IGlzIGJhZC4gIElz
-IHRoYXQgYSBnb29kIGFzc3VtcHRpb24/DQo+IA0KPiBJIGtub3cgdGhhdCBhdHRlc3RhdGlvbiBx
-dW90ZSBpbmNsdWRlcyBhbGwgcmVxdWlyZWQgaW5mb3JtYXRpb24NCj4gKGF0dHJpYnV0ZXMgYW5k
-IGtlcm5lbCBoYXNoKSB0byBtYWtlIHRoZSBkZWNpc2lvbiBhbmQgSSBhc3N1bWUgdGhhdA0KPiBh
-dHRlc3RhdGlvbiBzZXJ2aWNlIGlzIGNvbXBldGVudC4gU28sIHllcywgSSB0aGluayBleHBlY3Rh
-dGlvbiBMaW51eCArDQo+IFNFUFRfVkVfRElTQUJMRT09MCBnb2luZyB0byBiZSByZWplY3RlZCBp
-cyByZWFzb25hYmxlLg0KPiANCj4gRWxlbmEsIGlzIHRoZXJlIGFueXRoaW5nIHlvdSBjYW4gZWxh
-Ym9yYXRlIG9uIGhlcmU/DQoNClllcywgYXR0ZXN0YXRpb24gcXVvdGUgaGFzIHRoZSBhdHRyaWJ1
-dGUgaW5jbHVkZWQgZm9yIFNFUFRfVkVfRElTQUJMRS4NClNvIHRoZSByZW1vdGUgdmVyaWZpZXIg
-Y2FuIGNoZWNrIHRoaXMsICppZiogaXQgdW5kZXJzdGFuZHMgdGhhdCBpdCBpcyBpbXBvcnRhbnQu
-IA0KSG93ZXZlciwgaXQgaXMgYSBiaWcgKklGKiBpbW8uIEluIFREWCBtb2R1bGUgc3BlYyBhbmQg
-YXR0ZXN0YXRpb24gc3BlY3MsIA0KU0VQVF9WRV9ESVNBQkxFIGlzIG1hcmtlZCBhcyBhdHRyaWJ1
-dGUgdGhhdCAicG90ZW50aWFsbHkgaW1wYWN0cyBzZWN1cml0eSINCnZzIFRVRCBhdHRyaWJ1dGVz
-IGxpa2UgREVCVUcgdGhhdCBhcmUgY2xhc3NpZmllZCBhcyAieW91ciBURCBpcyBub3Qgc2VjdXJl
-IGF0IGFsbCIuDQpTbywgd2Ugd2lsbCBiZSByZWx5aW5nIG9uIHZlcmlmaWVycyB0byB1bmRlcnN0
-YW5kIHRoYXQgaW4gTGludXggY2FzZSBpdCBpcyBhIGNyaXRpY2FsDQp0aGluZyB2cyAicG90ZW50
-aWFsbHkgaW1wYWN0aW5nIHNlY3VyaXR5IHRoaW5nIi4NCldlIHdpbGwgZG9jdW1lbnQgdGhpcyBz
-cGVjaWZpY2FsbHkgaW4gb3VyIFREWCBndWVzdCBrZXJuZWwgZG9jdW1lbnRhdGlvbiwNCmJ1dCBJ
-IGhhdmUgbm8gZ3VhcmFudGVlcyBvbiBob3cgY2FyZWZ1bCBwZW9wbGUgYXJlIHJlYWRpbmcgaXQu
-ICANCk15IHByZWZlcmVuY2UgaXMgdG8gZG8gdGhlIHJpZ2h0IHRoaW5nIGluIGNvZGUuDQoNCkJl
-c3QgUmVnYXJkcywNCkVsZW5hLiANCg==
+On Wed, Jul 27, 2022 at 07:01:34PM +0200, Borislav Petkov wrote:
+> On Mon, Jun 20, 2022 at 11:03:07PM +0000, Ashish Kalra wrote:
+> 
+> > Subject: x86/sev: Invalid pages from direct map when adding it to RMP table
+> 
+> "...: Invalidate pages from the direct map when adding them to the RMP table"
+> 
+> > +static int restore_direct_map(u64 pfn, int npages)
+> > +{
+> > +	int i, ret = 0;
+> > +
+> > +	for (i = 0; i < npages; i++) {
+> > +		ret = set_direct_map_default_noflush(pfn_to_page(pfn + i));
+> 
+> set_memory_p() ?
+
+We implemented this approach for v7, but it causes a fairly significant
+performance regression, particularly for the case for npages > 1 which
+this change was meant to optimize.
+
+I still need to dig in a big but I'm guessing it's related to flushing
+behavior.
+
+It would however be nice to have a set_direct_map_default_noflush()
+variant that accepted a 'npages' argument, since it would be more
+performant here and also would potentially allow for restoring the 2M
+direct mapping in some cases. Will look into this more for v8.
+
+-Mike
+
+> 
+> > +		if (ret)
+> > +			goto cleanup;
+> > +	}
+> > +
+> > +cleanup:
+> > +	WARN(ret > 0, "Failed to restore direct map for pfn 0x%llx\n", pfn + i);
+> 
+> Warn for each pfn?!
+> 
+> That'll flood dmesg mightily.
+> 
+> > +	return ret;
+> > +}
+> > +
+> > +static int invalid_direct_map(unsigned long pfn, int npages)
+> > +{
+> > +	int i, ret = 0;
+> > +
+> > +	for (i = 0; i < npages; i++) {
+> > +		ret = set_direct_map_invalid_noflush(pfn_to_page(pfn + i));
+> 
+> As above, set_memory_np() doesn't work here instead of looping over each
+> page?
+> 
+> > @@ -2462,11 +2494,38 @@ static int rmpupdate(u64 pfn, struct rmpupdate *val)
+> >  	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> >  		return -ENXIO;
+> >  
+> > +	level = RMP_TO_X86_PG_LEVEL(val->pagesize);
+> > +	npages = page_level_size(level) / PAGE_SIZE;
+> > +
+> > +	/*
+> > +	 * If page is getting assigned in the RMP table then unmap it from the
+> > +	 * direct map.
+> > +	 */
+> > +	if (val->assigned) {
+> > +		if (invalid_direct_map(pfn, npages)) {
+> > +			pr_err("Failed to unmap pfn 0x%llx pages %d from direct_map\n",
+> 
+> "Failed to unmap %d pages at pfn 0x... from the direct map\n"
+> 
+> > +			       pfn, npages);
+> > +			return -EFAULT;
+> > +		}
+> > +	}
+> > +
+> >  	/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
+> >  	asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
+> >  		     : "=a"(ret)
+> >  		     : "a"(paddr), "c"((unsigned long)val)
+> >  		     : "memory", "cc");
+> > +
+> > +	/*
+> > +	 * Restore the direct map after the page is removed from the RMP table.
+> > +	 */
+> > +	if (!ret && !val->assigned) {
+> > +		if (restore_direct_map(pfn, npages)) {
+> > +			pr_err("Failed to map pfn 0x%llx pages %d in direct_map\n",
+> 
+> "Failed to map %d pages at pfn 0x... into the direct map\n"
+> 
+> Thx.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
