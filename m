@@ -1,314 +1,242 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329EA29CA
-	for <linux-coco@lists.linux.dev>; Thu, 22 Dec 2022 14:58:22 +0000 (UTC)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BMEcgOV037417;
-	Thu, 22 Dec 2022 14:57:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=XL1hZNgrmOg9cH6ry3OwTUd/lTK9egdtoBeKA3RpoBs=;
- b=awHM/ztat81t3bGwLLSRdGBY4j0lBgPoyXma0KO2R9KCMbpRORinlKfw56d/CwzLYCMX
- n7KULpjGKvEAj11fNk8ME34kN0eHq4l8+VGDcCmP/lrGAPm04vEEH6Jj2n0XyWlUNGGz
- o9mh1yIBrozckj10DpUNl8ITblAKKAe8szXdbKNNRICZZ8pS/asM3nqf6sEWgdydaKF3
- 6ElwIIxh0g6Or5JgFZNpj56V8hTfknpI6LH4+u5HL3EbXFvU9h2PFBD67XuT1anLi3PF
- 9Eo2UWMcQzWBhhbrjYOdX6HwPNBj8PhnaUFCmPw5FRTmUMAGXAh6Me0FiqnmenTY8rga Ww== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mmrsnh2fm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Dec 2022 14:57:43 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2BMEv18W002601;
-	Thu, 22 Dec 2022 14:57:42 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mmrsnh2ew-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Dec 2022 14:57:42 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 2BMCaeJ6022055;
-	Thu, 22 Dec 2022 14:57:40 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
-	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3mh6yy25wg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Dec 2022 14:57:40 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2BMEvdvs57278816
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 22 Dec 2022 14:57:39 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AB02C58056;
-	Thu, 22 Dec 2022 14:57:39 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A10735803F;
-	Thu, 22 Dec 2022 14:57:31 +0000 (GMT)
-Received: from [9.160.79.63] (unknown [9.160.79.63])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 22 Dec 2022 14:57:31 +0000 (GMT)
-Message-ID: <1c02cc0d-9f0c-cf4a-b012-9932f551dd83@linux.ibm.com>
-Date: Thu, 22 Dec 2022 16:57:30 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C35E7475
+	for <linux-coco@lists.linux.dev>; Thu, 22 Dec 2022 18:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1671733456; bh=3C//pPReD1huiKwB+HIgGP+aYEUDdZN5HiRsK7t6BqE=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FIbEaueLWxPWU2nVI81X+aZBJqb7pGiKZdoKgG+U+/42wzeWTFzf6iHOLbjwRHbKS
+	 aMZzYGP8gHRMOKHvL1MBsPw9wQm7ScTzhLbqAW1IOwD6kJAt/sBzJJXkcro7xzTtFd
+	 2IKPtO3ztNsG868yBfXLbm6JnrU3PAYcrgydeAVD8/kiq7SqwykGc7pn8Ku0Q1Mm80
+	 0ko/EnwuL32ohUPiwG0c04Co75Liy1YpueJvj9rrltmRh0ZIwg/6S3bUW5rvzlD3mw
+	 S+3O/RlnmWoqSD1a5e6mTdikoi28Qy0hxvDowJ2Oh8g3xC6T10Zy/wLSvR/GdoQeT8
+	 ekEncX+m2UNyA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost ([62.143.90.77]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Ma20k-1pKZqG2wdg-00Vvny; Thu, 22
+ Dec 2022 19:24:16 +0100
+Date: Thu, 22 Dec 2022 19:24:02 +0100
+From: erbse.13@gmx.de
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+	ashish.kalra@amd.com, harald@profian.com,
+	Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: [PATCH RFC v7 11/64] KVM: SEV: Support private pages in
+ LAUNCH_UPDATE_DATA
+Message-ID: <Y6Sgwp/BofzCUrQe@notebook>
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-12-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH RFC v7 62/64] x86/sev: Add KVM commands for instance certs
-Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-        ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-        vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-        luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-        pgonda@google.com, peterz@infradead.org,
-        srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-        tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
-        ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-        dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
-        harald@profian.com, Dionna Glaze <dionnaglaze@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-63-michael.roth@amd.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <20221214194056.161492-63-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Vmc8E9jK40yCYYa9Yu3ItgHPAwELMYH9
-X-Proofpoint-GUID: abweW81WQRFpje3SmNwzKQF3FrWvXWzr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-22_08,2022-12-22_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- mlxlogscore=999 clxscore=1011 spamscore=0 lowpriorityscore=0 adultscore=0
- impostorscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2212220127
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221214194056.161492-12-michael.roth@amd.com>
+X-Provags-ID: V03:K1:iVceB1ZaTzjhtQbFgMfH9Ymg2SVfhDV1qs8iVgziQpLZ9OiSFWI
+ sN08JdZwg8iuA8yLBoaQVNwx8WhVzL/GntbJSgRtWdUJ+dV69YrUwD8vPGSvr+qBqI+rvM3
+ 7IQ605ZNfMYdkWFdgTDF8nA3LA0A96qzMWZ7ICA/7cCXnt3WtZsxm/sU/LXGtPEQxcfSpuL
+ q4SEojyNdmQn9qUyq7hWw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:mdELVBPtDLE=;IBvNb1Mqd/JKAyjgIXTx8Dll7mH
+ ROU2y7XjKq0+oZ1bfY2w7dFcRtxeWQa8eVJ2+S0loCSdqt2xz8Hvg+ZagBUZLQg37Dt0Dc2ZD
+ YF0+WtnJpmHVjBwzEd0AEULmciHzK5mHAvWPEBcUisv/SMfoPkzxQpq4TabH9ZbYJUgeHhr0F
+ dzRTGl4HeUPmp9vWNwN1oDJMDdYEyqfffS/K0SaT68igm8SQdH7gjmL60nSab2fY8uxOTXklR
+ 4m5HEuR1zhTSNHp3Ztf27Z8gVKDQYlCQMHM4ERCmPTcC0Wca5TYHg+iclVpS6V5EaB4nk/N8u
+ WIZA2Eeft+8wzqXUW18TV6CiRkp7oocNjB1NN50akqy7kGJ33YZTMKhBJsYeVGsx9oPn4jagA
+ YzXPsqlwrP2kPPSUomkmnV+O7jtHtVnXTIAihl934kbl40IRHsk6yMKBb9iDfI9Lnj0sPMCjN
+ /Tx8FgwNxQuHQoWlNrk1JGDKjn4Yg1A7dDY9IsHF8ejlyBZXDJK3JcnKjBa/5kJ4PbX9E8Ngc
+ W4gBgYrVfxd260LRebdhVupfZcmgUa2LlWHR7BGYXu2uSBNw7gbwye+l9zhdd/KGml/y7OzbJ
+ roxc6AF378FfsfxnPQjf43niz7yHhqz1r4DSzdNiuU1PHfB1J7F4RRCIxyzjnyelcSuBQGEZe
+ dtJiFXcsivaiT4mRDDptAqQJEqxibD+KAUrnFQxt9J4/g/AWFksHi/jFd9ypkOx6ziR0qDASL
+ Djfb3x4uOG88TKmbb22g+FrU3FJntg3/h5xGX094wlMHv6Sy+APV+7nZVOjHeK6kfAfm4q9C3
+ qFawT+WGJ1h856OcOLx5qNe1MCyAq7QOPigBPzWfo3ic2vbEqs/yLTC6vZPGkyN8gd6Liti22
+ Tte+ZHHryGvKmvcJfFOCNXgQNahqzo0yWT6RhyS0zGY0okNfvraWBasF4gDZmXLn7FhvKj7oS
+ LCIiDaYU51jEQPEcd8umLujuT40=
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dionna, Mike,
-
-On 14/12/2022 21:40, Michael Roth wrote:
-> From: Dionna Glaze <dionnaglaze@google.com>
-> 
-> The /dev/sev device has the ability to store host-wide certificates for
-> the key used by the AMD-SP for SEV-SNP attestation report signing,
-> but for hosts that want to specify additional certificates that are
-> specific to the image launched in a VM, a different way is needed to
-> communicate those certificates.
-> 
-> This patch adds two new KVM ioctl commands: KVM_SEV_SNP_{GET,SET}_CERTS
-> 
-> The certificates that are set with this command are expected to follow
-> the same format as the host certificates, but that format is opaque
-> to the kernel.
-> 
-> The new behavior for custom certificates is that the extended guest
-> request command will now return the overridden certificates if they
-> were installed for the instance. The error condition for a too small
-> data buffer is changed to return the overridden certificate data size
-> if there is an overridden certificate set installed.
-> 
-> Setting a 0 length certificate returns the system state to only return
-> the host certificates on an extended guest request.
-> 
-> We also increase the SEV_FW_BLOB_MAX_SIZE another 4K page to allow
-> space for an extra certificate.
-> 
-> Cc: Tom Lendacky <Thomas.Lendacky@amd.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+On Wed, Dec 14, 2022 at 01:40:03PM -0600, Michael Roth wrote:
+> From: Nikunj A Dadhania <nikunj@amd.com>
+>
+> Pre-boot guest payload needs to be encrypted and VMM has copied it
+> over to the private-fd. Add support to get the pfn from the memfile fd
+> for encrypting the payload in-place.
+>
+> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
 > ---
->  arch/x86/kvm/svm/sev.c   | 111 ++++++++++++++++++++++++++++++++++++++-
->  arch/x86/kvm/svm/svm.h   |   1 +
->  include/linux/psp-sev.h  |   2 +-
->  include/uapi/linux/kvm.h |  12 +++++
->  4 files changed, 123 insertions(+), 3 deletions(-)
-> 
+>  arch/x86/kvm/svm/sev.c | 79 ++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 64 insertions(+), 15 deletions(-)
+>
 > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 4de952d1d446..d0e58cffd1ed 100644
+> index a7e4e3005786..ae4920aeb281 100644
 > --- a/arch/x86/kvm/svm/sev.c
 > +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2081,6 +2081,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  		goto e_free;
->  
->  	sev->snp_certs_data = certs_data;
-> +	sev->snp_certs_len = 0;
->  
->  	return context;
->  
-> @@ -2364,6 +2365,86 @@ static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> @@ -107,6 +107,11 @@ static inline bool is_mirroring_enc_context(struct =
+kvm *kvm)
+>  	return !!to_kvm_svm(kvm)->sev_info.enc_context_owner;
+>  }
+>
+> +static bool kvm_is_upm_enabled(struct kvm *kvm)
+> +{
+> +	return kvm->arch.upm_mode;
+> +}
+> +
+>  /* Must be called with the sev_bitmap_lock held */
+>  static bool __sev_recycle_asids(int min_asid, int max_asid)
+>  {
+> @@ -382,6 +387,38 @@ static int sev_launch_start(struct kvm *kvm, struct=
+ kvm_sev_cmd *argp)
 >  	return ret;
 >  }
->  
-> +static int snp_get_instance_certs(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>
+> +static int sev_get_memfile_pfn_handler(struct kvm *kvm, struct kvm_gfn_=
+range *range, void *data)
 > +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	struct kvm_sev_snp_get_certs params;
+> +	struct kvm_memory_slot *memslot =3D range->slot;
+> +	struct page **pages =3D data;
+> +	int ret =3D 0, i =3D 0;
+> +	kvm_pfn_t pfn;
+> +	gfn_t gfn;
 > +
-> +	if (!sev_snp_guest(kvm))
-> +		return -ENOTTY;
+> +	for (gfn =3D range->start; gfn < range->end; gfn++) {
+> +		int order;
 > +
-> +	if (!sev->snp_context)
-> +		return -EINVAL;
+> +		ret =3D kvm_restricted_mem_get_pfn(memslot, gfn, &pfn, &order);
+> +		if (ret)
+> +			return ret;
 > +
-> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data,
-> +			   sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	/* No instance certs set. */
-> +	if (!sev->snp_certs_len)
-> +		return -ENOENT;
-> +
-> +	if (params.certs_len < sev->snp_certs_len) {
-> +		/* Output buffer too small. Return the required size. */
-> +		params.certs_len = sev->snp_certs_len;
-> +
-> +		if (copy_to_user((void __user *)(uintptr_t)argp->data, &params,
-> +				 sizeof(params)))
+> +		if (is_error_noslot_pfn(pfn))
 > +			return -EFAULT;
 > +
-> +		return -EINVAL;
+> +		pages[i++] =3D pfn_to_page(pfn);
 > +	}
 > +
-> +	if (copy_to_user((void __user *)(uintptr_t)params.certs_uaddr,
-> +			 sev->snp_certs_data, sev->snp_certs_len))
-> +		return -EFAULT;
-> +
-> +	return 0;
+> +	return ret;
 > +}
 > +
-> +static int snp_set_instance_certs(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> +static int sev_get_memfile_pfn(struct kvm *kvm, unsigned long addr,
+> +			       unsigned long size, unsigned long npages,
+> +			       struct page **pages)
 > +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	unsigned long length = SEV_FW_BLOB_MAX_SIZE;
-> +	void *to_certs = sev->snp_certs_data;
-> +	struct kvm_sev_snp_set_certs params;
-> +
-> +	if (!sev_snp_guest(kvm))
-> +		return -ENOTTY;
-> +
-> +	if (!sev->snp_context)
-> +		return -EINVAL;
-> +
-> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data,
-> +			   sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	if (params.certs_len > SEV_FW_BLOB_MAX_SIZE)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Setting a length of 0 is the same as "uninstalling" instance-
-> +	 * specific certificates.
-> +	 */
-> +	if (params.certs_len == 0) {
-> +		sev->snp_certs_len = 0;
-> +		return 0;
-> +	}
-> +
-> +	/* Page-align the length */
-> +	length = (params.certs_len + PAGE_SIZE - 1) & PAGE_MASK;
-> +
-> +	if (copy_from_user(to_certs,
-> +			   (void __user *)(uintptr_t)params.certs_uaddr,
-> +			   params.certs_len)) {
-> +		return -EFAULT;
-> +	}
-> +
-> +	sev->snp_certs_len = length;
-
-Here we set the length to the page-aligned value, but we copy only
-params.cert_len bytes.  If there are two subsequent
-snp_set_instance_certs() calls where the second one has a shorter
-length, we might "keep" some leftover bytes from the first call.
-
-Consider:
-1. snp_set_instance_certs(certs_addr point to "AAA...", certs_len=8192)
-2. snp_set_instance_certs(certs_addr point to "BBB...", certs_len=4097)
-
-If I understand correctly, on the second call we'll copy 4097 "BBB..."
-bytes into the to_certs buffer, but length will be (4096 + PAGE_SIZE -
-1) & PAGE_MASK which will be 8192.
-
-Later when fetching the certs (for the extended report or in
-snp_get_instance_certs()) the user will get a buffer of 8192 bytes
-filled with 4097 BBBs and 4095 leftover AAAs.
-
-Maybe zero sev->snp_certs_data entirely before writing to it?
-
-Related question (not only for this patch) regarding snp_certs_data
-(host or per-instance): why is its size page-aligned at all? why is it
-limited by 16KB or 20KB? If I understand correctly, for SNP, this buffer
-is never sent to the PSP.
-
-> +
-> +	return 0;
+> +	return kvm_vm_do_hva_range_op(kvm, addr, size,
+> +				      sev_get_memfile_pfn_handler, pages);
 > +}
+
+The third argument for the kvm_vm_do_hva_range_op call should be addr+size=
+; the
+function expects the end of the range not the size of the range.
+
 > +
->  int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
->  {
->  	struct kvm_sev_cmd sev_cmd;
+>  static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uadd=
+r,
+>  				    unsigned long ulen, unsigned long *n,
+>  				    int write)
+> @@ -424,16 +461,25 @@ static struct page **sev_pin_memory(struct kvm *kv=
+m, unsigned long uaddr,
+>  	if (!pages)
+>  		return ERR_PTR(-ENOMEM);
+>
+> -	/* Pin the user virtual address. */
+> -	npinned =3D pin_user_pages_fast(uaddr, npages, write ? FOLL_WRITE : 0,=
+ pages);
+> -	if (npinned !=3D npages) {
+> -		pr_err("SEV: Failure locking %lu pages.\n", npages);
+> -		ret =3D -ENOMEM;
+> -		goto err;
+> +	if (kvm_is_upm_enabled(kvm)) {
+> +		/* Get the PFN from memfile */
+> +		if (sev_get_memfile_pfn(kvm, uaddr, ulen, npages, pages)) {
+> +			pr_err("%s: ERROR: unable to find slot for uaddr %lx", __func__, uad=
+dr);
+> +			ret =3D -ENOMEM;
+> +			goto err;
+> +		}
 
-[...]
+This branch doesn't initialize npinned. If sev_get_memfile_pfn fails, the =
+code following the err
+label passes the uninitialized value to unpin_user_pages.
 
-> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-> index a1e6624540f3..970a9de0ed20 100644
-> --- a/include/linux/psp-sev.h
-> +++ b/include/linux/psp-sev.h
-> @@ -22,7 +22,7 @@
->  #define __psp_pa(x)	__pa(x)
->  #endif
->  
-> -#define SEV_FW_BLOB_MAX_SIZE	0x4000	/* 16KB */
-> +#define SEV_FW_BLOB_MAX_SIZE	0x5000	/* 20KB */
->  
-
-This has effects in drivers/crypto/ccp/sev-dev.c
-                                                               (for
-example in alloc_snp_host_map).  Is that OK?
-
-
--Dov
-
->  /**
->   * SEV platform state
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 61b1e26ced01..48bcc59cf86b 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1949,6 +1949,8 @@ enum sev_cmd_id {
->  	KVM_SEV_SNP_LAUNCH_START,
->  	KVM_SEV_SNP_LAUNCH_UPDATE,
->  	KVM_SEV_SNP_LAUNCH_FINISH,
-> +	KVM_SEV_SNP_GET_CERTS,
-> +	KVM_SEV_SNP_SET_CERTS,
->  
->  	KVM_SEV_NR_MAX,
->  };
-> @@ -2096,6 +2098,16 @@ struct kvm_sev_snp_launch_finish {
->  	__u8 pad[6];
->  };
->  
-> +struct kvm_sev_snp_get_certs {
-> +	__u64 certs_uaddr;
-> +	__u64 certs_len;
-> +};
+> +	} else {
+> +		/* Pin the user virtual address. */
+> +		npinned =3D pin_user_pages_fast(uaddr, npages, write ? FOLL_WRITE : 0=
+, pages);
+> +		if (npinned !=3D npages) {
+> +			pr_err("SEV: Failure locking %lu pages.\n", npages);
+> +			ret =3D -ENOMEM;
+> +			goto err;
+> +		}
+> +		sev->pages_locked =3D locked;
+>  	}
+>
+>  	*n =3D npages;
+> -	sev->pages_locked =3D locked;
+>
+>  	return pages;
+>
+> @@ -514,6 +560,7 @@ static int sev_launch_update_shared_gfn_handler(stru=
+ct kvm *kvm,
+>
+>  	size =3D (range->end - range->start) << PAGE_SHIFT;
+>  	vaddr_end =3D vaddr + size;
+> +	WARN_ON(size < PAGE_SIZE);
+>
+>  	/* Lock the user memory. */
+>  	inpages =3D sev_pin_memory(kvm, vaddr, size, &npages, 1);
+> @@ -554,13 +601,16 @@ static int sev_launch_update_shared_gfn_handler(st=
+ruct kvm *kvm,
+>  	}
+>
+>  e_unpin:
+> -	/* content of memory is updated, mark pages dirty */
+> -	for (i =3D 0; i < npages; i++) {
+> -		set_page_dirty_lock(inpages[i]);
+> -		mark_page_accessed(inpages[i]);
+> +	if (!kvm_is_upm_enabled(kvm)) {
+> +		/* content of memory is updated, mark pages dirty */
+> +		for (i =3D 0; i < npages; i++) {
+> +			set_page_dirty_lock(inpages[i]);
+> +			mark_page_accessed(inpages[i]);
+> +		}
+> +		/* unlock the user pages */
+> +		sev_unpin_memory(kvm, inpages, npages);
+>  	}
+> -	/* unlock the user pages */
+> -	sev_unpin_memory(kvm, inpages, npages);
 > +
-> +struct kvm_sev_snp_set_certs {
-> +	__u64 certs_uaddr;
-> +	__u64 certs_len;
-> +};
-> +
->  #define KVM_DEV_ASSIGN_ENABLE_IOMMU	(1 << 0)
->  #define KVM_DEV_ASSIGN_PCI_2_3		(1 << 1)
->  #define KVM_DEV_ASSIGN_MASK_INTX	(1 << 2)
+>  	return ret;
+>  }
+>
+> @@ -609,9 +659,8 @@ static int sev_launch_update_priv_gfn_handler(struct=
+ kvm *kvm,
+>  			goto e_ret;
+>  		kvm_release_pfn_clean(pfn);
+>  	}
+> -	kvm_vm_set_region_attr(kvm, range->start, range->end,
+> -		true /* priv_attr */);
+>
+> +	kvm_vm_set_region_attr(kvm, range->start, range->end, KVM_MEMORY_ATTRI=
+BUTE_PRIVATE);
+>  e_ret:
+>  	return ret;
+>  }
+> --
+> 2.25.1
+>
+
+Regards, Tom
