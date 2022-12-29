@@ -1,154 +1,136 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2064.outbound.protection.outlook.com [40.107.94.64])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383E56ADB
-	for <linux-coco@lists.linux.dev>; Tue, 27 Dec 2022 21:49:52 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=e8n9oYf6WwJdTuF/kxscRi1brvlgjzQgRK1gV0+osbsDPPPcUZXoQyXtRhaY84rqhYIZjVk2LeTZMbkG0w30n080xTtOZD0w5OWslN1NMY+SOHd5BViGAtZkmpvce0UNVg5W5zapz610Sjd/uh63IiAzx2fn2ptsvdFJiF1rD9djcufIEgA3cBwHx3jm3qC3KqTuOjnSjxmP7zUeqWVkrJZ9z2ARLEF/B2f1XvfMFXqwstBwk+qrwYdN1n8O6L8M9eCT851yUZW9rVBaYnu7fq7YrZ2dmeCVSBt59ZQgG0ifu6LkJupgD9Y7fgQMONcEU67GeJ8aEHxyTnHhWhdEHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WkemZj2jZDdu8KAJ1zNdQlK4krUuT7b5oSMTAoqs+CU=;
- b=CNIrLMZqGURSHLkN50TRAJqONBopOkL33USKcUyyJea8KGpQgRffOpmaXe7+WGqq3TCUPxXUvkqgRyVlbUQ4J5VF8x24Y5qcLodqsiiZwDQUhgKfxyD9CvSKhIhpISG+Dn7/ZUZJ3qHFlDLmtuErB1BxKUbJL9vqyU3OrjA4kSVq9VXMaxk4KLvnBQNl6FoIKnsy634VR7LbMKo2MLlg9RTxGVCmGlyqTow1M9VeBWfpdezKLFbejr8kciGTBboe6d0uR+3fz3SGjESc2lkiY68rFxLhZZ2dbIMH2y0GRM5qu4eAL4E6ekYQOwLM2ZHvfVs8pu2jHlRqjt9Ku1Q7Ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WkemZj2jZDdu8KAJ1zNdQlK4krUuT7b5oSMTAoqs+CU=;
- b=pwfYqiVF/jcMOlMo4qQcA8D/I9yNQvmVwfz/aceerf+KcWl0moclcBdeofQ7DT0piXwSM/TX3f/9lpuGjTbR0fwCp+4zcaxkr/ualEG/vOGZdCGbf70uNQQRXxtev7c1lPQSwx5YgF/R3cLFRzuWNXt45sQI9TcIHutZt3xj0z0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by PH7PR12MB5878.namprd12.prod.outlook.com (2603:10b6:510:1d6::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.15; Tue, 27 Dec
- 2022 21:49:47 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::5317:fa3f:5cbe:45e9]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::5317:fa3f:5cbe:45e9%3]) with mapi id 15.20.5944.016; Tue, 27 Dec 2022
- 21:49:45 +0000
-Message-ID: <ab96e918-c8b7-67d5-1dfd-320264858cec@amd.com>
-Date: Tue, 27 Dec 2022 15:49:39 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH Part2 v6 07/49] x86/sev: Invalid pages from direct map
- when adding it to RMP table
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
- ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- dgilbert@redhat.com, jarkko@kernel.org
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <243778c282cd55a554af9c11d2ecd3ff9ea6820f.1655761627.git.ashish.kalra@amd.com>
- <YuFvbm/Zck9Tr5pq@zn.tnic> <20221219150026.bltiyk72pmdc2ic3@amd.com>
- <Y6DEv4QuvIfwWlCW@zn.tnic>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <Y6DEv4QuvIfwWlCW@zn.tnic>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR02CA0008.namprd02.prod.outlook.com
- (2603:10b6:610:4e::18) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3419D79C3
+	for <linux-coco@lists.linux.dev>; Thu, 29 Dec 2022 16:14:10 +0000 (UTC)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 88E171EC0622;
+	Thu, 29 Dec 2022 17:14:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1672330448;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=yiv7ygs+SuK0x+dgF6bq6lJbSdbknPxlHUob4CtNI7I=;
+	b=U+ywzFGfQlEWXXsPeZVWUBAI3CV4cBV33gK2O0narbJnFvVhbFNhPZQje1x01QqrasMH3V
+	MUpdr2/87oWoNpnkAbXLOCYjk2VEkAfyPdEdqPY8XKhnCBbs4HSaN2gv7OMPgCuhiN5TG2
+	WroaVxJLLGmzNIcOGkr0TzHey0VNpSQ=
+Date: Thu, 29 Dec 2022 17:14:03 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+	ashish.kalra@amd.com, harald@profian.com
+Subject: Re: [PATCH RFC v7 04/64] KVM: x86: Add 'fault_is_private' x86 op
+Message-ID: <Y628y6hQK38+IAev@zn.tnic>
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-5-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|PH7PR12MB5878:EE_
-X-MS-Office365-Filtering-Correlation-Id: aaa87af2-6b8d-4f55-4515-08dae854446d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	q4s/yevOIvgkSfN/bq7VUtm1+xdq7KiTUB18668PYlAb8JcxMyEUXJe5z1Ba/THyh3+eu0MdLq9nwZXkQfToaYhyfmAWY60Mu+UR6rjOs6Sy8t2wraIfp+BSXchecxlGY0oyaNpXxtMTCHSrOMhTwFMNyujDzGXz81qI7tYNxHkNN7QYztHmQ7RcoqGe0KS4dHFFbmJDg2Ye3ZM37EI8rnpYnQrHL6dKpG2XEyDEJV7o0f5pIdJ/waDnTCRDjT6b8d93bChdWDFYFcQ+Y94zTZK5z4RKi3yqGDJSopVm9wy8L/1fnBHjuFEun46PWs6B3ytXwjUII3X5I+f//vxu53PRcKKusAoW4zi2OH9yZiH0L6dfYZwDkeNgtzMxncq9FdS6XPrCJfbIfeTv70E12Iue5TJGIdD2HTHqM3lxUS5FY+dNg4nRY5MS89vNZhgrO/X8ZhZReGd4wf1rrp3Cf7Jd0CmfzsdvD3Kl4jEPtTO348F7aq9b4XTT9pmPWJYHKY8Jy8G4GEe4pXRNeYMYjGdNuMkmqTh4pZgkIVyS/bqlLrkcoHFXLLjJjUjhDLsYBrBiIARHWSADYcFMalAzYu1EHVXgG9OJj3aA9nN3Sxyowz8nEpWKnUvDXO+FB2keQ5o0WiCIdwWnqd+wDKom3rZUGSWdQ/DMKDFp8qAtfoF/gO29HFNrdE8/vTrcX8fJtBPw0Twg+IuD/NpGz6kiM31s6YU4vmxYVO4KOiY4wk8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(136003)(366004)(376002)(346002)(396003)(451199015)(4326008)(8676002)(66556008)(66476007)(66946007)(478600001)(6636002)(6506007)(53546011)(36756003)(2616005)(316002)(6486002)(38100700002)(110136005)(7416002)(7406005)(26005)(6512007)(186003)(5660300002)(4744005)(31686004)(31696002)(86362001)(8936002)(6666004)(2906002)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eDR5dTF1alBmRGVqK28zTnZjVWtUWmdoMGJucEFOUWQ2aWYya0t1MHAzTVJn?=
- =?utf-8?B?Nlg3VlB5ZTVkdzdJWUQzMjcxcUZKSnJLSkpzc3RVS3RQVEFCUURKRGMycmFt?=
- =?utf-8?B?M1FmQm1zWGdxSENxa09hNjdTR1RTdkplaGY5dmhvbVpDMlI4eFduS2tMS1Jm?=
- =?utf-8?B?aGlIcmFUa3FGZFFoS3ArNW5uUzdVK21tZzQ2NXU5VEMyVENwQmZFNnNzZkxS?=
- =?utf-8?B?MnMvdWExb3dhTmR5dFlrdlRPTi9Ka1VFdEJxUDFXaEZXdTdPQ0VrV2g0QjVv?=
- =?utf-8?B?MjIxejhxckljVDJBOFpYVEtieHkwV1RMVFY4M3cvODlWYWlIL1FrR29vUDBi?=
- =?utf-8?B?b3Z3bHE2S0VNa0NRamhlUnZ6TFl5NmlNUUltUnNmQTZuVnJ4Vkk2SDR3TmI2?=
- =?utf-8?B?cmp2bmxLb3VYbWF0Z0JEaEJjZm9JWXpQNjEzQVBqbEVKYUJjK3VpZWtSQUcw?=
- =?utf-8?B?aG1xbW5WVE94aW4xaU84YXFLSElpYk1zak5rZEVtSWhMczJDd25EZzFJOFAx?=
- =?utf-8?B?MW82d3FwdG93d0xlTmJGNjZjTnVnODQxenJGbXNjVEZHeGhiaVFVN0loRUVq?=
- =?utf-8?B?M05LK2thWUJTVlFndWRjRmpiRTdyYkN6QTFiY0xjRVlMaU5kci94cGZsMnBS?=
- =?utf-8?B?VlJoUGlVTUxiY25VRjBMQ2s5cXFnYldTblpBeUlJK1RXeHFnY3RVUXNmWjdX?=
- =?utf-8?B?YUpiaS8vL0tkMGcvdm1ZTUxyc2UxNUhEb0ZiT0t5SmRKUjd3VEx2VTRNa2hP?=
- =?utf-8?B?ZEF2ZzlUMTdFajlWWThLMGNVTksrTjkvcDhobjdkUzZSMXk2MWdVZE9VcTM3?=
- =?utf-8?B?dlRyN2FLL0tPc2h6UWhWR3owWHA5aTVjSUdjVE01STZBQ0RxZ0JYcmNLR1Rm?=
- =?utf-8?B?aW1qTlBvOFRnc3NpRXBVbkxJRWVpQTczNFcydE1HbG9sRUozSFQ2blMrNmJQ?=
- =?utf-8?B?M2JCdHBYL0pTaHNPUHZoNnBqRUM4dDBhMzBiQWgrVzBvYjVtSUppUHN3bHMz?=
- =?utf-8?B?b0Q1MDIwaVRJVzNoUVhJVHVSYWFzQXQzTE51WklLQWd4cEtMdE0rVWJNMkNt?=
- =?utf-8?B?bjQ4NUZLc2lPVXM0M0ptVTVudy9aZmdvWmZpQ3d2dzdldm8zbitndGxRcWFv?=
- =?utf-8?B?QmZ0aENzeS9DYVNmTmxFY1V1a0tqUzlmTzRjTkh0aTVGK0VnYklCcHQ2NkFD?=
- =?utf-8?B?b1JHSXJ2MnJyVWF5NWZIWHFVTmkva3lEd3VTaWVWUEdLdStaZmpXSCtvUFdK?=
- =?utf-8?B?QU1lNldpTmpUNVdXRE1VdnM3bXFQTENCc3RQaEVwczdoVEx5YmpSMEh2Nkxs?=
- =?utf-8?B?Qmk0QTliM0h0K1ljdTFoamZiTTVqS2p1S2YrWmlaMXRXME1zTXNVMkI1QmUz?=
- =?utf-8?B?T3BLS2pJS0dOczdGeWU0RS9DMUJTeUNOVk1tc0xadXV4WENpdUhTZy9tbi9j?=
- =?utf-8?B?MmZwVVJySzQwaU52QzB2WnAxODJ6cVc2Tm9uQXZVT2xyNE5oUkU5ME1tdHRT?=
- =?utf-8?B?YTJUWW5uN3M1WU9kcUVmTWlFbkNCRUZkUUh2aGJPKzJOMXRuMVE1aW5yYU1r?=
- =?utf-8?B?UjNnRGRBNHRvSCttM2FOcDVXOWhOSjhVeFlNMUduZWpwRTcwcEgzcEdSMW94?=
- =?utf-8?B?cDRXeG9WUjZnZmk5WVo0NG43RTAwUDdVZmZPaTREajcyQlIvMVplRUo5dW9N?=
- =?utf-8?B?UUQrc3ZoQkxubXR4cHZpL2h3cTNmOWIvSWFYVzZWa2xHV08rWTRhWlV6dnlX?=
- =?utf-8?B?c25PNzN2Myt0TlpvZmNITElUTVdYRWloMEJWWUJYK2ZrVFFBTy9pZW5Qc3p5?=
- =?utf-8?B?MnNQb2pOYTFGb0UxVVlNSUM0bWlabUlKN1B0eFlHQ2Y2bk5hNmNBbkRIcDhN?=
- =?utf-8?B?ZVlEWi9jUlI5THFVUE5xMmlBQk1TRG56UGFsR1J3aFJJQkVEVjQxeTc1UEU3?=
- =?utf-8?B?M0tzTFRkVkt2YU1VTVM5R0tPelBaRVNwSzhHZGtiU1V4NEZ0Y3QzT0pZckZC?=
- =?utf-8?B?UHhtVUVBMlFPVDZmem5hR0p3M0R4MzQ4dTVWODEra1V2ZVUwakVyL3pRV1lC?=
- =?utf-8?B?REtWS1cydXk5Si9YTkN2V0N1RUtpcVpyZXNGaHZ4Z0xpRVAvV3pqOGFVTHRO?=
- =?utf-8?Q?9oTE3SMbuasgJqRAb1GXwtbUX?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aaa87af2-6b8d-4f55-4515-08dae854446d
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Dec 2022 21:49:45.1755
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gGdiphVww4IuC7yXm4+Pdk1p7JdNoYlXXfUvLNMtgafGe22PI2F0ihDN1Z3dF7NI0pimDF9+ZA5ws5UP/qxWBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5878
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221214194056.161492-5-michael.roth@amd.com>
 
-Hello Boris,
+On Wed, Dec 14, 2022 at 01:39:56PM -0600, Michael Roth wrote:
+> This callback is used by the KVM MMU to check whether a #NPF was
+> or a private GPA or not.
 
-On 12/19/2022 2:08 PM, Borislav Petkov wrote:
-> On Mon, Dec 19, 2022 at 09:00:26AM -0600, Michael Roth wrote:
->> We implemented this approach for v7, but it causes a fairly significant
->> performance regression, particularly for the case for npages > 1 which
->> this change was meant to optimize.
->>
->> I still need to dig in a big but I'm guessing it's related to flushing
->> behavior.
+s/or //
+
 > 
-> Well, AFAICT, change_page_attr_set_clr() flushes once at the end.
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>  arch/x86/include/asm/kvm_host.h    |  1 +
+>  arch/x86/kvm/mmu/mmu.c             |  3 +--
+>  arch/x86/kvm/mmu/mmu_internal.h    | 40 +++++++++++++++++++++++++++---
+>  4 files changed, 39 insertions(+), 6 deletions(-)
 > 
-> Don't you need to flush when you modify the direct map?
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index f530a550c092..efae987cdce0 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -132,6 +132,7 @@ KVM_X86_OP(complete_emulated_msr)
+>  KVM_X86_OP(vcpu_deliver_sipi_vector)
+>  KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+>  KVM_X86_OP_OPTIONAL_RET0(private_mem_enabled);
+> +KVM_X86_OP_OPTIONAL_RET0(fault_is_private);
+>  
+>  #undef KVM_X86_OP
+>  #undef KVM_X86_OP_OPTIONAL
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 9317abffbf68..92539708f062 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1636,6 +1636,7 @@ struct kvm_x86_ops {
+>  	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
+>  			     int root_level);
+>  	int (*private_mem_enabled)(struct kvm *kvm);
+> +	int (*fault_is_private)(struct kvm *kvm, gpa_t gpa, u64 error_code, bool *private_fault);
+
+bool
+
+and then you don't need the silly "== 1" at the call site.
+
+>  
+>  	bool (*has_wbinvd_exit)(void);
+
+...
+
+> @@ -261,13 +293,13 @@ enum {
+>  };
+>  
+>  static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+> -					u32 err, bool prefetch)
+> +					u64 err, bool prefetch)
+
+The u32 -> u64 change of err could use a sentence or two of
+clarification in the commit message...
+
+>  {
+>  	bool is_tdp = likely(vcpu->arch.mmu->page_fault == kvm_tdp_page_fault);
+>  
+>  	struct kvm_page_fault fault = {
+>  		.addr = cr2_or_gpa,
+> -		.error_code = err,
+> +		.error_code = lower_32_bits(err),
+>  		.exec = err & PFERR_FETCH_MASK,
+>  		.write = err & PFERR_WRITE_MASK,
+>  		.present = err & PFERR_PRESENT_MASK,
+> @@ -281,8 +313,8 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+>  		.max_level = KVM_MAX_HUGEPAGE_LEVEL,
+>  		.req_level = PG_LEVEL_4K,
+>  		.goal_level = PG_LEVEL_4K,
+> -		.is_private = IS_ENABLED(CONFIG_HAVE_KVM_PRIVATE_MEM_TESTING) && is_tdp &&
+> -				kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT),
+> +		.is_private = is_tdp && kvm_mmu_fault_is_private(vcpu->kvm,
+> +								 cr2_or_gpa, err),
+>  	};
+>  	int r;
+>  
+> -- 
+> 2.25.1
 > 
 
-Milan onward, there is H/W support for coherency between mappings of the 
-same physical page with different encryption keys, so AFAIK, there 
-should be no need to flush during page state transitions, where we 
-invoke these direct map interface functions for re-mapping/invalidating 
-pages.
+-- 
+Regards/Gruss,
+    Boris.
 
-I don't know if there is any other reason to flush after modifying
-the direct map ?
-
-Thanks,
-Ashish
+https://people.kernel.org/tglx/notes-about-netiquette
