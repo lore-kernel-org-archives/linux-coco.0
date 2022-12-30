@@ -1,48 +1,43 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738111FAF
-	for <linux-coco@lists.linux.dev>; Thu, 29 Dec 2022 17:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E766023B7
+	for <linux-coco@lists.linux.dev>; Fri, 30 Dec 2022 11:28:01 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 36C1E1EC01CE;
-	Thu, 29 Dec 2022 18:09:40 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B87981EC0622;
+	Fri, 30 Dec 2022 12:27:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1672333780;
+	t=1672399679;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=+OOhnZUur7/65XYNN5FmieX2LDevIBg+5FobdbkM0V4=;
-	b=ZZ5a6aHw8mkatXdcTQjTIBD0qcmeQny18h0PJgtL3SDF/M34eLTxnFU2ln362VqwAnk9cW
-	HmuFwJeKmNCRp8KTd2O86F+ZNQ7Zb2KrYhShQl84Tbw1xAmuPzmUh3VGZhvASwYz38MQrL
-	lWkFhXIbJA9GKPkwwHAxZXMwVNKAGuE=
-Date: Thu, 29 Dec 2022 18:09:35 +0100
+	bh=Rc57ZPovDpq235rKCZ5fF1N14hn+t2Wcm4W4m/D7lWo=;
+	b=a/zY+elMZ2XEfVyrjInY4d4UfNOwEbEpG6OT37YjBnYGgH1Je2hg5szpaBBD98O69ELr5P
+	uS8nNzGeh3jxWcAv5xsB0bXxCZ4s24+yc+5Lt6A4jhft1OUbo2aArW6W9nd/98oVdIQe+7
+	rqQNYCw4GIhU5mIbxVDQjFSuBmVD8to=
+Date: Fri, 30 Dec 2022 12:27:55 +0100
 From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Michael Roth <michael.roth@amd.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
 	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
 	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org
-Subject: Re: [PATCH Part2 v6 07/49] x86/sev: Invalid pages from direct map
- when adding it to RMP table
-Message-ID: <Y63Jz01c7zLx03gQ@zn.tnic>
-References: <cover.1655761627.git.ashish.kalra@amd.com>
- <243778c282cd55a554af9c11d2ecd3ff9ea6820f.1655761627.git.ashish.kalra@amd.com>
- <YuFvbm/Zck9Tr5pq@zn.tnic>
- <20221219150026.bltiyk72pmdc2ic3@amd.com>
- <Y6DEv4QuvIfwWlCW@zn.tnic>
- <ab96e918-c8b7-67d5-1dfd-320264858cec@amd.com>
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+	ashish.kalra@amd.com, harald@profian.com
+Subject: Re: [PATCH RFC v7 05/64] KVM: x86: Add 'update_mem_attr' x86 op
+Message-ID: <Y67LO7OdnzzGIb8N@zn.tnic>
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-6-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,38 +46,48 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ab96e918-c8b7-67d5-1dfd-320264858cec@amd.com>
+In-Reply-To: <20221214194056.161492-6-michael.roth@amd.com>
 
-On Tue, Dec 27, 2022 at 03:49:39PM -0600, Kalra, Ashish wrote:
-> Milan onward,
+On Wed, Dec 14, 2022 at 01:39:57PM -0600, Michael Roth wrote:
+> This callback will handle any platform-specific handling needed for
 
-And before ML there's no SNP, right?
+s/handle/do/
 
-> there is H/W support for coherency between mappings of the
-> same physical page with different encryption keys, so AFAIK, there should be
-> no need to flush during page state transitions, where we invoke these direct
-> map interface functions for re-mapping/invalidating pages.
+> converting pages between shared/private.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>  arch/x86/include/asm/kvm_host.h    |  2 ++
+>  arch/x86/kvm/mmu/mmu.c             | 10 ++++++++--
+>  3 files changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index efae987cdce0..52f94a0ba5e9 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -133,6 +133,7 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
+>  KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+>  KVM_X86_OP_OPTIONAL_RET0(private_mem_enabled);
+>  KVM_X86_OP_OPTIONAL_RET0(fault_is_private);
+> +KVM_X86_OP_OPTIONAL_RET0(update_mem_attr)
+>  
+>  #undef KVM_X86_OP
+>  #undef KVM_X86_OP_OPTIONAL
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 92539708f062..13802389f0f9 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1637,6 +1637,8 @@ struct kvm_x86_ops {
+>  			     int root_level);
+>  	int (*private_mem_enabled)(struct kvm *kvm);
+>  	int (*fault_is_private)(struct kvm *kvm, gpa_t gpa, u64 error_code, bool *private_fault);
+> +	int (*update_mem_attr)(struct kvm_memory_slot *slot, unsigned int attr,
+> +			       gfn_t start, gfn_t end);
 
-Yah, that rings a bell.
+Does this one want to return bool too?
 
-In any case, the fact that flushing is not needed should be stated
-somewhere in text so that it is clear why.
-
-> I don't know if there is any other reason to flush after modifying
-> the direct map ?
-
-There's
-
-        /*
-         * No need to flush, when we did not set any of the caching
-         * attributes:
-         */
-        cache = !!pgprot2cachemode(mask_set);
-
-
-Does the above HW cover this case too?
-
-Thx.
+I guess I'll see later...
 
 -- 
 Regards/Gruss,
