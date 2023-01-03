@@ -1,184 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C562B2F44
-	for <linux-coco@lists.linux.dev>; Sat, 31 Dec 2022 15:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2EBC433EF;
-	Sat, 31 Dec 2022 15:32:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1672500764;
-	bh=biJ5OjRTz8LacHCIRhDE4EhKtGxMPJqMl2cws+KriSA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wy3CUR+9dYkvysDD2MX1mxUzbtSCU/1qo0R11/dbrhUE7qsa8wF81yuG3/xCMFGjR
-	 FB8Fxq6+YD3el2KrtlkHXbtmFLVuRa0Z2Cfcg0s9cShsI7kUFfOhS7S1dKNWfTCcH+
-	 QJVr1h0R9wajCAdbrdjrha9+ESNbIlyTnPRIqs94qHVTvYmruLISpbyFQVD6eUgLvU
-	 UQX0sXD+UyHjOqhlWBnrlSIJAx5rNV8SLwvq7fdR9UDaHZjj67k8/uzTPAqrWulycx
-	 ZJnOrGgBUmTEiIP3SnCaMARWF0J7NZkLd5NPuJ0Va6hbCtWXtS0sSOvq3VRcnvS8a7
-	 zSQw+OnHg/f+w==
-Date: Sat, 31 Dec 2022 15:32:42 +0000
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, dgilbert@redhat.com, ashish.kalra@amd.com,
-	harald@profian.com, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v7 25/64] crypto: ccp: Add support to initialize the
- AMD-SP for SEV-SNP
-Message-ID: <Y7BWGvGj/Ky8RctP@kernel.org>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-26-michael.roth@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148C179C5
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jan 2023 13:52:42 +0000 (UTC)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 90BC81EC04A9;
+	Tue,  3 Jan 2023 14:52:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1672753960;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=jenftXUsLCjYgVrpPBjfO/iyCDXDPDkEsFq22/aOs1Y=;
+	b=ZYVEZy40bpZKRPNEb8A+GuJDwo7co0rlr98fvB9Y46v2y2MaROimAin4irtrRaH0yfVsVu
+	YJFlUTK+92Y1n157kbiM0mqAgVZirhb4LrcZxhZhM8StngsMJoYWzHWJdG5iLOxBw3rMP9
+	JoTXTSzQ+35L8T7r5FofStb4YRVIDmw=
+Date: Tue, 3 Jan 2023 14:52:35 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+	khalid.elmously@canonical.com, philip.cox@canonical.com,
+	aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv8 05/14] x86/boot: Add infrastructure required for
+ unaccepted memory support
+Message-ID: <Y7QzI0GqNeG9OHy1@zn.tnic>
+References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
+ <20221207014933.8435-6-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20221214194056.161492-26-michael.roth@amd.com>
+In-Reply-To: <20221207014933.8435-6-kirill.shutemov@linux.intel.com>
 
-On Wed, Dec 14, 2022 at 01:40:17PM -0600, Michael Roth wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
+On Wed, Dec 07, 2022 at 04:49:24AM +0300, Kirill A. Shutemov wrote:
+> Pull functionality from the main kernel headers and lib/ that is
+> required for unaccepted memory support.
 > 
-> Before SNP VMs can be launched, the platform must be appropriately
-> configured and initialized. Platform initialization is accomplished via
-> the SNP_INIT command. Make sure to do a WBINVD and issue DF_FLUSH
-> command to prepare for the first SNP guest launch after INIT.
-> 
-> During the execution of SNP_INIT command, the firmware configures
-> and enables SNP security policy enforcement in many system components.
-> Some system components write to regions of memory reserved by early
-> x86 firmware (e.g. UEFI). Other system components write to regions
-> provided by the operation system, hypervisor, or x86 firmware.
-> Such system components can only write to HV-fixed pages or Default
-> pages. They will error when attempting to write to other page states
-> after SNP_INIT enables their SNP enforcement.
-> 
-> Starting in SNP firmware v1.52, the SNP_INIT_EX command takes a list of
-> system physical address ranges to convert into the HV-fixed page states
-> during the RMP initialization. If INIT_RMP is 1, hypervisors should
-> provide all system physical address ranges that the hypervisor will
-> never assign to a guest until the next RMP re-initialization.
-> For instance, the memory that UEFI reserves should be included in the
-> range list. This allows system components that occasionally write to
-> memory (e.g. logging to UEFI reserved regions) to not fail due to
-> RMP initialization and SNP enablement.
-> 
-> Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> This is preparatory patch. The users for the functionality will come in
+> following patches.
+
+No need for that sentence.
+
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 > ---
->  drivers/crypto/ccp/sev-dev.c | 225 +++++++++++++++++++++++++++++++++++
->  drivers/crypto/ccp/sev-dev.h |   2 +
->  include/linux/psp-sev.h      |  17 +++
->  3 files changed, 244 insertions(+)
-> 
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index 9d84720a41d7..af20420bd6c2 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -26,6 +26,7 @@
->  #include <linux/fs_struct.h>
->  
->  #include <asm/smp.h>
-> +#include <asm/e820/types.h>
->  
->  #include "psp-dev.h"
->  #include "sev-dev.h"
-> @@ -34,6 +35,10 @@
->  #define SEV_FW_FILE		"amd/sev.fw"
->  #define SEV_FW_NAME_SIZE	64
->  
-> +/* Minimum firmware version required for the SEV-SNP support */
-> +#define SNP_MIN_API_MAJOR	1
-> +#define SNP_MIN_API_MINOR	51
-> +
->  static DEFINE_MUTEX(sev_cmd_mutex);
->  static struct sev_misc_dev *misc_dev;
->  
-> @@ -76,6 +81,13 @@ static void *sev_es_tmr;
->  #define NV_LENGTH (32 * 1024)
->  static void *sev_init_ex_buffer;
->  
-> +/*
-> + * SEV_DATA_RANGE_LIST:
-> + *   Array containing range of pages that firmware transitions to HV-fixed
-> + *   page state.
-> + */
-> +struct sev_data_range_list *snp_range_list;
-> +
->  static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
->  {
->  	struct sev_device *sev = psp_master->sev_data;
-> @@ -830,6 +842,186 @@ static int sev_update_firmware(struct device *dev)
->  	return ret;
->  }
->  
-> +static void snp_set_hsave_pa(void *arg)
-> +{
-> +	wrmsrl(MSR_VM_HSAVE_PA, 0);
-> +}
-> +
-> +static int snp_filter_reserved_mem_regions(struct resource *rs, void *arg)
-> +{
-> +	struct sev_data_range_list *range_list = arg;
-> +	struct sev_data_range *range = &range_list->ranges[range_list->num_elements];
-> +	size_t size;
-> +
-> +	if ((range_list->num_elements * sizeof(struct sev_data_range) +
-> +	     sizeof(struct sev_data_range_list)) > PAGE_SIZE)
-> +		return -E2BIG;
-> +
-> +	switch (rs->desc) {
-> +	case E820_TYPE_RESERVED:
-> +	case E820_TYPE_PMEM:
-> +	case E820_TYPE_ACPI:
-> +		range->base = rs->start & PAGE_MASK;
-> +		size = (rs->end + 1) - rs->start;
-> +		range->page_count = size >> PAGE_SHIFT;
-> +		range_list->num_elements++;
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int __sev_snp_init_locked(int *error)
-> +{
-> +	struct psp_device *psp = psp_master;
-> +	struct sev_data_snp_init_ex data;
-> +	struct sev_device *sev;
-> +	int rc = 0;
-> +
-> +	if (!psp || !psp->sev_data)
-> +		return -ENODEV;
-> +
-> +	sev = psp->sev_data;
-> +
-> +	if (sev->snp_initialized)
-> +		return 0;
+>  arch/x86/boot/bitops.h                   | 40 ++++++++++++
+>  arch/x86/boot/compressed/align.h         | 14 +++++
+>  arch/x86/boot/compressed/bitmap.c        | 43 +++++++++++++
+>  arch/x86/boot/compressed/bitmap.h        | 49 +++++++++++++++
+>  arch/x86/boot/compressed/bits.h          | 36 +++++++++++
+>  arch/x86/boot/compressed/find.c          | 54 ++++++++++++++++
+>  arch/x86/boot/compressed/find.h          | 79 ++++++++++++++++++++++++
+>  arch/x86/boot/compressed/math.h          | 37 +++++++++++
+>  arch/x86/boot/compressed/minmax.h        | 61 ++++++++++++++++++
+>  arch/x86/boot/compressed/pgtable_types.h | 25 ++++++++
+>  10 files changed, 438 insertions(+)
+>  create mode 100644 arch/x86/boot/compressed/align.h
+>  create mode 100644 arch/x86/boot/compressed/bitmap.c
+>  create mode 100644 arch/x86/boot/compressed/bitmap.h
+>  create mode 100644 arch/x86/boot/compressed/bits.h
+>  create mode 100644 arch/x86/boot/compressed/find.c
+>  create mode 100644 arch/x86/boot/compressed/find.h
+>  create mode 100644 arch/x86/boot/compressed/math.h
+>  create mode 100644 arch/x86/boot/compressed/minmax.h
+>  create mode 100644 arch/x86/boot/compressed/pgtable_types.h
 
-Shouldn't this follow this check:
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
 
-        if (sev->state == SEV_STATE_INIT) {
-                /* debug printk about possible incorrect call order */
-                return -ENODEV;
-        }
+-- 
+Regards/Gruss,
+    Boris.
 
-It is game over for SNP, if SEV_CMD_INIT{_EX} got first, which means that
-this should not proceed.
-
-BR, Jarkko
+https://people.kernel.org/tglx/notes-about-netiquette
