@@ -1,250 +1,91 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97DF79C5
-	for <linux-coco@lists.linux.dev>; Tue,  3 Jan 2023 14:21:08 +0000 (UTC)
-Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C35001EC050B;
-	Tue,  3 Jan 2023 15:21:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1672755660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=Y2lMNFRbTCBvtpE0tVvmu7BZzOhA8eUbudyQ9zFc2rg=;
-	b=K6+UVr5X3tzkIkUeK2Xva7KYiJtp9twfwujIBube7NjMmd5dtNBxZMM9gtIWVhujHdqzOo
-	QbkxhtVi0qRNa7atPIIA44ov01SyhLrTMEvbipQVa4S5/HMxwOsZAsbB5KufNqx+qS7LeB
-	/zFFULKxRKEjW7PcJmhydT9s8xEP3yQ=
-Date: Tue, 3 Jan 2023 15:20:55 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	marcelo.cerri@canonical.com, tim.gardner@canonical.com,
-	khalid.elmously@canonical.com, philip.cox@canonical.com,
-	aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
-	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv8 06/14] efi/x86: Implement support for unaccepted memory
-Message-ID: <Y7Q5x7qV/Cmc/p8s@zn.tnic>
-References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
- <20221207014933.8435-7-kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A566D8F6B
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jan 2023 21:01:38 +0000 (UTC)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 303JToPV031813
+	for <linux-coco@lists.linux.dev>; Tue, 3 Jan 2023 21:01:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : date : content-type : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=MF7Z6Q5inorXzCXUGO0cAJGz5AwsKSZbZqyEtUIQp1U=;
+ b=epOmrgjEON0XNzWTwjKiYi4FwjwicxVOy1vL4AHjrQd/30amrZD6OGKJwokWDlPncnJc
+ uBp5bZN9yPpg7RC017/+fJ/T4lYucRuvTYyVXOZuxeDHgtuhek+5NsW6Nivltk9OoxTU
+ azO26R1rZx81/VJK5HIq9qe/Ch3mPMMjjiI9rxqvAWIrXfIshQvuB2LIrN4GAybBk+tD
+ C3qzOaU6RPzOcji2w6UJ6ttRvWsQzvX2+OYaxfd5VwztTyqJkYGW2YDLXJVJT4LELB0E
+ slvpPPkKkFDJjoBjmjdkfhfg623Fi6bKEK/DQnJZMrrhVNxdZpGRcXLrgsALj7OhQHf2 zA== 
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mvh8pqwgh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-coco@lists.linux.dev>; Tue, 03 Jan 2023 21:01:36 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 303J0Hwv019422
+	for <linux-coco@lists.linux.dev>; Tue, 3 Jan 2023 21:01:36 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
+	by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3mtcq7kxwa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-coco@lists.linux.dev>; Tue, 03 Jan 2023 21:01:36 +0000
+Received: from b03ledav004.gho.boulder.ibm.com ([9.17.130.235])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 303L1Zv111272926
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-coco@lists.linux.dev>; Tue, 3 Jan 2023 21:01:35 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C31AD78068
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jan 2023 22:34:01 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 611D57805C
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jan 2023 22:34:01 +0000 (GMT)
+Received: from lingrow.int.hansenpartnership.com (unknown [9.211.64.53])
+	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP
+	for <linux-coco@lists.linux.dev>; Tue,  3 Jan 2023 22:34:01 +0000 (GMT)
+Message-ID: <acb06bc7f329dfee21afa1b2ff080fe29b799021.camel@linux.ibm.com>
+Subject: [RFC 0/3] Enlightened vTPM support for SVSM on SEV-SNP
+From: James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To: linux-coco@lists.linux.dev
+Date: Tue, 03 Jan 2023 16:01:33 -0500
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221207014933.8435-7-kirill.shutemov@linux.intel.com>
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ddbA8sG4CS6a61ueLwhDXOsQkwHS8svF
+X-Proofpoint-ORIG-GUID: ddbA8sG4CS6a61ueLwhDXOsQkwHS8svF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-03_07,2023-01-03_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=387
+ suspectscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 clxscore=1011 spamscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301030174
 
-On Wed, Dec 07, 2022 at 04:49:25AM +0300, Kirill A. Shutemov wrote:
-> The implementation requires some basic helpers in boot stub. They
-> provided by linux/ includes in the main kernel image, but is not present
-> in boot stub. Create copy of required functionality in the boot stub.
+This is a sketch for how a fully enlightened vTPM driver would work. 
+The idea is that the SVSM responds on function 8 to vTPM requests, so
+we use that to send down a buffer which is modified on return (the
+buffer must be big enough, so the agreed protocol is it should be a
+page in length, which is larger than any possible TPM command or
+response).  The protocol used is the MSSIM one which is self describing
+in terms of length, so there's no need to transmit sizes (it also
+leaves room for expansion to localities and cancellation, which is
+useful in the light of discussions).  A NULL in place of the buffer is
+a probe and the SVSM call simply returns SVSM_SUCCESS without doing
+anything.  This can be used to probe for vTPM support because any other
+return would indicate no vTPM present.
 
-Leftover paragraph from a previous version. Can be removed.
+Hopefully IBM will publish the new svsm-vtpm repo shortly, but we're
+still working with the old CRB based one at the moment, so it may take
+some time.
 
-...
+The three following patches are for two different repos.  Patch 1 will
+apply to any upstream Linux kernel, Patch 2 requires the non-upstream
+sev-snp repo and patch 3 is against the non upstream sev-snp edk repo.
 
-> +/*
-> + * The accepted memory bitmap only works at PMD_SIZE granularity.  This
-> + * function takes unaligned start/end addresses and either:
+James
 
-s/This function takes/Take/
-
-> + *  1. Accepts the memory immediately and in its entirety
-> + *  2. Accepts unaligned parts, and marks *some* aligned part unaccepted
-> + *
-> + * The function will never reach the bitmap_set() with zero bits to set.
-> + */
-> +void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
-> +{
-> +	/*
-> +	 * Ensure that at least one bit will be set in the bitmap by
-> +	 * immediately accepting all regions under 2*PMD_SIZE.  This is
-> +	 * imprecise and may immediately accept some areas that could
-> +	 * have been represented in the bitmap.  But, results in simpler
-> +	 * code below
-> +	 *
-> +	 * Consider case like this:
-> +	 *
-> +	 * | 4k | 2044k |    2048k   |
-> +	 * ^ 0x0        ^ 2MB        ^ 4MB
-> +	 *
-> +	 * Only the first 4k has been accepted. The 0MB->2MB region can not be
-> +	 * represented in the bitmap. The 2MB->4MB region can be represented in
-> +	 * the bitmap. But, the 0MB->4MB region is <2*PMD_SIZE and will be
-> +	 * immediately accepted in its entirety.
-> +	 */
-> +	if (end - start < 2 * PMD_SIZE) {
-> +		__accept_memory(start, end);
-> +		return;
-> +	}
-> +
-> +	/*
-> +	 * No matter how the start and end are aligned, at least one unaccepted
-> +	 * PMD_SIZE area will remain to be marked in the bitmap.
-> +	 */
-> +
-> +	/* Immediately accept a <PMD_SIZE piece at the start: */
-> +	if (start & ~PMD_MASK) {
-> +		__accept_memory(start, round_up(start, PMD_SIZE));
-> +		start = round_up(start, PMD_SIZE);
-> +	}
-> +
-> +	/* Immediately accept a <PMD_SIZE piece at the end: */
-> +	if (end & ~PMD_MASK) {
-> +		__accept_memory(round_down(end, PMD_SIZE), end);
-> +		end = round_down(end, PMD_SIZE);
-> +	}
-> +
-> +	/*
-> +	 * 'start' and 'end' are now both PMD-aligned.
-> +	 * Record the range as being unaccepted:
-> +	 */
-> +	bitmap_set((unsigned long *)params->unaccepted_memory,
-> +		   start / PMD_SIZE, (end - start) / PMD_SIZE);
-> +}
-
-...
-
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index 6787ed8dfacf..8aa8adf0bcb5 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -314,6 +314,20 @@ config EFI_COCO_SECRET
->  	  virt/coco/efi_secret module to access the secrets, which in turn
->  	  allows userspace programs to access the injected secrets.
->  
-> +config UNACCEPTED_MEMORY
-> +	bool
-> +	depends on EFI_STUB
-
-This still doesn't make a whole lotta sense. If I do "make menuconfig" I don't
-see the help text because that bool doesn't have a string prompt. So who is that
-help text for?
-
-Then, in the last patch you have
-
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -888,6 +888,8 @@ config INTEL_TDX_GUEST
-        select ARCH_HAS_CC_PLATFORM
-        select X86_MEM_ENCRYPT
-        select X86_MCE
-+       select UNACCEPTED_MEMORY
-+       select EFI_STUB
-
-I guess you want to select UNACCEPTED_MEMORY only.
-
-And I've already mentioned this whole mess:
-
-https://lore.kernel.org/r/Yt%2BnOeLMqRxjObbx@zn.tnic
-
-Please incorporate all review comments before sending a new version of
-your patch.
-
-Ignoring review feedback is a very unfriendly thing to do:
-
-- if you agree with the feedback, you work it in in the next revision
-
-- if you don't agree, you *say* *why* you don't
-
-> +	help
-> +	   Some Virtual Machine platforms, such as Intel TDX, require
-> +	   some memory to be "accepted" by the guest before it can be used.
-> +	   This mechanism helps prevent malicious hosts from making changes
-> +	   to guest memory.
-> +
-> +	   UEFI specification v2.9 introduced EFI_UNACCEPTED_MEMORY memory type.
-> +
-> +	   This option adds support for unaccepted memory and makes such memory
-> +	   usable by the kernel.
-
-...
-
-> +static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
-> +					       __u32 nr_desc,
-> +					       struct efi_boot_memmap *map)
-> +{
-> +	unsigned long *mem = NULL;
-> +	u64 size, max_addr = 0;
-> +	efi_status_t status;
-> +	bool found = false;
-> +	int i;
-> +
-> +	/* Check if there's any unaccepted memory and find the max address */
-> +	for (i = 0; i < nr_desc; i++) {
-> +		efi_memory_desc_t *d;
-> +		unsigned long m = (unsigned long)map->map;
-> +
-> +		d = efi_early_memdesc_ptr(m, map->desc_size, i);
-> +		if (d->type == EFI_UNACCEPTED_MEMORY)
-> +			found = true;
-> +		if (d->phys_addr + d->num_pages * PAGE_SIZE > max_addr)
-> +			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
-> +	}
-> +
-> +	if (!found) {
-> +		params->unaccepted_memory = 0;
-> +		return EFI_SUCCESS;
-> +	}
-> +
-> +	/*
-> +	 * If unaccepted memory is present, allocate a bitmap to track what
-> +	 * memory has to be accepted before access.
-> +	 *
-> +	 * One bit in the bitmap represents 2MiB in the address space:
-> +	 * A 4k bitmap can track 64GiB of physical address space.
-> +	 *
-> +	 * In the worst case scenario -- a huge hole in the middle of the
-> +	 * address space -- It needs 256MiB to handle 4PiB of the address
-> +	 * space.
-> +	 *
-> +	 * TODO: handle situation if params->unaccepted_memory is already set.
-> +	 * It's required to deal with kexec.
-
-A TODO in a patch basically says this patch is not ready to go anywhere.
-
-IOW, you need to handle that kexec case here gracefully. Even if you refuse to
-boot a kexec-ed kernel because it cannot support handing in the bitmap from the
-first kernel, yadda yadda...
-
-> +	 *
-> +	 * The bitmap will be populated in setup_e820() according to the memory
-> +	 * map after efi_exit_boot_services().
-> +	 */
-> +	size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
-> +	status = efi_allocate_pages(size, (unsigned long *)&mem, ULONG_MAX);
-> +	if (status == EFI_SUCCESS) {
-> +		memset(mem, 0, size);
-> +		params->unaccepted_memory = (unsigned long)mem;
-> +	}
-> +
-> +	return status;
-> +}
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
