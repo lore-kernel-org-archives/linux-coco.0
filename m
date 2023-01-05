@@ -1,186 +1,113 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35AA63CE
-	for <linux-coco@lists.linux.dev>; Thu,  5 Jan 2023 12:28:29 +0000 (UTC)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 305CH2cM022213
-	for <linux-coco@lists.linux.dev>; Thu, 5 Jan 2023 12:28:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=7tTbMG1vlTZr4JcIYovEjAr7Agzu8U4IRwGwDh5BxAk=;
- b=Ij4W63a+3xV8kB46xO4bwJ5K8I8cONli6IKN99YoQrcLHqeGdVb1yU2ah0a5+FVZsT/5
- sJsQ/ZROoIy3BU7RzUJ3aqHRf7PJtbQivLMy9/6nFmhIneWhC3BszLqQFyRBKG+KRfs8
- c9FD+eNt8v8HPJl34JNibx4AAU0+/YdDwALso/OwsqNxivgZeFnVcB46nUNIoOWRHjvf
- O+ms8lEZL91NF5RXnpL/FvLtqo4gbpEfeOUJg5ke26xzLYuIKoPALbfICsDL4p22F1Fz
- kMPIbRJ61oKD6EjNAGza6H35i02TvjOzIJ0cTDy6PPRCGEMp0gvG9Kwu8Waz08t/w5DQ OQ== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mwxdx06nt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Thu, 05 Jan 2023 12:28:28 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 305C0A7c007032
-	for <linux-coco@lists.linux.dev>; Thu, 5 Jan 2023 12:28:27 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3mtcq8n2v0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-coco@lists.linux.dev>; Thu, 05 Jan 2023 12:28:27 +0000
-Received: from b03ledav004.gho.boulder.ibm.com ([9.17.130.235])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 305CSQ5d10682932
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Jan 2023 12:28:26 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C8397805E;
-	Thu,  5 Jan 2023 14:02:01 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E0487805C;
-	Thu,  5 Jan 2023 14:02:00 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.64.53])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Jan 2023 14:02:00 +0000 (GMT)
-Message-ID: <6d61034c9e2f0a7e9f30dfd56005a47fd10676cd.camel@linux.ibm.com>
-Subject: Re: [RFC 1/3] tpm: add generic platform device
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: Dov Murik <dovmurik@linux.ibm.com>, linux-coco@lists.linux.dev
-Date: Thu, 05 Jan 2023 07:28:23 -0500
-In-Reply-To: <f7d0bd07-ba1b-894e-5e39-15fb1817bc8b@linux.ibm.com>
-References: <acb06bc7f329dfee21afa1b2ff080fe29b799021.camel@linux.ibm.com>
-	 <826af61ac2097a14eee0d81cb869eba9c4fdef8b.camel@linux.ibm.com>
-	 <f7d0bd07-ba1b-894e-5e39-15fb1817bc8b@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553D82F27
+	for <linux-coco@lists.linux.dev>; Thu,  5 Jan 2023 15:05:00 +0000 (UTC)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 358AE1EC06C1;
+	Thu,  5 Jan 2023 16:04:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1672931096;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=GMhRtk9cEauGSmA4lPJVHebUyYxqUZuIY1TvE+SPTcQ=;
+	b=o+f2lFmxFzDQwrfUVndeh9pSFO8/LILqo+ZjpnBMTpmkZ2j3xQE7du8BJEeP4NOvinPKDJ
+	CZ2SUiY4EhKFCAxxNXGnIO9ZwiomP4VihxslRhAomrMtQRbs/vKjrA4VaMa7aldn2n3R8J
+	wqYVXKk5PfqMtT/WLzrqxpxBNT1yYo0=
+Date: Thu, 5 Jan 2023 16:04:51 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+	ashish.kalra@amd.com, harald@profian.com,
+	Nikunj A Dadhania <nikunj@amd.com>, chao.p.peng@linux.intel.com
+Subject: Re: [PATCH RFC v7 03/64] KVM: SVM: Advertise private memory support
+ to KVM
+Message-ID: <Y7bnE5bTUb6fQiX/@zn.tnic>
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-4-michael.roth@amd.com>
+ <Y6Xd0ruz3kMij/5F@zn.tnic>
+ <20230105021419.rs23nfq44rv64tsd@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: W803YFpfjJB_a_xyLdjXt2GY5ivzFqOC
-X-Proofpoint-GUID: W803YFpfjJB_a_xyLdjXt2GY5ivzFqOC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-05_04,2023-01-04_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- bulkscore=0 mlxscore=0 adultscore=0 priorityscore=1501 suspectscore=0
- lowpriorityscore=0 malwarescore=0 mlxlogscore=660 spamscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2301050095
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230105021419.rs23nfq44rv64tsd@amd.com>
 
-On Thu, 2023-01-05 at 10:08 +0200, Dov Murik wrote:
-[...]
-> > +static int tpm_platform_send(struct tpm_chip *chip, u8 *buf,
-> > size_t
-> > len)
-> > +{
-> > +       int ret;
-> > +       struct tpm_send_cmd_req *req = (struct tpm_send_cmd_req
-> > *)buffer;
-> > +
-> > +       if (len > TPM_PLATFORM_MAX_BUFFER - sizeof(*req))
-> > +               return -EINVAL;
-> > +       req->cmd = TPM_SEND_COMMAND;
-> > +       req->locality = locality;
-> > +       req->inbuf_size = len;
-> 
-> In include/linux/tpm_platform.h (below) the comment says:
-> 
-> + * Note that @inbuf_size must be large enough to hold the response
-> so
-> + * represents the maximum buffer size, not the size of the specific
-> + * TPM command.
-> 
-> but here we don't set req->inbuf_size to the maximum size (which is
-> TPM_PLATFORM_MAX_BUFFER - sizeof(*req) ). Is that OK?
+On Wed, Jan 04, 2023 at 08:14:19PM -0600, Michael Roth wrote:
+> Maybe that's not actually enforced, by it seems awkward to try to use a
+> bool return instead. At least for KVM_X86_OP_OPTIONAL_RET0().
 
-I'll fix the comment.  Unfortunately the ms TPM has a check in the
-ExecuteCommand() routine that checks the command and request size are
-equal.  I had originally thought to use this field to communicate max
-size, but it's not really any problem to make it a define.
+I don't see there being a problem/restriction for bool functions, see
 
+5be2226f417d ("KVM: x86: allow defining return-0 static calls")
 
+and __static_call_return0() returns a long which, if you wanna interpret as
+bool, works too as "false".
 
+I still need to disassemble and single-step through a static_call to see what
+all that magic does in detail, to be sure.
+
+> However, we could just use KVM_X86_OP() to declare it so we can cleanly
+> use a function that returns bool, and then we just need to do:
 > 
-> 
-> > +       memcpy(req->inbuf, buf, len);
-> > +
-> > +       ret = pops->sendrcv(buffer);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static int tpm_platform_recv(struct tpm_chip *chip, u8 *buf,
-> > size_t
-> > len)
-> > +{
-> > +       struct tpm_resp *resp = (struct tpm_resp *)buffer;
-> > +
-> > +       if (resp->size < 0)
-> > +               return resp->size;
-> > +
-> > +       if (len < resp->size)
-> > +               return -E2BIG;
-> 
-> 
-> I suggest another check before the memcpy:
-> 
-> if (resp->size > TPM_PLATFORM_MAX_BUFFER - sizeof(*resp))
->         return -EINVAL;  // Invalid response from the platform TPM
+>   bool kvm_arch_has_private_mem(struct kvm *kvm)
+>   {
+>           if (kvm_x86_ops.private_mem_enabled)
+>                   return static_call(kvm_x86_private_mem_enabled)(kvm);
 
-Yes, I already added that because of your matrix comments.
+That would be defeating the whole purpose of static calls, AFAICT, as you're
+testing the pointer. Might as well leave it be a normal function pointer then.
 
+> On a separate topic though, at a high level, this hook is basically a way
+> for platform-specific code to tell generic KVM code that private memslots
+> are supported by overriding the kvm_arch_has_private_mem() weak
+> reference. In this case the AMD platform is using using kvm->arch.upm_mode
+> flag to convey that, which is in turn set by the
+> KVM_CAP_UNMAPPED_PRIVATE_MEMORY introduced in this series.
 > 
+> But if, as I suggested in response to your PATCH 2 comments, we drop
+> KVM_CAP_UNAMMPED_PRIVATE_MEMORY in favor of
+> KVM_SET_SUPPORTED_MEMORY_ATTRIBUTES ioctl to enable "UPM mode" in SEV/SNP
+> code, then we need to rethink things a bit, since KVM_SET_MEMORY_ATTRIBUTES
+> in-part relies on kvm_arch_has_private_mem() to determine what flags are
+> supported, whereas SEV/SNP code would be using what was set by
+> KVM_SET_MEMORY_ATTRIBUTES to determine the return value in
+> kvm_arch_has_private_mem().
 > 
-> > +
-> > +       memcpy(buf, buffer + sizeof(*resp), resp->size);
-> > +
-> > +       return resp->size;
+> So, for AMD, the return value of kvm_arch_has_private_mem() needs to rely
+> on something else. Maybe the logic can just be:
 > 
-> Is there a possibility of a double recv?
-> Should we set resp->size = 0 (or -1) before returning? (while still
-> returning the original value)
+>   bool svm_private_mem_enabled(struct kvm *kvm)
+>   {
+>     return sev_enabled(kvm) || sev_snp_enabled(kvm)
 
-Not according to the way ->recv() is used, but even if there were, it
-should return the previous command until there is a new one.
+I haven't followed the whole discussion in detail but this means that SEV/SNP
+*means* UPM. I.e., no SEV/SNP without UPM, correct? I guess that's the final
+thing you guys decided to do ...
 
-[...]
-> > +/**
-> > + * struct tpm_platform_ops - the share platform operations
-> > + *
-> > + * @sendrecv:  Send a TPM command using the MSSIM protocol.
-> > + *
-> > + * The MSSIM protocol is designed for a network, so the buffers
-> > are
-> > + * self describing.  The minimum buffer size is sizeof(u32). 
-> > Every
-> > + * MSSIM command defines its own transport buffer and the command
-> > is
-> > + * sent in the first u32 array.  The only modification we make is
-> > that
-> > + * the MSSIM uses network order and we use the endianness of the
-> > + * architecture.  The response to every command (in the same
-> > buffer)
-> > + * is a u32 size preceded array.  Most of the MSSIM commands
-> > simply
-> > + * return zero here because they have no defined response.
-> > + *
-> > + * The only command with a defined request/response size is
-> > TPM_SEND_COMMAND
-> > + * The definition is in the structures below
-> > + */
-> > +struct tpm_platform_ops {
-> > +       int (*sendrcv)(u8 *buffer);
-> 
-> nit: In the commit message and struct description you
-> use "sendrecv" but the member here is called "sendrcv".
+Thx.
 
-OK, I'll; make the comments consistent (kernel docbook would complain
-to the people who bother to run it).
+-- 
+Regards/Gruss,
+    Boris.
 
-James
-
+https://people.kernel.org/tglx/notes-about-netiquette
