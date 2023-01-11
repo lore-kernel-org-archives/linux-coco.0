@@ -1,253 +1,153 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2062.outbound.protection.outlook.com [40.107.94.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B73A17D0
-	for <linux-coco@lists.linux.dev>; Wed, 11 Jan 2023 14:40:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1673447931; bh=KGDHyrq93FiiZx1EhWmtnBQOkzL5jkL4/UViqKUSfL4=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T1i/unbasWn85o+aPTED4yXFVg7aLTucnQyk8ryAaSmEqmPCfyf+rETycugwO24rQ
-	 fF7XuH5tCyDA/r2I+smEDWAhExcHBWpcZo/bQzLzrLCJxB4Ity0JowhbE41cCDZr5z
-	 v0oaGYPBY5pBnLO0otKZQRVpojZvkUqmEy7xCoqCuex4IL+xRZ23QY9UdK9HeSVVOq
-	 phoPQrIJj5wX3fJBvaPOslFYXdFXFVlCeWDI7sgfOwjWq9YlXJXvUd5mBjszRoyVSi
-	 aibeKXgnonXYZ0Knv71UPYJBj3HWkamsneodQ2Oaw5uKdGPtiuB8p1EDavrOJ70UtA
-	 jai1ONqaNRt3A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost ([134.147.254.72]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MCsPy-1p6qoF0gMa-008niX; Wed, 11
- Jan 2023 15:38:51 +0100
-Date: Wed, 11 Jan 2023 15:38:36 +0100
-From: Tom Dohrmann <erbse.13@gmx.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
-	ashish.kalra@amd.com, harald@profian.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v7 47/64] KVM: SVM: Add support to handle MSR based
- Page State Change VMGEXIT
-Message-ID: <Y77J7C2E9Xd1QcmZ@notebook>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-48-michael.roth@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39F717D0
+	for <linux-coco@lists.linux.dev>; Wed, 11 Jan 2023 14:50:04 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kObncrSi4OgD5jiR8eNeyQQkba59uPa6HGzf1DK+KhbHjOMtBGGYGhH0cvSma6vER/zmMOVPAaF5U+EFmnNPAtlUt05pd9cNLtXRFrkPwKKqziSssJZ1rf3NmNA+0DiDZNi9wguQ+ngO8bs5Jz/N32fH8ahYMZUpoHHQSwrHZ5/aAUmsPo/UHK2YTaa9MiA1FIaoa0WhWwCipa/m2cu2V4t5Fy7CTcDZNusGZQSGcFELMDz+Q4lsTyYAubFkxhRdNSPRf3CA7udA25n3C+sS8S4s30k9D75UJNKIF9CUyLad64NKf6ujZnXoUr67q/ZBuSqdvZnNpAXocjDMrNwhHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E8Eb5brKMfTaoHEhv2nHwZWZroSenuxUOE7THc/mOvg=;
+ b=K91qKmTHBIKwvLrrXm298zXZ9tGkXVw8eZ71PV4WvlyG8iBqdBZLRypXJHUP8SxTigDan1xCsXoSvR69mrgdqngRLEoPZWw5XwiDcmYFdJoaX2i5rwnduN3hd1BlPXyvgjocsrMXW3c604TNutZILHB9Va3ovlj9b2IsZCeZ2dTzVDmMEiBgjzz8Rda9vDx73LEh4w5DoOZ47AaxZvq+t9/nNKnhcA8FJfRt6uGGz+QIlEZV0gSppLQumOzCRrxSQ7mf5kSc9zoCYjEvwHUYGH8W4D9POrsyP8ShbfRRPaZqrzSyFPUNquW0RNAyuDBhxwPQacA26dSg202UbTc9dQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=E8Eb5brKMfTaoHEhv2nHwZWZroSenuxUOE7THc/mOvg=;
+ b=Gob3fEMl9gx/WjaTMHBmeCVK0l24GuqIV5wXBWzqvI5Ni/NiTncOzI2Lw3ocRl7opt4y0uJxaVB1lzIOo/GPIAPs4kk4oQjYm0aJM+KQddNj9yazLeBHAJw+uLTuHoIDWzyISXQ2eVp+I0Siis97Aj/ZecOTiRHVNYR8Gih2Fks=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by SA0PR12MB4382.namprd12.prod.outlook.com (2603:10b6:806:9a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5986.18; Wed, 11 Jan
+ 2023 14:50:00 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::8200:4042:8db4:63d7]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::8200:4042:8db4:63d7%3]) with mapi id 15.20.6002.013; Wed, 11 Jan 2023
+ 14:50:00 +0000
+Message-ID: <73a7ef36-2613-e75c-8f30-f2166c2a346f@amd.com>
+Date: Wed, 11 Jan 2023 08:49:58 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: SVSM Attestation and vTPM specification additions - v0.60
+Content-Language: en-US
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
+References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
+ <fbc84da05c5343c5228c5adb697d4b66f1ea6308.camel@HansenPartnership.com>
+ <6303283f-cf1c-8be6-9359-69d556a89554@amd.com>
+ <7f6782cb049398e9fc28176fc15456f55a3365ea.camel@HansenPartnership.com>
+ <c29bf3a5-2970-245a-40af-569fc933282e@amd.com>
+ <594f0863c990fffb5e7258f8e3fbc5d014c12556.camel@HansenPartnership.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <594f0863c990fffb5e7258f8e3fbc5d014c12556.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR16CA0062.namprd16.prod.outlook.com
+ (2603:10b6:208:234::31) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221214194056.161492-48-michael.roth@amd.com>
-X-Provags-ID: V03:K1:fyBxy7/U5oJ/3CUIg8Fre+QtVDGfqDpzpl+I0WKzziUfm4MtvXH
- AN3QAiMSkM5UBh+zOT1MtudGYJsm/9WAwTwuQVrW9T1IKHRY/XUiKRphImWDNWTF9ABn9xS
- j/kH6EL/jxWkwofoHGGaOkbeNgGASfqpYy+Y8tEvaCU+RPPS/pXtABfeyrJlD6mKnOtM+Ku
- xbRNGzskdvgqgPvCL3wtA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:dH+xw7ymR9w=;cLUfesrjFWuy3u94c3rIF8n1+Nx
- Te1okBEsYhishwY+PSwiZ9P45qQcafKVEnwg3kwi7G7qUJE90dCwVjb61fzHJIflyBk7bp8S8
- lWAvq0IlNkcNvdGdX61wK824zpC/0hO/MFKDUQGAYyifvcDl+VBfjTpBv/PYwzL3rER+wz4xZ
- is1MgUjXQdM3U403EuPgq2Ian1vDg1IaXwLA5IFBxk8344enYegAvdZuBir+BVdQ3yTkcTULi
- F3LMNqn/aznyBRhKXh6k+YVoMV7rGaUlIVU0CkwOXrmJYnJZHZD81KhdCQ82AidNp2FwShiXr
- HKj8LP8ZM6os69A3u20QKAww3ocLBz1hvdabDtXGfK/rn5PO1JEmBfJi8SXEUy4rxKIEjaJ24
- feK7F6jUf4wmyKAL1iZbQQoYprtKQ2nnJblgjepW9Q98t4ejFpmHKRjaO7C2jh4/tTRJjMoto
- CNcjQ2u8My7e94rboXSXB6DD/4UjK4e5FbIe//pVhikhjqKtE8bpG1Ndt/kjdDR92aqZBlbmc
- zqMan439EU+mrtTqeeNIH/Gk3HNX/xhlm+eY5rrVjus9a3lFqtsYazgVbUPfPWfpcilNnAod4
- buXxXnm/JwKKOWc2Rpm/8azzTVFxqcUqZAA4ZbpBWIUO6jgJjt10WwyrbWQZzB5pA7HohRjx6
- LsCd8d38mENFHkKleNmaFZwOgltfEcW7/EIN5iAySLJB/xs++G7f4MCCj7WxMWxOZOn9VYxI1
- euOwd8rDf/dp1TBKgqbq3uB9ERjjI6yEssBhsBoMikcgZT7aN7hix/C/zbvgwzXkj2BuD5YBy
- IeWGwk6ftwt+oCAZiRTr/BynKmVaWZy4DdRIO3dHZMSkk0CklYUyCyKKDUijX0qiQaTluWlVB
- eMvyTAjNqfTFqMfTP+1LH3WPIHxALQ13f5Yo48Fhw1v5VuFn6+j8WYM5pHjGt//AqZq2rL2rV
- 7WQk5LKZadDRgYgVCTSLA378BFk=
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|SA0PR12MB4382:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18d6b338-f117-4937-9e84-08daf3e31d83
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	JZJu61jd+Q1PR7qBjWgzT0b5WSypEHeWexpavnUPaCnauWXj1a7dVXkYfVI2H64nCn+QunzixKlRMoCrU/LDFaLmqcu2AxTBMWSW/62lGMadsH+ecUxqz+eIL+89EqQNbt3QIqCPXnACQg5hzsKjpW+YNhOU0TO3aR3Vs1f+UBwB0jVDCXsNZf2t7zfGQRcmMy/401g3/39A7b/bazlhzqyzoxygqN035mHuBZSJe4iGnUMXQPSXHnSmHrkNG0tmqVuT50Or58hramq/UDhFCOORtHCsWPSG2QoZg79Rzo6y/QMkuY0L6+By2PosUbEeFVEoLH39oTtUEGgGmAnuVX/sJD5pVXIjR8WNSHXTaJwdgxvM5HJpsVoBzPYUuAjGWqPO3w+HaIjrsEOiEp1Naeur0e7OmU+Zs3jREyThouid9ecg4lUht4f/9lRoaoYixYoMKUKF6ABBWqUseiwFZy3bVnIGs2DY7MKsZ6Shw6EWF6pCE9z+KWyGR4c0x6NeqfLU8CE57cgyKKJHmeNxQV7KfyAlAl79oxWEd+HAM3gNv6bkgAXAIq0hP72BaYh9AuXB737EHHQSOhUysMUIS68v6PKL9zJHE5ne3X9WR/PmvjiZDB2N/Xxu3W2WTLAx0A40ZqJebRYaFKYEFHuvJ2Ql3LbbHdYCa2wrPUucx56Ascj2fzR5qatz6vASJyAV+5/Uk7bouhAZwXbI+s4NOIOG432x8AE7xeFQztHUmBo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(346002)(136003)(396003)(376002)(39860400002)(451199015)(66556008)(31686004)(2906002)(36756003)(5660300002)(8936002)(66946007)(8676002)(41300700001)(66476007)(2616005)(316002)(110136005)(53546011)(6486002)(478600001)(26005)(6506007)(6512007)(186003)(31696002)(86362001)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RFU0UkR5S2dpR1A0MkJZUW9YY1FrQlgwU3lZbzBDQld1NmZLS0hNUWRMdGtw?=
+ =?utf-8?B?NCs4MlFnRVAwQ0QrQkgvSThvOXl3WWx1MmFKbjNiN1pmcUtRZHpLUjhXQSs0?=
+ =?utf-8?B?ZlF2bU9YejNVS29iRTZ5Yi9IZUNKR1NnTStGeWNhU01YVnZDL1pVd1FmYmRj?=
+ =?utf-8?B?RHFmVm5DWmdSOXI2dUlOd1BHODVBTnJCRVJxTzR6aFdXeWlRNEdrSTh4cis0?=
+ =?utf-8?B?anhQNVdneE1sNi8wVzJIY1lKbkpNME9aV3VJVmZDcUUzQjUzaXN0Q0JRODgz?=
+ =?utf-8?B?bnQyT2RUSnp1MG5Kb1Bmb1c1WS9jTCtmNjVSV3R2L1pVQVBIdXFXejRxaS9k?=
+ =?utf-8?B?WURROHRpNC94Z1pWUFBqVVhGb25wUWl1UWljY09MQkJ1LzFDQUlwQ0ZqTWRG?=
+ =?utf-8?B?dUlUSzNISE5MZS9xVmFRakRHUFJxWTA4Zk0zRVhQaU85V1RiY2RTV25tWm8v?=
+ =?utf-8?B?Y1FDZU1aT3dwZ29xZ2llVTVDRkRIZHdLWDVPaDNXR0l0NTNoVUNnZUhLdWhJ?=
+ =?utf-8?B?eUFBZUZjc1JKb3RwMDFaQUxNenRkSEdrWE45MW5vS2RycVVqYWJHdmFjSVM3?=
+ =?utf-8?B?SXYzV0NNaG5iVW5abCs2elFuaVp3SS95d3FNUVBsV1BPcytjSld2UVloVURn?=
+ =?utf-8?B?Qm5hTWFGdW5yWndweU1vVVB3akZ2KzJpSjB4Zk1FeHRSb2xSb3dGbWFxdXJC?=
+ =?utf-8?B?eFI0RTVCUXdINFBTdGh0aktxZXhxamhZdHI4cWhXd0x5TmMvL0xza0RDU0VI?=
+ =?utf-8?B?REQyVjZJRWwzTkR0ejBNQm9pcG9mZGJJZm5zdy9oSWtCdm04dE9adS9qdFhD?=
+ =?utf-8?B?aU1ocjhoQXp4VnBCV2d5aGhLT2d1TWZsZHU3bDN6cEtpRy9ROHNSK0tnbWFP?=
+ =?utf-8?B?b1g3OXdTbmNoUVM0dG9VdThjcENyZXlOM0ZYazVuS3ZtZDNNY0VtRFJjK09z?=
+ =?utf-8?B?Yk9pWC95UDMxWkFIaHZkY2lpbjdwYlc5V3pnYkdmMFEvaVZXU2JDNVdFVWRi?=
+ =?utf-8?B?ZWlYU1VHV2RHQUtXV2JRTG1EZlZ5Q1NnL1VuSVExOUcxR0tOcmlsaEoxVmYx?=
+ =?utf-8?B?V28rRzNtTUgwZzlXVzBzQXIzUmlhMkVxdVNzSkh0UWxmY0hxZ2dmbWRUbGpy?=
+ =?utf-8?B?K25aMS9PSUViWlg5N2ozbzdtVjVwT29SNEV3YjNQc1hoVTEzbUZsSDMzUitG?=
+ =?utf-8?B?ZXgwejczV3dIblMvVkpMZndobDlLQ1gvS2ZzUFhaOHV0ZWxhNU5SMVFzZWMw?=
+ =?utf-8?B?REUvSzdTbkFwMUF4S0NmNWJCelgyVk4waXJmLzBxL2tPWGlKaytoS0VZTUkr?=
+ =?utf-8?B?cXBqYmFhM0tWSStZckVmTU5kUEprbm0xaFlQV0xYeGltS2t2YXJRRkp0TFRR?=
+ =?utf-8?B?c0dXU1daZXk0N1J6aFF4WUVOazltdERpeWxVbitKVjhwbVFwbzdHZXdCaWp3?=
+ =?utf-8?B?K3MxNCsvVXZ1Tml5L2JYWWY4Q29VdWlPeHFGODQxSk5lRXIzalkxQmViZlow?=
+ =?utf-8?B?ZVBzQ2w2bUlTZklBYWhqZXlmNXBoaWxPdTFtbGg1V3FoNllJeS9QanU3M1Fs?=
+ =?utf-8?B?VUNPY3VtQnY2TzdRcHpqZ1JLcEppZ3ovUFBSdHh2aG9yMkJpZ2pGdEpXUTdR?=
+ =?utf-8?B?QWNtc0ZYdStUZEtNcXNKak1JOWRiV3pVR3dmNmwrOVNsRXYzdTJHdjRnaVV4?=
+ =?utf-8?B?MWtqWkhhZU14UER6ZDk3cUozVU9oUkxnTHFiRG1VV0pVek50OEdlVU80Ylc2?=
+ =?utf-8?B?Mzg0cDFnUUMzTHRQUFMyOGVLRnh4R1MxZGcybG80VWhTSWdKQktCMGhVNlhx?=
+ =?utf-8?B?RmRYOEZ1Yy9QQkdtSUowNm1IL1o1N08zYTJURVNUUUtJRDJ0RGdubjhGN2U5?=
+ =?utf-8?B?UFVha0JEZGtEenZhTy92eUJnTi93MUJkOTI2L0VEQVF0ZU9hbi84NzF5VVZp?=
+ =?utf-8?B?YlE2VjR5b25JV011WklCci95aXJFZjQzQXUxM3VKcVVTK1NHRzljU1ZPbDdL?=
+ =?utf-8?B?enZWcXZSay9NTk5CMCtxVm81UlN0N2NIQkUzY0Q5TnIwQW9rRi9yOHJpalRJ?=
+ =?utf-8?B?empTdG9iK3BHNmRxd0J5Y0ZsY0JXT25TdE5nRXNyQTFkMWViL0xUOUkyNGhh?=
+ =?utf-8?Q?/PI72ReBw0RR5EFyAJpOw5uP6?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18d6b338-f117-4937-9e84-08daf3e31d83
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jan 2023 14:50:00.6043
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pVFae/fe5rw1H+rq16VtaVlSPLXQdG000auk4C+Ir9ZssEzVyU/k3QHD/0E2Lvx1JmdlGJpbTXfhu7i+woWAiw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4382
 
-On Wed, Dec 14, 2022 at 01:40:39PM -0600, Michael Roth wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
->
-> SEV-SNP VMs can ask the hypervisor to change the page state in the RMP
-> table to be private or shared using the Page State Change MSR protocol
-> as defined in the GHCB specification.
->
-> Forward these requests to userspace via KVM_EXIT_VMGEXIT so the VMM can
-> issue the KVM ioctls to update the page state accordingly.
->
-> Co-developed-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  arch/x86/include/asm/sev-common.h |  9 ++++++++
->  arch/x86/kvm/svm/sev.c            | 25 +++++++++++++++++++++++
->  arch/x86/kvm/trace.h              | 34 +++++++++++++++++++++++++++++++
->  arch/x86/kvm/x86.c                |  1 +
->  4 files changed, 69 insertions(+)
->
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/se=
-v-common.h
-> index 0a9055cdfae2..ee38f7408470 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -93,6 +93,10 @@ enum psc_op {
->  };
->
->  #define GHCB_MSR_PSC_REQ		0x014
-> +#define GHCB_MSR_PSC_GFN_POS		12
-> +#define GHCB_MSR_PSC_GFN_MASK		GENMASK_ULL(39, 0)
-> +#define GHCB_MSR_PSC_OP_POS		52
-> +#define GHCB_MSR_PSC_OP_MASK		0xf
->  #define GHCB_MSR_PSC_REQ_GFN(gfn, op)			\
->  	/* GHCBData[55:52] */				\
->  	(((u64)((op) & 0xf) << 52) |			\
-> @@ -102,6 +106,11 @@ enum psc_op {
->  	GHCB_MSR_PSC_REQ)
->
->  #define GHCB_MSR_PSC_RESP		0x015
-> +#define GHCB_MSR_PSC_ERROR_POS		32
-> +#define GHCB_MSR_PSC_ERROR_MASK		GENMASK_ULL(31, 0)
-> +#define GHCB_MSR_PSC_ERROR		GENMASK_ULL(31, 0)
-> +#define GHCB_MSR_PSC_RSVD_POS		12
-> +#define GHCB_MSR_PSC_RSVD_MASK		GENMASK_ULL(19, 0)
->  #define GHCB_MSR_PSC_RESP_VAL(val)			\
->  	/* GHCBData[63:32] */				\
->  	(((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index d7b467b620aa..d7988629073b 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -29,6 +29,7 @@
->  #include "svm_ops.h"
->  #include "cpuid.h"
->  #include "trace.h"
-> +#include "mmu.h"
->
->  #ifndef CONFIG_KVM_AMD_SEV
->  /*
-> @@ -3350,6 +3351,23 @@ static void set_ghcb_msr(struct vcpu_svm *svm, u6=
-4 value)
->  	svm->vmcb->control.ghcb_gpa =3D value;
->  }
->
-> +/*
-> + * TODO: need to get the value set by userspace in vcpu->run->vmgexit.g=
-hcb_msr
-> + * and process that here accordingly.
-> + */
-> +static int snp_complete_psc_msr_protocol(struct kvm_vcpu *vcpu)
-> +{
-> +	struct vcpu_svm *svm =3D to_svm(vcpu);
-> +
-> +	set_ghcb_msr_bits(svm, 0,
-> +			  GHCB_MSR_PSC_ERROR_MASK, GHCB_MSR_PSC_ERROR_POS);
-> +
-> +	set_ghcb_msr_bits(svm, 0, GHCB_MSR_PSC_RSVD_MASK, GHCB_MSR_PSC_RSVD_PO=
-S);
-> +	set_ghcb_msr_bits(svm, GHCB_MSR_PSC_RESP, GHCB_MSR_INFO_MASK, GHCB_MSR=
-_INFO_POS);
-> +
-> +	return 1; /* resume */
-> +}
-> +
->  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  {
->  	struct vmcb_control_area *control =3D &svm->vmcb->control;
-> @@ -3450,6 +3468,13 @@ static int sev_handle_vmgexit_msr_protocol(struct=
- vcpu_svm *svm)
->  				  GHCB_MSR_INFO_POS);
->  		break;
->  	}
-> +	case GHCB_MSR_PSC_REQ:
-> +		vcpu->run->exit_reason =3D KVM_EXIT_VMGEXIT;
-> +		vcpu->run->vmgexit.ghcb_msr =3D control->ghcb_gpa;
-> +		vcpu->arch.complete_userspace_io =3D snp_complete_psc_msr_protocol;
-> +
-> +		ret =3D -1;
-> +		break;
+On 1/10/23 17:09, James Bottomley wrote:
+> On Tue, 2023-01-10 at 17:00 -0600, Tom Lendacky wrote:
+>> A GUID still works, though, to describe that the TPMT_PUBLIC supplied
+>> is for the EK - unless you want to go with the known handles, e.g.
+>> 0x81010001 for the EK RSA handle or 0x81010002 for the EK EC handle,
+>> etc.
+> 
+> You should probably use the hierarchy handle for that case: 0x40000001
+> for the Owner (storage) seed and 0x40000006 for the endorsement seed.
 
-What's the reasoning behind returning an error (-1) here? This error bubbl=
-es all
-the way up to the `KVM_RUN` ioctl. Would it be more appropriate to return =
-0?
-Returning 0 would cause a VM exit without indicating an error to userspace=
-.
+Looking at the spec, do you mean 0x4000000B for the endorsement seed?
 
->  	case GHCB_MSR_TERM_REQ: {
->  		u64 reason_set, reason_code;
->
-> diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
-> index 83843379813e..65861d2d086c 100644
-> --- a/arch/x86/kvm/trace.h
-> +++ b/arch/x86/kvm/trace.h
-> @@ -7,6 +7,7 @@
->  #include <asm/svm.h>
->  #include <asm/clocksource.h>
->  #include <asm/pvclock-abi.h>
-> +#include <asm/sev-common.h>
->
->  #undef TRACE_SYSTEM
->  #define TRACE_SYSTEM kvm
-> @@ -1831,6 +1832,39 @@ TRACE_EVENT(kvm_vmgexit_msr_protocol_exit,
->  		  __entry->vcpu_id, __entry->ghcb_gpa, __entry->result)
->  );
->
-> +/*
-> + * Tracepoint for the SEV-SNP page state change processing
-> + */
-> +#define psc_operation					\
-> +	{SNP_PAGE_STATE_PRIVATE, "private"},		\
-> +	{SNP_PAGE_STATE_SHARED,  "shared"}		\
-> +
-> +TRACE_EVENT(kvm_snp_psc,
-> +	TP_PROTO(unsigned int vcpu_id, u64 pfn, u64 gpa, u8 op, int level),
-> +	TP_ARGS(vcpu_id, pfn, gpa, op, level),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(int, vcpu_id)
-> +		__field(u64, pfn)
-> +		__field(u64, gpa)
-> +		__field(u8, op)
-> +		__field(int, level)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->vcpu_id =3D vcpu_id;
-> +		__entry->pfn =3D pfn;
-> +		__entry->gpa =3D gpa;
-> +		__entry->op =3D op;
-> +		__entry->level =3D level;
-> +	),
-> +
-> +	TP_printk("vcpu %u, pfn %llx, gpa %llx, op %s, level %d",
-> +		  __entry->vcpu_id, __entry->pfn, __entry->gpa,
-> +		  __print_symbolic(__entry->op, psc_operation),
-> +		  __entry->level)
-> +);
-> +
->  #endif /* _TRACE_KVM_H */
->
->  #undef TRACE_INCLUDE_PATH
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 732f9cbbadb5..08dd1ef7e136 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -13481,6 +13481,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_vmgexit_enter);
->  EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_vmgexit_exit);
->  EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_vmgexit_msr_protocol_enter);
->  EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_vmgexit_msr_protocol_exit);
-> +EXPORT_TRACEPOINT_SYMBOL_GPL(kvm_snp_psc);
->
->  static int __init kvm_x86_init(void)
->  {
-> --
-> 2.25.1
->
+Table 28 of the TPM 2.0 Structures document has TPM_RH_EK (0x40000006) as 
+"not used", but TPM_RH_ENDORSEMENT (0x4000000B) as "references the 
+Endorsement Primary Seed (EPS), endorsementAuth, and endorsementPolicy"
 
-Regards, Tom
+Thanks,
+Tom
+
+> However, I'd just specify the endorsement seed in the spec and be done
+> with it.  Once you know the EK, you can use it to certify any SRK you
+> create from the owner seed.
+> 
+>>   You still  need to identify what key is represented by the
+>> TPMT_PUBLIC structure, right, or am I missing something about the
+>> TPMT_PUBLIC structure?
+> 
+> All you need to know is what hierarchy seed (which is why I propose
+> endorsement).  After that the TPMT_PUBLIC defines exactly the
+> properties of the derived key, including the algorithm (RSA or EC
+> curve, etc).
+> 
+> James
+> 
+> 
