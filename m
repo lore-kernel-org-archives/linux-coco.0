@@ -1,84 +1,87 @@
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D58817D0
-	for <linux-coco@lists.linux.dev>; Wed, 11 Jan 2023 14:51:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1673448687; x=1704984687;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=n45m5Cnc0XyVGw5+Aet7GY6rtwRDVDBECQftBvbXgXQ=;
-  b=vpaXd1zk80KE4p8yk8PMktTvaB/u6R9704H/R+vv7jdWLDghFNFQ46Sd
-   /YzWOsuE+hNTROLGtV50G5nu179qFS4JSZeduSbqJHNsar047+kzTnE9m
-   LjE0+jI+QL741z3r3b92TBnNs/vKS2j6IB8YtNAtZHOOjo5Hjkz/OJnzu
-   Y=;
-X-IronPort-AV: E=Sophos;i="5.96,317,1665446400"; 
-   d="scan'208";a="281733609"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2023 14:51:20 +0000
-Received: from EX13D31EUA002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-	by email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com (Postfix) with ESMTPS id 0446E40D7E;
-	Wed, 11 Jan 2023 14:51:16 +0000 (UTC)
-Received: from EX19D024EUA002.ant.amazon.com (10.252.50.224) by
- EX13D31EUA002.ant.amazon.com (10.43.165.238) with Microsoft SMTP Server (TLS)
- id 15.0.1497.42; Wed, 11 Jan 2023 14:51:15 +0000
-Received: from [10.220.99.6] (10.43.161.114) by EX19D024EUA002.ant.amazon.com
- (10.252.50.224) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.7; Wed, 11 Jan
- 2023 14:51:01 +0000
-Message-ID: <65f056ed-68ab-2541-7c83-3f1712e597ce@amazon.com>
-Date: Wed, 11 Jan 2023 16:50:56 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A862C9A
+	for <linux-coco@lists.linux.dev>; Wed, 11 Jan 2023 14:56:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1673448989;
+	bh=iLv4o2rzwZtn+yWt1Opy+Vn1DqD7Et9EMHU2t6cT5Wo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=apZ1FN9ni2s639/pCwxBbNNTJsDxPI/iIDKIkDjxFEMNQGXO9jv4vVOAkgtzRa0n6
+	 xn8wAGoh97KcxefgakmbrCZyA8vTz2+aNidWizdCucruz9MMi1irRi3YKAX+pQ9CzE
+	 QD8fZm051rYzap6o69kvOtxbn7HhQaifQx0JyA4E=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id F207C12860BF;
+	Wed, 11 Jan 2023 09:56:29 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id z2YZj0LYn9mf; Wed, 11 Jan 2023 09:56:29 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1673448989;
+	bh=iLv4o2rzwZtn+yWt1Opy+Vn1DqD7Et9EMHU2t6cT5Wo=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=apZ1FN9ni2s639/pCwxBbNNTJsDxPI/iIDKIkDjxFEMNQGXO9jv4vVOAkgtzRa0n6
+	 xn8wAGoh97KcxefgakmbrCZyA8vTz2+aNidWizdCucruz9MMi1irRi3YKAX+pQ9CzE
+	 QD8fZm051rYzap6o69kvOtxbn7HhQaifQx0JyA4E=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 3D5931286083;
+	Wed, 11 Jan 2023 09:56:29 -0500 (EST)
+Message-ID: <48a2dfb1e8618c0032b9285d2fa33db462c30a90.camel@HansenPartnership.com>
+Subject: Re: SVSM Attestation and vTPM specification additions - v0.60
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>, "linux-coco@lists.linux.dev"
+	 <linux-coco@lists.linux.dev>, "amd-sev-snp@lists.suse.com"
+	 <amd-sev-snp@lists.suse.com>
+Date: Wed, 11 Jan 2023 09:56:27 -0500
+In-Reply-To: <73a7ef36-2613-e75c-8f30-f2166c2a346f@amd.com>
+References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
+	 <fbc84da05c5343c5228c5adb697d4b66f1ea6308.camel@HansenPartnership.com>
+	 <6303283f-cf1c-8be6-9359-69d556a89554@amd.com>
+	 <7f6782cb049398e9fc28176fc15456f55a3365ea.camel@HansenPartnership.com>
+	 <c29bf3a5-2970-245a-40af-569fc933282e@amd.com>
+	 <594f0863c990fffb5e7258f8e3fbc5d014c12556.camel@HansenPartnership.com>
+	 <73a7ef36-2613-e75c-8f30-f2166c2a346f@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.5.1
-Subject: Re: [PATCH RFC v7 14/64] x86/sev: Add the host SEV-SNP initialization
- support
-Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>, <kvm@vger.kernel.org>
-CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <wanpengli@tencent.com>, <jmattson@google.com>,
-	<luto@kernel.org>, <dave.hansen@linux.intel.com>, <slp@redhat.com>,
-	<pgonda@google.com>, <peterz@infradead.org>,
-	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
-	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
-	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
-	<marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	<alpergun@google.com>, <dgilbert@redhat.com>, <jarkko@kernel.org>,
-	<ashish.kalra@amd.com>, <harald@profian.com>, Brijesh Singh
-	<brijesh.singh@amd.com>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-15-michael.roth@amd.com>
-From: Sabin Rapan <sabrapan@amazon.com>
-In-Reply-To: <20221214194056.161492-15-michael.roth@amd.com>
-X-Originating-IP: [10.43.161.114]
-X-ClientProxiedBy: EX13D49UWC001.ant.amazon.com (10.43.162.217) To
- EX19D024EUA002.ant.amazon.com (10.252.50.224)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
 
-CgpPbiAxNC4xMi4yMDIyIDIxOjQwLCBNaWNoYWVsIFJvdGggd3JvdGU6Cj4gKyNpZmRlZiBDT05G
-SUdfQU1EX01FTV9FTkNSWVBUCj4gKyMgZGVmaW5lIERJU0FCTEVfU0VWX1NOUCAgICAgICAwCj4g
-KyNlbHNlCj4gKyMgZGVmaW5lIERJU0FCTEVfU0VWX1NOUCAgICAgICAoMSA8PCAoWDg2X0ZFQVRV
-UkVfU0VWX1NOUCAmIDMxKSkKPiArI2VuZGlmCj4gKwoKV291bGQgaXQgbWFrZSBzZW5zZSB0byBz
-cGxpdCB0aGUgU0VWLSogZmVhdHVyZSBmYW1pbHkgaW50byB0aGVpciBvd24KY29uZmlnIGZsYWco
-cykgPwpJJ20gdGhpbmtpbmcgaW4gdGhlIGNvbnRleHQgb2YgU0VWLVNOUCBydW5uaW5nIG9uIHN5
-c3RlbXMgd2l0aApUcmFuc3BhcmVudCBTTUUgZW5hYmxlZCBpbiB0aGUgYmlvcy4gSW4gdGhpcyBj
-YXNlLCBlbmFibGluZwpDT05GSUdfQU1EX01FTV9FTkNSWVBUIHdpbGwgYWxzbyBlbmFibGUgU01F
-IGluIHRoZSBrZXJuZWwsIHdoaWNoIGlzIGEKYml0IHN0cmFuZ2UgYW5kIG5vdCBuZWNlc3Nhcmls
-eSB1c2VmdWwuCkNvbW1pdCA0ZTJjODc5NDlmMmIgKCJjcnlwdG86IGNjcCAtIFdoZW4gVFNNRSBh
-bmQgU01FIGJvdGggZGV0ZWN0ZWQKbm90aWZ5IHVzZXIiKSBoaWdobGlnaHRzIGl0LgoKLS0KU2Fi
-aW4uCgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgKFJvbWFuaWEpIFMuUi5MLiByZWdpc3Rl
-cmVkIG9mZmljZTogMjdBIFNmLiBMYXphciBTdHJlZXQsIFVCQzUsIGZsb29yIDIsIElhc2ksIElh
-c2kgQ291bnR5LCA3MDAwNDUsIFJvbWFuaWEuIFJlZ2lzdGVyZWQgaW4gUm9tYW5pYS4gUmVnaXN0
-cmF0aW9uIG51bWJlciBKMjIvMjYyMS8yMDA1Lgo=
+On Wed, 2023-01-11 at 08:49 -0600, Tom Lendacky wrote:
+> On 1/10/23 17:09, James Bottomley wrote:
+> > On Tue, 2023-01-10 at 17:00 -0600, Tom Lendacky wrote:
+> > > A GUID still works, though, to describe that the TPMT_PUBLIC
+> > > supplied is for the EK - unless you want to go with the known
+> > > handles, e.g. 0x81010001 for the EK RSA handle or 0x81010002 for
+> > > the EK EC handle, etc.
+> > 
+> > You should probably use the hierarchy handle for that case:
+> > 0x40000001 for the Owner (storage) seed and 0x40000006 for the
+> > endorsement seed.
+> 
+> Looking at the spec, do you mean 0x4000000B for the endorsement seed?
+> 
+> Table 28 of the TPM 2.0 Structures document has TPM_RH_EK
+> (0x40000006) as "not used", but TPM_RH_ENDORSEMENT (0x4000000B) as
+> "references the Endorsement Primary Seed (EPS), endorsementAuth, and
+> endorsementPolicy"
+
+Yes, probably ... I don't really ever use it except as input the the
+command line tsscreateprimary -hi e or create_tpm2_key --parent
+endorsement.
+
+But I still say don't bother: the endorsement key is all that needs to
+be attested because there are well known processes to use it to attest
+every other TPM key.  If you're using the SVSM vTPM because you care
+about measurements, you need the endorsement key not the storage key
+(you only need the latter if you're inserting other keys).
+
+James
 
