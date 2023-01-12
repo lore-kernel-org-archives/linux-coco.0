@@ -1,248 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2040.outbound.protection.outlook.com [40.107.244.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11C679CF
-	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 14:39:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1673534370;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=vAo5BGfBBHQNg4SAwBs+gFnWeThtjwf2WST9HP4S12g=;
-	b=iRh36EFWJpxYrXCVMnn2LBCH1OdRn7waDt1z+N9mQzdPjfjO6AY5HMoTC64puisxGrtYIP
-	rOjHW1bgyII02J0BWQ3gKyYc7rizc1WPMoahJyIu9C5nzxlTvb5bCFT1LoDtUmiXj+towr
-	JjbLQiHLi7b/xK8WLn40n5fSI6DC4WE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-471-uxNtam06PBmbD9vyw7TmMg-1; Thu, 12 Jan 2023 09:39:27 -0500
-X-MC-Unique: uxNtam06PBmbD9vyw7TmMg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C67EE801779;
-	Thu, 12 Jan 2023 14:39:26 +0000 (UTC)
-Received: from redhat.com (unknown [10.33.36.222])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2E4021121314;
-	Thu, 12 Jan 2023 14:39:26 +0000 (UTC)
-Date: Thu, 12 Jan 2023 14:39:24 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: linux-coco@lists.linux.dev, amd-sev-snp@lists.suse.com
-Subject: SVSM initiated early attestation / guest secrets injection
-Message-ID: <Y8AbnM0cnKfXXW23@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29D579C9
+	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 15:13:55 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dGT5Y4fjw/a17fQmAq5g7xjKRxm4gQjIWC3/Hj1e1jgbWg4712Bw8zs+CAPbkWosDkmgROS3CWwYV0tOur61DX6i5x0NT2fiooshiCtPBG9IMXriSU9uW2P7CZpIugHjXHJuL1I69C81FoQcR6E2W2DCGpPz6fObo2hBKcwRBY3cGJFB2FZOgbCS+d8oW5pXISfjRH2VPeGuzjeUYZ86kOSROSS6obtjifSngM1F57oxlsqQgbruuoap6Poa0VpsPPNIQGrwDBHA95k5G1MFciXxJNduoPGc0Dg0KvVgq3bAcecb0EFAhRNfCkpqCyq7P/Y/V6Qsg2kb7hL2yBVkzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s6aWCVx0ntWhMp7aSOwG+LGiCBtc9igixFM1cwtjYco=;
+ b=R2+BioOpauF8OPpWqSJY7Mgo3czU6uwc6f+Apc52yH6FnRt9JQOKub2+k12Q/UMaSsrww42WWUmUNs1OWgu6Ta1AqwLIF76ypqWJHI0zCJf3qzpnm+JrKONd6dW/GuHdAhGVmOmJw0FFs9cJNrQWewFbYLpEPPhXdcmbZ3HvHIGB3tUPJ0ff6nZqyS+Xo4obNXbfvy1c2lYWzj5y1St9++z1gCdLNqPgAC8ZSlSsIA5EL6ufR+wwxKLlb/p0kTjw9K9gvzt6667cnbYLPGoBVRzctdona0nD35ddNasWiVlfGSux/UAi2ldtNGEpaYj/XnoKTOOKspQxggxPscYlWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s6aWCVx0ntWhMp7aSOwG+LGiCBtc9igixFM1cwtjYco=;
+ b=JLPl5nLgePz2JwurkGSMrbObWV2FfM5jckeWtkP0j61uRKzatOt3xTsLuxC0zxP2k5ImjY6qMc7vgjzzY1TcoiTzg9UDa248AV1TPi6ypxkHV0aok2X+42+inULsNL6MDfuGFw8utzZlygPLzMLBIBuQSDooZAFvLm/1P0Q3T4g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by BY5PR12MB4855.namprd12.prod.outlook.com (2603:10b6:a03:1dd::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.13; Thu, 12 Jan
+ 2023 15:13:51 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::8200:4042:8db4:63d7]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::8200:4042:8db4:63d7%3]) with mapi id 15.20.6002.013; Thu, 12 Jan 2023
+ 15:13:51 +0000
+Message-ID: <6705338d-2fb7-4f6d-6a5b-2a860e894a20@amd.com>
+Date: Thu, 12 Jan 2023 09:13:49 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: SVSM Attestation and vTPM specification additions - v0.60
+Content-Language: en-US
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Christophe de Dinechin <dinechin@redhat.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
+References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
+ <m2tu0wrjv0.fsf@redhat.com>
+ <777e87d6c77b2c6287040242f1f2759266778eff.camel@HansenPartnership.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <777e87d6c77b2c6287040242f1f2759266778eff.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR13CA0022.namprd13.prod.outlook.com
+ (2603:10b6:610:b1::27) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|BY5PR12MB4855:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1fbd171b-8117-453c-1bc4-08daf4af9ccf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	WiR2xXsJ+nD+VzsHfWATp0ktQ+tZD9VHxSgnU8PBd/BUcELx34F7CKlfx9NeIfJLi++JOlWohoqKWu/LbWaBLS9njKk6w9KpJcwmi4HE33+t8G/VSdMWwVq9nuksx7wrbtlgT0D0Y0AE0BHjghCdYV0K5tEBDaNYImErCYxfM7B6VTTKr9K3iZ5zIwnbxhliB7c8dhz4Ka+zPbnOktVrh5WPJoOOd5aGvJvQM+8ybLgq1faf4jBVMHtkWHO16FcmUK01bwm2kX688Ju0dKi4Rzd0BSH+0aYSSrD1tTy5MR9/rV4V8e6RNHnEvqIg2svS4w7Qzg4jjmHdAO8VQV/KojkdyKV7UGhcbvhjee2g0mIaZKv/2aavtdjilpcwDzVTEj4WCBCi+TDN9Ef+MpnOppPIcS6FU16bm6qUwOeX9PV05lldBGAp2Dq8fKd1JVEmIAXleTvbcvbsnxP73xHcsMbfI73USYj2GwZDNkzlZukuEt/iGyMSdCZ8bzcp3a98PXa2POMGeEXTG+KOhCWUDEuKiAN3yhUV2fXypMtkvKENqm6jMlPM/tEKcaM8M/mPh2qAYwll4QrZSlMiVA4jBK2dsxnR8lCRxJ3WwS699E+7jud97nd0Vxo/n3URIpI3Xiho8YHXVmo/LmmJUUsEWiTxl6661TjciLt1nwXTZmVJjGs7JNQIZSewvwqQ07MLad73GsVaprYL/46k2Veudao4HJtAIBpw/JHHSX+TheY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(396003)(376002)(136003)(366004)(39860400002)(451199015)(86362001)(31696002)(31686004)(110136005)(2616005)(54906003)(316002)(8676002)(66476007)(66556008)(66946007)(478600001)(26005)(186003)(6512007)(6486002)(6506007)(53546011)(38100700002)(36756003)(83380400001)(41300700001)(4326008)(2906002)(5660300002)(8936002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NWpEWkk1RUUyWVNJOTBia3RvVFJIVWlXRHN1dGl0aUF3aDVLRmhtK1JtbFdR?=
+ =?utf-8?B?dUlaWGFTeUY5SkZ4RTB3ZEsyWHZVVWRVSm5lV0JGdUxia3dmTW5XbHpZZklt?=
+ =?utf-8?B?TW5vU1ZCMW9qWXh3UXY5N21CcXVWT2xqTzRCSzAzWlRmOUlJNVp5Wm03R01u?=
+ =?utf-8?B?S3lYRGFQU3dYc2U2K2h6MjFvaERrWTBSYlFPWkpXQzkvN29TWG1USmxwZmR3?=
+ =?utf-8?B?ekRJdVJTRjh3RFhjQTYrRVc5OHhZTTcweW81cTQ4WVVvbG9oTlEvSXJ6ZzZu?=
+ =?utf-8?B?YlVERTVFdjVlc3o5aUlTNEh5b2lsQ3VUb0l5b1VybWt4VnoyTmJpWUtabXMw?=
+ =?utf-8?B?S3ZvUUZMR0FwekwydVYrSUFVZlhwalFvcHJFckdnc3AvbzVGajQ0eU1remNW?=
+ =?utf-8?B?QUU0TTM4SDIxUWE5U3JMM2NnYy9TeXBEM2RmdDJLTm5WdEtyQUFiekc5MkRU?=
+ =?utf-8?B?bFJmM1gwd0VBWTVYcTcxc2g0MFJZRXVuVmcvZlY1Zmg3eXBNaDhpSW5uZTNX?=
+ =?utf-8?B?R3pEd045REdXWnZxSms0VFpuRlQ1d1ZveEV6NmF3NGYrZzVCa1d5bWg2bEtH?=
+ =?utf-8?B?MURsejZlZVN4bFptaUFWWStqZGJqVFltWEpRd2t2dW4xNll1MjNXSE16TFVo?=
+ =?utf-8?B?WkczTkN1Z1VldEhzdEZPVmNBTVpZTENpYi8rVE1OUSs3TktPUGIyZmRYd0d6?=
+ =?utf-8?B?cENGN0pFV0p4bEhnU3UreXRybVBVYkkyNHRxOUM2L3AxL1I4aVFjVlhJVndV?=
+ =?utf-8?B?ZVVpbk5NU21rOTRSbGtuaHRTMzc3N3dXd0dxMkJOanhxOUtEYjdFMjlxbWFm?=
+ =?utf-8?B?YWxBSU1OTkc4THRZaTRBbm51bkhIeldYTkZNN3R2WjhYcXVKVXlaV3NueU1J?=
+ =?utf-8?B?a3lORERGcU9sdUxCNytRRnp2WndzcjEwS2cyRC9JSEZmaS9WRWJpMHNmd1Zl?=
+ =?utf-8?B?YUNUL0FicTZZV3g1ZklKcWRKQjBHVVRtcFgzZVlMZk1tc1V2emwzYzk1L2J5?=
+ =?utf-8?B?UHZCYndCeXZyR3NKVk02UXhVMjY4QkpHdXhqM2M5NXk4d0xFRFR3M3kzOEVX?=
+ =?utf-8?B?UVdpOXFubXI2eVFtbld1NVliVFdwSXFUUG1XcGN6amY0SFBQWEg1cDJvd3d3?=
+ =?utf-8?B?V2YxNnRZRHM4d29aaUo1VGFTaHFXdjZ0NHBFR3h5d1ZkS2N3QldEYjJZNE9Z?=
+ =?utf-8?B?L0x3WnVna1QzQkZJb1orNUxtbHBMRExuRjh3N1ozNXFJUzlKYzdwRE5NTW8w?=
+ =?utf-8?B?cVFXemkxZ0tGblZXSHpGeC9ncXJUY3VLd3RuYVpPbW9CZWpvQ1ZqcTd1c1Ur?=
+ =?utf-8?B?SE5vb2NSdjdWTDJiWTJ0MXJpajVBcW54YmJhWHVuNm1hU0JTTXo0U1hNd3ZI?=
+ =?utf-8?B?aEE2OFl0M29FVG5wbHZKaDJIcmNBVWxmaU8rWnBOTFZsc1I4bUJGbWxCbzAz?=
+ =?utf-8?B?SG5MZ2pzRXhmVkZBbkhtWnBxSGZpNCtpZ2pJaU5HR3V5SVBoNWRQcnZvaDFM?=
+ =?utf-8?B?SFdvT2FiMmpJMWFZRkR4Njl6RUxkcWdRUHhGOWdyNWFEVU9MaG9ML1FoRXV3?=
+ =?utf-8?B?VFhQY0s4Q3dGcTlqUHhpU2ZMOUZsZ0lCU2JZL3A5a2ROM2k1SUpPVzR5cnlK?=
+ =?utf-8?B?Rmd1N3B5aFN3UUREQ2lqZnozckFsU2JOMERsWlR0WGRaUHJKMkhjUXY5cWlY?=
+ =?utf-8?B?dUJZNjJsai9uQ0Q3cTB0Z3owOG12TVpqT3hSOTdpYVZOYmVON0VxWURuaEdP?=
+ =?utf-8?B?aHhSVGZuV3J4UFlMeDYyV0JZQWhVZmVtT3JJTlI0Q0gwVkFVb3N3MkFjaTd0?=
+ =?utf-8?B?TGdPMWp1Q2Y2R2RoU0lDdDRyRTJoNkRQSXlQdi9lbXduK2pweFJDSmtGbEFn?=
+ =?utf-8?B?WXNqRStGVkdSQ3Jzb0sxL3J4YzBmbFNYdWRuRGpjd0FaMllMemM4eFdmb2pI?=
+ =?utf-8?B?NzVxcHdXK21uQldIMUhlVy9uTWE3Q1R0aUVtSUNOSm9oMnRuQVduSlFpZFd0?=
+ =?utf-8?B?LzJ4SnEzNlNyMURKazhGMFA0YUhkOWVtNUxHcXNnaUxNVTJybWVvYWduRkJq?=
+ =?utf-8?B?T1BRdmlPZnlzbXNrQzRaUkZEU1Q0YS9PYlZoenZHQWNMTWFEaFNQOTU0b0Qw?=
+ =?utf-8?Q?wUWs/bEIi5gKoYD/cxuNlbA2Z?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fbd171b-8117-453c-1bc4-08daf4af9ccf
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2023 15:13:51.5025
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FMpPKr5rggMBS/ZvahmPmOB/qMy/Tty4QEGS9VtcCJg2lcsn6WLyQhK7DLw5t+YFijO+grCQPhl9KUUqNrRMXQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4855
 
-In the previous discussion about vTPMs and their persistence:
+On 1/12/23 07:57, James Bottomley wrote:
+> On Wed, 2023-01-11 at 17:39 +0100, Christophe de Dinechin wrote:
+> [...]
+>> p29: Table 14: How can RAX be used as command ordinal and command
+>> response size if it's already used for call identifier / result
+>> value?
+> 
+> I think there's a bug on the first table: in the prototype we use RAX
+> [in] (not RCX [in]) for the pointer to the request/response buffer and
+> RAX [out] as the SVSM return code.
 
-https://lore.kernel.org/linux-coco/4a5bde7e-c473-0fdc-3c3f-e08321e0b911@linux.ibm.com/T/#e92f5ec757664eec5c993d4c5d85b11a13ac59d00
+No, it's not a bug. You'll need to use RCX as the pointer to the 
+request/response buffer because RAX, per calling convention, contains the 
+protocol id and call id.
 
-it was suggested we split the work into several distinct pieces
+> 
+> The shared response buffer has the platform command as the first word
+> when it goes down and the response length as the first word when it
+> comes back, which I think is what the second table is meant to show.
 
-[quote]
-  1. Ephemeral vTPM with attestation retrieved from guest
-  2. Attestation and injection API from SVSM to host/guest end point
-  3. SVSM API for saving TPM state
-[/quote]
+Right, I commented already that it was a typo and should have been an 
+offset with a value of 0.
 
-I've been thinking about items 2 and 3 on that list. Beyond the desire to
-support persistence of the vTPM, I think there are other use cases that would
-benefit from early attestation. The overarching appealing aspect though is
-that we can largely isolate the guest OS userspace from having to know / do
-anything about SEV-SNP. This is a benefit because the more we can make a guest
-OS work just like it would on any other (non-confidential) VM / bare metal,
-the less burden there is for the guest owner and guest OS vendor alike. Every
-time there is a different code path / action sequence required for CVMs, we
-increase the testing burden and knowledge burden. Infrequently used code paths
-are invariably more likely to bitrot.
+Thanks,
+Tom
 
-If the guest OS can unlock its disk secrets from a persistent vTPM without
-having todo any attestation from the initrd, this simplifies the early boot
-process for the guest. Especially not having to bring up networking at this
-point in boot is a win, as that would add many failure scenarios, and we're
-limited in per-VM configuration options until after the guest's root disk is
-unlocked too.
-
-Aside from a desire to persist vTPM, it would also be desirable to support
-persistence of OVMF NVRAM variables. Traditional VMs have the split CODE.fd /
-VARS.fd arrangement where VARS.fd is writable per-VM, but we don't use that
-with confidential VMs as it wouldn't be covered by the SEV launch measurements.
-This is a difference from non-CVM environments and there could be use cases
-where OVMF NVRAM persistence is useful to support.
-
-Lets assume as a starting point that the guest owner has designated an
-attestation server for their CVM, and pre-loaded it with a set of secrets to
-be released upon successful attestation of their CVM The attestation server
-could be run by the cloud provider, or run by the guest owner themselves,
-whichever suits their confidentiality needs best.
-
-
-Just as we don't want to deal with the complexity of networking in the initrd,
-we also don't want that in SVSM. Instead it is desirable to rely on the host
-OS to act as a proxy between the attestation server and SVSM, while maintaining
-confidentiality against this intentional MITM. A plain old serial UART can be
-exposed to the guest OS for communication with the host attestation proxy.
-
-The sequence of operations/communications would follow:
-
- 1. Guest owner designates an attestation server to use with the CVM
-    and provides its address and a public key associated with the attestation
-    server to the hypervisor
-
- 2. Hypervisor injects the attestation server public key to the CVM
-
- 3. SVSM generates a public/private key pair using a public key algorithm to
-    be specified
-
- 4. SVSM requests an attestation report from SEV-SNP firmware, embedding a
-    hash of the attestation server public key and its own public key.
-
- 5. SVSM transmits the attestation report and the two public keys on the ISA
-    serial port
-
- 6. Host attestation proxy receives the attestation report and public key
-    on QEMU serial port backend
-
- 7. Host attestation proxy makes a HTTPS request to the designated attestation
-    server associated with the CVM instance
-
- 8. Remote attestation server validates the attestation report which
-    establishes that
-
-     * SVSM is running in a SEV-SNP VM
-     * The hash of the public keys comes from SVSM
-
- 8. Remote attestation server extracts the public keys hash from the
-    validated attestation report
- 
- 9. Remote attestation server validates the two public keys which
-    establishes that
-
-      * SVSM has a valid public key for the attestation server
-      * It can encrypt data to send back to SVSM
-
- 10. Remote attestation server acquires secrets to be released to the CVM,
-     encrypts them with SVSM’s public key, and signs them with its own
-     private key
-
- 11. Remote attestation server sends the HTTPS reply with the encrypted
-     secrets as payload
-
- 12. Host attestation proxy receives the HTTPS reply from the attestation
-     server and transmits the payload on the QEMU serial port backend
-
- 13. SVSM receives the attestation result payload from the ISA serial port
-
- 14. SVSM verifies the signature of the attestation server which
-     establishes that:
-
-       * The data came from an attestation server associated
-         with the public key is holds
-       * Establishes that the data has not been tampered with
-         in transit from the attestation server
-
- 15. SVSM decrypts the secrets received using its private key
-
-Use of a plain UART is suggested primarily for simplicity. The amount of
-data to be transferred is just a few 10's of KB, so a high data rate channel
-is not required. Further SVSM would block between steps 5 and 13 while waiting
-for the attestation response, before launching the guest firmware. The serial
-port would not be used again once the guest firmware is launched. Using
-virtio-serial or similar feels like overkill, extra code complexity for little
-obvious benefit. We could designate any of the traditional COM1/COM2/COM3/COM4
-ioports, or designate a new IO port specifically for this purpose but still use
-the simple UART protocol
-
-It is suggested that the secrets released from the attestation server be
-structured using the EFI secret table defined previously for SEV/SEV-ES
-in
-
-   https://github.com/torvalds/linux/blob/master/drivers/virt/coco/efi_secret/efi_secret.c
-
-Thus when SVSM decrypts the secrets it can place them into guest RAM in the
-address specified by OVMF, such that they are accessible by the efi_secret.ko
-guest driver (or equivalent for non-Linux).
-
-This on its own would allow for booting of encrypted root disks from the
-initrd, without even needing any vTPM integration. For example, systemd
-crypttab supports pointing to a plain file to acquire the LUKS passphrase
-and can thus be pointed to the efi_secret file in sysfs.
-
-This mechanism could also be used for injecting a host identity such as an
-SSH server keypair. Injecting the SSH identity is a way to mitigate the main
-risk in the above communications handshake where the malicious host proxy
-doesn't talk to the user's attestation server, and just replies with a bunch
-of secrets of its own choosing. If it did this the SSH identity would not
-match what the guest owner expects and thus it could tell the VM is not
-trustworthy on first use. Equivalently a HTTP server cert would serve much
-the same purpose if the CVM were exposing an HTTP service.
-
-This can also be used as a way to supply data for systemd credentials
-(https://systemd.io/CREDENTIALS/), as a confidential alternative to SMBIOS OEM
-strings or fw_cfg which are used in non-CVMs. It is important to be able to
-get these injected at the start of boot, as various systemd startup units
-can be influenced by this data. This avoids having to integrate support for
-CVM attestation servers directly with systemd.
-
-
-In addition to placing the secrets into guest RAM, however, SVSM can
-designate certain secret UUIDs for its own usage, and extract those before
-puitting the remaining secret table entries into guest RAM. One UUID could
-identify a key to use for encrypting/decrypting the vTPM persistent state.
-Another UUID could identify a key to use for encrypting / decrypting OVMF
-NVRAM variable state.
-
-In terms of how we actually provide vTPM / OVMF NVRAM state, it looks quite
-straightforward to just use the existing pflash support in QEMU. On first
-boot of the CVM, SVSM would have to initialize the pflash using the
-designate encryption key, erasing any data the hypervisor may be exposed.
-Either expose 2 pflash devices, one of vTPM and one for OVMF NVRAM, or just
-split the 1 pflash into two parts.
-
-With such a setup, the vTPM would by default be fully ephemeral. Only if the
-attestation server provided a vTPM encryption secret, would the pflash be
-used to persistent the vTPM state.
-
-For the OVMF NVRAM persistent, SVSM would have to expose a service to
-OVMF for the storage of NVRAM keys. I've not considered in any detail.
-
-Even if SVSM does an attestation to acquire secrets and inject them into
-the guest, the guest owner can repeat the attestation at any time when the
-guest OS is running, even in early boot if so desired. The SVSM initiated
-attestation provides a good default out of the box experiance though,
-avoiding the need to make most guest OS images aware of fact that they're
-running inside a CVM, and allows easy portability to other execution
-environments for the VM image.
-
-The scope of changes to SVSM to achieve the above looks fairly small. 
-RSA key gen, some encrypt/decrypt ops, and expand the serial port impl
-to support reading data.
-
-There would be minimal (if any) change to QEMU, we just need to provide
-the attestation server public key in some manner, perhaps fwcfg/SMBIOS,
-since it doesn't need to be confidential.
-
-We would need to write an attestation server proxy to run on the host,
-connected to QEMU's serial port backend. This is likely the largest
-amount of new code, and would need to know how to talk to any of the
-various attestation server impls that are relevant.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+> 
+>> p30: Why would you need 4 bytes for the TPM command ordinal? This
+>> causes the TPM command size to be misaligned. What about 2 bytes for
+>> command ordinal, one byte for locality, and one reserved byte?
+> 
+> It comes straight from the MSSIM protocol.  The actual vTPM service
+> routine sends the buffer down unmodified to the vTPM command routines.
+> If the size of this gets changed, the entire command would have to be
+> copied to a new buffer to send it to the MSSIM vTPM.
+> 
+> James
+> 
