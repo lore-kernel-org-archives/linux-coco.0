@@ -1,124 +1,228 @@
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFF32107
-	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 10:14:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1673518465; x=1705054465;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=LevyWGVkjbR3XtkwGaqhIDNbRXys+KmZlOUqinj8SNU=;
-  b=Vdjqnds8eFb5229gGXeEe4bDVkOn2Nhipkjj8+4FRyZuj7yrsHQrkH83
-   5fsTxSdbni4iI/AdQVXEHHtebH3yf7MDqIz6aAFQck6prlUnlci/oxN9A
-   XZdqCXMmPkHPz1YeqUZ//LnpSVHt2LdmX0c+xQIP0CL0Ly3ljOoreLTBm
-   s8mR5IOxWDRLDAf9WG36eX1T5g5ErtVSFP45mZr26eyQDHf+QFKNFM6jY
-   tYVhD1UDVS0eW8W1Q72+eVz1kwhAOKdQeFKbKBf3e+0V1fnpzKf0BE6f9
-   TeWuCAajG95jfkBJvDQHFMJ/XgC8U/Jrv1YUBRRYVAh4VEgGRLFBoGU4j
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="324899411"
-X-IronPort-AV: E=Sophos;i="5.96,319,1665471600"; 
-   d="scan'208";a="324899411"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2023 02:14:23 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="903128288"
-X-IronPort-AV: E=Sophos;i="5.96,319,1665471600"; 
-   d="scan'208";a="903128288"
-Received: from glieseu-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.52.1])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2023 02:14:21 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id B9318109AF7; Thu, 12 Jan 2023 13:14:13 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 7/7] x86/tdx: Disable NOTIFY_ENABLES
-Date: Thu, 12 Jan 2023 13:14:07 +0300
-Message-Id: <20230112101407.24327-8-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.38.2
-In-Reply-To: <20230112101407.24327-1-kirill.shutemov@linux.intel.com>
-References: <20230112101407.24327-1-kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8E9290F
+	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 11:59:14 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C66783EF0F;
+	Thu, 12 Jan 2023 11:59:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1673524747; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rk8NDzBWXwv58AsxaL9j8+/toDN9Bb61CC4cwhVedfM=;
+	b=qzHWsqiBk4OJrhKbSO650DFI5q4koVVxnqN2ZIEz8G1dreeKiagR3NaIzWHJVB3Bl/fcdI
+	jCL6pFrhSUuL1/2WzQBm8TJ1cYEbe+oW4Vh0T0yjwS7M4ToYHGT30L/V/TH4U6MwdjHfWz
+	Hq/aNYQC8eNjCUx+P362LtfzuP+uQ2c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1673524747;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rk8NDzBWXwv58AsxaL9j8+/toDN9Bb61CC4cwhVedfM=;
+	b=GsSUBRvSchziBexgTOABJx/UJVpqdXwdjgN18Qaksi7RKXa9O1ylPBIS91uJCl1uBMcnHa
+	hFOBoUYqBU/lwEBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 11AD213585;
+	Thu, 12 Jan 2023 11:59:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id vQdxAwv2v2NxPAAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Thu, 12 Jan 2023 11:59:07 +0000
+Message-ID: <2b6c77bd-bead-7bfb-bf07-63e9ca837c58@suse.cz>
+Date: Thu, 12 Jan 2023 12:59:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCHv8 02/14] mm: Add support for unaccepted memory
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>,
+ Dave Hansen <dave.hansen@intel.com>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@redhat.com>,
+ Mel Gorman <mgorman@techsingularity.net>, marcelo.cerri@canonical.com,
+ tim.gardner@canonical.com, khalid.elmously@canonical.com,
+ philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
+ x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>
+References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
+ <20221207014933.8435-3-kirill.shutemov@linux.intel.com>
+ <f944459f-76a6-60c3-7dae-0918d9ef0c5d@suse.cz>
+ <20221209192616.dg4cbe7mgh3axv5h@box.shutemov.name>
+ <3ab6ea38-5a9b-af4f-3c94-b75dce682bc1@suse.cz>
+ <20221224164639.pb3hrvbxtlodgm5e@box.shutemov.name>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20221224164639.pb3hrvbxtlodgm5e@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-== Background ==
+On 12/24/22 17:46, Kirill A. Shutemov wrote:
+> On Fri, Dec 09, 2022 at 11:23:50PM +0100, Vlastimil Babka wrote:
+>> On 12/9/22 20:26, Kirill A. Shutemov wrote:
+>> >> >  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+>> >> >  			/*
+>> >> >  			 * Watermark failed for this zone, but see if we can
+>> >> > @@ -4299,6 +4411,9 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>> >> >  
+>> >> >  			return page;
+>> >> >  		} else {
+>> >> > +			if (try_to_accept_memory(zone))
+>> >> > +				goto try_this_zone;
+>> >> 
+>> >> On the other hand, here we failed the full rmqueue(), including the
+>> >> potentially fragmenting fallbacks, so I'm worried that before we finally
+>> >> fail all of that and resort to accepting more memory, we already fragmented
+>> >> the already accepted memory, more than necessary.
+>> > 
+>> > I'm not sure I follow. We accept memory in pageblock chunks. Do we want to
+>> > allocate from a free pageblock if we have other memory to tap from? It
+>> > doesn't make sense to me.
+>> 
+>> The fragmentation avoidance based on migratetype does work with pageblock
+>> granularity, so yeah, if you accept a single pageblock worth of memory and
+>> then (through __rmqueue_fallback()) end up serving both movable and
+>> unmovable allocations from it, the whole fragmentation avoidance mechanism
+>> is defeated and you end up with unmovable allocations (e.g. page tables)
+>> scattered over many pageblocks and inability to allocate any huge pages.
+>> 
+>> >> So one way to prevent would be to move the acceptance into rmqueue() to
+>> >> happen before __rmqueue_fallback(), which I originally had in mind and maybe
+>> >> suggested that previously.
+>> > 
+>> > I guess it should be pretty straight forward to fail __rmqueue_fallback()
+>> > if there's non-empty unaccepted_pages list and steer to
+>> > try_to_accept_memory() this way.
+>> 
+>> That could be a way indeed. We do have ALLOC_NOFRAGMENT which could be
+>> possible to employ here.
+>> But maybe the zone_watermark_fast() modification would be simpler yet
+>> sufficient. It makes sense to me that we'd try to keep a high watermark
+>> worth of pre-accepted memory. zone_watermark_fast() would fail at low
+>> watermark, so we could try accepting (high-low) at a time instead of single
+>> pageblock.
+> 
+> Looks like we already have __zone_watermark_unusable_free() that seems
+> match use-case rather closely. We only need switch unaccepted memory to
+> per-zone accounting.
 
-There is a class of side-channel attacks against SGX enclaves called
-"SGX Step"[1]. These attacks create lots of exceptions inside of
-enclaves. Basically, run an in-enclave instruction, cause an exception.
-Over and over.
+Could work. I'd still suggest also making try_to_accept_memory() to accept
+up to high watermark, not a single pageblock.
+> The fixup below suppose to do the trick, but I'm not sure how to test
+> fragmentation avoidance properly.
+> 
+> Any suggestions?
 
-There is a concern that a VMM could attack a TDX guest in the same way
-by causing lots of #VE's. The TDX architecture includes new
-countermeasures for these attacks. It basically counts the number of
-exceptions and can send another *special* exception once the number of
-VMM-induced #VE's hits a critical threshold[2].
+Haven't done that for years, maybe Mel knows better. But from what I
+remember, I'd compare /proc/pagetypeinfo with and without memory accepting,
+and collect the mm_page_alloc_extfrag tracepoint. If there are more of these
+events happening, it's bad. Ideally with a workload that stresses both
+userspace (movable) allocations and kernel allocations. Again, Mel might
+have suggestions for a mmtest?
 
-== Problem ==
-
-But, these special exceptions are independent of any action that the
-guest takes. They can occur anywhere that the guest executes. This
-includes sensitive areas like the entry code. The (non-paranoid) #VE
-handler is incapable of handling exceptions in these areas.
-
-== Solution ==
-
-Fortunately, the special exceptions can be disabled by the guest via
-write to NOTIFY_ENABLES TDCS field. NOTIFY_ENABLES is disabled by
-default, but might be enabled by a bootloader, firmware or an earlier
-kernel before the current kernel runs.
-
-Disable NOTIFY_ENABLES feature explicitly and unconditionally. Any
-NOTIFY_ENABLES-based #VE's that occur before this point will end up
-in the early #VE exception handler and die due to unexpected exit
-reason.
-
-[1] https://github.com/jovanbulck/sgx-step
-[2] https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html#safety-against-ve-in-kernel-code
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@intel.com>
----
- arch/x86/coco/tdx/tdx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 2f4fbb7cd990..d72176a7d3a0 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -19,6 +19,10 @@
- #define TDX_GET_VEINFO			3
- #define TDX_GET_REPORT			4
- #define TDX_ACCEPT_PAGE			6
-+#define TDX_WR				8
-+
-+/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-+#define TDCS_NOTIFY_ENABLES		0x9100000000000010
- 
- /* TDX hypercall Leaf IDs */
- #define TDVMCALL_MAP_GPA		0x10001
-@@ -863,6 +867,9 @@ void __init tdx_early_init(void)
- 	tdx_parse_tdinfo(&cc_mask);
- 	cc_set_mask(cc_mask);
- 
-+	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
-+	tdx_module_call(TDX_WR, 0, TDCS_NOTIFY_ENABLES, 0, -1ULL, NULL);
-+
- 	/*
- 	 * All bits above GPA width are reserved and kernel treats shared bit
- 	 * as flag, not as part of physical address.
--- 
-2.38.2
+> 
+> diff --git a/drivers/base/node.c b/drivers/base/node.c
+> index ca6f0590be21..1bd2d245edee 100644
+> --- a/drivers/base/node.c
+> +++ b/drivers/base/node.c
+> @@ -483,7 +483,7 @@ static ssize_t node_read_meminfo(struct device *dev,
+>  #endif
+>  #ifdef CONFIG_UNACCEPTED_MEMORY
+>  			     ,
+> -			     nid, K(node_page_state(pgdat, NR_UNACCEPTED))
+> +			     nid, K(sum_zone_node_page_state(nid, NR_UNACCEPTED))
+>  #endif
+>  			    );
+>  	len += hugetlb_report_node_meminfo(buf, len, nid);
+> diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
+> index 789b77c7b6df..e9c05b4c457c 100644
+> --- a/fs/proc/meminfo.c
+> +++ b/fs/proc/meminfo.c
+> @@ -157,7 +157,7 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+>  
+>  #ifdef CONFIG_UNACCEPTED_MEMORY
+>  	show_val_kb(m, "Unaccepted:     ",
+> -		    global_node_page_state(NR_UNACCEPTED));
+> +		    global_zone_page_state(NR_UNACCEPTED));
+>  #endif
+>  
+>  	hugetlb_report_meminfo(m);
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 9c762e8175fc..8b5800cd4424 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -152,6 +152,9 @@ enum zone_stat_item {
+>  	NR_ZSPAGES,		/* allocated in zsmalloc */
+>  #endif
+>  	NR_FREE_CMA_PAGES,
+> +#ifdef CONFIG_UNACCEPTED_MEMORY
+> +	NR_UNACCEPTED,
+> +#endif
+>  	NR_VM_ZONE_STAT_ITEMS };
+>  
+>  enum node_stat_item {
+> @@ -198,9 +201,6 @@ enum node_stat_item {
+>  	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
+>  	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
+>  	NR_KERNEL_STACK_KB,	/* measured in KiB */
+> -#ifdef CONFIG_UNACCEPTED_MEMORY
+> -	NR_UNACCEPTED,
+> -#endif
+>  #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
+>  	NR_KERNEL_SCS_KB,	/* measured in KiB */
+>  #endif
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index e80e8d398863..404b267332a9 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1779,7 +1779,7 @@ static bool try_to_accept_memory(struct zone *zone)
+>  
+>  	migratetype = get_pfnblock_migratetype(page, page_to_pfn(page));
+>  	__mod_zone_freepage_state(zone, -1 << order, migratetype);
+> -	__mod_node_page_state(page_pgdat(page), NR_UNACCEPTED, -1 << order);
+> +	__mod_zone_page_state(zone, NR_UNACCEPTED, -1 << order);
+>  	spin_unlock_irqrestore(&zone->lock, flags);
+>  
+>  	if (last)
+> @@ -1808,7 +1808,7 @@ static void __free_unaccepted(struct page *page, unsigned int order)
+>  	migratetype = get_pfnblock_migratetype(page, page_to_pfn(page));
+>  	list_add_tail(&page->lru, &zone->unaccepted_pages);
+>  	__mod_zone_freepage_state(zone, 1 << order, migratetype);
+> -	__mod_node_page_state(page_pgdat(page), NR_UNACCEPTED, 1 << order);
+> +	__mod_zone_page_state(zone, NR_UNACCEPTED, 1 << order);
+>  	spin_unlock_irqrestore(&zone->lock, flags);
+>  
+>  	if (first)
+> @@ -4074,6 +4074,9 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
+>  	if (!(alloc_flags & ALLOC_CMA))
+>  		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
+>  #endif
+> +#ifdef CONFIG_UNACCEPTED_MEMORY
+> +	unusable_free += zone_page_state(z, NR_UNACCEPTED);
+> +#endif
+>  
+>  	return unusable_free;
+>  }
 
