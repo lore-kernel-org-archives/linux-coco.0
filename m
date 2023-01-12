@@ -1,228 +1,92 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8E9290F
-	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 11:59:14 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C66783EF0F;
-	Thu, 12 Jan 2023 11:59:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1673524747; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rk8NDzBWXwv58AsxaL9j8+/toDN9Bb61CC4cwhVedfM=;
-	b=qzHWsqiBk4OJrhKbSO650DFI5q4koVVxnqN2ZIEz8G1dreeKiagR3NaIzWHJVB3Bl/fcdI
-	jCL6pFrhSUuL1/2WzQBm8TJ1cYEbe+oW4Vh0T0yjwS7M4ToYHGT30L/V/TH4U6MwdjHfWz
-	Hq/aNYQC8eNjCUx+P362LtfzuP+uQ2c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1673524747;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rk8NDzBWXwv58AsxaL9j8+/toDN9Bb61CC4cwhVedfM=;
-	b=GsSUBRvSchziBexgTOABJx/UJVpqdXwdjgN18Qaksi7RKXa9O1ylPBIS91uJCl1uBMcnHa
-	hFOBoUYqBU/lwEBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 11AD213585;
-	Thu, 12 Jan 2023 11:59:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id vQdxAwv2v2NxPAAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Thu, 12 Jan 2023 11:59:07 +0000
-Message-ID: <2b6c77bd-bead-7bfb-bf07-63e9ca837c58@suse.cz>
-Date: Thu, 12 Jan 2023 12:59:06 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04E2CA4
+	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 12:18:14 +0000 (UTC)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30CBF7vg020683;
+	Thu, 12 Jan 2023 12:18:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=yCRCoLU8kzFecNwvs0GS18QHSKDBnUfA9uDZSjmD+C8=;
+ b=pIyIS3LDLIQhH5NX6ZsClwlUdARr4WpsWz5GclO3ZUkhi4/9rMpgT2Wc9lRY6gDA7na3
+ cJltOjIPkSpUEYdhGl7tHGJDG155UItjFPmP/YILiGicF7vspChYEb2GF+CHP53ls2Uy
+ JNxNSSoHrFX6qsG7YjIA+R22kpCHddHiGD6V+MQbWSE+n0hX+HzEPe1dgrH8X/DhNIAr
+ m95OS6uN70ujVUue9qEde8xhI3hLuMUHKaXIXwOlYodQF/K91yZGN8H5e1vYLR9/KFuk
+ loQeK4vgzHehSCCLaJkhaUBe9zwtx1DkwGjFJkAyPTLNdBtD61tWH+CMam1bPvBsNtKp rw== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n2h5wsja8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jan 2023 12:18:06 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+	by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30CBIRBY004552;
+	Thu, 12 Jan 2023 12:18:05 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
+	by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3n1kk7h3ac-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jan 2023 12:18:05 +0000
+Received: from b03ledav004.gho.boulder.ibm.com ([9.17.130.235])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30CCI4LT9241252
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Jan 2023 12:18:04 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6B8887805E;
+	Thu, 12 Jan 2023 13:56:32 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9B0D97805C;
+	Thu, 12 Jan 2023 13:56:31 +0000 (GMT)
+Received: from lingrow.int.hansenpartnership.com (unknown [9.163.48.220])
+	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Jan 2023 13:56:31 +0000 (GMT)
+Message-ID: <95318d8211fcd9a7adb574c5e293034937869331.camel@linux.ibm.com>
+Subject: Re: SVSM Attestation and vTPM specification additions - v0.60
+From: James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To: Dov Murik <dovmurik@linux.ibm.com>,
+        Tom Lendacky
+ <thomas.lendacky@amd.com>,
+        "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>,
+        "amd-sev-snp@lists.suse.com"
+ <amd-sev-snp@lists.suse.com>
+Date: Thu, 12 Jan 2023 07:18:02 -0500
+In-Reply-To: <ec43c1b9-8239-16c5-a4b5-5fe46970c9e4@linux.ibm.com>
+References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
+	 <ec43c1b9-8239-16c5-a4b5-5fe46970c9e4@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCHv8 02/14] mm: Add support for unaccepted memory
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>, Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>,
- Dave Hansen <dave.hansen@intel.com>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@redhat.com>,
- Mel Gorman <mgorman@techsingularity.net>, marcelo.cerri@canonical.com,
- tim.gardner@canonical.com, khalid.elmously@canonical.com,
- philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>
-References: <20221207014933.8435-1-kirill.shutemov@linux.intel.com>
- <20221207014933.8435-3-kirill.shutemov@linux.intel.com>
- <f944459f-76a6-60c3-7dae-0918d9ef0c5d@suse.cz>
- <20221209192616.dg4cbe7mgh3axv5h@box.shutemov.name>
- <3ab6ea38-5a9b-af4f-3c94-b75dce682bc1@suse.cz>
- <20221224164639.pb3hrvbxtlodgm5e@box.shutemov.name>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20221224164639.pb3hrvbxtlodgm5e@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 97OU2OZEneZL0v8dzJ739wC8I5KFdOl4
+X-Proofpoint-ORIG-GUID: 97OU2OZEneZL0v8dzJ739wC8I5KFdOl4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-12_07,2023-01-12_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 mlxlogscore=724 malwarescore=0 clxscore=1015 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301120085
 
-On 12/24/22 17:46, Kirill A. Shutemov wrote:
-> On Fri, Dec 09, 2022 at 11:23:50PM +0100, Vlastimil Babka wrote:
->> On 12/9/22 20:26, Kirill A. Shutemov wrote:
->> >> >  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->> >> >  			/*
->> >> >  			 * Watermark failed for this zone, but see if we can
->> >> > @@ -4299,6 +4411,9 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
->> >> >  
->> >> >  			return page;
->> >> >  		} else {
->> >> > +			if (try_to_accept_memory(zone))
->> >> > +				goto try_this_zone;
->> >> 
->> >> On the other hand, here we failed the full rmqueue(), including the
->> >> potentially fragmenting fallbacks, so I'm worried that before we finally
->> >> fail all of that and resort to accepting more memory, we already fragmented
->> >> the already accepted memory, more than necessary.
->> > 
->> > I'm not sure I follow. We accept memory in pageblock chunks. Do we want to
->> > allocate from a free pageblock if we have other memory to tap from? It
->> > doesn't make sense to me.
->> 
->> The fragmentation avoidance based on migratetype does work with pageblock
->> granularity, so yeah, if you accept a single pageblock worth of memory and
->> then (through __rmqueue_fallback()) end up serving both movable and
->> unmovable allocations from it, the whole fragmentation avoidance mechanism
->> is defeated and you end up with unmovable allocations (e.g. page tables)
->> scattered over many pageblocks and inability to allocate any huge pages.
->> 
->> >> So one way to prevent would be to move the acceptance into rmqueue() to
->> >> happen before __rmqueue_fallback(), which I originally had in mind and maybe
->> >> suggested that previously.
->> > 
->> > I guess it should be pretty straight forward to fail __rmqueue_fallback()
->> > if there's non-empty unaccepted_pages list and steer to
->> > try_to_accept_memory() this way.
->> 
->> That could be a way indeed. We do have ALLOC_NOFRAGMENT which could be
->> possible to employ here.
->> But maybe the zone_watermark_fast() modification would be simpler yet
->> sufficient. It makes sense to me that we'd try to keep a high watermark
->> worth of pre-accepted memory. zone_watermark_fast() would fail at low
->> watermark, so we could try accepting (high-low) at a time instead of single
->> pageblock.
+On Thu, 2023-01-12 at 10:19 +0200, Dov Murik wrote:
+> Page 28: vTPM Protocol
 > 
-> Looks like we already have __zone_watermark_unusable_free() that seems
-> match use-case rather closely. We only need switch unaccepted memory to
-> per-zone accounting.
+> 5. Will the SVSM update any PCRs on its own? For example, will it
+> measure the content of OVMF into PCR0?  Or are relying on the SNP
+> launch-update measurement (which currently includes both SVSM and
+> OVMF) to attest that part of the guest?
 
-Could work. I'd still suggest also making try_to_accept_memory() to accept
-up to high watermark, not a single pageblock.
-> The fixup below suppose to do the trick, but I'm not sure how to test
-> fragmentation avoidance properly.
-> 
-> Any suggestions?
+If the SVSM were to load OVMF then it would have to because the SVSM
+would become the root of trust.  While SVSM+OVMF are loaded together
+(and attested by the PSP) there's no need because the combined entity
+is the root of trust and thus measurements can begin in OVMF.
 
-Haven't done that for years, maybe Mel knows better. But from what I
-remember, I'd compare /proc/pagetypeinfo with and without memory accepting,
-and collect the mm_page_alloc_extfrag tracepoint. If there are more of these
-events happening, it's bad. Ideally with a workload that stresses both
-userspace (movable) allocations and kernel allocations. Again, Mel might
-have suggestions for a mmtest?
-
-> 
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index ca6f0590be21..1bd2d245edee 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -483,7 +483,7 @@ static ssize_t node_read_meminfo(struct device *dev,
->  #endif
->  #ifdef CONFIG_UNACCEPTED_MEMORY
->  			     ,
-> -			     nid, K(node_page_state(pgdat, NR_UNACCEPTED))
-> +			     nid, K(sum_zone_node_page_state(nid, NR_UNACCEPTED))
->  #endif
->  			    );
->  	len += hugetlb_report_node_meminfo(buf, len, nid);
-> diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
-> index 789b77c7b6df..e9c05b4c457c 100644
-> --- a/fs/proc/meminfo.c
-> +++ b/fs/proc/meminfo.c
-> @@ -157,7 +157,7 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
->  
->  #ifdef CONFIG_UNACCEPTED_MEMORY
->  	show_val_kb(m, "Unaccepted:     ",
-> -		    global_node_page_state(NR_UNACCEPTED));
-> +		    global_zone_page_state(NR_UNACCEPTED));
->  #endif
->  
->  	hugetlb_report_meminfo(m);
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 9c762e8175fc..8b5800cd4424 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -152,6 +152,9 @@ enum zone_stat_item {
->  	NR_ZSPAGES,		/* allocated in zsmalloc */
->  #endif
->  	NR_FREE_CMA_PAGES,
-> +#ifdef CONFIG_UNACCEPTED_MEMORY
-> +	NR_UNACCEPTED,
-> +#endif
->  	NR_VM_ZONE_STAT_ITEMS };
->  
->  enum node_stat_item {
-> @@ -198,9 +201,6 @@ enum node_stat_item {
->  	NR_FOLL_PIN_ACQUIRED,	/* via: pin_user_page(), gup flag: FOLL_PIN */
->  	NR_FOLL_PIN_RELEASED,	/* pages returned via unpin_user_page() */
->  	NR_KERNEL_STACK_KB,	/* measured in KiB */
-> -#ifdef CONFIG_UNACCEPTED_MEMORY
-> -	NR_UNACCEPTED,
-> -#endif
->  #if IS_ENABLED(CONFIG_SHADOW_CALL_STACK)
->  	NR_KERNEL_SCS_KB,	/* measured in KiB */
->  #endif
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index e80e8d398863..404b267332a9 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1779,7 +1779,7 @@ static bool try_to_accept_memory(struct zone *zone)
->  
->  	migratetype = get_pfnblock_migratetype(page, page_to_pfn(page));
->  	__mod_zone_freepage_state(zone, -1 << order, migratetype);
-> -	__mod_node_page_state(page_pgdat(page), NR_UNACCEPTED, -1 << order);
-> +	__mod_zone_page_state(zone, NR_UNACCEPTED, -1 << order);
->  	spin_unlock_irqrestore(&zone->lock, flags);
->  
->  	if (last)
-> @@ -1808,7 +1808,7 @@ static void __free_unaccepted(struct page *page, unsigned int order)
->  	migratetype = get_pfnblock_migratetype(page, page_to_pfn(page));
->  	list_add_tail(&page->lru, &zone->unaccepted_pages);
->  	__mod_zone_freepage_state(zone, 1 << order, migratetype);
-> -	__mod_node_page_state(page_pgdat(page), NR_UNACCEPTED, 1 << order);
-> +	__mod_zone_page_state(zone, NR_UNACCEPTED, 1 << order);
->  	spin_unlock_irqrestore(&zone->lock, flags);
->  
->  	if (first)
-> @@ -4074,6 +4074,9 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
->  	if (!(alloc_flags & ALLOC_CMA))
->  		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
->  #endif
-> +#ifdef CONFIG_UNACCEPTED_MEMORY
-> +	unusable_free += zone_page_state(z, NR_UNACCEPTED);
-> +#endif
->  
->  	return unusable_free;
->  }
+James
 
