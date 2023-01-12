@@ -1,124 +1,169 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B8B1369
-	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 08:20:06 +0000 (UTC)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30C8IoLe015991;
-	Thu, 12 Jan 2023 08:19:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : references : from : cc : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=soGFzcoL9qOL1VAZuc2LmRPVEMg7HEVfakiUeeMP0g4=;
- b=BtoNX+ueSH+Cls9l4OXqvTzUttq4191S2adHNNl1tcjJKTnqAc0e7QwH3vjwXGIafNY2
- a6nsB9Iy4+hNyKw7rVDxWZ2qmIRtV9Ci5o80NpXR1SfqfEjmn9oC+XHk4z/Yw5UMQbvl
- 2GfV2kuVMTMZFtQ92NTWCRQ74Vl52dF1krOA6fjZSOEX0YnUXTozfghfVc8/dYVmGdEx
- CZ2TI5TLu5h/Xy2DlWJvnQk54masg5UYmkUGmRAIB0toQEGlwlZjCW851BTsug7POExE
- 6qTm3X4nV4iZIZUyvJ8yYA+XhRn6xm5ZQDAisBXool+yxTjFIa/wi/wp9dEHUS3tcWuq UA== 
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n2eka00g3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jan 2023 08:19:57 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30C88whn007152;
-	Thu, 12 Jan 2023 08:19:57 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
-	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3n1kwkqx4a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jan 2023 08:19:57 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30C8JtFS5178062
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Jan 2023 08:19:56 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C0F658060;
-	Thu, 12 Jan 2023 08:19:55 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3BF258054;
-	Thu, 12 Jan 2023 08:19:53 +0000 (GMT)
-Received: from [9.160.176.15] (unknown [9.160.176.15])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 12 Jan 2023 08:19:53 +0000 (GMT)
-Message-ID: <ec43c1b9-8239-16c5-a4b5-5fe46970c9e4@linux.ibm.com>
-Date: Thu, 12 Jan 2023 10:19:52 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAD72107
+	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 10:14:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1673518459; x=1705054459;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=u1+Us1v7vAIWg661NR3lzpiichhOwsbWY0acStIamJs=;
+  b=VGvJCb+IanvgKEnPbCCuAPf/p0o7GwfuvbpptADqu0dDDn9RK3lSZ2ke
+   pJzz7CuuEWZFdjF3aUn9z7Dpz+nubfskySQo18qq0aQlEfmts6t6UMzi+
+   S7KF9O8K6V1d70xg3ppnAKYeBi1+YXcWlq3Da/carAuwIm9VUvPJ+ZnSj
+   0wMjn0CyxPuRzVqpfhTR7fZ1LioPvPdgcXIEQ8qrMS8EG8weeAUKKuofh
+   wAu4jR+B83g9DHnPPxD80PBjTIAt6jtbqIIRnca5wzrRp0d4uYpmNXVbF
+   +ZGkZ1oDPSjJ8ye2TSirMMKADLDGjH4XvL4rg9MxZt/NRRj29tIKJPg9H
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="350892161"
+X-IronPort-AV: E=Sophos;i="5.96,319,1665471600"; 
+   d="scan'208";a="350892161"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2023 02:14:18 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10586"; a="659722890"
+X-IronPort-AV: E=Sophos;i="5.96,319,1665471600"; 
+   d="scan'208";a="659722890"
+Received: from glieseu-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.52.1])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2023 02:14:16 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 9B74E109AF4; Thu, 12 Jan 2023 13:14:13 +0300 (+03)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 4/7] x86/tdx: Expand __tdx_hypercall() to handle more arguments
+Date: Thu, 12 Jan 2023 13:14:04 +0300
+Message-Id: <20230112101407.24327-5-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.38.2
+In-Reply-To: <20230112101407.24327-1-kirill.shutemov@linux.intel.com>
+References: <20230112101407.24327-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: SVSM Attestation and vTPM specification additions - v0.60
-Content-Language: en-US
-To: Tom Lendacky <thomas.lendacky@amd.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>,
-        James Bottomley <jejb@linux.ibm.com>
-References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-Cc: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0YuUjWDjGZ7tqbmN4OD16ONqAouH4-Hf
-X-Proofpoint-ORIG-GUID: 0YuUjWDjGZ7tqbmN4OD16ONqAouH4-Hf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2023-01-12_04,2023-01-11_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- adultscore=0 phishscore=0 suspectscore=0 mlxscore=0 priorityscore=1501
- impostorscore=0 spamscore=0 mlxlogscore=999 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301120056
+Content-Transfer-Encoding: 8bit
 
-Thanks Tom for these additions.
+So far __tdx_hypercall() only handles six arguments for VMCALL.
+Expanding it to six more register would allow to cover more use-cases
+like ReportFatalError() and Hyper-V hypercalls.
 
-On 10/01/2023 20:54, Tom Lendacky wrote:
-> Attached is an updated draft version of the SVSM specification with
-> added support for an attestation protocol and a vTPM protocol as well as
-> other miscellaneous changes (all identified by change bar). Please take
-> a look and reply with any feedback you may have.
-> 
+With all preparations in place, the expansion is pretty straight
+forward.
 
-Few comments/questions:
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/coco/tdx/tdcall.S | 35 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 5 deletions(-)
 
-Page 25: 7.1 SVSM_ATTEST_SERVICES
+diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
+index a9bb4cbb8197..5da06d1a9ba3 100644
+--- a/arch/x86/coco/tdx/tdcall.S
++++ b/arch/x86/coco/tdx/tdcall.S
+@@ -13,6 +13,12 @@
+ /*
+  * Bitmasks of exposed registers (with VMM).
+  */
++#define TDX_RDX		BIT(2)
++#define TDX_RBX		BIT(3)
++#define TDX_RSI		BIT(6)
++#define TDX_RDI		BIT(7)
++#define TDX_R8		BIT(8)
++#define TDX_R9		BIT(9)
+ #define TDX_R10		BIT(10)
+ #define TDX_R11		BIT(11)
+ #define TDX_R12		BIT(12)
+@@ -27,9 +33,9 @@
+  * details can be found in TDX GHCI specification, section
+  * titled "TDCALL [TDG.VP.VMCALL] leaf".
+  */
+-#define TDVMCALL_EXPOSE_REGS_MASK	( TDX_R10 | TDX_R11 | \
+-					  TDX_R12 | TDX_R13 | \
+-					  TDX_R14 | TDX_R15 )
++#define TDVMCALL_EXPOSE_REGS_MASK	\
++	( TDX_RDX | TDX_RBX | TDX_RSI | TDX_RDI | TDX_R8  | TDX_R9  | \
++	  TDX_R10 | TDX_R11 | TDX_R12 | TDX_R13 | TDX_R14 | TDX_R15 )
+ 
+ /*
+  * __tdx_module_call()  - Used by TDX guests to request services from
+@@ -124,6 +130,7 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	push %r14
+ 	push %r13
+ 	push %r12
++	push %rbx
+ 	push %rbp
+ 
+ 	/* Free RDI and RSI to be used as TDVMCALL arguments */
+@@ -131,12 +138,18 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	movq %rsi, %rbp
+ 
+ 	/* Copy hypercall registers from arg struct: */
++	movq TDX_HYPERCALL_r8(%rax),  %r8
++	movq TDX_HYPERCALL_r9(%rax),  %r9
+ 	movq TDX_HYPERCALL_r10(%rax), %r10
+ 	movq TDX_HYPERCALL_r11(%rax), %r11
+ 	movq TDX_HYPERCALL_r12(%rax), %r12
+ 	movq TDX_HYPERCALL_r13(%rax), %r13
+ 	movq TDX_HYPERCALL_r14(%rax), %r14
+ 	movq TDX_HYPERCALL_r15(%rax), %r15
++	movq TDX_HYPERCALL_rdi(%rax), %rdi
++	movq TDX_HYPERCALL_rsi(%rax), %rsi
++	movq TDX_HYPERCALL_rbx(%rax), %rbx
++	movq TDX_HYPERCALL_rdx(%rax), %rdx
+ 
+ 	push %rax
+ 
+@@ -178,12 +191,18 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	testq $TDX_HCALL_HAS_OUTPUT, %rbp
+ 	jz .Lout
+ 
++	movq %r8,  TDX_HYPERCALL_r8(%rax)
++	movq %r9,  TDX_HYPERCALL_r9(%rax)
+ 	movq %r10, TDX_HYPERCALL_r10(%rax)
+ 	movq %r11, TDX_HYPERCALL_r11(%rax)
+ 	movq %r12, TDX_HYPERCALL_r12(%rax)
+ 	movq %r13, TDX_HYPERCALL_r13(%rax)
+ 	movq %r14, TDX_HYPERCALL_r14(%rax)
+ 	movq %r15, TDX_HYPERCALL_r15(%rax)
++	movq %rdi, TDX_HYPERCALL_rdi(%rax)
++	movq %rsi, TDX_HYPERCALL_rsi(%rax)
++	movq %rbx, TDX_HYPERCALL_rbx(%rax)
++	movq %rdx, TDX_HYPERCALL_rdx(%rax)
+ .Lout:
+ 	/* TDVMCALL leaf return code is in R10 */
+ 	movq %r10, %rax
+@@ -191,14 +210,20 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	/*
+ 	 * Zero out registers exposed to the VMM to avoid speculative execution
+ 	 * with VMM-controlled values. This needs to include all registers
+-	 * present in TDVMCALL_EXPOSE_REGS_MASK (except R12-R15). R12-R15
+-	 * context will be restored.
++	 * present in TDVMCALL_EXPOSE_REGS_MASK, except RBX, and R12-R15 which
++	 * will be restored.
+ 	 */
++	xor %r8d,  %r8d
++	xor %r9d,  %r9d
+ 	xor %r10d, %r10d
+ 	xor %r11d, %r11d
++	xor %rdi,  %rdi
++	xor %rsi,  %rsi
++	xor %rdx,  %rdx
+ 
+ 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
+ 	pop %rbp
++	pop %rbx
+ 	pop %r12
+ 	pop %r13
+ 	pop %r14
+-- 
+2.38.2
 
-1. Should we add two fields in Table 11 for certs_addr and certs_len? If
-certs_len input is > 0, then SVSM will perform guest_ext_request and
-retrieve the host/VMM certs into certs_addr.  Provided certs_len must be
-4KB-aligned.  Not sure about certs_addr.
-
-If the size of the certs exceeds the size of the supplied certs buffer,
-R8 will be set to the size of the certs (in bytes) and the call will
-return SVSM_ERR_INVALID_PARAMETER.
-
-2. Table 11: The 'Attestation report buffer gPA': should have enough
-space to hold the resulting SNP attestation report (0x500 bytes).
-
-(I assume the implementation will ask the PSP to generate the report
-into an SVSM-HV shared page, and then copy the result to the
-caller-provided buffer in guest private memory.  So the caller doesn't
-need to worry about page alignment/crossing?)
-
-3. Consider stating that the SNP attestation report is always generated
-with MSG_REPORT_REQ.VMPL=0.
-
-4. Services Manifest (page 26): Can we require that the same SVSM source
-code will produce the same (binary) manifest buffer (in different VMs)?
-For example, at which order do the entries appear? I think James was
-aiming at durable/repeatable attestations.
-
-
-
-Page 28: vTPM Protocol
-
-5. Will the SVSM update any PCRs on its own? For example, will it
-measure the content of OVMF into PCR0?  Or are relying on the SNP
-launch-update measurement (which currently includes both SVSM and OVMF)
-to attest that part of the guest?
-
-
--Dov
