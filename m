@@ -1,39 +1,39 @@
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671B2105
-	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 20:47:33 +0000 (UTC)
-Received: by mail-io1-f42.google.com with SMTP id v65so5347322ioe.4
-        for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 12:47:33 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085908F6F
+	for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 23:45:21 +0000 (UTC)
+Received: by mail-io1-f46.google.com with SMTP id e129so9825765iof.3
+        for <linux-coco@lists.linux.dev>; Thu, 12 Jan 2023 15:45:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y33TCnC4aTVsOPz+eKs6ANS+v42Ifz3XrQ+jwhHqUTI=;
-        b=ObYOd2UTQhbRFEokIARxDLMWIZ/pno5W+IFLwElvD2F6//NiJJoEpB18gOEPMVZNF2
-         S95GWvK80yfBIIrvAcKrUJLPCmVFsFbymPwzQxMhXeY8/XflVzhYSqOFCD/bl+MQBhXF
-         dv5CELBCQytLVbNtDkxivMNgdwcZGNpIiQwWqfdq7svmRjM03vxVLuRYt+/gZGm21dA2
-         w8Xj3ZRntXkS7N9z83dzx9a5W1CNlosOWm3ckTaJLwfT85HwXa4xod5+TxMqzXjT5p/5
-         vfJfVzS/FaLpK/iehVsVhdsNhAc5IQdCbUPkvGBjalKJp4tpoqR9NYP2JuflaVSWvOJ6
-         de1A==
+        bh=Dou/7l5Ln5099e29YCInSWiRlreF7QPY4XMYAJnIwpA=;
+        b=j/HFWgGEAvEwD+g+/nPf/AGj1VTfBLge1N0MCvoFt2RTJT9jDx2TdBYk0dRii9clxT
+         KjQkNi0jkzWusBc34juoC/Oyh+66mJGlCrO8Y0RRvYrAYsCphiDn/9kpwlKhZYrJn7CW
+         +THxi6QLRgLD37Jt+OWnEEQgqCmMHusby3T8lH3CQ1BjBJzs69WX0UM0pzYw3Qq1uERh
+         mk3v716GzJitYtYIhFZDFQlEevDjFyF9OPx2MjvME8UFQ82Qyoz0gHXbhGBxr4Sj3PG0
+         0SPZbH+9r5kB/bPNVi0w3xvnmgwj9b0xTpGRPL5OXoNfnr5itZDxB2IMupsQQG/2JOai
+         LO8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Y33TCnC4aTVsOPz+eKs6ANS+v42Ifz3XrQ+jwhHqUTI=;
-        b=szWvlXF6dR5GY+b8gUBofS/8nK2UOgJiEesD0P5Y7Q4t6j141+8MGW0j/5e0kTXx2R
-         5f1f6R4ICQhKBaVbH/yTFEQDoTxflopioF3s4/Z3H1O8qjErBAp1yxMVSler0oFX4a3/
-         FoucvxktwDKfR4dp6gEnaz6m3+PeQ06BhR8RKaazarkTJ5Ks5NQFYk4MFl3PBsGk7jUb
-         sNv3YtrNeTVli6si45L8cwr91B6AxGjakayH/6s60SCzag3+pGALaqQcRMM8f7fW1eB/
-         Y3bKy9DZFrrpepTDLtDs2GBCC5yKk4rcSzmMBfuHKKdFOith12biq1T3cUuGNIAMUTxS
-         tPlQ==
-X-Gm-Message-State: AFqh2kpcm4ywzif2SRtIxnyMARcKmg+uTU4jdA1CO83mkXOgJ/u8L5p+
-	3ZLiscgdU4TCaaC5S8IVYOAkZqzedbRgf+rHtgpSxw==
-X-Google-Smtp-Source: AMrXdXuXcHHtAB+9TKlwl92wMAzc2QxA0XGfO5saf7T5G93StO021s1YFWnMHPVoFaiDG0eY3yPYnB6upaH+98os8S8=
-X-Received: by 2002:a05:6638:388:b0:38a:89cc:20bc with SMTP id
- y8-20020a056638038800b0038a89cc20bcmr8097617jap.249.1673556452457; Thu, 12
- Jan 2023 12:47:32 -0800 (PST)
+        bh=Dou/7l5Ln5099e29YCInSWiRlreF7QPY4XMYAJnIwpA=;
+        b=Orpwe6wKwNAEu/hKqgJ5h72X9RoLE5Q6iTIQ3En4AFJn4+OnDIP1Glv+9xEzc7Yegy
+         sNMwKYsysrZj8Lz5vVwFNpoKV1U0RHBSPgi1sYWO0rZqz34X2xXkX6kAz7zcoakxDsTa
+         xLp4Cd2J0Vm6au5krEv8f1qzfuUTrNJ3ISC1He3l/6omFQcPV+gPl4oL5JNoM2ZVorBZ
+         dz0oaYjD2e5kf2OiGiuDPewI4a5RLkJ85wFFU74ZXknfmchSUBsin2Wz0TY8/2WCn+Sb
+         3X1WcLuCZxFqwmztTRYXM9ckslZNRiBkrSqBpiggQ0Lr+kn2b4wTJ1hCAnjdEy282+q1
+         edIA==
+X-Gm-Message-State: AFqh2kp+zbsICPKhcd5Zrboe2cNoULUgcu8YxyDI5F9PZYydFDxxtllc
+	c+UnmaYFkAr9Nm2Q39bjaoLc1Pcnk7Eo7YcQekgkfQ==
+X-Google-Smtp-Source: AMrXdXtNGy545nKUKNMgBBir6F27PvipqWlle6iEo3t57srREuXvvq53TMY9MHcQip1/CPMXN9KtpFSRNQfCzhgayDQ=
+X-Received: by 2002:a6b:7a0a:0:b0:6e9:b3db:b5ce with SMTP id
+ h10-20020a6b7a0a000000b006e9b3dbb5cemr7202840iom.179.1673567120682; Thu, 12
+ Jan 2023 15:45:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -43,8 +43,8 @@ MIME-Version: 1.0
 References: <20221214194056.161492-1-michael.roth@amd.com> <20221214194056.161492-30-michael.roth@amd.com>
 In-Reply-To: <20221214194056.161492-30-michael.roth@amd.com>
 From: Alper Gun <alpergun@google.com>
-Date: Thu, 12 Jan 2023 12:47:21 -0800
-Message-ID: <CABpDEum=-3_izZJYzQb4B2ef699f2R+SDWC-L2Ca-rPE5-ekpw@mail.gmail.com>
+Date: Thu, 12 Jan 2023 15:45:09 -0800
+Message-ID: <CABpDEu=KTHp8Lp76JfzCdNZUAUj7FyYbfUHBTxGB2OGgBR1x5A@mail.gmail.com>
 Subject: Re: [PATCH RFC v7 29/64] crypto: ccp: Handle the legacy SEV command
  when SNP is enabled
 To: Michael Roth <michael.roth@amd.com>
@@ -278,10 +278,6 @@ On Wed, Dec 14, 2022 at 11:54 AM Michael Roth <michael.roth@amd.com> wrote:
 > +       if (from_fw && sev_legacy_cmd_buf_writable(cmd)) {
 > +               if (rmp_mark_pages_shared(__pa(cmd_buf), 1))
 > +                       return -EFAULT;
-
-If we return here, we will skip calling unmap_firmware_writeable and
-we will leak some pages in firmware state.
-
 > +
 > +               /* No need to go further if firmware failed to execute command. */
 > +               if (fw_err)
@@ -391,18 +387,6 @@ we will leak some pages in firmware state.
 > +       if (to_fw && sev_legacy_cmd_buf_writable(cmd)) {
 > +               if (rmp_mark_pages_firmware(__pa(cmd_buf), 1, true))
 > +                       return -EFAULT;
-
-This function moves two separate pages to firmware state. First
-calling map_firmware_writeable and second calling
-rmp_mark_pages_firmware for cmd_buf.
-In case rmp_mark_pages_firmware fails for cmd_buf, the page which has
-already moved to firmware state in map_firmware_writeable should be
-reclaimed.
-This is a problem especially if we leak a guest owned page in firmware
-state. Since this is used only by legacy SEV VMs, these leaked pages
-will never be reclaimed back when destroying these VMs.
-
->
 > +       }
 > +
 > +       return 0;
@@ -459,6 +443,9 @@ will never be reclaimed back when destroying these VMs.
 > +                * SNP firmware is in the INIT state.
 > +                */
 > +               if (need_firmware_copy(cmd) && snp_aware_copy_to_firmware(cmd, sev->cmd_buf))
+I believe this should be cmd_buf instead of sev->cmd_buf.
+snp_aware_copy_to_firmware(cmd, cmd_buf)
+
 > +                       return -EFAULT;
 > +       } else {
 > +               cmd_buf = sev->cmd_buf;
