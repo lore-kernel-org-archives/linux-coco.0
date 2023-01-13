@@ -1,53 +1,49 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355DB33E7
-	for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 11:50:14 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354BF880C
+	for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 14:16:55 +0000 (UTC)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 54FCE606CE;
-	Fri, 13 Jan 2023 11:50:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1673610612; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8aMjVzaGZHOiEWYgjfZZNCG7lVnlYfSJz9DtLbjDP0U=;
-	b=BTeba3pyv+Otn8sJ/FsFxceX5mY/KrvfF4IJFD41f3hQbHHT2XFZPpu2wVx4QtMRL0F6OF
-	V41rJnFBdPvEI/MQby0iC0cA1bihMe/3sPQRrszIB539W1eILBZUHNpBVDdCWszszZYi+p
-	kyOP01rfo0U4dwVk9ZisXW+Xzy0ns2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1673610612;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8aMjVzaGZHOiEWYgjfZZNCG7lVnlYfSJz9DtLbjDP0U=;
-	b=a/freltUPwHF9m88vpKI3bkgBE3/GUd12vKJfbmJ/T6UOcmxnSsh0Uj190ToboMlBMfNPt
-	LUPPH+EbFZ2Cp4Dg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 364C71358A;
-	Fri, 13 Jan 2023 11:50:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id AOH5C3RFwWP3QAAAMHmgww
-	(envelope-from <nstange@suse.de>); Fri, 13 Jan 2023 11:50:12 +0000
-From: Nicolai Stange <nstange@suse.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-  "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
-Subject: Re: SVSM Attestation and vTPM specification additions - v0.60
-References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
-Date: Fri, 13 Jan 2023 12:50:11 +0100
-In-Reply-To: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com> (Tom Lendacky's
-	message of "Tue, 10 Jan 2023 12:54:27 -0600")
-Message-ID: <87edryu00c.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5D5741EC04C1;
+	Fri, 13 Jan 2023 15:16:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1673619410;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=XYtqfhZKFK7PaSqp9fuWWHAp6AYDAbDdbgbeeBoQDPw=;
+	b=nYmdzgEuSjI5cCOeBGcx/PixXKD2yIek0jfY+hJjIFI4n5nwUrIuJrZNqewFOMW0YJBonI
+	cV9hqB9im51KA+msRMViQta8N3rmOPw5Gz0A4II5943TZ4R6nBUmwJZn3noP2dPeST1jHp
+	Pa1jJq/Qg1X5pvW7g+YHyx0RaQ4O4Rk=
+Date: Fri, 13 Jan 2023 15:16:46 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+	ashish.kalra@amd.com, harald@profian.com,
+	Nikunj A Dadhania <nikunj@amd.com>, chao.p.peng@linux.intel.com
+Subject: Re: [PATCH RFC v7 03/64] KVM: SVM: Advertise private memory support
+ to KVM
+Message-ID: <Y8FnzpJyPMYDl0CA@zn.tnic>
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-4-michael.roth@amd.com>
+ <Y6Xd0ruz3kMij/5F@zn.tnic>
+ <20230105021419.rs23nfq44rv64tsd@amd.com>
+ <Y7bnE5bTUb6fQiX/@zn.tnic>
+ <20230105181741.q6mq37gvcjk5nbjg@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,49 +51,23 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20230105181741.q6mq37gvcjk5nbjg@amd.com>
 
-Hi Tom,
+On Thu, Jan 05, 2023 at 12:17:41PM -0600, Michael Roth wrote:
+> In the case of SEV, it would still be up to userspace whether or not it
+> actually wants to make use of UPM functionality like KVM_SET_MEMORY_ATTRIBUTES
+> and private memslots. Otherwise, to maintain backward-compatibility, 
+> userspace can do things as it has always done and continue running SEV without
+> relying on private memslots/KVM_SET_MEMORY_ATTRIBUTES or any of the new ioctls.
+> 
+> For SNP however it is required that userspace uses/implements UPM
+> functionality.
 
-Tom Lendacky <thomas.lendacky@amd.com> writes:
+Makes sense to me.
 
-> Please take a look and reply with any feedback you may have.
+-- 
+Regards/Gruss,
+    Boris.
 
-Perhaps I simply missed it, but the available SVSM_VTPM_CMD response
-buffer size seems to remain kind of unspecified. That is, the proposal
-from [1] was to just require a complete page for the buffer, but I can't
-find that explicitly stated anywhere (except for the required alignment
-of %rcx giving a hint).
-
-
-For the table on p. 28 in sec. 8.1 "SVSM_VTPM_QUERY Call", the
-"Supported vTPM features" are meant get returned in %rdx, not %rcx, I
-think.
-
-
-And finally a question re the addition on p.9 ("Scope of the document"),
-which reads as
- "Items measured at VMLP1+
-  o Firmware binary
- "
-
-In light of the sentence immediately preceeding the above and explicitly
-stating that the svsm would get measured as part of the initial image,
-does this conversely imply that the firmware binary would typically not
-get measured as part of the initial guest image? I.e. that it would get
-loaded with PAGE_TYPE_UNMEASURED? If so the above could be read as if
-the firmware was supposed to measure itself at VMPL1. I think that's not
-what's being meant here, but the wording is a bit misleading IMO.
-
-Thanks!
-
-Nicolai
-
-[1] https://lore.kernel.org/linux-coco/b488a79617beed8913df61186e8e263c40f2=
-330b.camel@linux.ibm.com/
-
---=20
-SUSE Software Solutions Germany GmbH, Frankenstra=C3=9Fe 146, 90461 N=C3=BC=
-rnberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-(HRB 36809, AG N=C3=BCrnberg)
+https://people.kernel.org/tglx/notes-about-netiquette
