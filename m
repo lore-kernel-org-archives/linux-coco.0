@@ -1,65 +1,103 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7AA2115
-	for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 18:46:30 +0000 (UTC)
-Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0F6771EC04C1;
-	Fri, 13 Jan 2023 19:46:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1673635588;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=KRD3E8588u2tezl2sQYKK6rlbF2F4B2OiI46B0gWdS8=;
-	b=U2zfdZTum+2P6uMM4n6GHE4xnTO+4sYvHQBkSnFhinj1QhDfWL+E7/h45+S9I/O8MWXEl/
-	Vkur79isKnnRXyK/+y7DJiKOa41dy1KzpXCzdZqzDrdwUDgWV2nYD87K13d0dSgrJr3xrf
-	+zSgtgag+kFcMUCAylS4Qf7fa3inf6M=
-Date: Fri, 13 Jan 2023 19:46:27 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
-	ashish.kalra@amd.com, harald@profian.com,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	"Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
-Subject: Re: [PATCH RFC v7 08/64] KVM: Move
- kvm_for_each_memslot_in_hva_range() to be used in SVM
-Message-ID: <Y8GnA622oqQ7ihsl@zn.tnic>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-9-michael.roth@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528C52115
+	for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 18:53:10 +0000 (UTC)
+Received: by mail-pj1-f44.google.com with SMTP id gz9-20020a17090b0ec900b002290bda1b07so1841169pjb.1
+        for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 10:53:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=nX0c1e72RVwINfSjcTE63ePQA4G0ZSXJ7PPfsTUue9k=;
+        b=es+B8M3PzS8zElJciRPCR83Qo3FCm5ZCrVjnA7dzitarF1A/9HdpRSj3ez2DVSlqj4
+         CbrH+f2sHAPsRYUI+U+ZA3EhAqpTdRA+Gl2qKRO291nktBSDwz4UDWoxiL4ea15QizeK
+         HmxXz75f2pC8lAFxwS9p8je6eX5DkVZWQ5cs7U1ZMtEdXvwCuci6lmqGMxlmtFm6iKuZ
+         eUoW831HheZ3NF8FHdkNqOYqZeZ/c3RajYxtBgjqe6suFTMekxcbvL/zzDHyCVGD0WrU
+         tSkr+R8iU9R2C1ETdbOqy+dlC2TdQZsQUYAcWHqTt/8MMADdTLg8dOWkDqzdD7vtUpe/
+         y34A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nX0c1e72RVwINfSjcTE63ePQA4G0ZSXJ7PPfsTUue9k=;
+        b=Yo5DsJpjBQ+hlnVP4UJX5JsXozp8Ddj6FzfoL162yhKZltynr82s9USNQFK0PYu1hY
+         6N/jzwcbSgCG/UXaypFjw07R0bxy++waD0ccrJ+J+VMjXtg5Kbr64wTaWCBSxHKuqUwD
+         AjX8WcgwHDcKFIL6vuQeIJF8lMTNm9JeVwoiMEgfK0fFqoeviUt9tXzFzaSDcnJas1NI
+         5Y3HkwEOtxD51E/RZKDB2B4kezMIm3/lEj1Zg2iY0mBJuXtFSoqu/7Qgv7UsX7u1zRDZ
+         +yYObdn+3BbxNsYgNWW7KI0c5UP4tJUVsvq4JZgmtzMyfAAu9JNRk9fBG0akWp7y55mO
+         LakA==
+X-Gm-Message-State: AFqh2krI7V193An2BNx0RsZM4IUHeWv5QoQZrkAwmQrB3kKQObz1UyB4
+	b3vQY9gAxC3Xowlum+1Fzlixq/5lyjFVtU8W4HuFcQ==
+X-Google-Smtp-Source: AMrXdXugab51lW2zCA7pIfn4HH7ZxC4FfKeLKFxMb5M4BZvNTyy594B0xJgRj+Qww1/IDkTNqIScVTYpijX1fXFNTXI=
+X-Received: by 2002:a17:902:c78a:b0:193:2d08:d6e4 with SMTP id
+ w10-20020a170902c78a00b001932d08d6e4mr41869pla.97.1673635989614; Fri, 13 Jan
+ 2023 10:53:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20221214194056.161492-9-michael.roth@amd.com>
+References: <Y8AbnM0cnKfXXW23@redhat.com> <Y8GTXpfqlOe53cEr@suse.de> <Y8Gi0KLj5JbhCqBE@redhat.com>
+In-Reply-To: <Y8Gi0KLj5JbhCqBE@redhat.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Fri, 13 Jan 2023 10:52:57 -0800
+Message-ID: <CAAH4kHb=3nrAMR3GvpvyG0y__-USmZgV=FBSqtecw+ECXXoqpQ@mail.gmail.com>
+Subject: Re: SVSM initiated early attestation / guest secrets injection
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>, linux-coco@lists.linux.dev, 
+	amd-sev-snp@lists.suse.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Dec 14, 2022 at 01:40:00PM -0600, Michael Roth wrote:
-> From: Nikunj A Dadhania <nikunj@amd.com>
-> 
-> Move the macro to kvm_host.h and make if visible for SVM to use.
+>
+> Aside from what James' says, one option is to lockdown the OVMF and
+> secureboot chain. eg OVMF built with SecureBoot=on, and instead of
+> having the generic Microsoft keys enrolled, have a distro specific
+> key enrolled. That distro key would have to be one that is only
+> used for signing UKIs (Unified Kernel Images), and the initrd embedded
+> in the UKI would need to be designed abort if it finds the disk is
+> not encrypted.
+>
 
-s/if/it/
+IIUC, the disk doesn't need to be encrypted, it needs integrity. We
+can't treat booting to an encrypted disk as booting to the expected
+encrypted disk.
+Everything still depends on rooting your core secrets to your
+workload's identity. This relies on an integrity-protected initrd that
+has its root hash measured as part of the kernel_cmdline.
+
+The secret-holding server should only ever release secrets encrypted
+by an attested vTPM binary (SVSM-generated public key) that has sealed
+the secret to the workload PCRs.
+This kicks the problem to the server and VM having pre-agreed on
+what's the expected combination of OVMF and SVSM. So yes the vTPM gets
+its core secret transferred to it before the PCRs get set to the
+expected values, but that's part of the attestation dance with the
+initial registration with the secret-holding server.
+
+> The main challenge here is that you don't have a single OVMF anymore.
+> You have many OVMFs, one for each distinct set of distro SecureBoot
+> keys, and the attestation server has to decide which one it wants
+> based on the distro the VM is expected to use.
+>
+> If we don't do any of this, then the early attestation and secret
+> fetch would have to be limited to /only/ the secret for unlocking
+> the vTPM state, and not injected into the guest OS. The OS would
+> have to do everything else with the vTPM and PCR sealed data to
+> achieve the same end results of only getting access to secrets if
+> the vTPM sees the set of PCR values corresponding to the desired
+> UKI secureboot keys.
+>
+> Ultimately the latter is probably the more common case and more
+> flexible.
+>
+
+I don't think there can ever be a one-size-fits all base measurement
+to seal secrets to, since there's always the final variable of the
+workload.
+
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+-Dionna Glaze, PhD (she/her)
