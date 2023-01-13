@@ -1,103 +1,158 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528C52115
-	for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 18:53:10 +0000 (UTC)
-Received: by mail-pj1-f44.google.com with SMTP id gz9-20020a17090b0ec900b002290bda1b07so1841169pjb.1
-        for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 10:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nX0c1e72RVwINfSjcTE63ePQA4G0ZSXJ7PPfsTUue9k=;
-        b=es+B8M3PzS8zElJciRPCR83Qo3FCm5ZCrVjnA7dzitarF1A/9HdpRSj3ez2DVSlqj4
-         CbrH+f2sHAPsRYUI+U+ZA3EhAqpTdRA+Gl2qKRO291nktBSDwz4UDWoxiL4ea15QizeK
-         HmxXz75f2pC8lAFxwS9p8je6eX5DkVZWQ5cs7U1ZMtEdXvwCuci6lmqGMxlmtFm6iKuZ
-         eUoW831HheZ3NF8FHdkNqOYqZeZ/c3RajYxtBgjqe6suFTMekxcbvL/zzDHyCVGD0WrU
-         tSkr+R8iU9R2C1ETdbOqy+dlC2TdQZsQUYAcWHqTt/8MMADdTLg8dOWkDqzdD7vtUpe/
-         y34A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nX0c1e72RVwINfSjcTE63ePQA4G0ZSXJ7PPfsTUue9k=;
-        b=Yo5DsJpjBQ+hlnVP4UJX5JsXozp8Ddj6FzfoL162yhKZltynr82s9USNQFK0PYu1hY
-         6N/jzwcbSgCG/UXaypFjw07R0bxy++waD0ccrJ+J+VMjXtg5Kbr64wTaWCBSxHKuqUwD
-         AjX8WcgwHDcKFIL6vuQeIJF8lMTNm9JeVwoiMEgfK0fFqoeviUt9tXzFzaSDcnJas1NI
-         5Y3HkwEOtxD51E/RZKDB2B4kezMIm3/lEj1Zg2iY0mBJuXtFSoqu/7Qgv7UsX7u1zRDZ
-         +yYObdn+3BbxNsYgNWW7KI0c5UP4tJUVsvq4JZgmtzMyfAAu9JNRk9fBG0akWp7y55mO
-         LakA==
-X-Gm-Message-State: AFqh2krI7V193An2BNx0RsZM4IUHeWv5QoQZrkAwmQrB3kKQObz1UyB4
-	b3vQY9gAxC3Xowlum+1Fzlixq/5lyjFVtU8W4HuFcQ==
-X-Google-Smtp-Source: AMrXdXugab51lW2zCA7pIfn4HH7ZxC4FfKeLKFxMb5M4BZvNTyy594B0xJgRj+Qww1/IDkTNqIScVTYpijX1fXFNTXI=
-X-Received: by 2002:a17:902:c78a:b0:193:2d08:d6e4 with SMTP id
- w10-20020a170902c78a00b001932d08d6e4mr41869pla.97.1673635989614; Fri, 13 Jan
- 2023 10:53:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD82F2115
+	for <linux-coco@lists.linux.dev>; Fri, 13 Jan 2023 19:11:22 +0000 (UTC)
+Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7BF711EC0518;
+	Fri, 13 Jan 2023 20:11:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1673637080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=uSenXaLo6u2BuPearjH6XYMPmRVbj/fPB2X9geCCSBQ=;
+	b=N4v11qcO3FHjovvV1c6EaFU2xeyguJlnWDJSyC8w+rf7M4BzksU9+WdDquv+1mHSgLIrOU
+	NqaFofzSkjTrLynioeH/8a5rGjWs2RFNEZSKoOHUAp0OTc4JkKP5IlN7DeXV3OGoQIjbsZ
+	duvJXqWfKJ71FJkX8JawNxzGZ60iono=
+Date: Fri, 13 Jan 2023 20:11:14 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+	ashish.kalra@amd.com, harald@profian.com,
+	Vishal Annapurve <vannapurve@google.com>
+Subject: Re: [PATCH RFC v7 10/64] KVM: SEV: Populate private memory fd during
+ LAUNCH_UPDATE_DATA
+Message-ID: <Y8Gs0l1k4L96dP5V@zn.tnic>
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-11-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <Y8AbnM0cnKfXXW23@redhat.com> <Y8GTXpfqlOe53cEr@suse.de> <Y8Gi0KLj5JbhCqBE@redhat.com>
-In-Reply-To: <Y8Gi0KLj5JbhCqBE@redhat.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 13 Jan 2023 10:52:57 -0800
-Message-ID: <CAAH4kHb=3nrAMR3GvpvyG0y__-USmZgV=FBSqtecw+ECXXoqpQ@mail.gmail.com>
-Subject: Re: SVSM initiated early attestation / guest secrets injection
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>, linux-coco@lists.linux.dev, 
-	amd-sev-snp@lists.suse.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20221214194056.161492-11-michael.roth@amd.com>
 
->
-> Aside from what James' says, one option is to lockdown the OVMF and
-> secureboot chain. eg OVMF built with SecureBoot=on, and instead of
-> having the generic Microsoft keys enrolled, have a distro specific
-> key enrolled. That distro key would have to be one that is only
-> used for signing UKIs (Unified Kernel Images), and the initrd embedded
-> in the UKI would need to be designed abort if it finds the disk is
-> not encrypted.
->
+On Wed, Dec 14, 2022 at 01:40:02PM -0600, Michael Roth wrote:
+> From: Vishal Annapurve <vannapurve@google.com>
+> 
+> This change adds handling of HVA ranges to copy contents
 
-IIUC, the disk doesn't need to be encrypted, it needs integrity. We
-can't treat booting to an encrypted disk as booting to the expected
-encrypted disk.
-Everything still depends on rooting your core secrets to your
-workload's identity. This relies on an integrity-protected initrd that
-has its root hash measured as part of the kernel_cmdline.
+s/This change adds handling of/Handle/
 
-The secret-holding server should only ever release secrets encrypted
-by an attested vTPM binary (SVSM-generated public key) that has sealed
-the secret to the workload PCRs.
-This kicks the problem to the server and VM having pre-agreed on
-what's the expected combination of OVMF and SVSM. So yes the vTPM gets
-its core secret transferred to it before the PCRs get set to the
-expected values, but that's part of the attestation dance with the
-initial registration with the secret-holding server.
+> +static int sev_launch_update_priv_gfn_handler(struct kvm *kvm,
+> +					      struct kvm_gfn_range *range,
+> +					      struct kvm_sev_cmd *argp)
+> +{
+> +	struct sev_data_launch_update_data data;
+> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> +	gfn_t gfn;
+> +	kvm_pfn_t pfn;
+> +	struct kvm_memory_slot *memslot = range->slot;
+> +	int ret = 0;
+> +
+> +	data.reserved = 0;
+> +	data.handle = sev->handle;
+> +
+> +	for (gfn = range->start; gfn < range->end; gfn++) {
+> +		int order;
+> +		void *kvaddr;
+> +
+> +		ret = kvm_restricted_mem_get_pfn(memslot, gfn, &pfn, &order);
+> +		if (ret)
+> +			return ret;
+> +
+> +		kvaddr = pfn_to_kaddr(pfn);
+> +		if (!virt_addr_valid(kvaddr)) {
+> +			pr_err("Invalid kvaddr 0x%llx\n", (uint64_t)kvaddr);
 
-> The main challenge here is that you don't have a single OVMF anymore.
-> You have many OVMFs, one for each distinct set of distro SecureBoot
-> keys, and the attestation server has to decide which one it wants
-> based on the distro the VM is expected to use.
->
-> If we don't do any of this, then the early attestation and secret
-> fetch would have to be limited to /only/ the secret for unlocking
-> the vTPM state, and not injected into the guest OS. The OS would
-> have to do everything else with the vTPM and PCR sealed data to
-> achieve the same end results of only getting access to secrets if
-> the vTPM sees the set of PCR values corresponding to the desired
-> UKI secureboot keys.
->
-> Ultimately the latter is probably the more common case and more
-> flexible.
->
+Is that some debugging help leftover or what is that printk issued for?
 
-I don't think there can ever be a one-size-fits all base measurement
-to seal secrets to, since there's always the final variable of the
-workload.
+> +			ret = -EINVAL;
+> +			goto e_ret;
+> +		}
+> +
+> +		ret = kvm_read_guest_page(kvm, gfn, kvaddr, 0, PAGE_SIZE);
+> +		if (ret) {
+> +			pr_err("guest read failed 0x%x\n", ret);
+> +			goto e_ret;
+> +		}
+> +
+> +		if (!this_cpu_has(X86_FEATURE_SME_COHERENT))
 
+check_for_deprecated_apis: WARNING: arch/x86/kvm/svm/sev.c:602: Do not use this_cpu_has() - use cpu_feature_enabled() instead.
+
+> +			clflush_cache_range(kvaddr, PAGE_SIZE);
+> +
+> +		data.len = PAGE_SIZE;
+> +		data.address = __sme_set(pfn << PAGE_SHIFT);
+> +		ret = sev_issue_cmd(kvm, SEV_CMD_LAUNCH_UPDATE_DATA, &data, &argp->error);
+> +		if (ret)
+> +			goto e_ret;
+> +		kvm_release_pfn_clean(pfn);
+> +	}
+> +	kvm_vm_set_region_attr(kvm, range->start, range->end,
+> +		true /* priv_attr */);
+
+No need to break that line.
+
+> +
+> +e_ret:
+> +	return ret;
+> +}
+> +
+> +static int sev_launch_update_gfn_handler(struct kvm *kvm, struct kvm_gfn_range *range,
+> +					 void *data)
+> +{
+> +	struct kvm_sev_cmd *argp = (struct kvm_sev_cmd *)data;
+> +
+> +	if (kvm_slot_can_be_private(range->slot))
+> +		return sev_launch_update_priv_gfn_handler(kvm, range, argp);
+> +
+> +	return sev_launch_update_shared_gfn_handler(kvm, range, argp);
+> +}
+> +
+> +static int sev_launch_update_data(struct kvm *kvm,
+> +		struct kvm_sev_cmd *argp)
+> +{
+> +	struct kvm_sev_launch_update_data params;
+> +
+> +	if (!sev_guest(kvm))
+> +		return -ENOTTY;
+> +
+> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
+> +		return -EFAULT;
+
+Not gonna check those user-supplied values for sanity?
+
+Or is this check
+
+        if (WARN_ON_ONCE(hva_end <= hva_start))
+                return -EINVAL;
+
+in kvm_vm_do_hva_range_op() enough?
+
+Thx.
 
 -- 
--Dionna Glaze, PhD (she/her)
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
