@@ -1,97 +1,160 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2047.outbound.protection.outlook.com [40.107.223.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A81A8BE9
-	for <linux-coco@lists.linux.dev>; Sat, 14 Jan 2023 18:22:53 +0000 (UTC)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30EGZ2UE030654;
-	Sat, 14 Jan 2023 18:22:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=Uw1wTkZiktg0k17F5uplC2ASZKB3ZZ/3Txgf+pL6RLE=;
- b=WXtCrwwPW2CxZ9GQhgJJ1mPAy3XF0kZZerEimItCbABQHJyl/yNOOH3k9vV0VRGiwkwY
- ay07+LUdlsKt6NtTNSsFVGdHzbCdxWGzo+DwXXCOAg3zOWSWzEVt51kXngg8Y2FExK3v
- Klfxrcv60NkGiryppuWvVIyruFnSFK8HFB/Kkae1LxZ8uu7kxiBciL573woXElXZqMmS
- TZPBnfB2GNjpE9A/VFrQn/BCjg+r3jIzgjUUMvmiEuSpultp2MpjL6sSVyk2tyoga+Zn
- o9ISKFOe+JsKXAxKmLRBm+7bqJ1qsyGql6BAT/67NIT0qxAmbfdiZl2Pkd2Qv9Dso1ty 6A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n401s973b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 14 Jan 2023 18:22:46 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30EIKQiQ034056;
-	Sat, 14 Jan 2023 18:22:45 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3n401s972y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 14 Jan 2023 18:22:45 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30EHE5FC018337;
-	Sat, 14 Jan 2023 18:22:45 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
-	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3n3m16krmh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 14 Jan 2023 18:22:45 +0000
-Received: from b03ledav004.gho.boulder.ibm.com ([9.17.130.235])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30EIMhxr41746790
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 14 Jan 2023 18:22:44 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE1F17805E;
-	Sat, 14 Jan 2023 20:02:45 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 103847805C;
-	Sat, 14 Jan 2023 20:02:44 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.128.24])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Sat, 14 Jan 2023 20:02:44 +0000 (GMT)
-Message-ID: <45342f9ca1170817b2f741b35a5b0b2c85dc72c6.camel@linux.ibm.com>
-Subject: Re: SVSM initiated early attestation / guest secrets injection
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>,
-        "Daniel P."
-	=?ISO-8859-1?Q?Berrang=E9?=
-	 <berrange@redhat.com>
-Cc: linux-coco@lists.linux.dev, amd-sev-snp@lists.suse.com
-Date: Sat, 14 Jan 2023 13:22:41 -0500
-In-Reply-To: <Y8Lhd/H4yGTsOM/+@suse.de>
-References: <Y8AbnM0cnKfXXW23@redhat.com> <Y8GTXpfqlOe53cEr@suse.de>
-	 <Y8Gi0KLj5JbhCqBE@redhat.com> <Y8Lhd/H4yGTsOM/+@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D27E1363
+	for <linux-coco@lists.linux.dev>; Mon, 16 Jan 2023 07:56:29 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dpVo7iopzZdeeAyl6FVbMXQPU0wDD7rORdRTbyaGoUSUwVNDEKQEwW/dOG7gY6FmudSIZBfl9yj+4oHvpr0g4h6Qsy/OzTWUA1O5139WV4v2pLmijBBHWxNyYpYKotTaskqxEbICQPGyUth8C+tuRr+tObU2C8NeVN0kjYqsxPN77pq+bZiLd2r2bbXwxdGygUS/J8MIyVxc6s6EOjqtVqOKWvNNHkZ22OiLn9dKTMYsAPwCiU5Sg28VxX/XoZKdfXyhRcwV8jPrdwHFqPkKVByMghpn1Nijj0SQrzJXF2IPF6xTCyb0h3r1EolX4r/FOjPFvlFvRSikwBhrr4lyOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NW6njqAsEPYeRJh2kj8dx8+Rq3/ng4T35lcB/RbAxoE=;
+ b=Ep31T8eKt1mqmUepPMLVPCZ6Pp+Az6CRCx4gqtvjZXMxREMQSgJa3sZQD22DXwAKAxFbJshrV1Tr3/wN7PEz/LYMtjMnrOTVNAu1RmfvOfKEzZfOpviXspjSLxBLjv2xUEUQbd4AW2PoXWY0gmc1tloz+D3nBVbMCzGr1a8PqJWebQCr4L+1Uy3LKAkxgu2CIGyBO1QJy1bwA6duIkgN0OsTCz6clOAnvFVXXgygWFVd4CZlqfpLhypcamfLa8H0NRaV/SHpl+JWkihYnvJjE9A1v8GnVu+sUjFFlx5a7qPafa3tfFcrfjA88ecH7Dia+qvoI8Lm6YbsuY6LkAaIYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NW6njqAsEPYeRJh2kj8dx8+Rq3/ng4T35lcB/RbAxoE=;
+ b=m5reoDZuJAxXtKuSmTwwBdehM/IRz06jNpY2eXZjSakcyzdvgGn9hXRWG/938aUOcMSuNLgzN6ydySXTo1hOSZXLV4uvMFncbh2sGOTMfSNQF1SYly0qpMIzwDgp1Orh5+/4ezGZwpTNejP+FFE4ip/xsKhoVX25DoWKPQ7dzF8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com (2603:10b6:8:96::19) by
+ IA0PR12MB8278.namprd12.prod.outlook.com (2603:10b6:208:3dc::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5986.22; Mon, 16 Jan
+ 2023 07:56:25 +0000
+Received: from DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::8079:86db:f2e5:7700]) by DS7PR12MB6309.namprd12.prod.outlook.com
+ ([fe80::8079:86db:f2e5:7700%6]) with mapi id 15.20.5986.018; Mon, 16 Jan 2023
+ 07:56:24 +0000
+Message-ID: <460524f8-e52b-e195-3bd2-27e41f367f5d@amd.com>
+Date: Mon, 16 Jan 2023 13:26:02 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH RFC v7 07/64] KVM: SEV: Handle KVM_HC_MAP_GPA_RANGE
+ hypercall
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>, Borislav Petkov <bp@alien8.de>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, vkuznets@redhat.com, wanpengli@tencent.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
+ ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+ harald@profian.com
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-8-michael.roth@amd.com> <Y8GAGB73ZKElDYPI@zn.tnic>
+ <Y8GEGnmD90bySl8C@google.com>
+From: "Nikunj A. Dadhania" <nikunj@amd.com>
+In-Reply-To: <Y8GEGnmD90bySl8C@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0049.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:98::12) To DS7PR12MB6309.namprd12.prod.outlook.com
+ (2603:10b6:8:96::19)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QzuuGPi1600-0_eteAcCpa6uV0zifLWS
-X-Proofpoint-ORIG-GUID: tUhSYFIRLT9YSShJvCYQ-cplDgJf_VaU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-14_06,2023-01-13_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 clxscore=1015 mlxlogscore=819 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2301140132
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6309:EE_|IA0PR12MB8278:EE_
+X-MS-Office365-Filtering-Correlation-Id: adf13bbf-e61f-4ca9-54bc-08daf7972a14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	FUgM5yEfDef0+M5hc2lNQrySfuaevZsU6pDbkiw65H4D9jpIQlHmV55N8MbS21ZV8f4gDYkvE3jFeqG+yE8FDDw6VLHcDzkpbS2cFZBjqEfokTR45LkEwr35ohiqr53OhWWFbhZr4Qn5eC0m7CubOeN8Hb11cz3dklxcFhRf8al2rhPz3Esn16OPjNwPPGpZiyTjwVlNaDdhGzp6JrhLG9LGZ3VhF6gJ2UPaUfxDodN5sevGlf5dbZd2jF1L4drLTy6ysjOk1jZmmiVPvEP860WjD3XrL6EFAOQVk1xWqQv+kVF4NNJjLgErqAHaSc6haN12ySY9KNetKn9ELz+3EASLTFlEdIpmXmMK3f+MZNnPYTtyqP4lRuhOC3ZH8c6fZDKy+jKbdnj6mQ8rSXsGitd9oQo+SnrZDEBUVEv4h329WNSOJL98MpB9LdPGOZX5thCdh7iBk88O/OJcFDOaFaecaJKXhsEO4+q/EVO/YTz8FFTgxjfltZuWx0nLTTeiJ+CNxyrACnS82++6VMW7GLvf88Y9GKpOF4khjlKBTmRVnoPDOLluu8sVipu7RpHnK7ws7oC57I2gjBoMvimrjqti9GUosAPD0wHzbztLT1HDx8fS8hIsRc8mu3OeKGYCS40dXfmht5thyarsVAYnYCBrS/eQdaYNZaY3+T2fhaq+zDMWWnNsmSo5yHYpGtcLaTxQiWv+6TWOj9PQ4N8Wd5ug6IjU+2djzpT8aNvJahY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6309.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(376002)(396003)(136003)(346002)(366004)(451199015)(2616005)(8676002)(4326008)(26005)(186003)(6512007)(66476007)(66556008)(31686004)(66946007)(110136005)(478600001)(41300700001)(8936002)(7416002)(5660300002)(7406005)(6666004)(2906002)(83380400001)(53546011)(316002)(6506007)(38100700002)(31696002)(6486002)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RFJVOU4ycXdpVktzaVlXTXExWW9xYTZGeHg5YzZrZ0tWMHJvVDFqK1JzWUx2?=
+ =?utf-8?B?Z1oxdUZYZUhiSVRLVjRibUo3T2QzZExtTjJmT3ZGZnBTY0xDR25pMUNObldk?=
+ =?utf-8?B?QUxnY0RjS2M1enlpbWVJNHNRZ2tFbnoxa3lPMGxoOXExcTFVUU9XOGt6bGFj?=
+ =?utf-8?B?bTJOVnNZeWF1WVU4RWk3dDMrcy90YWpMZFFkUGdJSDM0N1hESnVmeEs2UGJU?=
+ =?utf-8?B?Sk1taTBXM2RmR0tmdjlHejJGbTR0TThieDQyV3RpRDlBVVI1V3p1NWl4ajhZ?=
+ =?utf-8?B?MS8yZG5sNjFxMFd4QldYNGJpQityc1FMWWw4RWY5RlR2bVpJQ2pyVHVOMFY2?=
+ =?utf-8?B?c0N5NEtDWGtub25oUVVMSVBWQThYZG1zUlcvSDBXdytncFdBQmFtMVB1a01o?=
+ =?utf-8?B?K0lmUTFlTmJ4cng1ZjNIaWVMZllqU2hDUGR6eUt2K0J0MUZ3emlranhqT21F?=
+ =?utf-8?B?WXRIcy9FMlV0eDJQLzNnL1FPRWVBbzEvaEI0bHZqWFczVkh1U21YYk5zbm12?=
+ =?utf-8?B?R3AxUzVkWm5Cakc0ZjZibHpzMkNseGhYQzl6MFk3S2xFRStieDhrTlZkcDVq?=
+ =?utf-8?B?SDZHU3ZqU1pFRTFPSi9QRlVyRVJHS1cvQUFobElpQ2pScU5ER291dkNIV0Y5?=
+ =?utf-8?B?QTRaOEJzYTRpaVo1M0Nid0lMalhPL2hJSDZnQXcwdWt5MDBtUGJ0b2J3ZURQ?=
+ =?utf-8?B?ZFVSb01RTUJyallaRkNCWVBJd3NYZm1DenBGZkdaYTY0d2FNNVB2WlJURnIw?=
+ =?utf-8?B?TjVBbms5RndZSlVZenpkWFQ0UEZCV2Nrd0V3UjZIbEFsUWNqN2JGeFpQcjVm?=
+ =?utf-8?B?K1hTUWQwaXZza0JQS2tGWk5FT2t3NndlMVBzQW1YU3h4WGpMb1RvUk5jbTcv?=
+ =?utf-8?B?WTBrM0pya1l6QlVpaHJiemp5cFdEL2VNTllWWnFjeEt2MnRMMUw1Q2ZDNkt2?=
+ =?utf-8?B?cDRaNi83T2UvemhpSllhQVAvbmkxNDZNaUtONGxwSlN3NXp5MVBHS0ptMmNZ?=
+ =?utf-8?B?ZkpjTUZmdCtTV1BOYWJ6R041TEw0RnFTbFlvdEdoMnFyckhYbi83YXZPTXdw?=
+ =?utf-8?B?SGRjTWRqNGpZSTBIMXlaV0tqc3VPUXI0NVExczB3RHVEUGNDK3IyTmxiZnN2?=
+ =?utf-8?B?N0h0K2VJb3ljKzhaUlowMUZWa2NUdy9PcmRwSjZxMFdLajFqaFd0MDB5dSs1?=
+ =?utf-8?B?ZXZrd1poMUliMW5zNVMwUTR0N3FCeDNEZTlGZlRxSEYrK1YyUUY1Y2x6RWlK?=
+ =?utf-8?B?ell0UkVLUTNEWnYySVVDNmNKT0ptclRZMXNNekRGYXViL0NqbGswUmhOSmxt?=
+ =?utf-8?B?SXh2dkEzMmZCTk5JL3Z4bnd6bW5weXdGeEczVzNvY2ZwUi90NXVyNCtmeTBh?=
+ =?utf-8?B?SmY0amJjZ2V6NUxvdUtsMkQvVG9mNTk5UkhNOXVXTGRweEZ6YXE2Q1F5VFNs?=
+ =?utf-8?B?bi9ibnV5WSttUlhiUitWcGhieFhpMVlEUkpOUERJamxqcU9kWFRrNExFSjcy?=
+ =?utf-8?B?UDluZDhZaFJLWUFYa0Z0WERHbExublM3NVRDV3YrUEF6TlhrcjNhK2pmOVVI?=
+ =?utf-8?B?dU40THU5UDF0WTM1aFZHcVcxSS9JOTc5Vk9yZ1htTWN2Smx1WjRneFp0OVA3?=
+ =?utf-8?B?bVhzWXhCNnljQUhqcVlIYmMrVXdPK01mSk5VM3ExMGhpWGRYUDVYRkJjZHl6?=
+ =?utf-8?B?RG4vaGpTbGtMUDVIaWtaTzNRQ1BuNzNQMy9PMnFnQ21Pb2c0QjRxTFV2R0Yy?=
+ =?utf-8?B?blRFSW1wVEhFWGJaWlpIOUxpYy83Tyt3WWR5a0xsdHJkU05aL2U5b05YVGl6?=
+ =?utf-8?B?cGxvaU44dncvL0JsMXFxa0p3RkZZYjVOVlBUd1VsT296YTFreXhqWTdURk1S?=
+ =?utf-8?B?Nnl0cWVvbmZuZGxrcHNOc01qQVB5TVVEZXgwdWw0WDUvZ3NjeWx6Z29YUWEr?=
+ =?utf-8?B?U3drTC9rbS8zZDVNOE5hZUZiOEZOc1JZMldtQUk3c2M1ZjlWQWllRFpXSnhN?=
+ =?utf-8?B?d3drem8xQXBrY1ZGRnUzQkxhUC9pd2VpbVJDaVdVRWZlVkFXSm5KWkdvUkgy?=
+ =?utf-8?B?VmViZ2o2dWttRGdJRTlISk10TkticVRzZHhUS25IRlprUGl0eVExUDB1NGxL?=
+ =?utf-8?Q?kMV4q9TSWOEvqWgBaTe/nLEsu?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: adf13bbf-e61f-4ca9-54bc-08daf7972a14
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6309.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2023 07:56:24.6944
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K/NeX47rgO1c5exW0eV+Alf84/ReLXOK292cLw1tRIhI4QTIg+HDDrVa66MAlPmc9wPEcsVQqINN4dDs1fSihA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8278
 
-On Sat, 2023-01-14 at 18:08 +0100, Jörg Rödel wrote:
+On 13/01/23 21:47, Sean Christopherson wrote:
+> On Fri, Jan 13, 2023, Borislav Petkov wrote:
+>> On Wed, Dec 14, 2022 at 01:39:59PM -0600, Michael Roth wrote:
+>>> From: Nikunj A Dadhania <nikunj@amd.com>
+>>>
+>>> KVM_HC_MAP_GPA_RANGE hypercall is used by the SEV guest to notify a
+>>> change in the page encryption status to the hypervisor.
+>>>
+>>> The hypercall exits to userspace with KVM_EXIT_HYPERCALL exit code,
+>>> currently this is used for explicit memory conversion between
+>>> shared/private for memfd based private memory.
+>>
+>> So Tom and I spent a while to figure out what this is doing...
+>>
+>> Please explain in more detail what that is. Like the hypercall gets ignored for
+>> memslots which cannot be private...?
 
-[...]
-> As James also said, the measurement to unlock secrets need to include
-> all software/data components up to the point where the encrypted disk
-> gets mounted.
+This was required when we were using per memslot bitmap for storing the 
+private information, mem_attr_array is not dependent on memslot anymore.
 
-Well, we have a prototype in IBM Research using keylime to do this
-based on the vTPM measurements.  We currently bring up a network
-interface inside the initrd to run the keylime agent, but if you're
-already inventing a non-network method for attestation, there's no
-reason we couldn't transport TPM quotes over it as well.
+> 
+> Don't bother, just drop the patch.  
 
-James
- 
+Agree, we can drop this. I have tested SEV without this patch.
+
+> It's perfectly legal for userspace to create the private memslot in response > to a guest request.
+
+Sean, did not understand this part, how could a memslot be created on a guest request?
+
+Regards
+Nikunj
+
