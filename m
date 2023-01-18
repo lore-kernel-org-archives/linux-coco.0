@@ -1,369 +1,270 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10A033C7
-	for <linux-coco@lists.linux.dev>; Wed, 18 Jan 2023 15:55:02 +0000 (UTC)
-Received: by linux.microsoft.com (Postfix, from userid 1112)
-	id 8613820E09F3; Wed, 18 Jan 2023 07:55:02 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8613820E09F3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1674057302;
-	bh=xuNrvowv2hcTLI73DVnfkxQ84AfOWijeQN8uwU3Si1Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ObVnY1z16hV8Et/ISM7DC3DNl7fd26Br85inzvm5NFmAc8yKfZWjJ7ISaNaA4lyG5
-	 A1aGLyzLLfrYr92nIAwp/Kzo+b4sjvBilvYYPR7ERfuX8VZMjJv2gCVVKawfzDq91B
-	 bibjjoDuStwIzDNCzKXh8ibeu4pHTnqm/UfbXViQ=
-Date: Wed, 18 Jan 2023 07:55:02 -0800
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
-	ashish.kalra@amd.com, harald@profian.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v7 14/64] x86/sev: Add the host SEV-SNP
- initialization support
-Message-ID: <20230118155502.GB24742@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-15-michael.roth@amd.com>
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6318539E
+	for <linux-coco@lists.linux.dev>; Wed, 18 Jan 2023 18:15:50 +0000 (UTC)
+Received: by mail-il1-f181.google.com with SMTP id m7so4895903ilh.7
+        for <linux-coco@lists.linux.dev>; Wed, 18 Jan 2023 10:15:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qFMvi2a6L2BPNbil1Z3ukPsrERB30WY5FsfmzneS0xY=;
+        b=FXN2VCbM00KvzRkLSjJCig2q0kiMeLGNdPtqDsL6Sn+DpZ+Rfxrxmut8jlbmR5reSW
+         MrN/046C1mOXE04WG8BP9Ag0tGSdsv3J1z3DLT+Ft+cTDKo0Fc8nHcQtX93SChBeTB3S
+         v+M0dtOnqM6E0LcYWrXGlAWURLkqAyXlfgRZUmty3DrKEjdVUMAJTpxYB9sMafWHFfnQ
+         Hw1IkSK/+hFION0jdBrcEI5Z2Pi0CTrplRkhpS3r4GLCFizUFFazRU1xi37XSU1WjSSS
+         GhASTTqJtcHutSoQlKJhlVJhKCKta6qfDEEx/dft6aFS/IzYIBXXmaQXjCEYcOjx29Of
+         zquQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qFMvi2a6L2BPNbil1Z3ukPsrERB30WY5FsfmzneS0xY=;
+        b=pyGwUPQNEl8Sn/p3Sq1V8kcqbNfEKDxmRaJ3NTm/NE0O6n73Vfbn+sdMoBKSDMGNk7
+         KDnjbAtmvklKGzoDgpcugdFLPIudVs2OpF5Pzj2RQdejGQYb3ExAqdO6Uhw9WekJ7MC8
+         g6RBAxR39nX3HeMKiiU13DG2Okhi9UxEKyJv7t9L+BKrVNi2sRsKE01BSljZrPW56oTS
+         Yd9d9FhLrwWKglvmhIBmZPpN7Xs8QX3ukxzwAtavgGq1T3XD6Zo2rIwTiU+wMjBccKw9
+         CKN+UGqeilQF0WTcbIts90BHq+247Zu85FZtqya/QXwe6kLuSOBGNv/uHDBuIJvPNndt
+         6WKg==
+X-Gm-Message-State: AFqh2kpFEFmyx84hmyIBIsCdz5Bvklg67LJxlbTzZuJSvpwgknUaTCUt
+	A28QGsV0EXPcTmYRcZTYMvAUoFCJbvMJbjztT4aTow==
+X-Google-Smtp-Source: AMrXdXv6zW3mUb3uJJYwWd8l/Zc0mUhiArEpYUTm10kiV+NXSFLzq7Rpx0/aHPDhA/yUTebrZSMnVWp7fevFEhGvFro=
+X-Received: by 2002:a92:d911:0:b0:30d:a0c6:55a3 with SMTP id
+ s17-20020a92d911000000b0030da0c655a3mr951212iln.199.1674065749311; Wed, 18
+ Jan 2023 10:15:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221214194056.161492-15-michael.roth@amd.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+References: <20221214194056.161492-1-michael.roth@amd.com> <20221214194056.161492-45-michael.roth@amd.com>
+ <20230118152721.GA24742@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To: <20230118152721.GA24742@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+From: Alper Gun <alpergun@google.com>
+Date: Wed, 18 Jan 2023 10:15:38 -0800
+Message-ID: <CABpDEunq_GwJZWw9LNEHB=67w7PHut=UfCr_0bmTHe6Ymng9vQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v7 44/64] KVM: SVM: Remove the long-lived GHCB host map
+To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
+	pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com, 
+	wanpengli@tencent.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com, 
+	harald@profian.com, Brijesh Singh <brijesh.singh@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Dec 14, 2022 at 01:40:06PM -0600, Michael Roth wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
-> 
-> The memory integrity guarantees of SEV-SNP are enforced through a new
-> structure called the Reverse Map Table (RMP). The RMP is a single data
-> structure shared across the system that contains one entry for every 4K
-> page of DRAM that may be used by SEV-SNP VMs. The goal of RMP is to
-> track the owner of each page of memory. Pages of memory can be owned by
-> the hypervisor, owned by a specific VM or owned by the AMD-SP. See APM2
-> section 15.36.3 for more detail on RMP.
-> 
-> The RMP table is used to enforce access control to memory. The table itself
-> is not directly writable by the software. New CPU instructions (RMPUPDATE,
-> PVALIDATE, RMPADJUST) are used to manipulate the RMP entries.
-> 
-> Based on the platform configuration, the BIOS reserves the memory used
-> for the RMP table. The start and end address of the RMP table must be
-> queried by reading the RMP_BASE and RMP_END MSRs. If the RMP_BASE and
-> RMP_END are not set then disable the SEV-SNP feature.
-> 
-> The SEV-SNP feature is enabled only after the RMP table is successfully
-> initialized.
-> 
-> Also set SYSCFG.MFMD when enabling SNP as SEV-SNP FW >= 1.51 requires
-> that SYSCFG.MFMD must be se
-> 
-> RMP table entry format is non-architectural and it can vary by processor
-> and is defined by the PPR. Restrict SNP support on the known CPU model
-> and family for which the RMP table entry format is currently defined for.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-b: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/include/asm/disabled-features.h |   8 +-
->  arch/x86/include/asm/msr-index.h         |  11 +-
->  arch/x86/kernel/sev.c                    | 180 +++++++++++++++++++++++
->  3 files changed, 197 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
-> index 33d2cd04d254..9b5a2cc8064a 100644
-> --- a/arch/x86/include/asm/disabled-features.h
-> +++ b/arch/x86/include/asm/disabled-features.h
-> @@ -87,6 +87,12 @@
->  # define DISABLE_TDX_GUEST	(1 << (X86_FEATURE_TDX_GUEST & 31))
->  #endif
->  
-> +#ifdef CONFIG_AMD_MEM_ENCRYPT
-> +# define DISABLE_SEV_SNP	0
-> +#else
-> +# define DISABLE_SEV_SNP	(1 << (X86_FEATURE_SEV_SNP & 31))
-> +#endif
-> +
->  /*
->   * Make sure to add features to the correct mask
->   */
-> @@ -110,7 +116,7 @@
->  			 DISABLE_ENQCMD)
->  #define DISABLED_MASK17	0
->  #define DISABLED_MASK18	0
-> -#define DISABLED_MASK19	0
-> +#define DISABLED_MASK19	(DISABLE_SEV_SNP)
->  #define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 20)
->  
->  #endif /* _ASM_X86_DISABLED_FEATURES_H */
-> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-> index 10ac52705892..35100c630617 100644
-> --- a/arch/x86/include/asm/msr-index.h
-> +++ b/arch/x86/include/asm/msr-index.h
-> @@ -565,6 +565,8 @@
->  #define MSR_AMD64_SEV_ENABLED		BIT_ULL(MSR_AMD64_SEV_ENABLED_BIT)
->  #define MSR_AMD64_SEV_ES_ENABLED	BIT_ULL(MSR_AMD64_SEV_ES_ENABLED_BIT)
->  #define MSR_AMD64_SEV_SNP_ENABLED	BIT_ULL(MSR_AMD64_SEV_SNP_ENABLED_BIT)
-> +#define MSR_AMD64_RMP_BASE		0xc0010132
-> +#define MSR_AMD64_RMP_END		0xc0010133
->  
->  #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
->  
-> @@ -649,7 +651,14 @@
->  #define MSR_K8_TOP_MEM2			0xc001001d
->  #define MSR_AMD64_SYSCFG		0xc0010010
->  #define MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT	23
-> -#define MSR_AMD64_SYSCFG_MEM_ENCRYPT	BIT_ULL(MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT)
-> +#define MSR_AMD64_SYSCFG_MEM_ENCRYPT		BIT_ULL(MSR_AMD64_SYSCFG_MEM_ENCRYPT_BIT)
-> +#define MSR_AMD64_SYSCFG_SNP_EN_BIT		24
-> +#define MSR_AMD64_SYSCFG_SNP_EN		BIT_ULL(MSR_AMD64_SYSCFG_SNP_EN_BIT)
-> +#define MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT	25
-> +#define MSR_AMD64_SYSCFG_SNP_VMPL_EN		BIT_ULL(MSR_AMD64_SYSCFG_SNP_VMPL_EN_BIT)
-> +#define MSR_AMD64_SYSCFG_MFDM_BIT		19
-> +#define MSR_AMD64_SYSCFG_MFDM			BIT_ULL(MSR_AMD64_SYSCFG_MFDM_BIT)
-> +
->  #define MSR_K8_INT_PENDING_MSG		0xc0010055
->  /* C1E active bits in int pending message */
->  #define K8_INTP_C1E_ACTIVE_MASK		0x18000000
-> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-> index a428c62330d3..687a91284506 100644
-> --- a/arch/x86/kernel/sev.c
-> +++ b/arch/x86/kernel/sev.c
-> @@ -22,6 +22,9 @@
->  #include <linux/efi.h>
->  #include <linux/platform_device.h>
->  #include <linux/io.h>
-> +#include <linux/cpumask.h>
-> +#include <linux/iommu.h>
-> +#include <linux/amd-iommu.h>
->  
->  #include <asm/cpu_entry_area.h>
->  #include <asm/stacktrace.h>
-> @@ -38,6 +41,7 @@
->  #include <asm/apic.h>
->  #include <asm/cpuid.h>
->  #include <asm/cmdline.h>
-> +#include <asm/iommu.h>
->  
->  #define DR7_RESET_VALUE        0x400
->  
-> @@ -57,6 +61,12 @@
->  #define AP_INIT_CR0_DEFAULT		0x60000010
->  #define AP_INIT_MXCSR_DEFAULT		0x1f80
->  
-> +/*
-> + * The first 16KB from the RMP_BASE is used by the processor for the
-> + * bookkeeping, the range needs to be added during the RMP entry lookup.
-> + */
-> +#define RMPTABLE_CPU_BOOKKEEPING_SZ	0x4000
-> +
->  /* For early boot hypervisor communication in SEV-ES enabled guests */
->  static struct ghcb boot_ghcb_page __bss_decrypted __aligned(PAGE_SIZE);
->  
-> @@ -69,6 +79,9 @@ static struct ghcb *boot_ghcb __section(".data");
->  /* Bitmap of SEV features supported by the hypervisor */
->  static u64 sev_hv_features __ro_after_init;
->  
-> +static unsigned long rmptable_start __ro_after_init;
-> +static unsigned long rmptable_end __ro_after_init;
-> +
->  /* #VC handler runtime per-CPU data */
->  struct sev_es_runtime_data {
->  	struct ghcb ghcb_page;
-> @@ -2260,3 +2273,170 @@ static int __init snp_init_platform_device(void)
->  	return 0;
->  }
->  device_initcall(snp_init_platform_device);
-> +
-> +#undef pr_fmt
-> +#define pr_fmt(fmt)	"SEV-SNP: " fmt
-> +
-> +static int __mfd_enable(unsigned int cpu)
-> +{
-> +	u64 val;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return 0;
-> +
-> +	rdmsrl(MSR_AMD64_SYSCFG, val);
-> +
-> +	val |= MSR_AMD64_SYSCFG_MFDM;
-> +
-> +	wrmsrl(MSR_AMD64_SYSCFG, val);
-> +
-> +	return 0;
-> +}
-> +
-> +static __init void mfd_enable(void *arg)
-> +{
-> +	__mfd_enable(smp_processor_id());
-> +}
-> +
-> +static int __snp_enable(unsigned int cpu)
-> +{
-> +	u64 val;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return 0;
-> +
-> +	rdmsrl(MSR_AMD64_SYSCFG, val);
-> +
-> +	val |= MSR_AMD64_SYSCFG_SNP_EN;
-> +	val |= MSR_AMD64_SYSCFG_SNP_VMPL_EN;
-> +
-> +	wrmsrl(MSR_AMD64_SYSCFG, val);
-> +
-> +	return 0;
-> +}
-> +
-> +static __init void snp_enable(void *arg)
-> +{
-> +	__snp_enable(smp_processor_id());
-> +}
-> +
-> +static bool get_rmptable_info(u64 *start, u64 *len)
-> +{
-> +	u64 calc_rmp_sz, rmp_sz, rmp_base, rmp_end;
-> +
-> +	rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
-> +	rdmsrl(MSR_AMD64_RMP_END, rmp_end);
-> +
-> +	if (!rmp_base || !rmp_end) {
-> +		pr_err("Memory for the RMP table has not been reserved by BIOS\n");
-> +		return false;
-> +	}
-> +
-> +	rmp_sz = rmp_end - rmp_base + 1;
-> +
-> +	/*
-> +	 * Calculate the amount the memory that must be reserved by the BIOS to
-> +	 * address the whole RAM. The reserved memory should also cover the
-> +	 * RMP table itself.
-> +	 */
-> +	calc_rmp_sz = (((rmp_sz >> PAGE_SHIFT) + totalram_pages()) << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
+On Wed, Jan 18, 2023 at 7:27 AM Jeremi Piotrowski
+<jpiotrowski@linux.microsoft.com> wrote:
+>
+> On Wed, Dec 14, 2022 at 01:40:36PM -0600, Michael Roth wrote:
+> > From: Brijesh Singh <brijesh.singh@amd.com>
+> >
+> > On VMGEXIT, sev_handle_vmgexit() creates a host mapping for the GHCB GPA,
+> > and unmaps it just before VM-entry. This long-lived GHCB map is used by
+> > the VMGEXIT handler through accessors such as ghcb_{set_get}_xxx().
+> >
+> > A long-lived GHCB map can cause issue when SEV-SNP is enabled. When
+> > SEV-SNP is enabled the mapped GPA needs to be protected against a page
+> > state change.
+> >
+> > To eliminate the long-lived GHCB mapping, update the GHCB sync operations
+> > to explicitly map the GHCB before access and unmap it after access is
+> > complete. This requires that the setting of the GHCBs sw_exit_info_{1,2}
+> > fields be done during sev_es_sync_to_ghcb(), so create two new fields in
+> > the vcpu_svm struct to hold these values when required to be set outside
+> > of the GHCB mapping.
+> >
+> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> > [mdr: defer per_cpu() assignment and order it with barrier() to fix case
+> >       where kvm_vcpu_map() causes reschedule on different CPU]
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  arch/x86/kvm/svm/sev.c | 131 ++++++++++++++++++++++++++---------------
+> >  arch/x86/kvm/svm/svm.c |  18 +++---
+> >  arch/x86/kvm/svm/svm.h |  24 +++++++-
+> >  3 files changed, 116 insertions(+), 57 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> > index d5c6e48055fb..6ac0cb6e3484 100644
+> > --- a/arch/x86/kvm/svm/sev.c
+> > +++ b/arch/x86/kvm/svm/sev.c
+> > @@ -2921,15 +2921,40 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
+> >       kvfree(svm->sev_es.ghcb_sa);
+> >  }
+> >
+> > +static inline int svm_map_ghcb(struct vcpu_svm *svm, struct kvm_host_map *map)
+> > +{
+> > +     struct vmcb_control_area *control = &svm->vmcb->control;
+> > +     u64 gfn = gpa_to_gfn(control->ghcb_gpa);
+> > +
+> > +     if (kvm_vcpu_map(&svm->vcpu, gfn, map)) {
+> > +             /* Unable to map GHCB from guest */
+> > +             pr_err("error mapping GHCB GFN [%#llx] from guest\n", gfn);
+> > +             return -EFAULT;
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static inline void svm_unmap_ghcb(struct vcpu_svm *svm, struct kvm_host_map *map)
+> > +{
+> > +     kvm_vcpu_unmap(&svm->vcpu, map, true);
+> > +}
+> > +
+> >  static void dump_ghcb(struct vcpu_svm *svm)
+> >  {
+> > -     struct ghcb *ghcb = svm->sev_es.ghcb;
+> > +     struct kvm_host_map map;
+> >       unsigned int nbits;
+> > +     struct ghcb *ghcb;
+> > +
+> > +     if (svm_map_ghcb(svm, &map))
+> > +             return;
+> > +
+> > +     ghcb = map.hva;
+>
+> dump_ghcb() is called from sev_es_validate_vmgexit() with the ghcb already
+> mapped. How about passing 'struct kvm_host_map *' (or struct ghcb *) as a
+> param to avoid double mapping?
 
-Since the rmptable is indexed by page number, I believe this check should be
-using max_pfn:
+This also causes a soft lockup, PSC spin lock is already acquired in
+sev_es_validate_vmgexit. dump_ghcb will try to acquire the same lock
+again. So a guest can send an invalid ghcb page  and cause a host soft
+lockup.
 
-    calc_rmp_sz = (max_pfn << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
-
-This accounts for holes/offsets in the memory map which lead to the top of
-memory having pfn > totalram_pages().
-
-> +
-> +	if (calc_rmp_sz > rmp_sz) {
-> +		pr_err("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
-> +		       calc_rmp_sz, rmp_sz);
-> +		return false;
-> +	}
-> +
-> +	*start = rmp_base;
-> +	*len = rmp_sz;
-> +
-> +	pr_info("RMP table physical address [0x%016llx - 0x%016llx]\n", rmp_base, rmp_end);
-> +
-> +	return true;
-> +}
-> +
-> +static __init int __snp_rmptable_init(void)
-> +{
-> +	u64 rmp_base, sz;
-> +	void *start;
-> +	u64 val;
-> +
-> +	if (!get_rmptable_info(&rmp_base, &sz))
-> +		return 1;
-> +
-> +	start = memremap(rmp_base, sz, MEMREMAP_WB);
-> +	if (!start) {
-> +		pr_err("Failed to map RMP table addr 0x%llx size 0x%llx\n", rmp_base, sz);
-> +		return 1;
-> +	}
-> +
-> +	/*
-> +	 * Check if SEV-SNP is already enabled, this can happen in case of
-> +	 * kexec boot.
-> +	 */
-> +	rdmsrl(MSR_AMD64_SYSCFG, val);
-> +	if (val & MSR_AMD64_SYSCFG_SNP_EN)
-> +		goto skip_enable;
-> +
-> +	/* Initialize the RMP table to zero */
-> +	memset(start, 0, sz);
-> +
-> +	/* Flush the caches to ensure that data is written before SNP is enabled. */
-> +	wbinvd_on_all_cpus();
-> +
-> +	/* MFDM must be enabled on all the CPUs prior to enabling SNP. */
-> +	on_each_cpu(mfd_enable, NULL, 1);
-> +
-> +	/* Enable SNP on all CPUs. */
-> +	on_each_cpu(snp_enable, NULL, 1);
-> +
-> +skip_enable:
-> +	rmptable_start = (unsigned long)start;
-> +	rmptable_end = rmptable_start + sz - 1;
-> +
-> +	return 0;
-> +}
-> +
-> +static int __init snp_rmptable_init(void)
-> +{
-> +	int family, model;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return 0;
-> +
-> +	family = boot_cpu_data.x86;
-> +	model  = boot_cpu_data.x86_model;
-> +
-> +	/*
-> +	 * RMP table entry format is not architectural and it can vary by processor and
-> +	 * is defined by the per-processor PPR. Restrict SNP support on the known CPU
-> +	 * model and family for which the RMP table entry format is currently defined for.
-> +	 */
-> +	if (family != 0x19 || model > 0xaf)
-> +		goto nosnp;
-> +
-> +	if (amd_iommu_snp_enable())
-> +		goto nosnp;
-> +
-> +	if (__snp_rmptable_init())
-> +		goto nosnp;
-> +
-> +	cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/rmptable_init:online", __snp_enable, NULL);
-> +
-> +	return 0;
-> +
-> +nosnp:
-> +	setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
-> +	return -ENOSYS;
-> +}
-> +
-> +/*
-> + * This must be called after the PCI subsystem. This is because amd_iommu_snp_enable()
-> + * is called to ensure the IOMMU supports the SEV-SNP feature, which can only be
-> + * called after subsys_initcall().
-> + *
-> + * NOTE: IOMMU is enforced by SNP to ensure that hypervisor cannot program DMA
-> + * directly into guest private memory. In case of SNP, the IOMMU ensures that
-> + * the page(s) used for DMA are hypervisor owned.
-> + */
-> +fs_initcall(snp_rmptable_init);
-> -- 
-> 2.25.1
-> 
+>
+> >
+> >       /* Re-use the dump_invalid_vmcb module parameter */
+> >       if (!dump_invalid_vmcb) {
+> >               pr_warn_ratelimited("set kvm_amd.dump_invalid_vmcb=1 to dump internal KVM state.\n");
+> > -             return;
+> > +             goto e_unmap;
+> >       }
+> >
+> >       nbits = sizeof(ghcb->save.valid_bitmap) * 8;
+> > @@ -2944,12 +2969,21 @@ static void dump_ghcb(struct vcpu_svm *svm)
+> >       pr_err("%-20s%016llx is_valid: %u\n", "sw_scratch",
+> >              ghcb->save.sw_scratch, ghcb_sw_scratch_is_valid(ghcb));
+> >       pr_err("%-20s%*pb\n", "valid_bitmap", nbits, ghcb->save.valid_bitmap);
+> > +
+> > +e_unmap:
+> > +     svm_unmap_ghcb(svm, &map);
+> >  }
+> >
+> > -static void sev_es_sync_to_ghcb(struct vcpu_svm *svm)
+> > +static bool sev_es_sync_to_ghcb(struct vcpu_svm *svm)
+> >  {
+> >       struct kvm_vcpu *vcpu = &svm->vcpu;
+> > -     struct ghcb *ghcb = svm->sev_es.ghcb;
+> > +     struct kvm_host_map map;
+> > +     struct ghcb *ghcb;
+> > +
+> > +     if (svm_map_ghcb(svm, &map))
+> > +             return false;
+> > +
+> > +     ghcb = map.hva;
+> >
+> >       /*
+> >        * The GHCB protocol so far allows for the following data
+> > @@ -2963,13 +2997,24 @@ static void sev_es_sync_to_ghcb(struct vcpu_svm *svm)
+> >       ghcb_set_rbx(ghcb, vcpu->arch.regs[VCPU_REGS_RBX]);
+> >       ghcb_set_rcx(ghcb, vcpu->arch.regs[VCPU_REGS_RCX]);
+> >       ghcb_set_rdx(ghcb, vcpu->arch.regs[VCPU_REGS_RDX]);
+> > +
+> > +     /*
+> > +      * Copy the return values from the exit_info_{1,2}.
+> > +      */
+> > +     ghcb_set_sw_exit_info_1(ghcb, svm->sev_es.ghcb_sw_exit_info_1);
+> > +     ghcb_set_sw_exit_info_2(ghcb, svm->sev_es.ghcb_sw_exit_info_2);
+> > +
+> > +     trace_kvm_vmgexit_exit(svm->vcpu.vcpu_id, ghcb);
+> > +
+> > +     svm_unmap_ghcb(svm, &map);
+> > +
+> > +     return true;
+> >  }
+> >
+> > -static void sev_es_sync_from_ghcb(struct vcpu_svm *svm)
+> > +static void sev_es_sync_from_ghcb(struct vcpu_svm *svm, struct ghcb *ghcb)
+> >  {
+> >       struct vmcb_control_area *control = &svm->vmcb->control;
+> >       struct kvm_vcpu *vcpu = &svm->vcpu;
+> > -     struct ghcb *ghcb = svm->sev_es.ghcb;
+> >       u64 exit_code;
+> >
+> >       /*
+> > @@ -3013,20 +3058,25 @@ static void sev_es_sync_from_ghcb(struct vcpu_svm *svm)
+> >       memset(ghcb->save.valid_bitmap, 0, sizeof(ghcb->save.valid_bitmap));
+> >  }
+> >
+> > -static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+> > +static int sev_es_validate_vmgexit(struct vcpu_svm *svm, u64 *exit_code)
+> >  {
+> > -     struct kvm_vcpu *vcpu;
+> > +     struct kvm_vcpu *vcpu = &svm->vcpu;
+> > +     struct kvm_host_map map;
+> >       struct ghcb *ghcb;
+> > -     u64 exit_code;
+> >       u64 reason;
+> >
+> > -     ghcb = svm->sev_es.ghcb;
+> > +     if (svm_map_ghcb(svm, &map))
+> > +             return -EFAULT;
+> > +
+> > +     ghcb = map.hva;
+> > +
+> > +     trace_kvm_vmgexit_enter(vcpu->vcpu_id, ghcb);
+> >
+> >       /*
+> >        * Retrieve the exit code now even though it may not be marked valid
+> >        * as it could help with debugging.
+> >        */
+> > -     exit_code = ghcb_get_sw_exit_code(ghcb);
+> > +     *exit_code = ghcb_get_sw_exit_code(ghcb);
+> >
+> >       /* Only GHCB Usage code 0 is supported */
+> >       if (ghcb->ghcb_usage) {
+> > @@ -3119,6 +3169,9 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+> >               goto vmgexit_err;
+> >       }
+> >
+> > +     sev_es_sync_from_ghcb(svm, ghcb);
+> > +
+> > +     svm_unmap_ghcb(svm, &map);
+> >       return 0;
+> >
+> >  vmgexit_err:
+> > @@ -3129,10 +3182,10 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+> >                           ghcb->ghcb_usage);
+> >       } else if (reason == GHCB_ERR_INVALID_EVENT) {
+> >               vcpu_unimpl(vcpu, "vmgexit: exit code %#llx is not valid\n",
+> > -                         exit_code);
+> > +                         *exit_code);
+> >       } else {
+> >               vcpu_unimpl(vcpu, "vmgexit: exit code %#llx input is not valid\n",
+> > -                         exit_code);
+> > +                         *exit_code);
+> >               dump_ghcb(svm);
+> >       }
+> >
+> > @@ -3142,6 +3195,8 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+> >       ghcb_set_sw_exit_info_1(ghcb, 2);
+> >       ghcb_set_sw_exit_info_2(ghcb, reason);
+> >
+> > +     svm_unmap_ghcb(svm, &map);
+> > +
+> >       /* Resume the guest to "return" the error code. */
+> >       return 1;
+> >  }
+>
