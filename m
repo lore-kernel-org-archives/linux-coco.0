@@ -1,110 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A45017CD
-	for <linux-coco@lists.linux.dev>; Thu, 19 Jan 2023 13:03:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB22C433EF;
-	Thu, 19 Jan 2023 13:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674133401;
-	bh=ijfFcGC5kAQ2nYmXEtcyL9+phHOOgiGJvROKRw4V2qo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RZdMtEEuZr7tE97F12rPotBfCByLsKQcgcA6T//IQ5YqeQ/v/D6XDedO0BpuyIUnx
-	 TBg5Gnpd4zOJUj/FvJCpx5TpBLL+470yit5tW60gms8xNYxGspnGiJA9tNTbG7R1wv
-	 Z1VUxRwnyHcRPmdsKatfbX51tTlsShJvyrmuxG0VDCg1QTDKKpxv0am630By1QBssp
-	 vzVOhZKVLz/CJJzpxLSHiCJ2Xa5fGCzVmk3raNpsu/uSz7pax5V9iNKDXGzwIgECbD
-	 syk+CFVp5gx0CaFlSgcEdglnzc1pcBa8wCK5SMZItMZeaNCkmFgxHV+fT/JMPsu7eg
-	 1A6DhF3Oj86pQ==
-Date: Thu, 19 Jan 2023 13:03:17 +0000
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, dgilbert@redhat.com, ashish.kalra@amd.com,
-	harald@profian.com, chao.p.peng@linux.intel.com
-Subject: Re: [PATCH RFC v7 02/64] KVM: x86: Add
- KVM_CAP_UNMAPPED_PRIVATE_MEMORY
-Message-ID: <Y8k/lXt18LwtUlff@kernel.org>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-3-michael.roth@amd.com>
- <Y6RM8RRryLgK8KiB@zn.tnic>
- <20230104174721.wa4detzppqzvsgsy@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3834D7471
+	for <linux-coco@lists.linux.dev>; Thu, 19 Jan 2023 14:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1674137159;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ugXNgqBtJPvWr4MA6JPsJP85cpDGY58i9mS6TsAsqUs=;
+	b=BtESJ8VL+UP6ZJZFGrF0oB/0ES11R8zRUFgAAwvgEZekk0pco6sEpZ6gn5N3789I6ArXIY
+	mQXSBmXS+A5f6byS4EfPU7PrVbnSG5aI5ayWrLGGg0yLiAXipnHIWzUuuQ+sCBghq9CDSJ
+	WPxpzbljc7Mzl/xKFFS6iTRf7H7/rUk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-665-iHCRJQXdOYq_FLbBaS2hrA-1; Thu, 19 Jan 2023 09:05:57 -0500
+X-MC-Unique: iHCRJQXdOYq_FLbBaS2hrA-1
+Received: by mail-wr1-f72.google.com with SMTP id k18-20020adfb352000000b002bdd0a7a2b5so388490wrd.0
+        for <linux-coco@lists.linux.dev>; Thu, 19 Jan 2023 06:05:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xBaiadbjt3CgbWtbdsTv1ZbRcElhiEsUfd9pG+658rw=;
+        b=7uW7faIcQWvVF/niFgKPbiNulxQpxDplJbd5jXwVE3XtWofDP3hylbsksXxW9MqhAu
+         p9vPYi5nk/yHHVS61vxchT58Lts7CgptaSykmK44Mug+7Mgdt3nVql8YbtgM0V28Glj0
+         CSmrmLUdfpVKUvfUYC3vqseQSK1lmRwj+biRstbA6HDEOC2uC3cXqT46k/xgXxh+hQ0G
+         GZkx68Iy3TW7GACAdHdYuqj1h2VLSaSYBtlAx6ohCCEQKhEN7ofxDvLEcd1dYjCYbdVx
+         Ks4UsczDXmn8Mt4Yq/mLUg131fl0NX9tQ0KM5ZDXriBeCs4Gg9Bda7Q1Iz+oNeF9gVJi
+         TvQg==
+X-Gm-Message-State: AFqh2krjs1SC1UrOHtxI2me+XptQiYRgZ76UO34qQRXnGqA4cTcmH4y2
+	AoxuUvvp35RzSYpCEbZoqwM9GO/PsRCl0RqnfTgRs4/jYCFH/UT47BL/JnAW4nQGZ16CE0luJmm
+	X8Y3FWjB0MYzpoUdwNYOybw==
+X-Received: by 2002:adf:e704:0:b0:2bd:d34e:534b with SMTP id c4-20020adfe704000000b002bdd34e534bmr8657386wrm.47.1674137154306;
+        Thu, 19 Jan 2023 06:05:54 -0800 (PST)
+X-Google-Smtp-Source: AMrXdXsvGhJ9Zt9S0sZflVlvrMh4GNyGjIHJHENaYFzkk21ksGhOwt7DKpROrG/1LigSBLVD4VqiYw==
+X-Received: by 2002:adf:e704:0:b0:2bd:d34e:534b with SMTP id c4-20020adfe704000000b002bdd34e534bmr8657325wrm.47.1674137153542;
+        Thu, 19 Jan 2023 06:05:53 -0800 (PST)
+Received: from smtpclient.apple ([2a01:e0a:834:5aa0:dcc2:1f2:1e47:e4e5])
+        by smtp.gmail.com with ESMTPSA id j14-20020adff00e000000b0024cb961b6aesm33096256wro.104.2023.01.19.06.05.52
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 19 Jan 2023 06:05:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230104174721.wa4detzppqzvsgsy@amd.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
+Subject: Re: SVSM initiated early attestation / guest secrets injection
+From: Christophe de Dinechin Dupont de Dinechin <cdupontd@redhat.com>
+In-Reply-To: <45f0dc31e61f111832f5da83dea6e1418deb3aee.camel@linux.ibm.com>
+Date: Thu, 19 Jan 2023 15:05:42 +0100
+Cc: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>,
+ =?utf-8?B?IkRhbmllbCBQLiBCZXJyYW5nw6ki?= <berrange@redhat.com>,
+ linux-coco@lists.linux.dev,
+ amd-sev-snp@lists.suse.com
+Message-Id: <17039966-2D3C-47F1-A5C3-82302CBD8D9D@redhat.com>
+References: <Y8AbnM0cnKfXXW23@redhat.com> <Y8GTXpfqlOe53cEr@suse.de>
+ <45f0dc31e61f111832f5da83dea6e1418deb3aee.camel@linux.ibm.com>
+To: James Bottomley <jejb@linux.ibm.com>
+X-Mailer: Apple Mail (2.3731.300.101.1.3)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 04, 2023 at 11:47:21AM -0600, Michael Roth wrote:
-> On Thu, Dec 22, 2022 at 01:26:25PM +0100, Borislav Petkov wrote:
-> > On Wed, Dec 14, 2022 at 01:39:54PM -0600, Michael Roth wrote:
-> > > This mainly indicates to KVM that it should expect all private guest
-> > > memory to be backed by private memslots. Ideally this would work
-> > > similarly for others archs, give or take a few additional flags, but
-> > > for now it's a simple boolean indicator for x86.
-> > 
-> > ...
-> > 
-> > > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> > > index c7e9d375a902..cc9424ccf9b2 100644
-> > > --- a/include/uapi/linux/kvm.h
-> > > +++ b/include/uapi/linux/kvm.h
-> > > @@ -1219,6 +1219,7 @@ struct kvm_ppc_resize_hpt {
-> > >  #define KVM_CAP_DIRTY_LOG_RING_ACQ_REL 223
-> > >  #define KVM_CAP_S390_PROTECTED_ASYNC_DISABLE 224
-> > >  #define KVM_CAP_MEMORY_ATTRIBUTES 225
-> > > +#define KVM_CAP_UNMAPPED_PRIVATE_MEM 240
-> > 
-> > Isn't this new cap supposed to be documented somewhere in
-> > Documentation/virt/kvm/api.rst ?
-> 
-> It should, but this is sort of a placeholder for now. Ideally we'd
-> re-use the capabilities introduced by UPM patchset rather than introduce
-> a new one. Originally the UPM patchset had a KVM_CAP_PRIVATE_MEM which
-> we planned to use to switch between legacy SEV and UPM-based SEV (for
-> lazy-pinning support) by making it writeable, but that was removed in v10
-> in favor of KVM_CAP_MEMORY_ATTRIBUTES, which is tied to the new
-> KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES ioctls:
-> 
->   https://lore.kernel.org/lkml/CA+EHjTxXOdzcP25F57Mtmnb1NWyG5DcyqeDPqzjEOzRUrqH8FQ@mail.gmail.com/
-> 
-> It wasn't clear at the time if that was the right interface to use for
-> this particular case, so we stuck with the more general
-> 'use-upm/dont-use-upm' semantics originally provided by making
-> KVM_CAP_UNMAPPED_PRIVATE_MEM/KVM_CAP_PRIVATE_MEM writeable.
-> 
-> But maybe it's okay to just make KVM_CAP_MEMORY_ATTRIBUTES writeable and
-> require userspace to negotiate it rather than just tying it to
-> CONFIG_HAVE_KVM_MEMORY_ATTRIBUTES. Or maybe introducing a new
-> KVM_SET_SUPPORTED_MEMORY_ATTRIBUTES ioctl to pair with
-> KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES. It sort of makes sense, since userspace
-> needs to be prepared to deal with KVM_EXIT_MEMORY_FAULTs relating to these
-> attributes.
 
-Doesn't upm patch set imply that user space should negotiate the memory
-attributes with the ioctl? 
 
-For me it looks like that the problem is introduced by conflicting usage
-pattern in the SNP code [*].
+> On 13 Jan 2023, at 19:02, James Bottomley <jejb@linux.ibm.com> wrote:
+>=20
+> On Fri, 2023-01-13 at 18:22 +0100, J=C3=B6rg R=C3=B6del wrote:
+> [...]
+>>         2. Host owner attaches a different disk image with malicious
+>>            content, e.g. a boot loader that sends the secrets to the
+>> host
+>>            owner.
+>=20
+>=20
+> This attack was discussed in the initial encrypted image prototype for
+> SEV and SEV-ES.  The idea is that either the disk is encrypted with the
+> injected encryption key (i.e. decodes correctly) or it isn't, in which
+> case it's up to the mounting component (grub in the initial prototype
+> and initrd in this proposal) to declare failure and destroy the
+> secrets.
 
-Perhaps sev_launch_update_gfn_handler() should not set memory attributes
-but instead expect user space to do it before the call?
+However, I recall discussions about the possibility that the host
+owner could trigger a fallback back that mounts an *unencrypted*
+disk successfully (or even discovers it). I remember discussions
+on such cases with Daniel (about auto-discovery of boot partitions)
+and Gerd (about fallback path for =E2=80=9Ccompatibility=E2=80=9D reasons).
 
-[*] https://lore.kernel.org/all/Y8cydYUfTUFwCh4K@kernel.org/
+So I believe that we need to clarify how we prevent the discovery
+and mounting of non-encrypted partitions, no?
 
-BR, Jarkko
+>=20
+> In the original proposal, grub was combined with ovmf to produce
+> attestation covering the mounting component.  In this new scheme, you
+> could use measured direct boot to ensure that the initial attestation
+> covers the initrd since the boot partition isn't encrypted.
+>=20
+> James
+>=20
+>=20
+
