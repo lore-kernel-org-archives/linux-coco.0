@@ -1,203 +1,200 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2069.outbound.protection.outlook.com [40.107.94.69])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ECC569E
-	for <linux-coco@lists.linux.dev>; Fri, 20 Jan 2023 20:10:28 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ObYA5zjvcCMt97aZk4BqKKuhWyeE80a0Bo+GD84muAqP6GHB93YNPp5uxJc/dnLvfJJWz8V91KuHORSia98ffEZwPfQQdPIlu2aQQS2U42qkEKXH5sPIFZTRo5aJHO6MC3ahVpEpZoi3r/Z+uEZ41bE+27yrlYj2Gc4RO6NEvhHKVtUfEFDnouGKxbafV+fGZii8lWTNjm+R9F8hlfWYoZUjCOs+HGTtTvJfVQEgopyy/Uul7OXitlQS1lQ8jBEip5+x+x8VwGqLWlYYXM4TxG5qej3a2m2Mgr4+vo77n8WxiBvhqTZwa1S/fxEMXc9W4OsoGK25e05S0C/F5XIcpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NdIThfOt+359IWoZYZxagRuePUVr9tk6mUaHYHh0azY=;
- b=k/DcPxyQK9L/vohpqvubkU9Dn9w42M8Y4weSbqFxrfv7JQFo/um5GljahA2qkWwDQF37638xvoix2v7VtCCKnlEbXvLljOPKyZhJ4TKU2w9cMpiL7kliWiG+hytcsQmTuph7nK6iSbwkDGBBlYJc0byGgETaY6B6XI7cCd2ow49lL19I14uCWigzQWZfj6SYsnArV80zw6lHZTJCGPFcMQS1tYd7Ic5IpfZy+YJEofYXpd0lG08fqMq1y8+IWxC9gXqmACZFzW77OlNaZt593bc3YOdmO1n8AWjfaSFe9Gy9VWlG+zVF/kVIf1kRNSw1ChRXzlGUfemsVRgRCrePWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NdIThfOt+359IWoZYZxagRuePUVr9tk6mUaHYHh0azY=;
- b=CpBggc542RzhL0yGv2I329mYla1eSQDjs1AJHy0fLzPxekqx5I2VesqIpXlj+gstaZ5zLAxYdTccte/6KiNQ+ztJurYpIsDMd6W2PS3a2chQ4u21m8dc9Q1iybU73YGWJD9Hy6+66RfUv1t6Q8sCTXU1dgPHMIVRH9VCv8hQ94Y=
-Received: from DM6PR07CA0083.namprd07.prod.outlook.com (2603:10b6:5:337::16)
- by SJ0PR12MB6712.namprd12.prod.outlook.com (2603:10b6:a03:44e::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.25; Fri, 20 Jan
- 2023 20:10:26 +0000
-Received: from DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:337:cafe::84) by DM6PR07CA0083.outlook.office365.com
- (2603:10b6:5:337::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6002.27 via Frontend
- Transport; Fri, 20 Jan 2023 20:10:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT056.mail.protection.outlook.com (10.13.173.99) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6023.16 via Frontend Transport; Fri, 20 Jan 2023 20:10:25 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Fri, 20 Jan
- 2023 14:10:24 -0600
-Date: Fri, 20 Jan 2023 14:10:08 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: Alper Gun <alpergun@google.com>
-CC: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-	<kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <wanpengli@tencent.com>, <jmattson@google.com>,
-	<luto@kernel.org>, <dave.hansen@linux.intel.com>, <slp@redhat.com>,
-	<pgonda@google.com>, <peterz@infradead.org>,
-	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
-	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
-	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
-	<marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
-	<harald@profian.com>, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v7 44/64] KVM: SVM: Remove the long-lived GHCB host
- map
-Message-ID: <20230120201008.v5kxftwqoddlslfe@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599BD3209
+	for <linux-coco@lists.linux.dev>; Fri, 20 Jan 2023 21:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A04EC433EF;
+	Fri, 20 Jan 2023 21:20:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674249633;
+	bh=F8IpSOi2yAsoDoJtoZ+I9NR2c/7qvXeB0K1/DdBRsNY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ND9fVSSJQ8Sdt6aDyGMKj6L0Pk+kfUC0xhp9OzbiQ/MwP1P2i/fY/4x70eG08kFP+
+	 FP/JzlzKcIwTfDuYnjZkj5Apjc+uSXOxq1vvelxt/4Ru+uzopag4DNPO/Uywaq4FLI
+	 lPR8GD0GpVv1bwxvW1lMIcOpGlQsaqt4wEXyFmu4X+WYIhVm5t4VVaqt2LvnsTH8Aq
+	 vdMcLamh7xyew6Ujc02MhTwLFJTdt4CNomQaoE9IZOdVBfZy4CVVFykaoBSy7eaDGz
+	 7YP9emKOeK3RyjYyuyu0uf1e05N12b5TcHPsvFPQ0rKucbHZdxWZrw1dR5YHVEueVt
+	 bJ8MVSTtdE8Gw==
+Date: Fri, 20 Jan 2023 21:20:30 +0000
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Michael Roth <michael.roth@amd.com>
+Cc: Borislav Petkov <bp@alien8.de>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, ashish.kalra@amd.com,
+	harald@profian.com, Nikunj A Dadhania <nikunj@amd.com>,
+	chao.p.peng@linux.intel.com
+Subject: Re: [PATCH RFC v7 03/64] KVM: SVM: Advertise private memory support
+ to KVM
+Message-ID: <Y8sFnsk2GvnUCVFI@kernel.org>
 References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-45-michael.roth@amd.com>
- <20230118152721.GA24742@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <CABpDEunq_GwJZWw9LNEHB=67w7PHut=UfCr_0bmTHe6Ymng9vQ@mail.gmail.com>
+ <20221214194056.161492-4-michael.roth@amd.com>
+ <Y6Xd0ruz3kMij/5F@zn.tnic>
+ <20230105021419.rs23nfq44rv64tsd@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CABpDEunq_GwJZWw9LNEHB=67w7PHut=UfCr_0bmTHe6Ymng9vQ@mail.gmail.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT056:EE_|SJ0PR12MB6712:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81d66ff1-9e9a-4c72-a38c-08dafb225e1d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	SZXGCnMjT1dnD9UFPWwFZCiIlXCbmxGJtq0Na8QetK27/B+MPcaLHv1YrFGP/Ftk6asezaaAV9sMCBiLBCREpmSdQ8StVIp9Khex2409+1RBcnE63fN+TgyWlqembeIilnny/D1EtrYOSfka5q/RuwnXUCXoEXtkYoLZRyXKiysxOnRHO4KsoL0WOC4vWkJrbAU3yyNawUEMKu78GFbXXJZi7M12rIDBd2+EXxBhvgjYIx3b6XJ0NM6SZ3Cc9zK7MgMo+bPlKHIr3qxB735Di3ypbLuuvTuIa4vHTcVR9mBVzYaxvbvrj3aTgvkOOOXfo9yKYgzrF9tel2YAzEM9Y3NYGIimP8HDU/rekaF3IbhkjWMm9aCBxpSjXihMCorzo2uJeGQiNR8XZ+x13rQtENUa/CpaAgVdSPifD7Hml1TyayMSiSgRpSlmC321Ulsxdy1HHapxkOORpmaX7AJ8MdXavK9yofMIY5Hr495x6FRajVNnHhe2EjCg9WiMjLfxhJb0FQHtl7RUo2AFbgXkH2TnM92mIfK4k6s81aO3DiAAqzdqC4SuKBqH+4Gl/EeJ+0yWbRc0A8q3pvuVrvBDYH0H6nv/w2//5vPzxdnTQ/cqVnURm9e0JBWmYSwl1ji1RjbakZAtwkrGdMhcudVHA16QApNE8S8HWJazHQ7GPTAGflwhNdKT28OSG5i8g5fXKaGtvLnjKmwFPZzn5+KdRLtWvX5fmd+w/Xa00qs8LwPRWjrn1Gj2Xd6TElpjULqVr+xevoD0qEh6h7IJpDOeqg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(136003)(346002)(39860400002)(396003)(376002)(451199015)(36840700001)(40470700004)(46966006)(81166007)(7416002)(26005)(5660300002)(44832011)(356005)(7406005)(41300700001)(8936002)(40460700003)(82740400003)(36860700001)(36756003)(54906003)(6666004)(53546011)(186003)(83380400001)(86362001)(16526019)(478600001)(316002)(8676002)(70206006)(2906002)(4326008)(82310400005)(70586007)(2616005)(426003)(40480700001)(336012)(1076003)(6916009)(47076005)(21314003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2023 20:10:25.1869
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81d66ff1-9e9a-4c72-a38c-08dafb225e1d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DM6NAM11FT056.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6712
+In-Reply-To: <20230105021419.rs23nfq44rv64tsd@amd.com>
 
-On Wed, Jan 18, 2023 at 10:15:38AM -0800, Alper Gun wrote:
-> On Wed, Jan 18, 2023 at 7:27 AM Jeremi Piotrowski
-> <jpiotrowski@linux.microsoft.com> wrote:
-> >
-> > On Wed, Dec 14, 2022 at 01:40:36PM -0600, Michael Roth wrote:
-> > > From: Brijesh Singh <brijesh.singh@amd.com>
-> > >
-> > > On VMGEXIT, sev_handle_vmgexit() creates a host mapping for the GHCB GPA,
-> > > and unmaps it just before VM-entry. This long-lived GHCB map is used by
-> > > the VMGEXIT handler through accessors such as ghcb_{set_get}_xxx().
-> > >
-> > > A long-lived GHCB map can cause issue when SEV-SNP is enabled. When
-> > > SEV-SNP is enabled the mapped GPA needs to be protected against a page
-> > > state change.
-> > >
-> > > To eliminate the long-lived GHCB mapping, update the GHCB sync operations
-> > > to explicitly map the GHCB before access and unmap it after access is
-> > > complete. This requires that the setting of the GHCBs sw_exit_info_{1,2}
-> > > fields be done during sev_es_sync_to_ghcb(), so create two new fields in
-> > > the vcpu_svm struct to hold these values when required to be set outside
-> > > of the GHCB mapping.
-> > >
-> > > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> > > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> > > [mdr: defer per_cpu() assignment and order it with barrier() to fix case
-> > >       where kvm_vcpu_map() causes reschedule on different CPU]
-> > > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > > ---
-> > >  arch/x86/kvm/svm/sev.c | 131 ++++++++++++++++++++++++++---------------
-> > >  arch/x86/kvm/svm/svm.c |  18 +++---
-> > >  arch/x86/kvm/svm/svm.h |  24 +++++++-
-> > >  3 files changed, 116 insertions(+), 57 deletions(-)
-> > >
-> > > diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> > > index d5c6e48055fb..6ac0cb6e3484 100644
-> > > --- a/arch/x86/kvm/svm/sev.c
-> > > +++ b/arch/x86/kvm/svm/sev.c
-> > > @@ -2921,15 +2921,40 @@ void sev_free_vcpu(struct kvm_vcpu *vcpu)
-> > >       kvfree(svm->sev_es.ghcb_sa);
-> > >  }
-> > >
-> > > +static inline int svm_map_ghcb(struct vcpu_svm *svm, struct kvm_host_map *map)
-> > > +{
-> > > +     struct vmcb_control_area *control = &svm->vmcb->control;
-> > > +     u64 gfn = gpa_to_gfn(control->ghcb_gpa);
-> > > +
-> > > +     if (kvm_vcpu_map(&svm->vcpu, gfn, map)) {
-> > > +             /* Unable to map GHCB from guest */
-> > > +             pr_err("error mapping GHCB GFN [%#llx] from guest\n", gfn);
-> > > +             return -EFAULT;
-> > > +     }
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static inline void svm_unmap_ghcb(struct vcpu_svm *svm, struct kvm_host_map *map)
-> > > +{
-> > > +     kvm_vcpu_unmap(&svm->vcpu, map, true);
-> > > +}
-> > > +
-> > >  static void dump_ghcb(struct vcpu_svm *svm)
-> > >  {
-> > > -     struct ghcb *ghcb = svm->sev_es.ghcb;
-> > > +     struct kvm_host_map map;
-> > >       unsigned int nbits;
-> > > +     struct ghcb *ghcb;
-> > > +
-> > > +     if (svm_map_ghcb(svm, &map))
-> > > +             return;
-> > > +
-> > > +     ghcb = map.hva;
-> >
-> > dump_ghcb() is called from sev_es_validate_vmgexit() with the ghcb already
-> > mapped. How about passing 'struct kvm_host_map *' (or struct ghcb *) as a
-> > param to avoid double mapping?
+On Wed, Jan 04, 2023 at 08:14:19PM -0600, Michael Roth wrote:
+> On Fri, Dec 23, 2022 at 05:56:50PM +0100, Borislav Petkov wrote:
+> > On Wed, Dec 14, 2022 at 01:39:55PM -0600, Michael Roth wrote:
+> > > +       bool (*private_mem_enabled)(struct kvm *kvm);
+> > 
+> > This looks like a function returning boolean to me. IOW, you can
+> > simplify this to:
 > 
-> This also causes a soft lockup, PSC spin lock is already acquired in
-> sev_es_validate_vmgexit. dump_ghcb will try to acquire the same lock
-> again. So a guest can send an invalid ghcb page  and cause a host soft
-> lockup.
+> The semantics and existing uses of KVM_X86_OP_OPTIONAL_RET0() gave me the
+> impression it needed to return an integer value, since by default if a
+> platform doesn't implement the op it would "return 0", and so could
+> still be called unconditionally.
+> 
+> Maybe that's not actually enforced, by it seems awkward to try to use a
+> bool return instead. At least for KVM_X86_OP_OPTIONAL_RET0().
+> 
+> However, we could just use KVM_X86_OP() to declare it so we can cleanly
+> use a function that returns bool, and then we just need to do:
+> 
+>   bool kvm_arch_has_private_mem(struct kvm *kvm)
+>   {
+>           if (kvm_x86_ops.private_mem_enabled)
+>                   return static_call(kvm_x86_private_mem_enabled)(kvm);
 
-We did notice that issue with v6, and had a fix similar to what Jeremi
-suggested, but in this patchset the psc_lock spinlock has been replaced
-in favor of taking a read_lock() on kvm->mmu_lock.
+I guess this is missing:
 
-The logic there is that userspace drives the page state changes via
-kvm_vm_ioctl_set_mem_attributes() now, and it does so while holding a
-write_lock() on kvm->mmu_lock, so if we want to guard the GHCB page from
-page state changes while the kernel is accessing it, it makes sense to
-use the same lock rather than relying on some separate SNP-specific lock.
+        return false;
 
-And because it's now a read_lock(), I don't think the deadlock issue is
-present anymore in v7, but it probably does still make sense to avoid the
-double-mapping as Jeremi suggested, so we'll plan to make that change for
-v8.
+>   }
+>     
+> instead of relying on default return value. So I'll take that approach
+> and adopt your other suggested changes.
+> 
+> ...
+> 
+> On a separate topic though, at a high level, this hook is basically a way
+> for platform-specific code to tell generic KVM code that private memslots
+> are supported by overriding the kvm_arch_has_private_mem() weak
+> reference. In this case the AMD platform is using using kvm->arch.upm_mode
+> flag to convey that, which is in turn set by the
+> KVM_CAP_UNMAPPED_PRIVATE_MEMORY introduced in this series.
+> 
+> But if, as I suggested in response to your PATCH 2 comments, we drop
+> KVM_CAP_UNAMMPED_PRIVATE_MEMORY in favor of
+> KVM_SET_SUPPORTED_MEMORY_ATTRIBUTES ioctl to enable "UPM mode" in SEV/SNP
+> code, then we need to rethink things a bit, since KVM_SET_MEMORY_ATTRIBUTES
+> in-part relies on kvm_arch_has_private_mem() to determine what flags are
+> supported, whereas SEV/SNP code would be using what was set by
+> KVM_SET_MEMORY_ATTRIBUTES to determine the return value in
+> kvm_arch_has_private_mem().
 
-Thanks,
+Does this mean that internal calls to  kvm_vm_set_region_attr() will
+cease to exist, and it will rely for user space to use the ioctl
+properly instead?
 
-Mike
+> So, for AMD, the return value of kvm_arch_has_private_mem() needs to rely
+> on something else. Maybe the logic can just be:
+> 
+>   bool svm_private_mem_enabled(struct kvm *kvm)
+>   {
+>     return sev_enabled(kvm) || sev_snp_enabled(kvm)
+>   }
+> 
+> (at least in the context of this patchset where UPM support is added for
+> both SEV and SNP).
+> 
+> So I'll plan to make that change as well.
+> 
+> -Mike
+> 
+> > 
+> > diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> > index 82ba4a564e58..4449aeff0dff 100644
+> > --- a/arch/x86/include/asm/kvm-x86-ops.h
+> > +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> > @@ -129,6 +129,7 @@ KVM_X86_OP(msr_filter_changed)
+> >  KVM_X86_OP(complete_emulated_msr)
+> >  KVM_X86_OP(vcpu_deliver_sipi_vector)
+> >  KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+> > +KVM_X86_OP_OPTIONAL_RET0(private_mem_enabled);
+> >  
+> >  #undef KVM_X86_OP
+> >  #undef KVM_X86_OP_OPTIONAL
+> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > index 1da0474edb2d..1b4b89ddeb55 100644
+> > --- a/arch/x86/include/asm/kvm_host.h
+> > +++ b/arch/x86/include/asm/kvm_host.h
+> > @@ -1574,6 +1574,7 @@ struct kvm_x86_ops {
+> >  
+> >  	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
+> >  			     int root_level);
+> > +	bool (*private_mem_enabled)(struct kvm *kvm);
+> >  
+> >  	bool (*has_wbinvd_exit)(void);
+> >  
+> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > index ce362e88a567..73b780fa4653 100644
+> > --- a/arch/x86/kvm/svm/svm.c
+> > +++ b/arch/x86/kvm/svm/svm.c
+> > @@ -4680,6 +4680,14 @@ static int svm_vm_init(struct kvm *kvm)
+> >  	return 0;
+> >  }
+> >  
+> > +static bool svm_private_mem_enabled(struct kvm *kvm)
+> > +{
+> > +	if (sev_guest(kvm))
+> > +		return kvm->arch.upm_mode;
+> > +
+> > +	return IS_ENABLED(CONFIG_HAVE_KVM_PRIVATE_MEM_TESTING);
+> > +}
+> > +
+> >  static struct kvm_x86_ops svm_x86_ops __initdata = {
+> >  	.name = "kvm_amd",
+> >  
+> > @@ -4760,6 +4768,8 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+> >  
+> >  	.vcpu_after_set_cpuid = svm_vcpu_after_set_cpuid,
+> >  
+> > +	.private_mem_enabled = svm_private_mem_enabled,
+> > +
+> >  	.has_wbinvd_exit = svm_has_wbinvd_exit,
+> >  
+> >  	.get_l2_tsc_offset = svm_get_l2_tsc_offset,
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index 823646d601db..9a1ca59d36a4 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -12556,6 +12556,11 @@ void __user * __x86_set_memory_region(struct kvm *kvm, int id, gpa_t gpa,
+> >  }
+> >  EXPORT_SYMBOL_GPL(__x86_set_memory_region);
+> >  
+> > +bool kvm_arch_has_private_mem(struct kvm *kvm)
+> > +{
+> > +	return static_call(kvm_x86_private_mem_enabled)(kvm);
+> > +}
+> > +
+> >  void kvm_arch_pre_destroy_vm(struct kvm *kvm)
+> >  {
+> >  	kvm_mmu_pre_destroy_vm(kvm);
+> > 
+> > -- 
+> > Regards/Gruss,
+> >     Boris.
+> > 
+> > https://nam11.safelinks.protection.outlook.com/?url=https%3A%2F%2Fpeople.kernel.org%2Ftglx%2Fnotes-about-netiquette&data=05%7C01%7Cmichael.roth%40amd.com%7C319e89ce555a46eace4d08dae506b51a%7C3dd8961fe4884e608e11a82d994e183d%7C0%7C0%7C638074114318137471%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=aG11K7va1BhemwlKCKKdcIXEwXGUzImYL%2BZ9%2FQ7XToI%3D&reserved=0
+
+BR, Jarkko
