@@ -1,37 +1,21 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C956257A
-	for <linux-coco@lists.linux.dev>; Wed, 25 Jan 2023 14:13:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674656019;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qBTVJEiEIva6aiwNg+MvF+yngIhGMSpeSJbbXk9BNss=;
-	b=QivYSzdtOD7vqREAOdJLagYhTUCBdN+fZ42p0/xG54i44YCO+zAX4eXDUE02H4ZeopbVtn
-	8hSPfXPzZatFNg3fYnPLntRRLEb6zOv4mnHAnoLD0U6HwbFXme7fXbzlAb/CXsDZE73qXe
-	GJ4ActUgZjpFY8Z52yfYLRyi/JzAlyc=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-360-YTMvLTIoODW62EMT5TnoEA-1; Wed, 25 Jan 2023 09:13:37 -0500
-X-MC-Unique: YTMvLTIoODW62EMT5TnoEA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F2FE3C1068D;
-	Wed, 25 Jan 2023 14:13:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.33.36.150])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 0414E492C14;
-	Wed, 25 Jan 2023 14:13:32 +0000 (UTC)
-Date: Wed, 25 Jan 2023 14:13:30 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA4E3FC2
+	for <linux-coco@lists.linux.dev>; Wed, 25 Jan 2023 14:22:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B61BC433D2;
+	Wed, 25 Jan 2023 14:22:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1674656575;
+	bh=NWNbPDzJqKIdUCzGbaHaDwxIGEt55x8en6Y9Q75bVcU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Qfkn5gFo27n1bxX9qip7Od5e/5Uc9S4wbjPRx1ayyiDpCWYCvnL4BzIha+oJdAgnD
+	 bD1FdXxhuFEn8wMzyaLMulLit/UaNZKudnahqNk9o+ScOehVr0OjzbsCoklrw2Vjpj
+	 bGGg1JlxTczQlaNg3xhQTHK7iSZPVrMvpTS6fzpY=
+Date: Wed, 25 Jan 2023 15:22:52 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
 	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
 	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
 	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
@@ -55,8 +39,7 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y9E5Cg7mreDx737N@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Message-ID: <Y9E7PNmSTP5w2zuw@kroah.com>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
  <Y9EkCvAfNXnJ+ATo@kroah.com>
  <Y9Ex3ZUIFxwOBg1n@work-vm>
@@ -70,8 +53,6 @@ Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 In-Reply-To: <Y9Ex3ZUIFxwOBg1n@work-vm>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 
 On Wed, Jan 25, 2023 at 01:42:53PM +0000, Dr. David Alan Gilbert wrote:
 > * Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:
@@ -97,75 +78,118 @@ On Wed, Jan 25, 2023 at 01:42:53PM +0000, Dr. David Alan Gilbert wrote:
 > can mess with - remember that not just the memory is encrypted, so is
 > the register state, and the guest gets to see changes to mapping and a
 > lot of control over interrupt injection etc.
-> 
+
+And due to the fact that SEV and TDX really do not work, how is anyone
+expecting any of this to work?  As one heckler on IRC recently put it,
+if you squint hard enough, you can kind of ignore the real-world issues
+here, so perhaps this should all be called "squint-puting" in order to
+feel like you have a "confidential" system?  :)
+
 > > So what do you actually trust here?  The CPU?  A device?  Nothing?
 > 
 > We trust the actual physical CPU, provided that it can prove that it's a
-> real CPU with the CoCo hardware enabled.  Both the SNP and TDX hardware
+> real CPU with the CoCo hardware enabled.
+
+Great, so why not have hardware attestation also for your devices you
+wish to talk to?  Why not use that as well?  Then you don't have to
+worry about anything in the guest.
+
+> Both the SNP and TDX hardware
 > can perform an attestation signed by the CPU to prove to someone
 > external that the guest is running on a real trusted CPU.
-> 
+
+And again, do the same thing for the other hardware devices and all is
+good.  To not do that is to just guess and wave hands.  You know this :)
+
 > Note that the trust is limited:
 >   a) We don't trust that we can make forward progress - if something
 > does something bad it's OK for the guest to stop.
+
+So the guest can stop itself?
+
 >   b) We don't trust devices, and we don't trust them by having the guest
 > do normal encryption; e.g. just LUKS on the disk and normal encrypted
 > networking. [There's a lot of schemes people are working on about how
 > the guest gets the keys etc for that)
 
-I think we need to more precisely say what we mean by 'trust' as it
-can have quite a broad interpretation.
+How do you trust you got real data on the disk?  On the network?  Those
+are coming from the host, how is any of that data to be trusted?  Where
+does the trust stop and why?
 
-As a baseline requirement, in the context of confidential computing the
-guest would not trust the hypervisor with data that needs to remain
-confidential, but would generally still expect it to provide a faithful
-implementation of a given device.
+> > I hate the term "hardening".  Please just say it for what it really is,
+> > "fixing bugs to handle broken hardware".  We've done that for years when
+> > dealing with PCI and USB and even CPUs doing things that they shouldn't
+> > be doing.  How is this any different in the end?
+> > 
+> > So what you also are saying here now is "we do not trust any PCI
+> > devices", so please just say that (why do you trust USB devices?)  If
+> > that is something that you all think that Linux should support, then
+> > let's go from there.
+> 
+> I don't think generally all PCI device drivers guard against all the
+> nasty things that a broken implementation of their hardware can do.
 
-IOW, the guest would expect the implementation of virtio-blk devices to
-be functionally correct per the virtio-blk specification, but would not
-trust the host to protect confidentiality any stored data in the disk.
+I know that all PCI drivers can NOT do that today as that was never
+anything that Linux was designed for.
 
-Any virtual device exposed to the guest that can transfer potentially
-sensitive data needs to have some form of guest controlled encryption
-applied. For disks this is easy with FDE like LUKS, for NICs this is
-already best practice for services by using TLS. Other devices may not
-have good existing options for applying encryption.
+> The USB devices are probably a bit better, because they actually worry
+> about people walking up with a nasty HID device;  I'm skeptical that
+> a kernel would survive a purposely broken USB controller.
 
-If the guest has a virtual keyboard, mouse and graphical display, which
-is backed by a VNC/RDP server in the host, then all that is visible to the
-host. There's no pre-existing solutions I know can could offer easy
-confidentiality for basic console I/O from the start of guest firmware
-onwards. The best is to spawn a VNC/RDP server in the guest at some
-point during boot. Means you can't login to the guest in single user
-mode with your root password though, without compromising it.
+I agree with you there, USB drivers are only starting to be fuzzed at
+the descriptor level, that's all.  Which is why they too can be put into
+the "untrusted" area until you trust them.
 
-The problem also applies for common solutions today where the host passes
-in config data to the guest, for consumption by tools like cloud-init.
-This is used in the past to inject an SSH key for example, or set the
-guest root password. Such data received from the host can no longer be
-trusted, as the host can see the data, or subsitute its own SSH key(s)
-in order to gain access. Cloud-init needs to get its config data from
-a trusted source, likely an external attestation server
+> I'm not sure the request here isn't really to make sure *all* PCI devices
+> are safe; just the ones we care about in a CoCo guest (e.g. the virtual devices) -
+> and potentially ones that people will want to pass-through (which
+> generally needs a lot more work to make safe).
+> (I've not looked at these Intel tools to see what they cover)
 
+Why not just create a whole new bus path for these "trusted" devices to
+attach to and do that instead of tyring to emulate a protocol that was
+explicitly designed NOT to this model at all?  Why are you trying to
+shoehorn something here and not just designing it properly from the
+beginning?
 
-A further challenge surrounds handling of undesirable devices. A goal
-of OS development has been to ensure that both coldplugged and hotplugged
-devices "just work" out of the box with zero guest admin config required.
-To some extent this is contrary to what a confidential guest will want.
-It doesn't want a getty spawned on any console exposed, it doesn't want
-to use a virtio-rng exposed by the host which could be feeding non-random.
+> Having said that, how happy are you with Thunderbolt PCI devices being
+> plugged into your laptop or into the hotplug NVMe slot on a server?
 
+We have protection for that, and have had it for many years.  Same for
+USB devices.  This isn't new, perhaps you all have not noticed those
+features be added and taken advantage of already by many Linux distros
+and system images (i.e. ChromeOS and embedded systems?)
 
-Protecting against malicious implementations of devices is conceivably
-interesting, as a hardening task. A malicious host may try to take
-advantage of the guest OS device driver impl to exploit the guest OS
-kernel with an end goal of getting into a state where it can be made
-to reveal confidential data that was otherwise protected.
+> We're now in the position we were with random USB devices years ago.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Nope, we are not, again, we already handle random PCI devices being
+plugged in.  It's up to userspace to make the policy decision if it
+should be trusted or not before the kernel has access to it.
 
+So a meta-comment, why not just use that today?  If your guest OS can
+not authenticate the PCI device passed to it, don't allow the kernel to
+bind to it.  If it can be authenticated, wonderful, bind away!  You can
+do this today with no kernel changes needed.
+
+> Also we would want to make sure that any config data that the hypervisor
+> can pass to the guest is validated.
+
+Define "validated" please.
+
+> The problem seems reasonably well understood within the CoCo world - how
+> far people want to push it probably varies; but it's good to make the
+> problem more widely understood.
+
+The "CoCo" world seems distant and separate from the real-world of Linux
+kernel development if you all do not even know about the authentication
+methods that we have for years for enabling access to PCI and USB
+devices as described above.  If the impementations that we currently
+have are lacking in some way, wonderful, please submit changes for them
+and we will be glad to review them as needed.
+
+Remember, it's up to you all to convince us that your changes make
+actual sense and are backed up with working implementations.  Not us :)
+
+good luck!
+
+greg k-h
