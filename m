@@ -1,344 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664BF4C7B
-	for <linux-coco@lists.linux.dev>; Wed, 25 Jan 2023 15:50:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674661842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P0g5sRLzmZMRmj3MKoDt9TvnE1vB8yteHz01D5AhG2w=;
-	b=hnJIR6lsBHNCMAcGIRiqa1pXezDAqztJdWEgnCfHkgJlmAES7aMfbL1cl5BebEfK7E88rc
-	iEsJhAg2RNUJ0PzFpThZGJ9VBNW71ygjU+N6TFzuVkulBbOEMrCxQpnoI+kLs4umaJUiAn
-	X1B2CUGCG+ii25VhWHX9pojCi54lVaE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-624-eLAWVrDCMeeX6Lk4KJpYUA-1; Wed, 25 Jan 2023 10:50:41 -0500
-X-MC-Unique: eLAWVrDCMeeX6Lk4KJpYUA-1
-Received: by mail-wr1-f71.google.com with SMTP id o11-20020adf8b8b000000b002be143c4827so3286080wra.19
-        for <linux-coco@lists.linux.dev>; Wed, 25 Jan 2023 07:50:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P0g5sRLzmZMRmj3MKoDt9TvnE1vB8yteHz01D5AhG2w=;
-        b=G5pNZ3sZCxl4FJElronM88fxViJXS++fpFE/FTuy4GsYtFtFK78Q+/a4IJ/Ywn9POZ
-         XV+wMtiB3z4Iuv49i7kK/p+hEemFrJJoeFjgemjvW4m1RuVPtlVK8IEGlKoryXc8TKrV
-         tTdRUEjvLZfEmY1ePTMzyR9D3Yp/DEYWmSn1fP0zvN15GL5+tKFgRUj/moAr1znieeOG
-         MBZZubxw8XSuwwyAFLisqia/IRNgL1CszImItglyWKRFlmBVIVRojxY/aUaMYrY1oaCR
-         UG10grPA1nqFZAiIo4lgZC/Z0N9zLT+x6T/nWc0adBbWTN3uwfaBS0n9nZzil3xVu6iL
-         qPFg==
-X-Gm-Message-State: AO0yUKUgN4qqN67FwkrcTswbzSbnvoo8VGnl73LFEHjQc1eB/haLp12+
-	x7K0EX8KoMq7qKFeSAOGOSeKZMI8oErFIxoPr4/J9qP8JV/Zbmpubx9TjDAEPFawpDjuK5iJu74
-	/e1rVW6tU6aGgcLN6H/ovqQ==
-X-Received: by 2002:adf:decc:0:b0:2bf:b119:e6e2 with SMTP id i12-20020adfdecc000000b002bfb119e6e2mr5540889wrn.47.1674661839507;
-        Wed, 25 Jan 2023 07:50:39 -0800 (PST)
-X-Google-Smtp-Source: AK7set/+r6DsJPuErihqA+tO1J7DJ2kesK8pm/oqfIMtJ/I/TWTofImR6SytbgfxfFqO/2H973FMeA==
-X-Received: by 2002:adf:decc:0:b0:2bf:b119:e6e2 with SMTP id i12-20020adfdecc000000b002bfb119e6e2mr5540866wrn.47.1674661839168;
-        Wed, 25 Jan 2023 07:50:39 -0800 (PST)
-Received: from work-vm (ward-16-b2-v4wan-166627-cust863.vm18.cable.virginm.net. [81.97.203.96])
-        by smtp.gmail.com with ESMTPSA id q6-20020adff946000000b002bdd155ca4dsm4727652wrr.48.2023.01.25.07.50.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jan 2023 07:50:38 -0800 (PST)
-Date: Wed, 25 Jan 2023 15:50:36 +0000
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
-	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Kleen, Andi" <andi.kleen@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D224C7B
+	for <linux-coco@lists.linux.dev>; Wed, 25 Jan 2023 16:02:07 +0000 (UTC)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailout.nyi.internal (Postfix) with ESMTP id E0BDB5C0193;
+	Wed, 25 Jan 2023 11:02:06 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Wed, 25 Jan 2023 11:02:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1674662526; x=1674748926; bh=j9
+	m9IV7KjyIID3/ptK8lRPhHxapTw3RI8SIqS9Yoqlw=; b=hQolHntqwrbC7SuX0u
+	Vq00jIE4bQzwk1jsBGFbtmlJ+UTOyLH1mVypUSXL/61li1NhrZbeUCe/DNDvJjer
+	hfpOJ3aMu2lpPS99FbM2v0glOjIqxWpcgxU39ksgLAoqitSR5Li1TLRdg6qd4ifa
+	+SlT/xoPsZoLfKQn9yFvE7RirciRN46BPLqC+K3xPJigVpxLKOhiMaJ4u/dw0Kms
+	yYWiX8UDYNaalP2HfABBmWtQduUaqpR19Pz0CpJHn5f4jQPBnygGtFrFlei+3roD
+	22Vr1ibOc7jaOJu+rMjPArxaTxO25HZHT1VjIfhzWjDCbmDT6iHrbFRDCS4/22yg
+	cfUg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:sender:subject:subject:to:to
+	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1674662526; x=1674748926; bh=j9m9IV7KjyIID3/ptK8lRPhHxapT
+	w3RI8SIqS9Yoqlw=; b=a5ZB8A2/2+6TdM7qUZmHs/pWQF2K2mHu2j+aLe9NmfDm
+	2nsoRI/gm4TdtvvKwvIj0BhjL9xv/NBvnC1a5JH7kM9ZTHHRsyaZXGOl9FhHBFN+
+	/VvUGWUwvF8xNvArMknd/DmaQSzlSlGwDB2THYaxJUsDNOytnWuzXQ081/ijFFUe
+	1Y3Ac24i9DLfPpTEqqSa7Rg46SKAM+7CWQN8B45i/18k0QiKQdrvljmgjQwV7O3S
+	SqAFw7KwCLaDrJI0oUFNco6QA2IPYYmL4nfHp9OP1MJXqLnDYFAH5STENIsmzLRi
+	dvzoy75dXF9jNA5ShxhoXuBCDT4JmnCwrJD8Mxwe9A==
+X-ME-Sender: <xms:fVLRY1Mz1L2Amy7_ns-7orSdcLNTWzYsAIJbo1HUdv-gVB3DoRQqwg>
+    <xme:fVLRY3-I8AuFv0KfqV0XXGV6N8sFzN0xYzKyqvqcaDN0Nav127Pzxw-30_eE2LLlb
+    b6dp1ImB75Jxppr9Vg>
+X-ME-Received: <xmr:fVLRY0SQgB5A3hVVxzJFDxfr7wccorzHba0olQ3fuCNrtJB0LyFhv5IFKKQ_PNtVnAEzpQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddvvddgkeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
+    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
+    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
+    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
+X-ME-Proxy: <xmx:fVLRYxvx7bkyO0hVIP6BDZ1DKi4NrBPTizk4MIeCdW0UkvyOGRhJ7w>
+    <xmx:fVLRY9euFdx-vpmOlisT7cpGb1Ty8qmobbiYq11MS-Nzm3JLFR9g5Q>
+    <xmx:fVLRY903a1Fzxx5cjbvs0ghs85vg6L-wtaKhrF1FRzYhiEtg413xlg>
+    <xmx:flLRY2vk6Oict34UEQd5dXJnrRmVNZBdNQ_NLnP1M92LvIzrrJY4vA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Jan 2023 11:02:04 -0500 (EST)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 30AFB10BDFE; Wed, 25 Jan 2023 19:02:03 +0300 (+03)
+Date: Wed, 25 Jan 2023 19:02:03 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,	"Reshetova,
+ Elena" <elena.reshetova@intel.com>,	"Shishkin,
+ Alexander" <alexander.shishkin@intel.com>,	"Shutemov,
+ Kirill" <kirill.shutemov@intel.com>,	"Kuppuswamy,
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,	"Kleen,
+ Andi" <andi.kleen@intel.com>,	"Hansen, Dave" <dave.hansen@intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Wunner, Lukas" <lukas.wunner@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,	"Wunner,
+ Lukas" <lukas.wunner@intel.com>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Poimboe, Josh" <jpoimboe@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,	"Poimboe, Josh" <jpoimboe@redhat.com>,
 	"aarcange@redhat.com" <aarcange@redhat.com>,
 	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
 	"jbachmann@google.com" <jbachmann@google.com>,
 	"pgonda@google.com" <pgonda@google.com>,
 	"keescook@chromium.org" <keescook@chromium.org>,
 	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	"Lange, Jon" <jlange@microsoft.com>,
+	Michael Kelley <mikelley@microsoft.com>,	"Lange,
+ Jon" <jlange@microsoft.com>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y9FPzD/kpL4sI/Qa@work-vm>
+Message-ID: <20230125160203.z4ttwlgclfd54pc6@box.shutemov.name>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
  <Y9EkCvAfNXnJ+ATo@kroah.com>
  <Y9Ex3ZUIFxwOBg1n@work-vm>
  <Y9E7PNmSTP5w2zuw@kroah.com>
  <Y9FDZPV7qENtNNyk@work-vm>
  <Y9FHsvVoPbgMR2s3@kroah.com>
+ <20230125103816-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <Y9FHsvVoPbgMR2s3@kroah.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230125103816-mutt-send-email-mst@kernel.org>
 
-* Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:
-> On Wed, Jan 25, 2023 at 02:57:40PM +0000, Dr. David Alan Gilbert wrote:
-> > * Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:
-> > > On Wed, Jan 25, 2023 at 01:42:53PM +0000, Dr. David Alan Gilbert wrote:
-> > > > * Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:
-> > > > > On Wed, Jan 25, 2023 at 12:28:13PM +0000, Reshetova, Elena wrote:
-> > > > > > Hi Greg, 
-> > > > > > 
-> > > > > > You mentioned couple of times (last time in this recent thread:
-> > > > > > https://lore.kernel.org/all/Y80WtujnO7kfduAZ@kroah.com/) that we ought to start
-> > > > > > discussing the updated threat model for kernel, so this email is a start in this direction. 
-> > > > > 
-> > > > > Any specific reason you didn't cc: the linux-hardening mailing list?
-> > > > > This seems to be in their area as well, right?
-> > > > > 
-> > > > > > As we have shared before in various lkml threads/conference presentations
-> > > > > > ([1], [2], [3] and many others), for the Confidential Computing guest kernel, we have a 
-> > > > > > change in the threat model where guest kernel doesn’t anymore trust the hypervisor. 
-> > > > > 
-> > > > > That is, frankly, a very funny threat model.  How realistic is it really
-> > > > > given all of the other ways that a hypervisor can mess with a guest?
-> > > > 
-> > > > It's what a lot of people would like; in the early attempts it was easy
-> > > > to defeat, but in TDX and SEV-SNP the hypervisor has a lot less that it
-> > > > can mess with - remember that not just the memory is encrypted, so is
-> > > > the register state, and the guest gets to see changes to mapping and a
-> > > > lot of control over interrupt injection etc.
-> > > 
-> > > And due to the fact that SEV and TDX really do not work, how is anyone
-> > > expecting any of this to work?  As one heckler on IRC recently put it,
-> > > if you squint hard enough, you can kind of ignore the real-world issues
-> > > here, so perhaps this should all be called "squint-puting" in order to
-> > > feel like you have a "confidential" system?  :)
-> > 
-> > I agree the original SEV was that weak; I've not seen anyone give a good
-> > argument against SNP or TDX.
+On Wed, Jan 25, 2023 at 10:45:48AM -0500, Michael S. Tsirkin wrote:
+> On Wed, Jan 25, 2023 at 04:16:02PM +0100, Greg Kroah-Hartman wrote:
+> > Everyone wants a subset, different from other's subset, which means you
+> > need them all.  Sorry.
 > 
-> Argument that it doesn't work?  I thought that ship sailed a long time
-> ago but I could be wrong as I don't really pay attention to that stuff
-> as it's just vaporware :)
+> Well if there's a very popular system (virtual in this case) that needs
+> a specific config to work well, then I guess
+> arch/x86/configs/ccguest.config or whatever might be acceptable, no?
+> Lots of precedent here.
 
-You're being unfair claiming it's vaporware.  You can go out and buy SNP
-hardware now (for over a year), the patches are on list and under review
-(and have been for quite a while).
-If you're claiming it doesn't, please justify it.
+OS vendors want the single kernel that fits all sizes: it should be
+possible (and secure) to run a generic disto kernel within TDX/SEV guest.
 
-> > > > > So what do you actually trust here?  The CPU?  A device?  Nothing?
-> > > > 
-> > > > We trust the actual physical CPU, provided that it can prove that it's a
-> > > > real CPU with the CoCo hardware enabled.
-> > > 
-> > > Great, so why not have hardware attestation also for your devices you
-> > > wish to talk to?  Why not use that as well?  Then you don't have to
-> > > worry about anything in the guest.
-> > 
-> > There were some talks at Plumbers where PCIe is working on adding that;
-> > it's not there yet though.  I think that's PCIe 'Integrity and Data
-> > Encryption' (IDE - sigh), and PCIe 'Security Prtocol and Data Model' -
-> > SPDM.   I don't know much of the detail of those, just that they're far
-> > enough off that people aren't depending on them yet.
-> 
-> Then work with those groups to implement that in an industry-wide way
-> and then take advantage of it by adding support for it to Linux!  Don't
-> try to reinvent the same thing in a totally different way please.
-
-Sure, people are working with them; but those are going to take time
-and people want to use existing PCIe devices; and given that the hosts
-are available that seems reasonable.   
-
-> > > > Both the SNP and TDX hardware
-> > > > can perform an attestation signed by the CPU to prove to someone
-> > > > external that the guest is running on a real trusted CPU.
-> > > 
-> > > And again, do the same thing for the other hardware devices and all is
-> > > good.  To not do that is to just guess and wave hands.  You know this :)
-> > 
-> > That wouldn't help you necessarily for virtual devices - where the
-> > hypervisor implements the device (like a virtual NIC).
-> 
-> Then create a new bus for that if you don't trust the virtio bus today.
-
-It's not that I distrust the virtio bus - just that we need to make sure
-it's implementation is pessimistic enough for CoCo.
-
-> > > > > I hate the term "hardening".  Please just say it for what it really is,
-> > > > > "fixing bugs to handle broken hardware".  We've done that for years when
-> > > > > dealing with PCI and USB and even CPUs doing things that they shouldn't
-> > > > > be doing.  How is this any different in the end?
-> > > > > 
-> > > > > So what you also are saying here now is "we do not trust any PCI
-> > > > > devices", so please just say that (why do you trust USB devices?)  If
-> > > > > that is something that you all think that Linux should support, then
-> > > > > let's go from there.
-> > > > 
-> > > > I don't think generally all PCI device drivers guard against all the
-> > > > nasty things that a broken implementation of their hardware can do.
-> > > 
-> > > I know that all PCI drivers can NOT do that today as that was never
-> > > anything that Linux was designed for.
-> > 
-> > Agreed; which again is why I only really worry about the subset of
-> > devices I'd want in a CoCo VM.
-> 
-> Everyone wants a subset, different from other's subset, which means you
-> need them all.  Sorry.
-
-I think for CoCo the subset is fairly small, even including all the
-people discussing it.  It's the virtual devices, and a few of their
-favourite physical devices, but a fairly small subset.
-
-> > > > The USB devices are probably a bit better, because they actually worry
-> > > > about people walking up with a nasty HID device;  I'm skeptical that
-> > > > a kernel would survive a purposely broken USB controller.
-> > > 
-> > > I agree with you there, USB drivers are only starting to be fuzzed at
-> > > the descriptor level, that's all.  Which is why they too can be put into
-> > > the "untrusted" area until you trust them.
-> > > 
-> > > > I'm not sure the request here isn't really to make sure *all* PCI devices
-> > > > are safe; just the ones we care about in a CoCo guest (e.g. the virtual devices) -
-> > > > and potentially ones that people will want to pass-through (which
-> > > > generally needs a lot more work to make safe).
-> > > > (I've not looked at these Intel tools to see what they cover)
-> > > 
-> > > Why not just create a whole new bus path for these "trusted" devices to
-> > > attach to and do that instead of tyring to emulate a protocol that was
-> > > explicitly designed NOT to this model at all?  Why are you trying to
-> > > shoehorn something here and not just designing it properly from the
-> > > beginning?
-> > 
-> > I'd be kind of OK with that for the virtual devices; but:
-> > 
-> >   a) I think you'd start reinventing PCIe with enumeration etc
-> 
-> Great, then work with the PCI group as talked about above to solve it
-> properly and not do whack-a-mole like seems to be happening so far.
-> 
-> >   b) We do want those pass through NICs etc that are PCIe
-> >     - as long as you use normal guest crypto stuff then the host
-> >     can be just as nasty as it likes with the data they present.
-> 
-> Great, work with the PCI spec for verified devices.
-> 
-> >   c) The world has enough bus protocols, and people understand the
-> >    basics of PCI(e) - we really don't need another one.
-> 
-> Great, work with the PCI spec people please.
-
-As I say above; all happening - but it's going to take years.
-It's wrong to leave users with less secure solutions if there are simple
-fixes available.  I agree that if it involves major pain all over then
-I can see your dislike - but if it's small fixes then what's the
-problem?
-
-> > > > Having said that, how happy are you with Thunderbolt PCI devices being
-> > > > plugged into your laptop or into the hotplug NVMe slot on a server?
-> > > 
-> > > We have protection for that, and have had it for many years.  Same for
-> > > USB devices.  This isn't new, perhaps you all have not noticed those
-> > > features be added and taken advantage of already by many Linux distros
-> > > and system images (i.e. ChromeOS and embedded systems?)
-> > 
-> > What protection?  I know we have an IOMMU, and that stops the device
-> > stamping all over RAM by itself - but I think Intel's worries are more
-> > subtle, things where the device starts playing with what PCI devices
-> > are expected to do to try and trigger untested kernel paths.  I don't
-> > think there's protection against that.
-> > I know we can lock by PCI/USB vendor/device ID - but those can be made
-> > up trivially; protection like that is meaningless.
-> 
-> Then combine it with device attestation and you have a solved solution,
-> don't ignore others working on this please.
-> 
-> > > > We're now in the position we were with random USB devices years ago.
-> > > 
-> > > Nope, we are not, again, we already handle random PCI devices being
-> > > plugged in.  It's up to userspace to make the policy decision if it
-> > > should be trusted or not before the kernel has access to it.
-> > > 
-> > > So a meta-comment, why not just use that today?  If your guest OS can
-> > > not authenticate the PCI device passed to it, don't allow the kernel to
-> > > bind to it.  If it can be authenticated, wonderful, bind away!  You can
-> > > do this today with no kernel changes needed.
-> > 
-> > Because:
-> >    a) there's no good way to authenticate a PCI device yet
-> >      - any nasty device can claim to have a given PCI ID.
-> >    b) Even if you could, there's no man-in-the-middle protection yet.
-> 
-> Where is the "man" here in the middle of?
-
-I'm worried what a malicious hypervisor could do.
-
-> And any PCI attestation should handle that, if not, work with them to
-> solve that please.
-
-I believe the two mechanisms I mentioned above would handle that; when
-it eventually gets there.
-
-> Thunderbolt has authenticated device support today, and so does PCI, and
-> USB has had it for a decade or so.  Use the in-kernel implementation
-> that we already have or again, show us where it is lacking and we will
-> be glad to take patches to cover the holes (as we did last year when
-> ChromeOS implemented support for it in their userspace.)
-
-I'd appreciate pointers to the implementations you're referring to.
-
-> > > > Also we would want to make sure that any config data that the hypervisor
-> > > > can pass to the guest is validated.
-> > > 
-> > > Define "validated" please.
-> > 
-> > Lets say you get something like a ACPI table or qemu fw.cfg table
-> > giving details of your devices; if the hypervisor builds those in a
-> > nasty way what happens?
-> 
-> You tell me, as we trust ACPI tables today, and if we can not, again
-> then you need to change the model of what Linux does.  Why isn't the
-> BIOS authentication path working properly for ACPI tables already today?
-> I thought that was a long-solved problem with UEFI (if not, I'm sure the
-> UEFI people would be interested.)
-
-If it's part of the BIOS image that's measured/loaded during startup
-then we're fine; if it's a table dynamically generated by the hypervisor
-I'm more worried.
-
-> Anyway, I'll wait until I see real patches as this thread seems to be
-> totally vague and ignores our current best-practices for pluggable
-> devices for some odd reason.
-
-Please point people at those best practices rather than just ranting
-about how pointless you feel all this is!
-
-The patches here from Intel are a TOOL to find problems; I can't see the
-objections to having a tool like this.
-
-(I suspect some of these fixes might make the kernel a bit more robust
-against unexpected hot-remove of PCIe devices as well; but that's more
-of a guess)
-
-Dave
-
-> thanks,
-> 
-> greg k-h
-> 
 -- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
-
+  Kiryl Shutsemau / Kirill A. Shutemov
