@@ -1,113 +1,101 @@
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D224C7B
-	for <linux-coco@lists.linux.dev>; Wed, 25 Jan 2023 16:02:07 +0000 (UTC)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.nyi.internal (Postfix) with ESMTP id E0BDB5C0193;
-	Wed, 25 Jan 2023 11:02:06 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 25 Jan 2023 11:02:06 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1674662526; x=1674748926; bh=j9
-	m9IV7KjyIID3/ptK8lRPhHxapTw3RI8SIqS9Yoqlw=; b=hQolHntqwrbC7SuX0u
-	Vq00jIE4bQzwk1jsBGFbtmlJ+UTOyLH1mVypUSXL/61li1NhrZbeUCe/DNDvJjer
-	hfpOJ3aMu2lpPS99FbM2v0glOjIqxWpcgxU39ksgLAoqitSR5Li1TLRdg6qd4ifa
-	+SlT/xoPsZoLfKQn9yFvE7RirciRN46BPLqC+K3xPJigVpxLKOhiMaJ4u/dw0Kms
-	yYWiX8UDYNaalP2HfABBmWtQduUaqpR19Pz0CpJHn5f4jQPBnygGtFrFlei+3roD
-	22Vr1ibOc7jaOJu+rMjPArxaTxO25HZHT1VjIfhzWjDCbmDT6iHrbFRDCS4/22yg
-	cfUg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to
-	:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1674662526; x=1674748926; bh=j9m9IV7KjyIID3/ptK8lRPhHxapT
-	w3RI8SIqS9Yoqlw=; b=a5ZB8A2/2+6TdM7qUZmHs/pWQF2K2mHu2j+aLe9NmfDm
-	2nsoRI/gm4TdtvvKwvIj0BhjL9xv/NBvnC1a5JH7kM9ZTHHRsyaZXGOl9FhHBFN+
-	/VvUGWUwvF8xNvArMknd/DmaQSzlSlGwDB2THYaxJUsDNOytnWuzXQ081/ijFFUe
-	1Y3Ac24i9DLfPpTEqqSa7Rg46SKAM+7CWQN8B45i/18k0QiKQdrvljmgjQwV7O3S
-	SqAFw7KwCLaDrJI0oUFNco6QA2IPYYmL4nfHp9OP1MJXqLnDYFAH5STENIsmzLRi
-	dvzoy75dXF9jNA5ShxhoXuBCDT4JmnCwrJD8Mxwe9A==
-X-ME-Sender: <xms:fVLRY1Mz1L2Amy7_ns-7orSdcLNTWzYsAIJbo1HUdv-gVB3DoRQqwg>
-    <xme:fVLRY3-I8AuFv0KfqV0XXGV6N8sFzN0xYzKyqvqcaDN0Nav127Pzxw-30_eE2LLlb
-    b6dp1ImB75Jxppr9Vg>
-X-ME-Received: <xmr:fVLRY0SQgB5A3hVVxzJFDxfr7wccorzHba0olQ3fuCNrtJB0LyFhv5IFKKQ_PNtVnAEzpQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddvvddgkeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
-    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
-    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
-    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:fVLRYxvx7bkyO0hVIP6BDZ1DKi4NrBPTizk4MIeCdW0UkvyOGRhJ7w>
-    <xmx:fVLRY9euFdx-vpmOlisT7cpGb1Ty8qmobbiYq11MS-Nzm3JLFR9g5Q>
-    <xmx:fVLRY903a1Fzxx5cjbvs0ghs85vg6L-wtaKhrF1FRzYhiEtg413xlg>
-    <xmx:flLRY2vk6Oict34UEQd5dXJnrRmVNZBdNQ_NLnP1M92LvIzrrJY4vA>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Jan 2023 11:02:04 -0500 (EST)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 30AFB10BDFE; Wed, 25 Jan 2023 19:02:03 +0300 (+03)
-Date: Wed, 25 Jan 2023 19:02:03 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: "Michael S. Tsirkin" <mst@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174143FC2
+	for <linux-coco@lists.linux.dev>; Wed, 25 Jan 2023 16:44:28 +0000 (UTC)
+Received: from cwcc.thunk.org (pool-173-48-120-46.bstnma.fios.verizon.net [173.48.120.46])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 30PGekT5003899
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Jan 2023 11:40:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1674664852; bh=87ST+3j3ht853XmSEHN0xdLq8YDjUMk/ZvDAixJFyYM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZyOS15yoknFWtHea0S6sBlb9jLH5MZbIghmMMAeYdcsk1vIDYas9OrAdlD2BjcEOc
+	 F4YohO7z4oO96Dyh5T2KBvee4slOGj/QZToOkse0CSkdXEnqzBC30hIZB3A4X/9J6S
+	 VbP/PnEWEEAWLo9bG+zONBnRln+1DFQ/KW71NpcDI1dEszCxk9WQsxM9LL+mMEbyfs
+	 YULe/cw7S42QiPwhbzwgW/u+P7QH4o0rPBizRVjUrma/+ahw9MWZdKyry+jDF7/xc0
+	 N3l7NxzZ1MXrHvL9rKznMJSEHiZg2y44pjmlzahl3odMO8N7evmBTTkAA4TZZ1tafI
+	 oLEI5gSH/GuxA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 8CC9C15C469B; Wed, 25 Jan 2023 11:40:46 -0500 (EST)
+Date: Wed, 25 Jan 2023 11:40:46 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,	"Reshetova,
- Elena" <elena.reshetova@intel.com>,	"Shishkin,
- Alexander" <alexander.shishkin@intel.com>,	"Shutemov,
- Kirill" <kirill.shutemov@intel.com>,	"Kuppuswamy,
- Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,	"Kleen,
- Andi" <andi.kleen@intel.com>,	"Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,	"Wunner,
- Lukas" <lukas.wunner@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jason Wang <jasowang@redhat.com>,	"Poimboe, Josh" <jpoimboe@redhat.com>,
-	"aarcange@redhat.com" <aarcange@redhat.com>,
-	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-	"jbachmann@google.com" <jbachmann@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,	"Lange,
- Jon" <jlange@microsoft.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        "Shishkin, Alexander" <alexander.shishkin@intel.com>,
+        "Shutemov, Kirill" <kirill.shutemov@intel.com>,
+        "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
+        "Kleen, Andi" <andi.kleen@intel.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Wunner, Lukas" <lukas.wunner@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "Poimboe, Josh" <jpoimboe@redhat.com>,
+        "aarcange@redhat.com" <aarcange@redhat.com>,
+        Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
+        "jbachmann@google.com" <jbachmann@google.com>,
+        "pgonda@google.com" <pgonda@google.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        James Morris <jmorris@namei.org>,
+        Michael Kelley <mikelley@microsoft.com>,
+        "Lange, Jon" <jlange@microsoft.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Kernel Hardening <kernel-hardening@lists.openwall.com>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <20230125160203.z4ttwlgclfd54pc6@box.shutemov.name>
+Message-ID: <Y9FbjjpVTt/Yp0lq@mit.edu>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
  <Y9EkCvAfNXnJ+ATo@kroah.com>
- <Y9Ex3ZUIFxwOBg1n@work-vm>
- <Y9E7PNmSTP5w2zuw@kroah.com>
- <Y9FDZPV7qENtNNyk@work-vm>
- <Y9FHsvVoPbgMR2s3@kroah.com>
- <20230125103816-mutt-send-email-mst@kernel.org>
+ <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230125103816-mutt-send-email-mst@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
 
-On Wed, Jan 25, 2023 at 10:45:48AM -0500, Michael S. Tsirkin wrote:
-> On Wed, Jan 25, 2023 at 04:16:02PM +0100, Greg Kroah-Hartman wrote:
-> > Everyone wants a subset, different from other's subset, which means you
-> > need them all.  Sorry.
+On Wed, Jan 25, 2023 at 03:29:07PM +0000, Reshetova, Elena wrote:
+> > Again, as our documentation states, when you submit patches based on
+> > these tools, you HAVE TO document that.  Otherwise we think you all are
+> > crazy and will get your patches rejected.  You all know this, why ignore
+> > it?
 > 
-> Well if there's a very popular system (virtual in this case) that needs
-> a specific config to work well, then I guess
-> arch/x86/configs/ccguest.config or whatever might be acceptable, no?
-> Lots of precedent here.
+> Sorry, I didn’t know that for every bug that is found in linux kernel when
+> we are submitting a fix that we have to list the way how it has been found.
+> We will fix this in the future submissions, but some bugs we have are found by
+> plain code audit, so 'human' is the tool.
 
-OS vendors want the single kernel that fits all sizes: it should be
-possible (and secure) to run a generic disto kernel within TDX/SEV guest.
+So the concern is that *you* may think it is a bug, but other people
+may not agree.  Perhaps what is needed is a full description of the
+goals of Confidential Computing, and what is in scope, and what is
+deliberately *not* in scope.  I predict that when you do this, that
+people will come out of the wood work and say, no wait, "CoCo ala
+S/390 means FOO", and "CoCo ala AMD means BAR", and "CoCo ala RISC V
+means QUUX".
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Others may end up objecting, "no wait, doing this is going to mean
+***insane*** changes to the entire kernel, and this will be a
+performance / maintenance nightmare and unless you fix your hardware
+in future chips, we wlil consider this a hardware bug and reject all
+of your patches".
+
+But it's better to figure this out now, then after you get hundreds of
+patches into the upstream kernel, we discover that this is only 5% of
+the necessary changes, and then the rest of your patches are rejected,
+and you have to end up fixing the hardware anyway, with the patches
+upstreamed so far being wasted effort.  :-)
+
+If we get consensus on that document, then that can get checked into
+Documentation, and that can represent general consensus on the problem
+early on.
+
+						- Ted
