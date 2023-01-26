@@ -1,118 +1,156 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49BD3222
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 15:55:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674748541;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KUfz5FqW5DjFue06WiRhV7K91biiIYjl4iTlBUVfvFM=;
-	b=itoZpfI6CAv3MX+5k4Up1GSDXfk958vgDtTXE0eCHreTtBeOIAgKh0o8aV66yNDUblq7cO
-	hkIVViott+xKE9EPNs66efok7hqwepuNl4cA1Pi/eipAE0WVKg3HrO7k8LySulGRqc6T96
-	tzbbUaVB+kM32lCdcnYGE4f9PzjJX4s=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-208-QlWNrDv2PaGd9D8a0A1pJw-1; Thu, 26 Jan 2023 10:55:38 -0500
-X-MC-Unique: QlWNrDv2PaGd9D8a0A1pJw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 91B4C3C10696;
-	Thu, 26 Jan 2023 15:55:37 +0000 (UTC)
-Received: from redhat.com (unknown [10.33.36.108])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 62D16492C14;
-	Thu, 26 Jan 2023 15:55:34 +0000 (UTC)
-Date: Thu, 26 Jan 2023 15:55:32 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Richard Weinberger <richard.weinberger@gmail.com>
-Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
-	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Kleen, Andi" <andi.kleen@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Wunner, Lukas" <lukas.wunner@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Poimboe, Josh" <jpoimboe@redhat.com>,
-	"aarcange@redhat.com" <aarcange@redhat.com>,
-	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-	"jbachmann@google.com" <jbachmann@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	"Lange, Jon" <jlange@microsoft.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6EB3222
+	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 16:07:35 +0000 (UTC)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4P2lvT46h3z6J9Tn;
+	Fri, 27 Jan 2023 00:06:45 +0800 (CST)
+Received: from localhost (10.81.202.191) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 26 Jan
+ 2023 16:07:30 +0000
+Date: Thu, 26 Jan 2023 16:07:29 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Samuel Ortiz <sameo@rivosinc.com>
+CC: Lukas Wunner <lukas@wunner.de>, "Dr. David Alan Gilbert"
+	<dgilbert@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>, "Shishkin, Alexander"
+	<alexander.shishkin@intel.com>, "Shutemov, Kirill"
+	<kirill.shutemov@intel.com>, "Kuppuswamy, Sathyanarayanan"
+	<sathyanarayanan.kuppuswamy@intel.com>, "Kleen, Andi" <andi.kleen@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>, "Thomas Gleixner"
+	<tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, "Mika
+ Westerberg" <mika.westerberg@linux.intel.com>, "Michael S. Tsirkin"
+	<mst@redhat.com>, Jason Wang <jasowang@redhat.com>, "Poimboe, Josh"
+	<jpoimboe@redhat.com>, "aarcange@redhat.com" <aarcange@redhat.com>, "Cfir
+ Cohen" <cfir@google.com>, Marc Orr <marcorr@google.com>,
+	"jbachmann@google.com" <jbachmann@google.com>, "pgonda@google.com"
+	<pgonda@google.com>, "keescook@chromium.org" <keescook@chromium.org>, "James
+ Morris" <jmorris@namei.org>, Michael Kelley <mikelley@microsoft.com>, "Lange,
+ Jon" <jlange@microsoft.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, Linux Kernel Mailing List
+	<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y9KidD7bT8QJbG+Q@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Message-ID: <20230126160729.00006843@Huawei.com>
+In-Reply-To: <Y9J82eutqDkusRIq@vermeer>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9EkCvAfNXnJ+ATo@kroah.com>
- <Y9Ex3ZUIFxwOBg1n@work-vm>
- <Y9E5Cg7mreDx737N@redhat.com>
- <CAFLxGvwHRK3vyXiCv5ELvrDSEkcDgV5c6pNnWgWhcATfp1dedA@mail.gmail.com>
- <Y9KVHnHnig4jwNPx@work-vm>
- <CAFLxGvyMncqjkEXiOqenQu+rZW46RP7UorXs36+awmgnBxTGhA@mail.gmail.com>
+	<Y9EkCvAfNXnJ+ATo@kroah.com>
+	<Y9Ex3ZUIFxwOBg1n@work-vm>
+	<Y9E7PNmSTP5w2zuw@kroah.com>
+	<Y9FDZPV7qENtNNyk@work-vm>
+	<20230125215333.GA18160@wunner.de>
+	<CAGXJix9-cXNW7EwJf0PVzj_Qmt5fmQvBX1KvXfRX5NAeEpnMvw@mail.gmail.com>
+	<20230126105847.00001b97@Huawei.com>
+	<Y9J82eutqDkusRIq@vermeer>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFLxGvyMncqjkEXiOqenQu+rZW46RP7UorXs36+awmgnBxTGhA@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.81.202.191]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
 
-On Thu, Jan 26, 2023 at 04:13:11PM +0100, Richard Weinberger wrote:
-> On Thu, Jan 26, 2023 at 3:58 PM Dr. David Alan Gilbert
-> <dgilbert@redhat.com> wrote:
-> >
-> > * Richard Weinberger (richard.weinberger@gmail.com) wrote:
-> > > On Wed, Jan 25, 2023 at 3:22 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> > > > Any virtual device exposed to the guest that can transfer potentially
-> > > > sensitive data needs to have some form of guest controlled encryption
-> > > > applied. For disks this is easy with FDE like LUKS, for NICs this is
-> > > > already best practice for services by using TLS. Other devices may not
-> > > > have good existing options for applying encryption.
-> > >
-> > > I disagree wrt. LUKS. The cryptography behind LUKS protects persistent data
-> > > but not transport. If an attacker can observe all IO you better
-> > > consult a cryptographer.
-> > > LUKS has no concept of session keys or such, so the same disk sector will
-> > > always get encrypted with the very same key/iv.
-> >
-> > Are you aware of anything that you'd use instead?
+On Thu, 26 Jan 2023 14:15:05 +0100
+Samuel Ortiz <sameo@rivosinc.com> wrote:
+
+> On Thu, Jan 26, 2023 at 10:58:47AM +0000, Jonathan Cameron wrote:
+> > On Thu, 26 Jan 2023 10:24:32 +0100
+> > Samuel Ortiz <sameo@rivosinc.com> wrote:
+> >   
+> > > Hi Lukas,
+> > > 
+> > > On Wed, Jan 25, 2023 at 11:03 PM Lukas Wunner <lukas@wunner.de> wrote:
+> > >   
+> > > > [cc += Jonathan Cameron, linux-pci]
+> > > >
+> > > > On Wed, Jan 25, 2023 at 02:57:40PM +0000, Dr. David Alan Gilbert wrote:    
+> > > > > Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:    
+> > > > > > Great, so why not have hardware attestation also for your devices you
+> > > > > > wish to talk to?  Why not use that as well?  Then you don't have to
+> > > > > > worry about anything in the guest.    
+> > > > >
+> > > > > There were some talks at Plumbers where PCIe is working on adding that;
+> > > > > it's not there yet though.  I think that's PCIe 'Integrity and Data
+> > > > > Encryption' (IDE - sigh), and PCIe 'Security Prtocol and Data Model' -
+> > > > > SPDM.   I don't know much of the detail of those, just that they're far
+> > > > > enough off that people aren't depending on them yet.    
+> > > >
+> > > > CMA/SPDM (PCIe r6.0 sec 6.31) is in active development on this branch:
+> > > >
+> > > > https://github.com/l1k/linux/commits/doe    
+> > > 
+> > > Nice, thanks a lot for that.
+> > > 
+> > > 
+> > >   
+> > > > The device authentication service afforded here is generic.
+> > > > It is up to users and vendors to decide how to employ it,
+> > > > be it for "confidential computing" or something else.
+> > > >
+> > > > Trusted root certificates to validate device certificates can be
+> > > > installed into a kernel keyring using the familiar keyctl(1) utility,
+> > > > but platform-specific roots of trust (such as a HSM) could be
+> > > > supported as well.
+> > > >    
+> > > 
+> > > This may have been discussed at LPC, but are there any plans to also
+> > > support confidential computing flows where the host kernel is not part
+> > > of the TCB and would not be trusted for validating the device cert chain
+> > > nor for running the SPDM challenge?  
+> > 
+> > There are lots of possible models for this. One simple option if the assigned
+> > VF supports it is a CMA instance per VF. That will let the guest
+> > do full attestation including measurement of whether the device is
+> > appropriately locked down so the hypervisor can't mess with
+> > configuration that affects the guest (without a reset anyway and that
+> > is guest visible).   
 > 
-> Well, I'd think towards iSCSI over TLS to protect the IO transport.
+> So the VF would be directly assigned to the guest, and the guest kernel
+> would create a CMA instance for the VF, and do the SPDM authentication
+> (based on a guest provided trusted root certificate). I think one
+> security concern with that approach is assigning the VF to the
+> (potentially confidential) guest address space without the guest being
+> able to attest of the device trustworthiness first. That's what TDISP is
+> aiming at fixing (establish a secure SPDM between the confidential guest
+> and the device, lock the device from the guest, attest and then enable
+> DMA). 
 
-That just moves the problem elsewhere though surely. The remote iSCSI
-server still has to persist the VMs' data, and the cloud sevice provider
-can observe any I/O before it hits the final hardware storage. So the
-remote iSCSI server needs to apply a FDE like encryption scheme for
-the exported iSCSI block device, and using a key only accessible to the
-tenant that owns the VM. It still needs to solve the same problem of
-having some kind of "generation ID" that can tweak the IV for each virtual
-disk sector, to protect against time based analysis.
+Agreed, TDISP is more comprehensive, but also much more complex with
+more moving parts that we don't really have yet.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Depending on your IOMMU design (+ related stuff) and interaction with
+the secure guest, you might be able to block any rogue DMA until
+after attestation / lock down checks even if the Hypervisor was letting
+it through.
+
+> 
+> > Whether anyone builds that option isn't yet clear
+> > though. If they do, Lukas' work should work there as well as for the
+> > host OS. (Note I'm not a security expert so may be missing something!)
+> > 
+> > For extra fun, why should the device trust the host? Mutual authentication
+> > fun (there are usecases where that matters)
+> > 
+> > There are way more complex options supported in PCIe TDISP (Tee Device
+> > security interface protocols). Anyone have an visibility of open solutions
+> > that make use of that? May be too new.  
+> 
+> It's still a PCI ECN, so quite new indeed.
+> FWIW the rust spdm crate [1] implements the TDISP state machine.
+
+Cool. thanks for the reference.
+> 
+> Cheers,
+> Samuel.
+> 
+> [1] https://github.com/jyao1/rust-spdm
+> >   
 
