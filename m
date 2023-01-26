@@ -1,46 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB06538D
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 21:25:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548D2C433D2;
-	Thu, 26 Jan 2023 21:25:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1674768342;
-	bh=l0Zu8iIrldR2UdBT8hZ4gHGIUEy3EDsOun6BQFWhokg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t0YubjSrKMW8vSsWkSdr/4Myl+5dSI9ia2kr4LIeXQ1OQP2FM8Eh/dDexFNEwl5cG
-	 8ufJH0uQn3UXphqct9gaEaImNF8ghCGQgqypnch95wp532zrbiUo8ZqMUt77kSYKHs
-	 lhYV+gclqQzVbZ+fAPORNgX7uWeY+dWR9Sq8MhQ4rOL+TC8QjvYekGKZEGCNPpfv8b
-	 di3MMIexrbGo1alA4a50vLYIMO/d1+gfiHhTAxhOvvkm8DsGHIzUdZLFjeIyuQMlhH
-	 zSSPrODVBQCNwfYn5xedaFwqnlA8BeB/I0SxKkuY6VQVpmrxi/u63REoQtkqGnrN0h
-	 VezmjkZ07iGmA==
-Date: Thu, 26 Jan 2023 21:25:40 +0000
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, dgilbert@redhat.com, harald@profian.com,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Pavan Kumar Paluri <papaluri@amd.com>
-Subject: Re: [PATCH RFC v7 37/64] KVM: SVM: Add KVM_SNP_INIT command
-Message-ID: <Y9Lv1HjD1FWdH9jg@kernel.org>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-38-michael.roth@amd.com>
- <Y7BG6pSuoZsBQYrx@kernel.org>
- <fd23ee51-ec47-717d-7cce-1d79db8b6bd3@amd.com>
- <16523f06-bb08-c4f9-bdfa-745fee553a43@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D213C538D
+	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 21:41:48 +0000 (UTC)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 5F23930000CFD;
+	Thu, 26 Jan 2023 22:41:46 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 42A8D2B0CE5; Thu, 26 Jan 2023 22:41:46 +0100 (CET)
+Date: Thu, 26 Jan 2023 22:41:46 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Samuel Ortiz <sameo@rivosinc.com>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
+	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
+	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
+	"Kleen, Andi" <andi.kleen@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Poimboe, Josh" <jpoimboe@redhat.com>,
+	"aarcange@redhat.com" <aarcange@redhat.com>,
+	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
+	"jbachmann@google.com" <jbachmann@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"keescook@chromium.org" <keescook@chromium.org>,
+	James Morris <jmorris@namei.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	"Lange, Jon" <jlange@microsoft.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-pci@vger.kernel.org
+Subject: Re: Linux guest kernel threat model for Confidential Computing
+Message-ID: <20230126214146.GA28774@wunner.de>
+References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <Y9EkCvAfNXnJ+ATo@kroah.com>
+ <Y9Ex3ZUIFxwOBg1n@work-vm>
+ <Y9E7PNmSTP5w2zuw@kroah.com>
+ <Y9FDZPV7qENtNNyk@work-vm>
+ <20230125215333.GA18160@wunner.de>
+ <CAGXJix9-cXNW7EwJf0PVzj_Qmt5fmQvBX1KvXfRX5NAeEpnMvw@mail.gmail.com>
+ <20230126154449.GB4188@wunner.de>
+ <20230126112058-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -49,21 +60,51 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <16523f06-bb08-c4f9-bdfa-745fee553a43@amd.com>
+In-Reply-To: <20230126112058-mutt-send-email-mst@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Jan 23, 2023 at 04:49:14PM -0600, Kalra, Ashish wrote:
-> There was an early firmware issue on Genoa which supported only SNP_INIT or
-> SEV_INIT, but this issue is resolved now.
+On Thu, Jan 26, 2023 at 11:25:21AM -0500, Michael S. Tsirkin wrote:
+> On Thu, Jan 26, 2023 at 04:44:49PM +0100, Lukas Wunner wrote:
+> > Obviously the host can DoS guest access to the device by modifying
+> > exchanged messages, but there are much simpler ways for it to
+> > do that, say, by clearing Bus Master Enable or Memory Space Enable
+> > bits in the Command Register.
 > 
-> Now, the main constraints are that SNP_INIT is always required before
-> SEV_INIT in case we want to launch SNP guests. In other words, if only
-> SEV_INIT is done on a platform which supports SNP we won't be able to launch
-> SNP guests after that.
-> 
-> So once we have RMP table setup (in BIOS) we will always do an SNP_INIT and
-> SEV_INIT will be ideally done only (on demand) when an SEV guest is
-> launched.
+> There's a single key per guest though, isn't it? Also used
+> for regular memory?
 
-OK, thanks for the clarification!
+The current design is to have a global keyring (per kernel, i.e. per
+guest).  A device presents a certificate chain and the first certificate
+in that chain needs to be signed by one of the certificates on the keyring.
 
-BR, Jarkko
+This is completely independent from the key used for memory encryption.
+
+A device can have up to 8 certificate chains (called "slots" in the
+SPDM spec) and I've implemented it such that all slots are iterated
+and validation is considered to be successful as soon as a slot with
+a valid signature is found.
+
+We can discuss having a per-device keyring if anyone thinks it makes
+sense.
+
+The PCISIG's idea seems to be that each vendor of PCIe cards publishes
+a trusted root certificate and users would then have to keep all those
+vendor certificates in their global keyring.  This follows from the
+last paragraph of PCIe r6.0.1 sec 6.31.3, which says "it is strongly
+recommended that authentication requesters [i.e. the kernel] confirm
+that the information provided in the Subject Alternative Name entry
+[of the device's leaf certificate] is signed by the vendor indicated
+by the Vendor ID."
+
+The astute reader will notice that for this to work, the Vendor ID
+must be included in the trusted root certificate in a machine-readable
+way.  Unfortunately the PCIe Base Spec fails to specify that.
+So I don't know how to associate a trusted root certificate with a
+Vendor ID.
+
+I'll report this and several other gaps I've found in the spec to the
+editor at the PCISIG so that they can be filled in a future revision.
+
+Thanks,
+
+Lukas
