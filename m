@@ -1,48 +1,24 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E7E256A
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 13:32:14 +0000 (UTC)
-Received: by mail-wm1-f53.google.com with SMTP id iv8-20020a05600c548800b003db04a0a46bso4144113wmb.0
-        for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 05:32:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hvXTfjErGpMP8uOLDwmTjxkzwIedC4pHfuHn5jXJ8N0=;
-        b=qSz3i+Nk4N2o0AemsRlY4Y1kvJX0QWS/ebt8ampVtbMQJog/GsNN/nHJrdTqc08+KU
-         Uw2lbHFjidj8JTAOcNFi1TpWGyvIB+pj4YDsirHFqftcK7Dae7wFeYYlU3daBS5q6O4J
-         4LOaY6/1cfkafaEzTU8ZXBpFvW9eS1dW0XgjD1dZFFY0tcDI02D237KJn+JXjR6phgnh
-         jOpNbb5SMNwjBwce++SDxth6ZQ+0R2khbjAsXWoKdmHx2k0KD6+r1ky0KnN2BgK40Y4W
-         4UNeq43CoU9gkSfpUFHt4Hyhex0QXygxXvr/3bxMnNx5ZCbSXdiJroNNBuMpfgzNCUnU
-         TOgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hvXTfjErGpMP8uOLDwmTjxkzwIedC4pHfuHn5jXJ8N0=;
-        b=pPhlk5D6SD5/nXU0n8vbHE469HK5mASqrLk4QgLlLk0sTlxxl44cwuB3RsYTH/xZ14
-         U7vS8zAueikKl/RnuZ5gMYFf4CcNwuS3euv1nsgdTdK9afUBMvpfKTdLNUSr/n7RYQSa
-         YeMc9/NjKrrwMZSRwTUZSTxN1ieN3J+W/Pd73NzOMaJmU/V0/msWxdk9iJNArU6HHvBL
-         ieZop06AvFeAZPMa4UopSP/6THK8MeTvI7sZwirWwaJHUpOQVEvZjmCPzl0b713pAB0q
-         tifzxiZF/Q1XmKYIcdHt5RSfGFI9aQ9mVDZU2eSc6rBvtX1c2Rv/C+W3HS/P/QfCQUIj
-         tNNA==
-X-Gm-Message-State: AFqh2kp4kjXv9Ibkt0Ribqves6MEtOk1toWk+HdeK2eMzJGcjBqL6oeJ
-	E9uq5ns93fsMTNaCY7uu9Zz2jw==
-X-Google-Smtp-Source: AMrXdXsvke9/I5SEmOUuX2fmA7FDEbfmJeFpKph8uM2MNd6/2VY4XfLs4JIZluGNUbgzvZmtCNlL8A==
-X-Received: by 2002:a1c:f310:0:b0:3db:15d9:1485 with SMTP id q16-20020a1cf310000000b003db15d91485mr29420414wmq.39.1674739932598;
-        Thu, 26 Jan 2023 05:32:12 -0800 (PST)
-Received: from vermeer ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
-        by smtp.gmail.com with ESMTPSA id n13-20020a05600c500d00b003db2b81660esm5006955wmr.21.2023.01.26.05.32.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jan 2023 05:32:11 -0800 (PST)
-Date: Thu, 26 Jan 2023 14:32:09 +0100
-From: Samuel Ortiz <sameo@rivosinc.com>
-To: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc: Lukas Wunner <lukas@wunner.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C98256A
+	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 13:50:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9A1C433EF;
+	Thu, 26 Jan 2023 13:50:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674741005;
+	bh=hJnAv06Ctj8m84GdTXHU08N55+6Z6UhZb5afVPxfAI0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=njVesddcTFbXraQe46NyjJdxG2wdeVAFplYs7egIwh8AVxZXK1uD37AMpNQW29mBI
+	 VLd2bj7IuM/NJSUvDeIAriFOLW/lBUzcbESdBccP3XheHwTHfTe8z9tIY/6HDoJQUs
+	 nXKNPeTGKVgJ3Q/Bqn4JWi66J36AN5edOC9X/hBN8/3SxpG7+t4sGjjW9xmrXh0O9z
+	 mTcGlQLi088lqJ0zA7wd1t1lO7QoNSB3/l34RoKvlYzrSChtsDo6Dlxtkw5E67bXoa
+	 BNFsnEpfGFJ3XlH1dQBzpxIAyAGuxy6NbEVh1ALUFc4cqZfI+u7UlCbTpbfMqZpjiT
+	 4tuRA8/KID7Uw==
+Date: Thu, 26 Jan 2023 15:50:00 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
 	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
 	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
@@ -50,6 +26,7 @@ Cc: Lukas Wunner <lukas@wunner.de>,
 	"Hansen, Dave" <dave.hansen@intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>,
+	"Wunner, Lukas" <lukas.wunner@intel.com>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Jason Wang <jasowang@redhat.com>,
@@ -64,74 +41,134 @@ Cc: Lukas Wunner <lukas@wunner.de>,
 	"Lange, Jon" <jlange@microsoft.com>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-pci@vger.kernel.org
+	Kernel Hardening <kernel-hardening@lists.openwall.com>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y9KA2RNHujabdV/D@vermeer>
+Message-ID: <Y9KFCC8XkCvduWDp@unreal>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
  <Y9EkCvAfNXnJ+ATo@kroah.com>
- <Y9Ex3ZUIFxwOBg1n@work-vm>
- <Y9E7PNmSTP5w2zuw@kroah.com>
- <Y9FDZPV7qENtNNyk@work-vm>
- <20230125215333.GA18160@wunner.de>
- <Y9Jakvab14K61b2t@work-vm>
+ <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <Y9Jh2x9XJE1KEUg6@unreal>
+ <DM8PR11MB5750414F6638169C7097E365E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <Y9JyW5bUqV7gWmU8@unreal>
+ <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Y9Jakvab14K61b2t@work-vm>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
 
-On Thu, Jan 26, 2023 at 10:48:50AM +0000, Dr. David Alan Gilbert wrote:
-> * Lukas Wunner (lukas@wunner.de) wrote:
-> > [cc += Jonathan Cameron, linux-pci]
+On Thu, Jan 26, 2023 at 01:28:15PM +0000, Reshetova, Elena wrote:
+> > On Thu, Jan 26, 2023 at 11:29:20AM +0000, Reshetova, Elena wrote:
+> > > > On Wed, Jan 25, 2023 at 03:29:07PM +0000, Reshetova, Elena wrote:
+> > > > > Replying only to the not-so-far addressed points.
+> > > > >
+> > > > > > On Wed, Jan 25, 2023 at 12:28:13PM +0000, Reshetova, Elena wrote:
+> > > > > > > Hi Greg,
+> > > >
+> > > > <...>
+> > > >
+> > > > > > > 3) All the tools are open-source and everyone can start using them right
+> > > > away
+> > > > > > even
+> > > > > > > without any special HW (readme has description of what is needed).
+> > > > > > > Tools and documentation is here:
+> > > > > > > https://github.com/intel/ccc-linux-guest-hardening
+> > > > > >
+> > > > > > Again, as our documentation states, when you submit patches based on
+> > > > > > these tools, you HAVE TO document that.  Otherwise we think you all are
+> > > > > > crazy and will get your patches rejected.  You all know this, why ignore
+> > > > > > it?
+> > > > >
+> > > > > Sorry, I didn’t know that for every bug that is found in linux kernel when
+> > > > > we are submitting a fix that we have to list the way how it has been found.
+> > > > > We will fix this in the future submissions, but some bugs we have are found
+> > by
+> > > > > plain code audit, so 'human' is the tool.
+> > > >
+> > > > My problem with that statement is that by applying different threat
+> > > > model you "invent" bugs which didn't exist in a first place.
+> > > >
+> > > > For example, in this [1] latest submission, authors labeled correct
+> > > > behaviour as "bug".
+> > > >
+> > > > [1] https://lore.kernel.org/all/20230119170633.40944-1-
+> > > > alexander.shishkin@linux.intel.com/
+> > >
+> > > Hm.. Does everyone think that when kernel dies with unhandled page fault
+> > > (such as in that case) or detection of a KASAN out of bounds violation (as it is in
+> > some
+> > > other cases we already have fixes or investigating) it represents a correct
+> > behavior even if
+> > > you expect that all your pci HW devices are trusted?
 > > 
-> > On Wed, Jan 25, 2023 at 02:57:40PM +0000, Dr. David Alan Gilbert wrote:
-> > > Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:
-> > > > Great, so why not have hardware attestation also for your devices you
-> > > > wish to talk to?  Why not use that as well?  Then you don't have to
-> > > > worry about anything in the guest.
-> > > 
-> > > There were some talks at Plumbers where PCIe is working on adding that;
-> > > it's not there yet though.  I think that's PCIe 'Integrity and Data
-> > > Encryption' (IDE - sigh), and PCIe 'Security Prtocol and Data Model' -
-> > > SPDM.   I don't know much of the detail of those, just that they're far
-> > > enough off that people aren't depending on them yet.
-> > 
-> > CMA/SPDM (PCIe r6.0 sec 6.31) is in active development on this branch:
-> >
-> > https://github.com/l1k/linux/commits/doe
+> > This is exactly what I said. You presented me the cases which exist in
+> > your invented world. Mentioned unhandled page fault doesn't exist in real
+> > world. If PCI device doesn't work, it needs to be replaced/blocked and not
+> > left to be operable and accessible from the kernel/user.
 > 
-> Thanks for the pointer - I'll go and hunt down that spec.
+> Can we really assure correct operation of *all* pci devices out there?
+
+Why do we need to do it in 2022? These *all* pci devices work.
+
+> How would such an audit be performed given a huge set of them available?
+
+Compliance tests?
+https://pcisig.com/developers/compliance-program
+
+> Isnt it better instead to make a small fix in the kernel behavior that would guard
+> us from such potentially not correctly operating devices? 
+
+Like Greg already said, this is a small drop in a ocean which needs to be changed.
+
+However even in mentioned by me case, you are not fixing but hiding real
+problem of having broken device in my machine. It is worst possible solution
+for the users. 
+
 > 
-> > It will allow for authentication of PCIe devices.  Goal is to submit
-> > this quarter (Q1).  Afterwards we'll look into retrieving measurements
-> > via CMA/SPDM and bringing up IDE encryption.
-> > 
-> > It's a kernel-native implementation which uses the existing crypto and
-> > keys infrastructure and is wired into the appropriate places in the
-> > PCI core to authenticate devices on enumeration and reauthenticate
-> > when CMA/SPDM state is lost (after resume from D3cold, after a
-> > Secondary Bus Reset and after a DPC-induced Hot Reset).
-> > 
-> > The device authentication service afforded here is generic.
-> > It is up to users and vendors to decide how to employ it,
-> > be it for "confidential computing" or something else.
 > 
-> As Samuel asks about who is doing the challenge; but I guess there are
-> also things like what happens when the host controls intermediate
-> switches 
+> > 
+> > > What about an error in two consequent pci reads? What about just some
+> > > failure that results in erroneous input?
+> > 
+> > Yes, some bugs need to be fixed, but they are not related to trust/not-trust
+> > discussion and PCI spec violations.
+> 
+> Let's forget the trust angle here (it only applies to the Confidential Computing 
+> threat model and you clearly implying the existing threat model instead) and stick just to
+> the not-correctly operating device. What you are proposing is to fix *unknown* bugs
+> in multitude of pci devices that (in case of this particular MSI bug) can
+> lead to two different values being read from the config space and kernel incorrectly
+> handing this situation. 
 
-You'd want to protect that through IDE selective streams.
+Let's don't call bug for something which is not.
 
-> and BAR access and when only VFs are passed to guests.
+Random crashes are much more tolerable then "working" device which sends
+random results.
 
-TDISP aims at addressing that afaiu. Once the VF (aka TDI) is locked,
-any changes to its BAR(s) or any PF MMIO that would affect the VF would
-get the VF back to unlocked (and let the guest reject it).
+> Isn't it better to do the clear fix in one place to ensure such
+> situation (two subsequent reads with different values) cannot even happen in theory?
+> In security we have a saying that fixing a root cause of the problem is the most efficient
+> way to mitigate the problem. The root cause here is a double-read with different values,
+> so if it can be substituted with an easy and clear patch that probably even improves
+> performance as we do one less pci read and use cached value instead, where is the
+> problem in this particular case? If there are technical issues with the patch, of course we 
+> need to discuss it/fix it, but it seems we are arguing here about whenever or not we want
+> to be fixing kernel code when we notice such cases... 
 
-Cheers,
-Samuel.
+Not really, we are arguing what is the right thing to do:
+1. Fix a root cause - device
+2. Hide the failure and pretend what everything is perfect despite
+having problematic device.
+
+Thanks
+
+> 
+> Best Regards,
+> Elena
+>  
+>  
