@@ -1,55 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1B533F0
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 16:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF4333F0
+	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 16:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674750333;
+	s=mimecast20190719; t=1674750557;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CyqC4HBKoEgyHHDtYb2+ga2T4D19HRBTg8u+WniVOaQ=;
-	b=d35bFUcUlSUSSOz7O7/+RMF2P+0Xxk1GpzKQp4/+dybdWDGiaCL6z0dR18NVw+AKLhNK00
-	XG/WhPjiP+3Se3C+ASbpTuNWpqlxSNWApnYsNaJFGTjZplPVF6/8HH0e5mcKSIWx4eALYG
-	s8jJcLo6DuOHWKgXL3hbn80kBb0G1O8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=uQ5AeqRdHoqDiMiO534YbFssRp+d+rc3l3U4CDokNu0=;
+	b=fhQGYpOATd3j+wWS7cdtxzXN9lzb4sNEVHp0geJXFd9BiFFqjsILa6WXtoszo/hmOFgzJ/
+	7ybPyOJxQHjdAUo8C0brOdTOkqvNTvhtV6ZAFpjfNs+JkRlhxnlPHZib/SLyoVrRMjr7mH
+	J1lJYTVBxDSXW5QHuK0kCMJoVFuDFcI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-90-2H9cPzB3PZmUbalQewq9dQ-1; Thu, 26 Jan 2023 11:25:29 -0500
-X-MC-Unique: 2H9cPzB3PZmUbalQewq9dQ-1
-Received: by mail-wr1-f72.google.com with SMTP id l8-20020adfc788000000b002bdfe72089cso428192wrg.21
-        for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 08:25:28 -0800 (PST)
+ us-mta-155-ztkHzIqoN5K_NtIvmuDbnQ-1; Thu, 26 Jan 2023 11:29:16 -0500
+X-MC-Unique: ztkHzIqoN5K_NtIvmuDbnQ-1
+Received: by mail-wr1-f70.google.com with SMTP id w16-20020a5d4b50000000b002bfca568cdfso332477wrs.0
+        for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 08:29:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CyqC4HBKoEgyHHDtYb2+ga2T4D19HRBTg8u+WniVOaQ=;
-        b=w3yKQVZq55Bwc4vsbgCsX3N1RYlEtNYG4saZne3FGa3bYyZ/AAz0FnY9FbQXr5+7Nv
-         Q4moMm1C5gZqrItUUP31WvofUuoNoYOSXNaNTPTIuU3tWO40i/5w5lhKb2UuCpqKMVk1
-         ZzaCRYTtC8fINsAFFRo5HjxDGwNyl1u5Y8RXMIVYtbluEnjJv38JrF2MP+n1xmrMfOJB
-         VsaofpigMABUmyoZPlhnYj7YfD8uJbkAkSEW1uCEeXsS2Ee2L0rSgN8rJaiFNyFvAC6m
-         iD/v2gWuT7Y3s7kxBhRUlDlEFwURKl/LM0VQHW3aetEmZJeVDJz5vr+mgDH1Xi7BCwed
-         HOLA==
-X-Gm-Message-State: AFqh2kotwZxDHvyruNJAnTvxaa0Ko5EUQVwtJP3pF0jFaTgU1hbNCnfs
-	MESStKfVbNv5W/sP76qlijJoXWHxSlNj6fasxzVtB+nWc62FXhFtpmo/072skJ3dquegGnUjCsz
-	Rm7uysxiVB1jMmfnVDQFR2g==
-X-Received: by 2002:a05:600c:3488:b0:3cf:68f8:790b with SMTP id a8-20020a05600c348800b003cf68f8790bmr33587603wmq.11.1674750327871;
-        Thu, 26 Jan 2023 08:25:27 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXv5e8MKjFsCkVUne5IjgyuScDl6uyyRaHtc0mBQA3MKSQ6ykJ/gLCNS/1L73hNUG/JIUAeP8g==
-X-Received: by 2002:a05:600c:3488:b0:3cf:68f8:790b with SMTP id a8-20020a05600c348800b003cf68f8790bmr33587572wmq.11.1674750327685;
-        Thu, 26 Jan 2023 08:25:27 -0800 (PST)
+        bh=uQ5AeqRdHoqDiMiO534YbFssRp+d+rc3l3U4CDokNu0=;
+        b=TZ5uFuJ9lbLxBCFbCBQFzf5Zfdhvd6rtDACHvB0EFSrRJCI/khZXS7pBpwwF4G6GGN
+         5Lb7XWl/NYhfA5x40KpShbSpmS1WQqkRLY+AidDTqnoamoh+J7w6WiQ/5HOcteYvcyct
+         9faE9GW5t17twRjqC/K8zN6AWqj6L+sE8EVUcNfPJlElpIjTlVw4TATWntTxqCtCbvkv
+         knPb+OOnasMQRqYqCXXCwrjyps9eU10ilXfegHcXrizigiA1TrhDa/7D2A3dUxh1bI2o
+         eWLv5q+/bW5OxvvKs+vBLd+JEViEdd/tG1nK+D9Ba4EMXz/+tfroQzf0L3OVanueeaCt
+         K4Ng==
+X-Gm-Message-State: AFqh2kosLGXNgA3iezuBLk1UgJrv7sgE+4ezh5EAE+4h/rfusE4TFqoh
+	6loVtmlHih9x0oHXYXjlbDMkiDsQJDVCy2c0df4h2uQmgiv7UDx2znuzxZhQrPnjZ08JB2hIVBo
+	qO31MolVgfZLH/SdfQtxHrA==
+X-Received: by 2002:a05:600c:1c9d:b0:3da:db4:6105 with SMTP id k29-20020a05600c1c9d00b003da0db46105mr36614927wms.37.1674750554562;
+        Thu, 26 Jan 2023 08:29:14 -0800 (PST)
+X-Google-Smtp-Source: AMrXdXu/XUMPJtU5iYBp8WyqQ43Iwj8Vmxw+tnCVJfRHeV2qUt/JRWJYMx6HGI88x+KBLozOr/fmeg==
+X-Received: by 2002:a05:600c:1c9d:b0:3da:db4:6105 with SMTP id k29-20020a05600c1c9d00b003da0db46105mr36614890wms.37.1674750554324;
+        Thu, 26 Jan 2023 08:29:14 -0800 (PST)
 Received: from redhat.com ([2.52.137.69])
-        by smtp.gmail.com with ESMTPSA id c11-20020adfa30b000000b002bfb5ebf8cfsm1822818wrb.21.2023.01.26.08.25.23
+        by smtp.gmail.com with ESMTPSA id p8-20020a05600c05c800b003c65c9a36dfsm1742661wmd.48.2023.01.26.08.29.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jan 2023 08:25:26 -0800 (PST)
-Date: Thu, 26 Jan 2023 11:25:21 -0500
+        Thu, 26 Jan 2023 08:29:13 -0800 (PST)
+Date: Thu, 26 Jan 2023 11:29:08 -0500
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Samuel Ortiz <sameo@rivosinc.com>,
-	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
 	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
 	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
@@ -57,6 +54,7 @@ Cc: Samuel Ortiz <sameo@rivosinc.com>,
 	"Hansen, Dave" <dave.hansen@intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>,
+	"Wunner, Lukas" <lukas.wunner@intel.com>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Jason Wang <jasowang@redhat.com>,
 	"Poimboe, Josh" <jpoimboe@redhat.com>,
@@ -70,39 +68,46 @@ Cc: Samuel Ortiz <sameo@rivosinc.com>,
 	"Lange, Jon" <jlange@microsoft.com>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-pci@vger.kernel.org
+	Kernel Hardening <kernel-hardening@lists.openwall.com>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <20230126112058-mutt-send-email-mst@kernel.org>
+Message-ID: <20230126105618-mutt-send-email-mst@kernel.org>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
  <Y9EkCvAfNXnJ+ATo@kroah.com>
- <Y9Ex3ZUIFxwOBg1n@work-vm>
- <Y9E7PNmSTP5w2zuw@kroah.com>
- <Y9FDZPV7qENtNNyk@work-vm>
- <20230125215333.GA18160@wunner.de>
- <CAGXJix9-cXNW7EwJf0PVzj_Qmt5fmQvBX1KvXfRX5NAeEpnMvw@mail.gmail.com>
- <20230126154449.GB4188@wunner.de>
+ <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20230126154449.GB4188@wunner.de>
+In-Reply-To: <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jan 26, 2023 at 04:44:49PM +0100, Lukas Wunner wrote:
-> Obviously the host can DoS guest access to the device by modifying
-> exchanged messages, but there are much simpler ways for it to
-> do that, say, by clearing Bus Master Enable or Memory Space Enable
-> bits in the Command Register.
+On Wed, Jan 25, 2023 at 03:29:07PM +0000, Reshetova, Elena wrote:
+> And this is a very special aspect of 'hardening' since it is about hardening a kernel
+> under different threat model/assumptions. 
 
-There's a single key per guest though, isn't it? Also used
-for regular memory?
+I am not sure it's that special in that hardening IMHO is not a specific
+threat model or a set of assumptions. IIUC it's just something that
+helps reduce severity of vulnerabilities.  Similarly, one can use the CC
+hardware in a variety of ways I guess. And one way is just that -
+hardening linux such that ability to corrupt guest memory does not
+automatically escalate into guest code execution.
 
+If you put it this way, you get to participate in a well understood
+problem space instead of constantly saying "yes but CC is special".  And
+further, you will now talk about features as opposed to fixing bugs.
+Which will stop annoying people who currently seem annoyed by the
+implication that their code is buggy simply because it does not cache in
+memory all data read from hardware. Finally, you then don't really need
+to explain why e.g. DoS is not a problem but info leak is a problem - when
+for many users it's actually the reverse - the reason is not that it's
+not part of a threat model - which then makes you work hard to define
+the threat model - but simply that CC hardware does not support this
+kind of hardening.
 
 -- 
 MST
