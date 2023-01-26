@@ -1,201 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0650446A7
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 18:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674756873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5S/IPLvFZLK6QG2ma4MFBOIajGhBXPdcBBlNU5N+t1g=;
-	b=R8l6ApfJOqQWhI/Yl36WNThVzApSZBO1c59lC6DqeMqs6ZFm0dxFTugF24I36VoF9k1OgV
-	9s5bwE0ar3oAyyP//QIqvj1T8LuGGUVk71kNLKjqpm/HiwWNZusYRwIlhLdp13MyiHt2b0
-	uI4K1/djgYA/qqyeNCwkP4oWPBff/p0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-629--PVkFL3RM4W12shuRtASIQ-1; Thu, 26 Jan 2023 13:14:32 -0500
-X-MC-Unique: -PVkFL3RM4W12shuRtASIQ-1
-Received: by mail-wm1-f72.google.com with SMTP id l8-20020a05600c1d0800b003dc25f6bb5dso1298802wms.0
-        for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 10:14:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5S/IPLvFZLK6QG2ma4MFBOIajGhBXPdcBBlNU5N+t1g=;
-        b=O88vzwFBLT+VfxccIw7zjMgsCtWCdFHAguolQZXH9FvSYEPe/3e4zQo1BWAQqWRxwQ
-         cqOAhST7hvrbTTbqkZsqWGm9nDJFWd9ob8qqM2s86BCo5DGJNEhi7oaK0qEPenE3Shmp
-         Ao5W55ATk8WKjgYMQNpHorkryvwqLByzVoE0hnVBcLvTp7wzjESjrR4rJTgpru25Kaje
-         PQjbmN/90LJAczQnmxqpuYl7aw1JLwEriZ+PB3JewjWLQbHUXDL5t0V/5yZnkBh0JgGU
-         IMJKZCPNDs3IIBpQI/ewyIW68N5U4dNrnT0gH9gO0ORmg/uqvXcemHAY1vtPMrmpfgWO
-         i6zg==
-X-Gm-Message-State: AO0yUKWkm+pVUjRjB3dwN2pXUzqoq+/UqbEvL2xarSew/Bbq3DCJqRuG
-	9yGQx8E9kZs9qkrucb57xU8cLzPsTzEUtjH09DXFJoEE5iG6REA6bjrp9eEXGtN+hN5CiJZ7JIT
-	7MYeWMmyf/4eod5NteWIvSA==
-X-Received: by 2002:adf:ea08:0:b0:2bf:c403:c485 with SMTP id q8-20020adfea08000000b002bfc403c485mr3235704wrm.22.1674756871770;
-        Thu, 26 Jan 2023 10:14:31 -0800 (PST)
-X-Google-Smtp-Source: AK7set/v0QimrbymbFXNOuSiw5JWllqKT6tFjROtZrYqeP4lNCZp9Va24F1ABNqqf5dKg+eSvg7yxg==
-X-Received: by 2002:adf:ea08:0:b0:2bf:c403:c485 with SMTP id q8-20020adfea08000000b002bfc403c485mr3235680wrm.22.1674756871526;
-        Thu, 26 Jan 2023 10:14:31 -0800 (PST)
-Received: from work-vm (ward-16-b2-v4wan-166627-cust863.vm18.cable.virginm.net. [81.97.203.96])
-        by smtp.gmail.com with ESMTPSA id e38-20020a05600c4ba600b003db11dfc687sm2058340wmp.36.2023.01.26.10.14.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jan 2023 10:14:31 -0800 (PST)
-Date: Thu, 26 Jan 2023 18:14:28 +0000
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
-	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Kleen, Andi" <andi.kleen@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Wunner, Lukas" <lukas.wunner@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Poimboe, Josh" <jpoimboe@redhat.com>,
-	"aarcange@redhat.com" <aarcange@redhat.com>,
-	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-	"jbachmann@google.com" <jbachmann@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	"Lange, Jon" <jlange@microsoft.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Kernel Hardening <kernel-hardening@lists.openwall.com>
-Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y9LDBKXMwoGrACLZ@work-vm>
-References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9EkCvAfNXnJ+ATo@kroah.com>
- <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9Jh2x9XJE1KEUg6@unreal>
- <DM8PR11MB5750414F6638169C7097E365E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9KG6g0CHlnKwuW+@work-vm>
- <DM8PR11MB57509016CEF6C939DCBD718FE7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9LBInM4uBNCSMDT@unreal>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB06538D
+	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 21:25:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548D2C433D2;
+	Thu, 26 Jan 2023 21:25:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1674768342;
+	bh=l0Zu8iIrldR2UdBT8hZ4gHGIUEy3EDsOun6BQFWhokg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t0YubjSrKMW8vSsWkSdr/4Myl+5dSI9ia2kr4LIeXQ1OQP2FM8Eh/dDexFNEwl5cG
+	 8ufJH0uQn3UXphqct9gaEaImNF8ghCGQgqypnch95wp532zrbiUo8ZqMUt77kSYKHs
+	 lhYV+gclqQzVbZ+fAPORNgX7uWeY+dWR9Sq8MhQ4rOL+TC8QjvYekGKZEGCNPpfv8b
+	 di3MMIexrbGo1alA4a50vLYIMO/d1+gfiHhTAxhOvvkm8DsGHIzUdZLFjeIyuQMlhH
+	 zSSPrODVBQCNwfYn5xedaFwqnlA8BeB/I0SxKkuY6VQVpmrxi/u63REoQtkqGnrN0h
+	 VezmjkZ07iGmA==
+Date: Thu, 26 Jan 2023 21:25:40 +0000
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, wanpengli@tencent.com, jmattson@google.com,
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+	pgonda@google.com, peterz@infradead.org,
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, dgilbert@redhat.com, harald@profian.com,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Pavan Kumar Paluri <papaluri@amd.com>
+Subject: Re: [PATCH RFC v7 37/64] KVM: SVM: Add KVM_SNP_INIT command
+Message-ID: <Y9Lv1HjD1FWdH9jg@kernel.org>
+References: <20221214194056.161492-1-michael.roth@amd.com>
+ <20221214194056.161492-38-michael.roth@amd.com>
+ <Y7BG6pSuoZsBQYrx@kernel.org>
+ <fd23ee51-ec47-717d-7cce-1d79db8b6bd3@amd.com>
+ <16523f06-bb08-c4f9-bdfa-745fee553a43@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <Y9LBInM4uBNCSMDT@unreal>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <16523f06-bb08-c4f9-bdfa-745fee553a43@amd.com>
 
-* Leon Romanovsky (leon@kernel.org) wrote:
-> On Thu, Jan 26, 2023 at 05:48:33PM +0000, Reshetova, Elena wrote:
-> > 
-> > > * Reshetova, Elena (elena.reshetova@intel.com) wrote:
-> > > > > On Wed, Jan 25, 2023 at 03:29:07PM +0000, Reshetova, Elena wrote:
-> > > > > > Replying only to the not-so-far addressed points.
-> > > > > >
-> > > > > > > On Wed, Jan 25, 2023 at 12:28:13PM +0000, Reshetova, Elena wrote:
-> > > > > > > > Hi Greg,
-> > > > >
-> > > > > <...>
-> > > > >
-> > > > > > > > 3) All the tools are open-source and everyone can start using them right
-> > > > > away
-> > > > > > > even
-> > > > > > > > without any special HW (readme has description of what is needed).
-> > > > > > > > Tools and documentation is here:
-> > > > > > > > https://github.com/intel/ccc-linux-guest-hardening
-> > > > > > >
-> > > > > > > Again, as our documentation states, when you submit patches based on
-> > > > > > > these tools, you HAVE TO document that.  Otherwise we think you all are
-> > > > > > > crazy and will get your patches rejected.  You all know this, why ignore
-> > > > > > > it?
-> > > > > >
-> > > > > > Sorry, I didn’t know that for every bug that is found in linux kernel when
-> > > > > > we are submitting a fix that we have to list the way how it has been found.
-> > > > > > We will fix this in the future submissions, but some bugs we have are found
-> > > by
-> > > > > > plain code audit, so 'human' is the tool.
-> > > > >
-> > > > > My problem with that statement is that by applying different threat
-> > > > > model you "invent" bugs which didn't exist in a first place.
-> > > > >
-> > > > > For example, in this [1] latest submission, authors labeled correct
-> > > > > behaviour as "bug".
-> > > > >
-> > > > > [1] https://lore.kernel.org/all/20230119170633.40944-1-
-> > > > > alexander.shishkin@linux.intel.com/
-> > > >
-> > > > Hm.. Does everyone think that when kernel dies with unhandled page fault
-> > > > (such as in that case) or detection of a KASAN out of bounds violation (as it is in
-> > > some
-> > > > other cases we already have fixes or investigating) it represents a correct
-> > > behavior even if
-> > > > you expect that all your pci HW devices are trusted? What about an error in
-> > > two
-> > > > consequent pci reads? What about just some failure that results in erroneous
-> > > input?
-> > > 
-> > > I'm not sure you'll get general agreement on those answers for all
-> > > devices and situations; I think for most devices for non-CoCo
-> > > situations, then people are generally OK with a misbehaving PCI device
-> > > causing a kernel crash, since most people are running without IOMMU
-> > > anyway, a misbehaving device can cause otherwise undetectable chaos.
-> > 
-> > Ok, if this is a consensus within the kernel community, then we can consider
-> > the fixes strictly from the CoCo threat model point of view. 
-> > 
-> > > 
-> > > I'd say:
-> > >   a) For CoCo, a guest (guaranteed) crash isn't a problem - CoCo doesn't
-> > >   guarantee forward progress or stop the hypervisor doing something
-> > >   truly stupid.
-> > 
-> > Yes, denial of service is out of scope but I would not pile all crashes as
-> > 'safe' automatically. Depending on the crash, it can be used as a
-> > primitive to launch further attacks: privilege escalation, information
-> > disclosure and corruption. It is especially true for memory corruption
-> > issues. 
-> > 
-> > >   b) For CoCo, information disclosure, or corruption IS a problem
-> > 
-> > Agreed, but the path to this can incorporate a number of attack 
-> > primitives, as well as bug chaining. So, if the bug is detected, and
-> > fix is easy, instead of thinking about possible implications and its 
-> > potential usage in exploit writing, safer to fix it.
-> > 
-> > > 
-> > >   c) For non-CoCo some people might care about robustness of the kernel
-> > >   against a failing PCI device, but generally I think they worry about
-> > >   a fairly clean failure, even in the unexpected-hot unplug case.
-> > 
-> > Ok.
+On Mon, Jan 23, 2023 at 04:49:14PM -0600, Kalra, Ashish wrote:
+> There was an early firmware issue on Genoa which supported only SNP_INIT or
+> SEV_INIT, but this issue is resolved now.
 > 
-> With my other hat as a representative of hardware vendor (at least for
-> NIC part), who cares about quality of our devices, we don't want to hide
-> ANY crash related to our devices, especially if it is related to misbehaving
-> PCI HW logic. Any uncontrolled "robustness" hides real issues and makes
-> QA/customer support much harder.
-
-Yeh if you're adding new code to be more careful, you want the code to
-fail/log the problem, not hide it.
-(Although heck, I suspect there are a million apparently working PCI
-cards out there that break some spec somewhere).
-
-Dave
-
-> Thanks
+> Now, the main constraints are that SNP_INIT is always required before
+> SEV_INIT in case we want to launch SNP guests. In other words, if only
+> SEV_INIT is done on a platform which supports SNP we won't be able to launch
+> SNP guests after that.
 > 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+> So once we have RMP table setup (in BIOS) we will always do an SNP_INIT and
+> SEV_INIT will be ideally done only (on demand) when an SEV guest is
+> launched.
 
+OK, thanks for the clarification!
+
+BR, Jarkko
