@@ -1,175 +1,209 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAC82571
-	for <linux-coco@lists.linux.dev>; Fri, 27 Jan 2023 10:04:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1674813860;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C7k+0JyRd7Jj4+JGuTlvRsODVs1VUz6inKc9+6lWrs4=;
-	b=S02KutXOhJyybZ/MQoKOtcQ3L1VZPYAwCi/qtORzyb0ZxWRRaMTIT794M634VKr3Lbmlsy
-	mPJnDJeZmny0qoQJkxw3o1EXDsZIIWHqUyCL2MWk4uhAvxwcywBsHFuVGlmCLdYCZ1mQ8b
-	3Jka5EV1P1tAadWqS9cf256g9jmZb5w=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-269-gW5UBnvwM1K1c5s2kEBSaA-1; Fri, 27 Jan 2023 05:04:19 -0500
-X-MC-Unique: gW5UBnvwM1K1c5s2kEBSaA-1
-Received: by mail-wm1-f72.google.com with SMTP id h18-20020a05600c351200b003dc25fc1849so2360479wmq.6
-        for <linux-coco@lists.linux.dev>; Fri, 27 Jan 2023 02:04:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C7k+0JyRd7Jj4+JGuTlvRsODVs1VUz6inKc9+6lWrs4=;
-        b=IRaVULCb7CIC4tXtnhsCEZyXdsYk0+ETPBomKA8nz/kzxrhy6DakNveytRJ3XUEEaJ
-         MTOYMXLOqcGkLsd4vz0umt8ouRDnCOhuEWkujnw43Yp8G9BkpOvNYb+FBwEGRqkYrnKo
-         x9WOJgEkLx0RxDlnWcJb/VqW6mpJNVQXp5CI8TIDomy44afJLycMBw6jvngDR+Sxz6n6
-         wmv4IxfTZfXZF7/Xkj5Dpn61UNdRVonNgIHYO9sjvnM4tshPaYYJXYsuX3KSlHvkIlxo
-         +Xj9iOjZB8S0c7hLS+TSYIzHqZYdy1rs2HSJf6e+gST4mowhBcdFrTC69ZK8hFyo3q+X
-         FHXg==
-X-Gm-Message-State: AFqh2ko++y1N7OTAd65RghwaPGcgBYLP46NRUsbOZMK5GMwy4R29F7Ff
-	ZYawEOqFdVRhgzVDg3O6FNcU1MXXzkvRAQyxhFYlk+TSaOTaq+48hCTSu75arg+6moRJqe2icwZ
-	iR5E4eiH20r+stxXiy2fNrQ==
-X-Received: by 2002:a05:600c:a52:b0:3db:122c:1638 with SMTP id c18-20020a05600c0a5200b003db122c1638mr34649467wmq.27.1674813858159;
-        Fri, 27 Jan 2023 02:04:18 -0800 (PST)
-X-Google-Smtp-Source: AMrXdXvJqy11IfUQQTbG2B8vHqiaJJ8gQRORP7iVkIPKkozNg7BhdJTGN3sIDmVxrNgk1mSSJzu9FA==
-X-Received: by 2002:a05:600c:a52:b0:3db:122c:1638 with SMTP id c18-20020a05600c0a5200b003db122c1638mr34649436wmq.27.1674813857820;
-        Fri, 27 Jan 2023 02:04:17 -0800 (PST)
-Received: from redhat.com ([2.52.137.69])
-        by smtp.gmail.com with ESMTPSA id n24-20020a7bcbd8000000b003daf7721bb3sm6790156wmi.12.2023.01.27.02.04.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jan 2023 02:04:17 -0800 (PST)
-Date: Fri, 27 Jan 2023 05:04:12 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
-	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Kleen, Andi" <andi.kleen@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Wunner, Lukas" <lukas.wunner@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Poimboe, Josh" <jpoimboe@redhat.com>,
-	"aarcange@redhat.com" <aarcange@redhat.com>,
-	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-	"jbachmann@google.com" <jbachmann@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	"Lange, Jon" <jlange@microsoft.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Kernel Hardening <kernel-hardening@lists.openwall.com>
-Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <20230127044508-mutt-send-email-mst@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0398E7B
+	for <linux-coco@lists.linux.dev>; Fri, 27 Jan 2023 11:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674818644; x=1706354644;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=UEoPqwv0XILFGnV3LNR7ws//TdmdrZpRWKmrkS+NKbQ=;
+  b=TQJjaJhhbsE74v7FshJWFbvInbqBlwSDKmgoDWHp2w1JARycYF4ClCzL
+   LU2X5BfZ7NgdprqRgaFTFUg6woDHSBknRqiSkiaLnU5BJzicb6UVP01pw
+   OykOAltWGBIC+UxCn76PRUb7+l8aVb36eMqqgLjqNA+7TXX2N8p9rxfHj
+   8AZ3gej5Ju+J/jUmBl7wlvDyexCw7ktNk+zUzwdKnRhqTHar4dZOluP0E
+   U3cUoX3ANO8lkO8LBadJS6yzWIYHjgomWz/d8vtA1CIWx3ude/JBID/QC
+   JLqXVYgARGT3/Tw726lFkVa6SF8AEXUrS3yQTo8MG3ec9/BDUpFYwj0WB
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="389441319"
+X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
+   d="scan'208";a="389441319"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2023 03:24:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="837080413"
+X-IronPort-AV: E=Sophos;i="5.97,250,1669104000"; 
+   d="scan'208";a="837080413"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orsmga005.jf.intel.com with ESMTP; 27 Jan 2023 03:24:03 -0800
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Fri, 27 Jan 2023 03:24:03 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Fri, 27 Jan 2023 03:24:02 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Fri, 27 Jan 2023 03:24:02 -0800
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.103)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Fri, 27 Jan 2023 03:24:00 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hWIeK+iTyLGDcgZaAi8/LKTix9/561X97m985IylFjmCf2QnavmZQjOfh1ADBdBPp08v6ZYyDvegKPd1EE/MBgY+f0Dbe+0ScM7rz0K56UWeMgIFH1b18ADYAaVWBLR+sDf8f2oGPNyPI0eR22Hr0ZNznNr/2JgP8mOqzuP3wItCTUqV6j06qA0a9bFl48w/Mn+ovSqK1yz/DPclyaWTahfAbapy41xhHZe26wHC009q49Dn5YLg98tNs9LCmAsOHc3n3WQ9Hjtisw1PmcY80WykEiOF+1Rbuf3pMH0UGaA3pivDZVFtWEPG4Tmqy8XK0MzTgWmz/TAx+9zNTOkQuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UEoPqwv0XILFGnV3LNR7ws//TdmdrZpRWKmrkS+NKbQ=;
+ b=XMQEWTvyKUuyjGmEgBuNpPHEQGxsFpmddaHyBOH3Sq3gBt/nUo0Nh7Wzmu3TW0kkL5N5kp8xSKb3dkbKmMvCdYm4CvSSPSJC5HvvxO+jhiNDiSRwlf6dE15UB4V9zaabnXIVGqp6FA2GGRrjUQFdpXYZ2XyS2LOP5aprAsAGHOsyA4oRUDNik+PBG/GTDSgpT9d1iezh45B6j2OYyM/+IZiNjRwSQ7vatJoBsxUichKzql7KlV6/SMo/qMvMDXLo6ydIbu5snsAXqGQP4Gb91H0xsykW6m4V6HzHMxOELZwDYZ7vhlHLnScv08kTpbiEKrJtvK96QQFZxakdApixCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from DM8PR11MB5750.namprd11.prod.outlook.com (2603:10b6:8:11::17) by
+ SN7PR11MB6776.namprd11.prod.outlook.com (2603:10b6:806:263::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6043.23; Fri, 27 Jan
+ 2023 11:23:54 +0000
+Received: from DM8PR11MB5750.namprd11.prod.outlook.com
+ ([fe80::f0e0:ca50:78eb:1030]) by DM8PR11MB5750.namprd11.prod.outlook.com
+ ([fe80::f0e0:ca50:78eb:1030%5]) with mapi id 15.20.6043.022; Fri, 27 Jan 2023
+ 11:23:54 +0000
+From: "Reshetova, Elena" <elena.reshetova@intel.com>
+To: Richard Weinberger <richard.weinberger@gmail.com>,
+	=?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+CC: "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "Shishkin, Alexander"
+	<alexander.shishkin@intel.com>, "Shutemov, Kirill"
+	<kirill.shutemov@intel.com>, "Kuppuswamy, Sathyanarayanan"
+	<sathyanarayanan.kuppuswamy@intel.com>, "Kleen, Andi" <andi.kleen@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>, "Wunner, Lukas"
+	<lukas.wunner@intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+	"Poimboe, Josh" <jpoimboe@redhat.com>, "aarcange@redhat.com"
+	<aarcange@redhat.com>, Cfir Cohen <cfir@google.com>, Marc Orr
+	<marcorr@google.com>, "jbachmann@google.com" <jbachmann@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "keescook@chromium.org"
+	<keescook@chromium.org>, James Morris <jmorris@namei.org>, Michael Kelley
+	<mikelley@microsoft.com>, "Lange, Jon" <jlange@microsoft.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Linux Kernel
+ Mailing List" <linux-kernel@vger.kernel.org>
+Subject: RE: Linux guest kernel threat model for Confidential Computing
+Thread-Topic: Linux guest kernel threat model for Confidential Computing
+Thread-Index: AdkwsXY+8ptYLAlAQXCgWg2jZ1ntPwACTigAAAIPWoAAARG8AAAypJsAACbWn0A=
+Date: Fri, 27 Jan 2023 11:23:54 +0000
+Message-ID: <DM8PR11MB57504DFB207175BD31E9F15AE7CC9@DM8PR11MB5750.namprd11.prod.outlook.com>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9EkCvAfNXnJ+ATo@kroah.com>
- <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20230126105618-mutt-send-email-mst@kernel.org>
- <DM8PR11MB5750678B5F639F6C2848FC3CE7CC9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <Y9EkCvAfNXnJ+ATo@kroah.com> <Y9Ex3ZUIFxwOBg1n@work-vm>
+ <Y9E5Cg7mreDx737N@redhat.com>
+ <CAFLxGvwHRK3vyXiCv5ELvrDSEkcDgV5c6pNnWgWhcATfp1dedA@mail.gmail.com>
+In-Reply-To: <CAFLxGvwHRK3vyXiCv5ELvrDSEkcDgV5c6pNnWgWhcATfp1dedA@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR11MB5750:EE_|SN7PR11MB6776:EE_
+x-ms-office365-filtering-correlation-id: f59fe3ac-b98e-4edc-3b1d-08db0058f954
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ht4TCem4WdYszBOA3m/1lHC2c3zwnKLvCFFJV0eWyNBv8PintP5f17cbDUyb7oGV9jJ7cAqfXEixR8/LpTh6NH7+819fD7Krzpuabyj4rsh5Br/TiGbXO4Cmh43sV2FciDbVZ5iEt8crTDEFv3emhoOwgtTUMOwXblWUzfjnxygqhmfku9QoMBM/xAiEZ+vItb5fshzPwiACjPAe2tcVHa6IOzxycCqWGvpJ//LXruxrnPkptu3ineQQo0DnGhCrfM33WnZ3VenOqDSzXm9j7DEBgFVyOMmqkXtu2yP4AGv6b/ed5esq8TDVn3kcuDIx1HjfKNvNAQ4t/1EnlsHppFY8Y+lCOmi4ssBTH9UJOntK3WBJcnjqmpP7UKmPFdflOIt9tD5c2VsyZ9Z/sdP6xUNWkbvrCdAHsU5FpLXzQ5j4P+i/cEb6U0ZeC5hyZ7pfOVMBTo4PcO//JMjct7Entx10M7oeEwotDo2ZFKOHH8clFhpw0V2gmUQjQS41h2cs7E7nGEWXhSGv0XFh2fakFPt+Fx9rQG9DLvzp8qf1gSAvfaW8ZkRyVYOh/JZfGOd+8g9Bay3wJh/m/sme8szyhnSMQotk1MLBC4em3VhCgpLlyL3oXuFDsMYOwQdV87E0syJ/x183xz5/R/TqKOITofJGvQHT0O3WMn0njFNPq4Zoi6b8rmGQfJFB+4yulKeBDEq7nGQmss6KEkBCYngJ+xaJPOIL6ZgR5mCcyxSnpdw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR11MB5750.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(366004)(346002)(39860400002)(396003)(376002)(136003)(451199018)(83380400001)(41300700001)(86362001)(54906003)(110136005)(316002)(478600001)(7696005)(966005)(33656002)(53546011)(26005)(186003)(9686003)(6506007)(71200400001)(4326008)(76116006)(8676002)(64756008)(66446008)(66476007)(66946007)(66556008)(82960400001)(38100700002)(2906002)(38070700005)(8936002)(52536014)(55016003)(122000001)(7416002)(5660300002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?R3RJUG0wQUZGVld4Ui9sQ2tuZjgzM2VaU1gvRU9LWFFWbmNTeU1maVc2bXNm?=
+ =?utf-8?B?akNtR2tsRHVkWm0vZGdBRmtvYjNzRzZiclkxNFdPbEhVVGE0OWZMaXUyWUpv?=
+ =?utf-8?B?QndjVnNkZFV4RHB2TEFrbkFzcXh0dDB1UGF3Z0l3L0syb0hQVEd6Y0tJL2tv?=
+ =?utf-8?B?ZXpMcFRGWVhZeWoxNUNpRVYrc1J4NGx1dnIxQjFMU2ZJbW5halFOK3Vjd1pm?=
+ =?utf-8?B?Q2xaYjNyZlBNR0pVS05rZnZtNVJ3VGNWaGl5VWk5N1F1SmpNUHVJY0MyUDk0?=
+ =?utf-8?B?NDBPalFhWVVPTUpPYytWQkZYWmdQa1N5ekludnZTeWFicXcxbGF5cEsrYWFr?=
+ =?utf-8?B?MXJRZ3FDZVpzbm9kU1JtUE9NcFFCb2Q3Y1VQZDN3RzFDSVRKaEo1c2V1Sks4?=
+ =?utf-8?B?VGh6WlZ0bGtvdFF2WnU3YVh5UzdzZjdvMkVIYnFIamRZZktOaEZ5dE1VRnZ0?=
+ =?utf-8?B?SlBCR0cxZ1NOMERiTHhWT3VHRWY1Zk9RUjV5Q1VIdlRNb0h3L1N2N090Z2Vv?=
+ =?utf-8?B?eit5OVpzL2luTE9uT09hZTd5ZG1zRVh5dDM4dWhKSjBTWkpxcllGVFNERUs2?=
+ =?utf-8?B?TnhPTUZlSjdyMkR3NUxRM1lKK0xEZkVxZWJrcmxBZFBjcGJLdVYyOWdwZVZx?=
+ =?utf-8?B?SU5NVFhkZFg4bDNib1grQm8rZlk4T2hJb29EdEtJdFZSUS8xUUJ4YU00VjFk?=
+ =?utf-8?B?aDNib0c5R0ZKejdIdEdLNjM4SFZsN3dRNGxNV2g1WmZEMExxa3ZnUGhGNnFH?=
+ =?utf-8?B?RUdUM2UzUjBST210b2RjSVhQS1lSUkZBMWJRZkxldEFWR1hiTmRrWVdVRzlW?=
+ =?utf-8?B?c3hoUllIanpJcXdmT1E4bFhUMmNseHVZMHNqNUg3SmZwS1U0N21ZVHBkdjcy?=
+ =?utf-8?B?R3NHNHQreFdUem0zZmxSSFpqR0VkTGlBSURIQm9uVWxOeFg3Nzlkeks2OVN6?=
+ =?utf-8?B?OUNYWmF6M3ptczg3SFJGRmROSTkyRk9zdC8yS0EwTUpha2wzVlFiVHhUdWtp?=
+ =?utf-8?B?ZStMMVh0aWd4bkNGaHdwNWNIL3hTVzd2UXdVUUd3dTJqdkFHODVPek52eTBj?=
+ =?utf-8?B?eUF4MzZFYzRHeFJHeUs3WEpUZU5Vem1pR2tnUkxaV2U4L1pDZkwwMm01THdv?=
+ =?utf-8?B?ZVd5Q0drYzNBWFVSdURTSysxSFpQbS9pNFlndkJwZFQxaVRmOWdiSUE1Tldi?=
+ =?utf-8?B?NVlHQjFQUmFDYmdoSHBuTWxhcXdIUy9nd1hBQk1wSmVmR2NuZmx6S1lDL244?=
+ =?utf-8?B?Z0cxdko4R1JuL3lqWlRUUnUxNVU0WFdKZy96c3Q4aFZrK2lFWEc5NWJJZXgx?=
+ =?utf-8?B?T2t1ZWJuckJ3cjVDYktVSVdqcm5UTVBQbkxyK0xzOEVRQURXY09QdTgrTlFF?=
+ =?utf-8?B?UHkzSFFhb25rcmsyaVhWN253M0hqMnpXMFZWa0ErZmZqd2dicXYvcW84Rm5H?=
+ =?utf-8?B?cTlTMkttWmZIbG41SlYvOVh2M3ZRMG5zNVhqN245MnIrNC9PQjB0M0Q1ZTds?=
+ =?utf-8?B?Vk1xV3lOY3lxeDJrQWlZbW54NWJzR2syc0NEODFYeFJZbFQ4ZUk0ZWs2WU1a?=
+ =?utf-8?B?TmUydlhlSFpyRW1LWG1wZFBjblJUTkJjMEZtdEx0SitlcWQxWDE0Y0FCRE83?=
+ =?utf-8?B?UHFOeS9uSjZoRGkrV0xRTGsrdzE3T3ZFdU9aV1ZqbmJLVlIyc25NbS9aUVlW?=
+ =?utf-8?B?bUNMOUJpSG5rSE5EMTJOSW9mNzNSenNnTGx3eXhiMkI2TGY3a2FpZFdQUW9T?=
+ =?utf-8?B?RDNzYVJSUStiVjRTZ081RG1Bc1RLeXE1a2RoblVORXBSbmNWazZ1THN4VzQw?=
+ =?utf-8?B?VnNjekJ3YUt3SGdhSkpkaWhwVlVTUzZvYitsbFZCeHFUcnp5dElpTkcwaWlV?=
+ =?utf-8?B?bmdRdlNvYitZcHl0WXk0VGtGMVB2Y1g2dFNxTG15Zk10SDdCa2JlUzRYeUVV?=
+ =?utf-8?B?K3pLcmhjeGtiOVUwajk0TDNHTjBTYW9lSi82RWJaaldmOHNnYVdzN1Q5Um1p?=
+ =?utf-8?B?L2g3cm8vUUs5T0E0SFduSVNLL21JY0JQTDU1V0toY3BzRTFsbG00YTRna3NL?=
+ =?utf-8?B?cXV1S0dMWDNtOU1qQ1A0OHdDd25uWHNmVEJ3aXljWk5RMmlUejN0R3B2eDcv?=
+ =?utf-8?Q?SzmUujbjts/v8AYYvlX8j5560?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <DM8PR11MB5750678B5F639F6C2848FC3CE7CC9@DM8PR11MB5750.namprd11.prod.outlook.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5750.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f59fe3ac-b98e-4edc-3b1d-08db0058f954
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2023 11:23:54.2745
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SELsuo4eQMioO9SVaSRjN3Ly2nU3hlpr5E06RO5+AEOyhV26eaZzQBfJqZmdH1xEV4v+rnh1cZNmaIAEQwklEP/cGAMBBoUKlB/5HpxFivk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6776
+X-OriginatorOrg: intel.com
 
-On Fri, Jan 27, 2023 at 08:52:22AM +0000, Reshetova, Elena wrote:
-> > On Wed, Jan 25, 2023 at 03:29:07PM +0000, Reshetova, Elena wrote:
-> > > And this is a very special aspect of 'hardening' since it is about hardening a
-> > kernel
-> > > under different threat model/assumptions.
-> > 
-> > I am not sure it's that special in that hardening IMHO is not a specific
-> > threat model or a set of assumptions. IIUC it's just something that
-> > helps reduce severity of vulnerabilities.  Similarly, one can use the CC
-> > hardware in a variety of ways I guess. And one way is just that -
-> > hardening linux such that ability to corrupt guest memory does not
-> > automatically escalate into guest code execution.
-> 
-> I am not sure if I fully follow you on this. I do agree that it is in principle
-> the same 'hardening' that we have been doing in Linux for decades just
-> applied to a new attack surface, host <-> guest, vs userspace <->kernel.
-
-Sorry about being unclear this is not the type of hardening I meant
-really.  The "hardening" you meant is preventing kernel vulnerabilities,
-right? This is what we've been doing for decades.
-But I meant slightly newer things like e.g. KASLR or indeed ASLR generally -
-we are trying to reduce a chance a vulnerability causes random
-code execution as opposed to a DOS. To think in these terms you do not
-need to think about attack surfaces - in the system including
-a hypervisor, guest supervisor and guest userspace hiding
-one component from others is helpful even if they share
-a privelege level.
-
-
-
-> Interfaces have changed, but the types of vulnerabilities, etc are the same.
-> The attacker model is somewhat different because we have 
-> different expectations on what host/hypervisor should be able to do
-> to the guest (following business reasons and use-cases), versus what we
-> expect normal userspace being able to "do" towards kernel. The host and
-> hypervisor still has a lot of control over the guest (ability to start/stop it, 
-> manage its resources, etc). But the reasons behind this doesn’t come
-> from the fact that security CoCo HW not being able to support this stricter
-> security model (it cannot now indeed, but this is a design decision), but
-> from the fact that it is important for Cloud service providers to retain that
-> level of control over their infrastructure. 
-
-Surely they need ability to control resource usage, not ability to execute DOS
-attacks. Current hardware just does not have ability to allow the former
-without the later.
-
-> > 
-> > If you put it this way, you get to participate in a well understood
-> > problem space instead of constantly saying "yes but CC is special".  And
-> > further, you will now talk about features as opposed to fixing bugs.
-> > Which will stop annoying people who currently seem annoyed by the
-> > implication that their code is buggy simply because it does not cache in
-> > memory all data read from hardware. Finally, you then don't really need
-> > to explain why e.g. DoS is not a problem but info leak is a problem - when
-> > for many users it's actually the reverse - the reason is not that it's
-> > not part of a threat model - which then makes you work hard to define
-> > the threat model - but simply that CC hardware does not support this
-> > kind of hardening.
-> 
-> But this won't be correct statement, because it is not limitation of HW, but the
-> threat and business model that Confidential Computing exists in. I am not 
-> aware of a single cloud provider who would be willing to use the HW that
-> takes the full control of their infrastructure and running confidential guests,
-> leaving them with no mechanisms to control the load balancing, enforce
-> resource usage, etc. So, given that nobody needs/willing to use such HW, 
-> such HW simply doesn’t exist. 
-> 
-> So, I would still say that the model we operate in CoCo usecases is somewhat
-> special, but I do agree that given that we list a couple of these special assumptions
-> (over which ones we have no control or ability to influence, none of us are business
-> people), then the rest becomes just careful enumeration of attack surface interfaces
-> and break up of potential mitigations. 
-> 
-> Best Regards,
-> Elena.
-> 
-
-I'd say each business has a slightly different business model, no?
-Finding common ground is what helps us share code ...
-
--- 
-MST
-
+PiBPbiBXZWQsIEphbiAyNSwgMjAyMyBhdCAzOjIyIFBNIERhbmllbCBQLiBCZXJyYW5nw6kgPGJl
+cnJhbmdlQHJlZGhhdC5jb20+DQo+IHdyb3RlOg0KPiA+IEFueSB2aXJ0dWFsIGRldmljZSBleHBv
+c2VkIHRvIHRoZSBndWVzdCB0aGF0IGNhbiB0cmFuc2ZlciBwb3RlbnRpYWxseQ0KPiA+IHNlbnNp
+dGl2ZSBkYXRhIG5lZWRzIHRvIGhhdmUgc29tZSBmb3JtIG9mIGd1ZXN0IGNvbnRyb2xsZWQgZW5j
+cnlwdGlvbg0KPiA+IGFwcGxpZWQuIEZvciBkaXNrcyB0aGlzIGlzIGVhc3kgd2l0aCBGREUgbGlr
+ZSBMVUtTLCBmb3IgTklDcyB0aGlzIGlzDQo+ID4gYWxyZWFkeSBiZXN0IHByYWN0aWNlIGZvciBz
+ZXJ2aWNlcyBieSB1c2luZyBUTFMuIE90aGVyIGRldmljZXMgbWF5IG5vdA0KPiA+IGhhdmUgZ29v
+ZCBleGlzdGluZyBvcHRpb25zIGZvciBhcHBseWluZyBlbmNyeXB0aW9uLg0KPiANCj4gSSBkaXNh
+Z3JlZSB3cnQuIExVS1MuIFRoZSBjcnlwdG9ncmFwaHkgYmVoaW5kIExVS1MgcHJvdGVjdHMgcGVy
+c2lzdGVudCBkYXRhDQo+IGJ1dCBub3QgdHJhbnNwb3J0LiBJZiBhbiBhdHRhY2tlciBjYW4gb2Jz
+ZXJ2ZSBhbGwgSU8geW91IGJldHRlcg0KPiBjb25zdWx0IGEgY3J5cHRvZ3JhcGhlci4NCj4gTFVL
+UyBoYXMgbm8gY29uY2VwdCBvZiBzZXNzaW9uIGtleXMgb3Igc3VjaCwgc28gdGhlIHNhbWUgZGlz
+ayBzZWN0b3Igd2lsbA0KPiBhbHdheXMgZ2V0IGVuY3J5cHRlZCB3aXRoIHRoZSB2ZXJ5IHNhbWUg
+a2V5L2l2Lg0KDQpJIGd1ZXNzIHlvdSBhcmUgcmVmZXJyaW5nIHRvIHRoZSBhZXMteHRzLXBsYWlu
+NjQgbW9kZSBvZiBMVUtTIG9wZXJhdGlvbiBvcg0KdG8gTFVLUyBpbiBnZW5lcmFsPyBEaWZmZXJl
+bnQgbW9kZXMgb2Ygb3BlcmF0aW9uIChpbmNsdWRpbmcgQUVBRCBtb2RlcykNCmNhbiBwcm92aWRl
+IGRpZmZlcmVudCBsZXZlbHMgb2YgcHJvdGVjdGlvbiwgc28gSSB3b3VsZCBub3Qgc3RhdGUgaXQg
+c28gZ2VuZXJhbGx5Lg0KQnV0IHRoZSBwb2ludCB5b3UgcmFpc2VkIGlzIGdvb2QgdG8gZGlzY3Vz
+cyB0aHJvdWdoOiBYVFMgZm9yIGV4YW1wbGUgaXMgYSBjb25maWRlbnRpYWxpdHkgbW9kZSwNCmJh
+c2VkIG9uIGEgY29uY2VwdCBvZiB0d2Vha2FibGUgYmxvY2tjaXBoZXIsIGRlc2lnbmVkIGFzIHlv
+dSBwb2ludGVkIG91dA0Kd2l0aCBkaXNrIGVuY3J5cHRpb24gdXNlIGNhc2UgaW4gbWluZC4gSXQg
+ZG9lcyBoYXZlIGEgYnVuY2ggb2YgbGltaXRhdGlvbnMvDQp3ZWFrbmVzc2VzIHRoYXQgYXJlIGtu
+b3duIChnb29kIGNsYXNzaWNhbCByZWZlcmVuY2UgSSBjYW4gc3VnZ2VzdCBvbiB0aGlzIGlzIFsx
+XSksDQpidXQgYXMgYW55IGJsb2NrY2lwaGVyIG1vZGUgaXRzIGNvbmZpZGVudGlhbGl0eSBndWFy
+YW50ZWVzIGFyZSBldmFsdWF0ZWQgaW4gdGVybXMNCm9mIHNlY3VyaXR5IGFnYWluc3QgYSBjaG9z
+ZW4gY2lwaGVydGV4dCBhdHRhY2sgKENDQSkgd2hlcmUgYW4gYWR2ZXJzYXJ5IGhhcyBhbiBhY2Nl
+c3MgdG8gYm90aA0KZW5jcnlwdGlvbiBhbmQgZGVjcnlwdGlvbiBvcmFjbGUgKGhlIGNhbiBwZXJm
+b3JtIGVuY3J5cHRpb25zIGFuZCBkZWNyeXB0aW9ucw0Kb2YgcGxhaW50ZXh0cy9jeXBoZXJ0ZXh0
+cyBvZiBoaXMgbGlraW5nIHVwIHRvIHRoZSBhbGxvd2VkIG51bWJlciBvZiBxdWVyaWVzKS4gDQpU
+aGlzIGlzIGEgdmVyeSBwb3dlcmZ1bCBhdHRhY2sgbW9kZWwgd2hpY2ggdG8gbWUgc2VlbXMgdG8g
+Y292ZXIgdGhlIG1vZGVsDQpvZiB1bnRydXN0ZWQgaG9zdC9WTU0gYmVpbmcgYWJsZSB0byBvYnNl
+cnZlIGRpc2sgcmVhZHMvd3JpdGVzLg0KDQpBbHNvLCBpZiBJIHJlbWVtYmVyIHJpZ2h0LCB0aGUg
+ZGlzayBlbmNyeXB0aW9uIGFsc28gYXNzdW1lcyB0aGF0IHRoZSBkaXNrIG9wZXJhdGlvbnMgYXJl
+IGZ1bGx5IHZpc2libGUNCnRvIHRoZSBhdHRhY2tlciwgaS5lLiBoZSBjYW4gc2VlIGFsbCBlbmNy
+eXB0ZWQgZGF0YSBvbiB0aGUgZGlzaywgb2JzZXJ2ZSBob3cgaXQgY2hhbmdlcw0Kd2hlbiBhIG5l
+dyBibG9jayBpcyB3cml0dGVuLCBldGMuIFNvLCB3aGVyZSBkbyB3ZSBoYXZlIGEgY2hhbmdlIGlu
+IGFuIGF0dGFja2VyIG1vZGVsIGhlcmU/IA0KV2hhdCBhbSBJIG1pc3Npbmc/IA0KDQpXaGF0IEFF
+UyBYVFMgd2FzIG5ldmVyIGRlc2lnbmVkIHRvIGRvIGlzIGFuIGludGVncml0eSBwcm90ZWN0aW9u
+IChvbmx5IHNvbWUgdmVyeSBsaW1pdGVkIA0KbWFsbGVhYmlsaXR5KTogaXQgaXMgbm90IEFFQUQg
+bW9kZSwgaXQgZG9lc27igJl0IGFsc28gcHJvdmlkZSBhIHJlcGxheSBwcm90ZWN0aW9uLiBTbywg
+dGhlIHNhbWUNCmxpbWl0YXRpb25zIGFyZSBnb2luZyB0byBhcHBseSBpbiBvdXIgY2FzZSBhbHNv
+LiANCg0KQmVzdCBSZWdhcmRzLA0KRWxlbmEuDQoNClsxXSBDaGFwdGVyIDYuIFhUUyBtb2RlLCBo
+dHRwczovL3dlYi5jcy51Y2RhdmlzLmVkdS9+cm9nYXdheS9wYXBlcnMvbW9kZXMucGRmDQoNCg==
