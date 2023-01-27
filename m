@@ -1,166 +1,170 @@
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045335C82
-	for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 22:31:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674772302; x=1706308302;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=66VIdz3muarY0vcrRz9QFa3oQoVQgiIWs1OHx/vAl/Q=;
-  b=AcfGZiZqqLUMdoCeaVVlCMLGdimVC8QIx08FgrBNun9tOOtYDgGt/H2o
-   oOd53x1pio6eMJqao4Mi+jEU8XwSvjOAgNasXBSxD1e39goCbYz8QLt03
-   nwLnmCSx2coZaLdeEA1rZ+cxdwsyz0RP1XiMP6tCdU8d/CEocrbIM6WFt
-   KuouWugCVOKeDGo38JRYbGImgNDuL0388hnv/TobYnBEZAu9KaD5f5JYT
-   4RFvEPgfpilpFgZksKqpmWiHahnMesJ0lJRBQsbvHCrp0fG3CrYMUN3i0
-   iK5DVwbdA7bdy4abDE0/lXzOHPh8A1Mx8VsTApxtVVuiw5d6/vCks8/rf
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="391516417"
-X-IronPort-AV: E=Sophos;i="5.97,249,1669104000"; 
-   d="scan'208";a="391516417"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2023 14:12:09 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10602"; a="908411176"
-X-IronPort-AV: E=Sophos;i="5.97,249,1669104000"; 
-   d="scan'208";a="908411176"
-Received: from smadjatx-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.210.179])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2023 14:12:06 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 5D04010DBE2; Fri, 27 Jan 2023 01:12:03 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C74923A8
+	for <linux-coco@lists.linux.dev>; Fri, 27 Jan 2023 07:02:21 +0000 (UTC)
+Received: by mail-wr1-f52.google.com with SMTP id b7so4089298wrt.3
+        for <linux-coco@lists.linux.dev>; Thu, 26 Jan 2023 23:02:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5HxGtUHBeTmKLxMYYWaiGw2aHRBHP369koztMrMyiwA=;
+        b=1vOE67AhAR9Wo70Q4blgMafsiy27P9P0INmEpVCMXsPf4nopeuS9PoJw3fHsyuiWqy
+         3I0HRLM1CO0JRy8oXWqjVU4jCGT3a8JorOWM3j9jZxIbgB11V5V0T/LRMNXiZ+x4zAx0
+         eBmJQ6k5fep/VBOfrEuTZn0vlRBnMETt9Ut/7Wj/X6OpA0kc44ymfUwY0pBt2yyS1Ttf
+         cJQAfj3ITgSGBFJh7UHio91JkFPL/DlPil95KHb60f+WphUgF3KRYAn5Hq6S3f/KDdoJ
+         b6uKzVW0M2RAJVXz96ahpAzDn4na76CzLjRsFAirKqyOpt7T62+p2VF1f7+5oFauQWXf
+         fAkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5HxGtUHBeTmKLxMYYWaiGw2aHRBHP369koztMrMyiwA=;
+        b=zlbEdazS5NpLOp7VN04A6iiKRo5JPM5kpRoZOQvQqR8g9clLtl6/lPBzzE+o/qxLso
+         RXeRUTOeu8wsXFdjY2bBfN877rktJj8htpItAFSOFTKgR9J9prQBkN1zW7J6Va6yym4i
+         iR6s2Ynp2vr4zcqSkkcihgP6pSiACT8MZsxluP73cndUD0JbS6AKVJbwU5GTr9uoz7TF
+         +mP0eKJo8WoI6DToDawBC9u3KWEUjicFCkh1hScnefs+IxsVv3eCeZ214L5Y0Qge32D6
+         4jN8HG6gy7W1jvY55rvEZWPbGWlXJj7gSBDrg/N2gorJ4ULCCRLRFc81uIQXvYsSFUX0
+         yZdA==
+X-Gm-Message-State: AO0yUKUE0BXOE9i6yMsz88Tb94Ioy+dlpyaVpAG51ecvsxdMZ7YDxZJP
+	tbf5uDYmPGr7+yBdigAMAd5Lgw==
+X-Google-Smtp-Source: AK7set/yG7eIZMrhBqHR2aFSoxHMlaYJfh+r3x8BhUulxgeFR3o8g0ofaas4ktkgxbll+A+ZGmrE/w==
+X-Received: by 2002:adf:a181:0:b0:2bf:ae42:9879 with SMTP id u1-20020adfa181000000b002bfae429879mr10453541wru.32.1674802940065;
+        Thu, 26 Jan 2023 23:02:20 -0800 (PST)
+Received: from vermeer ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
+        by smtp.gmail.com with ESMTPSA id k4-20020a5d66c4000000b002bdc19f8e8asm3223843wrw.79.2023.01.26.23.02.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Jan 2023 23:02:19 -0800 (PST)
+Date: Fri, 27 Jan 2023 08:02:16 +0100
+From: Samuel Ortiz <sameo@rivosinc.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Lukas Wunner <lukas@wunner.de>,
+	"Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
+	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
+	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
+	"Kleen, Andi" <andi.kleen@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2, RESEND 3/7] x86/tdx: Refactor __tdx_hypercall() to allow pass down more arguments
-Date: Fri, 27 Jan 2023 01:11:55 +0300
-Message-Id: <20230126221159.8635-4-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230126221159.8635-1-kirill.shutemov@linux.intel.com>
-References: <20230126221159.8635-1-kirill.shutemov@linux.intel.com>
+	Peter Zijlstra <peterz@infradead.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Poimboe, Josh" <jpoimboe@redhat.com>,
+	"aarcange@redhat.com" <aarcange@redhat.com>,
+	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
+	"jbachmann@google.com" <jbachmann@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"keescook@chromium.org" <keescook@chromium.org>,
+	James Morris <jmorris@namei.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	"Lange, Jon" <jlange@microsoft.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-pci@vger.kernel.org
+Subject: Re: Linux guest kernel threat model for Confidential Computing
+Message-ID: <Y9N2+Bsm0xLbLg5q@vermeer>
+References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <Y9EkCvAfNXnJ+ATo@kroah.com>
+ <Y9Ex3ZUIFxwOBg1n@work-vm>
+ <Y9E7PNmSTP5w2zuw@kroah.com>
+ <Y9FDZPV7qENtNNyk@work-vm>
+ <20230125215333.GA18160@wunner.de>
+ <CAGXJix9-cXNW7EwJf0PVzj_Qmt5fmQvBX1KvXfRX5NAeEpnMvw@mail.gmail.com>
+ <20230126105847.00001b97@Huawei.com>
+ <Y9J82eutqDkusRIq@vermeer>
+ <20230126160729.00006843@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230126160729.00006843@Huawei.com>
 
-RDI is the first argument to __tdx_hypercall() that used to pass pointer
-to struct tdx_hypercall_args. RSI is the second argument that contains
-flags, such as TDX_HCALL_HAS_OUTPUT and TDX_HCALL_ISSUE_STI.
+On Thu, Jan 26, 2023 at 04:07:29PM +0000, Jonathan Cameron wrote:
+> On Thu, 26 Jan 2023 14:15:05 +0100
+> Samuel Ortiz <sameo@rivosinc.com> wrote:
+> 
+> > On Thu, Jan 26, 2023 at 10:58:47AM +0000, Jonathan Cameron wrote:
+> > > On Thu, 26 Jan 2023 10:24:32 +0100
+> > > Samuel Ortiz <sameo@rivosinc.com> wrote:
+> > >   
+> > > > Hi Lukas,
+> > > > 
+> > > > On Wed, Jan 25, 2023 at 11:03 PM Lukas Wunner <lukas@wunner.de> wrote:
+> > > >   
+> > > > > [cc += Jonathan Cameron, linux-pci]
+> > > > >
+> > > > > On Wed, Jan 25, 2023 at 02:57:40PM +0000, Dr. David Alan Gilbert wrote:    
+> > > > > > Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:    
+> > > > > > > Great, so why not have hardware attestation also for your devices you
+> > > > > > > wish to talk to?  Why not use that as well?  Then you don't have to
+> > > > > > > worry about anything in the guest.    
+> > > > > >
+> > > > > > There were some talks at Plumbers where PCIe is working on adding that;
+> > > > > > it's not there yet though.  I think that's PCIe 'Integrity and Data
+> > > > > > Encryption' (IDE - sigh), and PCIe 'Security Prtocol and Data Model' -
+> > > > > > SPDM.   I don't know much of the detail of those, just that they're far
+> > > > > > enough off that people aren't depending on them yet.    
+> > > > >
+> > > > > CMA/SPDM (PCIe r6.0 sec 6.31) is in active development on this branch:
+> > > > >
+> > > > > https://github.com/l1k/linux/commits/doe    
+> > > > 
+> > > > Nice, thanks a lot for that.
+> > > > 
+> > > > 
+> > > >   
+> > > > > The device authentication service afforded here is generic.
+> > > > > It is up to users and vendors to decide how to employ it,
+> > > > > be it for "confidential computing" or something else.
+> > > > >
+> > > > > Trusted root certificates to validate device certificates can be
+> > > > > installed into a kernel keyring using the familiar keyctl(1) utility,
+> > > > > but platform-specific roots of trust (such as a HSM) could be
+> > > > > supported as well.
+> > > > >    
+> > > > 
+> > > > This may have been discussed at LPC, but are there any plans to also
+> > > > support confidential computing flows where the host kernel is not part
+> > > > of the TCB and would not be trusted for validating the device cert chain
+> > > > nor for running the SPDM challenge?  
+> > > 
+> > > There are lots of possible models for this. One simple option if the assigned
+> > > VF supports it is a CMA instance per VF. That will let the guest
+> > > do full attestation including measurement of whether the device is
+> > > appropriately locked down so the hypervisor can't mess with
+> > > configuration that affects the guest (without a reset anyway and that
+> > > is guest visible).   
+> > 
+> > So the VF would be directly assigned to the guest, and the guest kernel
+> > would create a CMA instance for the VF, and do the SPDM authentication
+> > (based on a guest provided trusted root certificate). I think one
+> > security concern with that approach is assigning the VF to the
+> > (potentially confidential) guest address space without the guest being
+> > able to attest of the device trustworthiness first. That's what TDISP is
+> > aiming at fixing (establish a secure SPDM between the confidential guest
+> > and the device, lock the device from the guest, attest and then enable
+> > DMA). 
+> 
+> Agreed, TDISP is more comprehensive, but also much more complex with
+> more moving parts that we don't really have yet.
+> 
+> Depending on your IOMMU design (+ related stuff) and interaction with
+> the secure guest, you might be able to block any rogue DMA until
+> after attestation / lock down checks even if the Hypervisor was letting
+> it through.
 
-RDI and RSI can also be used as arguments to TDVMCALL leafs. Move RDI to
-RAX and RSI to RBP to free up them for the hypercall arguments.
+Provided that the guest or, in the TDX and AP-TEE cases, the TSM have
+protected access to the IOMMU, yes. But then the implementation becomes
+platform specific.
 
-RAX saved on stack during TDCALL as it returns status code in the
-register.
-
-RBP value has to be restored before returning from __tdx_hypercall() as
-it is callee-saved register.
-
-This is preparatory patch. No functional change.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/coco/tdx/tdcall.S | 46 +++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 18 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
-index 74b108e94a0d..a9bb4cbb8197 100644
---- a/arch/x86/coco/tdx/tdcall.S
-+++ b/arch/x86/coco/tdx/tdcall.S
-@@ -124,19 +124,26 @@ SYM_FUNC_START(__tdx_hypercall)
- 	push %r14
- 	push %r13
- 	push %r12
-+	push %rbp
-+
-+	/* Free RDI and RSI to be used as TDVMCALL arguments */
-+	movq %rdi, %rax
-+	movq %rsi, %rbp
-+
-+	/* Copy hypercall registers from arg struct: */
-+	movq TDX_HYPERCALL_r10(%rax), %r10
-+	movq TDX_HYPERCALL_r11(%rax), %r11
-+	movq TDX_HYPERCALL_r12(%rax), %r12
-+	movq TDX_HYPERCALL_r13(%rax), %r13
-+	movq TDX_HYPERCALL_r14(%rax), %r14
-+	movq TDX_HYPERCALL_r15(%rax), %r15
-+
-+	push %rax
- 
- 	/* Mangle function call ABI into TDCALL ABI: */
- 	/* Set TDCALL leaf ID (TDVMCALL (0)) in RAX */
- 	xor %eax, %eax
- 
--	/* Copy hypercall registers from arg struct: */
--	movq TDX_HYPERCALL_r10(%rdi), %r10
--	movq TDX_HYPERCALL_r11(%rdi), %r11
--	movq TDX_HYPERCALL_r12(%rdi), %r12
--	movq TDX_HYPERCALL_r13(%rdi), %r13
--	movq TDX_HYPERCALL_r14(%rdi), %r14
--	movq TDX_HYPERCALL_r15(%rdi), %r15
--
- 	movl $TDVMCALL_EXPOSE_REGS_MASK, %ecx
- 
- 	/*
-@@ -148,7 +155,7 @@ SYM_FUNC_START(__tdx_hypercall)
- 	 * HLT operation indefinitely. Since this is the not the desired
- 	 * result, conditionally call STI before TDCALL.
- 	 */
--	testq $TDX_HCALL_ISSUE_STI, %rsi
-+	testq $TDX_HCALL_ISSUE_STI, %rbp
- 	jz .Lskip_sti
- 	sti
- .Lskip_sti:
-@@ -165,20 +172,22 @@ SYM_FUNC_START(__tdx_hypercall)
- 	testq %rax, %rax
- 	jne .Lpanic
- 
--	/* TDVMCALL leaf return code is in R10 */
--	movq %r10, %rax
-+	pop %rax
- 
- 	/* Copy hypercall result registers to arg struct if needed */
--	testq $TDX_HCALL_HAS_OUTPUT, %rsi
-+	testq $TDX_HCALL_HAS_OUTPUT, %rbp
- 	jz .Lout
- 
--	movq %r10, TDX_HYPERCALL_r10(%rdi)
--	movq %r11, TDX_HYPERCALL_r11(%rdi)
--	movq %r12, TDX_HYPERCALL_r12(%rdi)
--	movq %r13, TDX_HYPERCALL_r13(%rdi)
--	movq %r14, TDX_HYPERCALL_r14(%rdi)
--	movq %r15, TDX_HYPERCALL_r15(%rdi)
-+	movq %r10, TDX_HYPERCALL_r10(%rax)
-+	movq %r11, TDX_HYPERCALL_r11(%rax)
-+	movq %r12, TDX_HYPERCALL_r12(%rax)
-+	movq %r13, TDX_HYPERCALL_r13(%rax)
-+	movq %r14, TDX_HYPERCALL_r14(%rax)
-+	movq %r15, TDX_HYPERCALL_r15(%rax)
- .Lout:
-+	/* TDVMCALL leaf return code is in R10 */
-+	movq %r10, %rax
-+
- 	/*
- 	 * Zero out registers exposed to the VMM to avoid speculative execution
- 	 * with VMM-controlled values. This needs to include all registers
-@@ -189,6 +198,7 @@ SYM_FUNC_START(__tdx_hypercall)
- 	xor %r11d, %r11d
- 
- 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
-+	pop %rbp
- 	pop %r12
- 	pop %r13
- 	pop %r14
--- 
-2.39.1
-
+Cheers,
+Samuel.
