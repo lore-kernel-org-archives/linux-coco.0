@@ -1,135 +1,203 @@
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289FC3C02
-	for <linux-coco@lists.linux.dev>; Fri, 27 Jan 2023 18:02:59 +0000 (UTC)
-Received: from cwcc.thunk.org (pool-173-48-120-46.bstnma.fios.verizon.net [173.48.120.46])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 30RI20YF011202
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Jan 2023 13:02:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1674842528; bh=3mHKkbAH+okU6AHANi/BzVdlU8mAUZv1+jT73lv1OWI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X1v0PvbJ7JWuw5yg30+68d4U5ZTtRAZLYMVxixtcRgMlJpDCVuQ6acpnX4iLkbDsd
-	 btZK2gFujU5B++TxM9WWiqcJnvMY3YDQOLTkglyI7gPbDbgt+uRnkG+bAMT7GNvgF4
-	 gPa1cz9Er2Fa6FEs2GNjBOWgxMeXlzMTgEgcxo0d/ItaSxnaGhiVq/AW7hBpuAcG95
-	 XNDVKl3+/oCV834rcRv6W+rt14HZj88Did3JOrps9zQJZJc8AALNSSEIHny5OxYppm
-	 NB3ucNdAYROr3ctQOUubvQTW+SCY+K4c20hdtOo6PvpbyzQfyOaO4kvIF8KZrfuk6a
-	 Ra3qTApqdc4vQ==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 0407C15C358A; Thu, 26 Jan 2023 15:54:56 -0500 (EST)
-Date: Thu, 26 Jan 2023 15:54:55 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: Leon Romanovsky <leon@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Shishkin, Alexander" <alexander.shishkin@intel.com>,
-        "Shutemov, Kirill" <kirill.shutemov@intel.com>,
-        "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-        "Kleen, Andi" <andi.kleen@intel.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69DA187F
+	for <linux-coco@lists.linux.dev>; Fri, 27 Jan 2023 19:26:07 +0000 (UTC)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30RIQbev032099;
+	Fri, 27 Jan 2023 19:25:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : content-transfer-encoding : mime-version; s=pp1;
+ bh=ToKcaXCGHVtx/OUYQA1NFnUlgdSr2VZlO3XcPE9guYE=;
+ b=kX22gYODagjRJSs9N7MCO9mQRlzRUEPEYIkWZYSgicuqPorcHV+7Eyg+YW2LfiKr4OwI
+ pcak1j+0vLhvgDyebqDoWTC5+cs+NugDYldlhvN3Y2dYW00mMCwO5p1SwNGibvd6iS3I
+ K8lmSFqEfJseIoLiPnLg8JaCZQr3UBtQqq0Wnaovbv7j/yEpvwvDFLR8vVDcgJtZdyzT
+ ocxz+l8TP5RTMt6ek+fA2Zc4dl9o5Udi9cDN4OsIiAJWPycEPyV3II/u0H9BpiJOVrJN
+ QYoj6uO7pgVwEkWpFTOKRDpY606MoOECXb3SnV5IHNsVbc4uxdMqGRHYz+ZxaGV6jz99 LQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nckw6h99v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jan 2023 19:25:34 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30RISwHi010820;
+	Fri, 27 Jan 2023 19:25:33 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3nckw6h99k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jan 2023 19:25:33 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30RHRLtI012695;
+	Fri, 27 Jan 2023 19:25:32 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([9.208.129.119])
+	by ppma02wdc.us.ibm.com (PPS) with ESMTPS id 3n87p8402u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Jan 2023 19:25:32 +0000
+Received: from b03ledav001.gho.boulder.ibm.com ([9.17.130.232])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30RJPUlR38273624
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 Jan 2023 19:25:31 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8EE416E050;
+	Fri, 27 Jan 2023 19:27:31 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A16DC6E04E;
+	Fri, 27 Jan 2023 19:27:27 +0000 (GMT)
+Received: from lingrow.int.hansenpartnership.com (unknown [9.163.35.100])
+	by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Fri, 27 Jan 2023 19:27:27 +0000 (GMT)
+Message-ID: <702f22df28e628d41babcf670c909f1fa1bb3c0c.camel@linux.ibm.com>
+Subject: Re: Linux guest kernel threat model for Confidential Computing
+From: James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+        Leon Romanovsky
+	 <leon@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Shishkin, Alexander"
+ <alexander.shishkin@intel.com>,
+        "Shutemov, Kirill"
+ <kirill.shutemov@intel.com>,
+        "Kuppuswamy, Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@intel.com>,
+        "Kleen, Andi"
+ <andi.kleen@intel.com>,
         "Hansen, Dave" <dave.hansen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas
+ Gleixner <tglx@linutronix.de>,
         Peter Zijlstra <peterz@infradead.org>,
         "Wunner, Lukas" <lukas.wunner@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Mika Westerberg
+ <mika.westerberg@linux.intel.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
         Jason Wang <jasowang@redhat.com>,
         "Poimboe, Josh" <jpoimboe@redhat.com>,
         "aarcange@redhat.com" <aarcange@redhat.com>,
         Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-        "jbachmann@google.com" <jbachmann@google.com>,
+        "jbachmann@google.com"
+ <jbachmann@google.com>,
         "pgonda@google.com" <pgonda@google.com>,
         "keescook@chromium.org" <keescook@chromium.org>,
-        James Morris <jmorris@namei.org>,
+        James Morris
+ <jmorris@namei.org>,
         Michael Kelley <mikelley@microsoft.com>,
-        "Lange, Jon" <jlange@microsoft.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Kernel Hardening <kernel-hardening@lists.openwall.com>
-Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y9Lonw9HzlosUPnS@mit.edu>
-References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9EkCvAfNXnJ+ATo@kroah.com>
- <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9Jh2x9XJE1KEUg6@unreal>
- <DM8PR11MB5750414F6638169C7097E365E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <Y9JyW5bUqV7gWmU8@unreal>
- <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+        "Lange, Jon"
+ <jlange@microsoft.com>,
+        "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>,
+        Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>,
+        Kernel Hardening
+ <kernel-hardening@lists.openwall.com>
+Date: Fri, 27 Jan 2023 14:24:55 -0500
+In-Reply-To: <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+References: 
+	<DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+	 <Y9EkCvAfNXnJ+ATo@kroah.com>
+	 <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+	 <Y9Jh2x9XJE1KEUg6@unreal>
+	 <DM8PR11MB5750414F6638169C7097E365E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+	 <Y9JyW5bUqV7gWmU8@unreal>
+	 <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kBLf3s8wiJECaATpwbnqac63pWuxSv8m
+X-Proofpoint-ORIG-GUID: c_7tvaSFCnlC7B6dmBcHilT0GExG_s8M
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-27_12,2023-01-27_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
+ clxscore=1011 mlxscore=0 impostorscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301270176
 
-On Thu, Jan 26, 2023 at 01:28:15PM +0000, Reshetova, Elena wrote:
-> > This is exactly what I said. You presented me the cases which exist in
-> > your invented world. Mentioned unhandled page fault doesn't exist in real
-> > world. If PCI device doesn't work, it needs to be replaced/blocked and not
-> > left to be operable and accessible from the kernel/user.
+On Thu, 2023-01-26 at 13:28 +0000, Reshetova, Elena wrote:
+> > On Thu, Jan 26, 2023 at 11:29:20AM +0000, Reshetova, Elena wrote:
+> > > > On Wed, Jan 25, 2023 at 03:29:07PM +0000, Reshetova, Elena
+> > > > wrote:
+> > > > > Replying only to the not-so-far addressed points.
+> > > > > 
+> > > > > > On Wed, Jan 25, 2023 at 12:28:13PM +0000, Reshetova, Elena
+> > > > > > wrote:
+> > > > > > > Hi Greg,
+> > > > 
+> > > > <...>
+> > > > 
+> > > > > > > 3) All the tools are open-source and everyone can start
+> > > > > > > using them right away even without any special HW (readme
+> > > > > > > has description of what is needed).
+> > > > > > > Tools and documentation is here:
+> > > > > > > https://github.com/intel/ccc-linux-guest-hardening
+> > > > > > 
+> > > > > > Again, as our documentation states, when you submit patches
+> > > > > > based on these tools, you HAVE TO document that.  Otherwise
+> > > > > > we think you all are crazy and will get your patches
+> > > > > > rejected.  You all know this, why ignore it?
+> > > > > 
+> > > > > Sorry, I didn’t know that for every bug that is found in
+> > > > > linux kernel when we are submitting a fix that we have to
+> > > > > list the way how it has been found. We will fix this in the
+> > > > > future submissions, but some bugs we have are found by
+> > > > > plain code audit, so 'human' is the tool. 
+> > > > My problem with that statement is that by applying different
+> > > > threat model you "invent" bugs which didn't exist in a first
+> > > > place.
+> > > > 
+> > > > For example, in this [1] latest submission, authors labeled
+> > > > correct behaviour as "bug".
+> > > > 
+> > > > [1] https://lore.kernel.org/all/20230119170633.40944-1-
+> > > > alexander.shishkin@linux.intel.com/
+> > > 
+> > > Hm.. Does everyone think that when kernel dies with unhandled
+> > > page fault (such as in that case) or detection of a KASAN out of
+> > > bounds violation (as it is in some other cases we already have
+> > > fixes or investigating) it represents a correct behavior even if
+> > > you expect that all your pci HW devices are trusted?
+> > 
+> > This is exactly what I said. You presented me the cases which exist
+> > in your invented world. Mentioned unhandled page fault doesn't
+> > exist in real world. If PCI device doesn't work, it needs to be
+> > replaced/blocked and not left to be operable and accessible from
+> > the kernel/user.
 > 
-> Can we really assure correct operation of *all* pci devices out there? 
-> How would such an audit be performed given a huge set of them available? 
-> Isnt it better instead to make a small fix in the kernel behavior that would guard
-> us from such potentially not correctly operating devices?
+> Can we really assure correct operation of *all* pci devices out
+> there? How would such an audit be performed given a huge set of them
+> available? Isnt it better instead to make a small fix in the kernel
+> behavior that would guard us from such potentially not correctly
+> operating devices? 
 
-We assume that hardware works according to the spec; that's why we
-have a specification.  Otherwise, things would be pretty insane, and
-would lead to massive bloat *everywhere*.  If there are broken PCI
-devices out there, then we can blacklist the PCI device.  If a
-manufacturer is consistently creating devices which don't obey the
-spec, we could block all devices from that manufacturer, and have an
-explicit white list for those devices from that manufacturer that
-actually work.
+I think this is really the wrong question from the confidential
+computing (CC) point of view.  The question shouldn't be about assuring
+that the PCI device is operating completely correctly all the time (for
+some value of correct).  It's if it were programmed to be malicious
+what could it do to us?  If we take all DoS and Crash outcomes off the
+table (annoying but harmless if they don't reveal the confidential
+contents), we're left with it trying to extract secrets from the
+confidential environment.
 
-If we can't count on a floating point instruction to return the right
-value, what are we supposed to do?  Create a code which double checks
-every single floating point instruction just in case 2 + 2 = 3.99999999?   :-)
+The big threat from most devices (including the thunderbolt classes) is
+that they can DMA all over memory.  However, this isn't really a threat
+in CC (well until PCI becomes able to do encrypted DMA) because the
+device has specific unencrypted buffers set aside for the expected DMA.
+If it writes outside that CC integrity will detect it and if it reads
+outside that it gets unintelligible ciphertext.  So we're left with the
+device trying to trick secrets out of us by returning unexpected data.
 
-Ultimately, changing the trust boundary what is considered is a
-fundamentally hard thing, and to try to claim that code that assumes
-that things inside the trust boundary are, well, trusted, is not a
-great way to win friends and influence people.
+If I set this as the problem, verifying device correct operation is a
+possible solution (albeit hugely expensive), but there are likely many
+other cheaper ways to defeat or detect a device trying to trick us into
+revealing something.
 
-> Let's forget the trust angle here (it only applies to the Confidential Computing 
-> threat model and you clearly implying the existing threat model instead) and stick just to
-> the not-correctly operating device. What you are proposing is to fix *unknown* bugs
-> in multitude of pci devices that (in case of this particular MSI bug) can
-> lead to two different values being read from the config space and kernel incorrectly
-> handing this situation.
+James
 
-I don't think that's what people are saying.  If there are buggy PCI
-devices, we can put them on block lists.  But checking that every
-single read from the config space is unchanged is not something we
-should do, period.
-
-> Isn't it better to do the clear fix in one place to ensure such
-> situation (two subsequent reads with different values) cannot even happen in theory?
-> In security we have a saying that fixing a root cause of the problem is the most efficient
-> way to mitigate the problem. The root cause here is a double-read with different values,
-> so if it can be substituted with an easy and clear patch that probably even improves
-> performance as we do one less pci read and use cached value instead, where is the
-> problem in this particular case? If there are technical issues with the patch, of course we 
-> need to discuss it/fix it, but it seems we are arguing here about whenever or not we want
-> to be fixing kernel code when we notice such cases...
-
-Well, if there is a performance win to cache a read from config space,
-then make the argument from a performance perspective.  But caching
-values takes memory, and will potentially bloat data structures.  It's
-not necessarily cost-free to caching every single config space
-variable to prevent double-read from either buggy or malicious devices.
-
-So it's one thing if we make each decision from a cost-benefit
-perspective.  But then it's a *optimization*, not a *bug-fix*, and it
-also means that we aren't obligated to cache every single read from
-config space, lest someone wag their fingers at us saying, "Buggy!
-Your code is Buggy!".
-
-Cheers,
-
-						- Ted
