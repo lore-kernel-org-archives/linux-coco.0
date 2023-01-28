@@ -1,12 +1,12 @@
 Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C65199
-	for <linux-coco@lists.linux.dev>; Sat, 28 Jan 2023 08:48:35 +0000 (UTC)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=guorui.yu@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0VaGyb8l_1674894788;
-Received: from localhost(mailfrom:GuoRui.Yu@linux.alibaba.com fp:SMTPD_---0VaGyb8l_1674894788)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D143199
+	for <linux-coco@lists.linux.dev>; Sat, 28 Jan 2023 08:48:44 +0000 (UTC)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=guorui.yu@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0VaH.9z4_1674894785;
+Received: from localhost(mailfrom:GuoRui.Yu@linux.alibaba.com fp:SMTPD_---0VaH.9z4_1674894785)
           by smtp.aliyun-inc.com;
-          Sat, 28 Jan 2023 16:33:09 +0800
+          Sat, 28 Jan 2023 16:33:05 +0800
 From: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>
 To: linux-kernel@vger.kernel.org,
 	iommu@lists.linux-foundation.org,
@@ -14,12 +14,10 @@ To: linux-kernel@vger.kernel.org,
 	linux-coco@lists.linux.dev
 Cc: GuoRui.Yu@linux.alibaba.com,
 	robin.murphy@arm.com
-Subject: [PATCH 3/4] swiotlb: Add tracepoint swiotlb_unbounced
-Date: Sat, 28 Jan 2023 16:32:53 +0800
-Message-Id: <20230128083254.86012-4-GuoRui.Yu@linux.alibaba.com>
+Subject: [RFC] swiotlb: Add a new cc-swiotlb implementation for Confidential VMs
+Date: Sat, 28 Jan 2023 16:32:50 +0800
+Message-Id: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.29.2.540.g3cf59784d4
-In-Reply-To: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
-References: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -28,66 +26,86 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a new tracepoint swiotlb_unbounced to facilitate statistics of
-swiotlb buffer usage.
+This patch series adds a new swiotlb implementation, cc-swiotlb, for
+Confidential VMs (such as TDX and SEV-SNP). The new cc-swiotlb allocates
+the DMA TLB buffer dynamically in runtime instead of allocating at boot
+with a fixed size. Furthermore, future optimization and security
+enhancement could be applied on cc-swiotlb without "infecting" the
+legacy swiotlb.
 
-Signed-off-by: GuoRui.Yu <GuoRui.Yu@linux.alibaba.com>
----
- include/trace/events/swiotlb.h | 28 ++++++++++++++++++++++++++++
- kernel/dma/common-swiotlb.c    |  1 +
- 2 files changed, 29 insertions(+)
+Background
+==========
+Under COnfidential COmputing (CoCo) scenarios, the VMM cannot access
+guest memory directly but requires the guest to explicitly mark the
+memory as shared (decrypted). To make the streaming DMA mappings work,
+the current implementation relays on legacy SWIOTLB to bounce the DMA
+buffer between private (encrypted) and shared (decrypted) memory.
 
-diff --git a/include/trace/events/swiotlb.h b/include/trace/events/swiotlb.h
-index da05c9ebd224..0707adc34df5 100644
---- a/include/trace/events/swiotlb.h
-+++ b/include/trace/events/swiotlb.h
-@@ -35,6 +35,34 @@ TRACE_EVENT(swiotlb_bounced,
- 		__entry->force ? "FORCE" : "NORMAL")
- );
- 
-+TRACE_EVENT(swiotlb_unbounced,
-+	TP_PROTO(struct device *dev, dma_addr_t dev_addr, size_t size),
-+	TP_ARGS(dev, dev_addr, size),
-+
-+	TP_STRUCT__entry(
-+		__string(dev_name, dev_name(dev))
-+		__field(u64, dma_mask)
-+		__field(dma_addr_t, dev_addr)
-+		__field(size_t, size)
-+		__field(bool, force)
-+	),
-+
-+	TP_fast_assign(
-+		__assign_str(dev_name, dev_name(dev));
-+		__entry->dma_mask = (dev->dma_mask ? *dev->dma_mask : 0);
-+		__entry->dev_addr = dev_addr;
-+		__entry->size = size;
-+		__entry->force = is_swiotlb_force_bounce(dev);
-+	),
-+
-+	TP_printk("dev_name: %s dma_mask=%llx dev_addr=%llx size=%zu %s",
-+		__get_str(dev_name),
-+		__entry->dma_mask,
-+		(unsigned long long)__entry->dev_addr,
-+		__entry->size,
-+		__entry->force ? "FORCE" : "NORMAL")
-+);
-+
- #endif /*  _TRACE_SWIOTLB_H */
- 
- /* This part must be outside protection */
-diff --git a/kernel/dma/common-swiotlb.c b/kernel/dma/common-swiotlb.c
-index 553325d5c9cd..e3676a8358f2 100644
---- a/kernel/dma/common-swiotlb.c
-+++ b/kernel/dma/common-swiotlb.c
-@@ -46,6 +46,7 @@ void swiotlb_tbl_unmap_single(struct device *dev, phys_addr_t tlb_addr,
- 			      size_t mapping_size, enum dma_data_direction dir,
- 			      unsigned long attrs)
- {
-+	trace_swiotlb_unbounced(dev, phys_to_dma(dev, tlb_addr), mapping_size);
- 	/*
- 	 * First, sync the memory before unmapping the entry
- 	 */
--- 
-2.31.1
+However, the legacy swiotlb is designed for compatibility rather than
+efficiency and CoCo purpose, which will inevitably introduce some
+unnecessary restrictions.  
+
+1. Fixed immutable swiotlb size cannot accommodate to requirements of
+multiple devices. And 1GiB (current maximum size) of swiotlb in our
+testbed cannot afford multiple disks reads/writes simultaneously.  
+
+2. Fixed immutable IO_TLB_SIZE (2KiB) cannot satisfy various kinds of
+devices. At the moment, the minimal size of a swiotlb buffer is 2KiB,
+which will waste memory on small network packets (under 256 bytes) and
+decrease efficiency on a large block (up to 256KiB) size reads/writes of
+disks. And it is hard to have a trade-off on legacy swiotlb to rule them
+all.  
+
+3. The legacy swiotlb cannot efficiently support larger swiotlb buffers.
+In the worst case, the current implementation requires a full scan of
+the entire swiotlb buffer, which can cause severe performance hits.
+
+Changes in this patch set
+=========================
+Instead of keeping "infecting" the legacy swiotlb code with CoCo logic,
+this patch tries to introduce a new cc-swiotlb for Confidential VMs.
+
+Confidential VMs usually have reasonable modern devices (virtio devices,
+NVME, etc.), which can access memory above 4GiB, cc-swiotlb could
+allocate TLB buffers at any position dynamically. Since
+set_memory_{decrypted,encrypted} is time-consuming and cannot be used in
+interrupt context, a new kernel thread "kccd" has been added to populate
+new TLB buffers on-demand, which solved the problem 1.
+
+In addition, the cc-swiotlb manages TLB buffers by different sizes
+(512B, 2KiB, 4KiB, 16KiB, and 512KiB). The above values come from the
+following observations (boot with 8core, 32 GiB, 1 nvme disk, and 1
+virtio-net): 
+- Allocations of 512 bytes and below account for 3.5% of the total DMA
+  cache allocations;
+- Allocations of 2 KiB and below account for 57.7%;
+- Allocations of 4 KiB and below account for 91.3%;
+- Allocations of 16 KiB and below account for 96.0%;
+- Allocations of 512 KiB and below accounted for 100%;
+- At the end of booting, cc-swiotlb uses 288 MiB in total. 
+
+For comparison, legacy swiotlb reserves memory at 6%, which requires
+min(1GiB, 32GiB * 0.06) = 1GiB, and will hang when operating multiple
+disks simultaneously due to no memory for the swiotlb buffer.
+
+These patches were tested with fio (using different iodepth and block
+size) on a platform with 96 cores, 384 GiB, and 20 NVME disks, and no IO
+hang or error was observed.
+
+For simplicity, the current RFC version cannot switch between legacy
+implementation with cmdline but through compile options. I am open to
+discussing how to integrate the cc-swiotlb into the legacy one.
+
+Patch Organization
+==================
+- swiotlb: Split common code from swiotlb.{c,h}
+- swiotlb: Add a new cc-swiotlb implementation for Confidential VMs
+- swiotlb: Add tracepoint swiotlb_unbounced
+- cc-swiotlb: Allow set swiotlb watermark from cmdline
+
+Thanks for your time!
+
+Have a nice day,
+Guorui
+
 
