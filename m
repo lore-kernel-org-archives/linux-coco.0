@@ -1,116 +1,149 @@
-Received: from out199-17.us.a.mail.aliyun.com (out199-17.us.a.mail.aliyun.com [47.90.199.17])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AA43C0B
-	for <linux-coco@lists.linux.dev>; Sat, 28 Jan 2023 09:03:15 +0000 (UTC)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=guorui.yu@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0VaHEExj_1674896583;
-Received: from 30.221.129.22(mailfrom:GuoRui.Yu@linux.alibaba.com fp:SMTPD_---0VaHEExj_1674896583)
-          by smtp.aliyun-inc.com;
-          Sat, 28 Jan 2023 17:03:03 +0800
-Message-ID: <f9de1d58-a723-5791-605a-a0d4a024e3ad@linux.alibaba.com>
-Date: Sat, 28 Jan 2023 17:03:02 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43CA3232;
+	Sat, 28 Jan 2023 12:03:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674907410; x=1706443410;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=i0RFEKNFj77Bsg83J8YNF+pxSWojES57fmybMH++WWs=;
+  b=icMkUGOQ5WDcDmAi/PZcXW3STMA4jJKQPE/lDy1DvW30Z48iCvSrIKUs
+   1kg+pXNLLY8KVlVSuVILm1Ox2vC1Lt8rIOcdnSLa9rCBwDxI67gxvx/E6
+   hSEn2jY40BHZKf5nED5TeCBsaBS3PV4iFY6HFxxvRWqlNQusYmBsOmTbs
+   lpGIQNtImuCGyhFKOJzVwYDiaeWkbZF69PAvupV9c3ZolLxmUgTM3FnjP
+   QnJiNU4ydH4c0BmlOTL28PW8Q90LIExA/La8bN5qqAm+f4rD6sc/RJYot
+   NgICLYhQ9ubxF239XiyKFkdPFGb1bStOhM/SrKIA4Bnlpznxnjq7p5j4W
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10603"; a="354593380"
+X-IronPort-AV: E=Sophos;i="5.97,254,1669104000"; 
+   d="scan'208";a="354593380"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2023 04:03:30 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10603"; a="656917221"
+X-IronPort-AV: E=Sophos;i="5.97,254,1669104000"; 
+   d="scan'208";a="656917221"
+Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 28 Jan 2023 04:03:28 -0800
+Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pLjvb-0000cr-1Y;
+	Sat, 28 Jan 2023 12:03:27 +0000
+Date: Sat, 28 Jan 2023 20:03:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
+	linux-coco@lists.linux.dev
+Cc: oe-kbuild-all@lists.linux.dev, GuoRui.Yu@linux.alibaba.com,
+	robin.murphy@arm.com
+Subject: Re: [PATCH 2/4] swiotlb: Add a new cc-swiotlb implementation for
+ Confidential VMs
+Message-ID: <202301281925.XYfOkJnF-lkp@intel.com>
+References: <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.6.1
-Subject: Re: [RFC] swiotlb: Add a new cc-swiotlb implementation for
- Confidential VMs
-To: linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- konrad.wilk@oracle.com, linux-coco@lists.linux.dev, hch@lst.de,
- m.szyprowski@samsung.com
-Cc: robin.murphy@arm.com
-References: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
-From: Guorui Yu <GuoRui.Yu@linux.alibaba.com>
-In-Reply-To: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
 
-+ Marek Szyprowski and Robin Murphy.
+Hi GuoRui.Yu",
 
-在 2023/1/28 16:32, GuoRui.Yu 写道:
-> This patch series adds a new swiotlb implementation, cc-swiotlb, for
-> Confidential VMs (such as TDX and SEV-SNP). The new cc-swiotlb allocates
-> the DMA TLB buffer dynamically in runtime instead of allocating at boot
-> with a fixed size. Furthermore, future optimization and security
-> enhancement could be applied on cc-swiotlb without "infecting" the
-> legacy swiotlb.
-> 
-> Background
-> ==========
-> Under COnfidential COmputing (CoCo) scenarios, the VMM cannot access
-> guest memory directly but requires the guest to explicitly mark the
-> memory as shared (decrypted). To make the streaming DMA mappings work,
-> the current implementation relays on legacy SWIOTLB to bounce the DMA
-> buffer between private (encrypted) and shared (decrypted) memory.
-> 
-> However, the legacy swiotlb is designed for compatibility rather than
-> efficiency and CoCo purpose, which will inevitably introduce some
-> unnecessary restrictions.
-> 
-> 1. Fixed immutable swiotlb size cannot accommodate to requirements of
-> multiple devices. And 1GiB (current maximum size) of swiotlb in our
-> testbed cannot afford multiple disks reads/writes simultaneously.
-> 
-> 2. Fixed immutable IO_TLB_SIZE (2KiB) cannot satisfy various kinds of
-> devices. At the moment, the minimal size of a swiotlb buffer is 2KiB,
-> which will waste memory on small network packets (under 256 bytes) and
-> decrease efficiency on a large block (up to 256KiB) size reads/writes of
-> disks. And it is hard to have a trade-off on legacy swiotlb to rule them
-> all.
-> 
-> 3. The legacy swiotlb cannot efficiently support larger swiotlb buffers.
-> In the worst case, the current implementation requires a full scan of
-> the entire swiotlb buffer, which can cause severe performance hits.
-> 
-> Changes in this patch set
-> =========================
-> Instead of keeping "infecting" the legacy swiotlb code with CoCo logic,
-> this patch tries to introduce a new cc-swiotlb for Confidential VMs.
-> 
-> Confidential VMs usually have reasonable modern devices (virtio devices,
-> NVME, etc.), which can access memory above 4GiB, cc-swiotlb could
-> allocate TLB buffers at any position dynamically. Since
-> set_memory_{decrypted,encrypted} is time-consuming and cannot be used in
-> interrupt context, a new kernel thread "kccd" has been added to populate
-> new TLB buffers on-demand, which solved the problem 1.
-> 
-> In addition, the cc-swiotlb manages TLB buffers by different sizes
-> (512B, 2KiB, 4KiB, 16KiB, and 512KiB). The above values come from the
-> following observations (boot with 8core, 32 GiB, 1 nvme disk, and 1
-> virtio-net):
-> - Allocations of 512 bytes and below account for 3.5% of the total DMA
->    cache allocations;
-> - Allocations of 2 KiB and below account for 57.7%;
-> - Allocations of 4 KiB and below account for 91.3%;
-> - Allocations of 16 KiB and below account for 96.0%;
-> - Allocations of 512 KiB and below accounted for 100%;
-> - At the end of booting, cc-swiotlb uses 288 MiB in total.
-> 
-> For comparison, legacy swiotlb reserves memory at 6%, which requires
-> min(1GiB, 32GiB * 0.06) = 1GiB, and will hang when operating multiple
-> disks simultaneously due to no memory for the swiotlb buffer.
-> 
-> These patches were tested with fio (using different iodepth and block
-> size) on a platform with 96 cores, 384 GiB, and 20 NVME disks, and no IO
-> hang or error was observed.
-> 
-> For simplicity, the current RFC version cannot switch between legacy
-> implementation with cmdline but through compile options. I am open to
-> discussing how to integrate the cc-swiotlb into the legacy one.
-> 
-> Patch Organization
-> ==================
-> - swiotlb: Split common code from swiotlb.{c,h}
-> - swiotlb: Add a new cc-swiotlb implementation for Confidential VMs
-> - swiotlb: Add tracepoint swiotlb_unbounced
-> - cc-swiotlb: Allow set swiotlb watermark from cmdline
-> 
-> Thanks for your time!
-> 
-> Have a nice day,
-> Guorui
-> 
+Thank you for the patch! Perhaps something to improve:
+
+[auto build test WARNING on tip/x86/core]
+[also build test WARNING on joro-iommu/next driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus linus/master v6.2-rc5 next-20230127]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/GuoRui-Yu/swiotlb-Add-a-new-cc-swiotlb-implementation-for-Confidential-VMs/20230128-181154
+patch link:    https://lore.kernel.org/r/20230128083254.86012-3-GuoRui.Yu%40linux.alibaba.com
+patch subject: [PATCH 2/4] swiotlb: Add a new cc-swiotlb implementation for Confidential VMs
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20230128/202301281925.XYfOkJnF-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/9345d2c75b5994cec46ad0abf12f01ed91742e81
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review GuoRui-Yu/swiotlb-Add-a-new-cc-swiotlb-implementation-for-Confidential-VMs/20230128-181154
+        git checkout 9345d2c75b5994cec46ad0abf12f01ed91742e81
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha SHELL=/bin/bash kernel/dma/
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   kernel/dma/cc-swiotlb.c: In function 'swiotlb_bounce':
+>> kernel/dma/cc-swiotlb.c:174:32: warning: variable 'tlb_end' set but not used [-Wunused-but-set-variable]
+     174 |         phys_addr_t orig_addr, tlb_end, slot_start, slot_end = tlb_addr ;
+         |                                ^~~~~~~
+   kernel/dma/cc-swiotlb.c: At top level:
+>> kernel/dma/cc-swiotlb.c:492:13: warning: no previous prototype for 'swiotlb_hint_cpus' [-Wmissing-prototypes]
+     492 | void __init swiotlb_hint_cpus(int cpus) {}
+         |             ^~~~~~~~~~~~~~~~~
+
+
+vim +/tlb_end +174 kernel/dma/cc-swiotlb.c
+
+   167	
+   168	/*
+   169	 * Bounce: copy the swiotlb buffer from or back to the original dma location
+   170	 */
+   171	void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size,
+   172				   enum dma_data_direction dir)
+   173	{
+ > 174		phys_addr_t orig_addr, tlb_end, slot_start, slot_end = tlb_addr ;
+   175		struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+   176		struct io_tlb_slot *slot;
+   177		unsigned long pfn;
+   178		void *backing_addr;
+   179		size_t alloc_size;
+   180	
+   181		slot = xa_find_after(mem->mapping, (unsigned long*)&slot_end, ULONG_MAX, XA_PRESENT);
+   182		if (!slot) {
+   183			dev_WARN_ONCE(dev, 1, "TLB buffer not found.\n");
+   184			return;
+   185		}
+   186	
+   187		orig_addr = slot->orig_addr;
+   188		alloc_size = slot->alloc_size;
+   189		slot_start = slot_end - slot->orig_size;
+   190		tlb_end = tlb_addr + size;
+   191	
+   192		pfn = PFN_DOWN(orig_addr);
+   193		if (PageHighMem(pfn_to_page(pfn))) {
+   194			dev_WARN_ONCE(dev, 1, "Unexpected high memory.\n");
+   195			return;
+   196		}
+   197	
+   198		if (size > alloc_size) {
+   199			dev_WARN_ONCE(dev, 1,
+   200				"Buffer overflow detected. Allocation size: %zu. Mapping size: %zu.\n",
+   201				alloc_size, size);
+   202			size = alloc_size;
+   203		}
+   204	
+   205		backing_addr = slot->va + (tlb_addr - slot_start);
+   206	
+   207		if (dir == DMA_TO_DEVICE) {
+   208			memcpy(backing_addr, phys_to_virt(orig_addr), size);
+   209		} else {
+   210			memcpy(phys_to_virt(orig_addr), backing_addr, size);
+   211		}
+   212	}
+   213	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
