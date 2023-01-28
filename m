@@ -1,149 +1,73 @@
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43CA3232;
-	Sat, 28 Jan 2023 12:03:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1674907410; x=1706443410;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=i0RFEKNFj77Bsg83J8YNF+pxSWojES57fmybMH++WWs=;
-  b=icMkUGOQ5WDcDmAi/PZcXW3STMA4jJKQPE/lDy1DvW30Z48iCvSrIKUs
-   1kg+pXNLLY8KVlVSuVILm1Ox2vC1Lt8rIOcdnSLa9rCBwDxI67gxvx/E6
-   hSEn2jY40BHZKf5nED5TeCBsaBS3PV4iFY6HFxxvRWqlNQusYmBsOmTbs
-   lpGIQNtImuCGyhFKOJzVwYDiaeWkbZF69PAvupV9c3ZolLxmUgTM3FnjP
-   QnJiNU4ydH4c0BmlOTL28PW8Q90LIExA/La8bN5qqAm+f4rD6sc/RJYot
-   NgICLYhQ9ubxF239XiyKFkdPFGb1bStOhM/SrKIA4Bnlpznxnjq7p5j4W
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10603"; a="354593380"
-X-IronPort-AV: E=Sophos;i="5.97,254,1669104000"; 
-   d="scan'208";a="354593380"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2023 04:03:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10603"; a="656917221"
-X-IronPort-AV: E=Sophos;i="5.97,254,1669104000"; 
-   d="scan'208";a="656917221"
-Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 28 Jan 2023 04:03:28 -0800
-Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1pLjvb-0000cr-1Y;
-	Sat, 28 Jan 2023 12:03:27 +0000
-Date: Sat, 28 Jan 2023 20:03:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>, linux-kernel@vger.kernel.org,
-	iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
-	linux-coco@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev, GuoRui.Yu@linux.alibaba.com,
-	robin.murphy@arm.com
-Subject: Re: [PATCH 2/4] swiotlb: Add a new cc-swiotlb implementation for
- Confidential VMs
-Message-ID: <202301281925.XYfOkJnF-lkp@intel.com>
-References: <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B997E2F47
+	for <linux-coco@lists.linux.dev>; Sat, 28 Jan 2023 16:41:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=bU5gUwsThNIQrMDCEBdhvtVUOL/JSp67mzVg+s9HoyM=; b=LqTh7GK0HzuF/jTsWDZ5ej3mOA
+	G+VK0jKfAAt9Ossxga6Zvg18dCdkRiNBnzWPNc73ufZHEDbd7/fo6iHojv1nadOw6tS2NeNoEeKnl
+	UrlUSMYcr1C/RluABATSX+gIfFcyDsePEQaslXEp9FWHq4LA81bQV+QqDMCeNkROB0/Q8Tz1js3BG
+	uFZhsj1E+w/7/AOXNOy3la2D1aEkDrSf5FsEhqpZGocrqQ/WwXwsl8n8jiMYOHBXPq2GBjXYffDqq
+	gzrc7jQd0aBR6pMcHhQCg2dr7wl+G4ZcLrTwitpa10y5FqPT6QUtJdhOk1E0UkJpKdjFZYqvmqETz
+	CNoaN9SA==;
+Received: from [2601:1c2:d00:6a60::9526]
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pLoGr-000Q5j-JO; Sat, 28 Jan 2023 16:41:41 +0000
+Message-ID: <c966018b-95f0-7b92-0a5a-9023236b0dfb@infradead.org>
+Date: Sat, 28 Jan 2023 08:41:38 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 2/4] swiotlb: Add a new cc-swiotlb implementation for
+ Confidential VMs
+Content-Language: en-US
+To: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
+ linux-coco@lists.linux.dev
+Cc: robin.murphy@arm.com
+References: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
+ <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 In-Reply-To: <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi GuoRui.Yu",
+Hi--
 
-Thank you for the patch! Perhaps something to improve:
+On 1/28/23 00:32, GuoRui.Yu wrote:
+> diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+> index 56866aaa2ae1..7e6b20d2091f 100644
+> --- a/kernel/dma/Kconfig
+> +++ b/kernel/dma/Kconfig
+> @@ -78,8 +78,18 @@ config ARCH_HAS_FORCE_DMA_UNENCRYPTED
+>  
+>  config SWIOTLB
+>  	bool
+> +	depends on !CC_SWIOTLB
+>  	select NEED_DMA_MAP_STATE
+>  
+> +config CC_SWIOTLB
+> +	bool "Enable cc-swiotlb for Confidential VMs"
+> +	default n
+> +	select NEED_DMA_MAP_STATE
+> +	help
+> +	  This enables a cc-swiotlb implementation for Confidential VMs,
+> +	  which allows allocating the SWIOTLB buffer allocation on runtime.
 
-[auto build test WARNING on tip/x86/core]
-[also build test WARNING on joro-iommu/next driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus linus/master v6.2-rc5 next-20230127]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Two "allocat..." words seems to be redundant. Probably the second one
+can be dropped.
+Also, instead of "on runtime", how about "at runtime"?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/GuoRui-Yu/swiotlb-Add-a-new-cc-swiotlb-implementation-for-Confidential-VMs/20230128-181154
-patch link:    https://lore.kernel.org/r/20230128083254.86012-3-GuoRui.Yu%40linux.alibaba.com
-patch subject: [PATCH 2/4] swiotlb: Add a new cc-swiotlb implementation for Confidential VMs
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20230128/202301281925.XYfOkJnF-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/9345d2c75b5994cec46ad0abf12f01ed91742e81
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review GuoRui-Yu/swiotlb-Add-a-new-cc-swiotlb-implementation-for-Confidential-VMs/20230128-181154
-        git checkout 9345d2c75b5994cec46ad0abf12f01ed91742e81
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha SHELL=/bin/bash kernel/dma/
+> +	  If unsure, say "n".
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   kernel/dma/cc-swiotlb.c: In function 'swiotlb_bounce':
->> kernel/dma/cc-swiotlb.c:174:32: warning: variable 'tlb_end' set but not used [-Wunused-but-set-variable]
-     174 |         phys_addr_t orig_addr, tlb_end, slot_start, slot_end = tlb_addr ;
-         |                                ^~~~~~~
-   kernel/dma/cc-swiotlb.c: At top level:
->> kernel/dma/cc-swiotlb.c:492:13: warning: no previous prototype for 'swiotlb_hint_cpus' [-Wmissing-prototypes]
-     492 | void __init swiotlb_hint_cpus(int cpus) {}
-         |             ^~~~~~~~~~~~~~~~~
-
-
-vim +/tlb_end +174 kernel/dma/cc-swiotlb.c
-
-   167	
-   168	/*
-   169	 * Bounce: copy the swiotlb buffer from or back to the original dma location
-   170	 */
-   171	void swiotlb_bounce(struct device *dev, phys_addr_t tlb_addr, size_t size,
-   172				   enum dma_data_direction dir)
-   173	{
- > 174		phys_addr_t orig_addr, tlb_end, slot_start, slot_end = tlb_addr ;
-   175		struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
-   176		struct io_tlb_slot *slot;
-   177		unsigned long pfn;
-   178		void *backing_addr;
-   179		size_t alloc_size;
-   180	
-   181		slot = xa_find_after(mem->mapping, (unsigned long*)&slot_end, ULONG_MAX, XA_PRESENT);
-   182		if (!slot) {
-   183			dev_WARN_ONCE(dev, 1, "TLB buffer not found.\n");
-   184			return;
-   185		}
-   186	
-   187		orig_addr = slot->orig_addr;
-   188		alloc_size = slot->alloc_size;
-   189		slot_start = slot_end - slot->orig_size;
-   190		tlb_end = tlb_addr + size;
-   191	
-   192		pfn = PFN_DOWN(orig_addr);
-   193		if (PageHighMem(pfn_to_page(pfn))) {
-   194			dev_WARN_ONCE(dev, 1, "Unexpected high memory.\n");
-   195			return;
-   196		}
-   197	
-   198		if (size > alloc_size) {
-   199			dev_WARN_ONCE(dev, 1,
-   200				"Buffer overflow detected. Allocation size: %zu. Mapping size: %zu.\n",
-   201				alloc_size, size);
-   202			size = alloc_size;
-   203		}
-   204	
-   205		backing_addr = slot->va + (tlb_addr - slot_start);
-   206	
-   207		if (dir == DMA_TO_DEVICE) {
-   208			memcpy(backing_addr, phys_to_virt(orig_addr), size);
-   209		} else {
-   210			memcpy(phys_to_virt(orig_addr), backing_addr, size);
-   211		}
-   212	}
-   213	
-
+Thanks.
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+~Randy
