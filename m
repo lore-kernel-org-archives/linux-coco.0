@@ -1,73 +1,125 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B997E2F47
-	for <linux-coco@lists.linux.dev>; Sat, 28 Jan 2023 16:41:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=bU5gUwsThNIQrMDCEBdhvtVUOL/JSp67mzVg+s9HoyM=; b=LqTh7GK0HzuF/jTsWDZ5ej3mOA
-	G+VK0jKfAAt9Ossxga6Zvg18dCdkRiNBnzWPNc73ufZHEDbd7/fo6iHojv1nadOw6tS2NeNoEeKnl
-	UrlUSMYcr1C/RluABATSX+gIfFcyDsePEQaslXEp9FWHq4LA81bQV+QqDMCeNkROB0/Q8Tz1js3BG
-	uFZhsj1E+w/7/AOXNOy3la2D1aEkDrSf5FsEhqpZGocrqQ/WwXwsl8n8jiMYOHBXPq2GBjXYffDqq
-	gzrc7jQd0aBR6pMcHhQCg2dr7wl+G4ZcLrTwitpa10y5FqPT6QUtJdhOk1E0UkJpKdjFZYqvmqETz
-	CNoaN9SA==;
-Received: from [2601:1c2:d00:6a60::9526]
-	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pLoGr-000Q5j-JO; Sat, 28 Jan 2023 16:41:41 +0000
-Message-ID: <c966018b-95f0-7b92-0a5a-9023236b0dfb@infradead.org>
-Date: Sat, 28 Jan 2023 08:41:38 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A879B7486;
+	Sat, 28 Jan 2023 20:20:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1674937254; x=1706473254;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dFBhob8MHmzXu757sCnUaQFuD2W3tXJKuMR8SGgfwVc=;
+  b=k1cZ9hnfzJ7q7z2tkQQTeCCRFFrnMfGEPkWVqscKqeJjUyF0MCmEN9ba
+   zihI6mFxkYTSzNbVLHwKCbupcNLTO3ftow+DvPa2p2HtMpGNWPJh886sW
+   dR/U41YfI70i8EG+59bI7MSFCiPGz7b4qHkitDru5296WaqIOiuHvSksH
+   N1qxjOPkCTaikHXxaP6tTu4qOuqRhCe2KqO8O0MZbqXuggBM817qPbNxi
+   jhi8hMVCrVewsi+Tz1bwSMMtsPoBA/BPt3Ir74D3tzlq1iI7cVJuScuIb
+   lYW+aoNnrerxWOfpAp2T/qOSu9MdcSO+yfZbIJPDm2Sk3kpFRfdsdf0+y
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10604"; a="307672348"
+X-IronPort-AV: E=Sophos;i="5.97,254,1669104000"; 
+   d="scan'208";a="307672348"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2023 12:20:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10604"; a="727051089"
+X-IronPort-AV: E=Sophos;i="5.97,254,1669104000"; 
+   d="scan'208";a="727051089"
+Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 28 Jan 2023 12:20:51 -0800
+Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1pLrgw-00014a-1L;
+	Sat, 28 Jan 2023 20:20:50 +0000
+Date: Sun, 29 Jan 2023 04:19:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
+	linux-coco@lists.linux.dev
+Cc: oe-kbuild-all@lists.linux.dev, GuoRui.Yu@linux.alibaba.com,
+	robin.murphy@arm.com
+Subject: Re: [PATCH 4/4] cc-swiotlb: Allow set swiotlb watermark from cmdline
+Message-ID: <202301290417.n1KMDPQt-lkp@intel.com>
+References: <20230128083254.86012-5-GuoRui.Yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 2/4] swiotlb: Add a new cc-swiotlb implementation for
- Confidential VMs
-Content-Language: en-US
-To: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
- linux-coco@lists.linux.dev
-Cc: robin.murphy@arm.com
-References: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
- <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230128083254.86012-5-GuoRui.Yu@linux.alibaba.com>
 
-Hi--
+Hi GuoRui.Yu",
 
-On 1/28/23 00:32, GuoRui.Yu wrote:
-> diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
-> index 56866aaa2ae1..7e6b20d2091f 100644
-> --- a/kernel/dma/Kconfig
-> +++ b/kernel/dma/Kconfig
-> @@ -78,8 +78,18 @@ config ARCH_HAS_FORCE_DMA_UNENCRYPTED
->  
->  config SWIOTLB
->  	bool
-> +	depends on !CC_SWIOTLB
->  	select NEED_DMA_MAP_STATE
->  
-> +config CC_SWIOTLB
-> +	bool "Enable cc-swiotlb for Confidential VMs"
-> +	default n
-> +	select NEED_DMA_MAP_STATE
-> +	help
-> +	  This enables a cc-swiotlb implementation for Confidential VMs,
-> +	  which allows allocating the SWIOTLB buffer allocation on runtime.
+Thank you for the patch! Perhaps something to improve:
 
-Two "allocat..." words seems to be redundant. Probably the second one
-can be dropped.
-Also, instead of "on runtime", how about "at runtime"?
+[auto build test WARNING on tip/x86/core]
+[also build test WARNING on joro-iommu/next driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus linus/master v6.2-rc5 next-20230127]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> +	  If unsure, say "n".
+url:    https://github.com/intel-lab-lkp/linux/commits/GuoRui-Yu/swiotlb-Add-a-new-cc-swiotlb-implementation-for-Confidential-VMs/20230128-181154
+patch link:    https://lore.kernel.org/r/20230128083254.86012-5-GuoRui.Yu%40linux.alibaba.com
+patch subject: [PATCH 4/4] cc-swiotlb: Allow set swiotlb watermark from cmdline
+config: nios2-buildonly-randconfig-r002-20230129 (https://download.01.org/0day-ci/archive/20230129/202301290417.n1KMDPQt-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/fcbd538c875f5f1086682829671935d7155e4029
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review GuoRui-Yu/swiotlb-Add-a-new-cc-swiotlb-implementation-for-Confidential-VMs/20230128-181154
+        git checkout fcbd538c875f5f1086682829671935d7155e4029
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=nios2 olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=nios2 SHELL=/bin/bash kernel/dma/
 
-Thanks.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   kernel/dma/cc-swiotlb.c: In function 'swiotlb_bounce':
+   kernel/dma/cc-swiotlb.c:200:32: warning: variable 'tlb_end' set but not used [-Wunused-but-set-variable]
+     200 |         phys_addr_t orig_addr, tlb_end, slot_start, slot_end = tlb_addr ;
+         |                                ^~~~~~~
+   In file included from kernel/dma/cc-swiotlb.c:13:
+   kernel/dma/cc-swiotlb.c: In function 'cc_populate_pages':
+>> include/linux/kern_levels.h:5:25: warning: format '%lu' expects argument of type 'long unsigned int', but argument 2 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
+       5 | #define KERN_SOH        "\001"          /* ASCII Start Of Header */
+         |                         ^~~~~~
+   include/linux/printk.h:429:25: note: in definition of macro 'printk_index_wrap'
+     429 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                         ^~~~
+   include/linux/printk.h:530:9: note: in expansion of macro 'printk'
+     530 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~
+   include/linux/kern_levels.h:14:25: note: in expansion of macro 'KERN_SOH'
+      14 | #define KERN_INFO       KERN_SOH "6"    /* informational */
+         |                         ^~~~~~~~
+   include/linux/printk.h:530:16: note: in expansion of macro 'KERN_INFO'
+     530 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |                ^~~~~~~~~
+   kernel/dma/cc-swiotlb.c:411:9: note: in expansion of macro 'pr_info'
+     411 |         pr_info("bounce buffer size adjusted to %luMB", size >> 20);
+         |         ^~~~~~~
+   kernel/dma/cc-swiotlb.c: At top level:
+   kernel/dma/cc-swiotlb.c:524:13: warning: no previous prototype for 'swiotlb_hint_cpus' [-Wmissing-prototypes]
+     524 | void __init swiotlb_hint_cpus(int cpus) {}
+         |             ^~~~~~~~~~~~~~~~~
+
+
+vim +5 include/linux/kern_levels.h
+
+314ba3520e513a Joe Perches 2012-07-30  4  
+04d2c8c83d0e3a Joe Perches 2012-07-30 @5  #define KERN_SOH	"\001"		/* ASCII Start Of Header */
+04d2c8c83d0e3a Joe Perches 2012-07-30  6  #define KERN_SOH_ASCII	'\001'
+04d2c8c83d0e3a Joe Perches 2012-07-30  7  
+
 -- 
-~Randy
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
