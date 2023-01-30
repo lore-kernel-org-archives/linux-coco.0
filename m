@@ -1,130 +1,130 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266DC2560
-	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 13:03:30 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E2F01758;
-	Mon, 30 Jan 2023 05:04:10 -0800 (PST)
-Received: from [10.57.89.162] (unknown [10.57.89.162])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6402C3F885;
-	Mon, 30 Jan 2023 05:03:27 -0800 (PST)
-Message-ID: <0ee204fa-091d-43d9-9c2c-0c64cf0c1fdd@arm.com>
-Date: Mon, 30 Jan 2023 13:03:18 +0000
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DD228F3
+	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 13:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675086879; x=1706622879;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4DEGDkL+yrEmQwnOAwQuSEcBBMrH3SBUNGZ0BQPN+/Y=;
+  b=e6UeKpwKg7UBVMvT8vambUPfHpCitPPqI9md2jL1iobEUH7s4IxyErIT
+   m0Ex5QNIVVlfTd15cKUxX/elJJNj1fBBB54Q1+MQI9CbOnyxvGq9R1PKc
+   IKgNh9A8WKpAoqzkARWksEShpRdy+1u3cA03QryPFjujPIdweaZxOGlFE
+   +qhjqYyYgm1+rmNS17aGqcSnJyFRZmrrmyXu8CDipT3qF1PqFNyctSVi8
+   riLyxD4QMUwDSnYeK+rFdVthm+dJRbJJ2GUzLf5Et/8ldK6BD6ZOI6bhz
+   k6a0ANA01PdGNIEWSB9wjm5oOkAYh8xsyGqoLTlf0CgIX1q9L+CVxsckd
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="307903830"
+X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
+   d="scan'208";a="307903830"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 05:54:38 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="696405603"
+X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
+   d="scan'208";a="696405603"
+Received: from dhirceax-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.33.6])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 05:54:35 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id D4F4710DF7D; Mon, 30 Jan 2023 16:54:31 +0300 (+03)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH] x86/tdx: Do not corrupt frame-pointer in __tdx_hypercall()
+Date: Mon, 30 Jan 2023 16:53:54 +0300
+Message-Id: <20230130135354.27674-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.39.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [RFC] swiotlb: Add a new cc-swiotlb implementation for
- Confidential VMs
-Content-Language: en-GB
-To: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
- linux-coco@lists.linux.dev
-References: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
-From: Robin Murphy <robin.murphy@arm.com>
-In-Reply-To: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2023-01-28 08:32, GuoRui.Yu wrote:
-> This patch series adds a new swiotlb implementation, cc-swiotlb, for
-> Confidential VMs (such as TDX and SEV-SNP). The new cc-swiotlb allocates
-> the DMA TLB buffer dynamically in runtime instead of allocating at boot
-> with a fixed size. Furthermore, future optimization and security
-> enhancement could be applied on cc-swiotlb without "infecting" the
-> legacy swiotlb.
-> 
-> Background
-> ==========
-> Under COnfidential COmputing (CoCo) scenarios, the VMM cannot access
-> guest memory directly but requires the guest to explicitly mark the
-> memory as shared (decrypted). To make the streaming DMA mappings work,
-> the current implementation relays on legacy SWIOTLB to bounce the DMA
-> buffer between private (encrypted) and shared (decrypted) memory.
-> 
-> However, the legacy swiotlb is designed for compatibility rather than
-> efficiency and CoCo purpose, which will inevitably introduce some
-> unnecessary restrictions.
-> 
-> 1. Fixed immutable swiotlb size cannot accommodate to requirements of
-> multiple devices. And 1GiB (current maximum size) of swiotlb in our
-> testbed cannot afford multiple disks reads/writes simultaneously.
+If compiled with CONFIG_FRAME_POINTER=y, objtool in not happy that
+__tdx_hypercall() messes up RBP.
 
-That's not a very logical argument - if a particular use-case needs a 
-particular total amount of SWIOTLB capacity, then that's how much it 
-needs. Whether that capacity is allocated up-front or allocated 
-gradually over time doesn't affect that. The obvious solution to this 
-issue as presented is "make the maximum size bigger", not "add a whole 
-other SWIOTLB implementation".
+  objtool: __tdx_hypercall+0x7f: return with modified stack frame
 
-> 2. Fixed immutable IO_TLB_SIZE (2KiB) cannot satisfy various kinds of
-> devices. At the moment, the minimal size of a swiotlb buffer is 2KiB,
-> which will waste memory on small network packets (under 256 bytes) and
-> decrease efficiency on a large block (up to 256KiB) size reads/writes of
-> disks. And it is hard to have a trade-off on legacy swiotlb to rule them
-> all.
+Rework the function to store TDX_HCALL_ flags on stack instead of RBP.
 
-That's clearly a general argument, so why should any improvement be 
-arbitrarily restricted to Confidential Compute scenarios?
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: c30c4b2555ba ("x86/tdx: Refactor __tdx_hypercall() to allow pass down more arguments")
+Link: https://lore.kernel.org/all/202301290255.buUBs99R-lkp@intel.com
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+---
 
-> 3. The legacy swiotlb cannot efficiently support larger swiotlb buffers.
-> In the worst case, the current implementation requires a full scan of
-> the entire swiotlb buffer, which can cause severe performance hits.
+The patch is against tip/x86/tdx. tip/sched/core removes
+TDX_HCALL_ISSUE_STI. The trird hunk of the patch is not relevant
+after that.
 
-Isn't that the main reason we just recently introduced the multiple area 
-stuff?
+---
+ arch/x86/coco/tdx/tdcall.S | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Robin.
+diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
+index 5da06d1a9ba3..2bd436a4790d 100644
+--- a/arch/x86/coco/tdx/tdcall.S
++++ b/arch/x86/coco/tdx/tdcall.S
+@@ -131,11 +131,10 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	push %r13
+ 	push %r12
+ 	push %rbx
+-	push %rbp
+ 
+ 	/* Free RDI and RSI to be used as TDVMCALL arguments */
+ 	movq %rdi, %rax
+-	movq %rsi, %rbp
++	push %rsi
+ 
+ 	/* Copy hypercall registers from arg struct: */
+ 	movq TDX_HYPERCALL_r8(%rax),  %r8
+@@ -168,7 +167,7 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	 * HLT operation indefinitely. Since this is the not the desired
+ 	 * result, conditionally call STI before TDCALL.
+ 	 */
+-	testq $TDX_HCALL_ISSUE_STI, %rbp
++	testq $TDX_HCALL_ISSUE_STI, 8(%rsp)
+ 	jz .Lskip_sti
+ 	sti
+ .Lskip_sti:
+@@ -188,7 +187,7 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	pop %rax
+ 
+ 	/* Copy hypercall result registers to arg struct if needed */
+-	testq $TDX_HCALL_HAS_OUTPUT, %rbp
++	testq $TDX_HCALL_HAS_OUTPUT, (%rsp)
+ 	jz .Lout
+ 
+ 	movq %r8,  TDX_HYPERCALL_r8(%rax)
+@@ -218,11 +217,12 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	xor %r10d, %r10d
+ 	xor %r11d, %r11d
+ 	xor %rdi,  %rdi
+-	xor %rsi,  %rsi
+ 	xor %rdx,  %rdx
+ 
++	/* Remove TDX_HCALL_* flags from the stack */
++	pop %rsi
++
+ 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
+-	pop %rbp
+ 	pop %rbx
+ 	pop %r12
+ 	pop %r13
+-- 
+2.39.1
 
-> Changes in this patch set
-> =========================
-> Instead of keeping "infecting" the legacy swiotlb code with CoCo logic,
-> this patch tries to introduce a new cc-swiotlb for Confidential VMs.
-> 
-> Confidential VMs usually have reasonable modern devices (virtio devices,
-> NVME, etc.), which can access memory above 4GiB, cc-swiotlb could
-> allocate TLB buffers at any position dynamically. Since
-> set_memory_{decrypted,encrypted} is time-consuming and cannot be used in
-> interrupt context, a new kernel thread "kccd" has been added to populate
-> new TLB buffers on-demand, which solved the problem 1.
-> 
-> In addition, the cc-swiotlb manages TLB buffers by different sizes
-> (512B, 2KiB, 4KiB, 16KiB, and 512KiB). The above values come from the
-> following observations (boot with 8core, 32 GiB, 1 nvme disk, and 1
-> virtio-net):
-> - Allocations of 512 bytes and below account for 3.5% of the total DMA
->    cache allocations;
-> - Allocations of 2 KiB and below account for 57.7%;
-> - Allocations of 4 KiB and below account for 91.3%;
-> - Allocations of 16 KiB and below account for 96.0%;
-> - Allocations of 512 KiB and below accounted for 100%;
-> - At the end of booting, cc-swiotlb uses 288 MiB in total.
-> 
-> For comparison, legacy swiotlb reserves memory at 6%, which requires
-> min(1GiB, 32GiB * 0.06) = 1GiB, and will hang when operating multiple
-> disks simultaneously due to no memory for the swiotlb buffer.
-> 
-> These patches were tested with fio (using different iodepth and block
-> size) on a platform with 96 cores, 384 GiB, and 20 NVME disks, and no IO
-> hang or error was observed.
-> 
-> For simplicity, the current RFC version cannot switch between legacy
-> implementation with cmdline but through compile options. I am open to
-> discussing how to integrate the cc-swiotlb into the legacy one.
-> 
-> Patch Organization
-> ==================
-> - swiotlb: Split common code from swiotlb.{c,h}
-> - swiotlb: Add a new cc-swiotlb implementation for Confidential VMs
-> - swiotlb: Add tracepoint swiotlb_unbounced
-> - cc-swiotlb: Allow set swiotlb watermark from cmdline
-> 
-> Thanks for your time!
-> 
-> Have a nice day,
-> Guorui
-> 
-> 
