@@ -1,176 +1,130 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3291362
-	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 12:41:59 +0000 (UTC)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30UC9b6d016462;
-	Mon, 30 Jan 2023 12:41:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=SmLzzuerEoq5t9Gzjsx9QeubJiRT4pgArGq5OrlmHf0=;
- b=DHN6SLq/v1laThhBazkHeqiPESPsxOUzaWU1bQuWApwnIHNzb8aj0M+COFKeuaxj+2Th
- Bk0hV1IsbSJmLZi+PG9W3YVo0vTLg+v1HcYMTOSS9/P4CAay1NGUXNvyMrni9X0LxVWT
- 4sM4hUTv+WMUzitTrRjBi+6eHCHagh4ln/gOvLjdXOLNG2cd/mJ+tGMzJWDthmGs83Ez
- 9NS/OshMfRKwSVOfohm53gfD2kimNYGuQlMcyot/dZK2GhYScFFlfMesW66Mwnnw0dP4
- 7NJonTPMHu5SC/xGBFB201GfQ25tYEusR7MMmHFSgnDbZoCGhfdf2X0jf3Av9dOXIap/ iA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nebxeu3es-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jan 2023 12:41:26 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30UCAHxE021192;
-	Mon, 30 Jan 2023 12:41:26 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3nebxeu3ea-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jan 2023 12:41:25 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 30UBnhSr025436;
-	Mon, 30 Jan 2023 12:41:24 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
-	by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3ncvtrdb8b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Jan 2023 12:41:24 +0000
-Received: from b03ledav001.gho.boulder.ibm.com ([9.17.130.232])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30UCfNhq8258214
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Jan 2023 12:41:23 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 673BB6E050;
-	Mon, 30 Jan 2023 12:43:28 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7F6F66E04E;
-	Mon, 30 Jan 2023 12:43:24 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.110.248])
-	by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Mon, 30 Jan 2023 12:43:24 +0000 (GMT)
-Message-ID: <220b0be95a8c733f0a6eeddc08e37977ee21d518.camel@linux.ibm.com>
-Subject: Re: Linux guest kernel threat model for Confidential Computing
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: "Reshetova, Elena" <elena.reshetova@intel.com>,
-        Leon Romanovsky
-	 <leon@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Shishkin, Alexander"
- <alexander.shishkin@intel.com>,
-        "Shutemov, Kirill"
- <kirill.shutemov@intel.com>,
-        "Kuppuswamy, Sathyanarayanan"
- <sathyanarayanan.kuppuswamy@intel.com>,
-        "Kleen, Andi"
- <andi.kleen@intel.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        Thomas
- Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        "Wunner, Lukas" <lukas.wunner@intel.com>,
-        Mika Westerberg
- <mika.westerberg@linux.intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        "Poimboe, Josh" <jpoimboe@redhat.com>,
-        "aarcange@redhat.com" <aarcange@redhat.com>,
-        Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-        "jbachmann@google.com"
- <jbachmann@google.com>,
-        "pgonda@google.com" <pgonda@google.com>,
-        "keescook@chromium.org" <keescook@chromium.org>,
-        James Morris
- <jmorris@namei.org>,
-        Michael Kelley <mikelley@microsoft.com>,
-        "Lange, Jon"
- <jlange@microsoft.com>,
-        "linux-coco@lists.linux.dev"
- <linux-coco@lists.linux.dev>,
-        Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>,
-        Kernel Hardening
- <kernel-hardening@lists.openwall.com>
-Date: Mon, 30 Jan 2023 07:40:47 -0500
-In-Reply-To: <DM8PR11MB5750F939C0B70939AD3CBC37E7D39@DM8PR11MB5750.namprd11.prod.outlook.com>
-References: 
-	<DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <Y9EkCvAfNXnJ+ATo@kroah.com>
-	 <DM8PR11MB5750FA4849C3224F597C101AE7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <Y9Jh2x9XJE1KEUg6@unreal>
-	 <DM8PR11MB5750414F6638169C7097E365E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <Y9JyW5bUqV7gWmU8@unreal>
-	 <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
-	 <702f22df28e628d41babcf670c909f1fa1bb3c0c.camel@linux.ibm.com>
-	 <DM8PR11MB5750F939C0B70939AD3CBC37E7D39@DM8PR11MB5750.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TrOy0LamtMjgCzcx9x7_zhBWtk8LM61g
-X-Proofpoint-ORIG-GUID: IWo7cP949gYF6c-daYAgZ_ZxUF3I4s-s
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266DC2560
+	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 13:03:30 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E2F01758;
+	Mon, 30 Jan 2023 05:04:10 -0800 (PST)
+Received: from [10.57.89.162] (unknown [10.57.89.162])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6402C3F885;
+	Mon, 30 Jan 2023 05:03:27 -0800 (PST)
+Message-ID: <0ee204fa-091d-43d9-9c2c-0c64cf0c1fdd@arm.com>
+Date: Mon, 30 Jan 2023 13:03:18 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
- definitions=2023-01-30_10,2023-01-30_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- phishscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2301300121
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [RFC] swiotlb: Add a new cc-swiotlb implementation for
+ Confidential VMs
+Content-Language: en-GB
+To: "GuoRui.Yu" <GuoRui.Yu@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
+ linux-coco@lists.linux.dev
+References: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
+From: Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 2023-01-30 at 07:42 +0000, Reshetova, Elena wrote:
-[...]
-> > The big threat from most devices (including the thunderbolt
-> > classes) is that they can DMA all over memory.  However, this isn't
-> > really a threat in CC (well until PCI becomes able to do encrypted
-> > DMA) because the device has specific unencrypted buffers set aside
-> > for the expected DMA. If it writes outside that CC integrity will
-> > detect it and if it reads outside that it gets unintelligible
-> > ciphertext.  So we're left with the device trying to trick secrets
-> > out of us by returning unexpected data.
+On 2023-01-28 08:32, GuoRui.Yu wrote:
+> This patch series adds a new swiotlb implementation, cc-swiotlb, for
+> Confidential VMs (such as TDX and SEV-SNP). The new cc-swiotlb allocates
+> the DMA TLB buffer dynamically in runtime instead of allocating at boot
+> with a fixed size. Furthermore, future optimization and security
+> enhancement could be applied on cc-swiotlb without "infecting" the
+> legacy swiotlb.
 > 
-> Yes, by supplying the input that hasn’t been expected. This is
-> exactly the case we were trying to fix here for example:
-> https://lore.kernel.org/all/20230119170633.40944-2-alexander.shishkin@linux.intel.com/
-> I do agree that this case is less severe when others where memory
-> corruption/buffer overrun can happen, like here:
-> https://lore.kernel.org/all/20230119135721.83345-6-alexander.shishkin@linux.intel.com/
-> But we are trying to fix all issues we see now (prioritizing the
-> second ones though). 
-
-I don't see how MSI table sizing is a bug in the category we've
-defined.  The very text of the changelog says "resulting in a kernel
-page fault in pci_write_msg_msix()."  which is a crash, which I thought
-we were agreeing was out of scope for CC attacks?
-
-> > 
-> > If I set this as the problem, verifying device correct operation is
-> > a possible solution (albeit hugely expensive) but there are likely
-> > many other cheaper ways to defeat or detect a device trying to
-> > trick us into revealing something.
+> Background
+> ==========
+> Under COnfidential COmputing (CoCo) scenarios, the VMM cannot access
+> guest memory directly but requires the guest to explicitly mark the
+> memory as shared (decrypted). To make the streaming DMA mappings work,
+> the current implementation relays on legacy SWIOTLB to bounce the DMA
+> buffer between private (encrypted) and shared (decrypted) memory.
 > 
-> What do you have in mind here for the actual devices we need to
-> enable for CC cases?
+> However, the legacy swiotlb is designed for compatibility rather than
+> efficiency and CoCo purpose, which will inevitably introduce some
+> unnecessary restrictions.
+> 
+> 1. Fixed immutable swiotlb size cannot accommodate to requirements of
+> multiple devices. And 1GiB (current maximum size) of swiotlb in our
+> testbed cannot afford multiple disks reads/writes simultaneously.
 
-Well, the most dangerous devices seem to be the virtio set a CC system
-will rely on to boot up.  After that, there are other ways (like SPDM)
-to verify a real PCI device is on the other end of the transaction.
+That's not a very logical argument - if a particular use-case needs a 
+particular total amount of SWIOTLB capacity, then that's how much it 
+needs. Whether that capacity is allocated up-front or allocated 
+gradually over time doesn't affect that. The obvious solution to this 
+issue as presented is "make the maximum size bigger", not "add a whole 
+other SWIOTLB implementation".
 
-> We have been using here a combination of extensive fuzzing and static
-> code analysis.
+> 2. Fixed immutable IO_TLB_SIZE (2KiB) cannot satisfy various kinds of
+> devices. At the moment, the minimal size of a swiotlb buffer is 2KiB,
+> which will waste memory on small network packets (under 256 bytes) and
+> decrease efficiency on a large block (up to 256KiB) size reads/writes of
+> disks. And it is hard to have a trade-off on legacy swiotlb to rule them
+> all.
 
-by fuzzing, I assume you mean fuzzing from the PCI configuration space?
-Firstly I'm not so sure how useful a tool fuzzing is if we take Oopses
-off the table because fuzzing primarily triggers those so its hard to
-see what else it could detect given the signal will be smothered by
-oopses and secondly I think the PCI interface is likely the wrong place
-to begin and you should probably begin on the virtio bus and the
-hypervisor generated configuration space.
+That's clearly a general argument, so why should any improvement be 
+arbitrarily restricted to Confidential Compute scenarios?
 
-James
+> 3. The legacy swiotlb cannot efficiently support larger swiotlb buffers.
+> In the worst case, the current implementation requires a full scan of
+> the entire swiotlb buffer, which can cause severe performance hits.
 
+Isn't that the main reason we just recently introduced the multiple area 
+stuff?
+
+Robin.
+
+> Changes in this patch set
+> =========================
+> Instead of keeping "infecting" the legacy swiotlb code with CoCo logic,
+> this patch tries to introduce a new cc-swiotlb for Confidential VMs.
+> 
+> Confidential VMs usually have reasonable modern devices (virtio devices,
+> NVME, etc.), which can access memory above 4GiB, cc-swiotlb could
+> allocate TLB buffers at any position dynamically. Since
+> set_memory_{decrypted,encrypted} is time-consuming and cannot be used in
+> interrupt context, a new kernel thread "kccd" has been added to populate
+> new TLB buffers on-demand, which solved the problem 1.
+> 
+> In addition, the cc-swiotlb manages TLB buffers by different sizes
+> (512B, 2KiB, 4KiB, 16KiB, and 512KiB). The above values come from the
+> following observations (boot with 8core, 32 GiB, 1 nvme disk, and 1
+> virtio-net):
+> - Allocations of 512 bytes and below account for 3.5% of the total DMA
+>    cache allocations;
+> - Allocations of 2 KiB and below account for 57.7%;
+> - Allocations of 4 KiB and below account for 91.3%;
+> - Allocations of 16 KiB and below account for 96.0%;
+> - Allocations of 512 KiB and below accounted for 100%;
+> - At the end of booting, cc-swiotlb uses 288 MiB in total.
+> 
+> For comparison, legacy swiotlb reserves memory at 6%, which requires
+> min(1GiB, 32GiB * 0.06) = 1GiB, and will hang when operating multiple
+> disks simultaneously due to no memory for the swiotlb buffer.
+> 
+> These patches were tested with fio (using different iodepth and block
+> size) on a platform with 96 cores, 384 GiB, and 20 NVME disks, and no IO
+> hang or error was observed.
+> 
+> For simplicity, the current RFC version cannot switch between legacy
+> implementation with cmdline but through compile options. I am open to
+> discussing how to integrate the cc-swiotlb into the legacy one.
+> 
+> Patch Organization
+> ==================
+> - swiotlb: Split common code from swiotlb.{c,h}
+> - swiotlb: Add a new cc-swiotlb implementation for Confidential VMs
+> - swiotlb: Add tracepoint swiotlb_unbounced
+> - cc-swiotlb: Allow set swiotlb watermark from cmdline
+> 
+> Thanks for your time!
+> 
+> Have a nice day,
+> Guorui
+> 
+> 
