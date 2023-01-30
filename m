@@ -1,157 +1,144 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBE420E3
-	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 11:29:20 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2BF6E1FE32;
-	Mon, 30 Jan 2023 11:29:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1675078153; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EB820E3
+	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 11:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1675078582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VlutJp3Rq6v3ftkqKq4LQYOrGlBPvORoMOD6B3a9P3c=;
-	b=PuIuseIuzCs0TW2lCVTyWJqld7M4o7unA+36j7rVf4uXWddScpdLeMht6ZFofOJlnPtXul
-	b8DFJG6PgLCs5R400lSv4YC/YX0UzxU6MHNEQIfiAvjs87j2X5NDuQONFWY/5hfDkv5u0a
-	3dcKNf+p97Ies/j3verU9BggkaHnCpE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1675078153;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VlutJp3Rq6v3ftkqKq4LQYOrGlBPvORoMOD6B3a9P3c=;
-	b=TTJ9R7svkHbF5PkZTPbtxd4DJNGMxnTVOg6LpwO4I2x2A4BXFrpu4roQiJoCMhy8Im4ig2
-	MRAJp7yREjadZ1AA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	bh=jeBW6EwqBQR8mcb+U6gPECyycxrOzab1UxBLSfBKtfI=;
+	b=YODwslUKZE/zzWiTskJX6lDMS9Tke5yYMxjc3unYNX1e0GDqN45LR8Bbyz02lQu8eITiDa
+	2PVvhkSWWvqmcuvQo3pB9vGZpRtN+n6kBzUyPBys4RohXbkCct4WeH1g9x7tX618TKfO9U
+	s0S9bi0parVM8lqWpuxsg6n+H9XS5ps=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-258-M2TzEfdmPy6zBLJdpkOz2Q-1; Mon, 30 Jan 2023 06:36:19 -0500
+X-MC-Unique: M2TzEfdmPy6zBLJdpkOz2Q-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F28FA13A06;
-	Mon, 30 Jan 2023 11:29:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id zkjAOQiq12PTJAAAMHmgww
-	(envelope-from <jroedel@suse.de>); Mon, 30 Jan 2023 11:29:12 +0000
-Date: Mon, 30 Jan 2023 12:29:11 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
-To: Jon Lange <jlange@microsoft.com>
-Cc: Christophe de Dinechin Dupont de Dinechin <cdupontd@redhat.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
-Subject: Re: [EXTERNAL] Re: SVSM Attestation and vTPM specification additions
- - v0.60
-Message-ID: <Y9eqB5/1YcZeIHqG@suse.de>
-References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
- <Y8+oqoU2jZYrNlz1@suse.de>
- <7398c541-78ac-670f-1f4c-92b7525ed99e@amd.com>
- <749A53E5-4C6E-4D89-AF9B-E9F5EA273E1B@redhat.com>
- <MN0PR21MB3072B01C5A138EA849D88BE4CACF9@MN0PR21MB3072.namprd21.prod.outlook.com>
- <Y9OMuuHz2utBASOm@suse.de>
- <MN0PR21MB30724AB0ED1740D2018C06E3CACC9@MN0PR21MB3072.namprd21.prod.outlook.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31EF0101A521;
+	Mon, 30 Jan 2023 11:36:18 +0000 (UTC)
+Received: from ptitbras (unknown [10.39.195.43])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id C675EC15BAD;
+	Mon, 30 Jan 2023 11:36:13 +0000 (UTC)
+References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <Y9EkCvAfNXnJ+ATo@kroah.com> <Y9Ex3ZUIFxwOBg1n@work-vm>
+ <Y9E5Cg7mreDx737N@redhat.com>
+User-agent: mu4e 1.8.0; emacs 28.2
+From: Christophe de Dinechin <dinechin@redhat.com>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Reshetova, Elena"
+ <elena.reshetova@intel.com>, "Shishkin, Alexander"
+ <alexander.shishkin@intel.com>, "Shutemov, Kirill"
+ <kirill.shutemov@intel.com>, "Kuppuswamy, Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@intel.com>, "Kleen, Andi"
+ <andi.kleen@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ "Wunner, Lukas" <lukas.wunner@intel.com>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, "Poimboe, Josh" <jpoimboe@redhat.com>,
+ "aarcange@redhat.com" <aarcange@redhat.com>, Cfir Cohen <cfir@google.com>,
+ Marc Orr <marcorr@google.com>, "jbachmann@google.com"
+ <jbachmann@google.com>, "pgonda@google.com" <pgonda@google.com>,
+ "keescook@chromium.org" <keescook@chromium.org>, James Morris
+ <jmorris@namei.org>, Michael Kelley <mikelley@microsoft.com>, "Lange, Jon"
+ <jlange@microsoft.com>, "linux-coco@lists.linux.dev"
+ <linux-coco@lists.linux.dev>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>
+Subject: Re: Linux guest kernel threat model for Confidential Computing
+Date: Mon, 30 Jan 2023 12:30:45 +0100
+In-reply-to: <Y9E5Cg7mreDx737N@redhat.com>
+Message-ID: <m2tu085k5v.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <MN0PR21MB30724AB0ED1740D2018C06E3CACC9@MN0PR21MB3072.namprd21.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 
-Hi Jon,
 
-On Fri, Jan 27, 2023 at 04:11:57PM +0000, Jon Lange wrote:
-> I agree that some amount of implementation-specific SVSM communication
-> may be unavoidable, but for the sake of a robust standard, this
-> position should be accepted reluctantly rather than being embraced.
+On 2023-01-25 at 14:13 UTC, Daniel P. Berrang=C3=A9 <berrange@redhat.com> w=
+rote...
+> On Wed, Jan 25, 2023 at 01:42:53PM +0000, Dr. David Alan Gilbert wrote:
+>> * Greg Kroah-Hartman (gregkh@linuxfoundation.org) wrote:
+>> > On Wed, Jan 25, 2023 at 12:28:13PM +0000, Reshetova, Elena wrote:
+>> > > Hi Greg,
+>> > >
+>> > > You mentioned couple of times (last time in this recent thread:
+>> > > https://lore.kernel.org/all/Y80WtujnO7kfduAZ@kroah.com/) that we oug=
+ht to start
+>> > > discussing the updated threat model for kernel, so this email is a s=
+tart in this direction.
+>> >
+>> > Any specific reason you didn't cc: the linux-hardening mailing list?
+>> > This seems to be in their area as well, right?
+>> >
+>> > > As we have shared before in various lkml threads/conference presenta=
+tions
+>> > > ([1], [2], [3] and many others), for the Confidential Computing gues=
+t kernel, we have a
+>> > > change in the threat model where guest kernel doesn=E2=80=99t anymor=
+e trust the hypervisor.
+>> >
+>> > That is, frankly, a very funny threat model.  How realistic is it real=
+ly
+>> > given all of the other ways that a hypervisor can mess with a guest?
+>>
+>> It's what a lot of people would like; in the early attempts it was easy
+>> to defeat, but in TDX and SEV-SNP the hypervisor has a lot less that it
+>> can mess with - remember that not just the memory is encrypted, so is
+>> the register state, and the guest gets to see changes to mapping and a
+>> lot of control over interrupt injection etc.
+>>
+>> > So what do you actually trust here?  The CPU?  A device?  Nothing?
+>>
+>> We trust the actual physical CPU, provided that it can prove that it's a
+>> real CPU with the CoCo hardware enabled.  Both the SNP and TDX hardware
+>> can perform an attestation signed by the CPU to prove to someone
+>> external that the guest is running on a real trusted CPU.
+>>
+>> Note that the trust is limited:
+>>   a) We don't trust that we can make forward progress - if something
+>> does something bad it's OK for the guest to stop.
+>>   b) We don't trust devices, and we don't trust them by having the guest
+>> do normal encryption; e.g. just LUKS on the disk and normal encrypted
+>> networking. [There's a lot of schemes people are working on about how
+>> the guest gets the keys etc for that)
+>
+> I think we need to more precisely say what we mean by 'trust' as it
+> can have quite a broad interpretation.
+>
+> As a baseline requirement, in the context of confidential computing the
+> guest would not trust the hypervisor with data that needs to remain
+> confidential, but would generally still expect it to provide a faithful
+> implementation of a given device.
 
-I totally agree with that. How about specifying that implementation
-specific calls must be designed in a way that allows the guest OS to
-treat them as optional. Or in other words, an SVSM must be able to run a
-guest OS which does not use implementation specific call at all (and
-even doesn't know about them)?
+... or to have a reliable faulting behaviour (e.g. panic) if the device is
+found to be malicious, e.g. attempting to inject bogus data in the driver to
+trigger unexpected paths in the guest kernel.
 
-> As long as the crutch of implementation-specific calls is available,
-> it will be too easy for contributors to classify new features
-> in this way when doing so may be the easy way out.  It would
-> be much better if the specification of an
-> implementation-specific call were the harder path, so that the
-> default option would always be in the direction of
-> standardization.
+I think that part of the original discussion is really about being able to
+do that at least for the small subset of (mostly virtio) devices that would
+typically be of use in a CoCo setup.
 
-Right, but I think this is hard to achieve. It depends on how the
-standardization process works.
+As was pointed out elsewhere in that thread, doing so for physical devices,
+to the point of enabling end-to-end attestation and encryption, is work that
+is presently underway, but there is work to do already with the
+comparatively small subset of devices we need in the short-term. Also, that
+work needs only the Linux kernel community, whereas changes for example at
+the PCI level are much broader, and therefore require a lot more time.
 
-> Logging is something that every SVSM implementation will want to be
-> able to offer, and so the aspiration should be to design a standard
-> log configuration and retrieval calling convention so that log
-> management can be done in a consistent manner across all guests and
-> across all SVSM implementations.  The reflex to call this
-> "implementation-specific" is exactly the sort of deviation from a
-> standard that worries me.
-
-On the other side, too much standardization on these matters could lock
-down SVSM implementation details to a point that makes it hard to
-innovate.
-
-For example, consider these questions about logging alone:
-
-	* Support one log or many?
-	* In case of many logs, one per protocol? Or divide it
-	  differently? Separate event and error logs?
-	* How to enumerate the logs, by protocol number or by a name or
-	  even by a GUID?
-
-I think such questions are implementation specific, and it can be even
-worse with other possible extensions, like tracing for example.
-
-> Perhaps not every SVSM will want to offer logging, at least not at
-> first, and that's fine; those implementations can simply decline to
-> offer the logging protocol.  But the key point here is that the set of
-> features present in an SVSM should be at the discretion of the
-> implementation - and may change over time - and must be discoverable
-> in a standard way.
-
-I agree on the discoverability. There should be a standard way to
-discover the specific SVSM implementation and the extensions it possibly
-offers. The extension remain optional, of course.
-
-> Separately, I struggle to understand how a guest OS is supposed to
-> know which SVSM implementation it's running with.  I don't recall a
-> proposal to define a call to get the SVSM type, nor a proposal to
-> define a registry of SVSM types.  Without such a mechanism, how could
-> a guest have any idea which implementation-specific calls are expected
-> to succeed?  Again, moving functionality into a standard calling
-> convention avoids these questions, leaves protocol implementation
-> choices in the hands of individual SVSM designers, and is fully
-> enumerable and optional.  Shouldn't this be the primary design model
-> for all SVSM interactions?
-
-As I said, the implementation specific parts must remain optional, but I
-think the standard should leave room for implementers to have SVSM
-specific calls without violating the standard.
-
-As of discovery, this is what this sub-thread is about :) We can add a
-call to the standard which allows to identify the SVSM implementation.
-
-Regards,
-
--- 
-Jörg Rödel
-jroedel@suse.de
-
-SUSE Software Solutions Germany GmbH
-Frankenstraße 146
-90461 Nürnberg
-Germany
-
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+--
+Cheers,
+Christophe de Dinechin (https://c3d.github.io)
+Theory of Incomplete Measurements (https://c3d.github.io/TIM)
 
