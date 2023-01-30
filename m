@@ -1,130 +1,96 @@
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from out199-4.us.a.mail.aliyun.com (out199-4.us.a.mail.aliyun.com [47.90.199.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DD228F3
-	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 13:54:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1675086879; x=1706622879;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4DEGDkL+yrEmQwnOAwQuSEcBBMrH3SBUNGZ0BQPN+/Y=;
-  b=e6UeKpwKg7UBVMvT8vambUPfHpCitPPqI9md2jL1iobEUH7s4IxyErIT
-   m0Ex5QNIVVlfTd15cKUxX/elJJNj1fBBB54Q1+MQI9CbOnyxvGq9R1PKc
-   IKgNh9A8WKpAoqzkARWksEShpRdy+1u3cA03QryPFjujPIdweaZxOGlFE
-   +qhjqYyYgm1+rmNS17aGqcSnJyFRZmrrmyXu8CDipT3qF1PqFNyctSVi8
-   riLyxD4QMUwDSnYeK+rFdVthm+dJRbJJ2GUzLf5Et/8ldK6BD6ZOI6bhz
-   k6a0ANA01PdGNIEWSB9wjm5oOkAYh8xsyGqoLTlf0CgIX1q9L+CVxsckd
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="307903830"
-X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
-   d="scan'208";a="307903830"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 05:54:38 -0800
-X-IronPort-AV: E=McAfee;i="6500,9779,10606"; a="696405603"
-X-IronPort-AV: E=Sophos;i="5.97,258,1669104000"; 
-   d="scan'208";a="696405603"
-Received: from dhirceax-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.33.6])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2023 05:54:35 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id D4F4710DF7D; Mon, 30 Jan 2023 16:54:31 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	kernel test robot <lkp@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH] x86/tdx: Do not corrupt frame-pointer in __tdx_hypercall()
-Date: Mon, 30 Jan 2023 16:53:54 +0300
-Message-Id: <20230130135354.27674-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.39.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4778228F3
+	for <linux-coco@lists.linux.dev>; Mon, 30 Jan 2023 14:01:13 +0000 (UTC)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=guorui.yu@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0VaSvuzq_1675086323;
+Received: from 192.168.51.205(mailfrom:GuoRui.Yu@linux.alibaba.com fp:SMTPD_---0VaSvuzq_1675086323)
+          by smtp.aliyun-inc.com;
+          Mon, 30 Jan 2023 21:45:24 +0800
+Message-ID: <ccc21265-07aa-cd82-f679-4fee9c51df47@linux.alibaba.com>
+Date: Mon, 30 Jan 2023 21:45:22 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.6.1
+Subject: Re: [PATCH 2/4] swiotlb: Add a new cc-swiotlb implementation for
+ Confidential VMs
+To: Andi Kleen <ak@linux.intel.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, konrad.wilk@oracle.com,
+ linux-coco@lists.linux.dev
+Cc: robin.murphy@arm.com
+References: <20230128083254.86012-1-GuoRui.Yu@linux.alibaba.com>
+ <20230128083254.86012-3-GuoRui.Yu@linux.alibaba.com>
+ <9b167caf-1b10-f97a-d96a-b7ead8e785e8@linux.intel.com>
+ <2ec59355-c8d5-c794-16e8-7d646b43c455@linux.alibaba.com>
+ <09a56915-7ce2-b70c-33ec-3a8767269637@linux.intel.com>
+From: Guorui Yu <GuoRui.Yu@linux.alibaba.com>
+In-Reply-To: <09a56915-7ce2-b70c-33ec-3a8767269637@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-If compiled with CONFIG_FRAME_POINTER=y, objtool in not happy that
-__tdx_hypercall() messes up RBP.
+Hi Andi,
 
-  objtool: __tdx_hypercall+0x7f: return with modified stack frame
+在 2023/1/30 14:46, Andi Kleen 写道:
+> 
+>> I try to solve this problem by creating a new kernel thread, "kccd", 
+>> to populate the TLB buffer in the backgroud.
+>>
+>> Specifically,
+>> 1. A new kernel thread is created with the help of "arch_initcall", 
+>> and this kthread is responsible for memory allocation and setting 
+>> memory attributes (private or shared);
+>> 2. The "swiotlb_tbl_map_single" routine only use the spin_lock 
+>> protected TLB buffers pre-allocated by the kthread;
+>>   a) which actually includes ONE memory allocation brought by xarray 
+>> insertion "__xa_insert__".
+> 
+> That already seems dangerous with all the usual problems of memory 
+> allocations in IO paths. Normally code at least uses a mempool to avoid 
+> the worst dead lock potential.
+> 
 
-Rework the function to store TDX_HCALL_ flags on stack instead of RBP.
+The __xa_insert__ is called with GFP_NOWAIT (GFP_ATOMIC & ~__GFP_HIGH), 
+and I will try to dig into this to check if there is any chance to have 
+the deadlock.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: c30c4b2555ba ("x86/tdx: Refactor __tdx_hypercall() to allow pass down more arguments")
-Link: https://lore.kernel.org/all/202301290255.buUBs99R-lkp@intel.com
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
----
+I also tried my best to test this piece of code, and no issue have been 
+found in the case of a maximum of 700,000 IOPS.
 
-The patch is against tip/x86/tdx. tip/sched/core removes
-TDX_HCALL_ISSUE_STI. The trird hunk of the patch is not relevant
-after that.
+Thanks for your advices from this point, since I have not notice such 
+possibility.
 
----
- arch/x86/coco/tdx/tdcall.S | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+>> 3. After each allocation, the water level of TLB resources will be 
+>> checked. If the current TLB resources are found to be lower than the 
+>> preset value (half of the watermark), the kthread will be awakened to 
+>> fill them.
+>> 4. The TLB buffer allocation in the kthread is batched to 
+>> "(MAX_ORDER_NR_PAGES << PAGE_SHIFT)" to reduce the holding time of 
+>> spin_lock and number of calls to set_memory_decrypted().
+> 
+> Okay, but does this guarantee that it will never run out of memory?
+>
+> It seems difficult to make such guarantees. What happens for example if 
+> the background thread gets starved by something higher priority?
+> 
+No, this cannot guarantee we always have sufficient TLB caches, so we 
+can also have a "No memory for cc-swiotlb buffer" warning.
 
-diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
-index 5da06d1a9ba3..2bd436a4790d 100644
---- a/arch/x86/coco/tdx/tdcall.S
-+++ b/arch/x86/coco/tdx/tdcall.S
-@@ -131,11 +131,10 @@ SYM_FUNC_START(__tdx_hypercall)
- 	push %r13
- 	push %r12
- 	push %rbx
--	push %rbp
- 
- 	/* Free RDI and RSI to be used as TDVMCALL arguments */
- 	movq %rdi, %rax
--	movq %rsi, %rbp
-+	push %rsi
- 
- 	/* Copy hypercall registers from arg struct: */
- 	movq TDX_HYPERCALL_r8(%rax),  %r8
-@@ -168,7 +167,7 @@ SYM_FUNC_START(__tdx_hypercall)
- 	 * HLT operation indefinitely. Since this is the not the desired
- 	 * result, conditionally call STI before TDCALL.
- 	 */
--	testq $TDX_HCALL_ISSUE_STI, %rbp
-+	testq $TDX_HCALL_ISSUE_STI, 8(%rsp)
- 	jz .Lskip_sti
- 	sti
- .Lskip_sti:
-@@ -188,7 +187,7 @@ SYM_FUNC_START(__tdx_hypercall)
- 	pop %rax
- 
- 	/* Copy hypercall result registers to arg struct if needed */
--	testq $TDX_HCALL_HAS_OUTPUT, %rbp
-+	testq $TDX_HCALL_HAS_OUTPUT, (%rsp)
- 	jz .Lout
- 
- 	movq %r8,  TDX_HYPERCALL_r8(%rax)
-@@ -218,11 +217,12 @@ SYM_FUNC_START(__tdx_hypercall)
- 	xor %r10d, %r10d
- 	xor %r11d, %r11d
- 	xor %rdi,  %rdi
--	xor %rsi,  %rsi
- 	xor %rdx,  %rdx
- 
-+	/* Remove TDX_HCALL_* flags from the stack */
-+	pop %rsi
-+
- 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
--	pop %rbp
- 	pop %rbx
- 	pop %r12
- 	pop %r13
--- 
-2.39.1
+But I want to emphasize that in this case, the current implementation is 
+no worse than the legacy implementation. Moreover, dynamic TLB 
+allocation is more suitable for situations where more disks/network 
+devices will be hotplugged, in which case you cannot pre-set a 
+reasonable value.
 
+> Or if the allocators have such high bandwidth that they can overwhelm 
+> any reasonable background thread.
+> 
+> -Andi
+> 
+
+Sincerely,
+Guorui
