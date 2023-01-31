@@ -1,177 +1,160 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF657A922
-	for <linux-coco@lists.linux.dev>; Tue, 31 Jan 2023 17:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917F5A923
+	for <linux-coco@lists.linux.dev>; Tue, 31 Jan 2023 17:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675186798;
+	s=mimecast20190719; t=1675186800;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MsCyJ6wih57A5GjVGHDZm3qG6/Eq1d91lr2fpDgzdcg=;
-	b=bATycPPdYJZOlm0IiG92wYEC5JK0i3GNMa2bhhXdp36cmhrBO9ezlXrFlkjC/EdXEQPbCq
-	msgyY9duZkHdvL4+j5uA63Agp2dTMeDhRZW/yARP97bmLBRHEIaJ/N1vkGzaUjZckCy22T
-	oj90fnKR5NUmCRx+b/uBSO4Wk+12YrQ=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-157-RoLOdRQVOLGwdjK3BbJPbw-1; Tue, 31 Jan 2023 12:39:54 -0500
-X-MC-Unique: RoLOdRQVOLGwdjK3BbJPbw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5294638173D2;
-	Tue, 31 Jan 2023 17:39:53 +0000 (UTC)
-Received: from ptitbras (unknown [10.39.194.55])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id CBBF3112132C;
-	Tue, 31 Jan 2023 17:39:47 +0000 (UTC)
-References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <m2pmaw5jv4.fsf@redhat.com>
- <DM8PR11MB57504761DE92CE1213549C27E7D09@DM8PR11MB5750.namprd11.prod.outlook.com>
-User-agent: mu4e 1.8.0; emacs 28.2
-From: Christophe de Dinechin <dinechin@redhat.com>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Shishkin, Alexander"
- <alexander.shishkin@intel.com>, "Shutemov, Kirill"
- <kirill.shutemov@intel.com>, "Kuppuswamy, Sathyanarayanan"
- <sathyanarayanan.kuppuswamy@intel.com>, "Kleen, Andi"
- <andi.kleen@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, Thomas
- Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- "Wunner, Lukas" <lukas.wunner@intel.com>, Mika Westerberg
- <mika.westerberg@linux.intel.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, "Poimboe, Josh" <jpoimboe@redhat.com>,
- "aarcange@redhat.com" <aarcange@redhat.com>, Cfir Cohen <cfir@google.com>,
- Marc Orr <marcorr@google.com>, "jbachmann@google.com"
- <jbachmann@google.com>, "pgonda@google.com" <pgonda@google.com>,
- "keescook@chromium.org" <keescook@chromium.org>, James Morris
- <jmorris@namei.org>, Michael Kelley <mikelley@microsoft.com>, "Lange, Jon"
- <jlange@microsoft.com>, "linux-coco@lists.linux.dev"
- <linux-coco@lists.linux.dev>, Linux Kernel  Mailing List
- <linux-kernel@vger.kernel.org>
+	bh=w3FPeGg7hItnWxgo62PHoYeVD78xpshA0pZcr5VAtYY=;
+	b=Ah/d0sbLCj4BuFyfLsNHj3ItMfK4RKCmoAJFG4tY++fley1Hvm/29/07SM+UtU09XJy17L
+	C4e3W9Y63a8Cvw9bNfOZYFOsuTCo+wf76a9cEcfvxEDS68Vte15ssLY9zg+3IRpg8uMEbB
+	mQyDQPDrgkSRKgBq5Md8FZkWVKon0Z8=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-616-da5vdNKaPI6irbP3DA0zOQ-1; Tue, 31 Jan 2023 12:39:57 -0500
+X-MC-Unique: da5vdNKaPI6irbP3DA0zOQ-1
+Received: by mail-ed1-f70.google.com with SMTP id en20-20020a056402529400b004a26ef05c34so1524320edb.16
+        for <linux-coco@lists.linux.dev>; Tue, 31 Jan 2023 09:39:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w3FPeGg7hItnWxgo62PHoYeVD78xpshA0pZcr5VAtYY=;
+        b=dRM/7JYIm2Y+2oWSHP9nlCXUFwrUCr0MNuE7hmsZDMQzOuYAMk4kfMvN3Et7hEviNX
+         s3vvo0yBy7t2mgDopR8F3b0WJspeQMsX0J+T22a7jWqVUvIq9gtEroSC6RZ7ODpCeC+w
+         ogqDSkercHiGIdGWSFI1S6DDZk/f/apafZgsxx9gIP5Qru6Y90hFgCoy4FG3fxpad6m6
+         2oMLWVmftQ8N3O8KOkd7Y+X7MFziEf92YMYWOfmt3HsIN/Y2rFTNJtMdLA+md8ilG4Ue
+         DlHJj5A2qSqUY9vhE5UYNf+bduNpPIPlb+3u+MZHWzQY/KVop6fsVxTN2mjtzZzMG5bY
+         NRqg==
+X-Gm-Message-State: AO0yUKVw1R2GVaV2SZ4kMERc2CUfCJ2hAqBRaWUzP+8/PaML/y8YBDGL
+	U7FUKIHuMBrZATwyPGrlg8VmUmFMgUoolTgi5UzmQlanqQ2HGnlMU9GvkYhRLULxkqeDHZ26JdZ
+	sc4ZKgwTxhGDySrngYwBTLg==
+X-Received: by 2002:a05:6402:35c6:b0:46f:d386:117d with SMTP id z6-20020a05640235c600b0046fd386117dmr5019299edc.33.1675186796129;
+        Tue, 31 Jan 2023 09:39:56 -0800 (PST)
+X-Google-Smtp-Source: AK7set9ZPgbwWWTJbgUH+vDerGoDBXBQ/8n25BR+kRZY16ejwePSwXUQ1VHiheonNGFC8dalJpBx8Q==
+X-Received: by 2002:a05:6402:35c6:b0:46f:d386:117d with SMTP id z6-20020a05640235c600b0046fd386117dmr5019279edc.33.1675186795943;
+        Tue, 31 Jan 2023 09:39:55 -0800 (PST)
+Received: from redhat.com ([2.52.144.173])
+        by smtp.gmail.com with ESMTPSA id ed10-20020a056402294a00b004a236384909sm4304467edb.10.2023.01.31.09.39.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Jan 2023 09:39:55 -0800 (PST)
+Date: Tue, 31 Jan 2023 12:39:48 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Christophe de Dinechin <dinechin@redhat.com>
+Cc: jejb@linux.ibm.com, "Reshetova, Elena" <elena.reshetova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
+	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
+	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
+	"Kleen, Andi" <andi.kleen@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Wunner, Lukas" <lukas.wunner@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Poimboe, Josh" <jpoimboe@redhat.com>,
+	"aarcange@redhat.com" <aarcange@redhat.com>,
+	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
+	"jbachmann@google.com" <jbachmann@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"keescook@chromium.org" <keescook@chromium.org>,
+	James Morris <jmorris@namei.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	"Lange, Jon" <jlange@microsoft.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Kernel Hardening <kernel-hardening@lists.openwall.com>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Date: Tue, 31 Jan 2023 17:52:57 +0100
-In-reply-to: <DM8PR11MB57504761DE92CE1213549C27E7D09@DM8PR11MB5750.namprd11.prod.outlook.com>
-Message-ID: <m2cz6uk3h9.fsf@redhat.com>
+Message-ID: <20230131123033-mutt-send-email-mst@kernel.org>
+References: <Y9Jh2x9XJE1KEUg6@unreal>
+ <DM8PR11MB5750414F6638169C7097E365E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <Y9JyW5bUqV7gWmU8@unreal>
+ <DM8PR11MB57507D9C941D77E148EE9E87E7CF9@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <702f22df28e628d41babcf670c909f1fa1bb3c0c.camel@linux.ibm.com>
+ <DM8PR11MB5750F939C0B70939AD3CBC37E7D39@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <220b0be95a8c733f0a6eeddc08e37977ee21d518.camel@linux.ibm.com>
+ <DM8PR11MB575074D3BCBD02F3DD677A57E7D09@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <261bc99edc43990eecb1aac4fe8005cedc495c20.camel@linux.ibm.com>
+ <m2h6w6k5on.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+In-Reply-To: <m2h6w6k5on.fsf@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Tue, Jan 31, 2023 at 04:14:29PM +0100, Christophe de Dinechin wrote:
+> Finally, security considerations that apply irrespective of whether the
+> platform is confidential or not are also outside of the scope of this
+> document. This includes topics ranging from timing attacks to social
+> engineering.
 
-On 2023-01-31 at 10:06 UTC, "Reshetova, Elena" <elena.reshetova@intel.com> wrote...
-> Hi Dinechin,
+Why are timing attacks by hypervisor on the guest out of scope?
 
-Nit: My first name is actually Christophe ;-)
+> </doc>
+> 
+> Feel free to comment and reword at will ;-)
+> 
+> 
+> 3/ PCI-as-a-threat: where does that come from
+> 
+> Isn't there a fundamental difference, from a threat model perspective,
+> between a bad actor, say a rogue sysadmin dumping the guest memory (which CC
+> should defeat) and compromised software feeding us bad data? I think there
+> is: at leats inside the TCB, we can detect bad software using measurements,
+> and prevent it from running using attestation.  In other words, we first
+> check what we will run, then we run it. The security there is that we know
+> what we are running. The trust we have in the software is from testing,
+> reviewing or using it.
+> 
+> This relies on a key aspect provided by TDX and SEV, which is that the
+> software being measured is largely tamper-resistant thanks to memory
+> encryption. In other words, after you have measured your guest software
+> stack, the host or hypervisor cannot willy-nilly change it.
+> 
+> So this brings me to the next question: is there any way we could offer the
+> same kind of service for KVM and qemu? The measurement part seems relatively
+> easy. Thetamper-resistant part, on the other hand, seems quite difficult to
+> me. But maybe someone else will have a brilliant idea?
+> 
+> So I'm asking the question, because if you could somehow prove to the guest
+> not only that it's running the right guest stack (as we can do today) but
+> also a known host/KVM/hypervisor stack, we would also switch the potential
+> issues with PCI, MSRs and the like from "malicious" to merely "bogus", and
+> this is something which is evidently easier to deal with.
 
-[snip]
+Agree absolutely that's much easier.
 
->> "The implementation of the #VE handler is simple and does not require an
->> in-depth security audit or fuzzing since it is not the actual consumer of
->> the host/VMM supplied untrusted data": The assumption there seems to be that
->> the host will never be able to supply data (e.g. through a bounce buffer)
->> that it can trick the guest into executing. If that is indeed the
->> assumption, it is worth mentioning explicitly. I suspect it is a bit weak,
->> since many earlier attacks were based on executing the wrong code. Notably,
->> it is worth pointing out that I/O buffers are _not_ encrypted with the CPU
->> key (as opposed to any device key e.g. for PCI encryption) in either
->> TDX or SEV. Is there for example anything that precludes TDX or SEV from
->> executing code in the bounce buffers?
->
-> This was already replied by Kirill, any code execution out of shared memory generates
-> a #GP.
+> I briefly discussed this with James, and he pointed out two interesting
+> aspects of that question:
+> 
+> 1/ In the CC world, we don't really care about *virtual* PCI devices. We
+>    care about either virtio devices, or physical ones being passed through
+>    to the guest. Let's assume physical ones can be trusted, see above.
+>    That leaves virtio devices. How much damage can a malicious virtio device
+>    do to the guest kernel, and can this lead to secrets being leaked?
+> 
+> 2/ He was not as negative as I anticipated on the possibility of somehow
+>    being able to prevent tampering of the guest. One example he mentioned is
+>    a research paper [1] about running the hypervisor itself inside an
+>    "outer" TCB, using VMPLs on AMD. Maybe something similar can be achieved
+>    with TDX using secure enclaves or some other mechanism?
 
-Apologies for my wording. Everyone interpreted "executing" as "executing
-directly on the bounce buffer page", when what I meant is "consuming data
-fetched from the bounce buffers as code" (not necessarily directly).
+Or even just secureboot based root of trust?
 
-For example, in the diagram in your document, the guest kernel is a
-monolithic piece. In reality, there are dynamically loaded components. In
-the original SEV implementation, with pre-attestation, the measurement could
-only apply before loading any DLKM (I believe, not really sure). As another
-example, SEVerity (CVE-2020-12967 [1]) worked by injecting a payload
-directly into the guest kernel using virtio-based network I/O. That is what
-I referred to when I wrote "many earlier attacks were based on executing the
-wrong code".
-
-The fact that I/O buffers are not encrypted matters here, because it gives
-the host ample latitude to observe or even corrupt all I/Os, as many others
-have pointed out. Notably, disk crypto may not be designed to resist to a
-host that can see and possibly change the I/Os.
-
-So let me rephrase my vague question as a few more precise ones:
-
-1) What are the effects of semi-random kernel code injection?
-
-   If the host knows that a given bounce buffer happens to be used later to
-   execute some kernel code, it can start flipping bits in it to try and
-   trigger arbitrary code paths in the guest. My understanding is that
-   crypto alone (i.e. without additional layers like dm-integrity) will
-   happily decrypt that into a code stream with pseudo-random instructions
-   in it, not vehemently error out.
-
-   So, while TDX precludes the host from writing into guest memory directly,
-   since the bounce buffers are shared, TDX will not prevent the host from
-   flipping bits there. It's then just a matter of guessing where the bits
-   will go, and hoping that some bits execute at guest PL0. Of course, this
-   can be mitigated by either only using static configs, or using
-   dm-verity/dm-integrity, or maybe some other mechanisms.
-
-   Shouldn't that be part of your document?  To be clear: you mention under
-   "Storage protection" that you use dm-crypt and dm-integrity, so I believe
-   *you* know, but your readers may not figure out why dm-integrity is
-   integral to the process, notably after you write "Users could use other
-   encryption schemes".
-
-2) What are the effects of random user code injection?
-
-   It's the same as above, except that now you can target a much wider range
-   of input data, including shell scripts, etc. So the attack surface is
-   much larger.
-
-3) What is the effect of data poisoning?
-
-   You don't necessarily need to corrupt code. Being able to corrupt a
-   system configuration file for example can be largely sufficient.
-
-4) Are there I/O-based replay attacks that would work pre-attestation?
-
-   My current mental model is that you load a "base" software stack into the
-   TCB and then measure a relevant part of it. What you measure is somewhat
-   implementation-dependent, but in the end, if the system is attested, you
-   respond to a cryptographic challenge based on what was measured, and you
-   then get relevant secrets, e.g. a disk decryption key, that let you make
-   forward progress. However, what happens if every time you boot, the host
-   feeds you bogus disk data just to try to steer the boot sequence along
-   some specific path?
-
-   I believe that the short answer is: the guest either:
-
-   a) reaches attestation, but with bad in-memory data, so it fails the
-      crypto exchange, and secrets are not leaked.
-
-   b) does not reach attestation, so never gets the secrets, and therefore
-      still fulfils the CC promise of not leaking secrets.
-
-   So I personally feel this is OK, but it's worth writing up in your doc.
-
-
-Back to the #VE handler, if I can find a way to inject malicious code into
-my guest, what you wrote in that paragraph as a justification for no
-in-depth security still seems like "not exactly defense in depth". I would
-just remove the sentence, audit and fuzz that code with the same energy as
-for anything else that could face bad input.
-
-
-[1]: https://www.sec.in.tum.de/i20/student-work/code-execution-attacks-against-encrypted-virtual-machines
-
-
-
---
-Cheers,
-Christophe de Dinechin (https://c3d.github.io)
-Theory of Incomplete Measurements (https://c3d.github.io/TIM)
+-- 
+MST
 
