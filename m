@@ -1,30 +1,30 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4036936F
-	for <linux-coco@lists.linux.dev>; Tue, 31 Jan 2023 08:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE03808
+	for <linux-coco@lists.linux.dev>; Tue, 31 Jan 2023 08:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ANSSQvXLkAdB5vLFBiWOsNzzD5+Ok+WeTzqp79+9obU=; b=gThzmfIRxolj0u9xAVBDjK9jFn
-	Lf8J7skNxuA0lPWxaZraA0WTyGXxau82RSlqm2UlTnsBpkuUGzROFlpq2aIICIhpyYD46OC7qbsgt
-	Le6nsHRmWiJXUxNo9TtdaGH8JV++gjkOGIzGa38i1AW6uuIS6Jub+Npn9bm9SG/cUG1PiNkDSoaN8
-	zGI+VwsbfP3qurvij4w9J0Zqs97JBiTWOMhMKoa8kpocACi/AM/JwcCvInj7GPGEyat0zS+3f0ZgO
-	YioYV0h8PSaqHEdIMZ93dBe05FPi9Wu33lnaQLFFNfu9vyOIj32Oj81rsqOunDog1M1s65HJVoyOw
-	pr8054og==;
+	bh=yIv3LIr3qWgmHuEbe2VAns23Loew5Phrl74MLrKWWD8=; b=dIKlPDN1JvAxGw5inlYXDcwU4t
+	JV1Y7of4EGQZwP+xRWTx2dtjuHLTYTLo02H4E9BQ+GMAToe8yPsuEPgG1RfqBRttJA4T9PYo9TWxV
+	2XHnbEp9zXkaAvnWtqC6dR/OH8asvM85qbqpWDcB2P9inqPzEGPTHTvtiFZoR10dm6xQf+lF0PgWK
+	Y2Alu3/L7rR7gGEJpg+1WVCHAt333Y56eocnk8o5VVWyRXMlwERzy/QGq9yLe/yM8fPnSHXhko0av
+	oPh8Z35zcqVKIHfAmiodzt4GdErWPHE0yzZp3/4eGxqWLrLmViJlNfr/ZDVG/GQJQY/BRlkCYsKrM
+	iL52cKRQ==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMm4F-00B9KN-32; Tue, 31 Jan 2023 08:32:39 +0000
+	id 1pMm5k-00B9Of-GC; Tue, 31 Jan 2023 08:34:13 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CEB903002BF;
-	Tue, 31 Jan 2023 09:32:37 +0100 (CET)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 73934300209;
+	Tue, 31 Jan 2023 09:34:12 +0100 (CET)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id ABF1B2083586E; Tue, 31 Jan 2023 09:32:37 +0100 (CET)
-Date: Tue, 31 Jan 2023 09:32:37 +0100
+	id 62BEE2083586E; Tue, 31 Jan 2023 09:34:12 +0100 (CET)
+Date: Tue, 31 Jan 2023 09:34:12 +0100
 From: Peter Zijlstra <peterz@infradead.org>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>,
@@ -36,7 +36,7 @@ Cc: Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>,
 	kernel test robot <lkp@intel.com>
 Subject: Re: [PATCH] x86/tdx: Do not corrupt frame-pointer in
  __tdx_hypercall()
-Message-ID: <Y9jSJUwNlXSpV3uM@hirez.programming.kicks-ass.net>
+Message-ID: <Y9jShNfS/d8LGu8w@hirez.programming.kicks-ass.net>
 References: <20230130135354.27674-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -55,23 +55,7 @@ On Mon, Jan 30, 2023 at 04:53:54PM +0300, Kirill A. Shutemov wrote:
 >   objtool: __tdx_hypercall+0x7f: return with modified stack frame
 > 
 > Rework the function to store TDX_HCALL_ flags on stack instead of RBP.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Fixes: c30c4b2555ba ("x86/tdx: Refactor __tdx_hypercall() to allow pass down more arguments")
-> Link: https://lore.kernel.org/all/202301290255.buUBs99R-lkp@intel.com
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> ---
-> 
-> The patch is against tip/x86/tdx. tip/sched/core removes
-> TDX_HCALL_ISSUE_STI. The trird hunk of the patch is not relevant
-> after that.
 
-Right, this should work. But it does leave me wondering, should we
-perhaps strive to completely remove the flags thing and move to
-__tdx_hypercall() and __tdx_hypercall_ret() or something? That is,
-simply have two different functions, one with and one without return
-data.
-
-It should be trivial to generate that without actual code duplication.
-
+Also, on IRC you mentioned that per TDX spec, BP is a valid argument
+register too and you were going to raise this and get it fixed, TDX
+hypercalls must not use BP to pass data.
