@@ -1,148 +1,229 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8265C63B3
-	for <linux-coco@lists.linux.dev>; Wed,  1 Feb 2023 15:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C9963B3
+	for <linux-coco@lists.linux.dev>; Wed,  1 Feb 2023 16:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675264856;
+	s=mimecast20190719; t=1675267339;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SrLCw+CxRcyf1h+JCKMe42vO5pLCLPgHCqKGEpRxy9o=;
-	b=dO5acfTuBPNZkN9+s7lREBwvmhtR7KLFVjL+y1phJie/N0L9mIwZqFEB/Gz4hTrzvVfHPl
-	txBj7cSsTtZgqkMgSgz9iY5+CvC/YmzXP0txiWgFys0c8sylTrLbTY6GfhevtJU5GLEHgs
-	LWl4XrP40RgmVubKFC74fcJATzSwyqQ=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=EElzE8+e1kmP7S3k+GEUsksfz7cKl253GIZfZ0NLa3M=;
+	b=eAi+BgVEWx84qPkhPX16v3G3VEKjITMmxJqM5G4ijqkZx497RuYQIp8QZYEW8rlR9foUWB
+	RjkEw3Uf2WQE11IZ612bsD0XSCRuRyb8JY9qPkI4VN97gvr8HJgxKdb4zea8S9fwjTW/Gs
+	XieN3QQ178uNWLsVqxPVEK3mWV4QOHk=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-481-4lWryy_KP8O4LqX5Myr4Fw-1; Wed, 01 Feb 2023 10:20:55 -0500
-X-MC-Unique: 4lWryy_KP8O4LqX5Myr4Fw-1
-Received: by mail-qv1-f72.google.com with SMTP id j7-20020a0cf507000000b0053b538958d5so6097081qvm.18
-        for <linux-coco@lists.linux.dev>; Wed, 01 Feb 2023 07:20:47 -0800 (PST)
+ us-mta-50--0WZ0sLdNTODVTLrnEXK1A-1; Wed, 01 Feb 2023 11:02:18 -0500
+X-MC-Unique: -0WZ0sLdNTODVTLrnEXK1A-1
+Received: by mail-wm1-f70.google.com with SMTP id j24-20020a05600c1c1800b003dc4480f7bdso1309946wms.5
+        for <linux-coco@lists.linux.dev>; Wed, 01 Feb 2023 08:02:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=THYl/RLnPkUT1FNIkiWEjbvceggmQZZbuCfOPKJlxEg=;
-        b=vt/aROULlQM77x0YpRKm6mLu4kg0I44dhnVhHEd1d5/rfCSA5cj7SCIXdoYbu52AO9
-         xdjmSFbvv0IGpzTwGWL4j9Zy+v0cz25zHtu8oWE6UqpOt1OIGOogyZ7dRBgFQCgyuB/5
-         V7sYT9QWQOzbHwLJob2Fv51FytgtYb6BWDrn66YTzs22DONjxVisX4FCkt4z3a/9DjEA
-         RJ65CzC+8s5abi6BtZfA/90p1SjnB667zfykr67tY9dhkOv+75OtUh59oSaDO4uOKq/X
-         yxX6VpUAQeHNUgAW+MFeeb3edlmjZFsTEdF15P/avGs1jOEvva1/gapG9M38KqcLz1oy
-         11ig==
-X-Gm-Message-State: AO0yUKVt5LxcoPHDRUxIVx3CeaMDbG8hYiB0k9UcDaTxpLdeZiru4xXO
-	3sR5uXeEOTvmUjpgCc9ltKDG7yk2qdgkahYMcihR6KtZiEuUPunKg68Ek+GaCffbN0WERGOIXJX
-	psGc9BWk42ip4MpT1UJJgPQ==
-X-Received: by 2002:a05:622a:44f:b0:3b8:6b6b:28bc with SMTP id o15-20020a05622a044f00b003b86b6b28bcmr3832596qtx.62.1675264846640;
-        Wed, 01 Feb 2023 07:20:46 -0800 (PST)
-X-Google-Smtp-Source: AK7set8ilL9UCHBprGk+tfQJluUlcBbMqapTXtVjPhmTG/DR754r3SKUeS2SBaWAkrko+zGX+q2mnA==
-X-Received: by 2002:a05:622a:44f:b0:3b8:6b6b:28bc with SMTP id o15-20020a05622a044f00b003b86b6b28bcmr3832566qtx.62.1675264846364;
-        Wed, 01 Feb 2023 07:20:46 -0800 (PST)
-Received: from smtpclient.apple (82-65-201-253.subs.proxad.net. [82.65.201.253])
-        by smtp.gmail.com with ESMTPSA id i1-20020a37b801000000b00702d1c6e7bbsm12078862qkf.130.2023.02.01.07.20.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 01 Feb 2023 07:20:45 -0800 (PST)
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EElzE8+e1kmP7S3k+GEUsksfz7cKl253GIZfZ0NLa3M=;
+        b=TkxG3DNOGjpdHSzVfhkmysfQAkQb11ZfvTQ7q6n/KXXtpbUkIxr+4f7DjwCwj653jG
+         /XGpvJta3rRcIm3w9my9VImBScvYeoFrgDqqwe09ZIw8Yr2d5CQllg9HNwEjWqRKOxA6
+         2MHRBvksxPF1Xc5RRTP0p7NwfhARAGeJ1A3KOVetrt4IW6w0iGkr8D8PnfUFnLiugq8m
+         9LoGzCGVfxPQ0HRS7qE0a8/GRqlVvGPaa6XeAB9udQH7bCgQP7ddEpv3r32U9Di63/lq
+         G0w/3w39Vsgcv97lP6VwE/T991V/nZp9NsWaUPZ6wazgjr6jbC+xg+QLw13V7OSvNXrY
+         Su3Q==
+X-Gm-Message-State: AO0yUKUikTi1aTq+rb5XToekjuAOyCIRpkqLqCqWQGUnf4nuObBoldcN
+	i8BlpyfnV1T5TaNzVyPBWyRXqFALaSxE35yt1Awdoe4RUlSQUAfCB5ivKdf/bZGBKJZgQZ+yQcO
+	+j7/RUPqDsNbfzE+h1/Zxpw==
+X-Received: by 2002:adf:fd88:0:b0:2bf:5dc0:56c8 with SMTP id d8-20020adffd88000000b002bf5dc056c8mr2253294wrr.51.1675267336906;
+        Wed, 01 Feb 2023 08:02:16 -0800 (PST)
+X-Google-Smtp-Source: AK7set/cViVu8qXP79IJNXkXkroLfOIDkTqq67u9Yp+KKjFvc+/ficndq3vQOcHptFk86I0MldWauA==
+X-Received: by 2002:adf:fd88:0:b0:2bf:5dc0:56c8 with SMTP id d8-20020adffd88000000b002bf5dc056c8mr2253258wrr.51.1675267336661;
+        Wed, 01 Feb 2023 08:02:16 -0800 (PST)
+Received: from redhat.com ([2.52.144.173])
+        by smtp.gmail.com with ESMTPSA id r25-20020adfa159000000b00297dcfdc90fsm18127882wrr.24.2023.02.01.08.02.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Feb 2023 08:02:15 -0800 (PST)
+Date: Wed, 1 Feb 2023 11:02:09 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Christophe de Dinechin Dupont de Dinechin <cdupontd@redhat.com>
+Cc: Christophe de Dinechin <dinechin@redhat.com>,
+	James Bottomley <jejb@linux.ibm.com>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
+	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
+	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
+	"Kleen, Andi" <andi.kleen@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Wunner, Lukas" <lukas.wunner@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Poimboe, Josh" <jpoimboe@redhat.com>,
+	"aarcange@redhat.com" <aarcange@redhat.com>,
+	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
+	"jbachmann@google.com" <jbachmann@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"keescook@chromium.org" <keescook@chromium.org>,
+	James Morris <jmorris@namei.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	"Lange, Jon" <jlange@microsoft.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Kernel Hardening <kernel-hardening@lists.openwall.com>
+Subject: Re: Linux guest kernel threat model for Confidential Computing
+Message-ID: <20230201105305-mutt-send-email-mst@kernel.org>
+References: <702f22df28e628d41babcf670c909f1fa1bb3c0c.camel@linux.ibm.com>
+ <DM8PR11MB5750F939C0B70939AD3CBC37E7D39@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <220b0be95a8c733f0a6eeddc08e37977ee21d518.camel@linux.ibm.com>
+ <DM8PR11MB575074D3BCBD02F3DD677A57E7D09@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <261bc99edc43990eecb1aac4fe8005cedc495c20.camel@linux.ibm.com>
+ <m2h6w6k5on.fsf@redhat.com>
+ <20230131123033-mutt-send-email-mst@kernel.org>
+ <6BCC3285-ACA3-4E38-8811-1A91C9F03852@redhat.com>
+ <20230201055412-mutt-send-email-mst@kernel.org>
+ <4B78D161-2712-434A-8E6F-9D8BA468BB3A@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.300.101.1.3\))
-Subject: Re: [EXTERNAL] SVSM Attestation and vTPM specification additions -
- v0.60
-From: Christophe de Dinechin Dupont de Dinechin <cdupontd@redhat.com>
-In-Reply-To: <MN0PR21MB3072B127F1B0D6E0F73DF37ACAD09@MN0PR21MB3072.namprd21.prod.outlook.com>
-Date: Wed, 1 Feb 2023 16:20:27 +0100
-Cc: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
-Message-Id: <02020D95-2BF1-4999-80BD-86CD8589197C@redhat.com>
-References: <09819cb3-1938-fe86-b948-28aaffbe584e@amd.com>
- <Y8+oqoU2jZYrNlz1@suse.de> <7398c541-78ac-670f-1f4c-92b7525ed99e@amd.com>
- <749A53E5-4C6E-4D89-AF9B-E9F5EA273E1B@redhat.com>
- <MN0PR21MB3072B01C5A138EA849D88BE4CACF9@MN0PR21MB3072.namprd21.prod.outlook.com>
- <Y9OMuuHz2utBASOm@suse.de>
- <MN0PR21MB30724AB0ED1740D2018C06E3CACC9@MN0PR21MB3072.namprd21.prod.outlook.com>
- <Y9eqB5/1YcZeIHqG@suse.de>
- <MN0PR21MB3072B127F1B0D6E0F73DF37ACAD09@MN0PR21MB3072.namprd21.prod.outlook.com>
-To: Jon Lange <jlange@microsoft.com>
-X-Mailer: Apple Mail (2.3731.300.101.1.3)
+MIME-Version: 1.0
+In-Reply-To: <4B78D161-2712-434A-8E6F-9D8BA468BB3A@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
+On Wed, Feb 01, 2023 at 02:15:10PM +0100, Christophe de Dinechin Dupont de Dinechin wrote:
+> 
+> 
+> > On 1 Feb 2023, at 12:01, Michael S. Tsirkin <mst@redhat.com> wrote:
+> > 
+> > On Wed, Feb 01, 2023 at 11:52:27AM +0100, Christophe de Dinechin Dupont de Dinechin wrote:
+> >> 
+> >> 
+> >>> On 31 Jan 2023, at 18:39, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >>> 
+> >>> On Tue, Jan 31, 2023 at 04:14:29PM +0100, Christophe de Dinechin wrote:
+> >>>> Finally, security considerations that apply irrespective of whether the
+> >>>> platform is confidential or not are also outside of the scope of this
+> >>>> document. This includes topics ranging from timing attacks to social
+> >>>> engineering.
+> >>> 
+> >>> Why are timing attacks by hypervisor on the guest out of scope?
+> >> 
+> >> Good point.
+> >> 
+> >> I was thinking that mitigation against timing attacks is the same
+> >> irrespective of the source of the attack. However, because the HV
+> >> controls CPU time allocation, there are presumably attacks that
+> >> are made much easier through the HV. Those should be listed.
+> > 
+> > Not just that, also because it can and does emulate some devices.
+> > For example, are disk encryption systems protected against timing of
+> > disk accesses?
+> > This is why some people keep saying "forget about emulated devices, require
+> > passthrough, include devices in the trust zone".
+> > 
+> >>> 
+> >>>> </doc>
+> >>>> 
+> >>>> Feel free to comment and reword at will ;-)
+> >>>> 
+> >>>> 
+> >>>> 3/ PCI-as-a-threat: where does that come from
+> >>>> 
+> >>>> Isn't there a fundamental difference, from a threat model perspective,
+> >>>> between a bad actor, say a rogue sysadmin dumping the guest memory (which CC
+> >>>> should defeat) and compromised software feeding us bad data? I think there
+> >>>> is: at leats inside the TCB, we can detect bad software using measurements,
+> >>>> and prevent it from running using attestation.  In other words, we first
+> >>>> check what we will run, then we run it. The security there is that we know
+> >>>> what we are running. The trust we have in the software is from testing,
+> >>>> reviewing or using it.
+> >>>> 
+> >>>> This relies on a key aspect provided by TDX and SEV, which is that the
+> >>>> software being measured is largely tamper-resistant thanks to memory
+> >>>> encryption. In other words, after you have measured your guest software
+> >>>> stack, the host or hypervisor cannot willy-nilly change it.
+> >>>> 
+> >>>> So this brings me to the next question: is there any way we could offer the
+> >>>> same kind of service for KVM and qemu? The measurement part seems relatively
+> >>>> easy. Thetamper-resistant part, on the other hand, seems quite difficult to
+> >>>> me. But maybe someone else will have a brilliant idea?
+> >>>> 
+> >>>> So I'm asking the question, because if you could somehow prove to the guest
+> >>>> not only that it's running the right guest stack (as we can do today) but
+> >>>> also a known host/KVM/hypervisor stack, we would also switch the potential
+> >>>> issues with PCI, MSRs and the like from "malicious" to merely "bogus", and
+> >>>> this is something which is evidently easier to deal with.
+> >>> 
+> >>> Agree absolutely that's much easier.
+> >>> 
+> >>>> I briefly discussed this with James, and he pointed out two interesting
+> >>>> aspects of that question:
+> >>>> 
+> >>>> 1/ In the CC world, we don't really care about *virtual* PCI devices. We
+> >>>>  care about either virtio devices, or physical ones being passed through
+> >>>>  to the guest. Let's assume physical ones can be trusted, see above.
+> >>>>  That leaves virtio devices. How much damage can a malicious virtio device
+> >>>>  do to the guest kernel, and can this lead to secrets being leaked?
+> >>>> 
+> >>>> 2/ He was not as negative as I anticipated on the possibility of somehow
+> >>>>  being able to prevent tampering of the guest. One example he mentioned is
+> >>>>  a research paper [1] about running the hypervisor itself inside an
+> >>>>  "outer" TCB, using VMPLs on AMD. Maybe something similar can be achieved
+> >>>>  with TDX using secure enclaves or some other mechanism?
+> >>> 
+> >>> Or even just secureboot based root of trust?
+> >> 
+> >> You mean host secureboot? Or guest?
+> >> 
+> >> If it’s host, then the problem is detecting malicious tampering with
+> >> host code (whether it’s kernel or hypervisor).
+> > 
+> > Host.  Lots of existing systems do this.  As an extreme boot a RO disk,
+> > limit which packages are allowed.
+> 
+> Is that provable to the guest?
+> 
+> Consider a cloud provider doing that: how do they prove to their guest:
+> 
+> a) What firmware, kernel and kvm they run
+> 
+> b) That what they booted cannot be maliciouly modified, e.g. by a rogue
+>    device driver installed by a rogue sysadmin
+> 
+> My understanding is that SecureBoot is only intended to prevent non-verified
+> operating systems from booting. So the proof is given to the cloud provider,
+> and the proof is that the system boots successfully.
 
+I think I should have said measured boot not secure boot.
 
-> On 31 Jan 2023, at 05:44, Jon Lange <jlange@microsoft.com> wrote:
->=20
-> Joerg, I'm encouraged to see that we agree about most of the points relat=
-ed to implementation-specific protocol extensions.  It seems like the place=
-s where we have yet to come together have less to do with how the standard =
-is defined but about how to approach implementation choices.  That's not re=
-ally something that can be legislated into a standard (as you suggest) so w=
-e'll just have to trust that the right thing happens.
->=20
-> As far as how to enumerate implementation-specific extensions, why not ju=
-st embrace the core concept of the protocol's extensibility, which is that =
-individual protocol numbers are optional?  SVSM implementation 1A could pro=
-pose protocol number 0x123 is its own extensions, and SVSM implementation X=
- could propose protocol number 0xABC as its extensions, etc.  This would el=
-iminate any need to define any first-class concept of implementation identi=
-ty (thus eliminating the need for an identity registry) and would also elim=
-inate the question of deciding which commands within a given protocol are i=
-mplemented by a given SVSM.  Instead, a guest OS could query for the implem=
-entation protocol it wants, and if it's present, it can use it, and if it i=
-s absent, it won't.  A given implementation could choose to lump all of its=
- various implementation-specific extensions into a single protocol, or add =
-a different protocol number for every set of extensions (one for logging, a=
- separate one for other configuration - whatever).  With a 32-bit protocol =
-ID space to choose from, I suspect we don't have to worry too much about ru=
-nning out of IDs quickly, as long as we can construct some logical defense =
-for every separate protocol ID.  And, as a bonus, those individual "impleme=
-ntation-specific" constructs that are easily embraced by another implementa=
-tion can easily transform into standards without requiring an all-or-nothin=
-g adoption of an implementation's complete extension set - from your earlie=
-r comments about prototyping, this seems like one of the extensibility feat=
-ures you were hoping to achieve.
+> 
+> After that, I think all bets are off. SecureBoot does little AFAICT
+> to prevent malicious modifications of the running system by someone with
+> root access, including deliberately loading a malicious kvm-zilog.ko
 
-This is a common problem in the industry. For example, OpenGL had various e=
-xtensions that could be queried, each exposing an interface (similar to the=
- protocols here). C and C++ compilers exposed =E2=80=9Cworking group=E2=80=
-=9D features or compiler-specific extensions in various ways.
+So disable module loading then or don't allow root access?
 
-In all cases, some extensions are meant to be and remain =E2=80=9Cimplement=
-ation-dependent=E2=80=9D whereas others may be work in progress with the in=
-tent to become part of the standard later. In OpenGL, GL_NV_draw_vulkan_ima=
-ge would be an example of the former, being specific to NVIDIA, whereas GL_=
-ARB_arrays_of_arrays an example of the latter, ARB standing for Architectur=
-e Review Board). Another important aspect is to be able to query the availa=
-ble protocols in a portable way.
+> 
+> It does not mean it cannot be done, just that I don’t think we
+> have the tools at the moment.
 
-With IDs, I would split the ID space into three segments:
-- The standard part, which we have today
-- The experimental part, to become standard with possibly some changes
-- The implementation-dependent part, never to be used by portable code
+Phones, chromebooks do this all the time ...
 
-I must admit that I also thought of logging as an obvious extension to the =
-current protocols, and I was also torn about how to standardize that. The r=
-isk of not having an =E2=80=9Cexperimental=E2=80=9D part to the ID space is=
- that there will be a lot of discussion and bike shedding before we all agr=
-ee on something. By contrast, pushing an experiment and having people test =
-it should be comparatively painless.
-
-I=E2=80=99m also considering future changes in the underlying hardware, exp=
-osing capabilities that may not exist today. One example that was discussed=
- in another thread is the possibility, some day, to attest not just the gue=
-st code, but the host hypervisor and kernel as well. In the AMD case, I sus=
-pect this would involve having some of their code running at VMPL0, and may=
-be having a =E2=80=9CVMPL1 SVSM=E2=80=9D interface.
-
-
-Cheers,
-Christophe
+> > 
+> >> If it’s guest, at the moment at least, the measurements do not extend
+> >> beyond the TCB.
+> >> 
+> >>> 
+> >>> -- 
+> >>> MST
+> 
 
