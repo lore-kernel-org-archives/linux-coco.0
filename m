@@ -1,188 +1,281 @@
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016118483
-	for <linux-coco@lists.linux.dev>; Wed,  1 Feb 2023 17:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1675272050; x=1706808050;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=r3+1R9eof3Rid7BA198DtwB/M24a62e7cpNgDf7b0qU=;
-  b=JIOPno+w/v8pOcLUIJDJpYyQPQZIWqPRJZuo+45vBMBh3r/HeD+LokR1
-   dvESIXPJNWtDout1fdgG2sh7Z69xFC6aXCt5QzwGVu4iOnvxB91ETBT0Y
-   bGzNZ9pB+pqJzoz4px9U+kFQzzObyAIcq0CugNk8M9XIKvFGcydBAyc7A
-   o=;
-X-IronPort-AV: E=Sophos;i="5.97,263,1669075200"; 
-   d="scan'208";a="292542619"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1d-m6i4x-153b24bc.us-east-1.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2023 17:20:47 +0000
-Received: from EX13MTAUWC001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-	by email-inbound-relay-iad-1d-m6i4x-153b24bc.us-east-1.amazon.com (Postfix) with ESMTPS id 748DBC1D54;
-	Wed,  1 Feb 2023 17:20:36 +0000 (UTC)
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX13MTAUWC001.ant.amazon.com (10.43.162.135) with Microsoft SMTP Server (TLS)
- id 15.0.1497.45; Wed, 1 Feb 2023 17:20:34 +0000
-Received: from [0.0.0.0] (10.43.160.120) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1118.24; Wed, 1 Feb
- 2023 17:20:26 +0000
-Message-ID: <7e73cb2d-5046-66cd-5a9b-8e2faa8458dc@amazon.com>
-Date: Wed, 1 Feb 2023 18:20:24 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052C68483
+	for <linux-coco@lists.linux.dev>; Wed,  1 Feb 2023 17:47:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1675273650;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nRePCpDJBO/M8Zq3CNN7A6fVA0vNSETNMdWmUr+Atgo=;
+	b=ed07jrwAuesHPbW2DqbX5gO+AXV8i3cnwN46QxJsvjOQhJw6QAGcHQxKGnyKNiLov1Qkoc
+	VKas/0mSra/IquYk8st5XblisV/vZjvlGipd9ONITUplBrAMOQDW3bh1vViSP08qj4GF78
+	Y8JWxc17Metvy3c5pqRcuNn1qErAvbc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-502-XXCDyiTNPQae3Ivdo5qQ7A-1; Wed, 01 Feb 2023 12:47:29 -0500
+X-MC-Unique: XXCDyiTNPQae3Ivdo5qQ7A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAFE93C1068E;
+	Wed,  1 Feb 2023 17:47:23 +0000 (UTC)
+Received: from ptitbras (unknown [10.39.194.52])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2AC652166B33;
+	Wed,  1 Feb 2023 17:47:18 +0000 (UTC)
+References: <702f22df28e628d41babcf670c909f1fa1bb3c0c.camel@linux.ibm.com>
+ <DM8PR11MB5750F939C0B70939AD3CBC37E7D39@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <220b0be95a8c733f0a6eeddc08e37977ee21d518.camel@linux.ibm.com>
+ <DM8PR11MB575074D3BCBD02F3DD677A57E7D09@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <261bc99edc43990eecb1aac4fe8005cedc495c20.camel@linux.ibm.com>
+ <m2h6w6k5on.fsf@redhat.com>
+ <20230131123033-mutt-send-email-mst@kernel.org>
+ <6BCC3285-ACA3-4E38-8811-1A91C9F03852@redhat.com>
+ <20230201055412-mutt-send-email-mst@kernel.org>
+ <4B78D161-2712-434A-8E6F-9D8BA468BB3A@redhat.com>
+ <20230201105305-mutt-send-email-mst@kernel.org>
+User-agent: mu4e 1.8.0; emacs 28.2
+From: Christophe de Dinechin <dinechin@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: James Bottomley <jejb@linux.ibm.com>, "Reshetova, Elena"
+ <elena.reshetova@intel.com>, Leon Romanovsky <leon@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Shishkin, Alexander"
+ <alexander.shishkin@intel.com>, "Shutemov, Kirill"
+ <kirill.shutemov@intel.com>, "Kuppuswamy, Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@intel.com>, "Kleen, Andi"
+ <andi.kleen@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ "Wunner, Lukas" <lukas.wunner@intel.com>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>, Jason Wang <jasowang@redhat.com>,
+ "Poimboe, Josh" <jpoimboe@redhat.com>, "aarcange@redhat.com"
+ <aarcange@redhat.com>, Cfir Cohen <cfir@google.com>, Marc Orr
+ <marcorr@google.com>, "jbachmann@google.com" <jbachmann@google.com>,
+ "pgonda@google.com" <pgonda@google.com>, "keescook@chromium.org"
+ <keescook@chromium.org>, James Morris <jmorris@namei.org>, Michael Kelley
+ <mikelley@microsoft.com>, "Lange, Jon" <jlange@microsoft.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Linux Kernel
+ Mailing List <linux-kernel@vger.kernel.org>, Kernel Hardening
+ <kernel-hardening@lists.openwall.com>
+Subject: Re: Linux guest kernel threat model for Confidential Computing
+Date: Wed, 01 Feb 2023 18:13:22 +0100
+In-reply-to: <20230201105305-mutt-send-email-mst@kernel.org>
+Message-ID: <m2zg9xi8gr.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.6.1
-Subject: Re: [PATCH RFC v7 16/64] x86/sev: Add helper functions for RMPUPDATE
- and PSMASH instruction
-Content-Language: en-US
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Michael Roth
-	<michael.roth@amd.com>, <kvm@vger.kernel.org>
-CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <wanpengli@tencent.com>, <jmattson@google.com>,
-	<luto@kernel.org>, <dave.hansen@linux.intel.com>, <slp@redhat.com>,
-	<pgonda@google.com>, <peterz@infradead.org>,
-	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
-	<dovmurik@linux.ibm.com>, <tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>,
-	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
-	<marcorr@google.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	<alpergun@google.com>, <dgilbert@redhat.com>, <jarkko@kernel.org>,
-	<harald@profian.com>, Brijesh Singh <brijesh.singh@amd.com>, "Rapan, Sabin"
-	<sabrapan@amazon.com>
-References: <20221214194056.161492-1-michael.roth@amd.com>
- <20221214194056.161492-17-michael.roth@amd.com>
- <854a0caf-6940-8381-1e20-0ddb5ed94858@amazon.com>
- <59dd6291-6a99-ab7a-865f-b333a5f57bb9@amd.com>
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <59dd6291-6a99-ab7a-865f-b333a5f57bb9@amd.com>
-X-Originating-IP: [10.43.160.120]
-X-ClientProxiedBy: EX13D44UWB002.ant.amazon.com (10.43.161.192) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 
-Ck9uIDAxLjAyLjIzIDE4OjE0LCBLYWxyYSwgQXNoaXNoIHdyb3RlOgo+Cj4gT24gMS8zMS8yMDIz
-IDM6MjYgUE0sIEFsZXhhbmRlciBHcmFmIHdyb3RlOgo+Pgo+PiBPbiAxNC4xMi4yMiAyMDo0MCwg
-TWljaGFlbCBSb3RoIHdyb3RlOgo+Pj4gRnJvbTogQnJpamVzaCBTaW5naCA8YnJpamVzaC5zaW5n
-aEBhbWQuY29tPgo+Pj4KPj4+IFRoZSBSTVBVUERBVEUgaW5zdHJ1Y3Rpb24gd3JpdGVzIGEgbmV3
-IFJNUCBlbnRyeSBpbiB0aGUgUk1QIFRhYmxlLiBUaGUKPj4+IGh5cGVydmlzb3Igd2lsbCB1c2Ug
-dGhlIGluc3RydWN0aW9uIHRvIGFkZCBwYWdlcyB0byB0aGUgUk1QIHRhYmxlLiBTZWUKPj4+IEFQ
-TTMgZm9yIGRldGFpbHMgb24gdGhlIGluc3RydWN0aW9uIG9wZXJhdGlvbnMuCj4+Pgo+Pj4gVGhl
-IFBTTUFTSCBpbnN0cnVjdGlvbiBleHBhbmRzIGEgMk1CIFJNUCBlbnRyeSBpbnRvIGEgY29ycmVz
-cG9uZGluZyBzZXQKPj4+IG9mIGNvbnRpZ3VvdXMgNEtCLVBhZ2UgUk1QIGVudHJpZXMuIFRoZSBo
-eXBlcnZpc29yIHdpbGwgdXNlIHRoaXMKPj4+IGluc3RydWN0aW9uIHRvIGFkanVzdCB0aGUgUk1Q
-IGVudHJ5IHdpdGhvdXQgaW52YWxpZGF0aW5nIHRoZSBwcmV2aW91cwo+Pj4gUk1QIGVudHJ5Lgo+
-Pj4KPj4+IEFkZCB0aGUgZm9sbG93aW5nIGV4dGVybmFsIGludGVyZmFjZSBBUEkgZnVuY3Rpb25z
-Ogo+Pj4KPj4+IGludCBwc21hc2godTY0IHBmbik7Cj4+PiBwc21hc2ggaXMgdXNlZCB0byBzbWFz
-aCBhIDJNQiBhbGlnbmVkIHBhZ2UgaW50byA0Swo+Pj4gcGFnZXMgd2hpbGUgcHJlc2VydmluZyB0
-aGUgVmFsaWRhdGVkIGJpdCBpbiB0aGUgUk1QLgo+Pj4KPj4+IGludCBybXBfbWFrZV9wcml2YXRl
-KHU2NCBwZm4sIHU2NCBncGEsIGVudW0gcGdfbGV2ZWwgbGV2ZWwsIGludCBhc2lkLAo+Pj4gYm9v
-bCBpbW11dGFibGUpOwo+Pj4gVXNlZCB0byBhc3NpZ24gYSBwYWdlIHRvIGd1ZXN0IHVzaW5nIHRo
-ZSBSTVBVUERBVEUgaW5zdHJ1Y3Rpb24uCj4+Pgo+Pj4gaW50IHJtcF9tYWtlX3NoYXJlZCh1NjQg
-cGZuLCBlbnVtIHBnX2xldmVsIGxldmVsKTsKPj4+IFVzZWQgdG8gdHJhbnNpdGlvbiBhIHBhZ2Ug
-dG8gaHlwZXJ2aXNvci9zaGFyZWQgc3RhdGUgdXNpbmcgdGhlCj4+PiBSTVBVUERBVEUgaW5zdHJ1
-Y3Rpb24uCj4+Pgo+Pj4gU2lnbmVkLW9mZi1ieTogQXNoaXNoIEthbHJhIDxhc2hpc2gua2FscmFA
-YW1kLmNvbT4KPj4+IFNpZ25lZC1vZmYtYnk6IEJyaWplc2ggU2luZ2ggPGJyaWplc2guc2luZ2hA
-YW1kLmNvbT4KPj4+IFttZHI6IGFkZCBSTVBVUERBVEUgcmV0cnkgbG9naWMgZm9yIHRyYW5zaWVu
-dCBGQUlMX09WRVJMQVAgZXJyb3JzXQo+Pj4gU2lnbmVkLW9mZi1ieTogTWljaGFlbCBSb3RoIDxt
-aWNoYWVsLnJvdGhAYW1kLmNvbT4KPj4+IC0tLQo+Pj4gwqAgYXJjaC94ODYvaW5jbHVkZS9hc20v
-c2V2LmggfCAyNCArKysrKysrKysrCj4+PiDCoCBhcmNoL3g4Ni9rZXJuZWwvc2V2LmPCoMKgwqDC
-oMKgIHwgOTUgCj4+PiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+Pj4g
-wqAgMiBmaWxlcyBjaGFuZ2VkLCAxMTkgaW5zZXJ0aW9ucygrKQo+Pj4KPj4+IGRpZmYgLS1naXQg
-YS9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9zZXYuaCBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3Nldi5o
-Cj4+PiBpbmRleCA4ZDNjZTJhZDI3ZGEuLjRlZWVkY2FjYTU5MyAxMDA2NDQKPj4+IC0tLSBhL2Fy
-Y2gveDg2L2luY2x1ZGUvYXNtL3Nldi5oCj4+PiArKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9z
-ZXYuaAo+Pj4gQEAgLTgwLDEwICs4MCwxNSBAQCBleHRlcm4gYm9vbCBoYW5kbGVfdmNfYm9vdF9n
-aGNiKHN0cnVjdCBwdF9yZWdzCj4+PiAqcmVncyk7Cj4+Pgo+Pj4gwqAgLyogU29mdHdhcmUgZGVm
-aW5lZCAod2hlbiByRmxhZ3MuQ0YgPSAxKSAqLwo+Pj4gwqAgI2RlZmluZSBQVkFMSURBVEVfRkFJ
-TF9OT1VQREFURcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAyNTUKPj4+ICsvKiBSTVVQ
-REFURSBkZXRlY3RlZCA0SyBwYWdlIGFuZCAyTUIgcGFnZSBvdmVybGFwLiAqLwo+Pj4gKyNkZWZp
-bmUgUk1QVVBEQVRFX0ZBSUxfT1ZFUkxBUMKgwqDCoMKgwqDCoMKgwqAgNwo+Pj4KPj4+IMKgIC8q
-IFJNUCBwYWdlIHNpemUgKi8KPj4+IMKgICNkZWZpbmUgUk1QX1BHX1NJWkVfNEvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAwCj4+PiArI2RlZmluZSBSTVBfUEdfU0laRV8yTcKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIDEKPj4+IMKgICNkZWZpbmUgUk1QX1RPX1g4Nl9Q
-R19MRVZFTChsZXZlbCnCoMKgwqDCoCAoKChsZXZlbCkgPT0gUk1QX1BHX1NJWkVfNEspCj4+PiA/
-IFBHX0xFVkVMXzRLIDogUEdfTEVWRUxfMk0pCj4+PiArI2RlZmluZSBYODZfVE9fUk1QX1BHX0xF
-VkVMKGxldmVsKcKgwqDCoMKgICgoKGxldmVsKSA9PSBQR19MRVZFTF80SykgPwo+Pj4gUk1QX1BH
-X1NJWkVfNEsgOiBSTVBfUEdfU0laRV8yTSkKPj4+ICsKPj4+IMKgICNkZWZpbmUgUk1QQURKVVNU
-X1ZNU0FfUEFHRV9CSVTCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgQklUKDE2KQo+Pj4K
-Pj4+IMKgIC8qIFNOUCBHdWVzdCBtZXNzYWdlIHJlcXVlc3QgKi8KPj4+IEBAIC0xMzMsNiArMTM4
-LDE1IEBAIHN0cnVjdCBzbnBfc2VjcmV0c19wYWdlX2xheW91dCB7Cj4+PiDCoMKgwqDCoMKgwqDC
-oMKgIHU4IHJzdmQzWzM4NDBdOwo+Pj4gwqAgfSBfX3BhY2tlZDsKPj4+Cj4+PiArc3RydWN0IHJt
-cF9zdGF0ZSB7Cj4+PiArwqDCoMKgwqDCoMKgIHU2NCBncGE7Cj4+PiArwqDCoMKgwqDCoMKgIHU4
-IGFzc2lnbmVkOwo+Pj4gK8KgwqDCoMKgwqDCoCB1OCBwYWdlc2l6ZTsKPj4+ICvCoMKgwqDCoMKg
-wqAgdTggaW1tdXRhYmxlOwo+Pj4gK8KgwqDCoMKgwqDCoCB1OCByc3ZkOwo+Pj4gK8KgwqDCoMKg
-wqDCoCB1MzIgYXNpZDsKPj4+ICt9IF9fcGFja2VkOwo+Pj4gKwo+Pj4gwqAgI2lmZGVmIENPTkZJ
-R19BTURfTUVNX0VOQ1JZUFQKPj4+IMKgIGV4dGVybiBzdHJ1Y3Qgc3RhdGljX2tleV9mYWxzZSBz
-ZXZfZXNfZW5hYmxlX2tleTsKPj4+IMKgIGV4dGVybiB2b2lkIF9fc2V2X2VzX2lzdF9lbnRlcihz
-dHJ1Y3QgcHRfcmVncyAqcmVncyk7Cj4+PiBAQCAtMTk4LDYgKzIxMiw5IEBAIGJvb2wgc25wX2lu
-aXQoc3RydWN0IGJvb3RfcGFyYW1zICpicCk7Cj4+PiDCoCB2b2lkIF9faW5pdCBfX25vcmV0dXJu
-IHNucF9hYm9ydCh2b2lkKTsKPj4+IMKgIGludCBzbnBfaXNzdWVfZ3Vlc3RfcmVxdWVzdCh1NjQg
-ZXhpdF9jb2RlLCBzdHJ1Y3Qgc25wX3JlcV9kYXRhCj4+PiAqaW5wdXQsIHVuc2lnbmVkIGxvbmcg
-KmZ3X2Vycik7Cj4+PiDCoCBpbnQgc25wX2xvb2t1cF9ybXBlbnRyeSh1NjQgcGZuLCBpbnQgKmxl
-dmVsKTsKPj4+ICtpbnQgcHNtYXNoKHU2NCBwZm4pOwo+Pj4gK2ludCBybXBfbWFrZV9wcml2YXRl
-KHU2NCBwZm4sIHU2NCBncGEsIGVudW0gcGdfbGV2ZWwgbGV2ZWwsIGludCBhc2lkLAo+Pj4gYm9v
-bCBpbW11dGFibGUpOwo+Pj4gK2ludCBybXBfbWFrZV9zaGFyZWQodTY0IHBmbiwgZW51bSBwZ19s
-ZXZlbCBsZXZlbCk7Cj4+PiDCoCAjZWxzZQo+Pj4gwqAgc3RhdGljIGlubGluZSB2b2lkIHNldl9l
-c19pc3RfZW50ZXIoc3RydWN0IHB0X3JlZ3MgKnJlZ3MpIHsgfQo+Pj4gwqAgc3RhdGljIGlubGlu
-ZSB2b2lkIHNldl9lc19pc3RfZXhpdCh2b2lkKSB7IH0KPj4+IEBAIC0yMjMsNiArMjQwLDEzIEBA
-IHN0YXRpYyBpbmxpbmUgaW50IHNucF9pc3N1ZV9ndWVzdF9yZXF1ZXN0KHU2NAo+Pj4gZXhpdF9j
-b2RlLCBzdHJ1Y3Qgc25wX3JlcV9kYXRhICppbgo+Pj4gwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4g
-LUVOT1RUWTsKPj4+IMKgIH0KPj4+IMKgIHN0YXRpYyBpbmxpbmUgaW50IHNucF9sb29rdXBfcm1w
-ZW50cnkodTY0IHBmbiwgaW50ICpsZXZlbCkgeyByZXR1cm4KPj4+IDA7IH0KPj4+ICtzdGF0aWMg
-aW5saW5lIGludCBwc21hc2godTY0IHBmbikgeyByZXR1cm4gLUVOWElPOyB9Cj4+PiArc3RhdGlj
-IGlubGluZSBpbnQgcm1wX21ha2VfcHJpdmF0ZSh1NjQgcGZuLCB1NjQgZ3BhLCBlbnVtIHBnX2xl
-dmVsCj4+PiBsZXZlbCwgaW50IGFzaWQsCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJvb2wgaW1tdXRhYmxlKQo+
-Pj4gK3sKPj4+ICvCoMKgwqDCoMKgwqAgcmV0dXJuIC1FTk9ERVY7Cj4+PiArfQo+Pj4gK3N0YXRp
-YyBpbmxpbmUgaW50IHJtcF9tYWtlX3NoYXJlZCh1NjQgcGZuLCBlbnVtIHBnX2xldmVsIGxldmVs
-KSB7Cj4+PiByZXR1cm4gLUVOT0RFVjsgfQo+Pj4gwqAgI2VuZGlmCj4+Pgo+Pj4gwqAgI2VuZGlm
-Cj4+PiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYva2VybmVsL3Nldi5jIGIvYXJjaC94ODYva2VybmVs
-L3Nldi5jCj4+PiBpbmRleCA3MDY2NzU1NjFmNDkuLjY3MDM1ZDM0YWRhZCAxMDA2NDQKPj4+IC0t
-LSBhL2FyY2gveDg2L2tlcm5lbC9zZXYuYwo+Pj4gKysrIGIvYXJjaC94ODYva2VybmVsL3Nldi5j
-Cj4+PiBAQCAtMjUyMywzICsyNTIzLDk4IEBAIGludCBzbnBfbG9va3VwX3JtcGVudHJ5KHU2NCBw
-Zm4sIGludCAqbGV2ZWwpCj4+PiDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAhIXJtcGVudHJ5X2Fz
-c2lnbmVkKGUpOwo+Pj4gwqAgfQo+Pj4gwqAgRVhQT1JUX1NZTUJPTF9HUEwoc25wX2xvb2t1cF9y
-bXBlbnRyeSk7Cj4+PiArCj4+PiArLyoKPj4+ICsgKiBwc21hc2ggaXMgdXNlZCB0byBzbWFzaCBh
-IDJNQiBhbGlnbmVkIHBhZ2UgaW50byA0Swo+Pj4gKyAqIHBhZ2VzIHdoaWxlIHByZXNlcnZpbmcg
-dGhlIFZhbGlkYXRlZCBiaXQgaW4gdGhlIFJNUC4KPj4+ICsgKi8KPj4+ICtpbnQgcHNtYXNoKHU2
-NCBwZm4pCj4+PiArewo+Pj4gK8KgwqDCoMKgwqDCoCB1bnNpZ25lZCBsb25nIHBhZGRyID0gcGZu
-IDw8IFBBR0VfU0hJRlQ7Cj4+PiArwqDCoMKgwqDCoMKgIGludCByZXQ7Cj4+PiArCj4+PiArwqDC
-oMKgwqDCoMKgIGlmICghcGZuX3ZhbGlkKHBmbikpCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCByZXR1cm4gLUVJTlZBTDsKPj4KPj4KPj4gV2UgKGFuZCBtYW55IG90aGVyIGNsb3Vk
-cykgdXNlIGEgbmVhdCB0cmljayB0byByZWR1Y2UgdGhlIG51bWJlciBvZgo+PiBzdHJ1Y3QgcGFn
-ZXMgTGludXggYWxsb2NhdGVzIGZvciBndWVzdCBtZW1vcnk6IEluIGl0cyBzaW1wbGVzdCBmb3Jt
-LCBhZGQKPj4gbWVtPSB0byB0aGUga2VybmVsIGNtZGxpbmUgYW5kIG1tYXAoKSAvZGV2L21lbSB0
-byBhY2Nlc3MgdGhlIHJlc2VydmVkCj4+IG1lbW9yeSBpbnN0ZWFkLgo+Pgo+PiBUaGlzIG1lYW5z
-IHRoYXQgdGhlIHN5c3RlbSBjb3ZlcnMgbW9yZSBSQU0gdGhhbiBMaW51eCBjb250YWlucywgd2hp
-Y2gKPj4gbWVhbnMgcGZuX3ZhbGlkKCkgaXMgbm8gbG9uZ2VyIGEgZ29vZCBpbmRpY2F0aW9uIHdo
-ZXRoZXIgYSBwYWdlIGlzCj4+IGluZGVlZCB2YWxpZC4gS1ZNIGhhbmRsZXMgdGhpcyBjYXNlIGZp
-bmUsIGJ1dCB0aGlzIGNvZGUgZG9lcyBub3QuCj4KPiBIbW0uLi5idXQgdGhlbiBpcyBhbHNvIHVz
-aW5nIG1heF9wZm4gcmVsaWFibGUgPwoKCkkgd291bGQgZXhwZWN0IGl0IHRvIG5vdCBiZSByZWxp
-YWJsZSBhcyBpdCBvbmx5IGxvb2tzIGF0IEU4MjBfVFlQRV9SQU0sIAp5ZXMuIERvIHlvdSByZWx5
-IG9uIG1heF9wZm4gYW55d2hlcmU/CgoKPgo+Pgo+PiBJcyB0aGVyZSBhbnkgcGFydGljdWxhciBy
-ZWFzb24gd2h5IHdlIG5lZWQgdGhpcyBjaGVjayAoYW5kIHNpbWlsYXIgb25lcwo+PiBiZWxvdyBh
-bmQgaW4gb3RoZXIgUk1QIHJlbGF0ZWQgcGF0Y2hlcykgaW4gdGhlIGZpcnN0IHBsYWNlLiBJIHdv
-dWxkID4gCj4+IGV4cGVjdCB0aGF0IFBTTUFTSCBhbmQgZnJpZW5kcyByZXR1cm4gZmFpbHVyZSBj
-b2RlcyBmb3IgaW52YWxpZCBwZm5zLgo+Pgo+Cj4gWWVzLCBQU01BU0ggZG9lcyBvdXQgb2YgYm91
-bmRzIGNoZWNrIG9uIHRoZSBpbnB1dCBTUEEgYW5kIGFkZGl0aW9uYWxseQo+IGNoZWNrcyBpZiBT
-UEEgaXMgMk0gYWxpZ25lZCwgc28gZ3Vlc3Mgd2UgY2FuIHJlbHkgb24gdXNpbmcgUFNNQVNICj4g
-ZmFpbGluZyBvbiBpbnZhbGlkIHBmbnMuCgoKUGVyZmVjdCwgcGxlYXNlIHJlbW92ZSBhbGwgdGhl
-IHN1cGVyZmx1b3VzIGNoZWNrcyB0aGVuLiBJZiB5b3Ugd2FudCB0byAKbWFrZSBvdXIgbGlmZSBl
-YXN5LCBJJ2QgcmVjb21tZW5kIHlvdSB0cnkgdG8gdHJ5IHRoZSBwYXRjaCBzZXQgd2l0aCBtZW09
-IApwYXNzZWQgb24gdGhlIGhvc3QgYW5kIHRlbGwgUUVNVSB0byBtbWFwKCkgL2Rldi9tZW0gZm9y
-IGd1ZXN0IFJBTS4gVGhhdCAKd2F5IHlvdSBzaG91bGQgYmUgYWJsZSB0byBmaW5kIGFueSBvdGhl
-ciBwaXRmYWxscyA6KQoKCkFsZXgKCgoKCgpBbWF6b24gRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1h
-bnkgR21iSApLcmF1c2Vuc3RyLiAzOAoxMDExNyBCZXJsaW4KR2VzY2hhZWZ0c2Z1ZWhydW5nOiBD
-aHJpc3RpYW4gU2NobGFlZ2VyLCBKb25hdGhhbiBXZWlzcwpFaW5nZXRyYWdlbiBhbSBBbXRzZ2Vy
-aWNodCBDaGFybG90dGVuYnVyZyB1bnRlciBIUkIgMTQ5MTczIEIKU2l0ejogQmVybGluClVzdC1J
-RDogREUgMjg5IDIzNyA4NzkKCgo=
+
+On 2023-02-01 at 11:02 -05, "Michael S. Tsirkin" <mst@redhat.com> wrote...
+> On Wed, Feb 01, 2023 at 02:15:10PM +0100, Christophe de Dinechin Dupont d=
+e Dinechin wrote:
+>>
+>>
+>> > On 1 Feb 2023, at 12:01, Michael S. Tsirkin <mst@redhat.com> wrote:
+>> >
+>> > On Wed, Feb 01, 2023 at 11:52:27AM +0100, Christophe de Dinechin Dupon=
+t de Dinechin wrote:
+>> >>
+>> >>
+>> >>> On 31 Jan 2023, at 18:39, Michael S. Tsirkin <mst@redhat.com> wrote:
+>> >>>
+>> >>> On Tue, Jan 31, 2023 at 04:14:29PM +0100, Christophe de Dinechin wro=
+te:
+>> >>>> Finally, security considerations that apply irrespective of whether=
+ the
+>> >>>> platform is confidential or not are also outside of the scope of th=
+is
+>> >>>> document. This includes topics ranging from timing attacks to social
+>> >>>> engineering.
+>> >>>
+>> >>> Why are timing attacks by hypervisor on the guest out of scope?
+>> >>
+>> >> Good point.
+>> >>
+>> >> I was thinking that mitigation against timing attacks is the same
+>> >> irrespective of the source of the attack. However, because the HV
+>> >> controls CPU time allocation, there are presumably attacks that
+>> >> are made much easier through the HV. Those should be listed.
+>> >
+>> > Not just that, also because it can and does emulate some devices.
+>> > For example, are disk encryption systems protected against timing of
+>> > disk accesses?
+>> > This is why some people keep saying "forget about emulated devices, re=
+quire
+>> > passthrough, include devices in the trust zone".
+>> >
+>> >>>
+>> >>>> </doc>
+>> >>>>
+>> >>>> Feel free to comment and reword at will ;-)
+>> >>>>
+>> >>>>
+>> >>>> 3/ PCI-as-a-threat: where does that come from
+>> >>>>
+>> >>>> Isn't there a fundamental difference, from a threat model perspecti=
+ve,
+>> >>>> between a bad actor, say a rogue sysadmin dumping the guest memory =
+(which CC
+>> >>>> should defeat) and compromised software feeding us bad data? I thin=
+k there
+>> >>>> is: at leats inside the TCB, we can detect bad software using measu=
+rements,
+>> >>>> and prevent it from running using attestation.  In other words, we =
+first
+>> >>>> check what we will run, then we run it. The security there is that =
+we know
+>> >>>> what we are running. The trust we have in the software is from test=
+ing,
+>> >>>> reviewing or using it.
+>> >>>>
+>> >>>> This relies on a key aspect provided by TDX and SEV, which is that =
+the
+>> >>>> software being measured is largely tamper-resistant thanks to memory
+>> >>>> encryption. In other words, after you have measured your guest soft=
+ware
+>> >>>> stack, the host or hypervisor cannot willy-nilly change it.
+>> >>>>
+>> >>>> So this brings me to the next question: is there any way we could o=
+ffer the
+>> >>>> same kind of service for KVM and qemu? The measurement part seems r=
+elatively
+>> >>>> easy. Thetamper-resistant part, on the other hand, seems quite diff=
+icult to
+>> >>>> me. But maybe someone else will have a brilliant idea?
+>> >>>>
+>> >>>> So I'm asking the question, because if you could somehow prove to t=
+he guest
+>> >>>> not only that it's running the right guest stack (as we can do toda=
+y) but
+>> >>>> also a known host/KVM/hypervisor stack, we would also switch the po=
+tential
+>> >>>> issues with PCI, MSRs and the like from "malicious" to merely "bogu=
+s", and
+>> >>>> this is something which is evidently easier to deal with.
+>> >>>
+>> >>> Agree absolutely that's much easier.
+>> >>>
+>> >>>> I briefly discussed this with James, and he pointed out two interes=
+ting
+>> >>>> aspects of that question:
+>> >>>>
+>> >>>> 1/ In the CC world, we don't really care about *virtual* PCI device=
+s. We
+>> >>>>  care about either virtio devices, or physical ones being passed th=
+rough
+>> >>>>  to the guest. Let's assume physical ones can be trusted, see above.
+>> >>>>  That leaves virtio devices. How much damage can a malicious virtio=
+ device
+>> >>>>  do to the guest kernel, and can this lead to secrets being leaked?
+>> >>>>
+>> >>>> 2/ He was not as negative as I anticipated on the possibility of so=
+mehow
+>> >>>>  being able to prevent tampering of the guest. One example he menti=
+oned is
+>> >>>>  a research paper [1] about running the hypervisor itself inside an
+>> >>>>  "outer" TCB, using VMPLs on AMD. Maybe something similar can be ac=
+hieved
+>> >>>>  with TDX using secure enclaves or some other mechanism?
+>> >>>
+>> >>> Or even just secureboot based root of trust?
+>> >>
+>> >> You mean host secureboot? Or guest?
+>> >>
+>> >> If it=E2=80=99s host, then the problem is detecting malicious tamperi=
+ng with
+>> >> host code (whether it=E2=80=99s kernel or hypervisor).
+>> >
+>> > Host.  Lots of existing systems do this.  As an extreme boot a RO disk,
+>> > limit which packages are allowed.
+>>
+>> Is that provable to the guest?
+>>
+>> Consider a cloud provider doing that: how do they prove to their guest:
+>>
+>> a) What firmware, kernel and kvm they run
+>>
+>> b) That what they booted cannot be maliciouly modified, e.g. by a rogue
+>>    device driver installed by a rogue sysadmin
+>>
+>> My understanding is that SecureBoot is only intended to prevent non-veri=
+fied
+>> operating systems from booting. So the proof is given to the cloud provi=
+der,
+>> and the proof is that the system boots successfully.
+>
+> I think I should have said measured boot not secure boot.
+
+The problem again is how you prove to the guest that you are not lying?
+
+We know how to do that from a guest [1], but you will note that in the
+normal process, a trusted hardware component (e.g. the PSP for AMD SEV)
+proves the validity of the measurements of the TCB by encrypting it with an
+attestation signing key derived from some chip-unique secret. For AMD, this
+is called the VCEK, and TDX has something similar. In the case of SEV, this
+goes through firmware, and you have to tell the firmware each time you
+insert data in the original TCB (using SNP_LAUNCH_UPDATE). This is all tied
+to a VM execution context. I do not believe there is any provision to do the
+same thing to measure host data. And again, it would be somewhat pointless
+if there isn't also a mechanism to ensure the host data is not changed after
+the measurement.
+
+Now, I don't think it would be super-difficult to add a firmware service
+that would let the host do some kind of equivalent to PVALIDATE, setting
+some physical pages aside that then get measured and become inaccessible to
+the host. The PSP or similar could then integrate these measurements as part
+of the TCB, and the fact that the pages were "transferred" to this special
+invariant block would ensure the guests that the code will not change after
+being measured.
+
+I am not aware that such a mechanism exists on any of the existing CC
+platforms. Please feel free to enlighten me if I'm wrong.
+
+[1] https://www.redhat.com/en/blog/understanding-confidential-containers-at=
+testation-flow
+>
+>>
+>> After that, I think all bets are off. SecureBoot does little AFAICT
+>> to prevent malicious modifications of the running system by someone with
+>> root access, including deliberately loading a malicious kvm-zilog.ko
+>
+> So disable module loading then or don't allow root access?
+
+Who would do that?
+
+The problem is that we have a host and a tenant, and the tenant does not
+trust the host in principle. So it is not sufficient for the host to disable
+module loading or carefully control root access. It is also necessary to
+prove to the tenant(s) that this was done.
+
+>
+>>
+>> It does not mean it cannot be done, just that I don=E2=80=99t think we
+>> have the tools at the moment.
+>
+> Phones, chromebooks do this all the time ...
+
+Indeed, but there, this is to prove to the phone's real owner (which,
+surprise, is not the naive person who thought they'd get some kind of
+ownership by buying the phone) that the software running on the phone has
+not been replaced by some horribly jailbreaked goo.
+
+In other words, the user of the phone gets no proof whatsoever of anything,
+except that the phone appears to work. This is somewhat the situation in the
+cloud today: the owners of the hardware get all sorts of useful checks, from
+SecureBoot to error-correction for memory or I/O devices. However, someone
+running in a VM on the cloud gets none of that, just like the user of your
+phone.
+
+--
+Cheers,
+Christophe de Dinechin (https://c3d.github.io)
+Theory of Incomplete Measurements (https://c3d.github.io/TIM)
 
