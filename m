@@ -1,289 +1,190 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2075.outbound.protection.outlook.com [40.107.237.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6FF53BB
-	for <linux-coco@lists.linux.dev>; Mon,  6 Feb 2023 18:58:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675709931;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m16OitzwO71nkhwycKeW6iMhsPFeKDcAk5Zf0tX9cZY=;
-	b=AlHG5bV8Qp5UFANRT9UJ7PVCObFe0VPnTYOLsyb/iSiWiUG58ah085PEH4Fv/h4ztKMZ0C
-	BD7AgT100MFn0jUGVUiw3nOUWvWCr7W+KbV9pSyUVD2PnTA5RIbjrbPjpJ0MudG/7r1ed+
-	uR9kBcOWopnX0DZI/1M1q8S8kTtalIc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-297-2N3APtZFMpagDPT2LxwlFA-1; Mon, 06 Feb 2023 13:58:48 -0500
-X-MC-Unique: 2N3APtZFMpagDPT2LxwlFA-1
-Received: by mail-wm1-f69.google.com with SMTP id j37-20020a05600c1c2500b003deaf780ab6so6983345wms.4
-        for <linux-coco@lists.linux.dev>; Mon, 06 Feb 2023 10:58:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=m16OitzwO71nkhwycKeW6iMhsPFeKDcAk5Zf0tX9cZY=;
-        b=E+c7F6JSeFqKuGGmPBp9mo/zuanCOw1glS/xou8pOvVYWzgMpO0KRnd8sRGCQ2sISr
-         bcgwh0B8FD7cFj3KGGrZ6CZDFdzIkI2/3J95SyHeLwQaPQVutXSXYAZ5MBWpbriOikN4
-         Qagg4auHqRZVRqVniJKQeHW4ZgEzZHdLT7IG3NKe5Me9z+Zxk7k8y11ooTw8nR0s5Kot
-         4KFqnfrcbKHkUlG9c/y1z99939JDpgyjpPjQjr4g31jP+jxgRnQ8IrF0gFzBzlVXqsn3
-         7y1IarrkBjdLlcEXFDfu7Hsvbk4dP1gVVWZiUdkpccQKE+1KlE29cBmJMBbKTlurjx0w
-         FBhw==
-X-Gm-Message-State: AO0yUKXkpB15+P+RnwFewsFCVWLTDo2CTZrPcdtWG6vz3eJbhTfhBu/Q
-	sGe7Kv3lDH/SbUWqjDkP7TAuHfauqXYRRWGcv4kmfebjAa6Axzo7Zrfd8VaCkrpPrQToQOM08ol
-	d1CoEQOS5OfJWgUqLLXQqgg==
-X-Received: by 2002:a05:6000:69b:b0:2bf:dcdc:afb8 with SMTP id bo27-20020a056000069b00b002bfdcdcafb8mr20030052wrb.64.1675709927237;
-        Mon, 06 Feb 2023 10:58:47 -0800 (PST)
-X-Google-Smtp-Source: AK7set8UHg3rrYoack96/+Aen7rLx+dOSRGVf2dLJL6sX4SVrvCzEJO1dTlVfmXxYWw3BHd7tf86MA==
-X-Received: by 2002:a05:6000:69b:b0:2bf:dcdc:afb8 with SMTP id bo27-20020a056000069b00b002bfdcdcafb8mr20030031wrb.64.1675709926964;
-        Mon, 06 Feb 2023 10:58:46 -0800 (PST)
-Received: from work-vm (ward-16-b2-v4wan-166627-cust863.vm18.cable.virginm.net. [81.97.203.96])
-        by smtp.gmail.com with ESMTPSA id s16-20020adff810000000b002c3dc4131f5sm7212697wrp.18.2023.02.06.10.58.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Feb 2023 10:58:46 -0800 (PST)
-Date: Mon, 6 Feb 2023 18:58:44 +0000
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Christophe de Dinechin <dinechin@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
-	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Kleen, Andi" <andi.kleen@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Wunner, Lukas" <lukas.wunner@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Poimboe, Josh" <jpoimboe@redhat.com>,
-	"aarcange@redhat.com" <aarcange@redhat.com>,
-	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-	"jbachmann@google.com" <jbachmann@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	"Lange, Jon" <jlange@microsoft.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Kernel Hardening <kernel-hardening@lists.openwall.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2301182
+	for <linux-coco@lists.linux.dev>; Tue,  7 Feb 2023 00:28:05 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jfIpFNJsog8O09S/mxHHNt2hw13f+Ie03Be9ppoyHUd3eIybae9YyRnt2lsaeqw/hxWCvNkTF45LQaBz+xmpCaOD4rSghmOozQySr6hfLeYtgrd2vjkKd1yhE8e+SrAwa7dVu4F0bsn5q07RGOjrOLRahGTuQMtt6EcQ4rscqW+bFnlmHXGY5PTxdA7jfJnGhvdFK+k0EqJ9ncyMuySmhf7hwng9LOyfcWYqZWT9gMIFPyyKFyKwhlpR2X4deUqTHO9g0Ssa1z1N1EWpuquxCJx4jf+JMM1ImQJW3XlVXv5ZbZ+iGuHwag3Svu75dhHe73yMhqvZC+fkKYKKnt6LTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IUPVKCKm5UJ+rbpH4NBwnPRiw1zhOWwbAR/KfLzHeuE=;
+ b=X7CGvMjmRzUDHyyUsMDih3XgZllfUBPc7pyyOnh7zv/Rp8aWWBja03W21ATIuSld9y2Bocum9qCFH4GSlMOcG4QiJ8Y4TAHp1pICXtWOvEDu6wacHmBY5EtkVHjF5RySdLYoMtsZgEoBVAJor7h8dM3SgdKLf6Rt3GBb6MQ/zdAzyFM2ardUg8MIrVOGIquc1gbXBEthcyj1rNPiZEYu1/3mp81n2l6llhJ9EYCgznYzrvwJS8aMsqOef4JXdI+nhSdSveu+JWlVuPy/GylI+HZcgSgxpk6RwFdGRU6nko2iH8ibANJmmyNXF/3zAO4Si06orofewbknXZjaekoilA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IUPVKCKm5UJ+rbpH4NBwnPRiw1zhOWwbAR/KfLzHeuE=;
+ b=vq3LRUuZNPY0ysUhe6FWtKw5xBeEEdB+Y9eJ9TRuQ6q85s/lPGPDwJ7fg7fs2RZIUz/kAzYtWpUVHa2bA46VhPl4Y+4ipwnVyKEGvzsRnpV88f2eqgB4LwVqiKjNH+TA41jA0GYaPZqnQxB9KmcEbClGvN6NFql5TCx+0OYhS2o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com (2603:10b6:208:396::17)
+ by DM6PR12MB4530.namprd12.prod.outlook.com (2603:10b6:5:2aa::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.34; Tue, 7 Feb
+ 2023 00:28:03 +0000
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::f29:b74e:c400:b24]) by BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::f29:b74e:c400:b24%5]) with mapi id 15.20.6064.032; Tue, 7 Feb 2023
+ 00:28:03 +0000
+Message-ID: <658272b5-9547-a69f-b6c9-a7ff2dd2d468@amd.com>
+Date: Mon, 6 Feb 2023 18:27:48 -0600
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.6.1
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y+FN5B9VIKNFijCO@work-vm>
-References: <220b0be95a8c733f0a6eeddc08e37977ee21d518.camel@linux.ibm.com>
- <DM8PR11MB575074D3BCBD02F3DD677A57E7D09@DM8PR11MB5750.namprd11.prod.outlook.com>
- <261bc99edc43990eecb1aac4fe8005cedc495c20.camel@linux.ibm.com>
- <m2h6w6k5on.fsf@redhat.com>
- <20230131123033-mutt-send-email-mst@kernel.org>
- <6BCC3285-ACA3-4E38-8811-1A91C9F03852@redhat.com>
- <20230201055412-mutt-send-email-mst@kernel.org>
- <4B78D161-2712-434A-8E6F-9D8BA468BB3A@redhat.com>
- <20230201105305-mutt-send-email-mst@kernel.org>
- <m2zg9xi8gr.fsf@redhat.com>
+Content-Language: en-US
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Shishkin, Alexander" <alexander.shishkin@intel.com>,
+ "Shutemov, Kirill" <kirill.shutemov@intel.com>,
+ "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
+ "Kleen, Andi" <andi.kleen@intel.com>, "Hansen, Dave"
+ <dave.hansen@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Peter Zijlstra <peterz@infradead.org>, "Wunner, Lukas"
+ <lukas.wunner@intel.com>, Mika Westerberg <mika.westerberg@linux.intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Poimboe, Josh" <jpoimboe@redhat.com>,
+ "aarcange@redhat.com" <aarcange@redhat.com>, Cfir Cohen <cfir@google.com>,
+ Marc Orr <marcorr@google.com>, "jbachmann@google.com"
+ <jbachmann@google.com>, "pgonda@google.com" <pgonda@google.com>,
+ "keescook@chromium.org" <keescook@chromium.org>,
+ James Morris <jmorris@namei.org>, Michael Kelley <mikelley@microsoft.com>,
+ "Lange, Jon" <jlange@microsoft.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+From: Carlos Bilbao <carlos.bilbao@amd.com>
+In-Reply-To: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DS7PR03CA0152.namprd03.prod.outlook.com
+ (2603:10b6:5:3b2::7) To BL1PR12MB5874.namprd12.prod.outlook.com
+ (2603:10b6:208:396::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <m2zg9xi8gr.fsf@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5874:EE_|DM6PR12MB4530:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2611edf-d270-4ce3-73e8-08db08a22c6a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Q8fS1TgV4G7jwVapJOL26DUkRgbTsg5e/feKr8Vy/g3mK7AgGzMLnA94E+WnKG9ftBKYNvrJ+P0uh/Y508U6a1a9H+yjQegDaoIAqT//I+KGT6/T+yPKKpK58I7etBNcLIQAy3lj5kbiay1DJYGGgmQ3jHmPCgD8GBeAbaTgZ1NnV8XsgMNDmprBgUScbRIpo7mmIu1svaR2hop4Aw/4IL1CHmHLhWS3xxrwFYv4WndaFtiRCTviIAdXZVB7rW/7nXev5s8//DPCKkkng9RRJSYLrLo4EuBkFTGboCr5xZwCxS9C8Ny2Aa0wbLFu0B/UMoCPKmzGdQDrzNjU1JsTUHqbWfHpCo0VQqkR8eWIFg5KPH5yKT36BuM4KFsWPJdfdIyIb6RBysvzypwH9JIzbyQbcezFMPCUvt/xFrONye85/UjAPnCq8kpAHpY1nXHyuLBAMFEbfmhs9iuk+gW+6B8gMu0PM2jO+xnwwDVPKFYVEXRVJD/1jAOUFHhou/ThPuxqfCfxYzaMAm3XA5ppynPlchhmiYVhkPZzISFoOrKUBdD0PvEHi+YH8hGuBbDh1YnnfNJk65G5dNavxTRtZ4KuN1je9vDw6r66OYLPxbn+HA2EhYFFtsnwGxB2NyMwjIQ9F71sGnIpEgDz1qHSvIzAUy/Yn2JdacGq0N9uku+gebEObfaa5rA90uJo182EsqzQGdjGsxzvdXBbiBkgRO/wetE8IhWBEalKHvf6kTHMCUQxSKbd8gkAjNjaj1CFfb+5QxYolxBQ9x4iMLv3Z7GeIdyNjDYz0Xkw7ypZ+O0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5874.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(136003)(376002)(366004)(346002)(396003)(451199018)(36756003)(38100700002)(966005)(186003)(4326008)(66556008)(66946007)(8676002)(66476007)(316002)(110136005)(54906003)(6512007)(6666004)(53546011)(6486002)(6506007)(44832011)(5660300002)(86362001)(7416002)(83380400001)(2616005)(41300700001)(8936002)(478600001)(31696002)(31686004)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SnF3dityNWJVNUJOaEFnZ2VkNDdPeG9VVGVEZG9VK1JVKzNEbThiK2ZYZXFW?=
+ =?utf-8?B?ODNaM3RRekhVbGgwQjJMeWszUzZWdkNKNnpuQmpDZTF3WUNQS1Radm5WZFM4?=
+ =?utf-8?B?R0N1NmdQdXRhejZkUnBvQVV4RTNvdWhhVGpjblV3TWJFVjBtWk9lNnlGVGZT?=
+ =?utf-8?B?cG9neDR5ZVRuTldzUUpGb1B4V2VZWkVuMjQ3V2syNlZNOHc5ZnRSYlVxOHFl?=
+ =?utf-8?B?ZFpDdHBTeXRoN05BeVVtdnIrUklWZW9wK29nVUVuZ2FKNUQ1YUZIckhCY25q?=
+ =?utf-8?B?Wm91dS9wRWY1T3dNa0VkUUZIb0pIVFB4Z2RYOVlwZUNzS0dxNjNUMWJwbkxQ?=
+ =?utf-8?B?aExZQmFNMGhhSjZsTVhXUjdrT3hpZkVZT09LNDRkVXUxVVhKWGtFeTVQR2dv?=
+ =?utf-8?B?U2k1Zy9DZ1lrdUd4RW0xaVpzZllwN3g4VVppR1BLcUVmYkM5WC9vR09saHl4?=
+ =?utf-8?B?WHkxbjg3QnhtTlpQSFJzRlBxNTRsa1M5a2pDZGlzSHRub1p1bWtlNktoWVhp?=
+ =?utf-8?B?bXZoMkZGYkxOaHhOSk1lejdIQ2dyTnJ5TGpsTnY4TnpOTmFIbWVHV2d5WlJZ?=
+ =?utf-8?B?K1dRWEs2RnJseHlxOHYrZVhaU0t5Zi9jNllhdTBvRWtSSGN2Vm9VUDJqR1F5?=
+ =?utf-8?B?cW1tTzJScXUrKzB2ZFQ5c0twdmV6aytHVVduLzk2VGpxRHdGT1FheDk0MmNB?=
+ =?utf-8?B?WitnVWIvTlhndnJKZWVCQzFSNXc5Um5EYmRNU0hjcUg3elp2cmVreFVVemdE?=
+ =?utf-8?B?TGo4SmtVV1JRQzV3U1RjdFRyRllSZ25kcDFlT1RUaWs2YVVISExWZ1ZyVExs?=
+ =?utf-8?B?bExEN09oTEthbUZTS2Y4Sy96NStjaGpCUWJEb2ZCSS9VZVU4T2VmcDlPRlBD?=
+ =?utf-8?B?b2I4SXJ1L0FRTDVhWjNGaEJCZUc1R0syWFM2bC9BMkxRMTdsaXNlNDRyMnQz?=
+ =?utf-8?B?dkFZQzR2dDREN3RhNGJvTHczaFM1TFFQVVl2dFdaakRyczNuRkZ1V0lLeFht?=
+ =?utf-8?B?TERUNVF6eTRON29TQW8vQTZJS0l3OWtlbUNMdnlKTXpvaUVyTTNNVnFMZHpp?=
+ =?utf-8?B?R1U1U0h1ZmtWQ2NqeHhNNVZkYjBhODByRnRsRmtCcDVVaU5aWFVjN1pmTnpV?=
+ =?utf-8?B?U085bkZMNFBRVWFOanpxdXVoRjRFOWg4SFo3djRQNmtweWorKzlmWEdzVlgw?=
+ =?utf-8?B?Ti9sS0U2S0lkZWhyd0oyNnRvZGNjcVBUZVlQM2hHUnJqY3k5a0lYWGt6dGhy?=
+ =?utf-8?B?WXE4VnlWWnhZQm9aWG00Mnh6Q1hYajRqTlV3bVQ5N1lSMXo5N2Y1Y1hGRDJQ?=
+ =?utf-8?B?QU5wUEhuOU9UMHJpbFI0WHdod1lnMEp6Z2MvN0VWNm45WXBMOWFXQWlLWTNr?=
+ =?utf-8?B?ZHRWK0VmQUxyemhicGlocXVkanZCS2tFc1FGK0kzUnBjYUMrMFpqL05zVGRK?=
+ =?utf-8?B?MVFXc3ZKUUNWUXFMZzNWVGZPNmdFRzBqWFgxSXBCZUhmdUQwaEhrdjdpUjVo?=
+ =?utf-8?B?NzZMQ2F5QlZ2eGYrRk9DamNSNW43MW9IKzkwWTJVd0tvK0xvMXR5UG5hc3Uw?=
+ =?utf-8?B?VnVRcGovVmpTWU0vVmxxTGtSbzJLZkF6azJkVlpCaWZKb3hHOXM3RmEzcW5S?=
+ =?utf-8?B?OVdqbmU4L2Q0TjdkOWcyWVk4bDdQQk1YOXNidnJIbVpUaWlyNzVhVnBnVGtR?=
+ =?utf-8?B?N2UwcjZIN3p5L2dLY2hJS29qQU5vcXVmWmx3NlV2M0pTMy9DMGRnVzkrYWxi?=
+ =?utf-8?B?UjZPYVVGcG5CeTQzSEFTSEtva1hVVjZQSDYwM2d6eTk3ZnNBSnFWaEs5WDVS?=
+ =?utf-8?B?enVoa0ZVWkNRTjcyQy9DZ3hnQmhPRW5IbW1TaHNld1NLNnNQempxZkpoNGpJ?=
+ =?utf-8?B?SzM4a0ZOOS9ONk4ydkd1UHZpUm4wN3NGaW5lTFlSVXQ1SEV1TnNXMHZ1NjQ0?=
+ =?utf-8?B?Q2FRaTFOdXVuU2tWVCtjNzVMcHpQZ05vWFJ6aURjWU1lSlFzN2xvLytkdXdQ?=
+ =?utf-8?B?dDFwcCtkU2pmQTVxaVdIdGc0M24zNExNYUt4OU5IZGQxdzU0emF3VG13eTRm?=
+ =?utf-8?B?N1M3V3QwZEFYbExnYmgvRFNnM1RIVnlEdnhiVTRCMTR4S3NrRW1zWUE0Vk5F?=
+ =?utf-8?B?ZWs4M2gxa0FPUCtOVE9yTmFCS2pWNkdrcVBDblhWSjNoMCtTa1F3aXV5dDdE?=
+ =?utf-8?Q?L/xAaXvi5zqI8z4n6jI0dFgMBOws83GzHcJp1Qar2lUI?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2611edf-d270-4ce3-73e8-08db08a22c6a
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5874.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2023 00:28:02.9079
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2VcrjTUOIl9bIl4lfFHff6Lf6F5YGqPbgmydWdAfmCCALbaLXPKquqk7colRDy/0fR9Zwll31j7vZm8Ys+urRQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4530
 
-* Christophe de Dinechin (dinechin@redhat.com) wrote:
+On 1/25/23 6:28 AM, Reshetova, Elena wrote:
+> Hi Greg, 
 > 
-> On 2023-02-01 at 11:02 -05, "Michael S. Tsirkin" <mst@redhat.com> wrote...
-> > On Wed, Feb 01, 2023 at 02:15:10PM +0100, Christophe de Dinechin Dupont de Dinechin wrote:
-> >>
-> >>
-> >> > On 1 Feb 2023, at 12:01, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >> >
-> >> > On Wed, Feb 01, 2023 at 11:52:27AM +0100, Christophe de Dinechin Dupont de Dinechin wrote:
-> >> >>
-> >> >>
-> >> >>> On 31 Jan 2023, at 18:39, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >> >>>
-> >> >>> On Tue, Jan 31, 2023 at 04:14:29PM +0100, Christophe de Dinechin wrote:
-> >> >>>> Finally, security considerations that apply irrespective of whether the
-> >> >>>> platform is confidential or not are also outside of the scope of this
-> >> >>>> document. This includes topics ranging from timing attacks to social
-> >> >>>> engineering.
-> >> >>>
-> >> >>> Why are timing attacks by hypervisor on the guest out of scope?
-> >> >>
-> >> >> Good point.
-> >> >>
-> >> >> I was thinking that mitigation against timing attacks is the same
-> >> >> irrespective of the source of the attack. However, because the HV
-> >> >> controls CPU time allocation, there are presumably attacks that
-> >> >> are made much easier through the HV. Those should be listed.
-> >> >
-> >> > Not just that, also because it can and does emulate some devices.
-> >> > For example, are disk encryption systems protected against timing of
-> >> > disk accesses?
-> >> > This is why some people keep saying "forget about emulated devices, require
-> >> > passthrough, include devices in the trust zone".
-> >> >
-> >> >>>
-> >> >>>> </doc>
-> >> >>>>
-> >> >>>> Feel free to comment and reword at will ;-)
-> >> >>>>
-> >> >>>>
-> >> >>>> 3/ PCI-as-a-threat: where does that come from
-> >> >>>>
-> >> >>>> Isn't there a fundamental difference, from a threat model perspective,
-> >> >>>> between a bad actor, say a rogue sysadmin dumping the guest memory (which CC
-> >> >>>> should defeat) and compromised software feeding us bad data? I think there
-> >> >>>> is: at leats inside the TCB, we can detect bad software using measurements,
-> >> >>>> and prevent it from running using attestation.  In other words, we first
-> >> >>>> check what we will run, then we run it. The security there is that we know
-> >> >>>> what we are running. The trust we have in the software is from testing,
-> >> >>>> reviewing or using it.
-> >> >>>>
-> >> >>>> This relies on a key aspect provided by TDX and SEV, which is that the
-> >> >>>> software being measured is largely tamper-resistant thanks to memory
-> >> >>>> encryption. In other words, after you have measured your guest software
-> >> >>>> stack, the host or hypervisor cannot willy-nilly change it.
-> >> >>>>
-> >> >>>> So this brings me to the next question: is there any way we could offer the
-> >> >>>> same kind of service for KVM and qemu? The measurement part seems relatively
-> >> >>>> easy. Thetamper-resistant part, on the other hand, seems quite difficult to
-> >> >>>> me. But maybe someone else will have a brilliant idea?
-> >> >>>>
-> >> >>>> So I'm asking the question, because if you could somehow prove to the guest
-> >> >>>> not only that it's running the right guest stack (as we can do today) but
-> >> >>>> also a known host/KVM/hypervisor stack, we would also switch the potential
-> >> >>>> issues with PCI, MSRs and the like from "malicious" to merely "bogus", and
-> >> >>>> this is something which is evidently easier to deal with.
-> >> >>>
-> >> >>> Agree absolutely that's much easier.
-> >> >>>
-> >> >>>> I briefly discussed this with James, and he pointed out two interesting
-> >> >>>> aspects of that question:
-> >> >>>>
-> >> >>>> 1/ In the CC world, we don't really care about *virtual* PCI devices. We
-> >> >>>>  care about either virtio devices, or physical ones being passed through
-> >> >>>>  to the guest. Let's assume physical ones can be trusted, see above.
-> >> >>>>  That leaves virtio devices. How much damage can a malicious virtio device
-> >> >>>>  do to the guest kernel, and can this lead to secrets being leaked?
-> >> >>>>
-> >> >>>> 2/ He was not as negative as I anticipated on the possibility of somehow
-> >> >>>>  being able to prevent tampering of the guest. One example he mentioned is
-> >> >>>>  a research paper [1] about running the hypervisor itself inside an
-> >> >>>>  "outer" TCB, using VMPLs on AMD. Maybe something similar can be achieved
-> >> >>>>  with TDX using secure enclaves or some other mechanism?
-> >> >>>
-> >> >>> Or even just secureboot based root of trust?
-> >> >>
-> >> >> You mean host secureboot? Or guest?
-> >> >>
-> >> >> If it’s host, then the problem is detecting malicious tampering with
-> >> >> host code (whether it’s kernel or hypervisor).
-> >> >
-> >> > Host.  Lots of existing systems do this.  As an extreme boot a RO disk,
-> >> > limit which packages are allowed.
-> >>
-> >> Is that provable to the guest?
-> >>
-> >> Consider a cloud provider doing that: how do they prove to their guest:
-> >>
-> >> a) What firmware, kernel and kvm they run
-> >>
-> >> b) That what they booted cannot be maliciouly modified, e.g. by a rogue
-> >>    device driver installed by a rogue sysadmin
-> >>
-> >> My understanding is that SecureBoot is only intended to prevent non-verified
-> >> operating systems from booting. So the proof is given to the cloud provider,
-> >> and the proof is that the system boots successfully.
-> >
-> > I think I should have said measured boot not secure boot.
+> You mentioned couple of times (last time in this recent thread:
+> https://lore.kernel.org/all/Y80WtujnO7kfduAZ@kroah.com/) that we ought to start
+> discussing the updated threat model for kernel, so this email is a start in this direction. 
 > 
-> The problem again is how you prove to the guest that you are not lying?
+> (Note: I tried to include relevant people from different companies, as well as linux-coco
+> mailing list, but I hope everyone can help by including additional people as needed).
 > 
-> We know how to do that from a guest [1], but you will note that in the
-> normal process, a trusted hardware component (e.g. the PSP for AMD SEV)
-> proves the validity of the measurements of the TCB by encrypting it with an
-> attestation signing key derived from some chip-unique secret. For AMD, this
-> is called the VCEK, and TDX has something similar. In the case of SEV, this
-> goes through firmware, and you have to tell the firmware each time you
-> insert data in the original TCB (using SNP_LAUNCH_UPDATE). This is all tied
-> to a VM execution context. I do not believe there is any provision to do the
-> same thing to measure host data. And again, it would be somewhat pointless
-> if there isn't also a mechanism to ensure the host data is not changed after
-> the measurement.
+> As we have shared before in various lkml threads/conference presentations
+> ([1], [2], [3] and many others), for the Confidential Computing guest kernel, we have a 
+> change in the threat model where guest kernel doesn’t anymore trust the hypervisor. 
+> This is a big change in the threat model and requires both careful assessment of the 
+> new (hypervisor <-> guest kernel) attack surface, as well as careful design of mitigations
+> and security validation techniques. This is the activity that we have started back at Intel
+> and the current status can be found in
 > 
-> Now, I don't think it would be super-difficult to add a firmware service
-> that would let the host do some kind of equivalent to PVALIDATE, setting
-> some physical pages aside that then get measured and become inaccessible to
-> the host. The PSP or similar could then integrate these measurements as part
-> of the TCB, and the fact that the pages were "transferred" to this special
-> invariant block would ensure the guests that the code will not change after
-> being measured.
-> 
-> I am not aware that such a mechanism exists on any of the existing CC
-> platforms. Please feel free to enlighten me if I'm wrong.
-> 
-> [1] https://www.redhat.com/en/blog/understanding-confidential-containers-attestation-flow
-> >
-> >>
-> >> After that, I think all bets are off. SecureBoot does little AFAICT
-> >> to prevent malicious modifications of the running system by someone with
-> >> root access, including deliberately loading a malicious kvm-zilog.ko
-> >
-> > So disable module loading then or don't allow root access?
-> 
-> Who would do that?
-> 
-> The problem is that we have a host and a tenant, and the tenant does not
-> trust the host in principle. So it is not sufficient for the host to disable
-> module loading or carefully control root access. It is also necessary to
-> prove to the tenant(s) that this was done.
-> 
-> >
-> >>
-> >> It does not mean it cannot be done, just that I don’t think we
-> >> have the tools at the moment.
-> >
-> > Phones, chromebooks do this all the time ...
-> 
-> Indeed, but there, this is to prove to the phone's real owner (which,
-> surprise, is not the naive person who thought they'd get some kind of
-> ownership by buying the phone) that the software running on the phone has
-> not been replaced by some horribly jailbreaked goo.
-> 
-> In other words, the user of the phone gets no proof whatsoever of anything,
-> except that the phone appears to work. This is somewhat the situation in the
-> cloud today: the owners of the hardware get all sorts of useful checks, from
-> SecureBoot to error-correction for memory or I/O devices. However, someone
-> running in a VM on the cloud gets none of that, just like the user of your
-> phone.
+> 1) Threat model and potential mitigations: 
+> https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html> 
+> 2) One of the described in the above doc mitigations is "hardening of the enabled
+> code". What we mean by this, as well as techniques that are being used are
+> described in this document: > https://intel.github.io/ccc-linux-guest-hardening-docs/tdx-guest-hardening.html
 
-Assuming you do a measured boot, the host OS and firmware is measured into the host TPM;
-people have thought in the past about triggering attestations of the
-host from the guest; then you could have something external attest the
-host and only release keys to the guests disks if the attestation is
-correct; or a key for the guests disks held in the hosts TPM.
+Regarding driver hardening, does anyone have a better filtering idea?
 
-Dave
+The current solution assumes the kernel command line is trusted and cannot
+avoid the __init() functions that waste memory. I don't know if the
+__exit() routines of the filtered devices are called, but it doesn't sound
+much better to allocate memory and free it right after.
 
-> --
-> Cheers,
-> Christophe de Dinechin (https://c3d.github.io)
-> Theory of Incomplete Measurements (https://c3d.github.io/TIM)
 > 
+> 3) All the tools are open-source and everyone can start using them right away even
+> without any special HW (readme has description of what is needed).
+> Tools and documentation is here:
+> https://github.com/intel/ccc-linux-guest-hardening
 > 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
+> 4) all not yet upstreamed linux patches (that we are slowly submitting) can be found 
+> here: https://github.com/intel/tdx/commits/guest-next
+> 
+> So, my main question before we start to argue about the threat model, mitigations, etc,
+> is what is the good way to get this reviewed to make sure everyone is aligned?
+> There are a lot of angles and details, so what is the most efficient method? 
+> Should I split the threat model from https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html
+> into logical pieces and start submitting it to mailing list for discussion one by one? 
+> Any other methods? 
+> 
+> The original plan we had in mind is to start discussing the relevant pieces when submitting the code,
+> i.e. when submitting the device filter patches, we will include problem statement, threat model link, 
+> data, alternatives considered, etc. 
+> 
+> Best Regards,
+> Elena.
+> 
+> [1] https://lore.kernel.org/all/20210804174322.2898409-1-sathyanarayanan.kuppuswamy@linux.intel.com/
+> [2] https://lpc.events/event/16/contributions/1328/
+> [3] https://events.linuxfoundation.org/archive/2022/linux-security-summit-north-america/program/schedule/
 
+Thanks,
+Carlos
