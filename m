@@ -1,47 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178F917F7
-	for <linux-coco@lists.linux.dev>; Tue,  7 Feb 2023 06:03:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BA1C433EF;
-	Tue,  7 Feb 2023 06:03:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1675749787;
-	bh=n0NSw6MLeyqaJNIB2F0bB4A/V51VTRATE/PybeUZGeI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lq+fuoKJWnx5lwARuKY8fU+ugkgKvxmnmh/wFX7tUoTQM1p8cHZYpQzcu6oES9p5j
-	 UT4YZIbx9zIBGdQlil9TetkVt3C1vzsVtli86X15g/HRoGuso2qjnCZqbI4Lrq4hfV
-	 OAkrv5Bz5aHu3eMR/Ulh4c61HzIVjj/qp7DQmRhg=
-Date: Tue, 7 Feb 2023 07:03:04 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Carlos Bilbao <carlos.bilbao@amd.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
-	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Kleen, Andi" <andi.kleen@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Wunner, Lukas" <lukas.wunner@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Poimboe, Josh" <jpoimboe@redhat.com>,
-	"aarcange@redhat.com" <aarcange@redhat.com>,
-	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-	"jbachmann@google.com" <jbachmann@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	"Lange, Jon" <jlange@microsoft.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y+HpmIesY96cYcWQ@kroah.com>
-References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
- <658272b5-9547-a69f-b6c9-a7ff2dd2d468@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0502587
+	for <linux-coco@lists.linux.dev>; Tue,  7 Feb 2023 12:25:32 +0000 (UTC)
+Received: by mail-wr1-f46.google.com with SMTP id o18so13382824wrj.3
+        for <linux-coco@lists.linux.dev>; Tue, 07 Feb 2023 04:25:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LZAucNLzijzKQ21Q4plD1d78GkaeAHQGHHtmZwwWx5M=;
+        b=vjxJteG2AEMkQG8SG05CW8sO/4P+xzJk2Vnh+rBKD69Ff/Oyfka4vwhhsZqhKRgws0
+         15epdVbZeytxecFYQENRy0JaR6NWBjj0Qo/lPnMvyNPXGX1tmkhykVGpQqAZ2Et9pzVj
+         W0ToShnsMttJXXxEb12Wpkrn4Nju+WATfpg/1Lx7cNiD6nGkO8Ljb5FJxIEBge4t84BD
+         jX6+9449Q6o80EhUImqQHqOC2gxWkbo4WnoWqyGnWkrH7P5APItItpLNbxRfmvL6ruUw
+         FQIZWIJ1uvd/yw+WxuDIJ40Fp3uC7IS1K4cXMhuLDamgqsJctdyCwF2srRjG0QMjiXH3
+         ay0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LZAucNLzijzKQ21Q4plD1d78GkaeAHQGHHtmZwwWx5M=;
+        b=cYPvBnDNaJGAhquaBBsinQcu7Gddff3VTuYNAIcOqs4qkuM8twbMw4iU9+DfzsIs9H
+         HRZ9On2VFYmr5OQidjfDgnu79xpXVAQy0MoQAioVwRV887XN3lvwWYfPUkR0k/uLs0gJ
+         WAolnytLVCDttL9soUf5bJYp4EF5aq/hxn/eyrpt8HbmH3C0FaemI98wDTN9A3avsMWz
+         8glkgA5qtokzSKjG641ZdR3mRWgGgAzLYHbgKd6QMbUOuDG1R6ucaLEaWHbUoCpp4Yvh
+         sU8GMWJhXoAwUaBvTguy/zaDEYW8/JiDaQ3iyNf++qf8pxRW2Q2ThUkN1iWiy3glH6aV
+         Gn/g==
+X-Gm-Message-State: AO0yUKU5nByfyh9JzaDBB6j/YSfMY/foYn/DNsh/6bV/sxb64oCO8o3m
+	9jVbyA+LL+pjRjlaCv0a6fnFgw==
+X-Google-Smtp-Source: AK7set8vgK5CfM858EiDxkXkMMgPk8OOvF3Hcy+IAl3YuF1Ka53mp4jCWqk6XtOI1TyvyC37K565Pw==
+X-Received: by 2002:a05:6000:104:b0:2bf:ae3c:e963 with SMTP id o4-20020a056000010400b002bfae3ce963mr2424172wrx.9.1675772731272;
+        Tue, 07 Feb 2023 04:25:31 -0800 (PST)
+Received: from myrica (054592b0.skybroadband.com. [5.69.146.176])
+        by smtp.gmail.com with ESMTPSA id f6-20020a5d5686000000b002c3daaef051sm9949472wrv.82.2023.02.07.04.25.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Feb 2023 04:25:30 -0800 (PST)
+Date: Tue, 7 Feb 2023 12:25:26 +0000
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev
+Subject: Re: [RFC PATCH 06/28] arm64: RME: ioctls to create and configure
+ realms
+Message-ID: <Y+JDNkMpk9Y8ReWM@myrica>
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <20230127112932.38045-1-steven.price@arm.com>
+ <20230127112932.38045-7-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,40 +66,24 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <658272b5-9547-a69f-b6c9-a7ff2dd2d468@amd.com>
+In-Reply-To: <20230127112932.38045-7-steven.price@arm.com>
 
-On Mon, Feb 06, 2023 at 06:27:48PM -0600, Carlos Bilbao wrote:
-> On 1/25/23 6:28 AM, Reshetova, Elena wrote:
-> > 2) One of the described in the above doc mitigations is "hardening of the enabled
-> > code". What we mean by this, as well as techniques that are being used are
-> > described in this document: > https://intel.github.io/ccc-linux-guest-hardening-docs/tdx-guest-hardening.html
-> 
-> Regarding driver hardening, does anyone have a better filtering idea?
-> 
-> The current solution assumes the kernel command line is trusted and cannot
-> avoid the __init() functions that waste memory.
+On Fri, Jan 27, 2023 at 11:29:10AM +0000, Steven Price wrote:
+> +static int kvm_rme_config_realm(struct kvm *kvm, struct kvm_enable_cap *cap)
+> +{
+> +	struct kvm_cap_arm_rme_config_item cfg;
+> +	struct realm *realm = &kvm->arch.realm;
+> +	int r = 0;
+> +
+> +	if (kvm_realm_state(kvm) != REALM_STATE_NONE)
+> +		return -EBUSY;
 
-That is two different things (command line trust and __init()
-functions), so I do not understand the relationship at all here.  Please
-explain it better.
+This should also check kvm_is_realm() (otherwise we dereference a NULL
+realm).
 
-Also, why would an __init() function waste memory?  Memory usage isn't
-an issue here, right?
+I was wondering about fuzzing the API to find more of this kind of issue,
+but don't know anything about it. Is there a recommended way to fuzz KVM?
 
-> I don't know if the
-> __exit() routines of the filtered devices are called, but it doesn't sound
-> much better to allocate memory and free it right after.
+Thanks,
+Jean
 
-What device has a __exit() function?  Drivers have module init/exit
-functions but they should do nothing but register themselves with the
-relevant busses and they are only loaded if the device is found in the
-system.
-
-And what exactly is incorrect about allocating memory and then freeing
-it when not needed?
-
-So again, I don't understand the question, sorry.
-
-thanks,
-
-greg k-h
