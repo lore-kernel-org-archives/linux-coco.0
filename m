@@ -1,22 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE1A9465
-	for <linux-coco@lists.linux.dev>; Wed,  8 Feb 2023 10:58:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB92C4339B;
-	Wed,  8 Feb 2023 10:58:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1675853928;
-	bh=1R6/GTmUFjHYLF6JxWCemPeZqa3OwU2ptAZJy7wanZU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PJqSs3MHgzZT+ABPPlw50AKhAcRN7n78voKk+Sev/UdXhhQOjmAKX3okDGt0gQTYu
-	 6izrl3WzC+0VxCZ+KUzumRRKmeF900jQpLZl7vpGk1KiCC73iKExCV+YZm3w2o9BEn
-	 iqOIs2zsIVEldC1JApd5GEVEHQ3Ofo2Vl7TDKf7s=
-Date: Wed, 8 Feb 2023 11:58:45 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDA42560
+	for <linux-coco@lists.linux.dev>; Wed,  8 Feb 2023 13:00:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1675861216;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GZD4eF51TgC9oueoQn3RvNXVi7q+IJ98lRzwYnyNJW8=;
+	b=YAW6sDfscXM8PznbN0eDrE+U0rSgnIGRveOEgPv6qPPYlP0xo5GpssPhU/83zrlORCDI1X
+	lf+mgi+YRvq4lVLd9wNgwkZYneL8NuMdEH/mR+Y+eJqYn0sl2fAR1z8NT9cTDHe50hyy4f
+	3Xp9hAZ3UedRL5eRvTuEh11ButMdA4E=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-599-kh1_htmHNI65mJegdh3_Hw-1; Wed, 08 Feb 2023 08:00:15 -0500
+X-MC-Unique: kh1_htmHNI65mJegdh3_Hw-1
+Received: by mail-ej1-f70.google.com with SMTP id qa17-20020a170907869100b0088ea39742c8so13235396ejc.13
+        for <linux-coco@lists.linux.dev>; Wed, 08 Feb 2023 05:00:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GZD4eF51TgC9oueoQn3RvNXVi7q+IJ98lRzwYnyNJW8=;
+        b=zygjqPYR0t7b69ksMa7U/ZT/73/1iR8KpgOaJb6t3NbLIwDk5+XxhHIc1zKl9GmSD9
+         55lLrsf8FWCMOGIr7k9l2E1Fb2LzcKfoFu1yWwoq4+HTDiDJDwM4+KRPrASR+eaKkJQy
+         oKRh7OSayLiXQZBKZPhSy2ThzxKYTJeuNhMmJCYG5aWT2BnpBUuiWwFxICLoXaEFNoGG
+         lKrvLT2Gz6Gzb5oGe7U2dUaEF4WPLbqCKyA6HftLxpB/t2R0/0PHX9zPJtaZUAZcFkgS
+         Z6I4SImGvTh0o+amXgfbbXrqIrPvIq2PwFteHDD7Oz4uHcu86kBi5gpD6KTbUBvJqnnj
+         3Ydg==
+X-Gm-Message-State: AO0yUKXaUjJ+8rmb6YFUWJdtEe7vRguR52sjEkK257t5tvPEKdoev1A3
+	XP4ki7kfccueaf0nuRG/YUu42e1QdlXmjF2omHf5X5SkLd3pfal36b9FgDC/Fk1RfWd7EuSTfon
+	gQw3/ihtXztCGucG+xx3oFA==
+X-Received: by 2002:a17:907:160e:b0:8aa:c035:a651 with SMTP id hb14-20020a170907160e00b008aac035a651mr4776188ejc.37.1675861212224;
+        Wed, 08 Feb 2023 05:00:12 -0800 (PST)
+X-Google-Smtp-Source: AK7set+Y3v6ZDYs6fJVD6bZp4jFnLUDSB+F47FHl799qXTEy7dorD0nLqLTYAKPJs+2DVrLfitMtjQ==
+X-Received: by 2002:a17:907:160e:b0:8aa:c035:a651 with SMTP id hb14-20020a170907160e00b008aac035a651mr4776167ejc.37.1675861212053;
+        Wed, 08 Feb 2023 05:00:12 -0800 (PST)
+Received: from redhat.com ([2.52.132.212])
+        by smtp.gmail.com with ESMTPSA id de48-20020a1709069bf000b0088cf92eb0e1sm8267710ejc.150.2023.02.08.05.00.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Feb 2023 05:00:11 -0800 (PST)
+Date: Wed, 8 Feb 2023 08:00:05 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
 To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Theodore Ts'o <tytso@mit.edu>,
-	Carlos Bilbao <carlos.bilbao@amd.com>,
+Cc: Theodore Ts'o <tytso@mit.edu>, Carlos Bilbao <carlos.bilbao@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
 	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
 	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
@@ -39,7 +70,7 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Theodore Ts'o <tytso@mit.edu>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <Y+OAZTljX1I6ZvR/@kroah.com>
+Message-ID: <20230208075747-mutt-send-email-mst@kernel.org>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
  <658272b5-9547-a69f-b6c9-a7ff2dd2d468@amd.com>
  <Y+HpmIesY96cYcWQ@kroah.com>
@@ -53,109 +84,25 @@ List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+In-Reply-To: <DM8PR11MB5750D93CD9481F6AB78F1FB4E7D89@DM8PR11MB5750.namprd11.prod.outlook.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM8PR11MB5750D93CD9481F6AB78F1FB4E7D89@DM8PR11MB5750.namprd11.prod.outlook.com>
 
 On Wed, Feb 08, 2023 at 10:44:25AM +0000, Reshetova, Elena wrote:
-> 
-> 
-> > On Tue, Feb 07, 2023 at 08:51:56PM -0500, Theodore Ts'o wrote:
-> > > Why not just simply compile a special CoCo kernel that doesn't have
-> > > any drivers that you don't trust.
-> 
-> Aside from complexity and scalability management of such a config that has
-> to change with every kernel release, what about the build-in platform drivers?
-
-What do you mean by "built in platform drivers"?  You are creating a
-.config for a specific cloud platform, just only select the drivers for
-that exact configuration and you should be fine.
-
-And as for the management of such a config, distros do this just fine,
-why can't you?  It's not that hard to manage properly.
-
-> I am not a driver expert here but as far as I understand they cannot be disabled
-> via config. Please correct if this statement is wrong. 
-
-Again, which specific drivers are you referring to?  And why are they a
-problem?
-
-> > In order to make $$$$$, you need to push the costs onto various
-> > different players in the ecosystem.  This is cleverly disguised as
-> > taking current perfectly acceptable design paradigm when the trust
-> > boundary is in the traditional location, and causing all of the
-> > assumptions which you have broken as "bugs" that must be fixed by
-> > upstream developers.
-> 
-> The CC threat model does change the traditional linux trust boundary regardless of
-> what mitigations are used (kernel config vs. runtime filtering). Because for the
+> Because for the
 > drivers that CoCo guest happens to need, there is no way to fix this problem by 
 > either of these mechanisms (we cannot disable the code that we need), unless somebody
 > writes a totally new set of coco specific drivers (who needs another set of 
 > CoCo specific virtio drivers in the kernel?). 
 
-It sounds like you want such a set of drivers, why not just write them?
-We have zillions of drivers already, it's not hard to write new ones, as
-it really sounds like that's exactly what you want to have happen here
-in the end as you don't trust the existing set of drivers you are using
-for some reason.
+I think it's more about pci and all that jazz, no?
+As a virtio maintainer I applied patches adding validation and intend to
+do so in the future simply because for virtio specifically people
+build all kind of weird setups out of software and so validating
+everything is a good idea.
 
-> So, if the path is to be able to use existing driver kernel code, then we need:
+-- 
+MST
 
-Wait, again, why?  Why not just have your own?  That should be the
-simplest thing overall.  What's wrong with that?
-
-> 1. these selective CoCo guest required drivers (small set) needs to be hardened 
->  (or whatever word people prefer to use here), which only means that in
-> the presence of malicious host/hypervisor that can manipulate pci config space,
-> port IO and MMIO, these drivers should not expose CC guest memory 
-> confidentiality or integrity (including via privilege escalation into CC guest). 
-
-Again, stop it please with the "hardened" nonsense, that means nothing.
-Either the driver has bugs, or it doesn't.  I welcome you to prove it
-doesn't :)
-
-> Please note that this only applies to a small set (in tdx virtio setup we have less
-> than 10 of them) of drivers and does not present invasive changes to the kernel
-> code. There is also an additional core pci/msi code that is involved with discovery
-> and configuration of these drivers, this code also falls into the category we need to
-> make robust. 
-
-Again, why wouldn't we all want "robust" drivers?  This is not anything
-new here, all you are somehow saying is that you are changing the thread
-model that the kernel "must" support.  And for that, you need to then
-change the driver code to support that.
-
-So again, why not just have your own drivers and driver subsystem that
-meets your new requirements?  Let's see what that looks like and if
-there even is any overlap between that and the existing kernel driver
-subsystems.
-
-> 2. rest of non-needed drivers must be disabled. Here we can argue about what 
-> is the correct method of doing this and who should bare the costs of enforcing it. 
-
-You bare that cost.  Or you get a distro to do that.  That's not up to
-us in the kernel community, sorry, we give you the option to do that if
-you want to, that's all that we can do.
-
-> But from pure security point of view: the method that is simple and clear, that
-> requires as little maintenance as possible usually has the biggest chance of
-> enforcing security. 
-
-Again, that's up to your configuration management.  Please do it, tell
-us what doesn't work and send changes if you find better ways to do it.
-Again, this is all there for you to do today, nothing for us to have to
-do for you.
-
-> And given that we already have the concept of authorized devices in Linux,
-> does this method really brings so much additional complexity to the kernel? 
-
-No idea, you tell us!  :)
-
-Again, I recommend you just having your own drivers, that will allow you
-to show us all exactly what you mean by the terms you keep using.  Why
-not just submit that for review instead?
-
-good luck!
-
-greg k-h
