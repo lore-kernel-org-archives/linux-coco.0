@@ -1,171 +1,120 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C812560
-	for <linux-coco@lists.linux.dev>; Wed,  8 Feb 2023 13:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1675862163;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ANxKGUHxNkdFDDGu4Qxah7XgMeL7yrVgcXhPrJpPIhk=;
-	b=H4a1/MRzp9nHxmOzt4WvBZD6WREJXBkyRbon+Fk4RXWnGYTLHZPA1/sf65GjvHM69BIy+H
-	lvJpBJ8gSLy/943BzMnsj9PYCgP2kIPOw6vKQ1mQc8is2ahgd7e9fxA6IF+Xd2+cqhIlY2
-	ow2UOMmm5cOdYUKaV2415yl046xy1Wk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-534-L47p1E_aPOq3eeAChGej-w-1; Wed, 08 Feb 2023 08:16:01 -0500
-X-MC-Unique: L47p1E_aPOq3eeAChGej-w-1
-Received: by mail-ej1-f72.google.com with SMTP id wz4-20020a170906fe4400b0084c7e7eb6d0so13221505ejb.19
-        for <linux-coco@lists.linux.dev>; Wed, 08 Feb 2023 05:16:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ANxKGUHxNkdFDDGu4Qxah7XgMeL7yrVgcXhPrJpPIhk=;
-        b=sT1a9WQRyqY7WNtUZRVsc/tyISr6SEhratzAp/ECX17Gixd5qyoFryLxlJKecr8cAi
-         D0wcjdikr64SPckMXuVgS2v2NZlk1tmbSSdw0iuozKz1tcU5vCDCfonDjcpKtjM9jcOD
-         wLcXmGNHT87hw+YADmVC36YpZgEGA67mYyDymSlXr6u1NrEIlEQvzju5xaM7Is5FZLQO
-         ew1Eo2Zeu+WBDdgGLAbheGQlovxnO0dEsGofsMZvvfOsFV5W4+ZYnNL2d+BExs8vxNK1
-         xQYe0+AXlH8VMoHqPFzvOS1Y4E+96hYdlZ/+PWehF7tyh77jrkuQvEBGDGlduxPZyglg
-         o5ng==
-X-Gm-Message-State: AO0yUKXgvte9ooM3lDkXSu0wYrsv0LMbhHk1Dk3Rm1P9pKL0n/LWFhAL
-	hgI8iC1PjO3PriU1AL3FDi9jpPJ958iQ3OmR2K8PHMJEkV0zYeiuM9aJDPnx86hoqrxmgJIGkhS
-	Bf3oCwN3T5Vts9/X4f8GIJQ==
-X-Received: by 2002:a50:9b43:0:b0:4a2:1812:e062 with SMTP id a3-20020a509b43000000b004a21812e062mr8567083edj.18.1675862160418;
-        Wed, 08 Feb 2023 05:16:00 -0800 (PST)
-X-Google-Smtp-Source: AK7set/GQNHbqVkMPaw7jFTQpVA3MniL2vYO43AOpxYwu5eKEiswCaySQWYnKQFoOsZKQr8Al+WAxA==
-X-Received: by 2002:a50:9b43:0:b0:4a2:1812:e062 with SMTP id a3-20020a509b43000000b004a21812e062mr8567068edj.18.1675862160215;
-        Wed, 08 Feb 2023 05:16:00 -0800 (PST)
-Received: from redhat.com ([2.52.132.212])
-        by smtp.gmail.com with ESMTPSA id dm1-20020a05640222c100b004a21d03155bsm7831174edb.88.2023.02.08.05.15.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Feb 2023 05:15:59 -0800 (PST)
-Date: Wed, 8 Feb 2023 08:15:53 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ADB2561
+	for <linux-coco@lists.linux.dev>; Wed,  8 Feb 2023 13:43:09 +0000 (UTC)
+Received: from cwcc.thunk.org (pool-173-48-120-46.bstnma.fios.verizon.net [173.48.120.46])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 318DgZaj013022
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 8 Feb 2023 08:42:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1675863760; bh=xyb6v65nXuHP/xG5TcxP1ne6MztEMsgn/VqCrtkrf9Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HJGrzMDtNqQUvEs34B3TQmwiLMRpnmdRZpR1xMITfSZH5tk/6ZRko4EfF7OKOhx1y
+	 CRxNyCkhyDZyyVt6OIIKvX4fS4KCA/VyCNM1lkOh4LFxmKtTyWfD/ySX0j3YZwa8Ti
+	 g4/S23TNi1ldNDMrkqWMxMHdgxajG7koDrN0yBEF/MCCNqiMkZFymjtzjYVcDGsSSq
+	 rBTqR7ZlYlDEs3ffpZey4lKf+nYs3/Dkt/j69PNO09MnStayU3twnlcUUaJLFIC2p4
+	 9NBO3x5p0r27mi7Q1pMo3JT6T3jxPlq80HMtJ0lnllBU+XpA+2cPLsxKcG+0hiYZlY
+	 UjoSRMcr1NgXA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id E6DF015C35A2; Wed,  8 Feb 2023 08:42:34 -0500 (EST)
+Date: Wed, 8 Feb 2023 08:42:34 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
 To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: Carlos Bilbao <carlos.bilbao@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Shishkin, Alexander" <alexander.shishkin@intel.com>,
-	"Shutemov, Kirill" <kirill.shutemov@intel.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Kleen, Andi" <andi.kleen@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Wunner, Lukas" <lukas.wunner@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Poimboe, Josh" <jpoimboe@redhat.com>,
-	"aarcange@redhat.com" <aarcange@redhat.com>,
-	Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
-	"jbachmann@google.com" <jbachmann@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"keescook@chromium.org" <keescook@chromium.org>,
-	James Morris <jmorris@namei.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	"Lange, Jon" <jlange@microsoft.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+        Carlos Bilbao <carlos.bilbao@amd.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Shishkin, Alexander" <alexander.shishkin@intel.com>,
+        "Shutemov, Kirill" <kirill.shutemov@intel.com>,
+        "Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
+        "Kleen, Andi" <andi.kleen@intel.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Wunner, Lukas" <lukas.wunner@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "Poimboe, Josh" <jpoimboe@redhat.com>,
+        "aarcange@redhat.com" <aarcange@redhat.com>,
+        Cfir Cohen <cfir@google.com>, Marc Orr <marcorr@google.com>,
+        "jbachmann@google.com" <jbachmann@google.com>,
+        "pgonda@google.com" <pgonda@google.com>,
+        "keescook@chromium.org" <keescook@chromium.org>,
+        James Morris <jmorris@namei.org>,
+        Michael Kelley <mikelley@microsoft.com>,
+        "Lange, Jon" <jlange@microsoft.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: Linux guest kernel threat model for Confidential Computing
-Message-ID: <20230208080259-mutt-send-email-mst@kernel.org>
+Message-ID: <Y+OmytFP2ASNXil5@mit.edu>
 References: <DM8PR11MB57505481B2FE79C3D56C9201E7CE9@DM8PR11MB5750.namprd11.prod.outlook.com>
  <658272b5-9547-a69f-b6c9-a7ff2dd2d468@amd.com>
  <Y+HpmIesY96cYcWQ@kroah.com>
  <20044cae-4fab-7ef6-02a0-5955a56e5767@amd.com>
- <BN0PR11MB5758C701F81E701851ECA729E7D89@BN0PR11MB5758.namprd11.prod.outlook.com>
+ <Y+MAPHZNLeBY13Pj@mit.edu>
+ <20230208041913-mutt-send-email-mst@kernel.org>
+ <DM8PR11MB5750D93CD9481F6AB78F1FB4E7D89@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <BN0PR11MB5758C701F81E701851ECA729E7D89@BN0PR11MB5758.namprd11.prod.outlook.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM8PR11MB5750D93CD9481F6AB78F1FB4E7D89@DM8PR11MB5750.namprd11.prod.outlook.com>
 
-On Wed, Feb 08, 2023 at 10:16:14AM +0000, Reshetova, Elena wrote:
-> > No relation other than it would be nice to have a solution that does not
-> >require kernel command line and that prevents __init()s.
-> 
-> For __inits see below. For the command line, it is pretty straightforward to 
-> measure it and attest its integrity later: we need to do it for other parts
-> anyhow as acpi tables, etc. So I don’t see why we need to do smth special
-> about it? In any case it is indeed very different from driver discussion and
-> goes into "what should be covered by attestation for CC guest" topic. 
-> 
-> > More pressing concern than wasted memory, which may be unimportant, there's
-> > the issue of what are those driver init functions doing. For example, as
-> > part of device setup, MMIO regs may be involved, which we cannot trust. It's
-> > a lot more code to worry about from a CoCo perspective.
-> 
-> Yes, we have seen such cases in kernel where drivers or modules would access
-> MMIO or pci config space already in their __init() functions. 
-> Some concrete examples from modules and drivers (there are more):
-> 
->  intel_iommu_init() -> init_dmars() -> check_tylersburg_isoch()
+On Wed, Feb 08, 2023 at 10:44:25AM +0000, Reshetova, Elena wrote:
+> 2. rest of non-needed drivers must be disabled. Here we can argue about what 
+> is the correct method of doing this and who should bare the costs of enforcing it. 
+> But from pure security point of view: the method that is simple and clear, that
+> requires as little maintenance as possible usually has the biggest chance of
+> enforcing security. 
+> And given that we already have the concept of authorized devices in Linux,
+> does this method really brings so much additional complexity to the kernel? 
+> But hard to argue here without the code: we need to submit the filter proposal first
+> (under internal review still).
 
-An iommu driver.  So maybe you want to use virtio iommu then?
+I think the problem here is that we've had a lot of painful experience
+where fuzzing produces a lot of false positives which then
+security-types then insist that all kernel developers must fix so that
+we can see the "important" security issues from the false positives.
 
-> skx_init() -> get_all_munits()
-> skx_init() -> skx_register_mci() -> skx_get_dimm_config()
+So "as little maintenance as possible" and fuzzing have not
+necessarily gone together.  It might be less maintenance costs for
+*you*, but it's not necessarily less maintenance work for *us*.  I've
+seen Red Hat principal engineers take completely bogus issues and
+raise them to CVE "high" priority levels, when it was nothing like
+that, thus forcing distro and data center people to be forced to do
+global pushes to production because it's easier than trying to explain
+to FEDramp auditors why the CVE SS is bogus --- and every single
+unnecessary push to production has its own costs and risks.
 
-A memory controller driver, right? And you need it in a VM? why?
+I've seen the constant load of syzbot false positives that generate
+noise in my inbox and in bug tracking issues assigned to me at $WORK.
+I've seen the false positives generated by DEPT, which is why I've
+pushed back on it.  So if you are going to insist on fuzzing all of
+the PCI config space, and treat them all as "bugs", there is going to
+be huge pushback.
 
-> intel_rng_mod_init() -> intel_init_hw_struct()
+Even if the "fixes" are minor, and don't have any massive impact on
+memory used or cache line misses or code/maintainability bloat, the
+fact that we treat them as P3 quality of implementation issues, and
+*you* treat them as P1 security bugs that must be fixed Now!  Now!
+Now! is going to cause friction.  (This is especially true since CVE
+SS scores are unidimentional, and what might be high security --- or
+at least embarassing --- for CoCo, might be completely innocuous QOI
+bugs for the rest of the world.)
 
-And virtio iommu?
+So it might be that a simple, separate, kerenl config is going to be
+the massively simpler way to go, instead of insisting that all PCI
+device drivers must be fuzzed and be made CoCo safe, even if they will
+never be used in a CoCo context.  Again, please be cognizant about the
+costs that CoCo may be imposing and pushing onto the rest of the
+ecosystem.
 
-> i10nm_exit()->enable_retry_rd_err_log ->__enable_retry_rd_err_log()
+Cheers,
 
-Another memory controller driver? Can we decide on a single one?
-
-> However, this is how we address this from security point of view:
-> 
-> 1. In order for a MMIO read to obtain data from a untrusted host, the memory
-> range must be shared with the host to begin with. We enforce that
-> all MMIO mappings are private by default to the CC guest unless it is 
-> explicitly shared (and we do automatically share for the authorized devices
-> and their drivers from the allow list). This removes a problem of an 
-> "unexpected MMIO region interaction"
-> (modulo acpi AML operation regions that we do have to share also unfortunately,
-> but acpi is a whole different difficult case on its own).
-
-How does it remove the problem? You basically get trash from host, no?
-But it seems that whether said trash is exploitable will really depend
-on how it's used, e.g. if it's an 8 bit value host can just scan all
-options in a couple of hundred attempts. What did I miss?
-
-
-> 2. For pci config space, we limit any interaction with pci config
-> space only to authorized devices and their drivers (that are in the allow list).
-> As a result device drivers outside of the allow list are not able to access pci
-> config space even in their __init routines. It is done by setting the
-> to_pci_dev(dev)->error_state = pci_channel_io_perm_failure for non-authorized
-> devices. 
-
-This seems to be assuming drivers check return code from pci config
-space accesses, right?  I doubt all drivers do though. Even if they do
-that's unlikely to be a well tested path, right?
-
->  So, even if host made the driver __init function to run
-> (by faking the device on the host side), it should not be able to supply any
-> malicious data to it via MMIO or pci config space, so running their __init 
-> routines should be ok from security point of view or does anyone see any
-> holes here? 
-> 
-> Best Regards,
-> Elena.
-
-See above.  I am not sure the argument that the bugs are unexploitable
-sits well with the idea that all this effort is improving code quality.
-
--- 
-MST
-
+					- Ted
