@@ -1,166 +1,287 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722B62F41;
-	Fri, 10 Feb 2023 22:53:21 +0000 (UTC)
-Received: by mail-pf1-f176.google.com with SMTP id t17so4521409pfj.0;
-        Fri, 10 Feb 2023 14:53:21 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817098F5F;
+	Mon, 13 Feb 2023 15:48:57 +0000 (UTC)
+Received: by mail-il1-f175.google.com with SMTP id n2so5336327ili.11;
+        Mon, 13 Feb 2023 07:48:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5C7mT14sIcQvZGqVI82PDB3oIpwvIfrZYj8GQKRk2hw=;
-        b=P/Tr0QaVTqrmzTX9y2izxlfHtpFEpelXkhC8PrVRQIjIVTa77U5WVEXpobrw1wVXOt
-         ec2pULGZcCu1Q7QhlKmTHf6rsvSMr7NgLeQyrTQW3dBUJ/1d7BguZLWiBIlUibtR1yfm
-         Saq9iljFRa5en+DF9HAaDWUvOYQJzIpAdoW9S9GWKt7stpbuanfGr2xP6Xp9h1KCP+6V
-         waRMfWEy2EzM3N2uDUoOm4I4jtsWp7/YssULyHh3pMg+vhuP4liovJurTHrijef6L1f3
-         IbO/b56MVFY+bZnP2Nuu4dBpl9z7BiZl1gfPc0+aAXV6+KVD5otUeFJKwhSG8pjWX2pL
-         8hjA==
+        d=gmail.com; s=20210112; t=1676303336;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Waw3704gOD/az5PcxO/EsghNrg3YZs8kXzHhQwOTEJs=;
+        b=L5JDfZTnchppM3i6PqdvZLVMUS05vfV6UthgxdbPQcP2L3fl48I39lLW0iJEfZkUwu
+         Yhd91zOLTLdUPCObSKvyqf5a2esNEHrrVH5jUviY7UGp55DzP3Vx7wko/pfxNuYcL3JF
+         sF8+crevet79/M2ZQwBGnzvAFtVje9FYHqRMM+xHXqQvuEu98OE2ZO4xhiKk+MmrRCD4
+         eVEJzyuV41/UWwvhPLRxYNpdL4NzIj6Gj7Dz9nd1v930bHIHEIklMpwWCYVp/uDEvLdG
+         +wlnMESx22SdV5y5lTx5s1QP1SP9eErTeKre0IHAFHoD5KHfSJPrpPMQupn3q3xCuQ/g
+         2ixQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5C7mT14sIcQvZGqVI82PDB3oIpwvIfrZYj8GQKRk2hw=;
-        b=F3dBRSc9Pz255iiPzQ8uCCo6d4An4QxpswCK6daoo6DPaTrFpj4Mly1U04q8cr/hvv
-         QvEqwYzqpRW9aQAUUca5Ab6Gd43d/SOH65EtpXJFNstFcXDw6OOYpMeSlN9dfve6UEIC
-         EXmrzoqfO+YoKo57GGQcTS5fF2/Nx++9sRfmmDeOLqrFokB3oXxtXGg40NyPorPmLLzd
-         HmKKlebukNQWu66tVqqCRNdp3tGJhNh0ik4SWl4G3HfoiSc8P6MKjvZu+7fut0ZZK3hD
-         /RiU8yWwRmlyXVQ5hGH42iXrMe4zyplQo5Q+PZf4xX6lc7WoVJc3FwBwnbqGfDs7QjiG
-         bvZw==
-X-Gm-Message-State: AO0yUKXqXLr/NpL+qdAzstXZzZtar5s4yglxSPHTwwO0bYZbPwu/ECWk
-	UJeyPDFFk2jDCufcZXpTfhR758PftxfSe2+3WNQ=
-X-Google-Smtp-Source: AK7set/GNEl9KMH8Zwkoa7+0XItH/dxabtmg2DZlqpwxk0lC0z5W8yfttgTmQiqIMrBuECnEJk6/1mNLzLdb19oPgIs=
-X-Received: by 2002:a62:17c3:0:b0:5a8:6aeb:e95e with SMTP id
- 186-20020a6217c3000000b005a86aebe95emr1009703pfx.33.1676069600452; Fri, 10
- Feb 2023 14:53:20 -0800 (PST)
+        d=1e100.net; s=20210112; t=1676303336;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Waw3704gOD/az5PcxO/EsghNrg3YZs8kXzHhQwOTEJs=;
+        b=3yvRebKEkX+Odb18Mz3U/fOEF+mUr3TtITmObwY4bwppUrwSu22koPSIaxmW3PPM4w
+         nVik2C3YUle0Fg0uyQOcbAusSdrAoXJkn/GE8HC1A8RrAfUUQ1ZzxgLRv1qg5AFCUJwy
+         Jp721ljGDpdUXiC4mCO5sTO9KYuzwFOxOrXdL64WsSgg/PIlGmA+GSoxqAeAmgkuTL5Q
+         7DqbOlxYRCVjZ8aIN8kMls129/1t/o7wiJ/VyKuWFOlGb/pMFW883GEAVCNKg/F0CW7d
+         9nG6F+VDW4wtltiHGGe4zgOagjSZ2bjh1q156ekiguCEquWrJuCMW/W55OSHsxsHLABx
+         Vg/Q==
+X-Gm-Message-State: AO0yUKUzSEE9ROO86pXuXvWA4VAgR2pfhjaF2ppQ8BDQuBzjCBqVLLMf
+	VSP9h7oThmgNd5pJDAzbJks=
+X-Google-Smtp-Source: AK7set+FwZ+W7PnwPjiG2Mo2t7jCLHwiWgiv5IrmVFUv0YbtS1W/pjLs5Z/wAor1s/0TtYblSNqN9g==
+X-Received: by 2002:a05:6e02:ee3:b0:315:363e:b140 with SMTP id j3-20020a056e020ee300b00315363eb140mr4769616ilk.1.1676303336441;
+        Mon, 13 Feb 2023 07:48:56 -0800 (PST)
+Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
+        by smtp.gmail.com with ESMTPSA id h26-20020a02c73a000000b00389d02a032dsm4041122jao.172.2023.02.13.07.48.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Feb 2023 07:48:56 -0800 (PST)
+Date: Mon, 13 Feb 2023 17:48:46 +0200
+From: Zhi Wang <zhi.wang.linux@gmail.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Catalin Marinas
+ <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
+ <will@kernel.org>, James Morse <james.morse@arm.com>, Oliver Upton
+ <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, Alexandru
+ Elisei <alexandru.elisei@arm.com>, Christoffer Dall
+ <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev
+Subject: Re: [RFC PATCH 04/28] arm64: RME: Check for RME support at KVM init
+Message-ID: <20230213174846.00003fad@gmail.com>
+In-Reply-To: <20230127112932.38045-5-steven.price@arm.com>
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+	<20230127112932.38045-1-steven.price@arm.com>
+	<20230127112932.38045-5-steven.price@arm.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230127112248.136810-1-suzuki.poulose@arm.com> <cfb0292c-e84d-0a7c-be74-ae5508779502@arm.com>
-In-Reply-To: <cfb0292c-e84d-0a7c-be74-ae5508779502@arm.com>
-From: Itaru Kitayama <itaru.kitayama@gmail.com>
-Date: Sat, 11 Feb 2023 07:53:09 +0900
-Message-ID: <CANW9uyvXofhGGuhGzk_0Et-w8CHT2y35WSu5+hno6Qm8K4R4ug@mail.gmail.com>
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Andrew Jones <andrew.jones@linux.dev>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, 
-	James Morse <james.morse@arm.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
-	Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Quentin Perret <qperret@google.com>, Sean Christopherson <seanjc@google.com>, 
-	Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>, Will Deacon <will@kernel.org>, 
-	Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.cs.columbia.edu
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Feb 11, 2023 at 1:56 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
->
-> On 27/01/2023 11:22, Suzuki K Poulose wrote:
-> > [...]
->
-> > Running the stack
-> > ====================
-> >
-> > To run/test the stack, you would need the following components :
-> >
-> > 1) FVP Base AEM RevC model with FEAT_RME support [4]
-> > 2) TF-A firmware for EL3 [5]
-> > 3) TF-A RMM for R-EL2 [3]
-> > 4) Linux Kernel [6]
-> > 5) kvmtool [7]
-> > 6) kvm-unit-tests [8]
-> >
-> > Instructions for building the firmware components and running the model are
-> > available here [9]. Once, the host kernel is booted, a Realm can be launched by
-> > invoking the `lkvm` commad as follows:
-> >
-> >  $ lkvm run --realm                            \
-> >        --measurement-algo=["sha256", "sha512"] \
-> >        --disable-sve                           \
-> >        <normal-vm-options>
-> >
-> > Where:
-> >  * --measurement-algo (Optional) specifies the algorithm selected for creating the
-> >    initial measurements by the RMM for this Realm (defaults to sha256).
-> >  * GICv3 is mandatory for the Realms.
-> >  * SVE is not yet supported in the TF-RMM, and thus must be disabled using
-> >    --disable-sve
-> >
-> > You may also run the kvm-unit-tests inside the Realm world, using the similar
-> > options as above.
->
-> Building all of these components and configuring the FVP correctly can be quite
-> tricky, so I thought I would plug a tool we have called Shrinkwrap, which can
-> simplify all of this.
->
-> The tool accepts a yaml input configuration that describes how a set of
-> components should be built and packaged, and how the FVP should be configured
-> and booted. And by default, it uses a Docker container on its backend, which
-> contains all the required tools, including the FVP. You can optionally use
-> Podman or have it run on your native system if you prefer. It supports both
-> x86_64 and aarch64. And you can even run it in --dry-run mode to see the set of
-> shell commands that would have been executed.
->
-> It comes with two CCA configs out-of-the-box; cca-3world.yaml builds TF-A, RMM,
-> Linux (for both host and guest), kvmtool and kvm-unit-tests. cca-4world.yaml
-> adds Hafnium and some demo SPs for the secure world (although since Hafnium
-> requires x86_64 to build, cca-4world.yaml doesn't currently work on an aarch64
-> build host).
->
-> See the documentation [1] and repository [2] for more info.
->
-> Brief instructions to get you up and running:
->
->   # Install shrinkwrap. (I assume you have Docker installed):
->   sudo pip3 install pyyaml termcolor tuxmake
->   git clone https://git.gitlab.arm.com/tooling/shrinkwrap.git
->   export PATH=$PWD/shrinkwrap/shrinkwrap:$PATH
->
->   # If running Python < 3.9:
->   sudo pip3 install graphlib-backport
->
->   # Build all the CCA components:
->   shrinkwrap build cca-3world.yaml [--dry-run]
+On Fri, 27 Jan 2023 11:29:08 +0000
+Steven Price <steven.price@arm.com> wrote:
 
-This has been working on my Multipass instance on M1, thanks for the tool.
+> Query the RMI version number and check if it is a compatible version. A
+> static key is also provided to signal that a supported RMM is available.
+> 
+> Functions are provided to query if a VM or VCPU is a realm (or rec)
+> which currently will always return false.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>  arch/arm64/include/asm/kvm_emulate.h | 17 ++++++++++
+>  arch/arm64/include/asm/kvm_host.h    |  4 +++
+>  arch/arm64/include/asm/kvm_rme.h     | 22 +++++++++++++
+>  arch/arm64/include/asm/virt.h        |  1 +
+>  arch/arm64/kvm/Makefile              |  3 +-
+>  arch/arm64/kvm/arm.c                 |  8 +++++
+>  arch/arm64/kvm/rme.c                 | 49 ++++++++++++++++++++++++++++
+>  7 files changed, 103 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm64/include/asm/kvm_rme.h
+>  create mode 100644 arch/arm64/kvm/rme.c
+> 
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index 9bdba47f7e14..5a2b7229e83f 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -490,4 +490,21 @@ static inline bool vcpu_has_feature(struct kvm_vcpu *vcpu, int feature)
+>  	return test_bit(feature, vcpu->arch.features);
+>  }
+>  
+> +static inline bool kvm_is_realm(struct kvm *kvm)
+> +{
+> +	if (static_branch_unlikely(&kvm_rme_is_available))
+> +		return kvm->arch.is_realm;
+> +	return false;
+> +}
+> +
+> +static inline enum realm_state kvm_realm_state(struct kvm *kvm)
+> +{
+> +	return READ_ONCE(kvm->arch.realm.state);
+> +}
+> +
+> +static inline bool vcpu_is_rec(struct kvm_vcpu *vcpu)
+> +{
+> +	return false;
+> +}
+> +
+>  #endif /* __ARM64_KVM_EMULATE_H__ */
+> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> index 35a159d131b5..04347c3a8c6b 100644
+> --- a/arch/arm64/include/asm/kvm_host.h
+> +++ b/arch/arm64/include/asm/kvm_host.h
+> @@ -26,6 +26,7 @@
+>  #include <asm/fpsimd.h>
+>  #include <asm/kvm.h>
+>  #include <asm/kvm_asm.h>
+> +#include <asm/kvm_rme.h>
+>  
+>  #define __KVM_HAVE_ARCH_INTC_INITIALIZED
+>  
+> @@ -240,6 +241,9 @@ struct kvm_arch {
+>  	 * the associated pKVM instance in the hypervisor.
+>  	 */
+>  	struct kvm_protected_vm pkvm;
+> +
+> +	bool is_realm;
+               ^
+It would be better to put more comments which really helps on the review.
 
-Thanks,
-Itaru.
+I was looking for the user of this memeber to see when it is set. It seems
+it is not in this patch. It would have been nice to have a quick answer from the
+comments.
+> +	struct realm realm;
+>  };
+>  
+>  struct kvm_vcpu_fault_info {
+> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
+> new file mode 100644
+> index 000000000000..c26bc2c6770d
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/kvm_rme.h
+> @@ -0,0 +1,22 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2023 ARM Ltd.
+> + */
+> +
+> +#ifndef __ASM_KVM_RME_H
+> +#define __ASM_KVM_RME_H
+> +
+> +enum realm_state {
+> +	REALM_STATE_NONE,
+> +	REALM_STATE_NEW,
+> +	REALM_STATE_ACTIVE,
+> +	REALM_STATE_DYING
+> +};
+> +
+> +struct realm {
+> +	enum realm_state state;
+> +};
+> +
+> +int kvm_init_rme(void);
+> +
+> +#endif
+> diff --git a/arch/arm64/include/asm/virt.h b/arch/arm64/include/asm/virt.h
+> index 4eb601e7de50..be1383e26626 100644
+> --- a/arch/arm64/include/asm/virt.h
+> +++ b/arch/arm64/include/asm/virt.h
+> @@ -80,6 +80,7 @@ void __hyp_set_vectors(phys_addr_t phys_vector_base);
+>  void __hyp_reset_vectors(void);
+>  
+>  DECLARE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
+> +DECLARE_STATIC_KEY_FALSE(kvm_rme_is_available);
+>  
+>  /* Reports the availability of HYP mode */
+>  static inline bool is_hyp_mode_available(void)
+> diff --git a/arch/arm64/kvm/Makefile b/arch/arm64/kvm/Makefile
+> index 5e33c2d4645a..d2f0400c50da 100644
+> --- a/arch/arm64/kvm/Makefile
+> +++ b/arch/arm64/kvm/Makefile
+> @@ -20,7 +20,8 @@ kvm-y += arm.o mmu.o mmio.o psci.o hypercalls.o pvtime.o \
+>  	 vgic/vgic-v3.o vgic/vgic-v4.o \
+>  	 vgic/vgic-mmio.o vgic/vgic-mmio-v2.o \
+>  	 vgic/vgic-mmio-v3.o vgic/vgic-kvm-device.o \
+> -	 vgic/vgic-its.o vgic/vgic-debug.o
+> +	 vgic/vgic-its.o vgic/vgic-debug.o \
+> +	 rme.o
+>  
+>  kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o pmu.o
+>  
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 9c5573bc4614..d97b39d042ab 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -38,6 +38,7 @@
+>  #include <asm/kvm_asm.h>
+>  #include <asm/kvm_mmu.h>
+>  #include <asm/kvm_pkvm.h>
+> +#include <asm/kvm_rme.h>
+>  #include <asm/kvm_emulate.h>
+>  #include <asm/sections.h>
+>  
+> @@ -47,6 +48,7 @@
+>  
+>  static enum kvm_mode kvm_mode = KVM_MODE_DEFAULT;
+>  DEFINE_STATIC_KEY_FALSE(kvm_protected_mode_initialized);
+> +DEFINE_STATIC_KEY_FALSE(kvm_rme_is_available);
+>  
+>  DECLARE_KVM_HYP_PER_CPU(unsigned long, kvm_hyp_vector);
+>  
+> @@ -2213,6 +2215,12 @@ int kvm_arch_init(void *opaque)
+>  
+>  	in_hyp_mode = is_kernel_in_hyp_mode();
+>  
+> +	if (in_hyp_mode) {
+> +		err = kvm_init_rme();
+> +		if (err)
+> +			return err;
+> +	}
+> +
+>  	if (cpus_have_final_cap(ARM64_WORKAROUND_DEVICE_LOAD_ACQUIRE) ||
+>  	    cpus_have_final_cap(ARM64_WORKAROUND_1508412))
+>  		kvm_info("Guests without required CPU erratum workarounds can deadlock system!\n" \
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> new file mode 100644
+> index 000000000000..f6b587bc116e
+> --- /dev/null
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -0,0 +1,49 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2023 ARM Ltd.
+> + */
+> +
+> +#include <linux/kvm_host.h>
+> +
+> +#include <asm/rmi_cmds.h>
+> +#include <asm/virt.h>
+> +
+> +static int rmi_check_version(void)
+> +{
+> +	struct arm_smccc_res res;
+> +	int version_major, version_minor;
+> +
+> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, &res);
+> +
+> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
+> +		return -ENXIO;
+> +
+> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a0);
+> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a0);
+> +
+> +	if (version_major != RMI_ABI_MAJOR_VERSION) {
+> +		kvm_err("Unsupported RMI ABI (version %d.%d) we support %d\n",
+> +			version_major, version_minor,
+> +			RMI_ABI_MAJOR_VERSION);
+> +		return -ENXIO;
+> +	}
+> +
+> +	kvm_info("RMI ABI version %d.%d\n", version_major, version_minor);
+> +
+> +	return 0;
+> +}
+> +
+> +int kvm_init_rme(void)
+> +{
+> +	if (PAGE_SIZE != SZ_4K)
+> +		/* Only 4k page size on the host is supported */
+> +		return 0;
+> +
+> +	if (rmi_check_version())
+> +		/* Continue without realm support */
+> +		return 0;
+> +
+> +	/* Future patch will enable static branch kvm_rme_is_available */
+> +
+> +	return 0;
+> +}
 
->
->   # Run the stack in the FVP:
->   shrinkwrap run cca-3world.yaml -r ROOTFS=<my_rootfs.ext4> [--dry-run]
->
-> By default, building is done at ~/.shrinkwrap/build/cca-3world and the package
-> is created at ~/.shrinkwrap/package/cca-3world (this can be changed with
-> envvars).
->
-> The 'run' command will boot TF-A, RMM and host Linux kernel in the FVP, and
-> mount the provided rootfs. You will likely want to have copied the userspace
-> pieces into the rootfs before running, so you can create realms:
->
-> - ~/.shrinkwrap/package/cca-3world/Image (kernel with RMI and RSI support)
-> - ~/.shrinkwrap/package/cca-3world/lkvm (kvmtool able to launch realms)
-> - ~/.shrinkwrap/package/cca-3world/kvm-unit-tests.tgz (built kvm-unit-tests)
->
-> Once the FVP is booted to a shell, you can do something like this to launch a
-> Linux guest in a realm:
->
->   lkvm run --realm --disable-sve -c 1 -m 256 -k Image
->
-> [1] https://shrinkwrap.docs.arm.com
-> [2] https://gitlab.arm.com/tooling/shrinkwrap
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
