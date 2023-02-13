@@ -1,44 +1,44 @@
 Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817098F5F;
-	Mon, 13 Feb 2023 15:48:57 +0000 (UTC)
-Received: by mail-il1-f175.google.com with SMTP id n2so5336327ili.11;
-        Mon, 13 Feb 2023 07:48:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3E98F5F;
+	Mon, 13 Feb 2023 15:55:48 +0000 (UTC)
+Received: by mail-il1-f175.google.com with SMTP id k14so1101583ilo.9;
+        Mon, 13 Feb 2023 07:55:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1676303336;
+        d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Waw3704gOD/az5PcxO/EsghNrg3YZs8kXzHhQwOTEJs=;
-        b=L5JDfZTnchppM3i6PqdvZLVMUS05vfV6UthgxdbPQcP2L3fl48I39lLW0iJEfZkUwu
-         Yhd91zOLTLdUPCObSKvyqf5a2esNEHrrVH5jUviY7UGp55DzP3Vx7wko/pfxNuYcL3JF
-         sF8+crevet79/M2ZQwBGnzvAFtVje9FYHqRMM+xHXqQvuEu98OE2ZO4xhiKk+MmrRCD4
-         eVEJzyuV41/UWwvhPLRxYNpdL4NzIj6Gj7Dz9nd1v930bHIHEIklMpwWCYVp/uDEvLdG
-         +wlnMESx22SdV5y5lTx5s1QP1SP9eErTeKre0IHAFHoD5KHfSJPrpPMQupn3q3xCuQ/g
-         2ixQ==
+        bh=0+TZfyO96MuT6z1hpaU/81N8W1L7K7DdH8/8YCsn0po=;
+        b=cPyl1tdDXZ5qYnw44R9BEJT8bydv2rE67zAHJcwa0Gjm/AAQihVKqXkGJ+WEMdvVBm
+         t+rjMBR4VcGYJ4VNQekZJVijsjkK+EdlwPmNQ35ZAomo4G+JeTrSon1F1vGs57gMckwb
+         55uQpCHmoXMv8KV6rL+sEQPZyKrS5dJ6dSds4J5egseJG/5bISNybr2JDBtAhzaH54Yj
+         bsjPIXzqjQhDhGoO7QQ0SJT2ldbC0IXcF+j3lK6tIAA2RjdZz6pi6A4JtZd/OkhmSVEh
+         S/fhCBKaqLuV0PcxTqxjfhu6JOogve1E/8rdtlcfUAIUs7IDdjwMXaUcgHrdm9fbBb5a
+         BWpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1676303336;
+        d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Waw3704gOD/az5PcxO/EsghNrg3YZs8kXzHhQwOTEJs=;
-        b=3yvRebKEkX+Odb18Mz3U/fOEF+mUr3TtITmObwY4bwppUrwSu22koPSIaxmW3PPM4w
-         nVik2C3YUle0Fg0uyQOcbAusSdrAoXJkn/GE8HC1A8RrAfUUQ1ZzxgLRv1qg5AFCUJwy
-         Jp721ljGDpdUXiC4mCO5sTO9KYuzwFOxOrXdL64WsSgg/PIlGmA+GSoxqAeAmgkuTL5Q
-         7DqbOlxYRCVjZ8aIN8kMls129/1t/o7wiJ/VyKuWFOlGb/pMFW883GEAVCNKg/F0CW7d
-         9nG6F+VDW4wtltiHGGe4zgOagjSZ2bjh1q156ekiguCEquWrJuCMW/W55OSHsxsHLABx
-         Vg/Q==
-X-Gm-Message-State: AO0yUKUzSEE9ROO86pXuXvWA4VAgR2pfhjaF2ppQ8BDQuBzjCBqVLLMf
-	VSP9h7oThmgNd5pJDAzbJks=
-X-Google-Smtp-Source: AK7set+FwZ+W7PnwPjiG2Mo2t7jCLHwiWgiv5IrmVFUv0YbtS1W/pjLs5Z/wAor1s/0TtYblSNqN9g==
-X-Received: by 2002:a05:6e02:ee3:b0:315:363e:b140 with SMTP id j3-20020a056e020ee300b00315363eb140mr4769616ilk.1.1676303336441;
-        Mon, 13 Feb 2023 07:48:56 -0800 (PST)
+        bh=0+TZfyO96MuT6z1hpaU/81N8W1L7K7DdH8/8YCsn0po=;
+        b=RpxZGzzaBsrRr4BqjVAFIR77Zgtx73Dtqg4UZTsRhv2kSYEBjIMk76h1xWLe/8YbA6
+         vdBF+DYzRuYgNa96ayI8D9v0b5kxzFgimGeEoRhYlXZagSc4ANFVbKv7bz8ea+iGTfjx
+         TfhQ/DxohmGddGiDsH7/+Ja1EaB1/crBa2xuJqiviLt8N54h3JI7FHQcYBR6+OZm9XyM
+         vadi/T+CBcP5vPW3sUCpX63L2ki4S4OQk6jBPGwH047VUWIqrFTnm/T69y3zrgg6lhhn
+         rVilVYLA9vzt78+WTJagt9N/MYae/dCpSBybABTDl5y9tvOEmmn364/jLA//MOLbmBg4
+         gdzQ==
+X-Gm-Message-State: AO0yUKX+eTlFp+RTvlmIWPQdzHtXVHs+eERTSiWuleUXf2XIEybZeJO9
+	objTixryUZf5nWmi+b2Bh/w=
+X-Google-Smtp-Source: AK7set+GP57b23l4H7mZbkBUG5+1tmsloUkZbk2K4Lht+GiGt0jBGf9WhoYhh29+cRjOHLVgOKAXEw==
+X-Received: by 2002:a92:6801:0:b0:315:5436:a632 with SMTP id d1-20020a926801000000b003155436a632mr635911ilc.2.1676303747888;
+        Mon, 13 Feb 2023 07:55:47 -0800 (PST)
 Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id h26-20020a02c73a000000b00389d02a032dsm4041122jao.172.2023.02.13.07.48.53
+        by smtp.gmail.com with ESMTPSA id r13-20020a92d44d000000b0031550a3dc7esm399373ilm.32.2023.02.13.07.55.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 07:48:56 -0800 (PST)
-Date: Mon, 13 Feb 2023 17:48:46 +0200
+        Mon, 13 Feb 2023 07:55:47 -0800 (PST)
+Date: Mon, 13 Feb 2023 17:55:41 +0200
 From: Zhi Wang <zhi.wang.linux@gmail.com>
 To: Steven Price <steven.price@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Catalin Marinas
@@ -51,7 +51,7 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Catalin Marinas
  <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
  linux-coco@lists.linux.dev
 Subject: Re: [RFC PATCH 04/28] arm64: RME: Check for RME support at KVM init
-Message-ID: <20230213174846.00003fad@gmail.com>
+Message-ID: <20230213175541.00007cc9@gmail.com>
 In-Reply-To: <20230127112932.38045-5-steven.price@arm.com>
 References: <20230127112248.136810-1-suzuki.poulose@arm.com>
 	<20230127112932.38045-1-steven.price@arm.com>
@@ -132,12 +132,6 @@ Steven Price <steven.price@arm.com> wrote:
 >  	struct kvm_protected_vm pkvm;
 > +
 > +	bool is_realm;
-               ^
-It would be better to put more comments which really helps on the review.
-
-I was looking for the user of this memeber to see when it is set. It seems
-it is not in this patch. It would have been nice to have a quick answer from the
-comments.
 > +	struct realm realm;
 >  };
 >  
@@ -163,6 +157,10 @@ comments.
 > +	REALM_STATE_DYING
 > +};
 > +
+
+By the way, it is better to add more comments to introduce about the states
+here.
+
 > +struct realm {
 > +	enum realm_state state;
 > +};
