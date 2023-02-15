@@ -1,325 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A42BA54
-	for <linux-coco@lists.linux.dev>; Tue, 14 Feb 2023 17:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1676394790;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y/5VgWxD5A7kEC1uUIaEm14WHnCpjbWdzDimNIwkMXo=;
-	b=aUHbYn7dQgYEL51cejFJsSbHQx2rzo+zoVF6ES+e79uSaVSHQiFc2ZQ1qtLdFya6MPCABf
-	qPKJZpLRTuzF0HBveYxH/2FPrui8AGATYEW538izl7vU2/VVfB4mIc3J+FkO+tiiHBQ6dP
-	p/AB4TsbfQ8XgRdTc7EjC471DjRJ/So=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-668-e3EpeP9VM7mynr313Y1YKQ-1; Tue, 14 Feb 2023 12:13:06 -0500
-X-MC-Unique: e3EpeP9VM7mynr313Y1YKQ-1
-Received: by mail-wr1-f72.google.com with SMTP id r15-20020a5d494f000000b002c54d9b8312so1722208wrs.5
-        for <linux-coco@lists.linux.dev>; Tue, 14 Feb 2023 09:13:06 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y/5VgWxD5A7kEC1uUIaEm14WHnCpjbWdzDimNIwkMXo=;
-        b=ng9ScfuL9jhyGyObBRpOtVUY2MkD/yz/XiD1i/lx+O/GtCWx4surC8veAFwWk+ZXiw
-         aif2uTJvOM8S+PmlukFL3Y1HEFdsfTvG/iucQkqZ6NvQQEKciYKllAQEfxyOwjSspKsN
-         XOCGfSB4iRq+qJfi2DojAS2nyF9btxkUCyy+wyBBPBAs9YvQ9btk0kJR31pZCEn0UdGs
-         SguMdcm18mVSDR/Ezabo4obUJQpQGRAdY3zLha9QIl5pXTanhqh0cLu1gYGp8naA9Dls
-         yJl09Kr9cDqd8DV1iYndIvhKP0C4hCctX87Syhr2NWOhfnlQ7G5lXN92o7m95sS/aDG4
-         EfVg==
-X-Gm-Message-State: AO0yUKXErGuy5w9U0aDNkIuBQ3Vec2qP8frcXq+9Vd/LN3HWzBwqAcsa
-	akr4lBw/Gq/qSkcoYr5Hs0NH4V4HhaS+S93usob+YQ1Z0kuw8QjNP0GPiH7JXP1sYmtaYEzvCtr
-	wxMLwmCsvGWcN3ai4SFJXBg==
-X-Received: by 2002:a05:600c:2e95:b0:3dc:d5b:5f6a with SMTP id p21-20020a05600c2e9500b003dc0d5b5f6amr2691513wmn.30.1676394784978;
-        Tue, 14 Feb 2023 09:13:04 -0800 (PST)
-X-Google-Smtp-Source: AK7set/cJ2piCMFvK42J7bNZHKpTnu+3/VQ2u9+S6qVF3JZHtDfSzPg6gZVBJQN9lL9IMudwblyc5Q==
-X-Received: by 2002:a05:600c:2e95:b0:3dc:d5b:5f6a with SMTP id p21-20020a05600c2e9500b003dc0d5b5f6amr2691475wmn.30.1676394784663;
-        Tue, 14 Feb 2023 09:13:04 -0800 (PST)
-Received: from work-vm (ward-16-b2-v4wan-166627-cust863.vm18.cable.virginm.net. [81.97.203.96])
-        by smtp.gmail.com with ESMTPSA id o19-20020a05600c4fd300b003dc59d6f2f8sm18425547wmq.17.2023.02.14.09.13.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Feb 2023 09:13:04 -0800 (PST)
-Date: Tue, 14 Feb 2023 17:13:01 +0000
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, James Morse <james.morse@arm.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Quentin Perret <qperret@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>,
-	Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	kvmarm@lists.cs.columbia.edu
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-Message-ID: <Y+vBHXbxPBgHxzGY@work-vm>
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28E315AD
+	for <linux-coco@lists.linux.dev>; Wed, 15 Feb 2023 01:53:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1676426003; x=1707962003;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=YjzMRrr79cvWHhnzBj3/lDYHN5uz17MKB6Bd7+tQo6I=;
+  b=ccVIvoMUNKKdghLHp1i23APOpRgcUTyrkt3h7s5Hse9F9VRq5DQfjQlF
+   4YROD+YOUCuR2FX50GsYx6jwu7lFN4HbU+W7hHv+YpMKH+yd7HlUfj+dl
+   1W6Eiou5LuGOSffjqhYQei0zN3vQZEy4RI0QjBOA9Rqp8Sm1k0fd5y7Lv
+   v50cfVJMRjl8GFl6/uzj2pMQ4x2cCUB7BK/52VXR4rHDPD3jDjadDcy+l
+   ZSDe+wF7QsFSjyysxMIXuCCDHfhWm4KzU9y/XTpIePUtCD/CQM+R1a4OK
+   TVl4bP/K8yJH0dxsgfu40gGGeNYeGhrRs33KtOkr2n90uWIW843iRfRvf
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="333457967"
+X-IronPort-AV: E=Sophos;i="5.97,298,1669104000"; 
+   d="scan'208";a="333457967"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2023 17:53:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10621"; a="733099146"
+X-IronPort-AV: E=Sophos;i="5.97,298,1669104000"; 
+   d="scan'208";a="733099146"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmsmga008.fm.intel.com with ESMTP; 14 Feb 2023 17:53:22 -0800
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Tue, 14 Feb 2023 17:53:22 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16; Tue, 14 Feb 2023 17:53:22 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.16 via Frontend Transport; Tue, 14 Feb 2023 17:53:22 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.171)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.16; Tue, 14 Feb 2023 17:53:21 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gxZZ8y9MYQqNSikNNQgDesPlEsLIRxqBixxiHse4OQBRtEa5iOzgDHowb/xSn+hti1Zrf3jUIH/dU+KEAKV6bUKBN7yfatYBSAXjKA7FtxEH46ZzGKy+E0K47ZaWjSmM2q3Q/p2KNdSDHg8NYhrT1HAlfG54QvWRWcRU9K1+8N11eAxBMkgwYiAfQwUNUb5GoVEAB1aTlUmmfv8Q2VJvF5IW+M0J97mvZJ58S/96K+ggZh2il/28D40BVB5GRA8RXYjYfONWzwDx4/gMdGyD0/ImdvcPXChCw9j80Kx3f4twSpiiMLy5+BESfvQP28iZX5FYjYQ+5JkgEWVE0idNFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YjzMRrr79cvWHhnzBj3/lDYHN5uz17MKB6Bd7+tQo6I=;
+ b=HXbi0aHfZgfKowfQNaIX2zuINNAgwe1mf3uWVo9f3PnbX6CqJ5P9FiyMWkj8OgQx9aDyl8bvtyghMPqRVs1UdIqxlWoTAnoKvHT9K20ixh50HI+F17/oXesgrd1DCfhk9BawCv8iCvXSeAZ0317BOhhjxrgBD/uk4H0TUPLkzQZsYyi3+5j5t/KhcRhrcixt6ipIziywaQjHS9ij0E4WJ1j9uZrfN4noChatctZhXtnpxcu5hq9UIh9bNwjJJGOUMPDgoK4oFB0SNPzWIxNms11JDJVmcOvm2PxhE+FtADirHc3b2vjbY+Q852YtfSf999RD+XC2YB0QIrXqsH1MJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
+ by DM6PR11MB4561.namprd11.prod.outlook.com (2603:10b6:5:2ae::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6086.24; Wed, 15 Feb
+ 2023 01:53:19 +0000
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::3f19:b226:ebf1:b04a]) by BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::3f19:b226:ebf1:b04a%7]) with mapi id 15.20.6086.026; Wed, 15 Feb 2023
+ 01:53:19 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>, "bp@alien8.de" <bp@alien8.de>
+CC: "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "kexec@lists.infradead.org"
+	<kexec@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Yamahata, Isaku" <isaku.yamahata@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH 2/2] x86/tdx: Convert shared memory back to private on
+ kexec
+Thread-Topic: [PATCH 2/2] x86/tdx: Convert shared memory back to private on
+ kexec
+Thread-Index: AQHZQAXD7tsyIloqhU2IdZsgp2Dap67PQH4A
+Date: Wed, 15 Feb 2023 01:53:19 +0000
+Message-ID: <39b41f5b5852c5e9d23acb84a4ed4d9bf8a7c092.camel@intel.com>
+References: <20230213234836.3683-1-kirill.shutemov@linux.intel.com>
+	 <20230213234836.3683-3-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20230213234836.3683-3-kirill.shutemov@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DM6PR11MB4561:EE_
+x-ms-office365-filtering-correlation-id: 9a42e274-a81d-4da6-0795-08db0ef7697c
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: VSGvgC4PrsHVO0rVjVCNrxXBGlFGLZK2pSc6mZhEZudcnjXI0rLRnwVUVnz48Vy1uGmarL9pVTH/CeRYyAanvqIgVAT3rBQvemyg6Lz9VqnsT4zsKnuCgNNcBYPcr7guzCXp0Ro7dK3X0eAhAHTjxGuKn3yWKZeJ0levR433ezRn/47zywGvFwEGd8MUEZDRMGzQlslKv/+Ogi0IKYa3IqBtcDIuXSMUwEJbR+Aj4GnDoaBVjELZxELKEQBF9jG4w2lHTLdbuUG8E6BMGCcbsU5tQn4LCHvyWCuN981AURT2QCpC//k/qVoIvAydWhorjQQFHMi8P0AY04BX+vFlbxncnPVeWTNIE93zB/SpvObqIgddPOzWfLCrGcjo3XocYJeqPzQaXjH/QCl9WVn7+8YbpuDQp59gygPrDxnt6PTCWuipup++5UMRj7CA/xJ//11NsELdhq2VVfOKxlcYuGIsctqz6mWZy/UFSCsN4WtWDQ4kqXWhgSpUsxv772Gq8OMmnarbXpL6hMw4TmL2zVySE6DAo2aS5AIO5F+hydqaOOBOfrEh6SJRQln+ziH36ezZL5ApTwJiWUrtZf8MX2xAW1aXjAcRKZfFxJeKoHm7gNywl2fuZur0zd+/r+U5NqWQMomTuojkiQB6UKA98qm3lteIUuYWKOdTG+C4ufebQKisz7R4AfIMMl3PkUGP0MxB4ENzHLNsLBUBMMRTFA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(136003)(366004)(376002)(39860400002)(346002)(396003)(451199018)(82960400001)(91956017)(66946007)(38100700002)(76116006)(5660300002)(66476007)(4326008)(2616005)(6486002)(38070700005)(41300700001)(36756003)(71200400001)(66556008)(8936002)(8676002)(64756008)(478600001)(2906002)(110136005)(54906003)(66446008)(316002)(83380400001)(26005)(186003)(86362001)(6512007)(122000001)(6506007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZDNYMHNUZHlJOWdNekE1Wk9MQkp4dGZYdTNjT3RJbU0zcVdNbmdoMmYzWTNG?=
+ =?utf-8?B?WVJxS3B2U2p4WU12aHRjaGc3QVgvTDlnS2JJK0l3ZVAwOVpoaU90cnl0SXFG?=
+ =?utf-8?B?TWRzcXFCVytwR0MxU0tHazQvd2M3WnFRMlIxdUs0UVc4RkFoL2VTVGRBUmxS?=
+ =?utf-8?B?TUVJV3ovU3VBanpyRTBUUFlvOUJQREtodzYzT0Q3ekJzSzgyd0s3eGQ4OGgx?=
+ =?utf-8?B?NGIxSlBxV1ZENlVrWTlYaWlxL25tRmd4QWd5U1MwTStZSUhIYlZNVlJXZ1dp?=
+ =?utf-8?B?bk1uazI1SXRJNWhFMUxjMjlTUml1ODYvWFZqSzA0cVVSQTF2b1lhazY2NDNs?=
+ =?utf-8?B?dzlJWWpNcEhtQnE4aEh4SlpOWE5oQjNrUi82TkNrWmNFZ0xBSnhnZW1sWDRR?=
+ =?utf-8?B?eE5hbXZBWEJpQ3dsMzVhZVVYUTJRRmdLeC9xYmVMWm95RU5DMDUrdTUvb2RP?=
+ =?utf-8?B?SXcvdVZrWHlwYm00QXpRTTE0NDRUTG1qK3pqOVZjUWJqaEsvUnB3Q201K2JE?=
+ =?utf-8?B?SmRsa2tGZXBneE4xeFY5a240bGpEemJRMUViVnNMUFFKUDFzZDEzRGN4ZDht?=
+ =?utf-8?B?MTNZd0N2b21qQkdwdXVldUpWN1d1L2VXYThGbTJ3NVZiS3Yrc1BGT2Z1T0pq?=
+ =?utf-8?B?WUMvWTdvWCtmR0pqYVFvVjB2VlBzTVU0eUt1aDdTT2hpUUVsVlk4dXlyZUkr?=
+ =?utf-8?B?K0RxckpwNnpTUXU0YWs0UE05NHgva3hmbC8yUnBKUmxIazRqTXl4M3h1N1BB?=
+ =?utf-8?B?KzBndUFXNHJIbFlhSGo0ZVAvemZOUGdTU05OMFB0SDh4VEg5QjcybityeXNN?=
+ =?utf-8?B?YW5MeXg2MTVORGdwVUxveDQveUtMUUhqWDU3emVocDhkaVo2di9hYm1IaVh5?=
+ =?utf-8?B?U2xrd3JnK0lhZFlRWE9UbTVIWTNXczVWZUFZU1lKcXY3MUJGSWRxQmUyQ05Y?=
+ =?utf-8?B?YmVTdlFzUWoxWVVNazlKWmFqZisvTEdXMGlJZE82eTVPSCs3a3JQeVFvSkFM?=
+ =?utf-8?B?OXJqUzhzVkozV3cvK3piUFRMbyt4NzVma2pHekIrN3ZrYlNZOVNUbG9FZFN3?=
+ =?utf-8?B?TklhSTJqZ05LRDVTTFIxM0wvNUdPNFNnTXFLbG9tMVFhVGJmbEFuaUJrblV2?=
+ =?utf-8?B?eTUzY0dvVEZ4VVBnbkhQdE5tcHQ2bVZiK2Njd2VqckVhbURVdk5XelhnbDhi?=
+ =?utf-8?B?dmE0Q1BLdnBVQStNOTFHcFA5VzU0MGg4QTBmTVBQbGNpcXBpVVUwVENwRWVS?=
+ =?utf-8?B?T21IY3NOdmh5NnRNTlFDY2lobG5iWGo2U1BERlVaVWhVUFdBZVQzRk5LNlVF?=
+ =?utf-8?B?WS9SaEJuMFJJVmcxR3JKZDB6VGkxT0dqSUFocE9vdUVlOGNoelpHSWpZMmdY?=
+ =?utf-8?B?bkpTWTNoeHQ1bklBTWRVN0tFeGpVWmlJeUhubk9SNzZFZ3pIRWZoN1E1MTli?=
+ =?utf-8?B?NVFWQjJpbW0vYWZ4NndRUnZkRTB2ekhxVTRpa2dUR2VVc3grMXR0V0FpSDQ5?=
+ =?utf-8?B?N3I2K2VrL3Jzand0WVNiVnBtdEhCVEdXWDZGb25LU1hsNHMzRXkzT2QxMVEr?=
+ =?utf-8?B?NDZLeHI1ZFAxMisxUVZoT0NlcDBqbHp1UHdjZ0FZcDdRUnR6VFRXUkdqZWZi?=
+ =?utf-8?B?QWVTQjQxek9wVnlXYzJlMjUrMkFmOGFaYWp0UE9ReWhBVkszKy9PeVlkbVJT?=
+ =?utf-8?B?WjJ1cGhMOGlhT3BiRVg4QzdPVGxyWXVjbXhKL2JUK0hiVXN0cUVDVHpMajNy?=
+ =?utf-8?B?TUhQU2svblllNWVLWjg2cjRQM093OEpCTUFyeHM1NFdoeEsxN2xrb1JhbElE?=
+ =?utf-8?B?dkZZTjJuVDM5MHlGWTA5Z0JiL0xZMjJGbGF4NlIxSXBsNVpiN25jYVJMVWsv?=
+ =?utf-8?B?WlA2ZC81Ynd3WTZBd05FcEVBeXVPTFZwcWQ1bXR1Z0RmdXNUWFBzczFuODJp?=
+ =?utf-8?B?TWFZZmRTRU81ZmVEeGY2TC9IQStWT2hJbDVReWxVS09PSjhtSURWdEdvS1E2?=
+ =?utf-8?B?dXlsdGwxMXJGNVV0QXNITUpVRkk4aW9mQ29KckRnQ1Ezbk5Wai9KUmRKWU9R?=
+ =?utf-8?B?MXhXQzRNdHArKytPdVhRUnE1UjNWVjZXWmpFbi9RWHJQc1NoKzZBRzU3ZVdV?=
+ =?utf-8?B?dUthWE5YY2hsSTNRTmRkdFlvOTQ1dmZvZ3d0eEI2TGxLSTlZSzUxS1djTVhO?=
+ =?utf-8?B?T1E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <84C0A106BEDF754AB6C2B2D0730CF993@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <20230127112248.136810-1-suzuki.poulose@arm.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a42e274-a81d-4da6-0795-08db0ef7697c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2023 01:53:19.2035
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: qT4NH8sUdf2GlhIIg3uxMI87Zbk1HWYA+gSDatyK5FtZiQKnIFeE42DfkBJiN1ymwVweSoNAEIuYdhA6IeEh8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4561
+X-OriginatorOrg: intel.com
 
-* Suzuki K Poulose (suzuki.poulose@arm.com) wrote:
-> We are happy to announce the early RFC version of the Arm
-> Confidential Compute Architecture (CCA) support for the Linux
-> stack. The intention is to seek early feedback in the following areas:
->  * KVM integration of the Arm CCA
->  * KVM UABI for managing the Realms, seeking to generalise the operations
->    wherever possible with other Confidential Compute solutions.
->    Note: This version doesn't support Guest Private memory, which will be added
->    later (see below).
->  * Linux Guest support for Realms
-> 
-> Arm CCA Introduction
-> =====================
-> 
-> The Arm CCA is a reference software architecture and implementation that builds
-> on the Realm Management Extension (RME), enabling the execution of Virtual
-> machines, while preventing access by more privileged software, such as hypervisor.
-> The Arm CCA allows the hypervisor to control the VM, but removes the right for
-> access to the code, register state or data that is used by VM.
-> More information on the architecture is available here[0].
-> 
->     Arm CCA Reference Software Architecture
-> 
->         Realm World    ||    Normal World   ||  Secure World  ||
->                        ||        |          ||                ||
->  EL0 x-------x         || x----x | x------x ||                ||
->      | Realm |         || |    | | |      | ||                ||
->      |       |         || | VM | | |      | ||                ||
->  ----|  VM*  |---------||-|    |---|      |-||----------------||
->      |       |         || |    | | |  H   | ||                ||
->  EL1 x-------x         || x----x | |      | ||                ||
->          ^             ||        | |  o   | ||                ||
->          |             ||        | |      | ||                ||
->  ------- R*------------------------|  s  -|---------------------
->          S             ||          |      | ||                ||
->          I             ||          |  t   | ||                ||
->          |             ||          |      | ||                || 
->          v             ||          x------x ||                ||
->  EL2    RMM*           ||              ^    ||                ||
->          ^             ||              |    ||                ||
->  ========|=============================|========================
->          |                             | SMC
->          x--------- *RMI* -------------x
-> 
->  EL3                   Root World
->                        EL3 Firmware
->  ===============================================================
-> Where :
->  RMM - Realm Management Monitor
->  RMI - Realm Management Interface
->  RSI - Realm Service Interface
->  SMC - Secure Monitor Call
-
-Hi,
-  It's nice to see this full stack posted - thanks!
-
-Are there any pointers to information on attestation and similar
-measurement things?  In particular, are there any plans for a vTPM
-for Realms - if there were, it would make life easy for us, since we
-can share some user space stuff with other CoCo systems.
-
-Dave
-
-> RME introduces a new security state "Realm world", in addition to the
-> traditional Secure and Non-Secure states. The Arm CCA defines a new component,
-> Realm Management Monitor (RMM) that runs at R-EL2. This is a standard piece of
-> firmware, verified, installed and loaded by the EL3 firmware (e.g, TF-A), at
-> system boot.
-> 
-> The RMM provides standard interfaces - Realm Management Interface (RMI) - to the
-> Normal world hypervisor to manage the VMs running in the Realm world (also called
-> Realms in short). These are exposed via SMC and are routed through the EL3
-> firmwre.
-> The RMI interface includes:
->   - Move a physical page from the Normal world to the Realm world
->   - Creating a Realm with requested parameters, tracked via Realm Descriptor (RD)
->   - Creating VCPUs aka Realm Execution Context (REC), with initial register state.
->   - Create stage2 translation table at any level.
->   - Load initial images into Realm Memory from normal world memory
->   - Schedule RECs (vCPUs) and handle exits
->   - Inject virtual interrupts into the Realm
->   - Service stage2 runtime faults with pages (provided by host, scrubbed by RMM).
->   - Create "shared" mappings that can be accessed by VMM/Hyp.
->   - Reclaim the memory allocated for the RAM and RTTs (Realm Translation Tables)
-> 
-> However v1.0 of RMM specifications doesn't support:
->  - Paging protected memory of a Realm VM. Thus the pages backing the protected
->    memory region must be pinned.
->  - Live migration of Realms.
->  - Trusted Device assignment.
->  - Physical interrupt backed Virtual interrupts for Realms
-> 
-> RMM also provides certain services to the Realms via SMC, called Realm Service
-> Interface (RSI). These include:
->  - Realm Guest Configuration.
->  - Attestation & Measurement services
->  - Managing the state of an Intermediate Physical Address (IPA aka GPA) page.
->  - Host Call service (Communication with the Normal world Hypervisor)
-> 
-> The specifications for the RMM software is currently at *v1.0-Beta2* and the
-> latest version is available here [1].
-> 
-> The Trusted Firmware foundation has an implementation of the RMM - TF-RMM -
-> available here [3].
-> 
-> Implementation
-> =================
-> 
-> This version of the stack is based on the RMM specification v1.0-Beta0[2], with
-> following exceptions :
->   - TF-RMM/KVM currently doesn't support the optional features of PMU,
->      SVE and Self-hosted debug (coming soon).
->   - The RSI_HOST_CALL structure alignment requirement is reduced to match
->      RMM v1.0 Beta1
->   - RMI/RSI version numbers do not match the RMM spec. This will be
->     resolved once the spec/implementation is complete, across TF-RMM+Linux stack.
-> 
-> We plan to update the stack to support the latest version of the RMMv1.0 spec
-> in the coming revisions.
-> 
-> This release includes the following components :
-> 
->  a) Linux Kernel
->      i) Host / KVM support - Support for driving the Realms via RMI. This is
->      dependent on running in the Kernel at EL2 (aka VHE mode). Also provides
->      UABI for VMMs to manage the Realm VMs. The support is restricted to 4K page
->      size, matching the Stage2 granule supported by RMM. The VMM is responsible
->      for making sure the guest memory is locked.
-> 
->        TODO: Guest Private memory[10] integration - We have been following the
->        series and support will be added once it is merged upstream.
->      
->      ii) Guest support - Support for a Linux Kernel to run in the Realm VM at
->      Realm-EL1, using RSI services. This includes virtio support (virtio-v1.0
->      only). All I/O are treated as non-secure/shared.
->  
->  c) kvmtool - VMM changes required to manage Realm VMs. No guest private memory
->     as mentioned above.
->  d) kvm-unit-tests - Support for running in Realms along with additional tests
->     for RSI ABI.
-> 
-> Running the stack
-> ====================
-> 
-> To run/test the stack, you would need the following components :
-> 
-> 1) FVP Base AEM RevC model with FEAT_RME support [4]
-> 2) TF-A firmware for EL3 [5]
-> 3) TF-A RMM for R-EL2 [3]
-> 4) Linux Kernel [6]
-> 5) kvmtool [7]
-> 6) kvm-unit-tests [8]
-> 
-> Instructions for building the firmware components and running the model are
-> available here [9]. Once, the host kernel is booted, a Realm can be launched by
-> invoking the `lkvm` commad as follows:
-> 
->  $ lkvm run --realm 				 \
-> 	 --measurement-algo=["sha256", "sha512"] \
-> 	 --disable-sve				 \
-> 	 <normal-vm-options>
-> 
-> Where:
->  * --measurement-algo (Optional) specifies the algorithm selected for creating the
->    initial measurements by the RMM for this Realm (defaults to sha256).
->  * GICv3 is mandatory for the Realms.
->  * SVE is not yet supported in the TF-RMM, and thus must be disabled using
->    --disable-sve
-> 
-> You may also run the kvm-unit-tests inside the Realm world, using the similar
-> options as above.
-> 
-> 
-> Links
-> ============
-> 
-> [0] Arm CCA Landing page (See Key Resources section for various documentations)
->     https://www.arm.com/architecture/security-features/arm-confidential-compute-architecture
-> 
-> [1] RMM Specification Latest
->     https://developer.arm.com/documentation/den0137/latest
-> 
-> [2] RMM v1.0-Beta0 specification
->     https://developer.arm.com/documentation/den0137/1-0bet0/
-> 
-> [3] Trusted Firmware RMM - TF-RMM
->     https://www.trustedfirmware.org/projects/tf-rmm/
->     GIT: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
-> 
-> [4] FVP Base RevC AEM Model (available on x86_64 / Arm64 Linux)
->     https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms
-> 
-> [5] Trusted Firmware for A class
->     https://www.trustedfirmware.org/projects/tf-a/
-> 
-> [6] Linux kernel support for Arm-CCA
->     https://gitlab.arm.com/linux-arm/linux-cca
->     Host Support branch:	cca-host/rfc-v1
->     Guest Support branch:	cca-guest/rfc-v1
-> 
-> [7] kvmtool support for Arm CCA
->     https://gitlab.arm.com/linux-arm/kvmtool-cca cca/rfc-v1
-> 
-> [8] kvm-unit-tests support for Arm CCA
->     https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca  cca/rfc-v1
-> 
-> [9] Instructions for Building Firmware components and running the model, see
->     section 4.19.2 "Building and running TF-A with RME"
->     https://trustedfirmware-a.readthedocs.io/en/latest/components/realm-management-extension.html#building-and-running-tf-a-with-rme
-> 
-> [10] fd based Guest Private memory for KVM
->    https://lkml.kernel.org/r/20221202061347.1070246-1-chao.p.peng@linux.intel.com
-> 
-> Cc: Alexandru Elisei <alexandru.elisei@arm.com>
-> Cc: Andrew Jones <andrew.jones@linux.dev>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Chao Peng <chao.p.peng@linux.intel.com>
-> Cc: Christoffer Dall <christoffer.dall@arm.com>
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: James Morse <james.morse@arm.com>
-> Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Cc: Joey Gouly <Joey.Gouly@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Quentin Perret <qperret@google.com>
-> Cc: Sean Christopherson <seanjc@google.com>
-> Cc: Steven Price <steven.price@arm.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Zenghui Yu <yuzenghui@huawei.com>
-> To: linux-coco@lists.linux.dev
-> To: kvmarm@lists.linux.dev
-> Cc: kvmarm@lists.cs.columbia.edu
-> Cc: linux-arm-kernel@lists.infradead.org
-> To: linux-kernel@vger.kernel.org
-> To: kvm@vger.kernel.org
-> 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
-
+DQo+ICt2b2lkIHRkeF9rZXhlY19wcmVwYXJlKGJvb2wgY3Jhc2gpDQo+ICt7DQo+ICsJLyoNCj4g
+KwkgKiBDcmFzaCBrZXJuZWwgbWF5IHdhbnQgdG8gc2VlIGRhdGEgaW4gdGhlIHNoYXJlZCBidWZm
+ZXJzLg0KPiArCSAqIERvIG5vdCByZXZlcnQgdGhlbSB0byBwcml2YXRlIG9uIGtleGVjIG9mIGNy
+YXNoIGtlcm5lbC4NCj4gKwkgKi8NCj4gKwlpZiAoY3Jhc2gpDQo+ICsJCXJldHVybjsNCj4gKw0K
+PiArCS8qDQo+ICsJICogV2FsayBkaXJlY3QgbWFwcGluZyBhbmQgY29udmVydCBhbGwgc2hhcmVk
+IG1lbW9yeSBiYWNrIHRvIHByaXZhdGUsDQo+ICsJICogc28gdGhlIHRhcmdldCBrZXJuZWwgd2ls
+bCBiZSBhYmxlIHVzZSBpdCBub3JtYWxseS4NCj4gKwkgKi8NCj4gKwltbWFwX3dyaXRlX2xvY2so
+JmluaXRfbW0pOw0KPiArCXdhbGtfcGFnZV9yYW5nZV9ub3ZtYSgmaW5pdF9tbSwNCj4gKwkJCSAg
+ICAgIFBBR0VfT0ZGU0VULA0KPiArCQkJICAgICAgUEFHRV9PRkZTRVQgKyAobWF4X3Bmbl9tYXBw
+ZWQgPDwgUEFHRV9TSElGVCksDQo+ICsJCQkgICAgICAmdW5zaGFyZV9vcHMsIGluaXRfbW0ucGdk
+LCBOVUxMKTsNCj4gKwltbWFwX3dyaXRlX3VubG9jaygmaW5pdF9tbSk7DQo+ICt9DQoNCkxvb2tz
+IHRoZSBwYWdlIHRhYmxlIHdhbGsgaXMgZG9uZSB1bmNvbmRpdGlvbmFsbHkgd2hlbiAhY3Jhc2gu
+DQoNCkkgdGhpbmsgaXQncyBiZXR0ZXIgdG8gY2hlY2sgd2hldGhlciB0aGlzIGlzIFREWCBndWVz
+dCAoZWl0aGVyIHRoaXMgZnVuY3Rpb24sIG9yDQpiZWxvdyBpbiBtYWNoaW5lX2tleGVjKCkpIGFu
+ZCBqdXN0IHJldHVybiBlYXJseSBpZiBpdCdzIG5vdCBhIFREWCBndWVzdD8NCg0KWy4uXQ0KDQoN
+Cj4gIC8qDQo+IEBAIC0zMTIsNiArMzEzLDcgQEAgdm9pZCBtYWNoaW5lX2tleGVjKHN0cnVjdCBr
+aW1hZ2UgKmltYWdlKQ0KPiAgCWxvY2FsX2lycV9kaXNhYmxlKCk7DQo+ICAJaHdfYnJlYWtwb2lu
+dF9kaXNhYmxlKCk7DQo+ICAJY2V0X2Rpc2FibGUoKTsNCj4gKwl0ZHhfa2V4ZWNfcHJlcGFyZShp
+bWFnZS0+dHlwZSA9PSBLRVhFQ19UWVBFX0NSQVNIKTsNCj4gIA0KPiAgCWlmIChpbWFnZS0+cHJl
+c2VydmVfY29udGV4dCkgew0KPiAgI2lmZGVmIENPTkZJR19YODZfSU9fQVBJQw0KDQo=
