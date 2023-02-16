@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A65553A2
-	for <linux-coco@lists.linux.dev>; Thu, 16 Feb 2023 12:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA6E5665
+	for <linux-coco@lists.linux.dev>; Thu, 16 Feb 2023 12:46:06 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4DEEA1EC052A;
-	Thu, 16 Feb 2023 13:46:03 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 242291EC0939;
+	Thu, 16 Feb 2023 13:46:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1676551563;
+	t=1676551565;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9ZqBaTyUq+/8HiR92mwl2yPYyLN2fWif2NArmQh+IzA=;
-	b=BNM4ohXRfPujeH3MiwTJmKCzLSP9XXLlBnUxwxGe1Y1vpXutEobUp0flNyeH6EhQa/VARV
-	6vYy70w8BHYzQWDrhefzSBYF6xqlXLTO3ZkXNDawxRU8fhSOXj8xFEROdUb1M4aivL3CQu
-	Jx+HbiHfMX+zxdSd28InZG7qSHGfges=
+	bh=IYyR0+BccWAZu5naODrqJjalGeVpYFKs8LsqRBbFls0=;
+	b=c6yj2Mo7eACRrEU430w1WrLOK3ntY1zESGOlbSkytO76Dk9elQjGbbC7fxGWAcvcRvI7du
+	9EZktuhoKJrxsfzEp/lyJmBcM5h+en5shQHXeDfqC07ohyUSE0elnyyUfygZP3Hm4Sgt+Y
+	l3MSRt4GtN5B1l7YTBcAsVKJ6QV4XHM=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Dionna Glaze <dionnaglaze@google.com>,
@@ -28,12 +28,13 @@ Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH 06/11] virt/coco/sev-guest: Do some code style cleanups
-Date: Thu, 16 Feb 2023 13:45:57 +0100
-Message-Id: <20230216124602.26849-1-bp@alien8.de>
+Subject: [PATCH 10/11] crypto: ccp: Get rid of __sev_platform_init_locked()'s local function pointer
+Date: Thu, 16 Feb 2023 13:46:01 +0100
+Message-Id: <20230216124602.26849-5-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230216124120.26578-1-bp@alien8.de>
+In-Reply-To: <20230216124602.26849-1-bp@alien8.de>
 References: <20230216124120.26578-1-bp@alien8.de>
+ <20230216124602.26849-1-bp@alien8.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -44,40 +45,65 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-Remove unnecessary linebreaks, make the code more compact.
+Add a wrapper instead.
 
 No functional changes.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/crypto/ccp/sev-dev.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index e72289de2b28..d430e2be2a22 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -392,18 +392,14 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index f60bb73edfda..c54cc8f9a284 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -440,11 +440,18 @@ static int __sev_init_ex_locked(int *error)
+ 	return __sev_do_cmd_locked(SEV_CMD_INIT_EX, &data, error);
+ }
  
- 	rc = __handle_guest_request(snp_dev, exit_code, fw_err);
- 	if (rc) {
--		dev_alert(snp_dev->dev,
--			  "Detected error from ASP request. rc: %d, fw_err: %llu\n",
--			  rc, *fw_err);
-+		dev_alert(snp_dev->dev, "Detected error from ASP request. rc: %d, fw_err: %llu\n", rc, *fw_err);
- 		snp_disable_vmpck(snp_dev);
- 		return rc;
++static inline int __sev_do_init_locked(int *psp_ret)
++{
++	if (sev_init_ex_buffer)
++		return __sev_init_ex_locked(psp_ret);
++	else
++		return __sev_init_locked(psp_ret);
++}
++
+ static int __sev_platform_init_locked(int *error)
+ {
+ 	int rc = 0, psp_ret = SEV_RET_NO_FW_CALL;
+ 	struct psp_device *psp = psp_master;
+-	int (*init_function)(int *error);
+ 	struct sev_device *sev;
+ 
+ 	if (!psp || !psp->sev_data)
+@@ -456,15 +463,12 @@ static int __sev_platform_init_locked(int *error)
+ 		return 0;
+ 
+ 	if (sev_init_ex_buffer) {
+-		init_function = __sev_init_ex_locked;
+ 		rc = sev_read_init_ex_file();
+ 		if (rc)
+ 			return rc;
+-	} else {
+-		init_function = __sev_init_locked;
  	}
  
- 	rc = verify_and_dec_payload(snp_dev, resp_buf, resp_sz);
- 	if (rc) {
--		dev_alert(snp_dev->dev,
--			  "Detected unexpected decode failure from ASP. rc: %d\n",
--			  rc);
-+		dev_alert(snp_dev->dev, "Detected unexpected decode failure from ASP. rc: %d\n", rc);
- 		snp_disable_vmpck(snp_dev);
- 		return rc;
+-	rc = init_function(&psp_ret);
++	rc = __sev_do_init_locked(&psp_ret);
+ 	if (rc && psp_ret == SEV_RET_SECURE_DATA_INVALID) {
+ 		/*
+ 		 * Initialization command returned an integrity check failure
+@@ -475,7 +479,7 @@ static int __sev_platform_init_locked(int *error)
+ 		 */
+ 		dev_err(sev->dev,
+ "SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
+-		rc = init_function(&psp_ret);
++		rc = __sev_do_init_locked(&psp_ret);
  	}
+ 
+ 	if (error)
 -- 
 2.35.1
 
