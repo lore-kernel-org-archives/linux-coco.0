@@ -1,432 +1,166 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31626AA0;
-	Fri, 17 Feb 2023 13:07:28 +0000 (UTC)
-Received: by mail-lj1-f178.google.com with SMTP id a18so1162342ljp.7;
-        Fri, 17 Feb 2023 05:07:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=68byFiLYC5ad7+usz+evma5sc0WL32oksuylCDKLpLc=;
-        b=XyMGeHRAyuFHK1kPIMzLND2m7ZnVct4n8GsfI9Y/fzwgcXgAxmYpLTt2UpRfsx536T
-         MsseeR+KZ7loLisF3iRugdgV7NUNZR3wdn7LVks8E/MWnotGFZl9Fvw6tzI1c6Nm+r3l
-         BuVnqWVNK9q6sri62cgJ6uq1+5iUyCE17oIAcUzejkv1Kw+gcuuKkVjrgTJ5pic1jwHO
-         9TjSgjUWFvxPsk8AiHVVeWuh5G/woG+kij+oapQzkBORIM4+jQ8IPWo/e+E7pkIPM1pm
-         Ukty81HBnJy5b01ZZrknuTwUcB2sGztwRHFZSxn6t/dMzJ/Og2AjzSg6FzQdgu0VEPN/
-         fZ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=68byFiLYC5ad7+usz+evma5sc0WL32oksuylCDKLpLc=;
-        b=uH0Qjy8n47MWLOIVZdnTwYhO+TbZmDexClJAHIlgrEsy2mJjp/mxZOVwiFchumoaoH
-         2wzLFPtn4L0HfbNAPHQiHY4ubTb6lDTfszLGULEAG8idBI7zfDwAgj0lYRmlMsS/BugB
-         JPRVuJPfRCLCQ+cpWBbi7Z21yUzUpFYSm3zBgHwRCyXsd4hpJbdxnAM6dk+l3vEehMi/
-         U8RF/P2bBs6MMxRNqZ2QQ7gtT5/QEdS//sutNl7D9c2W6T0uopaKoCPWrf1uKtiGUg9z
-         tjRz4gMzhxaqyZchBI05ysYeBZpkTs0bukgg9YVl4hio84al4EthAhRNjJsHxXEdHd2G
-         YdSQ==
-X-Gm-Message-State: AO0yUKVIabnOivOBNUx8AM4iN/3zH5vxIalZWzo4v42+XaMe3HdwSADS
-	NHw1xnuy00Mw9K6W3NtC+aI=
-X-Google-Smtp-Source: AK7set+49LpdVaEUMs/rDfcN7O2eaGqHA+2GvBp75noTcFvkxqQ8kejJFTXC8w2xDcbaqDrX9Vl3TQ==
-X-Received: by 2002:a2e:9d51:0:b0:293:5054:9825 with SMTP id y17-20020a2e9d51000000b0029350549825mr441581ljj.1.1676639246544;
-        Fri, 17 Feb 2023 05:07:26 -0800 (PST)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id k16-20020a2e9210000000b00293524fb6b1sm591389ljg.74.2023.02.17.05.07.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Feb 2023 05:07:26 -0800 (PST)
-Date: Fri, 17 Feb 2023 15:07:24 +0200
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Catalin Marinas
- <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
- <will@kernel.org>, James Morse <james.morse@arm.com>, Oliver Upton
- <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, Alexandru
- Elisei <alexandru.elisei@arm.com>, Christoffer Dall
- <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev
-Subject: Re: [RFC PATCH 13/28] arm64: RME: Allow VMM to set RIPAS
-Message-ID: <20230217150724.00006820@gmail.com>
-In-Reply-To: <20230127112932.38045-14-steven.price@arm.com>
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
-	<20230127112932.38045-1-steven.price@arm.com>
-	<20230127112932.38045-14-steven.price@arm.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C196F2F2B;
+	Mon, 20 Feb 2023 10:52:04 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C879915BF;
+	Mon, 20 Feb 2023 02:52:40 -0800 (PST)
+Received: from [10.57.75.211] (unknown [10.57.75.211])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4EDEA3F703;
+	Mon, 20 Feb 2023 02:51:53 -0800 (PST)
+Message-ID: <09cc1a81-d4a2-7db2-2add-d56121bbd7d7@arm.com>
+Date: Mon, 20 Feb 2023 10:51:51 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.7.2
+Subject: Re: [RFC] Support for Arm CCA VMs on Linux
+Content-Language: en-US
+To: Itaru Kitayama <itaru.kitayama@gmail.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Andrew Jones <andrew.jones@linux.dev>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Chao Peng <chao.p.peng@linux.intel.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ James Morse <james.morse@arm.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Paolo Bonzini <pbonzini@redhat.com>, Quentin Perret <qperret@google.com>,
+ Sean Christopherson <seanjc@google.com>, Steven Price
+ <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>,
+ Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+ kvmarm@lists.cs.columbia.edu
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <cfb0292c-e84d-0a7c-be74-ae5508779502@arm.com>
+ <CANW9uyvXofhGGuhGzk_0Et-w8CHT2y35WSu5+hno6Qm8K4R4ug@mail.gmail.com>
+ <CANW9uyuY2Ca9dxYQTtFLFupd-A088NTtmhdE=ST6o6Qn1_XM_A@mail.gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <CANW9uyuY2Ca9dxYQTtFLFupd-A088NTtmhdE=ST6o6Qn1_XM_A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 27 Jan 2023 11:29:17 +0000
-Steven Price <steven.price@arm.com> wrote:
-
-> Each page within the protected region of the realm guest can be marked
-> as either RAM or EMPTY. Allow the VMM to control this before the guest
-> has started and provide the equivalent functions to change this (with
-> the guest's approval) at runtime.
+On 17/02/2023 08:02, Itaru Kitayama wrote:
+> On Sat, Feb 11, 2023 at 7:53 AM Itaru Kitayama <itaru.kitayama@gmail.com> wrote:
+>>
+>> On Sat, Feb 11, 2023 at 1:56 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
+>>>
+>>> On 27/01/2023 11:22, Suzuki K Poulose wrote:
+>>>> [...]
+>>>
+>>>> Running the stack
+>>>> ====================
+>>>>
+>>>> To run/test the stack, you would need the following components :
+>>>>
+>>>> 1) FVP Base AEM RevC model with FEAT_RME support [4]
+>>>> 2) TF-A firmware for EL3 [5]
+>>>> 3) TF-A RMM for R-EL2 [3]
+>>>> 4) Linux Kernel [6]
+>>>> 5) kvmtool [7]
+>>>> 6) kvm-unit-tests [8]
+>>>>
+>>>> Instructions for building the firmware components and running the model are
+>>>> available here [9]. Once, the host kernel is booted, a Realm can be launched by
+>>>> invoking the `lkvm` commad as follows:
+>>>>
+>>>>  $ lkvm run --realm                            \
+>>>>        --measurement-algo=["sha256", "sha512"] \
+>>>>        --disable-sve                           \
+>>>>        <normal-vm-options>
+>>>>
+>>>> Where:
+>>>>  * --measurement-algo (Optional) specifies the algorithm selected for creating the
+>>>>    initial measurements by the RMM for this Realm (defaults to sha256).
+>>>>  * GICv3 is mandatory for the Realms.
+>>>>  * SVE is not yet supported in the TF-RMM, and thus must be disabled using
+>>>>    --disable-sve
+>>>>
+>>>> You may also run the kvm-unit-tests inside the Realm world, using the similar
+>>>> options as above.
+>>>
+>>> Building all of these components and configuring the FVP correctly can be quite
+>>> tricky, so I thought I would plug a tool we have called Shrinkwrap, which can
+>>> simplify all of this.
+>>>
+>>> The tool accepts a yaml input configuration that describes how a set of
+>>> components should be built and packaged, and how the FVP should be configured
+>>> and booted. And by default, it uses a Docker container on its backend, which
+>>> contains all the required tools, including the FVP. You can optionally use
+>>> Podman or have it run on your native system if you prefer. It supports both
+>>> x86_64 and aarch64. And you can even run it in --dry-run mode to see the set of
+>>> shell commands that would have been executed.
+>>>
+>>> It comes with two CCA configs out-of-the-box; cca-3world.yaml builds TF-A, RMM,
+>>> Linux (for both host and guest), kvmtool and kvm-unit-tests. cca-4world.yaml
+>>> adds Hafnium and some demo SPs for the secure world (although since Hafnium
+>>> requires x86_64 to build, cca-4world.yaml doesn't currently work on an aarch64
+>>> build host).
+>>>
+>>> See the documentation [1] and repository [2] for more info.
+>>>
+>>> Brief instructions to get you up and running:
+>>>
+>>>   # Install shrinkwrap. (I assume you have Docker installed):
+>>>   sudo pip3 install pyyaml termcolor tuxmake
+>>>   git clone https://git.gitlab.arm.com/tooling/shrinkwrap.git
+>>>   export PATH=$PWD/shrinkwrap/shrinkwrap:$PATH
+>>>
+>>>   # If running Python < 3.9:
+>>>   sudo pip3 install graphlib-backport
+>>>
+>>>   # Build all the CCA components:
+>>>   shrinkwrap build cca-3world.yaml [--dry-run]
+>>
+>> This has been working on my Multipass instance on M1, thanks for the tool.
+>>
+>> Thanks,
+>> Itaru.
 > 
+> It took a while though I've just booted an Ubuntu 22.10 disk image
+> with the cca-3world.yaml config on M1.
 
-The above is just the purpose of this patch. It would be better to have one
-more paragraph to describe what this patch does (building RTT and set IPA
-state in the RTT) and explain something might confuse people, for example
-the spare page.
+That's good to hear - If you have any feedback (or patches ;-)) for Shrinkwrap
+that would improve the experience, do let me know!
 
-The spare page is really confusing. When reading __alloc_delegated_page()
-, it looks like a mechanism to cache a delegated page for the realm. But later
-in the teardown path, it looks like a workaround. What if the allocation of 
-the spare page failed in the RTT tear down path? 
-
-I understand this must be a temporary solution. It would be really nice to
-have a big picture or some basic introduction to the future plan. 
-
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->  arch/arm64/include/asm/kvm_rme.h |   4 +
->  arch/arm64/kvm/rme.c             | 288 +++++++++++++++++++++++++++++++
->  2 files changed, 292 insertions(+)
 > 
-> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
-> index 4b219ebe1400..3e75cedaad18 100644
-> --- a/arch/arm64/include/asm/kvm_rme.h
-> +++ b/arch/arm64/include/asm/kvm_rme.h
-> @@ -47,6 +47,10 @@ void kvm_realm_destroy_rtts(struct realm *realm, u32 ia_bits, u32 start_level);
->  int kvm_create_rec(struct kvm_vcpu *vcpu);
->  void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->  
-> +int realm_set_ipa_state(struct kvm_vcpu *vcpu,
-> +			unsigned long addr, unsigned long end,
-> +			unsigned long ripas);
-> +
->  #define RME_RTT_BLOCK_LEVEL	2
->  #define RME_RTT_MAX_LEVEL	3
->  
-> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
-> index d79ed889ca4d..b3ea79189839 100644
-> --- a/arch/arm64/kvm/rme.c
-> +++ b/arch/arm64/kvm/rme.c
-> @@ -73,6 +73,58 @@ static int rmi_check_version(void)
->  	return 0;
->  }
->  
-> +static phys_addr_t __alloc_delegated_page(struct realm *realm,
-> +					  struct kvm_mmu_memory_cache *mc, gfp_t flags)
-> +{
-> +	phys_addr_t phys = PHYS_ADDR_MAX;
-> +	void *virt;
-> +
-> +	if (realm->spare_page != PHYS_ADDR_MAX) {
-> +		swap(realm->spare_page, phys);
-> +		goto out;
-> +	}
-> +
-> +	if (mc)
-> +		virt = kvm_mmu_memory_cache_alloc(mc);
-> +	else
-> +		virt = (void *)__get_free_page(flags);
-> +
-> +	if (!virt)
-> +		goto out;
-> +
-> +	phys = virt_to_phys(virt);
-> +
-> +	if (rmi_granule_delegate(phys)) {
-> +		free_page((unsigned long)virt);
-> +
-> +		phys = PHYS_ADDR_MAX;
-> +	}
-> +
-> +out:
-> +	return phys;
-> +}
-> +
-> +static phys_addr_t alloc_delegated_page(struct realm *realm,
-> +					struct kvm_mmu_memory_cache *mc)
-> +{
-> +	return __alloc_delegated_page(realm, mc, GFP_KERNEL);
-> +}
-> +
-> +static void free_delegated_page(struct realm *realm, phys_addr_t phys)
-> +{
-> +	if (realm->spare_page == PHYS_ADDR_MAX) {
-> +		realm->spare_page = phys;
-> +		return;
-> +	}
-> +
-> +	if (WARN_ON(rmi_granule_undelegate(phys))) {
-> +		/* Undelegate failed: leak the page */
-> +		return;
-> +	}
-> +
-> +	free_page((unsigned long)phys_to_virt(phys));
-> +}
-> +
->  static void realm_destroy_undelegate_range(struct realm *realm,
->  					   unsigned long ipa,
->  					   unsigned long addr,
-> @@ -220,6 +272,30 @@ static int realm_rtt_create(struct realm *realm,
->  	return rmi_rtt_create(phys, virt_to_phys(realm->rd), addr, level);
->  }
->  
-> +static int realm_create_rtt_levels(struct realm *realm,
-> +				   unsigned long ipa,
-> +				   int level,
-> +				   int max_level,
-> +				   struct kvm_mmu_memory_cache *mc)
-> +{
-> +	if (WARN_ON(level == max_level))
-> +		return 0;
-> +
-> +	while (level++ < max_level) {
-> +		phys_addr_t rtt = alloc_delegated_page(realm, mc);
-> +
-> +		if (rtt == PHYS_ADDR_MAX)
-> +			return -ENOMEM;
-> +
-> +		if (realm_rtt_create(realm, ipa, level, rtt)) {
-> +			free_delegated_page(realm, rtt);
-> +			return -ENXIO;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static int realm_tear_down_rtt_range(struct realm *realm, int level,
->  				     unsigned long start, unsigned long end)
->  {
-> @@ -309,6 +385,206 @@ void kvm_realm_destroy_rtts(struct realm *realm, u32 ia_bits, u32 start_level)
->  	realm_tear_down_rtt_range(realm, start_level, 0, (1UL << ia_bits));
->  }
->  
-> +void kvm_realm_unmap_range(struct kvm *kvm, unsigned long ipa, u64 size)
-> +{
-> +	u32 ia_bits = kvm->arch.mmu.pgt->ia_bits;
-> +	u32 start_level = kvm->arch.mmu.pgt->start_level;
-> +	unsigned long end = ipa + size;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	phys_addr_t tmp_rtt = PHYS_ADDR_MAX;
-> +
-> +	if (end > (1UL << ia_bits))
-> +		end = 1UL << ia_bits;
-> +	/*
-> +	 * Make sure we have a spare delegated page for tearing down the
-> +	 * block mappings. We must use Atomic allocations as we are called
-> +	 * with kvm->mmu_lock held.
-> +	 */
-> +	if (realm->spare_page == PHYS_ADDR_MAX) {
-> +		tmp_rtt = __alloc_delegated_page(realm, NULL, GFP_ATOMIC);
-> +		/*
-> +		 * We don't have to check the status here, as we may not
-> +		 * have a block level mapping. Delay any error to the point
-> +		 * where we need it.
-> +		 */
-> +		realm->spare_page = tmp_rtt;
-> +	}
-> +
-> +	realm_tear_down_rtt_range(&kvm->arch.realm, start_level, ipa, end);
-> +
-> +	/* Free up the atomic page, if there were any */
-> +	if (tmp_rtt != PHYS_ADDR_MAX) {
-> +		free_delegated_page(realm, tmp_rtt);
-> +		/*
-> +		 * Update the spare_page after we have freed the
-> +		 * above page to make sure it doesn't get cached
-> +		 * in spare_page.
-> +		 * We should re-write this part and always have
-> +		 * a dedicated page for handling block mappings.
-> +		 */
-> +		realm->spare_page = PHYS_ADDR_MAX;
-> +	}
-> +}
-> +
-> +static int set_ipa_state(struct kvm_vcpu *vcpu,
-> +			 unsigned long ipa,
-> +			 unsigned long end,
-> +			 int level,
-> +			 unsigned long ripas)
-> +{
-> +	struct kvm *kvm = vcpu->kvm;
-> +	struct realm *realm = &kvm->arch.realm;
-> +	struct rec *rec = &vcpu->arch.rec;
-> +	phys_addr_t rd_phys = virt_to_phys(realm->rd);
-> +	phys_addr_t rec_phys = virt_to_phys(rec->rec_page);
-> +	unsigned long map_size = rme_rtt_level_mapsize(level);
-> +	int ret;
-> +
-> +	while (ipa < end) {
-> +		ret = rmi_rtt_set_ripas(rd_phys, rec_phys, ipa, level, ripas);
-> +
-> +		if (!ret) {
-> +			if (!ripas)
-> +				kvm_realm_unmap_range(kvm, ipa, map_size);
-> +		} else if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +			int walk_level = RMI_RETURN_INDEX(ret);
-> +
-> +			if (walk_level < level) {
-> +				ret = realm_create_rtt_levels(realm, ipa,
-> +							      walk_level,
-> +							      level, NULL);
-> +				if (ret)
-> +					return ret;
-> +				continue;
-> +			}
-> +
-> +			if (WARN_ON(level >= RME_RTT_MAX_LEVEL))
-> +				return -EINVAL;
-> +
-> +			/* Recurse one level lower */
-> +			ret = set_ipa_state(vcpu, ipa, ipa + map_size,
-> +					    level + 1, ripas);
-> +			if (ret)
-> +				return ret;
-> +		} else {
-> +			WARN(1, "Unexpected error in %s: %#x\n", __func__,
-> +			     ret);
-> +			return -EINVAL;
-> +		}
-> +		ipa += map_size;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int realm_init_ipa_state(struct realm *realm,
-> +				unsigned long ipa,
-> +				unsigned long end,
-> +				int level)
-> +{
-> +	unsigned long map_size = rme_rtt_level_mapsize(level);
-> +	phys_addr_t rd_phys = virt_to_phys(realm->rd);
-> +	int ret;
-> +
-> +	while (ipa < end) {
-> +		ret = rmi_rtt_init_ripas(rd_phys, ipa, level);
-> +
-> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
-> +			int cur_level = RMI_RETURN_INDEX(ret);
-> +
-> +			if (cur_level < level) {
-> +				ret = realm_create_rtt_levels(realm, ipa,
-> +							      cur_level,
-> +							      level, NULL);
-> +				if (ret)
-> +					return ret;
-> +				/* Retry with the RTT levels in place */
-> +				continue;
-> +			}
-> +
-> +			/* There's an entry at a lower level, recurse */
-> +			if (WARN_ON(level >= RME_RTT_MAX_LEVEL))
-> +				return -EINVAL;
-> +
-> +			realm_init_ipa_state(realm, ipa, ipa + map_size,
-> +					     level + 1);
-> +		} else if (WARN_ON(ret)) {
-> +			return -ENXIO;
-> +		}
-> +
-> +		ipa += map_size;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int find_map_level(struct kvm *kvm, unsigned long start, unsigned long end)
-> +{
-> +	int level = RME_RTT_MAX_LEVEL;
-> +
-> +	while (level > get_start_level(kvm) + 1) {
-> +		unsigned long map_size = rme_rtt_level_mapsize(level - 1);
-> +
-> +		if (!IS_ALIGNED(start, map_size) ||
-> +		    (start + map_size) > end)
-> +			break;
-> +
-> +		level--;
-> +	}
-> +
-> +	return level;
-> +}
-> +
-> +int realm_set_ipa_state(struct kvm_vcpu *vcpu,
-> +			unsigned long addr, unsigned long end,
-> +			unsigned long ripas)
-> +{
-> +	int ret = 0;
-> +
-> +	while (addr < end) {
-> +		int level = find_map_level(vcpu->kvm, addr, end);
-> +		unsigned long map_size = rme_rtt_level_mapsize(level);
-> +
-> +		ret = set_ipa_state(vcpu, addr, addr + map_size, level, ripas);
-> +		if (ret)
-> +			break;
-> +
-> +		addr += map_size;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int kvm_init_ipa_range_realm(struct kvm *kvm,
-> +				    struct kvm_cap_arm_rme_init_ipa_args *args)
-> +{
-> +	int ret = 0;
-> +	gpa_t addr, end;
-> +	struct realm *realm = &kvm->arch.realm;
-> +
-> +	addr = args->init_ipa_base;
-> +	end = addr + args->init_ipa_size;
-> +
-> +	if (end < addr)
-> +		return -EINVAL;
-> +
-> +	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
-> +		return -EBUSY;
-> +
-> +	while (addr < end) {
-> +		int level = find_map_level(kvm, addr, end);
-> +		unsigned long map_size = rme_rtt_level_mapsize(level);
-> +
-> +		ret = realm_init_ipa_state(realm, addr, addr + map_size, level);
-> +		if (ret)
-> +			break;
-> +
-> +		addr += map_size;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->  /* Protects access to rme_vmid_bitmap */
->  static DEFINE_SPINLOCK(rme_vmid_lock);
->  static unsigned long *rme_vmid_bitmap;
-> @@ -460,6 +736,18 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
->  
->  		r = kvm_create_realm(kvm);
->  		break;
-> +	case KVM_CAP_ARM_RME_INIT_IPA_REALM: {
-> +		struct kvm_cap_arm_rme_init_ipa_args args;
-> +		void __user *argp = u64_to_user_ptr(cap->args[1]);
-> +
-> +		if (copy_from_user(&args, argp, sizeof(args))) {
-> +			r = -EFAULT;
-> +			break;
-> +		}
-> +
-> +		r = kvm_init_ipa_range_realm(kvm, &args);
-> +		break;
-> +	}
->  	default:
->  		r = -EINVAL;
->  		break;
+> Thanks,
+> Itaru.
+> 
+>>
+>>>
+>>>   # Run the stack in the FVP:
+>>>   shrinkwrap run cca-3world.yaml -r ROOTFS=<my_rootfs.ext4> [--dry-run]
+>>>
+>>> By default, building is done at ~/.shrinkwrap/build/cca-3world and the package
+>>> is created at ~/.shrinkwrap/package/cca-3world (this can be changed with
+>>> envvars).
+>>>
+>>> The 'run' command will boot TF-A, RMM and host Linux kernel in the FVP, and
+>>> mount the provided rootfs. You will likely want to have copied the userspace
+>>> pieces into the rootfs before running, so you can create realms:
+>>>
+>>> - ~/.shrinkwrap/package/cca-3world/Image (kernel with RMI and RSI support)
+>>> - ~/.shrinkwrap/package/cca-3world/lkvm (kvmtool able to launch realms)
+>>> - ~/.shrinkwrap/package/cca-3world/kvm-unit-tests.tgz (built kvm-unit-tests)
+>>>
+>>> Once the FVP is booted to a shell, you can do something like this to launch a
+>>> Linux guest in a realm:
+>>>
+>>>   lkvm run --realm --disable-sve -c 1 -m 256 -k Image
+>>>
+>>> [1] https://shrinkwrap.docs.arm.com
+>>> [2] https://gitlab.arm.com/tooling/shrinkwrap
+>>>
+>>>
+>>> _______________________________________________
+>>> linux-arm-kernel mailing list
+>>> linux-arm-kernel@lists.infradead.org
+>>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
