@@ -1,44 +1,44 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D127F320D
-	for <linux-coco@lists.linux.dev>; Mon, 20 Feb 2023 21:13:05 +0000 (UTC)
-Received: by mail-lf1-f45.google.com with SMTP id s20so2894803lfb.11
-        for <linux-coco@lists.linux.dev>; Mon, 20 Feb 2023 13:13:05 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8F6882E
+	for <linux-coco@lists.linux.dev>; Mon, 20 Feb 2023 21:37:13 +0000 (UTC)
+Received: by mail-lj1-f181.google.com with SMTP id a30so2555118ljr.0
+        for <linux-coco@lists.linux.dev>; Mon, 20 Feb 2023 13:37:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1676927584;
+        d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TDIW4axl+hkN5j3NPMXP+ZPoJ29pdF3/fwwVKvtB5gk=;
-        b=KE1OVRc+qlYS5auHFljuhewLrBtTVsN/HV2pvtiQwUrLF6eqwzmYRitRPsdm8PzCKP
-         f94jSIuX7FTmGS11bxjT4AvvNxyrRqcYUiGEF4Ng3DhvV3zoLw5e9pxiCp4QQ8OrDhxX
-         +IYExd0hsXsaDOmT+Huu4SvNvPABnALW1IS0k8plNRR4mfpDqb94BaZcW6HC6enQPONQ
-         1emTmsmu6j96DIDwBRU9vHZSilWZTAUV76IdLSvjlWCEwuOHk3swIZ9ku21QyrPbomhK
-         StQA/UBsTxKBtZ+RXC4bCF9FuQXIXP0dNTDB6/L1AxVvsISpEQu6VSEPEOdLzBthSfmK
-         X9Nw==
+        bh=ntTegXxHE2C6Lp8xdtMzn8aIclw1LjjCN5pS0JeaA8A=;
+        b=K8zGSFBNI3bdU6J5gbrSYZcfL5sYsQjVxJTFkpIjhAqxR1Xxr817nUsCsnvL/JrUMp
+         qoPWnoDVVtnpBTvblsnDdqASG0UQ7WxtCHGWIaD8xXMKvw5xxrEYv2zRrGw6EEzNHKUj
+         UvEzax+npqRsxhJ8JA5VL57mkKzv9SPf0eqWr2PQ9wgxyXnOW9NxfdumExqueZbw8FsP
+         wisNc6cs8i8MKfQZbkfwjawdBzTETXo+kIWV3oi/vN1tHuW82XTJjBjtLNQC8BQNNasi
+         WK8w/uHuMYgkSPwZ4AYAG3k6i5mpyxrTtxYMwhqKcy7nCMpQ5pEsrC1o/nSFiQWyHmA1
+         CWng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1676927584;
+        d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TDIW4axl+hkN5j3NPMXP+ZPoJ29pdF3/fwwVKvtB5gk=;
-        b=6lcXX/f4TsdCwCCP5evVUrzMeluGURyg/5uaHi9mlmM7FcmQ08h33AwQFtyU/VPT7o
-         7WDskD3nT4V1ks4kiLKhyUPldfci43z0/7nx5m/Sq24gwBVS/k/JN7tm5RRuq0gDKyB3
-         Tw7egj/Fp2LZusHXa0QF/lpbdLKWMNxkZEuq1gJwsigoBhLlv6Yw9b9QnFyCF6wl4bXt
-         s/+xh6owRlLJN1QebjFfB1YZbglqaaVbWP4oBm+j3d+WgjpqKExbegzyCF2XIHWonXzR
-         CkFrUsz8HF3bR3u8u/mSolvDYRZeyEly6Cnni6nUhNLlL/5ss6SwtT2KosBTshp4bSK9
-         bGHw==
-X-Gm-Message-State: AO0yUKWAPOKvvpi9FbaCLUEDH4EBbJOKNpfUf1A6yPWXDURLe8jGNaUk
-	UJJnc92A0rEfSy7J4yQEm80=
-X-Google-Smtp-Source: AK7set+SFmQKGMJwRWrnol+bh+JAzBSaJAJIcs3b4nUG3o31URK0ZZcsUT7nvy2Smugv5Xzpba5R+g==
-X-Received: by 2002:a19:f00e:0:b0:4a4:68b9:26c with SMTP id p14-20020a19f00e000000b004a468b9026cmr795903lfc.6.1676927583594;
-        Mon, 20 Feb 2023 13:13:03 -0800 (PST)
+        bh=ntTegXxHE2C6Lp8xdtMzn8aIclw1LjjCN5pS0JeaA8A=;
+        b=ya7LdRIXITTrwzFDaR703zNNeiF8bb1BDylGY1sr7bOnPunx4I6f24Cf40/IGxlrZk
+         u4wFRHYW47C859tF45hFdS/QCy1vtBHIinfq05qZ54w7b1CFMtigq/JcP3f+YUdDAr4M
+         aFESFg2CM+BKepSeEMLhNk2T91m5te/hEPJwggOp6DI7FqFDGZOXSVzhJKqs6JyKo0bk
+         6mnlQwzMH7qXW46+2+VKnifxNUcU0xt7DuwY0QeHanuRPs1yqepDZULlmAwPPlDBLA/n
+         TytrJ7xJ3706Elq6fwezeh0E0WzF75/DPNfjoau1y0AQJhA/Gd0sSFHWmj0UjhWBKtlS
+         va1A==
+X-Gm-Message-State: AO0yUKVYLZyrkDqfjtu7g5PqAf3mcOpNDMqmHUHqlqPteG/A/r4GRviJ
+	IyYM2+OYUUBStQC32ReLv88=
+X-Google-Smtp-Source: AK7set9ere6899+uPRGjAaNY74PLHi6orKNOrPSws3NLJTJtiICDHHa4uvOj8GLhs/n/V591Itkx1Q==
+X-Received: by 2002:a05:651c:210f:b0:293:52a4:9717 with SMTP id a15-20020a05651c210f00b0029352a49717mr1528073ljq.4.1676929031468;
+        Mon, 20 Feb 2023 13:37:11 -0800 (PST)
 Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id u10-20020ac248aa000000b004dc4cb4f9c4sm1625853lfg.35.2023.02.20.13.13.01
+        by smtp.gmail.com with ESMTPSA id y2-20020a2e3202000000b002934ff9c817sm401104ljy.107.2023.02.20.13.37.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Feb 2023 13:13:03 -0800 (PST)
-Date: Mon, 20 Feb 2023 23:13:00 +0200
+        Mon, 20 Feb 2023 13:37:11 -0800 (PST)
+Date: Mon, 20 Feb 2023 23:37:09 +0200
 From: Zhi Wang <zhi.wang.linux@gmail.com>
 To: Michael Roth <michael.roth@amd.com>
 Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
@@ -54,13 +54,12 @@ Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
  <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
  <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
  <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
- <nikunj.dadhania@amd.com>
-Subject: Re: [PATCH RFC v8 19/56] x86/fault: Return pfn from
- dump_pagetable() for SEV-specific fault handling.
-Message-ID: <20230220231300.00004591@gmail.com>
-In-Reply-To: <20230220183847.59159-20-michael.roth@amd.com>
+ <nikunj.dadhania@amd.com>, Vishal Annapurve <vannapurve@google.com>
+Subject: Re: [PATCH RFC v8 04/56] KVM: Add HVA range operator
+Message-ID: <20230220233709.00006dfc@gmail.com>
+In-Reply-To: <20230220183847.59159-5-michael.roth@amd.com>
 References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-20-michael.roth@amd.com>
+	<20230220183847.59159-5-michael.roth@amd.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -71,99 +70,100 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 20 Feb 2023 12:38:10 -0600
+On Mon, 20 Feb 2023 12:37:55 -0600
 Michael Roth <michael.roth@amd.com> wrote:
 
-> From: Ashish Kalra <ashish.kalra@amd.com>
+> From: Vishal Annapurve <vannapurve@google.com>
 > 
-> Return pfn from dump_pagetable() to do SEV-specific
-> fault handling. Used for handling SNP RMP page fault.
+> Introduce HVA range operator so that other KVM subsystems
+> can operate on HVA range.
 > 
-
-It would be better to merge this patch with PATCH 13.
-
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> [mdr: minor checkpatch alignment fixups]
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
 > ---
->  arch/x86/mm/fault.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
+>  include/linux/kvm_host.h |  6 +++++
+>  virt/kvm/kvm_main.c      | 48 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 54 insertions(+)
 > 
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index afd4cde17001..f2b16dcfbd9a 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -311,7 +311,7 @@ static bool low_pfn(unsigned long pfn)
->  	return pfn < max_low_pfn;
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 4d542060cd93..c615650ed256 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -1402,6 +1402,12 @@ void kvm_mmu_invalidate_begin(struct kvm *kvm);
+>  void kvm_mmu_invalidate_range_add(struct kvm *kvm, gfn_t start, gfn_t end);
+>  void kvm_mmu_invalidate_end(struct kvm *kvm);
+>  
+> +typedef int (*kvm_hva_range_op_t)(struct kvm *kvm,
+> +				struct kvm_gfn_range *range, void *data);
+> +
+> +int kvm_vm_do_hva_range_op(struct kvm *kvm, unsigned long hva_start,
+> +			   unsigned long hva_end, kvm_hva_range_op_t handler, void *data);
+> +
+>  long kvm_arch_dev_ioctl(struct file *filp,
+>  			unsigned int ioctl, unsigned long arg);
+>  long kvm_arch_vcpu_ioctl(struct file *filp,
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index f7e00593cc5d..4ccd655dd5af 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -642,6 +642,54 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+>  	return (int)ret;
 >  }
 >  
-> -static void dump_pagetable(unsigned long address)
-> +static unsigned long dump_pagetable(unsigned long address)
->  {
->  	pgd_t *base = __va(read_cr3_pa());
->  	pgd_t *pgd = &base[pgd_index(address)];
-> @@ -345,8 +345,10 @@ static void dump_pagetable(unsigned long address)
->  
->  	pte = pte_offset_kernel(pmd, address);
->  	pr_cont("*pte = %0*Lx ", sizeof(*pte) * 2, (u64)pte_val(*pte));
-> +	return 0;
->  out:
->  	pr_cont("\n");
-> +	return 0;
->  }
->  
->  #else /* CONFIG_X86_64: */
-> @@ -367,10 +369,11 @@ static int bad_address(void *p)
->  	return get_kernel_nofault(dummy, (unsigned long *)p);
->  }
->  
-> -static void dump_pagetable(unsigned long address)
-> +static unsigned long dump_pagetable(unsigned long address)
->  {
->  	pgd_t *base = __va(read_cr3_pa());
->  	pgd_t *pgd = base + pgd_index(address);
-> +	unsigned long pfn;
->  	p4d_t *p4d;
->  	pud_t *pud;
->  	pmd_t *pmd;
-> @@ -388,6 +391,7 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(p4d))
->  		goto bad;
->  
-> +	pfn = p4d_pfn(*p4d);
->  	pr_cont("P4D %lx ", p4d_val(*p4d));
->  	if (!p4d_present(*p4d) || p4d_large(*p4d))
->  		goto out;
-> @@ -396,6 +400,7 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(pud))
->  		goto bad;
->  
-> +	pfn = pud_pfn(*pud);
->  	pr_cont("PUD %lx ", pud_val(*pud));
->  	if (!pud_present(*pud) || pud_large(*pud))
->  		goto out;
-> @@ -404,6 +409,7 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(pmd))
->  		goto bad;
->  
-> +	pfn = pmd_pfn(*pmd);
->  	pr_cont("PMD %lx ", pmd_val(*pmd));
->  	if (!pmd_present(*pmd) || pmd_large(*pmd))
->  		goto out;
-> @@ -412,13 +418,14 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(pte))
->  		goto bad;
->  
-> +	pfn = pte_pfn(*pte);
->  	pr_cont("PTE %lx", pte_val(*pte));
->  out:
->  	pr_cont("\n");
-> -
-> -	return;
-> +	return pfn;
->  bad:
->  	pr_info("BAD\n");
-> +	return -1;
->  }
->  
->  #endif /* CONFIG_X86_64 */
+
+Below function seems a reduced duplicate of __kvm_handle_hva_range()
+in virt/kvm/kvm_main.c. It would be nice to factor __kvm_handle_hva_range().
+
+> +int kvm_vm_do_hva_range_op(struct kvm *kvm, unsigned long hva_start,
+> +			   unsigned long hva_end, kvm_hva_range_op_t handler, void *data)
+> +{
+> +	int ret = 0;
+> +	struct kvm_gfn_range gfn_range;
+> +	struct kvm_memory_slot *slot;
+> +	struct kvm_memslots *slots;
+> +	int i, idx;
+> +
+> +	if (WARN_ON_ONCE(hva_end <= hva_start))
+> +		return -EINVAL;
+> +
+> +	idx = srcu_read_lock(&kvm->srcu);
+> +
+> +	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
+> +		struct interval_tree_node *node;
+> +
+> +		slots = __kvm_memslots(kvm, i);
+> +		kvm_for_each_memslot_in_hva_range(node, slots,
+> +						  hva_start, hva_end - 1) {
+> +			unsigned long start, end;
+> +
+> +			slot = container_of(node, struct kvm_memory_slot,
+> +					    hva_node[slots->node_idx]);
+> +			start = max(hva_start, slot->userspace_addr);
+> +			end = min(hva_end, slot->userspace_addr +
+> +						  (slot->npages << PAGE_SHIFT));
+> +
+> +			/*
+> +			 * {gfn(page) | page intersects with [hva_start, hva_end)} =
+> +			 * {gfn_start, gfn_start+1, ..., gfn_end-1}.
+> +			 */
+> +			gfn_range.start = hva_to_gfn_memslot(start, slot);
+> +			gfn_range.end = hva_to_gfn_memslot(end + PAGE_SIZE - 1, slot);
+> +			gfn_range.slot = slot;
+> +
+> +			ret = handler(kvm, &gfn_range, data);
+> +			if (ret)
+> +				goto e_ret;
+> +		}
+> +	}
+> +
+> +e_ret:
+> +	srcu_read_unlock(&kvm->srcu, idx);
+> +
+> +	return ret;
+> +}
+> +
+>  static __always_inline int kvm_handle_hva_range(struct mmu_notifier *mn,
+>  						unsigned long start,
+>  						unsigned long end,
 
