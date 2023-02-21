@@ -1,27 +1,26 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710A71FBF
-	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 11:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CB423C4
+	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 11:34:39 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 517DA1EC064C;
-	Tue, 21 Feb 2023 12:34:36 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C8C8F1EC0662;
+	Tue, 21 Feb 2023 12:34:37 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1676979276;
+	t=1676979277;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xAFRY6UWQLF1FP7olpHuR0CBZw+9W4Mq3Tn1rtwpBJM=;
-	b=qZK1Zd9ewhHGtj5llNFPOJ/ooJVzt5ZkJGOPofc6h/kDGBH04EZ6Tdc/ON7u7ANmGAOqEG
-	a5SeFooneVntrBGVqiEA7LXRYimNcXgyt/Ulb4k1ftCFbeZf9BuMbtIvdFVOAfsz5DwUbW
-	erynl47FPXz5h9Kadnn9/t7eqpvg/2w=
+	bh=eIxV1gF+0xxMeTGWWux4B6qDSXGFkU3ZGwakcGga7O0=;
+	b=ZpmskPJims9Hyc9dnmgeiYuGxje5mn0CO+IORb6lkVE++tmyaqBr+fekPt4jmfGXeUcGPu
+	zLDVvfAhZZ/TR3k89W4U7PKjtyjOQMfQy8+ZXxp7Tc6VPmKeOOpLJxJxpWIvy4p3ibOT1K
+	acb4yQU4Ykknp8PzRcHsdMYUx1ARNL8=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
-Cc: stable@kernel.org,
-	Dionna Glaze <dionnaglaze@google.com>,
+Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Joerg Roedel <jroedel@suse.de>,
 	Michael Roth <michael.roth@amd.com>,
 	Nikunj A Dadhania <nikunj@amd.com>,
@@ -29,9 +28,9 @@ Cc: stable@kernel.org,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH -v2 01/11] crypto: ccp - Name -1 return value as SEV_RET_NO_FW_CALL
-Date: Tue, 21 Feb 2023 12:34:18 +0100
-Message-Id: <20230221113428.19324-2-bp@alien8.de>
+Subject: [PATCH -v2 04/11] virt/coco/sev-guest: Remove the disable_vmpck label in handle_guest_request()
+Date: Tue, 21 Feb 2023 12:34:21 +0100
+Message-Id: <20230221113428.19324-5-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230221113428.19324-1-bp@alien8.de>
 References: <20230221113428.19324-1-bp@alien8.de>
@@ -43,88 +42,51 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Peter Gonda <pgonda@google.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-The PSP can return a "firmware error" code of -1 in circumstances where
-the PSP has not actually been called. To make this protocol unambiguous,
-name the value SEV_RET_NO_FW_CALL.
+Call the function directly instead.
 
-  [ bp: Massage a bit. ]
+No functional changes.
 
-Signed-off-by: Peter Gonda <pgonda@google.com>
-Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20221207010210.2563293-2-dionnaglaze@google.com
 ---
- Documentation/virt/coco/sev-guest.rst | 4 ++--
- drivers/crypto/ccp/sev-dev.c          | 8 +++++---
- include/uapi/linux/psp-sev.h          | 7 +++++++
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
-index bf593e88cfd9..aa3e4c6a1f90 100644
---- a/Documentation/virt/coco/sev-guest.rst
-+++ b/Documentation/virt/coco/sev-guest.rst
-@@ -40,8 +40,8 @@ along with a description:
- The guest ioctl should be issued on a file descriptor of the /dev/sev-guest device.
- The ioctl accepts struct snp_user_guest_request. The input and output structure is
- specified through the req_data and resp_data field respectively. If the ioctl fails
--to execute due to a firmware error, then fw_err code will be set otherwise the
--fw_err will be set to 0x00000000000000ff.
-+to execute due to a firmware error, then fw_err code will be set. Otherwise, fw_err
-+will be set to 0x00000000ffffffff, i.e., the lower 32-bits are -1.
- 
- The firmware checks that the message sequence counter is one greater than
- the guests message sequence counter. If guest driver fails to increment message
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index 06fc7156c04f..f60bb73edfda 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -442,10 +442,10 @@ static int __sev_init_ex_locked(int *error)
- 
- static int __sev_platform_init_locked(int *error)
- {
-+	int rc = 0, psp_ret = SEV_RET_NO_FW_CALL;
- 	struct psp_device *psp = psp_master;
--	struct sev_device *sev;
--	int rc = 0, psp_ret = -1;
- 	int (*init_function)(int *error);
-+	struct sev_device *sev;
- 
- 	if (!psp || !psp->sev_data)
- 		return -ENODEV;
-@@ -473,9 +473,11 @@ static int __sev_platform_init_locked(int *error)
- 		 * initialization function should succeed by replacing the state
- 		 * with a reset state.
- 		 */
--		dev_err(sev->dev, "SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
-+		dev_err(sev->dev,
-+"SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
- 		rc = init_function(&psp_ret);
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 5b4cddf44a3a..c0ecc5885573 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -388,7 +388,8 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 		dev_alert(snp_dev->dev,
+ 			  "Detected error from ASP request. rc: %d, fw_err: %llu\n",
+ 			  rc, *fw_err);
+-		goto disable_vmpck;
++		snp_disable_vmpck(snp_dev);
++		return rc;
  	}
-+
- 	if (error)
- 		*error = psp_ret;
  
-diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-index 91b4c63d5cbf..1c9da485318f 100644
---- a/include/uapi/linux/psp-sev.h
-+++ b/include/uapi/linux/psp-sev.h
-@@ -36,6 +36,13 @@ enum {
-  * SEV Firmware status code
-  */
- typedef enum {
-+	/*
-+	 * This error code is not in the SEV spec. Its purpose is to convey that
-+	 * there was an error that prevented the SEV firmware from being called.
-+	 * The SEV API error codes are 16 bits, so the -1 value will not overlap
-+	 * with possible values from the specification.
-+	 */
-+	SEV_RET_NO_FW_CALL = -1,
- 	SEV_RET_SUCCESS = 0,
- 	SEV_RET_INVALID_PLATFORM_STATE,
- 	SEV_RET_INVALID_GUEST_STATE,
+ 	rc = verify_and_dec_payload(snp_dev, resp_buf, resp_sz);
+@@ -396,17 +397,14 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 		dev_alert(snp_dev->dev,
+ 			  "Detected unexpected decode failure from ASP. rc: %d\n",
+ 			  rc);
+-		goto disable_vmpck;
++		snp_disable_vmpck(snp_dev);
++		return rc;
+ 	}
+ 
+ 	/* Increment to new message sequence after payload decryption was successful. */
+ 	snp_inc_msg_seqno(snp_dev);
+ 
+ 	return 0;
+-
+-disable_vmpck:
+-	snp_disable_vmpck(snp_dev);
+-	return rc;
+ }
+ 
+ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
 -- 
 2.35.1
 
