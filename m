@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626A733C4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6656E33EF
 	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 11:34:43 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 622981EC067C;
-	Tue, 21 Feb 2023 12:34:39 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CF1FA1EC0682;
+	Tue, 21 Feb 2023 12:34:40 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1676979279;
+	t=1676979280;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KR4vVsJESSCg86kIVXeeVz75YYrz3rzwdB6btBRiLEY=;
-	b=K1QiusbpWj/Qs2KDQUM2zv48odDuqatgdvqb+53IWyQa4LC5CALTvIvubvy2eo9E9G6rZU
-	eYWVG4ZIm6Y+K0DYbPI2ORGO2krxBpnOV/ypXVV1Cpzzi5yWN7xVeMBMQX2YEcK8r9NLO/
-	2vFZEvidXnah5e+KwhGGTDoWCQkvolY=
+	bh=dWHBIgi4/PPHoVD+CngkvEQZ9VAcHNq+ytmZl53I++c=;
+	b=Pa3GQzNpCEz5RIlXXbe112ECZiXJnWwMhmAnOK0IZbYyETMd8xNqbPoBdNZ7z7ZtQpZci4
+	xu457d3A+pT/QFBpwL3XB/XLxKeBhMGkAQdnSTIu9tV0VcMvYZZhhKDHbSkDF0CbU6GS5f
+	ikY0Z0bUIxYDKFvwapn2qeTqIOZqvLc=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Dionna Glaze <dionnaglaze@google.com>,
@@ -28,9 +28,9 @@ Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH -v2 07/11] virt/coco/sev-guest: Convert the sw_exit_info_2 checking to a switch-case
-Date: Tue, 21 Feb 2023 12:34:24 +0100
-Message-Id: <20230221113428.19324-8-bp@alien8.de>
+Subject: [PATCH -v2 10/11] virt/coco/sev-guest: Double-buffer messages
+Date: Tue, 21 Feb 2023 12:34:27 +0100
+Message-Id: <20230221113428.19324-11-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230221113428.19324-1-bp@alien8.de>
 References: <20230221113428.19324-1-bp@alien8.de>
@@ -42,52 +42,93 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Dionna Glaze <dionnaglaze@google.com>
 
-snp_issue_guest_request() checks the value returned by the hypervisor in
-sw_exit_info_2 and returns a different error depending on it.
+The encryption algorithms read and write directly to shared unencrypted
+memory, which may leak information as well as permit the host to tamper
+with the message integrity. Instead, copy whole messages in or out as
+needed before doing any computation on them.
 
-Convert those checks into a switch-case to make it more readable when
-more error values are going to be checked in the future.
-
-No functional changes.
-
+Fixes: d5af44dde546 ("x86/sev: Provide support for SNP guest request NAEs")
+Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230214164638.1189804-3-dionnaglaze@google.com
 ---
- arch/x86/kernel/sev.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c | 27 +++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 6a3e1425ba17..d67884fb38c1 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -2210,15 +2210,21 @@ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned
- 		goto e_put;
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index da4f6267baad..6bc1390b54e8 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -46,7 +46,15 @@ struct snp_guest_dev {
  
- 	*fw_err = ghcb->save.sw_exit_info_2;
--	if (ghcb->save.sw_exit_info_2) {
-+	switch (*fw_err) {
-+	case 0:
-+		break;
+ 	void *certs_data;
+ 	struct snp_guest_crypto *crypto;
++	/* request and response are in unencrypted memory */
+ 	struct snp_guest_msg *request, *response;
 +
-+	case SNP_GUEST_REQ_INVALID_LEN:
- 		/* Number of expected pages are returned in RBX */
--		if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST &&
--		    ghcb->save.sw_exit_info_2 == SNP_GUEST_REQ_INVALID_LEN) {
-+		if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST) {
- 			input->data_npages = ghcb_get_rbx(ghcb);
- 			ret = -ENOSPC;
--		} else {
--			ret = -EIO;
-+			break;
- 		}
-+		fallthrough;
-+	default:
-+		ret = -EIO;
-+		break;
- 	}
++	/*
++	 * Avoid information leakage by double-buffering shared messages
++	 * in fields that are in regular encrypted memory.
++	 */
++	struct snp_guest_msg secret_request, secret_response;
++
+ 	struct snp_secrets_page_layout *layout;
+ 	struct snp_req_data input;
+ 	u32 *os_area_msg_seqno;
+@@ -266,14 +274,17 @@ static int dec_payload(struct snp_guest_dev *snp_dev, struct snp_guest_msg *msg,
+ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, void *payload, u32 sz)
+ {
+ 	struct snp_guest_crypto *crypto = snp_dev->crypto;
+-	struct snp_guest_msg *resp = snp_dev->response;
+-	struct snp_guest_msg *req = snp_dev->request;
++	struct snp_guest_msg *resp = &snp_dev->secret_response;
++	struct snp_guest_msg *req = &snp_dev->secret_request;
+ 	struct snp_guest_msg_hdr *req_hdr = &req->hdr;
+ 	struct snp_guest_msg_hdr *resp_hdr = &resp->hdr;
  
- e_put:
+ 	dev_dbg(snp_dev->dev, "response [seqno %lld type %d version %d sz %d]\n",
+ 		resp_hdr->msg_seqno, resp_hdr->msg_type, resp_hdr->msg_version, resp_hdr->msg_sz);
+ 
++	/* Copy response from shared memory to encrypted memory. */
++	memcpy(resp, snp_dev->response, sizeof(*resp));
++
+ 	/* Verify that the sequence counter is incremented by 1 */
+ 	if (unlikely(resp_hdr->msg_seqno != (req_hdr->msg_seqno + 1)))
+ 		return -EBADMSG;
+@@ -297,7 +308,7 @@ static int verify_and_dec_payload(struct snp_guest_dev *snp_dev, void *payload,
+ static int enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, int version, u8 type,
+ 			void *payload, size_t sz)
+ {
+-	struct snp_guest_msg *req = snp_dev->request;
++	struct snp_guest_msg *req = &snp_dev->secret_request;
+ 	struct snp_guest_msg_hdr *hdr = &req->hdr;
+ 
+ 	memset(req, 0, sizeof(*req));
+@@ -400,13 +411,21 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 	if (!seqno)
+ 		return -EIO;
+ 
++	/* Clear shared memory's response for the host to populate. */
+ 	memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
+ 
+-	/* Encrypt the userspace provided payload */
++	/* Encrypt the userspace provided payload in snp_dev->secret_request. */
+ 	rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
+ 	if (rc)
+ 		return rc;
+ 
++	/*
++	 * Write the fully encrypted request to the shared unencrypted
++	 * request page.
++	 */
++	memcpy(snp_dev->request, &snp_dev->secret_request,
++	       sizeof(snp_dev->secret_request));
++
+ 	rc = __handle_guest_request(snp_dev, exit_code, fw_err);
+ 	if (rc) {
+ 		dev_alert(snp_dev->dev, "Detected error from ASP request. rc: %d, fw_err: %llu\n", rc, *fw_err);
 -- 
 2.35.1
 
