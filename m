@@ -1,48 +1,45 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151418F78
-	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 21:15:19 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id s20so7161698lfb.11
-        for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 13:15:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gHZsoxAUB1qOQOkvHNT7weaGeMzKDk1Ga8sccYf8xcg=;
-        b=OrCTf5cZvZYUFHI/0GymXf51VnjzTEY6BgE6OrAmYOmm3bTTSSA/UOLWlCMCPQgC55
-         aq/YEqGEdbQYHMH3n0OOtLUx4JdtIzXhNaW/00LFoLB5SuhiiGu50b+Z01CJUMHv5p/4
-         NYLXgGXknyT5MCEWl49qH7N0/jJyC7vfTes8ZPD0yelwnYzHg1uB20y5h9njG0maWaBv
-         /g66EkEgzHXRbMhMWWYfDGeCcIN5xCebQHh1hIY7T+cZOXQ3CrYc+/9NCPUq2UhZvxYv
-         m43zjB2VgOxSsjzRswksXL8PVuUPSf74n7sRrPJFEMiAbtLH1ZcEF2jFhHBc/ZUjU8VN
-         ky8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gHZsoxAUB1qOQOkvHNT7weaGeMzKDk1Ga8sccYf8xcg=;
-        b=XduAeuh8Cl+8Jm5XIqEwEIbLKpOJeIndWSqfcA1xvKkSsZYlUU4y/VJmEm1uGKsfuy
-         dRqAKsGZOMjZzI1rL4/e5vK6SyPGOAJmG8SV4muIEYhq/DQk6pOnDnFSDsqd2y0qah3j
-         k38TMDVky32HZfjzDwn1Kg77HoRyhTg4ap18utvs+5cj/wjSLdx4lioYkAwXJSGhalew
-         tnuvKWphmgzuDLJ+whulPNIYo1VOH+OqO1kSvGVYjVKVWiVxBoaGNOjEvtzT/N+O/UGJ
-         HzRHYY5qutfpmovu7fDM97uAGyK+OssnSyIL7rShh3FFoWrx51lFOmCy9/mKsIdQp+Ay
-         s/fw==
-X-Gm-Message-State: AO0yUKW22tpsxvV9JyPfpyAv0Qhmh2doCVYLuBenNTLEzV5EYBhRuK6y
-	lk7sAowxHUKQY5if2695PNQ=
-X-Google-Smtp-Source: AK7set8NjTzhXspfN0nv7/0jUg0gxiYbQwoM+JmD4tCTFmj26oQh0HeivTpT3TU1zBHWBaGTqt8wqQ==
-X-Received: by 2002:a19:7014:0:b0:4d0:e044:f865 with SMTP id h20-20020a197014000000b004d0e044f865mr1873623lfc.6.1677014117822;
-        Tue, 21 Feb 2023 13:15:17 -0800 (PST)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id v23-20020a197417000000b004d23763fe96sm1941493lfe.72.2023.02.21.13.15.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Feb 2023 13:15:17 -0800 (PST)
-Date: Tue, 21 Feb 2023 23:15:14 +0200
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1128F78
+	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 21:22:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1677014523; x=1708550523;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ehLy/IW0xpkSfeCuJBkmt64WJ8nBnpPBUAfnlKm8V7U=;
+  b=i14SX3prFvI4e+vIy8MH97mPHn7+qeebc3YnglKIBng7VCCx86h5SKvm
+   mlnyHq41mZyAOwfifCitRyWJcjDTE3ZDpw1CBdgcINjhutnByyTZMTNx3
+   9hLhg8he31E0anLpdQ5n1fti4ZxxML9rvLZgpnQpDDDAwhDK6Q/x5aUNi
+   KH+Vli23u62ddV9FmAHLNv3YOBtcbtK0a0oBIRGNXUSdcU3F/TYYslXkX
+   Q/WEgpoh4rHJg05GwKJ2V7Jnwnyw0fQgHCHtS8vT4FwT7jtqYm0aNk6PB
+   0OUv40c1crtu69v9D09BKdj1827gPo0VGFivYe2FP1HG7qtRLkaaTs7hY
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10628"; a="332758855"
+X-IronPort-AV: E=Sophos;i="5.97,315,1669104000"; 
+   d="scan'208";a="332758855"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2023 13:22:02 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10628"; a="781151547"
+X-IronPort-AV: E=Sophos;i="5.97,315,1669104000"; 
+   d="scan'208";a="781151547"
+Received: from dakateri-mobl2.amr.corp.intel.com (HELO [10.212.137.160]) ([10.212.137.160])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2023 13:21:59 -0800
+Message-ID: <856ded9e-facd-fe6d-2f71-bb0cf5b1d546@linux.intel.com>
+Date: Tue, 21 Feb 2023 13:21:58 -0800
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.4.2
+Subject: Re: [PATCH RFC v8 10/56] x86/cpufeatures: Add SEV-SNP CPU feature
+Content-Language: en-US
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
  linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
  tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
  thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
@@ -52,151 +49,90 @@ Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
  srinivas.pandruvada@linux.intel.com, rientjes@google.com,
  dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
  kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
- nikunj.dadhania@amd.com, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v8 24/56] crypto: ccp: Handle the legacy TMR
- allocation when SNP is enabled
-Message-ID: <20230221231514.00004b27@gmail.com>
-In-Reply-To: <f70a2398-bd78-24aa-b0ae-9171465d50ff@amd.com>
+ marcorr@google.com, alpergun@google.com, dgilbert@redhat.com,
+ jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ Brijesh Singh <brijesh.singh@amd.com>, Jarkko Sakkinen <jarkko@profian.com>
 References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-25-michael.roth@amd.com>
-	<20230221112823.000063e4@gmail.com>
-	<f70a2398-bd78-24aa-b0ae-9171465d50ff@amd.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <20230220183847.59159-11-michael.roth@amd.com>
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20230220183847.59159-11-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Tue, 21 Feb 2023 09:31:01 -0600
-"Kalra, Ashish" <ashish.kalra@amd.com> wrote:
 
-> >> +static int snp_reclaim_pages(unsigned long paddr, unsigned int npages, bool locked)
-> >> +{
-> >> +	/* Cbit maybe set in the paddr */
-> > 
-> > This is confusing.
-> > 
-> > I suppose C-bit is treated as a attribute of PTE in the kernel not part of the
-> > PA. It means only a PTE might carry a C-bit.
-> > 
+
+On 2/20/23 10:38 AM, Michael Roth wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> snp_reclaim_pages() is also called for reclaiming guest memory, in which 
-> case the (guest) paddr will have the C-bit set. Hence this C-bit 
-> handling is done within snp_reclaim_pages() so that the callers don't 
-> need to handle it explicitly.
-
-Thanks for the explanation.
-
-Do you mean it will be used like that in the later patch? Sorry if it is in the
-later patch as I was making progress slowly. It is quite a big patch set.
-
-At least, I don't see that kind of usage in the current patch. Feel free to
-correct me if I am wrong.
-
-The call chains:
-
-__snp_free_firmware_page()
-    snp_reclaim_pages();
-
-As __snp_free_firmware_page() takes struct page*, all the follwing coversion
-from it would not carry C-bit.
-
-__snp_alloc_firmware_pages()
-  rmp_mark_pages_firmware()
-    snp_reclaim_pages()
-
-As __snp_alloc_firmware_page() allocates page with struct page*, the same
-conclusion as above.
-
+> Add CPU feature detection for Secure Encrypted Virtualization with
+> Secure Nested Paging. This feature adds a strong memory integrity
+> protection to help prevent malicious hypervisor-based attacks like
+> data replay, memory re-mapping, and more.
 > 
-> 
-> > The paddr is from __pa(page_address()). It is not extracted from a PTE. Thus, the
-> > return from them should never have a C-bit.
-> > 
-> > BTW: Wouldn't it be better to have pfn as input param instead of paddr?
-> > 
-> > The caller has struct page, calling snp_reclaim_pages(page_to_pfn(page), xxxxx)
-> > would be much clearer than the current conversion:
-> > page_address() (struct page is converted to VA), __pa() (VA is converted to PA)
-> > in the caller and then PA is converted to pfn here.
-> > 
-> >> +	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
-> >> +	int ret, err, i, n = 0;
-> >> +
-> > 
-> > should be unsigned int i, n; as the input param npage is unsigned int.
-> > 
-> >> +	if (!pfn_valid(pfn)) {
-> >> +		pr_err("%s: Invalid PFN %lx\n", __func__, pfn);
-> >> +		return 0;
-> >> +	}
-> >> +
-> >> +	for (i = 0; i < npages; i++, pfn++, n++) {
-> >> +		paddr = pfn << PAGE_SHIFT;
-> >> +
-> >> +		if (locked)
-> >> +			ret = __sev_do_cmd_locked(SEV_CMD_SNP_PAGE_RECLAIM, &paddr, &err);
-> >> +		else
-> >> +			ret = sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &paddr, &err);
-> >> +
-> >> +		if (ret)
-> >> +			goto cleanup;
-> >> +
-> >> +		ret = rmp_make_shared(pfn, PG_LEVEL_4K);
-> >> +		if (ret)
-> >> +			goto cleanup;
-> >> +	}
-> >> +
-> >> +	return 0;
-> >> +
-> >> +cleanup:
-> >> +	/*
-> >> +	 * If failed to reclaim the page then page is no longer safe to
-> >> +	 * be release back to the system, leak it.
-> >> +	 */
-> >> +	snp_mark_pages_offline(pfn, npages - n);
-> >> +	return ret;
-> >> +}
-> >> +
-> >> +static int rmp_mark_pages_firmware(unsigned long paddr, unsigned int npages, bool locked)
-> > 
-> > The same comment as above. Better take pfn or page instead of paddr with
-> > redundant conversions.
-> > 
-> 
-> Again, the paddr can point to guest memory so it can have C-bit set.
-> 
-> Thanks,
-> Ashish
-> 
-> >> +{
-> >> +	/* Cbit maybe set in the paddr */
-> >> +	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
-> >> +	int rc, n = 0, i;
-> >> +
-> >> +	for (i = 0; i < npages; i++, n++, pfn++) {
-> >> +		rc = rmp_make_private(pfn, 0, PG_LEVEL_4K, 0, true);
-> >> +		if (rc)
-> >> +			goto cleanup;
-> >> +	}
-> >> +
-> >> +	return 0;
-> >> +
-> >> +cleanup:
-> >> +	/*
-> >> +	 * Try unrolling the firmware state changes by
-> >> +	 * reclaiming the pages which were already changed to the
-> >> +	 * firmware state.
-> >> +	 */
-> >> +	snp_reclaim_pages(paddr, n, locked);
-> >> +
-> >> +	return rc;
-> >> +}
-> >> +
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Jarkko Sakkinen <jarkko@profian.com>
+> Signed-off-by: Ashish Kalra <Ashish.Kalra@amd.com>
 
+Too many signed-off-by's. Are you missing Co-developed-by?
+
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/include/asm/cpufeatures.h       | 1 +
+>  arch/x86/kernel/cpu/amd.c                | 5 +++--
+>  tools/arch/x86/include/asm/cpufeatures.h | 1 +
+>  3 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index 1419c4e04d45..480b4eaef310 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -420,6 +420,7 @@
+>  #define X86_FEATURE_SEV			(19*32+ 1) /* AMD Secure Encrypted Virtualization */
+>  #define X86_FEATURE_VM_PAGE_FLUSH	(19*32+ 2) /* "" VM Page Flush MSR is supported */
+>  #define X86_FEATURE_SEV_ES		(19*32+ 3) /* AMD Secure Encrypted Virtualization - Encrypted State */
+> +#define X86_FEATURE_SEV_SNP		(19*32+ 4) /* AMD Secure Encrypted Virtualization - Secure Nested Paging */
+>  #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* "" Virtual TSC_AUX */
+>  #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
+>  
+> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+> index 860b60273df3..c7884198ad5b 100644
+> --- a/arch/x86/kernel/cpu/amd.c
+> +++ b/arch/x86/kernel/cpu/amd.c
+> @@ -558,8 +558,8 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
+>  	 *	      SME feature (set in scattered.c).
+>  	 *	      If the kernel has not enabled SME via any means then
+>  	 *	      don't advertise the SME feature.
+> -	 *   For SEV: If BIOS has not enabled SEV then don't advertise the
+> -	 *            SEV and SEV_ES feature (set in scattered.c).
+
+Did you remove the related scattered.c code mentioned above in a different patch?
+
+> +	 *   For SEV: If BIOS has not enabled SEV then don't advertise SEV and
+> +	 *	      any additional functionality based on it.
+>  	 *
+>  	 *   In all cases, since support for SME and SEV requires long mode,
+>  	 *   don't advertise the feature under CONFIG_X86_32.
+> @@ -594,6 +594,7 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
+>  clear_sev:
+>  		setup_clear_cpu_cap(X86_FEATURE_SEV);
+>  		setup_clear_cpu_cap(X86_FEATURE_SEV_ES);
+> +		setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
+>  	}
+>  }
+>  
+> diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
+> index b71f4f2ecdd5..e81606fcd2ab 100644
+> --- a/tools/arch/x86/include/asm/cpufeatures.h
+> +++ b/tools/arch/x86/include/asm/cpufeatures.h
+> @@ -417,6 +417,7 @@
+>  #define X86_FEATURE_SEV			(19*32+ 1) /* AMD Secure Encrypted Virtualization */
+>  #define X86_FEATURE_VM_PAGE_FLUSH	(19*32+ 2) /* "" VM Page Flush MSR is supported */
+>  #define X86_FEATURE_SEV_ES		(19*32+ 3) /* AMD Secure Encrypted Virtualization - Encrypted State */
+> +#define X86_FEATURE_SEV_SNP		(19*32+ 4) /* AMD Secure Encrypted Virtualization - Secure Nested Paging */
+>  #define X86_FEATURE_V_TSC_AUX		(19*32+ 9) /* "" Virtual TSC_AUX */
+>  #define X86_FEATURE_SME_COHERENT	(19*32+10) /* "" AMD hardware-enforced cache coherency */
+>  
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
