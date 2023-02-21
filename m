@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24337257D
-	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 11:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C32F45
+	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 11:34:43 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 64B5F1EC0666;
-	Tue, 21 Feb 2023 12:34:38 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D64C31EC067E;
+	Tue, 21 Feb 2023 12:34:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1676979278;
+	t=1676979279;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cwRPhPVa7VbVWxOqB+Oos/acf4MTp3gp6dUcgjiwjrA=;
-	b=beu/SnEpU6k01R9hmAUwPqllKFAUqkW0jJEU87dx7kdHVXy5avM1YPz+3XpcsqPnxeANif
-	Dl6+r9bAuxzk5CT4P1jlE4fqMMb8ewBai1pI4bvAcdGfwFJ8yk6p8Ekc8sPpalw33WLysY
-	lUGkjCzK9EKp7bu6FQ0Z9kkypY2bggQ=
+	bh=IYyR0+BccWAZu5naODrqJjalGeVpYFKs8LsqRBbFls0=;
+	b=V/S64JpQrPEnqV250KVXVQRNMRPqMIqPonbf6qQxcaH8JO7DLiKIsClOy29TDN/QmOOIox
+	dA5CXj+2i+Q0g6if//P0LcCDz/y2m//YkAP2uGlgN+Kyk+FSgtHWjuib8dSB7QRuTqiPYU
+	oyRua31voVHEt79/UQyFo1pyY4gVakE=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Dionna Glaze <dionnaglaze@google.com>,
@@ -28,9 +28,9 @@ Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH -v2 05/11] virt/coco/sev-guest: Carve out the request issuing logic into a helper
-Date: Tue, 21 Feb 2023 12:34:22 +0100
-Message-Id: <20230221113428.19324-6-bp@alien8.de>
+Subject: [PATCH -v2 08/11] crypto: ccp: Get rid of __sev_platform_init_locked()'s local function pointer
+Date: Tue, 21 Feb 2023 12:34:25 +0100
+Message-Id: <20230221113428.19324-9-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230221113428.19324-1-bp@alien8.de>
 References: <20230221113428.19324-1-bp@alien8.de>
@@ -44,86 +44,65 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-This makes the code flow a lot easier to follow.
+Add a wrapper instead.
 
 No functional changes.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c | 41 +++++++++++++++----------
- 1 file changed, 24 insertions(+), 17 deletions(-)
+ drivers/crypto/ccp/sev-dev.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index c0ecc5885573..e72289de2b28 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -318,27 +318,12 @@ static int enc_payload(struct snp_guest_dev *snp_dev, u64 seqno, int version, u8
- 	return __enc_payload(snp_dev, req, payload, sz);
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index f60bb73edfda..c54cc8f9a284 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -440,11 +440,18 @@ static int __sev_init_ex_locked(int *error)
+ 	return __sev_do_cmd_locked(SEV_CMD_INIT_EX, &data, error);
  }
  
--static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, int msg_ver,
--				u8 type, void *req_buf, size_t req_sz, void *resp_buf,
--				u32 resp_sz, __u64 *fw_err)
-+static int __handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, __u64 *fw_err)
- {
- 	unsigned long err, override_err = 0;
- 	unsigned int override_npages = 0;
--	u64 seqno;
- 	int rc;
- 
--	/* Get message sequence and verify that its a non-zero */
--	seqno = snp_get_msg_seqno(snp_dev);
--	if (!seqno)
--		return -EIO;
--
--	memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
--
--	/* Encrypt the userspace provided payload */
--	rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
--	if (rc)
--		return rc;
--
- retry_request:
- 	/*
- 	 * Call firmware to process the request. In this function the encrypted
-@@ -347,7 +332,6 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 	 * prevent reuse of the IV.
- 	 */
- 	rc = snp_issue_guest_request(exit_code, &snp_dev->input, &err);
--
- 	switch (rc) {
- 	case -ENOSPC:
- 		/*
-@@ -384,6 +368,29 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 	if (override_npages)
- 		snp_dev->input.data_npages = override_npages;
- 
-+	return rc;
++static inline int __sev_do_init_locked(int *psp_ret)
++{
++	if (sev_init_ex_buffer)
++		return __sev_init_ex_locked(psp_ret);
++	else
++		return __sev_init_locked(psp_ret);
 +}
 +
-+static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, int msg_ver,
-+				u8 type, void *req_buf, size_t req_sz, void *resp_buf,
-+				u32 resp_sz, __u64 *fw_err)
-+{
-+	u64 seqno;
-+	int rc;
-+
-+	/* Get message sequence and verify that its a non-zero */
-+	seqno = snp_get_msg_seqno(snp_dev);
-+	if (!seqno)
-+		return -EIO;
-+
-+	memset(snp_dev->response, 0, sizeof(struct snp_guest_msg));
-+
-+	/* Encrypt the userspace provided payload */
-+	rc = enc_payload(snp_dev, seqno, msg_ver, type, req_buf, req_sz);
-+	if (rc)
-+		return rc;
-+
-+	rc = __handle_guest_request(snp_dev, exit_code, fw_err);
- 	if (rc) {
- 		dev_alert(snp_dev->dev,
- 			  "Detected error from ASP request. rc: %d, fw_err: %llu\n",
+ static int __sev_platform_init_locked(int *error)
+ {
+ 	int rc = 0, psp_ret = SEV_RET_NO_FW_CALL;
+ 	struct psp_device *psp = psp_master;
+-	int (*init_function)(int *error);
+ 	struct sev_device *sev;
+ 
+ 	if (!psp || !psp->sev_data)
+@@ -456,15 +463,12 @@ static int __sev_platform_init_locked(int *error)
+ 		return 0;
+ 
+ 	if (sev_init_ex_buffer) {
+-		init_function = __sev_init_ex_locked;
+ 		rc = sev_read_init_ex_file();
+ 		if (rc)
+ 			return rc;
+-	} else {
+-		init_function = __sev_init_locked;
+ 	}
+ 
+-	rc = init_function(&psp_ret);
++	rc = __sev_do_init_locked(&psp_ret);
+ 	if (rc && psp_ret == SEV_RET_SECURE_DATA_INVALID) {
+ 		/*
+ 		 * Initialization command returned an integrity check failure
+@@ -475,7 +479,7 @@ static int __sev_platform_init_locked(int *error)
+ 		 */
+ 		dev_err(sev->dev,
+ "SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
+-		rc = init_function(&psp_ret);
++		rc = __sev_do_init_locked(&psp_ret);
+ 	}
+ 
+ 	if (error)
 -- 
 2.35.1
 
