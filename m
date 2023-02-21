@@ -1,67 +1,51 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F6C8F78
-	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 22:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97928F78
+	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 22:07:50 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=knC41Lnox3TQ3rvEz5djao8wftoPA1Vsy65Xr6db97m6LxSi1vOVQ0aTUoUj2IBeXniKivrHnyL2eqkT/Vek6BEBNCiDd0F9Q9n6N/GkNWDZOnHft3odp3Lpd/5InaDzgGkdGBVmq7F+0na2vnbD9O+ln+CROsErDQh6HZRoQ20+JcrQTT+nPn+BIcJNyk+1oJjpaNliCKet3khOZSOosbTuHNATrEXjJ4TgAb/WpEi387ey8QDtCBSPu1lOXTzs2SYZlVfQ+gefdvwGf8VQ6McYRAea8CElVe59ewJFCFcZ2FU7NcJNqf13iW6b/2Yf9tZhmW3YHrnTLAvJmUkBcw==
+ b=DtU3VPp8BZ8s2ENaY90mitToA7x3M1GluXnvLTsZ5o1wq1JuOP/8iNI8+v9i4F78MgGxtFXXZKj2q3n6daa0iVdJk3Wr+UJbjaRfnhyAQz6DkQRRMXMf0DQpeCcucKNrihtvQCX6LgnA2nYI/PuliyGX5qdXfyUyttcgDt1MiHg48ofcjUUxGmAKiRk+BMeZb1rjPWjGzQA2czN2Y74MITgoiD1bLS3IK7V9m2ZV6TX5S/Ph19OTkEYQMgcRwpbcCaMzMDglR2YT6h47QjHX00O7j13Jw+r6MNv1WsnZlLajLz+iHsu2xuHl2jD4khPEZ6z8JFeQSVNbPh6WtTSZmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qZyHiit4p3IDqeFtLvP3SjkUsiHaYD5sdx271a5WCco=;
- b=agm6ZEqX+mV1yYBppQ3PVQnOA36Rj1yCyeYTiVeFIE/14mFQSe5bwhiGM0Zia0vOJJ6zqN+X75QAdZLKmLvPBCUtgxxSQnqjGi7aSrBNZX5EL/N9wMnFE3KQ11Mq9rZZi7TRxi1VogZpnfnbZn0dW+5eog03d18eKoQWaV2ryk4gXdZEggRcYRwzeHbA7ANKloVM/6M9c44JTYJHXpqVvOdVz/geR9Z5tupoeEVuIVp7MsrelV0YJe1VOYYT6NrtsX4E4nfYKQ17XqLRVDocFTeI48GuLfQlWQtq4RjcRb1D3bgllZ+2sB/8YczF3+maQ/E8LWyp77Yw8msEi1l/Yw==
+ bh=7lFT4ASZIF5xxZOZqC07DM5VGOp6dm9Nh24s55pV+IA=;
+ b=QNseFE5evfVXudkc91oFELXKHRK2YMDsJEentU047TU2qVj5itoPp/HvcMUBdhkRTLorfulzsEr5/FiR9Gjxd//9tznxiqYlh8B+KkUISYT5jXdIfjEKRdLsOR06T4fEv176fJLl55GMDQsB/MaNU/0azENMMiSHm94QRNmPQj/JbYDOpJhaCUD06w87AeawHWt1RnGNOV4cM+3S6RTkKrTB+Q/o0JijNL887wNzm/DnjR7B2M+HdfjONpMPgGew+uc7X0bXpyydWvF55YEoggFWuxU/sLXZth4yxi7jMNogaJQbFP3OcYzKgqfrCwcU1TOjlf46emeQOvVt+j0Eiw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qZyHiit4p3IDqeFtLvP3SjkUsiHaYD5sdx271a5WCco=;
- b=XXfMafhWSBU4eUegj9/4G2OTNMGUiNRQLy+06JHUQ0Rfj4lii93X/Z+nogJq8N5D1iqD15isXFkeHlt6XFyViruK3P8arqg0/ZaZLWk7NQeY57n9UHhHYejUDuxDE2cDPW99gpGYrHupfEaUHd+pVxPBClv2CU0usM5QqUmtQtE=
+ bh=7lFT4ASZIF5xxZOZqC07DM5VGOp6dm9Nh24s55pV+IA=;
+ b=LTPITHBhSA1/AP77F3OVdAoNokrJBJuqqf1x9EjGtrHxMSJDuSm9993M+KjakruDntHxX4GDizrJjKQdmEo09Qsru/Kah5wA7nM8O2uuQOMPIRliErP0wVr5dyosRaI646ElY7VZv3n4GZHiUSaoxaWB7I/KonKlNWkaFSX8PQA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by SJ0PR12MB7082.namprd12.prod.outlook.com (2603:10b6:a03:4ae::12) with
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by PH8PR12MB7110.namprd12.prod.outlook.com (2603:10b6:510:22e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.21; Tue, 21 Feb
- 2023 22:06:14 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::dc5d:6248:1c13:4a3]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::dc5d:6248:1c13:4a3%7]) with mapi id 15.20.6111.019; Tue, 21 Feb 2023
- 22:06:13 +0000
-Message-ID: <40bf3fed-460e-b578-6795-08e564f412db@amd.com>
-Date: Tue, 21 Feb 2023 16:06:06 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH RFC v8 24/56] crypto: ccp: Handle the legacy TMR
- allocation when SNP is enabled
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.20; Tue, 21 Feb
+ 2023 22:07:48 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::6cc0:9c7a:bd00:441c]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::6cc0:9c7a:bd00:441c%5]) with mapi id 15.20.6111.021; Tue, 21 Feb 2023
+ 22:07:48 +0000
+Message-ID: <069c74a5-2735-adba-5748-090e80550c9e@amd.com>
+Date: Tue, 21 Feb 2023 16:07:46 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: SVSM Attestation and vTPM specification additions - v0.61
 Content-Language: en-US
-To: Zhi Wang <zhi.wang.linux@gmail.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
- nikunj.dadhania@amd.com, Brijesh Singh <brijesh.singh@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
- <20230220183847.59159-25-michael.roth@amd.com>
- <20230221112823.000063e4@gmail.com>
- <f70a2398-bd78-24aa-b0ae-9171465d50ff@amd.com>
- <20230221231514.00004b27@gmail.com>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <20230221231514.00004b27@gmail.com>
+To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
+References: <89f1527e-b710-8bd8-1059-4a0a51e4c0ab@amd.com>
+ <Y+yqpq+S3N/lIKjQ@suse.de>
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <Y+yqpq+S3N/lIKjQ@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0P221CA0018.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:610:11c::19) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BL1PR13CA0096.namprd13.prod.outlook.com
+ (2603:10b6:208:2b9::11) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,235 +53,158 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|SJ0PR12MB7082:EE_
-X-MS-Office365-Filtering-Correlation-Id: 30c7769e-8caa-446d-69e8-08db1457d8db
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|PH8PR12MB7110:EE_
+X-MS-Office365-Filtering-Correlation-Id: da9b8bf9-1db2-4390-1424-08db14581130
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	7se0XbO54SgNdD0Zo+ENJz3yAsNeDlSW1nNCphuG6dHxlqlH1yR3Bib81gQE2YK1Hjy3a69UMU4mgV/0Ap8ZsARUG0gmWcW+56QgYhuQ6Y5s2IiPbZGKoiI9neQzpAiDe3LnqcxDlrO+V31PkVINjvqLKmE5/aiDFIVYWuzXIeJSKRImTgaRCUoMND1za0bntkORW/UWkEni3dioGDaiexRL4ZUhg7E4vkaosWac6rel9Asou2aRdETKsVJfvTQ/Mso/ZQ+nW00fIBwBJUHB8VRMK/POfsKF2iz9NtESC/62F0Him1eDmQiCYXNC6Gx0N9OS4nQRoT9KMnn8mBGf97QzGUK1LisgLHfmiVO5tFSn38+a5dTL+mDuRgwX/5jHbTx+fJovkvuzaxQxXH8/PWnccqVhwQ8Ps1zHT+qwCWEMUZIy0+9u73Pbci76YPdiVpB+JY6RMfGQFNt0I+rqX7sllRRjBvUt04whpuGS/fjZonYEOlPvyEEHqJMj04lNfOay2KtgqSnMPb75NYiVCvLUV7grz44fEY9CeFtqUegh/5bf4yU3YH6tr4VE9hRRAeQHlifw0PKdPkABp5wkaHXJMhlYQo0aueFtBAHoAXEa7q9HM7XGFRDtNbSw4o6XTn+alEAMOfDk7YYznYWn6LEuHnuMXLgATe8kMuQxqv8cL1YKXOTMfM9BhK2lBX0M6r3o8qr1xruW5jsq8kq8nx/NukHBGClX+Y0VGN9QIH4=
+	4xbvaXiAhIy6/Lw2HLV3Yq7wFfQVN6PWTPlBKgmfEeV8DPDi/P8Z8U5gOQO/dNe4vxwE9zjF46xOsUzjhffGWA1MyxQ103H8pXTOX77Bph7umHQmWjTtQnxpL06voPh+9WttmgjRezbB+KKbwDs1eRsvctICjcXEqAT9FHCkzJ6rh8bu5Cf5i6Heot2dEGcGZw0fAERjTcwhZ9YJxyFuut4W+6ffgIz1CK/jmLx5+8uqGVo3hQrZXN+YlmIAtkD3FDb8Mrj4NJpNKN1lJPEhNGHpMi0LHoOU1PNVVdxYjjwJjpyeUMazSUQNwlIsv23knOA71XndzyLEzzJzYclRfHOZBv8I55n89E2Ra68gR0IhJGMrxQUWMRyc8CAUEZqdXxXhi4sb99VHBgn6/pnFVbABllf210UfoE4cF6UuAbeUwy2zr393xay5gCONnGLF7FR6JraVLIbvL1xBmVrpGooJfFqgmRFa+c71cBnQwc+yjjfX2YOScN152/DgLV4aiCdKR2w+U3IA1U37aLtAiH9IPB/a6M5DzffZyNHfqV56C4N9BfhwDjxXIKUBrYAZ3OsWrspgFx8o7zQ+Ilh/xBu4rN8sKzGNhrrqQRafLbOt4gQVrd9TT2pBBzxqDcs2f30oJ17JCsxt2+StVuQo10SRqFCifh6vt+1N6asOOmji3CNHzPoA7so+aDuXKJuIIRFsQgni2Aogehd5Umb5rDodZCk20GDEJmGBtV/Six0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(396003)(39860400002)(366004)(346002)(136003)(376002)(451199018)(31686004)(83380400001)(54906003)(316002)(36756003)(38100700002)(66946007)(8676002)(66556008)(66476007)(2616005)(53546011)(41300700001)(186003)(6512007)(26005)(6666004)(6486002)(6506007)(478600001)(7416002)(5660300002)(7406005)(4326008)(31696002)(6916009)(2906002)(86362001)(8936002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(396003)(366004)(346002)(136003)(376002)(451199018)(53546011)(6512007)(26005)(2906002)(66574015)(36756003)(6506007)(186003)(31686004)(38100700002)(478600001)(6486002)(8936002)(2616005)(41300700001)(4326008)(8676002)(66476007)(6916009)(31696002)(83380400001)(66556008)(5660300002)(66946007)(54906003)(86362001)(316002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjNMZXk3QnR2Unp2VHR4TjR5eWkzUG1kaXBqYnFGaG8yNHRMZW9EbkEzSFdz?=
- =?utf-8?B?ME02UjdHYzVDbHJNN2JUSUxsZytaZDFXalpJcWVsT3VSS3JtbjU2c1BSVTBi?=
- =?utf-8?B?czZpODA1bTVuQWhINXhueWNsaWYzOHdCbW1SZlcrY0oxYnZPRkJWdkgxaVlZ?=
- =?utf-8?B?RnZBVlFlU2dCYUgxbzRnaXVkL09VUG9GWHcyZGNYbVlibnFvbUJWZjRxYVU3?=
- =?utf-8?B?Mm9jQ1d1cTRKZ3dIL1paQXA0cmdpV254N0NLRjZtQ2lVQmNrOTlFMUdXaFhn?=
- =?utf-8?B?UVBqMmVPU3BIT1lReXV0ZnJGWm41dndOdUhaemFsVzg5Wnc4NUdsRnkwZmNy?=
- =?utf-8?B?R3IxcnZFYjNHbzRWRG5VVjE2Q0dKbjdzY3cwT2RYVnNOOUxhWDJyUnplQXV5?=
- =?utf-8?B?aEswKzhPNjlzSnoxODN1b1I2MnFncHpmczhHTUFsZ2kyMG1jMXBJM21xdDhu?=
- =?utf-8?B?K3ZiU0NxWjdOa0xtL1Z1Uk5aT3ZjSDhYREtFa2Ywa1VHMk1aTFlmNTkvYXlD?=
- =?utf-8?B?eFdFdCtGYjRvUE11QXpmdE82U0VOS0FOa29FZVJZYTJFZXRuZjlZKy9tckpX?=
- =?utf-8?B?b2FOYWtGTkg1alVvRVNva3FFOUcyTTJobUZYRWpRNUZNaDdmd1YxVTVGeWMy?=
- =?utf-8?B?a1ZjNS9jdDc1TVNQaERvem4vdUZRYnQwZ0xiV0xhMkpyY2pjQW9xREFOU3py?=
- =?utf-8?B?RkdJWnV1QkdqVVVHNlk5YWN3ejNyZWxYR3pBWXloSDAyVXdBUWxmQWx5K2tn?=
- =?utf-8?B?R2xiaGZYY2Nod0luZUhtbWRpWW1iSTFNbWZrM2NpZDFwRXAycDNtdmFuREI1?=
- =?utf-8?B?cGd1U1h5dHQ5eDIwbHloVjF6NmNiNEJlcjFkSFJld3R1QW42K2ZxMHNaOC96?=
- =?utf-8?B?bTNyOWp5eWNEa09zbU9QNnN3aW80SUY2ZHQ0YThkS0lHMTllTSswZGJKR0hm?=
- =?utf-8?B?OXYwYmlFZ0FOMko2K2RCT3lNUkRDZnN1VkNSRWNCYXlibDJwTGliOTFpL0xi?=
- =?utf-8?B?SFI3MjhYc3V3Z1ZvN3dWcDdYRVMzVmxqYXBvZU9aQTJGT3ZJZXQ2cGRCZ0lP?=
- =?utf-8?B?b3BzdzJSNytMbVNnMDdkc3R1NjAzRXpJNUZkNDE0eGYvNGh6cnZnV0pSakFa?=
- =?utf-8?B?dEF5RThpVzdmU2FGREVsOU1jWVNBSVNIVUphaG1DMk1QVVZIbzk4WURMZ2Fq?=
- =?utf-8?B?OWoyZTJQVXVWL0ZNbDJ1Q3JzYUZUaHpXUGRJd21PUEI0YkI5MVRHN0xMWHQ1?=
- =?utf-8?B?L09jeW01MThQMDg4OWtrRm1WN1JidjJNcFh4WXBoVEtRVW1VMGYzWVhUMEYx?=
- =?utf-8?B?LzVFN0c3UlNoeUtvUkVXbmMxMmpWdkI5RXpXa0d4RExlSnVFT1ZrZTFxeHFn?=
- =?utf-8?B?U3RkbVB2c01OYXM3ZlgwYW5mM1pVNGdwM0FieERuZWlSeXRjTldyTUp5b3Fh?=
- =?utf-8?B?ZUw2WTBpSW51Ynp4U2JWdVBSYjVBY1Flb2k5WEYrYW1kSVNHUUpYY1dLRFZG?=
- =?utf-8?B?cm4wOVQ2bmJNTkNVbzBFR2VuK2EvbVBFK01la2FjeHBTVU42eFMzdXFjTUVm?=
- =?utf-8?B?bDhDVVlvRW1ZeW1ycVhEdmYyK01Gd2JTbEZTWEY5Z25ZaU43cEtPaE1mZ3Jz?=
- =?utf-8?B?YWIxcSsyVVhLSzdNOWVpMWRVVko2TEJPbjJPNEMyb3dPeUNiMlVUbERMUC9K?=
- =?utf-8?B?cFVyVktLSm5DSGpkWFVYZ0VnajlYMzVTZENTKzcrNGlYOHVreUxsNjRyanRq?=
- =?utf-8?B?SWRUcEJlQW5ROW9ZWWNXcFVFTmtnNXF4QnBTaVRNY3BORGJ6eG9ZdmQ3VTZj?=
- =?utf-8?B?aDhIcERNRU1BeEYwdkxIbSsyUEpXVmtmZmhaRElqM1IvZnFpc1p3V081YUJT?=
- =?utf-8?B?OU9YZG9qRVl4VmdWQjJTQTBpaUo4eE1OTzJOQm1uWGlSMlltL3BHYk53ZmRF?=
- =?utf-8?B?SnBqUit4U2I5d2wzdVgrNENZa2FVVTY5UE5aMkx1VzIyUk9YLzdxYklZKzVE?=
- =?utf-8?B?eHdGcExwYU5NTHhHd3BBU00waTFLYWVqV2Nlci9QZDVuSEliWVEwTG9Nc1hi?=
- =?utf-8?B?aHJpNUJTTXRXeHIzbjZLU29NaUROV2IwUk9XR1JXZDFjY2xPVWY5MzNyZ2dK?=
- =?utf-8?Q?Quete3FZ2SzNrBPim16DuRJcx?=
+	=?utf-8?B?TTVvZTUzcVNBbGpqYWNLMzdYQ2hIZFh4NTkvdkZnbmJUcjI5Z29ZelA3Z1c5?=
+ =?utf-8?B?RXBFc0Z3aUJscG5ZaUhZdHZ1Q2hreXZOR0ZkRis3bUxTaWNBb3BhUW1kc0xz?=
+ =?utf-8?B?OWhUSEtXUkxkRVpyQ1JrZDhOeE1aNWljVlZOZGhmMDZ0YUFRVUlvOGNJa1NW?=
+ =?utf-8?B?SVJoVVV6U0ErSy9ISFBBVXZ5UWdoaGttdFZLbUlKbEpUVnl2QzBVdHRETHp6?=
+ =?utf-8?B?UVFsMVB6bVRqbU5SbjZNaWV2a1lLOG1SWVo1N0wwaUtBTlFyeHhqZkQvV3Na?=
+ =?utf-8?B?eldVMGNaWVdCb3lLRERiR245dW1PZldjanA2cTBmZzZqSndaTXNHU1l2MmI1?=
+ =?utf-8?B?cVJJUTFTTXNoUDNaQmh5ejdEbjFTVlE0Ry9OMHN2Tk80OE1SeUhJcW44MTRk?=
+ =?utf-8?B?dFZINlIwVUJPSG5YbHMwK0ptZ29KYWoyUmZDa3ZqN0RNWTBkdzg0eHlyajds?=
+ =?utf-8?B?OXY4UWFSR2ZnWWl1bVA1SXRQUjJJMnUrTjVibWgrTzBNbWUycVBvQW1oajNt?=
+ =?utf-8?B?Y2J5dUlwZ0ZDRUFjeXdLVVF1MmFybE15ZVVtTXlYM0taWnJCUU9VQm1BVGYw?=
+ =?utf-8?B?Y3dnbFYvVXVzQXc2clpFZ3Z5SndSRFlEdjVuenNDbzhxUlpEaTFJNForY1hT?=
+ =?utf-8?B?WlgyT0pCOHVWRzIwckc4bkhSdXUzZ24ycTVoNy9JOTAxYXhQUE5jbGtKdnI2?=
+ =?utf-8?B?MVd5cHpQZ2V0T01sU0dLMVFjajF3TUJLc0lsYjhlNnlsN2dZMU9zQlB5Z042?=
+ =?utf-8?B?VmptZ21SeWlaaS95bkZKZFNJZVhVeFhuNWl4bWpuQVlUR0l1Z0thTkFXVVhz?=
+ =?utf-8?B?ak5hcnV0N1J0Z294aE5VaHdlNXZzVDEwQnJURUtxVGU2b1ZrMTFhRy9URTgr?=
+ =?utf-8?B?cUtKUW0zbXY1d3B4YWpJL2JkRHdKcElSL3hiVDd0dlhmVXJJbjcxUm5kL0Fr?=
+ =?utf-8?B?RDA2Q1pZTWVOQW5KdktUVUpVM3FxdEN1aXE0NmdxYmI1dlhIUkRPQSt0dnkr?=
+ =?utf-8?B?VHc3LzE5NjRJd1ZuSUlSNVl2SWZCMGc1RmZIa0ViWFNPTERwN0lIVEVvNTFU?=
+ =?utf-8?B?c3JCU1lybzU1T2J5RnByaUwrYlEzY3Bvakc1VHYxM3hxNGVWRzk5RTk1azhU?=
+ =?utf-8?B?YmF0QVcvWTdjTCtCMUxwOHBmSEVOTE9WWDlNdGRTemZlUHlWV3k2OS9oQ1du?=
+ =?utf-8?B?aWVrZHVnQzU3VWg1NmNXRUlGQkFTK0t3eWFRSW02eXZlYjhiMWU2OWNuWHlh?=
+ =?utf-8?B?NTRUOVJlZ0puVE1OWHBGSUlObjN6bGRVTHo2ejV4aHNwSUtIL1FKSUUxdUxY?=
+ =?utf-8?B?d0FjbEdnckwxL0lTcjdQdE9TK1E4R0NBSS9LdjBHWWNieW1ldG52bG93WkNZ?=
+ =?utf-8?B?SXRRWGpaeFYweFJwd0RXMmU3czFZWmpCUy9pN21TQTZ1MnBaQmF4c3NPRFZx?=
+ =?utf-8?B?MVZJRWUxb2lJNWxFb3JKRVZoaUJJeE83cVNkODlzTGIyNjRiWXJ1Z2owZE4w?=
+ =?utf-8?B?em1US0FRdlpZYnlMc3NuMnlON2JxTWpWbFZrZ09aeVh6UzNjdm9yTWFrOU9x?=
+ =?utf-8?B?UkM4ZXFOQUFNc2NQVDJYb1FUdXBmbzFFN1Vpd1pSejdjanByT25MVVhFVVpz?=
+ =?utf-8?B?eVRpK2NSMFFZS0tzRW1QMVVPK1UwS0pZU0k1NndBS1llV05BQjVxVGdxQTB2?=
+ =?utf-8?B?b0xaREJGeFZnd0FCQmpEMytKUmZManpvdnBsN1JQUmxmdTVxSkRwbXR5RnJ3?=
+ =?utf-8?B?aDA3cVJGL3Vjd3p5R1YwVVZZNVB4cFdncGxpUEdJdDVKOGR5dzhwczUrbWZn?=
+ =?utf-8?B?ZnllYklZZkhoSEt4bUVXei81c3A0WGFBenFlZ3RFaWx0Y0Q5d2hZYVVBVjU4?=
+ =?utf-8?B?Z1p2c2syVnNGeUVZRjJ3OTFzaTIzRTBtMWVwcmVpM1g3VkRRWWRVRnAxdG5V?=
+ =?utf-8?B?NXNIQlhoaWVkTjhkcERRRHdRU2dwMzY1U2MraERBSmVLS2xrbkJmWmllOXAy?=
+ =?utf-8?B?MUV5TDhwMGUvQlNJTFJzUkVZbkxUSlgyc2NyY1pHSkNpRnRSeWN3Umx6dlR4?=
+ =?utf-8?B?T0pjMG5BUGVxZU1qbTRGVC9EczIrdVk5blhCSTlCNys5QWZDYWFUcTd2MWlS?=
+ =?utf-8?Q?1/TV53KXFT0RBv2c6QY+yhkis?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 30c7769e-8caa-446d-69e8-08db1457d8db
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: da9b8bf9-1db2-4390-1424-08db14581130
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2023 22:06:13.8212
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2023 22:07:48.3910
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: svIQz+e22JmVKzEp6aVwbQklLvq5Q1883OOz2OjwC4fQRfqz5l07O6xVoj4ynVIL2qf5yFluLVAfe7QdcGvJcg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7082
+X-MS-Exchange-CrossTenant-UserPrincipalName: a9baZrgGMNpUV2k13dhvXdPYgzwWlxhQJsnDNJeYvEz2zMFMIQsN37Nb4+ytUIS+YdDVfXTlgpt9Rw6iDEkgmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7110
 
-On 2/21/2023 3:15 PM, Zhi Wang wrote:
-> On Tue, 21 Feb 2023 09:31:01 -0600
-> "Kalra, Ashish" <ashish.kalra@amd.com> wrote:
+On 2/15/23 03:49, Jörg Rödel wrote:
+> Hi Tom,
 > 
->>>> +static int snp_reclaim_pages(unsigned long paddr, unsigned int npages, bool locked)
->>>> +{
->>>> +	/* Cbit maybe set in the paddr */
->>>
->>> This is confusing.
->>>
->>> I suppose C-bit is treated as a attribute of PTE in the kernel not part of the
->>> PA. It means only a PTE might carry a C-bit.
->>>
->>
->> snp_reclaim_pages() is also called for reclaiming guest memory, in which
->> case the (guest) paddr will have the C-bit set. Hence this C-bit
->> handling is done within snp_reclaim_pages() so that the callers don't
->> need to handle it explicitly.
+> On Wed, Feb 08, 2023 at 03:55:34PM -0600, Tom Lendacky wrote:
+>> Attached is an updated draft version of the SVSM specification with feedback
+>> incorporated from the previous review. Please take a look and reply with any
+>> feedback you may have.
 > 
-> Thanks for the explanation.
+> Thanks for your work on the new specification. I was reading through and
+> have some thoughts on the handling of SVSM_CORE_CREATE_VCPU and
+> SVSM_CORE_DELETE_VCPU calls. I think a few corner cases with these
+> commands should be better defined.
 > 
-> Do you mean it will be used like that in the later patch? Sorry if it is in the
-> later patch as I was making progress slowly. It is quite a big patch set.
->
-
-Yes, these are callers in later patches, like the following code path in 
-patch 25:
-
-static int unmap_firmware_writeable(u64 *paddr, u32 len, bool guest, 
-struct snp_host_map *map)
-{
-         unsigned int npages = PAGE_ALIGN(len) >> PAGE_SHIFT;
-	...
-         /* If paddr points to a guest memory then restore the page 
-state to hypervisor. */
-         if (guest) {
-                 if (snp_reclaim_pages(*paddr, npages, true))
-                         return -EFAULT;
-
-                 goto done;
-         }
-
-       	...
-	...
-
-Or, the following as part of patch 52:
-
-int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, 
-int *error)
-{
-	...
-         data.gctx_paddr = sme_me_mask | (gctx_pfn << PAGE_SHIFT);
-         data.src_addr = sme_me_mask | (src_pfn << PAGE_SHIFT);
-         data.dst_addr = sme_me_mask | (dst_pfn << PAGE_SHIFT);
-
-         /* The destination page must be in the firmware state. */
-         if (rmp_mark_pages_firmware(data.dst_addr, 1, false))
-                 return -EIO;
-
-         ret = sev_do_cmd(SEV_CMD_SNP_DBG_DECRYPT, &data, error);
-
-         /* Restore the page state */
-         if (snp_reclaim_pages(data.dst_addr, 1, false))
-	...
-	...
-
-Thanks,
-Ashish
-
-> At least, I don't see that kind of usage in the current patch. Feel free to
-> correct me if I am wrong.
+> The underlying problem is that the SVSM can only handle one VMSA per
+> (apic_id, vmpl) combination. So what happens if:
 > 
-> The call chains:
+> 	1) A new VCPU is created for an (apic_id, vmpl) tuple where
+> 	   there is already a VMSA, should the call fail or should the
+> 	   existing VMSA be implicitly shut down and replaced by the new
+> 	   one? The latter case can fail if the existing VMSA is
+> 	   currently in use (depending on how it is implemented).
+
+VCPU create doesn't actually replace the VMSA from the hypervisor point of 
+view. The guest is still required to invoke the GHCB interface to notify 
+the hypervisor.
+
+The SVSM PoC leaves any current VMSA in the list of all VMSAs, but does 
+replace the current / in-use version of the VMSA for the specified VCPU. 
+This is used to examine the register associated with a request, so the 
+guest can shoot itself in the foot if it doesn't switch that VCPU to the 
+new VMSA.
+
+I'm ok with either doing that or, as you suggest below, checking if 
+there's an existing VMSA for the VMPL level and failing the request until 
+the the existing VMSA is deleted. That does require the deletion/creation 
+to be offloaded to another VCPU, though (unless we allow the self-deletion 
+change talked about below).
+
 > 
-> __snp_free_firmware_page()
->      snp_reclaim_pages();
+> 	2) Who can delete VCPUs? Can a (apic_id, vmpl) VMSA only be
+> 	   deleted from a lower VMPL running on the same apic_id? Or can
+> 	   other apic_ids delete it too?
+
+Nothing prevents one VCPU from deleting another VCPU - although I think we 
+should probably prevent a lower VMPL from deleting a higher VMPL (e.g. 
+VMPL2 VMSA can't delete (or add for that matter) a VMPL1 VMSA). That 
+should be added to the specification.
+
+It might be desirable to allow another APIC to delete a VMSA. Maybe kexec 
+processing would be able to benefit from that.
+
 > 
-> As __snp_free_firmware_page() takes struct page*, all the follwing coversion
-> from it would not carry C-bit.
+> 	3) What happens if a given VMSA for a VCPU is deleted. Should
+> 	   that be not allowed or should the SVSM gracefully handle
+> 	   that.
+
+As the specification is written now, switching from the SVSM would result 
+in the VMRUN instruction failing for VMPL1, which will shutdown the guest.
+
+Again, I'm ok with either allowing that or, as you suggest below, if there 
+  is no VMPL1 VMSA, just enter HLT in the SVSM code.
+
 > 
-> __snp_alloc_firmware_pages()
->    rmp_mark_pages_firmware()
->      snp_reclaim_pages()
+> I have some thoughts on how to handle these cases, but want to put that
+> up for discussion here. For 1) I think it is best to fail VCPU creation
+> if there is already one for the (apic_id, vmpl) combination, requiring
+> the guest to delete the VCPU first. This is related to 3) where I think > the SVSM should just go into HLT when there is no higher-level VMSA
+> anymore. When it wakes up from HLT it can check whether a VMSA was
+> created and continue executing it.
+
+For 1), that is an option.
+
+For 3), if the SVSM goes into HLT, it will require another VCPU to perform 
+a VCPU create, which should result in the VMPL1 VMSA being run for the 
+VCPU. That would then imply that coming out of HLT in the SVSM would be 
+for a protocol request. So this is definitely possible.
+
 > 
-> As __snp_alloc_firmware_page() allocates page with struct page*, the same
-> conclusion as above.
+> For 2) I am a bit undecided, letting VCPUs only delete itself would
+> simplify things on the SVSM side. Allowing other VCPUs to delete VMSAs
+> needs quite some synchronization or could fail entirely if the VMSA is
+> currently executing.
+
+Should the clearing of the SVME bit fail, then a FAIL_INUSE return code 
+would be returned. I wouldn't think that the synchronization would be that 
+difficult, but I'm not sure. If we do allow self-deletion, then, I agree, 
+that would work nicely.
+
+Thanks
+Tom
+
 > 
->>
->>
->>> The paddr is from __pa(page_address()). It is not extracted from a PTE. Thus, the
->>> return from them should never have a C-bit.
->>>
->>> BTW: Wouldn't it be better to have pfn as input param instead of paddr?
->>>
->>> The caller has struct page, calling snp_reclaim_pages(page_to_pfn(page), xxxxx)
->>> would be much clearer than the current conversion:
->>> page_address() (struct page is converted to VA), __pa() (VA is converted to PA)
->>> in the caller and then PA is converted to pfn here.
->>>
->>>> +	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
->>>> +	int ret, err, i, n = 0;
->>>> +
->>>
->>> should be unsigned int i, n; as the input param npage is unsigned int.
->>>
->>>> +	if (!pfn_valid(pfn)) {
->>>> +		pr_err("%s: Invalid PFN %lx\n", __func__, pfn);
->>>> +		return 0;
->>>> +	}
->>>> +
->>>> +	for (i = 0; i < npages; i++, pfn++, n++) {
->>>> +		paddr = pfn << PAGE_SHIFT;
->>>> +
->>>> +		if (locked)
->>>> +			ret = __sev_do_cmd_locked(SEV_CMD_SNP_PAGE_RECLAIM, &paddr, &err);
->>>> +		else
->>>> +			ret = sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &paddr, &err);
->>>> +
->>>> +		if (ret)
->>>> +			goto cleanup;
->>>> +
->>>> +		ret = rmp_make_shared(pfn, PG_LEVEL_4K);
->>>> +		if (ret)
->>>> +			goto cleanup;
->>>> +	}
->>>> +
->>>> +	return 0;
->>>> +
->>>> +cleanup:
->>>> +	/*
->>>> +	 * If failed to reclaim the page then page is no longer safe to
->>>> +	 * be release back to the system, leak it.
->>>> +	 */
->>>> +	snp_mark_pages_offline(pfn, npages - n);
->>>> +	return ret;
->>>> +}
->>>> +
->>>> +static int rmp_mark_pages_firmware(unsigned long paddr, unsigned int npages, bool locked)
->>>
->>> The same comment as above. Better take pfn or page instead of paddr with
->>> redundant conversions.
->>>
->>
->> Again, the paddr can point to guest memory so it can have C-bit set.
->>
->> Thanks,
->> Ashish
->>
->>>> +{
->>>> +	/* Cbit maybe set in the paddr */
->>>> +	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
->>>> +	int rc, n = 0, i;
->>>> +
->>>> +	for (i = 0; i < npages; i++, n++, pfn++) {
->>>> +		rc = rmp_make_private(pfn, 0, PG_LEVEL_4K, 0, true);
->>>> +		if (rc)
->>>> +			goto cleanup;
->>>> +	}
->>>> +
->>>> +	return 0;
->>>> +
->>>> +cleanup:
->>>> +	/*
->>>> +	 * Try unrolling the firmware state changes by
->>>> +	 * reclaiming the pages which were already changed to the
->>>> +	 * firmware state.
->>>> +	 */
->>>> +	snp_reclaim_pages(paddr, n, locked);
->>>> +
->>>> +	return rc;
->>>> +}
->>>> +
+> Thoughts?
+> 
+> Regards,
 > 
