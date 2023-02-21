@@ -1,12 +1,12 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C32F45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626A733C4
 	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 11:34:43 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D64C31EC067E;
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 622981EC067C;
 	Tue, 21 Feb 2023 12:34:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
 	t=1676979279;
@@ -14,10 +14,10 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
 	 to:to:cc:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IYyR0+BccWAZu5naODrqJjalGeVpYFKs8LsqRBbFls0=;
-	b=V/S64JpQrPEnqV250KVXVQRNMRPqMIqPonbf6qQxcaH8JO7DLiKIsClOy29TDN/QmOOIox
-	dA5CXj+2i+Q0g6if//P0LcCDz/y2m//YkAP2uGlgN+Kyk+FSgtHWjuib8dSB7QRuTqiPYU
-	oyRua31voVHEt79/UQyFo1pyY4gVakE=
+	bh=KR4vVsJESSCg86kIVXeeVz75YYrz3rzwdB6btBRiLEY=;
+	b=K1QiusbpWj/Qs2KDQUM2zv48odDuqatgdvqb+53IWyQa4LC5CALTvIvubvy2eo9E9G6rZU
+	eYWVG4ZIm6Y+K0DYbPI2ORGO2krxBpnOV/ypXVV1Cpzzi5yWN7xVeMBMQX2YEcK8r9NLO/
+	2vFZEvidXnah5e+KwhGGTDoWCQkvolY=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Dionna Glaze <dionnaglaze@google.com>,
@@ -28,9 +28,9 @@ Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH -v2 08/11] crypto: ccp: Get rid of __sev_platform_init_locked()'s local function pointer
-Date: Tue, 21 Feb 2023 12:34:25 +0100
-Message-Id: <20230221113428.19324-9-bp@alien8.de>
+Subject: [PATCH -v2 07/11] virt/coco/sev-guest: Convert the sw_exit_info_2 checking to a switch-case
+Date: Tue, 21 Feb 2023 12:34:24 +0100
+Message-Id: <20230221113428.19324-8-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230221113428.19324-1-bp@alien8.de>
 References: <20230221113428.19324-1-bp@alien8.de>
@@ -44,65 +44,50 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-Add a wrapper instead.
+snp_issue_guest_request() checks the value returned by the hypervisor in
+sw_exit_info_2 and returns a different error depending on it.
+
+Convert those checks into a switch-case to make it more readable when
+more error values are going to be checked in the future.
 
 No functional changes.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- drivers/crypto/ccp/sev-dev.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ arch/x86/kernel/sev.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-index f60bb73edfda..c54cc8f9a284 100644
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -440,11 +440,18 @@ static int __sev_init_ex_locked(int *error)
- 	return __sev_do_cmd_locked(SEV_CMD_INIT_EX, &data, error);
- }
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 6a3e1425ba17..d67884fb38c1 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -2210,15 +2210,21 @@ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned
+ 		goto e_put;
  
-+static inline int __sev_do_init_locked(int *psp_ret)
-+{
-+	if (sev_init_ex_buffer)
-+		return __sev_init_ex_locked(psp_ret);
-+	else
-+		return __sev_init_locked(psp_ret);
-+}
+ 	*fw_err = ghcb->save.sw_exit_info_2;
+-	if (ghcb->save.sw_exit_info_2) {
++	switch (*fw_err) {
++	case 0:
++		break;
 +
- static int __sev_platform_init_locked(int *error)
- {
- 	int rc = 0, psp_ret = SEV_RET_NO_FW_CALL;
- 	struct psp_device *psp = psp_master;
--	int (*init_function)(int *error);
- 	struct sev_device *sev;
- 
- 	if (!psp || !psp->sev_data)
-@@ -456,15 +463,12 @@ static int __sev_platform_init_locked(int *error)
- 		return 0;
- 
- 	if (sev_init_ex_buffer) {
--		init_function = __sev_init_ex_locked;
- 		rc = sev_read_init_ex_file();
- 		if (rc)
- 			return rc;
--	} else {
--		init_function = __sev_init_locked;
++	case SNP_GUEST_REQ_INVALID_LEN:
+ 		/* Number of expected pages are returned in RBX */
+-		if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST &&
+-		    ghcb->save.sw_exit_info_2 == SNP_GUEST_REQ_INVALID_LEN) {
++		if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST) {
+ 			input->data_npages = ghcb_get_rbx(ghcb);
+ 			ret = -ENOSPC;
+-		} else {
+-			ret = -EIO;
++			break;
+ 		}
++		fallthrough;
++	default:
++		ret = -EIO;
++		break;
  	}
  
--	rc = init_function(&psp_ret);
-+	rc = __sev_do_init_locked(&psp_ret);
- 	if (rc && psp_ret == SEV_RET_SECURE_DATA_INVALID) {
- 		/*
- 		 * Initialization command returned an integrity check failure
-@@ -475,7 +479,7 @@ static int __sev_platform_init_locked(int *error)
- 		 */
- 		dev_err(sev->dev,
- "SEV: retrying INIT command because of SECURE_DATA_INVALID error. Retrying once to reset PSP SEV state.");
--		rc = init_function(&psp_ret);
-+		rc = __sev_do_init_locked(&psp_ret);
- 	}
- 
- 	if (error)
+ e_put:
 -- 
 2.35.1
 
