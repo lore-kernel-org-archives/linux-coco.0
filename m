@@ -1,210 +1,175 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97928F78
-	for <linux-coco@lists.linux.dev>; Tue, 21 Feb 2023 22:07:50 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DtU3VPp8BZ8s2ENaY90mitToA7x3M1GluXnvLTsZ5o1wq1JuOP/8iNI8+v9i4F78MgGxtFXXZKj2q3n6daa0iVdJk3Wr+UJbjaRfnhyAQz6DkQRRMXMf0DQpeCcucKNrihtvQCX6LgnA2nYI/PuliyGX5qdXfyUyttcgDt1MiHg48ofcjUUxGmAKiRk+BMeZb1rjPWjGzQA2czN2Y74MITgoiD1bLS3IK7V9m2ZV6TX5S/Ph19OTkEYQMgcRwpbcCaMzMDglR2YT6h47QjHX00O7j13Jw+r6MNv1WsnZlLajLz+iHsu2xuHl2jD4khPEZ6z8JFeQSVNbPh6WtTSZmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7lFT4ASZIF5xxZOZqC07DM5VGOp6dm9Nh24s55pV+IA=;
- b=QNseFE5evfVXudkc91oFELXKHRK2YMDsJEentU047TU2qVj5itoPp/HvcMUBdhkRTLorfulzsEr5/FiR9Gjxd//9tznxiqYlh8B+KkUISYT5jXdIfjEKRdLsOR06T4fEv176fJLl55GMDQsB/MaNU/0azENMMiSHm94QRNmPQj/JbYDOpJhaCUD06w87AeawHWt1RnGNOV4cM+3S6RTkKrTB+Q/o0JijNL887wNzm/DnjR7B2M+HdfjONpMPgGew+uc7X0bXpyydWvF55YEoggFWuxU/sLXZth4yxi7jMNogaJQbFP3OcYzKgqfrCwcU1TOjlf46emeQOvVt+j0Eiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7lFT4ASZIF5xxZOZqC07DM5VGOp6dm9Nh24s55pV+IA=;
- b=LTPITHBhSA1/AP77F3OVdAoNokrJBJuqqf1x9EjGtrHxMSJDuSm9993M+KjakruDntHxX4GDizrJjKQdmEo09Qsru/Kah5wA7nM8O2uuQOMPIRliErP0wVr5dyosRaI646ElY7VZv3n4GZHiUSaoxaWB7I/KonKlNWkaFSX8PQA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by PH8PR12MB7110.namprd12.prod.outlook.com (2603:10b6:510:22e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6111.20; Tue, 21 Feb
- 2023 22:07:48 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::6cc0:9c7a:bd00:441c]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::6cc0:9c7a:bd00:441c%5]) with mapi id 15.20.6111.021; Tue, 21 Feb 2023
- 22:07:48 +0000
-Message-ID: <069c74a5-2735-adba-5748-090e80550c9e@amd.com>
-Date: Tue, 21 Feb 2023 16:07:46 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: SVSM Attestation and vTPM specification additions - v0.61
-Content-Language: en-US
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
-References: <89f1527e-b710-8bd8-1059-4a0a51e4c0ab@amd.com>
- <Y+yqpq+S3N/lIKjQ@suse.de>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <Y+yqpq+S3N/lIKjQ@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BL1PR13CA0096.namprd13.prod.outlook.com
- (2603:10b6:208:2b9::11) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8749423A5
+	for <linux-coco@lists.linux.dev>; Wed, 22 Feb 2023 10:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=kMYqcVwJx/iP4jsYzL3AvQK5L2FlQeKCE+KazAWIy3k=; b=fMoQWb2zu1zy8zQSiAhA98UVWf
+	1OCURigMKBb8r+XK2P/SPzj+2yzw36VAXELSLQDLTSg3CYZPfDarGCO3Q4p+bB5YB7UjMEFBLxg77
+	iGU0RzfHR1ln85BFj6dY9xu9hYuDO6fdcVTCKh2TxcwTYTn5NNbjBHKm29cwHTkrh0A+iYfdDkPRJ
+	TQAVGI6IrJu4mccFjNgVMINZJ9v2J7/J8J1Csrxw69mhPCymxna+HLc3ZNqESYmEwEZTuhPCcylN+
+	gG+DN8b9AgRRspOuCM466LhIYiJcg0K9XzpI58I8D7tFE+I3alNHHe7PVFfo4sI94pdwnjiyd7nky
+	mGpydWAA==;
+Received: from [2001:8b0:10b:5::bb3] (helo=u3832b3a9db3152.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pUmKM-00DNyG-VL; Wed, 22 Feb 2023 10:26:23 +0000
+Message-ID: <6b09a3505bf3deaa11906a2ecb9d15c4ec427ea2.camel@infradead.org>
+Subject: Re: [PATCH 0/2] Kexec enabling in TDX guest
+From: David Woodhouse <dwmw2@infradead.org>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen
+	 <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+  Thomas Gleixner <tglx@linutronix.de>, Isaku Yamahata
+ <isaku.yamahata@intel.com>, x86@kernel.org,  linux-coco@lists.linux.dev,
+ kexec@lists.infradead.org,  linux-kernel@vger.kernel.org
+Date: Wed, 22 Feb 2023 10:26:22 +0000
+In-Reply-To: <20230213234836.3683-1-kirill.shutemov@linux.intel.com>
+References: <20230213234836.3683-1-kirill.shutemov@linux.intel.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-2FkNtV6wNwFOCt0s3bH1"
+User-Agent: Evolution 3.44.4-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|PH8PR12MB7110:EE_
-X-MS-Office365-Filtering-Correlation-Id: da9b8bf9-1db2-4390-1424-08db14581130
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	4xbvaXiAhIy6/Lw2HLV3Yq7wFfQVN6PWTPlBKgmfEeV8DPDi/P8Z8U5gOQO/dNe4vxwE9zjF46xOsUzjhffGWA1MyxQ103H8pXTOX77Bph7umHQmWjTtQnxpL06voPh+9WttmgjRezbB+KKbwDs1eRsvctICjcXEqAT9FHCkzJ6rh8bu5Cf5i6Heot2dEGcGZw0fAERjTcwhZ9YJxyFuut4W+6ffgIz1CK/jmLx5+8uqGVo3hQrZXN+YlmIAtkD3FDb8Mrj4NJpNKN1lJPEhNGHpMi0LHoOU1PNVVdxYjjwJjpyeUMazSUQNwlIsv23knOA71XndzyLEzzJzYclRfHOZBv8I55n89E2Ra68gR0IhJGMrxQUWMRyc8CAUEZqdXxXhi4sb99VHBgn6/pnFVbABllf210UfoE4cF6UuAbeUwy2zr393xay5gCONnGLF7FR6JraVLIbvL1xBmVrpGooJfFqgmRFa+c71cBnQwc+yjjfX2YOScN152/DgLV4aiCdKR2w+U3IA1U37aLtAiH9IPB/a6M5DzffZyNHfqV56C4N9BfhwDjxXIKUBrYAZ3OsWrspgFx8o7zQ+Ilh/xBu4rN8sKzGNhrrqQRafLbOt4gQVrd9TT2pBBzxqDcs2f30oJ17JCsxt2+StVuQo10SRqFCifh6vt+1N6asOOmji3CNHzPoA7so+aDuXKJuIIRFsQgni2Aogehd5Umb5rDodZCk20GDEJmGBtV/Six0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(39860400002)(396003)(366004)(346002)(136003)(376002)(451199018)(53546011)(6512007)(26005)(2906002)(66574015)(36756003)(6506007)(186003)(31686004)(38100700002)(478600001)(6486002)(8936002)(2616005)(41300700001)(4326008)(8676002)(66476007)(6916009)(31696002)(83380400001)(66556008)(5660300002)(66946007)(54906003)(86362001)(316002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TTVvZTUzcVNBbGpqYWNLMzdYQ2hIZFh4NTkvdkZnbmJUcjI5Z29ZelA3Z1c5?=
- =?utf-8?B?RXBFc0Z3aUJscG5ZaUhZdHZ1Q2hreXZOR0ZkRis3bUxTaWNBb3BhUW1kc0xz?=
- =?utf-8?B?OWhUSEtXUkxkRVpyQ1JrZDhOeE1aNWljVlZOZGhmMDZ0YUFRVUlvOGNJa1NW?=
- =?utf-8?B?SVJoVVV6U0ErSy9ISFBBVXZ5UWdoaGttdFZLbUlKbEpUVnl2QzBVdHRETHp6?=
- =?utf-8?B?UVFsMVB6bVRqbU5SbjZNaWV2a1lLOG1SWVo1N0wwaUtBTlFyeHhqZkQvV3Na?=
- =?utf-8?B?eldVMGNaWVdCb3lLRERiR245dW1PZldjanA2cTBmZzZqSndaTXNHU1l2MmI1?=
- =?utf-8?B?cVJJUTFTTXNoUDNaQmh5ejdEbjFTVlE0Ry9OMHN2Tk80OE1SeUhJcW44MTRk?=
- =?utf-8?B?dFZINlIwVUJPSG5YbHMwK0ptZ29KYWoyUmZDa3ZqN0RNWTBkdzg0eHlyajds?=
- =?utf-8?B?OXY4UWFSR2ZnWWl1bVA1SXRQUjJJMnUrTjVibWgrTzBNbWUycVBvQW1oajNt?=
- =?utf-8?B?Y2J5dUlwZ0ZDRUFjeXdLVVF1MmFybE15ZVVtTXlYM0taWnJCUU9VQm1BVGYw?=
- =?utf-8?B?Y3dnbFYvVXVzQXc2clpFZ3Z5SndSRFlEdjVuenNDbzhxUlpEaTFJNForY1hT?=
- =?utf-8?B?WlgyT0pCOHVWRzIwckc4bkhSdXUzZ24ycTVoNy9JOTAxYXhQUE5jbGtKdnI2?=
- =?utf-8?B?MVd5cHpQZ2V0T01sU0dLMVFjajF3TUJLc0lsYjhlNnlsN2dZMU9zQlB5Z042?=
- =?utf-8?B?VmptZ21SeWlaaS95bkZKZFNJZVhVeFhuNWl4bWpuQVlUR0l1Z0thTkFXVVhz?=
- =?utf-8?B?ak5hcnV0N1J0Z294aE5VaHdlNXZzVDEwQnJURUtxVGU2b1ZrMTFhRy9URTgr?=
- =?utf-8?B?cUtKUW0zbXY1d3B4YWpJL2JkRHdKcElSL3hiVDd0dlhmVXJJbjcxUm5kL0Fr?=
- =?utf-8?B?RDA2Q1pZTWVOQW5KdktUVUpVM3FxdEN1aXE0NmdxYmI1dlhIUkRPQSt0dnkr?=
- =?utf-8?B?VHc3LzE5NjRJd1ZuSUlSNVl2SWZCMGc1RmZIa0ViWFNPTERwN0lIVEVvNTFU?=
- =?utf-8?B?c3JCU1lybzU1T2J5RnByaUwrYlEzY3Bvakc1VHYxM3hxNGVWRzk5RTk1azhU?=
- =?utf-8?B?YmF0QVcvWTdjTCtCMUxwOHBmSEVOTE9WWDlNdGRTemZlUHlWV3k2OS9oQ1du?=
- =?utf-8?B?aWVrZHVnQzU3VWg1NmNXRUlGQkFTK0t3eWFRSW02eXZlYjhiMWU2OWNuWHlh?=
- =?utf-8?B?NTRUOVJlZ0puVE1OWHBGSUlObjN6bGRVTHo2ejV4aHNwSUtIL1FKSUUxdUxY?=
- =?utf-8?B?d0FjbEdnckwxL0lTcjdQdE9TK1E4R0NBSS9LdjBHWWNieW1ldG52bG93WkNZ?=
- =?utf-8?B?SXRRWGpaeFYweFJwd0RXMmU3czFZWmpCUy9pN21TQTZ1MnBaQmF4c3NPRFZx?=
- =?utf-8?B?MVZJRWUxb2lJNWxFb3JKRVZoaUJJeE83cVNkODlzTGIyNjRiWXJ1Z2owZE4w?=
- =?utf-8?B?em1US0FRdlpZYnlMc3NuMnlON2JxTWpWbFZrZ09aeVh6UzNjdm9yTWFrOU9x?=
- =?utf-8?B?UkM4ZXFOQUFNc2NQVDJYb1FUdXBmbzFFN1Vpd1pSejdjanByT25MVVhFVVpz?=
- =?utf-8?B?eVRpK2NSMFFZS0tzRW1QMVVPK1UwS0pZU0k1NndBS1llV05BQjVxVGdxQTB2?=
- =?utf-8?B?b0xaREJGeFZnd0FCQmpEMytKUmZManpvdnBsN1JQUmxmdTVxSkRwbXR5RnJ3?=
- =?utf-8?B?aDA3cVJGL3Vjd3p5R1YwVVZZNVB4cFdncGxpUEdJdDVKOGR5dzhwczUrbWZn?=
- =?utf-8?B?ZnllYklZZkhoSEt4bUVXei81c3A0WGFBenFlZ3RFaWx0Y0Q5d2hZYVVBVjU4?=
- =?utf-8?B?Z1p2c2syVnNGeUVZRjJ3OTFzaTIzRTBtMWVwcmVpM1g3VkRRWWRVRnAxdG5V?=
- =?utf-8?B?NXNIQlhoaWVkTjhkcERRRHdRU2dwMzY1U2MraERBSmVLS2xrbkJmWmllOXAy?=
- =?utf-8?B?MUV5TDhwMGUvQlNJTFJzUkVZbkxUSlgyc2NyY1pHSkNpRnRSeWN3Umx6dlR4?=
- =?utf-8?B?T0pjMG5BUGVxZU1qbTRGVC9EczIrdVk5blhCSTlCNys5QWZDYWFUcTd2MWlS?=
- =?utf-8?Q?1/TV53KXFT0RBv2c6QY+yhkis?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: da9b8bf9-1db2-4390-1424-08db14581130
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2023 22:07:48.3910
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: a9baZrgGMNpUV2k13dhvXdPYgzwWlxhQJsnDNJeYvEz2zMFMIQsN37Nb4+ytUIS+YdDVfXTlgpt9Rw6iDEkgmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7110
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 2/15/23 03:49, Jörg Rödel wrote:
-> Hi Tom,
-> 
-> On Wed, Feb 08, 2023 at 03:55:34PM -0600, Tom Lendacky wrote:
->> Attached is an updated draft version of the SVSM specification with feedback
->> incorporated from the previous review. Please take a look and reply with any
->> feedback you may have.
-> 
-> Thanks for your work on the new specification. I was reading through and
-> have some thoughts on the handling of SVSM_CORE_CREATE_VCPU and
-> SVSM_CORE_DELETE_VCPU calls. I think a few corner cases with these
-> commands should be better defined.
-> 
-> The underlying problem is that the SVSM can only handle one VMSA per
-> (apic_id, vmpl) combination. So what happens if:
-> 
-> 	1) A new VCPU is created for an (apic_id, vmpl) tuple where
-> 	   there is already a VMSA, should the call fail or should the
-> 	   existing VMSA be implicitly shut down and replaced by the new
-> 	   one? The latter case can fail if the existing VMSA is
-> 	   currently in use (depending on how it is implemented).
 
-VCPU create doesn't actually replace the VMSA from the hypervisor point of 
-view. The guest is still required to invoke the GHCB interface to notify 
-the hypervisor.
+--=-2FkNtV6wNwFOCt0s3bH1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The SVSM PoC leaves any current VMSA in the list of all VMSAs, but does 
-replace the current / in-use version of the VMSA for the specified VCPU. 
-This is used to examine the register associated with a request, so the 
-guest can shoot itself in the foot if it doesn't switch that VCPU to the 
-new VMSA.
+On Tue, 2023-02-14 at 02:48 +0300, Kirill A. Shutemov wrote:
+> The patch brings basic enabling of kexec in TDX guests.
+>=20
+> By "basic enabling" I mean, kexec in the guests with a single CPU.
+> TDX guests use ACPI MADT MPWK to bring up secondary CPUs. The mechanism
+> doesn't allow to put a CPU back offline if it has woken up.
+>=20
+> We are looking into this, but it might take time.
 
-I'm ok with either doing that or, as you suggest below, checking if 
-there's an existing VMSA for the VMPL level and failing the request until 
-the the existing VMSA is deleted. That does require the deletion/creation 
-to be offloaded to another VCPU, though (unless we allow the self-deletion 
-change talked about below).
+Can't we park the secondary CPUs in a purgatory-like thing of their own
+and wake them from there when we want them?
 
-> 
-> 	2) Who can delete VCPUs? Can a (apic_id, vmpl) VMSA only be
-> 	   deleted from a lower VMPL running on the same apic_id? Or can
-> 	   other apic_ids delete it too?
+Patches for that were floating around once, although the primary reason
+then was latency, and we decided to address that differently by doing
+the bringup in parallel instead.
 
-Nothing prevents one VCPU from deleting another VCPU - although I think we 
-should probably prevent a lower VMPL from deleting a higher VMPL (e.g. 
-VMPL2 VMSA can't delete (or add for that matter) a VMPL1 VMSA). That 
-should be added to the specification.
+--=-2FkNtV6wNwFOCt0s3bH1
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-It might be desirable to allow another APIC to delete a VMSA. Maybe kexec 
-processing would be able to benefit from that.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwMjIyMTAyNjIyWjAvBgkqhkiG9w0BCQQxIgQgda5+eWZh
+CLWcVdLHgKZI2vTnmfTZ3B6sRGK4Mq0H61Qwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAjNvHby0w7Rw3Ir0Nq45w3Z+KqHa5TfDU+
+97KIstOVB+Z/HwdKNq/hISycnk5HjaZ1OJrrZpfnfzFLEo8cKoMORzNT+Cq16IXzow28S+anUAo7
+vh0Kq3W3/JJRe033XesAL7v+w2YPRM4zskeQz9p/M6zgZDJZXAC8kRsBifyXfAgrR+3hMXGKXsdP
+84RTYUis9HTZV9CkQZjKsaOTyu6ofHv8JIvxP9EH3Ud6mXf3ePfRcb4iLRwqTfbEF6mqN8FxNGDp
+lAoM9dB4baAuf80vCriXz4R5EA9PtuBfHQUqAHu4H/3dPU1IClRRk6vbHVKyoUQJLPjikltg/xz+
+wDOBWRL5AsPCSdCAd6U59+uiAxImWAV7Xu314iMn4Nf71q/kvf0vV0/uVQNB95yzrr38FqV4xX7u
+ElbChgNQyKxt8mpmHQ7n5T+cU7K7BdY3VWpgbC6tZR0Dr8q0PCQBokPd6WD3Pgw2blGT6iFckEPU
+vFgvafB+4Rei3Od4g17Ei8Sw8GSHXVeT8AgnxtCF2Kp1VGmAPriYZuoIKRPiHZdrBFVqgzwYVrGr
+6vdXNBrt2QIvG+oNLeC4UyS2o+d0Oq6XpCdgIpcuchop8y78/eh6Izx+qqdDGvTXK6TxosB7sMZL
+is/5A4LDyaH2NgqjCEcNSHwsglxRCJdFcxIqe1MhggAAAAAAAA==
 
-> 
-> 	3) What happens if a given VMSA for a VCPU is deleted. Should
-> 	   that be not allowed or should the SVSM gracefully handle
-> 	   that.
 
-As the specification is written now, switching from the SVSM would result 
-in the VMRUN instruction failing for VMPL1, which will shutdown the guest.
-
-Again, I'm ok with either allowing that or, as you suggest below, if there 
-  is no VMPL1 VMSA, just enter HLT in the SVSM code.
-
-> 
-> I have some thoughts on how to handle these cases, but want to put that
-> up for discussion here. For 1) I think it is best to fail VCPU creation
-> if there is already one for the (apic_id, vmpl) combination, requiring
-> the guest to delete the VCPU first. This is related to 3) where I think > the SVSM should just go into HLT when there is no higher-level VMSA
-> anymore. When it wakes up from HLT it can check whether a VMSA was
-> created and continue executing it.
-
-For 1), that is an option.
-
-For 3), if the SVSM goes into HLT, it will require another VCPU to perform 
-a VCPU create, which should result in the VMPL1 VMSA being run for the 
-VCPU. That would then imply that coming out of HLT in the SVSM would be 
-for a protocol request. So this is definitely possible.
-
-> 
-> For 2) I am a bit undecided, letting VCPUs only delete itself would
-> simplify things on the SVSM side. Allowing other VCPUs to delete VMSAs
-> needs quite some synchronization or could fail entirely if the VMSA is
-> currently executing.
-
-Should the clearing of the SVME bit fail, then a FAIL_INUSE return code 
-would be returned. I wouldn't think that the synchronization would be that 
-difficult, but I'm not sure. If we do allow self-deletion, then, I agree, 
-that would work nicely.
-
-Thanks
-Tom
-
-> 
-> Thoughts?
-> 
-> Regards,
-> 
+--=-2FkNtV6wNwFOCt0s3bH1--
