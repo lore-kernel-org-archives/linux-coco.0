@@ -1,175 +1,356 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8749423A5
-	for <linux-coco@lists.linux.dev>; Wed, 22 Feb 2023 10:26:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kMYqcVwJx/iP4jsYzL3AvQK5L2FlQeKCE+KazAWIy3k=; b=fMoQWb2zu1zy8zQSiAhA98UVWf
-	1OCURigMKBb8r+XK2P/SPzj+2yzw36VAXELSLQDLTSg3CYZPfDarGCO3Q4p+bB5YB7UjMEFBLxg77
-	iGU0RzfHR1ln85BFj6dY9xu9hYuDO6fdcVTCKh2TxcwTYTn5NNbjBHKm29cwHTkrh0A+iYfdDkPRJ
-	TQAVGI6IrJu4mccFjNgVMINZJ9v2J7/J8J1Csrxw69mhPCymxna+HLc3ZNqESYmEwEZTuhPCcylN+
-	gG+DN8b9AgRRspOuCM466LhIYiJcg0K9XzpI58I8D7tFE+I3alNHHe7PVFfo4sI94pdwnjiyd7nky
-	mGpydWAA==;
-Received: from [2001:8b0:10b:5::bb3] (helo=u3832b3a9db3152.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pUmKM-00DNyG-VL; Wed, 22 Feb 2023 10:26:23 +0000
-Message-ID: <6b09a3505bf3deaa11906a2ecb9d15c4ec427ea2.camel@infradead.org>
-Subject: Re: [PATCH 0/2] Kexec enabling in TDX guest
-From: David Woodhouse <dwmw2@infradead.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Dave Hansen
-	 <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-  Thomas Gleixner <tglx@linutronix.de>, Isaku Yamahata
- <isaku.yamahata@intel.com>, x86@kernel.org,  linux-coco@lists.linux.dev,
- kexec@lists.infradead.org,  linux-kernel@vger.kernel.org
-Date: Wed, 22 Feb 2023 10:26:22 +0000
-In-Reply-To: <20230213234836.3683-1-kirill.shutemov@linux.intel.com>
-References: <20230213234836.3683-1-kirill.shutemov@linux.intel.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-2FkNtV6wNwFOCt0s3bH1"
-User-Agent: Evolution 3.44.4-0ubuntu1 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B8B46BF
+	for <linux-coco@lists.linux.dev>; Wed, 22 Feb 2023 12:32:12 +0000 (UTC)
+Received: by mail-lj1-f179.google.com with SMTP id z5so7626380ljc.8
+        for <linux-coco@lists.linux.dev>; Wed, 22 Feb 2023 04:32:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1677069130;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RyVpU31pGYL3hxPsk3WstIM/y2F79bUZeHHwWlTuPok=;
+        b=i5CokvbD5k4JtMJKI1HL6SznirWdNw7nvi/OtYQ8HTQkDyzsBgVTh4acYuHYa31Mgi
+         wuBrIaD8Hn1B96mrxbhRx+4n4JwiZjGhLbBO0wakqEVxXej7zJ2qZ922FKBjpUm+7xkL
+         LouG0oUfsVvYE5z8GhK1ueJMdwOb7WSdSVIlp/dSRSTFvz1h+kyegE5EPbqCSiBgskSD
+         +c55wkbx9xRC1gRjs7QPJJ+rDpV1MZR3Z7XO4lSDpc8HaoY0pfRbPxhqpxjrcBn651G0
+         5FQGGa7XSelN3Xz4Ki3RkWdXEHHvY2/oBgxs+l2bYz+ozGBog8pWXha7mT377fO5ZOsn
+         nOEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677069130;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RyVpU31pGYL3hxPsk3WstIM/y2F79bUZeHHwWlTuPok=;
+        b=PddZ10UHujalAqPOWBCQtfRUFmwCZBC3Ab9/AzEwcRzQbkFVM+QESpnSpED+9XUXJ4
+         InUCsV+wnhm+PvVbSJpdiK4J9aO56L5E+Zn4nfLnRaSArAE451B3SctdSIAyLV892NeY
+         I/9fSpwDYcJNcUrUmIJL6TYsw/wZ7NIcb8t/Nk/2QR4uI3K5JkUl4TpiICGIAuvxJVSH
+         25cDZOQFVjPrczqX16uTTnq+cQWppdRIeBhTCVN0n4aXhYY9InDi1FixUxL67CE4Zdte
+         fw+wuUSeaVl/TCyxnsHjV6WKeyn+sjxYN9XTKS9CAcxEwIANrPG2QkpXotdq1DBuiy3h
+         GFEw==
+X-Gm-Message-State: AO0yUKV50r3EY89v2ULho8MQieQ3zz/SdjuHufD1pCQj/d3ebrThFB9k
+	x5c+fhoOUtCfrIlfgDoS2is=
+X-Google-Smtp-Source: AK7set8L/s7Y4MyMogprcSJqyYvW/jhg8Y2UPbMYOLxDa0cCPc6SZjWzN8Q3ARFPBYMui0KZq/hvVQ==
+X-Received: by 2002:a05:651c:220e:b0:295:9c3f:e30c with SMTP id y14-20020a05651c220e00b002959c3fe30cmr201590ljq.1.1677069129921;
+        Wed, 22 Feb 2023 04:32:09 -0800 (PST)
+Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
+        by smtp.gmail.com with ESMTPSA id f4-20020a19ae04000000b004cb43c9bf9asm1127438lfc.208.2023.02.22.04.32.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Feb 2023 04:32:09 -0800 (PST)
+Date: Wed, 22 Feb 2023 14:32:05 +0200
+From: Zhi Wang <zhi.wang.linux@gmail.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+ <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+ <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+ <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+ <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+ <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+ <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+ <rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+ <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+ <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+ <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+ <nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH RFC v8 27/56] crypto: ccp: Add the
+ SNP_{SET,GET}_EXT_CONFIG command
+Message-ID: <20230222143205.00007635@gmail.com>
+In-Reply-To: <20230220183847.59159-28-michael.roth@amd.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+	<20230220183847.59159-28-michael.roth@amd.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 20 Feb 2023 12:38:18 -0600
+Michael Roth <michael.roth@amd.com> wrote:
 
---=-2FkNtV6wNwFOCt0s3bH1
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> From: Brijesh Singh <brijesh.singh@amd.com>
+> 
+> The SEV-SNP firmware provides the SNP_CONFIG command used to set the
+> system-wide configuration value for SNP guests. The information includes
+> the TCB version string to be reported in guest attestation reports.
+> 
+> Version 2 of the GHCB specification adds an NAE (SNP extended guest
+> request) that a guest can use to query the reports that include additional
+> certificates.
+> 
+> In both cases, userspace provided additional data is included in the
+> attestation reports. The userspace will use the SNP_SET_EXT_CONFIG
+> command to give the certificate blob and the reported TCB version string
+> at once. Note that the specification defines certificate blob with a
+> specific GUID format; the userspace is responsible for building the
+> proper certificate blob. The ioctl treats it an opaque blob.
+> 
+> While it is not defined in the spec, but let's add SNP_GET_EXT_CONFIG
+> command that can be used to obtain the data programmed through the
+> SNP_SET_EXT_CONFIG.
+> 
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  Documentation/virt/coco/sev-guest.rst |  27 ++++++
+>  drivers/crypto/ccp/sev-dev.c          | 123 ++++++++++++++++++++++++++
+>  drivers/crypto/ccp/sev-dev.h          |   4 +
+>  include/uapi/linux/psp-sev.h          |  17 ++++
+>  4 files changed, 171 insertions(+)
+> 
+> diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
+> index 11ea67c944df..6cad4226c348 100644
+> --- a/Documentation/virt/coco/sev-guest.rst
+> +++ b/Documentation/virt/coco/sev-guest.rst
+> @@ -145,6 +145,33 @@ The SNP_PLATFORM_STATUS command is used to query the SNP platform status. The
+>  status includes API major, minor version and more. See the SEV-SNP
+>  specification for further details.
+>  
+> +2.5 SNP_SET_EXT_CONFIG
+> +----------------------
+> +:Technology: sev-snp
+> +:Type: hypervisor ioctl cmd
+> +:Parameters (in): struct sev_data_snp_ext_config
+> +:Returns (out): 0 on success, -negative on error
+> +
+> +The SNP_SET_EXT_CONFIG is used to set the system-wide configuration such as
+> +reported TCB version in the attestation report. The command is similar to
+> +SNP_CONFIG command defined in the SEV-SNP spec. The main difference is the
+> +command also accepts an additional certificate blob defined in the GHCB
+> +specification.
+> +
+> +If the certs_address is zero, then the previous certificate blob will deleted.
+> +For more information on the certificate blob layout, see the GHCB spec
+> +(extended guest request message).
+> +
+> +2.6 SNP_GET_EXT_CONFIG
+> +----------------------
+> +:Technology: sev-snp
+> +:Type: hypervisor ioctl cmd
+> +:Parameters (in): struct sev_data_snp_ext_config
+> +:Returns (out): 0 on success, -negative on error
+> +
+> +The SNP_GET_EXT_CONFIG is used to query the system-wide configuration set
+> +through the SNP_SET_EXT_CONFIG.
+> +
+>  3. SEV-SNP CPUID Enforcement
+>  ============================
+>  
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index 65e13a562f3b..b56b00ca2cd4 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -1481,6 +1481,10 @@ static int __sev_snp_shutdown_locked(int *error)
+>  	data.length = sizeof(data);
+>  	data.iommu_snp_shutdown = 1;
+>  
+> +	/* Free the memory used for caching the certificate data */
+> +	kfree(sev->snp_certs_data);
+> +	sev->snp_certs_data = NULL;
+> +
+>  	wbinvd_on_all_cpus();
+>  
+>  retry:
+> @@ -1793,6 +1797,118 @@ static int sev_ioctl_snp_platform_status(struct sev_issue_cmd *argp)
+>  	return ret;
+>  }
+>  
+> +static int sev_ioctl_snp_get_config(struct sev_issue_cmd *argp)
+> +{
+> +	struct sev_device *sev = psp_master->sev_data;
+> +	struct sev_user_data_ext_snp_config input;
+> +	int ret;
+> +
+> +	if (!sev->snp_initialized || !argp->data)
+> +		return -EINVAL;
+> +
+> +	memset(&input, 0, sizeof(input));
+> +
+> +	if (copy_from_user(&input, (void __user *)argp->data, sizeof(input)))
+> +		return -EFAULT;
+> +
+> +	/* Copy the TCB version programmed through the SET_CONFIG to userspace */
+> +	if (input.config_address) {
+> +		if (copy_to_user((void * __user)input.config_address,
+> +				 &sev->snp_config, sizeof(struct sev_user_data_snp_config)))
+> +			return -EFAULT;
+> +	}
+> +
+> +	/* Copy the extended certs programmed through the SNP_SET_CONFIG */
+> +	if (input.certs_address && sev->snp_certs_data) {
+> +		if (input.certs_len < sev->snp_certs_len) {
+> +			/* Return the certs length to userspace */
+> +			input.certs_len = sev->snp_certs_len;
+> +
+> +			ret = -ENOSR;
+> +			goto e_done;
+> +		}
+> +
 
-On Tue, 2023-02-14 at 02:48 +0300, Kirill A. Shutemov wrote:
-> The patch brings basic enabling of kexec in TDX guests.
->=20
-> By "basic enabling" I mean, kexec in the guests with a single CPU.
-> TDX guests use ACPI MADT MPWK to bring up secondary CPUs. The mechanism
-> doesn't allow to put a CPU back offline if it has woken up.
->=20
-> We are looking into this, but it might take time.
+What about if input.certs_len > sev->snp_certs_len? Is it possbile for the
+userspace to know the length of data in the buffer? (I guess it might be able
+to know the certs len through the blob data, but a comment here would be nice)
 
-Can't we park the secondary CPUs in a purgatory-like thing of their own
-and wake them from there when we want them?
+> +		if (copy_to_user((void * __user)input.certs_address,
+> +				 sev->snp_certs_data, sev->snp_certs_len))
+> +			return -EFAULT;
+> +	}
+> +
+> +	ret = 0;
+> +
+> +e_done:
+> +	if (copy_to_user((void __user *)argp->data, &input, sizeof(input)))
+> +		ret = -EFAULT;
+> +
+> +	return ret;
+> +}
+> +
+> +static int sev_ioctl_snp_set_config(struct sev_issue_cmd *argp, bool writable)
+> +{
+> +	struct sev_device *sev = psp_master->sev_data;
+> +	struct sev_user_data_ext_snp_config input;
+> +	struct sev_user_data_snp_config config;
+> +	void *certs = NULL;
+> +	int ret = 0;
+> +
+> +	if (!sev->snp_initialized || !argp->data)
+> +		return -EINVAL;
+> +
+> +	if (!writable)
+> +		return -EPERM;
+> +
+> +	memset(&input, 0, sizeof(input));
+> +
+> +	if (copy_from_user(&input, (void __user *)argp->data, sizeof(input)))
+> +		return -EFAULT;
+> +
+> +	/* Copy the certs from userspace */
+> +	if (input.certs_address) {
+> +		if (!input.certs_len || !IS_ALIGNED(input.certs_len, PAGE_SIZE))
+> +			return -EINVAL;
+> +
+> +		certs = psp_copy_user_blob(input.certs_address, input.certs_len);
+> +		if (IS_ERR(certs))
+> +			return PTR_ERR(certs);
+> +	}
+> +
+> +	/* Issue the PSP command to update the TCB version using the SNP_CONFIG. */
+> +	if (input.config_address) {
+> +		memset(&config, 0, sizeof(config));
+> +		if (copy_from_user(&config,
+> +				   (void __user *)input.config_address, sizeof(config))) {
+> +			ret = -EFAULT;
+> +			goto e_free;
+> +		}
+> +
+> +		ret = __sev_do_cmd_locked(SEV_CMD_SNP_CONFIG, &config, &argp->error);
+> +		if (ret)
+> +			goto e_free;
+> +
+> +		memcpy(&sev->snp_config, &config, sizeof(config));
+> +	}
+> +
+> +	/*
+> +	 * If the new certs are passed then cache it else free the old certs.
+> +	 */
+> +	mutex_lock(&sev->snp_certs_lock);
+> +	if (certs) {
+> +		kfree(sev->snp_certs_data);
+> +		sev->snp_certs_data = certs;
+> +		sev->snp_certs_len = input.certs_len;
+> +	} else {
+> +		kfree(sev->snp_certs_data);
+> +		sev->snp_certs_data = NULL;
+> +		sev->snp_certs_len = 0;
+> +	}
+> +	mutex_unlock(&sev->snp_certs_lock);
+> +
+> +	return 0;
+> +
+> +e_free:
+> +	kfree(certs);
+> +	return ret;
+> +}
+> +
+>  static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+>  {
+>  	void __user *argp = (void __user *)arg;
+> @@ -1847,6 +1963,12 @@ static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+>  	case SNP_PLATFORM_STATUS:
+>  		ret = sev_ioctl_snp_platform_status(&input);
+>  		break;
+> +	case SNP_SET_EXT_CONFIG:
+> +		ret = sev_ioctl_snp_set_config(&input, writable);
+> +		break;
+> +	case SNP_GET_EXT_CONFIG:
+> +		ret = sev_ioctl_snp_get_config(&input);
+> +		break;
+>  	default:
+>  		ret = -EINVAL;
+>  		goto out;
+> @@ -1962,6 +2084,7 @@ int sev_dev_init(struct psp_device *psp)
+>  		goto e_sev;
+>  
+>  	sev->cmd_buf_backup = (uint8_t *)sev->cmd_buf + PAGE_SIZE;
+> +	mutex_init(&sev->snp_certs_lock);
+>  
+>  	psp->sev_data = sev;
+>  
+> diff --git a/drivers/crypto/ccp/sev-dev.h b/drivers/crypto/ccp/sev-dev.h
+> index 19d79f9d4212..41d5353d5bab 100644
+> --- a/drivers/crypto/ccp/sev-dev.h
+> +++ b/drivers/crypto/ccp/sev-dev.h
+> @@ -66,6 +66,10 @@ struct sev_device {
+>  
+>  	bool snp_initialized;
+>  	struct snp_host_map snp_host_map[MAX_SNP_HOST_MAP_BUFS];
+> +	void *snp_certs_data;
+> +	u32 snp_certs_len;
+> +	struct mutex snp_certs_lock;
+> +	struct sev_user_data_snp_config snp_config;
+>  };
+>  
+>  int sev_dev_init(struct psp_device *psp);
+> diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
+> index 5adfaea7df97..c20d37586d21 100644
+> --- a/include/uapi/linux/psp-sev.h
+> +++ b/include/uapi/linux/psp-sev.h
+> @@ -29,6 +29,8 @@ enum {
+>  	SEV_GET_ID,	/* This command is deprecated, use SEV_GET_ID2 */
+>  	SEV_GET_ID2,
+>  	SNP_PLATFORM_STATUS,
+> +	SNP_SET_EXT_CONFIG,
+> +	SNP_GET_EXT_CONFIG,
+>  
+>  	SEV_MAX,
+>  };
+> @@ -192,6 +194,21 @@ struct sev_user_data_snp_config {
+>  	__u8 rsvd1[52];
+>  } __packed;
+>  
+> +/**
+> + * struct sev_data_snp_ext_config - system wide configuration value for SNP.
+> + *
+> + * @config_address: address of the struct sev_user_data_snp_config or 0 when
+> + *		reported_tcb does not need to be updated.
+> + * @certs_address: address of extended guest request certificate chain or
+> + *              0 when previous certificate should be removed on SNP_SET_EXT_CONFIG.
+> + * @certs_len: length of the certs
+> + */
+> +struct sev_user_data_ext_snp_config {
+> +	__u64 config_address;		/* In */
+> +	__u64 certs_address;		/* In */
+> +	__u32 certs_len;		/* In */
+> +};
+> +
+>  /**
+>   * struct sev_issue_cmd - SEV ioctl parameters
+>   *
 
-Patches for that were floating around once, although the primary reason
-then was latency, and we decided to address that differently by doing
-the bringup in parallel instead.
-
---=-2FkNtV6wNwFOCt0s3bH1
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
-ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
-EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
-FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
-aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
-EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
-VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
-aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
-AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
-ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
-QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
-rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
-ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
-U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
-DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
-BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
-dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
-BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
-QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
-CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
-xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
-IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
-kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
-eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
-KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
-1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
-OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
-x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
-5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
-DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
-VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
-UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
-MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
-ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
-oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
-SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
-xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
-RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
-bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
-NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
-KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
-5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
-C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
-gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
-VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
-by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
-b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
-BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
-QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
-c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
-AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
-qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
-v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
-Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
-tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
-Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
-YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
-ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
-IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
-ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
-GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
-h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
-9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
-P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
-2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
-BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
-7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
-lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
-lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
-AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
-Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
-FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
-BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
-cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
-aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
-LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
-BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
-cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
-Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
-lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
-WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
-hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
-IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
-dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
-NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
-xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwMjIyMTAyNjIyWjAvBgkqhkiG9w0BCQQxIgQgda5+eWZh
-CLWcVdLHgKZI2vTnmfTZ3B6sRGK4Mq0H61Qwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
-A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
-dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
-DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
-MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
-Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAjNvHby0w7Rw3Ir0Nq45w3Z+KqHa5TfDU+
-97KIstOVB+Z/HwdKNq/hISycnk5HjaZ1OJrrZpfnfzFLEo8cKoMORzNT+Cq16IXzow28S+anUAo7
-vh0Kq3W3/JJRe033XesAL7v+w2YPRM4zskeQz9p/M6zgZDJZXAC8kRsBifyXfAgrR+3hMXGKXsdP
-84RTYUis9HTZV9CkQZjKsaOTyu6ofHv8JIvxP9EH3Ud6mXf3ePfRcb4iLRwqTfbEF6mqN8FxNGDp
-lAoM9dB4baAuf80vCriXz4R5EA9PtuBfHQUqAHu4H/3dPU1IClRRk6vbHVKyoUQJLPjikltg/xz+
-wDOBWRL5AsPCSdCAd6U59+uiAxImWAV7Xu314iMn4Nf71q/kvf0vV0/uVQNB95yzrr38FqV4xX7u
-ElbChgNQyKxt8mpmHQ7n5T+cU7K7BdY3VWpgbC6tZR0Dr8q0PCQBokPd6WD3Pgw2blGT6iFckEPU
-vFgvafB+4Rei3Od4g17Ei8Sw8GSHXVeT8AgnxtCF2Kp1VGmAPriYZuoIKRPiHZdrBFVqgzwYVrGr
-6vdXNBrt2QIvG+oNLeC4UyS2o+d0Oq6XpCdgIpcuchop8y78/eh6Izx+qqdDGvTXK6TxosB7sMZL
-is/5A4LDyaH2NgqjCEcNSHwsglxRCJdFcxIqe1MhggAAAAAAAA==
-
-
---=-2FkNtV6wNwFOCt0s3bH1--
