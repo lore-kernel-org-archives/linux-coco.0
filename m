@@ -1,44 +1,44 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E1615B2
-	for <linux-coco@lists.linux.dev>; Thu, 23 Feb 2023 06:38:44 +0000 (UTC)
-Received: by mail-lf1-f45.google.com with SMTP id g17so58679lfv.4
-        for <linux-coco@lists.linux.dev>; Wed, 22 Feb 2023 22:38:44 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42261FD9
+	for <linux-coco@lists.linux.dev>; Thu, 23 Feb 2023 08:15:01 +0000 (UTC)
+Received: by mail-lj1-f177.google.com with SMTP id t14so7388774ljd.5
+        for <linux-coco@lists.linux.dev>; Thu, 23 Feb 2023 00:15:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u5PL8CQqZ0Y5pMZbXNJ/kr0EOxkSfs/AG0Qpgz+ZVV4=;
-        b=YrJG7d1c8Jnn32KnUULGNX4J/9ehT2qSCD/vOWv5jMSTaDw+PeHWpNT+j7bMwWuxpa
-         k3mKgrEB0UYDhY55xoLM3rL61nluLMaJ1zQ6B5+9tWzFH0sxNkd0VMT1R5Otln++4Jnv
-         r3y7EkwQNPyNUXRmz2836aAyuvGLlZHUe0JteK5f19hfjRaHSgo4nHe18VmeShxT2eMG
-         LvY9N/VpYCw9Qi0ztPq5E1oTjeTAGdahqA5NvfWJZhY8+/4Cg9a2qXJ8vhlS8B2ikRED
-         5qW7rLGTO+5hbwKO0ktM9t/Xqx7EZNlBg0D51nN5AKnN3x/FqJ3r4Ay7hSGq1nOzxmBT
-         WGdQ==
+        bh=433bYYY/TmoUpHBBY/tF9/GMluKPjfLdJmiTSrcvVWQ=;
+        b=ktgvXtmjePsRRHA2T3w8lM2xrjXS/08CD5atW+arTYAcRj8dsMzcBKjOLIP5saXWZx
+         vMYppLTWw+nrGswXuDS6tugtxeNF9G9TDd3bvsTcgCzQcdHWqKD3aES8A2O76C6tHgcm
+         vBeXi6ziB7vO6zOA26AEOu9fPi98odlT/tYmiE2VwQ/feJ8JAeaKO+1V6B8CI4TwR/aM
+         0NmuvOYBPLsCifYLfuNIPpbGWgpblX1/72Xk+KuO8WMwkVyEC2iIAQYx6b5LlxHKFOdM
+         ne5mpbMdbr+HsuO8kWAIhw2gL6U2pQA11lN2DbL30A+8Mbba0JbRa1QKOP1AvyB4A4fE
+         4lpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=u5PL8CQqZ0Y5pMZbXNJ/kr0EOxkSfs/AG0Qpgz+ZVV4=;
-        b=oJAcycqvjJHZkPwRyx/ZiM67KyNZ+e4o0dcHcOh5OInraDYwGMjz0Tk30mA0y4DuVT
-         f+1/PBp9GtPm2sQMGxb95Trclm+Dh94Op3CXOatvIX8ITm7A8NKCsjywiWNOO5N5X4h9
-         SibS9mrD0/Hy5mDrEGrckT6+Nn2bPUkg+ks8plXXvNVgoJEMQB06XFFYmnfCwxSERsY4
-         FV+cZ+nJ80Vea23ilCqP/fs81aE2BkI5PDbOHm2pT5L9P7jLUF5gg92FThA/M3nBQ8dQ
-         NwiKxYahSgr9bI8pgTBs6VeKfOGwLV5m1ASPQXsZnjamOT7XOGaji2sSU2unl80WC2/V
-         CazA==
-X-Gm-Message-State: AO0yUKWhXuXl4IFJJ+ZY49kK38Pvv0JZZFHaKaqbVTaKachNwpgnWJpW
-	C97AVoxuBH/My+M1TzpF3pY=
-X-Google-Smtp-Source: AK7set8JiOGTL3mMywaHLjfT8zX815kd8y+yE7w7MNTBvUCyaLdNHcvN5kYVOPnN3iMMmDaSYo2sWQ==
-X-Received: by 2002:ac2:548d:0:b0:4cb:3a60:65c9 with SMTP id t13-20020ac2548d000000b004cb3a6065c9mr3961707lfk.2.1677134322263;
-        Wed, 22 Feb 2023 22:38:42 -0800 (PST)
+        bh=433bYYY/TmoUpHBBY/tF9/GMluKPjfLdJmiTSrcvVWQ=;
+        b=1tIMGDQe1HMWH5qzu6JVCpC6pzLgEGUvZKDUHq0hHKMJq59VdftW/ag+gZZixNUWmq
+         xVv24c4tk8ItpGwWBbalRN1BvxRWHUklEmAbD+8XFK6j4Kf5X2cWZ0IVD9zzdJf69ped
+         tmygfJ3vY3h8POyk1Xzodt89VT6XfhdRfU2XlIgpdPrpTJeAEHMloOlPGlBMBvZkpZJ3
+         kuGvuGQIZQmwjYeY1HwGLLeGkY+CPCqKIVlCWTjlLALowkA0SBbg/Upnx95ZK1agdTnV
+         ev2FkFX1Np7YEq/YJQ74HM7kM9RTSj8N1mENmmwveA/KBSfmdisONCwB1elLk4ZuLDVy
+         8zjw==
+X-Gm-Message-State: AO0yUKXPGtl6W1GCEGF6c5gA2quUKWjD7i59jgLWS2m/tlkdRzoMf99H
+	rv+ddBNXNkDHoQpYXKb3ld4=
+X-Google-Smtp-Source: AK7set/Ixb3WSqFMEhxCzQ689X3ZTVmK8ruI8pPEZ7ylGKFiKBp4ONoeUFKy8Fks/gcWB3v04QjpIw==
+X-Received: by 2002:a2e:bd06:0:b0:290:6302:8c7e with SMTP id n6-20020a2ebd06000000b0029063028c7emr4290489ljq.3.1677140099620;
+        Thu, 23 Feb 2023 00:14:59 -0800 (PST)
 Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id r16-20020ac252b0000000b004d4d7fb0e07sm91446lfm.216.2023.02.22.22.38.41
+        by smtp.gmail.com with ESMTPSA id 10-20020ac2568a000000b004db39e80733sm1244450lfr.155.2023.02.23.00.14.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Feb 2023 22:38:41 -0800 (PST)
-Date: Thu, 23 Feb 2023 08:38:39 +0200
+        Thu, 23 Feb 2023 00:14:59 -0800 (PST)
+Date: Thu, 23 Feb 2023 10:14:57 +0200
 From: Zhi Wang <zhi.wang.linux@gmail.com>
 To: "Kalra, Ashish" <ashish.kalra@amd.com>
 Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
@@ -55,14 +55,14 @@ Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
  marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
  alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
  nikunj.dadhania@amd.com, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v8 27/56] crypto: ccp: Add the
- SNP_{SET,GET}_EXT_CONFIG command
-Message-ID: <20230223083839.000014ee@gmail.com>
-In-Reply-To: <c548c555-279e-4ec4-d51f-7f8cdd501010@amd.com>
+Subject: Re: [PATCH RFC v8 28/56] crypto: ccp: Provide APIs to query
+ extended attestation report
+Message-ID: <20230223101457.000051ae@gmail.com>
+In-Reply-To: <8462a7e8-f021-6b55-75b4-5dbdaf013897@amd.com>
 References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-28-michael.roth@amd.com>
-	<20230222143205.00007635@gmail.com>
-	<c548c555-279e-4ec4-d51f-7f8cdd501010@amd.com>
+	<20230220183847.59159-29-michael.roth@amd.com>
+	<20230222222421.00001a62@gmail.com>
+	<8462a7e8-f021-6b55-75b4-5dbdaf013897@amd.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -73,306 +73,167 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Feb 2023 16:43:54 -0600
+On Wed, 22 Feb 2023 16:35:43 -0600
 "Kalra, Ashish" <ashish.kalra@amd.com> wrote:
 
-> On 2/22/2023 6:32 AM, Zhi Wang wrote:
-> > On Mon, 20 Feb 2023 12:38:18 -0600
+> On 2/22/2023 2:24 PM, Zhi Wang wrote:
+> > On Mon, 20 Feb 2023 12:38:19 -0600
 > > Michael Roth <michael.roth@amd.com> wrote:
 > > 
+> > It seems in the discussion:
+> > https://lore.kernel.org/lkml/f18fae8b-a928-cd82-e0b3-eac62ad3e106@amd.com/,
+> > this API is going to be removed. Will that fix land in this patch series or not?
+> > If not, It would be better to mention it in the comment message of this one
+> > or patch 45.
+> > If yes, I guess this patch is not needed.
+> >   
+> 
+> This API is definitely not going to be removed.
+> 
+> There will be some fixes and optimizations added to the API 
+> implementation (as per the discussions) and that will be included in v9.
+> 
+
+Thanks.
+
+I should use the term "this API is going to be refined" as
+snp_guest_ext_guest_request() is going to be renamed and refined. I gave
+this comment because when digging this patch, I found this API was going to be
+changed in the discussion based on v7 when digging this patch. It would be
+really nice to mention it in the v8 so that some review efforts can be saved.
+For example, some people might choose to skip reviewing this one in v8 and get
+back on it in the next version when it is ready. Or people can also evaluate
+the possible changes in v9 when reviewing this part.
+
+> Thanks,
+> Ashish
+> 
 > >> From: Brijesh Singh <brijesh.singh@amd.com>
 > >>
-> >> The SEV-SNP firmware provides the SNP_CONFIG command used to set the
-> >> system-wide configuration value for SNP guests. The information includes
-> >> the TCB version string to be reported in guest attestation reports.
+> >> Version 2 of the GHCB specification defines VMGEXIT that is used to get
+> >> the extended attestation report. The extended attestation report includes
+> >> the certificate blobs provided through the SNP_SET_EXT_CONFIG.
 > >>
-> >> Version 2 of the GHCB specification adds an NAE (SNP extended guest
-> >> request) that a guest can use to query the reports that include additional
-> >> certificates.
-> >>
-> >> In both cases, userspace provided additional data is included in the
-> >> attestation reports. The userspace will use the SNP_SET_EXT_CONFIG
-> >> command to give the certificate blob and the reported TCB version string
-> >> at once. Note that the specification defines certificate blob with a
-> >> specific GUID format; the userspace is responsible for building the
-> >> proper certificate blob. The ioctl treats it an opaque blob.
-> >>
-> >> While it is not defined in the spec, but let's add SNP_GET_EXT_CONFIG
-> >> command that can be used to obtain the data programmed through the
-> >> SNP_SET_EXT_CONFIG.
+> >> The snp_guest_ext_guest_request() will be used by the hypervisor to get
+> >> the extended attestation report. See the GHCB specification for more
+> >> details.
 > >>
 > >> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 > >> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 > >> Signed-off-by: Michael Roth <michael.roth@amd.com>
 > >> ---
-> >>   Documentation/virt/coco/sev-guest.rst |  27 ++++++
-> >>   drivers/crypto/ccp/sev-dev.c          | 123 ++++++++++++++++++++++++++
-> >>   drivers/crypto/ccp/sev-dev.h          |   4 +
-> >>   include/uapi/linux/psp-sev.h          |  17 ++++
-> >>   4 files changed, 171 insertions(+)
+> >>   drivers/crypto/ccp/sev-dev.c | 47 ++++++++++++++++++++++++++++++++++++
+> >>   include/linux/psp-sev.h      | 33 +++++++++++++++++++++++++
+> >>   2 files changed, 80 insertions(+)
 > >>
-> >> diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
-> >> index 11ea67c944df..6cad4226c348 100644
-> >> --- a/Documentation/virt/coco/sev-guest.rst
-> >> +++ b/Documentation/virt/coco/sev-guest.rst
-> >> @@ -145,6 +145,33 @@ The SNP_PLATFORM_STATUS command is used to query the SNP platform status. The
-> >>   status includes API major, minor version and more. See the SEV-SNP
-> >>   specification for further details.
-> >>   
-> >> +2.5 SNP_SET_EXT_CONFIG
-> >> +----------------------
-> >> +:Technology: sev-snp
-> >> +:Type: hypervisor ioctl cmd
-> >> +:Parameters (in): struct sev_data_snp_ext_config
-> >> +:Returns (out): 0 on success, -negative on error
-> >> +
-> >> +The SNP_SET_EXT_CONFIG is used to set the system-wide configuration such as
-> >> +reported TCB version in the attestation report. The command is similar to
-> >> +SNP_CONFIG command defined in the SEV-SNP spec. The main difference is the
-> >> +command also accepts an additional certificate blob defined in the GHCB
-> >> +specification.
-> >> +
-> >> +If the certs_address is zero, then the previous certificate blob will deleted.
-> >> +For more information on the certificate blob layout, see the GHCB spec
-> >> +(extended guest request message).
-> >> +
-> >> +2.6 SNP_GET_EXT_CONFIG
-> >> +----------------------
-> >> +:Technology: sev-snp
-> >> +:Type: hypervisor ioctl cmd
-> >> +:Parameters (in): struct sev_data_snp_ext_config
-> >> +:Returns (out): 0 on success, -negative on error
-> >> +
-> >> +The SNP_GET_EXT_CONFIG is used to query the system-wide configuration set
-> >> +through the SNP_SET_EXT_CONFIG.
-> >> +
-> >>   3. SEV-SNP CPUID Enforcement
-> >>   ============================
-> >>   
 > >> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> >> index 65e13a562f3b..b56b00ca2cd4 100644
+> >> index b56b00ca2cd4..e65563bc8298 100644
 > >> --- a/drivers/crypto/ccp/sev-dev.c
 > >> +++ b/drivers/crypto/ccp/sev-dev.c
-> >> @@ -1481,6 +1481,10 @@ static int __sev_snp_shutdown_locked(int *error)
-> >>   	data.length = sizeof(data);
-> >>   	data.iommu_snp_shutdown = 1;
-> >>   
-> >> +	/* Free the memory used for caching the certificate data */
-> >> +	kfree(sev->snp_certs_data);
-> >> +	sev->snp_certs_data = NULL;
-> >> +
-> >>   	wbinvd_on_all_cpus();
-> >>   
-> >>   retry:
-> >> @@ -1793,6 +1797,118 @@ static int sev_ioctl_snp_platform_status(struct sev_issue_cmd *argp)
-> >>   	return ret;
+> >> @@ -2017,6 +2017,53 @@ int sev_guest_df_flush(int *error)
 > >>   }
+> >>   EXPORT_SYMBOL_GPL(sev_guest_df_flush);
 > >>   
-> >> +static int sev_ioctl_snp_get_config(struct sev_issue_cmd *argp)
+> >> +int snp_guest_ext_guest_request(struct sev_data_snp_guest_request *data,
+> >> +				unsigned long vaddr, unsigned long *npages, unsigned long *fw_err)
 > >> +{
-> >> +	struct sev_device *sev = psp_master->sev_data;
-> >> +	struct sev_user_data_ext_snp_config input;
-> >> +	int ret;
+> >> +	unsigned long expected_npages;
+> >> +	struct sev_device *sev;
+> >> +	int rc;
 > >> +
-> >> +	if (!sev->snp_initialized || !argp->data)
+> >> +	if (!psp_master || !psp_master->sev_data)
+> >> +		return -ENODEV;
+> >> +
+> >> +	sev = psp_master->sev_data;
+> >> +
+> >> +	if (!sev->snp_initialized)
 > >> +		return -EINVAL;
 > >> +
-> >> +	memset(&input, 0, sizeof(input));
-> >> +
-> >> +	if (copy_from_user(&input, (void __user *)argp->data, sizeof(input)))
-> >> +		return -EFAULT;
-> >> +
-> >> +	/* Copy the TCB version programmed through the SET_CONFIG to userspace */
-> >> +	if (input.config_address) {
-> >> +		if (copy_to_user((void * __user)input.config_address,
-> >> +				 &sev->snp_config, sizeof(struct sev_user_data_snp_config)))
-> >> +			return -EFAULT;
-> >> +	}
-> >> +
-> >> +	/* Copy the extended certs programmed through the SNP_SET_CONFIG */
-> >> +	if (input.certs_address && sev->snp_certs_data) {
-> >> +		if (input.certs_len < sev->snp_certs_len) {
-> >> +			/* Return the certs length to userspace */
-> >> +			input.certs_len = sev->snp_certs_len;
-> >> +
-> >> +			ret = -ENOSR;
-> >> +			goto e_done;
-> >> +		}
-> >> +
-> > 
-> > What about if input.certs_len > sev->snp_certs_len? Is it possbile for the
-> > userspace to know the length of data in the buffer? (I guess it might be able
-> > to know the certs len through the blob data, but a comment here would be nice)
-> > 
-> 
-> If userspace provides an input buffer/length smaller then snp_certs_len, 
-> then the above returns the "required" certs length back to userspace.
-> 
-> And what is the issue if input.certs_len > sev->snp_certs_len, the 
-> buffer returned back to userspace is sev->snp_certs_len as below.
-> 
-
-My point is: How can the userspace know the length of return data is shorter
-than input.certs_len when input.certs_len > sev->snp_serts_len? as the length
-is only returned when input.certs_len < sev->snp_certs_len.
-
-> Thanks,
-> Ashish
-> 
-> >> +		if (copy_to_user((void * __user)input.certs_address,
-> >> +				 sev->snp_certs_data, sev->snp_certs_len))
-> >> +			return -EFAULT;
-> >> +	}
-> >> +
-> >> +	ret = 0;
-> >> +
-> >> +e_done:
-> >> +	if (copy_to_user((void __user *)argp->data, &input, sizeof(input)))
-> >> +		ret = -EFAULT;
-> >> +
-> >> +	return ret;
-> >> +}
-> >> +
-> >> +static int sev_ioctl_snp_set_config(struct sev_issue_cmd *argp, bool writable)
-> >> +{
-> >> +	struct sev_device *sev = psp_master->sev_data;
-> >> +	struct sev_user_data_ext_snp_config input;
-> >> +	struct sev_user_data_snp_config config;
-> >> +	void *certs = NULL;
-> >> +	int ret = 0;
-> >> +
-> >> +	if (!sev->snp_initialized || !argp->data)
-> >> +		return -EINVAL;
-> >> +
-> >> +	if (!writable)
-> >> +		return -EPERM;
-> >> +
-> >> +	memset(&input, 0, sizeof(input));
-> >> +
-> >> +	if (copy_from_user(&input, (void __user *)argp->data, sizeof(input)))
-> >> +		return -EFAULT;
-> >> +
-> >> +	/* Copy the certs from userspace */
-> >> +	if (input.certs_address) {
-> >> +		if (!input.certs_len || !IS_ALIGNED(input.certs_len, PAGE_SIZE))
-> >> +			return -EINVAL;
-> >> +
-> >> +		certs = psp_copy_user_blob(input.certs_address, input.certs_len);
-> >> +		if (IS_ERR(certs))
-> >> +			return PTR_ERR(certs);
-> >> +	}
-> >> +
-> >> +	/* Issue the PSP command to update the TCB version using the SNP_CONFIG. */
-> >> +	if (input.config_address) {
-> >> +		memset(&config, 0, sizeof(config));
-> >> +		if (copy_from_user(&config,
-> >> +				   (void __user *)input.config_address, sizeof(config))) {
-> >> +			ret = -EFAULT;
-> >> +			goto e_free;
-> >> +		}
-> >> +
-> >> +		ret = __sev_do_cmd_locked(SEV_CMD_SNP_CONFIG, &config, &argp->error);
-> >> +		if (ret)
-> >> +			goto e_free;
-> >> +
-> >> +		memcpy(&sev->snp_config, &config, sizeof(config));
-> >> +	}
-> >> +
-> >> +	/*
-> >> +	 * If the new certs are passed then cache it else free the old certs.
-> >> +	 */
 > >> +	mutex_lock(&sev->snp_certs_lock);
-> >> +	if (certs) {
-> >> +		kfree(sev->snp_certs_data);
-> >> +		sev->snp_certs_data = certs;
-> >> +		sev->snp_certs_len = input.certs_len;
-> >> +	} else {
-> >> +		kfree(sev->snp_certs_data);
-> >> +		sev->snp_certs_data = NULL;
-> >> +		sev->snp_certs_len = 0;
+> >> +	/*
+> >> +	 * Check if there is enough space to copy the certificate chain. Otherwise
+> >> +	 * return ERROR code defined in the GHCB specification.
+> >> +	 */
+> >> +	expected_npages = sev->snp_certs_len >> PAGE_SHIFT;
+> >> +	if (*npages < expected_npages) {
+> >> +		*npages = expected_npages;
+> >> +		*fw_err = SNP_GUEST_REQ_INVALID_LEN;
+> >> +		mutex_unlock(&sev->snp_certs_lock);
+> >> +		return -EINVAL;
 > >> +	}
+> >> +
+> >> +	rc = sev_do_cmd(SEV_CMD_SNP_GUEST_REQUEST, data, (int *)fw_err);
+> >> +	if (rc) {
+> >> +		mutex_unlock(&sev->snp_certs_lock);
+> >> +		return rc;
+> >> +	}
+> >> +
+> >> +	/* Copy the certificate blob */
+> >> +	if (sev->snp_certs_data) {
+> >> +		*npages = expected_npages;
+> >> +		memcpy((void *)vaddr, sev->snp_certs_data, *npages << PAGE_SHIFT);
+> >> +	} else {
+> >> +		*npages = 0;
+> >> +	}
+> >> +
 > >> +	mutex_unlock(&sev->snp_certs_lock);
-> >> +
-> >> +	return 0;
-> >> +
-> >> +e_free:
-> >> +	kfree(certs);
-> >> +	return ret;
+> >> +	return rc;
 > >> +}
+> >> +EXPORT_SYMBOL_GPL(snp_guest_ext_guest_request);
 > >> +
-> >>   static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
+> >>   static void sev_exit(struct kref *ref)
 > >>   {
-> >>   	void __user *argp = (void __user *)arg;
-> >> @@ -1847,6 +1963,12 @@ static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
-> >>   	case SNP_PLATFORM_STATUS:
-> >>   		ret = sev_ioctl_snp_platform_status(&input);
-> >>   		break;
-> >> +	case SNP_SET_EXT_CONFIG:
-> >> +		ret = sev_ioctl_snp_set_config(&input, writable);
-> >> +		break;
-> >> +	case SNP_GET_EXT_CONFIG:
-> >> +		ret = sev_ioctl_snp_get_config(&input);
-> >> +		break;
-> >>   	default:
-> >>   		ret = -EINVAL;
-> >>   		goto out;
-> >> @@ -1962,6 +2084,7 @@ int sev_dev_init(struct psp_device *psp)
-> >>   		goto e_sev;
-> >>   
-> >>   	sev->cmd_buf_backup = (uint8_t *)sev->cmd_buf + PAGE_SIZE;
-> >> +	mutex_init(&sev->snp_certs_lock);
-> >>   
-> >>   	psp->sev_data = sev;
-> >>   
-> >> diff --git a/drivers/crypto/ccp/sev-dev.h b/drivers/crypto/ccp/sev-dev.h
-> >> index 19d79f9d4212..41d5353d5bab 100644
-> >> --- a/drivers/crypto/ccp/sev-dev.h
-> >> +++ b/drivers/crypto/ccp/sev-dev.h
-> >> @@ -66,6 +66,10 @@ struct sev_device {
-> >>   
-> >>   	bool snp_initialized;
-> >>   	struct snp_host_map snp_host_map[MAX_SNP_HOST_MAP_BUFS];
-> >> +	void *snp_certs_data;
-> >> +	u32 snp_certs_len;
-> >> +	struct mutex snp_certs_lock;
-> >> +	struct sev_user_data_snp_config snp_config;
-> >>   };
-> >>   
-> >>   int sev_dev_init(struct psp_device *psp);
-> >> diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-> >> index 5adfaea7df97..c20d37586d21 100644
-> >> --- a/include/uapi/linux/psp-sev.h
-> >> +++ b/include/uapi/linux/psp-sev.h
-> >> @@ -29,6 +29,8 @@ enum {
-> >>   	SEV_GET_ID,	/* This command is deprecated, use SEV_GET_ID2 */
-> >>   	SEV_GET_ID2,
-> >>   	SNP_PLATFORM_STATUS,
-> >> +	SNP_SET_EXT_CONFIG,
-> >> +	SNP_GET_EXT_CONFIG,
-> >>   
-> >>   	SEV_MAX,
-> >>   };
-> >> @@ -192,6 +194,21 @@ struct sev_user_data_snp_config {
-> >>   	__u8 rsvd1[52];
-> >>   } __packed;
+> >>   	misc_deregister(&misc_dev->misc);
+> >> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+> >> index d19744807471..81bafc049eca 100644
+> >> --- a/include/linux/psp-sev.h
+> >> +++ b/include/linux/psp-sev.h
+> >> @@ -931,6 +931,32 @@ void snp_free_firmware_page(void *addr);
+> >>    */
+> >>   void snp_mark_pages_offline(unsigned long pfn, unsigned int npages);
 > >>   
 > >> +/**
-> >> + * struct sev_data_snp_ext_config - system wide configuration value for SNP.
+> >> + * snp_guest_ext_guest_request - perform the SNP extended guest request command
+> >> + *  defined in the GHCB specification.
 > >> + *
-> >> + * @config_address: address of the struct sev_user_data_snp_config or 0 when
-> >> + *		reported_tcb does not need to be updated.
-> >> + * @certs_address: address of extended guest request certificate chain or
-> >> + *              0 when previous certificate should be removed on SNP_SET_EXT_CONFIG.
-> >> + * @certs_len: length of the certs
+> >> + * @data: the input guest request structure
+> >> + * @vaddr: address where the certificate blob need to be copied.
+> >> + * @npages: number of pages for the certificate blob.
+> >> + *    If the specified page count is less than the certificate blob size, then the
+> >> + *    required page count is returned with error code defined in the GHCB spec.
+> >> + *    If the specified page count is more than the certificate blob size, then
+> >> + *    page count is updated to reflect the amount of valid data copied in the
+> >> + *    vaddr.
+> >> + *
+> >> + * @sev_ret: sev command return code
+> >> + *
+> >> + * Returns:
+> >> + * 0 if the sev successfully processed the command
+> >> + * -%ENODEV    if the sev device is not available
+> >> + * -%ENOTSUPP  if the sev does not support SEV
+> >> + * -%ETIMEDOUT if the sev command timed out
+> >> + * -%EIO       if the sev returned a non-zero return code
 > >> + */
-> >> +struct sev_user_data_ext_snp_config {
-> >> +	__u64 config_address;		/* In */
-> >> +	__u64 certs_address;		/* In */
-> >> +	__u32 certs_len;		/* In */
-> >> +};
+> >> +int snp_guest_ext_guest_request(struct sev_data_snp_guest_request *data,
+> >> +				unsigned long vaddr, unsigned long *npages,
+> >> +				unsigned long *error);
 > >> +
-> >>   /**
-> >>    * struct sev_issue_cmd - SEV ioctl parameters
-> >>    *
-> > 
+> >>   #else	/* !CONFIG_CRYPTO_DEV_SP_PSP */
+> >>   
+> >>   static inline int
+> >> @@ -968,6 +994,13 @@ static inline void *snp_alloc_firmware_page(gfp_t mask)
+> >>   
+> >>   static inline void snp_free_firmware_page(void *addr) { }
+> >>   
+> >> +static inline int snp_guest_ext_guest_request(struct sev_data_snp_guest_request *data,
+> >> +					      unsigned long vaddr, unsigned long *n,
+> >> +					      unsigned long *error)
+> >> +{
+> >> +	return -ENODEV;
+> >> +}
+> >> +
+> >>   #endif	/* CONFIG_CRYPTO_DEV_SP_PSP */
+> >>   
+> >>   #endif	/* __PSP_SEV_H__ */  
+> >   
 
