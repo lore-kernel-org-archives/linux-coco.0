@@ -1,361 +1,115 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EC6AD26
-	for <linux-coco@lists.linux.dev>; Thu, 23 Feb 2023 21:41:17 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id n2so12233639lfb.12
-        for <linux-coco@lists.linux.dev>; Thu, 23 Feb 2023 13:41:17 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B755C3D8C
+	for <linux-coco@lists.linux.dev>; Fri, 24 Feb 2023 11:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3qJoM4vXaENPXqnrETZsBVfs8/JYjXs2/pFDbVazfCI=;
-        b=f0c2b3ELsp/c031R0kg+iSLzD0LVA6+fDyAotS8+QsQEyDgaokMu43dNRkg9cEAUr9
-         yvQIKt4anc5575bqMD4JqnPvpJ8m0ITobP/94FC3ZFkRedzAu3dJ7hE0L65kMWHi7WVJ
-         m/UttK05vmOWJ7F4+SBnaezcoEO6kQbc09/gBnTuECJueFXDxatVeCc34hqsvM3J3L7q
-         1IsZNrROjDcIjKr1e1skVXxTNdwIynMVTJSHn1UKgrESeDrphkVVjJt9DBWkTx9g29w8
-         uQVmRkxcZ0dQ4w2Ez78CnQ0lnJkNoF75/MTEZbRD+nP8Mjbu5hrgdLV4WB9n9OIjGhKu
-         T8Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3qJoM4vXaENPXqnrETZsBVfs8/JYjXs2/pFDbVazfCI=;
-        b=LTUxRb8v4AqizzvwXp0FrDLQeE6uFeYt8YhfLHNbMKTQoRY+SR+hJsYtAabywT0Fsx
-         ubT2wd0XILg2tMeioVJ022IkWwiufHL37SKKVPCV6ys43004wkSJcoxLxW9+/Ik7gdh8
-         gIpdGv17a9YhVxnysTOSkZuwPBF9Q7lhQVvMyuHaHqTv/b5M1bVB+ODJh6254ZYpZnrC
-         N9dnLCM14ExABXb9I1hvEqhTJltvZwvD436qep3QXybmfZrkRRCgLh6dgfVW0A/VDLcC
-         +KwNrjJKphzIL4Xa73QNlh9ADIRYT4j7mBhlaqEiArIob8w5v8LbHNVuGS3HtVNbz39+
-         p6Zw==
-X-Gm-Message-State: AO0yUKXmQdu3ksvPQlEQDw3uhK82ekEb0MxNTDNDnokYcZ4XVE1lsT5Y
-	mf5ZHN0QJS+8piIEQifrwwQ=
-X-Google-Smtp-Source: AK7set8yK0DzArIbIqTuKw/72Q4C0axGvD9qC9p/0DSpcksqSIjNWFglrSiJJvsBLG6slbfPJDUHVA==
-X-Received: by 2002:a19:f00c:0:b0:4db:1e4a:749c with SMTP id p12-20020a19f00c000000b004db1e4a749cmr4421782lfc.0.1677188474998;
-        Thu, 23 Feb 2023 13:41:14 -0800 (PST)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id m22-20020ac24256000000b004b57bbaef87sm529496lfl.224.2023.02.23.13.41.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Feb 2023 13:41:14 -0800 (PST)
-Date: Thu, 23 Feb 2023 23:41:12 +0200
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
- <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
- <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
- <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
- <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
- <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
- <rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
- <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
- <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
- <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
- <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
- <nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v8 34/56] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_START
- command
-Message-ID: <20230223234112.000030ac@gmail.com>
-In-Reply-To: <20230220183847.59159-35-michael.roth@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-35-michael.roth@amd.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1677236528; x=1708772528;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=iP2Q1rCCDs5/6HCe0OSpJ2pmAxSDIeCTZ67VN6uLvus=;
+  b=BvAchG6+MZmvvszoIM+rEReTDTumC33kpCY2GrOk+Ag6SHaGqa8LfFo0
+   7x1O1voEsoclEGzzVLicQ0fEIJKWg9DnEmf/1Ae2cYAWXFOBjbIQCnXKG
+   x4MwmjFIJNB43umIeZsz1XcWkCVb29sCzY+E44efLe4B5OZRE+UZipavm
+   o=;
+X-IronPort-AV: E=Sophos;i="5.97,324,1669075200"; 
+   d="scan'208";a="185961388"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-93c3b254.us-east-1.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2023 11:02:02 +0000
+Received: from EX13MTAUWC002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+	by email-inbound-relay-iad-1a-m6i4x-93c3b254.us-east-1.amazon.com (Postfix) with ESMTPS id 138A3E431E;
+	Fri, 24 Feb 2023 11:01:50 +0000 (UTC)
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX13MTAUWC002.ant.amazon.com (10.43.162.240) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.45; Fri, 24 Feb 2023 11:01:48 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.24; Fri, 24 Feb
+ 2023 11:01:40 +0000
+Message-ID: <f79922de-c498-b471-01f3-54c35ee415ad@amazon.com>
+Date: Fri, 24 Feb 2023 12:01:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.8.0
+Subject: Re: [PATCH RFC v8 45/56] KVM: SVM: Provide support for
+ SNP_GUEST_REQUEST NAE event
+Content-Language: en-US
+To: Michael Roth <michael.roth@amd.com>, <kvm@vger.kernel.org>
+CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+	<ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+	<nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-46-michael.roth@amd.com>
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <20230220183847.59159-46-michael.roth@amd.com>
+X-Originating-IP: [10.253.83.51]
+X-ClientProxiedBy: EX19D040UWA002.ant.amazon.com (10.13.139.113) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On Mon, 20 Feb 2023 12:38:25 -0600
-Michael Roth <michael.roth@amd.com> wrote:
-
-> From: Brijesh Singh <brijesh.singh@amd.com>
-> 
-> KVM_SEV_SNP_LAUNCH_START begins the launch process for an SEV-SNP guest.
-> The command initializes a cryptographic digest context used to construct
-> the measurement of the guest. If the guest is expected to be migrated,
-> the command also binds a migration agent (MA) to the guest.
-> 
-> For more information see the SEV-SNP specification.
-> 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  .../virt/kvm/x86/amd-memory-encryption.rst    |  24 ++++
->  arch/x86/kvm/svm/sev.c                        | 121 +++++++++++++++++-
->  arch/x86/kvm/svm/svm.h                        |   1 +
->  include/uapi/linux/kvm.h                      |  10 ++
->  4 files changed, 153 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> index 2432213bd0ea..58971fc02a15 100644
-> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
-> @@ -461,6 +461,30 @@ The flags bitmap is defined as::
->  If the specified flags is not supported then return -EOPNOTSUPP, and the supported
->  flags are returned.
->  
-> +19. KVM_SNP_LAUNCH_START
-> +------------------------
-> +
-> +The KVM_SNP_LAUNCH_START command is used for creating the memory encryption
-> +context for the SEV-SNP guest. To create the encryption context, user must
-> +provide a guest policy, migration agent (if any) and guest OS visible
-> +workarounds value as defined SEV-SNP specification.
-> +
-> +Parameters (in): struct  kvm_snp_launch_start
-> +
-> +Returns: 0 on success, -negative on error
-> +
-> +::
-> +
-> +        struct kvm_sev_snp_launch_start {
-> +                __u64 policy;           /* Guest policy to use. */
-> +                __u64 ma_uaddr;         /* userspace address of migration agent */
-> +                __u8 ma_en;             /* 1 if the migration agent is enabled */
-> +                __u8 imi_en;            /* set IMI to 1. */
-> +                __u8 gosvw[16];         /* guest OS visible workarounds */
-> +        };
-> +
-> +See the SEV-SNP specification for further detail on the launch input.
-> +
->  References
->  ==========
->  
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index a8efe1f6bf77..097bb2138360 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -22,6 +22,7 @@
->  #include <asm/pkru.h>
->  #include <asm/trapnr.h>
->  #include <asm/fpu/xcr.h>
-> +#include <asm/sev.h>
->  
->  #include "mmu.h"
->  #include "x86.h"
-> @@ -75,6 +76,8 @@ static unsigned int nr_asids;
->  static unsigned long *sev_asid_bitmap;
->  static unsigned long *sev_reclaim_asid_bitmap;
->  
-> +static int snp_decommission_context(struct kvm *kvm);
-> +
->  struct enc_region {
->  	struct list_head list;
->  	unsigned long npages;
-> @@ -100,12 +103,17 @@ static int sev_flush_asids(int min_asid, int max_asid)
->  	down_write(&sev_deactivate_lock);
->  
->  	wbinvd_on_all_cpus();
-> -	ret = sev_guest_df_flush(&error);
-> +
-> +	if (sev_snp_enabled)
-> +		ret = sev_do_cmd(SEV_CMD_SNP_DF_FLUSH, NULL, &error);
-> +	else
-> +		ret = sev_guest_df_flush(&error);
->  
->  	up_write(&sev_deactivate_lock);
->  
->  	if (ret)
-> -		pr_err("SEV: DF_FLUSH failed, ret=%d, error=%#x\n", ret, error);
-> +		pr_err("SEV%s: DF_FLUSH failed, ret=%d, error=%#x\n",
-> +		       sev_snp_enabled ? "-SNP" : "", ret, error);
->  
->  	return ret;
->  }
-> @@ -2011,6 +2019,80 @@ int sev_vm_move_enc_context_from(struct kvm *kvm, unsigned int source_fd)
->  	return ret;
->  }
->  
-> +/*
-> + * The guest context contains all the information, keys and metadata
-> + * associated with the guest that the firmware tracks to implement SEV
-> + * and SNP features. The firmware stores the guest context in hypervisor
-> + * provide page via the SNP_GCTX_CREATE command.
-> + */
-> +static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> +{
-> +	struct sev_data_snp_addr data = {};
-> +	void *context;
-> +	int rc;
-> +
-> +	/* Allocate memory for context page */
-> +	context = snp_alloc_firmware_page(GFP_KERNEL_ACCOUNT);
-> +	if (!context)
-> +		return NULL;
-> +
-> +	data.gctx_paddr = __psp_pa(context);
-> +	rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_GCTX_CREATE, &data, &argp->error);
-> +	if (rc) {
-> +		snp_free_firmware_page(context);
-> +		return NULL;
-> +	}
-> +
-> +	return context;
-> +}
-> +
-> +static int snp_bind_asid(struct kvm *kvm, int *error)
-> +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	struct sev_data_snp_activate data = {0};
-> +
-> +	data.gctx_paddr = __psp_pa(sev->snp_context);
-> +	data.asid   = sev_get_asid(kvm);
-> +	return sev_issue_cmd(kvm, SEV_CMD_SNP_ACTIVATE, &data, error);
-
-According to the SNP ABI specification[1] 8.10 SNP_ACTIVATE:
-
-"The firmware checks that a DF_FLUSH is not required. If a DF_FLUSH is
-required, the firmware returns DFFLUSH_REQUIRED. Note that all ASIDs are
-marked to require a DF_FLUSH at reset."
-
-Do we need a SNP_DF_FLUSH here before calling SNP_ACTIVATE or handle the
-situation if the PSP firmware returns DFFLUSH_REQUIRED?
-
-[1] https://www.amd.com/system/files/TechDocs/56860.pdf
-
-> +}
-> +
-> +static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	struct sev_data_snp_launch_start start = {0};
-> +	struct kvm_sev_snp_launch_start params;
-> +	int rc;
-> +
-> +	if (!sev_snp_guest(kvm))
-> +		return -ENOTTY;
-> +
-> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	sev->snp_context = snp_context_create(kvm, argp);
-> +	if (!sev->snp_context)
-> +		return -ENOTTY;
-> +
-> +	start.gctx_paddr = __psp_pa(sev->snp_context);
-> +	start.policy = params.policy;
-> +	memcpy(start.gosvw, params.gosvw, sizeof(params.gosvw));
-> +	rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_START, &start, &argp->error);
-> +	if (rc)
-> +		goto e_free_context;
-> +
-> +	sev->fd = argp->sev_fd;
-> +	rc = snp_bind_asid(kvm, &argp->error);
-> +	if (rc)
-> +		goto e_free_context;
-> +
-> +	return 0;
-> +
-> +e_free_context:
-> +	snp_decommission_context(kvm);
-> +
-> +	return rc;
-> +}
-> +
->  int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
->  {
->  	struct kvm_sev_cmd sev_cmd;
-> @@ -2101,6 +2183,9 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
->  	case KVM_SEV_RECEIVE_FINISH:
->  		r = sev_receive_finish(kvm, &sev_cmd);
->  		break;
-> +	case KVM_SEV_SNP_LAUNCH_START:
-> +		r = snp_launch_start(kvm, &sev_cmd);
-> +		break;
->  	default:
->  		r = -EINVAL;
->  		goto out;
-> @@ -2292,6 +2377,28 @@ int sev_vm_copy_enc_context_from(struct kvm *kvm, unsigned int source_fd)
->  	return ret;
->  }
->  
-> +static int snp_decommission_context(struct kvm *kvm)
-> +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	struct sev_data_snp_addr data = {};
-> +	int ret;
-> +
-> +	/* If context is not created then do nothing */
-> +	if (!sev->snp_context)
-> +		return 0;
-> +
-> +	data.gctx_paddr = __sme_pa(sev->snp_context);
-> +	ret = sev_do_cmd(SEV_CMD_SNP_DECOMMISSION, &data, NULL);
-> +	if (WARN_ONCE(ret, "failed to release guest context"))
-> +		return ret;
-> +
-> +	/* free the context page now */
-> +	snp_free_firmware_page(sev->snp_context);
-> +	sev->snp_context = NULL;
-> +
-> +	return 0;
-> +}
-> +
->  void sev_vm_destroy(struct kvm *kvm)
->  {
->  	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> @@ -2333,7 +2440,15 @@ void sev_vm_destroy(struct kvm *kvm)
->  		}
->  	}
->  
-> -	sev_unbind_asid(kvm, sev->handle);
-> +	if (sev_snp_guest(kvm)) {
-> +		if (snp_decommission_context(kvm)) {
-> +			WARN_ONCE(1, "Failed to free SNP guest context, leaking asid!\n");
-> +			return;
-> +		}
-> +	} else {
-> +		sev_unbind_asid(kvm, sev->handle);
-> +	}
-> +
->  	sev_asid_free(sev);
->  }
->  
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 56a5c96d8a36..740969b57425 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -92,6 +92,7 @@ struct kvm_sev_info {
->  	struct misc_cg *misc_cg; /* For misc cgroup accounting */
->  	atomic_t migration_in_progress;
->  	u64 snp_init_flags;
-> +	void *snp_context;      /* SNP guest context page */
->  };
->  
->  struct kvm_svm {
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 499cc323f793..cf19799ca5ce 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1919,6 +1919,7 @@ enum sev_cmd_id {
->  
->  	/* SNP specific commands */
->  	KVM_SEV_SNP_INIT,
-> +	KVM_SEV_SNP_LAUNCH_START,
->  
->  	KVM_SEV_NR_MAX,
->  };
-> @@ -2026,6 +2027,15 @@ struct kvm_snp_init {
->  	__u64 flags;
->  };
->  
-> +struct kvm_sev_snp_launch_start {
-> +	__u64 policy;
-> +	__u64 ma_uaddr;
-> +	__u8 ma_en;
-> +	__u8 imi_en;
-> +	__u8 gosvw[16];
-> +	__u8 pad[6];
-> +};
-> +
->  #define KVM_DEV_ASSIGN_ENABLE_IOMMU	(1 << 0)
->  #define KVM_DEV_ASSIGN_PCI_2_3		(1 << 1)
->  #define KVM_DEV_ASSIGN_MASK_INTX	(1 << 2)
+Ck9uIDIwLjAyLjIzIDE5OjM4LCBNaWNoYWVsIFJvdGggd3JvdGU6Cj4gRnJvbTogQnJpamVzaCBT
+aW5naCA8YnJpamVzaC5zaW5naEBhbWQuY29tPgo+Cj4gVmVyc2lvbiAyIG9mIEdIQ0Igc3BlY2lm
+aWNhdGlvbiBhZGRlZCB0aGUgc3VwcG9ydCBmb3IgdHdvIFNOUCBHdWVzdAo+IFJlcXVlc3QgTWVz
+c2FnZSBOQUUgZXZlbnRzLiBUaGUgZXZlbnRzIGFsbG93cyBmb3IgYW4gU0VWLVNOUCBndWVzdCB0
+bwo+IG1ha2UgcmVxdWVzdCB0byB0aGUgU0VWLVNOUCBmaXJtd2FyZSB0aHJvdWdoIGh5cGVydmlz
+b3IgdXNpbmcgdGhlCj4gU05QX0dVRVNUX1JFUVVFU1QgQVBJIGRlZmluZSBpbiB0aGUgU0VWLVNO
+UCBmaXJtd2FyZSBzcGVjaWZpY2F0aW9uLgo+Cj4gVGhlIFNOUF9FWFRfR1VFU1RfUkVRVUVTVCBp
+cyBzaW1pbGFyIHRvIFNOUF9HVUVTVF9SRVFVRVNUIHdpdGggdGhlCj4gZGlmZmVyZW5jZSBvZiBh
+biBhZGRpdGlvbmFsIGNlcnRpZmljYXRlIGJsb2IgdGhhdCBjYW4gYmUgcGFzc2VkIHRocm91Z2gK
+PiB0aGUgU05QX1NFVF9DT05GSUcgaW9jdGwgZGVmaW5lZCBpbiB0aGUgQ0NQIGRyaXZlci4gVGhl
+IENDUCBkcml2ZXIKPiBwcm92aWRlcyBzbnBfZ3Vlc3RfZXh0X2d1ZXN0X3JlcXVlc3QoKSB0aGF0
+IGlzIHVzZWQgYnkgdGhlIEtWTSB0byBnZXQKPiBib3RoIHRoZSByZXBvcnQgYW5kIGNlcnRpZmlj
+YXRlIGRhdGEgYXQgb25jZS4KPgo+IFNpZ25lZC1vZmYtYnk6IEJyaWplc2ggU2luZ2ggPGJyaWpl
+c2guc2luZ2hAYW1kLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBBc2hpc2ggS2FscmEgPGFzaGlzaC5r
+YWxyYUBhbWQuY29tPgo+IFNpZ25lZC1vZmYtYnk6IE1pY2hhZWwgUm90aCA8bWljaGFlbC5yb3Ro
+QGFtZC5jb20+Cj4gLS0tCj4gICBhcmNoL3g4Ni9rdm0vc3ZtL3Nldi5jIHwgMTg1ICsrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tCj4gICBhcmNoL3g4Ni9rdm0vc3ZtL3N2
+bS5oIHwgICAyICsKPiAgIDIgZmlsZXMgY2hhbmdlZCwgMTgxIGluc2VydGlvbnMoKyksIDYgZGVs
+ZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYva3ZtL3N2bS9zZXYuYyBiL2FyY2gv
+eDg2L2t2bS9zdm0vc2V2LmMKPiBpbmRleCAxOTdiMWY5MDQ1NjcuLjkyMTc5NjE0MTAyZSAxMDA2
+NDQKPiAtLS0gYS9hcmNoL3g4Ni9rdm0vc3ZtL3Nldi5jCj4gKysrIGIvYXJjaC94ODYva3ZtL3N2
+bS9zZXYuYwo+IEBAIC0zMjcsNiArMzI3LDcgQEAgc3RhdGljIGludCBzZXZfZ3Vlc3RfaW5pdChz
+dHJ1Y3Qga3ZtICprdm0sIHN0cnVjdCBrdm1fc2V2X2NtZCAqYXJncCkKPiAgICAgICAgICAgICAg
+ICAgIGlmIChyZXQpCj4gICAgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gZV9mcmVlOwo+Cj4g
+KyAgICAgICAgICAgICAgIG11dGV4X2luaXQoJnNldi0+Z3Vlc3RfcmVxX2xvY2spOwo+ICAgICAg
+ICAgICAgICAgICAgcmV0ID0gc2V2X3NucF9pbml0KCZhcmdwLT5lcnJvciwgZmFsc2UpOwo+ICAg
+ICAgICAgIH0gZWxzZSB7Cj4gICAgICAgICAgICAgICAgICByZXQgPSBzZXZfcGxhdGZvcm1faW5p
+dCgmYXJncC0+ZXJyb3IpOwo+IEBAIC0yMDU5LDIzICsyMDYwLDM0IEBAIGludCBzZXZfdm1fbW92
+ZV9lbmNfY29udGV4dF9mcm9tKHN0cnVjdCBrdm0gKmt2bSwgdW5zaWduZWQgaW50IHNvdXJjZV9m
+ZCkKPiAgICAqLwo+ICAgc3RhdGljIHZvaWQgKnNucF9jb250ZXh0X2NyZWF0ZShzdHJ1Y3Qga3Zt
+ICprdm0sIHN0cnVjdCBrdm1fc2V2X2NtZCAqYXJncCkKPiAgIHsKPiArICAgICAgIHN0cnVjdCBr
+dm1fc2V2X2luZm8gKnNldiA9ICZ0b19rdm1fc3ZtKGt2bSktPnNldl9pbmZvOwo+ICAgICAgICAg
+IHN0cnVjdCBzZXZfZGF0YV9zbnBfYWRkciBkYXRhID0ge307Cj4gLSAgICAgICB2b2lkICpjb250
+ZXh0Owo+ICsgICAgICAgdm9pZCAqY29udGV4dCwgKmNlcnRzX2RhdGE7Cj4gICAgICAgICAgaW50
+IHJjOwo+Cj4gKyAgICAgICAvKiBBbGxvY2F0ZSBtZW1vcnkgdXNlZCBmb3IgdGhlIGNlcnRzIGRh
+dGEgaW4gU05QIGd1ZXN0IHJlcXVlc3QgKi8KPiArICAgICAgIGNlcnRzX2RhdGEgPSBremFsbG9j
+KFNFVl9GV19CTE9CX01BWF9TSVpFLCBHRlBfS0VSTkVMX0FDQ09VTlQpOwo+ICsgICAgICAgaWYg
+KCFjZXJ0c19kYXRhKQo+ICsgICAgICAgICAgICAgICByZXR1cm4gTlVMTDsKCgpJIGRvbid0IHVu
+ZGVyc3RhbmQgd2h5IHRoaXMgaXMgcGFydCBvZiB0aGUgY29udGV4dCBjcmVhdGlvbiwgd2hpY2gg
+YWdhaW4gCmlzIHBhcnQgb2YgdGhlIEtWTV9TRVZfU05QX0xBVU5DSF9TVEFSVCBvcC4gV291bGQg
+eW91IG1pbmQgdG8gY3JlYXRlIGEgCnNlcGFyYXRlIG9wIGZvciB0aGlzIGFuZCB0aGVuIGNoZWNr
+IGxhdGVyIG9uIHdoaWxlIHlvdSB1c2UgdGhlIGJ1ZmZlciAKd2hldGhlciBpdCB3YXMgZXZlciBh
+bGxvY2F0ZWQ/CgoKQWxleAoKCgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBH
+bWJICktyYXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlz
+dGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0
+IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBE
+RSAyODkgMjM3IDg3OQoKCg==
 
