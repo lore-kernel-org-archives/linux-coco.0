@@ -1,203 +1,142 @@
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32640539D
-	for <linux-coco@lists.linux.dev>; Fri, 24 Feb 2023 12:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1677242297; x=1708778297;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=D/FBueQOSeZs/t1qYgq9kYXAa0p8/ZhQl/Zmd0tLZC0=;
-  b=NtYuGn9XeowvyG+kr6alFCY1+VkI568xB6w7V5VZoIFhoPf/Ln9m0vLO
-   07NGZb1Le8eY5dgRzMTp/6t0bVlv+eYKN237HTbVaFFiKp78TBadAW34L
-   im2LM71eFADnvuVJAJYDIBnBMFTx3Qj58+5g27fx6vXf++fY47LP7O4+d
-   c=;
-X-IronPort-AV: E=Sophos;i="5.97,324,1669075200"; 
-   d="scan'208";a="300736811"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-44b6fc51.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2023 12:38:11 +0000
-Received: from EX13MTAUWC001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-	by email-inbound-relay-pdx-2a-m6i4x-44b6fc51.us-west-2.amazon.com (Postfix) with ESMTPS id 55BC2A2AB0;
-	Fri, 24 Feb 2023 12:37:59 +0000 (UTC)
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX13MTAUWC001.ant.amazon.com (10.43.162.135) with Microsoft SMTP Server (TLS)
- id 15.0.1497.45; Fri, 24 Feb 2023 12:37:58 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.24; Fri, 24 Feb
- 2023 12:37:51 +0000
-Message-ID: <09696af0-b72d-29e7-862b-22ae4a630299@amazon.com>
-Date: Fri, 24 Feb 2023 13:37:48 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EBE539D
+	for <linux-coco@lists.linux.dev>; Fri, 24 Feb 2023 14:15:16 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6F50338D66;
+	Fri, 24 Feb 2023 14:15:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1677248114; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hIr4OLobe1v9ePshBpCN8LwHWFlIkxYQxMPkC5Bofyw=;
+	b=D2fLuqLMUcm999YHuqQ24yyHy5lPluZyGsTljmq4AUjWOaagBU4CRnM/Ns7afZ4+/F2E+n
+	0AH91pkxkkpgEAi2lXsNrh5yTiFx9tI3UVuImEyKNNMhNloLCCs4mJnLBY1c4LT/SqX5Yn
+	2UeAUaC1IHv+AwNgjTDYt2dQeMCYH1c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1677248114;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hIr4OLobe1v9ePshBpCN8LwHWFlIkxYQxMPkC5Bofyw=;
+	b=QPyWpWAY1BcXFey8PtOcpY44Lx4VfokAKq+A35WChbdGp3f+EQhLrgdaFRuxoCWqptZiVy
+	kqeaY0tYv1BIlIAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4FC7513246;
+	Fri, 24 Feb 2023 14:15:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id VTADEnLG+GO4YgAAMHmgww
+	(envelope-from <jroedel@suse.de>); Fri, 24 Feb 2023 14:15:14 +0000
+Date: Fri, 24 Feb 2023 15:15:12 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
+Subject: Re: SVSM Attestation and vTPM specification additions - v0.61
+Message-ID: <Y/jGcMhXfEm8MCYK@suse.de>
+References: <89f1527e-b710-8bd8-1059-4a0a51e4c0ab@amd.com>
+ <Y+yqpq+S3N/lIKjQ@suse.de>
+ <069c74a5-2735-adba-5748-090e80550c9e@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.8.0
-Subject: Re: [PATCH RFC v8 47/56] KVM: SVM: Support SEV-SNP AP Creation NAE
- event
-Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>, <kvm@vger.kernel.org>
-CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
-	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
-	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
-	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
-	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
-	<ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
-	<nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
- <20230220183847.59159-48-michael.roth@amd.com>
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <20230220183847.59159-48-michael.roth@amd.com>
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D041UWA004.ant.amazon.com (10.13.139.9) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <069c74a5-2735-adba-5748-090e80550c9e@amd.com>
 
-Ck9uIDIwLjAyLjIzIDE5OjM4LCBNaWNoYWVsIFJvdGggd3JvdGU6Cj4gRnJvbTogVG9tIExlbmRh
-Y2t5IDx0aG9tYXMubGVuZGFja3lAYW1kLmNvbT4KPgo+IEFkZCBzdXBwb3J0IGZvciB0aGUgU0VW
-LVNOUCBBUCBDcmVhdGlvbiBOQUUgZXZlbnQuIFRoaXMgYWxsb3dzIFNFVi1TTlAKPiBndWVzdHMg
-dG8gYWx0ZXIgdGhlIHJlZ2lzdGVyIHN0YXRlIG9mIHRoZSBBUHMgb24gdGhlaXIgb3duLiBUaGlz
-IGFsbG93cwo+IHRoZSBndWVzdCBhIHdheSBvZiBzaW11bGF0aW5nIElOSVQtU0lQSS4KPgo+IEEg
-bmV3IGV2ZW50LCBLVk1fUkVRX1VQREFURV9QUk9URUNURURfR1VFU1RfU1RBVEUsIGlzIGNyZWF0
-ZWQgYW5kIHVzZWQKPiBzbyBhcyB0byBhdm9pZCB1cGRhdGluZyB0aGUgVk1TQSBwb2ludGVyIHdo
-aWxlIHRoZSB2Q1BVIGlzIHJ1bm5pbmcuCj4KPiBGb3IgQ1JFQVRFCj4gICAgVGhlIGd1ZXN0IHN1
-cHBsaWVzIHRoZSBHUEEgb2YgdGhlIFZNU0EgdG8gYmUgdXNlZCBmb3IgdGhlIHZDUFUgd2l0aAo+
-ICAgIHRoZSBzcGVjaWZpZWQgQVBJQyBJRC4gVGhlIEdQQSBpcyBzYXZlZCBpbiB0aGUgc3ZtIHN0
-cnVjdCBvZiB0aGUKPiAgICB0YXJnZXQgdkNQVSwgdGhlIEtWTV9SRVFfVVBEQVRFX1BST1RFQ1RF
-RF9HVUVTVF9TVEFURSBldmVudCBpcyBhZGRlZAo+ICAgIHRvIHRoZSB2Q1BVIGFuZCB0aGVuIHRo
-ZSB2Q1BVIGlzIGtpY2tlZC4KPgo+IEZvciBDUkVBVEVfT05fSU5JVDoKPiAgICBUaGUgZ3Vlc3Qg
-c3VwcGxpZXMgdGhlIEdQQSBvZiB0aGUgVk1TQSB0byBiZSB1c2VkIGZvciB0aGUgdkNQVSB3aXRo
-Cj4gICAgdGhlIHNwZWNpZmllZCBBUElDIElEIHRoZSBuZXh0IHRpbWUgYW4gSU5JVCBpcyBwZXJm
-b3JtZWQuIFRoZSBHUEEgaXMKPiAgICBzYXZlZCBpbiB0aGUgc3ZtIHN0cnVjdCBvZiB0aGUgdGFy
-Z2V0IHZDUFUuCj4KPiBGb3IgREVTVFJPWToKPiAgICBUaGUgZ3Vlc3QgaW5kaWNhdGVzIGl0IHdp
-c2hlcyB0byBzdG9wIHRoZSB2Q1BVLiBUaGUgR1BBIGlzIGNsZWFyZWQKPiAgICBmcm9tIHRoZSBz
-dm0gc3RydWN0LCB0aGUgS1ZNX1JFUV9VUERBVEVfUFJPVEVDVEVEX0dVRVNUX1NUQVRFIGV2ZW50
-IGlzCj4gICAgYWRkZWQgdG8gdkNQVSBhbmQgdGhlbiB0aGUgdkNQVSBpcyBraWNrZWQuCj4KPiBU
-aGUgS1ZNX1JFUV9VUERBVEVfUFJPVEVDVEVEX0dVRVNUX1NUQVRFIGV2ZW50IGhhbmRsZXIgd2ls
-bCBiZSBpbnZva2VkCj4gYXMgYSByZXN1bHQgb2YgdGhlIGV2ZW50IG9yIGFzIGEgcmVzdWx0IG9m
-IGFuIElOSVQuIFRoZSBoYW5kbGVyIHNldHMgdGhlCj4gdkNQVSB0byB0aGUgS1ZNX01QX1NUQVRF
-X1VOSU5JVElBTElaRUQgc3RhdGUsIHNvIHRoYXQgYW55IGVycm9ycyB3aWxsCj4gbGVhdmUgdGhl
-IHZDUFUgYXMgbm90IHJ1bm5hYmxlLiBBbnkgcHJldmlvdXMgVk1TQSBwYWdlcyB0aGF0IHdlcmUK
-PiBpbnN0YWxsZWQgYXMgcGFydCBvZiBhbiBTRVYtU05QIEFQIENyZWF0aW9uIE5BRSBldmVudCBh
-cmUgdW4tcGlubmVkLiBJZgo+IGEgbmV3IFZNU0EgaXMgdG8gYmUgaW5zdGFsbGVkLCB0aGUgVk1T
-QSBndWVzdCBwYWdlIGlzIHBpbm5lZCBhbmQgc2V0IGFzCj4gdGhlIFZNU0EgaW4gdGhlIHZDUFUg
-Vk1DQiBhbmQgdGhlIHZDUFUgc3RhdGUgaXMgc2V0IHRvCj4gS1ZNX01QX1NUQVRFX1JVTk5BQkxF
-LiBJZiBhIG5ldyBWTVNBIGlzIG5vdCB0byBiZSBpbnN0YWxsZWQsIHRoZSBWTVNBIGlzCj4gY2xl
-YXJlZCBpbiB0aGUgdkNQVSBWTUNCIGFuZCB0aGUgdkNQVSBzdGF0ZSBpcyBsZWZ0IGFzCj4gS1ZN
-X01QX1NUQVRFX1VOSU5JVElBTElaRUQgdG8gcHJldmVudCBpdCBmcm9tIGJlaW5nIHJ1bi4KPgo+
-IFNpZ25lZC1vZmYtYnk6IFRvbSBMZW5kYWNreSA8dGhvbWFzLmxlbmRhY2t5QGFtZC5jb20+Cj4g
-U2lnbmVkLW9mZi1ieTogQnJpamVzaCBTaW5naCA8YnJpamVzaC5zaW5naEBhbWQuY29tPgo+IFNp
-Z25lZC1vZmYtYnk6IEFzaGlzaCBLYWxyYSA8YXNoaXNoLmthbHJhQGFtZC5jb20+Cj4gW21kcjog
-YWRkIGhhbmRsaW5nIGZvciByZXN0cmljdGVkbWVtXQo+IFNpZ25lZC1vZmYtYnk6IE1pY2hhZWwg
-Um90aCA8bWljaGFlbC5yb3RoQGFtZC5jb20+CgoKV2hhdCBpcyB0aGUgaW50ZW5kZWQgYm9vdCBz
-ZXF1ZW5jZSBmb3IgU0VWLVNOUCBndWVzdHM/IEZXSVcgd2l0aCB0aGlzIAppbnRlcmZhY2UgaW4g
-cGxhY2UsIGd1ZXN0cyB3aWxsIHR5cGljYWxseSB1c2UgaW4tZ3Vlc3QgVk1TQSBwYWdlcyB0byAK
-aG9sZCBzZWNvbmRhcnkgdmNwdSBzdGF0ZS4gQnV0IHRoYXQgbWVhbnMgd2UncmUgbm93IGFsbG9j
-YXRpbmcgNGtiIG9mIAptZW1vcnkgZm9yIGV2ZXJ5IHZjcHUgdGhhdCB3ZSBjcmVhdGUgdGhhdCB3
-aWxsIGJlIGZvciBtb3N0IG9mIHRoZSAKZ3Vlc3QncyBsaWZldGltZSBzdXBlcmZsdW91cy4KCldv
-dWxkbid0IGl0IG1ha2UgbW9yZSBzZW5zZSB0byBoYXZlIGEgbW9kZWwgd2hlcmUgd2Ugb25seSBh
-bGxvY2F0ZSB0aGUgClZNU0EgZm9yIHRoZSBib290IENQVSBhbmQgbGVhdmUgc2Vjb25kYXJ5IGFs
-bG9jYXRpb24gdG8gdGhlIGd1ZXN0PyBXZSAKYWxyZWFkeSBuZWVkIGZpcm13YXJlIGNoYW5nZXMg
-Zm9yIFNFVi1TTlAgLSBtYXkgYXMgd2VsbCBtYWtlIHRoaXMgb25lIG1vcmUuCgpbLi4uXQoKPiAr
-Cj4gK3N0YXRpYyBpbnQgc2V2X3NucF9hcF9jcmVhdGlvbihzdHJ1Y3QgdmNwdV9zdm0gKnN2bSkK
-PiArewo+ICsgICAgICAgc3RydWN0IGt2bV9zZXZfaW5mbyAqc2V2ID0gJnRvX2t2bV9zdm0oc3Zt
-LT52Y3B1Lmt2bSktPnNldl9pbmZvOwo+ICsgICAgICAgc3RydWN0IGt2bV92Y3B1ICp2Y3B1ID0g
-JnN2bS0+dmNwdTsKPiArICAgICAgIHN0cnVjdCBrdm1fdmNwdSAqdGFyZ2V0X3ZjcHU7Cj4gKyAg
-ICAgICBzdHJ1Y3QgdmNwdV9zdm0gKnRhcmdldF9zdm07Cj4gKyAgICAgICB1bnNpZ25lZCBpbnQg
-cmVxdWVzdDsKPiArICAgICAgIHVuc2lnbmVkIGludCBhcGljX2lkOwo+ICsgICAgICAgYm9vbCBr
-aWNrOwo+ICsgICAgICAgaW50IHJldDsKPiArCj4gKyAgICAgICByZXF1ZXN0ID0gbG93ZXJfMzJf
-Yml0cyhzdm0tPnZtY2ItPmNvbnRyb2wuZXhpdF9pbmZvXzEpOwo+ICsgICAgICAgYXBpY19pZCA9
-IHVwcGVyXzMyX2JpdHMoc3ZtLT52bWNiLT5jb250cm9sLmV4aXRfaW5mb18xKTsKPiArCj4gKyAg
-ICAgICAvKiBWYWxpZGF0ZSB0aGUgQVBJQyBJRCAqLwo+ICsgICAgICAgdGFyZ2V0X3ZjcHUgPSBr
-dm1fZ2V0X3ZjcHVfYnlfaWQodmNwdS0+a3ZtLCBhcGljX2lkKTsKCgpPdXQgb2YgY3VyaW9zaXR5
-OiBUaGUgdGFyZ2V0IENQVSBjYW4gYmUgbXkgb3duIHZDUFUsIHJpZ2h0PwoKCj4gKyAgICAgICBp
-ZiAoIXRhcmdldF92Y3B1KSB7Cj4gKyAgICAgICAgICAgICAgIHZjcHVfdW5pbXBsKHZjcHUsICJ2
-bWdleGl0OiBpbnZhbGlkIEFQIEFQSUMgSUQgWyUjeF0gZnJvbSBndWVzdFxuIiwKPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgYXBpY19pZCk7Cj4gKyAgICAgICAgICAgICAgIHJldHVybiAt
-RUlOVkFMOwo+ICsgICAgICAgfQo+ICsKPiArICAgICAgIHJldCA9IDA7Cj4gKwo+ICsgICAgICAg
-dGFyZ2V0X3N2bSA9IHRvX3N2bSh0YXJnZXRfdmNwdSk7Cj4gKwo+ICsgICAgICAgLyoKPiArICAg
-ICAgICAqIFRoZSB0YXJnZXQgdkNQVSBpcyB2YWxpZCwgc28gdGhlIHZDUFUgd2lsbCBiZSBraWNr
-ZWQgdW5sZXNzIHRoZQo+ICsgICAgICAgICogcmVxdWVzdCBpcyBmb3IgQ1JFQVRFX09OX0lOSVQu
-IEZvciBhbnkgZXJyb3JzIGF0IHRoaXMgc3RhZ2UsIHRoZQo+ICsgICAgICAgICoga2ljayB3aWxs
-IHBsYWNlIHRoZSB2Q1BVIGluIGFuIG5vbi1ydW5uYWJsZSBzdGF0ZS4KPiArICAgICAgICAqLwo+
-ICsgICAgICAga2ljayA9IHRydWU7Cj4gKwo+ICsgICAgICAgbXV0ZXhfbG9jaygmdGFyZ2V0X3N2
-bS0+c2V2X2VzLnNucF92bXNhX211dGV4KTsKPiArCj4gKyAgICAgICB0YXJnZXRfc3ZtLT5zZXZf
-ZXMuc25wX3Ztc2FfZ3BhID0gSU5WQUxJRF9QQUdFOwo+ICsgICAgICAgdGFyZ2V0X3N2bS0+c2V2
-X2VzLnNucF9hcF9jcmVhdGUgPSB0cnVlOwo+ICsKPiArICAgICAgIC8qIEludGVycnVwdCBpbmpl
-Y3Rpb24gbW9kZSBzaG91bGRuJ3QgY2hhbmdlIGZvciBBUCBjcmVhdGlvbiAqLwo+ICsgICAgICAg
-aWYgKHJlcXVlc3QgPCBTVk1fVk1HRVhJVF9BUF9ERVNUUk9ZKSB7Cj4gKyAgICAgICAgICAgICAg
-IHU2NCBzZXZfZmVhdHVyZXM7Cj4gKwo+ICsgICAgICAgICAgICAgICBzZXZfZmVhdHVyZXMgPSB2
-Y3B1LT5hcmNoLnJlZ3NbVkNQVV9SRUdTX1JBWF07Cj4gKyAgICAgICAgICAgICAgIHNldl9mZWF0
-dXJlcyBePSBzZXYtPnNldl9mZWF0dXJlczsKPiArICAgICAgICAgICAgICAgaWYgKHNldl9mZWF0
-dXJlcyAmIFNWTV9TRVZfRkVBVF9JTlRfSU5KX01PREVTKSB7Cj4gKyAgICAgICAgICAgICAgICAg
-ICAgICAgdmNwdV91bmltcGwodmNwdSwgInZtZ2V4aXQ6IGludmFsaWQgQVAgaW5qZWN0aW9uIG1v
-ZGUgWyUjbHhdIGZyb20gZ3Vlc3RcbiIsCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgdmNwdS0+YXJjaC5yZWdzW1ZDUFVfUkVHU19SQVhdKTsKPiArICAgICAgICAgICAgICAg
-ICAgICAgICByZXQgPSAtRUlOVkFMOwo+ICsgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gb3V0
-Owo+ICsgICAgICAgICAgICAgICB9Cj4gKyAgICAgICB9Cj4gKwo+ICsgICAgICAgc3dpdGNoIChy
-ZXF1ZXN0KSB7Cj4gKyAgICAgICBjYXNlIFNWTV9WTUdFWElUX0FQX0NSRUFURV9PTl9JTklUOgo+
-ICsgICAgICAgICAgICAgICBraWNrID0gZmFsc2U7Cj4gKyAgICAgICAgICAgICAgIGZhbGx0aHJv
-dWdoOwo+ICsgICAgICAgY2FzZSBTVk1fVk1HRVhJVF9BUF9DUkVBVEU6Cj4gKyAgICAgICAgICAg
-ICAgIGlmICghcGFnZV9hZGRyZXNzX3ZhbGlkKHZjcHUsIHN2bS0+dm1jYi0+Y29udHJvbC5leGl0
-X2luZm9fMikpIHsKPiArICAgICAgICAgICAgICAgICAgICAgICB2Y3B1X3VuaW1wbCh2Y3B1LCAi
-dm1nZXhpdDogaW52YWxpZCBBUCBWTVNBIGFkZHJlc3MgWyUjbGx4XSBmcm9tIGd1ZXN0XG4iLAo+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN2bS0+dm1jYi0+Y29udHJvbC5l
-eGl0X2luZm9fMik7Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgcmV0ID0gLUVJTlZBTDsKPiAr
-ICAgICAgICAgICAgICAgICAgICAgICBnb3RvIG91dDsKPiArICAgICAgICAgICAgICAgfQo+ICsK
-PiArICAgICAgICAgICAgICAgLyoKPiArICAgICAgICAgICAgICAgICogTWFsaWNpb3VzIGd1ZXN0
-IGNhbiBSTVBBREpVU1QgYSBsYXJnZSBwYWdlIGludG8gVk1TQSB3aGljaAo+ICsgICAgICAgICAg
-ICAgICAgKiB3aWxsIGhpdCB0aGUgU05QIGVycmF0dW0gd2hlcmUgdGhlIENQVSB3aWxsIGluY29y
-cmVjdGx5IHNpZ25hbAo+ICsgICAgICAgICAgICAgICAgKiBhbiBSTVAgdmlvbGF0aW9uICNQRiBp
-ZiBhIGh1Z2VwYWdlIGNvbGxpZGVzIHdpdGggdGhlIFJNUCBlbnRyeQo+ICsgICAgICAgICAgICAg
-ICAgKiBvZiBWTVNBIHBhZ2UsIHJlamVjdCB0aGUgQVAgQ1JFQVRFIHJlcXVlc3QgaWYgVk1TQSBh
-ZGRyZXNzIGZyb20KPiArICAgICAgICAgICAgICAgICogZ3Vlc3QgaXMgMk0gYWxpZ25lZC4KCgpU
-aGlzIHdpbGwgYnJlYWsgZ2VudWluZSBjdXJyZW50IExpbnV4IGtlcm5lbHMgdGhhdCBqdXN0IGhh
-cHBlbiB0byAKYWxsb2NhdGUgYSBndWVzdCBwYWdlLCBubz8gSW4gZmFjdCwgZ2l2ZW4gZW5vdWdo
-IHZDUFVzIHlvdSdyZSBhbG1vc3QgCmd1YXJhbnRlZWQgdG8gaGl0IGFuIGFsaWduZWQgc3RydWN0
-dXJlIHNvbWV3aGVyZS4gV2hhdCBpcyB0aGUgZ3Vlc3QgCnN1cHBvc2VkIHRvIGRvIGluIHRoYXQg
-c2l0dWF0aW9uPwoKCj4gKyAgICAgICAgICAgICAgICAqLwo+ICsgICAgICAgICAgICAgICBpZiAo
-SVNfQUxJR05FRChzdm0tPnZtY2ItPmNvbnRyb2wuZXhpdF9pbmZvXzIsIFBNRF9TSVpFKSkgewo+
-ICsgICAgICAgICAgICAgICAgICAgICAgIHZjcHVfdW5pbXBsKHZjcHUsCj4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgInZtZ2V4aXQ6IEFQIFZNU0EgYWRkcmVzcyBbJWxseF0g
-ZnJvbSBndWVzdCBpcyB1bnNhZmUgYXMgaXQgaXMgMk0gYWxpZ25lZFxuIiwKPiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICBzdm0tPnZtY2ItPmNvbnRyb2wuZXhpdF9pbmZvXzIp
-Owo+ICsgICAgICAgICAgICAgICAgICAgICAgIHJldCA9IC1FSU5WQUw7Cj4gKyAgICAgICAgICAg
-ICAgICAgICAgICAgZ290byBvdXQ7Cj4gKyAgICAgICAgICAgICAgIH0KPiArCj4gKyAgICAgICAg
-ICAgICAgIHRhcmdldF9zdm0tPnNldl9lcy5zbnBfdm1zYV9ncGEgPSBzdm0tPnZtY2ItPmNvbnRy
-b2wuZXhpdF9pbmZvXzI7Cj4gKyAgICAgICAgICAgICAgIGJyZWFrOwo+ICsgICAgICAgY2FzZSBT
-Vk1fVk1HRVhJVF9BUF9ERVNUUk9ZOgoKCkkgZG9uJ3QgdW5kZXJzdGFuZCB0aGUgZGVzdHJveSBw
-YXRoLiBXaHkgZG9lcyB0aGlzIGNhc2UgZGVzdHJveSBhbnl0aGluZz8KCgo+ICsgICAgICAgICAg
-ICAgICBicmVhazsKPiArICAgICAgIGRlZmF1bHQ6Cj4gKyAgICAgICAgICAgICAgIHZjcHVfdW5p
-bXBsKHZjcHUsICJ2bWdleGl0OiBpbnZhbGlkIEFQIGNyZWF0aW9uIHJlcXVlc3QgWyUjeF0gZnJv
-bSBndWVzdFxuIiwKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVxdWVzdCk7Cj4gKyAg
-ICAgICAgICAgICAgIHJldCA9IC1FSU5WQUw7Cj4gKyAgICAgICAgICAgICAgIGJyZWFrOwo+ICsg
-ICAgICAgfQo+ICsKPiArb3V0Ogo+ICsgICAgICAgaWYgKGtpY2spIHsKPiArICAgICAgICAgICAg
-ICAgaWYgKHRhcmdldF92Y3B1LT5hcmNoLm1wX3N0YXRlID09IEtWTV9NUF9TVEFURV9VTklOSVRJ
-QUxJWkVEKQo+ICsgICAgICAgICAgICAgICAgICAgICAgIHRhcmdldF92Y3B1LT5hcmNoLm1wX3N0
-YXRlID0gS1ZNX01QX1NUQVRFX1JVTk5BQkxFOwoKCldoYXQgaWYgdGhlIGd1ZXN0IEFQIGdvZXMg
-dGhyb3VnaCBhIGNyZWF0ZSAtPiBkZXN0cm95IC0+IGNyZWF0ZSBjeWNsZT8gCldpbGwgaXQgc3Rh
-eSBydW5uYWJsZSB3aGlsZSBkZXN0cm95ZWQ/CgoKQWxleAoKPiArCj4gKyAgICAgICAgICAgICAg
-IGt2bV9tYWtlX3JlcXVlc3QoS1ZNX1JFUV9VUERBVEVfUFJPVEVDVEVEX0dVRVNUX1NUQVRFLCB0
-YXJnZXRfdmNwdSk7Cj4gKyAgICAgICAgICAgICAgIGt2bV92Y3B1X2tpY2sodGFyZ2V0X3ZjcHUp
-Owo+ICsgICAgICAgfQo+ICsKPiArICAgICAgIG11dGV4X3VubG9jaygmdGFyZ2V0X3N2bS0+c2V2
-X2VzLnNucF92bXNhX211dGV4KTsKPiArCj4gKyAgICAgICByZXR1cm4gcmV0Owo+ICt9Cj4gKwo+
-ICAgc3RhdGljIGludCBzZXZfaGFuZGxlX3ZtZ2V4aXRfbXNyX3Byb3RvY29sKHN0cnVjdCB2Y3B1
-X3N2bSAqc3ZtKQo+ICAgewo+ICAgICAgICAgIHN0cnVjdCB2bWNiX2NvbnRyb2xfYXJlYSAqY29u
-dHJvbCA9ICZzdm0tPnZtY2ItPmNvbnRyb2w7CgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIg
-R2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1
-bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFt
-dHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVyIEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4K
-VXN0LUlEOiBERSAyODkgMjM3IDg3OQoKCg==
+On Tue, Feb 21, 2023 at 04:07:46PM -0600, Tom Lendacky wrote:
+> VCPU create doesn't actually replace the VMSA from the hypervisor point of
+> view. The guest is still required to invoke the GHCB interface to notify the
+> hypervisor.
+> 
+> The SVSM PoC leaves any current VMSA in the list of all VMSAs, but does
+> replace the current / in-use version of the VMSA for the specified VCPU.
+> This is used to examine the register associated with a request, so the guest
+> can shoot itself in the foot if it doesn't switch that VCPU to the new VMSA.
+> 
+> I'm ok with either doing that or, as you suggest below, checking if there's
+> an existing VMSA for the VMPL level and failing the request until the the
+> existing VMSA is deleted. That does require the deletion/creation to be
+> offloaded to another VCPU, though (unless we allow the self-deletion change
+> talked about below).
+
+Yeah, so the current protocol expects a bit too much from the code
+running at VMPL1 for my personal taste. I think it would be better if we
+put some constraints into the handling of CREATE_VCPU and DELETE_VCPU
+calls to keep the number of pages marked as VMSA as small as possible.
+
+With the current semantics the guest is required to call DELETE_VCPU on
+any VMSA it no longer uses. But it is not required to do so. Also there
+is a race window between switching to the new VMSA and deleting the old
+one where the HV could run the old and the new VMSA in parallel.
+
+The SVSM will not get to see any old VMSA before it is retired (e.g. to
+clear EFER.SVME and make it invalid) until the DELETE_VCPU call, but at
+that time the new VMSA could already be running.
+
+I don't think we can fully prevent such attacks, but we can make them
+more complicated by having some constraints who and when VCPUs can be
+created and deleted.
+
+In particular:
+
+	1) VCPUs can only delete themselves. Exception is VCPU 0
+	   (or whichever VCPU the BSP is).
+
+	2) VCPUs can only be created for same or higher VMPLs on any
+	   VCPU in the guest, given that there is no VMSA configured for
+	   this (VCPU, VMPL) combination.
+
+These are constraints the SVSM can enforce and it should keep the number
+of VMSAs in the system minimal.
+
+It requires some changes to the current OVMF patches for SNP and SVSM,
+though.
+
+> It might be desirable to allow another APIC to delete a VMSA. Maybe kexec
+> processing would be able to benefit from that.
+
+Yeah, maybe. On the other side kexec would benefit if VCPUs delete
+themselves in the old kernel. Otherwise the new kernel needs to find the
+VMSA GPAs und delete them manually.
+
+There is already a code-path for kexec/kdump where the non-boot CPUs are
+parked. This could be instrumented. If a VCPU deletes itself the SVSM
+will go into HLT until a new VCPU is created.
+
+> Should the clearing of the SVME bit fail, then a FAIL_INUSE return code
+> would be returned. I wouldn't think that the synchronization would be that
+> difficult, but I'm not sure. If we do allow self-deletion, then, I agree,
+> that would work nicely.
+
+The question here is, can we reliably detect within the SVSM that
+clearing EFER.SVME failed?
+
+Regards,
+
+-- 
+Jörg Rödel
+jroedel@suse.de
+
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+
+(HRB 36809, AG Nürnberg)
+Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
 
