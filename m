@@ -1,78 +1,143 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out199-9.us.a.mail.aliyun.com (out199-9.us.a.mail.aliyun.com [47.90.199.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EB033C5
-	for <linux-coco@lists.linux.dev>; Mon, 27 Feb 2023 23:03:24 +0000 (UTC)
-Received: by mail-pg1-f174.google.com with SMTP id s17so4578656pgv.4
-        for <linux-coco@lists.linux.dev>; Mon, 27 Feb 2023 15:03:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pg8jLCETrGkaL4VJFja7UtTlA/JJG8XOO2LhkC01X9c=;
-        b=bsG+3jnQABLG/bbMBh9XjeX88bwj0SQ9Jx5uEJhWlMr1tpY8WoEdbEE3Pr3JQQF3RV
-         b+MquoPqUZlakvxWscfmUggSBaVALuqQMwvDr24dwQoKpxZVB2dSHQNmH4SU2hpLiefC
-         ZuGAMlK8YfKdgeFNOo5FJHkeS+wCud+0B1fFXpjfBtQVP3+BW522wIZurQCYhaPy4ZiQ
-         Q/EiX/QQHYfJEINrAUJc1lnQQ7kTSEY3tllwzt6EmR7PgMn0G2EYR9Go7rhdjBV+AylT
-         pF+mzkkoRGK20ybR508t9437vk5pwwk3DkToO7W29vcAEEgg8odGV/IpyBZ2OroTovFX
-         Feiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Pg8jLCETrGkaL4VJFja7UtTlA/JJG8XOO2LhkC01X9c=;
-        b=kp29GbqWTOJwnj0DIOsyqZfL6dhPnWTN5x981/Rob15grOtbyWFyOlpiq2wUp5Aw+4
-         mPL5YbE7icJp272KuPJdOYT2+qXmmC+U5E7JEZOqyEF6q9xNpzrJ40e7G0z2IkelDwuJ
-         YsAfRU8cHzDhwGBFl5boTVtQy9Vvpr3uC/E9y9BOyi0vGY+F7UU+iPpHnxtWbjsA6LK5
-         w70cppQ1MTTeCBoB/Rq2HY4rE9y7rB/KuldInan7z0oD/fcC7hA2JQnD5e1PXpUzy6HU
-         5S2auoiaJnh9bT6pbziMkw6S8zLdNYg/GumBcDPkokmNmwbVxIbWqV0ueT43ymglUwyY
-         ORkA==
-X-Gm-Message-State: AO0yUKVrcu/MfDb6R17d0seENsRtMNJe1QJZnBjSZ2mR9gfHOzA+S0+L
-	df1DHkcuVX2nmZ5xCNI49AOBMm5RBisUS0GqkrnZbg==
-X-Google-Smtp-Source: AK7set/fd9hoddiJWkR+2I3PuNhNzBSMhE/0+J/LoWTvdfY2Nxv2qR4uxnorljhiprYWSqvXEZFZkgPE4WAPbMdg5aA=
-X-Received: by 2002:a63:8c1d:0:b0:503:354c:41ad with SMTP id
- m29-20020a638c1d000000b00503354c41admr43761pgd.11.1677539003795; Mon, 27 Feb
- 2023 15:03:23 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3138D2CA2
+	for <linux-coco@lists.linux.dev>; Tue, 28 Feb 2023 11:09:47 +0000 (UTC)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=wuzongyong@linux.alibaba.com;NM=1;PH=DS;RN=39;SR=0;TI=SMTPD_---0Vcj3mWh_1677581630;
+Received: from localhost(mailfrom:wuzongyong@linux.alibaba.com fp:SMTPD_---0Vcj3mWh_1677581630)
+          by smtp.aliyun-inc.com;
+          Tue, 28 Feb 2023 18:53:51 +0800
+Date: Tue, 28 Feb 2023 18:53:50 +0800
+From: Wu Zongyong <wuzongyong@linux.alibaba.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, wutu.xq2@linux.alibaba.com
+Subject: Re: [PATCH RFC v8 19/56] x86/fault: Return pfn from dump_pagetable()
+ for SEV-specific fault handling.
+Message-ID: <20230228105350.GA15593@L-PF27918B-1352.localdomain>
+Reply-To: Wu Zongyong <wuzongyong@linux.alibaba.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-20-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230221113428.19324-1-bp@alien8.de> <20230221113428.19324-12-bp@alien8.de>
- <3cb5d149-699a-b649-1986-23d7f6783e6f@amd.com>
-In-Reply-To: <3cb5d149-699a-b649-1986-23d7f6783e6f@amd.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 27 Feb 2023 15:03:12 -0800
-Message-ID: <CAAH4kHaH=Xpnq48LtwPra=Mhu=110oFzs=dv40vsZT7WOAvDqw@mail.gmail.com>
-Subject: Re: [PATCH -v2 11/11] x86/sev: Change snp_guest_issue_request()'s
- fw_err argument
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, LKML <linux-kernel@vger.kernel.org>, 
-	Joerg Roedel <jroedel@suse.de>, Michael Roth <michael.roth@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Peter Gonda <pgonda@google.com>, linux-coco@lists.linux.dev, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230220183847.59159-20-michael.roth@amd.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
->
-> Should this be?
->
->         input.exitinfo2 = SEV_RET_NO_FW_CALL;
->
-> or make it part of patch #1?
->
+On Mon, Feb 20, 2023 at 12:38:10PM -0600, Michael Roth wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> Return pfn from dump_pagetable() to do SEV-specific
+> fault handling. Used for handling SNP RMP page fault.
+> 
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/mm/fault.c | 15 +++++++++++----
+>  1 file changed, 11 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> index afd4cde17001..f2b16dcfbd9a 100644
+> --- a/arch/x86/mm/fault.c
+> +++ b/arch/x86/mm/fault.c
+> @@ -311,7 +311,7 @@ static bool low_pfn(unsigned long pfn)
+>  	return pfn < max_low_pfn;
+>  }
+>  
+> -static void dump_pagetable(unsigned long address)
+> +static unsigned long dump_pagetable(unsigned long address)
+>  {
+>  	pgd_t *base = __va(read_cr3_pa());
+>  	pgd_t *pgd = &base[pgd_index(address)];
+> @@ -345,8 +345,10 @@ static void dump_pagetable(unsigned long address)
+>  
+>  	pte = pte_offset_kernel(pmd, address);
+>  	pr_cont("*pte = %0*Lx ", sizeof(*pte) * 2, (u64)pte_val(*pte));
+> +	return 0;
+>  out:
+>  	pr_cont("\n");
+> +	return 0;
+>  }
+>  
+>  #else /* CONFIG_X86_64: */
+> @@ -367,10 +369,11 @@ static int bad_address(void *p)
+>  	return get_kernel_nofault(dummy, (unsigned long *)p);
+>  }
+>  
+> -static void dump_pagetable(unsigned long address)
+> +static unsigned long dump_pagetable(unsigned long address)
+>  {
+>  	pgd_t *base = __va(read_cr3_pa());
+>  	pgd_t *pgd = base + pgd_index(address);
+> +	unsigned long pfn;
 
-This is something I'm not fully 100% on. You said that there's not
-that many bits for firmware errors, so -1 or 0xff are fine by me so
-long as neither are possible results from the firmware. I don't recall
-the details on that, so if we go back to 0xff for SEV_RET_NO_FW_CALL,
-I'd want a clearer explanation for why 0xff is sufficient.
+pfn should be initialized otherwise this function may return an
+uninitialized value.
 
-Apart from the other comments from Tom which are a matter of style and
-not semantics,
-
-Tested-by: Dionna Glaze <dionnaglaze@google.com>
-
--- 
--Dionna Glaze, PhD (she/her)
+>  	p4d_t *p4d;
+>  	pud_t *pud;
+>  	pmd_t *pmd;
+> @@ -388,6 +391,7 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(p4d))
+>  		goto bad;
+>  
+> +	pfn = p4d_pfn(*p4d);
+>  	pr_cont("P4D %lx ", p4d_val(*p4d));
+>  	if (!p4d_present(*p4d) || p4d_large(*p4d))
+>  		goto out;
+> @@ -396,6 +400,7 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(pud))
+>  		goto bad;
+>  
+> +	pfn = pud_pfn(*pud);
+>  	pr_cont("PUD %lx ", pud_val(*pud));
+>  	if (!pud_present(*pud) || pud_large(*pud))
+>  		goto out;
+> @@ -404,6 +409,7 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(pmd))
+>  		goto bad;
+>  
+> +	pfn = pmd_pfn(*pmd);
+>  	pr_cont("PMD %lx ", pmd_val(*pmd));
+>  	if (!pmd_present(*pmd) || pmd_large(*pmd))
+>  		goto out;
+> @@ -412,13 +418,14 @@ static void dump_pagetable(unsigned long address)
+>  	if (bad_address(pte))
+>  		goto bad;
+>  
+> +	pfn = pte_pfn(*pte);
+>  	pr_cont("PTE %lx", pte_val(*pte));
+>  out:
+>  	pr_cont("\n");
+> -
+> -	return;
+> +	return pfn;
+>  bad:
+>  	pr_info("BAD\n");
+> +	return -1;
+>  }
+>  
+>  #endif /* CONFIG_X86_64 */
+> -- 
+> 2.25.1
+> 
+> 
+> 
+> 
