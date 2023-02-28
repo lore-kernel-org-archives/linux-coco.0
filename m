@@ -1,143 +1,253 @@
-Received: from out199-9.us.a.mail.aliyun.com (out199-9.us.a.mail.aliyun.com [47.90.199.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3138D2CA2
-	for <linux-coco@lists.linux.dev>; Tue, 28 Feb 2023 11:09:47 +0000 (UTC)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=wuzongyong@linux.alibaba.com;NM=1;PH=DS;RN=39;SR=0;TI=SMTPD_---0Vcj3mWh_1677581630;
-Received: from localhost(mailfrom:wuzongyong@linux.alibaba.com fp:SMTPD_---0Vcj3mWh_1677581630)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Feb 2023 18:53:51 +0800
-Date: Tue, 28 Feb 2023 18:53:50 +0800
-From: Wu Zongyong <wuzongyong@linux.alibaba.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FB03224
+	for <linux-coco@lists.linux.dev>; Tue, 28 Feb 2023 19:12:02 +0000 (UTC)
+Received: by mail-lf1-f47.google.com with SMTP id s22so14569622lfi.9
+        for <linux-coco@lists.linux.dev>; Tue, 28 Feb 2023 11:12:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1677611520;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:date:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uv7zPB/3/n/GjotxPr3QAZ4fe2v+az1qjxPnevupIu0=;
+        b=BfMMLuS5eSNj/Ge+TUpVvYl+FYWzdyNRKWJ+xpggvWkmwP80jfH5IayK0shL2PiNmF
+         U5c7C6XGKocmqu9lu6iucY5RFxep3UTIjMecuocKxZfFtZloKpLSmEYJy2/mk6H46O0s
+         BQrvtUKPnQHx0rcaBtxXBw7JRnJ/qEdj2weTpk0+GLVe52DONvIQanmhWdgM5JMmSYuF
+         kE+JmQS85MtKbowNvjIl1DE8s137VHAc97GRfKpnsYRT4f2ODxdo3AMC9SGl6cXA4Wue
+         yvkrPrrMs3bC61/OOetNvwBPJCHNcVJxxOog/bLvxI7sRFkV/CqE6nMM1nLeRvmhrYui
+         np/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677611520;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uv7zPB/3/n/GjotxPr3QAZ4fe2v+az1qjxPnevupIu0=;
+        b=Nc/V1G1gf/qhLSX9gEdbXmI4Yf6Lj0O5/y759TUHMVLJJFJWetKNJAb5i3aH8NrZkF
+         k2mA8xhexN8ZYkBHNVaE2MOl6LUhWLBz2fdB15kmqwvHKfUKkS+5ecRrASuXJgiGIf2b
+         FGTdVto5Ekn0R/rrrixQd4J3ohryyde03DJHQMpALf1UtPqAZMycKs9FbFL+0bodq0jH
+         9qQ6J4w+STgJg8uZcP8Ead83bKNOEOUzrd7xdeNBhrhnp5Aohs0m5ZNRpkMxO49dNwda
+         daSaX/iZ+rWlQIStvvhFg345tXD8XeeCPqrceJ6FjTgM4KdJcHvAnG9rW9l/mEu5CXi0
+         ZO8w==
+X-Gm-Message-State: AO0yUKX7d5HNOomZ81rN4DvGu+f98JuZZSEgef3OdHjl2IsKHqoGxM0U
+	KNfmMXNX8Nlc+lniwzpaq2E=
+X-Google-Smtp-Source: AK7set8yCOjxHk7icQ9ufval00Ha+MWUzClI0rlxUuq3jsmZAk2MiIPR4enIzec0MGw/UdqPETNCyA==
+X-Received: by 2002:ac2:44a9:0:b0:4d2:c70a:fe0a with SMTP id c9-20020ac244a9000000b004d2c70afe0amr834685lfm.2.1677611520244;
+        Tue, 28 Feb 2023 11:12:00 -0800 (PST)
+Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
+        by smtp.gmail.com with ESMTPSA id b7-20020ac24107000000b004db297957e8sm1441198lfi.305.2023.02.28.11.11.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Feb 2023 11:12:00 -0800 (PST)
+From: Zhi Wang <zhi.wang.linux@gmail.com>
+X-Google-Original-From: Zhi Wang <zhi.wang.linux@intel.com>
+Date: Tue, 28 Feb 2023 21:11:57 +0200
 To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
-	nikunj.dadhania@amd.com, wutu.xq2@linux.alibaba.com
-Subject: Re: [PATCH RFC v8 19/56] x86/fault: Return pfn from dump_pagetable()
- for SEV-specific fault handling.
-Message-ID: <20230228105350.GA15593@L-PF27918B-1352.localdomain>
-Reply-To: Wu Zongyong <wuzongyong@linux.alibaba.com>
+Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+ <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+ <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+ <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+ <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+ <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+ <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+ <rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+ <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+ <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+ <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+ <nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH RFC v8 44/56] KVM: SVM: Add support to handle the RMP
+ nested page fault
+Message-ID: <20230228211157.0000071b@intel.com>
+In-Reply-To: <20230220183847.59159-45-michael.roth@amd.com>
 References: <20230220183847.59159-1-michael.roth@amd.com>
- <20230220183847.59159-20-michael.roth@amd.com>
+	<20230220183847.59159-45-michael.roth@amd.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230220183847.59159-20-michael.roth@amd.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 20, 2023 at 12:38:10PM -0600, Michael Roth wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
+On Mon, 20 Feb 2023 12:38:35 -0600
+Michael Roth <michael.roth@amd.com> wrote:
+
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> Return pfn from dump_pagetable() to do SEV-specific
-> fault handling. Used for handling SNP RMP page fault.
+> When SEV-SNP is enabled in the guest, the hardware places restrictions
+> on all memory accesses based on the contents of the RMP table. When
+> hardware encounters RMP check failure caused by the guest memory access
+> it raises the #NPF. The error code contains additional information on
+> the access type. See the APM volume 2 for additional information.
 > 
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Page state changes are handled by userspace, so if an RMP fault is
+> triggered as a result of an RMP NPT fault, exit to userspace just like
+> with explicit page-state change requests.
+> 
+> RMP NPT faults can also occur if the guest pvalidates a 2M page as 4K,
+> in which case the RMP entries need to be PSMASH'd. Handle this case
+> immediately in the kernel.
+> 
+> Co-developed-by: Michael Roth <michael.roth@amd.com>
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 > ---
->  arch/x86/mm/fault.c | 15 +++++++++++----
->  1 file changed, 11 insertions(+), 4 deletions(-)
+>  arch/x86/kvm/svm/sev.c | 84 ++++++++++++++++++++++++++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c | 21 +++++++++--
+>  arch/x86/kvm/svm/svm.h |  1 +
+>  3 files changed, 102 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> index afd4cde17001..f2b16dcfbd9a 100644
-> --- a/arch/x86/mm/fault.c
-> +++ b/arch/x86/mm/fault.c
-> @@ -311,7 +311,7 @@ static bool low_pfn(unsigned long pfn)
->  	return pfn < max_low_pfn;
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 102966c43e28..197b1f904567 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3347,6 +3347,13 @@ static void set_ghcb_msr(struct vcpu_svm *svm, u64 value)
+>  	svm->vmcb->control.ghcb_gpa = value;
 >  }
 >  
-> -static void dump_pagetable(unsigned long address)
-> +static unsigned long dump_pagetable(unsigned long address)
+> +static int snp_rmptable_psmash(struct kvm *kvm, kvm_pfn_t pfn)
+> +{
+> +	pfn = pfn & ~(KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) - 1);
+> +
+> +	return psmash(pfn);
+> +}
+> +
+>  /*
+>   * TODO: need to get the value set by userspace in vcpu->run->vmgexit.ghcb_msr
+>   * and process that here accordingly.
+> @@ -3872,3 +3879,80 @@ void sev_adjust_mapping_level(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int *le
+>  	pr_debug("%s: GFN: 0x%llx, PFN: 0x%llx, level: %d, rmp_level: %d, level_orig: %d, assigned: %d\n",
+>  		 __func__, gfn, pfn, *level, rmp_level, level_orig, assigned);
+>  }
+> +
+> +void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code)
+> +{
+> +	int order, rmp_level, assigned, ret;
+> +	struct kvm_memory_slot *slot;
+> +	struct kvm *kvm = vcpu->kvm;
+> +	kvm_pfn_t pfn;
+> +	gfn_t gfn;
+> +
+> +	/*
+> +	 * Private memslots punt handling of implicit page state changes to
+                             ^put
+> +	 * userspace, so the only RMP faults expected here for
+> +	 * PFERR_GUEST_SIZEM_MASK. Anything else suggests that the RMP table has
+> +	 * gotten out of sync with the private memslot.
+> +	 *
+> +	 * TODO: However, this case has also been noticed when an access occurs
+> +	 * to an NPT mapping that has just been split/PSMASHED, in which case
+> +	 * PFERR_GUEST_SIZEM_MASK might not be set. In those cases it should be
+> +	 * safe to ignore and let the guest retry, but log these just in case
+> +	 * for now.
+> +	 */
+> +	if (!(error_code & PFERR_GUEST_SIZEM_MASK)) {
+> +		pr_warn_ratelimited("Unexpected RMP fault for GPA 0x%llx, error_code 0x%llx",
+> +				    gpa, error_code);
+> +		return;
+> +	}
+> +
+> +	gfn = gpa >> PAGE_SHIFT;
+> +
+> +	/*
+> +	 * Only RMPADJUST/PVALIDATE should cause PFERR_GUEST_SIZEM.
+> +	 *
+> +	 * For PVALIDATE, this should only happen if a guest PVALIDATEs a 4K GFN
+> +	 * that is backed by a huge page in the host whose RMP entry has the
+> +	 * hugepage/assigned bits set. With UPM, that should only ever happen
+> +	 * for private pages.
+> +	 *
+> +	 * For RMPADJUST, this assumption might not hold, in which case handling
+> +	 * for obtaining the PFN from HVA-backed memory may be needed. For now,
+> +	 * just print warnings.
+> +	 */
+> +	if (!kvm_mem_is_private(kvm, gfn)) {
+> +		pr_warn_ratelimited("Unexpected RMP fault, size-mismatch for non-private GPA 0x%llx\n",
+> +				    gpa);
+> +		return;
+> +	}
+> +
+> +	slot = gfn_to_memslot(kvm, gfn);
+> +	if (!kvm_slot_can_be_private(slot)) {
+> +		pr_warn_ratelimited("Unexpected RMP fault, non-private slot for GPA 0x%llx\n",
+> +				    gpa);
+> +		return;
+> +	}
+> +
+> +	ret = kvm_restrictedmem_get_pfn(slot, gfn, &pfn, &order);
+> +	if (ret) {
+> +		pr_warn_ratelimited("Unexpected RMP fault, no private backing page for GPA 0x%llx\n",
+> +				    gpa);
+> +		return;
+> +	}
+> +
+> +	assigned = snp_lookup_rmpentry(pfn, &rmp_level);
+> +	if (assigned != 1) {
+> +		pr_warn_ratelimited("Unexpected RMP fault, no assigned RMP entry for GPA 0x%llx\n",
+> +				    gpa);
+> +		goto out;
+> +	}
+> +
+> +	ret = snp_rmptable_psmash(kvm, pfn);
+> +	if (ret)
+> +		pr_err_ratelimited("Unable to split RMP entries for GPA 0x%llx PFN 0x%llx ret %d\n",
+> +				   gpa, pfn, ret);
+> +
+> +out:
+> +	kvm_zap_gfn_range(kvm, gfn, gfn + PTRS_PER_PMD);
+> +	put_page(pfn_to_page(pfn));
+> +}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 9eb750c8b04c..f9ab4bf6d245 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -1976,15 +1976,28 @@ static int pf_interception(struct kvm_vcpu *vcpu)
+>  static int npf_interception(struct kvm_vcpu *vcpu)
 >  {
->  	pgd_t *base = __va(read_cr3_pa());
->  	pgd_t *pgd = &base[pgd_index(address)];
-> @@ -345,8 +345,10 @@ static void dump_pagetable(unsigned long address)
+>  	struct vcpu_svm *svm = to_svm(vcpu);
+> +	int rc;
 >  
->  	pte = pte_offset_kernel(pmd, address);
->  	pr_cont("*pte = %0*Lx ", sizeof(*pte) * 2, (u64)pte_val(*pte));
-> +	return 0;
->  out:
->  	pr_cont("\n");
-> +	return 0;
+>  	u64 fault_address = svm->vmcb->control.exit_info_2;
+>  	u64 error_code = svm->vmcb->control.exit_info_1;
+>  
+>  	trace_kvm_page_fault(vcpu, fault_address, error_code);
+> -	return kvm_mmu_page_fault(vcpu, fault_address, error_code,
+> -			static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
+> -			svm->vmcb->control.insn_bytes : NULL,
+> -			svm->vmcb->control.insn_len);
+> +	rc = kvm_mmu_page_fault(vcpu, fault_address, error_code,
+> +				static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
+> +				svm->vmcb->control.insn_bytes : NULL,
+> +				svm->vmcb->control.insn_len);
+> +
+> +	/*
+> +	 * rc == 0 indicates a userspace exit is needed to handle page
+> +	 * transitions, so do that first before updating the RMP table.
+> +	 */
+> +	if (error_code & PFERR_GUEST_RMP_MASK) {
+> +		if (rc == 0)
+> +			return rc;
+> +		handle_rmp_page_fault(vcpu, fault_address, error_code);
+> +	}
+> +
+> +	return rc;
 >  }
 >  
->  #else /* CONFIG_X86_64: */
-> @@ -367,10 +369,11 @@ static int bad_address(void *p)
->  	return get_kernel_nofault(dummy, (unsigned long *)p);
->  }
+>  static int db_interception(struct kvm_vcpu *vcpu)
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 0c655a4d32d5..13b00233b315 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -714,6 +714,7 @@ void sev_es_prepare_switch_to_guest(struct sev_es_save_area *hostsa);
+>  void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+>  struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
+>  void sev_adjust_mapping_level(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int *level);
+> +void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
 >  
-> -static void dump_pagetable(unsigned long address)
-> +static unsigned long dump_pagetable(unsigned long address)
->  {
->  	pgd_t *base = __va(read_cr3_pa());
->  	pgd_t *pgd = base + pgd_index(address);
-> +	unsigned long pfn;
+>  /* vmenter.S */
+>  
 
-pfn should be initialized otherwise this function may return an
-uninitialized value.
-
->  	p4d_t *p4d;
->  	pud_t *pud;
->  	pmd_t *pmd;
-> @@ -388,6 +391,7 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(p4d))
->  		goto bad;
->  
-> +	pfn = p4d_pfn(*p4d);
->  	pr_cont("P4D %lx ", p4d_val(*p4d));
->  	if (!p4d_present(*p4d) || p4d_large(*p4d))
->  		goto out;
-> @@ -396,6 +400,7 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(pud))
->  		goto bad;
->  
-> +	pfn = pud_pfn(*pud);
->  	pr_cont("PUD %lx ", pud_val(*pud));
->  	if (!pud_present(*pud) || pud_large(*pud))
->  		goto out;
-> @@ -404,6 +409,7 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(pmd))
->  		goto bad;
->  
-> +	pfn = pmd_pfn(*pmd);
->  	pr_cont("PMD %lx ", pmd_val(*pmd));
->  	if (!pmd_present(*pmd) || pmd_large(*pmd))
->  		goto out;
-> @@ -412,13 +418,14 @@ static void dump_pagetable(unsigned long address)
->  	if (bad_address(pte))
->  		goto bad;
->  
-> +	pfn = pte_pfn(*pte);
->  	pr_cont("PTE %lx", pte_val(*pte));
->  out:
->  	pr_cont("\n");
-> -
-> -	return;
-> +	return pfn;
->  bad:
->  	pr_info("BAD\n");
-> +	return -1;
->  }
->  
->  #endif /* CONFIG_X86_64 */
-> -- 
-> 2.25.1
-> 
-> 
-> 
-> 
