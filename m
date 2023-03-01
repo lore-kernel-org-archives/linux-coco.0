@@ -1,98 +1,121 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86979A4C;
-	Wed,  1 Mar 2023 22:12:36 +0000 (UTC)
-Received: by mail-pg1-f177.google.com with SMTP id d6so8673126pgu.2;
-        Wed, 01 Mar 2023 14:12:36 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A287C2F3E
+	for <linux-coco@lists.linux.dev>; Wed,  1 Mar 2023 22:59:47 +0000 (UTC)
+Received: by mail-lf1-f44.google.com with SMTP id s22so19763506lfi.9
+        for <linux-coco@lists.linux.dev>; Wed, 01 Mar 2023 14:59:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pfazAaB1krD03qoiIwUHuiCesj2DfTyBcU1GYneJYWY=;
-        b=eg3rRwZ9NRqc4NZ7mn+d958skdQTsR4DJymp6pXMjdMC+F8Cv5+HJ4h1h31TbHYrsf
-         xkQidejdXlTtUsLE4NorgMScT8UMYVTDEOrbXNiHh//bvLbt1DdI9scp0WftBOUfaOL9
-         X3GOlkZy4ukLdzwwqP9uaskWDAJ+K6nyala8LjPvtDQbDW0vF6DJYfBp5vnWdk5UTjtB
-         SYy9aeG2Xa1fiux0memPdeXSo97rZ3zxByZxeAp3fQHQzLEPsxndaS1s3qjMYWKZQVyw
-         cc0fjA/1jbDMsCuxijqVJMRK0tdroOTJmXWbGddzEM5Icc0EoyaRUq6iu+JtTAAY76bv
-         E+IQ==
+        d=gmail.com; s=20210112; t=1677711585;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:date:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cq6JtszAd/uLsfuDjslZ5BwQBYc2QLNd/Q/ORRtI1lk=;
+        b=dfpYmq2PNG54SS8ia04DO+uL3grlthWKLD89howZ36X8GU27v5TLvRGdGW+t8dWOB4
+         Se8NRZNEsbPggEVS1ckF9FE1TZFkXtOyLkrFwtypJIpHPUOdcLQzxePKavB9l9/AEvqp
+         gaULyNyQq8cgP8VfINqkq941ljoJP4C0A3rK4x6doXeHSGLbeK6ylBQaQTnv8e0EPLYG
+         s9z7mFCZZbe7Wusc0nRDPIGi2yr7ynSL1Pm8WZuERUWU/DC3KpKVQ7auHgzdHVV9OXLJ
+         5P00d882SJsNjuG4uziCxFwDNg7Woq3O5MA7MtYov2N7EENwtWwvDiXkdIuC+twRxZDy
+         /foA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pfazAaB1krD03qoiIwUHuiCesj2DfTyBcU1GYneJYWY=;
-        b=Oe0/F4yw/YlCue7tdCumn3rjM6VDQYcBUe0MqMFhZYxB3eRMuQVTZ+rvM8MiqMn+SN
-         bblcExDVMnx/PI/k5CSszbgB97RBPOX09r8p5vBMHCXAAoUrTj7Dr6XvVK4rk07sKQJ9
-         oh4nu21QxO+AedKhCgI4l2pVE0J4EbFO/+1MBGbkecEULsYIhoqP1sWNlnFJGM2ouMmK
-         2f2MTw+Rnsle+RFcZ53MZnEIBqVfjtv+Gj1Lqw4Sh2Da7Z8KWpUfH9+g+/uKpYCBKZj+
-         5kRoFSuMB2wmaUDwNO9tSzUblJIXEt+HQSZeibaGLKwBdVezL+OCHBsTen2oUxBOLUle
-         TF7Q==
-X-Gm-Message-State: AO0yUKWsB9VaXXD7QrAwB+l6amrTI+cjdOa9QQf6becMkwgiVx8H28u7
-	3bPU9mgljrLcUtkF4xufOgRENVxkIyaJbuxklUz+LmgVQ/zN/IZM
-X-Google-Smtp-Source: AK7set/xZsX7wuPd5hcssb22bozalTDdT87153QVXXZsO8821SKx1dgPeG8UYV84t8ORVw6spES6bxVcdlLRGQt0+8c=
-X-Received: by 2002:a63:7d57:0:b0:4fc:2369:811 with SMTP id
- m23-20020a637d57000000b004fc23690811mr2685207pgn.6.1677708755473; Wed, 01 Mar
- 2023 14:12:35 -0800 (PST)
+        d=1e100.net; s=20210112; t=1677711585;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cq6JtszAd/uLsfuDjslZ5BwQBYc2QLNd/Q/ORRtI1lk=;
+        b=PdUecE8jIK0aGbCoa0DjQVVDBTzGhXWeqMqW2VKBeCgH2H77Zikfk/5KqzTRuvwmgf
+         VocvSxp82z0WIPUhPqD5c10LxSLt2CzL/j1SkJZEvwK/u4WM0wQEu4bBGhyvexzCFP+h
+         EDttL/PrqIbmvrPBw0JcLKYFJfoBSrENbW6IH7aKabaSPQJecmBOx3rDoo/wn+Ss3yHg
+         5Hij9C9O8Up2X4ted4hr1lVQDspNg+dQbSrPxeG4d6fzs29aZHpnTqGf6wlUB0oDL+gA
+         zkwPLlBIhbHyw6wSBydoptbtJTD6TVFMlJhx5P2CqOWvV0XlfqSg7WHynhcUrYvxdVvL
+         ovlg==
+X-Gm-Message-State: AO0yUKVHBJOa4DnXNUMKDNbFAziwbOvZCEjpTr4MY0kkI9PX5xvRc8yx
+	kQJkJSTq/42yL81CGDXEYbk=
+X-Google-Smtp-Source: AK7set/BPYqdOnbeAKkU76dP9CqqweuXat20Hca70pdpT2iKMrvQVVaWiZHBqH7PbYNMVYfwqF/KoA==
+X-Received: by 2002:ac2:5197:0:b0:4b5:3e6e:382e with SMTP id u23-20020ac25197000000b004b53e6e382emr1951450lfi.4.1677711585446;
+        Wed, 01 Mar 2023 14:59:45 -0800 (PST)
+Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
+        by smtp.gmail.com with ESMTPSA id h5-20020a05651211c500b004dc48d91061sm1892988lfr.304.2023.03.01.14.59.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Mar 2023 14:59:45 -0800 (PST)
+From: Zhi Wang <zhi.wang.linux@gmail.com>
+X-Google-Original-From: Zhi Wang <zhi.wang.linux@intel.com>
+Date: Thu, 2 Mar 2023 00:59:43 +0200
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+ ashish.kalra@amd.com, nikunj.dadhania@amd.com
+Subject: Re: [PATCH RFC v8 00/56] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Message-ID: <20230302005943.00001a8e@intel.com>
+In-Reply-To: <f2c904f6-996a-e903-5d56-662781567578@intel.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+	<f2c904f6-996a-e903-5d56-662781567578@intel.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <Y9PtKJ3Wicc19JF1@myrica> <CANW9uyud8RTkqgiL=64wV712QMxtAyubqeyCJ0vpcADJ42VqJA@mail.gmail.com>
- <Y/8Y3WLmiw6+Z5AS@myrica>
-In-Reply-To: <Y/8Y3WLmiw6+Z5AS@myrica>
-From: Itaru Kitayama <itaru.kitayama@gmail.com>
-Date: Thu, 2 Mar 2023 07:12:24 +0900
-Message-ID: <CANW9uysnvGCwANu+_6dp9+3rvHGOkThT9d0K2qpQV4exdmYWoA@mail.gmail.com>
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Andrew Jones <andrew.jones@linux.dev>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, 
-	James Morse <james.morse@arm.com>, Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Quentin Perret <qperret@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>, 
-	Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.cs.columbia.edu
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 1, 2023 at 6:20 PM Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
->
-> Hi Itaru,
->
-> On Wed, Mar 01, 2023 at 08:35:05AM +0900, Itaru Kitayama wrote:
-> > Hi Jean,
-> > I've tried your series in Real on CCA Host, but the KVM arch init
-> > emits an Invalid argument error and terminates.
->
-> Do you know which call returns this error?  Normally the RMEGuest support
-> should print more detailed errors. Are you able to launch normal guests
-> (without the rme-guest object and confidential-guest-support machine
-> parameter)?  Could you give the complete QEMU command-line?
+On Wed, 1 Mar 2023 08:56:05 -0800
+Dave Hansen <dave.hansen@intel.com> wrote:
 
-No, I cant say which. Yes, the CCA-capable QEMU boots if I don't set
-RME-related options.
+> On 2/20/23 10:37, Michael Roth wrote:
+> > The RMP check is enforced as soon as SEV-SNP is enabled. Not every memory
+> > access requires an RMP check. In particular, the read accesses from the
+> > hypervisor do not require RMP checks because the data confidentiality is
+> > already protected via memory encryption. When hardware encounters an RMP
+> > checks failure, it raises a page-fault exception. If RMP check failure
+> > is due to the page-size mismatch, then split the large page to resolve
+> > the fault.
+> 
+> What does this all _mean_?
+>
 
-Here's mine (based upon your command-line):
-qemu-system-aarch64 -cpu host -accel kvm -machine
-virt,gic-version=3,confidential-guest-support=rme0 -smp 2 -m 256M
--nographic -object rme-guest,id=rme0,measurement-algo=sha512 -kernel
-Image -initrd rootfs.ext2 -append 'console=ttyAMA0 earlycon'
--overcommit mem-lock=on
+Unlike TDX which implements secure EPT to hold the restricted memory mapping,
+SEV-SNP is still using one NPT (similar to Intel EPT) while adding another
+level of HW-enforced check controlled by the "RMP" table. Similar to TDX,
+it has firmware calls to modify the attributes in the RMP table to achieve
+isolation and shared-private memory conversion. 
 
-Itaru.
->
-> > I configure it with the aarch64-softmmu target only and built, any
-> > other steps I should worry?
->
-> No, that should be enough
->
-> Thanks,
-> Jean
+The purpose and structure of RMP is quite similar to the PAMT table in TDX from
+the perspective of managing the per-page attributes. Each system page has a
+collection of attribute bits. But TDX only uses the PAMT as metadata as it has
+a separate secure EPT to achieve HW-enforced check.
+
+The RMP memory access checks has its own schematics. E.g. data write,
+page table access from VMM will be checked, but data read is not, mostly
+I guess, due to performance consideration. More details can be found from
+Table 15-39. RMP Memory Access Checks in [1].
+
+> When does the kernel need to care about a "page-size mismatch"?
+
+The RMP table has the ability to describe a large page (similar to a large page
+with a description of large-page PAMT entry in TDX that can be demoted via
+TDX SEAMCALLs). E.g. 2MB page.
+
+When the userspace sets the memory attribute of a GFN range through the
+restricted memory ioctl, the sev logic (sev_update_mem_attr() in PATCH 48, to
+be precise) will try to build a large page description in the RMP table if the
+PFNs are continuous. When kernel mm breaks the the large page due to THP, KVM
+updates the NPT accordingly.
+
+Then there will be a page-size mismatch between NPT and RMP. It will be
+resolved by a RMP fault later. Kinda of lazy sync.
+
+[1] https://www.amd.com/system/files/TechDocs/24593.pdf
