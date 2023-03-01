@@ -1,93 +1,112 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DB2D506;
-	Tue, 28 Feb 2023 23:35:17 +0000 (UTC)
-Received: by mail-pj1-f43.google.com with SMTP id m3-20020a17090ade0300b00229eec90a7fso2531pjv.0;
-        Tue, 28 Feb 2023 15:35:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=e4zYd/om/0vBkL4x55q7/7LukdZ/UT4v5ORbkIxAbcQ=;
-        b=nNJQX9hYnw3FX8YKTaDXEAIS+z4fPv8Bw+B8qr6ckPjb8pFiYXJ7RiGVqtKr/keDNd
-         GHwOhj9tlgJjLU/U20MXO8fQKHuOdeKGrg2eToL9nDAbiCvFdqud9l6fOuVKo0baxp7t
-         5FVPg/CUTGadEIP2mUpz3gWuG6560mb6D/o5pIVzm6rRVozf7pBSd3DFDEuXckZBA1OR
-         wnNpxgtjEvF/TswNsBSQ8hBWnHeKrYoekuzxHeICMr4siBBpNcT8MrJWADmUM92DmGVN
-         zsKkZkGc1Ez+ceo4mMkEpvaZAfJIiM7PDPrPH2zOGLVkBHL4KoIYnCweaSc3laUK7hCX
-         oIKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e4zYd/om/0vBkL4x55q7/7LukdZ/UT4v5ORbkIxAbcQ=;
-        b=GiCJcVLOkiOjNMODPscEGSXCBvJacBiB5ifl7K1R9juvSAREVgaLIzPGYoEp36jQR0
-         lIHTgC1m+biYMXk4zmr4+o8vu3BhCfAgvGFG9uXhdE8tG8g2y0/2CMlatzBrBw4JiXBM
-         6RZ4JOAYIB0fRxnUQzVGhet6OVXuzp1YWjIw7fNgsk++70EuqbecprUrC1V6a1dm2hCA
-         zyItb7DkdBJoN7Q9ebBsMAFXZ0Wq6vXWKT3ebIb849TI1i85gp11vNqkZlFMZHtPcrv7
-         ltOnlLUPgHNX6P1hha1RExu90djipxBc9uQDur7HDB4djK9UvDKdwBBdZOYc+GP2b10+
-         BeqQ==
-X-Gm-Message-State: AO0yUKWOv1zB9+kgUiVMp+sILvNbPl2rS/M9qKqBHw9emaiYwZGcY7Wa
-	cTIlaXbEvwvWrWQvpzyAY4ho8h50jElEow19amQ=
-X-Google-Smtp-Source: AK7set/h/6S+CfhMlSvBaTTgOBE4PVtAkXHS+ngdIcxOP2Zb8jQT9r+uwE43NbtTp5RsatSeptHrwizOBS6NcjndHi0=
-X-Received: by 2002:a17:90a:ad8a:b0:234:1fac:f291 with SMTP id
- s10-20020a17090aad8a00b002341facf291mr1861292pjq.8.1677627316752; Tue, 28 Feb
- 2023 15:35:16 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36777A32
+	for <linux-coco@lists.linux.dev>; Wed,  1 Mar 2023 08:56:22 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4FF5A1FE14;
+	Wed,  1 Mar 2023 08:56:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1677660980; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nPjvAJ27QIWAFz02jhn1lb/VWtsRhutV7st1KFkwjgg=;
+	b=nX8bp6IB+yCThfgjF9R+mgzvEi+kVN1hmiT54RafAM8PB3XW0JZLDhNARZdFcqXdYxu5ju
+	WyVXfNWSN19Q/ov9xdih0uCOy31JEsif8DEEuAa+YUHt0c5UGjVX+criZ1mIfqTREUIlEn
+	rnO6yUH8DpbHYkHApdeupRLsnkBMELg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1677660980;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nPjvAJ27QIWAFz02jhn1lb/VWtsRhutV7st1KFkwjgg=;
+	b=xVTN4VqY32OMdt68x0tOoxiAcKPpXW+RLDOyMawlf+PnL+L8MkciOxylwWSbzGy+nMkNVT
+	oG+EmRlJMs6ZqTBg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2B10B13A3E;
+	Wed,  1 Mar 2023 08:56:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id qX86CTQT/2MydQAAMHmgww
+	(envelope-from <jroedel@suse.de>); Wed, 01 Mar 2023 08:56:20 +0000
+Date: Wed, 1 Mar 2023 09:56:18 +0100
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: Jon Lange <jlange@microsoft.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"amd-sev-snp@lists.suse.com" <amd-sev-snp@lists.suse.com>
+Subject: Re: [EXTERNAL] Re: SVSM Attestation and vTPM specification additions
+ - v0.61
+Message-ID: <Y/8TMl9M3WmDRBoG@suse.de>
+References: <89f1527e-b710-8bd8-1059-4a0a51e4c0ab@amd.com>
+ <Y+yqpq+S3N/lIKjQ@suse.de>
+ <069c74a5-2735-adba-5748-090e80550c9e@amd.com>
+ <Y/jGcMhXfEm8MCYK@suse.de>
+ <MN0PR21MB3072CC6E9027D4B75560E05FCAA89@MN0PR21MB3072.namprd21.prod.outlook.com>
+ <Y/mrpV/pPxUontKF@suse.de>
+ <MN0PR21MB30720428EC5692B2E9BE29FACAAF9@MN0PR21MB3072.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230127112248.136810-1-suzuki.poulose@arm.com> <Y9PtKJ3Wicc19JF1@myrica>
-In-Reply-To: <Y9PtKJ3Wicc19JF1@myrica>
-From: Itaru Kitayama <itaru.kitayama@gmail.com>
-Date: Wed, 1 Mar 2023 08:35:05 +0900
-Message-ID: <CANW9uyud8RTkqgiL=64wV712QMxtAyubqeyCJ0vpcADJ42VqJA@mail.gmail.com>
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Andrew Jones <andrew.jones@linux.dev>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, 
-	James Morse <james.morse@arm.com>, Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Quentin Perret <qperret@google.com>, 
-	Sean Christopherson <seanjc@google.com>, Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>, 
-	Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.cs.columbia.edu
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <MN0PR21MB30720428EC5692B2E9BE29FACAAF9@MN0PR21MB3072.namprd21.prod.outlook.com>
 
-On Sat, Jan 28, 2023 at 12:30 AM Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
->
-> On Fri, Jan 27, 2023 at 11:22:48AM +0000, Suzuki K Poulose wrote:
-> > We are happy to announce the early RFC version of the Arm
-> > Confidential Compute Architecture (CCA) support for the Linux
-> > stack. The intention is to seek early feedback in the following areas:
-> >  * KVM integration of the Arm CCA
-> >  * KVM UABI for managing the Realms, seeking to generalise the operations
-> >    wherever possible with other Confidential Compute solutions.
->
-> A prototype for launching Realm VMs with QEMU is available at:
-> https://lore.kernel.org/qemu-devel/20230127150727.612594-1-jean-philippe@linaro.org/
->
-> Thanks,
-> Jean
+Hi Jon,
 
-Hi Jean,
-I've tried your series in Real on CCA Host, but the KVM arch init
-emits an Invalid argument error and terminates.
-I configure it with the aarch64-softmmu target only and built, any
-other steps I should worry?
+On Mon, Feb 27, 2023 at 05:03:07PM +0000, Jon Lange wrote:
+> It's true that the SVSM will not know if it is under attack in these
+> circumstances.  However, delivery of the #NPF prevents the SVSM from
+> making any forward progress, which is equivalent to a denial of
+> service.
 
-Itaru.
+Right, I sometimes forget there there is no guarantee for forward
+progress, just for confidentiality in SEV-SNP VMs (and CoCo VMs in
+general).
 
->
->
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+The interesting question here is how RMPADJUST behaves when it tries to
+revoke the VMSA flag of a VMSA page that is currently executing.
+Documentation does not state an IN_USE error code return, so I guess it
+will also cause an #NPF.
+
+> Is there a reason a failure code is useful instead of just blocking
+> (or spinning) in the SVSM until execution can complete successfully?
+> This situation can only arise in the face of a malicious VMM, and such
+> blocking is no different than the (malicious) VMM choosing not to
+> schedule the VM at all.  Is there something uniquely useful the higher
+> VMPL would achieve from observing a failure code instead of just
+> waiting for completion?
+
+It would allow the VM to make forward progress, but in a situation where
+it is under attack this is probably a bad idea anyway.
+After some more thinking I came to the conclusion that the VM must make
+sure that to-be-retired VMSAs point to a code-path where it can not
+escape anymore, like an AP-HLT loop with a zeroed IDT. This is important
+to consider also for higher-level VMPLs.
+
+Regards,
+
+-- 
+Jörg Rödel
+jroedel@suse.de
+
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+
+(HRB 36809, AG Nürnberg)
+Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+
