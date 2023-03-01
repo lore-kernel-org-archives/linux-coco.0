@@ -1,135 +1,197 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD731116
-	for <linux-coco@lists.linux.dev>; Wed,  1 Mar 2023 10:45:19 +0000 (UTC)
-Received: by mail-lf1-f50.google.com with SMTP id i9so17037534lfc.6
-        for <linux-coco@lists.linux.dev>; Wed, 01 Mar 2023 02:45:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677667518;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:date:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HgQQZanRv5/alvxkVET4D6uB4QZkFnK7oJuTnwO/hEE=;
-        b=P7SSTk6sznBU59W8FIBilggNoPneO/753Y91fiXGPLcnZo+7vSp688RM2AEYDH7KHS
-         Oe6Ac54VLqQqTSg9I80HwktZ3FG0ggZw80CfLRhkgsqAsu52TYikxNSjooJzTFicW5sH
-         vwKPsN3AjYT+NcKd4RsE3ndx3CMxhQnu9JSc4it/+kxEwrpOrbfsnxRqNHKzgVeCjnB7
-         zDkHqnFloq2501FJaTMMlXxulgv8DLgS6APspZ30Pcw4+tXEcrJKn+NK83RWNJxXk3Fj
-         9fICn88zqCxqTvwKFaz5Vnv0SqDmkTZFcpqRA5y5uidc8eWLrUwwKEzOm92C5g5/tnIp
-         24Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677667518;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HgQQZanRv5/alvxkVET4D6uB4QZkFnK7oJuTnwO/hEE=;
-        b=kFsCYBX4ZBZ3EqlQmMok4AEFJiW8OFSbEHjLGn+rbTtsVZtnyLwGV8yLrVYR5T7doV
-         yhjv19l95e8gNdWQ9AP5tWT3hynC9kOOq+VDwRrJVAdrbe0Mr9dgaaeMPwOCR7sCtSw0
-         5F9Zqy/CsowBZuncGR7F9XG7Iiv6rmbWF6rZA93xVElBd087inga39VTSYfhki1Rjv1B
-         i6kMVxPLVdWtMA3pmmyYai3+saCgtvt1WHkPsRg2HqHYhPqE6sOWCa44BkzN71FY5lhk
-         mZeFEbGhXuTIAXcTBEPNn5JQtWSBQjWz+ZwrHM4K1UGcp5/JIZr+fALrBrJ88DGB5+Ax
-         c9rg==
-X-Gm-Message-State: AO0yUKVmMOskgcNUKFjSjsUW/arf0jp4tvPeVZTc+1nxT0Sb7TWZROIT
-	opySNuwUOxW8rY99/0naciI=
-X-Google-Smtp-Source: AK7set+HFf00M+CzlupT1bQM2ZRdW6de/txyzQjH6FxzfeDTmSWjvROAUCh9HT5dCKqG75TdwtvY2A==
-X-Received: by 2002:ac2:44a9:0:b0:4d2:c70a:fe0a with SMTP id c9-20020ac244a9000000b004d2c70afe0amr1344986lfm.2.1677667517726;
-        Wed, 01 Mar 2023 02:45:17 -0800 (PST)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id r1-20020a19ac41000000b004dc4bb2f4bcsm1663800lfc.276.2023.03.01.02.45.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 02:45:17 -0800 (PST)
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-X-Google-Original-From: Zhi Wang <zhi.wang.linux@intel.com>
-Date: Wed, 1 Mar 2023 12:45:16 +0200
-To: Michael Roth <michael.roth@amd.com>
-Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
- <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
- <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
- <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
- <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
- <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
- <rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
- <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
- <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
- <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
- <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
- <nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v8 51/56] KVM: SVM: Add module parameter to enable
- the SEV-SNP
-Message-ID: <20230301124516.000048f5@intel.com>
-In-Reply-To: <20230220183847.59159-52-michael.roth@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-52-michael.roth@amd.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0221116;
+	Wed,  1 Mar 2023 11:54:41 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 81E9F2F4;
+	Wed,  1 Mar 2023 03:55:22 -0800 (PST)
+Received: from [10.57.16.41] (unknown [10.57.16.41])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1DA213F587;
+	Wed,  1 Mar 2023 03:54:35 -0800 (PST)
+Message-ID: <8e803abd-8856-3c44-6262-40c026216c9a@arm.com>
+Date: Wed, 1 Mar 2023 11:54:34 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [RFC PATCH 05/28] arm64: RME: Define the user ABI
+To: Zhi Wang <zhi.wang.linux@gmail.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <20230127112932.38045-1-steven.price@arm.com>
+ <20230127112932.38045-6-steven.price@arm.com>
+ <20230213180413.00000392@gmail.com>
+Content-Language: en-GB
+From: Steven Price <steven.price@arm.com>
+In-Reply-To: <20230213180413.00000392@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 20 Feb 2023 12:38:42 -0600
-Michael Roth <michael.roth@amd.com> wrote:
-
-> From: Brijesh Singh <brijesh.singh@amd.com>
+On 13/02/2023 16:04, Zhi Wang wrote:
+> On Fri, 27 Jan 2023 11:29:09 +0000
+> Steven Price <steven.price@arm.com> wrote:
 > 
-> Add a module parameter than can be used to enable or disable the SEV-SNP
-> feature. Now that KVM contains the support for the SNP set the GHCB
-> hypervisor feature flag to indicate that SNP is supported.
+>> There is one (multiplexed) CAP which can be used to create, populate and
+>> then activate the realm.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>>  Documentation/virt/kvm/api.rst    |  1 +
+>>  arch/arm64/include/uapi/asm/kvm.h | 63 +++++++++++++++++++++++++++++++
+>>  include/uapi/linux/kvm.h          |  2 +
+>>  3 files changed, 66 insertions(+)
+>>
+>> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+>> index 0dd5d8733dd5..f1a59d6fb7fc 100644
+>> --- a/Documentation/virt/kvm/api.rst
+>> +++ b/Documentation/virt/kvm/api.rst
+>> @@ -4965,6 +4965,7 @@ Recognised values for feature:
+>>  
+>>    =====      ===========================================
+>>    arm64      KVM_ARM_VCPU_SVE (requires KVM_CAP_ARM_SVE)
+>> +  arm64      KVM_ARM_VCPU_REC (requires KVM_CAP_ARM_RME)
+>>    =====      ===========================================
+>>  
+>>  Finalizes the configuration of the specified vcpu feature.
+>> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/asm/kvm.h
+>> index a7a857f1784d..fcc0b8dce29b 100644
+>> --- a/arch/arm64/include/uapi/asm/kvm.h
+>> +++ b/arch/arm64/include/uapi/asm/kvm.h
+>> @@ -109,6 +109,7 @@ struct kvm_regs {
+>>  #define KVM_ARM_VCPU_SVE		4 /* enable SVE for this CPU */
+>>  #define KVM_ARM_VCPU_PTRAUTH_ADDRESS	5 /* VCPU uses address authentication */
+>>  #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authentication */
+>> +#define KVM_ARM_VCPU_REC		7 /* VCPU REC state as part of Realm */
+>>  
+>>  struct kvm_vcpu_init {
+>>  	__u32 target;
+>> @@ -401,6 +402,68 @@ enum {
+>>  #define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
+>>  #define   KVM_DEV_ARM_ITS_CTRL_RESET		4
+>>  
+>> +/* KVM_CAP_ARM_RME on VM fd */
+>> +#define KVM_CAP_ARM_RME_CONFIG_REALM		0
+>> +#define KVM_CAP_ARM_RME_CREATE_RD		1
+>> +#define KVM_CAP_ARM_RME_INIT_IPA_REALM		2
+>> +#define KVM_CAP_ARM_RME_POPULATE_REALM		3
+>> +#define KVM_CAP_ARM_RME_ACTIVATE_REALM		4
+>> +
 > 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 7 ++++---
->  arch/x86/kvm/svm/svm.h | 2 +-
->  2 files changed, 5 insertions(+), 4 deletions(-)
+> It is a little bit confusing here. These seems more like 'commands' not caps.
+> Will leave more comments after reviewing the later patches.
+
+Sorry for the slow response. Thank you for your review - I hope to post
+a new version of this series (rebased on 6.3-rc1) in the coming weeks
+with your comments addressed.
+
+They are indeed commands - and using caps is a bit of a hack. The
+benefit here is that all the Realm commands are behind the one
+KVM_CAP_ARM_RME.
+
+The options I can see are:
+
+a) What I've got here - (ab)using KVM_ENABLE_CAP to perform commands.
+
+b) Add new ioctls for each of the above stages (so 5 new ioctls on top
+of the CAP for discovery). With any future extensions requiring new ioctls.
+
+c) Add a single new multiplexing ioctl (along with the CAP for discovery).
+
+I'm not massively keen on defining a new multiplexing scheme (c), but
+equally (b) seems like it's burning through ioctl numbers. Which led me
+to stick with (a) which at least keeps the rebasing simple (there's only
+the one CAP number which could conflict) and there's already a
+multiplexing scheme.
+
+But I'm happy to change if there's consensus a different approach would
+be preferable.
+
+Thanks,
+
+Steve
+
+>> +#define KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA256		0
+>> +#define KVM_CAP_ARM_RME_MEASUREMENT_ALGO_SHA512		1
+>> +
+>> +#define KVM_CAP_ARM_RME_RPV_SIZE 64
+>> +
+>> +/* List of configuration items accepted for KVM_CAP_ARM_RME_CONFIG_REALM */
+>> +#define KVM_CAP_ARM_RME_CFG_RPV			0
+>> +#define KVM_CAP_ARM_RME_CFG_HASH_ALGO		1
+>> +#define KVM_CAP_ARM_RME_CFG_SVE			2
+>> +#define KVM_CAP_ARM_RME_CFG_DBG			3
+>> +#define KVM_CAP_ARM_RME_CFG_PMU			4
+>> +
+>> +struct kvm_cap_arm_rme_config_item {
+>> +	__u32 cfg;
+>> +	union {
+>> +		/* cfg == KVM_CAP_ARM_RME_CFG_RPV */
+>> +		struct {
+>> +			__u8	rpv[KVM_CAP_ARM_RME_RPV_SIZE];
+>> +		};
+>> +
+>> +		/* cfg == KVM_CAP_ARM_RME_CFG_HASH_ALGO */
+>> +		struct {
+>> +			__u32	hash_algo;
+>> +		};
+>> +
+>> +		/* cfg == KVM_CAP_ARM_RME_CFG_SVE */
+>> +		struct {
+>> +			__u32	sve_vq;
+>> +		};
+>> +
+>> +		/* cfg == KVM_CAP_ARM_RME_CFG_DBG */
+>> +		struct {
+>> +			__u32	num_brps;
+>> +			__u32	num_wrps;
+>> +		};
+>> +
+>> +		/* cfg == KVM_CAP_ARM_RME_CFG_PMU */
+>> +		struct {
+>> +			__u32	num_pmu_cntrs;
+>> +		};
+>> +		/* Fix the size of the union */
+>> +		__u8	reserved[256];
+>> +	};
+>> +};
+>> +
+>> +struct kvm_cap_arm_rme_populate_realm_args {
+>> +	__u64 populate_ipa_base;
+>> +	__u64 populate_ipa_size;
+>> +};
+>> +
+>> +struct kvm_cap_arm_rme_init_ipa_args {
+>> +	__u64 init_ipa_base;
+>> +	__u64 init_ipa_size;
+>> +};
+>> +
+>>  /* Device Control API on vcpu fd */
+>>  #define KVM_ARM_VCPU_PMU_V3_CTRL	0
+>>  #define   KVM_ARM_VCPU_PMU_V3_IRQ	0
+>> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+>> index 20522d4ba1e0..fec1909e8b73 100644
+>> --- a/include/uapi/linux/kvm.h
+>> +++ b/include/uapi/linux/kvm.h
+>> @@ -1176,6 +1176,8 @@ struct kvm_ppc_resize_hpt {
+>>  #define KVM_CAP_S390_PROTECTED_ASYNC_DISABLE 224
+>>  #define KVM_CAP_DIRTY_LOG_RING_WITH_BITMAP 225
+>>  
+>> +#define KVM_CAP_ARM_RME 300 // FIXME: Large number to prevent conflicts
+>> +
+>>  #ifdef KVM_CAP_IRQ_ROUTING
+>>  
+>>  struct kvm_irq_routing_irqchip {
 > 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index bedec90d034f..70d5650d8d95 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -55,14 +55,15 @@ module_param_named(sev, sev_enabled, bool, 0444);
->  /* enable/disable SEV-ES support */
->  static bool sev_es_enabled = true;
->  module_param_named(sev_es, sev_es_enabled, bool, 0444);
-> +
-> +/* enable/disable SEV-SNP support */
-> +static bool sev_snp_enabled = true;
-> +module_param_named(sev_snp, sev_snp_enabled, bool, 0444);
->  #else
->  #define sev_enabled false
->  #define sev_es_enabled false
-
-Guess we also need #define sev_snp_enabled false.
-
->  #endif /* CONFIG_KVM_AMD_SEV */
->  
-> -/* enable/disable SEV-SNP support */
-> -static bool sev_snp_enabled;
-> -
->  #define AP_RESET_HOLD_NONE		0
->  #define AP_RESET_HOLD_NAE_EVENT		1
->  #define AP_RESET_HOLD_MSR_PROTO		2
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 857b674e68f0..221b38d3c845 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -694,7 +694,7 @@ void avic_refresh_virtual_apic_mode(struct kvm_vcpu *vcpu);
->  #define GHCB_VERSION_MAX	2ULL
->  #define GHCB_VERSION_MIN	1ULL
->  
-> -#define GHCB_HV_FT_SUPPORTED	0
-> +#define GHCB_HV_FT_SUPPORTED	(GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREATION)
-
-This is not related to the topic of this patch, should be merged into related
-patches.
-
->  
->  extern unsigned int max_sev_asid;
->  
 
