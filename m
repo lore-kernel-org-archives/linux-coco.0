@@ -1,46 +1,46 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF91A4C
-	for <linux-coco@lists.linux.dev>; Wed,  1 Mar 2023 21:20:51 +0000 (UTC)
-Received: by mail-lf1-f51.google.com with SMTP id m6so19503451lfq.5
-        for <linux-coco@lists.linux.dev>; Wed, 01 Mar 2023 13:20:51 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D26FA4C
+	for <linux-coco@lists.linux.dev>; Wed,  1 Mar 2023 21:23:10 +0000 (UTC)
+Received: by mail-lf1-f47.google.com with SMTP id g17so19514536lfv.4
+        for <linux-coco@lists.linux.dev>; Wed, 01 Mar 2023 13:23:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677705650;
+        d=gmail.com; s=20210112; t=1677705788;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:date:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Nu3x+PS5kBI5WP9BR112ZTU4z9UIuyI7KKIlTlTHeoQ=;
-        b=SzVg/5zL41KXogvGm5lKOvxW1C3rCcPhuShpSJvvVahiKNg7LGudNS2LH6j8JQwW/h
-         D7MVwCtdUPl1j1jE9kJclFZdtn9iRW5LyNd7aKbtMz4/5rZzFvDi5rXeG5HFWz5+Omcp
-         xnF9tJ808zJ2sE4A4CYZBFuMW6qLFAI6RwOlITc7gwR09jtWmUW2C28lCvd04uLEA+Ww
-         JzEOdxPGeuRgAoJYtWx1cqh5gno1NHnIO0hzKo2GMiMEH5h05dmHv8BFYmTGM9DFzenf
-         y9DL9YXcb4j0+9bESYzwkhtMwJjcZw44B47m5Ol4/WVYSVn1DaBtJgUPF/n+S0t4NE16
-         QpNA==
+        bh=5FeJ+IDtaGU0Dng3JPzlo8N148iZPjSnDaT2NDjs7iw=;
+        b=U8CpE6oQW0T0yL/b9SkOw8+im0wm0VFjDpBzKhqnbc90OvihHMA8b3Swuuy9QqpKMe
+         M+zFCU5cpADOmoJbYfb0etx9J0WIpBgFCtv13HBtqqQWPUMRzvD540wG5oR1npPqHhcs
+         XHdM9ObzYlw1GwwKb7RGDEgk3dCUQEgEg9hPh05KETDEJcy5nuIlhCM5Lvuof3p6zEMM
+         NO6CZHki9sKwqzWnZRUdOQT9s+Pa0Atf+qamboT7QHXS+kvTpz7o11xBU8WEkEMRHhns
+         OdzCe5cUufbtOfHlr/uaxn2eo3wfc57z+O/pojBy519Ra4o7lNhCJF1hAKcXPmnI3qrF
+         k7Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677705650;
+        d=1e100.net; s=20210112; t=1677705788;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Nu3x+PS5kBI5WP9BR112ZTU4z9UIuyI7KKIlTlTHeoQ=;
-        b=uiofjyWRO1kkr2nYvdznyLh7yslgrjhecdTIKK0ZeFuinznE9Dy/S8SwbH6E4LTLBz
-         j5KDNwNStS+hQmiC6CD+VtFoNqDsii3zrgEYL1x8Lv86IvQsOeFwpOupg3Wkg9yqvtO3
-         AusjO6tDNPH8S7tPPYTwIDEEWuyJ9U4qpFK9Y5epwCawuRtG+duIY2wbyZEwnGWA/Mjp
-         HefGrFZ82um1gIffDofY/arKw+uXN+bWlvcOX3o0KUOsohEarIbxc0/YiIJB8KShi7i3
-         A9gBZbmykA3jCwkm3HjHczK1iBPsTUG06oMnvxxSi1n7wq4XK+NKlR0X3RFNN5iU5OT5
-         rsJg==
-X-Gm-Message-State: AO0yUKX30dp1LWWSNik1+xE4vXipZZTuR05TwXeP0gIfE7h37wCmbZ4X
-	+7i1mtXHyXek7QgAxriw66A=
-X-Google-Smtp-Source: AK7set8yk+qcKeH8xZqt1MHJtbzkX+ZnH5n15zWSZb9IPULga8cN+Cba34unxob+c60jagUQ1AfbYw==
-X-Received: by 2002:ac2:4c2a:0:b0:4db:3890:cb59 with SMTP id u10-20020ac24c2a000000b004db3890cb59mr1713252lfq.1.1677705649622;
-        Wed, 01 Mar 2023 13:20:49 -0800 (PST)
+        bh=5FeJ+IDtaGU0Dng3JPzlo8N148iZPjSnDaT2NDjs7iw=;
+        b=JRS0qLeeEn6LQ6A1xy/A/fLrllEVR2B2BohX77RX5jLVW3HTvB96OQ0q1WM2wFZOGJ
+         6xEVDsSSNMhcJNxnwTmc8FFYEpWIeYqsiJwObnpwJzvys7oZAbZyG8tYv8anlXIlv1nR
+         RMiO7gBZREnmviEJIHUTyxN005yot2k+6Hakan6o86g5eYGGsF6uF+q+KvgRLSfP+2TF
+         PBkz2qsr4Zk5S1PSZIgfdCJfvqnrmcYU7nIH4LzNMIl4tIAxyNYcQ5DviZoifbHZYwQa
+         AAZG6zMRUh8TUEtxJ7ZD/9DH/FWZwsIsOcWUBmSbKAAgzSpJQF3kIVl4Xuw4RiJsUag0
+         J5HQ==
+X-Gm-Message-State: AO0yUKWoRJ6erTSNlyY3ivQBgTdOB6P3ObQh1V7FhZK4i4WrJ0d4LvNx
+	HSkoWmsKJJPQPKq0XTXOicA=
+X-Google-Smtp-Source: AK7set9Husvr/raZBgcJeLI0L1kUHYIjgMkrgLJmOKKElIcO7WhwF5Z9WCFNJJAEq103LkvXE98QNg==
+X-Received: by 2002:ac2:44a9:0:b0:4d2:c70a:fe0a with SMTP id c9-20020ac244a9000000b004d2c70afe0amr1752508lfm.2.1677705788430;
+        Wed, 01 Mar 2023 13:23:08 -0800 (PST)
 Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id j8-20020a19f508000000b004d093d60f50sm1861420lfb.215.2023.03.01.13.20.48
+        by smtp.gmail.com with ESMTPSA id p3-20020a19f003000000b004db2bda9527sm1858821lfc.121.2023.03.01.13.23.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 13:20:49 -0800 (PST)
+        Wed, 01 Mar 2023 13:23:08 -0800 (PST)
 From: Zhi Wang <zhi.wang.linux@gmail.com>
 X-Google-Original-From: Zhi Wang <zhi.wang.linux@intel.com>
-Date: Wed, 1 Mar 2023 23:20:45 +0200
+Date: Wed, 1 Mar 2023 23:23:06 +0200
 To: Michael Roth <michael.roth@amd.com>
 Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
  <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
@@ -55,12 +55,13 @@ Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
  <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
  <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
  <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
- <nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH RFC v8 52/56] ccp: Add support to decrypt the page
-Message-ID: <20230301232045.0000502e@intel.com>
-In-Reply-To: <20230220183847.59159-53-michael.roth@amd.com>
+ <nikunj.dadhania@amd.com>
+Subject: Re: [PATCH RFC v8 53/56] KVM: SVM: Make VMSAVE target area memory
+ allocation SNP safe
+Message-ID: <20230301232306.00005f86@intel.com>
+In-Reply-To: <20230220183847.59159-54-michael.roth@amd.com>
 References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-53-michael.roth@amd.com>
+	<20230220183847.59159-54-michael.roth@amd.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -71,123 +72,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 20 Feb 2023 12:38:43 -0600
+On Mon, 20 Feb 2023 12:38:44 -0600
 Michael Roth <michael.roth@amd.com> wrote:
 
-> From: Brijesh Singh <brijesh.singh@amd.com>
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> Add support to decrypt guest encrypted memory. These API interfaces can
-> be used for example to dump VMCBs on SNP guest exit.
+> Implement a workaround for an SNP erratum where the CPU will incorrectly
+> signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
+> RMP entry of the VMSAVE target page.
+> 
+> When SEV-SNP is globally enabled, the CPU marks the VMSAVE target page
+> as "InUse" while the VMSAVE instruction is executing. If another
+> CPU writes to a different page in the same 2MB region while the VMSAVE
+> is executing, the CPU will throw an RMP violation #PF.
+> 
+> Use the snp safe generic allocator for allocating the VMSA target
+> page which will ensure that the page returned is not a hugepage, as it
+> is already being used for the allocating the VMCB, VMSA and AVIC backing
+> page.
 > 
 
-What kinds of check will be applied from firmware when VMM decrypts this
-page? I suppose there has to be kinda mechanism to prevent VMM to decrypt
-any page in the guest. It would be nice to have some introduction about
-it in the comments.
+This should be merged with patch where implements the snp_safe_alloc_page().
 
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Co-developed-by: Marc Orr <marcorr@google.com>
+> Signed-off-by: Marc Orr <marcorr@google.com>
+> Reported-by: Alper Gun <alpergun@google.com>
 > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> [mdr: minor commit fixups]
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
 > ---
->  drivers/crypto/ccp/sev-dev.c | 32 ++++++++++++++++++++++++++++++++
->  include/linux/psp-sev.h      | 22 ++++++++++++++++++++--
->  2 files changed, 52 insertions(+), 2 deletions(-)
+>  arch/x86/kvm/svm/svm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index e65563bc8298..bf5167b2acfc 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -2017,6 +2017,38 @@ int sev_guest_df_flush(int *error)
->  }
->  EXPORT_SYMBOL_GPL(sev_guest_df_flush);
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 3fe5f13b5f3a..8bda31a61757 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -665,7 +665,7 @@ static int svm_cpu_init(int cpu)
+>  	int ret = -ENOMEM;
 >  
-> +int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error)
-> +{
-> +	struct sev_data_snp_dbg data = {0};
-> +	struct sev_device *sev;
-> +	int ret;
-> +
-> +	if (!psp_master || !psp_master->sev_data)
-> +		return -ENODEV;
-> +
-> +	sev = psp_master->sev_data;
-> +
-> +	if (!sev->snp_initialized)
-> +		return -EINVAL;
-> +
-> +	data.gctx_paddr = sme_me_mask | (gctx_pfn << PAGE_SHIFT);
-> +	data.src_addr = sme_me_mask | (src_pfn << PAGE_SHIFT);
-> +	data.dst_addr = sme_me_mask | (dst_pfn << PAGE_SHIFT);
-> +
-> +	/* The destination page must be in the firmware state. */
-> +	if (rmp_mark_pages_firmware(data.dst_addr, 1, false))
-> +		return -EIO;
-> +
-> +	ret = sev_do_cmd(SEV_CMD_SNP_DBG_DECRYPT, &data, error);
-> +
-> +	/* Restore the page state */
-> +	if (snp_reclaim_pages(data.dst_addr, 1, false))
-> +		ret = -EIO;
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(snp_guest_dbg_decrypt_page);
-> +
->  int snp_guest_ext_guest_request(struct sev_data_snp_guest_request *data,
->  				unsigned long vaddr, unsigned long *npages, unsigned long *fw_err)
->  {
-> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-> index 81bafc049eca..92116e2b74fd 100644
-> --- a/include/linux/psp-sev.h
-> +++ b/include/linux/psp-sev.h
-> @@ -710,7 +710,6 @@ struct sev_data_snp_dbg {
->  	u64 gctx_paddr;				/* In */
->  	u64 src_addr;				/* In */
->  	u64 dst_addr;				/* In */
-> -	u32 len;				/* In */
->  } __packed;
+>  	memset(sd, 0, sizeof(struct svm_cpu_data));
+> -	sd->save_area = alloc_page(GFP_KERNEL | __GFP_ZERO);
+> +	sd->save_area = snp_safe_alloc_page(NULL);
+>  	if (!sd->save_area)
+>  		return ret;
 >  
->  /**
-> @@ -913,13 +912,27 @@ int sev_guest_decommission(struct sev_data_decommission *data, int *error);
->   * @error: SEV command return code
->   *
->   * Returns:
-> + * 0 if the sev successfully processed the command
-> + * -%ENODEV    if the sev device is not available
-> + * -%ENOTSUPP  if the sev does not support SEV
-> + * -%ETIMEDOUT if the sev command timed out
-> + * -%EIO       if the sev returned a non-zero return code
-> + */
-> +int sev_do_cmd(int cmd, void *data, int *psp_ret);
-> +
-> +/**
-> + * snp_guest_dbg_decrypt_page - perform SEV SNP_DBG_DECRYPT command
-> + *
-> + * @sev_ret: sev command return code
-> + *
-> + * Returns:
->   * 0 if the SEV successfully processed the command
->   * -%ENODEV    if the SEV device is not available
->   * -%ENOTSUPP  if the SEV does not support SEV
->   * -%ETIMEDOUT if the SEV command timed out
->   * -%EIO       if the SEV returned a non-zero return code
->   */
-> -int sev_do_cmd(int cmd, void *data, int *psp_ret);
-> +int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error);
->  
->  void *psp_copy_user_blob(u64 uaddr, u32 len);
->  void *snp_alloc_firmware_page(gfp_t mask);
-> @@ -987,6 +1000,11 @@ static inline void *psp_copy_user_blob(u64 __user uaddr, u32 len) { return ERR_P
->  
->  void snp_mark_pages_offline(unsigned long pfn, unsigned int npages) {}
->  
-> +static inline int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error)
-> +{
-> +	return -ENODEV;
-> +}
-> +
->  static inline void *snp_alloc_firmware_page(gfp_t mask)
->  {
->  	return NULL;
 
