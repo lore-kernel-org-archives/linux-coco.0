@@ -1,119 +1,192 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97ECD23A1;
-	Wed,  1 Mar 2023 11:55:42 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 28F652F4;
-	Wed,  1 Mar 2023 03:56:25 -0800 (PST)
-Received: from [10.57.16.41] (unknown [10.57.16.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A8A43F587;
-	Wed,  1 Mar 2023 03:55:39 -0800 (PST)
-Message-ID: <5750eead-44f9-260f-283d-4902b5363faf@arm.com>
-Date: Wed, 1 Mar 2023 11:55:37 +0000
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3D523A1
+	for <linux-coco@lists.linux.dev>; Wed,  1 Mar 2023 12:09:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1677672476; i=erbse.13@gmx.de;
+	bh=jW9QqbNiXOx9cSB+L+BuNqUp884nAnRhvACcY0amjgY=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Tb5LO9l1Y3HYnpzuLYsuCG63NhqCbi3sA+tRcO2vCiYIPN6laSjLD0NiLX93T2pFg
+	 K2eVPQeZJ5y49yPGgtQnZYwvuctg9Jj1MhWCWL2JKFMolG69d5YPlhGQyPnxvTpv7J
+	 RFcGw1y6222RDmLkNqhZn3RunlK5Mjr7thpnnynN7ZbkYONdFaFuPL8lG15qj187ex
+	 NxAAjA9yRUhS8ZNZEuTlSFnNAdphzpc5RnyewkF5xKtchnJZIwHI5/a5q7z7SCksGi
+	 mXshF9eYo79WPYnBmSZ9Id35VkznJP7uPVhs/i7cu0AGuVEXMoTGocCe91x7TFQx/N
+	 MbgUeus/LfVsw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost ([134.147.116.198]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MORAa-1p7SOg1pde-00Pxza; Wed, 01
+ Mar 2023 13:07:56 +0100
+Date: Wed, 1 Mar 2023 13:07:47 +0100
+From: Tom Dohrmann <erbse.13@gmx.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH RFC v8 15/56] x86/sev: Invalidate pages from the direct
+ map when adding them to the RMP table
+Message-ID: <Y/9AEyiMLKfj+/mK@notebook>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-16-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [RFC PATCH 08/28] arm64: RME: Keep a spare page delegated to the
- RMM
-Content-Language: en-GB
-To: Zhi Wang <zhi.wang.linux@gmail.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <20230127112932.38045-1-steven.price@arm.com>
- <20230127112932.38045-9-steven.price@arm.com>
- <20230213184701.00005d3b@gmail.com>
-From: Steven Price <steven.price@arm.com>
-In-Reply-To: <20230213184701.00005d3b@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230220183847.59159-16-michael.roth@amd.com>
+X-Provags-ID: V03:K1:QAZfbcKAW91F2JHdCAu5cRq7q3g4qY9Nr1ls991Uxd34cj28wu4
+ gFgR+oTH8ZbPRHLZpBhl4NYmMW8WX2lBFowFZhD5+jFThO3mMnNTgmEBNRiYbYonDMhOz+R
+ zjLWYNL6TgjNmzKfnzwCu+728YITrxzAsF4A1hUmwF6jjASlkSwhevasq+/XUPFeziAS9iA
+ lCQJWTRgA4V/DccUsgqTQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:1Jgywx4vEhk=;2NZfYQAX5/O0Apb5Etjyh5/d2qh
+ eoZenyL9fVz4LLWYn1aL6JAUcleXQbzD+mOwwVtCG+S25b4ODoMeXnKTCJwyr5AawnOintaUY
+ 3eOl3NoC9v9Loic97MjO5ALcja6B+siNBQs+3FAbNfGYjT9IGhdFKXwpic6nW/HPEb1Wf80Rx
+ GZuP5Nhwpp5EcJcdrhCFe0yJFUQRh5mBOILWXiNLqI3VIdhaF1cRCKRAUm9zttvfiklJfELAJ
+ g/ccPpWbfxd8fvZtWHGjAQ5bDY3YMnumdeK/klor4tDCjYUxXtAU8SGV4peI9JDW8ApKwpNot
+ /D/jvOrh5uC+Dbyjw5TDtmrl9MRrzonWkVlnyi9CD/vt/IX5K2caSov+eUinh9QJolwJngSBY
+ YuM2FoYztSiTU/cetwl0vlGctwwdeY+H0E7mG7cTjCkrgRwPrTGj4e3Hf5JbBGw/eFOZdHovG
+ 9c7tW/eIn+kBZA1tNK1KXXOSgFnyov3ZiH7Qbmjl0QCtcVapnDBwJYzuVSK4PBFit+ZCYggO5
+ OBDhItKwjvKj/t6OD1xwRvr+pxRm3zHL5o3+PB7WcU19ImxJ6V+vkjTmsUMN52M+QsDQk4eFi
+ 3C2KMwlC7Xfk/ypUcAWyFQS/iuWhx52WdKnxJL/OfEsqLiHhVrx0cB6jOp5d9ckbFhw4yfCZn
+ y26KcJ6psULQkv1vhyCt+xsBsEdtoD/YGZtssqQeuHOwaC6mN9gPLDno/aMIv+3kxkYOJMeGg
+ EXeyUze3ZSF0P6gyvpvFSIZvesTGINW83Z2EV6a3M2S9eb5AUYRcZ1Zc12Pm5UG/+r8IMohPP
+ ykUXcdbRW7eapvjEGlKeqGEOdrxcL/F7iN7DYoLyyG4agX00F/MhT8cQvPy7iAbSbKehuoSZQ
+ wWlBDcl+8bI+Hv+v54K2msu5Tn7jADDoaLZqOQx29HKGdYL1Xi7SGEKh+CnJGHzr8kt+D2gm3
+ eOolEjxJ36f6NoUOuJNRQvUe3Co=
+Content-Transfer-Encoding: quoted-printable
 
-On 13/02/2023 16:47, Zhi Wang wrote:
-> On Fri, 27 Jan 2023 11:29:12 +0000
-> Steven Price <steven.price@arm.com> wrote:
-> 
->> Pages can only be populated/destroyed on the RMM at the 4KB granule,
->> this requires creating the full depth of RTTs. However if the pages are
->> going to be combined into a 4MB huge page the last RTT is only
->> temporarily needed. Similarly when freeing memory the huge page must be
->> temporarily split requiring temporary usage of the full depth oF RTTs.
->>
->> To avoid needing to perform a temporary allocation and delegation of a
->> page for this purpose we keep a spare delegated page around. In
->> particular this avoids the need for memory allocation while destroying
->> the realm guest.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->>  arch/arm64/include/asm/kvm_rme.h | 3 +++
->>  arch/arm64/kvm/rme.c             | 6 ++++++
->>  2 files changed, 9 insertions(+)
->>
->> diff --git a/arch/arm64/include/asm/kvm_rme.h b/arch/arm64/include/asm/kvm_rme.h
->> index 055a22accc08..a6318af3ed11 100644
->> --- a/arch/arm64/include/asm/kvm_rme.h
->> +++ b/arch/arm64/include/asm/kvm_rme.h
->> @@ -21,6 +21,9 @@ struct realm {
->>  	void *rd;
->>  	struct realm_params *params;
->>  
->> +	/* A spare already delegated page */
->> +	phys_addr_t spare_page;
->> +
->>  	unsigned long num_aux;
->>  	unsigned int vmid;
->>  	unsigned int ia_bits;
->> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
->> index 9f8c5a91b8fc..0c9d70e4d9e6 100644
->> --- a/arch/arm64/kvm/rme.c
->> +++ b/arch/arm64/kvm/rme.c
->> @@ -148,6 +148,7 @@ static int realm_create_rd(struct kvm *kvm)
->>  	}
->>  
->>  	realm->rd = rd;
->> +	realm->spare_page = PHYS_ADDR_MAX;
->>  	realm->ia_bits = VTCR_EL2_IPA(kvm->arch.vtcr);
->>  
->>  	if (WARN_ON(rmi_rec_aux_count(rd_phys, &realm->num_aux))) {
->> @@ -357,6 +358,11 @@ void kvm_destroy_realm(struct kvm *kvm)
->>  		free_page((unsigned long)realm->rd);
->>  		realm->rd = NULL;
->>  	}
->> +	if (realm->spare_page != PHYS_ADDR_MAX) {
->> +		if (!WARN_ON(rmi_granule_undelegate(realm->spare_page)))
->> +			free_page((unsigned long)phys_to_virt(realm->spare_page));
-> 
-> Will the page be leaked (not usable for host and realms) if the undelegate
-> failed? If yes, better at least put a comment.
+On Mon, Feb 20, 2023 at 12:38:06PM -0600, Michael Roth wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
+>
+> The integrity guarantee of SEV-SNP is enforced through the RMP table.
+> The RMP is used with standard x86 and IOMMU page tables to enforce
+> memory restrictions and page access rights. The RMP check is enforced as
+> soon as SEV-SNP is enabled globally in the system. When hardware
+> encounters an RMP-check failure, it raises a page-fault exception.
+>
+> The rmp_make_private() and rmp_make_shared() helpers are used to add
+> or remove the pages from the RMP table. Improve the rmp_make_private()
+> to invalidate state so that pages cannot be used in the direct-map after
+> they are added the RMP table, and restored to their default valid
+> permission after the pages are removed from the RMP table.
+>
+> Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/kernel/sev.c | 57 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>
+> diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+> index a49f30c10dc1..3e5ff5934e83 100644
+> --- a/arch/x86/kernel/sev.c
+> +++ b/arch/x86/kernel/sev.c
+> @@ -2595,6 +2595,37 @@ int psmash(u64 pfn)
+>  }
+>  EXPORT_SYMBOL_GPL(psmash);
+>
+> +static int restore_direct_map(u64 pfn, int npages)
+> +{
+> +	int i, ret =3D 0;
+> +
+> +	for (i =3D 0; i < npages; i++) {
+> +		ret =3D set_direct_map_default_noflush(pfn_to_page(pfn + i));
+> +		if (ret)
+> +			goto cleanup;
+> +	}
+> +
+> +cleanup:
+> +	WARN(ret > 0, "Failed to restore direct map for pfn 0x%llx\n", pfn + i=
+);
+> +	return ret;
+> +}
+> +
+> +static int invalidate_direct_map(u64 pfn, int npages)
+> +{
+> +	int i, ret =3D 0;
+> +
+> +	for (i =3D 0; i < npages; i++) {
+> +		ret =3D set_direct_map_invalid_noflush(pfn_to_page(pfn + i));
+> +		if (ret)
+> +			goto cleanup;
+> +	}
+> +
+> +cleanup:
+> +	WARN(ret > 0, "Failed to invalidate direct map for pfn 0x%llx\n", pfn =
++ i);
+> +	restore_direct_map(pfn, i);
 
-Yes - I'll add a comment.
+This immediately restores the direct map after invalidating it. It
+probably needs to put behind if(ret).
 
-In general being unable to undelegate a page points to a programming
-error in the host. The only reason the RMM should refuse the request is
-it the page is in use by a Realm which the host has configured. So the
-WARN() is correct (there's a kernel bug) and the only sensible course of
-action is to leak the page and limp on.
+Regards, Tom
 
-Thanks,
-
-Steve
-
->> +		realm->spare_page = PHYS_ADDR_MAX;
->> +	}
->>  
->>  	pgd_sz = kvm_pgd_pages(pgt->ia_bits, pgt->start_level);
->>  	for (i = 0; i < pgd_sz; i++) {
-> 
-
+> +	return ret;
+> +}
+> +
+>  static int rmpupdate(u64 pfn, struct rmp_state *val)
+>  {
+>  	int max_attempts =3D 4 * num_present_cpus();
+> @@ -2605,6 +2636,21 @@ static int rmpupdate(u64 pfn, struct rmp_state *v=
+al)
+>  	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+>  		return -ENXIO;
+>
+> +	level =3D RMP_TO_X86_PG_LEVEL(val->pagesize);
+> +	npages =3D page_level_size(level) / PAGE_SIZE;
+> +
+> +	/*
+> +	 * If page is getting assigned in the RMP table then unmap it from the
+> +	 * direct map.
+> +	 */
+> +	if (val->assigned) {
+> +		if (invalidate_direct_map(pfn, npages)) {
+> +			pr_err("Failed to unmap %d pages at pfn 0x%llx from the direct_map\n=
+",
+> +			       npages, pfn);
+> +			return -EFAULT;
+> +		}
+> +	}
+> +
+>  	do {
+>  		/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
+>  		asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
+> @@ -2630,6 +2676,17 @@ static int rmpupdate(u64 pfn, struct rmp_state *v=
+al)
+>  			 attempts, val->asid, ret, pfn, npages);
+>  	}
+>
+> +	/*
+> +	 * Restore the direct map after the page is removed from the RMP table=
+.
+> +	 */
+> +	if (!val->assigned) {
+> +		if (restore_direct_map(pfn, npages)) {
+> +			pr_err("Failed to map %d pages at pfn 0x%llx into the direct_map\n",
+> +			       npages, pfn);
+> +			return -EFAULT;
+> +		}
+> +	}
+> +
+>  	return 0;
+>  }
+>
+> --
+> 2.25.1
+>
