@@ -1,119 +1,98 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D26FA4C
-	for <linux-coco@lists.linux.dev>; Wed,  1 Mar 2023 21:23:10 +0000 (UTC)
-Received: by mail-lf1-f47.google.com with SMTP id g17so19514536lfv.4
-        for <linux-coco@lists.linux.dev>; Wed, 01 Mar 2023 13:23:10 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86979A4C;
+	Wed,  1 Mar 2023 22:12:36 +0000 (UTC)
+Received: by mail-pg1-f177.google.com with SMTP id d6so8673126pgu.2;
+        Wed, 01 Mar 2023 14:12:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677705788;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:date:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5FeJ+IDtaGU0Dng3JPzlo8N148iZPjSnDaT2NDjs7iw=;
-        b=U8CpE6oQW0T0yL/b9SkOw8+im0wm0VFjDpBzKhqnbc90OvihHMA8b3Swuuy9QqpKMe
-         M+zFCU5cpADOmoJbYfb0etx9J0WIpBgFCtv13HBtqqQWPUMRzvD540wG5oR1npPqHhcs
-         XHdM9ObzYlw1GwwKb7RGDEgk3dCUQEgEg9hPh05KETDEJcy5nuIlhCM5Lvuof3p6zEMM
-         NO6CZHki9sKwqzWnZRUdOQT9s+Pa0Atf+qamboT7QHXS+kvTpz7o11xBU8WEkEMRHhns
-         OdzCe5cUufbtOfHlr/uaxn2eo3wfc57z+O/pojBy519Ra4o7lNhCJF1hAKcXPmnI3qrF
-         k7Ow==
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pfazAaB1krD03qoiIwUHuiCesj2DfTyBcU1GYneJYWY=;
+        b=eg3rRwZ9NRqc4NZ7mn+d958skdQTsR4DJymp6pXMjdMC+F8Cv5+HJ4h1h31TbHYrsf
+         xkQidejdXlTtUsLE4NorgMScT8UMYVTDEOrbXNiHh//bvLbt1DdI9scp0WftBOUfaOL9
+         X3GOlkZy4ukLdzwwqP9uaskWDAJ+K6nyala8LjPvtDQbDW0vF6DJYfBp5vnWdk5UTjtB
+         SYy9aeG2Xa1fiux0memPdeXSo97rZ3zxByZxeAp3fQHQzLEPsxndaS1s3qjMYWKZQVyw
+         cc0fjA/1jbDMsCuxijqVJMRK0tdroOTJmXWbGddzEM5Icc0EoyaRUq6iu+JtTAAY76bv
+         E+IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677705788;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5FeJ+IDtaGU0Dng3JPzlo8N148iZPjSnDaT2NDjs7iw=;
-        b=JRS0qLeeEn6LQ6A1xy/A/fLrllEVR2B2BohX77RX5jLVW3HTvB96OQ0q1WM2wFZOGJ
-         6xEVDsSSNMhcJNxnwTmc8FFYEpWIeYqsiJwObnpwJzvys7oZAbZyG8tYv8anlXIlv1nR
-         RMiO7gBZREnmviEJIHUTyxN005yot2k+6Hakan6o86g5eYGGsF6uF+q+KvgRLSfP+2TF
-         PBkz2qsr4Zk5S1PSZIgfdCJfvqnrmcYU7nIH4LzNMIl4tIAxyNYcQ5DviZoifbHZYwQa
-         AAZG6zMRUh8TUEtxJ7ZD/9DH/FWZwsIsOcWUBmSbKAAgzSpJQF3kIVl4Xuw4RiJsUag0
-         J5HQ==
-X-Gm-Message-State: AO0yUKWoRJ6erTSNlyY3ivQBgTdOB6P3ObQh1V7FhZK4i4WrJ0d4LvNx
-	HSkoWmsKJJPQPKq0XTXOicA=
-X-Google-Smtp-Source: AK7set9Husvr/raZBgcJeLI0L1kUHYIjgMkrgLJmOKKElIcO7WhwF5Z9WCFNJJAEq103LkvXE98QNg==
-X-Received: by 2002:ac2:44a9:0:b0:4d2:c70a:fe0a with SMTP id c9-20020ac244a9000000b004d2c70afe0amr1752508lfm.2.1677705788430;
-        Wed, 01 Mar 2023 13:23:08 -0800 (PST)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id p3-20020a19f003000000b004db2bda9527sm1858821lfc.121.2023.03.01.13.23.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 13:23:08 -0800 (PST)
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-X-Google-Original-From: Zhi Wang <zhi.wang.linux@intel.com>
-Date: Wed, 1 Mar 2023 23:23:06 +0200
-To: Michael Roth <michael.roth@amd.com>
-Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
- <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
- <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
- <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
- <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
- <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
- <rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
- <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
- <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
- <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
- <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
- <nikunj.dadhania@amd.com>
-Subject: Re: [PATCH RFC v8 53/56] KVM: SVM: Make VMSAVE target area memory
- allocation SNP safe
-Message-ID: <20230301232306.00005f86@intel.com>
-In-Reply-To: <20230220183847.59159-54-michael.roth@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-54-michael.roth@amd.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pfazAaB1krD03qoiIwUHuiCesj2DfTyBcU1GYneJYWY=;
+        b=Oe0/F4yw/YlCue7tdCumn3rjM6VDQYcBUe0MqMFhZYxB3eRMuQVTZ+rvM8MiqMn+SN
+         bblcExDVMnx/PI/k5CSszbgB97RBPOX09r8p5vBMHCXAAoUrTj7Dr6XvVK4rk07sKQJ9
+         oh4nu21QxO+AedKhCgI4l2pVE0J4EbFO/+1MBGbkecEULsYIhoqP1sWNlnFJGM2ouMmK
+         2f2MTw+Rnsle+RFcZ53MZnEIBqVfjtv+Gj1Lqw4Sh2Da7Z8KWpUfH9+g+/uKpYCBKZj+
+         5kRoFSuMB2wmaUDwNO9tSzUblJIXEt+HQSZeibaGLKwBdVezL+OCHBsTen2oUxBOLUle
+         TF7Q==
+X-Gm-Message-State: AO0yUKWsB9VaXXD7QrAwB+l6amrTI+cjdOa9QQf6becMkwgiVx8H28u7
+	3bPU9mgljrLcUtkF4xufOgRENVxkIyaJbuxklUz+LmgVQ/zN/IZM
+X-Google-Smtp-Source: AK7set/xZsX7wuPd5hcssb22bozalTDdT87153QVXXZsO8821SKx1dgPeG8UYV84t8ORVw6spES6bxVcdlLRGQt0+8c=
+X-Received: by 2002:a63:7d57:0:b0:4fc:2369:811 with SMTP id
+ m23-20020a637d57000000b004fc23690811mr2685207pgn.6.1677708755473; Wed, 01 Mar
+ 2023 14:12:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <Y9PtKJ3Wicc19JF1@myrica> <CANW9uyud8RTkqgiL=64wV712QMxtAyubqeyCJ0vpcADJ42VqJA@mail.gmail.com>
+ <Y/8Y3WLmiw6+Z5AS@myrica>
+In-Reply-To: <Y/8Y3WLmiw6+Z5AS@myrica>
+From: Itaru Kitayama <itaru.kitayama@gmail.com>
+Date: Thu, 2 Mar 2023 07:12:24 +0900
+Message-ID: <CANW9uysnvGCwANu+_6dp9+3rvHGOkThT9d0K2qpQV4exdmYWoA@mail.gmail.com>
+Subject: Re: [RFC] Support for Arm CCA VMs on Linux
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Andrew Jones <andrew.jones@linux.dev>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, 
+	James Morse <james.morse@arm.com>, Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Quentin Perret <qperret@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>, 
+	Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.cs.columbia.edu
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 20 Feb 2023 12:38:44 -0600
-Michael Roth <michael.roth@amd.com> wrote:
+On Wed, Mar 1, 2023 at 6:20 PM Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
+>
+> Hi Itaru,
+>
+> On Wed, Mar 01, 2023 at 08:35:05AM +0900, Itaru Kitayama wrote:
+> > Hi Jean,
+> > I've tried your series in Real on CCA Host, but the KVM arch init
+> > emits an Invalid argument error and terminates.
+>
+> Do you know which call returns this error?  Normally the RMEGuest support
+> should print more detailed errors. Are you able to launch normal guests
+> (without the rme-guest object and confidential-guest-support machine
+> parameter)?  Could you give the complete QEMU command-line?
 
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> Implement a workaround for an SNP erratum where the CPU will incorrectly
-> signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
-> RMP entry of the VMSAVE target page.
-> 
-> When SEV-SNP is globally enabled, the CPU marks the VMSAVE target page
-> as "InUse" while the VMSAVE instruction is executing. If another
-> CPU writes to a different page in the same 2MB region while the VMSAVE
-> is executing, the CPU will throw an RMP violation #PF.
-> 
-> Use the snp safe generic allocator for allocating the VMSA target
-> page which will ensure that the page returned is not a hugepage, as it
-> is already being used for the allocating the VMCB, VMSA and AVIC backing
-> page.
-> 
+No, I cant say which. Yes, the CCA-capable QEMU boots if I don't set
+RME-related options.
 
-This should be merged with patch where implements the snp_safe_alloc_page().
+Here's mine (based upon your command-line):
+qemu-system-aarch64 -cpu host -accel kvm -machine
+virt,gic-version=3,confidential-guest-support=rme0 -smp 2 -m 256M
+-nographic -object rme-guest,id=rme0,measurement-algo=sha512 -kernel
+Image -initrd rootfs.ext2 -append 'console=ttyAMA0 earlycon'
+-overcommit mem-lock=on
 
-> Co-developed-by: Marc Orr <marcorr@google.com>
-> Signed-off-by: Marc Orr <marcorr@google.com>
-> Reported-by: Alper Gun <alpergun@google.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/kvm/svm/svm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 3fe5f13b5f3a..8bda31a61757 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -665,7 +665,7 @@ static int svm_cpu_init(int cpu)
->  	int ret = -ENOMEM;
->  
->  	memset(sd, 0, sizeof(struct svm_cpu_data));
-> -	sd->save_area = alloc_page(GFP_KERNEL | __GFP_ZERO);
-> +	sd->save_area = snp_safe_alloc_page(NULL);
->  	if (!sd->save_area)
->  		return ret;
->  
-
+Itaru.
+>
+> > I configure it with the aarch64-softmmu target only and built, any
+> > other steps I should worry?
+>
+> No, that should be enough
+>
+> Thanks,
+> Jean
