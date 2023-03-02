@@ -1,331 +1,96 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD298137B
-	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 00:02:52 +0000 (UTC)
-Received: by mail-lj1-f172.google.com with SMTP id b10so15939146ljr.0
-        for <linux-coco@lists.linux.dev>; Wed, 01 Mar 2023 16:02:52 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E499EA1
+	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 01:41:23 +0000 (UTC)
+Received: by mail-pj1-f52.google.com with SMTP id h17-20020a17090aea9100b0023739b10792so1195019pjz.1
+        for <linux-coco@lists.linux.dev>; Wed, 01 Mar 2023 17:41:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677715371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+mEYUoqzkV4y6vsMO1Tnsa6bn7KUqmY0W5AVOdUCN8g=;
-        b=dNvQTh8k3DnN0lwNU0AYKg+hLxSqZa0EsGqc8+Z5Bqudjprv9CWoBml91KkNT6PUbO
-         ruojlGrNqFgiBQwuLiuvPhXCfCfpxZAiVR1+7DnrLVZV/SDJfBZsgTbM5t32cm2edvwK
-         679Obb1Wh/fTJg/LeEdLZYOQSrCi23VyT6WfYbs5X7ZUq2JPNhQyQAwaxUGtjgI+nKkQ
-         1lvbWOzxoBPj0ZhY4N7/3lpUEDQZnbeBgyCHXpJWf298ODDpVmMiVtH/KAkudDLV43Dr
-         9McqHU09OPXl0PEvUWq08TBwk5na5mruZxmZTl8y3NQKTuPPx4J5ye6DwtjEgszg71fC
-         vM2g==
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=nQ/k+I6vg3DIpuQkWsbGXKaDuFnWAPV+R/MRhIWgerE=;
+        b=M1faUwzF8K9LVMgFawTxpJg0odDzVyBttN0AF69uG9guWjiSvbhav1cNgD35gDMKu0
+         j1niW9n0QqE3EKJ1dLgwNzvMTsr/XSuX4cXlnqhLDSoEXOlwHLpg/HIGgMwqwQFoKLTY
+         /3p1wvO6ecQ1YgClypzXuo5Z+9McY/e//LJVhv3UX6Kpq0CIXJKrgmeQRoYvzMI1gJrs
+         GhDh8QtNI7ubX9ks3+BO7j6DV36t9q0rMBQcG43GtBzfzhnaGmfxqQjy6q1mxlVc/mvD
+         dmoYB0/AEPJc7ihdJU3WdhAsnYUJK781v7iYPrrNrt88tgTT5g7Myt5GjBx8YtQisLfu
+         4ZrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677715371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+mEYUoqzkV4y6vsMO1Tnsa6bn7KUqmY0W5AVOdUCN8g=;
-        b=UoV80SiZ+z9QeX1cgFIqCbu49M2GW5BSpv0OhKgjW8pRVDuuQSibuW7XrEwug4NPUd
-         Homqiv6gONGlqI0QvP86eNp7yrbqrMi8lX77tEMu9gmEyPlDTuTpDt6o3QSuBp0lyntS
-         tNNBNysFWcT+y/vqNo0Bj8jVOBhaF+OEKy3VoEafbN2An1k/ZiK+VByXvSiVdZYoIkfi
-         OC6nF0ZslBdfisFHtOi/vMwaYvH49X/EvJbRu7gs4hgtLP6dZdoUSHH7ssTMB4TlPpNt
-         g4ZUFWc/e51AM4y2LREEP9k0m9X98CqiRSkko9UVTY6QhKd3ZG1am1SKbXBUqHBY/ePM
-         dpnw==
-X-Gm-Message-State: AO0yUKUVBZJ9NVcj/8swZUyuHUVHw0nO41csRdpqOPGnOIvbqmEi6747
-	dezFLzc/3354tEmS2ik1MKs=
-X-Google-Smtp-Source: AK7set/1liEDyyq962/VgpuqfVI283EUk4PS3DgsvEElOZ+Q4nC8n4n5DK3006LuS6BXBNGSvSfclw==
-X-Received: by 2002:a2e:960d:0:b0:295:9d09:680d with SMTP id v13-20020a2e960d000000b002959d09680dmr2143470ljh.0.1677715370579;
-        Wed, 01 Mar 2023 16:02:50 -0800 (PST)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id p17-20020a2eb991000000b00295b1ad177csm1656830ljp.68.2023.03.01.16.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 16:02:48 -0800 (PST)
-Date: Thu, 2 Mar 2023 02:02:45 +0200
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
- <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>, <x86@kernel.org>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
- <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
- <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
- <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
- <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
- <rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
- <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
- <ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
- <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
- <dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
- <nikunj.dadhania@amd.com>, Dionna Glaze <dionnaglaze@google.com>
-Subject: Re: [PATCH RFC v8 54/56] x86/sev: Add KVM commands for instance
- certs
-Message-ID: <20230302020245.00006f57@gmail.com>
-In-Reply-To: <20230220183847.59159-55-michael.roth@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-55-michael.roth@amd.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nQ/k+I6vg3DIpuQkWsbGXKaDuFnWAPV+R/MRhIWgerE=;
+        b=kzw5CASv3L2W0PVKMxIjd9lzHysobMhbtzdyfVAKr5NtuoZrqqxLzgXOGsbYJ03AI4
+         B8O4kE6F7118uHZa0DjwWx+YrsudrsHkBneAyYW8VsqwzvKeo+23+26mC2c3K1P4fo/Y
+         cy41rhqP9B2Ur049QJ4lLAHNPR2HtwK6hKHn0PXmCB44snprzWuo49WtP/Csu2CEetP0
+         ApjeWL8puu3KtzVVFmnhTpmRkne86o03JlUJjfXHTwaTn/zYH7F3JNEtWiH9WufbiSkV
+         AeZjhZHP6n5YdHmgccpgWsVgFZvqyPwPBEhgcVZbs8pRkuTGS4db1BW5QTLoLWIA0k6V
+         nkPA==
+X-Gm-Message-State: AO0yUKWh/sL9aycVxLA1KwGNT+l+hFg6CYsxicWONCOVOQJjWO4Ph0RC
+	onWgz5NZ1fXRKDMhSF0YL6tvtd4eBd9tEKklJh3dJA==
+X-Google-Smtp-Source: AK7set96nV5WxVAFJCuff1YfyXG1LVejzmkonDIYcfNUk89kau/aG+VyPFxYaHWrc+2i5u58w4j88wEOxo3FDLY30SQ=
+X-Received: by 2002:a17:902:7841:b0:19d:1dfe:eac6 with SMTP id
+ e1-20020a170902784100b0019d1dfeeac6mr3274257pln.1.1677721282551; Wed, 01 Mar
+ 2023 17:41:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20230220183847.59159-1-michael.roth@amd.com> <20230220183847.59159-55-michael.roth@amd.com>
+ <20230302020245.00006f57@gmail.com>
+In-Reply-To: <20230302020245.00006f57@gmail.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Wed, 1 Mar 2023 17:41:11 -0800
+Message-ID: <CAAH4kHY6jm9PHjuGj18eyCC8H4oksuNkVL=igAh4P4BTsKs2xA@mail.gmail.com>
+Subject: Re: [PATCH RFC v8 54/56] x86/sev: Add KVM commands for instance certs
+To: Zhi Wang <zhi.wang.linux@gmail.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
+	pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com, 
+	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com, 
+	slp@redhat.com, pgonda@google.com, peterz@infradead.org, 
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com, 
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org, 
+	ashish.kalra@amd.com, nikunj.dadhania@amd.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 20 Feb 2023 12:38:45 -0600
-Michael Roth <michael.roth@amd.com> wrote:
+> > @@ -2089,6 +2089,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> >               goto e_free;
+> >
+> >       sev->snp_certs_data = certs_data;
+> > +     sev->snp_certs_len = 0;
+> >
+> >       return context;
+> >
+>
+> Better to move the fix to PATCH 45.
+>
 
-In the host-wide certificates installing/uninstalling, a lock is to
-prevent the racing between cert upload/download path and the handling
-of guest request path.
+This part isn't a fix, but part of the implementation since
+snp_certs_len is added in this patch here
 
-Guess we need a similar lock to prevent the racing between
-snp_{set,get}_instance_certs() and snp_handle_ext_guest_request().
+> > diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> > index 221b38d3c845..dced46559508 100644
+> > --- a/arch/x86/kvm/svm/svm.h
+> > +++ b/arch/x86/kvm/svm/svm.h
+> > @@ -94,6 +94,7 @@ struct kvm_sev_info {
+> >       u64 snp_init_flags;
+> >       void *snp_context;      /* SNP guest context page */
+> >       void *snp_certs_data;
+> > +     unsigned int snp_certs_len; /* Size of instance override for certs */
+> >       struct mutex guest_req_lock; /* Lock for guest request handling */
+> >
+> >       u64 sev_features;       /* Features set at VMSA creation */
 
-This patch and PATCH 27 are focusing on cert from different sources.
-It would be better to abstract. With the functions and data structure
-of cert, the cert installing/uninstalling, checks, expectation of the
-output buffer can be unified. Then we don't need mostly duplicate
-routines in two different paths.
 
-> From: Dionna Glaze <dionnaglaze@google.com>
-> 
-> The /dev/sev device has the ability to store host-wide certificates for
-> the key used by the AMD-SP for SEV-SNP attestation report signing,
-> but for hosts that want to specify additional certificates that are
-> specific to the image launched in a VM, a different way is needed to
-> communicate those certificates.
-> 
-> Add two new KVM ioctl to handle this: KVM_SEV_SNP_{GET,SET}_CERTS
-> 
-> The certificates that are set with this command are expected to follow
-> the same format as the host certificates, but that format is opaque
-> to the kernel.
-> 
-> The new behavior for custom certificates is that the extended guest
-> request command will now return the overridden certificates if they
-> were installed for the instance. The error condition for a too small
-> data buffer is changed to return the overridden certificate data size
-> if there is an overridden certificate set installed.
-> 
-> Setting a 0 length certificate returns the system state to only return
-> the host certificates on an extended guest request.
-> 
-> Also increase the SEV_FW_BLOB_MAX_SIZE another 4K page to allow space
-> for an extra certificate.
-> 
-> Cc: Tom Lendacky <Thomas.Lendacky@amd.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> [mdr: remove used of "we" and "this patch" in commit log]
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c   | 111 ++++++++++++++++++++++++++++++++++++++-
->  arch/x86/kvm/svm/svm.h   |   1 +
->  include/linux/psp-sev.h  |   2 +-
->  include/uapi/linux/kvm.h |  12 +++++
->  4 files changed, 123 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 70d5650d8d95..18b64b7005e7 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2089,6 +2089,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  		goto e_free;
->  
->  	sev->snp_certs_data = certs_data;
-> +	sev->snp_certs_len = 0;
->  
->  	return context;
->  
-
-Better to move the fix to PATCH 45.
-
-> @@ -2404,6 +2405,86 @@ static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
->  	return ret;
->  }
->  
-> +static int snp_get_instance_certs(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	struct kvm_sev_snp_get_certs params;
-> +
-> +	if (!sev_snp_guest(kvm))
-> +		return -ENOTTY;
-> +
-> +	if (!sev->snp_context)
-> +		return -EINVAL;
-> +
-> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data,
-> +			   sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	/* No instance certs set. */
-> +	if (!sev->snp_certs_len)
-> +		return -ENOENT;
-> +
-> +	if (params.certs_len < sev->snp_certs_len) {
-> +		/* Output buffer too small. Return the required size. */
-> +		params.certs_len = sev->snp_certs_len;
-> +
-> +		if (copy_to_user((void __user *)(uintptr_t)argp->data, &params,
-> +				 sizeof(params)))
-> +			return -EFAULT;
-> +
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (copy_to_user((void __user *)(uintptr_t)params.certs_uaddr,
-> +			 sev->snp_certs_data, sev->snp_certs_len))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +}
-> +
-> +static int snp_set_instance_certs(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> +{
-> +	struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
-> +	unsigned long length = SEV_FW_BLOB_MAX_SIZE;
-> +	void *to_certs = sev->snp_certs_data;
-> +	struct kvm_sev_snp_set_certs params;
-> +
-> +	if (!sev_snp_guest(kvm))
-> +		return -ENOTTY;
-> +
-> +	if (!sev->snp_context)
-> +		return -EINVAL;
-> +
-> +	if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data,
-> +			   sizeof(params)))
-> +		return -EFAULT;
-> +
-> +	if (params.certs_len > SEV_FW_BLOB_MAX_SIZE)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Setting a length of 0 is the same as "uninstalling" instance-
-> +	 * specific certificates.
-> +	 */
-> +	if (params.certs_len == 0) {
-> +		sev->snp_certs_len = 0;
-> +		return 0;
-> +	}
-> +
-> +	/* Page-align the length */
-> +	length = (params.certs_len + PAGE_SIZE - 1) & PAGE_MASK;
-> +
-> +	if (copy_from_user(to_certs,
-> +			   (void __user *)(uintptr_t)params.certs_uaddr,
-> +			   params.certs_len)) {
-> +		return -EFAULT;
-> +	}
-> +
-> +	sev->snp_certs_len = length;
-> +
-> +	return 0;
-> +}
-> +
->  int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
->  {
->  	struct kvm_sev_cmd sev_cmd;
-> @@ -2503,6 +2584,12 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
->  	case KVM_SEV_SNP_LAUNCH_FINISH:
->  		r = snp_launch_finish(kvm, &sev_cmd);
->  		break;
-> +	case KVM_SEV_SNP_GET_CERTS:
-> +		r = snp_get_instance_certs(kvm, &sev_cmd);
-> +		break;
-> +	case KVM_SEV_SNP_SET_CERTS:
-> +		r = snp_set_instance_certs(kvm, &sev_cmd);
-> +		break;
->  	default:
->  		r = -EINVAL;
->  		goto out;
-> @@ -3550,8 +3637,28 @@ static void snp_handle_ext_guest_request(struct vcpu_svm *svm, gpa_t req_gpa, gp
->  	if (rc)
->  		goto unlock;
->  
-> -	rc = snp_guest_ext_guest_request(&req, (unsigned long)sev->snp_certs_data,
-> -					 &data_npages, &err);
-> +	/*
-> +	 * If the VMM has overridden the certs, then change the error message
-> +	 * if the size is inappropriate for the override. Otherwise, use a
-> +	 * regular guest request and copy back the instance certs.
-> +	 */
-> +	if (sev->snp_certs_len) {
-> +		if ((data_npages << PAGE_SHIFT) < sev->snp_certs_len) {
-> +			rc = -EINVAL;
-> +			err = SNP_GUEST_REQ_INVALID_LEN;
-> +			goto datalen;
-> +		}
-> +		rc = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &req,
-> +				   (int *)&err);
-> +	} else {
-> +		rc = snp_guest_ext_guest_request(&req,
-> +						 (unsigned long)sev->snp_certs_data,
-> +						 &data_npages, &err);
-> +	}
-> +datalen:
-> +	if (sev->snp_certs_len)
-> +		data_npages = sev->snp_certs_len >> PAGE_SHIFT;
-> +
->  	if (rc) {
->  		/*
->  		 * If buffer length is small then return the expected
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 221b38d3c845..dced46559508 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -94,6 +94,7 @@ struct kvm_sev_info {
->  	u64 snp_init_flags;
->  	void *snp_context;      /* SNP guest context page */
->  	void *snp_certs_data;
-> +	unsigned int snp_certs_len; /* Size of instance override for certs */
->  	struct mutex guest_req_lock; /* Lock for guest request handling */
->  
->  	u64 sev_features;	/* Features set at VMSA creation */
-> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-> index 92116e2b74fd..3b28b78938f6 100644
-> --- a/include/linux/psp-sev.h
-> +++ b/include/linux/psp-sev.h
-> @@ -22,7 +22,7 @@
->  #define __psp_pa(x)	__pa(x)
->  #endif
->  
-> -#define SEV_FW_BLOB_MAX_SIZE	0x4000	/* 16KB */
-> +#define SEV_FW_BLOB_MAX_SIZE	0x5000	/* 20KB */
->  
->  /**
->   * SEV platform state
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 6e684bf5f723..ad7e24e43547 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1928,6 +1928,8 @@ enum sev_cmd_id {
->  	KVM_SEV_SNP_LAUNCH_START,
->  	KVM_SEV_SNP_LAUNCH_UPDATE,
->  	KVM_SEV_SNP_LAUNCH_FINISH,
-> +	KVM_SEV_SNP_GET_CERTS,
-> +	KVM_SEV_SNP_SET_CERTS,
->  
->  	KVM_SEV_NR_MAX,
->  };
-> @@ -2075,6 +2077,16 @@ struct kvm_sev_snp_launch_finish {
->  	__u8 pad[6];
->  };
->  
-> +struct kvm_sev_snp_get_certs {
-> +	__u64 certs_uaddr;
-> +	__u64 certs_len;
-> +};
-> +
-> +struct kvm_sev_snp_set_certs {
-> +	__u64 certs_uaddr;
-> +	__u64 certs_len;
-> +};
-> +
->  #define KVM_DEV_ASSIGN_ENABLE_IOMMU	(1 << 0)
->  #define KVM_DEV_ASSIGN_PCI_2_3		(1 << 1)
->  #define KVM_DEV_ASSIGN_MASK_INTX	(1 << 2)
-
+-- 
+-Dionna Glaze, PhD (she/her)
