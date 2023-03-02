@@ -1,105 +1,305 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2583329B0
-	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 14:06:44 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 096BB1FB;
-	Thu,  2 Mar 2023 06:07:24 -0800 (PST)
-Received: from [10.1.25.48] (FVFF763DQ05P.cambridge.arm.com [10.1.25.48])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5F8143F587;
-	Thu,  2 Mar 2023 06:06:38 -0800 (PST)
-Message-ID: <f9b316ad-fe27-cb3a-493e-70f2ced8a6f7@arm.com>
-Date: Thu, 2 Mar 2023 14:06:37 +0000
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2085.outbound.protection.outlook.com [40.107.223.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D661110B
+	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 14:33:53 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hXeykdkIJGEouaZijTDIxlOCaWi02jO3+vOprGrKFWgHwmTmgWJzQI1eVCPScY9vRJdbf/JX+NSPozRIAqt0iM/MuxhnZWJCxlAOoV8Et5+4rthxfKofvOK/uSFYcw/HUndPeDUTeEyq9fiB/wEL0oc+yPIAdo6J7dc2A0075mY8qEgeKIrxDgIWjqrNri7ODe4Z5uJo8Ol/6BhM+mun0ANf8UTDDGTXHkQTNZUIwo9SHDUwGSjuDe/jDxNC2zIcsV6L6t+V/bcKwd9NLtN6ZaKPTbBjpmMiXsAResuGJhq2jA0hpvP95zzTxDfsidTK5me2i5rKRyp3WTq2ZUqMjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OhxYtfk898Bw3+aVUXTCf2OdlDb6gKnOXAQznqyznsA=;
+ b=XDJUB4teSFUtX+JRN/gJ713TWQxNqxeZtF4drDQfuM+WmJak1MHK8MJMDZsX4qI1NrTZJxdukIyG5+jAPvwauslw/dUgr732Q3G3hGKtEqClzBMxvs15czGjlKrRXTa8e+7XKfVlhRHlBPQiirFETAITbpgH6ZAwFkN4DghiU2lq3VdnYhkkfB0h6MHB+lsCZ/w6ayzB3QRK1Glzf9tjuWrhGxEWrQFxGX00NxRdXZRmTStzDe6sJxpE+pFaU4f6v/NAkx/0mcoibI65vLx0aToRQ6YejZSN+ic5YnNsR+DgjIom2HJVYqKC1SdwYl9IdTTkklgF9fTvGRQl9Y3s6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OhxYtfk898Bw3+aVUXTCf2OdlDb6gKnOXAQznqyznsA=;
+ b=N11GL9dwK0b+DoAXbgXmbJE61dJM9EtuwvjmFZYVwidKMkj3d1mtG8J6lJXIeS8sZPRmrwnMTMhWwHZniPtVg8MXKBm/qAm5M/VJI6iuYXbwqwey/OPbkQgiOJgAODsROZlf6PXvvPl507fR5/S4Cpa9lfHOGWqS1ULoVmpV+iQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
+ by PH7PR12MB5950.namprd12.prod.outlook.com (2603:10b6:510:1d9::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6156.17; Thu, 2 Mar
+ 2023 14:33:50 +0000
+Received: from DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::6cc0:9c7a:bd00:441c]) by DM4PR12MB5229.namprd12.prod.outlook.com
+ ([fe80::6cc0:9c7a:bd00:441c%6]) with mapi id 15.20.6156.019; Thu, 2 Mar 2023
+ 14:33:50 +0000
+Message-ID: <36734887-6474-b43e-51ae-34f37e6670a5@amd.com>
+Date: Thu, 2 Mar 2023 08:33:45 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH RFC v8 52/56] ccp: Add support to decrypt the page
+To: Dov Murik <dovmurik@linux.ibm.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
+ Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, hpa@zytor.com,
+ ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+ vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+ dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+ peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+ rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+ ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ Brijesh Singh <brijesh.singh@amd.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-53-michael.roth@amd.com>
+ <20230301232045.0000502e@intel.com>
+ <e63ba525-644d-1a8c-afe7-2ced4a8fbb93@linux.ibm.com>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+In-Reply-To: <e63ba525-644d-1a8c-afe7-2ced4a8fbb93@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0140.namprd13.prod.outlook.com
+ (2603:10b6:806:27::25) To DM4PR12MB5229.namprd12.prod.outlook.com
+ (2603:10b6:5:398::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [RFC kvmtool 18/31] arm64: Populate initial realm contents
-To: Piotr Sawicki <piotr.sawickas@gmail.com>
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
- Andrew Jones <andrew.jones@linux.dev>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Paolo Bonzini <pbonzini@redhat.com>, Quentin Perret <qperret@google.com>,
- Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>,
- Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-coco@lists.linux.dev, kvmarm@lists.cs.columbia.edu,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <20230127113932.166089-1-suzuki.poulose@arm.com>
- <20230127113932.166089-19-suzuki.poulose@arm.com>
- <7a0e256d-3ce1-3218-c930-ed518a679b8b@gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <7a0e256d-3ce1-3218-c930-ed518a679b8b@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|PH7PR12MB5950:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e7b8e88-1850-4096-458a-08db1b2b2374
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	uA+/72okoEL5qucqdx4hP6AZAk4HYe9V8UOJnNN6I8oxN931qsXWtzrTsTRxQkFgyMRQ0po7AtEay2ne9gbb7LPxyDljRtXRd+MuV+Br4jkmx3Al9HakKxjnZKPyOp9X03YXZZO4mXTTYnYZU0FtuizrAY7cvmzD8v4sKFkZ8raWTKIKQaZ5ERqVI+hHNJjyLqO+69Q+6pTVtju2DX/ZCGh1djq1l6/Drvq2GPT33E98wZD/4v0jkXOfSE42M/c9yVp8kPJ1OtbfIJ40xpcXOIJq+23x8j0uG8YeNZeoyCtO0KtLWLHgpjSRqVP8wlR13xmQ+A1DwiOG3sJXLP+ytHxc/mvxnOHWAgnx6d8cjxYlFPXYMCPQDC1jQkDvD95X5XJYZLuJY34YpH4KR7aY/OuBdvpgivwZFM3VPW7arYvkmykrqQYAOx/8yRao7n47D8Co7fCRyjjXkG3KD81D/HKR4E3wRTApYf84IeDeR3lEvAE4Sj0Up/8P/G2vdGTmrpogXhR7B0WbhGoh+c1N9CMsEBaMVj78LS1yK4zYlih1x8h8sc4p8giv+O0Bx8MiS0uirz69qDi0HB+3vzkomAR0ZQr+dSS+edpM9tTySHkjPfzFwGDrls8iMMgaNeIJii0SehfbpgagrcFSkXlzqKI27fow7xiL7hz6S0XxOgSI9bGzDYgCS72FsiLD/aFAH3hCp0fp4HgGK7372qUW6ILOBdcIloAkLDTox8jE4u04+EJU72OYPpVLWZO0B7C4U1r5GbqMmcs699xXypD87A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(366004)(136003)(396003)(346002)(39860400002)(451199018)(31686004)(36756003)(478600001)(83380400001)(110136005)(6636002)(316002)(4326008)(38100700002)(8676002)(66476007)(7406005)(41300700001)(2616005)(186003)(6506007)(5660300002)(53546011)(6666004)(26005)(6486002)(6512007)(31696002)(8936002)(66556008)(66946007)(7416002)(86362001)(2906002)(43740500002)(45980500001)(134885004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TFdNR2JzSWRZZVZwUUVBQWVXY3dqbXRNS1FlWjR2eEh2bzlaRWxXNXlPdlpo?=
+ =?utf-8?B?WWdOT3BZVm4zYjRsdHRHWk8yQXM1RGpheGVnZ0VGME1sZ3MzNHpPWENTTFVm?=
+ =?utf-8?B?Ry9KdzFJdDY2RG8zODhHV3MxMnhlbUxTS3NhdGkxeGNOc2RjVkJEUEYxcnpL?=
+ =?utf-8?B?RXdyb0lGYVVFanRuSE9ISWcrNXRmVUhRc2ZSQ2lUb01IbTZQakhORVBCWkdS?=
+ =?utf-8?B?SU1nc3RLZklJQ1NjSmtWZUNGclBMd2NUdjU0SXBFdURZSVdhRTJCN1lsSHNZ?=
+ =?utf-8?B?QmtxVWhhcmVqbFFFbXBzNlNPQnhxdnU2LzNQQTExVTh3ZVo4ZkZYTC9kK1Fi?=
+ =?utf-8?B?R1JFazg1QlY4WW8wNGd5bVFCRmkwdExjV0h5SE9xaXNpZzNydkxUZ1NqMHpB?=
+ =?utf-8?B?RGxCclB3dlMwbmZDZ3hCa3NpTVZuOVFZNVdpK1ZUd1VPVEgwNE4zRlZCTzVu?=
+ =?utf-8?B?bVJwWDd1TVdab3B6THR3bk5YSWZUSFc2MVJKd1ZnU2tCeEIrTUoxeWlram41?=
+ =?utf-8?B?REpueS9xK1I4RWhHeWlXN0JwaGtVc2FJMnZDbkdTRERXVFY5Q0ljQnFtUGkx?=
+ =?utf-8?B?Wm9MOFNpd0tRSmFLTmpmK05VVVVrYTlpUGdhL1o2NVBEenhiWG5sZGNmQzlt?=
+ =?utf-8?B?cWhIY3VXNXVLMExhVXJJclRkVUJCODFmcVNTUkxDTzJ6c3BPdVAvdzNWWEJn?=
+ =?utf-8?B?aCswb2FyaG1ORThBV0s3YklOSXYyOVJDOEVPRC9pRVQyTVR5c0tYcEVmWVE0?=
+ =?utf-8?B?ZVQ4VXdZRTRxVGVqVzJ4NmtqOHY2c2w0NG1JbE1VdCtDaEVNS3BFKzlVUTJr?=
+ =?utf-8?B?enR4TmVseFVlRC8vQmRpQ2FGNWhORi9paUFFaVBHSmw2N25rUzNuQUF3WHJ0?=
+ =?utf-8?B?MDI3ZFlvb2xCSHRTZlNHVTdxdTJXSVpXeDJPaVBxZEVMa0NFT0EzSk03NFRr?=
+ =?utf-8?B?SjZzYmRsSERzN0dpUTBnM0hMTHFPdHFhdU4wVFZGWGp6OHpBRjRweWpLMVJo?=
+ =?utf-8?B?empCMmtkRERTK05BcnFCaVNzZEhxVEhCU1ozVzZkQUczNkdOSVFUYWRZWmdi?=
+ =?utf-8?B?OThnanFoV0EycFE1N1hDQWM4Z1M3cEI1SFVjUnFmeGh6Q1dvSXI1dVI3ZTQ1?=
+ =?utf-8?B?NnFVeDlhM3JkRHJZYjhMb1hXUEVHaTdGQ0FPN01uRzNRcy9oOUIwaE5hNzJh?=
+ =?utf-8?B?MUUwTy8wZWdDalJMMTZNaGNmRFZ3UU1DTDdUM2V4Y3JNV3N2RmVVY3Byck5w?=
+ =?utf-8?B?Yjk2TTRYN3N0MkI1TFBKTzJqbzhvc3BENkIycEZ5T1hLMmZrT0NVcFZNYUtJ?=
+ =?utf-8?B?QUM1TnF2UFJGV1c2TUZxMTJMY1lqdTZZK3dOc2tNTWhlQXJIaXhqb3oySDVX?=
+ =?utf-8?B?U21yS2lHM2R4TDBzQThOaDc1TXUrNEZVMzBjNmZRaDNhWVM1RGc3MWRtQUdB?=
+ =?utf-8?B?cUhETXlDSnFpdktOZW1IWmJsQ3lUbmFPcWptTmI0K0tTdStxeWRwVGE4Nm8r?=
+ =?utf-8?B?SUxwRG14L29rQnRhS0NWZ2Vsa2d6VVBhd3doeEd2U1FWV1hCaVFvcStZZUpm?=
+ =?utf-8?B?SzJCaUVhZ1pyU0IzTUNEemlBVEszZlJ3ODBYRkZpcE5iZzExWk42UTlvNmpI?=
+ =?utf-8?B?ZDJvU2d5NFZTU3dMa1BOcWkyVzloSC9Oc2lZWnFlcG9GVGY0Y1Iyc0pJODg5?=
+ =?utf-8?B?NGtzVWNmck1MOUxzR3JRbmdBdTVONUpZcFpwWXFOZE53NHp6c0RkVE1FNmp3?=
+ =?utf-8?B?ODRDam1yK3lVZDcvMmFSMStjNGVmQjF6aUZCM1B5NldQMm5KZG5jd3o2WkRp?=
+ =?utf-8?B?bHlGT2tDQ0g3aFNkVy8ycm9zVVp1ZXdXTHdsc0M0ZllCcUpoZ3J1a2Z6Uy8v?=
+ =?utf-8?B?ZHZJY1NjRTlQb0hqYUlvbWRHVlN5VyszckE2ejhBM2Z5blRrZGZtNnROWWdE?=
+ =?utf-8?B?azVTSVM1eTZ3NXFYaFBWZTU4NjlVNVE2U1IrK3JzOGVUbDVKcDNFckx0SWJ6?=
+ =?utf-8?B?ZDgwYVVibkxJYmlWMzZPZGkvNmpZTmFmVEhYZHRBVURBaGVlSTJteCtZZysx?=
+ =?utf-8?B?bXVobFdoSFBxaE93Wjg1MTRzbGNLSFlpYklwWGp5NU52SW01cU91aHVuL3p1?=
+ =?utf-8?Q?iLW14x/NlvXH0FAMEvUWOSdTc?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e7b8e88-1850-4096-458a-08db1b2b2374
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Mar 2023 14:33:49.9030
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nocqHLz3Y1ivMdgnqmFuJqOpbbpAd+ERVINXx0n5mY/qzK7VhpIwqlP2knap6OjIPlJITq8UQuaHfdSakmOSuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5950
 
-Hi Piotr
-
-On 02/03/2023 14:03, Piotr Sawicki wrote:
-> Hi,
+On 3/1/23 23:59, Dov Murik wrote:
+> Hi Mike, Zhi,
 > 
->> From: Alexandru Elisei <alexandru.elisei@arm.com>
+> On 01/03/2023 23:20, Zhi Wang wrote:
+>> On Mon, 20 Feb 2023 12:38:43 -0600
+>> Michael Roth <michael.roth@amd.com> wrote:
 >>
->> Populate the realm memory with the initial contents, which include
->> the device tree blob, the kernel image, and initrd, if specified,
->> or the firmware image.
+>>> From: Brijesh Singh <brijesh.singh@amd.com>
+>>>
+>>> Add support to decrypt guest encrypted memory. These API interfaces can
+>>> be used for example to dump VMCBs on SNP guest exit.
+>>>
 >>
->> Populating an image in the realm involves two steps:
->>   a) Mark the IPA area as RAM - INIT_IPA_REALM
->>   b) Load the contents into the IPA - POPULATE_REALM
+>> What kinds of check will be applied from firmware when VMM decrypts this
+>> page? I suppose there has to be kinda mechanism to prevent VMM to decrypt
+>> any page in the guest. It would be nice to have some introduction about
+>> it in the comments.
 >>
->> Wherever we know the actual size of an image in memory, we make
->> sure the "memory area" is initialised to RAM.
->> e.g., Linux kernel image size from the header which includes the bss etc.
->> The "file size" on disk for the Linux image is much smaller.
->> We mark the region of size Image.header.size as RAM (a), from the kernel
->> load address. And load the Image file into the memory (b) above.
->> At the moment we only detect the Arm64 Linux Image header format.
+> 
+> The SNP ABI spec says (section 8.27.2 SNP_DBG_DECRYPT):
+> 
+>    The firmware checks that the guest's policy allows debugging. If not,
+>    the firmware returns POLICY_FAILURE.
+> 
+> and in the Guest Policy (section 4.3):
+> 
+>    Bit 19 - DEBUG
+>    0: Debugging is disallowed.
+>    1: Debugging is allowed.
+> 
+> In the kernel, that firmware error code is defined as
+> SEV_RET_POLICY_FAILURE.
+> 
+> 
+>>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+>>> [mdr: minor commit fixups]
+>>> Signed-off-by: Michael Roth <michael.roth@amd.com>
+>>> ---
+>>>   drivers/crypto/ccp/sev-dev.c | 32 ++++++++++++++++++++++++++++++++
+>>>   include/linux/psp-sev.h      | 22 ++++++++++++++++++++--
+>>>   2 files changed, 52 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>>> index e65563bc8298..bf5167b2acfc 100644
+>>> --- a/drivers/crypto/ccp/sev-dev.c
+>>> +++ b/drivers/crypto/ccp/sev-dev.c
+>>> @@ -2017,6 +2017,38 @@ int sev_guest_df_flush(int *error)
+>>>   }
+>>>   EXPORT_SYMBOL_GPL(sev_guest_df_flush);
+>>>   
+>>> +int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error)
+>>> +{
+>>> +	struct sev_data_snp_dbg data = {0};
+>>> +	struct sev_device *sev;
+>>> +	int ret;
+>>> +
+>>> +	if (!psp_master || !psp_master->sev_data)
+>>> +		return -ENODEV;
+>>> +
+>>> +	sev = psp_master->sev_data;
+>>> +
+>>> +	if (!sev->snp_initialized)
+>>> +		return -EINVAL;
+>>> +
+>>> +	data.gctx_paddr = sme_me_mask | (gctx_pfn << PAGE_SHIFT);
+>>> +	data.src_addr = sme_me_mask | (src_pfn << PAGE_SHIFT);
+>>> +	data.dst_addr = sme_me_mask | (dst_pfn << PAGE_SHIFT);
+> 
+> I guess this works, but I wonder why we need to turn on sme_me_mask on
+> teh dst_addr.  I thought that the firmware decrypts the guest page
+> (src_addr) to a plaintext page.  Couldn't find this requirement in the
+> SNP spec.
+
+This sme_me_mask tells the firmware how to access the host memory (similar 
+to how DMA uses sme_me_mask when supplying addresses to devices under 
+SME). This needs to match the pagetable mapping being used by the host, 
+otherwise the contents will appears as ciphertext to the host if they are 
+not in sync. Since the default pagetable mapping is encrypted, the 
+sme_me_mask bit must be provided on the destination address. So it is not 
+a spec requirement, but an SME implementation requirement.
+
+Thanks,
+Tom
+
+> 
+> 
+>>> +
+>>> +	/* The destination page must be in the firmware state. */
+>>> +	if (rmp_mark_pages_firmware(data.dst_addr, 1, false))
+>>> +		return -EIO;
+>>> +
+>>> +	ret = sev_do_cmd(SEV_CMD_SNP_DBG_DECRYPT, &data, error);
+>>> +
+>>> +	/* Restore the page state */
+>>> +	if (snp_reclaim_pages(data.dst_addr, 1, false))
+>>> +		ret = -EIO;
+>>> +
+>>> +	return ret;
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(snp_guest_dbg_decrypt_page);
+>>> +
+>>>   int snp_guest_ext_guest_request(struct sev_data_snp_guest_request *data,
+>>>   				unsigned long vaddr, unsigned long *npages, unsigned long *fw_err)
+>>>   {
+>>> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+>>> index 81bafc049eca..92116e2b74fd 100644
+>>> --- a/include/linux/psp-sev.h
+>>> +++ b/include/linux/psp-sev.h
+>>> @@ -710,7 +710,6 @@ struct sev_data_snp_dbg {
+>>>   	u64 gctx_paddr;				/* In */
+>>>   	u64 src_addr;				/* In */
+>>>   	u64 dst_addr;				/* In */
+>>> -	u32 len;				/* In */
+>>>   } __packed;
+> 
+> The comment above this ^^^ struct still lists the 'len' field, and also
+> calls the first field 'handle' instead of 'gctx_paddr'.
+> 
+> Also - why is this change happening in this patch? Why was the incorrect
+> 'len' field added in the first place in "[PATCH RFC v8 20/56]
+> crypto:ccp: Define the SEV-SNP commands" ? (the comment fixes should
+> probably go there too).
+> 
+> 
+> 
+>>>   
+>>>   /**
+>>> @@ -913,13 +912,27 @@ int sev_guest_decommission(struct sev_data_decommission *data, int *error);
+>>>    * @error: SEV command return code
+>>>    *
+>>>    * Returns:
+>>> + * 0 if the sev successfully processed the command
+>>> + * -%ENODEV    if the sev device is not available
+>>> + * -%ENOTSUPP  if the sev does not support SEV
+>>> + * -%ETIMEDOUT if the sev command timed out
+>>> + * -%EIO       if the sev returned a non-zero return code
+>>> + */
+> 
+> I think that if the word 'sev' would be 'SEV' in this comment, the diff
+> will be a bit less misleading (basically this patch should not introduce
+> changes to sev_do_cmd).
+> 
+> -Dov
+> 
+>>> +int sev_do_cmd(int cmd, void *data, int *psp_ret);
+>>> +
+>>> +/**
+>>> + * snp_guest_dbg_decrypt_page - perform SEV SNP_DBG_DECRYPT command
+>>> + *
+>>> + * @sev_ret: sev command return code
+>>> + *
+>>> + * Returns:
+>>>    * 0 if the SEV successfully processed the command
+>>>    * -%ENODEV    if the SEV device is not available
+>>>    * -%ENOTSUPP  if the SEV does not support SEV
+>>>    * -%ETIMEDOUT if the SEV command timed out
+>>>    * -%EIO       if the SEV returned a non-zero return code
+>>>    */
+>>> -int sev_do_cmd(int cmd, void *data, int *psp_ret);
+>>> +int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error);
+>>>   
+>>>   void *psp_copy_user_blob(u64 uaddr, u32 len);
+>>>   void *snp_alloc_firmware_page(gfp_t mask);
+>>> @@ -987,6 +1000,11 @@ static inline void *psp_copy_user_blob(u64 __user uaddr, u32 len) { return ERR_P
+>>>   
+>>>   void snp_mark_pages_offline(unsigned long pfn, unsigned int npages) {}
+>>>   
+>>> +static inline int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error)
+>>> +{
+>>> +	return -ENODEV;
+>>> +}
+>>> +
+>>>   static inline void *snp_alloc_firmware_page(gfp_t mask)
+>>>   {
+>>>   	return NULL;
 >>
->> Since we're already touching the code that copies the
->> initrd in guest memory, let's do a bit of cleaning and remove a
->> useless local variable.
->>
->> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
->> [ Make sure the Linux kernel image area is marked as RAM ]
->> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
-
->> diff --git a/arm/kvm.c b/arm/kvm.c
->> index acb627b2..57c5b5f7 100644
->> --- a/arm/kvm.c
->> +++ b/arm/kvm.c
->> @@ -6,6 +6,7 @@
->>   #include "kvm/fdt.h"
->>   #include "arm-common/gic.h"
->> +#include <asm/realm.h>
->>   #include <sys/resource.h>
->> @@ -167,6 +168,9 @@ bool kvm__arch_load_kernel_image(struct kvm *kvm, 
->> int fd_kernel, int fd_initrd,
->>       pr_debug("Loaded kernel to 0x%llx (%llu bytes)",
->>            kvm->arch.kern_guest_start, kvm->arch.kern_size);
-> 
-> 
-> I've noticed that multiple calling of the measurement test from the 
-> kvm-unit-tests suite results in different Realm Initial Measurements, 
-> although the kernel image is always the same.
-> 
-> After short investigation, I've found that the RIM starts being 
-> different while populating the last 4kB chunk of the kernel image.
-> The issue occurs when the image size is not aligned to the page size (4kB).
-> 
-> After zeroing the unused area of the last chunk, the measurements become 
-> repeatable.
-> 
-
-That is a good point. We could memset() the remaining bits of the 4K 
-page to 0. I will make this change.
-
-Suzuki
-
