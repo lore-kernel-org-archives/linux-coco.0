@@ -1,160 +1,386 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD895381
-	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 11:35:08 +0000 (UTC)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 322AiLsB030357;
-	Thu, 2 Mar 2023 11:34:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=dOAo4yP20BN2tMvLNTdTUQ9lWV9N88XXslr4sX2EaiY=;
- b=NOy3uKXatHZhVjhlYrjt7dk9peFQ+ghLo3nhedJCxpLkT91i7tygH4K+wODyfBkGsFq+
- +tydf3Q7mSMslJrrFP1RKERe0KWqkEZbaEcB+ZMov/jO9P7bKLQHMryatbYsH2IEFGJM
- IVx1PX44rxqUvo7KWoHHVHEbUR1+OzSbmxSx+Sa+CkM2XbI6e0MTVyFBHCpyehGjsHcP
- MZXRMI9gSZE+Z+p8ELs29MS3qFRtqfxWFCY96cw1dBk2RMPxG8NGyoVXjLjMDmhMiZg5
- XB3mJ2Zp9YNUW99CvpjbE/6sgje4ZoOadttLjicyrupsB7PUMLHG4ZF8cWjaOkgBavLH rA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2tag996v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 11:34:39 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 322BPU3D010598;
-	Thu, 2 Mar 2023 11:34:38 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2tag996d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 11:34:38 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3229qNok024547;
-	Thu, 2 Mar 2023 11:34:37 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
-	by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3nybe9vkru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 11:34:37 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 322BYZi44260488
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Mar 2023 11:34:35 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90FD95805E;
-	Thu,  2 Mar 2023 11:34:35 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 83B3F5805B;
-	Thu,  2 Mar 2023 11:34:26 +0000 (GMT)
-Received: from [9.65.199.252] (unknown [9.65.199.252])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Mar 2023 11:34:26 +0000 (GMT)
-Message-ID: <7bb7de5b-8650-d632-5d8d-13e961092514@linux.ibm.com>
-Date: Thu, 2 Mar 2023 13:34:24 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE926FC7
+	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 14:03:26 +0000 (UTC)
+Received: by mail-ed1-f42.google.com with SMTP id x3so5026881edb.10
+        for <linux-coco@lists.linux.dev>; Thu, 02 Mar 2023 06:03:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=h/JXa3jl6N7Sx/fIVr6/rpxA4dj4ykaps8uQIwSRFHI=;
+        b=SQe9A8zf+XRjs48CSJ+h4GnRYESyOz6AHJ2g25k/lwPj0Py8kP4rG8hhbJK3PRK/Ys
+         g3JfMqTzkjAS07GFOOSo5vWwYNY4RjnyegQ/OwnuY/mIwkndxf/tRl69oSIjYCFEsha9
+         1uivUu44qu8TIqf1FwmyDphbHfzYdzuMHmHW0+vQiB1MI+CoTV1HvTPaMBmotfy/pIXM
+         3Ya/DW90qOpCzTz0iMBDoR/16Ny+HfrUtO9T+8TUzhnEeRvYG92vR7b848tcOs8uZSCk
+         vTIm7M9BChxeqRZaVnDa7PfzMTULinMLJXWwlP6QFt4Pu4gBnY88Tnv+m57e1yTd1QRA
+         McPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h/JXa3jl6N7Sx/fIVr6/rpxA4dj4ykaps8uQIwSRFHI=;
+        b=dK8gC2ZZY9RCTunU4wXoewV+83fJ4c5pQ5zTSx6WkipAQMtaZktxgD5lDAQkV7lRAm
+         mxhGWSLwa2Fha9nmeSe+I3AYFYkXcAvge7btFgrUoZTq+a/CzG3NJiI65/X5wCmoNfgy
+         5tc1n02uahpSDDF1U7Y9geDakwCPkzjK1EPMzhCQ3EJjeLKr7snPo48Dh8BsQWJWURNG
+         n/txATeFslxCppKcQ/bGcbcGVCR99pK3j86WU9FriCFcz7zTZSaOJ96vwTTlc9cNitJ5
+         xNP0HdDjUItcJYuNwSZS/dKgkm+vvnDmZ9q3hAxQY5gntWkrZRK4+i/FeQ9oITe/WDOU
+         esHg==
+X-Gm-Message-State: AO0yUKU1/EAcukOMaxNo4yTAIqesPxTb76FK6O3AavuK1+oosvtWQccV
+	x4x4NBy7EIBsFGDf1eeYLYw=
+X-Google-Smtp-Source: AK7set/gtIv/d5+qF714NjY0nEzkNgdHznl1CeO4qmEfZDHvPZB9UdsHo5ShI+zFg/5R6pNVkFnOVQ==
+X-Received: by 2002:a05:6402:18a:b0:4ac:c3c0:24d7 with SMTP id r10-20020a056402018a00b004acc3c024d7mr10632959edv.42.1677765804566;
+        Thu, 02 Mar 2023 06:03:24 -0800 (PST)
+Received: from [192.168.5.8] (PC-176-101-165-146.tvk-net.pl. [176.101.165.146])
+        by smtp.gmail.com with ESMTPSA id t19-20020a50d713000000b004af73333d6esm6981406edi.53.2023.03.02.06.03.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Mar 2023 06:03:24 -0800 (PST)
+Message-ID: <7a0e256d-3ce1-3218-c930-ed518a679b8b@gmail.com>
+Date: Thu, 2 Mar 2023 15:03:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH RFC v8 54/56] x86/sev: Add KVM commands for instance certs
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [RFC kvmtool 18/31] arm64: Populate initial realm contents
 Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-        ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-        vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-        dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-        peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-        rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
-        kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-        alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
-        ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-        Dionna Glaze <dionnaglaze@google.com>,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
- <20230220183847.59159-55-michael.roth@amd.com>
-From: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <20230220183847.59159-55-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
+ Andrew Jones <andrew.jones@linux.dev>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Paolo Bonzini <pbonzini@redhat.com>, Quentin Perret <qperret@google.com>,
+ Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>,
+ Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-coco@lists.linux.dev, kvmarm@lists.cs.columbia.edu,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <20230127113932.166089-1-suzuki.poulose@arm.com>
+ <20230127113932.166089-19-suzuki.poulose@arm.com>
+From: Piotr Sawicki <piotr.sawickas@gmail.com>
+In-Reply-To: <20230127113932.166089-19-suzuki.poulose@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: sW6S_sH2skBR2gF5i0T43zjzYupGR-JF
-X-Proofpoint-GUID: wwIKig-YXQZM25e08VegcV-Ep_P_1img
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-02_06,2023-03-02_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
- impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501
- clxscore=1015 bulkscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303020101
 
+Hi,
 
-
-On 20/02/2023 20:38, Michael Roth wrote:
-> From: Dionna Glaze <dionnaglaze@google.com>
+> From: Alexandru Elisei <alexandru.elisei@arm.com>
 > 
-> The /dev/sev device has the ability to store host-wide certificates for
-> the key used by the AMD-SP for SEV-SNP attestation report signing,
-> but for hosts that want to specify additional certificates that are
-> specific to the image launched in a VM, a different way is needed to
-> communicate those certificates.
+> Populate the realm memory with the initial contents, which include
+> the device tree blob, the kernel image, and initrd, if specified,
+> or the firmware image.
 > 
-> Add two new KVM ioctl to handle this: KVM_SEV_SNP_{GET,SET}_CERTS
+> Populating an image in the realm involves two steps:
+>   a) Mark the IPA area as RAM - INIT_IPA_REALM
+>   b) Load the contents into the IPA - POPULATE_REALM
 > 
-> The certificates that are set with this command are expected to follow
-> the same format as the host certificates, but that format is opaque
-> to the kernel.
+> Wherever we know the actual size of an image in memory, we make
+> sure the "memory area" is initialised to RAM.
+> e.g., Linux kernel image size from the header which includes the bss etc.
+> The "file size" on disk for the Linux image is much smaller.
+> We mark the region of size Image.header.size as RAM (a), from the kernel
+> load address. And load the Image file into the memory (b) above.
+> At the moment we only detect the Arm64 Linux Image header format.
 > 
-> The new behavior for custom certificates is that the extended guest
-> request command will now return the overridden certificates if they
-> were installed for the instance. The error condition for a too small
-> data buffer is changed to return the overridden certificate data size
-> if there is an overridden certificate set installed.
+> Since we're already touching the code that copies the
+> initrd in guest memory, let's do a bit of cleaning and remove a
+> useless local variable.
 > 
-> Setting a 0 length certificate returns the system state to only return
-> the host certificates on an extended guest request.
-> 
-> Also increase the SEV_FW_BLOB_MAX_SIZE another 4K page to allow space
-> for an extra certificate.
-> 
-> Cc: Tom Lendacky <Thomas.Lendacky@amd.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> [mdr: remove used of "we" and "this patch" in commit log]
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> [ Make sure the Linux kernel image area is marked as RAM ]
+> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 > ---
->  arch/x86/kvm/svm/sev.c   | 111 ++++++++++++++++++++++++++++++++++++++-
->  arch/x86/kvm/svm/svm.h   |   1 +
->  include/linux/psp-sev.h  |   2 +-
->  include/uapi/linux/kvm.h |  12 +++++
->  4 files changed, 123 insertions(+), 3 deletions(-)
+>   arm/aarch32/include/asm/realm.h |   3 +
+>   arm/aarch64/include/asm/realm.h |   3 +
+>   arm/aarch64/realm.c             | 112 ++++++++++++++++++++++++++++++++
+>   arm/fdt.c                       |   6 ++
+>   arm/kvm.c                       |  20 ++++--
+>   include/linux/kernel.h          |   1 +
+>   6 files changed, 140 insertions(+), 5 deletions(-)
 > 
+> diff --git a/arm/aarch32/include/asm/realm.h b/arm/aarch32/include/asm/realm.h
+> index 5aca6cca..fcff0e55 100644
+> --- a/arm/aarch32/include/asm/realm.h
+> +++ b/arm/aarch32/include/asm/realm.h
+> @@ -6,5 +6,8 @@
+>   #include "kvm/kvm.h"
+>   
+>   static inline void kvm_arm_realm_create_realm_descriptor(struct kvm *kvm) {}
+> +static inline void kvm_arm_realm_populate_kernel(struct kvm *kvm) {}
+> +static inline void kvm_arm_realm_populate_initrd(struct kvm *kvm) {}
+> +static inline void kvm_arm_realm_populate_dtb(struct kvm *kvm) {}
+>   
+>   #endif /* ! __ASM_REALM_H */
+> diff --git a/arm/aarch64/include/asm/realm.h b/arm/aarch64/include/asm/realm.h
+> index e176f15f..6e760ac9 100644
+> --- a/arm/aarch64/include/asm/realm.h
+> +++ b/arm/aarch64/include/asm/realm.h
+> @@ -6,5 +6,8 @@
+>   #include "kvm/kvm.h"
+>   
+>   void kvm_arm_realm_create_realm_descriptor(struct kvm *kvm);
+> +void kvm_arm_realm_populate_kernel(struct kvm *kvm);
+> +void kvm_arm_realm_populate_initrd(struct kvm *kvm);
+> +void kvm_arm_realm_populate_dtb(struct kvm *kvm);
+>   
+>   #endif /* ! __ASM_REALM_H */
+> diff --git a/arm/aarch64/realm.c b/arm/aarch64/realm.c
+> index fc7f8d6a..eddccece 100644
+> --- a/arm/aarch64/realm.c
+> +++ b/arm/aarch64/realm.c
+> @@ -1,5 +1,7 @@
+>   #include "kvm/kvm.h"
+>   
+> +#include <linux/byteorder.h>
+> +#include <asm/image.h>
+>   #include <asm/realm.h>
+>   
+>   
+> @@ -80,3 +82,113 @@ void kvm_arm_realm_create_realm_descriptor(struct kvm *kvm)
+>   	if (ioctl(kvm->vm_fd, KVM_ENABLE_CAP, &rme_create_rd) < 0)
+>   		die_perror("KVM_CAP_RME(KVM_CAP_ARM_RME_CREATE_RD)");
+>   }
+> +
+> +static void realm_init_ipa_range(struct kvm *kvm, u64 start, u64 size)
+> +{
+> +	struct kvm_cap_arm_rme_init_ipa_args init_ipa_args = {
+> +		.init_ipa_base = start,
+> +		.init_ipa_size = size
+> +	};
+> +	struct kvm_enable_cap rme_init_ipa_realm = {
+> +		.cap = KVM_CAP_ARM_RME,
+> +		.args[0] = KVM_CAP_ARM_RME_INIT_IPA_REALM,
+> +		.args[1] = (u64)&init_ipa_args
+> +	};
+> +
+> +	if (ioctl(kvm->vm_fd, KVM_ENABLE_CAP, &rme_init_ipa_realm) < 0)
+> +		die("unable to intialise IPA range for Realm %llx - %llx (size %llu)",
+> +		    start, start + size, size);
+> +
+> +}
+> +
+> +static void __realm_populate(struct kvm *kvm, u64 start, u64 size)
+> +{
+> +	struct kvm_cap_arm_rme_populate_realm_args populate_args = {
+> +		.populate_ipa_base = start,
+> +		.populate_ipa_size = size
+> +	};
+> +	struct kvm_enable_cap rme_populate_realm = {
+> +		.cap = KVM_CAP_ARM_RME,
+> +		.args[0] = KVM_CAP_ARM_RME_POPULATE_REALM,
+> +		.args[1] = (u64)&populate_args
+> +	};
+> +
+> +	if (ioctl(kvm->vm_fd, KVM_ENABLE_CAP, &rme_populate_realm) < 0)
+> +		die("unable to populate Realm memory %llx - %llx (size %llu)",
+> +		    start, start + size, size);
+> +}
+> +
+> +static void realm_populate(struct kvm *kvm, u64 start, u64 size)
+> +{
+> +	realm_init_ipa_range(kvm, start, size);
+> +	__realm_populate(kvm, start, size);
+> +}
+> +
+> +static bool is_arm64_linux_kernel_image(void *header)
+> +{
+> +	struct arm64_image_header *hdr = header;
+> +
+> +	return memcmp(&hdr->magic, ARM64_IMAGE_MAGIC, sizeof(hdr->magic)) == 0;
+> +}
+> +
+> +static ssize_t arm64_linux_kernel_image_size(void *header)
+> +{
+> +	struct arm64_image_header *hdr = header;
+> +
+> +	if (is_arm64_linux_kernel_image(header))
+> +		return le64_to_cpu(hdr->image_size);
+> +	die("Not arm64 Linux kernel Image");
+> +}
+> +
+> +void kvm_arm_realm_populate_kernel(struct kvm *kvm)
+> +{
+> +	u64 start, end, mem_size;
+> +	void *header = guest_flat_to_host(kvm, kvm->arch.kern_guest_start);
+> +
+> +	start = ALIGN_DOWN(kvm->arch.kern_guest_start, SZ_4K);
+> +	end = ALIGN(kvm->arch.kern_guest_start + kvm->arch.kern_size, SZ_4K);
+> +
+> +	if (is_arm64_linux_kernel_image(header))
+> +		mem_size = arm64_linux_kernel_image_size(header);
+> +	else
+> +		mem_size = end - start;
+> +
+> +	realm_init_ipa_range(kvm, start, mem_size);
+> +	__realm_populate(kvm, start, end - start);
+> +}
+> +
+> +void kvm_arm_realm_populate_initrd(struct kvm *kvm)
+> +{
+> +	u64 kernel_end, start, end;
+> +
+> +	kernel_end = ALIGN(kvm->arch.kern_guest_start + kvm->arch.kern_size, SZ_4K);
+> +	start = ALIGN_DOWN(kvm->arch.initrd_guest_start, SZ_4K);
+> +	/*
+> +	 * Because we align the initrd to 4 bytes, it is theoretically possible
+> +	 * for the start of the initrd to overlap with the same page where the
+> +	 * kernel ends.
+> +	 */
+> +	if (start < kernel_end)
+> +		start = kernel_end;
+> +	end = ALIGN(kvm->arch.initrd_guest_start + kvm->arch.initrd_size, SZ_4K);
+> +	if (end > start)
+> +		realm_populate(kvm, start, end - start);
+> +}
+> +
+> +void kvm_arm_realm_populate_dtb(struct kvm *kvm)
+> +{
+> +	u64 initrd_end, start, end;
+> +
+> +	initrd_end = ALIGN(kvm->arch.initrd_guest_start + kvm->arch.initrd_size, SZ_4K);
+> +	start = ALIGN_DOWN(kvm->arch.dtb_guest_start, SZ_4K);
+> +	/*
+> +	 * Same situation as with the initrd, but now it is the DTB which is
+> +	 * overlapping with the last page of the initrd, because the initrd is
+> +	 * populated first.
+> +	 */
+> +	if (start < initrd_end)
+> +		start = initrd_end;
+> +	end = ALIGN(kvm->arch.dtb_guest_start + FDT_MAX_SIZE, SZ_4K);
+> +	if (end > start)
+> +		realm_populate(kvm, start, end - start);
+> +}
+> diff --git a/arm/fdt.c b/arm/fdt.c
+> index 286ccadf..762a604d 100644
+> --- a/arm/fdt.c
+> +++ b/arm/fdt.c
+> @@ -7,6 +7,8 @@
+>   #include "arm-common/gic.h"
+>   #include "arm-common/pci.h"
+>   
+> +#include <asm/realm.h>
+> +
+>   #include <stdbool.h>
+>   
+>   #include <linux/byteorder.h>
+> @@ -231,6 +233,10 @@ static int setup_fdt(struct kvm *kvm)
+>   
+>   	if (kvm->cfg.arch.dump_dtb_filename)
+>   		dump_fdt(kvm->cfg.arch.dump_dtb_filename, fdt_dest);
+> +
+> +	if (kvm->cfg.arch.is_realm)
+> +		kvm_arm_realm_populate_dtb(kvm);
+> +
+>   	return 0;
+>   }
+>   late_init(setup_fdt);
+> diff --git a/arm/kvm.c b/arm/kvm.c
+> index acb627b2..57c5b5f7 100644
+> --- a/arm/kvm.c
+> +++ b/arm/kvm.c
+> @@ -6,6 +6,7 @@
+>   #include "kvm/fdt.h"
+>   
+>   #include "arm-common/gic.h"
+> +#include <asm/realm.h>
+>   
+>   #include <sys/resource.h>
+>   
+> @@ -167,6 +168,9 @@ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+>   	pr_debug("Loaded kernel to 0x%llx (%llu bytes)",
+>   		 kvm->arch.kern_guest_start, kvm->arch.kern_size);
 
-[...]
 
-> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-> index 92116e2b74fd..3b28b78938f6 100644
-> --- a/include/linux/psp-sev.h
-> +++ b/include/linux/psp-sev.h
-> @@ -22,7 +22,7 @@
->  #define __psp_pa(x)	__pa(x)
->  #endif
->  
-> -#define SEV_FW_BLOB_MAX_SIZE	0x4000	/* 16KB */
-> +#define SEV_FW_BLOB_MAX_SIZE	0x5000	/* 20KB */
+I've noticed that multiple calling of the measurement test from the 
+kvm-unit-tests suite results in different Realm Initial Measurements, 
+although the kernel image is always the same.
 
-This change should be removed (it was also discussed in v7).  If I
-understand correctly, 16KB is a limit of the PSP.
+After short investigation, I've found that the RIM starts being 
+different while populating the last 4kB chunk of the kernel image.
+The issue occurs when the image size is not aligned to the page size (4kB).
 
--Dov
+After zeroing the unused area of the last chunk, the measurements become 
+repeatable.
 
+> +	if (kvm->cfg.arch.is_realm)
+> +		kvm_arm_realm_populate_kernel(kvm);
+> +
+>   	/*
+>   	 * Now load backwards from the end of memory so the kernel
+>   	 * decompressor has plenty of space to work with. First up is
+> @@ -188,7 +192,6 @@ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+>   	/* ... and finally the initrd, if we have one. */
+>   	if (fd_initrd != -1) {
+>   		struct stat sb;
+> -		unsigned long initrd_start;
+>   
+>   		if (fstat(fd_initrd, &sb))
+>   			die_perror("fstat");
+> @@ -199,7 +202,6 @@ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+>   		if (pos < kernel_end)
+>   			die("initrd overlaps with kernel image.");
+>   
+> -		initrd_start = guest_addr;
+>   		file_size = read_file(fd_initrd, pos, limit - pos);
+>   		if (file_size == -1) {
+>   			if (errno == ENOMEM)
+> @@ -208,11 +210,13 @@ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+>   			die_perror("initrd read");
+>   		}
+>   
+> -		kvm->arch.initrd_guest_start = initrd_start;
+> +		kvm->arch.initrd_guest_start = guest_addr;
+>   		kvm->arch.initrd_size = file_size;
+>   		pr_debug("Loaded initrd to 0x%llx (%llu bytes)",
+> -			 kvm->arch.initrd_guest_start,
+> -			 kvm->arch.initrd_size);
+> +			 kvm->arch.initrd_guest_start, kvm->arch.initrd_size);
+> +
+> +		if (kvm->cfg.arch.is_realm)
+> +			kvm_arm_realm_populate_initrd(kvm);
+>   	} else {
+>   		kvm->arch.initrd_size = 0;
+>   	}
+> @@ -269,6 +273,8 @@ bool kvm__load_firmware(struct kvm *kvm, const char *firmware_filename)
+>   
+>   	/* Kernel isn't loaded by kvm, point start address to firmware */
+>   	kvm->arch.kern_guest_start = fw_addr;
+> +	kvm->arch.kern_size = fw_sz;
+> +
+>   	pr_debug("Loaded firmware to 0x%llx (%zd bytes)",
+>   		 kvm->arch.kern_guest_start, fw_sz);
+>   
+> @@ -283,6 +289,10 @@ bool kvm__load_firmware(struct kvm *kvm, const char *firmware_filename)
+>   		 kvm->arch.dtb_guest_start,
+>   		 kvm->arch.dtb_guest_start + FDT_MAX_SIZE);
+>   
+> +	if (kvm->cfg.arch.is_realm)
+> +		/* We hijack the kernel fields to describe the firmware. */
+> +		kvm_arm_realm_populate_kernel(kvm);
+> +
+>   	return true;
+>   }
+>   
+> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+> index 6c22f1c0..25f19c20 100644
+> --- a/include/linux/kernel.h
+> +++ b/include/linux/kernel.h
+> @@ -9,6 +9,7 @@
+>   
+>   #define DIV_ROUND_UP(n,d) (((n) + (d) - 1) / (d))
+>   
+> +#define ALIGN_DOWN(x,a)		__ALIGN_MASK(x - (typeof(x))((a) - 1),(typeof(x))(a)-1)
+>   #define ALIGN(x,a)		__ALIGN_MASK(x,(typeof(x))(a)-1)
+>   #define __ALIGN_MASK(x,mask)	(((x)+(mask))&~(mask))
+>   #define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
 
->  
->  /**
->   * SEV platform state
+Kind regards,
+Piotr Sawicki
