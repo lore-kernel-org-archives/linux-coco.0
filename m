@@ -1,259 +1,113 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88211110B
-	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 06:00:09 +0000 (UTC)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32252Z1k027917;
-	Thu, 2 Mar 2023 05:59:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=wUdfnguh4H8PLzbalZbcZFqO3C4N0DClhybUCKsJD00=;
- b=QgRVPGU6Mys64aRBI4Eo5frRm7YMTrCIYglVT5ffGukrjzdlrux9wTDTVvO+qn2MYuRc
- 4NRc0mD5AR3mzJB+mtm0cxGo+q6z5/uohubiiVZHmC6x0sGx/yE4llG9rVcSqAy5wDhp
- 50FyLMeg90yso9RxcV2voTU7SfpyKUxq+ESRscWeXowvQeQLO1DXGa25iIJBSNr2PyF6
- sLlR0G1fH/ISx5eiqsDx5ORXL7ujtsIVaOeAxxLWiVgWqqwbThnfIaAwrtldhKael82e
- GKG/2dsJ1My2WI1enj/S+74Bx5FtIwiHvb6BmIHQIuPlwqZBJtIl8cvRV1zY/vuUx5+Q cg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2naah3ca-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 05:59:40 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3225uW8K004481;
-	Thu, 2 Mar 2023 05:59:39 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2naah3bk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 05:59:39 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3224D9b2016017;
-	Thu, 2 Mar 2023 05:59:38 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
-	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3nybdm1vwh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Mar 2023 05:59:38 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3225xaEd53936468
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Mar 2023 05:59:36 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F5225805D;
-	Thu,  2 Mar 2023 05:59:36 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9538B5805C;
-	Thu,  2 Mar 2023 05:59:26 +0000 (GMT)
-Received: from [9.65.199.252] (unknown [9.65.199.252])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Mar 2023 05:59:26 +0000 (GMT)
-Message-ID: <e63ba525-644d-1a8c-afe7-2ced4a8fbb93@linux.ibm.com>
-Date: Thu, 2 Mar 2023 07:59:24 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827BE1C35
+	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 09:18:24 +0000 (UTC)
+Received: by mail-wm1-f43.google.com with SMTP id r19-20020a05600c459300b003eb3e2a5e7bso1098008wmo.0
+        for <linux-coco@lists.linux.dev>; Thu, 02 Mar 2023 01:18:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1677748702;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+v85GLUDrQ2zVLBvlWtS8ia1HQWcVPpr7GzHsjdX2Jw=;
+        b=MswMY0eyIVOvB1BGlIsjT7T7ZB+Coenk8J9ktojT2m4Q1VRDdt++rgRUovNUXlnJ8+
+         0n9yemw+T01QZcvWjHA+IRLf1JeQT4kgvMDTRAYyxhxbxVWsHDg9iQgAYLNOQNwzA9OF
+         sDZz74KhVDusvK5O1ZzeFkSdIarEHU0F40BXnkkl9lMTBvYQ5MhVKpY3D2OmLJcBkAEy
+         KcO16Kf5TQjdh+qmv8d3ljlMfUjsN/SwOUJhPHytWIHGEv2W78sjXEO3RFhRyQIfEBHP
+         PMv71bBDjxuLO7cV0gbppJac2jsSFYaYorLS8teQTqi/lzN5ml/LLJzfs4CWnvoIVFYD
+         TWyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1677748703;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+v85GLUDrQ2zVLBvlWtS8ia1HQWcVPpr7GzHsjdX2Jw=;
+        b=h4GgCwhJaWkq3VmvSjcQgQ4kaA3yyGUE5nyCb4F2rtHN0cD178ioYJsWkdACSRmvQ1
+         qKCd6KEJRuxvqwKPveNRFqsCjxE2wM0pVUDAZYwO7vKPyejp3Ucen6nfBtIrCejV3hc6
+         +i7Uol/L8y2hS4Kwl41JVq2LkK/qe5ZjWKJLFnOK6o/RklrL9lCjhHgy+b3v1sZZLZbR
+         2OezqIkEeCt5JLQSnlhH8GHz8vHJrGiTY1XiV3bb3/yYUJCxWMya+LtFuh0NLbYHlckg
+         TSirkF0WgfglSwd3kmI2KwM6JPXWqbLbAmdykKKnh5XfB0H8+xpnBZsnHFdppsYh1Lx0
+         SNaQ==
+X-Gm-Message-State: AO0yUKVKaqatbkyd8zTzkfHRDQCwixrnqDLvE/+rePHBXdPgwiCYeNzK
+	iq1raMS0DVfUdZj8qeAfUPaD/Q==
+X-Google-Smtp-Source: AK7set+YPw1lyaEwaI48fxgT8GolHPnYxo9XVJyK/m4+bNoNPlN8Bml3v5HR6wybgri48X3tq2AU1w==
+X-Received: by 2002:a05:600c:3d8e:b0:3ea:bc08:b55e with SMTP id bi14-20020a05600c3d8e00b003eabc08b55emr6973744wmb.25.1677748702713;
+        Thu, 02 Mar 2023 01:18:22 -0800 (PST)
+Received: from myrica (054592b0.skybroadband.com. [5.69.146.176])
+        by smtp.gmail.com with ESMTPSA id x14-20020adfec0e000000b002c54536c662sm14745006wrn.34.2023.03.02.01.18.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Mar 2023 01:18:22 -0800 (PST)
+Date: Thu, 2 Mar 2023 09:18:24 +0000
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Itaru Kitayama <itaru.kitayama@gmail.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Andrew Jones <andrew.jones@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chao Peng <chao.p.peng@linux.intel.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, James Morse <james.morse@arm.com>,
+	Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Quentin Perret <qperret@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>,
+	Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.cs.columbia.edu
+Subject: Re: [RFC] Support for Arm CCA VMs on Linux
+Message-ID: <ZABp4KhrhsHcKmh2@myrica>
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <Y9PtKJ3Wicc19JF1@myrica>
+ <CANW9uyud8RTkqgiL=64wV712QMxtAyubqeyCJ0vpcADJ42VqJA@mail.gmail.com>
+ <Y/8Y3WLmiw6+Z5AS@myrica>
+ <CANW9uysnvGCwANu+_6dp9+3rvHGOkThT9d0K2qpQV4exdmYWoA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH RFC v8 52/56] ccp: Add support to decrypt the page
-To: Zhi Wang <zhi.wang.linux@gmail.com>, Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-        linux-crypto@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-        ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-        vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-        dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-        peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-        rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
-        kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-        alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
-        ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-        Brijesh Singh <brijesh.singh@amd.com>,
-        Dov Murik <dovmurik@linux.ibm.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
- <20230220183847.59159-53-michael.roth@amd.com>
- <20230301232045.0000502e@intel.com>
-Content-Language: en-US
-From: Dov Murik <dovmurik@linux.ibm.com>
-In-Reply-To: <20230301232045.0000502e@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3cOt12L_luCZfkyo3GAAwwOwY32Q2VvV
-X-Proofpoint-ORIG-GUID: HE5DsgxGDI6IFPFb0VeD3SZ_AWQzgOpk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-02_02,2023-03-01_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 mlxscore=0
- spamscore=0 clxscore=1011 impostorscore=0 mlxlogscore=999 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303020045
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANW9uysnvGCwANu+_6dp9+3rvHGOkThT9d0K2qpQV4exdmYWoA@mail.gmail.com>
 
-Hi Mike, Zhi,
-
-On 01/03/2023 23:20, Zhi Wang wrote:
-> On Mon, 20 Feb 2023 12:38:43 -0600
-> Michael Roth <michael.roth@amd.com> wrote:
+On Thu, Mar 02, 2023 at 07:12:24AM +0900, Itaru Kitayama wrote:
+> On Wed, Mar 1, 2023 at 6:20 PM Jean-Philippe Brucker
+> <jean-philippe@linaro.org> wrote:
+> >
+> > Hi Itaru,
+> >
+> > On Wed, Mar 01, 2023 at 08:35:05AM +0900, Itaru Kitayama wrote:
+> > > Hi Jean,
+> > > I've tried your series in Real on CCA Host, but the KVM arch init
+> > > emits an Invalid argument error and terminates.
+> >
+> > Do you know which call returns this error?  Normally the RMEGuest support
+> > should print more detailed errors. Are you able to launch normal guests
+> > (without the rme-guest object and confidential-guest-support machine
+> > parameter)?  Could you give the complete QEMU command-line?
 > 
->> From: Brijesh Singh <brijesh.singh@amd.com>
->>
->> Add support to decrypt guest encrypted memory. These API interfaces can
->> be used for example to dump VMCBs on SNP guest exit.
->>
+> No, I cant say which. Yes, the CCA-capable QEMU boots if I don't set
+> RME-related options.
 > 
-> What kinds of check will be applied from firmware when VMM decrypts this
-> page? I suppose there has to be kinda mechanism to prevent VMM to decrypt
-> any page in the guest. It would be nice to have some introduction about
-> it in the comments.
-> 
+> Here's mine (based upon your command-line):
+> qemu-system-aarch64 -cpu host -accel kvm -machine
+> virt,gic-version=3,confidential-guest-support=rme0 -smp 2 -m 256M
+> -nographic -object rme-guest,id=rme0,measurement-algo=sha512 -kernel
+> Image -initrd rootfs.ext2 -append 'console=ttyAMA0 earlycon'
+> -overcommit mem-lock=on
 
-The SNP ABI spec says (section 8.27.2 SNP_DBG_DECRYPT):
+Thank you, this works on my setup so I'm not sure what's wrong. Check that
+KVM initialized successfully, with this in the host kernel log:
+"[    0.267019] kvm [1]: Using prototype RMM support (version 56.0)"
 
-  The firmware checks that the guest's policy allows debugging. If not,
-  the firmware returns POLICY_FAILURE.
+Next step would be to find out where the EINVAL comes from, with printfs
+or GDB. This seems rather specific so I'll email you directly to avoid
+filling up everyone's inbox.
 
-and in the Guest Policy (section 4.3):
-
-  Bit 19 - DEBUG
-  0: Debugging is disallowed.
-  1: Debugging is allowed.
-
-In the kernel, that firmware error code is defined as
-SEV_RET_POLICY_FAILURE.
-
-
->> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
->> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
->> [mdr: minor commit fixups]
->> Signed-off-by: Michael Roth <michael.roth@amd.com>
->> ---
->>  drivers/crypto/ccp/sev-dev.c | 32 ++++++++++++++++++++++++++++++++
->>  include/linux/psp-sev.h      | 22 ++++++++++++++++++++--
->>  2 files changed, 52 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
->> index e65563bc8298..bf5167b2acfc 100644
->> --- a/drivers/crypto/ccp/sev-dev.c
->> +++ b/drivers/crypto/ccp/sev-dev.c
->> @@ -2017,6 +2017,38 @@ int sev_guest_df_flush(int *error)
->>  }
->>  EXPORT_SYMBOL_GPL(sev_guest_df_flush);
->>  
->> +int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error)
->> +{
->> +	struct sev_data_snp_dbg data = {0};
->> +	struct sev_device *sev;
->> +	int ret;
->> +
->> +	if (!psp_master || !psp_master->sev_data)
->> +		return -ENODEV;
->> +
->> +	sev = psp_master->sev_data;
->> +
->> +	if (!sev->snp_initialized)
->> +		return -EINVAL;
->> +
->> +	data.gctx_paddr = sme_me_mask | (gctx_pfn << PAGE_SHIFT);
->> +	data.src_addr = sme_me_mask | (src_pfn << PAGE_SHIFT);
->> +	data.dst_addr = sme_me_mask | (dst_pfn << PAGE_SHIFT);
-
-I guess this works, but I wonder why we need to turn on sme_me_mask on
-teh dst_addr.  I thought that the firmware decrypts the guest page
-(src_addr) to a plaintext page.  Couldn't find this requirement in the
-SNP spec.
-
-
->> +
->> +	/* The destination page must be in the firmware state. */
->> +	if (rmp_mark_pages_firmware(data.dst_addr, 1, false))
->> +		return -EIO;
->> +
->> +	ret = sev_do_cmd(SEV_CMD_SNP_DBG_DECRYPT, &data, error);
->> +
->> +	/* Restore the page state */
->> +	if (snp_reclaim_pages(data.dst_addr, 1, false))
->> +		ret = -EIO;
->> +
->> +	return ret;
->> +}
->> +EXPORT_SYMBOL_GPL(snp_guest_dbg_decrypt_page);
->> +
->>  int snp_guest_ext_guest_request(struct sev_data_snp_guest_request *data,
->>  				unsigned long vaddr, unsigned long *npages, unsigned long *fw_err)
->>  {
->> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
->> index 81bafc049eca..92116e2b74fd 100644
->> --- a/include/linux/psp-sev.h
->> +++ b/include/linux/psp-sev.h
->> @@ -710,7 +710,6 @@ struct sev_data_snp_dbg {
->>  	u64 gctx_paddr;				/* In */
->>  	u64 src_addr;				/* In */
->>  	u64 dst_addr;				/* In */
->> -	u32 len;				/* In */
->>  } __packed;
-
-The comment above this ^^^ struct still lists the 'len' field, and also
-calls the first field 'handle' instead of 'gctx_paddr'.
-
-Also - why is this change happening in this patch? Why was the incorrect
-'len' field added in the first place in "[PATCH RFC v8 20/56]
-crypto:ccp: Define the SEV-SNP commands" ? (the comment fixes should
-probably go there too).
-
-
-
->>  
->>  /**
->> @@ -913,13 +912,27 @@ int sev_guest_decommission(struct sev_data_decommission *data, int *error);
->>   * @error: SEV command return code
->>   *
->>   * Returns:
->> + * 0 if the sev successfully processed the command
->> + * -%ENODEV    if the sev device is not available
->> + * -%ENOTSUPP  if the sev does not support SEV
->> + * -%ETIMEDOUT if the sev command timed out
->> + * -%EIO       if the sev returned a non-zero return code
->> + */
-
-I think that if the word 'sev' would be 'SEV' in this comment, the diff
-will be a bit less misleading (basically this patch should not introduce
-changes to sev_do_cmd).
-
--Dov
-
->> +int sev_do_cmd(int cmd, void *data, int *psp_ret);
->> +
->> +/**
->> + * snp_guest_dbg_decrypt_page - perform SEV SNP_DBG_DECRYPT command
->> + *
->> + * @sev_ret: sev command return code
->> + *
->> + * Returns:
->>   * 0 if the SEV successfully processed the command
->>   * -%ENODEV    if the SEV device is not available
->>   * -%ENOTSUPP  if the SEV does not support SEV
->>   * -%ETIMEDOUT if the SEV command timed out
->>   * -%EIO       if the SEV returned a non-zero return code
->>   */
->> -int sev_do_cmd(int cmd, void *data, int *psp_ret);
->> +int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error);
->>  
->>  void *psp_copy_user_blob(u64 uaddr, u32 len);
->>  void *snp_alloc_firmware_page(gfp_t mask);
->> @@ -987,6 +1000,11 @@ static inline void *psp_copy_user_blob(u64 __user uaddr, u32 len) { return ERR_P
->>  
->>  void snp_mark_pages_offline(unsigned long pfn, unsigned int npages) {}
->>  
->> +static inline int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64 dst_pfn, int *error)
->> +{
->> +	return -ENODEV;
->> +}
->> +
->>  static inline void *snp_alloc_firmware_page(gfp_t mask)
->>  {
->>  	return NULL;
-> 
+Thanks,
+Jean
