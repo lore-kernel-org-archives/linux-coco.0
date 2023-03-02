@@ -1,112 +1,160 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3112B4C7B
-	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 11:27:10 +0000 (UTC)
-Received: by mail-lj1-f182.google.com with SMTP id b13so17263659ljf.6
-        for <linux-coco@lists.linux.dev>; Thu, 02 Mar 2023 03:27:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1677756428;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TJb7ZUgVLyd0BezCYruMgzCjIaGRbn8MEvGz3yq2uQ8=;
-        b=DBbo45ZyhnENO2PQEeIoAWIfplHoenM9uv102K8FoBn5IlQ/F3IbS2pJVKCBQQl4Z3
-         cDacFzW6IqmfjlggpJyJ9u7ZveV4kUH8S4ZQ3eHeOuv3LnwPGSyq3prWTkijFNJLqgUz
-         zdKG6Br34pnwCnp9yjJda2djJ3YPnYovU6dDQnnKHBmqOlW4a5QvIdcuEajrNiwBg/VX
-         JDnor36TEOvosU86JgpMLKpRLVerkqcJEVFcyhKt+fiBpPpixQuTiCPymUf5JwpfPbEY
-         N5QbTv1xuWXUNGYWNDkI02TUeGtk1y3PbKzaKRJHDD/2Z+VF6Zy5cx6vlgQjDHHNBxxW
-         +GSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677756428;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TJb7ZUgVLyd0BezCYruMgzCjIaGRbn8MEvGz3yq2uQ8=;
-        b=1/6UfIGzJSdQ10oBiF2cN7kbPEhem3fq1s/y+Qnx1lSpDAzfMKCQaQ326sd81uwWiT
-         eW/M6Cu/Llofa/qscG5TCEN2PeqFgyDGjrjBmy5Tbx5oXKYgDsr5kDWewxk3YiJGcbzO
-         xP7l49MLT6aTav3b19ARCTMEQgU+YAutxPlZzy6v0zX9Zj8bFD69wT5DBozTYow1IcRI
-         JfOM3ShLoXbRaVNyb9SfODgVPUNJ6z9Ao54Qol8BMoOr0VSIdIZqSbVpr28GdcpzyTEB
-         kqqQEnLjthJub2UpQYpUdtq31AnlEYPZrpcRYahIVp3yB51L7SruTu3g5PzwtPbwxjhb
-         QE3Q==
-X-Gm-Message-State: AO0yUKW/SZSElskGz6Ws6WX3arOsTjORxFgJCrznQmxq+WFSj543VwLn
-	fxFP3lZzTm12+NCq7Mb11gM=
-X-Google-Smtp-Source: AK7set/LBpmR3Ohx8+StI9clR/JKrsDH2fb2JnDl7qKrYvJxXVkoui0Q2HhcZRo8LAVSqRFwnfVepQ==
-X-Received: by 2002:a2e:c42:0:b0:295:a024:f3e2 with SMTP id o2-20020a2e0c42000000b00295a024f3e2mr2796902ljd.5.1677756428052;
-        Thu, 02 Mar 2023 03:27:08 -0800 (PST)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id be40-20020a05651c172800b002959b1162f0sm2057676ljb.96.2023.03.02.03.27.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 03:27:07 -0800 (PST)
-Date: Thu, 2 Mar 2023 13:27:05 +0200
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
- ashish.kalra@amd.com, nikunj.dadhania@amd.com
-Subject: Re: [PATCH RFC v8 54/56] x86/sev: Add KVM commands for instance
- certs
-Message-ID: <20230302132705.00001637@gmail.com>
-In-Reply-To: <CAAH4kHY6jm9PHjuGj18eyCC8H4oksuNkVL=igAh4P4BTsKs2xA@mail.gmail.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
-	<20230220183847.59159-55-michael.roth@amd.com>
-	<20230302020245.00006f57@gmail.com>
-	<CAAH4kHY6jm9PHjuGj18eyCC8H4oksuNkVL=igAh4P4BTsKs2xA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD895381
+	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 11:35:08 +0000 (UTC)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 322AiLsB030357;
+	Thu, 2 Mar 2023 11:34:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=dOAo4yP20BN2tMvLNTdTUQ9lWV9N88XXslr4sX2EaiY=;
+ b=NOy3uKXatHZhVjhlYrjt7dk9peFQ+ghLo3nhedJCxpLkT91i7tygH4K+wODyfBkGsFq+
+ +tydf3Q7mSMslJrrFP1RKERe0KWqkEZbaEcB+ZMov/jO9P7bKLQHMryatbYsH2IEFGJM
+ IVx1PX44rxqUvo7KWoHHVHEbUR1+OzSbmxSx+Sa+CkM2XbI6e0MTVyFBHCpyehGjsHcP
+ MZXRMI9gSZE+Z+p8ELs29MS3qFRtqfxWFCY96cw1dBk2RMPxG8NGyoVXjLjMDmhMiZg5
+ XB3mJ2Zp9YNUW99CvpjbE/6sgje4ZoOadttLjicyrupsB7PUMLHG4ZF8cWjaOkgBavLH rA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2tag996v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Mar 2023 11:34:39 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 322BPU3D010598;
+	Thu, 2 Mar 2023 11:34:38 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3p2tag996d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Mar 2023 11:34:38 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+	by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3229qNok024547;
+	Thu, 2 Mar 2023 11:34:37 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
+	by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3nybe9vkru-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Mar 2023 11:34:37 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 322BYZi44260488
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Mar 2023 11:34:35 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90FD95805E;
+	Thu,  2 Mar 2023 11:34:35 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 83B3F5805B;
+	Thu,  2 Mar 2023 11:34:26 +0000 (GMT)
+Received: from [9.65.199.252] (unknown [9.65.199.252])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Mar 2023 11:34:26 +0000 (GMT)
+Message-ID: <7bb7de5b-8650-d632-5d8d-13e961092514@linux.ibm.com>
+Date: Thu, 2 Mar 2023 13:34:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH RFC v8 54/56] x86/sev: Add KVM commands for instance certs
+Content-Language: en-US
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+        ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+        vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+        dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+        peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+        rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+        kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+        marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+        alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
+        ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+        Dionna Glaze <dionnaglaze@google.com>,
+        Dov Murik <dovmurik@linux.ibm.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-55-michael.roth@amd.com>
+From: Dov Murik <dovmurik@linux.ibm.com>
+In-Reply-To: <20230220183847.59159-55-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: sW6S_sH2skBR2gF5i0T43zjzYupGR-JF
+X-Proofpoint-GUID: wwIKig-YXQZM25e08VegcV-Ep_P_1img
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-02_06,2023-03-02_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 bulkscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2303020101
 
-On Wed, 1 Mar 2023 17:41:11 -0800
-Dionna Amalie Glaze <dionnaglaze@google.com> wrote:
 
-> > > @@ -2089,6 +2089,7 @@ static void *snp_context_create(struct kvm *kvm, struct kvm_sev_cmd *argp)
-> > >               goto e_free;
-> > >
-> > >       sev->snp_certs_data = certs_data;
-> > > +     sev->snp_certs_len = 0;
-> > >
-> > >       return context;
-> > >
-> >
-> > Better to move the fix to PATCH 45.
-> >
+
+On 20/02/2023 20:38, Michael Roth wrote:
+> From: Dionna Glaze <dionnaglaze@google.com>
 > 
-> This part isn't a fix, but part of the implementation since
-> snp_certs_len is added in this patch here
->
-
-I see. My bad. Was thinking it was the snp_serts_len in the global sev as
-they has the same name.
- 
-> > > diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> > > index 221b38d3c845..dced46559508 100644
-> > > --- a/arch/x86/kvm/svm/svm.h
-> > > +++ b/arch/x86/kvm/svm/svm.h
-> > > @@ -94,6 +94,7 @@ struct kvm_sev_info {
-> > >       u64 snp_init_flags;
-> > >       void *snp_context;      /* SNP guest context page */
-> > >       void *snp_certs_data;
-> > > +     unsigned int snp_certs_len; /* Size of instance override for certs */
-> > >       struct mutex guest_req_lock; /* Lock for guest request handling */
-> > >
-> > >       u64 sev_features;       /* Features set at VMSA creation */
+> The /dev/sev device has the ability to store host-wide certificates for
+> the key used by the AMD-SP for SEV-SNP attestation report signing,
+> but for hosts that want to specify additional certificates that are
+> specific to the image launched in a VM, a different way is needed to
+> communicate those certificates.
 > 
+> Add two new KVM ioctl to handle this: KVM_SEV_SNP_{GET,SET}_CERTS
+> 
+> The certificates that are set with this command are expected to follow
+> the same format as the host certificates, but that format is opaque
+> to the kernel.
+> 
+> The new behavior for custom certificates is that the extended guest
+> request command will now return the overridden certificates if they
+> were installed for the instance. The error condition for a too small
+> data buffer is changed to return the overridden certificate data size
+> if there is an overridden certificate set installed.
+> 
+> Setting a 0 length certificate returns the system state to only return
+> the host certificates on an extended guest request.
+> 
+> Also increase the SEV_FW_BLOB_MAX_SIZE another 4K page to allow space
+> for an extra certificate.
+> 
+> Cc: Tom Lendacky <Thomas.Lendacky@amd.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> 
+> Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> [mdr: remove used of "we" and "this patch" in commit log]
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/kvm/svm/sev.c   | 111 ++++++++++++++++++++++++++++++++++++++-
+>  arch/x86/kvm/svm/svm.h   |   1 +
+>  include/linux/psp-sev.h  |   2 +-
+>  include/uapi/linux/kvm.h |  12 +++++
+>  4 files changed, 123 insertions(+), 3 deletions(-)
 > 
 
+[...]
+
+> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+> index 92116e2b74fd..3b28b78938f6 100644
+> --- a/include/linux/psp-sev.h
+> +++ b/include/linux/psp-sev.h
+> @@ -22,7 +22,7 @@
+>  #define __psp_pa(x)	__pa(x)
+>  #endif
+>  
+> -#define SEV_FW_BLOB_MAX_SIZE	0x4000	/* 16KB */
+> +#define SEV_FW_BLOB_MAX_SIZE	0x5000	/* 20KB */
+
+This change should be removed (it was also discussed in v7).  If I
+understand correctly, 16KB is a limit of the PSP.
+
+-Dov
+
+
+>  
+>  /**
+>   * SEV platform state
