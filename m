@@ -1,210 +1,189 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA4810FA;
-	Thu,  2 Mar 2023 19:02:49 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 432622F4;
-	Thu,  2 Mar 2023 11:03:25 -0800 (PST)
-Received: from [10.57.90.27] (unknown [10.57.90.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0142C3F587;
-	Thu,  2 Mar 2023 11:02:37 -0800 (PST)
-Message-ID: <c1d9b82d-94a4-f2a2-fb39-6ae6b0729dc0@arm.com>
-Date: Thu, 2 Mar 2023 19:02:36 +0000
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D1AD524
+	for <linux-coco@lists.linux.dev>; Thu,  2 Mar 2023 21:11:57 +0000 (UTC)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 322KRihi009507;
+	Thu, 2 Mar 2023 21:11:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=C41PJKGqWAoHhNIrgZK/pcgj3ZWg/UjpjLf903DeDMI=;
+ b=kNVaJKbNkaXZPgIV7S7uWzeZ77ALDtBopJRrGSPLXBf0NzWwE1+D1uXUTFGWA7A1kJLW
+ z0lcazOwntdMekHSJ78uJKYPSuxX0H4sSeqtsLZD8GCnoHSyMqrEgKCiFKptHRZIOivp
+ 6sCeX5FPLx6SL5LhuYThw3785P5lCrvTcFbFC3QoosMx0R58PnlVSlADA85b4nbj94Dz
+ E0tgN85tdmJTGYHzIUCxFPjBcBcOWp+k1bzcd/zVCLh9qJRUqg3FVUwGolrYbd3S7qnP
+ E0z5Cd5YkJR7MjlNPTYJPsnyq0ghK+Kv9X2k0/SObKM7DI4xy9ol8wx7tWBrNodx6ppy Ew== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p32uygxn8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Mar 2023 21:11:29 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 322KmKgQ040718;
+	Thu, 2 Mar 2023 21:11:28 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3p32uygxmc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Mar 2023 21:11:28 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 322IOh2t016406;
+	Thu, 2 Mar 2023 21:11:26 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
+	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3nybdm6qvq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Mar 2023 21:11:26 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 322LBPmh7799472
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Mar 2023 21:11:25 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2CD965805F;
+	Thu,  2 Mar 2023 21:11:25 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 737F05805B;
+	Thu,  2 Mar 2023 21:11:15 +0000 (GMT)
+Received: from [9.65.199.252] (unknown [9.65.199.252])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Mar 2023 21:11:15 +0000 (GMT)
+Message-ID: <740d3ee7-e981-0812-f21e-296a7f350388@linux.ibm.com>
+Date: Thu, 2 Mar 2023 23:11:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-To: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Andrew Jones <andrew.jones@linux.dev>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Chao Peng <chao.p.peng@linux.intel.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- James Morse <james.morse@arm.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Paolo Bonzini <pbonzini@redhat.com>, Quentin Perret <qperret@google.com>,
- Sean Christopherson <seanjc@google.com>, Steven Price
- <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>,
- Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
- kvmarm@lists.cs.columbia.edu, Gareth Stockwell <Gareth.Stockwell@arm.com>
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <Y+vBHXbxPBgHxzGY@work-vm> <fa49dcf2-00a0-660d-cdcd-bbb6db02bcd0@arm.com>
- <ZADS5qMWoTy/uC6r@work-vm>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ZADS5qMWoTy/uC6r@work-vm>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH RFC v8 52/56] ccp: Add support to decrypt the page
+Content-Language: en-US
+To: Tom Lendacky <thomas.lendacky@amd.com>,
+        Zhi Wang <zhi.wang.linux@gmail.com>,
+        Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+        linux-crypto@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        jroedel@suse.de, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com,
+        seanjc@google.com, vkuznets@redhat.com, jmattson@google.com,
+        luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
+        pgonda@google.com, peterz@infradead.org,
+        srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+        tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
+        ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+        sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+        dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+        nikunj.dadhania@amd.com, Brijesh Singh <brijesh.singh@amd.com>,
+        Dov Murik <dovmurik@linux.ibm.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-53-michael.roth@amd.com>
+ <20230301232045.0000502e@intel.com>
+ <e63ba525-644d-1a8c-afe7-2ced4a8fbb93@linux.ibm.com>
+ <36734887-6474-b43e-51ae-34f37e6670a5@amd.com>
+From: Dov Murik <dovmurik@linux.ibm.com>
+In-Reply-To: <36734887-6474-b43e-51ae-34f37e6670a5@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BH9z6nn2n8lzIHVH_MLBi3cktElaaSB7
+X-Proofpoint-ORIG-GUID: NKQS8NB6-1CcXMFAavhlGNyyCSi2rGOZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-02_13,2023-03-02_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2303020182
 
-On 02/03/2023 16:46, Dr. David Alan Gilbert wrote:
-> * Suzuki K Poulose (suzuki.poulose@arm.com) wrote:
->> Hi Dave
+
+
+On 02/03/2023 16:33, Tom Lendacky wrote:
+> On 3/1/23 23:59, Dov Murik wrote:
+>> Hi Mike, Zhi,
 >>
->> Thanks for your response, and apologies for the delay. Response, in line.
->>
->> On 14/02/2023 17:13, Dr. David Alan Gilbert wrote:
->>> * Suzuki K Poulose (suzuki.poulose@arm.com) wrote:
->>>> We are happy to announce the early RFC version of the Arm
->>>> Confidential Compute Architecture (CCA) support for the Linux
->>>> stack. The intention is to seek early feedback in the following areas:
->>>>    * KVM integration of the Arm CCA
->>>>    * KVM UABI for managing the Realms, seeking to generalise the operations
->>>>      wherever possible with other Confidential Compute solutions.
->>>>      Note: This version doesn't support Guest Private memory, which will be added
->>>>      later (see below).
->>>>    * Linux Guest support for Realms
->>>>
->>>> Arm CCA Introduction
->>>> =====================
->>>>
->>>> The Arm CCA is a reference software architecture and implementation that builds
->>>> on the Realm Management Extension (RME), enabling the execution of Virtual
->>>> machines, while preventing access by more privileged software, such as hypervisor.
->>>> The Arm CCA allows the hypervisor to control the VM, but removes the right for
->>>> access to the code, register state or data that is used by VM.
->>>> More information on the architecture is available here[0].
->>>>
->>>>       Arm CCA Reference Software Architecture
->>>>
->>>>           Realm World    ||    Normal World   ||  Secure World  ||
->>>>                          ||        |          ||                ||
->>>>    EL0 x-------x         || x----x | x------x ||                ||
->>>>        | Realm |         || |    | | |      | ||                ||
->>>>        |       |         || | VM | | |      | ||                ||
->>>>    ----|  VM*  |---------||-|    |---|      |-||----------------||
->>>>        |       |         || |    | | |  H   | ||                ||
->>>>    EL1 x-------x         || x----x | |      | ||                ||
->>>>            ^             ||        | |  o   | ||                ||
->>>>            |             ||        | |      | ||                ||
->>>>    ------- R*------------------------|  s  -|---------------------
->>>>            S             ||          |      | ||                ||
->>>>            I             ||          |  t   | ||                ||
->>>>            |             ||          |      | ||                ||
->>>>            v             ||          x------x ||                ||
->>>>    EL2    RMM*           ||              ^    ||                ||
->>>>            ^             ||              |    ||                ||
->>>>    ========|=============================|========================
->>>>            |                             | SMC
->>>>            x--------- *RMI* -------------x
->>>>
->>>>    EL3                   Root World
->>>>                          EL3 Firmware
->>>>    ===============================================================
->>>> Where :
->>>>    RMM - Realm Management Monitor
->>>>    RMI - Realm Management Interface
->>>>    RSI - Realm Service Interface
->>>>    SMC - Secure Monitor Call
+>> On 01/03/2023 23:20, Zhi Wang wrote:
+>>> On Mon, 20 Feb 2023 12:38:43 -0600
+>>> Michael Roth <michael.roth@amd.com> wrote:
 >>>
->>> Hi,
->>>     It's nice to see this full stack posted - thanks!
+>>>> From: Brijesh Singh <brijesh.singh@amd.com>
+>>>>
+>>>> Add support to decrypt guest encrypted memory. These API interfaces can
+>>>> be used for example to dump VMCBs on SNP guest exit.
+>>>>
 >>>
->>> Are there any pointers to information on attestation and similar
->>> measurement things?  In particular, are there any plans for a vTPM
+>>> What kinds of check will be applied from firmware when VMM decrypts this
+>>> page? I suppose there has to be kinda mechanism to prevent VMM to
+>>> decrypt
+>>> any page in the guest. It would be nice to have some introduction about
+>>> it in the comments.
+>>>
 >>
->> The RMM v1.0 provides attestation and measurement services to the Realm,
->> via Realm Service Interface (RSI) calls.
-> 
-> Can you point me at some docs for that?
-> 
-
-It is part of the RMM specification [1], linked below.
-Please see "Chapter A7. Realm Measurement and Attestation"
-
-[1] https://developer.arm.com/documentation/den0137/latest
-
->> However, there is no support
->> for partitioning the Realm VM with v1.0. This is currently under
->> development and should be available in the near future.
+>> The SNP ABI spec says (section 8.27.2 SNP_DBG_DECRYPT):
 >>
->> With that in place, a vTPM could reside in a partition of the Realm VM along
->> side the OS in another. Does that answer your question ?
-> 
-> Possibly; it would be great to be able to use a standard vTPM interface
-> here rather than have to do anything special.  People already have this
-> working on AMD SEV-SNP.
-
-Ok.
-
-> 
-> Dave
-
-...
-
->>>>
->>>> [1] RMM Specification Latest
->>>>       https://developer.arm.com/documentation/den0137/latest
-
-
-Suzuki
-
-
-
->>>>
->>>> [2] RMM v1.0-Beta0 specification
->>>>       https://developer.arm.com/documentation/den0137/1-0bet0/
->>>>
->>>> [3] Trusted Firmware RMM - TF-RMM
->>>>       https://www.trustedfirmware.org/projects/tf-rmm/
->>>>       GIT: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
->>>>
->>>> [4] FVP Base RevC AEM Model (available on x86_64 / Arm64 Linux)
->>>>       https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms
->>>>
->>>> [5] Trusted Firmware for A class
->>>>       https://www.trustedfirmware.org/projects/tf-a/
->>>>
->>>> [6] Linux kernel support for Arm-CCA
->>>>       https://gitlab.arm.com/linux-arm/linux-cca
->>>>       Host Support branch:	cca-host/rfc-v1
->>>>       Guest Support branch:	cca-guest/rfc-v1
->>>>
->>>> [7] kvmtool support for Arm CCA
->>>>       https://gitlab.arm.com/linux-arm/kvmtool-cca cca/rfc-v1
->>>>
->>>> [8] kvm-unit-tests support for Arm CCA
->>>>       https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca  cca/rfc-v1
->>>>
->>>> [9] Instructions for Building Firmware components and running the model, see
->>>>       section 4.19.2 "Building and running TF-A with RME"
->>>>       https://trustedfirmware-a.readthedocs.io/en/latest/components/realm-management-extension.html#building-and-running-tf-a-with-rme
->>>>
->>>> [10] fd based Guest Private memory for KVM
->>>>      https://lkml.kernel.org/r/20221202061347.1070246-1-chao.p.peng@linux.intel.com
->>>>
->>>> Cc: Alexandru Elisei <alexandru.elisei@arm.com>
->>>> Cc: Andrew Jones <andrew.jones@linux.dev>
->>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>>> Cc: Chao Peng <chao.p.peng@linux.intel.com>
->>>> Cc: Christoffer Dall <christoffer.dall@arm.com>
->>>> Cc: Fuad Tabba <tabba@google.com>
->>>> Cc: James Morse <james.morse@arm.com>
->>>> Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>>> Cc: Joey Gouly <Joey.Gouly@arm.com>
->>>> Cc: Marc Zyngier <maz@kernel.org>
->>>> Cc: Mark Rutland <mark.rutland@arm.com>
->>>> Cc: Oliver Upton <oliver.upton@linux.dev>
->>>> Cc: Paolo Bonzini <pbonzini@redhat.com>
->>>> Cc: Quentin Perret <qperret@google.com>
->>>> Cc: Sean Christopherson <seanjc@google.com>
->>>> Cc: Steven Price <steven.price@arm.com>
->>>> Cc: Thomas Huth <thuth@redhat.com>
->>>> Cc: Will Deacon <will@kernel.org>
->>>> Cc: Zenghui Yu <yuzenghui@huawei.com>
->>>> To: linux-coco@lists.linux.dev
->>>> To: kvmarm@lists.linux.dev
->>>> Cc: kvmarm@lists.cs.columbia.edu
->>>> Cc: linux-arm-kernel@lists.infradead.org
->>>> To: linux-kernel@vger.kernel.org
->>>> To: kvm@vger.kernel.org
->>>>
+>>    The firmware checks that the guest's policy allows debugging. If not,
+>>    the firmware returns POLICY_FAILURE.
 >>
+>> and in the Guest Policy (section 4.3):
+>>
+>>    Bit 19 - DEBUG
+>>    0: Debugging is disallowed.
+>>    1: Debugging is allowed.
+>>
+>> In the kernel, that firmware error code is defined as
+>> SEV_RET_POLICY_FAILURE.
+>>
+>>
+>>>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+>>>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+>>>> [mdr: minor commit fixups]
+>>>> Signed-off-by: Michael Roth <michael.roth@amd.com>
+>>>> ---
+>>>>   drivers/crypto/ccp/sev-dev.c | 32 ++++++++++++++++++++++++++++++++
+>>>>   include/linux/psp-sev.h      | 22 ++++++++++++++++++++--
+>>>>   2 files changed, 52 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/crypto/ccp/sev-dev.c
+>>>> b/drivers/crypto/ccp/sev-dev.c
+>>>> index e65563bc8298..bf5167b2acfc 100644
+>>>> --- a/drivers/crypto/ccp/sev-dev.c
+>>>> +++ b/drivers/crypto/ccp/sev-dev.c
+>>>> @@ -2017,6 +2017,38 @@ int sev_guest_df_flush(int *error)
+>>>>   }
+>>>>   EXPORT_SYMBOL_GPL(sev_guest_df_flush);
+>>>>   +int snp_guest_dbg_decrypt_page(u64 gctx_pfn, u64 src_pfn, u64
+>>>> dst_pfn, int *error)
+>>>> +{
+>>>> +    struct sev_data_snp_dbg data = {0};
+>>>> +    struct sev_device *sev;
+>>>> +    int ret;
+>>>> +
+>>>> +    if (!psp_master || !psp_master->sev_data)
+>>>> +        return -ENODEV;
+>>>> +
+>>>> +    sev = psp_master->sev_data;
+>>>> +
+>>>> +    if (!sev->snp_initialized)
+>>>> +        return -EINVAL;
+>>>> +
+>>>> +    data.gctx_paddr = sme_me_mask | (gctx_pfn << PAGE_SHIFT);
+>>>> +    data.src_addr = sme_me_mask | (src_pfn << PAGE_SHIFT);
+>>>> +    data.dst_addr = sme_me_mask | (dst_pfn << PAGE_SHIFT);
+>>
+>> I guess this works, but I wonder why we need to turn on sme_me_mask on
+>> teh dst_addr.  I thought that the firmware decrypts the guest page
+>> (src_addr) to a plaintext page.  Couldn't find this requirement in the
+>> SNP spec.
+> 
+> This sme_me_mask tells the firmware how to access the host memory
+> (similar to how DMA uses sme_me_mask when supplying addresses to devices
+> under SME). This needs to match the pagetable mapping being used by the
+> host, otherwise the contents will appears as ciphertext to the host if
+> they are not in sync. Since the default pagetable mapping is encrypted,
+> the sme_me_mask bit must be provided on the destination address. So it
+> is not a spec requirement, but an SME implementation requirement.
+> 
 
+Ah, OK, that's clear now. Thanks Tom.
+
+-Dov
