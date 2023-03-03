@@ -1,136 +1,89 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488AD6FC0
-	for <linux-coco@lists.linux.dev>; Fri,  3 Mar 2023 13:57:29 +0000 (UTC)
-Received: by mail-wr1-f49.google.com with SMTP id q16so2369701wrw.2
-        for <linux-coco@lists.linux.dev>; Fri, 03 Mar 2023 05:57:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1677851847;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hrHDSk+aKQWG+5fv3AwNWB+cSl2suAJ8jLnBdEelixg=;
-        b=wA0JLwiXTgP78aOg9Fy3S212QN3lFzf2xs0OkU4uR31gq+5+VXY70j7NEr2MI0kFNV
-         aw799C8JRza89IaPD0o+Fs2abJDPkOBqyXasvRBRxd0f6rMlI8Ny5gNw1NpOpezNqLzA
-         B0l375Z2imh4lIC0h9fvMZ8LoX3n6XaSES2/wj2PeCobmWfQDNYS7Y4kUyvxPWNYMgjW
-         eWayThJDFs4mFcKfGpAJIXj/g+NjvilR1orOgShnTKWoprXtrzv95Jnv9y+vBN5qqvq8
-         Hx4zUOADzcq/Z9tx/fvFnlSCgniS4bsZmRdSEGN3H+bIIgSPkYfifD4O5vUULy29Mjzm
-         gtQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677851847;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hrHDSk+aKQWG+5fv3AwNWB+cSl2suAJ8jLnBdEelixg=;
-        b=1V7bgUc3wkATLk2Jc0gFn1ocLgyeXfjCuIBPVa+NK4lHZ21jT2bA0zkR19OeR2r0Hm
-         ObA2mEwdvnIwKXCMWnqtKywfKX6DX7Zth7F7mZ0GFdrYiNAoEifwJ0gQB/mD5UZXxu7F
-         AYJM205Vj1pfQlowAp4V3gSbYmmAwc6TuxHmWj7GUdm5NEIBqoN0k3FocPCYQY3R+Jz5
-         nSMh4AVtd9QMAFYA4x50axbFh4nimVtG74RRPtLWHLE9bJy+7idMuS6z+dve+PaQiNkD
-         EMNxKiC40MKWpfHxGrc70bJ2SvrcxY4NQ8RVWStX7komNZuSOzWpWwYpx99KzF/SWKmm
-         iXyg==
-X-Gm-Message-State: AO0yUKU9sp7a9abEvT2sbD9Lc72V1m6xTaL0TlvuUp/iCBjHk1mZ9Cbq
-	s93HcbCkrxav8nbj/De+OatEzQ==
-X-Google-Smtp-Source: AK7set8CZLbAGLTlPG82iW3Ddrry4HX/pR8GcNB6glVvipnsuFTiB+l0Sif0R9izgtavLnk1COykyA==
-X-Received: by 2002:a5d:6545:0:b0:2c7:cc8:782c with SMTP id z5-20020a5d6545000000b002c70cc8782cmr4300861wrv.1.1677851847356;
-        Fri, 03 Mar 2023 05:57:27 -0800 (PST)
-Received: from myrica (054592b0.skybroadband.com. [5.69.146.176])
-        by smtp.gmail.com with ESMTPSA id j6-20020a05600c42c600b003eb192787bfsm2445486wme.25.2023.03.03.05.57.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 05:57:26 -0800 (PST)
-Date: Fri, 3 Mar 2023 13:57:27 +0000
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Jean-Philippe Brucker <jpb@kernel.org>,
-	Itaru Kitayama <itaru.kitayama@gmail.com>,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, James Morse <james.morse@arm.com>,
-	Joey Gouly <Joey.Gouly@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Quentin Perret <qperret@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Steven Price <steven.price@arm.com>, Thomas Huth <thuth@redhat.com>,
-	Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	kvmarm@lists.cs.columbia.edu
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-Message-ID: <20230303135727.GA473581@myrica>
-References: <Y9PtKJ3Wicc19JF1@myrica>
- <CANW9uyud8RTkqgiL=64wV712QMxtAyubqeyCJ0vpcADJ42VqJA@mail.gmail.com>
- <Y/8Y3WLmiw6+Z5AS@myrica>
- <CANW9uysnvGCwANu+_6dp9+3rvHGOkThT9d0K2qpQV4exdmYWoA@mail.gmail.com>
- <20230303094618.GC361458@myrica>
- <1c91b777-982e-e71a-4829-51744e9555c5@arm.com>
- <20230303113905.GD361458@myrica>
- <20230303120800.ahtyc6et77ig4s27@orel>
- <2418536c-2658-18d6-f70c-c1af5adaa816@arm.com>
- <875ybi0ytc.fsf@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC7446AA
+	for <linux-coco@lists.linux.dev>; Fri,  3 Mar 2023 14:00:46 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D62402052E;
+	Fri,  3 Mar 2023 14:00:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1677852044; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wxV+vqRqP5FA17gWzru5WaqMedSYhLnPR0idRcduX0g=;
+	b=mGmx8NKmZojc13Vh+SoX62xVgQwefRgdcp9BblO5KfAFLL6taXUCrIP1i+Q6fSjo56vaQV
+	ioQvf+LNpmkhBAl3kw7hNZQTIX0WYJ9jqNKoQZGx3K2O/T5t2qIgR7sQN5OrFb11xozY+I
+	ugzz2FCwcnOVP6Ydqi1Uy0UDOSh8Vjw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1677852044;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wxV+vqRqP5FA17gWzru5WaqMedSYhLnPR0idRcduX0g=;
+	b=TLAgG9NwjxbPa5h72UbYo83Q/SnmtX0VCXL9B8AUov5zk8kSBDzwc5rtAF7zbGyc6AT+qY
+	KpQFcjqya9sSrOBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 519EA1329E;
+	Fri,  3 Mar 2023 14:00:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id Yw8/E4z9AWSfCgAAMHmgww
+	(envelope-from <vbabka@suse.cz>); Fri, 03 Mar 2023 14:00:44 +0000
+Message-ID: <86906f29-9853-6e18-6e03-7b689088ed5d@suse.cz>
+Date: Fri, 3 Mar 2023 15:00:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <875ybi0ytc.fsf@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH RFC v8 08/56] KVM: SEV: Rename sev_{pin,unpin}_memory
+Content-Language: en-US
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, kirill@shutemov.name,
+ ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+ nikunj.dadhania@amd.com, Nikunj A Dadhania <nikunj@amd.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-9-michael.roth@amd.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20230220183847.59159-9-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 03, 2023 at 02:06:07PM +0100, Cornelia Huck wrote:
-> On Fri, Mar 03 2023, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+On 2/20/23 19:37, Michael Roth wrote:
+> From: Nikunj A Dadhania <nikunj@amd.com>
 > 
-> > On 03/03/2023 12:08, Andrew Jones wrote:
-> >> On Fri, Mar 03, 2023 at 11:39:05AM +0000, Jean-Philippe Brucker wrote:
-> >>> On Fri, Mar 03, 2023 at 09:54:47AM +0000, Suzuki K Poulose wrote:
-> >>>> On 03/03/2023 09:46, Jean-Philippe Brucker wrote:
-> >>>>> On Thu, Mar 02, 2023 at 07:12:24AM +0900, Itaru Kitayama wrote:
-> >>>>>>>> I've tried your series in Real on CCA Host, but the KVM arch init
-> >>>>>>>> emits an Invalid argument error and terminates.
-> >>>>>
-> >>>>> This was the KVM_SET_ONE_REG for the SVE vector size. During my tests I
-> >>>>> didn't enable SVE in the host but shrinkwrap enables more options.
-> >>>>
-> >>>> Does the Qemu check for SVE capability on /dev/kvm ? For kvmtool, we
-> >>>> changed to using the VM instance and that would prevent using SVE,
-> >>>> until the RMM supports it.
-> >>>
-> >>> Yes, QEMU does check the SVE cap on /dev/kvm. I can propose changing it or
-> >>> complementing it with a VM check in my next version, it seems to work
-> >>> (though I need to double-check the VM fd lifetime). Same goes for
-> >>> KVM_CAP_STEAL_TIME, which I need to disable explicitly at the moment.
-> >> 
-> >> I'm probably missing something since I haven't looked at this, but I'm
-> >> wondering what the "VM instance" check is and why it should be necessary.
-> >
-> > Userspace can check for a KVM_CAP_ on KVM fd (/dev/kvm) or a VM fd
-> > (returned via KVM_CREATE_VM).
-> >
-> >> Shouldn't KVM only expose capabilities which it can provide? I.e. the
-> >
-> > Correct, given now that we have different "types" of VMs possible on
-> > Arm64, (Normal vs Realm vs pVM), the capabilities of each of these
-> > could be different and thus we should use the KVM_CAP_ on the VM fd (
-> > referred to VM instance above) and not the generic KVM fd.
-> 
-> Using the vm ioctl is even encouraged in the doc for
-> KVM_CHECK_EXTENSION:
-> 
-> "Based on their initialization different VMs may have different capabilities.
-> It is thus encouraged to use the vm ioctl to query for capabilities"
-> 
-> It would probably make sense to convert QEMU to use the vm ioctl
-> everywhere (the wrapper falls back to the global version on failure
-> anyway.)
+> Rename sev_{pin|unpin}_memory to sev_memory_{get|put}_pages. Apart
+> from pinning the pages, sev_pin_memory also populates the pages array
+> which is used by its callers. SEV guest using restricted memfd do not
+> to pin the memory but will require the pages array to be populated.
 
-Indeed, I'll see if I can come up with something generic, thanks for the
-pointer
+  ^need to?
 
-Thanks,
-Jean
+> Rename the function appropriately.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+
