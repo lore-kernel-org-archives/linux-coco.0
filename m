@@ -1,44 +1,44 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63BC53B8;
-	Mon,  6 Mar 2023 15:37:54 +0000 (UTC)
-Received: by mail-lf1-f43.google.com with SMTP id s20so13263768lfb.11;
-        Mon, 06 Mar 2023 07:37:54 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998C9566C;
+	Mon,  6 Mar 2023 17:34:42 +0000 (UTC)
+Received: by mail-lj1-f176.google.com with SMTP id a32so10482948ljr.9;
+        Mon, 06 Mar 2023 09:34:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678117072;
+        d=gmail.com; s=20210112; t=1678124080;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5hDMsqcdGIfiCOVeyjU4Ba4iMqQn+GOWjCwhWYk6SdI=;
-        b=cg1/O1TWCoAT+12txvkiPpk8WOQTLsVbbyntUVywAm++PWVMzFM4JjQRWDOUOYRScg
-         pvFU352A9exDJyfmr6d8LqJgbi0luBH+enT3u31nc54Hmh05vWYHCkSSe7oGk7lmhxyE
-         gQSPcdZk5nGsoTod4x/9xM1gvrso7kjeMYYHWi2P08jqU+eAbw3oqFZsorHQ0S/CRtHA
-         d+foYcEAUnenuImuL8oP9UXM5FRNCKBTKRUghgv+c1d+jCyNJQcf5Z8sqJZPTHfcasad
-         gO4Za/039IiZBBKhDDxAJK9l/nUdtBwyQUaEdwEM3X27LHjxursB5jxdMGtDxQkwzSHu
-         Mqpw==
+        bh=YNbWnb9fLhufznPrTCujm0OjCR86yff8zEINR9/66Jg=;
+        b=CCFi8E6XdEWAkbx/5iJUDNojUY+3dy3mwXOpLptH+w5LOZIbQ9pS42/9KCj14S7/LT
+         /gJe9a5ZTEMXinKJuVpQ+z4kr7JavyiJjrRY8GhPfv/B3Y2w2UvQ1GidbNPdIJO12Y1w
+         hbVqAzWH1lxz0cuZEndnPWyjdhu5UBv1fks9VqmFe7sOGMZuntrwQsXQvnzdNNAamuBa
+         KHvtROUSJx0OvOe3BMwFuv0Xbrl74qR1GfUUaKWxXjl8AzacTKCq/HPHOpiRe/Sne+BR
+         J7i3oIa+hibwY77PAoGM8U75cJl6/KfbIgQbSJxMlAu9JzY27p1e+gU7igKBh02Y8ab1
+         tJpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678117072;
+        d=1e100.net; s=20210112; t=1678124080;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5hDMsqcdGIfiCOVeyjU4Ba4iMqQn+GOWjCwhWYk6SdI=;
-        b=SmtJg5YyMJbMxQdWRowXnMsZMbp3hUJciy14qz7kC3UyQPBN03QyIwHJ+7ruxVXw3P
-         a3fDtUSPnkGinuDYt/GkShGNlo4tFFiJYDeYUqtcSv4kZttVMcJq/v8hKBOx2SbLNcGG
-         TPN82dFvx+7+LL1wyxMBVTZG4GKnA2I/wAzG36yGud+iX/g6buKQiJ9E9ZKNx5kbATtP
-         Zy7+aZiKzq5GgEFOHYfRPqFHC72lx2+QPqG8eQYHP9FC3wLZHhMo1FrwDsdAH+gNsDtO
-         pnFbHxijgOWojTzAOeSt37GAamaUkP6V3hejOMsrTzT4DpOEkxsY+g+c+qZ1xrcnckqQ
-         RSOA==
-X-Gm-Message-State: AO0yUKXFLwfHtQwu3daGD7r2kWSSaOjphW6C/XSb7RVw3iWPDMEpKE0M
-	fyWbPYhdsh/t+YfBsxNt80xU9B6G9VY=
-X-Google-Smtp-Source: AK7set/mMWXfBFsiLU1XkaTiImOSmqnWmfXifYoeEmJfJYsfZbSf6DihYHx9KRJq7C6ZcNvQWlxpEQ==
-X-Received: by 2002:a19:f011:0:b0:4cb:3a60:65c9 with SMTP id p17-20020a19f011000000b004cb3a6065c9mr2589865lfc.2.1678117072501;
-        Mon, 06 Mar 2023 07:37:52 -0800 (PST)
+        bh=YNbWnb9fLhufznPrTCujm0OjCR86yff8zEINR9/66Jg=;
+        b=zRRVfBlXorVeF55sAYiOAEKuWgAkF1qqk2MBGbh1FdRxS6XMBeE+Um9yjZhcsqxOiJ
+         XaPslL8wDUdpZ7vGmIo60fBJZcFaEIugTB7VR4i7KuKnJT4HgsmPjetYrxM7jBCWY0EP
+         McXxLKIvOH3GKTBHcmKX9kiax+AlzIHiPELWGGw2TZNDlzeaIT4YEl/qZN9vKbxxsydZ
+         d11y+rLJ1kVEUquAiVXrWtdpcT48xBRz0Pn08PuTS/Ueg8SyQ6IyMV/x8voC26bVjBdR
+         soFpTKTTCp1a75hT4V58VgSCKG+UscSWeB/amBRcWdVxtPrj1967II0WXCP1+ViNpjm0
+         ZPOg==
+X-Gm-Message-State: AO0yUKUVnphO6wSaxRLqSu6rSkH8fMitNBE4skufShDfs+Whv53eL7k/
+	7AYiVIHnA4dbDdEdbRe6vgM=
+X-Google-Smtp-Source: AK7set9gnNxS2zX2GuCCqoY4IvMKgf6MFW3wKPgqhT4pU292X7/ZfK4Ti8bCLicVaw8R/CLQGSVgEg==
+X-Received: by 2002:a2e:be9e:0:b0:295:8bea:99a2 with SMTP id a30-20020a2ebe9e000000b002958bea99a2mr4565495ljr.1.1678124080368;
+        Mon, 06 Mar 2023 09:34:40 -0800 (PST)
 Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id g22-20020ac25396000000b004cb14fa604csm1680397lfh.262.2023.03.06.07.37.52
+        by smtp.gmail.com with ESMTPSA id k16-20020a2ea270000000b002947028ae7csm1818432ljm.72.2023.03.06.09.34.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Mar 2023 07:37:52 -0800 (PST)
-Date: Mon, 6 Mar 2023 17:37:51 +0200
+        Mon, 06 Mar 2023 09:34:40 -0800 (PST)
+Date: Mon, 6 Mar 2023 19:34:39 +0200
 From: Zhi Wang <zhi.wang.linux@gmail.com>
 To: Steven Price <steven.price@arm.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Catalin Marinas
@@ -50,12 +50,12 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, Catalin Marinas
  Elisei <alexandru.elisei@arm.com>, Christoffer Dall
  <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
  linux-coco@lists.linux.dev
-Subject: Re: [RFC PATCH 15/28] KVM: arm64: Handle realm MMIO emulation
-Message-ID: <20230306173751.000026d4@gmail.com>
-In-Reply-To: <20230127112932.38045-16-steven.price@arm.com>
+Subject: Re: [RFC PATCH 16/28] arm64: RME: Allow populating initial contents
+Message-ID: <20230306193439.000048f2@gmail.com>
+In-Reply-To: <20230127112932.38045-17-steven.price@arm.com>
 References: <20230127112248.136810-1-suzuki.poulose@arm.com>
 	<20230127112932.38045-1-steven.price@arm.com>
-	<20230127112932.38045-16-steven.price@arm.com>
+	<20230127112932.38045-17-steven.price@arm.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -66,78 +66,422 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 27 Jan 2023 11:29:19 +0000
+On Fri, 27 Jan 2023 11:29:20 +0000
 Steven Price <steven.price@arm.com> wrote:
 
-> MMIO emulation for a realm cannot be done directly with the VM's
-> registers as they are protected from the host. However the RMM interface
-> provides a structure member for providing the read/written value and
-
-More details would be better for helping the review. I can only see the
-emulated mmio value from the device model (kvmtool or kvm_io_bus) is put into
-the GPRS[0] of the RecEntry object. But the rest of the flow is missing.
-
-I guess RMM copies the value in the RecEntry.GPRS[0] to the target GPR in the
-guest context in RMI_REC_ENTER when seeing RMI_EMULATED_MMIO. This is for
-the guest MMIO read path.
-
-How about the MMIO write path? I don't see where the RecExit.GPRS[0] is loaded
-to a varible and returned to the userspace.
-
-> we can transfer this to the appropriate VCPU's register entry and then
-> depend on the generic MMIO handling code in KVM.
+> The VMM needs to populate the realm with some data before starting (e.g.
+> a kernel and initrd). This is measured by the RMM and used as part of
+> the attestation later on.
 > 
 > Signed-off-by: Steven Price <steven.price@arm.com>
 > ---
->  arch/arm64/kvm/mmio.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  arch/arm64/kvm/rme.c | 366 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 366 insertions(+)
 > 
-> diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
-> index 3dd38a151d2a..c4879fa3a8d3 100644
-> --- a/arch/arm64/kvm/mmio.c
-> +++ b/arch/arm64/kvm/mmio.c
-> @@ -6,6 +6,7 @@
+> diff --git a/arch/arm64/kvm/rme.c b/arch/arm64/kvm/rme.c
+> index 16e0bfea98b1..3405b43e1421 100644
+> --- a/arch/arm64/kvm/rme.c
+> +++ b/arch/arm64/kvm/rme.c
+> @@ -4,6 +4,7 @@
+>   */
 >  
 >  #include <linux/kvm_host.h>
+> +#include <linux/hugetlb.h>
+>  
 >  #include <asm/kvm_emulate.h>
-> +#include <asm/rmi_smc.h>
->  #include <trace/events/kvm.h>
->  
->  #include "trace.h"
-> @@ -109,6 +110,9 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
->  			       &data);
->  		data = vcpu_data_host_to_guest(vcpu, data, len);
->  		vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
-> +
-> +		if (vcpu_is_rec(vcpu))
-> +			vcpu->arch.rec.run->entry.gprs[0] = data;
-
-I think the guest context is maintained by RMM (while KVM can only touch
-Rec{Entry, Exit} object) so that guest context in the legacy VHE mode is
-unused.
-
-If yes, I guess here is should be:
-
-if (unlikely(vcpu_is_rec(vcpu)))
-	vcpu->arch.rec.run->entry.gprs[0] = data;
-else
-	vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
-
+>  #include <asm/kvm_mmu.h>
+> @@ -426,6 +427,359 @@ void kvm_realm_unmap_range(struct kvm *kvm, unsigned long ipa, u64 size)
 >  	}
+>  }
 >  
->  	/*
-> @@ -179,6 +183,9 @@ int io_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa)
->  	run->mmio.len		= len;
->  	vcpu->mmio_needed	= 1;
->  
-> +	if (vcpu_is_rec(vcpu))
-> +		vcpu->arch.rec.run->entry.flags |= RMI_EMULATED_MMIO;
+> +static int realm_create_protected_data_page(struct realm *realm,
+> +					    unsigned long ipa,
+> +					    struct page *dst_page,
+> +					    struct page *tmp_page)
+> +{
+> +	phys_addr_t dst_phys, tmp_phys;
+> +	int ret;
+> +
+> +	copy_page(page_address(tmp_page), page_address(dst_page));
+> +
+> +	dst_phys = page_to_phys(dst_page);
+> +	tmp_phys = page_to_phys(tmp_page);
+> +
+> +	if (rmi_granule_delegate(dst_phys))
+> +		return -ENXIO;
+> +
+> +	ret = rmi_data_create(dst_phys, virt_to_phys(realm->rd), ipa, tmp_phys,
+> +			      RMI_MEASURE_CONTENT);
+> +
+> +	if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +		/* Create missing RTTs and retry */
+> +		int level = RMI_RETURN_INDEX(ret);
+> +
+> +		ret = realm_create_rtt_levels(realm, ipa, level,
+> +					      RME_RTT_MAX_LEVEL, NULL);
+> +		if (ret)
+> +			goto err;
+> +
+> +		ret = rmi_data_create(dst_phys, virt_to_phys(realm->rd), ipa,
+> +				      tmp_phys, RMI_MEASURE_CONTENT);
+> +	}
+> +
+> +	if (ret)
+> +		goto err;
+> +
+> +	return 0;
+> +
+> +err:
+> +	if (WARN_ON(rmi_granule_undelegate(dst_phys))) {
+> +		/* Page can't be returned to NS world so is lost */
+> +		get_page(dst_page);
+> +	}
+> +	return -ENXIO;
+> +}
+> +
+> +static int fold_rtt(phys_addr_t rd, unsigned long addr, int level,
+> +		    struct realm *realm)
+> +{
+> +	struct rtt_entry rtt;
+> +	phys_addr_t rtt_addr;
+> +
+> +	if (rmi_rtt_read_entry(rd, addr, level, &rtt))
+> +		return -ENXIO;
+> +
+> +	if (rtt.state != RMI_TABLE)
+> +		return -EINVAL;
+> +
+> +	rtt_addr = rmi_rtt_get_phys(&rtt);
+> +	if (rmi_rtt_fold(rtt_addr, rd, addr, level + 1))
+> +		return -ENXIO;
+> +
+> +	free_delegated_page(realm, rtt_addr);
+> +
+> +	return 0;
+> +}
+> +
+> +int realm_map_protected(struct realm *realm,
+> +			unsigned long hva,
+> +			unsigned long base_ipa,
+> +			struct page *dst_page,
+> +			unsigned long map_size,
+> +			struct kvm_mmu_memory_cache *memcache)
+> +{
+> +	phys_addr_t dst_phys = page_to_phys(dst_page);
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +	unsigned long phys = dst_phys;
+> +	unsigned long ipa = base_ipa;
+> +	unsigned long size;
+> +	int map_level;
+> +	int ret = 0;
+> +
+> +	if (WARN_ON(!IS_ALIGNED(ipa, map_size)))
+> +		return -EINVAL;
+> +
+> +	switch (map_size) {
+> +	case PAGE_SIZE:
+> +		map_level = 3;
+> +		break;
+> +	case RME_L2_BLOCK_SIZE:
+> +		map_level = 2;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (map_level < RME_RTT_MAX_LEVEL) {
+> +		/*
+> +		 * A temporary RTT is needed during the map, precreate it,
+> +		 * however if there is an error (e.g. missing parent tables)
+> +		 * this will be handled below.
+> +		 */
+> +		realm_create_rtt_levels(realm, ipa, map_level,
+> +					RME_RTT_MAX_LEVEL, memcache);
+> +	}
+> +
+> +	for (size = 0; size < map_size; size += PAGE_SIZE) {
+> +		if (rmi_granule_delegate(phys)) {
+> +			struct rtt_entry rtt;
+> +
+> +			/*
+> +			 * It's possible we raced with another VCPU on the same
+> +			 * fault. If the entry exists and matches then exit
+> +			 * early and assume the other VCPU will handle the
+> +			 * mapping.
+> +			 */
+> +			if (rmi_rtt_read_entry(rd, ipa, RME_RTT_MAX_LEVEL, &rtt))
+> +				goto err;
+> +
+> +			// FIXME: For a block mapping this could race at level
+> +			// 2 or 3...
+> +			if (WARN_ON((rtt.walk_level != RME_RTT_MAX_LEVEL ||
+> +				     rtt.state != RMI_ASSIGNED ||
+> +				     rtt.desc != phys))) {
+> +				goto err;
+> +			}
+> +
+> +			return 0;
+> +		}
+> +
+> +		ret = rmi_data_create_unknown(phys, rd, ipa);
+> +
+> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +			/* Create missing RTTs and retry */
+> +			int level = RMI_RETURN_INDEX(ret);
+> +
+> +			ret = realm_create_rtt_levels(realm, ipa, level,
+> +						      RME_RTT_MAX_LEVEL,
+> +						      memcache);
+> +			WARN_ON(ret);
+> +			if (ret)
+> +				goto err_undelegate;
+> +
+> +			ret = rmi_data_create_unknown(phys, rd, ipa);
+> +		}
+> +		WARN_ON(ret);
+> +
+> +		if (ret)
+> +			goto err_undelegate;
+> +
+> +		phys += PAGE_SIZE;
+> +		ipa += PAGE_SIZE;
+> +	}
+> +
+> +	if (map_size == RME_L2_BLOCK_SIZE)
+> +		ret = fold_rtt(rd, base_ipa, map_level, realm);
+> +	if (WARN_ON(ret))
+> +		goto err;
+> +
+> +	return 0;
+> +
+> +err_undelegate:
+> +	if (WARN_ON(rmi_granule_undelegate(phys))) {
+> +		/* Page can't be returned to NS world so is lost */
+> +		get_page(phys_to_page(phys));
+> +	}
+> +err:
+> +	while (size > 0) {
+> +		phys -= PAGE_SIZE;
+> +		size -= PAGE_SIZE;
+> +		ipa -= PAGE_SIZE;
+> +
+> +		rmi_data_destroy(rd, ipa);
+> +
+> +		if (WARN_ON(rmi_granule_undelegate(phys))) {
+> +			/* Page can't be returned to NS world so is lost */
+> +			get_page(phys_to_page(phys));
+> +		}
+> +	}
+> +	return -ENXIO;
+> +}
 > +
 
-Wouldn't it be better to set this in the kvm_handle_mmio_return where the MMIO
-read emulation has been surely successful?
+There seems no caller to the function above. Better move it to the related
+patch.
 
->  	if (!ret) {
->  		/* We handled the access successfully in the kernel. */
->  		if (!is_write)
+> +static int populate_par_region(struct kvm *kvm,
+> +			       phys_addr_t ipa_base,
+> +			       phys_addr_t ipa_end)
+> +{
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct kvm_memory_slot *memslot;
+> +	gfn_t base_gfn, end_gfn;
+> +	int idx;
+> +	phys_addr_t ipa;
+> +	int ret = 0;
+> +	struct page *tmp_page;
+> +	phys_addr_t rd = virt_to_phys(realm->rd);
+> +
+> +	base_gfn = gpa_to_gfn(ipa_base);
+> +	end_gfn = gpa_to_gfn(ipa_end);
+> +
+> +	idx = srcu_read_lock(&kvm->srcu);
+> +	memslot = gfn_to_memslot(kvm, base_gfn);
+> +	if (!memslot) {
+> +		ret = -EFAULT;
+> +		goto out;
+> +	}
+> +
+> +	/* We require the region to be contained within a single memslot */
+> +	if (memslot->base_gfn + memslot->npages < end_gfn) {
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	tmp_page = alloc_page(GFP_KERNEL);
+> +	if (!tmp_page) {
+> +		ret = -ENOMEM;
+> +		goto out;
+> +	}
+> +
+> +	mmap_read_lock(current->mm);
+> +
+> +	ipa = ipa_base;
+> +
+> +	while (ipa < ipa_end) {
+> +		struct vm_area_struct *vma;
+> +		unsigned long map_size;
+> +		unsigned int vma_shift;
+> +		unsigned long offset;
+> +		unsigned long hva;
+> +		struct page *page;
+> +		kvm_pfn_t pfn;
+> +		int level;
+> +
+> +		hva = gfn_to_hva_memslot(memslot, gpa_to_gfn(ipa));
+> +		vma = vma_lookup(current->mm, hva);
+> +		if (!vma) {
+> +			ret = -EFAULT;
+> +			break;
+> +		}
+> +
+> +		if (is_vm_hugetlb_page(vma))
+> +			vma_shift = huge_page_shift(hstate_vma(vma));
+> +		else
+> +			vma_shift = PAGE_SHIFT;
+> +
+> +		map_size = 1 << vma_shift;
+> +
+> +		/*
+> +		 * FIXME: This causes over mapping, but there's no good
+> +		 * solution here with the ABI as it stands
+> +		 */
+> +		ipa = ALIGN_DOWN(ipa, map_size);
+> +
+> +		switch (map_size) {
+> +		case RME_L2_BLOCK_SIZE:
+> +			level = 2;
+> +			break;
+> +		case PAGE_SIZE:
+> +			level = 3;
+> +			break;
+> +		default:
+> +			WARN_ONCE(1, "Unsupport vma_shift %d", vma_shift);
+> +			ret = -EFAULT;
+> +			break;
+> +		}
+> +
+> +		pfn = gfn_to_pfn_memslot(memslot, gpa_to_gfn(ipa));
+> +
+> +		if (is_error_pfn(pfn)) {
+> +			ret = -EFAULT;
+> +			break;
+> +		}
+> +
+> +		ret = rmi_rtt_init_ripas(rd, ipa, level);
+> +		if (RMI_RETURN_STATUS(ret) == RMI_ERROR_RTT) {
+> +			ret = realm_create_rtt_levels(realm, ipa,
+> +						      RMI_RETURN_INDEX(ret),
+> +						      level, NULL);
+> +			if (ret)
+> +				break;
+> +			ret = rmi_rtt_init_ripas(rd, ipa, level);
+> +			if (ret) {
+> +				ret = -ENXIO;
+> +				break;
+> +			}
+> +		}
+> +
+> +		if (level < RME_RTT_MAX_LEVEL) {
+> +			/*
+> +			 * A temporary RTT is needed during the map, precreate
+> +			 * it, however if there is an error (e.g. missing
+> +			 * parent tables) this will be handled in the
+> +			 * realm_create_protected_data_page() call.
+> +			 */
+> +			realm_create_rtt_levels(realm, ipa, level,
+> +						RME_RTT_MAX_LEVEL, NULL);
+> +		}
+> +
+> +		page = pfn_to_page(pfn);
+> +
+> +		for (offset = 0; offset < map_size && !ret;
+> +		     offset += PAGE_SIZE, page++) {
+> +			phys_addr_t page_ipa = ipa + offset;
+> +
+> +			ret = realm_create_protected_data_page(realm, page_ipa,
+> +							       page, tmp_page);
+> +		}
+> +		if (ret)
+> +			goto err_release_pfn;
+> +
+> +		if (level == 2) {
+> +			ret = fold_rtt(rd, ipa, level, realm);
+> +			if (ret)
+> +				goto err_release_pfn;
+> +		}
+> +
+> +		ipa += map_size;
+
+> +		kvm_set_pfn_accessed(pfn);
+> +		kvm_set_pfn_dirty(pfn);
+
+kvm_release_pfn_dirty() has already called kvm_set_pfn_{accessed, dirty}().
+
+> +		kvm_release_pfn_dirty(pfn);
+> +err_release_pfn:
+> +		if (ret) {
+> +			kvm_release_pfn_clean(pfn);
+> +			break;
+> +		}
+> +	}
+> +
+> +	mmap_read_unlock(current->mm);
+> +	__free_page(tmp_page);
+> +
+> +out:
+> +	srcu_read_unlock(&kvm->srcu, idx);
+> +	return ret;
+> +}
+> +
+> +static int kvm_populate_realm(struct kvm *kvm,
+> +			      struct kvm_cap_arm_rme_populate_realm_args *args)
+> +{
+> +	phys_addr_t ipa_base, ipa_end;
+> +
+
+Check kvm_is_realm(kvm) here or in the kvm_realm_enable_cap().
+
+> +	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
+> +		return -EBUSY;
+
+Maybe -EINVAL? The realm hasn't been created (RMI_REALM_CREATE is not called
+yet). The userspace shouldn't reach this path.
+
+> +
+> +	if (!IS_ALIGNED(args->populate_ipa_base, PAGE_SIZE) ||
+> +	    !IS_ALIGNED(args->populate_ipa_size, PAGE_SIZE))
+> +		return -EINVAL;
+> +
+> +	ipa_base = args->populate_ipa_base;
+> +	ipa_end = ipa_base + args->populate_ipa_size;
+> +
+> +	if (ipa_end < ipa_base)
+> +		return -EINVAL;
+> +
+> +	return populate_par_region(kvm, ipa_base, ipa_end);
+> +}
+> +
+>  static int set_ipa_state(struct kvm_vcpu *vcpu,
+>  			 unsigned long ipa,
+>  			 unsigned long end,
+> @@ -748,6 +1102,18 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>  		r = kvm_init_ipa_range_realm(kvm, &args);
+>  		break;
+>  	}
+> +	case KVM_CAP_ARM_RME_POPULATE_REALM: {
+> +		struct kvm_cap_arm_rme_populate_realm_args args;
+> +		void __user *argp = u64_to_user_ptr(cap->args[1]);
+> +
+> +		if (copy_from_user(&args, argp, sizeof(args))) {
+> +			r = -EFAULT;
+> +			break;
+> +		}
+> +
+> +		r = kvm_populate_realm(kvm, &args);
+> +		break;
+> +	}
+>  	default:
+>  		r = -EINVAL;
+>  		break;
 
