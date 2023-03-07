@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD7BD524
-	for <linux-coco@lists.linux.dev>; Tue,  7 Mar 2023 19:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC11BA56
+	for <linux-coco@lists.linux.dev>; Tue,  7 Mar 2023 19:25:02 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AC8731EC068E;
-	Tue,  7 Mar 2023 20:24:57 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3C9831EC069A;
+	Tue,  7 Mar 2023 20:24:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1678217097;
+	t=1678217099;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+YVJIIGc1QMZZquSCdhv6upEqgdnIu7WrVxw64prdzU=;
-	b=VL0A87YEm5pDLfCdVu5BShpJ9CV+f9BnxCKrHEaMR9lDs4m+nmdNLnUgeI4YvTB/jsfFgZ
-	HhgNsnGcmowa4VuC8KxLSEivKeD5kAETSNApHuFro2ZSXEd4lOMu7ZFplf6xovG1SMIxBt
-	2scHBfrHOVeT7GAGlRGhyFyLSo4ejvY=
+	bh=4SOdasNpIVZBeTMQZbt7smR8ArnRs5idhx2L3K5sBUU=;
+	b=JL1IOWo6bD1CXtSfHs86ZooGZBuL5z8YArxAaLYdFTF24OMBQNmbUH6cbj7L00ml+XvVOB
+	M4dwe+mGY0EMhBDUDRpx/jeV4VtUynMLwp4xgbAFtXGkXO77fXYUxXkO88bl7434j3MZm4
+	8yqPghVvPF9/PCoW5UKutIoPqnXkiMs=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Dionna Glaze <dionnaglaze@google.com>,
@@ -28,9 +28,9 @@ Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH -v3 03/11] virt/coco/sev-guest: Simplify extended guest request handling
-Date: Tue,  7 Mar 2023 20:24:41 +0100
-Message-Id: <20230307192449.24732-4-bp@alien8.de>
+Subject: [PATCH -v3 06/11] virt/coco/sev-guest: Do some code style cleanups
+Date: Tue,  7 Mar 2023 20:24:44 +0100
+Message-Id: <20230307192449.24732-7-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230307192449.24732-1-bp@alien8.de>
 References: <20230307192449.24732-1-bp@alien8.de>
@@ -44,143 +44,40 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-Return a specific error code - -ENOSPC - to signal the too small cert
-data buffer instead of checking exit code and exitinfo2.
+Remove unnecessary linebreaks, make the code more compact.
 
-While at it, hoist the *fw_err assignment in snp_issue_guest_request()
-so that a proper error value is returned to the callers.
+No functional changes.
 
-  [ Tom: check override_err instead of err. ]
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- arch/x86/kernel/sev.c                   | 11 +++---
- drivers/virt/coco/sev-guest/sev-guest.c | 48 +++++++++++++------------
- 2 files changed, 32 insertions(+), 27 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index c644c34372e8..6a3e1425ba17 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -2209,15 +2209,16 @@ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned
- 	if (ret)
- 		goto e_put;
- 
-+	*fw_err = ghcb->save.sw_exit_info_2;
- 	if (ghcb->save.sw_exit_info_2) {
- 		/* Number of expected pages are returned in RBX */
- 		if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST &&
--		    ghcb->save.sw_exit_info_2 == SNP_GUEST_REQ_INVALID_LEN)
-+		    ghcb->save.sw_exit_info_2 == SNP_GUEST_REQ_INVALID_LEN) {
- 			input->data_npages = ghcb_get_rbx(ghcb);
--
--		*fw_err = ghcb->save.sw_exit_info_2;
--
--		ret = -EIO;
-+			ret = -ENOSPC;
-+		} else {
-+			ret = -EIO;
-+		}
- 	}
- 
- e_put:
 diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index ed5d6ae1a144..e61db0b15b7a 100644
+index 07dafe22b27a..81a53c31ff46 100644
 --- a/drivers/virt/coco/sev-guest/sev-guest.c
 +++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -322,7 +322,8 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 				u8 type, void *req_buf, size_t req_sz, void *resp_buf,
- 				u32 resp_sz, __u64 *fw_err)
- {
--	unsigned long err;
-+	unsigned long err, override_err = 0;
-+	unsigned int override_npages = 0;
- 	u64 seqno;
- 	int rc;
+@@ -412,18 +412,14 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 		if (rc == -EIO && *fw_err == SNP_GUEST_REQ_INVALID_LEN)
+ 			return rc;
  
-@@ -338,6 +339,7 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 	if (rc)
+-		dev_alert(snp_dev->dev,
+-			  "Detected error from ASP request. rc: %d, fw_err: %llu\n",
+-			  rc, *fw_err);
++		dev_alert(snp_dev->dev, "Detected error from ASP request. rc: %d, fw_err: %llu\n", rc, *fw_err);
+ 		snp_disable_vmpck(snp_dev);
  		return rc;
- 
-+retry_request:
- 	/*
- 	 * Call firmware to process the request. In this function the encrypted
- 	 * message enters shared memory with the host. So after this call the
-@@ -346,17 +348,24 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 	 */
- 	rc = snp_issue_guest_request(exit_code, &snp_dev->input, &err);
- 
--	/*
--	 * If the extended guest request fails due to having too small of a
--	 * certificate data buffer, retry the same guest request without the
--	 * extended data request in order to increment the sequence number
--	 * and thus avoid IV reuse.
--	 */
--	if (exit_code == SVM_VMGEXIT_EXT_GUEST_REQUEST &&
--	    err == SNP_GUEST_REQ_INVALID_LEN) {
--		const unsigned int certs_npages = snp_dev->input.data_npages;
-+	switch (rc) {
-+	case -ENOSPC:
-+		/*
-+		 * If the extended guest request fails due to having too
-+		 * small of a certificate data buffer, retry the same
-+		 * guest request without the extended data request in
-+		 * order to increment the sequence number and thus avoid
-+		 * IV reuse.
-+		 */
-+		override_npages = snp_dev->input.data_npages;
-+		exit_code	= SVM_VMGEXIT_GUEST_REQUEST;
- 
--		exit_code = SVM_VMGEXIT_GUEST_REQUEST;
-+		/*
-+		 * Override the error to inform callers the given extended
-+		 * request buffer size was too small and give the caller the
-+		 * required buffer size.
-+		 */
-+		override_err	= SNP_GUEST_REQ_INVALID_LEN;
- 
- 		/*
- 		 * If this call to the firmware succeeds, the sequence number can
-@@ -366,15 +375,7 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 		 * of the VMPCK and the error code being propagated back to the
- 		 * user as an ioctl() return code.
- 		 */
--		rc = snp_issue_guest_request(exit_code, &snp_dev->input, &err);
--
--		/*
--		 * Override the error to inform callers the given extended
--		 * request buffer size was too small and give the caller the
--		 * required buffer size.
--		 */
--		err = SNP_GUEST_REQ_INVALID_LEN;
--		snp_dev->input.data_npages = certs_npages;
-+		goto retry_request;
  	}
  
- 	/*
-@@ -386,7 +387,10 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 	snp_inc_msg_seqno(snp_dev);
- 
- 	if (fw_err)
--		*fw_err = err;
-+		*fw_err = override_err ?: err;
-+
-+	if (override_npages)
-+		snp_dev->input.data_npages = override_npages;
- 
- 	/*
- 	 * If an extended guest request was issued and the supplied certificate
-@@ -394,7 +398,7 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
- 	 * prevent IV reuse. If the standard request was successful, return -EIO
- 	 * back to the caller as would have originally been returned.
- 	 */
--	if (!rc && err == SNP_GUEST_REQ_INVALID_LEN)
-+	if (!rc && override_err == SNP_GUEST_REQ_INVALID_LEN)
- 		return -EIO;
- 
+ 	rc = verify_and_dec_payload(snp_dev, resp_buf, resp_sz);
  	if (rc) {
+-		dev_alert(snp_dev->dev,
+-			  "Detected unexpected decode failure from ASP. rc: %d\n",
+-			  rc);
++		dev_alert(snp_dev->dev, "Detected unexpected decode failure from ASP. rc: %d\n", rc);
+ 		snp_disable_vmpck(snp_dev);
+ 		return rc;
+ 	}
 -- 
 2.35.1
 
