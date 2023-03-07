@@ -1,22 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F18BA4F
-	for <linux-coco@lists.linux.dev>; Tue,  7 Mar 2023 19:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44623D522
+	for <linux-coco@lists.linux.dev>; Tue,  7 Mar 2023 19:24:59 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 18FC11EC053F;
-	Tue,  7 Mar 2023 20:24:56 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2A16B1EC068D;
+	Tue,  7 Mar 2023 20:24:57 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1678217096;
+	t=1678217097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=rHkroy2w2uj7twFXa8AvgpglEvvBPcIzgbmQEyl+A/4=;
-	b=fI5PE9jW+tek0X3l1kVHiCPwTu6zNcBc41jmHDI370H2zq88pcGRoKV8kt20XtltfO2M80
-	lWe28uTkYpb8jrAo+hF9Sy8fdXJKSNBHEntTnMKumsjve7wGxP/A1YkF3/WVdU77vqVfAr
-	p74pprDUb0wUrEw2lOTXZp8YfdnmOfE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KcgkIWNvodDr5x36a9j1+pJT663ai9fqYOsgYzxEZYk=;
+	b=LOGioT+4S3qPypIbXtjQL01zmmGNuZ20p9ZyCb4TD0Smw3hDmdWZ60WSGcUBj5tJfF1ulJ
+	yPXFX1Jd1AJ3aM/VvY8qdZcrkCo5bAWQYlN09+U0f+Q1eIrfc+e6NRXoQWbTKKu7DjjqXj
+	qmg0s9drt+nvIml2t57kVuYScwGPgcU=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Dionna Glaze <dionnaglaze@google.com>,
@@ -27,10 +28,12 @@ Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH -v3 00/11] SEV: Cleanup sev-guest a bit and add throttling
-Date: Tue,  7 Mar 2023 20:24:38 +0100
-Message-Id: <20230307192449.24732-1-bp@alien8.de>
+Subject: [PATCH -v3 02/11] virt/coco/sev-guest: Check SEV_SNP attribute at probe time
+Date: Tue,  7 Mar 2023 20:24:40 +0100
+Message-Id: <20230307192449.24732-3-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20230307192449.24732-1-bp@alien8.de>
+References: <20230307192449.24732-1-bp@alien8.de>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -41,80 +44,46 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+No need to check it on every ioctl. And yes, this is a common SEV driver
+but it does only SNP-specific operations currently. This can be
+revisited later, when more use cases appear.
 
-Hi,
+No functional changes.
 
-ok, here's v3, rebased ontop of -rc1 and hopefully with all the stuff
-addressed. There's always room for improvement but that should come
-later and ontop.
-
-Thx.
-
-Changelog:
-----------
-
-v2:
-
-ok, here's v2 with the pending stuff fixed.
-
-Thx.
-
-v1:
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
-so I've been looking at Dionna's patches adding the SEV guest throttling
-and that request issuing spaghetti was getting on my nerves. And it
-would've become even worse with more stuff piling ontop so here's
-a first round of cleanups before adding more stuff and making it an
-unmaintainable mess.
+ arch/x86/kernel/sev.c                   | 3 ---
+ drivers/virt/coco/sev-guest/sev-guest.c | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-The final result is a lot easier to read with proper separation of
-functionality between functions. I want to get rid of more input/output
-params being passed back'n'forth and use a struct instead and Nikunj's
-patches have stuff which goes in that direction but first things first.
-
-After the cleanup, the new stuff being added is a lot less code and
-almost trivial. But I've been staring at this for a while now so it
-could be only me who thinks it is trivial now. But we'll see.
-
-Initial smoke testing seems to work ok but I might've introduced some
-funky bugs, ofc.
-
-Comments and suggestions are appreciated, as always.
-
-Thanks and thanks, Tom, for the help!
-
-
-Borislav Petkov (AMD) (7):
-  virt/coco/sev-guest: Check SEV_SNP attribute at probe time
-  virt/coco/sev-guest: Simplify extended guest request handling
-  virt/coco/sev-guest: Remove the disable_vmpck label in
-    handle_guest_request()
-  virt/coco/sev-guest: Carve out the request issuing logic into a helper
-  virt/coco/sev-guest: Do some code style cleanups
-  virt/coco/sev-guest: Convert the sw_exit_info_2 checking to a
-    switch-case
-  crypto: ccp: Get rid of __sev_platform_init_locked()'s local function
-    pointer
-
-Dionna Glaze (3):
-  virt/coco/sev-guest: Add throttling awareness
-  virt/coco/sev-guest: Double-buffer messages
-  x86/sev: Change snp_guest_issue_request()'s fw_err argument
-
-Peter Gonda (1):
-  crypto: ccp - Name -1 return value as SEV_RET_NO_FW_CALL
-
- Documentation/virt/coco/sev-guest.rst   |  20 ++-
- arch/x86/include/asm/sev-common.h       |   3 -
- arch/x86/include/asm/sev.h              |  10 +-
- arch/x86/kernel/sev.c                   |  33 ++--
- drivers/crypto/ccp/sev-dev.c            |  22 ++-
- drivers/virt/coco/sev-guest/sev-guest.c | 190 +++++++++++++++---------
- include/uapi/linux/psp-sev.h            |   7 +
- include/uapi/linux/sev-guest.h          |  18 ++-
- 8 files changed, 199 insertions(+), 104 deletions(-)
-
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 679026a640ef..c644c34372e8 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -2183,9 +2183,6 @@ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned
+ 	struct ghcb *ghcb;
+ 	int ret;
+ 
+-	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+-		return -ENODEV;
+-
+ 	if (!fw_err)
+ 		return -EINVAL;
+ 
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 7b4e9009f335..ed5d6ae1a144 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -703,6 +703,9 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+ 	void __iomem *mapping;
+ 	int ret;
+ 
++	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		return -ENODEV;
++
+ 	if (!dev->platform_data)
+ 		return -ENODEV;
+ 
 -- 
 2.35.1
 
