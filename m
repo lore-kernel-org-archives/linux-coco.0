@@ -1,23 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44623D522
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DA6D539
 	for <linux-coco@lists.linux.dev>; Tue,  7 Mar 2023 19:24:59 +0000 (UTC)
 Received: from zn.tnic (p5de8e9fe.dip0.t-ipconnect.de [93.232.233.254])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2A16B1EC068D;
-	Tue,  7 Mar 2023 20:24:57 +0100 (CET)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2A6651EC068F;
+	Tue,  7 Mar 2023 20:24:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1678217097;
+	t=1678217098;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KcgkIWNvodDr5x36a9j1+pJT663ai9fqYOsgYzxEZYk=;
-	b=LOGioT+4S3qPypIbXtjQL01zmmGNuZ20p9ZyCb4TD0Smw3hDmdWZ60WSGcUBj5tJfF1ulJ
-	yPXFX1Jd1AJ3aM/VvY8qdZcrkCo5bAWQYlN09+U0f+Q1eIrfc+e6NRXoQWbTKKu7DjjqXj
-	qmg0s9drt+nvIml2t57kVuYScwGPgcU=
+	bh=WcyoixC2EelL7IpGg5rrSKxc8ATNU7FnXy0NB/gPXKs=;
+	b=YpXdP0ZfYnL1cACp6ZkqWwJZe2QsMmfIY4zKeossGJiHp/rw2hmpHwhsKHwKAgo3xLYvcA
+	h3FsHBe/rka5PsA/4/qp2hwCs0/Es3Yyr4vxelGRFGzhw6otPIheJuuqSWdFoJ2ENRVxvZ
+	KUsFF7RN2v9z4W3AwK8SGIirj981q4o=
 From: Borislav Petkov <bp@alien8.de>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Dionna Glaze <dionnaglaze@google.com>,
@@ -28,9 +28,9 @@ Cc: Dionna Glaze <dionnaglaze@google.com>,
 	Tom Lendacky <Thomas.Lendacky@amd.com>,
 	linux-coco@lists.linux.dev,
 	x86@kernel.org
-Subject: [PATCH -v3 02/11] virt/coco/sev-guest: Check SEV_SNP attribute at probe time
-Date: Tue,  7 Mar 2023 20:24:40 +0100
-Message-Id: <20230307192449.24732-3-bp@alien8.de>
+Subject: [PATCH -v3 04/11] virt/coco/sev-guest: Remove the disable_vmpck label in handle_guest_request()
+Date: Tue,  7 Mar 2023 20:24:42 +0100
+Message-Id: <20230307192449.24732-5-bp@alien8.de>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20230307192449.24732-1-bp@alien8.de>
 References: <20230307192449.24732-1-bp@alien8.de>
@@ -44,46 +44,46 @@ Content-Transfer-Encoding: 8bit
 
 From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-No need to check it on every ioctl. And yes, this is a common SEV driver
-but it does only SNP-specific operations currently. This can be
-revisited later, when more use cases appear.
+Call the function directly instead.
 
 No functional changes.
 
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 ---
- arch/x86/kernel/sev.c                   | 3 ---
- drivers/virt/coco/sev-guest/sev-guest.c | 3 +++
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/virt/coco/sev-guest/sev-guest.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 679026a640ef..c644c34372e8 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -2183,9 +2183,6 @@ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, unsigned
- 	struct ghcb *ghcb;
- 	int ret;
- 
--	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
--		return -ENODEV;
--
- 	if (!fw_err)
- 		return -EINVAL;
- 
 diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 7b4e9009f335..ed5d6ae1a144 100644
+index e61db0b15b7a..a51bd4afd5ab 100644
 --- a/drivers/virt/coco/sev-guest/sev-guest.c
 +++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -703,6 +703,9 @@ static int __init sev_guest_probe(struct platform_device *pdev)
- 	void __iomem *mapping;
- 	int ret;
+@@ -405,7 +405,8 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 		dev_alert(snp_dev->dev,
+ 			  "Detected error from ASP request. rc: %d, fw_err: %llu\n",
+ 			  rc, *fw_err);
+-		goto disable_vmpck;
++		snp_disable_vmpck(snp_dev);
++		return rc;
+ 	}
  
-+	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
-+		return -ENODEV;
-+
- 	if (!dev->platform_data)
- 		return -ENODEV;
+ 	rc = verify_and_dec_payload(snp_dev, resp_buf, resp_sz);
+@@ -413,14 +414,11 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code, in
+ 		dev_alert(snp_dev->dev,
+ 			  "Detected unexpected decode failure from ASP. rc: %d\n",
+ 			  rc);
+-		goto disable_vmpck;
++		snp_disable_vmpck(snp_dev);
++		return rc;
+ 	}
  
+ 	return 0;
+-
+-disable_vmpck:
+-	snp_disable_vmpck(snp_dev);
+-	return rc;
+ }
+ 
+ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
 -- 
 2.35.1
 
