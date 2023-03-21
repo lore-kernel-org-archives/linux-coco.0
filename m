@@ -1,116 +1,127 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB35310E9
-	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 13:43:53 +0000 (UTC)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32LCv9qC005627;
-	Tue, 21 Mar 2023 13:43:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=1GMaDkpv/qcVBFp37IfT3wOFmO6whM+7W8zDnUBbUDA=;
- b=Nchhq6S8xdum808Zi4EUMraR1J8zRKLgxqXAqHfd6G6mabqc1P8PIf52uOUbZZizw7b2
- 8SMD6uD/fvQlw7MP44aXHWef0r59HXYpkrA3vViV+9iNbiOoNFCexmP+aBGgcduMx4wW
- N1ln1iPkeW7ylHml9FwVcj9D5M/24HtFdFAG/R4bYKpGBvYl/n1LgJ/q7VE2eVsh2Ro8
- StZRXPahl5PlTl2Y9YMxw+sR4TXxB9Y5Dmd8qXLsMm0eZP95PaKA6aU2iQHTPV7WVdA8
- YyKHNBYrpNVenwMRH2zlZmZJy4FI6lM4U1hTRkeHng23VPmN6+EwT6E4bSP6ilM6skU9 wQ== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pf7qns9rd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Mar 2023 13:43:52 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32LBmxwD020656;
-	Tue, 21 Mar 2023 13:43:51 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
-	by ppma01dal.us.ibm.com (PPS) with ESMTPS id 3pd4x7fdyh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Mar 2023 13:43:51 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32LDhoS88716892
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Mar 2023 13:43:50 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 703A458061;
-	Tue, 21 Mar 2023 13:43:50 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C284E58058;
-	Tue, 21 Mar 2023 13:43:49 +0000 (GMT)
-Received: from nat-wireless-guest-reg-153-54.bu.edu (unknown [9.163.23.201])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 21 Mar 2023 13:43:49 +0000 (GMT)
-Message-ID: <c2e8af835723c453adaba4b66db533a158076bbf.camel@linux.ibm.com>
-Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8141AC952
+	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 15:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1679411186;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DeboSID+flODqx9I+nMKyoD3QHmIkeCvkLB5G/ItUBU=;
+	b=Xd0hCw0U5R8nooesi2sC1J62g7JCVT/LRJ1PgGwBkm9agiev+it5CbMcQpGmR2q2op1QNE
+	CclrHms/X759dU+CUT1RsSTRRVo4O20ltnicKPWa3P/E5ea9b/h04Nr0phQ/0OQ70puhO2
+	9BJnTi/DOpNXxp89Ns5nXasxegF1jDs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-179-BGWdOEOCPvm-qb8VH2_mIg-1; Tue, 21 Mar 2023 11:06:25 -0400
+X-MC-Unique: BGWdOEOCPvm-qb8VH2_mIg-1
+Received: by mail-wm1-f72.google.com with SMTP id o42-20020a05600c512a00b003ed26fa6ebdso6025085wms.7
+        for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 08:06:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679411183;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DeboSID+flODqx9I+nMKyoD3QHmIkeCvkLB5G/ItUBU=;
+        b=3ZNA5WZ2vIuTiUhSp40WNl+fP1+iD0344s2ZmSlSM1xWx36mbLlxajta9ojFPQ//aE
+         92Dz7eYGwoL6wkrOUf7Z7jyAgp7cMVJFPwUJJEHlO7hYvBPVk5a7ksHnPDCjgNdcEc5F
+         8oAyRDKKzd0ed602hnL1mugUMHnB8w36LavlNgSmXQFEStkhSXeDHXfr1n2h58UeMBDq
+         IZ2Bq/fvl4sV2m0vXODw519toWvrwrG5VkVFzrph/9l2umJ1zTlvWScoevYY+Ozjn54v
+         vNoNKDZT5X1Q+TlubN3dNB3y85EZqKvKhan71Ea5BTK9XcRQ7nlngUZothkaTFOzear3
+         xpQA==
+X-Gm-Message-State: AO0yUKXZjnVoqwoNdesZq1Yq4CpaNZeOSN7/okClC/pzS4mA90VUmunl
+	P6bEVa3WvgrjqQ7mPtoJrBQVpCCHdq+XHlu0yTVQ03NSlesMt8oK/dLZmxXUVz9axLoAgvsPaqw
+	o5GLde2rEU74HuK1jsU2+KA==
+X-Received: by 2002:a7b:cd08:0:b0:3e1:f8af:8772 with SMTP id f8-20020a7bcd08000000b003e1f8af8772mr2718086wmj.9.1679411183621;
+        Tue, 21 Mar 2023 08:06:23 -0700 (PDT)
+X-Google-Smtp-Source: AK7set8hETz/BgtfXVgzBVy6TDRDQShGyhMxRyf2swuVorF+Gi27ydHl0d6lLBUA6v0wHiItH64mag==
+X-Received: by 2002:a7b:cd08:0:b0:3e1:f8af:8772 with SMTP id f8-20020a7bcd08000000b003e1f8af8772mr2718060wmj.9.1679411183335;
+        Tue, 21 Mar 2023 08:06:23 -0700 (PDT)
+Received: from work-vm (ward-16-b2-v4wan-166627-cust863.vm18.cable.virginm.net. [81.97.203.96])
+        by smtp.gmail.com with ESMTPSA id e5-20020a05600c254500b003eb596cbc54sm14078799wma.0.2023.03.21.08.06.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Mar 2023 08:06:22 -0700 (PDT)
+Date: Tue, 21 Mar 2023 15:06:19 +0000
+From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
+To: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
 Cc: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
-        kvm@vger.kernel.org
-Date: Tue, 21 Mar 2023 09:43:48 -0400
-In-Reply-To: <ZBmmjlNdBwVju6ib@suse.de>
+	kvm@vger.kernel.org
+Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
+Message-ID: <ZBnH600JIw1saZZ7@work-vm>
 References: <ZBl4592947wC7WKI@suse.de>
-	 <66eee693371c11bbd2173ad5d91afc740aa17b46.camel@linux.ibm.com>
-	 <ZBmmjlNdBwVju6ib@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0N1Ti4wqD48g2xLu1DEn-gB15xjh1zAO
-X-Proofpoint-ORIG-GUID: 0N1Ti4wqD48g2xLu1DEn-gB15xjh1zAO
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-21_08,2023-03-21_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999
- priorityscore=1501 clxscore=1015 phishscore=0 impostorscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303210103
+In-Reply-To: <ZBl4592947wC7WKI@suse.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2023-03-21 at 13:43 +0100, JÃ¶rg RÃ¶del wrote:
-> Hi James,
+* Jörg Rödel (jroedel@suse.de) wrote:
+> Hi,
 > 
-> On Tue, Mar 21, 2023 at 07:09:40AM -0400, James Bottomley wrote:
-> > Since this a fork of the AMD svsm code
-> > (https://github.com/AMDESE/linux-svsm/), is it intended to be a
-> > permanent fork, or are you going to be submitting your additions
-> > back upstream like we're trying to do for our initial vTPM
-> > prototype?Â From the community point of view, having two different
-> > SVSM code bases and having to choose which one to develop against
-> > is going to be very confusing ...
+> We are happy to announce that last week our secure VM service module
+> (SVSM) went public on GitHub for everyone to try it out and participate
+> in its further development. It is dual-licensed under the MIT and
+> APACHE-2.0 licenses.
 > 
-> The COCONUT-SVSM was and is a separate project and not a fork of AMDs
-> linux-svsm. Some code was ported from our code-base to linux-svsm in
-> the past, namely the SpinLock implementation and the memory
-> allocators.
-
-Well at the time you submitted the pull request, Coconut wasn't public,
-so I don't think it looked like a port from a separate code base when
-it happened.  But anyway, I'm not so interested in who is based on
-whom, I'm more interested in how we avoid dividing our efforts on
-confidential computing going forwards.
-
-> What the project also shares with linux-svsm is the support code in
-> the Linux kernel (host and guest) and the EDK2 changes needed to
-> launch an SVSM.
+> The project is written in Rust and can be cloned from:
 > 
-> But besides that the two code-bases are different, using a different
-> build approach and different launch protocol. The goals we have with
-> our SVSM are hard to achieve with the linux-svsm code-base, so a
-> merge does not make sense at this point.
+> 	https://github.com/coconut-svsm/svsm
+> 
+> There are also repositories in the github project with the Linux host and
+> guest, EDK2 and QEMU changes needed to run the SVSM and boot up a full
+> Linux guest.
+> 
+> The SVSM repository contains an installation guide in the INSTALL.md
+> file and contributor hints in CONTRIBUTING.md.
+> 
+> A blog entry with more details is here:
+> 
+> 	https://www.suse.com/c/suse-open-sources-secure-vm-service-module-for-confidential-computing/
+> 
+> We also thank AMD for implementing and providing the necessary changes
+> to Linux and EDK2 to make an SVSM possible.
 
-Could you describe these incompatible goals and explain why you think
-they are incompatible (as in why you and AMD don't think you can agree
-on it)?  That would help the rest of us understand where the two SVSM
-implementations fit in our ongoing plans.
+Interesting; it would have been nice to have known about this a little
+earlier, some people have been working on stuff built on top of the AMD
+one for a while.
 
-Regards,
+You mention two things that I wonder how they interact:
 
-James
+  a) TPMs in the future at a higher ring
+  b) Making (almost) unmodified guests
+
+What interface do you expect the guest to see from the TPM - would it
+look like an existing TPM hardware interface or would you need some
+changes?
+
+Dave
+
+> Have a lot of fun!
+> 
+> -- 
+> Jörg Rödel
+> jroedel@suse.de
+> 
+> SUSE Software Solutions Germany GmbH
+> Frankenstraße 146
+> 90461 Nürnberg
+> Germany
+> 
+> (HRB 36809, AG Nürnberg)
+> Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+> 
+-- 
+Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
