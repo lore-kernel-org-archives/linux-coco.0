@@ -1,135 +1,338 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2055.outbound.protection.outlook.com [40.107.244.55])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7608C7C
-	for <linux-coco@lists.linux.dev>; Mon, 20 Mar 2023 18:09:27 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mDaZYYZ9D8A8XMznK7rgomK0Ol3F1v8yKPtHL8cq+Lyypk8LTLAp1hlDc09j2ZHQpPGmjTWs9+lRlSoECduGj68jw/mTPAeSyynh08IktIEQG5hjYchroB4tn1WjhhXlfM+LDNT/yiQzZ5WmUDyH14TRxfLRMmtv2vqLtQv91J/aWrOQyb/cBE9/zBbet0Dn/5S13SIhlF4emHgJwavcxR3uO/oeYDFuicnaxkXYKMkEo3IKsuMjNP583qiRAsfpn3ixJrZMHtKQGKdtuhAn8I0epJJrXHCflyVVwJEPmq+2zaEvXQQgeCTKh1yNInw3GRKc7tg0kNgNECP+Zu5EFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gBqqtCCyNrjVVfmw0bqz563/qEySO7Z84R6+44BArg4=;
- b=F/7qs86ON1ljUD6X+T0MPAZZufBRzwzdlHTa4k7W1MurxF5UwSPb8tP9/20v4zW6Cq1j+QXWjqp7b/6r1leEzdCo9thaVRVfFfylywFZSukLU4R1Z29wxzBYofoT8+V715YRsQC1uBhoZ6VpU/KP9slsxQfm3iKsvFv5BdC07nYG13+lhY+ArG0Iz2PK5KSNw/2c5ASwTZDQYcAwgSRgiHpN0aafupOnjsD/eAfEpABsJx1p0pWrzQOrSe+ixktnzfLmz7xMqvQwYrFQHIc9LyXARZUP/MBtq32S+iTfnPR6rx8mYpTy2HSpvV0mYFA8zd2weCtnfplWbJ/NnTHpRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gBqqtCCyNrjVVfmw0bqz563/qEySO7Z84R6+44BArg4=;
- b=vxnpdECUpxjXKP7tFcv/8b9VZnSQoVzHMyh0HDNlx5np3wxSihkqmtnlWvMgnpPhKqvSO7yGsIdxwOw6OwQIVPWW0FhEMLsR+oPJ2sARP1WeT9LFmIFVytsTcD//gqFsTc1pO45YT4biVqNQo5NEGs3WN8jpf9ev4h93xQ+Bx6s=
-Received: from BN9PR03CA0739.namprd03.prod.outlook.com (2603:10b6:408:110::24)
- by CY5PR12MB6202.namprd12.prod.outlook.com (2603:10b6:930:25::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37; Mon, 20 Mar
- 2023 18:09:25 +0000
-Received: from BN8NAM11FT110.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:110:cafe::a8) by BN9PR03CA0739.outlook.office365.com
- (2603:10b6:408:110::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.37 via Frontend
- Transport; Mon, 20 Mar 2023 18:09:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT110.mail.protection.outlook.com (10.13.176.156) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6222.15 via Frontend Transport; Mon, 20 Mar 2023 18:09:25 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 20 Mar
- 2023 13:09:24 -0500
-Date: Mon, 20 Mar 2023 13:09:09 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Isaku Yamahata <isaku.yamahata@gmail.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
-	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
-	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
-	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
-	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
-	<ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
-	<nikunj.dadhania@amd.com>
-Subject: Re: [PATCH RFC v8 03/56] KVM: x86: Add platform hooks for private
- memory invalidations
-Message-ID: <20230320180909.gsffri3fdfdleewc@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
- <20230220183847.59159-4-michael.roth@amd.com>
- <20230318051322.GF408922@ls.amr.corp.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EA010E5
+	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 00:35:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1679358924; x=1710894924;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=541U4UtV3QlyfcTnxoIXC8ebj+SoFmzulWCbBJoBAkw=;
+  b=Wapaxts4swYYzc8D3m5/QLAe9gCidJfFebH/JVxR7U+m47f9BJUPv1q/
+   FTSjwy8qSS0EI8K74RfxIPxZn2PkH9gfoj5TZpqgVxPNFzNXUfP0KZoaC
+   nOxglukGQBjITiGDKaqCRqKn2S3bleWRfF7OMArJTehvqtfcWLRpZ5OAU
+   KSCu34eo1LxeLB2ukTlaHJXl5fBryw3+mrbDdFxUlSxFXBRPUrZFub2eH
+   SocU80k1Sxlk4duSfuIXRcXCB+rwRmBYlLATj4XbQkViBtzQ6f71sk67z
+   r+AGjXWBXamxVu321MuKjpHty0Fqk8LjWF0kZQAcGDWNy+0uQqmfTBfnd
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="341170534"
+X-IronPort-AV: E=Sophos;i="5.98,277,1673942400"; 
+   d="scan'208";a="341170534"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 17:35:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10655"; a="1010718718"
+X-IronPort-AV: E=Sophos;i="5.98,277,1673942400"; 
+   d="scan'208";a="1010718718"
+Received: from cbellini-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.221.208])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2023 17:35:20 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id E63A4109596; Tue, 21 Mar 2023 03:35:17 +0300 (+03)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: bp@alien8.de,
+	dave.hansen@intel.com,
+	luto@kernel.org,
+	peterz@infradead.org
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	tglx@linutronix.de,
+	x86@kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH, REBASED] x86/tdx: Drop flags from __tdx_hypercall()
+Date: Tue, 21 Mar 2023 03:35:11 +0300
+Message-Id: <20230321003511.9469-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20230318051322.GF408922@ls.amr.corp.intel.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT110:EE_|CY5PR12MB6202:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10fa67c9-8272-414d-2135-08db296e3d0e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	CAjiZp2+DdMErGjMGhW9oxqU39Qp8byZzx/+/ys8LIeIvgff6+5PyrJmaIO4CD0T7ue3UV0cUFr/ViRraB/yY8UQO1Ys7fNh/f/iADG/KMZ/4CryAQPkCF4IhC6+HNpkC2Zq9+KnamlhHpvQXYZ1RpKV52U350pQphuRZpm1aiu0zdyR0ux4I10gyzS+0uXy99zz4xTrGgjYRG5Lv/pLOFIaAzfwTU9vFlzU+PPAgeYPtIabtF9GHDETax204wN9BiimD/yVwgAP3lOiPsSeo3FbKlJFDiZV+xWwuRliy44iGKh2mHy7Lh/fuEsYCjmc3boSRar/WHrU6cBtgQuZiuKtnOBTsFmxvTbOfAnWhZpGonqImoN1hYIuXAVjciWyqHD4vH+Yd2NCq37NmSBDHEyUbj2njWIg0lj0tb/q+ueZ1eGNiSJaZHEcqcA4rp8hMq0T60/yY+iYT6zxwbpvgXpEdlNEALUSNmAYzfTXFthlPZAKN7WRHdmZ0JszRhn/vb3OBx374z+1m8i/gWFknHqIQPk+M5SoyrfMT5wEpNJ8MHzp2gODzUDWc8iVY9YoNsPjZCE4yPcKBuHCAFPIZzD88/z5n9jrdixPX5HfiBJdHBgFXWyRmqIiq7XqIwmSK1myy40Xa0c0a6A7ZsEE055bVHB5v8qij+NnA36NgNOIIjqZpFHkWmxxU/BE58Tniw2X4sa3LWhQxorYc1q2UblYRt6lM99c2sdF2QFWBMU=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230025)(4636009)(136003)(39860400002)(376002)(396003)(346002)(451199018)(36840700001)(40470700004)(46966006)(426003)(316002)(40480700001)(47076005)(44832011)(54906003)(70586007)(36860700001)(70206006)(36756003)(8936002)(8676002)(6916009)(4326008)(7416002)(7406005)(41300700001)(5660300002)(2906002)(478600001)(86362001)(40460700003)(81166007)(82740400003)(83380400001)(82310400005)(356005)(336012)(6666004)(2616005)(186003)(16526019)(1076003)(26005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2023 18:09:25.0065
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10fa67c9-8272-414d-2135-08db296e3d0e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT110.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6202
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 17, 2023 at 10:13:22PM -0700, Isaku Yamahata wrote:
-> On Mon, Feb 20, 2023 at 12:37:54PM -0600,
-> Michael Roth <michael.roth@amd.com> wrote:
-> 
-> > In some cases, like with SEV-SNP, guest memory needs to be updated in a
-> > platform-specific manner before it can be safely freed back to the host.
-> > Add hooks to wire up handling of this sort to the invalidation notifiers
-> > for restricted memory.
-> > 
-> > Also issue invalidations of all allocated pages during notifier/memslot
-> > unbinding so that the pages are not left in an unusable state when
-> > they eventually get freed back to the host upon FD release.
-> 
-> I'm just curios. Could you please elaborate?
-> Unbind is happen only when memory slot is delete or vm is destroyed.  In the
-> case of memory slot deletion, the gpa region is zapped via
-> kvm_arch_commit_memory_region().  In the case of VM destroy, we have
-> kvm_flush_shadow_all() which calls
-> kvm_arch_flush_shadow_all() =>kvm_mmu_zap_all().  Doesn't it work?
+After TDX_HCALL_ISSUE_STI got dropped, the only flag left is
+TDX_HCALL_HAS_OUTPUT. The flag indicates if the caller wants to see
+tdx_hypercall_args updated based on the hypercall output.
 
-The main thing here is unbind happens right before the restrictedmem
-pages are released back to the host, and for SNP we need to clear the
-associated RMP table entries to switch them from guest-owned to
-hypervisor-owned. It doesn't necessarily need to be a separate callback,
-but I'm not sure if it makes sense to squash that down into the various
-MMU zapping helpers.
+Drop the flags and provide __tdx_hypercall_ret() that matches
+TDX_HCALL_HAS_OUTPUT semantics.
 
--Mike
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+---
+ arch/x86/boot/compressed/tdx.c    |  4 +-
+ arch/x86/coco/tdx/tdcall.S        | 66 ++++++++++++++++++-------------
+ arch/x86/coco/tdx/tdx.c           | 18 ++++-----
+ arch/x86/include/asm/shared/tdx.h |  5 +--
+ 4 files changed, 51 insertions(+), 42 deletions(-)
 
-> 
-> Thanks,
-> -- 
-> Isaku Yamahata <isaku.yamahata@gmail.com>
+diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+index 918a7606f53c..2d81d3cc72a1 100644
+--- a/arch/x86/boot/compressed/tdx.c
++++ b/arch/x86/boot/compressed/tdx.c
+@@ -26,7 +26,7 @@ static inline unsigned int tdx_io_in(int size, u16 port)
+ 		.r14 = port,
+ 	};
+ 
+-	if (__tdx_hypercall(&args, TDX_HCALL_HAS_OUTPUT))
++	if (__tdx_hypercall_ret(&args))
+ 		return UINT_MAX;
+ 
+ 	return args.r11;
+@@ -43,7 +43,7 @@ static inline void tdx_io_out(int size, u16 port, u32 value)
+ 		.r15 = value,
+ 	};
+ 
+-	__tdx_hypercall(&args, 0);
++	__tdx_hypercall(&args);
+ }
+ 
+ static inline u8 tdx_inb(u16 port)
+diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
+index 6a255e6809bc..b193c0a1d8db 100644
+--- a/arch/x86/coco/tdx/tdcall.S
++++ b/arch/x86/coco/tdx/tdcall.S
+@@ -85,12 +85,12 @@ SYM_FUNC_START(__tdx_module_call)
+ SYM_FUNC_END(__tdx_module_call)
+ 
+ /*
+- * __tdx_hypercall() - Make hypercalls to a TDX VMM using TDVMCALL leaf
+- * of TDCALL instruction
++ * TDX_HYPERCALL - Make hypercalls to a TDX VMM using TDVMCALL leaf of TDCALL
++ * instruction
+  *
+  * Transforms values in  function call argument struct tdx_hypercall_args @args
+  * into the TDCALL register ABI. After TDCALL operation, VMM output is saved
+- * back in @args.
++ * back in @args, if \ret is 1.
+  *
+  *-------------------------------------------------------------------------
+  * TD VMCALL ABI:
+@@ -105,26 +105,18 @@ SYM_FUNC_END(__tdx_module_call)
+  *                       specification. Non zero value indicates vendor
+  *                       specific ABI.
+  * R11                 - VMCALL sub function number
+- * RBX, RBP, RDI, RSI  - Used to pass VMCALL sub function specific arguments.
++ * RBX, RDX, RDI, RSI  - Used to pass VMCALL sub function specific arguments.
+  * R8-R9, R12-R15      - Same as above.
+  *
+  * Output Registers:
+  *
+  * RAX                 - TDCALL instruction status (Not related to hypercall
+  *                        output).
+- * R10                 - Hypercall output error code.
+- * R11-R15             - Hypercall sub function specific output values.
++ * RBX, RDX, RDI, RSI  - Hypercall sub function specific output values.
++ * R8-R15              - Same as above.
+  *
+- *-------------------------------------------------------------------------
+- *
+- * __tdx_hypercall() function ABI:
+- *
+- * @args  (RDI)        - struct tdx_hypercall_args for input and output
+- * @flags (RSI)        - TDX_HCALL_* flags
+- *
+- * On successful completion, return the hypercall error code.
+  */
+-SYM_FUNC_START(__tdx_hypercall)
++.macro TDX_HYPERCALL ret:req
+ 	FRAME_BEGIN
+ 
+ 	/* Save callee-saved GPRs as mandated by the x86_64 ABI */
+@@ -134,9 +126,8 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	push %r12
+ 	push %rbx
+ 
+-	/* Free RDI and RSI to be used as TDVMCALL arguments */
++	/* Free RDI to be used as TDVMCALL arguments */
+ 	movq %rdi, %rax
+-	push %rsi
+ 
+ 	/* Copy hypercall registers from arg struct: */
+ 	movq TDX_HYPERCALL_r8(%rax),  %r8
+@@ -171,14 +162,11 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	 * and are handled by callers.
+ 	 */
+ 	testq %rax, %rax
+-	jne .Lpanic
++	jne .Lpanic\@
+ 
+ 	pop %rax
+ 
+-	/* Copy hypercall result registers to arg struct if needed */
+-	testq $TDX_HCALL_HAS_OUTPUT, (%rsp)
+-	jz .Lout
+-
++	.if \ret
+ 	movq %r8,  TDX_HYPERCALL_r8(%rax)
+ 	movq %r9,  TDX_HYPERCALL_r9(%rax)
+ 	movq %r10, TDX_HYPERCALL_r10(%rax)
+@@ -191,7 +179,8 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	movq %rsi, TDX_HYPERCALL_rsi(%rax)
+ 	movq %rbx, TDX_HYPERCALL_rbx(%rax)
+ 	movq %rdx, TDX_HYPERCALL_rdx(%rax)
+-.Lout:
++	.endif
++
+ 	/* TDVMCALL leaf return code is in R10 */
+ 	movq %r10, %rax
+ 
+@@ -208,9 +197,6 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	xor %rdi,  %rdi
+ 	xor %rdx,  %rdx
+ 
+-	/* Remove TDX_HCALL_* flags from the stack */
+-	pop %rsi
+-
+ 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
+ 	pop %rbx
+ 	pop %r12
+@@ -221,9 +207,33 @@ SYM_FUNC_START(__tdx_hypercall)
+ 	FRAME_END
+ 
+ 	RET
+-.Lpanic:
++.Lpanic\@:
+ 	call __tdx_hypercall_failed
+ 	/* __tdx_hypercall_failed never returns */
+ 	REACHABLE
+-	jmp .Lpanic
++	jmp .Lpanic\@
++.endm
++
++/*
++ *
++ * __tdx_hypercall() function ABI:
++ *
++ * @args  (RDI)        - struct tdx_hypercall_args for input
++ *
++ * On successful completion, return the hypercall error code.
++ */
++SYM_FUNC_START(__tdx_hypercall)
++	TDX_HYPERCALL ret=0
+ SYM_FUNC_END(__tdx_hypercall)
++
++/*
++ *
++ * __tdx_hypercall_ret() function ABI:
++ *
++ * @args  (RDI)        - struct tdx_hypercall_args for input and output
++ *
++ * On successful completion, return the hypercall error code.
++ */
++SYM_FUNC_START(__tdx_hypercall_ret)
++	TDX_HYPERCALL ret=1
++SYM_FUNC_END(__tdx_hypercall_ret)
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 055300e08fb3..e146b599260f 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -66,7 +66,7 @@ static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
+ 		.r15 = r15,
+ 	};
+ 
+-	return __tdx_hypercall(&args, 0);
++	return __tdx_hypercall(&args);
+ }
+ 
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+@@ -99,7 +99,7 @@ long tdx_kvm_hypercall(unsigned int nr, unsigned long p1, unsigned long p2,
+ 		.r14 = p4,
+ 	};
+ 
+-	return __tdx_hypercall(&args, 0);
++	return __tdx_hypercall(&args);
+ }
+ EXPORT_SYMBOL_GPL(tdx_kvm_hypercall);
+ #endif
+@@ -179,7 +179,7 @@ static void __noreturn tdx_panic(const char *msg)
+ 	 * happens to return.
+ 	 */
+ 	while (1)
+-		__tdx_hypercall(&args, 0);
++		__tdx_hypercall(&args);
+ }
+ 
+ static void tdx_parse_tdinfo(u64 *cc_mask)
+@@ -289,7 +289,7 @@ static u64 __cpuidle __halt(const bool irq_disabled)
+ 	 * can keep the vCPU in virtual HLT, even if an IRQ is
+ 	 * pending, without hanging/breaking the guest.
+ 	 */
+-	return __tdx_hypercall(&args, 0);
++	return __tdx_hypercall(&args);
+ }
+ 
+ static int handle_halt(struct ve_info *ve)
+@@ -326,7 +326,7 @@ static int read_msr(struct pt_regs *regs, struct ve_info *ve)
+ 	 * can be found in TDX Guest-Host-Communication Interface
+ 	 * (GHCI), section titled "TDG.VP.VMCALL<Instruction.RDMSR>".
+ 	 */
+-	if (__tdx_hypercall(&args, TDX_HCALL_HAS_OUTPUT))
++	if (__tdx_hypercall_ret(&args))
+ 		return -EIO;
+ 
+ 	regs->ax = lower_32_bits(args.r11);
+@@ -348,7 +348,7 @@ static int write_msr(struct pt_regs *regs, struct ve_info *ve)
+ 	 * can be found in TDX Guest-Host-Communication Interface
+ 	 * (GHCI) section titled "TDG.VP.VMCALL<Instruction.WRMSR>".
+ 	 */
+-	if (__tdx_hypercall(&args, 0))
++	if (__tdx_hypercall(&args))
+ 		return -EIO;
+ 
+ 	return ve_instr_len(ve);
+@@ -380,7 +380,7 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
+ 	 * ABI can be found in TDX Guest-Host-Communication Interface
+ 	 * (GHCI), section titled "VP.VMCALL<Instruction.CPUID>".
+ 	 */
+-	if (__tdx_hypercall(&args, TDX_HCALL_HAS_OUTPUT))
++	if (__tdx_hypercall_ret(&args))
+ 		return -EIO;
+ 
+ 	/*
+@@ -407,7 +407,7 @@ static bool mmio_read(int size, unsigned long addr, unsigned long *val)
+ 		.r15 = *val,
+ 	};
+ 
+-	if (__tdx_hypercall(&args, TDX_HCALL_HAS_OUTPUT))
++	if (__tdx_hypercall_ret(&args))
+ 		return false;
+ 	*val = args.r11;
+ 	return true;
+@@ -541,7 +541,7 @@ static bool handle_in(struct pt_regs *regs, int size, int port)
+ 	 * in TDX Guest-Host-Communication Interface (GHCI) section titled
+ 	 * "TDG.VP.VMCALL<Instruction.IO>".
+ 	 */
+-	success = !__tdx_hypercall(&args, TDX_HCALL_HAS_OUTPUT);
++	success = !__tdx_hypercall_ret(&args);
+ 
+ 	/* Update part of the register affected by the emulated instruction */
+ 	regs->ax &= ~mask;
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 4a03993e0785..2631e01f6e0f 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -7,8 +7,6 @@
+ 
+ #define TDX_HYPERCALL_STANDARD  0
+ 
+-#define TDX_HCALL_HAS_OUTPUT	BIT(0)
+-
+ #define TDX_CPUID_LEAF_ID	0x21
+ #define TDX_IDENT		"IntelTDX    "
+ 
+@@ -36,7 +34,8 @@ struct tdx_hypercall_args {
+ };
+ 
+ /* Used to request services from the VMM */
+-u64 __tdx_hypercall(struct tdx_hypercall_args *args, unsigned long flags);
++u64 __tdx_hypercall(struct tdx_hypercall_args *args);
++u64 __tdx_hypercall_ret(struct tdx_hypercall_args *args);
+ 
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void);
+-- 
+2.39.2
+
