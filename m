@@ -1,61 +1,113 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDE08BE1
-	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 10:15:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=myZeeIZ+99lKWhEqcJ0NcMY8rj0d8bMphmX0xRE+tl0=; b=l2oMnjetMX4keDC+q5ktTbF5V8
-	fOI5Dz5D3un98/Rio5si3KVnG2u0bh0Sy1K8EcRsaz+ze/LH1r8oBXybyPiRRh/01DdEQJSwqk/7K
-	C3wdHCQNsOEF5fKWzJWtcBAF48LBxkR2vBlgFu8UzL2QWlGUZYHF8jKY7OcWW8WIM22JhdDYfuYaP
-	6nJoobnLeIMP0YjgnKY/mLdivwpwEVuBgWdLmWffUzdn8aIpsi5Gliio49E1PuqFRK74KDAPbxev/
-	h22H4+qnNoNC6EiwnUcNkK36bfqGq011k8xOUQhAMXZWaONpAKbzteB9tUCCxnGK4bp2gRy9FX+2p
-	bbVn98uw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1peZ1U-004EBl-1f;
-	Tue, 21 Mar 2023 10:15:21 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A1DDB3001D6;
-	Tue, 21 Mar 2023 11:15:19 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8B83B240EA549; Tue, 21 Mar 2023 11:15:19 +0100 (CET)
-Date: Tue, 21 Mar 2023 11:15:19 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: bp@alien8.de, dave.hansen@intel.com, luto@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
-	x86@kernel.org
-Subject: Re: [PATCH, REBASED] x86/tdx: Drop flags from __tdx_hypercall()
-Message-ID: <20230321101519.GG2234901@hirez.programming.kicks-ass.net>
-References: <20230321003511.9469-1-kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F788C04
+	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 11:09:47 +0000 (UTC)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32LAtbl3016779;
+	Tue, 21 Mar 2023 11:09:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=IcVTfatXtXzF7BUgM+gClS/t5xUYcK0H+MNzBoUuoeA=;
+ b=ICEzFJCy9q051u9RljELUVjXAIYOZWInfm69iO1xZDondq2SJ/k6Wv4m1foo1zLruE5X
+ b/M0ta01huRixze1cJfP3r2btRcNLLfKj2XOhKOPnDaG1ZEkDAynGmxK4FRjvcuMQxtp
+ ZDcynoqsxaM/zc3LHhOjLoqOG79GIIGOc/3RhBZ3vJN5jVOUg0bF9cPKfoQ0+rFIlVoA
+ HjyHrakc4qUurrm19OjRMwQGdMNii0Iq72HPUuAhgJEPup6Ru14GTF7Shu+byarmibpG
+ CGNdbWnaX/9HnHGb8VPuddPAykQCu2ctXXCswyjW0+o9FOk2q4GZZfUtUies2hqj9QzY zA== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pfb8q8aet-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Mar 2023 11:09:46 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32LA9lDY025936;
+	Tue, 21 Mar 2023 11:09:45 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
+	by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3pd4x7enev-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Mar 2023 11:09:45 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32LB9i1M13435596
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Mar 2023 11:09:44 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B8445807B;
+	Tue, 21 Mar 2023 11:09:44 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3201A58057;
+	Tue, 21 Mar 2023 11:09:42 +0000 (GMT)
+Received: from [172.20.3.173] (unknown [9.163.23.201])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 21 Mar 2023 11:09:42 +0000 (GMT)
+Message-ID: <66eee693371c11bbd2173ad5d91afc740aa17b46.camel@linux.ibm.com>
+Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
+From: James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>,
+        amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
+        kvm@vger.kernel.org
+Date: Tue, 21 Mar 2023 07:09:40 -0400
+In-Reply-To: <ZBl4592947wC7WKI@suse.de>
+References: <ZBl4592947wC7WKI@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dok7lrnLE278hAVKT4pUWOr4ZCcZwI71
+X-Proofpoint-ORIG-GUID: dok7lrnLE278hAVKT4pUWOr4ZCcZwI71
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230321003511.9469-1-kirill.shutemov@linux.intel.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-21_08,2023-03-21_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ bulkscore=0 malwarescore=0 priorityscore=1501 mlxscore=0 adultscore=0
+ suspectscore=0 lowpriorityscore=0 mlxlogscore=999 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303210078
 
-On Tue, Mar 21, 2023 at 03:35:11AM +0300, Kirill A. Shutemov wrote:
-> After TDX_HCALL_ISSUE_STI got dropped, the only flag left is
-> TDX_HCALL_HAS_OUTPUT. The flag indicates if the caller wants to see
-> tdx_hypercall_args updated based on the hypercall output.
+On Tue, 2023-03-21 at 10:29 +0100, Jörg Rödel wrote:
+> Hi,
 > 
-> Drop the flags and provide __tdx_hypercall_ret() that matches
-> TDX_HCALL_HAS_OUTPUT semantics.
+> We are happy to announce that last week our secure VM service module
+> (SVSM) went public on GitHub for everyone to try it out and
+> participate in its further development. It is dual-licensed under the
+> MIT and APACHE-2.0 licenses.
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Suggested-by: Peter Zijlstra <peterz@infradead.org>
+> The project is written in Rust and can be cloned from:
+> 
+>         https://github.com/coconut-svsm/svsm
+> 
+> There are also repositories in the github project with the Linux host
+> and guest, EDK2 and QEMU changes needed to run the SVSM and boot up a
+> full Linux guest.
+> 
+> The SVSM repository contains an installation guide in the INSTALL.md
+> file and contributor hints in CONTRIBUTING.md.
+> 
+> A blog entry with more details is here:
+> 
+>         
+> https://www.suse.com/c/suse-open-sources-secure-vm-service-module-
+> for-confidential-computing/
+> 
+> We also thank AMD for implementing and providing the necessary
+> changes to Linux and EDK2 to make an SVSM possible.
 
-Thanks!
+Since this a fork of the AMD svsm code
+(https://github.com/AMDESE/linux-svsm/), is it intended to be a
+permanent fork, or are you going to be submitting your additions back
+upstream like we're trying to do for our initial vTPM prototype?  From
+the community point of view, having two different SVSM code bases and
+having to choose which one to develop against is going to be very
+confusing ...
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+James
+
+
+
