@@ -1,92 +1,61 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1857A79C7
-	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 09:29:15 +0000 (UTC)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDE08BE1
+	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 10:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=myZeeIZ+99lKWhEqcJ0NcMY8rj0d8bMphmX0xRE+tl0=; b=l2oMnjetMX4keDC+q5ktTbF5V8
+	fOI5Dz5D3un98/Rio5si3KVnG2u0bh0Sy1K8EcRsaz+ze/LH1r8oBXybyPiRRh/01DdEQJSwqk/7K
+	C3wdHCQNsOEF5fKWzJWtcBAF48LBxkR2vBlgFu8UzL2QWlGUZYHF8jKY7OcWW8WIM22JhdDYfuYaP
+	6nJoobnLeIMP0YjgnKY/mLdivwpwEVuBgWdLmWffUzdn8aIpsi5Gliio49E1PuqFRK74KDAPbxev/
+	h22H4+qnNoNC6EiwnUcNkK36bfqGq011k8xOUQhAMXZWaONpAKbzteB9tUCCxnGK4bp2gRy9FX+2p
+	bbVn98uw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1peZ1U-004EBl-1f;
+	Tue, 21 Mar 2023 10:15:21 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 497F31FD6A;
-	Tue, 21 Mar 2023 09:29:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1679390953; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yoH04eWd5UxBhyOEYXUi9WaWEaBHDCNrGzWfCwchho8=;
-	b=PMQGdG37ZFLuEhF5jkbBRnnoEoRwkzwd8PruvgRKKfb5DjgSiaEkV/UVAh2Ke01gCDAaQj
-	oz/Qip0ds6CsCkaDfEh38ElsZqJzMkbxPa03XAmxih0+DZUYNVKZ9Msuimy5lFgRg7nfKe
-	D0jQgGKSz0CD8RT46xVroZR5m8PGwb8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1679390953;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yoH04eWd5UxBhyOEYXUi9WaWEaBHDCNrGzWfCwchho8=;
-	b=KzYHp93Aj+DzS18wxTw5XXU4A+yLat97c2d2K306qrphexYVjEpsxajB9g+HnFq6wGO/4h
-	5tzqXQm0fqhkIJBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 24B2113451;
-	Tue, 21 Mar 2023 09:29:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id MwiDB+l4GWTDCwAAMHmgww
-	(envelope-from <jroedel@suse.de>); Tue, 21 Mar 2023 09:29:13 +0000
-Date: Tue, 21 Mar 2023 10:29:11 +0100
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
-To: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-Message-ID: <ZBl4592947wC7WKI@suse.de>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A1DDB3001D6;
+	Tue, 21 Mar 2023 11:15:19 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 8B83B240EA549; Tue, 21 Mar 2023 11:15:19 +0100 (CET)
+Date: Tue, 21 Mar 2023 11:15:19 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: bp@alien8.de, dave.hansen@intel.com, luto@kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com, tglx@linutronix.de,
+	x86@kernel.org
+Subject: Re: [PATCH, REBASED] x86/tdx: Drop flags from __tdx_hypercall()
+Message-ID: <20230321101519.GG2234901@hirez.programming.kicks-ass.net>
+References: <20230321003511.9469-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230321003511.9469-1-kirill.shutemov@linux.intel.com>
 
-Hi,
+On Tue, Mar 21, 2023 at 03:35:11AM +0300, Kirill A. Shutemov wrote:
+> After TDX_HCALL_ISSUE_STI got dropped, the only flag left is
+> TDX_HCALL_HAS_OUTPUT. The flag indicates if the caller wants to see
+> tdx_hypercall_args updated based on the hypercall output.
+> 
+> Drop the flags and provide __tdx_hypercall_ret() that matches
+> TDX_HCALL_HAS_OUTPUT semantics.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Suggested-by: Peter Zijlstra <peterz@infradead.org>
 
-We are happy to announce that last week our secure VM service module
-(SVSM) went public on GitHub for everyone to try it out and participate
-in its further development. It is dual-licensed under the MIT and
-APACHE-2.0 licenses.
+Thanks!
 
-The project is written in Rust and can be cloned from:
-
-	https://github.com/coconut-svsm/svsm
-
-There are also repositories in the github project with the Linux host and
-guest, EDK2 and QEMU changes needed to run the SVSM and boot up a full
-Linux guest.
-
-The SVSM repository contains an installation guide in the INSTALL.md
-file and contributor hints in CONTRIBUTING.md.
-
-A blog entry with more details is here:
-
-	https://www.suse.com/c/suse-open-sources-secure-vm-service-module-for-confidential-computing/
-
-We also thank AMD for implementing and providing the necessary changes
-to Linux and EDK2 to make an SVSM possible.
-
-Have a lot of fun!
-
--- 
-Jörg Rödel
-jroedel@suse.de
-
-SUSE Software Solutions Germany GmbH
-Frankenstraße 146
-90461 Nürnberg
-Germany
-
-(HRB 36809, AG Nürnberg)
-Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
