@@ -1,53 +1,51 @@
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0D3C952
-	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 15:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C699C952
+	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 15:25:29 +0000 (UTC)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 951D120188;
-	Tue, 21 Mar 2023 15:14:51 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 54F5A201A8;
+	Tue, 21 Mar 2023 15:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1679411691; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1679412328; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FIgJYxvGxFr9oKy3IZISEqejtPHhsrO/OfDKHlx1zYw=;
-	b=eGezmgSSZbDwGyTIqUTh9J+TcmwUFJ0YIGvkKGiYOaM7XgC6/20fABecqZRnEkmWgwia2q
-	ti7p459UDtOzpt/amWPDRwgz/mhBZ4WkVMWdsxIbQTDLk0A3NF12DhChxTb5ZKQvHBs/wX
-	VTqEclxq6dwl6audVxPpLgpYgyk+Ssw=
+	bh=Rn4O4CShsZUobHxhdMV/dIUP3ZK0/XXmESfdmwn94Bw=;
+	b=hWuDgKu4d60NVjpkMWkCL2la1R5GShHK7G+Br4e0OBFjEUAEzzEtMBWdtmFpcibFoMTj2E
+	rXZg1NKxOJbeYvQy0pOpLc4mqN8SAduSFuJyTIRe6c/WgQsitRA6up8pAdzZgDPW6IS8iU
+	jT/DIeAfONYygzlfuG3KwZZpLuHPQ9Y=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1679411691;
+	s=susede2_ed25519; t=1679412328;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FIgJYxvGxFr9oKy3IZISEqejtPHhsrO/OfDKHlx1zYw=;
-	b=z9h1li26KLY+otIJT9le2Bt72hjgfAMonibVKUKxsnHG87zpYy3mEhWX0N5jAHoiITb0+Z
-	mK82Y5qr7efSt6Ag==
+	bh=Rn4O4CShsZUobHxhdMV/dIUP3ZK0/XXmESfdmwn94Bw=;
+	b=9+EP/9IU+Wap0lqfMoKRskSPj1hsBBWZxjdUehUIB392D2G8M463pnNFjH9LBnNVW83pgX
+	laU6yjwgpHOTX3AQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6C95D13440;
-	Tue, 21 Mar 2023 15:14:51 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2B12F13440;
+	Tue, 21 Mar 2023 15:25:28 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id WxcTGevJGWQ9UQAAMHmgww
-	(envelope-from <jroedel@suse.de>); Tue, 21 Mar 2023 15:14:51 +0000
-Date: Tue, 21 Mar 2023 16:14:49 +0100
+	id PtsNCWjMGWSrVwAAMHmgww
+	(envelope-from <jroedel@suse.de>); Tue, 21 Mar 2023 15:25:28 +0000
+Date: Tue, 21 Mar 2023 16:25:26 +0100
 From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
-To: James Bottomley <jejb@linux.ibm.com>
+To: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
 Cc: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org
 Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-Message-ID: <ZBnJ6ZCuQJTVMM8h@suse.de>
+Message-ID: <ZBnMZsWMJMkxOelX@suse.de>
 References: <ZBl4592947wC7WKI@suse.de>
- <66eee693371c11bbd2173ad5d91afc740aa17b46.camel@linux.ibm.com>
- <ZBmmjlNdBwVju6ib@suse.de>
- <c2e8af835723c453adaba4b66db533a158076bbf.camel@linux.ibm.com>
+ <ZBnH600JIw1saZZ7@work-vm>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,41 +55,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c2e8af835723c453adaba4b66db533a158076bbf.camel@linux.ibm.com>
+In-Reply-To: <ZBnH600JIw1saZZ7@work-vm>
 
-On Tue, Mar 21, 2023 at 09:43:48AM -0400, James Bottomley wrote:
-> Could you describe these incompatible goals and explain why you think
-> they are incompatible (as in why you and AMD don't think you can agree
-> on it)?  That would help the rest of us understand where the two SVSM
-> implementations fit in our ongoing plans.
+Hi Dave,
 
-The goal of COCONUT is to have an SVSM which has isolation capabilities
-within itself. It already has percpu page-tables and in the end it will
-be able to run services (like the TPM) as separate processes in ring 3
-using cooperative multitasking.
+On Tue, Mar 21, 2023 at 03:06:19PM +0000, Dr. David Alan Gilbert wrote:
+> Interesting; it would have been nice to have known about this a little
+> earlier, some people have been working on stuff built on top of the AMD
+> one for a while.
 
-With the current linux-svsm code-base this is difficult to achieve due
-to its reliance on the x86-64 crate. For supporting a user-space like
-execution mode the crate has too many limitations, mainly in its
-page-table and IDT implementations.
+Sorry for that, we wanted to have it in a state where it could at least
+boot an SMP Linux guest. It took us some more time to get the
+foundations right and get to that point.
 
-The IDT code from that crate, which is also used in linux-svsm, relies
-on compiler-generated entry-code. This is not enough to support a
-ring-3 execution mode with syscalls and several (possibly nested) IST
-vectors. The next problem with the IDT code is that it doesn't allow
-modification of return register state.  This makes it impossible to
-implement exception fixups to guard RMPADJUST instructions and VMPL1
-memory accesses in general.
+> You mention two things that I wonder how they interact:
+> 
+>   a) TPMs in the future at a higher ring
+>   b) Making (almost) unmodified guests
+> 
+> What interface do you expect the guest to see from the TPM - would it
+> look like an existing TPM hardware interface or would you need some
+> changes?
 
-When we looked at the crate, the page-table implementation supported
-basically a direct and an offset mapping, which will get us into
-problems when support for non-contiguous mappings or sharing parts of a
-page-table with another page-table is needed. So in the very beginning
-of the project I decided to go with my own page-table implementation.
+For a) without b) the guest interface will be the SVSM TPM protocol. The
+ring-0 code will forward any request to the TPM process and return to
+the guest when it is done.
 
-Of course we could start changing linux-svsm to support the same goals,
-but I think the end result will not be very different from what COCONUT
-looks now.
+For b), or the paravisor mode, this is the vision, which is probably
+more than a year out. The idea behind that is to be able to emulate what
+Hyper-V is doing to boot Windows guests under SEV-SNP on an open source
+SW stack.
+
+How the TPM interface will look like for that paravisor mode is not
+clear yet. In theory we can emulate a real TPM interface to make this
+work, but that is not sure yet.
 
 Regards,
 
