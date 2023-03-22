@@ -1,128 +1,75 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFED4D530
-	for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 20:05:48 +0000 (UTC)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32LIXUd5016684;
-	Tue, 21 Mar 2023 20:05:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=ixwo8rFfOE7dCM9YBZU/EfkMPgOIFTuk724F+quK0ZM=;
- b=P8wxjup4Jo/sYX592knQ/DTk0RTopR3f4qIFbZoc8G7Hd+FK/gKTsXzA98uzvCDxDUfL
- 47lWYsENsQYQ/IJkF9sgiA+n/f1vem2XON06Ldb852opPfv0QMlVYbdQ+cQs+UabWskL
- Ouz9mW/YOkuzCo03H96kYyPJOGnIc7BGa9wPu43TeuLuzM2yKDv2x528x1BcpDYJaRaM
- sZFEDcO9u1Do4NRcMB8f3/YiFT1yW1uOGP3Le3U9XmWF9xGHGKMUW6lK3hDbM9A8dgMS
- +zp3KBA762G8nr/p4BQcDBOYTFqtJBIQPJL08DRsQGFFyvUGJyx/L3kYsjKtlS48/6Jp fg== 
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pf9249hjd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Mar 2023 20:05:41 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32LJ8xJ8020743;
-	Tue, 21 Mar 2023 20:05:40 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
-	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3pd4x79jd3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Mar 2023 20:05:40 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32LK5d3V18416188
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Mar 2023 20:05:39 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 296A758065;
-	Tue, 21 Mar 2023 20:05:39 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86F7D58061;
-	Tue, 21 Mar 2023 20:05:38 +0000 (GMT)
-Received: from nat-wireless-guest-reg-153-54.bu.edu (unknown [9.163.23.201])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 21 Mar 2023 20:05:38 +0000 (GMT)
-Message-ID: <7d615af4c6a9e5eeb0337d98c9e9ddca6d2cbdef.camel@linux.ibm.com>
-Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
-Cc: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
-        kvm@vger.kernel.org
-Date: Tue, 21 Mar 2023 16:05:35 -0400
-In-Reply-To: <ZBnJ6ZCuQJTVMM8h@suse.de>
-References: <ZBl4592947wC7WKI@suse.de>
-	 <66eee693371c11bbd2173ad5d91afc740aa17b46.camel@linux.ibm.com>
-	 <ZBmmjlNdBwVju6ib@suse.de>
-	 <c2e8af835723c453adaba4b66db533a158076bbf.camel@linux.ibm.com>
-	 <ZBnJ6ZCuQJTVMM8h@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C01E15A9
+	for <linux-coco@lists.linux.dev>; Wed, 22 Mar 2023 01:29:41 +0000 (UTC)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-17ac5ee3f9cso18025159fac.12
+        for <linux-coco@lists.linux.dev>; Tue, 21 Mar 2023 18:29:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112; t=1679448580;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NSCyyhzST23ex5r5AgFi+RlkaLf2K1PVz0O5N4A+Lbw=;
+        b=jzf02hDKsUrLyp3O5LE12aIO7p14qRl7n6B5pP2Vba01AI84MTd/duAFs38nhOlpy2
+         b6gKkomiMXft8nEsnwtW2nOXrXcs7CGM5h7d3V/vi3QYX8M1O28gNcsLeU2geT//PJb/
+         J3TwOhGyBvDPf+fgQl/2gKMJ73lNZAozmCOQBz9CXiQ+7eMIgDYK1UjpN2Skq84pCZMh
+         abD0ZeX+2thleQLRjVKr3gS5TpqEqKiuoHDlW/hTNS2ikvS/4LHElynzDKBlrjuW65iO
+         FRemaTLVSwXVN3utHWpPvCSVGv2xK/XWbm1AiyEBI8bHOqxGq0cS8BVXqOL9QvKIBFzJ
+         uD+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679448580;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NSCyyhzST23ex5r5AgFi+RlkaLf2K1PVz0O5N4A+Lbw=;
+        b=SogvfGeQ21LQO8QumiGfzC5C1I2pLOvRiGagewA9o22NOwk6nUgRTYMLIGiNmUfMtM
+         bsqzZkRatyJTzYxDdLligGk8Ja9vjn73HXrfh68V2LbNCAaiHaWZlSXBnSP5qGFHGkWl
+         lUvy4kLT+zlRWps2LZXTGcrWLUGDk4jYmHGggWgHmmTVyqVDnnvaNRbE5AeW/EKtlBSL
+         twvqXzDQnIXFTiTaZU4srFI/LS37JRXkvBik4DeXPlBFhXQqLsrHntG8bp5fx3l71Wu3
+         H+HbxGXoEJdMw3jCh/x+cJBXWM5QlvLjmoGsqFFVmAJTqCc9R20z4iLLXE+0I8zUpkzg
+         m0qw==
+X-Gm-Message-State: AO0yUKULDxgpHTx9rfW2sVKybB4MmC+IRAsOHVgbRn0zpS8nLXZG+grf
+	me/RCC9x3l4NEPmHJSFNfKBLNeIiUu4UzreWrVmXZg==
+X-Google-Smtp-Source: AK7set/ysncTXzUcWP1joJZ3auqDbvvUbIdr0nTvGVzzXRrd9cUIMlK/G+vacoJa+sl7uH4lMvdqANYtbw21s3MGGJI=
+X-Received: by 2002:a05:6870:df97:b0:17b:f094:5478 with SMTP id
+ us23-20020a056870df9700b0017bf0945478mr390201oab.2.1679448580241; Tue, 21 Mar
+ 2023 18:29:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DxOMIW6msPBOJFKA97GFJXokRTIqj3ai
-X-Proofpoint-ORIG-GUID: DxOMIW6msPBOJFKA97GFJXokRTIqj3ai
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-21_11,2023-03-21_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- malwarescore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 clxscore=1015
- impostorscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303210159
+References: <ZBl4592947wC7WKI@suse.de> <66eee693371c11bbd2173ad5d91afc740aa17b46.camel@linux.ibm.com>
+ <ZBmmjlNdBwVju6ib@suse.de> <c2e8af835723c453adaba4b66db533a158076bbf.camel@linux.ibm.com>
+ <ZBnJ6ZCuQJTVMM8h@suse.de> <7d615af4c6a9e5eeb0337d98c9e9ddca6d2cbdef.camel@linux.ibm.com>
+In-Reply-To: <7d615af4c6a9e5eeb0337d98c9e9ddca6d2cbdef.camel@linux.ibm.com>
+From: Marc Orr <marcorr@google.com>
+Date: Tue, 21 Mar 2023 18:29:29 -0700
+Message-ID: <CAA03e5F=Giy5pWbcc9M+O+=FTqL0rrCWSzcgr8V2s-xqjpxKJA@mail.gmail.com>
+Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
+To: jejb@linux.ibm.com
+Cc: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>, amd-sev-snp@lists.suse.com, 
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2023-03-21 at 16:14 +0100, Jörg Rödel wrote:
-> On Tue, Mar 21, 2023 at 09:43:48AM -0400, James Bottomley wrote:
-> > Could you describe these incompatible goals and explain why you
-> > think they are incompatible (as in why you and AMD don't think you
-> > can agree on it)?  That would help the rest of us understand where
-> > the two SVSM implementations fit in our ongoing plans.
-> 
-> The goal of COCONUT is to have an SVSM which has isolation
-> capabilities within itself. It already has percpu page-tables and in
-> the end it will be able to run services (like the TPM) as separate
-> processes in ring 3 using cooperative multitasking.
-> 
-> With the current linux-svsm code-base this is difficult to achieve
-> due to its reliance on the x86-64 crate. For supporting a user-space
-> like execution mode the crate has too many limitations, mainly in its
-> page-table and IDT implementations.
-> 
-> The IDT code from that crate, which is also used in linux-svsm,
-> relies on compiler-generated entry-code. This is not enough to
-> support a ring-3 execution mode with syscalls and several (possibly
-> nested) IST vectors. The next problem with the IDT code is that it
-> doesn't allow modification of return register state.  This makes it
-> impossible to implement exception fixups to guard RMPADJUST
-> instructions and VMPL1 memory accesses in general.
-> 
-> When we looked at the crate, the page-table implementation supported
-> basically a direct and an offset mapping, which will get us into
-> problems when support for non-contiguous mappings or sharing parts of
-> a page-table with another page-table is needed. So in the very
-> beginning of the project I decided to go with my own page-table
-> implementation.
+On Tue, Mar 21, 2023 at 1:05=E2=80=AFPM James Bottomley <jejb@linux.ibm.com=
+> wrote:
+>
+> > Of course we could start changing linux-svsm to support the same
+> > goals, but I think the end result will not be very different from
+> > what COCONUT looks now.
+>
+> That's entirely possible, so what are the chances of combining the
+> projects now so we don't get a split in community effort?
 
-OK, so this doesn't sound like a problem with the AMD svsm, it sounds
-like a (solvable) issue with a particular crate in embedded rust.  I
-have to say that embedded rust is so new, it's really hard to tell if
-this is just because it was developed by someone who didn't think of
-all the OS implications or because it's a fundamental issue within the
-rust ecosystem.  Have you tried improving this crate? ... and also it's
-a nuisance we came to with our insistence on using rust; it certainly
-wouldn't have been an issue in C.  I suspect improving the crate would
-help everyone (although I note the linux kernel isn't yet using this
-crate either).
+Very cool to see this announcement and read the discussion!
 
-> Of course we could start changing linux-svsm to support the same
-> goals, but I think the end result will not be very different from
-> what COCONUT looks now.
-
-That's entirely possible, so what are the chances of combining the
-projects now so we don't get a split in community effort?
-
-James
-
+One SVSM will be better for Google too. Specifically:
+- One hypervisor/SVSM startup sequence is easier for us to get working
+- One SVSM is easier to test/qualify/deploy
+- Generally speaking, things will be easier for us if all SNP VMs
+start running off of the same "first mutable code". I.e., the same
+SVSM, UEFI, etc.
