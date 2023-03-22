@@ -1,139 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E437523D4
-	for <linux-coco@lists.linux.dev>; Wed, 22 Mar 2023 10:34:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1679481248;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rVkLd1gXXSaNzOK+vQH5hpvFlsKrXbqvBvpTSZkuN40=;
-	b=asFrKw/uTOX8dFdq4RWzdMHrkxE7a7SCC8/jkRxMXDk2gtNOnjUb4gTLmKoHI5Dxdmi/XS
-	h7JrjkZfSJj0NyzlnEvDkNzBk86Lx7/VCpjvcoDAS0Y9sjzdnI9u9+Wj082JXo1n30p6d5
-	xIthBPUrfAiTEDuOETdkHcvh2j/qNAA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-iO875wDhODOU8WJKT1QDCA-1; Wed, 22 Mar 2023 06:34:05 -0400
-X-MC-Unique: iO875wDhODOU8WJKT1QDCA-1
-Received: by mail-wm1-f72.google.com with SMTP id o7-20020a05600c4fc700b003edf85f6bb1so4330607wmq.3
-        for <linux-coco@lists.linux.dev>; Wed, 22 Mar 2023 03:34:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679481244;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rVkLd1gXXSaNzOK+vQH5hpvFlsKrXbqvBvpTSZkuN40=;
-        b=CiCaoaRRpR3duq5rwRc/UZBUb2BUhBHNKSgrr/I8V8Q0CXs7TkSCmvRV//7c30EPcD
-         AgG1dschP1CWnSATSxB4zoEXdDIBM8bmWRrJg+4651LZwp89hDROLFXfns5clvYM6J1Y
-         3EpDu80hTFWfp7F4zJzsRCiW5GsarcIri/Wtn/er1wIsV381pbCeoMtYbMmP/ffWFqbA
-         Nys7ldsizYcE2J1yoFFAreoxiByURhLOjH/bSDFI1rR17y4RKPEu9MMxuc09960GRq5Q
-         clw1BcI9SyI9Lf5UjAEmkXoxp3z4CoXnW1DRlv4CwnLS5dRFQxhmn1oe5BwLWd1Y9aBe
-         Fzag==
-X-Gm-Message-State: AO0yUKWSzROV0IRZoXAlbf/2binQx5VAYmcxlsIdupAKY9Rd8pBiwZhd
-	GDpCNKwcR7g1V7FZ5TukEVtSIhLxO9BjquYF5cYU3O0dPSDFBwORMAholDJxrnd+DeyGn3iSp6J
-	Nu0OHjsvNzxEqkcYptnPbSA==
-X-Received: by 2002:a05:600c:cc5:b0:3ed:2346:44bd with SMTP id fk5-20020a05600c0cc500b003ed234644bdmr1267216wmb.19.1679481244576;
-        Wed, 22 Mar 2023 03:34:04 -0700 (PDT)
-X-Google-Smtp-Source: AK7set8Thq76pPmJGxOxWXjQQrmoDtwTU00agbKDE5V4x+4LtRlKY6qAlszC5c92Bor2YpNIrUHo5Q==
-X-Received: by 2002:a05:600c:cc5:b0:3ed:2346:44bd with SMTP id fk5-20020a05600c0cc500b003ed234644bdmr1267207wmb.19.1679481244334;
-        Wed, 22 Mar 2023 03:34:04 -0700 (PDT)
-Received: from work-vm (ward-16-b2-v4wan-166627-cust863.vm18.cable.virginm.net. [81.97.203.96])
-        by smtp.gmail.com with ESMTPSA id a10-20020a056000050a00b002d78a96cf5fsm6368842wrf.70.2023.03.22.03.34.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 03:34:04 -0700 (PDT)
-Date: Wed, 22 Mar 2023 10:34:01 +0000
-From: "Dr. David Alan Gilbert" <dgilbert@redhat.com>
-To: Alexander Graf <graf@amazon.com>
-Cc: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>,
-	amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-Message-ID: <ZBrZmbfWXVQLND/E@work-vm>
-References: <ZBl4592947wC7WKI@suse.de>
- <ZBnH600JIw1saZZ7@work-vm>
- <ZBnMZsWMJMkxOelX@suse.de>
- <ZBnhtEsMhuvwfY75@work-vm>
- <ZBn/ZbFwT9emf5zw@suse.de>
- <ZBoLVktt77F9paNV@work-vm>
- <ZBrIFnlPeCsP0x2g@suse.de>
- <444b0d8d-3a8c-8e6d-1df3-35f57046e58e@amazon.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D9F2571;
+	Wed, 22 Mar 2023 11:51:25 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D05F9AD7;
+	Wed, 22 Mar 2023 04:52:08 -0700 (PDT)
+Received: from [10.57.53.137] (unknown [10.57.53.137])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EDC243F93E;
+	Wed, 22 Mar 2023 04:51:21 -0700 (PDT)
+Message-ID: <3f4dcc1e-7679-0f7c-44ef-6b0824400259@arm.com>
+Date: Wed, 22 Mar 2023 11:51:20 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-In-Reply-To: <444b0d8d-3a8c-8e6d-1df3-35f57046e58e@amazon.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [RFC PATCH 16/28] arm64: RME: Allow populating initial contents
+Content-Language: en-GB
+To: Zhi Wang <zhi.wang.linux@gmail.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <20230127112932.38045-1-steven.price@arm.com>
+ <20230127112932.38045-17-steven.price@arm.com>
+ <20230306193439.000048f2@gmail.com>
+ <6c6ff608-2314-a49a-84ee-fac883c4e227@arm.com>
+ <20230314173121.00006cfb@gmail.com>
+From: Steven Price <steven.price@arm.com>
+In-Reply-To: <20230314173121.00006cfb@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-* Alexander Graf (graf@amazon.com) wrote:
-> Hi Jörg,
+On 14/03/2023 15:31, Zhi Wang wrote:
+> On Fri, 10 Mar 2023 15:47:16 +0000
+> Steven Price <steven.price@arm.com> wrote:
 > 
-> On 22.03.23 10:19, Jörg Rödel wrote:
-> 
-> > On Tue, Mar 21, 2023 at 07:53:58PM +0000, Dr. David Alan Gilbert wrote:
-> > > OK; the other thing that needs to get nailed down for the vTPM's is the
-> > > relationship between the vTPM attestation and the SEV attestation.
-> > > i.e. how to prove that the vTPM you're dealing with is from an SNP host.
-> > > (Azure have a hack of putting an SNP attestation report into the vTPM
-> > > NVRAM; see
-> > > https://github.com/Azure/confidential-computing-cvm-guest-attestation/blob/main/cvm-guest-attestation.md
-> > > )
-> > When using the SVSM TPM protocol it should be proven already that the
-> > vTPM is part of the SNP trusted base, no? The TPM communication is
-> > implicitly encrypted by the VMs memory key and the SEV attestation
-> > report proves that the correct vTPM is executing.
-> 
-> 
-> What you want to achieve eventually is to take a report from the vTPM and
-> submit only that to an external authorization entity that looks at it and
-> says "Yup, you ran in SEV-SNP, I trust your TCB, I trust your TPM
-> implementation, I also trust your PCR values" and based on that provides
-> access to whatever resource you want to access.
-> 
-> To do that, you need to link SEV-SNP and TPM measurements/reports together.
-> And the easiest way to do that is by providing the SEV-SNP report as part of
-> the TPM: You can then use the hash of the SEV-SNP report as signing key for
-> example.
+>> On 06/03/2023 17:34, Zhi Wang wrote:
+>>> On Fri, 27 Jan 2023 11:29:20 +0000
+>>> Steven Price <steven.price@arm.com> wrote:
 
-Yeh; I think the SVSM TPM protocol has some proof of that as well; the
-SVSM spec lists 'SVSM_ATTEST_SINGLE_SERVICE Manifest Data' that contains
-'TPMT_PUBLIC structure of the endorsement key'.
-So I *think* that's saying that the SEV attestation report contains
-something from the EK of the vTPM.
+<snip>
 
-> I think the key here is that you need to propagate that link to an external
-> party, not (only) to the VM.
+>>>> +	if (kvm_realm_state(kvm) != REALM_STATE_NEW)
+>>>> +		return -EBUSY;  
+>>>
+>>> Maybe -EINVAL? The realm hasn't been created (RMI_REALM_CREATE is not called
+>>> yet). The userspace shouldn't reach this path.  
+>>
+>> Well user space can attempt to populate in the ACTIVE state - which is
+>> where the idea of 'busy' comes from. Admittedly it's a little confusing
+>> when RMI_REALM_CREATE hasn't been called.
+>>
+>> I'm not particularly bothered about the return code, but it's useful to
+>> have a different code to -EINVAL as it's not an invalid argument, but
+>> calling at the wrong time. I can't immediately see a better error code
+>> though.
+>>
+> The reason why I feel -EBUSY is little bit off is EBUSY usually indicates
+> something is already initialized and currently running, then another
+> calling path wanna to operate it. 
+> 
+> I took a look on the ioctls in arch/arm64/kvm/arm.c. It seems people have
+> different opinions for calling execution path at a wrong time:
+> 
+> For example:
+> 
+> long kvm_arch_vcpu_ioctl()
+> ...
+>         case KVM_GET_REG_LIST: {
+>                 struct kvm_reg_list __user *user_list = argp;
+>                 struct kvm_reg_list reg_list;
+>                 unsigned n;
+> 
+>                 r = -ENOEXEC;
+>                 if (unlikely(!kvm_vcpu_initialized(vcpu)))
+>                         break;
+> 
+>                 r = -EPERM;
+>                 if (!kvm_arm_vcpu_is_finalized(vcpu))
+>                         break;
+> 
+> If we have to choose one, I prefer -ENOEXEC as -EPERM is stranger. But
+> personally my vote goes to -EINVAL.
 
-Yeh.
+Ok, I think you've convinced me - I'll change to -EINVAL. It is invalid
+use of the API and none of the other error codes seem a great fit.
 
-Dave
+Although I do wish Linux had more descriptive error codes - I often end
+up peppering the kernel with a few printks when using a new API to find
+out what I'm doing wrong.
+
+Steve
+
+>> Steve
+>>
+>>>> +
+>>>> +	if (!IS_ALIGNED(args->populate_ipa_base, PAGE_SIZE) ||
+>>>> +	    !IS_ALIGNED(args->populate_ipa_size, PAGE_SIZE))
+>>>> +		return -EINVAL;
+>>>> +
+>>>> +	ipa_base = args->populate_ipa_base;
+>>>> +	ipa_end = ipa_base + args->populate_ipa_size;
+>>>> +
+>>>> +	if (ipa_end < ipa_base)
+>>>> +		return -EINVAL;
+>>>> +
+>>>> +	return populate_par_region(kvm, ipa_base, ipa_end);
+>>>> +}
+>>>> +
+>>>>  static int set_ipa_state(struct kvm_vcpu *vcpu,
+>>>>  			 unsigned long ipa,
+>>>>  			 unsigned long end,
+>>>> @@ -748,6 +1102,18 @@ int kvm_realm_enable_cap(struct kvm *kvm, struct kvm_enable_cap *cap)
+>>>>  		r = kvm_init_ipa_range_realm(kvm, &args);
+>>>>  		break;
+>>>>  	}
+>>>> +	case KVM_CAP_ARM_RME_POPULATE_REALM: {
+>>>> +		struct kvm_cap_arm_rme_populate_realm_args args;
+>>>> +		void __user *argp = u64_to_user_ptr(cap->args[1]);
+>>>> +
+>>>> +		if (copy_from_user(&args, argp, sizeof(args))) {
+>>>> +			r = -EFAULT;
+>>>> +			break;
+>>>> +		}
+>>>> +
+>>>> +		r = kvm_populate_realm(kvm, &args);
+>>>> +		break;
+>>>> +	}
+>>>>  	default:
+>>>>  		r = -EINVAL;
+>>>>  		break;  
+>>>   
+>>
 > 
-> 
-> Alex
-> 
-> 
-> 
-> 
-> 
-> Amazon Development Center Germany GmbH
-> Krausenstr. 38
-> 10117 Berlin
-> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-> Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-> Sitz: Berlin
-> Ust-ID: DE 289 237 879
-> 
-> 
--- 
-Dr. David Alan Gilbert / dgilbert@redhat.com / Manchester, UK
 
