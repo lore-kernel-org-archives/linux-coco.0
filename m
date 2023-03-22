@@ -1,119 +1,128 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D1B9476
-	for <linux-coco@lists.linux.dev>; Wed, 22 Mar 2023 18:24:24 +0000 (UTC)
-Received: by mail-pf1-f173.google.com with SMTP id fd25so11695551pfb.1
-        for <linux-coco@lists.linux.dev>; Wed, 22 Mar 2023 11:24:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112; t=1679509464;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p3abP9aRA5SDFTYb2FKQAPDQMcZEnxuepNbfrKj7pZ0=;
-        b=BippmZicYj7E2EPrzcR4xRmqeOkL07gt3+16AEIhS2LdR27FcEgwf1CvFog/nmLLah
-         QcLBJ8XSh6yGaMFyEuuNgOokV6r0Na89SfsxojTwFKEu1NIOVnea6O/IwbpBLHu6If9n
-         KknmdoWOF3qoT4NkxnbBLGOwiXuz3H+C97VFgIu1SdTNzMadZgoiibBSCz5qRKOrrLNI
-         OQhozHpGYyvGG6azlMmb3nB8RFhW1zLhcVrZWS7Bk51Hrc1H5QnbPnu6mfTdWlRpMmnC
-         Rx6fjp6HhUewsbd7lis28zuL4qKZlDr5q61C4vPpriZnObYfzyB499QXJGPQykrnHazl
-         K0NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679509464;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p3abP9aRA5SDFTYb2FKQAPDQMcZEnxuepNbfrKj7pZ0=;
-        b=RdYJa8xvXtETFR0gRjRIwQfN0jFDfqPYAtBarqI5dE2KiSo4CzUCgbx081e9440ymZ
-         Uajo4MfucNUsijb8dEv3aAc4Ty9g6uzfELsrW4ywolrd/9huomox6+YsyoVxvqVdjTJ8
-         SGAMgJOyJlPWktrBT6YMxjpob2l+S2/4ffo4jOZ8aI6VeMxK9addUtocXZ/UG0R4nc4n
-         Ldcpmi3TwHEcP5kTxuA7ZhYygMsKF96Ybma2dddkmT9B1PSj2fB/EqN2573KDNdo0VeS
-         p7iKa1zAazpnZjGNW88C0QWXyv7BguBfDP1s+K3UZMurzDNNG2JkbE7njJgCSDwfcfTy
-         XNQQ==
-X-Gm-Message-State: AO0yUKWBFJ/fbznV9GBlF0gDDs37mDjKl6faGaM/5cPKXM6WKi8bGDpG
-	JVEY2dG9Srywl0ZowopVolR36i03O9RiU5Fi2X3FeA==
-X-Google-Smtp-Source: AK7set93oCKHMHjNDLqnEsRMEgOQH/x1RYye26sbnKzG6GW6AbkYn7JxzJTQG6PXbVsLuyT56Lb3WcK+zzVLGa7yEwY=
-X-Received: by 2002:a05:6a00:2314:b0:622:b78d:f393 with SMTP id
- h20-20020a056a00231400b00622b78df393mr2514427pfh.2.1679509463851; Wed, 22 Mar
- 2023 11:24:23 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243C3BA44
+	for <linux-coco@lists.linux.dev>; Wed, 22 Mar 2023 21:53:20 +0000 (UTC)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32MLF863019027;
+	Wed, 22 Mar 2023 21:53:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=mlXAo7Mm6ssh6l7Vk/LFp56jv79Zxm9clSndeogY8oY=;
+ b=i89t1XCD8YFPughcmS3eVvTEklPzOYfzxNeWz2+19mKNeyZttsHWvFochXV5BwDwIWwC
+ hertpMjLUG1sl+qzP5Ae4WF2nMVZWCTcUuWzxK3j0HOKHsKms4zejbDrOwqIxTwEX+ii
+ AMmJiztWyeQqr9QWy3KO45iJECtJBZiTU9uf/ful/0RP+z3s4vSIL5ubxAFcjurYEmp3
+ 0cfFOTNWVMnhyppNrN1mK0BFRVfCr8InxK1f8TY7np3YCa+yy9BXWQ6yveUIYlSZhxfr
+ i9wOtqqzIPaAYRWDQFOnbIpwRhEOJEeuuRhxPv1yPOBGf3F4kMJe3ljXxCRSMgtQtat9 jg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pg9dt8qx7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Mar 2023 21:53:14 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32MLrCUB022009;
+	Wed, 22 Mar 2023 21:53:13 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3pg9dt8qx5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Mar 2023 21:53:13 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32MLj0Zv031919;
+	Wed, 22 Mar 2023 21:53:13 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
+	by ppma01wdc.us.ibm.com (PPS) with ESMTPS id 3pd4x72gu3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Mar 2023 21:53:13 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32MLrB5g21431036
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Mar 2023 21:53:12 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BAE3758057;
+	Wed, 22 Mar 2023 21:53:11 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C1CF458059;
+	Wed, 22 Mar 2023 21:53:10 +0000 (GMT)
+Received: from [172.20.3.246] (unknown [9.163.23.201])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Mar 2023 21:53:10 +0000 (GMT)
+Message-ID: <4f07f72da5c73d317bb00e6b3c41f47090c5240b.camel@linux.ibm.com>
+Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
+From: James Bottomley <jejb@linux.ibm.com>
+Reply-To: jejb@linux.ibm.com
+To: "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        Dionna Amalie Glaze
+	 <dionnaglaze@google.com>
+Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+        amd-sev-snp@lists.suse.com
+Date: Wed, 22 Mar 2023 17:53:08 -0400
+In-Reply-To: <ZBs/TX4eDuj5zc3+@work-vm>
+References: <ZBl4592947wC7WKI@suse.de> <ZBnH600JIw1saZZ7@work-vm>
+	 <ZBnMZsWMJMkxOelX@suse.de> <ZBnhtEsMhuvwfY75@work-vm>
+	 <ZBn/ZbFwT9emf5zw@suse.de> <ZBoLVktt77F9paNV@work-vm>
+	 <ZBrIFnlPeCsP0x2g@suse.de>
+	 <444b0d8d-3a8c-8e6d-1df3-35f57046e58e@amazon.com>
+	 <ZBrZmbfWXVQLND/E@work-vm>
+	 <CAAH4kHbYc+Wx5W_S8XFch+z1B19U_Zm=hFQr1fj1rv1S8QOvxg@mail.gmail.com>
+	 <ZBs/TX4eDuj5zc3+@work-vm>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZBl4592947wC7WKI@suse.de> <66eee693371c11bbd2173ad5d91afc740aa17b46.camel@linux.ibm.com>
- <ZBmmjlNdBwVju6ib@suse.de> <c2e8af835723c453adaba4b66db533a158076bbf.camel@linux.ibm.com>
- <ZBnJ6ZCuQJTVMM8h@suse.de> <7d615af4c6a9e5eeb0337d98c9e9ddca6d2cbdef.camel@linux.ibm.com>
- <ZBrHNW4//aA/ToEl@suse.de> <ZBtD/y1En3FqDYxw@redhat.com>
-In-Reply-To: <ZBtD/y1En3FqDYxw@redhat.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Wed, 22 Mar 2023 11:24:11 -0700
-Message-ID: <CAAH4kHYykL2Qr8ZWT+dsbuRG+h_h3SpCB=7Nn66aQhhhV6Hixg@mail.gmail.com>
-Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>, linux-coco@lists.linux.dev, 
-	kvm@vger.kernel.org, amd-sev-snp@lists.suse.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mCMeKRRmqF4AlFxd1xNsaS1o-wq2B75X
+X-Proofpoint-GUID: uymxaK8FyiJ2K8VPI79fXJOfykCCRjok
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-22_18,2023-03-22_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 mlxlogscore=970 impostorscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303220154
 
-On Wed, Mar 22, 2023 at 11:08=E2=80=AFAM Daniel P. Berrang=C3=A9 <berrange@=
-redhat.com> wrote:
->
-> On Wed, Mar 22, 2023 at 10:15:33AM +0100, J=C3=B6rg R=C3=B6del wrote:
-> > There is of course work building on linux-svsm out there, too. It would
-> > be interesting to get an overview of that. We are already looking into
-> > porting over the attestation code IBM wrote for linux-svsm (although we
-> > would prefer IBM submitting it :) ). The vTPM code out there can not be
-> > ported over as-is, as COCONUT will not link a whole TPM library in its
-> > code-base. But maybe it can be the base for a separate vTPM binary run
-> > by COCONUT.
->
-> For whichever SVSM impl becomes the dominant, the vTPM support with
-> persistence, is something I see as a critical component. It lets the
-> guest OS boot process at least be largely decoupled from the CVM
-> attestation process, and instead rely on the pre-existing support for
-> TPMs, SecureBoot & secret sealing which is common to bare metal and
-> non-confidential VM deployments alike.
->
+On Wed, 2023-03-22 at 17:47 +0000, Dr. David Alan Gilbert wrote:
+[...]
+> > I think this might need to jump back to the vTPM protocol thread
+> > since this is about COCONUT, but I'm worried we're talking about
+> > AMD-specific long-term formats when perhaps the trusted computing
+> > group should be widening its scope to how a TPM should be
+> > virtualized. I appreciate that we're attempting to solve the
+> > problem in the short term, and certainly the SVSM will need
+> > attestation capabilities, but the linking to the TPM is dicey
+> > without that conversation with TCG, IMHO.
+> 
+> Some standardisation of the link between the vTPM and the underlying
+> CoCo hardware would be great; there's at least 2 or 3 CoCo linked
+> vTPMs already and I don't think they're sharing any idea of that.
 
-NVDATA in a confidential setting in my mind needs a whole an attested
-sealing key escrow service to really remove the host from the trust
-boundary.
-Ideally the service never goes down and can have an unbroken chain of
-custody back to the original ingestion into the service.
-If the service ever has all machines go down, it would have to have
-another trusted service of rollback-safe files. That depends on
-trusted time.
+Well, for SNP, it's easy: the VMPL0 labelled attestation report proves
+the SVSM and other components including OVMF and vTPM code
+implementation.  We insert a hash of the manufactured EK into the
+report and that gives proof from the trusted SVSM of the EK belonging
+to the vTPM (essentially binding the vTPM to the VM).  The same thing
+would work for other CoCo VM environments.
 
-The service nodes plays hot potato with key replication and has logged
-and attested cluster management operations:
-*  sealing secrets forward to a new version that was signed by a
-pre-registered trusted operator.
-*  adding more machines to a cluster that has access to the secrets by
-a trusted operator.
-*  the sealing enclaves themselves need a secure source of time to
-know when the enclave came up and whether it got its secrets from a
-rollback-safe sealed-to-code file or will depend on gossip.
+If we do ephemeral vTPMs, the binding is one time and there's no
+persistent state security issue, so the SVSM-vTPM attestation is all
+you need to begin trusting the vTPM measurements.
 
-Trusted persistence really means there's some trusted workload that
-never goes down that is able to take a sealing key bound to an
-expected workload measurement and return a secret that will only be
-unsealed when the vTPM gets to the bound measurement.
+> Whether it's TCG I'm not sure; It doesn't seem to me to make sense
+> for them to specify the flow to bring the vTPM up or the details of
+> the underlying CoCo's attestation; but standardising how the two
+> processes are tied together might be possible.
 
-It's a fun problem, one I've been wanting to work on, but yeah there's
-a bunch of other more pressing work to do first.
+I think the TCG is probably not going to touch that because how you
+attest the code that will run as the SVSM and vTPM is very specific to
+each CoCo implementation.  However, they all provide a user data like
+field which allows you to add information from the to be verified as
+trusted SVSM, so you can use it for the EK, which is pretty identical
+to the above proposal.
 
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
+James
 
-
---=20
--Dionna Glaze, PhD (she/her)
