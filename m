@@ -1,162 +1,275 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2044.outbound.protection.outlook.com [40.107.92.44])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A642AFC1
-	for <linux-coco@lists.linux.dev>; Tue, 28 Mar 2023 23:35:00 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Aq3+2+iROt6Cp+jvJg/kjX8sk0gMVZe2osplaQ7Xq2V1o9IltUrVRT/EzDTVWSpYv3U02nzh7FRv6rifnBSVprJB5sBcZn+Lphy6B9bSV17tdhDYu+pl49wvr00FteDBt9NWGwrodyjuSWDndBdihK3WQsIziVjP8/FtucGDjIdfM7daJCj7vP7jYHuqkQWktXi9pvVeNtcfT8rT0aAPaYSTaBjq8Mv/2bijDO7jfGwSS5CNl0YRnNaK8jzZ2izzSfpxowokxNU3Tl07Lxqv4VJNdXNb51BTmfN12Ds20T2GiPpy1Y1i11SJouAs8MpjXyG5Mqjf0Do8vQwtj1UScA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qnQ4hMDbgmzulrJmRXdEQSRCEUjhwT5IRjHNs8n/Www=;
- b=a3Zj+XqqQYccMbzSEww2+g6Z9tZMnLb/saAEXOTW7PuM2mkSUGtMP1ZyLMbVfg9RpW03W/dRL6WS3PXmL5K/DYsend3CBrFnjOYK1xTgnBtBnRUURBSKCOEBnkT5kFusRNvqrAAxF0WS8xh4QzIkrJIYMh76N7tgd4Jl30GcUtMuOG5i3E/9625HO4F3RPVXMZca7cv+IkY4v8vspLu9JF0u13eydHFqTXZBtfGbyj/pzjUTlmsazCguDxgcHbn/d/xNSLCanOcIsOz9TlawUbXf8MO0xrkJPtfqpFpbKfsJkBiq5JblQKz95vP1A0Ce+KSzN1kYXakYZiqAomQqIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qnQ4hMDbgmzulrJmRXdEQSRCEUjhwT5IRjHNs8n/Www=;
- b=PZvW3zGNq11gY02+BL+3vRDUehJq7InPEPitJezsW4w/tXky7X6K+3T7gu9esL1vUJdzk47ZKfrHBEvn18/EYBrPFVx/ESp1nL6NZ6IkAi2tM5C/xhUJnzwcxbIKrSdmdjv9RrQGnEhjUzV1W3tKGgQChCXzpGlerkVp6sYGOy0=
-Received: from BN0PR03CA0034.namprd03.prod.outlook.com (2603:10b6:408:e7::9)
- by SA0PR12MB4510.namprd12.prod.outlook.com (2603:10b6:806:94::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.33; Tue, 28 Mar
- 2023 23:34:57 +0000
-Received: from BN8NAM11FT021.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:e7:cafe::a1) by BN0PR03CA0034.outlook.office365.com
- (2603:10b6:408:e7::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.43 via Frontend
- Transport; Tue, 28 Mar 2023 23:34:57 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT021.mail.protection.outlook.com (10.13.177.114) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6254.14 via Frontend Transport; Tue, 28 Mar 2023 23:34:57 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 28 Mar
- 2023 18:34:54 -0500
-Date: Tue, 28 Mar 2023 18:31:01 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Dave Hansen <dave.hansen@intel.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
-	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
-	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
-	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
-	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
-	<ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
-	<nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, "Jarkko
- Sakkinen" <jarkko.sakkinen@profian.com>
-Subject: Re: [PATCH RFC v8 17/56] x86/fault: Add support to handle the RMP
- fault for user address
-Message-ID: <20230328233101.4idfki7ulpyhxrwy@amd.com>
-References: <20230220183847.59159-1-michael.roth@amd.com>
- <20230220183847.59159-18-michael.roth@amd.com>
- <a15fc9a5-c136-47f7-e15e-776a511f3cdb@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E858F7B
+	for <linux-coco@lists.linux.dev>; Wed, 29 Mar 2023 10:40:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDFAC433D2;
+	Wed, 29 Mar 2023 10:40:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1680086426;
+	bh=3/EYlpKA/WAhFjAC+6ttrKSSg5D43RrofkB8s9tg/JY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RbgJov/FjAyGNtxTvxU0IRjiquduZah7SZoWZ0QoZNSdPIfv9wOxRYfDyWvODIBdv
+	 0mY8FkkD7hax+aGY50MNvh3qEXEhg4nTgIJOfaczOPaZu1Y5ifLZoq6Nv5rGhY8flR
+	 8HAi/Ka8HnfSBSuJKg4MqrVYHowdwIg0VZvLQAV8=
+Date: Wed, 29 Mar 2023 12:40:24 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Carlos Bilbao <carlos.bilbao@amd.com>
+Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ardb@kernel.org, kraxel@redhat.com, dovmurik@linux.ibm.com,
+	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+	Dhaval.Giani@amd.com, michael.day@amd.com,
+	pavankumar.paluri@amd.com, David.Kaplan@amd.com, Reshma.Lal@amd.com,
+	Jeremy.Powell@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
+	tglx@linutronix.de, dgilbert@redhat.com, dinechin@redhat.com,
+	linux-coco@lists.linux.dev, berrange@redhat.com, mst@redhat.com,
+	tytso@mit.edu, jikos@kernel.org, joro@8bytes.org, leon@kernel.org,
+	richard.weinberger@gmail.com, lukas@wunner.de, jejb@linux.ibm.com,
+	cdupontd@redhat.com, jasowang@redhat.com, sameo@rivosinc.com,
+	bp@alien8.de, seanjc@google.com, security@kernel.org
+Subject: Re: [PATCH] docs: security: Confidential computing intro and threat
+ model
+Message-ID: <ZCQVmIKXWXX2xvo-@kroah.com>
+References: <20230327141816.2648615-1-carlos.bilbao@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a15fc9a5-c136-47f7-e15e-776a511f3cdb@intel.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT021:EE_|SA0PR12MB4510:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e45826c-771b-45ea-3b34-08db2fe50a64
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	aN/gcf8xdFmeaW0Yd/n0Pe/gKnTBoOnt2UisdRKcKbdYca7v2RALGjP22WCH322CGVSERbC0vCIPBLjUdStishmhVtmmJBYp4tliHxN4AB/dMvjHJ7HFN5/jFwKWfNnbrroxbTfpiInMuyQGnEdjNCcaGuM4XhCdkFij1ajXcxmPQZRcimddj0aMaPxjqrxg9PvSkPE6awLIzZP2BtBtiyKZmC934rOLM0K0ODYroqU/qX8G7NmxLN7xLs6jsP1O5WXosLQ+WJUpzeO9/eHbpQ39r1aY2n/SVJDLFTpsQ8DTrfEjuQBmRNyvSdBtTbo7DUMsQGIt6V0rYf/8ELVrAzzBXt5vhCtX6/MnOXJfqhvc+ed47ZHPXJE3NpfCNUOtgGV+NXUfDmFLRE1eNGHked77Fo3pCoxCke5MR2e+PG7T3Z+3eFKSe9oaFYsQlSjf2Fbw69nWcDLjS6f2T5hzXc4mO1QFmM/6G/Z5EY9Mzwx6GgvmYPEWsJMxJYyexOxOCbOe4pCg5FpLzmMrisVZHejacHg3RVp8Q+sr2vCEVAdfDqetIS8wsgVmstdDG9VLXub5dj+dcCKNEqgNpBa0oVnPpugYsc6au0tFRs50yK6KZRRaQ8bo5VeVA9bK6EykewbCg3uZMDGFC7dO5xHPcIz6yrFJPUts3+rFpAuI+iXCJCYgLraSrLbmmTSSUFt4GAtgBkHXCwGWQc22y0BKxQPclWsqgknFFKdxL/moehM=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(346002)(396003)(136003)(451199021)(40470700004)(46966006)(36840700001)(40460700003)(4326008)(41300700001)(8676002)(356005)(70586007)(6916009)(70206006)(2906002)(36860700001)(36756003)(82740400003)(7406005)(5660300002)(8936002)(81166007)(40480700001)(82310400005)(478600001)(7416002)(44832011)(86362001)(316002)(54906003)(2616005)(6666004)(53546011)(186003)(16526019)(47076005)(26005)(1076003)(426003)(336012)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2023 23:34:57.0945
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e45826c-771b-45ea-3b34-08db2fe50a64
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT021.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4510
+In-Reply-To: <20230327141816.2648615-1-carlos.bilbao@amd.com>
 
-On Wed, Mar 01, 2023 at 08:21:17AM -0800, Dave Hansen wrote:
-> On 2/20/23 10:38, Michael Roth wrote:
-> > +static int handle_split_page_fault(struct vm_fault *vmf)
-> > +{
-> > +	__split_huge_pmd(vmf->vma, vmf->pmd, vmf->address, false, NULL);
-> > +	return 0;
-> > +}
-> > +
-> >  /*
-> >   * By the time we get here, we already hold the mm semaphore
-> >   *
-> > @@ -5078,6 +5084,10 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
-> >  				pmd_migration_entry_wait(mm, vmf.pmd);
-> >  			return 0;
-> >  		}
-> > +
-> > +		if (flags & FAULT_FLAG_PAGE_SPLIT)
-> > +			return handle_split_page_fault(&vmf);
-> 
-> I asked this long ago, but how do you prevent these faults from
-> occurring on hugetlbfs mappings that can't be split?
-> 
+On Mon, Mar 27, 2023 at 09:18:16AM -0500, Carlos Bilbao wrote:
+> Kernel developers working on confidential computing operate under a set of
+> assumptions regarding the Linux kernel threat model that differ from the
+> traditional view. In order to effectively engage with the linux-coco
+> mailing list and contribute to ongoing kernel efforts, one must have a
+> thorough familiarity with these concepts. Add a concise,
+> architecture-agnostic introduction and threat model to provide a reference
+> for ongoing design discussions and to help developers gain a foundational
+> understanding of the subject.
 
-In v6 there used to be a KVM ioctl to register a user HVA range for use
-with SEV-SNP guests, and as part of that registration the code would scan
-all the VMAs encompassed by that range and check for VM_HUGETLB in
-vma->vm_flags.
+Thanks for putting this together.  Some questions below:
 
-With v7+ this registration mechanism has been replaced with the
-new restricted memfd implementation provided by UPM to manage private guest
-memory. Normal shmem/memfd backend can specify HugeTLBFS via a
-MFD_HUGETLB flag when creating the memfd, but for restricted memfd no
-special flags are allowed, so HugeTLBFS isn't possible for the pages
-that are used for private memory. Though it might make sense to enforce
-that in SNP-specific code still, in case restricted memfd does
-eventually gain that ability...
+> +The basic CoCo layout includes the host, guest, the interfaces that
+> +communicate guest and host, a platform capable of supporting CoCo, and an
+> +intermediary between the guest virtual machine (VM) and the underlying
+> +platform that acts as security manager::
+> +
+> +    +-------------------+      +-----------------------+
+> +    | CoCo guest VM     |<---->|                       |
+> +    +-------------------+      |                       |
+> +      | Interfaces |           | CoCo security manager |
+> +    +-------------------+      |                       |
+> +    | Host VMM          |<---->|                       |
+> +    +-------------------+      |                       |
+> +                               |                       |
+> +    +--------------------+     |                       |
+> +    | CoCo platform      |<--->|                       |
+> +    +--------------------+     +-----------------------+
 
-But now, with v7+, the non-private memory that doesn't get allocated via
-restricted memfd (and thus can actually be mapped into userspace and
-used for things like buffers shared between host/guest), can still be
-allocated via HugeTLBFS since there is nothing SNP is doing to
-specifically guard against that. So we'd probably want to reimplement
-similar logic to what was in v6 to guard against this, since it's these
-mapping that would potentially be triggering the RMP faults and require
-splitting.
+I do not understand, what are the "<--->" lines representing?  Function
+calls?  APIs?  something else?
 
-However...
+> +The specific details of the CoCo intermediary vastly diverge between
+> +technologies, so much so that in some cases it will be HW and in others
+> +SW.
+> +
+> +Existing Linux kernel threat model
+> +==================================
+> +
+> +The components of the current Linux kernel threat model are::
+> +
+> +     +-----------------------+      +-------------------+
+> +     |                       |<---->| Userspace         |
+> +     |                       |      +-------------------+
+> +     |   External attack     |         | Interfaces |
+> +     |       vectors         |      +-------------------+
+> +     |                       |<---->| Linux Kernel      |
+> +     |                       |      +-------------------+
+> +     +-----------------------+      +-------------------+
+> +                                    | Bootloader/BIOS   |
+> +                                    +-------------------+
+> +                                    +-------------------+
+> +                                    | HW platform       |
+> +                                    +-------------------+
 
-The fact that any pages potentially triggering these #PFs are able to be
-mapped as 2M in the first place means that all the PFNs covered by that
-2M mapping must also been allocated by via mappable/VMA memory rather
-than via restricted memfd where userspace mappings are not possible.
+Again, what do the "<---->" lines mean?  there's no talking betwen the
+bootloader and the kernel?  What about the kernel talking to the HW
+without the BIOS (as is most of the time)?  What is "Interfaces"?
 
-So I think we should be able to drop this patch entirely, as well as
-allow the use of HugeTLBFS for non-restricted memfd memory (though
-eventually the guest will switch all its memory to private/restricted
-so not gaining much there other than reducing management complexity).
+And "external attack vectors" is odd, how can they get to the kernel
+without going through userspace?
 
--Mike
+> +The existing Linux kernel threat model typically assumes execution on a
+> +trusted HW platform with all of the firmware and bootloaders included on
+> +its TCB. The primary attacker resides in the userspace and all of the data
+> +coming from there is generally considered untrusted, unless userspace is
+> +privileged enough to perform trusted actions. In addition, external
+> +attackers are typically considered, including those with access to enabled
+> +external networks (e.g. Ethernet, Wireless, Bluetooth), exposed hardware
+> +interfaces (e.g. USB, Thunderbolt), and the ability to modify the contents
+> +of disks offline.
+
+I can not parse that last sentance well, sorry.  What is in addition?
+What are you trying to say, some hardware the kernel trusts and some it
+doesn't?  Note there are different "levels" of trust for hardware as
+well (i.e. we attempt to accept any USB configuration header and treat
+that as untrusted but the USB data path we totally trust.)
+
+> +Confidential Computing threat model and security objectives
+> +===========================================================
+> +
+> +Confidential Cloud Computing adds a new type of attacker to the above list:
+> +an untrusted and potentially malicious host. This can be viewed as a more
+> +powerful type of external attacker, as it resides locally on the same
+> +physical machine, in contrast to a remote network attacker, and has control
+> +over the guest kernel communication with most of the HW::
+> +
+> +                                 +------------------------+
+> +                                 |    CoCo guest VM       |
+> +   +-----------------------+     |  +-------------------+ |
+> +   |                       |<--->|  | Userspace         | |
+> +   |                       |     |  +-------------------+ |
+> +   |   External attack     |     |     | Interfaces |     |
+> +   |       vectors         |     |  +-------------------+ |
+> +   |                       |<--->|  | Linux Kernel      | |
+> +   |                       |     |  +-------------------+ |
+> +   +-----------------------+     |  +-------------------+ |
+> +                                 |  | Bootloader/BIOS   | |
+> +   +-----------------------+     |  +-------------------+ |
+> +   |                       |<--->+------------------------+
+> +   |                       |          | Interfaces |
+> +   |                       |     +------------------------+
+> +   |     CoCo security     |<--->|   Host VMM             |
+> +   |      manager          |     +------------------------+
+> +   |                       |     +------------------------+
+> +   |                       |<--->|   CoCo platform        |
+> +   +-----------------------+     +------------------------+
+
+Again, I don't undertand the layers or <---> here, sorry.
+
+> +While the traditional hypervisor has unlimited access to guest data and
+> +can leverage this access to attack the guest, the CoCo systems mitigate
+> +such attacks by adding security features like guest data confidentiality
+> +and integrity protection. This threat model assumes that those features
+> +are available and intact.
+> +
+> +The **Linux kernel CoCo security objectives** can be summarized as follows:
+> +
+> +1. Preserve the confidentiality and integrity of CoCo guest private memory.
+
+Confidentiality from/to what?  Itself?  Someone else?  Userspace?
+
+> +2. Prevent privileged escalation from a host into a CoCo guest Linux kernel.
+
+But a host has to have privileges in order to create/destroy/sleep the
+guest, right?
+
+> +
+> +The above security objectives result in two primary **Linux kernel CoCo
+> +assets**:
+> +
+> +1. Guest kernel execution context.
+> +2. Guest kernel private memory.
+> +
+> +The host retains full control over the CoCo guest resources and can deny
+> +access to them at any time. Because of this, the host Denial of Service
+> +(DoS) attacks against CoCo guests are beyond the scope of this threat
+> +model.
+
+So all resources provided by the host to the guest are trusted?  Or are
+not trusted?  Confused...
+
+> +The **Linux CoCo attack surface** is any interface exposed from a CoCo
+> +guest Linux kernel towards an untrusted host that is not covered by the
+> +CoCo technology SW/HW protections.
+
+"not covered by" is an odd way to say "we trust lots of things, but not
+all", right?  If not, I don't understand again.
+
+> This includes any possible
+> +side-channels, as well as transient execution side channels. Examples of
+> +explicit (not side-channel) interfaces include accesses to port I/O, MMIO
+> +and DMA interfaces, access to PCI configuration space, VMM-specific
+> +hypercalls, access to shared memory pages, interrupts allowed to be
+> +injected to the guest kernel by the host, as well as CoCo technology
+> +specific hypercalls.
+
+So all of those things are trusted?  Or are not trusted?  Again, I'm
+confused.  And who is trusting, or not trusting them?  The host?  The
+guest?
+
+> Additionally, the host in a CoCo system typically
+> +controls the process of creating a CoCo guest: it has a method to load
+> +into a guest the firmware and bootloader images, the kernel image
+> +together with the kernel command line. All of this data should also be
+> +considered untrusted until its integrity and authenticity is established.
+
+Who does the authentication?  The host?  The guest?  Through what
+channel?
+
+> +The table below shows a threat matrix for the CoCo guest Linux kernel with
+> +the potential mitigation strategies. The matrix refers to CoCo-specific
+> +versions of the guest, host and platform.
+> +
+> +.. list-table:: CoCo Linux guest kernel threat matrix
+> +   :widths: auto
+> +   :align: center
+> +   :header-rows: 1
+> +
+> +   * - Threat name
+> +     - Threat description
+> +     - Mitigation strategy
+> +
+> +   * - Guest malicious configuration
+> +     - A malicious host modifies one of the following guest's
+> +       configuration:
+> +
+> +       1. Guest firmware or bootloader
+> +
+> +       2. Guest kernel or module binaries
+> +
+> +       3. Guest command line parameters
+> +
+> +       This allows the host to break the integrity of the code running
+> +       inside a CoCo guest and violate the CoCo security objectives.
+
+So hosts are not allowed to change this?  I don't understand the use of
+"violate" here, sorry.
+
+> +     - The integrity of the guest's configuration passed via untrusted host
+> +       must be ensured by methods such as remote attestation and signing.
+> +       This should be largely transparent to the guest kernel and would
+> +       allow it to assume a trusted state at the time of boot.
+
+How can it be transparent if the guest has to do this?  If the guest
+isn't doing it, who is?  Can configuration be changed while the guest is
+running?
+
+> +
+> +   * - CoCo guest data attacks
+> +     - A malicious host retains full control of the CoCo guest's data
+> +       in-transit between the guest and the host-managed physical or
+> +       virtual devices. This allows any attack against confidentiality,
+> +       integrity or freshness of such data.
+> +     - The CoCo guest is responsible for ensuring the confidentiality,
+> +       integrity and freshness of such data using well-established
+> +       security mechanisms. For example, for any guest external network
+> +       communications that are passed via the untrusted host, an end-to-end
+> +       secure session must be established between a guest and a trusted
+> +       remote endpoint using well-known protocols such as TLS.
+> +       This requirement also applies to protection of the guest's disk
+> +       image.
+
+So you trust all I/O into the guest by virtue of it having to be
+encrypted/protected somehow at the data layer?  So the guest kernel
+doesn't have to worry about the data contents it is receiving any more
+than it does today?
+
+I'm stopping here, sorry...
+
+greg k-h
