@@ -1,34 +1,34 @@
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0931FB8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8480D1FB6
 	for <linux-coco@lists.linux.dev>; Thu, 30 Mar 2023 11:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1680177028; x=1711713028;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=f7/hrgLyEe7uCgqzPwQBAiXJTS6cTMMnuaKLYQlQP9E=;
-  b=dDdrUwNy2Kio2n5xNdWUNBTWMOvs0XhZIML7FZmc1Ol3MrFUTqEcW2nD
-   g2jrJ6HJU4CxxK1zOBuW0kyFvoZRfJc50Cq+tgHa4n93tKnV2rsQjwKfi
-   ueiC/9Jx+Fx+bVy177Q8fi8b1GoXIKtUdFXTfY3gvWa7fzXuj/P0oq1QF
-   V4GlVGLLtTFEg3S9r1JiA485BxxKSaQr/pL18evv+J/UneIBv198grTn6
-   CW8Ew6g++sk4o7WB3yetFBOcFw3sYxduxCq908ZrfHPFR2zApoPSvB/5d
-   tnMeQ7Gs/If3sYf6n16NhzG+aKVB4Np6PSeb2d9TeDfJDXkvcW5D8B7Yu
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="339868484"
+  bh=MmsAbUP+stG7qEWYYDNAAzwlLkIUGBDyKypaxDlWzw4=;
+  b=gixM1Vv/IWcSlPvQWBV6n8Uxde6NK5DZ8oMoyDzCXsc/h68FHi+JKgVP
+   rFQ78xSh5JFWf9icQ/y7jhGe90REKnG84CxoYQAcK7FYUTUNnoR3T5rO6
+   f7v3JKq9R6jWr7mehIYVCZHNY1obCxBoG02QH52RRTSbU2ljPgeldJu3P
+   cS5Q/0FrMqM3ns6bim24f8sKTN2cVUbaa33t6Criy+Mnr6REBUMzNIQUV
+   HdYm/EhjAUWRrqOertVPR9sJY3L9PxpL/mokhu0pabfz8k6tTxL6IJQsN
+   dPJr69GmO4EYw76iGCiaBQHclc/u88Y/439lj2B8/I07nkxc1ojo3LoRA
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="339868542"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="339868484"
+   d="scan'208";a="339868542"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:24 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="1014401448"
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="1014401458"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="1014401448"
+   d="scan'208";a="1014401458"
 Received: from ngreburx-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.209.91])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:17 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:18 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 49CA4104545; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
+	id 75D41104D1D; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -62,10 +62,10 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Mike Rapoport <rppt@linux.ibm.com>
-Subject: [PATCHv9 09/14] x86/mm: Reserve unaccepted memory bitmap
-Date: Thu, 30 Mar 2023 14:49:51 +0300
-Message-Id: <20230330114956.20342-10-kirill.shutemov@linux.intel.com>
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCHv9 13/14] x86/tdx: Refactor try_accept_one()
+Date: Thu, 30 Mar 2023 14:49:55 +0300
+Message-Id: <20230330114956.20342-14-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
@@ -77,60 +77,97 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A given page of memory can only be accepted once. The kernel has to
-accept memory both in the early decompression stage and during normal
-runtime.
-
-A bitmap is used to communicate the acceptance state of each page
-between the decompression stage and normal runtime.
-
-boot_params is used to communicate location of the bitmap throughout
-the boot. The bitmap is allocated and initially populated in EFI stub.
-Decompression stage accepts pages required for kernel/initrd and marks
-these pages accordingly in the bitmap. The main kernel picks up the
-bitmap from the same boot_params and uses it to determine what has to
-be accepted on allocation.
-
-In the runtime kernel, reserve the bitmap's memory to ensure nothing
-overwrites it.
-
-The size of bitmap is determined with e820__end_of_ram_pfn() which
-relies on setup_e820() marking unaccepted memory as E820_TYPE_RAM.
+Rework try_accept_one() to return accepted size instead of modifying
+'start' inside the helper. It makes 'start' in-only argument and
+streamlines code on the caller side.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
+Suggested-by: Borislav Petkov <bp@alien8.de>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/kernel/e820.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/x86/coco/tdx/tdx.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index fb8cf953380d..483c36a28d2e 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -1316,6 +1316,23 @@ void __init e820__memblock_setup(void)
- 	int i;
- 	u64 end;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index a9893f44288f..9e6557d7514c 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -713,18 +713,18 @@ static bool tdx_cache_flush_required(void)
+ 	return true;
+ }
  
-+	/*
-+	 * Mark unaccepted memory bitmap reserved.
-+	 *
-+	 * This kind of reservation usually done from early_reserve_memory(),
-+	 * but early_reserve_memory() called before e820__memory_setup(), so
-+	 * e820_table is not finalized and e820__end_of_ram_pfn() cannot be
-+	 * used to get correct RAM size.
-+	 */
-+	if (boot_params.unaccepted_memory) {
-+		unsigned long size;
-+
-+		/* One bit per 2MB */
-+		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
-+				    PMD_SIZE * BITS_PER_BYTE);
-+		memblock_reserve(boot_params.unaccepted_memory, size);
-+	}
-+
+-static bool try_accept_one(phys_addr_t *start, unsigned long len,
+-			  enum pg_level pg_level)
++static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
++				    enum pg_level pg_level)
+ {
+ 	unsigned long accept_size = page_level_size(pg_level);
+ 	u64 tdcall_rcx;
+ 	u8 page_size;
+ 
+-	if (!IS_ALIGNED(*start, accept_size))
+-		return false;
++	if (!IS_ALIGNED(start, accept_size))
++		return 0;
+ 
+ 	if (len < accept_size)
+-		return false;
++		return 0;
+ 
  	/*
- 	 * The bootstrap memblock region count maximum is 128 entries
- 	 * (INIT_MEMBLOCK_REGIONS), but EFI might pass us more E820 entries
+ 	 * Pass the page physical address to the TDX module to accept the
+@@ -743,15 +743,14 @@ static bool try_accept_one(phys_addr_t *start, unsigned long len,
+ 		page_size = 2;
+ 		break;
+ 	default:
+-		return false;
++		return 0;
+ 	}
+ 
+-	tdcall_rcx = *start | page_size;
++	tdcall_rcx = start | page_size;
+ 	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
+-		return false;
++		return 0;
+ 
+-	*start += accept_size;
+-	return true;
++	return accept_size;
+ }
+ 
+ /*
+@@ -788,21 +787,22 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ 	 */
+ 	while (start < end) {
+ 		unsigned long len = end - start;
++		unsigned long accept_size;
+ 
+ 		/*
+ 		 * Try larger accepts first. It gives chance to VMM to keep
+-		 * 1G/2M SEPT entries where possible and speeds up process by
+-		 * cutting number of hypercalls (if successful).
++		 * 1G/2M Secure EPT entries where possible and speeds up
++		 * process by cutting number of hypercalls (if successful).
+ 		 */
+ 
+-		if (try_accept_one(&start, len, PG_LEVEL_1G))
+-			continue;
+-
+-		if (try_accept_one(&start, len, PG_LEVEL_2M))
+-			continue;
+-
+-		if (!try_accept_one(&start, len, PG_LEVEL_4K))
++		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
++		if (!accept_size)
+ 			return false;
++		start += accept_size;
+ 	}
+ 
+ 	return true;
 -- 
 2.39.2
 
