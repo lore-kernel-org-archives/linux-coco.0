@@ -1,34 +1,34 @@
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8480D1FB6
-	for <linux-coco@lists.linux.dev>; Thu, 30 Mar 2023 11:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C931FB8
+	for <linux-coco@lists.linux.dev>; Thu, 30 Mar 2023 11:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680177028; x=1711713028;
+  t=1680177029; x=1711713029;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MmsAbUP+stG7qEWYYDNAAzwlLkIUGBDyKypaxDlWzw4=;
-  b=gixM1Vv/IWcSlPvQWBV6n8Uxde6NK5DZ8oMoyDzCXsc/h68FHi+JKgVP
-   rFQ78xSh5JFWf9icQ/y7jhGe90REKnG84CxoYQAcK7FYUTUNnoR3T5rO6
-   f7v3JKq9R6jWr7mehIYVCZHNY1obCxBoG02QH52RRTSbU2ljPgeldJu3P
-   cS5Q/0FrMqM3ns6bim24f8sKTN2cVUbaa33t6Criy+Mnr6REBUMzNIQUV
-   HdYm/EhjAUWRrqOertVPR9sJY3L9PxpL/mokhu0pabfz8k6tTxL6IJQsN
-   dPJr69GmO4EYw76iGCiaBQHclc/u88Y/439lj2B8/I07nkxc1ojo3LoRA
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="339868542"
+  bh=aSDNa5qy6AjyVCvAMnDoppa8Rk9jEp1+/qGA3XqX6A0=;
+  b=Jj+z3USW7LoN9dweQabcod3uq+5OHbM/A8NEuvJ/NJrpNWnxFQt51xPU
+   i6brfyf8EYJVg4xwqam6Wua0/EgYRqubOoTkVmDvQxf19d/WQdmlPUZWJ
+   litwCVlDXQINrMhnEEgpO1N3/XmX+H1g94E4V8MrAQZgAJVRN+k4dFIOw
+   o/FEnD12TWjmkkU7LBK7Gxel8vPz4ywqPdCsmpYmr0dOScihAS4MGcTpH
+   gVnaHinBHYOKuiQsSrkkwKFAuQgI2j2BsOBkE+uh0PgoYrZNPcSqN/vSG
+   ccb7HW/rfIciDIyw2U1e6nzSDcAZDnJgHVFfpvZX2rk1HzF0tL8PFbqoU
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="339868526"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="339868542"
+   d="scan'208";a="339868526"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
   by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="1014401458"
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="1014401453"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="1014401458"
+   d="scan'208";a="1014401453"
 Received: from ngreburx-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.209.91])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:18 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:17 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 75D41104D1D; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
+	id 6BA50104CA8; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -63,9 +63,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCHv9 13/14] x86/tdx: Refactor try_accept_one()
-Date: Thu, 30 Mar 2023 14:49:55 +0300
-Message-Id: <20230330114956.20342-14-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 12/14] x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in boot stub
+Date: Thu, 30 Mar 2023 14:49:54 +0300
+Message-Id: <20230330114956.20342-13-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
@@ -77,97 +77,177 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rework try_accept_one() to return accepted size instead of modifying
-'start' inside the helper. It makes 'start' in-only argument and
-streamlines code on the caller side.
+Memory acceptance requires a hypercall and one or multiple module calls.
+
+Make helpers for the calls available in boot stub. It has to accept
+memory where kernel image and initrd are placed.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Suggested-by: Borislav Petkov <bp@alien8.de>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdx.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ arch/x86/coco/tdx/tdx.c           | 32 -------------------
+ arch/x86/include/asm/shared/tdx.h | 51 +++++++++++++++++++++++++++++++
+ arch/x86/include/asm/tdx.h        | 19 ------------
+ 3 files changed, 51 insertions(+), 51 deletions(-)
 
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index a9893f44288f..9e6557d7514c 100644
+index 055300e08fb3..a9893f44288f 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -713,18 +713,18 @@ static bool tdx_cache_flush_required(void)
- 	return true;
- }
+@@ -14,20 +14,6 @@
+ #include <asm/insn-eval.h>
+ #include <asm/pgtable.h>
  
--static bool try_accept_one(phys_addr_t *start, unsigned long len,
--			  enum pg_level pg_level)
-+static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
-+				    enum pg_level pg_level)
+-/* TDX module Call Leaf IDs */
+-#define TDX_GET_INFO			1
+-#define TDX_GET_VEINFO			3
+-#define TDX_GET_REPORT			4
+-#define TDX_ACCEPT_PAGE			6
+-#define TDX_WR				8
+-
+-/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
+-#define TDCS_NOTIFY_ENABLES		0x9100000000000010
+-
+-/* TDX hypercall Leaf IDs */
+-#define TDVMCALL_MAP_GPA		0x10001
+-#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
+-
+ /* MMIO direction */
+ #define EPT_READ	0
+ #define EPT_WRITE	1
+@@ -51,24 +37,6 @@
+ 
+ #define TDREPORT_SUBTYPE_0	0
+ 
+-/*
+- * Wrapper for standard use of __tdx_hypercall with no output aside from
+- * return code.
+- */
+-static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
+-{
+-	struct tdx_hypercall_args args = {
+-		.r10 = TDX_HYPERCALL_STANDARD,
+-		.r11 = fn,
+-		.r12 = r12,
+-		.r13 = r13,
+-		.r14 = r14,
+-		.r15 = r15,
+-	};
+-
+-	return __tdx_hypercall(&args, 0);
+-}
+-
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ noinstr void __tdx_hypercall_failed(void)
  {
- 	unsigned long accept_size = page_level_size(pg_level);
- 	u64 tdcall_rcx;
- 	u8 page_size;
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 4a03993e0785..562b3f4cbde8 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -12,6 +12,20 @@
+ #define TDX_CPUID_LEAF_ID	0x21
+ #define TDX_IDENT		"IntelTDX    "
  
--	if (!IS_ALIGNED(*start, accept_size))
--		return false;
-+	if (!IS_ALIGNED(start, accept_size))
-+		return 0;
- 
- 	if (len < accept_size)
--		return false;
-+		return 0;
- 
- 	/*
- 	 * Pass the page physical address to the TDX module to accept the
-@@ -743,15 +743,14 @@ static bool try_accept_one(phys_addr_t *start, unsigned long len,
- 		page_size = 2;
- 		break;
- 	default:
--		return false;
-+		return 0;
- 	}
- 
--	tdcall_rcx = *start | page_size;
-+	tdcall_rcx = start | page_size;
- 	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
--		return false;
-+		return 0;
- 
--	*start += accept_size;
--	return true;
-+	return accept_size;
- }
++/* TDX module Call Leaf IDs */
++#define TDX_GET_INFO			1
++#define TDX_GET_VEINFO			3
++#define TDX_GET_REPORT			4
++#define TDX_ACCEPT_PAGE			6
++#define TDX_WR				8
++
++/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
++#define TDCS_NOTIFY_ENABLES		0x9100000000000010
++
++/* TDX hypercall Leaf IDs */
++#define TDVMCALL_MAP_GPA		0x10001
++#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
++
+ #ifndef __ASSEMBLY__
  
  /*
-@@ -788,21 +787,22 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 	 */
- 	while (start < end) {
- 		unsigned long len = end - start;
-+		unsigned long accept_size;
+@@ -38,8 +52,45 @@ struct tdx_hypercall_args {
+ /* Used to request services from the VMM */
+ u64 __tdx_hypercall(struct tdx_hypercall_args *args, unsigned long flags);
  
- 		/*
- 		 * Try larger accepts first. It gives chance to VMM to keep
--		 * 1G/2M SEPT entries where possible and speeds up process by
--		 * cutting number of hypercalls (if successful).
-+		 * 1G/2M Secure EPT entries where possible and speeds up
-+		 * process by cutting number of hypercalls (if successful).
- 		 */
++/*
++ * Wrapper for standard use of __tdx_hypercall with no output aside from
++ * return code.
++ */
++static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
++{
++	struct tdx_hypercall_args args = {
++		.r10 = TDX_HYPERCALL_STANDARD,
++		.r11 = fn,
++		.r12 = r12,
++		.r13 = r13,
++		.r14 = r14,
++		.r15 = r15,
++	};
++
++	return __tdx_hypercall(&args, 0);
++}
++
++
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void);
  
--		if (try_accept_one(&start, len, PG_LEVEL_1G))
--			continue;
++/*
++ * Used in __tdx_module_call() to gather the output registers' values of the
++ * TDCALL instruction when requesting services from the TDX module. This is a
++ * software only structure and not part of the TDX module/VMM ABI
++ */
++struct tdx_module_output {
++	u64 rcx;
++	u64 rdx;
++	u64 r8;
++	u64 r9;
++	u64 r10;
++	u64 r11;
++};
++
++/* Used to communicate with the TDX module */
++u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
++		      struct tdx_module_output *out);
++
+ #endif /* !__ASSEMBLY__ */
+ #endif /* _ASM_X86_SHARED_TDX_H */
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 28d889c9aa16..234197ec17e4 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -20,21 +20,6 @@
+ 
+ #ifndef __ASSEMBLY__
+ 
+-/*
+- * Used to gather the output registers values of the TDCALL and SEAMCALL
+- * instructions when requesting services from the TDX module.
+- *
+- * This is a software only structure and not part of the TDX module/VMM ABI.
+- */
+-struct tdx_module_output {
+-	u64 rcx;
+-	u64 rdx;
+-	u64 r8;
+-	u64 r9;
+-	u64 r10;
+-	u64 r11;
+-};
 -
--		if (try_accept_one(&start, len, PG_LEVEL_2M))
--			continue;
--
--		if (!try_accept_one(&start, len, PG_LEVEL_4K))
-+		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
-+		if (!accept_size)
- 			return false;
-+		start += accept_size;
- 	}
+ /*
+  * Used by the #VE exception handler to gather the #VE exception
+  * info from the TDX module. This is a software only structure
+@@ -55,10 +40,6 @@ struct ve_info {
  
- 	return true;
+ void __init tdx_early_init(void);
+ 
+-/* Used to communicate with the TDX module */
+-u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
+-		      struct tdx_module_output *out);
+-
+ void tdx_get_ve_info(struct ve_info *ve);
+ 
+ bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
 -- 
 2.39.2
 
