@@ -1,34 +1,34 @@
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521B11FAD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A513E1FB8
 	for <linux-coco@lists.linux.dev>; Thu, 30 Mar 2023 11:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1680177026; x=1711713026;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=4/nsBozr9Yxm1Svh3lW2TBRBUO1KN1TDzMtK6uriOCA=;
-  b=AzJPoGXX2ZepZVsKvtRD644FyKJ8pUBPSBlhjelq4SlrFY0AupvJIpdK
-   U/qUBk6INCSzYt4LvSobyzVsQ8MFz5M39rODPHFMPyDdTLTI6geQbMbIs
-   GGLZL3w24VzjHCnofqLkFsL1YP0dHuwNCHv0LQwizSrBzNyy1n3sY55Mr
-   UpYVa7ILqOzgUoXRIHmImpkUIKRVDphyvT7GrlvQ3wDrI2CBwq+ZQz/8n
-   NaAkCYCBN97wFv7FXKVdiidqwCmNIvkq9T7K++s41MB9PWOzhRSJ4uWLa
-   VzcDrE603zCiM/DStDeEu7cQTTOsZ2sf/NKIirkWJwhHZ3n5yn12zdmct
+  bh=EdpB5LGN65LHmZVLPoPRNthJZeU3YLHWwC+hwkbMqQk=;
+  b=EBagO2UIUAcOL4+BMcft0pAlDOe9g0Xr78VXjSjfxT6MTdcdEWt53d65
+   etTdKXQZ0kPf26zOYIAwFk0MVgcQuY3GcJ8SNUaaUwZvbL3LbSxOI/XQ+
+   t1zhEMvRd4a2PhNPukt5xz77SjvVbm+EKpwvMOVJUad9H/zvJXLlHUOXl
+   96E3cT7AvTJOuTC09gW4kBxp/DvBCI3VGFzHuhI0VhuyyjL3BMfCRfeBL
+   gy2SK/kYSiJmQuCIQ0vPx3Dzc8yS6gMC9sYeXNn/RTjXUSpIMNNxslsJa
+   DvrZh0WM+dY6XJwVkFEwje6pQEXW+pIoGp+4+q2W4NVBvCnHxFYtOsh0b
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="342756688"
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="339868500"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="342756688"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:25 -0700
+   d="scan'208";a="339868500"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:25 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="634856368"
+X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="1014401451"
 X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="634856368"
+   d="scan'208";a="1014401451"
 Received: from ngreburx-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.209.91])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:02 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:17 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 105B310438F; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
+	id 54CD11046EE; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -62,9 +62,9 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 04/14] mm/page_alloc: Add sysfs handle to accept accept_memory
-Date: Thu, 30 Mar 2023 14:49:46 +0300
-Message-Id: <20230330114956.20342-5-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv9 10/14] x86/mm: Provide helpers for unaccepted memory
+Date: Thu, 30 Mar 2023 14:49:52 +0300
+Message-Id: <20230330114956.20342-11-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
@@ -76,98 +76,129 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Write amount of memory to accept into the new sysfs handle
-/sys/kernel/mm/page_alloc/accept_memory.
+Core-mm requires few helpers to support unaccepted memory:
 
-Write 'all' to the handle to accept all memory in the system.
+ - accept_memory() checks the range of addresses against the bitmap and
+   accept memory if needed.
 
-It can be used to implement background memory accepting from userspace.
-It is also useful for debugging.
+ - range_contains_unaccepted_memory() checks if anything within the
+   range requires acceptance.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- mm/page_alloc.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ arch/x86/include/asm/page.h              |  3 ++
+ arch/x86/include/asm/unaccepted_memory.h |  4 ++
+ arch/x86/mm/Makefile                     |  2 +
+ arch/x86/mm/unaccepted_memory.c          | 61 ++++++++++++++++++++++++
+ 4 files changed, 70 insertions(+)
+ create mode 100644 arch/x86/mm/unaccepted_memory.c
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 509a93b7e5af..07e16e9b49c4 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7343,6 +7343,45 @@ static bool __free_unaccepted(struct page *page)
- 	return true;
- }
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index d18e5c332cb9..4bab2bb2c9c0 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -19,6 +19,9 @@
+ struct page;
  
-+static ssize_t accept_memory_store(struct kobject *kobj,
-+				    struct kobj_attribute *attr,
-+				    const char *buf, size_t count)
-+{
-+	unsigned long to_accept = 0;
-+	struct zone *zone;
-+	char *retptr;
+ #include <linux/range.h>
 +
-+	if (sysfs_streq(buf, "all")) {
-+		to_accept = ULONG_MAX;
-+	} else {
-+		to_accept = memparse(buf, &retptr);
++#include <asm/unaccepted_memory.h>
 +
-+		/* Get rid of trailing whitespace, including '\n' */
-+		retptr = skip_spaces(retptr);
-+
-+		if (*retptr != 0 || to_accept == 0)
-+			return -EINVAL;
-+	}
-+
-+	for_each_populated_zone(zone) {
-+		while (try_to_accept_memory_one(zone)) {
-+			if (to_accept <= PAGE_SIZE << MAX_ORDER)
-+				return count;
-+
-+			to_accept -= PAGE_SIZE << MAX_ORDER;
-+		}
-+	}
-+
-+	return count;
-+}
-+
-+static struct kobj_attribute accept_memory_attr = __ATTR_WO(accept_memory);
-+
-+static struct attribute *page_alloc_attr[] = {
-+	&accept_memory_attr.attr,
-+	NULL
-+};
-+
- #else
+ extern struct range pfn_mapped[];
+ extern int nr_pfn_mapped;
  
- static bool page_contains_unaccepted(struct page *page, unsigned int order)
-@@ -7366,3 +7405,28 @@ static bool __free_unaccepted(struct page *page)
- }
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index 41fbfc798100..89fc91c61560 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -7,6 +7,10 @@ struct boot_params;
  
- #endif /* CONFIG_UNACCEPTED_MEMORY */
-+
-+static const struct attribute_group page_alloc_attr_group = {
+ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
+ 
 +#ifdef CONFIG_UNACCEPTED_MEMORY
-+	.attrs = page_alloc_attr,
++
+ void accept_memory(phys_addr_t start, phys_addr_t end);
++bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end);
+ 
+ #endif
 +#endif
-+};
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index c80febc44cd2..b0ef1755e5c8 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -67,3 +67,5 @@ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
+ 
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_identity.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
 +
-+static int __init page_alloc_init_sysfs(void)
++obj-$(CONFIG_UNACCEPTED_MEMORY)	+= unaccepted_memory.o
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+new file mode 100644
+index 000000000000..1df918b21469
+--- /dev/null
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -0,0 +1,61 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/memblock.h>
++#include <linux/mm.h>
++#include <linux/pfn.h>
++#include <linux/spinlock.h>
++
++#include <asm/io.h>
++#include <asm/setup.h>
++#include <asm/unaccepted_memory.h>
++
++/* Protects unaccepted memory bitmap */
++static DEFINE_SPINLOCK(unaccepted_memory_lock);
++
++void accept_memory(phys_addr_t start, phys_addr_t end)
 +{
-+	struct kobject *page_alloc_kobj;
-+	int err;
++	unsigned long range_start, range_end;
++	unsigned long *bitmap;
++	unsigned long flags;
 +
-+	page_alloc_kobj = kobject_create_and_add("page_alloc", mm_kobj);
-+	if (!page_alloc_kobj)
-+		return -ENOMEM;
++	if (!boot_params.unaccepted_memory)
++		return;
 +
-+	err = sysfs_create_group(page_alloc_kobj, &page_alloc_attr_group);
-+	if (err) {
-+		kobject_put(page_alloc_kobj);
-+		return err;
++	bitmap = __va(boot_params.unaccepted_memory);
++	range_start = start / PMD_SIZE;
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	for_each_set_bitrange_from(range_start, range_end, bitmap,
++				   DIV_ROUND_UP(end, PMD_SIZE)) {
++		unsigned long len = range_end - range_start;
++
++		/* Platform-specific memory-acceptance call goes here */
++		panic("Cannot accept memory: unknown platform\n");
++		bitmap_clear(bitmap, range_start, len);
 +	}
-+
-+	return 0;
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
 +}
-+late_initcall(page_alloc_init_sysfs);
++
++bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
++{
++	unsigned long *bitmap;
++	unsigned long flags;
++	bool ret = false;
++
++	if (!boot_params.unaccepted_memory)
++		return 0;
++
++	bitmap = __va(boot_params.unaccepted_memory);
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	while (start < end) {
++		if (test_bit(start / PMD_SIZE, bitmap)) {
++			ret = true;
++			break;
++		}
++
++		start += PMD_SIZE;
++	}
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++
++	return ret;
++}
 -- 
 2.39.2
 
