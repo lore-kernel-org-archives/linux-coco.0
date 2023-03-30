@@ -1,580 +1,472 @@
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2050.outbound.protection.outlook.com [40.107.220.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4962A1FCA
-	for <linux-coco@lists.linux.dev>; Thu, 30 Mar 2023 11:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680177035; x=1711713035;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xeABudaJnL+acO+dda0KFPliSd+zujBisTvxupxsoaI=;
-  b=nkcpCsFWgLSn+iPyKzl8U0tiMqiNuQMLcZtwuefM/gclkNONFxagMFif
-   MSNjsKFwhuJU0JjLEjhpELpuvXGd4xvY14II7CLWyQPgq3pCjf46ejxj9
-   4VSSdAOEzisi1SJBTaPZ08EeW7dTpncFb+1sZNashgYAq+SKo15cdYe4+
-   J+3ksO7PKvnC7boExSbiEcpz7+monsjkmM5wQ/fWbnK9dbR5GVQynFjTp
-   /eE1I+GOmR585Lw75GqFqvU0BCI7c8Dd6h6nz19N88F2vVqbkOFQGlE07
-   A6gHVQXCoyFIkWZ6b+wYzbK4sbmzsIhraKuwRod+kgF//EaGpYHiZSBCQ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="342756814"
-X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="342756814"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10664"; a="634856512"
-X-IronPort-AV: E=Sophos;i="5.98,303,1673942400"; 
-   d="scan'208";a="634856512"
-Received: from ngreburx-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.209.91])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2023 04:50:18 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 7FDFF1095DF; Thu, 30 Mar 2023 14:50:00 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	marcelo.cerri@canonical.com,
-	tim.gardner@canonical.com,
-	khalid.elmously@canonical.com,
-	philip.cox@canonical.com,
-	aarcange@redhat.com,
-	peterx@redhat.com,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv9 14/14] x86/tdx: Add unaccepted memory support
-Date: Thu, 30 Mar 2023 14:49:56 +0300
-Message-Id: <20230330114956.20342-15-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
-References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892468C02
+	for <linux-coco@lists.linux.dev>; Thu, 30 Mar 2023 17:32:28 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NeiE03Xpdwou7drOQnStWeUVLYjxkIGD4ZvrbVtrsysmaL5OMPLGCu1cOgJx+vlKA58vAPISx1bGwxx0glYBewiBn+4PTPusPl7pAhRpIzsgrO02PNZwQlU2TxYbbPwOGYVMPMrg7soqVyBl+/TcMUQEBbFDTHzI9TuLlxwfElK9C+hRWHL8PD46GueFV3ua2GqJgK1JDiw67fR5vcvjkL4+UPHhrf1LwLtYe70NPL8OgPYT4o4Jq/3whudNLa9YJG76rFdt6eIK5HEF/223x/O6TU5075zrezUYGlAoRGsubvx8RylTNy4BuDkkwPsKIcFqlIrd2XSuMMa32qyuUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vAJ11c+extkywp1tgWjA0xpXyuJ4k9z85jyc2oU8eeg=;
+ b=crh+rjq33V7kD1FvQ75BRulZmvwSbGQHmJ+qyblChrRdN6XeaQZ0/0HXArumXYJhjMNeY57Bq77iYc8EGNl59QCQq0wW6tbI+Yir2tHJXssjmKC9PveZ729hHTFaCSssWIYKwuSVbGjRKxHevwroPdlnTrI1iipsKDoEarotS+gZAGCPadJO9XNCgXJa3lrO6qKa2fgjFo7QWkjUY47UfZZ2W/Lh3hiyrnstAP9g73TPOcTJ2BquZLf/ZbsaN1h5fqL25b1EGOK0KyGBfyXZrMggVRJKpyvIOmPy0Id2xIEjyO0rHENVFdLK/B5nmtqEjJdfBCzm/2DD0oSLA+MueA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vAJ11c+extkywp1tgWjA0xpXyuJ4k9z85jyc2oU8eeg=;
+ b=NuxjRXnsLVf+vL497sxjrFMDul/7ds/vvIZl7BUigqsdPpBRlAtz2ekvXIiRXjcu425C1yfFy+8CG7txMJ+PvUr0M1OewStlDDWh7+8VGSBl2YO6456GMekzaS1CkadefoBFhveODP6CUg7Vm49+u3WaePvOYdOpP1iUTHN1HsI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com (2603:10b6:208:396::17)
+ by DM4PR12MB5389.namprd12.prod.outlook.com (2603:10b6:5:39e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6222.35; Thu, 30 Mar
+ 2023 17:32:25 +0000
+Received: from BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::8511:7da:3d1e:4db0]) by BL1PR12MB5874.namprd12.prod.outlook.com
+ ([fe80::8511:7da:3d1e:4db0%6]) with mapi id 15.20.6222.035; Thu, 30 Mar 2023
+ 17:32:25 +0000
+Message-ID: <ebae6595-1904-a12e-d964-ec3da7217b49@amd.com>
+Date: Thu, 30 Mar 2023 12:32:20 -0500
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [PATCH] docs: security: Confidential computing intro and threat
+ model
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ardb@kernel.org, kraxel@redhat.com, dovmurik@linux.ibm.com,
+ elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+ Dhaval.Giani@amd.com, michael.day@amd.com, pavankumar.paluri@amd.com,
+ David.Kaplan@amd.com, Reshma.Lal@amd.com, Jeremy.Powell@amd.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com,
+ alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
+ tglx@linutronix.de, dgilbert@redhat.com, dinechin@redhat.com,
+ linux-coco@lists.linux.dev, berrange@redhat.com, mst@redhat.com,
+ tytso@mit.edu, jikos@kernel.org, joro@8bytes.org, leon@kernel.org,
+ richard.weinberger@gmail.com, lukas@wunner.de, jejb@linux.ibm.com,
+ cdupontd@redhat.com, jasowang@redhat.com, sameo@rivosinc.com, bp@alien8.de,
+ seanjc@google.com, security@kernel.org
+References: <20230327141816.2648615-1-carlos.bilbao@amd.com>
+ <ZCQVmIKXWXX2xvo-@kroah.com>
+From: Carlos Bilbao <carlos.bilbao@amd.com>
+In-Reply-To: <ZCQVmIKXWXX2xvo-@kroah.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR18CA0011.namprd18.prod.outlook.com
+ (2603:10b6:806:f3::19) To BL1PR12MB5874.namprd12.prod.outlook.com
+ (2603:10b6:208:396::17)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5874:EE_|DM4PR12MB5389:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f887e66-bd52-4e97-2695-08db3144b9fa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	2KmXgLqbPNW5fIwD6g27XKHUr1VCjJQDsmpr8BM2POggZsiJvopGXZOrhJV2xNM3DYfCo7YSJyuW7HhqScp1cxKSyItZC4mkbPeqrXL5Y7CZcg9KZ6O4AzUoVT2a9Cyjszuj+tHW1HX7qLr5QQ0c2wewBbJAPOqCOtFU/RyrSxc9MYbhj9dzHOVtPCjvWna/OVpDwqJZicfKBmIg5g4PMFo/P70dQQQRbZ9tNNIAxm8K8vBHrXIiO3woFeMnYmWqHP0ZIMnBEn+HztxBQ39vsQ2AbYxbUEZIhULuIAgypLLLk3sX4uc/5+R+SUv4CIhnUekaWWhqB6oHB7MpozBwRWjl8A07IZcyJW77vklXWohWqYw9HjsWIJvwq439p5g9srjVV4YCTGbno9PSwVr50KCX1rDlBjyE8OhtCZaplzq10nx1bdkpfka0O+aA6lYf7Ph73owQZnrvubKMmWhOAwKaaAFqQhuxBA4uf65h38czXSh7nYmMBV19lwHCQ7WBAEppYcSymd9DPrrLsXfrQ2L7x8v0/AN+IiAb+BFsGFJHwVkFo9BbC+4zwvQriowzNZMvtvGhlFJoDNAg4APe35O4pfWiLymekmy3OmhWeyk6JEd9MlzrjZlyH3p7l79XJJjE+7ExkSu9q6yV97qOsg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5874.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(366004)(346002)(39860400002)(136003)(376002)(451199021)(6666004)(66476007)(83380400001)(53546011)(966005)(38100700002)(186003)(6486002)(6512007)(2616005)(44832011)(30864003)(5660300002)(2906002)(8936002)(15650500001)(7406005)(7416002)(36756003)(478600001)(316002)(41300700001)(6506007)(31696002)(66946007)(8676002)(6916009)(86362001)(66556008)(4326008)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RzNRRkpoSzdmL0RPcC9rVmtGY2NlWmdhQ2pOekJJWWVKOWNrNy9vTDFSOWRJ?=
+ =?utf-8?B?UDJoMjNDbVBsRFpSb3QzdFR0WU9yanF4a1E1ckFxZ3hOWVVibm5WTFpncTdk?=
+ =?utf-8?B?MnVsNzJHVDdsZXdBVUs4dFQzQWJQbVpsdGh5VXREU0ZwOGlVOGpKeG9jRE03?=
+ =?utf-8?B?QXo3U2EwUjRSWGpncDRYR3kvUmFIY2ZKZ1JpQUpYMFhkVzdHaGFBcEN4Mi9j?=
+ =?utf-8?B?Ri9YL2dmQU9wSXZYSE9UMEJCV0M5dVF1YXJGb1h4T2VoQXB3UHk5eitEZFhp?=
+ =?utf-8?B?R1diaTRZeXFFMXRGTlJ0cFIzUDlMK0N3a0NVdDhYdWhVVnhFK01xKzVVeXhJ?=
+ =?utf-8?B?OWVoQ0tTcmJrZS8rdVNzT1Q2MG5DVW8ySmx0a05nUm9PVy85ZlY1QlZuQUxt?=
+ =?utf-8?B?cUxKYk43Nm9UMXgvZldtUHVSSWpCN3lhQ2xZTjdZWEZJSWdGTmpTcmp5RDF3?=
+ =?utf-8?B?QWpLQjlqNVR1MVFMN00xbDVGbUQ2TldrU0RIU0VhQlU3emdOUnBBSDh0RnJ6?=
+ =?utf-8?B?UXdmbWZEcTN6ZW1HZFFxMzVaQ01nTzl1ZHN3VERSV0pzRG1RM3lMeUI1cHp4?=
+ =?utf-8?B?dXFER3dzeklzZEZybTBvVUczdFNZTHdkajN1V2J6VnpaUWxDQ1Z4OVhjK3RO?=
+ =?utf-8?B?SkJpSUlsK1JlMDh6WkNlcmljSXhMS0VRdXdHMm5xaU80M2hFN2xNVzQvNnI0?=
+ =?utf-8?B?VkQwVzFGVHh2ZTZ4VWQvMzFPWHZYRTQ0d3VHRFJaSm1LVjFsU3NRejRXREdR?=
+ =?utf-8?B?S2ZENGlLbzlROTl2d0E2YUswbW5ROFNTM2tmeWlNRlkwenVDV0MvcDZyTTRk?=
+ =?utf-8?B?TjQvY0lqWUZGQUZaMXpXV21zQWp5aUg1SGptejdxSWVUbmZRblBFa0JxU09M?=
+ =?utf-8?B?cjBYdDRxdkpkdVRVYUxORWVBK2p5SjI3RDhxUzVmMlA2dzNnVWFlZmRxQm9y?=
+ =?utf-8?B?dVZpRFVkaEpmRXhEQXVzdE5aaDRXK3U5RlBFRnNnc0p3REFKV2hLMmZGczRO?=
+ =?utf-8?B?dzBwV0tmdW15NkJJc0tOZDNGNkNkajRmQndhL0s5UXlsd1I4dVdoRVBHdjdT?=
+ =?utf-8?B?WXJsZTVPNlhSb3hkSjM3blhLK1JVd1F3Tm1CUVZBdFFuV0FWM3V1V1loalg1?=
+ =?utf-8?B?b0puY3BRbDJQYkJLREJDUXRhVXcxMjd6NGJQYVlzNWNiOGh6TGVYTHRBYytL?=
+ =?utf-8?B?ZC9SQW82bXdpSWVvT1VHK1VwcDRIZ3RzVk1kbEt5OTRvUDZydVNyNGNsNFNo?=
+ =?utf-8?B?QkdHSXk1dENnQUtPRkwwZW1UNjNwMUpKckhoeFRWTjMrVis3VWxGZHo3WTJI?=
+ =?utf-8?B?akZPdGl5Vys1U0F0K1QyWEExTm9XRVRnYWlVRkZwTzdUL0krNDBYTEpmMDho?=
+ =?utf-8?B?bktRVE0wbjV2S2tLUGRmZ1laQzRIVXo0Vk5JRGEwaEsrU2RJMjYrcXFNcHJW?=
+ =?utf-8?B?bHlNWFcyN1U1amRzMUhuck5hSnF4bmRnZnJ1b2RwbVNhc0RrbVFwSDFpYzFE?=
+ =?utf-8?B?dnFCNEoxTDRENExLMlQ1Z2JoTk1qUGY3dFRzYmZDVDlpdExjanU5RTBoVUFo?=
+ =?utf-8?B?RHEyWWZWRGY2ZnVKTUJjNSs2aE9ZSjc1RExnUHMyNm1FdTJIRk1kYXBvV2ht?=
+ =?utf-8?B?K3pHTWFLY2E5UWZLRDRCdzJSbnVxQmFVb3JQNEhwZTM4VVhpdmdlUTJNdjZh?=
+ =?utf-8?B?SjdBUUZVV0puWU4yMmc3ejVmNWpXQ3U0ako0UTZuQ0l4TkVLN29ESE5DOUNW?=
+ =?utf-8?B?bHpEUkZxb24rcDBWYWEzZnBZa05JMlNPNEl5K3d4ME5nZ1hDWFNwcDdmZVdv?=
+ =?utf-8?B?ZEZaVFpLWWZKaVBFY21RTEZ5MDY1MG5yaTZvcy9GK1ExcFlha25adHkxallh?=
+ =?utf-8?B?b0dHcGZQYXkvVHlqZDVwL2ZFdzNuTjZmTEoyZkxseWpPOElQSkVzSDNpdS9C?=
+ =?utf-8?B?Q25PTzZsWTJHL2dkck9Oa2hhNnBDa3FxdnVxSU9RMUFaVmxJeFRXTkFXYjAr?=
+ =?utf-8?B?ZGRBVVZ1RXJscDlKb0M5TFZIVFhyVytjcHdESzF1cml1b2ZwYUdZUGkyODJk?=
+ =?utf-8?B?WlY0amNSRlR4eUNoQ0VNNFF5SU85akpvREYvUkZOejlXQ0FxRU14VE9xZHg0?=
+ =?utf-8?B?N3EyNVRZZzVVVmV6WklCT3dLbUlkQmhKNFV4VDVYbTRQMVhUempaSVNOc04y?=
+ =?utf-8?Q?JGO6FVUDsaJb/972qhVWOfSIy11ypASHUK+oVfX+U+Zt?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f887e66-bd52-4e97-2695-08db3144b9fa
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5874.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Mar 2023 17:32:25.3424
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AAx1ypWhCUasKE11roSLXbIdVpMekWS17f71kPqRisM1X6yoMydn1Xhsjsti+NCqihNzQLvXuA0xrqbbm9x+1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5389
 
-Hookup TDX-specific code to accept memory.
+Hello Greg,
 
-Accepting the memory is the same process as converting memory from
-shared to private: kernel notifies VMM with MAP_GPA hypercall and then
-accept pages with ACCEPT_PAGE module call.
+On 3/29/23 5:40 AM, Greg KH wrote:
+> On Mon, Mar 27, 2023 at 09:18:16AM -0500, Carlos Bilbao wrote:
+>> Kernel developers working on confidential computing operate under a set of
+>> assumptions regarding the Linux kernel threat model that differ from the
+>> traditional view. In order to effectively engage with the linux-coco
+>> mailing list and contribute to ongoing kernel efforts, one must have a
+>> thorough familiarity with these concepts. Add a concise,
+>> architecture-agnostic introduction and threat model to provide a reference
+>> for ongoing design discussions and to help developers gain a foundational
+>> understanding of the subject.
+> 
+> Thanks for putting this together.  Some questions below:
 
-The implementation in core kernel uses tdx_enc_status_changed(). It
-already used for converting memory to shared and back for I/O
-transactions.
+Thanks for looking into this!
 
-Boot stub provides own implementation of tdx_accept_memory(). It is
-similar in structure to tdx_enc_status_changed(), but only cares about
-converting memory to private.
+> 
+>> +The basic CoCo layout includes the host, guest, the interfaces that
+>> +communicate guest and host, a platform capable of supporting CoCo, and an
+>> +intermediary between the guest virtual machine (VM) and the underlying
+>> +platform that acts as security manager::
+>> +
+>> +    +-------------------+      +-----------------------+
+>> +    | CoCo guest VM     |<---->|                       |
+>> +    +-------------------+      |                       |
+>> +      | Interfaces |           | CoCo security manager |
+>> +    +-------------------+      |                       |
+>> +    | Host VMM          |<---->|                       |
+>> +    +-------------------+      |                       |
+>> +                               |                       |
+>> +    +--------------------+     |                       |
+>> +    | CoCo platform      |<--->|                       |
+>> +    +--------------------+     +-----------------------+
+> 
+> I do not understand, what are the "<--->" lines representing?  Function
+> calls?  APIs?  something else?
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/Kconfig                      |  2 +
- arch/x86/boot/compressed/Makefile     |  2 +-
- arch/x86/boot/compressed/error.c      | 19 ++++++
- arch/x86/boot/compressed/error.h      |  1 +
- arch/x86/boot/compressed/mem.c        | 33 +++++++++-
- arch/x86/boot/compressed/tdx-shared.c |  2 +
- arch/x86/boot/compressed/tdx.c        | 39 +++++++++++
- arch/x86/coco/tdx/Makefile            |  2 +-
- arch/x86/coco/tdx/tdx-shared.c        | 95 +++++++++++++++++++++++++++
- arch/x86/coco/tdx/tdx.c               | 86 +-----------------------
- arch/x86/include/asm/shared/tdx.h     |  2 +
- arch/x86/include/asm/tdx.h            |  2 +
- arch/x86/mm/unaccepted_memory.c       |  9 ++-
- 13 files changed, 206 insertions(+), 88 deletions(-)
- create mode 100644 arch/x86/boot/compressed/tdx-shared.c
- create mode 100644 arch/x86/coco/tdx/tdx-shared.c
+The "<--->" lines in the diagram represent bidirectional communication
+channels or interfaces between the CoCo security manager and the rest of
+the components (guest, host, hardware). It's a graphical way to represent
+data flow that I think will help some people.
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index df21fba77db1..448cd869f0bd 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -884,9 +884,11 @@ config INTEL_TDX_GUEST
- 	bool "Intel TDX (Trust Domain Extensions) - Guest Support"
- 	depends on X86_64 && CPU_SUP_INTEL
- 	depends on X86_X2APIC
-+	depends on EFI_STUB
- 	select ARCH_HAS_CC_PLATFORM
- 	select X86_MEM_ENCRYPT
- 	select X86_MCE
-+	select UNACCEPTED_MEMORY
- 	help
- 	  Support running as a guest under Intel TDX.  Without this support,
- 	  the guest kernel can not boot or run under TDX.
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 74f7adee46ad..71d9f71c13eb 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -106,7 +106,7 @@ ifdef CONFIG_X86_64
- endif
- 
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
--vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
-+vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdx-shared.o $(obj)/tdcall.o
- vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
- 
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
-diff --git a/arch/x86/boot/compressed/error.c b/arch/x86/boot/compressed/error.c
-index c881878e56d3..5313c5cb2b80 100644
---- a/arch/x86/boot/compressed/error.c
-+++ b/arch/x86/boot/compressed/error.c
-@@ -22,3 +22,22 @@ void error(char *m)
- 	while (1)
- 		asm("hlt");
- }
-+
-+/* EFI libstub  provides vsnprintf() */
-+#ifdef CONFIG_EFI_STUB
-+void panic(const char *fmt, ...)
-+{
-+	static char buf[1024];
-+	va_list args;
-+	int len;
-+
-+	va_start(args, fmt);
-+	len = vsnprintf(buf, sizeof(buf), fmt, args);
-+	va_end(args);
-+
-+	if (len && buf[len - 1] == '\n')
-+		buf[len - 1] = '\0';
-+
-+	error(buf);
-+}
-+#endif
-diff --git a/arch/x86/boot/compressed/error.h b/arch/x86/boot/compressed/error.h
-index 1de5821184f1..86fe33b93715 100644
---- a/arch/x86/boot/compressed/error.h
-+++ b/arch/x86/boot/compressed/error.h
-@@ -6,5 +6,6 @@
- 
- void warn(char *m);
- void error(char *m) __noreturn;
-+void panic(const char *fmt, ...) __noreturn __cold;
- 
- #endif /* BOOT_COMPRESSED_ERROR_H */
-diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index de858a5180b6..e6b92e822ddd 100644
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -5,6 +5,8 @@
- #include "error.h"
- #include "find.h"
- #include "math.h"
-+#include "tdx.h"
-+#include <asm/shared/tdx.h>
- 
- #define PMD_SHIFT	21
- #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
-@@ -12,10 +14,39 @@
- 
- extern struct boot_params *boot_params;
- 
-+/*
-+ * accept_memory() and process_unaccepted_memory() called from EFI stub which
-+ * runs before decompresser and its early_tdx_detect().
-+ *
-+ * Enumerate TDX directly from the early users.
-+ */
-+static bool early_is_tdx_guest(void)
-+{
-+	static bool once;
-+	static bool is_tdx;
-+
-+	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
-+		return false;
-+
-+	if (!once) {
-+		u32 eax, sig[3];
-+
-+		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
-+			    &sig[0], &sig[2],  &sig[1]);
-+		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
-+		once = true;
-+	}
-+
-+	return is_tdx;
-+}
-+
- static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
- {
- 	/* Platform-specific memory-acceptance call goes here */
--	error("Cannot accept memory");
-+	if (early_is_tdx_guest())
-+		tdx_accept_memory(start, end);
-+	else
-+		error("Cannot accept memory: unknown platform\n");
- }
- 
- /*
-diff --git a/arch/x86/boot/compressed/tdx-shared.c b/arch/x86/boot/compressed/tdx-shared.c
-new file mode 100644
-index 000000000000..5ac43762fe13
---- /dev/null
-+++ b/arch/x86/boot/compressed/tdx-shared.c
-@@ -0,0 +1,2 @@
-+#include "error.h"
-+#include "../../coco/tdx/tdx-shared.c"
-diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-index 918a7606f53c..de1d4a87418d 100644
---- a/arch/x86/boot/compressed/tdx.c
-+++ b/arch/x86/boot/compressed/tdx.c
-@@ -3,12 +3,17 @@
- #include "../cpuflags.h"
- #include "../string.h"
- #include "../io.h"
-+#include "align.h"
- #include "error.h"
-+#include "pgtable_types.h"
- 
- #include <vdso/limits.h>
- #include <uapi/asm/vmx.h>
- 
- #include <asm/shared/tdx.h>
-+#include <asm/page_types.h>
-+
-+static u64 cc_mask;
- 
- /* Called from __tdx_hypercall() for unrecoverable failure */
- void __tdx_hypercall_failed(void)
-@@ -16,6 +21,38 @@ void __tdx_hypercall_failed(void)
- 	error("TDVMCALL failed. TDX module bug?");
- }
- 
-+static u64 get_cc_mask(void)
-+{
-+	struct tdx_module_output out;
-+	unsigned int gpa_width;
-+
-+	/*
-+	 * TDINFO TDX module call is used to get the TD execution environment
-+	 * information like GPA width, number of available vcpus, debug mode
-+	 * information, etc. More details about the ABI can be found in TDX
-+	 * Guest-Host-Communication Interface (GHCI), section 2.4.2 TDCALL
-+	 * [TDG.VP.INFO].
-+	 *
-+	 * The GPA width that comes out of this call is critical. TDX guests
-+	 * can not meaningfully run without it.
-+	 */
-+	if (__tdx_module_call(TDX_GET_INFO, 0, 0, 0, 0, &out))
-+		error("TDCALL GET_INFO failed (Buggy TDX module!)\n");
-+
-+	gpa_width = out.rcx & GENMASK(5, 0);
-+
-+	/*
-+	 * The highest bit of a guest physical address is the "sharing" bit.
-+	 * Set it for shared pages and clear it for private pages.
-+	 */
-+	return BIT_ULL(gpa_width - 1);
-+}
-+
-+u64 cc_mkdec(u64 val)
-+{
-+	return val & ~cc_mask;
-+}
-+
- static inline unsigned int tdx_io_in(int size, u16 port)
- {
- 	struct tdx_hypercall_args args = {
-@@ -70,6 +107,8 @@ void early_tdx_detect(void)
- 	if (memcmp(TDX_IDENT, sig, sizeof(sig)))
- 		return;
- 
-+	cc_mask = get_cc_mask();
-+
- 	/* Use hypercalls instead of I/O instructions */
- 	pio_ops.f_inb  = tdx_inb;
- 	pio_ops.f_outb = tdx_outb;
-diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
-index 46c55998557d..2c7dcbf1458b 100644
---- a/arch/x86/coco/tdx/Makefile
-+++ b/arch/x86/coco/tdx/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-y += tdx.o tdcall.o
-+obj-y += tdx.o tdx-shared.o tdcall.o
-diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
-new file mode 100644
-index 000000000000..ee74f7bbe806
---- /dev/null
-+++ b/arch/x86/coco/tdx/tdx-shared.c
-@@ -0,0 +1,95 @@
-+#include <asm/tdx.h>
-+#include <asm/pgtable.h>
-+
-+static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
-+				    enum pg_level pg_level)
-+{
-+	unsigned long accept_size = page_level_size(pg_level);
-+	u64 tdcall_rcx;
-+	u8 page_size;
-+
-+	if (!IS_ALIGNED(start, accept_size))
-+		return 0;
-+
-+	if (len < accept_size)
-+		return 0;
-+
-+	/*
-+	 * Pass the page physical address to the TDX module to accept the
-+	 * pending, private page.
-+	 *
-+	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
-+	 */
-+	switch (pg_level) {
-+	case PG_LEVEL_4K:
-+		page_size = 0;
-+		break;
-+	case PG_LEVEL_2M:
-+		page_size = 1;
-+		break;
-+	case PG_LEVEL_1G:
-+		page_size = 2;
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	tdcall_rcx = start | page_size;
-+	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
-+		return 0;
-+
-+	return accept_size;
-+}
-+
-+bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc)
-+{
-+	if (!enc) {
-+		/* Set the shared (decrypted) bits: */
-+		start |= cc_mkdec(0);
-+		end   |= cc_mkdec(0);
-+	}
-+
-+	/*
-+	 * Notify the VMM about page mapping conversion. More info about ABI
-+	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
-+	 * section "TDG.VP.VMCALL<MapGPA>"
-+	 */
-+	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
-+		return false;
-+
-+	/* private->shared conversion  requires only MapGPA call */
-+	if (!enc)
-+		return true;
-+
-+	/*
-+	 * For shared->private conversion, accept the page using
-+	 * TDX_ACCEPT_PAGE TDX module call.
-+	 */
-+	while (start < end) {
-+		unsigned long len = end - start;
-+		unsigned long accept_size;
-+
-+		/*
-+		 * Try larger accepts first. It gives chance to VMM to keep
-+		 * 1G/2M Secure EPT entries where possible and speeds up
-+		 * process by cutting number of hypercalls (if successful).
-+		 */
-+
-+		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
-+		if (!accept_size)
-+			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
-+		if (!accept_size)
-+			return false;
-+		start += accept_size;
-+	}
-+
-+	return true;
-+}
-+
-+void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
-+{
-+	if (!tdx_enc_status_changed_phys(start, end, true))
-+		panic("Accepting memory failed: %#llx-%#llx\n",  start, end);
-+}
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 9e6557d7514c..1392ebc3b406 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -713,46 +713,6 @@ static bool tdx_cache_flush_required(void)
- 	return true;
- }
- 
--static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
--				    enum pg_level pg_level)
--{
--	unsigned long accept_size = page_level_size(pg_level);
--	u64 tdcall_rcx;
--	u8 page_size;
--
--	if (!IS_ALIGNED(start, accept_size))
--		return 0;
--
--	if (len < accept_size)
--		return 0;
--
--	/*
--	 * Pass the page physical address to the TDX module to accept the
--	 * pending, private page.
--	 *
--	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
--	 */
--	switch (pg_level) {
--	case PG_LEVEL_4K:
--		page_size = 0;
--		break;
--	case PG_LEVEL_2M:
--		page_size = 1;
--		break;
--	case PG_LEVEL_1G:
--		page_size = 2;
--		break;
--	default:
--		return 0;
--	}
--
--	tdcall_rcx = start | page_size;
--	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
--		return 0;
--
--	return accept_size;
--}
--
- /*
-  * Inform the VMM of the guest's intent for this physical page: shared with
-  * the VMM or private to the guest.  The VMM is expected to change its mapping
-@@ -761,51 +721,9 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
- static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- {
- 	phys_addr_t start = __pa(vaddr);
--	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
--
--	if (!enc) {
--		/* Set the shared (decrypted) bits: */
--		start |= cc_mkdec(0);
--		end   |= cc_mkdec(0);
--	}
--
--	/*
--	 * Notify the VMM about page mapping conversion. More info about ABI
--	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
--	 * section "TDG.VP.VMCALL<MapGPA>"
--	 */
--	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
--		return false;
--
--	/* private->shared conversion  requires only MapGPA call */
--	if (!enc)
--		return true;
-+	phys_addr_t end = __pa(vaddr + numpages * PAGE_SIZE);
- 
--	/*
--	 * For shared->private conversion, accept the page using
--	 * TDX_ACCEPT_PAGE TDX module call.
--	 */
--	while (start < end) {
--		unsigned long len = end - start;
--		unsigned long accept_size;
--
--		/*
--		 * Try larger accepts first. It gives chance to VMM to keep
--		 * 1G/2M Secure EPT entries where possible and speeds up
--		 * process by cutting number of hypercalls (if successful).
--		 */
--
--		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
--		if (!accept_size)
--			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
--		if (!accept_size)
--			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
--		if (!accept_size)
--			return false;
--		start += accept_size;
--	}
--
--	return true;
-+	return tdx_enc_status_changed_phys(start, end, enc);
- }
- 
- void __init tdx_early_init(void)
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 562b3f4cbde8..3afbba545a0d 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -92,5 +92,7 @@ struct tdx_module_output {
- u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
- 		      struct tdx_module_output *out);
- 
-+void tdx_accept_memory(phys_addr_t start, phys_addr_t end);
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* _ASM_X86_SHARED_TDX_H */
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 234197ec17e4..3a7340ad9a4b 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -50,6 +50,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
- 
- int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
- 
-+bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc);
-+
- #else
- 
- static inline void tdx_early_init(void) { };
-diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index a0a58486eb74..a521f8c0987d 100644
---- a/arch/x86/mm/unaccepted_memory.c
-+++ b/arch/x86/mm/unaccepted_memory.c
-@@ -6,6 +6,7 @@
- 
- #include <asm/io.h>
- #include <asm/setup.h>
-+#include <asm/shared/tdx.h>
- #include <asm/unaccepted_memory.h>
- 
- /* Protects unaccepted memory bitmap */
-@@ -61,7 +62,13 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 		unsigned long len = range_end - range_start;
- 
- 		/* Platform-specific memory-acceptance call goes here */
--		panic("Cannot accept memory: unknown platform\n");
-+		if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
-+			tdx_accept_memory(range_start * PMD_SIZE,
-+					  range_end * PMD_SIZE);
-+		} else {
-+			panic("Cannot accept memory: unknown platform\n");
-+		}
-+
- 		bitmap_clear(bitmap, range_start, len);
- 	}
- 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
--- 
-2.39.2
+> 
+>> +The specific details of the CoCo intermediary vastly diverge between
+>> +technologies, so much so that in some cases it will be HW and in others
+>> +SW.
+>> +
+>> +Existing Linux kernel threat model
+>> +==================================
+>> +
+>> +The components of the current Linux kernel threat model are::
+>> +
+>> +     +-----------------------+      +-------------------+
+>> +     |                       |<---->| Userspace         |
+>> +     |                       |      +-------------------+
+>> +     |   External attack     |         | Interfaces |
+>> +     |       vectors         |      +-------------------+
+>> +     |                       |<---->| Linux Kernel      |
+>> +     |                       |      +-------------------+
+>> +     +-----------------------+      +-------------------+
+>> +                                    | Bootloader/BIOS   |
+>> +                                    +-------------------+
+>> +                                    +-------------------+
+>> +                                    | HW platform       |
+>> +                                    +-------------------+
+> 
+> Again, what do the "<---->" lines mean?  there's no talking betwen the
+> bootloader and the kernel?  What about the kernel talking to the HW
+> without the BIOS (as is most of the time)?  What is "Interfaces"?
 
+The "<---->" arrows here also represent the direction of data flow, in
+this case between external attackers and userspace or kernel.
+
+Yes, there is communication between the bootloader and the kernel during
+the boot process, but this diagram does not represent it explicitly. 
+
+The "Interfaces" box represents the various interfaces that allow
+communication between kernel and userspace. This includes system calls,
+kernel APIs, device drivers, etc.
+
+> 
+> And "external attack vectors" is odd, how can they get to the kernel
+> without going through userspace?
+> 
+
+It is true that in most cases external attackers will try to exploit
+vulnerabilities in userspace first, but it is possible for an attacker to
+directly target the kernel, particularly if the host has physical access.
+Examples of direct kernel attacks include the vulnerabilities
+CVE-2019-19524, CVE-2022-0435 [1] and CVE-2020-24490 [2].
+
+Anyway, the main point we aimed to convey is that the kernel is
+vulnerable to external attack vectors, whether they are direct attacks or
+rely on userspace privilege escalation. In either case, the security of the
+kernel can be compromised and this must be considered in the threat model.
+
+>> +The existing Linux kernel threat model typically assumes execution on a
+>> +trusted HW platform with all of the firmware and bootloaders included on
+>> +its TCB. The primary attacker resides in the userspace and all of the data
+>> +coming from there is generally considered untrusted, unless userspace is
+>> +privileged enough to perform trusted actions. In addition, external
+>> +attackers are typically considered, including those with access to enabled
+>> +external networks (e.g. Ethernet, Wireless, Bluetooth), exposed hardware
+>> +interfaces (e.g. USB, Thunderbolt), and the ability to modify the contents
+>> +of disks offline.
+> 
+> I can not parse that last sentance well, sorry.  What is in addition?
+> What are you trying to say, some hardware the kernel trusts and some it
+> doesn't?  Note there are different "levels" of trust for hardware as
+> well (i.e. we attempt to accept any USB configuration header and treat
+> that as untrusted but the USB data path we totally trust.)
+
+Yes, this relates to my answer above; "In addition" is used to introduce
+something beyond the primary attacker residing in userspace. This extra
+stuff emerges in CoCo because the machine owner has access to
+components like external networks, exposed hardware interfaces (such as USB
+and Thunderbolt), and the disk itself. 
+
+The paragraph does not explicitly state that the kernel trusts some
+hardware and not others. But yes, that happens in CoCo. For example, AMD
+has the AMD Secure Processor (ASP), which is part of the TCB of the AMD
+Secure Encrypted Virtualization (SEV) tech. In addition, the kernel may
+trust some hardware if certain configuration is enforced.
+
+> 
+>> +Confidential Computing threat model and security objectives
+>> +===========================================================
+>> +
+>> +Confidential Cloud Computing adds a new type of attacker to the above list:
+>> +an untrusted and potentially malicious host. This can be viewed as a more
+>> +powerful type of external attacker, as it resides locally on the same
+>> +physical machine, in contrast to a remote network attacker, and has control
+>> +over the guest kernel communication with most of the HW::
+>> +
+>> +                                 +------------------------+
+>> +                                 |    CoCo guest VM       |
+>> +   +-----------------------+     |  +-------------------+ |
+>> +   |                       |<--->|  | Userspace         | |
+>> +   |                       |     |  +-------------------+ |
+>> +   |   External attack     |     |     | Interfaces |     |
+>> +   |       vectors         |     |  +-------------------+ |
+>> +   |                       |<--->|  | Linux Kernel      | |
+>> +   |                       |     |  +-------------------+ |
+>> +   +-----------------------+     |  +-------------------+ |
+>> +                                 |  | Bootloader/BIOS   | |
+>> +   +-----------------------+     |  +-------------------+ |
+>> +   |                       |<--->+------------------------+
+>> +   |                       |          | Interfaces |
+>> +   |                       |     +------------------------+
+>> +   |     CoCo security     |<--->|   Host VMM             |
+>> +   |      manager          |     +------------------------+
+>> +   |                       |     +------------------------+
+>> +   |                       |<--->|   CoCo platform        |
+>> +   +-----------------------+     +------------------------+
+> 
+> Again, I don't undertand the layers or <---> here, sorry.
+
+Ditto, data flow/interaction.
+
+> 
+>> +While the traditional hypervisor has unlimited access to guest data and
+>> +can leverage this access to attack the guest, the CoCo systems mitigate
+>> +such attacks by adding security features like guest data confidentiality
+>> +and integrity protection. This threat model assumes that those features
+>> +are available and intact.
+>> +
+>> +The **Linux kernel CoCo security objectives** can be summarized as follows:
+>> +
+>> +1. Preserve the confidentiality and integrity of CoCo guest private memory.
+> 
+> Confidentiality from/to what?  Itself?  Someone else?  Userspace?
+
+Confidentiality from everyone that is not explicitly authorized by the
+guest. Not itself; the guest can access its own contents.
+
+> 
+>> +2. Prevent privileged escalation from a host into a CoCo guest Linux kernel.
+> 
+> But a host has to have privileges in order to create/destroy/sleep the
+> guest, right?
+
+While it is true that the host system requires some level of privilege to
+create, destroy, or pause the guest, part of the goal of preventing
+privileged escalation is to ensure that these operations do not provide a
+pathway for attackers to gain access to the guest's kernel. 
+
+BTW, abusing KVM's ability to perform these operations to somehow gain
+access to the guest would be another example of an attack vector that does
+not go through userspace.
+
+> 
+>> +
+>> +The above security objectives result in two primary **Linux kernel CoCo
+>> +assets**:
+>> +
+>> +1. Guest kernel execution context.
+>> +2. Guest kernel private memory.
+>> +
+>> +The host retains full control over the CoCo guest resources and can deny
+>> +access to them at any time. Because of this, the host Denial of Service
+>> +(DoS) attacks against CoCo guests are beyond the scope of this threat
+>> +model.
+> 
+> So all resources provided by the host to the guest are trusted?  Or are
+> not trusted?  Confused...
+
+I think I should clarify here that by 'resources' we meant things like
+CPU time, memory that the guest can consume, network bandwidth, etc. So
+the notion of "trust" is not applicable here. In this case, we would talk
+about availability, which is not a CoCo guarantee.
+
+> 
+>> +The **Linux CoCo attack surface** is any interface exposed from a CoCo
+>> +guest Linux kernel towards an untrusted host that is not covered by the
+>> +CoCo technology SW/HW protections.
+> 
+> "not covered by" is an odd way to say "we trust lots of things, but not
+> all", right?  If not, I don't understand again.
+
+We trust anything that the host is not able to manipulate (e.g., dedicated
+CoCo HW) and the rest (e.g., bootloader config) we validate and/or protect
+from.
+
+> 
+>> This includes any possible
+>> +side-channels, as well as transient execution side channels. Examples of
+>> +explicit (not side-channel) interfaces include accesses to port I/O, MMIO
+>> +and DMA interfaces, access to PCI configuration space, VMM-specific
+>> +hypercalls, access to shared memory pages, interrupts allowed to be
+>> +injected to the guest kernel by the host, as well as CoCo technology
+>> +specific hypercalls.
+> 
+> So all of those things are trusted?  Or are not trusted?  Again, I'm
+> confused.  And who is trusting, or not trusting them?  The host?  The
+> guest?
+
+Same answer. It's worth noting that it's not that the guest does not
+"trust" ACPI tables, it's that the guest does not trust the host that
+provides them. Depending on the interface, different actions are taken,
+and that's where the mitigation matrix comes into play. 
+
+> 
+>> Additionally, the host in a CoCo system typically
+>> +controls the process of creating a CoCo guest: it has a method to load
+>> +into a guest the firmware and bootloader images, the kernel image
+>> +together with the kernel command line. All of this data should also be
+>> +considered untrusted until its integrity and authenticity is established.
+> 
+> Who does the authentication?  The host?  The guest?  Through what
+> channel?
+> 
+
+The authentication is carried out by the CoCo security manager, which is
+the intermediary between the guest and the underlying platform, in
+cooperation with some external third party. The security manager is in
+charge of verifying the integrity and authenticity of all this (firmware,
+bootloader, kernel, and other data loaded into the guest) before the
+normal execution of the guest. The verification is usually based on digital
+signatures or other forms of cryptographic authentication. The specific
+details on how this will happen in the kernel are still an ongoing
+discussion, AFAIK.
+
+>> +The table below shows a threat matrix for the CoCo guest Linux kernel with
+>> +the potential mitigation strategies. The matrix refers to CoCo-specific
+>> +versions of the guest, host and platform.
+>> +
+>> +.. list-table:: CoCo Linux guest kernel threat matrix
+>> +   :widths: auto
+>> +   :align: center
+>> +   :header-rows: 1
+>> +
+>> +   * - Threat name
+>> +     - Threat description
+>> +     - Mitigation strategy
+>> +
+>> +   * - Guest malicious configuration
+>> +     - A malicious host modifies one of the following guest's
+>> +       configuration:
+>> +
+>> +       1. Guest firmware or bootloader
+>> +
+>> +       2. Guest kernel or module binaries
+>> +
+>> +       3. Guest command line parameters
+>> +
+>> +       This allows the host to break the integrity of the code running
+>> +       inside a CoCo guest and violate the CoCo security objectives.
+> 
+> So hosts are not allowed to change this?  I don't understand the use of
+> "violate" here, sorry.
+
+The host is capable of altering the configurations of these components.
+Attestation can help identify these attacks.
+
+> 
+>> +     - The integrity of the guest's configuration passed via untrusted host
+>> +       must be ensured by methods such as remote attestation and signing.
+>> +       This should be largely transparent to the guest kernel and would
+>> +       allow it to assume a trusted state at the time of boot.
+> 
+> How can it be transparent if the guest has to do this?  If the guest
+> isn't doing it, who is?  Can configuration be changed while the guest is
+> running?
+
+See prior answer.
+
+> 
+>> +
+>> +   * - CoCo guest data attacks
+>> +     - A malicious host retains full control of the CoCo guest's data
+>> +       in-transit between the guest and the host-managed physical or
+>> +       virtual devices. This allows any attack against confidentiality,
+>> +       integrity or freshness of such data.
+>> +     - The CoCo guest is responsible for ensuring the confidentiality,
+>> +       integrity and freshness of such data using well-established
+>> +       security mechanisms. For example, for any guest external network
+>> +       communications that are passed via the untrusted host, an end-to-end
+>> +       secure session must be established between a guest and a trusted
+>> +       remote endpoint using well-known protocols such as TLS.
+>> +       This requirement also applies to protection of the guest's disk
+>> +       image.
+> 
+> So you trust all I/O into the guest by virtue of it having to be
+> encrypted/protected somehow at the data layer?  So the guest kernel
+> doesn't have to worry about the data contents it is receiving any more
+> than it does today?
+
+Right, if there are proper secured control structures for the communication
+channels, then the payload should be fine.
+
+> 
+> I'm stopping here, sorry...
+
+Hopefully I was able to provide some clarity.
+
+> 
+> greg k-h
+> 
+
+Thanks,
+Carlos
+
+[1] https://www.appgate.com/blog/a-remote-stack-overflow-in-the-linux-kernel
+[2] https://google.github.io/security-research/pocs/linux/bleedingtooth/writeup.html
