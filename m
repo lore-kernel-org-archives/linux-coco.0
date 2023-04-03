@@ -1,167 +1,166 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8086FAA
-	for <linux-coco@lists.linux.dev>; Mon,  3 Apr 2023 14:43:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680532993;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/eYb2XMUpR9VXDleQG1dvUeP259a87ERPUWeMJE/H5g=;
-	b=Elevh4Zd3aW7+wpa9VK2FHEI4B1i1v4uVsKQt7PwTv6OJy7yI1x2xZNv8AdRoqhH23ZUfF
-	T5cW4lhrpW7cj//V7iNAoLB7qpzuVT8yIbRq72P3OT4yxmMFm9jMGyTbASAzMS2y/OqQKl
-	j6B9l6Il6kwO2aKB41ZI5heMDF+lc+g=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-569-G0xia00kOr6Bgf26oaqpGg-1; Mon, 03 Apr 2023 10:43:12 -0400
-X-MC-Unique: G0xia00kOr6Bgf26oaqpGg-1
-Received: by mail-wm1-f69.google.com with SMTP id iv18-20020a05600c549200b003ee21220fccso14667487wmb.1
-        for <linux-coco@lists.linux.dev>; Mon, 03 Apr 2023 07:43:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680532991;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/eYb2XMUpR9VXDleQG1dvUeP259a87ERPUWeMJE/H5g=;
-        b=arfDGfvUI8HFQtE0qatwbLhJDPTy+ob6unyn+v4yKwolZ6h9fWtNm0+sXYrkh2W82h
-         v493jwbe1CT7979pR0V35Ow+uQN04L2cBkrTcs6+FZ6TSMsr4fsY84egrOtYItuALet6
-         i0e6mM9Y8KQEgrVDTI49RItDzSynekisK5gNq+nUKl5OXmKzrHJhkcQQTeWAjVmlFTn3
-         flERZm6Q7JJWYIyOAP07rYxGGj1HzjqzXQa13RCWQ0xnoMfC8w6Ug4DO+xmpJWAucrAh
-         67hU5+Av3VU3M2h+2Xj190wcmDtex1bEBW4EBwCJbySGWtt3wSDiCGXRLwL397sZubEa
-         tlxA==
-X-Gm-Message-State: AAQBX9dK0h/+ehAf36O3+cU9CEKUNDYv7mp5BqrKLg7Eo9useL7mqpUh
-	3AtX9XKtlqXB6a372YO66UC6/OkTMgqvPEclAu1pRINIu1x9J6XyH6xEieeF1lm/qeaIgASIXbd
-	CkMF0fB4QLFxVkV03yjBVVw==
-X-Received: by 2002:adf:fb0d:0:b0:2e5:17a4:7d65 with SMTP id c13-20020adffb0d000000b002e517a47d65mr9853002wrr.39.1680532991156;
-        Mon, 03 Apr 2023 07:43:11 -0700 (PDT)
-X-Google-Smtp-Source: AKy350Y08+lpc/XjAnUg5I1OrKi5tNhWj0ZeUnj6X2UCuKEr2raMcQhFTlwQjTgwu1vHm8iFtim9pA==
-X-Received: by 2002:adf:fb0d:0:b0:2e5:17a4:7d65 with SMTP id c13-20020adffb0d000000b002e517a47d65mr9852963wrr.39.1680532990772;
-        Mon, 03 Apr 2023 07:43:10 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c702:5e00:8e78:71f3:6243:77f0? (p200300cbc7025e008e7871f3624377f0.dip0.t-ipconnect.de. [2003:cb:c702:5e00:8e78:71f3:6243:77f0])
-        by smtp.gmail.com with ESMTPSA id i17-20020a5d5591000000b002eaac3a9beesm169318wrv.8.2023.04.03.07.43.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Apr 2023 07:43:10 -0700 (PDT)
-Message-ID: <053a9ccd-4205-7a76-70c3-c256bd995a1f@redhat.com>
-Date: Mon, 3 Apr 2023 16:43:08 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F4C6FA1
+	for <linux-coco@lists.linux.dev>; Mon,  3 Apr 2023 14:47:09 +0000 (UTC)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.west.internal (Postfix) with ESMTP id 433DE320098C;
+	Mon,  3 Apr 2023 10:47:06 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 03 Apr 2023 10:47:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to; s=fm1; t=1680533225; x=
+	1680619625; bh=oqA0VHWBGbzdDXhXtmsL6Q39VlRQlEDa8qmRtydlcIU=; b=C
+	JfPIRcTDs1kJ7uvJSt2/SC/gZ0s850Etkzy+yVS2pfYpPQSe4KLXh+cJ84UD79uM
+	aidEngC7vydhEz1Hr2f1ZscjLnk+/Hh+N7LfBjfBV6oEenxEWi+xxLTWvyi/nx6o
+	KZOaM/T9wBaMXjDZ3fkuSURI3kFbbBLWl9Hvy1a9HCXfKsbFifcZVNpOixtCzsRn
+	ROxo2xpwYSgqVKOPVJnJRmKTJG+is3IdH4YDb7IvUD7EwIbsoCDnUHGu9sdqMCs3
+	m4aDvaENE/KrceJdicbM90VxOhBz7H1xkYv3p1qd7eOsFtLSChCaQ856gRVV+vrl
+	Ou+/Gpqjm3bSf4YwITdXA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm2; t=1680533225; x=1680619625; bh=oqA0VHWBGbzdD
+	XhXtmsL6Q39VlRQlEDa8qmRtydlcIU=; b=NdC2tkDIF2Qhtp04LAGWOXraeGqkd
+	982Y+yLEmxsFtcAqCDimsb+ePj1+DytzJB2hnGUZrzVkc/g8Z8Fi1GCrHGLgfWI4
+	QBsaLkkQRZudXq6LE6F9lnIVTkGiPE4A/nb8ig8q8QeDrqrebU6oBbERzt5e8ITl
+	0vB2kvE3DpiaNiUCdd66271rOTkHfuHO9OTbF0V6IftqC7XoOK+JbDbpE90mL/PS
+	WwQxWJyvvENm21f2G+Yr/Juv5rsXj3DcBayYqFwbmVVzYcQiEOeX7DpXAA9wrFr4
+	cUvdHcQfYUNo6WjW17vojot3bC/Ii5NqALXIlFvZm+sgqiLDCWOYKMUOw==
+X-ME-Sender: <xms:6eYqZAWuUJFFeT4Els4rkEvl3rE9GtT3adgPEpLNj2ZgJucWMz67Kg>
+    <xme:6eYqZEmyRGbDzQG-ueXu0MPWCEaD7sW1WEK_Vx65N_IcDn86lUZN50HvPO6hs_VjU
+    41Jj7__Cta1Pr57vU0>
+X-ME-Received: <xmr:6eYqZEbXGeTJ0R-98qLjPgI4Amoll0myvtXvsEE4R-rkwjBz0Hnr4nJlIA28Xv81wo-9Kg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeijedgkedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
+    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
+    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
+    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
+X-ME-Proxy: <xmx:6eYqZPX41MPaQ6YeTN_zeNk_ZbdQ-rpKINXG7D4FIQFgJ8gAka38Xw>
+    <xmx:6eYqZKniee3nysIag5tPof8iThgigYkccu8nsYn-u78L9OrXN3udwQ>
+    <xmx:6eYqZEf0O6Em4Jbj61rhAQMLOD1HmcvZJF_fvl8v3G7o8R3yBIgnRA>
+    <xmx:6eYqZIxdMzEWsP58CVZgEKg3x7nLq_KTgp8CGymwKff72Pnjq7stoA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Apr 2023 10:47:04 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id C6B9410D7B3; Mon,  3 Apr 2023 17:47:02 +0300 (+03)
+Date: Mon, 3 Apr 2023 17:47:02 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: David Hildenbrand <david@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Dario Faggioli <dfaggioli@suse.com>,	Dave Hansen <dave.hansen@intel.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,	marcelo.cerri@canonical.com,
+ tim.gardner@canonical.com,	khalid.elmously@canonical.com,
+ philip.cox@canonical.com,	aarcange@redhat.com, peterx@redhat.com,
+ x86@kernel.org,	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv9 03/14] mm/page_alloc: Fake unaccepted memory
+Message-ID: <20230403144702.uf7fhfrffypkmqy5@box.shutemov.name>
+References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
+ <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
+ <053a9ccd-4205-7a76-70c3-c256bd995a1f@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCHv9 03/14] mm/page_alloc: Fake unaccepted memory
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Sean Christopherson <seanjc@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
- Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
- <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Dario Faggioli <dfaggioli@suse.com>, Dave Hansen <dave.hansen@intel.com>,
- Mike Rapoport <rppt@kernel.org>, Mel Gorman <mgorman@techsingularity.net>,
- marcelo.cerri@canonical.com, tim.gardner@canonical.com,
- khalid.elmously@canonical.com, philip.cox@canonical.com,
- aarcange@redhat.com, peterx@redhat.com, x86@kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
- <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <053a9ccd-4205-7a76-70c3-c256bd995a1f@redhat.com>
 
-On 30.03.23 13:49, Kirill A. Shutemov wrote:
-> For testing purposes, it is useful to fake unaccepted memory in the
-> system. It helps to understand unaccepted memory overhead to the page
-> allocator.
+On Mon, Apr 03, 2023 at 04:43:08PM +0200, David Hildenbrand wrote:
+> On 30.03.23 13:49, Kirill A. Shutemov wrote:
+> > For testing purposes, it is useful to fake unaccepted memory in the
+> > system. It helps to understand unaccepted memory overhead to the page
+> > allocator.
+> > 
+> > The patch allows to treat memory above the specified physical memory
+> > address as unaccepted.
+> > 
+> > The change only fakes unaccepted memory for page allocator. Memblock is
+> > not affected.
+> > 
+> > It also assumes that arch-provided accept_memory() on already accepted
+> > memory is a nop.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >   mm/page_alloc.c | 21 +++++++++++++++++++++
+> >   1 file changed, 21 insertions(+)
+> > 
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index d62fcb2f28bd..509a93b7e5af 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -7213,6 +7213,8 @@ static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
+> >   static bool lazy_accept = true;
+> > +static unsigned long fake_unaccepted_start = -1UL;
+> > +
+> >   static int __init accept_memory_parse(char *p)
+> >   {
+> >   	if (!strcmp(p, "lazy")) {
+> > @@ -7227,11 +7229,30 @@ static int __init accept_memory_parse(char *p)
+> >   }
+> >   early_param("accept_memory", accept_memory_parse);
+> > +static int __init fake_unaccepted_start_parse(char *p)
+> > +{
+> > +	if (!p)
+> > +		return -EINVAL;
+> > +
+> > +	fake_unaccepted_start = memparse(p, &p);
+> > +
+> > +	if (*p != '\0') {
+> > +		fake_unaccepted_start = -1UL;
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +early_param("fake_unaccepted_start", fake_unaccepted_start_parse);
+> > +
+> >   static bool page_contains_unaccepted(struct page *page, unsigned int order)
+> >   {
+> >   	phys_addr_t start = page_to_phys(page);
+> >   	phys_addr_t end = start + (PAGE_SIZE << order);
+> > +	if (start >= fake_unaccepted_start)
+> > +		return true;
+> > +
+> >   	return range_contains_unaccepted_memory(start, end);
+> >   }
 > 
-> The patch allows to treat memory above the specified physical memory
-> address as unaccepted.
+> The "unpleasant" thing about this is, that page_contains_unaccepted() could
+> not be used for sanity checks because the result is static.
 > 
-> The change only fakes unaccepted memory for page allocator. Memblock is
-> not affected.
+> For example, something like
 > 
-> It also assumes that arch-provided accept_memory() on already accepted
-> memory is a nop.
+> if (page_contains_unaccepted(page, 0))
+> 	accept_memory(page, 0);
+> BUG_ON(!page_contains_unaccepted(page, 0));
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->   mm/page_alloc.c | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index d62fcb2f28bd..509a93b7e5af 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7213,6 +7213,8 @@ static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
->   
->   static bool lazy_accept = true;
->   
-> +static unsigned long fake_unaccepted_start = -1UL;
-> +
->   static int __init accept_memory_parse(char *p)
->   {
->   	if (!strcmp(p, "lazy")) {
-> @@ -7227,11 +7229,30 @@ static int __init accept_memory_parse(char *p)
->   }
->   early_param("accept_memory", accept_memory_parse);
->   
-> +static int __init fake_unaccepted_start_parse(char *p)
-> +{
-> +	if (!p)
-> +		return -EINVAL;
-> +
-> +	fake_unaccepted_start = memparse(p, &p);
-> +
-> +	if (*p != '\0') {
-> +		fake_unaccepted_start = -1UL;
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +early_param("fake_unaccepted_start", fake_unaccepted_start_parse);
-> +
->   static bool page_contains_unaccepted(struct page *page, unsigned int order)
->   {
->   	phys_addr_t start = page_to_phys(page);
->   	phys_addr_t end = start + (PAGE_SIZE << order);
->   
-> +	if (start >= fake_unaccepted_start)
-> +		return true;
-> +
->   	return range_contains_unaccepted_memory(start, end);
->   }
->   
+> Would work on real hardware, however, not for the fake variant.
 
-The "unpleasant" thing about this is, that page_contains_unaccepted() 
-could not be used for sanity checks because the result is static.
-
-For example, something like
-
-if (page_contains_unaccepted(page, 0))
-	accept_memory(page, 0);
-BUG_ON(!page_contains_unaccepted(page, 0));
-
-Would work on real hardware, however, not for the fake variant.
+Need for raw_page_contains_unaccepted()? :P
 
 -- 
-Thanks,
-
-David / dhildenb
-
+  Kiryl Shutsemau / Kirill A. Shutemov
