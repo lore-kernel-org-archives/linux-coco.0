@@ -1,124 +1,137 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B0C33CF
-	for <linux-coco@lists.linux.dev>; Mon,  3 Apr 2023 16:33:08 +0000 (UTC)
-Received: by mail-pj1-f47.google.com with SMTP id l9-20020a17090a3f0900b0023d32684e7fso14049088pjc.1
-        for <linux-coco@lists.linux.dev>; Mon, 03 Apr 2023 09:33:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680539588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/JyY9VZwYc39EnA1aZWuXOPQGLxKvuatHXzEFodZCZQ=;
-        b=FACJfAv6gr+vK3e3XeLN4xvpkGnKPBmnv+fv9jvnfnCHgf1bczHB6AYubASZaeKnWO
-         rNNLZE8IYRJ8BRbD/fGBhWTtRFr3kbxLQ2xZm5LIjwTrnobuLcRsF8oLHPd9FFDE798F
-         xwQG589j0RfUlH8NV2IT1h5SUeHtadiEVA1anBsEmyeoUrEP9NQoL2K1rl0CH2YyBYQX
-         iosbiKl+uG6JEkZ0gGwW2PZhs5seT17+QAjCwCRmZqpEsomA3wV9DiXEKnPA0Q8gFISG
-         BbZtS2wxXdRwc5mpG6kJxKWbjjDpI9JOyMmNvUEM2h8g5h+Sv/L25nAcudz8NqBFkMpL
-         R7jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680539588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/JyY9VZwYc39EnA1aZWuXOPQGLxKvuatHXzEFodZCZQ=;
-        b=L7gSAgXl3bzCkEz1uVYbeU+fAqIz9ZKzlfPvOfU88C+e0D33KMmhmyoBWdmfYO7v8h
-         jM1jkGqwCKSPGy/UccdI/IlSGbEYMTzef7m/FroN9YaYielpW+A5CHUyMYfG1L3HQ3eb
-         ehYZlC5W0TmomdAIB1JRMNAtK6oyxQTwicja3DNe4VXKghJTLorM6LFPDHYB+rGrUulp
-         3xATIihGm7bZbgnqxm0/F6edAvc17SpqVzM3MAEJ8724Svmwusfe9F/51fGFaY1LUBks
-         +Um1guuAu6W6hmJz3a5tvWwPNfDYtT4qjvgQsPMkr9WOURE0pcwy8dBWFRTMpp6AtWd/
-         o+rg==
-X-Gm-Message-State: AAQBX9ekHBDqSqZtY9A7T37knMzSAKC+CVFJS+KBscf8Kcl005Z/19kP
-	8Cw0p4pEIoz9y8nNlWc9t6K2MLNolmnlHJ91UiE=
-X-Google-Smtp-Source: AKy350bsjMqV4NZgmlAE2raeLsIsDcysn41kaYxCjcPrDjA9fvGH+CkiSf3cG9CL3vzkpEB75b+yuh9BvTkAmAFp99U=
-X-Received: by 2002:a17:902:ef94:b0:1a1:c109:3700 with SMTP id
- iz20-20020a170902ef9400b001a1c1093700mr12819974plb.7.1680539587819; Mon, 03
- Apr 2023 09:33:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BE16FDF
+	for <linux-coco@lists.linux.dev>; Mon,  3 Apr 2023 16:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1680540796; x=1712076796;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=ki7HvbTTIzSPCh+p8ENNZZvs3EEXOxF+XqGP2DaWK5Y=;
+  b=cBB3dej1+fSvz0QI8KMDHMbvQR6HSrIybpO+86Y2kGP5zo95fGTgoGGr
+   +h7KqPfTT2n+5or9QoYU2BfKyMKTmT5VqdR1b040xWWh+GT2Q7jl4mbq/
+   OM6R0csvd7EWMJOrffY1dIVNdgvZaOZ4a3IITPZM53tIELxY76sqG3Fwn
+   CBz12PulD0LlZPxernh3crw3mxB135SwTL2Qo5myFjdeJBdHVP6k7tvVJ
+   K29KW4+39s3j0RZm0CQLOd9rQWsVSSjgtyJo30W6LBxQdkPQpVGhEdums
+   JLwL50zTuhp4mXBy+gUj3hgKRbFWRtML+iaEZznKPkmmezIyQ4rDYy0KT
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10669"; a="407008578"
+X-IronPort-AV: E=Sophos;i="5.98,315,1673942400"; 
+   d="scan'208";a="407008578"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2023 09:53:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10669"; a="860280525"
+X-IronPort-AV: E=Sophos;i="5.98,315,1673942400"; 
+   d="scan'208";a="860280525"
+Received: from ssidhu-mobl.amr.corp.intel.com (HELO [10.212.178.109]) ([10.212.178.109])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2023 09:53:13 -0700
+Message-ID: <19035c40-e756-6efd-1c02-b09109fb44c1@intel.com>
+Date: Mon, 3 Apr 2023 09:53:13 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230403140605.540512-1-jiangshanlai@gmail.com> <700a9c1b-5967-4e0c-0a15-8e2ab968dac6@intel.com>
-In-Reply-To: <700a9c1b-5967-4e0c-0a15-8e2ab968dac6@intel.com>
-From: Lai Jiangshan <jiangshanlai@gmail.com>
-Date: Tue, 4 Apr 2023 00:32:55 +0800
-Message-ID: <CAJhGHyBSxZbsjkaZ-zkVUJ6fkcpAKEszxLh49VZQ3hxO95Cn6g@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+From: Dave Hansen <dave.hansen@intel.com>
 Subject: Re: [RFC PATCH 0/7] x86/entry: Atomic statck switching for IST
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, Lai Jiangshan <jiangshan.ljs@antgroup.com>, 
-	"H. Peter Anvin" <hpa@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, 
-	Andrew Cooper <andrew.cooper3@citrix.com>, Andy Lutomirski <luto@kernel.org>, 
-	Asit Mallick <asit.k.mallick@intel.com>, Cfir Cohen <cfir@google.com>, 
-	Dan Williams <dan.j.williams@intel.com>, David Kaplan <David.Kaplan@amd.com>, 
-	David Rientjes <rientjes@google.com>, Erdem Aktas <erdemaktas@google.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Jiri Slaby <jslaby@suse.cz>, Joerg Roedel <joro@8bytes.org>, 
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>, 
-	Kirill Shutemov <kirill.shutemov@linux.intel.com>, 
-	Kuppuswamy Sathyanarayanan <knsathya@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Mike Stunes <mstunes@vmware.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Raj Ashok <ashok.raj@intel.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Tony Luck <tony.luck@intel.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org
+Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
+ "H. Peter Anvin" <hpa@linux.intel.com>, Andi Kleen <ak@linux.intel.com>,
+ Andrew Cooper <andrew.cooper3@citrix.com>, Andy Lutomirski
+ <luto@kernel.org>, Asit Mallick <asit.k.mallick@intel.com>,
+ Cfir Cohen <cfir@google.com>, Dan Williams <dan.j.williams@intel.com>,
+ David Kaplan <David.Kaplan@amd.com>, David Rientjes <rientjes@google.com>,
+ Erdem Aktas <erdemaktas@google.com>, Jan Kiszka <jan.kiszka@siemens.com>,
+ Jiri Slaby <jslaby@suse.cz>, Joerg Roedel <joro@8bytes.org>,
+ Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Mike Stunes <mstunes@vmware.com>, Peter Zijlstra <peterz@infradead.org>,
+ Raj Ashok <ashok.raj@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Tony Luck <tony.luck@intel.com>,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org
+References: <20230403140605.540512-1-jiangshanlai@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20230403140605.540512-1-jiangshanlai@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 3, 2023 at 10:23=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 4/3/23 07:05, Lai Jiangshan wrote:
-> > 2.3 #VE
-> > -------
-> >
-> > The approach for fixing the kernel mode #VE recursion issue is to just
-> > NOT use IST for #VE although #VE is also considered to be one of the
-> > super exceptions and had raised some worries:
-> > https://lore.kernel.org/lkml/YCEQiDNSHTGBXBcj@hirez.programming.kicks-a=
-ss.net/
-> > https://lore.kernel.org/lkml/CALCETrU9XypKbj-TrXLB3CPW6=3DMZ__5ifLz0ckb=
-B=3Dc=3DMyegn9Q@mail.gmail.com/
-> > https://lore.kernel.org/lkml/1843debc-05e8-4d10-73e4-7ddce3b3eae2@intel=
-.com/
-> >
-> > To remit the worries,  SEPT_VE_DISABLE is forced used currently and
-> > also disables its abilities (accept-on-demand or memory balloon which
-> > is critical to lightweight VMs like Kata Containers):
-> > https://lore.kernel.org/lkml/YCb0%2FDg28uI7TRD%2F@google.com/
->
-> You don't need #VE for accept-on-demand.  Pages go through _very_
-> well-defined software choke points before they get used *and* before
-> they get ballooned.  Thus:
->
-> > https://lore.kernel.org/lkml/20230330114956.20342-3-kirill.shutemov@lin=
-ux.intel.com/
->
+On 4/3/23 07:05, Lai Jiangshan wrote:
+>  Documentation/x86/kernel-stacks.rst   |   2 +
+>  arch/x86/entry/Makefile               |   3 +
+>  arch/x86/entry/entry_64.S             | 615 +++++++-------------------
+>  arch/x86/entry/ist_entry.c            | 299 +++++++++++++
+>  arch/x86/include/asm/cpu_entry_area.h |   8 +-
+>  arch/x86/include/asm/idtentry.h       |  15 +-
+>  arch/x86/include/asm/sev.h            |  14 -
+>  arch/x86/include/asm/traps.h          |   1 -
+>  arch/x86/kernel/asm-offsets_64.c      |   7 +
+>  arch/x86/kernel/callthunks.c          |   2 +
+>  arch/x86/kernel/dumpstack_64.c        |   6 +-
+>  arch/x86/kernel/nmi.c                 |   8 -
+>  arch/x86/kernel/sev.c                 | 108 -----
+>  arch/x86/kernel/traps.c               |  43 --
+>  arch/x86/kvm/vmx/vmx.c                | 441 +++++++++++++++++-
+>  arch/x86/kvm/x86.c                    |  10 +-
+>  arch/x86/mm/cpu_entry_area.c          |   2 +-
+>  tools/objtool/check.c                 |   7 +-
+>  18 files changed, 937 insertions(+), 654 deletions(-)
+>  create mode 100644 arch/x86/entry/ist_entry.c
 
-Thanks for the information.
+Some high-level comments...
 
-I will have a look to see how it supports memory balloons.
+The diffstat looks a lot nastier because of the testing patch.  If you
+that patch and trim the diffstat a bit, it starts to look a _lot_ more
+appealing:
 
-And if accept-on-demand were supported, do we still need this
-CONFIG_UNACCEPTED_MEMORY?
+>  arch/x86/entry/entry_64.S             |  615 ++++++++----------------------------
+>  arch/x86/entry/ist_entry.c            |  299 +++++++++++++++++
+>  arch/x86/kernel/sev.c                 |  108 ------
+>  arch/x86/kernel/traps.c               |   43 --
+...
+>  16 files changed, 490 insertions(+), 650 deletions(-)
 
-> BTW, _who_ considers #VE to be a "super exception"?  Can you explain how
-> it is any more "super" than #PF?  #PF can recurse.  You can take #PF in
-> the entry paths.
->
-> I kinda don't think you should be using TDX and #VE as part of the
-> justification for this series.
+It removes more code than it adds and also removes a bunch of assembly.
+If it were me posting this, I'd have shouted that from the rooftops
+instead of obscuring it with a testing patch and leaving it as an
+exercise to the reader to figure out.
 
-You are right, #VE is not a super exception anymore since SEPT_VE_DISABLE
-is forced set in the Linux kernel and it is nothing to do with this series.
+It also comes with testing code and a great cover letter, which are rare
+and _spectacular_.
 
-But #VE was once thought to be a super exception (I will correct the
-sentence in the cover letter), so it is worth mentioning it.
+That said, I'm torn.  This series makes a valiant attempt to improve one
+of the creakiest corners of arch/x86/.  But, there are precious few
+reviewers that can _really_ dig into this stuff.  This is also a lot
+less valuable now than it would have been when FRED was not on the horizon.
 
-And since SEPT_VE_DISABLE is configurable, it would allow some paranoids
-to have a try with SEPT_VE_DISABLE=3Dfalse even without FRED.
-The paranoids can try it with IST #VE.
+It's also not incremental at all.  It's going to be a big pain when
+someone bisects their random system hang to patch 4/7.  It'll mean
+there's a bug buried somewhere in the 500 lines of patch 3/7.
 
-Thanks
-Lai
+Grumbling aside, there's too much potential upside here to ignore.  As
+this moves out of RFC territory, it would be great if you could:
+
+ * Look at the FRED series and determine how much this collides
+ * Dig up some reviewers
+ * Flesh out the testing story.  What kind of hardware was this tested
+   on?  How much was bare metal vs. VMs, etc...?
+ * Reinforce what the benefits to end users are here.  Are folks
+   _actually_ running into the #VC fragility, for instance?
+
+Also, let's say we queue this, it starts getting linux-next testing, and
+we start getting bug reports of hangs.  It'll have to get reverted if we
+can't find the bug fast.
+
+How much of a pain would it be to make atomic-IST-entry _temporarily_
+selectable at boot time?  It would obviously need to keep the old code
+around and would not have the nice diffstat.  But that way, folks would
+at least have a workaround while we're bug hunting.
+
+1. https://lore.kernel.org/all/20230327075838.5403-1-xin3.li@intel.com/
