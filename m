@@ -1,149 +1,97 @@
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D96FA1
-	for <linux-coco@lists.linux.dev>; Mon,  3 Apr 2023 15:50:19 +0000 (UTC)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.west.internal (Postfix) with ESMTP id 5503632009D2;
-	Mon,  3 Apr 2023 11:50:16 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Mon, 03 Apr 2023 11:50:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm1; t=1680537015; x=
-	1680623415; bh=hvMPk2VFFCoLBECPlHT93AuyqWq9AiPkFUCgyzV1WjM=; b=u
-	SVpbwQ7v4XuHWFLanjNQ9tGfvXICUwjRsTubI1ABBNQWsniN/KY2Rnxy5epytyGn
-	e/f3RAstVfwmlbTOdkpU0nmVgcGkKLOHiCO17obU27wROTgqV8lFN7oAzE0LXuZi
-	OQWDGWFFnzbM0lRJlR1pwILD09/2/YV6zCZq70J5meudotAC7XH4E7YYpznDu797
-	PgmxWUXwAxw0bEZwrI0iy3icXz9Arb5Fd/UoY9g4bW0LNh1fGx4OnxeimVkCtu2Z
-	2voJYblHINLFv27+cVHv6gSC57U2xY1ymTCF7QyjC4ZK/AJX/7dPZ6/k9iLSdx9L
-	NFUCb2z4eZPx5wD8uN/LQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1680537015; x=1680623415; bh=hvMPk2VFFCoLB
-	ECPlHT93AuyqWq9AiPkFUCgyzV1WjM=; b=t0vcoq5UGAwjtC23bgvg9IlQed7z0
-	6wrDfzCnaqikCyis26OmexPd1msLzDbzD3zFf1b8M4vYRKkeFcuR9zKQCS1Qa1Bb
-	xwuJ6K94oxCyiRw1ly5ch9/Dn996moASG4fxtT+5gLvtjngp6DmEnqe+vSYEEhGP
-	qLKKDBkGjcIKcEucirDIFH6TPYEyGvzDNC+eUclVdGCnskXe2uWLGFTIHfbkm3EF
-	R7tZwg15nywuFSuayiRLJYrOWOvSLoeAuN/Bwd96BOD23o6eU4kC2vWiAvpqak4v
-	w2xOuXCSMq1byennNQ1Jn1dqFPsFuMCJ2EzVZ5BzZV3nEDHk9jZXgFdEg==
-X-ME-Sender: <xms:tvUqZLjgEmS6UiIANTZKPTRP-nK-O_aaxGGlaVtcuwSyv22nUWrwTQ>
-    <xme:tvUqZIAahZOmEANUofMyKE4f-QXF1wgHZkMmY870uxXL-Z2Fn17Fk0DYp8Fq8Dwyn
-    OAziGDylg2W3mOPpys>
-X-ME-Received: <xmr:tvUqZLGg28roft_EVY4BroXyQQE1XGkYlAv5IOXaBiL6vRiecxLV3IoM0bF7juHa1vfi9Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeijedgleegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
-    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
-    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
-    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:tvUqZITd8ZeOko-EA6Y5LHL1NgLxw9pInXtZegEN74sHD2OeDYsYfA>
-    <xmx:tvUqZIyt8-ibgFzjEKJwZ2EZUgLkrJHuwHWXuOOmr3xfW6dA4uUecw>
-    <xmx:tvUqZO5IowN-JtHcJuvSHufriryoyNK8uFG-QEK4cJ_jC20XbdAx1w>
-    <xmx:t_UqZB-Zw5hLxT-lqJhFKYo-ZfKg9N0ewQmefVOG_6sf6PCB4vdTDA>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Apr 2023 11:50:13 -0400 (EDT)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id C1C7E10D7B3; Mon,  3 Apr 2023 18:50:11 +0300 (+03)
-Date: Mon, 3 Apr 2023 18:50:11 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Dario Faggioli <dfaggioli@suse.com>,	Dave Hansen <dave.hansen@intel.com>,
-	Mike Rapoport <rppt@kernel.org>,	David Hildenbrand <david@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,	marcelo.cerri@canonical.com,
- tim.gardner@canonical.com,	khalid.elmously@canonical.com,
- philip.cox@canonical.com,	aarcange@redhat.com, peterx@redhat.com,
- x86@kernel.org,	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv9 03/14] mm/page_alloc: Fake unaccepted memory
-Message-ID: <20230403155011.aodnd5ratcyeie52@box.shutemov.name>
-References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
- <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
- <835dfe65-d9dd-0b16-37d4-920e97f1bca0@suse.cz>
- <20230403143915.uc4tnpgmssvpdqxu@box.shutemov.name>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AA56FA1
+	for <linux-coco@lists.linux.dev>; Mon,  3 Apr 2023 16:22:08 +0000 (UTC)
+Received: by mail-lj1-f180.google.com with SMTP id e9so15668030ljq.4
+        for <linux-coco@lists.linux.dev>; Mon, 03 Apr 2023 09:22:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1680538926; x=1683130926;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xFwQPWx8Ux6bh8rA+x2qSR6v2JLfRrPIjTrTWUE6sUM=;
+        b=VQrZLN2muADh9UFrSayUVh1WDgvluWJdHQy6YqKlNP9zpSTGQVnoQ4czIhEJNByA5a
+         cXRdNpS1mvl+k8QrammEf5Fkyv/Lk6ZmRwYb86J+47t9Mw6W5cnIiQTgnuUMKzMJalzr
+         yda3uvkB7zkMf+nkfXEq133SaNSEhT5f34FoA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680538926; x=1683130926;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xFwQPWx8Ux6bh8rA+x2qSR6v2JLfRrPIjTrTWUE6sUM=;
+        b=VOKQacPSYgJEPBTze3xmdafLGXPGG/VLXMFN72r2hTxHcnQwlJrFlqqHnCqt6PPW3M
+         3zlOlEreRx22WnSLBWx3jFrxpA4+M7w4tnse3EMM3SBjPQ+jYZOutAJkW0EdZI6z2SWQ
+         jSapLXPTBmNWsAt6BCjnYLDSfY4r3sy6lHCK6CDd7q48E41igdSStKRn3D3W/ll2mJ3G
+         DBIL0dUIA8fiU2+RKxIS3vNKPeXHfEaL7QVeTMhXhP6r+BHJiFVQ1v1xlSxzsMZgpOWN
+         JctSMSOb8W8dw7pdL8aJGpG/pewO+7hbBjLyWf4hT7vhg9MnRlGqYoGbnAeDE76Ewy1K
+         nxYA==
+X-Gm-Message-State: AAQBX9eU16+LgpFFoskOQLFIMpJ23Z0tUxWrhvFhdKD8LimWXpZa1mjx
+	F5I9TvO4gzdVqLcdzO0eJnUxTCgIWvWHiev4SbeYdA==
+X-Google-Smtp-Source: AKy350bTXog22/j3gnC1kHc7XGvMkD/aAt1/HBI0+ExEvhNndpFO8UwDXL0T/MdM5X3By/q4pgNa5w==
+X-Received: by 2002:a2e:8058:0:b0:29b:aee8:29b3 with SMTP id p24-20020a2e8058000000b0029baee829b3mr11349ljg.38.1680538925790;
+        Mon, 03 Apr 2023 09:22:05 -0700 (PDT)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com. [209.85.208.173])
+        by smtp.gmail.com with ESMTPSA id p23-20020a2ea417000000b002934abfb109sm1818249ljn.45.2023.04.03.09.22.05
+        for <linux-coco@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Apr 2023 09:22:05 -0700 (PDT)
+Received: by mail-lj1-f173.google.com with SMTP id a11so30935760lji.6
+        for <linux-coco@lists.linux.dev>; Mon, 03 Apr 2023 09:22:05 -0700 (PDT)
+X-Received: by 2002:a17:907:3e16:b0:932:da0d:9375 with SMTP id
+ hp22-20020a1709073e1600b00932da0d9375mr11670367ejc.4.1680538904942; Mon, 03
+ Apr 2023 09:21:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230403143915.uc4tnpgmssvpdqxu@box.shutemov.name>
+References: <20230403140605.540512-1-jiangshanlai@gmail.com> <20230403140605.540512-3-jiangshanlai@gmail.com>
+In-Reply-To: <20230403140605.540512-3-jiangshanlai@gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 3 Apr 2023 09:21:27 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whY8tkKJoFjzP1-kR5rqCmgTEiX2i+GJgjdJcn+q+3HTQ@mail.gmail.com>
+Message-ID: <CAHk-=whY8tkKJoFjzP1-kR5rqCmgTEiX2i+GJgjdJcn+q+3HTQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/7] x86/entry: Add IST main stack
+To: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Lai Jiangshan <jiangshan.ljs@antgroup.com>, 
+	"H. Peter Anvin" <hpa@linux.intel.com>, Andi Kleen <ak@linux.intel.com>, 
+	Andrew Cooper <andrew.cooper3@citrix.com>, Andy Lutomirski <luto@kernel.org>, 
+	Asit Mallick <asit.k.mallick@intel.com>, Cfir Cohen <cfir@google.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	David Kaplan <David.Kaplan@amd.com>, David Rientjes <rientjes@google.com>, 
+	Dirk Hohndel <dirkhh@vmware.com>, Erdem Aktas <erdemaktas@google.com>, 
+	Jan Kiszka <jan.kiszka@siemens.com>, Jiri Slaby <jslaby@suse.cz>, Joerg Roedel <joro@8bytes.org>, 
+	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>, 
+	Kirill Shutemov <kirill.shutemov@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <knsathya@kernel.org>, Mike Stunes <mstunes@vmware.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Raj Ashok <ashok.raj@intel.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Tony Luck <tony.luck@intel.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 03, 2023 at 05:39:15PM +0300, Kirill A. Shutemov wrote:
-> On Mon, Apr 03, 2023 at 03:39:53PM +0200, Vlastimil Babka wrote:
-> > On 3/30/23 13:49, Kirill A. Shutemov wrote:
-> > > For testing purposes, it is useful to fake unaccepted memory in the
-> > > system. It helps to understand unaccepted memory overhead to the page
-> > > allocator.
-> > 
-> > Ack on being useful for testing, but the question is if we want to also
-> > merge this patch into mainline as it is?
-> 
-> I don't insist on getting it upstream, but it can be handy to debug
-> related bugs in the future.
-> 
-> > > The patch allows to treat memory above the specified physical memory
-> > > address as unaccepted.
-> > > 
-> > > The change only fakes unaccepted memory for page allocator. Memblock is
-> > > not affected.
-> > > 
-> > > It also assumes that arch-provided accept_memory() on already accepted
-> > > memory is a nop.
-> > 
-> > I guess to be in mainline it would have to at least gracefully handle the
-> > case of accept_memory actually not being a nop, and running on a system with
-> > actual unaccepted memory (probably by ignoring the parameter in such case).
-> > Then also the parameter would have to be documented.
-> 
-> As it is written now, accept_memory() is nop on system with real
-> unaccepted memory if the memory is already accepted. Arch-specific code
-> will check against own records to see if the memory needs accepting. If
-> not, just return.
-> 
-> And the option will not interfere with unaccepted memory declared by EFI
-> memmap. It can extend it, but that's it.
-> 
-> Looks safe to me.
-> 
-> > Speaking of documented parameters, I found at least two that seem a more
-> > generic variant of this (but I didn't look closely if that makes sense):
-> > 
-> > efi_fake_mem=   nn[KMG]@ss[KMG]:aa[,nn[KMG]@ss[KMG]:aa,..] [EFI; X86]
-> >     Add arbitrary attribute to specific memory range by
-> >     updating original EFI memory map.
+On Mon, Apr 3, 2023 at 7:05=E2=80=AFAM Lai Jiangshan <jiangshanlai@gmail.co=
+m> wrote:
+>
+> diff --git a/Documentation/x86/kernel-stacks.rst b/Documentation/x86/kern=
+el-stacks.rst
+> index 6b0bcf027ff1..be89acf302da 100644
+> --- a/Documentation/x86/kernel-stacks.rst
+> +++ b/Documentation/x86/kernel-stacks.rst
+> @@ -105,6 +105,8 @@ The currently assigned IST stacks are:
+>    middle of switching stacks.  Using IST for MCE events avoids making
+>    assumptions about the previous state of the kernel stack.
+>
+> +* ESTACK_IST. bla bla
+> +
+>  For more details see the Intel IA32 or AMD AMD64 architecture manuals.
 
-As of now, efi_fake_mem= can adjust attributes of memory. Unaccepted is
-type of memory, not an attribute. I guess we can allow it override type
-too. But syntax is going to be fun.
+Maybe the cover letter description could be used here, rather than the
+"bla bla" placeholder?
 
-> > memmap=<size>%<offset>-<oldtype>+<newtype>
-> >     [KNL,ACPI] Convert memory within the specified region
-> >     from <oldtype> to <newtype>. If "-<oldtype>" is left
-
-It overrides E820 map, but unaccepted memory is not represented there.
-Unaccepted memory is just RAM in E820.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+              Linus
