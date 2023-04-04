@@ -1,97 +1,276 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2087.outbound.protection.outlook.com [40.107.237.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63B128F3
-	for <linux-coco@lists.linux.dev>; Tue,  4 Apr 2023 17:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1680627837;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E8sSDVvxyvnOruB+0lVJW1HHgkW7ZReKHR1WtAZfwmo=;
-	b=FOhT1YFTA9PLzIK71aDmmQHpk4KnL1ljSlBh8sWcX9ewTOWUXh9gmI6wG+pne414OJpGkG
-	G7zpVNk7KxJPy6+22tJJAPTjgpq54BKcQIm2iUMZc50DJo4olsf2ylN8nvcLihKY+0C9wL
-	jYDlX+XmklMK55xH3GlvWFle3p+BPUg=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-IlFvNfrpNw6QWWq15LRydA-1; Tue, 04 Apr 2023 13:03:51 -0400
-X-MC-Unique: IlFvNfrpNw6QWWq15LRydA-1
-Received: by mail-ed1-f72.google.com with SMTP id f15-20020a50a6cf000000b0050050d2326aso46559285edc.18
-        for <linux-coco@lists.linux.dev>; Tue, 04 Apr 2023 10:03:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680627828; x=1683219828;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E8sSDVvxyvnOruB+0lVJW1HHgkW7ZReKHR1WtAZfwmo=;
-        b=PJRUK54K/ZyWdW4UzKqLK1TLYXEFMPmHM21PJCBlUgaFwqri5xopM45fQuUf/TZTqz
-         BBmscOJ3JOVuV+pvRzdw1hJFAIqTAhH3PaBgULRViXqlN/uhWoCobjMsT3CLj4KWyV6F
-         75kuacPSCAI/8B/FKSbwOtXJsJjpQAKXOAhUWnPHRHbER93cICykNdhlUZpVt3AdUs0n
-         +vAo7giUlPYMGv9w5bK7FjLa8BEV9zH37d9gvYBR5V7sYPOL3XM2q0WqqEgj1kCbnA3s
-         rotWZuATicDXO1ecMAOrCNTCRfDpRMNjFs4ezzm5Z2LyxrVdknqb4F84I7VQf9MWG2jm
-         AV8Q==
-X-Gm-Message-State: AAQBX9cuv/57NGIsg63ngCQePXeVpTrODwvWytlFumJ/m68yWbW7JjRv
-	E0nGcZRKK5WxDINy5BjhVtNnP2GLav6gy90c+Gf8hzF42J8DDp6HN5bu0Gwr0oPZbomvqTQWQIs
-	LX09IrpdS+lcxX8nVDbKN+Q==
-X-Received: by 2002:a17:906:360e:b0:931:ce20:db8e with SMTP id q14-20020a170906360e00b00931ce20db8emr222852ejb.51.1680627828516;
-        Tue, 04 Apr 2023 10:03:48 -0700 (PDT)
-X-Google-Smtp-Source: AKy350aFFDO02CFOBCMJ38oBbcfDo2OcrnEUu9Q6JgQdWEtobOV1hRzKF0iFO6xz/n2FBierAH2GMA==
-X-Received: by 2002:a17:906:360e:b0:931:ce20:db8e with SMTP id q14-20020a170906360e00b00931ce20db8emr222810ejb.51.1680627828194;
-        Tue, 04 Apr 2023 10:03:48 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89? ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
-        by smtp.googlemail.com with ESMTPSA id j10-20020a17090643ca00b0092f38a6d082sm6128661ejn.209.2023.04.04.10.03.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Apr 2023 10:03:47 -0700 (PDT)
-Message-ID: <3591487f-96ae-3ab7-6ce7-e524a070c9e7@redhat.com>
-Date: Tue, 4 Apr 2023 19:03:45 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CE67C
+	for <linux-coco@lists.linux.dev>; Wed,  5 Apr 2023 01:32:49 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=exT2onnvHJMKhuoINKwKlzttf9F0OgsGeC0zvF5RB90KhddnGDWcwjOPTVNhrPsanSPmZ0+70YJl2ptS0e8wiO3KOML7o9zGWspb2EwzZqfEuSjsNhTTc/YCnVd6b48+9srnz1NLX3ob20zARqSOCvj0+yiHozQYfJQQtweCRWBBz23KSvDMVR/4hd8hqug/6WYvkQMOvdfczQlpzJe99ZdJB5SvPDDclxDrULXmYzAAQF5Kocm2QrZlm1DxDPG2Y+4I3NaRLI2gQ64aRm+JtUM32jEfNWq+y7auMb0Se65jZPWBPA8YTo9LJ3iS9Ta2tryO9EnupAiOJMvF8SgrgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6FzslyonlON//o9itqOpGRm13XZjlfWaQ9nkmget7Do=;
+ b=f5dihMrkoG7wQwk5/2WHKShjoIRrGKJgUBqoQTyOEkS6DaCrp6c8wjceskoIvkS3kC+KlkJeoQdsYQ85eZVh5t9aOh8+DpWtarlUZZpdjmLuhHjPDpR8QYGuKDlYYB4oCrQDsE48zmh1CfRNph6lBt1ByjU7rGcj1+PlMrBYAkoNzxDnQ6UA2u5Z8IkH9rn+0jBbNrigiQB44jl33hNv41sEJ/sFWiS8hgZcDUJM3HIXbHO4VGYrPMS6Zp4duDhfu1uHoTLmetWqWc6jbuwPfAEgi1L0skh7rFE398V/My3+GQGUbuQNGUseEJsdQHUOK7ht0ZyA9vJtJeU4VBFxdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=amazon.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6FzslyonlON//o9itqOpGRm13XZjlfWaQ9nkmget7Do=;
+ b=CMLQn4Vo2T5BQKAOso0r/5MuuQ9v1Gq1f5/7Zyh1ZG4I+djCsFKu1q9lFsrA9MBM7Avov7fwIT91BoRdMBsOyqsO49QopCYFS5cvQv6N1UbKZMW4pwITEcv4Qsz/LMUmJg8Ttq7io1PcMPuvv/ejItk7T1J+l2TwC0+BRipuK5k=
+Received: from DM6PR11CA0003.namprd11.prod.outlook.com (2603:10b6:5:190::16)
+ by PH0PR12MB7094.namprd12.prod.outlook.com (2603:10b6:510:21d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.35; Wed, 5 Apr
+ 2023 01:32:47 +0000
+Received: from DM6NAM11FT071.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:190:cafe::3a) by DM6PR11CA0003.outlook.office365.com
+ (2603:10b6:5:190::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.22 via Frontend
+ Transport; Wed, 5 Apr 2023 01:32:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT071.mail.protection.outlook.com (10.13.173.48) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6277.16 via Frontend Transport; Wed, 5 Apr 2023 01:32:46 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 4 Apr
+ 2023 20:32:45 -0500
+Date: Tue, 4 Apr 2023 17:48:02 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Alexander Graf <graf@amazon.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+	<ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+	<nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH RFC v8 47/56] KVM: SVM: Support SEV-SNP AP Creation NAE
+ event
+Message-ID: <20230404224802.23fbe7kxa3h7tjps@amd.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-48-michael.roth@amd.com>
+ <09696af0-b72d-29e7-862b-22ae4a630299@amazon.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [RFC PATCH 0/7] x86/entry: Atomic statck switching for IST
-To: Lai Jiangshan <jiangshanlai@gmail.com>,
- Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, Lai Jiangshan <jiangshan.ljs@antgroup.com>,
- "H. Peter Anvin" <hpa@linux.intel.com>, Andi Kleen <ak@linux.intel.com>,
- Andrew Cooper <andrew.cooper3@citrix.com>, Andy Lutomirski
- <luto@kernel.org>, Asit Mallick <asit.k.mallick@intel.com>,
- Cfir Cohen <cfir@google.com>, Dan Williams <dan.j.williams@intel.com>,
- David Kaplan <David.Kaplan@amd.com>, David Rientjes <rientjes@google.com>,
- Erdem Aktas <erdemaktas@google.com>, Jan Kiszka <jan.kiszka@siemens.com>,
- Jiri Slaby <jslaby@suse.cz>, Joerg Roedel <joro@8bytes.org>,
- Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
- Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Mike Stunes <mstunes@vmware.com>, Peter Zijlstra <peterz@infradead.org>,
- Raj Ashok <ashok.raj@intel.com>, Sean Christopherson <seanjc@google.com>,
- Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
- <thomas.lendacky@amd.com>, Tony Luck <tony.luck@intel.com>,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev, x86@kernel.org
-References: <20230403140605.540512-1-jiangshanlai@gmail.com>
- <19035c40-e756-6efd-1c02-b09109fb44c1@intel.com>
- <CAJhGHyBHmC=UXr88GsykO9eUeqJZp59jrCH3ngkFiCxVBW2F3g@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <CAJhGHyBHmC=UXr88GsykO9eUeqJZp59jrCH3ngkFiCxVBW2F3g@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <09696af0-b72d-29e7-862b-22ae4a630299@amazon.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT071:EE_|PH0PR12MB7094:EE_
+X-MS-Office365-Filtering-Correlation-Id: eec5707b-1eb4-4223-1314-08db3575a90b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	SmX5NKjNJlfscop6GfFb//wQFqtJ7CYZPN4Qsx4hKNNyoLjI98hij4NtOg1TeyHyJjiji6eBM9jjX7JVfOajYBoaYx0jM4I+gIsTn7oQ621hXqXCzOhJGmaU75oEatZP2eTZPBQpc0RJyPovqIcbf30qEJxSmUK0+KoLLa1RQUUnuRionqxWUnnKH9bcPl1m+28xnV5BusEyhjL+kHLkla+kO1BzNXKmNZySTBD7ilOVkMPYgCFPZy3bLglAIGZhhrxpcP7XiNNG/Ofqb2EpQtrvUYRxIXNCNpIPXuNpMeiIHrWMfDlGhcb5pbj5PgLs42vuk5Saru20ur4VtJfQchd2Nopt2nayIRFa9MWkswQxzgNiEUH8LSsWcxdILuepZzU47t/Vn45L9MJwX5/R28LVl7VgCCa6luPfi4Jlu7vT3ufR8JmPVsm7kkPMXnOST1jl+iqydPdFXA9kulsOIouCyipMB9xuj9ipYpRawboMUOCsbQq7uZlfPH+9DzIg6OEwOXm5u5vhckV0y3XW2gB1uX5pPe0D2Xm44x8ZDAkNpWuYgl6jgo6/HIAMgwW1DAv15TApH+hMOUS6RKxKAROZduK41rAirm/0CuPxo8LR1URs1c5qksvsdr11M6Vv0nyXg/r6TL7JSvw0xLoWJXW4mQ1y4BkwpQGvmFH99KhRkvLJj3LXvMVnpQy72YQAyg9WvPNcoZy57ELZ7EpMwI9JOWEtFE/BRFY0tgTY8Iw=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(376002)(136003)(39860400002)(396003)(451199021)(36840700001)(46966006)(40470700004)(40480700001)(40460700003)(41300700001)(8676002)(4326008)(36860700001)(70586007)(478600001)(70206006)(7416002)(81166007)(54906003)(8936002)(316002)(356005)(44832011)(7406005)(5660300002)(6916009)(82740400003)(53546011)(186003)(83380400001)(16526019)(426003)(2616005)(6666004)(47076005)(26005)(1076003)(336012)(86362001)(36756003)(2906002)(82310400005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2023 01:32:46.5797
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eec5707b-1eb4-4223-1314-08db3575a90b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM6NAM11FT071.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7094
 
-On 4/4/23 05:17, Lai Jiangshan wrote:
-> The cover letter has 800+ lines of comments.  About 100-300 lines
-> of comments will be moved into the code which would make the diffstat
-> not so appealing.
+On Fri, Feb 24, 2023 at 01:37:48PM +0100, Alexander Graf wrote:
+> 
+> On 20.02.23 19:38, Michael Roth wrote:
+> > From: Tom Lendacky <thomas.lendacky@amd.com>
+> > 
+> > Add support for the SEV-SNP AP Creation NAE event. This allows SEV-SNP
+> > guests to alter the register state of the APs on their own. This allows
+> > the guest a way of simulating INIT-SIPI.
+> > 
+> > A new event, KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, is created and used
+> > so as to avoid updating the VMSA pointer while the vCPU is running.
+> > 
+> > For CREATE
+> >    The guest supplies the GPA of the VMSA to be used for the vCPU with
+> >    the specified APIC ID. The GPA is saved in the svm struct of the
+> >    target vCPU, the KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event is added
+> >    to the vCPU and then the vCPU is kicked.
+> > 
+> > For CREATE_ON_INIT:
+> >    The guest supplies the GPA of the VMSA to be used for the vCPU with
+> >    the specified APIC ID the next time an INIT is performed. The GPA is
+> >    saved in the svm struct of the target vCPU.
+> > 
+> > For DESTROY:
+> >    The guest indicates it wishes to stop the vCPU. The GPA is cleared
+> >    from the svm struct, the KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event is
+> >    added to vCPU and then the vCPU is kicked.
+> > 
+> > The KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event handler will be invoked
+> > as a result of the event or as a result of an INIT. The handler sets the
+> > vCPU to the KVM_MP_STATE_UNINITIALIZED state, so that any errors will
+> > leave the vCPU as not runnable. Any previous VMSA pages that were
+> > installed as part of an SEV-SNP AP Creation NAE event are un-pinned. If
+> > a new VMSA is to be installed, the VMSA guest page is pinned and set as
+> > the VMSA in the vCPU VMCB and the vCPU state is set to
+> > KVM_MP_STATE_RUNNABLE. If a new VMSA is not to be installed, the VMSA is
+> > cleared in the vCPU VMCB and the vCPU state is left as
+> > KVM_MP_STATE_UNINITIALIZED to prevent it from being run.
+> > 
+> > Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> > [mdr: add handling for restrictedmem]
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> 
+> 
+> What is the intended boot sequence for SEV-SNP guests? FWIW with this
+> interface in place, guests will typically use in-guest VMSA pages to hold
+> secondary vcpu state. But that means we're now allocating 4kb of memory for
+> every vcpu that we create that will be for most of the guest's lifetime
+> superfluous.
+> 
+> Wouldn't it make more sense to have a model where we only allocate the VMSA
+> for the boot CPU and leave secondary allocation to the guest? We already
+> need firmware changes for SEV-SNP - may as well make this one more.
 
-Removing assembly from arch/x86/entry/ and adding English to 
-Documentation/?  That's _even more_ appealing. :)
+I don't think we'd necessarily need a firmware change. We could just
+free original VMSA back to the hypervisor as soon as those APs come
+online. The down-side to that versus deferring cleaning till guest
+shutdown is there is some flushing activity (see:
+sev_flush_encrypted_page()) that would now likely be occuring during
+guest boot up where the overhead might be more noticeable. But for SNP
+the host likely supports X86_FEATURE_SME_COHERENT so the overhead
+probably isn't that bad.
 
-Paolo
+> 
+> [...]
+> 
+> > +
+> > +static int sev_snp_ap_creation(struct vcpu_svm *svm)
+> > +{
+> > +       struct kvm_sev_info *sev = &to_kvm_svm(svm->vcpu.kvm)->sev_info;
+> > +       struct kvm_vcpu *vcpu = &svm->vcpu;
+> > +       struct kvm_vcpu *target_vcpu;
+> > +       struct vcpu_svm *target_svm;
+> > +       unsigned int request;
+> > +       unsigned int apic_id;
+> > +       bool kick;
+> > +       int ret;
+> > +
+> > +       request = lower_32_bits(svm->vmcb->control.exit_info_1);
+> > +       apic_id = upper_32_bits(svm->vmcb->control.exit_info_1);
+> > +
+> > +       /* Validate the APIC ID */
+> > +       target_vcpu = kvm_get_vcpu_by_id(vcpu->kvm, apic_id);
+> 
+> 
+> Out of curiosity: The target CPU can be my own vCPU, right?
 
+I don't think that would be the normal behavior, but maybe with some
+care it's possible for a guest to do things that way. I haven't seen
+anything strictly prohibiting this in the relevant specs.
+
+> 
+> 
+> > +       if (!target_vcpu) {
+> > +               vcpu_unimpl(vcpu, "vmgexit: invalid AP APIC ID [%#x] from guest\n",
+> > +                           apic_id);
+> > +               return -EINVAL;
+> > +       }
+> > +
+> > +       ret = 0;
+> > +
+> > +       target_svm = to_svm(target_vcpu);
+> > +
+> > +       /*
+> > +        * The target vCPU is valid, so the vCPU will be kicked unless the
+> > +        * request is for CREATE_ON_INIT. For any errors at this stage, the
+> > +        * kick will place the vCPU in an non-runnable state.
+> > +        */
+> > +       kick = true;
+> > +
+> > +       mutex_lock(&target_svm->sev_es.snp_vmsa_mutex);
+> > +
+> > +       target_svm->sev_es.snp_vmsa_gpa = INVALID_PAGE;
+> > +       target_svm->sev_es.snp_ap_create = true;
+> > +
+> > +       /* Interrupt injection mode shouldn't change for AP creation */
+> > +       if (request < SVM_VMGEXIT_AP_DESTROY) {
+> > +               u64 sev_features;
+> > +
+> > +               sev_features = vcpu->arch.regs[VCPU_REGS_RAX];
+> > +               sev_features ^= sev->sev_features;
+> > +               if (sev_features & SVM_SEV_FEAT_INT_INJ_MODES) {
+> > +                       vcpu_unimpl(vcpu, "vmgexit: invalid AP injection mode [%#lx] from guest\n",
+> > +                                   vcpu->arch.regs[VCPU_REGS_RAX]);
+> > +                       ret = -EINVAL;
+> > +                       goto out;
+> > +               }
+> > +       }
+> > +
+> > +       switch (request) {
+> > +       case SVM_VMGEXIT_AP_CREATE_ON_INIT:
+> > +               kick = false;
+> > +               fallthrough;
+> > +       case SVM_VMGEXIT_AP_CREATE:
+> > +               if (!page_address_valid(vcpu, svm->vmcb->control.exit_info_2)) {
+> > +                       vcpu_unimpl(vcpu, "vmgexit: invalid AP VMSA address [%#llx] from guest\n",
+> > +                                   svm->vmcb->control.exit_info_2);
+> > +                       ret = -EINVAL;
+> > +                       goto out;
+> > +               }
+> > +
+> > +               /*
+> > +                * Malicious guest can RMPADJUST a large page into VMSA which
+> > +                * will hit the SNP erratum where the CPU will incorrectly signal
+> > +                * an RMP violation #PF if a hugepage collides with the RMP entry
+> > +                * of VMSA page, reject the AP CREATE request if VMSA address from
+> > +                * guest is 2M aligned.
+> 
+> 
+> This will break genuine current Linux kernels that just happen to allocate a
+> guest page, no? In fact, given enough vCPUs you're almost guaranteed to hit
+> an aligned structure somewhere. What is the guest supposed to do in that
+> situation?
+
+The initial SNP support for guest kernels already made use of
+snp_alloc_vmsa_page() to do the appropriate workaround to avoid allocating
+2MB-aligned VMSA pages.
+
+-Mike
+
+> 
+> 
+> 
+> Amazon Development Center Germany GmbH
+> Krausenstr. 38
+> 10117 Berlin
+> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+> Sitz: Berlin
+> Ust-ID: DE 289 237 879
+> 
+> 
