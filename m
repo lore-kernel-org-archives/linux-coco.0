@@ -1,31 +1,30 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBC2D2F7
-	for <linux-coco@lists.linux.dev>; Thu,  6 Apr 2023 21:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD28D53E
+	for <linux-coco@lists.linux.dev>; Thu,  6 Apr 2023 21:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3hwN/YQlmfu+j1gvDC0ozNOHSiaSepyoqpyTVyTKngc=; b=DUYMZP3I6MAIdN+RaNwDZ2GO2M
-	5NAnKV9hWWYVWs/YitgvsXX6dYPXVrEmh2Zwb0IwaETdO29FjClCC3FbCdSijw6piJkmtoy4RhXpT
-	k2SmpsJWtKgEe+bbcNekOFVcTYWimPIqglnBi7AagNQzuAmIl4rhHCXWD2xn2RQCU7ppq9ABLNJa+
-	B14hrLYbBZTH32p5BAoxzhH/9/pyJg9I25GMEh5NkRCqumVuDlM70Z3KC9iCXscPjcJdXoXuy+xCy
-	cPaXvFWTreAX9Y8z/N/bUupIxRySGoylhHq87LnPsGjZHI2PlXsJOO3Me86hbJOYd0BSR1aSOTsg5
-	krH13tbQ==;
+	bh=U8JW0408VL+0xUA1rdsbCgWZ7VzW8QR93tRjPIuuUHY=; b=sKDCcUHIsdldUKSc73yu/nAvU6
+	q6H0Z+iGdUSkV7WetTYD+KgssCbS+ZImEj+6QfYcyDgYu5l9HneHncQ5MvI0BHtsDJgx0qOUwcjha
+	fpVsoxDJxr8by/Ar77X7MEaXVF09SCCtLNQxRneTi4wwfu64EJBeUjtaN8pcKt2XxxA8YiFNsfQm/
+	RvMBNsfjjRxFhER9xNRkWS4XmtJ+yCZKz6D8c6P7Z0uJArOWfB48hWJeNJbnFcIGvL/zJo96OwIh0
+	/WElvKlA4J3IjrXq6ZHxU0fMQdEZnz5u7gWfOjKAWGfqWtcZ48BeJ5gEUmcStPP90J+AoWe3dT/k/
+	O8RKFAyQ==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1pkWjO-00AfU4-35;
-	Thu, 06 Apr 2023 21:01:20 +0000
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pkXcz-000CyW-U7; Thu, 06 Apr 2023 21:58:46 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 92276300274;
-	Thu,  6 Apr 2023 23:01:16 +0200 (CEST)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CA2D430036C;
+	Thu,  6 Apr 2023 23:58:43 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 669982692D852; Thu,  6 Apr 2023 23:01:16 +0200 (CEST)
-Date: Thu, 6 Apr 2023 23:01:16 +0200
+	id 57DDF20B52972; Thu,  6 Apr 2023 23:58:43 +0200 (CEST)
+Date: Thu, 6 Apr 2023 23:58:43 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Lai Jiangshan <jiangshanlai@gmail.com>
 Cc: linux-kernel@vger.kernel.org,
@@ -59,7 +58,7 @@ Cc: linux-kernel@vger.kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>,
 	Josh Poimboeuf <jpoimboe@kernel.org>, Arnd Bergmann <arnd@arndb.de>
 Subject: Re: [RFC PATCH 3/7] x86/entry: Implement atomic-IST-entry
-Message-ID: <20230406210116.GG405948@hirez.programming.kicks-ass.net>
+Message-ID: <20230406215843.GH405948@hirez.programming.kicks-ass.net>
 References: <20230403140605.540512-1-jiangshanlai@gmail.com>
  <20230403140605.540512-4-jiangshanlai@gmail.com>
 Precedence: bulk
@@ -73,124 +72,59 @@ Content-Disposition: inline
 In-Reply-To: <20230403140605.540512-4-jiangshanlai@gmail.com>
 
 On Mon, Apr 03, 2023 at 10:06:01PM +0800, Lai Jiangshan wrote:
+> +static __always_inline
+> +void copy_regs_exception_head(struct pt_regs *target, const struct pt_regs *from)
+> +{
+> +	target->ss	= from->ss;
+> +	target->sp	= from->sp;
+> +	target->flags 	= from->flags;
+> +	target->cs	= from->cs;
+> +	target->ip	= from->ip;
+> +	target->orig_ax	= from->orig_ax;
+> +}
+> +
+> +static __always_inline
+> +void copy_regs_general_registers(struct pt_regs *target, const struct pt_regs *from)
+> +{
+> +	target->di  = from->di;
+> +	target->si  = from->si;
+> +	target->dx  = from->dx;
+> +	target->cx  = from->cx;
+> +	target->ax  = from->ax;
+> +	target->r8  = from->r8;
+> +	target->r9  = from->r9;
+> +	target->r10 = from->r10;
+> +	target->r11 = from->r11;
+> +	target->bx  = from->bx;
+> +	target->bp  = from->bp;
+> +	target->r12 = from->r12;
+> +	target->r13 = from->r13;
+> +	target->r14 = from->r14;
+> +	target->r15 = from->r15;
+> +}
 
-> diff --git a/arch/x86/entry/Makefile b/arch/x86/entry/Makefile
-> index ca2fe186994b..7cc1254ca519 100644
-> --- a/arch/x86/entry/Makefile
-> +++ b/arch/x86/entry/Makefile
-> @@ -8,11 +8,14 @@ UBSAN_SANITIZE := n
->  KCOV_INSTRUMENT := n
->  
->  CFLAGS_REMOVE_common.o		= $(CC_FLAGS_FTRACE)
-> +CFLAGS_REMOVE_ist_entry.o	= $(CC_FLAGS_FTRACE) $(RETHUNK_CFLAGS)
+> +/* Replicate the interrupted atomic-IST-entry's CLEAR_REGS macro. */
+> +static __always_inline void replicate_clear_regs(struct pt_regs *target)
+> +{
+> +	target->di  = 0;
+> +	target->si  = 0;
+> +	target->dx  = 0;
+> +	target->cx  = 0;
+> +	target->ax  = 0;
+> +	target->r8  = 0;
+> +	target->r9  = 0;
+> +	target->r10 = 0;
+> +	target->r11 = 0;
+> +	target->bx  = 0;
+> +	target->bp  = 0;
+> +	target->r12 = 0;
+> +	target->r13 = 0;
+> +	target->r14 = 0;
+> +	target->r15 = 0;
+> +}
 
-This ^^^
+I think there's compilers smart enough to see through your attempts at
+avoiding mem{set,cpy}() there and I think we'll end up needing something
+like __inline_memset() and __inline_memcpy() like here:
 
-
-> diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-> index 49ddc4dd3117..50a24cc83581 100644
-> --- a/arch/x86/entry/entry_64.S
-> +++ b/arch/x86/entry/entry_64.S
-> @@ -443,6 +443,184 @@ SYM_CODE_END(\asmsym)
-
-> +.macro idtentry_ist vector asmsym cfunc user_cfunc has_error_code:req, stack_offset:req
-> +SYM_CODE_START(\asmsym)
-> +	UNWIND_HINT_IRET_REGS offset=\has_error_code*8
-> +	ENDBR
-> +
-> +	/*
-> +	 * Clear X86_EFLAGS_AC, X86_EFLAGS_DF and set a default ORIG_RAX.
-> +	 *
-> +	 * The code setting ORIG_RAX will not be replicated if interrupted.
-> +	 */
-> +	ASM_CLAC
-> +	cld
-> +
-> +	.if \has_error_code == 0
-> +		pushq	$-1		/* ORIG_RAX: no syscall to restart */
-> +	.endif
-> +
-> +	/*
-> +	 * No register can be touched except %rsp,%rflags,%rip before
-> +	 * pushing all the registers.  It is indispensable for nested
-> +	 * atomic-IST-entry to replicate pushing the registers.
-> +	 */
-> +	PUSH_REGS
-> +
-> +	/*
-> +	 * Finished pushing register, all registers can be touched by now.
-> +	 *
-> +	 * Clear registers for the C function ist_copy_regs_to_main_stack()
-> +	 * and the handler to avoid any possible exploitation of any
-> +	 * speculation attack.
-> +	 */
-> +	CLEAR_REGS
-> +
-> +	/*
-> +	 * Copy the pt_regs to the IST main stack including the pt_regs of
-> +	 * the interrupted atomic-IST-entris, if any, by replicating.
-> +	 */
-> +	movq	%rsp, %rdi				/* pt_regs pointer on its own IST stack */
-> +	leaq	PTREGS_SIZE-\stack_offset(%rsp), %rsi	/* struct cea_exception_stacks pointer */
-> +	call	ist_copy_regs_to_main_stack
-
-IIUC you do a CALL+RET here, before you call paranoid_entry ...
-
-> +
-> +	/*
-> +	 * Commit stage.
-> +	 */
-> +SYM_INNER_LABEL(start_commit_\asmsym, SYM_L_GLOBAL)
-> +	/*
-> +	 * Switches to the IST main stack.  Before the switching is done,
-> +	 * %rax is the copied pt_regs pointer in IST main stack.
-> +	 */
-> +	movq	%rax, %rsp
-> +
-> +	/*
-> +	 * The label should be immediate after the instruction that switches
-> +	 * the stack since there is code assuming there is only one single
-> +	 * instruction in the commit stage and the code assumes "%rsp in the
-> +	 * IST main stack is also the sign of ending a atomic-IST-entry".
-> +	 * (The code will be removed in future when %rip-based identifying
-> +	 * is added.)
-> +	 */
-> +SYM_INNER_LABEL(commit_\asmsym, SYM_L_GLOBAL)
-> +
-> +	/*
-> +	 * Now, it is on the IST main stack.  For the whole kernel, the entries
-> +	 * of the IST exceptions can be seen from here because the inside
-> +	 * of the atomic-IST-entry can not be seen from the whole kernel
-> +	 * except in the atomic-IST-entry or #DF.
-> +	 */
-> +	UNWIND_HINT_REGS
-> +	ENCODE_FRAME_POINTER
-> +
-> +	/*
-> +	 * The code setting ORIG_RAX will not be replicated if interrupted.
-> +	 * So redo it here.
-> +	 */
-> +	.if \has_error_code == 0
-> +		movq	$-1, ORIG_RAX(%rsp)	/* ORIG_RAX: no syscall to restart */
-> +	.endif
-> +
-> +	/*
-> +	 * If the entry is from userspace, switch stacks and treat it as
-> +	 * a normal entry.
-> +	 */
-> +	testb	$3, CS(%rsp)
-> +	jnz	.Lfrom_usermode_switch_stack_\@
-> +
-> +	/*
-> +	 * paranoid_entry returns GS/CR3/SPEC_CTL information for
-> +	 * paranoid_exit in RBX/R14/R15.
-> +	 */
-> +	call	paranoid_entry
-
-... all the way down here, which will do:
-
-  IBRS_ENTER;
-  UNTRAIN_RET_FROM_CALL;
-
-Which thus breaks the whole RetBleed mess, since that must not do RET
-before that happens.
+https://lore.kernel.org/lkml/Y759AJ%2F0N9fqwDED@hirez.programming.kicks-ass.net/
