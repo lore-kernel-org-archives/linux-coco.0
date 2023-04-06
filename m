@@ -1,35 +1,33 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A0A29A1
-	for <linux-coco@lists.linux.dev>; Thu,  6 Apr 2023 12:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B927CD2F7
+	for <linux-coco@lists.linux.dev>; Thu,  6 Apr 2023 20:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6G0PeHjBucaMpcTqS+MbmLttXP4X+8vdHS54iSMHEkE=; b=pocCnMFjveWReclFnOvNIHXaFy
-	3GrG9RU1yLbNQTlpqnucYYV6Vo765+4G1vrs+PrS2z6+TblszZYRJ0sAu9sAolqPHY8Tp8KAhAx4r
-	oiWVOzNoX/o/MUudT1aKAAs0W8mSmuV5tz0uUB76tbxk8uF8Dc6OZ728w1kpE3i8o+u/GJAXDJYtC
-	oVXXOKLTsGSCzdjzmTQbivx8VQ2VymC+L+sxhHMvJd6L4TX5oxAtAITYIbtut0ZzqL2LVmIkmxa2U
-	3PUdMvlbPRNC9SfEdWT8zsC2K/IBJQQxdtLcWHsBft4T43Qj0OBiFHHMshHhOO5qBZIAb4+XkKIh5
-	Vf6HDY5A==;
+	bh=mWCYh+aHqMQPGU92cJY3RsdVCoOL6xggKE9AswxAjjI=; b=FVfGvilevbgchwqZb52BXeY8SA
+	yM4/PlPBCQF19uANo8phcXNg55OCv069MBl+d8kfOQ5fzChyQXwG8hcFBV26OSUTZK3K1MfiWWUTP
+	32vXXFNGdIMRTR5weNKpSj9tpJQJ08tYy7FODzQZIricHNb+7nLm/NlEmcEHUZUat4+aVvWRzkbiz
+	ZruHBv84ED5dthnKaC9V4SqK0Yq3SlaeD80X0P16qTbl5RgzuVxK7Xp1Z9JmtdzlZpwNiqopTQUez
+	SR04HbpaphOyaR+GDCdQeqjdy2CICbldb2Fzsbp+GTvV1FLr5ojiF1w7bxi5Fvgja+sPSUoHU2akV
+	mOqncIzg==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pkOsI-00HPw3-BW; Thu, 06 Apr 2023 12:37:58 +0000
+	id 1pkWMX-0009V8-4F; Thu, 06 Apr 2023 20:37:41 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 11D04300194;
-	Thu,  6 Apr 2023 14:37:55 +0200 (CEST)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B0750300274;
+	Thu,  6 Apr 2023 22:37:39 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 903182CB641A9; Thu,  6 Apr 2023 14:37:55 +0200 (CEST)
-Date: Thu, 6 Apr 2023 14:37:55 +0200
+	id 190072625036A; Thu,  6 Apr 2023 22:37:39 +0200 (CEST)
+Date: Thu, 6 Apr 2023 22:37:38 +0200
 From: Peter Zijlstra <peterz@infradead.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org,
+To: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
 	Lai Jiangshan <jiangshan.ljs@antgroup.com>,
 	"H. Peter Anvin" <hpa@linux.intel.com>,
 	Andi Kleen <ak@linux.intel.com>,
@@ -38,11 +36,14 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Asit Mallick <asit.k.mallick@intel.com>,
 	Cfir Cohen <cfir@google.com>,
 	Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@intel.com>,
 	David Kaplan <David.Kaplan@amd.com>,
 	David Rientjes <rientjes@google.com>,
+	Dirk Hohndel <dirkhh@vmware.com>,
 	Erdem Aktas <erdemaktas@google.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>, Joerg Roedel <joro@8bytes.org>,
-	Juergen Gross <jgross@suse.com>, Kees Cook <keescook@chromium.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>, Jiri Slaby <jslaby@suse.cz>,
+	Joerg Roedel <joro@8bytes.org>, Juergen Gross <jgross@suse.com>,
+	Kees Cook <keescook@chromium.org>,
 	Kirill Shutemov <kirill.shutemov@linux.intel.com>,
 	Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -51,17 +52,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
 	Tony Luck <tony.luck@intel.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org
-Subject: Re: [RFC PATCH 0/7] x86/entry: Atomic statck switching for IST
-Message-ID: <20230406123755.GC392176@hirez.programming.kicks-ass.net>
+	linux-coco@lists.linux.dev, x86@kernel.org,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [RFC PATCH 1/7] x86/entry: Move PUSH_AND_CLEAR_REGS out of
+ paranoid_entry
+Message-ID: <20230406203738.GE405948@hirez.programming.kicks-ass.net>
 References: <20230403140605.540512-1-jiangshanlai@gmail.com>
- <19035c40-e756-6efd-1c02-b09109fb44c1@intel.com>
- <CAJhGHyBHmC=UXr88GsykO9eUeqJZp59jrCH3ngkFiCxVBW2F3g@mail.gmail.com>
- <3591487f-96ae-3ab7-6ce7-e524a070c9e7@redhat.com>
- <20230406101254.GI386572@hirez.programming.kicks-ass.net>
- <26be2c81-9431-6b43-e3e9-52d7d184750e@kernel.org>
- <20230406104750.GA392176@hirez.programming.kicks-ass.net>
- <be836a4f-fc0f-bbcd-636d-4766fdd33c81@kernel.org>
+ <20230403140605.540512-2-jiangshanlai@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -70,45 +69,27 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <be836a4f-fc0f-bbcd-636d-4766fdd33c81@kernel.org>
+In-Reply-To: <20230403140605.540512-2-jiangshanlai@gmail.com>
 
-On Thu, Apr 06, 2023 at 01:04:16PM +0200, Jiri Slaby wrote:
+On Mon, Apr 03, 2023 at 10:05:59PM +0800, Lai Jiangshan wrote:
+> @@ -915,11 +922,8 @@ SYM_CODE_END(xen_failsafe_callback)
+>   * R14 - old CR3
+>   * R15 - old SPEC_CTRL
+>   */
+> -SYM_CODE_START(paranoid_entry)
+> +SYM_FUNC_START(paranoid_entry)
+>  	ANNOTATE_NOENDBR
+> -	UNWIND_HINT_FUNC
 
-> Definitely it _can_ defeat the purpose and be heavily formatted.But it
-> doesn't have to. It's like programming in perl.
-> 
-> What I had in mind was e.g. "DOC: TTY Struct Flags":
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/tty.h#n261
+That isn't quite equivalent. SYM_FUNC_START() gets you ENDBR, while the
+SYM_CODE_START(); ANNOTATE_NOENDBR; UNWIND_HINT_FUNC is
+explicitly no ENDBR.
 
- * TTY_THROTTLED
- *	Driver input is throttled. The ldisc should call
- *	:c:member:`tty_driver.unthrottle()` in order to resume reception when
- *	it is ready to process more data (at threshold min).
 
-That whole :c:member:'tty_driver.unthrottle()' is an abomination and
-has no place in a comment.
+> -	PUSH_AND_CLEAR_REGS save_ret=1
+> -	ENCODE_FRAME_POINTER 8
+>  
+>  	/*
+>  	 * Always stash CR3 in %r14.  This value will be restored,
 
-> Resulting in:
-> https://www.kernel.org/doc/html/latest/driver-api/tty/tty_struct.html#tty-struct-flags
-> 
-> Both the source and the result are quite readable, IMO. And the markup in
-> the source is not mandatory, it's only for emphasizing and hyperlinks.
-> 
-> As I wrote, you can link the comment in the code. But definitely you don't
-> have to, if you don't want. I like the linking in Documentation as I can put
-> the pieces from various sources/headers together to one place and build a
-> bigger picture.
-> 
-> > I really detest that whole RST thing, and my solution is to explicitly
-> > not write kerneldoc, that way the doc generation stuff doesn't complain
-> > and I don't get random drive by patches wrecking the perfectly readable
-> > comment.
-> 
-> Sure. Rst _sources_ are not readable, IMO. Only generated man pages or html
-> are.
 
-But code comments are read in a text editor, not a browser. Hence all
-the markup is counter productive.
-
-Why would you go read something in a browser if you have the code right
-there in a text editor?
