@@ -1,133 +1,145 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CCF626
-	for <linux-coco@lists.linux.dev>; Thu, 13 Apr 2023 18:12:49 +0000 (UTC)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33DG2OI5027566;
-	Thu, 13 Apr 2023 16:57:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=D5yWcGIgmRhATTU255ihuSPwo0baBTJ7jksurRFuZ+g=;
- b=mk1w9WnZUKuqL3ILXvLilMJL0se8GJaoizyp1CuvknGwp8V9/lmnC6Boasb72A27ty7g
- eQ6kSH/r0xQipXwEECzTNxdqMTELog5QlWf1FZDUC2BHCZoPC1BUF/kUxFSDgxlwZWoE
- hE5dT1JS7d93v55usw3QZgOgNIyLbOmD9TDnEtv2bPt8z0U0d2a4g++Skma/5rdGM3UJ
- WwWerV3w0jiB9JvgdgQxFBr9o/bixjJ8t1DFRTpGYiESlg0nhyJAAe4vfIHCb/5ArfWa
- rTcGs1WuWnC4xzNPMUdPWbJX30RjPGjKnh/TTuyEfbZrPYzQ5CSQc4k1G+Mq316QXSfq zg== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pxjn0hjrr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Apr 2023 16:57:42 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33DGTTvM020834;
-	Thu, 13 Apr 2023 16:57:41 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
-	by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3pu0jhcg58-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Apr 2023 16:57:41 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33DGve8O10420780
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Apr 2023 16:57:40 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C301C58058;
-	Thu, 13 Apr 2023 16:57:40 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1091958057;
-	Thu, 13 Apr 2023 16:57:40 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.87.50])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Apr 2023 16:57:39 +0000 (GMT)
-Message-ID: <5ab2bca5dab750cce82df5e28db5ebb8f657e3ed.camel@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70464810
+	for <linux-coco@lists.linux.dev>; Fri, 14 Apr 2023 09:01:05 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 548C71FD96;
+	Fri, 14 Apr 2023 09:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1681462858; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q0l/ikP83dDW4zv5edWPxEJ1eKwhsJ2wrFcqkhU3L7s=;
+	b=kdi3c3xnsHaq/oyiGm/uY+4zZxFEIzz73Lr0ZO4OsoGsHkpiSEgVg1YDIsNvdmdZwgFIFW
+	OhOgaPj7JNyMMZi3poKpsLSe+CFxxIQL4a/s8Sny121kgvZaeEQwRBRF84uF3P15E2kbkg
+	VWb3agMX8vRpfGE415phDg0z3GUeOlI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1681462858;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q0l/ikP83dDW4zv5edWPxEJ1eKwhsJ2wrFcqkhU3L7s=;
+	b=11wifBI70zLYrE9G+aakhlzMH65NOLX0K5aT2BsjOueRqbw5aZPLfbyi85mtYm1VjbZu9f
+	/3a8qohpSgybjUCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 236D913498;
+	Fri, 14 Apr 2023 09:00:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 2hqtBkoWOWQzewAAMHmgww
+	(envelope-from <jroedel@suse.de>); Fri, 14 Apr 2023 09:00:58 +0000
+Date: Fri, 14 Apr 2023 11:00:56 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: James Bottomley <jejb@linux.ibm.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, amd-sev-snp@lists.suse.com,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org
 Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: Tom Lendacky <thomas.lendacky@amd.com>,
-        =?ISO-8859-1?Q?J=F6rg_R=F6del?=
- <jroedel@suse.de>,
-        amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
-        kvm@vger.kernel.org
-Date: Thu, 13 Apr 2023 12:57:38 -0400
-In-Reply-To: <bf7f82ab-3cd3-a5f6-74ec-270d3ca6c766@amd.com>
+Message-ID: <ZDkWSMUNiJ7BfoCo@suse.de>
 References: <ZBl4592947wC7WKI@suse.de>
-	 <bf7f82ab-3cd3-a5f6-74ec-270d3ca6c766@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: G6IPjah4Ll5JGw14d5KhHRAs-Ml2m2qk
-X-Proofpoint-GUID: G6IPjah4Ll5JGw14d5KhHRAs-Ml2m2qk
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ <bf7f82ab-3cd3-a5f6-74ec-270d3ca6c766@amd.com>
+ <5ab2bca5dab750cce82df5e28db5ebb8f657e3ed.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-13_12,2023-04-13_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
- spamscore=0 mlxscore=0 clxscore=1011 lowpriorityscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304130147
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5ab2bca5dab750cce82df5e28db5ebb8f657e3ed.camel@linux.ibm.com>
 
-On Tue, 2023-04-11 at 14:57 -0500, Tom Lendacky wrote:
-> On 3/21/23 04:29, Jörg Rödel wrote:
-> > Hi,
-> > 
-> > We are happy to announce that last week our secure VM service
-> > module (SVSM) went public on GitHub for everyone to try it out and
-> > participate in its further development. It is dual-licensed under
-> > the MIT and APACHE-2.0 licenses.
-> > 
-> > The project is written in Rust and can be cloned from:
-> > 
-> >         https://github.com/coconut-svsm/svsm
-> > 
-> > There are also repositories in the github project with the Linux
-> > host and guest, EDK2 and QEMU changes needed to run the SVSM and
-> > boot up a full Linux guest.
-> > 
-> > The SVSM repository contains an installation guide in the
-> > INSTALL.md file and contributor hints in CONTRIBUTING.md.
-> > 
-> > A blog entry with more details is here:
-> > 
-> >         https://www.suse.com/c/suse-open-sources-secure-vm-service-
-> > module-for-confidential-computing/
-> > 
-> > We also thank AMD for implementing and providing the necessary
-> > changes to Linux and EDK2 to make an SVSM possible.
+Hi James,
+
+On Thu, Apr 13, 2023 at 12:57:38PM -0400, James Bottomley wrote:
+> We (IBM) did look at what it might take to add a vTPM to Coconut, but
+> we ran into the problem that if we do it at CPL3 (which looks
+> desirable), then we have to wait until pretty much every one of the
+> twelve(!) tasks in this list is complete:
 > 
-> Just wanted to let everyone know that I'm looking into what we can do
-> to  move towards a single SVSM project so that resources aren't split
-> between  the two.
-> 
-> I was hoping to have a comparison, questions and observations between
-> the two available by now, however, I'm behind on that... but, I am
-> working on it.
+> https://github.com/coconut-svsm/svsm/issues/16
 
-We (IBM) did look at what it might take to add a vTPM to Coconut, but
-we ran into the problem that if we do it at CPL3 (which looks
-desirable), then we have to wait until pretty much every one of the
-twelve(!) tasks in this list is complete:
+Thanks for looking into the code-base. Our approach to getting CPL-3
+support is incremental. We can take some shortcuts where possible, as
+long as the foundations and the underlying design is right, to get code
+running at CPL-3 at some point in 2H/2023.
 
-https://github.com/coconut-svsm/svsm/issues/16
+Looking at the points listed in the issue above, some of them are ready
+or almost ready (just not included in the main branch yet):
 
-At a conservative estimate, it looks like completion of all twelve
-would take a team of people over a year to achieve.  Some of these
-tasks, like task switching and a syscall interface, really don't look
-like they belong in a simple service module, like we were imagining an
-SVSM would operate, is there some rationale behind this (or ideally
-some architecture document that gives the justifications)?  I think
-what I'm really asking is can we get to CPL3 separation way sooner than
-completion of all these tasks?
+	* "Archive file in SVSM binary" is implemented
+	* "Page allocator enhancements for reference counting pages" is
+	  implemented
+	* "ELF loader" is implemented, there is a pending PR for it.
+
+The "RAM file system support" is currently being worked on. All of the
+listed points probably don't have a 'complete' state, I think we start
+with something very simple and improve from that later as needed.
+
+A primary example is the syscall interface, that will certainly evolve
+over time as people come along with their own ideas for other modules.
+
+The rough plan moving forward is:
+
+	* Get RAM FS ready
+	* Implement a task and address space abstraction which allows
+	  to map RAM FS file contents for CPL-3
+	* Task switch and sycall entry/exit
+	* Example binary to run for initial tests (that will probably be
+	  worked on in parallel)
+
+When that is done we can look into how to get a vTPM into a binary and
+improve the underlying interface as required.
+
+Of course progress will be faster with more helping hands :-)
+
+There are also a lot of places that don't have a final design yet where
+help and discussions are beneficial.
+
+> At a conservative estimate, it looks like completion of all twelve
+> would take a team of people over a year to achieve.  Some of these
+> tasks, like task switching and a syscall interface, really don't look
+> like they belong in a simple service module, like we were imagining an
+> SVSM would operate, is there some rationale behind this (or ideally
+> some architecture document that gives the justifications)?  I think
+> what I'm really asking is can we get to CPL3 separation way sooner than
+> completion of all these tasks?
+
+We do not imaging the SVSM to be simple and small, we are imagining it
+to be secure and extensible. Of course it will always be smaller than a
+full-blown OS, but the vision is that it can do more than running a vTPM
+emulation. Also when we start looking into paravisor-like features like
+ReflectVC-handling later, the SVSM will certainly not be simple anymore.
+
+When I talked to people about the SVSM I often heard other interesting
+ideas what services it can provide. To make this possible and secure the
+SVSM needs the ability to run multiple modules at CPL-3. And a task
+concept with a simple FS to load those modules from is, in my opinion,
+the right approach.
+
+Yes, it takes more time than simpler and less flexible approaches, but
+as one of my favourite TV characters put it: "This is the Way" :-)
 
 Regards,
 
-James
+-- 
+J�rg R�del
+jroedel@suse.de
 
+SUSE Software Solutions Germany GmbH
+Frankenstra�e 146
+90461 N�rnberg
+Germany
+
+(HRB 36809, AG N�rnberg)
+Gesch�ftsf�hrer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
 
