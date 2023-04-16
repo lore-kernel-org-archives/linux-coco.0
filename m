@@ -1,58 +1,58 @@
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8465EA45
-	for <linux-coco@lists.linux.dev>; Fri, 14 Apr 2023 10:19:09 +0000 (UTC)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.nyi.internal (Postfix) with ESMTP id 829305C019C;
-	Fri, 14 Apr 2023 06:19:08 -0400 (EDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC72A4C60
+	for <linux-coco@lists.linux.dev>; Sun, 16 Apr 2023 19:19:46 +0000 (UTC)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.nyi.internal (Postfix) with ESMTP id 8C5C05C0039;
+	Sun, 16 Apr 2023 15:19:45 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 14 Apr 2023 06:19:08 -0400
+  by compute5.internal (MEProxy); Sun, 16 Apr 2023 15:19:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-type:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm1; t=1681467548; x=
-	1681553948; bh=3WBXbUqLLLeQq1ZCi/ry0FRNyZxe7SfbSw3k4IDdgYw=; b=Z
-	ClIRosJvFYimXH424uFn+IMWuq7wHzSt3CljrY6r3b2AWz20JTr3/voTEg5m5Jwj
-	UJozpW/Eb7z4fS8NJLngrRWiQwe9+eoOVt7aOHAQU8KHYLFuHpcZJ9KLPu/jJtH2
-	9khb9X0dhloRjI8UKC8rzGLqd4glPe/VOA+1sw47v8Kz2xTKBqAmvuIHRr2Hk9cb
-	qkCx1iB5t55scuSTy14A81GS7dz2XtgBVN4oPJ1F8+Jje3pSWcAngphiyuKemx3f
-	5gvG9A4VrQlZBSySiKi8BqvxPS1CgAlqqjhMEMgsJmNEdYd+KfOodnUs9Md3q4qX
-	aKeFlK5chukPhVnOAF12Q==
+	:reply-to:sender:subject:subject:to:to; s=fm1; t=1681672785; x=
+	1681759185; bh=YGRdIcPItYFcSw7fEDFLZquPj7AtRRDkYXtyuZxJq/U=; b=d
+	cKPlQi01xUEdqakuUy3IFFpBHkHDOpDeTPLZ78GWzQqE/gvsG2Sj9e0OyOzJI1x3
+	HUkEG3YdI4KsSgb6cgETLCUhDlkuOVgmIN23kS5njWdsAiRKWWMLNz54bMhlOHKP
+	1Nb+XSqoZrEMF0I7wdgORuqj1sfKMYPYHKPvT+Xe5uvQe62eIJp+72TBWCkYNqau
+	k5IUHGy16wXxNo6nQ3fxwiRNU9iggNarO6PezzahvI2J5yinnLv5FSkeEDchWpF/
+	pb4xTPq5RSBx8VkM/oFP5oDI3fYkR3ckSEp4Gk2OS1u7wus3bosyIR/DW8mdCTp+
+	pZ3VDIOmcTaF8/voIA7Lw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:sender:subject
 	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1681467548; x=1681553948; bh=3WBXbUqLLLeQq
-	1ZCi/ry0FRNyZxe7SfbSw3k4IDdgYw=; b=Upd2y1I6y+9hRCGMAhkcN7OzmAdK+
-	ZYWyZauB6wWOXiH4DJdR7jvPQF4zF5KAFENPCLq+iUnbuIbPxWvaRixT0yBUZDWB
-	sURE8/aBRxo4kDgGlXUphkxSqWCNFJLcBsoXhTKFDVSmNnp/D+3t493rFbUl2G5m
-	3z7OHA3oU3wt8CMch2Ipsx0uZsyKbSEL8xR3x6AsfXqGa2qwbvzTwOpnZ0h15QFu
-	yOoVpNQ7SoueL2JYoTHKrbUTt6bnABkk3OshYd7lnz0sYNwOyzoAwrcPb/l2hTse
-	V/H/Nb6xu7Mwzmd/y/uH1C6F2FvXMRV1h25KH7yXB1zx++Pm/aVEoJ/lw==
-X-ME-Sender: <xms:mSg5ZPS4HgjIrSFX5z_NpAVVSbED5mN9q3mUjZ_8nHbZ9eVTlmtdWA>
-    <xme:mSg5ZAwUJnBb46d1NnpKk21K5cIBNFghWn5EDA6GyBByGtkoqmxquuGnpLQs_zVA8
-    RQJwjSpKbr_bGa_XSg>
-X-ME-Received: <xmr:mSg5ZE2pqdD1eG7mmTjt8v2OqS7gQXjHe0eCEkBuTn1RUFeR5GiZYcC81LlUgFzc8J9r3A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdeltddgvdeiucetufdoteggodetrfdotf
+	:x-sasl-enc; s=fm3; t=1681672785; x=1681759185; bh=YGRdIcPItYFcS
+	w7fEDFLZquPj7AtRRDkYXtyuZxJq/U=; b=ZhHDbhA+5anegK7zp66gP1bNpMsiO
+	DwJNW4ZlvCEuB+i/dDTyFod2fR8GNQxRbEa1JHytZ25x5/8iNzEisk9GPXP+2CM1
+	fu8mN7L5mAbgFsuqHGLfaXfhzDmP3NmvCZJ+c1H6WONj/9c40Zny9u2nyjq/o4dA
+	otPOkENiTyDS6386owjy06YAkP+h7RV5WZ8ltg/uDiPi1Cib79GoeeOACXAZflLv
+	9d3pYZltCvv/9E1lrz+MDmM8rj9N+bBwHaNbzxtgTvhtziopYYKgD9Vx6MGrDO9E
+	N1EKft90agA0X58pbTk4Te5DLOJiZvqJBsJOnm1I5SHYNvTZXDqL/2fzg==
+X-ME-Sender: <xms:UEo8ZCgJ2f_PcM4jhh96JFFn6pr379B1cIC0bxXCCOIX2i0gcuTSQA>
+    <xme:UEo8ZDDyeFbm2WjeVbIO0R9GC9GW4sV7A-gQFb0sikYf9f8ltyJvt0XmIs3XZriJc
+    lZ-SzhzKA4PzsqE3b0>
+X-ME-Received: <xmr:UEo8ZKGWtlZFRRuRPrgbp2u9xidH7_1f7bq6nG_aYvSSVq0pQdAIkgyHZ3zz0TE5dHC-oA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvdelgedgleegucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepfdfmihhr
+    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
     ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
-    grmhgvqeenucggtffrrghtthgvrhhnpeekvddvjeffheetgedtvdfgieejiedvgeejieet
-    jeehieehveffueekfeehffdvveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
+    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
     epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:mSg5ZPCvN2Rg7TWqsjEeh_lGBR8eEY7DVzpug6C_77mc6cCu2EIXhA>
-    <xmx:mSg5ZIhNS0G2oXtzXubSOHOOhSyd2NDMcTQ5j4QU67biRvjCz3iZ3w>
-    <xmx:mSg5ZDrP_l6z9rFc5Czx3kgu5vM-oC36DTLB_RQcRK9qcA7pihEogQ>
-    <xmx:nCg5ZNtKLM41dZv5Xl9o1gVYOHKrPDeiKeYiGdqaoMzKsiOzE_xpbg>
+X-ME-Proxy: <xmx:UEo8ZLQ0YrZ0SYnvhgfFQXBo4MVahr8E1VYDJWwPPcfyHlaaqbkxIQ>
+    <xmx:UEo8ZPzsXc0J4X_Y1Wg66pwUUZB1zvyMnNicsACP2F_fQakLg8C3wg>
+    <xmx:UEo8ZJ7rHlVXMUN0oaS92Rr8hB2ve3zfdGwBJUyfqqdlAv8SYA_QJA>
+    <xmx:UUo8ZI9XMBpuDpdqcaMQcLMszovDTAUpQTN7s3cct9z3Po2ZFZ1dIA>
 Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Apr 2023 06:19:05 -0400 (EDT)
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 16 Apr 2023 15:19:44 -0400 (EDT)
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id EE51510D7B4; Fri, 14 Apr 2023 13:19:01 +0300 (+03)
-Date: Fri, 14 Apr 2023 13:19:01 +0300
+	id D06C610B9A3; Sun, 16 Apr 2023 22:19:40 +0300 (+03)
+Date: Sun, 16 Apr 2023 22:19:40 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Vlastimil Babka <vbabka@suse.cz>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -74,13 +74,11 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  philip.cox@canonical.com,	aarcange@redhat.com, peterx@redhat.com,
  x86@kernel.org,	linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv9 03/14] mm/page_alloc: Fake unaccepted memory
-Message-ID: <20230414101901.j3zoji6vmjzpjiec@box>
+Subject: Re: [PATCHv9 00/14] mm, x86/cc: Implement support for unaccepted
+ memory
+Message-ID: <20230416191940.ex7ao43pmrjhru2p@box.shutemov.name>
 References: <20230330114956.20342-1-kirill.shutemov@linux.intel.com>
- <20230330114956.20342-4-kirill.shutemov@linux.intel.com>
- <835dfe65-d9dd-0b16-37d4-920e97f1bca0@suse.cz>
- <20230403143915.uc4tnpgmssvpdqxu@box.shutemov.name>
- <20230403155011.aodnd5ratcyeie52@box.shutemov.name>
+ <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -89,63 +87,30 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230403155011.aodnd5ratcyeie52@box.shutemov.name>
+In-Reply-To: <2e0da486-71e4-cfeb-1578-68f1c8c43d33@suse.cz>
 
-On Mon, Apr 03, 2023 at 06:50:11PM +0300, Kirill A. Shutemov wrote:
-> On Mon, Apr 03, 2023 at 05:39:15PM +0300, Kirill A. Shutemov wrote:
-> > On Mon, Apr 03, 2023 at 03:39:53PM +0200, Vlastimil Babka wrote:
-> > > On 3/30/23 13:49, Kirill A. Shutemov wrote:
-> > > > For testing purposes, it is useful to fake unaccepted memory in the
-> > > > system. It helps to understand unaccepted memory overhead to the page
-> > > > allocator.
-> > > 
-> > > Ack on being useful for testing, but the question is if we want to also
-> > > merge this patch into mainline as it is?
-> > 
-> > I don't insist on getting it upstream, but it can be handy to debug
-> > related bugs in the future.
-> > 
-> > > > The patch allows to treat memory above the specified physical memory
-> > > > address as unaccepted.
-> > > > 
-> > > > The change only fakes unaccepted memory for page allocator. Memblock is
-> > > > not affected.
-> > > > 
-> > > > It also assumes that arch-provided accept_memory() on already accepted
-> > > > memory is a nop.
-> > > 
-> > > I guess to be in mainline it would have to at least gracefully handle the
-> > > case of accept_memory actually not being a nop, and running on a system with
-> > > actual unaccepted memory (probably by ignoring the parameter in such case).
-> > > Then also the parameter would have to be documented.
-> > 
-> > As it is written now, accept_memory() is nop on system with real
-> > unaccepted memory if the memory is already accepted. Arch-specific code
-> > will check against own records to see if the memory needs accepting. If
-> > not, just return.
-> > 
-> > And the option will not interfere with unaccepted memory declared by EFI
-> > memmap. It can extend it, but that's it.
-> > 
-> > Looks safe to me.
-> > 
-> > > Speaking of documented parameters, I found at least two that seem a more
-> > > generic variant of this (but I didn't look closely if that makes sense):
-> > > 
-> > > efi_fake_mem=   nn[KMG]@ss[KMG]:aa[,nn[KMG]@ss[KMG]:aa,..] [EFI; X86]
-> > >     Add arbitrary attribute to specific memory range by
-> > >     updating original EFI memory map.
-> 
-> As of now, efi_fake_mem= can adjust attributes of memory. Unaccepted is
-> type of memory, not an attribute. I guess we can allow it override type
-> too. But syntax is going to be fun.
+On Mon, Apr 03, 2023 at 04:42:54PM +0200, Vlastimil Babka wrote:
+> Hmm yeah it can be noisy. Did you try to only count events that have
+> fragmenting=1 and/or MIGRATE_MOVABLE as fallback_migratetype? As those are
+> the really bad events.
 
-efi_fake_mem applied too late. Bitmap that represents unaccepted memory
-for kernel created at kernel decompression stage, but efi_fake_mem=
-handled in main kernel.
+I finally got around to retest it.
 
-I don't think pushing efi_fake_mem to decompressor makes sesne. I would
-rather drom the feature altogether.
+		total	fragmenting	movable	fragmenting&&movable
+base-1:		957	583		353	0
+base-2:		2715	2343		359	0
+base-3:		2033	1669		353	0
+patched-1:	1325	929		371	0
+patched-2:	2844	2451		371	0
+patched-3:	1304	917		361	0
+
+fragmenting=1 is defined as fallback_order<pageblock_order which is most
+of them.
+
+Patched kernel showed slightly elevated movable(fallback_migratetype=1)
+cases. Is it critical?
+
+There's no allocations that is fragmenting and movable. Hm.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
