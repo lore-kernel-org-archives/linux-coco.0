@@ -1,43 +1,43 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD28D300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:24:06 +0000 (UTC)
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1a6862e47b1so5552125ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:24:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BA9D300
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:24:08 +0000 (UTC)
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-51f597c975fso297578a12.0
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:24:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681943046; x=1684535046;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681943048; x=1684535048;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nDYPek2GW62ZjpMwmsxfE9d0xDPaKHdBMm+cEZKc8s8=;
-        b=gbm655ZKGYsSplRJThxaUIliJsDtxxCNHAd8Jsh9rquTj5wgjudHgZwJA550iZsQk9
-         VB0SQu2x2QDE7zie14SgvIe7dnOfITMaMnMjD/onrUT0al1gT1sDadgULueeivhnEmTD
-         JNLdLb2hMXSDd97f9GLtgcoOoiKtiFWFueifxdMTSbyKE0Z6Gv5tcQoRd/Nk8sLhR8hd
-         DGNAlG+7Czxou3KoS1S39Pu0wydKlsp73goQ0cZbb90x0/1svTeMdjxcJ4JUnBS4z1ue
-         xceJZmumlSVFCncTt6FuOgv+xYSVDvprfYgxAUggRJ/YOlKDghslSrOk6KKM64ujkV1m
-         0exg==
+        bh=sx5yCGWct6pM6GpC/mvdByE459bnHS7kFRJEEmvmIAE=;
+        b=3p9iTgdU1fM6SCFnmbdU2SRrkZIz70XAXwuZckkQOMwQBsxli9xyQOj3eelNgilUbh
+         Ys8/7Ew5TPJfNpxVGDr0CtIGeK0FA4rEB+OIcbXgq5wyTLnVYPvSZ8aMalLarGl9SYQB
+         5RACL91+xtTKghPY756sehNtiuCKsCnVWuoe+lw1F03ENQxtWOfB9WS65O7GV37PILFO
+         Dk35L2JW1UKZe1fvGcD1U01nAz5TPWWbGAHGpwD1ZT3uAJFTUyTj5jlwZGRm00f0H14O
+         tl+5fi2Hb+F0OmZuIVTWcPUeShVBuC5Hht10Q7j0AV8S9TF+U8wIpbjtIc2XL8zQkszI
+         EVlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681943046; x=1684535046;
+        d=1e100.net; s=20221208; t=1681943048; x=1684535048;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nDYPek2GW62ZjpMwmsxfE9d0xDPaKHdBMm+cEZKc8s8=;
-        b=Ay45EBe4m+pOODNcYgTVoyuTvmSCSmH52W+p+RS6/l1ILqAjliQ7fNDEteT3pN7M1z
-         rL+c4JJOly8+v8YYPQLDNiR3gmEAogGI68CPEMZPk7Kn5wLUoRP0GHOO2PtRKjPbDaX/
-         Q3Dc69KldMrLNiN13z6a8FDyig0Q85tNql9KTbUYVBgNY5sDxPYsx9ut8lBnWulpcEWn
-         C276cfd6qmYSMasjVy3sl5qaqOOVl2ADJy1dkG62o2Vr8P4/Dr0STjd48u0u+uqUWlU4
-         G0KGsfVXmiv7ZTrdxjWZA68QzKNm8ynhcUl6jrkyA4SLuCOw/+PHqTx9fsrUZaKkgS6r
-         ZFbA==
-X-Gm-Message-State: AAQBX9e0tQk4gN0L3BWswuY/Qkpq6Q7jJldNaPknZUTdtYKU014kdXx2
-	M57mLzckGD8ToiygcIykldS9nw==
-X-Google-Smtp-Source: AKy350ZvU/B8LPyorDIQytWlfNOBgumMg9x+NGoZu6TjngTCY2lrTTdfxOrkdp5JkE0zcFgeJL83hQ==
-X-Received: by 2002:a17:903:120e:b0:1a6:c12d:9020 with SMTP id l14-20020a170903120e00b001a6c12d9020mr7842484plh.24.1681943046020;
-        Wed, 19 Apr 2023 15:24:06 -0700 (PDT)
+        bh=sx5yCGWct6pM6GpC/mvdByE459bnHS7kFRJEEmvmIAE=;
+        b=ToJvRKW8R6EdlVStBH7Aruy/+ThXnnDmDnj/ReiL5pzciUx7utYPTuJGSKxRjan2F3
+         xWdYrOuxX37jNB+J8XfuFw3nVOhd8SxbAyII8tANBrizIAx4Ws/MRo5XxicVCnOc7GZz
+         aZTEaXRDDWg4uwX+xjPoUSjR5Wpi4ZwErDqYy7vHrNw0teA6m1BJxG99J6S8hvJwlbNh
+         4d2B3fGPtftqwSh+shqrgVGbKean5ijncsCmolW1h/iWDmU7iLGE92JcpEQL3AyMdQKJ
+         T69Pl7iR9/UFw9GCmvSnQItgQvri2xrmg2x4MEQBEnb4UluMrXy9hzX5N13cDWYuZduh
+         wQnQ==
+X-Gm-Message-State: AAQBX9c34iU6+yyPu0kXndCsg4hZElZiw8CCa5KJu+guC7kqM5lMS5si
+	nwegl44aCg88XClE9T1xNPbddJQ+ndvFBCn17Nc=
+X-Google-Smtp-Source: AKy350YPzGRajmyQ2O5tL/h5sOqIMWA3WFpT3qCLbVNDZ6itlq+/cjeCHlrQkCoL9IBGQLSaGxxwuA==
+X-Received: by 2002:a17:903:2905:b0:19a:b869:f2f8 with SMTP id lh5-20020a170903290500b0019ab869f2f8mr5951568plb.21.1681943047880;
+        Wed, 19 Apr 2023 15:24:07 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id e4-20020a170902744400b001a681fb3e77sm11867810plt.44.2023.04.19.15.24.04
+        by smtp.gmail.com with ESMTPSA id e4-20020a170902744400b001a681fb3e77sm11867810plt.44.2023.04.19.15.24.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:24:05 -0700 (PDT)
+        Wed, 19 Apr 2023 15:24:07 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -63,9 +63,9 @@ Cc: Atish Patra <atishp@rivosinc.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC kvmtool 02/10] riscv: Define a command line option for CoVE VM
-Date: Wed, 19 Apr 2023 15:23:42 -0700
-Message-Id: <20230419222350.3604274-3-atishp@rivosinc.com>
+Subject: [RFC kvmtool 03/10] riscv: Define a measure region IOCTL
+Date: Wed, 19 Apr 2023 15:23:43 -0700
+Message-Id: <20230419222350.3604274-4-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419222350.3604274-1-atishp@rivosinc.com>
 References: <20230419222350.3604274-1-atishp@rivosinc.com>
@@ -77,35 +77,91 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The user should be able configure the VMM to instantiate a CoVE VM via
-a command line. Add the new option cove-vm.
+CoVE VM images needs to be measured by the TSM. The VMM updates
+the host about these images via a new IOCTL. The host makes appropriate
+ecalls for TSM to perform the measurement.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- riscv/include/kvm/kvm-config-arch.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/kvm.h          |  2 ++
+ riscv/include/asm/kvm.h      |  6 ++++++
+ riscv/include/kvm/kvm-arch.h |  2 ++
+ riscv/kvm.c                  | 21 +++++++++++++++++++++
+ 4 files changed, 31 insertions(+)
 
-diff --git a/riscv/include/kvm/kvm-config-arch.h b/riscv/include/kvm/kvm-config-arch.h
-index aed4fbf..01276ea 100644
---- a/riscv/include/kvm/kvm-config-arch.h
-+++ b/riscv/include/kvm/kvm-config-arch.h
-@@ -10,6 +10,7 @@ struct kvm_config_arch {
- 	u64		custom_mimpid;
- 	bool		ext_disabled[KVM_RISCV_ISA_EXT_MAX];
- 	bool		sbi_ext_disabled[KVM_RISCV_SBI_EXT_MAX];
-+	bool		cove_vm;
+diff --git a/include/linux/kvm.h b/include/linux/kvm.h
+index 000d2b9..d4969a0 100644
+--- a/include/linux/kvm.h
++++ b/include/linux/kvm.h
+@@ -1547,6 +1547,8 @@ struct kvm_s390_ucas_mapping {
+ #define KVM_PPC_SVM_OFF		  _IO(KVMIO,  0xb3)
+ #define KVM_ARM_MTE_COPY_TAGS	  _IOR(KVMIO,  0xb4, struct kvm_arm_copy_mte_tags)
+ 
++#define KVM_RISCV_COVE_MEASURE_REGION _IOR(KVMIO, 0xb5, struct kvm_riscv_cove_measure_region)
++
+ /* ioctl for vm fd */
+ #define KVM_CREATE_DEVICE	  _IOWR(KVMIO,  0xe0, struct kvm_create_device)
+ 
+diff --git a/riscv/include/asm/kvm.h b/riscv/include/asm/kvm.h
+index 1dce9a4..2bacc38 100644
+--- a/riscv/include/asm/kvm.h
++++ b/riscv/include/asm/kvm.h
+@@ -98,6 +98,12 @@ struct kvm_riscv_timer {
+ 	__u64 state;
  };
  
- #define OPT_ARCH_RUN(pfx, cfg)						\
-@@ -66,6 +67,7 @@ struct kvm_config_arch {
- 		    "Disable SBI Experimental Extensions"),		\
- 	OPT_BOOLEAN('\0', "disable-sbi-vendor",				\
- 		    &(cfg)->sbi_ext_disabled[KVM_RISCV_SBI_EXT_VENDOR],	\
--		    "Disable SBI Vendor Extensions"),
-+		    "Disable SBI Vendor Extensions"),			\
-+	OPT_BOOLEAN('\0', "cove-vm", &(cfg)->cove_vm, "CoVE VM"),
++struct kvm_riscv_cove_measure_region {
++	unsigned long user_addr;
++	unsigned long gpa;
++	unsigned long size;
++};
++
+ /*
+  * ISA extension IDs specific to KVM. This is not the same as the host ISA
+  * extension IDs as that is internal to the host and should not be exposed
+diff --git a/riscv/include/kvm/kvm-arch.h b/riscv/include/kvm/kvm-arch.h
+index 9f2159f..08ac54a 100644
+--- a/riscv/include/kvm/kvm-arch.h
++++ b/riscv/include/kvm/kvm-arch.h
+@@ -120,4 +120,6 @@ void riscv__generate_irq_prop(void *fdt, u8 irq, enum irq_type irq_type);
  
- #endif /* KVM__KVM_CONFIG_ARCH_H */
+ void riscv__irqchip_create(struct kvm *kvm);
+ 
++void kvm_cove_measure_region(struct kvm *kvm, unsigned long uaddr,
++			      unsigned long gpa, unsigned long rsize);
+ #endif /* KVM__KVM_ARCH_H */
+diff --git a/riscv/kvm.c b/riscv/kvm.c
+index a9ade1f..99b253e 100644
+--- a/riscv/kvm.c
++++ b/riscv/kvm.c
+@@ -13,6 +13,27 @@ struct kvm_ext kvm_req_ext[] = {
+ 	{ 0, 0 },
+ };
+ 
++void kvm_cove_measure_region(struct kvm *kvm, unsigned long uaddr,
++			      unsigned long gpa, unsigned long rsize)
++{
++	int ret;
++
++	if (!kvm->cfg.arch.cove_vm)
++		return;
++
++	struct kvm_riscv_cove_measure_region mr = {
++		.user_addr = uaddr,
++		.gpa = gpa,
++		.size = rsize,
++	};
++
++	ret = ioctl(kvm->vm_fd, KVM_RISCV_COVE_MEASURE_REGION, &mr);
++	if (ret < 0) {
++		ret = -errno;
++		die("Setting measure region failed for CoVE VM\n");
++	}
++}
++
+ u64 kvm__arch_default_ram_address(void)
+ {
+ 	return RISCV_RAM;
 -- 
 2.25.1
 
