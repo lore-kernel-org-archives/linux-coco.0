@@ -1,43 +1,43 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5C9D300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:18:56 +0000 (UTC)
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-51fcf5d1e44so252144a12.3
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:18:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F09D303
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:19:01 +0000 (UTC)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1a68f2345c5so4228955ad.2
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:19:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942736; x=1684534736;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942740; x=1684534740;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HpkP1wnIrltbLZeAb/TZzxnsq9NvqWT39c9WofSyiOk=;
-        b=Nzsbq++D21vwA8dGs2TEhUmfLPFSaig0puRkykWSASC64dxd/vGkpSKeFxQXOJxyon
-         5Ou4PoViyNfDX1Gfoq/jlBl1G1RhaiR4JLXaKzD7kt+niF6AKE+yOb7DVxkMfV9AiHsx
-         mTPuZ/MAZl6BEVu8xpX5HBzOXWWYp6VQYr3Mp0sTKgkIRgLhxoSPyTdHc4vxQBKRTjC6
-         nzaETrxZRtdvV7d/S3g19DaIk1Y5S0BgV4Ei7fF0jUB1ujpfDWT04dllTpouA2v7Akvc
-         l3myGSmdOxw+gPB2lOjj2aqYoHDlOR0Rr4q6kW0PPflSvA1d+iZ7docwAXBz+likDSY4
-         tCOg==
+        bh=XoUTXkkdzp66fUQa0SZgxh2I0hcfFcSevl2ozJzsZr8=;
+        b=IhesJB7cf1n2WZ7fBKb+dS6w3v0TIDtk6aiBcZra2CO2eehnlOUntTGLXPnoKcGUou
+         bLgl/XcFe6/UB+ywV55miS51XCkHEWA0laPJEt1KJ/aJ0rahNvo0Q/dF7ADasdpm9XXJ
+         UbjbI+Mf8nQXeZ5MyqNpR4s0bolzM0xGm/nM+7/6dJzXpWgydjb9eiN4RqXE1WgIi7X8
+         Cthi7K85fjMc6Q2drU0GHSRvqnoqTSaztCaljlOhPnma9qwgoHLv2753zQOCcA61wCJ4
+         ASXuml6AjUU1EX63a78TtnBe3v9dKyM8HxF0mGk0OEwSi9vUl2cLdbi3OnS7mPROB1q6
+         5uTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681942736; x=1684534736;
+        d=1e100.net; s=20221208; t=1681942740; x=1684534740;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HpkP1wnIrltbLZeAb/TZzxnsq9NvqWT39c9WofSyiOk=;
-        b=S/d4MfwK9hDNI1NqCwUAzsLQD8KPQ+TortUaUv8j69k7qiB7ONzNVOJ1liReQlwt3Q
-         x19Q9cuhSVtCMoK1buEHNRWxZqSHAnBdonbvnA4I/Sh325kFwVdfNz1X4JQcz9rJKxH3
-         R28UP4jCoYaU1cmO1KEhzd2ihYF3adwNse8QZnTZ08fpvM/EWMNrsGcqqOulgiVOgWsV
-         zMbEYT9N2xhhbaJlkA6IRP6Ta7QV5eUeM5HVekAEAHR7d3gZs7ub6s2XAh7z1MQ40O6Y
-         QTCSxChmTsoBuhOnjqakeHKEMbnQL4j65bayW/QyawGppuv/CsjUoRaIKcCl2pTxBJf9
-         fpwA==
-X-Gm-Message-State: AAQBX9ecck/oYNRhmmxlnuicynRDS4TZR2SE+yTv5uvKaPWw7JSo4Wt9
-	/OW7j8wfRR/7HJGWXHoGgr48Uw==
-X-Google-Smtp-Source: AKy350bCoBKIrFcroX21XtHTuZqvJehyqLN918v9CE2Osbf4jkMqvKMUa5z+Sio4RKf3jpe/KHP4Bg==
-X-Received: by 2002:a17:90a:f415:b0:247:6be7:8cc0 with SMTP id ch21-20020a17090af41500b002476be78cc0mr3832862pjb.35.1681942736133;
-        Wed, 19 Apr 2023 15:18:56 -0700 (PDT)
+        bh=XoUTXkkdzp66fUQa0SZgxh2I0hcfFcSevl2ozJzsZr8=;
+        b=LvCSN243TRBTWL0JB/w8el/ZH0dK2CMg/Bn2RwdXdudKAymyh1qcfR8/YBryBx5a9P
+         yKshdTe8YIcKuSkHpeNYsuBGQgYdxLieyg+NlO+d/DlL438s2PMggj4S2FaDg+tgiF1f
+         zI+X9IUSLCcIgUCNYA4LiHvwmSUn2MA/jxmNmLnO51xN5uP8Riml9kPTJESVDA4EeeNq
+         BLLYhA2akIcYYQrEJXDfXbWJhoIkK72VTobfnpk5+rrwkUuBpD+jSbnLrrSnAnS09h72
+         uwNHCyy7DwAgNfwyVzkSO8zS/VpqSDbTlKL1JWu/ESkgXVU7ZW0qJVC30W3PRJPLPsFr
+         BJ/g==
+X-Gm-Message-State: AAQBX9fPodbVR5O2EJ1EMCS6JKU4NDyfiDpeBzizJCl12NY6ZxxFGUgN
+	F3HQGwZm3xmIoyO2BRD0VsbIWQ==
+X-Google-Smtp-Source: AKy350Y7aINNAc9YHSFZjS/1v/4hxySiR9RBBeMIRAwJ/RoWtbD0/kdtTdNjVZfjscd6qYzOFWfZ9Q==
+X-Received: by 2002:a17:902:eb91:b0:1a6:d2a9:3fab with SMTP id q17-20020a170902eb9100b001a6d2a93fabmr5967973plg.47.1681942740547;
+        Wed, 19 Apr 2023 15:19:00 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.18.54
+        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.18.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:18:55 -0700 (PDT)
+        Wed, 19 Apr 2023 15:19:00 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>,
@@ -71,9 +71,9 @@ Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC 39/48] RISC-V: Implement COVG SBI extension
-Date: Wed, 19 Apr 2023 15:17:07 -0700
-Message-Id: <20230419221716.3603068-40-atishp@rivosinc.com>
+Subject: [RFC 41/48] RISC-V: KVM: Add host side support to handle COVG SBI calls.
+Date: Wed, 19 Apr 2023 15:17:09 -0700
+Message-Id: <20230419221716.3603068-42-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419221716.3603068-1-atishp@rivosinc.com>
 References: <20230419221716.3603068-1-atishp@rivosinc.com>
@@ -87,39 +87,292 @@ Content-Transfer-Encoding: 8bit
 
 From: Rajnesh Kanwal <rkanwal@rivosinc.com>
 
-COVG extension defines the guest side interface for running a guest
-in CoVE. These functions allow a CoVE guest to share/unshare memory, ask
-host to trap and emulate MMIO regions and allow/deny
-injection of interrupts from host.
+Adding host side support to allow memory sharing/unsharing.
+Host needs to check if the page has been already assigned
+(converted) to a TVM or not. If yes, that page needs to be
+reclaimed before sharing that page.
+
+For the remaining ECALLs host doesn't really need to do anything
+and we just return in those cases.
 
 Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- arch/riscv/cove/Makefile          |   2 +-
- arch/riscv/cove/cove_guest_sbi.c  | 109 ++++++++++++++++++++++++++++++
- arch/riscv/include/asm/covg_sbi.h |  38 +++++++++++
- 3 files changed, 148 insertions(+), 1 deletion(-)
- create mode 100644 arch/riscv/cove/cove_guest_sbi.c
- create mode 100644 arch/riscv/include/asm/covg_sbi.h
+ arch/riscv/include/asm/kvm_cove.h     |  11 +-
+ arch/riscv/include/asm/kvm_cove_sbi.h |   4 +
+ arch/riscv/include/asm/kvm_vcpu_sbi.h |   3 +
+ arch/riscv/include/uapi/asm/kvm.h     |   1 +
+ arch/riscv/kvm/Makefile               |   2 +-
+ arch/riscv/kvm/cove.c                 |  48 +++++-
+ arch/riscv/kvm/cove_sbi.c             |  18 ++
+ arch/riscv/kvm/vcpu_exit.c            |   2 +-
+ arch/riscv/kvm/vcpu_sbi.c             |  14 ++
+ arch/riscv/kvm/vcpu_sbi_covg.c        | 232 ++++++++++++++++++++++++++
+ 10 files changed, 328 insertions(+), 7 deletions(-)
+ create mode 100644 arch/riscv/kvm/vcpu_sbi_covg.c
 
-diff --git a/arch/riscv/cove/Makefile b/arch/riscv/cove/Makefile
-index 03a0cac..a95043b 100644
---- a/arch/riscv/cove/Makefile
-+++ b/arch/riscv/cove/Makefile
-@@ -1,2 +1,2 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-$(CONFIG_RISCV_COVE_GUEST)	+= core.o
-+obj-$(CONFIG_RISCV_COVE_GUEST)	+= core.o cove_guest_sbi.o
-diff --git a/arch/riscv/cove/cove_guest_sbi.c b/arch/riscv/cove/cove_guest_sbi.c
+diff --git a/arch/riscv/include/asm/kvm_cove.h b/arch/riscv/include/asm/kvm_cove.h
+index 4367281..afaea7c 100644
+--- a/arch/riscv/include/asm/kvm_cove.h
++++ b/arch/riscv/include/asm/kvm_cove.h
+@@ -31,6 +31,9 @@
+ 
+ #define get_order_num_pages(n) (get_order(n << PAGE_SHIFT))
+ 
++#define get_gpr_index(goffset) \
++	((goffset - KVM_ARCH_GUEST_ZERO) / (__riscv_xlen / 8))
++
+ /* Describe a confidential or shared memory region */
+ struct kvm_riscv_cove_mem_region {
+ 	unsigned long hva;
+@@ -139,7 +142,8 @@ int kvm_riscv_cove_vcpu_sbi_ecall(struct kvm_vcpu *vcpu, struct kvm_run *run);
+ 
+ int kvm_riscv_cove_vm_measure_pages(struct kvm *kvm, struct kvm_riscv_cove_measure_region *mr);
+ int kvm_riscv_cove_vm_add_memreg(struct kvm *kvm, unsigned long gpa, unsigned long size);
+-int kvm_riscv_cove_gstage_map(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned long hva);
++int kvm_riscv_cove_handle_pagefault(struct kvm_vcpu *vcpu, gpa_t gpa,
++				    unsigned long hva);
+ /* Fence related function */
+ int kvm_riscv_cove_tvm_fence(struct kvm_vcpu *vcpu);
+ 
+@@ -179,8 +183,9 @@ static inline int kvm_riscv_cove_vm_measure_pages(struct kvm *kvm,
+ {
+ 	return -1;
+ }
+-static inline int kvm_riscv_cove_gstage_map(struct kvm_vcpu *vcpu,
+-					    gpa_t gpa, unsigned long hva) {return -1; }
++static inline int kvm_riscv_cove_handle_pagefault(struct kvm_vcpu *vcpu,
++						  gpa_t gpa, unsigned long hva) { return -1; }
++
+ /* TVM interrupt managenet via AIA functions */
+ static inline int kvm_riscv_cove_aia_init(struct kvm *kvm) { return -1; }
+ static inline int kvm_riscv_cove_vcpu_inject_interrupt(struct kvm_vcpu *vcpu,
+diff --git a/arch/riscv/include/asm/kvm_cove_sbi.h b/arch/riscv/include/asm/kvm_cove_sbi.h
+index b554a8d..c930265 100644
+--- a/arch/riscv/include/asm/kvm_cove_sbi.h
++++ b/arch/riscv/include/asm/kvm_cove_sbi.h
+@@ -59,6 +59,10 @@ int sbi_covh_create_tvm_vcpu(unsigned long tvmid, unsigned long tvm_vcpuid,
+ 
+ int sbi_covh_run_tvm_vcpu(unsigned long tvmid, unsigned long tvm_vcpuid);
+ 
++int sbi_covh_add_shared_pages(unsigned long tvmid, unsigned long page_addr_phys,
++			      enum sbi_cove_page_type ptype,
++			      unsigned long npages,
++			      unsigned long tvm_base_page_addr);
+ int sbi_covh_tvm_invalidate_pages(unsigned long tvmid,
+ 			     unsigned long tvm_base_page_addr,
+ 			     unsigned long len);
+diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include/asm/kvm_vcpu_sbi.h
+index b10c896..5b37a12 100644
+--- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
++++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
+@@ -66,5 +66,8 @@ extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_hsm;
+ extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_dbcn;
+ extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_experimental;
+ extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_vendor;
++#ifdef CONFIG_RISCV_COVE_HOST
++extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_covg;
++#endif
+ 
+ #endif /* __RISCV_KVM_VCPU_SBI_H__ */
+diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
+index ac3def0..2a24341 100644
+--- a/arch/riscv/include/uapi/asm/kvm.h
++++ b/arch/riscv/include/uapi/asm/kvm.h
+@@ -148,6 +148,7 @@ enum KVM_RISCV_SBI_EXT_ID {
+ 	KVM_RISCV_SBI_EXT_EXPERIMENTAL,
+ 	KVM_RISCV_SBI_EXT_VENDOR,
+ 	KVM_RISCV_SBI_EXT_DBCN,
++	KVM_RISCV_SBI_EXT_COVG,
+ 	KVM_RISCV_SBI_EXT_MAX,
+ };
+ 
+diff --git a/arch/riscv/kvm/Makefile b/arch/riscv/kvm/Makefile
+index 8c91551..31f4dbd 100644
+--- a/arch/riscv/kvm/Makefile
++++ b/arch/riscv/kvm/Makefile
+@@ -31,4 +31,4 @@ kvm-y += aia.o
+ kvm-y += aia_device.o
+ kvm-y += aia_aplic.o
+ kvm-y += aia_imsic.o
+-kvm-$(CONFIG_RISCV_COVE_HOST) += cove_sbi.o cove.o
++kvm-$(CONFIG_RISCV_COVE_HOST) += cove_sbi.o cove.o vcpu_sbi_covg.o
+diff --git a/arch/riscv/kvm/cove.c b/arch/riscv/kvm/cove.c
+index 154b01a..ba596b7 100644
+--- a/arch/riscv/kvm/cove.c
++++ b/arch/riscv/kvm/cove.c
+@@ -44,6 +44,18 @@ static void kvm_cove_local_fence(void *info)
+ 		kvm_err("local fence for TSM failed %d on cpu %d\n", rc, smp_processor_id());
+ }
+ 
++static void cove_delete_shared_pinned_page_list(struct kvm *kvm,
++						struct list_head *tpages)
++{
++	struct kvm_riscv_cove_page *tpage, *temp;
++
++	list_for_each_entry_safe(tpage, temp, tpages, link) {
++		unpin_user_pages_dirty_lock(&tpage->page, 1, true);
++		list_del(&tpage->link);
++		kfree(tpage);
++	}
++}
++
+ static void cove_delete_page_list(struct kvm *kvm, struct list_head *tpages, bool unpin)
+ {
+ 	struct kvm_riscv_cove_page *tpage, *temp;
+@@ -425,7 +437,8 @@ int kvm_riscv_cove_vcpu_sbi_ecall(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 
+ 	sbi_ext = kvm_vcpu_sbi_find_ext(vcpu, cp->a7);
+ 	if ((sbi_ext && sbi_ext->handler) && ((cp->a7 == SBI_EXT_DBCN) ||
+-	    (cp->a7 == SBI_EXT_HSM) || (cp->a7 == SBI_EXT_SRST) || ext_is_01)) {
++	    (cp->a7 == SBI_EXT_HSM) || (cp->a7 == SBI_EXT_SRST) ||
++	    (cp->a7 == SBI_EXT_COVG) || ext_is_01)) {
+ 		ret = sbi_ext->handler(vcpu, run, &sbi_ret);
+ 	} else {
+ 		kvm_err("%s: SBI EXT %lx not supported for TVM\n", __func__, cp->a7);
+@@ -451,7 +464,8 @@ int kvm_riscv_cove_vcpu_sbi_ecall(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 	return ret;
+ }
+ 
+-int kvm_riscv_cove_gstage_map(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned long hva)
++static int kvm_riscv_cove_gstage_map(struct kvm_vcpu *vcpu, gpa_t gpa,
++				     unsigned long hva)
+ {
+ 	struct kvm_riscv_cove_page *tpage;
+ 	struct mm_struct *mm = current->mm;
+@@ -517,6 +531,35 @@ int kvm_riscv_cove_gstage_map(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned long hv
+ 	return rc;
+ }
+ 
++int kvm_riscv_cove_handle_pagefault(struct kvm_vcpu *vcpu, gpa_t gpa,
++				    unsigned long hva)
++{
++	struct kvm_cove_tvm_context *tvmc = vcpu->kvm->arch.tvmc;
++	struct kvm_riscv_cove_page *tpage, *next;
++	bool shared = false;
++
++	/* TODO: Implement a better approach to track regions to avoid
++	 * traversing the whole list on each fault.
++	 */
++	spin_lock(&vcpu->kvm->mmu_lock);
++	list_for_each_entry_safe(tpage, next, &tvmc->shared_pages, link) {
++		if (tpage->gpa == (gpa & PAGE_MASK)) {
++			shared = true;
++			break;
++		}
++	}
++	spin_unlock(&vcpu->kvm->mmu_lock);
++
++	if (shared) {
++		return sbi_covh_add_shared_pages(tvmc->tvm_guest_id,
++						 page_to_phys(tpage->page),
++						 SBI_COVE_PAGE_4K, 1,
++						 gpa & PAGE_MASK);
++	}
++
++	return kvm_riscv_cove_gstage_map(vcpu, gpa, hva);
++}
++
+ void noinstr kvm_riscv_cove_vcpu_switchto(struct kvm_vcpu *vcpu, struct kvm_cpu_trap *trap)
+ {
+ 	int rc;
+@@ -804,6 +847,7 @@ void kvm_riscv_cove_vm_destroy(struct kvm *kvm)
+ 	cove_delete_page_list(kvm, &tvmc->reclaim_pending_pages, false);
+ 	cove_delete_page_list(kvm, &tvmc->measured_pages, false);
+ 	cove_delete_page_list(kvm, &tvmc->zero_pages, true);
++	cove_delete_shared_pinned_page_list(kvm, &tvmc->shared_pages);
+ 
+ 	/* Reclaim and Free the pages for tvm state management */
+ 	rc = sbi_covh_tsm_reclaim_pages(page_to_phys(tvmc->tvm_state.page), tvmc->tvm_state.npages);
+diff --git a/arch/riscv/kvm/cove_sbi.c b/arch/riscv/kvm/cove_sbi.c
+index 01dc260..4759b49 100644
+--- a/arch/riscv/kvm/cove_sbi.c
++++ b/arch/riscv/kvm/cove_sbi.c
+@@ -380,6 +380,24 @@ int sbi_covh_add_zero_pages(unsigned long tvmid, unsigned long page_addr_phys,
+ 	return 0;
+ }
+ 
++int sbi_covh_add_shared_pages(unsigned long tvmid, unsigned long page_addr_phys,
++			      enum sbi_cove_page_type ptype,
++			      unsigned long npages,
++			      unsigned long tvm_base_page_addr)
++{
++	struct sbiret ret;
++
++	if (!PAGE_ALIGNED(page_addr_phys))
++		return -EINVAL;
++
++	ret = sbi_ecall(SBI_EXT_COVH, SBI_EXT_COVH_TVM_ADD_SHARED_PAGES, tvmid,
++			page_addr_phys, ptype, npages, tvm_base_page_addr, 0);
++	if (ret.error)
++		return sbi_err_map_linux_errno(ret.error);
++
++	return 0;
++}
++
+ int sbi_covh_create_tvm_vcpu(unsigned long tvmid, unsigned long vcpuid,
+ 			     unsigned long vcpu_state_paddr)
+ {
+diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
+index c46e7f2..51eb434 100644
+--- a/arch/riscv/kvm/vcpu_exit.c
++++ b/arch/riscv/kvm/vcpu_exit.c
+@@ -43,7 +43,7 @@ static int gstage_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 
+ 	if (is_cove_vcpu(vcpu)) {
+ 		/* CoVE doesn't care about PTE prots now. No need to compute the prots */
+-		ret = kvm_riscv_cove_gstage_map(vcpu, fault_addr, hva);
++		ret = kvm_riscv_cove_handle_pagefault(vcpu, fault_addr, hva);
+ 	} else {
+ 		ret = kvm_riscv_gstage_map(vcpu, memslot, fault_addr, hva,
+ 			(trap->scause == EXC_STORE_GUEST_PAGE_FAULT) ? true : false);
+diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+index d2f43bc..8bc7d73 100644
+--- a/arch/riscv/kvm/vcpu_sbi.c
++++ b/arch/riscv/kvm/vcpu_sbi.c
+@@ -13,6 +13,8 @@
+ #include <asm/kvm_nacl.h>
+ #include <asm/kvm_cove_sbi.h>
+ #include <asm/kvm_vcpu_sbi.h>
++#include <asm/asm-offsets.h>
++#include <asm/kvm_cove.h>
+ 
+ #ifndef CONFIG_RISCV_SBI_V01
+ static const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_v01 = {
+@@ -32,6 +34,14 @@ static const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_pmu = {
+ };
+ #endif
+ 
++#ifndef CONFIG_RISCV_COVE_HOST
++static const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_covg = {
++	.extid_start = -1UL,
++	.extid_end = -1UL,
++	.handler = NULL,
++};
++#endif
++
+ struct kvm_riscv_sbi_extension_entry {
+ 	enum KVM_RISCV_SBI_EXT_ID dis_idx;
+ 	const struct kvm_vcpu_sbi_extension *ext_ptr;
+@@ -82,6 +92,10 @@ static const struct kvm_riscv_sbi_extension_entry sbi_ext[] = {
+ 		.dis_idx = KVM_RISCV_SBI_EXT_VENDOR,
+ 		.ext_ptr = &vcpu_sbi_ext_vendor,
+ 	},
++	{
++		.dis_idx = KVM_RISCV_SBI_EXT_COVG,
++		.ext_ptr = &vcpu_sbi_ext_covg,
++	},
+ };
+ 
+ void kvm_riscv_vcpu_sbi_forward(struct kvm_vcpu *vcpu, struct kvm_run *run)
+diff --git a/arch/riscv/kvm/vcpu_sbi_covg.c b/arch/riscv/kvm/vcpu_sbi_covg.c
 new file mode 100644
-index 0000000..af22d5e
+index 0000000..44a3b06
 --- /dev/null
-+++ b/arch/riscv/cove/cove_guest_sbi.c
-@@ -0,0 +1,109 @@
++++ b/arch/riscv/kvm/vcpu_sbi_covg.c
+@@ -0,0 +1,232 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * COVG SBI extensions related helper functions.
-+ *
 + * Copyright (c) 2023 Rivos Inc.
 + *
 + * Authors:
@@ -127,148 +380,229 @@ index 0000000..af22d5e
 + */
 +
 +#include <linux/errno.h>
++#include <linux/err.h>
++#include <linux/kvm_host.h>
++#include <linux/list.h>
++#include <linux/mm.h>
++#include <linux/spinlock.h>
++#include <asm/csr.h>
 +#include <asm/sbi.h>
-+#include <asm/covg_sbi.h>
++#include <asm/kvm_vcpu_sbi.h>
++#include <asm/kvm_cove.h>
++#include <asm/kvm_cove_sbi.h>
 +
-+int sbi_covg_add_mmio_region(unsigned long addr, unsigned long len)
++static int cove_share_converted_page(struct kvm_vcpu *vcpu, gpa_t gpa,
++				     struct kvm_riscv_cove_page *tpage)
 +{
-+	struct sbiret ret;
++	struct kvm *kvm = vcpu->kvm;
++	struct kvm_cove_tvm_context *tvmc = kvm->arch.tvmc;
++	int rc;
 +
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_ADD_MMIO_REGION, addr, len,
-+			0, 0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
++	rc = sbi_covh_tvm_invalidate_pages(tvmc->tvm_guest_id, gpa, PAGE_SIZE);
++	if (rc)
++		return rc;
++
++	rc = kvm_riscv_cove_tvm_fence(vcpu);
++	if (rc)
++		goto err;
++
++	rc = sbi_covh_tvm_remove_pages(tvmc->tvm_guest_id, gpa, PAGE_SIZE);
++	if (rc)
++		goto err;
++
++	rc = sbi_covh_tsm_reclaim_page(page_to_phys(tpage->page));
++	if (rc)
++		return rc;
++
++	spin_lock(&kvm->mmu_lock);
++	list_del(&tpage->link);
++	list_add(&tpage->link, &tvmc->shared_pages);
++	spin_unlock(&kvm->mmu_lock);
++
++	return 0;
++
++err:
++	sbi_covh_tvm_validate_pages(tvmc->tvm_guest_id, gpa, PAGE_SIZE);
++
++	return rc;
++}
++
++static int cove_share_page(struct kvm_vcpu *vcpu, gpa_t gpa,
++			   unsigned long *sbi_err)
++{
++	unsigned long hva = gfn_to_hva(vcpu->kvm, gpa >> PAGE_SHIFT);
++	struct kvm_cove_tvm_context *tvmc = vcpu->kvm->arch.tvmc;
++	struct mm_struct *mm = current->mm;
++	struct kvm_riscv_cove_page *tpage;
++	struct page *page;
++	int rc;
++
++	if (kvm_is_error_hva(hva)) {
++		/* Address is out of the guest ram memory region. */
++		*sbi_err = SBI_ERR_INVALID_PARAM;
++		return 0;
++	}
++
++	tpage = kmalloc(sizeof(*tpage), GFP_KERNEL_ACCOUNT);
++	if (!tpage)
++		return -ENOMEM;
++
++	mmap_read_lock(mm);
++	rc = pin_user_pages(hva, 1, FOLL_LONGTERM | FOLL_WRITE, &page, NULL);
++	mmap_read_unlock(mm);
++
++	if (rc != 1) {
++		rc = -EINVAL;
++		goto free_tpage;
++	} else if (!PageSwapBacked(page)) {
++		rc = -EIO;
++		goto free_tpage;
++	}
++
++	tpage->page = page;
++	tpage->gpa = gpa;
++	tpage->hva = hva;
++	INIT_LIST_HEAD(&tpage->link);
++
++	spin_lock(&vcpu->kvm->mmu_lock);
++	list_add(&tpage->link, &tvmc->shared_pages);
++	spin_unlock(&vcpu->kvm->mmu_lock);
++
++	return 0;
++
++free_tpage:
++	kfree(tpage);
++
++	return rc;
++}
++
++static int kvm_riscv_cove_share_page(struct kvm_vcpu *vcpu, gpa_t gpa,
++				     unsigned long *sbi_err)
++{
++	struct kvm_cove_tvm_context *tvmc = vcpu->kvm->arch.tvmc;
++	struct kvm_riscv_cove_page *tpage, *next;
++	bool converted = false;
++
++	/*
++	 * Check if the shared memory is part of the pages already assigned
++	 * to the TVM.
++	 *
++	 * TODO: Implement a better approach to track regions to avoid
++	 * traversing the whole list.
++	 */
++	spin_lock(&vcpu->kvm->mmu_lock);
++	list_for_each_entry_safe(tpage, next, &tvmc->zero_pages, link) {
++		if (tpage->gpa == gpa) {
++			converted = true;
++			break;
++		}
++	}
++	spin_unlock(&vcpu->kvm->mmu_lock);
++
++	if (converted)
++		return cove_share_converted_page(vcpu, gpa, tpage);
++
++	return cove_share_page(vcpu, gpa, sbi_err);
++}
++
++static int kvm_riscv_cove_unshare_page(struct kvm_vcpu *vcpu, gpa_t gpa)
++{
++	struct kvm_riscv_cove_page *tpage, *next;
++	struct kvm *kvm = vcpu->kvm;
++	struct kvm_cove_tvm_context *tvmc = kvm->arch.tvmc;
++	struct page *page = NULL;
++	int rc;
++
++	spin_lock(&kvm->mmu_lock);
++	list_for_each_entry_safe(tpage, next, &tvmc->shared_pages, link) {
++		if (tpage->gpa == gpa) {
++			page = tpage->page;
++			break;
++		}
++	}
++	spin_unlock(&kvm->mmu_lock);
++
++	if (unlikely(!page))
++		return -EINVAL;
++
++	rc = sbi_covh_tvm_invalidate_pages(tvmc->tvm_guest_id, gpa, PAGE_SIZE);
++	if (rc)
++		return rc;
++
++	rc = kvm_riscv_cove_tvm_fence(vcpu);
++	if (rc)
++		return rc;
++
++	rc = sbi_covh_tvm_remove_pages(tvmc->tvm_guest_id, gpa, PAGE_SIZE);
++	if (rc)
++		return rc;
++
++	unpin_user_pages_dirty_lock(&page, 1, true);
++
++	spin_lock(&kvm->mmu_lock);
++	list_del(&tpage->link);
++	spin_unlock(&kvm->mmu_lock);
++
++	kfree(tpage);
 +
 +	return 0;
 +}
 +
-+int sbi_covg_remove_mmio_region(unsigned long addr, unsigned long len)
++static int kvm_sbi_ext_covg_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
++				    struct kvm_vcpu_sbi_return *retdata)
 +{
-+	struct sbiret ret;
++	struct kvm_cpu_context *cp = &vcpu->arch.guest_context;
++	uint32_t num_pages = cp->a1 / PAGE_SIZE;
++	unsigned long funcid = cp->a6;
++	unsigned long *err_val = &retdata->err_val;
++	uint32_t i;
++	int ret;
 +
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_REMOVE_MMIO_REGION, addr,
-+			len, 0, 0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
++	switch (funcid) {
++	case SBI_EXT_COVG_SHARE_MEMORY:
++		for (i = 0; i < num_pages; i++) {
++			ret = kvm_riscv_cove_share_page(
++				vcpu, cp->a0 + i * PAGE_SIZE, err_val);
++			if (ret || *err_val != SBI_SUCCESS)
++				return ret;
++		}
++		return 0;
 +
++	case SBI_EXT_COVG_UNSHARE_MEMORY:
++		for (i = 0; i < num_pages; i++) {
++			ret = kvm_riscv_cove_unshare_page(
++				vcpu, cp->a0 + i * PAGE_SIZE);
++			if (ret)
++				return ret;
++		}
++		return 0;
++
++	case SBI_EXT_COVG_ADD_MMIO_REGION:
++	case SBI_EXT_COVG_REMOVE_MMIO_REGION:
++	case SBI_EXT_COVG_ALLOW_EXT_INTERRUPT:
++	case SBI_EXT_COVG_DENY_EXT_INTERRUPT:
++		/* We don't really need to do anything here for now. */
++		return 0;
++
++	default:
++		kvm_err("%s: Unsupported guest SBI %ld.\n", __func__, funcid);
++		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
++		return -EOPNOTSUPP;
++	}
++}
++
++unsigned long kvm_sbi_ext_covg_probe(struct kvm_vcpu *vcpu)
++{
++	/* KVM COVG SBI handler is only meant for handling calls from TSM */
 +	return 0;
 +}
 +
-+int sbi_covg_share_memory(unsigned long addr, unsigned long len)
-+{
-+	struct sbiret ret;
-+
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_SHARE_MEMORY, addr, len, 0,
-+			0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
-+
-+	return 0;
-+}
-+
-+int sbi_covg_unshare_memory(unsigned long addr, unsigned long len)
-+{
-+	struct sbiret ret;
-+
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_UNSHARE_MEMORY, addr, len, 0,
-+			0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
-+
-+	return 0;
-+}
-+
-+int sbi_covg_allow_external_interrupt(unsigned long id)
-+{
-+	struct sbiret ret;
-+
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_ALLOW_EXT_INTERRUPT, id, 0,
-+			0, 0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
-+
-+	return 0;
-+}
-+
-+int sbi_covg_allow_all_external_interrupt(void)
-+{
-+	struct sbiret ret;
-+
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_ALLOW_EXT_INTERRUPT, -1, 0,
-+			0, 0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
-+
-+	return 0;
-+}
-+
-+int sbi_covg_deny_external_interrupt(unsigned long id)
-+{
-+	struct sbiret ret;
-+
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_DENY_EXT_INTERRUPT, id, 0, 0,
-+			0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
-+
-+	return 0;
-+}
-+
-+int sbi_covg_deny_all_external_interrupt(void)
-+{
-+	struct sbiret ret;
-+
-+	ret = sbi_ecall(SBI_EXT_COVG, SBI_EXT_COVG_DENY_EXT_INTERRUPT, -1, 0, 0,
-+			0, 0, 0);
-+	if (ret.error)
-+		return sbi_err_map_linux_errno(ret.error);
-+
-+	return 0;
-+}
-diff --git a/arch/riscv/include/asm/covg_sbi.h b/arch/riscv/include/asm/covg_sbi.h
-new file mode 100644
-index 0000000..31283de
---- /dev/null
-+++ b/arch/riscv/include/asm/covg_sbi.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * COVG SBI extension related header file.
-+ *
-+ * Copyright (c) 2023 Rivos Inc.
-+ *
-+ * Authors:
-+ *     Rajnesh Kanwal <rkanwal@rivosinc.com>
-+ */
-+
-+#ifndef __RISCV_COVG_SBI_H__
-+#define __RISCV_COVG_SBI_H__
-+
-+#ifdef CONFIG_RISCV_COVE_GUEST
-+
-+int sbi_covg_add_mmio_region(unsigned long addr, unsigned long len);
-+int sbi_covg_remove_mmio_region(unsigned long addr, unsigned long len);
-+int sbi_covg_share_memory(unsigned long addr, unsigned long len);
-+int sbi_covg_unshare_memory(unsigned long addr, unsigned long len);
-+int sbi_covg_allow_external_interrupt(unsigned long id);
-+int sbi_covg_allow_all_external_interrupt(void);
-+int sbi_covg_deny_external_interrupt(unsigned long id);
-+int sbi_covg_deny_all_external_interrupt(void);
-+
-+#else
-+
-+static inline int sbi_covg_add_mmio_region(unsigned long addr, unsigned long len) { return 0; }
-+static inline int sbi_covg_remove_mmio_region(unsigned long addr, unsigned long len) { return 0; }
-+static inline int sbi_covg_share_memory(unsigned long addr, unsigned long len) { return 0; }
-+static inline int sbi_covg_unshare_memory(unsigned long addr, unsigned long len) { return 0; }
-+static inline int sbi_covg_allow_external_interrupt(unsigned long id) { return 0; }
-+static inline int sbi_covg_allow_all_external_interrupt(void) { return 0; }
-+static inline int sbi_covg_deny_external_interrupt(unsigned long id) { return 0; }
-+static inline int sbi_covg_deny_all_external_interrupt(void) { return 0; }
-+
-+#endif
-+
-+#endif /* __RISCV_COVG_SBI_H__ */
++const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_covg = {
++	.extid_start = SBI_EXT_COVG,
++	.extid_end = SBI_EXT_COVG,
++	.handler = kvm_sbi_ext_covg_handler,
++	.probe = kvm_sbi_ext_covg_probe,
++};
 -- 
 2.25.1
 
