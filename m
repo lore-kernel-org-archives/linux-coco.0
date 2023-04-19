@@ -1,43 +1,43 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56D2D304
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:17:47 +0000 (UTC)
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1a6817adde4so5423945ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:17:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31752D304
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:17:50 +0000 (UTC)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1a66b9bd893so4663995ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:17:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942667; x=1684534667;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942669; x=1684534669;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xru1T6bsi1+3ZKp8XjmLeeEUO6sc9QurHQCwhhM84HA=;
-        b=fB9b4YMtcQOYrcKj9/GWzeONjcxKP2oeywQTvv9jgtHPhKMG6piGSirEiNQPiRUSw/
-         TNDD98EsCQRHJb8o4KR/40iwkDz2iCL9O1Q5D4OApUqfzyyueF2pWWXu9oUBTr1sBd7r
-         qN8+st+530NNWaQglZ+vx32ZFpdd6jtoI22iSuSF0a+tcpVy60XJq7vb5hms8XM51miU
-         EUekIXnr0Cbflr87WbR+EkVxvu0imyYB9o1bwvrkRw5vQJ9T+Gvh04UNMDx3e/rdtmef
-         Rhm+A3oBDjRklFUpsePBjaVMWeVQWCFlRT5JvPLYOIPW/X1HEUctXf38yhKlTJ/Aw1FH
-         TvXg==
+        bh=T59m5JAZKpRDJgvlPNnQtLbeFsduDf6TBzeyZHAxXV0=;
+        b=qjxNMIrl8HnhfIp/ecw72oYKFII9UTAwql/uMAHKk/FXlEBEiMQ66OH7eiwjlGKtCq
+         fOjlVW3CuH2HqfOiNP9XRTFCzDI4+lJmQdsac4GSSp3r+OkcygCfPaztbk/heRGDIhKM
+         pnYeif4EQ7Prrd5kCwoWu5m8+1XOIOkSJ78OzpuHzmCbajgIzTGS3QZn2FEzSLBwhiSb
+         6w7a2QMSx0oX83P6+RuntF3wYcXCE4rbF3duzd0QwdejxuKey4lt6WjYMDej+sLNVh9T
+         6z0R8DizcoQpeT/MVd47bfnzAc938aOKta+516VE8cUvwIwwgAey2BJajvvIriSfLlPU
+         8bjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681942667; x=1684534667;
+        d=1e100.net; s=20221208; t=1681942669; x=1684534669;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xru1T6bsi1+3ZKp8XjmLeeEUO6sc9QurHQCwhhM84HA=;
-        b=frRMpOIZC6dq0U+Hk1UEb3WmbIjv3SJKPgCuikufy8HdPbSS31WpqqGTLYpaLKucP/
-         3gJr2LOQ6S/UO327NBPEG+CWQO43/60W0qZz2VY2447w+sDYzz/2xTBGAXV6Fnn2ukge
-         hZiEQ6eqW4q2iZo+N4wZbhI5qxk6sl2mtduiR4Jv4Mz7jVK83AQalI1ebosS0kUtX9fl
-         Zrgv+BFGwVAUeHwJ3/6MsB9CG4EcNVfWCJ15BIxYwSss9YRtanjpX2fnyivzWwXYPlFU
-         QQ+r3CspgyrFsTeEa81AwzEeWulWw3Pzm0QONyh631GUQTzGloGvdEI2WwPjoJnBoFDv
-         A9VQ==
-X-Gm-Message-State: AAQBX9cXlDRZWNGrExFE/zuYy+pymD/sF1tzLDTneHhmM0UW6nucJgAF
-	2c6qgetx5NxUcT3jg0HCGOC65w==
-X-Google-Smtp-Source: AKy350Ze6w+VITNJKc37wiOWND61z06Oiijk/jlDr4gywczSxyZvsezIoz1E2Y/uHqG7LrTSWYdlBg==
-X-Received: by 2002:a17:902:f682:b0:1a1:f5dd:2dce with SMTP id l2-20020a170902f68200b001a1f5dd2dcemr8068605plg.6.1681942667389;
-        Wed, 19 Apr 2023 15:17:47 -0700 (PDT)
+        bh=T59m5JAZKpRDJgvlPNnQtLbeFsduDf6TBzeyZHAxXV0=;
+        b=kqqLsTNZYcCtGrgaOiG0/rf6+zTMjfCUTJBcJGCz8k9VZcYhJ1W4CPVtI5WXOgjVlo
+         QqB4sfStBNoycLfh/3k8Akvydl79v6wYow2pploUM30WkcTZeeDGbNlnklEDMYDygKx2
+         w8aJUcjjqcz3RmAQrUUcnxzWZpoIQ3dkwSKHY3SNw1WitMuYfv3TsPebfwCd908YTePr
+         a9emUgjIZwK3HB9DeqLREjTdIVZWNDAQS7LnfHB8AG8JWgl0azYtj3U3BiWA3sN7sZ21
+         rHTNfeyVP/EmwpDQCu23R7gxHyMhT17ReDt6UwF1ihTh7oPd9bqM9713l7q0PSlqSscM
+         F9Xw==
+X-Gm-Message-State: AAQBX9fZqc/zxzzH6LfzaCDlxN9Q20UeQg3Km9oIEV0BZGBo/KVkm1WV
+	4a1wewrxjiLFZDRck4CgZGAOTQ==
+X-Google-Smtp-Source: AKy350a2O0VHJD6AXYzabb4g8786HYDihr3e7/POpprE3Ii6IVd/H8nE9VOR2CTMJgAkkR7C+O0Rjg==
+X-Received: by 2002:a17:902:aa4a:b0:1a1:f0cb:1055 with SMTP id c10-20020a170902aa4a00b001a1f0cb1055mr6242462plr.28.1681942669632;
+        Wed, 19 Apr 2023 15:17:49 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.17.45
+        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.17.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:17:47 -0700 (PDT)
+        Wed, 19 Apr 2023 15:17:49 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -71,9 +71,9 @@ Cc: Atish Patra <atishp@rivosinc.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC 08/48] RISC-V: KVM: Add UABI to support static memory region attestation
-Date: Wed, 19 Apr 2023 15:16:36 -0700
-Message-Id: <20230419221716.3603068-9-atishp@rivosinc.com>
+Subject: [RFC 09/48] RISC-V: KVM: Add CoVE related nacl helpers
+Date: Wed, 19 Apr 2023 15:16:37 -0700
+Message-Id: <20230419221716.3603068-10-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419221716.3603068-1-atishp@rivosinc.com>
 References: <20230419221716.3603068-1-atishp@rivosinc.com>
@@ -85,55 +85,43 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To initialize a TVM, a TSM must ensure that all the static memory regions
-that contain the device tree, the kernel image or initrd for the TVM
-attested. Some of these information is not usually present with the host
-and only VMM is aware of these.
+The NACL SBI extension allows the scratch area to be customizable
+per SBI extension. As per the COVH SBI extension, the scratch
+area stores the guest gpr state.
 
-Introduce an new ioctl which is part of the uABI to support this.
+Add some helpers to read/write gprs easily.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- arch/riscv/include/uapi/asm/kvm.h | 12 ++++++++++++
- include/uapi/linux/kvm.h          |  2 ++
- 2 files changed, 14 insertions(+)
+ arch/riscv/include/asm/kvm_cove_sbi.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
-index 11440df..ac3def0 100644
---- a/arch/riscv/include/uapi/asm/kvm.h
-+++ b/arch/riscv/include/uapi/asm/kvm.h
-@@ -98,6 +98,18 @@ struct kvm_riscv_timer {
- 	__u64 state;
- };
+diff --git a/arch/riscv/include/asm/kvm_cove_sbi.h b/arch/riscv/include/asm/kvm_cove_sbi.h
+index 24562df..df7d88c 100644
+--- a/arch/riscv/include/asm/kvm_cove_sbi.h
++++ b/arch/riscv/include/asm/kvm_cove_sbi.h
+@@ -17,6 +17,21 @@
+ #include <asm/csr.h>
+ #include <asm/sbi.h>
  
-+/* Memory region details of a CoVE guest that is measured at boot time */
-+struct kvm_riscv_cove_measure_region {
-+	/* Address of the user space where the VM code/data resides */
-+	unsigned long userspace_addr;
++#include <asm/asm-offsets.h>
 +
-+	/* The guest physical address where VM code/data should be mapped */
-+	unsigned long gpa;
++/**
++ * CoVE SBI extensions defines the NACL scratch memory.
++ * uint64_t gprs[32]
++ * uint64_t reserved[224]
++ */
++#define get_scratch_gpr_offset(goffset) (goffset - KVM_ARCH_GUEST_ZERO)
 +
-+	/* Size of the region */
-+	unsigned long size;
-+};
++#define nacl_shmem_gpr_write_cove(__s, __g, __o) \
++	nacl_shmem_scratch_write_long(__s, get_scratch_gpr_offset(__g), __o)
 +
- /*
-  * ISA extension IDs specific to KVM. This is not the same as the host ISA
-  * extension IDs as that is internal to the host and should not be exposed
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index a55a6a5..84a73b5 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1552,6 +1552,8 @@ struct kvm_s390_ucas_mapping {
- #define KVM_PPC_SVM_OFF		  _IO(KVMIO,  0xb3)
- #define KVM_ARM_MTE_COPY_TAGS	  _IOR(KVMIO,  0xb4, struct kvm_arm_copy_mte_tags)
- 
-+#define KVM_RISCV_COVE_MEASURE_REGION  _IOR(KVMIO, 0xb5, struct kvm_riscv_cove_measure_region)
++#define nacl_shmem_gpr_read_cove(__s, __g) \
++	nacl_shmem_scratch_read_long(__s, get_scratch_gpr_offset(__g))
 +
- /* ioctl for vm fd */
- #define KVM_CREATE_DEVICE	  _IOWR(KVMIO,  0xe0, struct kvm_create_device)
- 
+ int sbi_covh_tsm_get_info(struct sbi_cove_tsm_info *tinfo_addr);
+ int sbi_covh_tvm_initiate_fence(unsigned long tvmid);
+ int sbi_covh_tsm_initiate_fence(void);
 -- 
 2.25.1
 
