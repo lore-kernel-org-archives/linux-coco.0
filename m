@@ -1,46 +1,47 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AA8D300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:19:12 +0000 (UTC)
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-63b73203e0aso2788963b3a.1
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:19:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1339D300
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:19:14 +0000 (UTC)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1a6715ee82fso5271465ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:19:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942752; x=1684534752;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942754; x=1684534754;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ecSGlantlLzvA0G9VPQY9TXgG8EZEn7xksLEzRIVmIY=;
-        b=c21zAYv4W/8efVpj9s/CrAgsnyC7GRoXBj+SQ9uvGvmMRjbXi9C/l4ApXeL/28qOSL
-         J5ZZ+TVmCUP3cqWaEnHlrNG9d5s4uDtI+r8DS5GpmAI6Te5+PPhg0JPesMsJ6QkBBUKM
-         i2T5E7+u0KUNpPzwSPIgIDhWBA0x55J8INy/+9T5mEzV2Ub7rIt7zSh4bB9QChjdbp48
-         Ndc6bow+xP/wEEVhqSShIWQJsWlE7p19+1r0llK0omkaJDYaHRCgD+bcV/3pj1FMTVTV
-         cqaMAtAzWTd3lG4iAZAgavUNbrYuLSPh85yDNfwJPgtXxhKdv5Whjg+e3B66BtLz82q2
-         i0eg==
+        bh=8fg2apWNkO7XMTsfLYU3rTZlWorsx4wHesUuN9ZGrN4=;
+        b=g8HGuVmDd6hY+lMcoFR1p/zerf1IBaVcRH5kNxjG8cnb+FPy7JiKlP8xFMLawWOJHX
+         8MxTVIaCIdLr6Ccp55qIHAejxBF5J0nZ/QJIh66AwlqKb1gy2DUEWlLH+BzQR5o+T67+
+         kKooYcWWcij0NvxWxb05YPJbKR63uF1OQBv02Tg7GGtGx4ZWKWirSARZVPhbGcCUYnPY
+         6NUmTXcNFvsNN28a27iL5OcLCC76rPHgwAm1ISi/TugfdDtHR47w4bW7o0MafWBEn9ey
+         E/SyyfLa4ioudzzGIw9EwQwg7+Rg1abk6H2BVftGz286pLz6P5MCHu2QYJA07cO/VmFG
+         Q9lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681942752; x=1684534752;
+        d=1e100.net; s=20221208; t=1681942754; x=1684534754;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ecSGlantlLzvA0G9VPQY9TXgG8EZEn7xksLEzRIVmIY=;
-        b=hDreycKzLbdQ1BMW8LFgwc6VGBNQGTwVu4TQtlf5xd6fNs4vagp7Ua/t17lxSQYM4e
-         vG7ZBZvHGHjA9seEsfOYaxhhoHA3vy7efYd2K4akZoOgAlaKvauX1XKiJx5K6Q2Xhy6D
-         aOCZzNIsgn/kJ5PMtMq9PChkNZC5DpnjF9BO68Lsug3L4Vb1/bFeMtMz+TQJNa0oNsky
-         EdyIHjk4AuiIjszb6SkzCCXmqsixuSHte+FsPVXdvhM7JJ0/omZ6SiVMYdFDoXHAs50s
-         EBlCjy6g5/gXAy4Ch+oheT+1yZ0nPAM2Lt2v56zZoMoAaEgRI+WkB8h7r6LJa8hdcWaU
-         iBdg==
-X-Gm-Message-State: AAQBX9ervytO1+ygjd0rqotbjiRj5TeZ/tlREMWBoUQLKG93nAmxVNpo
-	nEIXUSDCiPDftlPBgcf3bCvMgw==
-X-Google-Smtp-Source: AKy350YKfPHbIymM6qmHQFNTIkUnRhQSV2hEDBlfRu6z0TKA3ibQ947LdlZE55huq5S43nAipp/NMA==
-X-Received: by 2002:a17:903:22c7:b0:1a6:3737:750c with SMTP id y7-20020a17090322c700b001a63737750cmr4095049plg.21.1681942751934;
-        Wed, 19 Apr 2023 15:19:11 -0700 (PDT)
+        bh=8fg2apWNkO7XMTsfLYU3rTZlWorsx4wHesUuN9ZGrN4=;
+        b=QCWvgyxzg58wa3sbT2+0P1xGXwiErW0fuA4WSdlWZkWdJ9hgH1h5ptmc2b1nnqJwgo
+         mOghPT5XVsv6EZSvfaFGJLjJ4uYlPrEpPawA2Gq0lc4Tb/oDzDjwfwBTnx20soxNlYCj
+         SMB1GMexYDYEW6lS/hGpycYhrKWhSfLyliDYr9d5XZwnPi5FcRjirY1hvyLzKXALpcaS
+         py5MNDB4TD8KzExgXzXMymq7GdwRC7UwZPe06g7RdAysJQ0IB5fB6hsb2EUTeTIDX/gu
+         I5vvTf88MUiAq6G4vNEIsG20pE6gFlSVxzveGQHFXY3PGjK8rKcqkYDMz8gW3MJjyE0Q
+         Nkbg==
+X-Gm-Message-State: AAQBX9fM9zNgHDz9swsNmPcS0sdW7kWtP7HmwQrl+d+g/uwLOEAcfkg/
+	K3e+z5Wh8PTsx+gRdV7Ph45ODA==
+X-Google-Smtp-Source: AKy350bcbgE/EJ3Ej08OUUDHS562dStL1nY59dRLyQva3UBkO8qD2X/slMFNk57ZH7aSQKcUf51qPw==
+X-Received: by 2002:a17:902:a504:b0:1a1:be45:9857 with SMTP id s4-20020a170902a50400b001a1be459857mr6646673plq.1.1681942754165;
+        Wed, 19 Apr 2023 15:19:14 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.19.09
+        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.19.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:19:11 -0700 (PDT)
+        Wed, 19 Apr 2023 15:19:13 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>,
+	Atish Patra <atishp@rivosinc.com>,
 	Alexandre Ghiti <alex@ghiti.fr>,
 	Andrew Jones <ajones@ventanamicro.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -70,9 +71,9 @@ Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC 46/48] riscv/virtio: Have CoVE guests enforce restricted virtio memory access.
-Date: Wed, 19 Apr 2023 15:17:14 -0700
-Message-Id: <20230419221716.3603068-47-atishp@rivosinc.com>
+Subject: [RFC 47/48] RISC-V: Add shared bounce buffer to support DBCN for CoVE Guest.
+Date: Wed, 19 Apr 2023 15:17:15 -0700
+Message-Id: <20230419221716.3603068-48-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419221716.3603068-1-atishp@rivosinc.com>
 References: <20230419221716.3603068-1-atishp@rivosinc.com>
@@ -86,37 +87,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Rajnesh Kanwal <rkanwal@rivosinc.com>
 
-CoVE guest requires that virtio devices use the DMA API to allow the
-hypervisor to successfully access guest memory as needed.
-
-The VIRTIO_F_VERSION_1 and VIRTIO_F_ACCESS_PLATFORM features tell virtio
-to use the DMA API. Force to check for these features to fail the device
-probe if these features have not been set when running as an TEE guest.
+Early console buffer needs to be shared with the host for CoVE Guest.
 
 Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- arch/riscv/mm/mem_encrypt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/serial/earlycon-riscv-sbi.c | 51 ++++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/mm/mem_encrypt.c b/arch/riscv/mm/mem_encrypt.c
-index 8207a5c..8523c50 100644
---- a/arch/riscv/mm/mem_encrypt.c
-+++ b/arch/riscv/mm/mem_encrypt.c
-@@ -10,6 +10,7 @@
- #include <linux/swiotlb.h>
- #include <linux/cc_platform.h>
- #include <linux/mem_encrypt.h>
-+#include <linux/virtio_anchor.h>
- #include <asm/covg_sbi.h>
- 
- /* Override for DMA direct allocation check - ARCH_HAS_FORCE_DMA_UNENCRYPTED */
-@@ -54,4 +55,7 @@ void __init mem_encrypt_init(void)
- 
- 	/* Call into SWIOTLB to update the SWIOTLB DMA buffers */
- 	swiotlb_update_mem_attributes();
+diff --git a/drivers/tty/serial/earlycon-riscv-sbi.c b/drivers/tty/serial/earlycon-riscv-sbi.c
+index 311a4f8..9033cca 100644
+--- a/drivers/tty/serial/earlycon-riscv-sbi.c
++++ b/drivers/tty/serial/earlycon-riscv-sbi.c
+@@ -9,6 +9,14 @@
+ #include <linux/init.h>
+ #include <linux/serial_core.h>
+ #include <asm/sbi.h>
++#include <asm/cove.h>
++#include <asm/covg_sbi.h>
++#include <linux/memblock.h>
 +
-+	/* Set restricted memory access for virtio. */
-+	virtio_set_mem_acc_cb(virtio_require_restricted_mem_acc);
++#ifdef CONFIG_RISCV_COVE_GUEST
++#define DBCN_BOUNCE_BUF_SIZE (PAGE_SIZE)
++static char dbcn_buf[DBCN_BOUNCE_BUF_SIZE] __aligned(PAGE_SIZE);
++#endif
+ 
+ #ifdef CONFIG_RISCV_SBI_V01
+ static void sbi_putc(struct uart_port *port, unsigned char c)
+@@ -24,6 +32,33 @@ static void sbi_0_1_console_write(struct console *con,
+ }
+ #endif
+ 
++#ifdef CONFIG_RISCV_COVE_GUEST
++static void sbi_dbcn_console_write_cove(struct console *con, const char *s,
++					unsigned int n)
++{
++	phys_addr_t pa = __pa(dbcn_buf);
++	unsigned int off = 0;
++
++	while (off < n) {
++		const unsigned int rem = n - off;
++		const unsigned int size =
++			rem > DBCN_BOUNCE_BUF_SIZE ? DBCN_BOUNCE_BUF_SIZE : rem;
++
++		memcpy(dbcn_buf, &s[off], size);
++
++		sbi_ecall(SBI_EXT_DBCN, SBI_EXT_DBCN_CONSOLE_WRITE,
++#ifdef CONFIG_32BIT
++			  size, pa, (u64)pa >> 32,
++#else
++			  size, pa, 0,
++#endif
++			  0, 0, 0);
++
++		off += size;
++	}
++}
++#endif
++
+ static void sbi_dbcn_console_write(struct console *con,
+ 				   const char *s, unsigned n)
+ {
+@@ -45,14 +80,26 @@ static int __init early_sbi_setup(struct earlycon_device *device,
+ 
+ 	/* TODO: Check for SBI debug console (DBCN) extension */
+ 	if ((sbi_spec_version >= sbi_mk_version(1, 0)) &&
+-	    (sbi_probe_extension(SBI_EXT_DBCN) > 0))
++	    (sbi_probe_extension(SBI_EXT_DBCN) > 0)) {
++#ifdef CONFIG_RISCV_COVE_GUEST
++		if (is_cove_guest()) {
++			ret = sbi_covg_share_memory(__pa(dbcn_buf),
++						    DBCN_BOUNCE_BUF_SIZE);
++			if (ret)
++				return ret;
++
++			device->con->write = sbi_dbcn_console_write_cove;
++			return 0;
++		}
++#endif
+ 		device->con->write = sbi_dbcn_console_write;
+-	else
++	} else {
+ #ifdef CONFIG_RISCV_SBI_V01
+ 		device->con->write = sbi_0_1_console_write;
+ #else
+ 		ret = -ENODEV;
+ #endif
++	}
+ 
+ 	return ret;
  }
 -- 
 2.25.1
