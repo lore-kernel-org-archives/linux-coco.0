@@ -1,43 +1,43 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B39D304
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:17:54 +0000 (UTC)
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1a66888cb89so4501945ad.3
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:17:54 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE81D304
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:17:56 +0000 (UTC)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-63b50a02bffso366504b3a.2
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:17:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942674; x=1684534674;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942676; x=1684534676;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uwIdkHCarryXV50I6knz0ZklcYwS0nTZYHahvAAioGA=;
-        b=JAfyJwlLZTLpeO+0a9mP+Qz17gHyrei/u3hvU+Y1oEWg9aDIafnfffPw2WLQocmCE5
-         thEwftksAEQCxymE79XbmXlY3CV86W6kKDPWDlsoieUM1U98liDXsdwKh0TtzMRMco/6
-         2qgFOkWb8NmcTouc/FLGToAZLWlsyjEWM3W1S9eitYQ6PZtGjRV1E0Bh4dYyak7MqlLF
-         NqImRVNGkomVidir55QeblFMKk81mgA2duY/+3llfMenErvbAqjZMXeQVvmExrFa536W
-         fZATF/TIP+lPFweeamhhj205CiSSkghmiFgf4j0xA47+WlMqYFC57GJCbBbKkv5f7DR4
-         f0PA==
+        bh=aZA9SkX62fIMzNEcuGtwzVe8Up8R4eolVQO1cYHyNXI=;
+        b=pr/kZUHrkhLnktVNRdfz4ij02MTZd+B9h2TaIJSMbt3NVujPvaiFp7Ik4rbkspQ4Mw
+         yuGTwtHLYNepi572aUMJZXGKBGxqqLOoQQAVLkJQE8EutQeaNnEXjp7ozMrwLpK3F/bd
+         Ea/tWnKPdLgS76oaBzGp+E0BB9Obb3YUpFKxXwNOfadBL+8Y1NryGBq3tL1grWdeANk4
+         WZM2Z6J10fv3mT8jXclG/Jc0tJeziAmqwuD529CbKYuuh+zFcMDe14NqalRMWLaTiCrI
+         zVE7Fohp3aDpbBaOaQnfhoMTTf4olrAvxRsbHG36Vnwm4rXJhTcr8zeKFydq/GZ4e/40
+         +9lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681942674; x=1684534674;
+        d=1e100.net; s=20221208; t=1681942676; x=1684534676;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uwIdkHCarryXV50I6knz0ZklcYwS0nTZYHahvAAioGA=;
-        b=NrCVFMagchadoProXZECXWWrUPFaYa/zvwb3TVOpkPp2g+aAgMblWnozPAFj3Agu1N
-         TUukDYGa9PYb3juvusWy6dYukwjbPvO6O4QAKM+0zm8LPziuiSNV0E/mJRg4q2PFFza/
-         mqFNzRef5Y7/7/uS2q+JqbfX0XrwVxFbDJxwKi4ReoRBWoGclTbybgeWQ6CkscU/W/ax
-         u1p3K2qmDLhoDa6tuge5PqdxipW7WfpHcxcmRXMOKu9DgHWMB1csmTGS3WTtBdUHIdSl
-         IwPNG/suk0M/gWDsMx7/TE5sdfwKoBvxAEU1L6MNlVMOa/0J++5BDp0hKXjJ4jOXrtFO
-         Tkag==
-X-Gm-Message-State: AAQBX9eURja9kDMBVteoBum+ib9kCVwmCs3w9XOogFYvL4V5SrkChWp7
-	5fP4VPQCx5FNWOMq/ToBBVdxJg==
-X-Google-Smtp-Source: AKy350aOeQnqsiOOnUYsijZU0I/0P7RvEF6TJy/X0/H7ROAFo8Dof2s5JoE26B/8+FVZEZPKo3gc/w==
-X-Received: by 2002:a17:902:ce88:b0:1a1:f5dd:2dd5 with SMTP id f8-20020a170902ce8800b001a1f5dd2dd5mr8081414plg.13.1681942674035;
-        Wed, 19 Apr 2023 15:17:54 -0700 (PDT)
+        bh=aZA9SkX62fIMzNEcuGtwzVe8Up8R4eolVQO1cYHyNXI=;
+        b=gY2cA2pXyfE7PbS2bO2+eI2CE4A0PFc2PxwywOy8p8c6Kylw8xNFix/GliSqGV9MJd
+         Jg5Yt5jNxhFzFiLlPb+xeXEoYxIppTz/o5H4RTzVUxccs8NYsK6zi10fzDA1/no3xTVz
+         h2ZHcnfSabRmPdiZQQqvNsQKHBP0LbygH6ZRy8GyjKOgsW2cDBfaKxGnVjzopgk/R40K
+         hsnOsRottvovBABR1++93+QQ/qUTkYnAXUlj38nlZ+N7cRVQYHMqYd12ui4Fot9p9Tv+
+         EhiEDUrGui/tGBEetO+jkSvcqxGKWB6ny9smiahuscGMVaoGLUCCz6QhJvey9H0iLn95
+         tXXg==
+X-Gm-Message-State: AAQBX9cPW+p9xFfTfQbWC5+GBXRlyodzg4DBagViZkPIjmLDOkRgU4le
+	CgAKTMq36z4eaGwX8z6FqRsF4g==
+X-Google-Smtp-Source: AKy350aluUR1rPQXEDjya7qc0cousjv7HzRiR+wEHDbTSJe3tj7Btum5nXicmgptUoZ7hSCP4qqeQg==
+X-Received: by 2002:a17:902:c40d:b0:1a8:1cbb:4f76 with SMTP id k13-20020a170902c40d00b001a81cbb4f76mr4908149plk.28.1681942676188;
+        Wed, 19 Apr 2023 15:17:56 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.17.52
+        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.17.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:17:53 -0700 (PDT)
+        Wed, 19 Apr 2023 15:17:55 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -71,9 +71,9 @@ Cc: Atish Patra <atishp@rivosinc.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC 11/48] RISC-V: KVM: Use the new VM IOCTL for measuring pages
-Date: Wed, 19 Apr 2023 15:16:39 -0700
-Message-Id: <20230419221716.3603068-12-atishp@rivosinc.com>
+Subject: [RFC 12/48] RISC-V: KVM: Exit to the user space for trap redirection
+Date: Wed, 19 Apr 2023 15:16:40 -0700
+Message-Id: <20230419221716.3603068-13-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419221716.3603068-1-atishp@rivosinc.com>
 References: <20230419221716.3603068-1-atishp@rivosinc.com>
@@ -85,48 +85,119 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The newly introduced VM IOCTL allow the VMM to measure the pages used
-to load the blobs. Hookup the VM ioctl.
+Currently, the trap redirection to the guest happens in the
+following cases.
+
+1. Illegal instruction trap
+2. Virtual instruction trap
+3. Unsuccesfull unpriv read
+
+Allowing host to cause traps in the TVM directly is problematic.
+TSM doesn't support trap redirection yet. Ideally, the host should not end
+up in one of these situations where it has to redirect the trap. If it
+happens, exit to the userspace with error as it can't forward the trap to
+the TVM.
+
+If there is any usecasse arises in the future, it has to be co-ordinated
+through TSM.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- arch/riscv/kvm/vm.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/riscv/kvm/vcpu_exit.c |  9 ++++++++-
+ arch/riscv/kvm/vcpu_insn.c | 17 +++++++++++++++++
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/vm.c b/arch/riscv/kvm/vm.c
-index 29d3221..1b59a8f 100644
---- a/arch/riscv/kvm/vm.c
-+++ b/arch/riscv/kvm/vm.c
-@@ -11,6 +11,7 @@
- #include <linux/module.h>
- #include <linux/uaccess.h>
+diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
+index 4ea101a..0d0c895 100644
+--- a/arch/riscv/kvm/vcpu_exit.c
++++ b/arch/riscv/kvm/vcpu_exit.c
+@@ -9,6 +9,7 @@
+ #include <linux/kvm_host.h>
+ #include <asm/csr.h>
+ #include <asm/insn-def.h>
++#include <asm/kvm_cove.h>
+ 
+ static int gstage_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 			     struct kvm_cpu_trap *trap)
+@@ -135,8 +136,14 @@ unsigned long kvm_riscv_vcpu_unpriv_read(struct kvm_vcpu *vcpu,
+ void kvm_riscv_vcpu_trap_redirect(struct kvm_vcpu *vcpu,
+ 				  struct kvm_cpu_trap *trap)
+ {
+-	unsigned long vsstatus = csr_read(CSR_VSSTATUS);
++	unsigned long vsstatus;
+ 
++	if (is_cove_vcpu(vcpu)) {
++		kvm_err("RISC-V KVM do not support redirect to CoVE guest yet\n");
++		return;
++	}
++
++	vsstatus = csr_read(CSR_VSSTATUS);
+ 	/* Change Guest SSTATUS.SPP bit */
+ 	vsstatus &= ~SR_SPP;
+ 	if (vcpu->arch.guest_context.sstatus & SR_SPP)
+diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+index 7a6abed..331489f 100644
+--- a/arch/riscv/kvm/vcpu_insn.c
++++ b/arch/riscv/kvm/vcpu_insn.c
+@@ -6,6 +6,7 @@
+ 
+ #include <linux/bitops.h>
  #include <linux/kvm_host.h>
 +#include <asm/kvm_cove.h>
  
- const struct _kvm_stats_desc kvm_vm_stats_desc[] = {
- 	KVM_GENERIC_VM_STATS()
-@@ -209,5 +210,20 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- long kvm_arch_vm_ioctl(struct file *filp,
- 		       unsigned int ioctl, unsigned long arg)
+ #define INSN_OPCODE_MASK	0x007c
+ #define INSN_OPCODE_SHIFT	2
+@@ -153,6 +154,10 @@ static int truly_illegal_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
  {
--	return -EINVAL;
-+	struct kvm *kvm = filp->private_data;
-+	void __user *argp = (void __user *)arg;
-+	struct kvm_riscv_cove_measure_region mr;
+ 	struct kvm_cpu_trap utrap = { 0 };
+ 
++	/* The host can not redirect any illegal instruction trap to TVM */
++	if (unlikely(is_cove_vcpu(vcpu)))
++		return -EPERM;
 +
-+	switch (ioctl) {
-+	case KVM_RISCV_COVE_MEASURE_REGION:
-+		if (!is_cove_vm(kvm))
-+			return -EINVAL;
-+		if (copy_from_user(&mr, argp, sizeof(mr)))
+ 	/* Redirect trap to Guest VCPU */
+ 	utrap.sepc = vcpu->arch.guest_context.sepc;
+ 	utrap.scause = EXC_INST_ILLEGAL;
+@@ -169,6 +174,10 @@ static int truly_virtual_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ {
+ 	struct kvm_cpu_trap utrap = { 0 };
+ 
++	/* The host can not redirect any virtual instruction trap to TVM */
++	if (unlikely(is_cove_vcpu(vcpu)))
++		return -EPERM;
++
+ 	/* Redirect trap to Guest VCPU */
+ 	utrap.sepc = vcpu->arch.guest_context.sepc;
+ 	utrap.scause = EXC_VIRTUAL_INST_FAULT;
+@@ -417,6 +426,10 @@ int kvm_riscv_vcpu_virtual_insn(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	if (unlikely(INSN_IS_16BIT(insn))) {
+ 		if (insn == 0) {
+ 			ct = &vcpu->arch.guest_context;
++
++			if (unlikely(is_cove_vcpu(vcpu)))
++				return -EPERM;
++
+ 			insn = kvm_riscv_vcpu_unpriv_read(vcpu, true,
+ 							  ct->sepc,
+ 							  &utrap);
+@@ -469,6 +482,8 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		insn = htinst | INSN_16BIT_MASK;
+ 		insn_len = (htinst & BIT(1)) ? INSN_LEN(insn) : 2;
+ 	} else {
++		if (unlikely(is_cove_vcpu(vcpu)))
 +			return -EFAULT;
-+
-+		return kvm_riscv_cove_vm_measure_pages(kvm, &mr);
-+	default:
-+		return -EINVAL;
-+	}
-+
- }
+ 		/*
+ 		 * Bit[0] == 0 implies trapped instruction value is
+ 		 * zero or special value.
+@@ -595,6 +610,8 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		insn = htinst | INSN_16BIT_MASK;
+ 		insn_len = (htinst & BIT(1)) ? INSN_LEN(insn) : 2;
+ 	} else {
++		if (unlikely(is_cove_vcpu(vcpu)))
++			return -EFAULT;
+ 		/*
+ 		 * Bit[0] == 0 implies trapped instruction value is
+ 		 * zero or special value.
 -- 
 2.25.1
 
