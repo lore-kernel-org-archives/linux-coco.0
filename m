@@ -1,43 +1,43 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F9DD300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:19:07 +0000 (UTC)
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-63b60365f53so481222b3a.0
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:19:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E271D300
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:19:09 +0000 (UTC)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-63b4a64c72bso365646b3a.0
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:19:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942747; x=1684534747;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942749; x=1684534749;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+bezt4nspa35ZRqzRaZmY422b4QR0Mn7woQKzr9+0N8=;
-        b=cFqy/7hM+Ny4fP4WIxs4wAIEAjRhQmifvh65+m0WDOJ/jYCumQJdB1BJZNu5ucVQLt
-         vHeOX9JqsZJsPoOkvbrleSPo5GRulHiShRoX7tLw/Bo3NH2vnqKu9FAh7Id3Frv2QuNE
-         +weDjwOUG7PuVaf0Q8I8065eawPZBUZF/IBP3CPxafiXKLMpIPqIxJCnZC8Rka6I13Pf
-         MlvlahxQGVeNZnlElGB4Hwi7P8WFIaVtZscNXzvS3DDLN30pdgEiwWgQCtnYC84qh4Gj
-         EUi0u8wk2hWEG92QVESAvb05CMVa66rE4mAeYWrE7046KCBAGXIObMS7PVHwhD5fW9N7
-         Ltcw==
+        bh=D8vKC+DATLxW+QWgEBtVVKhLwPezg/zgsscm2TPJ1sU=;
+        b=BwX+DM7PF0bcRvAKKIu4MHKKajOEzXLxGIauLswkbEgjP6DJZ6w6f7IIzl8Qpi8c98
+         ed4C65vIGkkrNIrLR5kdnMXy2vcDHhmfQHa8C6amTJnDRxQZMkqxUQV7hs024Ati36Dt
+         zpHCU/W8PLW1oErRDOCQdSTnQVm/WTAOCvbqhuYsNSC3p+RiRejOdpcZADkJX6CbNoIH
+         9EVmLfGzACsyDnRZvTGg/b8+8stR7Al9zVOUv8bZ/yCdHCLAg6/FhYsFSYe4Yx79Lh8K
+         qgEDVcvH60RycDNT8QKaO1+287IZvvLfcWjMdpa7LI9GrhUlCgUkAt3/dSeYRn7Itqpu
+         sgIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681942747; x=1684534747;
+        d=1e100.net; s=20221208; t=1681942749; x=1684534749;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+bezt4nspa35ZRqzRaZmY422b4QR0Mn7woQKzr9+0N8=;
-        b=jjFILfbTs2Z8xPwza0aRnQ3LLIeCkuZFhO/24mkoIN2SbQxgafdzAt7cHJAdJa6zo+
-         aMU8dBK2LAqnPRGJA1Ryx8oM+QFobq/DoRPPiWEcV3+plkmVoQUHRxFMF8y8Xkgy6DhJ
-         oMuEW5+8INslZm+bSUw2g4VOlmBQswZfRMiC1F/k3VNQLOn7JbIdyRnsvLc5+btht9rm
-         grLyX9h5KpjpCMAuce0k++bFibJ/8+YNCgA3my7YXVvxCHvtokQI3FeH2Wu5upe8CS7U
-         csbp2X3CJ6eC+YtABZEoC1FAZYPGYI7ke3XrwbJ8l+BZJ55kXVhCxPyKsXopAdTMeKXO
-         1Z7w==
-X-Gm-Message-State: AAQBX9fth3o8YqZbMpHlnOXinJWj01MVjHs25vUMKPzR4TpS/58TAMIs
-	UWuM6sqGVc08ibEeWzAfQ+KSlQ==
-X-Google-Smtp-Source: AKy350bB8ZklTkd1MwNIad8/q9PvIlAh0JulWMyK+P713MLjTnxYs1KPIh7Umu4fPlJwkV2KzfaSZw==
-X-Received: by 2002:a17:902:e5c7:b0:1a8:1436:c892 with SMTP id u7-20020a170902e5c700b001a81436c892mr5030556plf.14.1681942747426;
-        Wed, 19 Apr 2023 15:19:07 -0700 (PDT)
+        bh=D8vKC+DATLxW+QWgEBtVVKhLwPezg/zgsscm2TPJ1sU=;
+        b=LMEp3b1OrSe9XlajQqvVQTLIqKsAwFUmpE52mit6OZhlbXsgJbzyAO6iVt6hrdMzQq
+         cAfcaBrp0w5Ir5+2hhBkJghJRHLME3Q3R5MKK3RFyp9Vo3pvF8j8iYY5Pqmq5nqzlTJT
+         UbvidL2ZI/0+KR85km8fOA0gz1H/AW1wFrzRT52XjFSfA+0EXa2o80fXIe/DKmydvkjo
+         rn2ZOKU7MzhoLL5IT5DBLY7bNCIdezVTThf1hAMHBDniNsJ8mQah6MnuT/HfYaitemJl
+         7vLRuZyPgNILy39ddLiiw4GXuyg3cNU/o+xYUPS5H7ucBirBMilwSmueZ8ApEp5+Baf3
+         5VfA==
+X-Gm-Message-State: AAQBX9e9h9s6PzE9KSstd+DC5uywzup558HfQLpSgo1GImKVxFucQq3/
+	2lU6ovVPuGK2Xeuim1aB4GKqdQ==
+X-Google-Smtp-Source: AKy350YMt1GXaXJLEtI/tcFCT7P2BRkKgLnzDade8rOaHZzTbglX9T86uEwEdM3HEdy8DD35oL3itg==
+X-Received: by 2002:a17:903:3013:b0:1a2:8940:6da4 with SMTP id o19-20020a170903301300b001a289406da4mr5416617pla.29.1681942749582;
+        Wed, 19 Apr 2023 15:19:09 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.19.05
+        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.19.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:19:07 -0700 (PDT)
+        Wed, 19 Apr 2023 15:19:09 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>,
@@ -71,9 +71,9 @@ Cc: Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC 44/48] RISC-V: Add cc_platform_has() for RISC-V for CoVE
-Date: Wed, 19 Apr 2023 15:17:12 -0700
-Message-Id: <20230419221716.3603068-45-atishp@rivosinc.com>
+Subject: [RFC 45/48] RISC-V: ioremap: Implement for arch specific ioremap hooks
+Date: Wed, 19 Apr 2023 15:17:13 -0700
+Message-Id: <20230419221716.3603068-46-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419221716.3603068-1-atishp@rivosinc.com>
 References: <20230419221716.3603068-1-atishp@rivosinc.com>
@@ -87,52 +87,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Rajnesh Kanwal <rkanwal@rivosinc.com>
 
-All the confidential computing solutions uses the arch specific
-cc_platform_has function to enable memory encryption/decryption.
-Implement the same for RISC-V to support that as well.
+The guests running in CoVE must notify the host about its mmio regions
+so that host can enable mmio emulation.
 
 Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- arch/riscv/Kconfig     |  1 +
- arch/riscv/cove/core.c | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
+ arch/riscv/mm/Makefile  |  1 +
+ arch/riscv/mm/ioremap.c | 45 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
+ create mode 100644 arch/riscv/mm/ioremap.c
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 414cee1..2ca9e01 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -522,6 +522,7 @@ config RISCV_COVE_GUEST
- 	default n
- 	select SWIOTLB
- 	select RISCV_MEM_ENCRYPT
-+	select ARCH_HAS_CC_PLATFORM
- 	help
- 	  Enables support for running TVMs on platforms supporting CoVE.
+diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
+index 1fd9b60..721b557 100644
+--- a/arch/riscv/mm/Makefile
++++ b/arch/riscv/mm/Makefile
+@@ -15,6 +15,7 @@ obj-y += cacheflush.o
+ obj-y += context.o
+ obj-y += pgtable.o
+ obj-y += pmem.o
++obj-y += ioremap.o
  
-diff --git a/arch/riscv/cove/core.c b/arch/riscv/cove/core.c
-index 7218fe7..582feb1c 100644
---- a/arch/riscv/cove/core.c
-+++ b/arch/riscv/cove/core.c
-@@ -21,6 +21,18 @@ bool is_cove_guest(void)
- }
- EXPORT_SYMBOL_GPL(is_cove_guest);
- 
-+bool cc_platform_has(enum cc_attr attr)
-+{
-+	switch (attr) {
-+	case CC_ATTR_GUEST_MEM_ENCRYPT:
-+	case CC_ATTR_MEM_ENCRYPT:
-+		return is_cove_guest();
-+	default:
-+		return false;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(cc_platform_has);
+ ifeq ($(CONFIG_MMU),y)
+ obj-$(CONFIG_SMP) += tlbflush.o
+diff --git a/arch/riscv/mm/ioremap.c b/arch/riscv/mm/ioremap.c
+new file mode 100644
+index 0000000..0d4e026
+--- /dev/null
++++ b/arch/riscv/mm/ioremap.c
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2023 Rivos Inc.
++ *
++ * Authors:
++ *     Rajnesh Kanwal <rkanwal@rivosinc.com>
++ */
 +
- void riscv_cove_sbi_init(void)
- {
- 	if (sbi_probe_extension(SBI_EXT_COVG) > 0)
++#include <linux/export.h>
++#include <linux/mm.h>
++#include <linux/vmalloc.h>
++#include <linux/io.h>
++#include <asm/covg_sbi.h>
++#include <asm/cove.h>
++#include <asm-generic/io.h>
++
++void ioremap_phys_range_hook(phys_addr_t addr, size_t size, pgprot_t prot)
++{
++	unsigned long offset;
++
++	if (!is_cove_guest())
++		return;
++
++	/* Page-align address and size. */
++	offset = addr & (~PAGE_MASK);
++	addr -= offset;
++	size = PAGE_ALIGN(size + offset);
++
++	sbi_covg_add_mmio_region(addr, size);
++}
++
++void iounmap_phys_range_hook(phys_addr_t addr, size_t size)
++{
++	unsigned long offset;
++
++	if (!is_cove_guest())
++		return;
++
++	/* Page-align address and size. */
++	offset = addr & (~PAGE_MASK);
++	addr -= offset;
++	size = PAGE_ALIGN(size + offset);
++
++	sbi_covg_remove_mmio_region(addr, size);
++}
 -- 
 2.25.1
 
