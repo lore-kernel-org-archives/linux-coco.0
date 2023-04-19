@@ -1,43 +1,43 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922FED300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:18:09 +0000 (UTC)
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-63b60366047so357095b3a.1
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:18:09 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFD1D300
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:18:11 +0000 (UTC)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1a67bcde3a7so5056785ad.3
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:18:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942689; x=1684534689;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942691; x=1684534691;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EbUa6ryrerMYndbR89JSXBoBIycYIOI5MWjMv8QTenY=;
-        b=EpHc5rfijGiS9cvhe3gxGYJxsSuAlVbG/pIJOuFJNosZx/VFQeVfm0eSrlDMuReSFj
-         7ypZdw3QjuxdW55Zh8SHxl8sc3yXVSNROJW2fjaa+26b7equVpWpnxFDYreqHSbXDwun
-         vUfn3kQvN844BJ2Z55UTjnK33zctXOKmEJb38uE3yoQBIsr74T/OcqMWb3KweGfTU4Yi
-         yYPd+HV7CeU/AvlBhTKuqFAlbX3z2KwharbhJqAcrRnAlg1XHGRRtMmnLgMuCDk8ejGu
-         HvdE2AEcRzhomKSg5akQJMWerijQ4tiFWsNpofhgVRA19F6Cu15/PaXEiC7xDxP0NCRj
-         VY9g==
+        bh=EN7cfqRTuUxE4NYFTrE6RcyXhfZTP+XO506Z7P5jnSo=;
+        b=2HntuY5n1tLM4pNJa7nz4osjLmrd+gHhTujKcUSE8JGJeCF47AW9Dyj0rRPbdS8CKR
+         ec8mdHxJp3zhFL+VPoHjKpwqqItbmuGrX1ePOLL/H/CjhizNW48AJx/+m0SEc6hw+lrg
+         4TAnXTUfT+76XBgFTJYmo+eDlVergYm7g4UDIIG8q8towz6RIKhd0qUN5gI1M3MPJ6Yf
+         v6+fwgTgJxyGyevBN2wreiHgOozsBMp0FBa2pY9PJ2gXBMvj4I9WYLUgQzPavzY4XGMn
+         BfwkMktMwYiFO0NHEmqBJ8uwsXt7UjR2yMhk7oglZtm60MHD5OqGzZFoQLQcULwN1VOW
+         9p+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681942689; x=1684534689;
+        d=1e100.net; s=20221208; t=1681942691; x=1684534691;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EbUa6ryrerMYndbR89JSXBoBIycYIOI5MWjMv8QTenY=;
-        b=YZrUWRu+jXI9xkZXPNt1IyfS2R12NMrjrltk0e6P7vj3rt8g2Z0XpI9NOlYzIqJGBE
-         pe45iXFoz5jpD+LjT9El5spj83sGACukUVNbaVPvcI4LsDl7wPbFv/9RkDIsadWrAWvK
-         lwPIpXUm5ZGhS5NU2LMmQK2yiZjasq6aGppNFcv3FY6hgGZlOmkZfrfyx7a7DQ0H0NZF
-         yGMNyqSsysGef8AFmNwfKYp+BhFBY5lRm/jTm8QjRhlb3t2Bw8xiYTiOjmxaAp2DmVJ5
-         uc7uCeExVdVl6gkNlIThWPa5RfvbwKNmcSBIFgWqurZXGzNfIKW+js3SzcCktmquuhQa
-         Jg0g==
-X-Gm-Message-State: AAQBX9czavuGO33CbO/v3K8ad2n30otwMpUR5u7j+LmztN9YWKsLYire
-	YHe/J6sEkd3vGLDCghK8hpWWWQ==
-X-Google-Smtp-Source: AKy350bOrY/ltn4aOC/irJe3I2c3DHWQXEGnacE0hKIRD44viSqKcVds6P+5HuawRV2gn0DMpSc7nw==
-X-Received: by 2002:a17:902:e80c:b0:1a8:32e:3256 with SMTP id u12-20020a170902e80c00b001a8032e3256mr6684314plg.35.1681942689090;
-        Wed, 19 Apr 2023 15:18:09 -0700 (PDT)
+        bh=EN7cfqRTuUxE4NYFTrE6RcyXhfZTP+XO506Z7P5jnSo=;
+        b=ZfKZ5COh/YAfwaj+17jUHhx1gwVZfxvmPqZU20RMIiyIh+UGktI8qjBI6wicbU5PDj
+         9lAP7O0Pwlp2lLS8F7BSHBqZ56J/LVw4ZHTxBoiPfy+ngTf4b7jXzXAG4UcA1AOsSnMk
+         9aHUwO6CXUBUE/INpy/pTqmCcIJjpX9ff0faykcvSqNtjn4qcFmx2OOcK4jDjPHH+uma
+         YcZfpM/evcAqYq1JE0MaZFBGPSiaMRl3o+9t/yUUzh/LtJqIt1pIhPSyYyttBVbHap/z
+         PUDfu/oR3Mm6NqkKVtMg9myJ7P1eF/cohgq66+frbJwF2WvnwjDNQAoy95QSwMHQNZIY
+         X97w==
+X-Gm-Message-State: AAQBX9eYpuXP6dqU8ngCZGl0XWgsyynXC6lzMDUFZxBrPBi/OJG/eMzr
+	ofz+332mDprOzROJAisbUkB7nA==
+X-Google-Smtp-Source: AKy350ZYsA8lzJG7NSbCoTlmBQanAcDJyPETNQetpvDDQv9McJwUAM0nHCIZ5qbS6IwUoaXgRnH5YQ==
+X-Received: by 2002:a17:902:8b8a:b0:1a6:dfb3:5f4b with SMTP id ay10-20020a1709028b8a00b001a6dfb35f4bmr5466195plb.55.1681942691242;
+        Wed, 19 Apr 2023 15:18:11 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.18.07
+        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.18.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:18:08 -0700 (PDT)
+        Wed, 19 Apr 2023 15:18:11 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -71,9 +71,9 @@ Cc: Atish Patra <atishp@rivosinc.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC 18/48] RISC-V: KVM: Skip TLB management for TVMs
-Date: Wed, 19 Apr 2023 15:16:46 -0700
-Message-Id: <20230419221716.3603068-19-atishp@rivosinc.com>
+Subject: [RFC 19/48] RISC-V: KVM: Register memory regions as confidential for TVMs
+Date: Wed, 19 Apr 2023 15:16:47 -0700
+Message-Id: <20230419221716.3603068-20-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419221716.3603068-1-atishp@rivosinc.com>
 References: <20230419221716.3603068-1-atishp@rivosinc.com>
@@ -85,53 +85,33 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TSM manages the tlb entries for the TVMs. Thus, host can ignore
-all the hfence requests or tlb updates for confidential guests.
-Most of the hfence requests happen through vcpu requests which
-are skipped for TVMs. Thus, we just need to take care of the
-invocation from tlb management here.
+The entire DRAM region of a TVM running in CoVE must be confidential by
+default. If a TVM wishes to share any sub-region, the TVM has to
+request it explicitly with memory share APIs.
+
+Mark the memory region as confidential during vm create itself.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- arch/riscv/kvm/tlb.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ arch/riscv/kvm/mmu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-index dff37b57..b007c02 100644
---- a/arch/riscv/kvm/tlb.c
-+++ b/arch/riscv/kvm/tlb.c
-@@ -15,6 +15,7 @@
- #include <asm/hwcap.h>
- #include <asm/insn-def.h>
- #include <asm/kvm_nacl.h>
-+#include <asm/kvm_cove.h>
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 4b0f09e..63889d9 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -499,6 +499,11 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
  
- #define has_svinval()	riscv_has_extension_unlikely(RISCV_ISA_EXT_SVINVAL)
+ 	mmap_read_lock(current->mm);
  
-@@ -72,6 +73,14 @@ void kvm_riscv_local_hfence_gvma_gpa(gpa_t gpa, gpa_t gpsz,
- 
- void kvm_riscv_local_hfence_gvma_all(void)
- {
-+	/* For TVMs, TSM will take care of hfence.
-+	 * TODO: We can't skip unconditionally if cove is enabled
-+	 * as the host may be running in HS-mode and need to issue hfence
-+	 * for legacy VMs.
-+	 */
-+	if (kvm_riscv_cove_enabled())
-+		return;
-+
- 	asm volatile(HFENCE_GVMA(zero, zero) : : : "memory");
- }
- 
-@@ -160,7 +169,7 @@ void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
- {
- 	unsigned long vmid;
- 
--	if (!kvm_riscv_gstage_vmid_bits() ||
-+	if (is_cove_vcpu(vcpu) || !kvm_riscv_gstage_vmid_bits() ||
- 	    vcpu->arch.last_exit_cpu == vcpu->cpu)
- 		return;
- 
++	if (is_cove_vm(kvm)) {
++		ret = kvm_riscv_cove_vm_add_memreg(kvm, base_gpa, size);
++		if (ret)
++			return ret;
++	}
+ 	/*
+ 	 * A memory region could potentially cover multiple VMAs, and
+ 	 * any holes between them, so iterate over all of them to find
 -- 
 2.25.1
 
