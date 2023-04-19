@@ -1,43 +1,43 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2166D300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:24:04 +0000 (UTC)
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-517c840f181so185721a12.3
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:24:04 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD28D300
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:24:06 +0000 (UTC)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1a6862e47b1so5552125ad.0
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:24:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681943044; x=1684535044;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681943046; x=1684535046;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LXsqDGUR1sIAzl083YrDdeF8Dcz5MG5TcoJ+FCFYQPE=;
-        b=ohOEHO7BV/FHEqjDiY6pG/sbPPkvlHxUUXDxUV7dZqgZIIWVcpKe0qvs+coh7D9ZRh
-         B9hkxCLFKh8o9nAC2rlRn7bMm1mBtWYtjnNK9pkEtJDD583cXnspj2Ze6kFtPx4sD05T
-         M0i9ezLAErgLCl4r/YZAwl7ub1kBW72A2bCM2VN+GllxhNlhbw4174U5Fs0Rqs8lwuLx
-         6dFmv6DPhfk7Q0h+47Fu4cY06lgOcb8Yfc8WZoxCPJavUfQg727zdhXtl53U+ZG5ga3H
-         Ua4k+o9Cp2yjV6jziSpH7zmCITKPG2JXN/AwelqUy5IqPzKZ18t594Y0qlAjZCJGwgwu
-         OUiw==
+        bh=nDYPek2GW62ZjpMwmsxfE9d0xDPaKHdBMm+cEZKc8s8=;
+        b=gbm655ZKGYsSplRJThxaUIliJsDtxxCNHAd8Jsh9rquTj5wgjudHgZwJA550iZsQk9
+         VB0SQu2x2QDE7zie14SgvIe7dnOfITMaMnMjD/onrUT0al1gT1sDadgULueeivhnEmTD
+         JNLdLb2hMXSDd97f9GLtgcoOoiKtiFWFueifxdMTSbyKE0Z6Gv5tcQoRd/Nk8sLhR8hd
+         DGNAlG+7Czxou3KoS1S39Pu0wydKlsp73goQ0cZbb90x0/1svTeMdjxcJ4JUnBS4z1ue
+         xceJZmumlSVFCncTt6FuOgv+xYSVDvprfYgxAUggRJ/YOlKDghslSrOk6KKM64ujkV1m
+         0exg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681943044; x=1684535044;
+        d=1e100.net; s=20221208; t=1681943046; x=1684535046;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LXsqDGUR1sIAzl083YrDdeF8Dcz5MG5TcoJ+FCFYQPE=;
-        b=DzTmNBKVXeSWaSxWzjKXf+Qj0RkY3uFIAe88ZG96mLWhLqeCLaRsof+Dyoc0dY7MMo
-         wJX4V86E8QFS8iRIuRvNFupFMKQgkL0uCMal2GmjmdH/osTItMOlPbBNPCFW1ifoHobt
-         61r5IXUBtZqGnUQoEdUjS/gBKI8+QDQZL5gXbBHswHnXqkhfDdqAczA2K5vY79wq5sNS
-         iOm5uNCZFqe90LDJEd/8YUZr7rdzBGcJ1MOJFnjSt6T0UXCUB8jmWzHUDiS7iofA9QJY
-         6J2Vzg/bhPPMvsnpx6RbtO0xv19tRmxKg7+ElmpVAwn6e4IalZamPf8zb00Ok6Lj4OV1
-         z7kQ==
-X-Gm-Message-State: AAQBX9cW1NrDrBsEywOrb0U9b8klN1hbQijpoRYLLLhnR9IurxFMhmlD
-	nN3vJ3q7kWagT9AVhzbQOIpJUw==
-X-Google-Smtp-Source: AKy350ZHJJEltFWMtiEqeoirE/coBcaQIIAAD+T2dcklEUVhjT2GbyU5FBvkRUpdkDap1R/DwivJLA==
-X-Received: by 2002:a17:90a:be01:b0:247:1e30:5880 with SMTP id a1-20020a17090abe0100b002471e305880mr3727645pjs.38.1681943044256;
-        Wed, 19 Apr 2023 15:24:04 -0700 (PDT)
+        bh=nDYPek2GW62ZjpMwmsxfE9d0xDPaKHdBMm+cEZKc8s8=;
+        b=Ay45EBe4m+pOODNcYgTVoyuTvmSCSmH52W+p+RS6/l1ILqAjliQ7fNDEteT3pN7M1z
+         rL+c4JJOly8+v8YYPQLDNiR3gmEAogGI68CPEMZPk7Kn5wLUoRP0GHOO2PtRKjPbDaX/
+         Q3Dc69KldMrLNiN13z6a8FDyig0Q85tNql9KTbUYVBgNY5sDxPYsx9ut8lBnWulpcEWn
+         C276cfd6qmYSMasjVy3sl5qaqOOVl2ADJy1dkG62o2Vr8P4/Dr0STjd48u0u+uqUWlU4
+         G0KGsfVXmiv7ZTrdxjWZA68QzKNm8ynhcUl6jrkyA4SLuCOw/+PHqTx9fsrUZaKkgS6r
+         ZFbA==
+X-Gm-Message-State: AAQBX9e0tQk4gN0L3BWswuY/Qkpq6Q7jJldNaPknZUTdtYKU014kdXx2
+	M57mLzckGD8ToiygcIykldS9nw==
+X-Google-Smtp-Source: AKy350ZvU/B8LPyorDIQytWlfNOBgumMg9x+NGoZu6TjngTCY2lrTTdfxOrkdp5JkE0zcFgeJL83hQ==
+X-Received: by 2002:a17:903:120e:b0:1a6:c12d:9020 with SMTP id l14-20020a170903120e00b001a6c12d9020mr7842484plh.24.1681943046020;
+        Wed, 19 Apr 2023 15:24:06 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id e4-20020a170902744400b001a681fb3e77sm11867810plt.44.2023.04.19.15.24.02
+        by smtp.gmail.com with ESMTPSA id e4-20020a170902744400b001a681fb3e77sm11867810plt.44.2023.04.19.15.24.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:24:04 -0700 (PDT)
+        Wed, 19 Apr 2023 15:24:05 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -63,9 +63,9 @@ Cc: Atish Patra <atishp@rivosinc.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC kvmtool 01/10] riscv: Add a CoVE VM type.
-Date: Wed, 19 Apr 2023 15:23:41 -0700
-Message-Id: <20230419222350.3604274-2-atishp@rivosinc.com>
+Subject: [RFC kvmtool 02/10] riscv: Define a command line option for CoVE VM
+Date: Wed, 19 Apr 2023 15:23:42 -0700
+Message-Id: <20230419222350.3604274-3-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419222350.3604274-1-atishp@rivosinc.com>
 References: <20230419222350.3604274-1-atishp@rivosinc.com>
@@ -77,28 +77,35 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The KVM needs to distinguish if an user wants to create a CoVE VM instead
-of a traditional VM. Define a RISC-V specific CoVE VM type that can be
-passed as a VM type.
+The user should be able configure the VMM to instantiate a CoVE VM via
+a command line. Add the new option cove-vm.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- include/linux/kvm.h | 2 ++
- 1 file changed, 2 insertions(+)
+ riscv/include/kvm/kvm-config-arch.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/kvm.h b/include/linux/kvm.h
-index ba4c4b0..000d2b9 100644
---- a/include/linux/kvm.h
-+++ b/include/linux/kvm.h
-@@ -911,6 +911,8 @@ struct kvm_ppc_resize_hpt {
- #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
- #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
- 	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
-+
-+#define KVM_VM_TYPE_RISCV_COVE  (1UL << 9)
- /*
-  * ioctls for /dev/kvm fds:
-  */
+diff --git a/riscv/include/kvm/kvm-config-arch.h b/riscv/include/kvm/kvm-config-arch.h
+index aed4fbf..01276ea 100644
+--- a/riscv/include/kvm/kvm-config-arch.h
++++ b/riscv/include/kvm/kvm-config-arch.h
+@@ -10,6 +10,7 @@ struct kvm_config_arch {
+ 	u64		custom_mimpid;
+ 	bool		ext_disabled[KVM_RISCV_ISA_EXT_MAX];
+ 	bool		sbi_ext_disabled[KVM_RISCV_SBI_EXT_MAX];
++	bool		cove_vm;
+ };
+ 
+ #define OPT_ARCH_RUN(pfx, cfg)						\
+@@ -66,6 +67,7 @@ struct kvm_config_arch {
+ 		    "Disable SBI Experimental Extensions"),		\
+ 	OPT_BOOLEAN('\0', "disable-sbi-vendor",				\
+ 		    &(cfg)->sbi_ext_disabled[KVM_RISCV_SBI_EXT_VENDOR],	\
+-		    "Disable SBI Vendor Extensions"),
++		    "Disable SBI Vendor Extensions"),			\
++	OPT_BOOLEAN('\0', "cove-vm", &(cfg)->cove_vm, "CoVE VM"),
+ 
+ #endif /* KVM__KVM_CONFIG_ARCH_H */
 -- 
 2.25.1
 
