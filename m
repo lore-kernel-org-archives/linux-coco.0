@@ -1,43 +1,43 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A01D300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:18:00 +0000 (UTC)
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1a6bc48aec8so4061555ad.2
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:18:00 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1869D300
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:18:02 +0000 (UTC)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1a5197f00e9so4658705ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:18:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942680; x=1684534680;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681942682; x=1684534682;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UvoLTFH11lm+jG4OLKr6/L5S3PiYUonU+A7E1tEIRKo=;
-        b=N4XtdIUPBSqsJPJi86uCyaF35SsvQqKIOljuRP/nM3GeL5PnC+sHwcgW+t5y7DrxbF
-         5TpNpwBssHKlVMD0+rR0V581oyy3Tas3sY/32xO2PA8Waej/gLWBYShGPmuxBhpf6re5
-         DdBOslqLXNOPSWtzW2KMHDPcIh6b83lTPIBfFraWIh9OIpnFYzRRhBid7+FKOFDAgg76
-         TSEZFYh5jipl2xgrex0+4e/qWmzQSgGTsJyLQHLHYVjRsdnpfnSpQ74r0gthMKcWw1bC
-         bNIhm8IsywbFNoO4sfJHPMRDxwvnuXKEz2kBcBAbp8YppTYmN0JgS+/GNdHTRqrvAGAB
-         SHNw==
+        bh=gRHTy1c+Pl7OVrg4l834g5VjRWcSWQwGhgEvJAPkg+w=;
+        b=kmEcD4YfOAFXGG17QX3KsyUFIzwyUfrsKZ1wYGSvZgqODlY6mzST437Sn9HGEmF2e4
+         2a2a47FJD8fRdSNkrzKWkWk+t1hYBGWo5RKv/QKbDEChEI7DPntySLvvhVENeLXEvAzZ
+         Yi9hf+mn4OFq02nwK3TFnSe2tJbzQbrAKkpWS2zkyUDSsMGzPeY61HsFbh3a25B058l+
+         uUA1pt3+Fbza1RQ2lPxN0ghz2+DhS82u09mOfYSZt3cX82Z63iV2DNRddUax6jZ/SlYZ
+         5R7VI8q/CylWQy7dmPwpqmG5M0g3aSf6g2QGsKHX2ECmbls1SK5jLS9FX181LfzlvClk
+         L9rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681942680; x=1684534680;
+        d=1e100.net; s=20221208; t=1681942682; x=1684534682;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UvoLTFH11lm+jG4OLKr6/L5S3PiYUonU+A7E1tEIRKo=;
-        b=e90u/eRupazHy0wPDsTnB+KpyBU75tgZL7QMdXYgc61/3OjAHaimlsDEEqwKpB0pdf
-         olRqrD2GjNYCl9sFTqV6S02MzQ+3OgxSjlOQVjBR0EKFDhIeb1KQIUuKYjfWBF9dBHgz
-         +3fDZpk8zEQ2q0u0L99+sWDRJyFx5PHcz6jdBFGt7Gmr1a7wiN/kff9sd02pyRuPpn64
-         EfyuOCIdPvJDIImmWhBnNkzKQBZz1Pi1JlHMMknFzvHlGeIzWiNVbuHyC2R/yMGAcf6D
-         zmpAi4G+dVyf7yvDPDCnYRQfj+u1CImf2Z8oCozwppYcQRSc3toCgvQuKc7UBVwtLCvf
-         55WA==
-X-Gm-Message-State: AAQBX9dBwZCol1ufBy1fLhxhSMf/GktGx9jVexKLkItWnbXVd6gBA/v+
-	C5OU7yFpBBK906EBRhyQQM+FGg==
-X-Google-Smtp-Source: AKy350Z88ZumXUVLTXNRcg1zbdln/2qU8CAI5Xlijd5PgR7U+e9fUdXEuzGKHFP/DBsSEjOZB75l1A==
-X-Received: by 2002:a17:903:2287:b0:1a9:2951:7753 with SMTP id b7-20020a170903228700b001a929517753mr1272548plh.45.1681942680495;
-        Wed, 19 Apr 2023 15:18:00 -0700 (PDT)
+        bh=gRHTy1c+Pl7OVrg4l834g5VjRWcSWQwGhgEvJAPkg+w=;
+        b=EvvLmwsfXKSSbBQBIm7ghVjg0XFeNy2WbtcVzEwEIbzqQOakzN0KElpTTueGc6rHlC
+         Oqh5IDNGcdY6KjWOZoxb2WoIGOnclY6iw+r4YO+N48sDkmLzAvmNUdxneimj13ZKeHg+
+         CIGggJutW1MgRg/Mte0g54zEXUtvWXc9HLtkEjHtpJtph9OKaz5by+OVYyCnWCTZj/K3
+         D7Ge8gWi0v2A+PVgQW8GzgvJww9Ti0P4EYrPEE5WxPGYaJk0jzYqbFTWpduWnTdsfbM3
+         W/Y03sTBexaPfZHczlYyPPM+4VxWW2d5O7XvwxrI+gWHmvCB2YLOrhpvq73q1rLm4dCS
+         ebyw==
+X-Gm-Message-State: AAQBX9diCKQtvxjLRSxUsOU6Ill748raEP6DifGLvBB4nigpcgov/ODF
+	pUY1fI0Y9ROYSWvPQISs+yi98w==
+X-Google-Smtp-Source: AKy350YWY4zn6DitmSoPXPvjQSlrg5vxaeh3mQBYR6TvOk3ni0Mxh3KE27JFZrBKZBdZgegUV17R1Q==
+X-Received: by 2002:a17:902:ec8b:b0:1a9:23b7:9182 with SMTP id x11-20020a170902ec8b00b001a923b79182mr2673903plg.27.1681942682652;
+        Wed, 19 Apr 2023 15:18:02 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.17.58
+        by smtp.gmail.com with ESMTPSA id jn11-20020a170903050b00b00196807b5189sm11619190plb.292.2023.04.19.15.18.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:18:00 -0700 (PDT)
+        Wed, 19 Apr 2023 15:18:02 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -71,9 +71,9 @@ Cc: Atish Patra <atishp@rivosinc.com>,
 	Paul Walmsley <paul.walmsley@sifive.com>,
 	Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC 14/48] RISC-V: KVM: Skip dirty logging updates for TVM
-Date: Wed, 19 Apr 2023 15:16:42 -0700
-Message-Id: <20230419221716.3603068-15-atishp@rivosinc.com>
+Subject: [RFC 15/48] RISC-V: KVM: Add a helper function to trigger fence ops
+Date: Wed, 19 Apr 2023 15:16:43 -0700
+Message-Id: <20230419221716.3603068-16-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419221716.3603068-1-atishp@rivosinc.com>
 References: <20230419221716.3603068-1-atishp@rivosinc.com>
@@ -85,28 +85,78 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The CoVE doesn't support dirty logging for TVMs yet.
-Skip for now.
+When Cove is enabled in RISC-V, the TLB shootdown happens in co-ordination
+with TSM. The host must not issue hfence directly. It relies on TSM
+to do that instead. It just needs to initiate the process and make
+sure that all the running vcpus exit the guest mode. As a result, it
+traps to TSM and TSM issues hfence on behalf of the host.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- arch/riscv/kvm/mmu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/include/asm/kvm_cove.h |  2 ++
+ arch/riscv/kvm/cove.c             | 36 +++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 9693897..1d5e4ed 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -457,6 +457,9 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 				const struct kvm_memory_slot *new,
- 				enum kvm_mr_change change)
+diff --git a/arch/riscv/include/asm/kvm_cove.h b/arch/riscv/include/asm/kvm_cove.h
+index 4ea1df1..fc8633d 100644
+--- a/arch/riscv/include/asm/kvm_cove.h
++++ b/arch/riscv/include/asm/kvm_cove.h
+@@ -130,6 +130,8 @@ void kvm_riscv_cove_vcpu_switchto(struct kvm_vcpu *vcpu, struct kvm_cpu_trap *tr
+ int kvm_riscv_cove_vm_measure_pages(struct kvm *kvm, struct kvm_riscv_cove_measure_region *mr);
+ int kvm_riscv_cove_vm_add_memreg(struct kvm *kvm, unsigned long gpa, unsigned long size);
+ int kvm_riscv_cove_gstage_map(struct kvm_vcpu *vcpu, gpa_t gpa, unsigned long hva);
++/* Fence related function */
++int kvm_riscv_cove_tvm_fence(struct kvm_vcpu *vcpu);
+ #else
+ static inline bool kvm_riscv_cove_enabled(void) {return false; };
+ static inline int kvm_riscv_cove_init(void) { return -1; }
+diff --git a/arch/riscv/kvm/cove.c b/arch/riscv/kvm/cove.c
+index 5b4d9ba..4efcae3 100644
+--- a/arch/riscv/kvm/cove.c
++++ b/arch/riscv/kvm/cove.c
+@@ -78,6 +78,42 @@ static int kvm_riscv_cove_fence(void)
+ 	return rc;
+ }
+ 
++int kvm_riscv_cove_tvm_fence(struct kvm_vcpu *vcpu)
++{
++	struct kvm *kvm = vcpu->kvm;
++	struct kvm_cove_tvm_context *tvmc = kvm->arch.tvmc;
++	DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
++	unsigned long i;
++	struct kvm_vcpu *temp_vcpu;
++	int ret;
++
++	if (!tvmc)
++		return -EINVAL;
++
++	spin_lock(&tvmc->tvm_fence_lock);
++	ret = sbi_covh_tvm_initiate_fence(tvmc->tvm_guest_id);
++	if (ret) {
++		spin_unlock(&tvmc->tvm_fence_lock);
++		return ret;
++	}
++
++	bitmap_clear(vcpu_mask, 0, KVM_MAX_VCPUS);
++	kvm_for_each_vcpu(i, temp_vcpu, kvm) {
++		if (temp_vcpu != vcpu)
++			bitmap_set(vcpu_mask, i, 1);
++	}
++
++	/*
++	 * The host just needs to make sure that the running vcpus exit the
++	 * guest mode and traps into TSM so that it can issue hfence.
++	 */
++	kvm_make_vcpus_request_mask(kvm, KVM_REQ_OUTSIDE_GUEST_MODE, vcpu_mask);
++	spin_unlock(&tvmc->tvm_fence_lock);
++
++	return 0;
++}
++
++
+ static int cove_convert_pages(unsigned long phys_addr, unsigned long npages, bool fence)
  {
-+	/* We don't support dirty logging for CoVE guests yet */
-+	if (is_cove_vm(kvm))
-+		return;
- 	/*
- 	 * At this point memslot has been committed and there is an
- 	 * allocated dirty_bitmap[], dirty pages will be tracked while
+ 	int rc;
 -- 
 2.25.1
 
