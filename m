@@ -1,43 +1,43 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7961DD300
-	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:24:12 +0000 (UTC)
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1a66911f5faso4727295ad.0
-        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:24:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268B7D300
+	for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 22:24:14 +0000 (UTC)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-63b4a64c72bso368521b3a.0
+        for <linux-coco@lists.linux.dev>; Wed, 19 Apr 2023 15:24:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681943052; x=1684535052;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1681943053; x=1684535053;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E81F/sZHqFlmC4PTTDxmyvFtDAnkdcxCBJVjUmPx/Qw=;
-        b=h8qvhmk4lDaY4kQIaAqeKrnT156suhglOdhOFhlubu1kF8monJSVNUgUE+j1dG31u3
-         2u4SpVYqZ4tfegebKpsL38KKycJWXvEDDTgK8UNr6JRmWeQLZM10VY51+CKxQiNgddvl
-         jVlFZj35wrKDUORGT0J+qOCCKpjlGHzbKe/sGfoeSgQinTk47q9jptfvuPOOM2rG+CYr
-         zwGu3oFCrdRFjF7E7+wb2JbG1bH3s5tlAZXNHsT/M1j9N2DMFEV+pbXVFPMwgsNs8Fq+
-         +9F3bZPSaGt+4fI+77DT77iqb04ZT/uOhlexxfDhgZPl/024tDlCe5TFxeig37XFSsp8
-         WtKw==
+        bh=2k6fZhtBjuovD0xJN9/3Mss7sJpSj6M+Lhg1puIM9yQ=;
+        b=frHFpOgJMj3IyT+0l6lF4ggQqLWSqJ+R5Lwl83JFjnZ1FgOj+RCeflj5OiteP2veXj
+         hs8UabqlFhDeAfeVOqN8nsOlJjF/2yPcJvsYdreBOn4W0VsT07xnNPxxC9wRqCbEDrEI
+         ZWpU6jo5/ivGxGl/5WlSrPuw4s+yWAlTdUEKKQGRxh6JkIhcKHr1ykdZxEako+r8BVLI
+         Iia+UAGrprs58WkfVvjD7u2w/7WcLDjo2lLLRaRlMw3OivWlNDMPp50fyu9RdhML7Hv4
+         wHYTWA+nkcv0sFjdO1RQEsLbEgouvwKngVct5OCtGdc8SgVKzfHhIkTKi03d/OSMpN46
+         dypw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681943052; x=1684535052;
+        d=1e100.net; s=20221208; t=1681943053; x=1684535053;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E81F/sZHqFlmC4PTTDxmyvFtDAnkdcxCBJVjUmPx/Qw=;
-        b=M7twPmkU70oeoqvqnXXMGOdgJWLXqTEuXraf+AeO/YjMmMN+OyhNpse6lyNmSUy83q
-         H0OQe2sk+PEqx3XSUX7NprhFKoohKNVH1wlEaDFhnVTqFcxTQoRzCZ1buxZ5y7SJicW9
-         gEANWLrzjmbdj2zdDX49/86VaYfPlB5BrH1pdF2nwnptYxviTOTa7LxYfuMPKLdD2prM
-         z5L+Ij/RI71I+7CgHULIcTHM8tdrmNmBLE53ZKgX7rr/M7aaube5VVywYsXmivbE1L8T
-         F75jIErci1zbedQLSAoAYf4NY4ei9ax0CTtn/Bv1AvWhZLVQVwg2iSJH4xbZCchItFp+
-         TYeQ==
-X-Gm-Message-State: AAQBX9cGS+hFxYmk9lZgNroBiclf/MBu1DsH/8tXLMMCviuxxe9vxduZ
-	25k6kW8OuAxj3SfPRwoqUUgCRQ==
-X-Google-Smtp-Source: AKy350ZDizFV7lhpli0WrCYYrT6iDsFp55kYpsDPb3wO0+TsDTvsM5wAJ/jQ030A1Tz0V9swMbp+9w==
-X-Received: by 2002:a17:902:da8a:b0:1a6:97fd:29e7 with SMTP id j10-20020a170902da8a00b001a697fd29e7mr8449012plx.27.1681943051998;
-        Wed, 19 Apr 2023 15:24:11 -0700 (PDT)
+        bh=2k6fZhtBjuovD0xJN9/3Mss7sJpSj6M+Lhg1puIM9yQ=;
+        b=Td4fghaifrN8fl2JA0uIrAD0g6DSqF2ewIPa8Nb19v/kjH+5RiUxc7UvuyjiyOyJAS
+         3Zii9U/kp03ZlFKT5DGq29DLDtDp45ffyITeUe1jzX9iPwNMobGG6sorUlDurGOBx4Uf
+         HNEfjEMvcw+cvAI4gzrD0a7dwVx9qg/1GBCtyovWhfYuLYHMjPFkBf4hoKFzmfJMU5T0
+         cr82gJ6G0yN78mwuN+HvO0OA8dkBmh1WjfJuMz50lxnxEQx2/CMctX0mZKU0FIzotFK5
+         bR38s5PL2H6v6RNWSnB0SBqiHBeVjLLWhRDd6hXb0siYrAIsYalbLDT7duygE3uVDgyN
+         cHyA==
+X-Gm-Message-State: AAQBX9cz3TQxG1OCg9OtTaHWfeE8DH1hOjdUqYOlpeJ+yk/IJyLR+Mn+
+	8IFKIkfaaV17a42rFoHDE5qbhA==
+X-Google-Smtp-Source: AKy350a+wtlv0SH4nHUTs3X+REynERjZtWfA6CRUt3D8Ejpa/aSb6HljJIxaa3PlyPoDKWKx8hTZ+g==
+X-Received: by 2002:a17:903:8c6:b0:1a0:42d4:e38a with SMTP id lk6-20020a17090308c600b001a042d4e38amr7048884plb.11.1681943053760;
+        Wed, 19 Apr 2023 15:24:13 -0700 (PDT)
 Received: from atishp.ba.rivosinc.com ([66.220.2.162])
-        by smtp.gmail.com with ESMTPSA id e4-20020a170902744400b001a681fb3e77sm11867810plt.44.2023.04.19.15.24.10
+        by smtp.gmail.com with ESMTPSA id e4-20020a170902744400b001a681fb3e77sm11867810plt.44.2023.04.19.15.24.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Apr 2023 15:24:11 -0700 (PDT)
+        Wed, 19 Apr 2023 15:24:13 -0700 (PDT)
 From: Atish Patra <atishp@rivosinc.com>
 To: linux-kernel@vger.kernel.org
 Cc: Atish Patra <atishp@rivosinc.com>,
@@ -63,9 +63,9 @@ Cc: Atish Patra <atishp@rivosinc.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Rajnesh Kanwal <rkanwal@rivosinc.com>,
 	Uladzislau Rezki <urezki@gmail.com>
-Subject: [RFC kvmtool 05/10] riscv: Do not create APLIC for TVMs
-Date: Wed, 19 Apr 2023 15:23:45 -0700
-Message-Id: <20230419222350.3604274-6-atishp@rivosinc.com>
+Subject: [RFC kvmtool 06/10] riscv: Change initrd alignment to a page size
+Date: Wed, 19 Apr 2023 15:23:46 -0700
+Message-Id: <20230419222350.3604274-7-atishp@rivosinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230419222350.3604274-1-atishp@rivosinc.com>
 References: <20230419222350.3604274-1-atishp@rivosinc.com>
@@ -77,70 +77,31 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The CoVE VMs do not support wired interrupts. Thus no need of APLIC at
-this point.
+Currently, the initrd image is aligned to 8. This is problematic for
+CoVE where the image is expected to be aligned at page granularity level.
+
+Thus, align it to 4k. This can be done only if user requested a TVM.
+However, initrd usually much bigger (in MBs at least). Thus, aligning
+to a page for everything should not matter much.
 
 Signed-off-by: Atish Patra <atishp@rivosinc.com>
 ---
- riscv/aia.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ riscv/kvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/riscv/aia.c b/riscv/aia.c
-index 8c85b3f..a3b8618 100644
---- a/riscv/aia.c
-+++ b/riscv/aia.c
-@@ -143,6 +143,11 @@ static int aia__init(struct kvm *kvm)
- 		.attr	= KVM_DEV_RISCV_AIA_CTRL_INIT,
- 	};
+diff --git a/riscv/kvm.c b/riscv/kvm.c
+index d59e8bc..5f9b0d5 100644
+--- a/riscv/kvm.c
++++ b/riscv/kvm.c
+@@ -113,7 +113,7 @@ void kvm__arch_init(struct kvm *kvm)
+ }
  
-+
-+	/* CoVE VM only supports hardware with physical guest interrupt file */
-+	if (kvm->cfg.arch.cove_vm)
-+		aia_mode = KVM_DEV_RISCV_AIA_MODE_HWACCEL;
-+
- 	/* Setup global device attribute variables */
- 	aia_mode_attr.addr = (u64)(unsigned long)&aia_mode;
- 	aia_nr_ids_attr.addr = (u64)(unsigned long)&aia_nr_ids;
-@@ -160,10 +165,7 @@ static int aia__init(struct kvm *kvm)
- 	ret = ioctl(aia_fd, KVM_GET_DEVICE_ATTR, &aia_nr_ids_attr);
- 	if (ret)
- 		return ret;
--	aia_nr_sources = irq__get_nr_allocated_lines();
--	ret = ioctl(aia_fd, KVM_SET_DEVICE_ATTR, &aia_nr_sources_attr);
--	if (ret)
--		return ret;
-+
- 	aia_hart_bits = fls_long(kvm->nrcpus);
- 	ret = ioctl(aia_fd, KVM_SET_DEVICE_ATTR, &aia_hart_bits_attr);
- 	if (ret)
-@@ -172,12 +174,21 @@ static int aia__init(struct kvm *kvm)
- 	/* Save number of HARTs for FDT generation */
- 	aia_nr_harts = kvm->nrcpus;
- 
--	/* Set AIA device addresses */
--	aia_addr = AIA_APLIC_ADDR(aia_nr_harts);
--	aia_addr_attr.attr = KVM_DEV_RISCV_AIA_ADDR_APLIC;
--	ret = ioctl(aia_fd, KVM_SET_DEVICE_ATTR, &aia_addr_attr);
--	if (ret)
--		return ret;
-+	/* CoVE VMs do not support APLIC yet */
-+	if (!kvm->cfg.arch.cove_vm) {
-+		aia_nr_sources = irq__get_nr_allocated_lines();
-+		ret = ioctl(aia_fd, KVM_SET_DEVICE_ATTR, &aia_nr_sources_attr);
-+		if (ret)
-+			return ret;
-+
-+		/* Set AIA device addresses */
-+		aia_addr = AIA_APLIC_ADDR(aia_nr_harts);
-+		aia_addr_attr.attr = KVM_DEV_RISCV_AIA_ADDR_APLIC;
-+		ret = ioctl(aia_fd, KVM_SET_DEVICE_ATTR, &aia_addr_attr);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	for (i = 0; i < kvm->nrcpus; i++) {
- 		aia_addr = AIA_IMSIC_ADDR(i);
- 		aia_addr_attr.attr = KVM_DEV_RISCV_AIA_ADDR_IMSIC(i);
+ #define FDT_ALIGN	SZ_4M
+-#define INITRD_ALIGN	8
++#define INITRD_ALIGN	SZ_4K
+ bool kvm__arch_load_kernel_image(struct kvm *kvm, int fd_kernel, int fd_initrd,
+ 				 const char *kernel_cmdline)
+ {
 -- 
 2.25.1
 
