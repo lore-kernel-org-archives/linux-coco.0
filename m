@@ -1,268 +1,171 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E688F68
-	for <linux-coco@lists.linux.dev>; Thu, 20 Apr 2023 19:14:01 +0000 (UTC)
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-63b5ce4f069so1796333b3a.1
-        for <linux-coco@lists.linux.dev>; Thu, 20 Apr 2023 12:14:01 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252C98F68
+	for <linux-coco@lists.linux.dev>; Thu, 20 Apr 2023 19:42:46 +0000 (UTC)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-3f17e584462so9555125e9.2
+        for <linux-coco@lists.linux.dev>; Thu, 20 Apr 2023 12:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682018040; x=1684610040;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hiGazBo7fqmmG21SdxdzgEwUnvE1CYshJ5DRTxFcvcU=;
-        b=VPpNbcz8lUmn6XqbAF8ZKpyYp3zV26MHR66QP3yKRqpcmVdPoHTXLEyF6Tm6HEp4sd
-         I6BqSMDCI5vFX0NE5D1q7CokCl4/RoKvxQk1G13HaFvjs53+GMT1wsINZIEansmPZtBE
-         1k8Rd9FGcvKrprRZvlKXZGn5l88bbi1KjmY6066siYhLq8wcQ8X6Jf6SnA5UoPM85uEo
-         7diQrnMp6doro6jk8uOyyRDOWi4bDJDokTvU+c4NBYe1TsSjguNSflNmfNIhkY1Df2B0
-         kI05B/Wzga0pxbf0UynU69HDnh053SHp7yyj+UPOsBKA2vPkT5VaxUle0IyaTxscv/pO
-         Av8w==
+        d=gmail.com; s=20221208; t=1682019764; x=1684611764;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pfv2B7nnglGPY5lKeYYJGgG41JxY4YTi9gYldIZZ2FA=;
+        b=MYgjyypqswmQG6YtHr/gj3invlgUzYkrg/aPTuFdvQHZPL/YO5i4PF32XnyH1ZTGQz
+         b734vWMYMbVsbbO/M9Wal3nSfPgVsr/VlA1Dm+srAgGFmF6Lp0bnhVphG5TcywnqlxEN
+         otaG9qzSCRigVoIglNcR4SbSXcfghPUb5gc1+7NJi53TmMDnoeaSS5N3K/ZZKyvKhMOv
+         my1Eafov4Ugs+psmIfSzuTUTr7xCxd+xW3qLejMV+2Hr7Qjwm/CzXTt6GkSmEByoLwgT
+         dJD5ky+Ow1cBOXG8ZlV7MdBSFET0Faa917sHxhy0dYFJroREl5QPGJjugg/sG4kskK5K
+         ewTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682018040; x=1684610040;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hiGazBo7fqmmG21SdxdzgEwUnvE1CYshJ5DRTxFcvcU=;
-        b=Hwoy3SBOaPKk9st8UF2WWY7UamU6BylplAEH7X8PeId1HtpIJZ0mFhdsZD/6Z+uRuQ
-         iq3KunFJKY8S4HBMy/9i8090H/zNsSOKHFc33d7jRcuV64pnP6B/IReBsuz2IZMTR7JS
-         oXhANUXNV5rt4BLWUgfDffezkDGbXmj1z7FJejGPcrUe1uuGCZL1Jpkw6SpM6xRbm/d5
-         hhN2PY5xZjYD75TV4L1Pg4yl6Cwim3t+HfU/K5Tg8JnbeOKiXdKKDOA7OPuER78KJgZ9
-         Pqrq4M2zAEW68pTGSsVUK09w4OWExDO0fiQ46/YjAre+dFG6xq7IZbTi5qval0yLkrEX
-         wibA==
-X-Gm-Message-State: AAQBX9fT9+ajWavYJajriJmm5ISXs1t4tq7jBFscAWC2IWDcxDVuX8M2
-	vhQcGecbZ/9hFOX0MzvlCQ+fUdHWZEO7yFUiBvhteQ==
-X-Google-Smtp-Source: AKy350aRQ0rM7CLx1DwjTywqrVN0WjdwG2lvnHksOXDIHfuaqZi7DwTJ1XnW9z+QtTwIqGEYzeTP15HNnlsEvUBFY24=
-X-Received: by 2002:a17:90a:744c:b0:23f:962e:826b with SMTP id
- o12-20020a17090a744c00b0023f962e826bmr2608127pjk.15.1682018040457; Thu, 20
- Apr 2023 12:14:00 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682019764; x=1684611764;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Pfv2B7nnglGPY5lKeYYJGgG41JxY4YTi9gYldIZZ2FA=;
+        b=ce5rDUXoQFuZADlBENFQOBq2lXsQke2KWWUmiA1IAtue76uhAZNLwwVlyc73nfR4Ab
+         YomyiwlNWuOsztitWc8wyzbv6P4QIgrQz452zkG/zisAY8+hCDMGk6RPPwHR1kmtJM50
+         qBvCB2XA/dIv0+noBwgw0Q/NM7WFLNlLlAlKTVhE/QoTV1jmppByR/+2GObbPpoxcsbA
+         A4tiI5cGom05xd/uc1QXFjjT3f3vAzWonNkgLr/1PS8nxL5LmmJXwampjSnEq0XMeGwL
+         TZWxMbunajqX93Mvk+wQ6B3hK64s+ekDPiHzEgHK3jbVFtfeN+wJzYCDvjDww1UzbjD0
+         dDlw==
+X-Gm-Message-State: AAQBX9cNJZAvpQzcCmQhdZXnoRMge4J7O2HKe0bigXcAzGAZLC9bqQ4M
+	ZnfvolAeY8YRalwIve43InY=
+X-Google-Smtp-Source: AKy350avq0CExGtf4fiebF3FQzRiPIJEHCbJzrk50zC+WfWDQsglBM9pgQzdlXh/LaLmbuvNYNl/2A==
+X-Received: by 2002:a7b:ca43:0:b0:3eb:3945:d405 with SMTP id m3-20020a7bca43000000b003eb3945d405mr34247wml.38.1682019764130;
+        Thu, 20 Apr 2023 12:42:44 -0700 (PDT)
+Received: from localhost (host86-156-84-164.range86-156.btcentralplus.com. [86.156.84.164])
+        by smtp.gmail.com with ESMTPSA id j32-20020a05600c1c2000b003f173987ec2sm6257438wms.22.2023.04.20.12.42.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Apr 2023 12:42:43 -0700 (PDT)
+Date: Thu, 20 Apr 2023 20:42:42 +0100
+From: Lorenzo Stoakes <lstoakes@gmail.com>
+To: Atish Patra <atishp@rivosinc.com>
+Cc: linux-kernel@vger.kernel.org, Rajnesh Kanwal <rkanwal@rivosinc.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atishp@atishpatra.org>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev,
+	Dylan Reid <dylan@rivosinc.com>, abrestic@rivosinc.com,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+	Jiri Slaby <jirislaby@kernel.org>, kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org,
+	Mayuresh Chitale <mchitale@ventanamicro.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Uladzislau Rezki <urezki@gmail.com>
+Subject: Re: [RFC 01/48] mm/vmalloc: Introduce arch hooks to notify
+ ioremap/unmap changes
+Message-ID: <b58eadb7-c80c-42fe-b803-09f2f466c0bd@lucifer.local>
+References: <20230419221716.3603068-1-atishp@rivosinc.com>
+ <20230419221716.3603068-2-atishp@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230419221716.3603068-1-atishp@rivosinc.com> <ZEFopfs5Ij/AIkee@google.com>
-In-Reply-To: <ZEFopfs5Ij/AIkee@google.com>
-From: Atish Kumar Patra <atishp@rivosinc.com>
-Date: Fri, 21 Apr 2023 00:43:49 +0530
-Message-ID: <CAHBxVyE+SkQ-jpbupmJU4fpuiXY_GufnANDBUuO5bMHDsudeYg@mail.gmail.com>
-Subject: Re: [RFC 00/48] RISC-V CoVE support
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>, 
-	Andrew Jones <ajones@ventanamicro.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Anup Patel <anup@brainfault.org>, Atish Patra <atishp@atishpatra.org>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	linux-coco@lists.linux.dev, Dylan Reid <dylan@rivosinc.com>, abrestic@rivosinc.com, 
-	Samuel Ortiz <sameo@rivosinc.com>, Christoph Hellwig <hch@infradead.org>, 
-	Conor Dooley <conor.dooley@microchip.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guo Ren <guoren@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Jiri Slaby <jirislaby@kernel.org>, kvm-riscv@lists.infradead.org, 
-	kvm@vger.kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
-	Mayuresh Chitale <mchitale@ventanamicro.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Rajnesh Kanwal <rkanwal@rivosinc.com>, Uladzislau Rezki <urezki@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230419221716.3603068-2-atishp@rivosinc.com>
 
-On Thu, Apr 20, 2023 at 10:00=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
+I'm a vmalloc reviewer too now -next/mm-unstable get_maintainer.pl should say
+so, but forgivable because perhaps you ran against another tree but FYI for
+future I'd appreciate a cc- :)
+
+On Wed, Apr 19, 2023 at 03:16:29PM -0700, Atish Patra wrote:
+> From: Rajnesh Kanwal <rkanwal@rivosinc.com>
 >
-> On Wed, Apr 19, 2023, Atish Patra wrote:
-> > 2. Lazy gstage page allocation vs upfront allocation with page pool.
-> > Currently, all gstage mappings happen at runtime during the fault. This=
- is expensive
-> > as we need to convert that page to confidential memory as well. A page =
-pool framework
-> > may be a better choice which can hold all the confidential pages which =
-can be
-> > pre-allocated upfront. A generic page pool infrastructure may benefit o=
-ther CC solutions ?
+> In virtualization, the guest may need notify the host about the ioremap
+> regions. This is a common usecase in confidential computing where the
+> host only provides MMIO emulation for the regions specified by the guest.
 >
-> I'm sorry, what?  Do y'all really not pay any attention to what is happen=
-ing
-> outside of the RISC-V world?
+> Add a pair if arch specific callbacks to track the ioremapped regions.
+
+Nit: typo if -> of.
+
 >
-> We, where "we" is KVM x86 and ARM, with folks contributing from 5+ compan=
-ines,
-> have been working on this problem for going on three *years*.  And that's=
- just
-> from the first public posting[1], there have been discussions about how t=
-o approach
-> this for even longer.  There have been multiple related presentations at =
-KVM Forum,
-> something like 4 or 5 just at KVM Forum 2022 alone.
+> This patch is based on pkvm patches. A generic arch config can be added
+> similar to pkvm if this is going to be the final solution. The device
+> authorization/filtering approach is very different from this and we
+> may prefer that one as it provides more flexibility in terms of which
+> devices are allowed for the confidential guests.
+
+So it's an RFC that assumes existing patches are already applied or do you mean
+something else here? What do I need to do to get to a vmalloc.c with your patch
+applied?
+
+I guess this is pretty nitty since your changes are small here but be good to
+know!
+
 >
-
-Yes. We are following the restrictedmem effort and was reviewing the
-v10 this week.
-I did mention about that in the 1st item in the TODO list. We are
-planning to use the restrictedmen
-feature once it is closer to upstream (which seems to be the case
-looking at v10).
-Another reason is that this initial series is based on kvmtool only.
-We are working on qemu-kvm
-right now but have some RISC-V specific dependencies(interrupt
-controller stuff) which are not there yet.
-As the restrictedmem patches are already available in qemu-kvm too,
-our plan was to support CoVE
-in qemu-kvm first and work on restrictedmem after that.
-
-This item was just based on this RFC implementation which uses a lazy
-gstage page allocation.
-The idea was to check if there is any interest at all in this
-approach. I should have mentioned about
-restrictedmem plan in this section as well. Sorry for the confusion.
-
-Thanks for your suggestion. It seems we should just directly move to
-restrictedmem asap.
-
-> Patch 1 says "This patch is based on pkvm patches", so clearly you are at=
- least
-> aware that there is other work going on in this space.
+> Signed-off-by: Rajnesh Kanwal <rkanwal@rivosinc.com>
+> Signed-off-by: Atish Patra <atishp@rivosinc.com>
+> ---
+>  mm/vmalloc.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 >
-
-Yes. We have been following pkvm, tdx & CCA patches. The MMIO section
-has more details
-on TDX/pkvm related aspects.
-
-> At a very quick glance, this series is suffers from all of the same flaws=
- that SNP,
-> TDX, and pKVM have encountered.  E.g. assuming guest memory is backed by =
-struct page
-> memory, relying on pinning to solve all problems (hint, it doesn't), and =
-so on and
-> so forth.
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index bef6cf2..023630e 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -304,6 +304,14 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
+>  	return err;
+>  }
 >
-> And to make things worse, this series is riddled with bugs.  E.g. patch 1=
-9 alone
-> manages to squeeze in multiple fatal bugs in five new lines of code: dead=
-lock due
-> to not releasing mmap_lock on failure, failure to correcty handle MOVE, f=
-ailure to
+> +__weak void ioremap_phys_range_hook(phys_addr_t phys_addr, size_t size, pgprot_t prot)
+> +{
+> +}
+> +
+> +__weak void iounmap_phys_range_hook(phys_addr_t phys_addr, size_t size)
+> +{
+> +}
+> +
 
-That's an oversight. Apologies for that. Thanks for pointing it out.
+I'm not sure if this is for efficiency by using a weak reference, however, and
+perhaps a nit, but I'd prefer an arch_*() that's defined in a header somewhere,
+as it does hide the call paths quite effectively.
 
-> handle DELETE at all, failure to honor (or reject) READONLY, and probably=
- several
-> others.
+>  int ioremap_page_range(unsigned long addr, unsigned long end,
+>  		phys_addr_t phys_addr, pgprot_t prot)
+>  {
+> @@ -315,6 +323,10 @@ int ioremap_page_range(unsigned long addr, unsigned long end,
+>  	if (!err)
+>  		kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>  					 ioremap_max_page_shift);
+> +
+> +	if (!err)
+> +		ioremap_phys_range_hook(phys_addr, end - addr, prot);
+> +
+>  	return err;
+>  }
 >
-It should be rejected for READONLY as our APIs don't have any
-permission flags yet.
-I think we should add that to enable CoVE APIs to support as well ?
+> @@ -2772,6 +2784,10 @@ void vunmap(const void *addr)
+>  				addr);
+>  		return;
+>  	}
+> +
+> +	if (vm->flags & VM_IOREMAP)
+> +		iounmap_phys_range_hook(vm->phys_addr, get_vm_area_size(vm));
+> +
 
-Same goes for DELETE ops as we don't have an API to delete any
-confidential memory region
-yet. I was not very sure about the use case for MOVE though (migration
-possibly ?)
+There are places other than ioremap_page_range() that can set VM_IOREMAP,
+e.g. vmap_pfn(), so this may trigger with addresses other than those specified
+in the original hook. Is this intended?
 
-kvm_riscv_cove_vm_add_memreg should have been invoked only for CREATE
-& reject others for now.
-I will revise the patch accordingly and leave a TODO comment for the
-future about API updates.
-
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 4b0f09e..63889d9 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -499,6 +499,11 @@ int kvm_arch_prepare_memory_region(struct kvm *kvm,
+>  	kfree(vm);
+>  }
+>  EXPORT_SYMBOL(vunmap);
+> --
+> 2.25.1
 >
->         mmap_read_lock(current->mm);
->
-> +       if (is_cove_vm(kvm)) {
-> +               ret =3D kvm_riscv_cove_vm_add_memreg(kvm, base_gpa, size)=
-;
-> +               if (ret)
-> +                       return ret;
-> +       }
->         /*
->          * A memory region could potentially cover multiple VMAs, and
->          * any holes between them, so iterate over all of them to find
->
-> I get that this is an RFC, but for a series of this size, operating in an=
- area that
-> is under heavy development by multiple other architectures, to have a dif=
-fstat that
-> shows _zero_ changes to common KVM is simply unacceptable.
->
-
-Thanks for the valuable feedback. This is pretty much pre-RFC as the
-spec is very much
-in draft state. We want to share with the larger linux community to
-gather feedback sooner
-than later so that we can incorporate that feedback into the spec if any.
-
-> Please, go look at restrictedmem[2] and work on building CoVE support on =
-top of
-> that.  If the current proposal doesn't fit CoVE's needs, then we need to =
-know _before_
-> all of that code gets merged.
->
-
-Absolutely. That has always been the plan.
-
-> [1] https://lore.kernel.org/linux-mm/20200522125214.31348-1-kirill.shutem=
-ov@linux.intel.com
-> [2] https://lkml.kernel.org/r/20221202061347.1070246-1-chao.p.peng%40linu=
-x.intel.com
->
-> > arch/riscv/Kbuild                       |    2 +
-> > arch/riscv/Kconfig                      |   27 +
-> > arch/riscv/cove/Makefile                |    2 +
-> > arch/riscv/cove/core.c                  |   40 +
-> > arch/riscv/cove/cove_guest_sbi.c        |  109 +++
-> > arch/riscv/include/asm/cove.h           |   27 +
-> > arch/riscv/include/asm/covg_sbi.h       |   38 +
-> > arch/riscv/include/asm/csr.h            |    2 +
-> > arch/riscv/include/asm/kvm_cove.h       |  206 +++++
-> > arch/riscv/include/asm/kvm_cove_sbi.h   |  101 +++
-> > arch/riscv/include/asm/kvm_host.h       |   10 +-
-> > arch/riscv/include/asm/kvm_vcpu_sbi.h   |    3 +
-> > arch/riscv/include/asm/mem_encrypt.h    |   26 +
-> > arch/riscv/include/asm/sbi.h            |  107 +++
-> > arch/riscv/include/uapi/asm/kvm.h       |   17 +
-> > arch/riscv/kernel/irq.c                 |   12 +
-> > arch/riscv/kernel/setup.c               |    2 +
-> > arch/riscv/kvm/Makefile                 |    1 +
-> > arch/riscv/kvm/aia.c                    |  101 ++-
-> > arch/riscv/kvm/aia_device.c             |   41 +-
-> > arch/riscv/kvm/aia_imsic.c              |  127 ++-
-> > arch/riscv/kvm/cove.c                   | 1005 +++++++++++++++++++++++
-> > arch/riscv/kvm/cove_sbi.c               |  490 +++++++++++
-> > arch/riscv/kvm/main.c                   |   30 +-
-> > arch/riscv/kvm/mmu.c                    |   45 +-
-> > arch/riscv/kvm/tlb.c                    |   11 +-
-> > arch/riscv/kvm/vcpu.c                   |   69 +-
-> > arch/riscv/kvm/vcpu_exit.c              |   34 +-
-> > arch/riscv/kvm/vcpu_insn.c              |  115 ++-
-> > arch/riscv/kvm/vcpu_sbi.c               |   16 +
-> > arch/riscv/kvm/vcpu_sbi_covg.c          |  232 ++++++
-> > arch/riscv/kvm/vcpu_timer.c             |   26 +-
-> > arch/riscv/kvm/vm.c                     |   34 +-
-> > arch/riscv/kvm/vmid.c                   |   17 +-
-> > arch/riscv/mm/Makefile                  |    3 +
-> > arch/riscv/mm/init.c                    |   17 +-
-> > arch/riscv/mm/ioremap.c                 |   45 +
-> > arch/riscv/mm/mem_encrypt.c             |   61 ++
-> > drivers/tty/hvc/hvc_riscv_sbi.c         |    5 +
-> > drivers/tty/serial/earlycon-riscv-sbi.c |   51 +-
-> > include/uapi/linux/kvm.h                |    8 +
-> > mm/vmalloc.c                            |   16 +
-> > 42 files changed, 3222 insertions(+), 109 deletions(-)
-> > create mode 100644 arch/riscv/cove/Makefile
-> > create mode 100644 arch/riscv/cove/core.c
-> > create mode 100644 arch/riscv/cove/cove_guest_sbi.c
-> > create mode 100644 arch/riscv/include/asm/cove.h
-> > create mode 100644 arch/riscv/include/asm/covg_sbi.h
-> > create mode 100644 arch/riscv/include/asm/kvm_cove.h
-> > create mode 100644 arch/riscv/include/asm/kvm_cove_sbi.h
-> > create mode 100644 arch/riscv/include/asm/mem_encrypt.h
-> > create mode 100644 arch/riscv/kvm/cove.c
-> > create mode 100644 arch/riscv/kvm/cove_sbi.c
-> > create mode 100644 arch/riscv/kvm/vcpu_sbi_covg.c
-> > create mode 100644 arch/riscv/mm/ioremap.c
-> > create mode 100644 arch/riscv/mm/mem_encrypt.c
-> >
-> > --
-> > 2.25.1
-> >
