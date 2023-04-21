@@ -1,60 +1,61 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A2328E3
-	for <linux-coco@lists.linux.dev>; Fri, 21 Apr 2023 18:50:19 +0000 (UTC)
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1a8097c1ccfso27904225ad.1
-        for <linux-coco@lists.linux.dev>; Fri, 21 Apr 2023 11:50:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230A228E3
+	for <linux-coco@lists.linux.dev>; Fri, 21 Apr 2023 19:24:53 +0000 (UTC)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1a667067275so22338665ad.1
+        for <linux-coco@lists.linux.dev>; Fri, 21 Apr 2023 12:24:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682103019; x=1684695019;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682105092; x=1684697092;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/IIUhUlmRecN66Z6gik+9JylRPrSHv9qYt9esJpbqSI=;
-        b=THDL4+u/vOfwLaOnCW6eh/CjgCzPbUBKAHWf1LgoVb5urObrbbDHtE6LnFnJmkcGbJ
-         X8sScn53VOwmiufg6b6vh6lFIqrfOMJmRlqDY7muic2fAlWCCsOBcmJbCjOoIvNUxnTw
-         CCi7AskMw6mhK+++me+sRjwikLpeFgIwFV0nF0mmjg428f8Rammes3zg4WwGMq8g786W
-         u8Qe//FfgFBTmm/8czZ4ckylnzNPDOezoP2aS60VK1m3/oMe/h5ZP8lwmqiqiNZdCveU
-         hRoUCo88MTFudnwN/fMDvgNm+b5CVsDTOcg14bYbIUZFekjOGitMEoCJ5+oTpJJu4z/U
-         HanA==
+        bh=lvkLA+a8YoW/wuOsjaIxJzuPVSb1YjjMK/JpWWUYlMo=;
+        b=Z1mYNDZ6AkudtVnrT3n5V/eEIts8OddUDSW9KLn74LxIddwBxxMBvHvXimDOcCpD64
+         X6WHStiU+II2uxk73igF03YyRe+mqwSuW6H9Qtdv7u/DWvtDubpnzfk1YriCRr9za8v5
+         XC2S0BuPZrz2o6+CZXODj0TbYeG2KwCM2cVe6oSpp9pVUDXxGg9olTtkau7Q+5+NsYc4
+         cPFBjLGEPHFWzzeOrmDbwFXicua/PB03j/rs7FblIcXdCvm1JDi0Tcgqxr22anUmw5R3
+         tGRsDEZo6/EsKO19A+OOzPNIS7W+AHqe2QZk6VRckV7ELyCwNp6MWsNbX2FhgYUyMfrE
+         CxsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682103019; x=1684695019;
+        d=1e100.net; s=20221208; t=1682105092; x=1684697092;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/IIUhUlmRecN66Z6gik+9JylRPrSHv9qYt9esJpbqSI=;
-        b=PyjvfNRH8VZ+0ruysDkmR1BTZjybi6SVBKZsCahBtgE8Au1SDYQzv6QlFcOKQk0exu
-         5Lcy6pDsBaqs28uN1HHsIYD1EMq0upkBuzrPWUMFKpoOLgpd1jhX+o/khIBi9uD2epIs
-         +mZiaG0jF0WkySEaEQ5LD/Dd+ZgGkPwjUE5lS4JCy7wUSrA+keH+a9tqwoQzwuccIYjw
-         z5Db+poRLOtZp4F3vynI3D1ifbTWjaBDY3gMVjUowvACMeaNiwdO6s5NShfr1VZ0a0/F
-         v91EdIVl+TpGAoStIwuIXUWIo0HvvRK67eP70yvswzO6r/yvKgOvXKCT2jCVu7HGtR8Q
-         JszQ==
-X-Gm-Message-State: AAQBX9fL5VyccRIXJxSvypabct30G0dhyV8LlqQukHdsJ0y8hS9hc3Fx
-	KiLavF1NLsBeeT2zOJQycTYldGYogf2edKiE2CcdHw==
-X-Google-Smtp-Source: AKy350YdSljDnRrQJM9jfWzeZ/GLttvpy4dWrgL7+90Nmaems+z3L9naUfpMZAy9sq8Fz7lbqPOj5hZdKf+W5l/Qavg=
-X-Received: by 2002:a17:902:8501:b0:1a1:f95a:24f2 with SMTP id
- bj1-20020a170902850100b001a1f95a24f2mr5252822plb.19.1682103019136; Fri, 21
- Apr 2023 11:50:19 -0700 (PDT)
+        bh=lvkLA+a8YoW/wuOsjaIxJzuPVSb1YjjMK/JpWWUYlMo=;
+        b=cNsDGp1avvPr1opRPkLBnhXEqIUJljgwBv7slMgf1qHoaLDr8U+Jg6k8m5eJLrwSWv
+         //y8maSB/6IsK9eN366LChOESUCR2WMzVpVr8XW6L7op6YAAqFQApUBe5aXvd/i+Aseh
+         /p7+ca4dYM2JDRe3JQSnhJ48pej4CrcBDlvosxRB7aZfOUfrl/WDHlpl+K11BfAAL8Gf
+         yIy5Av3XMSjzwQT5x88DSp6PIKuBZ1hroofnKLgiq6QZkyB4qU+JY6FyNWAXZaoJ7tv6
+         GZHBRjmJZU1J4no8epGvlAIG7b+XFXujTxLAxz5BerGZ7diBCZHqY5k+rI/OSTHGbW21
+         aNlg==
+X-Gm-Message-State: AAQBX9c6WdPPJsQRCHJdmYD4f9p7KB4fRf3TZg3OqpBb1wWQTSJocC8S
+	HIZVTBDhvdxb1OLnaazt8sKIDaNwBWEYPgxqejacqo9c3Mzq5uIJ9j3ZBf8t
+X-Google-Smtp-Source: AKy350bWDl0o884sMlNpmr/NR+NvkEPHrIR9Z4zX48mWh2RO0zn4bHfGQxbBytUzrO9XtFhCP8cwpF/T0JLyArYTY9E=
+X-Received: by 2002:a17:903:22c8:b0:1a6:c12d:9036 with SMTP id
+ y8-20020a17090322c800b001a6c12d9036mr7907063plg.33.1682105092516; Fri, 21 Apr
+ 2023 12:24:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230419221716.3603068-1-atishp@rivosinc.com> <20230419221716.3603068-11-atishp@rivosinc.com>
- <ZEFXiXu+0XLSdRkQ@google.com>
-In-Reply-To: <ZEFXiXu+0XLSdRkQ@google.com>
+References: <20230419221716.3603068-1-atishp@rivosinc.com> <20230419221716.3603068-46-atishp@rivosinc.com>
+ <69ba1760-a079-fd8f-b079-fcb01e3eedec@intel.com>
+In-Reply-To: <69ba1760-a079-fd8f-b079-fcb01e3eedec@intel.com>
 From: Atish Kumar Patra <atishp@rivosinc.com>
-Date: Sat, 22 Apr 2023 00:20:08 +0530
-Message-ID: <CAHBxVyGGsvYrRpx1=ahW-5ALskAQJsgjF=9a=BMreuQov0En6Q@mail.gmail.com>
-Subject: Re: [RFC 10/48] RISC-V: KVM: Implement static memory region measurement
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>, 
-	Andrew Jones <ajones@ventanamicro.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Anup Patel <anup@brainfault.org>, Atish Patra <atishp@atishpatra.org>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+Date: Sat, 22 Apr 2023 00:54:41 +0530
+Message-ID: <CAHBxVyFhDapAeMQ8quBqWZ10jWSHw1CdE227ciyKQpULHYzffA@mail.gmail.com>
+Subject: Re: [RFC 45/48] RISC-V: ioremap: Implement for arch specific ioremap hooks
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, Rajnesh Kanwal <rkanwal@rivosinc.com>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atishp@atishpatra.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
 	Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	linux-coco@lists.linux.dev, Dylan Reid <dylan@rivosinc.com>, abrestic@rivosinc.com, 
+	Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev, 
+	Dylan Reid <dylan@rivosinc.com>, abrestic@rivosinc.com, 
 	Samuel Ortiz <sameo@rivosinc.com>, Christoph Hellwig <hch@infradead.org>, 
 	Conor Dooley <conor.dooley@microchip.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guo Ren <guoren@kernel.org>, 
@@ -62,178 +63,56 @@ Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>,
 	kvm@vger.kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
 	Mayuresh Chitale <mchitale@ventanamicro.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Rajnesh Kanwal <rkanwal@rivosinc.com>, Uladzislau Rezki <urezki@gmail.com>
+	Uladzislau Rezki <urezki@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 20, 2023 at 8:47=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Fri, Apr 21, 2023 at 3:46=E2=80=AFAM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
 >
-> On Wed, Apr 19, 2023, Atish Patra wrote:
-> > +int kvm_riscv_cove_vm_measure_pages(struct kvm *kvm, struct kvm_riscv_=
-cove_measure_region *mr)
-> > +{
-> > +     struct kvm_cove_tvm_context *tvmc =3D kvm->arch.tvmc;
-> > +     int rc =3D 0, idx, num_pages;
-> > +     struct kvm_riscv_cove_mem_region *conf;
-> > +     struct page *pinned_page, *conf_page;
-> > +     struct kvm_riscv_cove_page *cpage;
-> > +
-> > +     if (!tvmc)
-> > +             return -EFAULT;
-> > +
-> > +     if (tvmc->finalized_done) {
-> > +             kvm_err("measured_mr pages can not be added after finaliz=
-e\n");
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     num_pages =3D bytes_to_pages(mr->size);
-> > +     conf =3D &tvmc->confidential_region;
-> > +
-> > +     if (!IS_ALIGNED(mr->userspace_addr, PAGE_SIZE) ||
-> > +         !IS_ALIGNED(mr->gpa, PAGE_SIZE) || !mr->size ||
-> > +         !cove_is_within_region(conf->gpa, conf->npages << PAGE_SHIFT,=
- mr->gpa, mr->size))
-> > +             return -EINVAL;
-> > +
-> > +     idx =3D srcu_read_lock(&kvm->srcu);
-> > +
-> > +     /*TODO: Iterate one page at a time as pinning multiple pages fail=
- with unmapped panic
-> > +      * with a virtual address range belonging to vmalloc region for s=
-ome reason.
+> On 4/19/23 15:17, Atish Patra wrote:
+> > The guests running in CoVE must notify the host about its mmio regions
+> > so that host can enable mmio emulation.
 >
-> I've no idea what code you had, but I suspect the fact that vmalloc'd mem=
-ory isn't
-> guaranteed to be physically contiguous is relevant to the panic.
+> This one doesn't make a lot of sense to me.
+>
+> The guest and host must agree about the guest's physical layout up
+> front.  In general, the host gets to dictate that layout.  It tells the
+> guest, up front, what is present in the guest physical address space.
 >
 
-Ahh. That makes sense. Thanks.
+That is passed through DT/ACPI (which will be measured) to the guest.
 
-> > +      */
-> > +     while (num_pages) {
-> > +             if (signal_pending(current)) {
-> > +                     rc =3D -ERESTARTSYS;
-> > +                     break;
-> > +             }
-> > +
-> > +             if (need_resched())
-> > +                     cond_resched();
-> > +
-> > +             rc =3D get_user_pages_fast(mr->userspace_addr, 1, 0, &pin=
-ned_page);
-> > +             if (rc < 0) {
-> > +                     kvm_err("Pinning the userpsace addr %lx failed\n"=
-, mr->userspace_addr);
-> > +                     break;
-> > +             }
-> > +
-> > +             /* Enough pages are not available to be pinned */
-> > +             if (rc !=3D 1) {
-> > +                     rc =3D -ENOMEM;
-> > +                     break;
-> > +             }
-> > +             conf_page =3D alloc_page(GFP_KERNEL | __GFP_ZERO);
-> > +             if (!conf_page) {
-> > +                     rc =3D -ENOMEM;
-> > +                     break;
-> > +             }
-> > +
-> > +             rc =3D cove_convert_pages(page_to_phys(conf_page), 1, tru=
-e);
-> > +             if (rc)
-> > +                     break;
-> > +
-> > +             /*TODO: Support other pages sizes */
-> > +             rc =3D sbi_covh_add_measured_pages(tvmc->tvm_guest_id, pa=
-ge_to_phys(pinned_page),
-> > +                                              page_to_phys(conf_page),=
- SBI_COVE_PAGE_4K,
-> > +                                              1, mr->gpa);
-> > +             if (rc)
-> > +                     break;
-> > +
-> > +             /* Unpin the page now */
-> > +             put_page(pinned_page);
-> > +
-> > +             cpage =3D kmalloc(sizeof(*cpage), GFP_KERNEL_ACCOUNT);
-> > +             if (!cpage) {
-> > +                     rc =3D -ENOMEM;
-> > +                     break;
-> > +             }
-> > +
-> > +             cpage->page =3D conf_page;
-> > +             cpage->npages =3D 1;
-> > +             cpage->gpa =3D mr->gpa;
-> > +             cpage->hva =3D mr->userspace_addr;
+> This callback appears to say to the host:
 >
-> Snapshotting the userspace address for the _source_ page can't possibly b=
-e useful.
+>         Hey, I (the guest) am treating this guest physical area as MMIO.
+>
+> But the host and guest have to agree _somewhere_ what the MMIO is used
+> for, not just that it is being used as MMIO.
 >
 
-Yeah. Currently, the hva in the kvm_riscv_cove_page is not used
-anywhere in the code. We can remove it.
+Yes. The TSM (TEE Security Manager) which is equivalent to TDX also
+needs to be aware
+of the MMIO regions so that it can forward the faults accordingly.
+Most of the MMIO is emulated in the host (userspace or kernel
+emulation if present).
+The host is outside the trust boundary of the guest. Thus, guest needs
+to make sure the host
+only emulates the designated MMIO region. Otherwise, it opens an
+attack surface from a malicious host.
 
-> > +             cpage->is_mapped =3D true;
-> > +             INIT_LIST_HEAD(&cpage->link);
-> > +             list_add(&cpage->link, &tvmc->measured_pages);
-> > +
-> > +             mr->userspace_addr +=3D PAGE_SIZE;
-> > +             mr->gpa +=3D PAGE_SIZE;
-> > +             num_pages--;
-> > +             conf_page =3D NULL;
-> > +
-> > +             continue;
-> > +     }
-> > +     srcu_read_unlock(&kvm->srcu, idx);
-> > +
-> > +     if (rc < 0) {
-> > +             /* We don't to need unpin pages as it is allocated by the=
- hypervisor itself */
+All other confidential computing solutions also depend on guest
+initiated MMIO as well. AFAIK, the TDX & SEV
+relies on #VE like exceptions to invoke that while this patch is
+similar to what pkvm does.
+This approach lets the enlightened guest control which MMIO regions it
+wants the host to emulate.
+It can be a subset of the region's host provided the layout. The guest
+device filtering solution is based on
+this idea as well [1].
+
+[1] https://lore.kernel.org/all/20210930010511.3387967-1-sathyanarayanan.ku=
+ppuswamy@linux.intel.com/
+
+
 >
-> This comment makes no sense.  The above code is doing all of the allocati=
-on and
-> pinning, which strongly suggests that KVM is the hypervisor.  But this co=
-mment
-> implies that KVM is not the hypervisor.
->
-
-I mean to say here the conf_page is allocated in the kernel using
-alloc_page. So no pinning/unpinning is required.
-It seems the comment is probably misleading & confusing at best. I
-will remove it.
-
-> And "pinned_page" is cleared unpinned in the loop after the page is added=
-+measured,
-> which looks to be the same model as TDX where "pinned_page" is the source=
- and
-> "conf_page" is gifted to the hypervisor.  But on failure, e.g. when alloc=
-ating
-> "conf_page", that reference is not put.
->
-
-Thanks. Will fix it.
-
-> > +             cove_delete_page_list(kvm, &tvmc->measured_pages, false);
-> > +             /* Free the last allocated page for which conversion/meas=
-urement failed */
-> > +             kfree(conf_page);
->
-> Assuming my guesses about how the architecture works are correct, this is=
- broken
-> if sbi_covh_add_measured_pages() fails. The page has already been gifted =
-to the
-
-Yeah. The last conf_page should be reclaimed as well if measured_pages
-fail at any point in the loop.
-All other allocated ones would be reclaimed as a part of cove_delete_page_l=
-ist.
-
-
-
-> TSM by cove_convert_pages(), but there is no call to sbi_covh_tsm_reclaim=
-_pages(),
-> which I'm guessing is necesary to transition the page back to a state whe=
-re it can
-> be safely used by the host.
