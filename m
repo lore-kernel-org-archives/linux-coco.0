@@ -1,173 +1,200 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD8B7B
-	for <linux-coco@lists.linux.dev>; Tue, 25 Apr 2023 08:00:19 +0000 (UTC)
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4ec816d64afso23373010e87.1
-        for <linux-coco@lists.linux.dev>; Tue, 25 Apr 2023 01:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682409618; x=1685001618;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wJcVKVJA3HgnW7bSvVOddaHKG/ERA+dvV0Lub2llU+Q=;
-        b=EOkcITT5Rq6XWK3ejRIWqvQTkMe0ymO3UjoLJxHU/nMXd+kJfjuDnngRLl0056SRHm
-         ThA9qKaCSDNobvcy6jnV68/ursuWUy1LRvfcOiMnvJd6umM5gBHUqjEii9P0KObi7KGh
-         BAFvn/jnFZdpnznd05oLdmPYj0b3vIN6GQEhpBNTdSfL4z+ZwxB1QMA9d150A+77EI3i
-         plazI1uNEF7MssMeARqn6HbaKObj7K0qUBZHDm45tsXJspZswccglcpyVh33k/az8cYf
-         7sxktCdB7+YpplssXVz1+FDrVlx5NHqwNlTaeiZQzIojqvTIoBPoyIpW8YSps41cN/xv
-         Ujqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682409618; x=1685001618;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wJcVKVJA3HgnW7bSvVOddaHKG/ERA+dvV0Lub2llU+Q=;
-        b=PrwRjNBBm8/oJ5J+x47EwaSEdoktrqsdQMGQkw6xaSGSdNBaPlU24D7yS1FzX/GRnJ
-         bwYguKHmSE8v8u1iGS9rvbv9SJ0Tf22sS7QZBNHyjFY49ZT79UwxFeKMUbOb8BqFk+42
-         0L9BJgqZqf98aR6+H2u/+6AXuZSBVERqpif5QCOheHOLHZHGp41qT2pN3556yZp9EkvJ
-         hTQHz4EEA4dSzx1MVuHVtz7mWAjO7ABtXsVoxukAS33ip+PK0IEfHBM13kV/6NsN5k3F
-         bkNS2VJ74FbWX7PyiGDEzbU/P8gV6SeQbxqeeuVUnA/Vd083NDxaU29EnNQh4l9IKFtu
-         96Dw==
-X-Gm-Message-State: AAQBX9eFhI/vXB3GoTGPmaH4P1qR+G6JDwdvh4HPMvQj1qMAAH62T+ut
-	B3duuPPC1pMpazc6IXPv6Xsp5KBcfGk8Epd31hRbzA==
-X-Google-Smtp-Source: AKy350ZxdfhaQD3I1+8v331wKiSztM8EPfAn2hc331pKYjbFsrskYvBdyUu9x9mXAh7RJVZWCXfYiGyWTG2NjZzD97c=
-X-Received: by 2002:a2e:9b87:0:b0:2aa:4550:9169 with SMTP id
- z7-20020a2e9b87000000b002aa45509169mr3099317lji.20.1682409617717; Tue, 25 Apr
- 2023 01:00:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2FD7B
+	for <linux-coco@lists.linux.dev>; Tue, 25 Apr 2023 13:10:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682428232; x=1713964232;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=rjBDnveYTlgu+7sEbRfwz2mR/VV2dupmzj53Ht6fq5I=;
+  b=NKUEO8DuhVFhAoD+6hOMK5wdMJxc/izqLPJL9D05PvM4ByxoJFxi22hI
+   es4sIlIFYKDJTgjeuCgfrKkbliBRO3TYJp57IYR3RAbPEYyQ54mV7ez8t
+   MOpRV9n7bOUB2/6Zj6YiE4aKUSibZxgTqkPg0v3TXlQGykdOmz8QPZZll
+   R44YUCfUrd8NoM57MoiHGDNr+a/COylq0CBIBmuvXhvUXOr69XxM5d9GA
+   vs4be1pNLpYKfWd0tT7qaKaFOaCvotiK00rnfpGqsk2kRT4GJOnv1SiFr
+   iAXkC2XRA4uhCBmWy8La+xy5mETXNpW93eDWRq2zta7PzMH22H87kr5Mw
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="326360149"
+X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
+   d="scan'208";a="326360149"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 06:10:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="939765044"
+X-IronPort-AV: E=Sophos;i="5.99,225,1677571200"; 
+   d="scan'208";a="939765044"
+Received: from gchacko-mobl1.gar.corp.intel.com (HELO [10.215.145.52]) ([10.215.145.52])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2023 06:10:17 -0700
+Message-ID: <fe1a849a-3276-5fad-869b-bad54bc918f6@intel.com>
+Date: Tue, 25 Apr 2023 06:10:12 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230419221716.3603068-1-atishp@rivosinc.com> <20230419221716.3603068-46-atishp@rivosinc.com>
- <69ba1760-a079-fd8f-b079-fcb01e3eedec@intel.com> <CAHBxVyFhDapAeMQ8quBqWZ10jWSHw1CdE227ciyKQpULHYzffA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC 45/48] RISC-V: ioremap: Implement for arch specific ioremap
+ hooks
+Content-Language: en-US
+To: Atish Kumar Patra <atishp@rivosinc.com>
+Cc: linux-kernel@vger.kernel.org, Rajnesh Kanwal <rkanwal@rivosinc.com>,
+ Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Anup Patel <anup@brainfault.org>,
+ Atish Patra <atishp@atishpatra.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@rivosinc.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev,
+ Dylan Reid <dylan@rivosinc.com>, abrestic@rivosinc.com,
+ Samuel Ortiz <sameo@rivosinc.com>, Christoph Hellwig <hch@infradead.org>,
+ Conor Dooley <conor.dooley@microchip.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guo Ren
+ <guoren@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ Jiri Slaby <jirislaby@kernel.org>, kvm-riscv@lists.infradead.org,
+ kvm@vger.kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+ Mayuresh Chitale <mchitale@ventanamicro.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Uladzislau Rezki <urezki@gmail.com>
+References: <20230419221716.3603068-1-atishp@rivosinc.com>
+ <20230419221716.3603068-46-atishp@rivosinc.com>
+ <69ba1760-a079-fd8f-b079-fcb01e3eedec@intel.com>
+ <CAHBxVyFhDapAeMQ8quBqWZ10jWSHw1CdE227ciyKQpULHYzffA@mail.gmail.com>
  <81c476f4-ef62-e4a6-0033-8a46a15379fd@intel.com>
-In-Reply-To: <81c476f4-ef62-e4a6-0033-8a46a15379fd@intel.com>
-From: Atish Kumar Patra <atishp@rivosinc.com>
-Date: Tue, 25 Apr 2023 13:30:06 +0530
-Message-ID: <CAHBxVyHg7vTaQJWKoVSD8budVZEYSo1eDOyZyZK7gcJApR7SbA@mail.gmail.com>
-Subject: Re: [RFC 45/48] RISC-V: ioremap: Implement for arch specific ioremap hooks
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, Rajnesh Kanwal <rkanwal@rivosinc.com>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Anup Patel <anup@brainfault.org>, 
-	Atish Patra <atishp@atishpatra.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev, 
-	Dylan Reid <dylan@rivosinc.com>, abrestic@rivosinc.com, 
-	Samuel Ortiz <sameo@rivosinc.com>, Christoph Hellwig <hch@infradead.org>, 
-	Conor Dooley <conor.dooley@microchip.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guo Ren <guoren@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Jiri Slaby <jirislaby@kernel.org>, kvm-riscv@lists.infradead.org, 
-	kvm@vger.kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
-	Mayuresh Chitale <mchitale@ventanamicro.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Uladzislau Rezki <urezki@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CAHBxVyHg7vTaQJWKoVSD8budVZEYSo1eDOyZyZK7gcJApR7SbA@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <CAHBxVyHg7vTaQJWKoVSD8budVZEYSo1eDOyZyZK7gcJApR7SbA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 24, 2023 at 7:18=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
->
-> On 4/21/23 12:24, Atish Kumar Patra wrote:
-> > On Fri, Apr 21, 2023 at 3:46=E2=80=AFAM Dave Hansen <dave.hansen@intel.=
-com> wrote:>> This callback appears to say to the host:
-> >>
-> >>         Hey, I (the guest) am treating this guest physical area as MMI=
-O.
-> >>
-> >> But the host and guest have to agree _somewhere_ what the MMIO is used
-> >> for, not just that it is being used as MMIO.
-> >
-> > Yes. The TSM (TEE Security Manager) which is equivalent to TDX also
-> > needs to be aware of the MMIO regions so that it can forward the
-> > faults accordingly. Most of the MMIO is emulated in the host
-> > (userspace or kernel emulation if present). The host is outside the
-> > trust boundary of the guest. Thus, guest needs to make sure the host
-> > only emulates the designated MMIO region. Otherwise, it opens an
-> > attack surface from a malicious host.
-> How does this mechanism stop the host from emulating something outside
-> the designated region?
->
-> On TDX, for instance, the guest page table have a shared/private bit.
-> Private pages get TDX protections to (among other things) keep the page
-> contents confidential from the host.  Shared pages can be used for MMIO
-> and don't have those protections.
->
-> If the host goes and tries to flip a page from private->shared, TDX
-> protections will kick in and prevent it.
->
-> None of this requires the guest to tell the host where it expects MMIO
-> to be located.
->
-> > All other confidential computing solutions also depend on guest
-> > initiated MMIO as well. AFAIK, the TDX & SEV relies on #VE like
-> > exceptions to invoke that while this patch is similar to what pkvm
-> > does. This approach lets the enlightened guest control which MMIO
-> > regions it wants the host to emulate.
->
-> I'm not _quite_ sure what "guest initiated" means.  But SEV and TDX
-> don't require an ioremap hook like this.  So, even if they *are* "guest
-> initiated", the question still remains how they work without this patch,
-> or what they are missing without it.
->
+On 4/25/23 01:00, Atish Kumar Patra wrote:
+> On Mon, Apr 24, 2023 at 7:18 PM Dave Hansen <dave.hansen@intel.com> wrote:
+>> On 4/21/23 12:24, Atish Kumar Patra wrote:
+>> I'm not _quite_ sure what "guest initiated" means.  But SEV and TDX
+>> don't require an ioremap hook like this.  So, even if they *are* "guest
+>> initiated", the question still remains how they work without this patch,
+>> or what they are missing without it.
+> 
+> Maybe I misunderstood your question earlier. Are you concerned about guests
+> invoking any MMIO region specific calls in the ioremap path or passing
+> that information to the host ?
 
-Maybe I misunderstood your question earlier. Are you concerned about guests
-invoking any MMIO region specific calls in the ioremap path or passing
-that information to the host ?
-Earlier, I assumed the former but it seems you are also concerned
-about the latter as well. Sorry for the confusion in that case.
-The guest initiation is necessary while the host notification can be
-made optional.
-The "guest initiated" means the guest tells the TSM (equivalent of TDX
-module in RISC-V) the MMIO region details.
-The TSM keeps a track of this and any page faults that happen in that
-region are forwarded
-to the host by the TSM after the instruction decoding. Thus TSM can
-make sure that only ioremapped regions are
-considered MMIO regions. Otherwise, all memory outside the guest
-physical region will be considered as the MMIO region.
+My concern is that I don't know why this patch is here.  There should be
+a very simple answer to the question: Why does RISC-V need this patch
+but x86 does not?
 
-In the current CoVE implementation, that MMIO region information is also
-passed to the host to provide additional flexibility. The host may
-choose to do additional
-sanity check and bail if the fault address does not belong to
-requested MMIO regions without
-going to the userspace. This is purely an optimization and may not be manda=
-tory.
+> Earlier, I assumed the former but it seems you are also concerned
+> about the latter as well. Sorry for the confusion in that case.
+> The guest initiation is necessary while the host notification can be
+> made optional.
+> The "guest initiated" means the guest tells the TSM (equivalent of TDX
+> module in RISC-V) the MMIO region details.
+> The TSM keeps a track of this and any page faults that happen in that
+> region are forwarded
+> to the host by the TSM after the instruction decoding. Thus TSM can
+> make sure that only ioremapped regions are
+> considered MMIO regions. Otherwise, all memory outside the guest
+> physical region will be considered as the MMIO region.
 
+Ahh, OK, that's a familiar problem.  I see the connection to device
+filtering now.
 
-> > It can be a subset of the region's host provided the layout. The
-> > guest device filtering solution is based on this idea as well [1].
-> >
-> > [1] https://lore.kernel.org/all/20210930010511.3387967-1-sathyanarayana=
-n.kuppuswamy@linux.intel.com/
->
-> I don't really see the connection.  Even if that series was going
-> forward (I'm not sure it is) there is no ioremap hook there.  There's
-> also no guest->host communication in that series.  The guest doesn't
-> _tell_ the host where the MMIO is, it just declines to run code for
-> devices that it didn't expect to see.
->
+Is this functionality in the current set?  I went looking for it and all
+I found was the host notification side.
 
-This is a recent version of the above series from tdx github. This is
-a WIP as well and has not been posted to
-the mailing list. Thus, it may be going under revisions as well.
-As per my understanding the above ioremap changes for TDX mark the
-ioremapped pages as shared.
-The guest->host communication happen in the #VE exception handler
-where the guest converts this to a hypercall by invoking TDG.VP.VMCALL
-with an EPT violation set. The host would emulate an MMIO address if
-it gets an VMCALL with EPT violation.
-Please correct me if I am wrong.
+Is this the only mechanism by which the guest tells the TSM which parts
+of the guest physical address space can be exposed to the host?
 
-As I said above, the objective here is to notify the TSM where the
-MMIO is. Notifying the host
-is just an optimization that we choose to add. In fact, in this series
-the KVM code doesn't do anything with that information.
-The commit text probably can be improved to clarify that.
+For TDX and SEV, that information is inferred from a bit in the page
+tables.  Essentially, there are dedicated guest physical addresses that
+tell the hardware how to treat the mappings: should the secure page
+tables or the host's EPT/NPT be consulted?
 
+If that mechanism is different for RISC-V, it would go a long way to
+explaining why RISC-V needs this patch.
 
-> I'm still rather confused here.
+> In the current CoVE implementation, that MMIO region information is also
+> passed to the host to provide additional flexibility. The host may
+> choose to do additional
+> sanity check and bail if the fault address does not belong to
+> requested MMIO regions without
+> going to the userspace. This is purely an optimization and may not be mandatory.
+
+Makes sense, thanks for the explanation.
+
+>>> It can be a subset of the region's host provided the layout. The
+>>> guest device filtering solution is based on this idea as well [1].
+>>>
+>>> [1] https://lore.kernel.org/all/20210930010511.3387967-1-sathyanarayanan.kuppuswamy@linux.intel.com/
+>>
+>> I don't really see the connection.  Even if that series was going
+>> forward (I'm not sure it is) there is no ioremap hook there.  There's
+>> also no guest->host communication in that series.  The guest doesn't
+>> _tell_ the host where the MMIO is, it just declines to run code for
+>> devices that it didn't expect to see.
+> 
+> This is a recent version of the above series from tdx github. This is
+> a WIP as well and has not been posted to
+> the mailing list. Thus, it may be going under revisions as well.
+> As per my understanding the above ioremap changes for TDX mark the
+> ioremapped pages as shared.
+> The guest->host communication happen in the #VE exception handler
+> where the guest converts this to a hypercall by invoking TDG.VP.VMCALL
+> with an EPT violation set. The host would emulate an MMIO address if
+> it gets an VMCALL with EPT violation.
+> Please correct me if I am wrong.
+
+Yeah, TDX does:
+
+1. Guest MMIO access
+2. Guest #VE handler (if the access faults)
+3. Guest hypercall->host
+4. Host fixes the fault
+5. Hypercall returns, guest returns from #VE via IRET
+6. Guest retries MMIO instruction
+
+From what you said, RISC-V appears to do:
+
+1. Guest MMIO access
+2. Host MMIO handler
+3. Host handles the fault, returns
+4. Guest retries MMIO instruction
+
+In other words, this mechanism does the same thing but short-circuits
+the trip through #VE and the hypercall.
+
+What happens if this ioremap() hook is not in place?  Does the hardware
+(or TSM) generate an exception like TDX gets?  If so, it's probably
+possible to move this "notify the TSM" code to that exception handler
+instead of needing an ioremap() hook.
+
+I'm not saying that it's _better_ to do that, but it would allow you to
+get rid of this patch for now and get me to shut up. :)
+
+> As I said above, the objective here is to notify the TSM where the 
+> MMIO is. Notifying the host is just an optimization that we choose to
+> add. In fact, in this series the KVM code doesn't do anything with
+> that information. The commit text probably can be improved to clarify
+> that.
+
+Just to close the loop here, please go take a look at
+pgprot_decrypted().  That's where the x86 guest page table bit gets to
+tell the hardware that the mapping might cause a #VE and is under the
+control of the host.  That's the extent of what x86 does at ioremap() time.
+
+So, to summarize, we have:
+
+x86:
+1. Guest page table bit to mark shared (host) vs. private (guest)
+   control
+2. #VE if there is a fault on a shared mapping to call into the host
+
+RISC-V:
+1. Guest->TSM call to mark MMIO vs. private
+2. Faults in the MMIO area are then transparent to the guest
+
+That design difference would, indeed, help explain why this patch is
+here.  I'm still not 100% convinced that the patch is *required*, but I
+at least understand how we arrived here.
