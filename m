@@ -1,195 +1,256 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4384408
-	for <linux-coco@lists.linux.dev>; Tue, 25 Apr 2023 15:02:40 +0000 (UTC)
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-54f8b418ee6so47272997b3.1
-        for <linux-coco@lists.linux.dev>; Tue, 25 Apr 2023 08:02:40 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35687C2E5
+	for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 08:02:51 +0000 (UTC)
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2a8aea2a654so65958141fa.1
+        for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 01:02:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1682434959; x=1685026959;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pZ3BGGNQ6rZtpR453LXsl6Itbxm0bwQy5BQoZPJ3oOU=;
-        b=gUsxX26NXCZ6r14dXeXTp21glO0SrEWZa0rLsi3b4nj9YECEk48w42dZ5zaVPa7WY/
-         VEQpikWRZ8Jv85GYPAwmZ4OIBWRu7lUH9EV+MOxZD9iV6G4Yz0SKw641h9NbsLZc+yef
-         aF7N3A2XQ3Qbw55iU5AV/KuK1BvM8NFrT1xyOA/e5KBFsZbEWAXo1L0X42nn8wUFapMf
-         mUzCwhzdaTYHiUybm/V5DUKF0QzrYT8mWu0OL+/XsLbacOgIunGO40YmgbKi/nZsxfAN
-         3IadH7enSVVuLeKUZv5uu42FK34DVvzvZIVy3onO8tQRi1MC7axcQ7EIBWNLi4uvTiMk
-         AS1A==
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1682496170; x=1685088170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c6VqCfb1kZ/+ni6WW1VeBoVtLPJZGHHpNASSaglTaKY=;
+        b=Hp3aE02HRO0m3EBKxD02RPwATf5ceTDh/i9USme207oxn1diekd5bTeXtZQSKuJrxc
+         lqxuBO0dtGbO01nQ1KD4vl/RkVBN0QnvLtUu7Y6aZDFdB7OiGGLCXEmGM6h6YHIWwtBU
+         HxyaJiWfbNR6Zuemq5kBjaycfIlDoYxHVaVH4FxsN9o0Est2c0n5wikAMnmtFiXX9PgM
+         X9mbBgGkR1aQGsADNvNuE/7vP4qPCdq71Cq7Eyt/io68aRAjbtbK6b4fMCrAjZwWkK3/
+         k44hCbUubgZlGOX/Wn/x/Ris46x7S735iq4yyoAI4E97YMPF+plb+C8uS1LYmylluBR2
+         UcIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682434959; x=1685026959;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pZ3BGGNQ6rZtpR453LXsl6Itbxm0bwQy5BQoZPJ3oOU=;
-        b=JRFf6NWwUKTZLE5xdYsEmOJPn2bBXEOL9ucyBzbjlVFmjbWgM3bJqJ8QAdD8p7XMot
-         2022gmx+xqCqgF5jb7HM025e9xoeUeATTrBt8YPrFXoaPktevxI8ZyzOdB8r+dWughnV
-         1EOR+V6C+ZSjARHyeKMCKwwrEYwyFjAzGD0s6I1H9sqDvDhpaX+re1Rm1+TWUTaJmMBO
-         htn+EfnnzqM9QyhW4UqHuTM9lhnog4irFh46j+ASbI+2sMk23zJOus+YMPmMSIf2o75X
-         jwk0K6OzGiufXe9Di85nUMxEbmG/JWuLOHNME0ofc2HfMeOYKtM+jj0EZfOuEhMLeYRP
-         14QA==
-X-Gm-Message-State: AAQBX9e3DQUTjchOjSK1qczvxY84jLekPW+pqXC5eg2x5ZjOe7qDyj2k
-	GcssjhEc13pLlq3tRxpWcLzpd5Vlw1Y=
-X-Google-Smtp-Source: AKy350YDAZbkOQRK5g6tYkXR/oEveOOfRFHQC7RKfIoKTzQYKWd2HI7WCN0BwwrDGeWs5JNKrBjyDPSMfRs=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:b60f:0:b0:54f:bb6f:3deb with SMTP id
- u15-20020a81b60f000000b0054fbb6f3debmr8642876ywh.4.1682434959555; Tue, 25 Apr
- 2023 08:02:39 -0700 (PDT)
-Date: Tue, 25 Apr 2023 08:02:38 -0700
-In-Reply-To: <20230327141816.2648615-1-carlos.bilbao@amd.com>
+        d=1e100.net; s=20221208; t=1682496170; x=1685088170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c6VqCfb1kZ/+ni6WW1VeBoVtLPJZGHHpNASSaglTaKY=;
+        b=AJhTQV3PQyzCvnZUiSWOz7CytZgnOiU62ZpYjkAzJg0E53o+TLeZWJOwjU5U3Nm4Yb
+         qKoVxIZqX3EyrUlZjeOcI7QZEOj+bDwBL4V6zBe0cme1qQzedYE/odFXoAgxkpl1wZru
+         A1Y/g8IWWzUQtT87cw/PR+vlWYXUdtpMKgGwYUgj1X4TKX8lwDfIKO7C4SBZZlwbMBfD
+         TbRMC3ChZL8rTzKX3CLuuVTyZkTacxlG3GpxxqOwCYLO4Opq3FwDub1c7xBmENtHWBsR
+         liyv2L5LMQVFZZjdI9tD+LVy390mn9kZzN1fyfQF6XQnjwxJx+pDgw0QWSeYUnR8/cJo
+         7qZw==
+X-Gm-Message-State: AAQBX9fXG8uq+481s2P4l5QeEmy+ZhbR362jkBQ2ZCtnLssK93WCKcVo
+	X7lcPgH+3QdMsI2joyOHkHl0qMclbKebWfQlitXgBQ==
+X-Google-Smtp-Source: AKy350bhUHsJEvcsW8iSEylieDylog00SNfNj0iBGM6TzFGJ4p1/0j/5I8WnT45BTziCTTQzCFmf2MYWcO8/ALW7viU=
+X-Received: by 2002:a2e:a41a:0:b0:2a1:ab4a:153d with SMTP id
+ p26-20020a2ea41a000000b002a1ab4a153dmr4970025ljn.29.1682496169872; Wed, 26
+ Apr 2023 01:02:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20230327141816.2648615-1-carlos.bilbao@amd.com>
-Message-ID: <ZEfrjtgGgm1lpadq@google.com>
-Subject: Re: [PATCH] docs: security: Confidential computing intro and threat model
-From: Sean Christopherson <seanjc@google.com>
-To: Carlos Bilbao <carlos.bilbao@amd.com>
-Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ardb@kernel.org, kraxel@redhat.com, dovmurik@linux.ibm.com, 
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com, Dhaval.Giani@amd.com, 
-	michael.day@amd.com, pavankumar.paluri@amd.com, David.Kaplan@amd.com, 
-	Reshma.Lal@amd.com, Jeremy.Powell@amd.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, 
-	alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com, 
-	tglx@linutronix.de, dgilbert@redhat.com, gregkh@linuxfoundation.org, 
-	dinechin@redhat.com, linux-coco@lists.linux.dev, berrange@redhat.com, 
-	mst@redhat.com, tytso@mit.edu, jikos@kernel.org, joro@8bytes.org, 
-	leon@kernel.org, richard.weinberger@gmail.com, lukas@wunner.de, 
-	jejb@linux.ibm.com, cdupontd@redhat.com, jasowang@redhat.com, 
-	sameo@rivosinc.com, bp@alien8.de, security@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20230419221716.3603068-1-atishp@rivosinc.com> <20230419221716.3603068-46-atishp@rivosinc.com>
+ <69ba1760-a079-fd8f-b079-fcb01e3eedec@intel.com> <CAHBxVyFhDapAeMQ8quBqWZ10jWSHw1CdE227ciyKQpULHYzffA@mail.gmail.com>
+ <81c476f4-ef62-e4a6-0033-8a46a15379fd@intel.com> <CAHBxVyHg7vTaQJWKoVSD8budVZEYSo1eDOyZyZK7gcJApR7SbA@mail.gmail.com>
+ <fe1a849a-3276-5fad-869b-bad54bc918f6@intel.com>
+In-Reply-To: <fe1a849a-3276-5fad-869b-bad54bc918f6@intel.com>
+From: Atish Kumar Patra <atishp@rivosinc.com>
+Date: Wed, 26 Apr 2023 13:32:38 +0530
+Message-ID: <CAHBxVyEkcGwcxB+oDWywJuAwkC-k-_0gMC-mXqSEHy_MyTcN4A@mail.gmail.com>
+Subject: Re: [RFC 45/48] RISC-V: ioremap: Implement for arch specific ioremap hooks
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, Rajnesh Kanwal <rkanwal@rivosinc.com>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atishp@atishpatra.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev, 
+	Dylan Reid <dylan@rivosinc.com>, abrestic@rivosinc.com, 
+	Samuel Ortiz <sameo@rivosinc.com>, Christoph Hellwig <hch@infradead.org>, 
+	Conor Dooley <conor.dooley@microchip.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Guo Ren <guoren@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Jiri Slaby <jirislaby@kernel.org>, kvm-riscv@lists.infradead.org, 
+	kvm@vger.kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
+	Mayuresh Chitale <mchitale@ventanamicro.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Uladzislau Rezki <urezki@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 27, 2023, Carlos Bilbao wrote:
-> +Kernel developers working on confidential computing for the cloud operate
-> +under a set of assumptions regarding the Linux kernel threat model that
-> +differ from the traditional view. In order to effectively engage with the
-> +linux-coco mailing list and contribute to its initiatives, one must have a
-> +thorough familiarity with these concepts. This document provides a concise,
-> +architecture-agnostic introduction to help developers gain a foundational
+On Tue, Apr 25, 2023 at 6:40=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
+>
+> On 4/25/23 01:00, Atish Kumar Patra wrote:
+> > On Mon, Apr 24, 2023 at 7:18=E2=80=AFPM Dave Hansen <dave.hansen@intel.=
+com> wrote:
+> >> On 4/21/23 12:24, Atish Kumar Patra wrote:
+> >> I'm not _quite_ sure what "guest initiated" means.  But SEV and TDX
+> >> don't require an ioremap hook like this.  So, even if they *are* "gues=
+t
+> >> initiated", the question still remains how they work without this patc=
+h,
+> >> or what they are missing without it.
+> >
+> > Maybe I misunderstood your question earlier. Are you concerned about gu=
+ests
+> > invoking any MMIO region specific calls in the ioremap path or passing
+> > that information to the host ?
+>
+> My concern is that I don't know why this patch is here.  There should be
+> a very simple answer to the question: Why does RISC-V need this patch
+> but x86 does not?
+>
+> > Earlier, I assumed the former but it seems you are also concerned
+> > about the latter as well. Sorry for the confusion in that case.
+> > The guest initiation is necessary while the host notification can be
+> > made optional.
+> > The "guest initiated" means the guest tells the TSM (equivalent of TDX
+> > module in RISC-V) the MMIO region details.
+> > The TSM keeps a track of this and any page faults that happen in that
+> > region are forwarded
+> > to the host by the TSM after the instruction decoding. Thus TSM can
+> > make sure that only ioremapped regions are
+> > considered MMIO regions. Otherwise, all memory outside the guest
+> > physical region will be considered as the MMIO region.
+>
+> Ahh, OK, that's a familiar problem.  I see the connection to device
+> filtering now.
+>
+> Is this functionality in the current set?  I went looking for it and all
+> I found was the host notification side.
+>
 
-Heh, vendor agnostic maybe, but certainly not architecture agnostic.
+The current series doesn't have the guest filtering feature enabled.
+However, we implemented guest filtering and is maintained in a separate tre=
+e
 
-> +understanding of the subject.
-> +
-> +Overview and terminology
-> +========================
-> +
-> +Confidential Cloud Computing (CoCo) refers to a set of HW and SW
+https://github.com/rivosinc/linux/tree/cove-integration-device-filtering
 
-As per Documentation/security/secrets/coco.rst and every discussion I've observed,
-CoCo is Confidential Computing.  "Cloud" is not part of the definition.  That's
-true even if this discussion is restricted to CoCo VMs, e.g. see pKVM.
+We did not include those in this series because the tdx patches are
+still undergoing
+development. We are planning to rebase our changes once the revised
+patches are available.
 
-> +virtualization technologies that allow Cloud Service Providers (CSPs) to
+> Is this the only mechanism by which the guest tells the TSM which parts
+> of the guest physical address space can be exposed to the host?
+>
 
-Again, CoCo isn't just for cloud use cases.
+This is the current approach defined in CoVE spec. Guest informs about both
+shared memory & mmio regions via dedicated SBI calls (
+e.g sbi_covg_[add/remove]_mmio_region and
+sbi_covg_[share/unshare]_memory_region)
 
-> +provide stronger security guarantees to their clients (usually referred to
-> +as tenants) by excluding all the CSP's infrastructure and SW out of the
-> +tenant's Trusted Computing Base (TCB).
+> For TDX and SEV, that information is inferred from a bit in the page
+> tables.  Essentially, there are dedicated guest physical addresses that
+> tell the hardware how to treat the mappings: should the secure page
+> tables or the host's EPT/NPT be consulted?
+>
 
-This is inaccurate, the provider may still have software and/or hardware in the TCB.
+Yes. We don't have such a mechanism defined in CoVE yet.
+Having said that, there is nothing in ISA to prevent that and it is doable.
+Some specific bits in the PTE entry can also be used to encode for
+shared & mmio physical memory addresses.
+The TSM implementation will probably need to implement a software page
+walker in that case.
 
-And for the cloud use case, I very, very strongly object to implying that the goal
-of CoCo is to exclude the CSP from the TCB.  Getting out of the TCB is the goal for
-_some_ CSPs, but it is not a fundamental tenant of CoCo.  This viewpoint is heavily
-tainted by Intel's and AMD's current offerings, which effectively disallow third
-party code for reasons that have nothing to do with security.
+Are there any performance advantages between the two approaches ?
+As per my understanding, we are saving some boot time privilege
+transitions & less ABIs but
+adds the cost of software walk at runtime faults.
 
-https://lore.kernel.org/all/Y+aP8rHr6H3LIf%2Fc@google.com
+> If that mechanism is different for RISC-V, it would go a long way to
+> explaining why RISC-V needs this patch.
+>
+> > In the current CoVE implementation, that MMIO region information is als=
+o
+> > passed to the host to provide additional flexibility. The host may
+> > choose to do additional
+> > sanity check and bail if the fault address does not belong to
+> > requested MMIO regions without
+> > going to the userspace. This is purely an optimization and may not be m=
+andatory.
+>
+> Makes sense, thanks for the explanation.
+>
+> >>> It can be a subset of the region's host provided the layout. The
+> >>> guest device filtering solution is based on this idea as well [1].
+> >>>
+> >>> [1] https://lore.kernel.org/all/20210930010511.3387967-1-sathyanaraya=
+nan.kuppuswamy@linux.intel.com/
+> >>
+> >> I don't really see the connection.  Even if that series was going
+> >> forward (I'm not sure it is) there is no ioremap hook there.  There's
+> >> also no guest->host communication in that series.  The guest doesn't
+> >> _tell_ the host where the MMIO is, it just declines to run code for
+> >> devices that it didn't expect to see.
+> >
+> > This is a recent version of the above series from tdx github. This is
+> > a WIP as well and has not been posted to
+> > the mailing list. Thus, it may be going under revisions as well.
+> > As per my understanding the above ioremap changes for TDX mark the
+> > ioremapped pages as shared.
+> > The guest->host communication happen in the #VE exception handler
+> > where the guest converts this to a hypercall by invoking TDG.VP.VMCALL
+> > with an EPT violation set. The host would emulate an MMIO address if
+> > it gets an VMCALL with EPT violation.
+> > Please correct me if I am wrong.
+>
+> Yeah, TDX does:
+>
+> 1. Guest MMIO access
+> 2. Guest #VE handler (if the access faults)
+> 3. Guest hypercall->host
+> 4. Host fixes the fault
+> 5. Hypercall returns, guest returns from #VE via IRET
+> 6. Guest retries MMIO instruction
+>
+> From what you said, RISC-V appears to do:
+>
+> 1. Guest MMIO access
+> 2. Host MMIO handler
+> 3. Host handles the fault, returns
+> 4. Guest retries MMIO instruction
+>
+> In other words, this mechanism does the same thing but short-circuits
+> the trip through #VE and the hypercall.
+>
 
-> +While the concrete implementation details differ between technologies, all
-> +of these mechanisms provide increased confidentiality and integrity of CoCo
-> +guest memory and execution state (vCPU registers), more tightly controlled
-> +guest interrupt injection,
+Yes. Thanks for summarizing the tdx approach.
 
-This is highly dependent on how "interrupt" is defined, and how "controlled" is
-defined.
+> What happens if this ioremap() hook is not in place?  Does the hardware
+> (or TSM) generate an exception like TDX gets?  If so, it's probably
+> possible to move this "notify the TSM" code to that exception handler
+> instead of needing an ioremap() hook.
+>
 
-> as well as some additional mechanisms to control guest-host page mapping.
+We don't have a #VE like exception mechanism in RISC-V.
 
-This is flat out wrong for SNP for any reasonable definition of "page mapping".
-SNP has _zero_ "control" over page tables, which is most people think of when they
-see "page mapping".
+> I'm not saying that it's _better_ to do that, but it would allow you to
+> get rid of this patch for now and get me to shut up. :)
+>
+> > As I said above, the objective here is to notify the TSM where the
+> > MMIO is. Notifying the host is just an optimization that we choose to
+> > add. In fact, in this series the KVM code doesn't do anything with
+> > that information. The commit text probably can be improved to clarify
+> > that.
+>
+> Just to close the loop here, please go take a look at
+> pgprot_decrypted().  That's where the x86 guest page table bit gets to
+> tell the hardware that the mapping might cause a #VE and is under the
+> control of the host.  That's the extent of what x86 does at ioremap() tim=
+e.
+>
+> So, to summarize, we have:
+>
+> x86:
+> 1. Guest page table bit to mark shared (host) vs. private (guest)
+>    control
+> 2. #VE if there is a fault on a shared mapping to call into the host
+>
+> RISC-V:
+> 1. Guest->TSM call to mark MMIO vs. private
+> 2. Faults in the MMIO area are then transparent to the guest
+>
 
-> More details on the x86-specific solutions can be
-> +found in
-> +:doc:`Intel Trust Domain Extensions (TDX) </x86/tdx>` and
-> +:doc:`AMD Memory Encryption </x86/amd-memory-encryption>`.
+Yup. This discussion raised a very valid design aspect of the CoVE spec.
+To summarize, we need to investigate whether using PTE bits instead of
+additional ABI
+for managing shared/confidential/ioremapped pages makes more sense.
 
-So by the above definition, vanilla SEV and SEV-ES can't be considered CoCo.  SEV
-doesn't provide anything besides increased confidentiality of guest memory, and
-SEV-ES doesn't provide integrity or validation of physical page assignment.
+Thanks for putting up with my answers and the feedback :).
 
-> +The basic CoCo layout includes the host, guest, the interfaces that
-> +communicate guest and host, a platform capable of supporting CoCo,
-
-CoCo VMs...
-
-> and an intermediary between the guest virtual machine (VM) and the
-> underlying platform that acts as security manager::
-
-Having an intermediary is very much an implementation detail.
-
-> +Confidential Computing threat model and security objectives
-> +===========================================================
-> +
-> +Confidential Cloud Computing adds a new type of attacker to the above list:
-> +an untrusted and potentially malicious host.
-
-I object to splattering "malicious host" everywhere.  Many people are going to
-read this and interpret "host" as "the CSP", and then make assumptions like
-"CoCo assumes the CSP is malicious!".  AIUI, the vast majority of use cases aren't
-concerned so much about "the CSP" being malicious, but rather they're concerned
-about new attack vectors that come with running code/VMs on a stack that is
-managed by a third party, on hardware that doesn't reside in a secured facility,
-etc.
-
-> +While the traditional hypervisor has unlimited access to guest data and
-> +can leverage this access to attack the guest, the CoCo systems mitigate
-> +such attacks by adding security features like guest data confidentiality
-> +and integrity protection. This threat model assumes that those features
-> +are available and intact.
-
-Again, if you're claiming integrity is a key tenant, then SEV and SEV-ES can't be
-considered CoCo.
-
-> +The **Linux kernel CoCo security objectives** can be summarized as follows:
-> +
-> +1. Preserve the confidentiality and integrity of CoCo guest private memory.
-
-So, registers are fair game?
-
-> +2. Prevent privileged escalation from a host into a CoCo guest Linux kernel.
-> +
-> +The above security objectives result in two primary **Linux kernel CoCo
-> +assets**:
-> +
-> +1. Guest kernel execution context.
-> +2. Guest kernel private memory.
-
-...
-
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 7f86d02cb427..4a16727bf7f9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5307,6 +5307,12 @@ S:	Orphan
->  W:	http://accessrunner.sourceforge.net/
->  F:	drivers/usb/atm/cxacru.c
->  
-> +CONFIDENTIAL COMPUTING THREAT MODEL
-
-This is not generic CoCo documentation, it's specific to CoCo VMs.  E.g. SGX is
-most definitely considered a CoCo feature, and it has no dependencies whatsoever
-on virtualization.
-
-> +M:	Elena Reshetova <elena.reshetova@intel.com>
-> +M:	Carlos Bilbao <carlos.bilbao@amd.com>
-
-I would love to see an M: or R: entry for someone that is actually _using_ CoCo.
-
-IMO, this document is way too Intel/AMD centric.
+> That design difference would, indeed, help explain why this patch is
+> here.  I'm still not 100% convinced that the patch is *required*, but I
+> at least understand how we arrived here.
