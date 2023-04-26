@@ -1,107 +1,98 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9464E4C8E
-	for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 16:17:05 +0000 (UTC)
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-640f5191c79so7797919b3a.1
-        for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 09:17:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDB0538A
+	for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 17:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1682525825; x=1685117825;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UOhh7PBmE0FMhbaVbxSvnruTMoKtaFfjJSq6v0FhcXc=;
-        b=MZ4nIIJTkzZdwLItB22MSQr876/ZCmOOTnCjOwMN3HdZZA2MBx0RasO5pEQ/Q/JWWd
-         O3NitjTxiGvQdKCYmxRC9XFU68PNDyZBtslpXPysgDBVMUdXdMfgMmoIUzjdawjlEr2g
-         qQFD2+bVu0nt4/Epppg59t1qLnYmXXAr8GqBCfXhZzFq8LVA8mzxpKkEYaGvTFX1WCdU
-         u3Wgn6jcO4GlrBPeARgIe9BCGjk6FGCL2HNwRCAyyqtvc8xdH59S7McTdKDHbUBYZqmr
-         Of+AcOL8IdXTBWVqOuVHuVeVNYqF9OcM9V9oG7yyhc/7SVtGpJ56+FscccIyl3JvKrJi
-         bV2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682525825; x=1685117825;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UOhh7PBmE0FMhbaVbxSvnruTMoKtaFfjJSq6v0FhcXc=;
-        b=HPImTU3EhQSA1a0AFGi6b6/jum/BG67PaByfAjMgISKLn6f4QjDry1NlTCgMoLd4x/
-         OL7US1BRqtnT7CxSZy2O1Sc82DJenGzWTOa5Je742ZwQoUqOi4uC8+YUDxJnfCvgsK5P
-         e6moC7G9qVmv94Vj2XPUn5SqTkqLG7fiNDv6WiQr/5/uxoUXPWrEyy4PHIhByjBf+1cR
-         3tYaLgTR/QhdDYpy517HS2aMvzOaYLBk5+8Ft7Q5A+lE6ZeIFZliwn2Gf04Vkl3IJ7A8
-         UTsGM0w+zOGXH2L9/O9+Ez52pJgw/RNNQ/ZYAqCsssEbSDdOJJkCmjZwc5TtNekTLDjr
-         ZTjA==
-X-Gm-Message-State: AC+VfDwsZstK3RoBK0uqj1/bss3pEMQb9n6O2bWc9PWVIb/sL+3AbJbF
-	7xPQT9ujgkpwcFNLtLaDq1z0RAahEpE=
-X-Google-Smtp-Source: ACHHUZ5zn0kzUvAs53+qiE6+jt0LA2gWUhXUpDVyfL4k7W+HpTWTIOUbsKs80mJX/Z8nN4M4KKiZuVcHeL8=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:44c9:b0:63d:24ea:4172 with SMTP id
- cv9-20020a056a0044c900b0063d24ea4172mr1075870pfb.1.1682525825009; Wed, 26 Apr
- 2023 09:17:05 -0700 (PDT)
-Date: Wed, 26 Apr 2023 09:17:03 -0700
-In-Reply-To: <7502e1af0615c08167076ff452fc69ebf316c730.camel@linux.ibm.com>
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1682528818; x=1714064818;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/q/RayQgCyxolJD2+aA0KPoPbGMNuZ3edjcz0uAPYGg=;
+  b=dLMWBP8dvSMd870q2qXV9LjEzdEJxqj66IPnTx7607kd2jM6q5+MBqwD
+   S2wTJxzdD/TFpH0nH7gREhSDqna1q1WgmepffswvUpqP5LP6jufQS43mW
+   D64CIuONcGGLqtsOYnKCOQnDDYGU0tLZrs5WVMp1f06mrdf3nC2mTGcRU
+   g=;
+X-IronPort-AV: E=Sophos;i="5.99,228,1677542400"; 
+   d="scan'208";a="208529811"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 17:06:55 +0000
+Received: from EX19D015EUA004.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+	by email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com (Postfix) with ESMTPS id 7F02640D51;
+	Wed, 26 Apr 2023 17:06:53 +0000 (UTC)
+Received: from EX19D024EUA002.ant.amazon.com (10.252.50.224) by
+ EX19D015EUA004.ant.amazon.com (10.252.50.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 26 Apr 2023 17:06:52 +0000
+Received: from [192.168.12.110] (10.1.213.23) by EX19D024EUA002.ant.amazon.com
+ (10.252.50.224) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Wed, 26 Apr
+ 2023 17:06:38 +0000
+Message-ID: <f708da54-b99c-2ce8-f68f-6f3ba28ec2ff@amazon.com>
+Date: Wed, 26 Apr 2023 20:06:33 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20230327141816.2648615-1-carlos.bilbao@amd.com>
- <ZEfrjtgGgm1lpadq@google.com> <DM8PR11MB575046B6DAA17B41FFED8080E7659@DM8PR11MB5750.namprd11.prod.outlook.com>
- <7502e1af0615c08167076ff452fc69ebf316c730.camel@linux.ibm.com>
-Message-ID: <ZElOfzn37kmesy7e@google.com>
-Subject: Re: [PATCH] docs: security: Confidential computing intro and threat model
-From: Sean Christopherson <seanjc@google.com>
-To: James Bottomley <jejb@linux.ibm.com>
-Cc: Elena Reshetova <elena.reshetova@intel.com>, Carlos Bilbao <carlos.bilbao@amd.com>, 
-	"corbet@lwn.net" <corbet@lwn.net>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ardb@kernel.org" <ardb@kernel.org>, 
-	"kraxel@redhat.com" <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>, 
-	"michael.day@amd.com" <michael.day@amd.com>, 
-	"pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>, "David.Kaplan@amd.com" <David.Kaplan@amd.com>, 
-	"Reshma.Lal@amd.com" <Reshma.Lal@amd.com>, "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"dgilbert@redhat.com" <dgilbert@redhat.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "dinechin@redhat.com" <dinechin@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "berrange@redhat.com" <berrange@redhat.com>, 
-	"mst@redhat.com" <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>, "jikos@kernel.org" <jikos@kernel.org>, 
-	"joro@8bytes.org" <joro@8bytes.org>, "leon@kernel.org" <leon@kernel.org>, 
-	"richard.weinberger@gmail.com" <richard.weinberger@gmail.com>, "lukas@wunner.de" <lukas@wunner.de>, 
-	"cdupontd@redhat.com" <cdupontd@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>, 
-	"sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"security@kernel.org" <security@kernel.org>, Andrew Bresticker <abrestic@rivosinc.com>, 
-	Rajnesh Kanwal <rkanwal@rivosinc.com>, Dylan Reid <dylan@rivosinc.com>, 
-	Ravi Sahita <ravi@rivosinc.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH RFC v8 34/56] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_START
+ command
+To: Michael Roth <michael.roth@amd.com>, <kvm@vger.kernel.org>
+CC: <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+	<ak@linux.intel.com>, <tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+	<nikunj.dadhania@amd.com>, Brijesh Singh <brijesh.singh@amd.com>
+References: <20230220183847.59159-1-michael.roth@amd.com>
+ <20230220183847.59159-35-michael.roth@amd.com>
+Content-Language: en-US
+From: Sabin Rapan <sabrapan@amazon.com>
+In-Reply-To: <20230220183847.59159-35-michael.roth@amd.com>
+X-Originating-IP: [10.1.213.23]
+X-ClientProxiedBy: EX19D035UWB003.ant.amazon.com (10.13.138.85) To
+ EX19D024EUA002.ant.amazon.com (10.252.50.224)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Wed, Apr 26, 2023, James Bottomley wrote:
-> On Wed, 2023-04-26 at 13:32 +0000, Reshetova, Elena wrote:
-> > > On Mon, Mar 27, 2023, Carlos Bilbao wrote:
-> [...]
-> > > > +provide stronger security guarantees to their clients (usually
-> > > > referred to +as tenants) by excluding all the CSP's
-> > > > infrastructure and SW out of the +tenant's Trusted Computing Base
-> > > > (TCB).
-> > > 
-> > > This is inaccurate, the provider may still have software and/or
-> > > hardware in the TCB.
-> > 
-> > Well, this is the end goal where we want to be,
+CgpPbiAyMC4wMi4yMDIzIDIwOjM4LCBNaWNoYWVsIFJvdGggd3JvdGU6Cj4gRnJvbTogQnJpamVz
+aCBTaW5naCA8YnJpamVzaC5zaW5naEBhbWQuY29tPgo+IAo+ICAKPiArc3RhdGljIGludCBzbnBf
+ZGVjb21taXNzaW9uX2NvbnRleHQoc3RydWN0IGt2bSAqa3ZtKQo+ICt7Cj4gKwlzdHJ1Y3Qga3Zt
+X3Nldl9pbmZvICpzZXYgPSAmdG9fa3ZtX3N2bShrdm0pLT5zZXZfaW5mbzsKPiArCXN0cnVjdCBz
+ZXZfZGF0YV9zbnBfYWRkciBkYXRhID0ge307Cj4gKwlpbnQgcmV0Owo+ICsKPiArCS8qIElmIGNv
+bnRleHQgaXMgbm90IGNyZWF0ZWQgdGhlbiBkbyBub3RoaW5nICovCj4gKwlpZiAoIXNldi0+c25w
+X2NvbnRleHQpCj4gKwkJcmV0dXJuIDA7Cj4gKwo+ICsJZGF0YS5nY3R4X3BhZGRyID0gX19zbWVf
+cGEoc2V2LT5zbnBfY29udGV4dCk7Cj4gKwlyZXQgPSBzZXZfZG9fY21kKFNFVl9DTURfU05QX0RF
+Q09NTUlTU0lPTiwgJmRhdGEsIE5VTEwpOwo+ICsJaWYgKFdBUk5fT05DRShyZXQsICJmYWlsZWQg
+dG8gcmVsZWFzZSBndWVzdCBjb250ZXh0IikpCj4gKwkJcmV0dXJuIHJldDsKPiArCj4gKwkvKiBm
+cmVlIHRoZSBjb250ZXh0IHBhZ2Ugbm93ICovCj4gKwlzbnBfZnJlZV9maXJtd2FyZV9wYWdlKHNl
+di0+c25wX2NvbnRleHQpOwo+ICsJc2V2LT5zbnBfY29udGV4dCA9IE5VTEw7Cj4gKwo+ICsJcmV0
+dXJuIDA7Cj4gK30KPiArCgpFdmVuIHRob3VnaCBpdCdzIG5vdCBkb2N1bWVudGVkLCBTTlBfREVD
+T01NSVNTSU9OIHNlZW1zIHRvIGNsZWFyIHRoZQpXQklOVkQgaW5kaWNhdG9yIGp1c3QgbGlrZSBE
+RUFDVElWQVRFIGRvZXMgZm9yIFNFVi4KV29uJ3QgQVNJRCByZWN5Y2xpbmcgcmFjZSB3aXRoIFNO
+UF9ERUNPTU1JU1NJT04gaWYgdGhlIGxhdHRlciBpc24ndApndWFyZGVkIHdpdGggc2V2X2RlYWN0
+aXZhdGVfbG9jaz8KCgo+ICB2b2lkIHNldl92bV9kZXN0cm95KHN0cnVjdCBrdm0gKmt2bSkKPiAg
+ewo+ICAJc3RydWN0IGt2bV9zZXZfaW5mbyAqc2V2ID0gJnRvX2t2bV9zdm0oa3ZtKS0+c2V2X2lu
+Zm87Cj4gQEAgLTIzMzMsNyArMjQ0MCwxNSBAQCB2b2lkIHNldl92bV9kZXN0cm95KHN0cnVjdCBr
+dm0gKmt2bSkKPiAgCQl9Cj4gIAl9Cj4gIAo+IC0Jc2V2X3VuYmluZF9hc2lkKGt2bSwgc2V2LT5o
+YW5kbGUpOwo+ICsJaWYgKHNldl9zbnBfZ3Vlc3Qoa3ZtKSkgewo+ICsJCWlmIChzbnBfZGVjb21t
+aXNzaW9uX2NvbnRleHQoa3ZtKSkgewo+ICsJCQlXQVJOX09OQ0UoMSwgIkZhaWxlZCB0byBmcmVl
+IFNOUCBndWVzdCBjb250ZXh0LCBsZWFraW5nIGFzaWQhXG4iKTsKPiArCQkJcmV0dXJuOwo+ICsJ
+CX0KPiArCX0gZWxzZSB7Cj4gKwkJc2V2X3VuYmluZF9hc2lkKGt2bSwgc2V2LT5oYW5kbGUpOwo+
+ICsJfQo+ICsKPiAgCXNldl9hc2lkX2ZyZWUoc2V2KTsKPiAgfQo+ICAKCgoKQW1hem9uIERldmVs
+b3BtZW50IENlbnRlciAoUm9tYW5pYSkgUy5SLkwuIHJlZ2lzdGVyZWQgb2ZmaWNlOiAyN0EgU2Yu
+IExhemFyIFN0cmVldCwgVUJDNSwgZmxvb3IgMiwgSWFzaSwgSWFzaSBDb3VudHksIDcwMDA0NSwg
+Um9tYW5pYS4gUmVnaXN0ZXJlZCBpbiBSb21hbmlhLiBSZWdpc3RyYXRpb24gbnVtYmVyIEoyMi8y
+NjIxLzIwMDUuCg==
 
-If by "we" you mean Intel and AMD, then yes, that is probably a true statement.
-But those goals have nothing to do with security.
-
-> > the practical deployment can differ of course. We can rephrase that it
-> > "allows to exclude all the CSP's infrastructure and SW out of tenant's
-> > TCB." 
-> 
-> That's getting even more inaccurate.  To run  in a Cloud with CoCo you
-> usually have to insert some provided code, like OVMF and, for AMD, the
-> SVSM.  These are often customized by the CSP to suit the cloud
-> infrastructure, so you're running their code.  The goal, I think, is to
-> make sure you only run code you trust (some of which may come from the
-> CSP) in your TCB, which is very different from the statement above.
-
-Yes.  And taking things a step further, if we were to ask security concious users
-what they would choose to have in their TCB: (a) closed-source firmware written by
-a hardware vendor, or (b) open-source software that is provided by CSPs, I am
-betting the overwhelming majority would choose (b).
