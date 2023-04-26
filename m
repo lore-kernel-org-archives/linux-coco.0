@@ -1,102 +1,143 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D896ADC
-	for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 19:53:54 +0000 (UTC)
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-24b6a888085so5774394a91.0
-        for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 12:53:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1682538834; x=1685130834;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UcyBowT/7snrKRgrt26A0bjGirGSsCbvk5IYXN32HYY=;
-        b=CuidvLgO7z5aVRbyi2cxF8vMwPPNTmcByG3DJ8NEOcVe3pCT0eXWZCsKQGraTkbjGb
-         4hbjD82vdnbjArnYR0vPXmtn/K2NYzEIa6GZk3RYRZcQ86pEsJEOILpvt0zH+DdIh86M
-         ffZ931f+gaGp84zpzHvRMCo3GvNBJkjL+UCbYgWEmDmR7lYZ+8mTq1o6ejVruQisWeC9
-         lRVgdjaN7rDBJhYqvaod9OTfpzYSt3rTCMpPj1f8ZXA0CQIkcinSLPYutZ8SgksXJbS5
-         TllB/S+PKzuHiyv/7x/yV/hviGV1R0FcgfZ0iJ3AFMVJ/2sK/o88ygPxT19/fSVM6uxR
-         bwjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682538834; x=1685130834;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UcyBowT/7snrKRgrt26A0bjGirGSsCbvk5IYXN32HYY=;
-        b=ReqeUDKnmBWJjy7JPIGwEgISRrTy7j76GlImX0omyQLN71qjHV7yuOs6Q3YypbLy4S
-         gNJ2ktvJc/+EVR30Lmz/WRKM4z8JOmGKmTH+wxVn4fTlHHl62DBzGP3yJgbrAyzWsUPR
-         Z21ax4A7o6zUhKLZT+0ReHb2ImE5A1JdbsTxOy8ANdbebRDI5yujJO5QcDBwv9mgpmXN
-         KmdadngfcnZigCvIKTuuPCdQif1jid8qzSjRKqwnLzXhx+Iz0BFJ4Y1Lwueym+Y/OI4M
-         +qVqYNikU1buYLd82gaVlKcSqJZhpfmvanlR8W9iTu4MzpQDb3XFuWqj59REDnRvJaaw
-         oaqA==
-X-Gm-Message-State: AC+VfDziMEsCD776iw0bDMQVW0wbPrGH0yA7lL1P2Eau6bbUuuRZA5S+
-	g4MdRolViC61ydMKFZa5UImk3YIJRjo=
-X-Google-Smtp-Source: ACHHUZ7RI4MX7FcPrIeTC5Ho80NQDYQuerP8eAeDqvdf0/r1i6zP/B09U0lrSgLPqQyKFDHUPKT0f/XOgrU=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90a:2c82:b0:24b:dbeb:d3b4 with SMTP id
- n2-20020a17090a2c8200b0024bdbebd3b4mr1869198pjd.0.1682538834276; Wed, 26 Apr
- 2023 12:53:54 -0700 (PDT)
-Date: Wed, 26 Apr 2023 12:53:52 -0700
-In-Reply-To: <9021d861-cde6-a51a-7d8c-b3f67eaa01d8@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0118A6FBC
+	for <linux-coco@lists.linux.dev>; Wed, 26 Apr 2023 20:12:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682539969; x=1714075969;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=c7J1Pq+nY5OOEI59jBJPzYIKNrB4jPXkPAjR672Rb/s=;
+  b=cktSQg41LlED2uDlMPHxTeLM/JaYkIKJmYyYpC6zRbhb8u5KHM7ksZth
+   P0Eglnq92m1lyH62cxEO+qfhxYOiahuH4M5heAqpXmVbaZhWGiJUw60lT
+   BAxkN7i8uDEQn7VJOn5GXG+FFEmr9I6apdIVEo645mCDei/a3qGlKvMf0
+   K9vWjs3nuV5sp94CJMUELCFT80Alxq2qXAvB8RbnvCgBgYbXoaBcU/Tlh
+   bl+EpoSNxxE25+zh3qvQTFCG0zNUrbQGwaq73Lqi/ycnR2m5q34j30Vb3
+   riKJU/lYVM7Ws1KGv/Paan1nS0aQ013N+BdcU2Oz4ca8T1Y7tb+nLluEm
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10692"; a="347245904"
+X-IronPort-AV: E=Sophos;i="5.99,229,1677571200"; 
+   d="scan'208";a="347245904"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 13:12:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10692"; a="783454877"
+X-IronPort-AV: E=Sophos;i="5.99,229,1677571200"; 
+   d="scan'208";a="783454877"
+Received: from kdaneshi-mobl2.amr.corp.intel.com (HELO [10.209.15.204]) ([10.209.15.204])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 13:12:47 -0700
+Message-ID: <45a798dd-af8b-a162-adc5-71237b33b8d1@intel.com>
+Date: Wed, 26 Apr 2023 13:12:43 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] docs: security: Confidential computing intro and threat
+ model
+Content-Language: en-US
+To: Carlos Bilbao <carlos.bilbao@amd.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: Elena Reshetova <elena.reshetova@intel.com>,
+ "corbet@lwn.net" <corbet@lwn.net>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "ardb@kernel.org" <ardb@kernel.org>, "kraxel@redhat.com"
+ <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>,
+ "michael.day@amd.com" <michael.day@amd.com>,
+ "pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>,
+ "David.Kaplan@amd.com" <David.Kaplan@amd.com>,
+ "Reshma.Lal@amd.com" <Reshma.Lal@amd.com>,
+ "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>,
+ "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "dgilbert@redhat.com" <dgilbert@redhat.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "dinechin@redhat.com" <dinechin@redhat.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "berrange@redhat.com" <berrange@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>,
+ "jikos@kernel.org" <jikos@kernel.org>, "joro@8bytes.org" <joro@8bytes.org>,
+ "leon@kernel.org" <leon@kernel.org>,
+ "richard.weinberger@gmail.com" <richard.weinberger@gmail.com>,
+ "lukas@wunner.de" <lukas@wunner.de>, "jejb@linux.ibm.com"
+ <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>,
+ "security@kernel.org" <security@kernel.org>,
+ Andrew Bresticker <abrestic@rivosinc.com>,
+ Rajnesh Kanwal <rkanwal@rivosinc.com>, Dylan Reid <dylan@rivosinc.com>,
+ Ravi Sahita <ravi@rivosinc.com>
 References: <20230327141816.2648615-1-carlos.bilbao@amd.com>
- <ZEfrjtgGgm1lpadq@google.com> <DM8PR11MB575046B6DAA17B41FFED8080E7659@DM8PR11MB5750.namprd11.prod.outlook.com>
- <9fa5ce43-584d-878d-227a-fb458254c00a@amd.com> <ZElIjw7Ca6N2mYHe@google.com> <9021d861-cde6-a51a-7d8c-b3f67eaa01d8@amd.com>
-Message-ID: <ZEmBULXp24oMxaUH@google.com>
-Subject: Re: [PATCH] docs: security: Confidential computing intro and threat model
-From: Sean Christopherson <seanjc@google.com>
-To: Carlos Bilbao <carlos.bilbao@amd.com>
-Cc: Elena Reshetova <elena.reshetova@intel.com>, "corbet@lwn.net" <corbet@lwn.net>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ardb@kernel.org" <ardb@kernel.org>, 
-	"kraxel@redhat.com" <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>, 
-	"michael.day@amd.com" <michael.day@amd.com>, 
-	"pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>, "David.Kaplan@amd.com" <David.Kaplan@amd.com>, 
-	"Reshma.Lal@amd.com" <Reshma.Lal@amd.com>, "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"dgilbert@redhat.com" <dgilbert@redhat.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "dinechin@redhat.com" <dinechin@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "berrange@redhat.com" <berrange@redhat.com>, 
-	"mst@redhat.com" <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>, "jikos@kernel.org" <jikos@kernel.org>, 
-	"joro@8bytes.org" <joro@8bytes.org>, "leon@kernel.org" <leon@kernel.org>, 
-	"richard.weinberger@gmail.com" <richard.weinberger@gmail.com>, "lukas@wunner.de" <lukas@wunner.de>, 
-	"jejb@linux.ibm.com" <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>, 
-	"jasowang@redhat.com" <jasowang@redhat.com>, "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"security@kernel.org" <security@kernel.org>, Andrew Bresticker <abrestic@rivosinc.com>, 
-	Rajnesh Kanwal <rkanwal@rivosinc.com>, Dylan Reid <dylan@rivosinc.com>, 
-	Ravi Sahita <ravi@rivosinc.com>
-Content-Type: text/plain; charset="us-ascii"
+ <ZEfrjtgGgm1lpadq@google.com>
+ <DM8PR11MB575046B6DAA17B41FFED8080E7659@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <9fa5ce43-584d-878d-227a-fb458254c00a@amd.com> <ZElIjw7Ca6N2mYHe@google.com>
+ <9021d861-cde6-a51a-7d8c-b3f67eaa01d8@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <9021d861-cde6-a51a-7d8c-b3f67eaa01d8@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 26, 2023, Carlos Bilbao wrote:
-> On 4/26/23 10:51 AM, Sean Christopherson wrote:
-> > This document is named confidential-computing.rst, not tdx-and-snp.rst.  Not
-> > explicitly mentioning SEV doesn't magically warp reality to make descriptions like
-> > this one from security/secrets/coco.rst disappear:
-> > 
-> >   Introduction                                                                    
-> >   ============                                                                    
-> >                                                                                 
-> >   Confidential Computing (coco) hardware such as AMD SEV (Secure Encrypted        
-> >   Virtualization) allows guest owners to inject secrets into the VMs              
-> >   memory without the host/hypervisor being able to read them.
-> > 
-> > My complaint about this document being too Intel/AMD centric isn't that it doesn't
-> > mention other implementations, it's that the doc describes CoCo purely from the
-> > narrow viewpoint of Intel TDX and AMD SNP, and to be blunt, reads like a press
-> > release and not an objective overview of CoCo.
-> 
+On 4/26/23 12:21, Carlos Bilbao wrote:
+>>   Confidential Computing (coco) hardware such as AMD SEV (Secure Encrypted        
+>>   Virtualization) allows guest owners to inject secrets into the VMs              
+>>   memory without the host/hypervisor being able to read them.
+>>
+>> My complaint about this document being too Intel/AMD centric isn't that it doesn't
+>> mention other implementations, it's that the doc describes CoCo purely from the
+>> narrow viewpoint of Intel TDX and AMD SNP, and to be blunt, reads like a press
+>> release and not an objective overview of CoCo.
 > Be specific about the parts of the document that you feel are too
 > AMD/Intel centric, and we will correct them.
 
-The whole thing?  There aren't specific parts that are too SNP/TDX centric, the
-entire tone and approach of the document is wrong.  As I responded to Dave, I
-would feel differently if the document were named tdx-and-snp-threat-model.rst,
-but this patch proposes a generic confidential-computing.rst and presents the
-SNP+TDX confidential VM use case as if it's the *only* confidential computing use
-case.
+That's kinda not the point.
+
+Confidential computing covers a *REALLY* wide swath of technologies,
+even on just AMD and Intel: SGX, SEV{,-ES,SNP}, MKTME, TDX.
+
+But this document is talking about one *VERY* *SPECIFIC* thing: VMs
+running under SEV-SNP or TDX and in a very specific environment: CSPs.
+Also, not even *ALL* CSPs, a subset of CSPs.  You're tossing out a huge
+chunk of the confidential computing world without acknowledging it.
+
+I don't have any great suggestions on what you call this subset.  Maybe
+you get an ack from the CoVE folks:
+
+> https://lore.kernel.org/all/20230419221716.3603068-1-atishp@rivosinc.com/
+
+and call it
+tdx-and-snp-and-cove-at-some-random-unnamed-big-fancy-csps-threat-model.rst.
+ Just add an -and-foo each time a new hardware vendor shows up until
+someone smarter than us finds a good name.
+
+But I do think the difficulty here is in drawing that "line in the sand"
+I was talking about.  You're trying to make the argument that once you
+get hardware support for:
+
+1. Increased guest data and state confidentiality from a VMM
+2. Better guest data and state integrity in the face of VMM modification
+3. More tightly controlled guest interrupt injection
+4. Some additional mechanisms to control guest-host page mapping.
+
+... then you need all this *other* stuff that the document talks about.
+
+I think #3 and #4 are really just (SEV and TDX) implementation details.
+I can certainly imagine a sane architecture without all of x86's warts
+that doesn't care much about #3.
+
+I think I know what #4 is talking about, but it's too handwavy for me to
+even offer any improvements.  I actually think #4 is just a subset of
+integrity protection: make sure that the same data that the guest puts
+in memory at a guest physical address comes back out at that address
+later.  SEV and TDX implement that by preventing the host from remapping
+guest physical address space willy nilly, but it's just integrity
+protection by another name.
