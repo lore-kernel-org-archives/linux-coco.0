@@ -1,122 +1,176 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144B43C27
-	for <linux-coco@lists.linux.dev>; Wed,  3 May 2023 16:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1683130217;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iHAjsHAaaqgyjPtfZLNpavdoVBdm9qokwL/9JsrOAiI=;
-	b=gCioepLUWMdUm4acDkRpOJUOz4Ny7sp5hCwN+d8Bp7ZIMrEFP2o4P5QYErPfYCDw6Gw/x1
-	IPo2oFyEP9+pveRFAA12SlL/H4Q3ADVanyuoJ3ha/ow8FxgdFlrkWXTI8s64q5DCnZ8XoR
-	yecoYkfxHVnfd87gFLdkGTm0yuz3mrw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-643-Yt2oAUdKP3qdZkpW9JOVmQ-1; Wed, 03 May 2023 12:10:12 -0400
-X-MC-Unique: Yt2oAUdKP3qdZkpW9JOVmQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B6074858F09;
-	Wed,  3 May 2023 16:10:11 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.37])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D158492C3E;
-	Wed,  3 May 2023 16:10:08 +0000 (UTC)
-Date: Wed, 3 May 2023 17:10:01 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Klaus Kiwi <kkiwi@redhat.com>, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, amd-sev-snp@lists.suse.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F28DA51
+	for <linux-coco@lists.linux.dev>; Wed,  3 May 2023 16:52:25 +0000 (UTC)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 343GodBv026998;
+	Wed, 3 May 2023 16:52:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=dQ884//3MIN5TZFslQ5hPzbr/FOPMz2sIzKYatfvBhU=;
+ b=lE1Sn5NkN5+/Qxvl8e+kky8ZwGTWAVnqgYJq1GwwSj1uSRaScY9oymdfY7XQwuXLlGpU
+ 08mBevZLFKowR+jq1DXBaZzyU/Nek+vUfni10OygHirWjBJizW4LUXOQ0L1xJpg8BevN
+ fC0zyfzA65VVwgzCI/z+aNwuZFO88l7Pnq9/ZZamIsYJfr3wPl9UeIMtfF8eATMQYEUI
+ 4tSutka3fohSXcdhUVel9rQtLjeOTFEwg/mPgrwLMTM+czHrpbdxEdB1CinqLpIHT/vR
+ g8C7m0zFYaMo9jyHU5Gr8SkAaU+Sz7sTHKUHrs2Rc8M0dCkxEJSbSLry5PoGltA4OlUC 2g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qbug702hc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 May 2023 16:52:20 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 343GonNj027788;
+	Wed, 3 May 2023 16:52:19 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qbug702e3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 May 2023 16:52:19 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 343F8lFL023724;
+	Wed, 3 May 2023 16:51:18 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
+	by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3q8tv7nd5t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 May 2023 16:51:18 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 343GpIqg11338432
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 3 May 2023 16:51:18 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1DB9F58052;
+	Wed,  3 May 2023 16:51:18 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C5C85805E;
+	Wed,  3 May 2023 16:51:17 +0000 (GMT)
+Received: from li-a300cfcc-3261-11b2-a85c-fa2d52d0d140.ibm.com (unknown [9.160.23.254])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  3 May 2023 16:51:17 +0000 (GMT)
+Message-ID: <cc22183359d107dc0be58b4f9509c8d785313879.camel@linux.ibm.com>
 Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-Message-ID: <ZFKHWf5A8APB/XEe@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+From: Claudio Carvalho <cclaudio@linux.ibm.com>
+To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>,
+        Tom Lendacky
+	 <thomas.lendacky@amd.com>
+Cc: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev,
+        kvm@vger.kernel.org, Carlos Bilbao <carlos.bilbao@amd.com>,
+        Klaus Kiwi
+ <kkiwi@redhat.com>
+Date: Wed, 03 May 2023 12:51:17 -0400
+In-Reply-To: <ZFJTDtMK0QqXK5+E@suse.de>
 References: <ZBl4592947wC7WKI@suse.de>
- <4420d7e5-d05f-8c31-a0f2-587ebb7eaa20@amd.com>
- <ZFJTDtMK0QqXK5+E@suse.de>
- <CAAH4kHa_mWSVrOdp-XvV9kd0fULQ_OOf4j8TMWJy6GhoZD5SEg@mail.gmail.com>
+	 <4420d7e5-d05f-8c31-a0f2-587ebb7eaa20@amd.com> <ZFJTDtMK0QqXK5+E@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: sj8sxnOtRrj090Qt4mIqkCXtAcVQqs7d
+X-Proofpoint-GUID: Wa0JeZMFVsoh0Zf-drserLKROW-Ly5nl
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAH4kHa_mWSVrOdp-XvV9kd0fULQ_OOf4j8TMWJy6GhoZD5SEg@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-03_11,2023-05-03_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ lowpriorityscore=0 phishscore=0 suspectscore=0 clxscore=1011
+ priorityscore=1501 bulkscore=0 adultscore=0 mlxscore=0 mlxlogscore=881
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2305030141
 
-On Wed, May 03, 2023 at 08:24:10AM -0700, Dionna Amalie Glaze wrote:
-> On Wed, May 3, 2023 at 5:27 AM Jörg Rödel <jroedel@suse.de> wrote:
-> > >   - On the subject of priorities, the number one priority for the
-> > >     linux-svsm project has been to quickly achieve production quality vTPM
-> > >     support. The support for this is being actively worked on by
-> > >     linux-svsm contributors and we'd want to find fastest path towards
-> > >     getting that redirected into coconut-svsm (possibly starting with CPL0
-> > >     implementation until CPL3 support is available) and the project
-> > >     hardened for a release.  I imagine there will be some competing
-> > >     priorities from coconut-svsm project currently, so wanted to get this
-> > >     out on the table from the beginning.
-> >
-> > That has been under discussion for some time, and honestly I think
-> > the approach taken is the main difference between linux-svsm and
-> > COCONUT. My position here is, and that comes with a big 'BUT', that I am
-> > not fundamentally opposed to having a temporary solution for the TPM
-> > until CPL-3 support is at a point where it can run a TPM module.
-> >
-> > And here come the 'BUT': Since the goal of having one project is to
-> > bundle community efforts, I think that the joint efforts are better
-> > targeted at getting CPL-3 support to a point where it can run modules.
-> > On that side some input and help is needed, especially to define the
-> > syscall interface so that it suits the needs of a TPM implementation.
-> >
-> > It is also not the case that CPL-3 support is out more than a year or
-> > so. The RamFS is almost ready, as is the archive file inclusion[1]. We
-> > will move to task management next, the goal is still to have basic
-> > support ready in 2H2023.
-> >
-> > [1] https://github.com/coconut-svsm/svsm/pull/27
-> >
-> > If there is still a strong desire to have COCONUT with a TPM (running at
-> > CPL-0) before CPL-3 support is usable, then I can live with including
-> > code for that as a temporary solution. But linking huge amounts of C
-> > code (like openssl or a tpm lib) into the SVSM rust binary kind of
-> > contradicts the goals which made us using Rust for project in the first
-> > place. That is why I only see this as a temporary solution.
-> >
-> > > Since we don't want to split resources or have competing projects, we are
-> > > leaning towards moving our development resources over to the coconut-svsm
-> > > project.
-> >
-> 
-> Not to throw a wrench in the works, but is it possible for us to have
-> an RTMR protocol as a stop-gap between a fully paravirtualized vTPM
-> and a fully internalized vTPM? The EFI protocol
-> CC_MEASUREMENT_PROTOCOL is already standardized, and it can serve as a
-> hardware-rooted integrity measure for a paravirtualized vTPM. This
-> solution would further allow a TDX measured boot solution to be more
-> thoroughly supported earlier, given that we'd need to have the RTMR
-> event log replay logic implemented.
+Hi Jorg,
 
-IMHO it would be preferrable if RTMR was exposed to as little as possible.
-The less special cases we have to build into applications / projects
-related to confidential virt, the better off we'll be. The use of industry
-standard TPMs with PCRs reduces the matrix that work that is needed to
-support confidential virt across the stack.
+On Wed, 2023-05-03 at 14:26 +0200, J=C3=B6rg R=C3=B6del wrote:
+>=20
+> > =C2=A0 - Are you open to having maintainers outside of SUSE? There is s=
+ome
+> > =C2=A0=C2=A0=C2=A0 linux-svsm community concern about project governanc=
+e and project
+> > =C2=A0=C2=A0=C2=A0 priorities and release schedules. This wouldn't have=
+ to be AMD even,
+> > =C2=A0=C2=A0=C2=A0 but we'd volunteer to help here if desired, but we'd=
+ like to foster a
+> > =C2=A0=C2=A0=C2=A0 true community model for governance regardless. We'd=
+ love to hear
+> > =C2=A0=C2=A0=C2=A0 thoughts on this from coconut-svsm folks.
+>=20
+> Yes, I am definitely willing to make the project more open and move to a
+> maintainer-group model, no intention from my side to become a BDFL for
+> the project. I just have no clear picture yet how the model should look
+> like and how to get there. I will send a separate email to kick-start a
+> discussion about that.
+>=20
 
+Thanks. I would be happy to collaborate in that discussion.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> > =C2=A0 - On the subject of priorities, the number one priority for the
+> > =C2=A0=C2=A0=C2=A0 linux-svsm project has been to quickly achieve produ=
+ction quality vTPM
+> > =C2=A0=C2=A0=C2=A0 support. The support for this is being actively work=
+ed on by
+> > =C2=A0=C2=A0=C2=A0 linux-svsm contributors and we'd want to find fastes=
+t path towards
+> > =C2=A0=C2=A0=C2=A0 getting that redirected into coconut-svsm (possibly =
+starting with CPL0
+> > =C2=A0=C2=A0=C2=A0 implementation until CPL3 support is available) and =
+the project
+> > =C2=A0=C2=A0=C2=A0 hardened for a release.=C2=A0 I imagine there will b=
+e some competing
+> > =C2=A0=C2=A0=C2=A0 priorities from coconut-svsm project currently, so w=
+anted to get this
+> > =C2=A0=C2=A0=C2=A0 out on the table from the beginning.
+>=20
+> That has been under discussion for some time, and honestly I think
+> the approach taken is the main difference between linux-svsm and
+> COCONUT. My position here is, and that comes with a big 'BUT', that I am
+> not fundamentally opposed to having a temporary solution for the TPM
+> until CPL-3 support is at a point where it can run a TPM module.
+>=20
+> And here come the 'BUT': Since the goal of having one project is to
+> bundle community efforts, I think that the joint efforts are better
+> targeted at getting CPL-3 support to a point where it can run modules.
+> On that side some input and help is needed, especially to define the
+> syscall interface so that it suits the needs of a TPM implementation.
+>=20
+> It is also not the case that CPL-3 support is out more than a year or
+> so. The RamFS is almost ready, as is the archive file inclusion[1]. We
+> will move to task management next, the goal is still to have basic
+> support ready in 2H2023.
+>=20
+> [1] https://github.com/coconut-svsm/svsm/pull/27
+>=20
+> If there is still a strong desire to have COCONUT with a TPM (running at
+> CPL-0) before CPL-3 support is usable, then I can live with including
+> code for that as a temporary solution. But linking huge amounts of C
+> code (like openssl or a tpm lib) into the SVSM rust binary kind of
+> contradicts the goals which made us using Rust for project in the first
+> place. That is why I only see this as a temporary solution.
+>=20
+>=20
+
+I think the crypto support requires more design discussion since it is requ=
+ired
+in multiple places.
+
+The experience I've had adding SVSM-vTPM support is that the SVSM needs cry=
+pto
+for requesting an attestation report (SNP_GUEST_REQUEST messages sent to the
+security processor PSP have to be encrypted with AES_GCM) and the vTPM also
+needs crypto for the TPM crypto operations. We could just duplicate the cry=
+pto
+library, or find a way to share it (e.g. vdso approach).
+
+For the SVSM, it would be rust code talking to the crypto library; for the =
+vTPM
+it would be the vTPM (most likely an existing C implementation) talking to =
+the
+crypto library.
+
+Regards,
+
+Claudio
 
