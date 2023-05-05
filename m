@@ -1,48 +1,45 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F3A8BE0
-	for <linux-coco@lists.linux.dev>; Fri,  5 May 2023 15:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62EC15B9
+	for <linux-coco@lists.linux.dev>; Sat,  6 May 2023 08:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1683301673;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=mimecast20190719; t=1683361239;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hQobjkXCgk5uy3vBplD0U6FyzeEdp0Sx4RLjpDbb7I8=;
-	b=UPKm+XTBu+5S3ezawvFbQofYWIjj6ZOFN9oNS3ZLofLs23y3wfvSVLO57I14m3Cd/dGiMK
-	Ph57iqG7jaL8Tg4fJaK91gNVJaiC7HlG0Yn6rnw2zteiAyqdUg/t6t5raIoyOcULubnGbl
-	tqQ/rq5NhKkTXMy6YUSdBYLjHrRcDMU=
+	bh=W+cU6hTxnO9+qbS4HZrZOmgB68CTHmsF8DCfihRTe+M=;
+	b=ULDnBL7bYwOTJ4W2mb1Kn7OAWd0XETayU6zABFiF5Vikf0FCqaiaHMxZgC+g6kvdmgbMWC
+	ZuI9JBwT7wdpxZgAohoBLZLxHd7e7D2NF4x0k4sayI/WE3AmFDd9ddkOcr0CTQMUlxBjFu
+	BPOhCYK6IBmU0Li9oE2zDrNIg6HGAPs=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-584-l-v661S2Ooy26swHv9Pw_g-1; Fri, 05 May 2023 11:47:52 -0400
-X-MC-Unique: l-v661S2Ooy26swHv9Pw_g-1
+ us-mta-319-fcyq1iJ_NPuaaE_FUQvT5A-1; Sat, 06 May 2023 04:20:36 -0400
+X-MC-Unique: fcyq1iJ_NPuaaE_FUQvT5A-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A3A53815EED;
-	Fri,  5 May 2023 15:47:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.42])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id AA78E1121331;
-	Fri,  5 May 2023 15:47:50 +0000 (UTC)
-Date: Fri, 5 May 2023 16:47:48 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>
-Cc: Claudio Carvalho <cclaudio@linux.ibm.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, amd-sev-snp@lists.suse.com,
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	Carlos Bilbao <carlos.bilbao@amd.com>,
-	Klaus Kiwi <kkiwi@redhat.com>
-Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-Message-ID: <ZFUlJOFZvrNEjV1N@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B88DE1C05AF3;
+	Sat,  6 May 2023 08:20:35 +0000 (UTC)
+Received: from ptitbras (unknown [10.39.192.69])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 104AC1121314;
+	Sat,  6 May 2023 08:20:33 +0000 (UTC)
 References: <ZBl4592947wC7WKI@suse.de>
- <4420d7e5-d05f-8c31-a0f2-587ebb7eaa20@amd.com>
- <ZFJTDtMK0QqXK5+E@suse.de>
- <cc22183359d107dc0be58b4f9509c8d785313879.camel@linux.ibm.com>
- <ZFUh/KlLXJF+2hoJ@suse.de>
+ <4420d7e5-d05f-8c31-a0f2-587ebb7eaa20@amd.com> <ZFJTDtMK0QqXK5+E@suse.de>
+ <614e66054c58048f2f43104cf1c9dcbc8745f292.camel@linux.ibm.com>
+User-agent: mu4e 1.10.0; emacs 28.2
+From: Christophe de Dinechin <dinechin@redhat.com>
+To: jejb@linux.ibm.com
+Cc: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>,
+ Klaus Kiwi <kkiwi@redhat.com>, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, amd-sev-snp@lists.suse.com
+Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
+Date: Fri, 05 May 2023 14:35:29 +0200
+In-reply-to: <614e66054c58048f2f43104cf1c9dcbc8745f292.camel@linux.ibm.com>
+Message-ID: <m25y95j2gg.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,46 +47,125 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZFUh/KlLXJF+2hoJ@suse.de>
-User-Agent: Mutt/2.2.9 (2022-11-12)
+Content-Transfer-Encoding: quoted-printable
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 
-On Fri, May 05, 2023 at 05:34:20PM +0200, Jörg Rödel wrote:
-> Hi Claudio,
-> 
-> On Wed, May 03, 2023 at 12:51:17PM -0400, Claudio Carvalho wrote:
-> > Thanks. I would be happy to collaborate in that discussion.
-> 
-> Great, I will send out that email early next week to get the discussion
-> rolling.
-> 
-> > I think the crypto support requires more design discussion since it is required
-> > in multiple places.
-> > 
-> > The experience I've had adding SVSM-vTPM support is that the SVSM needs crypto
-> > for requesting an attestation report (SNP_GUEST_REQUEST messages sent to the
-> > security processor PSP have to be encrypted with AES_GCM) and the vTPM also
-> > needs crypto for the TPM crypto operations. We could just duplicate the crypto
-> > library, or find a way to share it (e.g. vdso approach).
-> > 
-> > For the SVSM, it would be rust code talking to the crypto library; for the vTPM
-> > it would be the vTPM (most likely an existing C implementation) talking to the
-> > crypto library.
-> 
-> Right, where to place and how to share the crypto code needs more
-> discussion, there are multiple possible approaches. I have seen that you
-> have a talk at KVM Forum, so we can meet there in a larger group and
-> discuss those and other questions in person.
 
-Yep, we should probably do a BoF session on the topic of SVSM
-for anyone interested who's attending KVM Forum.
+On 2023-05-04 at 13:04 -04, James Bottomley <jejb@linux.ibm.com> wrote...
+> On Wed, 2023-05-03 at 14:26 +0200, J=C3=B6rg R=C3=B6del wrote:
+>> On Tue, May 02, 2023 at 06:03:55PM -0500, Tom Lendacky wrote:
+> [...]
+>> > =C2=A0 - On the subject of priorities, the number one priority for the
+>> > =C2=A0=C2=A0=C2=A0 linux-svsm project has been to quickly achieve prod=
+uction
+>> > quality vTPM support. The support for this is being actively worked
+>> > on by linux-svsm contributors and we'd want to find fastest path
+>> > towards getting that redirected into coconut-svsm (possibly
+>> > starting with CPL0
+>> > =C2=A0=C2=A0=C2=A0 implementation until CPL3 support is available) and=
+ the project
+>> > =C2=A0=C2=A0=C2=A0 hardened for a release.=C2=A0 I imagine there will =
+be some competing
+>> > =C2=A0=C2=A0=C2=A0 priorities from coconut-svsm project currently, so =
+wanted to
+>> > get this out on the table from the beginning.
+>>
+>> That has been under discussion for some time, and honestly I think
+>> the approach taken is the main difference between linux-svsm and
+>> COCONUT. My position here is, and that comes with a big 'BUT', that I
+>> am not fundamentally opposed to having a temporary solution for the
+>> TPM until CPL-3 support is at a point where it can run a TPM module.
+>
+> OK, so this, for IBM, is directly necessary.  We have the vTPM pull
+> request about ready to go and we'll probably send it still to the AMD
+> SVSM.  Given that the AMD SVSM already has the openssl library and the
+> attestation report support, do you want to pull them into coconut
+> directly so we can base a coconut vTPM pull request on that?
+>
+>> And here come the 'BUT': Since the goal of having one project is to
+>> bundle community efforts, I think that the joint efforts are better
+>> targeted at getting CPL-3 support to a point where it can run
+>> modules. On that side some input and help is needed, especially to
+>> define the syscall interface so that it suits the needs of a TPM
+>> implementation.
+>
+> Crypto support in ring-0 is unavoidable if we want to retain control of
+> the VMPCK0 key in ring-0.  I can't see us giving it to ring-3 because
+> that would give up control of the SVSM identity and basically make the
+> ring-0 separation useless because you can compromise ring-3 and get the
+> key and then communicate with the PSP as the SVSM.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+I'm a but confused regarding the roles that VMPL vs rings is in the security
+model here. In particular, I assume that any attack on ring3 would still
+have to cross either the VMPL boundary (if coming from the guest) or the TEE
+boundary (if coming from the host).
+
+>
+> I think the above problem also indicates no-one really has a fully
+> thought out security model that shows practically how ring-3 improves
+> the security posture.  So I really think starting in ring-0 and then
+> moving pieces to ring-3 and discussing whether this materially improves
+> the security posture based on the code and how it operates gets us
+> around the lack of understanding of the security model because we
+> proceed by evolution.
+
+And there is definitely a lot of complexity added by supporting ring3. You
+are essentially getting the complexity of a "real" operating system. By
+contrast, TDX is providing the same kind of isolation with secure enclaves,
+but at least the base OS kernel is shared.
+
+The expected benefit is to be able to run more complex code from ring3 with
+a better way to handle malfunctions, faults, whatever. At least that's the
+way I read it. So it's a way to write software in a more modular way.
+
+IIUC, the ring-3 modules of the SVSM would still be at VMPL0, so presumably,
+not accesible from host or guest. If we consider this property as strong,
+then do we really care entrusting ring3 with sensitive data?
+
+>
+> The next question that's going to arise is *where* the crypto libraries
+> should reside.  Given they're somewhat large, duplicating them for
+> every cpl-3 application plus cpl-3 seems wasteful, so some type of vdso
+> model sounds better (and might work instead of a syscall interfaces for
+> cpl-0 services that are pure code).
+
+I don't understand what you call "pure code". I presume you mean "code that
+does not need to access ring0 data"?
+
+>
+>> It is also not the case that CPL-3 support is out more than a year or
+>> so. The RamFS is almost ready, as is the archive file inclusion[1].
+>> We will move to task management next, the goal is still to have basic
+>> support ready in 2H2023.
+>>
+>> [1] https://github.com/coconut-svsm/svsm/pull/27
+>
+> Well, depending on how you order them, possibly.  The vTPM has a simple
+> request/response model, so it really doesn't have much need of a
+> scheduler for instance.  And we could obviously bring up cpl-3 before a
+> module loader/ram filesystem and move to that later.
+>
+>> If there is still a strong desire to have COCONUT with a TPM (running
+>> at CPL-0) before CPL-3 support is usable, then I can live with
+>> including code for that as a temporary solution. But linking huge
+>> amounts of C code (like openssl or a tpm lib) into the SVSM rust
+>> binary kind of contradicts the goals which made us using Rust for
+>> project in the first place. That is why I only see this as a
+>> temporary solution.
+>
+> I'm not sure it will be.  If some cloud or distro wants to shoot for
+> FIPS compliance of the SVSM, for instance, a requirement will likely be
+> to use a FIPS certified crypto library ... and they're all currently in
+> C.  That's not to say we shouldn't aim for minimizing the C
+> dependencies, but I don't see a "pure rust or else" approach
+> facilitating the initial utility of the project.
+>
+> James
+
+
+--
+Cheers,
+Christophe de Dinechin (https://c3d.github.io)
+Freedom Covenant (https://github.com/c3d/freedom-covenant)
+Theory of Incomplete Measurements (https://c3d.github.io/TIM)
 
