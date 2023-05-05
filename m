@@ -1,168 +1,122 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6715A7E7
-	for <linux-coco@lists.linux.dev>; Thu,  4 May 2023 17:06:55 +0000 (UTC)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 344H3817029701;
-	Thu, 4 May 2023 17:06:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=bCfEs44O59JogdS5BpuwlqVU+dmACMM9SfBh6S4pUX0=;
- b=aGQcS9Y1iKkjBxAy+uJmNGSTMCDFYNKAV+qc9A+VZba/IniFqx5Bp0eIaPBDwqbFVRn7
- KBmJWxYIr/K1f5LhU4DbZDNVgjldO6JRfRjSXzmex5s8AcnPnzFtv0T3DGbiLXXVRQdg
- 70CXZ/QhQadGorGTeGqz8JE5iWsrWwJKIOc4lM7S58yZji4SI2zJgWlx/BKHkzxNJrrU
- jVrNxD8ZyEBPU3dK8Icm6phNN0yGXG30jb1A7/IEoLMUNY7f/a0rXakry0LSkQ1PPyMi
- MfiMJKUQu5rUg50DmM6q8uRPl/YX3oUpliloI3UR89a2vadJJ5K+KUkEPDcOy9DItDE8 6A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qcgs087kd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 May 2023 17:06:50 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 344H4AD5002057;
-	Thu, 4 May 2023 17:05:09 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qcgs082fr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 May 2023 17:05:08 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 344FAIKZ008611;
-	Thu, 4 May 2023 17:04:13 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
-	by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3q8tv8h485-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 May 2023 17:04:12 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 344H4BmU63898064
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 May 2023 17:04:11 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BFF5558057;
-	Thu,  4 May 2023 17:04:11 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC4B05805D;
-	Thu,  4 May 2023 17:04:10 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.211.131.5])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  4 May 2023 17:04:10 +0000 (GMT)
-Message-ID: <614e66054c58048f2f43104cf1c9dcbc8745f292.camel@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD6BBE7A
+	for <linux-coco@lists.linux.dev>; Fri,  5 May 2023 15:03:02 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9C20D20161;
+	Fri,  5 May 2023 15:02:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1683298979; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cazz3fWUIPev4x3qnlhZI4nTSlnGcYjwyxYCH5Sp+0k=;
+	b=HUBUzJLn9QVxYWn9XBnEnzGWIKM3BNdsLK4YmOxSoFEjWbG6xMOp8DTIYfOZylmG6/wn1d
+	CFvKx0TLiiW56BE14vMMlf+uhgjq78LLPWLfqTrfr/iSr/AE2s1AW/Lc9s41+5hx42edH5
+	wmgETVSEyB5Wd1o/vbzPWfv2KUVepzY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1683298979;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cazz3fWUIPev4x3qnlhZI4nTSlnGcYjwyxYCH5Sp+0k=;
+	b=9eZYPpsGjjKNhhUsqWRlbn4QExQ7FNu7MiEZ9eStsdNWr4pvy+UkLbMghrLBtD2XDwVbFb
+	p/+ozzNNjsRHqCBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6CB3113513;
+	Fri,  5 May 2023 15:02:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 2kE7GaMaVWTTBAAAMHmgww
+	(envelope-from <jroedel@suse.de>); Fri, 05 May 2023 15:02:59 +0000
+Date: Fri, 5 May 2023 17:02:58 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: James Bottomley <jejb@linux.ibm.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Klaus Kiwi <kkiwi@redhat.com>,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	amd-sev-snp@lists.suse.com
 Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>,
-        Tom Lendacky
-	 <thomas.lendacky@amd.com>
-Cc: Klaus Kiwi <kkiwi@redhat.com>, linux-coco@lists.linux.dev,
-        kvm@vger.kernel.org, amd-sev-snp@lists.suse.com
-Date: Thu, 04 May 2023 13:04:09 -0400
-In-Reply-To: <ZFJTDtMK0QqXK5+E@suse.de>
+Message-ID: <ZFUaou1Ts5cwheHg@suse.de>
 References: <ZBl4592947wC7WKI@suse.de>
-	 <4420d7e5-d05f-8c31-a0f2-587ebb7eaa20@amd.com> <ZFJTDtMK0QqXK5+E@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kdfIoJheiL8N26zq2rnPEfHDa29dII_G
-X-Proofpoint-GUID: Ji_cchR4b7C7AGBkuUicstgNWcHIfOU7
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ <4420d7e5-d05f-8c31-a0f2-587ebb7eaa20@amd.com>
+ <ZFJTDtMK0QqXK5+E@suse.de>
+ <614e66054c58048f2f43104cf1c9dcbc8745f292.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-04_10,2023-05-04_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 clxscore=1015 phishscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2305040139
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <614e66054c58048f2f43104cf1c9dcbc8745f292.camel@linux.ibm.com>
 
-On Wed, 2023-05-03 at 14:26 +0200, Jörg Rödel wrote:
-> On Tue, May 02, 2023 at 06:03:55PM -0500, Tom Lendacky wrote:
-[...]
-> >   - On the subject of priorities, the number one priority for the
-> >     linux-svsm project has been to quickly achieve production
-> > quality vTPM support. The support for this is being actively worked
-> > on by linux-svsm contributors and we'd want to find fastest path
-> > towards getting that redirected into coconut-svsm (possibly
-> > starting with CPL0
-> >     implementation until CPL3 support is available) and the project
-> >     hardened for a release.  I imagine there will be some competing
-> >     priorities from coconut-svsm project currently, so wanted to
-> > get this out on the table from the beginning.
-> 
-> That has been under discussion for some time, and honestly I think
-> the approach taken is the main difference between linux-svsm and
-> COCONUT. My position here is, and that comes with a big 'BUT', that I
-> am not fundamentally opposed to having a temporary solution for the
-> TPM until CPL-3 support is at a point where it can run a TPM module.
+On Thu, May 04, 2023 at 01:04:09PM -0400, James Bottomley wrote:
+> Crypto support in ring-0 is unavoidable if we want to retain control of
+> the VMPCK0 key in ring-0.  I can't see us giving it to ring-3 because
+> that would give up control of the SVSM identity and basically make the
+> ring-0 separation useless because you can compromise ring-3 and get the
+> key and then communicate with the PSP as the SVSM.
 
-OK, so this, for IBM, is directly necessary.  We have the vTPM pull
-request about ready to go and we'll probably send it still to the AMD
-SVSM.  Given that the AMD SVSM already has the openssl library and the
-attestation report support, do you want to pull them into coconut
-directly so we can base a coconut vTPM pull request on that?
+It all depends on what the SVSM allows ring-3 to do, or in other
+words, how the security model is implemented which locks down the ring-3
+services. For example, I can see an attestation service implemented in
+ring-3 as the exclusive owner of the VMPCK0 key (enforced by SVSM ring-0
+code).
 
-> And here come the 'BUT': Since the goal of having one project is to
-> bundle community efforts, I think that the joint efforts are better
-> targeted at getting CPL-3 support to a point where it can run
-> modules. On that side some input and help is needed, especially to
-> define the syscall interface so that it suits the needs of a TPM
-> implementation.
+> I think the above problem also indicates no-one really has a fully
+> thought out security model that shows practically how ring-3 improves
+> the security posture.
 
-Crypto support in ring-0 is unavoidable if we want to retain control of
-the VMPCK0 key in ring-0.  I can't see us giving it to ring-3 because
-that would give up control of the SVSM identity and basically make the
-ring-0 separation useless because you can compromise ring-3 and get the
-key and then communicate with the PSP as the SVSM.
+The security model is certainly not fully designed in all details, but
+when comparing an all-ring-0 (with everything in one address space)
+approach to a split-code model which moves functionality into separate
+address spaces and less privileged execution contexts, my bet is that
+the latter will always win. This is something we know already, so there
+is no need to re-learn that by evolution.
 
-I think the above problem also indicates no-one really has a fully
-thought out security model that shows practically how ring-3 improves
-the security posture.  So I really think starting in ring-0 and then
-moving pieces to ring-3 and discussing whether this materially improves
-the security posture based on the code and how it operates gets us
-around the lack of understanding of the security model because we
-proceed by evolution.
+> The next question that's going to arise is *where* the crypto libraries
+> should reside.  Given they're somewhat large, duplicating them for
+> every cpl-3 application plus cpl-3 seems wasteful, so some type of vdso
+> model sounds better (and might work instead of a syscall interfaces for
+> cpl-0 services that are pure code).
 
-The next question that's going to arise is *where* the crypto libraries
-should reside.  Given they're somewhat large, duplicating them for
-every cpl-3 application plus cpl-3 seems wasteful, so some type of vdso
-model sounds better (and might work instead of a syscall interfaces for
-cpl-0 services that are pure code).  
+That, in contrast, is something I would leave to evolution. We can build
+the services (attestation, TPM, ...) and see if they benefit from a
+shared-lib for crypto. The dynamic linking for that is certainly not
+trivial, but can also be fully done in ring-3.
 
-> It is also not the case that CPL-3 support is out more than a year or
-> so. The RamFS is almost ready, as is the archive file inclusion[1].
-> We will move to task management next, the goal is still to have basic
-> support ready in 2H2023.
-> 
-> [1] https://github.com/coconut-svsm/svsm/pull/27
+> I'm not sure it will be.  If some cloud or distro wants to shoot for
+> FIPS compliance of the SVSM, for instance, a requirement will likely be
+> to use a FIPS certified crypto library ... and they're all currently in
+> C.  That's not to say we shouldn't aim for minimizing the C
+> dependencies, but I don't see a "pure rust or else" approach
+> facilitating the initial utility of the project.
 
-Well, depending on how you order them, possibly.  The vTPM has a simple
-request/response model, so it really doesn't have much need of a
-scheduler for instance.  And we could obviously bring up cpl-3 before a
-module loader/ram filesystem and move to that later.
+Another reason to move all of this to ring-3. Ring-3 services can be
+written in C and use C libraries as needed without lowering the security
+of the ring-0 rust code.
 
-> If there is still a strong desire to have COCONUT with a TPM (running
-> at CPL-0) before CPL-3 support is usable, then I can live with
-> including code for that as a temporary solution. But linking huge
-> amounts of C code (like openssl or a tpm lib) into the SVSM rust
-> binary kind of contradicts the goals which made us using Rust for
-> project in the first place. That is why I only see this as a
-> temporary solution.
+Regards,
 
-I'm not sure it will be.  If some cloud or distro wants to shoot for
-FIPS compliance of the SVSM, for instance, a requirement will likely be
-to use a FIPS certified crypto library ... and they're all currently in
-C.  That's not to say we shouldn't aim for minimizing the C
-dependencies, but I don't see a "pure rust or else" approach
-facilitating the initial utility of the project.
+-- 
+J�rg R�del
+jroedel@suse.de
 
-James
+SUSE Software Solutions Germany GmbH
+Frankenstra�e 146
+90461 N�rnberg
+Germany
 
-
-
+(HRB 36809, AG N�rnberg)
+Gesch�ftsf�hrer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
 
