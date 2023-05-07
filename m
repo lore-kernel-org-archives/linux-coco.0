@@ -1,34 +1,34 @@
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8FB11C9D
-	for <linux-coco@lists.linux.dev>; Sun,  7 May 2023 23:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E534711C9F
+	for <linux-coco@lists.linux.dev>; Sun,  7 May 2023 23:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1683503204; x=1715039204;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Y619tJKuPjwZ/y2uw6gP6ILX0dPH5S7/IjFdg41hRrw=;
-  b=R0vma4SvF7QPs190C0zqrPqVnmL4Iq49gHm7RCh3Zwi6C0tyqxtafsAj
-   8oU7owT3kBXjbnjsoWD/HAAXPFJQpy9sEwyYqGMAZMm2tfqcYCdZo2Y/Y
-   DmqkA9sJL9BxKW4D/EWTE5O1rOiU66jnBgmgDmX8kxk5S7P9a/td/grKP
-   S/I//O+AawJc5eYSfcqqWjfu++X0aKyFcQ3KzkqasWnHB+5JujR9KAt50
-   iHEb25mglaLDIftbSZkuz+BTLym36ZKnaMK+SwsJlobb1FS6G4fKG4C6V
-   7/yim+YW0G2P+axv+8m8n2dFYzc6MfeHWkzlyOTGSRA5Y/R/yMUv5Imc8
+  bh=i5KLg2PtjNA0aS2FICwds+HU2Sxn6WOAGGMewQBMCK4=;
+  b=crEdxRfj0iC6nmdOH/CtNv/Ic4KMxsDf4ciOOQTi3zBhd1SRnYGh8g2x
+   el9PuPPo6rECWR7rYiatGEJdkw8GPbSqyBdZL0CsnQG98jpoGZLtE5EFF
+   z6FEpaIc8MJuqjrSHUS4lS5gBKnSFYjSAJDAIz3qExRvp04Q3NbCUJ/vB
+   XDNvyNS7zCvZ5uL5czFppoJiC4EqnV7IfjfMdmnD11s38q0hrt4ExWgJN
+   DUSeP2HBchIwDeqgFUW74fE4DPTK+8r9JiDR6ciJQYihnsSGODU7BHgEC
+   1QOjmaPdAVa/DiqLqY1yFQayiDg2fN2jcweXI3OHWVZIYwB6NR7c2n2aX
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="349550269"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="349550242"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="349550269"
+   d="scan'208";a="349550242"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:39 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="701222808"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="701222788"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="701222808"
+   d="scan'208";a="701222788"
 Received: from dancaspi-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.61.73])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:31 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:22 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 3C28910D1EB; Mon,  8 May 2023 02:46:20 +0300 (+03)
+	id 1138210D1E7; Mon,  8 May 2023 02:46:20 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -61,10 +61,11 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv10 05/11] x86/boot/compressed: Handle unaccepted memory
-Date: Mon,  8 May 2023 02:46:12 +0300
-Message-Id: <20230507234618.18067-6-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Mike Rapoport <rppt@linux.ibm.com>
+Subject: [PATCHv10 01/11] mm: Add support for unaccepted memory
+Date: Mon,  8 May 2023 02:46:08 +0300
+Message-Id: <20230507234618.18067-2-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
 References: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
@@ -76,188 +77,447 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The firmware will pre-accept the memory used to run the stub. But, the
-stub is responsible for accepting the memory into which it decompresses
-the main kernel. Accept memory just before decompression starts.
+UEFI Specification version 2.9 introduces the concept of memory
+acceptance. Some Virtual Machine platforms, such as Intel TDX or AMD
+SEV-SNP, require memory to be accepted before it can be used by the
+guest. Accepting happens via a protocol specific to the Virtual Machine
+platform.
 
-The stub is also responsible for choosing a physical address in which to
-place the decompressed kernel image. The KASLR mechanism will randomize
-this physical address. Since the unaccepted memory region is relatively
-small, KASLR would be quite ineffective if it only used the pre-accepted
-area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
-entire physical address space by also including EFI_UNACCEPTED_MEMORY.
+There are several ways kernel can deal with unaccepted memory:
+
+ 1. Accept all the memory during the boot. It is easy to implement and
+    it doesn't have runtime cost once the system is booted. The downside
+    is very long boot time.
+
+    Accept can be parallelized to multiple CPUs to keep it manageable
+    (i.e. via DEFERRED_STRUCT_PAGE_INIT), but it tends to saturate
+    memory bandwidth and does not scale beyond the point.
+
+ 2. Accept a block of memory on the first use. It requires more
+    infrastructure and changes in page allocator to make it work, but
+    it provides good boot time.
+
+    On-demand memory accept means latency spikes every time kernel steps
+    onto a new memory block. The spikes will go away once workload data
+    set size gets stabilized or all memory gets accepted.
+
+ 3. Accept all memory in background. Introduce a thread (or multiple)
+    that gets memory accepted proactively. It will minimize time the
+    system experience latency spikes on memory allocation while keeping
+    low boot time.
+
+    This approach cannot function on its own. It is an extension of #2:
+    background memory acceptance requires functional scheduler, but the
+    page allocator may need to tap into unaccepted memory before that.
+
+    The downside of the approach is that these threads also steal CPU
+    cycles and memory bandwidth from the user's workload and may hurt
+    user experience.
+
+The patch implements #1 and #2 for now. #2 is the default. Some
+workloads may want to use #1 with accept_memory=eager in kernel
+command line. #3 can be implemented later based on user's demands.
+
+Support of unaccepted memory requires a few changes in core-mm code:
+
+  - memblock has to accept memory on allocation;
+
+  - page allocator has to accept memory on the first allocation of the
+    page;
+
+Memblock change is trivial.
+
+The page allocator is modified to accept pages. New memory gets accepted
+before putting pages on free lists. It is done lazily: only accept new
+pages when we run out of already accepted memory. The memory gets
+accepted until the high watermark is reached.
+
+Architecture has to provide two helpers if it wants to support
+unaccepted memory:
+
+ - accept_memory() makes a range of physical addresses accepted.
+
+ - range_contains_unaccepted_memory() checks anything within the range
+   of physical addresses requires acceptance.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- arch/x86/boot/compressed/Makefile        |  2 +-
- arch/x86/boot/compressed/efi.h           |  1 +
- arch/x86/boot/compressed/kaslr.c         | 35 ++++++++++++++++--------
- arch/x86/boot/compressed/mem.c           | 18 ++++++++++++
- arch/x86/boot/compressed/misc.c          |  6 ++++
- arch/x86/boot/compressed/misc.h          |  6 ++++
- arch/x86/include/asm/unaccepted_memory.h |  2 ++
- 7 files changed, 57 insertions(+), 13 deletions(-)
+ drivers/base/node.c    |   7 ++
+ fs/proc/meminfo.c      |   5 ++
+ include/linux/mmzone.h |   8 ++
+ mm/internal.h          |  13 ++++
+ mm/memblock.c          |   9 +++
+ mm/mm_init.c           |   7 ++
+ mm/page_alloc.c        | 173 +++++++++++++++++++++++++++++++++++++++++
+ mm/vmstat.c            |   3 +
+ 8 files changed, 225 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index f62c02348f9a..74f7adee46ad 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -107,7 +107,7 @@ endif
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index b46db17124f3..655975946ef6 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -448,6 +448,9 @@ static ssize_t node_read_meminfo(struct device *dev,
+ 			     "Node %d ShmemPmdMapped: %8lu kB\n"
+ 			     "Node %d FileHugePages: %8lu kB\n"
+ 			     "Node %d FilePmdMapped: %8lu kB\n"
++#endif
++#ifdef CONFIG_UNACCEPTED_MEMORY
++			     "Node %d Unaccepted:     %8lu kB\n"
+ #endif
+ 			     ,
+ 			     nid, K(node_page_state(pgdat, NR_FILE_DIRTY)),
+@@ -477,6 +480,10 @@ static ssize_t node_read_meminfo(struct device *dev,
+ 			     nid, K(node_page_state(pgdat, NR_SHMEM_PMDMAPPED)),
+ 			     nid, K(node_page_state(pgdat, NR_FILE_THPS)),
+ 			     nid, K(node_page_state(pgdat, NR_FILE_PMDMAPPED))
++#endif
++#ifdef CONFIG_UNACCEPTED_MEMORY
++			     ,
++			     nid, K(sum_zone_node_page_state(nid, NR_UNACCEPTED))
+ #endif
+ 			    );
+ 	len += hugetlb_report_node_meminfo(buf, len, nid);
+diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
+index b43d0bd42762..8dca4d6d96c7 100644
+--- a/fs/proc/meminfo.c
++++ b/fs/proc/meminfo.c
+@@ -168,6 +168,11 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+ 		    global_zone_page_state(NR_FREE_CMA_PAGES));
+ #endif
  
- vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
- vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
--vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/mem.o
-+vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
- 
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
- vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
-diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
-index 7db2f41b54cd..cf475243b6d5 100644
---- a/arch/x86/boot/compressed/efi.h
-+++ b/arch/x86/boot/compressed/efi.h
-@@ -32,6 +32,7 @@ typedef	struct {
- } efi_table_hdr_t;
- 
- #define EFI_CONVENTIONAL_MEMORY		 7
-+#define EFI_UNACCEPTED_MEMORY		15
- 
- #define EFI_MEMORY_MORE_RELIABLE \
- 				((u64)0x0000000000010000ULL)	/* higher reliability */
-diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 454757fbdfe5..749f0fe7e446 100644
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -672,6 +672,28 @@ static bool process_mem_region(struct mem_vector *region,
- }
- 
- #ifdef CONFIG_EFI
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	show_val_kb(m, "Unaccepted:     ",
++		    global_zone_page_state(NR_UNACCEPTED));
++#endif
 +
-+/*
-+ * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if supported) are
-+ * guaranteed to be free.
-+ *
-+ * It is more conservative in picking free memory than the EFI spec allows:
-+ *
-+ * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also free memory
-+ * and thus available to place the kernel image into, but in practice there's
-+ * firmware where using that memory leads to crashes.
-+ */
-+static inline bool memory_type_is_free(efi_memory_desc_t *md)
+ 	hugetlb_report_meminfo(m);
+ 
+ 	arch_report_meminfo(m);
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index a4889c9d4055..6c1c2fc13017 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -143,6 +143,9 @@ enum zone_stat_item {
+ 	NR_ZSPAGES,		/* allocated in zsmalloc */
+ #endif
+ 	NR_FREE_CMA_PAGES,
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	NR_UNACCEPTED,
++#endif
+ 	NR_VM_ZONE_STAT_ITEMS };
+ 
+ enum node_stat_item {
+@@ -910,6 +913,11 @@ struct zone {
+ 	/* free areas of different sizes */
+ 	struct free_area	free_area[MAX_ORDER + 1];
+ 
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	/* Pages to be accepted. All pages on the list are MAX_ORDER */
++	struct list_head	unaccepted_pages;
++#endif
++
+ 	/* zone flags, see below */
+ 	unsigned long		flags;
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index 68410c6d97ac..ed042e366d49 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1099,4 +1099,17 @@ struct vma_prepare {
+ 	struct vm_area_struct *remove;
+ 	struct vm_area_struct *remove2;
+ };
++
++#ifndef CONFIG_UNACCEPTED_MEMORY
++static inline bool range_contains_unaccepted_memory(phys_addr_t start,
++						    phys_addr_t end)
 +{
-+	if (md->type == EFI_CONVENTIONAL_MEMORY)
-+		return true;
-+
-+	if (md->type == EFI_UNACCEPTED_MEMORY)
-+		return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY);
-+
 +	return false;
 +}
 +
- /*
-  * Returns true if we processed the EFI memmap, which we prefer over the E820
-  * table if it is available.
-@@ -716,18 +738,7 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
- 	for (i = 0; i < nr_desc; i++) {
- 		md = efi_early_memdesc_ptr(pmap, e->efi_memdesc_size, i);
- 
--		/*
--		 * Here we are more conservative in picking free memory than
--		 * the EFI spec allows:
--		 *
--		 * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also
--		 * free memory and thus available to place the kernel image into,
--		 * but in practice there's firmware where using that memory leads
--		 * to crashes.
--		 *
--		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
--		 */
--		if (md->type != EFI_CONVENTIONAL_MEMORY)
-+		if (!memory_type_is_free(md))
- 			continue;
- 
- 		if (efi_soft_reserve_enabled() &&
-diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index 6b15a0ed8b54..de858a5180b6 100644
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -3,12 +3,15 @@
- #include "../cpuflags.h"
- #include "bitmap.h"
- #include "error.h"
-+#include "find.h"
- #include "math.h"
- 
- #define PMD_SHIFT	21
- #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
- #define PMD_MASK	(~(PMD_SIZE - 1))
- 
-+extern struct boot_params *boot_params;
-+
- static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
- {
- 	/* Platform-specific memory-acceptance call goes here */
-@@ -71,3 +74,18 @@ void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
- 	bitmap_set((unsigned long *)params->unaccepted_memory,
- 		   start / PMD_SIZE, (end - start) / PMD_SIZE);
- }
-+
-+void accept_memory(phys_addr_t start, phys_addr_t end)
++static inline void accept_memory(phys_addr_t start, phys_addr_t end)
 +{
-+	unsigned long range_start, range_end;
-+	unsigned long *bitmap, bitmap_size;
-+
-+	bitmap = (unsigned long *)boot_params->unaccepted_memory;
-+	range_start = start / PMD_SIZE;
-+	bitmap_size = DIV_ROUND_UP(end, PMD_SIZE);
-+
-+	for_each_set_bitrange_from(range_start, range_end, bitmap, bitmap_size) {
-+		__accept_memory(range_start * PMD_SIZE, range_end * PMD_SIZE);
-+		bitmap_clear(bitmap, range_start, range_end - range_start);
-+	}
 +}
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 014ff222bf4b..186bfd53e042 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -455,6 +455,12 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- #endif
- 
- 	debug_putstr("\nDecompressing Linux... ");
-+
-+	if (boot_params->unaccepted_memory) {
-+		debug_putstr("Accepting memory... ");
-+		accept_memory(__pa(output), __pa(output) + needed_size);
-+	}
-+
- 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
- 			NULL, error);
- 	entry_offset = parse_elf(output);
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 2f155a0e3041..9663d1839f54 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -247,4 +247,10 @@ static inline unsigned long efi_find_vendor_table(struct boot_params *bp,
- }
- #endif /* CONFIG_EFI */
- 
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+void accept_memory(phys_addr_t start, phys_addr_t end);
-+#else
-+static inline void accept_memory(phys_addr_t start, phys_addr_t end) {}
 +#endif
 +
- #endif /* BOOT_COMPRESSED_MISC_H */
-diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
-index df0736d32858..41fbfc798100 100644
---- a/arch/x86/include/asm/unaccepted_memory.h
-+++ b/arch/x86/include/asm/unaccepted_memory.h
-@@ -7,4 +7,6 @@ struct boot_params;
+ #endif	/* __MM_INTERNAL_H */
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 3feafea06ab2..50b921119600 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1436,6 +1436,15 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
+ 		 */
+ 		kmemleak_alloc_phys(found, size, 0);
  
- void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
- 
-+void accept_memory(phys_addr_t start, phys_addr_t end);
++	/*
++	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
++	 * require memory to be accepted before it can be used by the
++	 * guest.
++	 *
++	 * Accept the memory of the allocated buffer.
++	 */
++	accept_memory(found, found + size);
 +
+ 	return found;
+ }
+ 
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 7f7f9c677854..1cfc08e25f93 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1375,6 +1375,10 @@ static void __meminit zone_init_free_lists(struct zone *zone)
+ 		INIT_LIST_HEAD(&zone->free_area[order].free_list[t]);
+ 		zone->free_area[order].nr_free = 0;
+ 	}
++
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	INIT_LIST_HEAD(&zone->unaccepted_pages);
++#endif
+ }
+ 
+ void __meminit init_currently_empty_zone(struct zone *zone,
+@@ -1960,6 +1964,9 @@ static void __init deferred_free_range(unsigned long pfn,
+ 		return;
+ 	}
+ 
++	/* Accept chunks smaller than MAX_ORDER upfront */
++	accept_memory(PFN_PHYS(pfn), PFN_PHYS(pfn + nr_pages));
++
+ 	for (i = 0; i < nr_pages; i++, page++, pfn++) {
+ 		if (pageblock_aligned(pfn))
+ 			set_pageblock_migratetype(page, MIGRATE_MOVABLE);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 47421bedc12b..d239fba3f31c 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -387,6 +387,12 @@ EXPORT_SYMBOL(nr_node_ids);
+ EXPORT_SYMBOL(nr_online_nodes);
  #endif
+ 
++static bool page_contains_unaccepted(struct page *page, unsigned int order);
++static void accept_page(struct page *page, unsigned int order);
++static bool try_to_accept_memory(struct zone *zone, unsigned int order);
++static inline bool has_unaccepted_memory(void);
++static bool __free_unaccepted(struct page *page);
++
+ int page_group_by_mobility_disabled __read_mostly;
+ 
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+@@ -1481,6 +1487,13 @@ void __free_pages_core(struct page *page, unsigned int order)
+ 
+ 	atomic_long_add(nr_pages, &page_zone(page)->managed_pages);
+ 
++	if (page_contains_unaccepted(page, order)) {
++		if (order == MAX_ORDER && __free_unaccepted(page))
++			return;
++
++		accept_page(page, order);
++	}
++
+ 	/*
+ 	 * Bypass PCP and place fresh pages right to the tail, primarily
+ 	 * relevant for memory onlining.
+@@ -3159,6 +3172,9 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
+ 	if (!(alloc_flags & ALLOC_CMA))
+ 		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
+ #endif
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	unusable_free += zone_page_state(z, NR_UNACCEPTED);
++#endif
+ 
+ 	return unusable_free;
+ }
+@@ -3458,6 +3474,11 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 				       gfp_mask)) {
+ 			int ret;
+ 
++			if (has_unaccepted_memory()) {
++				if (try_to_accept_memory(zone, order))
++					goto try_this_zone;
++			}
++
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+ 			/*
+ 			 * Watermark failed for this zone, but see if we can
+@@ -3510,6 +3531,11 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 
+ 			return page;
+ 		} else {
++			if (has_unaccepted_memory()) {
++				if (try_to_accept_memory(zone, order))
++					goto try_this_zone;
++			}
++
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+ 			/* Try again if zone has deferred pages */
+ 			if (deferred_pages_enabled()) {
+@@ -7215,3 +7241,150 @@ bool has_managed_dma(void)
+ 	return false;
+ }
+ #endif /* CONFIG_ZONE_DMA */
++
++#ifdef CONFIG_UNACCEPTED_MEMORY
++
++/* Counts number of zones with unaccepted pages. */
++static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
++
++static bool lazy_accept = true;
++
++static int __init accept_memory_parse(char *p)
++{
++	if (!strcmp(p, "lazy")) {
++		lazy_accept = true;
++		return 0;
++	} else if (!strcmp(p, "eager")) {
++		lazy_accept = false;
++		return 0;
++	} else {
++		return -EINVAL;
++	}
++}
++early_param("accept_memory", accept_memory_parse);
++
++static bool page_contains_unaccepted(struct page *page, unsigned int order)
++{
++	phys_addr_t start = page_to_phys(page);
++	phys_addr_t end = start + (PAGE_SIZE << order);
++
++	return range_contains_unaccepted_memory(start, end);
++}
++
++static void accept_page(struct page *page, unsigned int order)
++{
++	phys_addr_t start = page_to_phys(page);
++
++	accept_memory(start, start + (PAGE_SIZE << order));
++}
++
++static bool try_to_accept_memory_one(struct zone *zone)
++{
++	unsigned long flags;
++	struct page *page;
++	bool last;
++
++	if (list_empty(&zone->unaccepted_pages))
++		return false;
++
++	spin_lock_irqsave(&zone->lock, flags);
++	page = list_first_entry_or_null(&zone->unaccepted_pages,
++					struct page, lru);
++	if (!page) {
++		spin_unlock_irqrestore(&zone->lock, flags);
++		return false;
++	}
++
++	list_del(&page->lru);
++	last = list_empty(&zone->unaccepted_pages);
++
++	__mod_zone_freepage_state(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
++	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
++	spin_unlock_irqrestore(&zone->lock, flags);
++
++	accept_page(page, MAX_ORDER);
++
++	__free_pages_ok(page, MAX_ORDER, FPI_TO_TAIL);
++
++	if (last)
++		static_branch_dec(&zones_with_unaccepted_pages);
++
++	return true;
++}
++
++static bool try_to_accept_memory(struct zone *zone, unsigned int order)
++{
++	long to_accept;
++	int ret = false;
++
++	/* How much to accept to get to high watermark? */
++	to_accept = high_wmark_pages(zone) -
++		    (zone_page_state(zone, NR_FREE_PAGES) -
++		    __zone_watermark_unusable_free(zone, order, 0));
++
++	/* Accept at least one page */
++	do {
++		if (!try_to_accept_memory_one(zone))
++			break;
++		ret = true;
++		to_accept -= MAX_ORDER_NR_PAGES;
++	} while (to_accept > 0);
++
++	return ret;
++}
++
++static inline bool has_unaccepted_memory(void)
++{
++	return static_branch_unlikely(&zones_with_unaccepted_pages);
++}
++
++static bool __free_unaccepted(struct page *page)
++{
++	struct zone *zone = page_zone(page);
++	unsigned long flags;
++	bool first = false;
++
++	if (!lazy_accept)
++		return false;
++
++	spin_lock_irqsave(&zone->lock, flags);
++	first = list_empty(&zone->unaccepted_pages);
++	list_add_tail(&page->lru, &zone->unaccepted_pages);
++	__mod_zone_freepage_state(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
++	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
++	spin_unlock_irqrestore(&zone->lock, flags);
++
++	if (first)
++		static_branch_inc(&zones_with_unaccepted_pages);
++
++	return true;
++}
++
++#else
++
++static bool page_contains_unaccepted(struct page *page, unsigned int order)
++{
++	return false;
++}
++
++static void accept_page(struct page *page, unsigned int order)
++{
++}
++
++static bool try_to_accept_memory(struct zone *zone, unsigned int order)
++{
++	return false;
++}
++
++static inline bool has_unaccepted_memory(void)
++{
++	return false;
++}
++
++static bool __free_unaccepted(struct page *page)
++{
++	BUILD_BUG();
++	return false;
++}
++
++#endif /* CONFIG_UNACCEPTED_MEMORY */
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index c28046371b45..282349cabf01 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1180,6 +1180,9 @@ const char * const vmstat_text[] = {
+ 	"nr_zspages",
+ #endif
+ 	"nr_free_cma",
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	"nr_unaccepted",
++#endif
+ 
+ 	/* enum numa_stat_item counters */
+ #ifdef CONFIG_NUMA
 -- 
 2.39.3
 
