@@ -1,34 +1,34 @@
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F32411C9E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27F311C9D
 	for <linux-coco@lists.linux.dev>; Sun,  7 May 2023 23:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1683503206; x=1715039206;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9TDbO3a4jRT5J+8rG9pcod0nyB+3DpMcKz9PP7HQwro=;
-  b=Ua1LAgfGANEz3VoSbhneibI410Zd7/Ii8XBOBZ0j1nTL3I8qZWs7aVCw
-   NqS4E0sMpRXLopNEfd9/gst366q2jJmSvZNRHJ/mGLYejK2T1Odr/SnBV
-   qaYz93Ayb09MJ8WI7VK2MZlW2X9vYd6tnDcQWL27iLahdUBfm6+z6rgnp
-   Asm7qDiSp5WqknePyh7wQYeYyZa9f4y2/vmEBf8Q2MmJ73E8kVVUsGTzv
-   s0odiemL/oTl0qKAeL/lkSbrb8FCNYihR4jnt4y1K15SQfc7XzJ3GAS2v
-   TBfzhzjgKPyZ25f3OuGfz4ijGhtPuCE2VaMLgDqN8D1uaOE5ptiuPI/CS
+  bh=aZopMiOqySx7JndnTrSUPweowgUAMNn3NhckmECikp4=;
+  b=eDPqfZHgjgy2W0exNZ0dHIzfEPGQkS++WAch84vu6yoCZ/jCG0tUaBZu
+   hDFVvDXXWSYyhNFxRdjH6CXfcsvci6aAWHneGp/hpJ0KU7gHdH6BjigpX
+   F8Agzda7SfVbSMDdeDizXHIbOAn7NDl4YjZhrOdEavEkKs9rNtrSkDyd9
+   CYN8pq0+WHf/eExvpMoc51JALVrnJyOu8zLDinD3+aSf00xzWUiKkuW46
+   0A1Y9g1LwKTl9YZrOAcfdZQLaj3QQWOurB9N7Ge5eFI1LKmBF17aiSAO1
+   vVLTqPPx9Q5Vz/DGnS/C6AFQJAnGz+B73kCbOAoATPb46iwwXci30aOje
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="349550303"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="349550320"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="349550303"
+   d="scan'208";a="349550320"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:39 -0700
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:40 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="701222812"
+X-IronPort-AV: E=McAfee;i="6600,9927,10703"; a="701222816"
 X-IronPort-AV: E=Sophos;i="5.99,258,1677571200"; 
-   d="scan'208";a="701222812"
+   d="scan'208";a="701222816"
 Received: from dancaspi-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.61.73])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:32 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2023 16:46:33 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 5EDD010D349; Mon,  8 May 2023 02:46:20 +0300 (+03)
+	id 833ED10D48E; Mon,  8 May 2023 02:46:20 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -61,11 +61,10 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCHv10 08/11] x86/mm: Avoid load_unaligned_zeropad() stepping into unaccepted memory
-Date: Mon,  8 May 2023 02:46:15 +0300
-Message-Id: <20230507234618.18067-9-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv10 11/11] x86/tdx: Add unaccepted memory support
+Date: Mon,  8 May 2023 02:46:18 +0300
+Message-Id: <20230507234618.18067-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
 References: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
@@ -77,113 +76,505 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
-The unwanted loads are typically harmless. But, they might be made to
-totally unrelated or even unmapped memory. load_unaligned_zeropad()
-relies on exception fixup (#PF, #GP and now #VE) to recover from these
-unwanted loads.
+Hookup TDX-specific code to accept memory.
 
-But, this approach does not work for unaccepted memory. For TDX, a load
-from unaccepted memory will not lead to a recoverable exception within
-the guest. The guest will exit to the VMM where the only recourse is to
-terminate the guest.
+Accepting the memory is the same process as converting memory from
+shared to private: kernel notifies VMM with MAP_GPA hypercall and then
+accept pages with ACCEPT_PAGE module call.
 
-There are two parts to fix this issue and comprehensively avoid access
-to unaccepted memory. Together these ensure that an extra "guard" page
-is accepted in addition to the memory that needs to be used.
+The implementation in core kernel uses tdx_enc_status_changed(). It
+already used for converting memory to shared and back for I/O
+transactions.
 
-1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-   checks up to end+2M if 'end' is aligned on a 2M boundary. It may
-   require checking 2M chunk beyond end of RAM. The bitmap allocation is
-   modified to accommodate this.
-2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
-   aligned on a 2M boundary.
-
-Side note: This leads to something strange. Pages which were accepted
-	   at boot, marked by the firmware as accepted and will never
-	   _need_ to be accepted might be on unaccepted_pages list
-	   This is a cue to ensure that the next page is accepted
-	   before 'page' can be used.
-
-This is an actual, real-world problem which was discovered during TDX
-testing.
+Boot stub provides own implementation of tdx_accept_memory(). It is
+similar in structure to tdx_enc_status_changed(), but only cares about
+converting memory to private.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 ---
- arch/x86/mm/unaccepted_memory.c         | 33 +++++++++++++++++++++++++
- drivers/firmware/efi/libstub/x86-stub.c |  7 ++++++
- 2 files changed, 40 insertions(+)
+ arch/x86/Kconfig                      |  2 +
+ arch/x86/boot/compressed/Makefile     |  2 +-
+ arch/x86/boot/compressed/error.c      | 19 ++++++
+ arch/x86/boot/compressed/error.h      |  1 +
+ arch/x86/boot/compressed/mem.c        | 33 +++++++++-
+ arch/x86/boot/compressed/tdx-shared.c |  2 +
+ arch/x86/boot/compressed/tdx.c        | 39 +++++++++++
+ arch/x86/coco/tdx/Makefile            |  2 +-
+ arch/x86/coco/tdx/tdx-shared.c        | 95 +++++++++++++++++++++++++++
+ arch/x86/coco/tdx/tdx.c               | 86 +-----------------------
+ arch/x86/include/asm/shared/tdx.h     |  2 +
+ arch/x86/include/asm/tdx.h            |  2 +
+ arch/x86/mm/unaccepted_memory.c       |  9 ++-
+ 13 files changed, 206 insertions(+), 88 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/tdx-shared.c
+ create mode 100644 arch/x86/coco/tdx/tdx-shared.c
 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 53bab123a8ee..5c72067c06d4 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -884,9 +884,11 @@ config INTEL_TDX_GUEST
+ 	bool "Intel TDX (Trust Domain Extensions) - Guest Support"
+ 	depends on X86_64 && CPU_SUP_INTEL
+ 	depends on X86_X2APIC
++	depends on EFI_STUB
+ 	select ARCH_HAS_CC_PLATFORM
+ 	select X86_MEM_ENCRYPT
+ 	select X86_MCE
++	select UNACCEPTED_MEMORY
+ 	help
+ 	  Support running as a guest under Intel TDX.  Without this support,
+ 	  the guest kernel can not boot or run under TDX.
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 74f7adee46ad..71d9f71c13eb 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -106,7 +106,7 @@ ifdef CONFIG_X86_64
+ endif
+ 
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+-vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
++vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdx-shared.o $(obj)/tdcall.o
+ vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/bitmap.o $(obj)/find.o $(obj)/mem.o
+ 
+ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+diff --git a/arch/x86/boot/compressed/error.c b/arch/x86/boot/compressed/error.c
+index c881878e56d3..5313c5cb2b80 100644
+--- a/arch/x86/boot/compressed/error.c
++++ b/arch/x86/boot/compressed/error.c
+@@ -22,3 +22,22 @@ void error(char *m)
+ 	while (1)
+ 		asm("hlt");
+ }
++
++/* EFI libstub  provides vsnprintf() */
++#ifdef CONFIG_EFI_STUB
++void panic(const char *fmt, ...)
++{
++	static char buf[1024];
++	va_list args;
++	int len;
++
++	va_start(args, fmt);
++	len = vsnprintf(buf, sizeof(buf), fmt, args);
++	va_end(args);
++
++	if (len && buf[len - 1] == '\n')
++		buf[len - 1] = '\0';
++
++	error(buf);
++}
++#endif
+diff --git a/arch/x86/boot/compressed/error.h b/arch/x86/boot/compressed/error.h
+index 1de5821184f1..86fe33b93715 100644
+--- a/arch/x86/boot/compressed/error.h
++++ b/arch/x86/boot/compressed/error.h
+@@ -6,5 +6,6 @@
+ 
+ void warn(char *m);
+ void error(char *m) __noreturn;
++void panic(const char *fmt, ...) __noreturn __cold;
+ 
+ #endif /* BOOT_COMPRESSED_ERROR_H */
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index de858a5180b6..e6b92e822ddd 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -5,6 +5,8 @@
+ #include "error.h"
+ #include "find.h"
+ #include "math.h"
++#include "tdx.h"
++#include <asm/shared/tdx.h>
+ 
+ #define PMD_SHIFT	21
+ #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
+@@ -12,10 +14,39 @@
+ 
+ extern struct boot_params *boot_params;
+ 
++/*
++ * accept_memory() and process_unaccepted_memory() called from EFI stub which
++ * runs before decompresser and its early_tdx_detect().
++ *
++ * Enumerate TDX directly from the early users.
++ */
++static bool early_is_tdx_guest(void)
++{
++	static bool once;
++	static bool is_tdx;
++
++	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
++		return false;
++
++	if (!once) {
++		u32 eax, sig[3];
++
++		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
++			    &sig[0], &sig[2],  &sig[1]);
++		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
++		once = true;
++	}
++
++	return is_tdx;
++}
++
+ static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
+ {
+ 	/* Platform-specific memory-acceptance call goes here */
+-	error("Cannot accept memory");
++	if (early_is_tdx_guest())
++		tdx_accept_memory(start, end);
++	else
++		error("Cannot accept memory: unknown platform\n");
+ }
+ 
+ /*
+diff --git a/arch/x86/boot/compressed/tdx-shared.c b/arch/x86/boot/compressed/tdx-shared.c
+new file mode 100644
+index 000000000000..5ac43762fe13
+--- /dev/null
++++ b/arch/x86/boot/compressed/tdx-shared.c
+@@ -0,0 +1,2 @@
++#include "error.h"
++#include "../../coco/tdx/tdx-shared.c"
+diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+index 2d81d3cc72a1..5cc4053f9df5 100644
+--- a/arch/x86/boot/compressed/tdx.c
++++ b/arch/x86/boot/compressed/tdx.c
+@@ -3,12 +3,17 @@
+ #include "../cpuflags.h"
+ #include "../string.h"
+ #include "../io.h"
++#include "align.h"
+ #include "error.h"
++#include "pgtable_types.h"
+ 
+ #include <vdso/limits.h>
+ #include <uapi/asm/vmx.h>
+ 
+ #include <asm/shared/tdx.h>
++#include <asm/page_types.h>
++
++static u64 cc_mask;
+ 
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void)
+@@ -16,6 +21,38 @@ void __tdx_hypercall_failed(void)
+ 	error("TDVMCALL failed. TDX module bug?");
+ }
+ 
++static u64 get_cc_mask(void)
++{
++	struct tdx_module_output out;
++	unsigned int gpa_width;
++
++	/*
++	 * TDINFO TDX module call is used to get the TD execution environment
++	 * information like GPA width, number of available vcpus, debug mode
++	 * information, etc. More details about the ABI can be found in TDX
++	 * Guest-Host-Communication Interface (GHCI), section 2.4.2 TDCALL
++	 * [TDG.VP.INFO].
++	 *
++	 * The GPA width that comes out of this call is critical. TDX guests
++	 * can not meaningfully run without it.
++	 */
++	if (__tdx_module_call(TDX_GET_INFO, 0, 0, 0, 0, &out))
++		error("TDCALL GET_INFO failed (Buggy TDX module!)\n");
++
++	gpa_width = out.rcx & GENMASK(5, 0);
++
++	/*
++	 * The highest bit of a guest physical address is the "sharing" bit.
++	 * Set it for shared pages and clear it for private pages.
++	 */
++	return BIT_ULL(gpa_width - 1);
++}
++
++u64 cc_mkdec(u64 val)
++{
++	return val & ~cc_mask;
++}
++
+ static inline unsigned int tdx_io_in(int size, u16 port)
+ {
+ 	struct tdx_hypercall_args args = {
+@@ -70,6 +107,8 @@ void early_tdx_detect(void)
+ 	if (memcmp(TDX_IDENT, sig, sizeof(sig)))
+ 		return;
+ 
++	cc_mask = get_cc_mask();
++
+ 	/* Use hypercalls instead of I/O instructions */
+ 	pio_ops.f_inb  = tdx_inb;
+ 	pio_ops.f_outb = tdx_outb;
+diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
+index 46c55998557d..2c7dcbf1458b 100644
+--- a/arch/x86/coco/tdx/Makefile
++++ b/arch/x86/coco/tdx/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-obj-y += tdx.o tdcall.o
++obj-y += tdx.o tdx-shared.o tdcall.o
+diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
+new file mode 100644
+index 000000000000..ee74f7bbe806
+--- /dev/null
++++ b/arch/x86/coco/tdx/tdx-shared.c
+@@ -0,0 +1,95 @@
++#include <asm/tdx.h>
++#include <asm/pgtable.h>
++
++static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
++				    enum pg_level pg_level)
++{
++	unsigned long accept_size = page_level_size(pg_level);
++	u64 tdcall_rcx;
++	u8 page_size;
++
++	if (!IS_ALIGNED(start, accept_size))
++		return 0;
++
++	if (len < accept_size)
++		return 0;
++
++	/*
++	 * Pass the page physical address to the TDX module to accept the
++	 * pending, private page.
++	 *
++	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
++	 */
++	switch (pg_level) {
++	case PG_LEVEL_4K:
++		page_size = 0;
++		break;
++	case PG_LEVEL_2M:
++		page_size = 1;
++		break;
++	case PG_LEVEL_1G:
++		page_size = 2;
++		break;
++	default:
++		return 0;
++	}
++
++	tdcall_rcx = start | page_size;
++	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
++		return 0;
++
++	return accept_size;
++}
++
++bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc)
++{
++	if (!enc) {
++		/* Set the shared (decrypted) bits: */
++		start |= cc_mkdec(0);
++		end   |= cc_mkdec(0);
++	}
++
++	/*
++	 * Notify the VMM about page mapping conversion. More info about ABI
++	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
++	 * section "TDG.VP.VMCALL<MapGPA>"
++	 */
++	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
++		return false;
++
++	/* private->shared conversion  requires only MapGPA call */
++	if (!enc)
++		return true;
++
++	/*
++	 * For shared->private conversion, accept the page using
++	 * TDX_ACCEPT_PAGE TDX module call.
++	 */
++	while (start < end) {
++		unsigned long len = end - start;
++		unsigned long accept_size;
++
++		/*
++		 * Try larger accepts first. It gives chance to VMM to keep
++		 * 1G/2M Secure EPT entries where possible and speeds up
++		 * process by cutting number of hypercalls (if successful).
++		 */
++
++		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
++		if (!accept_size)
++			return false;
++		start += accept_size;
++	}
++
++	return true;
++}
++
++void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	if (!tdx_enc_status_changed_phys(start, end, true))
++		panic("Accepting memory failed: %#llx-%#llx\n",  start, end);
++}
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 0d5fe6e24e45..32501277ef84 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -713,46 +713,6 @@ static bool tdx_cache_flush_required(void)
+ 	return true;
+ }
+ 
+-static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+-				    enum pg_level pg_level)
+-{
+-	unsigned long accept_size = page_level_size(pg_level);
+-	u64 tdcall_rcx;
+-	u8 page_size;
+-
+-	if (!IS_ALIGNED(start, accept_size))
+-		return 0;
+-
+-	if (len < accept_size)
+-		return 0;
+-
+-	/*
+-	 * Pass the page physical address to the TDX module to accept the
+-	 * pending, private page.
+-	 *
+-	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
+-	 */
+-	switch (pg_level) {
+-	case PG_LEVEL_4K:
+-		page_size = 0;
+-		break;
+-	case PG_LEVEL_2M:
+-		page_size = 1;
+-		break;
+-	case PG_LEVEL_1G:
+-		page_size = 2;
+-		break;
+-	default:
+-		return 0;
+-	}
+-
+-	tdcall_rcx = start | page_size;
+-	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
+-		return 0;
+-
+-	return accept_size;
+-}
+-
+ /*
+  * Inform the VMM of the guest's intent for this physical page: shared with
+  * the VMM or private to the guest.  The VMM is expected to change its mapping
+@@ -761,51 +721,9 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ {
+ 	phys_addr_t start = __pa(vaddr);
+-	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
++	phys_addr_t end = __pa(vaddr + numpages * PAGE_SIZE);
+ 
+-	if (!enc) {
+-		/* Set the shared (decrypted) bits: */
+-		start |= cc_mkdec(0);
+-		end   |= cc_mkdec(0);
+-	}
+-
+-	/*
+-	 * Notify the VMM about page mapping conversion. More info about ABI
+-	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
+-	 * section "TDG.VP.VMCALL<MapGPA>"
+-	 */
+-	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
+-		return false;
+-
+-	/* private->shared conversion  requires only MapGPA call */
+-	if (!enc)
+-		return true;
+-
+-	/*
+-	 * For shared->private conversion, accept the page using
+-	 * TDX_ACCEPT_PAGE TDX module call.
+-	 */
+-	while (start < end) {
+-		unsigned long len = end - start;
+-		unsigned long accept_size;
+-
+-		/*
+-		 * Try larger accepts first. It gives chance to VMM to keep
+-		 * 1G/2M Secure EPT entries where possible and speeds up
+-		 * process by cutting number of hypercalls (if successful).
+-		 */
+-
+-		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
+-		if (!accept_size)
+-			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
+-		if (!accept_size)
+-			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
+-		if (!accept_size)
+-			return false;
+-		start += accept_size;
+-	}
+-
+-	return true;
++	return tdx_enc_status_changed_phys(start, end, enc);
+ }
+ 
+ void __init tdx_early_init(void)
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 1ff0ee822961..95fbe7376694 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -91,5 +91,7 @@ struct tdx_module_output {
+ u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
+ 		      struct tdx_module_output *out);
+ 
++void tdx_accept_memory(phys_addr_t start, phys_addr_t end);
++
+ #endif /* !__ASSEMBLY__ */
+ #endif /* _ASM_X86_SHARED_TDX_H */
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 234197ec17e4..3a7340ad9a4b 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -50,6 +50,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
+ 
+ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
+ 
++bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc);
++
+ #else
+ 
+ static inline void tdx_early_init(void) { };
 diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
-index 1df918b21469..2f38059e5b08 100644
+index 2f38059e5b08..f61174d4c3cb 100644
 --- a/arch/x86/mm/unaccepted_memory.c
 +++ b/arch/x86/mm/unaccepted_memory.c
-@@ -23,6 +23,32 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
- 	bitmap = __va(boot_params.unaccepted_memory);
- 	range_start = start / PMD_SIZE;
+@@ -6,6 +6,7 @@
  
-+	/*
-+	 * load_unaligned_zeropad() can lead to unwanted loads across page
-+	 * boundaries. The unwanted loads are typically harmless. But, they
-+	 * might be made to totally unrelated or even unmapped memory.
-+	 * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
-+	 * #VE) to recover from these unwanted loads.
-+	 *
-+	 * But, this approach does not work for unaccepted memory. For TDX, a
-+	 * load from unaccepted memory will not lead to a recoverable exception
-+	 * within the guest. The guest will exit to the VMM where the only
-+	 * recourse is to terminate the guest.
-+	 *
-+	 * There are two parts to fix this issue and comprehensively avoid
-+	 * access to unaccepted memory. Together these ensure that an extra
-+	 * "guard" page is accepted in addition to the memory that needs to be
-+	 * used:
-+	 *
-+	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-+	 *    checks up to end+2M if 'end' is aligned on a 2M boundary.
-+	 *
-+	 * 2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
-+	 *    aligned on a 2M boundary. (immediately following this comment)
-+	 */
-+	if (!(end % PMD_SIZE))
-+		end += PMD_SIZE;
+ #include <asm/io.h>
+ #include <asm/setup.h>
++#include <asm/shared/tdx.h>
+ #include <asm/unaccepted_memory.h>
+ 
+ /* Protects unaccepted memory bitmap */
+@@ -55,7 +56,13 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 		unsigned long len = range_end - range_start;
+ 
+ 		/* Platform-specific memory-acceptance call goes here */
+-		panic("Cannot accept memory: unknown platform\n");
++		if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
++			tdx_accept_memory(range_start * PMD_SIZE,
++					  range_end * PMD_SIZE);
++		} else {
++			panic("Cannot accept memory: unknown platform\n");
++		}
 +
- 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
- 	for_each_set_bitrange_from(range_start, range_end, bitmap,
- 				   DIV_ROUND_UP(end, PMD_SIZE)) {
-@@ -46,6 +72,13 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
- 
- 	bitmap = __va(boot_params.unaccepted_memory);
- 
-+	/*
-+	 * Also consider the unaccepted state of the *next* page. See fix #1 in
-+	 * the comment on load_unaligned_zeropad() in accept_memory().
-+	 */
-+	if (!(end % PMD_SIZE))
-+		end += PMD_SIZE;
-+
- 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
- 	while (start < end) {
- 		if (test_bit(start / PMD_SIZE, bitmap)) {
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 1643ddbde249..1afe7b5b02e1 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -715,6 +715,13 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
- 		return EFI_SUCCESS;
+ 		bitmap_clear(bitmap, range_start, len);
  	}
- 
-+	/*
-+	 * range_contains_unaccepted_memory() may need to check one 2M chunk
-+	 * beyond the end of RAM to deal with load_unaligned_zeropad(). Make
-+	 * sure that the bitmap is large enough handle it.
-+	 */
-+	max_addr += PMD_SIZE;
-+
- 	/*
- 	 * If unaccepted memory is present, allocate a bitmap to track what
- 	 * memory has to be accepted before access.
+ 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
 -- 
 2.39.3
 
