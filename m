@@ -1,213 +1,126 @@
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC635CB0
-	for <linux-coco@lists.linux.dev>; Mon,  8 May 2023 05:17:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1683523035; x=1715059035;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=TvvF54I6iD7dqdO+EM4OLrrltMTOldVpdvIWUnSbbOg=;
-  b=Kxf0/3dTeAQazXneAkXMDZq5DG86vcqRpuWfS/cVeoAdPJRrA/enWS/L
-   45ldla1otnmGyot3eJpCnG2pcbeRyAhkAp6Tlz05sskhtZWyasMsYnm1i
-   Ox8Y4SPoeN8L7aqW1y+kbrAz2Gr2PpDYrDlib2hHdA7XvGd2SMS36LbKD
-   Y=;
-X-IronPort-AV: E=Sophos;i="5.99,258,1677542400"; 
-   d="scan'208";a="336905200"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1d-m6i4x-f05d30a1.us-east-1.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2023 05:17:08 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-	by email-inbound-relay-iad-1d-m6i4x-f05d30a1.us-east-1.amazon.com (Postfix) with ESMTPS id D3A8F81363;
-	Mon,  8 May 2023 05:17:04 +0000 (UTC)
-Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 8 May 2023 05:16:57 +0000
-Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
- (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.26; Mon, 8 May
- 2023 05:16:55 +0000
-Message-ID: <cd8ff6c2-f187-7e01-62d5-1120893db53b@amazon.com>
-Date: Mon, 8 May 2023 07:16:53 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C839C7E
+	for <linux-coco@lists.linux.dev>; Mon,  8 May 2023 07:19:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E1AC43445
+	for <linux-coco@lists.linux.dev>; Mon,  8 May 2023 07:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1683530391;
+	bh=6rOQ5NbJZcxzZSxkaCY+XurJ69PAlQjGw84WzWS8G1Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AVS+L7/pJIeUn0n9W87kFXUcETAPzGxN1m4r3j+rxHh93FZ+1kjOn8qxRwvpgwW4D
+	 kQdYGkurJwrrrIlYczUphQq37LlzvhJp/N5CMEzYZVmiGUkfe7q0l6C0xEH5dUlpl1
+	 kPrXbyapvWYUWgJwTrrcklDJEpiQseQNMtwdBv/tFCepoMTAUIsBZpGAs1/2BF8wQO
+	 ACqilnqVQBBkMBURdaWjbNl7U32u7zfWQlyHqe2MBNzNg79/030jTKztqI9qQz3+jt
+	 TVK8xaCXS/KfhhE2LChb/9+HDLoIrXSJuwkeNIDEa2rR5XEQLkHHFKMVTozoFdzN6C
+	 F0mWb9E/MAZ7Q==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4efe8991b8aso4793220e87.0
+        for <linux-coco@lists.linux.dev>; Mon, 08 May 2023 00:19:51 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzEXPt4W2RwLCtFhLPV5jpMTaElahFFUtmaU3o+1FE+DO4c6tyN
+	OFI+hoX40ntnuYR9cQ3Y54zZgKcShacex4m+FkQ=
+X-Google-Smtp-Source: ACHHUZ6Lr2KTv0yM1wNOHpOdrJL0IajT8cMul1NTtl5PaGquY5kQh44lWRaZjtVgvX94CbeoAVX2DSx6ApFYn5Q9v1Q=
+X-Received: by 2002:ac2:511d:0:b0:4f1:4040:8143 with SMTP id
+ q29-20020ac2511d000000b004f140408143mr2574670lfb.60.1683530389163; Mon, 08
+ May 2023 00:19:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [ANNOUNCEMENT] COCONUT Secure VM Service Module for SEV-SNP
-Content-Language: en-US
-To: <jejb@linux.ibm.com>, Christophe de Dinechin <dinechin@redhat.com>
-CC: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>, Tom Lendacky
-	<thomas.lendacky@amd.com>, Klaus Kiwi <kkiwi@redhat.com>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<amd-sev-snp@lists.suse.com>
-References: <ZBl4592947wC7WKI@suse.de>
- <4420d7e5-d05f-8c31-a0f2-587ebb7eaa20@amd.com> <ZFJTDtMK0QqXK5+E@suse.de>
- <614e66054c58048f2f43104cf1c9dcbc8745f292.camel@linux.ibm.com>
- <m25y95j2gg.fsf@redhat.com>
- <2f1c0527ab42dee7d4eaf562c6a14851bb64c341.camel@linux.ibm.com>
-From: Alexander Graf <graf@amazon.com>
-In-Reply-To: <2f1c0527ab42dee7d4eaf562c6a14851bb64c341.camel@linux.ibm.com>
-X-Originating-IP: [10.253.83.51]
-X-ClientProxiedBy: EX19D044UWB004.ant.amazon.com (10.13.139.134) To
- EX19D020UWC004.ant.amazon.com (10.13.138.149)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+References: <20230507234618.18067-1-kirill.shutemov@linux.intel.com> <20230507234618.18067-3-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20230507234618.18067-3-kirill.shutemov@linux.intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 8 May 2023 09:19:37 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFNXMmAsnQovWq18LrOnNL4=3Puamvz7p1ufynJfVEOug@mail.gmail.com>
+Message-ID: <CAMj1kXFNXMmAsnQovWq18LrOnNL4=3Puamvz7p1ufynJfVEOug@mail.gmail.com>
+Subject: Re: [PATCHv10 02/11] efi/x86: Get full memory map in allocate_e820()
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
+	Sean Christopherson <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Mel Gorman <mgorman@techsingularity.net>, 
+	marcelo.cerri@canonical.com, tim.gardner@canonical.com, 
+	khalid.elmously@canonical.com, philip.cox@canonical.com, aarcange@redhat.com, 
+	peterx@redhat.com, x86@kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Borislav Petkov <bp@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Ck9uIDA2LjA1LjIzIDE0OjQ4LCBKYW1lcyBCb3R0b21sZXkgd3JvdGU6Cj4KPgo+IE9uIEZyaSwg
-MjAyMy0wNS0wNSBhdCAxNDozNSArMDIwMCwgQ2hyaXN0b3BoZSBkZSBEaW5lY2hpbiB3cm90ZToK
-Pj4gT24gMjAyMy0wNS0wNCBhdCAxMzowNCAtMDQsIEphbWVzIEJvdHRvbWxleSA8amVqYkBsaW51
-eC5pYm0uY29tPgo+PiB3cm90ZS4uLgo+Pj4gT24gV2VkLCAyMDIzLTA1LTAzIGF0IDE0OjI2ICsw
-MjAwLCBKw7ZyZyBSw7ZkZWwgd3JvdGU6Cj4gWy4uLl0KPj4+PiBBbmQgaGVyZSBjb21lIHRoZSAn
-QlVUJzogU2luY2UgdGhlIGdvYWwgb2YgaGF2aW5nIG9uZSBwcm9qZWN0IGlzCj4+Pj4gdG8gYnVu
-ZGxlIGNvbW11bml0eSBlZmZvcnRzLCBJIHRoaW5rIHRoYXQgdGhlIGpvaW50IGVmZm9ydHMgYXJl
-Cj4+Pj4gYmV0dGVyIHRhcmdldGVkIGF0IGdldHRpbmcgQ1BMLTMgc3VwcG9ydCB0byBhIHBvaW50
-IHdoZXJlIGl0IGNhbgo+Pj4+IHJ1biBtb2R1bGVzLiBPbiB0aGF0IHNpZGUgc29tZSBpbnB1dCBh
-bmQgaGVscCBpcyBuZWVkZWQsCj4+Pj4gZXNwZWNpYWxseSB0byBkZWZpbmUgdGhlIHN5c2NhbGwg
-aW50ZXJmYWNlIHNvIHRoYXQgaXQgc3VpdHMgdGhlCj4+Pj4gbmVlZHMgb2YgYSBUUE0gaW1wbGVt
-ZW50YXRpb24uCj4+PiBDcnlwdG8gc3VwcG9ydCBpbiByaW5nLTAgaXMgdW5hdm9pZGFibGUgaWYg
-d2Ugd2FudCB0byByZXRhaW4KPj4+IGNvbnRyb2wgb2YgdGhlIFZNUENLMCBrZXkgaW4gcmluZy0w
-LiAgSSBjYW4ndCBzZWUgdXMgZ2l2aW5nIGl0IHRvCj4+PiByaW5nLTMgYmVjYXVzZSB0aGF0IHdv
-dWxkIGdpdmUgdXAgY29udHJvbCBvZiB0aGUgU1ZTTSBpZGVudGl0eSBhbmQKPj4+IGJhc2ljYWxs
-eSBtYWtlIHRoZSByaW5nLTAgc2VwYXJhdGlvbiB1c2VsZXNzIGJlY2F1c2UgeW91IGNhbgo+Pj4g
-Y29tcHJvbWlzZSByaW5nLTMgYW5kIGdldCB0aGUga2V5IGFuZCB0aGVuIGNvbW11bmljYXRlIHdp
-dGggdGhlIFBTUAo+Pj4gYXMgdGhlIFNWU00uCj4+IEknbSBhIGJ1dCBjb25mdXNlZCByZWdhcmRp
-bmcgdGhlIHJvbGVzIHRoYXQgVk1QTCB2cyByaW5ncyBpcyBpbiB0aGUKPj4gc2VjdXJpdHkgbW9k
-ZWwgaGVyZS4KPiBIZWgsIEkgdGhpbmsgdGhhdCBnb2VzIGZvciBldmVyeW9uZSwgd2hpY2ggaXMg
-d2h5IEknbSBmaXNoaW5nIGZvcgo+IGluZm9ybWF0aW9uIGFib3V0IHRoZSBzZWN1cml0eSBtb2Rl
-bC4gIEkgZG9uJ3QgdGhpbmsgaXRzIGVub3VnaCB0bwo+IGJsaW5kbHkgY2xhaW0gcnVubmluZyBh
-dCBjcGwzIGdpdmVzIG1vcmUgc2VjdXJpdHksIHlvdSBoYXZlIHRvIGhhdmUgYQo+IHRocmVhdCBt
-b2RlbCB0aGF0IGRlbW9uc3RyYXRlcyBpdC4KPgo+PiAgIEluIHBhcnRpY3VsYXIsIEkgYXNzdW1l
-IHRoYXQgYW55IGF0dGFjayBvbiByaW5nMyB3b3VsZAo+PiBzdGlsbCBoYXZlIHRvIGNyb3NzIGVp
-dGhlciB0aGUgVk1QTCBib3VuZGFyeSAoaWYgY29taW5nIGZyb20gdGhlCj4+IGd1ZXN0KSBvciB0
-aGUgVEVFIGJvdW5kYXJ5IChpZiBjb21pbmcgZnJvbSB0aGUgaG9zdCkuCj4gSSB0aGluayB0aGUg
-YXR0YWNrIHRoZW9yeSBpcyBtb3JlIGxpa2UgYSBwcml2aWxlZ2UgZXNjYWxhdGlvbjogeW91Cj4g
-aW5kdWNlIHRoZSBTVlNNIHRvIHRha2UgYSBmYXVsdCB0aHJvdWdoIGl0cyBub3JtYWwgQVBJIG1l
-Y2hhbmlzbSBieQo+IGNyYWZ0aW5nIGJhZCBkYXRhICh0aGlzIG1lYW5zIHRoZSBydW50aW1lIGF0
-dGFjayBjYW4gb25seSBjb21lIGZyb20gdGhlCj4gZ3Vlc3Qgc2luY2UgdGhlIGhvc3QgZG9lc24n
-dCBnZXQgYWNjZXNzIHRvIHRoZSBTVlNNIGF0IHJ1bnRpbWUsCj4gYWx0aG91Z2ggaXQgY291bGQg
-Y3JhZnQgYmFkIGNvbmZpZ3VyYXRpb24gZGF0YSBmb3IgYm9vdCB0aW1lKS4KPgo+IEFzc3VtaW5n
-IGEgc3VjY2Vzc2Z1bCBleHBsb2l0LCB0aGUgYXR0YWNrZXIgbm93IGhhcyB0aGUgYWJpbGl0eSB0
-byBydW4KPiBjb2RlIGluIHRoZSBjb21wcm9taXNlZCBtb2R1bGUuICBGb3IgYSB1bml0YXJ5IFNW
-U00sIHRoYXQgd291bGQgZ2l2ZQo+IGNvbnRyb2wgb2YgdGhlIGVudGlyZSBTVlNNLiAgRm9yIHJp
-bmcgMC8zIHNlcGFyYXRpb24sIGl0IHNob3VsZCBvbmx5Cj4gZ2l2ZSBjb250cm9sIG9mIHRoZSBj
-b21wcm9taXNlZCBtb2R1bGUsIHdoaWNoIHdlJ3JlIGFzc3VtaW5nIGlzIHJpbmcgMwo+IGNvZGUu
-ICBIb3dldmVyLCB5b3UncmUgcmlnaHQsIGluIHRoYXQgdGhlIGF0dGFja2VyIG5vdyBoYXMgdGhl
-IGFiaWxpdHkKPiB0byBleGVjdXRlIFZQTUwwIGNvZGUsIGV4Y2VwdCB0aGF0IHNvbWUgcHJpdmls
-ZWdlZCBpbnN0cnVjdGlvbnMgKGxpa2UKPiBQVkFMSURBVEUpIGNhbiBvbmx5IGV4ZWN1dGUgYXQg
-cmluZyAwLCBzbyB0aGUgYXR0YWNrIGFiaWxpdHkgaXMKPiBzbGlnaHRseSBtb3JlIGxpbWl0ZWQu
-CgoKSSB0aGluayB3ZSdyZSBtdW5naW5nIDIgdGhpbmdzIGludG8gdGhlIHNhbWUgY29udmVyc2F0
-aW9uOgoKKiBSdW5uaW5nIGNvZGUgYXQgbG93ZXIgcHJpdmlsZWdlIGxldmVsIHNvIGNvZGUgZXhl
-Y3V0aW9uIGF0dGFja3MgY2FuIApub3QgZWxldmF0ZSBiZXlvbmQgdGhhdCBjb2RlJ3MgYXJlYSBv
-ZiByZXNwb25zaWJpbGl0eQoqIFJ1bm5pbmcgY29kZSB3aXRoIGl0cyBvd24gYWRkcmVzcyBzcGFj
-ZSwgc28gYWNjaWRlbnRhbCBkYXRhIGxlYWtzIApkb24ndCBsZWFrIGFkZGl0aW9uYWxseSBzZW5z
-aXRpdmUgaW5mb3JtYXRpb24KCkkgcGVyc29uYWxseSBjYXJlIG1vcmUgYWJvdXQgdGhlIGxhdHRl
-ciB0aGFuIHRoZSBmb3JtZXIsIG1vc3RseSBhbHNvIApiZWNhdXNlIG9mIHNwZWN1bGF0aW9uIHNp
-ZGUgY2hhbm5lbCBhdHRhY2tzLiBJIHJlYWxseSBkb24ndCB3YW50IHRvIGJlIAppbiBhIHdvcmxk
-IHdoZXJlIHlvdSBjYW4gdHJhaW4gdGhlIGJyYW5jaCBwcmVkaWN0b3Igb2YgdGhlIHZUUE0gdG8g
-CmFjY2VzcyBrZXJuZWwgbWVtb3J5LiBDb2RlIGV4ZWN1dGlvbiBnYWRnZXRzIGFyZSBsZXNzIHBy
-ZXZhbGVudCwgCmVzcGVjaWFsbHkgaWYgeW91IHVzZSBydXN0IGFzIHByb2dyYW1taW5nIGxhbmd1
-YWdlLgoKPiBJJ3ZlIGFsd2F5cyBjb25zaWRlcmVkIHRoZSBnb2xkIHN0YW5kYXJkIGV4cGxvaXQg
-b2YgdGhlIFNWU00gdG8gYmUgb25lCj4gdGhhdCBhbGxvd3MgeW91IHRvIGZha2UgYXR0ZXN0YXRp
-b24gcmVwb3J0cywgc2luY2UgdGhlbiBpdCdzIGdhbWUgb3Zlcgo+IGFzIGZhciBhcyByZW1vdGUg
-dmVyaWZpY2F0aW9uIGdvZXMsIHdoaWNoIGlzIHdoeSBJIHdhbnQgdGhlIFZNUENLMCBrZXkKPiAo
-dGhlIGNvbW11bmljYXRpb24ga2V5IFZQTUwwIHVzZXMgdG8gZ2V0IFZNUEwwIHNwZWNpZmljIGF0
-dGVzdGF0aW9uCj4gcmVwb3J0cyBmcm9tIHRoZSBQU1ApIHRvIGJlIGNsb3NlbHkgZ3VhcmRlZCBh
-dCByaW5nIDAsIG1ha2luZyBpdCBoYXJkZXIKPiB0byBjb21wcm9taXNlIHJlbW90ZSBhdHRlc3Rh
-dGlvbiB2aWEgZXhwbG9pdHMuCgoKSU1ITyB0aGF0J3Mgc2xpZ2h0bHkgdG9vIGZvY3VzZWQgb24g
-dGhlIGF0dGVzdGF0aW9uIHBhcnQgb2YgdGhlIHN0b3J5LiAKSW1hZ2luZSBhbiBlbnZpcm9ubWVu
-dCB3aGVyZSBzb21lb25lIG1hbmFnZWQgdG8gZ2FpbiBSQ0UgaW4gYSByYW5kb20gCnVzZXIgc3Bh
-Y2UgYXBwbGljYXRpb24gb2YgeW91ciBWTSB0aGF0IGhhcyBubyBhY2Nlc3MgdG8gYWN0dWFsIHNl
-Y3JldHMgLyAKUEVJIC8gZXRjLiBMaWtlIGEgbW9uaXRvcmluZyBzZXJ2aWNlIHJ1bm5pbmcgbG9n
-NGogOikuIFRoYXQgc2VydmljZSAKaG93ZXZlciBtYXkgaGF2ZSBhY2Nlc3MgdG8gL2Rldi90cG0w
-ICh2aWEgd2hhdGV2ZXIgbWVhbnMpIGFuZCB0aHVzIGlzIAphYmxlIHRvIGNyYWZ0IHJlcXVlc3Rz
-IHRvIHRoZSB2VFBNLgoKSW4gdGhpcyBzaXR1YXRpb24sIHlvdSByZWFsbHkgd2FudCB0byBlbnN1
-cmUgdGhhdCB0aGUgdlRQTSBoYXMgCmFic29sdXRlbHkgMCBhY2Nlc3MgdG8gYW55IG1lbW9yeSBp
-dCBkb2Vzbid0IGhhdmUgdG8uIEV2ZW4gYmV0dGVyIGlmIHlvdSAKY2FuIGVuc3VyZSBpdCBzdGF5
-cyB0aGF0IHdheSAocmVhZDogbm8gd2F5IHRvIHdyaXRlIENSMykuCgoKPiBUaGUgZmxpcCBzaWRl
-IGlzIHRoYXQsIGFzc3VtaW5nIHRoZSB2VFBNIGlzIHRoZSBjb21wcm9taXNlZCBzZXJ2aWNlLAo+
-IHlvdSd2ZSBhbHJlYWR5IGdvdCB0aGUgYWJpbGl0eSB0byBmYWtlIFRQTSBiYXNlZCBydW50aW1l
-IGF0dGVzdGF0aW9uLAo+IHNvIGl0cyBzdGlsbCBnYW1lIG92ZXIgZnJvbSB0aGUgcmVtb3RlIGF0
-dGVzdGF0aW9uIHBvaW50IG9mIHZpZXcuICBUaGlzCj4gbGVhZHMgbWUgdG8gY29uY2x1ZGUgdGhh
-dCBpdCByZWFsbHkgZG9lc24ndCBtYXR0ZXIgd2hlcmUgc2VjdXJpdHkKPiBjcml0aWNhbCBwcm90
-b2NvbHMgcnVuLCBhbmQgdGhlIG9ubHkgcmVhbCBhZHZhbnRhZ2Ugb2YgdGhlIHJpbmcgMC8zCj4g
-c2VwYXJhdGlvbiB3b3VsZCBjb21lIGludG8gcGxheSBpZiB0aGUgU1ZTTSBoYWQgc29tZSBub24t
-c2VjdXJpdHkKPiBjcml0aWNhbCBwcm90b2NvbHMgYW5kIGl0J3Mgbm90IGNsZWFyIGlmIGl0IGV2
-ZXIgd2lsbC4KCgpJIHRoaW5rIGdvaW5nIGZvcndhcmQgd2Ugd2lsbCBoYXZlIHRvIG1vdmUgdGhl
-IFVFRkkgVmFyaWFibGUgUnVudGltZSAKU2VydmljZXMgaW50byBTVlNNIGFzIHdlbGwuIFRoZXJl
-IGlzIG5vIHZpcnR1YWwgU01NIG1vZGUgaW4gU0VWLVNOUCB0aGF0IApJJ20gYXdhcmUgb2YgYW5k
-IHRydXN0aW5nIHRoZSBob3N0IGVudmlyb25tZW50IGZvciBVRUZJIFNlY3VyZSBCb290IG1heSAK
-b3IgbWF5IG5vdCBiZSBkZXNpcmFibGUuCgoKPgo+Pj4gSSB0aGluayB0aGUgYWJvdmUgcHJvYmxl
-bSBhbHNvIGluZGljYXRlcyBuby1vbmUgcmVhbGx5IGhhcyBhIGZ1bGx5Cj4+PiB0aG91Z2h0IG91
-dCBzZWN1cml0eSBtb2RlbCB0aGF0IHNob3dzIHByYWN0aWNhbGx5IGhvdyByaW5nLTMKPj4+IGlt
-cHJvdmVzIHRoZSBzZWN1cml0eSBwb3N0dXJlLiAgU28gSSByZWFsbHkgdGhpbmsgc3RhcnRpbmcg
-aW4gcmluZy0KPj4+IDAgYW5kIHRoZW4gbW92aW5nIHBpZWNlcyB0byByaW5nLTMgYW5kIGRpc2N1
-c3Npbmcgd2hldGhlciB0aGlzCj4+PiBtYXRlcmlhbGx5IGltcHJvdmVzIHRoZSBzZWN1cml0eSBw
-b3N0dXJlIGJhc2VkIG9uIHRoZSBjb2RlIGFuZCBob3cKPj4+IGl0IG9wZXJhdGVzIGdldHMgdXMg
-YXJvdW5kIHRoZSBsYWNrIG9mIHVuZGVyc3RhbmRpbmcgb2YgdGhlCj4+PiBzZWN1cml0eSBtb2Rl
-bCBiZWNhdXNlIHdlIHByb2NlZWQgYnkgZXZvbHV0aW9uLgo+PiBBbmQgdGhlcmUgaXMgZGVmaW5p
-dGVseSBhIGxvdCBvZiBjb21wbGV4aXR5IGFkZGVkIGJ5IHN1cHBvcnRpbmcKPj4gcmluZzMuIFlv
-dSBhcmUgZXNzZW50aWFsbHkgZ2V0dGluZyB0aGUgY29tcGxleGl0eSBvZiBhICJyZWFsIgo+PiBv
-cGVyYXRpbmcgc3lzdGVtLiAgQnkgY29udHJhc3QsIFREWCBpcyBwcm92aWRpbmcgdGhlIHNhbWUg
-a2luZCBvZgo+PiBpc29sYXRpb24gd2l0aCBzZWN1cmUgZW5jbGF2ZXMsIGJ1dCBhdCBsZWFzdCB0
-aGUgYmFzZSBPUyBrZXJuZWwgaXMKPj4gc2hhcmVkLgo+Pgo+PiBUaGUgZXhwZWN0ZWQgYmVuZWZp
-dCBpcyB0byBiZSBhYmxlIHRvIHJ1biBtb3JlIGNvbXBsZXggY29kZSBmcm9tCj4+IHJpbmczIHdp
-dGggYSBiZXR0ZXIgd2F5IHRvIGhhbmRsZSBtYWxmdW5jdGlvbnMsIGZhdWx0cywgd2hhdGV2ZXIu
-IEF0Cj4+IGxlYXN0IHRoYXQncyB0aGUgd2F5IEkgcmVhZCBpdC4gU28gaXQncyBhIHdheSB0byB3
-cml0ZSBzb2Z0d2FyZSBpbiBhCj4+IG1vcmUgbW9kdWxhciB3YXkuCj4gWWVzLCBidXQgaXMgdGhh
-dCBhIGJlbmVmaXQ/ICBJZiBvbmUgb2YgdGhlIHByb3RvY29sIG1vZHVsZXMgZmF1bHRzLCBJCj4g
-dGhpbmsgeW91J2QgcmF0aGVyIGhhdmUgYSBoYXJkIGZhaWx1cmUgb2YgdGhlIHdob2xlIGNvbmZp
-ZGVudGlhbCBWTQo+IHRoYW4gYSByZXN0YXJ0IHRoYXQgZ2l2ZXMgYW4gYXR0YWNrZXIgbW9yZSBs
-ZWV3YXkgdG8gY3JhZnQgYQo+IGNvbXByb21pc2UuCgoKSXQncyBhbHNvIGFib3V0IHRoZSBhYmls
-aXR5IHRvIGRldGVjdCBmYWlsdXJlLiBUaGUgbW9yZSBndWFyZCByYWlscyB5b3UgCnB1dCBpbiwg
-dGhlIG1vcmUgbGlrZWx5IHlvdSBjYW4gaWRlbnRpZnkgd2hlbiBzb21ldGhpbmcgZ29lcyBvZmYu
-IApXaGV0aGVyIHdlIHRoZW4gYXR0ZW1wdCB0byBjb250aW51ZSBleGVjdXRpb24gb3IgY29uc2lk
-ZXIgaXQgYSBmYXRhbCAKZXZlbnQgaXMgdXAgdG8gdXMuCgpUaGUgd29yc3QgY2FzZSB3b3VsZCBi
-ZSBhIGZ1bGx5IHBvcHVsYXRlZCBsaW5lYXIgYWRkcmVzcyBzcGFjZSB3aGVyZSBhbnkgCnBvaW50
-ZXIgZGVyYWlsaW5nIGlzIGNvbXBsZXRlbHkgdW5kZXRlY3RhYmxlLgoKCj4KPj4gSUlVQywgdGhl
-IHJpbmctMyBtb2R1bGVzIG9mIHRoZSBTVlNNIHdvdWxkIHN0aWxsIGJlIGF0IFZNUEwwLCBzbwo+
-PiBwcmVzdW1hYmx5LCBub3QgYWNjZXNpYmxlIGZyb20gaG9zdCBvciBndWVzdC4gSWYgd2UgY29u
-c2lkZXIgdGhpcwo+PiBwcm9wZXJ0eSBhcyBzdHJvbmcsIHRoZW4gZG8gd2UgcmVhbGx5IGNhcmUg
-ZW50cnVzdGluZyByaW5nMyB3aXRoCj4+IHNlbnNpdGl2ZSBkYXRhPwo+IFdlbGwsIGFzIEkgc2Fp
-ZCBhYm92ZSwgSSB0aGluayBmb3Igc2VjdXJpdHkgY3JpdGljYWwgbW9kdWxlcywgaXQKPiBkb2Vz
-bid0IG1hdHRlciB3aGVyZSB0aGV5IHJ1biwgc28gcGVyaGFwcyB3ZSBkb24ndCBjYXJlLCBidXQg
-ZXF1YWxseQo+IHRoZXJlJ3Mgbm90IG11Y2ggc2VjdXJpdHkgYmVuZWZpdCB0byByaW5nIDAvMyBz
-ZXBhcmF0aW9uIGVpdGhlci4KPgo+Pj4gVGhlIG5leHQgcXVlc3Rpb24gdGhhdCdzIGdvaW5nIHRv
-IGFyaXNlIGlzICp3aGVyZSogdGhlIGNyeXB0bwo+Pj4gbGlicmFyaWVzIHNob3VsZCByZXNpZGUu
-ICBHaXZlbiB0aGV5J3JlIHNvbWV3aGF0IGxhcmdlLCBkdXBsaWNhdGluZwo+Pj4gdGhlbSBmb3Ig
-ZXZlcnkgY3BsLTMgYXBwbGljYXRpb24gcGx1cyBjcGwtMyBzZWVtcyB3YXN0ZWZ1bCwgc28gc29t
-ZQo+Pj4gdHlwZSBvZiB2ZHNvIG1vZGVsIHNvdW5kcyBiZXR0ZXIgKGFuZCBtaWdodCB3b3JrIGlu
-c3RlYWQgb2YgYQo+Pj4gc3lzY2FsbCBpbnRlcmZhY2VzIGZvciBjcGwtMCBzZXJ2aWNlcyB0aGF0
-IGFyZSBwdXJlIGNvZGUpLgo+PiBJIGRvbid0IHVuZGVyc3RhbmQgd2hhdCB5b3UgY2FsbCAicHVy
-ZSBjb2RlIi4gSSBwcmVzdW1lIHlvdSBtZWFuCj4+ICJjb2RlIHRoYXQgZG9lcyBub3QgbmVlZCB0
-byBhY2Nlc3MgcmluZzAgZGF0YSI/Cj4gSSB3YXMgbWVhbmluZyBhIFZEU08gbGlrZSBtb2RlbCwg
-d2hlcmUgdGhlIG9wZW5zc2wgY3J5cHRvIGNvZGUgY291bGQgYmUKPiBleHBvcnRlZCBmcm9tIHJp
-bmctMCBhcyBhbiBleGVjdXRhYmxlIGxpYnJhcnksIGJ1dCB0aGUgZGF0YSB3b3VsZCBsaXZlCj4g
-d2l0aCB0aGUgY29ycmVzcG9uZGluZyBjb25zdW1lciwgc28gaXQgY291bGQgYmUgdXNlZCBieSB0
-aGUgU1ZTTSBib2R5Cj4gYXQgcmluZy0wIHdpdGggYW55IGNyeXB0byBkYXRhIGJlaW5nIGhlbGQg
-YXQgcmluZy0wIGFuZCBpbmFjY2Vzc2libGUgdG8KPiByaW5nLTMgY29uc3VtZXJzIG9mIHRoZSBj
-cnlwdG8gY29kZS4KCgpIYXZlIGEgbG9vayBhdCB0aGlzIHByZXNlbnRhdGlvbiwgZ2V0IGFsbCB0
-aGUgd2F5IHRvIHRoZSBvbi1zY3JlZW4gCmtleWJvYXJkIHNuaWZmZXIgYW5kIHRoZW4gZmFpdGhm
-dWxseSB0ZWxsIG1lIGFnYWluIHRoYXQgeW91IGJlbGlldmUgCnNoYXJpbmcgY29kZSAoYW5kIEFF
-UyB0YWJsZXMpIGlzIGEgZ29vZCBpZGVhIDopCgpodHRwczovL21lZGlhLmNjYy5kZS92LzMzYzMt
-ODA0NC13aGF0X2NvdWxkX3Bvc3NpYmx5X2dvX3dyb25nX3dpdGhfaW5zZXJ0X3g4Nl9pbnN0cnVj
-dGlvbl9oZXJlCgpJIGFsc28gZmVlbCBsaWtlIEknbSBtaXNzaW5nIHNvbWV0aGluZyBvYnZpb3Vz
-IGluIHRoZSBjb252ZXJzYXRpb24uIApMZXQncyBpbWFnaW5lIHRoZSB3b3JzdCBjYXNlIGZvciBz
-aXplIEkgY2FuIHRoaW5rIG9mIHRvZGF5LiBJbiB0aGF0IApjYXNlLCB0aGUgbWFpbiBTVlNNIGNv
-ZGUsIHZUUE0gY29kZSBhcyB3ZWxsIGFzIFVFRkkgdmFyaWFibGUgc3RvcmUgd291bGQgCmR1cGxp
-Y2F0ZSAocGFydHMgb2YpIGNyeXB0byBsaWJyYXJpZXMuIExldCdzIGFnYWluIGltYWdpbmUgdGhl
-IHdvcnN0IGFuZCAKbm8gcHJvcGVyIExUTywgc28gd2UgbmVlZCB0byBsaW5rIGFsbCBvZiBvcGVu
-c3NsIGludG8gYWxsIDIgY29tcG9uZW50cyAKcGx1cyB0aGUgUnVzdCBiYXNlZCBjcnlwdG8gd2hp
-Y2ggd2UgYWdhaW4gYXNzdW1lIHRvIGJlIGFzIGxhcmdlLgoKSW4gdGhpcyB3b3JzdCBjYXNlIHNj
-ZW5hcmlvIG5vdCBzaGFyaW5nIHRoZSBjb2RlIHdhc3RlcyBsZXNzIHRoYW4gMU1pQiAKYWx0b2dl
-dGhlci4gVGhhdCBkb2Vzbid0IHNvdW5kIGxpa2Ugc29tZXRoaW5nIHRvIG9wdGltaXplIGZvciBh
-dCBhbGwgYXQgCnRoaXMgc3RhZ2U/CgoKQWxleAoKCgoKQW1hem9uIERldmVsb3BtZW50IENlbnRl
-ciBHZXJtYW55IEdtYkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVybGluCkdlc2NoYWVmdHNmdWVo
-cnVuZzogQ2hyaXN0aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0g
-QW10c2dlcmljaHQgQ2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDE0OTE3MyBCClNpdHo6IEJlcmxp
-bgpVc3QtSUQ6IERFIDI4OSAyMzcgODc5CgoK
+On Mon, 8 May 2023 at 01:46, Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
+>
+> Currently allocate_e820() is only interested in the size of map and size
+> of memory descriptor to determine how many e820 entries the kernel
+> needs.
+>
+> UEFI Specification version 2.9 introduces a new memory type --
+> unaccepted memory. To track unaccepted memory kernel needs to allocate
+> a bitmap. The size of the bitmap is dependent on the maximum physical
+> address present in the system. A full memory map is required to find
+> the maximum address.
+>
+> Modify allocate_e820() to get a full memory map.
+>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Borislav Petkov <bp@suse.de>
 
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+
+> ---
+>  drivers/firmware/efi/libstub/x86-stub.c | 26 +++++++++++--------------
+>  1 file changed, 11 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index a0bfd31358ba..fff81843169c 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -681,28 +681,24 @@ static efi_status_t allocate_e820(struct boot_params *params,
+>                                   struct setup_data **e820ext,
+>                                   u32 *e820ext_size)
+>  {
+> -       unsigned long map_size, desc_size, map_key;
+> +       struct efi_boot_memmap *map;
+>         efi_status_t status;
+> -       __u32 nr_desc, desc_version;
+> +       __u32 nr_desc;
+>
+> -       /* Only need the size of the mem map and size of each mem descriptor */
+> -       map_size = 0;
+> -       status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+> -                            &desc_size, &desc_version);
+> -       if (status != EFI_BUFFER_TOO_SMALL)
+> -               return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
+> +       status = efi_get_memory_map(&map, false);
+> +       if (status != EFI_SUCCESS)
+> +               return status;
+>
+> -       nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
+> -
+> -       if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+> -               u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
+> +       nr_desc = map->map_size / map->desc_size;
+> +       if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
+> +               u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
+> +                       EFI_MMAP_NR_SLACK_SLOTS;
+>
+>                 status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+> -               if (status != EFI_SUCCESS)
+> -                       return status;
+>         }
+>
+> -       return EFI_SUCCESS;
+> +       efi_bs_call(free_pool, map);
+> +       return status;
+>  }
+>
+>  struct exit_boot_struct {
+> --
+> 2.39.3
+>
