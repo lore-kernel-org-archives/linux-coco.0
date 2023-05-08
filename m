@@ -1,176 +1,666 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3244407
-	for <linux-coco@lists.linux.dev>; Mon,  8 May 2023 16:28:52 +0000 (UTC)
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1aaf702c3ccso837855ad.1
-        for <linux-coco@lists.linux.dev>; Mon, 08 May 2023 09:28:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1683563332; x=1686155332;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s0GBvgtXFzk01LDZ1sY2ABtb7ww7m6vPpluzRFNiPXw=;
-        b=tv9iI8CG7ntW3IKhCV/VN3+wVynBZOjHP3YJI9eMdGvtEHsy1jOqV3ANQAqltiAkH/
-         7cfCs8p5TGBaJ3F4LEJC2j19+sR4DnSsnZvo22Y3Qp6bymAS/OlK2IRaJts4rw2PS0uh
-         2We2dSgsFozJYcjqEDPFL7wEfQ3lJjUYMnMqSta5XiYJiHYRzE1J+sS2oopyG+bLGiYl
-         4QzPJUELpPK1Y3hUWQ8cBAVlteBK/hbq2DcFiDbEf7Dsum5EkdVjr+89ZvFVmqWT3WRE
-         etZ4DyddSynWkR7226dWdvzcUvXVWu3xESGYHgTwaCriI6V2awwBldwypWRClgG25glK
-         fz0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683563332; x=1686155332;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s0GBvgtXFzk01LDZ1sY2ABtb7ww7m6vPpluzRFNiPXw=;
-        b=Chqfn96dF+jcZ3ETiZqvA+2nY0jW6H04WNwyizw24KepVc8i/Sw9TyNUIoFnwhXL2E
-         HaRIudOiKl0v8WdW9eYs/x6+YC8APArTR+hhXOOM0WXVqWZTKUYrjBbdfhpOcn38ZXEN
-         PUoWSzlqoI7C4KS0eVFlwcd44d4tPm3pXsBXmzaaghzI/sNYxBREDpiTaBbbk6clran7
-         3BUynXGHYGcNBx3V5t6PPvn30d+wN+zWjv6C4nE35Ekk6hASHei8q68O4jhCdxqTa/pn
-         XO5IZcWxgy7apxLR2J6ILNTeQAAI84RRqMFaqog3l8/2Zae72og9+Q+mPlkKk+HR8/0x
-         oPQg==
-X-Gm-Message-State: AC+VfDyknldXHfhG//O71p59+Fd7dgd7u/UgZUpPUNcmg/p8yJX2xqL+
-	jwW6nbNn8MfuGxKV/4PiC+tcKPvaL3lFiMyDnP46KA==
-X-Google-Smtp-Source: ACHHUZ61b1aYs3otH34bwS5pkLJmeVkvB3Lq0HnWBktvEzz6q6mK2mNoHwhqw0+OIMsNF03SzRyeKABTo6kQnyoR2AU=
-X-Received: by 2002:a17:902:ea07:b0:1a9:bb1d:644 with SMTP id
- s7-20020a170902ea0700b001a9bb1d0644mr538152plg.12.1683563332251; Mon, 08 May
- 2023 09:28:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A495682
+	for <linux-coco@lists.linux.dev>; Mon,  8 May 2023 19:00:52 +0000 (UTC)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailout.west.internal (Postfix) with ESMTP id EA18132009AD;
+	Mon,  8 May 2023 15:00:49 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 08 May 2023 15:00:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:sender:subject:subject:to:to; s=fm2; t=1683572449; x=
+	1683658849; bh=URO9+J5oSsm+RSUnh14u/dfGB5Ga3FUAok9tY/J4WxA=; b=H
+	X+BWoxJcm+Q/jjDj6mrT/6sYnj160CqCEAfYucYTnWyUuz05t5PdKUVXHhr/8lBd
+	18oTffkfYvLvvF8YzqN0v0FWt6KWnYfdCegMiXlwplRzTElX1iPO1Hz90qbR+bNg
+	mC2DFOBOVt+A1bbYrWdxln2uXQCowpXEzhjJFlwdQMbuJIlAk+fjAwhDgX/U6OpM
+	XyFf+Oy7mefmarkh0XgzYbWGdgCmKdPrcAfEecsXi1ZVlcRDT8i8xPwipwCwtBtU
+	QOTHHt0vZPfhA5Cu92hoWdgEhlVeLFlG4kBx6Q55JBEC8JmmFaqW8sTLe5UHL9Fs
+	xBf6pgrxZPj3LDwrf5FrA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm3; t=1683572449; x=1683658849; bh=URO9+J5oSsm+R
+	SUnh14u/dfGB5Ga3FUAok9tY/J4WxA=; b=M2TsQQEsw/rY91BZp4E0nLO6ssRE1
+	JqeRSUbsMa5QQMIUd5onFMEeVDdmMISWY5uInH//R4SwyTxR4nQv5PgNWOCt3QMU
+	dymnIcA7s5AVCM6laeeCqm81r78eQZ6XueXHK53vCYyjK855twCc/y6M7QJDZ8/Q
+	Xla+RtkrGXLeBnLDsGVWQUrqkGgAkDSU2DT5SvSf9FE+HFYptO7YWsAm/JnAvwye
+	+H5MHnvM1hxlbVzZSyWEQeOwJAhAlXb5qUoAU1WFlvkGYrwMTPNOx1IAsAW0Yfbv
+	oPew/+NNmSr3sNSUmL2LHpFGYI5t3fQ4rcgu/xvbsQpU8D+ljOksseWzA==
+X-ME-Sender: <xms:30ZZZJNlEx9koOnHA6G3DxXp7o1oq_rURX-5bzxUblU-iMSBrIS3eg>
+    <xme:30ZZZL9t_g0b-9Nrf2o1NsEn_WvEK76qEvZdNGeuDr0MI7oNeZbhmWuVwhmLlT1qz
+    i80CoLWF9hqnDdvKiY>
+X-ME-Received: <xmr:30ZZZISsYlG7oHIkxQzhQrfnnhYubF3JDDOmS6yjgNQffmCK9_MnV3fJrrER0kKSpZY7rA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeefkedgudefvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttddttddttddvnecuhfhrohhmpedfmfhi
+    rhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllhesshhhuhhtvghmohhvrd
+    hnrghmvgeqnecuggftrfgrthhtvghrnhephfeigefhtdefhedtfedthefghedutddvueeh
+    tedttdehjeeukeejgeeuiedvkedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgv
+X-ME-Proxy: <xmx:30ZZZFt4lRRG87t961rV-5OiDwGvYxqNRNgp7PM-WKtC8P7OT9CxFw>
+    <xmx:30ZZZBfF7SdS47FMsi3nGnxwP-Rv4yQwv4sHx_t4N2L5gjUUnDQUYQ>
+    <xmx:30ZZZB0xasN5Jwn2IGeApNlL1ZEdGhAIQQKQMT8g7UGB56SO7-5zQg>
+    <xmx:4UZZZNr3mRWuUUZY3mSUyB9VN8Kp7VQ08xiz-H_xiyZefPTdC0HEwA>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 8 May 2023 15:00:47 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id A706A10C38B; Mon,  8 May 2023 22:00:43 +0300 (+03)
+Date: Mon, 8 May 2023 22:00:43 +0300
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Dario Faggioli <dfaggioli@suse.com>,	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,	marcelo.cerri@canonical.com,
+ tim.gardner@canonical.com,	khalid.elmously@canonical.com,
+ philip.cox@canonical.com,	aarcange@redhat.com, peterx@redhat.com,
+ x86@kernel.org,	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv10 04/11] efi/x86: Implement support for unaccepted memory
+Message-ID: <20230508190043.ouauzbghn27khdy4@box.shutemov.name>
+References: <20230507234618.18067-1-kirill.shutemov@linux.intel.com>
+ <20230507234618.18067-5-kirill.shutemov@linux.intel.com>
+ <CAMj1kXE26G=HgqBHoJOWF+FyXs7Ryj7VFFY9A+xG7HmUXnb5bg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <ZFjL0oXu6NjYKCXl@suse.de>
-In-Reply-To: <ZFjL0oXu6NjYKCXl@suse.de>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 8 May 2023 09:28:40 -0700
-Message-ID: <CAAH4kHYpyeu-UFBYL5mXnS0xQh_rD039FgMz=Qfa=ruCUsVL_A@mail.gmail.com>
-Subject: Re: [RFD] COCONUT-SVSM project governance
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>
-Cc: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXE26G=HgqBHoJOWF+FyXs7Ryj7VFFY9A+xG7HmUXnb5bg@mail.gmail.com>
 
-I'm in favor of governance models that strongly value transparency,
-good-faith disagreement, and a set of community guidelines that both
-has enforcement power and accountability of all parties involved.
+On Mon, May 08, 2023 at 09:30:22AM +0200, Ard Biesheuvel wrote:
+> Hello Kirill,
+> 
+> On Mon, 8 May 2023 at 01:46, Kirill A. Shutemov
+> <kirill.shutemov@linux.intel.com> wrote:
+> >
+> > UEFI Specification version 2.9 introduces the concept of memory
+> > acceptance: Some Virtual Machine platforms, such as Intel TDX or AMD
+> > SEV-SNP, requiring memory to be accepted before it can be used by the
+> > guest. Accepting happens via a protocol specific for the Virtual
+> > Machine platform.
+> >
+> > Accepting memory is costly and it makes VMM allocate memory for the
+> > accepted guest physical address range. It's better to postpone memory
+> > acceptance until memory is needed. It lowers boot time and reduces
+> > memory overhead.
+> >
+> > The kernel needs to know what memory has been accepted. Firmware
+> > communicates this information via memory map: a new memory type --
+> > EFI_UNACCEPTED_MEMORY -- indicates such memory.
+> >
+> > Range-based tracking works fine for firmware, but it gets bulky for
+> > the kernel: e820 has to be modified on every page acceptance. It leads
+> > to table fragmentation, but there's a limited number of entries in the
+> > e820 table
+> >
+> > Another option is to mark such memory as usable in e820 and track if the
+> > range has been accepted in a bitmap. One bit in the bitmap represents
+> > 2MiB in the address space: one 4k page is enough to track 64GiB or
+> > physical address space.
+> >
+> > In the worst-case scenario -- a huge hole in the middle of the
+> > address space -- It needs 256MiB to handle 4PiB of the address
+> > space.
+> >
+> > Any unaccepted memory that is not aligned to 2M gets accepted upfront.
+> >
+> > The bitmap is allocated and constructed in the EFI stub and passed down
+> > to the kernel via boot_params. allocate_e820() allocates the bitmap if
+> > unaccepted memory is present, according to the maximum address in the
+> > memory map.
+> >
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > ---
+> >  Documentation/arch/x86/zero-page.rst     |  1 +
+> >  arch/x86/boot/compressed/Makefile        |  1 +
+> >  arch/x86/boot/compressed/mem.c           | 73 ++++++++++++++++++++++++
+> >  arch/x86/include/asm/unaccepted_memory.h | 10 ++++
+> >  arch/x86/include/uapi/asm/bootparam.h    |  2 +-
+> >  drivers/firmware/efi/Kconfig             | 14 +++++
+> >  drivers/firmware/efi/efi.c               |  1 +
+> >  drivers/firmware/efi/libstub/x86-stub.c  | 65 +++++++++++++++++++++
+> >  include/linux/efi.h                      |  3 +-
+> >  9 files changed, 168 insertions(+), 2 deletions(-)
+> >  create mode 100644 arch/x86/boot/compressed/mem.c
+> >  create mode 100644 arch/x86/include/asm/unaccepted_memory.h
+> >
+> > diff --git a/Documentation/arch/x86/zero-page.rst b/Documentation/arch/x86/zero-page.rst
+> > index 45aa9cceb4f1..f21905e61ade 100644
+> > --- a/Documentation/arch/x86/zero-page.rst
+> > +++ b/Documentation/arch/x86/zero-page.rst
+> > @@ -20,6 +20,7 @@ Offset/Size   Proto   Name                    Meaning
+> >  060/010                ALL     ist_info                Intel SpeedStep (IST) BIOS support information
+> >                                                 (struct ist_info)
+> >  070/008                ALL     acpi_rsdp_addr          Physical address of ACPI RSDP table
+> > +078/008                ALL     unaccepted_memory       Bitmap of unaccepted memory (1bit == 2M)
+> 
+> Unaccepted memory is a generic EFI feature, and will need to be
+> supported on other architectures as well.
+> 
+> Could we perhaps use a EFI configuration table to pass the bitmap to
+> the core kernel, instead of adding more cruft to this archaic header?
+> That could be implemented in a arch-agnostic manner, even in cases
+> where the bootloader is the agent that calls ExitBootServices(), as it
+> would be the loader that allocates and populates the bitmap in that
+> case.
 
-On Mon, May 8, 2023 at 3:15=E2=80=AFAM J=C3=B6rg R=C3=B6del <jroedel@suse.d=
-e> wrote:
->
-> Hi,
->
-> As discussed before[1] I'd like to start a discussion about the future
-> governance of COCONUT-SVSM. Bottom line is that the project should move
-> from a single-maintainer, SUSE-driven project to a multi-maintainer
-> model driven by the community.
->
-> [1] https://lore.kernel.org/linux-coco/ZFJTDtMK0QqXK5+E@suse.de/
->
-> Some of the things to discuss:
->
->         * How many maintainers? (3 or more?)
->
+Okay, that's a fair point.
 
-3 is a minimum I think, with at least 2 entities represented.
+Below is my take on this. It is on top of whole patchset. It seems to be
+functional, but more testing is required.
 
-Technical software repo governance I think should follow the OSSF
-Scorecard [1], e.g., you need at least 2 people to approve a change
-(author + human reviewer), enforced by a repository security setting.
+While there I also removed hardcoded 1b == 2MB.
 
->         * How to select them (by contributions and trust in the
->           community? elections? If elections, who can vote?)
->
+My EFI knowledge is rather superficial. I would be glad for feedback.
 
-I think that an RFC process as means of democracy around policy
-changes, maintainer list changes, and substantial/breaking features =C3=A1
-la the Rust-lang project is a good one to emulate.
-Particularly contentious RFCs should generally be treated with a great
-deal of caution, so following a good-faith revision process shouldn't
-be too onerous.
-If an RFC drags on to the point of "calling the question" [2], I think
-you'd have to hold a series of community town halls in APAC-, EMEA-,
-and Americas-friendly timezones to send a contentious RFC to a vote. I
-don't like online election systems without some kind of
-group-membership restricting casting multiple votes.
-
-To avoid situations of "why wasn't I consulted?" [4] you need both a
-minimum length response period (e.g., 3-6 weeks), and mechanisms to
-shorten that time in the event that there is no hesitation for
-adopting the change given at all, and that you have a majority of
-active contributors (has engaged with the project in the past 180
-days) weighing in. I don't imagine the shortening condition getting
-hit often except for extreme circumstances.
-
-Certainly to make this work, you need to have to have existing
-maintainers stick to the selection criteria for requiring a change go
-through the RFC process when the contributor hadn't elected to do so.
-
->         * Regular changes to the maintainer group?
->
-
-I think again an RFC process to amend the maintainer group is
-sensible, so long as following community guidelines are treated as a
-sort of constitution to remove members in protest due to unneighborly
-behavior.
-
->         * How the group makes decisions on merging contributions and
->           the general direction of the project.
->
-
-This is where the notion of a working group comes into play, such as
-language or core library evolution working groups of the C++ standards
-committee.
-It's up to maintainers to decide if it's time to split
-responsibilities into different working groups in order to avoid
-expensive meetings that attendees have little interest in
-participating in.
-
-> And certainly more questions which I have not yet thought of. So I'd
-> like to invite everyone to share their thoughts and opinions in this
-> thread so that we can develop a way to an open project governance :)
->
-
-We don't want to repeat the unaccountability mistakes of the Rust
-project that led to the moderation team quitting en masse.
-I think eventually the project ought to be donated to the Linux
-Foundation for impartial-ish ownership, but when it would be a wise
-decision to do so is something I think lawyers will need to figure
-out, since there are so many rules about corporation collaboration
-outside the context of a third-party foundation.
-
-I think the sigstore.dev project does a good job of running regular
-community meetings and publishing meeting notes to allow for regular
-collaboration across institutions.
-I don't think we need to set that up until there's a good reason to
-take a discussion off the mailing list for higher bandwidth
-communication, since who needs more low value meetings?
-
-
-[1] https://github.com/ossf/scorecard
-[2] Robert's Rules of Order
-[3] https://www.redhat.com/en/blog/understanding-open-source-governance-mod=
-els
-[4] https://www.youtube.com/watch?v=3Dm0rakUuPXFM
-
-
-> Regards,
->
-> --
-> J=C3=B6rg R=C3=B6del
-> jroedel@suse.de
->
-> SUSE Software Solutions Germany GmbH
-> Frankenstra=C3=9Fe 146
-> 90461 N=C3=BCrnberg
-> Germany
->
-> (HRB 36809, AG N=C3=BCrnberg)
-> Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev, Andrew Myers, Andrew McDonald, Boud=
-ien Moerman
->
-
-
---
--Dionna Glaze, PhD (she/her)
+diff --git a/Documentation/arch/x86/zero-page.rst b/Documentation/arch/x86/zero-page.rst
+index f21905e61ade..45aa9cceb4f1 100644
+--- a/Documentation/arch/x86/zero-page.rst
++++ b/Documentation/arch/x86/zero-page.rst
+@@ -20,7 +20,6 @@ Offset/Size	Proto	Name			Meaning
+ 060/010		ALL	ist_info		Intel SpeedStep (IST) BIOS support information
+ 						(struct ist_info)
+ 070/008		ALL	acpi_rsdp_addr		Physical address of ACPI RSDP table
+-078/008		ALL	unaccepted_memory	Bitmap of unaccepted memory (1bit == 2M)
+ 080/010		ALL	hd0_info		hd0 disk parameter, OBSOLETE!!
+ 090/010		ALL	hd1_info		hd1 disk parameter, OBSOLETE!!
+ 0A0/010		ALL	sys_desc_table		System description table (struct sys_desc_table),
+diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
+index cf475243b6d5..5b63628912da 100644
+--- a/arch/x86/boot/compressed/efi.h
++++ b/arch/x86/boot/compressed/efi.h
+@@ -105,6 +105,15 @@ struct efi_setup_data {
+ 	u64 reserved[8];
+ };
+ 
++struct efi_unaccepted_memory {
++	u32 version;
++	u32 unit_size;
++	u64 size;
++	u64 bitmap[];
++};
++
++extern struct efi_unaccepted_memory *unaccepted_table;
++
+ static inline int efi_guidcmp (efi_guid_t left, efi_guid_t right)
+ {
+ 	return memcmp(&left, &right, sizeof (efi_guid_t));
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index e6b92e822ddd..7d50aea0d6b1 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -1,7 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
++#include <linux/uuid.h>
+ #include "../cpuflags.h"
+ #include "bitmap.h"
++#include "efi.h"
+ #include "error.h"
+ #include "find.h"
+ #include "math.h"
+@@ -12,8 +14,6 @@
+ #define PMD_SIZE	(_AC(1, UL) << PMD_SHIFT)
+ #define PMD_MASK	(~(PMD_SIZE - 1))
+ 
+-extern struct boot_params *boot_params;
+-
+ /*
+  * accept_memory() and process_unaccepted_memory() called from EFI stub which
+  * runs before decompresser and its early_tdx_detect().
+@@ -57,66 +57,77 @@ static inline void __accept_memory(phys_addr_t start, phys_addr_t end)
+  *
+  * The function will never reach the bitmap_set() with zero bits to set.
+  */
+-void process_unaccepted_memory(struct boot_params *params, u64 start, u64 end)
++void process_unaccepted_memory(u64 start, u64 end)
+ {
++	u64 unit_size = unaccepted_table->unit_size;
++	u64 unit_mask = unaccepted_table->unit_size - 1;
++	u64 bitmap_size = unaccepted_table->size;
++
+ 	/*
+ 	 * Ensure that at least one bit will be set in the bitmap by
+-	 * immediately accepting all regions under 2*PMD_SIZE.  This is
++	 * immediately accepting all regions under 2*unit_size.  This is
+ 	 * imprecise and may immediately accept some areas that could
+ 	 * have been represented in the bitmap.  But, results in simpler
+ 	 * code below
+ 	 *
+-	 * Consider case like this:
++	 * Consider case like this (assuming unit_size == 2MB):
+ 	 *
+ 	 * | 4k | 2044k |    2048k   |
+ 	 * ^ 0x0        ^ 2MB        ^ 4MB
+ 	 *
+ 	 * Only the first 4k has been accepted. The 0MB->2MB region can not be
+ 	 * represented in the bitmap. The 2MB->4MB region can be represented in
+-	 * the bitmap. But, the 0MB->4MB region is <2*PMD_SIZE and will be
++	 * the bitmap. But, the 0MB->4MB region is <2*unit_size and will be
+ 	 * immediately accepted in its entirety.
+ 	 */
+-	if (end - start < 2 * PMD_SIZE) {
++	if (end - start < 2 * unit_size) {
+ 		__accept_memory(start, end);
+ 		return;
+ 	}
+ 
+ 	/*
+ 	 * No matter how the start and end are aligned, at least one unaccepted
+-	 * PMD_SIZE area will remain to be marked in the bitmap.
++	 * unit_size area will remain to be marked in the bitmap.
+ 	 */
+ 
+-	/* Immediately accept a <PMD_SIZE piece at the start: */
+-	if (start & ~PMD_MASK) {
+-		__accept_memory(start, round_up(start, PMD_SIZE));
+-		start = round_up(start, PMD_SIZE);
++	/* Immediately accept a <unit_size piece at the start: */
++	if (start & unit_mask) {
++		__accept_memory(start, round_up(start, unit_size));
++		start = round_up(start, unit_size);
+ 	}
+ 
+-	/* Immediately accept a <PMD_SIZE piece at the end: */
+-	if (end & ~PMD_MASK) {
+-		__accept_memory(round_down(end, PMD_SIZE), end);
+-		end = round_down(end, PMD_SIZE);
++	/* Immediately accept a <unit_size piece at the end: */
++	if (end & unit_mask) {
++		__accept_memory(round_down(end, unit_size), end);
++		end = round_down(end, unit_size);
++	}
++
++	/* Accept everything that cannot be recorded into the bitmap */
++	if (end > bitmap_size * unit_size * BITS_PER_BYTE) {
++		__accept_memory(bitmap_size * unit_size * BITS_PER_BYTE, end);
++		end = bitmap_size * unit_size * BITS_PER_BYTE;
+ 	}
+ 
+ 	/*
+-	 * 'start' and 'end' are now both PMD-aligned.
++	 * 'start' and 'end' are now both unit_size-aligned.
+ 	 * Record the range as being unaccepted:
+ 	 */
+-	bitmap_set((unsigned long *)params->unaccepted_memory,
+-		   start / PMD_SIZE, (end - start) / PMD_SIZE);
++	bitmap_set((unsigned long *)unaccepted_table->bitmap,
++		   start / unit_size, (end - start) / unit_size);
+ }
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end)
+ {
+ 	unsigned long range_start, range_end;
+ 	unsigned long *bitmap, bitmap_size;
++	u64 unit_size = unaccepted_table->unit_size;
+ 
+-	bitmap = (unsigned long *)boot_params->unaccepted_memory;
+-	range_start = start / PMD_SIZE;
+-	bitmap_size = DIV_ROUND_UP(end, PMD_SIZE);
++	bitmap = (unsigned long *)unaccepted_table->bitmap;
++	range_start = start / unit_size;
++	bitmap_size = DIV_ROUND_UP(end, unit_size);
+ 
+ 	for_each_set_bitrange_from(range_start, range_end, bitmap, bitmap_size) {
+-		__accept_memory(range_start * PMD_SIZE, range_end * PMD_SIZE);
++		__accept_memory(range_start * unit_size, range_end * unit_size);
+ 		bitmap_clear(bitmap, range_start, range_end - range_start);
+ 	}
+ }
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index 186bfd53e042..f481f0b30873 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -456,7 +456,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ 
+ 	debug_putstr("\nDecompressing Linux... ");
+ 
+-	if (boot_params->unaccepted_memory) {
++	if (unaccepted_table) {
+ 		debug_putstr("Accepting memory... ");
+ 		accept_memory(__pa(output), __pa(output) + needed_size);
+ 	}
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+index 89fc91c61560..9f695bdde01c 100644
+--- a/arch/x86/include/asm/unaccepted_memory.h
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -3,9 +3,7 @@
+ #ifndef _ASM_X86_UNACCEPTED_MEMORY_H
+ #define _ASM_X86_UNACCEPTED_MEMORY_H
+ 
+-struct boot_params;
+-
+-void process_unaccepted_memory(struct boot_params *params, u64 start, u64 num);
++void process_unaccepted_memory(u64 start, u64 num);
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 
+diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
+index 630a54046af0..01d19fc22346 100644
+--- a/arch/x86/include/uapi/asm/bootparam.h
++++ b/arch/x86/include/uapi/asm/bootparam.h
+@@ -189,7 +189,7 @@ struct boot_params {
+ 	__u64  tboot_addr;				/* 0x058 */
+ 	struct ist_info ist_info;			/* 0x060 */
+ 	__u64 acpi_rsdp_addr;				/* 0x070 */
+-	__u64 unaccepted_memory;			/* 0x078 */
++	__u8  _pad3[8];					/* 0x078 */
+ 	__u8  hd0_info[16];	/* obsolete! */		/* 0x080 */
+ 	__u8  hd1_info[16];	/* obsolete! */		/* 0x090 */
+ 	struct sys_desc_table sys_desc_table; /* obsolete! */	/* 0x0a0 */
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index 483c36a28d2e..8ee6b756712f 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -16,6 +16,7 @@
+ #include <linux/firmware-map.h>
+ #include <linux/sort.h>
+ #include <linux/memory_hotplug.h>
++#include <linux/efi.h>
+ 
+ #include <asm/e820/api.h>
+ #include <asm/setup.h>
+@@ -1324,13 +1325,15 @@ void __init e820__memblock_setup(void)
+ 	 * e820_table is not finalized and e820__end_of_ram_pfn() cannot be
+ 	 * used to get correct RAM size.
+ 	 */
+-	if (boot_params.unaccepted_memory) {
++	if (efi.unaccepted != EFI_INVALID_TABLE_ADDR) {
++		struct efi_unaccepted_memory *unaccepted;
+ 		unsigned long size;
+ 
+-		/* One bit per 2MB */
+-		size = DIV_ROUND_UP(e820__end_of_ram_pfn() * PAGE_SIZE,
+-				    PMD_SIZE * BITS_PER_BYTE);
+-		memblock_reserve(boot_params.unaccepted_memory, size);
++		unaccepted = __va(efi.unaccepted);
++
++		size = sizeof(struct efi_unaccepted_memory);
++		size += unaccepted->size;
++		memblock_reserve(efi.unaccepted, size);
+ 	}
+ 
+ 	/*
+diff --git a/arch/x86/mm/unaccepted_memory.c b/arch/x86/mm/unaccepted_memory.c
+index f61174d4c3cb..ec2b616ef32e 100644
+--- a/arch/x86/mm/unaccepted_memory.c
++++ b/arch/x86/mm/unaccepted_memory.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++#include <linux/efi.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
+ #include <linux/pfn.h>
+@@ -14,15 +15,19 @@ static DEFINE_SPINLOCK(unaccepted_memory_lock);
+ 
+ void accept_memory(phys_addr_t start, phys_addr_t end)
+ {
++	struct efi_unaccepted_memory *unaccepted;
+ 	unsigned long range_start, range_end;
+-	unsigned long *bitmap;
+-	unsigned long flags;
++	unsigned long flags, *bitmap;
++	u64 unit_size;
+ 
+-	if (!boot_params.unaccepted_memory)
++	if (efi.unaccepted == EFI_INVALID_TABLE_ADDR)
+ 		return;
+ 
+-	bitmap = __va(boot_params.unaccepted_memory);
+-	range_start = start / PMD_SIZE;
++	unaccepted = __va(efi.unaccepted);
++	unit_size = unaccepted->unit_size;
++	bitmap = (unsigned long *)unaccepted->bitmap;
++
++	range_start = start / unit_size;
+ 
+ 	/*
+ 	 * load_unaligned_zeropad() can lead to unwanted loads across page
+@@ -42,23 +47,25 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 	 * used:
+ 	 *
+ 	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
+-	 *    checks up to end+2M if 'end' is aligned on a 2M boundary.
++	 *    checks up to end+unit_size if 'end' is aligned on a unit_size
++	 *    boundary.
+ 	 *
+-	 * 2. Implicitly extend accept_memory(start, end) to end+2M if 'end' is
+-	 *    aligned on a 2M boundary. (immediately following this comment)
++	 * 2. Implicitly extend accept_memory(start, end) to end+unit_size if
++	 *    'end' is aligned on a unit_size boundary. (immediately following
++	 *    this comment)
+ 	 */
+-	if (!(end % PMD_SIZE))
+-		end += PMD_SIZE;
++	if (!(end % unit_size))
++		end += unit_size;
+ 
+ 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+ 	for_each_set_bitrange_from(range_start, range_end, bitmap,
+-				   DIV_ROUND_UP(end, PMD_SIZE)) {
++				   DIV_ROUND_UP(end, unit_size)) {
+ 		unsigned long len = range_end - range_start;
+ 
+ 		/* Platform-specific memory-acceptance call goes here */
+ 		if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+-			tdx_accept_memory(range_start * PMD_SIZE,
+-					  range_end * PMD_SIZE);
++			tdx_accept_memory(range_start * unit_size,
++					  range_end * unit_size);
+ 		} else {
+ 			panic("Cannot accept memory: unknown platform\n");
+ 		}
+@@ -70,30 +77,33 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+ 
+ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
+ {
+-	unsigned long *bitmap;
+-	unsigned long flags;
++	struct efi_unaccepted_memory *unaccepted;
++	unsigned long flags, *bitmap;
+ 	bool ret = false;
++	u64 unit_size;
+ 
+-	if (!boot_params.unaccepted_memory)
++	if (efi.unaccepted == EFI_INVALID_TABLE_ADDR)
+ 		return 0;
+ 
+-	bitmap = __va(boot_params.unaccepted_memory);
++	unaccepted = __va(efi.unaccepted);
++	unit_size = unaccepted->unit_size;
++	bitmap = (unsigned long *)unaccepted->bitmap;
+ 
+ 	/*
+ 	 * Also consider the unaccepted state of the *next* page. See fix #1 in
+ 	 * the comment on load_unaligned_zeropad() in accept_memory().
+ 	 */
+-	if (!(end % PMD_SIZE))
+-		end += PMD_SIZE;
++	if (!(end % unit_size))
++		end += unit_size;
+ 
+ 	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+ 	while (start < end) {
+-		if (test_bit(start / PMD_SIZE, bitmap)) {
++		if (test_bit(start / unit_size, bitmap)) {
+ 			ret = true;
+ 			break;
+ 		}
+ 
+-		start += PMD_SIZE;
++		start += unit_size;
+ 	}
+ 	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+ 
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 7dce06e419c5..e15a2005ed93 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -50,6 +50,9 @@ struct efi __read_mostly efi = {
+ #ifdef CONFIG_EFI_COCO_SECRET
+ 	.coco_secret		= EFI_INVALID_TABLE_ADDR,
+ #endif
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	.unaccepted		= EFI_INVALID_TABLE_ADDR,
++#endif
+ };
+ EXPORT_SYMBOL(efi);
+ 
+@@ -605,6 +608,9 @@ static const efi_config_table_type_t common_tables[] __initconst = {
+ #ifdef CONFIG_EFI_COCO_SECRET
+ 	{LINUX_EFI_COCO_SECRET_AREA_GUID,	&efi.coco_secret,	"CocoSecret"	},
+ #endif
++#ifdef CONFIG_UNACCEPTED_MEMORY
++	{LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID,	&efi.unaccepted,	"Unaccepted"	},
++#endif
+ #ifdef CONFIG_EFI_GENERIC_STUB
+ 	{LINUX_EFI_SCREEN_INFO_TABLE_GUID,	&screen_info_table			},
+ #endif
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 1afe7b5b02e1..4953b40f30c3 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -26,6 +26,7 @@ const efi_system_table_t *efi_system_table;
+ const efi_dxe_services_table_t *efi_dxe_table;
+ u32 image_offset __section(".data");
+ static efi_loaded_image_t *image = NULL;
++struct efi_unaccepted_memory *unaccepted_table;
+ 
+ static efi_status_t
+ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+@@ -621,7 +622,7 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
+ 				continue;
+ 			}
+ 			e820_type = E820_TYPE_RAM;
+-			process_unaccepted_memory(params, d->phys_addr,
++			process_unaccepted_memory(d->phys_addr,
+ 						  d->phys_addr + PAGE_SIZE * d->num_pages);
+ 			break;
+ 		default:
+@@ -692,12 +693,22 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
+ 					       __u32 nr_desc,
+ 					       struct efi_boot_memmap *map)
+ {
+-	unsigned long *mem = NULL;
+-	u64 size, max_addr = 0;
++	efi_guid_t unaccepted_table_guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
++	u64 bitmap_size, max_addr = 0;
+ 	efi_status_t status;
+ 	bool found = false;
+ 	int i;
+ 
++	/* Check if the table is already installed */
++	unaccepted_table = get_efi_config_table(unaccepted_table_guid);
++	if (unaccepted_table) {
++		if (unaccepted_table->version != 0) {
++			efi_err("Unknown version of unaccepted memory tatble\n");
++			return EFI_UNSUPPORTED;
++		}
++		return EFI_SUCCESS;
++	}
++
+ 	/* Check if there's any unaccepted memory and find the max address */
+ 	for (i = 0; i < nr_desc; i++) {
+ 		efi_memory_desc_t *d;
+@@ -710,11 +721,6 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
+ 			max_addr = d->phys_addr + d->num_pages * PAGE_SIZE;
+ 	}
+ 
+-	if (!found) {
+-		params->unaccepted_memory = 0;
+-		return EFI_SUCCESS;
+-	}
+-
+ 	/*
+ 	 * range_contains_unaccepted_memory() may need to check one 2M chunk
+ 	 * beyond the end of RAM to deal with load_unaligned_zeropad(). Make
+@@ -736,11 +742,26 @@ static efi_status_t allocate_unaccepted_bitmap(struct boot_params *params,
+ 	 * The bitmap will be populated in setup_e820() according to the memory
+ 	 * map after efi_exit_boot_services().
+ 	 */
+-	size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
+-	status = efi_allocate_pages(size, (unsigned long *)&mem, ULONG_MAX);
+-	if (status == EFI_SUCCESS) {
+-		memset(mem, 0, size);
+-		params->unaccepted_memory = (unsigned long)mem;
++	bitmap_size = DIV_ROUND_UP(max_addr, PMD_SIZE * BITS_PER_BYTE);
++
++	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
++			     sizeof(*unaccepted_table) + bitmap_size,
++			     (void **)&unaccepted_table);
++	if (status != EFI_SUCCESS) {
++		efi_err("Failed to allocate unaccepted memory config table\n");
++		return status;
++	}
++
++	unaccepted_table->version = 0;
++	unaccepted_table->unit_size = PMD_SIZE;
++	unaccepted_table->size = bitmap_size;
++	memset(unaccepted_table->bitmap, 0, bitmap_size);
++
++	status = efi_bs_call(install_configuration_table,
++			     &unaccepted_table_guid, unaccepted_table);
++	if (status != EFI_SUCCESS) {
++		efi_bs_call(free_pool, unaccepted_table);
++		efi_err("Failed to install unaccepted memory config table!\n");
+ 	}
+ 
+ 	return status;
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index efbe14641638..f765266a81b3 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -418,6 +418,7 @@ void efi_native_runtime_setup(void);
+ #define LINUX_EFI_MOK_VARIABLE_TABLE_GUID	EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+ #define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+ #define LINUX_EFI_BOOT_MEMMAP_GUID		EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
++#define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+ 
+ #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+ 
+@@ -535,6 +536,13 @@ struct efi_boot_memmap {
+ 	efi_memory_desc_t	map[];
+ };
+ 
++struct efi_unaccepted_memory {
++	u32 version;
++	u32 unit_size;
++	u64 size;
++	u64 bitmap[];
++};
++
+ /*
+  * Architecture independent structure for describing a memory map for the
+  * benefit of efi_memmap_init_early(), and for passing context between
+@@ -637,6 +645,7 @@ extern struct efi {
+ 	unsigned long			tpm_final_log;		/* TPM2 Final Events Log table */
+ 	unsigned long			mokvar_table;		/* MOK variable config table */
+ 	unsigned long			coco_secret;		/* Confidential computing secret table */
++	unsigned long			unaccepted;
+ 
+ 	efi_get_time_t			*get_time;
+ 	efi_set_time_t			*set_time;
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
