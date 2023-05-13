@@ -1,34 +1,34 @@
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4691D8F51
-	for <linux-coco@lists.linux.dev>; Sat, 13 May 2023 22:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180822262F
+	for <linux-coco@lists.linux.dev>; Sat, 13 May 2023 22:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684015485; x=1715551485;
+  t=1684015487; x=1715551487;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=74C6EjHk9vtTut2nxMktdKwMlSXxa+Ikleh1JSyXolE=;
-  b=F/VkRRJ4Pvq9ReMU5ao2Y6fR2j6BxhauN2iVW7Z5Tuy2H9RS2MPBe5cX
-   7znmlgWYD7ds3VcRaZZGipnLCokVPyiUmy08ReI4bqt61TMliXW8YK8Gy
-   lhfGxIlQasD+jLWXwVgZlF1yvyMPo+D6jOkjDGuR9XtyDNnTHrGYLaVXy
-   JJuLFC4WdnWtKsFbxoek/s3Jo2+QcoaFM0djiL/kGUUlrGDHK0f+rF26x
-   TTpMhAsb4+kzUMS+74711c65lh3n2b0mqpkQaWI2lUkIT7l4EjQc8aGoc
-   QIO3LRD9eX9InvO2mPhZGsxt+p3RLkrWhS2xtlrNkgxTwQV+c7B5XQEDw
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="379142509"
+  bh=F0wEDPSvMabnYNajFJWO6701ciPheAFu0TDqu98qRss=;
+  b=J/uW3EO18hTRHmmMi1OdEsEWjb0DiKO5ACJiw88V3MvZ1aDNWDQs46Sj
+   BwB4vMFRMUzzRWTiY6LYQzHqUfKRuP8iScpIKP1azR4gpWBmA4ag0jZ/y
+   rmNByXhjMfvd8XVerO4GTrC0vJ0KsFyHVavpJWuKGvur4XRpQgs6VwI2H
+   6mVRNzxt1RMJZ31P1pWp0vVDPKGjfpdmqNSLwgxpYBvGuylDmWb6Bnue0
+   Bm5Bablh/EZjH9Y+1pfUWEaXutevRY6H6LSBLkGTO3wA+XT0KEdEjKlGv
+   CLGEhN+e/zFEjUDqZUXSKFsvKXLPEAkGA5Ygm3mLxLg+FUJFAg8xA3FzA
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="437325176"
 X-IronPort-AV: E=Sophos;i="5.99,273,1677571200"; 
-   d="scan'208";a="379142509"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2023 15:04:44 -0700
+   d="scan'208";a="437325176"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2023 15:04:43 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="733429545"
+X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="790199649"
 X-IronPort-AV: E=Sophos;i="5.99,273,1677571200"; 
-   d="scan'208";a="733429545"
+   d="scan'208";a="790199649"
 Received: from sorinaau-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.62.145])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2023 15:04:36 -0700
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2023 15:04:36 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 051AE10CF7A; Sun, 14 May 2023 01:04:34 +0300 (+03)
+	id E090C10CF78; Sun, 14 May 2023 01:04:33 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -61,10 +61,11 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv11 4/9] x86/boot/compressed: Handle unaccepted memory
-Date: Sun, 14 May 2023 01:04:13 +0300
-Message-Id: <20230513220418.19357-5-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCHv11 2/9] efi/x86: Get full memory map in allocate_e820()
+Date: Sun, 14 May 2023 01:04:11 +0300
+Message-Id: <20230513220418.19357-3-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
 References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
@@ -76,122 +77,69 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The firmware will pre-accept the memory used to run the stub. But, the
-stub is responsible for accepting the memory into which it decompresses
-the main kernel. Accept memory just before decompression starts.
+Currently allocate_e820() is only interested in the size of map and size
+of memory descriptor to determine how many e820 entries the kernel
+needs.
 
-The stub is also responsible for choosing a physical address in which to
-place the decompressed kernel image. The KASLR mechanism will randomize
-this physical address. Since the unaccepted memory region is relatively
-small, KASLR would be quite ineffective if it only used the pre-accepted
-area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
-entire physical address space by also including EFI_UNACCEPTED_MEMORY.
+UEFI Specification version 2.9 introduces a new memory type --
+unaccepted memory. To track unaccepted memory kernel needs to allocate
+a bitmap. The size of the bitmap is dependent on the maximum physical
+address present in the system. A full memory map is required to find
+the maximum address.
+
+Modify allocate_e820() to get a full memory map.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/boot/compressed/efi.h   |  1 +
- arch/x86/boot/compressed/kaslr.c | 35 +++++++++++++++++++++-----------
- arch/x86/boot/compressed/misc.c  |  6 ++++++
- arch/x86/boot/compressed/misc.h  |  6 ++++++
- 4 files changed, 36 insertions(+), 12 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 26 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
-index 7db2f41b54cd..cf475243b6d5 100644
---- a/arch/x86/boot/compressed/efi.h
-+++ b/arch/x86/boot/compressed/efi.h
-@@ -32,6 +32,7 @@ typedef	struct {
- } efi_table_hdr_t;
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index a0bfd31358ba..fff81843169c 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -681,28 +681,24 @@ static efi_status_t allocate_e820(struct boot_params *params,
+ 				  struct setup_data **e820ext,
+ 				  u32 *e820ext_size)
+ {
+-	unsigned long map_size, desc_size, map_key;
++	struct efi_boot_memmap *map;
+ 	efi_status_t status;
+-	__u32 nr_desc, desc_version;
++	__u32 nr_desc;
  
- #define EFI_CONVENTIONAL_MEMORY		 7
-+#define EFI_UNACCEPTED_MEMORY		15
+-	/* Only need the size of the mem map and size of each mem descriptor */
+-	map_size = 0;
+-	status = efi_bs_call(get_memory_map, &map_size, NULL, &map_key,
+-			     &desc_size, &desc_version);
+-	if (status != EFI_BUFFER_TOO_SMALL)
+-		return (status != EFI_SUCCESS) ? status : EFI_UNSUPPORTED;
++	status = efi_get_memory_map(&map, false);
++	if (status != EFI_SUCCESS)
++		return status;
  
- #define EFI_MEMORY_MORE_RELIABLE \
- 				((u64)0x0000000000010000ULL)	/* higher reliability */
-diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 454757fbdfe5..749f0fe7e446 100644
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -672,6 +672,28 @@ static bool process_mem_region(struct mem_vector *region,
+-	nr_desc = map_size / desc_size + EFI_MMAP_NR_SLACK_SLOTS;
+-
+-	if (nr_desc > ARRAY_SIZE(params->e820_table)) {
+-		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table);
++	nr_desc = map->map_size / map->desc_size;
++	if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
++		u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
++			EFI_MMAP_NR_SLACK_SLOTS;
+ 
+ 		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+-		if (status != EFI_SUCCESS)
+-			return status;
+ 	}
+ 
+-	return EFI_SUCCESS;
++	efi_bs_call(free_pool, map);
++	return status;
  }
  
- #ifdef CONFIG_EFI
-+
-+/*
-+ * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if supported) are
-+ * guaranteed to be free.
-+ *
-+ * It is more conservative in picking free memory than the EFI spec allows:
-+ *
-+ * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also free memory
-+ * and thus available to place the kernel image into, but in practice there's
-+ * firmware where using that memory leads to crashes.
-+ */
-+static inline bool memory_type_is_free(efi_memory_desc_t *md)
-+{
-+	if (md->type == EFI_CONVENTIONAL_MEMORY)
-+		return true;
-+
-+	if (md->type == EFI_UNACCEPTED_MEMORY)
-+		return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY);
-+
-+	return false;
-+}
-+
- /*
-  * Returns true if we processed the EFI memmap, which we prefer over the E820
-  * table if it is available.
-@@ -716,18 +738,7 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
- 	for (i = 0; i < nr_desc; i++) {
- 		md = efi_early_memdesc_ptr(pmap, e->efi_memdesc_size, i);
- 
--		/*
--		 * Here we are more conservative in picking free memory than
--		 * the EFI spec allows:
--		 *
--		 * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also
--		 * free memory and thus available to place the kernel image into,
--		 * but in practice there's firmware where using that memory leads
--		 * to crashes.
--		 *
--		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
--		 */
--		if (md->type != EFI_CONVENTIONAL_MEMORY)
-+		if (!memory_type_is_free(md))
- 			continue;
- 
- 		if (efi_soft_reserve_enabled() &&
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 014ff222bf4b..eb8df0d4ad51 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -455,6 +455,12 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- #endif
- 
- 	debug_putstr("\nDecompressing Linux... ");
-+
-+	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
-+		debug_putstr("Accepting memory... ");
-+		accept_memory(__pa(output), __pa(output) + needed_size);
-+	}
-+
- 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
- 			NULL, error);
- 	entry_offset = parse_elf(output);
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 2f155a0e3041..9663d1839f54 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -247,4 +247,10 @@ static inline unsigned long efi_find_vendor_table(struct boot_params *bp,
- }
- #endif /* CONFIG_EFI */
- 
-+#ifdef CONFIG_UNACCEPTED_MEMORY
-+void accept_memory(phys_addr_t start, phys_addr_t end);
-+#else
-+static inline void accept_memory(phys_addr_t start, phys_addr_t end) {}
-+#endif
-+
- #endif /* BOOT_COMPRESSED_MISC_H */
+ struct exit_boot_struct {
 -- 
 2.39.3
 
