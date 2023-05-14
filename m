@@ -1,253 +1,654 @@
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C1A9471
-	for <linux-coco@lists.linux.dev>; Sat, 13 May 2023 22:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684015495; x=1715551495;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Eu57mUO9ct2ICW4Etq/GrS2vGWKQMEDS8IVWtzUCpBo=;
-  b=jF83OPTXPBY+iPNojRtqdvNSc6++Gru1HcUb8IOS8SxgsoSAvwQ/j9Tm
-   zs++mxqjVLuGvnSkbVf3M4FlOZdTJvWWyavyHC3YerpxqJj/u/uKhUqsY
-   kbLF46Ry5n9huWTNE2XEzQx+GH0yS14LSn3ZS4/+fuVgg6KCCKwAb8daF
-   0qAF0b9O1c05sru2ykcEkRQlyhG+i9VMRyOH+4XAL3gQ2njyfINNez1dL
-   Eycl9qg8yzh4QJq8kPFCsmmR1zVRMBzukipj2SRGrfyqxYJvtqANAhHyi
-   DOUYNKbKXsA+XkQnm2blpoYNgbVW0bX2tOWUoEOo1bRlUCkEhM32zaPfe
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="437325213"
-X-IronPort-AV: E=Sophos;i="5.99,273,1677571200"; 
-   d="scan'208";a="437325213"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2023 15:04:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10709"; a="790199676"
-X-IronPort-AV: E=Sophos;i="5.99,273,1677571200"; 
-   d="scan'208";a="790199676"
-Received: from sorinaau-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.62.145])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2023 15:04:45 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 256A710CF7D; Sun, 14 May 2023 01:04:34 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dario Faggioli <dfaggioli@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	marcelo.cerri@canonical.com,
-	tim.gardner@canonical.com,
-	khalid.elmously@canonical.com,
-	philip.cox@canonical.com,
-	aarcange@redhat.com,
-	peterx@redhat.com,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCHv11 7/9] x86/tdx: Make _tdx_hypercall() and __tdx_module_call() available in boot stub
-Date: Sun, 14 May 2023 01:04:16 +0300
-Message-Id: <20230513220418.19357-8-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
-References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA88822636
+	for <linux-coco@lists.linux.dev>; Sun, 14 May 2023 05:08:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1684040905;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=++tDIMnKx9d8saZAQTsbmwwAGD4Au0W+SHxSlymtD3I=;
+	b=hS4aP0uwntBPGhx9wevnidq8o++JMdQ8LvOBOrkf4Z8EzEIH56hCxqGG4duSEbyuP715yN
+	gt2QGKQXCrjMqAZy0Gau6m+hPzZdH5w/kJ7U8oy4xhFEkHA77LlyAbLCyQRIjk+E1F0pX6
+	VcBgEAfbdm0roKI5r1wQndGI71dSUTU=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-314-GgJQLNqnPGmYzbn6jXLIfw-1; Sun, 14 May 2023 01:08:24 -0400
+X-MC-Unique: GgJQLNqnPGmYzbn6jXLIfw-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-4f2732c09feso1516847e87.2
+        for <linux-coco@lists.linux.dev>; Sat, 13 May 2023 22:08:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684040898; x=1686632898;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=++tDIMnKx9d8saZAQTsbmwwAGD4Au0W+SHxSlymtD3I=;
+        b=SDWYdaqyMG4VROIFMl9Eb3aXIvsCaMuccQNyTQYYNRQQn73uL6Inz0Qjw4iKRblda0
+         uc9kutV4PyOwBf4uSH1uyIb6NMO7G8gT3c+VXMN1DgOkBUFpf5J/hLgjAosdaD985Nhh
+         OL4n/3lTxH6J1WKBo2pGEYkdVYJ42dixtuCPIEutkZETBfhyTosqhOLe8YupkhfEHAPe
+         +aoMb9iCFr64461bpb8R0tZ8/zeq8jucEFK1gHXzrwLgsk4iL2sfzQvNgoMAMLIf5YT3
+         eAAbEMEI8xopVaK7UWbYDjk+DSLlwYayY646E/1tyaUGyUrTsSvkmwG83g/r8CP6LI2F
+         fHMw==
+X-Gm-Message-State: AC+VfDym/nWiWBr/TV0i/rsJPsxL7PvfRp5VQYm7dzZ6LNl/EwkR/eQl
+	MNZKCZAa8nwJwJkbfciBPAMeaAYplxIMIsD+oknQbHpU7/k67lf4dhiEndgbOiPgVyM0ROSrP2a
+	GgyaIoXRnhJUFlrbU/JvS
+X-Received: by 2002:ac2:533c:0:b0:4ef:fddf:d5fa with SMTP id f28-20020ac2533c000000b004effddfd5famr4306548lfh.27.1684040897724;
+        Sat, 13 May 2023 22:08:17 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6O2YNWfKwLqG8DKI2C59jcd0Y7CBWIt3BlAAW5Unfj00cDOTvMu7Ku8/ZkcQlOst8W89yk3A==
+X-Received: by 2002:ac2:533c:0:b0:4ef:fddf:d5fa with SMTP id f28-20020ac2533c000000b004effddfd5famr4306529lfh.27.1684040897323;
+        Sat, 13 May 2023 22:08:17 -0700 (PDT)
+Received: from [192.168.1.121] (85-23-48-202.bb.dnainternet.fi. [85.23.48.202])
+        by smtp.gmail.com with ESMTPSA id r4-20020ac24d04000000b004f2794dcb4asm772284lfi.255.2023.05.13.22.08.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 May 2023 22:08:16 -0700 (PDT)
+Message-ID: <9549d984-e581-048d-95a3-7c54acd70fb8@redhat.com>
+Date: Sun, 14 May 2023 08:08:07 +0300
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCHv11 3/9] efi/libstub: Implement support for unaccepted
+ memory
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, Sean Christopherson
+ <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@redhat.com>,
+ Mel Gorman <mgorman@techsingularity.net>, marcelo.cerri@canonical.com,
+ tim.gardner@canonical.com, khalid.elmously@canonical.com,
+ philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
+ x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
+ <20230513220418.19357-4-kirill.shutemov@linux.intel.com>
+From: =?UTF-8?Q?Mika_Penttil=c3=a4?= <mpenttil@redhat.com>
+In-Reply-To: <20230513220418.19357-4-kirill.shutemov@linux.intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Memory acceptance requires a hypercall and one or multiple module calls.
+Hi,
 
-Make helpers for the calls available in boot stub. It has to accept
-memory where kernel image and initrd are placed.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
----
- arch/x86/coco/tdx/tdx.c           | 32 -------------------
- arch/x86/include/asm/shared/tdx.h | 51 +++++++++++++++++++++++++++++++
- arch/x86/include/asm/tdx.h        | 19 ------------
- 3 files changed, 51 insertions(+), 51 deletions(-)
+On 14.5.2023 1.04, Kirill A. Shutemov wrote:
+> UEFI Specification version 2.9 introduces the concept of memory
+> acceptance: Some Virtual Machine platforms, such as Intel TDX or AMD
+> SEV-SNP, requiring memory to be accepted before it can be used by the
+> guest. Accepting happens via a protocol specific for the Virtual
+> Machine platform.
+> 
+> Accepting memory is costly and it makes VMM allocate memory for the
+> accepted guest physical address range. It's better to postpone memory
+> acceptance until memory is needed. It lowers boot time and reduces
+> memory overhead.
+> 
+> The kernel needs to know what memory has been accepted. Firmware
+> communicates this information via memory map: a new memory type --
+> EFI_UNACCEPTED_MEMORY -- indicates such memory.
+> 
+> Range-based tracking works fine for firmware, but it gets bulky for
+> the kernel: e820 (or whatever the arch uses) has to be modified on every
+> page acceptance. It leads to table fragmentation and there's a limited
+> number of entries in the e820 table.
+> 
+> Another option is to mark such memory as usable in e820 and track if the
+> range has been accepted in a bitmap. One bit in the bitmap represents a
+> naturally aligned power-2-sized region of address space -- unit.
+> 
+> For x86, unit size is 2MiB: 4k of the bitmap is enough to track 64GiB or
+> physical address space.
+> 
+> In the worst-case scenario -- a huge hole in the middle of the
+> address space -- It needs 256MiB to handle 4PiB of the address
+> space.
+> 
+> Any unaccepted memory that is not aligned to unit_size gets accepted
+> upfront.
+> 
+> The bitmap is allocated and constructed in the EFI stub and passed down
+> to the kernel via EFI configuration table. allocate_e820() allocates the
+> bitmap if unaccepted memory is present, according to the size of
+> unaccepted region.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>   arch/x86/boot/compressed/Makefile             |   1 +
+>   arch/x86/boot/compressed/mem.c                |   9 +
+>   arch/x86/include/asm/efi.h                    |   2 +
+>   drivers/firmware/efi/Kconfig                  |  14 ++
+>   drivers/firmware/efi/efi.c                    |   1 +
+>   drivers/firmware/efi/libstub/Makefile         |   2 +
+>   drivers/firmware/efi/libstub/bitmap.c         |  41 ++++
+>   drivers/firmware/efi/libstub/efistub.h        |   6 +
+>   drivers/firmware/efi/libstub/find.c           |  43 ++++
+>   .../firmware/efi/libstub/unaccepted_memory.c  | 222 ++++++++++++++++++
+>   drivers/firmware/efi/libstub/x86-stub.c       |  13 +
+>   include/linux/efi.h                           |  12 +-
+>   12 files changed, 365 insertions(+), 1 deletion(-)
+>   create mode 100644 arch/x86/boot/compressed/mem.c
+>   create mode 100644 drivers/firmware/efi/libstub/bitmap.c
+>   create mode 100644 drivers/firmware/efi/libstub/find.c
+>   create mode 100644 drivers/firmware/efi/libstub/unaccepted_memory.c
+> 
+> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> index 6b6cfe607bdb..cc4978123c30 100644
+> --- a/arch/x86/boot/compressed/Makefile
+> +++ b/arch/x86/boot/compressed/Makefile
+> @@ -107,6 +107,7 @@ endif
+>   
+>   vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+>   vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
+> +vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
+>   
+>   vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+>   vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
+> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+> new file mode 100644
+> index 000000000000..67594fcb11d9
+> --- /dev/null
+> +++ b/arch/x86/boot/compressed/mem.c
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#include "error.h"
+> +
+> +void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +	/* Platform-specific memory-acceptance call goes here */
+> +	error("Cannot accept memory");
+> +}
+> diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
+> index 419280d263d2..8b4be7cecdb8 100644
+> --- a/arch/x86/include/asm/efi.h
+> +++ b/arch/x86/include/asm/efi.h
+> @@ -31,6 +31,8 @@ extern unsigned long efi_mixed_mode_stack_pa;
+>   
+>   #define ARCH_EFI_IRQ_FLAGS_MASK	X86_EFLAGS_IF
+>   
+> +#define EFI_UNACCEPTED_UNIT_SIZE PMD_SIZE
+> +
+>   /*
+>    * The EFI services are called through variadic functions in many cases. These
+>    * functions are implemented in assembler and support only a fixed number of
+> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
+> index 043ca31c114e..231f1c70d1db 100644
+> --- a/drivers/firmware/efi/Kconfig
+> +++ b/drivers/firmware/efi/Kconfig
+> @@ -269,6 +269,20 @@ config EFI_COCO_SECRET
+>   	  virt/coco/efi_secret module to access the secrets, which in turn
+>   	  allows userspace programs to access the injected secrets.
+>   
+> +config UNACCEPTED_MEMORY
+> +	bool
+> +	depends on EFI_STUB
+> +	help
+> +	   Some Virtual Machine platforms, such as Intel TDX, require
+> +	   some memory to be "accepted" by the guest before it can be used.
+> +	   This mechanism helps prevent malicious hosts from making changes
+> +	   to guest memory.
+> +
+> +	   UEFI specification v2.9 introduced EFI_UNACCEPTED_MEMORY memory type.
+> +
+> +	   This option adds support for unaccepted memory and makes such memory
+> +	   usable by the kernel.
+> +
+>   config EFI_EMBEDDED_FIRMWARE
+>   	bool
+>   	select CRYPTO_LIB_SHA256
+> diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+> index abeff7dc0b58..7dce06e419c5 100644
+> --- a/drivers/firmware/efi/efi.c
+> +++ b/drivers/firmware/efi/efi.c
+> @@ -843,6 +843,7 @@ static __initdata char memory_type_name[][13] = {
+>   	"MMIO Port",
+>   	"PAL Code",
+>   	"Persistent",
+> +	"Unaccepted",
+>   };
+>   
+>   char * __init efi_md_typeattr_format(char *buf, size_t size,
+> diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+> index 3abb2b357482..16d64a34d1e1 100644
+> --- a/drivers/firmware/efi/libstub/Makefile
+> +++ b/drivers/firmware/efi/libstub/Makefile
+> @@ -96,6 +96,8 @@ CFLAGS_arm32-stub.o		:= -DTEXT_OFFSET=$(TEXT_OFFSET)
+>   zboot-obj-$(CONFIG_RISCV)	:= lib-clz_ctz.o lib-ashldi3.o
+>   lib-$(CONFIG_EFI_ZBOOT)		+= zboot.o $(zboot-obj-y)
+>   
+> +lib-$(CONFIG_UNACCEPTED_MEMORY) += unaccepted_memory.o bitmap.o find.o
+> +
+>   extra-y				:= $(lib-y)
+>   lib-y				:= $(patsubst %.o,%.stub.o,$(lib-y))
+>   
+> diff --git a/drivers/firmware/efi/libstub/bitmap.c b/drivers/firmware/efi/libstub/bitmap.c
+> new file mode 100644
+> index 000000000000..5c9bba0d549b
+> --- /dev/null
+> +++ b/drivers/firmware/efi/libstub/bitmap.c
+> @@ -0,0 +1,41 @@
+> +#include <linux/bitmap.h>
+> +
+> +void __bitmap_set(unsigned long *map, unsigned int start, int len)
+> +{
+> +	unsigned long *p = map + BIT_WORD(start);
+> +	const unsigned int size = start + len;
+> +	int bits_to_set = BITS_PER_LONG - (start % BITS_PER_LONG);
+> +	unsigned long mask_to_set = BITMAP_FIRST_WORD_MASK(start);
+> +
+> +	while (len - bits_to_set >= 0) {
+> +		*p |= mask_to_set;
+> +		len -= bits_to_set;
+> +		bits_to_set = BITS_PER_LONG;
+> +		mask_to_set = ~0UL;
+> +		p++;
+> +	}
+> +	if (len) {
+> +		mask_to_set &= BITMAP_LAST_WORD_MASK(size);
+> +		*p |= mask_to_set;
+> +	}
+> +}
+> +
+> +void __bitmap_clear(unsigned long *map, unsigned int start, int len)
+> +{
+> +	unsigned long *p = map + BIT_WORD(start);
+> +	const unsigned int size = start + len;
+> +	int bits_to_clear = BITS_PER_LONG - (start % BITS_PER_LONG);
+> +	unsigned long mask_to_clear = BITMAP_FIRST_WORD_MASK(start);
+> +
+> +	while (len - bits_to_clear >= 0) {
+> +		*p &= ~mask_to_clear;
+> +		len -= bits_to_clear;
+> +		bits_to_clear = BITS_PER_LONG;
+> +		mask_to_clear = ~0UL;
+> +		p++;
+> +	}
+> +	if (len) {
+> +		mask_to_clear &= BITMAP_LAST_WORD_MASK(size);
+> +		*p &= ~mask_to_clear;
+> +	}
+> +}
+> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+> index 67d5a20802e0..8659a01664b8 100644
+> --- a/drivers/firmware/efi/libstub/efistub.h
+> +++ b/drivers/firmware/efi/libstub/efistub.h
+> @@ -1133,4 +1133,10 @@ const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
+>   void efi_remap_image(unsigned long image_base, unsigned alloc_size,
+>   		     unsigned long code_size);
+>   
+> +efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
+> +					struct efi_boot_memmap *map);
+> +void process_unaccepted_memory(u64 start, u64 end);
+> +void accept_memory(phys_addr_t start, phys_addr_t end);
+> +void arch_accept_memory(phys_addr_t start, phys_addr_t end);
+> +
+>   #endif
+> diff --git a/drivers/firmware/efi/libstub/find.c b/drivers/firmware/efi/libstub/find.c
+> new file mode 100644
+> index 000000000000..4e7740d28987
+> --- /dev/null
+> +++ b/drivers/firmware/efi/libstub/find.c
+> @@ -0,0 +1,43 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <linux/bitmap.h>
+> +#include <linux/math.h>
+> +#include <linux/minmax.h>
+> +
+> +/*
+> + * Common helper for find_next_bit() function family
+> + * @FETCH: The expression that fetches and pre-processes each word of bitmap(s)
+> + * @MUNGE: The expression that post-processes a word containing found bit (may be empty)
+> + * @size: The bitmap size in bits
+> + * @start: The bitnumber to start searching at
+> + */
+> +#define FIND_NEXT_BIT(FETCH, MUNGE, size, start)				\
+> +({										\
+> +	unsigned long mask, idx, tmp, sz = (size), __start = (start);		\
+> +										\
+> +	if (unlikely(__start >= sz))						\
+> +		goto out;							\
+> +										\
+> +	mask = MUNGE(BITMAP_FIRST_WORD_MASK(__start));				\
+> +	idx = __start / BITS_PER_LONG;						\
+> +										\
+> +	for (tmp = (FETCH) & mask; !tmp; tmp = (FETCH)) {			\
+> +		if ((idx + 1) * BITS_PER_LONG >= sz)				\
+> +			goto out;						\
+> +		idx++;								\
+> +	}									\
+> +										\
+> +	sz = min(idx * BITS_PER_LONG + __ffs(MUNGE(tmp)), sz);			\
+> +out:										\
+> +	sz;									\
+> +})
+> +
+> +unsigned long _find_next_bit(const unsigned long *addr, unsigned long nbits, unsigned long start)
+> +{
+> +	return FIND_NEXT_BIT(addr[idx], /* nop */, nbits, start);
+> +}
+> +
+> +unsigned long _find_next_zero_bit(const unsigned long *addr, unsigned long nbits,
+> +					 unsigned long start)
+> +{
+> +	return FIND_NEXT_BIT(~addr[idx], /* nop */, nbits, start);
+> +}
+> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> new file mode 100644
+> index 000000000000..f4642c4f25dd
+> --- /dev/null
+> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> @@ -0,0 +1,222 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#include <linux/efi.h>
+> +#include <asm/efi.h>
+> +#include "efistub.h"
+> +
+> +static struct efi_unaccepted_memory *unaccepted_table;
+> +
+> +efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
+> +					struct efi_boot_memmap *map)
+> +{
+> +	efi_guid_t unaccepted_table_guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
+> +	u64 unaccepted_start = ULLONG_MAX, unaccepted_end = 0, bitmap_size;
+> +	efi_status_t status;
+> +	int i;
+> +
+> +	/* Check if the table is already installed */
+> +	unaccepted_table = get_efi_config_table(unaccepted_table_guid);
+> +	if (unaccepted_table) {
+> +		if (unaccepted_table->version != 1) {
+> +			efi_err("Unknown version of unaccepted memory table\n");
+> +			return EFI_UNSUPPORTED;
+> +		}
+> +		return EFI_SUCCESS;
+> +	}
+> +
+> +	/* Check if there's any unaccepted memory and find the max address */
+> +	for (i = 0; i < nr_desc; i++) {
+> +		efi_memory_desc_t *d;
+> +		unsigned long m = (unsigned long)map->map;
+> +
+> +		d = efi_early_memdesc_ptr(m, map->desc_size, i);
+> +		if (d->type != EFI_UNACCEPTED_MEMORY)
+> +			continue;
+> +
+> +		unaccepted_start = min(unaccepted_start, d->phys_addr);
+> +		unaccepted_end = max(unaccepted_end,
+> +				     d->phys_addr + d->num_pages * PAGE_SIZE);
+> +	}
+> +
+> +	if (unaccepted_start == ULLONG_MAX)
+> +		return EFI_SUCCESS;
+> +
+> +	unaccepted_start = round_down(unaccepted_start,
+> +				      EFI_UNACCEPTED_UNIT_SIZE);
+> +	unaccepted_end = round_up(unaccepted_end, EFI_UNACCEPTED_UNIT_SIZE);
+> +
+> +	/*
+> +	 * If unaccepted memory is present, allocate a bitmap to track what
+> +	 * memory has to be accepted before access.
+> +	 *
+> +	 * One bit in the bitmap represents 2MiB in the address space:
+> +	 * A 4k bitmap can track 64GiB of physical address space.
+> +	 *
+> +	 * In the worst case scenario -- a huge hole in the middle of the
+> +	 * address space -- It needs 256MiB to handle 4PiB of the address
+> +	 * space.
+> +	 *
+> +	 * The bitmap will be populated in setup_e820() according to the memory
+> +	 * map after efi_exit_boot_services().
+> +	 */
+> +	bitmap_size = DIV_ROUND_UP(unaccepted_end - unaccepted_start,
+> +				   EFI_UNACCEPTED_UNIT_SIZE * BITS_PER_BYTE);
+> +
+> +	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
+> +			     sizeof(*unaccepted_table) + bitmap_size,
+> +			     (void **)&unaccepted_table);
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index e146b599260f..e6f4c2758a68 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -14,20 +14,6 @@
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
- 
--/* TDX module Call Leaf IDs */
--#define TDX_GET_INFO			1
--#define TDX_GET_VEINFO			3
--#define TDX_GET_REPORT			4
--#define TDX_ACCEPT_PAGE			6
--#define TDX_WR				8
--
--/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
--#define TDCS_NOTIFY_ENABLES		0x9100000000000010
--
--/* TDX hypercall Leaf IDs */
--#define TDVMCALL_MAP_GPA		0x10001
--#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
--
- /* MMIO direction */
- #define EPT_READ	0
- #define EPT_WRITE	1
-@@ -51,24 +37,6 @@
- 
- #define TDREPORT_SUBTYPE_0	0
- 
--/*
-- * Wrapper for standard use of __tdx_hypercall with no output aside from
-- * return code.
-- */
--static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
--{
--	struct tdx_hypercall_args args = {
--		.r10 = TDX_HYPERCALL_STANDARD,
--		.r11 = fn,
--		.r12 = r12,
--		.r13 = r13,
--		.r14 = r14,
--		.r15 = r15,
--	};
--
--	return __tdx_hypercall(&args);
--}
--
- /* Called from __tdx_hypercall() for unrecoverable failure */
- noinstr void __tdx_hypercall_failed(void)
- {
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 2631e01f6e0f..1ff0ee822961 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -10,6 +10,20 @@
- #define TDX_CPUID_LEAF_ID	0x21
- #define TDX_IDENT		"IntelTDX    "
- 
-+/* TDX module Call Leaf IDs */
-+#define TDX_GET_INFO			1
-+#define TDX_GET_VEINFO			3
-+#define TDX_GET_REPORT			4
-+#define TDX_ACCEPT_PAGE			6
-+#define TDX_WR				8
-+
-+/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-+#define TDCS_NOTIFY_ENABLES		0x9100000000000010
-+
-+/* TDX hypercall Leaf IDs */
-+#define TDVMCALL_MAP_GPA		0x10001
-+#define TDVMCALL_REPORT_FATAL_ERROR	0x10003
-+
- #ifndef __ASSEMBLY__
- 
- /*
-@@ -37,8 +51,45 @@ struct tdx_hypercall_args {
- u64 __tdx_hypercall(struct tdx_hypercall_args *args);
- u64 __tdx_hypercall_ret(struct tdx_hypercall_args *args);
- 
-+/*
-+ * Wrapper for standard use of __tdx_hypercall with no output aside from
-+ * return code.
-+ */
-+static inline u64 _tdx_hypercall(u64 fn, u64 r12, u64 r13, u64 r14, u64 r15)
-+{
-+	struct tdx_hypercall_args args = {
-+		.r10 = TDX_HYPERCALL_STANDARD,
-+		.r11 = fn,
-+		.r12 = r12,
-+		.r13 = r13,
-+		.r14 = r14,
-+		.r15 = r15,
-+	};
-+
-+	return __tdx_hypercall(&args);
-+}
-+
-+
- /* Called from __tdx_hypercall() for unrecoverable failure */
- void __tdx_hypercall_failed(void);
- 
-+/*
-+ * Used in __tdx_module_call() to gather the output registers' values of the
-+ * TDCALL instruction when requesting services from the TDX module. This is a
-+ * software only structure and not part of the TDX module/VMM ABI
-+ */
-+struct tdx_module_output {
-+	u64 rcx;
-+	u64 rdx;
-+	u64 r8;
-+	u64 r9;
-+	u64 r10;
-+	u64 r11;
-+};
-+
-+/* Used to communicate with the TDX module */
-+u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
-+		      struct tdx_module_output *out);
-+
- #endif /* !__ASSEMBLY__ */
- #endif /* _ASM_X86_SHARED_TDX_H */
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 28d889c9aa16..234197ec17e4 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -20,21 +20,6 @@
- 
- #ifndef __ASSEMBLY__
- 
--/*
-- * Used to gather the output registers values of the TDCALL and SEAMCALL
-- * instructions when requesting services from the TDX module.
-- *
-- * This is a software only structure and not part of the TDX module/VMM ABI.
-- */
--struct tdx_module_output {
--	u64 rcx;
--	u64 rdx;
--	u64 r8;
--	u64 r9;
--	u64 r10;
--	u64 r11;
--};
--
- /*
-  * Used by the #VE exception handler to gather the #VE exception
-  * info from the TDX module. This is a software only structure
-@@ -55,10 +40,6 @@ struct ve_info {
- 
- void __init tdx_early_init(void);
- 
--/* Used to communicate with the TDX module */
--u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
--		      struct tdx_module_output *out);
--
- void tdx_get_ve_info(struct ve_info *ve);
- 
- bool tdx_handle_virt_exception(struct pt_regs *regs, struct ve_info *ve);
--- 
-2.39.3
+
+Wonder if EFI_LOADER_DATA guarantees bitmap not to be freed, or should 
+some more persistent type be used. If EFI_LOADER_DATA is enough, maybe a 
+comment why it is safe could be added.
+
+
+> +	if (status != EFI_SUCCESS) {
+> +		efi_err("Failed to allocate unaccepted memory config table\n");
+> +		return status;
+> +	}
+> +
+> +	unaccepted_table->version = 1;
+> +	unaccepted_table->unit_size = EFI_UNACCEPTED_UNIT_SIZE;
+> +	unaccepted_table->phys_base = unaccepted_start;
+> +	unaccepted_table->size = bitmap_size;
+> +	memset(unaccepted_table->bitmap, 0, bitmap_size);
+> +
+> +	status = efi_bs_call(install_configuration_table,
+> +			     &unaccepted_table_guid, unaccepted_table);
+> +	if (status != EFI_SUCCESS) {
+> +		efi_bs_call(free_pool, unaccepted_table);
+> +		efi_err("Failed to install unaccepted memory config table!\n");
+> +	}
+> +
+> +	return status;
+> +}
+> +
+> +/*
+> + * The accepted memory bitmap only works at unit_size granularity.  Take
+> + * unaligned start/end addresses and either:
+> + *  1. Accepts the memory immediately and in its entirety
+> + *  2. Accepts unaligned parts, and marks *some* aligned part unaccepted
+> + *
+> + * The function will never reach the bitmap_set() with zero bits to set.
+> + */
+> +void process_unaccepted_memory(u64 start, u64 end)
+> +{
+> +	u64 unit_size = unaccepted_table->unit_size;
+> +	u64 unit_mask = unaccepted_table->unit_size - 1;
+> +	u64 bitmap_size = unaccepted_table->size;
+> +
+> +	/*
+> +	 * Ensure that at least one bit will be set in the bitmap by
+> +	 * immediately accepting all regions under 2*unit_size.  This is
+> +	 * imprecise and may immediately accept some areas that could
+> +	 * have been represented in the bitmap.  But, results in simpler
+> +	 * code below
+> +	 *
+> +	 * Consider case like this (assuming unit_size == 2MB):
+> +	 *
+> +	 * | 4k | 2044k |    2048k   |
+> +	 * ^ 0x0        ^ 2MB        ^ 4MB
+> +	 *
+> +	 * Only the first 4k has been accepted. The 0MB->2MB region can not be
+> +	 * represented in the bitmap. The 2MB->4MB region can be represented in
+> +	 * the bitmap. But, the 0MB->4MB region is <2*unit_size and will be
+> +	 * immediately accepted in its entirety.
+> +	 */
+> +	if (end - start < 2 * unit_size) {
+> +		arch_accept_memory(start, end);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * No matter how the start and end are aligned, at least one unaccepted
+> +	 * unit_size area will remain to be marked in the bitmap.
+> +	 */
+> +
+> +	/* Immediately accept a <unit_size piece at the start: */
+> +	if (start & unit_mask) {
+> +		arch_accept_memory(start, round_up(start, unit_size));
+> +		start = round_up(start, unit_size);
+> +	}
+> +
+> +	/* Immediately accept a <unit_size piece at the end: */
+> +	if (end & unit_mask) {
+> +		arch_accept_memory(round_down(end, unit_size), end);
+> +		end = round_down(end, unit_size);
+> +	}
+> +
+> +	/*
+> +	 * Accept part of the range that before phys_base and cannot be recorded
+> +	 * into the bitmap.
+> +	 */
+> +	if (start < unaccepted_table->phys_base) {
+> +		arch_accept_memory(start,
+> +				   min(unaccepted_table->phys_base, end));
+> +		start = unaccepted_table->phys_base;
+> +	}
+> +
+> +	/* Nothing to record */
+> +	if (end < unaccepted_table->phys_base)
+> +		return;
+> +
+> +	/* Translate to offsets from the beginning of the bitmap */
+> +	start -= unaccepted_table->phys_base;
+> +	end -= unaccepted_table->phys_base;
+> +
+> +	/* Accept memory that doesn't fit into bitmap */
+> +	if (end > bitmap_size * unit_size * BITS_PER_BYTE) {
+> +		unsigned long phys_start, phys_end;
+> +
+> +		phys_start = bitmap_size * unit_size * BITS_PER_BYTE +
+> +			     unaccepted_table->phys_base;
+> +		phys_end = end + unaccepted_table->phys_base;
+> +
+> +		arch_accept_memory(phys_start, phys_end);
+> +		end = bitmap_size * unit_size * BITS_PER_BYTE;
+> +	}
+> +
+> +	/*
+> +	 * 'start' and 'end' are now both unit_size-aligned.
+> +	 * Record the range as being unaccepted:
+> +	 */
+> +	bitmap_set(unaccepted_table->bitmap,
+> +		   start / unit_size, (end - start) / unit_size);
+> +}
+> +
+> +void accept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +	unsigned long range_start, range_end;
+> +	unsigned long bitmap_size;
+> +	u64 unit_size;
+> +
+> +	if (!unaccepted_table)
+> +		return;
+> +
+> +	unit_size = unaccepted_table->unit_size;
+> +
+> +	/*
+> +	 * Only care for the part of the range that is represented
+> +	 * in the bitmap.
+> +	 */
+> +	if (start < unaccepted_table->phys_base)
+> +		start = unaccepted_table->phys_base;
+> +	if (end < unaccepted_table->phys_base)
+> +		return;
+> +
+> +	/* Translate to offsets from the beginning of the bitmap */
+> +	start -= unaccepted_table->phys_base;
+> +	end -= unaccepted_table->phys_base;
+> +
+> +	/* Make sure not to overrun the bitmap */
+> +	if (end > unaccepted_table->size * unit_size * BITS_PER_BYTE)
+> +		end = unaccepted_table->size * unit_size * BITS_PER_BYTE;
+> +
+> +	range_start = start / unit_size;
+> +	bitmap_size = DIV_ROUND_UP(end, unit_size);
+> +
+> +	for_each_set_bitrange_from(range_start, range_end,
+> +				   unaccepted_table->bitmap, bitmap_size) {
+> +		unsigned long phys_start, phys_end;
+> +
+> +		phys_start = range_start * unit_size + unaccepted_table->phys_base;
+> +		phys_end = range_end * unit_size + unaccepted_table->phys_base;
+> +
+> +		arch_accept_memory(phys_start, phys_end);
+> +		bitmap_clear(unaccepted_table->bitmap,
+> +			     range_start, range_end - range_start);
+> +	}
+> +}
+> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+> index fff81843169c..8d17cee8b98e 100644
+> --- a/drivers/firmware/efi/libstub/x86-stub.c
+> +++ b/drivers/firmware/efi/libstub/x86-stub.c
+> @@ -613,6 +613,16 @@ setup_e820(struct boot_params *params, struct setup_data *e820ext, u32 e820ext_s
+>   			e820_type = E820_TYPE_PMEM;
+>   			break;
+>   
+> +		case EFI_UNACCEPTED_MEMORY:
+> +			if (!IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
+> +				efi_warn_once(
+> +"The system has unaccepted memory,  but kernel does not support it\nConsider enabling CONFIG_UNACCEPTED_MEMORY\n");
+> +				continue;
+> +			}
+> +			e820_type = E820_TYPE_RAM;
+> +			process_unaccepted_memory(d->phys_addr,
+> +						  d->phys_addr + PAGE_SIZE * d->num_pages);
+> +			break;
+>   		default:
+>   			continue;
+>   		}
+> @@ -697,6 +707,9 @@ static efi_status_t allocate_e820(struct boot_params *params,
+>   		status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
+>   	}
+>   
+> +	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) && status == EFI_SUCCESS)
+> +		status = allocate_unaccepted_bitmap(nr_desc, map);
+> +
+>   	efi_bs_call(free_pool, map);
+>   	return status;
+>   }
+> diff --git a/include/linux/efi.h b/include/linux/efi.h
+> index 7aa62c92185f..29cc622910da 100644
+> --- a/include/linux/efi.h
+> +++ b/include/linux/efi.h
+> @@ -108,7 +108,8 @@ typedef	struct {
+>   #define EFI_MEMORY_MAPPED_IO_PORT_SPACE	12
+>   #define EFI_PAL_CODE			13
+>   #define EFI_PERSISTENT_MEMORY		14
+> -#define EFI_MAX_MEMORY_TYPE		15
+> +#define EFI_UNACCEPTED_MEMORY		15
+> +#define EFI_MAX_MEMORY_TYPE		16
+>   
+>   /* Attribute values: */
+>   #define EFI_MEMORY_UC		((u64)0x0000000000000001ULL)	/* uncached */
+> @@ -417,6 +418,7 @@ void efi_native_runtime_setup(void);
+>   #define LINUX_EFI_MOK_VARIABLE_TABLE_GUID	EFI_GUID(0xc451ed2b, 0x9694, 0x45d3,  0xba, 0xba, 0xed, 0x9f, 0x89, 0x88, 0xa3, 0x89)
+>   #define LINUX_EFI_COCO_SECRET_AREA_GUID		EFI_GUID(0xadf956ad, 0xe98c, 0x484c,  0xae, 0x11, 0xb5, 0x1c, 0x7d, 0x33, 0x64, 0x47)
+>   #define LINUX_EFI_BOOT_MEMMAP_GUID		EFI_GUID(0x800f683f, 0xd08b, 0x423a,  0xa2, 0x93, 0x96, 0x5c, 0x3c, 0x6f, 0xe2, 0xb4)
+> +#define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+>   
+>   #define RISCV_EFI_BOOT_PROTOCOL_GUID		EFI_GUID(0xccd15fec, 0x6f73, 0x4eec,  0x83, 0x95, 0x3e, 0x69, 0xe4, 0xb9, 0x40, 0xbf)
+>   
+> @@ -534,6 +536,14 @@ struct efi_boot_memmap {
+>   	efi_memory_desc_t	map[];
+>   };
+>   
+> +struct efi_unaccepted_memory {
+> +	u32 version;
+> +	u32 unit_size;
+> +	u64 phys_base;
+> +	u64 size;
+> +	unsigned long bitmap[];
+> +};
+> +
+>   /*
+>    * Architecture independent structure for describing a memory map for the
+>    * benefit of efi_memmap_init_early(), and for passing context between
 
