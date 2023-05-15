@@ -1,145 +1,112 @@
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B14B1FCE
-	for <linux-coco@lists.linux.dev>; Sun, 14 May 2023 21:13:30 +0000 (UTC)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id 1D14F5C00C2;
-	Sun, 14 May 2023 17:13:29 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Sun, 14 May 2023 17:13:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to;
-	 s=fm2; t=1684098809; x=1684185209; bh=IuSPhPzoKt6SzlFItZmSGd7IF
-	Em9JtR4K2XlTqqjDSg=; b=tRwc6niuBNOVuTKwEyqx9a6VsQIiR8Moy/8NsjRBc
-	MFNzOOBwCeyBwuKH7hfQf2mu11BcHRvW1/sTy4ioyfDuFCfb831tniIUXGJWZLoQ
-	+olt7twOWA1isCCaTiLKvMAj/ObtUl1WhE8iidAq9qKKDFSNBBs2icMa1urfhSyq
-	jzlTGwaNZLVGaG3PN9OieoaRG0lwYWf3/jRkOXymTJ1/5i+FgiZiry1ORlENAWvP
-	dVt+22VdL8RZQszaF5cZNpd0J0NBOlTGSBHTTJf0Ei2WBX/bB/H93NDVbMcFYE6r
-	4kNmCJWwvOPkvJQ5AFuUF/dT08mYqhEeUO5moMzZWR7zQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1684098809; x=1684185209; bh=IuSPhPzoKt6SzlFItZmSGd7IFEm9JtR4K2X
-	lTqqjDSg=; b=qAOct1LDQY6g96IN0g+vR8v7cPKjM76ZHfoMUWVWkTj38CppXKb
-	n2qLMtnZjESXKqj5IoGvh+Y2tH2QsKrUUZbixtRlm8ZpZx31hjD/VYngQ5yhM8X0
-	tgSZWUPOBTxLaZ/jfTPnY/TDMO0jDiP5PLOfKyQHRl8VXxPGFW4I5JNL4vJWNt+0
-	v/at5pANurF9eFyKG+s+INq228hVcDUSkq8LXMSucg3Ij7lQFX7hyJlXmKXNyT2e
-	qebGr1GFlQ7bogamkkOa7WznBY6VUnfRPEVmO9g1SE1jaE2YulTGy0cyKKsoN/N7
-	OpmPFn+xFm63xvHzfPl3Xi9SvvJF6PUiDJw==
-X-ME-Sender: <xms:905hZEwNnRihkRdYg1IppfpF8vo443CZSZgXN2NJllWOoxaDq8afSQ>
-    <xme:905hZIQN1wahBceOitOKWZkmDwXaOk3jjKQppfIHlY4cA2DVb8bJYqyQAloOdmmXM
-    NnpFEAfOO9sP01_lcc>
-X-ME-Received: <xmr:905hZGWxxQTBe3OxmEOACoGB9D_jRgtPgEARzA6z7I6oHfHGu_c8HfaiEa7ZWBxTdOSN8w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeehhedgudehlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtugfgjgesthektddttddtudenucfhrhhomhepfdfm
-    ihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovh
-    drnhgrmhgvqeenucggtffrrghtthgvrhhnpeetveehleetgeegffejffejtdevgeeugeef
-    tefghffhgfeivefghfeuvefgjeekfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
-X-ME-Proxy: <xmx:905hZCiyjAnj_6KNeSN0F6O_NLZB6_jSQVnkBZo3yyIzqICtgjngIA>
-    <xmx:905hZGCPG6Lb8T15UCZh4ofkAfw6HkvZcDh3x6st1z5bocz4QE3jAQ>
-    <xmx:905hZDLo8rXNLtX2L-pO6pqr9QvJzl0YAkPubSiE-HXqSbc8BQfO2A>
-    <xmx:-U5hZOu8SfLvzZc6LhBAYNrPOc51oXjVX3-fpAw4XAQ91y9OfBhpnw>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 14 May 2023 17:13:27 -0400 (EDT)
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 3DBD910C400; Mon, 15 May 2023 00:13:24 +0300 (+03)
-Date: Mon, 15 May 2023 00:13:24 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Mika =?utf-8?B?UGVudHRpbMOk?= <mpenttil@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	David Rientjes <rientjes@google.com>,	Vlastimil Babka <vbabka@suse.cz>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Dario Faggioli <dfaggioli@suse.com>,	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,	marcelo.cerri@canonical.com,
- tim.gardner@canonical.com,	khalid.elmously@canonical.com,
- philip.cox@canonical.com,	aarcange@redhat.com, peterx@redhat.com,
- x86@kernel.org,	linux-mm@kvack.org, linux-coco@lists.linux.dev,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv11 3/9] efi/libstub: Implement support for unaccepted
- memory
-Message-ID: <20230514211324.fymzoa263wx2hs2p@box.shutemov.name>
-References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
- <20230513220418.19357-4-kirill.shutemov@linux.intel.com>
- <9549d984-e581-048d-95a3-7c54acd70fb8@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD42FBE7
+	for <linux-coco@lists.linux.dev>; Mon, 15 May 2023 16:45:23 +0000 (UTC)
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-3f51ea3a062so265901cf.1
+        for <linux-coco@lists.linux.dev>; Mon, 15 May 2023 09:45:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1684169122; x=1686761122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zRf1suCxpp2xw9xVtC6+jBhjPv+ukUhidKZm42V6ybU=;
+        b=EDIK7Pc/86wryFh04RCHc696LTO8e7WBVjartdOINZOy20P8SDN8FxNtn6AilVWdDJ
+         qplWuDdd5lGpudBSOsNa6OtkgIfzsB1eE3m9Lz9jwt0A7SGm1KHD+bVxe7ba8YJCzgix
+         pDK/Y1fX6/d0Z/3gceRYPDj/4YsT9gpdTuFL0i7mGT/AQWNw+0YAxKOVMGp/HP7RNbyE
+         ldupBjv3mNrUNl76wZi15yBT8Nk2Yw9AXWOL2I6CLO4jQTn+MQkw2agqf0aQXHYl9Pp9
+         74JixFrx7e9SWXEAs+6xBUIsPOEuCLml3za3UZTShdbIxXM5CzjTNNDOcPyjcbYEoerk
+         iR0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684169122; x=1686761122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zRf1suCxpp2xw9xVtC6+jBhjPv+ukUhidKZm42V6ybU=;
+        b=AShnkwPA+0Jh/n1xSMwBem7WyTn7UCgTHnLVA2f3molzvB8fN5XiLbMGo2zwlKznWa
+         EiRWd2euSXY0cbALxjA4Ed9/h6ERzCtWWxq6cnohTqM4W4qPP/0B3WFT23EGX4JMyQcR
+         4Mld3l8zCpz++yjVcefm4k07hz0hQhJQJgJBQYy20pQzCgbTcxREtmnqh+RzR2FCNry7
+         OMVNJC10TZ4WXvqih4TMYLOboO1LyQKLoy2aXNIZ2HkQq3Zq1Ym3jIVPAy/+B4TkGfgG
+         ve2NGTmonKhxfUNT5R3M6cOt6om6ebMh9FoCptHIUgaea89EBP+ddgY0MPwwyvDHHKBj
+         dxSw==
+X-Gm-Message-State: AC+VfDwpa7y3ic72O9UYJZLGti9W3YuxOcKIMZSjMWp5u/GlFLdZcB5J
+	zsH5D2IPZf1K1Rg2BkwyEa/iA1wpmsiVjK0bOhlLtA==
+X-Google-Smtp-Source: ACHHUZ6WL2yHBGGSTjCR/zNcMyHw7JQQk7RuXqLGbndgXVi0BaKjhZ4zIXUc8BriMv7vS24UmRRZQDqx5sUvWOA/tBw=
+X-Received: by 2002:a05:622a:1456:b0:3ed:6bde:9681 with SMTP id
+ v22-20020a05622a145600b003ed6bde9681mr1323105qtx.0.1684169121825; Mon, 15 May
+ 2023 09:45:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9549d984-e581-048d-95a3-7c54acd70fb8@redhat.com>
+References: <385016f9-e948-4f7f-8db3-24a0c0543b3d@amd.com> <55e5f02f-4c1f-e6b0-59ba-07abc4d3408f@amd.com>
+ <81037a58-6b5c-cde4-79fe-3686d9b8a551@amd.com> <b0baa6ee-ea6d-3a30-d5fb-3ec395896750@amd.com>
+ <dbcb6666-270a-4867-6de7-73812d32fd8c@amd.com> <7fb25176-3752-1be3-66d4-a7f5a0e1617a@amd.com>
+ <682c0bf9-ccf7-9660-21fe-925ef63c5fbb@amd.com> <4c642bd1-5f1c-292e-398f-eed699db590d@amd.com>
+ <65cb8f0f-7e8b-6df6-6bb1-a9f1add027bb@amd.com> <CAAH4kHYDUGnUnZt2HUVcGqOYyzsyUhBXUqW+iDyvKCtQW9XuEQ@mail.gmail.com>
+ <ZF17KuHV5VIpT8DG@google.com>
+In-Reply-To: <ZF17KuHV5VIpT8DG@google.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Mon, 15 May 2023 09:45:10 -0700
+Message-ID: <CAAH4kHbLrZZ6xvXYc-TLEyN4pAd=-PL4d2T2yUF318yuh+=_pw@mail.gmail.com>
+Subject: Re: [PATCH RFC v7 52/64] KVM: SVM: Provide support for
+ SNP_GUEST_REQUEST NAE event
+To: Sean Christopherson <seanjc@google.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Alexey Kardashevskiy <aik@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
+	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
+	mingo@redhat.com, jroedel@suse.de, hpa@zytor.com, ardb@kernel.org, 
+	pbonzini@redhat.com, vkuznets@redhat.com, wanpengli@tencent.com, 
+	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com, 
+	slp@redhat.com, pgonda@google.com, peterz@infradead.org, 
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com, 
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org, 
+	harald@profian.com, Brijesh Singh <brijesh.singh@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 14, 2023 at 08:08:07AM +0300, Mika Penttilä wrote:
-> > +	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-> > +			     sizeof(*unaccepted_table) + bitmap_size,
-> > +			     (void **)&unaccepted_table);
-> 
-> 
-> Wonder if EFI_LOADER_DATA guarantees bitmap not to be freed, or should some
-> more persistent type be used. If EFI_LOADER_DATA is enough, maybe a comment
-> why it is safe could be added.
+On Thu, May 11, 2023 at 4:33=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, May 11, 2023, Dionna Amalie Glaze wrote:
+> > Would it be okay to request that we add a KVM stat for how often there
+> > are GUEST_REQUEST_NAE exits? I think it'd be good for service
+> > operators to get a better idea how valued the feature is.
+>
+> Heh, it's always ok to request something, but sometimes the answer will b=
+e no.
+>
+> And in the case, the answer is likely "no stat for you".  A year or so ag=
+o, in the
+> context of us (Google) trying to upstream a pile of stats, we (KVM folks)=
+ came to
+> a rough consensus that KVM should only add upstream stats if they are rel=
+atively
+> generic and (almost) universally useful[*].  IMO, a one-off stat for a sp=
+ecific exit
+> reason is too narrowly focused, e.g. collecting information on all exit r=
+easons is
+> superior.  And no, that won't be accepted upstream either, because for so=
+me environments
+> gathering detailed information on all exits is too much overhead (also co=
+vered in
+> the link).
+>
+> FWIW, we (GCE) plan on carrying stats like this in out-of-tree patches, i=
+.e. your
+> request for stats is likely something that would get accepted internally =
+(if it
+> isn't already captured through our generic stats collection).
+>
+> [*] https://lore.kernel.org/all/87czp0voqg.wl-maz@kernel.org
 
-Ughh.. I've lost the hunk that reserves the memory explicitly while
-folding in the patch we discussed with Ard. See below.
+Thanks Sean, noted :)
 
-But the question is solid.
-
-Ard, do we want to allocate the memory as EFI_RUNTIME_SERVICES_DATA (or
-something else?) that got reserved automatically without additional steps?
-
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index e15a2005ed93..d817e7afd266 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -765,6 +765,25 @@ int __init efi_config_parse_tables(const efi_config_table_t *config_tables,
- 		}
- 	}
- 
-+	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY) &&
-+	    efi.unaccepted != EFI_INVALID_TABLE_ADDR) {
-+		struct efi_unaccepted_memory *unaccepted;
-+
-+		unaccepted = early_memremap(efi.unaccepted, sizeof(*unaccepted));
-+		if (unaccepted) {
-+			unsigned long size;
-+
-+			if (unaccepted->version == 1) {
-+				size = sizeof(*unaccepted) + unaccepted->size;
-+				memblock_reserve(efi.unaccepted, size);
-+			} else {
-+				efi.unaccepted = EFI_INVALID_TABLE_ADDR;
-+			}
-+
-+			early_memunmap(unaccepted, sizeof(*unaccepted));
-+		}
-+	}
-+
- 	return 0;
- }
- 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+--=20
+-Dionna Glaze, PhD (she/her)
