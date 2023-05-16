@@ -1,157 +1,83 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED71101CF
-	for <linux-coco@lists.linux.dev>; Tue, 16 May 2023 18:08:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC36C433A8
-	for <linux-coco@lists.linux.dev>; Tue, 16 May 2023 18:08:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684260532;
-	bh=EuLTL0z0cItgFiTcg+BNi9m4MmZo8uZTaS650kq9lR4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eqrkQFx6rhRJujq4VWj4FzAyNGWYXTRwwDgyA5V3A+MHAv5k+HnqxBOF4OIy8cZkJ
-	 wlr/nGLB9U0awyzmtcWNdiQ3locGkyOpSlHrOTZrHPz7cdw7STS6cmzLETt17aRQUZ
-	 fkQu/Cq+SFiadTqPuOBZ5gStXcB2xqJYRpSp+bJKGfBGn7le4a7xeNDV1zbX5ztiGx
-	 i1ohR7qwbhExdzokVQagdx9ZsrS2RI8U+e8S3buraBXpfYStZQ09HaTMP8x2/bNuzr
-	 NG/f2QhWBJ8vXT5AilkZk2rYXxj5Eqo367bSvv+7iOHdMvmmK+W+kd5ieeRNFAJzFQ
-	 tQ3jSabpkTbMQ==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2ac7f53ae44so155290531fa.2
-        for <linux-coco@lists.linux.dev>; Tue, 16 May 2023 11:08:52 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwzTra9Ff1ukvR5UMTXjp8yFq6IL8uWkjsJXpw7QeO7Sd38TsDg
-	woP9OK4wFtCoC8AJR8eCpOSycEADlB4d4IyOygg=
-X-Google-Smtp-Source: ACHHUZ5+shXS/oY0pTS/6qckGGB5Nhpshb8lVSqz1yNpZtyaX4Fz38IBjMuv/6+PbSqztZeXv7E5jFQB3se1sORtPTk=
-X-Received: by 2002:a2e:9056:0:b0:2a8:bf35:3b7 with SMTP id
- n22-20020a2e9056000000b002a8bf3503b7mr7472306ljg.32.1684260530160; Tue, 16
- May 2023 11:08:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3E8107A5
+	for <linux-coco@lists.linux.dev>; Tue, 16 May 2023 18:27:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684261651; x=1715797651;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=h1IC5Du4s+rB6lI+ZptTZERfabS0oTlbNW5MVGmb3FA=;
+  b=lwkqfTrRAgX/a6vIPcFBBRLEZpIrjf+3hwIpzeLKwRfAKc7DdsfCY55R
+   uNEaIWvBTI1Bit2mn2JTbAxCNxi70Go2ghsG/5PdvHYW8BbTXDDxj6ITB
+   9TIKpOe10OZH8ImELGYyBZbrzuMtnEmXqBOhyCDj/X/beooozluML5qTX
+   1B2Z+JohwFuHGTWyC0dopxeBwQF3pIx00QTWrCJbkns+dWq/URRXTFXgE
+   hAd9/k1I+1za5a6UTdE0uBQN3pw6OrCvOQb/3gcn8f0HCvQLsQwzTKE0E
+   N3coyo9i8WOJUfGL5Li0GoWMIaLdMcPM9ls3cxrIVxla91RrsFDtpQsf4
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="351587637"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="351587637"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 11:27:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10712"; a="771162721"
+X-IronPort-AV: E=Sophos;i="5.99,278,1677571200"; 
+   d="scan'208";a="771162721"
+Received: from mtpanu-mobl1.amr.corp.intel.com (HELO [10.212.203.6]) ([10.212.203.6])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2023 11:27:16 -0700
+Message-ID: <6fe42f66-819c-f2c8-176b-759c1c5a9cf5@intel.com>
+Date: Tue, 16 May 2023 11:27:16 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com> <20230513220418.19357-7-kirill.shutemov@linux.intel.com>
-In-Reply-To: <20230513220418.19357-7-kirill.shutemov@linux.intel.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 16 May 2023 20:08:37 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG488uW=dpvbfvdN1fMZVJ3kCZQoW3UVQJW1F2VEXyxHg@mail.gmail.com>
-Message-ID: <CAMj1kXG488uW=dpvbfvdN1fMZVJ3kCZQoW3UVQJW1F2VEXyxHg@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
 Subject: Re: [PATCHv11 6/9] efi/unaccepted: Avoid load_unaligned_zeropad()
  stepping into unaccepted memory
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
-	Sean Christopherson <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Mel Gorman <mgorman@techsingularity.net>, 
-	marcelo.cerri@canonical.com, tim.gardner@canonical.com, 
-	khalid.elmously@canonical.com, philip.cox@canonical.com, aarcange@redhat.com, 
-	peterx@redhat.com, x86@kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-US
+To: Ard Biesheuvel <ardb@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <seanjc@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Joerg Roedel <jroedel@suse.de>,
+ Andi Kleen <ak@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+ Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ David Hildenbrand <david@redhat.com>,
+ Mel Gorman <mgorman@techsingularity.net>, marcelo.cerri@canonical.com,
+ tim.gardner@canonical.com, khalid.elmously@canonical.com,
+ philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
+ x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+ linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>
+References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
+ <20230513220418.19357-7-kirill.shutemov@linux.intel.com>
+ <CAMj1kXG488uW=dpvbfvdN1fMZVJ3kCZQoW3UVQJW1F2VEXyxHg@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <CAMj1kXG488uW=dpvbfvdN1fMZVJ3kCZQoW3UVQJW1F2VEXyxHg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, 14 May 2023 at 00:04, Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
-> The unwanted loads are typically harmless. But, they might be made to
-> totally unrelated or even unmapped memory. load_unaligned_zeropad()
-> relies on exception fixup (#PF, #GP and now #VE) to recover from these
-> unwanted loads.
->
-> But, this approach does not work for unaccepted memory. For TDX, a load
-> from unaccepted memory will not lead to a recoverable exception within
-> the guest. The guest will exit to the VMM where the only recourse is to
-> terminate the guest.
->
+On 5/16/23 11:08, Ard Biesheuvel wrote:
+>> But, this approach does not work for unaccepted memory. For TDX, a load
+>> from unaccepted memory will not lead to a recoverable exception within
+>> the guest. The guest will exit to the VMM where the only recourse is to
+>> terminate the guest.
+>>
+> Does this mean that the kernel maps memory before accepting it? As
+> otherwise, I would assume that such an access would page fault inside
+> the guest before triggering an exception related to the unaccepted
+> state.
 
-Does this mean that the kernel maps memory before accepting it? As
-otherwise, I would assume that such an access would page fault inside
-the guest before triggering an exception related to the unaccepted
-state.
+Yes, the kernel maps memory before accepting it (modulo things like
+DEBUG_PAGEALLOC).
 
-> There are two parts to fix this issue and comprehensively avoid access
-> to unaccepted memory. Together these ensure that an extra "guard" page
-> is accepted in addition to the memory that needs to be used.
->
-> 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
->    checks up to end+unit_size if 'end' is aligned on a unit_size
->    boundary.
-> 2. Implicitly extend accept_memory(start, end) to end+unit_size if 'end'
->    is aligned on a unit_size boundary.
->
-> Side note: This leads to something strange. Pages which were accepted
->            at boot, marked by the firmware as accepted and will never
->            _need_ to be accepted might be on unaccepted_pages list
->            This is a cue to ensure that the next page is accepted
->            before 'page' can be used.
->
-> This is an actual, real-world problem which was discovered during TDX
-> testing.
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> ---
->  drivers/firmware/efi/unaccepted_memory.c | 35 ++++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
->
-> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-> index bb91c41f76fb..3d1ca60916dd 100644
-> --- a/drivers/firmware/efi/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/unaccepted_memory.c
-> @@ -37,6 +37,34 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
->         start -= unaccepted->phys_base;
->         end -= unaccepted->phys_base;
->
-> +       /*
-> +        * load_unaligned_zeropad() can lead to unwanted loads across page
-> +        * boundaries. The unwanted loads are typically harmless. But, they
-> +        * might be made to totally unrelated or even unmapped memory.
-> +        * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
-> +        * #VE) to recover from these unwanted loads.
-> +        *
-> +        * But, this approach does not work for unaccepted memory. For TDX, a
-> +        * load from unaccepted memory will not lead to a recoverable exception
-> +        * within the guest. The guest will exit to the VMM where the only
-> +        * recourse is to terminate the guest.
-> +        *
-> +        * There are two parts to fix this issue and comprehensively avoid
-> +        * access to unaccepted memory. Together these ensure that an extra
-> +        * "guard" page is accepted in addition to the memory that needs to be
-> +        * used:
-> +        *
-> +        * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-> +        *    checks up to end+unit_size if 'end' is aligned on a unit_size
-> +        *    boundary.
-> +        *
-> +        * 2. Implicitly extend accept_memory(start, end) to end+unit_size if
-> +        *    'end' is aligned on a unit_size boundary. (immediately following
-> +        *    this comment)
-> +        */
-> +       if (!(end % unit_size))
-> +               end += unit_size;
-> +
->         /* Make sure not to overrun the bitmap */
->         if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
->                 end = unaccepted->size * unit_size * BITS_PER_BYTE;
-> @@ -84,6 +112,13 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
->         start -= unaccepted->phys_base;
->         end -= unaccepted->phys_base;
->
-> +       /*
-> +        * Also consider the unaccepted state of the *next* page. See fix #1 in
-> +        * the comment on load_unaligned_zeropad() in accept_memory().
-> +        */
-> +       if (!(end % unit_size))
-> +               end += unit_size;
-> +
->         /* Make sure not to overrun the bitmap */
->         if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
->                 end = unaccepted->size * unit_size * BITS_PER_BYTE;
-> --
-> 2.39.3
->
