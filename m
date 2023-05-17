@@ -1,223 +1,350 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2070.outbound.protection.outlook.com [40.107.237.70])
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F06101D9
-	for <linux-coco@lists.linux.dev>; Wed, 17 May 2023 16:07:43 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nH1kqrb5A1GXJe02/R0Dwlq54y/1I7RnqHCAmgsKexTs06uTFT90W1iXz958Dxf7a9Zs3RNjxAMe7Od4Gp6iQFhTyclVLm1Id1kUz5o2H07nA/ieyurPvnSEJQ6RVesxn9I2G7hU6V0GYc66k/+ny1D6EW7sQLXT4EWlc3WXsgSVWHMJupsOUFpMz1SzwWvSPGr8kOAAQqkarjBcDHpE/qLns6stKuO95khnKmcyritNuAC3LwavTynf6zcs0rkP2Y35CXrEds9O2hcJm+FZvJg+kh36sczssa1MQUX3UTIqDfRio2v0BAEofvKKOD6rfudnG047yOIY3T7VJBx5yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hAt9fFoHWB1YevfNwALXh6vikrAD5FxXl9rcOVC2/Y0=;
- b=ZnUnirX8Megj3SxgN5A7uI9ZJs5XSsaHcOra+GQulSzL5KlrGQEZn2le5Ouh0Y64+WdrLnIhroGM3m/OjrZG7xu1CqB8yrKcPyd7K1ZqmkflLfd+kW3WzxxQhFAqypDLLwrSp71x3neoxe2vYUEj1EDlKTZ1+BbT1HGLy7wiLi6w2r3UUlmrpVEsr7LYxzFxwJVuCViXDCzQNRcQ8Fe3J2tBLOTEDebjEL8OHpxSQTV6HKPbRk2aMTnQoK0VcVfLDME6jHAoYctqKDhXQQ7+ETbMDJSj1CQc9VKc+KbYx0GwHCpSfdh+amUqYXjWeyW6jQIGwYHmdV7J9WNDBEkoow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hAt9fFoHWB1YevfNwALXh6vikrAD5FxXl9rcOVC2/Y0=;
- b=eUXxP5NponnxdInpaqs4xbT8Yj9BoB+0rrJylN/Z5O32LK7EbIJdKo2YTlOGFFeU4UeJGMl/pnCRPDZuCtBU7caLLSdMHSENrdssp7k7Wwb/mnkH/QMS4h/alkVnq9JmJMwSVS6BNch6ZW/D/dYr/j3wtkFtxsIrUhJGEBT6yns=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by MW6PR12MB8662.namprd12.prod.outlook.com (2603:10b6:303:243::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.17; Wed, 17 May
- 2023 16:07:38 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::ea32:baf8:cc85:9648]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::ea32:baf8:cc85:9648%7]) with mapi id 15.20.6411.017; Wed, 17 May 2023
- 16:07:38 +0000
-Message-ID: <b58dd2bd-4eb9-7efc-f6ee-3074d2bea579@amd.com>
-Date: Wed, 17 May 2023 11:07:35 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCHv11 6/9] efi/unaccepted: Avoid load_unaligned_zeropad()
- stepping into unaccepted memory
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Dave Hansen <dave.hansen@intel.com>, Sean Christopherson
- <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
- Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@redhat.com>,
- Mel Gorman <mgorman@techsingularity.net>, marcelo.cerri@canonical.com,
- tim.gardner@canonical.com, khalid.elmously@canonical.com,
- philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3361A4420
+	for <linux-coco@lists.linux.dev>; Wed, 17 May 2023 18:36:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1684348572; x=1715884572;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=o+aKSL6q9dJPEJobrP6WeOyJ2dGBu6HVTyqo3g6dYjw=;
+  b=RD6R5p4iPpobnhMNy8Q1d9MCQADLLv8hxR2akUXEJxLeXaT/VJMZ605+
+   mdB5DQSupQOoU9PQXiW1uvM9J2rBFI3dbzHaghsw55RrXU0W98wVXbsaA
+   /O3lAl+xpxXvpF1J0len1irzhSDJvZt21GQW3LRfze7xo2Bw89l4PrZOa
+   bajn8vxFL515xWmdVSr02UAdGNBrw2o/h3fUXNMYC2cI0X94gV8i0D7er
+   EcV1+m9nwGqpYaYujgCXVgCsNDedd8c5KSXlnEHSp9JxEu3zWYXOY0xtT
+   bsHfZeUNERsOdGtd7dcZ8dZJV6bU6JVEnViGM6B7cicUjD6uIQ6YfVnSt
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="349351035"
+X-IronPort-AV: E=Sophos;i="5.99,283,1677571200"; 
+   d="scan'208";a="349351035"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 11:36:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="1031840277"
+X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
+   d="scan'208";a="1031840277"
+Received: from bruennej-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.43.52])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 11:36:04 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 8BD4710C8C1; Wed, 17 May 2023 21:36:01 +0300 (+03)
+Date: Wed, 17 May 2023 21:36:01 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>,
+	Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+	khalid.elmously@canonical.com, philip.cox@canonical.com,
+	aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv11 0/9] mm, x86/cc, efi: Implement support for unaccepted
+ memory
+Message-ID: <20230517183601.vgdnuchw3we2abua@box.shutemov.name>
 References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
- <20230513220418.19357-7-kirill.shutemov@linux.intel.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20230513220418.19357-7-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR05CA0013.namprd05.prod.outlook.com
- (2603:10b6:805:de::26) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+ <aa35a445-f410-b11f-bf21-3e482647faae@amd.com>
+ <20230516232204.3k53vh6pdnimdrhi@box.shutemov.name>
+ <fe62b3a6-2c28-a069-d880-772fe6c13125@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|MW6PR12MB8662:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61af4214-89cd-49bd-46f8-08db56f0d5ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	xLnmybtU2lKiCW6nbCVMgaEwJIhmydMBJHseqVHsrN7lbnum2v/RUGDHjydyJLmp7HGRnSn8YU17SzXRCvBRhGqh7cGG03K4+X2/R8chjfXcIEmXIYmqmmdIhGaNJH6IfSpqhl5g9f0Js+He1vzAmNPiZBBY/QhlqKTYz0v5jJEPr4Me3iHHePHXieKT0uLnZ2xS67NoLFx2o8T7sHOri59BmEoHAio7m7CfivBNtB99PNtXXthLVrd/05XfgqhVd1AZ6r7vzDjIZK5Amx44quKJB9hvkJKe204hdRXnM7kEgVV74YrFoC4miMf/vDqojPh2CX91U/CrRG7P1NAWqwRtjWV2dRenRohfMTi5X0ET3ZQKgZ8o6YYZ1T9ROwU/2Pq+2eGaRFGgw4oUP1zEzAgAO7kiT1t4em9BGqytmTeKPPVg4GlXGXBRFJU04/6RQvg8wM25f7oS0zyIFPMyJkv0Z1Bnx4xRj7QObB/dB3hjKuMATV8laENe/Du8U1GSxz2Tb/ilgT8bFutgdc7W4ucscPP4/hufZzt19z8K51N4fJCCutopiwSErbUiskn2HT+r1kZ90pIeuIjTQ2DjLL/S1IIGNl9TTHJfoIKZlKziJDhPHpbCqIyPN13ToWhgP4tdlbKX4UBR5IF2SPgqYA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(136003)(366004)(376002)(346002)(451199021)(66946007)(31686004)(2906002)(7416002)(7406005)(83380400001)(5660300002)(8936002)(8676002)(66476007)(110136005)(54906003)(66556008)(41300700001)(316002)(478600001)(6486002)(36756003)(4326008)(6666004)(2616005)(53546011)(31696002)(26005)(6512007)(6506007)(186003)(86362001)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SmVKTjA5Yzg1blJ1REtjNzJlRjdZZzRROTVHSTZ3T1Z2VHBRdllaL3lNaUt3?=
- =?utf-8?B?MENrTi8vR3NVRXQ1L2hmZVJKamZHQml5WWd1Y0RoL2RrWTUrd2x0ZTc5YmJz?=
- =?utf-8?B?NE1rSGp5WXZoRXBDTWlZY3ROanpzcEZ4VnBQQnBUQkNzbHBVbmZldXdLNVdy?=
- =?utf-8?B?MTQxUEdMMWJmN1JIS0F6VGhIbXpScjI2bmhUZWZBZEgwQWRkcUI4cmF5eGp3?=
- =?utf-8?B?N0RCZFpwSUZicHh5SEVLRkg1T1FTNG4yU0R2OFkrb0Q0UEJoQ2l3VzdOVytm?=
- =?utf-8?B?REpzUTZtdkdZZWdqTURCVmNHaGFvQlZEb3dJUEp3a3dpOEFmYkFtQWljYm5V?=
- =?utf-8?B?ckJJS29yWldwdFMrMzBZNjF1WEJKSlRaanIyOVFkSjlRRU90SFRMWnNUU3V5?=
- =?utf-8?B?OE03QWNxeFNmZ3hJb3k3QmFvd0tkT0RRa0s1RmVXckpaR1l3VlB6aFh2T3kz?=
- =?utf-8?B?THVRSGVzK0xmVnpNTDZmR1BiNTB6T1Vrd0huTnRDbHhGUnU5ZWRneE1zZDZa?=
- =?utf-8?B?ZHlDc2hGaXE2cTFicW9kd1d6ZlZFUjJhZWdXLzBoT3NnN0o0Ty90b3JzbU1q?=
- =?utf-8?B?M042VXZUc2tTb1JSWFlDY3BIQnJCaXEwb2d5bG9Hb3RCK0paSElqQUd5TTBZ?=
- =?utf-8?B?TlRVemVPeVRXV1FNek9odW0yYS9NMElJL0ppaG9pUWwwc3RmRDUrNmsxaWhD?=
- =?utf-8?B?eXhFU2NtR2ZlS3EyMzN6ekpkeHVxRzNpa2llRTRNcDVrdmVGb3FzVzQrVG9J?=
- =?utf-8?B?TngvZFZyN1VwUU9YR2Y0bHh4cGd4a2RiVzdwVUdtelhMUFNDMU5XTTF0RGxU?=
- =?utf-8?B?NXZ6YzJwZU1Tc3JQWmNDMHl1VFJKb2s4YS9yQ2FIdjJUTWplb2NNamp0VVo3?=
- =?utf-8?B?a3NIcUFqT0ZYTWtDK3p2Qm9sTGpKNFV2anliRVoydERuZDNneU5XbXlSb2JT?=
- =?utf-8?B?RDNMYjh5NTVzMGNjUGlCZW5jOHdhU0J4cXEwYVA3NEpUekRLa3Z4TTF2eDZx?=
- =?utf-8?B?SEpvOGJabkRNaXV1RnZONWplcmpoZEE0MG1TcWR4UmRBcTAxY2ZXbFFhaHZI?=
- =?utf-8?B?bjcxTkFTdWZZT001Wk5YVkpRMHNhMER1b01EcGh1N0RwNmlYTGxYRVdQbzRk?=
- =?utf-8?B?REQ1bzl5cUhQVDFzVjNiWSt2MS9OeHlndm5YUWpodXJ4RkJmTXc2NFNSM3VL?=
- =?utf-8?B?TWVYQ29peDlxMnRzUC92Z2d3UDJzZzZKeWcwaFBwOXp5QVl0b0NTUlJIWmhU?=
- =?utf-8?B?dm9PS05HTjNubm9GcVJkREtLa3dQTFRlV1VQVTRjbVpXaGV1Q1owZytDN1Bm?=
- =?utf-8?B?SFlIaFc2WkVsbFdwdUxSd2gzUHhiTFNBNytJY0J0RXZhbXQwMUxFVmwxU0x3?=
- =?utf-8?B?WVNHWjI1clNRZEZkT1NxdGxLc0VkQ1RKbmV0QlhOdUFpMmdGVXFxZ2xpK3ZS?=
- =?utf-8?B?ZUQyS0pkZWpHdkxnQTFReEVadUY1Z2hPZ3NJUTVEd2E1bWJWOS9zcUszalVt?=
- =?utf-8?B?a004THcwM1ZsbGU3NTl5ZmFPZUYxVjVBTFhiUE95Z1hGeGdLSUpQYkVBdTAw?=
- =?utf-8?B?NE9qck8ybDZLNDdtWmg4U2VST3NBbG14a1RmaCtkbUh1NUQwWmlEVUYyN3lw?=
- =?utf-8?B?U0dNcnVZMVZGN3JOaVp6OC9idVVnNTloLzhVODlKVmxKcVYzcGR2Qm43ZGJu?=
- =?utf-8?B?Z0lrZVg1OUc1RXZuWlM5ckk1bHdiZFczQlNiTzRzRUp4VEg2UlJDd1Fzd21X?=
- =?utf-8?B?RklWb3BPZklxc3k5a05zSFMwOTRHNGJHaWRUek45bXZHeHBMYnBUSDkwMnVp?=
- =?utf-8?B?ZmxFNWcyTnR3UFd6SVZWSEZEeGRGWEJpSWx6NjNTd2hpOTV5SC9CbFZVMDdn?=
- =?utf-8?B?cDVNbWNISkhjY0ZZdmtTYXl6RU5KYWw0Q1JYRDRHbzlFNUo2ei9UdEZOM3ZI?=
- =?utf-8?B?TE5qRHVYMnB5SlR4U3RFWW8ycnpja0wzVEdkVU90TEtBWU5uak80THZKb1Av?=
- =?utf-8?B?eGhnVlZsNXhKN0NZWlI2M3MwUWp2eGlXcEJ6L2xSanpvTEhEYU50Vmc0Y1Bw?=
- =?utf-8?B?MEZiMVlMd0dRUGplWmFvWHNNR3Y0dlMvZlRkTm1IcXJSTHRUeVJzMVFiZEJQ?=
- =?utf-8?Q?37scOVuf4PftyG/y8uTojm0xg?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61af4214-89cd-49bd-46f8-08db56f0d5ee
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 16:07:38.7071
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lv4xJHu3F3YF7ehtmve+xdjqrWb4qxvDeQXeLGE7TPYLHzvNiP85bOsRr73jQH+Z3W7Xww9SwG834SPNEIHMvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8662
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fe62b3a6-2c28-a069-d880-772fe6c13125@amd.com>
 
-On 5/13/23 17:04, Kirill A. Shutemov wrote:
-> load_unaligned_zeropad() can lead to unwanted loads across page boundaries.
-> The unwanted loads are typically harmless. But, they might be made to
-> totally unrelated or even unmapped memory. load_unaligned_zeropad()
-> relies on exception fixup (#PF, #GP and now #VE) to recover from these
-> unwanted loads.
+On Wed, May 17, 2023 at 09:32:27AM -0500, Tom Lendacky wrote:
+> On 5/16/23 18:22, Kirill A. Shutemov wrote:
+> > On Tue, May 16, 2023 at 05:41:55PM -0500, Tom Lendacky wrote:
+> > > On 5/13/23 17:04, Kirill A. Shutemov wrote:
+> > > > UEFI Specification version 2.9 introduces the concept of memory
+> > > > acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
+> > > > SEV-SNP, requiring memory to be accepted before it can be used by the
+> > > > guest. Accepting happens via a protocol specific for the Virtual
+> > > > Machine platform.
+> > > > 
+> > > > Accepting memory is costly and it makes VMM allocate memory for the
+> > > > accepted guest physical address range. It's better to postpone memory
+> > > > acceptance until memory is needed. It lowers boot time and reduces
+> > > > memory overhead.
+> > > > 
+> > > > The kernel needs to know what memory has been accepted. Firmware
+> > > > communicates this information via memory map: a new memory type --
+> > > > EFI_UNACCEPTED_MEMORY -- indicates such memory.
+> > > > 
+> > > > Range-based tracking works fine for firmware, but it gets bulky for
+> > > > the kernel: e820 has to be modified on every page acceptance. It leads
+> > > > to table fragmentation, but there's a limited number of entries in the
+> > > > e820 table
+> > > > 
+> > > > Another option is to mark such memory as usable in e820 and track if the
+> > > > range has been accepted in a bitmap. One bit in the bitmap represents
+> > > > 2MiB in the address space: one 4k page is enough to track 64GiB or
+> > > > physical address space.
+> > > > 
+> > > > In the worst-case scenario -- a huge hole in the middle of the
+> > > > address space -- It needs 256MiB to handle 4PiB of the address
+> > > > space.
+> > > > 
+> > > > Any unaccepted memory that is not aligned to 2M gets accepted upfront.
+> > > > 
+> > > > The approach lowers boot time substantially. Boot to shell is ~2.5x
+> > > > faster for 4G TDX VM and ~4x faster for 64G.
+> > > > 
+> > > > TDX-specific code isolated from the core of unaccepted memory support. It
+> > > > supposed to help to plug-in different implementation of unaccepted memory
+> > > > such as SEV-SNP.
+> > > > 
+> > > > -- Fragmentation study --
+> > > > 
+> > > > Vlastimil and Mel were concern about effect of unaccepted memory on
+> > > > fragmentation prevention measures in page allocator. I tried to evaluate
+> > > > it, but it is tricky. As suggested I tried to run multiple parallel kernel
+> > > > builds and follow how often kmem:mm_page_alloc_extfrag gets hit.
+> > > > 
+> > > > See results in the v9 of the patchset[1][2]
+> > > > 
+> > > > [1] https://lore.kernel.org/all/20230330114956.20342-1-kirill.shutemov@linux.intel.com
+> > > > [2] https://lore.kernel.org/all/20230416191940.ex7ao43pmrjhru2p@box.shutemov.name
+> > > > 
+> > > > --
+> > > > 
+> > > > The tree can be found here:
+> > > > 
+> > > > https://github.com/intel/tdx.git guest-unaccepted-memory
+> > > 
+> > > I get some failures when building without TDX support selected in my
+> > > kernel config after adding unaccepted memory support for SNP:
+> > > 
+> > >    In file included from arch/x86/boot/compressed/../../coco/tdx/tdx-shared.c:1,
+> > >                     from arch/x86/boot/compressed/tdx-shared.c:2:
+> > >    ./arch/x86/include/asm/tdx.h: In function ?tdx_kvm_hypercall?:
+> > >    ./arch/x86/include/asm/tdx.h:72:17: error: ?ENODEV? undeclared (first use in this function)
+> > >       72 |         return -ENODEV;
+> > >          |                 ^~~~~~
+> > >    ./arch/x86/include/asm/tdx.h:72:17: note: each undeclared identifier is reported only once for each function it appears in
+> > > 
+> > > Adding an include for linux/errno.h gets past that error, but then
+> > > I get the following:
+> > > 
+> > >    ld: arch/x86/boot/compressed/tdx-shared.o: in function `tdx_enc_status_changed_phys':
+> > >    tdx-shared.c:(.text+0x42): undefined reference to `__tdx_hypercall'
+> > >    ld: tdx-shared.c:(.text+0x7f): undefined reference to `__tdx_module_call'
+> > >    ld: tdx-shared.c:(.text+0xce): undefined reference to `__tdx_module_call'
+> > >    ld: tdx-shared.c:(.text+0x13b): undefined reference to `__tdx_module_call'
+> > >    ld: tdx-shared.c:(.text+0x153): undefined reference to `cc_mkdec'
+> > >    ld: tdx-shared.c:(.text+0x15d): undefined reference to `cc_mkdec'
+> > >    ld: tdx-shared.c:(.text+0x18e): undefined reference to `__tdx_hypercall'
+> > >    ld: arch/x86/boot/compressed/vmlinux: hidden symbol `__tdx_hypercall' isn't defined
+> > >    ld: final link failed: bad value
+> > > 
+> > > So it looks like arch/x86/boot/compressed/tdx-shared.c is being
+> > > built, while arch/x86/boot/compressed/tdx.c isn't.
+> > 
+> > Right. I think this should help:
+> > 
+> > diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+> > index 78f67e0a2666..b13a58021086 100644
+> > --- a/arch/x86/boot/compressed/Makefile
+> > +++ b/arch/x86/boot/compressed/Makefile
+> > @@ -106,8 +106,8 @@ ifdef CONFIG_X86_64
+> >   endif
+> > 
+> >   vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+> > -vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
+> > -vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o $(obj)/tdx-shared.o
+> > +vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o $(obj)/tdx-shared.o
+> > +vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
+> > 
+> >   vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+> >   vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
+> > 
+> > > After setting TDX in the kernel config, I can build successfully, but
+> > > I'm running into an error when trying to accept memory during
+> > > decompression.
+> > > 
+> > > In drivers/firmware/efi/libstub/unaccepted_memory.c, I can see that the
+> > > unaccepted_table is allocated, but when accept_memory() is invoked the
+> > > table address is now zero. I thought maybe it had to do with bss, but even
+> > > putting it in the .data section didn't help. I'll keep digging, but if you
+> > > have any ideas, that would be great.
+> > 
+> > Not right away. But maybe seeing your side of enabling would help.
 > 
-> But, this approach does not work for unaccepted memory. For TDX, a load
-> from unaccepted memory will not lead to a recoverable exception within
-> the guest. The guest will exit to the VMM where the only recourse is to
-> terminate the guest.
+> Let me get something pushed up where you can access it and I'll also send
+> you my kernel config.
 > 
-> There are two parts to fix this issue and comprehensively avoid access
-> to unaccepted memory. Together these ensure that an extra "guard" page
-> is accepted in addition to the memory that needs to be used.
+> In the mean time I added the following and everything worked. But I'm not
+> sure how acceptable it is to always be checking for the table when the
+> value is zero is.
 > 
-> 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
->     checks up to end+unit_size if 'end' is aligned on a unit_size
->     boundary.
-> 2. Implicitly extend accept_memory(start, end) to end+unit_size if 'end'
->     is aligned on a unit_size boundary.
 > 
-> Side note: This leads to something strange. Pages which were accepted
-> 	   at boot, marked by the firmware as accepted and will never
-> 	   _need_ to be accepted might be on unaccepted_pages list
-> 	   This is a cue to ensure that the next page is accepted
-> 	   before 'page' can be used.
-> 
-> This is an actual, real-world problem which was discovered during TDX
-> testing.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-
-> ---
->   drivers/firmware/efi/unaccepted_memory.c | 35 ++++++++++++++++++++++++
->   1 file changed, 35 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-> index bb91c41f76fb..3d1ca60916dd 100644
-> --- a/drivers/firmware/efi/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/unaccepted_memory.c
-> @@ -37,6 +37,34 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
->   	start -= unaccepted->phys_base;
->   	end -= unaccepted->phys_base;
->   
-> +	/*
-> +	 * load_unaligned_zeropad() can lead to unwanted loads across page
-> +	 * boundaries. The unwanted loads are typically harmless. But, they
-> +	 * might be made to totally unrelated or even unmapped memory.
-> +	 * load_unaligned_zeropad() relies on exception fixup (#PF, #GP and now
-> +	 * #VE) to recover from these unwanted loads.
-> +	 *
-> +	 * But, this approach does not work for unaccepted memory. For TDX, a
-> +	 * load from unaccepted memory will not lead to a recoverable exception
-> +	 * within the guest. The guest will exit to the VMM where the only
-> +	 * recourse is to terminate the guest.
-> +	 *
-> +	 * There are two parts to fix this issue and comprehensively avoid
-> +	 * access to unaccepted memory. Together these ensure that an extra
-> +	 * "guard" page is accepted in addition to the memory that needs to be
-> +	 * used:
-> +	 *
-> +	 * 1. Implicitly extend the range_contains_unaccepted_memory(start, end)
-> +	 *    checks up to end+unit_size if 'end' is aligned on a unit_size
-> +	 *    boundary.
-> +	 *
-> +	 * 2. Implicitly extend accept_memory(start, end) to end+unit_size if
-> +	 *    'end' is aligned on a unit_size boundary. (immediately following
-> +	 *    this comment)
-> +	 */
-> +	if (!(end % unit_size))
-> +		end += unit_size;
+> diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> index f4642c4f25dd..8c5632ab1208 100644
+> --- a/drivers/firmware/efi/libstub/unaccepted_memory.c
+> +++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
+> @@ -183,8 +183,13 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+>  	unsigned long bitmap_size;
+>  	u64 unit_size;
+> -	if (!unaccepted_table)
+> -		return;
+> +	if (!unaccepted_table) {
+> +		efi_guid_t unaccepted_table_guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
 > +
->   	/* Make sure not to overrun the bitmap */
->   	if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
->   		end = unaccepted->size * unit_size * BITS_PER_BYTE;
-> @@ -84,6 +112,13 @@ bool range_contains_unaccepted_memory(phys_addr_t start, phys_addr_t end)
->   	start -= unaccepted->phys_base;
->   	end -= unaccepted->phys_base;
->   
-> +	/*
-> +	 * Also consider the unaccepted state of the *next* page. See fix #1 in
-> +	 * the comment on load_unaligned_zeropad() in accept_memory().
-> +	 */
-> +	if (!(end % unit_size))
-> +		end += unit_size;
-> +
->   	/* Make sure not to overrun the bitmap */
->   	if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
->   		end = unaccepted->size * unit_size * BITS_PER_BYTE;
+> +		unaccepted_table = get_efi_config_table(unaccepted_table_guid);
+> +		if (!unaccepted_table)
+> +			return;
+> +	}
+>  	unit_size = unaccepted_table->unit_size;
+> 
+
+Kudos to Ard: if efi_relocate_kernel() triggered, it copies the kernel
+image to the new place before the variable gets initialized, so it has to
+be initialized explicitly by decompressor.
+
+It also covers the cases when bootloader doesn't use EFI stub, including
+kexec cases.
+
+I think this fixup should work.
+
+diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
+index cf475243b6d5..866c0af8b5b9 100644
+--- a/arch/x86/boot/compressed/efi.h
++++ b/arch/x86/boot/compressed/efi.h
+@@ -16,6 +16,7 @@ typedef guid_t efi_guid_t __aligned(__alignof__(u32));
+ #define ACPI_TABLE_GUID				EFI_GUID(0xeb9d2d30, 0x2d88, 0x11d3,  0x9a, 0x16, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ #define ACPI_20_TABLE_GUID			EFI_GUID(0x8868e871, 0xe4f1, 0x11d3,  0xbc, 0x22, 0x00, 0x80, 0xc7, 0x3c, 0x88, 0x81)
+ #define EFI_CC_BLOB_GUID			EFI_GUID(0x067b1f5f, 0xcf26, 0x44c5, 0x85, 0x54, 0x93, 0xd7, 0x77, 0x91, 0x2d, 0x42)
++#define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+ 
+ #define EFI32_LOADER_SIGNATURE	"EL32"
+ #define EFI64_LOADER_SIGNATURE	"EL64"
+@@ -105,6 +106,14 @@ struct efi_setup_data {
+ 	u64 reserved[8];
+ };
+ 
++struct efi_unaccepted_memory {
++	u32 version;
++	u32 unit_size;
++	u64 phys_base;
++	u64 size;
++	unsigned long bitmap[];
++};
++
+ static inline int efi_guidcmp (efi_guid_t left, efi_guid_t right)
+ {
+ 	return memcmp(&left, &right, sizeof (efi_guid_t));
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index a4308d077885..0108c97399a5 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -1,8 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+-#include "../cpuflags.h"
+-#include "../string.h"
+ #include "error.h"
++#include "misc.h"
+ #include "tdx.h"
+ #include <asm/shared/tdx.h>
+ 
+@@ -40,3 +39,25 @@ void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+ 	else
+ 		error("Cannot accept memory: unknown platform\n");
+ }
++
++void init_unaccepted_memory(void)
++{
++	guid_t guid =  LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
++	struct efi_unaccepted_memory *unaccepted_table;
++	unsigned long cfg_table_pa;
++	unsigned int cfg_table_len;
++	int ret;
++
++	ret = efi_get_conf_table(boot_params, &cfg_table_pa, &cfg_table_len);
++	if (ret)
++		error("EFI config table not found.");
++
++	unaccepted_table = (void *)efi_find_vendor_table(boot_params,
++							 cfg_table_pa,
++							 cfg_table_len,
++							 guid);
++	if (unaccepted_table->version != 1)
++		error("Unknown version of unaccepted memory table\n");
++
++	set_unaccepted_table(unaccepted_table);
++}
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index eb8df0d4ad51..36535a3753f5 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -458,6 +458,7 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+ 
+ 	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
+ 		debug_putstr("Accepting memory... ");
++		init_unaccepted_memory();
+ 		accept_memory(__pa(output), __pa(output) + needed_size);
+ 	}
+ 
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 9663d1839f54..e1a0b49e0ed2 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -247,10 +247,10 @@ static inline unsigned long efi_find_vendor_table(struct boot_params *bp,
+ }
+ #endif /* CONFIG_EFI */
+ 
+-#ifdef CONFIG_UNACCEPTED_MEMORY
++void init_unaccepted_memory(void);
++
++/* Implemented in EFI stub */
++void set_unaccepted_table(struct efi_unaccepted_memory *table);
+ void accept_memory(phys_addr_t start, phys_addr_t end);
+-#else
+-static inline void accept_memory(phys_addr_t start, phys_addr_t end) {}
+-#endif
+ 
+ #endif /* BOOT_COMPRESSED_MISC_H */
+diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
+index f4642c4f25dd..fd6a3195c68f 100644
+--- a/drivers/firmware/efi/libstub/unaccepted_memory.c
++++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
+@@ -6,6 +6,18 @@
+ 
+ static struct efi_unaccepted_memory *unaccepted_table;
+ 
++/*
++ * Decompressor needs to initialize the variable to cover cases when the table
++ * is not allocated by EFI stub or EFI stub copied the kernel image with
++ * efi_relocate_kernel() before the variable is set.
++ *
++ * It must be call before the first usage of accept_memory() by decompressor.
++ */
++void set_unaccepted_table(struct efi_unaccepted_memory *table)
++{
++	unaccepted_table = table;
++}
++
+ efi_status_t allocate_unaccepted_bitmap(__u32 nr_desc,
+ 					struct efi_boot_memmap *map)
+ {
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
