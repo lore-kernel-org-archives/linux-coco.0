@@ -1,47 +1,45 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2065.outbound.protection.outlook.com [40.107.243.65])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435341C26
-	for <linux-coco@lists.linux.dev>; Wed, 17 May 2023 14:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777FC567C
+	for <linux-coco@lists.linux.dev>; Wed, 17 May 2023 15:52:40 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RvZP6LgLisrMPRqA3j1Rvf+DGfmUUXjo4xilAcUohRQjlGf9XrOSj/eUgela9abf9jjW8DIcrthsLqQCWuaYnRf5X0hx5+auvVqJ8wlzVImD6sFfyS4kLR2ldVwQI8SyzEzk79r8K7aZS4mGiQnEKKflAuFOdOSL1GeZincSYC+QcadVDHwDPAEx/7He6rIxyvlmsJR3yQfxAyW7qz3RcwPm90/plV8IgjJ4BxG+pVBtY7W1vwQNi50I1U2XHvfq8fyFHzVOWlgzVA52Qz7yvdU809HTTUaTuEmjiCGmMyTBxNDrN/0vKcFOgXEJ/WE2X4QA4E2NPz07wvqsw+Llvg==
+ b=ZOsjVm/qRvb9EDo3OzvbpV8RfKFZoh1mFXS45E9/VWHvVwd49zSpJNFjJQymjOkOasNRs2QKNoTWQPxjQ8gVukLUpBBMErj0/wJmA51IEMrTRvhJ8qVbIEq50DUml2OLRFrMJxmLSjiDrQJH/T9fwM2H0YLe3YgC6TZBhoZKWiCdYS1ZJCnhxma71c5ZJhNRn+rz2QhnoDXnDr6/Wi5bsCgLS/bRqjXDc/juFSVzK3gD9OsairFWT250wtfSfg8XUnGzgQ572tGWfb8bSNyEPxpiRi2lHRllfXz0bPY0AAgoWHxp5tfUpvBAeycZXQgmIch8i4ZtrI/1RtmkdDK96Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oGH9/afE197hpRD9BqpOJMbtxYlyPKJe89JDipVHiOM=;
- b=CdxdG5Trg2esH2op3+OpJD5xoDyVErU+FJ9YcjRAq638lTIvzT3t+hsKJNjCF5I3dV+xaRpaEVOjoZ3nHyT3A0tw6oiJcYRoSV98XW/QTNPCvexEHBartFs4dxqQJaY7BaYLApFkbRdFDGBHqSOsO7Wwc1QFETxb+3wJwzQFZ9PLHnSW0BMcvRI0qH8/gRelbjFYHgy5FleVcgs2u6jCv/PJAedKZATVfXsX1RKZXlC50Ig8UNYbKuEnCsw0t+2opgfkaRyKSVowJjZlGKIbswYHzNVv54rSJfevr4DzfFu1sAjaCpwwYU6DkfrW6r4d/XB56wjucZIQDL6NK55Nzg==
+ bh=+2cIJDctDdw7tliFossXPnrV3DS+U4xFF0dt4Nd6ss4=;
+ b=CiEE0y2ylP0qbbx9gjcv6VgfT4F7AcXCgARSR+la6eRWExeheTAeksARyLJYuSf/Tsda2WOccjKXXi/I+4Hxo3vPiFs9soJXsT0nWkmZoGW2lORSkdiV89TEYMvLwZzOTuMHCTGw7FUryPBcP0yy37DExbDB6suMNTExFgEzpDayoOPB6ysHy6PSF+ONAeHO/sLT5Hfbt6Cha7/vouRrCCVRh5WPyYBQvWzYqUi74TSjWgWUBKlFRE3IKq8DmEIzapRxxHp3ubCnKu54zWhiicAG5f41VGV58mvvA4471rjmOwEO+mpwgFt0Yw7+Crw14DmX4GX5Lc5AfxUf6q2Huw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oGH9/afE197hpRD9BqpOJMbtxYlyPKJe89JDipVHiOM=;
- b=JU7ZvpFyJzLUvvsPyZWfeCYqD+zxOCvma87uDojUePQYVHAVNR14k+y71YoqtZ6YLEPx678mSPQFwuPGNlvpwOYxCk9K/D3PN8gVUnwnSyd3YfMGMtppV/C9p1pr2vn6azTdJWdAroUIUMrcCW306sX5+++d6if/I8EcgvQXL1c=
+ bh=+2cIJDctDdw7tliFossXPnrV3DS+U4xFF0dt4Nd6ss4=;
+ b=zGu8o2OKy1PQaxwIHZxmsj6i1MMVc4nnVU/dJX2PYKX1HIl4KXoKY/R+Mq2jXxGWyOSOkYD8c993WmZItan6lTe7fnlRNTE8dpb5t1o3rUOA/jIwliQAyaZqD7RxrXNQp4KUrDBJR6jAjQeIeIBJuJW9Rg8+ZnVdSG//CJumulM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by SJ0PR12MB7473.namprd12.prod.outlook.com (2603:10b6:a03:48d::8) with
+ by DS0PR12MB7897.namprd12.prod.outlook.com (2603:10b6:8:146::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.17; Wed, 17 May
- 2023 14:32:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6387.33; Wed, 17 May
+ 2023 15:52:38 +0000
 Received: from DM4PR12MB5229.namprd12.prod.outlook.com
  ([fe80::ea32:baf8:cc85:9648]) by DM4PR12MB5229.namprd12.prod.outlook.com
  ([fe80::ea32:baf8:cc85:9648%7]) with mapi id 15.20.6411.017; Wed, 17 May 2023
- 14:32:31 +0000
-Message-ID: <fe62b3a6-2c28-a069-d880-772fe6c13125@amd.com>
-Date: Wed, 17 May 2023 09:32:27 -0500
+ 15:52:37 +0000
+Message-ID: <ae0bee7f-0fa1-caec-a4c9-10170b1b38af@amd.com>
+Date: Wed, 17 May 2023 10:52:34 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCHv11 0/9] mm, x86/cc, efi: Implement support for unaccepted
- memory
+Subject: Re: [PATCHv11 4/9] x86/boot/compressed: Handle unaccepted memory
 Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
  Dave Hansen <dave.hansen@intel.com>, Sean Christopherson
  <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
- Andi Kleen <ak@linux.intel.com>,
+ Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Andi Kleen <ak@linux.intel.com>,
  Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
  David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>,
  Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
@@ -54,14 +52,13 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
  linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20230513220418.19357-1-kirill.shutemov@linux.intel.com>
- <aa35a445-f410-b11f-bf21-3e482647faae@amd.com>
- <20230516232204.3k53vh6pdnimdrhi@box.shutemov.name>
+ <20230513220418.19357-5-kirill.shutemov@linux.intel.com>
 From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20230516232204.3k53vh6pdnimdrhi@box.shutemov.name>
+In-Reply-To: <20230513220418.19357-5-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR13CA0002.namprd13.prod.outlook.com
- (2603:10b6:806:130::7) To DM4PR12MB5229.namprd12.prod.outlook.com
+X-ClientProxiedBy: SN7PR04CA0207.namprd04.prod.outlook.com
+ (2603:10b6:806:126::32) To DM4PR12MB5229.namprd12.prod.outlook.com
  (2603:10b6:5:398::12)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -70,212 +67,182 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|SJ0PR12MB7473:EE_
-X-MS-Office365-Filtering-Correlation-Id: 567dd25e-6994-4bbf-f912-08db56e38c3b
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|DS0PR12MB7897:EE_
+X-MS-Office365-Filtering-Correlation-Id: ce73d274-e496-4cf5-4dde-08db56eebce9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	asQ3vAS5j+jc0aY+C84cFgE/lEWN246cEBY3sKDyFYZ2ndr5QMWHAulXnliwMGJ8HLEuQ3C9Ze9Z7o57v2RS4sKvb7TG4geRopQI/FvC+h4UuLVodcC8INaBhAeVLMRfL2HimzNdl2u3Eieo4lsO49riPA2n4Mkrx5bWxb2r3pc94Y/6daG/GEJui0md6v/6lloBUw8jsJTpPCq0Q/8qf3KZ/IXDyUZvXmaju87wCieJxkXhgD87ncNiGjCnfpW9FUULDkyHxbmq1hnS9NsfsVwpona6hrk2sJX1CHRsNPnX7UjxJ/3ypSZIn30LpgSEM8K6P7Q9/2JPq3YdWiR6pKPlzNEiSHzFQrYdupHX7Q9OFd0h3Awer5ktjgLH6w6fTzEgvwexUoZbyeDez1834XqEDk28wOU22OnYAD8gvBKnwoDD773CF7l9e1P1vjPEZYxn7g8+GrUdr4sbp/fT55EJ5u+2G3zkVxy4IAK3tsNAEvij9YspEIvT1HSWQ/XAobdrvLGXTTGmV+0BQYGXVtX5W3yVBr6noXr6KCyRJXkD1tEOiFCOvmCOqXJNIgw7TABBN6q1B8t/2gyvO1I8M7xlBrPyTXLnYGXveYtCKwZWo4K4e6sk0qxupvQ5feL+vV9gxO4LpRK2Rw/wWY9SkmJNK0kbg64br1IT4BntwApFpthPpFjMgFTlGYZ7qUr3
+	cRqJKTeAiB3wtF73aNKwC76W6UAKoHZxz4UpbSOnFw5QbW2Nvh8VnPSHo+tKi4hSOJc+ZQtRVeGlnCBhRJ/MosD93bJyu3B3H8fLMc/cYHONNDFOld/Z6SmAZkPmi+lNfuZTztwxNKHFdJoH3emt+b5EJbVqukqdIQ82LqN3lu8cEYtV3YaDz/asTnapuFFhYXbPQotkMAsH9R07QlMhAQw3u/R5l64CR9AkWnQyUA+lluq9BZm9BI4eu27hZp+jpGkDtkf4CtMGfkKJGZCvUTwYAdCPto3CRDhx4YZHYBUwBue3LcR6mASNLKsqWfrzxwNRQb3llXHh1g8jfY+Jz2cAsge+FIpmYzP2K3KMITpZvS09hOtXqBdJZ/j3SGnjIb5RdpLY21AUpy0l9Ljf4spBQK6IAoC+pPDyeX0sCRxX4tH7192N38LD75ZAydWYWQuiZ8We9pgotp5NLTYIUaQiuslXeS1LAdTYJz2PmxMDF3lRiNJ3Gc8/8BKN4eRoEUaFQGSGREedegBj+EuOZs1NdEc8JikJC+lkegM18N8oYfvprXHNCTPiXIrfDf2mrcXkEypGiP9CsWWxwRj47w5MzPV8NTv4Jk63JbUPB9YQmZi6mBX80VBiwAaP6rJK+Z1jxPNiBeO55qfUFP/EyA5d7PL30CuRPEEAigEnoXcDfcZIh7fY6wqaPjVsFwoaLoCpgTK97AztNxXBq3JlHw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(39860400002)(376002)(396003)(366004)(451199021)(31686004)(83380400001)(6916009)(41300700001)(8676002)(7416002)(7406005)(2906002)(8936002)(5660300002)(36756003)(31696002)(86362001)(316002)(38100700002)(4326008)(66476007)(66556008)(66946007)(966005)(53546011)(6512007)(6506007)(26005)(186003)(478600001)(6486002)(2616005)(6666004)(54906003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(366004)(136003)(376002)(346002)(39860400002)(451199021)(31686004)(4326008)(66556008)(66946007)(478600001)(66476007)(316002)(110136005)(54906003)(36756003)(31696002)(6486002)(86362001)(26005)(83380400001)(6506007)(6512007)(2616005)(186003)(53546011)(7406005)(2906002)(8936002)(6666004)(8676002)(41300700001)(5660300002)(38100700002)(7416002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0p0emxvb1ZCRDg0cWh0V1NhRDRFQWt0QlptbmVSaldzNnBHNEZEbDRjNnkw?=
- =?utf-8?B?ejVabmZPQndWWEJGSDUwYlZmamo0aGJRRjdKZEpJekg3VXZJbWVzbmJhazB2?=
- =?utf-8?B?dUZJdVppdjJEN1ZwSFlhWFhGOWlRY2VKSmxhM1VhYURnNTg3dklBekJEdWJH?=
- =?utf-8?B?UEZhbFZKYWkwZ0pBdnFnQWNISjJ3RiszNUNzTTQvdEs3R2hlcjhMQXhzTGZh?=
- =?utf-8?B?Rm1hWnkvNDI0LzVhdWFkRitRUHlINzBmMFVvS2U3YStvYzI3OUZBb3Urekxw?=
- =?utf-8?B?bSt3cGdpNUVvdTYyRDVUdUtaNDhkMHJ1RXhxYVFBK0NjZ0RIS21aUGFCaHJn?=
- =?utf-8?B?YlF2TXEwZi9DeEZhUUppeVpwYnJ1OHN1Q2VXak1ZNjhMOWFGV2t4TXdJNkZU?=
- =?utf-8?B?YVFncjQyelZIZFFGSEJjc0liTDNWOVg0UGtOQ3FUd0p6bER2Z2llR2t1WmhC?=
- =?utf-8?B?eHo0VEJvamEralZrbVFnRmEvMkhDa2l3S3NxbkZDdTd1aFZFMjBHNHpiOE8y?=
- =?utf-8?B?MXAwczIrRDBqWGFMWnB2NUp5MVZ2RTNoU3ZBM2piM1dBVFh5dEZJNzNQSnh3?=
- =?utf-8?B?M1k3ZTI1OGJnK1V1NUdVUEVDbkVHMjl6amJ4aFJhTWFkNDFTMDdKbGpXSEdC?=
- =?utf-8?B?emttNzFoTXlpd0diakIxL2FXK2xlOFRFTjF1M0o2aFZlbWUwUzMxN2ZYbGxu?=
- =?utf-8?B?OEFMcmNwZHZJWmd6eGRtRXpyZStucEpjNS8zYWxJb3pFY2Uzd0VwV1lPbnFn?=
- =?utf-8?B?UGRyZW1MaUhRd0w3dkhzMkRWcWE3NXVOOEVscmU1NGdidW5FUkVVa0FNYlJS?=
- =?utf-8?B?c2FCaUllbjhrLzREbGtNcHp0bzN3QUhTNGFmeUZNcWovREhhSG8yRWJqQWNj?=
- =?utf-8?B?U0UwUCtFVEpTbjU0djRuR2ZTaGZlU1hnT0VtbldPVFhUanBtWmh6V0hZU0sz?=
- =?utf-8?B?dnJOUTJDR0JkRzZKU3NLQkdvT2V2U0phOFZEWDF2ckJPU2J4K2dvbzhZT0gx?=
- =?utf-8?B?b2IzM3duNmVva2FoNTZ5SVpkN3RpWmI5N3NvNC8wVWdqUHR3ek8yb2x2OVN1?=
- =?utf-8?B?TzZwR3dvQkg4UUdKTzh6SktNRTlHczVQUFI4dzA4NDArRU5qUlZZaERxTUF2?=
- =?utf-8?B?bTU1QS9leVRpR2dmY1QrVGU1SnJsbGp1dGt4NkJRa0VWY2d3SERobDhwcHlx?=
- =?utf-8?B?NUxTNmFqdWJlcDY0ZWN2b0NMbVZIVGJVajlxOUhwaEFJcG42MU5SbDFtbnNW?=
- =?utf-8?B?S0VVSENGVVFxRDdaTW81UXRwcHV4SzJ1SFdYTUs1ZGI5Ny9YRTBEUXU1bG93?=
- =?utf-8?B?QmNSeWRWbm1xaVhVa2hTVFFsWjZkNzgrbjIyNHJJa2JTZHhraWZwSU51SXVC?=
- =?utf-8?B?VlVzRFFhYW9IcDBXTW1HTEFrTUd6L0UzbXN4akFuUUIybGhjVllkYTBYaTh6?=
- =?utf-8?B?cVVJYWdIRmV2LzdtNHRWdlJSeEc5MW43aVY2ODBsU2wvdHFVL3ZUNnpJUU1w?=
- =?utf-8?B?VGRYbUZTQkFFZjVjbnhCZHVOQ2FMV0lRenFXNEFhM0xpVTNoRElNRFhna2JF?=
- =?utf-8?B?empvSGFrR0pzd25DcENlTWtXK2w1VnVadGk5SS9GNFZSMFhaWElEQkVRbHFa?=
- =?utf-8?B?a09IK1M4c3hpbFAvMkkycWkvNFdtbmNUTlZtUnlNSXZpVlROZW5IZ3l5S1d2?=
- =?utf-8?B?UW5Jd1NrRzN0OTd4RzJNL0xjQWp1V3lRWHVwS1dlem5MbEU1ZmgzRkcyVWR5?=
- =?utf-8?B?d0FnaDVkSVNidVk5RnUzVTZ0M3hnSmdUSnFleGdGaGhySlkxRUhHRWFDaHNn?=
- =?utf-8?B?cThhZWIraWx2TktpZzlvOWFhYitNTk50SDFaNGY4SFVOVklpUFY5bmU3UGtM?=
- =?utf-8?B?ZSs0b1FYaG04NUpYdmtZZkUvNStWL3JzSG9MREpRTUMyWUR4TlhnVWZ4aGkv?=
- =?utf-8?B?UUVBWnA0aHIrSWU2dUo5QmFPVU0wcXQ1ZlRSWkFpTnZjQWpQTzNld3h4eDIw?=
- =?utf-8?B?cjRkK3hLa014dkhodkhiNE45Y0gyRHZjVHVSN0xOY2gyb2tIQklzZ29aQlJr?=
- =?utf-8?B?Z1pKOHpjb0g1aHVmS0xtMjNLNUdlVEkyZkxkaEw5eTlxc3dKc0dkdlg5Y0xr?=
- =?utf-8?Q?krMM3S8p09f82rzmULnWCVaVq?=
+	=?utf-8?B?RWZhS2ZwMkVBdVl3OUVWajBUbVR0T0VqcHpIMlRWbEVyRHcwdnl3SmxXKzM1?=
+ =?utf-8?B?ODNMT0trMEE1c2lWclRtYjFYdnM5ekpYSDZYMGJDWnFwejJKKzYyTkIwb25a?=
+ =?utf-8?B?cklTUVdXT2dDMzdiNzR0VkhFVTRVVGltUTR4UGt4SGxaVFhVNFVHY3lDS1ZY?=
+ =?utf-8?B?bU1SNmUybUxWdzVMVG8wSFRUbFZSUHMrN0U0MXdjRWJqNk5jdUxmSmtSQ2ls?=
+ =?utf-8?B?RzhhblFpdUthN0Y0TC9vVTBvRW5DYUdRZGY4MndlMm1lcXZtemcwZGpHNmhP?=
+ =?utf-8?B?RFRENksxeVNqM241MGtEMXlqN21uYVRDV1F3eTJkY3RoMldGa2x1WG0yMi9G?=
+ =?utf-8?B?ZlAwRTIzUHBaSW90Q2JRaHhrbDNjMDFKdDlGa1BSUzdmL1Q5SXgwTHdiYTgy?=
+ =?utf-8?B?RmRtU29McngxR09HdHhHVHladDNQV0NsMVc0VGxoaXdXSldIc2w1MmpDVlpN?=
+ =?utf-8?B?cVk2U0tRKzdSdk9TVUF1VG5MQXliM0VjenQ5TWExRmMzcEcyK0FEdjhaSWV2?=
+ =?utf-8?B?M0tlMnpMTFMzOGdzSjQyOHU1THljemZCUGl0UnI4Uzc5VTk3M3M4T0ZsdEVi?=
+ =?utf-8?B?eUhjekhGbTR3eW43dzlhS0pVV3hYR3AzRGQrRmkvR1k3a2hTcm5SM1V5UkVl?=
+ =?utf-8?B?R3FpblF1b2ZJMS94SnZEZ3lOTmF5cVFEd2J4WWZSZnRqMXZjWG93OElJbnVk?=
+ =?utf-8?B?YUFta2FxTzh5ZGpRQ2RPSHdMNDZXamY4cjdjdHRXOXd1ZWtJMU1YUjI3S253?=
+ =?utf-8?B?M0txc29sMlRzOERoWWVtMVdHVnpkb05ndjlBVWdENkRaVVNubTVna1hHbExN?=
+ =?utf-8?B?L29qQ0U1aTlOTFNycm13Rkp3UG1veEYxZndpOHoveUxKWmV3N0JETVBzQlJE?=
+ =?utf-8?B?VXNndHhseXdYTUJSZUpwdzgzTy9FUGxQK0NUMXVaRVJzamh2aHJndWdJTEpr?=
+ =?utf-8?B?QWNHVGVaUlpLMnZHRitVblN2Q3FydmtNa2drOEtDM1JMMXVzQVd1V0I5RC9M?=
+ =?utf-8?B?bXEwYWRmdkhyNGxzN1drb0dOTmdaWEIxeDhQZXVWaE9uaHVza3RqM1dFNVpC?=
+ =?utf-8?B?VDlXWmJKYVFDK3k2dGw5Y0FRSHFMKzdLV1hFNEJxN0R4d2FmQ3Zjbms3dFJs?=
+ =?utf-8?B?RUNnUnBleXphdFk5UmtSQkJFcUhRbmlPcmxWa29hV0Y2bVpXSmFKZEJTOHc5?=
+ =?utf-8?B?RytSTk1VbnlTcXh5Yit6VnVDbjlXbDVLUjFyTjN6Y3VUdXNaMWhsbFdiWkMw?=
+ =?utf-8?B?WVJyZzlpSU0zeE9xRnFCa29FMUJZNGZiRXYrTHUwaXBEc05nUms3K2JwbjdD?=
+ =?utf-8?B?Y3Z6a1FHWnZEQXpDMlZBdEJYZVgrZW95aERXVTdUWTZiVnhxZ2ZIUjdWYTdK?=
+ =?utf-8?B?S2s1Ti9JWkZ5VFVlZFU1ZGl3eGJYVzFHQ3BzWFp1VVBMdGlBL3BLR3I4N0FL?=
+ =?utf-8?B?TVFpdWd1UXBvczU4YjlWUGxQck1DelNqMGZDUHA4ZFZCSUhEbXJrVjFEQnpj?=
+ =?utf-8?B?aFpwTVhFSnBva1lqK011UTZhdXdlY0NadHU4bUE5RThJc2V5Q1ZmYU5Eelhy?=
+ =?utf-8?B?UFUvbERLbnlvc01PeUpzMnhhZG84UEUrcGlnS2FJMncrMzVRQlBSVUhlYjV1?=
+ =?utf-8?B?cnhGVUQyR3dra09wWGdaaEhjQjVza1MydElHOXhOZUc4NEhWOFlDYWZaK2ZU?=
+ =?utf-8?B?K3FRMTRCbldYYTNHRG9jQ2krVmY1L2ZmWkRhamxYSmtOdGxFSWk3WEhncyt0?=
+ =?utf-8?B?VnFGQlBUdkVIMnhhM1V6U0F1RncvSXpveitqODZvOWQvS0ExRThkMGVBTFQy?=
+ =?utf-8?B?VE5RaytaVURBYi9Ma2hsb0tIcDBhMk5Ndmkvc2ZZVkhoY3FTOTBYcVZVNWx2?=
+ =?utf-8?B?L1AzeDFBSGticjVnRUd4RWpNU25YY2VsUTFmU25CaTdHWDF2cktvb25LK1pO?=
+ =?utf-8?B?S0xsQjhVcHlXeDJkUEZMYUR1T2RWM3gzN3VucFhpMDUyelNwOEdVT1cxMzJ5?=
+ =?utf-8?B?eTUzVWJjRnZlZEx4SE1SQ2hLVjU4WmF2ZkRBcEM3TjJveU9TbitkSXlsRm9v?=
+ =?utf-8?B?WVFKeHFDTm5CM0FQRUl2Rys2eGQ4MWVKUzVpeVpJTTVUQk80TG9pNzJ5NHFz?=
+ =?utf-8?Q?2TTM/PExVO1npFca+wTRPILXA?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 567dd25e-6994-4bbf-f912-08db56e38c3b
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce73d274-e496-4cf5-4dde-08db56eebce9
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 14:32:31.5360
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2023 15:52:37.7477
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ECSwRAcLCwmGUng8Dl0sc5L4Esww1BbZCfO2d4gieQlLiPrBuXI6ipu8GwZZbay4F6e4tExPh1iJm7e5Zr4HHw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7473
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5StAnk9LsYBL9LcMsqeAlbSYoZcEHErN+XLKT2EUl5EF2OmbirenVGu0UJzc2e8YAeZQA1SZZ3VUzKT9aLQKNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7897
 
-On 5/16/23 18:22, Kirill A. Shutemov wrote:
-> On Tue, May 16, 2023 at 05:41:55PM -0500, Tom Lendacky wrote:
->> On 5/13/23 17:04, Kirill A. Shutemov wrote:
->>> UEFI Specification version 2.9 introduces the concept of memory
->>> acceptance: some Virtual Machine platforms, such as Intel TDX or AMD
->>> SEV-SNP, requiring memory to be accepted before it can be used by the
->>> guest. Accepting happens via a protocol specific for the Virtual
->>> Machine platform.
->>>
->>> Accepting memory is costly and it makes VMM allocate memory for the
->>> accepted guest physical address range. It's better to postpone memory
->>> acceptance until memory is needed. It lowers boot time and reduces
->>> memory overhead.
->>>
->>> The kernel needs to know what memory has been accepted. Firmware
->>> communicates this information via memory map: a new memory type --
->>> EFI_UNACCEPTED_MEMORY -- indicates such memory.
->>>
->>> Range-based tracking works fine for firmware, but it gets bulky for
->>> the kernel: e820 has to be modified on every page acceptance. It leads
->>> to table fragmentation, but there's a limited number of entries in the
->>> e820 table
->>>
->>> Another option is to mark such memory as usable in e820 and track if the
->>> range has been accepted in a bitmap. One bit in the bitmap represents
->>> 2MiB in the address space: one 4k page is enough to track 64GiB or
->>> physical address space.
->>>
->>> In the worst-case scenario -- a huge hole in the middle of the
->>> address space -- It needs 256MiB to handle 4PiB of the address
->>> space.
->>>
->>> Any unaccepted memory that is not aligned to 2M gets accepted upfront.
->>>
->>> The approach lowers boot time substantially. Boot to shell is ~2.5x
->>> faster for 4G TDX VM and ~4x faster for 64G.
->>>
->>> TDX-specific code isolated from the core of unaccepted memory support. It
->>> supposed to help to plug-in different implementation of unaccepted memory
->>> such as SEV-SNP.
->>>
->>> -- Fragmentation study --
->>>
->>> Vlastimil and Mel were concern about effect of unaccepted memory on
->>> fragmentation prevention measures in page allocator. I tried to evaluate
->>> it, but it is tricky. As suggested I tried to run multiple parallel kernel
->>> builds and follow how often kmem:mm_page_alloc_extfrag gets hit.
->>>
->>> See results in the v9 of the patchset[1][2]
->>>
->>> [1] https://lore.kernel.org/all/20230330114956.20342-1-kirill.shutemov@linux.intel.com
->>> [2] https://lore.kernel.org/all/20230416191940.ex7ao43pmrjhru2p@box.shutemov.name
->>>
->>> --
->>>
->>> The tree can be found here:
->>>
->>> https://github.com/intel/tdx.git guest-unaccepted-memory
->>
->> I get some failures when building without TDX support selected in my
->> kernel config after adding unaccepted memory support for SNP:
->>
->>    In file included from arch/x86/boot/compressed/../../coco/tdx/tdx-shared.c:1,
->>                     from arch/x86/boot/compressed/tdx-shared.c:2:
->>    ./arch/x86/include/asm/tdx.h: In function ?tdx_kvm_hypercall?:
->>    ./arch/x86/include/asm/tdx.h:72:17: error: ?ENODEV? undeclared (first use in this function)
->>       72 |         return -ENODEV;
->>          |                 ^~~~~~
->>    ./arch/x86/include/asm/tdx.h:72:17: note: each undeclared identifier is reported only once for each function it appears in
->>
->> Adding an include for linux/errno.h gets past that error, but then
->> I get the following:
->>
->>    ld: arch/x86/boot/compressed/tdx-shared.o: in function `tdx_enc_status_changed_phys':
->>    tdx-shared.c:(.text+0x42): undefined reference to `__tdx_hypercall'
->>    ld: tdx-shared.c:(.text+0x7f): undefined reference to `__tdx_module_call'
->>    ld: tdx-shared.c:(.text+0xce): undefined reference to `__tdx_module_call'
->>    ld: tdx-shared.c:(.text+0x13b): undefined reference to `__tdx_module_call'
->>    ld: tdx-shared.c:(.text+0x153): undefined reference to `cc_mkdec'
->>    ld: tdx-shared.c:(.text+0x15d): undefined reference to `cc_mkdec'
->>    ld: tdx-shared.c:(.text+0x18e): undefined reference to `__tdx_hypercall'
->>    ld: arch/x86/boot/compressed/vmlinux: hidden symbol `__tdx_hypercall' isn't defined
->>    ld: final link failed: bad value
->>
->> So it looks like arch/x86/boot/compressed/tdx-shared.c is being
->> built, while arch/x86/boot/compressed/tdx.c isn't.
+On 5/13/23 17:04, Kirill A. Shutemov wrote:
+> The firmware will pre-accept the memory used to run the stub. But, the
+> stub is responsible for accepting the memory into which it decompresses
+> the main kernel. Accept memory just before decompression starts.
 > 
-> Right. I think this should help:
+> The stub is also responsible for choosing a physical address in which to
+> place the decompressed kernel image. The KASLR mechanism will randomize
+> this physical address. Since the unaccepted memory region is relatively
+> small, KASLR would be quite ineffective if it only used the pre-accepted
+> area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
+> entire physical address space by also including EFI_UNACCEPTED_MEMORY.
 > 
-> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> index 78f67e0a2666..b13a58021086 100644
-> --- a/arch/x86/boot/compressed/Makefile
-> +++ b/arch/x86/boot/compressed/Makefile
-> @@ -106,8 +106,8 @@ ifdef CONFIG_X86_64
->   endif
-> 
->   vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
-> -vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
-> -vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o $(obj)/tdx-shared.o
-> +vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o $(obj)/tdx-shared.o
-> +vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
-> 
->   vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
->   vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
-> 
->> After setting TDX in the kernel config, I can build successfully, but
->> I'm running into an error when trying to accept memory during
->> decompression.
->>
->> In drivers/firmware/efi/libstub/unaccepted_memory.c, I can see that the
->> unaccepted_table is allocated, but when accept_memory() is invoked the
->> table address is now zero. I thought maybe it had to do with bss, but even
->> putting it in the .data section didn't help. I'll keep digging, but if you
->> have any ideas, that would be great.
-> 
-> Not right away. But maybe seeing your side of enabling would help.
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-Let me get something pushed up where you can access it and I'll also send
-you my kernel config.
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-In the mean time I added the following and everything worked. But I'm not
-sure how acceptable it is to always be checking for the table when the
-value is zero is.
-
-
-diff --git a/drivers/firmware/efi/libstub/unaccepted_memory.c b/drivers/firmware/efi/libstub/unaccepted_memory.c
-index f4642c4f25dd..8c5632ab1208 100644
---- a/drivers/firmware/efi/libstub/unaccepted_memory.c
-+++ b/drivers/firmware/efi/libstub/unaccepted_memory.c
-@@ -183,8 +183,13 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
-  	unsigned long bitmap_size;
-  	u64 unit_size;
-  
--	if (!unaccepted_table)
--		return;
-+	if (!unaccepted_table) {
-+		efi_guid_t unaccepted_table_guid = LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
-+
-+		unaccepted_table = get_efi_config_table(unaccepted_table_guid);
-+		if (!unaccepted_table)
-+			return;
-+	}
-  
-  	unit_size = unaccepted_table->unit_size;
-  
-
-Thanks,
-Tom
-
+> ---
+>   arch/x86/boot/compressed/efi.h   |  1 +
+>   arch/x86/boot/compressed/kaslr.c | 35 +++++++++++++++++++++-----------
+>   arch/x86/boot/compressed/misc.c  |  6 ++++++
+>   arch/x86/boot/compressed/misc.h  |  6 ++++++
+>   4 files changed, 36 insertions(+), 12 deletions(-)
 > 
+> diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
+> index 7db2f41b54cd..cf475243b6d5 100644
+> --- a/arch/x86/boot/compressed/efi.h
+> +++ b/arch/x86/boot/compressed/efi.h
+> @@ -32,6 +32,7 @@ typedef	struct {
+>   } efi_table_hdr_t;
+>   
+>   #define EFI_CONVENTIONAL_MEMORY		 7
+> +#define EFI_UNACCEPTED_MEMORY		15
+>   
+>   #define EFI_MEMORY_MORE_RELIABLE \
+>   				((u64)0x0000000000010000ULL)	/* higher reliability */
+> diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
+> index 454757fbdfe5..749f0fe7e446 100644
+> --- a/arch/x86/boot/compressed/kaslr.c
+> +++ b/arch/x86/boot/compressed/kaslr.c
+> @@ -672,6 +672,28 @@ static bool process_mem_region(struct mem_vector *region,
+>   }
+>   
+>   #ifdef CONFIG_EFI
+> +
+> +/*
+> + * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if supported) are
+> + * guaranteed to be free.
+> + *
+> + * It is more conservative in picking free memory than the EFI spec allows:
+> + *
+> + * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also free memory
+> + * and thus available to place the kernel image into, but in practice there's
+> + * firmware where using that memory leads to crashes.
+> + */
+> +static inline bool memory_type_is_free(efi_memory_desc_t *md)
+> +{
+> +	if (md->type == EFI_CONVENTIONAL_MEMORY)
+> +		return true;
+> +
+> +	if (md->type == EFI_UNACCEPTED_MEMORY)
+> +		return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY);
+> +
+> +	return false;
+> +}
+> +
+>   /*
+>    * Returns true if we processed the EFI memmap, which we prefer over the E820
+>    * table if it is available.
+> @@ -716,18 +738,7 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
+>   	for (i = 0; i < nr_desc; i++) {
+>   		md = efi_early_memdesc_ptr(pmap, e->efi_memdesc_size, i);
+>   
+> -		/*
+> -		 * Here we are more conservative in picking free memory than
+> -		 * the EFI spec allows:
+> -		 *
+> -		 * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also
+> -		 * free memory and thus available to place the kernel image into,
+> -		 * but in practice there's firmware where using that memory leads
+> -		 * to crashes.
+> -		 *
+> -		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
+> -		 */
+> -		if (md->type != EFI_CONVENTIONAL_MEMORY)
+> +		if (!memory_type_is_free(md))
+>   			continue;
+>   
+>   		if (efi_soft_reserve_enabled() &&
+> diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+> index 014ff222bf4b..eb8df0d4ad51 100644
+> --- a/arch/x86/boot/compressed/misc.c
+> +++ b/arch/x86/boot/compressed/misc.c
+> @@ -455,6 +455,12 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
+>   #endif
+>   
+>   	debug_putstr("\nDecompressing Linux... ");
+> +
+> +	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
+> +		debug_putstr("Accepting memory... ");
+> +		accept_memory(__pa(output), __pa(output) + needed_size);
+> +	}
+> +
+>   	__decompress(input_data, input_len, NULL, NULL, output, output_len,
+>   			NULL, error);
+>   	entry_offset = parse_elf(output);
+> diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+> index 2f155a0e3041..9663d1839f54 100644
+> --- a/arch/x86/boot/compressed/misc.h
+> +++ b/arch/x86/boot/compressed/misc.h
+> @@ -247,4 +247,10 @@ static inline unsigned long efi_find_vendor_table(struct boot_params *bp,
+>   }
+>   #endif /* CONFIG_EFI */
+>   
+> +#ifdef CONFIG_UNACCEPTED_MEMORY
+> +void accept_memory(phys_addr_t start, phys_addr_t end);
+> +#else
+> +static inline void accept_memory(phys_addr_t start, phys_addr_t end) {}
+> +#endif
+> +
+>   #endif /* BOOT_COMPRESSED_MISC_H */
