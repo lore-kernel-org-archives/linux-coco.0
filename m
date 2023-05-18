@@ -1,34 +1,34 @@
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939F0394
-	for <linux-coco@lists.linux.dev>; Thu, 18 May 2023 23:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4635320F2
+	for <linux-coco@lists.linux.dev>; Thu, 18 May 2023 23:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684451704; x=1715987704;
+  t=1684451705; x=1715987705;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BuLaVtTf5RKQWpr3anFnaNnaMQK4KaotupS5o/iFyhQ=;
-  b=einq3Vpw2k+3H9lSLLJA+/WaIvFAjucesQcS2OkXKb3Lztpnr9lF1CyU
-   PmhWTzDP4n7z0pMIjhq7kGqpcj2h8B0pbuSzkCFWib7tmdVFrMi+JiaGs
-   BRIjb6dG0zWKdjEEzVf6K9TVClPZBzR/cp/VxQfJBBRATJiA2x8shqgb0
-   A4L532chv9WCYJ38bdb6zvkPRkfeEDE5R7tgPaeAU+kaaKs2EC9qy8QjK
-   VxpyO1k7f/HySRVBT66wsFFg43AThwwVfrqJCx8KGEeI1RHfi1P8SYBM3
-   f8kJfkAAey5wUs5NLt+QOrvSLpsegkk7z2yO1Q8qAhC3+dyp2fay/ibR7
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="380431738"
+  bh=WocS7y0ges2OdJqRz+xrLKS0zSZ/Dr1Rwu72pFULcnE=;
+  b=M8zkTCcrkuGldwbmqyxNiWjeIQUe4lrtG3lDW4P79KC5RAO3yE/xa2sQ
+   LIgMTqim6Mxm1lu9ug7M5o76XTe07RkWcFOsLAt6ZtcQFOalC/3/anE9p
+   oOOm9nVqrTU6ohtYZZJhs5NceXJilnQBVqjFNqFs2VwYQ1hFj+srVM4fb
+   f4nbcNDK6PetZFPZIGxDsM9cYSu4I8b/USm+JHJkGGMkXl1diUtaRM9T3
+   Nqe1BUccDPwjb9woqgmz2QRzpxde8yo2kqQzhzL4I6eRBVc9GQ+dt6ETs
+   z8A00yAbExYx1fTsIMXB2dOzB5SxYR6c9aw3gFsIcvY+RVAp9zCWpMo8A
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="380431785"
 X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; 
-   d="scan'208";a="380431738"
+   d="scan'208";a="380431785"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2023 16:14:50 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2023 16:14:59 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="846669541"
+X-IronPort-AV: E=McAfee;i="6600,9927,10714"; a="846669578"
 X-IronPort-AV: E=Sophos;i="6.00,175,1681196400"; 
-   d="scan'208";a="846669541"
+   d="scan'208";a="846669578"
 Received: from rkiyama-mobl1.amr.corp.intel.com (HELO box.shutemov.name) ([10.251.222.16])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2023 16:14:42 -0700
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2023 16:14:52 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 3F46A10DFCF; Fri, 19 May 2023 02:14:40 +0300 (+03)
+	id 79FC910DFD7; Fri, 19 May 2023 02:14:40 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
@@ -61,11 +61,10 @@ Cc: Andi Kleen <ak@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Liam Merwick <liam.merwick@oracle.com>
-Subject: [PATCHv12 4/9] x86/boot/compressed: Handle unaccepted memory
-Date: Fri, 19 May 2023 02:14:29 +0300
-Message-Id: <20230518231434.26080-5-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv12 9/9] x86/tdx: Add unaccepted memory support
+Date: Fri, 19 May 2023 02:14:34 +0300
+Message-Id: <20230518231434.26080-10-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230518231434.26080-1-kirill.shutemov@linux.intel.com>
 References: <20230518231434.26080-1-kirill.shutemov@linux.intel.com>
@@ -77,186 +76,494 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The firmware will pre-accept the memory used to run the stub. But, the
-stub is responsible for accepting the memory into which it decompresses
-the main kernel. Accept memory just before decompression starts.
+Hookup TDX-specific code to accept memory.
 
-The stub is also responsible for choosing a physical address in which to
-place the decompressed kernel image. The KASLR mechanism will randomize
-this physical address. Since the accepted memory region is relatively
-small, KASLR would be quite ineffective if it only used the pre-accepted
-area (EFI_CONVENTIONAL_MEMORY). Ensure that KASLR randomizes among the
-entire physical address space by also including EFI_UNACCEPTED_MEMORY.
+Accepting the memory is the same process as converting memory from
+shared to private: kernel notifies VMM with MAP_GPA hypercall and then
+accept pages with ACCEPT_PAGE module call.
+
+The implementation in core kernel uses tdx_enc_status_changed(). It
+already used for converting memory to shared and back for I/O
+transactions.
+
+Boot stub provides own implementation of tdx_accept_memory(). It is
+similar in structure to tdx_enc_status_changed(), but only cares about
+converting memory to private.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 ---
- arch/x86/boot/compressed/efi.h   | 10 +++++++++
- arch/x86/boot/compressed/kaslr.c | 35 +++++++++++++++++++++-----------
- arch/x86/boot/compressed/mem.c   | 23 +++++++++++++++++++++
- arch/x86/boot/compressed/misc.c  |  7 +++++++
- arch/x86/boot/compressed/misc.h  |  6 ++++++
- 5 files changed, 69 insertions(+), 12 deletions(-)
+ arch/x86/Kconfig                         |  2 +
+ arch/x86/boot/compressed/Makefile        |  2 +-
+ arch/x86/boot/compressed/error.c         | 19 +++++
+ arch/x86/boot/compressed/error.h         |  1 +
+ arch/x86/boot/compressed/mem.c           | 33 +++++++-
+ arch/x86/boot/compressed/tdx-shared.c    |  2 +
+ arch/x86/boot/compressed/tdx.c           | 37 +++++++++
+ arch/x86/coco/tdx/Makefile               |  2 +-
+ arch/x86/coco/tdx/tdx-shared.c           | 95 ++++++++++++++++++++++++
+ arch/x86/coco/tdx/tdx.c                  | 86 +--------------------
+ arch/x86/include/asm/shared/tdx.h        |  2 +
+ arch/x86/include/asm/tdx.h               |  2 +
+ arch/x86/include/asm/unaccepted_memory.h | 23 ++++++
+ 13 files changed, 219 insertions(+), 87 deletions(-)
+ create mode 100644 arch/x86/boot/compressed/tdx-shared.c
+ create mode 100644 arch/x86/coco/tdx/tdx-shared.c
+ create mode 100644 arch/x86/include/asm/unaccepted_memory.h
 
-diff --git a/arch/x86/boot/compressed/efi.h b/arch/x86/boot/compressed/efi.h
-index 7db2f41b54cd..866c0af8b5b9 100644
---- a/arch/x86/boot/compressed/efi.h
-+++ b/arch/x86/boot/compressed/efi.h
-@@ -16,6 +16,7 @@ typedef guid_t efi_guid_t __aligned(__alignof__(u32));
- #define ACPI_TABLE_GUID				EFI_GUID(0xeb9d2d30, 0x2d88, 0x11d3,  0x9a, 0x16, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
- #define ACPI_20_TABLE_GUID			EFI_GUID(0x8868e871, 0xe4f1, 0x11d3,  0xbc, 0x22, 0x00, 0x80, 0xc7, 0x3c, 0x88, 0x81)
- #define EFI_CC_BLOB_GUID			EFI_GUID(0x067b1f5f, 0xcf26, 0x44c5, 0x85, 0x54, 0x93, 0xd7, 0x77, 0x91, 0x2d, 0x42)
-+#define LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID	EFI_GUID(0xd5d1de3c, 0x105c, 0x44f9,  0x9e, 0xa9, 0xbc, 0xef, 0x98, 0x12, 0x00, 0x31)
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 53bab123a8ee..5c72067c06d4 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -884,9 +884,11 @@ config INTEL_TDX_GUEST
+ 	bool "Intel TDX (Trust Domain Extensions) - Guest Support"
+ 	depends on X86_64 && CPU_SUP_INTEL
+ 	depends on X86_X2APIC
++	depends on EFI_STUB
+ 	select ARCH_HAS_CC_PLATFORM
+ 	select X86_MEM_ENCRYPT
+ 	select X86_MCE
++	select UNACCEPTED_MEMORY
+ 	help
+ 	  Support running as a guest under Intel TDX.  Without this support,
+ 	  the guest kernel can not boot or run under TDX.
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index cc4978123c30..b13a58021086 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -106,7 +106,7 @@ ifdef CONFIG_X86_64
+ endif
  
- #define EFI32_LOADER_SIGNATURE	"EL32"
- #define EFI64_LOADER_SIGNATURE	"EL64"
-@@ -32,6 +33,7 @@ typedef	struct {
- } efi_table_hdr_t;
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+-vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
++vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o $(obj)/tdx-shared.o
+ vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY) += $(obj)/mem.o
  
- #define EFI_CONVENTIONAL_MEMORY		 7
-+#define EFI_UNACCEPTED_MEMORY		15
- 
- #define EFI_MEMORY_MORE_RELIABLE \
- 				((u64)0x0000000000010000ULL)	/* higher reliability */
-@@ -104,6 +106,14 @@ struct efi_setup_data {
- 	u64 reserved[8];
- };
- 
-+struct efi_unaccepted_memory {
-+	u32 version;
-+	u32 unit_size;
-+	u64 phys_base;
-+	u64 size;
-+	unsigned long bitmap[];
-+};
-+
- static inline int efi_guidcmp (efi_guid_t left, efi_guid_t right)
- {
- 	return memcmp(&left, &right, sizeof (efi_guid_t));
-diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index 454757fbdfe5..749f0fe7e446 100644
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -672,6 +672,28 @@ static bool process_mem_region(struct mem_vector *region,
+ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+diff --git a/arch/x86/boot/compressed/error.c b/arch/x86/boot/compressed/error.c
+index c881878e56d3..5313c5cb2b80 100644
+--- a/arch/x86/boot/compressed/error.c
++++ b/arch/x86/boot/compressed/error.c
+@@ -22,3 +22,22 @@ void error(char *m)
+ 	while (1)
+ 		asm("hlt");
  }
- 
- #ifdef CONFIG_EFI
 +
-+/*
-+ * Only EFI_CONVENTIONAL_MEMORY and EFI_UNACCEPTED_MEMORY (if supported) are
-+ * guaranteed to be free.
-+ *
-+ * It is more conservative in picking free memory than the EFI spec allows:
-+ *
-+ * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also free memory
-+ * and thus available to place the kernel image into, but in practice there's
-+ * firmware where using that memory leads to crashes.
-+ */
-+static inline bool memory_type_is_free(efi_memory_desc_t *md)
++/* EFI libstub  provides vsnprintf() */
++#ifdef CONFIG_EFI_STUB
++void panic(const char *fmt, ...)
 +{
-+	if (md->type == EFI_CONVENTIONAL_MEMORY)
-+		return true;
++	static char buf[1024];
++	va_list args;
++	int len;
 +
-+	if (md->type == EFI_UNACCEPTED_MEMORY)
-+		return IS_ENABLED(CONFIG_UNACCEPTED_MEMORY);
++	va_start(args, fmt);
++	len = vsnprintf(buf, sizeof(buf), fmt, args);
++	va_end(args);
 +
-+	return false;
++	if (len && buf[len - 1] == '\n')
++		buf[len - 1] = '\0';
++
++	error(buf);
 +}
-+
- /*
-  * Returns true if we processed the EFI memmap, which we prefer over the E820
-  * table if it is available.
-@@ -716,18 +738,7 @@ process_efi_entries(unsigned long minimum, unsigned long image_size)
- 	for (i = 0; i < nr_desc; i++) {
- 		md = efi_early_memdesc_ptr(pmap, e->efi_memdesc_size, i);
++#endif
+diff --git a/arch/x86/boot/compressed/error.h b/arch/x86/boot/compressed/error.h
+index 1de5821184f1..86fe33b93715 100644
+--- a/arch/x86/boot/compressed/error.h
++++ b/arch/x86/boot/compressed/error.h
+@@ -6,5 +6,6 @@
  
--		/*
--		 * Here we are more conservative in picking free memory than
--		 * the EFI spec allows:
--		 *
--		 * According to the spec, EFI_BOOT_SERVICES_{CODE|DATA} are also
--		 * free memory and thus available to place the kernel image into,
--		 * but in practice there's firmware where using that memory leads
--		 * to crashes.
--		 *
--		 * Only EFI_CONVENTIONAL_MEMORY is guaranteed to be free.
--		 */
--		if (md->type != EFI_CONVENTIONAL_MEMORY)
-+		if (!memory_type_is_free(md))
- 			continue;
+ void warn(char *m);
+ void error(char *m) __noreturn;
++void panic(const char *fmt, ...) __noreturn __cold;
  
- 		if (efi_soft_reserve_enabled() &&
+ #endif /* BOOT_COMPRESSED_ERROR_H */
 diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index 67594fcb11d9..87372b96d613 100644
+index 87372b96d613..0108c97399a5 100644
 --- a/arch/x86/boot/compressed/mem.c
 +++ b/arch/x86/boot/compressed/mem.c
-@@ -1,9 +1,32 @@
- // SPDX-License-Identifier: GPL-2.0-only
+@@ -2,11 +2,42 @@
  
  #include "error.h"
-+#include "misc.h"
+ #include "misc.h"
++#include "tdx.h"
++#include <asm/shared/tdx.h>
++
++/*
++ * accept_memory() and process_unaccepted_memory() called from EFI stub which
++ * runs before decompresser and its early_tdx_detect().
++ *
++ * Enumerate TDX directly from the early users.
++ */
++static bool early_is_tdx_guest(void)
++{
++	static bool once;
++	static bool is_tdx;
++
++	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
++		return false;
++
++	if (!once) {
++		u32 eax, sig[3];
++
++		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
++			    &sig[0], &sig[2],  &sig[1]);
++		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
++		once = true;
++	}
++
++	return is_tdx;
++}
  
  void arch_accept_memory(phys_addr_t start, phys_addr_t end)
  {
  	/* Platform-specific memory-acceptance call goes here */
- 	error("Cannot accept memory");
+-	error("Cannot accept memory");
++	if (early_is_tdx_guest())
++		tdx_accept_memory(start, end);
++	else
++		error("Cannot accept memory: unknown platform\n");
  }
-+
-+void init_unaccepted_memory(void)
-+{
-+	guid_t guid =  LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
-+	struct efi_unaccepted_memory *unaccepted_table;
-+	unsigned long cfg_table_pa;
-+	unsigned int cfg_table_len;
-+	int ret;
-+
-+	ret = efi_get_conf_table(boot_params, &cfg_table_pa, &cfg_table_len);
-+	if (ret)
-+		error("EFI config table not found.");
-+
-+	unaccepted_table = (void *)efi_find_vendor_table(boot_params,
-+							 cfg_table_pa,
-+							 cfg_table_len,
-+							 guid);
-+	if (unaccepted_table->version != 1)
-+		error("Unknown version of unaccepted memory table\n");
-+
-+	set_unaccepted_table(unaccepted_table);
-+}
-diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 014ff222bf4b..36535a3753f5 100644
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -455,6 +455,13 @@ asmlinkage __visible void *extract_kernel(void *rmode, memptr heap,
- #endif
  
- 	debug_putstr("\nDecompressing Linux... ");
+ void init_unaccepted_memory(void)
+diff --git a/arch/x86/boot/compressed/tdx-shared.c b/arch/x86/boot/compressed/tdx-shared.c
+new file mode 100644
+index 000000000000..5ac43762fe13
+--- /dev/null
++++ b/arch/x86/boot/compressed/tdx-shared.c
+@@ -0,0 +1,2 @@
++#include "error.h"
++#include "../../coco/tdx/tdx-shared.c"
+diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
+index 2d81d3cc72a1..d073764eaa50 100644
+--- a/arch/x86/boot/compressed/tdx.c
++++ b/arch/x86/boot/compressed/tdx.c
+@@ -9,6 +9,9 @@
+ #include <uapi/asm/vmx.h>
+ 
+ #include <asm/shared/tdx.h>
++#include <asm/page_types.h>
 +
-+	if (IS_ENABLED(CONFIG_UNACCEPTED_MEMORY)) {
-+		debug_putstr("Accepting memory... ");
-+		init_unaccepted_memory();
-+		accept_memory(__pa(output), __pa(output) + needed_size);
++static u64 cc_mask;
+ 
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ void __tdx_hypercall_failed(void)
+@@ -16,6 +19,38 @@ void __tdx_hypercall_failed(void)
+ 	error("TDVMCALL failed. TDX module bug?");
+ }
+ 
++static u64 get_cc_mask(void)
++{
++	struct tdx_module_output out;
++	unsigned int gpa_width;
++
++	/*
++	 * TDINFO TDX module call is used to get the TD execution environment
++	 * information like GPA width, number of available vcpus, debug mode
++	 * information, etc. More details about the ABI can be found in TDX
++	 * Guest-Host-Communication Interface (GHCI), section 2.4.2 TDCALL
++	 * [TDG.VP.INFO].
++	 *
++	 * The GPA width that comes out of this call is critical. TDX guests
++	 * can not meaningfully run without it.
++	 */
++	if (__tdx_module_call(TDX_GET_INFO, 0, 0, 0, 0, &out))
++		error("TDCALL GET_INFO failed (Buggy TDX module!)\n");
++
++	gpa_width = out.rcx & GENMASK(5, 0);
++
++	/*
++	 * The highest bit of a guest physical address is the "sharing" bit.
++	 * Set it for shared pages and clear it for private pages.
++	 */
++	return BIT_ULL(gpa_width - 1);
++}
++
++u64 cc_mkdec(u64 val)
++{
++	return val & ~cc_mask;
++}
++
+ static inline unsigned int tdx_io_in(int size, u16 port)
+ {
+ 	struct tdx_hypercall_args args = {
+@@ -70,6 +105,8 @@ void early_tdx_detect(void)
+ 	if (memcmp(TDX_IDENT, sig, sizeof(sig)))
+ 		return;
+ 
++	cc_mask = get_cc_mask();
++
+ 	/* Use hypercalls instead of I/O instructions */
+ 	pio_ops.f_inb  = tdx_inb;
+ 	pio_ops.f_outb = tdx_outb;
+diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
+index 46c55998557d..2c7dcbf1458b 100644
+--- a/arch/x86/coco/tdx/Makefile
++++ b/arch/x86/coco/tdx/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-obj-y += tdx.o tdcall.o
++obj-y += tdx.o tdx-shared.o tdcall.o
+diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
+new file mode 100644
+index 000000000000..ee74f7bbe806
+--- /dev/null
++++ b/arch/x86/coco/tdx/tdx-shared.c
+@@ -0,0 +1,95 @@
++#include <asm/tdx.h>
++#include <asm/pgtable.h>
++
++static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
++				    enum pg_level pg_level)
++{
++	unsigned long accept_size = page_level_size(pg_level);
++	u64 tdcall_rcx;
++	u8 page_size;
++
++	if (!IS_ALIGNED(start, accept_size))
++		return 0;
++
++	if (len < accept_size)
++		return 0;
++
++	/*
++	 * Pass the page physical address to the TDX module to accept the
++	 * pending, private page.
++	 *
++	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
++	 */
++	switch (pg_level) {
++	case PG_LEVEL_4K:
++		page_size = 0;
++		break;
++	case PG_LEVEL_2M:
++		page_size = 1;
++		break;
++	case PG_LEVEL_1G:
++		page_size = 2;
++		break;
++	default:
++		return 0;
 +	}
 +
- 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
- 			NULL, error);
- 	entry_offset = parse_elf(output);
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index 2f155a0e3041..e1a0b49e0ed2 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -247,4 +247,10 @@ static inline unsigned long efi_find_vendor_table(struct boot_params *bp,
++	tdcall_rcx = start | page_size;
++	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
++		return 0;
++
++	return accept_size;
++}
++
++bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc)
++{
++	if (!enc) {
++		/* Set the shared (decrypted) bits: */
++		start |= cc_mkdec(0);
++		end   |= cc_mkdec(0);
++	}
++
++	/*
++	 * Notify the VMM about page mapping conversion. More info about ABI
++	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
++	 * section "TDG.VP.VMCALL<MapGPA>"
++	 */
++	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
++		return false;
++
++	/* private->shared conversion  requires only MapGPA call */
++	if (!enc)
++		return true;
++
++	/*
++	 * For shared->private conversion, accept the page using
++	 * TDX_ACCEPT_PAGE TDX module call.
++	 */
++	while (start < end) {
++		unsigned long len = end - start;
++		unsigned long accept_size;
++
++		/*
++		 * Try larger accepts first. It gives chance to VMM to keep
++		 * 1G/2M Secure EPT entries where possible and speeds up
++		 * process by cutting number of hypercalls (if successful).
++		 */
++
++		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
++		if (!accept_size)
++			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
++		if (!accept_size)
++			return false;
++		start += accept_size;
++	}
++
++	return true;
++}
++
++void tdx_accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	if (!tdx_enc_status_changed_phys(start, end, true))
++		panic("Accepting memory failed: %#llx-%#llx\n",  start, end);
++}
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 0d5fe6e24e45..32501277ef84 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -713,46 +713,6 @@ static bool tdx_cache_flush_required(void)
+ 	return true;
  }
- #endif /* CONFIG_EFI */
  
-+void init_unaccepted_memory(void);
+-static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+-				    enum pg_level pg_level)
+-{
+-	unsigned long accept_size = page_level_size(pg_level);
+-	u64 tdcall_rcx;
+-	u8 page_size;
+-
+-	if (!IS_ALIGNED(start, accept_size))
+-		return 0;
+-
+-	if (len < accept_size)
+-		return 0;
+-
+-	/*
+-	 * Pass the page physical address to the TDX module to accept the
+-	 * pending, private page.
+-	 *
+-	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
+-	 */
+-	switch (pg_level) {
+-	case PG_LEVEL_4K:
+-		page_size = 0;
+-		break;
+-	case PG_LEVEL_2M:
+-		page_size = 1;
+-		break;
+-	case PG_LEVEL_1G:
+-		page_size = 2;
+-		break;
+-	default:
+-		return 0;
+-	}
+-
+-	tdcall_rcx = start | page_size;
+-	if (__tdx_module_call(TDX_ACCEPT_PAGE, tdcall_rcx, 0, 0, 0, NULL))
+-		return 0;
+-
+-	return accept_size;
+-}
+-
+ /*
+  * Inform the VMM of the guest's intent for this physical page: shared with
+  * the VMM or private to the guest.  The VMM is expected to change its mapping
+@@ -761,51 +721,9 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
+ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ {
+ 	phys_addr_t start = __pa(vaddr);
+-	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
++	phys_addr_t end = __pa(vaddr + numpages * PAGE_SIZE);
+ 
+-	if (!enc) {
+-		/* Set the shared (decrypted) bits: */
+-		start |= cc_mkdec(0);
+-		end   |= cc_mkdec(0);
+-	}
+-
+-	/*
+-	 * Notify the VMM about page mapping conversion. More info about ABI
+-	 * can be found in TDX Guest-Host-Communication Interface (GHCI),
+-	 * section "TDG.VP.VMCALL<MapGPA>"
+-	 */
+-	if (_tdx_hypercall(TDVMCALL_MAP_GPA, start, end - start, 0, 0))
+-		return false;
+-
+-	/* private->shared conversion  requires only MapGPA call */
+-	if (!enc)
+-		return true;
+-
+-	/*
+-	 * For shared->private conversion, accept the page using
+-	 * TDX_ACCEPT_PAGE TDX module call.
+-	 */
+-	while (start < end) {
+-		unsigned long len = end - start;
+-		unsigned long accept_size;
+-
+-		/*
+-		 * Try larger accepts first. It gives chance to VMM to keep
+-		 * 1G/2M Secure EPT entries where possible and speeds up
+-		 * process by cutting number of hypercalls (if successful).
+-		 */
+-
+-		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
+-		if (!accept_size)
+-			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
+-		if (!accept_size)
+-			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
+-		if (!accept_size)
+-			return false;
+-		start += accept_size;
+-	}
+-
+-	return true;
++	return tdx_enc_status_changed_phys(start, end, enc);
+ }
+ 
+ void __init tdx_early_init(void)
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 1ff0ee822961..95fbe7376694 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -91,5 +91,7 @@ struct tdx_module_output {
+ u64 __tdx_module_call(u64 fn, u64 rcx, u64 rdx, u64 r8, u64 r9,
+ 		      struct tdx_module_output *out);
+ 
++void tdx_accept_memory(phys_addr_t start, phys_addr_t end);
 +
-+/* Implemented in EFI stub */
-+void set_unaccepted_table(struct efi_unaccepted_memory *table);
-+void accept_memory(phys_addr_t start, phys_addr_t end);
+ #endif /* !__ASSEMBLY__ */
+ #endif /* _ASM_X86_SHARED_TDX_H */
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 234197ec17e4..3a7340ad9a4b 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -50,6 +50,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
+ 
+ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
+ 
++bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end, bool enc);
 +
- #endif /* BOOT_COMPRESSED_MISC_H */
+ #else
+ 
+ static inline void tdx_early_init(void) { };
+diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
+new file mode 100644
+index 000000000000..72b354f992bb
+--- /dev/null
++++ b/arch/x86/include/asm/unaccepted_memory.h
+@@ -0,0 +1,23 @@
++#ifndef _ASM_X86_UNACCEPTED_MEMORY_H
++#define _ASM_X86_UNACCEPTED_MEMORY_H
++
++#include <linux/efi.h>
++#include <asm/tdx.h>
++
++static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
++{
++	/* Platform-specific memory-acceptance call goes here */
++	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
++		tdx_accept_memory(start, end);
++	} else {
++		panic("Cannot accept memory: unknown platform\n");
++	}
++}
++
++static inline struct efi_unaccepted_memory *efi_get_unaccepted_table(void)
++{
++	if (efi.unaccepted == EFI_INVALID_TABLE_ADDR)
++		return NULL;
++	return __va(efi.unaccepted);
++}
++#endif
 -- 
 2.39.3
 
