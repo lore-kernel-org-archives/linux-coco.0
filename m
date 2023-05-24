@@ -1,138 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08346BE49
-	for <linux-coco@lists.linux.dev>; Mon, 22 May 2023 11:08:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB94C43444
-	for <linux-coco@lists.linux.dev>; Mon, 22 May 2023 11:08:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1684753721;
-	bh=dZzOa+0jKFOy2FXi+DrUaKGjHvbyRLYaSwG19Q0u4E0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GJD6jDN8N1fH8Sk1+KZCuXl3R0FNqMWXA5rHFwAwOa3B/Q9xfgsF1UeqY4zMbF87f
-	 A7dQB5Sj/pzo/ViW4bdXtBoHFIk28+YJIIf78BJ6rYoRR81UkTP/Y21elu87Z8AKSV
-	 Nd0jXFnBNo9Kvu+TpAN3l4C+15+ONqQkRT3KjB1BodGx/qmg7lXZmd6wEi3x4XmVw5
-	 lpvGOOcYZC1Xr9Gg7d7OLx2ndfwzfOD8lGMzjE7qyBUOh2RiO2zycUcGt3tJFOdxlT
-	 e/PrvebA7SBHmiRm7PxdHUC52vP2hka4ThQKuwKDdZ1Fc4wCM27eolycrdAUv8kRz1
-	 +ZQsvz7c31Atg==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2af2958db45so32993861fa.1
-        for <linux-coco@lists.linux.dev>; Mon, 22 May 2023 04:08:41 -0700 (PDT)
-X-Gm-Message-State: AC+VfDxm1Uqu4LCzWzuZYXwwFLjptOmsN7lSFp9tm0bsCDvSIj1mBbhR
-	9B+C7uDVebKCrFPRzaNy6Vi7ivR6PcvjTuDLdmA=
-X-Google-Smtp-Source: ACHHUZ7D/8RmGeXbWZYE5PXfgu2Db2fE1tbZ/Ty+qOnQj3Ao3ximTAhEb612qg9Af/a0JF3TKL3wl1dNXZZ8F20Vq10=
-X-Received: by 2002:ac2:47ee:0:b0:4f3:ab4b:9015 with SMTP id
- b14-20020ac247ee000000b004f3ab4b9015mr3442452lfp.18.1684753719455; Mon, 22
- May 2023 04:08:39 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8763D63
+	for <linux-coco@lists.linux.dev>; Wed, 24 May 2023 10:39:05 +0000 (UTC)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D85BC2184F;
+	Wed, 24 May 2023 10:39:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1684924743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIZOjHy34Pa3aKJjPE1x+kaQAyEQhGMM/I45dR2QCrA=;
+	b=dVu2W9A8ON8JyVnLKjBuGJv6SV8EEg+HxSSFXIMOMzGtJ05kGk9Pn8wRBd+6dBKnkIkGDt
+	1XpSnZsw84YzjSa0J9SYiRaIpMw8Sn0yxjsBaTADJQlqrFJjUncxPcAsBISCKhilvq1cCA
+	EPzc78PCjnm57wQoxiOkcXIniaNLULk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1684924743;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PIZOjHy34Pa3aKJjPE1x+kaQAyEQhGMM/I45dR2QCrA=;
+	b=ETzkhO8i8atkPAz/8Snt2EX5SoggaDccax5hMSKza+1Lo4p/ibNRBuKHHzk+vaqGW0IIbr
+	7BG+MV8zgCI/Q5CQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B5599133E6;
+	Wed, 24 May 2023 10:39:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id C7PfKkfpbWQTKQAAMHmgww
+	(envelope-from <jroedel@suse.de>); Wed, 24 May 2023 10:39:03 +0000
+Date: Wed, 24 May 2023 12:39:02 +0200
+From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
+To: Dionna Amalie Glaze <dionnaglaze@google.com>
+Cc: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev
+Subject: Re: [RFD] COCONUT-SVSM project governance
+Message-ID: <ZG3pRhRPTXl1FkGG@suse.de>
+References: <ZFjL0oXu6NjYKCXl@suse.de>
+ <CAAH4kHYpyeu-UFBYL5mXnS0xQh_rD039FgMz=Qfa=ruCUsVL_A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230518231434.26080-1-kirill.shutemov@linux.intel.com>
- <20230518231434.26080-5-kirill.shutemov@linux.intel.com> <20230519101641.nka7ty3fttntymci@box.shutemov.name>
- <20230522110116.675nqxrztxbtmdl7@box.shutemov.name>
-In-Reply-To: <20230522110116.675nqxrztxbtmdl7@box.shutemov.name>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 22 May 2023 13:08:28 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF1ugZ9fZaLccvi86jnJFM6OSiYrc1_6d6LP=ApcBr7Gg@mail.gmail.com>
-Message-ID: <CAMj1kXF1ugZ9fZaLccvi86jnJFM6OSiYrc1_6d6LP=ApcBr7Gg@mail.gmail.com>
-Subject: Re: [PATCHv12 4/9] x86/boot/compressed: Handle unaccepted memory
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Borislav Petkov <bp@alien8.de>, 
-	Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>, 
-	Sean Christopherson <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joerg Roedel <jroedel@suse.de>, Andi Kleen <ak@linux.intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	David Rientjes <rientjes@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Mel Gorman <mgorman@techsingularity.net>, 
-	marcelo.cerri@canonical.com, tim.gardner@canonical.com, 
-	khalid.elmously@canonical.com, philip.cox@canonical.com, aarcange@redhat.com, 
-	peterx@redhat.com, x86@kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Liam Merwick <liam.merwick@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAH4kHYpyeu-UFBYL5mXnS0xQh_rD039FgMz=Qfa=ruCUsVL_A@mail.gmail.com>
 
-On Mon, 22 May 2023 at 13:01, Kirill A. Shutemov <kirill@shutemov.name> wrote:
->
-> On Fri, May 19, 2023 at 01:16:41PM +0300, Kirill A. Shutemov wrote:
-> > On Fri, May 19, 2023 at 02:14:29AM +0300, Kirill A. Shutemov wrote:
-> > > diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-> > > index 67594fcb11d9..87372b96d613 100644
-> > > --- a/arch/x86/boot/compressed/mem.c
-> > > +++ b/arch/x86/boot/compressed/mem.c
-> > > @@ -1,9 +1,32 @@
-> > >  // SPDX-License-Identifier: GPL-2.0-only
-> > >
-> > >  #include "error.h"
-> > > +#include "misc.h"
-> > >
-> > >  void arch_accept_memory(phys_addr_t start, phys_addr_t end)
-> > >  {
-> > >     /* Platform-specific memory-acceptance call goes here */
-> > >     error("Cannot accept memory");
-> > >  }
-> > > +
-> > > +void init_unaccepted_memory(void)
-> > > +{
-> > > +   guid_t guid =  LINUX_EFI_UNACCEPTED_MEM_TABLE_GUID;
-> > > +   struct efi_unaccepted_memory *unaccepted_table;
-> > > +   unsigned long cfg_table_pa;
-> > > +   unsigned int cfg_table_len;
-> > > +   int ret;
-> > > +
-> > > +   ret = efi_get_conf_table(boot_params, &cfg_table_pa, &cfg_table_len);
-> > > +   if (ret)
-> > > +           error("EFI config table not found.");
-> > > +
-> > > +   unaccepted_table = (void *)efi_find_vendor_table(boot_params,
-> > > +                                                    cfg_table_pa,
-> > > +                                                    cfg_table_len,
-> > > +                                                    guid);
-> > > +   if (unaccepted_table->version != 1)
-> > > +           error("Unknown version of unaccepted memory table\n");
-> > > +
-> > > +   set_unaccepted_table(unaccepted_table);
-> > > +}
-> >
-> > 0-day reported boot failure outdise TDX guest with CONFIG_INTEL_TDX_GUEST=y.
->
-> 0-day folks reported one more issue: booting on non-EFI system fail.
->
-> Updated fixup:
->
-> diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-> index 0108c97399a5..e7f7ef31e581 100644
-> --- a/arch/x86/boot/compressed/mem.c
-> +++ b/arch/x86/boot/compressed/mem.c
-> @@ -46,8 +46,13 @@ void init_unaccepted_memory(void)
->         struct efi_unaccepted_memory *unaccepted_table;
->         unsigned long cfg_table_pa;
->         unsigned int cfg_table_len;
-> +       enum efi_type et;
->         int ret;
->
-> +       et = efi_get_type(boot_params);
-> +       if (et == EFI_TYPE_NONE)
-> +               return;
-> +
->         ret = efi_get_conf_table(boot_params, &cfg_table_pa, &cfg_table_len);
->         if (ret)
->                 error("EFI config table not found.");
-> @@ -56,6 +61,9 @@ void init_unaccepted_memory(void)
->                                                          cfg_table_pa,
->                                                          cfg_table_len,
->                                                          guid);
-> +       if (!unaccepted_table)
-> +               return;
-> +
->         if (unaccepted_table->version != 1)
->                 error("Unknown version of unaccepted memory table\n");
->
+Hi Dionna,
 
-With these changes applied,
+On Mon, May 08, 2023 at 09:28:40AM -0700, Dionna Amalie Glaze wrote:
+> I'm in favor of governance models that strongly value transparency,
+> good-faith disagreement, and a set of community guidelines that both
+> has enforcement power and accountability of all parties involved.
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Thanks for your input, I completly agree with that baseline. One thing
+to keep in mind is that any processes and rules we potentially put in
+place are aligned with the size of the community. Really large
+communities like for Rust or K8s certainly need different governance
+than ours.
+
+> 3 is a minimum I think, with at least 2 entities represented.
+
+Right, we need to make sure different entities are represented.
+
+> I think the sigstore.dev project does a good job of running regular
+> community meetings and publishing meeting notes to allow for regular
+> collaboration across institutions.
+> I don't think we need to set that up until there's a good reason to
+> take a discussion off the mailing list for higher bandwidth
+> communication, since who needs more low value meetings?
+> 
+> [1] https://github.com/ossf/scorecard
+> [2] Robert's Rules of Order
+> [3] https://www.redhat.com/en/blog/understanding-open-source-governance-models
+> [4] https://www.youtube.com/watch?v=m0rakUuPXFM
+
+Thanks, that is a lot of good input. I think in general we need to find
+a balance between the needed bureaucracy to ensure fairness and
+inclusiveness on one side, and being able to stay productive and make
+decissions as needed on the other. That balance might shift with the
+size of the community, of course.
+
+Regards,
+
+-- 
+Jörg Rödel
+jroedel@suse.de
+
+SUSE Software Solutions Germany GmbH
+Frankenstraße 146
+90461 Nürnberg
+Germany
+
+(HRB 36809, AG Nürnberg)
+Geschäftsführer: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+
