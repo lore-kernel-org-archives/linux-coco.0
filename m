@@ -1,50 +1,50 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8763D63
-	for <linux-coco@lists.linux.dev>; Wed, 24 May 2023 10:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07D3BE7E
+	for <linux-coco@lists.linux.dev>; Wed, 24 May 2023 10:49:32 +0000 (UTC)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D85BC2184F;
-	Wed, 24 May 2023 10:39:03 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2A17122175;
+	Wed, 24 May 2023 10:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1684924743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1684925371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PIZOjHy34Pa3aKJjPE1x+kaQAyEQhGMM/I45dR2QCrA=;
-	b=dVu2W9A8ON8JyVnLKjBuGJv6SV8EEg+HxSSFXIMOMzGtJ05kGk9Pn8wRBd+6dBKnkIkGDt
-	1XpSnZsw84YzjSa0J9SYiRaIpMw8Sn0yxjsBaTADJQlqrFJjUncxPcAsBISCKhilvq1cCA
-	EPzc78PCjnm57wQoxiOkcXIniaNLULk=
+	bh=I72T63NU2+6w0Tyt1L23fnk061BHiJxR1Ivrp6NxQBs=;
+	b=E001a7kcR2sZ8jF6Cp6otwCoH4HS7dweAEfpgT00jWABLOCg5e+esaBPJuqhK9hSk09wFY
+	xgCg4/M0mwtisj0cVeElANBUAzVt7hjEEWSDTTkLOZSUD8Hc+95yJUEw2hC+FxyfWD7ZHe
+	edaqOKYz7VgWAmDPjj/z3TteUWFqU08=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1684924743;
+	s=susede2_ed25519; t=1684925371;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PIZOjHy34Pa3aKJjPE1x+kaQAyEQhGMM/I45dR2QCrA=;
-	b=ETzkhO8i8atkPAz/8Snt2EX5SoggaDccax5hMSKza+1Lo4p/ibNRBuKHHzk+vaqGW0IIbr
-	7BG+MV8zgCI/Q5CQ==
+	bh=I72T63NU2+6w0Tyt1L23fnk061BHiJxR1Ivrp6NxQBs=;
+	b=V5UHbrMrQXzH5248X0AIY3UtUe26yXI7538fWOzzfpA6LAemPdKEayfYxQo/+Cm1fQqKhp
+	kIgHGsO7nYmieyDg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
 	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B5599133E6;
-	Wed, 24 May 2023 10:39:03 +0000 (UTC)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 07415133E6;
+	Wed, 24 May 2023 10:49:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
 	by imap2.suse-dmz.suse.de with ESMTPSA
-	id C7PfKkfpbWQTKQAAMHmgww
-	(envelope-from <jroedel@suse.de>); Wed, 24 May 2023 10:39:03 +0000
-Date: Wed, 24 May 2023 12:39:02 +0200
+	id KIRRALvrbWTVLgAAMHmgww
+	(envelope-from <jroedel@suse.de>); Wed, 24 May 2023 10:49:31 +0000
+Date: Wed, 24 May 2023 12:49:29 +0200
 From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <jroedel@suse.de>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
+To: Claudio Carvalho <cclaudio@linux.ibm.com>
 Cc: amd-sev-snp@lists.suse.com, linux-coco@lists.linux.dev
 Subject: Re: [RFD] COCONUT-SVSM project governance
-Message-ID: <ZG3pRhRPTXl1FkGG@suse.de>
+Message-ID: <ZG3rubI1enwgiYpN@suse.de>
 References: <ZFjL0oXu6NjYKCXl@suse.de>
- <CAAH4kHYpyeu-UFBYL5mXnS0xQh_rD039FgMz=Qfa=ruCUsVL_A@mail.gmail.com>
+ <53adca2d4e8287f2189c631be611c9c76ee1b708.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,42 +54,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAH4kHYpyeu-UFBYL5mXnS0xQh_rD039FgMz=Qfa=ruCUsVL_A@mail.gmail.com>
+In-Reply-To: <53adca2d4e8287f2189c631be611c9c76ee1b708.camel@linux.ibm.com>
 
-Hi Dionna,
+On Thu, May 11, 2023 at 03:26:30PM -0400, Claudio Carvalho wrote:
+> At least 3 maintainers looks good, but I think we will have a better answer once
+> we know the number of maintainer candidates and their experience/interest.
 
-On Mon, May 08, 2023 at 09:28:40AM -0700, Dionna Amalie Glaze wrote:
-> I'm in favor of governance models that strongly value transparency,
-> good-faith disagreement, and a set of community guidelines that both
-> has enforcement power and accountability of all parties involved.
+Yeah, I also think that 3 is a good starting point. Having more probably
+does not make sense before the community reaches a certain size or we
+get to a sub-maintainer model.
 
-Thanks for your input, I completly agree with that baseline. One thing
-to keep in mind is that any processes and rules we potentially put in
-place are aligned with the size of the community. Really large
-communities like for Rust or K8s certainly need different governance
-than ours.
+> An option could be to have maintainer(s) per area. I have worked on the
+> vtpm/attestation for the AMDESE/linux-svsm and I could help to maintain it (and
+> other parts) in the coconut-svsm.
 
-> 3 is a minimum I think, with at least 2 entities represented.
+That definitly makes sense. There will likely also be effort to make
+certain parts of the code more generic, so that the different parts are
+easier to maintain.
 
-Right, we need to make sure different entities are represented.
 
-> I think the sigstore.dev project does a good job of running regular
-> community meetings and publishing meeting notes to allow for regular
-> collaboration across institutions.
-> I don't think we need to set that up until there's a good reason to
-> take a discussion off the mailing list for higher bandwidth
-> communication, since who needs more low value meetings?
-> 
-> [1] https://github.com/ossf/scorecard
-> [2] Robert's Rules of Order
-> [3] https://www.redhat.com/en/blog/understanding-open-source-governance-models
-> [4] https://www.youtube.com/watch?v=m0rakUuPXFM
+> We may also want to discuss about release plan/model; e.g. the dynamics of new
+> releases, how often they will happen and if there is any priority that we need
+> to consider in the short term.
 
-Thanks, that is a lot of good input. I think in general we need to find
-a balance between the needed bureaucracy to ensure fairness and
-inclusiveness on one side, and being able to stay productive and make
-decissions as needed on the other. That balance might shift with the
-size of the community, of course.
+That are all interesting points. In my opinion it is too early to think
+about doing a release. But we can discuss possible release models so
+that we are ready when it actually happens.
 
 Regards,
 
