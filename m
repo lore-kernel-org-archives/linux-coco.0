@@ -1,25 +1,37 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA441171B8
-	for <linux-coco@lists.linux.dev>; Wed, 31 May 2023 16:01:25 +0000 (UTC)
-Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9C3121EC042D;
-	Wed, 31 May 2023 17:52:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1685548326;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=PjJvC25aHbGALiU6YVgnG9fmUYnvsHAivYjN1VpUWL8=;
-	b=hTxgDwfuCwzRv4XyrSuZ1Qa/JoBjVnYer95z1d/ZhV90LaqH0lo9D/xw19UMf4qna+zqJN
-	PLvs3Zyviep3I4zsBKo5jRh/OzsXXIobNdM1eoy13WyxhPFbpuCfTfMj9xCgpxQJMzYNj2
-	PFcu9weh1qnAloA4dGUNGjjHbMOIB2E=
-Date: Wed, 31 May 2023 17:51:59 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACB7174C6
+	for <linux-coco@lists.linux.dev>; Wed, 31 May 2023 16:27:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685550437; x=1717086437;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=751fKcMvplG6/KmjKYOTWk7+Q9GXlyI46BmhatKMpyg=;
+  b=kh80LPIZRUV/AA2QNwq31MisZX2ufWlvZofpe8Ud5nodpsV5ciH3hHXK
+   PNJmI40bdvpPdTK3jnx2ouDmq+dGpjVivcH25ExaE1T5Lkl9EVG8vExvk
+   ihaUgV8iuvVzRZNdFdD/siz3mtEH5zWch1hyAy2cH8cRpBISN6v600I+e
+   jZlc+RO+MlapXGqfNWeLNZodabXdiJWMHOxVDLEb/ZX+FTkKQYw6wICGi
+   JAMCWWsNG4lGn8hqpuzMVQuSgCrwQ2BSco1puNUQupdq389dSmMsd0pMn
+   lQHRdX/qI3Yb4+8clxEAp7TEK+eZ8BGee9Da8xei3UK9Ln+Mop8hNrEUg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="344807301"
+X-IronPort-AV: E=Sophos;i="6.00,207,1681196400"; 
+   d="scan'208";a="344807301"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2023 09:27:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10727"; a="740029619"
+X-IronPort-AV: E=Sophos;i="6.00,207,1681196400"; 
+   d="scan'208";a="740029619"
+Received: from zukmacix-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.46.53])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 May 2023 09:27:05 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 4A56410B45A; Wed, 31 May 2023 19:27:02 +0300 (+03)
+Date: Wed, 31 May 2023 19:27:02 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
 Cc: Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -43,72 +55,54 @@ Cc: Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Mike Rapoport <rppt@linux.ibm.com>
 Subject: Re: [PATCHv12 1/9] mm: Add support for unaccepted memory
-Message-ID: <20230531155159.GIZHdtH20Q0FsmN3OR@fat_crate.local>
+Message-ID: <20230531162702.zfzex7vkhn3uqgvb@box.shutemov.name>
 References: <20230518231434.26080-1-kirill.shutemov@linux.intel.com>
  <20230518231434.26080-2-kirill.shutemov@linux.intel.com>
+ <20230531155159.GIZHdtH20Q0FsmN3OR@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230518231434.26080-2-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20230531155159.GIZHdtH20Q0FsmN3OR@fat_crate.local>
 
-On Fri, May 19, 2023 at 02:14:26AM +0300, Kirill A. Shutemov wrote:
-> The patch implements #1 and #2 for now. #2 is the default. Some
+On Wed, May 31, 2023 at 05:51:59PM +0200, Borislav Petkov wrote:
+> On Fri, May 19, 2023 at 02:14:26AM +0300, Kirill A. Shutemov wrote:
+> > The patch implements #1 and #2 for now. #2 is the default. Some
+> 
+> s/This patch implements/Implement/
+> 
+> > workloads may want to use #1 with accept_memory=eager in kernel
+> > command line. #3 can be implemented later based on user's demands.
+> 
+> All this remaining text should not talk about what is being done
+> - that's in the diff - but why. Drop the "what" pls.
 
-s/This patch implements/Implement/
+Does it look okay?
 
-> workloads may want to use #1 with accept_memory=eager in kernel
-> command line. #3 can be implemented later based on user's demands.
+Implement #1 and #2 for now. #2 is the default. Some workloads may want
+to use #1 with accept_memory=eager in kernel command line. #3 can be
+implemented later based on user's demands.
 
-All this remaining text should not talk about what is being done
-- that's in the diff - but why. Drop the "what" pls.
+Support of unaccepted memory requires a few changes in core-mm code:
 
-> Support of unaccepted memory requires a few changes in core-mm code:
-> 
->   - memblock has to accept memory on allocation;
-> 
->   - page allocator has to accept memory on the first allocation of the
->     page;
->
-> Memblock change is trivial.
-> 
-> The page allocator is modified to accept pages. New memory gets accepted
-> before putting pages on free lists. It is done lazily: only accept new
-> pages when we run out of already accepted memory. The memory gets
-> accepted until the high watermark is reached.
-> 
-> EFI code will provide two helpers if the platform supports unaccepted
-> memory:
-> 
->  - accept_memory() makes a range of physical addresses accepted.
-> 
->  - range_contains_unaccepted_memory() checks anything within the range
->    of physical addresses requires acceptance.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Acked-by: Mike Rapoport <rppt@linux.ibm.com>	# memblock
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  drivers/base/node.c    |   7 ++
->  fs/proc/meminfo.c      |   5 ++
->  include/linux/mm.h     |  19 +++++
->  include/linux/mmzone.h |   8 ++
->  mm/memblock.c          |   9 +++
->  mm/mm_init.c           |   7 ++
->  mm/page_alloc.c        | 173 +++++++++++++++++++++++++++++++++++++++++
->  mm/vmstat.c            |   3 +
->  8 files changed, 231 insertions(+)
+  - memblock accepts memory on allocation. It serves early boot memory
+    allocations and doesn't limit them to pre-accepted pool of memory.
 
-Diff itself looks ok.
+  - page allocator accepts memory on the first allocation of the page.
+    When kernel runs out of accepted memory, it accepts memory until the
+    high watermark is reached. It helps to minimize fragmentation.
 
-Thx.
+EFI code will provide two helpers if the platform supports unaccepted
+memory:
+
+ - accept_memory() makes a range of physical addresses accepted.
+
+ - range_contains_unaccepted_memory() checks anything within the range
+   of physical addresses requires acceptance.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
