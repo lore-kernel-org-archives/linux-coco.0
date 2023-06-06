@@ -1,24 +1,23 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A45D37B97
-	for <linux-coco@lists.linux.dev>; Tue,  6 Jun 2023 16:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937F030B95
+	for <linux-coco@lists.linux.dev>; Tue,  6 Jun 2023 16:25:49 +0000 (UTC)
 Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C7CFA1EC064A;
-	Tue,  6 Jun 2023 18:16:10 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7E4A21EC064A;
+	Tue,  6 Jun 2023 18:25:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1686068170;
+	t=1686068747;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EzBNPsFl2Dhg5+mFLreu4S8+80Y4hLppeh74KxkxTV0=;
-	b=kL9MUkQiC0UGBSPHskdsYSS8Sun5ZP40wjnMuRf4XqVC/ucpHdpbaETCgZabPrrU+59aBo
-	IL6BwpRYVz4LW5nsrG15WxB3B4g9sY3o2A1RUIHqcQTmMN3NpnTO7tP8nJE8PLdeezhCcd
-	Mj5M018TevNsx4gJequl4dGcYnpPqys=
-Date: Tue, 6 Jun 2023 18:16:06 +0200
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=Yc8fsBs+xKPd14gOftiVwaYwObAPlOek8WdNbu4B2Xc=;
+	b=QOuL9ObSvxl7i9nUuh8XAtyi9JrErbcJ9WmVYaji7xlFyIRgQPU3msr4AtfO4nDccTWoam
+	02ysCMJZqU9QTLHU/ZH557iIegZXgnauZ8/fcSWNSe0TuUxG/G3uL5TAsnSm1Ub02MNryC
+	lNhmZDEhMrfkhPH56jIFtohrl4yCkBs=
+Date: Tue, 6 Jun 2023 18:25:47 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
@@ -44,8 +43,9 @@ Cc: Andy Lutomirski <luto@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv14 0/9] mm, x86/cc, efi: Implement support for unaccepted
  memory
-Message-ID: <20230606161606.GDZH9bxhrGnFkaLl2A@fat_crate.local>
+Message-ID: <20230606162547.GEZH9eC9bDNkRcU+l4@fat_crate.local>
 References: <20230606142637.5171-1-kirill.shutemov@linux.intel.com>
+ <20230606161606.GDZH9bxhrGnFkaLl2A@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -54,38 +54,27 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230606142637.5171-1-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20230606161606.GDZH9bxhrGnFkaLl2A@fat_crate.local>
 
-On Tue, Jun 06, 2023 at 05:26:28PM +0300, Kirill A. Shutemov wrote:
-> v14:
->  - Fix error handling in arch_accept_memory() (Tom);
->  - Address Borislav's feedback:
->    + code restructure;
->    + added/adjusted comments;
+On Tue, Jun 06, 2023 at 06:16:06PM +0200, Borislav Petkov wrote:
+> Why does that tdx_kvm_hypercall() thing even depend on CONFIG_KVM_GUEST?
 
-In file included from arch/x86/coco/tdx/tdx-shared.c:1:
-./arch/x86/include/asm/tdx.h: In function ‘tdx_kvm_hypercall’:
-./arch/x86/include/asm/tdx.h:70:17: error: ‘ENODEV’ undeclared (first use in this function)
-   70 |         return -ENODEV;
-      |                 ^~~~~~
-./arch/x86/include/asm/tdx.h:70:17: note: each undeclared identifier is reported only once for each function it appears in
-make[4]: *** [scripts/Makefile.build:252: arch/x86/coco/tdx/tdx-shared.o] Error 1
-make[3]: *** [scripts/Makefile.build:494: arch/x86/coco/tdx] Error 2
-make[2]: *** [scripts/Makefile.build:494: arch/x86/coco] Error 2
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [scripts/Makefile.build:494: arch/x86] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:2026: .] Error 2
+Amending with this, obviously:
 
-Not enough build tests ran?
-
-$ grep INTEL_TDX_GUEST .config
-CONFIG_INTEL_TDX_GUEST=y
-$ grep KVM_GUEST .config
-$
-
-Why does that tdx_kvm_hypercall() thing even depend on CONFIG_KVM_GUEST?
+---
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 234197ec17e4..603e6d1e9d4a 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -5,6 +5,8 @@
+ 
+ #include <linux/init.h>
+ #include <linux/bits.h>
++
++#include <asm/errno.h>
+ #include <asm/ptrace.h>
+ #include <asm/shared/tdx.h>
+ 
 
 -- 
 Regards/Gruss,
