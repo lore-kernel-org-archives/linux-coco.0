@@ -1,196 +1,184 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2071.outbound.protection.outlook.com [40.107.223.71])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51BB3B3E0
-	for <linux-coco@lists.linux.dev>; Wed,  7 Jun 2023 23:18:25 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gazsuysUFAwI0K9MfW/fJy19r876NGRVbk3nZlNearrPtfGg2ermg5jLicCTlC+R2vGvXlJtundgjd3tV2XnxdZK+kc7Ep4aDAnjdYt5k9YuoH+KRRN7bVxAHj04NVNlA6gwwsNBpUlQrR8DhSEc7MjtKs+X/Rlnrj38NWM5qlelTsVnXdt0k00+qptOcuPgYEnzXa27VZzH3LgX55zLRQufQU5sMQOwrVZsq9kIVPNqYDHUyqmjEo1uiA/j/B7boZSDyfjnt84sHbD6ULLywSiK7qk+Sjdat/uGzQjoVmxJkPNibA3HPXFv8aCc5we0/hvKEft45GAEOXJ6fQyCFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nnTrhIvol+Sjm+PcmXB6rhdTCaAKOEbhBrbPZyXO7Ds=;
- b=YU7OyhnQ2zUL014syHPKZO2qE7Cj4vFpQQM/PUxVX36akw6Nq3+BF+pfDu3XIqWFXwfZFY7yI68BHcPYaWj2OE++UFA6Mkva6VX7r0rfzZ+7GOJ54AiqorjI7zMOGQ1UMbHH9Pd5Gz19NHLpou39nOJkuE1RITbzgKYU3DP/FwpqL+S4+w8xZ0lVvX0QEO6YvLnaI0hcUhAY2WmBs7si+cKDLNxk8m0ixkeClfib/JmEU58Y28V8lcWT03DnGi1SjSKyTw7U+n+N9EvpBwr/+8AfFHp2gTM76+T8I9OF+WWFfbWV5WMhJDHHV4Tqrxj3h76RAh4QLK4qirfdGkx1JQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nnTrhIvol+Sjm+PcmXB6rhdTCaAKOEbhBrbPZyXO7Ds=;
- b=Wrb5GwZUJWw183Asvb0iN8r804Gx/tgjRT6sGOpBPs0XFOK6y/BTaGVu3dSzoRmCB3LjiyKAhm1YzIsddX6XZMwvZOCRuv4HU0IetbyUmJb5SFMbKYG4DlaYdtQw4TnJVwK9uHg7r5j+KnLZTaLVY5d3MEuy0GLUFH9shYRz6sM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB2843.namprd12.prod.outlook.com (2603:10b6:5:48::24) by
- SN7PR12MB6768.namprd12.prod.outlook.com (2603:10b6:806:268::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.33; Wed, 7 Jun 2023 23:18:23 +0000
-Received: from DM6PR12MB2843.namprd12.prod.outlook.com
- ([fe80::ff22:cffa:293:5cef]) by DM6PR12MB2843.namprd12.prod.outlook.com
- ([fe80::ff22:cffa:293:5cef%3]) with mapi id 15.20.6455.030; Wed, 7 Jun 2023
- 23:18:23 +0000
-Message-ID: <d1269899-7e74-f33c-97bf-be0c708d2465@amd.com>
-Date: Thu, 8 Jun 2023 09:18:12 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.5.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3091FBB
+	for <linux-coco@lists.linux.dev>; Thu,  8 Jun 2023 09:21:05 +0000 (UTC)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 36899100F00EE;
+	Thu,  8 Jun 2023 11:12:03 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 00322D4F60; Thu,  8 Jun 2023 11:12:02 +0200 (CEST)
+Date: Thu, 8 Jun 2023 11:12:02 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+	"Giani, Dhaval" <Dhaval.Giani@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	"Kardashevskiy, Alexey" <Alexey.Kardashevskiy@amd.com>,
+	"Kaplan, David" <David.Kaplan@amd.com>,
+	"steffen.eiden@ibm.com" <steffen.eiden@ibm.com>,
+	"yilun.xu@intel.com" <yilun.xu@intel.com>,
+	Suzuki K P <suzuki.kp@gmail.com>,
+	"Powell, Jeremy" <Jeremy.Powell@amd.com>,
+	"atishp04@gmail.com" <atishp04@gmail.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	Sean Christopherson <seanjc@google.com>
 Subject: Re: RE: KVM Forum BoF on I/O + secure virtualization
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>,
- "Giani, Dhaval" <Dhaval.Giani@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- "Kardashevskiy, Alexey" <Alexey.Kardashevskiy@amd.com>,
- "Kaplan, David" <David.Kaplan@amd.com>,
- "steffen.eiden@ibm.com" <steffen.eiden@ibm.com>,
- "yilun.xu@intel.com" <yilun.xu@intel.com>, Suzuki K P <suzuki.kp@gmail.com>,
- "Powell, Jeremy" <Jeremy.Powell@amd.com>,
- "atishp04@gmail.com" <atishp04@gmail.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, lukas@wunner.de
+Message-ID: <20230608091202.GA962@wunner.de>
 References: <c2db1a80-722b-c807-76b5-b8672cb0db09@redhat.com>
  <MW4PR12MB7213E05A15C3F45CA6F9E93B8D4EA@MW4PR12MB7213.namprd12.prod.outlook.com>
  <647e9d4be14dd_142af8294b2@dwillia2-xfh.jf.intel.com.notmuch>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <647e9d4be14dd_142af8294b2@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SY5P282CA0112.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:20b::10) To DM6PR12MB2843.namprd12.prod.outlook.com
- (2603:10b6:5:48::24)
+ <d1269899-7e74-f33c-97bf-be0c708d2465@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2843:EE_|SN7PR12MB6768:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffab2d1d-5264-475b-d4c3-08db67ad7cfc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	2dCOYrclWqjz3A5wVpo3M5FFlLZmlDAD5PNzkhZi4WnJosb0/gK/R3ZRv19VB3v5a1qNSQyN6rZOQveV2TxTQQ6mE9T/OhZD4lwRQncXC9IQ3Q8sbuol7OZ9nwJe6aNkL/btRUZaPnUt4jtoCNXV3adDXQqCabE3skq1cCd/obz288gVbpLvTO33TdM5S8Mz2lOEaB+/nl6d6CNwLUF6B2Gaga2yu8eTAVn7uVduFp98YKLrF1X1RL2AY9enIJ4HSH7KKbu4Bg44yw9NjYvGnbGyiJn+/S0feOEmxm4qH7ZaWJTgNtxDThaj9jVpNs7iK25sORUnOq0HIv3mt6A2S1Lvks3HulXTPzS1YJK7N422JxTob5z+f55J3kFMD0zpMkstnGRqwdnQDnaK5lW/ZAkzTXdHQa2aGYxO9I/TcijMv1GGvsBWooovUetOPsCryyCZuAgCHXq9tCphsb8WellznGUJJZPbyP1nNj85qSFAnz/Cqveo7/PYtlNeIR32jn6v2DaXtTvRgJMA2pRrDrVMQKrfT5oIjH96nnvOcYwiU1QiCfIIuv9mbxWVaoGkYTojKZmbJBo16RaYiZRMiDfJtrDVrjhZ7qweHOayvXVltZkcSLcR1wanKfBkGBWk1KvRBBtxGoaxrgf4ulO5bro7TSe3jfM7FrzJdl46T+Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB2843.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(376002)(346002)(136003)(396003)(39860400002)(451199021)(31686004)(26005)(6512007)(186003)(41300700001)(5660300002)(6506007)(53546011)(36756003)(316002)(4326008)(66556008)(966005)(66946007)(6666004)(66476007)(8676002)(8936002)(2616005)(478600001)(54906003)(110136005)(31696002)(2906002)(6486002)(38100700002)(921005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VURGZTRSUUNzdkN1Tk1VMUovUHFaV0diWXVRekxpdFZrY3g1VjU0cDlyblNw?=
- =?utf-8?B?YzRNVThRaHorZDRvMmhxZWFZNVZzWkUyeEpUdDU1NExGV1duNzJCLzNsNnk5?=
- =?utf-8?B?NEZlT3hVWDBWU1dzakdldlFYOWZ3bVlYMDJBeEFBL0RadXFvNkFwbFYwc0pV?=
- =?utf-8?B?a2Y5Z2VOZzM1S0hsZmZiVkVJcVNoVHdFNWJybWxpNUFoamFVbDBEcTJscXAx?=
- =?utf-8?B?alQzdmptLzlhcExMM3JPS0YreHdIOUwxRGFkdVU3SEJINzdrZURVUEFFOStz?=
- =?utf-8?B?L29EK1g1VHJHQmlkTzVpYktIM2RsRUxaUTBLU0ZIYWswQ3dJc1pMRThkMmpV?=
- =?utf-8?B?dWdHSzlQN1gvM2JtRXNpTHBialo0OHRBMXU1U3JlN1V1SUJUU3VNZzRTSm5Y?=
- =?utf-8?B?SGNsVlgvb0kyYTdRTkNhd2g1QkRuMnpGL2gvWkg5QStycW4za2dFblN4bWlo?=
- =?utf-8?B?ZlI4V1hwTVo4L2UrbFIyb0txTkF4NnRuLzRLNHRsYXVKQlhMOGxCcDAvVERC?=
- =?utf-8?B?MHhDU05FTW5FTVZEN1QrRXlCdkREV01MOHFpdDU1dHV5NWFpRFFFbHVtaFBI?=
- =?utf-8?B?OWRaM0VxWHF2QlkxajY1b2RtSjFuYkY2OFNOZSs2WUZRME10TWpBSEUvcEV2?=
- =?utf-8?B?a3FKak1GZlUvOWJYbTJLMWhBeVpYaXRUL2d2VDFuaWJxMVpMMnQ5c3o2MmlK?=
- =?utf-8?B?UnhHN2pWRk9INHBsQVpOMEF4ajFXNFAzV1AzYVF1aTZ2c3dkcGpVTTM0RGpT?=
- =?utf-8?B?QmhoWlZzR3Q0VVZKQVB5TW13ODBwajc1KzZ2N3dXSEtRWFlPY0JWMS9EU0Za?=
- =?utf-8?B?SWx3VGNVQVU5REwxcnFQdmpvdlNwSWh1cStReFpZeHZQWnAzbEpEd1hMT0xK?=
- =?utf-8?B?WmhOTk56THl6L05rS2hZWWlqd3JsK1AyeExsRVpwZzNoWmNjSVZuVnJpMFNO?=
- =?utf-8?B?Qm5oRmh2MTdBWFk3TStmSXJSNVlqZjgyT09jUzVkV2RsS2JpNi9PQmRXTFY0?=
- =?utf-8?B?a2NqaHI1YXkyRmp6dlJUWDNFb1o5WVpxbXo4U3hWei9uUFlzc2dQZmdaclFj?=
- =?utf-8?B?VTZQOVJPalVNZ1oydEEvV25wRkMzNVR3aDkva09WS2RUMmtnNUVnWDh1MHFO?=
- =?utf-8?B?a0NBa3pKdTAwUjdRZUVpWTFKN1NEUWdvVCtmN2lta2REWXZUYTRQOXNMRmZR?=
- =?utf-8?B?c1FuNzBzQWh3a042U1ZhbmRRUnFVZWxqL05uODc1MUVoYWdBQlZTcjJGSnBD?=
- =?utf-8?B?L3JRVjdCbDNGdldxK2FRQWdFYmgyM3NkTkhUbkQ4NiswUW1Sdit2VkdyODJ3?=
- =?utf-8?B?UVpHN1F6QVdMd3QwVUZIOGF0NmxjQmpNUDFyaGtOSTdESHZ2cjYzbmR0dmI0?=
- =?utf-8?B?MVM5alhOQk9QcTlCUGJETzB4UjNETlFpTHhvL3NJSnB2UjRHMzUyMmY3UHNB?=
- =?utf-8?B?YW9WcWlNK01rRmVQTkNiUk16RjBoUXJvaHVYRElZaDg3VU5vM1ZjZTVxWDg4?=
- =?utf-8?B?MlcwRGtKVnJ5VGttSGhMVS90dk9FL2thZ3pObjlpdzZhK29LRlc4dm83a2ww?=
- =?utf-8?B?NEtJNlVhWHJFU3RHNE9PUFc1Umh0bWNnbW4rVEE2RzJxbWxCZjlSanFTM3FG?=
- =?utf-8?B?TTJwL3ZGc04yblhibmZ2VTlFNy9MaDdyR243a1ZGM0ZheFJhY09vVUNOSkR5?=
- =?utf-8?B?b25pT0VyL28zcS9BNHc0MnJJbUZENjRDc1JnejlkM2pXWGhPTnFrYmNmejNl?=
- =?utf-8?B?Y3Y1THg4SW8xREwzRkd5RVVEL0NpSnR0SUhyUDhCUTlZa1VmeUNCd3Vya3RM?=
- =?utf-8?B?ZitkaFlQMy9aZlFwUXQ3R0pyR3VqZ0pLYkUvRjd2TDc5T1FNWENxZ2dZRkxQ?=
- =?utf-8?B?aDhycDBVbS92N25TSDgzZWl1T21KN0NsRDEwK0MvSDIzUzV4c3R6bTdEeGlY?=
- =?utf-8?B?RFp3RmxrVjkyNWxxakcySmNqczc5dnBIWTF6Vlc1TU93ZHFYMW1sakR3MldJ?=
- =?utf-8?B?akl1ckRNS1YwTW1zUmFRcjZpcTlpR1JSakdOQWhDRjA5UDI5Vi9tYVBHM0hW?=
- =?utf-8?B?bGcva1l4aFlaVDBZLy9ya1JvS0F4UjVJMWtKV0hIbHpnNEwzblAzamtLcFM0?=
- =?utf-8?Q?aVIAqQAL8kx85pBa1h3CHdFEb?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffab2d1d-5264-475b-d4c3-08db67ad7cfc
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2843.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 23:18:23.1058
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iJQskop3jB1JPO5CwVclVNOdmS5NnjP/Lsm8EO3kvXp+BXqRtyYNAUqTvpdcTMTB2h1ROL57xhqdqWCCFZnESQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6768
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d1269899-7e74-f33c-97bf-be0c708d2465@amd.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On 6/6/23 12:43, Dan Williams wrote:
-> [ add Lukas ]
+[cc += Jonathan, Sean]
+
+On Thu, Jun 08, 2023 at 09:18:12AM +1000, Alexey Kardashevskiy wrote:
+> On 6/6/23 12:43, Dan Williams wrote:
+> > Giani, Dhaval wrote:
+> > > We have proposed a trusted I/O BoF session at KVM forum this year.
+> > > I wanted to kick off the discussion to maximize the 25 mins we have.
+> > > 
+> > > By trusted I/O, I mean using TDISP to have "trusted" communications
+> > > with a device using something like AMD SEV-TIO [1] or Intel's
+> > > TDX connect [2].
+> > > 
+> > > Some topics we would like to discuss are
+> > > o What is the device model like?
+> > > o Do we enlighten the PCI subsystem?
+> > > o Do we enlighten device drivers?
+> > 
+> > One observation in relation to these first questions is something that
+> > has been brewing since SPDM and IDE were discussed at Plumbers 2022.
+> > 
+> > https://lpc.events/event/16/contributions/1304/
+> > 
+> > Namely, that there is value in the base specs on the way to the full
+> > vendor TSM implementations. I.e. that if the Linux kernel can aspire to
+> > the role of a TSM it becomes easier to incrementally add proxying to a
+> > platform TSM later. In the meantime, platforms and endpoints that
+> > support CMA / SPDM and PCIe/CXL IDE but not full "trusted I/O" still
+> > gain incremental benefit.
 > 
-> Giani, Dhaval wrote:
->> [AMD Official Use Only - General]
->>
->> Hi all,
->>
->> We have proposed a trusted I/O BoF session at KVM forum this year. I wanted
->> to kick off the discussion to maximize the 25 mins we have.
->>
->> By trusted I/O, I mean using TDISP to have “trusted” communications with a
->> device using something like AMD SEV-TIO [1] or Intel’s TDX connect [2].
->>
->> Some topics we would like to discuss are
->> o What is the device model like?
->> o Do we enlighten the PCI subsystem?
->> o Do we enlighten device drivers?
+> TSM on the AMD hardware is a PSP firmware and it is going to implement all
+> of SPDM/IDE and the only proxying the host kernel will do is PCI DOE.
+
+Sean has voiced a scathing critique of this model where a firmware does
+all the attestation and hence needs to be trusted:
+
+https://lore.kernel.org/all/Y+aP8rHr6H3LIf%2Fc@google.com/
+https://lore.kernel.org/all/ZEfrjtgGgm1lpadq@google.com/
+
+I think we need to entertain the idea that Linux does the attestation
+and encryption setup itself.  Reliance on a "trusted" hardware module
+should be optional.
+
+That also works for KVM:  The guest can perform attestation on its own
+behalf, setup encryption and drive the TDISP state machine.  If the
+guest's memory is encrypted with SEV or TDX, the IDE keys generated by
+the guest are invisible to the VMM and hence confidentiality is achieved.
+The guest can communicate the keys securely to the device via IDE_KM and
+the guest can ask the device to lock down via TDISP.
+
+Yes, the guest may need to rely on the PSP firmware to program the
+IDE key into the Root Port.  Can you provide that as a service from
+the PSP firmware?
+
+What you seem to be arguing for is a "fat" firmware which does all
+the attestation.  The host kernel is relegated to being a mere DOE proxy.
+And the guest is relegated to being a "dumb" receiver of the firmware's
+attestation results.
+
+What I'm arguing for is a "thin" firmware which provides a minimized
+set of services (such as selecting a free IDE stream in the Root Port
+and writing keys into it).
+
+The host kernel can perform attestation and set up encryption for
+devices it wants to use itself.  Once it passes through a device to
+a guest, the host kernel no longer performs any SPDM exchanges with
+the device as it's now owned by the guest.  The guest is responsible
+for performing attestation and set up encryption for itself, possibly
+with the help of firmware.
+
+If there is no firmware to program IDE keys into the Root Port,
+the guest must ask the VMM to do that.  The VMM then becomes part
+of the guest's TCB, but that trade-off is unavoidable if there's
+no firmware assistance.  Some customers (such as Sean) seem to
+prefer that to trusting a vendor-provided firmware.
+
+Remember, this must work for everyone, not just for people who are
+happy with AMD's and Intel's shrink-wrapped offerings.
+
+We can discuss an _OSC bit to switch between firmware-driven attestation
+and OS-native attestation, similar to the existing bits for PCIe hotplug,
+DPC etc.
+
+However, past experience with firmware-handled hotplug and DPC has
+generally been negative and I believe most everyone is preferring the
+OS-native variant nowadays.  The OS has a better overall knowledge of
+the system state than the firmware.  E.g. the kernel can detect hotplug
+events caused by DPC and ignore them (see commit a97396c6eb13).
+
+Similarly, the CMA-SPDM patches I'm working on reauthenticate devices
+after a DPC-induced Hot Reset or after resume from D3cold.  I imagine
+it may be difficult to achieve the same if attestation is handled by
+firmware.
+
+I'm talking about commit "PCI/CMA: Reauthenticate devices on reset and
+resume" on this development branch:
+
+https://github.com/l1k/linux/commits/doe
+
+Thanks,
+
+Lukas
+
+> > The first proof point for that idea is teaching the PCI core to perform
+> > CMA / SPDM session establishment and provide that result to drivers.
+> > 
+> > That is what Lukas has been working on after picking up Jonathan's
+> > initial SPDM RFC. I expect the discussion on those forthcoming patches
+> > starts to answer device-model questions around attestation.
 > 
-> One observation in relation to these first questions is something that
-> has been brewing since SPDM and IDE were discussed at Plumbers 2022.
+> Those SPDM patches should work on the AMD hw (as they do not need any
+> additional host PCI support) but that's about it - IDE won't be possible
+> that way as there is no way to program the IDE keys to PCI RC without the
+> PSP.
 > 
-> https://lpc.events/event/16/contributions/1304/
+> If we want reuse any of that code to provide
+> certificates/measurements/reports for the host kernel, then that will need
+> to allow skipping the bits that the firmware implements (SPDM, IDE) +
+> calling the firmware instead. And TDISP is worse as it is based on the idea
+> of not trusting the VMM (is there any use for TDISP for the host-only config
+> at all?) so such SPDM-enabled linux has to not run KVM.
 > 
-> Namely, that there is value in the base specs on the way to the full
-> vendor TSM implementations. I.e. that if the Linux kernel can aspire to
-> the role of a TSM it becomes easier to incrementally add proxying to a
-> platform TSM later. In the meantime, platforms and endpoints that
-> support CMA / SPDM and PCIe/CXL IDE but not full "trusted I/O" still
-> gain incremental benefit.
-
-TSM on the AMD hardware is a PSP firmware and it is going to implement 
-all of SPDM/IDE and the only proxying the host kernel will do is PCI DOE.
-
-> The first proof point for that idea is teaching the PCI core to perform
-> CMA / SPDM session establishment and provide that result to drivers.
-> 
-> That is what Lukas has been working on after picking up Jonathan's
-> initial SPDM RFC. I expect the discussion on those forthcoming patches
-> starts to answer device-model questions around attestation.
-
-
-Those SPDM patches should work on the AMD hw (as they do not need any 
-additional host PCI support) but that's about it - IDE won't be possible 
-that way as there is no way to program the IDE keys to PCI RC without 
-the PSP.
-
-If we want reuse any of that code to provide 
-certificates/measurements/reports for the host kernel, then that will 
-need to allow skipping the bits that the firmware implements (SPDM, IDE) 
-+ calling the firmware instead. And TDISP is worse as it is based on the 
-idea of not trusting the VMM (is there any use for TDISP for the 
-host-only config at all?) so such SPDM-enabled linux has to not run KVM.
-
-
-
->> o What does the guest need to know from the device?
->> o How does the attestation workflow work?
->> o Generic vs vendor specific TSMs
->>
->> Some of these topics may be better suited for LPC,
-> 
-> Maybe, but there's so much to discuss that the more opportunities to
-> collaborate on the details the better.
-> 
->> however we want to get the discussion going from the KVM perspective
->> and continue wider discussions at LPC.
-> 
-> While I worry that my points above are more suited to something like a
-> PCI Micro-conference than a KVM BoF, I think the nature of "trusted I/O"
-> requires those tribes to talk more to each other.
-
--- 
-Alexey
-
+> > > o What does the guest need to know from the device?
+> > > o How does the attestation workflow work?
+> > > o Generic vs vendor specific TSMs
+> > > 
+> > > Some of these topics may be better suited for LPC,
+> > 
+> > Maybe, but there's so much to discuss that the more opportunities to
+> > collaborate on the details the better.
+> > 
+> > > however we want to get the discussion going from the KVM perspective
+> > > and continue wider discussions at LPC.
+> > 
+> > While I worry that my points above are more suited to something like a
+> > PCI Micro-conference than a KVM BoF, I think the nature of "trusted I/O"
+> > requires those tribes to talk more to each other.
