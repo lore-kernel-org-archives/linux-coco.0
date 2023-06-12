@@ -1,34 +1,34 @@
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161DB21CD7
-	for <linux-coco@lists.linux.dev>; Mon, 12 Jun 2023 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6533A10FB
+	for <linux-coco@lists.linux.dev>; Mon, 12 Jun 2023 16:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686587439; x=1718123439;
+  t=1686588050; x=1718124050;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=QhNATEJQnWJ6d9I9Xkx5FpQ9VU6vwCfeDSbUV8NvC4c=;
-  b=B/9w/7K5VkML5iYlsDr84NZRlA/D4/N2ymXEUGd4e4rK/QhLlT9nVPdg
-   Nk/kyHetMKJTGgIudjYpu4scGepnOq5EnFUbTATQbF0RDXJvbUPtiEGZz
-   rkeNJZKJFivFsjWXIcDmvKBKlWNgfSzQAFPGXh2axTIPgrAta7Xri2qiS
-   i5GqT9h68lI6m6R7QsE83r0o6ktVFguYpKndeLc01BBCqogw2oAbzdlde
-   Y9NZaUD76r1QdEAYXyeQyFoz/vzRnRC6N25hRzHVJ1bOp09fRX+VZVGkC
-   XY0L4QJu1nCznahDJ3UzlqoAo3iCSEsWkCO3EWAwAC+frx1b4C+4ZDMeL
+  bh=1vf2gpsw1WTcumfYJQxjWdVtrfbml7pTawG9Tbh2CEs=;
+  b=KiABhiXZsFnr7AVuuOw9xtHqVINuNY+Kh458pQ9AFRbL/UbT0vDK+cxx
+   n8AkklJUqzL6Uy1GBhm33LHFKSq4RdvCTH8iO5pK4pD4GFb38Qt7VjPGj
+   Hwz31ltFKwhVXv/fhkqLrOuOQo8RNBHWENEStGMN4lqJQvw+7o/VT7PWw
+   INmDlcAOp7etTf4xERWDG2KCH4tJhD3V1GTI5MVuaS9cmJLO9tVogQBap
+   xGApUCI1aRVx48OW9OaXmMtmEWGunBk5p0fBLIArm3y4YfySbAi74cxA/
+   gY3cEFGW/gaIRZB/d9xzd7QFwkbobqFLK4P4HuLvIvFQmDI+YFx8CGbd4
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="337729019"
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="347750432"
 X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="337729019"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 09:30:38 -0700
+   d="scan'208";a="347750432"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 09:40:49 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="1041415457"
+X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="661645619"
 X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="1041415457"
+   d="scan'208";a="661645619"
 Received: from spmantha-mobl1.amr.corp.intel.com (HELO [10.209.43.2]) ([10.209.43.2])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 09:30:36 -0700
-Message-ID: <93654914-c3d9-8927-8ab2-ee4597426924@intel.com>
-Date: Mon, 12 Jun 2023 09:30:35 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 09:40:48 -0700
+Message-ID: <bad7dfd5-c88a-6452-0dc4-599fd1eeb447@intel.com>
+Date: Mon, 12 Jun 2023 09:40:48 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH RFC v9 12/51] x86/fault: Report RMP page faults for kernel
+Subject: Re: [PATCH RFC v9 13/51] x86/fault: Handle RMP page faults for user
  addresses
 Content-Language: en-US
 To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
@@ -54,36 +54,61 @@ Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
  marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
  alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
  ashish.kalra@amd.com, nikunj.dadhania@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com
+ zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@profian.com>
 References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-13-michael.roth@amd.com>
+ <20230612042559.375660-14-michael.roth@amd.com>
 From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20230612042559.375660-13-michael.roth@amd.com>
+In-Reply-To: <20230612042559.375660-14-michael.roth@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 6/11/23 21:25, Michael Roth wrote:
->  	dump_pagetable(address);
-> +
+> From: Brijesh Singh <brijesh.singh@amd.com>
+> 
+> When SEV-SNP is enabled globally, a write from the host is subject to
+> checks performed by the hardware against the RMP table (APM2 15.36.10)
+> at the end of a page walk:
+> 
+>   1. Assigned bit in the RMP table is not set (i.e page is shared).
+>   2. Immutable bit in the RMP table is not set.
+>   3. If the page table entry that gives the sPA indicates that the
+>      target page size is a large page, then all RMP entries for the 4KB
+>      constituting pages of the target must have the assigned bit 0.
+> 
+> Nothing constructive can come of an attempt by userspace to violate case
+> 1) (which will result in writing garbage due to page encryption) or case
+> 2) (userspace should not ever need or be allowed to write to a page that
+> the host has specifically needed to mark immutable).
+
+What does this _mean_?  If nothing constructive can come of it, what
+does that mean for the kernel?
+
+> Case 3) is dependent on the hypervisor. In case of KVM, due to how
+> shared/private pages are partitioned into separate memory pools via
+> restricted/guarded memory, there should never be a case where a page in
+> the private pool overlaps with a shared page: either it is a
+> hugepage-sized allocation and all the sub-pages are private, or it is a
+> single-page allocation, in which case it cannot overlap with anything
+> but itself.
+> 
+> Therefore, for all 3 cases, it is appropriate to simply kill the
+> userspace process if it ever generates an RMP #PF. Implement that logic
+> here.
+...
 > +	if (error_code & X86_PF_RMP) {
-> +		unsigned int level;
-> +		pgd_t *pgd;
-> +		pte_t *pte;
-> +
-> +		pgd = __va(read_cr3_pa());
-> +		pgd += pgd_index(address);
-> +		pte = lookup_address_in_pgd(pgd, address, &level);
-> +
-> +		sev_dump_rmpentry(pte_pfn(*pte));
+> +		pr_err("Unexpected RMP page fault for address 0x%lx, terminating process\n",
+> +		       address);
+> +		do_sigbus(regs, error_code, address, VM_FAULT_SIGBUS);
+> +		return;
 > +	}
->  }
+> +
 
-It would be nice to trim this hunk down.  Can you make it:
+This is special-snowflake code.  You're making the argument that an RMP
+fault is a special snowflake and needs special handling.
 
-	if (error_code & X86_PF_RMP)
-		sev_dump_rmpentry(address);
+Why should an RMP violation be any different than, say a write to a
+read-only page (that also ends in signal delivery)?
 
-and hide the rest of the logic in the helper?
-
-Oh, and lookup_address_in_pgd() can return NULL.  It's not great to page
-fault in the page fault handler.  Could you fix that up too, please?
+I kinda dislike the entire changelog here.  I really don't know what
+point it's making or what it is arguing.
