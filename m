@@ -1,79 +1,111 @@
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9269D17AB7
-	for <linux-coco@lists.linux.dev>; Mon, 12 Jun 2023 17:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686589205; x=1718125205;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lINzTdir4qaEtcszrtUnYr0rUxQ02JyprEtg0yNn6yc=;
-  b=DpxMsfo6myF69wpEuQCBW5QSNhjbDYyi0y0JmzTKEB45dM8chp6xeCFW
-   i5pJRj8nhQ56SfdmQOUNVnCWo5s7LHp4RYTf40VvU/0Npi8x9yLS5gKqE
-   VRTp220XH2MQ6lvgb8UAyhE6okte728ZYJsREFxWCoFY06zcNDAPnHT9o
-   OxuOF3y+O+iVl+1UU0REQKG/7YiQwUlXP7A/9Itf9iq8W0fiez05bZNsB
-   2MgGU0jrB+TjgIyfPJi3Dl/SrkLjP1fEk3Ifymkrhjv8c/SSAafd2l/+b
-   5EE5+5phQkGaAAYeN3HOTLCVD43G7txko2jU37JEonXYcE9kM6TYCuFRz
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="355600416"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="355600416"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 10:00:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="741098047"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="741098047"
-Received: from spmantha-mobl1.amr.corp.intel.com (HELO [10.209.43.2]) ([10.209.43.2])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 10:00:01 -0700
-Message-ID: <d627220d-e8e0-7a8d-73a7-ce3633359f57@intel.com>
-Date: Mon, 12 Jun 2023 10:00:00 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6789E17AB7
+	for <linux-coco@lists.linux.dev>; Mon, 12 Jun 2023 17:08:25 +0000 (UTC)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-4f58444a410so150e87.0
+        for <linux-coco@lists.linux.dev>; Mon, 12 Jun 2023 10:08:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1686589703; x=1689181703;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hPHA2iInW/5MWEIDY5sRw7hsczk67ay7y9vys8rDT34=;
+        b=JGfnzKQxNy5ZG+svk3pKWyN7ndYnw6Cg9NfAVLy+p80Ss4DBGYrgTioADx2kTru1sI
+         Jiw4Cq4n4CvBniPpQdYSG0bgvTXC/lCBZWwzRI7ImGoniwCx5RT1mmyE3fAVGSZuo6rl
+         kOLCwE/HMFlIkIC68lxhIo0g1ynyfizgcrAin0y7fQOFLdZJL5qPtHBMIMc9HeTz8j3C
+         FV6Fe3V1rWxDiUqDjzbJEvoouy9sNYhVLzaF2X0FSyMHSmG8McHmXGU1sd5SgwDQWOqk
+         lh1TtdgZNNeeCJXKMM8jvJSHzd5f0xl+QTVGjqiepFPlYV7S5SME39tqQGLNNvDwTNuQ
+         OaSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686589703; x=1689181703;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hPHA2iInW/5MWEIDY5sRw7hsczk67ay7y9vys8rDT34=;
+        b=FcfNSybSKbCcnSXgcSbcuDoiTJXDOD1wmtrwtwxgXv7SutdbXmHNZucy7oV/JcqBR+
+         o2l/XPdfZyzu+YAroO1E3UDfqhAmPK6Fsg9uezUTBNBjHla/WnGN40pm3Rls/SzcOMRR
+         pQ/qcrpwStIUHsKpYQoOESlA3arZNODWUQfrxKuG5EVyDhQ/lVEDPte7+GgCDNhl3qb5
+         ++utLblDoBu1JHFfC5BeuhBvZP4vDf/n1P5lNoOUqM5l/ZfFPCn24ouoSUf8syYDKxuP
+         9jdH0HuxK5g9brf8ocXlHZqXCLrHCy/X9mANQYefgN0cyLJZ3ULJoCqroq9Y+aH+38Nl
+         XzOQ==
+X-Gm-Message-State: AC+VfDyXCwOQ//zocVuYPwJvkvuwmvDNnirW+6DohohfkF2IB+oa3xU/
+	L4dl35bHNmM91cBbWXq/1k+f8tFP0iDNM7ikcdTXlg==
+X-Google-Smtp-Source: ACHHUZ75qxKnzvhiDDf0D5IcWH78fHsJ5oE2uWNN4sR3H9U9eFd+mPr5PWjgybS2SATgWNhLMY+e7X97TQ0uvb78OYc=
+X-Received: by 2002:ac2:4c39:0:b0:4f6:1722:d73a with SMTP id
+ u25-20020ac24c39000000b004f61722d73amr147507lfq.5.1686589702990; Mon, 12 Jun
+ 2023 10:08:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH RFC v9 14/51] x86/sev: Add helper functions for RMPUPDATE
- and PSMASH instruction
-Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
- ashish.kalra@amd.com, nikunj.dadhania@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
-References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-15-michael.roth@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20230612042559.375660-15-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20230612042559.375660-1-michael.roth@amd.com> <20230612042559.375660-30-michael.roth@amd.com>
+In-Reply-To: <20230612042559.375660-30-michael.roth@amd.com>
+From: Peter Gonda <pgonda@google.com>
+Date: Mon, 12 Jun 2023 11:08:11 -0600
+Message-ID: <CAMkAt6qQ73ah0UW2sTh8CYNgMhWRMQ7bVxH5bWpVfCR-ncnZuQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v9 29/51] KVM: SVM: Add KVM_SEV_SNP_LAUNCH_START command
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
+	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
+	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, peterz@infradead.org, 
+	srinivas.pandruvada@linux.intel.com, rientjes@google.com, 
+	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org, 
+	ashish.kalra@amd.com, nikunj.dadhania@amd.com, liam.merwick@oracle.com, 
+	zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 6/11/23 21:25, Michael Roth wrote:
-> +/*
-> + * Assign a page to guest using the RMPUPDATE instruction.
-> + */
-> +int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable)
-> +{
-> +	struct rmp_state val;
 > +
-> +	pr_debug("%s: GPA: 0x%llx, PFN: 0x%llx, level: %d, immutable: %d\n",
-> +		 __func__, gpa, pfn, level, immutable);
+> +static int snp_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
+> +{
+> +       struct kvm_sev_info *sev = &to_kvm_svm(kvm)->sev_info;
+> +       struct sev_data_snp_launch_start start = {0};
+> +       struct kvm_sev_snp_launch_start params;
+> +       int rc;
+> +
+> +       if (!sev_snp_guest(kvm))
+> +               return -ENOTTY;
+> +
+> +       if (copy_from_user(&params, (void __user *)(uintptr_t)argp->data, sizeof(params)))
+> +               return -EFAULT;
+> +
+> +       sev->snp_context = snp_context_create(kvm, argp);
+> +       if (!sev->snp_context)
+> +               return -ENOTTY;
 
-Is this needed *EVERY* time a page is assigned to a guest?  As in, if I
-create a 4GB guest, I'll see a literal million of these pr_debug()s in
-dmesg?
 
+I commented on a  previous series but I think the bug is still here. I
+think users can repeatedly call KVM_SEV_SNP_LAUNCH_START to have KVM
+keep allocating more snp_contexts above.
+
+Should we check if the VM already has a |snp_context| and error out if so?
+
+>
+> +
+> +       start.gctx_paddr = __psp_pa(sev->snp_context);
+> +       start.policy = params.policy;
+> +       memcpy(start.gosvw, params.gosvw, sizeof(params.gosvw));
+> +       rc = __sev_issue_cmd(argp->sev_fd, SEV_CMD_SNP_LAUNCH_START, &start, &argp->error);
+> +       if (rc)
+> +               goto e_free_context;
+> +
+> +       sev->fd = argp->sev_fd;
+> +       rc = snp_bind_asid(kvm, &argp->error);
+> +       if (rc)
+> +               goto e_free_context;
+> +
+> +       return 0;
+> +
+> +e_free_context:
+> +       snp_decommission_context(kvm);
+> +
+> +       return rc;
+> +}
+> +
