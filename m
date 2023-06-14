@@ -1,183 +1,267 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662ECDDAF
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 14:15:53 +0000 (UTC)
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-bc6a920e69aso999057276.0
-        for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 07:15:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D77DF66
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 14:24:29 +0000 (UTC)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-66643830ab3so760450b3a.0
+        for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 07:24:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686752152; x=1689344152;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HyxJUC+ggEK6dr+Cv8s7hAwz0UuDDFgEK68ULk5W7mU=;
-        b=hlSASfmdf95l6QbzQ3fTLZfUMNONKaFKa/5PK/w9IyO9XfSLYxNrqqtvosvvZSif1e
-         LI3fBAs0/TMzWjtfnsVoYfIqYpJ/ewrksL1PJSxpWO3zTFX/20QDjk8NZMXhv/cbW5HM
-         8BAEpVWNAmInPlZlrDC/h29Y/RKSbENk9hDPFICG2JDXGZjkZebco1rVDXD6JX7RQIm6
-         vIH6pM8tWGJEMF8GP/HXPdYMMrTVEqD14VyJdcUFEPG4Fxi5E0WLAUErCb9XtGVjNgmp
-         iftESueAkB7OB+sX/M6oBgBbhv3ZrHO7exeD5R+SCygrf1DIdWKfIbaC877aTM3t3Ec6
-         dbug==
+        d=gmail.com; s=20221208; t=1686752669; x=1689344669;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OeHuGk36iAi9FOib4LSEuZFMwIiKSgOuCZrmCC6ygDM=;
+        b=QFVWHvQ4FVT4k/YpETceISLCQLKSRQLGXyiPykxrKYX7KOYnDwTGAVh15Gr7cN4Gvo
+         8G7VeSRCWGuCAFZphJp9YUsMGb2LYzbA+o7fD/pXjmdiN2Wvm5Wb9Ol13xQhIw3e2ucM
+         LAI4NEIJ6/d60vVlv0qvKzX53o+BS/wDAIZFmLy49cFFPGFABrjrbAxZTjP8B+LCOhQ/
+         Ang+dAMFLtN5MMv7n/hhb1w4iNGBIVfmCB33E9zius7nO3FsETszUVg5DIzIBeYeEWmA
+         dbsDDwoSoejiXKpS9l7wTDaflW30K+KejUncLBeBeaUfYLXYeqvalqjrReooPKPYFjDe
+         RL7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686752152; x=1689344152;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HyxJUC+ggEK6dr+Cv8s7hAwz0UuDDFgEK68ULk5W7mU=;
-        b=bvEXACTlFWZvLa2Nb3LchFOOvIQFgX2JAatlqi5/5IgCVVB1TDnkDE80UUdO7uVolF
-         UEZ+O6n2ZBMSI6Wd6vzvX1bg3VSX5MyNetiqK0MGHd1o9R4FYGgJcpw2dLSCiSmz45sv
-         6pvMk7HnrBwwfkFDU0Ml8GH/kDBPZEhR8HynMnE2mxm3OrJz7cLjJn8pESNNMxCz5THJ
-         go6JAKmaA7gn5UJPqn0Rm5MCZwEcr3KLppXfZiiNbgzbnaUkcSckoO/Imd7ibE7msOqi
-         19M8kqiIgqaClgwdXHLNl1Wkfx7IlVvym7YjAOG+7iT0biPAq8P3tg5h1lumjWh+QOeX
-         HZWA==
-X-Gm-Message-State: AC+VfDwybY2kcpwRfcI2iPvqc4po6ZeXElac7SF5UDlYxn+gggAC2JRf
-	noCAObnD1on+ZFPWF4HL3CZbk0OAFcg=
-X-Google-Smtp-Source: ACHHUZ57W8rzqxbJrL52S1c85P/owRVhPYIdJcTC5dSko1414FTQprcFTMsekp8j3wY/FlGzlyV+eG+PfAM=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:1783:b0:bd0:4e03:a247 with SMTP id
- ca3-20020a056902178300b00bd04e03a247mr1054400ybb.5.1686752152293; Wed, 14 Jun
- 2023 07:15:52 -0700 (PDT)
-Date: Wed, 14 Jun 2023 07:15:50 -0700
-In-Reply-To: <DM8PR11MB5750D16B08B769173DCD740AE75AA@DM8PR11MB5750.namprd11.prod.outlook.com>
+        d=1e100.net; s=20221208; t=1686752669; x=1689344669;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OeHuGk36iAi9FOib4LSEuZFMwIiKSgOuCZrmCC6ygDM=;
+        b=V8EUUzL69jVzX+vvGvzQslwL1MThpw1958ZIEMlVjOaB9bmaLAG2bZZnTwKFg98Mz9
+         W2u5BWIp3awlxr2MiThWIQDc8Rv8pTzdD2U/AL2g8/wYvEoU+TNBSDe8UMPFoUKf8tl3
+         C5Ko52RwGaRj+d00UX79gsYak8M53ycz7wXgJ7pTkKM9OEt2Pi09mLgiQUpfOt6yZgh2
+         u6GG7BWeNY3ep6ONczHSdt7MiMSQnzr0syjJkU5qrR3AEjvkhFOTaOD6O9UY3raNpAna
+         F9j3ixD4MQ6jmRrSnfYFpsuyY7vnUIPI2dTBHn8YZ3NPIUPQ56Cb6yPakWzQrROb9F2i
+         haQw==
+X-Gm-Message-State: AC+VfDy72g8I+SAEHdzaD/FLy+n8gsEjm0pxC8AW59osZgjIxIy4zVpN
+	01tcNa5SGpk9A8MXgnfddX0=
+X-Google-Smtp-Source: ACHHUZ5XuSVorTt0n5Kbv+qYZgeGRCldqLkkmHj+Fft0QsEK+SkVoy/Fm/1ZGl+VFauor6vJg0+xCw==
+X-Received: by 2002:a05:6a20:72ac:b0:10c:2349:459d with SMTP id o44-20020a056a2072ac00b0010c2349459dmr2242690pzk.11.1686752668433;
+        Wed, 14 Jun 2023 07:24:28 -0700 (PDT)
+Received: from localhost ([192.55.54.50])
+        by smtp.gmail.com with ESMTPSA id l7-20020a62be07000000b0063b7f3250e9sm10418609pff.7.2023.06.14.07.24.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jun 2023 07:24:27 -0700 (PDT)
+Date: Wed, 14 Jun 2023 07:24:26 -0700
+From: Isaku Yamahata <isaku.yamahata@gmail.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
+	zhi.a.wang@intel.com, isaku.yamahata@gmail.com
+Subject: Re: [PATCH RFC v9 03/51] KVM: x86: Use full 64-bit error code for
+ kvm_mmu_do_page_fault
+Message-ID: <20230614142426.GQ2244082@ls.amr.corp.intel.com>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-4-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
- <ZIihRqZljMaMRGcK@google.com> <DM8PR11MB5750D16B08B769173DCD740AE75AA@DM8PR11MB5750.namprd11.prod.outlook.com>
-Message-ID: <ZInLlkXsgnej9ZpT@google.com>
-Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
- threat model for x86 virtualization
-From: Sean Christopherson <seanjc@google.com>
-To: Elena Reshetova <elena.reshetova@intel.com>
-Cc: Carlos Bilbao <carlos.bilbao@amd.com>, Jason CJ Chen <jason.cj.chen@intel.com>, 
-	"corbet@lwn.net" <corbet@lwn.net>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ardb@kernel.org" <ardb@kernel.org>, 
-	"kraxel@redhat.com" <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>, 
-	"michael.day@amd.com" <michael.day@amd.com>, 
-	"pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>, "David.Kaplan@amd.com" <David.Kaplan@amd.com>, 
-	"Reshma.Lal@amd.com" <Reshma.Lal@amd.com>, "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"dgilbert@redhat.com" <dgilbert@redhat.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "dinechin@redhat.com" <dinechin@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "berrange@redhat.com" <berrange@redhat.com>, 
-	"mst@redhat.com" <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>, "jikos@kernel.org" <jikos@kernel.org>, 
-	"joro@8bytes.org" <joro@8bytes.org>, "leon@kernel.org" <leon@kernel.org>, 
-	"richard.weinberger@gmail.com" <richard.weinberger@gmail.com>, "lukas@wunner.de" <lukas@wunner.de>, 
-	"jejb@linux.ibm.com" <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>, 
-	"jasowang@redhat.com" <jasowang@redhat.com>, "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"security@kernel.org" <security@kernel.org>, Larry Dewey <larry.dewey@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230612042559.375660-4-michael.roth@amd.com>
 
-On Wed, Jun 14, 2023, Elena Reshetova wrote:
-> > > +The specific details of the CoCo security manager vastly diverge bet=
-ween
-> > > +technologies. For example, in some cases, it will be implemented in =
-HW
-> > > +while in others it may be pure SW. In some cases, such as for the
-> > > +`Protected kernel-based virtual machine (pKVM) <https://github.com/i=
-ntel-
-> > staging/pKVM-IA>`,
-> > > +the CoCo security manager is a small, isolated and highly privileged
-> > > +(compared to the rest of SW running on the host) part of a tradition=
-al
-> > > +VMM.
-> >=20
-> > I say that "virtualized environments" isn't a good description because
-> > while pKVM does utilize hardware virtualization, my understanding is th=
-at
-> > the primary use cases for pKVM don't have the same threat model as SNP/=
-TDX,
-> > e.g. IIUC many (most?  all?) pKVM guests don't require network access.
->=20
-> Not having a network access requirement doesn=E2=80=99t implicitly invali=
-date the=20
-> separation guarantees between the host and guest, it just makes it easier
-> since you have one interface less between the host and guest.
+On Sun, Jun 11, 2023 at 11:25:11PM -0500,
+Michael Roth <michael.roth@amd.com> wrote:
 
-My point is that if the protected guest doesn't need any I/O beyond the har=
-dware
-device that it accesses, then the threat model is different because many of=
- the
-new/novel attack surfaces that come with the TDX/SNP threat model don't exi=
-st.
-E.g. the hardening that people want to do for VirtIO drivers may not be at =
-all
-relevant to pKVM.
+> The upper bits will be needed in some cases to distinguish between
+> nested page faults for private/shared pages, so pass along the full
+> 64-bit value.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/kvm/mmu/mmu.c          | 3 +--
+>  arch/x86/kvm/mmu/mmu_internal.h | 4 ++--
+>  2 files changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index c54672ad6cbc..0d3983b9aa7e 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -5829,8 +5829,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+>  	}
+>  
+>  	if (r == RET_PF_INVALID) {
+> -		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
+> -					  lower_32_bits(error_code), false,
+> +		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code, false,
+>  					  &emulation_type);
+>  		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
+>  			return -EIO;
+> diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+> index f1786698ae00..780b91e1da9f 100644
+> --- a/arch/x86/kvm/mmu/mmu_internal.h
+> +++ b/arch/x86/kvm/mmu/mmu_internal.h
+> @@ -283,11 +283,11 @@ enum {
+>  };
+>  
+>  static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+> -					u32 err, bool prefetch, int *emulation_type)
+> +					u64 err, bool prefetch, int *emulation_type)
+>  {
+>  	struct kvm_page_fault fault = {
+>  		.addr = cr2_or_gpa,
+> -		.error_code = err,
+> +		.error_code = lower_32_bits(err),
+>  		.exec = err & PFERR_FETCH_MASK,
+>  		.write = err & PFERR_WRITE_MASK,
+>  		.present = err & PFERR_PRESENT_MASK,
+> -- 
+> 2.25.1
 
-> But again I will let Jason to reply on this since he knows details.=20
->=20
-> But what you are saying more generally here and above is that you don=E2=
-=80=99t want
-> pKVM case included into this threat model, did I understand you correctly=
-?=20
+Hi. I'd like to pass around 64bit for TDX and come up with the following one.
+Does it work for you?
 
-More or less.  I think the threat models for pKVM versus TDX/SNP are differ=
-ent
-enough that accurately capturing the nuances and novelties of the TDX/SNP t=
-hreat
-model will be unnecessarily difficult if you also try to lump in pKVM.  E.g=
-. pKVM
-is intended to run on portable client hardware, likely without memory encry=
-ption,
-versus TDX/SNP being almost exclusively server oriented with the hardware b=
-eing
-owned and hosted by a third party that is benign (perhaps trusted even), bu=
-t not
-necessarily physically isolated enough to satisfy the end user's security
-requirements.
+From 53273b67e9be09129d35ac00cf9ce739d3fb4e2c Mon Sep 17 00:00:00 2001
+Message-Id: <53273b67e9be09129d35ac00cf9ce739d3fb4e2c.1686752340.git.isaku.yamahata@intel.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
+Date: Fri, 17 Mar 2023 12:58:42 -0700
+Subject: [PATCH] KVM: x86/mmu: Pass round full 64-bit error code for the KVM
+ page fault
 
-One of the points I (and others) was trying to get across in v1 feedback is=
- that
-security requirements for CoCo are not the same across all use cases, and t=
-hat
-there are subtle but meaningful differences even when use cases are built o=
-n common
-underlying technology.  In other words, describing the TDX/SNP threat model=
- with
-sufficient detail and nuance is difficult enough without throwing pKVM into=
- the
-mix.
+In some cases the full 64-bit error code for the KVM page fault will be
+needed to make this determination, so also update kvm_mmu_do_page_fault()
+to accept the full 64-bit value so it can be plumbed through to the
+callback.
 
-And I don't see any need to formally document pKVM's threat model right *no=
-w*.
-pKVM on x86 is little more than a proposal at this point, and while I would=
- love
-to see documentation for pKVM on ARM's threat model, that obviously doesn't=
- belong
-in a doc that's x86 specific.
+The upper 32 bits of error code is discarded at kvm_mmu_page_fault()
+by lower_32_bits().  Now it's passed down as full 64 bits. It turns out
+that only FNAME(page_fault) depends on it.  Move lower_32_bits() into
+FNAME(page_fault).
 
-> > > +potentially misbehaving host (which can also include some part of a
-> > > +traditional VMM or all of it), which is typically placed outside of =
-the
-> > > +CoCo VM TCB due to its large SW attack surface. It is important to n=
-ote
-> > > +that this doesn=E2=80=99t imply that the host or VMM are intentional=
-ly
-> > > +malicious, but that there exists a security value in having a small =
-CoCo
-> > > +VM TCB. This new type of adversary may be viewed as a more powerful =
-type
-> > > +of external attacker, as it resides locally on the same physical mac=
-hine
-> > > +-in contrast to a remote network attacker- and has control over the =
-guest
-> > > +kernel communication with most of the HW::
-> >=20
-> > IIUC, this last statement doesn't hold true for the pKVM on x86 use cas=
-e, which
-> > specifically aims to give a "guest" exclusive access to hardware resour=
-ces.
->=20
-> Does it hold for *all* HW resources? If yes, indeed this would make pKVM =
-on
-> x86 considerably different.
+The accesses of fault->error_code are as follows
+- FNAME(page_fault): change to explicitly use lower_32_bits()
+- kvm_tdp_page_fault(): explicit mask with PFERR_LEVEL_MASK
+- kvm_mmu_page_fault(): explicit mask with PFERR_RSVD_MASK,
+                        PFERR_NESTED_GUEST_PAGE
+- mmutrace: changed u32 -> u64
+- pgprintk(): change %x -> %llx
 
-Heh, the original says "most", so it doesn't have to hold for all hardware =
-resources,
-just a simple majority.
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+---
+ arch/x86/kvm/mmu.h              | 2 +-
+ arch/x86/kvm/mmu/mmu.c          | 7 +++----
+ arch/x86/kvm/mmu/mmu_internal.h | 4 ++--
+ arch/x86/kvm/mmu/mmutrace.h     | 2 +-
+ arch/x86/kvm/mmu/paging_tmpl.h  | 4 ++--
+ 5 files changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 6cc2558e977d..b6c9c2e27d0b 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -176,7 +176,7 @@ static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
+ }
+ 
+ kvm_pfn_t kvm_mmu_map_tdp_page(struct kvm_vcpu *vcpu, gpa_t gpa,
+-			       u32 error_code, int max_level);
++			       u64 error_code, int max_level);
+ 
+ /*
+  * Check if a given access (described through the I/D, W/R and U/S bits of a
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 2c6d9d8d2c10..e4457eaa10a9 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4941,7 +4941,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ static int nonpaging_page_fault(struct kvm_vcpu *vcpu,
+ 				struct kvm_page_fault *fault)
+ {
+-	pgprintk("%s: gva %llx error %x\n", __func__, fault->addr, fault->error_code);
++	pgprintk("%s: gva %llx error %llx\n", __func__, fault->addr, fault->error_code);
+ 
+ 	/* This path builds a PAE pagetable, we can map 2mb pages at maximum. */
+ 	fault->max_level = PG_LEVEL_2M;
+@@ -5062,7 +5062,7 @@ int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ }
+ 
+ kvm_pfn_t kvm_mmu_map_tdp_page(struct kvm_vcpu *vcpu, gpa_t gpa,
+-			       u32 error_code, int max_level)
++			       u64 error_code, int max_level)
+ {
+ 	int r;
+ 	struct kvm_page_fault fault = (struct kvm_page_fault) {
+@@ -6317,8 +6317,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+ 	}
+ 
+ 	if (r == RET_PF_INVALID) {
+-		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
+-					  lower_32_bits(error_code), false,
++		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code, false,
+ 					  &emulation_type);
+ 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
+ 			return -EIO;
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index 2d8a5df56f20..979fd7c26610 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -342,7 +342,7 @@ static inline bool is_nx_huge_page_enabled(struct kvm *kvm)
+ struct kvm_page_fault {
+ 	/* arguments to kvm_mmu_do_page_fault.  */
+ 	const gpa_t addr;
+-	const u32 error_code;
++	const u64 error_code;
+ 	const bool prefetch;
+ 
+ 	/* Derived from error_code.  */
+@@ -437,7 +437,7 @@ enum {
+ };
+ 
+ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+-					u32 err, bool prefetch, int *emulation_type)
++					u64 err, bool prefetch, int *emulation_type)
+ {
+ 	struct kvm_page_fault fault = {
+ 		.addr = cr2_or_gpa,
+diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
+index 2d7555381955..2e77883c92f6 100644
+--- a/arch/x86/kvm/mmu/mmutrace.h
++++ b/arch/x86/kvm/mmu/mmutrace.h
+@@ -261,7 +261,7 @@ TRACE_EVENT(
+ 	TP_STRUCT__entry(
+ 		__field(int, vcpu_id)
+ 		__field(gpa_t, cr2_or_gpa)
+-		__field(u32, error_code)
++		__field(u64, error_code)
+ 		__field(u64 *, sptep)
+ 		__field(u64, old_spte)
+ 		__field(u64, new_spte)
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index d87f95245ee9..8aeafd9178ac 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -758,7 +758,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	struct guest_walker walker;
+ 	int r;
+ 
+-	pgprintk("%s: addr %llx err %x\n", __func__, fault->addr, fault->error_code);
++	pgprintk("%s: addr %llx err %llx\n", __func__, fault->addr, fault->error_code);
+ 	WARN_ON_ONCE(fault->is_tdp);
+ 
+ 	/*
+@@ -767,7 +767,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	 * The bit needs to be cleared before walking guest page tables.
+ 	 */
+ 	r = FNAME(walk_addr)(&walker, vcpu, fault->addr,
+-			     fault->error_code & ~PFERR_RSVD_MASK);
++			     lower_32_bits(fault->error_code) & ~PFERR_RSVD_MASK);
+ 
+ 	/*
+ 	 * The page is not mapped by the guest.  Let the guest handle it.
+-- 
+2.25.1
+
+
+
+
+-- 
+Isaku Yamahata <isaku.yamahata@gmail.com>
