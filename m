@@ -1,192 +1,173 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53CE8460
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 15:06:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=MHhoy+aXdzABuPyOvTHtKHIRHy9vgBPmvGrwO4Er2DI=; b=nf1RNAdEwaCweVdy6yI/iwSaQd
-	lgG/ZfH09FYEDMQ5+zRocH9yDfrTC7TSJ/eyTpjfhWHXsD1AbJd1rISvFp3DjX9pnDGSWACCup/XK
-	ym2mPcVhxEHhou5q0lXcQ9oBdUzl5cq6ap5mgeOoHulIh5HrAijYGC6QdO5usxJgxN/SEmfTn5HJ1
-	0Y+652+xz9JYTRfeXUWfAM8H/nCUjv3ATx7mdPF9zqGB+bR6GWDTaRc5bF02ODlb4Wr1Wlvd64cxm
-	74R7lES1XGNMXbEbjc9nwVnbmWDtwWjKLKRt9DBD7llZZMx6KVdwSAUROYT6RVC99HCCbxCBi0zai
-	+6UY7hbw==;
-Received: from [2601:1c2:980:9ec0::2764]
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9S4X-00C031-2S;
-	Wed, 14 Jun 2023 15:06:09 +0000
-Message-ID: <4bde30cd-3ec6-bacd-5d92-1b52489a8c48@infradead.org>
-Date: Wed, 14 Jun 2023 08:06:06 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2697F
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 16:47:12 +0000 (UTC)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1b50394a7f2so4561135ad.1
+        for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 09:47:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686761231; x=1689353231;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=12MPORJYTdRaxuQWvnPe0uInIKYb4u8od8aH9jpQ52k=;
+        b=DC2zDgn1z/Yjl45gfG0Phjz8VODs0yrmxTMp6+IqxDmlZlJ7Jz/IED2WIsKnV84zwj
+         gn8rdevPHAD0ubADyIhBK93xK5txCIKo7RQSMA75eKXnMoUkw4qA6RIo/7tLRNLZ2XPy
+         UY8MhtOrlBwjafEclLoSKWDprDg4piYJAkN9MXfCvktb0r226MJ96HC32f10n29f7WZn
+         mJzFfShZQGW2Ag8Wi9EwfPoR542mz2CCr5EFYz9kKLHTHb7NZ2vKr8z03CdgIkfRrgQk
+         p0YEL5BPaGWqUDU6jjtp/WwXUJyZauS95FH2F2BtTlEeRP9UpJXrJwRCkt8C/GknA+Wf
+         I8Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686761231; x=1689353231;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=12MPORJYTdRaxuQWvnPe0uInIKYb4u8od8aH9jpQ52k=;
+        b=A8NJT4Rwy8C3IFkgSTlqBMjcYksyY0rVBR2WlBihekXIn4jt6XztiFYWekge2uyaAm
+         7UJd7oHZSnZU+7vuLfbdfbIb2YHnsT8pxkYjIdrRsc9XW6FMcZYQKC0PVcvBmCaasW6v
+         VyEYzWgoCsxMubEEP6n4cDOOsHvihFwudVYoUcisBIhr11jBRlkLDt34xV3mtNk7eZP6
+         UuFBV5FoxS1i88Vg0c1jeaOt2mHC3nE23u2hrqhMLSMekQcYCybhrWdTkbQC59sqofdw
+         yj2RDW9tbkx2jlcwob/G4keFBnYcVFG3uOOBakcEUtwJVWtbKQ4ylM4CAkyU3a/s20Yn
+         Wo8w==
+X-Gm-Message-State: AC+VfDzhlPNlXopsQjZAgVprPrSFgh+3dXk8YMVUcfQzb50PuoD3wrIX
+	+sJuqHO5aB4QMNWimtsnKbk=
+X-Google-Smtp-Source: ACHHUZ6t8N6IBSWvdJvyRkmm0c03psAWogPX0vP/Ol0n4nnWls6/IXHJjRosLSS7EI/95vJQ1fS+Ng==
+X-Received: by 2002:a17:902:8c84:b0:1b1:a2c3:29c0 with SMTP id t4-20020a1709028c8400b001b1a2c329c0mr11199347plo.24.1686761231544;
+        Wed, 14 Jun 2023 09:47:11 -0700 (PDT)
+Received: from localhost ([192.55.54.50])
+        by smtp.gmail.com with ESMTPSA id y10-20020a17090322ca00b001ae6b4b28adsm7016713plg.130.2023.06.14.09.47.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jun 2023 09:47:10 -0700 (PDT)
+Date: Wed, 14 Jun 2023 09:47:09 -0700
+From: Isaku Yamahata <isaku.yamahata@gmail.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
+	zhi.a.wang@intel.com, isaku.yamahata@gmail.com
+Subject: Re: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
+ using a configurable mask
+Message-ID: <20230614164709.GT2244082@ls.amr.corp.intel.com>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-5-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
- threat model for x86 virtualization
-Content-Language: en-US
-To: Carlos Bilbao <carlos.bilbao@amd.com>, corbet@lwn.net
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, ardb@kernel.org,
- kraxel@redhat.com, dovmurik@linux.ibm.com, elena.reshetova@intel.com,
- dave.hansen@linux.intel.com, Dhaval.Giani@amd.com, michael.day@amd.com,
- pavankumar.paluri@amd.com, David.Kaplan@amd.com, Reshma.Lal@amd.com,
- Jeremy.Powell@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
- tglx@linutronix.de, dgilbert@redhat.com, gregkh@linuxfoundation.org,
- dinechin@redhat.com, linux-coco@lists.linux.dev, berrange@redhat.com,
- mst@redhat.com, tytso@mit.edu, jikos@kernel.org, joro@8bytes.org,
- leon@kernel.org, richard.weinberger@gmail.com, lukas@wunner.de,
- jejb@linux.ibm.com, cdupontd@redhat.com, jasowang@redhat.com,
- sameo@rivosinc.com, bp@alien8.de, seanjc@google.com, security@kernel.org,
- Larry Dewey <larry.dewey@amd.com>
-References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
- <82f5bcec-103b-f449-281e-ff82e2f27efe@infradead.org>
- <902093e0-dd44-d542-363d-06367a533fce@amd.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <902093e0-dd44-d542-363d-06367a533fce@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230612042559.375660-5-michael.roth@amd.com>
 
-Hi Carlos,
+On Sun, Jun 11, 2023 at 11:25:12PM -0500,
+Michael Roth <michael.roth@amd.com> wrote:
 
-On 6/14/23 06:55, Carlos Bilbao wrote:
-> Hello Randy,
+> This will be used to determine whether or not an #NPF should be serviced
+> using a normal page vs. a guarded/gmem one.
 > 
-> On 6/12/23 17:43, Randy Dunlap wrote:
->> Hi--
->>
->> On 6/12/23 09:47, Carlos Bilbao wrote:
->>> Kernel developers working on confidential computing for virtualized
->>> environments in x86 operate under a set of assumptions regarding the Linux
->>> kernel threat model that differs from the traditional view. Historically,
->>> the Linux threat model acknowledges attackers residing in userspace, as
->>> well as a limited set of external attackers that are able to interact with
->>> the kernel through networking or limited HW-specific exposed interfaces
->>> (e.g. USB, thunderbolt). The goal of this document is to explain additional
->>> attack vectors that arise in the virtualized confidential computing space
->>> and discuss the proposed protection mechanisms for the Linux kernel.
->>>
->>> Reviewed-by: Larry Dewey <larry.dewey@amd.com>
->>> Reviewed-by: David Kaplan <david.kaplan@amd.com>
->>> Co-developed-by: Elena Reshetova <elena.reshetova@intel.com>
->>> Signed-off-by: Elena Reshetova <elena.reshetova@intel.com>
->>> Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
->>> ---
->>>
->>> ---
->>>   Documentation/security/index.rst              |   1 +
->>>   .../security/x86-confidential-computing.rst   | 298 ++++++++++++++++++
->>>   MAINTAINERS                                   |   6 +
->>>   3 files changed, 305 insertions(+)
->>>   create mode 100644 Documentation/security/x86-confidential-computing.rst
->>>
-
->>> diff --git a/Documentation/security/x86-confidential-computing.rst b/Documentation/security/x86-confidential-computing.rst
->>> new file mode 100644
->>> index 000000000000..5c52b8888089
->>> --- /dev/null
->>> +++ b/Documentation/security/x86-confidential-computing.rst
->>> @@ -0,0 +1,298 @@
->>> +======================================================
->>> +Confidential Computing in Linux for x86 virtualization
->>> +======================================================
->>> +
->>> +.. contents:: :local:
->>> +
->>> +By: Elena Reshetova <elena.reshetova@intel.com> and Carlos Bilbao <carlos.bilbao@amd.com>
->>> +
-
->>> +The basic CoCo guest layout includes the host, guest, the interfaces that
->>> +communicate guest and host, a platform capable of supporting CoCo VMs, and
->>> +a trusted intermediary between the guest VM and the underlying platform
->>> +that acts as a security manager. The host-side virtual machine monitor
->>> +(VMM) typically consists of a subset of traditional VMM features and
->>> +is still in charge of the guest lifecycle, i.e. create or destroy a CoCo
->>> +VM, manage its access to system resources, etc. However, since it
->>> +typically stays out of CoCo VM TCB, its access is limited to preserve the
->>
->>                                                         to preserving the
->> ?
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h |  7 +++++++
+>  arch/x86/kvm/mmu/mmu_internal.h | 35 ++++++++++++++++++++++++++++++++-
+>  2 files changed, 41 insertions(+), 1 deletion(-)
 > 
-> I think that using "preserving" and "preserve" here may result in two
-> different interpretations:
-> 
-> "limited to preserve the security objectives" suggests that the limited
-> access is enforced to preserve the security guarantees. In other words, the
-> act of limiting access itself, particularly from the VMM, helps to maintain
-> the security objectives. This is what we want to say.
-> 
-> "limited to preserving the security objectives" suggests that the access of
-> the VMM is limited to the components that allow the VMM to preserve the
-> security objectives.
-> 
-> Hope that makes sense?
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index b3bd24f2a390..c26f76641121 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1445,6 +1445,13 @@ struct kvm_arch {
+>  	 */
+>  #define SPLIT_DESC_CACHE_MIN_NR_OBJECTS (SPTE_ENT_PER_PAGE + 1)
+>  	struct kvm_mmu_memory_cache split_desc_cache;
+> +
+> +	/*
+> +	 * When set, used to determine whether a fault should be treated as
+> +	 * private in the context of protected VMs which use a separate gmem
+> +	 * pool to back private guest pages.
+> +	 */
+> +	u64 mmu_private_fault_mask;
+>  };
+>  
+>  struct kvm_vm_stat {
+> diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+> index 780b91e1da9f..9b9e75aa43f4 100644
+> --- a/arch/x86/kvm/mmu/mmu_internal.h
+> +++ b/arch/x86/kvm/mmu/mmu_internal.h
+> @@ -252,6 +252,39 @@ struct kvm_page_fault {
+>  
+>  int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
+>  
+> +static bool kvm_mmu_fault_is_private(struct kvm *kvm, gpa_t gpa, u64 err)
+> +{
+> +	struct kvm_memory_slot *slot;
+> +	bool private_fault = false;
+> +	gfn_t gfn = gpa_to_gfn(gpa);
+> +
+> +	slot = gfn_to_memslot(kvm, gfn);
+> +	if (!slot) {
+> +		pr_debug("%s: no slot, GFN: 0x%llx\n", __func__, gfn);
+> +		goto out;
+> +	}
+> +
+> +	if (!kvm_slot_can_be_private(slot)) {
+> +		pr_debug("%s: slot is not private, GFN: 0x%llx\n", __func__, gfn);
+> +		goto out;
+> +	}
+> +
+> +	if (kvm->arch.mmu_private_fault_mask) {
+> +		private_fault = !!(err & kvm->arch.mmu_private_fault_mask);
+> +		goto out;
+> +	}
 
-Yes, I get it, thanks.
-
->>
->>> +security objectives.
->>> +
->>> +In the following diagram, the "<--->" lines represent bi-directional
->>> +communication channels or interfaces between the CoCo security manager and
->>> +the rest of the components (data flow for guest, host, hardware) ::
->>> +
->>> +    +-------------------+      +-----------------------+
->>> +    | CoCo guest VM     |<---->|                       |
->>> +    +-------------------+      |                       |
->>> +      | Interfaces |           | CoCo security manager |
->>> +    +-------------------+      |                       |
->>> +    | Host VMM          |<---->|                       |
->>> +    +-------------------+      |                       |
->>> +                               |                       |
->>> +    +--------------------+     |                       |
->>> +    | CoCo platform      |<--->|                       |
->>> +    +--------------------+     +-----------------------+
->>> +
->>> +The specific details of the CoCo security manager vastly diverge between
->>> +technologies. For example, in some cases, it will be implemented in HW
->>> +while in others it may be pure SW. In some cases, such as for the
->>> +`Protected kernel-based virtual machine (pKVM) <https://github.com/intel-staging/pKVM-IA>`,
->>> +the CoCo security manager is a small, isolated and highly privileged
->>> +(compared to the rest of SW running on the host) part of a traditional
->>> +VMM.
->>> +
-
->>> +Confidential Computing threat model and its security objectives
->>> +===============================================================
->>> +
->>> +Confidential Computing adds a new type of attacker to the above list: a
->>> +potentially misbehaving host (which can also include some part of a
->>> +traditional VMM or all of it), which is typically placed outside of the
->>> +CoCo VM TCB due to its large SW attack surface. It is important to note
->>> +that this doesn’t imply that the host or VMM are intentionally
->>> +malicious, but that there exists a security value in having a small CoCo
->>> +VM TCB. This new type of adversary may be viewed as a more powerful type
->>> +of external attacker, as it resides locally on the same physical machine
->>> +-in contrast to a remote network attacker- and has control over the guest
->>
->> Hyphens (dashes) are not normally used for a parenthetical phrase AFAIK.
-> 
-> Yes, parentheses would be more appropriate.
-> 
->>
->>> +kernel communication with most of the HW::
->>
->> I would prefer to capitalize "kernel" above.
-> 
-> I'm not sure I follow, we don't capitalize kernel elsewhere, why here?
-> 
-
-My mistake in reading. :(
+What's the convention of err? Can we abstract it by introducing a new bit
+PFERR_PRIVATE_MASK? The caller sets it based on arch specific value.
+the logic will be
+        .is_private = err & PFERR_PRIVATE_MASK;
 
 
+> +
+> +	/*
+> +	 * Handling below is for UPM self-tests and guests that treat userspace
+> +	 * as the authority on whether a fault should be private or not.
+> +	 */
+> +	private_fault = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
 
-Thanks.
+This code path is sad. One extra slot lookup and xarray look up.
+Without mmu lock, the result can change by other vcpu.
+Let's find a better way.
+
+> +
+> +out:
+> +	pr_debug("%s: GFN: 0x%llx, private: %d\n", __func__, gfn, private_fault);
+> +	return private_fault;
+> +}
+> +
+>  /*
+>   * Return values of handle_mmio_page_fault(), mmu.page_fault(), fast_page_fault(),
+>   * and of course kvm_mmu_do_page_fault().
+> @@ -301,7 +334,7 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+>  		.max_level = KVM_MAX_HUGEPAGE_LEVEL,
+>  		.req_level = PG_LEVEL_4K,
+>  		.goal_level = PG_LEVEL_4K,
+> -		.is_private = kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT),
+> +		.is_private = kvm_mmu_fault_is_private(vcpu->kvm, cr2_or_gpa, err),
+>  	};
+>  	int r;
+>  
+> -- 
+> 2.25.1
+> 
 
 -- 
-~Randy
+Isaku Yamahata <isaku.yamahata@gmail.com>
