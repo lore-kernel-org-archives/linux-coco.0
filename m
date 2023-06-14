@@ -1,267 +1,192 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D77DF66
-	for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 14:24:29 +0000 (UTC)
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-66643830ab3so760450b3a.0
-        for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 07:24:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686752669; x=1689344669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OeHuGk36iAi9FOib4LSEuZFMwIiKSgOuCZrmCC6ygDM=;
-        b=QFVWHvQ4FVT4k/YpETceISLCQLKSRQLGXyiPykxrKYX7KOYnDwTGAVh15Gr7cN4Gvo
-         8G7VeSRCWGuCAFZphJp9YUsMGb2LYzbA+o7fD/pXjmdiN2Wvm5Wb9Ol13xQhIw3e2ucM
-         LAI4NEIJ6/d60vVlv0qvKzX53o+BS/wDAIZFmLy49cFFPGFABrjrbAxZTjP8B+LCOhQ/
-         Ang+dAMFLtN5MMv7n/hhb1w4iNGBIVfmCB33E9zius7nO3FsETszUVg5DIzIBeYeEWmA
-         dbsDDwoSoejiXKpS9l7wTDaflW30K+KejUncLBeBeaUfYLXYeqvalqjrReooPKPYFjDe
-         RL7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686752669; x=1689344669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OeHuGk36iAi9FOib4LSEuZFMwIiKSgOuCZrmCC6ygDM=;
-        b=V8EUUzL69jVzX+vvGvzQslwL1MThpw1958ZIEMlVjOaB9bmaLAG2bZZnTwKFg98Mz9
-         W2u5BWIp3awlxr2MiThWIQDc8Rv8pTzdD2U/AL2g8/wYvEoU+TNBSDe8UMPFoUKf8tl3
-         C5Ko52RwGaRj+d00UX79gsYak8M53ycz7wXgJ7pTkKM9OEt2Pi09mLgiQUpfOt6yZgh2
-         u6GG7BWeNY3ep6ONczHSdt7MiMSQnzr0syjJkU5qrR3AEjvkhFOTaOD6O9UY3raNpAna
-         F9j3ixD4MQ6jmRrSnfYFpsuyY7vnUIPI2dTBHn8YZ3NPIUPQ56Cb6yPakWzQrROb9F2i
-         haQw==
-X-Gm-Message-State: AC+VfDy72g8I+SAEHdzaD/FLy+n8gsEjm0pxC8AW59osZgjIxIy4zVpN
-	01tcNa5SGpk9A8MXgnfddX0=
-X-Google-Smtp-Source: ACHHUZ5XuSVorTt0n5Kbv+qYZgeGRCldqLkkmHj+Fft0QsEK+SkVoy/Fm/1ZGl+VFauor6vJg0+xCw==
-X-Received: by 2002:a05:6a20:72ac:b0:10c:2349:459d with SMTP id o44-20020a056a2072ac00b0010c2349459dmr2242690pzk.11.1686752668433;
-        Wed, 14 Jun 2023 07:24:28 -0700 (PDT)
-Received: from localhost ([192.55.54.50])
-        by smtp.gmail.com with ESMTPSA id l7-20020a62be07000000b0063b7f3250e9sm10418609pff.7.2023.06.14.07.24.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jun 2023 07:24:27 -0700 (PDT)
-Date: Wed, 14 Jun 2023 07:24:26 -0700
-From: Isaku Yamahata <isaku.yamahata@gmail.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
-	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
-	zhi.a.wang@intel.com, isaku.yamahata@gmail.com
-Subject: Re: [PATCH RFC v9 03/51] KVM: x86: Use full 64-bit error code for
- kvm_mmu_do_page_fault
-Message-ID: <20230614142426.GQ2244082@ls.amr.corp.intel.com>
-References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-4-michael.roth@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53CE8460
+	for <linux-coco@lists.linux.dev>; Wed, 14 Jun 2023 15:06:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=MHhoy+aXdzABuPyOvTHtKHIRHy9vgBPmvGrwO4Er2DI=; b=nf1RNAdEwaCweVdy6yI/iwSaQd
+	lgG/ZfH09FYEDMQ5+zRocH9yDfrTC7TSJ/eyTpjfhWHXsD1AbJd1rISvFp3DjX9pnDGSWACCup/XK
+	ym2mPcVhxEHhou5q0lXcQ9oBdUzl5cq6ap5mgeOoHulIh5HrAijYGC6QdO5usxJgxN/SEmfTn5HJ1
+	0Y+652+xz9JYTRfeXUWfAM8H/nCUjv3ATx7mdPF9zqGB+bR6GWDTaRc5bF02ODlb4Wr1Wlvd64cxm
+	74R7lES1XGNMXbEbjc9nwVnbmWDtwWjKLKRt9DBD7llZZMx6KVdwSAUROYT6RVC99HCCbxCBi0zai
+	+6UY7hbw==;
+Received: from [2601:1c2:980:9ec0::2764]
+	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+	id 1q9S4X-00C031-2S;
+	Wed, 14 Jun 2023 15:06:09 +0000
+Message-ID: <4bde30cd-3ec6-bacd-5d92-1b52489a8c48@infradead.org>
+Date: Wed, 14 Jun 2023 08:06:06 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230612042559.375660-4-michael.roth@amd.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
+ threat model for x86 virtualization
+Content-Language: en-US
+To: Carlos Bilbao <carlos.bilbao@amd.com>, corbet@lwn.net
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, ardb@kernel.org,
+ kraxel@redhat.com, dovmurik@linux.ibm.com, elena.reshetova@intel.com,
+ dave.hansen@linux.intel.com, Dhaval.Giani@amd.com, michael.day@amd.com,
+ pavankumar.paluri@amd.com, David.Kaplan@amd.com, Reshma.Lal@amd.com,
+ Jeremy.Powell@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
+ tglx@linutronix.de, dgilbert@redhat.com, gregkh@linuxfoundation.org,
+ dinechin@redhat.com, linux-coco@lists.linux.dev, berrange@redhat.com,
+ mst@redhat.com, tytso@mit.edu, jikos@kernel.org, joro@8bytes.org,
+ leon@kernel.org, richard.weinberger@gmail.com, lukas@wunner.de,
+ jejb@linux.ibm.com, cdupontd@redhat.com, jasowang@redhat.com,
+ sameo@rivosinc.com, bp@alien8.de, seanjc@google.com, security@kernel.org,
+ Larry Dewey <larry.dewey@amd.com>
+References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
+ <82f5bcec-103b-f449-281e-ff82e2f27efe@infradead.org>
+ <902093e0-dd44-d542-363d-06367a533fce@amd.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <902093e0-dd44-d542-363d-06367a533fce@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 11, 2023 at 11:25:11PM -0500,
-Michael Roth <michael.roth@amd.com> wrote:
+Hi Carlos,
 
-> The upper bits will be needed in some cases to distinguish between
-> nested page faults for private/shared pages, so pass along the full
-> 64-bit value.
+On 6/14/23 06:55, Carlos Bilbao wrote:
+> Hello Randy,
 > 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/kvm/mmu/mmu.c          | 3 +--
->  arch/x86/kvm/mmu/mmu_internal.h | 4 ++--
->  2 files changed, 3 insertions(+), 4 deletions(-)
+> On 6/12/23 17:43, Randy Dunlap wrote:
+>> Hi--
+>>
+>> On 6/12/23 09:47, Carlos Bilbao wrote:
+>>> Kernel developers working on confidential computing for virtualized
+>>> environments in x86 operate under a set of assumptions regarding the Linux
+>>> kernel threat model that differs from the traditional view. Historically,
+>>> the Linux threat model acknowledges attackers residing in userspace, as
+>>> well as a limited set of external attackers that are able to interact with
+>>> the kernel through networking or limited HW-specific exposed interfaces
+>>> (e.g. USB, thunderbolt). The goal of this document is to explain additional
+>>> attack vectors that arise in the virtualized confidential computing space
+>>> and discuss the proposed protection mechanisms for the Linux kernel.
+>>>
+>>> Reviewed-by: Larry Dewey <larry.dewey@amd.com>
+>>> Reviewed-by: David Kaplan <david.kaplan@amd.com>
+>>> Co-developed-by: Elena Reshetova <elena.reshetova@intel.com>
+>>> Signed-off-by: Elena Reshetova <elena.reshetova@intel.com>
+>>> Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
+>>> ---
+>>>
+>>> ---
+>>>   Documentation/security/index.rst              |   1 +
+>>>   .../security/x86-confidential-computing.rst   | 298 ++++++++++++++++++
+>>>   MAINTAINERS                                   |   6 +
+>>>   3 files changed, 305 insertions(+)
+>>>   create mode 100644 Documentation/security/x86-confidential-computing.rst
+>>>
+
+>>> diff --git a/Documentation/security/x86-confidential-computing.rst b/Documentation/security/x86-confidential-computing.rst
+>>> new file mode 100644
+>>> index 000000000000..5c52b8888089
+>>> --- /dev/null
+>>> +++ b/Documentation/security/x86-confidential-computing.rst
+>>> @@ -0,0 +1,298 @@
+>>> +======================================================
+>>> +Confidential Computing in Linux for x86 virtualization
+>>> +======================================================
+>>> +
+>>> +.. contents:: :local:
+>>> +
+>>> +By: Elena Reshetova <elena.reshetova@intel.com> and Carlos Bilbao <carlos.bilbao@amd.com>
+>>> +
+
+>>> +The basic CoCo guest layout includes the host, guest, the interfaces that
+>>> +communicate guest and host, a platform capable of supporting CoCo VMs, and
+>>> +a trusted intermediary between the guest VM and the underlying platform
+>>> +that acts as a security manager. The host-side virtual machine monitor
+>>> +(VMM) typically consists of a subset of traditional VMM features and
+>>> +is still in charge of the guest lifecycle, i.e. create or destroy a CoCo
+>>> +VM, manage its access to system resources, etc. However, since it
+>>> +typically stays out of CoCo VM TCB, its access is limited to preserve the
+>>
+>>                                                         to preserving the
+>> ?
 > 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index c54672ad6cbc..0d3983b9aa7e 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -5829,8 +5829,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
->  	}
->  
->  	if (r == RET_PF_INVALID) {
-> -		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
-> -					  lower_32_bits(error_code), false,
-> +		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code, false,
->  					  &emulation_type);
->  		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
->  			return -EIO;
-> diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-> index f1786698ae00..780b91e1da9f 100644
-> --- a/arch/x86/kvm/mmu/mmu_internal.h
-> +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> @@ -283,11 +283,11 @@ enum {
->  };
->  
->  static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
-> -					u32 err, bool prefetch, int *emulation_type)
-> +					u64 err, bool prefetch, int *emulation_type)
->  {
->  	struct kvm_page_fault fault = {
->  		.addr = cr2_or_gpa,
-> -		.error_code = err,
-> +		.error_code = lower_32_bits(err),
->  		.exec = err & PFERR_FETCH_MASK,
->  		.write = err & PFERR_WRITE_MASK,
->  		.present = err & PFERR_PRESENT_MASK,
-> -- 
-> 2.25.1
+> I think that using "preserving" and "preserve" here may result in two
+> different interpretations:
+> 
+> "limited to preserve the security objectives" suggests that the limited
+> access is enforced to preserve the security guarantees. In other words, the
+> act of limiting access itself, particularly from the VMM, helps to maintain
+> the security objectives. This is what we want to say.
+> 
+> "limited to preserving the security objectives" suggests that the access of
+> the VMM is limited to the components that allow the VMM to preserve the
+> security objectives.
+> 
+> Hope that makes sense?
 
-Hi. I'd like to pass around 64bit for TDX and come up with the following one.
-Does it work for you?
+Yes, I get it, thanks.
 
-From 53273b67e9be09129d35ac00cf9ce739d3fb4e2c Mon Sep 17 00:00:00 2001
-Message-Id: <53273b67e9be09129d35ac00cf9ce739d3fb4e2c.1686752340.git.isaku.yamahata@intel.com>
-From: Isaku Yamahata <isaku.yamahata@intel.com>
-Date: Fri, 17 Mar 2023 12:58:42 -0700
-Subject: [PATCH] KVM: x86/mmu: Pass round full 64-bit error code for the KVM
- page fault
+>>
+>>> +security objectives.
+>>> +
+>>> +In the following diagram, the "<--->" lines represent bi-directional
+>>> +communication channels or interfaces between the CoCo security manager and
+>>> +the rest of the components (data flow for guest, host, hardware) ::
+>>> +
+>>> +    +-------------------+      +-----------------------+
+>>> +    | CoCo guest VM     |<---->|                       |
+>>> +    +-------------------+      |                       |
+>>> +      | Interfaces |           | CoCo security manager |
+>>> +    +-------------------+      |                       |
+>>> +    | Host VMM          |<---->|                       |
+>>> +    +-------------------+      |                       |
+>>> +                               |                       |
+>>> +    +--------------------+     |                       |
+>>> +    | CoCo platform      |<--->|                       |
+>>> +    +--------------------+     +-----------------------+
+>>> +
+>>> +The specific details of the CoCo security manager vastly diverge between
+>>> +technologies. For example, in some cases, it will be implemented in HW
+>>> +while in others it may be pure SW. In some cases, such as for the
+>>> +`Protected kernel-based virtual machine (pKVM) <https://github.com/intel-staging/pKVM-IA>`,
+>>> +the CoCo security manager is a small, isolated and highly privileged
+>>> +(compared to the rest of SW running on the host) part of a traditional
+>>> +VMM.
+>>> +
 
-In some cases the full 64-bit error code for the KVM page fault will be
-needed to make this determination, so also update kvm_mmu_do_page_fault()
-to accept the full 64-bit value so it can be plumbed through to the
-callback.
+>>> +Confidential Computing threat model and its security objectives
+>>> +===============================================================
+>>> +
+>>> +Confidential Computing adds a new type of attacker to the above list: a
+>>> +potentially misbehaving host (which can also include some part of a
+>>> +traditional VMM or all of it), which is typically placed outside of the
+>>> +CoCo VM TCB due to its large SW attack surface. It is important to note
+>>> +that this doesn’t imply that the host or VMM are intentionally
+>>> +malicious, but that there exists a security value in having a small CoCo
+>>> +VM TCB. This new type of adversary may be viewed as a more powerful type
+>>> +of external attacker, as it resides locally on the same physical machine
+>>> +-in contrast to a remote network attacker- and has control over the guest
+>>
+>> Hyphens (dashes) are not normally used for a parenthetical phrase AFAIK.
+> 
+> Yes, parentheses would be more appropriate.
+> 
+>>
+>>> +kernel communication with most of the HW::
+>>
+>> I would prefer to capitalize "kernel" above.
+> 
+> I'm not sure I follow, we don't capitalize kernel elsewhere, why here?
+> 
 
-The upper 32 bits of error code is discarded at kvm_mmu_page_fault()
-by lower_32_bits().  Now it's passed down as full 64 bits. It turns out
-that only FNAME(page_fault) depends on it.  Move lower_32_bits() into
-FNAME(page_fault).
-
-The accesses of fault->error_code are as follows
-- FNAME(page_fault): change to explicitly use lower_32_bits()
-- kvm_tdp_page_fault(): explicit mask with PFERR_LEVEL_MASK
-- kvm_mmu_page_fault(): explicit mask with PFERR_RSVD_MASK,
-                        PFERR_NESTED_GUEST_PAGE
-- mmutrace: changed u32 -> u64
-- pgprintk(): change %x -> %llx
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
----
- arch/x86/kvm/mmu.h              | 2 +-
- arch/x86/kvm/mmu/mmu.c          | 7 +++----
- arch/x86/kvm/mmu/mmu_internal.h | 4 ++--
- arch/x86/kvm/mmu/mmutrace.h     | 2 +-
- arch/x86/kvm/mmu/paging_tmpl.h  | 4 ++--
- 5 files changed, 9 insertions(+), 10 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 6cc2558e977d..b6c9c2e27d0b 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -176,7 +176,7 @@ static inline void kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
- }
- 
- kvm_pfn_t kvm_mmu_map_tdp_page(struct kvm_vcpu *vcpu, gpa_t gpa,
--			       u32 error_code, int max_level);
-+			       u64 error_code, int max_level);
- 
- /*
-  * Check if a given access (described through the I/D, W/R and U/S bits of a
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 2c6d9d8d2c10..e4457eaa10a9 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4941,7 +4941,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- static int nonpaging_page_fault(struct kvm_vcpu *vcpu,
- 				struct kvm_page_fault *fault)
- {
--	pgprintk("%s: gva %llx error %x\n", __func__, fault->addr, fault->error_code);
-+	pgprintk("%s: gva %llx error %llx\n", __func__, fault->addr, fault->error_code);
- 
- 	/* This path builds a PAE pagetable, we can map 2mb pages at maximum. */
- 	fault->max_level = PG_LEVEL_2M;
-@@ -5062,7 +5062,7 @@ int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- }
- 
- kvm_pfn_t kvm_mmu_map_tdp_page(struct kvm_vcpu *vcpu, gpa_t gpa,
--			       u32 error_code, int max_level)
-+			       u64 error_code, int max_level)
- {
- 	int r;
- 	struct kvm_page_fault fault = (struct kvm_page_fault) {
-@@ -6317,8 +6317,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
- 	}
- 
- 	if (r == RET_PF_INVALID) {
--		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
--					  lower_32_bits(error_code), false,
-+		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code, false,
- 					  &emulation_type);
- 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
- 			return -EIO;
-diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index 2d8a5df56f20..979fd7c26610 100644
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -342,7 +342,7 @@ static inline bool is_nx_huge_page_enabled(struct kvm *kvm)
- struct kvm_page_fault {
- 	/* arguments to kvm_mmu_do_page_fault.  */
- 	const gpa_t addr;
--	const u32 error_code;
-+	const u64 error_code;
- 	const bool prefetch;
- 
- 	/* Derived from error_code.  */
-@@ -437,7 +437,7 @@ enum {
- };
- 
- static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
--					u32 err, bool prefetch, int *emulation_type)
-+					u64 err, bool prefetch, int *emulation_type)
- {
- 	struct kvm_page_fault fault = {
- 		.addr = cr2_or_gpa,
-diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
-index 2d7555381955..2e77883c92f6 100644
---- a/arch/x86/kvm/mmu/mmutrace.h
-+++ b/arch/x86/kvm/mmu/mmutrace.h
-@@ -261,7 +261,7 @@ TRACE_EVENT(
- 	TP_STRUCT__entry(
- 		__field(int, vcpu_id)
- 		__field(gpa_t, cr2_or_gpa)
--		__field(u32, error_code)
-+		__field(u64, error_code)
- 		__field(u64 *, sptep)
- 		__field(u64, old_spte)
- 		__field(u64, new_spte)
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index d87f95245ee9..8aeafd9178ac 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -758,7 +758,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	struct guest_walker walker;
- 	int r;
- 
--	pgprintk("%s: addr %llx err %x\n", __func__, fault->addr, fault->error_code);
-+	pgprintk("%s: addr %llx err %llx\n", __func__, fault->addr, fault->error_code);
- 	WARN_ON_ONCE(fault->is_tdp);
- 
- 	/*
-@@ -767,7 +767,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	 * The bit needs to be cleared before walking guest page tables.
- 	 */
- 	r = FNAME(walk_addr)(&walker, vcpu, fault->addr,
--			     fault->error_code & ~PFERR_RSVD_MASK);
-+			     lower_32_bits(fault->error_code) & ~PFERR_RSVD_MASK);
- 
- 	/*
- 	 * The page is not mapped by the guest.  Let the guest handle it.
--- 
-2.25.1
+My mistake in reading. :(
 
 
 
+Thanks.
 
 -- 
-Isaku Yamahata <isaku.yamahata@gmail.com>
+~Randy
