@@ -1,32 +1,32 @@
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C925EAF8
-	for <linux-coco@lists.linux.dev>; Thu, 15 Jun 2023 20:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CBDFBE6
+	for <linux-coco@lists.linux.dev>; Thu, 15 Jun 2023 20:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686859960; x=1718395960;
+  t=1686859962; x=1718395962;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UZ90WRxUjX2K077yAxQuqlxmZw9YzTEYYyZ0/+kWEtg=;
-  b=jdm+30UrUn/SYjvh+N7PDZ5sRtmT9Rzx2HL97mcpp6cymb8fQqtafRuS
-   5g+QfYharbZY0gaPtMF3LpSM/9NQNYDijwhajr5T4y0tQHJg0IVcWWUc0
-   wa3MH6VqDWz3Rau29DjcuOK0FQnKI/SSJ9sEhujtL6m/nMuxIFdGABx6G
-   huPWf4JeMwKcS5A8cMdVbLUHJk4q2yWbUq5Eb0MuRQS5st1ysUQSu4DQi
-   /GBAMiO7KcGr4Dld1ADc+n0UCvVilfWcEOP/nlYWoMtgu1KIFvfyNQWUZ
-   OHE632iR/HUEM3jbL/85hHth79F3cmchD/IIqajFE4B+e+FZLcAegegvT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="387611453"
+  bh=A3iAeINTOQxjlIUETFqioqPcdTpYY+dG6kh7WvobNeQ=;
+  b=CS2ALiIc1shHi0mDbBjy9H/TWb4Xh6n3A4bYs//6SQAsQ7N5fD/SbPvx
+   VmNTAor6PTcyBlswqP2O0R3Quq3a7nkLQZAmSbFzKWTSnG5b09oeTE2QS
+   eUXW8EWfEdHUh5hx4IZqLcore0EvUqpjLI4/ord0cCkhjR8OPMvGg9tTw
+   WLKKNlQc2nY+e0EGx8Dovw3uTNeYDBaj419kHbd//3T5WOZ9cUQ+vuKPT
+   5UJUlORRHBhVWFZX4S3oEGFS49xgcHhg/DdcwBazwDmWaB7kwqWGrMASC
+   TpqEYt7jBnP3AUc8h/ZtjVe3BQF/uU36Ua4XQBmVmCF5yv7sRmu7M3U7/
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="387611483"
 X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="387611453"
+   d="scan'208";a="387611483"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 13:12:38 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 13:12:40 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="712576654"
+X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="712576666"
 X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="712576654"
+   d="scan'208";a="712576666"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 13:12:37 -0700
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 13:12:40 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -45,9 +45,9 @@ Cc: isaku.yamahata@intel.com,
 	Ackerley Tng <ackerleytng@google.com>,
 	Vishal Annapurve <vannapurve@google.com>,
 	Michael Roth <michael.roth@amd.com>
-Subject: [RFC PATCH 3/6] KVM: x86/mmu: Pass round full 64-bit error code for the KVM page fault
-Date: Thu, 15 Jun 2023 13:12:16 -0700
-Message-Id: <2dea4b9819d1aac4b3194b00c5effaf6d01b449f.1686858861.git.isaku.yamahata@intel.com>
+Subject: [RFC PATCH 6/6] KVM: x86: Add is_vm_type_supported callback
+Date: Thu, 15 Jun 2023 13:12:19 -0700
+Message-Id: <268aa027f991eb6afbfb338f88a33d409e81fd36.1686858861.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1686858861.git.isaku.yamahata@intel.com>
 References: <cover.1686858861.git.isaku.yamahata@intel.com>
@@ -61,114 +61,150 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Because the full 64-bit error code, or more info about the fault, for the
-KVM page fault will be needed for protected VM, TDX and SEV-SNP, update
-kvm_mmu_do_page_fault() to accept the 64-bit value so it can pass it to the
-callbacks.
-
-The upper 32 bits of error code are discarded at kvm_mmu_page_fault()
-by lower_32_bits().  Now it's passed down as full 64 bits.
-Because only FNAME(page_fault) depends on it, move lower_32_bits() into
-FNAME(page_fault).
-
-The accesses of fault->error_code are as follows
-- FNAME(page_fault): change to explicitly use lower_32_bits()
-- kvm_mmu_page_fault(): explicit mask with PFERR_RSVD_MASK,
-                        PFERR_NESTED_GUEST_PAGE
-- mmutrace: changed u32 -> u64
-- pgprintk(): change %x -> %llx
-
-No functional change is intended.  This is a preparation to pass on more
-info with page fault error code.
+For TDX, allow the backend can override the supported vm type.  Add
+KVM_X86_TDX_VM to reserve the bit.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/kvm/mmu/mmu.c          | 5 ++---
- arch/x86/kvm/mmu/mmu_internal.h | 4 ++--
- arch/x86/kvm/mmu/mmutrace.h     | 2 +-
- arch/x86/kvm/mmu/paging_tmpl.h  | 4 ++--
- 4 files changed, 7 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |  1 +
+ arch/x86/include/asm/kvm_host.h    |  1 +
+ arch/x86/include/uapi/asm/kvm.h    |  1 +
+ arch/x86/kvm/svm/svm.c             |  7 +++++++
+ arch/x86/kvm/vmx/vmx.c             |  6 ++++++
+ arch/x86/kvm/x86.c                 | 10 +++++++++-
+ arch/x86/kvm/x86.h                 |  2 ++
+ 7 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index dc2b9a2f717c..b8ba7f11c3cb 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4510,7 +4510,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- static int nonpaging_page_fault(struct kvm_vcpu *vcpu,
- 				struct kvm_page_fault *fault)
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 13bc212cd4bc..c0143906fe6d 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -20,6 +20,7 @@ KVM_X86_OP(hardware_disable)
+ KVM_X86_OP(hardware_unsetup)
+ KVM_X86_OP(has_emulated_msr)
+ KVM_X86_OP(vcpu_after_set_cpuid)
++KVM_X86_OP(is_vm_type_supported)
+ KVM_X86_OP(vm_init)
+ KVM_X86_OP_OPTIONAL(vm_destroy)
+ KVM_X86_OP_OPTIONAL_RET0(vcpu_precreate)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 2763f9837a0b..ce83e24a538d 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1547,6 +1547,7 @@ struct kvm_x86_ops {
+ 	bool (*has_emulated_msr)(struct kvm *kvm, u32 index);
+ 	void (*vcpu_after_set_cpuid)(struct kvm_vcpu *vcpu);
+ 
++	bool (*is_vm_type_supported)(unsigned long vm_type);
+ 	unsigned int vm_size;
+ 	int (*vm_init)(struct kvm *kvm);
+ 	void (*vm_destroy)(struct kvm *kvm);
+diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+index 6afbfbb32d56..53d382b3b423 100644
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -561,5 +561,6 @@ struct kvm_pmu_event_filter {
+ 
+ #define KVM_X86_DEFAULT_VM	0
+ #define KVM_X86_PROTECTED_VM	1
++#define KVM_X86_TDX_VM		2
+ 
+ #endif /* _ASM_X86_KVM_H */
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index eb308c9994f9..e9ed8729f63b 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4756,6 +4756,12 @@ static void svm_vm_destroy(struct kvm *kvm)
+ 	sev_vm_destroy(kvm);
+ }
+ 
++static bool svm_is_vm_type_supported(unsigned long type)
++{
++	/* FIXME: Check if CPU is capable of SEV. */
++	return __kvm_is_vm_type_supported(type);
++}
++
+ static int svm_vm_init(struct kvm *kvm)
  {
--	pgprintk("%s: gva %lx error %x\n", __func__, fault->addr, fault->error_code);
-+	pgprintk("%s: gva %llx error %llx\n", __func__, fault->addr, fault->error_code);
+ 	if (!pause_filter_count || !pause_filter_thresh)
+@@ -4784,6 +4790,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+ 	.vcpu_free = svm_vcpu_free,
+ 	.vcpu_reset = svm_vcpu_reset,
  
- 	/* This path builds a PAE pagetable, we can map 2mb pages at maximum. */
- 	fault->max_level = PG_LEVEL_2M;
-@@ -5820,8 +5820,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
- 	}
++	.is_vm_type_supported = svm_is_vm_type_supported,
+ 	.vm_size = sizeof(struct kvm_svm),
+ 	.vm_init = svm_vm_init,
+ 	.vm_destroy = svm_vm_destroy,
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 44fb619803b8..b5394ba8cb9c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7469,6 +7469,11 @@ static int vmx_vcpu_create(struct kvm_vcpu *vcpu)
+ 	return err;
+ }
  
- 	if (r == RET_PF_INVALID) {
--		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
--					  lower_32_bits(error_code), false,
-+		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code, false,
- 					  &emulation_type);
- 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
- 			return -EIO;
-diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index f1786698ae00..7f9ec1e5b136 100644
---- a/arch/x86/kvm/mmu/mmu_internal.h
-+++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -191,7 +191,7 @@ static inline bool is_nx_huge_page_enabled(struct kvm *kvm)
- struct kvm_page_fault {
- 	/* arguments to kvm_mmu_do_page_fault.  */
- 	const gpa_t addr;
--	const u32 error_code;
-+	const u64 error_code;
- 	const bool prefetch;
++static bool vmx_is_vm_type_supported(unsigned long type)
++{
++	return __kvm_is_vm_type_supported(type);
++}
++
+ #define L1TF_MSG_SMT "L1TF CPU bug present and SMT on, data leak possible. See CVE-2018-3646 and https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html for details.\n"
+ #define L1TF_MSG_L1D "L1TF CPU bug present and virtualization mitigation disabled, data leak possible. See CVE-2018-3646 and https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html for details.\n"
  
- 	/* Derived from error_code.  */
-@@ -283,7 +283,7 @@ enum {
- };
+@@ -8138,6 +8143,7 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.hardware_disable = vmx_hardware_disable,
+ 	.has_emulated_msr = vmx_has_emulated_msr,
  
- static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
--					u32 err, bool prefetch, int *emulation_type)
-+					u64 err, bool prefetch, int *emulation_type)
++	.is_vm_type_supported = vmx_is_vm_type_supported,
+ 	.vm_size = sizeof(struct kvm_vmx),
+ 	.vm_init = vmx_vm_init,
+ 	.vm_destroy = vmx_vm_destroy,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index c9e1c9369be2..b5f865f39a00 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4418,12 +4418,18 @@ static int kvm_ioctl_get_supported_hv_cpuid(struct kvm_vcpu *vcpu,
+ 	return 0;
+ }
+ 
+-static bool kvm_is_vm_type_supported(unsigned long type)
++bool __kvm_is_vm_type_supported(unsigned long type)
  {
- 	struct kvm_page_fault fault = {
- 		.addr = cr2_or_gpa,
-diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
-index 2d7555381955..2e77883c92f6 100644
---- a/arch/x86/kvm/mmu/mmutrace.h
-+++ b/arch/x86/kvm/mmu/mmutrace.h
-@@ -261,7 +261,7 @@ TRACE_EVENT(
- 	TP_STRUCT__entry(
- 		__field(int, vcpu_id)
- 		__field(gpa_t, cr2_or_gpa)
--		__field(u32, error_code)
-+		__field(u64, error_code)
- 		__field(u64 *, sptep)
- 		__field(u64, old_spte)
- 		__field(u64, new_spte)
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 0662e0278e70..ee4b881c5b39 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -758,7 +758,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	struct guest_walker walker;
- 	int r;
+ 	return type == KVM_X86_DEFAULT_VM ||
+ 	       (type == KVM_X86_PROTECTED_VM &&
+ 	        IS_ENABLED(CONFIG_KVM_PROTECTED_VM) && tdp_enabled);
+ }
++EXPORT_SYMBOL_GPL(__kvm_is_vm_type_supported);
++
++static bool kvm_is_vm_type_supported(unsigned long type)
++{
++	return static_call(kvm_x86_is_vm_type_supported)(type);
++}
  
--	pgprintk("%s: addr %lx err %x\n", __func__, fault->addr, fault->error_code);
-+	pgprintk("%s: addr %llx err %llx\n", __func__, fault->addr, fault->error_code);
- 	WARN_ON_ONCE(fault->is_tdp);
+ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ {
+@@ -4618,6 +4624,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 		r = BIT(KVM_X86_DEFAULT_VM);
+ 		if (kvm_is_vm_type_supported(KVM_X86_PROTECTED_VM))
+ 			r |= BIT(KVM_X86_PROTECTED_VM);
++		if (kvm_is_vm_type_supported(KVM_X86_TDX_VM))
++			r |= BIT(KVM_X86_TDX_VM);
+ 		break;
+ 	default:
+ 		break;
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index c544602d07a3..7d5aa8f0571a 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -9,6 +9,8 @@
+ #include "kvm_cache_regs.h"
+ #include "kvm_emulate.h"
  
- 	/*
-@@ -767,7 +767,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	 * The bit needs to be cleared before walking guest page tables.
- 	 */
- 	r = FNAME(walk_addr)(&walker, vcpu, fault->addr,
--			     fault->error_code & ~PFERR_RSVD_MASK);
-+			     lower_32_bits(fault->error_code) & ~PFERR_RSVD_MASK);
- 
- 	/*
- 	 * The page is not mapped by the guest.  Let the guest handle it.
++bool __kvm_is_vm_type_supported(unsigned long type);
++
+ struct kvm_caps {
+ 	/* control of guest tsc rate supported? */
+ 	bool has_tsc_control;
 -- 
 2.25.1
 
