@@ -1,173 +1,123 @@
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B9E18C11
-	for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 14:10:02 +0000 (UTC)
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-43b3b30bd55so211981137.3
-        for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 07:10:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E4B19916
+	for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 14:20:10 +0000 (UTC)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-53f06f7cc74so562484a12.1
+        for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 07:20:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686924602; x=1689516602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0UG/iG1PP3VNbKBwZi98yGZ3Q4NgI6Gz0Wj5eZD3quA=;
-        b=4mz4fQHxunRllolc/a4/JUKfBDYsgE6Pk9GbP+mJbTRDox331R06d3oF+9cfnFBN1C
-         YQlL92eq5vXzbvreNR89PsMAcy7JfnGhqs5iOlyTUy0mQ6ULdEC5xNMhTBzJStJeOBwh
-         KmLL7Pa+3iNd7sdkonM2t5Ic3B5xCxkZsQB4HXPKarzYNwK+8M65yDYqvOI5LrWo9KNl
-         KMjPjZMIVQwsaxkTnPh1tiLbg5SBlt8DuCRB0EZmjuZdyLPAAJt6eg9EA+SXgiuEK8CA
-         u9BMt4rd3ZloTzh/C4N56QrFJdPaJvliwnB/a7EotYuOlFD5mueIRnKBg4zgzbyrCoxM
-         +bDw==
+        d=google.com; s=20221208; t=1686925209; x=1689517209;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7kkXzW7flFmwwNgdmJOF/Bq45kulQkYYDELv7ovIE0s=;
+        b=RiJzto8bqF5mS6jDezs9b1trpJIIMu8WiPtaI/dBqSOaUte3g34NBpJY00M2wZETCw
+         JuxbHe+ZjSkjRKKokqNagwHyDvhgOXDcX6lAwiPANdNiITZUZnUA6KwH6xZvNzD4m7Gn
+         nyPdjZCFacInQQZD5E5HdGRqJvTIoqFFl448zQW6enBqgtdBXTg/J0wnfT1Imkel50q9
+         2yXQ7JrbSFVw6B8glsYOlTI7GkLE/PzN6oZhFebXaVE/eyvYcTcqsTTf5LA3/OO1ynhX
+         ubOgJk2lgj9u43PqdyPqFgjacd7vzw2bmw+h0AaxUTkKWlRoiS7U0tXjrV+lNqLdIHq1
+         VpTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686924602; x=1689516602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0UG/iG1PP3VNbKBwZi98yGZ3Q4NgI6Gz0Wj5eZD3quA=;
-        b=YQ5Q0y3pOBJJDD9zzcguEqyj3uEDJoKfAm2xZSjjnuP85edomnB2j5eZhxkJnuXWAX
-         hublg7bFtPkCxXwjgznC8QOjWcdklK/K1Kpjv9sUohcA+k2wvfkgW7/1hiFLUcUneey1
-         /55H3n6yall2cnfpbWTP0rl2n1B9jT9GU4RqS5jHB+iRFeBAt32JqOhkeNtgGL3xL2h4
-         ZoePFTrGuOtdbYRj7xnmM48XkDQ6DwFLWaCLLZTrqR32f2J544rqpA/U7dkSgq+6H+Wf
-         SsuCYM1a+vxkw32NAuDdwkk+T1VHvg5OsznYFrIxIQ/cCF/cq17ru8kjB3y4MRDJ6GvH
-         bg1Q==
-X-Gm-Message-State: AC+VfDxIXozFDDk8swx1b0Z1EBxthDgJYg3MowiqSAgZFyBBdUbOf46e
-	yREdPDlis43PFgHsrlyMY0zwk94MCCZ18f3VWcUwHQ==
-X-Google-Smtp-Source: ACHHUZ4YeKHrxTY2/2Olc1L4hzuMRn/MfTdbY/qdTIZGERtkOW3HPCFKITqBbDBpQE0mIMl/r7/Yibv+qEWH9+xCU/c=
-X-Received: by 2002:a67:e9d5:0:b0:440:9ab7:e2fb with SMTP id
- q21-20020a67e9d5000000b004409ab7e2fbmr406809vso.6.1686924601531; Fri, 16 Jun
- 2023 07:10:01 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686925209; x=1689517209;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7kkXzW7flFmwwNgdmJOF/Bq45kulQkYYDELv7ovIE0s=;
+        b=gcYKiug+dks31QpKEtR+RQWQ5Ucwt7BqUkr9RNXvF3AALo0YT+hXMHDFl0WC2D0fpz
+         QA0XYl/fGox/JQdKp82NfVETN4c9Y/z9fDSp9kIVKovx/eft5o2Ft21XEeALGm8bcHga
+         kbht+yCdykGtmrH1TWeS9x2gnpC+NLLkFOm/fWmuHkN5ZmdQn2390QIhKQaNHB4lELPR
+         0MZgCiC0N/vXkO2YWBh8bC2sAakwFJkVVLYVqLDAFFtPYJirNP9CrS0B67M8uNgyygd0
+         4W0FZ5Bh+RvvBQa8NtkQe96Y2vVYSQxx95tBIyyZmG22TyW4K28buAFZCeqZY/kX+7aJ
+         7XvA==
+X-Gm-Message-State: AC+VfDwh5kntyoCzqWH76alCavjxyyDvnRndttyOKAIsHRuxHBkGobCb
+	25KPErXXi6sstk1JZJS/lltRc5bS1mA=
+X-Google-Smtp-Source: ACHHUZ5k5s1Dv3E8j8iPdrphFfLSmc9JW7weBGs7UOX1rIhuKWrjsGwis9n9lFua0MhUrP1Y+iyk5Js0+pY=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a63:3d05:0:b0:53f:9a37:c199 with SMTP id
+ k5-20020a633d05000000b0053f9a37c199mr633876pga.1.1686925209547; Fri, 16 Jun
+ 2023 07:20:09 -0700 (PDT)
+Date: Fri, 16 Jun 2023 07:20:07 -0700
+In-Reply-To: <2cfa3122-6b54-aab5-8a61-41c08853286b@semihalf.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
 References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
- <ZIihRqZljMaMRGcK@google.com> <DM8PR11MB5750D16B08B769173DCD740AE75AA@DM8PR11MB5750.namprd11.prod.outlook.com>
- <ZInLlkXsgnej9ZpT@google.com> <001aa2ed-2f78-4361-451d-e31a4d4abaa0@semihalf.com>
- <ZIxqAXhy1tCVpzz7@google.com>
-In-Reply-To: <ZIxqAXhy1tCVpzz7@google.com>
-From: Allen Webb <allenwebb@google.com>
-Date: Fri, 16 Jun 2023 09:09:50 -0500
-Message-ID: <CAJzde06TP5D1UAko6tJmdPt-0Ja4cnByWEDF0c6KJ4k__WjODg@mail.gmail.com>
+ <ZIihRqZljMaMRGcK@google.com> <2cfa3122-6b54-aab5-8a61-41c08853286b@semihalf.com>
+Message-ID: <ZIxvl4sMH6N8TrAL@google.com>
 Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
  threat model for x86 virtualization
-To: Sean Christopherson <seanjc@google.com>
-Cc: Dmytro Maluka <dmy@semihalf.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Carlos Bilbao <carlos.bilbao@amd.com>, Jason CJ Chen <jason.cj.chen@intel.com>, 
-	"corbet@lwn.net" <corbet@lwn.net>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ardb@kernel.org" <ardb@kernel.org>, 
-	"kraxel@redhat.com" <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>, 
-	"michael.day@amd.com" <michael.day@amd.com>, 
-	"pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>, "David.Kaplan@amd.com" <David.Kaplan@amd.com>, 
-	"Reshma.Lal@amd.com" <Reshma.Lal@amd.com>, "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"dgilbert@redhat.com" <dgilbert@redhat.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "dinechin@redhat.com" <dinechin@redhat.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "berrange@redhat.com" <berrange@redhat.com>, 
-	"mst@redhat.com" <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>, "jikos@kernel.org" <jikos@kernel.org>, 
-	"joro@8bytes.org" <joro@8bytes.org>, "leon@kernel.org" <leon@kernel.org>, 
-	"richard.weinberger@gmail.com" <richard.weinberger@gmail.com>, "lukas@wunner.de" <lukas@wunner.de>, 
-	"jejb@linux.ibm.com" <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>, 
-	"jasowang@redhat.com" <jasowang@redhat.com>, "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"security@kernel.org" <security@kernel.org>, Larry Dewey <larry.dewey@amd.com>, android-kvm@google.com, 
-	Dmitry Torokhov <dtor@google.com>, Tomasz Nowicki <tn@semihalf.com>, Grzegorz Jaszczyk <jaz@semihalf.com>, 
-	Patryk Duda <pdk@semihalf.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Sean Christopherson <seanjc@google.com>
+To: Dmytro Maluka <dmy@semihalf.com>
+Cc: Carlos Bilbao <carlos.bilbao@amd.com>, corbet@lwn.net, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ardb@kernel.org, kraxel@redhat.com, 
+	dovmurik@linux.ibm.com, elena.reshetova@intel.com, 
+	dave.hansen@linux.intel.com, Dhaval.Giani@amd.com, michael.day@amd.com, 
+	pavankumar.paluri@amd.com, David.Kaplan@amd.com, Reshma.Lal@amd.com, 
+	Jeremy.Powell@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
+	alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com, 
+	tglx@linutronix.de, dgilbert@redhat.com, gregkh@linuxfoundation.org, 
+	dinechin@redhat.com, linux-coco@lists.linux.dev, berrange@redhat.com, 
+	mst@redhat.com, tytso@mit.edu, jikos@kernel.org, joro@8bytes.org, 
+	leon@kernel.org, richard.weinberger@gmail.com, lukas@wunner.de, 
+	jejb@linux.ibm.com, cdupontd@redhat.com, jasowang@redhat.com, 
+	sameo@rivosinc.com, bp@alien8.de, security@kernel.org, 
+	Larry Dewey <larry.dewey@amd.com>, android-kvm@google.com, 
+	Dmitry Torokhov <dtor@google.com>, Allen Webb <allenwebb@google.com>, Tomasz Nowicki <tn@semihalf.com>, 
+	Grzegorz Jaszczyk <jaz@semihalf.com>, Patryk Duda <pdk@semihalf.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 16, 2023 at 8:56=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Fri, Jun 16, 2023, Dmytro Maluka wrote:
-> > On 6/14/23 16:15, Sean Christopherson wrote:
-> > > On Wed, Jun 14, 2023, Elena Reshetova wrote:
-> > >> Not having a network access requirement doesn=E2=80=99t implicitly i=
-nvalidate the
-> > >> separation guarantees between the host and guest, it just makes it e=
-asier
-> > >> since you have one interface less between the host and guest.
-> > >
-> > > My point is that if the protected guest doesn't need any I/O beyond t=
-he hardware
-> > > device that it accesses, then the threat model is different because m=
-any of the
-> > > new/novel attack surfaces that come with the TDX/SNP threat model don=
-'t exist.
-> > > E.g. the hardening that people want to do for VirtIO drivers may not =
-be at all
-> > > relevant to pKVM.
->
-> ...
->
-> > But I think I get what you mean: there is no data transfer whereby the
-> > host is not an endpoint but an intermediary between the guest and some
-> > device. In simple words, things like virtio-net or virtio-blk are out o=
-f
-> > scope. Yes, I think that's correct for pKVM-on-x86 use cases (and I
-> > suppose it is correct for pKVM-on-ARM use cases as well). I guess it
-> > means that "guest data attacks" may not be relevant to pKVM, and perhap=
-s
-> > this makes its threat model substantially different from cloud use
-> > cases.
->
-> Yes.
->
-> > >>>> +This new type of adversary may be viewed as a more powerful type
-> > >>>> +of external attacker, as it resides locally on the same physical =
-machine
-> > >>>> +-in contrast to a remote network attacker- and has control over t=
-he guest
-> > >>>> +kernel communication with most of the HW::
-> > >>>
-> > >>> IIUC, this last statement doesn't hold true for the pKVM on x86 use=
- case, which
-> > >>> specifically aims to give a "guest" exclusive access to hardware re=
-sources.
-> > >>
-> > >> Does it hold for *all* HW resources? If yes, indeed this would make =
-pKVM on
-> > >> x86 considerably different.
-> > >
-> > > Heh, the original says "most", so it doesn't have to hold for all har=
-dware resources,
-> > > just a simple majority.
-> >
-> > Again, pedantic mode on, I find it difficult to agree with the wording
-> > that the guest owns "most of" the HW resources it uses. It controls the
-> > data communication with its hardware device, but other resources (e.g.
-> > CPU time, interrupts, timers, PCI config space, ACPI) are owned by the
-> > host and virtualized by it for the guest.
->
-> I wasn't saying that the guest owns most resources, I was saying that the=
- *untrusted*
-> host does *not* own most resources that are exposed to the guest.  My und=
-erstanding
-> is that everything in your list is owned by the trusted hypervisor in the=
- pKVM model.
->
-> What I was pointing out is related to the above discussion about the gues=
-t needing
-> access to hardware that is effectively owned by the untrusted host, e.g. =
-network
-> access.
+On Fri, Jun 16, 2023, Dmytro Maluka wrote:
+> On 6/13/23 19:03, Sean Christopherson wrote:
+> > On Mon, Jun 12, 2023, Carlos Bilbao wrote:
+> >> +well as CoCo technology specific hypercalls, if present. Additionally, the
+> >> +host in a CoCo system typically controls the process of creating a CoCo
+> >> +guest: it has a method to load into a guest the firmware and bootloader
+> >> +images, the kernel image together with the kernel command line. All of this
+> >> +data should also be considered untrusted until its integrity and
+> >> +authenticity is established via attestation.
+> > 
+> > Attestation is SNP and TDX specific.  AIUI, none of SEV, SEV-ES, or pKVM (which
+> > doesn't even really exist on x86 yet), have attestation of their own, e.g. the
+> > proposed pKVM support would rely on Secure Boot of the original "full" host kernel.
+> 
+> Seems to be a bit of misunderstanding here. Secure Boot verifies the
+> host kernel, which is indeed also important, since the pKVM hypervisor
+> is a part of the host kernel image. But when it comes to verifying the
+> guests, it's a different story: a protected pKVM guest is started by the
+> (untrusted) host at an arbitrary moment in time, not before the early
+> kernel deprivileging when the host is still considered trusted.
+> (Moreover, in practice the guest is started by a userspace VMM, i.e. not
+> exactly the most trusted part of the host stack.) So the host can
+> maliciously or mistakenly load a wrong guest image for running as a
+> protected guest, so we do need attestation for protected guests.
+> 
+> This attestation is not implemented in pKVM on x86 yet (you are right
+> that pKVM on x86 is little more than a proposal at this point). But in
+> pKVM on ARM it is afaik already working, it is software based (ensured
+> by pKVM hypervisor + a tiny generic guest bootloader which verifies the
+> guest image before jumping to the guest) and architecture-independent,
+> so it should be possible to adopt it for x86 as is.
 
-The network case isn't a great example because it is common for user
-space applications not to trust the network and to use verification
-schemes like TLS where trust of the network is not required, so the
-trusted guest could use these strategies when needed. There wouldn't
-be any availability guarantees, but my understanding is that isn't in
-scope for pKVM.
+Sorry, instead of "Attestation is SNP and TDX specific", I should have said, "The
+form of attestation described here is SNP and TDX specific".
 
-In the case where the host owns a TPM and the guest has to cooperate
-with the host to communicate with the TPM. There are schemes for
-establishing trust between the TPM and the trusted guest with various
-properties (authentication, confidentiality, integrity, etc.). This
-does have the downside of additional complexity, but comes with the
-benefit of also being resistant to attacks like monitoring the SPI
-lines going to the TPM.
+pKVM's "attestation", effectively has its root of trust in the pKVM hypervisor,
+which is in turn attested via Secure Boot.  I.e. the guest payload is verified
+*before* it is launched.
 
-Did you have particular situations in mind for resources that would be
-owned by the host and needed by the trusted guest?
+That is different from SNP and TDX where guest code and data is controlled by the
+*untrusted* host.  The initial payload is measured by trusted firmware, but it is
+not verified, and so that measurement must be attested after the guest boots,
+before any sensitive data is provisioned to the guest.
+
+Specifically, with "untrusted" inserted by me for clarification, my understanding
+is that this doesn't hold true for pKVM when splitting hairs:
+
+  Additionally, the **untrusted** host in a CoCo system typically controls the
+  process of creating a CoCo guest: it has a method to load into a guest the
+  firmware and bootloader images, the kernel image together with the kernel
+  command line. All of this data should also be considered untrusted until its
+  integrity and authenticity is established via attestation.
+
+because the guest firmware comes from a trusted entity, not the untrusted host.
