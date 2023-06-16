@@ -1,210 +1,114 @@
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CBDFBE6
-	for <linux-coco@lists.linux.dev>; Thu, 15 Jun 2023 20:12:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686859962; x=1718395962;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=A3iAeINTOQxjlIUETFqioqPcdTpYY+dG6kh7WvobNeQ=;
-  b=CS2ALiIc1shHi0mDbBjy9H/TWb4Xh6n3A4bYs//6SQAsQ7N5fD/SbPvx
-   VmNTAor6PTcyBlswqP2O0R3Quq3a7nkLQZAmSbFzKWTSnG5b09oeTE2QS
-   eUXW8EWfEdHUh5hx4IZqLcore0EvUqpjLI4/ord0cCkhjR8OPMvGg9tTw
-   WLKKNlQc2nY+e0EGx8Dovw3uTNeYDBaj419kHbd//3T5WOZ9cUQ+vuKPT
-   5UJUlORRHBhVWFZX4S3oEGFS49xgcHhg/DdcwBazwDmWaB7kwqWGrMASC
-   TpqEYt7jBnP3AUc8h/ZtjVe3BQF/uU36Ua4XQBmVmCF5yv7sRmu7M3U7/
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="387611483"
-X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="387611483"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 13:12:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="712576666"
-X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="712576666"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 13:12:40 -0700
-From: isaku.yamahata@intel.com
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: isaku.yamahata@intel.com,
-	isaku.yamahata@gmail.com,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	erdemaktas@google.com,
-	Sean Christopherson <seanjc@google.com>,
-	Sagi Shahar <sagis@google.com>,
-	David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>,
-	chen.bo@intel.com,
-	linux-coco@lists.linux.dev,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Michael Roth <michael.roth@amd.com>
-Subject: [RFC PATCH 6/6] KVM: x86: Add is_vm_type_supported callback
-Date: Thu, 15 Jun 2023 13:12:19 -0700
-Message-Id: <268aa027f991eb6afbfb338f88a33d409e81fd36.1686858861.git.isaku.yamahata@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1686858861.git.isaku.yamahata@intel.com>
-References: <cover.1686858861.git.isaku.yamahata@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808D919922
+	for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 12:24:25 +0000 (UTC)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-4f640e48bc3so836017e87.2
+        for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 05:24:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google; t=1686918263; x=1689510263;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OHHJMVvxjSG31pi51Gp1mclD2e/YsepxsxxTfRtM4/c=;
+        b=ivk7Nc1OroL2Qci6OBq3Aw2cw3ZttBg0XLtayXM7An0TEOOlI3d4owkvW3mNXwkkPx
+         D68XfDyeKGe1l6kzwZiqiRx3nKZ532HzE4dBISy+J6Lqn/BbPmjp+CMyH9KZQQj4m61B
+         zvAMCYjNaQ0MWTpwtEl82xDTe/PPFtHSL83MX3fLLX3vW90tnyAGCJTdQ6OtC1sEeNcK
+         VjP3d7zT5HBaQ4PKUOXkJqGzh+U9OIEMaGO03vcYNR2KlO0iDaQCnl4ESWCgYCBb1fL8
+         lMFZkPlAfrFy+867JzEBTJIKTAu9iDrLVAyNNwDi+pKF1saEQ5UZ3z16RFVURCxebh8N
+         hQMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686918263; x=1689510263;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OHHJMVvxjSG31pi51Gp1mclD2e/YsepxsxxTfRtM4/c=;
+        b=W6OnvREo+OJjkEJ/wxbfYzHRY3TOVsh9kzSZmw9y+mgqOF2VOIBw2zur254XnCgOtZ
+         TBVuY1UfCqxhVkieELrWkBkkOHKE+Qokxm8teMZQkzjeRsVJMh0vKQ/gb0VjPsRLgHnR
+         wnTVySj6NYmLULYamW3+tvKkKuQwfRnWY3fBEboJC9XpLMHfqbfsxFiY62HoTBGI4w8Q
+         spZEkEMlMvnabftl7esNeu++jHMOJ3nouVoy/felxVdEbIkqGhI1MBhpUTBm353R1D1h
+         4dq7FucgCKz8DG+p1nFmYWMCZweuUyn02yH+aL9sf9Qj87qpJc667t4udw3EN1ils18n
+         6dsg==
+X-Gm-Message-State: AC+VfDwgR+FntpSZTGWl7Etm3Swe6RUy+4T1Q7n3PrE+EHjChJ3X1qey
+	SnP9n56Gc7X77d6/WIRqsmcehQ==
+X-Google-Smtp-Source: ACHHUZ6AzPXkjReYZoZNAHq+wtr6OCDbf9GVO9EGhvCijYda0xoVofjwFvUuRrFO9TVV5esgh89UxQ==
+X-Received: by 2002:a19:6601:0:b0:4f3:8196:80cb with SMTP id a1-20020a196601000000b004f3819680cbmr1253347lfc.41.1686918262709;
+        Fri, 16 Jun 2023 05:24:22 -0700 (PDT)
+Received: from [10.43.1.253] ([83.142.187.84])
+        by smtp.gmail.com with ESMTPSA id j20-20020a19f514000000b004eae73a0530sm2994177lfb.39.2023.06.16.05.24.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jun 2023 05:24:22 -0700 (PDT)
+Message-ID: <2cfa3122-6b54-aab5-8a61-41c08853286b@semihalf.com>
+Date: Fri, 16 Jun 2023 14:24:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
+ threat model for x86 virtualization
+To: Sean Christopherson <seanjc@google.com>,
+ Carlos Bilbao <carlos.bilbao@amd.com>
+Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ardb@kernel.org, kraxel@redhat.com, dovmurik@linux.ibm.com,
+ elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+ Dhaval.Giani@amd.com, michael.day@amd.com, pavankumar.paluri@amd.com,
+ David.Kaplan@amd.com, Reshma.Lal@amd.com, Jeremy.Powell@amd.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com,
+ alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
+ tglx@linutronix.de, dgilbert@redhat.com, gregkh@linuxfoundation.org,
+ dinechin@redhat.com, linux-coco@lists.linux.dev, berrange@redhat.com,
+ mst@redhat.com, tytso@mit.edu, jikos@kernel.org, joro@8bytes.org,
+ leon@kernel.org, richard.weinberger@gmail.com, lukas@wunner.de,
+ jejb@linux.ibm.com, cdupontd@redhat.com, jasowang@redhat.com,
+ sameo@rivosinc.com, bp@alien8.de, security@kernel.org,
+ Larry Dewey <larry.dewey@amd.com>, android-kvm@google.com,
+ Dmitry Torokhov <dtor@google.com>, Allen Webb <allenwebb@google.com>,
+ Tomasz Nowicki <tn@semihalf.com>, Grzegorz Jaszczyk <jaz@semihalf.com>,
+ Patryk Duda <pdk@semihalf.com>
+References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
+ <ZIihRqZljMaMRGcK@google.com>
+Content-Language: en-US
+From: Dmytro Maluka <dmy@semihalf.com>
+In-Reply-To: <ZIihRqZljMaMRGcK@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+On 6/13/23 19:03, Sean Christopherson wrote:
+> On Mon, Jun 12, 2023, Carlos Bilbao wrote:
+>> +well as CoCo technology specific hypercalls, if present. Additionally, the
+>> +host in a CoCo system typically controls the process of creating a CoCo
+>> +guest: it has a method to load into a guest the firmware and bootloader
+>> +images, the kernel image together with the kernel command line. All of this
+>> +data should also be considered untrusted until its integrity and
+>> +authenticity is established via attestation.
+> 
+> Attestation is SNP and TDX specific.  AIUI, none of SEV, SEV-ES, or pKVM (which
+> doesn't even really exist on x86 yet), have attestation of their own, e.g. the
+> proposed pKVM support would rely on Secure Boot of the original "full" host kernel.
 
-For TDX, allow the backend can override the supported vm type.  Add
-KVM_X86_TDX_VM to reserve the bit.
+Seems to be a bit of misunderstanding here. Secure Boot verifies the
+host kernel, which is indeed also important, since the pKVM hypervisor
+is a part of the host kernel image. But when it comes to verifying the
+guests, it's a different story: a protected pKVM guest is started by the
+(untrusted) host at an arbitrary moment in time, not before the early
+kernel deprivileging when the host is still considered trusted.
+(Moreover, in practice the guest is started by a userspace VMM, i.e. not
+exactly the most trusted part of the host stack.) So the host can
+maliciously or mistakenly load a wrong guest image for running as a
+protected guest, so we do need attestation for protected guests.
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  1 +
- arch/x86/include/uapi/asm/kvm.h    |  1 +
- arch/x86/kvm/svm/svm.c             |  7 +++++++
- arch/x86/kvm/vmx/vmx.c             |  6 ++++++
- arch/x86/kvm/x86.c                 | 10 +++++++++-
- arch/x86/kvm/x86.h                 |  2 ++
- 7 files changed, 27 insertions(+), 1 deletion(-)
+This attestation is not implemented in pKVM on x86 yet (you are right
+that pKVM on x86 is little more than a proposal at this point). But in
+pKVM on ARM it is afaik already working, it is software based (ensured
+by pKVM hypervisor + a tiny generic guest bootloader which verifies the
+guest image before jumping to the guest) and architecture-independent,
+so it should be possible to adopt it for x86 as is.
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 13bc212cd4bc..c0143906fe6d 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -20,6 +20,7 @@ KVM_X86_OP(hardware_disable)
- KVM_X86_OP(hardware_unsetup)
- KVM_X86_OP(has_emulated_msr)
- KVM_X86_OP(vcpu_after_set_cpuid)
-+KVM_X86_OP(is_vm_type_supported)
- KVM_X86_OP(vm_init)
- KVM_X86_OP_OPTIONAL(vm_destroy)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_precreate)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 2763f9837a0b..ce83e24a538d 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1547,6 +1547,7 @@ struct kvm_x86_ops {
- 	bool (*has_emulated_msr)(struct kvm *kvm, u32 index);
- 	void (*vcpu_after_set_cpuid)(struct kvm_vcpu *vcpu);
- 
-+	bool (*is_vm_type_supported)(unsigned long vm_type);
- 	unsigned int vm_size;
- 	int (*vm_init)(struct kvm *kvm);
- 	void (*vm_destroy)(struct kvm *kvm);
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index 6afbfbb32d56..53d382b3b423 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -561,5 +561,6 @@ struct kvm_pmu_event_filter {
- 
- #define KVM_X86_DEFAULT_VM	0
- #define KVM_X86_PROTECTED_VM	1
-+#define KVM_X86_TDX_VM		2
- 
- #endif /* _ASM_X86_KVM_H */
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index eb308c9994f9..e9ed8729f63b 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4756,6 +4756,12 @@ static void svm_vm_destroy(struct kvm *kvm)
- 	sev_vm_destroy(kvm);
- }
- 
-+static bool svm_is_vm_type_supported(unsigned long type)
-+{
-+	/* FIXME: Check if CPU is capable of SEV. */
-+	return __kvm_is_vm_type_supported(type);
-+}
-+
- static int svm_vm_init(struct kvm *kvm)
- {
- 	if (!pause_filter_count || !pause_filter_thresh)
-@@ -4784,6 +4790,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
- 	.vcpu_free = svm_vcpu_free,
- 	.vcpu_reset = svm_vcpu_reset,
- 
-+	.is_vm_type_supported = svm_is_vm_type_supported,
- 	.vm_size = sizeof(struct kvm_svm),
- 	.vm_init = svm_vm_init,
- 	.vm_destroy = svm_vm_destroy,
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 44fb619803b8..b5394ba8cb9c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7469,6 +7469,11 @@ static int vmx_vcpu_create(struct kvm_vcpu *vcpu)
- 	return err;
- }
- 
-+static bool vmx_is_vm_type_supported(unsigned long type)
-+{
-+	return __kvm_is_vm_type_supported(type);
-+}
-+
- #define L1TF_MSG_SMT "L1TF CPU bug present and SMT on, data leak possible. See CVE-2018-3646 and https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html for details.\n"
- #define L1TF_MSG_L1D "L1TF CPU bug present and virtualization mitigation disabled, data leak possible. See CVE-2018-3646 and https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html for details.\n"
- 
-@@ -8138,6 +8143,7 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
- 	.hardware_disable = vmx_hardware_disable,
- 	.has_emulated_msr = vmx_has_emulated_msr,
- 
-+	.is_vm_type_supported = vmx_is_vm_type_supported,
- 	.vm_size = sizeof(struct kvm_vmx),
- 	.vm_init = vmx_vm_init,
- 	.vm_destroy = vmx_vm_destroy,
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c9e1c9369be2..b5f865f39a00 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4418,12 +4418,18 @@ static int kvm_ioctl_get_supported_hv_cpuid(struct kvm_vcpu *vcpu,
- 	return 0;
- }
- 
--static bool kvm_is_vm_type_supported(unsigned long type)
-+bool __kvm_is_vm_type_supported(unsigned long type)
- {
- 	return type == KVM_X86_DEFAULT_VM ||
- 	       (type == KVM_X86_PROTECTED_VM &&
- 	        IS_ENABLED(CONFIG_KVM_PROTECTED_VM) && tdp_enabled);
- }
-+EXPORT_SYMBOL_GPL(__kvm_is_vm_type_supported);
-+
-+static bool kvm_is_vm_type_supported(unsigned long type)
-+{
-+	return static_call(kvm_x86_is_vm_type_supported)(type);
-+}
- 
- int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- {
-@@ -4618,6 +4624,8 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		r = BIT(KVM_X86_DEFAULT_VM);
- 		if (kvm_is_vm_type_supported(KVM_X86_PROTECTED_VM))
- 			r |= BIT(KVM_X86_PROTECTED_VM);
-+		if (kvm_is_vm_type_supported(KVM_X86_TDX_VM))
-+			r |= BIT(KVM_X86_TDX_VM);
- 		break;
- 	default:
- 		break;
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index c544602d07a3..7d5aa8f0571a 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -9,6 +9,8 @@
- #include "kvm_cache_regs.h"
- #include "kvm_emulate.h"
- 
-+bool __kvm_is_vm_type_supported(unsigned long type);
-+
- struct kvm_caps {
- 	/* control of guest tsc rate supported? */
- 	bool has_tsc_control;
--- 
-2.25.1
-
+Furthermore, since for pKVM on x86 use cases we also need assigning
+physical secure hardware devices to the protected guest, we need
+attestation not just for the guest image itself but also for the secure
+devices assigned to it by the host.
