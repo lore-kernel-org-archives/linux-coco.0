@@ -1,200 +1,150 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE21469E
-	for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 12:36:43 +0000 (UTC)
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-4f76a0a19d4so828534e87.2
-        for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 05:36:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EA319E40
+	for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 13:56:19 +0000 (UTC)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-569fee67d9dso17853717b3.1
+        for <linux-coco@lists.linux.dev>; Fri, 16 Jun 2023 06:56:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google; t=1686919001; x=1689511001;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yGOfdzs+A9lP2dR/JNkIwPkC68/3Vu2CqB4daNG5pwA=;
-        b=RSONdy/aWWf3Ur7h0nHkjZlPyEQ5dtlEtQbJzqtE0kE0zoZk3l/KxiCh0wAVCV2FMt
-         tUQmzFivhfbl7XpeU6YtyVpAc3xfsOEGC7jx3T0PwMUfZogyLy23EViZxL1QoIdUH+RF
-         VjVuK4nssJVah45tKqBZCEGUrCNZBwp9cvxXHQ0Qz1zTUr6yyG3pnufMSGwOw3MH6PGo
-         ktaa+mhX8G1JRhSdpXl/EMZWRT8D6q11B/ARHNxJC7gtgAuqKIJSIF3n3Y3sDm0VsMLW
-         4+aKB8LZeIfJQv+HkxLxa9/6/WEQpFxSa43gwGsT716d+EjoXtFg/tQX210XqR8nkr6j
-         TSFA==
+        d=google.com; s=20221208; t=1686923779; x=1689515779;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+fLjpuuUE/jNF1tH6F57kU3/oz9GcPLjPemMOCQa+1A=;
+        b=kNEwOe7XFugcmTjzejkuLqe708dE86ZSA2Z02MR+itoEcBA1IIXVGzEzNcM+7B/yit
+         /G4/KfRJfYi8TfuA+schY99QKI/TgMRFSYQ3YShmf+jecxNfsH3FIycYHMvFkGYx3dO6
+         csX3FpYeN9nHCvPR5xqobGs5gY/sWUAvRRDrsHMm4O/O/5Os7zOZs5Kn9EgWQFrxh4yp
+         N3ffTABcIaPkXXPUx2UnPJ+63qtXb5iRnFA1BvlKY85/2QpvaUgCXGQ7Bbjqpa4jFC5K
+         dYPkhAwcHFMJzsjx5/8e7eryiOfCf+EYLwADTFT7G50bhph4lhHC4vtoySHvJ5NdcK9u
+         MgLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686919001; x=1689511001;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yGOfdzs+A9lP2dR/JNkIwPkC68/3Vu2CqB4daNG5pwA=;
-        b=Yw0rmyxQ65feLXLfJYAOs9lqpj3x3FjNi2TgMVkb96e9Toq+QJtHpxbIY3ZHeZEszT
-         ftAE8jyf3yfxVHLgwpwu8tVhywo5kqZlWN7RO8vMxAVTmZKu6LdVRKiyA5aPiACD0aFt
-         VMaPfetVtMURVrPO7QPhexyFEChNap7mGp6FBJ+5RyHxSBHvP+z50LWPK9b03WEqJvvk
-         g1OxxC4hRB37mEnGjiisUVgkQwAI69fWqrXSTZ6DNXl0ti33lznEePzIegyJ/Ki/SvnX
-         azDaAsA5Bjci7UaYpU41pBT0A6mC/dClYJtZSHLEya6ykkLHeVBjdAtpbzp1ZvFUsUQM
-         jUPQ==
-X-Gm-Message-State: AC+VfDwO6tjvncw+NjEx9wTRDU8egpUyzNaW39QWusCi9XmAhn7OIHm0
-	AAEIIScuSR80QDlhMzjFfueNOw==
-X-Google-Smtp-Source: ACHHUZ4QjwKxl7vt9iFPySkHd1yALSaM/Z4FHfEyj3OrRTFl17s49Q7/27TY/h26lz6RYBEKa53/6w==
-X-Received: by 2002:ac2:4647:0:b0:4f0:af5:5560 with SMTP id s7-20020ac24647000000b004f00af55560mr1090291lfo.19.1686919000977;
-        Fri, 16 Jun 2023 05:36:40 -0700 (PDT)
-Received: from [10.43.1.253] ([83.142.187.84])
-        by smtp.gmail.com with ESMTPSA id r17-20020ac25a51000000b004f7618c67a7sm1238978lfn.76.2023.06.16.05.36.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Jun 2023 05:36:40 -0700 (PDT)
-Message-ID: <001aa2ed-2f78-4361-451d-e31a4d4abaa0@semihalf.com>
-Date: Fri, 16 Jun 2023 14:36:37 +0200
+        d=1e100.net; s=20221208; t=1686923779; x=1689515779;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+fLjpuuUE/jNF1tH6F57kU3/oz9GcPLjPemMOCQa+1A=;
+        b=Mzi9lcHXRbiD8hOPN1PbpY9t0OTraQM+UzVRW53t5e8ENwoJQb2JvcykTbDZuiuXvn
+         HGgkPYmYlcgYEyCw4iV8/4d5xWhJDnlz7UkWUzlb88mUawR45vTQLHlumOXkAcwwcq2m
+         GtSjf55bzQ1DMSQcuCfzQBqItfImEfNhWmR1Q+xc7/u60TvgXfP60QGVPJvMlq1Q5RMX
+         ZNE7c/C7iYTMkQ/SJtnRTJ13OJco45TeeUf5kRItO36/N9Lho6fNVjETtlf78h0/Tqwi
+         oISYIW2jqqVmgoqoMuavAeyDcJg/woMxzJa2veOgPE2bhbPszhe/3Sg84tuq/3UXFgO5
+         ZP1g==
+X-Gm-Message-State: AC+VfDxqtE4viBS9I9PakdXD22UZmTS1sQBvXWNxpaiwbSXiBxikjo8f
+	EeTv+/7BpYOfNUMdDchNvcZqZ19KKoI=
+X-Google-Smtp-Source: ACHHUZ7OzTA93Y1I7rU1NhrUcAYr1UEs7VGzDreSZWqL5hTvLcWQja6Louv3bjofLUuDe8EyPzVEx6z26Vk=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:ac04:0:b0:56d:5db:2f07 with SMTP id
+ k4-20020a81ac04000000b0056d05db2f07mr3772639ywh.5.1686923778815; Fri, 16 Jun
+ 2023 06:56:18 -0700 (PDT)
+Date: Fri, 16 Jun 2023 06:56:17 -0700
+In-Reply-To: <001aa2ed-2f78-4361-451d-e31a4d4abaa0@semihalf.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
+Mime-Version: 1.0
+References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
+ <ZIihRqZljMaMRGcK@google.com> <DM8PR11MB5750D16B08B769173DCD740AE75AA@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <ZInLlkXsgnej9ZpT@google.com> <001aa2ed-2f78-4361-451d-e31a4d4abaa0@semihalf.com>
+Message-ID: <ZIxqAXhy1tCVpzz7@google.com>
 Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
  threat model for x86 virtualization
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>,
- Elena Reshetova <elena.reshetova@intel.com>
-Cc: Carlos Bilbao <carlos.bilbao@amd.com>,
- Jason CJ Chen <jason.cj.chen@intel.com>, "corbet@lwn.net" <corbet@lwn.net>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "ardb@kernel.org" <ardb@kernel.org>, "kraxel@redhat.com"
- <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>,
- "michael.day@amd.com" <michael.day@amd.com>,
- "pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>,
- "David.Kaplan@amd.com" <David.Kaplan@amd.com>,
- "Reshma.Lal@amd.com" <Reshma.Lal@amd.com>,
- "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>,
- "sathyanarayanan.kuppuswamy@linux.intel.com"
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
- "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "dgilbert@redhat.com" <dgilbert@redhat.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "dinechin@redhat.com" <dinechin@redhat.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "berrange@redhat.com" <berrange@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>,
- "jikos@kernel.org" <jikos@kernel.org>, "joro@8bytes.org" <joro@8bytes.org>,
- "leon@kernel.org" <leon@kernel.org>,
- "richard.weinberger@gmail.com" <richard.weinberger@gmail.com>,
- "lukas@wunner.de" <lukas@wunner.de>, "jejb@linux.ibm.com"
- <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>,
- "security@kernel.org" <security@kernel.org>,
- Larry Dewey <larry.dewey@amd.com>, android-kvm@google.com,
- Dmitry Torokhov <dtor@google.com>, Allen Webb <allenwebb@google.com>,
- Tomasz Nowicki <tn@semihalf.com>, Grzegorz Jaszczyk <jaz@semihalf.com>,
- Patryk Duda <pdk@semihalf.com>
-References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
- <ZIihRqZljMaMRGcK@google.com>
- <DM8PR11MB5750D16B08B769173DCD740AE75AA@DM8PR11MB5750.namprd11.prod.outlook.com>
- <ZInLlkXsgnej9ZpT@google.com>
-From: Dmytro Maluka <dmy@semihalf.com>
-In-Reply-To: <ZInLlkXsgnej9ZpT@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Sean Christopherson <seanjc@google.com>
+To: Dmytro Maluka <dmy@semihalf.com>
+Cc: Elena Reshetova <elena.reshetova@intel.com>, Carlos Bilbao <carlos.bilbao@amd.com>, 
+	Jason CJ Chen <jason.cj.chen@intel.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "ardb@kernel.org" <ardb@kernel.org>, 
+	"kraxel@redhat.com" <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>, 
+	"michael.day@amd.com" <michael.day@amd.com>, 
+	"pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>, "David.Kaplan@amd.com" <David.Kaplan@amd.com>, 
+	"Reshma.Lal@amd.com" <Reshma.Lal@amd.com>, "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>, 
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>, 
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"dgilbert@redhat.com" <dgilbert@redhat.com>, 
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "dinechin@redhat.com" <dinechin@redhat.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "berrange@redhat.com" <berrange@redhat.com>, 
+	"mst@redhat.com" <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>, "jikos@kernel.org" <jikos@kernel.org>, 
+	"joro@8bytes.org" <joro@8bytes.org>, "leon@kernel.org" <leon@kernel.org>, 
+	"richard.weinberger@gmail.com" <richard.weinberger@gmail.com>, "lukas@wunner.de" <lukas@wunner.de>, 
+	"jejb@linux.ibm.com" <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>, 
+	"jasowang@redhat.com" <jasowang@redhat.com>, "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"security@kernel.org" <security@kernel.org>, Larry Dewey <larry.dewey@amd.com>, android-kvm@google.com, 
+	Dmitry Torokhov <dtor@google.com>, Allen Webb <allenwebb@google.com>, Tomasz Nowicki <tn@semihalf.com>, 
+	Grzegorz Jaszczyk <jaz@semihalf.com>, Patryk Duda <pdk@semihalf.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/14/23 16:15, Sean Christopherson wrote:
-> On Wed, Jun 14, 2023, Elena Reshetova wrote:
->>>> +The specific details of the CoCo security manager vastly diverge between
->>>> +technologies. For example, in some cases, it will be implemented in HW
->>>> +while in others it may be pure SW. In some cases, such as for the
->>>> +`Protected kernel-based virtual machine (pKVM) <https://github.com/intel-
->>> staging/pKVM-IA>`,
->>>> +the CoCo security manager is a small, isolated and highly privileged
->>>> +(compared to the rest of SW running on the host) part of a traditional
->>>> +VMM.
->>>
->>> I say that "virtualized environments" isn't a good description because
->>> while pKVM does utilize hardware virtualization, my understanding is that
->>> the primary use cases for pKVM don't have the same threat model as SNP/TDX,
->>> e.g. IIUC many (most?  all?) pKVM guests don't require network access.
->>
->> Not having a network access requirement doesn’t implicitly invalidate the 
->> separation guarantees between the host and guest, it just makes it easier
->> since you have one interface less between the host and guest.
-> 
-> My point is that if the protected guest doesn't need any I/O beyond the hardware
-> device that it accesses, then the threat model is different because many of the
-> new/novel attack surfaces that come with the TDX/SNP threat model don't exist.
-> E.g. the hardening that people want to do for VirtIO drivers may not be at all
-> relevant to pKVM.
+On Fri, Jun 16, 2023, Dmytro Maluka wrote:
+> On 6/14/23 16:15, Sean Christopherson wrote:
+> > On Wed, Jun 14, 2023, Elena Reshetova wrote:
+> >> Not having a network access requirement doesn=E2=80=99t implicitly inv=
+alidate the=20
+> >> separation guarantees between the host and guest, it just makes it eas=
+ier
+> >> since you have one interface less between the host and guest.
+> >=20
+> > My point is that if the protected guest doesn't need any I/O beyond the=
+ hardware
+> > device that it accesses, then the threat model is different because man=
+y of the
+> > new/novel attack surfaces that come with the TDX/SNP threat model don't=
+ exist.
+> > E.g. the hardening that people want to do for VirtIO drivers may not be=
+ at all
+> > relevant to pKVM.
 
-Strictly speaking, the protected pKVM guest does need some I/O beyond
-that, e.g. for some (limited and specialized) communication between the
-host and the guest, e.g. vsock-based. For example, in the fingerprint
-use case, the guest receives requests from the host to capture
-fingerprint data from the sensor, sends encrypted fingerprint templates
-to the host, and so on.
+...
 
-Additionally, speaking of the hardware device, the guest does not
-entirely own it. It has direct exclusive access to the data
-communication with the device (ensured by its exclusive access to MMIO
-and DMA buffers), but e.g. the device interrupts are forwarded to the
-guest by the host, and the PCI config space is virtualized by the host.
+> But I think I get what you mean: there is no data transfer whereby the
+> host is not an endpoint but an intermediary between the guest and some
+> device. In simple words, things like virtio-net or virtio-blk are out of
+> scope. Yes, I think that's correct for pKVM-on-x86 use cases (and I
+> suppose it is correct for pKVM-on-ARM use cases as well). I guess it
+> means that "guest data attacks" may not be relevant to pKVM, and perhaps
+> this makes its threat model substantially different from cloud use
+> cases.
 
-But I think I get what you mean: there is no data transfer whereby the
-host is not an endpoint but an intermediary between the guest and some
-device. In simple words, things like virtio-net or virtio-blk are out of
-scope. Yes, I think that's correct for pKVM-on-x86 use cases (and I
-suppose it is correct for pKVM-on-ARM use cases as well). I guess it
-means that "guest data attacks" may not be relevant to pKVM, and perhaps
-this makes its threat model substantially different from cloud use
-cases.
+Yes. =20
 
-However, other kinds of threats described in the doc do seem to be
-relevant to pKVM. "Malformed/malicious runtime input" is relevant since
-communication channels between the host and the guest do exist, the host
-may arbitrarily inject interrupts into the guest, etc. "Guest malicious
-configuration" is relevant too, and guest attestation is required, as I
-wrote in [1].
+> >>>> +This new type of adversary may be viewed as a more powerful type
+> >>>> +of external attacker, as it resides locally on the same physical ma=
+chine
+> >>>> +-in contrast to a remote network attacker- and has control over the=
+ guest
+> >>>> +kernel communication with most of the HW::
+> >>>
+> >>> IIUC, this last statement doesn't hold true for the pKVM on x86 use c=
+ase, which
+> >>> specifically aims to give a "guest" exclusive access to hardware reso=
+urces.
+> >>
+> >> Does it hold for *all* HW resources? If yes, indeed this would make pK=
+VM on
+> >> x86 considerably different.
+> >=20
+> > Heh, the original says "most", so it doesn't have to hold for all hardw=
+are resources,
+> > just a simple majority.
+>=20
+> Again, pedantic mode on, I find it difficult to agree with the wording
+> that the guest owns "most of" the HW resources it uses. It controls the
+> data communication with its hardware device, but other resources (e.g.
+> CPU time, interrupts, timers, PCI config space, ACPI) are owned by the
+> host and virtualized by it for the guest.
 
-Cc'ing android-kvm and some ChromeOS folks to correct me if needed.
+I wasn't saying that the guest owns most resources, I was saying that the *=
+untrusted*
+host does *not* own most resources that are exposed to the guest.  My under=
+standing
+is that everything in your list is owned by the trusted hypervisor in the p=
+KVM model.
 
-> And I don't see any need to formally document pKVM's threat model right *now*.
-> pKVM on x86 is little more than a proposal at this point, and while I would love
-> to see documentation for pKVM on ARM's threat model, that obviously doesn't belong
-> in a doc that's x86 specific.
-
-Agree, and I don't think it makes sense to mention pKVM-on-x86 without
-mentioning pKVM-on-ARM, as if pKVM-on-x86 had more in common with cloud
-use cases than with pKVM-on-ARM, while quite the opposite is true.
-
-It seems there is no reason why pKVM-on-x86 threat model should be
-different from pKVM-on-ARM. The use cases on ARM (for Android) and on
-x86 (for ChromeOS) are somewhat different at this moment (in that in
-ChromeOS use cases the protected guest's sensitive data includes also
-data coming directly from a physical device), but IIUC they are
-converging now, i.e. Android is getting interested in use cases with
-physical devices too.
-
->>>> +potentially misbehaving host (which can also include some part of a
->>>> +traditional VMM or all of it), which is typically placed outside of the
->>>> +CoCo VM TCB due to its large SW attack surface. It is important to note
->>>> +that this doesn’t imply that the host or VMM are intentionally
->>>> +malicious, but that there exists a security value in having a small CoCo
->>>> +VM TCB. This new type of adversary may be viewed as a more powerful type
->>>> +of external attacker, as it resides locally on the same physical machine
->>>> +-in contrast to a remote network attacker- and has control over the guest
->>>> +kernel communication with most of the HW::
->>>
->>> IIUC, this last statement doesn't hold true for the pKVM on x86 use case, which
->>> specifically aims to give a "guest" exclusive access to hardware resources.
->>
->> Does it hold for *all* HW resources? If yes, indeed this would make pKVM on
->> x86 considerably different.
-> 
-> Heh, the original says "most", so it doesn't have to hold for all hardware resources,
-> just a simple majority.
-
-Again, pedantic mode on, I find it difficult to agree with the wording
-that the guest owns "most of" the HW resources it uses. It controls the
-data communication with its hardware device, but other resources (e.g.
-CPU time, interrupts, timers, PCI config space, ACPI) are owned by the
-host and virtualized by it for the guest.
-
-[1] https://lore.kernel.org/all/2cfa3122-6b54-aab5-8a61-41c08853286b@semihalf.com/
+What I was pointing out is related to the above discussion about the guest =
+needing
+access to hardware that is effectively owned by the untrusted host, e.g. ne=
+twork
+access.
