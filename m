@@ -1,106 +1,136 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF8C1118B
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 13:40:46 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DB3D31EC0102;
-	Mon, 19 Jun 2023 15:40:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1687182038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=NQcQ+a91rnEmxFtS6KIZWR6r/nd+aTVNBSnx9bM3XZo=;
-	b=MjZrI2Pb1EA97CsnjLQkLLYXnftqpz1BMSytwT2Fkcm79yTr7JlS3vbPHybZQGk2gNvBdV
-	7pJxq+Ljl/BYq/YNswcZLYfOeYT3BcOtdCS2ltKIotcJp6HYvURYcrmTpDMEIyanHuqgDd
-	H+X68i3UAmnnIDktOVRK7Y5dvsc0MIs=
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id xyc2kN7e7SI6; Mon, 19 Jun 2023 13:40:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1687182035; bh=NQcQ+a91rnEmxFtS6KIZWR6r/nd+aTVNBSnx9bM3XZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hhjq4sAwqpuXAjDZr0482mo+tJJ0h0offjDvdI0pCCoCQw2bDUcP8d1vbDkapw272
-	 xVM5yjFjjoNovnJZSBbFHf8J20dy0BvYq3Lf5/6HRBdwil9v1Aobm+f2g/gfW4DXnM
-	 b4YK0b1ne/U38dROisrBRRDzRlbXtYjRrFji1OTpCkEAnk7c+RPW9lAtONuYgZRerJ
-	 I6+INtMP4DnSAZnjWraSMdu0T5EW08EU7cAYkC/Hha/niDr/F5MewITS/JqCLcCk2w
-	 M4fJW5oXMRz9hZQzxEsZOb+8GOiaXrEPRugbBe8sJyskrr6Nh7FJhJjuPcsFYYypTU
-	 hca7QInRQqaye2PTigrrCnFcm0WMOQp1goK0OxCGZ9Ing4TiGzBJOuvh74BZVr/Qmi
-	 DdSTA2frFGKVeHBbStTjaynkbdb1FjWeT4A2xGYIok+FY/MvJPPnX/bv72T9u8DOue
-	 fdyb1/BCxS9myr7OYuFisiuGoDRpYKpLCPZZzwC8xjY8OXaZXwAYoWmCwqI56wH0Js
-	 TfJMAZ4TNRorAeiEzc0gIHq0u0T5lPm4dt0t754mvHOYYJYEaoCsQqHeC4Dy2RGzS1
-	 aqKVArwd+i9hfQZM7ZM3g53aGg9SoCzbpCl/YgirQxJXdSuW99oJN7wrICWB1/lnJP
-	 63A8a5ZQ59tJNZlWhFgkbgVs=
-Received: from zn.tnic (p200300ea971dC5b2329c23fFFEA6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971d:c5b2:329c:23ff:fea6:a903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 793DE40E0034;
-	Mon, 19 Jun 2023 13:39:55 +0000 (UTC)
-Date: Mon, 19 Jun 2023 15:39:50 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
-	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
-	zhi.a.wang@intel.com
-Subject: Re: [PATCH RFC v9 02/51] KVM: x86: Add gmem hook for invalidating
- private memory
-Message-ID: <20230619133950.GBZJBapnJ3vD74ASAu@fat_crate.local>
-References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-3-michael.roth@amd.com>
- <20230612104905.GOZIb4ISN9gj9lWYNv@fat_crate.local>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BF28BE5
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 15:03:40 +0000 (UTC)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4f769c37d26so4574757e87.1
+        for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 08:03:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google; t=1687187019; x=1689779019;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=49YbCrrQnu++46aqDxt53mcv8RYAaq7cMrbIqaaKKyY=;
+        b=nF2ZfiGhvW695ksU2fZGH8TntTiJZDsIYNJXmRhfJhE8hrLMgVujyNeOlovtQ8zmBs
+         YJBdLOvNi4ffSAs3QIuT44dZxkwfw1Jsk59cfo0o2+aVJrRGBC4zF1SrVJOc0tuMrch3
+         WCgBsh9iZWz+AhHRspSUz3dLixDXzXEXyZCArBISpBJgjvKafrnV6WiLg/VRywdKbMHH
+         wDXJUa/K5OD2WXMFtiDt+tecmRmZWvJBjtAz0aSIDS8iVdZreDp5aMwSEz7SO3uIWmjl
+         IYoekmh7VOrc8ZdwyGktpGMDlyoOiji0hCps/UObbPmONQO2PjwIIf+Qc64ZsGOb8nlg
+         kBEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687187019; x=1689779019;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=49YbCrrQnu++46aqDxt53mcv8RYAaq7cMrbIqaaKKyY=;
+        b=aLhduS6hymcmCXZ77dC4d2s3I2ez6Cy3Q+iuKru00E10UED8EO7AtZLGwvt3eQLR/F
+         tmIqyZ5NzGu4WCyE9Wvt6FeiM30TcSmTg3wDj2VTG2yGkZAwi6w0//vzkSYi6UKCNg/v
+         sfZFPQZDh0mWZwU4SvU3QqdCLRg7Kpsfps+qZhSZik5qfYAnCTyonb2CyhIzLh2T+xwv
+         yFCi1QH7yGpOqhHvDrnQ6W4izv8qC3MCMN9uicjrP5NVzxUtzJdeBRm1gegArkvwiBkV
+         Vs/WgdO3ZIEq6VRxdu6+VPq+Gd5nZpXIsOJ54UhTbf7KzQfEL9iOkqIIppkIsymmuFZX
+         z+Zw==
+X-Gm-Message-State: AC+VfDxaOEQtJihcIcAKRAc/8vMGfNJAu9AY0/+GYd6JFgJq4A8WghT+
+	tLbJ2g5C203yWmXEX7ImYJlHeg==
+X-Google-Smtp-Source: ACHHUZ7FJRf9OVIP5GW2qC+5pDf0N+cIYCphYRWLPLD/TYzVC+I3/y+Zs8rDeqQ1h+4S2vb97c/VQw==
+X-Received: by 2002:a19:e30e:0:b0:4f4:b138:e998 with SMTP id a14-20020a19e30e000000b004f4b138e998mr5132982lfh.68.1687187018602;
+        Mon, 19 Jun 2023 08:03:38 -0700 (PDT)
+Received: from [10.43.1.253] ([83.142.187.84])
+        by smtp.gmail.com with ESMTPSA id m29-20020a056512015d00b004f6366cbe72sm4295872lfo.228.2023.06.19.08.03.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jun 2023 08:03:38 -0700 (PDT)
+Message-ID: <a38a35ca-41cd-d082-9723-391130fcb8bf@semihalf.com>
+Date: Mon, 19 Jun 2023 17:03:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230612104905.GOZIb4ISN9gj9lWYNv@fat_crate.local>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
+ threat model for x86 virtualization
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "Christopherson,, Sean" <seanjc@google.com>
+Cc: Carlos Bilbao <carlos.bilbao@amd.com>,
+ "Chen, Jason CJ" <jason.cj.chen@intel.com>, "corbet@lwn.net"
+ <corbet@lwn.net>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "ardb@kernel.org" <ardb@kernel.org>, "kraxel@redhat.com"
+ <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>,
+ "michael.day@amd.com" <michael.day@amd.com>,
+ "pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>,
+ "David.Kaplan@amd.com" <David.Kaplan@amd.com>,
+ "Reshma.Lal@amd.com" <Reshma.Lal@amd.com>,
+ "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>,
+ "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "dgilbert@redhat.com" <dgilbert@redhat.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "dinechin@redhat.com" <dinechin@redhat.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "berrange@redhat.com" <berrange@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>,
+ "jikos@kernel.org" <jikos@kernel.org>, "joro@8bytes.org" <joro@8bytes.org>,
+ "leon@kernel.org" <leon@kernel.org>,
+ "richard.weinberger@gmail.com" <richard.weinberger@gmail.com>,
+ "lukas@wunner.de" <lukas@wunner.de>, "jejb@linux.ibm.com"
+ <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>,
+ "security@kernel.org" <security@kernel.org>,
+ Larry Dewey <larry.dewey@amd.com>,
+ "android-kvm@google.com" <android-kvm@google.com>,
+ Dmitry Torokhov <dtor@google.com>, Allen Webb <allenwebb@google.com>,
+ Tomasz Nowicki <tn@semihalf.com>, Grzegorz Jaszczyk <jaz@semihalf.com>,
+ Patryk Duda <pdk@semihalf.com>
+References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
+ <ZIihRqZljMaMRGcK@google.com>
+ <DM8PR11MB5750D16B08B769173DCD740AE75AA@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <ZInLlkXsgnej9ZpT@google.com>
+ <001aa2ed-2f78-4361-451d-e31a4d4abaa0@semihalf.com>
+ <ZIxqAXhy1tCVpzz7@google.com>
+ <22438996-cea6-fcdc-530b-bf3f2477a81c@semihalf.com>
+ <ZIyk+qIBRD6ezlPo@google.com>
+ <10b6045e-e5e4-e1f6-f93a-34f1ad61fdfe@semihalf.com>
+ <DM8PR11MB5750F226997913CC1A0E54A4E75FA@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Dmytro Maluka <dmy@semihalf.com>
+In-Reply-To: <DM8PR11MB5750F226997913CC1A0E54A4E75FA@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 12, 2023 at 12:49:05PM +0200, Borislav Petkov wrote:
-> ld: arch/x86/kvm/../../../virt/kvm/eventfd.o: in function `kvm_arch_gmem_invalidate':
-> /home/boris/kernel/2nd/linux/./include/linux/kvm_host.h:2356: multiple definition of `kvm_arch_gmem_invalidate'; arch/x86/kvm/../../../virt/kvm/kvm_main.o:/home/boris/kernel/2nd/linux/./include/linux/kvm_host.h:2356: first defined here
-> ld: arch/x86/kvm/../../../virt/kvm/binary_stats.o: in function `kvm_arch_gmem_invalidate':
+On 6/19/23 13:23, Reshetova, Elena wrote:
+>> And BTW, doesn't it mean that interrupts also need to be hardened in the
+>> guest (if we don't want the complexity of interrupt controllers in the
+>> trusted hypervisor)? At least sensitive ones like IPIs, but I guess we
+>> should also consider interrupt-based timings attacks, which could use
+>> any type of interrupt. (I have no idea how to harden either of the two
+>> cases, but I'm no expert.)
+> 
+> We have been thinking about it a bit at least when it comes to our
+> TDX case. Two main issues were identified: interrupts contributing
+> to the state of Linux PRNG [1] and potential implications of missing
+> interrupts for reliable panic and other kernel use cases [2]. 
+> 
+> [1] https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html#randomness-inside-tdx-guest
+> [2] https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html#reliable-panic
+> 
+> For the first one, in addition to simply enforce usage of RDSEED
+> for TDX guests, we still want to do a proper evaluation of security
+> of Linux PRNG under our threat model. The second one is 
+> harder to reliably asses imo, but so far we were not able to find any
+> concrete attack vectors. But it would be good if people who 
+> have expertise in this, could take a look on the assessment we did. 
+> The logic was to go over all kernel core callers of various 
+> smp_call_function*, on_each_cpu* and check the implications
+> if such an IPI is never delivered. 
 
-Fix is trivial:
+Thanks. I also had in mind for example [1].
 
----
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 7de06add2235..67fdfb683cb9 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2353,7 +2353,7 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 	return -EIO;
- }
- 
--void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end) { }
-+static inline void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end) { }
- #endif /* CONFIG_KVM_PRIVATE_MEM */
- 
- #endif
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+[1] https://people.cs.kuleuven.be/~jo.vanbulck/ccs18.pdf
