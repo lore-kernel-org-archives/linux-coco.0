@@ -1,110 +1,81 @@
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61A8107A4
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 16:27:53 +0000 (UTC)
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 411341EC008F;
-	Mon, 19 Jun 2023 18:27:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1687192071;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=6e+4J0KSePLpz6FTC4NhR5KUsm5UJTEw2Lw9R3X5YHA=;
-	b=AlSKdpxsOZ+nS/CPQc7yj9aY9ErEjrZRdMhJMlo0KWzMCXA8lu4hemnsr6Wk7EMTplJHdz
-	BrTTJbeWTiku5J954tWCM/j0/eX5IZ1NIuoRbFFSgP7WkYjyrGFakYVLkbJVCrarHUsxZM
-	8IVBvwxFHZaNX4SRuyz59DyFrFL8dTI=
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 5Q4p30cZ_o3g; Mon, 19 Jun 2023 16:27:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1687192068; bh=6e+4J0KSePLpz6FTC4NhR5KUsm5UJTEw2Lw9R3X5YHA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T6CSex4pxxOUGcnUlWnR/Xo2F33N52ScuPqHkNW2AML76+OE1kyvEBc+bkQgzkv2Z
-	 abCEhuwSxKm9DahUqUbwWWiHDz03B0y3jWZ7kKfcBHjBurfOCcLSzdw/ErxosX//jT
-	 a6HCRZRcH0mhHJnXWcw4vo+mEIV4b0MuGHfzWU7ok4kEkrz6vzEIepFN2rYUuRRVic
-	 9jQ0qHSyPlhjWGps9I3y2nYRoowminmkxMEKEGnK9wOZ1iQ4gOs4oHJqIg+XfAVPQs
-	 18K3t6C5ezyd5ELZNBjTU1xnbeym37NDckXjBSulQ29B3bZGmKSwyfqbrWPpMjIoGF
-	 me90GDFrVhvefpvCqhiF7VnHeC6I+eILSCoDXIAETTmckx1L+5TGd8jvp/ErOPykkM
-	 pZFJhq7lpbKrJBg/69gqJ7Cvfk5hqxsuO3B//fF3eOknNI1u2yFz1WCF6pFXHVCJQp
-	 Ocr6W3eQLJwDL8rxcUn9rINdGR11Nu9OQYNQWLdo1ZnlNEb5Y3Azw3z02Uio6aOfQE
-	 SxGsaAcFNM+5159nfIj1gOkUm8M5aPJC75dCUsuHv7g0LqrM9x2dss0CIjPwI4sSOI
-	 efmolVR3UXyphRlvCUhM7BwZuIewQCqrCKwn3nTW5K0dPSD0E6hWixJTCtyvwEG2CP
-	 CMwbzzeMPkwPSGtYazpqAVag=
-Received: from zn.tnic (p200300Ea971dc5B2329C23fffEa6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971d:c5b2:329c:23ff:fea6:a903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B07E340E0034;
-	Mon, 19 Jun 2023 16:27:08 +0000 (UTC)
-Date: Mon, 19 Jun 2023 18:27:03 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
-	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
-	zhi.a.wang@intel.com
-Subject: Re: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
- using a configurable mask
-Message-ID: <20230619162703.GRZJCB10+Xg8fn8XLx@fat_crate.local>
-References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-5-michael.roth@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9190FD53B
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 19:12:02 +0000 (UTC)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6300f6ab032so20554246d6.2
+        for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 12:12:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1687201921; x=1689793921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SVYc5tgS9GuhHSW4I9Rx24JeDuyY6zS9msd6s7vhYTU=;
+        b=OnleU7zrZ4EJ5IyP76ORdPEGUQJvFcLOukq8VMDe+wwB+FGyzxbTlaoLKzEjpLPfy3
+         MZbQ9QFq06vaie7OdQwrruTdOjItnQ+zYAclJz87yqkQDAaEWgbwvpwWsjBgCDRLZFAE
+         jt71Nvx60sycS2/amx/VkoRkjk/371B0lt/rI0UHfiZj+hClNfMtNZzUUlWaXtOFUKZV
+         RDmiPgZhS9rWVvjs1DAH67l47h9ov1Fyb86uBVIb+j7Rt7nQVrKAFnCx0564bcXdMxbW
+         rKKd1rOoBykB8xwUV4i3zZk6qvg3rpBVKmjtEhwvFpKd3sS/I4ObEqPjguq3163nS9Ea
+         91JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687201921; x=1689793921;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SVYc5tgS9GuhHSW4I9Rx24JeDuyY6zS9msd6s7vhYTU=;
+        b=jGBaC9EMCwy5Rf156Ha7znIYzOqAjQltEG3mPKCPWw9TeV7zreW1fw+THZAUu8/6Ks
+         cDQ61OXjMmHOmZ4w/5oEYY6YSJi6sVvtAKo+2PTZUxcOpMlygjbFUaotC8S+UHTlvhrk
+         QJ4+N+DMpOd+pydsWVbhvmeYMGrQWhGW4OVXmXx2Bx2HFi9WXRci924w8w95Iaqpf9Vc
+         nVfwZwDPmUfJa5hQLF5wXDlPQErVg9L/2EgUCHKDOy8QxOwmQY13M8vvmiMdFK0PLh0b
+         P880xxuio2J4JLOWf1Zw4MZUGe/x4Uaw1DDEte07Hp627t6ATDmhJKLOYWviUA46DEmw
+         4QeQ==
+X-Gm-Message-State: AC+VfDzYjzX5yx7XktZZ0nF2D16WaOaiVfxR+h01hOAtfuf18WJhJWJW
+	AVYm6WqQV1wm8r/5ey91tIrCfaRL3Trm0MqtLqCjfQ==
+X-Google-Smtp-Source: ACHHUZ7v1a0Qp73sX3oTeiKCZI3Bb2g5bAKarlkDAhHHC0BAo/ZJLGYRWoUQn6eothVG18b1p04JXDmu8ZavGfwhsjM=
+X-Received: by 2002:a05:6214:e8a:b0:621:331b:f55d with SMTP id
+ hf10-20020a0562140e8a00b00621331bf55dmr13680549qvb.19.1687201921127; Mon, 19
+ Jun 2023 12:12:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230612042559.375660-5-michael.roth@amd.com>
+References: <cover.1686858861.git.isaku.yamahata@intel.com>
+In-Reply-To: <cover.1686858861.git.isaku.yamahata@intel.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Mon, 19 Jun 2023 12:11:50 -0700
+Message-ID: <CAGtprH8O6dsjjNrMzLPmRio0ZDLe6M3U06HD0oNX3NN9FeWQfg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/6] KVM: guest memory: Misc enhacnement
+To: isaku.yamahata@intel.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	isaku.yamahata@gmail.com, Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, 
+	Sean Christopherson <seanjc@google.com>, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Michael Roth <michael.roth@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jun 11, 2023 at 11:25:12PM -0500, Michael Roth wrote:
-> This will be used to determine whether or not an #NPF should be serviced
-> using a normal page vs. a guarded/gmem one.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/include/asm/kvm_host.h |  7 +++++++
->  arch/x86/kvm/mmu/mmu_internal.h | 35 ++++++++++++++++++++++++++++++++-
->  2 files changed, 41 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index b3bd24f2a390..c26f76641121 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1445,6 +1445,13 @@ struct kvm_arch {
->  	 */
->  #define SPLIT_DESC_CACHE_MIN_NR_OBJECTS (SPTE_ENT_PER_PAGE + 1)
->  	struct kvm_mmu_memory_cache split_desc_cache;
-> +
-> +	/*
-> +	 * When set, used to determine whether a fault should be treated as
-	   ^^^^^^^^
+On Thu, Jun 15, 2023 at 1:12=E2=80=AFPM <isaku.yamahata@intel.com> wrote:
+> ...
+>
+> * VM type: Now we have KVM_X86_PROTECTED_VM. How do we proceed?
+>   - Keep KVM_X86_PROTECTED_VM for its use. Introduce KVM_X86_TDX_VM
+>   - Use KVM_X86_PROTECTED_VM for TDX. (If necessary, introduce another ty=
+pe in
+>     the future)
+>   - any other way?
 
-And when not set? Invalid?
+There are selftests posted[1] in context of this work, which rely on
+KVM_X86_PROTECTED_VM being just the software-only psuedo-confidential
+VMs. In future there might be more work to expand this usecase to
+full-scale VMs. So it would be better to treat protected VMs as a
+separate type which can be used on any platform without the need of
+enabling TDX/SEV functionality.
 
-I guess so, judging by the code below.
+TDX VM type can possibly serve as a specialized type of protected VM
+with additional arch specific capabilities enabled.
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+[1] - https://github.com/sean-jc/linux/commits/x86/kvm_gmem_solo
