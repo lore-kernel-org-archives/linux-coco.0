@@ -1,136 +1,110 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BF28BE5
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 15:03:40 +0000 (UTC)
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4f769c37d26so4574757e87.1
-        for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 08:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google; t=1687187019; x=1689779019;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=49YbCrrQnu++46aqDxt53mcv8RYAaq7cMrbIqaaKKyY=;
-        b=nF2ZfiGhvW695ksU2fZGH8TntTiJZDsIYNJXmRhfJhE8hrLMgVujyNeOlovtQ8zmBs
-         YJBdLOvNi4ffSAs3QIuT44dZxkwfw1Jsk59cfo0o2+aVJrRGBC4zF1SrVJOc0tuMrch3
-         WCgBsh9iZWz+AhHRspSUz3dLixDXzXEXyZCArBISpBJgjvKafrnV6WiLg/VRywdKbMHH
-         wDXJUa/K5OD2WXMFtiDt+tecmRmZWvJBjtAz0aSIDS8iVdZreDp5aMwSEz7SO3uIWmjl
-         IYoekmh7VOrc8ZdwyGktpGMDlyoOiji0hCps/UObbPmONQO2PjwIIf+Qc64ZsGOb8nlg
-         kBEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687187019; x=1689779019;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=49YbCrrQnu++46aqDxt53mcv8RYAaq7cMrbIqaaKKyY=;
-        b=aLhduS6hymcmCXZ77dC4d2s3I2ez6Cy3Q+iuKru00E10UED8EO7AtZLGwvt3eQLR/F
-         tmIqyZ5NzGu4WCyE9Wvt6FeiM30TcSmTg3wDj2VTG2yGkZAwi6w0//vzkSYi6UKCNg/v
-         sfZFPQZDh0mWZwU4SvU3QqdCLRg7Kpsfps+qZhSZik5qfYAnCTyonb2CyhIzLh2T+xwv
-         yFCi1QH7yGpOqhHvDrnQ6W4izv8qC3MCMN9uicjrP5NVzxUtzJdeBRm1gegArkvwiBkV
-         Vs/WgdO3ZIEq6VRxdu6+VPq+Gd5nZpXIsOJ54UhTbf7KzQfEL9iOkqIIppkIsymmuFZX
-         z+Zw==
-X-Gm-Message-State: AC+VfDxaOEQtJihcIcAKRAc/8vMGfNJAu9AY0/+GYd6JFgJq4A8WghT+
-	tLbJ2g5C203yWmXEX7ImYJlHeg==
-X-Google-Smtp-Source: ACHHUZ7FJRf9OVIP5GW2qC+5pDf0N+cIYCphYRWLPLD/TYzVC+I3/y+Zs8rDeqQ1h+4S2vb97c/VQw==
-X-Received: by 2002:a19:e30e:0:b0:4f4:b138:e998 with SMTP id a14-20020a19e30e000000b004f4b138e998mr5132982lfh.68.1687187018602;
-        Mon, 19 Jun 2023 08:03:38 -0700 (PDT)
-Received: from [10.43.1.253] ([83.142.187.84])
-        by smtp.gmail.com with ESMTPSA id m29-20020a056512015d00b004f6366cbe72sm4295872lfo.228.2023.06.19.08.03.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jun 2023 08:03:38 -0700 (PDT)
-Message-ID: <a38a35ca-41cd-d082-9723-391130fcb8bf@semihalf.com>
-Date: Mon, 19 Jun 2023 17:03:35 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61A8107A4
+	for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 16:27:53 +0000 (UTC)
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 411341EC008F;
+	Mon, 19 Jun 2023 18:27:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1687192071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=6e+4J0KSePLpz6FTC4NhR5KUsm5UJTEw2Lw9R3X5YHA=;
+	b=AlSKdpxsOZ+nS/CPQc7yj9aY9ErEjrZRdMhJMlo0KWzMCXA8lu4hemnsr6Wk7EMTplJHdz
+	BrTTJbeWTiku5J954tWCM/j0/eX5IZ1NIuoRbFFSgP7WkYjyrGFakYVLkbJVCrarHUsxZM
+	8IVBvwxFHZaNX4SRuyz59DyFrFL8dTI=
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 5Q4p30cZ_o3g; Mon, 19 Jun 2023 16:27:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1687192068; bh=6e+4J0KSePLpz6FTC4NhR5KUsm5UJTEw2Lw9R3X5YHA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T6CSex4pxxOUGcnUlWnR/Xo2F33N52ScuPqHkNW2AML76+OE1kyvEBc+bkQgzkv2Z
+	 abCEhuwSxKm9DahUqUbwWWiHDz03B0y3jWZ7kKfcBHjBurfOCcLSzdw/ErxosX//jT
+	 a6HCRZRcH0mhHJnXWcw4vo+mEIV4b0MuGHfzWU7ok4kEkrz6vzEIepFN2rYUuRRVic
+	 9jQ0qHSyPlhjWGps9I3y2nYRoowminmkxMEKEGnK9wOZ1iQ4gOs4oHJqIg+XfAVPQs
+	 18K3t6C5ezyd5ELZNBjTU1xnbeym37NDckXjBSulQ29B3bZGmKSwyfqbrWPpMjIoGF
+	 me90GDFrVhvefpvCqhiF7VnHeC6I+eILSCoDXIAETTmckx1L+5TGd8jvp/ErOPykkM
+	 pZFJhq7lpbKrJBg/69gqJ7Cvfk5hqxsuO3B//fF3eOknNI1u2yFz1WCF6pFXHVCJQp
+	 Ocr6W3eQLJwDL8rxcUn9rINdGR11Nu9OQYNQWLdo1ZnlNEb5Y3Azw3z02Uio6aOfQE
+	 SxGsaAcFNM+5159nfIj1gOkUm8M5aPJC75dCUsuHv7g0LqrM9x2dss0CIjPwI4sSOI
+	 efmolVR3UXyphRlvCUhM7BwZuIewQCqrCKwn3nTW5K0dPSD0E6hWixJTCtyvwEG2CP
+	 CMwbzzeMPkwPSGtYazpqAVag=
+Received: from zn.tnic (p200300Ea971dc5B2329C23fffEa6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971d:c5b2:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B07E340E0034;
+	Mon, 19 Jun 2023 16:27:08 +0000 (UTC)
+Date: Mon, 19 Jun 2023 18:27:03 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
+	zhi.a.wang@intel.com
+Subject: Re: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
+ using a configurable mask
+Message-ID: <20230619162703.GRZJCB10+Xg8fn8XLx@fat_crate.local>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-5-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
- threat model for x86 virtualization
-To: "Reshetova, Elena" <elena.reshetova@intel.com>,
- "Christopherson,, Sean" <seanjc@google.com>
-Cc: Carlos Bilbao <carlos.bilbao@amd.com>,
- "Chen, Jason CJ" <jason.cj.chen@intel.com>, "corbet@lwn.net"
- <corbet@lwn.net>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "ardb@kernel.org" <ardb@kernel.org>, "kraxel@redhat.com"
- <kraxel@redhat.com>, "dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "Dhaval.Giani@amd.com" <Dhaval.Giani@amd.com>,
- "michael.day@amd.com" <michael.day@amd.com>,
- "pavankumar.paluri@amd.com" <pavankumar.paluri@amd.com>,
- "David.Kaplan@amd.com" <David.Kaplan@amd.com>,
- "Reshma.Lal@amd.com" <Reshma.Lal@amd.com>,
- "Jeremy.Powell@amd.com" <Jeremy.Powell@amd.com>,
- "sathyanarayanan.kuppuswamy@linux.intel.com"
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
- "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "dgilbert@redhat.com" <dgilbert@redhat.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "dinechin@redhat.com" <dinechin@redhat.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "berrange@redhat.com" <berrange@redhat.com>, "mst@redhat.com"
- <mst@redhat.com>, "tytso@mit.edu" <tytso@mit.edu>,
- "jikos@kernel.org" <jikos@kernel.org>, "joro@8bytes.org" <joro@8bytes.org>,
- "leon@kernel.org" <leon@kernel.org>,
- "richard.weinberger@gmail.com" <richard.weinberger@gmail.com>,
- "lukas@wunner.de" <lukas@wunner.de>, "jejb@linux.ibm.com"
- <jejb@linux.ibm.com>, "cdupontd@redhat.com" <cdupontd@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "sameo@rivosinc.com" <sameo@rivosinc.com>, "bp@alien8.de" <bp@alien8.de>,
- "security@kernel.org" <security@kernel.org>,
- Larry Dewey <larry.dewey@amd.com>,
- "android-kvm@google.com" <android-kvm@google.com>,
- Dmitry Torokhov <dtor@google.com>, Allen Webb <allenwebb@google.com>,
- Tomasz Nowicki <tn@semihalf.com>, Grzegorz Jaszczyk <jaz@semihalf.com>,
- Patryk Duda <pdk@semihalf.com>
-References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
- <ZIihRqZljMaMRGcK@google.com>
- <DM8PR11MB5750D16B08B769173DCD740AE75AA@DM8PR11MB5750.namprd11.prod.outlook.com>
- <ZInLlkXsgnej9ZpT@google.com>
- <001aa2ed-2f78-4361-451d-e31a4d4abaa0@semihalf.com>
- <ZIxqAXhy1tCVpzz7@google.com>
- <22438996-cea6-fcdc-530b-bf3f2477a81c@semihalf.com>
- <ZIyk+qIBRD6ezlPo@google.com>
- <10b6045e-e5e4-e1f6-f93a-34f1ad61fdfe@semihalf.com>
- <DM8PR11MB5750F226997913CC1A0E54A4E75FA@DM8PR11MB5750.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Dmytro Maluka <dmy@semihalf.com>
-In-Reply-To: <DM8PR11MB5750F226997913CC1A0E54A4E75FA@DM8PR11MB5750.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230612042559.375660-5-michael.roth@amd.com>
 
-On 6/19/23 13:23, Reshetova, Elena wrote:
->> And BTW, doesn't it mean that interrupts also need to be hardened in the
->> guest (if we don't want the complexity of interrupt controllers in the
->> trusted hypervisor)? At least sensitive ones like IPIs, but I guess we
->> should also consider interrupt-based timings attacks, which could use
->> any type of interrupt. (I have no idea how to harden either of the two
->> cases, but I'm no expert.)
+On Sun, Jun 11, 2023 at 11:25:12PM -0500, Michael Roth wrote:
+> This will be used to determine whether or not an #NPF should be serviced
+> using a normal page vs. a guarded/gmem one.
 > 
-> We have been thinking about it a bit at least when it comes to our
-> TDX case. Two main issues were identified: interrupts contributing
-> to the state of Linux PRNG [1] and potential implications of missing
-> interrupts for reliable panic and other kernel use cases [2]. 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h |  7 +++++++
+>  arch/x86/kvm/mmu/mmu_internal.h | 35 ++++++++++++++++++++++++++++++++-
+>  2 files changed, 41 insertions(+), 1 deletion(-)
 > 
-> [1] https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html#randomness-inside-tdx-guest
-> [2] https://intel.github.io/ccc-linux-guest-hardening-docs/security-spec.html#reliable-panic
-> 
-> For the first one, in addition to simply enforce usage of RDSEED
-> for TDX guests, we still want to do a proper evaluation of security
-> of Linux PRNG under our threat model. The second one is 
-> harder to reliably asses imo, but so far we were not able to find any
-> concrete attack vectors. But it would be good if people who 
-> have expertise in this, could take a look on the assessment we did. 
-> The logic was to go over all kernel core callers of various 
-> smp_call_function*, on_each_cpu* and check the implications
-> if such an IPI is never delivered. 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index b3bd24f2a390..c26f76641121 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1445,6 +1445,13 @@ struct kvm_arch {
+>  	 */
+>  #define SPLIT_DESC_CACHE_MIN_NR_OBJECTS (SPTE_ENT_PER_PAGE + 1)
+>  	struct kvm_mmu_memory_cache split_desc_cache;
+> +
+> +	/*
+> +	 * When set, used to determine whether a fault should be treated as
+	   ^^^^^^^^
 
-Thanks. I also had in mind for example [1].
+And when not set? Invalid?
 
-[1] https://people.cs.kuleuven.be/~jo.vanbulck/ccs18.pdf
+I guess so, judging by the code below.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
