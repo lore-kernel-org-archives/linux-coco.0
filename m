@@ -1,108 +1,115 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D5C14A8B
-	for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 21:55:21 +0000 (UTC)
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-62ffb5f6aafso30976256d6.1
-        for <linux-coco@lists.linux.dev>; Mon, 19 Jun 2023 14:55:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687211720; x=1689803720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RdzLczGyyyiIYNvTKN6t+nBWF1GzRjK5CWv52ZbiRPw=;
-        b=APeY+OLAeUM0ntetAp1LDxTmd/ZT8qV36vebhZ6/VcMwk4uMUUhR800CSyT18vQlKW
-         uZrNQ0FXmnmG48copWury88dMkDTPzBwzMO4eHtQcqLUzVlqVbWLjqVkFWoHN7/9nYt4
-         gdgeN6/4LPgoMA6mnX7E+CKl7ob64ZJ233kC5FH2SyFdQUNGKTK5tvC1N0UIsrq+T6yn
-         HK2AWxXZShhWSMaNeyZIHkrZSssRKkui9N5KvRKfbAdA0nA9UQ3gK6+SPuyPkaTf9Xh8
-         yEtrMZykMHE2W08gpiQ9liyy7c+0Bi4srhjg+nU5OCAJPdoY1CcNDc3e2kdTORGk8eX3
-         j7lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687211720; x=1689803720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RdzLczGyyyiIYNvTKN6t+nBWF1GzRjK5CWv52ZbiRPw=;
-        b=GuNa67dvVwsUDDkf7BUCq0QyM/ChMnZzM9G4UxRlHjA5/tqtuwwm8GNfYqZHZKM6C6
-         pdrNi38U0+L4lKcMdmZliNPasTt5gsf/a3MI3FeG2qUBti410bIAMaOIxWOT4CRiTtis
-         C2YtsA2BWTXSFuX/Urp3Tjuy4gLDte0nYunmSdVQ+zEG5FQCTs/96z9rH+CTGHSf9H84
-         zjooNTQP1dtTgh4X6rs1ysBlXkthEx014codGRcLyd+TurCq52G4qA8zyxP3X7VpP/Jf
-         +eAynIJO7cgU9XgjCb3VF33Zi/XoHL/hLFSI1pnOvNIIWXJLWCby3LZa66tEs9JV9sVN
-         Bt1g==
-X-Gm-Message-State: AC+VfDyHy3JjTWSW7uO28X8PyLh1Eo7etWfIPwDdlHpHS4mY9OzsIQvK
-	M/026Cpkc3iAnbM3qQwd3WX/71KBWA8a059c5J0XiA==
-X-Google-Smtp-Source: ACHHUZ6KgfyuctugoVyraKcM8/CJNj0lR3f8HJwxs5YUXGKvuIfI0mQXyJJIMWhpcjZgwCcSiJvSEr/zQ5TDsp+5oq4=
-X-Received: by 2002:a05:6214:21ec:b0:615:a18b:d5af with SMTP id
- p12-20020a05621421ec00b00615a18bd5afmr13033287qvj.35.1687211720528; Mon, 19
- Jun 2023 14:55:20 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85981101FA
+	for <linux-coco@lists.linux.dev>; Tue, 20 Jun 2023 12:10:11 +0000 (UTC)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 52D6D1EC0589;
+	Tue, 20 Jun 2023 14:10:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1687263009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=Ql+U7fdRXmA/T5FzVBClcEAj8T+8ofxD8UdRBhS4onc=;
+	b=WjEsimMgK0SDv+cwlHliRtOENHTrsh91vMlUj76a3SY0Rc6H+E1QML4j0hkmoDQidVH8Jo
+	iXeveYuyVhZCavOAbekzryJbODT1+1WzsAlpLWeLbvTXnmWdxcNWhwVhZgfkinI/0jEWz6
+	GPtY+3bfzVSiL0QsI9sT/GtaoNxGfp0=
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 18CQLNStf_-r; Tue, 20 Jun 2023 12:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1687263006; bh=Ql+U7fdRXmA/T5FzVBClcEAj8T+8ofxD8UdRBhS4onc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hfOUBxtBtBjPXF39oOF3ZUvN61XjQe3LmVhjKtWxJsHC/101LS7/ZwEAyCLXrtDos
+	 6rV65BENcyyyWRLr06AnSLHuPXyYBP8k8Xku12SM1wyuoQ3Kt7xKdjkycFp66hKDeI
+	 tFuA9sZRcDfWPUaFLFmL9M3d8fJU46JD2A9HhsxeXeaEyPL1MYk7jgUgshZnl0oZAw
+	 OgRuwWp1I1HEPoirhwvgfY/c1X5by8s5P5gOw3pP8I8emQDdyYknlRJuLQgo31u10O
+	 Jk+ojyM8mG0G6b2kJ5L0JpD5WSMAWgQ0sytpzO/R9X8XJt4S4PLWWkg6QpaXqhaO6+
+	 X+XI3G+Wq8YDfZEGURuoru8FEWkLjNEwD6KAFabpurzjQPQbNuZOAMar3QqiqdycQ4
+	 uDOihd2sUnMyBYqaLil+kQxq+50zc+tis817YK1HglsVOg/HvJeyupBjjO2cT+gHMM
+	 dOR61duo+TRp5kxEpjcmIJQXulRbaURS/xFMoH7MoED/2Ky/h5xU7sUczEOG44CZFz
+	 1bjOrgBSvWNgYLNzPwUoG+11pqfR/yFvht+38G03bd5wsnae6D/9ccuMfHQ64U5wZ4
+	 tsmJXHXJbtLyApTEr6gMiQS/0RNFXcGdJzXW8hqDoM72Z/gUH4o1a2wvYS9PjVWPxB
+	 DtXgq+0bY4yEUrlbXMaWY9ug=
+Received: from zn.tnic (p200300eA971dC592329C23ffFEa6A903.dip0.t-ipconnect.de [IPv6:2003:ea:971d:c592:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1E74440E01DE;
+	Tue, 20 Jun 2023 12:09:26 +0000 (UTC)
+Date: Tue, 20 Jun 2023 14:09:20 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
+	zhi.a.wang@intel.com,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH RFC v9 05/51] x86/coco: move CONFIG_HAS_CC_PLATFORM check
+ down into coco/Makefile
+Message-ID: <20230620120920.GAZJGW8B6XHrsoLGCJ@fat_crate.local>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-6-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1686858861.git.isaku.yamahata@intel.com>
- <CAGtprH8O6dsjjNrMzLPmRio0ZDLe6M3U06HD0oNX3NN9FeWQfg@mail.gmail.com> <20230619231142.0000134a.zhi.wang.linux@gmail.com>
-In-Reply-To: <20230619231142.0000134a.zhi.wang.linux@gmail.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 19 Jun 2023 14:55:09 -0700
-Message-ID: <CAGtprH8jreK52wTcNhoAcBoHKZfkQ_1AYArgb2v6M_YVRYAw+w@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/6] KVM: guest memory: Misc enhacnement
-To: Zhi Wang <zhi.wang.linux@gmail.com>
-Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, 
-	Sean Christopherson <seanjc@google.com>, Sagi Shahar <sagis@google.com>, 
-	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, chen.bo@intel.com, 
-	linux-coco@lists.linux.dev, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230612042559.375660-6-michael.roth@amd.com>
 
-On Mon, Jun 19, 2023 at 1:11=E2=80=AFPM Zhi Wang <zhi.wang.linux@gmail.com>=
- wrote:
->
-> On Mon, 19 Jun 2023 12:11:50 -0700
-> Vishal Annapurve <vannapurve@google.com> wrote:
->
-> > On Thu, Jun 15, 2023 at 1:12___PM <isaku.yamahata@intel.com> wrote:
-> > > ...
-> > >
-> > > * VM type: Now we have KVM_X86_PROTECTED_VM. How do we proceed?
-> > >   - Keep KVM_X86_PROTECTED_VM for its use. Introduce KVM_X86_TDX_VM
-> > >   - Use KVM_X86_PROTECTED_VM for TDX. (If necessary, introduce anothe=
-r type in
-> > >     the future)
-> > >   - any other way?
-> >
-> > There are selftests posted[1] in context of this work, which rely on
-> > KVM_X86_PROTECTED_VM being just the software-only psuedo-confidential
-> > VMs. In future there might be more work to expand this usecase to
-> > full-scale VMs. So it would be better to treat protected VMs as a
-> > separate type which can be used on any platform without the need of
-> > enabling TDX/SEV functionality.
-> >
->
-> Out of curiosity, is this really a valid case in practice except selftest=
-?
-> It sounds to me whenever KVM_X86_PROTECTED_VM is used, it has to be tied
-> with a platform-specific CC type.
+On Sun, Jun 11, 2023 at 11:25:13PM -0500, Michael Roth wrote:
+> Currently CONFIG_HAS_CC_PLATFORM is a prereq for building anything in
+					^^^^^^
 
-Protected VM effort is about being able to have guest memory ranges
-not mapped into Userspace VMM and so are unreachable for most of the
-cases from KVM as well. Non-CC VMs can use this support to mitigate
-any unintended accesses from userspace VMM/KVM possibly using
-enlightened kernels.
+Use proper english words pls.
 
-Exact implementation of such a support warrants more discussion but it
-should be in the line of sight here as a future work item.
+> arch/x86/coco, but that is generally only applicable for guest support.
+> 
+> For SEV-SNP, helpers related purely to host support will also live in
+> arch/x86/coco. To allow for CoCo-related host support code in
+> arch/x86/coco, move that check down into the Makefile and check for it
+> specifically when needed.
 
+I have no clue what that means. Example?
 
+The last time we talked about paths, we ended up agreeing on:
 
+https://lore.kernel.org/all/Yg5nh1RknPRwIrb8@zn.tnic/
 
->
-> > TDX VM type can possibly serve as a specialized type of protected VM
-> > with additional arch specific capabilities enabled.
-> >
-> > [1] - https://github.com/sean-jc/linux/commits/x86/kvm_gmem_solo
->
+So your "helpers related purely to host support" should go to
+
+arch/x86/virt/svm/sev*.c
+
+And just to keep it simple, that should be
+
+arch/x86/virt/svm/sev.c
+
+and if there's real need to split that, we can do that later.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
