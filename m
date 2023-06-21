@@ -1,129 +1,103 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EDDC8C0
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jun 2023 08:16:33 +0000 (UTC)
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2b07762d292so16754371fa.0
-        for <linux-coco@lists.linux.dev>; Wed, 21 Jun 2023 01:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687335392; x=1689927392;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JkfTMbz8TLgIEiNfglNK3B/35KQ443+5fwdu9oyRTc8=;
-        b=WRc0mQdt8tT8orOjTrBku2drWl4tKtybJ3JXwQLmWxhx4g0aSDX5/KaDjzlcrL7jnJ
-         Kp0Ye+hmJe9Trl6uLPq2twnK3LyPL2m1j3hU19vTr9hVQQ+iqmbiw6W8NNnpiCbd/mPJ
-         Jc6nyJfBRogTkiZvkvQk5Y5UoUucA8WNjaDOqMyODU+prQOJ975Wn6sjwYfR+B9fHz/v
-         UmfXKrtoZW8IsdQs0owO5nC8vezRULKohksj0AfVDjBzBhE75TYH+jD752GfrDhtiBoY
-         xkKKGIvSAnP3YUhsuIXrO/n2nZJpEcR7pIcAmoKkBj31fdF/3dRIIca2BFbAfB455uMd
-         E0uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687335392; x=1689927392;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JkfTMbz8TLgIEiNfglNK3B/35KQ443+5fwdu9oyRTc8=;
-        b=XX4DERPiVBcxmzQWQEfCAMytZzJEmbrVGNjORMttEK+HCH9QiAvypFwthrfYqhIsJT
-         Dm7nowzjaq+wUssf/qmJ2HWQhXAgSti22326bhFKzX9bHSQ9lg9Ordmfbm/U/gYVRkl9
-         SoGjwFqA62d5nUXTJJNNAYR2LB35BxCBc96KoVs/mpV3Ibvw7pzLK3nloPVFHh4n51n5
-         UdCSDCQfIiCWBGNYbM9u7Hv/a558VQ4BfshEhicDeuHoqLdANlwwoXwf13sVuB4X2Xud
-         8RTWHNBkMIdYp9nBK+Ei5OZt7wMfeniLjdb/iHb6E1mel46lKGbCO/P42vlQDJC77Gmr
-         M9bg==
-X-Gm-Message-State: AC+VfDznVz2Ssd6nLPWr0uj61+axTbKZtjI5O1VtRTpk4Mj3cUlGXE8p
-	fcP5Lve6jD6VXXKdkDkY/pM=
-X-Google-Smtp-Source: ACHHUZ5AaVtsGMoIkyho4i8mUBql4cRD55grmmskRymra4oFpgZkcT3ibkYY2IMooWZGLly3WZfGXw==
-X-Received: by 2002:a2e:a4c2:0:b0:2b4:666d:513a with SMTP id p2-20020a2ea4c2000000b002b4666d513amr5951239ljm.3.1687335391604;
-        Wed, 21 Jun 2023 01:16:31 -0700 (PDT)
-Received: from localhost (88-115-161-74.elisa-laajakaista.fi. [88.115.161.74])
-        by smtp.gmail.com with ESMTPSA id y16-20020a2e3210000000b002aeee2a093csm785230ljy.59.2023.06.21.01.16.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jun 2023 01:16:31 -0700 (PDT)
-Date: Wed, 21 Jun 2023 11:16:29 +0300
-From: Zhi Wang <zhi.wang.linux@gmail.com>
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, Paolo Bonzini
- <pbonzini@redhat.com>, erdemaktas@google.com, Sean Christopherson
- <seanjc@google.com>, Sagi Shahar <sagis@google.com>, David Matlack
- <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, chen.bo@intel.com,
- linux-coco@lists.linux.dev, Chao Peng <chao.p.peng@linux.intel.com>,
- Ackerley Tng <ackerleytng@google.com>, Michael Roth <michael.roth@amd.com>
-Subject: Re: [RFC PATCH 0/6] KVM: guest memory: Misc enhacnement
-Message-ID: <20230621111629.0000045b.zhi.wang.linux@gmail.com>
-In-Reply-To: <CAGtprH8jreK52wTcNhoAcBoHKZfkQ_1AYArgb2v6M_YVRYAw+w@mail.gmail.com>
-References: <cover.1686858861.git.isaku.yamahata@intel.com>
-	<CAGtprH8O6dsjjNrMzLPmRio0ZDLe6M3U06HD0oNX3NN9FeWQfg@mail.gmail.com>
-	<20230619231142.0000134a.zhi.wang.linux@gmail.com>
-	<CAGtprH8jreK52wTcNhoAcBoHKZfkQ_1AYArgb2v6M_YVRYAw+w@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03B65C97
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jun 2023 08:54:56 +0000 (UTC)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A60A11EC0645;
+	Wed, 21 Jun 2023 10:54:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+	t=1687337688;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=PaijKeZv9hHzPlRW8nV/FYz8UIKd1karlQoSdFTK9HU=;
+	b=bXvV0+pxKiaymh6RMR5E7TymGBtOIKsJQRSEXl6ZgJlqDLoxmRN+EbYq53nMqpeSm8Fqcv
+	juvqXqCN6U9D1PMExuQT2nUWstu0UHyTHq6SadvJ6vqMCjyKTvbQpFF+6xoNHNbK+zgcXd
+	lMHc57oV4O1RNKyc122eH/G4HXSD12g=
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id J9iqJbrA_r02; Wed, 21 Jun 2023 08:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1687337685; bh=PaijKeZv9hHzPlRW8nV/FYz8UIKd1karlQoSdFTK9HU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NZyPtAM5/IdcCmMCgT07D/cKwY5LISGmi08sReq8DvsGMAJg7TbmGflxm2e4+nhW1
+	 iM8n4szOWC7EJktdC7OieNP3tV1U+8A8rGXnToElYLW9jG7PFYvhP/pxB/hG0gD0A5
+	 NvgkTVHjWBzSaTC2PTYLrnb6dis6w/coleE3KJ7P5U4ueUijT+AY6Mw3eGKF/rpJOl
+	 1+3U94yuoOb95xXewS808ymG8YphUWenlYBtwW1c59lKr3Bn5mSbiJLdjGiWnMxfIB
+	 W+IDhNs+64UGOO9sJmxs2+Qm445XqPoUuR7pqJpjx3DHGjK3Sb1pCewY4sVibZX3LX
+	 s0vVMDCE250TdXfAao/7fr9iTE2uU5U4fkvPZCZ/++dVp9/vBPEzvVJVSkfoDw/TWW
+	 ZGorHZa3NrTRAsNHRifAqR6/OV6uq7uqOwZBVdsra6/+Zymo6cXFgzqIHTwbQglT1Q
+	 hoZ6+C2USb20l9LItSwWGf+id6/NME+lQMm/ZGG7Pn5D7CdZT2epathV3G9ZpzgMUS
+	 BVC8P2MDBpL967kRs++EckTvrNYXIAi4Hml4Y9d6RNE+WHkqH5egbll7z0yZUR68ja
+	 XBymJ9aKqhJAMgYgsL9YnDigIu5FZeZfinbP/8kBa0FRKJS+OrU5iqj2Lar4z2aNqy
+	 5dmKsESs5nfxY7bHbIvYwrqA=
+Received: from zn.tnic (p200300ea971Dc592329c23FffEA6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971d:c592:329c:23ff:fea6:a903])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ED59740E019B;
+	Wed, 21 Jun 2023 08:54:04 +0000 (UTC)
+Date: Wed, 21 Jun 2023 10:54:00 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
+	zhi.a.wang@intel.com,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH RFC v9 05/51] x86/coco: move CONFIG_HAS_CC_PLATFORM check
+ down into coco/Makefile
+Message-ID: <20230621085400.GDZJK6qMeOU2monJDv@fat_crate.local>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-6-michael.roth@amd.com>
+ <20230620120920.GAZJGW8B6XHrsoLGCJ@fat_crate.local>
+ <20230620204315.xr7wtcrowc7oprka@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230620204315.xr7wtcrowc7oprka@amd.com>
 
-On Mon, 19 Jun 2023 14:55:09 -0700
-Vishal Annapurve <vannapurve@google.com> wrote:
+On Tue, Jun 20, 2023 at 03:43:15PM -0500, Michael Roth wrote:
+> Basically, arch/x86/coco/Makefile is never processed if arch/x86/Kbuild
+> indicates that CONFIG_HAS_CC_PLATFORM is not set. So if we want to have
+> stuff in arch/x86/coco/Makefile that build for !CONFIG_HAS_CC_PLATFORM,
+> like SNP host support, which does not rely on CONFIG_HAS_CC_PLATFORM
+> being set, that check needs to be moved down into arch/x86/coco/Makefile.
 
-> On Mon, Jun 19, 2023 at 1:11___PM Zhi Wang <zhi.wang.linux@gmail.com> wrote:
-> >
-> > On Mon, 19 Jun 2023 12:11:50 -0700
-> > Vishal Annapurve <vannapurve@google.com> wrote:
-> >
-> > > On Thu, Jun 15, 2023 at 1:12___PM <isaku.yamahata@intel.com> wrote:
-> > > > ...
-> > > >
-> > > > * VM type: Now we have KVM_X86_PROTECTED_VM. How do we proceed?
-> > > >   - Keep KVM_X86_PROTECTED_VM for its use. Introduce KVM_X86_TDX_VM
-> > > >   - Use KVM_X86_PROTECTED_VM for TDX. (If necessary, introduce another type in
-> > > >     the future)
-> > > >   - any other way?
-> > >
-> > > There are selftests posted[1] in context of this work, which rely on
-> > > KVM_X86_PROTECTED_VM being just the software-only psuedo-confidential
-> > > VMs. In future there might be more work to expand this usecase to
-> > > full-scale VMs. So it would be better to treat protected VMs as a
-> > > separate type which can be used on any platform without the need of
-> > > enabling TDX/SEV functionality.
-> > >
-> >
-> > Out of curiosity, is this really a valid case in practice except selftest?
-> > It sounds to me whenever KVM_X86_PROTECTED_VM is used, it has to be tied
-> > with a platform-specific CC type.
-> 
-> Protected VM effort is about being able to have guest memory ranges
-> not mapped into Userspace VMM and so are unreachable for most of the
-> cases from KVM as well. Non-CC VMs can use this support to mitigate
-> any unintended accesses from userspace VMM/KVM possibly using
-> enlightened kernels.
-> 
-> Exact implementation of such a support warrants more discussion but it
-> should be in the line of sight here as a future work item.
-> 
->
+Ok, so if you put SNP host support into arch/x86/virt/svm/sev.c, that
+should work too and won't have any relation to CONFIG_HAS_CC_PLATFORM,
+right?
 
-IIUC, what you are saying is (KVM_X86_PROTECTED_VM == (VMs with UPM or GMEM))
-&& (KVM_X86_PROTECTED_VM != KVM_X86_CC_VM) && KVM_X86_CC_VM requires
-KVM_X86_PROTECTED_VM.
+The CC_PLATFORM thing is a way to check for confidential computing guest
+features by abstracting the capabilities so that you don't have to check
+*each* and *every* conf guest type in the conditionals and thus go nuts.
 
-If we think KVM_X86_PROTECTED_VM as a dedicated feature, not tightly coupled
-with CC techs, it seems we needs another defination of KVM_X86_CC_VM to represent
-CC VM and CC platform types like KVM_X86_CC_TDX_VM to tell which CC tech sits
-behind it?
+Thx.
 
-I don't think it is good to mix the usages of KVM_X86_PROTECTED_VM and KVM_X86_CC_VM
-together if we are sure KVM_X86_PROTECTED_VM is not going to represent CC VMs
-in the code.
+-- 
+Regards/Gruss,
+    Boris.
 
-> 
-> 
-> >
-> > > TDX VM type can possibly serve as a specialized type of protected VM
-> > > with additional arch specific capabilities enabled.
-> > >
-> > > [1] - https://github.com/sean-jc/linux/commits/x86/kvm_gmem_solo
-> >
-
+https://people.kernel.org/tglx/notes-about-netiquette
