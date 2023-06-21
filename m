@@ -1,52 +1,53 @@
 Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03B65C97
-	for <linux-coco@lists.linux.dev>; Wed, 21 Jun 2023 08:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365FFC2DE
+	for <linux-coco@lists.linux.dev>; Wed, 21 Jun 2023 09:16:31 +0000 (UTC)
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A60A11EC0645;
-	Wed, 21 Jun 2023 10:54:48 +0200 (CEST)
+	by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 081071EC0645;
+	Wed, 21 Jun 2023 11:16:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-	t=1687337688;
+	t=1687338990;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=PaijKeZv9hHzPlRW8nV/FYz8UIKd1karlQoSdFTK9HU=;
-	b=bXvV0+pxKiaymh6RMR5E7TymGBtOIKsJQRSEXl6ZgJlqDLoxmRN+EbYq53nMqpeSm8Fqcv
-	juvqXqCN6U9D1PMExuQT2nUWstu0UHyTHq6SadvJ6vqMCjyKTvbQpFF+6xoNHNbK+zgcXd
-	lMHc57oV4O1RNKyc122eH/G4HXSD12g=
+	bh=fI4K8Q/io77w6bwiDKBNg2gNYXZ0qce2M/7aadNkERY=;
+	b=NC0f3uCJoMjFh+SJvvtI3/CBfXtdZh/LTG3aydeR6bHNDvjpjK2qxl0y5xh018/+U0lwk7
+	KrGI4WRKca2Ddy0sPzDbxqYrUJGl7uCjwzi3qu3fKIDLi1nN7TavH15xKnm0eD61+boalt
+	phPsKYwSqvyik7xgwVGdhJKqljnc25w=
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id J9iqJbrA_r02; Wed, 21 Jun 2023 08:54:46 +0000 (UTC)
+	with ESMTP id ZIP4NY-AI2Be; Wed, 21 Jun 2023 09:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1687337685; bh=PaijKeZv9hHzPlRW8nV/FYz8UIKd1karlQoSdFTK9HU=;
+	t=1687338987; bh=fI4K8Q/io77w6bwiDKBNg2gNYXZ0qce2M/7aadNkERY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NZyPtAM5/IdcCmMCgT07D/cKwY5LISGmi08sReq8DvsGMAJg7TbmGflxm2e4+nhW1
-	 iM8n4szOWC7EJktdC7OieNP3tV1U+8A8rGXnToElYLW9jG7PFYvhP/pxB/hG0gD0A5
-	 NvgkTVHjWBzSaTC2PTYLrnb6dis6w/coleE3KJ7P5U4ueUijT+AY6Mw3eGKF/rpJOl
-	 1+3U94yuoOb95xXewS808ymG8YphUWenlYBtwW1c59lKr3Bn5mSbiJLdjGiWnMxfIB
-	 W+IDhNs+64UGOO9sJmxs2+Qm445XqPoUuR7pqJpjx3DHGjK3Sb1pCewY4sVibZX3LX
-	 s0vVMDCE250TdXfAao/7fr9iTE2uU5U4fkvPZCZ/++dVp9/vBPEzvVJVSkfoDw/TWW
-	 ZGorHZa3NrTRAsNHRifAqR6/OV6uq7uqOwZBVdsra6/+Zymo6cXFgzqIHTwbQglT1Q
-	 hoZ6+C2USb20l9LItSwWGf+id6/NME+lQMm/ZGG7Pn5D7CdZT2epathV3G9ZpzgMUS
-	 BVC8P2MDBpL967kRs++EckTvrNYXIAi4Hml4Y9d6RNE+WHkqH5egbll7z0yZUR68ja
-	 XBymJ9aKqhJAMgYgsL9YnDigIu5FZeZfinbP/8kBa0FRKJS+OrU5iqj2Lar4z2aNqy
-	 5dmKsESs5nfxY7bHbIvYwrqA=
-Received: from zn.tnic (p200300ea971Dc592329c23FffEA6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971d:c592:329c:23ff:fea6:a903])
+	b=DnzWgH4s65gVXoHcEoH/FiuLI57PSlNdcO7BHD7AiqDg5Ne41G5S2z1A0ESKW8KhC
+	 zjmGH4F+ox7qQyiCy85AzymObJcixiAKYc0XFgafArcY2zjxCKLvbZuMnR5kVmC0zQ
+	 NWqOSWnId4cJu4keK0mECeYvsv5on253FZhdyb4GWCPSj03g/7ZAGz5OMbNfXON4Bc
+	 paruBiy4iZDLq7cq596SzlYmtR9dYUnAn0B1/22qVcE7HPsDh5NGWHJaL9EktazY1j
+	 fz1JHeZgvQXkyk7GGknnpiVxx7UT3Bfvc66dLJWlHFAaB7Nsdg3lzF8akjfcoOxNIj
+	 aNk9j0WNmHS7S1fjPAQc3OZW2ytSJ0xKg+MV5jgGfkqSry9i9hx9ey74YEU2iFy6vz
+	 yXfgSbuvaS7UYJBRet6JMh1+39qO+W9OAbjuCQXqE7iSOrFQQMx33c//qXH+hCNktH
+	 ePeyqdfqFPWn1kDKDTUrcR1i5EHYAIpb2JTObPZb297GlpSaEJ5AYvyqIg+0Ue5dw2
+	 GH4KZg77UvBgfivI9IHcoPpR0Lfq8DnZUpBh/vjXJtrIK8LJV1F7P66BBDUGKEIAxF
+	 P0VQmhCRtJp/sBPXl+8iD3aY3JkXZe60cyGczseLAg8argYAuhqcz0eFa5Wazx/Ds1
+	 ZHO3DK95miUU+DmSiGNfPScg=
+Received: from zn.tnic (p200300EA971DC592329c23FfFea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971d:c592:329c:23ff:fea6:a903])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ED59740E019B;
-	Wed, 21 Jun 2023 08:54:04 +0000 (UTC)
-Date: Wed, 21 Jun 2023 10:54:00 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 08FF640E0145;
+	Wed, 21 Jun 2023 09:15:46 +0000 (UTC)
+Date: Wed, 21 Jun 2023 11:15:41 +0200
 From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	linux-crypto@vger.kernel.org, x86@kernel.org,
 	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
 	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
@@ -60,15 +61,13 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
 	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
 	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
-	zhi.a.wang@intel.com,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCH RFC v9 05/51] x86/coco: move CONFIG_HAS_CC_PLATFORM check
- down into coco/Makefile
-Message-ID: <20230621085400.GDZJK6qMeOU2monJDv@fat_crate.local>
+	zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH RFC v9 07/51] x86/sev: Add the host SEV-SNP
+ initialization support
+Message-ID: <20230621091541.GEZJK/veTnfhOnX8ci@fat_crate.local>
 References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-6-michael.roth@amd.com>
- <20230620120920.GAZJGW8B6XHrsoLGCJ@fat_crate.local>
- <20230620204315.xr7wtcrowc7oprka@amd.com>
+ <20230612042559.375660-8-michael.roth@amd.com>
+ <12f95b38-427c-6810-373a-ba2062c43882@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -77,24 +76,25 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230620204315.xr7wtcrowc7oprka@amd.com>
+In-Reply-To: <12f95b38-427c-6810-373a-ba2062c43882@intel.com>
 
-On Tue, Jun 20, 2023 at 03:43:15PM -0500, Michael Roth wrote:
-> Basically, arch/x86/coco/Makefile is never processed if arch/x86/Kbuild
-> indicates that CONFIG_HAS_CC_PLATFORM is not set. So if we want to have
-> stuff in arch/x86/coco/Makefile that build for !CONFIG_HAS_CC_PLATFORM,
-> like SNP host support, which does not rely on CONFIG_HAS_CC_PLATFORM
-> being set, that check needs to be moved down into arch/x86/coco/Makefile.
+On Mon, Jun 12, 2023 at 08:34:02AM -0700, Dave Hansen wrote:
+> On 6/11/23 21:25, Michael Roth wrote:
+> > +	/*
+> > +	 * Calculate the amount the memory that must be reserved by the BIOS to
+> > +	 * address the whole RAM, including the bookkeeping area. The RMP itself
+> > +	 * must also be covered.
+> > +	 */
+> > +	max_rmp_pfn = max_pfn;
+> > +	if (PHYS_PFN(rmp_end) > max_pfn)
+> > +		max_rmp_pfn = PHYS_PFN(rmp_end);
+> 
+> Could you say a little here about how this deals with memory hotplug?
 
-Ok, so if you put SNP host support into arch/x86/virt/svm/sev.c, that
-should work too and won't have any relation to CONFIG_HAS_CC_PLATFORM,
-right?
+Does SNP hw even support memory hotplug?
 
-The CC_PLATFORM thing is a way to check for confidential computing guest
-features by abstracting the capabilities so that you don't have to check
-*each* and *every* conf guest type in the conditionals and thus go nuts.
-
-Thx.
+I think in order to support that, you'd need some special dance because
+of the RMP table etc...
 
 -- 
 Regards/Gruss,
