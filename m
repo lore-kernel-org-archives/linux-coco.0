@@ -1,185 +1,171 @@
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406AF21085
-	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 23:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1745221085
+	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 23:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687475836; x=1719011836;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zBMD9h2KBgIYaddcweRh+FeZhoyrRw3SBUE0qo0cW8k=;
-  b=CCwTVc3HqVzp37k+XscW/HTWif0KwJvO55jnmE1R/PQV3Dqu2HEYzqEc
-   XepDFyawKvjR1Igrssei7VoJw3Zx2MAXzBhIpEkHGMDM0Q6LNqg0hBjL4
-   bbeYcuYb59W1jRm4g61aK8X3CQXyIiYSQu6JBt47W6f3l6ftiX48xwtdC
-   RHx7tjU/xY486y1WVQztyv8GRLTAWQVjU3F+p4fiIeHdr6O2fjzA+bhv/
-   AO5s5iTxaX+TAAkeTuPKclli42FsGgHrYoxbpP/z1iDnQ3iG7MiRkl85E
-   vwPeufA4Uj3eD6QkTN65AQb8rP1aswc+nTWzSciH0zCUtyp5LzulDaqWX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="358129745"
+  t=1687476507; x=1719012507;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=oC6IEQI0lj2oD0/ueS/PW0YMtWP8UjxcWnSDJn0yvu8=;
+  b=PPRr0MdKivfdJLEvfTJRWLW/TEaqjLmeLTx4Q4TwM3zU1RPqgnctwsvV
+   fIrUVPsIhuuMgdDAlvt58r78khA85/ufXyIj4zb1KeCwoZpj7VqROufwC
+   KtiNkWOBuG1A1bUvn/IOZdirHtSf8JoQOYwl7gLihsaTNr6ifb5ge68tJ
+   xHaH3pSjRmarP4hAmf9+7km7OQbegU+5PBskYOMv9YEHOk4I9ePQv6UUh
+   FjbzgkYd20Y63SQfI5RZ1LrOYgXUlDwLLTBXULI88pKAIj2xbfQ1aHxAt
+   /Gtks5XhSpaOp2TJUCP+825G4m2xF8YRV54B6WTMY85jHx42Lx5YP/Zna
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="358131658"
 X-IronPort-AV: E=Sophos;i="6.01,150,1684825200"; 
-   d="scan'208";a="358129745"
+   d="scan'208";a="358131658"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 16:17:13 -0700
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 16:28:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="718285986"
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="718288478"
 X-IronPort-AV: E=Sophos;i="6.01,150,1684825200"; 
-   d="scan'208";a="718285986"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 16:17:13 -0700
-From: isaku.yamahata@intel.com
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: isaku.yamahata@intel.com,
-	isaku.yamahata@gmail.com,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	erdemaktas@google.com,
-	Sean Christopherson <seanjc@google.com>,
-	Sagi Shahar <sagis@google.com>,
-	David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>,
-	chen.bo@intel.com,
-	linux-coco@lists.linux.dev,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Michael Roth <michael.roth@amd.com>
-Subject: [RFC PATCH v2 5/6] KVM: Add flags to struct kvm_gfn_range
-Date: Thu, 22 Jun 2023 16:16:29 -0700
-Message-Id: <689da77417c2f4055f02a71aab51ff603bc195af.1687474039.git.isaku.yamahata@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1687474039.git.isaku.yamahata@intel.com>
+   d="scan'208";a="718288478"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga007.fm.intel.com with ESMTP; 22 Jun 2023 16:28:25 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 22 Jun 2023 16:28:25 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Thu, 22 Jun 2023 16:28:25 -0700
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.45) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Thu, 22 Jun 2023 16:28:24 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ALZLCGeUf4n/MZ/LgeFAfXlMH2C0DQemBAqrskOS+X3c+FS6Obrmmqdvln69M5F9PDOMGCqoCC8UngSxYloNC68MhR7WlloI9QsdvCjkq4qg1bRdUf0qM+l7s28PnNh/7RUlnCHfByiXtVUYTxTM9qhQaqjpb4yyVfHQloj/QdmRB85mf+8JGkKVBqHBzVxs9a4O31R5k9cTzW+ibDM3U6ympT2ud9ZA/1kuv3CRgwMKIRTmqZRf2ZeMTIvgtt3oKvp5aHoZZt6n7XRvPN+WaoT3RViVtsy9gLcRKQnRnfd7HeJna6kVhFsSXxdQwCoR6VLrbxkqTTcPT/RSQZbj4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oC6IEQI0lj2oD0/ueS/PW0YMtWP8UjxcWnSDJn0yvu8=;
+ b=n88HVNctDc55XBW+NkgDg1oAlXwkNY+aMGZ/x4L3k5TRV274H47U7i+dxjervHUelJ/UiK23Zzjy2waJF2B5zbxSWkJC1vW7IkZ0CwuJnOuA17UMDgNO8yMdQ4WIyoMZAywfPI3cq4nN8L5iZSxs/VDeH9gy5iJMJHgGpV1FVRMeVWGetREbSulYqcbpCSbIhKhobB9zdUZk6reP1ezyTSAYTiBFZ9X7llWxugpw7vmtvZpHGvUuqvL9Yl21kSt8TnjTwqmfi8PCQRHrr79e/k+pQUn1eGXQvfdh0yZfxyRCs8TC5SBaU1iOQqV2XqrxYLDBMVr796S4WslFgXLIfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
+ by IA1PR11MB6396.namprd11.prod.outlook.com (2603:10b6:208:3ab::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 22 Jun
+ 2023 23:28:22 +0000
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::19b7:466f:32ac:b764]) by BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::19b7:466f:32ac:b764%3]) with mapi id 15.20.6521.026; Thu, 22 Jun 2023
+ 23:28:22 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Yamahata,
+ Isaku" <isaku.yamahata@intel.com>
+CC: "michael.roth@amd.com" <michael.roth@amd.com>, "Annapurve, Vishal"
+	<vannapurve@google.com>, "Christopherson,, Sean" <seanjc@google.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>, "Chen, Bo2"
+	<chen.bo@intel.com>, "Shahar, Sagi" <sagis@google.com>,
+	"isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "Aktas, Erdem"
+	<erdemaktas@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"dmatlack@google.com" <dmatlack@google.com>, "zhi.wang.linux@gmail.com"
+	<zhi.wang.linux@gmail.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "chao.p.peng@linux.intel.com"
+	<chao.p.peng@linux.intel.com>
+Subject: Re: [RFC PATCH v2 3/6] KVM: x86/mmu: Pass round full 64-bit error
+ code for the KVM page fault
+Thread-Topic: [RFC PATCH v2 3/6] KVM: x86/mmu: Pass round full 64-bit error
+ code for the KVM page fault
+Thread-Index: AQHZpV+yhpnTip1UUUaNzYvoReaLo6+Xd7YA
+Date: Thu, 22 Jun 2023 23:28:22 +0000
+Message-ID: <37b868c53c9f35e8ec051573562a4598df38d72d.camel@intel.com>
 References: <cover.1687474039.git.isaku.yamahata@intel.com>
+	 <b659f86ac7128965e05a7a660c38734667530fc0.1687474039.git.isaku.yamahata@intel.com>
+In-Reply-To: <b659f86ac7128965e05a7a660c38734667530fc0.1687474039.git.isaku.yamahata@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.48.2 (3.48.2-1.fc38) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|IA1PR11MB6396:EE_
+x-ms-office365-filtering-correlation-id: 448d8d1b-1210-4061-e0f8-08db73785ebc
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Yxi5AZuu2k7RaXlSPQtKXkDeqZcTQx0waZGkulnyaZuXXYNmzYsFnzNugIjvhRAk8lwd8w5zvr97oBQqVdAWjgctYm6HlBGKENXqkykSFdLGb6OFTs7kEP6dKUMrHo97waRorKpOYQnZDahpFlZcqNIFaBqJgoJN9JTtkIZram258LFc9L9fNkv1boNz8Do2qVh23ByiD6afFWXYy0T2qyvVwpvLG372gyPs6ojowUITJPKeKbKyygYZMT/W9IHPVSB9oQaQ/O/Mq3pU52ZfG2FLd/rgZ+jj9CGtMIHXGMadIJqKFgw24MLAvXOKFqCP5GdXmKZKjZBN7cmHq6W9bbbOWjnkBvc33KrxcoMC+Bm+7Nw8ekQr/086EUiEoyQVCePU+drhZ5VwM6KSdsW5oRrJRf3fqoDSwmngwZ3QL23k1P3GXAIxNLAQTcGWSQS+PEh+RpYoHdJdnbhuJmMZ8fpVul2FnrGfXrfl+xvcRZdsNBguRt0uzfa2e6LrgE/U0J61dz83gRu/H6H4vAE6FY8h+hMzdERuaG8kl4p8vl10EbfKox1B9juqbRTSJm9+MbxqA1p2/BVts5cLxaSpMCDsxOer1CCgbM9pD2ZafktuR4lb7ybfwdT3zsHrrAsf
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39860400002)(376002)(136003)(366004)(396003)(346002)(451199021)(186003)(26005)(6506007)(6512007)(2616005)(82960400001)(54906003)(7416002)(6486002)(2906002)(71200400001)(478600001)(36756003)(4744005)(122000001)(38070700005)(38100700002)(110136005)(64756008)(91956017)(66446008)(66556008)(4326008)(316002)(8676002)(76116006)(66946007)(6636002)(41300700001)(5660300002)(66476007)(86362001)(8936002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QkMxRHowYzdkU1lDTnpvKzh1aGNBbWFqMW5xTC94MXV6d0lQSTJJemZHSXRP?=
+ =?utf-8?B?WStwQ1AvRitnajBuVE10TWJNRDduUW1nNllLb29rc3k2RnZnSzdwVkpoblRt?=
+ =?utf-8?B?aXdqT0R5NXV4M2pRVWxzMk11aDJ2UnlYVndoQzV6ZjQwWStsWU1ENGVNbTNy?=
+ =?utf-8?B?N1NRd3kxNExHcXB0ekh4azc0Rk5Bd0FpTWJJVlBSaHhwdytjNk1QdlFUam9h?=
+ =?utf-8?B?Mmxvb3QrWVNiZ2JublZVN2w4YXRyc2tUWGYzdkdLaWZtQVhUQTNydHJqTWYy?=
+ =?utf-8?B?NkhrOFhnL3F0NzhhTFkxOS9ZQ2t5ZTZGSnlYVlhGYVNndHZ4R2xldTFEbUMy?=
+ =?utf-8?B?VzdoTzF3VEZNdjVURDc1S3lhUHBSdE1WVmQ5K2RRcmhOZ0xyRVl2K2NtdmZY?=
+ =?utf-8?B?RUNtejVoS0VPWjdTQ2hjMTBwbTNJdVJyVkNrVVZLbzRaTWl0RXR1SVBkZWtK?=
+ =?utf-8?B?dHg0azdxYjlhR0h3d3h5SGFkWkpueEI4OTRib2R5TGlvRXlCUVVpSTFFRnpO?=
+ =?utf-8?B?Nkc5VXJjSTBnc0xDdU5jdzhGODdJd2RMakJuejJUVTUyeDNyTENSNTBPNGkw?=
+ =?utf-8?B?ZStsUXptcW1kSHYybyt6SXdIOTk4MTJLSkFDbSs4anoxcDN6cG9tN2lxUm5i?=
+ =?utf-8?B?dXRGOUtaMXBBR2NtNHlkSVJyVTF0WmQ3cGlmYmgreHRaeU9aK3pncTJOTG5O?=
+ =?utf-8?B?MVJ3aWIwemFIY1kyZlJCWDJBcHhrUUpxdzRqOWNhTm9LNmcxSHFGbFJNNHJh?=
+ =?utf-8?B?NkxDaDVSOGVvdHZONW52Mkgva1lFMVJuZ0ppazZvR3hjNXl5UGU2d3JzRzJV?=
+ =?utf-8?B?REpLbkhQNTEzUDkrS3ozdHI2Qzd3ZktSbjB4Q2F0Nlk4dTJqdlkyRXpqYndq?=
+ =?utf-8?B?SHE4TURrOGxkcHliNzFGY2hRRWJIWW1xbmpFSkZxNWxSOUMyUnVydGtpMlFX?=
+ =?utf-8?B?dDdKelc2bDNGMkV4eE8xcGRSemxZaExJUVZtOEFUZ21raW5PZTROZjJpNmEv?=
+ =?utf-8?B?ZHBBSlJBdkh3bnZ3NW9Gb2h4b0FZL2V6V0hDY1lOd1RYWVpTcXdsL3lLMTFn?=
+ =?utf-8?B?dnhiRHpRTVJDOEY5SEx2ek1IcUYyM3BhbDZVdGdzZ256WGJCb3VhU1RVRkVx?=
+ =?utf-8?B?SmZFQ1hWMmdMUFhhYUd5cnlrbjluVm5CdEdtNUwvTUhUb3ZWNk1waGZqbGJW?=
+ =?utf-8?B?TkFCek1uTmY1Wi8vSC9YVEM0OFJjRFh1YWJQajk2S1BKNzlyTWRkOVcvWGtY?=
+ =?utf-8?B?dlE0SlNOam1WZy9xZW1Eb0JnSDI5RDFrYldRWHBBdGNOMk93NjF6aStJcnBU?=
+ =?utf-8?B?UHVIYWJ5cWw0V0tiSWJzRnY5azV3akdwMmYyZ28zZnREbjBzQVhFblBqUDN4?=
+ =?utf-8?B?NDdvOVp1S3dkUUU1TDNYdUpWdWZnU2NDM05QTHNROStmSnoxN3I3R1dnWW5y?=
+ =?utf-8?B?aG9jQ05POUNWTUg2UXd5YkM1Q1lBUWtsY2dOS0NmMThXTEQ1ak4yMUh4NzA5?=
+ =?utf-8?B?SGNoUmx6NCtHV2drcmpzTnE0d2Q3UHhBUmJTeFg1ckZ3NGY4TXJ3ZHJBdDQz?=
+ =?utf-8?B?Vk9MUnAwNnBQWEVNRU1SYVVRbmd4VEFoUXMzOERUSkIzc3lsR2dBMDdKUUxH?=
+ =?utf-8?B?TDViZFFkQXA5ay9ZVGZmZ0F6NGdJR1I3cmhxaGpCZFFKUzhNVzN4Vkt0ejIv?=
+ =?utf-8?B?emVGRlpVWWhlczRuU001OTBldHdXU0xidWEvUUZKb29BNzVVSll5QnlqUUNJ?=
+ =?utf-8?B?aEZ1aU1mNFc2ZWZQckVYVFRBQnBscFFHUEZWM0c3c1l0ditPSWV4bzFESDRY?=
+ =?utf-8?B?N04rbExnTENxOUt3SXphamJwNzNnS0h1TGZjTS9VOVpVZ05XSEM3QW5nS3lm?=
+ =?utf-8?B?ZnpSUFoxNzJ0djIwQ3d6cC9lOGY3cFB4ZW5CV3EvYUN0aUtTNlFXRDNHT0x6?=
+ =?utf-8?B?LzI0ZVFMbVhIODdlbTdKRCt6dVk3OWg0bkRSZncxYnM4eWFOaUlJVVREYy80?=
+ =?utf-8?B?cXVpV0tQSkg0UGgzb2FVZThmVU9YOFdLRHNqRE42Z1ptblFIaEc5dTZmZkNN?=
+ =?utf-8?B?VERVRjNmd3c3ZW1XZUhiNUpyYTRURDh0cXNuandyOWJFdFZjOEpnU3ZkOEx6?=
+ =?utf-8?B?enVJNUZUcDVXZ3l1bGZZMGVEWFo2b0VDcVF6REZGTUVpY2luckJSRFRFeEFR?=
+ =?utf-8?B?QVE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5216A021D6A1944FBF97CEE7B2D53B65@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 448d8d1b-1210-4061-e0f8-08db73785ebc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2023 23:28:22.5487
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JvjUBxrBKNbk4DfFDEfVyyKKHR1CNcXNLlJmjBfELHHg4nnlN8SP4Zhr+4vx6/rLRmOm9stuGKykNrMs3z8WNQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6396
+X-OriginatorOrg: intel.com
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
-
-Add flags to strut kvm_gfn_range to indicate who triggered the callback
-and new memory attributes.
-
-TDX needs to know the reason for a callback by kvm_unmap_gfn_range().  mmu
-notifier, set memory attributes ioctl or KVM gmem callback.  With TDX,
-zapping a private page from the encrypted page table and adding the page
-back to the same private GPA results in zeroing the page, and the guest has
-to accept the page again.  On the change of memory attribute from private
-to shared, zapping the GPA range irrespective to private-or-shared and
-expecting the fault doesn't work for TDX.  Instead, zap shared pages only
-and keep the private pages.  Concretely
-- If it's from mmu notifier, zap shared pages.
-- If it's from KVM gmem, zap private pages.
-- If setting memory attributes to private, zap shared pages.
-- If setting memory attributes to shared, zap private pages.
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-
----
-Changes v1 -> v2:
-- consolidate KVM_GFN_RANGE_FLAGS_GMEM_{PUNCH_HOLE, RELEASE} into
-  KVM_GFN_RANGE_FLAGS_GMEM.
-- Update the commit message to describe TDX more.  Drop SEV_SNP.
----
- include/linux/kvm_host.h | 10 +++++++++-
- virt/kvm/guest_mem.c     |  9 ++++++---
- virt/kvm/kvm_main.c      |  4 +++-
- 3 files changed, 18 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 1a47cedae8a1..1fe0516fcddf 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -256,12 +256,20 @@ int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu);
- #endif
- 
- #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
-+
-+#define KVM_GFN_RANGE_FLAGS_SET_MEM_ATTR	BIT(0)
-+#define KVM_GFN_RANGE_FLAGS_GMEM		BIT(1)
-+
- struct kvm_gfn_range {
- 	struct kvm_memory_slot *slot;
- 	gfn_t start;
- 	gfn_t end;
--	pte_t pte;
-+	union {
-+		pte_t pte;
-+		u64 attrs;
-+	};
- 	bool may_block;
-+	unsigned int flags;
- };
- bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
- bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
-diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-index cdf2d84683c8..387226136960 100644
---- a/virt/kvm/guest_mem.c
-+++ b/virt/kvm/guest_mem.c
-@@ -99,7 +99,8 @@ static struct folio *kvm_gmem_get_folio(struct file *file, pgoff_t index)
- }
- 
- static void kvm_gmem_invalidate_begin(struct kvm *kvm, struct kvm_gmem *gmem,
--				      pgoff_t start, pgoff_t end)
-+				      pgoff_t start, pgoff_t end,
-+				      unsigned int flags)
- {
- 	struct kvm_memory_slot *slot;
- 	unsigned long index;
-@@ -118,6 +119,7 @@ static void kvm_gmem_invalidate_begin(struct kvm *kvm, struct kvm_gmem *gmem,
- 			.slot = slot,
- 			.pte = __pte(0),
- 			.may_block = true,
-+			.flags = flags,
- 		};
- 
- 		kvm_mmu_invalidate_range_add(kvm, gfn_range.start, gfn_range.end);
-@@ -156,7 +158,8 @@ static long kvm_gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
- 	 */
- 	filemap_invalidate_lock(file->f_mapping);
- 
--	kvm_gmem_invalidate_begin(kvm, gmem, start, end);
-+	kvm_gmem_invalidate_begin(kvm, gmem, start, end,
-+				  KVM_GFN_RANGE_FLAGS_GMEM);
- 
- 	truncate_inode_pages_range(file->f_mapping, offset, offset + len - 1);
- 
-@@ -263,7 +266,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * Free the backing memory, and more importantly, zap all SPTEs that
- 	 * pointed at this file.
- 	 */
--	kvm_gmem_invalidate_begin(kvm, gmem, 0, -1ul);
-+	kvm_gmem_invalidate_begin(kvm, gmem, 0, -1ul, KVM_GFN_RANGE_FLAGS_GMEM);
- 	truncate_inode_pages_final(file->f_mapping);
- 	kvm_gmem_invalidate_end(kvm, gmem, 0, -1ul);
- 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 422d49634c56..9cdfa2fb675f 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -613,6 +613,7 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
- 			gfn_range.start = hva_to_gfn_memslot(hva_start, slot);
- 			gfn_range.end = hva_to_gfn_memslot(hva_end + PAGE_SIZE - 1, slot);
- 			gfn_range.slot = slot;
-+			gfn_range.flags = 0;
- 
- 			if (!locked) {
- 				locked = true;
-@@ -2391,8 +2392,9 @@ static void kvm_mem_attrs_changed(struct kvm *kvm, unsigned long attrs,
- 	bool flush = false;
- 	int i;
- 
--	gfn_range.pte = __pte(0);
-+	gfn_range.attrs = attrs;
- 	gfn_range.may_block = true;
-+	gfn_range.flags = KVM_GFN_RANGE_FLAGS_SET_MEM_ATTR;
- 
- 	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
- 		slots = __kvm_memslots(kvm, i);
--- 
-2.25.1
-
+T24gVGh1LCAyMDIzLTA2LTIyIGF0IDE2OjE2IC0wNzAwLCBZYW1haGF0YSwgSXNha3Ugd3JvdGU6
+DQo+IFRoZSB1cHBlciAzMiBiaXRzIG9mIGVycm9yIGNvZGUgYXJlIGRpc2NhcmRlZCBhdCBrdm1f
+bW11X3BhZ2VfZmF1bHQoKQ0KPiBieSBsb3dlcl8zMl9iaXRzKCkuwqAgTm93IGl0J3MgcGFzc2Vk
+IGRvd24gYXMgZnVsbCA2NCBiaXRzLg0KPiBCZWNhdXNlIG9ubHkgRk5BTUUocGFnZV9mYXVsdCkg
+ZGVwZW5kcyBvbiBpdCwgbW92ZSBsb3dlcl8zMl9iaXRzKCkgaW50bw0KPiBGTkFNRShwYWdlX2Zh
+dWx0KS4NCg0KSSBoYXZlbid0IGxvb2tlZCBpbnRvIHRoZSBjb2RlIHlldCwgYnV0IHRoZSBsYXN0
+IHNlbnRlbmNlIGFyb3VuZA0KRk5BTUUocGFnZV9mYXVsdCkgZG9lc24ndCBtYWtlIGEgbG90IHNl
+bnNlIElJVUM/DQoNCkZvciBpbnN0YW5jZSwgd2UgY2FuIGhhdmUgYSBzaGFkb3cgRVBUIHRhYmxl
+IHdoZW4gRVBUIGlzIGVuYWJsZWQgaW4gTDAgYW5kDQpleHBvc2VkIHRvIEwxLiAgSWYgd2Ugd2Fu
+dCB0byBwYXNzIDY0LWJpdCBlcnJvciBjb2RlIHRvIHRoZSBoYW5kbGVyLCBob3cgY2FuDQpGUkFN
+RShwYWdlX2ZhdWx0KSgpIGRlcGVuZCBvbiB0aGUgbG93ZXIgMzItYml0IHZhbHVlPyANCg==
