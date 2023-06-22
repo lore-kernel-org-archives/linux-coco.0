@@ -1,327 +1,238 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269BC613A
-	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 08:01:44 +0000 (UTC)
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-54fac3b7725so3216150a12.3
-        for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 01:01:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687420899; x=1690012899;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cloVSkdWRaIfbBOxPQ/5NL8Y9shMc59TTz/Gk1UTt40=;
-        b=O9pJ+eQznYp2MIzSRo3S9XntWTm6Kof6D55uWH6oTEn3Add317V+FtXHscZI0obzjH
-         a/+eu8GrEPFlq1GE1laxLMcgvzymjmcNxBX8S2FvGJlVVUsY6d8PUg+hN5Mz2Y8UFYwK
-         lZL4I4yhtfVvP3vqrqwugvs9JhQk6zZi5wjxP+u/1PVwbKi62J4ghmJO4zArySk3rTsk
-         lwjQZ58RMTmnKeeuJzCbV32kJatoFGLK9jTYADFGxk0wKwoRnfq2EU9xyoLxGvqntchU
-         OnyYaz6SMB26PdNQgVZCyT97UA90mdSvzMPDbYCTNGI7oRgtn40HhGEL+fKNe8Hc15s9
-         R8Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687420899; x=1690012899;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cloVSkdWRaIfbBOxPQ/5NL8Y9shMc59TTz/Gk1UTt40=;
-        b=PPgNYon0IJrT4JDhK+O92evCkKi1TxO5K9rKQq4PwiYAxSn3Vg0dYAwzMqe33nMgcg
-         CT+rhXRSOCFyG3JgcLuaJTOEz6Z+AtQ5qacJI10QzxBRBR/3u0RyjDLL5WSBPFnrHWDT
-         oUp9w3CPnxZsjqq99Rp6Gv4jxBUPS+dpvK8ckqi+E8xBM4xScmSurNN15w+DloxPbF8+
-         7/qsEAcH/KtGd80RNt/sM9zxr9hZnFgqUA/HkkMFNOtvEtfXmNL40rTUhyoEMbuc8GXM
-         +4T5tLdFcB+IPKx6TF92rczPsrvGhtzRw/6KiGuA/zQvqwpA7vztT6DVGgQxKU7cY/SX
-         ahsQ==
-X-Gm-Message-State: AC+VfDzgGgAPcpkvAc9LraWRFoIhbFdnOFQvr8tZXp1z17zWNsEi/Owv
-	wbovqd3edf4F91YA/lYD46A=
-X-Google-Smtp-Source: ACHHUZ5EvV0wlwbl0iaemga+IWaQucsxLfY6cbQrae9VK32+zUNMZdtdADk21i1ma7B5boAReNWXtQ==
-X-Received: by 2002:a05:6a20:1610:b0:116:5321:63bf with SMTP id l16-20020a056a20161000b00116532163bfmr13456726pzj.41.1687420899092;
-        Thu, 22 Jun 2023 01:01:39 -0700 (PDT)
-Received: from localhost ([192.55.54.50])
-        by smtp.gmail.com with ESMTPSA id w5-20020a170902d3c500b001ae5d21f760sm4752009plb.146.2023.06.22.01.01.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jun 2023 01:01:38 -0700 (PDT)
-Date: Thu, 22 Jun 2023 01:01:37 -0700
-From: Isaku Yamahata <isaku.yamahata@gmail.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Isaku Yamahata <isaku.yamahata@gmail.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
-	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
-	zhi.a.wang@intel.com, Vishal Annapurve <vannapurve@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1CF3AA8C
+	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 09:55:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687427729; x=1718963729;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=nfx5Kx+YofBJE7sOxzWd1q5iQN0M5XDdD9Qh0JN+4+M=;
+  b=dd41VnvotTituRQ/91A8F1RNp1JIsZKjDulHNnge8hR2MzXEW7FMagaz
+   fqbyCl4p5GO1o2Gjs9//E6W2qRSDSq2kegN4lbFjcVMnMxd5jIqtR6sQy
+   tNo1YFIu6gS7U5u07xGc8GbYBxVI6t3LOJoXcgM6l0gh00wbYIk7O8Vag
+   5fOjKlAjwW5KbGCUrjkyUl8HyoqyIU9EvRvYhjEyPJZcbA9FTPeUcU5VR
+   zB6JfS+41u6wtx4LcSy/YPiqu8CbKALP9tjSwgk3azHQ7BvEFxWHhvrfQ
+   WASGOznvKfJNQcqF0chPjFmCnaZSUxM9LeYhPjaLVLcf2GlucX+CKIXOi
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="357935544"
+X-IronPort-AV: E=Sophos;i="6.00,263,1681196400"; 
+   d="scan'208";a="357935544"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 02:55:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="664986640"
+X-IronPort-AV: E=Sophos;i="6.00,263,1681196400"; 
+   d="scan'208";a="664986640"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orsmga003.jf.intel.com with ESMTP; 22 Jun 2023 02:55:27 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 22 Jun 2023 02:55:27 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Thu, 22 Jun 2023 02:55:27 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.100)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Thu, 22 Jun 2023 02:55:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ca/bpQAF5BBN1xKaQwIPglARa+5/mItm+2feTlAJufN3jfxC0+nuGL+opqOXYuoplWKqEUmlUJFPaYGJNB7znyGa/JhL0vWcF1u0YuOF8UYZ/GwFAPJlpkfJKPNtE6dq9OWOnWrimDRVSCwJA3shKXgNrCSDWHugw/dJi6TGj4PubvV1pEWhiNi/Ttsvrb/f5JozOPJvGB9shAn68Zg7gLO9EfvThNx6GX2ZXJ2KYAjsElgSZUVeNAZtpFj0h4l5sJUIGQVk/W6BMg/MSc+0m+TDLDrDeEhFkoeQMUNr4HQxMKVuZW8dxUuPlmdGf7BF7kx2A4anJx38vxoHwFRkOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nfx5Kx+YofBJE7sOxzWd1q5iQN0M5XDdD9Qh0JN+4+M=;
+ b=l5CSM776ki24RkDM0ZrSSlHxjL1CShNZiTxj6og3e0iEqhfli/cr8BrDWE65HFVi3YNQx3UYf19wbnycyCRMkn9EWHLMqAhfr7hEJaPQnKTIILK1LZztiiPY/XZlxrDY7k5qkX7SkvUEkG/8+B+yNqz9QI+GyPU9j/JQ6I2h3Ioo7OUM+bhOaZgqpVcBxgucQskk+WXfJwR/vNH0fBXnLRUJqquodgje0u4dq8rgcBnmPowlp4GqQ75kAiwJSf+jTxuN+2P6kV8dVC8Z1ge+yGcTpr5VgUcHvDHJ5BbacCPU2WwxFB91m8buNer8JaVRSsry5SpA3EXfrLnHYaT9iw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
+ by DM4PR11MB6190.namprd11.prod.outlook.com (2603:10b6:8:ad::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Thu, 22 Jun
+ 2023 09:55:23 +0000
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::19b7:466f:32ac:b764]) by BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::19b7:466f:32ac:b764%3]) with mapi id 15.20.6521.020; Thu, 22 Jun 2023
+ 09:55:23 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>,
+	"michael.roth@amd.com" <michael.roth@amd.com>
+CC: "tglx@linutronix.de" <tglx@linutronix.de>, "tobin@ibm.com"
+	<tobin@ibm.com>, "liam.merwick@oracle.com" <liam.merwick@oracle.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Luck, Tony"
+	<tony.luck@intel.com>, "jmattson@google.com" <jmattson@google.com>,
+	"Lutomirski, Andy" <luto@kernel.org>, "ak@linux.intel.com"
+	<ak@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"slp@redhat.com" <slp@redhat.com>, "rientjes@google.com"
+	<rientjes@google.com>, "alpergun@google.com" <alpergun@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "dovmurik@linux.ibm.com"
+	<dovmurik@linux.ibm.com>, "thomas.lendacky@amd.com"
+	<thomas.lendacky@amd.com>, "Wang, Zhi A" <zhi.a.wang@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "Annapurve,
+ Vishal" <vannapurve@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"Christopherson,, Sean" <seanjc@google.com>, "vkuznets@redhat.com"
+	<vkuznets@redhat.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"marcorr@google.com" <marcorr@google.com>, "ashish.kalra@amd.com"
+	<ashish.kalra@amd.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "nikunj.dadhania@amd.com"
+	<nikunj.dadhania@amd.com>, "Rodel, Jorg" <jroedel@suse.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "kirill@shutemov.name" <kirill@shutemov.name>,
+	"jarkko@kernel.org" <jarkko@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>
 Subject: Re: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
  using a configurable mask
-Message-ID: <20230622080137.GB1808127@ls.amr.corp.intel.com>
+Thread-Topic: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
+ using a configurable mask
+Thread-Index: AQHZnOphA4hNJcIpGkeiRJNqOV8fuK+KheOAgAmr4oCAAA39gIABrsSAgAC28gA=
+Date: Thu, 22 Jun 2023 09:55:22 +0000
+Message-ID: <c116b7ab8ca02116f2b8d19a8214161c3b30576c.camel@intel.com>
 References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-5-michael.roth@amd.com>
- <20230614164709.GT2244082@ls.amr.corp.intel.com>
- <20230620202841.7qizls3u3kcck45g@amd.com>
- <20230620211845.GV2244082@ls.amr.corp.intel.com>
- <20230621230031.37hdnymbjzwjgbo2@amd.com>
+	 <20230612042559.375660-5-michael.roth@amd.com>
+	 <20230614164709.GT2244082@ls.amr.corp.intel.com>
+	 <20230620202841.7qizls3u3kcck45g@amd.com>
+	 <20230620211845.GV2244082@ls.amr.corp.intel.com>
+	 <20230621230031.37hdnymbjzwjgbo2@amd.com>
+In-Reply-To: <20230621230031.37hdnymbjzwjgbo2@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.48.2 (3.48.2-1.fc38) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DM4PR11MB6190:EE_
+x-ms-office365-filtering-correlation-id: 12af70e6-fc56-47bb-f74b-08db7306cb9c
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: f2ztTwAJkqQAl+V8qQYOuLq0Jt+fYDiIuLfY/VqMLaeY/3I3qArsmkVKxpR05xTAagbnKj7U7l6K0+bOY0UAXUUe2thr9kGmPX1Ah4Iii8M9xwCd8ZjBAP9dhB+tLP2UTzqra90001WBD4K7BI+OcBUqb0dGsxLKGgvSTdeYqok8pOzCafqS25i8YcJywGjEH/8Pwn1xZp1S9bCEePewmLwO1nws+/NG09IMxgtoMA6MaTwQCaRXiR0JHj4OiN36aNcF39aY8C9ADdoEJeJdArruWhPoQGI3KinWYZkCRgDq7qmzTT+CLdEaORI6ISTDv6q5Mv6aBn1GP6xe9t4knh3nsFdqzSGwNQFzowGfKFuPiSRZW8BBHLf7fN5mN6VrjK21Xpmh+7F15As5KEumt0kQyHQRsaN2iRaGk8UTEo819AQ8ifIs6qsy7ntsf8YrIe25pxSD74VlcaK47/f+9AKvvNpEroitvbclTeQuVDh7b9uW9zqvnekHFruhNdBdQNMurjH169Sff/AdhR8SgCBuc+WaBUDLeDyh1GhnZ4p69CqKmmIgrEeCZ1cdMkkxekxNXBBGI36IdSe5rEuGWaPq9e1tpBB4h0qcGiIptsIdNS082umxaCYFlfNl1kab
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(39860400002)(366004)(136003)(376002)(346002)(451199021)(86362001)(2906002)(38070700005)(122000001)(38100700002)(82960400001)(8936002)(41300700001)(8676002)(36756003)(6486002)(76116006)(66946007)(91956017)(4326008)(71200400001)(66476007)(66556008)(64756008)(66446008)(6512007)(478600001)(26005)(186003)(6506007)(2616005)(316002)(7406005)(7416002)(54906003)(110136005)(5660300002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TzdEVDlJaWozNlgzYklmWXNLUWdodG9hRWsrSWZSaUIxMzI0eFF3dkdBT1Ar?=
+ =?utf-8?B?RnlGOTJYWWJ2R0p0a3ZHNmdPZTBRTHRxWXhTODhndGNVNjBodkVNeVBjeGRx?=
+ =?utf-8?B?Y3ljRlBKeTlGd0ZpNVVacGFkZElKV0dUMmQ5bVp4cVQrc1JobHhhNktObGxM?=
+ =?utf-8?B?TTFBRmR0UnNDd0ZYdEcyYmxoM2Z4dFNQL1IzUkZQalpzS0ZxVVl0Uk5SZnBU?=
+ =?utf-8?B?b1ZMVEtXUVRXS3dlTU1waFBzd1BTWDczT05kSEdsU013MXhjeG5vUkExK2dj?=
+ =?utf-8?B?algrY2k4TnR2VFRyY1d4VElBOGkxL3lma1Q0OVBuWUxyQnp2NHFBNEJic3FU?=
+ =?utf-8?B?VDVtSUZyMVdPdmdHT0RENWpxQU1iQnRmZDU5WTg3dFUyNy90Q1ByRWJKQ2Rm?=
+ =?utf-8?B?ZFhNTi90QUhlQUs5eTNUd3JFaEs1OWRhc29OdFR3bHlLRmZwQW9Jcm9ubm9M?=
+ =?utf-8?B?VThkU2xlUW9EOG1vNmNjVlBPVWJYY2o3NUU2R3ZMWlFOeFVoLzdvRTJ2aWFE?=
+ =?utf-8?B?UG1OWnJML1luVkRsQlNYV2VrUjZDV25Ga1pVbXVFelFUdHdLTWlVNExzWWlY?=
+ =?utf-8?B?Q2QrQXpHODBTajdWQUxTZGlleXZ4c3FDeTZWUGoyZ1dZWHdCRE9iS0VPYkwy?=
+ =?utf-8?B?djRTYm9pRlhOY1E3OTRkS2VjMHNRakx1VkxxZTlWYUxhSVN4MS9sc3lIRWdi?=
+ =?utf-8?B?UlFzTENUanBMbVhVeWFlUmFpL1hlcENSTkxFQ2hhYUVFc1NqUndTK2wyeXdx?=
+ =?utf-8?B?NWJnZDArWWx6bjl0R2JQQ2d3OWlpT3QxM1ovNWU2L245aHFDcTJUa2hLWE8z?=
+ =?utf-8?B?dFE1UURscnJWSldPbWl6VHBoOG1PNDc1aitwZFptVTBjQzAwd3hSdWdWUlI2?=
+ =?utf-8?B?WkZRRVh4dXdUU2hMVlJNMTY5UTRkVmFwVzYvOVZ1WVRmc1dJMGt3ZzJ0YUs1?=
+ =?utf-8?B?Y3MzVldZYzFqQ0J5a2VDQU5sSjVOVHF6blZhb2VVcm5JdUFoeWZOaGlKUGF3?=
+ =?utf-8?B?TjRpcU15SU5YeTd2bnVJWUNhajFlUnN1YVZYMlJYcGhBN0pnRnlVbmVnV21s?=
+ =?utf-8?B?VWF1MlozSlJUUmhlTTRKZHZDVWQrNnpqUExXMFlLS2Y0T2Q1cGZWaGtVZnpQ?=
+ =?utf-8?B?VDVBcVBSeWloM3pBKzJGT3lKU2xOcFFDSHhVSWFYRVVzalU2ck8wbXRiWVhy?=
+ =?utf-8?B?ZEhseGNtZ2plQy9QZHVHYWc4dml6bHN0OGRER0paSTM1Q3luOTFEVmVKejhH?=
+ =?utf-8?B?NldTSjhsSkJXQjE2U2QvMXJ4NDh4VmVoVXp2eE1yMGJTWlBhaGhSWFlZUnlF?=
+ =?utf-8?B?bjNjbDM2Mmppam0zc1pwZVFwNWlBM1FlelVxeEQyQmxVaWxaOFF3V0FFV2xs?=
+ =?utf-8?B?TWdFOTFyLy9ETVhqSnN2V0ZmNVZpMjJBWS91TVdvYmJ2SE1IZG1EcW5sRXhJ?=
+ =?utf-8?B?UVBhc1ArVUQvUmlkSFhQb2hQTFl6OHRkZkxabCtJaGFYZ0NwRmJiMjRGcHcw?=
+ =?utf-8?B?aThOdFJCdW5LaXBLUFBPWGovVHcwODE5UGlFclByZGxPbEVuYWp4MXY4THNo?=
+ =?utf-8?B?dSs5YjVsUHN1SjYySlErWW5LSGRjbzhuQ2VRaWtCdWowTTNlTGdQV0E1a0RZ?=
+ =?utf-8?B?eU5wZVBvcVhqRmQ2RGZOalJZUFFDQ3BDQTg3SURqUTVDMnhtaThiLzkwL0Fy?=
+ =?utf-8?B?b0VscURJdk5qRGdCakxHYTc1bHFrSUVLOVI0WjFTV0txL0JLYmt0d1ZGVXN3?=
+ =?utf-8?B?dm5vS3JJOGNlNGxBMmIyb0M3NHlOT3dWRUhScEVkdWpHUWJ3TTZNSmE0R0J5?=
+ =?utf-8?B?TURBMHMwTG5EdHN3UGRqdlJKWnp6cEowRzJZWXZSU29JTnV0eURvQmtwRmph?=
+ =?utf-8?B?TG1jK2s1UVEvR2ppUzNLM0w1anNMWlRjS0VpcFRCSnBraGF2RUxUQ3NiaEpt?=
+ =?utf-8?B?TzdHK0xsc09mRHZMWFQ4eWNaV2J4azhLTlJZdmVNU1RlbVdlL25JTDVvdUcv?=
+ =?utf-8?B?VkZoL01SZUJ4bGZWWnlmNXd2YjB1REdLbDFvM2xpWnRoSVArWUpuYjU4VnFU?=
+ =?utf-8?B?eGpZL243Tmg1REdMR3p2WDJuY3FmTjJYTk01djJTbitpTkQrc0hRbFRiRDVp?=
+ =?utf-8?Q?j4vTRRjhn9fjtN2c+gTNZ855P?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E5E6B13C56399C4BB323FBF43FEA0748@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230621230031.37hdnymbjzwjgbo2@amd.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12af70e6-fc56-47bb-f74b-08db7306cb9c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2023 09:55:22.5928
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: vgZDAC9F5ZcaNfMRrZ0WWX6k9aff4Jy220hwjfla1iYg85MP6ERs8e/6LrFjlDHEFYxIES921KsCdtbe1e8Igw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6190
+X-OriginatorOrg: intel.com
 
-On Wed, Jun 21, 2023 at 06:00:31PM -0500,
-Michael Roth <michael.roth@amd.com> wrote:
-
-> On Tue, Jun 20, 2023 at 02:18:45PM -0700, Isaku Yamahata wrote:
-> > On Tue, Jun 20, 2023 at 03:28:41PM -0500,
-> > Michael Roth <michael.roth@amd.com> wrote:
-> > 
-> > > On Wed, Jun 14, 2023 at 09:47:09AM -0700, Isaku Yamahata wrote:
-> > > > On Sun, Jun 11, 2023 at 11:25:12PM -0500,
-> > > > Michael Roth <michael.roth@amd.com> wrote:
-> > > > 
-> > > > > This will be used to determine whether or not an #NPF should be serviced
-> > > > > using a normal page vs. a guarded/gmem one.
-> > > > > 
-> > > > > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > > > > ---
-> > > > >  arch/x86/include/asm/kvm_host.h |  7 +++++++
-> > > > >  arch/x86/kvm/mmu/mmu_internal.h | 35 ++++++++++++++++++++++++++++++++-
-> > > > >  2 files changed, 41 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > > > > index b3bd24f2a390..c26f76641121 100644
-> > > > > --- a/arch/x86/include/asm/kvm_host.h
-> > > > > +++ b/arch/x86/include/asm/kvm_host.h
-> > > > > @@ -1445,6 +1445,13 @@ struct kvm_arch {
-> > > > >  	 */
-> > > > >  #define SPLIT_DESC_CACHE_MIN_NR_OBJECTS (SPTE_ENT_PER_PAGE + 1)
-> > > > >  	struct kvm_mmu_memory_cache split_desc_cache;
-> > > > > +
-> > > > > +	/*
-> > > > > +	 * When set, used to determine whether a fault should be treated as
-> > > > > +	 * private in the context of protected VMs which use a separate gmem
-> > > > > +	 * pool to back private guest pages.
-> > > > > +	 */
-> > > > > +	u64 mmu_private_fault_mask;
-> > > > >  };
-> > > > >  
-> > > > >  struct kvm_vm_stat {
-> > > > > diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-> > > > > index 780b91e1da9f..9b9e75aa43f4 100644
-> > > > > --- a/arch/x86/kvm/mmu/mmu_internal.h
-> > > > > +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> > > > > @@ -252,6 +252,39 @@ struct kvm_page_fault {
-> > > > >  
-> > > > >  int kvm_tdp_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault);
-> > > > >  
-> > > > > +static bool kvm_mmu_fault_is_private(struct kvm *kvm, gpa_t gpa, u64 err)
-> > > > > +{
-> > > > > +	struct kvm_memory_slot *slot;
-> > > > > +	bool private_fault = false;
-> > > > > +	gfn_t gfn = gpa_to_gfn(gpa);
-> > > > > +
-> > > > > +	slot = gfn_to_memslot(kvm, gfn);
-> > > > > +	if (!slot) {
-> > > > > +		pr_debug("%s: no slot, GFN: 0x%llx\n", __func__, gfn);
-> > > > > +		goto out;
-> > > > > +	}
-> > > > > +
-> > > > > +	if (!kvm_slot_can_be_private(slot)) {
-> > > > > +		pr_debug("%s: slot is not private, GFN: 0x%llx\n", __func__, gfn);
-> > > > > +		goto out;
-> > > > > +	}
-> > > > > +
-> > > > > +	if (kvm->arch.mmu_private_fault_mask) {
-> > > > > +		private_fault = !!(err & kvm->arch.mmu_private_fault_mask);
-> > > > > +		goto out;
-> > > > > +	}
-> > > > 
-> > > > What's the convention of err? Can we abstract it by introducing a new bit
-> > > > PFERR_PRIVATE_MASK? The caller sets it based on arch specific value.
-> > > > the logic will be
-> > > >         .is_private = err & PFERR_PRIVATE_MASK;
-> > > 
-> > > I'm not sure I understand the question. 'err' is just the page fault flags,
-> > > and arch.mmu_private_fault_mask is something that can be set on a
-> > > per-platform basis when running in a mode where shared/private access
-> > > is recorded in the page fault flags during a #NPF.
-> > > 
-> > > I'm not sure how we'd keep the handling cross-platform by moving to a macro,
-> > > since TDX uses a different bit, and we'd want to be able to build a
-> > > SNP+TDX kernel that could run on either type of hardware.
-> > > 
-> > > Are you suggesting to reverse that and have err be set in a platform-specific
-> > > way and then use a common PFERR_PRIVATE_MASK that's software-defined and
-> > > consistent across platforms? That could work, but existing handling seems
-> > > to use page fault flags as-is, keeping the hardware-set values, rather than
-> > > modifying them to pass additional metadata, so it seems like it might
-> > > make things more confusing to make an exception to that here. Or are
-> > > there other cases where it's done that way?
-> > 
-> > I meant the latter, making PFERR_PRIVATE_MASK common software-defined.
-> > 
-> > I think the SVM fault handler can use hardware value directly by carefully
-> > defining those PFERR values.
-> > 
-> > TDX doesn't have architectural bit in error code to indicate the private fault.
-> > It's coded in faulted address as shared bit. GPA bit 51 or 47.
-> > PFERR_{USER, WRITE, FETCH, PRESENT} are already software-defined value for VMX
-> > (and TDX).  The fault handler for VMX, handle_ept_violation(), converts
-> > encoding.  For TDX, PFERR_PRIVATE_MASK is just one more software defined bit.
-> > 
-> > I'm fine with either way, variable or macro. Which do you prefer?
-> > 
-> > - Define variable mmu_private_fault_mask (global or per struct kvm)
-> >   The module initialization code, hardware_setup(), sets mmu_private_fault_mask.
-> > - Define the software defined value, PFERR_PRIVATE_MASK.
-> >   The caller of kvm_mmu_page_fault() parses the hardware value and construct
-> >   software defined error_code.
-> > - any other?
-> >   
-> > 
-> > > > > +
-> > > > > +	/*
-> > > > > +	 * Handling below is for UPM self-tests and guests that treat userspace
-> > > > > +	 * as the authority on whether a fault should be private or not.
-> > > > > +	 */
-> > > > > +	private_fault = kvm_mem_is_private(kvm, gpa >> PAGE_SHIFT);
-> > > > 
-> > > > This code path is sad. One extra slot lookup and xarray look up.
-> > > > Without mmu lock, the result can change by other vcpu.
-> > > > Let's find a better way.
-> > > 
-> > > The intention was to rely on fault->mmu_seq to determine if a
-> > > KVM_SET_MEMORY_ATTRIBUTES update came in after .private_fault was set so
-> > > that fault handling could be retried, but that doesn't happen until
-> > > kvm_faultin_pfn() which is *after* this is logged. So yes, I think there
-> > > is a race here, and the approach you took in your Misc. series of
-> > > keeping the kvm_mem_is_private() check inside kvm_faultin_pfn() is more
-> > > efficient/correct.
-> > > 
-> > > If we can figure out a way to handle checking the fault flags in a way
-> > > that works for both TDX/SNP (and KVM self-test use-case) we can
-> > > consolidate around that.
-> > 
-> > I can think of the following ways. I think the second option is better because
-> > we don't need exit bit for error code.
-> > 
-> > - Introduce software defined error code
-> > - Add a flags to struct kvm_arch for self-test use-case VM_TYPE_PROTECTED_VM.
-> >   Set it to true for VM_TYPE_PROTECTED_VM case.
-> > - any other?
-> 
-> Vishal: hoping to get your thoughts here as well from the perspective of
-> the KVM self-test use-case.
-> 
-> I was thinking that once we set fault->is_private, that sort of
-> becomes our "software-defined" bit, and what KVM would use from that
-> point forward to determine whether or not the access should be treated
-> as a private one or not, and that whatever handler sets
-> fault->is_private would encapsulate away all the platform-specific
-> bit-checking needed to do that.
-> 
-> So if we were to straight-forwardly implement that based on how TDX
-> currently handles checking for the shared bit in GPA, paired with how
-> SEV-SNP handles checking for private bit in fault flags, it would look
-> something like:
-> 
->   bool kvm_fault_is_private(kvm, gpa, err)
->   {
->     /* SEV-SNP handling */
->     if (kvm->arch.mmu_private_fault_mask)
->       return !!(err & arch.mmu_private_fault_mask);
-> 
->     /* TDX handling */
->     if (kvm->arch.gfn_shared_mask)
->       return !!(gpa & arch.gfn_shared_mask);
-> 
->     return false;
->   }
-> 
->   kvm_mmu_do_page_fault(vcpu, gpa, err, ...)
->   {
->     struct kvm_page_fault fault = {
->       ...
->       .is_private = kvm_fault_is_private(vcpu->kvm, gpa, err)
->     };
-> 
->     ...
->   }
-> 
-> And then arch.mmu_private_fault_mask and arch.gfn_shared_mask would be
-> set per-KVM-instance, just like they are now with current SNP and TDX
-> patchsets, since stuff like KVM self-test wouldn't be setting those
-> masks, so it makes sense to do it per-instance in that regard.
-> 
-> But that still gets a little awkward for the KVM self-test use-case where
-> .is_private should sort of be ignored in favor of whatever the xarray
-> reports via kvm_mem_is_private(). In your Misc. series I believe you
-> handled this by introducing a PFERR_HASATTR_MASK bit so we can determine
-> whether existing value of fault->is_private should be
-> ignored/overwritten or not.
-> 
-> So maybe kvm_fault_is_private() needs to return an integer value
-> instead, like:
-> 
->   enum {
->     KVM_FAULT_VMM_DEFINED,
->     KVM_FAULT_SHARED,
->     KVM_FAULT_PRIVATE,
->   }
-> 
->   bool kvm_fault_is_private(kvm, gpa, err)
->   {
->     /* SEV-SNP handling */
->     if (kvm->arch.mmu_private_fault_mask)
->       (err & arch.mmu_private_fault_mask) ? KVM_FAULT_PRIVATE : KVM_FAULT_SHARED
-> 
->     /* TDX handling */
->     if (kvm->arch.gfn_shared_mask)
->       (gpa & arch.gfn_shared_mask) ? KVM_FAULT_SHARED : KVM_FAULT_PRIVATE
-> 
->     return KVM_FAULT_VMM_DEFINED;
->   }
-> 
-> And then down in __kvm_faultin_pfn() we do:
-> 
->   if (fault->is_private == KVM_FAULT_VMM_DEFINED)
->     fault->is_private = kvm_mem_is_private(vcpu->kvm, fault->gfn);
->   else if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn))
->     return kvm_do_memory_fault_exit(vcpu, fault);
-> 
->   if (fault->is_private)
->     return kvm_faultin_pfn_private(vcpu, fault);
-> 
-> Maybe kvm_fault_is_private() can be simplified based on what direction
-> we end up taking WRT ongoing discussions like whether we decide to define
-> KVM_X86_{SNP,TDX}_VM vm_types in addition to the KVM_X86_PROTECTED_VM
-> type that the selftests uses, but hoping that for this path, any changes
-> along that line can be encapsulated away in kvm_fault_is_private() without
-> any/much further churn at the various call-sites like __kvm_faultin_pfn().
-> 
-> We could even push all the above logic down into the KVM self-tests, but
-> have:
-> 
->   bool kvm_fault_is_private(kvm, gpa, err) {
->     return KVM_FAULT_VMM_DEFINED;
->   }
-> 
-> And that would be enough to run self-tests as standalone series, with
-> TDX/SNP should filling in kvm_fault_is_private() with their
-> platform-specific handling.
-> 
-> Does that seem reasonable to you? At least as a starting point. 
-
-I tried to move the logic to the caller site and hide it from KVM MMU code.
-You'd like to move the logic down into KVM MMU side and make the difference
-explicit.  Either way works for me.  Let me respin my patches for the direction
-you propose.
--- 
-Isaku Yamahata <isaku.yamahata@gmail.com>
+DQo+IA0KPiBTbyBpZiB3ZSB3ZXJlIHRvIHN0cmFpZ2h0LWZvcndhcmRseSBpbXBsZW1lbnQgdGhh
+dCBiYXNlZCBvbiBob3cgVERYDQo+IGN1cnJlbnRseSBoYW5kbGVzIGNoZWNraW5nIGZvciB0aGUg
+c2hhcmVkIGJpdCBpbiBHUEEsIHBhaXJlZCB3aXRoIGhvdw0KPiBTRVYtU05QIGhhbmRsZXMgY2hl
+Y2tpbmcgZm9yIHByaXZhdGUgYml0IGluIGZhdWx0IGZsYWdzLCBpdCB3b3VsZCBsb29rDQo+IHNv
+bWV0aGluZyBsaWtlOg0KPiANCj4gICBib29sIGt2bV9mYXVsdF9pc19wcml2YXRlKGt2bSwgZ3Bh
+LCBlcnIpDQo+ICAgew0KPiAgICAgLyogU0VWLVNOUCBoYW5kbGluZyAqLw0KPiAgICAgaWYgKGt2
+bS0+YXJjaC5tbXVfcHJpdmF0ZV9mYXVsdF9tYXNrKQ0KPiAgICAgICByZXR1cm4gISEoZXJyICYg
+YXJjaC5tbXVfcHJpdmF0ZV9mYXVsdF9tYXNrKTsNCj4gDQo+ICAgICAvKiBURFggaGFuZGxpbmcg
+Ki8NCj4gICAgIGlmIChrdm0tPmFyY2guZ2ZuX3NoYXJlZF9tYXNrKQ0KPiAgICAgICByZXR1cm4g
+ISEoZ3BhICYgYXJjaC5nZm5fc2hhcmVkX21hc2spOw0KDQpUaGUgbG9naWMgb2YgdGhlIHR3byBh
+cmUgaWRlbnRpY2FsLiAgSSB0aGluayB0aGV5IG5lZWQgdG8gYmUgY29udmVyZ2VkLg0KDQpFaXRo
+ZXIgU0VWLVNOUCBzaG91bGQgY29udmVydCB0aGUgZXJyb3IgY29kZSBwcml2YXRlIGJpdCB0byB0
+aGUgZ2ZuX3NoYXJlZF9tYXNrLA0Kb3IgVERYJ3Mgc2hhcmVkIGJpdCBzaG91bGQgYmUgY29udmVy
+dGVkIHRvIHNvbWUgcHJpdmF0ZSBlcnJvciBiaXQuDQoNClBlcmhhcHMgY29udmVydGluZyBTRVYt
+U05QIG1ha2VzIG1vcmUgc2Vuc2UgYmVjYXVzZSBpZiBJIHJlY2FsbCBjb3JyZWN0bHkgU0VWDQpn
+dWVzdCBhbHNvIGhhcyBhIEMtYml0LCBjb3JyZWN0Pw0KDQpPciwgLi4uDQoNCj4gDQo+ICAgICBy
+ZXR1cm4gZmFsc2U7DQo+ICAgfQ0KPiANCj4gICBrdm1fbW11X2RvX3BhZ2VfZmF1bHQodmNwdSwg
+Z3BhLCBlcnIsIC4uLikNCj4gICB7DQo+ICAgICBzdHJ1Y3Qga3ZtX3BhZ2VfZmF1bHQgZmF1bHQg
+PSB7DQo+ICAgICAgIC4uLg0KPiAgICAgICAuaXNfcHJpdmF0ZSA9IGt2bV9mYXVsdF9pc19wcml2
+YXRlKHZjcHUtPmt2bSwgZ3BhLCBlcnIpDQoNCi4uLiBzaG91bGQgd2UgZG8gc29tZXRoaW5nIGxp
+a2U6DQoNCgkuaXNfcHJpdmF0ZSA9IHN0YXRpY19jYWxsKGt2bV94ODZfZmF1bHRfaXNfcHJpdmF0
+ZSkodmNwdS0+a3ZtLCBncGEswqANCgkJCQkJCQkgICAgZXJyKTsNCg0KPw0KDQo+ICAgICB9Ow0K
+PiANCj4gICAgIC4uLg0KPiAgIH0NCj4gDQo+IEFuZCB0aGVuIGFyY2gubW11X3ByaXZhdGVfZmF1
+bHRfbWFzayBhbmQgYXJjaC5nZm5fc2hhcmVkX21hc2sgd291bGQgYmUNCj4gc2V0IHBlci1LVk0t
+aW5zdGFuY2UsIGp1c3QgbGlrZSB0aGV5IGFyZSBub3cgd2l0aCBjdXJyZW50IFNOUCBhbmQgVERY
+DQo+IHBhdGNoc2V0cywgc2luY2Ugc3R1ZmYgbGlrZSBLVk0gc2VsZi10ZXN0IHdvdWxkbid0IGJl
+IHNldHRpbmcgdGhvc2UNCj4gbWFza3MsIHNvIGl0IG1ha2VzIHNlbnNlIHRvIGRvIGl0IHBlci1p
+bnN0YW5jZSBpbiB0aGF0IHJlZ2FyZC4NCj4gDQo+IEJ1dCB0aGF0IHN0aWxsIGdldHMgYSBsaXR0
+bGUgYXdrd2FyZCBmb3IgdGhlIEtWTSBzZWxmLXRlc3QgdXNlLWNhc2Ugd2hlcmUNCj4gLmlzX3By
+aXZhdGUgc2hvdWxkIHNvcnQgb2YgYmUgaWdub3JlZCBpbiBmYXZvciBvZiB3aGF0ZXZlciB0aGUg
+eGFycmF5DQo+IHJlcG9ydHMgdmlhIGt2bV9tZW1faXNfcHJpdmF0ZSgpLsKgDQo+IA0KDQpJIG11
+c3QgaGF2ZSBtaXNzZWQgc29tZXRoaW5nLiAgV2h5IGRvZXMgS1ZNIHNlbGYtdGVzdCBoYXZlIGlt
+cGFjdCB0byBob3cgZG9lcw0KS1ZNIGhhbmRsZXMgcHJpdmF0ZSBmYXVsdD8gDQoNCj4gSW4geW91
+ciBNaXNjLiBzZXJpZXMgSSBiZWxpZXZlIHlvdQ0KPiBoYW5kbGVkIHRoaXMgYnkgaW50cm9kdWNp
+bmcgYSBQRkVSUl9IQVNBVFRSX01BU0sgYml0IHNvIHdlIGNhbiBkZXRlcm1pbmUNCj4gd2hldGhl
+ciBleGlzdGluZyB2YWx1ZSBvZiBmYXVsdC0+aXNfcHJpdmF0ZSBzaG91bGQgYmUNCj4gaWdub3Jl
+ZC9vdmVyd3JpdHRlbiBvciBub3QuDQo+IA0KPiBTbyBtYXliZSBrdm1fZmF1bHRfaXNfcHJpdmF0
+ZSgpIG5lZWRzIHRvIHJldHVybiBhbiBpbnRlZ2VyIHZhbHVlDQo+IGluc3RlYWQsIGxpa2U6DQo+
+IA0KPiAgIGVudW0gew0KPiAgICAgS1ZNX0ZBVUxUX1ZNTV9ERUZJTkVELA0KPiAgICAgS1ZNX0ZB
+VUxUX1NIQVJFRCwNCj4gICAgIEtWTV9GQVVMVF9QUklWQVRFLA0KPiAgIH0NCj4gDQo+ICAgYm9v
+bCBrdm1fZmF1bHRfaXNfcHJpdmF0ZShrdm0sIGdwYSwgZXJyKQ0KPiAgIHsNCj4gICAgIC8qIFNF
+Vi1TTlAgaGFuZGxpbmcgKi8NCj4gICAgIGlmIChrdm0tPmFyY2gubW11X3ByaXZhdGVfZmF1bHRf
+bWFzaykNCj4gICAgICAgKGVyciAmIGFyY2gubW11X3ByaXZhdGVfZmF1bHRfbWFzaykgPyBLVk1f
+RkFVTFRfUFJJVkFURSA6IEtWTV9GQVVMVF9TSEFSRUQNCj4gDQo+ICAgICAvKiBURFggaGFuZGxp
+bmcgKi8NCj4gICAgIGlmIChrdm0tPmFyY2guZ2ZuX3NoYXJlZF9tYXNrKQ0KPiAgICAgICAoZ3Bh
+ICYgYXJjaC5nZm5fc2hhcmVkX21hc2spID8gS1ZNX0ZBVUxUX1NIQVJFRCA6IEtWTV9GQVVMVF9Q
+UklWQVRFDQo+IA0KPiAgICAgcmV0dXJuIEtWTV9GQVVMVF9WTU1fREVGSU5FRDsNCj4gICB9DQo+
+IA0KPiBBbmQgdGhlbiBkb3duIGluIF9fa3ZtX2ZhdWx0aW5fcGZuKCkgd2UgZG86DQo+IA0KPiAg
+IGlmIChmYXVsdC0+aXNfcHJpdmF0ZSA9PSBLVk1fRkFVTFRfVk1NX0RFRklORUQpDQo+ICAgICBm
+YXVsdC0+aXNfcHJpdmF0ZSA9IGt2bV9tZW1faXNfcHJpdmF0ZSh2Y3B1LT5rdm0sIGZhdWx0LT5n
+Zm4pOw0KPiAgIGVsc2UgaWYgKGZhdWx0LT5pc19wcml2YXRlICE9IGt2bV9tZW1faXNfcHJpdmF0
+ZSh2Y3B1LT5rdm0sIGZhdWx0LT5nZm4pKQ0KPiAgICAgcmV0dXJuIGt2bV9kb19tZW1vcnlfZmF1
+bHRfZXhpdCh2Y3B1LCBmYXVsdCk7DQo+IA0KPiAgIGlmIChmYXVsdC0+aXNfcHJpdmF0ZSkNCj4g
+ICAgIHJldHVybiBrdm1fZmF1bHRpbl9wZm5fcHJpdmF0ZSh2Y3B1LCBmYXVsdCk7DQoNCg0KV2hh
+dCBkb2VzIEtWTV9GQVVMVF9WTU1fREVGSU5FRCBtZWFuLCBleGFjdGx5Pw0KDQpTaG91bGRuJ3Qg
+dGhlIGZhdWx0IHR5cGUgY29tZSBmcm9tIF9oYXJkd2FyZV8/DQo=
