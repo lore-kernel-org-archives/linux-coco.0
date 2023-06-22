@@ -1,238 +1,515 @@
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2081.outbound.protection.outlook.com [40.107.243.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD1CF3AA8C
-	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 09:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687427729; x=1718963729;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=nfx5Kx+YofBJE7sOxzWd1q5iQN0M5XDdD9Qh0JN+4+M=;
-  b=dd41VnvotTituRQ/91A8F1RNp1JIsZKjDulHNnge8hR2MzXEW7FMagaz
-   fqbyCl4p5GO1o2Gjs9//E6W2qRSDSq2kegN4lbFjcVMnMxd5jIqtR6sQy
-   tNo1YFIu6gS7U5u07xGc8GbYBxVI6t3LOJoXcgM6l0gh00wbYIk7O8Vag
-   5fOjKlAjwW5KbGCUrjkyUl8HyoqyIU9EvRvYhjEyPJZcbA9FTPeUcU5VR
-   zB6JfS+41u6wtx4LcSy/YPiqu8CbKALP9tjSwgk3azHQ7BvEFxWHhvrfQ
-   WASGOznvKfJNQcqF0chPjFmCnaZSUxM9LeYhPjaLVLcf2GlucX+CKIXOi
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="357935544"
-X-IronPort-AV: E=Sophos;i="6.00,263,1681196400"; 
-   d="scan'208";a="357935544"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 02:55:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10748"; a="664986640"
-X-IronPort-AV: E=Sophos;i="6.00,263,1681196400"; 
-   d="scan'208";a="664986640"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga003.jf.intel.com with ESMTP; 22 Jun 2023 02:55:27 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Thu, 22 Jun 2023 02:55:27 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Thu, 22 Jun 2023 02:55:27 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.100)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Thu, 22 Jun 2023 02:55:26 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325E11F92C
+	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 14:32:38 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ca/bpQAF5BBN1xKaQwIPglARa+5/mItm+2feTlAJufN3jfxC0+nuGL+opqOXYuoplWKqEUmlUJFPaYGJNB7znyGa/JhL0vWcF1u0YuOF8UYZ/GwFAPJlpkfJKPNtE6dq9OWOnWrimDRVSCwJA3shKXgNrCSDWHugw/dJi6TGj4PubvV1pEWhiNi/Ttsvrb/f5JozOPJvGB9shAn68Zg7gLO9EfvThNx6GX2ZXJ2KYAjsElgSZUVeNAZtpFj0h4l5sJUIGQVk/W6BMg/MSc+0m+TDLDrDeEhFkoeQMUNr4HQxMKVuZW8dxUuPlmdGf7BF7kx2A4anJx38vxoHwFRkOg==
+ b=M+zoj/l1byT4umdYEAwwo/5TlwaqTreHi7odC+Z5FBS+JQgE2URQYtZT1cfi+5mf+YA0zrFdTkcjkL+v1/Y+EkxVk0EXiyUktwsNjRp4c0xfu+JFtqR3E9zLm3ko6JKa/Db+VKc30DzbSGxgcprVuEKDiyN+B/325zQSZNL4D8ERCbOiBZWK9wM/qvx9iJBx8vzc8l6Iwj4qNpBWbA6JwlNvskQB3O7yC3RfEiutDxj7RACpRw5uPqvSfNU1CAbgPFeUvNDgQ2bp+mZxtDYxKdrQ2SK9jBgzjvt07K2FfbKJ3qu/iB2dOanLxMEZSvQ8obOW9JhGRdl9fScM9lPmfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nfx5Kx+YofBJE7sOxzWd1q5iQN0M5XDdD9Qh0JN+4+M=;
- b=l5CSM776ki24RkDM0ZrSSlHxjL1CShNZiTxj6og3e0iEqhfli/cr8BrDWE65HFVi3YNQx3UYf19wbnycyCRMkn9EWHLMqAhfr7hEJaPQnKTIILK1LZztiiPY/XZlxrDY7k5qkX7SkvUEkG/8+B+yNqz9QI+GyPU9j/JQ6I2h3Ioo7OUM+bhOaZgqpVcBxgucQskk+WXfJwR/vNH0fBXnLRUJqquodgje0u4dq8rgcBnmPowlp4GqQ75kAiwJSf+jTxuN+2P6kV8dVC8Z1ge+yGcTpr5VgUcHvDHJ5BbacCPU2WwxFB91m8buNer8JaVRSsry5SpA3EXfrLnHYaT9iw==
+ bh=4lyC5XP60I1pfW6xw8TswS5IWf2B55Z/R5/DINLRNLA=;
+ b=Rt47t/J0lHXVjjMKV8IkDfaB8/J9G5M1DhT7q/AJmIf0T2FNTMq56k8N42GvYcUB81q5J6lUirpXg9RjCRSHUgjYSgrgfCThwrNgckCjqcNtvWihGk/U04WLwfTOsN/RtOWhY/yIkoOFhiIWGQvFByW1Rtklmvkc1qx5BLBnaGwYCE74Sytm95UmTQc1tyiZQlD1dWMZjZpLzj7H1TJS5zBJeWXY0Xvej+yK8uNk9pagl7LOkUrOSK4OGu8n7iWeTqy4Y3I1C2gYDbsPhmekL2sx4DWP7sZJetkHChlH7BhhI9OOwJ98HNC7KOZOjEr2wn7XmWTBiXFBC+gWpXOXSA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by DM4PR11MB6190.namprd11.prod.outlook.com (2603:10b6:8:ad::13) with
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4lyC5XP60I1pfW6xw8TswS5IWf2B55Z/R5/DINLRNLA=;
+ b=30oH3GutF+EuXmDuuzNHOWjDhnE4v3G/NXXpf4p1EkHi4nmSzdDVfL73pbRnK1BbD2yBqepOfV5e8pAJVaXRQTh1iXv1RHsaNtKeVmzjTnkdJetvS0Zh5CDlpo5nxTJpuBHt7zRpYDKojCjFjmmsgGWP6uDNXi5XpOfAUpKxWG0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1SPRMB0007.namprd12.prod.outlook.com (2603:10b6:208:39e::8)
+ by SA3PR12MB8812.namprd12.prod.outlook.com (2603:10b6:806:312::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Thu, 22 Jun
- 2023 09:55:23 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::19b7:466f:32ac:b764]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::19b7:466f:32ac:b764%3]) with mapi id 15.20.6521.020; Thu, 22 Jun 2023
- 09:55:23 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>,
-	"michael.roth@amd.com" <michael.roth@amd.com>
-CC: "tglx@linutronix.de" <tglx@linutronix.de>, "tobin@ibm.com"
-	<tobin@ibm.com>, "liam.merwick@oracle.com" <liam.merwick@oracle.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Luck, Tony"
-	<tony.luck@intel.com>, "jmattson@google.com" <jmattson@google.com>,
-	"Lutomirski, Andy" <luto@kernel.org>, "ak@linux.intel.com"
-	<ak@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"slp@redhat.com" <slp@redhat.com>, "rientjes@google.com"
-	<rientjes@google.com>, "alpergun@google.com" <alpergun@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "dovmurik@linux.ibm.com"
-	<dovmurik@linux.ibm.com>, "thomas.lendacky@amd.com"
-	<thomas.lendacky@amd.com>, "Wang, Zhi A" <zhi.a.wang@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "Annapurve,
- Vishal" <vannapurve@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
-	"Christopherson,, Sean" <seanjc@google.com>, "vkuznets@redhat.com"
-	<vkuznets@redhat.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"marcorr@google.com" <marcorr@google.com>, "ashish.kalra@amd.com"
-	<ashish.kalra@amd.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "nikunj.dadhania@amd.com"
-	<nikunj.dadhania@amd.com>, "Rodel, Jorg" <jroedel@suse.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "kirill@shutemov.name" <kirill@shutemov.name>,
-	"jarkko@kernel.org" <jarkko@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>
-Subject: Re: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
- using a configurable mask
-Thread-Topic: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
- using a configurable mask
-Thread-Index: AQHZnOphA4hNJcIpGkeiRJNqOV8fuK+KheOAgAmr4oCAAA39gIABrsSAgAC28gA=
-Date: Thu, 22 Jun 2023 09:55:22 +0000
-Message-ID: <c116b7ab8ca02116f2b8d19a8214161c3b30576c.camel@intel.com>
-References: <20230612042559.375660-1-michael.roth@amd.com>
-	 <20230612042559.375660-5-michael.roth@amd.com>
-	 <20230614164709.GT2244082@ls.amr.corp.intel.com>
-	 <20230620202841.7qizls3u3kcck45g@amd.com>
-	 <20230620211845.GV2244082@ls.amr.corp.intel.com>
-	 <20230621230031.37hdnymbjzwjgbo2@amd.com>
-In-Reply-To: <20230621230031.37hdnymbjzwjgbo2@amd.com>
-Accept-Language: en-US
+ 2023 14:32:36 +0000
+Received: from BL1SPRMB0007.namprd12.prod.outlook.com
+ ([fe80::3404:aab:eb6f:8754]) by BL1SPRMB0007.namprd12.prod.outlook.com
+ ([fe80::3404:aab:eb6f:8754%7]) with mapi id 15.20.6521.023; Thu, 22 Jun 2023
+ 14:32:35 +0000
+Message-ID: <4f84f895-a733-df1d-552a-862a2f60933c@amd.com>
+Date: Thu, 22 Jun 2023 09:32:31 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] docs: security: Confidential computing intro and
+ threat model for x86 virtualization
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.48.2 (3.48.2-1.fc38) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DM4PR11MB6190:EE_
-x-ms-office365-filtering-correlation-id: 12af70e6-fc56-47bb-f74b-08db7306cb9c
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: f2ztTwAJkqQAl+V8qQYOuLq0Jt+fYDiIuLfY/VqMLaeY/3I3qArsmkVKxpR05xTAagbnKj7U7l6K0+bOY0UAXUUe2thr9kGmPX1Ah4Iii8M9xwCd8ZjBAP9dhB+tLP2UTzqra90001WBD4K7BI+OcBUqb0dGsxLKGgvSTdeYqok8pOzCafqS25i8YcJywGjEH/8Pwn1xZp1S9bCEePewmLwO1nws+/NG09IMxgtoMA6MaTwQCaRXiR0JHj4OiN36aNcF39aY8C9ADdoEJeJdArruWhPoQGI3KinWYZkCRgDq7qmzTT+CLdEaORI6ISTDv6q5Mv6aBn1GP6xe9t4knh3nsFdqzSGwNQFzowGfKFuPiSRZW8BBHLf7fN5mN6VrjK21Xpmh+7F15As5KEumt0kQyHQRsaN2iRaGk8UTEo819AQ8ifIs6qsy7ntsf8YrIe25pxSD74VlcaK47/f+9AKvvNpEroitvbclTeQuVDh7b9uW9zqvnekHFruhNdBdQNMurjH169Sff/AdhR8SgCBuc+WaBUDLeDyh1GhnZ4p69CqKmmIgrEeCZ1cdMkkxekxNXBBGI36IdSe5rEuGWaPq9e1tpBB4h0qcGiIptsIdNS082umxaCYFlfNl1kab
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(39860400002)(366004)(136003)(376002)(346002)(451199021)(86362001)(2906002)(38070700005)(122000001)(38100700002)(82960400001)(8936002)(41300700001)(8676002)(36756003)(6486002)(76116006)(66946007)(91956017)(4326008)(71200400001)(66476007)(66556008)(64756008)(66446008)(6512007)(478600001)(26005)(186003)(6506007)(2616005)(316002)(7406005)(7416002)(54906003)(110136005)(5660300002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TzdEVDlJaWozNlgzYklmWXNLUWdodG9hRWsrSWZSaUIxMzI0eFF3dkdBT1Ar?=
- =?utf-8?B?RnlGOTJYWWJ2R0p0a3ZHNmdPZTBRTHRxWXhTODhndGNVNjBodkVNeVBjeGRx?=
- =?utf-8?B?Y3ljRlBKeTlGd0ZpNVVacGFkZElKV0dUMmQ5bVp4cVQrc1JobHhhNktObGxM?=
- =?utf-8?B?TTFBRmR0UnNDd0ZYdEcyYmxoM2Z4dFNQL1IzUkZQalpzS0ZxVVl0Uk5SZnBU?=
- =?utf-8?B?b1ZMVEtXUVRXS3dlTU1waFBzd1BTWDczT05kSEdsU013MXhjeG5vUkExK2dj?=
- =?utf-8?B?algrY2k4TnR2VFRyY1d4VElBOGkxL3lma1Q0OVBuWUxyQnp2NHFBNEJic3FU?=
- =?utf-8?B?VDVtSUZyMVdPdmdHT0RENWpxQU1iQnRmZDU5WTg3dFUyNy90Q1ByRWJKQ2Rm?=
- =?utf-8?B?ZFhNTi90QUhlQUs5eTNUd3JFaEs1OWRhc29OdFR3bHlLRmZwQW9Jcm9ubm9M?=
- =?utf-8?B?VThkU2xlUW9EOG1vNmNjVlBPVWJYY2o3NUU2R3ZMWlFOeFVoLzdvRTJ2aWFE?=
- =?utf-8?B?UG1OWnJML1luVkRsQlNYV2VrUjZDV25Ga1pVbXVFelFUdHdLTWlVNExzWWlY?=
- =?utf-8?B?Q2QrQXpHODBTajdWQUxTZGlleXZ4c3FDeTZWUGoyZ1dZWHdCRE9iS0VPYkwy?=
- =?utf-8?B?djRTYm9pRlhOY1E3OTRkS2VjMHNRakx1VkxxZTlWYUxhSVN4MS9sc3lIRWdi?=
- =?utf-8?B?UlFzTENUanBMbVhVeWFlUmFpL1hlcENSTkxFQ2hhYUVFc1NqUndTK2wyeXdx?=
- =?utf-8?B?NWJnZDArWWx6bjl0R2JQQ2d3OWlpT3QxM1ovNWU2L245aHFDcTJUa2hLWE8z?=
- =?utf-8?B?dFE1UURscnJWSldPbWl6VHBoOG1PNDc1aitwZFptVTBjQzAwd3hSdWdWUlI2?=
- =?utf-8?B?WkZRRVh4dXdUU2hMVlJNMTY5UTRkVmFwVzYvOVZ1WVRmc1dJMGt3ZzJ0YUs1?=
- =?utf-8?B?Y3MzVldZYzFqQ0J5a2VDQU5sSjVOVHF6blZhb2VVcm5JdUFoeWZOaGlKUGF3?=
- =?utf-8?B?TjRpcU15SU5YeTd2bnVJWUNhajFlUnN1YVZYMlJYcGhBN0pnRnlVbmVnV21s?=
- =?utf-8?B?VWF1MlozSlJUUmhlTTRKZHZDVWQrNnpqUExXMFlLS2Y0T2Q1cGZWaGtVZnpQ?=
- =?utf-8?B?VDVBcVBSeWloM3pBKzJGT3lKU2xOcFFDSHhVSWFYRVVzalU2ck8wbXRiWVhy?=
- =?utf-8?B?ZEhseGNtZ2plQy9QZHVHYWc4dml6bHN0OGRER0paSTM1Q3luOTFEVmVKejhH?=
- =?utf-8?B?NldTSjhsSkJXQjE2U2QvMXJ4NDh4VmVoVXp2eE1yMGJTWlBhaGhSWFlZUnlF?=
- =?utf-8?B?bjNjbDM2Mmppam0zc1pwZVFwNWlBM1FlelVxeEQyQmxVaWxaOFF3V0FFV2xs?=
- =?utf-8?B?TWdFOTFyLy9ETVhqSnN2V0ZmNVZpMjJBWS91TVdvYmJ2SE1IZG1EcW5sRXhJ?=
- =?utf-8?B?UVBhc1ArVUQvUmlkSFhQb2hQTFl6OHRkZkxabCtJaGFYZ0NwRmJiMjRGcHcw?=
- =?utf-8?B?aThOdFJCdW5LaXBLUFBPWGovVHcwODE5UGlFclByZGxPbEVuYWp4MXY4THNo?=
- =?utf-8?B?dSs5YjVsUHN1SjYySlErWW5LSGRjbzhuQ2VRaWtCdWowTTNlTGdQV0E1a0RZ?=
- =?utf-8?B?eU5wZVBvcVhqRmQ2RGZOalJZUFFDQ3BDQTg3SURqUTVDMnhtaThiLzkwL0Fy?=
- =?utf-8?B?b0VscURJdk5qRGdCakxHYTc1bHFrSUVLOVI0WjFTV0txL0JLYmt0d1ZGVXN3?=
- =?utf-8?B?dm5vS3JJOGNlNGxBMmIyb0M3NHlOT3dWRUhScEVkdWpHUWJ3TTZNSmE0R0J5?=
- =?utf-8?B?TURBMHMwTG5EdHN3UGRqdlJKWnp6cEowRzJZWXZSU29JTnV0eURvQmtwRmph?=
- =?utf-8?B?TG1jK2s1UVEvR2ppUzNLM0w1anNMWlRjS0VpcFRCSnBraGF2RUxUQ3NiaEpt?=
- =?utf-8?B?TzdHK0xsc09mRHZMWFQ4eWNaV2J4azhLTlJZdmVNU1RlbVdlL25JTDVvdUcv?=
- =?utf-8?B?VkZoL01SZUJ4bGZWWnlmNXd2YjB1REdLbDFvM2xpWnRoSVArWUpuYjU4VnFU?=
- =?utf-8?B?eGpZL243Tmg1REdMR3p2WDJuY3FmTjJYTk01djJTbitpTkQrc0hRbFRiRDVp?=
- =?utf-8?Q?j4vTRRjhn9fjtN2c+gTNZ855P?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E5E6B13C56399C4BB323FBF43FEA0748@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+To: corbet@lwn.net
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, ardb@kernel.org,
+ kraxel@redhat.com, dovmurik@linux.ibm.com, elena.reshetova@intel.com,
+ dave.hansen@linux.intel.com, Dhaval.Giani@amd.com, michael.day@amd.com,
+ pavankumar.paluri@amd.com, David.Kaplan@amd.com, Reshma.Lal@amd.com,
+ Jeremy.Powell@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
+ tglx@linutronix.de, dgilbert@redhat.com, gregkh@linuxfoundation.org,
+ dinechin@redhat.com, linux-coco@lists.linux.dev, berrange@redhat.com,
+ mst@redhat.com, tytso@mit.edu, jikos@kernel.org, joro@8bytes.org,
+ leon@kernel.org, richard.weinberger@gmail.com, lukas@wunner.de,
+ jejb@linux.ibm.com, cdupontd@redhat.com, jasowang@redhat.com,
+ sameo@rivosinc.com, bp@alien8.de, seanjc@google.com, security@kernel.org,
+ Larry Dewey <larry.dewey@amd.com>
+References: <20230612164727.3935657-1-carlos.bilbao@amd.com>
+From: Carlos Bilbao <carlos.bilbao@amd.com>
+In-Reply-To: <20230612164727.3935657-1-carlos.bilbao@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA0PR11CA0193.namprd11.prod.outlook.com
+ (2603:10b6:806:1bc::18) To BL1SPRMB0007.namprd12.prod.outlook.com
+ (2603:10b6:208:39e::8)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1SPRMB0007:EE_|SA3PR12MB8812:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6875df5-568b-424a-932b-08db732d85b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	pNTALVG6yyBlUcgGsnb9zNqfEWIuMumj4XbSdvagFsoEUBqS5TYO91TVWlxSVnZJF0QWOsPfrui/UpIb4jt9bWHjgMRSCKuXAAhbaAwY5L2r8FiG34aKoO6jMRX+KzfwnUGazSS+cMjWvYZtuYA5UejV/ljJYv6qhl3knu0dEbM3Y2WyxvIw3stlI6/hEeF86N3C3VQ/MWigrK3f+YbYCUZMiSL842kCrNB2JBILRrwjVDkW9lNv0BZHZ9SRBMiPD50EBscCuX5rN2kmcVpgWTrODiLmDcmf8HisSK73Ia9iVcsn//mu99MkJbWn5dT3vosT6RXdl6TLJI2jZ+JqfXxAkwWHDHdWUpR61c8wnArAAK1sEav6UyBC7ygdy9++i0Dh/BNP3xgKbPoA8gfw150wZziK7AiYE6VeUMbnin0wdGcIdAjqCnERbbUOgd91Jjv2lF22f03/aoRM9ukX4aEBfBEplHr/PLa4qj24PjHov/ZAjPEQICkQaatjar2x7KxVZxbEBqld+kFNoLZmDS6mHVjPsjCllZIpNhxAwNH155Jxn5/1CkJELMR6LgE85ITtfkCqc/eHqpPE75tkdSpHuxnFCwkVLS4uYxjtUFy0JNuGJdTG7tkU9GiGVHv20YmPDwl4cW6ZXPzd2L6pZJL+HW/DLK2SiGXRNfdws08=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1SPRMB0007.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(346002)(366004)(376002)(136003)(451199021)(6512007)(4326008)(6666004)(966005)(26005)(186003)(36756003)(2906002)(31686004)(31696002)(86362001)(2616005)(316002)(44832011)(8936002)(66946007)(6916009)(66476007)(66556008)(5660300002)(478600001)(53546011)(6486002)(7406005)(6506007)(30864003)(15650500001)(7416002)(83380400001)(41300700001)(8676002)(38100700002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OG8xbGorWmVBVUV0dmZsUWF2VUJhMEQwMjREb21WdERsTndOakEvRG80ejhq?=
+ =?utf-8?B?M0w5VDd4WmVFSVc5OENla2w1RnFVYUVUZm9CVFZqalFBaW91UUdlQkN1dnFv?=
+ =?utf-8?B?dUVuNGNRVWQ1anA2WFZTTjV4ZW92NHNTajFnN09tWDJranU4OStFM2xLZXB0?=
+ =?utf-8?B?aGQzOXhaY0RXNnMxYkdyMEhlU3gydjhFb2xkVlJtNzV2Y0ZXRlVsTWIxUXh1?=
+ =?utf-8?B?cG5YbmtXbjQrWXhDOWE5MXRQWkk0eVJvaXQxMEdvVW5mTEtrdFF0aHc0dUUy?=
+ =?utf-8?B?M1JOWVcyTEJLTGJDaVlsZld5TkE5R0tMM3VacVF1bGpxdDBjU1BnWWNaUWdt?=
+ =?utf-8?B?SC92UGN3NnVWalovckdhaW1ydityUktaM01kSXc5RzE5RENSZ1lNYTdnRjhX?=
+ =?utf-8?B?T1ZwRFY3d2ppMVQ2RW9STGhSMU1LWE9uM2tUSVhJR2l2MW9xa01XVVozazFy?=
+ =?utf-8?B?SXluQmRiemdGTlJFb3JqdHE4WDhxNlFBVGkxbGpxcGJvTi9lUktqaFV0ekdU?=
+ =?utf-8?B?Z3dDNWk4bFpnaWRNRUl0dnhlenR3RWl0bmtkUkZzcVh5bkdpc0lFSUYyNlVD?=
+ =?utf-8?B?ZldBS3JBNitTOVpydm9IS25nRVFQZEd3WjFiOTdnTVZwWXV4UExQTzhlSEN1?=
+ =?utf-8?B?WG11WkdaV2YvTEZuVW9zZDFoNG8rblBFaXhMRWZ2bDdQTmdORHlhd0VBSWNM?=
+ =?utf-8?B?czFhMkFUYm5JS1FoeDBTMGUvTVhFRFBpSXg0dDhaUUt3YkhzWTNRSEZFaFUr?=
+ =?utf-8?B?algrVExlbjByWWFZaEoxaXRtbXN2aDQ0VGxRZ1YrUXBBYXFVWXA3aWZBY0RH?=
+ =?utf-8?B?SjViWnhYMkc4UlhlKyszQTRwSU9jZVRHSkd5UTA0VFdVNWJ0NVU1a3JZVGhh?=
+ =?utf-8?B?U3VCZWNvdFlJWmkrczdoejZtUngyMWRyZjExTEEvZTJoRVJFeHJmYkMvQ1Z2?=
+ =?utf-8?B?RVVUVy9iUEVTeHpMa1h6LzlUQ1ZvQmVFb1dEK3ZUenh6bXhVbG1wcFdoUk9E?=
+ =?utf-8?B?aVF4cEpNSnNtU1lTS3Nhbyt3WWNoc0d2YVJLU25yTEZOSTVxUkFmMVhTUGlI?=
+ =?utf-8?B?ODBhbVhoNllpT0RHUS95aitvbzBDbDA2Tm1NNXhPdmZMZlEyVDArSU9oUUE5?=
+ =?utf-8?B?VGZ6UjJNbTdnRmRjTzNZZW5aZitxQ2NCMDdycmp0TzZpTDBmSFFxZU1Ld1B0?=
+ =?utf-8?B?VHkwek1Jc2ZPYW1UUUZnczFDWnBBUGljem9pRFp2MkpNMDdqMGM3dXkyWEw2?=
+ =?utf-8?B?U0laRnhTc2IxQ2hpMmVGNzBkalduVWV2QldBYzRUVnd3QzZNVEJKV29MZEFl?=
+ =?utf-8?B?SVptSFI0RjFMRU5lR3RQRkc2MUMrZjJ5WXJmdnltNTFEbTNGZU0wVlAvNmtK?=
+ =?utf-8?B?ZVlZTFpMcHF4WjFYWTNEM2tPL1h5a2x0OC9lZkgwZWY4SDZweExMeEowZkZZ?=
+ =?utf-8?B?OFh2T3lWbjNHSFRKTmkveVcvYXJXMkxEaXZNWjE3QjRMc3BoL1IyWVpMd3pL?=
+ =?utf-8?B?NnNYZ1pWY3UyaU9UM2p1TGYvbjhPUnJReFNFL3lBZmljNVVzR3dydFBQak40?=
+ =?utf-8?B?R1Jtd3NkMXdlV29WTno5QVB3RjhzbTExRHN4T0N5bE51SkR4cDB5a3JpTlh2?=
+ =?utf-8?B?MWdpcFlYdVovTTQyRVRZV3d2eUZkeE9RYVdYd3BPSlNkYXc4UHVWWU0xcDJL?=
+ =?utf-8?B?L1dLM0s2NUlrd2hwdDBJNE9NdGp5emJaS0xNVkNIUzJrdEljTzcyQTBJZFhn?=
+ =?utf-8?B?aUc3WUlqSjBRUmZnUDNQTzdTQUVPZzZyMHY5V0tYMllpTmZSb2Jaek1RMUxH?=
+ =?utf-8?B?Tkozc1g0OW5OQXNrT1BpSXFDYnJoaGtQZWhwUlFYL1V1UVQxalJyK3c4aXls?=
+ =?utf-8?B?TTlBUUlJeS9NTTU0cDFHZDJ6amlUeEVtRFVZazNIVWZTQkt3Z1F6by85aDlr?=
+ =?utf-8?B?SEsxekp4Q3RwUzJiZTRpbVlRelZacWF2TENLWjdnMWlwSXpxRzlwZzhKOTBZ?=
+ =?utf-8?B?N2d1bHRXakFaMHgwdFFLMUd3bEVndXpCNUg5eWJhWkNXdnhZYW0yQVBKVC9j?=
+ =?utf-8?B?aC9qNFNiSWpJVzE0eTY3NklIQm40TjZNcDNuUW9GbXdHZU84QjlieldlZDJv?=
+ =?utf-8?Q?pJfSHb+kbrxCM2Jhh6dHo0xm8?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6875df5-568b-424a-932b-08db732d85b7
+X-MS-Exchange-CrossTenant-AuthSource: BL1SPRMB0007.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12af70e6-fc56-47bb-f74b-08db7306cb9c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2023 09:55:22.5928
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2023 14:32:35.8801
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vgZDAC9F5ZcaNfMRrZ0WWX6k9aff4Jy220hwjfla1iYg85MP6ERs8e/6LrFjlDHEFYxIES921KsCdtbe1e8Igw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6190
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iHJ0xyERU3syaxcfjc4HkcvT6uwB91CRC/oV7DgHRcp70vdYPSnpDThuvBWdMsoZ8IStTaUpqo7AhvIPoQcOdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8812
 
-DQo+IA0KPiBTbyBpZiB3ZSB3ZXJlIHRvIHN0cmFpZ2h0LWZvcndhcmRseSBpbXBsZW1lbnQgdGhh
-dCBiYXNlZCBvbiBob3cgVERYDQo+IGN1cnJlbnRseSBoYW5kbGVzIGNoZWNraW5nIGZvciB0aGUg
-c2hhcmVkIGJpdCBpbiBHUEEsIHBhaXJlZCB3aXRoIGhvdw0KPiBTRVYtU05QIGhhbmRsZXMgY2hl
-Y2tpbmcgZm9yIHByaXZhdGUgYml0IGluIGZhdWx0IGZsYWdzLCBpdCB3b3VsZCBsb29rDQo+IHNv
-bWV0aGluZyBsaWtlOg0KPiANCj4gICBib29sIGt2bV9mYXVsdF9pc19wcml2YXRlKGt2bSwgZ3Bh
-LCBlcnIpDQo+ICAgew0KPiAgICAgLyogU0VWLVNOUCBoYW5kbGluZyAqLw0KPiAgICAgaWYgKGt2
-bS0+YXJjaC5tbXVfcHJpdmF0ZV9mYXVsdF9tYXNrKQ0KPiAgICAgICByZXR1cm4gISEoZXJyICYg
-YXJjaC5tbXVfcHJpdmF0ZV9mYXVsdF9tYXNrKTsNCj4gDQo+ICAgICAvKiBURFggaGFuZGxpbmcg
-Ki8NCj4gICAgIGlmIChrdm0tPmFyY2guZ2ZuX3NoYXJlZF9tYXNrKQ0KPiAgICAgICByZXR1cm4g
-ISEoZ3BhICYgYXJjaC5nZm5fc2hhcmVkX21hc2spOw0KDQpUaGUgbG9naWMgb2YgdGhlIHR3byBh
-cmUgaWRlbnRpY2FsLiAgSSB0aGluayB0aGV5IG5lZWQgdG8gYmUgY29udmVyZ2VkLg0KDQpFaXRo
-ZXIgU0VWLVNOUCBzaG91bGQgY29udmVydCB0aGUgZXJyb3IgY29kZSBwcml2YXRlIGJpdCB0byB0
-aGUgZ2ZuX3NoYXJlZF9tYXNrLA0Kb3IgVERYJ3Mgc2hhcmVkIGJpdCBzaG91bGQgYmUgY29udmVy
-dGVkIHRvIHNvbWUgcHJpdmF0ZSBlcnJvciBiaXQuDQoNClBlcmhhcHMgY29udmVydGluZyBTRVYt
-U05QIG1ha2VzIG1vcmUgc2Vuc2UgYmVjYXVzZSBpZiBJIHJlY2FsbCBjb3JyZWN0bHkgU0VWDQpn
-dWVzdCBhbHNvIGhhcyBhIEMtYml0LCBjb3JyZWN0Pw0KDQpPciwgLi4uDQoNCj4gDQo+ICAgICBy
-ZXR1cm4gZmFsc2U7DQo+ICAgfQ0KPiANCj4gICBrdm1fbW11X2RvX3BhZ2VfZmF1bHQodmNwdSwg
-Z3BhLCBlcnIsIC4uLikNCj4gICB7DQo+ICAgICBzdHJ1Y3Qga3ZtX3BhZ2VfZmF1bHQgZmF1bHQg
-PSB7DQo+ICAgICAgIC4uLg0KPiAgICAgICAuaXNfcHJpdmF0ZSA9IGt2bV9mYXVsdF9pc19wcml2
-YXRlKHZjcHUtPmt2bSwgZ3BhLCBlcnIpDQoNCi4uLiBzaG91bGQgd2UgZG8gc29tZXRoaW5nIGxp
-a2U6DQoNCgkuaXNfcHJpdmF0ZSA9IHN0YXRpY19jYWxsKGt2bV94ODZfZmF1bHRfaXNfcHJpdmF0
-ZSkodmNwdS0+a3ZtLCBncGEswqANCgkJCQkJCQkgICAgZXJyKTsNCg0KPw0KDQo+ICAgICB9Ow0K
-PiANCj4gICAgIC4uLg0KPiAgIH0NCj4gDQo+IEFuZCB0aGVuIGFyY2gubW11X3ByaXZhdGVfZmF1
-bHRfbWFzayBhbmQgYXJjaC5nZm5fc2hhcmVkX21hc2sgd291bGQgYmUNCj4gc2V0IHBlci1LVk0t
-aW5zdGFuY2UsIGp1c3QgbGlrZSB0aGV5IGFyZSBub3cgd2l0aCBjdXJyZW50IFNOUCBhbmQgVERY
-DQo+IHBhdGNoc2V0cywgc2luY2Ugc3R1ZmYgbGlrZSBLVk0gc2VsZi10ZXN0IHdvdWxkbid0IGJl
-IHNldHRpbmcgdGhvc2UNCj4gbWFza3MsIHNvIGl0IG1ha2VzIHNlbnNlIHRvIGRvIGl0IHBlci1p
-bnN0YW5jZSBpbiB0aGF0IHJlZ2FyZC4NCj4gDQo+IEJ1dCB0aGF0IHN0aWxsIGdldHMgYSBsaXR0
-bGUgYXdrd2FyZCBmb3IgdGhlIEtWTSBzZWxmLXRlc3QgdXNlLWNhc2Ugd2hlcmUNCj4gLmlzX3By
-aXZhdGUgc2hvdWxkIHNvcnQgb2YgYmUgaWdub3JlZCBpbiBmYXZvciBvZiB3aGF0ZXZlciB0aGUg
-eGFycmF5DQo+IHJlcG9ydHMgdmlhIGt2bV9tZW1faXNfcHJpdmF0ZSgpLsKgDQo+IA0KDQpJIG11
-c3QgaGF2ZSBtaXNzZWQgc29tZXRoaW5nLiAgV2h5IGRvZXMgS1ZNIHNlbGYtdGVzdCBoYXZlIGlt
-cGFjdCB0byBob3cgZG9lcw0KS1ZNIGhhbmRsZXMgcHJpdmF0ZSBmYXVsdD8gDQoNCj4gSW4geW91
-ciBNaXNjLiBzZXJpZXMgSSBiZWxpZXZlIHlvdQ0KPiBoYW5kbGVkIHRoaXMgYnkgaW50cm9kdWNp
-bmcgYSBQRkVSUl9IQVNBVFRSX01BU0sgYml0IHNvIHdlIGNhbiBkZXRlcm1pbmUNCj4gd2hldGhl
-ciBleGlzdGluZyB2YWx1ZSBvZiBmYXVsdC0+aXNfcHJpdmF0ZSBzaG91bGQgYmUNCj4gaWdub3Jl
-ZC9vdmVyd3JpdHRlbiBvciBub3QuDQo+IA0KPiBTbyBtYXliZSBrdm1fZmF1bHRfaXNfcHJpdmF0
-ZSgpIG5lZWRzIHRvIHJldHVybiBhbiBpbnRlZ2VyIHZhbHVlDQo+IGluc3RlYWQsIGxpa2U6DQo+
-IA0KPiAgIGVudW0gew0KPiAgICAgS1ZNX0ZBVUxUX1ZNTV9ERUZJTkVELA0KPiAgICAgS1ZNX0ZB
-VUxUX1NIQVJFRCwNCj4gICAgIEtWTV9GQVVMVF9QUklWQVRFLA0KPiAgIH0NCj4gDQo+ICAgYm9v
-bCBrdm1fZmF1bHRfaXNfcHJpdmF0ZShrdm0sIGdwYSwgZXJyKQ0KPiAgIHsNCj4gICAgIC8qIFNF
-Vi1TTlAgaGFuZGxpbmcgKi8NCj4gICAgIGlmIChrdm0tPmFyY2gubW11X3ByaXZhdGVfZmF1bHRf
-bWFzaykNCj4gICAgICAgKGVyciAmIGFyY2gubW11X3ByaXZhdGVfZmF1bHRfbWFzaykgPyBLVk1f
-RkFVTFRfUFJJVkFURSA6IEtWTV9GQVVMVF9TSEFSRUQNCj4gDQo+ICAgICAvKiBURFggaGFuZGxp
-bmcgKi8NCj4gICAgIGlmIChrdm0tPmFyY2guZ2ZuX3NoYXJlZF9tYXNrKQ0KPiAgICAgICAoZ3Bh
-ICYgYXJjaC5nZm5fc2hhcmVkX21hc2spID8gS1ZNX0ZBVUxUX1NIQVJFRCA6IEtWTV9GQVVMVF9Q
-UklWQVRFDQo+IA0KPiAgICAgcmV0dXJuIEtWTV9GQVVMVF9WTU1fREVGSU5FRDsNCj4gICB9DQo+
-IA0KPiBBbmQgdGhlbiBkb3duIGluIF9fa3ZtX2ZhdWx0aW5fcGZuKCkgd2UgZG86DQo+IA0KPiAg
-IGlmIChmYXVsdC0+aXNfcHJpdmF0ZSA9PSBLVk1fRkFVTFRfVk1NX0RFRklORUQpDQo+ICAgICBm
-YXVsdC0+aXNfcHJpdmF0ZSA9IGt2bV9tZW1faXNfcHJpdmF0ZSh2Y3B1LT5rdm0sIGZhdWx0LT5n
-Zm4pOw0KPiAgIGVsc2UgaWYgKGZhdWx0LT5pc19wcml2YXRlICE9IGt2bV9tZW1faXNfcHJpdmF0
-ZSh2Y3B1LT5rdm0sIGZhdWx0LT5nZm4pKQ0KPiAgICAgcmV0dXJuIGt2bV9kb19tZW1vcnlfZmF1
-bHRfZXhpdCh2Y3B1LCBmYXVsdCk7DQo+IA0KPiAgIGlmIChmYXVsdC0+aXNfcHJpdmF0ZSkNCj4g
-ICAgIHJldHVybiBrdm1fZmF1bHRpbl9wZm5fcHJpdmF0ZSh2Y3B1LCBmYXVsdCk7DQoNCg0KV2hh
-dCBkb2VzIEtWTV9GQVVMVF9WTU1fREVGSU5FRCBtZWFuLCBleGFjdGx5Pw0KDQpTaG91bGRuJ3Qg
-dGhlIGZhdWx0IHR5cGUgY29tZSBmcm9tIF9oYXJkd2FyZV8/DQo=
+On 6/12/23 11:47, Carlos Bilbao wrote:
+> Kernel developers working on confidential computing for virtualized
+> environments in x86 operate under a set of assumptions regarding the Linux
+> kernel threat model that differs from the traditional view. Historically,
+> the Linux threat model acknowledges attackers residing in userspace, as
+> well as a limited set of external attackers that are able to interact with
+> the kernel through networking or limited HW-specific exposed interfaces
+> (e.g. USB, thunderbolt). The goal of this document is to explain additional
+> attack vectors that arise in the virtualized confidential computing space
+> and discuss the proposed protection mechanisms for the Linux kernel.
+
+To expedite things, I'm going to outline the changes to make for v3 based
+on the given feedback. Please, take a look and let me know if I'm missing
+something. Changes for v3:
+
+- Remove pKVM from the document. Although there are clear overlaps in the
+   threat models (as the discussions have shown), it might be good to omit
+   pKVM for now to avoid further complexity. In the future, when pKVM is
+   more mature, we can revisit and discuss its inclusion.
+
+- Change file name to "snp-tdx-threat-model.rst".
+
+- Replace hyphens (dashes) for parenthesis in a parenthetical sentence.
+
+- Change "technology specific" for "technology-specific".
+
+> 
+> Reviewed-by: Larry Dewey <larry.dewey@amd.com>
+> Reviewed-by: David Kaplan <david.kaplan@amd.com>
+> Co-developed-by: Elena Reshetova <elena.reshetova@intel.com>
+> Signed-off-by: Elena Reshetova <elena.reshetova@intel.com>
+> Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
+> ---
+> 
+> V1 can be found in:
+>   https://lore.kernel.org/lkml/20230327141816.2648615-1-carlos.bilbao@amd.com/
+> Changes since v1:
+> 
+> - Apply feedback from first version of the patch
+> - Clarify that the document applies only to a particular angle of
+>    confidential computing, namely confidential computing for virtualized
+>    environments. Also, state that the document is specific to x86 and
+>    that the main goal is to discuss the emerging threats.
+> - Change commit message and file name accordingly
+> - Replace AMD's link to AMD SEV SNP white paper
+> - Minor tweaking and clarifications
+> 
+> ---
+>   Documentation/security/index.rst              |   1 +
+>   .../security/x86-confidential-computing.rst   | 298 ++++++++++++++++++
+>   MAINTAINERS                                   |   6 +
+>   3 files changed, 305 insertions(+)
+>   create mode 100644 Documentation/security/x86-confidential-computing.rst
+> 
+> diff --git a/Documentation/security/index.rst b/Documentation/security/index.rst
+> index 6ed8d2fa6f9e..bda919aecb37 100644
+> --- a/Documentation/security/index.rst
+> +++ b/Documentation/security/index.rst
+> @@ -6,6 +6,7 @@ Security Documentation
+>      :maxdepth: 1
+>   
+>      credentials
+> +   x86-confidential-computing
+>      IMA-templates
+>      keys/index
+>      lsm
+> diff --git a/Documentation/security/x86-confidential-computing.rst b/Documentation/security/x86-confidential-computing.rst
+> new file mode 100644
+> index 000000000000..5c52b8888089
+> --- /dev/null
+> +++ b/Documentation/security/x86-confidential-computing.rst
+> @@ -0,0 +1,298 @@
+> +======================================================
+> +Confidential Computing in Linux for x86 virtualization
+> +======================================================
+> +
+> +.. contents:: :local:
+> +
+> +By: Elena Reshetova <elena.reshetova@intel.com> and Carlos Bilbao <carlos.bilbao@amd.com>
+> +
+> +Motivation
+> +==========
+> +
+> +Kernel developers working on confidential computing for virtualized
+> +environments in x86 operate under a set of assumptions regarding the Linux
+> +kernel threat model that differ from the traditional view. Historically,
+> +the Linux threat model acknowledges attackers residing in userspace, as
+> +well as a limited set of external attackers that are able to interact with
+> +the kernel through various networking or limited HW-specific exposed
+> +interfaces (USB, thunderbolt). The goal of this document is to explain
+> +additional attack vectors that arise in the confidential computing space
+> +and discuss the proposed protection mechanisms for the Linux kernel.
+> +
+> +Overview and terminology
+> +========================
+> +
+> +Confidential Computing (CoCo) is a broad term covering a wide range of
+> +security technologies that aim to protect the confidentiality and integrity
+> +of data in use (vs. data at rest or data in transit). At its core, CoCo
+> +solutions provide a Trusted Execution Environment (TEE), where secure data
+> +processing can be performed and, as a result, they are typically further
+> +classified into different subtypes depending on the SW that is intended
+> +to be run in TEE. This document focuses on a subclass of CoCo technologies
+> +that are targeting virtualized environments and allow running Virtual
+> +Machines (VM) inside TEE. From now on in this document will be referring
+> +to this subclass of CoCo as 'Confidential Computing (CoCo) for the
+> +virtualized environments (VE)'.
+> +
+> +CoCo, in the virtualization context, refers to a set of HW and/or SW
+> +technologies that allow for stronger security guarantees for the SW running
+> +inside a CoCo VM. Namely, confidential computing allows its users to
+> +confirm the trustworthiness of all SW pieces to include in its reduced
+> +Trusted Computing Base (TCB) given its ability to attest the state of these
+> +trusted components.
+> +
+> +While the concrete implementation details differ between technologies, all
+> +available mechanisms aim to provide increased confidentiality and
+> +integrity for the VM's guest memory and execution state (vCPU registers),
+> +more tightly controlled guest interrupt injection, as well as some
+> +additional mechanisms to control guest-host page mapping. More details on
+> +the x86-specific solutions can be found in
+> +:doc:`Intel Trust Domain Extensions (TDX) </arch/x86/tdx>` and
+> +`AMD Memory Encryption <https://www.amd.com/system/files/techdocs/sev-snp-strengthening-vm-isolation-with-integrity-protection-and-more.pdf>`_.
+> +
+> +The basic CoCo guest layout includes the host, guest, the interfaces that
+> +communicate guest and host, a platform capable of supporting CoCo VMs, and
+> +a trusted intermediary between the guest VM and the underlying platform
+> +that acts as a security manager. The host-side virtual machine monitor
+> +(VMM) typically consists of a subset of traditional VMM features and
+> +is still in charge of the guest lifecycle, i.e. create or destroy a CoCo
+> +VM, manage its access to system resources, etc. However, since it
+> +typically stays out of CoCo VM TCB, its access is limited to preserve the
+> +security objectives.
+> +
+> +In the following diagram, the "<--->" lines represent bi-directional
+> +communication channels or interfaces between the CoCo security manager and
+> +the rest of the components (data flow for guest, host, hardware) ::
+> +
+> +    +-------------------+      +-----------------------+
+> +    | CoCo guest VM     |<---->|                       |
+> +    +-------------------+      |                       |
+> +      | Interfaces |           | CoCo security manager |
+> +    +-------------------+      |                       |
+> +    | Host VMM          |<---->|                       |
+> +    +-------------------+      |                       |
+> +                               |                       |
+> +    +--------------------+     |                       |
+> +    | CoCo platform      |<--->|                       |
+> +    +--------------------+     +-----------------------+
+> +
+> +The specific details of the CoCo security manager vastly diverge between
+> +technologies. For example, in some cases, it will be implemented in HW
+> +while in others it may be pure SW. In some cases, such as for the
+> +`Protected kernel-based virtual machine (pKVM) <https://github.com/intel-staging/pKVM-IA>`,
+> +the CoCo security manager is a small, isolated and highly privileged
+> +(compared to the rest of SW running on the host) part of a traditional
+> +VMM.
+> +
+> +Existing Linux kernel threat model
+> +==================================
+> +
+> +The overall components of the current Linux kernel threat model are::
+> +
+> +     +-----------------------+      +-------------------+
+> +     |                       |<---->| Userspace         |
+> +     |                       |      +-------------------+
+> +     |   External attack     |         | Interfaces |
+> +     |       vectors         |      +-------------------+
+> +     |                       |<---->| Linux Kernel      |
+> +     |                       |      +-------------------+
+> +     +-----------------------+      +-------------------+
+> +                                    | Bootloader/BIOS   |
+> +                                    +-------------------+
+> +                                    +-------------------+
+> +                                    | HW platform       |
+> +                                    +-------------------+
+> +
+> +There is also communication between the bootloader and the kernel during
+> +the boot process, but this diagram does not represent it explicitly. The
+> +"Interfaces" box represents the various interfaces that allow
+> +communication between kernel and userspace. This includes system calls,
+> +kernel APIs, device drivers, etc.
+> +
+> +The existing Linux kernel threat model typically assumes execution on a
+> +trusted HW platform with all of the firmware and bootloaders included on
+> +its TCB. The primary attacker resides in the userspace, and all of the data
+> +coming from there is generally considered untrusted, unless userspace is
+> +privileged enough to perform trusted actions. In addition, external
+> +attackers are typically considered, including those with access to enabled
+> +external networks (e.g. Ethernet, Wireless, Bluetooth), exposed hardware
+> +interfaces (e.g. USB, Thunderbolt), and the ability to modify the contents
+> +of disks offline.
+> +
+> +Regarding external attack vectors, it is interesting to note that in most
+> +cases external attackers will try to exploit vulnerabilities in userspace
+> +first, but that it is possible for an attacker to directly target the
+> +kernel; particularly if the host has physical access. Examples of direct
+> +kernel attacks include the vulnerabilities CVE-2019-19524, CVE-2022-0435
+> +and CVE-2020-24490.
+> +
+> +Confidential Computing threat model and its security objectives
+> +===============================================================
+> +
+> +Confidential Computing adds a new type of attacker to the above list: a
+> +potentially misbehaving host (which can also include some part of a
+> +traditional VMM or all of it), which is typically placed outside of the
+> +CoCo VM TCB due to its large SW attack surface. It is important to note
+> +that this doesn’t imply that the host or VMM are intentionally
+> +malicious, but that there exists a security value in having a small CoCo
+> +VM TCB. This new type of adversary may be viewed as a more powerful type
+> +of external attacker, as it resides locally on the same physical machine
+> +-in contrast to a remote network attacker- and has control over the guest
+> +kernel communication with most of the HW::
+> +
+> +                                 +------------------------+
+> +                                 |    CoCo guest VM       |
+> +   +-----------------------+     |  +-------------------+ |
+> +   |                       |<--->|  | Userspace         | |
+> +   |                       |     |  +-------------------+ |
+> +   |   External attack     |     |     | Interfaces |     |
+> +   |       vectors         |     |  +-------------------+ |
+> +   |                       |<--->|  | Linux Kernel      | |
+> +   |                       |     |  +-------------------+ |
+> +   +-----------------------+     |  +-------------------+ |
+> +                                 |  | Bootloader/BIOS   | |
+> +   +-----------------------+     |  +-------------------+ |
+> +   |                       |<--->+------------------------+
+> +   |                       |          | Interfaces |
+> +   |                       |     +------------------------+
+> +   |     CoCo security     |<--->| Host/Host-side VMM |
+> +   |      manager          |     +------------------------+
+> +   |                       |     +------------------------+
+> +   |                       |<--->|   CoCo platform        |
+> +   +-----------------------+     +------------------------+
+> +
+> +While traditionally the host has unlimited access to guest data and can
+> +leverage this access to attack the guest, the CoCo systems mitigate such
+> +attacks by adding security features like guest data confidentiality and
+> +integrity protection. This threat model assumes that those features are
+> +available and intact.
+> +
+> +The **Linux kernel CoCo VM security objectives** can be summarized as follows:
+> +
+> +1. Preserve the confidentiality and integrity of CoCo guest's private
+> +memory and registers.
+> +
+> +2. Prevent privileged escalation from a host into a CoCo guest Linux kernel.
+> +While it is true that the host (and host-side VMM) requires some level of
+> +privilege to create, destroy, or pause the guest, part of the goal of
+> +preventing privileged escalation is to ensure that these operations do not
+> +provide a pathway for attackers to gain access to the guest's kernel.
+> +
+> +The above security objectives result in two primary **Linux kernel CoCo
+> +VM assets**:
+> +
+> +1. Guest kernel execution context.
+> +2. Guest kernel private memory.
+> +
+> +The host retains full control over the CoCo guest resources, and can deny
+> +access to them at any time. Examples of resources include CPU time, memory
+> +that the guest can consume, network bandwidth, etc. Because of this, the
+> +host Denial of Service (DoS) attacks against CoCo guests are beyond the
+> +scope of this threat model.
+> +
+> +The **Linux CoCo VM attack surface** is any interface exposed from a CoCo
+> +guest Linux kernel towards an untrusted host that is not covered by the
+> +CoCo technology SW/HW protection. This includes any possible
+> +side-channels, as well as transient execution side channels. Examples of
+> +explicit (not side-channel) interfaces include accesses to port I/O, MMIO
+> +and DMA interfaces, access to PCI configuration space, VMM-specific
+> +hypercalls (towards Host-side VMM), access to shared memory pages,
+> +interrupts allowed to be injected into the guest kernel by the host, as
+> +well as CoCo technology specific hypercalls, if present. Additionally, the
+> +host in a CoCo system typically controls the process of creating a CoCo
+> +guest: it has a method to load into a guest the firmware and bootloader
+> +images, the kernel image together with the kernel command line. All of this
+> +data should also be considered untrusted until its integrity and
+> +authenticity is established via attestation.
+> +
+> +The table below shows a threat matrix for the CoCo guest Linux kernel with
+> +the potential mitigation strategies. The matrix refers to CoCo-specific
+> +versions of the guest, host and platform.
+> +
+> +.. list-table:: CoCo Linux guest kernel threat matrix
+> +   :widths: auto
+> +   :align: center
+> +   :header-rows: 1
+> +
+> +   * - Threat name
+> +     - Threat description
+> +     - Mitigation strategies
+> +
+> +   * - Guest malicious configuration
+> +     - A misbehaving host modifies one of the following guest's
+> +       configuration:
+> +
+> +       1. Guest firmware or bootloader
+> +
+> +       2. Guest kernel or module binaries
+> +
+> +       3. Guest command line parameters
+> +
+> +       This allows the host to break the integrity of the code running
+> +       inside a CoCo guest, and violates the CoCo security objectives.
+> +     - The integrity of the guest's configuration passed via untrusted host
+> +       must be ensured by methods such as remote attestation and signing.
+> +       This should be largely transparent to the guest kernel, and would
+> +       allow it to assume a trusted state at the time of boot.
+> +
+> +   * - CoCo guest data attacks
+> +     - A misbehaving host retains full control of the CoCo guest's data
+> +       in-transit between the guest and the host-managed physical or
+> +       virtual devices. This allows any attack against confidentiality,
+> +       integrity or freshness of such data.
+> +     - The CoCo guest is responsible for ensuring the confidentiality,
+> +       integrity and freshness of such data using well-established
+> +       security mechanisms. For example, for any guest external network
+> +       communications passed via the untrusted host, an end-to-end
+> +       secure session must be established between a guest and a trusted
+> +       remote endpoint using well-known protocols such as TLS.
+> +       This requirement also applies to protection of the guest's disk
+> +       image.
+> +
+> +   * - Malformed runtime input
+> +     - A misbehaving host injects malformed input via any communication
+> +       interface used by the guest's kernel code. If the code is not
+> +       prepared to handle this input correctly, this can result in a host
+> +       --> guest kernel privilege escalation. This includes traditional
+> +       side-channel and/or transient execution attack vectors.
+> +     - The attestation or signing process cannot help to mitigate this
+> +       threat since this input is highly dynamic. Instead, a different set
+> +       of mechanisms is required:
+> +
+> +       1. *Limit the exposed attack surface*. Whenever possible, disable
+> +       complex kernel features and device drivers (not required for guest
+> +       operation) that actively use the communication interfaces between
+> +       the untrusted host and the guest. This is not a new concept for the
+> +       Linux kernel, since it already has mechanisms to disable external
+> +       interfaces, such as attacker's access via USB/Thunderbolt subsystem.
+> +
+> +       2. *Harden the exposed attack surface*. Any code that uses such
+> +       interfaces must treat the input from the untrusted host as malicious,
+> +       and do sanity checks before processing it. This can be ensured by
+> +       performing a code audit of such device drivers as well as employing
+> +       other standard techniques for testing the code robustness, such as
+> +       fuzzing. This is again a well-known concept for the Linux kernel,
+> +       since all its networking code has been previously analyzed under
+> +       presumption of processing malformed input from a network attacker.
+> +
+> +   * - Malicious runtime input
+> +     - A misbehaving host injects a specific input value via any
+> +       communication interface used by the guest's kernel code. The
+> +       difference with the previous attack vector (malformed runtime input)
+> +       is that this input is not malformed, but its value is crafted to
+> +       impact the guest's kernel security. Examples of such inputs include
+> +       providing a malicious time to the guest or the entropy to the guest
+> +       random number generator. Additionally, the timing of such events can
+> +       be an attack vector on its own, if it results in a particular guest
+> +       kernel action (i.e. processing of a host-injected interrupt).
+> +     - Similarly, as with the previous attack vector, it is not possible to
+> +       use attestation mechanisms to address this threat. Instead, such
+> +       attack vectors (i.e. interfaces) must be either disabled or made
+> +       resistant to supplied host input.
+> +
+> +As can be seen from the above table, the potential mitigation strategies
+> +to secure the CoCo Linux guest kernel vary, but can be roughly split into
+> +mechanisms that either require or do not require changes to the existing
+> +Linux kernel code. One main goal of the CoCo security architecture is to
+> +minimize changes to the Linux kernel code, while also providing usable
+> +and scalable means to facilitate the security of a CoCo guest kernel.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a73486c4aa6e..1d4ae60cdee9 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -5197,6 +5197,12 @@ S:	Orphan
+>   W:	http://accessrunner.sourceforge.net/
+>   F:	drivers/usb/atm/cxacru.c
+>   
+> +CONFIDENTIAL COMPUTING THREAT MODEL FOR X86 VIRTUALIZATION
+> +M:    Elena Reshetova <elena.reshetova@intel.com>
+> +M:    Carlos Bilbao <carlos.bilbao@amd.com>
+> +S:    Maintained
+> +F:    Documentation/security/x86-confidential-computing.rst
+> +
+>   CONFIGFS
+>   M:	Joel Becker <jlbec@evilplan.org>
+>   M:	Christoph Hellwig <hch@lst.de>
+
+Thanks,
+Carlos
