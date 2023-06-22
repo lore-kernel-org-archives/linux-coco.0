@@ -1,337 +1,329 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2056.outbound.protection.outlook.com [40.107.96.56])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACF21F18B
-	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 15:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4BE3AA87
+	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 22:31:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687473075; x=1719009075;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=QuT3nlgWRF276gcC51kRD10BziA9ICfbsw/+aaTeesU=;
+  b=bDzjBO9L/ZMyRSKeWM0piPUU2d/0HUoJ4QuDXfq96jyR/WZ5QZigcFAP
+   w8Z+ilujqKtCuveZ3UnPKmhMQYdeZyekYNtfjB7cnIsw80cG9+QMheex8
+   tFrJ1Qj1uMOzUv4UTBxU3BwM61a18sbDH0AMDVgMu2MW7deyJ5vHrf0yv
+   cXMVCxfh3F02HBU2DW4cowAZYFS8Hmv1sxNLsgwbzKk1q5zS4u6Udd4CI
+   aBNr6a2NlbKR3dJdgVqE+nzKkkHvYLjLqgdK53/DAlvV1YoFrfeLRGHEO
+   PlnM101ounFvPFxYttU0S0XENpKbdhwApEABGrl+4SI8OQG9rkp9bUmnN
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="426609069"
+X-IronPort-AV: E=Sophos;i="6.01,150,1684825200"; 
+   d="scan'208";a="426609069"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 15:31:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="859629388"
+X-IronPort-AV: E=Sophos;i="6.01,150,1684825200"; 
+   d="scan'208";a="859629388"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by fmsmga001.fm.intel.com with ESMTP; 22 Jun 2023 15:31:13 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 22 Jun 2023 15:31:12 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 22 Jun 2023 15:31:12 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23 via Frontend Transport; Thu, 22 Jun 2023 15:31:12 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.173)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.23; Thu, 22 Jun 2023 15:31:11 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h5tRdG/XBDLrYs3mGKpv0SLVhjkWxL+BMdGmvDND46NzHRsYjXaCafBrPGfNzk1+Ae7w/gl1TAAzalhh+qXU0vZLKpOcEDI1A0mqLdqSz3q/QIIcW9r9IkoKgtqfCAzHR0IUYpIDSJDwKxymBwbqsLfhe0suGDM/JGeEgMVWdxbgwNsZ1/E35EXhHvOau/o51iRmwkUBXcpQz3RbP0tAXIV5vgpiHLD87p0cMPWHP3d/Qh94iLxqtmMu0I9iRuezdO4pehRKIpjLD61HVuK2JYqkalOXVvCre+TG+EK37/v6F66SnAZXj2pk1XoJX2encbL4m/KlnoRCfPAsi3MyXw==
+ b=U3ImeqUv+neHGVNcrnMkGjfbwNAIVyQH58yJoG4reKcBHe4JtTPoG/de2XejMizW1VgIIT4obMiiR0ihtF7myxaVA3vFyAUCNb8hisXqTrm4VjFdVgsQGX9sAEotA5w7k1igmDJVhSAnWicu1+2PSL/acXXDQln2yvQs/bsiYWkPA/7lXyayIeHizjZIRaaxNnheI2rzf1CBoi8mGNVjTAvVYBf5M/eEVqnyJjoBpzB98OUfEdc8HkiQ8AV37wLaq66OFDi3OeuQmMmISEql6IxVi1yqQY3GZ614Uaxso6WLCrIt0ftmoMvH00rTrgKDpzeZNU/fKgtXP9cu7H/2NA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uOKQ4tLy4lmLfhUwKT8qUOQSzfRJe9PS7pk+tRc7/kQ=;
- b=FaPxzJRkezEgRQp0S7b9tdpxPdnGwA0J/gVMrNr53cQn9qxfqz0VaRNr9T8msI7Rm+WGh/Su+e2mZxBYZQmE0smwGx8LsmtXYDoTNrwOCrTrWbvX8SQdi4eoZw3OE3iuoVky7vSCApXSAXMOn8yphhSsIeVofqYmxQoAsT+slbFnu7sGftSL4dmHwwxRiB51okXsgYAOEBSZ8nErzW0xHn/JgUvlPtZshYNLbnW7AhnkxXQKr7NgSuRsEBdidoThsdqzoDeaAvnjIw1p5o20k9xzawofjoQicLgmGc8AAzzvONb01usFVAvWG8KPAOt/aOx8zIVRCcYw65V5ICljEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uOKQ4tLy4lmLfhUwKT8qUOQSzfRJe9PS7pk+tRc7/kQ=;
- b=qtJ/U/Yddn+08Usex8h9ajqPM1aCPw5uQjeBmacjI9eKctG6hopoCKCqtyMb56uA0DrQ7REfEQ9AuZtXsBQ6O7bbcLNRNs6OdT+OBxalPOIQTxNPEJOjsloIZlZqLo913YmhE7BBJDPJ3HTQcXjmXhPQTO+QSfUGoxvs63W8x2E=
-Received: from BN1PR14CA0025.namprd14.prod.outlook.com (2603:10b6:408:e3::30)
- by DM6PR12MB4909.namprd12.prod.outlook.com (2603:10b6:5:1ba::23) with
+ bh=QuT3nlgWRF276gcC51kRD10BziA9ICfbsw/+aaTeesU=;
+ b=IeA5E7bdaGRCTjnV5FZItL/+KZ03K6BX1KE/+SCDSkpouwYM7cVlxwE8INbs0ZDRGleruXRJrI9JaKf5uBWGCd5lO5GLRYk43DbmopNI0uG/+NmIrBRS0SHbgUJ6apV899Yp5xCvsFSc2Ha+h+4okQIDtCt8Da+w9w1WGQ9wrINXMQtZEZSsaEaVIJRqEdXQAsu99z97+cc1tfOJToDvIH4yWB2qjfSZQBcXxQq6E/02Sxep3zeJLHy7+M6NggFMw8FsmgiCbiEUXreGe2Q+fmMpVczCCog07mT+iLKWGNOmB4RqctZXkSHpeIr0FCphc1teUArfMsy4u9pfFleKog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB5983.namprd11.prod.outlook.com (2603:10b6:510:1e2::13)
+ by MW4PR11MB7006.namprd11.prod.outlook.com (2603:10b6:303:22f::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.23; Thu, 22 Jun
- 2023 15:32:48 +0000
-Received: from BN8NAM11FT084.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:e3:cafe::ca) by BN1PR14CA0025.outlook.office365.com
- (2603:10b6:408:e3::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24 via Frontend
- Transport; Thu, 22 Jun 2023 15:32:48 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT084.mail.protection.outlook.com (10.13.176.169) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6500.41 via Frontend Transport; Thu, 22 Jun 2023 15:32:48 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 22 Jun
- 2023 10:32:48 -0500
-Date: Thu, 22 Jun 2023 10:32:29 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-CC: "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "tobin@ibm.com" <tobin@ibm.com>,
-	"liam.merwick@oracle.com" <liam.merwick@oracle.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "Luck, Tony" <tony.luck@intel.com>,
-	"jmattson@google.com" <jmattson@google.com>, "Lutomirski, Andy"
-	<luto@kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "pgonda@google.com"
-	<pgonda@google.com>, "srinivas.pandruvada@linux.intel.com"
-	<srinivas.pandruvada@linux.intel.com>, "slp@redhat.com" <slp@redhat.com>,
-	"rientjes@google.com" <rientjes@google.com>, "alpergun@google.com"
-	<alpergun@google.com>, "peterz@infradead.org" <peterz@infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, "thomas.lendacky@amd.com"
-	<thomas.lendacky@amd.com>, "Wang, Zhi A" <zhi.a.wang@intel.com>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.35; Thu, 22 Jun
+ 2023 22:31:08 +0000
+Received: from PH7PR11MB5983.namprd11.prod.outlook.com
+ ([fe80::b429:a482:736e:e1ff]) by PH7PR11MB5983.namprd11.prod.outlook.com
+ ([fe80::b429:a482:736e:e1ff%5]) with mapi id 15.20.6521.024; Thu, 22 Jun 2023
+ 22:31:08 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "michael.roth@amd.com" <michael.roth@amd.com>
+CC: "srinivas.pandruvada@linux.intel.com"
+	<srinivas.pandruvada@linux.intel.com>, "liam.merwick@oracle.com"
+	<liam.merwick@oracle.com>, "tobin@ibm.com" <tobin@ibm.com>,
+	"alpergun@google.com" <alpergun@google.com>, "Luck, Tony"
+	<tony.luck@intel.com>, "jmattson@google.com" <jmattson@google.com>,
+	"Lutomirski, Andy" <luto@kernel.org>, "ak@linux.intel.com"
+	<ak@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "slp@redhat.com" <slp@redhat.com>,
+	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, "Wang, Zhi A"
+	<zhi.a.wang@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "pgonda@google.com" <pgonda@google.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "peterz@infradead.org" <peterz@infradead.org>,
 	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "Annapurve,
  Vishal" <vannapurve@google.com>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
 	"Christopherson,, Sean" <seanjc@google.com>, "vkuznets@redhat.com"
-	<vkuznets@redhat.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"marcorr@google.com" <marcorr@google.com>, "ashish.kalra@amd.com"
+	<vkuznets@redhat.com>, "marcorr@google.com" <marcorr@google.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "ashish.kalra@amd.com"
 	<ashish.kalra@amd.com>, "linux-coco@lists.linux.dev"
 	<linux-coco@lists.linux.dev>, "nikunj.dadhania@amd.com"
 	<nikunj.dadhania@amd.com>, "Rodel, Jorg" <jroedel@suse.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "kirill@shutemov.name" <kirill@shutemov.name>,
-	"jarkko@kernel.org" <jarkko@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
+	"isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "mingo@redhat.com"
+	<mingo@redhat.com>, "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "kirill@shutemov.name"
+	<kirill@shutemov.name>, "jarkko@kernel.org" <jarkko@kernel.org>,
+	"hpa@zytor.com" <hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>,
 	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
 	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dave.hansen@linux.intel.com"
 	<dave.hansen@linux.intel.com>
 Subject: Re: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
  using a configurable mask
-Message-ID: <20230622153229.vjkrzi6rgiolstns@amd.com>
+Thread-Topic: [PATCH RFC v9 04/51] KVM: x86: Determine shared/private faults
+ using a configurable mask
+Thread-Index: AQHZnOphA4hNJcIpGkeiRJNqOV8fuK+KheOAgAmr4oCAAA39gIABrsSAgAC28gCAAF41gIAAdPYA
+Date: Thu, 22 Jun 2023 22:31:08 +0000
+Message-ID: <25037dfe969698dd109daee8c6dbe0d08a874a08.camel@intel.com>
 References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-5-michael.roth@amd.com>
- <20230614164709.GT2244082@ls.amr.corp.intel.com>
- <20230620202841.7qizls3u3kcck45g@amd.com>
- <20230620211845.GV2244082@ls.amr.corp.intel.com>
- <20230621230031.37hdnymbjzwjgbo2@amd.com>
- <c116b7ab8ca02116f2b8d19a8214161c3b30576c.camel@intel.com>
+	 <20230612042559.375660-5-michael.roth@amd.com>
+	 <20230614164709.GT2244082@ls.amr.corp.intel.com>
+	 <20230620202841.7qizls3u3kcck45g@amd.com>
+	 <20230620211845.GV2244082@ls.amr.corp.intel.com>
+	 <20230621230031.37hdnymbjzwjgbo2@amd.com>
+	 <c116b7ab8ca02116f2b8d19a8214161c3b30576c.camel@intel.com>
+	 <20230622153229.vjkrzi6rgiolstns@amd.com>
+In-Reply-To: <20230622153229.vjkrzi6rgiolstns@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.48.2 (3.48.2-1.fc38) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB5983:EE_|MW4PR11MB7006:EE_
+x-ms-office365-filtering-correlation-id: 6c74670a-248a-4d3e-11d3-08db73705fc1
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: //gMJwG77N1RxilX4NuQTTxTJr/VMTfmj9rK0DTAkc0ZDz0tZhWWxZZZu/+6rrEEmmGkg5jWKOLDsqb5tgGwBR+PKwzzMmtVXEWrZC1z3WISGcoYsIpcDhj9xbR/isNB6IYXpLcwsKseQpvaf9HlfbCI2KJZpukh5BSRB5VDk4CKjskOdlWJb7luYanaNoxBMJ3Gn/1o8DePH1vm9zceLmUUDQY5Rr6l96DwAcWx8wzxWuTMybY0U3zBzwRG3x0DGaiWvAeseeKOHp3xvS9lHho99iY6qc1SR2fEeOHVWopwEyih5Pzt8YtBVHOXGvtBfuuNm3eyM6rIvaaqc8FvoiEfOsxK4CnQDZZ5XuvIYa2VPHtvSlK+as229oNOAy7RbFDehtb3OWX8fZdN12jw6FtnPcTuoOSJnGFDBkr6gNh0pOChKLphm2CU0TSSk7WHKrJQBaoyxIO3JnoyiAWpIzt0JQxdO2uiT8FG+HRb79nOqHZ2FCCjMkk+FYYcfwJBZN+FsczfcOINRqkGqoaUv7VcbglyexibmQjJ7O7633IJL61T0GHqMILmjTKyogpBt7alKW5txYh1qXs+C0sPiKkoX0zaSMZuxluX7aQfg8Z1wNZiHSNv3zLAdQNwrvce6z4y0EN0NEcrjyougP7a/w==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5983.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(366004)(136003)(346002)(396003)(39860400002)(376002)(451199021)(38100700002)(82960400001)(122000001)(38070700005)(36756003)(86362001)(966005)(6486002)(186003)(6506007)(26005)(8936002)(8676002)(7406005)(5660300002)(7416002)(316002)(2906002)(6512007)(66946007)(6916009)(54906003)(66446008)(66556008)(91956017)(64756008)(41300700001)(76116006)(4326008)(66476007)(71200400001)(478600001)(2616005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U1hmZm9kUWk3Q0ZQQzlQT2VKQkF0azkxUXprSEVLSE91VFdGUjFJdDg5MUJI?=
+ =?utf-8?B?L0FTYVZGZlA1bDhvRGZCcnU1cW9KaHpaUGxaUEk1WVZxRHVxK0pKd29ZdEJR?=
+ =?utf-8?B?M29WcmZWaFJzWmw4VGFhYXRzWDE2RUZLT1JvYlhuNzd1Ujh2aVUzcWprNlVZ?=
+ =?utf-8?B?Sk1pcUJDNEh1dlJjNXVlNTFDaFBiaG9yMW5tV2FFRTJlQ0F2dC9GdmtaR0tJ?=
+ =?utf-8?B?VGc4alZrQTRCWW8xZzM5ZFh0Qm8ydVVxOGY1M1lKQVhqZlFkdUVIZHJ2STlE?=
+ =?utf-8?B?bURlQy9DU0JVbzdTQ0xibzduZWdHcXprUXlLRzBxTjNmSEV4amVXejdVNjFR?=
+ =?utf-8?B?M0lDa0YvWUYzS0U1cUcyV0xkTEFOOUtEeURCZTkzQ09wNmxnMDAxMUd3dkth?=
+ =?utf-8?B?blNBR2ttdFZMTnRnLzJRaFM5d3Z0UUEvV1AwUksvcG42OUxrVEJ2bWpldnJr?=
+ =?utf-8?B?TEJObDRmYk5mRmxtRlk0OU94WEVNUnU5OGZkaGJvQ1lUWjBTTml6SXFiZDRN?=
+ =?utf-8?B?OVlsVTVKL0dXZzVUS2lkVWlSQmt2TWdhRjIzY1FxeE1NeFE4VzVCR1g2NSs1?=
+ =?utf-8?B?cmFWK2ovU2JQVFFjNVhKMDNTaTBhL1NNQW5IejhDRTk3VUhjVE9ySE1Sakps?=
+ =?utf-8?B?NmVwcU5GRzRYMjNDOGtCR25ZT3A5b2pCZFB1cFd3ZVdQU1VPVXV4Y3daVUx4?=
+ =?utf-8?B?aFNIbUZGTHZxdlRtdmg1VG1DWHNZVUhYVTdWT3Q2L0pxSmJqOU1ReVpjZ1pE?=
+ =?utf-8?B?ajhJZE4xYlpUeVRZbHFTbGJRSytxRERYOVo0dnJrSUs5bjY1T0U4ZDZHcld4?=
+ =?utf-8?B?VVJhU1RWbmZDRVRYWGpTS0JnWk1Ya0lVcE9uQ2NyZjdBWlFHMlExaE1VVkl0?=
+ =?utf-8?B?Wm9LQWZIQ1pYWlNVRTdNMU50NmFCTUJ2T0dvMEZCNHFJTHdXUVQyZGpYSVFD?=
+ =?utf-8?B?c0sxUzhlK3dyUmpMRzJaNU94S1hDVTJQUGZqbkNRM2tDcExkZ2JyOFBrUlpT?=
+ =?utf-8?B?cVZxZ2dvbHMwdFF0MlhkalhWRTk5L0cydDZJdm9CUTl4dXNTQkt3bDRnUjhC?=
+ =?utf-8?B?MjZvQXAydGVsQTFCdFpiNndZOVVQaFl4TXRmWWJpUkVCMTRpcHMrWGtZL1dU?=
+ =?utf-8?B?dHJCeG9hMnZTTm51SjRpdTBlUGtCeEZnNnBPZWhCOWNkMkVWQndKZEFRUDND?=
+ =?utf-8?B?bXplNmpmMUxHNmN4a3Z4KzVuTkM3ZFJMTyt2NlY5Y3IvdEx2amNRK1JtQndI?=
+ =?utf-8?B?cVE4a1pIVTVzMlFva1F3RWQzWC91UTNMNVdVdlo3NlVidDQrQmlvdmpSVk9W?=
+ =?utf-8?B?d2c3elBlMDFud1ZYS3VCUUxSME1FWjI1Sy9NMFJQTDJWWHllb3pNbTVkOG40?=
+ =?utf-8?B?NlZNQmh1VWdaZXhseUlUOUFiSlovOGpuYXE1bFFab1VDWEp5S0t6NThHdkZi?=
+ =?utf-8?B?UVBzekI5eW9INDM0VzM5dEV3c1RYK0JOb3RNd1BhK3BOVVJUUVJSaElWZXVx?=
+ =?utf-8?B?MnA3dk5KTzJ6M3oxcktTRyt3UVlVUFdCa3FnVXhWaXE1WWRVc2lNZ0piSkdr?=
+ =?utf-8?B?LzlKZFcyYmtOb1JFZG5KRUE3N2NEK0JweUFVaytleXRyUC9qdnMxZDJEOVhr?=
+ =?utf-8?B?T1RhaUhmME5ML1VvZGsxUGc0U0FSZkJPOHMvb1ZjaGx6L2x6clRIWkJ0STBl?=
+ =?utf-8?B?SjFTWElLZDFoRXl0YXZCdCsyZlgwekIyWU0wclpBZ3dhZ2FCRnlBU2JWL0N1?=
+ =?utf-8?B?eTV1REFabkdCYWoxSWhYWHNUR1RFWXdiV00rdXVUM3h6T2VQamhIdjdyRzVO?=
+ =?utf-8?B?Q29OVUpYYjB4d3dNeWxPQUF0WW5hTzBDMlVFYndzc24vWExsM2RJRU9HUXhx?=
+ =?utf-8?B?TGhHTHFvcEhxNGxMcTZSTUE2M1UzVWdUQ2lub2NlOElBNGowT2hHOThPZjlo?=
+ =?utf-8?B?VFlRVWhkd1c1UHFCNzQzOFk0eFN4QXRoanNyRUppQXFzRXIydFZHNEM2SHdU?=
+ =?utf-8?B?N3J0aWxHYVFncWxRZ2dHblM2dHRkZWNUaTBScHcrSXI5bU1YNEkySkxMcWpl?=
+ =?utf-8?B?WTFHVjZWQUpZM1UzZXJROXl0ZUlmUjVtMlFFZTBsSUVvQ3ZrUDF6VmZkWDBW?=
+ =?utf-8?B?bldlUEtoSGdXZTBvYWVmQWUxbnR0cS9Rb0QzWVJYdndZMStJeHlMSVozQi96?=
+ =?utf-8?B?NHc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <946BF4DC42287E45BC5A8355B6E735F1@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c116b7ab8ca02116f2b8d19a8214161c3b30576c.camel@intel.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT084:EE_|DM6PR12MB4909:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd641d23-9e0d-4932-1878-08db7335ef3e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	/H2gTV3W5ku2G3veUjbyBln7S6CRe4ifYof6M/ZC381fHcit92ekthbAwIqL/e5eUCIQknxQQpoGwQJ3FCUDIgXpT8LiCScRyZylJMOpZ+KLqGWvjoZs7b5KAqVYMKCNgp9EXlIG35eGgUEpsByNeKUQA4HKuc2iWGo8bw8KNpiDWtSeMJPV2QbPF2dHVYB4PTd4vZCYM/mzJkWOorcvX0+5gPT4cldt0GeHC2WVzDB68x0gKCQWFgR+VgsKNOhbQ00NEwtISQIFSGMO9XlF0t3aHHywPJPA32vUDf/NP4I2P6mc6WKPRGrQg26OQ6NpQ83azIN7IRk65ERlUd/EYpJsKWofUx4zAniTkqAxSkL5TuulqRUTNk0zTZayhrXkF0xzBE3qClWoalT8NNUCwvYLOB9c4oxo0BcUdtBhC4hPqwi+qZqcWaU8fiTplrw0aXHRSwpziaDmme873CyvpvjSjz/Z620XLGdEpoiBNpYlYYOiK3zVa2jhcsEKT9CQeI/Y0eK+hK7qTkrZM5e+vjss39/0s8wO+cPPf54fhXqd6JWIbnGu6w+89aGA+5Qf17qS0Y5aAJWD16LpEST0cJ0/P9O5/XMm7NU2bEVAMrjcAwoOr1hAToyeVg1reQskmGbqqFU1MfQfFSzPLcVP+HmWh4WLitnXLFP95Cn8C2+xR6yY4NUCNgnmf5KdZFBskaQv+iWebHcyFQoWmSBHHuZ1ah5S06MOW3aZnlJZ/oxlHbUopcCfqq04zbFun6vGIMHRMy+8lQiBIK+jMXsGlyr4TJVMU8Gu+dzQpwcmFHg=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(136003)(396003)(39860400002)(376002)(451199021)(46966006)(36840700001)(40470700004)(478600001)(6666004)(54906003)(4326008)(47076005)(40480700001)(336012)(83380400001)(426003)(86362001)(36756003)(36860700001)(40460700003)(2616005)(70586007)(2906002)(82310400005)(1076003)(26005)(966005)(16526019)(186003)(356005)(81166007)(82740400003)(41300700001)(8676002)(7416002)(8936002)(70206006)(6916009)(316002)(7406005)(44832011)(5660300002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2023 15:32:48.6717
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5983.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c74670a-248a-4d3e-11d3-08db73705fc1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2023 22:31:08.2941
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd641d23-9e0d-4932-1878-08db7335ef3e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT084.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4909
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 35gZJFQBPwslRNHIPmITbRjuryA1rCW9I5kecA1hgLo2JL8m341aS+ywtLukKvdFaZyNXbfvfEzSOjwruIXqrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7006
+X-OriginatorOrg: intel.com
 
-On Thu, Jun 22, 2023 at 09:55:22AM +0000, Huang, Kai wrote:
-> 
-> > 
-> > So if we were to straight-forwardly implement that based on how TDX
-> > currently handles checking for the shared bit in GPA, paired with how
-> > SEV-SNP handles checking for private bit in fault flags, it would look
-> > something like:
-> > 
-> >   bool kvm_fault_is_private(kvm, gpa, err)
-> >   {
-> >     /* SEV-SNP handling */
-> >     if (kvm->arch.mmu_private_fault_mask)
-> >       return !!(err & arch.mmu_private_fault_mask);
-> > 
-> >     /* TDX handling */
-> >     if (kvm->arch.gfn_shared_mask)
-> >       return !!(gpa & arch.gfn_shared_mask);
-> 
-> The logic of the two are identical.  I think they need to be converged.
-
-I think they're just different enough that trying too hard to converge
-them might obfuscate things. If the determination didn't come from 2
-completely different fields (gpa vs. fault flags) maybe it could be
-simplified a bit more, but have well-defined open-coded handler that
-gets called once to set fault->is_private during initial fault time so
-that that ugliness never needs to be looked at again by KVM MMU seems
-like a good way to keep things simple through the rest of the handling.
-
-> 
-> Either SEV-SNP should convert the error code private bit to the gfn_shared_mask,
-> or TDX's shared bit should be converted to some private error bit.
-
-struct kvm_page_fault seems to be the preferred way to pass additional
-params/metadata around, and .is_private field was introduced to track
-this private/shared state as part of UPM base series:
-
-  https://lore.kernel.org/lkml/20221202061347.1070246-9-chao.p.peng@linux.intel.com/
-
-So it seems like unecessary complexity to track/encode that state into
-other additional places rather than just encapsulating it all in
-fault->is_private (or some similar field), and synthesizing all this
-platform-specific handling into a well-defined value that's conveyed
-by something like fault->is_private in a way where KVM MMU doesn't need
-to worry as much about platform-specific stuff seems like a good thing,
-and in line with what the UPM base series was trying to do by adding the
-fault->is_private field.
-
-So all I'm really proposing is that whatever SNP and TDX end up doing
-should center around setting that fault->is_private field and keeping
-everything contained there. If there are better ways to handle *how*
-that's done I don't have any complaints there, but moving/adding bits
-to GPA/error_flags after fault time just seems unecessary to me when
-fault->is_private field can serve that purpose just as well.
-
-> 
-> Perhaps converting SEV-SNP makes more sense because if I recall correctly SEV
-> guest also has a C-bit, correct?
-
-That's correct, but the C-bit doesn't show in the GPA that gets passed
-up to KVM during an #NPF, and instead gets encoded into the fault's
-error_flags.
-
-> 
-> Or, ...
-> 
-> > 
-> >     return false;
-> >   }
-> > 
-> >   kvm_mmu_do_page_fault(vcpu, gpa, err, ...)
-> >   {
-> >     struct kvm_page_fault fault = {
-> >       ...
-> >       .is_private = kvm_fault_is_private(vcpu->kvm, gpa, err)
-> 
-> ... should we do something like:
-> 
-> 	.is_private = static_call(kvm_x86_fault_is_private)(vcpu->kvm, gpa, 
-> 							    err);
-
-We actually had exactly this in v7 of SNP hypervisor patches:
-
-  https://lore.kernel.org/linux-coco/20221214194056.161492-7-michael.roth@amd.com/T/#m17841f5bfdfb8350d69d78c6831dd8f3a4748638
-
-but Sean was hoping to avoid a callback, which is why we ended up using
-a bitmask in this version since it basically all that callback would
-need to do. It's unfortunately that we don't have a common scheme
-between SNP/TDX, but maybe that's still possible, I just think that
-whatever that ends up being, it should live and be contained inside
-whatever helper ends up setting fault->is_private.
-
-There's some other awkwardness with a callback approach. It sort of ties
-into your question about selftests so I'll address it below...
-
-
-> 
-> ?
-> 
-> >     };
-> > 
-> >     ...
-> >   }
-> > 
-> > And then arch.mmu_private_fault_mask and arch.gfn_shared_mask would be
-> > set per-KVM-instance, just like they are now with current SNP and TDX
-> > patchsets, since stuff like KVM self-test wouldn't be setting those
-> > masks, so it makes sense to do it per-instance in that regard.
-> > 
-> > But that still gets a little awkward for the KVM self-test use-case where
-> > .is_private should sort of be ignored in favor of whatever the xarray
-> > reports via kvm_mem_is_private(). 
-> > 
-> 
-> I must have missed something.  Why does KVM self-test have impact to how does
-> KVM handles private fault? 
-
-The self-tests I'm referring to here are the ones from Vishal that shipped with
-v10 of Chao's UPM/fd-based private memory series, and also as part of Sean's
-gmem tree:
-
-  https://github.com/sean-jc/linux/commit/a0f5f8c911804f55935094ad3a277301704330a6
-
-These exercise gmem/UPM handling without the need for any SNP/TDX
-hardware support. They do so by "trusting" the shared/private state
-that the VMM sets via KVM_SET_MEMORY_ATTRIBUTES. So if VMM says it
-should be private, KVM MMU will treat it as private, so we'd never
-get a mismatch, so KVM_EXIT_MEMORY_FAULT will never be generated.
-
-> 
-> > In your Misc. series I believe you
-> > handled this by introducing a PFERR_HASATTR_MASK bit so we can determine
-> > whether existing value of fault->is_private should be
-> > ignored/overwritten or not.
-> > 
-> > So maybe kvm_fault_is_private() needs to return an integer value
-> > instead, like:
-> > 
-> >   enum {
-> >     KVM_FAULT_VMM_DEFINED,
-> >     KVM_FAULT_SHARED,
-> >     KVM_FAULT_PRIVATE,
-> >   }
-> > 
-> >   bool kvm_fault_is_private(kvm, gpa, err)
-> >   {
-> >     /* SEV-SNP handling */
-> >     if (kvm->arch.mmu_private_fault_mask)
-> >       (err & arch.mmu_private_fault_mask) ? KVM_FAULT_PRIVATE : KVM_FAULT_SHARED
-> > 
-> >     /* TDX handling */
-> >     if (kvm->arch.gfn_shared_mask)
-> >       (gpa & arch.gfn_shared_mask) ? KVM_FAULT_SHARED : KVM_FAULT_PRIVATE
-> > 
-> >     return KVM_FAULT_VMM_DEFINED;
-> >   }
-> > 
-> > And then down in __kvm_faultin_pfn() we do:
-> > 
-> >   if (fault->is_private == KVM_FAULT_VMM_DEFINED)
-> >     fault->is_private = kvm_mem_is_private(vcpu->kvm, fault->gfn);
-> >   else if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn))
-> >     return kvm_do_memory_fault_exit(vcpu, fault);
-> > 
-> >   if (fault->is_private)
-> >     return kvm_faultin_pfn_private(vcpu, fault);
-> 
-> 
-> What does KVM_FAULT_VMM_DEFINED mean, exactly?
-> 
-> Shouldn't the fault type come from _hardware_?
-
-In above self-test use-case, there is no reliance on hardware support,
-and fault->is_private should always be treated as being whatever was
-set by the VMM via KVM_SET_MEMORY_ATTRIBUTES, so that's why I proposed
-the KVM_FAULT_VMM_DEFINED value to encode that case into
-fault->is_private so KVM MMU and handle protected self-test VMs of this
-sort.
-
-In the future, this protected self-test VMs might become the basis of
-a new protected VM type where some sort of guest-issued hypercall can
-be used to set whether a fault should be treated as shared/private,
-rather than relying on VMM-defined value. There's some current discussion
-about that here:
-
-  https://lore.kernel.org/lkml/20230620190443.GU2244082@ls.amr.corp.intel.com/T/#me627bed3d9acf73ea882e8baa76dfcb27759c440
-
-Going back to your callback question above, that makes things a little
-awkward, since kvm_x86_ops is statically defined for both
-kvm_amd/kvm_intel modules, and either can run these self-tests guests as
-well as these proposed "non-CC VMs" which rely on enlightened guest
-kernels instead of TDX/SNPhardware support for managing private/shared
-access.
-
-So you either need to duplicate the handling for how to determine
-private/shared for these other types into the kvm_intel/kvm_amd callbacks,
-or have some way for the callback to say to "fall back to the common
-handling for self-tests and non-CC VMs". The latter is what we implemented
-in v8 of this series, but Isaku suggested it was a bit too heavyweight
-and proposed dropping the fall-back logic in favor of updating the
-kvm_x86_ops at run-time once we know whether or not it's a TDX/SNP guest:
-
-  https://lkml.iu.edu/hypermail/linux/kernel/2303.2/03009.html
-
-which could work, but it still doesn't address Sean's desire to avoid
-callbacks completely, and still amounts to a somewhat convulated way
-to hide away TDX/SNP-specific bit checks for shared/private. Rather
-than hide them away in callbacks that are already frowned upon by
-maintainer, I think it makes sense to "open-code" all these checks in a
-common handler like kvm_fault_is_private() to we can make some progress
-toward a consensus, and then iterate on it from there rather than
-refining what may already be a dead-end path.
-
--Mike
-
+T24gVGh1LCAyMDIzLTA2LTIyIGF0IDEwOjMyIC0wNTAwLCBNaWNoYWVsIFJvdGggd3JvdGU6DQo+
+IE9uIFRodSwgSnVuIDIyLCAyMDIzIGF0IDA5OjU1OjIyQU0gKzAwMDAsIEh1YW5nLCBLYWkgd3Jv
+dGU6DQo+ID4gDQo+ID4gPiANCj4gPiA+IFNvIGlmIHdlIHdlcmUgdG8gc3RyYWlnaHQtZm9yd2Fy
+ZGx5IGltcGxlbWVudCB0aGF0IGJhc2VkIG9uIGhvdyBURFgNCj4gPiA+IGN1cnJlbnRseSBoYW5k
+bGVzIGNoZWNraW5nIGZvciB0aGUgc2hhcmVkIGJpdCBpbiBHUEEsIHBhaXJlZCB3aXRoIGhvdw0K
+PiA+ID4gU0VWLVNOUCBoYW5kbGVzIGNoZWNraW5nIGZvciBwcml2YXRlIGJpdCBpbiBmYXVsdCBm
+bGFncywgaXQgd291bGQgbG9vaw0KPiA+ID4gc29tZXRoaW5nIGxpa2U6DQo+ID4gPiANCj4gPiA+
+ICAgYm9vbCBrdm1fZmF1bHRfaXNfcHJpdmF0ZShrdm0sIGdwYSwgZXJyKQ0KPiA+ID4gICB7DQo+
+ID4gPiAgICAgLyogU0VWLVNOUCBoYW5kbGluZyAqLw0KPiA+ID4gICAgIGlmIChrdm0tPmFyY2gu
+bW11X3ByaXZhdGVfZmF1bHRfbWFzaykNCj4gPiA+ICAgICAgIHJldHVybiAhIShlcnIgJiBhcmNo
+Lm1tdV9wcml2YXRlX2ZhdWx0X21hc2spOw0KPiA+ID4gDQo+ID4gPiAgICAgLyogVERYIGhhbmRs
+aW5nICovDQo+ID4gPiAgICAgaWYgKGt2bS0+YXJjaC5nZm5fc2hhcmVkX21hc2spDQo+ID4gPiAg
+ICAgICByZXR1cm4gISEoZ3BhICYgYXJjaC5nZm5fc2hhcmVkX21hc2spOw0KPiA+IA0KPiA+IFRo
+ZSBsb2dpYyBvZiB0aGUgdHdvIGFyZSBpZGVudGljYWwuICBJIHRoaW5rIHRoZXkgbmVlZCB0byBi
+ZSBjb252ZXJnZWQuDQo+IA0KPiBJIHRoaW5rIHRoZXkncmUganVzdCBkaWZmZXJlbnQgZW5vdWdo
+IHRoYXQgdHJ5aW5nIHRvbyBoYXJkIHRvIGNvbnZlcmdlDQo+IHRoZW0gbWlnaHQgb2JmdXNjYXRl
+IHRoaW5ncy4gSWYgdGhlIGRldGVybWluYXRpb24gZGlkbid0IGNvbWUgZnJvbSAyDQo+IGNvbXBs
+ZXRlbHkgZGlmZmVyZW50IGZpZWxkcyAoZ3BhIHZzLiBmYXVsdCBmbGFncykgbWF5YmUgaXQgY291
+bGQgYmUNCj4gc2ltcGxpZmllZCBhIGJpdCBtb3JlLCBidXQgaGF2ZSB3ZWxsLWRlZmluZWQgb3Bl
+bi1jb2RlZCBoYW5kbGVyIHRoYXQNCj4gZ2V0cyBjYWxsZWQgb25jZSB0byBzZXQgZmF1bHQtPmlz
+X3ByaXZhdGUgZHVyaW5nIGluaXRpYWwgZmF1bHQgdGltZSBzbw0KPiB0aGF0IHRoYXQgdWdsaW5l
+c3MgbmV2ZXIgbmVlZHMgdG8gYmUgbG9va2VkIGF0IGFnYWluIGJ5IEtWTSBNTVUgc2VlbXMNCj4g
+bGlrZSBhIGdvb2Qgd2F5IHRvIGtlZXAgdGhpbmdzIHNpbXBsZSB0aHJvdWdoIHRoZSByZXN0IG9m
+IHRoZSBoYW5kbGluZy4NCg0KSSBhY3R1YWxseSBhZ3JlZSB3aXRoIHRoZSBzZWNvbmQgaGFsZiB0
+aGF0IGlzIGFmdGVyICJidXQgLi4uIiwgYnV0IElJVUMgaXQNCmRvZXNuJ3QgY29uZmxpY3Qgd2l0
+aCBjb252ZXJnaW5nIGFyY2gubW11X3ByaXZhdGVfZmF1bHRfbWFzayBhbmQNCmFyY2guZ2ZuX3No
+YXJlZF9tYXNrIGludG8gb25lLiAgTm8/DQoNCj4gDQo+ID4gDQo+ID4gRWl0aGVyIFNFVi1TTlAg
+c2hvdWxkIGNvbnZlcnQgdGhlIGVycm9yIGNvZGUgcHJpdmF0ZSBiaXQgdG8gdGhlIGdmbl9zaGFy
+ZWRfbWFzaywNCj4gPiBvciBURFgncyBzaGFyZWQgYml0IHNob3VsZCBiZSBjb252ZXJ0ZWQgdG8g
+c29tZSBwcml2YXRlIGVycm9yIGJpdC4NCj4gDQo+IHN0cnVjdCBrdm1fcGFnZV9mYXVsdCBzZWVt
+cyB0byBiZSB0aGUgcHJlZmVycmVkIHdheSB0byBwYXNzIGFkZGl0aW9uYWwNCj4gcGFyYW1zL21l
+dGFkYXRhIGFyb3VuZCwgYW5kIC5pc19wcml2YXRlIGZpZWxkIHdhcyBpbnRyb2R1Y2VkIHRvIHRy
+YWNrDQo+IHRoaXMgcHJpdmF0ZS9zaGFyZWQgc3RhdGUgYXMgcGFydCBvZiBVUE0gYmFzZSBzZXJp
+ZXM6DQo+IA0KPiAgIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyMjEyMDIwNjEzNDcu
+MTA3MDI0Ni05LWNoYW8ucC5wZW5nQGxpbnV4LmludGVsLmNvbS8NCg0KU3VyZS4gIEFncmVlZC4N
+Cg0KPiANCj4gU28gaXQgc2VlbXMgbGlrZSB1bmVjZXNzYXJ5IGNvbXBsZXhpdHkgdG8gdHJhY2sv
+ZW5jb2RlIHRoYXQgc3RhdGUgaW50bw0KPiBvdGhlciBhZGRpdGlvbmFsIHBsYWNlcyByYXRoZXIg
+dGhhbiBqdXN0IGVuY2Fwc3VsYXRpbmcgaXQgYWxsIGluDQo+IGZhdWx0LT5pc19wcml2YXRlIChv
+ciBzb21lIHNpbWlsYXIgZmllbGQpLCBhbmQgc3ludGhlc2l6aW5nIGFsbCB0aGlzDQo+IHBsYXRm
+b3JtLXNwZWNpZmljIGhhbmRsaW5nIGludG8gYSB3ZWxsLWRlZmluZWQgdmFsdWUgdGhhdCdzIGNv
+bnZleWVkDQo+IGJ5IHNvbWV0aGluZyBsaWtlIGZhdWx0LT5pc19wcml2YXRlIGluIGEgd2F5IHdo
+ZXJlIEtWTSBNTVUgZG9lc24ndCBuZWVkDQo+IHRvIHdvcnJ5IGFzIG11Y2ggYWJvdXQgcGxhdGZv
+cm0tc3BlY2lmaWMgc3R1ZmYgc2VlbXMgbGlrZSBhIGdvb2QgdGhpbmcsDQo+IGFuZCBpbiBsaW5l
+IHdpdGggd2hhdCB0aGUgVVBNIGJhc2Ugc2VyaWVzIHdhcyB0cnlpbmcgdG8gZG8gYnkgYWRkaW5n
+IHRoZQ0KPiBmYXVsdC0+aXNfcHJpdmF0ZSBmaWVsZC4NCg0KWWVzIHdlIHNob3VsZCBqdXN0IHNl
+dCBmYXVsdC0+aXNfcHJpdmF0ZSBhbmQgcGFzcyB0byB0aGUgcmVzdCBvZiB0aGUgY29tbW9uIEtW
+TQ0KTU1VIGNvZGUuDQoNCj4gDQo+IFNvIGFsbCBJJ20gcmVhbGx5IHByb3Bvc2luZyBpcyB0aGF0
+IHdoYXRldmVyIFNOUCBhbmQgVERYIGVuZCB1cCBkb2luZw0KPiBzaG91bGQgY2VudGVyIGFyb3Vu
+ZCBzZXR0aW5nIHRoYXQgZmF1bHQtPmlzX3ByaXZhdGUgZmllbGQgYW5kIGtlZXBpbmcNCj4gZXZl
+cnl0aGluZyBjb250YWluZWQgdGhlcmUuwqANCj4gDQoNCkkgYWdyZWUuDQoNCj4gSWYgdGhlcmUg
+YXJlIGJldHRlciB3YXlzIHRvIGhhbmRsZSAqaG93Kg0KPiB0aGF0J3MgZG9uZSBJIGRvbid0IGhh
+dmUgYW55IGNvbXBsYWludHMgdGhlcmUsIGJ1dCBtb3ZpbmcvYWRkaW5nIGJpdHMNCj4gdG8gR1BB
+L2Vycm9yX2ZsYWdzIGFmdGVyIGZhdWx0IHRpbWUganVzdCBzZWVtcyB1bmVjZXNzYXJ5IHRvIG1l
+IHdoZW4NCj4gZmF1bHQtPmlzX3ByaXZhdGUgZmllbGQgY2FuIHNlcnZlIHRoYXQgcHVycG9zZSBq
+dXN0IGFzIHdlbGwuDQoNClBlcmhhcHMgeW91IG1pc3NlZCBteSBwb2ludC4gIE15IHBvaW50IGlz
+IGFyY2gubW11X3ByaXZhdGVfZmF1bHRfbWFzayBhbmQNCmFyY2guZ2ZuX3NoYXJlZF9tYXNrIHNl
+ZW0gcmVkdW5kYW50IGJlY2F1c2UgdGhlIGxvZ2ljIGFyb3VuZCB0aGVtIGFyZSBleGFjdGx5DQp0
+aGUgc2FtZS4gIEkgZG8gYmVsaWV2ZSB3ZSBzaG91bGQgaGF2ZSBmYXVsdC0+aXNfcHJpdmF0ZSBw
+YXNzaW5nIHRvIHRoZSBjb21tb24NCk1NVSBjb2RlLg0KDQpJbiBmYWN0LCBub3cgSSBhbSB3b25k
+ZXJpbmcgd2h5IHdlIG5lZWQgdG8gaGF2ZSAibW11X3ByaXZhdGVfZmF1bHRfbWFzayIgYW5kDQoi
+Z2ZuX3NoYXJlZF9tYXNrIiBpbiBfY29tbW9uXyBLVk0gTU1VIGNvZGUuICBXZSBhbHJlYWR5IGhh
+dmUgZW5vdWdoIG1lY2hhbmlzbSBpbg0KS1ZNIGNvbW1vbiBjb2RlOg0KDQogIDEpIGZhdWx0LT5p
+c19wcml2YXRlDQogIDIpIGt2bV9tbXVfcGFnZV9yb2xlLnByaXZhdGUNCiAgMykgYW4gWGFycmF5
+IHRvIHRlbGwgd2hldGhlciBhIEdGTiBpcyBwcml2YXRlIG9yIHNoYXJlZA0KDQpJIGFtIG5vdCBj
+b252aW5jZWQgdGhhdCB3ZSBuZWVkIHRvIGhhdmUgIm1tdV9wcml2YXRlX2ZhdWx0X21hc2siIGFu
+ZA0KImdmbl9zaGFyZWRfbWFzayIgaW4gY29tbW9uIEtWTSBNTVUgY29kZS4gIEluc3RlYWQsIHRo
+ZXkgY2FuIGJlIGluIEFNRCBhbmQNCkludGVsJ3MgdmVuZG9yIGNvZGUuDQoNCk1heWJlIGl0IG1h
+a2VzIHNlbnNlIHRvIGhhdmUgImdmbl9zaGFyZWRfbWFzayIgaW4gdGhlIEtWTSBjb21tb24gY29k
+ZSBzbyB0aGF0DQp0aGUgZmF1bHQgaGFuZGxlciBjYW4ganVzdCBzdHJpcCBhd2F5IHRoZSAic2hh
+cmVkIGJpdCIgYXQgdGhlIHZlcnkgYmVnaW5uaW5nIChhdA0KbGVhc3QgZm9yIFREWCksIGJ1dCBm
+b3IgdGhlIHJlc3Qgb2YgdGhlIHRpbWUgSSB0aGluayB3ZSBzaG91bGQgYWxyZWFkeSBoYXZlDQpl
+bm91Z2ggaW5mcmFzdHJ1Y3R1cmUgdG8gaGFuZGxlIHByaXZhdGUvc2hhcmVkIG1hcHBpbmcuDQoN
+CkJ0dywgb25lIG1pbm9yIGlzc3VlIGlzLCBpZiBJIHJlY2FsbCBjb3JyZWN0bHksIGZvciBURFgg
+dGhlIHNoYXJlZCBiaXQgbXVzdCBiZQ0KYXBwbGllZCB0byB0aGUgR0ZOIGZvciBzaGFyZWQgbWFw
+cGluZyBpbiBub3JtYWwgRVBULiAgSSBndWVzcyBBTUQgZG9lc24ndCBuZWVkDQp0aGF0IGZvciBz
+aGFyZWQgbWFwcGluZy4gIFNvICJnZm5fc2hhcmVkX21hc2siIG1heWJlIHVzZWZ1bCBpbiB0aGlz
+IGNhc2UsIGJ1dA0Kdy9vIGl0IEkgYmVsaWV2ZSB3ZSBjYW4gYWxzbyBhY2hpZXZlIGluIGFub3Ro
+ZXIgd2F5IHZpYSB2ZW5kb3IgY2FsbGJhY2suDQoNCj4gDQo+ID4gDQo+ID4gUGVyaGFwcyBjb252
+ZXJ0aW5nIFNFVi1TTlAgbWFrZXMgbW9yZSBzZW5zZSBiZWNhdXNlIGlmIEkgcmVjYWxsIGNvcnJl
+Y3RseSBTRVYNCj4gPiBndWVzdCBhbHNvIGhhcyBhIEMtYml0LCBjb3JyZWN0Pw0KPiANCj4gVGhh
+dCdzIGNvcnJlY3QsIGJ1dCB0aGUgQy1iaXQgZG9lc24ndCBzaG93IGluIHRoZSBHUEEgdGhhdCBn
+ZXRzIHBhc3NlZA0KPiB1cCB0byBLVk0gZHVyaW5nIGFuICNOUEYsIGFuZCBpbnN0ZWFkIGdldHMg
+ZW5jb2RlZCBpbnRvIHRoZSBmYXVsdCdzDQo+IGVycm9yX2ZsYWdzLg0KPiANCj4gPiANCj4gPiBP
+ciwgLi4uDQo+ID4gDQo+ID4gPiANCj4gPiA+ICAgICByZXR1cm4gZmFsc2U7DQo+ID4gPiAgIH0N
+Cj4gPiA+IA0KPiA+ID4gICBrdm1fbW11X2RvX3BhZ2VfZmF1bHQodmNwdSwgZ3BhLCBlcnIsIC4u
+LikNCj4gPiA+ICAgew0KPiA+ID4gICAgIHN0cnVjdCBrdm1fcGFnZV9mYXVsdCBmYXVsdCA9IHsN
+Cj4gPiA+ICAgICAgIC4uLg0KPiA+ID4gICAgICAgLmlzX3ByaXZhdGUgPSBrdm1fZmF1bHRfaXNf
+cHJpdmF0ZSh2Y3B1LT5rdm0sIGdwYSwgZXJyKQ0KPiA+IA0KPiA+IC4uLiBzaG91bGQgd2UgZG8g
+c29tZXRoaW5nIGxpa2U6DQo+ID4gDQo+ID4gCS5pc19wcml2YXRlID0gc3RhdGljX2NhbGwoa3Zt
+X3g4Nl9mYXVsdF9pc19wcml2YXRlKSh2Y3B1LT5rdm0sIGdwYSzCoA0KPiA+IAkJCQkJCQkgICAg
+ZXJyKTsNCj4gDQo+IFdlIGFjdHVhbGx5IGhhZCBleGFjdGx5IHRoaXMgaW4gdjcgb2YgU05QIGh5
+cGVydmlzb3IgcGF0Y2hlczoNCj4gDQo+ICAgaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgt
+Y29jby8yMDIyMTIxNDE5NDA1Ni4xNjE0OTItNy1taWNoYWVsLnJvdGhAYW1kLmNvbS9ULyNtMTc4
+NDFmNWJmZGZiODM1MGQ2OWQ3OGM2ODMxZGQ4ZjNhNDc0ODYzOA0KPiANCj4gYnV0IFNlYW4gd2Fz
+IGhvcGluZyB0byBhdm9pZCBhIGNhbGxiYWNrLCB3aGljaCBpcyB3aHkgd2UgZW5kZWQgdXAgdXNp
+bmcNCj4gYSBiaXRtYXNrIGluIHRoaXMgdmVyc2lvbiBzaW5jZSBpdCBiYXNpY2FsbHkgYWxsIHRo
+YXQgY2FsbGJhY2sgd291bGQNCj4gbmVlZCB0byBkby4gSXQncyB1bmZvcnR1bmF0ZWx5IHRoYXQg
+d2UgZG9uJ3QgaGF2ZSBhIGNvbW1vbiBzY2hlbWUNCj4gYmV0d2VlbiBTTlAvVERYLCBidXQgbWF5
+YmUgdGhhdCdzIHN0aWxsIHBvc3NpYmxlLCBJIGp1c3QgdGhpbmsgdGhhdA0KPiB3aGF0ZXZlciB0
+aGF0IGVuZHMgdXAgYmVpbmcsIGl0IHNob3VsZCBsaXZlIGFuZCBiZSBjb250YWluZWQgaW5zaWRl
+DQo+IHdoYXRldmVyIGhlbHBlciBlbmRzIHVwIHNldHRpbmcgZmF1bHQtPmlzX3ByaXZhdGUuDQoN
+ClN1cmUuICBJZiB0aGUgZnVuY3Rpb24gY2FsbCBjYW4gYmUgYXZvaWRlZCBpbiBmYXVsdCBoYW5k
+bGVyIHRoZW4gd2Ugc2hvdWxkLg0KDQo+IA0KPiBUaGVyZSdzIHNvbWUgb3RoZXIgYXdrd2FyZG5l
+c3Mgd2l0aCBhIGNhbGxiYWNrIGFwcHJvYWNoLiBJdCBzb3J0IG9mIHRpZXMNCj4gaW50byB5b3Vy
+IHF1ZXN0aW9uIGFib3V0IHNlbGZ0ZXN0cyBzbyBJJ2xsIGFkZHJlc3MgaXQgYmVsb3cuLi4NCj4g
+DQo+IA0KPiA+IA0KPiA+ID8NCj4gPiANCj4gPiA+ICAgICB9Ow0KPiA+ID4gDQo+ID4gPiAgICAg
+Li4uDQo+ID4gPiAgIH0NCj4gPiA+IA0KPiA+ID4gQW5kIHRoZW4gYXJjaC5tbXVfcHJpdmF0ZV9m
+YXVsdF9tYXNrIGFuZCBhcmNoLmdmbl9zaGFyZWRfbWFzayB3b3VsZCBiZQ0KPiA+ID4gc2V0IHBl
+ci1LVk0taW5zdGFuY2UsIGp1c3QgbGlrZSB0aGV5IGFyZSBub3cgd2l0aCBjdXJyZW50IFNOUCBh
+bmQgVERYDQo+ID4gPiBwYXRjaHNldHMsIHNpbmNlIHN0dWZmIGxpa2UgS1ZNIHNlbGYtdGVzdCB3
+b3VsZG4ndCBiZSBzZXR0aW5nIHRob3NlDQo+ID4gPiBtYXNrcywgc28gaXQgbWFrZXMgc2Vuc2Ug
+dG8gZG8gaXQgcGVyLWluc3RhbmNlIGluIHRoYXQgcmVnYXJkLg0KPiA+ID4gDQo+ID4gPiBCdXQg
+dGhhdCBzdGlsbCBnZXRzIGEgbGl0dGxlIGF3a3dhcmQgZm9yIHRoZSBLVk0gc2VsZi10ZXN0IHVz
+ZS1jYXNlIHdoZXJlDQo+ID4gPiAuaXNfcHJpdmF0ZSBzaG91bGQgc29ydCBvZiBiZSBpZ25vcmVk
+IGluIGZhdm9yIG9mIHdoYXRldmVyIHRoZSB4YXJyYXkNCj4gPiA+IHJlcG9ydHMgdmlhIGt2bV9t
+ZW1faXNfcHJpdmF0ZSgpLsKgDQo+ID4gPiANCj4gPiANCj4gPiBJIG11c3QgaGF2ZSBtaXNzZWQg
+c29tZXRoaW5nLiAgV2h5IGRvZXMgS1ZNIHNlbGYtdGVzdCBoYXZlIGltcGFjdCB0byBob3cgZG9l
+cw0KPiA+IEtWTSBoYW5kbGVzIHByaXZhdGUgZmF1bHQ/IA0KPiANCj4gVGhlIHNlbGYtdGVzdHMg
+SSdtIHJlZmVycmluZyB0byBoZXJlIGFyZSB0aGUgb25lcyBmcm9tIFZpc2hhbCB0aGF0IHNoaXBw
+ZWQgd2l0aA0KPiB2MTAgb2YgQ2hhbydzIFVQTS9mZC1iYXNlZCBwcml2YXRlIG1lbW9yeSBzZXJp
+ZXMsIGFuZCBhbHNvIGFzIHBhcnQgb2YgU2VhbidzDQo+IGdtZW0gdHJlZToNCj4gDQo+ICAgaHR0
+cHM6Ly9naXRodWIuY29tL3NlYW4tamMvbGludXgvY29tbWl0L2EwZjVmOGM5MTE4MDRmNTU5MzUw
+OTRhZDNhMjc3MzAxNzA0MzMwYTYNCj4gDQo+IFRoZXNlIGV4ZXJjaXNlIGdtZW0vVVBNIGhhbmRs
+aW5nIHdpdGhvdXQgdGhlIG5lZWQgZm9yIGFueSBTTlAvVERYDQo+IGhhcmR3YXJlIHN1cHBvcnQu
+IFRoZXkgZG8gc28gYnkgInRydXN0aW5nIiB0aGUgc2hhcmVkL3ByaXZhdGUgc3RhdGUNCj4gdGhh
+dCB0aGUgVk1NIHNldHMgdmlhIEtWTV9TRVRfTUVNT1JZX0FUVFJJQlVURVMuIFNvIGlmIFZNTSBz
+YXlzIGl0DQo+IHNob3VsZCBiZSBwcml2YXRlLCBLVk0gTU1VIHdpbGwgdHJlYXQgaXQgYXMgcHJp
+dmF0ZSwgc28gd2UnZCBuZXZlcg0KPiBnZXQgYSBtaXNtYXRjaCwgc28gS1ZNX0VYSVRfTUVNT1JZ
+X0ZBVUxUIHdpbGwgbmV2ZXIgYmUgZ2VuZXJhdGVkLg0KDQpJZiBLVk0gc3VwcG9ydHMgYSB0ZXN0
+IG1vZGUsIG9yIGJ5IHJlYWRpbmcgYW5vdGhlciB0aHJlYWQsIEtWTSB3YW50cyB0byBzdXBwb3J0
+DQphIHNvZnR3YXJlLWJhc2VkIEtWTV9YODZfUFJPVEVDVEVEX1ZNIGFuZCBkaXN0aW5ndWlzaCBp
+dCB3aXRoIGhhcmR3YXJlLWJhc2VkDQpjb25maWRlbnRpYWwgVk1zIHN1Y2ggYXMgVERYIGFuZCBT
+RVYtU05QOg0KDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzllM2U5OWY3OGZjYmQ3ZGIy
+MTM2OGI1ZmUxZDkzMWZlZWI0ZGI1NjcuMTY4Njg1ODg2MS5naXQuaXNha3UueWFtYWhhdGFAaW50
+ZWwuY29tL1QvI21lNjI3YmVkM2Q5YWNmNzNlYTg4MmU4YmFhNzZkZmNiMjc3NTljNDQwDQoNCnRo
+ZW4gaXQncyBmaW5lIHRvIGhhbmRsZSBpdCB3aGVuIHNldHRpbmcgdXAgZmF1bHQtPmlzX3ByaXZh
+dGUuICBCdXQgbXkgcG9pbnQgaXMNCktWTSBzZWxmLXRlc3QgaXRzZWxmIHNob3VsZCBub3QgaW1w
+YWN0IGhvdyBkb2VzIEtWTSBpbXBsZW1lbnQgZmF1bHQgaGFuZGxlciAtLQ0KaXQgaXMgS1ZNIGl0
+c2VsZiB3YW50cyB0byBzdXBwb3J0IGFkZGl0aW9uYWwgc29mdHdhcmUtYmFzZWQgdGhpbmdzLg0K
+DQpbLi4uXQ0KDQooVGhhbmtzIGZvciBleHBsYWluaW5nIGFkZGl0aW9uYWwgYmFja2dyb3VuZCku
+DQo=
