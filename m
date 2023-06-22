@@ -1,32 +1,32 @@
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497D223C6E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E454E23C6A
 	for <linux-coco@lists.linux.dev>; Thu, 22 Jun 2023 23:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1687475834; x=1719011834;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Ey//Er7uRB344w44NonunJHMD5Ey7BtAHN0MXVhUTHM=;
-  b=LKlzvoWIj7iG8jZR06FfSD7ThFb4U3wyZuWDqM0nnJ5PBrF9yyVt2Z/o
-   qFwP10eH9FoSbYH7GIoBOCI9Vy5TPFrIwgVo8Maq8KUZUmB+UWZXf/G4a
-   xulxfFvkeEzyoZvfWUwxgF1gp1dexRXN0M4nQhV5p2glICrmZ5bF+dA33
-   Q69E/BpS4ZMVENWRdu32VvGG9/UCn2gsXtnE8Q1m6JyOYBAoXRH8oeNCS
-   mKmKraJ+VJ5sExO1YU7zVht/Hv4KEBp7qbbpFmNhX3Io/Jhc2OwoLhTN/
-   1tw0HGaBeYeurc6Z6YCbEeCqmgZgzmSkZcYxVC4cd9WfRnBN1HYDNzILZ
+  bh=6833orrJKCdah5qJfCTEMu2QxzIt4doif9bOKIutL50=;
+  b=WjMakcGEy2gBoKSNZuVbmAX5uOOYbtE9aweCmFomSDRxFbHsCcpNcYPd
+   Pf1EU+UMqN7QE4UEx3VEVFO6/g8jhWRTARSLFeCraLX3iWHSEq4JC/t/v
+   i3Ms3r9rugX2xDPQY+5MCCQZTO+ImRZRC4HqGgFiiEKYlp9C6Md0s/8Ak
+   FGVQlIhYY9tNk7A0eY7fcR2/X938grUzV6LKOITImvoDjeOEsvlqfN0wc
+   naqtmaJIsQvnmgzUC3raSLmCFkkqHnk6q+gEjiiF7sWubVQQZkD4WdWFs
+   BfjNh6vqyew3debS3Ibn12x7GIZIyj4Wz3EFhC42pJg6N4wPwVRRCR9Mz
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="358129723"
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="358129740"
 X-IronPort-AV: E=Sophos;i="6.01,150,1684825200"; 
-   d="scan'208";a="358129723"
+   d="scan'208";a="358129740"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 16:17:11 -0700
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 16:17:13 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="718285976"
+X-IronPort-AV: E=McAfee;i="6600,9927,10749"; a="718285983"
 X-IronPort-AV: E=Sophos;i="6.01,150,1684825200"; 
-   d="scan'208";a="718285976"
+   d="scan'208";a="718285983"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 16:17:10 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 16:17:12 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -45,9 +45,9 @@ Cc: isaku.yamahata@intel.com,
 	Ackerley Tng <ackerleytng@google.com>,
 	Vishal Annapurve <vannapurve@google.com>,
 	Michael Roth <michael.roth@amd.com>
-Subject: [RFC PATCH v2 2/6] KVM: selftests: Fix guest_memfd()
-Date: Thu, 22 Jun 2023 16:16:26 -0700
-Message-Id: <6934b5a7c87a9804360678c52553cf92c3870b5a.1687474039.git.isaku.yamahata@intel.com>
+Subject: [RFC PATCH v2 4/6] KVM: x86: Introduce fault type to indicate kvm page fault is private
+Date: Thu, 22 Jun 2023 16:16:28 -0700
+Message-Id: <a3a19de92c7ac6e607ac3e663d84a4312876084b.1687474039.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1687474039.git.isaku.yamahata@intel.com>
 References: <cover.1687474039.git.isaku.yamahata@intel.com>
@@ -61,35 +61,178 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Some test cases should succeed.  Check !ret instead of ret.
+Introduce kvm fault type to indicate how to handle kvm page fault.
 
-Fixes: 36eedd5b91e3 ("KVM: selftests: Add basic selftest for guest_memfd()")
+It is unfortunate and inflexible for kvm_mmu_do_page_fault() to call
+kvm_mem_is_private(), eventually looking up memory attributes.  Later
+__kvm_faultin_pfn() looks up memory attributes again.  There is a race
+condition that other threads can change memory attributes due to not
+gaining the mmu lock.  SNP-SEV and TDX define theri way to indicate that
+the page fault is private.
+
+Add KVM fault type, add mmu_private_fault_mask to struct kvm_arch for SNP
+to determine the fault is private, add gfn_shared_mask to struct kvm_arch
+for TDX to determine the fault is private. KVM_FAULT_SHARED_ALWAYS is added
+for the conventional guest to avoid over head to lookup memory attributes.
+
+Suggested-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
 Changes v1 -> v2:
-- no change
+- Introduced fault type and replaced is_private with fault_type.
+- Add kvm_get_fault_type() to encapsulate the difference.
 ---
- tools/testing/selftests/kvm/guest_memfd_test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  6 ++++++
+ arch/x86/kvm/mmu/mmu.c          | 26 ++++++++++++++++++++------
+ arch/x86/kvm/mmu/mmu_internal.h | 33 +++++++++++++++++++++++++++++++--
+ 3 files changed, 57 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index 3b6532b833b2..f3b99c1e5464 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -72,11 +72,11 @@ static void test_fallocate(int fd, size_t page_size, size_t total_size)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 8ae131dc645d..5afeefc7a516 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1445,6 +1445,12 @@ struct kvm_arch {
+ 	 */
+ #define SPLIT_DESC_CACHE_MIN_NR_OBJECTS (SPTE_ENT_PER_PAGE + 1)
+ 	struct kvm_mmu_memory_cache split_desc_cache;
++
++#ifdef CONFIG_KVM_PROTECTED_VM
++	/* To make the patch compile. */
++	u64 mmu_private_fault_mask;
++	gfn_t gfn_shared_mask;
++#endif
+ };
  
- 	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
- 			total_size, page_size);
--	TEST_ASSERT(ret, "fallocate(PUNCH_HOLE) at total_size should be fine (no-op)");
-+	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) at total_size should be fine (no-op)");
+ struct kvm_vm_stat {
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index b8ba7f11c3cb..feec75515f39 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3174,10 +3174,12 @@ static int host_pfn_mapping_level(struct kvm *kvm, gfn_t gfn,
  
- 	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
- 			total_size + page_size, page_size);
--	TEST_ASSERT(ret, "fallocate(PUNCH_HOLE) after total_size should be fine (no-op)");
-+	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) after total_size should be fine (no-op)");
+ static int __kvm_mmu_max_mapping_level(struct kvm *kvm,
+ 				       const struct kvm_memory_slot *slot,
+-				       gfn_t gfn, int max_level, bool is_private)
++				       gfn_t gfn, int max_level,
++				       enum kvm_fault_type fault_type)
+ {
+ 	struct kvm_lpage_info *linfo;
+ 	int host_level;
++	bool is_private = fault_type == KVM_FAULT_PRIVATE;
  
- 	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
- 			page_size, page_size - 1);
+ 	max_level = min(max_level, max_huge_page_level);
+ 	for ( ; max_level > PG_LEVEL_4K; max_level--) {
+@@ -3228,7 +3230,7 @@ void kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	 */
+ 	fault->req_level = __kvm_mmu_max_mapping_level(vcpu->kvm, slot,
+ 						       fault->gfn, fault->max_level,
+-						       fault->is_private);
++						       fault->fault_type);
+ 	if (fault->req_level == PG_LEVEL_4K || fault->huge_page_disallowed)
+ 		return;
+ 
+@@ -4328,7 +4330,7 @@ static int kvm_do_memory_fault_exit(struct kvm_vcpu *vcpu,
+ 				    struct kvm_page_fault *fault)
+ {
+ 	vcpu->run->exit_reason = KVM_EXIT_MEMORY_FAULT;
+-	if (fault->is_private)
++	if (fault->fault_type == KVM_FAULT_PRIVATE)
+ 		vcpu->run->memory.flags = KVM_MEMORY_EXIT_FLAG_PRIVATE;
+ 	else
+ 		vcpu->run->memory.flags = 0;
+@@ -4386,10 +4388,22 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 			return RET_PF_EMULATE;
+ 	}
+ 
+-	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn))
+-		return kvm_do_memory_fault_exit(vcpu, fault);
++	if (fault->fault_type == KVM_FAULT_SHARED_ALWAYS) {
++		/*
++		 * The conventional case. Don't lookup memory attributes to
++		 * avoid overhead
++		 */
++		fault->fault_type = KVM_FAULT_SHARED;
++	} else if (fault->fault_type == KVM_FAULT_MEM_ATTR) {
++		fault->fault_type = kvm_mem_is_private(vcpu->kvm, fault->gfn) ?
++			KVM_FAULT_PRIVATE : KVM_FAULT_SHARED;
++	} else {
++		if ((fault->fault_type == KVM_FAULT_PRIVATE) !=
++		    kvm_mem_is_private(vcpu->kvm, fault->gfn))
++			return kvm_do_memory_fault_exit(vcpu, fault);
++	}
+ 
+-	if (fault->is_private)
++	if (fault->fault_type == KVM_FAULT_PRIVATE)
+ 		return kvm_faultin_pfn_private(vcpu, fault);
+ 
+ 	async = false;
+diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+index 7f9ec1e5b136..0ec0b927a391 100644
+--- a/arch/x86/kvm/mmu/mmu_internal.h
++++ b/arch/x86/kvm/mmu/mmu_internal.h
+@@ -188,6 +188,13 @@ static inline bool is_nx_huge_page_enabled(struct kvm *kvm)
+ 	return READ_ONCE(nx_huge_pages) && !kvm->arch.disable_nx_huge_pages;
+ }
+ 
++enum kvm_fault_type {
++	KVM_FAULT_MEM_ATTR,
++	KVM_FAULT_SHARED,
++	KVM_FAULT_SHARED_ALWAYS,
++	KVM_FAULT_PRIVATE,
++};
++
+ struct kvm_page_fault {
+ 	/* arguments to kvm_mmu_do_page_fault.  */
+ 	const gpa_t addr;
+@@ -203,9 +210,10 @@ struct kvm_page_fault {
+ 
+ 	/* Derived from mmu and global state.  */
+ 	const bool is_tdp;
+-	const bool is_private;
+ 	const bool nx_huge_page_workaround_enabled;
+ 
++	enum kvm_fault_type fault_type;
++
+ 	/*
+ 	 * Whether a >4KB mapping can be created or is forbidden due to NX
+ 	 * hugepages.
+@@ -282,6 +290,27 @@ enum {
+ 	RET_PF_SPURIOUS,
+ };
+ 
++static inline enum kvm_fault_type kvm_get_fault_type(struct kvm *kvm,
++						     gpa_t gpa, u64 err)
++{
++
++#ifdef CONFIG_KVM_PROTECTED_VM
++	/* SEV-SNP handling */
++	if (kvm->arch.mmu_private_fault_mask)
++		return (err & kvm->arch.mmu_private_fault_mask) ?
++			KVM_FAULT_PRIVATE : KVM_FAULT_SHARED;
++
++	/* TDX handling */
++	if (kvm->arch.gfn_shared_mask)
++		return (gpa_to_gfn(gpa) & kvm->arch.gfn_shared_mask) ?
++			KVM_FAULT_SHARED : KVM_FAULT_PRIVATE;
++#endif
++	if (kvm->arch.vm_type == KVM_X86_PROTECTED_VM)
++		return KVM_FAULT_MEM_ATTR;
++	/* Don't query memory attributes. */
++	return KVM_FAULT_SHARED_ALWAYS;
++}
++
+ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 					u64 err, bool prefetch, int *emulation_type)
+ {
+@@ -301,7 +330,7 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 		.max_level = KVM_MAX_HUGEPAGE_LEVEL,
+ 		.req_level = PG_LEVEL_4K,
+ 		.goal_level = PG_LEVEL_4K,
+-		.is_private = kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT),
++		.fault_type = kvm_get_fault_type(vcpu->kvm, cr2_or_gpa, err),
+ 	};
+ 	int r;
+ 
 -- 
 2.25.1
 
