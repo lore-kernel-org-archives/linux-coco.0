@@ -1,53 +1,50 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9851094B
-	for <linux-coco@lists.linux.dev>; Fri, 23 Jun 2023 20:04:05 +0000 (UTC)
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-54ff7ab1e4dso803204a12.3
-        for <linux-coco@lists.linux.dev>; Fri, 23 Jun 2023 13:04:05 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F6218D
+	for <linux-coco@lists.linux.dev>; Sat, 24 Jun 2023 00:09:27 +0000 (UTC)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-53fd224ad48so726771a12.2
+        for <linux-coco@lists.linux.dev>; Fri, 23 Jun 2023 17:09:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687550645; x=1690142645;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EAV+u9FZn1OMDdsvLpiA8ptQ0UAVCWOU9+eOHemeZkc=;
-        b=r2KqjKqvT/xeedE+Uetlyqb6JDv1xiVsWPQjpWxl++J6+bumEq73qW8Ny/MMnElmJ6
-         O9O2t+XH/Ria9AnJC9poUqbrQIzuL18YDpLLO+HlnCySj9MFXVrVxzR/qRL9WemW0s8K
-         3U/BXFOQch6jmpkQTR/rGoDpfz23FrESAr+lNHWLawIGMzx2fTTjcz1KpK0kxOX0sHxx
-         PHZ14EwZSL9+kcmBhAgmfFWsCBqxCFGX8Kqp3FXP6iK6FOy934HbUBIYW/mYPki2JK4x
-         3ykr0QYQA2hg1zzqTT7R+u+3plk5LWLv04e+GFSDnf/W5oXUa/ZF4xbNxQ1crQCdeyfB
-         MhKQ==
+        d=google.com; s=20221208; t=1687565367; x=1690157367;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6LvkJneBy3/YMbwKk609UgSQMNaHvxDfIWkehlJrEmg=;
+        b=znEFkvugMo4sImCFfgS2qwCOLArcMdjXNcjLgHOhMC9xIU3DvkzpkMCW6uGVJRd6Ju
+         g76vDmwk2C3WSAvIWBDrFYrqVe7JL5hI1Mf333G2jyuGDEvWJ3vhYX8pH1syinbdfDFh
+         hbRo4fkBW9WO0wrevYIRn8bU13AZJFHNrhgm9cz26iwq/UtFXuP7fBHX/Uq1dgsTslxR
+         9vLiVWcHcP/15wxXU65k3wQ7ne+ORwPRg2o4zVmdcaNjAcndf6ggLs+lIUvj84zgWTyR
+         3YTZOyatvBcMtxPQpri0htvOeEZ0rsKid9MVUg672KjGfmiUq1Y501qF79MyFBZ4gbxp
+         QEAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687550645; x=1690142645;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EAV+u9FZn1OMDdsvLpiA8ptQ0UAVCWOU9+eOHemeZkc=;
-        b=Cb4bGyK2lEhyZktOsNSPCqbCJXVtWC1d4CLXVG7GnnIvLg9LRwRn8utJ6Z2w7TO27X
-         CSHHHVkuYl+kWXS0tEiZb2twB4JIed2ENZUiWxkIKU6QIo0jrzFX2EVxkzhjVupRgaFZ
-         YcDYFO+hQMdEg1CI/+Lmy9y8boX7zcSkTiu4wjWZAiaUqm5B8Y1xaiP/weACDNxX/jge
-         5UaPlO+Y6NbXNj+znEe0RmHsiiIs0QWFe1VpFEqnfpPVXrSJNoYryW2qvcYvLuW6ZQCI
-         rqnRF1SKqejy2/Ip5Sdy/KsMWV1hog+coIKyYSWUn24EuH6DYRquv1+i7aLDYJKP8OkF
-         yENw==
-X-Gm-Message-State: AC+VfDxPAWSiyTKXS3NM05jLskZJByGCMY/1vrlc+JvmI4nokkGAihig
-	W9bt/DpVtz6CssFQ3ti3MtvZXadBwAk=
-X-Google-Smtp-Source: ACHHUZ6zM7Tgx4TGI3IPNASvkUDDWcbHxCnEXQz8Gh0NAaLENOYDQwmMhjGIuX7u07qjeoQlIIvfGSAVCwQ=
+        d=1e100.net; s=20221208; t=1687565367; x=1690157367;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6LvkJneBy3/YMbwKk609UgSQMNaHvxDfIWkehlJrEmg=;
+        b=Xyv24ekdW2vvwdtiMnvN2qw2j9y+zfB5LTPNYUGl2uJTWcXxAdxj5UzcGwKK+KQMMX
+         dJtbcEDyl32jcpl3QtWYjhrlvDyjy8sGfgBgAv5CjyqljnkpcVk42IJa2tnIGhZcC5sL
+         vkDLI4CS2Rj+Yf8RRwpn8mXv0XYuOhOJ+Uww9WIw3y2iicQlEz4Bz+9DrgUh//ydHd5N
+         suc38IqSCiYZofDfIJXIvT4qiWTU4hmdbZHsaWYnvAgwV4vzU25H/KcJNP3t9TUn34wZ
+         fjFxNDORP3K7nBAdKhgkHpKyO6g3XSZevGkjo5R/T/XAPmo9wK7gM/qZ6bHJtCEICbQp
+         jT1g==
+X-Gm-Message-State: AC+VfDxGc7OS01ogi0/PWRON1l9ydWDVbCiAkb54+C1s0gPmzZBdbFYG
+	qMowk3glZhUGRyatuLmS0ELkpaoUFlU=
+X-Google-Smtp-Source: ACHHUZ7GYqhOn7bHUyi6+FrThgCMRPif8Rtwe80QIDWA0IpGY9LZNVqsPFDUF3IV6HL7i3Z8DDrWsIB9vyo=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:1c12:0:b0:53f:6f7c:554e with SMTP id
- c18-20020a631c12000000b0053f6f7c554emr2532033pgc.12.1687550645192; Fri, 23
- Jun 2023 13:04:05 -0700 (PDT)
-Date: Fri, 23 Jun 2023 13:04:03 -0700
-In-Reply-To: <a3a19de92c7ac6e607ac3e663d84a4312876084b.1687474039.git.isaku.yamahata@intel.com>
+ (user=seanjc job=sendgmr) by 2002:a63:2f42:0:b0:53f:7713:5e0e with SMTP id
+ v63-20020a632f42000000b0053f77135e0emr2662006pgv.5.1687565367474; Fri, 23 Jun
+ 2023 17:09:27 -0700 (PDT)
+Date: Fri, 23 Jun 2023 17:09:26 -0700
+In-Reply-To: <cover.1686858861.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <cover.1687474039.git.isaku.yamahata@intel.com> <a3a19de92c7ac6e607ac3e663d84a4312876084b.1687474039.git.isaku.yamahata@intel.com>
-Message-ID: <ZJX6s2HxbHOUMXlj@google.com>
-Subject: Re: [RFC PATCH v2 4/6] KVM: x86: Introduce fault type to indicate kvm
- page fault is private
+References: <cover.1686858861.git.isaku.yamahata@intel.com>
+Message-ID: <ZJY0Nudy8ym2kKNg@google.com>
+Subject: Re: [RFC PATCH 0/6] KVM: guest memory: Misc enhacnement
 From: Sean Christopherson <seanjc@google.com>
 To: isaku.yamahata@intel.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -56,65 +53,15 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
 	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Vishal Annapurve <vannapurve@google.com>, Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jun 22, 2023, isaku.yamahata@intel.com wrote:
-> diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_inter=
-nal.h
-> index 7f9ec1e5b136..0ec0b927a391 100644
-> --- a/arch/x86/kvm/mmu/mmu_internal.h
-> +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> @@ -188,6 +188,13 @@ static inline bool is_nx_huge_page_enabled(struct kv=
-m *kvm)
->  	return READ_ONCE(nx_huge_pages) && !kvm->arch.disable_nx_huge_pages;
->  }
-> =20
-> +enum kvm_fault_type {
-> +	KVM_FAULT_MEM_ATTR,
-> +	KVM_FAULT_SHARED,
-> +	KVM_FAULT_SHARED_ALWAYS,
-> +	KVM_FAULT_PRIVATE,
+On Thu, Jun 15, 2023, isaku.yamahata@intel.com wrote:
+> * VM type: Now we have KVM_X86_PROTECTED_VM. How do we proceed?
+>   - Keep KVM_X86_PROTECTED_VM for its use. Introduce KVM_X86_TDX_VM
+>   - Use KVM_X86_PROTECTED_VM for TDX. (If necessary, introduce another type in
+>     the future)
 
-This is silly.  Just use AMD's error code bit, i.e. PFERR_GUEST_ENC_MASK as=
- per
-the SNP series.
+How would KVM differentiate between software-protected VMs and TDX VMs if we go
+with this option?
 
-  Bit 34 (ENC): Set to 1 if the guest=E2=80=99s effective C-bit was 1, 0 ot=
-herwise.
-
-Just because Intel's ucode is too crusty to support error codes larger than=
- 16
-bits doesn't mean KVM can't utilize the bits :-)  KVM already translates to=
- AMD's
-error codes for other things, e.g.
-
-	error_code |=3D (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) !=3D 0=
- ?
-	       PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
-
-For TDX, handle_ept_violation() can do something like:
-
-	if (is_tdx(vcpu->kvm))
-		error_code |=3D (gpa & shared) ? 0 : PFERR_GUEST_ENC_MASK;
-	else if (kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(gpa)))
-		error_code |=3D PFERR_GUEST_ENC_MASK;
-
-And that's not even taking into account that TDX might have a separate entr=
-y point,
-i.e. the "is_tdx()" check can probably be avoided.
-
-As for optimizing kvm_mem_is_private() to avoid unnecessary xarray lookups,=
- that
-can and should be done separately, e.g.
-
-  static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
-  {
-	return IS_ENABLED(CONFIG_KVM_PRIVATE_MEM) &&
-	       kvm_guest_has_private_mem(kvm) &&
-	       kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
-  }
-
-where x86's implementation of kvm_guest_has_private_mem() can be
-
-  #define kvm_guest_has_private_mem(kvm) (!!(kvm)->vm_type)
+>   - any other way?
