@@ -1,281 +1,598 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8A0134B3
-	for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 18:21:48 +0000 (UTC)
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-564fb1018bcso50831017b3.0
-        for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 11:21:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEECD313
+	for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 18:58:08 +0000 (UTC)
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-401f4408955so30001cf.1
+        for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 11:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687803707; x=1690395707;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hupRzbzLCG/KIXYw3qGlEQa2tHfb7hjWdTMdzJJmdDM=;
-        b=ohSso1FC/DQeIHA+1eUJuSO1lOTpFRkGhOiR6VdJjcISbGPEIquZUTMbeyZVkgFAkQ
-         gqRGTWeNf8b1rvSgk4aQYTukf60xObTtwT4X+zDQZJ+F9/1MdV+vYhUlV+KlVB1sIZQl
-         YSUd45XUPOPlVoNH5vDpHfpn/OhZw5YQe0e+o/2cD+zYWrq4ct2jjzzZh99BFN+0jmis
-         YZXeaME2EtNMRWM1RqJLd+QRh4kVCKYPPe3un35mjJYLRHafNbhjy6+89BfS1H+cJi4g
-         yHoyVcUcTxVmYJx+NUDsDXob0MLjaynvK7SamfewI1YntDWnKpSFNLBudyt6JSGfk0aG
-         QD7g==
+        d=google.com; s=20221208; t=1687805887; x=1690397887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M4GUf7WeVm/hCddlw+w8yOJbmt8xnvBLWi12UWuji0U=;
+        b=vdz0Dez2/lTX+zwCQBUkHXRY4x+j0rrOwJn7wLjLQlvRHqWprVuuRGKne6jokvw9eh
+         HySS8P0q7Z7ygKsrdYvyPEpBnB1lbPekjkPgvXf5XUjHSR5AUiopy2Q2rBpFOBpIslPH
+         /qB31zsJGxoHLKO20m1Be74yBCvTCIiIrxOKRzyMnf07NBaZfpS7Gz2pl28keRb0SY3W
+         NxT2Z69DjhitkCu/f2cwmjsrMFkQLOBZs0hC12APZuQ07jelCwO+MG54pLgBne6o39fL
+         a77ZTRGJ2Nrhotzyq2FL8dQs761op3qMna/9PD06VPt6yGs8glzLbPkUPrXQOUdWzdYq
+         1vTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687803707; x=1690395707;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hupRzbzLCG/KIXYw3qGlEQa2tHfb7hjWdTMdzJJmdDM=;
-        b=UtlnNic0m6B8S5iGvP2Ql3aqyDj3KzgEWyjPipw8zu6Vuowo42SZlualk2zV8fANgk
-         ULyI4bWlI2B53Alcec6siuzoAEaAqC8oRdSTxCj7j8nbGShDf690Iaav3wZSeHVkGnPj
-         rlijRflXdiF09NiuIUHBuZP++fOF2T7MlG9wSEvT9Ne2LkW2SMfvegFGb/oZnp+BImSy
-         8GRR35R7EiGda6/YDuDQ5LgpsGla995SHR43RxHZmfcXNbatkJeCTPa9iZf1vDBHzrYW
-         OxpEnNXoG3tvtZGkkZaz8SZmKBTththpbt/JLU4TdpJFlYb7tvUZUK1zHwhXNkhhDO+A
-         FS9g==
-X-Gm-Message-State: AC+VfDylleIw85qboyJYT7S+CrFW5EJMZEkwEtSZHRSRj8WXiG40O133
-	XgNdd/29fI57k4LExUO4rNE457aae30=
-X-Google-Smtp-Source: ACHHUZ7RxEyzb6Y1552i3A91XNRZFOLdXv2HoYbR4FmMQlZGGkLJM8luga2UBQhkCA//Pht8ELhRkZL/yL4=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:4007:0:b0:bc4:8627:57c3 with SMTP id
- n7-20020a254007000000b00bc4862757c3mr12315046yba.9.1687803707139; Mon, 26 Jun
- 2023 11:21:47 -0700 (PDT)
-Date: Mon, 26 Jun 2023 11:21:45 -0700
-In-Reply-To: <20230626010753.xru5ph3irmyokrgc@amd.com>
+        d=1e100.net; s=20221208; t=1687805887; x=1690397887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M4GUf7WeVm/hCddlw+w8yOJbmt8xnvBLWi12UWuji0U=;
+        b=H9Rgs5sfVH7LWnTTb3DXMvvIi+sRaiNb6uWavvhBb0JHQ7XieMP2uq8BTWbm9UmygW
+         7aHjAjWyV9LNT1ZApML/64qNx0pgikd/CAccHDJUFWr74SOXGfgymHoaCYCLr09yMNlJ
+         F8TDs6gimAaWCjFmkbKkPbJZh/1gqHvJpPx5T+fwoxlwLi+5zuv4GIZzrXF7K1sQ4XfW
+         NNRvPzhabgIJn6qdbkHt+DyzBHWNRTxVQyUA3KYjy7rNXkwLKRm7ODzQkDt6ZrfsZicG
+         iUqAZpB3WMch7pkVlghqp3OmWpTH8YqH8TlEZmGMhYPh2F1riM+KaWVAsvm9wNHnTSNM
+         jCbg==
+X-Gm-Message-State: AC+VfDyAWsVPhtUV+4LdPi7pmlReAwY0EP++DxMZLnTHNv4x4k9lc+7U
+	dTSNSpSTdVrXSb77c8twaKmWzconkfTFysG7eJPbZw==
+X-Google-Smtp-Source: ACHHUZ7CYlGUHng5/0i+SjbkzbOGxMG59lgVDNnwFmM0pQRy0KC0IODREJ/9nPvMXwcwHgqCfj2vlaz02bG/kroyCkQ=
+X-Received: by 2002:ac8:57c5:0:b0:3f9:f877:1129 with SMTP id
+ w5-20020ac857c5000000b003f9f8771129mr450561qta.29.1687805887403; Mon, 26 Jun
+ 2023 11:58:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1687474039.git.isaku.yamahata@intel.com>
- <a3a19de92c7ac6e607ac3e663d84a4312876084b.1687474039.git.isaku.yamahata@intel.com>
- <ZJX6s2HxbHOUMXlj@google.com> <20230626010753.xru5ph3irmyokrgc@amd.com>
-Message-ID: <ZJnXObRHhn5Q1dX2@google.com>
-Subject: Re: [RFC PATCH v2 4/6] KVM: x86: Introduce fault type to indicate kvm
- page fault is private
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
-	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
-	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <972e1d5c5ec53e2757fb17a586558c5385e987dd.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch>
+ <64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch> <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com>
+In-Reply-To: <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Mon, 26 Jun 2023 11:57:55 -0700
+Message-ID: <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] selftests/tdx: Test GetQuote TDX attestation feature
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Shuah Khan <shuah@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, "H . Peter Anvin" <hpa@zytor.com>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Tony Luck <tony.luck@intel.com>, 
+	Wander Lairson Costa <wander@redhat.com>, Erdem Aktas <erdemaktas@google.com>, Chong Cai <chongc@google.com>, 
+	Qinkun Bao <qinkun@apache.org>, Guorui Yu <GuoRui.Yu@linux.alibaba.com>, 
+	Du Fan <fan.du@intel.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	dhowells@redhat.com, brijesh.singh@amd.com, atishp@rivosinc.com, 
+	gregkh@linuxfoundation.org, linux-coco@lists.linux.dev, joey.gouly@arm.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jun 25, 2023, Michael Roth wrote:
-> On Fri, Jun 23, 2023 at 01:04:03PM -0700, Sean Christopherson wrote:
-> > On Thu, Jun 22, 2023, isaku.yamahata@intel.com wrote:
-> > > diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_i=
-nternal.h
-> > > index 7f9ec1e5b136..0ec0b927a391 100644
-> > > --- a/arch/x86/kvm/mmu/mmu_internal.h
-> > > +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> > > @@ -188,6 +188,13 @@ static inline bool is_nx_huge_page_enabled(struc=
-t kvm *kvm)
-> > >  	return READ_ONCE(nx_huge_pages) && !kvm->arch.disable_nx_huge_pages=
-;
-> > >  }
-> > > =20
-> > > +enum kvm_fault_type {
-> > > +	KVM_FAULT_MEM_ATTR,
-> > > +	KVM_FAULT_SHARED,
-> > > +	KVM_FAULT_SHARED_ALWAYS,
-> > > +	KVM_FAULT_PRIVATE,
-> >=20
-> > This is silly.  Just use AMD's error code bit, i.e. PFERR_GUEST_ENC_MAS=
-K as per
-> > the SNP series.
-> >=20
-> >   Bit 34 (ENC): Set to 1 if the guest=E2=80=99s effective C-bit was 1, =
-0 otherwise.
-> >=20
-> > Just because Intel's ucode is too crusty to support error codes larger =
-than 16
-> > bits doesn't mean KVM can't utilize the bits :-)  KVM already translate=
-s to AMD's
-> > error codes for other things, e.g.
-> >=20
-> > 	error_code |=3D (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) !=
-=3D 0 ?
-> > 	       PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
-> >=20
-> > For TDX, handle_ept_violation() can do something like:
-> >=20
-> > 	if (is_tdx(vcpu->kvm))
-> > 		error_code |=3D (gpa & shared) ? 0 : PFERR_GUEST_ENC_MASK;
-> > 	else if (kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(gpa)))
-> > 		error_code |=3D PFERR_GUEST_ENC_MASK;
->=20
-> Maybe this is what you're getting at below, but seems awkward to have thi=
-s
-> being handling in TDX code since that would suggest that SVM module would
-> also need to duplicate that logic and synthesize this PFERR_GUEST_ENC_MAS=
-K
-> bit for non-SNP VMs (e.g. gmem self-tests).
-
-Ah, right, forgot about that angle.  The non-TDX synthesizing can be done i=
-n
-kvm_mmu_page_fault(), e.g.
-
-	if (vcpu->kvm->vm_type =3D=3D KVM_X86_PROTECTED_VM &&
-	    kvm_mem_is_private(...))
-		error_code |=3D PFERR_GUEST_ENC_MASK;
-
-> So maybe SNP/TDX can rely on passing this via error_code, and then some
-> common code, like kvm_mem_is_private(), can handle this for non-TDX/SNP
-> guest types. But the current gmem series does this via a new .is_private
-> in kvm_page_fault:
->=20
->   .is_private =3D kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT)=
-,
->=20
-> This seems at odds with the idea of storing this 'fault->is_private'
-> logic into the error_code. Isaku and I were discussing[1] that we
-> should do one or the other:
->=20
->   a) store everything in error_code
->   b) use the .is_private field that seems to have been introduced to
->      track exactly this information
->=20
-> So I think this series is attempting to do b). If you're suggesting we
-> should do a), then what purpose is fault->is_private field meant to
-> serve? Are you planning to get rid of it? Otherwise it seems redundant.
->=20
-> But I think approach b) is useful for another reason:
-
-"is_private" would serve the same purpose as all the other bits that are de=
-rived
-from the error code, e.g. improve readability, reduce line lengths, etc.  T=
-hough
-looking at the name, just "private" is probably the right name.
-
-	/* Derived from error_code.  */
-	const bool exec;
-	const bool write;
-	const bool present;
-	const bool rsvd;
-	const bool user;
-
-> > And that's not even taking into account that TDX might have a separate =
-entry point,
-> > i.e. the "is_tdx()" check can probably be avoided.
-> >=20
-> > As for optimizing kvm_mem_is_private() to avoid unnecessary xarray look=
-ups, that
-> > can and should be done separately, e.g.
-> >=20
-> >   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
-> >   {
-> > 	return IS_ENABLED(CONFIG_KVM_PRIVATE_MEM) &&
-> > 	       kvm_guest_has_private_mem(kvm) &&
-> > 	       kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIV=
-ATE;
-> >   }
-> >=20
-> > where x86's implementation of kvm_guest_has_private_mem() can be
-> >=20
-> >   #define kvm_guest_has_private_mem(kvm) (!!(kvm)->vm_type)
->=20
-> It's just about not checking xarray for non-protected case. The
-> optimization here is that neither TDX nor SNP care about the xarray as
-> far as determining whether the *fault* was a private or not.
-
-Yes, and what I am suggesting doesn't use kvm_mem_is_private() to synthesiz=
-e that
-flag for TDX (or SNP).
-
-> We only care later, in part of the KVM MMU code that determines whether t=
-he
-> fault type is at odds with the xarray state and whether to generate a
-> KVM_EXIT_MEMORY_FAULT as a result.
->=20
-> In that code, both TDX/SNP, as well as gmem self-tests, will all end up
-> calling kvm_mem_is_private().
->=20
-> In the gmem self-test case, in current gmem base series, and I think with
-> what you've proposed here, we'd check the xarray via kvm_mem_is_privae(),
-> both in kvm_mmu_do_page_fault(), as well as later kvm_faultin_pfn() where
-> KVM_EXIT_MEMORY_FAULT case is handled. That seems off because:
->=20
->   1) Checking in kvm_mem_is_private() via kvm_mmu_do_page_fault() means
->      that we will grab the value prior to when the KVM MMU records the
->      mmu_invalidate_seq, which means there's a window between
->      kvm_mmu_do_page_fault() and kvm_faultin_pfn() where an updated
->      xarray won't be noticed, and the #NPF retry logic will not get
->      triggered.
-
-That's ok-ish, for some definitions of ok.  There's no fatal bug, but users=
-pace
-will see a spurious, arguably nonsensical exit.  If the race occurs before =
-mmu_seq
-is snapshot, this code will detect the change and exit to userspace.
-
-	if (fault->is_private !=3D kvm_mem_is_private(vcpu->kvm, fault->gfn))
-		return kvm_do_memory_fault_exit(vcpu, fault);
-
->   2) For gmem self-test, kvm_mem_is_private() is the authority on
->      whether the fault is private or not. There's no need to distinguish
->      between what was set via KVM_SET_MEMORY_ATTRIBUTES, vs. what was
->      indicated via fault flags/GPA like TDX/SNP do.
->=20
-> So it makes sense, in the gmem case (and TDX/SNP), to defer the
-> kvm_mem_is_private() till later in kvm_faultin_pfn(). It avoid a
-> duplicate lookup, and a race. But .is_private only conveys
-> encrypted/unencrypted fault in TDX/SNP case, it doesn't have a way to
-> cleanly convey this case "just use whatever kvm_mem_is_private() reports
-> later, because it will always be what the VMM set, and it's too early
-> to check kvm_mem_is_private() right now".
-
-Yeah, the duplicate lookup is unfortunate :-/  But I'd really like to be ab=
-le to
-make kvm_page_fault.private const, just like all the other booleans that ar=
+On Sun, Jun 25, 2023 at 8:06=E2=80=AFPM Sathyanarayanan Kuppuswamy
+<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+>
+> Hi Dan,
+>
+> On 6/23/23 3:27 PM, Dan Williams wrote:
+> > Dan Williams wrote:
+> >> [ add David, Brijesh, and Atish]
+> >>
+> >> Kuppuswamy Sathyanarayanan wrote:
+> >>> In TDX guest, the second stage of the attestation process is Quote
+> >>> generation. This process is required to convert the locally generated
+> >>> TDREPORT into a remotely verifiable Quote. It involves sending the
+> >>> TDREPORT data to a Quoting Enclave (QE) which will verify the
+> >>> integrity of the TDREPORT and sign it with an attestation key.
+> >>>
+> >>> Intel's TDX attestation driver exposes TDX_CMD_GET_QUOTE IOCTL to
+> >>> allow the user agent to get the TD Quote.
+> >>>
+> >>> Add a kernel selftest module to verify the Quote generation feature.
+> >>>
+> >>> TD Quote generation involves following steps:
+> >>>
+> >>> * Get the TDREPORT data using TDX_CMD_GET_REPORT IOCTL.
+> >>> * Embed the TDREPORT data in quote buffer and request for quote
+> >>>   generation via TDX_CMD_GET_QUOTE IOCTL request.
+> >>> * Upon completion of the GetQuote request, check for non zero value
+> >>>   in the status field of Quote header to make sure the generated
+> >>>   quote is valid.
+> >>
+> >> What this cover letter does not say is that this is adding another
+> >> instance of the similar pattern as SNP_GET_REPORT.
+> >>
+> >> Linux is best served when multiple vendors trying to do similar
+> >> operations are brought together behind a common ABI. We see this in th=
 e
-derived from the error code.  My concern with making it *not* const is that
-there will be a discrepancy between "private" and "error_code", and we'll h=
-ave
-to be very careful to never touch "private" before kvm_faultin_pfn().
+> >> history of wrangling SCSI vendors behind common interfaces. Now multip=
+le
+> >> confidential computing vendors trying to develop similar flows with
+> >> differentiated formats where that differentiation need not leak over t=
+he
+> >> ABI boundary.
+> > [..]
+> >
+> > Below is a rough mock up of this approach to demonstrate the direction.
+> > Again, the goal is to define an ABI that can support any vendor's
+> > arch-specific attestation method and key provisioning flows without
+> > leaking vendor-specific details, or confidential material over the
+> > user/kernel ABI.
+>
+> Thanks for working on this mock code and helping out. It gives me the
+> general idea about your proposal.
+>
+> >
+> > The observation is that there are a sufficient number of attestation
+> > flows available to review where Linux can define a superset ABI to
+> > contain them all. The other observation is that the implementations hav=
+e
+> > features that may cross-polinate over time. For example the SEV
+> > privelege level consideration ("vmpl"), and the TDX RTMR (think TPM
+> > PCRs) mechanisms address generic Confidential Computing use cases.
+>
+>
+> I agree with your point about VMPL and RTMR feature cases. This observati=
+on
+> is valid for AMD SEV and TDX attestation flows. But I am not sure whether
+> it will hold true for other vendor implementations. Our sample set is not
+> good enough to make this conclusion. The reason for my concern is, if you
+> check the ABI interface used in the S390 arch attestation driver
+> (drivers/s390/char/uvdevice.c), you would notice that there is a signific=
+ant
+> difference between the ABI used in that driver and SEV/TDX drivers. The S=
+390
+> driver attestation request appears to accept two data blobs as input, as =
+well
+> as a variety of vendor-specific header configurations.
+>
+> Maybe the s390 attestation model is a special case, but, I think we consi=
+der
+> this issue. Since we don't have a common spec, there is chance that any
+> superset ABI we define now may not meet future vendor requirements. One w=
+ay to
+> handle it to leave enough space in the generic ABI to handle future vendo=
+r
+> requirements.
+>
+> I think it would be better if other vendors (like ARM or RISC) can commen=
+t and
+> confirm whether this proposal meets their demands.
+>
 
-And I don't want to special case "VMM defined", because the primary reason =
-the
-"VMM defined" case exists at this time is to allow testing KVM's implementa=
-tion
-without TDX or SNP.  E.g. I don't want to end up with code in fast_page_fau=
-lt()
-or so that does X for KVM_FAULT_VMM_DEFINED, but Y for KVM_FAULT_PRIVATE.
+The VMPL-based separation that will house the supervisor module known
+as SVSM can have protocols that implement a TPM command interface, or
+an RTMR-extension interface, and will also need to have an
+SVSM-specific protocol attestation report format to keep the secure
+chain of custody apparent. We'd have different formats and protocols
+in the kernel, at least, to speak to each technology. I'm not sure
+it's worth the trouble of papering over all the... 3-4 technologies
+with similar but still weirdly different formats and ways of doing
+things with an abstracted attestation ABI, especially since the output
+all has to be interpreted in an architecture-specific way anyway.
 
-So I'm leaning toward the above be
+ARM's Confidential Computing Realm Management Extensions (RME) seems
+to be going along the lines of a runtime measurement register model
+with their hardware enforced security. The number of registers isn't
+prescribed in the spec.
 
-	if (fault->is_private !=3D kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
-		if (vcpu->kvm->vm_type =3D=3D KVM_X86_PROTECTED_VM)
-			return RET_PF_RETRY;
-		else
-			return kvm_do_memory_fault_exit(vcpu, fault);
-	}
++Joey Gouly +linux-coco@lists.linux.dev as far as RME is concerned, do
+you know who would be best to weigh in on this discussion of a unified
+attestation model?
 
-even though software-protected VMs would perform a technically-unnecessary
-attributes lookup.  *If* software-protected VMs ever get to the point where=
- folks
-care about the performance overhead of the extra lookup, then I'm all for
-revisiting the implementation, but that is a ginormous "if" at this point. =
- Though
-even then I'd still prefer to figure out a way to make the flag const, but =
-that's
-a future problem.
+> >
+> > Vendor specific ioctls for all of this feels like surrender when Linux
+> > already has the keys subsystem which has plenty of degrees of freedom
+> > for tracking blobs with signatures and using those blobs to instantiate
+> > other blobs. It already serves as the ABI wrapping various TPM
+> > implementations and marshaling keys for storage encryption and other us=
+e
+> > cases that intersect Confidential Computing.
+> >
+> > The benefit of deprecating vendor-specific abstraction layers in
+> > userspace is secondary. The primary benefit is collaboration. It enable=
+s
+> > kernel developers from various architectures to collaborate on common
+> > infrastructure. If, referring back to my previous example, SEV adopts a=
+n
+> > RTMR-like mechanism and TDX adopts a vmpl-like mechanism it would be
+> > unfortunate if those efforts were siloed, duplicated, and needlessly
+> > differentiated to userspace. So while there are arguably a manageable
+> > number of basic arch attestation methods the planned expansion of those
+> > to build incremental functionality is where I believe we, as a
+> > community, will be glad that we invested in a "Linux format" for all of
+> > this.
+> >
+> > An example, to show what the strawman patch below enables: (req_key is
+> > the sample program from "man 2 request_key")
+> >
+> > # ./req_key guest_attest guest_attest:0:0-$desc $(cat user_data | base6=
+4)
+> > Key ID is 10e2f3a7
+> > # keyctl pipe 0x10e2f3a7 | hexdump -C
+> > 00000000  54 44 58 20 47 65 6e 65  72 61 74 65 64 20 51 75  |TDX Genera=
+ted Qu|
+> > 00000010  6f 74 65 00 00 00 00 00  00 00 00 00 00 00 00 00  |ote.......=
+......|
+> > 00000020  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |..........=
+......|
+> > *
+> > 00004000
+> >
+> > This is the kernel instantiating a TDX Quote without the TDREPORT
+> > implementation detail ever leaving the kernel. Now, this is only the
+>
+> IIUC, the idea here is to cache the quote data and return it to the user =
+whenever
+> possible, right? If yes, I think such optimization may not be very useful=
+ for our
+> case. AFAIK, the quote data will change whenever there is a change in the=
+ guest
+> measurement data. Since the validity of the generated quote will not be l=
+ong,
+> and the frequency of quote generation requests is expected to be less, we=
+ may not
+> get much benefit from caching the quote data. I think we can keep this lo=
+gic simple
+> by directly retrieving the quote data from the quoting enclave whenever t=
+here is a
+> request from the user.
+>
+> > top-half of what is needed. The missing bottom half takes that material
+> > and uses it to instantiate derived key material like the storage
+> > decryption key internal to the kernel. See "The Process" in
+> > Documentation/security/keys/request-key.rst for how the Keys subsystem
+> > handles the "keys for keys" use case.
+>
+> This is only useful for key-server use case, right? Attestation can also =
+be
+> used for use cases like pattern matching or uploading some secure data, e=
+tc.
+> Since key-server is not the only use case, does it make sense to suppport
+> this derived key feature?
+>
+> >
+> > ---
+> > diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
+> > index f79ab13a5c28..0f775847028e 100644
+> > --- a/drivers/virt/Kconfig
+> > +++ b/drivers/virt/Kconfig
+> > @@ -54,4 +54,8 @@ source "drivers/virt/coco/sev-guest/Kconfig"
+> >
+> >  source "drivers/virt/coco/tdx-guest/Kconfig"
+> >
+> > +config GUEST_ATTEST
+> > +     tristate
+> > +     select KEYS
+> > +
+> >  endif
+> > diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
+> > index e9aa6fc96fab..66f6b838f8f4 100644
+> > --- a/drivers/virt/Makefile
+> > +++ b/drivers/virt/Makefile
+> > @@ -12,3 +12,4 @@ obj-$(CONFIG_ACRN_HSM)              +=3D acrn/
+> >  obj-$(CONFIG_EFI_SECRET)     +=3D coco/efi_secret/
+> >  obj-$(CONFIG_SEV_GUEST)              +=3D coco/sev-guest/
+> >  obj-$(CONFIG_INTEL_TDX_GUEST)        +=3D coco/tdx-guest/
+> > +obj-$(CONFIG_GUEST_ATTEST)   +=3D coco/guest-attest/
+> > diff --git a/drivers/virt/coco/guest-attest/Makefile b/drivers/virt/coc=
+o/guest-attest/Makefile
+> > new file mode 100644
+> > index 000000000000..5581c5a27588
+> > --- /dev/null
+> > +++ b/drivers/virt/coco/guest-attest/Makefile
+> > @@ -0,0 +1,2 @@
+> > +obj-$(CONFIG_GUEST_ATTEST) +=3D guest_attest.o
+> > +guest_attest-y :=3D key.o
+> > diff --git a/drivers/virt/coco/guest-attest/key.c b/drivers/virt/coco/g=
+uest-attest/key.c
+> > new file mode 100644
+> > index 000000000000..2a494b6dd7a7
+> > --- /dev/null
+> > +++ b/drivers/virt/coco/guest-attest/key.c
+> > @@ -0,0 +1,159 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/* Copyright(c) 2023 Intel Corporation. All rights reserved. */
+> > +
+> > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> > +#include <linux/seq_file.h>
+> > +#include <linux/key-type.h>
+> > +#include <linux/module.h>
+> > +#include <linux/base64.h>
+> > +
+> > +#include <keys/request_key_auth-type.h>
+> > +#include <keys/user-type.h>
+> > +
+> > +#include "guest-attest.h"
+>
+> Can you share you guest-attest.h?
+>
+> > +
+> > +static LIST_HEAD(guest_attest_list);
+> > +static DECLARE_RWSEM(guest_attest_rwsem);
+> > +
+> > +static struct guest_attest_ops *fetch_ops(void)
+> > +{
+> > +     return list_first_entry_or_null(&guest_attest_list,
+> > +                                     struct guest_attest_ops, list);
+> > +}
+> > +
+> > +static struct guest_attest_ops *get_ops(void)
+> > +{
+> > +     down_read(&guest_attest_rwsem);
+> > +     return fetch_ops();
+> > +}
+> > +
+> > +static void put_ops(void)
+> > +{
+> > +     up_read(&guest_attest_rwsem);
+> > +}
+> > +
+> > +int register_guest_attest_ops(struct guest_attest_ops *ops)
+> > +{
+> > +     struct guest_attest_ops *conflict;
+> > +     int rc;
+> > +
+> > +     down_write(&guest_attest_rwsem);
+> > +     conflict =3D fetch_ops();
+> > +     if (conflict) {
+> > +             pr_err("\"%s\" ops already registered\n", conflict->name)=
+;
+> > +             rc =3D -EEXIST;
+> > +             goto out;
+> > +     }
+> > +     list_add(&ops->list, &guest_attest_list);
+> > +     try_module_get(ops->module);
+> > +     rc =3D 0;
+> > +out:
+> > +     up_write(&guest_attest_rwsem);
+> > +     return rc;
+> > +}
+> > +EXPORT_SYMBOL_GPL(register_guest_attest_ops);
+> > +
+> > +void unregister_guest_attest_ops(struct guest_attest_ops *ops)
+> > +{
+> > +     down_write(&guest_attest_rwsem);
+> > +     list_del(&ops->list);
+> > +     up_write(&guest_attest_rwsem);
+> > +     module_put(ops->module);
+> > +}
+> > +EXPORT_SYMBOL_GPL(unregister_guest_attest_ops);
+> > +
+> > +static int __guest_attest_request_key(struct key *key, int level,
+> > +                                   struct key *dest_keyring,
+> > +                                   const char *callout_info, int callo=
+ut_len,
+> > +                                   struct key *authkey)
+> > +{
+> > +     struct guest_attest_ops *ops;
+> > +     void *payload =3D NULL;
+> > +     int rc, payload_len;
+> > +
+> > +     ops =3D get_ops();
+> > +     if (!ops)
+> > +             return -ENOKEY;
+> > +
+> > +     payload =3D kzalloc(max(GUEST_ATTEST_DATALEN, callout_len), GFP_K=
+ERNEL);
+> > +     if (!payload) {
+> > +             rc =3D -ENOMEM;
+> > +             goto out;
+> > +     }
+>
+> Is the idea to get the values like vmpl part of the payload?
+>
+> > +
+> > +     payload_len =3D base64_decode(callout_info, callout_len, payload)=
+;
+> > +     if (payload_len < 0 || payload_len > GUEST_ATTEST_DATALEN) {
+> > +             rc =3D -EINVAL;
+> > +             goto out;
+> > +     }
+> > +
+> > +     rc =3D ops->request_attest(key, level, dest_keyring, payload, pay=
+load_len,
+> > +                              authkey);
+> > +out:
+> > +     kfree(payload);
+> > +     put_ops();
+> > +     return rc;
+> > +}
+> > +
+> > +static int guest_attest_request_key(struct key *authkey, void *data)
+> > +{
+> > +     struct request_key_auth *rka =3D get_request_key_auth(authkey);
+> > +     struct key *key =3D rka->target_key;
+> > +     unsigned long long id;
+> > +     int rc, level;
+> > +
+> > +     pr_debug("desc: %s op: %s callout: %s\n", key->description, rka->=
+op,
+> > +              rka->callout_info ? (char *)rka->callout_info : "\"none\=
+"");
+> > +
+> > +     if (sscanf(key->description, "guest_attest:%d:%llu", &level, &id)=
+ !=3D 2)
+> > +             return -EINVAL;
+> > +
+>
+> Can you explain some details about the id and level? It is not very clear=
+ why
+> we need it.
+>
+> > +     if (!rka->callout_info) {
+> > +             rc =3D -EINVAL;
+> > +             goto out;
+> > +     }
+> > +
+> > +     rc =3D __guest_attest_request_key(key, level, rka->dest_keyring,
+> > +                                     rka->callout_info, rka->callout_l=
+en,
+> > +                                     authkey);
+> > +out:
+> > +     complete_request_key(authkey, rc);
+> > +     return rc;
+> > +}
+> > +
+> > +static int guest_attest_vet_description(const char *desc)
+> > +{
+> > +     unsigned long long id;
+> > +     int level;
+> > +
+> > +     if (sscanf(desc, "guest_attest:%d:%llu", &level, &id) !=3D 2)
+> > +             return -EINVAL;
+> > +     return 0;
+> > +}
+> > +
+> > +static struct key_type key_type_guest_attest =3D {
+> > +     .name =3D "guest_attest",
+> > +     .preparse =3D user_preparse,
+> > +     .free_preparse =3D user_free_preparse,
+> > +     .instantiate =3D generic_key_instantiate,
+> > +     .revoke =3D user_revoke,
+> > +     .destroy =3D user_destroy,
+> > +     .describe =3D user_describe,
+> > +     .read =3D user_read,
+> > +     .vet_description =3D guest_attest_vet_description,
+> > +     .request_key =3D guest_attest_request_key,
+> > +};
+> > +
+> > +static int __init guest_attest_init(void)
+> > +{
+> > +     return register_key_type(&key_type_guest_attest);
+> > +}
+> > +
+> > +static void __exit guest_attest_exit(void)
+> > +{
+> > +     unregister_key_type(&key_type_guest_attest);
+> > +}
+> > +
+> > +module_init(guest_attest_init);
+> > +module_exit(guest_attest_exit);
+> > +MODULE_LICENSE("GPL v2");
+> > diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/td=
+x-guest/Kconfig
+> > index 14246fc2fb02..9a1ec85369fe 100644
+> > --- a/drivers/virt/coco/tdx-guest/Kconfig
+> > +++ b/drivers/virt/coco/tdx-guest/Kconfig
+> > @@ -1,6 +1,7 @@
+> >  config TDX_GUEST_DRIVER
+> >       tristate "TDX Guest driver"
+> >       depends on INTEL_TDX_GUEST
+> > +     select GUEST_ATTEST
+> >       help
+> >         The driver provides userspace interface to communicate with
+> >         the TDX module to request the TDX guest details like attestatio=
+n
+> > diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coc=
+o/tdx-guest/tdx-guest.c
+> > index 388491fa63a1..65b5aab284d9 100644
+> > --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> > +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> > @@ -13,11 +13,13 @@
+> >  #include <linux/string.h>
+> >  #include <linux/uaccess.h>
+> >  #include <linux/set_memory.h>
+> > +#include <linux/key-type.h>
+> >
+> >  #include <uapi/linux/tdx-guest.h>
+> >
+> >  #include <asm/cpu_device_id.h>
+> >  #include <asm/tdx.h>
+> > +#include "../guest-attest/guest-attest.h"
+> >
+> >  /*
+> >   * Intel's SGX QE implementation generally uses Quote size less
+> > @@ -229,6 +231,62 @@ static const struct x86_cpu_id tdx_guest_ids[] =3D=
+ {
+> >  };
+> >  MODULE_DEVICE_TABLE(x86cpu, tdx_guest_ids);
+> >
+> > +static int tdx_request_attest(struct key *key, int level,
+> > +                           struct key *dest_keyring, void *payload,
+> > +                           int payload_len, struct key *authkey)
+> > +{
+> > +     u8 *tdreport;
+> > +     long ret;
+> > +
+> > +     tdreport =3D kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
+> > +     if (!tdreport)
+> > +             return -ENOMEM;
+> > +
+> > +     /* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
+> > +     ret =3D tdx_mcall_get_report0(payload, tdreport);
+> > +     if (ret)
+> > +             goto out;
+> > +
+> > +     mutex_lock(&quote_lock);
+> > +
+> > +     memset(qentry->buf, 0, qentry->buf_len);
+> > +     reinit_completion(&qentry->compl);
+> > +     qentry->valid =3D true;
+> > +
+> > +     /* Submit GetQuote Request using GetQuote hyperetall */
+> > +     ret =3D tdx_hcall_get_quote(qentry->buf, qentry->buf_len);
+> > +     if (ret) {
+> > +             pr_err("GetQuote hyperetall failed, status:%lx\n", ret);
+> > +             ret =3D -EIO;
+> > +             goto quote_failed;
+> > +     }
+> > +
+> > +     /*
+> > +      * Although the GHCI specification does not state explicitly that
+> > +      * the VMM must not wait indefinitely for the Quote request to be
+> > +      * completed, a sane VMM should always notify the guest after a
+> > +      * certain time, regardless of whether the Quote generation is
+> > +      * successful or not.  For now just assume the VMM will do so.
+> > +      */
+> > +     wait_for_completion(&qentry->compl);
+> > +
+> > +     ret =3D key_instantiate_and_link(key, qentry->buf, qentry->buf_le=
+n,
+> > +                                    dest_keyring, authkey);
+> > +
+> > +quote_failed:
+> > +     qentry->valid =3D false;
+> > +     mutex_unlock(&quote_lock);
+> > +out:
+> > +     kfree(tdreport);
+> > +     return ret;
+> > +}
+> > +
+> > +static struct guest_attest_ops tdx_attest_ops =3D {
+> > +     .name =3D KBUILD_MODNAME,
+> > +     .module =3D THIS_MODULE,
+> > +     .request_attest =3D tdx_request_attest,
+> > +};
+> > +
+> >  static int __init tdx_guest_init(void)
+> >  {
+> >       int ret;
+> > @@ -251,8 +309,14 @@ static int __init tdx_guest_init(void)
+> >       if (ret)
+> >               goto free_quote;
+> >
+> > +     ret =3D register_guest_attest_ops(&tdx_attest_ops);
+> > +     if (ret)
+> > +             goto free_irq;
+> > +
+> >       return 0;
+> >
+> > +free_irq:
+> > +     tdx_unregister_event_irq_cb(quote_cb_handler, qentry);
+> >  free_quote:
+> >       free_quote_entry(qentry);
+> >  free_misc:
+> > @@ -264,6 +328,7 @@ module_init(tdx_guest_init);
+> >
+> >  static void __exit tdx_guest_exit(void)
+> >  {
+> > +     unregister_guest_attest_ops(&tdx_attest_ops);
+> >       tdx_unregister_event_irq_cb(quote_cb_handler, qentry);
+> >       free_quote_entry(qentry);
+> >       misc_deregister(&tdx_misc_dev);
+>
+> --
+> Sathyanarayanan Kuppuswamy
+> Linux Kernel Developer
 
-> So that's where this enum type came from. Although in the discussion I
-> linked to above I suggested just:
->=20
->   enum kvm_fault_type {
->     KVM_FAULT_VMM_DEFINED,
->     KVM_FAULT_SHARED,
->     KVM_FAULT_PRIVATE,
->=20
-> Which I think would work just as well,
 
-I want to use vm_type for tracking "VMM_DEFINED".  KVM's ABI easily allows =
-for 64
-VM types, I see no reason to reuse KVM_X86_PROTECTED_VM for TDX and/or SNP,=
- though
-the type probably should be KVM_X86_SW_PROTECTED_VM.  With that out of the =
-way,
-there's no need for an enum to track shared vs. private.
+
+--
+-Dionna Glaze, PhD (she/her)
