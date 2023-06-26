@@ -1,82 +1,103 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F4E125AA
-	for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 20:54:48 +0000 (UTC)
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-666e916b880so1960378b3a.2
-        for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 13:54:47 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169E41549F
+	for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 21:48:16 +0000 (UTC)
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-c0f35579901so3925674276.0
+        for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 14:48:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687812887; x=1690404887;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SLX8BQCbnM9f/rd4hNlD65VtEQzgDwt/qNhvu2U5O+o=;
-        b=O7Rlv3HO3y2p/neIeiX+WcXeKkYRkH/Hud4oWFA5Kwnfa7VEzewyTactXTn9BMWagn
-         vrgIqVvhLsl3179GwpoERag7EPwtBJrx8guHw0/h9isty9OZtlzTXWOQqt6wIyTK7L3R
-         7LqIPfKbIaZELhFwvp7OqI4uMUunijs8eZh9Gk+Iqh0L7jXDE4rrszK08tfI6fWAfYwR
-         mFu/EUKnXHMceb/jyadLdvnj1b1saB+NlU3mK3g9cnflr0SBspqYYbUn5HAb2Wmfklcc
-         jeCjTeriif9cUxUs9GOkzRl2kY2uRZgfjhurVA0h57pkEFeIUB0RFZT1iPLhwt5Mh3C2
-         IV0Q==
+        d=google.com; s=20221208; t=1687816096; x=1690408096;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wZVFLEwCNz6O5VSX0dKeV/2hfaxawROSg/UwuvPb7KA=;
+        b=QbFhbyGMP77zQoxyBWcuFmcKZufP0/xanTgxOrKGk772Ft+Peae3q0m3lPZ3JTsLXB
+         LRM6NDzCEIhuyuzhKe0bcBhs0B5kRUuvw6iZEjIj2cGCFyVSKbNY3OHbUvrG6J6kmvAM
+         50OWIRgkM4yZE3M3MeNj12jwl+sVhH1ig7zTI17o91Z12gvOlfQk/VBXUo7o0JPpiXff
+         /ETda+Ecl1FtH4LQrAWH53lLlfkcziNzQde8VuSGd4qbjS9RfiOY7jIjrMWJWrzkCQ+U
+         Zu/PDjh2O+B7SGx31VeCXNREQ+pjgGgIkVCVSCbFiAG9B7VBaBrF24XhKXjmk8t3ZS1U
+         tT4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687812887; x=1690404887;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SLX8BQCbnM9f/rd4hNlD65VtEQzgDwt/qNhvu2U5O+o=;
-        b=GqQ+Wy0yIe3SBK6GyU01k/RmMAq0E/G3CcC9MWTfkcsJ0t4wa2/4d4BvcmSxwFROSo
-         Eu1jXLWJzg40py4xFIAeFQfE4SRbUcyHus7ykddtE7yYzuHa1aWIcjRQxCrOIhDrcSts
-         P+mJQPPj9ar4qRp7Rjw/Noh1FBZTYKe8Dz18dmlzMUha20HsclkRQcQKFSyYJU2/y7Pj
-         uR4GszBhc4yNyJBeZxUv5yd9yHhBRHIz+EKHoyt3awOk/0hN0sq4p/tLb5EDNlZeyHso
-         JBTcP4DmUOVtCMt6VB/t11NS/t3DFRi7hE8Ev7NH8sLpQtMhc0Y4r1D7MQovy5ixz4e1
-         8+pA==
-X-Gm-Message-State: AC+VfDzsKSqWpdOANo6vUSPl5Rzdc4dt3lJOce7tyrC6IGVl2O2RINkH
-	rxkhNMDadWM3c6Up9aOYWqw=
-X-Google-Smtp-Source: ACHHUZ7QMKlAdDcizoc4NRAdtXPlF4YVpNcKhSVQ4cUkFFQT3MDj4GDlmbTFg4KOOawQON5+rFuebg==
-X-Received: by 2002:a05:6a00:2394:b0:668:73f5:dce0 with SMTP id f20-20020a056a00239400b0066873f5dce0mr18699094pfc.29.1687812887340;
-        Mon, 26 Jun 2023 13:54:47 -0700 (PDT)
-Received: from localhost ([192.55.54.50])
-        by smtp.gmail.com with ESMTPSA id t16-20020aa79390000000b0065dd1e7c3c2sm4202467pfe.184.2023.06.26.13.54.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jun 2023 13:54:46 -0700 (PDT)
-Date: Mon, 26 Jun 2023 13:54:45 -0700
-From: Isaku Yamahata <isaku.yamahata@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com,
-	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com,
-	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com,
-	linux-coco@lists.linux.dev, Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Michael Roth <michael.roth@amd.com>
-Subject: Re: [RFC PATCH 0/6] KVM: guest memory: Misc enhacnement
-Message-ID: <20230626205445.GD3436214@ls.amr.corp.intel.com>
-References: <cover.1686858861.git.isaku.yamahata@intel.com>
- <ZJY0Nudy8ym2kKNg@google.com>
+        d=1e100.net; s=20221208; t=1687816096; x=1690408096;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wZVFLEwCNz6O5VSX0dKeV/2hfaxawROSg/UwuvPb7KA=;
+        b=WSPTFe0rmYUS4bhGgEOsACkc1EbksHIQgQVGTwE+207glvTaMz6ZZMZr0WQpP47V35
+         7NmhT7E2mujBMoYy6mlrcRX+76+h7rWge6/GR2Ir5O3EXNNT/3GHtS1P783OPdFTJYfJ
+         MsIe67iA89lPZMoNwWXA5rAC89xRg1uF7lEQK4tk1SCYIgf+7/a/DPqaQTgfGWOiSWpL
+         kCp/BTcVxRqsoXjT88NZN/LI1ufwlhK4dH0+j6G05GvJkLG0ltgEO10EnNwXmx+vXQSe
+         lF7nP4rvYpc5ZKCyY3QnaK5+MNtBEMmYIMYT1SwwwQkYWMpyBuoGO47vvK3ulKn/2CJf
+         9WLA==
+X-Gm-Message-State: AC+VfDxEdJd1riyfV4S4yNVP7rG1JFt1VreP1tLS0vTLWG82B3v4fVsP
+	rGnd2GMzB8eSMTcZuU5v1gj/tZ6ofqo=
+X-Google-Smtp-Source: ACHHUZ6QHacu0vmaWyfYkBFmM6ESWSZg2AruFnD5EFFU2sXqMHPOlYKXjh4rAsPaHNGFPgotAGgeI+0SkiU=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:d387:0:b0:bd6:9fb7:69bb with SMTP id
+ e129-20020a25d387000000b00bd69fb769bbmr13450357ybf.13.1687816095794; Mon, 26
+ Jun 2023 14:48:15 -0700 (PDT)
+Date: Mon, 26 Jun 2023 14:48:14 -0700
+In-Reply-To: <93404a98324f1a4e93a6b6e711b209bc57c831de.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZJY0Nudy8ym2kKNg@google.com>
+Mime-Version: 1.0
+References: <cover.1687474039.git.isaku.yamahata@intel.com>
+ <b659f86ac7128965e05a7a660c38734667530fc0.1687474039.git.isaku.yamahata@intel.com>
+ <37b868c53c9f35e8ec051573562a4598df38d72d.camel@intel.com>
+ <20230623025429.GB3436214@ls.amr.corp.intel.com> <ZJXS7tU6iukBXSuv@google.com>
+ <93404a98324f1a4e93a6b6e711b209bc57c831de.camel@intel.com>
+Message-ID: <ZJoHNPn/tppcJDLG@google.com>
+Subject: Re: [RFC PATCH v2 3/6] KVM: x86/mmu: Pass round full 64-bit error
+ code for the KVM page fault
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "isaku.yamahata@gmail.com" <isaku.yamahata@gmail.com>, "dmatlack@google.com" <dmatlack@google.com>, 
+	"chao.p.peng@linux.intel.com" <chao.p.peng@linux.intel.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>, Bo2 Chen <chen.bo@intel.com>, 
+	Sagi Shahar <sagis@google.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Erdem Aktas <erdemaktas@google.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"michael.roth@amd.com" <michael.roth@amd.com>, Isaku Yamahata <isaku.yamahata@intel.com>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"zhi.wang.linux@gmail.com" <zhi.wang.linux@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jun 23, 2023 at 05:09:26PM -0700,
-Sean Christopherson <seanjc@google.com> wrote:
-
-> On Thu, Jun 15, 2023, isaku.yamahata@intel.com wrote:
-> > * VM type: Now we have KVM_X86_PROTECTED_VM. How do we proceed?
-> >   - Keep KVM_X86_PROTECTED_VM for its use. Introduce KVM_X86_TDX_VM
-> >   - Use KVM_X86_PROTECTED_VM for TDX. (If necessary, introduce another type in
-> >     the future)
+On Sat, Jun 24, 2023, Kai Huang wrote:
 > 
-> How would KVM differentiate between software-protected VMs and TDX VMs if we go
-> with this option?
+> > From: Sean Christopherson <seanjc@google.com>
+> > Date: Fri, 23 Jun 2023 09:46:38 -0700
+> > Subject: [PATCH] KVM: x86/mmu: Guard against collision with KVM-defined
+> >  PFERR_IMPLICIT_ACCESS
+> > 
+> > Add an assertion in kvm_mmu_page_fault() to ensure the error code provided
+> > by hardware doesn't conflict with KVM's software-defined IMPLICIT_ACCESS
+> > flag.  In the unlikely scenario that future hardware starts using bit 48
+> > for a hardware-defined flag, preserving the bit could result in KVM
+> > incorrectly interpreting the unknown flag as KVM's IMPLICIT_ACCESS flag.
+> > 
+> > WARN so that any such conflict can be surfaced to KVM developers and
+> > resolved, but otherwise ignore the bit as KVM can't possibly rely on a
+> > flag it knows nothing about.
+> 
+> I think the fundamental problem is we mix synthetic bit(s) with the hardware
+> error code together into a single 'u64'.  Given there's no guarantee from
+> hardware vendors (Intel/AMD) that some bits will be always reserved for software
+> use, there's no guarantee the synthetic bit(s) won't conflict with those
+> hardware defined bits.
+> 
+> Perhaps a fundamental fix is to use a new 'u64' as parameter for software-
+> defined error code passing to all relevant code paths.
 
-Let's introduce new two VM type.  I'm fine with two new VM types.  I had KVM
-capability in mind if SEV implementation doesn't like new VM types.
--- 
-Isaku Yamahata <isaku.yamahata@gmail.com>
+Yeah, in an ideal world KVM wouldn't usurp error code bits.  But I don't know
+that it's worth plumbing in an extra param to all the affected helpers.  From a
+functional perspective, unless someone runs with panic_on_warn=1 in production,
+or I'm missing something, the warn-and-clear approach is sufficient.  If we get
+more synthetic "access" bits, then we should revisit this, but I think for now
+it's ok
+
+> But I think your fix (or detection) below should be good enough perhaps for a
+> long time, and even in the future when such conflict merges, we can move the
+> synthetic bit to another bit.  The only problem is probably we will need
+> relevant patch(es) back-ported to stable kernels.
