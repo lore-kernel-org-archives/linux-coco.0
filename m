@@ -1,216 +1,231 @@
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2065.outbound.protection.outlook.com [40.107.94.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEC27F
-	for <linux-coco@lists.linux.dev>; Sat, 24 Jun 2023 04:15:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687580142; x=1719116142;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=eXNT2qynzTUrrJDasNnZlMZpL5P3ZRNp//snV+yvCBY=;
-  b=RiS4LgtjS5f2FxsJItx9XBvmqAqtWSeWyaKoPdYpm8sby4izdghe+wbG
-   DF5fmykCTbJuw5s2Sp1/KiWAfG1i1cJA7skiZ5thgEG1bC8mQ3gP8XMtJ
-   cDjGRA3os1C8ozC+x4jiLRxHm++vuOgPXQZ8aQWpl/CYnSL5vNO1XY/3S
-   c9Sv77/o3yNcmWhDJRJrj4mTnsaMl4kVLgMw99ONpNgmgv6GG3tAkVkTn
-   Z1gONHLiFXzp+hxJtUNUD2MZkVl1Ll5Eg59gcp0bdj4FuLBlXfO+5Emt6
-   Nhs8ROGAIsAKcbuz30PlnZaDmuW4yICXDkkd9vLPqxYKkv62C74EUlfn6
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10750"; a="340504637"
-X-IronPort-AV: E=Sophos;i="6.01,154,1684825200"; 
-   d="scan'208";a="340504637"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2023 21:15:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10750"; a="860085999"
-X-IronPort-AV: E=Sophos;i="6.01,154,1684825200"; 
-   d="scan'208";a="860085999"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmsmga001.fm.intel.com with ESMTP; 23 Jun 2023 21:15:41 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Fri, 23 Jun 2023 21:15:40 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 23 Jun 2023 21:15:40 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Fri, 23 Jun 2023 21:15:40 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Fri, 23 Jun 2023 21:15:39 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B43628
+	for <linux-coco@lists.linux.dev>; Mon, 26 Jun 2023 01:10:16 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kNyajLlnWvzULWEB4ykFWpYsX12aCdMJj2xqV08waquC7kKDBogi94hVPWWhMnIShGiA4NEruAwo/xi7WeMRhSSPbsKU3uOQU+MPnyatXqQDK+CKSQWQw/xal4slkRUJPjoQ5bWKAKM9lqmRlYcn2NEogs4q6ZyFTmXpyq3UFX7nwJ9jOqELI8hAki810OkISHwhqsFjm/huCK60hQqDslS4UU4htUEHPJifDABJgb8/DlwMPWSXWzH4bMAFbKFN7tTHoF2MDrd6dkqc75cYW96t1lGbkQaVZkoe/xWLV1vHZd0nCxs3JGh07L8lsa6IuYLGEZjqdexntX2ft/lgeA==
+ b=P52a6+SAMtb1aoZeZXGzw5K0TfSg4xSoWjj68sEpQmIVouueoegPMUsJf5orcSbZ1brq6JBtfrN8MCtgArKkkrLEVkFv3USdhFueJsoiU/1diABMqh1GicaG6XnOHj0j1+nnyjmSZX5v+WiKCN5KzEABntxTIpPAuPNKP2x7AKo2uq1itqZFfOlPLO7kRSLX6RQasDl19RhZYbmu4jEW3scBgXmNrlgFj9K9yaBvsEQlDgDOCCW3vVRwWW6wdmNUoZIZT9Q4gjbZ1ind65fbZg0FPzQ+wWdXpynGXVpDDXF9FUyrq3q6pAspkoRBfUoPPuJiCnoWbBe+jGR8JV8h8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eXNT2qynzTUrrJDasNnZlMZpL5P3ZRNp//snV+yvCBY=;
- b=Isz5RbO8EgYJRYgYbxJiRAeIyMr+1q3bFb4QxEs4XChOwmH9D03ue6kNvE9GeSmtBYgm016v1vMqA7tfDdjFfihYo3u/wYS0Mu9HL1AT6WT+LApRROgvKdhrKyj1tQuPbP+xcNNf/7/J0hdTToY0v0f5BPTob/YYs5g/ZKrUMnfJYlHnHPiKVB6VNqVQKqsqzRdfbLahuXMGOze/JL3MesClsaSjQBCBfiQG6OivxEkCIr4rzMge0hxmMbRhgxOHmso1DaDYAQhSliLCygCUKvu9yyRQzmlN8m1PT8KPw2KVZb1arS4YF3accroAcp/R/qQCZEnSR8p0FBsIlxhpVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by DM8PR11MB5672.namprd11.prod.outlook.com (2603:10b6:8:26::10) with
+ bh=LjxjwiMnU79gNSi25wzZMGhJ54M3DmfS2lU4aNJ+Joo=;
+ b=i39ve7FVtqueijhYte1blXHUEHFbWSl2G0Byg8UZV1B7hFC913o+eKpSiriAfmTXIeij78caDIsuqQbC1FNoAIqP/1vH9wj6A3+ToWaKOk/PRDvi6vk1CTMvVLigclyi1CHvzHul0niGtrdAw7Zd4KesimbHG8eRQmqOI2Aiz3VyPwgGB7YNKmTMSTccrSHDKqTZAJr3v+kfocc/wb9oTKKo6TpT3RNaQuPyHXKaZmsA1hBeancEx+A1q8EG+DJMRMbBGmz6lvrUIb1blhgB6/6OKKkGXRBr75+Rg71m+dTDM9Nx9TCKgi7gU4Fi0ybgzJ1YA4rDDcJz0UPYOF3GCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LjxjwiMnU79gNSi25wzZMGhJ54M3DmfS2lU4aNJ+Joo=;
+ b=0s9fbHfrBLicuG0tVnekQkCja5wvJsMcwMV1xVB/E7boRL0y5PrIE88LW7zWDmr6SPsjzfdOCCFRAntmLPiRzo+G2QbHtFGDd0h74ZRvjSsR9Xnl8u1YBijV6F1YL+P0g4ct0x3VvNRfUX9bEZQRoYdOX3FfOlgVf8rW4WvXpJk=
+Received: from DM6PR05CA0048.namprd05.prod.outlook.com (2603:10b6:5:335::17)
+ by PH7PR12MB7966.namprd12.prod.outlook.com (2603:10b6:510:274::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Sat, 24 Jun
- 2023 04:15:35 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::19b7:466f:32ac:b764]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::19b7:466f:32ac:b764%3]) with mapi id 15.20.6521.026; Sat, 24 Jun 2023
- 04:15:34 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "Christopherson,, Sean" <seanjc@google.com>, "isaku.yamahata@gmail.com"
-	<isaku.yamahata@gmail.com>
-CC: "dmatlack@google.com" <dmatlack@google.com>, "chao.p.peng@linux.intel.com"
-	<chao.p.peng@linux.intel.com>, "ackerleytng@google.com"
-	<ackerleytng@google.com>, "Chen, Bo2" <chen.bo@intel.com>, "Shahar, Sagi"
-	<sagis@google.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Annapurve, Vishal" <vannapurve@google.com>,
-	"Aktas, Erdem" <erdemaktas@google.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "michael.roth@amd.com" <michael.roth@amd.com>,
-	"Yamahata, Isaku" <isaku.yamahata@intel.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "zhi.wang.linux@gmail.com"
-	<zhi.wang.linux@gmail.com>
-Subject: Re: [RFC PATCH v2 3/6] KVM: x86/mmu: Pass round full 64-bit error
- code for the KVM page fault
-Thread-Topic: [RFC PATCH v2 3/6] KVM: x86/mmu: Pass round full 64-bit error
- code for the KVM page fault
-Thread-Index: AQHZpV+yhpnTip1UUUaNzYvoReaLo6+Xd7YAgAA5mYCAAPFOgIAAt6qA
-Date: Sat, 24 Jun 2023 04:15:34 +0000
-Message-ID: <93404a98324f1a4e93a6b6e711b209bc57c831de.camel@intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.24; Mon, 26 Jun
+ 2023 01:10:13 +0000
+Received: from DM6NAM11FT069.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:335:cafe::3b) by DM6PR05CA0048.outlook.office365.com
+ (2603:10b6:5:335::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.15 via Frontend
+ Transport; Mon, 26 Jun 2023 01:10:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT069.mail.protection.outlook.com (10.13.173.202) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6500.47 via Frontend Transport; Mon, 26 Jun 2023 01:10:12 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Sun, 25 Jun
+ 2023 20:10:11 -0500
+Date: Sun, 25 Jun 2023 20:07:53 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: <isaku.yamahata@intel.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <isaku.yamahata@gmail.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, <erdemaktas@google.com>, Sagi Shahar
+	<sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang
+	<kai.huang@intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
+	<chen.bo@intel.com>, <linux-coco@lists.linux.dev>, Chao Peng
+	<chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, Vishal
+ Annapurve <vannapurve@google.com>
+Subject: Re: [RFC PATCH v2 4/6] KVM: x86: Introduce fault type to indicate
+ kvm page fault is private
+Message-ID: <20230626010753.xru5ph3irmyokrgc@amd.com>
 References: <cover.1687474039.git.isaku.yamahata@intel.com>
-	 <b659f86ac7128965e05a7a660c38734667530fc0.1687474039.git.isaku.yamahata@intel.com>
-	 <37b868c53c9f35e8ec051573562a4598df38d72d.camel@intel.com>
-	 <20230623025429.GB3436214@ls.amr.corp.intel.com>
-	 <ZJXS7tU6iukBXSuv@google.com>
-In-Reply-To: <ZJXS7tU6iukBXSuv@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.48.2 (3.48.2-1.fc38) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DM8PR11MB5672:EE_
-x-ms-office365-filtering-correlation-id: 576f1945-af7e-4b12-dbc2-08db7469a85e
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: xTQAiMDlJCQQy0exliQQ/vWAikipsZpq6cIXVpAFTrCiup/iLUx1bPzMvGkP9OPe94n/koop0zgRHHrO9G69yQCyqEcpfjXusfkhIqlIlctpo5qFeojeOt51967G15v3AIoY+2prKqVeIaEBNs07EcwBG+k++t2i1DExrt5+qcvOIigW3Eu7mrAkAR4r+Z/b3yaDkmdx08/yQZvdbZcUdCU3B2crOkjHizZh0GWrFVRfjYHEZhoZvOXLdsUtDlB5HAge0KCCKgbwT5jOs2gsbYVj4s0igqxUWG06X0W1z9szEsIK+yHa0tsaVTcUlx+3Q7/CwgVit796BFpVzcMzQg+GLAduZ/WIRFXC19OloiO2u8qD69OfJip4fKqcP0rOoacEiREHNFP5bkrs8h2b8/3pmsnXtfHUJzNUpuNHhHtGd1K3DHSY2fmoghs87MEtVFRA53PgjW7sog7dSK6lRTse8yuaC0gQ1p1HmRZQ6t+HRjhzKqGBH2vSdjPilG0WbNAjXKA664tP6Thj/j990GwA2yC1N3Q9q1y9QOjUgkwiOZsyredGj7GhN/bECBr83ImAqVHGsDJETfrwLfYvnfETixVoAEflB0ciu4L1h3gCGORXjLEcIN2XSQC+NnTe
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(366004)(376002)(136003)(396003)(346002)(39860400002)(451199021)(38070700005)(82960400001)(38100700002)(122000001)(2616005)(86362001)(316002)(66476007)(66446008)(66556008)(64756008)(8936002)(41300700001)(66946007)(8676002)(91956017)(4326008)(76116006)(7416002)(83380400001)(53546011)(6486002)(54906003)(478600001)(71200400001)(110136005)(5660300002)(6506007)(6512007)(186003)(2906002)(36756003)(26005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RE1DVGVtTnRyaWVpanA4WjNkcjd2TnlCbG5CZms5YXBOZ0xyMFdsSm81UnFu?=
- =?utf-8?B?MmVoRHg5dU9hRnZrTkJlcldsRExhRm1pa2NSOHludHZzN0JQQVlQMkEzZEU5?=
- =?utf-8?B?SDVDWFBDYTZJRXgvdGFIRmYrTFIrS2NnRGEvWDJONkMyV2dOSTRWcmJCVXFp?=
- =?utf-8?B?QVBtNlhVdEJ1MTBDajY4TTFQWm9tTzhtUVlzSmtaOHlPd2I5QXRjK2ZJQjRK?=
- =?utf-8?B?T0JZOVJGbTlNQWVBRTRXYjJXU3Jad3FFZmpYMTBzSVlocHdOWEU2SjNsUWxB?=
- =?utf-8?B?WWxUbkNFWFNEN1F0WFZuNTFockFYcml4dWxMSDNOalZaelljTkZvK2Ryd1NJ?=
- =?utf-8?B?T1FvU2Z5TWRYZ3JiMmJmVUl6bWY5MGVCVkdMK25SM21uWXJsTURzMFd0dVBI?=
- =?utf-8?B?WnR6ME5IZ2habzlKdnZ5Y1d3MkRsTG9ISlFnY2lHSTFBMkxCMHZhKzdNWTI1?=
- =?utf-8?B?LytUNVI1ZjIzZERseUVFVDJ3LzdZVVZNQ0V0SmtQTTkvK2JjYjdrSVdGQUhZ?=
- =?utf-8?B?RlBSazhvQkpLR2g0akxhakxUdFJpbGRvQkJCV2pKTjNDcjVvVTNpZFExV25Q?=
- =?utf-8?B?UDdwZkY1bWl1S1FPMkFlUjBqbmZ3ZDRRZGFqTnNVZ2RJQWlaL3hab2xhMDJ0?=
- =?utf-8?B?bFZaS1pCTHJHeVJJQWhqM3o2bEZRcmw0VEdTRVl3WXI0QTFTUXZtdlhXS0JJ?=
- =?utf-8?B?V2F2OElXdnVHUUhrakY1V1lwLy9QY0hVMkcvdFNBdWhmeFNEZjNCTEpDS05j?=
- =?utf-8?B?WWpTbmZMQktubEZmRWt1RFFJSTMrOXo5REYzQUliNmFQdGdadU9lcEI5TlV2?=
- =?utf-8?B?UWtwSTVZM2J4UHJsb3ZVNVUyeTBmaWFZWUpDUlMrL2ViV2dPdXZwQTRNb0VK?=
- =?utf-8?B?VzhXSkhOMytwSXpGdi9GLzNjMUhmdXhjVkxqdi8vL2FUd2VIeFJ6akNtaWRo?=
- =?utf-8?B?M1dKNkJZTnUxcEFrbEtxM28wdVMyYlJ3dnNuU0I2Z1ZiVDMzNk5veUtHY3Na?=
- =?utf-8?B?Qk5PdjBPY0d6U3FEdTFkcVZrK3VoZFJNZDZmV2FJRU45dXVQOVhjd21ZMko1?=
- =?utf-8?B?bkVDZmIrdGEra0NaM2MraG9FcFU4aTBtK0RrMkNKc2VQVDZuV1g4dno3YzFr?=
- =?utf-8?B?OTN1bkFHTXFaVmVteE9VOVpKTG1HdWMzRDk2YjU5QVh3UGF2WDQ4L29mTTBJ?=
- =?utf-8?B?WkJqRXgwTGVhdUJpdkxnRWVRL2d4S1JRU205RXFGQSsxYS9GdGpnbXozQlVk?=
- =?utf-8?B?c1doNUFjcThITkUyU09USm5GOEVRdTVFNW9FcW9UR0JUMnlvNXJscHRkdVpv?=
- =?utf-8?B?Tzk0N2IzOXhWalZpVmhiMUIyRHkzbWxPMU9jKzJ0cTVFTUlLQzlKL1FtWURu?=
- =?utf-8?B?aG9ZNVRRd3JHczlSTk9iTFMveW9sU3Bqdm9nTWttcUgwL3VaNS8rQlpUdktX?=
- =?utf-8?B?TVlpNEZHN1NBRUpDZ2RTOGNiUlZmRld1Q0k4ZktxZDBRVk1LL1dDUFAvRVRO?=
- =?utf-8?B?aDB4ZWJyZmZaNHNSeWdXSVFaMTV0V01tM1dRZ2hDbmZzRUdYbk85Sm1qbnZx?=
- =?utf-8?B?S0RrQzlvTHo3eWpSM1R6b2EwekR0Tmt0WHZQUDVhSWF1SFNhV1pQOVZiUi81?=
- =?utf-8?B?QzRmWWFMUENya2NXM3o5bm5PczlicW50ZSttdEd4VFZSUjhpa0t1c1JvcDl5?=
- =?utf-8?B?cUxEV1V5U1BrMVJ6SjBMemExSXJOYzdWUU9vOHJpQk9jWkgzdmZ4NE9pVWZz?=
- =?utf-8?B?ODZjOGt4L0xqalZQQTViZ0FTQ1FuNnduUEJHUHVoZExYRTlRVkZFTXl4bmM1?=
- =?utf-8?B?a0Q0MWg3eGN4R0lBY2szZ0VidjZ0RFZrdDgrV3k5Y05GS0xWYzRhTzNVS3p6?=
- =?utf-8?B?cXNaVFNjQXkxcGxKSnpqVnZESE92bVNLWWRGa0pmaTZNeXY5d0ZxaFo4TnRW?=
- =?utf-8?B?c09QcU1VTFVaM1lkanJQOGdnM21hWEoyZy9XblBtQ2FGRjBmRmJGZCtRRktE?=
- =?utf-8?B?VVd5WWkwZGNRcGlEK09abWtVSVhTZmZ1YTVSTGo1M0l1WG1ZakRsTitkR0xv?=
- =?utf-8?B?cy9SVld6bTV2RVJnQis1RDY3RmpqQzdRT0dYamRNc21TeEpsS0JYcU1CRWVv?=
- =?utf-8?Q?fqkQ+cdDwdEnWQGs3UMjSpUiq?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <48B2294D5E171D42985B0013803FECE8@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <a3a19de92c7ac6e607ac3e663d84a4312876084b.1687474039.git.isaku.yamahata@intel.com>
+ <ZJX6s2HxbHOUMXlj@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 576f1945-af7e-4b12-dbc2-08db7469a85e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jun 2023 04:15:34.8222
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZJX6s2HxbHOUMXlj@google.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT069:EE_|PH7PR12MB7966:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5ceaa75-84a0-4c73-a463-08db75e217be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	+5ePdfD1bdCTAGUYPCjDebs2U1EVvSqxCN4PNhncwLBTaKz6O3Rag1/spiwa4K7L8eL6vsvnL4OhHZz5NQwc+PZyPdv3L6EDSYsAbVsqR2zHblzKd79HWSGe1HokJIbSs3ftZXvqyde2VDuLFT8jEP3LbXUQCYNXiirm0sfAOQ6pghtq/g411WLd82A7NiblGfJPoem6BPSdv2uTj4cB1I0jzbIop1uBVZ4+LBgk+Zl9Ged/E1DkEpxGIb00XLGiui0unXR0akeBwdMAwxMgHYfUTcmOEBGqhkFFNijj64L+AjwLU1ccc/meYpUZzaw4EY59pypUaGM3TiV3G4pj1VYFLgEIe1L1jwVbdR3d1Xk1oDZYIRoha7PgSUub/6/MmlzG+D/bA8XUlx4cycr4QMwG5aKRszCP0VvdX5ymQQJXG+fP9xZTCz0NjvDxY3ao+dNrJq9c1KqKT2+r2sruMhA8cLxI8yGL4fBxniB5xvNzFs2Xi1vlYO0C92EGq6WrVKUEWxfLWbbDCEsSo11SlPrKDnyIeBtN03PdyY2C80ac6V4hU0s1raf7ev+vd+FdYt0r5KJB+W0uZk1qvRxJSLC3ckvQJ5s+ilRhFcSoQ7sB8gDAAk1gCW5Xx62vL27yoKxH/eChjY61f7m3DdidsQTXcfejciqI8l+VSuSL66mzhUTvwIAvWcjS3AaOESPJN+YYsykkLeblC1P8CohOi19u5IPh5rHbMD6z59qKS4Lq66D039fI56Gl82t27adCrCgE3bCibM/T2wPJyi2naA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(346002)(376002)(136003)(451199021)(46966006)(36840700001)(40470700004)(82310400005)(36860700001)(40460700003)(36756003)(70206006)(356005)(5660300002)(44832011)(7416002)(41300700001)(316002)(86362001)(6916009)(8936002)(8676002)(4326008)(81166007)(40480700001)(70586007)(82740400003)(966005)(47076005)(1076003)(26005)(2906002)(186003)(16526019)(478600001)(54906003)(426003)(336012)(6666004)(83380400001)(2616005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2023 01:10:12.3704
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qcAimpkSE7k47t1vIlooZOCAs3QZc/vmjDtCVDFEkXQnxwD9zVSA7x3ewLUzSkcJ4JLOHW4qUUbkDtoRlWS5iQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR11MB5672
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5ceaa75-84a0-4c73-a463-08db75e217be
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM6NAM11FT069.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7966
 
-DQo+IEZyb206IFNlYW4gQ2hyaXN0b3BoZXJzb24gPHNlYW5qY0Bnb29nbGUuY29tPg0KPiBEYXRl
-OiBGcmksIDIzIEp1biAyMDIzIDA5OjQ2OjM4IC0wNzAwDQo+IFN1YmplY3Q6IFtQQVRDSF0gS1ZN
-OiB4ODYvbW11OiBHdWFyZCBhZ2FpbnN0IGNvbGxpc2lvbiB3aXRoIEtWTS1kZWZpbmVkDQo+ICBQ
-RkVSUl9JTVBMSUNJVF9BQ0NFU1MNCj4gDQo+IEFkZCBhbiBhc3NlcnRpb24gaW4ga3ZtX21tdV9w
-YWdlX2ZhdWx0KCkgdG8gZW5zdXJlIHRoZSBlcnJvciBjb2RlIHByb3ZpZGVkDQo+IGJ5IGhhcmR3
-YXJlIGRvZXNuJ3QgY29uZmxpY3Qgd2l0aCBLVk0ncyBzb2Z0d2FyZS1kZWZpbmVkIElNUExJQ0lU
-X0FDQ0VTUw0KPiBmbGFnLiAgSW4gdGhlIHVubGlrZWx5IHNjZW5hcmlvIHRoYXQgZnV0dXJlIGhh
-cmR3YXJlIHN0YXJ0cyB1c2luZyBiaXQgNDgNCj4gZm9yIGEgaGFyZHdhcmUtZGVmaW5lZCBmbGFn
-LCBwcmVzZXJ2aW5nIHRoZSBiaXQgY291bGQgcmVzdWx0IGluIEtWTQ0KPiBpbmNvcnJlY3RseSBp
-bnRlcnByZXRpbmcgdGhlIHVua25vd24gZmxhZyBhcyBLVk0ncyBJTVBMSUNJVF9BQ0NFU1MgZmxh
-Zy4NCj4gDQo+IFdBUk4gc28gdGhhdCBhbnkgc3VjaCBjb25mbGljdCBjYW4gYmUgc3VyZmFjZWQg
-dG8gS1ZNIGRldmVsb3BlcnMgYW5kDQo+IHJlc29sdmVkLCBidXQgb3RoZXJ3aXNlIGlnbm9yZSB0
-aGUgYml0IGFzIEtWTSBjYW4ndCBwb3NzaWJseSByZWx5IG9uIGENCj4gZmxhZyBpdCBrbm93cyBu
-b3RoaW5nIGFib3V0Lg0KDQpJIHRoaW5rIHRoZSBmdW5kYW1lbnRhbCBwcm9ibGVtIGlzIHdlIG1p
-eCBzeW50aGV0aWMgYml0KHMpIHdpdGggdGhlIGhhcmR3YXJlDQplcnJvciBjb2RlIHRvZ2V0aGVy
-IGludG8gYSBzaW5nbGUgJ3U2NCcuICBHaXZlbiB0aGVyZSdzIG5vIGd1YXJhbnRlZSBmcm9tDQpo
-YXJkd2FyZSB2ZW5kb3JzIChJbnRlbC9BTUQpIHRoYXQgc29tZSBiaXRzIHdpbGwgYmUgYWx3YXlz
-IHJlc2VydmVkIGZvciBzb2Z0d2FyZQ0KdXNlLCB0aGVyZSdzIG5vIGd1YXJhbnRlZSB0aGUgc3lu
-dGhldGljIGJpdChzKSB3b24ndCBjb25mbGljdCB3aXRoIHRob3NlDQpoYXJkd2FyZSBkZWZpbmVk
-IGJpdHMuDQoNClBlcmhhcHMgYSBmdW5kYW1lbnRhbCBmaXggaXMgdG8gdXNlIGEgbmV3ICd1NjQn
-IGFzIHBhcmFtZXRlciBmb3Igc29mdHdhcmUtDQpkZWZpbmVkIGVycm9yIGNvZGUgcGFzc2luZyB0
-byBhbGwgcmVsZXZhbnQgY29kZSBwYXRocy4NCg0KQnV0IEkgdGhpbmsgeW91ciBmaXggKG9yIGRl
-dGVjdGlvbikgYmVsb3cgc2hvdWxkIGJlIGdvb2QgZW5vdWdoIHBlcmhhcHMgZm9yIGENCmxvbmcg
-dGltZSwgYW5kIGV2ZW4gaW4gdGhlIGZ1dHVyZSB3aGVuIHN1Y2ggY29uZmxpY3QgbWVyZ2VzLCB3
-ZSBjYW4gbW92ZSB0aGUNCnN5bnRoZXRpYyBiaXQgdG8gYW5vdGhlciBiaXQuICBUaGUgb25seSBw
-cm9ibGVtIGlzIHByb2JhYmx5IHdlIHdpbGwgbmVlZA0KcmVsZXZhbnQgcGF0Y2goZXMpIGJhY2st
-cG9ydGVkIHRvIHN0YWJsZSBrZXJuZWxzLg0KDQo+IA0KPiBGaXhlczogNGY0YWE4MGUzYjg4ICgi
-S1ZNOiBYODY6IEhhbmRsZSBpbXBsaWNpdCBzdXBlcnZpc29yIGFjY2VzcyB3aXRoIFNNQVAiKQ0K
-PiBTaWduZWQtb2ZmLWJ5OiBTZWFuIENocmlzdG9waGVyc29uIDxzZWFuamNAZ29vZ2xlLmNvbT4N
-Cj4gLS0tDQo+ICBhcmNoL3g4Ni9rdm0vbW11L21tdS5jIHwgMTEgKysrKysrKysrKysNCj4gIDEg
-ZmlsZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94
-ODYva3ZtL21tdS9tbXUuYyBiL2FyY2gveDg2L2t2bS9tbXUvbW11LmMNCj4gaW5kZXggNjAzOTdh
-MWJlZGEzLi4yMjhhNDgzZDM3NDYgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L2t2bS9tbXUvbW11
-LmMNCj4gKysrIGIvYXJjaC94ODYva3ZtL21tdS9tbXUuYw0KPiBAQCAtNTc0Miw2ICs1NzQyLDE3
-IEBAIGludCBub2lubGluZSBrdm1fbW11X3BhZ2VfZmF1bHQoc3RydWN0IGt2bV92Y3B1ICp2Y3B1
-LCBncGFfdCBjcjJfb3JfZ3BhLCB1NjQgZXJyDQo+ICAJaW50IHIsIGVtdWxhdGlvbl90eXBlID0g
-RU1VTFRZUEVfUEY7DQo+ICAJYm9vbCBkaXJlY3QgPSB2Y3B1LT5hcmNoLm1tdS0+cm9vdF9yb2xl
-LmRpcmVjdDsNCj4gIA0KPiArCS8qDQo+ICsJICogSU1QTElDSVRfQUNDRVNTIGlzIGEgS1ZNLWRl
-ZmluZWQgZmxhZyB1c2VkIHRvIGNvcnJlY3RseSBwZXJmb3JtIFNNQVANCj4gKwkgKiBjaGVja3Mg
-d2hlbiBlbXVsYXRpbmcgaW5zdHJ1Y3Rpb25zIHRoYXQgdHJpZ2dlcnMgaW1wbGljaXQgYWNjZXNz
-Lg0KPiArCSAqIFdBUk4gaWYgaGFyZHdhcmUgZ2VuZXJhdGVzIGEgZmF1bHQgd2l0aCBhbiBlcnJv
-ciBjb2RlIHRoYXQgY29sbGlkZXMNCj4gKwkgKiB3aXRoIHRoZSBLVk0tZGVmaW5lZCB2YWx1ZS4g
-IENsZWFyIHRoZSBmbGFnIGFuZCBjb250aW51ZSBvbiwgaS5lLg0KPiArCSAqIGRvbid0IHRlcm1p
-bmF0ZSB0aGUgVk0sIGFzIEtWTSBjYW4ndCBwb3NzaWJseSBiZSByZWx5aW5nIG9uIGEgZmxhZw0K
-PiArCSAqIHRoYXQgS1ZNIGRvZXNuJ3Qga25vdyBhYm91dC4NCj4gKwkgKi8NCj4gKwlpZiAoV0FS
-Tl9PTl9PTkNFKGVycm9yX2NvZGUgJiBQRkVSUl9JTVBMSUNJVF9BQ0NFU1MpKQ0KPiArCQllcnJv
-cl9jb2RlICY9IH5QRkVSUl9JTVBMSUNJVF9BQ0NFU1M7DQo+ICsNCj4gIAlpZiAoV0FSTl9PTigh
-VkFMSURfUEFHRSh2Y3B1LT5hcmNoLm1tdS0+cm9vdC5ocGEpKSkNCj4gIAkJcmV0dXJuIFJFVF9Q
-Rl9SRVRSWTsNCj4gIA0KPiANCj4gYmFzZS1jb21taXQ6IDI5MzM3NWJmMmZkMzMzZTU1NjNkZDgw
-Yjg5NDcyNWI5MGNkODRjNWQNCj4gLS0NCg0K
+On Fri, Jun 23, 2023 at 01:04:03PM -0700, Sean Christopherson wrote:
+> On Thu, Jun 22, 2023, isaku.yamahata@intel.com wrote:
+> > diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
+> > index 7f9ec1e5b136..0ec0b927a391 100644
+> > --- a/arch/x86/kvm/mmu/mmu_internal.h
+> > +++ b/arch/x86/kvm/mmu/mmu_internal.h
+> > @@ -188,6 +188,13 @@ static inline bool is_nx_huge_page_enabled(struct kvm *kvm)
+> >  	return READ_ONCE(nx_huge_pages) && !kvm->arch.disable_nx_huge_pages;
+> >  }
+> >  
+> > +enum kvm_fault_type {
+> > +	KVM_FAULT_MEM_ATTR,
+> > +	KVM_FAULT_SHARED,
+> > +	KVM_FAULT_SHARED_ALWAYS,
+> > +	KVM_FAULT_PRIVATE,
+> 
+> This is silly.  Just use AMD's error code bit, i.e. PFERR_GUEST_ENC_MASK as per
+> the SNP series.
+> 
+>   Bit 34 (ENC): Set to 1 if the guest’s effective C-bit was 1, 0 otherwise.
+> 
+> Just because Intel's ucode is too crusty to support error codes larger than 16
+> bits doesn't mean KVM can't utilize the bits :-)  KVM already translates to AMD's
+> error codes for other things, e.g.
+> 
+> 	error_code |= (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) != 0 ?
+> 	       PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
+> 
+> For TDX, handle_ept_violation() can do something like:
+> 
+> 	if (is_tdx(vcpu->kvm))
+> 		error_code |= (gpa & shared) ? 0 : PFERR_GUEST_ENC_MASK;
+> 	else if (kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(gpa)))
+> 		error_code |= PFERR_GUEST_ENC_MASK;
+
+Maybe this is what you're getting at below, but seems awkward to have this
+being handling in TDX code since that would suggest that SVM module would
+also need to duplicate that logic and synthesize this PFERR_GUEST_ENC_MASK
+bit for non-SNP VMs (e.g. gmem self-tests).
+
+So maybe SNP/TDX can rely on passing this via error_code, and then some
+common code, like kvm_mem_is_private(), can handle this for non-TDX/SNP
+guest types. But the current gmem series does this via a new .is_private
+in kvm_page_fault:
+
+  .is_private = kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT),
+
+This seems at odds with the idea of storing this 'fault->is_private'
+logic into the error_code. Isaku and I were discussing[1] that we
+should do one or the other:
+
+  a) store everything in error_code
+  b) use the .is_private field that seems to have been introduced to
+     track exactly this information
+
+So I think this series is attempting to do b). If you're suggesting we
+should do a), then what purpose is fault->is_private field meant to
+serve? Are you planning to get rid of it? Otherwise it seems redundant.
+
+But I think approach b) is useful for another reason:
+
+> 
+> And that's not even taking into account that TDX might have a separate entry point,
+> i.e. the "is_tdx()" check can probably be avoided.
+> 
+> As for optimizing kvm_mem_is_private() to avoid unnecessary xarray lookups, that
+> can and should be done separately, e.g.
+> 
+>   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   {
+> 	return IS_ENABLED(CONFIG_KVM_PRIVATE_MEM) &&
+> 	       kvm_guest_has_private_mem(kvm) &&
+> 	       kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+>   }
+> 
+> where x86's implementation of kvm_guest_has_private_mem() can be
+> 
+>   #define kvm_guest_has_private_mem(kvm) (!!(kvm)->vm_type)
+
+It's just about not checking xarray for non-protected case. The
+optimization here is that neither TDX nor SNP care about the xarray as
+far as determining whether the *fault* was a private or not. We only
+care later, in part of the KVM MMU code that determines whether the
+fault type is at odds with the xarray state and whether to generate a
+KVM_EXIT_MEMORY_FAULT as a result.
+
+In that code, both TDX/SNP, as well as gmem self-tests, will all end up
+calling kvm_mem_is_private().
+
+In the gmem self-test case, in current gmem base series, and I think with
+what you've proposed here, we'd check the xarray via kvm_mem_is_privae(),
+both in kvm_mmu_do_page_fault(), as well as later kvm_faultin_pfn() where
+KVM_EXIT_MEMORY_FAULT case is handled. That seems off because:
+
+  1) Checking in kvm_mem_is_private() via kvm_mmu_do_page_fault() means
+     that we will grab the value prior to when the KVM MMU records the
+     mmu_invalidate_seq, which means there's a window between
+     kvm_mmu_do_page_fault() and kvm_faultin_pfn() where an updated
+     xarray won't be noticed, and the #NPF retry logic will not get
+     triggered.
+
+  2) For gmem self-test, kvm_mem_is_private() is the authority on
+     whether the fault is private or not. There's no need to distinguish
+     between what was set via KVM_SET_MEMORY_ATTRIBUTES, vs. what was
+     indicated via fault flags/GPA like TDX/SNP do.
+
+So it makes sense, in the gmem case (and TDX/SNP), to defer the
+kvm_mem_is_private() till later in kvm_faultin_pfn(). It avoid a
+duplicate lookup, and a race. But .is_private only conveys
+encrypted/unencrypted fault in TDX/SNP case, it doesn't have a way to
+cleanly convey this case "just use whatever kvm_mem_is_private() reports
+later, because it will always be what the VMM set, and it's too early
+to check kvm_mem_is_private() right now".
+
+So that's where this enum type came from. Although in the discussion I
+linked to above I suggested just:
+
+  enum kvm_fault_type {
+    KVM_FAULT_VMM_DEFINED,
+    KVM_FAULT_SHARED,
+    KVM_FAULT_PRIVATE,
+
+Which I think would work just as well, since VMM_DEFINED is basically what
+MEM_ATTR case handles in this patch, and if you also add the
+kvm_guest_has_private_mem() check into kvm_mem_is_private() as you suggested,
+it would naturally cover the SHARED_ALWAYS case as well.
+
+I'm fine with other approaches, but think there are a couple good reasons
+(#1 and #2 above) for what Isaku is proposing, and any alternative
+approach should account for them as well.
+
+[1] https://lore.kernel.org/kvm/20230612042559.375660-1-michael.roth@amd.com/T/#mdb24fe4998aa3ff3e568e8a0cba4d12b159087c7
+
+-Mike
