@@ -1,32 +1,32 @@
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0259B6FCA
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 22:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852D563D1
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 22:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1687992224; x=1719528224;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0Hrv6P8Eo/E7Tn5rAa++Nq6hcFfaCBIgIk5SxiRD7OA=;
-  b=Zp000XFAMlc3YH9mdzuUKHYrD2OA5476vMAgBwDWLIpFfvpK93Q+Wvil
-   IcZJAiCQa0eFIef2X+1gsIOjf2zR/EIcxj4WKBvHSabtK899cIoxXfOqi
-   d8+ywJyBWo4WHalGMOhtb/pY+9RtKwUPIP5HJRkkKNlgb5licPVF8EBnQ
-   thW/A7SN1uf9dbNuvvD/TCD0at34NPoFmb164Ls2Ag7HHIXtcc1TP5cHb
-   CPPFXEb1mym072d3QSZ16mbNnJIrZSOr3Cl9ytZq+SkclRKxuvJ7ZtgjX
-   t2hmwssYd8dm3hI8tdLhy6NPRh1GJpWoTI6zvdwg6IGUmtnqyNs1RBWhr
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="392699161"
+  bh=6umfemwMrYz7WsXi1NlQUufCvU391Sg+THAWamuc+xA=;
+  b=cuuQ9g0E/a6k6J9ogB9V3JEwcL7UWvLqA/wD/EZTDBcQSddEiZU5kC7g
+   RhJ3Otw4XgKPnPibhGDuBZYE9AitUnSklDKuVY+4EcOb1TSBR95jaSk/m
+   swhOMwQ1RouS7sJ+95dL/hnGVtbvxFCJldwXja4ptuqk7UYk6PnFo9otU
+   07m9uAcc/7lbouK80m8UyHpsbibR6qZ49xXBPTtwRWSb+FNu/3bzn/cvi
+   vTzTAgJZxRJC+a1LquioT6pSxVl9ROjaI6Ke0IRXzfmI91km3RhaHbW0m
+   jLPM5w5ijrrZqd5jcJS8inPbwrXa3u6iNTk8zWrHK+VGOh5BPArkvW+hq
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="392699166"
 X-IronPort-AV: E=Sophos;i="6.01,166,1684825200"; 
-   d="scan'208";a="392699161"
+   d="scan'208";a="392699166"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
   by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 15:43:24 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="830300005"
+X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="830300010"
 X-IronPort-AV: E=Sophos;i="6.01,166,1684825200"; 
-   d="scan'208";a="830300005"
+   d="scan'208";a="830300010"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 15:43:23 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 15:43:24 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -45,12 +45,10 @@ Cc: isaku.yamahata@intel.com,
 	Ackerley Tng <ackerleytng@google.com>,
 	Vishal Annapurve <vannapurve@google.com>,
 	Michael Roth <michael.roth@amd.com>,
-	Yuan Yao <yuan.yao@linux.intel.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: [RFC PATCH v3 07/11] KVM: x86: Export the kvm_zap_gfn_range() for the SNP use
-Date: Wed, 28 Jun 2023 15:43:06 -0700
-Message-Id: <93778ff0e10657491f0a2906a251f8f68b774a15.1687991811.git.isaku.yamahata@intel.com>
+	Yuan Yao <yuan.yao@linux.intel.com>
+Subject: [RFC PATCH v3 08/11] KVM: Fix set_mem_attr ioctl when error case
+Date: Wed, 28 Jun 2023 15:43:07 -0700
+Message-Id: <358fb191b3690a5cbc2c985d3ffc67224df11cf3.1687991811.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1687991811.git.isaku.yamahata@intel.com>
 References: <cover.1687991811.git.isaku.yamahata@intel.com>
@@ -62,69 +60,63 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Brijesh Singh <brijesh.singh@amd.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-While resolving the RMP page fault, there may be cases where the page
-level between the RMP entry and TDP does not match and the 2M RMP entry
-must be split into 4K RMP entries. Or a 2M TDP page need to be broken
-into multiple of 4K pages.
+kvm_vm_ioctl_set_mem_attributes() discarded an error code of xa_err()
+unconditionally.  If an error occurred at the beginning, return error.
 
-To keep the RMP and TDP page level in sync, zap the gfn range after
-splitting the pages in the RMP entry. The zap should force the TDP to
-gets rebuilt with the new page level.
-
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20230612042559.375660-39-michael.roth@amd.com
+Fixes: 3779c214835b ("KVM: Introduce per-page memory attributes")
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 
 ---
 Changes v2 -> v3:
 - Newly added
 ---
- arch/x86/include/asm/kvm_host.h | 2 ++
- arch/x86/kvm/mmu.h              | 2 --
- arch/x86/kvm/mmu/mmu.c          | 1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ virt/kvm/kvm_main.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 831bfd1e719a..bdf507797c73 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1842,6 +1842,8 @@ void kvm_mmu_slot_leaf_clear_dirty(struct kvm *kvm,
- void kvm_mmu_zap_all(struct kvm *kvm);
- void kvm_mmu_invalidate_mmio_sptes(struct kvm *kvm, u64 gen);
- void kvm_mmu_change_mmu_pages(struct kvm *kvm, unsigned long kvm_nr_mmu_pages);
-+void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
-+
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 422d49634c56..fdef56f85174 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2423,6 +2423,7 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+ 	gfn_t start, end;
+ 	unsigned long i;
+ 	void *entry;
++	int err = 0;
  
- int load_pdptrs(struct kvm_vcpu *vcpu, unsigned long cr3);
+ 	/* flags is currently not used. */
+ 	if (attrs->flags)
+@@ -2447,14 +2448,17 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+ 	KVM_MMU_UNLOCK(kvm);
  
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index 92d5a1924fc1..963c734642f6 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -235,8 +235,6 @@ static inline u8 permission_fault(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
- 	return -(u32)fault & errcode;
+ 	for (i = start; i < end; i++) {
+-		if (xa_err(xa_store(&kvm->mem_attr_array, i, entry,
+-				    GFP_KERNEL_ACCOUNT)))
++		err = xa_err(xa_store(&kvm->mem_attr_array, i, entry,
++				      GFP_KERNEL_ACCOUNT));
++		if (err)
+ 			break;
+ 	}
+ 
+ 	KVM_MMU_LOCK(kvm);
+-	if (i > start)
++	if (i > start) {
++		err = 0;
+ 		kvm_mem_attrs_changed(kvm, attrs->attributes, start, i);
++	}
+ 	kvm_mmu_invalidate_end(kvm);
+ 	KVM_MMU_UNLOCK(kvm);
+ 
+@@ -2463,7 +2467,7 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+ 	attrs->address = i << PAGE_SHIFT;
+ 	attrs->size = (end - i) << PAGE_SHIFT;
+ 
+-	return 0;
++	return err;
  }
+ #endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
  
--void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end);
--
- int kvm_arch_write_log_dirty(struct kvm_vcpu *vcpu);
- 
- int kvm_mmu_post_init_vm(struct kvm *kvm);
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 464c70b35383..5a80ec49bdcd 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -6727,6 +6727,7 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
- 
- 	return need_tlb_flush;
- }
-+EXPORT_SYMBOL_GPL(kvm_zap_gfn_range);
- 
- static void kvm_rmap_zap_collapsible_sptes(struct kvm *kvm,
- 					   const struct kvm_memory_slot *slot)
 -- 
 2.25.1
 
