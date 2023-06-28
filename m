@@ -1,187 +1,271 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2051.outbound.protection.outlook.com [40.107.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E786C8E3
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 16:04:36 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kmCWI2CO1X3fGXZ0ZSpyept9LBIwnF7JC24VmdzvXGoOXO1/xGT0Tr18GTpwxSXOxMOWUSIZaXXWsBzMjv7o5/2eezL7Ygj79iVuxlO7Q+TIDOXY0gcCCv7++Xdfi88La2Qc0pDZsN8UEjP7zIiGjR5/HTAWQDI8XSXRsg1wSAGbCkxNhNtjvFW/bZKoqIfc2pOKDqFOHToM+OZjjv32WHTT/+khCXhLwoA3mh9NrBKf4VF4yoWzQycEiwrX8fXn6bh7Ng2vQUoamkgfSSXxmOWQZwJFS/ZaFga/A4mG7+kb0etsavCp/WaLX19barke9JBd78f6/MVBOVplQj/DXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZgS6kGECvPoNxMZv5WdB7ShAjP3rtPhWeqqwvlYDjTA=;
- b=mQJN+rMb5754KfaKyrN6dz4NgBYBfydnRrC6jFfSBz1elxrKmotR5jBdJ3GfK6jpz+vnK+K5wZhqInNxrIpP6yxbDeY4dNqc5Ts0SvRwKRgxK42/I88MnKDzxYmWnim58+Ie6FyyozgQgmlqfjouuNWtPEy2LWaZDkq7Lf45QcwP1WI4jrSgpqggr1d1D/BPmS7HkU0e0i+1DUG2Wc0GZc0G8TP6Wxf3XoQZwhyLbRnzc44kkycA6If7SN+gBrc13zxColpJXK0kAe16Rb7q+njVjuXNke1iZfvlMjUhb10OUdTntMWEJK3CnjdXCHUCo3hihMivPAfXZvvjSckd2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZgS6kGECvPoNxMZv5WdB7ShAjP3rtPhWeqqwvlYDjTA=;
- b=r60QjD0gMI4Le6ObpOE55W/SKOYtautB0pG47SWxmcdvjju9H7VvxB+TYeMoEqtF54IpkOdCkkAFFIs7Iav7ELWB1tw1ZPNSO5hJ16J/IRiaCTEZLByrLLejFN/AlxzeW739nfpQDTBm4AhzCJK33tFh7NLbNNqzWheRlacQaM8=
-Received: from BN9PR03CA0463.namprd03.prod.outlook.com (2603:10b6:408:139::18)
- by BL1PR12MB5320.namprd12.prod.outlook.com (2603:10b6:208:314::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Wed, 28 Jun
- 2023 16:04:31 +0000
-Received: from BN8NAM11FT094.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:139:cafe::34) by BN9PR03CA0463.outlook.office365.com
- (2603:10b6:408:139::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.34 via Frontend
- Transport; Wed, 28 Jun 2023 16:04:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT094.mail.protection.outlook.com (10.13.176.131) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6500.48 via Frontend Transport; Wed, 28 Jun 2023 16:04:31 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 28 Jun
- 2023 11:04:30 -0500
-Date: Wed, 28 Jun 2023 10:21:32 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: <isaku.yamahata@intel.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<isaku.yamahata@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	<erdemaktas@google.com>, Sean Christopherson <seanjc@google.com>, Sagi Shahar
-	<sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang
-	<kai.huang@intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
-	<chen.bo@intel.com>, <linux-coco@lists.linux.dev>, Chao Peng
-	<chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, Vishal
- Annapurve <vannapurve@google.com>
-Subject: Re: [RFC PATCH v2 5/6] KVM: Add flags to struct kvm_gfn_range
-Message-ID: <20230628152132.xyfquj67vhklsvlu@amd.com>
-References: <cover.1687474039.git.isaku.yamahata@intel.com>
- <689da77417c2f4055f02a71aab51ff603bc195af.1687474039.git.isaku.yamahata@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E86322E
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 16:53:30 +0000 (UTC)
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-bd5f9d084c9so6567367276.3
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 09:53:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1687971209; x=1690563209;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1R0X/i0lRCH4miOSwDDYOODB6W8gkeuLWHpbyZwxp5Y=;
+        b=ghMHaBgSCNiJR8sLHsMY2tLgMF5ts+0OjeJhvhiPngm56U/UbMPyBf5MGIrGSiYwjv
+         B03mGv7zHqbKvshpv6IUAS1Vb3zAr4e2MBK3O4BqxDGajsP9Z9sGoDsxBuCNV+qOWEl/
+         6K1s05fsig3YTpjCqWUU3MYfhGOY4iel1hn/NJYXfQAyUuPeRrwkFY/AwXDv9R4BG1Il
+         qMgXSJSuyUczGK17tfen3bXoZlNWJLn2d+MyLRfNYyS4LsF+NEcu2RoM4rLdJvq9/qNF
+         omKtqPYf8NBelEixBTIM0S/CZMjEDshKEhzyWWahTclCdnPJO3V8OdJk/0XeBr8Wi92M
+         CK6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687971209; x=1690563209;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1R0X/i0lRCH4miOSwDDYOODB6W8gkeuLWHpbyZwxp5Y=;
+        b=BPSR8cVaFHFlVDA4JP6KrDyiwr/Wrj2Vn7yzvrJDFt7FV/RIQPrsPJZtXpS57+ZpG3
+         Q7M9TATgsJZEFf//UmNnuwRumwhtKEfJ5GNkU+ZXt4f/6Rqatr2ctTQED917ltWt19+0
+         7DwlH6lOXjpnIbPuNQrLANWAjsKfcJ7lLfyV92bmr0ER17YgF9Tf04CT+A4HJ6quK05a
+         ikrL4y7PtcwEeeZDACxawXYcTD161eiEQMke3+xmoBspFk6XYFpCfM6uZEAUJbNxkXiM
+         VlHwPnjtoYAQUj1HIzKl9NBl8+pjrshn7kbPkscEnYFZur3GpLx4KJUBjVpO35kNOkVa
+         Ka3A==
+X-Gm-Message-State: AC+VfDwjVMFog/gCs13dWik4EXgx5LVM1JPV7XShrTk5Y37RDCZVqssQ
+	KIIVHMcAk/toGQUT1rQwZahvbspdkS4=
+X-Google-Smtp-Source: ACHHUZ7fpXjxSyzrjBsRYNYDfUikJP6XXwFS6cHwPIadCTAWuhTjoyYKwCou0aajG7Ys7M7rEHOF143IJS4=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a5b:b42:0:b0:bfe:738e:363f with SMTP id
+ b2-20020a5b0b42000000b00bfe738e363fmr10416316ybr.1.1687971209560; Wed, 28 Jun
+ 2023 09:53:29 -0700 (PDT)
+Date: Wed, 28 Jun 2023 09:53:27 -0700
+In-Reply-To: <20230627235845.qixtneay2tiv6xuu@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <cover.1687474039.git.isaku.yamahata@intel.com>
+ <a3a19de92c7ac6e607ac3e663d84a4312876084b.1687474039.git.isaku.yamahata@intel.com>
+ <ZJX6s2HxbHOUMXlj@google.com> <20230626010753.xru5ph3irmyokrgc@amd.com>
+ <ZJnXObRHhn5Q1dX2@google.com> <20230627235845.qixtneay2tiv6xuu@amd.com>
+Message-ID: <ZJxlh5mql/Y0syHV@google.com>
+Subject: Re: [RFC PATCH v2 4/6] KVM: x86: Introduce fault type to indicate kvm
+ page fault is private
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <689da77417c2f4055f02a71aab51ff603bc195af.1687474039.git.isaku.yamahata@intel.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT094:EE_|BL1PR12MB5320:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c224ae6-2195-42a6-8473-08db77f15bbe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	AYqOUpk6tDGC4QKxUDtextN9dLWteHmspsqwt61szAoZQ+juAR2nCk3brPMCvu6ZHpx2l157S0Holhv9Pzw1eue/Et8djXDrM7b8v2ng2Re8XW2qIz+MFz7DUaSEMpk0wwtxV+NQ+bLYaB8Ibi0uZs//hpbFuRNMd7TgEXeky8H+4xB5nRuG6m3cdA5k9JWl4kn2X4QovmV7XLQCiBbH8OktK01lhhnRkHzFpyjyXiLrE6tKZTlEyHXGQ+jyHJY5Cg4fH9cnFSjf4LwLuD3fpoOb744+LkE1/jG6TFyfJ00LMDfN+FcS5gnvm7TTkQUWMAEQjb2l083Vh1kLVsyHyNR4OMe8RUupjXJ69S5RUa1NtSwwsqcPulabqY20foDApinyTguKyIPPJK5dycepwqBn8TkmndIvzGELM51OtJMJ+UFJkF3400QVUUqdfe5m/31SOAenhHI+jBU869pCCGwa+3a7n+HuJlLItvkTFqdbnY2jO+ZlwiLaTqDwCXUpVHm02ijyz4crFRACzuGulU4GAw/pIyEtkC40oxj1hdCjUduL0unHiJx+vaDiU9oecjX6CKyEsBEUOAU1KCc6r5SJ2pTR64/HPPcaDbvpAM0vUateux1pDs48ZIsqrH1TSghppH1vCncw2MwnOqdcK9BQAME3Z2d7HDKQKseeBL5Zlt8U9Hbz+N7WM/Z6kwfWR/DglzzmKXR71Er6Vh2a+HcbYmpzR1IB9XLwkG72zvw=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(451199021)(40470700004)(36840700001)(46966006)(54906003)(508600001)(83380400001)(2616005)(47076005)(36860700001)(336012)(86362001)(40460700003)(426003)(82310400005)(16526019)(1076003)(26005)(186003)(81166007)(2906002)(4326008)(36756003)(6916009)(8936002)(70206006)(70586007)(316002)(356005)(7416002)(44832011)(8676002)(5660300002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2023 16:04:31.2780
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c224ae6-2195-42a6-8473-08db77f15bbe
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT094.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5320
 
-On Thu, Jun 22, 2023 at 04:16:29PM -0700, isaku.yamahata@intel.com wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
+On Tue, Jun 27, 2023, Michael Roth wrote:
+> On Mon, Jun 26, 2023 at 11:21:45AM -0700, Sean Christopherson wrote:
+> > "is_private" would serve the same purpose as all the other bits that are derived
+> > from the error code, e.g. improve readability, reduce line lengths, etc.  Though
+> > looking at the name, just "private" is probably the right name.
+> > 
+> > 	/* Derived from error_code.  */
+> > 	const bool exec;
+> > 	const bool write;
+> > 	const bool present;
+> > 	const bool rsvd;
+> > 	const bool user;
 > 
-> Add flags to strut kvm_gfn_range to indicate who triggered the callback
-> and new memory attributes.
-> 
-> TDX needs to know the reason for a callback by kvm_unmap_gfn_range().  mmu
-> notifier, set memory attributes ioctl or KVM gmem callback.  With TDX,
-> zapping a private page from the encrypted page table and adding the page
-> back to the same private GPA results in zeroing the page, and the guest has
-> to accept the page again.  On the change of memory attribute from private
-> to shared, zapping the GPA range irrespective to private-or-shared and
-> expecting the fault doesn't work for TDX.  Instead, zap shared pages only
-> and keep the private pages.  Concretely
-> - If it's from mmu notifier, zap shared pages.
-> - If it's from KVM gmem, zap private pages.
-> - If setting memory attributes to private, zap shared pages.
-> - If setting memory attributes to shared, zap private pages.
-> 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> ---
-> Changes v1 -> v2:
-> - consolidate KVM_GFN_RANGE_FLAGS_GMEM_{PUNCH_HOLE, RELEASE} into
->   KVM_GFN_RANGE_FLAGS_GMEM.
-> - Update the commit message to describe TDX more.  Drop SEV_SNP.
-> ---
->  include/linux/kvm_host.h | 10 +++++++++-
->  virt/kvm/guest_mem.c     |  9 ++++++---
->  virt/kvm/kvm_main.c      |  4 +++-
->  3 files changed, 18 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 1a47cedae8a1..1fe0516fcddf 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -256,12 +256,20 @@ int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu);
->  #endif
->  
->  #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
-> +
-> +#define KVM_GFN_RANGE_FLAGS_SET_MEM_ATTR	BIT(0)
-> +#define KVM_GFN_RANGE_FLAGS_GMEM		BIT(1)
-> +
->  struct kvm_gfn_range {
->  	struct kvm_memory_slot *slot;
->  	gfn_t start;
->  	gfn_t end;
-> -	pte_t pte;
-> +	union {
-> +		pte_t pte;
-> +		u64 attrs;
-> +	};
->  	bool may_block;
-> +	unsigned int flags;
->  };
->  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
->  bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
-> diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-> index cdf2d84683c8..387226136960 100644
-> --- a/virt/kvm/guest_mem.c
-> +++ b/virt/kvm/guest_mem.c
-> @@ -99,7 +99,8 @@ static struct folio *kvm_gmem_get_folio(struct file *file, pgoff_t index)
->  }
->  
->  static void kvm_gmem_invalidate_begin(struct kvm *kvm, struct kvm_gmem *gmem,
-> -				      pgoff_t start, pgoff_t end)
-> +				      pgoff_t start, pgoff_t end,
-> +				      unsigned int flags)
->  {
->  	struct kvm_memory_slot *slot;
->  	unsigned long index;
-> @@ -118,6 +119,7 @@ static void kvm_gmem_invalidate_begin(struct kvm *kvm, struct kvm_gmem *gmem,
->  			.slot = slot,
->  			.pte = __pte(0),
->  			.may_block = true,
-> +			.flags = flags,
->  		};
->  
->  		kvm_mmu_invalidate_range_add(kvm, gfn_range.start, gfn_range.end);
-> @@ -156,7 +158,8 @@ static long kvm_gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
->  	 */
->  	filemap_invalidate_lock(file->f_mapping);
->  
-> -	kvm_gmem_invalidate_begin(kvm, gmem, start, end);
-> +	kvm_gmem_invalidate_begin(kvm, gmem, start, end,
-> +				  KVM_GFN_RANGE_FLAGS_GMEM);
+> If we go out of our way to pull bits out of error_code so they can be
+> accessed more consistently/sensibly, why introduce additional bits into
+> error_code in the first place? It just seems like an unecessary
+> intermediate step, and introduces error_code bits that TDX/selftests
+> don't actually ever need, which raises the specter of "what if hardware
+> starts using this synthetic bit for something else?"
 
-Do you anticipate ever needing to pass a different flag via
-kvm_gmem_invalidate_begin()? If not it might make sense to just
-hard-code it rather than passing as a parameter.
+It's not a KVM-defined bit though, it's an AMD-defined bit.  That's a very big
+difference as AMD and Intel both go to out of their way to not step on each other's
+toes.
 
--Mike
+And *architecturally*, VMX doesn't support #PF error codes larger than 16 bits,
+not to mention that all of this needs to be dependent on TDP.  And for EPT
+violations, the error code is *fully* synthetic anyways because the error code
+passed into kvm_mmu_page_fault is a translation of vmcs.EXIT_QUALIFICATION into
+the "legacy" error code format.
+
+So there's really no danger here, whereas a truly synthetic, KVM-defined bit like
+PFERR_IMPLICIT_ACCESS *does* carry some risk because AMD in particular might use
+bit 48 for a new hardware-defined flags.
+
+> Is it mainly to avoid introducing additional parameters to
+> kvm_mmu_page_fault() and instead piggy-backing off of error_code param?
+> Or does recording the values into error_code have a use outside of that?
+
+It provides canonical behavior within common KVM code.  Stashing individual flags
+in const bools in kvm_page_fault is purely for ease-of-use, they are NOT the canonical
+representation of state for the entirety of page fault handling.  E.g. in the unlikely
+scenario that kvm_mmu_page_fault() needs to care about shared vs. private, there's
+no kvm_page_fault structure to query.
+
+> > > So it makes sense, in the gmem case (and TDX/SNP), to defer the
+> > > kvm_mem_is_private() till later in kvm_faultin_pfn(). It avoid a
+> > > duplicate lookup, and a race. But .is_private only conveys
+> > > encrypted/unencrypted fault in TDX/SNP case, it doesn't have a way to
+> > > cleanly convey this case "just use whatever kvm_mem_is_private() reports
+> > > later, because it will always be what the VMM set, and it's too early
+> > > to check kvm_mem_is_private() right now".
+> > 
+> > Yeah, the duplicate lookup is unfortunate :-/  But I'd really like to be able to
+> > make kvm_page_fault.private const, just like all the other booleans that are
+> > derived from the error code.  My concern with making it *not* const is that
+> > there will be a discrepancy between "private" and "error_code", and we'll have
+> > to be very careful to never touch "private" before kvm_faultin_pfn().
+> 
+> It can actually be const using the KVM_FAULT_{VMM_DEFINED,SHARED,PRIVATE} 
+> abstraction. fault->is_private doesn't really need to be overwritten for
+> VMM_DEFINED case later, it can just be treated as "use whatever
+> kvm_mem_is_private() reports". But I guess that's what you mean by
+> "special casing" below.
+
+That's not constifying the state (private vs. shared), that's constifying behavior.
+VMM_DEFINED is like Schrodinger's cat; the fault is neither private nor shared
+until KVM actually looks at it.
+
+> > And I don't want to special case "VMM defined", because the primary reason the
+> > "VMM defined" case exists at this time is to allow testing KVM's implementation
+> > without TDX or SNP.  E.g. I don't want to end up with code in fast_page_fault()
+> 
+> Are you suggesting VMM_DEFINED would eventually go away once SNP/TDX
+> have bigger uptake,
+
+I'm saying I don't want VMM_DEFINED, period.  :-)
+
+> or maybe in favor of tests built around some new VM type (e.g.
+> software-protected VMs) that use guest hypercalls to set guest-expected
+> memory state rather than always relying on what the VMM sets up?
+> 
+> I guess in that case VMM_DEFINED handling could just be dropped at
+> that point, and KVM_FAULT_{SHARED,PRIVATE} would still be relevant (or they
+> could get switched back to bool at that point), and software-protected VMs
+> would set that value based on whatever state tracks the hypercalls.
+> 
+> But if that's the end-game maybe it's a good reason for keeping
+> fault->is_private bool and avoiding enums. But still don't really see the
+> worth in also setting the bit in error_code.
+> 
+> > without TDX or SNP.  E.g. I don't want to end up with code in fast_page_fault()
+> > or so that does X for KVM_FAULT_VMM_DEFINED, but Y for KVM_FAULT_PRIVATE.
+> 
+> Hadn't really considered fast_page_fault() for SNP... it seems like
+> for explicit page-state changes, the vCPU issuing the conversions
+> would just block until the GHCB request it issued was completed. So by
+> the time it accesses the GPA, KVM_SET_MEMORY_ATTRIBUTES would have
+> already zapped the old entry, so the fast path would get bypassed at
+> that point.
+> 
+> For implicit page-state changes, I guess there's a risk you can
+> get stuck looping on fast_page_fault() since it's up to KVM MMU
+> to generate the KVM_EXIT_MEMORY_FAULT so KVM_SET_MEMORY_ATTRIBUTES
+> gets called eventually. Sort of surprised I haven't encountered
+> that case though... but anyway...
+> 
+> If you rely on similar checks to what slow path does:
+> 
+>  	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn))
+>  		return kvm_do_memory_fault_exit(vcpu, fault);
+> 
+> kvm_mem_is_private() could be stale due to unnoticed invalidation,
+> but eventually it would reach steady-state and the
+> KVM_EXIT_MEMORY_FAULT would fire. Is that sort of what you have in
+> mind there?
+> 
+> For SNP it seems more efficient to check for RMP bit and then head
+> straight to the slow-path, but this isn't a hot path so probably
+> doesn't matter much.
+
+I'm not concerned about any specific path, i.e. don't read too much into my
+arbitrary fast_page_fault() example.
+
+What I am trying to point out is that I don't want to end up in a world where
+a page fault is known to be private or shared for TDX/SNP, but not for SW-protected
+VMs.  Because if that happens, then we'll end up in one of three situations:
+
+  1. KVM can't act on private versus shared until after __kvm_faultin_pfn()
+  2. KVM is buggy because it is consuming undefined state, i.e. querying if memory
+     is private versus shared before looking inside the box
+  3. KVM has different flows for TDX/SNP versus SW-protected VMs
+
+> > So I'm leaning toward the above be
+> > 
+> > 	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
+> > 		if (vcpu->kvm->vm_type == KVM_X86_PROTECTED_VM)
+> > 			return RET_PF_RETRY;
+> > 		else
+> > 			return kvm_do_memory_fault_exit(vcpu, fault);
+> > 	}
+> > 
+> > even though software-protected VMs would perform a technically-unnecessary
+> > attributes lookup.  *If* software-protected VMs ever get to the point where folks
+> > care about the performance overhead of the extra lookup, then I'm all for
+> > revisiting the implementation, but that is a ginormous "if" at this point.  Though
+> > even then I'd still prefer to figure out a way to make the flag const, but that's
+> > a future problem.
+> > 
+> > > So that's where this enum type came from. Although in the discussion I
+> > > linked to above I suggested just:
+> > > 
+> > >   enum kvm_fault_type {
+> > >     KVM_FAULT_VMM_DEFINED,
+> > >     KVM_FAULT_SHARED,
+> > >     KVM_FAULT_PRIVATE,
+> > > 
+> > > Which I think would work just as well,
+> > 
+> > I want to use vm_type for tracking "VMM_DEFINED".  KVM's ABI easily allows for 64
+> > VM types, I see no reason to reuse KVM_X86_PROTECTED_VM for TDX and/or SNP, though
+> > the type probably should be KVM_X86_SW_PROTECTED_VM.  With that out of the way,
+> > there's no need for an enum to track shared vs. private.
+> > 
+> 
+> Introducing TDX/SNP vm types seems to buy us some flexibility so it
+> sounds useful.
+> 
+> Rather than synthesizing bits in error_code, maybe we could also use it
+> to help out there as well? (assuming parameter-passing was the main
+> use-case there)
+> 
+>   static bool kvm_fault_is_private(kvm, gpa, error_code)
+>   {
+>     if (kvm->vm_type == KVM_X86_TDX_VM)
+>       return gpa & TDX_SHARED_GPA_MASK;
+> 
+>     if (kvm->vm_type == KVM_X86_SNP_VM)
+>       return error_code & PFERR_GUEST_ENC_MASK;
+> 
+>     return kvm_mem_is_private(kvm, gpa);
+>   }
+
+That's also an option, but (a) it's a bit kludgy as it requries three pieces of data,
+(b) it's suboptimal for KVM_X86_SW_PROTECTED_VM if there are multiple lookups, and
+(c) it will result in inconsistent behavior if there are multiple lookups.
+
+E.g. these two things wouldn't be functionally equivalent, which is just asking
+for bugs.
+
+	if (!kvm_fault_is_private(...)
+		A();
+
+	B();
+
+	if (kvm_fault_is_private(...)
+		C();
+
+versus
+
+	bool private = kvm_fault_is_private();
+
+	if (!private)
+		A();
+
+	B();
+
+	if (private)
+		C();
+	
