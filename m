@@ -1,232 +1,230 @@
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C676C79C8
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 09:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687945542; x=1719481542;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=AJvwSpYpypbUz8/oB7VCBkUMHpsGfX0mLzSAtVlTGWs=;
-  b=M4dn9yZUM54kpbruYNm4lscolxC2Yp96gG+Dt0Kaxq3WHEUj494CiHM/
-   nk8GettyE9KI0W8k0GW7WD8wCWdcMP3Y/wrbZv5jslQKjtmav3azArGr5
-   PVSvDM2u02FV2vYWu1OhlcJ43UjTVCj7G2FSWFeK9tK4fLXkx6mYeAQuN
-   R2YscZu4pK/bc5JhkM46cDRRwRJhnpG+UmIH3ISYmfEwwm1k/rrLtqwQc
-   9eEcfJAAk2hfZUQU0XEUvoxFZvtiY9CKc3nHzG5t1Piqort6DuOCY1S/G
-   T9kD0hIjzsWgVwN5Mpyhc75GXl7KO2NMYNgnIpz7Ql9Ez4HgH3k8F08SI
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="392523332"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="392523332"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 02:45:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="1047331312"
-X-IronPort-AV: E=Sophos;i="6.01,165,1684825200"; 
-   d="scan'208";a="1047331312"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmsmga005.fm.intel.com with ESMTP; 28 Jun 2023 02:45:40 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 28 Jun 2023 02:45:39 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Wed, 28 Jun 2023 02:45:39 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.104)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Wed, 28 Jun 2023 02:45:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kiolXSwoYnVI8tF9Cwm71dpacEoXfc8GjZLNDyDma5kkejarHRUuajsT/G01oEy1ScrKvGU/8QXy6ICBuTfwmzlSslTjWmhsIOJxpnAq3FIfDsKkEN1+geNFrZ7xsLAI7kJhUrA931se21Boyrrl9SX3DnuO/gHEh+NzESGai17ut+juHWZq7y6YYVckeGV+0WYcXvu5l+nt0okMsJ7styrwTTBM4cp7k1/TK+Z7JvFdzgPL63j/4TLHq7JFza0G4041RGpusdYuocNd0n8Uoor48KDXuM9SdYXxKQhlo5Fbh1s8wL/t6+ZHRj/cjwLEBsi2B4fRu8wEo02anfRUlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AJvwSpYpypbUz8/oB7VCBkUMHpsGfX0mLzSAtVlTGWs=;
- b=SxGNPsTc4NGviDhQM+rDWaGc+CyHegpy4My7+u23kk4S3n9MutScRs4Tn8uDbFVx2pIae5LRp7AZXNjyY1wU6LDtpMx8stivXOAEpxu45ZBKUvAROvmYe4W67Tz7xUgmpj0qlDS8FEJIo5xTp8NGgsGMz2ra7lZtLnngWscjJ1f7XJ0goloETz+7YJxECFQn5LPebOOBLyv0+nOIGYLhRnHhbg0zz2gJsPdzMvQGprvBAKQzMblwgRbLErPyKUfFA9byI16VKD67rfjyOrvlBmQs/+7WpQGt6eWDyGCopzYx70vpI/VeMNM1ZXQgMKP34RIChemIJQ9JNmRXV8R9nQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
- by DM4PR11MB6478.namprd11.prod.outlook.com (2603:10b6:8:89::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.15; Wed, 28 Jun
- 2023 09:45:34 +0000
-Received: from BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::19b7:466f:32ac:b764]) by BL1PR11MB5978.namprd11.prod.outlook.com
- ([fe80::19b7:466f:32ac:b764%3]) with mapi id 15.20.6521.026; Wed, 28 Jun 2023
- 09:45:34 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-CC: "corbet@lwn.net" <corbet@lwn.net>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "dhowells@redhat.com" <dhowells@redhat.com>,
-	"shuah@kernel.org" <shuah@kernel.org>, "brijesh.singh@amd.com"
-	<brijesh.singh@amd.com>, "Luck, Tony" <tony.luck@intel.com>,
-	"joey.gouly@arm.com" <joey.gouly@arm.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "dionnaglaze@google.com"
-	<dionnaglaze@google.com>, "qinkun@apache.org" <qinkun@apache.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"mingo@redhat.com" <mingo@redhat.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>, "kirill.shutemov@linux.intel.com"
-	<kirill.shutemov@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "wander@redhat.com"
-	<wander@redhat.com>, "atishp@rivosinc.com" <atishp@rivosinc.com>, "Du, Fan"
-	<fan.du@intel.com>, "hpa@zytor.com" <hpa@zytor.com>, "chongc@google.com"
-	<chongc@google.com>, "bp@alien8.de" <bp@alien8.de>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Aktas,
- Erdem" <erdemaktas@google.com>, "sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "Yu, Guorui"
-	<guorui.yu@linux.alibaba.com>, "x86@kernel.org" <x86@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D06BC2D9
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 15:24:35 +0000 (UTC)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-3fba545d743so389275e9.0
+        for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 08:24:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1687965873; x=1690557873;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lN8SGKNkIKsowIbOG24r2oHuv4Nw4qW6wOBZIWClXj8=;
+        b=MkkXjC9KhSM2H5uOLgHX8CFDi6yBTUzRKnE7IZmqYQjDDVgYlQg+qY5CrYwNbmQxQK
+         UQe6clAFHqdKWTckalVo7ypS12RhXt9HG9fFQR76pTvbR75AwxYfhY1ZB1sHzCJEUKlZ
+         8NnXvXTM6bK1For8MOSDjyfg7rIj1kL+b2pOo3WFAUQwCJnw1GrbKJ90+d+RwJb+U5Qz
+         7mnmxUD0lw3iLOxPrNzBTBBQeBR/uaXW04tW7Y7yhrFEBKHv0jqxPISbkEUf+ctoYZew
+         ZHO5QcCcjfPVZNcWPM4CGU5lUVR8E+23WcXHR+gPcFmbs69Rv+l6X4hr9syJL3aq6iRW
+         a0fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687965873; x=1690557873;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lN8SGKNkIKsowIbOG24r2oHuv4Nw4qW6wOBZIWClXj8=;
+        b=HH7d+hF0FaCvQUJYMj1aFPLNdWz87Or6JgwBGDMngCvp66RQ/RxW7P8eNWlQUPHE5n
+         9WIP71zMj+Q0TwZCCrpv7VKYDDwhw4g3nflOqwgJOw7YkwCoRHE//d6DUJgXjB3riQIL
+         N+6F6JWMBy8qr6zeQht+KT8BBIET24V85nCCtUdJtGssHMlrjo+1ehMB/LVocBrr61tD
+         JGZ1N11RLtHIiOAvc4bYAcvWFBA6Nc8SU27CtjawrIdqpGPMlSZSJyYzMXgLnxCeitZU
+         7GwC5Nq/zEzpIKhxk1ox+w2qmAL8v96QRbw28qSkE8h1pLkhzAR6Y6oqmXmU+YoXjFhf
+         m2zA==
+X-Gm-Message-State: AC+VfDxoqfCoI2EawYrxEqZZr5BuoUm6GieffQNoZJqjDb5gMzE1aacL
+	JgooRJOezL7ZmGlk5Im1eRJgxg==
+X-Google-Smtp-Source: ACHHUZ419DnKiKqWGEETRVY6hfowx+1eoXsIWIvFGMy0EdeT5Aa1Be3rPvw4EzKFgMcYjQboZIjGrA==
+X-Received: by 2002:a05:600c:2247:b0:3fb:a266:3a34 with SMTP id a7-20020a05600c224700b003fba2663a34mr4247463wmm.12.1687965873152;
+        Wed, 28 Jun 2023 08:24:33 -0700 (PDT)
+Received: from vermeer ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
+        by smtp.gmail.com with ESMTPSA id 12-20020a05600c020c00b003f90ab2fff9sm14027515wmi.9.2023.06.28.08.24.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jun 2023 08:24:32 -0700 (PDT)
+Date: Wed, 28 Jun 2023 17:24:30 +0200
+From: Samuel Ortiz <sameo@rivosinc.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Erdem Aktas <erdemaktas@google.com>, Chong Cai <chongc@google.com>,
+	Qinkun Bao <qinkun@apache.org>,
+	Guorui Yu <GuoRui.Yu@linux.alibaba.com>, Du Fan <fan.du@intel.com>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org, dhowells@redhat.com,
+	brijesh.singh@amd.com, atishp@rivosinc.com,
+	gregkh@linuxfoundation.org, linux-coco@lists.linux.dev,
+	joey.gouly@arm.com
 Subject: Re: [PATCH v3 3/3] selftests/tdx: Test GetQuote TDX attestation
  feature
-Thread-Topic: [PATCH v3 3/3] selftests/tdx: Test GetQuote TDX attestation
- feature
-Thread-Index: AQHZhjUev+9U/9vzEkKqwBILfHYrRq+HtK4AgBGCl4CAA3KQAIABCfuAgAHp14CAABfAgIAAC1WAgABLSQCAACRpgIAAAbAAgAAMBgA=
-Date: Wed, 28 Jun 2023 09:45:34 +0000
-Message-ID: <45d9214d845ba2ab048f215e95dac751f07bfd8d.camel@intel.com>
-References: <972e1d5c5ec53e2757fb17a586558c5385e987dd.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
-	 <64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch>
-	 <64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch>
-	 <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com>
-	 <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
-	 <649b7a9b69cb6_11e68529473@dwillia2-xfh.jf.intel.com.notmuch>
-	 <CAAH4kHY1-N+HOxPON6SuXE3QPowAGnwTjc5H=ZnNZwh7a+msnQ@mail.gmail.com>
-	 <c85324480053af20e6f0409e28fbc5e156c54143.camel@intel.com>
-	 <2023062805-drove-privatize-ae2c@gregkh>
-	 <e30fb40d736ccc60672316c5d20aaf1ab7c94dcf.camel@intel.com>
-	 <2023062825-rebel-happily-09fd@gregkh>
-In-Reply-To: <2023062825-rebel-happily-09fd@gregkh>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.48.2 (3.48.2-1.fc38) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DM4PR11MB6478:EE_
-x-ms-office365-filtering-correlation-id: f4843844-2673-46f3-3f00-08db77bc6bbf
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: wOffXsG1y/0AQZ506DnjmnTviyaAuYCvYZVAHXGsPoc5bxQdTJ1hTrdB/jXAQBtpU5Y90lE8pwG/DIVVY8G8cOtPiCntaz4EFw9xVXJIqQ52DH84yBsi9kxMGgH3yxlQYDUHbxJ58N3rmPKT2OM8d+0zH9hA8dGKNCwyPAJrYZP/MY+ZNLWYnzqnmapryRp/COBBzA1ySJ2+pYV0QtDAINQhDICilNQ9uM+HzdJ35pfEXC08k4lNhBU+276fGg+GWfGPePmdgfMtZ+RdnS48Xnv7gX3N0mVSpnzAIt3GOzmazDhiI0GfH+G3e0FYQsI0tQROIiWeqT+8ni0E8z3sHngwsOvNiXphWfRgE+uXwGjsdv2/pj7JzYfJOp0ANWd7+ony7pYJXj6lv2mXuLBLIYhi7zoODmrrxdPLXq4YZPqvCbPHYxaZcktLmfJtS8ptXVOr/+8zPTuIzGDqGN5OotoaLY9N7A6dIl0wUra1M8swNBbSAmS8iCyqAmkaan6+mI4UC7lcscQY89eQWvyVbiN/8sHZILdWM1ncOOJ9NFN+/0ORNeY+yTY0MT+v9x/xohXw+nk6FE1zieWwFKxAne4wfG/3W0lPHy17JhwMRKM=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(366004)(346002)(39860400002)(396003)(136003)(376002)(451199021)(5660300002)(7416002)(6916009)(66476007)(64756008)(91956017)(66556008)(76116006)(66446008)(66946007)(316002)(478600001)(36756003)(2906002)(4326008)(8676002)(8936002)(6512007)(966005)(41300700001)(86362001)(38070700005)(54906003)(38100700002)(6486002)(186003)(6506007)(26005)(82960400001)(71200400001)(122000001)(83380400001)(2616005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TUpXeEtOOGRKL2NIZE9JMytmZmtJL3NuRVBKb1RNRXhYOE9lVnVVd2F3ZGE2?=
- =?utf-8?B?anJFVXZ0UFpZL0dyTmNUVjM3aHcrY3doUjRBZmtJRWhJd2xqaEk1UXBDS0to?=
- =?utf-8?B?Y2pyRWJQby82WjloQmhYRHlFZ0NxVFdPNUpKRHFoNXJOazI4TDBTSm5CQUZS?=
- =?utf-8?B?Z0M5OEN4bnN4TUhCNXJ2cGF0TUxQNm1VS0xESnlzdlFPWHJGZ3ZhU2E5WFYx?=
- =?utf-8?B?Vzh5UjIyOUd0TjdveEhMaktWQlg0ZTJYNDBhT293SHExOVBMN3hnTHVGY3Ft?=
- =?utf-8?B?MzQ5N0ZZTGppalBESlNMVElvR2dwSFpKV1ZmbG9iWVRBWnJ2YmtjMytjRXZO?=
- =?utf-8?B?SE5idWlNVTRUbTIycTRUYjFpNFVRYytnTG9IMllBL1RBVEl0MEJiN2VGclk2?=
- =?utf-8?B?dmNqZ0pFc0o0V29oQ0VKaE9sRVVWMkYwYzJldFFXRVJnTktzN3oxWGtqODZ4?=
- =?utf-8?B?TnNCS3RJTHFHS0UycmNzbXBSOXQ4VFI5N1BHSVk2azJnWnQ1Q1VSSzVDUkNQ?=
- =?utf-8?B?SFVGbEcwLytFTHB0M2UxNG5lWE9MdXdaSFhwWkZEelFlbThtL2RtN1lveUtL?=
- =?utf-8?B?b1ZvUnNwR0QzZjJrZFBYM2ZCdVNjYTZmejU2NjdVREhhZjFXdlpscVVISVhK?=
- =?utf-8?B?T05MSmcyeUpXUVpCMzVCZlFWWUFFcDFCRExLZ28rd3RuY25JUzRnT0Vyb1Mr?=
- =?utf-8?B?VmhLUExNUDhJWHVsSUxuQjdqbHFoTmIxanBGdGFiYmFVNUVpU21CcDdISzBw?=
- =?utf-8?B?cDR1MDgvcXAvUnllMXR2RE1kc3BSSDBUQlk5ODhJNURpSkFWeEM1U3FBcmdL?=
- =?utf-8?B?blF3OGZJUWp0NnJDbUFSM1dUMndXbWJYcFJERGJHa1VKNVpsY1RPcm1QWWlr?=
- =?utf-8?B?RG1ZSHl5cmgzVEM0d0FaMjB1U3VRUnVWM0NKS0RUWFNZNFF4bTZYM3cwblc0?=
- =?utf-8?B?WjlqZ2JlVXlQOTJoSDNiZTlUbVNFb2t2UC8wRnFPNmJqZExKR1BIekNkeHFr?=
- =?utf-8?B?Qk5XTmtoajVKVlU2NGtFdUZyajJIRmdqR2dQR3ExUnhWMWdDeXZFVVlGTE5l?=
- =?utf-8?B?M0Vtb2Z4Y1AzM0JPK25peXVHcWxVdGszS3QzbDZMaTdRUnZMSzhLZ2hJbEw4?=
- =?utf-8?B?Y29KaWhDbUtkdGQ5ZDZLbU0vWCtoOXRjNDQ2bnBsT2c2THRmZXAwZHNmdVZO?=
- =?utf-8?B?VVVISURiTnZIY2dhWHpkekpQYWlMdS8wZDQ1eitKRVlGWlduUmg0NkpOWWVw?=
- =?utf-8?B?UW9lcUtSUkpYNElLaFZRU0NKbkcxWGFnajladkViTGc3WmV1SWVpdzhQL2VO?=
- =?utf-8?B?RnlDS3grTzV1RUVCdExkSCtDM29RdFlIN3hYYU9xSlcrdm9DSXN3OGFJbW00?=
- =?utf-8?B?ZUFUblF1MUgxVnlKNmFmZXZxWGFJVVNneEYxVk90NENHNU0yODdPaUZNTm0y?=
- =?utf-8?B?cW9BQlVNSUQ5S3o0SngrS0ZvR3VDcTh6UHIvdS9VU1BoZnVTRUZwYmpoeDVH?=
- =?utf-8?B?YkRDSzZPdUhLVUc3Q3lES3VGazJjTml2blNaUnFwdTc5aEVLbVpwL0hKNWRO?=
- =?utf-8?B?cmNMd1VvTnRtOGR4OFgxeERSVmxMYUNQckV5T09jYmN5ZjhxQzY2VEhScEhx?=
- =?utf-8?B?aVVZOFRsQU1Tc1ZCeE1kbDRvbVYwc212V1J0dGtzV2dwTVR0ZndsUTdReVJT?=
- =?utf-8?B?Z3FQSWVoalZZMWdtdGE1bkFvZzMvNjV6WDhmcFJwbkhTaDRlTWhOV3JYOUsx?=
- =?utf-8?B?OXQ5NGNvcUpFSjBqRVlTcVgyVlVRMjNRc0o4QXhZZnQ0bGNOdWhnbmwzNmZz?=
- =?utf-8?B?MXVmREpseVhjQTFHd3BpUEpNeDlXMEYvZlo0K0F1TVRuSHBrNVo4T0YvdDND?=
- =?utf-8?B?MXpzSXdaOEozS2lXWW9wQTJuL1ZWSTN6N2swT1NYbEdMaXQ0SmkxUU40eWZK?=
- =?utf-8?B?ZVlOZWJZaEVrZHlLaVliaFNVWk54cHNkbHRhQUtjSTNDNGs1SFI2RmQzZ1h2?=
- =?utf-8?B?anU3NCt5L1diUlZHSldhNkk2K1JzSk9HYzZYUGtwazh0Z0M5YnVSNEFVM3E0?=
- =?utf-8?B?eHV4aGFCRm9heU85R0UrRmFGVXlxYUNWUnZSZ0ovNjlhTW1tYm9Wa1FDRXhn?=
- =?utf-8?B?M0VTdnNkVllNUEMrV1JpaGlFUEgvUHMwVWZLQ2ZqZWlrR3lwdmNkbkNJTUx5?=
- =?utf-8?B?QlE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <67CD300DCB87D5409C64380DF48B6E1C@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Message-ID: <ZJxQrs2KrWITNuLE@vermeer>
+References: <cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <972e1d5c5ec53e2757fb17a586558c5385e987dd.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch>
+ <64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch>
+ <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com>
+ <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
+ <649b7a9b69cb6_11e68529473@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4843844-2673-46f3-3f00-08db77bc6bbf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jun 2023 09:45:34.8052
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AyvE5cPuzmWd/cBkAPLxUaPa2Ihj1UhiZyQ3s1RqyzAGUkjVV/Qd+hI0cUN5QHWgMLpzvXzzJ2bP3vshlzbFJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6478
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <649b7a9b69cb6_11e68529473@dwillia2-xfh.jf.intel.com.notmuch>
 
-T24gV2VkLCAyMDIzLTA2LTI4IGF0IDExOjAyICswMjAwLCBncmVna2hAbGludXhmb3VuZGF0aW9u
-Lm9yZyB3cm90ZToNCj4gT24gV2VkLCBKdW4gMjgsIDIwMjMgYXQgMDg6NTY6MzBBTSArMDAwMCwg
-SHVhbmcsIEthaSB3cm90ZToNCj4gPiBPbiBXZWQsIDIwMjMtMDYtMjggYXQgMDg6NDYgKzAyMDAs
-IGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnIHdyb3RlOg0KPiA+ID4gT24gV2VkLCBKdW4gMjgs
-IDIwMjMgYXQgMDI6MTY6NDVBTSArMDAwMCwgSHVhbmcsIEthaSB3cm90ZToNCj4gPiA+ID4gPiBZ
-b3UgcmVhbGx5IHNob3VsZG4ndCBiZSBwdXR0aW5nIGF0dGVzdGF0aW9uIHZhbGlkYXRpb24gbG9n
-aWMgaW4gdGhlDQo+ID4gPiA+ID4ga2VybmVsLg0KPiA+ID4gPiANCj4gPiA+ID4gQWdyZWVkLiAg
-VGhlIGRhdGEgYmxvYiBmb3IgcmVtb3RlIHZlcmlmaWNhdGlvbiBzaG91bGQgYmUganVzdCBzb21l
-IGRhdGEgYmxvYiB0bw0KPiA+ID4gPiB0aGUga2VybmVsLiAgSSB0aGluayB0aGUga2VybmVsIHNo
-b3VsZG4ndCBldmVuIHRyeSB0byB1bmRlcnN0YW5kIHRoZSBkYXRhIGJsb2INCj4gPiA+ID4gaXMg
-Zm9yIHdoaWNoIGFyY2hpdGVjdHVyZS4gIEZyb20gdGhlIGtlcm5lbCdzIHBlcnNwZWN0aXZlLCBp
-dCBzaG91bGQgYmUganVzdA0KPiA+ID4gPiBzb21lIGRhdGEgYmxvYiB0aGF0IHRoZSBrZXJuZWwg
-Z2V0cyBmcm9tIGhhcmR3YXJlL2Zpcm13YXJlIG9yIHdoYXRldmVyIGVtYmVkZGVkDQo+ID4gPiA+
-IGluIHRoZSByb290LW9mLXRydXN0IGluIHRoZSBoYXJkd2FyZSBhZnRlciB0YWtpbmcgc29tZSBp
-bnB1dCBmcm9tIHVzcnNwYWNlIGZvcg0KPiA+ID4gPiB0aGUgdW5pcXVlIGlkZW50aXR5IG9mIHRo
-ZSBibG9iIHRoYXQgY2FuIGJlIHVzZWQgdG8sIGUuZy4sIG1pdGlnYXRlIHJlcGxheS0NCj4gPiA+
-ID4gYXR0YWNrLCBldGMuDQo+ID4gPiANCj4gPiA+IEdyZWF0LCB0aGVuIHVzZSB0aGUgY29tbW9u
-ICJkYXRhIGJsb2IiIGFwaSB0aGF0IHdlIGhhdmUgaW4gdGhlIGtlcm5lbA0KPiA+ID4gZm9yIGEg
-dmVyeSBsb25nIHRpbWUgbm93LCB0aGUgImZpcndtYXJlIGRvd25sb2FkIiBhcGksIG9yIHRoZSBz
-eXNmcw0KPiA+ID4gYmluYXJ5IGZpbGUgYXBpLiAgQm90aCBvZiB0aGVtIGp1c3QgdXNlIHRoZSBr
-ZXJuZWwgYXMgYSBwYXNzLXRocm91Z2ggYW5kDQo+ID4gPiBkbyBub3QgdG91Y2ggdGhlIGRhdGEg
-YXQgYWxsLiAgTm8gbmVlZCBmb3IgY3JhenkgY3VzdG9tIGlvY3RscyBhbmQgYWxsDQo+ID4gPiB0
-aGF0IG1lc3MgOikNCj4gPiA+IA0KPiA+IA0KPiA+IEkgZ3Vlc3MgSSB3YXMgdGFsa2luZyBhYm91
-dCBmcm9tICJrZXJuZWwgc2hvdWxkbid0IHRyeSB0byBwYXJzZSBhdHRlc3RhdGlvbiBkYXRhDQo+
-ID4gYmxvYiIgcGVyc3BlY3RpdmUuICBMb29raW5nIGF0IEFNRCdzIGF0dGVzdGF0aW9uIGZsb3cg
-KEkgaGF2ZSBubyBkZWVwDQo+ID4gdW5kZXJzdGFuZGluZyBvZiBBTUQncyBhdHRlc3RhdGlvbiBm
-bG93KSwgdGhlIGFzc3VtcHRpb24gb2YgIm9uZSByZW1vdGUNCj4gPiB2ZXJpZmlhYmxlIGRhdGEg
-YmxvYiIgaXNuJ3QgZXZlbiB0cnVlIC0tIEFNRCBjYW4gcmV0dXJuICJhdHRlc3RhdGlvbiByZXBv
-cnQiDQo+ID4gKHJlbW90ZSB2ZXJpZmlhYmxlKSBhbmQgdGhlICJjZXJ0aWZpY2F0ZSIgdG8gdmVy
-aWZ5IGl0IHNlcGFyYXRlbHk6DQo+ID4gDQo+ID4gaHR0cHM6Ly9kb2NzLmF3cy5hbWF6b24uY29t
-L0FXU0VDMi9sYXRlc3QvVXNlckd1aWRlL3NucC1hdHRlc3RhdGlvbi5odG1sDQo+ID4gDQo+ID4g
-T24gdGhlIG90aGVyIGhhbmQsIEFGQUlDVCBJbnRlbCBTR1gtYmFzZWQgYXR0ZXN0YXRpb24gZG9l
-c24ndCBoYXZlIGEgbWVjaGFuaXNtDQo+ID4gImZvciB0aGUga2VybmVsIiB0byByZXR1cm4gY2Vy
-dGlmaWNhdGUocyksIGJ1dCBjaG9vc2UgdG8gZW1iZWQgdGhlDQo+ID4gY2VydGlmaWNhdGUocykg
-dG8gdGhlIFF1b3RlIGl0c2VsZi4gIEkgYmVsaWV2ZSB3ZSBjYW4gYWRkIHN1Y2ggbWVjaGFuaXNt
-IChlLmcuLA0KPiA+IGFub3RoZXIgVERWTUNBTEwpIGZvciB0aGUga2VybmVsIHRvIGdldCBjZXJ0
-aWZpY2F0ZShzKSBzZXBhcmF0ZWx5LCBidXQgQUZBSUNUIGl0DQo+ID4gZG9lc24ndCBleGlzdCB5
-ZXQuDQo+ID4gDQo+ID4gQnR3LCBnZXR0aW5nICJyZW1vdGUgdmVyaWZpYWJsZSBibG9iIiBpcyBv
-bmx5IG9uZSBzdGVwIG9mIHRoZSBhdHRlc3RhdGlvbiBmbG93Lg0KPiA+IEZvciBpbnN0YW5jZSwg
-YmVmb3JlIHRoZSBibG9iIGNhbiBiZSBnZW5lcmF0ZWQsIHRoZXJlIG11c3QgYmUgYSBzdGVwIHRv
-DQo+ID4gZXN0YWJsaXNoIHRoZSBhdHRlc3RhdGlvbiBrZXkgYmV0d2VlbiB0aGUgbWFjaGluZSBh
-bmQgdGhlIGF0dGVzdGF0aW9uIHNlcnZpY2UuIA0KPiA+IEFuZCB0aGUgZmxvdyB0byBkbyB0aGlz
-IGNvdWxkIGJlIHZlcnkgZGlmZmVyZW50IGJldHdlZW4gdmVuZG9ycyB0b28uDQo+ID4gDQo+ID4g
-VGhhdCBiZWluZyBzYWlkLCB3aGlsZSBJIGJlbGlldmUgYWxsIHRob3NlIGRpZmZlcmVuY2VzIGNh
-biBiZSB1bmlmaWVkIGluIHNvbWUNCj4gPiB3YXksIEkgdGhpbmsgdGhlIHF1ZXN0aW9uIGlzIHdo
-ZXRoZXIgaXQgaXMgd29ydGggdG8gcHV0IHN1Y2ggZWZmb3J0IHRvIHRyeSB0bw0KPiA+IHVuaWZ5
-IGF0dGVzdGF0aW9uIGZsb3cgZm9yIGFsbCB2ZW5kb3JzLiAgQXMgRXJkZW0gQWt0YXMgbWVudGlv
-bmVkIGVhcmxpZXIsICJ0aGUNCj4gPiBudW1iZXIgb2YgQ1BVIHZlbmRvcnMgZm9yIGNvbmZpZGVu
-dGlhbCBjb21wdXRpbmcgc2VlbXMgbWFuYWdlYWJsZSIuDQo+IA0KPiBTbyB5b3UgdGhpbmsgdGhh
-dCB0aGVyZSBzaG91bGQgYmUgYSBjdXN0b20gdXNlci9rZXJuZWwgYXBpIGZvciBldmVyeQ0KPiBz
-aW5nbGUgZGlmZmVyZW50IENQVSB2ZW5kb3I/ICBUaGF0J3Mgbm90IGhvdyBrZXJuZWwgZGV2ZWxv
-cG1lbnQgd29ya3MsDQo+IHNvcnJ5LiAgTGV0J3MgdHJ5IHRvIHVuaWZ5IHRoZW0gdG8gbWFrZSBi
-b3RoIHRoZSBrZXJuZWwsIGFuZCB1c2Vyc3BhY2UsDQo+IHNhbmUuDQo+IA0KPiBBbmQgRGFuIGlz
-IHJpZ2h0LCBpZiB0aGlzIGlzIGhhbmRsaW5nIGtleXMsIHRoZW4gdGhlIGtleSBzdWJzeXN0ZW0g
-bmVlZHMNCj4gdG8gYmUgdXNlZCBoZXJlIGluc3RlYWQgb2YgY3VzdG9tIGlvY3Rscy4NCj4gDQoN
-ClN1cmUuICBJIGhhdmUgbm8gb2JqZWN0aW9uIHRvIHRoaXMuDQo=
+On Tue, Jun 27, 2023 at 05:11:07PM -0700, Dan Williams wrote:
+> Dionna Amalie Glaze wrote:
+> > On Sun, Jun 25, 2023 at 8:06 PM Sathyanarayanan Kuppuswamy
+> > <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+> [..]
+> > > Hi Dan,
+> > >
+> > > On 6/23/23 3:27 PM, Dan Williams wrote:
+> > > > Dan Williams wrote:
+> > > >> [ add David, Brijesh, and Atish]
+> > > >>
+> > > >> Kuppuswamy Sathyanarayanan wrote:
+> > > >>> In TDX guest, the second stage of the attestation process is Quote
+> > > >>> generation. This process is required to convert the locally generated
+> > > >>> TDREPORT into a remotely verifiable Quote. It involves sending the
+> > > >>> TDREPORT data to a Quoting Enclave (QE) which will verify the
+> > > >>> integrity of the TDREPORT and sign it with an attestation key.
+> > > >>>
+> > > >>> Intel's TDX attestation driver exposes TDX_CMD_GET_QUOTE IOCTL to
+> > > >>> allow the user agent to get the TD Quote.
+> > > >>>
+> > > >>> Add a kernel selftest module to verify the Quote generation feature.
+> > > >>>
+> > > >>> TD Quote generation involves following steps:
+> > > >>>
+> > > >>> * Get the TDREPORT data using TDX_CMD_GET_REPORT IOCTL.
+> > > >>> * Embed the TDREPORT data in quote buffer and request for quote
+> > > >>>   generation via TDX_CMD_GET_QUOTE IOCTL request.
+> > > >>> * Upon completion of the GetQuote request, check for non zero value
+> > > >>>   in the status field of Quote header to make sure the generated
+> > > >>>   quote is valid.
+> > > >>
+> > > >> What this cover letter does not say is that this is adding another
+> > > >> instance of the similar pattern as SNP_GET_REPORT.
+> > > >>
+> > > >> Linux is best served when multiple vendors trying to do similar
+> > > >> operations are brought together behind a common ABI. We see this in the
+> > > >> history of wrangling SCSI vendors behind common interfaces. Now multiple
+> > > >> confidential computing vendors trying to develop similar flows with
+> > > >> differentiated formats where that differentiation need not leak over the
+> > > >> ABI boundary.
+> > > > [..]
+> > > >
+> > > > Below is a rough mock up of this approach to demonstrate the direction.
+> > > > Again, the goal is to define an ABI that can support any vendor's
+> > > > arch-specific attestation method and key provisioning flows without
+> > > > leaking vendor-specific details, or confidential material over the
+> > > > user/kernel ABI.
+> > >
+> > > Thanks for working on this mock code and helping out. It gives me the
+> > > general idea about your proposal.
+> > >
+> > > >
+> > > > The observation is that there are a sufficient number of attestation
+> > > > flows available to review where Linux can define a superset ABI to
+> > > > contain them all. The other observation is that the implementations have
+> > > > features that may cross-polinate over time. For example the SEV
+> > > > privelege level consideration ("vmpl"), and the TDX RTMR (think TPM
+> > > > PCRs) mechanisms address generic Confidential Computing use cases.
+> > >
+> > >
+> > > I agree with your point about VMPL and RTMR feature cases. This observation
+> > > is valid for AMD SEV and TDX attestation flows. But I am not sure whether
+> > > it will hold true for other vendor implementations. Our sample set is not
+> > > good enough to make this conclusion. The reason for my concern is, if you
+> > > check the ABI interface used in the S390 arch attestation driver
+> > > (drivers/s390/char/uvdevice.c), you would notice that there is a significant
+> > > difference between the ABI used in that driver and SEV/TDX drivers. The S390
+> > > driver attestation request appears to accept two data blobs as input, as well
+> > > as a variety of vendor-specific header configurations.
+> > >
+> > > Maybe the s390 attestation model is a special case, but, I think we consider
+> > > this issue. Since we don't have a common spec, there is chance that any
+> > > superset ABI we define now may not meet future vendor requirements. One way to
+> > > handle it to leave enough space in the generic ABI to handle future vendor
+> > > requirements.
+> > >
+> > > I think it would be better if other vendors (like ARM or RISC) can comment and
+> > > confirm whether this proposal meets their demands.
+> > >
+> > 
+> > The VMPL-based separation that will house the supervisor module known
+> > as SVSM can have protocols that implement a TPM command interface, or
+> > an RTMR-extension interface, and will also need to have an
+> > SVSM-specific protocol attestation report format to keep the secure
+> > chain of custody apparent. We'd have different formats and protocols
+> > in the kernel, at least, to speak to each technology. 
+> 
+> That's where I hope the line can be drawn, i.e. that all of this vendor
+> differentiation really only matters inside the kernel in the end.
+
+Looking at your keys subsystem based PoC (thanks for putting it
+together), I understand that the intention is to pass an attestation
+evidence request as a payload to the kernel, in a abstract way.
+i.e. the void *data in:
+static int guest_attest_request_key(struct key *authkey, void *data)
+
+And then passiing that down to vendor specific handlers
+(tdx_request_attest in your PoC) for it to behave as a key server for
+that attestation evidence request. The vendor magic of transforming an
+attestation request into an actual attestation evidence (typically
+signed with platform derived keys) is stuffed into that handler. The
+format, content and protection of both the attestation evidence request
+and the evidence itself is left for the guest kernel handler (e.g.
+tdx_request_attest) to handle.
+
+Is that a fair description of your proposal?
+
+If it is, then it makes sense to me, and could serve as a generic
+abstraction for confidential computing guest attestation evidence
+requests. I think it could support the TDX, SEV and also the RISC-V
+(aka CoVE) guest attestation request evidence flow.
+
+> > I'm not sure it's worth the trouble of papering over all the... 3-4
+> > technologies with similar but still weirdly different formats and ways
+> > of doing things with an abstracted attestation ABI, especially since
+> > the output all has to be interpreted in an architecture-specific way
+> > anyway.
+> 
+> This is where I need help. Can you identify where the following
+> assertion falls over:
+> 
+> "The minimum viable key-server is one that can generically validate a
+> blob with an ECDSA signature".
+> 
+> I.e. the fact that SEV and TDX send different length blobs is less
+> important than validating that signature.
+
+I'm not sure which signature we're talking about here.
+The final attestation evidence (The blob the guest workload will send to
+a remote attestation service) is signed with a platform derived key,
+typically rooted into a manufacturer's CA. It is then up to the *remote*
+attestation service to authenticate and validate the evidence signature.
+Then it can go through the actual attestation verification flow
+(comparison against reference values, policy checks, etc). The latter
+should be none of the guest kernel's business, which is what your
+proposal seems to be heading to.
+
+
+> If it is always the case that specific fields in the blob need to be
+> decoded then yes, that weakens the assertion. 
+
+Your vendor specific key handler may have to decode the passed void
+pointer into a vendor specific structure before sending it down to the
+TSM/ASP/etc, and that's fine imho.
+
+Cheers,
+Samuel.
