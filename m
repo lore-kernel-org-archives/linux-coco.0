@@ -1,385 +1,280 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2072.outbound.protection.outlook.com [40.107.93.72])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0F52F24
-	for <linux-coco@lists.linux.dev>; Tue, 27 Jun 2023 23:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD93E173
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 00:13:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687911197; x=1719447197;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=8CzNOU/BiDOEWQwzvKn9MkuKCLmhbDN9RAQPEeP+H5w=;
+  b=dVb6ds1H+bl7VZYiIT10rfQ1II2uz5symCMvZMHbf/gJRX1o7g74Q6NG
+   RWkp99t1a7gSw81cBBrARw/RUeZs4bhAPb89XgG6Gnz8KzcgLADlZd560
+   Sihr1Fz4LiwC99xyYC48UcXqOy8Yzlsxh1tQamHF6u6B3MFMcy7xkgqdb
+   Eg2SfrWvOZGJox4imreTh/YTPV30UbDUwC5woGvX9NK6y3uqWg1bdq0LE
+   doXSoKJw6lViJOSj9Cx97o1WUKIr7i+7J99fkcFt32TPqnU5fxnON9+ou
+   2I83Imz6aDiv73p6dsuNzv+XKBIptpaawvfpnBZnv+YMBY0j/WwrUXzCB
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="365167063"
+X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
+   d="scan'208";a="365167063"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 17:11:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="666896043"
+X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
+   d="scan'208";a="666896043"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga003.jf.intel.com with ESMTP; 27 Jun 2023 17:11:16 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 27 Jun 2023 17:11:16 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Tue, 27 Jun 2023 17:11:16 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.45) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Tue, 27 Jun 2023 17:11:16 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gADdqXbql3od1RsgL8hI5jQkMIZp8zGXywdziFaVBw3x4BG+xd8q26ncaGgX7nYwx6/7aW2OunDCit2xMKRjt1H/JieEt0tt1xT3U6zPJP5XmTi0vQ7xj8S33EXtgPqn73PUpNHfo5p/N0bFPsZYDZHBkt1kGU9rCZ1zaBufawNnpUwH+j8XrVctMDesc8TohuzQPsJFCzKTfvYE8WK+7bdl7kiHvNXw3/a5aTVriewfq24gYMppbslq5XvaB3F7WTKNT2wejDQkSHXlOfnX514XO+CAiU6n9cCD2ToXqNzOLlnuwep/1OoEbl7IzkPyRvaqclhm9QWH2/UoaWpjGg==
+ b=j7O+vhz4X1E8n86ucuUj7P+il1PSjUXWawmWazjOzLm5EZjmTt7fri+XyYf/EcpUA1DjUSY4Q0AhGY/U89KHXxRYpB0Z1GRFez/nhZVb5mzU1kvpz/GepMOGQxa7o4WyU4UCws2rEkf1Qm8Pz1NdolcBhIuokI/xHP7dkMpRXafOtljAWDkaHdwkfVnq28QriH8Mj9vvQFwpjrBRWAiQYNTOBZviQ97suw0F6ACRqgwMwiVrBnhGaL9aoZL9Aw97CQytbNXlBuAq/+IvNOCpM3YWMJ8g45wX2ws1eRDhLks2nxq9ehvWX+yR5Ii8OZtc71RR8yjIMoAXaD00snRUsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6xK+UQIZocNImMdTK8FGtWxKw6RpPfkGjG4LIbMcYzw=;
- b=g5ArYXxXiDxnJUNt2AU8XdZ5JqdJAY8ywPz08qETLgIEtJ8JqasEIClLrjRLuaieBQtt7z9ESkcJcKPheQenK0OSkqlH6dwp84YpH+7NYIvoh2wpfoUZrZvHxKd4C1mqJc+c3pCl6F9SnxajnhIbCViuj4s6iPUjhN1bhJdhZBpUPYszFZ5OHEgDtOIKbHJrb9SIG3jAq83S9FBce9GKr7P5pi+4kq93Eo218sLHfgHPU3drmELQWWgm/M/VXQNDUyXZOZ/IL4KSq6JG5jrH9WHIM/iTy5mKRAnfmjbwbsFWgBce8+ejeXpsjh0qLf/CkwQPscdOyGVTCOFvb2P5/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6xK+UQIZocNImMdTK8FGtWxKw6RpPfkGjG4LIbMcYzw=;
- b=UpV5OtrtRFgRDZD9DgixKnhJOGFF6mlPv0JxfUvM+c7tBmLRV7SF/9grIhHrzm69y0dYQWhPlSzyysWKcFW7ghKZpb43C8MCBi5k6V73aHtpx2qnFlY7jdMptkS3h5C8JAbvb7NjomkI7pHSXZM0QkBZbsX0GzxwwJiuxi4mVhM=
-Received: from BN9PR03CA0119.namprd03.prod.outlook.com (2603:10b6:408:fd::34)
- by CY8PR12MB7634.namprd12.prod.outlook.com (2603:10b6:930:9d::16) with
+ bh=Fa+ExTECRz196bk7FE5imQx/BdkbJW8JXLcY4AoJpKE=;
+ b=di30sVNNh9AmsrgQ2R/Uom94ocaSLjqPkskp6DNF80YvWvVucdKYsD0vHWs18J2FMyVv8vkq4zztl85E8nf6LW+0164osx6TqGL4Jvulw3XbtKC/Wa/h39VVejJR+cz5TwsH/7MmJJFiSprQY4hiSBui6rvt39HU31x0zQgHJQmTh16OWwlPkyNjtVlvTkUQl1cQ/Hux97ejzJywklQlrRSQDAQr21fgAXDoY1NTqakzTdyEFiq41iagL9PxxG/Jrny+PoLVjN8xC0zjAPQpdqbBnenybWtNOi6orOKC/NL/MaGjCysyWpPPw+JK8nw4YEZQrbqGdK05wqCXO+/Rzw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by CY8PR11MB7241.namprd11.prod.outlook.com (2603:10b6:930:94::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Tue, 27 Jun
- 2023 23:59:04 +0000
-Received: from BN8NAM11FT009.eop-nam11.prod.protection.outlook.com
- (2603:10b6:408:fd:cafe::96) by BN9PR03CA0119.outlook.office365.com
- (2603:10b6:408:fd::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.34 via Frontend
- Transport; Tue, 27 Jun 2023 23:59:03 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN8NAM11FT009.mail.protection.outlook.com (10.13.176.65) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6500.48 via Frontend Transport; Tue, 27 Jun 2023 23:59:03 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Tue, 27 Jun
- 2023 18:59:03 -0500
-Date: Tue, 27 Jun 2023 18:58:45 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <isaku.yamahata@intel.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <isaku.yamahata@gmail.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, <erdemaktas@google.com>, Sagi Shahar
-	<sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang
-	<kai.huang@intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
-	<chen.bo@intel.com>, <linux-coco@lists.linux.dev>, Chao Peng
-	<chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, Vishal
- Annapurve <vannapurve@google.com>
-Subject: Re: [RFC PATCH v2 4/6] KVM: x86: Introduce fault type to indicate
- kvm page fault is private
-Message-ID: <20230627235845.qixtneay2tiv6xuu@amd.com>
-References: <cover.1687474039.git.isaku.yamahata@intel.com>
- <a3a19de92c7ac6e607ac3e663d84a4312876084b.1687474039.git.isaku.yamahata@intel.com>
- <ZJX6s2HxbHOUMXlj@google.com>
- <20230626010753.xru5ph3irmyokrgc@amd.com>
- <ZJnXObRHhn5Q1dX2@google.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6521.26; Wed, 28 Jun
+ 2023 00:11:12 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::aeb:12b5:6ac9:fab0]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::aeb:12b5:6ac9:fab0%7]) with mapi id 15.20.6500.029; Wed, 28 Jun 2023
+ 00:11:12 +0000
+Date: Tue, 27 Jun 2023 17:11:07 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Dionna Amalie Glaze <dionnaglaze@google.com>, Sathyanarayanan Kuppuswamy
+	<sathyanarayanan.kuppuswamy@linux.intel.com>
+CC: Dan Williams <dan.j.williams@intel.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, "H . Peter
+ Anvin" <hpa@zytor.com>, "Kirill A . Shutemov"
+	<kirill.shutemov@linux.intel.com>, Tony Luck <tony.luck@intel.com>, "Wander
+ Lairson Costa" <wander@redhat.com>, Erdem Aktas <erdemaktas@google.com>,
+	"Chong Cai" <chongc@google.com>, Qinkun Bao <qinkun@apache.org>, Guorui Yu
+	<GuoRui.Yu@linux.alibaba.com>, Du Fan <fan.du@intel.com>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <dhowells@redhat.com>, <brijesh.singh@amd.com>,
+	<atishp@rivosinc.com>, <gregkh@linuxfoundation.org>,
+	<linux-coco@lists.linux.dev>, <joey.gouly@arm.com>
+Subject: Re: [PATCH v3 3/3] selftests/tdx: Test GetQuote TDX attestation
+ feature
+Message-ID: <649b7a9b69cb6_11e68529473@dwillia2-xfh.jf.intel.com.notmuch>
+References: <cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <972e1d5c5ec53e2757fb17a586558c5385e987dd.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch>
+ <64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch>
+ <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com>
+ <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
+X-ClientProxiedBy: MW4PR04CA0144.namprd04.prod.outlook.com
+ (2603:10b6:303:84::29) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZJnXObRHhn5Q1dX2@google.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8NAM11FT009:EE_|CY8PR12MB7634:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89ae2d90-7cd1-4716-f2eb-08db776a7c4b
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY8PR11MB7241:EE_
+X-MS-Office365-Filtering-Correlation-Id: d0ec5c63-328b-4556-e1e7-08db776c2e27
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	X2uqVytGTxlcwYTvBrPcgrSPIN7fdv8Hr6BK++zMpGx57lshwm0/Who0szJELnwHn1ZH8JtEx1NpSS2yW+zb5P/1rjuTznXU1aeuq7EjhT6eadRG7khMljE1jRn9gN2qyFAFlt/SoLwFeGqDvI8ITruVXtF29acGTz66blb6DYCSjs9K61QluY7IhoCVjhjsQa+YaC3xB41KEpSDBb10rc8y4WmZlX/JzNnIl2GHRXDucn/W0buYMVw9SiZfJvw6qeFkRirc1qeUXp46M9Kmo3vpS8sngPK/wcDf9dOK6UMK3iwPT+vCRsaVUcRuuLPAHKTknzmukGT9e1eMF0/V2Yhy9IHHHl2qRD3Ri01c8++vrShPdAWP1xJgoS0F/cPzv85dvbOrrR9SSqPQubD18XGJeJRSyAfLVivj1+68NTz04CtnGFEtV8Xw/OXskmMWYNtTsVgHativ+CrTOUPSHzywGu+YKf7ptS6zHm8wlBjtoxo36OPFWu/X00w9oj0bflhAroVmJSkG/jubGDfLLc1y4JXz94JgfNkoqL77d/YmdfdmcMbqQikmxiFgOB1oA9B5oeWXXKJp3JHQDQxITDO7SfOVdbD0s2Q7zkDGwbqkpEGOMY3w3IKDSTVBHbx57PaahBWyW15JMX0FADeYL8ZOCOMxEb0Ll/FXwdojIdIQT0BBTf9V5Lagka7xGj4biVYjRjQGe5G9CvZ0F2AiA+eLYrtiNeX1CY9af1vuEn56vKJhr6c5x4KY6KG1gwMPubPfK+bqTUb9iQkcvgxvWw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(136003)(39860400002)(396003)(346002)(451199021)(36840700001)(40470700004)(46966006)(83380400001)(54906003)(478600001)(6666004)(1076003)(81166007)(2906002)(26005)(186003)(30864003)(82310400005)(16526019)(70586007)(316002)(7416002)(44832011)(356005)(41300700001)(70206006)(5660300002)(8676002)(36756003)(4326008)(6916009)(8936002)(426003)(86362001)(82740400003)(36860700001)(336012)(47076005)(2616005)(40480700001)(40460700003)(66899021)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2023 23:59:03.8179
+X-Microsoft-Antispam-Message-Info: ljJJ1lQXAN1425wfHQRkt/AnN9pXKNLMoZwMPFK2kyu10sKc7rr81MWCiEmzJRZvZCNZHNpsWb6MErRC4Vdl2r3V7n8qvaiZLxAkRop7+CORaoZjWtIGFsVNe3htTnIqo/UdmZ+INf21931+VlIki8fq+j9eQGkxbX87i2zp0JJWnVH0D876VI8xEbnRil1xZkpf8fmJCCb+G1LBLUFTCWbhLVJiAnHGgxMegeiOuIvFDZ16v1ErGnQi4m7lHbfD9Ho2NL+KmNRZ7oaCXExyAZc65FkA0ehM+puKTYvi2vTklJiORg1v0cVlp0EwvgsNuB/iu7Oyh7mSK9kYJ44PyQxi0PjnV5Erp3vJRAiOsvEG+AYk4QUFIbgYv9/HMZfIS6BH9+o6N8PpOmkY4pjsdbkfgGRrDVXl8qVvGMS258RSjL7nbFqXzKNKqNer6TdKXbFjZWETVIUocK2JOkap9QixMT37+4RVxbyHJIG3BVD5orzo/pAX/OOycrxcKuvuFRfDXyfpr9m0zzJOvmcdwA6BaUzJjVnmY5hgHa34a+776nDL4kdp/jvMDm7u8rdZ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(136003)(39860400002)(396003)(346002)(366004)(451199021)(83380400001)(110136005)(54906003)(478600001)(6486002)(6666004)(9686003)(53546011)(6512007)(66556008)(2906002)(66946007)(26005)(186003)(66476007)(6506007)(316002)(7416002)(38100700002)(41300700001)(5660300002)(8676002)(4326008)(8936002)(86362001)(82960400001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RUd5Rkw4ZWE4NHpWbGJvVlNhZWFoeFNCMmx3MC8vZHV2Q0pTVGRaRWE3bkN1?=
+ =?utf-8?B?aUYrRE5GU2x6aWRWZXNlSHBueUs3YW1pTUg3YThTalQ4cW83TEZ1enVCU1Vq?=
+ =?utf-8?B?Vyt3ZU9VR0NyNzlMMWl6dDNuLzB6cjgzVFVhUlo2UkNBdHZXaUptRWFYckZ1?=
+ =?utf-8?B?ZmE0dUY3U2xFTjN2ZGlJWTJrMytQcUlBbUNpbzNKdGsrTVFYc0EvTEhhdFY2?=
+ =?utf-8?B?N2EwRDNLd0h1bDdYL0xpdzZMWXZsanVQendqVUZXanZYZG11MXcrbHRpcUpt?=
+ =?utf-8?B?dXdlNzBHOE5mVXRxTjVtcGR5QnBROEFnVVpxQlRMVC95YnVHdkxEK3FTYVcx?=
+ =?utf-8?B?M3JOaXFIRXV1QlVybC9aTUdjK1RaWE1nZVBMMElUU1QvUm0vYUFqSk5kb2E0?=
+ =?utf-8?B?SmJGVEV4aE8zYWgvMEF2N3ZFc3dBUTRzT0ZKdUFPMEJydGJBWjU0MGZ3UEx4?=
+ =?utf-8?B?ditwTG5nN3pudkNmQVNWNDZOKzRtdm5wUWlubDJ1QytuQm1wenlWT0l1QXhL?=
+ =?utf-8?B?K25CRXhrWHF5ZU9jaU1GaDAzZW5xMG5ZSlpmL0NlV1ZsclZEdkJRNkNsNkZa?=
+ =?utf-8?B?UUdISXJpMjRTSGlwU25lNXZlWHYzZGIwQ1FFMVRlV2JyWFNQWTVGVWJxa0ty?=
+ =?utf-8?B?b0xZS29YdmtBUEFwS3o1bjhuQ1Azay9nUytnM09RaWpZc3NCWUdWZ0lXb085?=
+ =?utf-8?B?c0tyZlRTemtiYTBGMlpoQlpNbjR4N1JoMEtkVkFpelpIa0FqNG0wUmIzMW5i?=
+ =?utf-8?B?aGRiL29xZTlKRzlnVzI0N1RJY3JIcXkzYXk0dlBFdTRCWlA2OFlnYWI3cHpx?=
+ =?utf-8?B?aUJzNndZRFdmb05yZ1piRTlkdnRsaGZBdWxKSHVSa2M0SEh6NkZ6MlN6OURG?=
+ =?utf-8?B?S0pXY1NOc2dMcTZIc0pBNnYyeXFLbnlnMVo3eU1JZkYvdkxzcTh6Zmp3SkZa?=
+ =?utf-8?B?NVdYcG4vdmhBcEpSRHd6Q0ZkRFltdHdBQy91bGlrUlllNHYwejU3RmlsenJp?=
+ =?utf-8?B?Y1pwUTZ3MXRYeXRKSFFNS3YvdkxzOGgxWU9uUlFvZDQ4YnIvb3Q0Y0ZVSm9m?=
+ =?utf-8?B?ekJzUWo4VUhoOVpwQXlEb2RKOCsyTG92YnBDM3E3RVVUamYyZ096WUEraTZm?=
+ =?utf-8?B?RjhNK0lQQ0xHaVgzZkQ1ZkVzMlJxQzlZanBzOHJDNFdXUTFSRno4K0M3NHhV?=
+ =?utf-8?B?YnlxUnBVcXpFcnZGWllYSkIrQUxQVzNJQnoyOWRZT1JJSnBsbHBTaG5IVkVI?=
+ =?utf-8?B?cTRTVURqS3JneWRBbWRCYWI0cTFqVEp3Q1cvMHdSTzNvTTRZS0xVYXZaTTlp?=
+ =?utf-8?B?YytJMjVNK0hjTU50cWxHNG1LV2k0ZHJFNklSVEJCUUhmWlQ3bXJiK3Q4cmd0?=
+ =?utf-8?B?NjRCQnI3Um50eU9jZ1V4TjNqNUo0STdtZFhTMWNqRzJEL1RKVzM5dmNsMXI3?=
+ =?utf-8?B?eVFsMTZoRTg0S2FHenRKTXh3bTUrTDVmOHpNVFZ2a1pTd1c4V3lJVjFHSWRH?=
+ =?utf-8?B?cXQzRCt6OTRFMTRVa1Faa25iNUNOMlEzR2NlYzVRUkcyWXN0N21tODBiamt1?=
+ =?utf-8?B?QVoySUlPUlgzdGR6UUQ5a0J4RHdDK1BKejZTaW5aSmVpV1RPM1hxODZNeUxY?=
+ =?utf-8?B?VWVCU2tWU3JHVVNWeFlLVjFFRDlLN2tWNUJzaXFnZFhmMjZRREtuMG11OGpR?=
+ =?utf-8?B?UFQ5Mk1qUzBZSC94ZmxCaXgxdG9XQ2RaR1d4bzVtSm4xZ3BsNm5EUGlIQmsv?=
+ =?utf-8?B?TUhqMW8rdmhweVB2M25oTkFJTHNxSUNHN01iMzk3aElNZ2tTL1RvRXJBNUZW?=
+ =?utf-8?B?WlVWVkZKMkhBQ3dscGlYMWNLTGw3YnpiNCtaV2h5Q1VSQkNzeFU4R21Tbk1Z?=
+ =?utf-8?B?MlF4UG5NZG4wY2JCQzV5dkF5NWZDVWxZRDlHV0w4eU5tbXRVMW9vZDR3V0dm?=
+ =?utf-8?B?YnJhcUprbWE0aFljaXZpK0ZleWlZY1pTaHp3cU5lUVJkZC9DaDg1SVBrSS9C?=
+ =?utf-8?B?U2pXTWRxNXA3a0RsOFhEZHgzQ2s2ek9aUzlDODVQQ0YvcEFCc0prak5zak5k?=
+ =?utf-8?B?cUhLNUYwRzVnWnh2T3Vod01KMjBtOGpsdG1vMzQ3T20vZVRycVNLR3V6N3RI?=
+ =?utf-8?B?akZZaUF2NFM1SlBYZmU1eEZJNS83cWxjMmlMbDUyajUxZFEybGNQMzM5cjE4?=
+ =?utf-8?B?UVE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0ec5c63-328b-4556-e1e7-08db776c2e27
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2023 00:11:11.9492
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89ae2d90-7cd1-4716-f2eb-08db776a7c4b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN8NAM11FT009.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7634
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zuiAp7VFaDWTqrVjCaWWaL37xQbXbZ1pTMRsTSyRO+dxfCdV9kQM8UtfJFo1u8QBhdDE336BH0HxqzcwkKytiSxqltO8dX5ke7FLuNttqfc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7241
+X-OriginatorOrg: intel.com
 
-On Mon, Jun 26, 2023 at 11:21:45AM -0700, Sean Christopherson wrote:
-> On Sun, Jun 25, 2023, Michael Roth wrote:
-> > On Fri, Jun 23, 2023 at 01:04:03PM -0700, Sean Christopherson wrote:
-> > > On Thu, Jun 22, 2023, isaku.yamahata@intel.com wrote:
-> > > > diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-> > > > index 7f9ec1e5b136..0ec0b927a391 100644
-> > > > --- a/arch/x86/kvm/mmu/mmu_internal.h
-> > > > +++ b/arch/x86/kvm/mmu/mmu_internal.h
-> > > > @@ -188,6 +188,13 @@ static inline bool is_nx_huge_page_enabled(struct kvm *kvm)
-> > > >  	return READ_ONCE(nx_huge_pages) && !kvm->arch.disable_nx_huge_pages;
-> > > >  }
-> > > >  
-> > > > +enum kvm_fault_type {
-> > > > +	KVM_FAULT_MEM_ATTR,
-> > > > +	KVM_FAULT_SHARED,
-> > > > +	KVM_FAULT_SHARED_ALWAYS,
-> > > > +	KVM_FAULT_PRIVATE,
-> > > 
-> > > This is silly.  Just use AMD's error code bit, i.e. PFERR_GUEST_ENC_MASK as per
-> > > the SNP series.
-> > > 
-> > >   Bit 34 (ENC): Set to 1 if the guest’s effective C-bit was 1, 0 otherwise.
-> > > 
-> > > Just because Intel's ucode is too crusty to support error codes larger than 16
-> > > bits doesn't mean KVM can't utilize the bits :-)  KVM already translates to AMD's
-> > > error codes for other things, e.g.
-> > > 
-> > > 	error_code |= (exit_qualification & EPT_VIOLATION_GVA_TRANSLATED) != 0 ?
-> > > 	       PFERR_GUEST_FINAL_MASK : PFERR_GUEST_PAGE_MASK;
-> > > 
-> > > For TDX, handle_ept_violation() can do something like:
-> > > 
-> > > 	if (is_tdx(vcpu->kvm))
-> > > 		error_code |= (gpa & shared) ? 0 : PFERR_GUEST_ENC_MASK;
-> > > 	else if (kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(gpa)))
-> > > 		error_code |= PFERR_GUEST_ENC_MASK;
-> > 
-> > Maybe this is what you're getting at below, but seems awkward to have this
-> > being handling in TDX code since that would suggest that SVM module would
-> > also need to duplicate that logic and synthesize this PFERR_GUEST_ENC_MASK
-> > bit for non-SNP VMs (e.g. gmem self-tests).
+Dionna Amalie Glaze wrote:
+> On Sun, Jun 25, 2023 at 8:06 PM Sathyanarayanan Kuppuswamy
+> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+[..]
+> > Hi Dan,
+> >
+> > On 6/23/23 3:27 PM, Dan Williams wrote:
+> > > Dan Williams wrote:
+> > >> [ add David, Brijesh, and Atish]
+> > >>
+> > >> Kuppuswamy Sathyanarayanan wrote:
+> > >>> In TDX guest, the second stage of the attestation process is Quote
+> > >>> generation. This process is required to convert the locally generated
+> > >>> TDREPORT into a remotely verifiable Quote. It involves sending the
+> > >>> TDREPORT data to a Quoting Enclave (QE) which will verify the
+> > >>> integrity of the TDREPORT and sign it with an attestation key.
+> > >>>
+> > >>> Intel's TDX attestation driver exposes TDX_CMD_GET_QUOTE IOCTL to
+> > >>> allow the user agent to get the TD Quote.
+> > >>>
+> > >>> Add a kernel selftest module to verify the Quote generation feature.
+> > >>>
+> > >>> TD Quote generation involves following steps:
+> > >>>
+> > >>> * Get the TDREPORT data using TDX_CMD_GET_REPORT IOCTL.
+> > >>> * Embed the TDREPORT data in quote buffer and request for quote
+> > >>>   generation via TDX_CMD_GET_QUOTE IOCTL request.
+> > >>> * Upon completion of the GetQuote request, check for non zero value
+> > >>>   in the status field of Quote header to make sure the generated
+> > >>>   quote is valid.
+> > >>
+> > >> What this cover letter does not say is that this is adding another
+> > >> instance of the similar pattern as SNP_GET_REPORT.
+> > >>
+> > >> Linux is best served when multiple vendors trying to do similar
+> > >> operations are brought together behind a common ABI. We see this in the
+> > >> history of wrangling SCSI vendors behind common interfaces. Now multiple
+> > >> confidential computing vendors trying to develop similar flows with
+> > >> differentiated formats where that differentiation need not leak over the
+> > >> ABI boundary.
+> > > [..]
+> > >
+> > > Below is a rough mock up of this approach to demonstrate the direction.
+> > > Again, the goal is to define an ABI that can support any vendor's
+> > > arch-specific attestation method and key provisioning flows without
+> > > leaking vendor-specific details, or confidential material over the
+> > > user/kernel ABI.
+> >
+> > Thanks for working on this mock code and helping out. It gives me the
+> > general idea about your proposal.
+> >
+> > >
+> > > The observation is that there are a sufficient number of attestation
+> > > flows available to review where Linux can define a superset ABI to
+> > > contain them all. The other observation is that the implementations have
+> > > features that may cross-polinate over time. For example the SEV
+> > > privelege level consideration ("vmpl"), and the TDX RTMR (think TPM
+> > > PCRs) mechanisms address generic Confidential Computing use cases.
+> >
+> >
+> > I agree with your point about VMPL and RTMR feature cases. This observation
+> > is valid for AMD SEV and TDX attestation flows. But I am not sure whether
+> > it will hold true for other vendor implementations. Our sample set is not
+> > good enough to make this conclusion. The reason for my concern is, if you
+> > check the ABI interface used in the S390 arch attestation driver
+> > (drivers/s390/char/uvdevice.c), you would notice that there is a significant
+> > difference between the ABI used in that driver and SEV/TDX drivers. The S390
+> > driver attestation request appears to accept two data blobs as input, as well
+> > as a variety of vendor-specific header configurations.
+> >
+> > Maybe the s390 attestation model is a special case, but, I think we consider
+> > this issue. Since we don't have a common spec, there is chance that any
+> > superset ABI we define now may not meet future vendor requirements. One way to
+> > handle it to leave enough space in the generic ABI to handle future vendor
+> > requirements.
+> >
+> > I think it would be better if other vendors (like ARM or RISC) can comment and
+> > confirm whether this proposal meets their demands.
+> >
 > 
-> Ah, right, forgot about that angle.  The non-TDX synthesizing can be done in
-> kvm_mmu_page_fault(), e.g.
+> The VMPL-based separation that will house the supervisor module known
+> as SVSM can have protocols that implement a TPM command interface, or
+> an RTMR-extension interface, and will also need to have an
+> SVSM-specific protocol attestation report format to keep the secure
+> chain of custody apparent. We'd have different formats and protocols
+> in the kernel, at least, to speak to each technology. 
+
+That's where I hope the line can be drawn, i.e. that all of this vendor
+differentiation really only matters inside the kernel in the end.
+
+> I'm not sure it's worth the trouble of papering over all the... 3-4
+> technologies with similar but still weirdly different formats and ways
+> of doing things with an abstracted attestation ABI, especially since
+> the output all has to be interpreted in an architecture-specific way
+> anyway.
+
+This is where I need help. Can you identify where the following
+assertion falls over:
+
+"The minimum viable key-server is one that can generically validate a
+blob with an ECDSA signature".
+
+I.e. the fact that SEV and TDX send different length blobs is less
+important than validating that signature.
+
+If it is always the case that specific fields in the blob need to be
+decoded then yes, that weakens the assertion. However, maybe that means
+that kernel code parses the blob and conveys that parsed info along with
+vendor attestation payload all signed by a Linux key. I.e. still allow
+for a unified output format + signed vendor blob and provide a path to
+keep all the vendor specific handling internal to the kernel.
+
+> ARM's Confidential Computing Realm Management Extensions (RME) seems
+> to be going along the lines of a runtime measurement register model
+> with their hardware enforced security. The number of registers isn't
+> prescribed in the spec.
 > 
-> 	if (vcpu->kvm->vm_type == KVM_X86_PROTECTED_VM &&
-> 	    kvm_mem_is_private(...))
-> 		error_code |= PFERR_GUEST_ENC_MASK;
-> 
-> > So maybe SNP/TDX can rely on passing this via error_code, and then some
-> > common code, like kvm_mem_is_private(), can handle this for non-TDX/SNP
-> > guest types. But the current gmem series does this via a new .is_private
-> > in kvm_page_fault:
-> > 
-> >   .is_private = kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT),
-> > 
-> > This seems at odds with the idea of storing this 'fault->is_private'
-> > logic into the error_code. Isaku and I were discussing[1] that we
-> > should do one or the other:
-> > 
-> >   a) store everything in error_code
-> >   b) use the .is_private field that seems to have been introduced to
-> >      track exactly this information
-> > 
-> > So I think this series is attempting to do b). If you're suggesting we
-> > should do a), then what purpose is fault->is_private field meant to
-> > serve? Are you planning to get rid of it? Otherwise it seems redundant.
-> > 
-> > But I think approach b) is useful for another reason:
-> 
-> "is_private" would serve the same purpose as all the other bits that are derived
-> from the error code, e.g. improve readability, reduce line lengths, etc.  Though
-> looking at the name, just "private" is probably the right name.
-> 
-> 	/* Derived from error_code.  */
-> 	const bool exec;
-> 	const bool write;
-> 	const bool present;
-> 	const bool rsvd;
-> 	const bool user;
-
-If we go out of our way to pull bits out of error_code so they can be
-accessed more consistently/sensibly, why introduce additional bits into
-error_code in the first place? It just seems like an unecessary
-intermediate step, and introduces error_code bits that TDX/selftests
-don't actually ever need, which raises the specter of "what if hardware
-starts using this synthetic bit for something else?"
-
-Is it mainly to avoid introducing additional parameters to
-kvm_mmu_page_fault() and instead piggy-backing off of error_code param?
-Or does recording the values into error_code have a use outside of that?
-
-> 
-> > > And that's not even taking into account that TDX might have a separate entry point,
-> > > i.e. the "is_tdx()" check can probably be avoided.
-> > > 
-> > > As for optimizing kvm_mem_is_private() to avoid unnecessary xarray lookups, that
-> > > can and should be done separately, e.g.
-> > > 
-> > >   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
-> > >   {
-> > > 	return IS_ENABLED(CONFIG_KVM_PRIVATE_MEM) &&
-> > > 	       kvm_guest_has_private_mem(kvm) &&
-> > > 	       kvm_get_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> > >   }
-> > > 
-> > > where x86's implementation of kvm_guest_has_private_mem() can be
-> > > 
-> > >   #define kvm_guest_has_private_mem(kvm) (!!(kvm)->vm_type)
-> > 
-> > It's just about not checking xarray for non-protected case. The
-> > optimization here is that neither TDX nor SNP care about the xarray as
-> > far as determining whether the *fault* was a private or not.
-> 
-> Yes, and what I am suggesting doesn't use kvm_mem_is_private() to synthesize that
-> flag for TDX (or SNP).
-> 
-> > We only care later, in part of the KVM MMU code that determines whether the
-> > fault type is at odds with the xarray state and whether to generate a
-> > KVM_EXIT_MEMORY_FAULT as a result.
-> > 
-> > In that code, both TDX/SNP, as well as gmem self-tests, will all end up
-> > calling kvm_mem_is_private().
-> > 
-> > In the gmem self-test case, in current gmem base series, and I think with
-> > what you've proposed here, we'd check the xarray via kvm_mem_is_privae(),
-> > both in kvm_mmu_do_page_fault(), as well as later kvm_faultin_pfn() where
-> > KVM_EXIT_MEMORY_FAULT case is handled. That seems off because:
-> > 
-> >   1) Checking in kvm_mem_is_private() via kvm_mmu_do_page_fault() means
-> >      that we will grab the value prior to when the KVM MMU records the
-> >      mmu_invalidate_seq, which means there's a window between
-> >      kvm_mmu_do_page_fault() and kvm_faultin_pfn() where an updated
-> >      xarray won't be noticed, and the #NPF retry logic will not get
-> >      triggered.
-> 
-> That's ok-ish, for some definitions of ok.  There's no fatal bug, but userspace
-> will see a spurious, arguably nonsensical exit.  If the race occurs before mmu_seq
-> is snapshot, this code will detect the change and exit to userspace.
-> 
-> 	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn))
-> 		return kvm_do_memory_fault_exit(vcpu, fault);
-
-Yah, that's not so bad, but it does make it more tricky to write tighter
-tests since you always have to allow/handle spurious KVM_EXIT_MEMORY
-faults instead of being able to individually flag those non-sensical
-cases. Not a huge deal I guess.
-
-> 
-> >   2) For gmem self-test, kvm_mem_is_private() is the authority on
-> >      whether the fault is private or not. There's no need to distinguish
-> >      between what was set via KVM_SET_MEMORY_ATTRIBUTES, vs. what was
-> >      indicated via fault flags/GPA like TDX/SNP do.
-> > 
-> > So it makes sense, in the gmem case (and TDX/SNP), to defer the
-> > kvm_mem_is_private() till later in kvm_faultin_pfn(). It avoid a
-> > duplicate lookup, and a race. But .is_private only conveys
-> > encrypted/unencrypted fault in TDX/SNP case, it doesn't have a way to
-> > cleanly convey this case "just use whatever kvm_mem_is_private() reports
-> > later, because it will always be what the VMM set, and it's too early
-> > to check kvm_mem_is_private() right now".
-> 
-> Yeah, the duplicate lookup is unfortunate :-/  But I'd really like to be able to
-> make kvm_page_fault.private const, just like all the other booleans that are
-> derived from the error code.  My concern with making it *not* const is that
-> there will be a discrepancy between "private" and "error_code", and we'll have
-> to be very careful to never touch "private" before kvm_faultin_pfn().
-
-It can actually be const using the KVM_FAULT_{VMM_DEFINED,SHARED,PRIVATE} 
-abstraction. fault->is_private doesn't really need to be overwritten for
-VMM_DEFINED case later, it can just be treated as "use whatever
-kvm_mem_is_private() reports". But I guess that's what you mean by
-"special casing" below.
-
-> 
-> And I don't want to special case "VMM defined", because the primary reason the
-> "VMM defined" case exists at this time is to allow testing KVM's implementation
-> without TDX or SNP.  E.g. I don't want to end up with code in fast_page_fault()
-
-Are you suggesting VMM_DEFINED would eventually go away once SNP/TDX
-have bigger uptake, or maybe in favor of tests built around some new VM type
-(e.g. software-protected VMs) that use guest hypercalls to set
-guest-expected memory state rather than always relying on what the VMM sets
-up?
-
-I guess in that case VMM_DEFINED handling could just be dropped at
-that point, and KVM_FAULT_{SHARED,PRIVATE} would still be relevant (or they
-could get switched back to bool at that point), and software-protected VMs
-would set that value based on whatever state tracks the hypercalls.
-
-But if that's the end-game maybe it's a good reason for keeping
-fault->is_private bool and avoiding enums. But still don't really see the
-worth in also setting the bit in error_code.
-
-> without TDX or SNP.  E.g. I don't want to end up with code in fast_page_fault()
-> or so that does X for KVM_FAULT_VMM_DEFINED, but Y for KVM_FAULT_PRIVATE.
-
-Hadn't really considered fast_page_fault() for SNP... it seems like
-for explicit page-state changes, the vCPU issuing the conversions
-would just block until the GHCB request it issued was completed. So by
-the time it accesses the GPA, KVM_SET_MEMORY_ATTRIBUTES would have
-already zapped the old entry, so the fast path would get bypassed at
-that point.
-
-For implicit page-state changes, I guess there's a risk you can
-get stuck looping on fast_page_fault() since it's up to KVM MMU
-to generate the KVM_EXIT_MEMORY_FAULT so KVM_SET_MEMORY_ATTRIBUTES
-gets called eventually. Sort of surprised I haven't encountered
-that case though... but anyway...
-
-If you rely on similar checks to what slow path does:
-
- 	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn))
- 		return kvm_do_memory_fault_exit(vcpu, fault);
-
-kvm_mem_is_private() could be stale due to unnoticed invalidation,
-but eventually it would reach steady-state and the
-KVM_EXIT_MEMORY_FAULT would fire. Is that sort of what you have in
-mind there?
-
-For SNP it seems more efficient to check for RMP bit and then head
-straight to the slow-path, but this isn't a hot path so probably
-doesn't matter much.
-
-> 
-> So I'm leaning toward the above be
-> 
-> 	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
-> 		if (vcpu->kvm->vm_type == KVM_X86_PROTECTED_VM)
-> 			return RET_PF_RETRY;
-> 		else
-> 			return kvm_do_memory_fault_exit(vcpu, fault);
-> 	}
-> 
-> even though software-protected VMs would perform a technically-unnecessary
-> attributes lookup.  *If* software-protected VMs ever get to the point where folks
-> care about the performance overhead of the extra lookup, then I'm all for
-> revisiting the implementation, but that is a ginormous "if" at this point.  Though
-> even then I'd still prefer to figure out a way to make the flag const, but that's
-> a future problem.
-> 
-> > So that's where this enum type came from. Although in the discussion I
-> > linked to above I suggested just:
-> > 
-> >   enum kvm_fault_type {
-> >     KVM_FAULT_VMM_DEFINED,
-> >     KVM_FAULT_SHARED,
-> >     KVM_FAULT_PRIVATE,
-> > 
-> > Which I think would work just as well,
-> 
-> I want to use vm_type for tracking "VMM_DEFINED".  KVM's ABI easily allows for 64
-> VM types, I see no reason to reuse KVM_X86_PROTECTED_VM for TDX and/or SNP, though
-> the type probably should be KVM_X86_SW_PROTECTED_VM.  With that out of the way,
-> there's no need for an enum to track shared vs. private.
-> 
-
-Introducing TDX/SNP vm types seems to buy us some flexibility so it
-sounds useful.
-
-Rather than synthesizing bits in error_code, maybe we could also use it
-to help out there as well? (assuming parameter-passing was the main
-use-case there)
-
-  static bool kvm_fault_is_private(kvm, gpa, error_code)
-  {
-    if (kvm->vm_type == KVM_X86_TDX_VM)
-      return gpa & TDX_SHARED_GPA_MASK;
-
-    if (kvm->vm_type == KVM_X86_SNP_VM)
-      return error_code & PFERR_GUEST_ENC_MASK;
-
-    return kvm_mem_is_private(kvm, gpa);
-  }
-
-  static inline int kvm_mmu_do_page_fault(vcpu, gpa, err, ...)
-  {
-    struct kvm_page_fault = {
-      ...
-      .is_private = kvm_fault_is_private(kvm, gpa, err)
-    };
-
-    ...
-  }
-
--Mike
+> +Joey Gouly +linux-coco@lists.linux.dev as far as RME is concerned, do
+> you know who would be best to weigh in on this discussion of a unified
+> attestation model?
