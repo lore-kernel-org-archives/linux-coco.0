@@ -1,49 +1,58 @@
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6358D23BD
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 06:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687934528; x=1719470528;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JL27lh85xBZAEx37iqF0ZHE4UjNOgtCj+fG3vad4fao=;
-  b=gOfIuXC/MkCVWRkYI8O5Okb8UzY2yxYzBEaqFIf5HeTnKmq+ePOE3nja
-   0e25Wy+JI4Pc8E7xlaruBmDoURhjq2YvSS7+6G2w+1xRftvl/L329kDJ9
-   HCEiFZj4fsbVAup079bslqZEuc/TlVeoryvq4hedrhqSTfDAuMlsJTIYb
-   yxi2gzQ1Yw+GtOq2sATIEb0w/mVAFe5oHYF/8SfyzBl/SBqW8r6DI+zJy
-   OjFjjiw3/MhqYtmBjO7AdcBDNdr50lMAzoQrLhPomJzvPe7mm8V9kRkI7
-   AMJH9exqkZ8t1c4aJsCTuz97GdbP0hF5kmIirx2lxK3LVQth5ak0Srh/S
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="361807726"
-X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
-   d="scan'208";a="361807726"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 23:42:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="786952953"
-X-IronPort-AV: E=Sophos;i="6.01,164,1684825200"; 
-   d="scan'208";a="786952953"
-Received: from yy-desk-7060.sh.intel.com (HELO localhost) ([10.239.159.76])
-  by fmsmga004.fm.intel.com with ESMTP; 27 Jun 2023 23:41:57 -0700
-Date: Wed, 28 Jun 2023 14:41:56 +0800
-From: Yuan Yao <yuan.yao@linux.intel.com>
-To: isaku.yamahata@intel.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	isaku.yamahata@gmail.com, Paolo Bonzini <pbonzini@redhat.com>,
-	erdemaktas@google.com, Sean Christopherson <seanjc@google.com>,
-	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com,
-	linux-coco@lists.linux.dev, Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Michael Roth <michael.roth@amd.com>
-Subject: Re: [RFC PATCH v2 5/6] KVM: Add flags to struct kvm_gfn_range
-Message-ID: <20230628064156.pblgvaks4cvulb3g@yy-desk-7060>
-References: <cover.1687474039.git.isaku.yamahata@intel.com>
- <689da77417c2f4055f02a71aab51ff603bc195af.1687474039.git.isaku.yamahata@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EFF23BD
+	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 06:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDFEC433C0;
+	Wed, 28 Jun 2023 06:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1687934771;
+	bh=/fBZ9cbSiRyinkC8H30RlCqMLrhBXaEf9+MR3DHs4I0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gJIzgLxArGj7Io7qmYRX/fDLAClIv/nZa8WwlJeGEn59EQ7DpbRTwClBZWwlz+xqu
+	 iU4VZxFf4XYSNWuTUY+M6g8MgwA6/yEKiy4quy30WS2JZD3v0B2TPOp+4elt0MRqWz
+	 6zaOyP4tHrSxKnx51WIY5rZ3AyPx6yEhjbuQbP7s=
+Date: Wed, 28 Jun 2023 08:46:08 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "Williams, Dan J" <dan.j.williams@intel.com>,
+	"dionnaglaze@google.com" <dionnaglaze@google.com>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"Aktas, Erdem" <erdemaktas@google.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"shuah@kernel.org" <shuah@kernel.org>, "Du, Fan" <fan.du@intel.com>,
+	"Luck, Tony" <tony.luck@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"brijesh.singh@amd.com" <brijesh.singh@amd.com>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"qinkun@apache.org" <qinkun@apache.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"wander@redhat.com" <wander@redhat.com>,
+	"atishp@rivosinc.com" <atishp@rivosinc.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"chongc@google.com" <chongc@google.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"dhowells@redhat.com" <dhowells@redhat.com>,
+	"Yu, Guorui" <guorui.yu@linux.alibaba.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 3/3] selftests/tdx: Test GetQuote TDX attestation
+ feature
+Message-ID: <2023062805-drove-privatize-ae2c@gregkh>
+References: <cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <972e1d5c5ec53e2757fb17a586558c5385e987dd.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch>
+ <64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch>
+ <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com>
+ <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
+ <649b7a9b69cb6_11e68529473@dwillia2-xfh.jf.intel.com.notmuch>
+ <CAAH4kHY1-N+HOxPON6SuXE3QPowAGnwTjc5H=ZnNZwh7a+msnQ@mail.gmail.com>
+ <c85324480053af20e6f0409e28fbc5e156c54143.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -52,143 +61,26 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <689da77417c2f4055f02a71aab51ff603bc195af.1687474039.git.isaku.yamahata@intel.com>
-User-Agent: NeoMutt/20171215
+In-Reply-To: <c85324480053af20e6f0409e28fbc5e156c54143.camel@intel.com>
 
-On Thu, Jun 22, 2023 at 04:16:29PM -0700, isaku.yamahata@intel.com wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
->
-> Add flags to strut kvm_gfn_range to indicate who triggered the callback
-> and new memory attributes.
->
-> TDX needs to know the reason for a callback by kvm_unmap_gfn_range().  mmu
-> notifier, set memory attributes ioctl or KVM gmem callback.  With TDX,
-> zapping a private page from the encrypted page table and adding the page
-> back to the same private GPA results in zeroing the page, and the guest has
-> to accept the page again.  On the change of memory attribute from private
+On Wed, Jun 28, 2023 at 02:16:45AM +0000, Huang, Kai wrote:
+> > You really shouldn't be putting attestation validation logic in the
+> > kernel.
+> 
+> Agreed.  The data blob for remote verification should be just some data blob to
+> the kernel.  I think the kernel shouldn't even try to understand the data blob
+> is for which architecture.  From the kernel's perspective, it should be just
+> some data blob that the kernel gets from hardware/firmware or whatever embedded
+> in the root-of-trust in the hardware after taking some input from usrspace for
+> the unique identity of the blob that can be used to, e.g., mitigate replay-
+> attack, etc.
 
-Is this part used to explains why on MMU notifier only shared pages should
-be zapped ?
+Great, then use the common "data blob" api that we have in the kernel
+for a very long time now, the "firwmare download" api, or the sysfs
+binary file api.  Both of them just use the kernel as a pass-through and
+do not touch the data at all.  No need for crazy custom ioctls and all
+that mess :)
 
-> to shared, zapping the GPA range irrespective to private-or-shared and
-> expecting the fault doesn't work for TDX.  Instead, zap shared pages only
-> and keep the private pages.  Concretely
+thanks,
 
-Do you mean:
-
-On the change of memory attribute, zapping the GPA range irrespective to
-private-or-shared and expecting that the EPT mapping for attribute converts
-to doesn't exist at the time of changing the attribute, zap the "from"
-attribute range only and ignore the "to" attribute.
-
-> - If it's from mmu notifier, zap shared pages.
-> - If it's from KVM gmem, zap private pages.
-> - If setting memory attributes to private, zap shared pages.
-> - If setting memory attributes to shared, zap private pages.
->
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
->
-> ---
-> Changes v1 -> v2:
-> - consolidate KVM_GFN_RANGE_FLAGS_GMEM_{PUNCH_HOLE, RELEASE} into
->   KVM_GFN_RANGE_FLAGS_GMEM.
-> - Update the commit message to describe TDX more.  Drop SEV_SNP.
-> ---
->  include/linux/kvm_host.h | 10 +++++++++-
->  virt/kvm/guest_mem.c     |  9 ++++++---
->  virt/kvm/kvm_main.c      |  4 +++-
->  3 files changed, 18 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 1a47cedae8a1..1fe0516fcddf 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -256,12 +256,20 @@ int kvm_async_pf_wakeup_all(struct kvm_vcpu *vcpu);
->  #endif
->
->  #ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
-> +
-> +#define KVM_GFN_RANGE_FLAGS_SET_MEM_ATTR	BIT(0)
-> +#define KVM_GFN_RANGE_FLAGS_GMEM		BIT(1)
-> +
->  struct kvm_gfn_range {
->  	struct kvm_memory_slot *slot;
->  	gfn_t start;
->  	gfn_t end;
-> -	pte_t pte;
-> +	union {
-> +		pte_t pte;
-> +		u64 attrs;
-> +	};
->  	bool may_block;
-> +	unsigned int flags;
->  };
->  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range);
->  bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range);
-> diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-> index cdf2d84683c8..387226136960 100644
-> --- a/virt/kvm/guest_mem.c
-> +++ b/virt/kvm/guest_mem.c
-> @@ -99,7 +99,8 @@ static struct folio *kvm_gmem_get_folio(struct file *file, pgoff_t index)
->  }
->
->  static void kvm_gmem_invalidate_begin(struct kvm *kvm, struct kvm_gmem *gmem,
-> -				      pgoff_t start, pgoff_t end)
-> +				      pgoff_t start, pgoff_t end,
-> +				      unsigned int flags)
->  {
->  	struct kvm_memory_slot *slot;
->  	unsigned long index;
-> @@ -118,6 +119,7 @@ static void kvm_gmem_invalidate_begin(struct kvm *kvm, struct kvm_gmem *gmem,
->  			.slot = slot,
->  			.pte = __pte(0),
->  			.may_block = true,
-> +			.flags = flags,
->  		};
->
->  		kvm_mmu_invalidate_range_add(kvm, gfn_range.start, gfn_range.end);
-> @@ -156,7 +158,8 @@ static long kvm_gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
->  	 */
->  	filemap_invalidate_lock(file->f_mapping);
->
-> -	kvm_gmem_invalidate_begin(kvm, gmem, start, end);
-> +	kvm_gmem_invalidate_begin(kvm, gmem, start, end,
-> +				  KVM_GFN_RANGE_FLAGS_GMEM);
->
->  	truncate_inode_pages_range(file->f_mapping, offset, offset + len - 1);
->
-> @@ -263,7 +266,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->  	 * Free the backing memory, and more importantly, zap all SPTEs that
->  	 * pointed at this file.
->  	 */
-> -	kvm_gmem_invalidate_begin(kvm, gmem, 0, -1ul);
-> +	kvm_gmem_invalidate_begin(kvm, gmem, 0, -1ul, KVM_GFN_RANGE_FLAGS_GMEM);
->  	truncate_inode_pages_final(file->f_mapping);
->  	kvm_gmem_invalidate_end(kvm, gmem, 0, -1ul);
->
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 422d49634c56..9cdfa2fb675f 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -613,6 +613,7 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
->  			gfn_range.start = hva_to_gfn_memslot(hva_start, slot);
->  			gfn_range.end = hva_to_gfn_memslot(hva_end + PAGE_SIZE - 1, slot);
->  			gfn_range.slot = slot;
-> +			gfn_range.flags = 0;
->
->  			if (!locked) {
->  				locked = true;
-> @@ -2391,8 +2392,9 @@ static void kvm_mem_attrs_changed(struct kvm *kvm, unsigned long attrs,
->  	bool flush = false;
->  	int i;
->
-> -	gfn_range.pte = __pte(0);
-> +	gfn_range.attrs = attrs;
->  	gfn_range.may_block = true;
-> +	gfn_range.flags = KVM_GFN_RANGE_FLAGS_SET_MEM_ATTR;
->
->  	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
->  		slots = __kvm_memslots(kvm, i);
-> --
-> 2.25.1
->
+greg k-h
