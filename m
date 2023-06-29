@@ -1,206 +1,142 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2077.outbound.protection.outlook.com [40.107.243.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3679D12B6F
-	for <linux-coco@lists.linux.dev>; Thu, 29 Jun 2023 16:25:33 +0000 (UTC)
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-401f4408955so295391cf.1
-        for <linux-coco@lists.linux.dev>; Thu, 29 Jun 2023 09:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1688055933; x=1690647933;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0i+VclhX9JPA4GYKeZEUom4kBRpZ1KIdf8SKnr6Czlk=;
-        b=lYYVQ83POTy6/9CC8ArxHOFEL2r2JwFNPyDWX+P2beZLfK82lg/k/QqEiUVFBWPCgo
-         VmeFAKZKkCzoVlfdqlFTWDVXzNRikIvKionHxYyx1RSL88UsmNo8BH8U5k4Ylma7/sDh
-         fFxg/9wDt+eK/72umGrPtF/2wN9RReAjVAYHDHF+jMx84TJyhn8POoLRKrvz4TWF4ue2
-         xConQRz9n8xU9Z1SHa8AjD9LE8dgnrIp5+7GRd7o73hkXnik5wnoetttJyzpknEMpT7k
-         2xQaj+QRos+VqCRitgTeAx6UoB6HGVgOG0bXdQSF6Hb1YkYFFLJr83x3QjwHOLu8PcZg
-         hSGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688055933; x=1690647933;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0i+VclhX9JPA4GYKeZEUom4kBRpZ1KIdf8SKnr6Czlk=;
-        b=M326ZY77wT9f/sj/A5c/8bjFLXLo+ZPSYXHpe4n7GhuduK88Z7v+Ak/4YPYBxnkGD+
-         SWGGNHnJ1Dx0JLc7KYH5RLLq7g7se3RaAucXE6hMSZ4VyTPIKijPeJj7A9YdxLcVUEeR
-         ZtwCTzK/eLyCXLz/fqcvYPgSgEzwbYsyBEN2W/+cEh2T4i9bshXw1r2/pHBFSzgw6GDY
-         ayn8GvO1kbyuUX0NbERbOLydnsC0kjmidbS3UBu7UDU0IriSDoXotadWKkPkM/PgonEQ
-         ytRKXNCKiHbiu9JI6wJTg8iIfxJS7ECQaSONV2cPEbfyJ20FfBWp3HRMx9ejap7eeRxm
-         ZLtw==
-X-Gm-Message-State: AC+VfDzr7ANlezHwkIZ+hjRZcjYDQjgOSN1rQoA15YnTBNJdH1zjWn82
-	s4NLRKsXmgZ7G/7NkoY93mjlfE/iFblizSfeA+vN5A==
-X-Google-Smtp-Source: ACHHUZ4GlcdhSG6HvWkFXq7A7do/fjnsIN9VLRkINS6bTK3+6Z8sQeiMBbqJ2leEce8ozWN8saz37CEHTk7PdmgSBCQ=
-X-Received: by 2002:ac8:5b46:0:b0:3f7:ffc8:2f6f with SMTP id
- n6-20020ac85b46000000b003f7ffc82f6fmr703437qtw.28.1688055932634; Thu, 29 Jun
- 2023 09:25:32 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931AB174F0
+	for <linux-coco@lists.linux.dev>; Fri, 30 Jun 2023 21:57:34 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GfYjU94Cnp06BXBw5UiRvIRCry8BPZEoYJOfUqeLOmPcov+IzIIzh6FfdcywTlQojkBFfPrNTPKhz6MhmdMHOAE5IdOQussuo5qf1xPyo1zr2R63Sr0QDq+65564dYVyu6rMWwTQmIKgFwo2mHq6dvU1x8SkbhIao/BsZFYHamzpC0M2jBwTYc9YZdalYsrfSs/MnnWxbp3gX1+Fxsso4GdkMImp7rhYwDp0YLa0q+D069m9HbRltQkQAmca7OpbKE7FVdQeuwcBtPiPR9piOQ+mzk0KvYb+9/lVw9Bg2Q1absC2sgz26R9Ojs8qINdQbwjEmSChDzIz9lGoxkCldg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+iP/yKKjl5mdIjpVbAtOLYWO3fTzTwcqvi2QUrxpywA=;
+ b=NL5WNRrNrPN/ZgOw2kvgxt2ScqjJE9T70CIt44UpTkUISi+AJNM3Pw2rY8Xb3/Pyu6DuVeu6nRX0hzjv7/Z0I3NasLMPL8afi+hdQgwsygv05CHdkD0GDgKJJOU8Uwjw332jP7QmJKkBAeKzlm1ZNwRO2YJ6ifzk+10K7/i3HHrHQ+N6b44J0Y8ukLc7UtLawazzm0MpU6HLSuVTXC0S6dfXpgRdnhjQm3cm0SwVNq7aMzR3v7gWfscumoW5x89utGdtVoGfIHuSKSuqXCDWdWclNg2O/GG1XGHoT3y2XQDGman01wkm1/u3bVh/MIOTtzZCI5DuFQ3xxByPVh/suQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+iP/yKKjl5mdIjpVbAtOLYWO3fTzTwcqvi2QUrxpywA=;
+ b=aorNiie7NFRWzpxynbEUyhNvR8XyDo9C/1bNYcN8A02dXHJcoSJ29Dnnditld1YyKDTRCVQxB8p8xfO/iX8+oDv8uqTWZQXWn4v4YQldY1/uZtkzNVUyPBRX8WFB11Qsesli7xIzw/Ja0Rs06mpEivYK/y/bz0w+DjdixyT5jQU=
+Received: from SJ0PR13CA0084.namprd13.prod.outlook.com (2603:10b6:a03:2c4::29)
+ by BL1PR12MB5062.namprd12.prod.outlook.com (2603:10b6:208:313::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.19; Fri, 30 Jun
+ 2023 21:57:31 +0000
+Received: from DM6NAM11FT078.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:a03:2c4:cafe::7b) by SJ0PR13CA0084.outlook.office365.com
+ (2603:10b6:a03:2c4::29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.10 via Frontend
+ Transport; Fri, 30 Jun 2023 21:57:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT078.mail.protection.outlook.com (10.13.173.183) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6521.43 via Frontend Transport; Fri, 30 Jun 2023 21:57:29 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Fri, 30 Jun
+ 2023 16:57:29 -0500
+Date: Thu, 29 Jun 2023 16:02:04 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<vbabka@suse.cz>, <kirill@shutemov.name>, <ak@linux.intel.com>,
+	<tony.luck@intel.com>, <marcorr@google.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<dgilbert@redhat.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+	<nikunj.dadhania@amd.com>, <liam.merwick@oracle.com>, <zhi.a.wang@intel.com>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: Re: [PATCH RFC v9 05/51] x86/coco: move CONFIG_HAS_CC_PLATFORM check
+ down into coco/Makefile
+Message-ID: <20230629210204.tknoh7p3hw45jcp4@amd.com>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-6-michael.roth@amd.com>
+ <20230620120920.GAZJGW8B6XHrsoLGCJ@fat_crate.local>
+ <20230620204315.xr7wtcrowc7oprka@amd.com>
+ <20230621085400.GDZJK6qMeOU2monJDv@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
- <972e1d5c5ec53e2757fb17a586558c5385e987dd.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
- <64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch>
- <64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch>
- <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com> <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
- <649b7a9b69cb6_11e68529473@dwillia2-xfh.jf.intel.com.notmuch>
- <CAAH4kHY1-N+HOxPON6SuXE3QPowAGnwTjc5H=ZnNZwh7a+msnQ@mail.gmail.com> <649ba059a086_11e68529458@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <649ba059a086_11e68529458@dwillia2-xfh.jf.intel.com.notmuch>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Thu, 29 Jun 2023 09:25:21 -0700
-Message-ID: <CAAH4kHYLETfPk-sMD-QSJd0fJ7Qnt04FBwFuEkpnehB5U7D_yw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] selftests/tdx: Test GetQuote TDX attestation feature
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Shuah Khan <shuah@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, "H . Peter Anvin" <hpa@zytor.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Tony Luck <tony.luck@intel.com>, 
-	Wander Lairson Costa <wander@redhat.com>, Erdem Aktas <erdemaktas@google.com>, Chong Cai <chongc@google.com>, 
-	Qinkun Bao <qinkun@apache.org>, Guorui Yu <GuoRui.Yu@linux.alibaba.com>, 
-	Du Fan <fan.du@intel.com>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
-	dhowells@redhat.com, brijesh.singh@amd.com, atishp@rivosinc.com, 
-	gregkh@linuxfoundation.org, linux-coco@lists.linux.dev, joey.gouly@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230621085400.GDZJK6qMeOU2monJDv@fat_crate.local>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT078:EE_|BL1PR12MB5062:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0427086-2cf8-440e-9a14-08db79b4fff1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	2sMGfiNIQZezfcZ+PMzMdNlgxoADlvJl2Lni3o1m/an0dVjtH/TvzKf9pgnnM8aK6EchpUcimIfT2GE4BKWCWXtWXwFyo2sffHuQE3pb+0HkGQZTo3mzfAvqbymOFNjolh/RVms2Dpqy2IDA48n4Ex6zXSE/7SaC9s/Nkm2k4eWrl7Ix5Wg9MDX2oAZzTu0TrUqA4KtdOqXIMF3qC4akTccxbif13LtRYO5hFgBCv00wqukWGUa236DlYiMFPF11/uncY1906z+1xSsbyj1PzjlIm1PRqeBzUIQ1FPUwsx6TP1UTBPV3TGlbfmr0WCTImzbAC67/Pe1FUqNyP//zlHOev+Y8RPuGJn7fDwJ5vuQZJXXX8EfiyeMlZmPIK86zodgAcVm0lWAIGAN76Q3CB9F4yhRvDPKgdCaT5FyyW93XPuRKevfGgNw4iP3eT6NyVa38aczMQd1gHKKCMDudRz6ZEU69vjQqoJY/sf+bHWfI7sXUxyq2BUBvOQuslkSMbaJRApASVvuDgF1QHx2UukzzYoRj4ZKKZfnS1VkiZl7YPO+o++dx74NCx6zqFPWOWLG2OETx7fWRgSKOI/+MiVJTb8fDf0xviQVU1IGOafN2/TiVStiB31XL3kNTCC6C/ikEqbwkpubXChwN/VPK3g8gPoxISeKUtYlOos6DDITkZaE4c3z+sMtjTX/TzA4PEb/o1ZmUR5Yjo2G54u4eHcsVSWRm7HNRWkdCZK3P//9LuCr9/ir5EK3WJvgS1wy7Sb0jUPW+VCQtmd2gzqQqdTI4/oi/oFoOADdLiMDDpqs=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(396003)(136003)(376002)(451199021)(40470700004)(46966006)(36840700001)(336012)(426003)(47076005)(40460700003)(2616005)(2906002)(81166007)(356005)(82740400003)(36860700001)(40480700001)(36756003)(8936002)(8676002)(82310400005)(5660300002)(86362001)(54906003)(966005)(41300700001)(6916009)(4326008)(70206006)(70586007)(6666004)(316002)(478600001)(16526019)(186003)(44832011)(1076003)(7406005)(7416002)(26005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2023 21:57:29.7373
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0427086-2cf8-440e-9a14-08db79b4fff1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM6NAM11FT078.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5062
 
->
-> First, thank you for engaging, it speeds up the iteration. This
-> confirmed my worry that the secondary goal of this proposal, a common
-> verification implementation, is indeed unachievable in the near term. A
-> few clarifying questions below, but I will let this go.
->
-> The primary goal, achievable on a short runway, is more for kernel
-> developers. It is to have a common infrastructure for marshaling vendor
-> payloads, provide a mechanism to facilitate kernel initiated requests to
-> a key-server, and to deploy a common frontend for concepts like runtime
-> measurement (likely as another backend to what Keys already understands
-> for various TPM PCR implementations).
->
+On Wed, Jun 21, 2023 at 10:54:00AM +0200, Borislav Petkov wrote:
+> On Tue, Jun 20, 2023 at 03:43:15PM -0500, Michael Roth wrote:
+> > Basically, arch/x86/coco/Makefile is never processed if arch/x86/Kbuild
+> > indicates that CONFIG_HAS_CC_PLATFORM is not set. So if we want to have
+> > stuff in arch/x86/coco/Makefile that build for !CONFIG_HAS_CC_PLATFORM,
+> > like SNP host support, which does not rely on CONFIG_HAS_CC_PLATFORM
+> > being set, that check needs to be moved down into arch/x86/coco/Makefile.
+> 
+> Ok, so if you put SNP host support into arch/x86/virt/svm/sev.c, that
+> should work too and won't have any relation to CONFIG_HAS_CC_PLATFORM,
+> right?
 
-That sounds good, though the devil is in the details. The TPM
-situation will be exacerbated by a lower root of trust. The TPM itself
-doesn't have a specification for its own attested firmware.
+Right, that works out just as well, and ends up being a bit more
+straightforward. I have it implemented here:
 
-> > All the specific fields of the blob have to be decoded and subjected
-> > to an acceptance policy. That policy will most always be different
-> > across different platforms and VM owners. I wrote all of
-> > github.com/google/go-sev-guest, including the verification and
-> > validation logic, and it's going to get more complicated, and the
-> > sources of the data that provide validators with notions of what
-> > values can be trusted will be varied.
->
-> Can you provide an example? I ask only to include it in the kernel
-> commit log for a crisp explanation why this proposed Keys format will
-> continue to convey a raw vendor blob with no kernel abstraction as part
-> of its payload for the foreseeable future.
->
+  https://github.com/mdroth/linux/commits/snp-host-latest-v9b
 
-An example is that while there is a common notion that each report
-will have some attestation key whose certificate needs to be verified,
-there is additional collateral that must be downloaded to
+  https://github.com/mdroth/linux/commit/a889a2dd64b62d9c3bf74cf02e7d8d71c7061667
 
-* verify a TDX key certificate against updates to known weaknesses of
-the key's details
-* verify the measurement in the report against a vendor's signed
-golden measurement
-* [usually offline and signed by the analyzing principal that the
-analysis was done] fully verify the measurement given a build
-provenance document like SLSA. The complexity of this analysis could
-even engage in static analysis of every commit since a certain date,
-or from a developer of low repute... whatever the verifier wants to
-do.
+and dropped the patch that reworks arch/x86/coco/Makefile.
 
-These are all in the realm of interpreting the blob for acceptance, so
-it's best to keep uninterpreted.
+Thanks,
 
-> > The formats are not standardized. The Confidential Computing
-> > Consortium should be working toward that, but it's a slow process.
-> > There's IETF RATS. There's in-toto.io attestations. There's Azure's
-> > JWT thing. There's a signed serialized protocol buffer that I've
-> > decided is what Google is going to produce while we figure out all the
-> > "right" formats to use. There will be factions and absolute gridlock
-> > for multiple years if we require solidifying an abstraction for the
-> > kernel to manage all this logic before passing a report on to user
-> > space.
->
-> Understood. When that standardization process completes my expectation
-> is that it slots into the common conveyance method and no need to go
-> rewrite code that already knows how to interface with Keys to get
-> attestation evidence.
->
+Mike
 
-I can get on board with that. I don't think there will be much cause
-for more than a handful of attestation requests with different report
-data, so it shouldn't overwhelm the key subsystem.
-
-> >
-> > You really shouldn't be putting attestation validation logic in the
-> > kernel.
->
-> It was less putting validation logic in the kernel, and more hoping for
-> a way to abstract some common parsing in advance of a true standard
-> attestation format, but point taken.
->
-
-I think we'll have hardware-provided blobs and host-provided cached
-collateral. The caching could be achieved with a hosted proxy server,
-but given SEV-SNP already has GET_EXT_GUEST_REQUEST to simplify
-delivery, I think it's fair to offer other technologies the chance at
-supporting a similar simple solution.
-
-Everything else will have to come from the network or the workload itself.
-
-
-> > It belongs outside of the VM entirely with the party that will
-> > only release access keys to the VM if it can prove it's running the
-> > software it claims, on the platform it claims. I think Windows puts a
-> > remote procedure call in their guest attestation driver to the Azure
-> > attestation service, and that is an anti-pattern in my mind.
->
-> I can not speak to the Windows implementation, but the Linux Keys
-> subsystem is there to handle Key construction that may be requested by
-> userspace or the kernel and may be serviced by built-in keys,
-> device/platform instantiated keys, or keys retrieved via an upcall to
-> userspace.
->
-> The observation is that existing calls to request_key() in the kernel
-> likely have reason to be serviced by a confidential computing key server
-> somewhere in the chain. So, might as well enlighten the Keys subsystem
-> to retrieve this information and skip round trips to userspace run
-> vendor specific ioctls. Make the kernel as self sufficient as possible,
-> and make SEV, TDX, etc. developers talk more to each other about their
-> needs.
-
-That sounds reasonable. I think one wrinkle in the current design is
-that SGX and SEV-SNP provide derived keys as a thing separate from
-attestation but still based on firmware measurement, and TDX doesn't
-yet. It may in the future come with a TDX module update that gets
-derived keys through an SGX enclave=E2=80=93who knows. The MSG_KEY_REQ gues=
-t
-request for a SEV-SNP derived key has some bits and bobs to select
-different VM material to mix into the key derivation, so that would
-need to be in the API as well. It makes request_key a little weird to
-use for both. I don't even think there's a sufficient abstraction for
-the guest-attest device to provide, since there isn't a common
-REPORT_DATA + attestation level pair of inputs that drive it. If we're
-fine with a technology-tagged uninterpreted input blob for key
-derivation, and the device returns an error if the real hardware
-doesn't match the technology tag, then that could be an okay enough
-interface.
-
-I could be convinced to leave MSG_KEY_REQ out of Linux entirely, but
-only for selfish reasons. The alternative is to set up a sealing key
-escrow service that releases sealing keys when a VM's attestation
-matches a pre-registered policy, which is extremely heavy-handed when
-you can enforce workload identity at VM launch time and have a safe
-derived key with this technology. I think there's a Decentriq blog
-post about setting that whole supply chain up ("swiss cheese to
-cheddar"), so they'd likely have some words about that.
-
---=20
--Dionna Glaze, PhD (she/her)
+> 
+> The CC_PLATFORM thing is a way to check for confidential computing guest
+> features by abstracting the capabilities so that you don't have to check
+> *each* and *every* conf guest type in the conditionals and thus go nuts.
+> 
+> Thx.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
