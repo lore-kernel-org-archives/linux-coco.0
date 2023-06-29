@@ -1,237 +1,206 @@
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6FF63D1
-	for <linux-coco@lists.linux.dev>; Wed, 28 Jun 2023 22:43:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687992226; x=1719528226;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=R6aeeOVtCVl/aF4rr9VOp5md60UJagkTMuBGcdbekMM=;
-  b=TQVT/Ys1AWTYkoTi9bHTf4tLog2s9AxhXfilFvCBCsBaQxlj9z4mjYOO
-   Xq0jDVrRhgX02CXGpnxTm5j7XJ3Rb07opQSnyoYVerKsMZD97pM9A6Rjp
-   kVU+uEhfjImHWD1+xBgWNIG4k85q1vUG4csC1JFkiiglwxlCu/jaiSumE
-   GUmNCAzTPjxWV3mmgH0WQrbthXGblW0PUq0ZcYHI6T0IXDApPYhIlJn0k
-   9iqP9wpCqLT8AiwOPvY+lfOV30N3ay9ymLbHFc71q/atOPHksM4t9HtXN
-   nL3+cfZuJx2Aeu46hrE3w8nE27BSYwaJUi9ng9AkFsM3ADC5YJ04J2SSm
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="392699191"
-X-IronPort-AV: E=Sophos;i="6.01,166,1684825200"; 
-   d="scan'208";a="392699191"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 15:43:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10755"; a="830300029"
-X-IronPort-AV: E=Sophos;i="6.01,166,1684825200"; 
-   d="scan'208";a="830300029"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2023 15:43:25 -0700
-From: isaku.yamahata@intel.com
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: isaku.yamahata@intel.com,
-	isaku.yamahata@gmail.com,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	erdemaktas@google.com,
-	Sean Christopherson <seanjc@google.com>,
-	Sagi Shahar <sagis@google.com>,
-	David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>,
-	chen.bo@intel.com,
-	linux-coco@lists.linux.dev,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Yuan Yao <yuan.yao@linux.intel.com>
-Subject: [RFC PATCH v3 11/11] KVM: x86: Add gmem hook for invalidating private memory
-Date: Wed, 28 Jun 2023 15:43:10 -0700
-Message-Id: <e57fc6834a49e9773f0dc54eac650b21bb7e5476.1687991811.git.isaku.yamahata@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1687991811.git.isaku.yamahata@intel.com>
-References: <cover.1687991811.git.isaku.yamahata@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3679D12B6F
+	for <linux-coco@lists.linux.dev>; Thu, 29 Jun 2023 16:25:33 +0000 (UTC)
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-401f4408955so295391cf.1
+        for <linux-coco@lists.linux.dev>; Thu, 29 Jun 2023 09:25:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1688055933; x=1690647933;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0i+VclhX9JPA4GYKeZEUom4kBRpZ1KIdf8SKnr6Czlk=;
+        b=lYYVQ83POTy6/9CC8ArxHOFEL2r2JwFNPyDWX+P2beZLfK82lg/k/QqEiUVFBWPCgo
+         VmeFAKZKkCzoVlfdqlFTWDVXzNRikIvKionHxYyx1RSL88UsmNo8BH8U5k4Ylma7/sDh
+         fFxg/9wDt+eK/72umGrPtF/2wN9RReAjVAYHDHF+jMx84TJyhn8POoLRKrvz4TWF4ue2
+         xConQRz9n8xU9Z1SHa8AjD9LE8dgnrIp5+7GRd7o73hkXnik5wnoetttJyzpknEMpT7k
+         2xQaj+QRos+VqCRitgTeAx6UoB6HGVgOG0bXdQSF6Hb1YkYFFLJr83x3QjwHOLu8PcZg
+         hSGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688055933; x=1690647933;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0i+VclhX9JPA4GYKeZEUom4kBRpZ1KIdf8SKnr6Czlk=;
+        b=M326ZY77wT9f/sj/A5c/8bjFLXLo+ZPSYXHpe4n7GhuduK88Z7v+Ak/4YPYBxnkGD+
+         SWGGNHnJ1Dx0JLc7KYH5RLLq7g7se3RaAucXE6hMSZ4VyTPIKijPeJj7A9YdxLcVUEeR
+         ZtwCTzK/eLyCXLz/fqcvYPgSgEzwbYsyBEN2W/+cEh2T4i9bshXw1r2/pHBFSzgw6GDY
+         ayn8GvO1kbyuUX0NbERbOLydnsC0kjmidbS3UBu7UDU0IriSDoXotadWKkPkM/PgonEQ
+         ytRKXNCKiHbiu9JI6wJTg8iIfxJS7ECQaSONV2cPEbfyJ20FfBWp3HRMx9ejap7eeRxm
+         ZLtw==
+X-Gm-Message-State: AC+VfDzr7ANlezHwkIZ+hjRZcjYDQjgOSN1rQoA15YnTBNJdH1zjWn82
+	s4NLRKsXmgZ7G/7NkoY93mjlfE/iFblizSfeA+vN5A==
+X-Google-Smtp-Source: ACHHUZ4GlcdhSG6HvWkFXq7A7do/fjnsIN9VLRkINS6bTK3+6Z8sQeiMBbqJ2leEce8ozWN8saz37CEHTk7PdmgSBCQ=
+X-Received: by 2002:ac8:5b46:0:b0:3f7:ffc8:2f6f with SMTP id
+ n6-20020ac85b46000000b003f7ffc82f6fmr703437qtw.28.1688055932634; Thu, 29 Jun
+ 2023 09:25:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <972e1d5c5ec53e2757fb17a586558c5385e987dd.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com>
+ <64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch>
+ <64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch>
+ <9437b176-e15a-3cec-e5cb-68ff57dbc25c@linux.intel.com> <CAAH4kHa85hCz0GhQM3f1OQ3wM+=-SfF77ShFAse0-eYGBHvO_A@mail.gmail.com>
+ <649b7a9b69cb6_11e68529473@dwillia2-xfh.jf.intel.com.notmuch>
+ <CAAH4kHY1-N+HOxPON6SuXE3QPowAGnwTjc5H=ZnNZwh7a+msnQ@mail.gmail.com> <649ba059a086_11e68529458@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <649ba059a086_11e68529458@dwillia2-xfh.jf.intel.com.notmuch>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Thu, 29 Jun 2023 09:25:21 -0700
+Message-ID: <CAAH4kHYLETfPk-sMD-QSJd0fJ7Qnt04FBwFuEkpnehB5U7D_yw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] selftests/tdx: Test GetQuote TDX attestation feature
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Shuah Khan <shuah@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, "H . Peter Anvin" <hpa@zytor.com>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Tony Luck <tony.luck@intel.com>, 
+	Wander Lairson Costa <wander@redhat.com>, Erdem Aktas <erdemaktas@google.com>, Chong Cai <chongc@google.com>, 
+	Qinkun Bao <qinkun@apache.org>, Guorui Yu <GuoRui.Yu@linux.alibaba.com>, 
+	Du Fan <fan.du@intel.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	dhowells@redhat.com, brijesh.singh@amd.com, atishp@rivosinc.com, 
+	gregkh@linuxfoundation.org, linux-coco@lists.linux.dev, joey.gouly@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Michael Roth <michael.roth@amd.com>
+>
+> First, thank you for engaging, it speeds up the iteration. This
+> confirmed my worry that the secondary goal of this proposal, a common
+> verification implementation, is indeed unachievable in the near term. A
+> few clarifying questions below, but I will let this go.
+>
+> The primary goal, achievable on a short runway, is more for kernel
+> developers. It is to have a common infrastructure for marshaling vendor
+> payloads, provide a mechanism to facilitate kernel initiated requests to
+> a key-server, and to deploy a common frontend for concepts like runtime
+> measurement (likely as another backend to what Keys already understands
+> for various TPM PCR implementations).
+>
 
-TODO: add a CONFIG option that can be to completely skip arch
-invalidation loop and avoid __weak references for arch/platforms that
-don't need an additional invalidation hook.
+That sounds good, though the devil is in the details. The TPM
+situation will be exacerbated by a lower root of trust. The TPM itself
+doesn't have a specification for its own attested firmware.
 
-In some cases, like with SEV-SNP, guest memory needs to be updated in a
-platform-specific manner before it can be safely freed back to the host.
-Add hooks to wire up handling of this sort when freeing memory in
-response to FALLOC_FL_PUNCH_HOLE operations.
+> > All the specific fields of the blob have to be decoded and subjected
+> > to an acceptance policy. That policy will most always be different
+> > across different platforms and VM owners. I wrote all of
+> > github.com/google/go-sev-guest, including the verification and
+> > validation logic, and it's going to get more complicated, and the
+> > sources of the data that provide validators with notions of what
+> > values can be trusted will be varied.
+>
+> Can you provide an example? I ask only to include it in the kernel
+> commit log for a crisp explanation why this proposed Keys format will
+> continue to convey a raw vendor blob with no kernel abstraction as part
+> of its payload for the foreseeable future.
+>
 
-Also issue invalidations of all allocated pages when releasing the gmem
-file so that the pages are not left in an unusable state when they get
-freed back to the host.
+An example is that while there is a common notion that each report
+will have some attestation key whose certificate needs to be verified,
+there is additional collateral that must be downloaded to
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20230612042559.375660-3-michael.roth@amd.com
+* verify a TDX key certificate against updates to known weaknesses of
+the key's details
+* verify the measurement in the report against a vendor's signed
+golden measurement
+* [usually offline and signed by the analyzing principal that the
+analysis was done] fully verify the measurement given a build
+provenance document like SLSA. The complexity of this analysis could
+even engage in static analysis of every commit since a certain date,
+or from a developer of low repute... whatever the verifier wants to
+do.
 
----
-Changes v2 -> v3:
-- Newly added
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  1 +
- arch/x86/kvm/x86.c                 |  6 ++++
- include/linux/kvm_host.h           |  3 ++
- virt/kvm/guest_mem.c               | 48 ++++++++++++++++++++++++++++--
- 5 files changed, 57 insertions(+), 2 deletions(-)
+These are all in the realm of interpreting the blob for acceptance, so
+it's best to keep uninterpreted.
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index cce8621e3216..a864a2093002 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -136,6 +136,7 @@ KVM_X86_OP(complete_emulated_msr)
- KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
- KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
-+KVM_X86_OP_OPTIONAL(gmem_invalidate)
- 
- #undef KVM_X86_OP
- #undef KVM_X86_OP_OPTIONAL
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 653f208979cf..a91d17fa2fe8 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1741,6 +1741,7 @@ struct kvm_x86_ops {
- 
- 	int (*gmem_prepare)(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			    kvm_pfn_t pfn, gfn_t gfn, u8 *max_level);
-+	void (*gmem_invalidate)(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end);
- };
- 
- struct kvm_x86_nested_ops {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index b5f865f39a00..e722ace8150d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13260,6 +13260,12 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_GPL(kvm_arch_no_poll);
- 
-+#ifdef CONFIG_KVM_PRIVATE_MEM
-+void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end)
-+{
-+	static_call_cond(kvm_x86_gmem_invalidate)(kvm, start, end);
-+}
-+#endif
- 
- int kvm_spec_ctrl_test_value(u64 value)
- {
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 5ca0c8ee4292..cfd98572d8be 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2346,6 +2346,7 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- #ifdef CONFIG_KVM_PRIVATE_MEM
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			      gfn_t gfn, kvm_pfn_t *pfn, int *order);
-+void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end);
- #else
- static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 				   struct kvm_memory_slot *slot, gfn_t gfn,
-@@ -2354,6 +2355,8 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 	KVM_BUG_ON(1, kvm);
- 	return -EIO;
- }
-+
-+void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end) { }
- #endif /* CONFIG_KVM_PRIVATE_MEM */
- 
- #endif
-diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-index 63ac006db7ee..5b8e11760d28 100644
---- a/virt/kvm/guest_mem.c
-+++ b/virt/kvm/guest_mem.c
-@@ -142,16 +142,58 @@ static void kvm_gmem_invalidate_end(struct kvm *kvm, struct kvm_gmem *gmem,
- 	KVM_MMU_UNLOCK(kvm);
- }
- 
-+void __weak kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end)
-+{
-+}
-+
-+/* Handle arch-specific hooks needed before releasing guarded pages. */
-+static void kvm_gmem_issue_arch_invalidate(struct kvm *kvm, struct file *file,
-+					   pgoff_t start, pgoff_t end)
-+{
-+	pgoff_t file_end = i_size_read(file_inode(file)) >> PAGE_SHIFT;
-+	pgoff_t index = start;
-+
-+	end = min(end, file_end);
-+
-+	while (index < end) {
-+		struct folio *folio;
-+		unsigned int order;
-+		struct page *page;
-+		kvm_pfn_t pfn;
-+
-+		folio = __filemap_get_folio(file->f_mapping, index,
-+					    FGP_LOCK, 0);
-+		if (!folio) {
-+			index++;
-+			continue;
-+		}
-+
-+		page = folio_file_page(folio, index);
-+		pfn = page_to_pfn(page);
-+		order = folio_order(folio);
-+
-+		kvm_arch_gmem_invalidate(kvm, pfn, pfn + min((1ul << order), end - index));
-+
-+		index = folio_next_index(folio);
-+		folio_unlock(folio);
-+		folio_put(folio);
-+
-+		cond_resched();
-+	}
-+}
-+
- static long kvm_gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
- {
- 	struct kvm_gmem *gmem = file->private_data;
--	pgoff_t start = offset >> PAGE_SHIFT;
--	pgoff_t end = (offset + len) >> PAGE_SHIFT;
- 	struct kvm *kvm = gmem->kvm;
-+	pgoff_t start, end;
- 
- 	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
- 		return 0;
- 
-+	start = offset >> PAGE_SHIFT;
-+	end = (offset + len) >> PAGE_SHIFT;
-+
- 	/*
- 	 * Bindings must stable across invalidation to ensure the start+end
- 	 * are balanced.
-@@ -160,6 +202,7 @@ static long kvm_gmem_punch_hole(struct file *file, loff_t offset, loff_t len)
- 
- 	kvm_gmem_invalidate_begin(kvm, gmem, start, end);
- 
-+	kvm_gmem_issue_arch_invalidate(kvm, file, start, end);
- 	truncate_inode_pages_range(file->f_mapping, offset, offset + len - 1);
- 
- 	kvm_gmem_invalidate_end(kvm, gmem, start, end);
-@@ -266,6 +309,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * pointed at this file.
- 	 */
- 	kvm_gmem_invalidate_begin(kvm, gmem, 0, -1ul);
-+	kvm_gmem_issue_arch_invalidate(gmem->kvm, file, 0, -1ul);
- 	truncate_inode_pages_final(file->f_mapping);
- 	kvm_gmem_invalidate_end(kvm, gmem, 0, -1ul);
- 
--- 
-2.25.1
+> > The formats are not standardized. The Confidential Computing
+> > Consortium should be working toward that, but it's a slow process.
+> > There's IETF RATS. There's in-toto.io attestations. There's Azure's
+> > JWT thing. There's a signed serialized protocol buffer that I've
+> > decided is what Google is going to produce while we figure out all the
+> > "right" formats to use. There will be factions and absolute gridlock
+> > for multiple years if we require solidifying an abstraction for the
+> > kernel to manage all this logic before passing a report on to user
+> > space.
+>
+> Understood. When that standardization process completes my expectation
+> is that it slots into the common conveyance method and no need to go
+> rewrite code that already knows how to interface with Keys to get
+> attestation evidence.
+>
 
+I can get on board with that. I don't think there will be much cause
+for more than a handful of attestation requests with different report
+data, so it shouldn't overwhelm the key subsystem.
+
+> >
+> > You really shouldn't be putting attestation validation logic in the
+> > kernel.
+>
+> It was less putting validation logic in the kernel, and more hoping for
+> a way to abstract some common parsing in advance of a true standard
+> attestation format, but point taken.
+>
+
+I think we'll have hardware-provided blobs and host-provided cached
+collateral. The caching could be achieved with a hosted proxy server,
+but given SEV-SNP already has GET_EXT_GUEST_REQUEST to simplify
+delivery, I think it's fair to offer other technologies the chance at
+supporting a similar simple solution.
+
+Everything else will have to come from the network or the workload itself.
+
+
+> > It belongs outside of the VM entirely with the party that will
+> > only release access keys to the VM if it can prove it's running the
+> > software it claims, on the platform it claims. I think Windows puts a
+> > remote procedure call in their guest attestation driver to the Azure
+> > attestation service, and that is an anti-pattern in my mind.
+>
+> I can not speak to the Windows implementation, but the Linux Keys
+> subsystem is there to handle Key construction that may be requested by
+> userspace or the kernel and may be serviced by built-in keys,
+> device/platform instantiated keys, or keys retrieved via an upcall to
+> userspace.
+>
+> The observation is that existing calls to request_key() in the kernel
+> likely have reason to be serviced by a confidential computing key server
+> somewhere in the chain. So, might as well enlighten the Keys subsystem
+> to retrieve this information and skip round trips to userspace run
+> vendor specific ioctls. Make the kernel as self sufficient as possible,
+> and make SEV, TDX, etc. developers talk more to each other about their
+> needs.
+
+That sounds reasonable. I think one wrinkle in the current design is
+that SGX and SEV-SNP provide derived keys as a thing separate from
+attestation but still based on firmware measurement, and TDX doesn't
+yet. It may in the future come with a TDX module update that gets
+derived keys through an SGX enclave=E2=80=93who knows. The MSG_KEY_REQ gues=
+t
+request for a SEV-SNP derived key has some bits and bobs to select
+different VM material to mix into the key derivation, so that would
+need to be in the API as well. It makes request_key a little weird to
+use for both. I don't even think there's a sufficient abstraction for
+the guest-attest device to provide, since there isn't a common
+REPORT_DATA + attestation level pair of inputs that drive it. If we're
+fine with a technology-tagged uninterpreted input blob for key
+derivation, and the device returns an error if the real hardware
+doesn't match the technology tag, then that could be an okay enough
+interface.
+
+I could be convinced to leave MSG_KEY_REQ out of Linux entirely, but
+only for selfish reasons. The alternative is to set up a sealing key
+escrow service that releases sealing keys when a VM's attestation
+matches a pre-registered policy, which is extremely heavy-handed when
+you can enforce workload identity at VM launch time and have a safe
+derived key with this technology. I think there's a Decentriq blog
+post about setting that whole supply chain up ("swiss cheese to
+cheddar"), so they'd likely have some words about that.
+
+--=20
+-Dionna Glaze, PhD (she/her)
