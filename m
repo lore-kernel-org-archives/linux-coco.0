@@ -1,200 +1,105 @@
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from outbound-smtp46.blacknight.com (outbound-smtp46.blacknight.com [46.22.136.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11E91775B
-	for <linux-coco@lists.linux.dev>; Fri, 30 Jun 2023 22:29:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1688164198; x=1719700198;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=kmxjEdY/oS9OgHs4b5rew7Czs0b9e7jAaSHy4XBU38o=;
-  b=UAs25VDhQWJ0Hf4V6Xy4yWiJA9WGd8sCzoKC5FMuvX0QDH84x9O3ZIKC
-   uHbljP4OyvNLR3gd8MV19Z9IWA6fCPNmxDsKcJnBXqHaBWr4dRdRCyPg7
-   e1rw7+cjFqXGpZYPfJDCDNH+n+tRDQQMp8mXpVZBtGo24HHCJGUXZn7OD
-   GRIAAYW1NMGOR37EBoE6wfszMmUPPaxFG1ZoocX1PJU3mSSfeexH0bhz2
-   66UN8gjT8TqwrF/Qg8OtMGqromdfpOkNjNjXgLdXMj3eYhYpVXF8Wo+4X
-   vwIg9vI6lAUJhwm62itHpMpGQ7lAk+/50mECW4P/ALtrD1ypq0XiPujVg
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10757"; a="428552766"
-X-IronPort-AV: E=Sophos;i="6.01,172,1684825200"; 
-   d="scan'208";a="428552766"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2023 15:29:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10757"; a="747558521"
-X-IronPort-AV: E=Sophos;i="6.01,172,1684825200"; 
-   d="scan'208";a="747558521"
-Received: from amuruge1-mobl.amr.corp.intel.com (HELO [10.252.133.96]) ([10.252.133.96])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2023 15:29:55 -0700
-Message-ID: <522b0954-749e-33be-59a7-4ce28e8c4d5c@intel.com>
-Date: Fri, 30 Jun 2023 15:29:54 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A6FF9C6
+	for <linux-coco@lists.linux.dev>; Mon,  3 Jul 2023 13:31:29 +0000 (UTC)
+Received: from mail.blacknight.com (pemlinmail02.blacknight.ie [81.17.254.11])
+	by outbound-smtp46.blacknight.com (Postfix) with ESMTPS id 7FBB7FAD86
+	for <linux-coco@lists.linux.dev>; Mon,  3 Jul 2023 14:25:22 +0100 (IST)
+Received: (qmail 10291 invoked from network); 3 Jul 2023 13:25:22 -0000
+Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.21.103])
+  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 3 Jul 2023 13:25:21 -0000
+Date: Mon, 3 Jul 2023 14:25:18 +0100
+From: Mel Gorman <mgorman@techsingularity.net>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>, marcelo.cerri@canonical.com,
+	tim.gardner@canonical.com, khalid.elmously@canonical.com,
+	philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
+	x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv14 5/9] efi: Add unaccepted memory support
+Message-ID: <20230703132518.3ukqyolnes47i5r3@techsingularity.net>
+References: <20230606142637.5171-1-kirill.shutemov@linux.intel.com>
+ <20230606142637.5171-6-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH RFC v9 09/51] x86/sev: Add RMP entry lookup helpers
-Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
- ashish.kalra@amd.com, nikunj.dadhania@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
-References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-10-michael.roth@amd.com>
- <59d5ca67-6a31-1929-8d2f-0e3314626893@intel.com>
- <20230630215709.owobzb5cr2wtkqhd@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20230630215709.owobzb5cr2wtkqhd@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20230606142637.5171-6-kirill.shutemov@linux.intel.com>
 
-On 6/30/23 14:57, Michael Roth wrote:
-> On Mon, Jun 12, 2023 at 09:08:58AM -0700, Dave Hansen wrote:
->> On 6/11/23 21:25, Michael Roth wrote:
->>> +/*
->>> + * The RMP entry format is not architectural. The format is defined in PPR
->>> + * Family 19h Model 01h, Rev B1 processor.
->>> + */
->>> +struct rmpentry {
->>> +	union {
->>> +		struct {
->>> +			u64	assigned	: 1,
->>> +				pagesize	: 1,
->>> +				immutable	: 1,
->>> +				rsvd1		: 9,
->>> +				gpa		: 39,
->>> +				asid		: 10,
->>> +				vmsa		: 1,
->>> +				validated	: 1,
->>> +				rsvd2		: 1;
->>> +		} info;
->>> +		u64 low;
->>> +	};
->>> +	u64 high;
->>> +} __packed;
->>
->> What's 'high' used for?  The PPR says it's reserved.  Why not call it
->> reserved?
->>
->> It _looks_ like it's only used for a debugging pr_info().  It makes the
->> struct look kinda goofy.  I'd much rather limit the goofiness to the
->> "dumping" code, like:
->>
->>      u64 *__e = (void *)e;
->>      ....
->>      pr_info("RMPEntry paddr 0x%llx: [high=0x%016llx low=0x%016llx]\n",
->>                                pfn << PAGE_SHIFT, __e[0], __e[1]);
->>
->> BTW, why does it do any good to dump all these reserved fields?
->>
+On Tue, Jun 06, 2023 at 05:26:33PM +0300, Kirill A. Shutemov wrote:
+> efi_config_parse_tables() reserves memory that holds unaccepted memory
+> configuration table so it won't be reused by page allocator.
 > 
-> The reserved bits sometimes contain information that can be useful to
-> pass along to folks on the firmware side, so would definitely be helpful
-> to provide the full raw contents of the RMP entry.
-
-Ahh, OK.  Could you include a comment to that effect, please?
-
-> So maybe something like this better captures the intended usage:
+> Core-mm requires few helpers to support unaccepted memory:
 > 
->     struct rmpentry {
->         union {
->             struct {
->                 u64 assigned        : 1,
->                     pagesize        : 1,
->                     immutable       : 1,
->                     rsvd1           : 9,
->                     gpa             : 39,
->                     asid            : 10,
->                     vmsa            : 1,
->                     validated       : 1,
->                     rsvd2           : 1;
->                 u64 rsvd3;
->             } info;
->             u64 data[2];
->         };
->     } __packed;
+>  - accept_memory() checks the range of addresses against the bitmap and
+>    accept memory if needed.
 > 
-> But dropping the union and casting to u64[] locally in the debug/dumping
-> routine should work fine as well.
-
-Yeah, I'd suggest doing the nasty casting in the debug function.  That
-makes it much more clear what the hardware is doing with the entries.
-The hardware doesn't treat the struct as 2*u64's at all.
-
-...
->>> +	ret = rmptable_entry(paddr, entry);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	/* Read a large RMP entry to get the correct page level used in RMP entry. */
->>> +	ret = rmptable_entry(paddr & PMD_MASK, &large_entry);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	*level = RMP_TO_X86_PG_LEVEL(rmpentry_pagesize(&large_entry));
->>> +
->>> +	return 0;
->>> +}
->>
->> This is a bit weird.  Should it say something like this?
->>
->> To do an 4k RMP lookup the hardware looks at two places in the RMP:
+>  - range_contains_unaccepted_memory() checks if anything within the
+>    range requires acceptance.
 > 
-> I'd word this as:
+> Architectural code has to provide efi_get_unaccepted_table() that
+> returns pointer to the unaccepted memory configuration table.
 > 
->   "To query all the relevant bit of an 4k RMP entry, the kernel must access
->    2 entries in the RMP table:"
+> arch_accept_memory() handles arch-specific part of memory acceptance.
 > 
-> Because it's possible hardware only looks at the 2M entry for
-> hardware-based lookups, depending on where the access is coming from, or
-> how the memory at the PFN range is mapped.
-> 
-> But otherwise it seems like an accurate description.
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-The wording you suggest is a bit imprecise.  For a 2M-aligned 4k page,
-there is only *one* location, *one* entry.
+By and large, this looks ok from the page allocator perspective as the
+checks for unaccepted are mostly after watermark checks. However, if you
+look in the initial fast path, you'll see this
 
-Also, we're not doing a lookup for an RMP entry.  We're doing it for a
-_pfn_ that results in an RMP entry.
+        /* 
+         * Forbid the first pass from falling back to types that fragment
+         * memory until all local zones are considered.
+         */     
+        alloc_flags |= alloc_flags_nofragment(ac.preferred_zoneref->zone, gfp);
 
-How about this:
+While checking watermarks should be fine from a functional perspective and
+the fast paths are unaffected, there is a risk of premature fragmentation
+until all memory has been accepted. Meeting watermarks does not necessarily
+mean that fragmentation is avoided as pageblocks can get mixed while still
+meeting watermarks. This will be tricky to detect in most cases so it may
+be worth considering augmenting the watermark checks with a check in this
+block for unaccepted memory
 
-/*
- * Find the authoritative RMP entry for a PFN.  This can be either a 4k
- * RMP entry or a special large RMP entry that is authoritative for a
- * whole 2M area.
- */
-...
->>> +#ifdef CONFIG_KVM_AMD_SEV
->>> +int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level);
->>> +#else
->>> +static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return 0; }
->>> +#endif
->>
->> Above, -ENXIO was returned when SEV-SNP was not supported.  Here, 0 is
->> returned when it is compiled out.  That inconsistent.
->>
->> Is snp_lookup_rmpentry() acceptable when SEV-SNP is in play?  I'd like
->> to see consistency between when it is compiled out and when it is
->> compiled in but unsupported on the CPU.
-> 
-> I really don't think anything in the kernel should be calling
-> snp_lookup_rmpentry(), so I think it makes sense to adoption the -ENXIO
-> convention here and in any other stubs where that applies.
+        /*
+         * It's possible on a UMA machine to get through all zones that are
+         * fragmented. If avoiding fragmentation, reset and try again.  */
+        if (no_fallback) {
+                alloc_flags &= ~ALLOC_NOFRAGMENT;
+		goto retry;
+	}
 
-Sounds good to me.  Just please make them consistent.
+I think the watermark checks will still be needed because hypothetically
+if 100% of allocations were MIGRATE_UNMOVABLE then there never would be
+a request that fragments memory and memory would not be accepted.
+
+It's not a blocker to the series, simply a suggestion for follow-on
+work.
+
+-- 
+Mel Gorman
+SUSE Labs
