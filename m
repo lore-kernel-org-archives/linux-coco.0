@@ -1,17 +1,37 @@
-Received: from outbound-smtp46.blacknight.com (outbound-smtp46.blacknight.com [46.22.136.58])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A6FF9C6
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jul 2023 13:31:29 +0000 (UTC)
-Received: from mail.blacknight.com (pemlinmail02.blacknight.ie [81.17.254.11])
-	by outbound-smtp46.blacknight.com (Postfix) with ESMTPS id 7FBB7FAD86
-	for <linux-coco@lists.linux.dev>; Mon,  3 Jul 2023 14:25:22 +0100 (IST)
-Received: (qmail 10291 invoked from network); 3 Jul 2023 13:25:22 -0000
-Received: from unknown (HELO techsingularity.net) (mgorman@techsingularity.net@[84.203.21.103])
-  by 81.17.254.9 with ESMTPSA (AES256-SHA encrypted, authenticated); 3 Jul 2023 13:25:21 -0000
-Date: Mon, 3 Jul 2023 14:25:18 +0100
-From: Mel Gorman <mgorman@techsingularity.net>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF2B567B
+	for <linux-coco@lists.linux.dev>; Tue,  4 Jul 2023 14:37:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688481471; x=1720017471;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3uPK0lQLnODbW5urZpqsXqNoSRHmvwzicJIhGoLTkFM=;
+  b=bMFyR4O3Z5LBVuHSyrXZ+TJeLTUe79bo2t8i+ccei59ckkZoDMNo9nlh
+   ffmcMDQEDKZlFp1L5B693nZA1Ya1EZD/RStfuf7+1NHA1h3ypjjn1zKu9
+   Fw2YuPhFuBUKxVdA2mZFRSeK8A9AM4cAS07K+IUirGCj2n78mb/2Ym5L1
+   CpORi+LTssTHoYyWQs3AoItP7LyIfLcC5KjloYgvbWmjy43ojusqoAJ18
+   +xBb9BVDEgjVYKuVA+yV+fQEWWokTPixaO8c+RyD9y1KtvTEwsUhpzmsW
+   gePdoSz8bPlkWFnTMrbXmZQyfucn9fQtu/bydy24nFq7E96yZ1Rw9DqM7
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10760"; a="343469404"
+X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
+   d="scan'208";a="343469404"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2023 07:37:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10760"; a="718940604"
+X-IronPort-AV: E=Sophos;i="6.01,180,1684825200"; 
+   d="scan'208";a="718940604"
+Received: from posikoya-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.49.196])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2023 07:37:41 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 27C2A10A08E; Tue,  4 Jul 2023 17:37:40 +0300 (+03)
+Date: Tue, 4 Jul 2023 17:37:40 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Mel Gorman <mgorman@techsingularity.net>
 Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	Dave Hansen <dave.hansen@intel.com>,
 	Sean Christopherson <seanjc@google.com>,
@@ -33,73 +53,72 @@ Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
 	x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
 	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv14 5/9] efi: Add unaccepted memory support
-Message-ID: <20230703132518.3ukqyolnes47i5r3@techsingularity.net>
+Message-ID: <20230704143740.bgimyg3bqsgxbm47@box.shutemov.name>
 References: <20230606142637.5171-1-kirill.shutemov@linux.intel.com>
  <20230606142637.5171-6-kirill.shutemov@linux.intel.com>
+ <20230703132518.3ukqyolnes47i5r3@techsingularity.net>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230606142637.5171-6-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20230703132518.3ukqyolnes47i5r3@techsingularity.net>
 
-On Tue, Jun 06, 2023 at 05:26:33PM +0300, Kirill A. Shutemov wrote:
-> efi_config_parse_tables() reserves memory that holds unaccepted memory
-> configuration table so it won't be reused by page allocator.
+On Mon, Jul 03, 2023 at 02:25:18PM +0100, Mel Gorman wrote:
+> On Tue, Jun 06, 2023 at 05:26:33PM +0300, Kirill A. Shutemov wrote:
+> > efi_config_parse_tables() reserves memory that holds unaccepted memory
+> > configuration table so it won't be reused by page allocator.
+> > 
+> > Core-mm requires few helpers to support unaccepted memory:
+> > 
+> >  - accept_memory() checks the range of addresses against the bitmap and
+> >    accept memory if needed.
+> > 
+> >  - range_contains_unaccepted_memory() checks if anything within the
+> >    range requires acceptance.
+> > 
+> > Architectural code has to provide efi_get_unaccepted_table() that
+> > returns pointer to the unaccepted memory configuration table.
+> > 
+> > arch_accept_memory() handles arch-specific part of memory acceptance.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> > Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 > 
-> Core-mm requires few helpers to support unaccepted memory:
+> By and large, this looks ok from the page allocator perspective as the
+> checks for unaccepted are mostly after watermark checks. However, if you
+> look in the initial fast path, you'll see this
 > 
->  - accept_memory() checks the range of addresses against the bitmap and
->    accept memory if needed.
+>         /* 
+>          * Forbid the first pass from falling back to types that fragment
+>          * memory until all local zones are considered.
+>          */     
+>         alloc_flags |= alloc_flags_nofragment(ac.preferred_zoneref->zone, gfp);
 > 
->  - range_contains_unaccepted_memory() checks if anything within the
->    range requires acceptance.
-> 
-> Architectural code has to provide efi_get_unaccepted_table() that
-> returns pointer to the unaccepted memory configuration table.
-> 
-> arch_accept_memory() handles arch-specific part of memory acceptance.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> While checking watermarks should be fine from a functional perspective and
+> the fast paths are unaffected, there is a risk of premature fragmentation
+> until all memory has been accepted. Meeting watermarks does not necessarily
+> mean that fragmentation is avoided as pageblocks can get mixed while still
+> meeting watermarks.
 
-By and large, this looks ok from the page allocator perspective as the
-checks for unaccepted are mostly after watermark checks. However, if you
-look in the initial fast path, you'll see this
+Could you elaborate on this scenario?
 
-        /* 
-         * Forbid the first pass from falling back to types that fragment
-         * memory until all local zones are considered.
-         */     
-        alloc_flags |= alloc_flags_nofragment(ac.preferred_zoneref->zone, gfp);
+Current code checks the watermark, if it is met, try rmqueue().
 
-While checking watermarks should be fine from a functional perspective and
-the fast paths are unaffected, there is a risk of premature fragmentation
-until all memory has been accepted. Meeting watermarks does not necessarily
-mean that fragmentation is avoided as pageblocks can get mixed while still
-meeting watermarks. This will be tricky to detect in most cases so it may
-be worth considering augmenting the watermark checks with a check in this
-block for unaccepted memory
+If rmqueue() fails anyway, try to accept more pages and retry the zone if
+it is successful.
 
-        /*
-         * It's possible on a UMA machine to get through all zones that are
-         * fragmented. If avoiding fragmentation, reset and try again.  */
-        if (no_fallback) {
-                alloc_flags &= ~ALLOC_NOFRAGMENT;
-		goto retry;
-	}
+I'm not sure how we can get to the 'if (no_fallback) {' case with any
+unaccepted memory in the allowed zones.
 
-I think the watermark checks will still be needed because hypothetically
-if 100% of allocations were MIGRATE_UNMOVABLE then there never would be
-a request that fragments memory and memory would not be accepted.
+I see that there's preferred_zoneref and spread_dirty_pages cases, but
+unaccepted memory seems change nothing for them.
 
-It's not a blocker to the series, simply a suggestion for follow-on
-work.
+Hm?
 
 -- 
-Mel Gorman
-SUSE Labs
+  Kiryl Shutsemau / Kirill A. Shutemov
