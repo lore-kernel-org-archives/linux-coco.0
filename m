@@ -1,171 +1,115 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2071.outbound.protection.outlook.com [40.107.244.71])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E69579D2
-	for <linux-coco@lists.linux.dev>; Thu,  6 Jul 2023 14:53:58 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q9ZyVDfn1Q6MDF5G4OxWs6DoLX8SEr7zXxFU2u90JdU6dFN1ume3r3WqruW7+H0Ip12QBB8FxJiy3OELyOuLbLUTrVhqtgU6xPUlLNHOwCmi37ou9kgjzY0koPzFzi6O/b3129w3n2IhsRJJhUt0Y/LlkI9WVGiqJ/Ao8XiGuBUGRNlmyIUUOqw7LnZH9jxgl2dJaS+dkXFsQRVhWHYmffcylcj5YuCj1f92J29nfpDpc9vpOlOPjKs2hQwxH/KJHH7CJOl+Oby7hMXaVPIiWsIqHBg4vLT8Z036h7b38jY5XZ40mx7cprinwFvp3CeE5bekMtuszuq22cmbHTXR1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=791YcPgQ1FhSU50xSd0HY3bCTmFLKMRt+YWTS2n8Ojc=;
- b=ksqWZDbpIgdtZjrik0jPraxnBIsdz/OIcDarfNYz62WbSbDztM+XdD75JiKZvCeVKPy53gBgfjZbOBmLuI624OU+YWeVWMe596bdVkBzknu7KoKdGg1ueQQ06Hx8ubAMRemh1W7MlyBz/0EhpWgb4QaiIpVSiAu6BNMcyJSP9E0DTIA27dOmEbEdJ6fbk0pEOMDmNnccCm3OeqwZVg55rbC86pdOw2hoTpPelzyalJi9dHYnSWIKc/FUSbyNEluvYk8OAkmSCm94gUBLqiQ/CLcAvqRVrjZsNiy7JYWVpxzm4YNmRsI7cSCEzXsskRMHQFrNgPs17hzZubgF0icqqg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=791YcPgQ1FhSU50xSd0HY3bCTmFLKMRt+YWTS2n8Ojc=;
- b=fLAJ5rA00jDxdYNuGuRNU7zddMdbMkn+RPhJUEt9UZ9L6pbdJ4tp7a5HGhrSrq6lanMJDtIQDJEq3gS5RjnKz84BCscbOQkPOZVzrbTDUd4A3xqmRvsYK60YML/qa6b4vk2dp+GvK2FmPM/TZkf3YzcX77IBOTpDsiAAfF/F/kc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com (2603:10b6:5:398::12)
- by LV2PR12MB5848.namprd12.prod.outlook.com (2603:10b6:408:173::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Thu, 6 Jul
- 2023 14:53:54 +0000
-Received: from DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::1629:622f:93d0:f72f]) by DM4PR12MB5229.namprd12.prod.outlook.com
- ([fe80::1629:622f:93d0:f72f%7]) with mapi id 15.20.6565.016; Thu, 6 Jul 2023
- 14:53:54 +0000
-Message-ID: <8e8eea5a-c5bb-c460-0e80-0f769ec9e6d8@amd.com>
-Date: Thu, 6 Jul 2023 09:53:52 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US
-To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- kvm list <kvm@vger.kernel.org>
-Cc: "Kaplan, David" <david.kaplan@amd.com>,
- Jeremy Powell <jeremy.powell@amd.com>, "Giani, Dhaval"
- <Dhaval.Giani@amd.com>, Alexey Kardashevskiy <aik@amd.com>,
- Ashish Kalra <ashkalra@amd.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-Subject: KVM Forum: Trusted I/O BoF summary
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR03CA0003.namprd03.prod.outlook.com
- (2603:10b6:806:20::8) To DM4PR12MB5229.namprd12.prod.outlook.com
- (2603:10b6:5:398::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B67F17D2
+	for <linux-coco@lists.linux.dev>; Mon, 10 Jul 2023 03:05:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1688958312; x=1720494312;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RDmc0GZUWAA3G5ck7OlGOYb7bZsUDXGbc8q2Xk1f4ws=;
+  b=nJmm8xs56PcMOIcL21hjMXyKXVWjMYPMCTgjUkz2JhNOcmfwx8JCEent
+   d/sGm4qawzHxY8/5+wC28VHku5giNIFIp4Dg1KgvK0UlBwlyAaMsTCaYs
+   hGmxFMnfZz/fHDhTe5rjMgolrpNwyotwrSviZ8dO8LPIf2TOLmZ+DJvAb
+   ecBXOQBPSXb1lSFWa+a/AvzOXI9PUpxITWvs85/hqaEeLtUF564iNKm/t
+   Uz7b2Gt3YZHymCdYIlZ89Ml+GfxVkYw/f0Jn54R1m+cb6eMYuGh2Rzvxm
+   70yLtzHx3YtkGe8/5XKPyAYtqzqbKEMhzA4o5kPNBXHsJDSkzihsdg/6/
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="354103773"
+X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; 
+   d="scan'208";a="354103773"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2023 20:05:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="697856804"
+X-IronPort-AV: E=Sophos;i="6.01,193,1684825200"; 
+   d="scan'208";a="697856804"
+Received: from krtulig-mobl45.amr.corp.intel.com (HELO [10.212.175.70]) ([10.212.175.70])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2023 20:05:10 -0700
+Message-ID: <fd4cf001-b600-a09e-050b-2b5ed94922da@linux.intel.com>
+Date: Sun, 9 Jul 2023 20:05:09 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5229:EE_|LV2PR12MB5848:EE_
-X-MS-Office365-Filtering-Correlation-Id: 015692f9-7be5-4b24-fcfe-08db7e30d1cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	dhNoeZZqcHXDNK8UqBRzWrDNtviFpI6g3c5JKxEvoxnMQKuE9ObQhR0DzHxKwsjV6FmaLTyks5U7ExicJSNHZvGIP8Kdptl6A7SYlpJoYnmfQ1ZyNgjZRsvzWOh340umqE93uNlHpbb09rNuzS+PS8UJVrmWPdxAjNtzUUOIHxVpR3OK/EzMbbhEvIDAhdMZ+ZerBgcBlIo3GerPirWW8QkofkNnbXzATjOLliSM/nQ7Ywv/3moZo+vOVMCa9V3Uz9W2VDhk+xewBsXx4FMkR1hLnlD0EmGg9zYnQ6whcAcrebLOzOH8O4iUXIRCyVnX6k2u9lSrmaBetcFdVJIinXL/o89XOODNMxmof0sWOI8QuCy9oTiVzLzLI6GXu+pVgNB+4rXAjUDcUOqWqa+DVG0YVS4DDvh9Z0wUXdKmiyZwsrvY/TNtC6SCGfqwtDzxZoyqgGw8pE6Opl6306dRMJCAJx0Q2oLRr4rMk9HEBIhtUOf1GqAg/CjwE+agw24PhNpY8QRqWcbjAAZAYVYOmpfwKbblk1n45pdHPUX9Zamr7h/kW9oJM7e/Fc0sm822VhNTWdx858K8CArC8EYad13Zuf1kb++Kmi6x812fWasaW4AKaKkb1N33nUvBJoie1P3fJptBtqpd6wDikfblhg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5229.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(376002)(396003)(346002)(39860400002)(366004)(451199021)(31686004)(2906002)(66556008)(66946007)(4326008)(478600001)(66476007)(316002)(8676002)(8936002)(36756003)(5660300002)(31696002)(41300700001)(110136005)(6512007)(86362001)(54906003)(38100700002)(6486002)(6506007)(26005)(2616005)(186003)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dUpkZ0JocDZpcEpiSnpUVE5BRmZQSnVMUGRKdU42WXZVb24zTmdxQnlHUmhP?=
- =?utf-8?B?cTJGUWRPMWYvdm5HZzFiQXRIa1YydW5KWGFYbW9wZ2hFWkVoYUtHK0p6MWtu?=
- =?utf-8?B?c1I4cVlWOVYwbVVmRjFzT1dpU05XZ3p0VWtPS09mQ2hZUlEzUXVPZFI4bUly?=
- =?utf-8?B?SkhmcUVvc0JDS05TQmZxcjZHaDlTY0ZJSkJ6ZnVrczJHN0FUd0ZYb1hFS0RD?=
- =?utf-8?B?K2M3WTdtU2tMVVh6V0g1MFBwakFsZ0xubEVvdlY5ODlVRHdNZnEvSi9zb3dF?=
- =?utf-8?B?cExybUhCZER4OTVYK1RoMVV3UGIwczBHcnpMckJpaFRtbGZ3VFA0R0lRa1Ey?=
- =?utf-8?B?dHRBSEFNQngvU0lGRnI0WHFGL2l3SEhCR0VIc1p5ekZmVTFQa2drNUFpa2Jq?=
- =?utf-8?B?WEZ1N250djRqUjlIeGJteXZIQ0ozL0JvR3NKTGVnVm81OUNQdklnbEVFdTF2?=
- =?utf-8?B?REoxOWpsemZEc0FuRVlScitQYytOSmVhSkRZQUVuSUFsTDVFcDlETjR6MG9W?=
- =?utf-8?B?THB3MUxWZjRWd3RzeWo2cDlEazVZS1o1bWIyakkrWlhTM2RJdHNUN0trRGQz?=
- =?utf-8?B?TVdtSmEwaUVSUmVaeXIwenkzbVlJNGk0RXNqVklLdzcwVkl3aGdtQUpHanJh?=
- =?utf-8?B?RTJBU25jZUZqZjh3clF6QzN6VTZLYTQ1NW5OZGRiS2FyWElRci96ZVV4OG5n?=
- =?utf-8?B?ZHZzOHpUOURZWmdTTVF1aHBtTlhpbUJJNmgxYXFaOWJxbnR0WUxucmhISlFm?=
- =?utf-8?B?b2hVays4cTdYNno3NFFKbFNKVVkzNFJNdG9NeTZYVlFHNEFHZCtMOWREK1N4?=
- =?utf-8?B?aGFvQUlRVkFJZEwvelZaajIwRjFZQVQxSEVXQ3FqWUhwWXNVR1dnS1hwbGZu?=
- =?utf-8?B?NURVSi9wV29DbXIyRGJ5Y1B3d3V6YjRDbnJTVXBRYkxEak5xQnNQQmpmNi9N?=
- =?utf-8?B?aTI5bXNFMjBqeHFBMmtSQm9FVTErQVlsYWU3bDZ2dm8rOUtWc21SMXRFWVRD?=
- =?utf-8?B?MkFIMTNlVVp6TlZxYkEweGtjMHVpb0VPY09jclZseTh5UmltZlE4aWR3Tkxi?=
- =?utf-8?B?WHdHNWEySmxRY2RtbjRZaWVYdDI4WWlVbGR6QjF4bG9nR3F2elZvSDBTTVl1?=
- =?utf-8?B?VGkzcmZTZ212ZUh1YkVIZWtFVkk1NU1lOEN4NU1XNEFnSHhBRjl0bXVJUXhz?=
- =?utf-8?B?ZkFJMWVoNWtub0grZDBTKzlrYzJkWTV1bHhlSkh5dlZkYXFycFAwQWM3b1Fk?=
- =?utf-8?B?eHByMmJJbS84NUxCNjdjTk5WaXQzdXFRYUgycnAyME9tNnJCZWlnVlBlVU1T?=
- =?utf-8?B?K3c3UGVFeDNHVGk4RkFXZXpaODRtVTlUMHpocjA3Q1U0S0F1Zm05SS9BYlli?=
- =?utf-8?B?dzI0OHpseUgwMHFFbEFGWVozaVdFcCtQTnlDQ2J4VjdVL1BKOE5MMk52R3FD?=
- =?utf-8?B?bXhHd0M0U01NRU03d0hvd244MEMzSzZrN2hhSjdpL2hTanRCNmROOHN5VHFT?=
- =?utf-8?B?QWlhZ3Q5dEtaKzNMcVFJQWlsdVE2NGhKNFJTZ0dCOFRuMXptMmFwc09NZk0z?=
- =?utf-8?B?cTlyU2U2SXpEODNucm1GNXhGVFViSlVMQlFvVXNORCtvcnorN0xNNU41S2ds?=
- =?utf-8?B?WnRpREEwdUZ3akZaYjcvcWNqeWtuNGJCSHJISnhmK2N2YXJ1eFdrK2E2TVAz?=
- =?utf-8?B?VGdnUUlDNkJQd1NlYVFkMXdIS0hEdStpOEg2b0NEbkplNFhGSW1veGwxM1Z5?=
- =?utf-8?B?K3liQkM2L2gxTm9XZ1A3QWFQWkR2b29sQStZaUxiYURLelJyaDhJNlkrQUdK?=
- =?utf-8?B?VVA4cGZmanNjbkNWcUVSaVVidUxWWFZ0YS9XSlJsTmIxd0xscHljYUZyYmh4?=
- =?utf-8?B?R2tEd0FqRlJTOUh2Z05ocHphN3dsQUtIbGprMDdZZXpxOTdNMFNTSEF3N3lL?=
- =?utf-8?B?ZkxVSzg5aytVODNSN3NPSE5uWnpvdHVoeXZuWFVxa0gzK2VYQmNCaks3U2hL?=
- =?utf-8?B?Zm5zVkZ5aVpRNllSOVR0bWsrV0VtVTZLVkpjZWtVbE1BNExXVm5hbnVxbHBJ?=
- =?utf-8?B?R1p5RHFEZFZxa1pjZmVmZWNRdlgyU1FKWEpZN3AvSnpTbVRoRzFDYlNRMHk4?=
- =?utf-8?Q?D+Led6dE+EexV82qGd229po8c?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 015692f9-7be5-4b24-fcfe-08db7e30d1cd
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5229.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2023 14:53:54.8028
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m4JU+gx9FvJnasaIKTVUwprAxmxPoPv5a/6qBPx8sfs5hRx4HG/kd1hRRcpIRAr/yLmunMO7eh+/4hZVrIvahA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5848
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.11.0
+Subject: Re: [PATCH RFC v9 05/51] x86/coco: move CONFIG_HAS_CC_PLATFORM check
+ down into coco/Makefile
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com,
+ dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ marcorr@google.com, alpergun@google.com, dgilbert@redhat.com,
+ jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ liam.merwick@oracle.com, zhi.a.wang@intel.com,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-6-michael.roth@amd.com>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20230612042559.375660-6-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Sorry for the delay on getting this out, it's been a crazy couple of weeks 
-since KVM Forum. Here's my summary of the discussion had at the KVM Forum 
-Trusted I/O BoF.
+Hi,
 
-Some initial discussion of why Trusted I/O is really needed:
+On 6/11/23 9:25 PM, Michael Roth wrote:
+> Currently CONFIG_HAS_CC_PLATFORM is a prereq for building anything in
+> arch/x86/coco, but that is generally only applicable for guest support.> 
+> For SEV-SNP, helpers related purely to host support will also live in
+> arch/x86/coco. To allow for CoCo-related host support code in
+> arch/x86/coco, move that check down into the Makefile and check for it
+> specifically when needed.
 
-   - Secure end-to-end path between the CVM and the device
-   - Performance advantage to avoid bounce buffering through shared memory
-   - Attestation of device
 
-The discussion turned to the device model and was more guest focused:
+I think CONFIG_HAS_CC_PLATFORM is not meant to be guest specific (otherwise,
+we could have named it CONFIG_HAS_CC_GUEST). Will it create any issue if
+we enable it in host?
 
-   - Where should the support to transition the TDI live?
-     - PCI subsystem?
-     - Device driver?
-     - Other (such as in an SVSM)?
+> 
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/Kbuild        | 2 +-
+>  arch/x86/coco/Makefile | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/Kbuild b/arch/x86/Kbuild
+> index 5a83da703e87..1889cef48b58 100644
+> --- a/arch/x86/Kbuild
+> +++ b/arch/x86/Kbuild
+> @@ -1,5 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> -obj-$(CONFIG_ARCH_HAS_CC_PLATFORM) += coco/
+> +obj-y += coco/
+>  
+>  obj-y += entry/
+>  
+> diff --git a/arch/x86/coco/Makefile b/arch/x86/coco/Makefile
+> index c816acf78b6a..6aa52e719bf5 100644
+> --- a/arch/x86/coco/Makefile
+> +++ b/arch/x86/coco/Makefile
+> @@ -3,6 +3,6 @@ CFLAGS_REMOVE_core.o	= -pg
+>  KASAN_SANITIZE_core.o	:= n
+>  CFLAGS_core.o		+= -fno-stack-protector
+>  
+> -obj-y += core.o
+> +obj-$(CONFIG_ARCH_HAS_CC_PLATFORM) += core.o
+>  
+>  obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx/
 
-   - TDI readiness
-     - Use an SVSM to take TDI to run state and hand to the OS
-     - Firmware or kernel takes device to run state
-     - Hot-plug like
-       - Leave unlocked until guest requests to make device secure
-
-   - Attestation
-     - Generic or device specific?
-       - Is it a device specific policy?
-       - How to account for firmware revisions
-       - Should we just care about the measurement?
-
-     - Don't do any attestation
-       - Use SYSFS to present an interface to "activate" secure device
-       - Until activation, OS enforces DMA to shared memory
-       - Remote attestation can be performed to decide activation
-
-   - DMA security
-     - Can MMIO be locked but still not make DMA secure to allow the device
-       to be used similar to today
-       - Allow DMA, but only allow to shared memory (software enforced)
-       - Start in "OS non-secure" and move to "OS secure"
-         - vIOMMU prevents access to the whole address space
-         - Device driver work to transition DMA buffers
-         - Can this state be detected?
-           - What if OVMF has transitioned the device to secure
-       - Firmware, e.g. OVMF, would need to do the same
-
-       - The device should always be available for use
-         - Device does not need to be attested to be used
-         - Attestation could be done later to then move the device to
-           "OS secure"
-
-It was hard to hear at times during the discussion. Thanks to Christophe 
-de Dinechin for recording the session and getting a copy of it to me.
-
-Hopefully I didn't miss too much.
-
-Thanks,
-Tom
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
