@@ -1,82 +1,209 @@
-Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAC11F163
-	for <linux-coco@lists.linux.dev>; Thu, 13 Jul 2023 15:56:51 +0000 (UTC)
-Received: from 8bytes.org (pd9fe94eb.dip0.t-ipconnect.de [217.254.148.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.8bytes.org (Postfix) with ESMTPSA id B01B828012A;
-	Thu, 13 Jul 2023 17:50:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
-	s=default; t=1689263424;
-	bh=OLJU3SR6cRiJ6OsOAtXZ0G0weObZUi+vKis4ETdMDq8=;
-	h=Date:From:To:Cc:Subject:From;
-	b=B4SXyn6rxFd9d9kM1MadPeDKBKhPsBYAaoYXWfrO24UOMnxYJZSd/JdEWiVrU9STk
-	 TQWp1IETI7NzkBQUbpqMHlVfoLmfcvfm9HQuBoWWER/Or3nOyDgjZPsDDtQVuBGgFl
-	 vlcNpvTH8qWvk6rQUTSeb42TMNSFpH2w5Uo84C21EMvqYgZJFZ2RU9wAXZ3oJsEKnr
-	 OxW6kfRZ5/jzZ9q950rQO7Cmr1e95nwjWl9NzxJc490KUryPqLUDT7sNZZ2Pxdo+dk
-	 RcWLY9RE6euw49DkQc7eRezkLnh5Mvgc0yyCTDgemVYtQwZ/JOfvLxpoXOygfBdrTm
-	 z2a7cX+z2BGEg==
-Date: Thu, 13 Jul 2023 17:50:23 +0200
-From: =?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>
-To: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	linux-sgx@vger.kernel.org
-Cc: Dhaval Giani <dhaval.giani@gmail.com>
-Subject: [CfP] Confidential Computing Microconference @ LPC 2023
-Message-ID: <ZLAdPyqn8glGgYjT@8bytes.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D2520FB7
+	for <linux-coco@lists.linux.dev>; Thu, 13 Jul 2023 22:03:56 +0000 (UTC)
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-1b896096287so8840895ad.0
+        for <linux-coco@lists.linux.dev>; Thu, 13 Jul 2023 15:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689285836; x=1691877836;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZzFbjTUKfvtg9IK6V6Q6qdE4DKqEmkmxRE0+kAvIJJc=;
+        b=ooPU8phvp1E+dELkGdoFhSzDtDE8YZ55ffTywH58Vi8FSZxwM4RT2FbNyoO1BRxaio
+         lX8CW3VYAi2vduxGvn7dWcmO+UOuXBnFIpNy17+gypv+Pr7ApdmPhrngOgtwI4RmzkSd
+         iwZ5zXmDS2+JAeCeCl2H92KB87W4rsHRHHYJZE3kH6hgM+9qXF7V9ommIt54PIGeV3Em
+         YdhEeLe/NPY0wZ6m/LAKLQDA5G6Ub8XVrRxf4TChH3WRdiU5B3E97JcTOhGahE1KcbGb
+         rk5UW+6Y2PopGpUVvZZyg5Ta2V2NP8dycatOplwk+Y2O5wWZaMJ3ngX+sjjcj2RQqCjS
+         Ot4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689285836; x=1691877836;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZzFbjTUKfvtg9IK6V6Q6qdE4DKqEmkmxRE0+kAvIJJc=;
+        b=DTJCcOXSA4uyZbMjnltQL/I/lCdmTVxkOKLzmssh5RlnloamOSlIUR/ah0KAQiK/Oj
+         UcW344EUZP6VPghJF4GdTwk1dNcQIJ15PMX0Y/tQhgS81xBMUnl93/rsQX69r1mOOLpc
+         VnoyUziAGjbfmp2iW4feBEUWEZZZKSUfdpCbtx8BN1cuXorr8uY3zPCnyUJFckUe50Bp
+         pfEUS59UK4D+6zFdnwlLEFBco+xQ5uKd3fP4+3Z/lxGPokPvXG8b+QSRtRscRlJ1O4Du
+         cGlDniMgRaCGlHylygm+TRSen2mY2myFc/471VGvTiggbTOZhkJ0ovJzFevcUgqwefyg
+         a36g==
+X-Gm-Message-State: ABy/qLZp76/EsRFVpjeej4u468tE9+FXOO7JllkSbEN8mq0b5YG9PM6M
+	RV2/09HGarChRJ6TubY5sryr6/AXz3Y=
+X-Google-Smtp-Source: APBJJlHsGVlZCRJkBgCAhvsTKbRLQYCXoORPGHs0vaqb/OclkGLJ58hCGkydkfW0vvf9K7hic6wlAzTb28U=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:902:70c9:b0:1b8:b7fc:9aa1 with SMTP id
+ l9-20020a17090270c900b001b8b7fc9aa1mr8957plt.1.1689285836408; Thu, 13 Jul
+ 2023 15:03:56 -0700 (PDT)
+Date: Thu, 13 Jul 2023 15:03:54 -0700
+In-Reply-To: <358fb191b3690a5cbc2c985d3ffc67224df11cf3.1687991811.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <cover.1687991811.git.isaku.yamahata@intel.com> <358fb191b3690a5cbc2c985d3ffc67224df11cf3.1687991811.git.isaku.yamahata@intel.com>
+Message-ID: <ZLB0ytO7y4NOLWpL@google.com>
+Subject: Re: [RFC PATCH v3 08/11] KVM: Fix set_mem_attr ioctl when error case
+From: Sean Christopherson <seanjc@google.com>
+To: isaku.yamahata@intel.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	isaku.yamahata@gmail.com, Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, 
+	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Michael Roth <michael.roth@amd.com>, 
+	Yuan Yao <yuan.yao@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi,
+On Wed, Jun 28, 2023, isaku.yamahata@intel.com wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> 
+> kvm_vm_ioctl_set_mem_attributes() discarded an error code of xa_err()
+> unconditionally.  If an error occurred at the beginning, return error.
+> 
+> Fixes: 3779c214835b ("KVM: Introduce per-page memory attributes")
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> 
+> ---
+> Changes v2 -> v3:
+> - Newly added
+> ---
+>  virt/kvm/kvm_main.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 422d49634c56..fdef56f85174 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2423,6 +2423,7 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+>  	gfn_t start, end;
+>  	unsigned long i;
+>  	void *entry;
+> +	int err = 0;
+>  
+>  	/* flags is currently not used. */
+>  	if (attrs->flags)
+> @@ -2447,14 +2448,17 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+>  	KVM_MMU_UNLOCK(kvm);
+>  
+>  	for (i = start; i < end; i++) {
+> -		if (xa_err(xa_store(&kvm->mem_attr_array, i, entry,
+> -				    GFP_KERNEL_ACCOUNT)))
+> +		err = xa_err(xa_store(&kvm->mem_attr_array, i, entry,
+> +				      GFP_KERNEL_ACCOUNT));
+> +		if (err)
+>  			break;
+>  	}
+>  
+>  	KVM_MMU_LOCK(kvm);
+> -	if (i > start)
+> +	if (i > start) {
+> +		err = 0;
+>  		kvm_mem_attrs_changed(kvm, attrs->attributes, start, i);
+> +	}
+>  	kvm_mmu_invalidate_end(kvm);
+>  	KVM_MMU_UNLOCK(kvm);
+>  
+> @@ -2463,7 +2467,7 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+>  	attrs->address = i << PAGE_SHIFT;
+>  	attrs->size = (end - i) << PAGE_SHIFT;
+>  
+> -	return 0;
+> +	return err;
 
-We are pleased to announce the call for presentations for this years
-Confidential Computing MC at the Linux Plumbers Conference.
+Aha!  Idea (stolen from commit afb2acb2e3a3 ("KVM: Fix vcpu_array[0] races")).
+Rather than deal with a potential error partway through the updates, reserve all
+xarray entries head of time.  That way the ioctl() is all-or-nothing, e.g. KVM
+doesn't need to update the address+size to capture progress, and userspace doesn't
+have to retry (which is probably pointless anyways since failure to allocate an
+xarray entry likely means the system/cgroup is under intense memory pressure).
 
-In this microconference we want to discuss ongoing developments around
-Linux support for memory encryption and support for confidential
-computing in general.
+Assuming it works (compile tested only), I'll squash this:
 
-Topics of interest include:
-
-	* Support for unaccepted memory
-
-	* Attestation workflows
-
-	* Confidential Computing threat model
-
-	* Secure VM Service module (SVSM) and paravisor architecture and implementation
-
-	* Live migration of confidential virtual machines
-
-	* ARM64 Confidential Computing
-
-	* RISC-V CoVE
-
-	* Secure IO and device attestation
-
-	* Intel TDX Connect
-
-	* AMD SEV-TIO
-
-Please use the LPC CfP process to submit your proposals. Submissions can
-be made via
-
-	https://lpc.events/event/17/abstracts/
-
-Make sure to select "Confidential Computing MC" as the track and submit
-your session proposal by August 25th. Submissions made after that date
-can not be included into the microconference.
-
-Looking forward to seeing all of you in Richmond, Virginia in November!
-
-Thanks,
-
-	Joerg
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 46fbb4e019a6..8cb972038dab 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -2278,7 +2278,7 @@ struct kvm_s390_zpci_op {
+ 
+ /* Available with KVM_CAP_MEMORY_ATTRIBUTES */
+ #define KVM_GET_SUPPORTED_MEMORY_ATTRIBUTES    _IOR(KVMIO,  0xd2, __u64)
+-#define KVM_SET_MEMORY_ATTRIBUTES              _IOWR(KVMIO,  0xd3, struct kvm_memory_attributes)
++#define KVM_SET_MEMORY_ATTRIBUTES              _IOW(KVMIO,  0xd3, struct kvm_memory_attributes)
+ 
+ struct kvm_memory_attributes {
+        __u64 address;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 9584491c0cd3..93e82e3f1e1f 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2425,6 +2425,7 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+        gfn_t start, end;
+        unsigned long i;
+        void *entry;
++       int r;
+ 
+        /* flags is currently not used. */
+        if (attrs->flags)
+@@ -2439,18 +2440,32 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+        start = attrs->address >> PAGE_SHIFT;
+        end = (attrs->address + attrs->size - 1 + PAGE_SIZE) >> PAGE_SHIFT;
+ 
++       if (WARN_ON_ONCE(start == end))
++               return -EINVAL;
++
+        entry = attrs->attributes ? xa_mk_value(attrs->attributes) : NULL;
+ 
+        mutex_lock(&kvm->slots_lock);
+ 
++       /*
++        * Reserve memory ahead of time to avoid having to deal with failures
++        * partway through setting the new attributes.
++        */
++       for (i = start; i < end; i++) {
++               r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
++               if (r)
++                       goto out_unlock;
++       }
++
+        KVM_MMU_LOCK(kvm);
+        kvm_mmu_invalidate_begin(kvm);
+        kvm_mmu_invalidate_range_add(kvm, start, end);
+        KVM_MMU_UNLOCK(kvm);
+ 
+        for (i = start; i < end; i++) {
+-               if (xa_err(xa_store(&kvm->mem_attr_array, i, entry,
+-                                   GFP_KERNEL_ACCOUNT)))
++               r = xa_err(xa_store(&kvm->mem_attr_array, i, entry,
++                                   GFP_KERNEL_ACCOUNT));
++               if (KVM_BUG_ON(r, kvm))
+                        break;
+        }
+ 
+@@ -2460,12 +2475,10 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+        kvm_mmu_invalidate_end(kvm);
+        KVM_MMU_UNLOCK(kvm);
+ 
++out_unlock:
+        mutex_unlock(&kvm->slots_lock);
+ 
+-       attrs->address = i << PAGE_SHIFT;
+-       attrs->size = (end - i) << PAGE_SHIFT;
+-
+-       return 0;
++       return r;
+ }
+ #endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
+ 
+@@ -5078,9 +5091,6 @@ static long kvm_vm_ioctl(struct file *filp,
+                        goto out;
+ 
+                r = kvm_vm_ioctl_set_mem_attributes(kvm, &attrs);
+-
+-               if (!r && copy_to_user(argp, &attrs, sizeof(attrs)))
+-                       r = -EFAULT;
+                break;
+        }
+ #endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
 
