@@ -1,109 +1,104 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17324C9E
-	for <linux-coco@lists.linux.dev>; Fri, 14 Jul 2023 22:35:53 +0000 (UTC)
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-1b8b310553bso17333245ad.3
-        for <linux-coco@lists.linux.dev>; Fri, 14 Jul 2023 15:35:53 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A83163
+	for <linux-coco@lists.linux.dev>; Sat, 15 Jul 2023 04:31:15 +0000 (UTC)
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4036bd4fff1so154191cf.0
+        for <linux-coco@lists.linux.dev>; Fri, 14 Jul 2023 21:31:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689374153; x=1691966153;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AqPQXu/AIr+STPlGjrumZEqk7MLinV6fP6qlYwF+Hxk=;
-        b=Tt0V9A0qkpbl5zS0LESlEdwvp+4lS8swsnaM5ygU4p8wmWduWJsTsWiMBUrW9Vh2KL
-         aNiclCU+3JOXB1yiqIKXN6QgR9QdqoTo2RC11ivA+QpKq3HQpnI8PiDAYzg63A260iOT
-         /X8Zs4ITCCFalugl0jsN26LMWffPpuzQBP22vn8lpRSG+H4mTHf3+orEXOoeYZYdfyr2
-         abFsO9FDujBoCuI48/+aMdXB2jBUEMCB+wK+csXPETYbqUkpzTNRqr4u7awtDvgcPp5C
-         u2l7VKka+4qaqK2LwY7H9dgsRxhvzJ+xsqjkh1lzLWjpI9iGg9n1Apbc27ImlTO1X+KO
-         zawA==
+        d=google.com; s=20221208; t=1689395474; x=1691987474;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fY7WqLus7jVclsKOgyv5P2i48ZMgYiFyiuJB7T/iYJw=;
+        b=y3dyDswLm3NG+cpBXivvLpSQvnVsie+3RNQD59vC88TeX5oQlKJWglbWb6NaoPiIxR
+         vTpVITn+vdMr1SiSU+03FlOhPQ4ghz50pXAYzN9ukMPtRGnQlJ+6zzuHSaTm7KvjgJYc
+         7x+0inTyoU07FtS0QsqwAtSBBgp58Pbkn8gN3euUXpTS87wyXqM48JTk4DuhLoyX8Frp
+         r1SUzOKQCccxN6jt5CMNHFmjM3I3zRi/DXsgKurWcsj7mEUHImgQosgFXVjIn51PBvar
+         UCQWrHchg+e5Zm1TEOI+R7EYg7weo5PGoOMEc66nWIf/UOpWBd+fx38x4TYx+mJtuhUj
+         /iJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689374153; x=1691966153;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AqPQXu/AIr+STPlGjrumZEqk7MLinV6fP6qlYwF+Hxk=;
-        b=lGBFvxsUlbmWKVBPgYDMscsN0i1PZ0zYyV9hAr9zT+Ihd1+tzg1YTTcP2GEdcP/8d6
-         crFf03qb0QzRx0PsL1cKEfeXGitibOUhn4exDCVMld0w+k/Vz1WmsBGJDjjARZzugN6v
-         evW53dH3imLuNX5b14i5pspUK+ZLga9aFMfOcP1UH+dhdWM8DdSjlvnPV+97FyBTFmIO
-         wttjPt51qsgUEKLjqSodCIgl68+AbPxSlH7d2CnqS5apMMGlDy4i166n6L7tJZxJldZu
-         u86TwaakUO0lOniVPIgB5jk08tKtnvycH5JC7Zi4ci2qFqL38KW9G8Uq/ey1hAlg6uGn
-         9zOA==
-X-Gm-Message-State: ABy/qLbfgaRwdyakJv7q9o3rA05ZFse5SwWVinpmHe33jU+hg9x8TpDH
-	A+g0oLgALX/fyY/xJHftLMewLbJLJXA=
-X-Google-Smtp-Source: APBJJlF9Rovb1aladgpgZPHMCXoqG55aen/Zed897i+LVWocHvfN1RJ6IbmpkTUFw7J9N1WkMXgLw6ub6IY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:b492:b0:1b9:e338:a90d with SMTP id
- y18-20020a170902b49200b001b9e338a90dmr17230plr.3.1689374153026; Fri, 14 Jul
- 2023 15:35:53 -0700 (PDT)
-Date: Fri, 14 Jul 2023 22:35:51 +0000
-In-Reply-To: <20230714115715.000026fe.zhi.wang.linux@gmail.com>
+        d=1e100.net; s=20221208; t=1689395474; x=1691987474;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fY7WqLus7jVclsKOgyv5P2i48ZMgYiFyiuJB7T/iYJw=;
+        b=YFY7LmYv9bAdw3fQHNMWh8cFGqHxzQTTK+nhEdtOblDlg9qXShr0xXg1RpZ8ghtQoV
+         NmR2PKUMcVGggHGPF8911+ltjh50bSNXHLSqIvUj6pCXleX5lLWrdP97CVOJFzp/wYOK
+         qQWt1JoFol/WfyeaKjq8Zxu8RCHum/0II445+DIC66INUnCQKjfoBSW0yBY0tO8O6vfi
+         9P5XpE0caAQi6Xtb16LZ+cqH36FZ0MMhUy6ITu5yrNwmCkIqYYEYzDzauZc9yav4CDz6
+         6U/vPB1fwmSUs/nYXIkwmJvklHNBtiVtPU91DiPzYEIQnpaomO7+3AYr1ONaTkptu1Y+
+         BDGA==
+X-Gm-Message-State: ABy/qLbj19MfIZqkavJ7/GVOD7ZXKwbrlRQ0cD+HZ1cmVv+Q55cRNmUt
+	w6o32w+EBuAX0/ZBALOa/j3ClIxluI8CDxnNMjacIg==
+X-Google-Smtp-Source: APBJJlGIFcWJSqqngk2GWrPEK8zfKLY3hsUwvEUwu0jYYsPNxLQ98GaZ1Sd7MjT1sMxYMMf5myapc+mTDlqwLOVhUp4=
+X-Received: by 2002:a05:622a:208:b0:403:e1d1:8b63 with SMTP id
+ b8-20020a05622a020800b00403e1d18b63mr39255qtx.24.1689395474099; Fri, 14 Jul
+ 2023 21:31:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <cover.1687991811.git.isaku.yamahata@intel.com>
- <358fb191b3690a5cbc2c985d3ffc67224df11cf3.1687991811.git.isaku.yamahata@intel.com>
- <ZLB0ytO7y4NOLWpL@google.com> <20230714115715.000026fe.zhi.wang.linux@gmail.com>
-Message-ID: <ZLHNx5jDjla2+4b0@google.com>
-Subject: Re: [RFC PATCH v3 08/11] KVM: Fix set_mem_attr ioctl when error case
-From: Sean Christopherson <seanjc@google.com>
-To: Zhi Wang <zhi.wang.linux@gmail.com>
+ <bbd17dbe371d6b12b2e7670bef6a4f080267c300.1687991811.git.isaku.yamahata@intel.com>
+ <ZLB2Ro55dKGElB9B@google.com>
+In-Reply-To: <ZLB2Ro55dKGElB9B@google.com>
+From: Yu Zhao <yuzhao@google.com>
+Date: Fri, 14 Jul 2023 22:30:37 -0600
+Message-ID: <CAOUHufady0XkgFWSL6-Mb+HFEyaQ33DJCinsjidRw2DTR9F8yQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 09/11] KVM: Add new members to struct kvm_gfn_range
+ to operate on
+To: Sean Christopherson <seanjc@google.com>
 Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
 	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
-	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, chen.bo@intel.com, 
-	linux-coco@lists.linux.dev, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Ackerley Tng <ackerleytng@google.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Michael Roth <michael.roth@amd.com>, Yuan Yao <yuan.yao@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Michael Roth <michael.roth@amd.com>, 
+	Yuan Yao <yuan.yao@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 14, 2023, Zhi Wang wrote:
-> On Thu, 13 Jul 2023 15:03:54 -0700
-> Sean Christopherson <seanjc@google.com> wrote:
-> > +       /*
-> > +        * Reserve memory ahead of time to avoid having to deal with failures
-> > +        * partway through setting the new attributes.
-> > +        */
-> > +       for (i = start; i < end; i++) {
-> > +               r = xa_reserve(&kvm->mem_attr_array, i, GFP_KERNEL_ACCOUNT);
-> > +               if (r)
-> > +                       goto out_unlock;
-> > +       }
-> > +
-> >         KVM_MMU_LOCK(kvm);
-> >         kvm_mmu_invalidate_begin(kvm);
-> >         kvm_mmu_invalidate_range_add(kvm, start, end);
-> >         KVM_MMU_UNLOCK(kvm);
-> >  
-> >         for (i = start; i < end; i++) {
-> > -               if (xa_err(xa_store(&kvm->mem_attr_array, i, entry,
-> > -                                   GFP_KERNEL_ACCOUNT)))
-> > +               r = xa_err(xa_store(&kvm->mem_attr_array, i, entry,
-> > +                                   GFP_KERNEL_ACCOUNT));
-> > +               if (KVM_BUG_ON(r, kvm))
-> >                         break;
-> >         }
-> >
-> 
-> IIUC, If an error happenes here, we should bail out and call xa_release()?
-> Or the code below (which is not shown here) still changes the memory attrs
-> partially.
+On Thu, Jul 13, 2023 at 4:10=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> +Yu
+>
+> On Wed, Jun 28, 2023, isaku.yamahata@intel.com wrote:
+> >  void kvm_mmu_init_memslot_memory_attributes(struct kvm *kvm,
+> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> > index 1a47cedae8a1..5ca0c8ee4292 100644
+> > --- a/include/linux/kvm_host.h
+> > +++ b/include/linux/kvm_host.h
+> > @@ -260,7 +260,13 @@ struct kvm_gfn_range {
+> >       struct kvm_memory_slot *slot;
+> >       gfn_t start;
+> >       gfn_t end;
+> > -     pte_t pte;
+> > +     union {
+> > +             unsigned long attributes;
+> > +             pte_t pte;
+> > +             unsigned long callback_arg; /* needs a better name */
+> > +     };
+>
+> Making the union needs to be done in a separate patch.  And coming back t=
+o this
+> with fresh eyes, I think it makes sense to give the union a name.  I thin=
+k an
+> anonymous union is actually worse in the long run, and there aren't _that=
+_ many
+> instances to update.  E.g. that way a single build-time assertion can cap=
+ture
+> all uses, and it makes it more obvious that the usage is poking into a un=
+ion.
+>
+> I'll post a patch separately so that it can be picked up for the MGLRU se=
+ries
+> (and maybe even merged ahead of both).
 
-I'm pretty sure we want to continue on.  The VM is dead (killed by KVM_BUG_ON()),
-so the attributes as seen by userspace and/or the VM don't matter.  What does
-matter is that KVM's internal state is consistent, e.g. that KVM doesn't have
-shared SPTEs while the attributes say a GFN is private.  That might not matter
-for teardown, but I can't think of any reason not to tidy up.
-
-And there can also be other ioctls() in flight.  KVM_REQ_VM_DEAD ensures vCPU
-can't enter the guest, and vm->vm_dead ensures no new ioctls() cant start, but
-neither of those guarantees there aren't other tasks doing KVM things.
-
-Regardless, we definitely don't need to do xa_release().  The VM is dead and all
-its memory will be reclaimed soon enough.  And there's no guarantee xa_release()
-will actually be able to free anything, e.g. already processed entries won't be
-freed, nor will any entries that existed _before_ the ioctl() was invoked.  Not
-to mention that the xarray probably isn't consuming much memory, relatively
-speaking.  I.e. in the majority of scenarios, it's likely preferable to get out
-and destroy the VM asap.
+Thanks a lot, Sean. And sorry for having not addressed your comments
+on v2 -- I'm wrapping up a few other projects and will be focusing on
+addressing all pending comments in a couple of weeks.
