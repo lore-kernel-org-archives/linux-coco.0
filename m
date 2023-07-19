@@ -1,126 +1,107 @@
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683E217AB1
-	for <linux-coco@lists.linux.dev>; Tue, 18 Jul 2023 23:17:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689722236; x=1721258236;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=LKaFukftyjgRVkggmhjfkR3N5wbjbrueS9ivB5r4O8o=;
-  b=KYZK38fo0vmIIz1leaCEWutuE51kt/gwvPW2W1sbZasmTKtWiHgzx8UD
-   gjB57rOKouqDJQNFmpYQlXrMm/WpRybodVozeeUt4lmF0a5EsFCd7SHRz
-   yCMj+1Dj6bSD/4yVwh65MM8onuWl2mBqoaFGBd+jr8uA0eWIYFAnAbJRP
-   q7TZk7CWiqOhRyWoSVdQE39Ew1enWWXq8Gl0ozlVRilbwOuKS5/Ce0CT0
-   UZwch8Q6uyyl/+MIIICQSD5o9yKWEL63afeJOxHOCZfhd5psI1Sfv/sHI
-   1sw9P8wflJ9SbMYJ9EkhS8bguFKZQR8+AD1O/xkudUPi3qXZd5g/cUDK/
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="430095232"
-X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="430095232"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 16:17:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="837450299"
-X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="837450299"
-Received: from unknown (HELO [10.209.37.195]) ([10.209.37.195])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 16:17:11 -0700
-Message-ID: <396d0e29-defc-e207-2cbd-fe7137e798ad@intel.com>
-Date: Tue, 18 Jul 2023 16:17:11 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAFE15A5;
+	Wed, 19 Jul 2023 02:35:28 +0000 (UTC)
+Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.207])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R5Kc000Dtz67QB0;
+	Wed, 19 Jul 2023 10:32:47 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Wed, 19 Jul 2023 03:35:20 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.027;
+ Wed, 19 Jul 2023 03:35:20 +0100
+From: Salil Mehta <salil.mehta@huawei.com>
+To: "steven.price@arm.com" <steven.price@arm.com>, Suzuki K Poulose
+	<suzuki.poulose@arm.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	"james.morse@arm.com" <james.morse@arm.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>
+CC: Catalin Marinas <catalin.marinas@arm.com>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
+	<will@kernel.org>, "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "mark.rutland@arm.com"
+	<mark.rutland@arm.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "Salil
+ Mehta" <salil.mehta@opnsrc.net>, "andrew.jones@linux.dev"
+	<andrew.jones@linux.dev>, yuzenghui <yuzenghui@huawei.com>,
+	"kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world might
+ require ARM spec change?
+Thread-Topic: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
+ might require ARM spec change?
+Thread-Index: Adm55YYLPryt1tEKR0alBn01xBiFBw==
+Date: Wed, 19 Jul 2023 02:35:19 +0000
+Message-ID: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.48.147.181]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH RFC v9 08/51] x86/speculation: Do not enable Automatic
- IBRS if SEV SNP is enabled
-To: Kim Phillips <kim.phillips@amd.com>, Michael Roth <michael.roth@amd.com>,
- kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org,
- ashish.kalra@amd.com, nikunj.dadhania@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com
-References: <20230612042559.375660-1-michael.roth@amd.com>
- <20230612042559.375660-9-michael.roth@amd.com>
- <696ea7fe-3294-f21b-3bc0-3f8cc0a718e9@intel.com>
- <b8eeb557-0a6b-3aff-0f31-1c5e3e965a50@amd.com>
-Content-Language: en-US
-In-Reply-To: <b8eeb557-0a6b-3aff-0f31-1c5e3e965a50@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-CFilter-Loop: Reflected
 
-On 7/18/23 15:34, Kim Phillips wrote:
-...
-> Automatic IBRS provides protection to [1]:
-> 
->  - Processes running at CPL=0
->  - Processes running as host when Secure Nested Paging (SEV-SNP) is enabled
-> 
-> i.e.,
-> 
->     (CPL < 3) || ((ASID == 0) && SNP)
-> 
-> Because of this limitation, do not enable Automatic IBRS when SNP is
-> enabled.
+[Reposting it here from Linaro Open Discussion List for more eyes to look a=
+t]
 
-Gah, I found that hard to parse.  I think it's because you're talking
-about an SEV-SNP host in one part and "SNP" in the other but _meaning_
-SNP host and SNP guest.
+Hello,
+I have recently started to dabble with ARM CCA stuff and check if our
+recent changes to support vCPU Hotplug in ARM64 can work in the realm
+world. I have realized that in the RMM specification[1] PSCI_CPU_ON
+command(B5.3.3) does not handles the PSCI_DENIED return code(B5.4.2),
+from the host. This might be required to support vCPU Hotplug feature
+in the realm world in future. vCPU Hotplug is an important feature to
+support kata-containers in realm world as it reduces the VM boot time
+and facilitates dynamic adjustment of vCPUs (which I think should be
+true even with Realm world as current implementation only makes use
+of the PSCI_ON/OFF to realize the Hotplug look-like effect?)
 
-Could I maybe suggest that you folks follow the TDX convention and
-actually add _GUEST and _HOST to the feature name be explicit about
-which side is which?
 
-> Instead, fall back to retpolines.
+As per our recent changes [2], [3] related to support vCPU Hotplug on
+ARM64, we handle the guest exits due to SMC/HVC Hypercall in the
+user-space i.e. VMM/Qemu. In realm world, REC Exits to host due to
+PSCI_CPU_ON should undergo similar policy checks and I think,
 
-Now I'm totally lost.
+1. Host should *deny* to online the target vCPUs which are NOT plugged
+2. This means target REC should be denied by host. Can host call
+   RMI_PSCI_COMPETE in such s case?=20
+3. The *return* value (B5.3.3.1.3 Output values) should be PSCI_DENIED
+4. Failure condition (B5.3.3.2) should be amended with
+   runnable pre: target_rec.flags.runnable =3D=3D NOT_RUNNABLE (?)
+            post: result =3D=3D PSCI_DENIED (?)
+5. Change would also be required in the flow (D1.4 PSCI flows) depicting=20
+   PSCI_CPU_ON flow (D1.4.1)
+ =20
 
-This is talking about falling back to retpolines ... in the kernel.  But
-"Automatic IBRS provides protection to ... CPL < 3", aka. the kernel.
+I do understand that ARM CCA support is in its infancy stage and
+discussing about vCPU Hotplug in realm world seem to be a far-fetched
+idea right now. But specification changes require lot of time and if
+this change is really required then it should be further discussed
+within ARM.=20
 
-> Note that the AutoIBRS feature may continue to be used within the
-> guest.
+Many thanks!
 
-What is this trying to say?
 
-"AutoIBRS can still be used in a guest since it protects CPL < 3"
+Bes regards
+Salil
 
-or
 
-"The AutoIBRS bits can still be twiddled within the guest even though it
-doesn't do any good"
+References:
 
-?
-
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 8cd4126d8253..311c0a6422b5 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -1348,7 +1348,8 @@ static void __init cpu_set_bug_bits(struct
-> cpuinfo_x86 *c)
->       * AMD's AutoIBRS is equivalent to Intel's eIBRS - use the Intel feature
->       * flag and protect from vendor-specific bugs via the whitelist.
->       */
-> -    if ((ia32_cap & ARCH_CAP_IBRS_ALL) || cpu_has(c, X86_FEATURE_AUTOIBRS)) {
-> +    if ((ia32_cap & ARCH_CAP_IBRS_ALL) || (cpu_has(c, X86_FEATURE_AUTOIBRS) &&
-> +        !cpu_feature_enabled(X86_FEATURE_SEV_SNP))) {
->          setup_force_cpu_cap(X86_FEATURE_IBRS_ENHANCED);
->          if (!cpu_matches(cpu_vuln_whitelist, NO_EIBRS_PBRSB) &&
->              !(ia32_cap & ARCH_CAP_PBRSB_NO))
+[1] https://developer.arm.com/documentation/den0137/latest/
+[2] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v1-port110=
+52023.dev-1
+[3] https://git.gitlab.arm.com/linux-arm/linux-jm.git virtual_cpu_hotplug/r=
+fc/v2
 
