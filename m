@@ -1,30 +1,30 @@
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFEA1E501
-	for <linux-coco@lists.linux.dev>; Thu, 20 Jul 2023 23:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC3D1E502
+	for <linux-coco@lists.linux.dev>; Thu, 20 Jul 2023 23:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689895994; x=1721431994;
+  t=1689895995; x=1721431995;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6QAyRks6GCgs8PQtb9mnH47VZqnkkcQc1XdzVo3l3HM=;
-  b=KTWN03r7P+1QWm6hLTuLCSk/BJ4TYWWLgQEZHUGzxjkLs6dp0o7Gbqcv
-   Y5CaOIc9i0T4iCfWVFUt+qZqu3zdXK5FVrH0tZbNJ28BIEC3degBtjkDX
-   sNrI1qUHwpLL9cx3GTiSKuA+nf4HKRtdpLVJehErnsCAjQsIMmJbNh41X
-   Qvbzy7MWlGCJKzCpuIuEP+Bh9MKh4lvEQmSagaD02DzZXK64J1jqRCWZP
-   hk9ufc9kTrSSjzZTOaW3TzyxPiqYAU+V0NiAWwP5k4scIwAPiy6v9nmab
-   hZIHEZ++xCNpSEZaIwKvy+1DwuhWigHdXE9pTWW18uD01+pDu9pUpLp8x
+  bh=Ax6ORuGmO7dyoYVgLyCg1s0HQk7F5KLKTu96xRoFvXU=;
+  b=XmT4SgAQJzT/sj0a6l2ekRtwXgRNTo6mfw3CcKG+WeRU+kicawYcouXX
+   PrR5Qn1WUjHB4vAAz5OWy7xE0uwqmSNSGGFiyfRS7QUSyPlQPx2tiOGLP
+   QEhq++bHKktcfWhMocEaLqNaRgsWSzvfKGjmiMvKMt/tFyPc4bg6PZE1B
+   0bNIYkZWmsrmnp5Ok6sJ/sWNzE4E8LpMDxIoxxsseg50nyRr2QRPFoD8G
+   jKR/wKDNlIrlngwEVwsY5EIr/pBpur8e/UYUoRxp7PQ7tXuZ93CROXKXf
+   QMeEWEc1CjVAyMRZQ6/wc9ETA0pB3ZgubkvsvjooyjnpedowWUOEJNjt9
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="364355919"
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="364355929"
 X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="364355919"
+   d="scan'208";a="364355929"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 16:33:11 -0700
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 16:33:12 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="727891785"
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="727891789"
 X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="727891785"
+   d="scan'208";a="727891789"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
   by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 16:33:11 -0700
 From: isaku.yamahata@intel.com
@@ -46,9 +46,9 @@ Cc: isaku.yamahata@intel.com,
 	Ackerley Tng <ackerleytng@google.com>,
 	Vishal Annapurve <vannapurve@google.com>,
 	Yuan Yao <yuan.yao@linux.intel.com>
-Subject: [RFC PATCH v4 03/10] KVM: x86/mmu: Pass around full 64-bit error code for the KVM page fault
-Date: Thu, 20 Jul 2023 16:32:49 -0700
-Message-Id: <cdfd69d89f6d9d99c67b46094a7d2e0dcd834cff.1689893403.git.isaku.yamahata@intel.com>
+Subject: [RFC PATCH v4 04/10] KVM: x86: Introduce PFERR_GUEST_ENC_MASK to indicate fault is private
+Date: Thu, 20 Jul 2023 16:32:50 -0700
+Message-Id: <f474282d701aca7af00e4f7171445abb5e734c6f.1689893403.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1689893403.git.isaku.yamahata@intel.com>
 References: <cover.1689893403.git.isaku.yamahata@intel.com>
@@ -62,133 +62,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Because the full 64-bit error code, or more info about the fault, for the
-KVM page fault will be needed for protected VM, TDX and SEV-SNP, update
-kvm_mmu_do_page_fault() to accept the 64-bit value so it can pass it to the
-callbacks.
+Add two PFERR codes to designate that the page fault is private and that
+it requires looking up memory attributes.  The vendor kvm page fault
+handler should set PFERR_GUEST_ENC_MASK bit based on their fault
+information.  It may or may not use the hardware value directly or
+parse the hardware value to set the bit.
 
-The upper 32 bits of error code are discarded at kvm_mmu_page_fault()
-by lower_32_bits().  Now it's passed down as full 64 bits.
-Currently two hardware defined bits, PFERR_GUEST_FINAL_MASK and
-PFERR_GUEST_PAGE_MASK, and one software defined bit, PFERR_IMPLICIT_ACCESS,
-is defined.
-
-PFERR_IMPLICIT_ACCESS:
-commit 4f4aa80e3b88 ("KVM: X86: Handle implicit supervisor access with SMAP")
-introduced a software defined bit PFERR_IMPLICIT_ACCESS at bit 48 to
-indicate implicit access for SMAP with instruction emulator.  Concretely
-emulator_read_std() and emulator_write_std() set the bit.
-permission_fault() checks the bit as smap implicit access.  The vendor page
-fault handler shouldn't pass the bit to kvm_mmu_page_fault().
-
-PFERR_GUEST_FINAL_MASK and PFERR_GUEST_PAGE_MASK:
-commit 147277540bbc ("kvm: svm: Add support for additional SVM NPF error codes")
-introduced them to optimize the nested page fault handling.  Other code
-path doesn't use the bits.  Those two bits can be safely passed down
-without functionality change.
-
-The accesses of fault->error_code are as follows
-- FNAME(page_fault): PFERR_IMPLICIT_ACCESS shouldn't be passed down.
-                     PFERR_GUEST_FINAL_MASK and PFERR_GUEST_PAGE_MASK
-                     aren't used.
-- kvm_mmu_page_fault(): explicit mask with PFERR_RSVD_MASK, and
-                        PFERR_NESTED_GUEST_PAGE is used outside of the
-                        masking upper 32 bits.
-- mmutrace: change u32 -> u64
-- pgprintk(): change %x -> %llx
-
-No functional change is intended.  This is a preparation to pass on more
-info with page fault error code.
+For KVM_X86_PROTECTED_VM, ask memory attributes for the fault privateness.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 
 ---
+Changes v3 -> v4:
+- rename back struct kvm_page_fault::private => is_private
+- catch up rename: KVM_X86_PROTECTED_VM => KVM_X86_SW_PROTECTED_VM
+
 Changes v2 -> v3:
-- Make depends on a patch to clear PFERR_IMPLICIT_ACCESS
-- drop clearing the upper 32 bit, instead just pass whole 64 bits
-- update commit message to mention about PFERR_IMPLICIT_ACCESS and
-  PFERR_NESTED_GUEST_PAGE
+- Revive PFERR_GUEST_ENC_MASK
+- rename struct kvm_page_fault::is_private => private
+- Add check KVM_X86_PROTECTED_VM
 
 Changes v1 -> v2:
-- no change
+- Introduced fault type and replaced is_private with fault_type.
+- Add kvm_get_fault_type() to encapsulate the difference.
 ---
- arch/x86/kvm/mmu/mmu.c          | 5 ++---
- arch/x86/kvm/mmu/mmu_internal.h | 4 ++--
- arch/x86/kvm/mmu/mmutrace.h     | 2 +-
- arch/x86/kvm/mmu/paging_tmpl.h  | 2 +-
- 4 files changed, 6 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  2 ++
+ arch/x86/kvm/mmu/mmu.c          |  8 ++++++--
+ arch/x86/kvm/mmu/mmu_internal.h | 14 +++++++++++++-
+ 3 files changed, 21 insertions(+), 3 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 2c9350aa0da4..ab7d080bf544 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -255,6 +255,7 @@ enum x86_intercept_stage;
+ #define PFERR_SGX_BIT 15
+ #define PFERR_GUEST_FINAL_BIT 32
+ #define PFERR_GUEST_PAGE_BIT 33
++#define PFERR_GUEST_ENC_BIT 34
+ #define PFERR_IMPLICIT_ACCESS_BIT 48
+ 
+ #define PFERR_PRESENT_MASK	BIT(PFERR_PRESENT_BIT)
+@@ -266,6 +267,7 @@ enum x86_intercept_stage;
+ #define PFERR_SGX_MASK		BIT(PFERR_SGX_BIT)
+ #define PFERR_GUEST_FINAL_MASK	BIT_ULL(PFERR_GUEST_FINAL_BIT)
+ #define PFERR_GUEST_PAGE_MASK	BIT_ULL(PFERR_GUEST_PAGE_BIT)
++#define PFERR_GUEST_ENC_MASK	BIT_ULL(PFERR_GUEST_ENC_BIT)
+ #define PFERR_IMPLICIT_ACCESS	BIT_ULL(PFERR_IMPLICIT_ACCESS_BIT)
+ 
+ #define PFERR_NESTED_GUEST_PAGE (PFERR_GUEST_PAGE_MASK |	\
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index a9bbc20c7dfd..a2fe091e327a 100644
+index a2fe091e327a..d2ebe26fb822 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4523,7 +4523,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- static int nonpaging_page_fault(struct kvm_vcpu *vcpu,
- 				struct kvm_page_fault *fault)
- {
--	pgprintk("%s: gva %lx error %x\n", __func__, fault->addr, fault->error_code);
-+	pgprintk("%s: gva %llx error %llx\n", __func__, fault->addr, fault->error_code);
- 
- 	/* This path builds a PAE pagetable, we can map 2mb pages at maximum. */
- 	fault->max_level = PG_LEVEL_2M;
-@@ -5844,8 +5844,7 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+@@ -4399,8 +4399,12 @@ static int __kvm_faultin_pfn(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 			return RET_PF_EMULATE;
  	}
  
- 	if (r == RET_PF_INVALID) {
--		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa,
--					  lower_32_bits(error_code), false,
-+		r = kvm_mmu_do_page_fault(vcpu, cr2_or_gpa, error_code, false,
- 					  &emulation_type);
- 		if (KVM_BUG_ON(r == RET_PF_INVALID, vcpu->kvm))
- 			return -EIO;
+-	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn))
+-		return kvm_do_memory_fault_exit(vcpu, fault);
++	if (fault->is_private != kvm_mem_is_private(vcpu->kvm, fault->gfn)) {
++		if (vcpu->kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM)
++			return RET_PF_RETRY;
++		else
++			return kvm_do_memory_fault_exit(vcpu, fault);
++	}
+ 
+ 	if (fault->is_private)
+ 		return kvm_faultin_pfn_private(vcpu, fault);
 diff --git a/arch/x86/kvm/mmu/mmu_internal.h b/arch/x86/kvm/mmu/mmu_internal.h
-index f1786698ae00..7f9ec1e5b136 100644
+index 7f9ec1e5b136..4f8f83546c37 100644
 --- a/arch/x86/kvm/mmu/mmu_internal.h
 +++ b/arch/x86/kvm/mmu/mmu_internal.h
-@@ -191,7 +191,7 @@ static inline bool is_nx_huge_page_enabled(struct kvm *kvm)
- struct kvm_page_fault {
- 	/* arguments to kvm_mmu_do_page_fault.  */
- 	const gpa_t addr;
--	const u32 error_code;
-+	const u64 error_code;
- 	const bool prefetch;
- 
- 	/* Derived from error_code.  */
-@@ -283,7 +283,7 @@ enum {
+@@ -282,6 +282,18 @@ enum {
+ 	RET_PF_SPURIOUS,
  };
  
++static inline bool kvm_is_fault_private(struct kvm *kvm, gpa_t gpa, u64 error_code)
++{
++	/*
++	 * This is racy with mmu_seq.  If we hit a race, it would result in a
++	 * spurious KVM_EXIT_MEMORY_FAULT.
++	 */
++	if (kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM)
++		return kvm_mem_is_private(kvm, gpa_to_gfn(gpa));
++
++	return error_code & PFERR_GUEST_ENC_MASK;
++}
++
  static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
--					u32 err, bool prefetch, int *emulation_type)
-+					u64 err, bool prefetch, int *emulation_type)
+ 					u64 err, bool prefetch, int *emulation_type)
  {
- 	struct kvm_page_fault fault = {
- 		.addr = cr2_or_gpa,
-diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
-index 2d7555381955..2e77883c92f6 100644
---- a/arch/x86/kvm/mmu/mmutrace.h
-+++ b/arch/x86/kvm/mmu/mmutrace.h
-@@ -261,7 +261,7 @@ TRACE_EVENT(
- 	TP_STRUCT__entry(
- 		__field(int, vcpu_id)
- 		__field(gpa_t, cr2_or_gpa)
--		__field(u32, error_code)
-+		__field(u64, error_code)
- 		__field(u64 *, sptep)
- 		__field(u64, old_spte)
- 		__field(u64, new_spte)
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 0662e0278e70..42d48b1ec7b3 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -758,7 +758,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	struct guest_walker walker;
+@@ -295,13 +307,13 @@ static inline int kvm_mmu_do_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 		.user = err & PFERR_USER_MASK,
+ 		.prefetch = prefetch,
+ 		.is_tdp = likely(vcpu->arch.mmu->page_fault == kvm_tdp_page_fault),
++		.is_private = kvm_is_fault_private(vcpu->kvm, cr2_or_gpa, err),
+ 		.nx_huge_page_workaround_enabled =
+ 			is_nx_huge_page_enabled(vcpu->kvm),
+ 
+ 		.max_level = KVM_MAX_HUGEPAGE_LEVEL,
+ 		.req_level = PG_LEVEL_4K,
+ 		.goal_level = PG_LEVEL_4K,
+-		.is_private = kvm_mem_is_private(vcpu->kvm, cr2_or_gpa >> PAGE_SHIFT),
+ 	};
  	int r;
  
--	pgprintk("%s: addr %lx err %x\n", __func__, fault->addr, fault->error_code);
-+	pgprintk("%s: addr %llx err %llx\n", __func__, fault->addr, fault->error_code);
- 	WARN_ON_ONCE(fault->is_tdp);
- 
- 	/*
 -- 
 2.25.1
 
