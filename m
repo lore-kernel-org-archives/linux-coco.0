@@ -1,51 +1,51 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC951EA66
-	for <linux-coco@lists.linux.dev>; Fri, 21 Jul 2023 14:11:45 +0000 (UTC)
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5839bad0ba7so4385577b3.0
-        for <linux-coco@lists.linux.dev>; Fri, 21 Jul 2023 07:11:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382501ED24
+	for <linux-coco@lists.linux.dev>; Fri, 21 Jul 2023 14:26:00 +0000 (UTC)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-583a4015791so2791147b3.1
+        for <linux-coco@lists.linux.dev>; Fri, 21 Jul 2023 07:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1689948704; x=1690553504;
+        d=google.com; s=20221208; t=1689949560; x=1690554360;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T4SdCBonFvWuf+V0yEJ7nT449w336KZFoWRjXJb2o+8=;
-        b=n0oKwH0dgFAGMVF27nk3YDk+kFnnpdNBuswzKKsDjUoF2nttUcFPQAkqIQGcn0vrbH
-         T/IucMfN+WY88gtSSszC9sE2AOaEvI3LvZ/89ISKL1/4Eui6pr5dnCaRqpMbBbdVWsYv
-         NRptPq/VIq8QeXzcY4lctUyDp4uXHQnVipX3esx5J7htoMXXac4+aNvckJCuvtputXFM
-         Ey6stLIQHLTh6AWzRANZgxRvllCkH15KVd+nBxOMRRXGWHdlimZlTV+Wew5WEIFL+PBk
-         V1aphpXfO/KyTCCCKDLLkTbYJ6wkv8i3EyZqsT8phHQ8tdPzL6w1VMKzFt0jzzKo/WGf
-         WWVA==
+        bh=qsOblVN0R0vt/pe3dNZWP7QQiaTx7X4bgufFrqaLpho=;
+        b=cGBHW/6K1sW6ejc8bX15/z0rQMq0wpeeceuX8mY+GNE8GIy9t1+zTMzpJ9tfj5nofb
+         ognBRrmq4MHOycdxBwA5oUh3s92ngcSXiMyYAw8dbCbR4hwgS7SkVmsNmHVnxCii7UtH
+         eDlIzCF+QNfGeyJMQ6G5q0Sgf8Cry2iVYlWNs2RXUnOhOkH/QfoeRTTeNciF8K9Ft0x4
+         /tcc15TTPjIADvjUoRNLSjgR87jS23/3RFVkZqjPFQ4aurgk+AQnDOJbUlFHSFn+fjqX
+         WVGX6Pw6cCmfNNxOLlGW3i/zMiuPKL702bffjmRHgrAL/GaPa/BBVMAtrTIb8Lo3Qfa2
+         JCcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689948704; x=1690553504;
+        d=1e100.net; s=20221208; t=1689949560; x=1690554360;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T4SdCBonFvWuf+V0yEJ7nT449w336KZFoWRjXJb2o+8=;
-        b=IJ6WArb9LKN2k2uev1X3xV4lAwX8B7s3/9OMlgvbf3qg8OkdHI6YFbPVpfyYhA2+OF
-         8Q7/scLIVLEA+PhVp8SokAwGNYp1zi/xDm/FWMnMH22EhtCStPyW/F4FRKC5n7oOoyiH
-         JgmiIfiPxLB1AIigKnONAvEI8bxBe2mJQ6uxZGx6Q5eQ/hG/KSY9K4bqnhPb3rxzJd+d
-         FxkJtzih0d6zDqNvkGGk6mRjkx8QTsYFqupmvhKA2zqWWOeCdnyWS25K7NfGU/ycH6pZ
-         qGUBiH/PmbblzI99snsg0FpsKzLq65vof7tx1uzeYmZfQHavLmQk7jlI67QfPJkY8y+T
-         m2Gg==
-X-Gm-Message-State: ABy/qLYkUUYq6rNCwQajyBxwxNwZ+2h/pYeRVF3+6cARxdPQSrV1wx7b
-	zwTj8sJwagBlKBLSb9GMdVLq0vD4iWI=
-X-Google-Smtp-Source: APBJJlGU/N1c7xh9FsCGTTqaD2PqcnAod11BMYxzm1muKo1ARK3G7tqDbEj8dtVJ1jfB1maibUqj4V2HcNs=
+        bh=qsOblVN0R0vt/pe3dNZWP7QQiaTx7X4bgufFrqaLpho=;
+        b=PzdIugPZDq5MJGKGJnWylWiexXh6lDWkw5pPVvH+JO8GcpIsvcGT2+pxYsP1K+MD06
+         rTAt0K34Uyn8vXwmQyi56HgvHTIh5IbMIIaDztyr8e0P3SpUjGk7eKg8nTTPsMXp980G
+         4ok+sRrVLqmXL/KoD8QtNGsGormBTEqG8qpNdmsFgdcA3yVZuTahdemYAtGxu9WW06F0
+         99sh7YaDIKWSHyf3oX93n24+gosdt3QYyOtAKVYpReTtLGPVmLjCXnB4p1j9TrSjQDKG
+         jZxG8L8wTjd7NDTWlC/QOxCU/y5fn7ta4f0xZb3lVl/7LKYpcLP9k4+18NA5JAybw3yI
+         JbbQ==
+X-Gm-Message-State: ABy/qLaWHG69DySydbRQ8xqFJwfxlbOnLl5s3TfUvVSS+Sc+V7ReUGpC
+	z0d29cM8BSbtMlAFQXfAxsDa0AEpacI=
+X-Google-Smtp-Source: APBJJlG0OZKVwyLHrGl5rZrxsG0XvhQbW+hg4R9n5nWymHNVwtjpYPkxb0V0qrnY8W7UAcFS2k3Opvc6Mwc=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:ba06:0:b0:c61:7151:6727 with SMTP id
- t6-20020a25ba06000000b00c6171516727mr13809ybg.10.1689948704796; Fri, 21 Jul
- 2023 07:11:44 -0700 (PDT)
-Date: Fri, 21 Jul 2023 07:11:43 -0700
-In-Reply-To: <f474282d701aca7af00e4f7171445abb5e734c6f.1689893403.git.isaku.yamahata@intel.com>
+ (user=seanjc job=sendgmr) by 2002:a25:e74f:0:b0:ce8:e6f:440c with SMTP id
+ e76-20020a25e74f000000b00ce80e6f440cmr11741ybh.6.1689949559993; Fri, 21 Jul
+ 2023 07:25:59 -0700 (PDT)
+Date: Fri, 21 Jul 2023 07:25:58 -0700
+In-Reply-To: <21e488b6ced77c08d9e6718fcf57e100af409c64.1689893403.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <cover.1689893403.git.isaku.yamahata@intel.com> <f474282d701aca7af00e4f7171445abb5e734c6f.1689893403.git.isaku.yamahata@intel.com>
-Message-ID: <ZLqSH/lEbHEnQ9i8@google.com>
-Subject: Re: [RFC PATCH v4 04/10] KVM: x86: Introduce PFERR_GUEST_ENC_MASK to
- indicate fault is private
+References: <cover.1689893403.git.isaku.yamahata@intel.com> <21e488b6ced77c08d9e6718fcf57e100af409c64.1689893403.git.isaku.yamahata@intel.com>
+Message-ID: <ZLqVdvsF11Ddo7Dq@google.com>
+Subject: Re: [RFC PATCH v4 07/10] KVM: x86: Add gmem hook for initializing
+ private memory
 From: Sean Christopherson <seanjc@google.com>
 To: isaku.yamahata@intel.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -57,51 +57,44 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-s/Introduce/Use
-
-This doesn't "introduce" anything, in the sense that it's an AMD-defined error
-code flag.  That matters because KVM *did* introduce/define PFERR_IMPLICIT_ACCESS.
-
 On Thu, Jul 20, 2023, isaku.yamahata@intel.com wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
-> 
-> Add two PFERR codes to designate that the page fault is private and that
-> it requires looking up memory attributes.  The vendor kvm page fault
-> handler should set PFERR_GUEST_ENC_MASK bit based on their fault
-> information.  It may or may not use the hardware value directly or
-> parse the hardware value to set the bit.
-> 
-> For KVM_X86_PROTECTED_VM, ask memory attributes for the fault privateness.
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index a73ddb43a2cf..35bb14363828 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -4352,6 +4352,7 @@ static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+>  				   struct kvm_page_fault *fault)
+>  {
+>  	int max_order, r;
+> +	u8 max_level;
+>  
+>  	if (!kvm_slot_can_be_private(fault->slot))
+>  		return kvm_do_memory_fault_exit(vcpu, fault);
+> @@ -4361,8 +4362,15 @@ static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
+>  	if (r)
+>  		return r;
+>  
+> -	fault->max_level = min(kvm_max_level_for_order(max_order),
+> -			       fault->max_level);
+> +	max_level = kvm_max_level_for_order(max_order);
+> +	r = static_call(kvm_x86_gmem_prepare)(vcpu->kvm, fault->slot, fault->pfn,
+> +					      fault->gfn, &max_level);
 
-...
+I think KVM should hook gmem itself, i.e. convert pages to private when they're
+allocated, and then back to shared when they're freed.  I don't like having
+asymmetric APIs (convert on fault instead of allocate, but then convert back on
+free instead of on zap), and hooking the page fault path also violates the approach
+of tying the RMP/HKID to the physical allocation.
 
-> +static inline bool kvm_is_fault_private(struct kvm *kvm, gpa_t gpa, u64 error_code)
-> +{
-> +	/*
-> +	 * This is racy with mmu_seq.  If we hit a race, it would result in a
-> +	 * spurious KVM_EXIT_MEMORY_FAULT.
-> +	 */
-> +	if (kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM)
-> +		return kvm_mem_is_private(kvm, gpa_to_gfn(gpa));
+Practically speaking, hooking the fault path will result in undesirable behavior.
+Just because KVM *maps* at 4KiB granularity doesn't mean the RMP must be assigned
+at 4KiB granularity, e.g. if userspace chooses to *not* PUNCH_HOLE when the guest
+shares a single 4KiB page in a 2MiB chunk.   Dirty logging is another case where
+the RMP can stay at 2MiB.  Or as a very silly example, imagine userspace pulls a
+stupid and covers a single 2MiB chunk of gmem with 512 memslots.
 
-Please synthesize the error code flag for SW-protected VMs, same as TDX, e.g.
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 20e289e872eb..de9e0a9c41e6 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5751,6 +5751,10 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
-        if (WARN_ON(!VALID_PAGE(vcpu->arch.mmu->root.hpa)))
-                return RET_PF_RETRY;
- 
-+       if (vcpu->kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM &&
-+           kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(cr2_or_gpa)))
-+               error_code |= PFERR_GUEST_ENC_MASK;
-+
-        r = RET_PF_INVALID;
-        if (unlikely(error_code & PFERR_RSVD_MASK)) {
-                r = handle_mmio_page_fault(vcpu, cr2_or_gpa, direct);
-
-Functionally it's the same, but I want all VM types to have the same source of
-truth for private versus shared, and I really don't want kvm_is_fault_private()
-to exist.
+That likely means KVM will need an additional hook to clamp the max_level at the
+RMP, but that shouldn't be a big deal, e.g. if we convert on allocation, then KVM
+should be able to blindly do the conversion because it would be a kernel bug if
+the page is already assigned to an ASID in the RMP, i.e. the additional hook
+shouldn't incur an extra RMP lookup.
