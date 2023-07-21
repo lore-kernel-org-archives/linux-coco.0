@@ -1,333 +1,107 @@
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFF31E502
-	for <linux-coco@lists.linux.dev>; Thu, 20 Jul 2023 23:33:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689895999; x=1721431999;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=akaN+utMQ8juiTuY6mwV99pr2tJtji8DhcmufCIiDIg=;
-  b=CJHCS94hWJvAwuk7Fzvrbu6+D5Ssy8wqdLW3IZmE0cYubTElZc4S30ft
-   LISKt2C05mPTiFVtnHVZscaXvBn5+pIfzyUHdQxYS4tUbZCeKAtW2XAbj
-   CQkAPH0+k190Kaa1OvMeC1onSZbX+CPpu5pKe7nF4WXbmmaSRILeUVAsv
-   zFqAB//jxItVg1ioqrcm2TtoTgyXQvfF+K/YyvP9PsWT8yq/GFTMpc2KM
-   SgEfCMO0x9B8pXnHQrChXBsooR4AyZskqtYo2OFDOm/wGqTkvE3JrzltZ
-   R+Y00U9jqfvPT0CRMX0jSnogiTaLQ8AOJmemBDz1lMnF6QjxSwPPeiDFJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="364355970"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="364355970"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 16:33:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="727891808"
-X-IronPort-AV: E=Sophos;i="6.01,220,1684825200"; 
-   d="scan'208";a="727891808"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2023 16:33:12 -0700
-From: isaku.yamahata@intel.com
-To: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: isaku.yamahata@intel.com,
-	isaku.yamahata@gmail.com,
-	Michael Roth <michael.roth@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	erdemaktas@google.com,
-	Sagi Shahar <sagis@google.com>,
-	David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>,
-	chen.bo@intel.com,
-	linux-coco@lists.linux.dev,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Yuan Yao <yuan.yao@linux.intel.com>
-Subject: [RFC PATCH v4 09/10] KVM: x86: Make struct sev_cmd common for KVM_MEM_ENC_OP
-Date: Thu, 20 Jul 2023 16:32:55 -0700
-Message-Id: <8c0b7babbdd777a33acd4f6b0f831ae838037806.1689893403.git.isaku.yamahata@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1689893403.git.isaku.yamahata@intel.com>
-References: <cover.1689893403.git.isaku.yamahata@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC951EA66
+	for <linux-coco@lists.linux.dev>; Fri, 21 Jul 2023 14:11:45 +0000 (UTC)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5839bad0ba7so4385577b3.0
+        for <linux-coco@lists.linux.dev>; Fri, 21 Jul 2023 07:11:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1689948704; x=1690553504;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T4SdCBonFvWuf+V0yEJ7nT449w336KZFoWRjXJb2o+8=;
+        b=n0oKwH0dgFAGMVF27nk3YDk+kFnnpdNBuswzKKsDjUoF2nttUcFPQAkqIQGcn0vrbH
+         T/IucMfN+WY88gtSSszC9sE2AOaEvI3LvZ/89ISKL1/4Eui6pr5dnCaRqpMbBbdVWsYv
+         NRptPq/VIq8QeXzcY4lctUyDp4uXHQnVipX3esx5J7htoMXXac4+aNvckJCuvtputXFM
+         Ey6stLIQHLTh6AWzRANZgxRvllCkH15KVd+nBxOMRRXGWHdlimZlTV+Wew5WEIFL+PBk
+         V1aphpXfO/KyTCCCKDLLkTbYJ6wkv8i3EyZqsT8phHQ8tdPzL6w1VMKzFt0jzzKo/WGf
+         WWVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689948704; x=1690553504;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T4SdCBonFvWuf+V0yEJ7nT449w336KZFoWRjXJb2o+8=;
+        b=IJ6WArb9LKN2k2uev1X3xV4lAwX8B7s3/9OMlgvbf3qg8OkdHI6YFbPVpfyYhA2+OF
+         8Q7/scLIVLEA+PhVp8SokAwGNYp1zi/xDm/FWMnMH22EhtCStPyW/F4FRKC5n7oOoyiH
+         JgmiIfiPxLB1AIigKnONAvEI8bxBe2mJQ6uxZGx6Q5eQ/hG/KSY9K4bqnhPb3rxzJd+d
+         FxkJtzih0d6zDqNvkGGk6mRjkx8QTsYFqupmvhKA2zqWWOeCdnyWS25K7NfGU/ycH6pZ
+         qGUBiH/PmbblzI99snsg0FpsKzLq65vof7tx1uzeYmZfQHavLmQk7jlI67QfPJkY8y+T
+         m2Gg==
+X-Gm-Message-State: ABy/qLYkUUYq6rNCwQajyBxwxNwZ+2h/pYeRVF3+6cARxdPQSrV1wx7b
+	zwTj8sJwagBlKBLSb9GMdVLq0vD4iWI=
+X-Google-Smtp-Source: APBJJlGU/N1c7xh9FsCGTTqaD2PqcnAod11BMYxzm1muKo1ARK3G7tqDbEj8dtVJ1jfB1maibUqj4V2HcNs=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:ba06:0:b0:c61:7151:6727 with SMTP id
+ t6-20020a25ba06000000b00c6171516727mr13809ybg.10.1689948704796; Fri, 21 Jul
+ 2023 07:11:44 -0700 (PDT)
+Date: Fri, 21 Jul 2023 07:11:43 -0700
+In-Reply-To: <f474282d701aca7af00e4f7171445abb5e734c6f.1689893403.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <cover.1689893403.git.isaku.yamahata@intel.com> <f474282d701aca7af00e4f7171445abb5e734c6f.1689893403.git.isaku.yamahata@intel.com>
+Message-ID: <ZLqSH/lEbHEnQ9i8@google.com>
+Subject: Re: [RFC PATCH v4 04/10] KVM: x86: Introduce PFERR_GUEST_ENC_MASK to
+ indicate fault is private
+From: Sean Christopherson <seanjc@google.com>
+To: isaku.yamahata@intel.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	isaku.yamahata@gmail.com, Michael Roth <michael.roth@amd.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>
+Content-Type: text/plain; charset="us-ascii"
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+s/Introduce/Use
 
-TDX KVM will use KVM_MEM_ENC_OP.  Make struct sev_cmd common both for
-vendor backends, SEV and TDX, with rename.  Make the struct common uABI for
-KVM_MEM_ENC_OP.  TDX backend wants to return 64 bit error code instead of
-32 bit. To keep ABI for SEV backend, use union to accommodate 64 bit
-member.  Opportunistically make the implicit padding after id member to
-explicit flags member for future use and clarity.
+This doesn't "introduce" anything, in the sense that it's an AMD-defined error
+code flag.  That matters because KVM *did* introduce/define PFERR_IMPLICIT_ACCESS.
 
-Some data structures for sub-commands could be common.  The current
-candidate would be KVM_SEV{,_ES}_INIT, KVM_SEV_LAUNCH_FINISH,
-KVM_SEV_LAUNCH_UPDATE_VMSA, KVM_SEV_DBG_DECRYPT, and KVM_SEV_DBG_ENCRYPT.
+On Thu, Jul 20, 2023, isaku.yamahata@intel.com wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
+> 
+> Add two PFERR codes to designate that the page fault is private and that
+> it requires looking up memory attributes.  The vendor kvm page fault
+> handler should set PFERR_GUEST_ENC_MASK bit based on their fault
+> information.  It may or may not use the hardware value directly or
+> parse the hardware value to set the bit.
+> 
+> For KVM_X86_PROTECTED_VM, ask memory attributes for the fault privateness.
 
-Only compile tested for SEV code.
+...
 
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
----
-Changes v3 -> v4:
-- newly added
----
- arch/x86/include/asm/kvm_host.h |  2 +-
- arch/x86/include/uapi/asm/kvm.h | 33 ++++++++++++++++
- arch/x86/kvm/svm/sev.c          | 68 ++++++++++++++++++---------------
- arch/x86/kvm/svm/svm.h          |  2 +-
- arch/x86/kvm/x86.c              | 16 +++++++-
- 5 files changed, 87 insertions(+), 34 deletions(-)
+> +static inline bool kvm_is_fault_private(struct kvm *kvm, gpa_t gpa, u64 error_code)
+> +{
+> +	/*
+> +	 * This is racy with mmu_seq.  If we hit a race, it would result in a
+> +	 * spurious KVM_EXIT_MEMORY_FAULT.
+> +	 */
+> +	if (kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM)
+> +		return kvm_mem_is_private(kvm, gpa_to_gfn(gpa));
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 440a4a13a93f..5ede982442a0 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1710,7 +1710,7 @@ struct kvm_x86_ops {
- 	void (*enable_smi_window)(struct kvm_vcpu *vcpu);
- #endif
+Please synthesize the error code flag for SW-protected VMs, same as TDX, e.g.
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 20e289e872eb..de9e0a9c41e6 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -5751,6 +5751,10 @@ int noinline kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 err
+        if (WARN_ON(!VALID_PAGE(vcpu->arch.mmu->root.hpa)))
+                return RET_PF_RETRY;
  
--	int (*mem_enc_ioctl)(struct kvm *kvm, void __user *argp);
-+	int (*mem_enc_ioctl)(struct kvm *kvm, struct kvm_mem_enc_cmd *cmd);
- 	int (*mem_enc_register_region)(struct kvm *kvm, struct kvm_enc_region *argp);
- 	int (*mem_enc_unregister_region)(struct kvm *kvm, struct kvm_enc_region *argp);
- 	int (*vm_copy_enc_context_from)(struct kvm *kvm, unsigned int source_fd);
-diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
-index aa7a56a47564..32883e520b00 100644
---- a/arch/x86/include/uapi/asm/kvm.h
-+++ b/arch/x86/include/uapi/asm/kvm.h
-@@ -562,6 +562,39 @@ struct kvm_pmu_event_filter {
- /* x86-specific KVM_EXIT_HYPERCALL flags. */
- #define KVM_EXIT_HYPERCALL_LONG_MODE	BIT(0)
- 
-+struct kvm_mem_enc_cmd {
-+	/* sub-command id of KVM_MEM_ENC_OP. */
-+	__u32 id;
-+	/*
-+	 * Auxiliary flags for sub-command.  If sub-command doesn't use it,
-+	 * set zero.
-+	 */
-+	__u32 flags;
-+	/*
-+	 * Data for sub-command.  An immediate or a pointer to the actual
-+	 * data in process virtual address.  If sub-command doesn't use it,
-+	 * set zero.
-+	 */
-+	__u64 data;
-+	/*
-+	 * Supplemental error code in the case of error.
-+	 * SEV error code from the PSP or TDX SEAMCALL status code.
-+	 * The caller should set zero.
-+	 */
-+	union {
-+		struct {
-+			__u32 error;
-+			/*
-+			 * KVM_SEV_LAUNCH_START and KVM_SEV_RECEIVE_START
-+			 * require extra data. Not included in struct
-+			 * kvm_sev_launch_start or struct kvm_sev_receive_start.
-+			 */
-+			__u32 sev_fd;
-+		};
-+		__u64 error64;
-+	};
-+};
++       if (vcpu->kvm->arch.vm_type == KVM_X86_SW_PROTECTED_VM &&
++           kvm_mem_is_private(vcpu->kvm, gpa_to_gfn(cr2_or_gpa)))
++               error_code |= PFERR_GUEST_ENC_MASK;
 +
- #define KVM_X86_DEFAULT_VM	0
- #define KVM_X86_SW_PROTECTED_VM	1
- #define KVM_X86_TDX_VM		2
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 07756b7348ae..94e13bb49c86 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1835,30 +1835,39 @@ int sev_vm_move_enc_context_from(struct kvm *kvm, unsigned int source_fd)
- 	return ret;
- }
- 
--int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
-+int sev_mem_enc_ioctl(struct kvm *kvm, struct kvm_mem_enc_cmd *cmd)
- {
--	struct kvm_sev_cmd sev_cmd;
-+	struct kvm_sev_cmd *sev_cmd = (struct kvm_sev_cmd *)cmd;
- 	int r;
- 
-+	/* TODO: replace struct kvm_sev_cmd with kvm_mem_enc_cmd. */
-+	BUILD_BUG_ON(sizeof(*sev_cmd) != sizeof(*cmd));
-+	BUILD_BUG_ON(offsetof(struct kvm_sev_cmd, id) !=
-+		     offsetof(struct kvm_mem_enc_cmd, id));
-+	BUILD_BUG_ON(sizeof(sev_cmd->id) != sizeof(cmd->id));
-+	BUILD_BUG_ON(offsetof(struct kvm_sev_cmd, data) !=
-+		     offsetof(struct kvm_mem_enc_cmd, data));
-+	BUILD_BUG_ON(sizeof(sev_cmd->data) != sizeof(cmd->data));
-+	BUILD_BUG_ON(offsetof(struct kvm_sev_cmd, error) !=
-+		     offsetof(struct kvm_mem_enc_cmd, error));
-+	BUILD_BUG_ON(sizeof(sev_cmd->error) != sizeof(cmd->error));
-+	BUILD_BUG_ON(offsetof(struct kvm_sev_cmd, sev_fd) !=
-+		     offsetof(struct kvm_mem_enc_cmd, sev_fd));
-+	BUILD_BUG_ON(sizeof(sev_cmd->sev_fd) != sizeof(cmd->sev_fd));
-+
- 	if (!sev_enabled)
- 		return -ENOTTY;
- 
--	if (!argp)
--		return 0;
--
--	if (copy_from_user(&sev_cmd, argp, sizeof(struct kvm_sev_cmd)))
--		return -EFAULT;
--
- 	mutex_lock(&kvm->lock);
- 
- 	/* Only the enc_context_owner handles some memory enc operations. */
- 	if (is_mirroring_enc_context(kvm) &&
--	    !is_cmd_allowed_from_mirror(sev_cmd.id)) {
-+	    !is_cmd_allowed_from_mirror(sev_cmd->id)) {
- 		r = -EINVAL;
- 		goto out;
- 	}
- 
--	switch (sev_cmd.id) {
-+	switch (sev_cmd->id) {
- 	case KVM_SEV_ES_INIT:
- 		if (!sev_es_enabled) {
- 			r = -ENOTTY;
-@@ -1866,67 +1875,64 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
- 		}
- 		fallthrough;
- 	case KVM_SEV_INIT:
--		r = sev_guest_init(kvm, &sev_cmd);
-+		r = sev_guest_init(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_LAUNCH_START:
--		r = sev_launch_start(kvm, &sev_cmd);
-+		r = sev_launch_start(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_LAUNCH_UPDATE_DATA:
--		r = sev_launch_update_data(kvm, &sev_cmd);
-+		r = sev_launch_update_data(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_LAUNCH_UPDATE_VMSA:
--		r = sev_launch_update_vmsa(kvm, &sev_cmd);
-+		r = sev_launch_update_vmsa(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_LAUNCH_MEASURE:
--		r = sev_launch_measure(kvm, &sev_cmd);
-+		r = sev_launch_measure(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_LAUNCH_FINISH:
--		r = sev_launch_finish(kvm, &sev_cmd);
-+		r = sev_launch_finish(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_GUEST_STATUS:
--		r = sev_guest_status(kvm, &sev_cmd);
-+		r = sev_guest_status(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_DBG_DECRYPT:
--		r = sev_dbg_crypt(kvm, &sev_cmd, true);
-+		r = sev_dbg_crypt(kvm, sev_cmd, true);
- 		break;
- 	case KVM_SEV_DBG_ENCRYPT:
--		r = sev_dbg_crypt(kvm, &sev_cmd, false);
-+		r = sev_dbg_crypt(kvm, sev_cmd, false);
- 		break;
- 	case KVM_SEV_LAUNCH_SECRET:
--		r = sev_launch_secret(kvm, &sev_cmd);
-+		r = sev_launch_secret(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_GET_ATTESTATION_REPORT:
--		r = sev_get_attestation_report(kvm, &sev_cmd);
-+		r = sev_get_attestation_report(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_SEND_START:
--		r = sev_send_start(kvm, &sev_cmd);
-+		r = sev_send_start(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_SEND_UPDATE_DATA:
--		r = sev_send_update_data(kvm, &sev_cmd);
-+		r = sev_send_update_data(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_SEND_FINISH:
--		r = sev_send_finish(kvm, &sev_cmd);
-+		r = sev_send_finish(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_SEND_CANCEL:
--		r = sev_send_cancel(kvm, &sev_cmd);
-+		r = sev_send_cancel(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_RECEIVE_START:
--		r = sev_receive_start(kvm, &sev_cmd);
-+		r = sev_receive_start(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_RECEIVE_UPDATE_DATA:
--		r = sev_receive_update_data(kvm, &sev_cmd);
-+		r = sev_receive_update_data(kvm, sev_cmd);
- 		break;
- 	case KVM_SEV_RECEIVE_FINISH:
--		r = sev_receive_finish(kvm, &sev_cmd);
-+		r = sev_receive_finish(kvm, sev_cmd);
- 		break;
- 	default:
- 		r = -EINVAL;
- 		goto out;
- 	}
- 
--	if (copy_to_user(argp, &sev_cmd, sizeof(struct kvm_sev_cmd)))
--		r = -EFAULT;
--
- out:
- 	mutex_unlock(&kvm->lock);
- 	return r;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 18af7e712a5a..74ecab20c24b 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -716,7 +716,7 @@ void avic_refresh_virtual_apic_mode(struct kvm_vcpu *vcpu);
- extern unsigned int max_sev_asid;
- 
- void sev_vm_destroy(struct kvm *kvm);
--int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp);
-+int sev_mem_enc_ioctl(struct kvm *kvm, struct kvm_mem_enc_cmd *cmd);
- int sev_mem_enc_register_region(struct kvm *kvm,
- 				struct kvm_enc_region *range);
- int sev_mem_enc_unregister_region(struct kvm *kvm,
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 2ae40fa8e178..ab36e8940f1b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7040,11 +7040,25 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
- 		goto out;
- 	}
- 	case KVM_MEMORY_ENCRYPT_OP: {
-+		struct kvm_mem_enc_cmd cmd;
-+
- 		r = -ENOTTY;
- 		if (!kvm_x86_ops.mem_enc_ioctl)
- 			goto out;
- 
--		r = static_call(kvm_x86_mem_enc_ioctl)(kvm, argp);
-+		if (!argp) {
-+			r = 0;
-+			goto out;
-+		}
-+
-+		if (copy_from_user(&cmd, argp, sizeof(cmd))) {
-+			r = -EFAULT;
-+			goto out;
-+		}
-+		r = static_call(kvm_x86_mem_enc_ioctl)(kvm, &cmd);
-+		if (copy_to_user(argp, &cmd, sizeof(cmd)))
-+			r = -EFAULT;
-+
- 		break;
- 	}
- 	case KVM_MEMORY_ENCRYPT_REG_REGION: {
--- 
-2.25.1
+        r = RET_PF_INVALID;
+        if (unlikely(error_code & PFERR_RSVD_MASK)) {
+                r = handle_mmio_page_fault(vcpu, cr2_or_gpa, direct);
 
+Functionally it's the same, but I want all VM types to have the same source of
+truth for private versus shared, and I really don't want kvm_is_fault_private()
+to exist.
