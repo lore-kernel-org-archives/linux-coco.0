@@ -1,143 +1,145 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4EBE549;
-	Mon, 24 Jul 2023 16:27:25 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 14C73FEC;
-	Mon, 24 Jul 2023 09:28:02 -0700 (PDT)
-Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 11E4F3F5A1;
-	Mon, 24 Jul 2023 09:27:15 -0700 (PDT)
-Message-ID: <0d268afa-c04b-7a4e-be5e-2362d3dfa64d@arm.com>
-Date: Mon, 24 Jul 2023 17:27:14 +0100
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC7161;
+	Tue, 25 Jul 2023 00:05:47 +0000 (UTC)
+Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.226])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R8xzY3f0Wz67yc8;
+	Tue, 25 Jul 2023 08:02:17 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 25 Jul 2023 01:05:43 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.027;
+ Tue, 25 Jul 2023 01:05:43 +0100
+From: Salil Mehta <salil.mehta@huawei.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, "steven.price@arm.com"
+	<steven.price@arm.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	"james.morse@arm.com" <james.morse@arm.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>
+CC: Catalin Marinas <catalin.marinas@arm.com>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
+	<will@kernel.org>, "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "mark.rutland@arm.com"
+	<mark.rutland@arm.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "Salil
+ Mehta" <salil.mehta@opnsrc.net>, "andrew.jones@linux.dev"
+	<andrew.jones@linux.dev>, yuzenghui <yuzenghui@huawei.com>,
+	"kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Gareth Stockwell <Gareth.Stockwell@arm.com>
+Subject: RE: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
+ might require ARM spec change?
+Thread-Topic: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
+ might require ARM spec change?
+Thread-Index: Adm55YYLPryt1tEKR0alBn01xBiFBwANXi2AAQoU7gAAA+aEUA==
+Date: Tue, 25 Jul 2023 00:05:43 +0000
+Message-ID: <93c9c8356e444fb287393a935a8c7899@huawei.com>
+References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
+	<7da93c6e-1cbf-8840-282e-f115197b80c4@arm.com>
+ <0d268afa-c04b-7a4e-be5e-2362d3dfa64d@arm.com>
+In-Reply-To: <0d268afa-c04b-7a4e-be5e-2362d3dfa64d@arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.126.173.65]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
- might require ARM spec change?
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Salil Mehta <salil.mehta@huawei.com>,
- "steven.price@arm.com" <steven.price@arm.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- "james.morse@arm.com" <james.morse@arm.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Marc Zyngier
- <maz@kernel.org>, Will Deacon <will@kernel.org>,
- "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- Salil Mehta <salil.mehta@opnsrc.net>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
- yuzenghui <yuzenghui@huawei.com>,
- "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Gareth Stockwell <Gareth.Stockwell@arm.com>
-References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
- <7da93c6e-1cbf-8840-282e-f115197b80c4@arm.com>
-Content-Language: en-US
-In-Reply-To: <7da93c6e-1cbf-8840-282e-f115197b80c4@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-CFilter-Loop: Reflected
 
-Hi Salil
-
-On 19/07/2023 10:28, Suzuki K Poulose wrote:
-> Hi Salil
-> 
-> Thanks for raising this.
-> 
-> On 19/07/2023 03:35, Salil Mehta wrote:
->> [Reposting it here from Linaro Open Discussion List for more eyes to 
->> look at]
->>
->> Hello,
->> I have recently started to dabble with ARM CCA stuff and check if our
->> recent changes to support vCPU Hotplug in ARM64 can work in the realm
->> world. I have realized that in the RMM specification[1] PSCI_CPU_ON
->> command(B5.3.3) does not handles the PSCI_DENIED return code(B5.4.2),
->> from the host. This might be required to support vCPU Hotplug feature
->> in the realm world in future. vCPU Hotplug is an important feature to
->> support kata-containers in realm world as it reduces the VM boot time
->> and facilitates dynamic adjustment of vCPUs (which I think should be
->> true even with Realm world as current implementation only makes use
->> of the PSCI_ON/OFF to realize the Hotplug look-like effect?)
->>
->>
->> As per our recent changes [2], [3] related to support vCPU Hotplug on
->> ARM64, we handle the guest exits due to SMC/HVC Hypercall in the
->> user-space i.e. VMM/Qemu. In realm world, REC Exits to host due to
->> PSCI_CPU_ON should undergo similar policy checks and I think,
->>
->> 1. Host should *deny* to online the target vCPUs which are NOT plugged
->> 2. This means target REC should be denied by host. Can host call
->>     RMI_PSCI_COMPETE in such s case?
->> 3. The *return* value (B5.3.3.1.3 Output values) should be PSCI_DENIED
-> 
-> The Realm exit with EXIT_PSCI already provides the parameters passed
-> onto the PSCI request. This happens for all PSCI calls except
-> (PSCI_VERSION and PSCI_FEAUTRES). The hyp could forward these exits to
-> the VMM and could invoke the RMI_PSCI_COMPLETE only when the VMM blesses 
-> the request (wherever applicable).
-> 
-> However, the RMM spec currently doesn't allow denying the request.
-> i.e., without RMI_PSCI_COMPLETE, the REC cannot be scheduled back in.
-> We will address this in the RMM spec and get back to you.
-
-This is now resolved in RMMv1.0-eac3 spec, available here [0].
-
-This allows the host to DENY a PSCI_CPU_ON request. The RMM ensures that
-the response doesn't violate the security guarantees by checking the
-state of the target REC.
-
-[0] https://developer.arm.com/documentation/den0137/latest/
-
-Kind regards
-Suzuki
-
-
-
-
-> 
-> Kind regards
-> Suzuki
-> 
-> 
->> 4. Failure condition (B5.3.3.2) should be amended with
->>     runnable pre: target_rec.flags.runnable == NOT_RUNNABLE (?)
->>              post: result == PSCI_DENIED (?)
->> 5. Change would also be required in the flow (D1.4 PSCI flows) depicting
->>     PSCI_CPU_ON flow (D1.4.1)
->>
->> I do understand that ARM CCA support is in its infancy stage and
->> discussing about vCPU Hotplug in realm world seem to be a far-fetched
->> idea right now. But specification changes require lot of time and if
->> this change is really required then it should be further discussed
->> within ARM.
->>
->> Many thanks!
->>
->>
->> Bes regards
->> Salil
->>
->>
->> References:
->>
->> [1] https://developer.arm.com/documentation/den0137/latest/
->> [2] https://github.com/salil-mehta/qemu.git 
->> virt-cpuhp-armv8/rfc-v1-port11052023.dev-1
->> [3] https://git.gitlab.arm.com/linux-arm/linux-jm.git 
->> virtual_cpu_hotplug/rfc/v2
->>
-> 
-
+SGkgU3V6dWtpLA0KU29ycnkgZm9yIHJlcGx5aW5nIGxhdGUgYXMgSSB3YXMgb24vb2ZmIGxhc3Qg
+d2VlayB0byB1bmRlcmdvIHNvbWUgbWVkaWNhbCB0ZXN0Lg0KDQoNCj4gRnJvbTogU3V6dWtpIEsg
+UG91bG9zZSA8c3V6dWtpLnBvdWxvc2VAYXJtLmNvbT4NCj4gU2VudDogTW9uZGF5LCBKdWx5IDI0
+LCAyMDIzIDU6MjcgUE0NCj4gDQo+IEhpIFNhbGlsDQo+IA0KPiBPbiAxOS8wNy8yMDIzIDEwOjI4
+LCBTdXp1a2kgSyBQb3Vsb3NlIHdyb3RlOg0KPiA+IEhpIFNhbGlsDQo+ID4NCj4gPiBUaGFua3Mg
+Zm9yIHJhaXNpbmcgdGhpcy4NCj4gPg0KPiA+IE9uIDE5LzA3LzIwMjMgMDM6MzUsIFNhbGlsIE1l
+aHRhIHdyb3RlOg0KPiA+PiBbUmVwb3N0aW5nIGl0IGhlcmUgZnJvbSBMaW5hcm8gT3BlbiBEaXNj
+dXNzaW9uIExpc3QgZm9yIG1vcmUgZXllcyB0bw0KPiA+PiBsb29rIGF0XQ0KPiA+Pg0KPiA+PiBI
+ZWxsbywNCj4gPj4gSSBoYXZlIHJlY2VudGx5IHN0YXJ0ZWQgdG8gZGFiYmxlIHdpdGggQVJNIEND
+QSBzdHVmZiBhbmQgY2hlY2sgaWYgb3VyDQo+ID4+IHJlY2VudCBjaGFuZ2VzIHRvIHN1cHBvcnQg
+dkNQVSBIb3RwbHVnIGluIEFSTTY0IGNhbiB3b3JrIGluIHRoZSByZWFsbQ0KPiA+PiB3b3JsZC4g
+SSBoYXZlIHJlYWxpemVkIHRoYXQgaW4gdGhlIFJNTSBzcGVjaWZpY2F0aW9uWzFdIFBTQ0lfQ1BV
+X09ODQo+ID4+IGNvbW1hbmQoQjUuMy4zKSBkb2VzIG5vdCBoYW5kbGVzIHRoZSBQU0NJX0RFTklF
+RCByZXR1cm4gY29kZShCNS40LjIpLA0KPiA+PiBmcm9tIHRoZSBob3N0LiBUaGlzIG1pZ2h0IGJl
+IHJlcXVpcmVkIHRvIHN1cHBvcnQgdkNQVSBIb3RwbHVnIGZlYXR1cmUNCj4gPj4gaW4gdGhlIHJl
+YWxtIHdvcmxkIGluIGZ1dHVyZS4gdkNQVSBIb3RwbHVnIGlzIGFuIGltcG9ydGFudCBmZWF0dXJl
+IHRvDQo+ID4+IHN1cHBvcnQga2F0YS1jb250YWluZXJzIGluIHJlYWxtIHdvcmxkIGFzIGl0IHJl
+ZHVjZXMgdGhlIFZNIGJvb3QgdGltZQ0KPiA+PiBhbmQgZmFjaWxpdGF0ZXMgZHluYW1pYyBhZGp1
+c3RtZW50IG9mIHZDUFVzICh3aGljaCBJIHRoaW5rIHNob3VsZCBiZQ0KPiA+PiB0cnVlIGV2ZW4g
+d2l0aCBSZWFsbSB3b3JsZCBhcyBjdXJyZW50IGltcGxlbWVudGF0aW9uIG9ubHkgbWFrZXMgdXNl
+DQo+ID4+IG9mIHRoZSBQU0NJX09OL09GRiB0byByZWFsaXplIHRoZSBIb3RwbHVnIGxvb2stbGlr
+ZSBlZmZlY3Q/KQ0KPiA+Pg0KPiA+Pg0KPiA+PiBBcyBwZXIgb3VyIHJlY2VudCBjaGFuZ2VzIFsy
+XSwgWzNdIHJlbGF0ZWQgdG8gc3VwcG9ydCB2Q1BVIEhvdHBsdWcgb24NCj4gPj4gQVJNNjQsIHdl
+IGhhbmRsZSB0aGUgZ3Vlc3QgZXhpdHMgZHVlIHRvIFNNQy9IVkMgSHlwZXJjYWxsIGluIHRoZQ0K
+PiA+PiB1c2VyLXNwYWNlIGkuZS4gVk1NL1FlbXUuIEluIHJlYWxtIHdvcmxkLCBSRUMgRXhpdHMg
+dG8gaG9zdCBkdWUgdG8NCj4gPj4gUFNDSV9DUFVfT04gc2hvdWxkIHVuZGVyZ28gc2ltaWxhciBw
+b2xpY3kgY2hlY2tzIGFuZCBJIHRoaW5rLA0KPiA+Pg0KPiA+PiAxLiBIb3N0IHNob3VsZCAqZGVu
+eSogdG8gb25saW5lIHRoZSB0YXJnZXQgdkNQVXMgd2hpY2ggYXJlIE5PVCBwbHVnZ2VkDQo+ID4+
+IDIuIFRoaXMgbWVhbnMgdGFyZ2V0IFJFQyBzaG91bGQgYmUgZGVuaWVkIGJ5IGhvc3QuIENhbiBo
+b3N0IGNhbGwNCj4gPj4gwqDCoMKgIFJNSV9QU0NJX0NPTVBFVEUgaW4gc3VjaCBzIGNhc2U/DQo+
+ID4+IDMuIFRoZSAqcmV0dXJuKiB2YWx1ZSAoQjUuMy4zLjEuMyBPdXRwdXQgdmFsdWVzKSBzaG91
+bGQgYmUgUFNDSV9ERU5JRUQNCj4gPg0KPiA+IFRoZSBSZWFsbSBleGl0IHdpdGggRVhJVF9QU0NJ
+IGFscmVhZHkgcHJvdmlkZXMgdGhlIHBhcmFtZXRlcnMgcGFzc2VkDQo+ID4gb250byB0aGUgUFND
+SSByZXF1ZXN0LiBUaGlzIGhhcHBlbnMgZm9yIGFsbCBQU0NJIGNhbGxzIGV4Y2VwdA0KPiA+IChQ
+U0NJX1ZFUlNJT04gYW5kIFBTQ0lfRkVBVVRSRVMpLiBUaGUgaHlwIGNvdWxkIGZvcndhcmQgdGhl
+c2UgZXhpdHMgdG8NCj4gPiB0aGUgVk1NIGFuZCBjb3VsZCBpbnZva2UgdGhlIFJNSV9QU0NJX0NP
+TVBMRVRFIG9ubHkgd2hlbiB0aGUgVk1NIGJsZXNzZXMNCj4gPiB0aGUgcmVxdWVzdCAod2hlcmV2
+ZXIgYXBwbGljYWJsZSkuDQo+ID4NCj4gPiBIb3dldmVyLCB0aGUgUk1NIHNwZWMgY3VycmVudGx5
+IGRvZXNuJ3QgYWxsb3cgZGVueWluZyB0aGUgcmVxdWVzdC4NCj4gPiBpLmUuLCB3aXRob3V0IFJN
+SV9QU0NJX0NPTVBMRVRFLCB0aGUgUkVDIGNhbm5vdCBiZSBzY2hlZHVsZWQgYmFjayBpbi4NCj4g
+PiBXZSB3aWxsIGFkZHJlc3MgdGhpcyBpbiB0aGUgUk1NIHNwZWMgYW5kIGdldCBiYWNrIHRvIHlv
+dS4NCj4gDQo+IFRoaXMgaXMgbm93IHJlc29sdmVkIGluIFJNTXYxLjAtZWFjMyBzcGVjLCBhdmFp
+bGFibGUgaGVyZSBbMF0uDQo+IA0KPiBUaGlzIGFsbG93cyB0aGUgaG9zdCB0byBERU5ZIGEgUFND
+SV9DUFVfT04gcmVxdWVzdC4gVGhlIFJNTSBlbnN1cmVzIHRoYXQNCj4gdGhlIHJlc3BvbnNlIGRv
+ZXNuJ3QgdmlvbGF0ZSB0aGUgc2VjdXJpdHkgZ3VhcmFudGVlcyBieSBjaGVja2luZyB0aGUNCj4g
+c3RhdGUgb2YgdGhlIHRhcmdldCBSRUMuDQo+IA0KPiBbMF0gaHR0cHM6Ly9kZXZlbG9wZXIuYXJt
+LmNvbS9kb2N1bWVudGF0aW9uL2RlbjAxMzcvbGF0ZXN0Lw0KDQoNCk1hbnkgdGhhbmtzIGZvciB0
+YWtpbmcgdGhpcyB1cCBwcm9hY3RpdmVseSBhbmQgZ2V0dGluZyBpdCBkb25lIGFzIHdlbGwNCnZl
+cnkgZWZmaWNpZW50bHkuIFJlYWxseSBhcHByZWNpYXRlIHRoaXMhDQoNCkkgYWNrbm93bGVkZ2Ug
+YmVsb3cgbmV3IGNoYW5nZXMgcGFydCBvZiB0aGUgbmV3bHkgcmVsZWFzZWQgUk1NDQpTcGVjaWZp
+Y2F0aW9uIFszXSAoUGFnZS0yKSAoUmVsZWFzZSBJbmZvcm1hdGlvbiAxLjAtZWFjMyAyMC0wNy0y
+MDIzKToNCg0KMS4gQWRkaXRpb24gb2YgQjIuMTkgUHNjaVJldHVybkNvZGVQZXJtaXR0ZWQgZnVu
+Y3Rpb24gWzNdIChQYWdlLTEyNikNCjIuIEFkZGl0aW9uIG9mICdzdGF0dXMnIGluIEIzLjMuNy4y
+IEZhaWx1cmUgY29uZGl0aW9ucyBvZiB0aGUNCiAgIEIzLjMuNyBSTUlfUFNDSV9DT01QTEVURSBj
+b21tYW5kIFszXSAoUGFnZS0xNjApDQoNCg0KU29tZSBGdXJ0aGVyIFN1Z2dlc3Rpb25zOg0KMS4g
+SXQgd291bGQgYmUgcmVhbGx5IGhlbHBmdWwgaWYgUFNDSV9ERU5JRUQgY2FuIGJlIGFjY29tbW9k
+YXRlZCBzb21ld2hlcmUNCiAgIGluIHRoZSBmbG93IGRpYWdyYW0gKEQxLjQuMSBQU0NJX0NQVV9P
+TiBmbG93KSBbM10gKFBhZ2UtMjk3KSBhcyB3ZWxsLg0KMi4gWW91IHdvdWxkIG5lZWQgY2hhbmdl
+cyB0byBoYW5kbGUgdGhlIHJldHVybiB2YWx1ZSBvZiB0aGUgUFNDSV9ERU5JRUQNCiAgIGluIHRo
+aXMgYmVsb3cgcGF0Y2ggWzJdIGFzIHdlbGwgZnJvbSBBUk0gQ0NBIHNlcmllcyBbMV0gDQoNCg0K
+QEphbWVzLCBBbnkgZnVydGhlciB0aG91Z2h0cyBvbiB0aGlzPw0KDQoNClJlZmVyZW5jZXM6DQpb
+MV0gW1JGQyBQQVRDSCAwMC8yOF0gYXJtNjQ6IFN1cHBvcnQgZm9yIEFybSBDQ0EgaW4gS1ZNDQpb
+Ml0gW1JGQyBQQVRDSCAxOS8yOF0gS1ZNOiBhcm02NDogVmFsaWRhdGUgcmVnaXN0ZXIgYWNjZXNz
+IGZvciBhIFJlYWxtIFZNDQogICAgIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyMzAx
+MjcxMTIyNDguMTM2ODEwLTEtc3V6dWtpLnBvdWxvc2VAYXJtLmNvbS9ULyNtNmMxMGI5YTI3YzRh
+NzI0OTY3YzE4MDBmYWNhY2FhOTQ0M2IzOGI0Yw0KWzNdIEFSTSBSZWFsbSBNYW5hZ2VtZW50IE1v
+bml0b3Igc3BlY2lmaWNhdGlvbihERU4wMTM3IDEuMC1lYWMzKQ0KICAgIGh0dHBzOi8vZGV2ZWxv
+cGVyLmFybS5jb20vZG9jdW1lbnRhdGlvbi9kZW4wMTM3L2xhdGVzdC8NCiANCg0KVGhhbmtzDQpT
+YWxpbC4NCg0KDQo+ID4+IDQuIEZhaWx1cmUgY29uZGl0aW9uIChCNS4zLjMuMikgc2hvdWxkIGJl
+IGFtZW5kZWQgd2l0aA0KPiA+PiDCoMKgwqAgcnVubmFibGUgcHJlOiB0YXJnZXRfcmVjLmZsYWdz
+LnJ1bm5hYmxlID09IE5PVF9SVU5OQUJMRSAoPykNCj4gPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIHBvc3Q6IHJlc3VsdCA9PSBQU0NJX0RFTklFRCAoPykNCj4gPj4gNS4gQ2hhbmdlIHdvdWxk
+IGFsc28gYmUgcmVxdWlyZWQgaW4gdGhlIGZsb3cgKEQxLjQgUFNDSSBmbG93cykgZGVwaWN0aW5n
+DQo+ID4+IMKgwqDCoCBQU0NJX0NQVV9PTiBmbG93IChEMS40LjEpDQo+ID4+DQo+ID4+IEkgZG8g
+dW5kZXJzdGFuZCB0aGF0IEFSTSBDQ0Egc3VwcG9ydCBpcyBpbiBpdHMgaW5mYW5jeSBzdGFnZSBh
+bmQNCj4gPj4gZGlzY3Vzc2luZyBhYm91dCB2Q1BVIEhvdHBsdWcgaW4gcmVhbG0gd29ybGQgc2Vl
+bSB0byBiZSBhIGZhci1mZXRjaGVkDQo+ID4+IGlkZWEgcmlnaHQgbm93LiBCdXQgc3BlY2lmaWNh
+dGlvbiBjaGFuZ2VzIHJlcXVpcmUgbG90IG9mIHRpbWUgYW5kIGlmDQo+ID4+IHRoaXMgY2hhbmdl
+IGlzIHJlYWxseSByZXF1aXJlZCB0aGVuIGl0IHNob3VsZCBiZSBmdXJ0aGVyIGRpc2N1c3NlZA0K
+PiA+PiB3aXRoaW4gQVJNLg0KPiA+Pg0KPiA+PiBNYW55IHRoYW5rcyENCj4gPj4NCj4gPj4NCj4g
+Pj4gQmVzIHJlZ2FyZHMNCj4gPj4gU2FsaWwNCj4gPj4NCj4gPj4NCj4gPj4gUmVmZXJlbmNlczoN
+Cj4gPj4NCj4gPj4gWzFdIGh0dHBzOi8vZGV2ZWxvcGVyLmFybS5jb20vZG9jdW1lbnRhdGlvbi9k
+ZW4wMTM3L2xhdGVzdC8NCj4gPj4gWzJdIGh0dHBzOi8vZ2l0aHViLmNvbS9zYWxpbC1tZWh0YS9x
+ZW11LmdpdCB2aXJ0LWNwdWhwLWFybXY4L3JmYy12MS1wb3J0MTEwNTIwMjMuZGV2LTENCj4gPj4g
+WzNdIGh0dHBzOi8vZ2l0LmdpdGxhYi5hcm0uY29tL2xpbnV4LWFybS9saW51eC1qbS5naXQgdmly
+dHVhbF9jcHVfaG90cGx1Zy9yZmMvdjINCg0K
