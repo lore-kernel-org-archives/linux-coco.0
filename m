@@ -1,187 +1,46 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3194D1ED38;
-	Tue, 25 Jul 2023 11:20:00 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94A5615BF;
-	Tue, 25 Jul 2023 04:20:43 -0700 (PDT)
-Received: from [10.57.89.166] (unknown [10.57.89.166])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E7A7E3F67D;
-	Tue, 25 Jul 2023 04:19:56 -0700 (PDT)
-Message-ID: <8a828ef2-b09b-4322-26fa-eae6cc88753f@arm.com>
-Date: Tue, 25 Jul 2023 12:19:54 +0100
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157CCC8C3
+	for <linux-coco@lists.linux.dev>; Tue, 25 Jul 2023 12:39:26 +0000 (UTC)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=wuzongyong@linux.alibaba.com;NM=1;PH=DS;RN=3;SR=0;TI=SMTPD_---0VoD7u7L_1690287822;
+Received: from localhost(mailfrom:wuzongyong@linux.alibaba.com fp:SMTPD_---0VoD7u7L_1690287822)
+          by smtp.aliyun-inc.com;
+          Tue, 25 Jul 2023 20:23:43 +0800
+Date: Tue, 25 Jul 2023 20:23:42 +0800
+From: Wu Zongyong <wuzongyong@linux.alibaba.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: [Question] int3_selftest() generates a #UD instead of a #BP when
+ create a SEV VM
+Message-ID: <20230725122342.GA414477@L-PF27918B-1352.>
+Reply-To: Wu Zongyong <wuzongyong@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
- might require ARM spec change?
-To: Salil Mehta <salil.mehta@huawei.com>,
- "steven.price@arm.com" <steven.price@arm.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- "james.morse@arm.com" <james.morse@arm.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Marc Zyngier
- <maz@kernel.org>, Will Deacon <will@kernel.org>,
- "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- Salil Mehta <salil.mehta@opnsrc.net>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
- yuzenghui <yuzenghui@huawei.com>,
- "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Gareth Stockwell <Gareth.Stockwell@arm.com>
-References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
- <7da93c6e-1cbf-8840-282e-f115197b80c4@arm.com>
- <0d268afa-c04b-7a4e-be5e-2362d3dfa64d@arm.com>
- <93c9c8356e444fb287393a935a8c7899@huawei.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <93c9c8356e444fb287393a935a8c7899@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-Hi Salil
+Hi,
 
-On 25/07/2023 01:05, Salil Mehta wrote:
-> Hi Suzuki,
-> Sorry for replying late as I was on/off last week to undergo some medical test.
-> 
-> 
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Sent: Monday, July 24, 2023 5:27 PM
->>
->> Hi Salil
->>
->> On 19/07/2023 10:28, Suzuki K Poulose wrote:
->>> Hi Salil
->>>
->>> Thanks for raising this.
->>>
->>> On 19/07/2023 03:35, Salil Mehta wrote:
->>>> [Reposting it here from Linaro Open Discussion List for more eyes to
->>>> look at]
->>>>
->>>> Hello,
->>>> I have recently started to dabble with ARM CCA stuff and check if our
->>>> recent changes to support vCPU Hotplug in ARM64 can work in the realm
->>>> world. I have realized that in the RMM specification[1] PSCI_CPU_ON
->>>> command(B5.3.3) does not handles the PSCI_DENIED return code(B5.4.2),
->>>> from the host. This might be required to support vCPU Hotplug feature
->>>> in the realm world in future. vCPU Hotplug is an important feature to
->>>> support kata-containers in realm world as it reduces the VM boot time
->>>> and facilitates dynamic adjustment of vCPUs (which I think should be
->>>> true even with Realm world as current implementation only makes use
->>>> of the PSCI_ON/OFF to realize the Hotplug look-like effect?)
->>>>
->>>>
->>>> As per our recent changes [2], [3] related to support vCPU Hotplug on
->>>> ARM64, we handle the guest exits due to SMC/HVC Hypercall in the
->>>> user-space i.e. VMM/Qemu. In realm world, REC Exits to host due to
->>>> PSCI_CPU_ON should undergo similar policy checks and I think,
->>>>
->>>> 1. Host should *deny* to online the target vCPUs which are NOT plugged
->>>> 2. This means target REC should be denied by host. Can host call
->>>>      RMI_PSCI_COMPETE in such s case?
->>>> 3. The *return* value (B5.3.3.1.3 Output values) should be PSCI_DENIED
->>>
->>> The Realm exit with EXIT_PSCI already provides the parameters passed
->>> onto the PSCI request. This happens for all PSCI calls except
->>> (PSCI_VERSION and PSCI_FEAUTRES). The hyp could forward these exits to
->>> the VMM and could invoke the RMI_PSCI_COMPLETE only when the VMM blesses
->>> the request (wherever applicable).
->>>
->>> However, the RMM spec currently doesn't allow denying the request.
->>> i.e., without RMI_PSCI_COMPLETE, the REC cannot be scheduled back in.
->>> We will address this in the RMM spec and get back to you.
->>
->> This is now resolved in RMMv1.0-eac3 spec, available here [0].
->>
->> This allows the host to DENY a PSCI_CPU_ON request. The RMM ensures that
->> the response doesn't violate the security guarantees by checking the
->> state of the target REC.
->>
->> [0] https://developer.arm.com/documentation/den0137/latest/
-> 
-> 
-> Many thanks for taking this up proactively and getting it done as well
-> very efficiently. Really appreciate this!
-> 
-> I acknowledge below new changes part of the newly released RMM
-> Specification [3] (Page-2) (Release Information 1.0-eac3 20-07-2023):
-> 
-> 1. Addition of B2.19 PsciReturnCodePermitted function [3] (Page-126)
-> 2. Addition of 'status' in B3.3.7.2 Failure conditions of the
->     B3.3.7 RMI_PSCI_COMPLETE command [3] (Page-160)
-> 
-> 
-> Some Further Suggestions:
-> 1. It would be really helpful if PSCI_DENIED can be accommodated somewhere
->     in the flow diagram (D1.4.1 PSCI_CPU_ON flow) [3] (Page-297) as well.
+I try to boot a SEV VM (just SEV, no SEV-ES and no SEV-SNP) with a firmware written by myself.
 
-Good point, yes, will get that added.
+But when the linux kernel executed the int3_selftest(), a #UD generated
+instead of a #BP.
 
-> 2. You would need changes to handle the return value of the PSCI_DENIED
->     in this below patch [2] as well from ARM CCA series [1]
-> 
+I'm curious how this happend. So I came here to ask for some here about
+this problem. Is there some conditions that would make the int3
+instruction generates a #UD?
 
-Of course. Please note that the series [1] is based on RMMv1.0-beta0 and
-we are in the process of rebasing our changes to v1.0-eac3, which
-includes a lot of other changes. The updated series will have all the
-required changes.
+BTW, it worked nomarlly with qemu and ovmf.
 
-Kind regards
-Suzuki
+Any suggestion would be appreciated!
 
+Thanks,
+Wu Zongyong
 
-> 
-> @James, Any further thoughts on this?
-> 
-> 
-> References:
-> [1] [RFC PATCH 00/28] arm64: Support for Arm CCA in KVM
-> [2] [RFC PATCH 19/28] KVM: arm64: Validate register access for a Realm VM
->       https://lore.kernel.org/lkml/20230127112248.136810-1-suzuki.poulose@arm.com/T/#m6c10b9a27c4a724967c1800facacaa9443b38b4c
-> [3] ARM Realm Management Monitor specification(DEN0137 1.0-eac3)
->      https://developer.arm.com/documentation/den0137/latest/
->   
-> 
-> Thanks
-> Salil.
-> 
-> 
->>>> 4. Failure condition (B5.3.3.2) should be amended with
->>>>      runnable pre: target_rec.flags.runnable == NOT_RUNNABLE (?)
->>>>               post: result == PSCI_DENIED (?)
->>>> 5. Change would also be required in the flow (D1.4 PSCI flows) depicting
->>>>      PSCI_CPU_ON flow (D1.4.1)
->>>>
->>>> I do understand that ARM CCA support is in its infancy stage and
->>>> discussing about vCPU Hotplug in realm world seem to be a far-fetched
->>>> idea right now. But specification changes require lot of time and if
->>>> this change is really required then it should be further discussed
->>>> within ARM.
->>>>
->>>> Many thanks!
->>>>
->>>>
->>>> Bes regards
->>>> Salil
->>>>
->>>>
->>>> References:
->>>>
->>>> [1] https://developer.arm.com/documentation/den0137/latest/
->>>> [2] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v1-port11052023.dev-1
->>>> [3] https://git.gitlab.arm.com/linux-arm/linux-jm.git virtual_cpu_hotplug/rfc/v2
-> 
 
