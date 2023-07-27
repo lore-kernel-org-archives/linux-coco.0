@@ -1,163 +1,160 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D7B174D0;
-	Thu, 27 Jul 2023 14:24:10 +0000 (UTC)
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.201])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RBXxZ6j4Qz67lWw;
-	Thu, 27 Jul 2023 22:21:06 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 27 Jul 2023 15:24:06 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.027;
- Thu, 27 Jul 2023 15:24:06 +0100
-From: Salil Mehta <salil.mehta@huawei.com>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, "steven.price@arm.com"
-	<steven.price@arm.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	"james.morse@arm.com" <james.morse@arm.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>
-CC: Catalin Marinas <catalin.marinas@arm.com>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Marc Zyngier <maz@kernel.org>, Will Deacon
-	<will@kernel.org>, "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>, "mark.rutland@arm.com"
-	<mark.rutland@arm.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, "Salil
- Mehta" <salil.mehta@opnsrc.net>, "andrew.jones@linux.dev"
-	<andrew.jones@linux.dev>, yuzenghui <yuzenghui@huawei.com>,
-	"kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Gareth Stockwell <Gareth.Stockwell@arm.com>
-Subject: RE: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
- might require ARM spec change?
-Thread-Topic: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
- might require ARM spec change?
-Thread-Index: Adm55YYLPryt1tEKR0alBn01xBiFBwANXi2AAQoU7gAAA+aEUAAjqFEAAGzOg6A=
-Date: Thu, 27 Jul 2023 14:24:06 +0000
-Message-ID: <ef506b02d6774a7d87f6b2d941427333@huawei.com>
-References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
-	<7da93c6e-1cbf-8840-282e-f115197b80c4@arm.com>
-	<0d268afa-c04b-7a4e-be5e-2362d3dfa64d@arm.com>
-	<93c9c8356e444fb287393a935a8c7899@huawei.com>
- <8a828ef2-b09b-4322-26fa-eae6cc88753f@arm.com>
-In-Reply-To: <8a828ef2-b09b-4322-26fa-eae6cc88753f@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.126.173.64]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39E027124;
+	Thu, 27 Jul 2023 16:40:36 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD37CD75;
+	Thu, 27 Jul 2023 09:41:18 -0700 (PDT)
+Received: from [10.57.89.117] (unknown [10.57.89.117])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 716303F5A1;
+	Thu, 27 Jul 2023 09:40:32 -0700 (PDT)
+Message-ID: <1cb495f2-fb0d-5a93-5a7f-d717bf3ef97a@arm.com>
+Date: Thu, 27 Jul 2023 17:40:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
+ might require ARM spec change?
+To: Salil Mehta <salil.mehta@huawei.com>,
+ "steven.price@arm.com" <steven.price@arm.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ "james.morse@arm.com" <james.morse@arm.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Marc Zyngier
+ <maz@kernel.org>, Will Deacon <will@kernel.org>,
+ "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "mark.rutland@arm.com" <mark.rutland@arm.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ Salil Mehta <salil.mehta@opnsrc.net>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
+ yuzenghui <yuzenghui@huawei.com>,
+ "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ Gareth Stockwell <Gareth.Stockwell@arm.com>
+References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
+ <7da93c6e-1cbf-8840-282e-f115197b80c4@arm.com>
+ <0d268afa-c04b-7a4e-be5e-2362d3dfa64d@arm.com>
+ <93c9c8356e444fb287393a935a8c7899@huawei.com>
+ <8a828ef2-b09b-4322-26fa-eae6cc88753f@arm.com>
+ <ef506b02d6774a7d87f6b2d941427333@huawei.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <ef506b02d6774a7d87f6b2d941427333@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-SGkgU3V6dWtpLA0KDQo+IEZyb206IFN1enVraSBLIFBvdWxvc2UgPHN1enVraS5wb3Vsb3NlQGFy
-bS5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIEp1bHkgMjUsIDIwMjMgMTI6MjAgUE0NCj4gDQo+IEhp
-IFNhbGlsDQo+IA0KPiBPbiAyNS8wNy8yMDIzIDAxOjA1LCBTYWxpbCBNZWh0YSB3cm90ZToNCj4g
-PiBIaSBTdXp1a2ksDQo+ID4gU29ycnkgZm9yIHJlcGx5aW5nIGxhdGUgYXMgSSB3YXMgb24vb2Zm
-IGxhc3Qgd2VlayB0byB1bmRlcmdvIHNvbWUgbWVkaWNhbCB0ZXN0Lg0KPiA+DQo+ID4+IEZyb206
-IFN1enVraSBLIFBvdWxvc2UgPHN1enVraS5wb3Vsb3NlQGFybS5jb20+DQo+ID4+IFNlbnQ6IE1v
-bmRheSwgSnVseSAyNCwgMjAyMyA1OjI3IFBNDQo+ID4+DQo+ID4+IEhpIFNhbGlsDQo+ID4+DQo+
-ID4+IE9uIDE5LzA3LzIwMjMgMTA6MjgsIFN1enVraSBLIFBvdWxvc2Ugd3JvdGU6DQo+ID4+PiBI
-aSBTYWxpbA0KPiA+Pj4NCj4gPj4+IFRoYW5rcyBmb3IgcmFpc2luZyB0aGlzLg0KPiA+Pj4NCj4g
-Pj4+IE9uIDE5LzA3LzIwMjMgMDM6MzUsIFNhbGlsIE1laHRhIHdyb3RlOg0KPiA+Pj4+IFtSZXBv
-c3RpbmcgaXQgaGVyZSBmcm9tIExpbmFybyBPcGVuIERpc2N1c3Npb24gTGlzdCBmb3IgbW9yZSBl
-eWVzIHRvIGxvb2sgYXRdDQo+ID4+Pj4NCj4gPj4+PiBIZWxsbywNCj4gPj4+PiBJIGhhdmUgcmVj
-ZW50bHkgc3RhcnRlZCB0byBkYWJibGUgd2l0aCBBUk0gQ0NBIHN0dWZmIGFuZCBjaGVjayBpZiBv
-dXINCj4gPj4+PiByZWNlbnQgY2hhbmdlcyB0byBzdXBwb3J0IHZDUFUgSG90cGx1ZyBpbiBBUk02
-NCBjYW4gd29yayBpbiB0aGUgcmVhbG0NCj4gPj4+PiB3b3JsZC4gSSBoYXZlIHJlYWxpemVkIHRo
-YXQgaW4gdGhlIFJNTSBzcGVjaWZpY2F0aW9uWzFdIFBTQ0lfQ1BVX09ODQo+ID4+Pj4gY29tbWFu
-ZChCNS4zLjMpIGRvZXMgbm90IGhhbmRsZXMgdGhlIFBTQ0lfREVOSUVEIHJldHVybiBjb2RlKEI1
-LjQuMiksDQo+ID4+Pj4gZnJvbSB0aGUgaG9zdC4gVGhpcyBtaWdodCBiZSByZXF1aXJlZCB0byBz
-dXBwb3J0IHZDUFUgSG90cGx1ZyBmZWF0dXJlDQo+ID4+Pj4gaW4gdGhlIHJlYWxtIHdvcmxkIGlu
-IGZ1dHVyZS4gdkNQVSBIb3RwbHVnIGlzIGFuIGltcG9ydGFudCBmZWF0dXJlIHRvDQo+ID4+Pj4g
-c3VwcG9ydCBrYXRhLWNvbnRhaW5lcnMgaW4gcmVhbG0gd29ybGQgYXMgaXQgcmVkdWNlcyB0aGUg
-Vk0gYm9vdCB0aW1lDQo+ID4+Pj4gYW5kIGZhY2lsaXRhdGVzIGR5bmFtaWMgYWRqdXN0bWVudCBv
-ZiB2Q1BVcyAod2hpY2ggSSB0aGluayBzaG91bGQgYmUNCj4gPj4+PiB0cnVlIGV2ZW4gd2l0aCBS
-ZWFsbSB3b3JsZCBhcyBjdXJyZW50IGltcGxlbWVudGF0aW9uIG9ubHkgbWFrZXMgdXNlDQo+ID4+
-Pj4gb2YgdGhlIFBTQ0lfT04vT0ZGIHRvIHJlYWxpemUgdGhlIEhvdHBsdWcgbG9vay1saWtlIGVm
-ZmVjdD8pDQo+ID4+Pj4NCj4gPj4+Pg0KPiA+Pj4+IEFzIHBlciBvdXIgcmVjZW50IGNoYW5nZXMg
-WzJdLCBbM10gcmVsYXRlZCB0byBzdXBwb3J0IHZDUFUgSG90cGx1ZyBvbg0KPiA+Pj4+IEFSTTY0
-LCB3ZSBoYW5kbGUgdGhlIGd1ZXN0IGV4aXRzIGR1ZSB0byBTTUMvSFZDIEh5cGVyY2FsbCBpbiB0
-aGUNCj4gPj4+PiB1c2VyLXNwYWNlIGkuZS4gVk1NL1FlbXUuIEluIHJlYWxtIHdvcmxkLCBSRUMg
-RXhpdHMgdG8gaG9zdCBkdWUgdG8NCj4gPj4+PiBQU0NJX0NQVV9PTiBzaG91bGQgdW5kZXJnbyBz
-aW1pbGFyIHBvbGljeSBjaGVja3MgYW5kIEkgdGhpbmssDQo+ID4+Pj4NCj4gPj4+PiAxLiBIb3N0
-IHNob3VsZCAqZGVueSogdG8gb25saW5lIHRoZSB0YXJnZXQgdkNQVXMgd2hpY2ggYXJlIE5PVCBw
-bHVnZ2VkDQo+ID4+Pj4gMi4gVGhpcyBtZWFucyB0YXJnZXQgUkVDIHNob3VsZCBiZSBkZW5pZWQg
-YnkgaG9zdC4gQ2FuIGhvc3QgY2FsbA0KPiA+Pj4+ICDCoMKgwqAgUk1JX1BTQ0lfQ09NUEVURSBp
-biBzdWNoIHMgY2FzZT8NCj4gPj4+PiAzLiBUaGUgKnJldHVybiogdmFsdWUgKEI1LjMuMy4xLjMg
-T3V0cHV0IHZhbHVlcykgc2hvdWxkIGJlIFBTQ0lfREVOSUVEDQo+ID4+Pg0KPiA+Pj4gVGhlIFJl
-YWxtIGV4aXQgd2l0aCBFWElUX1BTQ0kgYWxyZWFkeSBwcm92aWRlcyB0aGUgcGFyYW1ldGVycyBw
-YXNzZWQNCj4gPj4+IG9udG8gdGhlIFBTQ0kgcmVxdWVzdC4gVGhpcyBoYXBwZW5zIGZvciBhbGwg
-UFNDSSBjYWxscyBleGNlcHQNCj4gPj4+IChQU0NJX1ZFUlNJT04gYW5kIFBTQ0lfRkVBVVRSRVMp
-LiBUaGUgaHlwIGNvdWxkIGZvcndhcmQgdGhlc2UgZXhpdHMgdG8NCj4gPj4+IHRoZSBWTU0gYW5k
-IGNvdWxkIGludm9rZSB0aGUgUk1JX1BTQ0lfQ09NUExFVEUgb25seSB3aGVuIHRoZSBWTU0gYmxl
-c3Nlcw0KPiA+Pj4gdGhlIHJlcXVlc3QgKHdoZXJldmVyIGFwcGxpY2FibGUpLg0KPiA+Pj4NCj4g
-Pj4+IEhvd2V2ZXIsIHRoZSBSTU0gc3BlYyBjdXJyZW50bHkgZG9lc24ndCBhbGxvdyBkZW55aW5n
-IHRoZSByZXF1ZXN0Lg0KPiA+Pj4gaS5lLiwgd2l0aG91dCBSTUlfUFNDSV9DT01QTEVURSwgdGhl
-IFJFQyBjYW5ub3QgYmUgc2NoZWR1bGVkIGJhY2sgaW4uDQo+ID4+PiBXZSB3aWxsIGFkZHJlc3Mg
-dGhpcyBpbiB0aGUgUk1NIHNwZWMgYW5kIGdldCBiYWNrIHRvIHlvdS4NCj4gPj4NCj4gPj4gVGhp
-cyBpcyBub3cgcmVzb2x2ZWQgaW4gUk1NdjEuMC1lYWMzIHNwZWMsIGF2YWlsYWJsZSBoZXJlIFsw
-XS4NCj4gPj4NCj4gPj4gVGhpcyBhbGxvd3MgdGhlIGhvc3QgdG8gREVOWSBhIFBTQ0lfQ1BVX09O
-IHJlcXVlc3QuIFRoZSBSTU0gZW5zdXJlcyB0aGF0DQo+ID4+IHRoZSByZXNwb25zZSBkb2Vzbid0
-IHZpb2xhdGUgdGhlIHNlY3VyaXR5IGd1YXJhbnRlZXMgYnkgY2hlY2tpbmcgdGhlDQo+ID4+IHN0
-YXRlIG9mIHRoZSB0YXJnZXQgUkVDLg0KPiA+Pg0KPiA+PiBbMF0gaHR0cHM6Ly9kZXZlbG9wZXIu
-YXJtLmNvbS9kb2N1bWVudGF0aW9uL2RlbjAxMzcvbGF0ZXN0Lw0KPiA+DQo+ID4NCj4gPiBNYW55
-IHRoYW5rcyBmb3IgdGFraW5nIHRoaXMgdXAgcHJvYWN0aXZlbHkgYW5kIGdldHRpbmcgaXQgZG9u
-ZSBhcyB3ZWxsDQo+ID4gdmVyeSBlZmZpY2llbnRseS4gUmVhbGx5IGFwcHJlY2lhdGUgdGhpcyEN
-Cj4gPg0KPiA+IEkgYWNrbm93bGVkZ2UgYmVsb3cgbmV3IGNoYW5nZXMgcGFydCBvZiB0aGUgbmV3
-bHkgcmVsZWFzZWQgUk1NDQo+ID4gU3BlY2lmaWNhdGlvbiBbM10gKFBhZ2UtMikgKFJlbGVhc2Ug
-SW5mb3JtYXRpb24gMS4wLWVhYzMgMjAtMDctMjAyMyk6DQo+ID4NCj4gPiAxLiBBZGRpdGlvbiBv
-ZiBCMi4xOSBQc2NpUmV0dXJuQ29kZVBlcm1pdHRlZCBmdW5jdGlvbiBbM10gKFBhZ2UtMTI2KQ0K
-PiA+IDIuIEFkZGl0aW9uIG9mICdzdGF0dXMnIGluIEIzLjMuNy4yIEZhaWx1cmUgY29uZGl0aW9u
-cyBvZiB0aGUNCj4gPiAgICAgQjMuMy43IFJNSV9QU0NJX0NPTVBMRVRFIGNvbW1hbmQgWzNdIChQ
-YWdlLTE2MCkNCj4gPg0KPiA+DQo+ID4gU29tZSBGdXJ0aGVyIFN1Z2dlc3Rpb25zOg0KPiA+IDEu
-IEl0IHdvdWxkIGJlIHJlYWxseSBoZWxwZnVsIGlmIFBTQ0lfREVOSUVEIGNhbiBiZSBhY2NvbW1v
-ZGF0ZWQgc29tZXdoZXJlDQo+ID4gICAgIGluIHRoZSBmbG93IGRpYWdyYW0gKEQxLjQuMSBQU0NJ
-X0NQVV9PTiBmbG93KSBbM10gKFBhZ2UtMjk3KSBhcyB3ZWxsLg0KPiANCj4gR29vZCBwb2ludCwg
-eWVzLCB3aWxsIGdldCB0aGF0IGFkZGVkLg0KDQoNCkdyZWF0LiBUaGFua3MhDQoNCg0KPiA+IDIu
-IFlvdSB3b3VsZCBuZWVkIGNoYW5nZXMgdG8gaGFuZGxlIHRoZSByZXR1cm4gdmFsdWUgb2YgdGhl
-IFBTQ0lfREVOSUVEDQo+ID4gICAgIGluIHRoaXMgYmVsb3cgcGF0Y2ggWzJdIGFzIHdlbGwgZnJv
-bSBBUk0gQ0NBIHNlcmllcyBbMV0NCj4gPg0KPiANCj4gT2YgY291cnNlLiBQbGVhc2Ugbm90ZSB0
-aGF0IHRoZSBzZXJpZXMgWzFdIGlzIGJhc2VkIG9uIFJNTXYxLjAtYmV0YTAgYW5kDQo+IHdlIGFy
-ZSBpbiB0aGUgcHJvY2VzcyBvZiByZWJhc2luZyBvdXIgY2hhbmdlcyB0byB2MS4wLWVhYzMsIHdo
-aWNoDQo+IGluY2x1ZGVzIGEgbG90IG9mIG90aGVyIGNoYW5nZXMuIFRoZSB1cGRhdGVkIHNlcmll
-cyB3aWxsIGhhdmUgYWxsIHRoZQ0KPiByZXF1aXJlZCBjaGFuZ2VzLg0KDQoNCk9rLiBXaGVuIGFy
-ZSB5b3UgcGxhbm5pbmcgdG8gcG9zdCB0aGlzIG5ldyBzZXJpZXMgd2l0aCB2MS4wLWVhYzMgY2hh
-bmdlcz8NCg0KDQpUaGFua3MNClNhbGlsLg0KDQo+IEtpbmQgcmVnYXJkcw0KPiBTdXp1a2kNCj4g
-DQo+ID4gQEphbWVzLCBBbnkgZnVydGhlciB0aG91Z2h0cyBvbiB0aGlzPw0KPiA+DQo+ID4NCj4g
-PiBSZWZlcmVuY2VzOg0KPiA+IFsxXSBbUkZDIFBBVENIIDAwLzI4XSBhcm02NDogU3VwcG9ydCBm
-b3IgQXJtIENDQSBpbiBLVk0NCj4gPiBbMl0gW1JGQyBQQVRDSCAxOS8yOF0gS1ZNOiBhcm02NDog
-VmFsaWRhdGUgcmVnaXN0ZXIgYWNjZXNzIGZvciBhIFJlYWxtIFZNDQo+ID4gICAgICAgaHR0cHM6
-Ly9sb3JlLmtlcm5lbC5vcmcvbGttbC8yMDIzMDEyNzExMjI0OC4xMzY4MTAtMS1zdXp1a2kucG91
-bG9zZUBhcm0uY29tL1QvI202YzEwYjlhMjdjNGE3MjQ5NjdjMTgwMGZhY2FjYWE5NDQzYjM4YjRj
-DQo+ID4gWzNdIEFSTSBSZWFsbSBNYW5hZ2VtZW50IE1vbml0b3Igc3BlY2lmaWNhdGlvbihERU4w
-MTM3IDEuMC1lYWMzKQ0KPiA+ICAgICAgaHR0cHM6Ly9kZXZlbG9wZXIuYXJtLmNvbS9kb2N1bWVu
-dGF0aW9uL2RlbjAxMzcvbGF0ZXN0Lw0KPiA+DQo+ID4NCj4gPiBUaGFua3MNCj4gPiBTYWxpbC4N
-Cj4gPg0KPiA+DQo+ID4+Pj4gNC4gRmFpbHVyZSBjb25kaXRpb24gKEI1LjMuMy4yKSBzaG91bGQg
-YmUgYW1lbmRlZCB3aXRoDQo+ID4+Pj4gIMKgwqDCoCBydW5uYWJsZSBwcmU6IHRhcmdldF9yZWMu
-ZmxhZ3MucnVubmFibGUgPT0gTk9UX1JVTk5BQkxFICg/KQ0KPiA+Pj4+ICDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgcG9zdDogcmVzdWx0ID09IFBTQ0lfREVOSUVEICg/KQ0KPiA+Pj4+IDUuIENo
-YW5nZSB3b3VsZCBhbHNvIGJlIHJlcXVpcmVkIGluIHRoZSBmbG93IChEMS40IFBTQ0kgZmxvd3Mp
-IGRlcGljdGluZw0KPiA+Pj4+ICDCoMKgwqAgUFNDSV9DUFVfT04gZmxvdyAoRDEuNC4xKQ0KPiA+
-Pj4+DQo+ID4+Pj4gSSBkbyB1bmRlcnN0YW5kIHRoYXQgQVJNIENDQSBzdXBwb3J0IGlzIGluIGl0
-cyBpbmZhbmN5IHN0YWdlIGFuZA0KPiA+Pj4+IGRpc2N1c3NpbmcgYWJvdXQgdkNQVSBIb3RwbHVn
-IGluIHJlYWxtIHdvcmxkIHNlZW0gdG8gYmUgYSBmYXItZmV0Y2hlZA0KPiA+Pj4+IGlkZWEgcmln
-aHQgbm93LiBCdXQgc3BlY2lmaWNhdGlvbiBjaGFuZ2VzIHJlcXVpcmUgbG90IG9mIHRpbWUgYW5k
-IGlmDQo+ID4+Pj4gdGhpcyBjaGFuZ2UgaXMgcmVhbGx5IHJlcXVpcmVkIHRoZW4gaXQgc2hvdWxk
-IGJlIGZ1cnRoZXIgZGlzY3Vzc2VkDQo+ID4+Pj4gd2l0aGluIEFSTS4NCj4gPj4+Pg0KPiA+Pj4+
-IE1hbnkgdGhhbmtzIQ0KPiA+Pj4+DQo+ID4+Pj4NCj4gPj4+PiBCZXMgcmVnYXJkcw0KPiA+Pj4+
-IFNhbGlsDQo+ID4+Pj4NCj4gPj4+PiBSZWZlcmVuY2VzOg0KPiA+Pj4+DQo+ID4+Pj4gWzFdIGh0
-dHBzOi8vZGV2ZWxvcGVyLmFybS5jb20vZG9jdW1lbnRhdGlvbi9kZW4wMTM3L2xhdGVzdC8NCj4g
-Pj4+PiBbMl0gaHR0cHM6Ly9naXRodWIuY29tL3NhbGlsLW1laHRhL3FlbXUuZ2l0IHZpcnQtY3B1
-aHAtYXJtdjgvcmZjLXYxLXBvcnQxMTA1MjAyMy5kZXYtMQ0KPiA+Pj4+IFszXSBodHRwczovL2dp
-dC5naXRsYWIuYXJtLmNvbS9saW51eC1hcm0vbGludXgtam0uZ2l0ICB2aXJ0dWFsX2NwdV9ob3Rw
-bHVnL3JmYy92Mg0KDQoNCiANCg0K
+On 27/07/2023 15:24, Salil Mehta wrote:
+> Hi Suzuki,
+> 
+>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Sent: Tuesday, July 25, 2023 12:20 PM
+>>
+>> Hi Salil
+>>
+>> On 25/07/2023 01:05, Salil Mehta wrote:
+>>> Hi Suzuki,
+>>> Sorry for replying late as I was on/off last week to undergo some medical test.
+>>>
+>>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>> Sent: Monday, July 24, 2023 5:27 PM
+>>>>
+>>>> Hi Salil
+>>>>
+>>>> On 19/07/2023 10:28, Suzuki K Poulose wrote:
+>>>>> Hi Salil
+>>>>>
+>>>>> Thanks for raising this.
+>>>>>
+>>>>> On 19/07/2023 03:35, Salil Mehta wrote:
+>>>>>> [Reposting it here from Linaro Open Discussion List for more eyes to look at]
+>>>>>>
+>>>>>> Hello,
+>>>>>> I have recently started to dabble with ARM CCA stuff and check if our
+>>>>>> recent changes to support vCPU Hotplug in ARM64 can work in the realm
+>>>>>> world. I have realized that in the RMM specification[1] PSCI_CPU_ON
+>>>>>> command(B5.3.3) does not handles the PSCI_DENIED return code(B5.4.2),
+>>>>>> from the host. This might be required to support vCPU Hotplug feature
+>>>>>> in the realm world in future. vCPU Hotplug is an important feature to
+>>>>>> support kata-containers in realm world as it reduces the VM boot time
+>>>>>> and facilitates dynamic adjustment of vCPUs (which I think should be
+>>>>>> true even with Realm world as current implementation only makes use
+>>>>>> of the PSCI_ON/OFF to realize the Hotplug look-like effect?)
+>>>>>>
+>>>>>>
+>>>>>> As per our recent changes [2], [3] related to support vCPU Hotplug on
+>>>>>> ARM64, we handle the guest exits due to SMC/HVC Hypercall in the
+>>>>>> user-space i.e. VMM/Qemu. In realm world, REC Exits to host due to
+>>>>>> PSCI_CPU_ON should undergo similar policy checks and I think,
+>>>>>>
+>>>>>> 1. Host should *deny* to online the target vCPUs which are NOT plugged
+>>>>>> 2. This means target REC should be denied by host. Can host call
+>>>>>>       RMI_PSCI_COMPETE in such s case?
+>>>>>> 3. The *return* value (B5.3.3.1.3 Output values) should be PSCI_DENIED
+>>>>>
+>>>>> The Realm exit with EXIT_PSCI already provides the parameters passed
+>>>>> onto the PSCI request. This happens for all PSCI calls except
+>>>>> (PSCI_VERSION and PSCI_FEAUTRES). The hyp could forward these exits to
+>>>>> the VMM and could invoke the RMI_PSCI_COMPLETE only when the VMM blesses
+>>>>> the request (wherever applicable).
+>>>>>
+>>>>> However, the RMM spec currently doesn't allow denying the request.
+>>>>> i.e., without RMI_PSCI_COMPLETE, the REC cannot be scheduled back in.
+>>>>> We will address this in the RMM spec and get back to you.
+>>>>
+>>>> This is now resolved in RMMv1.0-eac3 spec, available here [0].
+>>>>
+>>>> This allows the host to DENY a PSCI_CPU_ON request. The RMM ensures that
+>>>> the response doesn't violate the security guarantees by checking the
+>>>> state of the target REC.
+>>>>
+>>>> [0] https://developer.arm.com/documentation/den0137/latest/
+>>>
+>>>
+>>> Many thanks for taking this up proactively and getting it done as well
+>>> very efficiently. Really appreciate this!
+>>>
+>>> I acknowledge below new changes part of the newly released RMM
+>>> Specification [3] (Page-2) (Release Information 1.0-eac3 20-07-2023):
+>>>
+>>> 1. Addition of B2.19 PsciReturnCodePermitted function [3] (Page-126)
+>>> 2. Addition of 'status' in B3.3.7.2 Failure conditions of the
+>>>      B3.3.7 RMI_PSCI_COMPLETE command [3] (Page-160)
+>>>
+>>>
+>>> Some Further Suggestions:
+>>> 1. It would be really helpful if PSCI_DENIED can be accommodated somewhere
+>>>      in the flow diagram (D1.4.1 PSCI_CPU_ON flow) [3] (Page-297) as well.
+>>
+>> Good point, yes, will get that added.
+> 
+> 
+> Great. Thanks!
+> 
+> 
+>>> 2. You would need changes to handle the return value of the PSCI_DENIED
+>>>      in this below patch [2] as well from ARM CCA series [1]
+>>>
+>>
+>> Of course. Please note that the series [1] is based on RMMv1.0-beta0 and
+>> we are in the process of rebasing our changes to v1.0-eac3, which
+>> includes a lot of other changes. The updated series will have all the
+>> required changes.
+> 
+> 
+> Ok. When are you planning to post this new series with v1.0-eac3 changes?
+
+Please see :
+
+https://lkml.kernel.org/r/42cbffac-05a8-a279-9bdb-f76354c1a1b1@arm.com
+
+Suzuki
+
