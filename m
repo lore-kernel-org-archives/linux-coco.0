@@ -1,160 +1,113 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39E027124;
-	Thu, 27 Jul 2023 16:40:36 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD37CD75;
-	Thu, 27 Jul 2023 09:41:18 -0700 (PDT)
-Received: from [10.57.89.117] (unknown [10.57.89.117])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 716303F5A1;
-	Thu, 27 Jul 2023 09:40:32 -0700 (PDT)
-Message-ID: <1cb495f2-fb0d-5a93-5a7f-d717bf3ef97a@arm.com>
-Date: Thu, 27 Jul 2023 17:40:30 +0100
+Received: from mgamail.intel.com (unknown [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2151914AA0
+	for <linux-coco@lists.linux.dev>; Fri, 28 Jul 2023 19:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690572657; x=1722108657;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XEvRgEzLzJgiPhpM8NRlpjxiZhfplAwFtjWJ70NzV80=;
+  b=hCQyOmXE9Blt045mDHBqnvL6Ttlq4W+lZ9H0tQdv9Cl9FNZm59MHeM76
+   Po3RAmWDNAjldjcA6lQRS8nKWfGNIQChi/CB/YjvYw74KyIW1LlWWsBpf
+   yOO1eBexIdaP/5RoS5O3Ir5mB4CQcOCQtRvRNhGp6odPqC5xRidwcFpGn
+   QhFeClwbQG2unMqN3G+tH+ohcFjJ933LIEibmgnM0ilIKalwl4qXTl21Q
+   i9rB+0eNWBBf5NJnlIaVaChJg8DZ1y7OknVGn6cKKVP4YTSVRapVW1GoA
+   7inVcVflFW7rTT+R5lGe1Ln0v9DlUvO8BA0TI/CqHegvR8nuzB0YuO+OF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="366137068"
+X-IronPort-AV: E=Sophos;i="6.01,238,1684825200"; 
+   d="scan'208";a="366137068"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2023 12:30:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="762694002"
+X-IronPort-AV: E=Sophos;i="6.01,238,1684825200"; 
+   d="scan'208";a="762694002"
+Received: from cheehong-laptop.gar.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.212.158.179])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2023 12:30:52 -0700
+Subject: [PATCH 0/4] keys: Introduce a keys frontend for attestation reports
+From: Dan Williams <dan.j.williams@intel.com>
+To: dhowells@redhat.com
+Cc: Brijesh Singh <brijesh.singh@amd.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Dionna Amalie Glaze <dionnaglaze@google.com>, Borislav Petkov <bp@alien8.de>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Samuel Ortiz <sameo@rivosinc.com>,
+ Dionna Glaze <dionnaglaze@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-coco@lists.linux.dev,
+ keyrings@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 28 Jul 2023 12:30:52 -0700
+Message-ID: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [Question - ARM CCA] vCPU Hotplug Support in ARM Realm world
- might require ARM spec change?
-To: Salil Mehta <salil.mehta@huawei.com>,
- "steven.price@arm.com" <steven.price@arm.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- "james.morse@arm.com" <james.morse@arm.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, Marc Zyngier
- <maz@kernel.org>, Will Deacon <will@kernel.org>,
- "christoffer.dall@arm.com" <christoffer.dall@arm.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
- "mark.rutland@arm.com" <mark.rutland@arm.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- Salil Mehta <salil.mehta@opnsrc.net>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
- yuzenghui <yuzenghui@huawei.com>,
- "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Gareth Stockwell <Gareth.Stockwell@arm.com>
-References: <9cb24131a09a48e9a622e92bf8346c9d@huawei.com>
- <7da93c6e-1cbf-8840-282e-f115197b80c4@arm.com>
- <0d268afa-c04b-7a4e-be5e-2362d3dfa64d@arm.com>
- <93c9c8356e444fb287393a935a8c7899@huawei.com>
- <8a828ef2-b09b-4322-26fa-eae6cc88753f@arm.com>
- <ef506b02d6774a7d87f6b2d941427333@huawei.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <ef506b02d6774a7d87f6b2d941427333@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On 27/07/2023 15:24, Salil Mehta wrote:
-> Hi Suzuki,
-> 
->> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Sent: Tuesday, July 25, 2023 12:20 PM
->>
->> Hi Salil
->>
->> On 25/07/2023 01:05, Salil Mehta wrote:
->>> Hi Suzuki,
->>> Sorry for replying late as I was on/off last week to undergo some medical test.
->>>
->>>> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>> Sent: Monday, July 24, 2023 5:27 PM
->>>>
->>>> Hi Salil
->>>>
->>>> On 19/07/2023 10:28, Suzuki K Poulose wrote:
->>>>> Hi Salil
->>>>>
->>>>> Thanks for raising this.
->>>>>
->>>>> On 19/07/2023 03:35, Salil Mehta wrote:
->>>>>> [Reposting it here from Linaro Open Discussion List for more eyes to look at]
->>>>>>
->>>>>> Hello,
->>>>>> I have recently started to dabble with ARM CCA stuff and check if our
->>>>>> recent changes to support vCPU Hotplug in ARM64 can work in the realm
->>>>>> world. I have realized that in the RMM specification[1] PSCI_CPU_ON
->>>>>> command(B5.3.3) does not handles the PSCI_DENIED return code(B5.4.2),
->>>>>> from the host. This might be required to support vCPU Hotplug feature
->>>>>> in the realm world in future. vCPU Hotplug is an important feature to
->>>>>> support kata-containers in realm world as it reduces the VM boot time
->>>>>> and facilitates dynamic adjustment of vCPUs (which I think should be
->>>>>> true even with Realm world as current implementation only makes use
->>>>>> of the PSCI_ON/OFF to realize the Hotplug look-like effect?)
->>>>>>
->>>>>>
->>>>>> As per our recent changes [2], [3] related to support vCPU Hotplug on
->>>>>> ARM64, we handle the guest exits due to SMC/HVC Hypercall in the
->>>>>> user-space i.e. VMM/Qemu. In realm world, REC Exits to host due to
->>>>>> PSCI_CPU_ON should undergo similar policy checks and I think,
->>>>>>
->>>>>> 1. Host should *deny* to online the target vCPUs which are NOT plugged
->>>>>> 2. This means target REC should be denied by host. Can host call
->>>>>>       RMI_PSCI_COMPETE in such s case?
->>>>>> 3. The *return* value (B5.3.3.1.3 Output values) should be PSCI_DENIED
->>>>>
->>>>> The Realm exit with EXIT_PSCI already provides the parameters passed
->>>>> onto the PSCI request. This happens for all PSCI calls except
->>>>> (PSCI_VERSION and PSCI_FEAUTRES). The hyp could forward these exits to
->>>>> the VMM and could invoke the RMI_PSCI_COMPLETE only when the VMM blesses
->>>>> the request (wherever applicable).
->>>>>
->>>>> However, the RMM spec currently doesn't allow denying the request.
->>>>> i.e., without RMI_PSCI_COMPLETE, the REC cannot be scheduled back in.
->>>>> We will address this in the RMM spec and get back to you.
->>>>
->>>> This is now resolved in RMMv1.0-eac3 spec, available here [0].
->>>>
->>>> This allows the host to DENY a PSCI_CPU_ON request. The RMM ensures that
->>>> the response doesn't violate the security guarantees by checking the
->>>> state of the target REC.
->>>>
->>>> [0] https://developer.arm.com/documentation/den0137/latest/
->>>
->>>
->>> Many thanks for taking this up proactively and getting it done as well
->>> very efficiently. Really appreciate this!
->>>
->>> I acknowledge below new changes part of the newly released RMM
->>> Specification [3] (Page-2) (Release Information 1.0-eac3 20-07-2023):
->>>
->>> 1. Addition of B2.19 PsciReturnCodePermitted function [3] (Page-126)
->>> 2. Addition of 'status' in B3.3.7.2 Failure conditions of the
->>>      B3.3.7 RMI_PSCI_COMPLETE command [3] (Page-160)
->>>
->>>
->>> Some Further Suggestions:
->>> 1. It would be really helpful if PSCI_DENIED can be accommodated somewhere
->>>      in the flow diagram (D1.4.1 PSCI_CPU_ON flow) [3] (Page-297) as well.
->>
->> Good point, yes, will get that added.
-> 
-> 
-> Great. Thanks!
-> 
-> 
->>> 2. You would need changes to handle the return value of the PSCI_DENIED
->>>      in this below patch [2] as well from ARM CCA series [1]
->>>
->>
->> Of course. Please note that the series [1] is based on RMMv1.0-beta0 and
->> we are in the process of rebasing our changes to v1.0-eac3, which
->> includes a lot of other changes. The updated series will have all the
->> required changes.
-> 
-> 
-> Ok. When are you planning to post this new series with v1.0-eac3 changes?
+The bulk of the justification for this patch kit is in "[PATCH 1/4]
+keys: Introduce tsm keys". The short summary is that the current
+approach of adding new char devs and new ioctls, for what amounts to the
+same functionality with minor formatting differences across vendors, is
+untenable. Common concepts and the community benefit from common
+infrastructure.
 
-Please see :
+Use Keys to build common infrastructure for confidential computing
+attestation report blobs, convert sevguest to use it (leaving the
+deprecation question alone for now), and pave the way for tdx-guest and
+the eventual risc-v equivalent to use it in lieu of new ioctls.
 
-https://lkml.kernel.org/r/42cbffac-05a8-a279-9bdb-f76354c1a1b1@arm.com
+The sevguest conversion is only compile-tested.
 
-Suzuki
+This submission is To:David since he needs to sign-off on the idea of a
+new Keys type, the rest is up to the confidential-computing driver
+maintainers to adopt.
 
+Changes from / credit for internal review:
+- highlight copy_{to,from}_sockptr() as a common way to mix
+  copy_user() and memcpy() paths (Andy)
+- add MODULE_DESCRIPTION() (Andy)
+- clarify how the user-defined portion blob might be used (Elena)
+- clarify the key instantiation options (Sathya)
+- drop usage of a list for registering providers (Sathya)
+- drop list.h include from tsm.h (Andy)
+- add a comment for how TSM_DATA_MAX was derived (Andy)
+- stop open coding kmemdup_nul() (Andy)
+- add types.h to tsm.h (Andy)
+- fix punctuation in comment (Andy)
+- reorder security/keys/Makefile (Andy)
+- add some missing includes to tsm.c (Andy)
+- undo an 81 column clang-format line break (Andy)
+- manually reflow tsm_token indentation (Andy)
+- move allocations after input validation in tsm_instantiate() (Andy)
+- switch to bin2hex() in tsm_read() (Andy)
+- move init/exit declarations next to their functions (Andy)
+
+
+---
+
+Dan Williams (4):
+      keys: Introduce tsm keys
+      virt: sevguest: Prep for kernel internal {get,get_ext}_report()
+      mm/slab: Add __free() support for kvfree
+      virt: sevguest: Add TSM key support for SNP_{GET,GET_EXT}_REPORT
+
+
+ drivers/virt/coco/sev-guest/Kconfig     |    2 
+ drivers/virt/coco/sev-guest/sev-guest.c |  135 ++++++++++++++-
+ include/keys/tsm.h                      |   71 ++++++++
+ include/linux/slab.h                    |    2 
+ security/keys/Kconfig                   |   12 +
+ security/keys/Makefile                  |    1 
+ security/keys/tsm.c                     |  282 +++++++++++++++++++++++++++++++
+ 7 files changed, 494 insertions(+), 11 deletions(-)
+ create mode 100644 include/keys/tsm.h
+ create mode 100644 security/keys/tsm.c
+
+base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
