@@ -1,229 +1,163 @@
-Received: from mgamail.intel.com (unknown [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512641BB4A
-	for <linux-coco@lists.linux.dev>; Fri, 28 Jul 2023 19:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690573486; x=1722109486;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Awft7Rue0ajXLJzC8FVOsd4d8KfjUkZwsI7+KZhRdLo=;
-  b=U+8DTkERDJwO7RxGGyw9t9PeVZypAB074Mp2bPeDcfRxihs1/16QeU6Q
-   vcsTz5QXhajVnfa4b6C4CdY/FAdxTxZJu+wGr6XZxd27S2l5HAjqKwJ46
-   5gFztxdxKG+i/ouBznr+/npR/f4h/E05zHpQYWycsLpei451foOPdqUVp
-   Sp7ZfMkFOkZIv7XlCqQ2JpX7DGdwHfoQUa8ax+DqslXfJQ9xmxy2NcYEy
-   KsqlikL3a7zj35Uy8mROv8F4WQi6AGjyqg0UO/ZxBbZ7/gdbLZSsh38mX
-   VZvmZs69IRFaRjpEPeL6uOLRLTlPrRs7vuTCtEmbkASQLzmuKwHGHr4e9
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="358696850"
-X-IronPort-AV: E=Sophos;i="6.01,238,1684825200"; 
-   d="scan'208";a="358696850"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2023 12:44:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10785"; a="1058254693"
-X-IronPort-AV: E=Sophos;i="6.01,238,1684825200"; 
-   d="scan'208";a="1058254693"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by fmsmga005.fm.intel.com with ESMTP; 28 Jul 2023 12:44:44 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 28 Jul 2023 12:44:44 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Fri, 28 Jul 2023 12:44:44 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Fri, 28 Jul 2023 12:44:44 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Fri, 28 Jul 2023 12:44:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iEALVKAWFLAAb3IRO6sU5fepQnS2rc/TnadiLT+HgCVChCjCPoWFbE9+WBh3ysELyKHTTfj9qFRPraU5zHuqeWgG2M7w35um5hrPMhb3C3zqll75ntTyxqi/ytWfD3y+0gaZ+LmE8yMNcZwDfF5YOSrlnavJUTToW+IlMVxVUesZYeTicMjrStd+tmLqGSy+8+19XLRQT4gC28k2gykCx55/eC67t6EqADrGcGWaY+IVllHqDBtz9EtVqlQLk54YCxkDztFVoZ8adx2VOEGNAoXY46WF9o4+VtgtIKji1yPj7+ASmnkn2df8UGqlltx+2440WzJzyXATHl6UafMEyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dWVTsnnhY3bKGA4JS1j6ufSSksJ/VGMO7WTeqhCqVHE=;
- b=F/Fvzp7B1oiNaornjgnmzDkqMw31CEnWjgU7Nv1EnCV1VKii7lXBl8xfHAkMk9F/CojrK0hnfIelTnV95HMeZmwPZfuZcgdHZrUNbBHsaYdasw5ZYcr3Xog+1KVfygHZRSNYOm2HZMkH9fOf++ICIb6CU1OQEdBtlODRUjMXslIrIkjJ2BlQnt9p+onXjNqOG9fDMby7nmrclTQh1kynHKP2EUf5aPIXrLc91Ax1xUZAeqdjse7caKbk6TcvPo8MNvmpPHUaenhUoRcKWHgmByNH7Ngtve16IbnUh8Pz69H4V/CDgUsaqC6tK4ZDyMP3LoKr1JOA4td0YUFR9o3L+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH0PR11MB5144.namprd11.prod.outlook.com (2603:10b6:510:3e::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6631.29; Fri, 28 Jul
- 2023 19:44:41 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::4556:2d4e:a29c:3712]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::4556:2d4e:a29c:3712%4]) with mapi id 15.20.6631.026; Fri, 28 Jul 2023
- 19:44:41 +0000
-Date: Fri, 28 Jul 2023 12:44:37 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Dan Williams
-	<dan.j.williams@intel.com>, <dhowells@redhat.com>
-CC: Brijesh Singh <brijesh.singh@amd.com>, Kuppuswamy Sathyanarayanan
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, Peter Zijlstra
-	<peterz@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>, "Dionna
- Amalie Glaze" <dionnaglaze@google.com>, Borislav Petkov <bp@alien8.de>,
-	Samuel Ortiz <sameo@rivosinc.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>,
-	<linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
- reports
-Message-ID: <64c41aa5ba9ac_a88b29494@dwillia2-xfh.jf.intel.com.notmuch>
-References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
- <CUE22P5RYPH3.1K05T2OCK1CN1@seitikki>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <CUE22P5RYPH3.1K05T2OCK1CN1@seitikki>
-X-ClientProxiedBy: MW4P220CA0010.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:303:115::15) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+Received: from ustc.edu.cn (smtp2.ustc.edu.cn [202.38.64.46])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9F5198
+	for <linux-coco@lists.linux.dev>; Sat, 29 Jul 2023 03:20:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mail.ustc.edu.cn; s=dkim; h=Received:Message-ID:Date:
+	MIME-Version:User-Agent:From:To:Cc:Subject:Content-Type:
+	Content-Transfer-Encoding; bh=zgkAdu+bRUAzX1goJastFrFu1/KsEZ+L3N
+	tJb7mZ3+8=; b=lTKJNTAPtgpqnFHFQKNforLCcm7cYgcy+zeeB9hsHHMQWwCzFJ
+	PehIw216PCxch7xyHTbE0jFxes1sFVSBiDEpn0j3IrU0D1VfUKnxlAbvvLn99o/4
+	ITRV1uJV7LsM/kPSSb0wGihLI0/117fD60RKSH+gCsT+8wtROBvRxZaDA=
+Received: from [192.168.199.152] (unknown [180.158.176.68])
+	by newmailweb.ustc.edu.cn (Coremail) with SMTP id LkAmygC3vAw3hMRkVCzAAA--.25069S2;
+	Sat, 29 Jul 2023 11:15:03 +0800 (CST)
+Message-ID: <8eb933fd-2cf3-d7a9-32fe-2a1d82eac42a@mail.ustc.edu.cn>
+Date: Sat, 29 Jul 2023 11:15:04 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH0PR11MB5144:EE_
-X-MS-Office365-Filtering-Correlation-Id: e84de3a5-d6b5-4d20-84af-08db8fa3159e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XHfQXb8bZ+delfC2fnjYh/rjQ9l5f2fQIHwL3ZGrRWHEMwz5HEKfv0bh/bi+E6XTC9VK+tjRLg89TgS+Hxwh9JAcm17kG4BIHos5q5pSJGwPmu9RISL/GGkSG5yzqdzdJBCMb/9BLvvdMtZ2aLoHr9rwH6ORhDY5kFSJEQyaSPS2SGde970KEfDA7V5nRqgzGaoQZVGZk05azIHuPvsJLZHufr0LIO0BOBs+737U6IsG7eZ5xZ4pRwUvuWkj1EiTGJ77fxQyqDNYT6m7P9YqA1lIGdHAKBInyyBQOM/9h0YTGAEApF7oQ0SEHmi9FftqpHtvfWcKCJgBA/5TXEPOa7zUnX7qD7hxP0IOUk+G1N2g4zTBYLT3BC5G+gh9RFlRl5lWSXUpRAlkeVwZVLf5MRPHRWtr2zuiAeBCv/Gg/VhLJkuU9bTRQ+EpY9Bj1a63JAy8VbxB52ze8PuGIIJTzdWEtIxLGds6xVZ94fMJ1jX1PLY8lg/zMiDMRRiN8YLg3m/yXLc20+IdAfS/rA0/dbV0NuHX//KjqGjGK9O0e7q0iJC+Y4WT3aO6OGdxbA9kScQvFEbX+d3WMH1N3hxV4GZ4dpFEdc6xbAqFTF7bjD8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(396003)(39860400002)(136003)(376002)(366004)(346002)(451199021)(26005)(186003)(6506007)(2906002)(54906003)(82960400001)(8676002)(8936002)(7416002)(110136005)(86362001)(478600001)(6666004)(6486002)(6512007)(4326008)(9686003)(38100700002)(316002)(66556008)(5660300002)(66946007)(41300700001)(66476007)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tHF3gWQuP0+ZEku+l/bX+rhBEToNshfjifh24J9KdMTE6dDs7dEqRpbCev4v?=
- =?us-ascii?Q?g4h3YZ/cwsbtIz7TkQ2adxcqiKnelQaUQ7/B+K2a/GtRvfu/Dj9LVSRp3EQL?=
- =?us-ascii?Q?V9F6OyBRmLpIoXyOWPqvmx0KJPaKGJAXNZDIvqR2iO0kqFSMo2YQXY7EcCf9?=
- =?us-ascii?Q?kM6d0HUznb8kdOchQO5mRUOQxXIJun6nvG41JTT2uZISx7M6GvisqBxrtQJr?=
- =?us-ascii?Q?AbinyADUANcuHEr6A5x8JcSw7oKWLVnbqzZNdfgsYmDP0NVnDnZWI2VOxett?=
- =?us-ascii?Q?Ch4gojfs1T+6Ztal70OpKQPT0KWk5JOFnO9ahsuVXkbZplKuKoOOp7ZcTy1L?=
- =?us-ascii?Q?zgIp3ONCf168q4mRil3s5OeD7wMumcTDcJioosmdmYo38jnt9hZbXVZOWF02?=
- =?us-ascii?Q?uyrSBjY29tXuaS4pkTK1/TKMlXIbO9r87tHF+F3OMkxSoUuaEy2MWNcivkcb?=
- =?us-ascii?Q?aSra4UJCCmfP3QUr0ccSOy5jov3mrSWTHceD64GSR/vW6S2jzK+b+f5vcDS5?=
- =?us-ascii?Q?s2ZJAmGLYFe/dql4Pdey8IUwKQumBR/wz11pAaY+qClVKk852hv7h1AdDPn0?=
- =?us-ascii?Q?Anu38n9vt9n9dl/POwEPPmFxjz0kIC7BAyE8PQjx6R0UnQN9EePfqfsBv3vN?=
- =?us-ascii?Q?E+J6YA6R6fTTP74sudn5DWlZiwDz60o7VQfpuDMvOPdrp3G+KtxflJw/r4Ob?=
- =?us-ascii?Q?orNK+kJvEHv3wJB1lKEJ3LoFBwtOdfRFtYIUEgULlcOaJcJhzm194Ep1tvgQ?=
- =?us-ascii?Q?iB/rl82mrIhoIRk4Z0SebKW9P4l7YPeDvsmvvqbQLaeeMcVQoJRsW4diq2x3?=
- =?us-ascii?Q?RmUaQ6oQftvawLVMcGc0Gi1yhNs+9PB7U0J6Mu1h19iSSpFdM0GQGplMTVDi?=
- =?us-ascii?Q?Mmg4hiwc1nrSbU0UK7wn3tlPuzWWBOPIkGrOXm/BMPEZ8yqJ+vhaCUQpbnvW?=
- =?us-ascii?Q?xfWapGscXhldX16SVCfr+f68q34gM8ecDhOHUBoMXJD/QCU3BHfy/gtTvPQl?=
- =?us-ascii?Q?ytEK7/z3SLS8IBBqWFfjF3YRbr0v+si5mfBki29pIOzHLUFHpdDnOrejXbZC?=
- =?us-ascii?Q?faxRYi/KZ+2nfGifh8pfGgKD/A/euaupuYm86VBPnJblxmLMjaU+PD42PkC8?=
- =?us-ascii?Q?aFIghs60QEshAoE38ILuiC3Z+S/LKq+wBQ/h065mXh3RH/A6rDHlgd5gXOpj?=
- =?us-ascii?Q?5QK6FXSzu4I3C2Jkjs7H4xEzMSTNMcejvMbfTYHeqt6oM5Q7btBoiTSj64aT?=
- =?us-ascii?Q?rF6/P7QADrYDE52AmgyFu4T8u6RS2vRusoC+GYbl04JSV4KOCaoNkdxcb28/?=
- =?us-ascii?Q?nKOJAvjDFvNrgdTN+n7S2dsfFAe4uJPo7qIJKtl+nZsOXiVh8w1Nwc95M534?=
- =?us-ascii?Q?WR8E+srkwaugP+aujCOsV+lrAXgSPSwUWoM2S/OCYSL/C9eIX0Ybq6YQBZCP?=
- =?us-ascii?Q?WW4UbGh3LXACpUs46sXbyUJ4lDRNFFJFDeWCDFsmBSKgLCoxKN2iW1lvzNAn?=
- =?us-ascii?Q?vLzQZBjEv+4Spf+yivs3ZUMKcty3LSrRbO1RKqZvsRKlpm74njNLU9wHd7f6?=
- =?us-ascii?Q?OUyRwz/z9mIB7zR83tjB++Ks5UBocLUh1jyigqDacMPiM/ozHnIsF5GT1G6g?=
- =?us-ascii?Q?pg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e84de3a5-d6b5-4d20-84af-08db8fa3159e
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2023 19:44:40.9258
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K7605YvniLXpXeXaeZa+MF8mcj1rl7QI8iyIODfvqbETlRVt1zEnzWgGXzCmW0VVi5/+ZOtu7CSyzXXyZG0vhfgcHXcl6JJUeHotCVPcnMw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5144
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+From: wuzongyong <wuzongyo@mail.ustc.edu.cn>
+To: linux-kernel@vger.kernel.org, thomas.lendacky@amd.com,
+ kvm@vger.kernel.org, x86@kernel.org
+Cc: linux-coco@lists.linux.dev
+Subject: [Question] int3 instruction generates a #UD in SEV VM
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:LkAmygC3vAw3hMRkVCzAAA--.25069S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3GF4xWw43WryfCF4xJF48Crg_yoW3JF1fpr
+	4rAw43GFW8Gw18ArWUWF1UtryUtF1UAa1DJr1UAF1UJFyUWw1qqr1Uur429FnrJr4fZFy3
+	t34Dta12vry7CaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyIb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
+	C2z280aVCY1x0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCFx2Iq
+	xVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r
+	106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AK
+	xVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7
+	xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWU
+	JVW8JbIYCTnIWIevJa73UjIFyTuYvjxUgg_TUUUUU
+X-CM-SenderInfo: pzx200xj1rqzxdloh3xvwfhvlgxou0/
 
-Jarkko Sakkinen wrote:
-> On Fri Jul 28, 2023 at 7:30 PM UTC, Dan Williams wrote:
-> > The bulk of the justification for this patch kit is in "[PATCH 1/4]
-> 
-> /patch kit/patch set/
-> 
-> > keys: Introduce tsm keys". The short summary is that the current
-> > approach of adding new char devs and new ioctls, for what amounts to the
-> > same functionality with minor formatting differences across vendors, is
-> > untenable. Common concepts and the community benefit from common
-> > infrastructure.
-> >
-> > Use Keys to build common infrastructure for confidential computing
-> 
-> /Keys/Linux keyring/
-> 
-> > attestation report blobs, convert sevguest to use it (leaving the
-> > deprecation question alone for now), and pave the way for tdx-guest and
-> > the eventual risc-v equivalent to use it in lieu of new ioctls.
-> >
-> > The sevguest conversion is only compile-tested.
-> >
-> > This submission is To:David since he needs to sign-off on the idea of a
-> > new Keys type, the rest is up to the confidential-computing driver
-> > maintainers to adopt.
-> >
-> > Changes from / credit for internal review:
-> > - highlight copy_{to,from}_sockptr() as a common way to mix
-> >   copy_user() and memcpy() paths (Andy)
-> > - add MODULE_DESCRIPTION() (Andy)
-> > - clarify how the user-defined portion blob might be used (Elena)
-> > - clarify the key instantiation options (Sathya)
-> > - drop usage of a list for registering providers (Sathya)
-> > - drop list.h include from tsm.h (Andy)
-> > - add a comment for how TSM_DATA_MAX was derived (Andy)
-> > - stop open coding kmemdup_nul() (Andy)
-> > - add types.h to tsm.h (Andy)
-> > - fix punctuation in comment (Andy)
-> > - reorder security/keys/Makefile (Andy)
-> > - add some missing includes to tsm.c (Andy)
-> > - undo an 81 column clang-format line break (Andy)
-> > - manually reflow tsm_token indentation (Andy)
-> > - move allocations after input validation in tsm_instantiate() (Andy)
-> > - switch to bin2hex() in tsm_read() (Andy)
-> > - move init/exit declarations next to their functions (Andy)
-> >
-> >
-> > ---
-> >
-> > Dan Williams (4):
-> >       keys: Introduce tsm keys
-> >       virt: sevguest: Prep for kernel internal {get,get_ext}_report()
-> >       mm/slab: Add __free() support for kvfree
-> >       virt: sevguest: Add TSM key support for SNP_{GET,GET_EXT}_REPORT
-> >
-> >
-> >  drivers/virt/coco/sev-guest/Kconfig     |    2 
-> >  drivers/virt/coco/sev-guest/sev-guest.c |  135 ++++++++++++++-
-> >  include/keys/tsm.h                      |   71 ++++++++
-> >  include/linux/slab.h                    |    2 
-> >  security/keys/Kconfig                   |   12 +
-> >  security/keys/Makefile                  |    1 
-> >  security/keys/tsm.c                     |  282 +++++++++++++++++++++++++++++++
-> >  7 files changed, 494 insertions(+), 11 deletions(-)
-> >  create mode 100644 include/keys/tsm.h
-> >  create mode 100644 security/keys/tsm.c
-> >
-> > base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
-> 
-> So how does this scale? Does it scale to TDX, SGX, TPM's or even TEE's
-> (ARM SM, RISC-V Keystone etc.). I'm not sure about the scope but we want
-> of course something that adapts to multiple use cases, right?
+Hi,
+I am writing a firmware in Rust to support SEV based on project td-shim[1].
+But when I create a SEV VM (just SEV, no SEV-ES and no SEV-SNP) with the firmware,
+the linux kernel crashed because the int3 instruction in int3_selftest() cause a
+#UD.
+The stack is as follows:
+    [    0.141804] invalid opcode: 0000 [#1] PREEMPT SMP^M
+    [    0.141804] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.3.0+ #37^M
+    [    0.141804] RIP: 0010:int3_selftest_ip+0x0/0x2a^M
+    [    0.141804] Code: eb bc 66 90 0f 1f 44 00 00 48 83 ec 08 48 c7 c7 90 0d 78 83
+c7 44 24 04 00 00 00 00 e8 23 fe ac fd 85 c0 75 22 48 8d 7c 24 04 <cc>
+90 90 90 90 83 7c 24 04 01 75 13 48 c7 c7 90 0d 78 83 e8 42 fc^M
+    [    0.141804] RSP: 0000:ffffffff82803f18 EFLAGS: 00010246^M
+    [    0.141804] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000007ffffffe^M
+    [    0.141804] RDX: ffffffff82fd4938 RSI: 0000000000000296 RDI: ffffffff82803f1c^M
+    [    0.141804] RBP: 0000000000000000 R08: 0000000000000000 R09: 00000000fffeffff^M
+    [    0.141804] R10: ffffffff82803e08 R11: ffffffff82f615a8 R12: 00000000ff062350^M
+    [    0.141804] R13: 000000001fddc20a R14: 000000000090122c R15: 0000000002000000^M
+    [    0.141804] FS:  0000000000000000(0000) GS:ffff88801f200000(0000) knlGS:0000000000000000^M
+    [    0.141804] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033^M
+    [    0.141804] CR2: ffff888004c00000 CR3: 000800000281f000 CR4: 00000000003506f0^M
+    [    0.141804] Call Trace:^M
+    [    0.141804]  <TASK>^M
+    [    0.141804]  alternative_instructions+0xe/0x100^M
+    [    0.141804]  check_bugs+0xa7/0x110^M
+    [    0.141804]  start_kernel+0x320/0x430^M
+    [    0.141804]  secondary_startup_64_no_verify+0xd3/0xdb^M
+    [    0.141804]  </TASK>^M
+    [    0.141804] Modules linked in:^M
+    [    0.141804] ---[ end trace 0000000000000000 ]--
 
-TPMs and TEEs are covered by trusted-keys. I do think a "TSM" flavor of
-trusted-keys is in scope for where some of these implementations are
-headed, but that comes later. I talk about that in the changelog that
-functionality like SNP_GET_DERIVED_KEY likely wants to have a
-trusted-keys frontend and not isolated behind a vendor-specific ioctl
-interface.
+Then I tried to figure out the problem and do some test with qemu & OVMF in SEV.
+But the behaviour is also weird when I create SEV VM with qemu & OVMF.
 
-This facility is different, it is just aiming to unify this attestation
-report flow. It scales to any driver that can provide the ->auth_new()
-operation. I have the sev-guest conversion in this set, and Sathya has
-tested this with tdx-guest. I am hoping Samuel can evaluate it for
-cove-guest or whatever that driver ends up being called.
+I found the int3 instruction always generated a #UD if I put a int3 instruction before
+gen_pool_create() in mce_gen_pool_create(). But if I put the int3 instruction after the
+gen_pool_create() in mce_gen_pool_create(), the int3 instruction generated a #BP rightly.
+
+    // linux/arch/x86/kernel/cpu/mce/genpool.c
+    static int mce_gen_pool_create(void)
+    {
+        struct gen_pool *tmpp;
+        int ret = -ENOMEM;
+   
+        asm volatile ("int3\n\t"); // generated a # UD
+        tmpp = gen_pool_create(ilog2(sizeof(struct mce_evt_list)), -1);
+        asm volatile ("int3\n\t"); // generated a #BP
+        ...
+    }
+
+The stack is as follows when I put the int3 instruction before gen_pool_create().
+
+    [    0.094846] invalid opcode: 0000 [#1] PREEMPT SMP^M
+    [    0.094994] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.3.0+ #101^M
+    [    0.094994] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022^M
+    [    0.094994] RIP: 0010:mcheck_cpu_init+0x4e/0x150^M
+    [    0.094994] Code: 84 c0 0f 89 97 00 00 00 48 8b 45 28 f6 c4 40 0f 84 8a 00 00 00 e8 c2
+e6 ff ff 48 89 ef e8 8a e2 ff ff 85 c0 0f 88 94 00 00 00 <cc> e8 dc 05 00 00 85 c0 75 76
+80 0d a1 90 0a 02 20 0f b6 45 01 3c^M
+    [    0.094994] RSP: 0000:ffffffff92803ef8 EFLAGS: 00010246^M
+    [    0.094994] RAX: 0000000000000000 RBX: 0000000000000058 RCX: 00000000ffffffff^M
+    [    0.094994] RDX: 0000000000000002 RSI: 00000000000000ff RDI: ffffffff930ed860^M
+    [    0.094994] RBP: ffffffff930ed860 R08: 0000000000000000 R09: 0000000000000000^M
+    [    0.094994] R10: 0000000000000000 R11: 0000000000000254 R12: 0000000000000207^M
+    [    0.094994] R13: 000000001f9ec018 R14: 000000001fe85928 R15: 0000000000000001^M
+    [    0.094994] FS:  0000000000000000(0000) GS:ffff8ae0dca00000(0000) knlGS:0000000000000000^M
+    [    0.094994] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033^M
+    [    0.094994] CR2: ffff8ae0dac01000 CR3: 000800001881f000 CR4: 00000000003506f0^M
+    [    0.094994] Call Trace:^M
+    [    0.094994]  <TASK>^M
+    [    0.094994]  identify_cpu+0x2cb/0x500^M
+    [    0.094994]  identify_boot_cpu+0x10/0xb0^M
+    [    0.094994]  check_bugs+0xf/0x110^M
+    [    0.094994]  start_kernel+0x320/0x430^M
+    [    0.094994]  secondary_startup_64_no_verify+0xd3/0xdb^M
+    [    0.094994]  </TASK>^M
+    [    0.094994] Modules linked in:^M
+    [    0.094995] ---[ end trace 0000000000000000 ]---^
+
+The stack is as follows when I put the int3 instruction after gen_pool_create().
+    [    0.095585] int3: 0000 [#1] PREEMPT SMP^M
+    [    0.095590] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.3.0+ #101^M
+    [    0.095593] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022^M
+    [    0.095594] RIP: 0010:mcheck_cpu_init+0x4f/0x150^M
+    [    0.095597] Code: c0 0f 89 97 00 00 00 48 8b 45 28 f6 c4 40 0f 84 8a 00 00 00 e8 c2 e6
+ff ff 48 89 ef e8 8a e2 ff ff 85 c0 0f 88 94 00 00 00 cc <e8> dc 05 00 00 85 c0 75 76 80 
+0d a1 90 0a 02 20 0f b6 45 01 3c 02^M
+    [    0.095598] RSP: 0000:ffffffff86803ef8 EFLAGS: 00000246^M
+    [    0.095599] RAX: 0000000000000000 RBX: 0000000000000058 RCX: 00000000ffffffff^M
+    [    0.095600] RDX: 0000000000000002 RSI: 00000000000000ff RDI: ffffffff870ed860^M
+    [    0.095601] RBP: ffffffff870ed860 R08: 0000000000000000 R09: 0000000000000000^M
+    [    0.095601] R10: 0000000000000000 R11: 0000000000000254 R12: 0000000000000207^M
+    [    0.095602] R13: 000000001f9ec018 R14: 000000001fe85928 R15: 0000000000000001^M
+    [    0.095604] FS:  0000000000000000(0000) GS:ffff901e5ca00000(0000) knlGS:0000000000000000^M
+    [    0.095605] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033^M
+    [    0.095606] CR2: ffff901e5ac01000 CR3: 000800001881f000 CR4: 00000000003506f0^M
+    [    0.095606] Call Trace:^M
+    [    0.095611]  <TASK>^M
+    [    0.095612]  identify_cpu+0x2cb/0x500^M
+    [    0.095615]  identify_boot_cpu+0x10/0xb0^M
+    [    0.095618]  check_bugs+0xf/0x110^M
+    [    0.095620]  start_kernel+0x320/0x430^M
+    [    0.095622]  secondary_startup_64_no_verify+0xd3/0xdb^M
+    [    0.095625]  </TASK>^M
+    [    0.095625] Modules linked in:^M
+    [    0.096577] ---[ end trace 0000000000000000 ]---^
+BTW, if a create a normal VM without SEV by qemu & OVMF, the int3 instruction always generates a
+#BP.
+So I am confused now about the behaviour of int3 instruction, could anyone help to explain the behaviour?
+Any suggestion is appreciated!
+
+[1] https://github.com/confidential-containers/td-shim
+
+Thanks,
+Wu Zongyo
+
