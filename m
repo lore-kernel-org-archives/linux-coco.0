@@ -1,103 +1,268 @@
-Received: from ustc.edu.cn (smtp2.ustc.edu.cn [202.38.64.46])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48FF18C32
-	for <linux-coco@lists.linux.dev>; Mon, 31 Jul 2023 15:45:42 +0000 (UTC)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 154078BEE
+	for <linux-coco@lists.linux.dev>; Mon, 31 Jul 2023 16:33:36 +0000 (UTC)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-3fe0e132352so1075e9.0
+        for <linux-coco@lists.linux.dev>; Mon, 31 Jul 2023 09:33:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mail.ustc.edu.cn; s=dkim; h=Received:Message-ID:Date:
-	MIME-Version:User-Agent:Subject:To:Cc:References:From:
-	In-Reply-To:Content-Type:Content-Transfer-Encoding; bh=vFtCHrIgi
-	gSbtoNV1mnQVn3W557qU3XL1eHMMQCtsxQ=; b=PnDU1XgfaWjFE0R/iRY8ZcwRU
-	PjF2z+Wk29ng5gv49OSFr41GNTf65fqJWqn7Huyen1+xoHtIeLwBZAF6xoTxNxRZ
-	0jGAyVnVPUc2GFTo2bDCnab2avuPJu9z69eqpWqf3CDIcZHRF4uR9A4XexwkYqIW
-	h5ePxnbDqU1FyLL47w=
-Received: from [192.168.199.152] (unknown [180.158.176.68])
-	by newmailweb.ustc.edu.cn (Coremail) with SMTP id LkAmygDHNJAZ18dkdd_iAA--.31594S2;
-	Mon, 31 Jul 2023 23:45:29 +0800 (CST)
-Message-ID: <544b7f95-4b34-654d-a57b-3791a6f4fd5f@mail.ustc.edu.cn>
-Date: Mon, 31 Jul 2023 23:45:29 +0800
+        d=google.com; s=20221208; t=1690821215; x=1691426015;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cuWATRET77tyb1uo8IPo90xACV32fUCq2guhUdmEFls=;
+        b=Tdg2MKQqHhluls/uCjqroj+MH+TUAoR1i0qc/ajQ8wWZdqmcHcbjP5CMcNqdZJ9GPz
+         y/3dy8uy3dAYcMFthHLGlpmt7hok6t5YchQg3nqIOryvlxcWoGqoJJYhSW+4zFVoEuHX
+         MHQquMb8bjj6X8tmfEcyxqIudzu5FqvcBA8q42vM2L4D8oO/ZrX+qafYWVrC1X6+jVGn
+         ofRImATJqqmenIBWk2ACmz4Mfdc6zuku/HNRDKMeRa5Ae/QTbENrG1GoBIxpuqSGKQon
+         LgEhCxjz1Punm9aVHSExvRsWLwq3klE2BtG/ADCzScmZ5mL74lSz8P+fU/kftyhS9o0v
+         PZKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690821215; x=1691426015;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cuWATRET77tyb1uo8IPo90xACV32fUCq2guhUdmEFls=;
+        b=NSMlttlUWzykhprqriGVHPoODJ6dPfhWjzvn7m2XbXduD9AOw0rTvkC+yX5RcN0JHy
+         ujyq/1u4Hdf6iXB3G/Plrn9/uHaBNR9+E6h44aai31oNFFi0k4qRhpnnhUN81YZahixL
+         Z+6unSBE7SedjY/Rv+n46Q/tCEyTLiL9BuL9WFBP/0OH3sxO8IIUksIfIOT4XLdxJZSG
+         kU3JBMIG9vmxJpamYam7vKc08k6yibQK18eEXmJt5XxUie1v+l7yhvFztMlB6GzZXPim
+         fk9WHYiQ6s8D3UDnGE/iQqcnKE6ZZA+vnqRWhS/6QxAso168Mu/m3nCxUmFjP2AuF+YT
+         MuHA==
+X-Gm-Message-State: ABy/qLZQbnbTMUMXiR5vuDRiTdEdd/WN1VZh1UF0uNklvnCWQS5+WlXf
+	2h8Jc1MLdPl7oWyjbGqlrdlFZHLFHcqO2YstAcnXCw==
+X-Google-Smtp-Source: APBJJlG9N8QU9egW8mkno1wAm32nx+rrXKs4+cxx9edfMDm2d5Dnl47NavsjDU3KvuNODbh6H8N+hHNjuXp8MgG9Lhk=
+X-Received: by 2002:a05:600c:68a:b0:3f1:70d1:21a6 with SMTP id
+ a10-20020a05600c068a00b003f170d121a6mr158278wmn.0.1690821214889; Mon, 31 Jul
+ 2023 09:33:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Question] int3 instruction generates a #UD in SEV VM
-To: Tom Lendacky <thomas.lendacky@amd.com>,
- Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
- linux-coco@lists.linux.dev
-References: <8eb933fd-2cf3-d7a9-32fe-2a1d82eac42a@mail.ustc.edu.cn>
- <ZMfFaF2M6Vrh/QdW@google.com> <4ebb3e20-a043-8ad3-ef6c-f64c2443412c@amd.com>
-From: wuzongyong <wuzongyo@mail.ustc.edu.cn>
-In-Reply-To: <4ebb3e20-a043-8ad3-ef6c-f64c2443412c@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:LkAmygDHNJAZ18dkdd_iAA--.31594S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZF1fJrWxWw1kAF1kCryxuFg_yoW8uFy7pF
-	Z7ta4YyFsrGr1kAr12yr48Za4Fv39xJFsrXrn8J3s8AayUZas2gFWI9rZ8A3WDZrWfWw1j
-	qa4IqrZru39rArJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUy2b7Iv0xC_Cr1lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwV
-	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxAIw28IcxkI7VAKI48JMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
-	I_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
-	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj4
-	0_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j
-	6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jeXdbUUUUU=
-X-CM-SenderInfo: pzx200xj1rqzxdloh3xvwfhvlgxou0/
+References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+ <169057265801.180586.10867293237672839356.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <169057265801.180586.10867293237672839356.stgit@dwillia2-xfh.jf.intel.com>
+From: Peter Gonda <pgonda@google.com>
+Date: Mon, 31 Jul 2023 10:33:23 -0600
+Message-ID: <CAMkAt6ot9zyUL9Ub-qYq+d9v-6rTft4ea2mUxp3o1s3GVFq7nw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] keys: Introduce tsm keys
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: dhowells@redhat.com, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Samuel Ortiz <sameo@rivosinc.com>, peterz@infradead.org, 
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jul 28, 2023 at 1:31=E2=80=AFPM Dan Williams <dan.j.williams@intel.=
+com> wrote:
+>
+> One of the common operations of a TSM (Trusted Security Module) is to
+> provide a way for a TVM (confidential computing guest execution
+> environment) to take a measurement of its run state and use that with a
+> key-exchange protocol to establish a shared secret with a third-party /
+> remote attestation agent. The concept is common across TSMs, but the
+> implementations are unfortunately vendor specific. While the industry
+> grapples with a common definition of this attestation format [1], Linux
+> need not make this problem worse by defining a new ABI per TSM that
+> wants to perform a similar operation. The current momentum has been to
+> invent new ioctl-ABI per TSM per function which at best is an abdication
+> of the kernel's responsibility to make common infrastructure concepts
+> share common ABI.
+>
+> The proposal, targeted to conceptually work with TDX, SEV, COVE if not
+> more, is to define a new key type that produces a TSM common blob format
+> and moves the vendor specificity inside that envelope. The common Linux
+> definition is:
+>
+>     "<hex encoded pubkey> <blob descriptor> <hex encoded attestation blob=
+>"
+>
+> This approach later allows for the standardization of the attestation
+> blob format without needing to change the Linux ABI. TSM specific
+> options are encoded in the frontend request format where the options
+> like SEV:vmpl (privilege level) can be specified and TSMs that do not
+> support them can decide to ignore them or fail if they are specified.
+> For now, "privlevel=3D" and "format=3D" are the only implemented options.
+>
+> Example of establishing a tsm key and dumping the provider-specific
+> report:
+>
+>     dd if=3D/dev/urandom of=3Dpubkey bs=3D1 count=3D64
+>     keyctl add tsm tsm_test "auth $(xxd -p -c 0 < pubkey) privlevel=3D2" =
+@u
+>     keyctl print 280877394 | awk '{ print $3 }' | xxd -p -c 0 -r | hexdum=
+p -C
+
+What is the purpose of this report? What does it prove to whom? I'm a
+bit confused because it doesn't seem like there is an ability for a
+remote party to participate in a challenge and response to introduce
+any freshness into this protocol.
+
+Also shouldn't the report have a little more context into the key we
+are signing? For instance what type of public key is this? And what is
+its purpose? In your example this isn't even a valid public key.
+
+>
+> Now, this patch ends up being a fairly simple custom-key format because
+> most of the follow-on work that happens after publishing a TSM-wrapped
+> public-key is performed by userspace. The TSM key is just one step in
+> establishing a shared secret that can be used to unlock other keys. For
+> example a user-key could be populated with the resulting shared secret
+> and that could be used as a master-key for an encrypted-key
+> (security/keys/encrypted-keys/encrypted.c).
+>
+> While the discussion that led to this proposal hinted at a new
+> trusted-key (security/keys/trusted-keys/trusted_core.c) type rooted in
+> the TSM [2], more work is needed to fetch a secret from the TSM
+> directly. The trusted-key core expects a pre-established secure channel
+> to seal and unseal secrets locally. For that reason a "tsm" flavor
+> trusted-key is saved for follow on work. That will likely starting as a
+> wrapper around SNP_GET_DERIVED_KEY.
+>
+> Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.=
+intel.com.notmuch [1]
+> Link: http://lore.kernel.org/r/CAAH4kHYLETfPk-sMD-QSJd0fJ7Qnt04FBwFuEkpne=
+hB5U7D_yw@mail.gmail.com [2]
+> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.co=
+m>
+> Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.i=
+ntel.com>
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: Jarkko Sakkinen <jarkko@kernel.org>
+> Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  include/keys/tsm.h     |   71 ++++++++++++
+>  security/keys/Kconfig  |   12 ++
+>  security/keys/Makefile |    1
+>  security/keys/tsm.c    |  282 ++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  4 files changed, 366 insertions(+)
+>  create mode 100644 include/keys/tsm.h
+>  create mode 100644 security/keys/tsm.c
+>
+> diff --git a/include/keys/tsm.h b/include/keys/tsm.h
+> new file mode 100644
+> index 000000000000..61a81017d8f5
+> --- /dev/null
+> +++ b/include/keys/tsm.h
+> @@ -0,0 +1,71 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __TSM_H
+> +#define __TSM_H
+> +
+> +#include <linux/types.h>
+> +#include <linux/module.h>
+> +
+> +/*
+> + * @TSM_DATA_MAX: a reasonable max with enough space for known attestati=
+on
+> + * report formats. This mirrors the trusted/encrypted key blob max size.
+> + */
+> +#define TSM_DATA_MAX 32767
+> +#define TSM_PUBKEY_MAX 64
+> +#define TSM_FORMAT_MAX 16
+> +
+> +/**
+> + * DOC: TSM Keys
+> + *
+> + * Trusted Security Module Keys are a common provider of blobs that
+> + * facilitate key-exchange between a TVM (confidential computing guest)
+> + * and an attestation service. A TSM key combines a user-defined blob
+
+Are we limited to only doing key-exchanges between guests and
+attestation services? What if some user would like to handle the
+attestation verification without a service?
+
+> + * (likely a public-key for a key-exchance protocol) with a signed
+
+key-exchange
+
+> + * attestation report. That combined blob is then used to obtain
+> + * secrets provided by an agent that can validate the attestation
+> + * report.
+> + *
+> + * A full implementation uses a tsm key to, for example, establish a
+
+Should 'TSM' be capitalized everywhere? Or does it not matter?
+
+> + * shared secret and then use that communication channel to instantiate
+> + * other keys. The expectation is that the requester of the tsm key
+> + * knows a priori the key-exchange protocol associated with the
+> + * 'pubkey'.
+
+Can we instead be very specific about what protocols and cryptography
+are being used?
+
+> + *
+> + * The attestation report format is TSM provider specific, when / if a
+
+I'm confused about the TSM terminology and what a TSM provider is. Is
+TSM the confidential compute framework of the vendor? So for Intel
+this is TDX, and the TSM provider is the SEAM module?
+
+> + * standard materializes it is only a change to the auth_blob_desc
+> + * member of 'struct tsm_key_payload', to convey that common format.
+> + */
+> +
+> +/**
+> + * struct tsm_key_payload - generic payload for vendor TSM blobs
+> + * @privlevel: optional privilege level to associate with @pubkey
+> + * @pubkey_len: how much of @pubkey is valid
+> + * @pubkey: the public key-exchange blob to include in the attestation r=
+eport
+> + * @auth_blob_desc: base ascii descriptor of @auth_blob
+> + * @auth_blob_format: for TSMs with multiple formats, extend @auth_blob_=
+desc
+> + * @auth_blob_len: TSM provider length of the array it publishes in @aut=
+h_blob
+> + * @auth_blob: TSM specific attestation report blob
+> + */
+> +struct tsm_key_payload {
+> +       int privlevel;
+> +       size_t pubkey_len;
+> +       u8 pubkey[TSM_PUBKEY_MAX];
+> +       const char *auth_blob_desc;
+> +       char auth_blob_format[TSM_FORMAT_MAX];
+> +       size_t auth_blob_len;
+> +       u8 *auth_blob;
+> +};
+
+How is freshness incorporated into the key exchange protocol? Wouldn't
+we need to do a challenge response between each remote party that we
+need to attest the provenance of @pubkey too?
+
+> +
+> +/*
+> + * tsm_parse - parse the tsm request data
+> + *
+> + * input format: "auth <hex pubkey data> [options]"
+> + *
+> + * Checks for options and parses a hex blob of data to be wrapped by the
+> + * TSM attestation format.
+> + *
+> + * options:
+> + *     privlevel=3D integer for selecting the privelege level of the
+
+privilege
+
+> + *                request, if the platform TSM supports that concept. To
+> + *                date only SEV accepts this option. Default 0.
+
+SEV-SNP or just SNP? Plain SEV or SEV-ES doesn't actually support this
+interface at all.
 
 
-On 2023/7/31 23:03, Tom Lendacky wrote:
-> On 7/31/23 09:30, Sean Christopherson wrote:
->> On Sat, Jul 29, 2023, wuzongyong wrote:
->>> Hi,
->>> I am writing a firmware in Rust to support SEV based on project td-shim[1].
->>> But when I create a SEV VM (just SEV, no SEV-ES and no SEV-SNP) with the firmware,
->>> the linux kernel crashed because the int3 instruction in int3_selftest() cause a
->>> #UD.
->>
->> ...
->>
->>> BTW, if a create a normal VM without SEV by qemu & OVMF, the int3 instruction always generates a
->>> #BP.
->>> So I am confused now about the behaviour of int3 instruction, could anyone help to explain the behaviour?
->>> Any suggestion is appreciated!
->>
->> Have you tried my suggestions from the other thread[*]?
-Firstly, I'm sorry for sending muliple mails with the same content. I thought the mails I sent previously 
-didn't be sent successfully.
-And let's talk the problem here.
->>
->>    : > > I'm curious how this happend. I cannot find any condition that would
->>    : > > cause the int3 instruction generate a #UD according to the AMD's spec.
->>    :
->>    : One possibility is that the value from memory that gets executed diverges from the
->>    : value that is read out be the #UD handler, e.g. due to patching (doesn't seem to
->>    : be the case in this test), stale cache/tlb entries, etc.
->>    :
->>    : > > BTW, it worked nomarlly with qemu and ovmf.
->>    : >
->>    : > Does this happen every time you boot the guest with your firmware? What
->>    : > processor are you running on?
->>    :
-Yes, every time.
-The processor I used is EPYC 7T83.
->>    : And have you ruled out KVM as the culprit?  I.e. verified that KVM is NOT injecting
->>    : a #UD.  That obviously shouldn't happen, but it should be easy to check via KVM
->>    : tracepoints.
->
-> I have a feeling that KVM is injecting the #UD, but it will take instrumenting KVM to see which path the #UD is being injected from.
->
-> Wu Zongyo, can you add some instrumentation to figure that out if the trace points towards KVM injecting the #UD?
-Ok, I will try to do that.
->
-> Thanks,
-> Tom
->
->>
->> [*] https://lore.kernel.org/all/ZMFd5kkehlkIfnBA@google.com
-
+> + *     format=3D    string modifier for the format, if the platform TSM
+> + *                supports multiple formats. To date only SEV accepts an
+> + *                "extended" argument. Default "".
+> + *
+> + * On success returns 0, otherwise -EINVAL.
+> + */
