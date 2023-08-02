@@ -1,127 +1,182 @@
-Received: from ustc.edu.cn (smtp2.ustc.edu.cn [202.38.64.46])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC18B6FD2
-	for <linux-coco@lists.linux.dev>; Wed,  2 Aug 2023 11:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mail.ustc.edu.cn; s=dkim; h=Received:Date:From:To:Cc:Subject:
-	Message-ID:Reply-To:References:MIME-Version:Content-Type:
-	Content-Disposition:In-Reply-To; bh=msXnw5IG4jvKLMzQa2hmaHiEHyhn
-	q8MqCAoMVYtLez8=; b=vD/7w/cwOmZ3edXHeLLoku0r7UxarQs0TgHNr6vfjbOb
-	MavwZ+Xh04TxWTDwF9JLFH50mTDtrRMhgAI+0rf7TNlNIbDXDp2zhA4x2O/J5gEc
-	1VnpGNphY7VhaKAHy3tYxIzFKvWljEyWpPvjnWhWS9tOQOAYB0FJWxmvXa0Sbvo=
-Received: from localhost (unknown [139.224.204.105])
-	by newmailweb.ustc.edu.cn (Coremail) with SMTP id LkAmygBn1BxRRMpkBIUTAA--.3970S2;
-	Wed, 02 Aug 2023 19:56:01 +0800 (CST)
-Date: Wed, 2 Aug 2023 19:56:01 +0800
-From: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
-To: Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [Question] int3 instruction generates a #UD in SEV VM
-Message-ID: <ZMpEUVsv5hSmrcH8@iZuf6hx7901barev1c282cZ>
-Reply-To: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
-References: <8eb933fd-2cf3-d7a9-32fe-2a1d82eac42a@mail.ustc.edu.cn>
- <ZMfFaF2M6Vrh/QdW@google.com>
- <4ebb3e20-a043-8ad3-ef6c-f64c2443412c@amd.com>
- <544b7f95-4b34-654d-a57b-3791a6f4fd5f@mail.ustc.edu.cn>
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C9C63B1
+	for <linux-coco@lists.linux.dev>; Wed,  2 Aug 2023 12:41:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1690980111;
+	bh=OVp9/5eXr90ixhPTEpgp22DDNgheas8aSJabvLl6ZBc=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=wYfpWYWZtLtDmi4p2IyLnx+xqeaHzaQudIjkJwIUIxiRaQpjrZ35/sbaEkKvH5Z+e
+	 3Y5arjwM9mWrkKn95lfLoVubYX8mtVZf9aN+8yGEuEE4I7jg4QXYOvu5DvlvXgtZW8
+	 02+KFkY9yagBAn+CTxacejwVEfCaAvbvVnvQBWCk=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id C4E0A128006A;
+	Wed,  2 Aug 2023 08:41:51 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id JV7x_JQ4eBds; Wed,  2 Aug 2023 08:41:51 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1690980111;
+	bh=OVp9/5eXr90ixhPTEpgp22DDNgheas8aSJabvLl6ZBc=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=wYfpWYWZtLtDmi4p2IyLnx+xqeaHzaQudIjkJwIUIxiRaQpjrZ35/sbaEkKvH5Z+e
+	 3Y5arjwM9mWrkKn95lfLoVubYX8mtVZf9aN+8yGEuEE4I7jg4QXYOvu5DvlvXgtZW8
+	 02+KFkY9yagBAn+CTxacejwVEfCaAvbvVnvQBWCk=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EECA01280255;
+	Wed,  2 Aug 2023 08:41:49 -0400 (EDT)
+Message-ID: <5a76c56a10f6512d0613577a412d2644945dbe77.camel@HansenPartnership.com>
+Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
+ reports
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: "Huang, Kai" <kai.huang@intel.com>, "Williams, Dan J"
+	 <dan.j.williams@intel.com>, "dhowells@redhat.com" <dhowells@redhat.com>
+Cc: "sameo@rivosinc.com" <sameo@rivosinc.com>, "jarkko@kernel.org"
+ <jarkko@kernel.org>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>,  "gregkh@linuxfoundation.org"
+ <gregkh@linuxfoundation.org>, "peterz@infradead.org"
+ <peterz@infradead.org>,  "bp@alien8.de" <bp@alien8.de>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+ "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "thomas.lendacky@amd.com"
+ <thomas.lendacky@amd.com>, "dionnaglaze@google.com"
+ <dionnaglaze@google.com>,  "brijesh.singh@amd.com" <brijesh.singh@amd.com>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,  "x86@kernel.org"
+ <x86@kernel.org>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Date: Wed, 02 Aug 2023 08:41:47 -0400
+In-Reply-To: <070e2386c99137b59bea114032d22664dd7272f8.camel@intel.com>
+References: 
+	<169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+	 <a507ef3302d3afff58d82528ee17e82df1f21de0.camel@HansenPartnership.com>
+	 <64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch>
+	 <c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com>
+	 <6dec442c64faf2fecd21bcc77e4a6350e88948b9.camel@intel.com>
+	 <55cec220f20c497925f46074fc70eeccccff61c9.camel@HansenPartnership.com>
+	 <ebedf39723d465923413b0ab2b50fe6c78aab64b.camel@HansenPartnership.com>
+	 <070e2386c99137b59bea114032d22664dd7272f8.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <544b7f95-4b34-654d-a57b-3791a6f4fd5f@mail.ustc.edu.cn>
-X-CM-TRANSID:LkAmygBn1BxRRMpkBIUTAA--.3970S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXr1xGw1kKFyfXw17Xr4Dtwb_yoW5Xry8pF
-	WxK3ZIkrs7Jrn3Zr4Dta1UAryFya9xGr47Xr18J3s8A3s0v3Za9ryIkrZ0k3ZrCrWfWw10
-	v3y0qF9F9a4DArDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyYb7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCF
-	s4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r
-	1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWU
-	JVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r
-	W3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8
-	JbIYCTnIWIevJa73UjIFyTuYvjxUc_-PUUUUU
-X-CM-SenderInfo: pzx200xj1rqzxdloh3xvwfhvlgxou0/
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 31, 2023 at 11:45:29PM +0800, wuzongyong wrote:
+On Wed, 2023-08-02 at 00:10 +0000, Huang, Kai wrote:
+> On Tue, 2023-08-01 at 08:30 -0400, James Bottomley wrote:
+> > On Tue, 2023-08-01 at 08:03 -0400, James Bottomley wrote:
+> > > On Tue, 2023-08-01 at 11:45 +0000, Huang, Kai wrote:
+> > > [...]
+> > > > 
+> > > > Sorry perhaps a dumb question to ask:
+> > > > 
+> > > > As it has been adequately put, the remote verifiable report
+> > > > normally contains a nonce.  For instance, it can be a per-
+> > > > session or per-request nonce from the remote verification
+> > > > service to the confidential VM.  
+> > > > 
+> > > > IIUC, exposing attestation report via /sysfs means many
+> > > > processes (in the confidential VM) can potentially see the
+> > > > report and the nonce. My question is whether such nonce should
+> > > > be considered as a secret thus should be only visible to the
+> > > > process which is responsible for talking to the remote
+> > > > verification service? 
+> > > > Using IOCTL seems can avoid such exposure.
+> > > 
+> > > OK, so the nonce seems to be a considerably misunderstood piece
+> > > of this (and not just by you), so I'll try to go over carefully
+> > > what it is and why.  The problem we have in pretty much any
+> > > signature based attestation evidence scheme is when I, the
+> > > attesting party, present the signed evidence to you, the relying
+> > > part, how do you know I got it today from the system in question
+> > > not five days ago when I happen to have engineered the correct
+> > > conditions?  The solution to this currency problem is to
+> > > incorporate a challenge supplied by the relying party (called a
+> > > nonce) into the signature.  The nonce must be unpredictable
+> > > enough that the attesting party can't guess it beforehand and it
+> > > must be unique so that the attesting party can't go through its
+> > > records and find an attestation signature with the same
+> > > nonce and supply that instead.
+> > > 
+> > > This property of unpredictability and uniqueness is usually
+> > > satisfied simply by sending a random number.  However, as you can
+> > > also see, since the nonce is supplied by the relying party to the
+> > > attesting party, it eventually gets known to both, so can't be a
+> > > secret to one or the other.  Because of the unpredictability
+> > > requirement, it's generally frowned on to have nonces based on
+> > > anything other than random numbers, because that might lead to
+> > > predictability.
 > 
-> On 2023/7/31 23:03, Tom Lendacky wrote:
-> > On 7/31/23 09:30, Sean Christopherson wrote:
-> >> On Sat, Jul 29, 2023, wuzongyong wrote:
-> >>> Hi,
-> >>> I am writing a firmware in Rust to support SEV based on project td-shim[1].
-> >>> But when I create a SEV VM (just SEV, no SEV-ES and no SEV-SNP) with the firmware,
-> >>> the linux kernel crashed because the int3 instruction in int3_selftest() cause a
-> >>> #UD.
-> >>
-> >> ...
-> >>
-> >>> BTW, if a create a normal VM without SEV by qemu & OVMF, the int3 instruction always generates a
-> >>> #BP.
-> >>> So I am confused now about the behaviour of int3 instruction, could anyone help to explain the behaviour?
-> >>> Any suggestion is appreciated!
-> >>
-> >> Have you tried my suggestions from the other thread[*]?
-> Firstly, I'm sorry for sending muliple mails with the same content. I thought the mails I sent previously 
-> didn't be sent successfully.
-> And let's talk the problem here.
-> >>
-> >>    : > > I'm curious how this happend. I cannot find any condition that would
-> >>    : > > cause the int3 instruction generate a #UD according to the AMD's spec.
-> >>    :
-> >>    : One possibility is that the value from memory that gets executed diverges from the
-> >>    : value that is read out be the #UD handler, e.g. due to patching (doesn't seem to
-> >>    : be the case in this test), stale cache/tlb entries, etc.
-> >>    :
-> >>    : > > BTW, it worked nomarlly with qemu and ovmf.
-> >>    : >
-> >>    : > Does this happen every time you boot the guest with your firmware? What
-> >>    : > processor are you running on?
-> >>    :
-> Yes, every time.
-> The processor I used is EPYC 7T83.
-> >>    : And have you ruled out KVM as the culprit?  I.e. verified that KVM is NOT injecting
-> >>    : a #UD.  That obviously shouldn't happen, but it should be easy to check via KVM
-> >>    : tracepoints.
-> >
-> > I have a feeling that KVM is injecting the #UD, but it will take instrumenting KVM to see which path the #UD is being injected from.
-> >
-> > Wu Zongyo, can you add some instrumentation to figure that out if the trace points towards KVM injecting the #UD?
-> Ok, I will try to do that.
-You're right. The #UD is injected by KVM.
+> Thanks for explaining!
+> 
+> So in other words, in general nonce shouldn't be a secret due to it's
+> unpredictability, thus using /sysfs to expose attestation report
+> should be OK?
 
-The path I found is:
-    svm_vcpu_run
-        svm_complete_interrupts
-	    kvm_requeue_exception // vector = 3
-	        kvm_make_request
+There's no reason I can think of it should be secret (well, except
+security through obscurity in case someone is monitoring for a replay).
 
-    vcpu_enter_guest
-        kvm_check_and_inject_events
-	    svm_inject_exception
-	        svm_update_soft_interrupt_rip
-		    __svm_skip_emulated_instruction
-		        x86_emulate_instruction
-			    svm_can_emulate_instruction
-			        kvm_queue_exception(vcpu, UD_VECTOR)
+> > I suppose there is a situation where you use the nonce to bind
+> > other details of the attesting party.  For instance, in
+> > confidential computing, the parties often exchange secrets after
+> > successful attestation.  To do this, the attesting party generates
+> > an ephemeral public key.  It then communicates the key binding by
+> > constructing a new nonce as
+> > 
+> > <new nonce> = hash( <relying party nonce> || <public key> )
+> > 
+> > and using that new nonce in the attestation report signature.
+> 
+> This looks like taking advantage of the attestation flow to carry
+> additional info that can be communicated _after_ attestation is done.
 
-Does this mean a #PF intercept occur when the guest try to deliver a
-#BP through the IDT? But why?
+Well, no, the <new nonce> must be part of the attestation report.
 
-Thanks
+>   Not sure the benefit?  For instance, shouldn't we normally use
+> symmetric key for exchanging secrets after attestation?
 
-> >
-> > Thanks,
-> > Tom
-> >
-> >>
-> >> [*] https://lore.kernel.org/all/ZMFd5kkehlkIfnBA@google.com
+Yes, but how do you get the symmetric key?  A pre-chosen symmetric key
+would have to be in the enclave as an existing secret, which can't be
+done if you have to provision secrets.  The way around this is to use a
+key agreement to generate a symmetric key on the fly.  The problem,
+when you are doing things like Diffie Hellman Ephemeral (DHE) to give
+you this transport encryption key is that of endpoint verification. 
+You can provision a public certificate in the enclave to verify the
+remote (so a malicious remote can't inject false secrets), but the
+remote needs some assurance that it has established communication with
+the correct local (otherwise it would give up its secrets to anyone). 
+A binding of the local public DHE key to the attestation report can do
+this. 
+
+> > So the relying party can also reconstruct the new nonce (if it
+> > knows the key) and verify that it has a current attestation report
+> > *and* that the attesting party wants secrets encrypted to <public
+> > key>.  This scheme does rely on the fact that the thing generating
+> > the attestation signature must only send reports to the owner of
+> > the enclave, so that untrusted third parties, like the host owner,
+> > can't generate a report with their own nonce and thus fake out the
+> > key exchange.
+> 
+> Sorry I am not sure I am following this.
+
+If you use an attestation report for binding, you have to be sure no
+third party could generate the report and give a false binding.
+
+For instance, this isn't true of a TPM2_Quote because anyone who can
+get into the tss group can generate one.
+
+James
+
+
+>   For TDX only the confidential VM can put the nonce to the report
+> (because the specific instruction to get the local-verifiable report
+> out from firmware can only be made from the confidential VM).
+> Not sure other vendors' implementations though.
+> 
 
