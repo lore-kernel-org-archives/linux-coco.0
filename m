@@ -1,101 +1,102 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7563D385
-	for <linux-coco@lists.linux.dev>; Thu,  3 Aug 2023 14:34:52 +0000 (UTC)
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-d326cb4c97fso1105637276.0
-        for <linux-coco@lists.linux.dev>; Thu, 03 Aug 2023 07:34:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A1724198
+	for <linux-coco@lists.linux.dev>; Thu,  3 Aug 2023 18:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691073292; x=1691678092;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/HeVObJQnYDsmrxbFy3UKyOXJ/04Tm/UrYLmx2eoTf0=;
-        b=mY+VlJDI/9R96lHrF/byfI80tHJ1s5Gus55V305s7E4SAg0rPoHWmnYIjWZxnR96Qg
-         wNgVWy+nar1i5fCgkhUIxyuPYnwULI/CDGcui4W4frLoCo2Xs6Mvmh4O93VXwINaG4MD
-         aLQSjEgY5Sr++uwder4uv1U1zr+RE/TZw70suJBkPoAxfERYGUAh65xpMXXf1VC4L6YR
-         QI1yBioovUHQV314pZya8DbV6ot00JQTOHznRjjB0MHBwoe648gepwgyrhx6yF+obTXg
-         4b5zV85RlYKVZAVdlQIMyXxU5SyIvwC4aueFb8qZtbmEWd++S6ziiWUINJuLfm1ROpFm
-         9WQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691073292; x=1691678092;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/HeVObJQnYDsmrxbFy3UKyOXJ/04Tm/UrYLmx2eoTf0=;
-        b=CBdKZs6EZcpYxk5y2vLdPBga9oHcAmKLgyIWP2TFnOS2xD7gl9tpHryOVaUpUqS9Xs
-         sY+KKSDClIbHFSMliVHpCvJ3oreBsi+xHUgmb/V1wOr8zELhS1MKytPEUIUwNceXgT2J
-         ZyoU12u7tl8hg8Lh0tGraLiPQ907Kn2vo/QSOo8aggRkZf6q7JBHW4beu7HUoeoIP1wd
-         hFIBzThvX0GJf/FoPQY8hE3hQNFkW9q8RvK2WB3In7reW13LpxlrSdyBoNOgOUWCMvku
-         zBbxOtaJOFgMKH6LcXHxWarW6E42K0wrXNfStiUsmSuWPKhuvLyx9kkVJwEnbYOlgbAz
-         p2+w==
-X-Gm-Message-State: ABy/qLbqCem36w70kgzSOdLFRPxoDyFRCTDOJycrc59zJwSxBRTG7acl
-	9AsO18H6Fw3YO/eyElwjphPvQbRkO+o=
-X-Google-Smtp-Source: APBJJlFFzKkAdKTRoLZ2bhoaeb1cJvVOWKX7WmBJwxFpjymL5GMdod+dfzaL5IdKDJfMFpNHYNav47SkUAk=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:37d8:0:b0:c64:2bcd:a451 with SMTP id
- e207-20020a2537d8000000b00c642bcda451mr133323yba.7.1691073291936; Thu, 03 Aug
- 2023 07:34:51 -0700 (PDT)
-Date: Thu, 3 Aug 2023 14:34:50 +0000
-In-Reply-To: <ZMto2Yza4rd2JdXf@iZuf6hx7901barev1c282cZ>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1691087287; x=1722623287;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   content-id:mime-version:content-transfer-encoding;
+  bh=dU7FhD9vg9CDvnRfzIXtvR7vPuzQleLv4BUkDfepjCk=;
+  b=loyjJ0Nkhbkmzv90mngg8M+qc0afK4SSmBS9xNM0G706Fz/nrhL28zVw
+   HojYvmpDne89nDofr1cj08Hc3znJ0ahEmHevC/kWXl5coruod57uOGn0z
+   IIpNeg726xobAK5QAC8CvMxE9Doj/UAJ2ND1sMted90/Y+XuHHXbPzPWV
+   k=;
+X-IronPort-AV: E=Sophos;i="6.01,252,1684800000"; 
+   d="scan'208";a="350627819"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2023 18:28:01 +0000
+Received: from EX19MTAUWA002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
+	by email-inbound-relay-pdx-2b-m6i4x-26a610d2.us-west-2.amazon.com (Postfix) with ESMTPS id 8B90F40DE0;
+	Thu,  3 Aug 2023 18:27:58 +0000 (UTC)
+Received: from EX19D020UWA002.ant.amazon.com (10.13.138.222) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Thu, 3 Aug 2023 18:27:58 +0000
+Received: from EX19D033EUC001.ant.amazon.com (10.252.61.132) by
+ EX19D020UWA002.ant.amazon.com (10.13.138.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Thu, 3 Aug 2023 18:27:57 +0000
+Received: from EX19D033EUC001.ant.amazon.com ([fe80::6dc8:500e:fe63:454c]) by
+ EX19D033EUC001.ant.amazon.com ([fe80::6dc8:500e:fe63:454c%3]) with mapi id
+ 15.02.1118.030; Thu, 3 Aug 2023 18:27:56 +0000
+From: "Schander, Johanna 'Mimoja' Amelie" <mimoja@amazon.de>
+To: "Graf (AWS), Alexander" <graf@amazon.de>, "michael.roth@amd.com"
+	<michael.roth@amd.com>, "mimoja@mimoja.de" <mimoja@mimoja.de>
+CC: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
+	"tobin@ibm.com" <tobin@ibm.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"alpergun@google.com" <alpergun@google.com>, "jmattson@google.com"
+	<jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>,
+	"ak@linux.intel.com" <ak@linux.intel.com>, "slp@redhat.com" <slp@redhat.com>,
+	"dovmurik@linux.ibm.com" <dovmurik@linux.ibm.com>, "pbonzini@redhat.com"
+	<pbonzini@redhat.com>, "rientjes@google.com" <rientjes@google.com>,
+	"peterz@infradead.org" <peterz@infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "pgonda@google.com" <pgonda@google.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "tony.luck@intel.com"
+	<tony.luck@intel.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de"
+	<bp@alien8.de>, "dgilbert@redhat.com" <dgilbert@redhat.com>,
+	"seanjc@google.com" <seanjc@google.com>, "vkuznets@redhat.com"
+	<vkuznets@redhat.com>, "marcorr@google.com" <marcorr@google.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>, "ashish.kalra@amd.com"
+	<ashish.kalra@amd.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "nikunj.dadhania@amd.com"
+	<nikunj.dadhania@amd.com>, "hpa@zytor.com" <hpa@zytor.com>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "jroedel@suse.de"
+	<jroedel@suse.de>, "kirill@shutemov.name" <kirill@shutemov.name>,
+	"jarkko@kernel.org" <jarkko@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>
+Subject: Re: [PATCH RFC v8 00/56] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Thread-Topic: [PATCH RFC v8 00/56] Add AMD Secure Nested Paging (SEV-SNP)
+ Hypervisor Support
+Thread-Index: AQHZxjg5EcZaH17x7USkn+te0u//TQ==
+Date: Thu, 3 Aug 2023 18:27:56 +0000
+Message-ID: <f4905c32f4054d4ce254b3acb9339aa1c59728b8.camel@amazon.de>
+In-Reply-To: <20230220183847.59159-1-michael.roth@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.106.82.18]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <21BE49845F41F240B8334E1AF103963F@amazon.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <ZMfFaF2M6Vrh/QdW@google.com> <4ebb3e20-a043-8ad3-ef6c-f64c2443412c@amd.com>
- <544b7f95-4b34-654d-a57b-3791a6f4fd5f@mail.ustc.edu.cn> <ZMpEUVsv5hSmrcH8@iZuf6hx7901barev1c282cZ>
- <ZMphvF+0H9wHQr5B@google.com> <bbc52f40-2661-3fa2-8e09-bec772728812@amd.com>
- <7a4f3f59-1482-49c4-92b2-aa621e9b06b3@amd.com> <bdf548d1-84cb-6885-c4eb-cbb16c4a3e3b@amd.com>
- <ZMsekJG8PF0f4sCp@iZuf6hx7901barev1c282cZ> <ZMto2Yza4rd2JdXf@iZuf6hx7901barev1c282cZ>
-Message-ID: <ZMu7Cl6im9JwjHIQ@google.com>
-Subject: Re: [Question] int3 instruction generates a #UD in SEV VM
-From: Sean Christopherson <seanjc@google.com>
-To: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
 
-On Thu, Aug 03, 2023, Wu Zongyo wrote:
-> On Thu, Aug 03, 2023 at 11:27:12AM +0800, Wu Zongyo wrote:
-> > > > > 
-> > > > > I'm guessing it was a #NPF, too. Could it be related to the changes that
-> > > > > went in around svm_update_soft_interrupt_rip()?
-> > Yes, it's a #NPF with exit code 0x400.
-> > 
-> > There must be something I didn't handle corretly since it behave normally with
-> > qemu & ovmf If I don't add int3 before mcheck_cpu_init().
-> > 
-> > So it'a about memory, is there something I need to pay special attention
-> > to?
-> > 
-> > Thanks
-> I check the fault address of #NPF, and it is the IDT entry address of
-> the guest kernel. The NPT page table is not constructed for the IDT
-> entry and the #NPF is generated when guest try to access IDT.
-> 
-> With qemu & ovmf, I didn't see the #NPF when guest invoke the int3
-> handler. That means the NPT page table has already been constructed, but
-> when?
-
-More than likely, the page was used by the guest at some point earlier in boot.
-Why the page is faulted in for certain setups but not others isn't really all
-that interesting in terms of fixing the KVM bug, both guest behaviors are completely
-normal and should work.
-
-Can you try this patch I suggested earlier?  If this fixes the problem, I'll post
-a formal patch.
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index d381ad424554..2eace114a934 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -385,6 +385,9 @@ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
-        }
-
-        if (!svm->next_rip) {
-+               if (sev_guest(vcpu->kvm))
-+                       return 0;
-+
-                if (unlikely(!commit_side_effects))
-                        old_rflags = svm->vmcb->save.rflags;
+V2UgZGlzY292ZXJlZCB0aGF0IHRoZSBrZHVtcCBjcmFzaGtlcm5lbCB3b3VsZCBub3Qgd29yayB3
+aXRoIG91ciBTRVYtDQpTTlAgY29uZmlndXJhdGlvbi4NCg0KQWZ0ZXIgcmVhZGluZyB0aGUgZGV2
+aWNlIHRhYmxlIGZyb20gdGhlIHByZXZpb3VyIGtlcm5lbCB3ZSB3b3VsZA0Kc2VlIGEgbG90IG9m
+DQogIEFNRC1WaTogQ29tcGxldGlvbi1XYWl0IGxvb3AgdGltZWQgb3V0DQplcnJvcnMgYW5kIGZp
+bmFsbHkgY3Jhc2g6DQogIEtlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5nOiB0aW1lciBkb2Vzbid0
+IHdvcmsgdGhyb3VnaCBJbnRlcnJ1cHQtDQpyZW1hcHBlZCBJTy1BUElDDQoNCldlIGZvdW5kIHRo
+YXQgZGlzYWJlbGluZyBTTlAgaW4gdGhlIG91dGdvaW5nIChjcmFzaGluZykga2VybmVsDQp3b3Vs
+ZCBlbmFibGUgdGhlIGNyYXNoa2VybmVsIHRvIHRha2Ugb3ZlciB0aGUgaW9tbXUgY29uZmlnIGFu
+ZA0KYm9vdCBmcm9tIHRoZXJlLg0KDQpXZSBvcGVuZWQgYSBQUiBvdmVyIG9uIGdpdGh1YiBhZ2Fp
+bnN0IHRoZSByZmMtdjkgYnJhbmNoIHRvIGRpc2N1c3MNCnRoZSBpc3N1ZToNCmh0dHBzOi8vZ2l0
+aHViLmNvbS9BTURFU0UvbGludXgvcHVsbC81DQoNCkNoZWVycyBKb2hhbm5hDQoNCg0KDQoNCgoK
+CkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVzZW5zdHIuIDM4CjEw
+MTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hsYWVnZXIsIEpvbmF0
+aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0ZW5idXJnIHVudGVy
+IEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3IDg3OQoKCg==
 
