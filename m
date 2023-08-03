@@ -1,213 +1,101 @@
-Received: from ustc.edu.cn (smtp2.ustc.edu.cn [202.38.64.46])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A347E
-	for <linux-coco@lists.linux.dev>; Thu,  3 Aug 2023 08:44:16 +0000 (UTC)
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7563D385
+	for <linux-coco@lists.linux.dev>; Thu,  3 Aug 2023 14:34:52 +0000 (UTC)
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-d326cb4c97fso1105637276.0
+        for <linux-coco@lists.linux.dev>; Thu, 03 Aug 2023 07:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mail.ustc.edu.cn; s=dkim; h=Received:Date:From:To:Subject:
-	Message-ID:Reply-To:References:MIME-Version:Content-Type:
-	Content-Disposition:In-Reply-To; bh=yXnEgMyB+c/lKx03qRo/gn5A2aJh
-	N2Ua96JMPHGvbm8=; b=sd+r0iqT9xJ6UUOW8AsRNOz5v/B21/0i9IhD0VfQOb3Y
-	I7tulBEl0AUysnMflLMbQJCTVjgupVYn3CgsRqDgZzP3uLUSeGwVcFFpv0fXoRZd
-	xECT/T4/yjpIgIr8cXdJ7buk3QzR9LiawPOC4ggwasebs5rvyJe0vEKUnhhiH+I=
-Received: from localhost (unknown [139.224.204.105])
-	by newmailweb.ustc.edu.cn (Coremail) with SMTP id LkAmygDHmqbZaMtkmg8nAA--.458S2;
-	Thu, 03 Aug 2023 16:44:09 +0800 (CST)
-Date: Thu, 3 Aug 2023 16:44:09 +0800
-From: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
-To: Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, x86@kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [Question] int3 instruction generates a #UD in SEV VM
-Message-ID: <ZMto2Yza4rd2JdXf@iZuf6hx7901barev1c282cZ>
-Reply-To: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
-References: <8eb933fd-2cf3-d7a9-32fe-2a1d82eac42a@mail.ustc.edu.cn>
- <ZMfFaF2M6Vrh/QdW@google.com>
- <4ebb3e20-a043-8ad3-ef6c-f64c2443412c@amd.com>
- <544b7f95-4b34-654d-a57b-3791a6f4fd5f@mail.ustc.edu.cn>
- <ZMpEUVsv5hSmrcH8@iZuf6hx7901barev1c282cZ>
- <ZMphvF+0H9wHQr5B@google.com>
- <bbc52f40-2661-3fa2-8e09-bec772728812@amd.com>
- <7a4f3f59-1482-49c4-92b2-aa621e9b06b3@amd.com>
- <bdf548d1-84cb-6885-c4eb-cbb16c4a3e3b@amd.com>
- <ZMsekJG8PF0f4sCp@iZuf6hx7901barev1c282cZ>
+        d=google.com; s=20221208; t=1691073292; x=1691678092;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/HeVObJQnYDsmrxbFy3UKyOXJ/04Tm/UrYLmx2eoTf0=;
+        b=mY+VlJDI/9R96lHrF/byfI80tHJ1s5Gus55V305s7E4SAg0rPoHWmnYIjWZxnR96Qg
+         wNgVWy+nar1i5fCgkhUIxyuPYnwULI/CDGcui4W4frLoCo2Xs6Mvmh4O93VXwINaG4MD
+         aLQSjEgY5Sr++uwder4uv1U1zr+RE/TZw70suJBkPoAxfERYGUAh65xpMXXf1VC4L6YR
+         QI1yBioovUHQV314pZya8DbV6ot00JQTOHznRjjB0MHBwoe648gepwgyrhx6yF+obTXg
+         4b5zV85RlYKVZAVdlQIMyXxU5SyIvwC4aueFb8qZtbmEWd++S6ziiWUINJuLfm1ROpFm
+         9WQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691073292; x=1691678092;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/HeVObJQnYDsmrxbFy3UKyOXJ/04Tm/UrYLmx2eoTf0=;
+        b=CBdKZs6EZcpYxk5y2vLdPBga9oHcAmKLgyIWP2TFnOS2xD7gl9tpHryOVaUpUqS9Xs
+         sY+KKSDClIbHFSMliVHpCvJ3oreBsi+xHUgmb/V1wOr8zELhS1MKytPEUIUwNceXgT2J
+         ZyoU12u7tl8hg8Lh0tGraLiPQ907Kn2vo/QSOo8aggRkZf6q7JBHW4beu7HUoeoIP1wd
+         hFIBzThvX0GJf/FoPQY8hE3hQNFkW9q8RvK2WB3In7reW13LpxlrSdyBoNOgOUWCMvku
+         zBbxOtaJOFgMKH6LcXHxWarW6E42K0wrXNfStiUsmSuWPKhuvLyx9kkVJwEnbYOlgbAz
+         p2+w==
+X-Gm-Message-State: ABy/qLbqCem36w70kgzSOdLFRPxoDyFRCTDOJycrc59zJwSxBRTG7acl
+	9AsO18H6Fw3YO/eyElwjphPvQbRkO+o=
+X-Google-Smtp-Source: APBJJlFFzKkAdKTRoLZ2bhoaeb1cJvVOWKX7WmBJwxFpjymL5GMdod+dfzaL5IdKDJfMFpNHYNav47SkUAk=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:37d8:0:b0:c64:2bcd:a451 with SMTP id
+ e207-20020a2537d8000000b00c642bcda451mr133323yba.7.1691073291936; Thu, 03 Aug
+ 2023 07:34:51 -0700 (PDT)
+Date: Thu, 3 Aug 2023 14:34:50 +0000
+In-Reply-To: <ZMto2Yza4rd2JdXf@iZuf6hx7901barev1c282cZ>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZMsekJG8PF0f4sCp@iZuf6hx7901barev1c282cZ>
-X-CM-TRANSID:LkAmygDHmqbZaMtkmg8nAA--.458S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxKr4UKry7GrykJr4xuF43trb_yoW7trWxpF
-	W8G3WDtr4UJr18AryUtr4kAryYyr4fAr4jqr1UAw13Ja4qk3Wrtr4xtrW5CF1UCr4fAr1U
-	tr10q3srWryUArDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUy2b7Iv0xC_KF4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E
-	4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGV
-	WUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_
-	Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rV
-	WrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_
-	Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jOb18UUUUU=
-X-CM-SenderInfo: pzx200xj1rqzxdloh3xvwfhvlgxou0/
+Mime-Version: 1.0
+References: <ZMfFaF2M6Vrh/QdW@google.com> <4ebb3e20-a043-8ad3-ef6c-f64c2443412c@amd.com>
+ <544b7f95-4b34-654d-a57b-3791a6f4fd5f@mail.ustc.edu.cn> <ZMpEUVsv5hSmrcH8@iZuf6hx7901barev1c282cZ>
+ <ZMphvF+0H9wHQr5B@google.com> <bbc52f40-2661-3fa2-8e09-bec772728812@amd.com>
+ <7a4f3f59-1482-49c4-92b2-aa621e9b06b3@amd.com> <bdf548d1-84cb-6885-c4eb-cbb16c4a3e3b@amd.com>
+ <ZMsekJG8PF0f4sCp@iZuf6hx7901barev1c282cZ> <ZMto2Yza4rd2JdXf@iZuf6hx7901barev1c282cZ>
+Message-ID: <ZMu7Cl6im9JwjHIQ@google.com>
+Subject: Re: [Question] int3 instruction generates a #UD in SEV VM
+From: Sean Christopherson <seanjc@google.com>
+To: Wu Zongyo <wuzongyo@mail.ustc.edu.cn>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Aug 03, 2023 at 11:27:12AM +0800, Wu Zongyo wrote:
-> On Wed, Aug 02, 2023 at 03:03:45PM -0500, Tom Lendacky wrote:
-> > On 8/2/23 09:33, Tom Lendacky wrote:
-> > > On 8/2/23 09:25, Tom Lendacky wrote:
-> > > > On 8/2/23 09:01, Sean Christopherson wrote:
-> > > > > On Wed, Aug 02, 2023, Wu Zongyo wrote:
-> > > > > > On Mon, Jul 31, 2023 at 11:45:29PM +0800, wuzongyong wrote:
-> > > > > > > 
-> > > > > > > On 2023/7/31 23:03, Tom Lendacky wrote:
-> > > > > > > > On 7/31/23 09:30, Sean Christopherson wrote:
-> > > > > > > > > On Sat, Jul 29, 2023, wuzongyong wrote:
-> > > > > > > > > > Hi,
-> > > > > > > > > > I am writing a firmware in Rust to support
-> > > > > > > > > > SEV based on project td-shim[1].
-> > > > > > > > > > But when I create a SEV VM (just SEV, no
-> > > > > > > > > > SEV-ES and no SEV-SNP) with the firmware,
-> > > > > > > > > > the linux kernel crashed because the int3
-> > > > > > > > > > instruction in int3_selftest() cause a
-> > > > > > > > > > #UD.
-> > > > > > > > > 
-> > > > > > > > > ...
-> > > > > > > > > 
-> > > > > > > > > > BTW, if a create a normal VM without SEV by
-> > > > > > > > > > qemu & OVMF, the int3 instruction always
-> > > > > > > > > > generates a
-> > > > > > > > > > #BP.
-> > > > > > > > > > So I am confused now about the behaviour of
-> > > > > > > > > > int3 instruction, could anyone help to
-> > > > > > > > > > explain the behaviour?
-> > > > > > > > > > Any suggestion is appreciated!
-> > > > > > > > > 
-> > > > > > > > > Have you tried my suggestions from the other thread[*]?
-> > > > > > > Firstly, I'm sorry for sending muliple mails with the
-> > > > > > > same content. I thought the mails I sent previously
-> > > > > > > didn't be sent successfully.
-> > > > > > > And let's talk the problem here.
-> > > > > > > > > 
-> > > > > > > > > ??? : > > I'm curious how this happend. I cannot
-> > > > > > > > > find any condition that would
-> > > > > > > > > ??? : > > cause the int3 instruction generate a
-> > > > > > > > > #UD according to the AMD's spec.
-> > > > > > > > > ??? :
-> > > > > > > > > ??? : One possibility is that the value from
-> > > > > > > > > memory that gets executed diverges from the
-> > > > > > > > > ??? : value that is read out be the #UD handler,
-> > > > > > > > > e.g. due to patching (doesn't seem to
-> > > > > > > > > ??? : be the case in this test), stale cache/tlb entries, etc.
-> > > > > > > > > ??? :
-> > > > > > > > > ??? : > > BTW, it worked nomarlly with qemu and ovmf.
-> > > > > > > > > ??? : >
-> > > > > > > > > ??? : > Does this happen every time you boot the
-> > > > > > > > > guest with your firmware? What
-> > > > > > > > > ??? : > processor are you running on?
-> > > > > > > > > ??? :
-> > > > > > > Yes, every time.
-> > > > > > > The processor I used is EPYC 7T83.
-> > > > > > > > > ??? : And have you ruled out KVM as the
-> > > > > > > > > culprit?? I.e. verified that KVM is NOT
-> > > > > > > > > injecting
-> > > > > > > > > ??? : a #UD.? That obviously shouldn't happen,
-> > > > > > > > > but it should be easy to check via KVM
-> > > > > > > > > ??? : tracepoints.
-> > > > > > > > 
-> > > > > > > > I have a feeling that KVM is injecting the #UD, but
-> > > > > > > > it will take instrumenting KVM to see which path the
-> > > > > > > > #UD is being injected from.
-> > > > > > > > 
-> > > > > > > > Wu Zongyo, can you add some instrumentation to
-> > > > > > > > figure that out if the trace points towards KVM
-> > > > > > > > injecting the #UD?
-> > > > > > > Ok, I will try to do that.
-> > > > > > You're right. The #UD is injected by KVM.
-> > > > > > 
-> > > > > > The path I found is:
-> > > > > > ???? svm_vcpu_run
-> > > > > > ???????? svm_complete_interrupts
-> > > > > > ??????? kvm_requeue_exception // vector = 3
-> > > > > > ??????????? kvm_make_request
-> > > > > > 
-> > > > > > ???? vcpu_enter_guest
-> > > > > > ???????? kvm_check_and_inject_events
-> > > > > > ??????? svm_inject_exception
-> > > > > > ??????????? svm_update_soft_interrupt_rip
-> > > > > > ??????????? __svm_skip_emulated_instruction
-> > > > > > ??????????????? x86_emulate_instruction
-> > > > > > ??????????????? svm_can_emulate_instruction
-> > > > > > ??????????????????? kvm_queue_exception(vcpu, UD_VECTOR)
-> > > > > > 
-> > > > > > Does this mean a #PF intercept occur when the guest try to deliver a
-> > > > > > #BP through the IDT? But why?
+On Thu, Aug 03, 2023, Wu Zongyo wrote:
+> On Thu, Aug 03, 2023 at 11:27:12AM +0800, Wu Zongyo wrote:
 > > > > > 
-> > > > > I doubt it's a #PF.? A #NPF is much more likely, though it could
-> > > > > be something
-> > > > > else entirely, but I'm pretty sure that would require bugs in
-> > > > > both the host and
-> > > > > guest.
-> > > > > 
-> > > > > What is the last exit recorded by trace_kvm_exit() before the
-> > > > > #UD is injected?
-> > > > 
-> > > > I'm guessing it was a #NPF, too. Could it be related to the changes that
-> > > > went in around svm_update_soft_interrupt_rip()?
-> Yes, it's a #NPF with exit code 0x400.
+> > > > > I'm guessing it was a #NPF, too. Could it be related to the changes that
+> > > > > went in around svm_update_soft_interrupt_rip()?
+> > Yes, it's a #NPF with exit code 0x400.
+> > 
+> > There must be something I didn't handle corretly since it behave normally with
+> > qemu & ovmf If I don't add int3 before mcheck_cpu_init().
+> > 
+> > So it'a about memory, is there something I need to pay special attention
+> > to?
+> > 
+> > Thanks
+> I check the fault address of #NPF, and it is the IDT entry address of
+> the guest kernel. The NPT page table is not constructed for the IDT
+> entry and the #NPF is generated when guest try to access IDT.
 > 
-> There must be something I didn't handle corretly since it behave normally with
-> qemu & ovmf If I don't add int3 before mcheck_cpu_init().
-> 
-> So it'a about memory, is there something I need to pay special attention
-> to?
-> 
-> Thanks
-I check the fault address of #NPF, and it is the IDT entry address of
-the guest kernel. The NPT page table is not constructed for the IDT
-entry and the #NPF is generated when guest try to access IDT.
+> With qemu & ovmf, I didn't see the #NPF when guest invoke the int3
+> handler. That means the NPT page table has already been constructed, but
+> when?
 
-With qemu & ovmf, I didn't see the #NPF when guest invoke the int3
-handler. That means the NPT page table has already been constructed, but
-when?
+More than likely, the page was used by the guest at some point earlier in boot.
+Why the page is faulted in for certain setups but not others isn't really all
+that interesting in terms of fixing the KVM bug, both guest behaviors are completely
+normal and should work.
 
-> > > > 
-> > > > 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the
-> > > > instruction")
-> > > 
-> > > Sorry, that should have been:
-> > > 
-> > > 7e5b5ef8dca3 ("KVM: SVM: Re-inject INTn instead of retrying the insn on
-> > > "failure"")
-> > 
-> > Doh! I was right the first time... sigh
-> > 
-> > 6ef88d6e36c2 ("KVM: SVM: Re-inject INT3/INTO instead of retrying the instruction")
-> > 
-> > Thanks,
-> > Tom
-> > 
-> > > 
-> > > > 
-> > > > Before this the !nrips check would prevent the call into
-> > > > svm_skip_emulated_instruction(). But now, there is a call to:
-> > > > 
-> > > > ?? svm_update_soft_interrupt_rip()
-> > > > ???? __svm_skip_emulated_instruction()
-> > > > ?????? kvm_emulate_instruction()
-> > > > ???????? x86_emulate_instruction() (passed a NULL insn pointer)
-> > > > ?????????? kvm_can_emulate_insn() (passed a NULL insn pointer)
-> > > > ???????????? svm_can_emulate_instruction() (passed NULL insn pointer)
-> > > > 
-> > > > Because it is an SEV guest, it ends up in the "if (unlikely(!insn))" path
-> > > > and injects the #UD.
-> > > > 
-> > > > Thanks,
-> > > > Tom
-> > > > 
+Can you try this patch I suggested earlier?  If this fixes the problem, I'll post
+a formal patch.
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d381ad424554..2eace114a934 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -385,6 +385,9 @@ static int __svm_skip_emulated_instruction(struct kvm_vcpu *vcpu,
+        }
+
+        if (!svm->next_rip) {
++               if (sev_guest(vcpu->kvm))
++                       return 0;
++
+                if (unlikely(!commit_side_effects))
+                        old_rflags = svm->vmcb->save.rflags;
 
