@@ -1,124 +1,95 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89D914F94
-	for <linux-coco@lists.linux.dev>; Tue,  8 Aug 2023 16:07:44 +0000 (UTC)
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4036bd4fff1so293661cf.0
-        for <linux-coco@lists.linux.dev>; Tue, 08 Aug 2023 09:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1691510863; x=1692115663;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8KJ5t+CiuSqsFYkiJ2Ez3PlStQR/yi3Jik6zirchtNg=;
-        b=3rruu8VuQ6sEnx24V6i4EeBKQXuAYJ3UJoVV/TwptPF1nnHVWsrENT6C/rgoUsFLpE
-         u2ZH6Mm2HudmF4Tq+4yZJMk2KulpkkZh60w6a+vnXK4a1OYH4JSUo2PdGAxHIrbuHrOM
-         FCL1WDxv2EL9XJPzMm0P4NU77fqKLaU6dWV+qvWA3MSmdC4/XAPy86kEj3PV1pntJle2
-         BCcQWfjCyWxvFx+H9XOnpKQeGwMIm409WshtOtmW5iWsWxkCSH/wS39fwcjRsbcE03NF
-         zdZFukacIMYWAolIqT5GLdX8hyytJeXHnAiJgJ43z+vbPgvMGz5v0BXHYxMeXUnBpcfw
-         OJpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691510863; x=1692115663;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8KJ5t+CiuSqsFYkiJ2Ez3PlStQR/yi3Jik6zirchtNg=;
-        b=L50ZOhFJJqfMOleG12nnkCriCGv0WYVrvhicVn2Z3K+pMAEVqj2k7d2T0CWVonzaEd
-         GAOvdH+LH1kdCWhYl5x6cu/cKZ47tdXUpkdJrx6AItMHgcjPDSpUocJLvqCczsGvPXov
-         Nu58DrB9A48kXs/xR1mOKkFcYoEdcZF39GSq9cEoPLML50CffJ/gEt7Ufwz7Mun6Bnba
-         FBq55agoUp/tpnC3kZ8UP556f+aknuZ1OqSdO1HuxXsMA0J/Ftt8t8JGWZQOqKEyIc2y
-         zx7zfm/Mo+1Z2MlTagukSzOSsnJHDT838XR02F9FR6h3RxxsSrL8ZSoZkO2XJHLxmIk3
-         KOuw==
-X-Gm-Message-State: AOJu0Yz+IpC2bZjtsHDO1pWwtNQNoZSZefuERefRV82Pa2Cmt15wbJx1
-	f/SB369UOBfpVjfyVzlMpwn3AuNxlSEuXtwnm5ucqA==
-X-Google-Smtp-Source: AGHT+IHt6voO9BYVJcWdEkniRLCcqBRLef735ePpp1tfW1zNahlgGDA7vGpo612clikAIgeIZaaP9JI5rM3a1iauBbg=
-X-Received: by 2002:ac8:5b08:0:b0:403:b1d0:2f0a with SMTP id
- m8-20020ac85b08000000b00403b1d02f0amr746939qtw.28.1691510863628; Tue, 08 Aug
- 2023 09:07:43 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00113AF9
+	for <linux-coco@lists.linux.dev>; Tue,  8 Aug 2023 16:26:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1691512018; x=1723048018;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0z1l/njVD+UEzwVIY4bLXSqHss3Uzx8s2RCDApioNEA=;
+  b=DEsmh2jrk0VMhiyR6uuOqtHlDuU5+LSPrbIpltfo2A/zKjPBt6MJR4Bf
+   7rZ8qdG2tO6R+n2NEHqMHzqr3iXzoqbErOzNcXZN8yRXCFT7e63pxv3qg
+   FmoR0oPiebG+Qg7agdTZMi6mn14VvLwR7uRujxjV8jcc22PO64ou//5SX
+   B1SkXkZDOt02fTuUaPqz/Pi2TngrfE1RGVUK+9+0AvVK6W+sRoCmpnSna
+   4+SmlKAqENE75xrQb547nkWzhxyKr6qPqZYszyxcjlw4faD4L+dgxifLP
+   eQ3afSK4GV8QIoJYenrr4Hz3fDbnX7JqBmyfFExpa4R7kSTCR8dUeGNqZ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="374551728"
+X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
+   d="scan'208";a="374551728"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 09:23:30 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="977932468"
+X-IronPort-AV: E=Sophos;i="6.01,156,1684825200"; 
+   d="scan'208";a="977932468"
+Received: from vevladis-mobl.ccr.corp.intel.com (HELO box.shutemov.name) ([10.252.49.245])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 09:23:27 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id E348C10A12B; Tue,  8 Aug 2023 19:23:24 +0300 (+03)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCH] x86/tdx: Mark TSC reliable
+Date: Tue,  8 Aug 2023 19:23:20 +0300
+Message-ID: <20230808162320.27297-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
- <a507ef3302d3afff58d82528ee17e82df1f21de0.camel@HansenPartnership.com>
- <64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch>
- <c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com>
- <64cdb5f25c56_2138e294f1@dwillia2-xfh.jf.intel.com.notmuch>
- <1180481830431165d49c5e64b92b81c396ebc9b1.camel@HansenPartnership.com>
- <64d17f5728fbc_5ea6e2943f@dwillia2-xfh.jf.intel.com.notmuch>
- <c7d6e953a4b36014ea0c7406531b24bb29d6127e.camel@HansenPartnership.com>
- <2425e00b-defb-c12b-03e5-c3d23b30be01@linux.intel.com> <64d263e44e401_2138e29486@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <64d263e44e401_2138e29486@dwillia2-xfh.jf.intel.com.notmuch>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 8 Aug 2023 09:07:32 -0700
-Message-ID: <CAAH4kHamob7g_+BRd0JW76cM7_vS=jzXzRjrgCPDxZ29VnzdCQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation reports
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, dhowells@redhat.com, 
-	Brijesh Singh <brijesh.singh@amd.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Samuel Ortiz <sameo@rivosinc.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
->
-> At least that was not the level of concurrency I was worried about. The
-> sysfs approach makes it so that concurrency problem of option-writing vs
-> report-reading is pushed to userspace.
->
+In x86 virtualization environments, including TDX, RDTSC instruction is
+handled without causing a VM exit, resulting in minimal overhead and
+jitters. On the other hand, other clock sources (such as HPET, ACPI
+timer, APIC, etc.) necessitate VM exits to implement, resulting in more
+fluctuating measurements compared to TSC. Thus, those clock sources are
+not effective for calibrating TSC.
 
-The reason I would advocate against making attestation report
-collection single-threaded in user space at a machine level is that
-there are new schemes of attested connections that may become the
-basis of server handshakes. I think folks are mainly looking at this
-from the use case of
+In TD guests, TSC is virtualized by the TDX module, which ensures:
 
-1. workload will do large amounts of work on behalf of the VM owner,
-provided it gets a sealing key released by the VM owner once on boot
-after proving its code identity
+  - Virtual TSC values are consistent among all the TD’s VCPUs;
+  - Monotonously incrementing for any single VCPU;
+  - The frequency is determined by TD configuration. The host TSC is
+    invariant on platforms where TDX is available.
 
-however I'm thinking of the case of a more user-centric use case that
-enables service users to challenge for proof of workload identity
+Use TSC as the only reliable clock source in TD guests, bypassing
+unstable calibration.
 
-2. workload is a server that accepts incoming connections that include
-a hardware attestation challenge. It generates an attestation report
-that includes the challenge as part of the connection handshake
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/coco/tdx/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-This posits the existence of such an advanced user, but high security
-applications also have users with high expectations. I want the option
-to be open to empower more users to have access to provable workload
-provenance, not just the VM owners that are unlocking resources.
-
-> For example, take the following script:
->
-> $ cat -n get_report
->      1  #!/bin/bash
->      2  tsm=/sys/class/tsm/tsm0
->      3  echo $1 > ${tsm}/privlevel
->      4  echo $2 > ${tsm}/format
->      5  echo "hex encoded attestation report for: $(cat ${tsm}/provider)"
->      6  xxd -p -c 0 -r ${tsm}/report
->
-> The kernel handles the concurrency of line 6 where it synchronizes
-> against new writes to the options for the duration of emitting a
-> coherent report. However, if you do:
->
-> $ get_report 2 extended > reportA & get_report 0 default > reportB
->
-> ...there is race between those invocations to set the options and read
-> the report.
->
-> So to solve that concurrency problem userspace needs to be well behaved
-> and only have one thread at a time configuring the options and reading
-> out the report before the next agent is allowed to proceed. There are
-> several ways to do that, but the kernel only guarantees that the state
-> of the options is snapshotted for the duration of 6.
-
-
-
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 1d6b863c42b0..1583ec64d92e 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -769,6 +769,9 @@ void __init tdx_early_init(void)
+ 
+ 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
+ 
++	/* TSC is the only reliable clock in TDX guest */
++	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
++
+ 	cc_vendor = CC_VENDOR_INTEL;
+ 	tdx_parse_tdinfo(&cc_mask);
+ 	cc_set_mask(cc_mask);
 -- 
--Dionna Glaze, PhD (she/her)
+2.41.0
+
