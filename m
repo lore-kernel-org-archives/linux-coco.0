@@ -1,52 +1,38 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471193C3F
-	for <linux-coco@lists.linux.dev>; Wed,  9 Aug 2023 06:13:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691561635; x=1723097635;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I89NpMm1BmDvQjFSjgEsliwddKY7luHiKWODVdUb6e0=;
-  b=fdCRqqLbHhl97vurGQhuDUNEqib2b0qCq43FFZjwLGs0rCoxMjngWnKB
-   IlI0u0rN3ruUvvQdrlXjAudKZ087a3dgDFmuvztABp2SaLIazpN+DwsjB
-   5LqDLJniwlKWPBqLRK3H0bGyg3ZZSeFfavGXFSbVWysFebgw8UGh8LzLn
-   NZ2akI/u2nZQ9tXJNVStQupkkB9TMItjJAVp2vSEIjaBdFmeNyTcf9k4d
-   nFCHz+uyntRNQNb6ulL5mCf0HVE5ger6PO6xIWid7K50jUXcK6o2KhrLL
-   IkAz4lldMsNXC4bPGlolcra7VLFaozGs1fp18QjfrtOHu+cKJ61BCoGrT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="457410110"
-X-IronPort-AV: E=Sophos;i="6.01,158,1684825200"; 
-   d="scan'208";a="457410110"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 23:13:54 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10795"; a="731680732"
-X-IronPort-AV: E=Sophos;i="6.01,158,1684825200"; 
-   d="scan'208";a="731680732"
-Received: from jmhendri-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.40.58])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2023 23:13:51 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id D9E2C10A11A; Wed,  9 Aug 2023 09:13:48 +0300 (+03)
-Date: Wed, 9 Aug 2023 09:13:48 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "Hansen, Dave" <dave.hansen@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	"Lutomirski, Andy" <luto@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] x86/tdx: Mark TSC reliable
-Message-ID: <20230809061348.vhm5ie4uzystwfya@box.shutemov.name>
-References: <20230808162320.27297-1-kirill.shutemov@linux.intel.com>
- <ecc11d54-6aaa-f755-9436-ae15b94fb627@intel.com>
- <20230808200111.nz74tmschph435ri@box>
- <DM8PR11MB5750DEFF988068EFAFE28667E712A@DM8PR11MB5750.namprd11.prod.outlook.com>
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9CC8BE0
+	for <linux-coco@lists.linux.dev>; Wed,  9 Aug 2023 12:46:37 +0000 (UTC)
+Received: by linux.microsoft.com (Postfix, from userid 1112)
+	id D6FD120FC3FE; Wed,  9 Aug 2023 05:46:30 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D6FD120FC3FE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1691585190;
+	bh=G0gxRN5QnxTLEOIdIvEe864KwskWfmwxWJZYwvjDSlo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JvqfUwlrN8SFoQZfvoGT5ol8Tmiz9HmGGUsXNPJy28y9tdBKDtRIpIkaO0RTgvnGy
+	 me82/2JlMkKOJ8nouwy+b6PR8sxGfLnSMkNPCxFctzUFbnJb3MMLT5naT+6xEjxA9q
+	 sQa3F9+OJGboaWVu/aYlKhbXeWKFEEG9axlkdoYo=
+Date: Wed, 9 Aug 2023 05:46:30 -0700
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	bp@alien8.de, vbabka@suse.cz, kirill@shutemov.name,
+	ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	dgilbert@redhat.com, jarkko@kernel.org, ashish.kalra@amd.com,
+	nikunj.dadhania@amd.com, liam.merwick@oracle.com,
+	zhi.a.wang@intel.com
+Subject: Re: [PATCH RFC v9 19/51] x86/sev: Introduce snp leaked pages list
+Message-ID: <20230809124630.GA11150@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20230612042559.375660-1-michael.roth@amd.com>
+ <20230612042559.375660-20-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,37 +41,96 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM8PR11MB5750DEFF988068EFAFE28667E712A@DM8PR11MB5750.namprd11.prod.outlook.com>
+In-Reply-To: <20230612042559.375660-20-michael.roth@amd.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Wed, Aug 09, 2023 at 05:44:37AM +0000, Reshetova, Elena wrote:
-> > 
-> > I don't know what the rules here. As far as I can see, all other clock
-> > sources relevant for TDX guest have lower rating. I guess we are fine?
+On Sun, Jun 11, 2023 at 11:25:27PM -0500, Michael Roth wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> What about acpi_pm? 
-> See this:
-> https://github.com/intel/tdx/commit/045692772ab4ef75062a83cc6e4ffa22cab40226
-
-clocksource_acpi_pm.rating is 200 while TSC is 300.
-
-> > There's notable exception to the rating order is kvmclock which is higher
-> > than tsc. It has to be disabled, but it is not clear to me how. This topic
-> > is related to how we are going to filter allowed devices/drivers, so I
-> > would postpone the decision until we settle on wider filtering schema.
+> Pages are unsafe to be released back to the page-allocator, if they
+> have been transitioned to firmware/guest state and can't be reclaimed
+> or transitioned back to hypervisor/shared state. In this case add
+> them to an internal leaked pages list to ensure that they are not freed
+> or touched/accessed to cause fatal page faults.
 > 
-> One option is to include "no-kvmclock" into kernel command line, which
-> is attested. Another option is to try to disable it explicitly, like we had
-> in past: 
-> https://github.com/intel/tdx/commit/6b0357f2115c1bdd158c0c8836f4f541517bf375
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> [mdr: relocate to arch/x86/coco/sev/host.c]
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/coco/sev/host.c        | 28 ++++++++++++++++++++++++++++
+>  arch/x86/include/asm/sev-host.h |  3 +++
+>  2 files changed, 31 insertions(+)
 > 
-> The obvious issues with command line is that it is going to 1) grow 
-> considerably if we try to disable everything we can via command line
-> and 2) there is a high chance that in practice people will not use secure default
-> and/or forget to verify the correct status of cmd line. But this is to be
-> expected I guess for any security method that involves attestation unfortunately.
+> diff --git a/arch/x86/coco/sev/host.c b/arch/x86/coco/sev/host.c
+> index cd3b4c6a25bc..373e91f5a337 100644
+> --- a/arch/x86/coco/sev/host.c
+> +++ b/arch/x86/coco/sev/host.c
+> @@ -64,6 +64,12 @@ struct rmpentry {
+>  static unsigned long rmptable_start __ro_after_init;
+>  static unsigned long rmptable_end __ro_after_init;
+>  
+> +/* list of pages which are leaked and cannot be reclaimed */
+> +static LIST_HEAD(snp_leaked_pages_list);
+> +static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
+> +
+> +static atomic_long_t snp_nr_leaked_pages = ATOMIC_LONG_INIT(0);
+> +
+>  #undef pr_fmt
+>  #define pr_fmt(fmt)	"SEV-SNP: " fmt
+>  
+> @@ -494,3 +500,25 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
+>  	return rmpupdate(pfn, &val);
+>  }
+>  EXPORT_SYMBOL_GPL(rmp_make_shared);
+> +
+> +void snp_leak_pages(unsigned long pfn, unsigned int npages)
+> +{
+> +	struct page *page = pfn_to_page(pfn);
+> +
+> +	WARN(1, "psc failed, pfn 0x%lx pages %d (marked offline)\n", pfn, npages);
+> +
+> +	spin_lock(&snp_leaked_pages_list_lock);
+> +	while (npages--) {
+> +		/*
+> +		 * Reuse the page's buddy list for chaining into the leaked
+> +		 * pages list. This page should not be on a free list currently
+> +		 * and is also unsafe to be added to a free list.
+> +		 */
+> +		list_add_tail(&page->buddy_list, &snp_leaked_pages_list);
+> +		sev_dump_rmpentry(pfn);
+> +		pfn++;
+> +	}
+> +	spin_unlock(&snp_leaked_pages_list_lock);
+> +	atomic_long_inc(&snp_nr_leaked_pages);
+> +}
+> +EXPORT_SYMBOL_GPL(snp_leak_pages);
+> diff --git a/arch/x86/include/asm/sev-host.h b/arch/x86/include/asm/sev-host.h
+> index 753e80d16433..bab3b226777a 100644
+> --- a/arch/x86/include/asm/sev-host.h
+> +++ b/arch/x86/include/asm/sev-host.h
+> @@ -19,6 +19,8 @@ void sev_dump_rmpentry(u64 pfn);
+>  int psmash(u64 pfn);
+>  int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable);
+>  int rmp_make_shared(u64 pfn, enum pg_level level);
+> +void snp_leak_pages(unsigned long pfn, unsigned int npages);
+> +
+>  #else
+>  static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return 0; }
+>  static inline void sev_dump_rmpentry(u64 pfn) {}
+> @@ -29,6 +31,7 @@ static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int as
+>  	return -ENODEV;
+>  }
+>  static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENODEV; }
+> +void snp_leak_pages(unsigned long pfn, unsigned int npages) {}
 
-I guess command line is fine, until we have coherent solution on
-filtering.
+This needs to be 'static inline' or the build fails with multiple definition errors.
+I'm building a guest kernel with CONFIG_KVM_AMD_SEV disabled.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jeremi
+
+>  #endif
+>  
+>  #endif
+> -- 
+> 2.25.1
+> 
