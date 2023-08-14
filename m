@@ -1,83 +1,201 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BDBC2D9
-	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 16:58:23 +0000 (UTC)
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-40c72caec5cso11291cf.0
-        for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 09:58:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692032302; x=1692637102;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=m/WoweT55sLO5fRn6kufHuPlBBPxo8HUXjSRuA4Mczg=;
-        b=Q0fc8BLqD7wyXCOAOk3IPDV9Cp5h/LQhx8w5FeDc/Oq4xCCNjGiU5lj7eVG2UDAi6G
-         gGKMMSEj7LdqNHelfpKXokpTmkEFBPK6JYd8ld6zO95MjKEBiP6fI8HxhvZrtBzgcmlR
-         cugbBFjd5mmw+vkHfF9Cm9YLJ67TZrAHPcKCcqrOKlonZr3F12NeFub35TIFi/dEdUzu
-         FNpHd4c4rMjTr4IK7AohAigfWCtG8EEekRBSyf7hUiUQzQ56cgtAZIOj0lS+Ne46ZzAn
-         UXrIAr2vFref6NqwfEAmWNR/V498cbQ97SQq1LESFt1XuCEnzpFOHNjIO9u4Ve6lkj6A
-         1tpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692032302; x=1692637102;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=m/WoweT55sLO5fRn6kufHuPlBBPxo8HUXjSRuA4Mczg=;
-        b=UUU7LV44/Ht5m4ToQcqYJpZryVeJYw5xpumDQQjM7Gu+NnUA1fA7bx7pjji0+vuYbh
-         0svdyMAc941FJp0iNH3SSaPoEacXwEhYLtVrn9b3mp/oAo0iSP/M7/CFnjjkLK2QWRFk
-         axNFnyCAGH/3uL+iQeCZ/403W1zzQC7ExPfyyGxgmh1j/n1VhJHwgfkd6mgCgvdMGcDw
-         GIh+egQv3puagCDHj5yL3WrHdB+7XWEdF9EPfrxy75e9FpJY12Xjzd1MT1iYLw6QaE++
-         F4dpPozmX9vj3cz55i1HV6VHiQQW6ZOT3kClzAfYhhU6NPlugVCygLZGajcgMxihaI33
-         x8UQ==
-X-Gm-Message-State: AOJu0YzqtcpnPQzgORvvFJZQAL6P6y7bdpOm8veXeUWpLbe5cgGYCOCN
-	LiDYFUBVg2xiXJWXXLevbZongSg3enbiE7Am/NITeA==
-X-Google-Smtp-Source: AGHT+IH+ZEsxASbuHJbtYOaL4jiCGRwyq9SBYfbwVUTjbFILjWP+xu+p/05rzPYZrbX5Rmv6vLcEDwCgX13wDicyzFU=
-X-Received: by 2002:ac8:4e55:0:b0:40f:ec54:973 with SMTP id
- e21-20020ac84e55000000b0040fec540973mr684272qtw.22.1692032301951; Mon, 14 Aug
- 2023 09:58:21 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53789BE79
+	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 17:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692033140; x=1723569140;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=gAo2Mhiyy3CMlyHWRj+iWUhicUdt0+bV1lGGTLk7JtI=;
+  b=BG1ZtzTTBtPoGRZSpNVw92QAbt1oRLgXcWAGZvRwZB/trrMapexEbGyQ
+   6WqUNOW62SnAlbn4IDgabqZR5+a2vnSdUXux6ZRSTLaYHfNxrjL6+UKk+
+   FfveXiKMoCBryqiiW3+n4Hl0y6VJUfn+jlPwXxvHHyQKndhZkvxeVnTTv
+   abI1f9U91+ZpOxilUouQ8UqowaRNJEXhlx+nHeYEi96+t0xi02PgKbZK7
+   zeHnBkaBSSxN5Kvjlhyx0wWv/3gD/HjSyT84VSV0K8Oo8iRRlQRrb50jm
+   jWemux2L3aiNQbSG42KddcvIa8TiZr0YCB4CgUZfStA9hoZfsx4HiGhnL
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="370993414"
+X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
+   d="scan'208";a="370993414"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 10:12:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="710406179"
+X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
+   d="scan'208";a="710406179"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga006.jf.intel.com with ESMTP; 14 Aug 2023 10:12:18 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 14 Aug 2023 10:12:18 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 14 Aug 2023 10:12:17 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Mon, 14 Aug 2023 10:12:17 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.104)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Mon, 14 Aug 2023 10:12:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DKNFxb78awipLJ+4Y9OlpAtDYMfB73o3s52hNLeXM24xeW97W/dFRPPZqh6zEZaTiKXUCO3ejnJdw00xhHVioStA3K957r42KvFcjpaQZ7p1v7ZUArifUnhGDfZTFN1xXy0fAnzdvDKtpoJHaBP1rb5Nc+QAECSUmhf83N3mFM57RweLUv3I8rLwq9YQ+uDOuhHcYmjGhgmxwDX3GZyxhVk6GUC1lddlEA1J7vsjXuf0M8CG5VNGkj4mK06QkxoG8xDzyTK+EFpKPGPCqsjycXaGMkTNp+TWbSDyVqMfeqA3JIMGqSDDHExp/yYIHdRw6nw0Ppaulm6SW4DMniFbsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5qI8FxvpitcIO0vxgqIfcFhrR7qPbYWzr36ExG0KFRY=;
+ b=d1MfoGNJufdWdypV8EDgoIfJ74h17KN20g2S0aMAjTJFRBdcNfLz+5vM4ZzrDVLLuxR1YTJk640ZgwWMex9I9GVl9zSzvFn3a5I3ljnyX6gSxp2lZD4Dtvnz/5CUrGu1BrKKA6IwqeTvSRIWvKtaIZX73PVvhhia6iZAQyaGSGPq2+yasaUZJATxw85CWP9ffqOGe48oGKEZUZk5IS+7MbtW3WJ4fCpCfjOidc6b0EnF9Byo5bT9DxffvIjCgRRwoKhcqywkmI0JDmc9Y0Tdhp0qAKDzhivwUjanamPgs7XtSZfi8nbAZRYhNlsjHnd2jdHEqF6mjjqK0uDr4xeqWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA0PR11MB4733.namprd11.prod.outlook.com (2603:10b6:806:9a::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.24; Mon, 14 Aug
+ 2023 17:12:14 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::acb0:6bd3:58a:c992]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::acb0:6bd3:58a:c992%5]) with mapi id 15.20.6678.022; Mon, 14 Aug 2023
+ 17:12:14 +0000
+Date: Mon, 14 Aug 2023 10:12:11 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, Dan Williams
+	<dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>
+CC: Brijesh Singh <brijesh.singh@amd.com>, Kuppuswamy Sathyanarayanan
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, Peter Zijlstra
+	<peterz@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>, Peter Gonda
+	<pgonda@google.com>, Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
+	<dionnaglaze@google.com>, Samuel Ortiz <sameo@rivosinc.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Andrew Morton
+	<akpm@linux-foundation.org>, James Bottomley
+	<James.Bottomley@hansenpartnership.com>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/5] tsm: Attestation Report ABI
+Message-ID: <64da606b171cc_2138e29484@dwillia2-xfh.jf.intel.com.notmuch>
+References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
+ <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
+X-ClientProxiedBy: MW4P222CA0002.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:303:114::7) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
- <169199900677.1782217.12516417657696965559.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <169199900677.1782217.12516417657696965559.stgit@dwillia2-xfh.jf.intel.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 14 Aug 2023 09:58:10 -0700
-Message-ID: <CAAH4kHbRkFdmdQyPHjOjnnyuYXPLT2GKmQTE8fU9aDFMtri8ew@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] virt: sevguest: Prep for kernel internal {get, get_ext}_report()
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, Borislav Petkov <bp@alien8.de>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Brijesh Singh <brijesh.singh@amd.com>, peterz@infradead.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA0PR11MB4733:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7fff46a-05d8-4cce-aa1c-08db9ce99af8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: rM6RZN6T4oJ+0Rmc4acGG4cMzW/WLLr/TuFhszCS7nFIDInlc0DxZVNhZlbmx9yDZNQShKvtWkz1SFac2yNgl+U+ysbJN3W3UqAEOv56X0BZefRoqyIpdi9PXI5GHskDeMcIrE6+mWqBC1SwzRwtJtY8uL6cwebIvWbP5VtbDIac79s8eEVgdxbcMqyGCylZKpzudB5r/+BPrDmlI0AU6/RMg/kCzfHjA6hMooYqGEAM5gyCIacuphyg06+O8ffEGtmwO489ZIVjaJyAMabQCvGOIyeDIiIMFmgTcollREYa2dst7m0b6lCIAawW1TdSCv/vWzNv/YBB9h2uQLAO200KTgtsmx7VuH3ZFwikx8UpLeDpjTbrn8Di8LOtA1Up9Iud3zSR9uH4jt0XdfUB7pisYnUpM2ekGW2HnWC5qrYu2vKvoc5eJk/y16N3GgvriJjzvU3Ekpsqk4B1Jf1uT9c+klGn3mwyeVPJ59F2+Z1V1X698TACmWt0egcByYAvH4xfQl6lNISwHUDBq2owtKY1FPIoGtSsB1oQ6GFZ9fbi3bjQ0waCFFSnEGeBRhIt
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(366004)(376002)(136003)(39860400002)(451199021)(1800799006)(186006)(66899021)(6666004)(6486002)(110136005)(6506007)(478600001)(82960400001)(86362001)(83380400001)(9686003)(7416002)(6512007)(26005)(66946007)(53546011)(2906002)(38100700002)(316002)(4326008)(66476007)(8676002)(66556008)(54906003)(8936002)(5660300002)(41300700001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mMfBS0ecTRwGYywMXFHZMYr5sw95IX9TE3EKopp7td1Cke9JJvOuNIAaKd3p?=
+ =?us-ascii?Q?yj2cDPvtb+dtaYFEGhnOvSbG5hJ5blVwzPWfx/P0NktoBy88T8WkoQ1yTX8E?=
+ =?us-ascii?Q?mLD2+TBUSqBz7drEx9ZavSn9coEdzXFt8rkf3jRx3SAipxKKMkBkCy0NyHm0?=
+ =?us-ascii?Q?5TX1t4+vteZLz9hCbVGKHraIoV7nsTQ9Z7qK+uVw/JEv7zVv4OON4drdGsc1?=
+ =?us-ascii?Q?DiXxXLu1sFDfQKWmMQO8tkerj2fMUhp2byvvQ0dflZuJc5nHu64VQdgKJNGG?=
+ =?us-ascii?Q?NtIP8qD/4B3JSjuxZOV52reH+kribWNUGQ0XBTMgDuFqwyLHgQJ76HUJgyU2?=
+ =?us-ascii?Q?3uwhwi46twgAIC3xGgWUP0C+g1zTH2dP/AbAWrpFZQFzr7+3VQ/QYvb5/cll?=
+ =?us-ascii?Q?ec0j2+Ow5WvGLVg6TTdvseqnwy1u/6DEZDzKg9iRjr0VIBxYoJbxwA5KDap+?=
+ =?us-ascii?Q?yQZmnorU5L/nsb9mpgcH7Fb6KYUeCRdhh6+ErxULhc9HiZboqejTQJlW9pnw?=
+ =?us-ascii?Q?p16qhnbg+euuMrF1N1EJwRCikJJD6H8TyZAs/4vDfL5Z8V6qd7119ME3LCIB?=
+ =?us-ascii?Q?Cb4S9Ua1OE3v+bcClF44nVB3ZhDsMJh7jO52fcOFIRivpd7Dj9CWX5zJ5e4H?=
+ =?us-ascii?Q?h9iDBfQt5PMQGEUYjT5LT4E8HGmvjCm99Ha6OwAg+44Amg6XgSsn/zUwvEUc?=
+ =?us-ascii?Q?thXMYfvNBWjmObTozeHe7X+qIImf3/xwf9ODBD50ysxWO2thHSdjDH624LIW?=
+ =?us-ascii?Q?tequIWMSHjVhNut9JMr4iSZNXjrCJcgfKTC2ROcR2TqVyK0XI5/U125s7Von?=
+ =?us-ascii?Q?DMaV+xxdNNjJ0lmr8WLeWCooyIHWIO3DKlPcIgDy7stQTqJKGHGkWAB5e98Z?=
+ =?us-ascii?Q?zNdBQSEdjt5JO55maBX/06UBk88bSBhMG8y8cy6PIkaVUqH2QEijFkhn9oZY?=
+ =?us-ascii?Q?Yu2yn/tz1CdfAKx3bhMPWTADzs8y7ko4cruLTuKn6mscikDGCjSusvu6fvWK?=
+ =?us-ascii?Q?DoziSmKyZHqa5vEkvUkPkJwJR2r2kZtfco1W67YgHWqicD3CRf5uqAfZMQXZ?=
+ =?us-ascii?Q?pdaBAmmKpMM+Bm5b1Rr+v9mbL3NNqBFj3y3EMFR/F/yp64meeK6cSLzzhWGg?=
+ =?us-ascii?Q?v02HEBgNvLTnUkHlroXm5B2D66XQQ9Ali/IhjdoPaYVbUcamv9JfSm7LlNek?=
+ =?us-ascii?Q?Pli62pqcALwlEDI4mqAf8kAfVylHo7yEIZQFRJE6XfwQ9ADFsP3FuaEXF1UY?=
+ =?us-ascii?Q?jBSRA7VNF/rm7co2XgOO2m4B697QRAKt1V46jvmxtTmCZIqyUelMk25iGL9e?=
+ =?us-ascii?Q?cn+rxwI6AX+sEQF2UpQ/BZ7194tH+5ZoLyr0YMTLy2hQLJYh0wVlvljlvGMI?=
+ =?us-ascii?Q?oR9w0hA16LiAZQx1wpej7WTET0ivF7jSl6WrRnPi2qRRnPCaXqA4Vpr8kgaq?=
+ =?us-ascii?Q?FHw6f260OhyoKFi5/EG2rSEUOhZS/PYh+lMMVpYcgpdywIsGYmZ98leWXBfr?=
+ =?us-ascii?Q?c6B3+RTx/TJ0/4BSSI6OrZyJH03g0r4H1Su4dBiXMXbpdM+A0Tv3qpz7tlK+?=
+ =?us-ascii?Q?u3npmyE2qAF7qd4XTW+DrbprjOuwtOpM+Viy2w/5adirEbyvKm8bNue378uK?=
+ =?us-ascii?Q?lQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7fff46a-05d8-4cce-aa1c-08db9ce99af8
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2023 17:12:14.8377
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X7N40hk2tG+Xr0NogI1eU8W74cjugqLKOZZKqb3Nmt/ZxC+eQVhwaE6abwCcps3Dp0sm+tgGUvUY34wGSFwgBss+WZoaoktder4adTNOb2c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4733
+X-OriginatorOrg: intel.com
 
->
->         switch (ioctl) {
->         case SNP_GET_REPORT:
-> -               ret = get_report(snp_dev, &input);
-> +               ret = get_report(snp_dev, &input, SNP_UARG);
->                 break;
->         case SNP_GET_DERIVED_KEY:
->                 ret = get_derived_key(snp_dev, &input);
->                 break;
+Jeremi Piotrowski wrote:
+> On 8/14/2023 9:43 AM, Dan Williams wrote:
+> > Changes since v1:
+> > - Switch from Keyring to sysfs (James)
+> > 
+> > An attestation report is signed evidence of how a Trusted Virtual
+> > Machine (TVM) was launched and its current state. A verifying party uses
+> > the report to make judgements of the confidentiality and integrity of
+> > that execution environment. Upon successful attestation the verifying
+> > party may, for example, proceed to deploy secrets to the TVM to carry
+> > out a workload. Multiple confidential computing platforms share this
+> > similar flow.
+> > 
+> > The approach of adding adding new char devs and new ioctls, for what
+> > amounts to the same logical functionality with minor formatting
+> > differences across vendors [1], is untenable. Common concepts and the
+> > community benefit from common infrastructure.
+> > 
+> > Use sysfs for this facility for maintainability compared to ioctl(). The
+> > expectation is that this interface is a boot time, configure once, get
+> > report, and done flow. I.e. not something that receives ongoing
+> > transactions at runtime. However, runtime retrieval is not precluded and
+> > a mechanism to detect potential configuration conflicts from
+> > multiple-threads using this interface is included.
+> > 
+> 
+> I wanted to speak up to say that this does not align with the needs we have
+> in the Confidential Containers project. We want to be able to perform attestation
+> not just once during boot but during the lifecycle of the confidential VM. We
+> may need to fetch a fresh attestation report from a trusted agent but also from
+> arbitrary applications running in containers.
+> 
+> The trusted agent might need attestation when launching a new container from an
+> encrypted container image or when a new secret is being added to the VM - both
+> of these events may happen at any time (also when containerized applications
+> are already executing).
+> 
+> Container applications have their own uses for attestation, such as when they need
+> to fetch keys required to decrypt payloads. We also have things like performing
+> attestation when establishing a TLS or ssh connection to provide an attested e2e
+> encrypted communication channel.
 
-Do we have an agreement around the continued existence of sev-guest
-for supporting derived keys, is that similarly slated for the chopping
-block, or is it left undecided?
-It appears your choice to not include the uarg/karg extension here is
-deliberate.
+...and you expect that the boot time attestation becomes invalidated
+later at run time such that ongoing round trips to the TSM are needed? I
+am looking at "Table 21. ATTESTATION_REPORT Structure" for example and
+not seeing data there that changes from one request to the next. Runtime
+validation likely looks more like the vTPM use case with PCRs. That will
+leverage the existing / common TPM ABI.
 
->         case SNP_GET_EXT_REPORT:
-> -               ret = get_ext_report(snp_dev, &input);
-> +               ret = get_ext_report(snp_dev, &input, SNP_UARG);
->                 break;
->         default:
->                 break;
->
+> I don't think sysfs is suitable for such concurrent transactions. Also if you think
+> about exposing the sysfs interface to an application in a container, this requires
+> bind mounting rw part of the sysfs tree into the mount namespace - not ideal.
 
-Reviewed-by: Dionna Glaze <dionnaglaze@google.com>
-
--- 
--Dionna Glaze, PhD (she/her)
+sysfs is not suitable for concurrent transactions. The container would
+need to have an alternate path to request that the singleton owner of
+the interface generate new reports, or use the boot time attestation to
+derive per container communication sessions to the attestation agent.
