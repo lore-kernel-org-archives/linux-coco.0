@@ -1,201 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53789BE79
-	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 17:12:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692033140; x=1723569140;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=gAo2Mhiyy3CMlyHWRj+iWUhicUdt0+bV1lGGTLk7JtI=;
-  b=BG1ZtzTTBtPoGRZSpNVw92QAbt1oRLgXcWAGZvRwZB/trrMapexEbGyQ
-   6WqUNOW62SnAlbn4IDgabqZR5+a2vnSdUXux6ZRSTLaYHfNxrjL6+UKk+
-   FfveXiKMoCBryqiiW3+n4Hl0y6VJUfn+jlPwXxvHHyQKndhZkvxeVnTTv
-   abI1f9U91+ZpOxilUouQ8UqowaRNJEXhlx+nHeYEi96+t0xi02PgKbZK7
-   zeHnBkaBSSxN5Kvjlhyx0wWv/3gD/HjSyT84VSV0K8Oo8iRRlQRrb50jm
-   jWemux2L3aiNQbSG42KddcvIa8TiZr0YCB4CgUZfStA9hoZfsx4HiGhnL
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="370993414"
-X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
-   d="scan'208";a="370993414"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 10:12:18 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10802"; a="710406179"
-X-IronPort-AV: E=Sophos;i="6.01,173,1684825200"; 
-   d="scan'208";a="710406179"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orsmga006.jf.intel.com with ESMTP; 14 Aug 2023 10:12:18 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 14 Aug 2023 10:12:18 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 14 Aug 2023 10:12:17 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Mon, 14 Aug 2023 10:12:17 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.104)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Mon, 14 Aug 2023 10:12:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DKNFxb78awipLJ+4Y9OlpAtDYMfB73o3s52hNLeXM24xeW97W/dFRPPZqh6zEZaTiKXUCO3ejnJdw00xhHVioStA3K957r42KvFcjpaQZ7p1v7ZUArifUnhGDfZTFN1xXy0fAnzdvDKtpoJHaBP1rb5Nc+QAECSUmhf83N3mFM57RweLUv3I8rLwq9YQ+uDOuhHcYmjGhgmxwDX3GZyxhVk6GUC1lddlEA1J7vsjXuf0M8CG5VNGkj4mK06QkxoG8xDzyTK+EFpKPGPCqsjycXaGMkTNp+TWbSDyVqMfeqA3JIMGqSDDHExp/yYIHdRw6nw0Ppaulm6SW4DMniFbsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5qI8FxvpitcIO0vxgqIfcFhrR7qPbYWzr36ExG0KFRY=;
- b=d1MfoGNJufdWdypV8EDgoIfJ74h17KN20g2S0aMAjTJFRBdcNfLz+5vM4ZzrDVLLuxR1YTJk640ZgwWMex9I9GVl9zSzvFn3a5I3ljnyX6gSxp2lZD4Dtvnz/5CUrGu1BrKKA6IwqeTvSRIWvKtaIZX73PVvhhia6iZAQyaGSGPq2+yasaUZJATxw85CWP9ffqOGe48oGKEZUZk5IS+7MbtW3WJ4fCpCfjOidc6b0EnF9Byo5bT9DxffvIjCgRRwoKhcqywkmI0JDmc9Y0Tdhp0qAKDzhivwUjanamPgs7XtSZfi8nbAZRYhNlsjHnd2jdHEqF6mjjqK0uDr4xeqWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SA0PR11MB4733.namprd11.prod.outlook.com (2603:10b6:806:9a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6678.24; Mon, 14 Aug
- 2023 17:12:14 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992%5]) with mapi id 15.20.6678.022; Mon, 14 Aug 2023
- 17:12:14 +0000
-Date: Mon, 14 Aug 2023 10:12:11 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, Dan Williams
-	<dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>
-CC: Brijesh Singh <brijesh.singh@amd.com>, Kuppuswamy Sathyanarayanan
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, Peter Zijlstra
-	<peterz@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>, Peter Gonda
-	<pgonda@google.com>, Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
-	<dionnaglaze@google.com>, Samuel Ortiz <sameo@rivosinc.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Andrew Morton
-	<akpm@linux-foundation.org>, James Bottomley
-	<James.Bottomley@hansenpartnership.com>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 0/5] tsm: Attestation Report ABI
-Message-ID: <64da606b171cc_2138e29484@dwillia2-xfh.jf.intel.com.notmuch>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD99C140
+	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 18:43:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003B4C433C8;
+	Mon, 14 Aug 2023 18:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1692038612;
+	bh=CEDtxHzewvNP/uVLV4uDBvWZBs5jA5ucEbHtniMYaqs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UkpRB+FqHK9b/sPQmPhA8AVKEJRLDRF6v6MYb/Efe+JkxkaS6NDKp7bD0dJV5yCPH
+	 +a2eY3iDgBP2ZQap6sa2k1fZmG16e8uQjHbE9xCNn/9yhqE91rYfffRiy6UmLKO/IK
+	 cL1zKiuTOGepZzqIGXAUZhhIcVkNRoS98l82ata8=
+Date: Mon, 14 Aug 2023 20:43:29 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Peter Gonda <pgonda@google.com>, Samuel Ortiz <sameo@rivosinc.com>,
+	peterz@infradead.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] tsm: Introduce a shared ABI for attestation
+ reports
+Message-ID: <2023081454-mortify-unopened-5b71@gregkh>
 References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
- <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
-X-ClientProxiedBy: MW4P222CA0002.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::7) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ <169199900110.1782217.12112722316618515086.stgit@dwillia2-xfh.jf.intel.com>
+ <2023081432-evade-proofing-fb8c@gregkh>
+ <64da59b9924d2_2138e2947f@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA0PR11MB4733:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7fff46a-05d8-4cce-aa1c-08db9ce99af8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rM6RZN6T4oJ+0Rmc4acGG4cMzW/WLLr/TuFhszCS7nFIDInlc0DxZVNhZlbmx9yDZNQShKvtWkz1SFac2yNgl+U+ysbJN3W3UqAEOv56X0BZefRoqyIpdi9PXI5GHskDeMcIrE6+mWqBC1SwzRwtJtY8uL6cwebIvWbP5VtbDIac79s8eEVgdxbcMqyGCylZKpzudB5r/+BPrDmlI0AU6/RMg/kCzfHjA6hMooYqGEAM5gyCIacuphyg06+O8ffEGtmwO489ZIVjaJyAMabQCvGOIyeDIiIMFmgTcollREYa2dst7m0b6lCIAawW1TdSCv/vWzNv/YBB9h2uQLAO200KTgtsmx7VuH3ZFwikx8UpLeDpjTbrn8Di8LOtA1Up9Iud3zSR9uH4jt0XdfUB7pisYnUpM2ekGW2HnWC5qrYu2vKvoc5eJk/y16N3GgvriJjzvU3Ekpsqk4B1Jf1uT9c+klGn3mwyeVPJ59F2+Z1V1X698TACmWt0egcByYAvH4xfQl6lNISwHUDBq2owtKY1FPIoGtSsB1oQ6GFZ9fbi3bjQ0waCFFSnEGeBRhIt
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(366004)(376002)(136003)(39860400002)(451199021)(1800799006)(186006)(66899021)(6666004)(6486002)(110136005)(6506007)(478600001)(82960400001)(86362001)(83380400001)(9686003)(7416002)(6512007)(26005)(66946007)(53546011)(2906002)(38100700002)(316002)(4326008)(66476007)(8676002)(66556008)(54906003)(8936002)(5660300002)(41300700001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mMfBS0ecTRwGYywMXFHZMYr5sw95IX9TE3EKopp7td1Cke9JJvOuNIAaKd3p?=
- =?us-ascii?Q?yj2cDPvtb+dtaYFEGhnOvSbG5hJ5blVwzPWfx/P0NktoBy88T8WkoQ1yTX8E?=
- =?us-ascii?Q?mLD2+TBUSqBz7drEx9ZavSn9coEdzXFt8rkf3jRx3SAipxKKMkBkCy0NyHm0?=
- =?us-ascii?Q?5TX1t4+vteZLz9hCbVGKHraIoV7nsTQ9Z7qK+uVw/JEv7zVv4OON4drdGsc1?=
- =?us-ascii?Q?DiXxXLu1sFDfQKWmMQO8tkerj2fMUhp2byvvQ0dflZuJc5nHu64VQdgKJNGG?=
- =?us-ascii?Q?NtIP8qD/4B3JSjuxZOV52reH+kribWNUGQ0XBTMgDuFqwyLHgQJ76HUJgyU2?=
- =?us-ascii?Q?3uwhwi46twgAIC3xGgWUP0C+g1zTH2dP/AbAWrpFZQFzr7+3VQ/QYvb5/cll?=
- =?us-ascii?Q?ec0j2+Ow5WvGLVg6TTdvseqnwy1u/6DEZDzKg9iRjr0VIBxYoJbxwA5KDap+?=
- =?us-ascii?Q?yQZmnorU5L/nsb9mpgcH7Fb6KYUeCRdhh6+ErxULhc9HiZboqejTQJlW9pnw?=
- =?us-ascii?Q?p16qhnbg+euuMrF1N1EJwRCikJJD6H8TyZAs/4vDfL5Z8V6qd7119ME3LCIB?=
- =?us-ascii?Q?Cb4S9Ua1OE3v+bcClF44nVB3ZhDsMJh7jO52fcOFIRivpd7Dj9CWX5zJ5e4H?=
- =?us-ascii?Q?h9iDBfQt5PMQGEUYjT5LT4E8HGmvjCm99Ha6OwAg+44Amg6XgSsn/zUwvEUc?=
- =?us-ascii?Q?thXMYfvNBWjmObTozeHe7X+qIImf3/xwf9ODBD50ysxWO2thHSdjDH624LIW?=
- =?us-ascii?Q?tequIWMSHjVhNut9JMr4iSZNXjrCJcgfKTC2ROcR2TqVyK0XI5/U125s7Von?=
- =?us-ascii?Q?DMaV+xxdNNjJ0lmr8WLeWCooyIHWIO3DKlPcIgDy7stQTqJKGHGkWAB5e98Z?=
- =?us-ascii?Q?zNdBQSEdjt5JO55maBX/06UBk88bSBhMG8y8cy6PIkaVUqH2QEijFkhn9oZY?=
- =?us-ascii?Q?Yu2yn/tz1CdfAKx3bhMPWTADzs8y7ko4cruLTuKn6mscikDGCjSusvu6fvWK?=
- =?us-ascii?Q?DoziSmKyZHqa5vEkvUkPkJwJR2r2kZtfco1W67YgHWqicD3CRf5uqAfZMQXZ?=
- =?us-ascii?Q?pdaBAmmKpMM+Bm5b1Rr+v9mbL3NNqBFj3y3EMFR/F/yp64meeK6cSLzzhWGg?=
- =?us-ascii?Q?v02HEBgNvLTnUkHlroXm5B2D66XQQ9Ali/IhjdoPaYVbUcamv9JfSm7LlNek?=
- =?us-ascii?Q?Pli62pqcALwlEDI4mqAf8kAfVylHo7yEIZQFRJE6XfwQ9ADFsP3FuaEXF1UY?=
- =?us-ascii?Q?jBSRA7VNF/rm7co2XgOO2m4B697QRAKt1V46jvmxtTmCZIqyUelMk25iGL9e?=
- =?us-ascii?Q?cn+rxwI6AX+sEQF2UpQ/BZ7194tH+5ZoLyr0YMTLy2hQLJYh0wVlvljlvGMI?=
- =?us-ascii?Q?oR9w0hA16LiAZQx1wpej7WTET0ivF7jSl6WrRnPi2qRRnPCaXqA4Vpr8kgaq?=
- =?us-ascii?Q?FHw6f260OhyoKFi5/EG2rSEUOhZS/PYh+lMMVpYcgpdywIsGYmZ98leWXBfr?=
- =?us-ascii?Q?c6B3+RTx/TJ0/4BSSI6OrZyJH03g0r4H1Su4dBiXMXbpdM+A0Tv3qpz7tlK+?=
- =?us-ascii?Q?u3npmyE2qAF7qd4XTW+DrbprjOuwtOpM+Viy2w/5adirEbyvKm8bNue378uK?=
- =?us-ascii?Q?lQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7fff46a-05d8-4cce-aa1c-08db9ce99af8
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2023 17:12:14.8377
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X7N40hk2tG+Xr0NogI1eU8W74cjugqLKOZZKqb3Nmt/ZxC+eQVhwaE6abwCcps3Dp0sm+tgGUvUY34wGSFwgBss+WZoaoktder4adTNOb2c=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4733
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <64da59b9924d2_2138e2947f@dwillia2-xfh.jf.intel.com.notmuch>
 
-Jeremi Piotrowski wrote:
-> On 8/14/2023 9:43 AM, Dan Williams wrote:
-> > Changes since v1:
-> > - Switch from Keyring to sysfs (James)
+On Mon, Aug 14, 2023 at 09:43:37AM -0700, Dan Williams wrote:
+> Greg Kroah-Hartman wrote:
+> > On Mon, Aug 14, 2023 at 12:43:21AM -0700, Dan Williams wrote:
+> > > One of the common operations of a TSM (Trusted Security Module) is to
+> > > provide a way for a TVM (confidential computing guest execution
+> > > environment) to take a measurement of its launch state, sign it and
+> > > submit it to a verifying party. Upon successful attestation that
+> > > verifies the integrity of the TVM additional secrets may be deployed.
+> > > The concept is common across TSMs, but the implementations are
+> > > unfortunately vendor specific. While the industry grapples with a common
+> > > definition of this attestation format [1], Linux need not make this
+> > > problem worse by defining a new ABI per TSM that wants to perform a
+> > > similar operation. The current momentum has been to invent new ioctl-ABI
+> > > per TSM per function which at best is an abdication of the kernel's
+> > > responsibility to make common infrastructure concepts share common ABI.
+> > > 
+> > > The proposal, targeted to conceptually work with TDX, SEV, COVE if not
+> > > more, is to define a sysfs interface to retrieve the TSM-specific blob.
+> > > 
+> > >     echo $hex_encoded_userdata_plus_nonce > /sys/class/tsm/tsm0/inhex
+> > >     hexdump /sys/class/tsm/tsm0/outblob
 > > 
-> > An attestation report is signed evidence of how a Trusted Virtual
-> > Machine (TVM) was launched and its current state. A verifying party uses
-> > the report to make judgements of the confidentiality and integrity of
-> > that execution environment. Upon successful attestation the verifying
-> > party may, for example, proceed to deploy secrets to the TVM to carry
-> > out a workload. Multiple confidential computing platforms share this
-> > similar flow.
-> > 
-> > The approach of adding adding new char devs and new ioctls, for what
-> > amounts to the same logical functionality with minor formatting
-> > differences across vendors [1], is untenable. Common concepts and the
-> > community benefit from common infrastructure.
-> > 
-> > Use sysfs for this facility for maintainability compared to ioctl(). The
-> > expectation is that this interface is a boot time, configure once, get
-> > report, and done flow. I.e. not something that receives ongoing
-> > transactions at runtime. However, runtime retrieval is not precluded and
-> > a mechanism to detect potential configuration conflicts from
-> > multiple-threads using this interface is included.
-> > 
+> > Why is one way a hex-encode file, that the kernel has to parse, and the
+> > other not?  Binary sysfs files should be "pass through" if at all
+> > possible, why not make them both binary and not mess with hex at all?
+> > That keeps the kernel simpler, and if userspace wants the hex format,
+> > they can provide it much easier (with less potential parsing errors).
 > 
-> I wanted to speak up to say that this does not align with the needs we have
-> in the Confidential Containers project. We want to be able to perform attestation
-> not just once during boot but during the lifecycle of the confidential VM. We
-> may need to fetch a fresh attestation report from a trusted agent but also from
-> arbitrary applications running in containers.
-> 
-> The trusted agent might need attestation when launching a new container from an
-> encrypted container image or when a new secret is being added to the VM - both
-> of these events may happen at any time (also when containerized applications
-> are already executing).
-> 
-> Container applications have their own uses for attestation, such as when they need
-> to fetch keys required to decrypt payloads. We also have things like performing
-> attestation when establishing a TLS or ssh connection to provide an attested e2e
-> encrypted communication channel.
+> I can do that. The concern was the contract around what to do with
+> partial writes since binary attributes allow writing the middle of the
+> buffer. So either the attribute needs to enforce that @offset is always
+> zero, or that the unwritten portion of the buffer is zeroed. I will go
+> with just enforcing offset=zero writes.
 
-...and you expect that the boot time attestation becomes invalidated
-later at run time such that ongoing round trips to the TSM are needed? I
-am looking at "Table 21. ATTESTATION_REPORT Structure" for example and
-not seeing data there that changes from one request to the next. Runtime
-validation likely looks more like the vTPM use case with PCRs. That will
-leverage the existing / common TPM ABI.
+Enforcing that sounds sane, thanks.
 
-> I don't think sysfs is suitable for such concurrent transactions. Also if you think
-> about exposing the sysfs interface to an application in a container, this requires
-> bind mounting rw part of the sysfs tree into the mount namespace - not ideal.
-
-sysfs is not suitable for concurrent transactions. The container would
-need to have an alternate path to request that the singleton owner of
-the interface generate new reports, or use the boot time attestation to
-derive per container communication sessions to the attestation agent.
+greg k-h
