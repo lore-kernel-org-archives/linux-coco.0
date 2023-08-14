@@ -1,47 +1,40 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6631842
-	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 07:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7832C1842
+	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 07:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1691998991; x=1723534991;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=TwoF5fq59lRt7vlTdgDePaChbL1k3CWvyUQLNnCPZ/s=;
-  b=ctOcEDrBoxsapg1mlgiLmVhvJIgT2uuXKpWa4TQexCHMPUxR2CKg/xyF
-   qbl3MEy02VL256oucUisrLoPKu9T9Mqh/BkpfIhN3dUrDj1AkbpYERo1e
-   zwrSnXWFBgGbojAyr0QYatZLEsr7JQNCgW2CHJUAvfExcK/pPZE2TJ6n2
-   iZNwdxbWxDol0Y8izn2jIlTFIvX9JuuhH2iziUSNJN1DaxMCing3vFMqK
-   l7/AVDvgqAig09491pebhHDeSyoWlQizrzbpaKmnw7CdsShtskv3JytqH
-   y9E1/8w2b5mSzFq1baiz/CcqwQ5WACaKi7cIEeNJgCNfZ+nJ45EMI6tfR
+  t=1691998996; x=1723534996;
+  h=subject:from:to:cc:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=1QNSa8PfJ6fHxxDbOfg/mWMGFnDXUsLlbGCHGWdkA9Q=;
+  b=UNwpLu4Tu/3zGPB7WrtkMbq0YdGNa/33OC8BM8IfUQWTH2sF/Ba/5g1g
+   u6HF7cJn1grSSbvXJLCpBJZXNDTyMIA9ajKsfc4+PQG7wykfwRQR4wCSh
+   fgEwUojwSR7kIvxY/O1qxBp6CwP3v1b2JuPtf/BajxqNALo3OB0aRWy+m
+   JDF31Ve9ZbSXYXUOlI/KjJHKGyBsBmZagYxizmqwJzSx9zpJ9yUnkvjJ3
+   a6XT/xTMx1cZHIbXZqGYAOLJFnLnqmHueMpveEDvPY7zQVVLynW1xTJEf
+   Yg2Av984t2Sdi1InsKYTo+MwBkGivp6pZWDGEjQp8fh9LBVNE+pa3L0p2
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="370882721"
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="370882740"
 X-IronPort-AV: E=Sophos;i="6.01,172,1684825200"; 
-   d="scan'208";a="370882721"
+   d="scan'208";a="370882740"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:43:10 -0700
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:43:16 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="736445226"
+X-IronPort-AV: E=McAfee;i="6600,9927,10801"; a="736445243"
 X-IronPort-AV: E=Sophos;i="6.01,172,1684825200"; 
-   d="scan'208";a="736445226"
+   d="scan'208";a="736445243"
 Received: from navanban-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.127.25])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:43:09 -0700
-Subject: [PATCH v2 0/5] tsm: Attestation Report ABI
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2023 00:43:15 -0700
+Subject: [PATCH v2 1/5] virt: coco: Add a coco/Makefile and coco/Kconfig
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev
-Cc: Brijesh Singh <brijesh.singh@amd.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
- Dionna Amalie Glaze <dionnaglaze@google.com>,
- Samuel Ortiz <sameo@rivosinc.com>, Dionna Glaze <dionnaglaze@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 14 Aug 2023 00:43:09 -0700
-Message-ID: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
+Cc: peterz@infradead.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 14 Aug 2023 00:43:15 -0700
+Message-ID: <169199899543.1782217.492316368774728659.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
+References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -52,61 +45,75 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Changes since v1:
-- Switch from Keyring to sysfs (James)
+In preparation for adding another coco build target, relieve
+drivers/virt/Makefile of the responsibility to track new compilation
+unit additions to drivers/virt/coco/, and do the same for
+drivers/virt/Kconfig.
 
-An attestation report is signed evidence of how a Trusted Virtual
-Machine (TVM) was launched and its current state. A verifying party uses
-the report to make judgements of the confidentiality and integrity of
-that execution environment. Upon successful attestation the verifying
-party may, for example, proceed to deploy secrets to the TVM to carry
-out a workload. Multiple confidential computing platforms share this
-similar flow.
-
-The approach of adding adding new char devs and new ioctls, for what
-amounts to the same logical functionality with minor formatting
-differences across vendors [1], is untenable. Common concepts and the
-community benefit from common infrastructure.
-
-Use sysfs for this facility for maintainability compared to ioctl(). The
-expectation is that this interface is a boot time, configure once, get
-report, and done flow. I.e. not something that receives ongoing
-transactions at runtime. However, runtime retrieval is not precluded and
-a mechanism to detect potential configuration conflicts from
-multiple-threads using this interface is included.
-
-The keyring@ list is dropped on this posting since a new key-type is no
-longer being pursued.
-
-Link: http://lore.kernel.org/r/cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com
-
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
-
-Dan Williams (5):
-      virt: coco: Add a coco/Makefile and coco/Kconfig
-      tsm: Introduce a shared ABI for attestation reports
-      virt: sevguest: Prep for kernel internal {get,get_ext}_report()
-      mm/slab: Add __free() support for kvfree
-      virt: sevguest: Add TSM_REPORTS support for SNP_{GET,GET_EXT}_REPORT
-
-
- Documentation/ABI/testing/sysfs-class-tsm |   47 +++++
- MAINTAINERS                               |    8 +
- drivers/virt/Kconfig                      |    6 -
- drivers/virt/Makefile                     |    4 
- drivers/virt/coco/Kconfig                 |   13 +
- drivers/virt/coco/Makefile                |    8 +
- drivers/virt/coco/sev-guest/Kconfig       |    1 
- drivers/virt/coco/sev-guest/sev-guest.c   |  129 ++++++++++++-
- drivers/virt/coco/tdx-guest/Kconfig       |    1 
- drivers/virt/coco/tsm.c                   |  290 +++++++++++++++++++++++++++++
- include/linux/slab.h                      |    2 
- include/linux/tsm.h                       |   45 +++++
- 12 files changed, 535 insertions(+), 19 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
+ drivers/virt/Kconfig       |    6 +-----
+ drivers/virt/Makefile      |    4 +---
+ drivers/virt/coco/Kconfig  |    9 +++++++++
+ drivers/virt/coco/Makefile |    7 +++++++
+ 4 files changed, 18 insertions(+), 8 deletions(-)
  create mode 100644 drivers/virt/coco/Kconfig
  create mode 100644 drivers/virt/coco/Makefile
- create mode 100644 drivers/virt/coco/tsm.c
- create mode 100644 include/linux/tsm.h
 
-base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
+index f79ab13a5c28..40129b6f0eca 100644
+--- a/drivers/virt/Kconfig
++++ b/drivers/virt/Kconfig
+@@ -48,10 +48,6 @@ source "drivers/virt/nitro_enclaves/Kconfig"
+ 
+ source "drivers/virt/acrn/Kconfig"
+ 
+-source "drivers/virt/coco/efi_secret/Kconfig"
+-
+-source "drivers/virt/coco/sev-guest/Kconfig"
+-
+-source "drivers/virt/coco/tdx-guest/Kconfig"
++source "drivers/virt/coco/Kconfig"
+ 
+ endif
+diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
+index e9aa6fc96fab..f29901bd7820 100644
+--- a/drivers/virt/Makefile
++++ b/drivers/virt/Makefile
+@@ -9,6 +9,4 @@ obj-y				+= vboxguest/
+ 
+ obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
+ obj-$(CONFIG_ACRN_HSM)		+= acrn/
+-obj-$(CONFIG_EFI_SECRET)	+= coco/efi_secret/
+-obj-$(CONFIG_SEV_GUEST)		+= coco/sev-guest/
+-obj-$(CONFIG_INTEL_TDX_GUEST)	+= coco/tdx-guest/
++obj-y				+= coco/
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+new file mode 100644
+index 000000000000..fc5c64f04c4a
+--- /dev/null
++++ b/drivers/virt/coco/Kconfig
+@@ -0,0 +1,9 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Confidential computing related collateral
++#
++source "drivers/virt/coco/efi_secret/Kconfig"
++
++source "drivers/virt/coco/sev-guest/Kconfig"
++
++source "drivers/virt/coco/tdx-guest/Kconfig"
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+new file mode 100644
+index 000000000000..55302ef719ad
+--- /dev/null
++++ b/drivers/virt/coco/Makefile
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Confidential computing related collateral
++#
++obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
++obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
++obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
+
