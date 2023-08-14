@@ -1,125 +1,117 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CA1A927
-	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 09:04:57 +0000 (UTC)
-Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3BBD02100EDE;
-	Mon, 14 Aug 2023 02:04:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3BBD02100EDE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1692003896;
-	bh=Hdv0TV7IK5EijrOqDm5tLbEXTg6srsWaFaDw+fUVPxg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=m7EMhRo/a55p4EjUMggu4NIf79girf/NR3+g9eY+gA8uikwrHk8AsmruKMG8sdhIk
-	 uJWJIC7lW6LdzuBuaxp5zXbPNaPd72XFYXDsIoGDXBMQbPWAZ06j4lAaN7VKxLk4bi
-	 +Q2aHfYkSDUYZC0HjO1chi9jEQyhVNpW0IMeYCbg=
-Message-ID: <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
-Date: Mon, 14 Aug 2023 11:04:52 +0200
+Received: from chg.server2.ideacentral.com (unknown [108.163.232.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F388F8F53
+	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 09:27:03 +0000 (UTC)
+Received: from mailnull by ns-196.awsdns-24.com with local (Exim 4.96)
+	id 1qVTqp-0027zd-0l
+	for linux-coco@lists.linux.dev;
+	Mon, 14 Aug 2023 04:27:03 -0500
+X-Failed-Recipients: linux-coco@lists.linux.dev
+Auto-Submitted: auto-replied
+From: Mail Delivery System <Mailer-Daemon@ns-196.awsdns-24.com>
+To: linux-coco@lists.linux.dev
+References: <20230814102700.7F5D13F4B03D7D17@lists.linux.dev>
+Content-Type: multipart/report; report-type=delivery-status; boundary=1692005223-eximdsn-1825926894
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] tsm: Attestation Report ABI
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: Brijesh Singh <brijesh.singh@amd.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Tom Lendacky
- <thomas.lendacky@amd.com>, Peter Gonda <pgonda@google.com>,
- Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
- <dionnaglaze@google.com>, Samuel Ortiz <sameo@rivosinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Mail delivery failed: returning message to sender
+Message-Id: <E1qVTqp-0027zd-0l@ns-196.awsdns-24.com>
+Date: Mon, 14 Aug 2023 04:27:03 -0500
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - ns-196.awsdns-24.com
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - 
+X-Get-Message-Sender-Via: ns-196.awsdns-24.com: sender_ident via received_protocol == local: mailnull/primary_hostname/system user
+X-Authenticated-Sender: ns-196.awsdns-24.com: mailnull
 
-On 8/14/2023 9:43 AM, Dan Williams wrote:
-> Changes since v1:
-> - Switch from Keyring to sysfs (James)
-> 
-> An attestation report is signed evidence of how a Trusted Virtual
-> Machine (TVM) was launched and its current state. A verifying party uses
-> the report to make judgements of the confidentiality and integrity of
-> that execution environment. Upon successful attestation the verifying
-> party may, for example, proceed to deploy secrets to the TVM to carry
-> out a workload. Multiple confidential computing platforms share this
-> similar flow.
-> 
-> The approach of adding adding new char devs and new ioctls, for what
-> amounts to the same logical functionality with minor formatting
-> differences across vendors [1], is untenable. Common concepts and the
-> community benefit from common infrastructure.
-> 
-> Use sysfs for this facility for maintainability compared to ioctl(). The
-> expectation is that this interface is a boot time, configure once, get
-> report, and done flow. I.e. not something that receives ongoing
-> transactions at runtime. However, runtime retrieval is not precluded and
-> a mechanism to detect potential configuration conflicts from
-> multiple-threads using this interface is included.
-> 
+--1692005223-eximdsn-1825926894
+Content-type: text/plain; charset=us-ascii
 
-I wanted to speak up to say that this does not align with the needs we have
-in the Confidential Containers project. We want to be able to perform attestation
-not just once during boot but during the lifecycle of the confidential VM. We
-may need to fetch a fresh attestation report from a trusted agent but also from
-arbitrary applications running in containers.
+This message was created automatically by mail delivery software.
 
-The trusted agent might need attestation when launching a new container from an
-encrypted container image or when a new secret is being added to the VM - both
-of these events may happen at any time (also when containerized applications
-are already executing).
+A message that you sent could not be delivered to one or more of its
+recipients. This is a permanent error. The following address(es) failed:
 
-Container applications have their own uses for attestation, such as when they need
-to fetch keys required to decrypt payloads. We also have things like performing
-attestation when establishing a TLS or ssh connection to provide an attested e2e
-encrypted communication channel.
+  linux-coco@lists.linux.dev
+    host smtp.subspace.kernel.org [44.238.234.78]
+    SMTP error from remote mail server after end of data:
+    550 5.7.1 Blocked by SpamAssassin
 
-I don't think sysfs is suitable for such concurrent transactions. Also if you think
-about exposing the sysfs interface to an application in a container, this requires
-bind mounting rw part of the sysfs tree into the mount namespace - not ideal.
+--1692005223-eximdsn-1825926894
+Content-type: message/delivery-status
 
-Jeremi
+Reporting-MTA: dns; ns-196.awsdns-24.com
 
-> The keyring@ list is dropped on this posting since a new key-type is no
-> longer being pursued.
-> 
-> Link: http://lore.kernel.org/r/cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com
-> 
-> ---
-> 
-> Dan Williams (5):
->       virt: coco: Add a coco/Makefile and coco/Kconfig
->       tsm: Introduce a shared ABI for attestation reports
->       virt: sevguest: Prep for kernel internal {get,get_ext}_report()
->       mm/slab: Add __free() support for kvfree
->       virt: sevguest: Add TSM_REPORTS support for SNP_{GET,GET_EXT}_REPORT
-> 
-> 
->  Documentation/ABI/testing/sysfs-class-tsm |   47 +++++
->  MAINTAINERS                               |    8 +
->  drivers/virt/Kconfig                      |    6 -
->  drivers/virt/Makefile                     |    4 
->  drivers/virt/coco/Kconfig                 |   13 +
->  drivers/virt/coco/Makefile                |    8 +
->  drivers/virt/coco/sev-guest/Kconfig       |    1 
->  drivers/virt/coco/sev-guest/sev-guest.c   |  129 ++++++++++++-
->  drivers/virt/coco/tdx-guest/Kconfig       |    1 
->  drivers/virt/coco/tsm.c                   |  290 +++++++++++++++++++++++++++++
->  include/linux/slab.h                      |    2 
->  include/linux/tsm.h                       |   45 +++++
->  12 files changed, 535 insertions(+), 19 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-class-tsm
->  create mode 100644 drivers/virt/coco/Kconfig
->  create mode 100644 drivers/virt/coco/Makefile
->  create mode 100644 drivers/virt/coco/tsm.c
->  create mode 100644 include/linux/tsm.h
-> 
-> base-commit: 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+Action: failed
+Final-Recipient: rfc822;linux-coco@lists.linux.dev
+Status: 5.0.0
+Remote-MTA: dns; smtp.subspace.kernel.org
+Diagnostic-Code: smtp; 550 5.7.1 Blocked by SpamAssassin
 
+--1692005223-eximdsn-1825926894
+Content-type: message/rfc822
+
+Return-path: <linux-coco@lists.linux.dev>
+Received: from v-104-153-108-120.unman-vds.premium-chicago.nfoservers.com ([104.153.108.120]:54339)
+	by ns-196.awsdns-24.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux-coco@lists.linux.dev>)
+	id 1qVTqm-00278J-2S
+	for linux-coco@lists.linux.dev;
+	Mon, 14 Aug 2023 04:27:00 -0500
+From: lists.linux.devAdministrator<linux-coco@lists.linux.dev>
+To: linux-coco@lists.linux.dev
+Subject: =?UTF-8?B?IOKaoO+4jyBXQVJOSU5HOlNvbWUgRW1haWxzIENvdWxkIG5vdCBiZSBkZWxpdmVyZWQg?=
+Date: 14 Aug 2023 10:27:00 +0100
+Message-ID: <20230814102700.7F5D13F4B03D7D17@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+
+<html><head><title></title>
+<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.19003">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body><span style=3D"background-color: rgb(204, 204, 204);"><b><i><font col=
+or=3D"#ff0000">Some Emails Could not be Delivered , Action Required</font><=
+/i></b>.</span><div><br><font color=3D"#3d85c6"><font size=3D"4"><b>Quarant=
+ined Messages Report</b> </font>&nbsp;</font><br>linux-coco@lists.linux.dev=
+<div>14-08-2023, 08:00AM <br>&nbsp;<br>Dear linux-coco,</div><div><br>
+4 messages addressed to you are currently on hold awaiting your further act=
+ion. You can release all of your held messages and permit or block future e=
+mails from the senders, or manage messages individually.<br><br>
+<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPa=
+nxX?clientID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" data-saferedir=
+ecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Emai=
+l-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwL=
+ZWfJX-xB2LHrk7CvessvAOsg">Review all</a>
+&nbsp; &nbsp;<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGb=
+cFJkycxN8DaPanxX?clientID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" d=
+ata-saferedirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%=
+23%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=
+=3DAFQjCNFFwLZWfJX-xB2LHrk7CvessvAOsg">Release all</a>
+&nbsp; &nbsp; <a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRG=
+bcFJkycxN8DaPanxX?clientID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" =
+data-saferedirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/=
+%23%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;us=
+g=3DAFQjCNFFwLZWfJX-xB2LHrk7CvessvAOsg">Block all</a><br><br>Further Inform=
+ation: <br>
+To view your entire quarantine inbox or manage your preferences, <a href=3D=
+"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPanxX?client=
+ID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" data-saferedirecturl=3D"=
+https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Email-%5D%5D&a=
+mp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwLZWfJX-xB2L=
+Hrk7CvessvAOsg">Click Here</a><br><br>The system generated this notice on 1=
+4-08-2023, at 09:00AM<br>Do not reply to this automated message.<br>
+&copy; 2023 lists.linux.dev. All rights reserved.</div></div>
+</body></html>
+
+--1692005223-eximdsn-1825926894--
