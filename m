@@ -1,33 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD99C140
-	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 18:43:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003B4C433C8;
-	Mon, 14 Aug 2023 18:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8EBC140
+	for <linux-coco@lists.linux.dev>; Mon, 14 Aug 2023 18:44:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F27C433C7;
+	Mon, 14 Aug 2023 18:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1692038612;
-	bh=CEDtxHzewvNP/uVLV4uDBvWZBs5jA5ucEbHtniMYaqs=;
+	s=korg; t=1692038686;
+	bh=LEuGpdKZpA8/+x9gfEcRV35HQ0BKOWtN4ZWuxG+F7EU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UkpRB+FqHK9b/sPQmPhA8AVKEJRLDRF6v6MYb/Efe+JkxkaS6NDKp7bD0dJV5yCPH
-	 +a2eY3iDgBP2ZQap6sa2k1fZmG16e8uQjHbE9xCNn/9yhqE91rYfffRiy6UmLKO/IK
-	 cL1zKiuTOGepZzqIGXAUZhhIcVkNRoS98l82ata8=
-Date: Mon, 14 Aug 2023 20:43:29 +0200
+	b=H2dnfqsJuLn/jmcKvc3pqBB/Igfw+P5XPRRSEw9tO/PmZRKXV3tF49ukrzxqlAY6H
+	 582Mf+7xYJWsYDx8xUc4PXgV789jx6Ve3LXT8SRGw3fZqMhB4GcJnC5VJXJ7ranB+a
+	 884DDsAZNfBl5MBCDep+IE+qxwhQvc3B82qKztOw=
+Date: Mon, 14 Aug 2023 20:44:43 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Peter Gonda <pgonda@google.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	peterz@infradead.org, x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] tsm: Introduce a shared ABI for attestation
- reports
-Message-ID: <2023081454-mortify-unopened-5b71@gregkh>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] mm/slab: Add __free() support for kvfree
+Message-ID: <2023081434-stoppage-fracture-9812@gregkh>
 References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
- <169199900110.1782217.12112722316618515086.stgit@dwillia2-xfh.jf.intel.com>
- <2023081432-evade-proofing-fb8c@gregkh>
- <64da59b9924d2_2138e2947f@dwillia2-xfh.jf.intel.com.notmuch>
+ <169199901230.1782217.9803098171993981037.stgit@dwillia2-xfh.jf.intel.com>
+ <2023081449-blurry-bath-248e@gregkh>
+ <20230814161731.GN776869@hirez.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -36,42 +32,44 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <64da59b9924d2_2138e2947f@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <20230814161731.GN776869@hirez.programming.kicks-ass.net>
 
-On Mon, Aug 14, 2023 at 09:43:37AM -0700, Dan Williams wrote:
-> Greg Kroah-Hartman wrote:
-> > On Mon, Aug 14, 2023 at 12:43:21AM -0700, Dan Williams wrote:
-> > > One of the common operations of a TSM (Trusted Security Module) is to
-> > > provide a way for a TVM (confidential computing guest execution
-> > > environment) to take a measurement of its launch state, sign it and
-> > > submit it to a verifying party. Upon successful attestation that
-> > > verifies the integrity of the TVM additional secrets may be deployed.
-> > > The concept is common across TSMs, but the implementations are
-> > > unfortunately vendor specific. While the industry grapples with a common
-> > > definition of this attestation format [1], Linux need not make this
-> > > problem worse by defining a new ABI per TSM that wants to perform a
-> > > similar operation. The current momentum has been to invent new ioctl-ABI
-> > > per TSM per function which at best is an abdication of the kernel's
-> > > responsibility to make common infrastructure concepts share common ABI.
+On Mon, Aug 14, 2023 at 06:17:31PM +0200, Peter Zijlstra wrote:
+> On Mon, Aug 14, 2023 at 05:31:27PM +0200, Greg Kroah-Hartman wrote:
+> > On Mon, Aug 14, 2023 at 12:43:32AM -0700, Dan Williams wrote:
+> > > Allow for the declaration of variables that trigger kvfree() when they
+> > > go out of scope.
 > > > 
-> > > The proposal, targeted to conceptually work with TDX, SEV, COVE if not
-> > > more, is to define a sysfs interface to retrieve the TSM-specific blob.
+> > > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > > Cc: Peter Zijlstra <peterz@infradead.org>
+> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > > ---
+> > >  include/linux/slab.h |    2 ++
+> > >  1 file changed, 2 insertions(+)
 > > > 
-> > >     echo $hex_encoded_userdata_plus_nonce > /sys/class/tsm/tsm0/inhex
-> > >     hexdump /sys/class/tsm/tsm0/outblob
+> > > diff --git a/include/linux/slab.h b/include/linux/slab.h
+> > > index 848c7c82ad5a..241025367943 100644
+> > > --- a/include/linux/slab.h
+> > > +++ b/include/linux/slab.h
+> > > @@ -746,6 +746,8 @@ static inline __alloc_size(1, 2) void *kvcalloc(size_t n, size_t size, gfp_t fla
+> > >  extern void *kvrealloc(const void *p, size_t oldsize, size_t newsize, gfp_t flags)
+> > >  		      __realloc_size(3);
+> > >  extern void kvfree(const void *addr);
+> > > +DEFINE_FREE(kvfree, void *, if (_T) kvfree(_T))
 > > 
-> > Why is one way a hex-encode file, that the kernel has to parse, and the
-> > other not?  Binary sysfs files should be "pass through" if at all
-> > possible, why not make them both binary and not mess with hex at all?
-> > That keeps the kernel simpler, and if userspace wants the hex format,
-> > they can provide it much easier (with less potential parsing errors).
+> > No need to check _T before calling this, right (as was also pointed out
+> > earlier).
 > 
-> I can do that. The concern was the contract around what to do with
-> partial writes since binary attributes allow writing the middle of the
-> buffer. So either the attribute needs to enforce that @offset is always
-> zero, or that the unwritten portion of the buffer is zeroed. I will go
-> with just enforcing offset=zero writes.
+> Well, that does mean you get an unconditional call to kvfree() in the
+> success case. Linus argued against this.
+> 
+> This way the compiler sees:
+> 
+> 	buf = NULL;
+> 	if (buf)
+> 		kvfree(buf);
+> 
+> and goes: 'let me clean that up for you'. And all is well.
 
-Enforcing that sounds sane, thanks.
-
-greg k-h
+Ah, didn't realize that, ok, nevermind :)
