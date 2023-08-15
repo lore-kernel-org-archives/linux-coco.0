@@ -1,32 +1,32 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41E015AC5
-	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 17:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3B315ACA
+	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 17:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692119950; x=1723655950;
+  t=1692119952; x=1723655952;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5UFL8g4pHO7FMqMvTNqcXsSv7Q/kEXEGlxS+r2b9T+I=;
-  b=FArx3jlro3xIWOdfhXiVlnfQhq+DQRWZMpQdytlQYeBdoY4ZTtRf/9nf
-   zWcUaAGvUUcKx871bp6N0gKPMHO3+aEy/eBZwSy+UR2nmsybhSYGY+6GA
-   zYWuuLIuLVI5feg0+J+lI6idfn/URbm50E6rNjnlHPQQMfvg7jQvB4gOV
-   c70TwJ0Kl0/NI+46y1RDmE3MEPKCKGmhylToG0v0L+3u77Sl4WSo0zbBA
-   96x/BWEGham4raLjMaLIgFYuUptj+XsDDHcIcPwMHKHhQS9optufPtZfY
-   9NfJepRj+LN9EOpavA5FbmjWvJTANk4PL71j9DbbzhXij4W8aRkJuK4hA
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="436229841"
+  bh=fnhmYRSLLF7upnCUT+rF6FBxCOUm7AKxntdwOQGVU48=;
+  b=YV0NOvq65FexhjG1Ag+eIhhbhCyqgQ0puUB0LwxpE23WNs673KturcxX
+   IIlue0vGaanFFE58tJHebZ+aRV12RrysosptD/SPRt7g9zVpDkzOzY2Mx
+   blOh+eKdwjxSVzhg8ClluVe177E81y59+gtp7yTmU4IlenpshMYuomT/C
+   9Ebg0NFE0wu2hmUiDlUPB+7izr1LJazWk4zO6rzFPbEb/E40jDJE5r9Y4
+   p199xvERd+NHIYXmShQYDle5u3+40S5iZPI4rwViqrd4nHKPOzyCiJ9XI
+   w0KZuzLCnD5Pv63pL8dAucv1WMI8KrEY7xdvJDSUzptqjoERXkN4acMAF
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="436229859"
 X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="436229841"
+   d="scan'208";a="436229859"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:06 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907693400"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907693416"
 X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="907693400"
+   d="scan'208";a="907693416"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:06 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:08 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: isaku.yamahata@intel.com,
 	Quentin Perret <qperret@google.com>,
 	wei.w.wang@intel.com,
 	Fuad Tabba <tabba@google.com>
-Subject: [PATCH 6/8] KVM: gmem, x86: Add gmem hook for invalidating private memory
-Date: Tue, 15 Aug 2023 10:18:53 -0700
-Message-Id: <8c9f0470ba6e5dc122f3f4e37c4dcfb6fb97b184.1692119201.git.isaku.yamahata@intel.com>
+Subject: [PATCH 8/8] RFC: KVM: gmem: Guarantee the order of destruction
+Date: Tue, 15 Aug 2023 10:18:55 -0700
+Message-Id: <72655345e07a02028c9239ccb2c3633dd72bbf9d.1692119201.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1692119201.git.isaku.yamahata@intel.com>
 References: <cover.1692119201.git.isaku.yamahata@intel.com>
@@ -65,167 +65,142 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michael Roth <michael.roth@amd.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-TODO: add a CONFIG option that can be to completely skip arch
-invalidation loop and avoid __weak references for arch/platforms that
-don't need an additional invalidation hook.
+Call kvm_flush_shadow_all() before releasing kvm gmem file on the guest
+destruction.
 
-In some cases, like with SEV-SNP, guest memory needs to be updated in a
-platform-specific manner before it can be safely freed back to the host.
-Add hooks to wire up handling of this sort when freeing memory in
-response to FALLOC_FL_PUNCH_HOLE operations.
+The current gmem doesn't guarantee the destruction order between kvm gmem
+and kvm_mmu_notifier_release(), which calls kvm_flush_shadow_all().  When
+destructing TD guest, it's efficient to call kvm_flush_shadow_all() before
+calling kvm_gmem_issue_arch_invalidate() on releasing its struct file
+because kvm_flush_shadow_all() releases its host key ID (HKID).  After
+releasing HKID, the TDX module doesn't have to validate the consistency of
+the Secure-EPT structure.
 
-Also issue invalidations of all allocated pages when releasing the gmem
-file so that the pages are not left in an unusable state when they get
-freed back to the host.
+One way is to make struct kvm to reference kvm gmem file.  The current gmem
+implementation chose to make kvm gmem file to reference struct kvm.  So
+reference from struct kvm to reference kvm gmem file results in a circular
+reference.  Use kvm_mmu_notifier_release() to break it.
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20230612042559.375660-3-michael.roth@amd.com
-
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
-Changes v4 -> v5:
-- Fix compile issue by adding static inline when gmem is disabled
+ include/linux/kvm_host.h | 24 ++++++++++++++++++++++++
+ virt/kvm/kvm_main.c      | 23 ++++++++++++++++++++++-
+ 2 files changed, 46 insertions(+), 1 deletion(-)
 
-Changes v2 -> v3:
-- Newly added
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  1 +
- arch/x86/kvm/x86.c                 |  6 +++++
- include/linux/kvm_host.h           |  3 +++
- virt/kvm/guest_mem.c               | 42 ++++++++++++++++++++++++++++++
- 5 files changed, 53 insertions(+)
-
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 439ba4beb5af..48f043de2ec0 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -134,6 +134,7 @@ KVM_X86_OP(complete_emulated_msr)
- KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
- KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
-+KVM_X86_OP_OPTIONAL(gmem_invalidate)
- 
- #undef KVM_X86_OP
- #undef KVM_X86_OP_OPTIONAL
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 2bc42f2887fa..17e78f9f2d17 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1735,6 +1735,7 @@ struct kvm_x86_ops {
- 
- 	int (*gmem_prepare)(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			    kvm_pfn_t pfn, gfn_t gfn, u8 *max_level);
-+	void (*gmem_invalidate)(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end);
- };
- 
- struct kvm_x86_nested_ops {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index de195ad83ec0..b54818d02cb1 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13274,6 +13274,12 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_GPL(kvm_arch_no_poll);
- 
-+#ifdef CONFIG_KVM_PRIVATE_MEM
-+void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end)
-+{
-+	static_call_cond(kvm_x86_gmem_invalidate)(kvm, start, end);
-+}
-+#endif
- 
- int kvm_spec_ctrl_test_value(u64 value)
- {
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 091bc89ae805..349b0bf81fa5 100644
+index 349b0bf81fa5..d717945702a8 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -2358,6 +2358,7 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+@@ -594,6 +594,10 @@ struct kvm_memory_slot {
+ 	u16 as_id;
+ 
  #ifdef CONFIG_KVM_PRIVATE_MEM
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			      gfn_t gfn, kvm_pfn_t *pfn, int *max_order);
-+void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end);
- #else
- static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 				   struct kvm_memory_slot *slot, gfn_t gfn,
-@@ -2366,6 +2367,8 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 	KVM_BUG_ON(1, kvm);
- 	return -EIO;
- }
-+
-+static inline void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end) { }
- #endif /* CONFIG_KVM_PRIVATE_MEM */
- 
++#ifdef CONFIG_KVM_GENERIC_MMU_NOTIFIER
++	struct file *file;
++#endif
++	/* Private guest_mem */
+ 	struct {
+ 		struct file __rcu *file;
+ 		pgoff_t pgoff;
+@@ -601,6 +605,26 @@ struct kvm_memory_slot {
  #endif
-diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-index ed03f1d12172..342d2938716a 100644
---- a/virt/kvm/guest_mem.c
-+++ b/virt/kvm/guest_mem.c
-@@ -127,6 +127,46 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
- 	KVM_MMU_UNLOCK(kvm);
+ };
+ 
++static inline int kvm_memslot_gmem_fget(struct kvm_memory_slot *memslot, int fd)
++{
++#if defined(CONFIG_KVM_PRIVATE_MEM) && defined(CONFIG_KVM_GENERIC_MMU_NOTIFIER)
++	memslot->file = fget(fd);
++	if (!memslot->file)
++		return -EBADF;
++#endif
++	return 0;
++}
++
++static inline void kvm_memslot_gmem_fput(struct kvm_memory_slot *memslot)
++{
++#if defined(CONFIG_KVM_PRIVATE_MEM) && defined(CONFIG_KVM_GENERIC_MMU_NOTIFIER)
++	if (memslot->file) {
++		fput(memslot->file);
++		memslot->file = NULL;
++	}
++#endif
++}
++
+ static inline bool kvm_slot_can_be_private(const struct kvm_memory_slot *slot)
+ {
+ 	return slot && (slot->flags & KVM_MEM_PRIVATE);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 4855d0b7a859..35bc3b64b7e4 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -926,6 +926,7 @@ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+ {
+ 	struct kvm *kvm = mmu_notifier_to_kvm(mn);
+ 	int idx;
++	int i;
+ 
+ 	/*
+ 	 * Avoide race with kvm_gmem_release().
+@@ -936,6 +937,18 @@ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+ 	idx = srcu_read_lock(&kvm->srcu);
+ 	kvm_flush_shadow_all(kvm);
+ 	srcu_read_unlock(&kvm->srcu, idx);
++
++	/* Break circular reference count: kvm->gmem, gmem->kvm. */
++	for (i = 0; i < kvm_arch_nr_memslot_as_ids(kvm); i++) {
++		struct kvm_memslots *slots = __kvm_memslots(kvm, i);
++		struct kvm_memory_slot *memslot;
++		struct hlist_node *tmp;
++		int bkt;
++
++		hash_for_each_safe(slots->id_hash, bkt, tmp, memslot, id_node[slots->node_idx])
++			kvm_memslot_gmem_fput(memslot);
++	}
++
+ 	mutex_unlock(&kvm->slots_lock);
  }
  
-+void __weak kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end)
-+{
-+}
-+
-+/* Handle arch-specific hooks needed before releasing guarded pages. */
-+static void kvm_gmem_issue_arch_invalidate(struct kvm *kvm, struct file *file,
-+					   pgoff_t start, pgoff_t end)
-+{
-+	pgoff_t file_end = i_size_read(file_inode(file)) >> PAGE_SHIFT;
-+	pgoff_t index = start;
-+
-+	end = min(end, file_end);
-+
-+	while (index < end) {
-+		struct folio *folio;
-+		unsigned int order;
-+		struct page *page;
-+		kvm_pfn_t pfn;
-+
-+		folio = __filemap_get_folio(file->f_mapping, index,
-+					    FGP_LOCK, 0);
-+		if (!folio) {
-+			index++;
-+			continue;
-+		}
-+
-+		page = folio_file_page(folio, index);
-+		pfn = page_to_pfn(page);
-+		order = folio_order(folio);
-+
-+		kvm_arch_gmem_invalidate(kvm, pfn, pfn + min((1ul << order), end - index));
-+
-+		index = folio_next_index(folio);
-+		folio_unlock(folio);
-+		folio_put(folio);
-+
-+		cond_resched();
-+	}
-+}
-+
- static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+@@ -1008,8 +1021,10 @@ static void kvm_destroy_dirty_bitmap(struct kvm_memory_slot *memslot)
+ /* This does not remove the slot from struct kvm_memslots data structures */
+ static void kvm_free_memslot(struct kvm *kvm, struct kvm_memory_slot *slot)
  {
- 	struct list_head *gmem_list = &inode->i_mapping->private_list;
-@@ -143,6 +183,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- 	list_for_each_entry(gmem, gmem_list, entry)
- 		kvm_gmem_invalidate_begin(gmem, start, end);
+-	if (slot->flags & KVM_MEM_PRIVATE)
++	if (slot->flags & KVM_MEM_PRIVATE) {
+ 		kvm_gmem_unbind(slot);
++		kvm_memslot_gmem_fput(slot);
++	}
  
-+	kvm_gmem_issue_arch_invalidate(kvm, file, start, end);
- 	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+ 	kvm_destroy_dirty_bitmap(slot);
  
- 	list_for_each_entry(gmem, gmem_list, entry)
-@@ -253,6 +294,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * memory, as its lifetime is associated with the inode, not the file.
- 	 */
- 	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
-+	kvm_gmem_issue_arch_invalidate(gmem->kvm, file, 0, -1ul);
- 	kvm_gmem_invalidate_end(gmem, 0, -1ul);
+@@ -1734,6 +1749,8 @@ static void kvm_commit_memory_region(struct kvm *kvm,
+ 		if (old->dirty_bitmap && !new->dirty_bitmap)
+ 			kvm_destroy_dirty_bitmap(old);
  
- 	list_del(&gmem->entry);
++		kvm_memslot_gmem_fput(old);
++
+ 		/*
+ 		 * The final quirk.  Free the detached, old slot, but only its
+ 		 * memory, not any metadata.  Metadata, including arch specific
+@@ -2088,6 +2105,9 @@ int __kvm_set_memory_region(struct kvm *kvm,
+ 	new->flags = mem->flags;
+ 	new->userspace_addr = mem->userspace_addr;
+ 	if (mem->flags & KVM_MEM_PRIVATE) {
++		r = kvm_memslot_gmem_fget(new, mem->gmem_fd);
++		if (r)
++			goto out;
+ 		r = kvm_gmem_bind(kvm, new, mem->gmem_fd, mem->gmem_offset);
+ 		if (r)
+ 			goto out;
+@@ -2103,6 +2123,7 @@ int __kvm_set_memory_region(struct kvm *kvm,
+ 	if (mem->flags & KVM_MEM_PRIVATE)
+ 		kvm_gmem_unbind(new);
+ out:
++	kvm_memslot_gmem_fput(new);
+ 	kfree(new);
+ 	return r;
+ }
 -- 
 2.25.1
 
