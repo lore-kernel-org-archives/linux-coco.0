@@ -1,32 +1,32 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCFE156FB
-	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 17:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0892B15AC8
+	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 17:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1692119952; x=1723655952;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IOB6egI1P24F5biT3CsDzSkUO+xJDoBD1NOa36eza/w=;
-  b=U84rY4FjvhW1FeuCbdWkXgganzi6+wPEQ68dNU0dFSRiaAgU65FBRdHM
-   mtALiyZcwQTn/snYRu/FyWFiXAJwIgTlF2lL6M35AUKbRvnFQoaJ5QUt3
-   3sz2QIZdEnB/aqLLGaFzACEnsjhyLTqDA6umVOMxb2xT6mmAle6mGlIhT
-   XNSfHDee8l7xKljL89OSF0f5qqpMk7OJ8vqd4zy03AjdqJ6ZTcVqwJsfi
-   by+QgsEYXrmA6Fps+uUdRgqK8tIv3QVWYoONpbMw2sljmB5mGvWMuk+Ud
-   WkaSFRr39mlAvGe8H9iwHyg5EeEFTfimInS4xpRqGvtY2cq3UafM566B6
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="436229848"
+  bh=QjH4UtWigF9raNSzy69mNymbrOXsfGuwJ3fVuFOdnfU=;
+  b=JMUaT6t6XXr2lM1FOwvEXBI8AlNw3lJDv9W0XJ8Wp5lNQfUsH5xQ+O+6
+   qPyejTal8AcYGqArjRoHip+iziWXDCsRZAnmVXw2mGOY172+tbC2GPDsh
+   1zR8EqKgnhhCdkrShFDkgGX7hv27IbMLKWQx5+IGMvrp65210NbOlf4SY
+   lQw8yNqCkK/ZD9rlKjKsdUHQ+Gtyh3Celsm6DAB6EAB3jbhCeISGeGivj
+   aJokOQm7cDTlex5c2vZlOdrzukI100FKTJ4PCyXQuBoEWp5y3skLIqWyx
+   HL8UBipIKaXF8s24z2cP7eE01sER59LrI+mhkMESBZwmp7pAE8sExBq+I
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="362488596"
 X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="436229848"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:09 -0700
+   d="scan'208";a="362488596"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907693407"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="848148971"
 X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="907693407"
+   d="scan'208";a="848148971"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:07 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:04 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -50,10 +50,11 @@ Cc: isaku.yamahata@intel.com,
 	Xu Yilun <yilun.xu@intel.com>,
 	Quentin Perret <qperret@google.com>,
 	wei.w.wang@intel.com,
-	Fuad Tabba <tabba@google.com>
-Subject: [PATCH 7/8] KVM: gmem: Avoid race with kvm_gmem_release and mmu notifier
-Date: Tue, 15 Aug 2023 10:18:54 -0700
-Message-Id: <c3128665745b58500f71f46db6969d02cabcc8db.1692119201.git.isaku.yamahata@intel.com>
+	Fuad Tabba <tabba@google.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PATCH 2/8] KVM: gmem: removed duplicated kvm_gmem_init()
+Date: Tue, 15 Aug 2023 10:18:49 -0700
+Message-Id: <5eec36e76ee288d56f45ff2f22b7c9f56d23b75a.1692119201.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1692119201.git.isaku.yamahata@intel.com>
 References: <cover.1692119201.git.isaku.yamahata@intel.com>
@@ -67,44 +68,24 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Add slots_lock around kvm_flush_shadow_all().  kvm_gmem_release() via
-fput() and kvm_mmu_notifier_release() via mmput() can be called
-simultaneously on process exit because vhost, /dev/vhost_{net, vsock}, can
-delay the call to release mmu_notifier, kvm_mmu_notifier_release() by its
-kernel thread.  Vhost uses get_task_mm() and mmput() for the kernel thread
-to access process memory.  mmput() can defer after closing the file.
-
-kvm_flush_shadow_all() and kvm_gmem_release() can be called simultaneously.
-With TDX KVM, HKID releasing by kvm_flush_shadow_all() and private memory
-releasing by kvm_gmem_release() can race.  Add slots_lock to
-kvm_mmu_notifier_release().
-
+Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- virt/kvm/kvm_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ virt/kvm/kvm_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 49380cd62367..4855d0b7a859 100644
+index ee331cf8ba54..8bfeb615fc4d 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -927,9 +927,16 @@ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
- 	struct kvm *kvm = mmu_notifier_to_kvm(mn);
- 	int idx;
+@@ -6308,7 +6308,6 @@ int kvm_init(unsigned vcpu_size, unsigned vcpu_align, struct module *module)
+ 	kvm_preempt_ops.sched_out = kvm_sched_out;
  
-+	/*
-+	 * Avoide race with kvm_gmem_release().
-+	 * This function is called via mmu notifier, mmu_release().
-+	 * kvm_gmem_release() is called via fput() on process exit.
-+	 */
-+	mutex_lock(&kvm->slots_lock);
- 	idx = srcu_read_lock(&kvm->srcu);
- 	kvm_flush_shadow_all(kvm);
- 	srcu_read_unlock(&kvm->srcu, idx);
-+	mutex_unlock(&kvm->slots_lock);
- }
+ 	kvm_init_debug();
+-	kvm_gmem_init();
  
- static const struct mmu_notifier_ops kvm_mmu_notifier_ops = {
+ 	r = kvm_vfio_ops_init();
+ 	if (WARN_ON_ONCE(r))
 -- 
 2.25.1
 
