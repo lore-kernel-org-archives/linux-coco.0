@@ -1,115 +1,112 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2192712B98
-	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 16:00:58 +0000 (UTC)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5232ce75e26so11478a12.1
-        for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 09:00:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AC5134CE
+	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 17:16:19 +0000 (UTC)
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4036bd4fff1so20961cf.0
+        for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 10:16:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692115257; x=1692720057;
+        d=google.com; s=20221208; t=1692119779; x=1692724579;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XpJb+OJfG+8YyFrgPemLQHLQMcBP2sLxedbL+4WkyQI=;
-        b=12OED/nj8x27vkzaTPH4huvtjj1jVfmU0hALhPhRV6AHmDCTdQhEw61qFu0CiIfn5o
-         xv23dzfwiXjilKF2V4mskgtYOlyAItz4mGPTN2wpAueITgQOP78cOJbBTI5T+qpxeb1D
-         i+enASWV3RDnzBDsM9sJhV1dKddbywFKKUa61O57PtAiIAuwyGiXXM14LOto23UpYAxE
-         PGemjOd/8RRrs6Lx5h5wH0joSWfAVxRthE6BXEwns8z2BhGRUhYJtOemEbyDvBnO44s/
-         oV7zywqJBfWLvArDGYmw2b/xFekU2Hy5QZ25lKkvn+5v2YLe42/YEkzYEm+UrksNlC2f
-         uQYA==
+        bh=1WCcY1DTF2SDkL2C38h5/rIUZSGkzG/CsRQNgHvnx78=;
+        b=M6Vx4wfJkJ366sFCowkGvQ+/tOWO0fxXKCqskj3hKgFn5l2JkDOB5JczHT5DRghjkp
+         DV6VbcYG8D/gxiY83tG+Orw4OM1ZzoyIhFC7w4p9PWtNuqTFtKthCwrFzNqgt6CJ0gWm
+         GsHptxsBfryyqd+kX21dJbj76UtP5YksoujiDKi18lAl4vcJhoH0DyG9S3Zq3RcxhOEC
+         Yfti0RtdYszrEhnONH7e2kZvYknbFDgCf6y8YcD9RHfP//9dEUcwRJzrjh1PLL/D5Rr/
+         VL+sDINBBTQZXBZg1Yvpumg3DuV7AdCL200x/BIOLDjEysi2fZpD6C8LosVbuyIUku1o
+         kNgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692115257; x=1692720057;
+        d=1e100.net; s=20221208; t=1692119779; x=1692724579;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XpJb+OJfG+8YyFrgPemLQHLQMcBP2sLxedbL+4WkyQI=;
-        b=fGvWHyCOUH0ggfYZ8hlCO+iieFbRTtYUV2cncvi1yTwAYLuTl3sEOoG0Ne5Qix8Y6h
-         47DTtw8WhfuXFDw07AcBy6YPSTgM9lk5VL1Zq4dLW+u3KvT+OD8Wma+jOXd4vWxUrjy5
-         FMcFFUjBrkU0gRr4CDK2hjeQOLawvyS75p5aAEkoeUWJMbZfRnOqDfGlbDl9F1eDsQB4
-         XfuKxnwPWXGJd4M+HYlfxUhKnf/XmBqj0uVO3kWnY2KelGTM27rtSslOUpMWbTVQG9fB
-         Jt8aGDFF+G1mVoNTKZ4RXQbyogYmzE22It58dj5lLKy/RvCsDhoZK/TvtL2z6+iUNbgP
-         8Tnw==
-X-Gm-Message-State: AOJu0Yz/G89Kc8PbDv+sxPJYY6veNsau8vzy7Tbu8U4p95ZQsa6/iAC/
-	KvP9QYsz1cF/Ova/s7A0igCgWCvrGjKtd8kFvmkugQ==
-X-Google-Smtp-Source: AGHT+IEdGhK9M3JtHIkjAkwh3xNQNLfzowgWF508z3Uj0qlA890h/RB4apOdF96xxD3sICYqpWEaeKcnTbjgLEFFWtk=
-X-Received: by 2002:a50:9fa4:0:b0:506:b280:4993 with SMTP id
- c33-20020a509fa4000000b00506b2804993mr363704edf.2.1692115256934; Tue, 15 Aug
- 2023 09:00:56 -0700 (PDT)
+        bh=1WCcY1DTF2SDkL2C38h5/rIUZSGkzG/CsRQNgHvnx78=;
+        b=FpofhHCiaUPEzxwE2GiR5SnWDpL+QWwH1sAIx6mycpt33aYzAfpErlrNzoatRipzNM
+         kxtg32Pw7issvtrtUPmmy+/mpkw2GUmgUukJNlk7jAQy2FvEDp7Mruljngu/oT8FHegg
+         gDLfbiXh+K5kn+w2LjPdF04/oJ4AoNHCYySE0DGjdRXM5okiHmaNiPNmI8l2R60rf2F2
+         xhMVe3NZmVrUEH6i1/pwb6Z2Y8r2Y9GtDduZE6fKENPrfFtfsCd5qbVD3vBYxEQaSxPN
+         12jySA3PTnD0k6+YNX2zr2N6OBqNiZ2cvCr3KbbHTvYitOuTMFTLw8wROKBtNlOjA8U2
+         wIng==
+X-Gm-Message-State: AOJu0Yx37dwD3nvajhpO5YRp7onWH/NMaHyMdoBiIFe1DuvmhDw0DjQl
+	4g8IuUNlcV1IyPnZTu7ZFSuWiOn6bJhlOZBt8owCKw==
+X-Google-Smtp-Source: AGHT+IFqL0pfdNfEWIZn8u3qSj/0LPOU2mPsKtOZnp4OjF2evlrmW8cqhJ3XupOOj5c2cRH/ZWnXdCm5O18SK7V080k=
+X-Received: by 2002:a05:622a:1106:b0:403:e1d1:8b63 with SMTP id
+ e6-20020a05622a110600b00403e1d18b63mr11535qty.24.1692119778732; Tue, 15 Aug
+ 2023 10:16:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230612042559.375660-1-michael.roth@amd.com> <20230612042559.375660-43-michael.roth@amd.com>
-In-Reply-To: <20230612042559.375660-43-michael.roth@amd.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Tue, 15 Aug 2023 10:00:45 -0600
-Message-ID: <CAMkAt6r9noa7NCukf213cpmTOFgUSvowEOoGwRaGH+E4vxL20g@mail.gmail.com>
-Subject: Re: [PATCH RFC v9 42/51] KVM: SVM: Support SEV-SNP AP Creation NAE event
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, peterz@infradead.org, 
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com, 
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	alpergun@google.com, dgilbert@redhat.com, jarkko@kernel.org, 
-	ashish.kalra@amd.com, nikunj.dadhania@amd.com, liam.merwick@oracle.com, 
-	zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
+References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
+ <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
+ <64da606b171cc_2138e29484@dwillia2-xfh.jf.intel.com.notmuch> <CAMkAt6q1ZedWBQ+ZLmD5QRKc0jcz2nrdwEAw6g8R2fZ5e2ed_A@mail.gmail.com>
+In-Reply-To: <CAMkAt6q1ZedWBQ+ZLmD5QRKc0jcz2nrdwEAw6g8R2fZ5e2ed_A@mail.gmail.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 15 Aug 2023 10:16:07 -0700
+Message-ID: <CAAH4kHYCofTtdjpxKMLO8CMX6kZjQUG69mbbwerwuW0Pk6up9A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] tsm: Attestation Report ABI
+To: Peter Gonda <pgonda@google.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, 
+	Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, linux-coco@lists.linux.dev, 
+	Brijesh Singh <brijesh.singh@amd.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Borislav Petkov <bp@alien8.de>, Samuel Ortiz <sameo@rivosinc.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, x86@kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-> +
-> +       switch (request) {
-> +       case SVM_VMGEXIT_AP_CREATE_ON_INIT:
-> +               kick = false;
-> +               fallthrough;
-> +       case SVM_VMGEXIT_AP_CREATE:
-> +               if (!page_address_valid(vcpu, svm->vmcb->control.exit_info_2)) {
-> +                       vcpu_unimpl(vcpu, "vmgexit: invalid AP VMSA address [%#llx] from guest\n",
-> +                                   svm->vmcb->control.exit_info_2);
-> +                       ret = -EINVAL;
-> +                       goto out;
-> +               }
-> +
-> +               /*
-> +                * Malicious guest can RMPADJUST a large page into VMSA which
-> +                * will hit the SNP erratum where the CPU will incorrectly signal
-> +                * an RMP violation #PF if a hugepage collides with the RMP entry
-> +                * of VMSA page, reject the AP CREATE request if VMSA address from
-> +                * guest is 2M aligned.
-> +                */
-> +               if (IS_ALIGNED(svm->vmcb->control.exit_info_2, PMD_SIZE)) {
-> +                       vcpu_unimpl(vcpu,
-> +                                   "vmgexit: AP VMSA address [%llx] from guest is unsafe as it is 2M aligned\n",
-> +                                   svm->vmcb->control.exit_info_2);
+>
+> Why do we need to be so prescriptive about "boot time" vs "runtime"
+> attestations? A user may wish to attest to several requests as Jeremi
+> notes. And why should users be forced into using a vTPM interface if
+> their usecase doesn't require all the features and complexity of a
+> vTPM? Some users may prefer less overall code within their Trusted
+> Computer Base (TCB) and a TPM emulate is a significant code base.
+>
 
-In this case and maybe the above case can we instead return an error
-to the guest instead of a #GP?
+I agree, and I was a bit too hasty to acquiesce to sysfs due to the
+TPM argument that really only applies for SEV-SNP without a whole lot
+of extra work for other backends (not to say SVSM isn't itself a whole
+lot of extra work).
 
-I think Tom suggested: SW_EXITINFO1[31:0] to 2 (meaning there was an
-error with the VMGEXIT request) and SW_EXITINFO2 to 5 (The NAE event
-input was not valid (e.g., an invalid SW_EXITINFO1 value for the AP
-Jump Table NAE event).
+> It seems like you are just reading the SNP spec, if you read the TDX
+> spec you'll see there are RTMRs which can be extended with new data.
+> This leads to a different data in the attestation. Similar there are
+> REMs in the ARM CCA spec.
+>
 
-This way a non-malicious but buggy or naive guest gets a little more
-information and a chance to retry the request?
+I'll add a note here that measurement registers are extensible at any
+point by ring0, and there should be an API for doing so, the way that
+there is for /dev/tpmX.
 
-> +                       ret = -EINVAL;
-> +                       goto out;
-> +               }
-> +
-> +               target_svm->sev_es.snp_vmsa_gpa = svm->vmcb->control.exit_info_2;
-> +               break;
-> +       case SVM_VMGEXIT_AP_DESTROY:
-> +               break;
-> +       default:
-> +               vcpu_unimpl(vcpu, "vmgexit: invalid AP creation request [%#x] from guest\n",
-> +                           request);
-> +               ret = -EINVAL;
-> +               break;
-> +       }
-> +
+It could be /dev/teemr or something to unify TDX, COVE, ARM CCA, and
+potentially a measurement register protocol extension to SEV-SNP's
+SVSM.
+I'm not sure how Intel is going to propose abstracting TCG Canonical
+Event Log measurements to reuse measurement-to-PCR<X> code points in
+the kernel as measurement-to-MR<f(X)>, or whatnot, but each technology
+should have that implementation option to extend their own measurement
+registers (and event log, potentially).
+
+I (and probably James) object with just saying the PCRs are going to
+xyz-measurement-register for simulating that integrity part of a TPM
+to get just the quote aspect and not the rest of TPM 2.0 to hide
+everything behind the TPM abstraction. It doesn't follow the Tcg spec.
+
+But I repeat myself. If we use any ioctl, we'll end up multiplexing
+the input per-technology, and at that point we essentially have
+manufacturer-specific devices much to Dan's dismay.
+
+Sysfs will certainly not be okay for measurement register-only
+technology, since there's no way to not use a hardware attestation to
+securely track measurement changes past "the static boot" (PCRs 0-7).
+I don't want to have to rely on enclave-like peer VMs that perform the
+TPM behavior.
+
+-- 
+-Dionna Glaze, PhD (she/her)
