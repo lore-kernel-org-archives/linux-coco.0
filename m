@@ -1,32 +1,32 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A135E156FB
-	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 17:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F85D15AC6
+	for <linux-coco@lists.linux.dev>; Tue, 15 Aug 2023 17:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692119950; x=1723655950;
+  t=1692119951; x=1723655951;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=o3k6+pbIB4VT1tldgWw//qkeFxus1DFuhHSn8Vxfw6U=;
-  b=bHdrJ9YAVFy5eTIdHwbAl/sd30S3VHNTEh6rn3qKyxrhRVSI5vU4jpCu
-   zYk1vtqf6nsriT97o3Ux56b4tOvfJaI70f2gR5LJNUVPvXCBvxLlEuaqx
-   1o/reYHEali+7hcQYuQ2q9eHN3Jcuazh+ijXh/MaH97zAXYCEUFIALX7j
-   6J2xFmtAQIuEuUw5NY4s4j19Tp+mnoJR42TrSvRcKg75UeHA5iQjpgwEU
-   UZXd1T2QCDvfjLtd4JC/B+c4J/1W+nQl94y2AL8usmv3/Te5glgJcAg6o
-   GMnid7WYGlEprmZ93rXrCZ2WyVQxvcyRkqM09iEGfNQhlRka/tRSiRKfg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="436229835"
+  bh=BoNjcydlwVP9IfhBLhVhZL9vVzO2yH4AyILTumiROh0=;
+  b=QdtnaR9t0YnmjwpFejUdWX6A2J9/iu39WM7TOCdaC618aeEj8+1VErZJ
+   TEFu1TV0RfUppsvS2BBdBO9WuR0GsM1vvb5qoUfCEfyGz2AFUNzxsT1CP
+   cfaDg/MrdG/Ruo7wsr1iKUG4CQPUKSBszTlucG/Ul6jgyes3ij3Pcw/FJ
+   ciJ3NiQpgqBYA98Q1QguN6Clbs0KPy1+12nEoYliUvl/rBIT8nGTH2iWi
+   tT1YrL9uJWfrvSowcYGrn/Kl1d6c0CYkCZrvm5iu/tUyidCdrTJcyt3Fr
+   AE6DzXDuE7XkOkpbYJYyg4tsqHyBNrAXET7ppZXRyifVuhPExEgebQp0J
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="362488591"
 X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="436229835"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:06 -0700
+   d="scan'208";a="362488591"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="907693389"
+X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="848148968"
 X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="907693389"
+   d="scan'208";a="848148968"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:05 -0700
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 10:19:04 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: isaku.yamahata@intel.com,
 	Quentin Perret <qperret@google.com>,
 	wei.w.wang@intel.com,
 	Fuad Tabba <tabba@google.com>
-Subject: [PATCH 5/8] KVM: gmem, x86: Add gmem hook for initializing private memory
-Date: Tue, 15 Aug 2023 10:18:52 -0700
-Message-Id: <3d5079d0a58616726e7471a93e3295676148865a.1692119201.git.isaku.yamahata@intel.com>
+Subject: [PATCH 1/8] KVM: gmem: Make kvm_gmem_bind return EBADF on wrong fd
+Date: Tue, 15 Aug 2023 10:18:48 -0700
+Message-Id: <ea8d844e59a6586cc722dfa1af203560aa4795de.1692119201.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1692119201.git.isaku.yamahata@intel.com>
 References: <cover.1692119201.git.isaku.yamahata@intel.com>
@@ -65,87 +65,29 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michael Roth <michael.roth@amd.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-All gmem pages are expected to be 'private' as defined by a particular
-arch/platform. Platforms like SEV-SNP require additional operations to
-move these pages into a private state, so implement a hook that can be
-used to prepare this memory prior to mapping it into a guest.
+When kvm_gmem_bind() fails fget(), return EBADF instead of EINVAL because
+EBADF is more appropriate.
 
-In the case of SEV-SNP, whether or not a 2MB page can be mapped via a
-2MB mapping in the guest's nested page table depends on whether or not
-any subpages within the range have already been initialized as private
-in the RMP table, so this hook will also be used by the KVM MMU to clamp
-the maximum mapping size accordingly.
-
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20230612042559.375660-2-michael.roth@amd.com
-
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
-Changes v2 -> v3:
-- Newly added
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  3 +++
- arch/x86/kvm/mmu/mmu.c             | 12 ++++++++++--
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ virt/kvm/guest_mem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 13bc212cd4bc..439ba4beb5af 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -133,6 +133,7 @@ KVM_X86_OP(msr_filter_changed)
- KVM_X86_OP(complete_emulated_msr)
- KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
-+KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
+diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
+index db644f7fa48b..c81d2bb9ae93 100644
+--- a/virt/kvm/guest_mem.c
++++ b/virt/kvm/guest_mem.c
+@@ -479,7 +479,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
  
- #undef KVM_X86_OP
- #undef KVM_X86_OP_OPTIONAL
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index bbefd79b7950..2bc42f2887fa 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1732,6 +1732,9 @@ struct kvm_x86_ops {
- 	 * Returns vCPU specific APICv inhibit reasons
- 	 */
- 	unsigned long (*vcpu_get_apicv_inhibit_reasons)(struct kvm_vcpu *vcpu);
-+
-+	int (*gmem_prepare)(struct kvm *kvm, struct kvm_memory_slot *slot,
-+			    kvm_pfn_t pfn, gfn_t gfn, u8 *max_level);
- };
+ 	file = fget(fd);
+ 	if (!file)
+-		return -EINVAL;
++		return -EBADF;
  
- struct kvm_x86_nested_ops {
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 05943ccb55a4..06900b01b8f0 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4352,6 +4352,7 @@ static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
- 				   struct kvm_page_fault *fault)
- {
- 	int max_order, r;
-+	u8 max_level;
- 
- 	if (!kvm_slot_can_be_private(fault->slot))
- 		return kvm_do_memory_fault_exit(vcpu, fault);
-@@ -4361,8 +4362,15 @@ static int kvm_faultin_pfn_private(struct kvm_vcpu *vcpu,
- 	if (r)
- 		return r;
- 
--	fault->max_level = min(kvm_max_level_for_order(max_order),
--			       fault->max_level);
-+	max_level = kvm_max_level_for_order(max_order);
-+	r = static_call(kvm_x86_gmem_prepare)(vcpu->kvm, fault->slot, fault->pfn,
-+					      fault->gfn, &max_level);
-+	if (r) {
-+		kvm_release_pfn_clean(fault->pfn);
-+		return r;
-+	}
-+
-+	fault->max_level = min(max_level, fault->max_level);
- 	fault->map_writable = !(fault->slot->flags & KVM_MEM_READONLY);
- 	return RET_PF_CONTINUE;
- }
+ 	if (file->f_op != &kvm_gmem_fops)
+ 		goto err;
 -- 
 2.25.1
 
