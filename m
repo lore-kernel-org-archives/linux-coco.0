@@ -1,130 +1,139 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E93392;
-	Wed, 16 Aug 2023 00:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692146603; x=1723682603;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=EXFt+DVMPpy5/WiDLt0PKUW2C3TnX2KNn2swCXJ/iCM=;
-  b=WRn29HQMLB7163zt52vnEF9wFZdKprD9Vjw+u/2BRytomaEwS8CTZD26
-   UlsUwf+5Ojq1Ns9qqt/LMVFqookoEVWmnW6DgJJUilxQGiFCl5ekdXqlK
-   38pXBlL78WOg3iCjlTY4Tl0pgq12zcgXP11/KzZPlk+e8q7v+oh1VtIme
-   OHgPIK2thKZuOzDKQ8OmkYvdnmmxEXozzsTDNJK92uCCnhmIiKXKPRaLZ
-   Wwg8R/zc9W7i3w8wzRJqqimyZ8CesaLBuCnTu7PCGEDt9k/krWEopJh0o
-   vdf/UdLQfWNVaV6SoQX8lXY7G+krkEupFAeeFfeR5qKtpabngazx1mSqG
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="352739004"
-X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="352739004"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2023 17:43:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10803"; a="763459820"
-X-IronPort-AV: E=Sophos;i="6.01,175,1684825200"; 
-   d="scan'208";a="763459820"
-Received: from lkp-server02.sh.intel.com (HELO b5fb8d9e1ffc) ([10.239.97.151])
-  by orsmga008.jf.intel.com with ESMTP; 15 Aug 2023 17:43:18 -0700
-Received: from kbuild by b5fb8d9e1ffc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qW4d3-0001M3-0B;
-	Wed, 16 Aug 2023 00:43:17 +0000
-Date: Wed, 16 Aug 2023 08:42:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: isaku.yamahata@intel.com, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, isaku.yamahata@intel.com,
-	isaku.yamahata@gmail.com, Michael Roth <michael.roth@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>, erdemaktas@google.com,
-	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com,
-	linux-coco@lists.linux.dev, Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Yuan Yao <yuan.yao@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH 6/8] KVM: gmem, x86: Add gmem hook for invalidating
- private memory
-Message-ID: <202308160801.jwbys3HI-lkp@intel.com>
-References: <8c9f0470ba6e5dc122f3f4e37c4dcfb6fb97b184.1692119201.git.isaku.yamahata@intel.com>
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062E1C2DF
+	for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 09:43:07 +0000 (UTC)
+Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+	by linux.microsoft.com (Postfix) with ESMTPSA id BAC74211F608;
+	Wed, 16 Aug 2023 02:42:56 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BAC74211F608
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1692178981;
+	bh=Gwx6Xom00MkPioxw+Pi/in06ebPb82sxsdQ1BTchRPQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LnQngDegS3VFFejo2RsFDVkREjej8N7XKG+/xZdAWcLdBjmIOPnd6PXWAU89MXP6+
+	 8QAitHkCpGhwzq6fkogXgjpcZwz6ufMOCiLyoYouCQWOprRH9l4u5If53OMyahYIep
+	 NyRy1GklnieroaKo5MSTiPxqJvJMBLZ7k30wDwdQ=
+Message-ID: <85f4f047-43a4-4a66-8913-f1a55f8cf0fa@linux.microsoft.com>
+Date: Wed, 16 Aug 2023 11:42:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8c9f0470ba6e5dc122f3f4e37c4dcfb6fb97b184.1692119201.git.isaku.yamahata@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] tsm: Attestation Report ABI
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: Brijesh Singh <brijesh.singh@amd.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Peter Gonda <pgonda@google.com>,
+ Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
+ <dionnaglaze@google.com>, Samuel Ortiz <sameo@rivosinc.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
+ <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
+ <64da606b171cc_2138e29484@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Language: en-US
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <64da606b171cc_2138e29484@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 8/14/2023 7:12 PM, Dan Williams wrote:
+> Jeremi Piotrowski wrote:
+>> On 8/14/2023 9:43 AM, Dan Williams wrote:
+>>> Changes since v1:
+>>> - Switch from Keyring to sysfs (James)
+>>>
+>>> An attestation report is signed evidence of how a Trusted Virtual
+>>> Machine (TVM) was launched and its current state. A verifying party uses
+>>> the report to make judgements of the confidentiality and integrity of
+>>> that execution environment. Upon successful attestation the verifying
+>>> party may, for example, proceed to deploy secrets to the TVM to carry
+>>> out a workload. Multiple confidential computing platforms share this
+>>> similar flow.
+>>>
+>>> The approach of adding adding new char devs and new ioctls, for what
+>>> amounts to the same logical functionality with minor formatting
+>>> differences across vendors [1], is untenable. Common concepts and the
+>>> community benefit from common infrastructure.
+>>>
+>>> Use sysfs for this facility for maintainability compared to ioctl(). The
+>>> expectation is that this interface is a boot time, configure once, get
+>>> report, and done flow. I.e. not something that receives ongoing
+>>> transactions at runtime. However, runtime retrieval is not precluded and
+>>> a mechanism to detect potential configuration conflicts from
+>>> multiple-threads using this interface is included.
+>>>
+>>
+>> I wanted to speak up to say that this does not align with the needs we have
+>> in the Confidential Containers project. We want to be able to perform attestation
+>> not just once during boot but during the lifecycle of the confidential VM. We
+>> may need to fetch a fresh attestation report from a trusted agent but also from
+>> arbitrary applications running in containers.
+>>
+>> The trusted agent might need attestation when launching a new container from an
+>> encrypted container image or when a new secret is being added to the VM - both
+>> of these events may happen at any time (also when containerized applications
+>> are already executing).
+>>
+>> Container applications have their own uses for attestation, such as when they need
+>> to fetch keys required to decrypt payloads. We also have things like performing
+>> attestation when establishing a TLS or ssh connection to provide an attested e2e
+>> encrypted communication channel.
+> 
+> ...and you expect that the boot time attestation becomes invalidated
+> later at run time such that ongoing round trips to the TSM are needed?
 
-kernel test robot noticed the following build errors:
+It's not that it would become invalidated - it's that it will have served its purpose.
+Attestation is used to establish trust with a relying party, for every other relying
+party you'll need to generate a fresh attestation report. So we can't lock ourselves
+into a specific protocol in the kernel here that only assumes a single party.
 
-[auto build test ERROR on 89b6a7b873d72280e85976bbb8fe4998b2ababa8]
+The one shot "decrypt disk image during boot" attestation use case is relevant elsewhere,
+but not so much for containers.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/isaku-yamahata-intel-com/KVM-gmem-Make-kvm_gmem_bind-return-EBADF-on-wrong-fd/20230816-012315
-base:   89b6a7b873d72280e85976bbb8fe4998b2ababa8
-patch link:    https://lore.kernel.org/r/8c9f0470ba6e5dc122f3f4e37c4dcfb6fb97b184.1692119201.git.isaku.yamahata%40intel.com
-patch subject: [PATCH 6/8] KVM: gmem, x86: Add gmem hook for invalidating private memory
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20230816/202308160801.jwbys3HI-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20230816/202308160801.jwbys3HI-lkp@intel.com/reproduce)
+> I am looking at "Table 21. ATTESTATION_REPORT Structure" for example and
+> not seeing data there that changes from one request to the next.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202308160801.jwbys3HI-lkp@intel.com/
+REPORT_DATA in SNP or REPORTDATA in TDX. You want to have a nonce/challenge or short
+lived session keys covered by the report, so you hash some data structure that includes
+them and request an attestation report with the hash in "report data".
 
-All errors (new ones prefixed by >>):
-
-   arch/x86/kvm/../../../virt/kvm/guest_mem.c: In function 'kvm_gmem_punch_hole':
->> arch/x86/kvm/../../../virt/kvm/guest_mem.c:186:40: error: 'kvm' undeclared (first use in this function)
-     186 |         kvm_gmem_issue_arch_invalidate(kvm, file, start, end);
-         |                                        ^~~
-   arch/x86/kvm/../../../virt/kvm/guest_mem.c:186:40: note: each undeclared identifier is reported only once for each function it appears in
->> arch/x86/kvm/../../../virt/kvm/guest_mem.c:186:45: error: 'file' undeclared (first use in this function)
-     186 |         kvm_gmem_issue_arch_invalidate(kvm, file, start, end);
-         |                                             ^~~~
+Here's an example of the verifying side:
+https://github.com/confidential-containers/attestation-service/blob/main/attestation-service/src/verifier/tdx/mod.rs#L40-L52
 
 
-vim +/kvm +186 arch/x86/kvm/../../../virt/kvm/guest_mem.c
+> Runtime validation likely looks more like the vTPM use case with PCRs. That will
+> leverage the existing / common TPM ABI.> 
 
-   169	
-   170	static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
-   171	{
-   172		struct list_head *gmem_list = &inode->i_mapping->private_list;
-   173		pgoff_t start = offset >> PAGE_SHIFT;
-   174		pgoff_t end = (offset + len) >> PAGE_SHIFT;
-   175		struct kvm_gmem *gmem;
-   176	
-   177		/*
-   178		 * Bindings must stable across invalidation to ensure the start+end
-   179		 * are balanced.
-   180		 */
-   181		filemap_invalidate_lock(inode->i_mapping);
-   182	
-   183		list_for_each_entry(gmem, gmem_list, entry)
-   184			kvm_gmem_invalidate_begin(gmem, start, end);
-   185	
- > 186		kvm_gmem_issue_arch_invalidate(kvm, file, start, end);
-   187		truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
-   188	
-   189		list_for_each_entry(gmem, gmem_list, entry)
-   190			kvm_gmem_invalidate_end(gmem, start, end);
-   191	
-   192		filemap_invalidate_unlock(inode->i_mapping);
-   193	
-   194		return 0;
-   195	}
-   196	
+Not at all, these two things are orthogonal. PCRs can be extended at runtime but you'll
+struggle to use them as described above. You'd have to designate a PCR for this purpose,
+lock against concurrent users (across multiple TPM commands) and reset it before every
+use. Highly impractical.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+TPM2 has a similar concept to "REPORTDATA" called "qualifying data" which is passed
+when requesting a quote. This highlights the need for an interface to regenerate evidence
+(attestation report or quote) with user defined data mixed in.
+
+>> I don't think sysfs is suitable for such concurrent transactions. Also if you think
+>> about exposing the sysfs interface to an application in a container, this requires
+>> bind mounting rw part of the sysfs tree into the mount namespace - not ideal.
+> 
+> sysfs is not suitable for concurrent transactions. The container would
+> need to have an alternate path to request that the singleton owner of
+> the interface generate new reports, or use the boot time attestation to
+> derive per container communication sessions to the attestation agent.
+
+It would be possible to use a userspace agent to coordinate access to generating reports,
+but that takes us further away from standardization - applications would have to be
+tailored to a specific environment instead of relying on the same kernel (hardware)
+interface everywhere.
+
+I don't follow this part:
+"use the boot time attestation to derive per container communication sessions to the attestation agent".
+In general we want the application attestation report to be linked directly to a hardware
+root of trust, without chaining through some intermediate entity.
