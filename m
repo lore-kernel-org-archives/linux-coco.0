@@ -1,84 +1,165 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B1014A80
-	for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 19:38:50 +0000 (UTC)
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-407db3e9669so3501cf.1
-        for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 12:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692214729; x=1692819529;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JNDp3i2bBwoOV1rWtC/ohzjbdWhzdLjzTZ59sTAggCU=;
-        b=zauDROUUKvcs8lCQ/BfV9kcQA4HIORrUlzsCcdVtdntWypJgGELZqZcEPLioY0DX1d
-         UZTL8VoPIfEhBk0xRjDcyf9AqwQrbV0warNe/Q5irckHL//x2ua7KFrsy9YP53ps8gIr
-         Y25/CTQUJBZxNty4Qz8tQDZf36+O091toHhi80CCb7b0XTD8jR2DttEpmTMY19WOJcyO
-         X/hU+x6DLfL7tVILoR3oXr77fDuqp4wQ7rgEtiSf+7j/37CGM66AepJOf4st574goUhl
-         hcJa09xtf3ESJfDOe4BfolpD04dXesNC+RWoz2KCs0hYYa9GxZoWxlWIbPdJwYStxD+G
-         47tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692214729; x=1692819529;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JNDp3i2bBwoOV1rWtC/ohzjbdWhzdLjzTZ59sTAggCU=;
-        b=N6RWeB8MtxXAElcmCJt5RN1UG0/aILhiWTUbkQzHHzJ3LMP/JnI1woUFhAld42V0ij
-         SGUdSyNUNZyGzTv9rsS2U/SAggy0mYx3JW3H5EHjJWVBR8+8JInUSgvkennZH/20sbw7
-         aD1E5dnElTI//0P6wMqSRPcImCPbDFw1VIpfoCOr+wiuAKYpLUxPq/B+HcaAYq48o/VC
-         7f9Vp3L4iodwbFqyv74oeKHbmU8E1Ea6cS1Rwwke9cmIo5OPyuCLugHBwNdi7gw/yYrm
-         TEjWHBVFJR9DLtVjqFWgaETRhEyKqRAdBomfLG3Md1juoYeKo6ZYIotFi+WjR3AiwjiK
-         oKeA==
-X-Gm-Message-State: AOJu0YxqT0+1m07nfqQjTSp5UEChIgSiIkYKZu2vcSrpO9CGzGvrRNGY
-	21RCotHq+kE1W/1CrKknbkKOo12c1uXUcC9NjA10cA==
-X-Google-Smtp-Source: AGHT+IFpIaCPqotOsX3UISM7uhBPq1XQaPa+MtAyjklx4cxfSxVons1e1QLTn7tMSjl7u9VZ5PpbIJ+PhOxSqkDX0oM=
-X-Received: by 2002:ac8:5e48:0:b0:403:a43d:be41 with SMTP id
- i8-20020ac85e48000000b00403a43dbe41mr53686qtx.20.1692214729529; Wed, 16 Aug
- 2023 12:38:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ACE17ACE
+	for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 20:28:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B776C433C7;
+	Wed, 16 Aug 2023 20:28:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1692217701;
+	bh=yf25bicjIxz7p5iTZ7Dqx9bZgB66p7ZsNKtdIgM1exM=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ebVrwvzD+buuQK53Q8z0GiOCnS2jSV+3peLErmUKaYpssZaJXqVpWu6EuRR4Q2OMe
+	 +vWIJxPxLesV+wZRs/9fDfgeFt82HeTj6obUoQ5wBBK9YfrNGDo3/HbyluKAcq/VRI
+	 2pkok435Zuuxwe3oTWqLQ9PK1hT8wHhjBRiggAVqpM4wb+Ti0ZktRuj8MZhUwRGCAq
+	 94omYkqu/unRfHIpWyp2/C9BMCtt5EcpzLox3S9SS21CmtxcqlyQrnGd6yVJ2MhIg/
+	 S8t7Iw1T6Ji71wEKHRZpIuqqX0N0MbXMiWA2sUjlHpvSXGDaPF0cGCq+8qR2ORPVSx
+	 DsDL2ly5IUiCA==
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
- <169199900677.1782217.12516417657696965559.stgit@dwillia2-xfh.jf.intel.com>
- <CAAH4kHbRkFdmdQyPHjOjnnyuYXPLT2GKmQTE8fU9aDFMtri8ew@mail.gmail.com>
- <64dab7a322eef_2138e29421@dwillia2-xfh.jf.intel.com.notmuch>
- <ed962dc3-1e7e-8959-7921-365fae705594@amd.com> <64dbe8079511b_47b57294de@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-In-Reply-To: <64dbe8079511b_47b57294de@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Wed, 16 Aug 2023 12:38:38 -0700
-Message-ID: <CAAH4kHaM_hUPNFLpg-2unnBFL5b_ZYrrj=ZuYub9kR_CxVkqdQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] virt: sevguest: Prep for kernel internal {get, get_ext}_report()
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, linux-coco@lists.linux.dev, 
-	Borislav Petkov <bp@alien8.de>, Brijesh Singh <brijesh.singh@amd.com>, peterz@infradead.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Aug 2023 23:28:15 +0300
+Message-Id: <CUU93XA8UKMG.X15YWDK533GB@suppilovahvero>
+Cc: <isaku.yamahata@gmail.com>, "Michael Roth" <michael.roth@amd.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>, "Sean Christopherson"
+ <seanjc@google.com>, <erdemaktas@google.com>, "Sagi Shahar"
+ <sagis@google.com>, "David Matlack" <dmatlack@google.com>, "Kai Huang"
+ <kai.huang@intel.com>, "Zhi Wang" <zhi.wang.linux@gmail.com>,
+ <chen.bo@intel.com>, <linux-coco@lists.linux.dev>, "Chao Peng"
+ <chao.p.peng@linux.intel.com>, "Ackerley Tng" <ackerleytng@google.com>,
+ "Vishal Annapurve" <vannapurve@google.com>, "Yuan Yao"
+ <yuan.yao@linux.intel.com>, "Xu Yilun" <yilun.xu@intel.com>, "Quentin
+ Perret" <qperret@google.com>, <wei.w.wang@intel.com>, "Fuad Tabba"
+ <tabba@google.com>
+Subject: Re: [PATCH 4/8] KVM: gmem: protect kvm_mmu_invalidate_end()
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: <isaku.yamahata@intel.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.14.0
+References: <cover.1692119201.git.isaku.yamahata@intel.com>
+ <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
+In-Reply-To: <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
 
-> Definitely, instead it was this comment from James that gave me pause:
+On Tue Aug 15, 2023 at 8:18 PM EEST,  wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
 >
-> "To get a bit off topic, I'm not sure derived keys are much use.  The
-> problem is in SNP that by the time the PSP does the derivation, the key
-> is both tied to the physical system and derived from a measurement too
-> general to differentiate between VM images (so one VM could read
-> another VMs stored secrets)."
+> kvm_mmu_invalidate_end() updates struct kvm::mmu_invalidate_in_progress
+> and it's protected by kvm::mmu_lock.  call kvm_mmu_invalidate_end() befor=
+e
+> unlocking it. Not after the unlock.
 >
+> Fixes: 8e9009ca6d14 ("KVM: Introduce per-page memory attributes")
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> ---
+>  virt/kvm/kvm_main.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+>
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 8bfeb615fc4d..49380cd62367 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -535,6 +535,7 @@ struct kvm_mmu_notifier_range {
+>  	} arg;
+>  	gfn_handler_t handler;
+>  	on_lock_fn_t on_lock;
+> +	on_unlock_fn_t before_unlock;
+>  	on_unlock_fn_t on_unlock;
+>  	bool flush_on_ret;
+>  	bool may_block;
+> @@ -629,6 +630,8 @@ static __always_inline int __kvm_handle_hva_range(str=
+uct kvm *kvm,
+>  		kvm_flush_remote_tlbs(kvm);
+> =20
+>  	if (locked) {
+> +		if (!IS_KVM_NULL_FN(range->before_unlock))
+> +			range->before_unlock(kvm);
+>  		KVM_MMU_UNLOCK(kvm);
+>  		if (!IS_KVM_NULL_FN(range->on_unlock))
+>  			range->on_unlock(kvm);
+> @@ -653,6 +656,7 @@ static __always_inline int kvm_handle_hva_range(struc=
+t mmu_notifier *mn,
+>  		.arg.pte	=3D pte,
+>  		.handler	=3D handler,
+>  		.on_lock	=3D (void *)kvm_null_fn,
+> +		.before_unlock	=3D (void *)kvm_null_fn,
+>  		.on_unlock	=3D (void *)kvm_null_fn,
+>  		.flush_on_ret	=3D true,
+>  		.may_block	=3D false,
+> @@ -672,6 +676,7 @@ static __always_inline int kvm_handle_hva_range_no_fl=
+ush(struct mmu_notifier *mn
+>  		.end		=3D end,
+>  		.handler	=3D handler,
+>  		.on_lock	=3D (void *)kvm_null_fn,
+> +		.before_unlock	=3D (void *)kvm_null_fn,
+>  		.on_unlock	=3D (void *)kvm_null_fn,
+>  		.flush_on_ret	=3D false,
+>  		.may_block	=3D false,
+> @@ -776,6 +781,7 @@ static int kvm_mmu_notifier_invalidate_range_start(st=
+ruct mmu_notifier *mn,
+>  		.end		=3D range->end,
+>  		.handler	=3D kvm_mmu_unmap_gfn_range,
+>  		.on_lock	=3D kvm_mmu_invalidate_begin,
+> +		.before_unlock	=3D (void *)kvm_null_fn,
+>  		.on_unlock	=3D kvm_arch_guest_memory_reclaimed,
+>  		.flush_on_ret	=3D true,
+>  		.may_block	=3D mmu_notifier_range_blockable(range),
+> @@ -815,6 +821,8 @@ static int kvm_mmu_notifier_invalidate_range_start(st=
+ruct mmu_notifier *mn,
+> =20
+>  void kvm_mmu_invalidate_end(struct kvm *kvm)
+>  {
+> +	lockdep_assert_held_write(&kvm->mmu_lock);
+> +
+>  	/*
+>  	 * This sequence increase will notify the kvm page fault that
+>  	 * the page that is going to be mapped in the spte could have
+> @@ -846,6 +854,7 @@ static void kvm_mmu_notifier_invalidate_range_end(str=
+uct mmu_notifier *mn,
+>  		.end		=3D range->end,
+>  		.handler	=3D (void *)kvm_null_fn,
+>  		.on_lock	=3D kvm_mmu_invalidate_end,
+> +		.before_unlock	=3D (void *)kvm_null_fn,
+>  		.on_unlock	=3D (void *)kvm_null_fn,
+>  		.flush_on_ret	=3D false,
+>  		.may_block	=3D mmu_notifier_range_blockable(range),
+> @@ -2433,6 +2442,8 @@ static __always_inline void kvm_handle_gfn_range(st=
+ruct kvm *kvm,
+>  		kvm_flush_remote_tlbs(kvm);
+> =20
+>  	if (locked) {
+> +		if (!IS_KVM_NULL_FN(range->before_unlock))
+> +			range->before_unlock(kvm);
+>  		KVM_MMU_UNLOCK(kvm);
+>  		if (!IS_KVM_NULL_FN(range->on_unlock))
+>  			range->on_unlock(kvm);
+> @@ -2447,6 +2458,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kv=
+m, unsigned long attributes,
+>  		.end =3D end,
+>  		.handler =3D kvm_mmu_unmap_gfn_range,
+>  		.on_lock =3D kvm_mmu_invalidate_begin,
+> +		.before_unlock	=3D (void *)kvm_null_fn,
+>  		.on_unlock =3D (void *)kvm_null_fn,
+>  		.flush_on_ret =3D true,
+>  		.may_block =3D true,
+> @@ -2457,7 +2469,8 @@ static int kvm_vm_set_mem_attributes(struct kvm *kv=
+m, unsigned long attributes,
+>  		.arg.attributes =3D attributes,
+>  		.handler =3D kvm_arch_post_set_memory_attributes,
+>  		.on_lock =3D (void *)kvm_null_fn,
+> -		.on_unlock =3D kvm_mmu_invalidate_end,
+> +		.before_unlock =3D kvm_mmu_invalidate_end,
+> +		.on_unlock =3D (void *)kvm_null_fn,
+>  		.may_block =3D true,
+>  	};
+>  	unsigned long i;
+> --=20
+> 2.25.1
 
-Key derivation on AMD SEV-SNP is not necessarily tied to a physical
-system with the introduction of VLEK-based attestation. It's now tied
-to a CSP's fleet of machines. We can use key derivation in the SVSM as
-a basis for further key derivation based on measurement registers, so
-the utility increases to provide something like persisted sealed data
-that can only be unsealed when the SVSM witnesses a particular runtime
-measurement configuration.
-We can use NIST 800-90A Rev. 1 for combining keys from the PSP with
-measurement register values for example.
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-> http://lore.kernel.org/r/c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com
-
-
-
-
---
--Dionna Glaze, PhD (she/her)
+BR, Jarkko
