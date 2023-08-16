@@ -1,139 +1,117 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062E1C2DF
-	for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 09:43:07 +0000 (UTC)
-Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
-	by linux.microsoft.com (Postfix) with ESMTPSA id BAC74211F608;
-	Wed, 16 Aug 2023 02:42:56 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BAC74211F608
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1692178981;
-	bh=Gwx6Xom00MkPioxw+Pi/in06ebPb82sxsdQ1BTchRPQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LnQngDegS3VFFejo2RsFDVkREjej8N7XKG+/xZdAWcLdBjmIOPnd6PXWAU89MXP6+
-	 8QAitHkCpGhwzq6fkogXgjpcZwz6ufMOCiLyoYouCQWOprRH9l4u5If53OMyahYIep
-	 NyRy1GklnieroaKo5MSTiPxqJvJMBLZ7k30wDwdQ=
-Message-ID: <85f4f047-43a4-4a66-8913-f1a55f8cf0fa@linux.microsoft.com>
-Date: Wed, 16 Aug 2023 11:42:54 +0200
+Received: from chg.server2.ideacentral.com (unknown [108.163.232.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DB25CBC
+	for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 11:05:33 +0000 (UTC)
+Received: from mailnull by ns-196.awsdns-24.com with local (Exim 4.96)
+	id 1qWELE-00EGC8-1B
+	for linux-coco@lists.linux.dev;
+	Wed, 16 Aug 2023 06:05:32 -0500
+X-Failed-Recipients: linux-coco@lists.linux.dev
+Auto-Submitted: auto-replied
+From: Mail Delivery System <Mailer-Daemon@ns-196.awsdns-24.com>
+To: linux-coco@lists.linux.dev
+References: <20230816120528.99581B15228A21F9@lists.linux.dev>
+Content-Type: multipart/report; report-type=delivery-status; boundary=1692183932-eximdsn-2061794812
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] tsm: Attestation Report ABI
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: Brijesh Singh <brijesh.singh@amd.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Tom Lendacky
- <thomas.lendacky@amd.com>, Peter Gonda <pgonda@google.com>,
- Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
- <dionnaglaze@google.com>, Samuel Ortiz <sameo@rivosinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- James Bottomley <James.Bottomley@hansenpartnership.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
- <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
- <64da606b171cc_2138e29484@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <64da606b171cc_2138e29484@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Mail delivery failed: returning message to sender
+Message-Id: <E1qWELE-00EGC8-1B@ns-196.awsdns-24.com>
+Date: Wed, 16 Aug 2023 06:05:32 -0500
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - ns-196.awsdns-24.com
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - 
+X-Get-Message-Sender-Via: ns-196.awsdns-24.com: sender_ident via received_protocol == local: mailnull/primary_hostname/system user
+X-Authenticated-Sender: ns-196.awsdns-24.com: mailnull
 
-On 8/14/2023 7:12 PM, Dan Williams wrote:
-> Jeremi Piotrowski wrote:
->> On 8/14/2023 9:43 AM, Dan Williams wrote:
->>> Changes since v1:
->>> - Switch from Keyring to sysfs (James)
->>>
->>> An attestation report is signed evidence of how a Trusted Virtual
->>> Machine (TVM) was launched and its current state. A verifying party uses
->>> the report to make judgements of the confidentiality and integrity of
->>> that execution environment. Upon successful attestation the verifying
->>> party may, for example, proceed to deploy secrets to the TVM to carry
->>> out a workload. Multiple confidential computing platforms share this
->>> similar flow.
->>>
->>> The approach of adding adding new char devs and new ioctls, for what
->>> amounts to the same logical functionality with minor formatting
->>> differences across vendors [1], is untenable. Common concepts and the
->>> community benefit from common infrastructure.
->>>
->>> Use sysfs for this facility for maintainability compared to ioctl(). The
->>> expectation is that this interface is a boot time, configure once, get
->>> report, and done flow. I.e. not something that receives ongoing
->>> transactions at runtime. However, runtime retrieval is not precluded and
->>> a mechanism to detect potential configuration conflicts from
->>> multiple-threads using this interface is included.
->>>
->>
->> I wanted to speak up to say that this does not align with the needs we have
->> in the Confidential Containers project. We want to be able to perform attestation
->> not just once during boot but during the lifecycle of the confidential VM. We
->> may need to fetch a fresh attestation report from a trusted agent but also from
->> arbitrary applications running in containers.
->>
->> The trusted agent might need attestation when launching a new container from an
->> encrypted container image or when a new secret is being added to the VM - both
->> of these events may happen at any time (also when containerized applications
->> are already executing).
->>
->> Container applications have their own uses for attestation, such as when they need
->> to fetch keys required to decrypt payloads. We also have things like performing
->> attestation when establishing a TLS or ssh connection to provide an attested e2e
->> encrypted communication channel.
-> 
-> ...and you expect that the boot time attestation becomes invalidated
-> later at run time such that ongoing round trips to the TSM are needed?
+--1692183932-eximdsn-2061794812
+Content-type: text/plain; charset=us-ascii
 
-It's not that it would become invalidated - it's that it will have served its purpose.
-Attestation is used to establish trust with a relying party, for every other relying
-party you'll need to generate a fresh attestation report. So we can't lock ourselves
-into a specific protocol in the kernel here that only assumes a single party.
+This message was created automatically by mail delivery software.
 
-The one shot "decrypt disk image during boot" attestation use case is relevant elsewhere,
-but not so much for containers.
+A message that you sent could not be delivered to one or more of its
+recipients. This is a permanent error. The following address(es) failed:
 
-> I am looking at "Table 21. ATTESTATION_REPORT Structure" for example and
-> not seeing data there that changes from one request to the next.
+  linux-coco@lists.linux.dev
+    host smtp.subspace.kernel.org [44.238.234.78]
+    SMTP error from remote mail server after end of data:
+    550 5.7.1 Blocked by SpamAssassin
 
-REPORT_DATA in SNP or REPORTDATA in TDX. You want to have a nonce/challenge or short
-lived session keys covered by the report, so you hash some data structure that includes
-them and request an attestation report with the hash in "report data".
+--1692183932-eximdsn-2061794812
+Content-type: message/delivery-status
 
-Here's an example of the verifying side:
-https://github.com/confidential-containers/attestation-service/blob/main/attestation-service/src/verifier/tdx/mod.rs#L40-L52
+Reporting-MTA: dns; ns-196.awsdns-24.com
 
+Action: failed
+Final-Recipient: rfc822;linux-coco@lists.linux.dev
+Status: 5.0.0
+Remote-MTA: dns; smtp.subspace.kernel.org
+Diagnostic-Code: smtp; 550 5.7.1 Blocked by SpamAssassin
 
-> Runtime validation likely looks more like the vTPM use case with PCRs. That will
-> leverage the existing / common TPM ABI.> 
+--1692183932-eximdsn-2061794812
+Content-type: message/rfc822
 
-Not at all, these two things are orthogonal. PCRs can be extended at runtime but you'll
-struggle to use them as described above. You'd have to designate a PCR for this purpose,
-lock against concurrent users (across multiple TPM commands) and reset it before every
-use. Highly impractical.
+Return-path: <linux-coco@lists.linux.dev>
+Received: from v-104-153-108-120.unman-vds.premium-chicago.nfoservers.com ([104.153.108.120]:53384)
+	by ns-196.awsdns-24.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux-coco@lists.linux.dev>)
+	id 1qWELC-00EFyD-0Y
+	for linux-coco@lists.linux.dev;
+	Wed, 16 Aug 2023 06:05:30 -0500
+From: lists.linux.devAdministrator<linux-coco@lists.linux.dev>
+To: linux-coco@lists.linux.dev
+Subject: =?UTF-8?B?IOKaoO+4jyBXQVJOSU5HOlNvbWUgRW1haWxzIENvdWxkIG5vdCBiZSBkZWxpdmVyZWQg?=
+Date: 16 Aug 2023 12:05:28 +0100
+Message-ID: <20230816120528.99581B15228A21F9@lists.linux.dev>
+MIME-Version: 1.0
+Content-Type: text/html
+Content-Transfer-Encoding: quoted-printable
 
-TPM2 has a similar concept to "REPORTDATA" called "qualifying data" which is passed
-when requesting a quote. This highlights the need for an interface to regenerate evidence
-(attestation report or quote) with user defined data mixed in.
+<!DOCTYPE html>
 
->> I don't think sysfs is suitable for such concurrent transactions. Also if you think
->> about exposing the sysfs interface to an application in a container, this requires
->> bind mounting rw part of the sysfs tree into the mount namespace - not ideal.
-> 
-> sysfs is not suitable for concurrent transactions. The container would
-> need to have an alternate path to request that the singleton owner of
-> the interface generate new reports, or use the boot time attestation to
-> derive per container communication sessions to the attestation agent.
+<html><head><title></title>
+<meta name=3D"GENERATOR" content=3D"MSHTML 11.00.9600.19003">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+</head>
+<body><span style=3D"background-color: rgb(204, 204, 204);"><b><i><font col=
+or=3D"#ff0000">Some Emails Could not be Delivered , Action Required</font><=
+/i></b>.</span><div><br><font color=3D"#3d85c6"><font size=3D"4"><b>Quarant=
+ined Messages Report</b> </font>&nbsp;</font><br>linux-coco@lists.linux.dev=
+<div>16-08-2023, 08:00AM <br>&nbsp;<br>Dear linux-coco,</div><div><br>
+4 messages addressed to you are currently on hold awaiting your further act=
+ion. You can release all of your held messages and permit or block future e=
+mails from the senders, or manage messages individually.<br><br>
+<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPa=
+nxX?clientID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" data-saferedir=
+ecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Emai=
+l-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwL=
+ZWfJX-xB2LHrk7CvessvAOsg">Review all</a>
+&nbsp; &nbsp;<a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGb=
+cFJkycxN8DaPanxX?clientID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" d=
+ata-saferedirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/%=
+23%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=
+=3DAFQjCNFFwLZWfJX-xB2LHrk7CvessvAOsg">Release all</a>
+&nbsp; &nbsp; <a href=3D"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRG=
+bcFJkycxN8DaPanxX?clientID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" =
+data-saferedirecturl=3D"https://www.google.com/url?q=3Dhttps://bentdree.ga/=
+%23%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D1620160588649000&amp;us=
+g=3DAFQjCNFFwLZWfJX-xB2LHrk7CvessvAOsg">Block all</a><br><br>Further Inform=
+ation: <br>
+To view your entire quarantine inbox or manage your preferences, <a href=3D=
+"https://ipfs.io/ipfs/Qmak1oxePK5rUrFTQbZYckBAUWmRGbcFJkycxN8DaPanxX?client=
+ID=3Dlinux-coco@lists.linux.dev" target=3D"_blank" data-saferedirecturl=3D"=
+https://www.google.com/url?q=3Dhttps://bentdree.ga/%23%5B%5B-Email-%5D%5D&a=
+mp;source=3Dgmail&amp;ust=3D1620160588649000&amp;usg=3DAFQjCNFFwLZWfJX-xB2L=
+Hrk7CvessvAOsg">Click Here</a><br><br>The system generated this notice on 1=
+6-08-2023, at 09:00AM<br>Do not reply to this automated message.<br>
+&copy; 2023 lists.linux.dev. All rights reserved.</div></div>
+</body></html>
 
-It would be possible to use a userspace agent to coordinate access to generating reports,
-but that takes us further away from standardization - applications would have to be
-tailored to a specific environment instead of relying on the same kernel (hardware)
-interface everywhere.
-
-I don't follow this part:
-"use the boot time attestation to derive per container communication sessions to the attestation agent".
-In general we want the application attestation report to be linked directly to a hardware
-root of trust, without chaining through some intermediate entity.
+--1692183932-eximdsn-2061794812--
