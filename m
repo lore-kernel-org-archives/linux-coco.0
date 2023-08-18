@@ -1,278 +1,298 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9D4D50F
-	for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 20:37:11 +0000 (UTC)
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-68891000f34so776560b3a.0
-        for <linux-coco@lists.linux.dev>; Wed, 16 Aug 2023 13:37:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9AB63A0
+	for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 17:55:28 +0000 (UTC)
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-58daaa2ba65so15203867b3.1
+        for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 10:55:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692218231; x=1692823031;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3jGuo32BcwZ4xrip9OSKVN8CRZpvzjsNQ0WOCuGvqoo=;
-        b=IwRFjsy3rmvP07bgFhAzql9KyPj/+y7HhbnNxUmt5S21f2nbnXpvDbV+ASL6sPvjp4
-         V1TGGNXnTRmkD5Il95nbhJQx6Mo5XHTbp/R1+Z2XkwMPAwvizKEiMH8o/vq03J1ExQgx
-         6wOwul6ue6R/VU091fCQb+RPUEAlCqyMoWwJMfbIWA+PvUznpqCJPJPco8TZ/aYxikik
-         mNg//VmsW2YpfEGJ5swqjMxwlouqmUv7KfL9by0U0DfnGS8IoO1vqub7EXex2cftSLEH
-         zEsYxLmszuTF1TKUgPUGacgc7HNQqayEKvPSNZ10Xq2BPcX0gIUJii/aMKx/TONc4lMB
-         BaGg==
+        d=google.com; s=20221208; t=1692381327; x=1692986127;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OK+8NViLbT4e2HS8SDOPbE3/nK16UAbIxztB0Ra0oFI=;
+        b=xyLB0r66tKK3HtIeMxOjj0iYxeV+b+BNXB0K/YYiuUNB71cFFURuqz7r0bcobYxbCW
+         qQIajCbcKciT2aGVInJCi/p6NZw86Td2er7Fcy+DVknKJXkJ+EpP/Cpg5Yn8arwU8bH0
+         Cu0ZqYHcQZrdmbZcPm9wwwymJcPbkwEstHzy4HGkXIZO84sZKh5JZZNF+ObyUqzpoxgv
+         vWUYWYvo+I53kiS3tOJt0nXhcD3OLPIl5QtniE9iLFqZt1qrZRLmOiADv+0kzNPj39Cx
+         R4FtCUrNPUyBulnHL287SvEbkdRP8SstrXV1WtF0MyciwJ4GK27SLa+RhmxzCmd4HjVo
+         WdWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692218231; x=1692823031;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3jGuo32BcwZ4xrip9OSKVN8CRZpvzjsNQ0WOCuGvqoo=;
-        b=XyrL14FhKNqbMAmTu6DP0vt/piqnGqmJEBv6n6Qj3hFZU9pdju7csLD2vVPHWP2Q2C
-         aX2B1DYDpF7zLGBdHohnq6TkuRJYEs/oHPqTNgp8Hu8b+lW6f8SntN9TgRv4MTYz0x7U
-         yjm8CnDaUFbjmeDioPVnEyQCLSnbnBPCxFPAt3aE0XDj6weYhvMIsRIFuCJE2/EeVck/
-         6lmJeJOv5+cQObWvzeII4pXzTs5i8wWoTOtSQB739rYqbl/+KAICLmd8QuKEwa3ovDy1
-         1tpSlwh8MTwav2CTqBqPVHFGGPsF5h+FWxK/EaZ0YJJ1BG08OJpzVbVpG81aSkrteUFr
-         hJmA==
-X-Gm-Message-State: AOJu0Yz1rWmiPVHaYiVzUuplJoLmEzJaaV0za/Wdp+0VMjxY7k9NeYnT
-	T0FVf6XP1csXTq2EFFYAOT0=
-X-Google-Smtp-Source: AGHT+IFueect6CxNlrZ/Gbgac9xxnV2DHvFL3lOI6qtByKzkkLJhbDn1orqcbqpgFUNsfejd88MaiA==
-X-Received: by 2002:a05:6a00:418f:b0:668:8596:752f with SMTP id ca15-20020a056a00418f00b006688596752fmr2890359pfb.4.1692218231115;
-        Wed, 16 Aug 2023 13:37:11 -0700 (PDT)
-Received: from localhost ([192.55.55.51])
-        by smtp.gmail.com with ESMTPSA id u9-20020a62ed09000000b00686ed095681sm11421006pfh.191.2023.08.16.13.37.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Aug 2023 13:37:10 -0700 (PDT)
-Date: Wed, 16 Aug 2023 13:37:09 -0700
-From: Isaku Yamahata <isaku.yamahata@gmail.com>
-To: isaku.yamahata@intel.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	isaku.yamahata@gmail.com, Michael Roth <michael.roth@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>, erdemaktas@google.com,
-	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com,
-	linux-coco@lists.linux.dev, Chao Peng <chao.p.peng@linux.intel.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Yuan Yao <yuan.yao@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH 6/8] KVM: gmem, x86: Add gmem hook for invalidating
- private memory
-Message-ID: <20230816203709.GA3561043@ls.amr.corp.intel.com>
-References: <cover.1692119201.git.isaku.yamahata@intel.com>
- <8c9f0470ba6e5dc122f3f4e37c4dcfb6fb97b184.1692119201.git.isaku.yamahata@intel.com>
+        d=1e100.net; s=20221208; t=1692381327; x=1692986127;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OK+8NViLbT4e2HS8SDOPbE3/nK16UAbIxztB0Ra0oFI=;
+        b=F1lzZg+FfltGf+0jDTZuvT9Uw1aPxwosZmXJg87G4XPrpULde0yrrOJfaGwRzTy/RT
+         LjryT3IK0d7dF/Gsu85/r+b6kZQFnlJpR6Mpynhmzs6OrrW2r8oA8hVn6kfnUE3y5O+8
+         LXDJwCKoyHxM5AKUlqkYuDiq0esbtzjRlXTnTs8BcYoqWAQ54WICRtl9v0tHoo7LGTKw
+         0C/MTaWCyhio2qQERqlGDJXcAsWnBF+ta72eDgowXenRn7ySSGa5Ho/SEGiuM0A7DDV+
+         TWxRUq07sm+PqSnZ8EyId4WIu4UwGQ0ow8nkXc+UT6ToJPPsBpgprEL2KPGZAWSBJGUX
+         Uwcg==
+X-Gm-Message-State: AOJu0YwVLP1pdP0nfXpswCl4t8AeeRePeUgpTrY1qlSd909stfZwyO5c
+	5yufqjScJ1lGWvJks0HJiPbFD17X7es=
+X-Google-Smtp-Source: AGHT+IHFRrhsMBCKFdXjoa9UkoXzEXomb1zbD0I89gNgveRrIuz09gSEhLJGX/SlQ2funcPLA9QxcxpHUcQ=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:760f:0:b0:589:9d51:c8c0 with SMTP id
+ r15-20020a81760f000000b005899d51c8c0mr53502ywc.2.1692381327444; Fri, 18 Aug
+ 2023 10:55:27 -0700 (PDT)
+Date: Fri, 18 Aug 2023 10:55:17 -0700
+In-Reply-To: <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <8c9f0470ba6e5dc122f3f4e37c4dcfb6fb97b184.1692119201.git.isaku.yamahata@intel.com>
+Mime-Version: 1.0
+References: <cover.1692119201.git.isaku.yamahata@intel.com> <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
+Message-ID: <ZN+whX3/lSBcZKUj@google.com>
+Subject: Re: [PATCH 4/8] KVM: gmem: protect kvm_mmu_invalidate_end()
+From: Sean Christopherson <seanjc@google.com>
+To: isaku.yamahata@intel.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	isaku.yamahata@gmail.com, Michael Roth <michael.roth@amd.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
+	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Aug 15, 2023 at 10:18:53AM -0700,
-isaku.yamahata@intel.com wrote:
-
-> From: Michael Roth <michael.roth@amd.com>
+On Tue, Aug 15, 2023, isaku.yamahata@intel.com wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> TODO: add a CONFIG option that can be to completely skip arch
-> invalidation loop and avoid __weak references for arch/platforms that
-> don't need an additional invalidation hook.
+> kvm_mmu_invalidate_end() updates struct kvm::mmu_invalidate_in_progress
+> and it's protected by kvm::mmu_lock.  call kvm_mmu_invalidate_end() before
+> unlocking it. Not after the unlock.
 > 
-> In some cases, like with SEV-SNP, guest memory needs to be updated in a
-> platform-specific manner before it can be safely freed back to the host.
-> Add hooks to wire up handling of this sort when freeing memory in
-> response to FALLOC_FL_PUNCH_HOLE operations.
+> Fixes: 8e9009ca6d14 ("KVM: Introduce per-page memory attributes")
+
+This fixes is wrong.  It won't matter in the long run, but it makes my life that
+much harder.
+
+> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+> ---
+>  virt/kvm/kvm_main.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
 > 
-> Also issue invalidations of all allocated pages when releasing the gmem
-> file so that the pages are not left in an unusable state when they get
-> freed back to the host.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Link: https://lore.kernel.org/r/20230612042559.375660-3-michael.roth@amd.com
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 8bfeb615fc4d..49380cd62367 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -535,6 +535,7 @@ struct kvm_mmu_notifier_range {
+>  	} arg;
+>  	gfn_handler_t handler;
+>  	on_lock_fn_t on_lock;
+> +	on_unlock_fn_t before_unlock;
+>  	on_unlock_fn_t on_unlock;
 
-Somehow I used the old one. Here is the updated one. The change is the argument
-for kvm_gmem_issue_arch_invalidate() is struct inode instead of struct file.
+Ugh, shame on my past me.  Having on_lock and on_unlock be asymmetrical with respect
+to the lock is nasty.
 
+I would much rather we either (a) be explicit, e.g. before_(un)lock and after_(un)lock,
+or (b) have just on_(un)lock, make them symetrical, and handle the SEV mess a
+different way.
 
-From e14483943e2ab6d8a0e4d00ea903509595847aa9 Mon Sep 17 00:00:00 2001
-Message-Id: <e14483943e2ab6d8a0e4d00ea903509595847aa9.1692218085.git.isaku.yamahata@intel.com>
-In-Reply-To: <cover.1692218085.git.isaku.yamahata@intel.com>
-References: <cover.1692218085.git.isaku.yamahata@intel.com>
-From: Michael Roth <michael.roth@amd.com>
-Date: Sun, 11 Jun 2023 23:25:10 -0500
-Subject: [PATCH 6/8] KVM: gmem, x86: Add gmem hook for invalidating private
- memory
+The SEV hook doesn't actually care about running immediately after unlock, it just
+wants to know if there was an overlapping memslot.  It can run after SRCU is dropped,
+because even if we make the behavior more precise (right now it blasts WBINVD),
+just having a reference to memslots isn't sufficient, the code needs to guarantee
+memslots are *stable*.  And that is already guaranteed by the notifier code, i.e.
+the SEV code could just reacquire SRCU.
 
-TODO: add a CONFIG option that can be to completely skip arch
-invalidation loop and avoid __weak references for arch/platforms that
-don't need an additional invalidation hook.
+And that will hold true for any possible stuff that wants to do something *after*
+dropping mmu_lock.
 
-In some cases, like with SEV-SNP, guest memory needs to be updated in a
-platform-specific manner before it can be safely freed back to the host.
-Add hooks to wire up handling of this sort when freeing memory in
-response to FALLOC_FL_PUNCH_HOLE operations.
+One idea would be to use a struct to return a tuple of the actual return value
+along with whether or not mmu_lock was acquired, i.e. if there was overlap.  The
+only really gross part is squeezing in meaningful name.  Absusing a #define is
+one way to make the code somewhat readable...
 
-Also issue invalidations of all allocated pages when releasing the gmem
-file so that the pages are not left in an unusable state when they get
-freed back to the host.
+I think this has my vote, especially if we can figure out a way to keep the
+line lengths reasonable without a gnarly #define hack (I really don't want to
+split the return onto a separate line).
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20230612042559.375660-3-michael.roth@amd.com
-
----
-Changes:
-- Use struct inode instead of struct file.
-
-Changes v4 -> v5:
-- Fix compile issue by adding static inline when gmem is disabled
-
-Changes v2 -> v3:
-- Newly added
-
-KVM: guest_mem: fix kvm_gmem_issue_arch_invalidate()
-
-Now kvm_gmem_issue_arch_invalidate() takes struct inode instead of
-struct file.  Adjust argument.
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  1 +
- arch/x86/kvm/x86.c                 |  6 +++++
- include/linux/kvm_host.h           |  3 +++
- virt/kvm/guest_mem.c               | 42 ++++++++++++++++++++++++++++++
- 5 files changed, 53 insertions(+)
-
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 439ba4beb5af..48f043de2ec0 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -134,6 +134,7 @@ KVM_X86_OP(complete_emulated_msr)
- KVM_X86_OP(vcpu_deliver_sipi_vector)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
- KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
-+KVM_X86_OP_OPTIONAL(gmem_invalidate)
- 
- #undef KVM_X86_OP
- #undef KVM_X86_OP_OPTIONAL
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 2bc42f2887fa..17e78f9f2d17 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1735,6 +1735,7 @@ struct kvm_x86_ops {
- 
- 	int (*gmem_prepare)(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			    kvm_pfn_t pfn, gfn_t gfn, u8 *max_level);
-+	void (*gmem_invalidate)(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end);
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 95c621e05b5a..ec45510549bf 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -541,6 +541,11 @@ struct kvm_mmu_notifier_range {
+        bool may_block;
  };
  
- struct kvm_x86_nested_ops {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index de195ad83ec0..b54818d02cb1 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -13274,6 +13274,12 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
- }
- EXPORT_SYMBOL_GPL(kvm_arch_no_poll);
++struct kvm_mmu_notifier_return {
++       bool ret;
++       bool locked;
++};
++
+ /*
+  * Use a dedicated stub instead of NULL to indicate that there is no callback
+  * function/handler.  The compiler technically can't guarantee that a real
+@@ -560,10 +565,15 @@ static void kvm_null_fn(void)
+             node;                                                           \
+             node = interval_tree_iter_next(node, start, last))      \
  
-+#ifdef CONFIG_KVM_PRIVATE_MEM
-+void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end)
-+{
-+	static_call_cond(kvm_x86_gmem_invalidate)(kvm, start, end);
-+}
-+#endif
- 
- int kvm_spec_ctrl_test_value(u64 value)
+-static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+-                                                 const struct kvm_mmu_notifier_range *range)
++#define kvm_mn_ret_t __always_inline struct kvm_mmu_notifier_return
++
++static kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
++                                          const struct kvm_mmu_notifier_range *range)
  {
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 091bc89ae805..349b0bf81fa5 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2358,6 +2358,7 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- #ifdef CONFIG_KVM_PRIVATE_MEM
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			      gfn_t gfn, kvm_pfn_t *pfn, int *max_order);
-+void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end);
- #else
- static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 				   struct kvm_memory_slot *slot, gfn_t gfn,
-@@ -2366,6 +2367,8 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
- 	KVM_BUG_ON(1, kvm);
- 	return -EIO;
- }
-+
-+static inline void kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end) { }
- #endif /* CONFIG_KVM_PRIVATE_MEM */
+-       bool ret = false, locked = false;
++       struct kvm_mmu_notifier_return r = {
++               .ret = false,
++               .locked = false,
++       };
+        struct kvm_gfn_range gfn_range;
+        struct kvm_memory_slot *slot;
+        struct kvm_memslots *slots;
+@@ -574,12 +584,12 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+        BUILD_BUG_ON(sizeof(gfn_range.arg) != sizeof(range->arg));
  
- #endif
-diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-index ed03f1d12172..13d6dab08f87 100644
---- a/virt/kvm/guest_mem.c
-+++ b/virt/kvm/guest_mem.c
-@@ -127,6 +127,46 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
- 	KVM_MMU_UNLOCK(kvm);
+        if (WARN_ON_ONCE(range->end <= range->start))
+-               return 0;
++               return r;
+ 
+        /* A null handler is allowed if and only if on_lock() is provided. */
+        if (WARN_ON_ONCE(IS_KVM_NULL_FN(range->on_lock) &&
+                         IS_KVM_NULL_FN(range->handler)))
+-               return 0;
++               return r;
+ 
+        idx = srcu_read_lock(&kvm->srcu);
+ 
+@@ -613,8 +623,8 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+                        gfn_range.end = hva_to_gfn_memslot(hva_end + PAGE_SIZE - 1, slot);
+                        gfn_range.slot = slot;
+ 
+-                       if (!locked) {
+-                               locked = true;
++                       if (!r.locked) {
++                               r.locked = true;
+                                KVM_MMU_LOCK(kvm);
+                                if (!IS_KVM_NULL_FN(range->on_lock))
+                                        range->on_lock(kvm);
+@@ -622,33 +632,28 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
+                                if (IS_KVM_NULL_FN(range->handler))
+                                        break;
+                        }
+-                       ret |= range->handler(kvm, &gfn_range);
++                       r.ret |= range->handler(kvm, &gfn_range);
+                }
+        }
+ 
+-       if (range->flush_on_ret && ret)
++       if (range->flush_on_ret && r.ret)
+                kvm_flush_remote_tlbs(kvm);
+ 
+-       if (locked) {
++       if (r.locked) {
+                KVM_MMU_UNLOCK(kvm);
+                if (!IS_KVM_NULL_FN(range->on_unlock))
+                        range->on_unlock(kvm);
+        }
+ 
+-       if (range->reclaim_on_ret && ret)
+-               kvm_arch_guest_memory_reclaimed(kvm);
+-
+        srcu_read_unlock(&kvm->srcu, idx);
+ 
+-       /* The notifiers are averse to booleans. :-( */
+-       return (int)ret;
++       return r;
  }
  
-+void __weak kvm_arch_gmem_invalidate(struct kvm *kvm, kvm_pfn_t start, kvm_pfn_t end)
-+{
-+}
-+
-+/* Handle arch-specific hooks needed before releasing guarded pages. */
-+static void kvm_gmem_issue_arch_invalidate(struct kvm *kvm, struct inode *inode,
-+					   pgoff_t start, pgoff_t end)
-+{
-+	pgoff_t file_end = i_size_read(inode) >> PAGE_SHIFT;
-+	pgoff_t index = start;
-+
-+	end = min(end, file_end);
-+
-+	while (index < end) {
-+		struct folio *folio;
-+		unsigned int order;
-+		struct page *page;
-+		kvm_pfn_t pfn;
-+
-+		folio = __filemap_get_folio(inode->i_mapping, index,
-+					    FGP_LOCK, 0);
-+		if (!folio) {
-+			index++;
-+			continue;
-+		}
-+
-+		page = folio_file_page(folio, index);
-+		pfn = page_to_pfn(page);
-+		order = folio_order(folio);
-+
-+		kvm_arch_gmem_invalidate(kvm, pfn, pfn + min((1ul << order), end - index));
-+
-+		index = folio_next_index(folio);
-+		folio_unlock(folio);
-+		folio_put(folio);
-+
-+		cond_resched();
-+	}
-+}
-+
- static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+...skipping...
+        const struct kvm_mmu_notifier_range range = {
+@@ -780,7 +785,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+                .end            = range->end,
+                .handler        = kvm_mmu_unmap_gfn_range,
+                .on_lock        = kvm_mmu_invalidate_begin,
+-               .on_unlock      = kvm_null_fn,
++               .on_unlock      = (void *)kvm_null_fn,
+                .flush_on_ret   = true,
+                .reclaim_on_ret = true,
+                .may_block      = mmu_notifier_range_blockable(range),
+@@ -813,7 +818,8 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
+        gfn_to_pfn_cache_invalidate_start(kvm, range->start, range->end,
+                                          hva_range.may_block);
+ 
+-       __kvm_handle_hva_range(kvm, &hva_range);
++       if (__kvm_handle_hva_range(kvm, &hva_range).locked)
++               kvm_arch_guest_memory_reclaimed(kvm);
+ 
+        return 0;
+ }
+@@ -881,7 +887,7 @@ static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
  {
- 	struct list_head *gmem_list = &inode->i_mapping->private_list;
-@@ -143,6 +183,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- 	list_for_each_entry(gmem, gmem_list, entry)
- 		kvm_gmem_invalidate_begin(gmem, start, end);
+        trace_kvm_age_hva(start, end);
  
-+	kvm_gmem_issue_arch_invalidate(gmem->kvm, inode, start, end);
- 	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+-       return kvm_handle_hva_range(mn, start, end, __pte(0), kvm_age_gfn);
++       return kvm_handle_hva_range(mn, start, end, __pte(0), kvm_age_gfn).ret;
+ }
  
- 	list_for_each_entry(gmem, gmem_list, entry)
-@@ -253,6 +294,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * memory, as its lifetime is associated with the inode, not the file.
- 	 */
- 	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
-+	kvm_gmem_issue_arch_invalidate(gmem->kvm, file_inode(file), 0, -1ul);
- 	kvm_gmem_invalidate_end(gmem, 0, -1ul);
+ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
+@@ -904,7 +910,7 @@ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
+         * cadence. If we find this inaccurate, we might come up with a
+         * more sophisticated heuristic later.
+         */
+-       return kvm_handle_hva_range_no_flush(mn, start, end, kvm_age_gfn);
++       return kvm_handle_hva_range_no_flush(mn, start, end, kvm_age_gfn).ret;
+ }
  
- 	list_del(&gmem->entry);
--- 
-2.25.1
--- 
-Isaku Yamahata <isaku.yamahata@linux.intel.com>
+ static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
+@@ -914,7 +920,7 @@ static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
+        trace_kvm_test_age_hva(address);
+ 
+        return kvm_handle_hva_range_no_flush(mn, address, address + 1,
+-                                            kvm_test_age_gfn);
++                                            kvm_test_age_gfn).ret;
+ }
+ 
+ static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
+@@ -2400,12 +2406,14 @@ static u64 kvm_supported_mem_attributes(struct kvm *kvm)
+ static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
+                                                 struct kvm_mmu_notifier_range *range)
+ {
++       struct kvm_mmu_notifier_return r = {
++               .ret = false,
++               .locked = false,
++       };
+        struct kvm_gfn_range gfn_range;
+        struct kvm_memory_slot *slot;
+        struct kvm_memslots *slots;
+        struct kvm_memslot_iter iter;
+-       bool locked = false;
+-       bool ret = false;
+        int i;
+ 
+        gfn_range.arg.raw = range->arg.raw;
+@@ -2423,21 +2431,21 @@ static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
+                        if (gfn_range.start >= gfn_range.end)
+                                continue;
+ 
+-                       if (!locked) {
+-                               locked = true;
++                       if (!r.locked) {
++                               r.locked = true;
+                                KVM_MMU_LOCK(kvm);
+                                if (!IS_KVM_NULL_FN(range->on_lock))
+                                        range->on_lock(kvm);
+                        }
+ 
+-                       ret |= range->handler(kvm, &gfn_range);
++                       r.ret |= range->handler(kvm, &gfn_range);
+                }
+        }
+ 
+-       if (range->flush_on_ret && ret)
++       if (range->flush_on_ret && r.ret)
+                kvm_flush_remote_tlbs(kvm);
+ 
+-       if (locked) {
++       if (r.locked) {
+                KVM_MMU_UNLOCK(kvm);
+                if (!IS_KVM_NULL_FN(range->on_unlock))
+                        range->on_unlock(kvm);
+
