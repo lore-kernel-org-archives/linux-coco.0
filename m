@@ -1,50 +1,50 @@
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9AB63A0
-	for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 17:55:28 +0000 (UTC)
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-58daaa2ba65so15203867b3.1
-        for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 10:55:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2209F63A0
+	for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 18:15:30 +0000 (UTC)
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1bde8160fbdso17125105ad.1
+        for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 11:15:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692381327; x=1692986127;
+        d=google.com; s=20221208; t=1692382530; x=1692987330;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OK+8NViLbT4e2HS8SDOPbE3/nK16UAbIxztB0Ra0oFI=;
-        b=xyLB0r66tKK3HtIeMxOjj0iYxeV+b+BNXB0K/YYiuUNB71cFFURuqz7r0bcobYxbCW
-         qQIajCbcKciT2aGVInJCi/p6NZw86Td2er7Fcy+DVknKJXkJ+EpP/Cpg5Yn8arwU8bH0
-         Cu0ZqYHcQZrdmbZcPm9wwwymJcPbkwEstHzy4HGkXIZO84sZKh5JZZNF+ObyUqzpoxgv
-         vWUYWYvo+I53kiS3tOJt0nXhcD3OLPIl5QtniE9iLFqZt1qrZRLmOiADv+0kzNPj39Cx
-         R4FtCUrNPUyBulnHL287SvEbkdRP8SstrXV1WtF0MyciwJ4GK27SLa+RhmxzCmd4HjVo
-         WdWg==
+        bh=2UpHtort9A6GjNTa35crOHhwpakPEKD1yUlcxtVr0FM=;
+        b=Wf3bir3HeQk+WypI1ZAPThcOJ8gBnSqr+4uMmAGs5XkTifA1Jk+MIDWHiHZRdNk0+C
+         M5661hEphU/S9CH1QehwULjXmETLlJNjdYP7x4EH3ZdU2MpvGa5UN9y+2vDZICrkZDzZ
+         9a649TKMt+pSSYcAeMrscys6un16n6z/fPt7iyYlqM4sbvaWGeLiX+6zLD4vT13u8GdA
+         3bdku6+tGWd8ndlrBLcc0mCDTPvthWqpoilu/rEO+XcSveGnU4nmPXc5G48yPu6t9WW9
+         xAesWTGzznMOvZ3+KVJhuC/+J7hHFF43hvk0Pb9RuSXACDXlbQZZQTwmjhwqyIP7otfl
+         IU8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692381327; x=1692986127;
+        d=1e100.net; s=20221208; t=1692382530; x=1692987330;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OK+8NViLbT4e2HS8SDOPbE3/nK16UAbIxztB0Ra0oFI=;
-        b=F1lzZg+FfltGf+0jDTZuvT9Uw1aPxwosZmXJg87G4XPrpULde0yrrOJfaGwRzTy/RT
-         LjryT3IK0d7dF/Gsu85/r+b6kZQFnlJpR6Mpynhmzs6OrrW2r8oA8hVn6kfnUE3y5O+8
-         LXDJwCKoyHxM5AKUlqkYuDiq0esbtzjRlXTnTs8BcYoqWAQ54WICRtl9v0tHoo7LGTKw
-         0C/MTaWCyhio2qQERqlGDJXcAsWnBF+ta72eDgowXenRn7ySSGa5Ho/SEGiuM0A7DDV+
-         TWxRUq07sm+PqSnZ8EyId4WIu4UwGQ0ow8nkXc+UT6ToJPPsBpgprEL2KPGZAWSBJGUX
-         Uwcg==
-X-Gm-Message-State: AOJu0YwVLP1pdP0nfXpswCl4t8AeeRePeUgpTrY1qlSd909stfZwyO5c
-	5yufqjScJ1lGWvJks0HJiPbFD17X7es=
-X-Google-Smtp-Source: AGHT+IHFRrhsMBCKFdXjoa9UkoXzEXomb1zbD0I89gNgveRrIuz09gSEhLJGX/SlQ2funcPLA9QxcxpHUcQ=
+        bh=2UpHtort9A6GjNTa35crOHhwpakPEKD1yUlcxtVr0FM=;
+        b=AkR4BWq1poLMWD4d9KSq18trwyLyDW/lz5cHlA6tYhDBul4LEvIKIKP0bm+WF6Rof8
+         QmZ48UOJqZLh0cKiEmpB3/O5/OlYAA1ycX6+3uYLwZByhLLrtow1CttSGsFFDCZ0wwZ1
+         GQkwdMdZMrtdOC22dQd5FpSgEp78DmUgB3Bxyd+7dlwfhXMCpk+b0u7eaEvzB8OjTbqS
+         +TpBHS44LGLdJ7TsN4zuk4xkTGXlttG4l0T3iwlAX6cF+poimiY9ZhHneQVhKjrjwjbT
+         C5Gqk+zg3T0smweqUTb5pm2AC24aMnlerLgWLEWzrRMOskmdg1HnCVK/QVbU9CU7AOqu
+         aqlw==
+X-Gm-Message-State: AOJu0YyoSNJNiNGnKAI0pxc0gqWj9nKgI30AQCTD72rA0aT1Ii9isdfk
+	JoMHiNmBr+UsQTIju2EfoSGKpII06Sk=
+X-Google-Smtp-Source: AGHT+IFIP6KRkFSo7uDQ6UxRK3c68Ehxfv1w9ffi6BGnhY+oGbePYtHkVZUTFVjvumMFptQ/4PuZ+lXpYqw=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:760f:0:b0:589:9d51:c8c0 with SMTP id
- r15-20020a81760f000000b005899d51c8c0mr53502ywc.2.1692381327444; Fri, 18 Aug
- 2023 10:55:27 -0700 (PDT)
-Date: Fri, 18 Aug 2023 10:55:17 -0700
-In-Reply-To: <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
+ (user=seanjc job=sendgmr) by 2002:a17:902:f547:b0:1b8:8fe2:6627 with SMTP id
+ h7-20020a170902f54700b001b88fe26627mr1183892plf.8.1692382529796; Fri, 18 Aug
+ 2023 11:15:29 -0700 (PDT)
+Date: Fri, 18 Aug 2023 11:15:28 -0700
+In-Reply-To: <c3128665745b58500f71f46db6969d02cabcc8db.1692119201.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <cover.1692119201.git.isaku.yamahata@intel.com> <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
-Message-ID: <ZN+whX3/lSBcZKUj@google.com>
-Subject: Re: [PATCH 4/8] KVM: gmem: protect kvm_mmu_invalidate_end()
+References: <cover.1692119201.git.isaku.yamahata@intel.com> <c3128665745b58500f71f46db6969d02cabcc8db.1692119201.git.isaku.yamahata@intel.com>
+Message-ID: <ZN+1QHGa6ltpQxZn@google.com>
+Subject: Re: [PATCH 7/8] KVM: gmem: Avoid race with kvm_gmem_release and mmu notifier
 From: Sean Christopherson <seanjc@google.com>
 To: isaku.yamahata@intel.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -61,238 +61,26 @@ Content-Type: text/plain; charset="us-ascii"
 On Tue, Aug 15, 2023, isaku.yamahata@intel.com wrote:
 > From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> kvm_mmu_invalidate_end() updates struct kvm::mmu_invalidate_in_progress
-> and it's protected by kvm::mmu_lock.  call kvm_mmu_invalidate_end() before
-> unlocking it. Not after the unlock.
+> Add slots_lock around kvm_flush_shadow_all().  kvm_gmem_release() via
+> fput() and kvm_mmu_notifier_release() via mmput() can be called
+> simultaneously on process exit because vhost, /dev/vhost_{net, vsock}, can
+> delay the call to release mmu_notifier, kvm_mmu_notifier_release() by its
+> kernel thread.  Vhost uses get_task_mm() and mmput() for the kernel thread
+> to access process memory.  mmput() can defer after closing the file.
 > 
-> Fixes: 8e9009ca6d14 ("KVM: Introduce per-page memory attributes")
+> kvm_flush_shadow_all() and kvm_gmem_release() can be called simultaneously.
 
-This fixes is wrong.  It won't matter in the long run, but it makes my life that
-much harder.
+KVM shouldn't reclaim memory on file release, it should instead do that on the
+inode being "evicted": https://lore.kernel.org/all/ZLGiEfJZTyl7M8mS@google.com
 
-> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> ---
->  virt/kvm/kvm_main.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 8bfeb615fc4d..49380cd62367 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -535,6 +535,7 @@ struct kvm_mmu_notifier_range {
->  	} arg;
->  	gfn_handler_t handler;
->  	on_lock_fn_t on_lock;
-> +	on_unlock_fn_t before_unlock;
->  	on_unlock_fn_t on_unlock;
+> With TDX KVM, HKID releasing by kvm_flush_shadow_all() and private memory
+> releasing by kvm_gmem_release() can race.  Add slots_lock to
+> kvm_mmu_notifier_release().
 
-Ugh, shame on my past me.  Having on_lock and on_unlock be asymmetrical with respect
-to the lock is nasty.
+No, the right answer is to not release the HKID until the VM is destroyed.  gmem
+has a reference to its associated kvm instance, and so that will naturally ensure
+memory all memory encrypted with the HKID is freed before the HKID is released.
+kvm_flush_shadow_all() should only tear down page tables, it shouldn't be freeing
+guest_memfd memory.
 
-I would much rather we either (a) be explicit, e.g. before_(un)lock and after_(un)lock,
-or (b) have just on_(un)lock, make them symetrical, and handle the SEV mess a
-different way.
-
-The SEV hook doesn't actually care about running immediately after unlock, it just
-wants to know if there was an overlapping memslot.  It can run after SRCU is dropped,
-because even if we make the behavior more precise (right now it blasts WBINVD),
-just having a reference to memslots isn't sufficient, the code needs to guarantee
-memslots are *stable*.  And that is already guaranteed by the notifier code, i.e.
-the SEV code could just reacquire SRCU.
-
-And that will hold true for any possible stuff that wants to do something *after*
-dropping mmu_lock.
-
-One idea would be to use a struct to return a tuple of the actual return value
-along with whether or not mmu_lock was acquired, i.e. if there was overlap.  The
-only really gross part is squeezing in meaningful name.  Absusing a #define is
-one way to make the code somewhat readable...
-
-I think this has my vote, especially if we can figure out a way to keep the
-line lengths reasonable without a gnarly #define hack (I really don't want to
-split the return onto a separate line).
-
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 95c621e05b5a..ec45510549bf 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -541,6 +541,11 @@ struct kvm_mmu_notifier_range {
-        bool may_block;
- };
- 
-+struct kvm_mmu_notifier_return {
-+       bool ret;
-+       bool locked;
-+};
-+
- /*
-  * Use a dedicated stub instead of NULL to indicate that there is no callback
-  * function/handler.  The compiler technically can't guarantee that a real
-@@ -560,10 +565,15 @@ static void kvm_null_fn(void)
-             node;                                                           \
-             node = interval_tree_iter_next(node, start, last))      \
- 
--static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
--                                                 const struct kvm_mmu_notifier_range *range)
-+#define kvm_mn_ret_t __always_inline struct kvm_mmu_notifier_return
-+
-+static kvm_mn_ret_t __kvm_handle_hva_range(struct kvm *kvm,
-+                                          const struct kvm_mmu_notifier_range *range)
- {
--       bool ret = false, locked = false;
-+       struct kvm_mmu_notifier_return r = {
-+               .ret = false,
-+               .locked = false,
-+       };
-        struct kvm_gfn_range gfn_range;
-        struct kvm_memory_slot *slot;
-        struct kvm_memslots *slots;
-@@ -574,12 +584,12 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
-        BUILD_BUG_ON(sizeof(gfn_range.arg) != sizeof(range->arg));
- 
-        if (WARN_ON_ONCE(range->end <= range->start))
--               return 0;
-+               return r;
- 
-        /* A null handler is allowed if and only if on_lock() is provided. */
-        if (WARN_ON_ONCE(IS_KVM_NULL_FN(range->on_lock) &&
-                         IS_KVM_NULL_FN(range->handler)))
--               return 0;
-+               return r;
- 
-        idx = srcu_read_lock(&kvm->srcu);
- 
-@@ -613,8 +623,8 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
-                        gfn_range.end = hva_to_gfn_memslot(hva_end + PAGE_SIZE - 1, slot);
-                        gfn_range.slot = slot;
- 
--                       if (!locked) {
--                               locked = true;
-+                       if (!r.locked) {
-+                               r.locked = true;
-                                KVM_MMU_LOCK(kvm);
-                                if (!IS_KVM_NULL_FN(range->on_lock))
-                                        range->on_lock(kvm);
-@@ -622,33 +632,28 @@ static __always_inline int __kvm_handle_hva_range(struct kvm *kvm,
-                                if (IS_KVM_NULL_FN(range->handler))
-                                        break;
-                        }
--                       ret |= range->handler(kvm, &gfn_range);
-+                       r.ret |= range->handler(kvm, &gfn_range);
-                }
-        }
- 
--       if (range->flush_on_ret && ret)
-+       if (range->flush_on_ret && r.ret)
-                kvm_flush_remote_tlbs(kvm);
- 
--       if (locked) {
-+       if (r.locked) {
-                KVM_MMU_UNLOCK(kvm);
-                if (!IS_KVM_NULL_FN(range->on_unlock))
-                        range->on_unlock(kvm);
-        }
- 
--       if (range->reclaim_on_ret && ret)
--               kvm_arch_guest_memory_reclaimed(kvm);
--
-        srcu_read_unlock(&kvm->srcu, idx);
- 
--       /* The notifiers are averse to booleans. :-( */
--       return (int)ret;
-+       return r;
- }
- 
-...skipping...
-        const struct kvm_mmu_notifier_range range = {
-@@ -780,7 +785,7 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
-                .end            = range->end,
-                .handler        = kvm_mmu_unmap_gfn_range,
-                .on_lock        = kvm_mmu_invalidate_begin,
--               .on_unlock      = kvm_null_fn,
-+               .on_unlock      = (void *)kvm_null_fn,
-                .flush_on_ret   = true,
-                .reclaim_on_ret = true,
-                .may_block      = mmu_notifier_range_blockable(range),
-@@ -813,7 +818,8 @@ static int kvm_mmu_notifier_invalidate_range_start(struct mmu_notifier *mn,
-        gfn_to_pfn_cache_invalidate_start(kvm, range->start, range->end,
-                                          hva_range.may_block);
- 
--       __kvm_handle_hva_range(kvm, &hva_range);
-+       if (__kvm_handle_hva_range(kvm, &hva_range).locked)
-+               kvm_arch_guest_memory_reclaimed(kvm);
- 
-        return 0;
- }
-@@ -881,7 +887,7 @@ static int kvm_mmu_notifier_clear_flush_young(struct mmu_notifier *mn,
- {
-        trace_kvm_age_hva(start, end);
- 
--       return kvm_handle_hva_range(mn, start, end, __pte(0), kvm_age_gfn);
-+       return kvm_handle_hva_range(mn, start, end, __pte(0), kvm_age_gfn).ret;
- }
- 
- static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
-@@ -904,7 +910,7 @@ static int kvm_mmu_notifier_clear_young(struct mmu_notifier *mn,
-         * cadence. If we find this inaccurate, we might come up with a
-         * more sophisticated heuristic later.
-         */
--       return kvm_handle_hva_range_no_flush(mn, start, end, kvm_age_gfn);
-+       return kvm_handle_hva_range_no_flush(mn, start, end, kvm_age_gfn).ret;
- }
- 
- static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
-@@ -914,7 +920,7 @@ static int kvm_mmu_notifier_test_young(struct mmu_notifier *mn,
-        trace_kvm_test_age_hva(address);
- 
-        return kvm_handle_hva_range_no_flush(mn, address, address + 1,
--                                            kvm_test_age_gfn);
-+                                            kvm_test_age_gfn).ret;
- }
- 
- static void kvm_mmu_notifier_release(struct mmu_notifier *mn,
-@@ -2400,12 +2406,14 @@ static u64 kvm_supported_mem_attributes(struct kvm *kvm)
- static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
-                                                 struct kvm_mmu_notifier_range *range)
- {
-+       struct kvm_mmu_notifier_return r = {
-+               .ret = false,
-+               .locked = false,
-+       };
-        struct kvm_gfn_range gfn_range;
-        struct kvm_memory_slot *slot;
-        struct kvm_memslots *slots;
-        struct kvm_memslot_iter iter;
--       bool locked = false;
--       bool ret = false;
-        int i;
- 
-        gfn_range.arg.raw = range->arg.raw;
-@@ -2423,21 +2431,21 @@ static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
-                        if (gfn_range.start >= gfn_range.end)
-                                continue;
- 
--                       if (!locked) {
--                               locked = true;
-+                       if (!r.locked) {
-+                               r.locked = true;
-                                KVM_MMU_LOCK(kvm);
-                                if (!IS_KVM_NULL_FN(range->on_lock))
-                                        range->on_lock(kvm);
-                        }
- 
--                       ret |= range->handler(kvm, &gfn_range);
-+                       r.ret |= range->handler(kvm, &gfn_range);
-                }
-        }
- 
--       if (range->flush_on_ret && ret)
-+       if (range->flush_on_ret && r.ret)
-                kvm_flush_remote_tlbs(kvm);
- 
--       if (locked) {
-+       if (r.locked) {
-                KVM_MMU_UNLOCK(kvm);
-                if (!IS_KVM_NULL_FN(range->on_unlock))
-                        range->on_unlock(kvm);
-
+Then patches 6-8 go away.
