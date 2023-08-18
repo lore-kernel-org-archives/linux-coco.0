@@ -1,41 +1,41 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0449A2C
-	for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 22:44:59 +0000 (UTC)
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-589ac93bc6eso17649187b3.0
-        for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 15:44:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042E9174DA
+	for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 23:14:34 +0000 (UTC)
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-565aee6e925so1822346a12.0
+        for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 16:14:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692398699; x=1693003499;
+        d=google.com; s=20221208; t=1692400474; x=1693005274;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e0yIaLrfprkYOudGbsE5ssGGGSQHn95w53fiIFwE4ps=;
-        b=hWw9AbKzdxPQvghrM+Gde/ZZ0ptrm4kwXQe0yfMCekQOx01RZK/qOnO2HocOon1lHt
-         u2OyE7GQ1n+MAr3VaNsnPPUdsDsxzYJspDSks8KX1sfZ7shAr3a29kRXirszojblnq/V
-         UB+gP5sHdYMGsessvmlRZQ1WooZ91IsMsO+v2UySUXsw+QUSRkbw0/tmxdHGR4QLsWOA
-         GcK8kJBSlIPbePEyz0zujaWgq98AdBoQfWEnyorO9Tbmg65mDLr8sNt79LVsYlXhXvfG
-         ERLCSA0OovmXlcuU9082R9AoDFgZAwxwD/Y+y5Q4G2Po3gyE6rluAC1LTVpH0bBiFs62
-         CGDA==
+        bh=5DZepNUwrlYIieQTJr9Dh/3tOxOseVHo5Xld8dMNuNg=;
+        b=lsQ+HVzfe/LvJcjpi5EkUeNksPQ4SKFkDuitTo8QZ8/V1sWcr6kxph8TKOQUDPuQY6
+         3R+Pf/jmvF5hwJvwA/qd5EZ3umv7mDUrFv27YvRHTc8kZljL+me7hAdDiSfTlWvFfEj/
+         coNhxIPQ3jfxMfHlGddYmQDEEwSQ+Y5RTQnvOpYtmp6kPuX7mXVgS6zWmHmU+sPbmIdm
+         3HwG+UlgYVsM7jRmT+4vVPawxf3yitDSjepBo5MpteRZM1D0Vdl8EmV210P/oEzmRyXa
+         r4YJEufogWKx1B2Git+TQpUucYnwL9g/7hgB267fQrq1A8h/ysQfdzEjFcPJQrGcpD54
+         aN0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692398699; x=1693003499;
+        d=1e100.net; s=20221208; t=1692400474; x=1693005274;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e0yIaLrfprkYOudGbsE5ssGGGSQHn95w53fiIFwE4ps=;
-        b=emTAlRubvYH3oj3/jnDCX75lOOc6bLhAhLkbGGurmj4LAOVOcF9YCesIlrdaZdrrpO
-         z6MW+wY4vvEuZLAwW7tq/JM8gS4AZkikYnde0KCkRjwgQMqR9/6l+lR4BRlQ6Bti957l
-         YYL5cuqO7bjJnhDIE2YZw6ZZZlOTGTzdzNetqNNEgV9iv0DHOlqWG5coIo1cQ8N/ddLd
-         eRCJyfuyjFd0tTvC8REjA9npZo+W4MkXqBJDF53+zzcAfa8JPjIn9GFJ6c9vPAuNcbko
-         cLWzDK4SmOygr4/qo77VnDxCWlIyHvsvmFwG6pab/cVepA9cHLUMYxn6q/+G5aqqGk7X
-         luxQ==
-X-Gm-Message-State: AOJu0YwjQemkSo+ldQDPBa9VjZW2LaOBqrEuYFI9vXVRE6kgskOy93m4
-	RitlXoQ7jvibvm7L1C6hG6DRcZM8ky8=
-X-Google-Smtp-Source: AGHT+IEaJZvHkdOPE3MxKuwc1z8+0s4BKNu0HXRVPvzaGNsRdvJOmeFduY0mAdxUCpm4bP8O3LFPDR6fanY=
+        bh=5DZepNUwrlYIieQTJr9Dh/3tOxOseVHo5Xld8dMNuNg=;
+        b=hFHqY17hQoe6Mevc8nK/URFNcSaAPADs907S9oy+VxHzXLw9hxzXy3mg6daJzOHGV0
+         d0ECOlEiTouHXWh2e5d2FbO8JKi5Kv6J3OfhbGcR8Mb9VutAMUU9jjOXA9ZbuNCObFyL
+         iRfD+414yYD43Ibp8s8J5TG1J1wayOR363QATTpXDCcw+m6f/s3zlDO2wS4FuE5A1yOa
+         WJP3h43+LVhMFwNh/PT5e8pROkDb/azuQ7NSL9QAyguHo8gQ/mwBANbkJQVbcbzY4v2n
+         s3M6tavnfShSA4rxSwePA969RMKBiaXaaGwqH+LAIX8m+7LUDBSpOhdHUUuHdNvVlTcP
+         KFQQ==
+X-Gm-Message-State: AOJu0YyrWURzxxbyvYPzkTLgTQq4XNiO1yDC1AogU4C8sXh76FBIDILu
+	iaI8iGMl2gpm1zGagJdoKkFF+RloDlI=
+X-Google-Smtp-Source: AGHT+IF9HyPZ8NYi1dOCnWJqmB9Xg8StOO2+i4hjQBZ6kPAEn5MgrO+XU77nUxSPGBzB9RxPZ8c5rXOzSME=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:440c:0:b0:565:9bee:22e0 with SMTP id
- r12-20020a81440c000000b005659bee22e0mr6650ywa.0.1692398698818; Fri, 18 Aug
- 2023 15:44:58 -0700 (PDT)
-Date: Fri, 18 Aug 2023 15:44:57 -0700
-In-Reply-To: <52c6a8a6-3a0a-83ba-173d-0833e16b64fd@amd.com>
+ (user=seanjc job=sendgmr) by 2002:a63:3ecd:0:b0:565:56be:4dee with SMTP id
+ l196-20020a633ecd000000b0056556be4deemr124213pga.8.1692400474224; Fri, 18 Aug
+ 2023 16:14:34 -0700 (PDT)
+Date: Fri, 18 Aug 2023 16:14:18 -0700
+In-Reply-To: <cover.1692119201.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -43,98 +43,54 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
 References: <cover.1692119201.git.isaku.yamahata@intel.com>
- <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
- <ZN+whX3/lSBcZKUj@google.com> <52c6a8a6-3a0a-83ba-173d-0833e16b64fd@amd.com>
-Message-ID: <ZN/0aefp2gw5wDXk@google.com>
-Subject: Re: [PATCH 4/8] KVM: gmem: protect kvm_mmu_invalidate_end()
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
+Message-ID: <169239820500.1761806.6161030396328593760.b4-ty@google.com>
+Subject: Re: [PATCH 0/8] KVM: gmem: Adding hooks for SEV and TDX
 From: Sean Christopherson <seanjc@google.com>
-To: Ashish Kalra <ashish.kalra@amd.com>
-Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
-	Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, 
-	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	isaku.yamahata@intel.com
+Cc: isaku.yamahata@gmail.com, Michael Roth <michael.roth@amd.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
 	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
 	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, 
 	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
-	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>, 
-	Mingwei Zhang <mizhang@google.com>
-Content-Type: text/plain; charset="us-ascii"
+	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-+Mingwei to correct me if I'm wrong
-
-On Fri, Aug 18, 2023, Ashish Kalra wrote:
+On Tue, 15 Aug 2023 10:18:47 -0700, isaku.yamahata@intel.com wrote:
+> From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> On 8/18/2023 12:55 PM, Sean Christopherson wrote:
-> > On Tue, Aug 15, 2023, isaku.yamahata@intel.com wrote:
-> > > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > 
-> > > kvm_mmu_invalidate_end() updates struct kvm::mmu_invalidate_in_progress
-> > > and it's protected by kvm::mmu_lock.  call kvm_mmu_invalidate_end() before
-> > > unlocking it. Not after the unlock.
-> > > 
-> > > Fixes: 8e9009ca6d14 ("KVM: Introduce per-page memory attributes")
-> > 
-> > This fixes is wrong.  It won't matter in the long run, but it makes my life that
-> > much harder.
-> > 
-> > > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > ---
-> > >   virt/kvm/kvm_main.c | 15 ++++++++++++++-
-> > >   1 file changed, 14 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> > > index 8bfeb615fc4d..49380cd62367 100644
-> > > --- a/virt/kvm/kvm_main.c
-> > > +++ b/virt/kvm/kvm_main.c
-> > > @@ -535,6 +535,7 @@ struct kvm_mmu_notifier_range {
-> > >   	} arg;
-> > >   	gfn_handler_t handler;
-> > >   	on_lock_fn_t on_lock;
-> > > +	on_unlock_fn_t before_unlock;
-> > >   	on_unlock_fn_t on_unlock;
-> > 
-> > Ugh, shame on my past me.  Having on_lock and on_unlock be asymmetrical with respect
-> > to the lock is nasty.
-> > 
-> > I would much rather we either (a) be explicit, e.g. before_(un)lock and after_(un)lock,
-> > or (b) have just on_(un)lock, make them symetrical, and handle the SEV mess a
-> > different way.
-> > 
-> > The SEV hook doesn't actually care about running immediately after unlock, it just
-> > wants to know if there was an overlapping memslot.  It can run after SRCU is dropped,
-> > because even if we make the behavior more precise (right now it blasts WBINVD),
-> > just having a reference to memslots isn't sufficient, the code needs to guarantee
-> > memslots are *stable*.  And that is already guaranteed by the notifier code, i.e.
-> > the SEV code could just reacquire SRCU.
+> This patch series for KVM guest memfd is to have common code base for SEV and
+> TDX.  Several minor fixes.  Based on this patch series, TDX KVM can defer page
+> clearing without mmu lock.
 > 
-> On a separate note here, the SEV hook blasting WBINVD is still causing
-> serious performance degradation issues with SNP triggered via
-> AutoNUMA/numad/KSM, etc. With reference to previous discussions related to
-> it, we have plans to replace WBINVD with CLFLUSHOPT.
+> Isaku Yamahata (6):
+>   KVM: gmem: Make kvm_gmem_bind return EBADF on wrong fd
+>   KVM: gmem: removed duplicated kvm_gmem_init()
+>   KVM: gmem: Fix kvm_gmem_issue_arch_invalidate()
+>   KVM: gmem: protect kvm_mmu_invalidate_end()
+>   KVM: gmem: Avoid race with kvm_gmem_release and mmu notifier
+>   RFC: KVM: gmem: Guarantee the order of destruction
+> 
+> [...]
 
-Isn't the flush unnecessary when freeing shared memory?  My recollection is that
-the problematic scenario is when encrypted memory is freed back to the host,
-because KVM already flushes when potentially encrypted mapping memory into the
-guest.
+Applied patches 1 and 2 to kvm-x86 guest_memfd.  I'll post the alternative
+approach for fixing the unlocking bug next week (need to test, and I'm out of
+time this week).
 
-With SNP+guest_memfd, private/encrypted memory should be unreachabled via the
-hva-based mmu_notifiers.  gmem should have full control of the page lifecycles,
-i.e. can get the kernel virtual address as appropriated, and so it SNP shouldn't
-need the nuclear option.
+Regarding the initialize/invalidate hooks, I resurrected the discussion from
+the previous version[*], I'd like to bottom out on a solution in that thread
+before applying anything.
 
-E.g. something like this?
+[*] https://lore.kernel.org/all/ZN%2FwY53TF2aOZtLu@google.com
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 07756b7348ae..1c6828ae391d 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2328,7 +2328,7 @@ static void sev_flush_encrypted_page(struct kvm_vcpu *vcpu, void *va)
- 
- void sev_guest_memory_reclaimed(struct kvm *kvm)
- {
--       if (!sev_guest(kvm))
-+       if (!sev_guest(kvm) || sev_snp_guest(kvm))
-                return;
- 
-        wbinvd_on_all_cpus();
+[1/8] KVM: gmem: Make kvm_gmem_bind return EBADF on wrong fd
+      https://github.com/kvm-x86/linux/commit/07ac04fbefce
+[2/8] KVM: gmem: removed duplicated kvm_gmem_init()
+      https://github.com/kvm-x86/linux/commit/9ab46d91d5ea
+
+--
+https://github.com/kvm-x86/linux/tree/next
+https://github.com/kvm-x86/linux/tree/fixes
