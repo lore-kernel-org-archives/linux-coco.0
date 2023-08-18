@@ -1,86 +1,200 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2040.outbound.protection.outlook.com [40.107.223.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2209F63A0
-	for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 18:15:30 +0000 (UTC)
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1bde8160fbdso17125105ad.1
-        for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 11:15:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692382530; x=1692987330;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2UpHtort9A6GjNTa35crOHhwpakPEKD1yUlcxtVr0FM=;
-        b=Wf3bir3HeQk+WypI1ZAPThcOJ8gBnSqr+4uMmAGs5XkTifA1Jk+MIDWHiHZRdNk0+C
-         M5661hEphU/S9CH1QehwULjXmETLlJNjdYP7x4EH3ZdU2MpvGa5UN9y+2vDZICrkZDzZ
-         9a649TKMt+pSSYcAeMrscys6un16n6z/fPt7iyYlqM4sbvaWGeLiX+6zLD4vT13u8GdA
-         3bdku6+tGWd8ndlrBLcc0mCDTPvthWqpoilu/rEO+XcSveGnU4nmPXc5G48yPu6t9WW9
-         xAesWTGzznMOvZ3+KVJhuC/+J7hHFF43hvk0Pb9RuSXACDXlbQZZQTwmjhwqyIP7otfl
-         IU8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692382530; x=1692987330;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2UpHtort9A6GjNTa35crOHhwpakPEKD1yUlcxtVr0FM=;
-        b=AkR4BWq1poLMWD4d9KSq18trwyLyDW/lz5cHlA6tYhDBul4LEvIKIKP0bm+WF6Rof8
-         QmZ48UOJqZLh0cKiEmpB3/O5/OlYAA1ycX6+3uYLwZByhLLrtow1CttSGsFFDCZ0wwZ1
-         GQkwdMdZMrtdOC22dQd5FpSgEp78DmUgB3Bxyd+7dlwfhXMCpk+b0u7eaEvzB8OjTbqS
-         +TpBHS44LGLdJ7TsN4zuk4xkTGXlttG4l0T3iwlAX6cF+poimiY9ZhHneQVhKjrjwjbT
-         C5Gqk+zg3T0smweqUTb5pm2AC24aMnlerLgWLEWzrRMOskmdg1HnCVK/QVbU9CU7AOqu
-         aqlw==
-X-Gm-Message-State: AOJu0YyoSNJNiNGnKAI0pxc0gqWj9nKgI30AQCTD72rA0aT1Ii9isdfk
-	JoMHiNmBr+UsQTIju2EfoSGKpII06Sk=
-X-Google-Smtp-Source: AGHT+IFIP6KRkFSo7uDQ6UxRK3c68Ehxfv1w9ffi6BGnhY+oGbePYtHkVZUTFVjvumMFptQ/4PuZ+lXpYqw=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:f547:b0:1b8:8fe2:6627 with SMTP id
- h7-20020a170902f54700b001b88fe26627mr1183892plf.8.1692382529796; Fri, 18 Aug
- 2023 11:15:29 -0700 (PDT)
-Date: Fri, 18 Aug 2023 11:15:28 -0700
-In-Reply-To: <c3128665745b58500f71f46db6969d02cabcc8db.1692119201.git.isaku.yamahata@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194AA1C29A
+	for <linux-coco@lists.linux.dev>; Fri, 18 Aug 2023 20:32:40 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fJ1s+kADkR+3EBDS+lk59Fx+qzDkn9eEthmnzyK1m6A1qyWgpmnt0iMHiTsbrIoNSzhIQEM7qXkS5PtjcGECufPAbYuM5Oh35NS6beqFgVH8j/5MH+EBF4uAWzBTggwMV+lPcfnEbVue9NE/wms+F1mRGUDwwojd9SaBlf9JSiHrlIoGHO1zqUwf/sSrn280DUVV4/o0Ej0zQTneZfWCt5KyS5OKCjvzkMskhGKrgEXRz7xCvTMIbbhX+8lf69U0yy2P+hZWKoeezSqhXOIYzwq7+T0YozalimAlcv81d3Qrv0PmE5cv+5RwpgYcsDD01V4896iosuopC7l+sEYlpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/4WKRBhCl2iJtOXBTndHKY52QvV/EU73iWyOjPk7mTs=;
+ b=nZs/cWSf9og30Jxv7jXb0bQ2hPs5Sj0Jm7gcyZBuJameoQXFWsprqHnqGuK05Xuym4omdRHx+EpGaVVo9GSMO8S/+qWIH+amm/a3gk+hlOuOtJ/2r5o82/93PSgwartnjWta3alEpwC1Qs3EuJSvkgH3s6zNK9ZQW8ifzcTXppmKeI685gNsXQSFkclmFaZSnrhPtM7Mb0zIeeC0iNIocWmjXYaF6zL1a85cNd0O7nVRlLgnPtU8t6MInuV/f8yysdcKkQt7+yL9bKTkGZpmGLP43oUMkRbeW2UsYB8EO6mIqrRP/4sOHYkDe952LHErJFS+/jHcyD29NVuMki+rHA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/4WKRBhCl2iJtOXBTndHKY52QvV/EU73iWyOjPk7mTs=;
+ b=LkahU5BxEFsfmghDsUt+A3RZ2c0OItcErUnB0m//A23oX6HFrTwWVcJwcfmNLThM6U4/wnYsS46Oa5YPL0dHjXrARdf2+AwiMkQpj/T22ykCx1E8pezNVkQWBzzwqis72x/60vu3vSFjT3+VSghU5EVgZr52TJjTZ29ERiK8t5o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by DS0PR12MB6464.namprd12.prod.outlook.com (2603:10b6:8:c4::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6678.31; Fri, 18 Aug 2023 20:32:37 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::af15:9d:25ab:206b]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::af15:9d:25ab:206b%3]) with mapi id 15.20.6678.031; Fri, 18 Aug 2023
+ 20:32:37 +0000
+Message-ID: <52c6a8a6-3a0a-83ba-173d-0833e16b64fd@amd.com>
+Date: Fri, 18 Aug 2023 15:32:34 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH 4/8] KVM: gmem: protect kvm_mmu_invalidate_end()
+Content-Language: en-US
+To: Sean Christopherson <seanjc@google.com>, isaku.yamahata@intel.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ isaku.yamahata@gmail.com, Michael Roth <michael.roth@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com,
+ Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>,
+ Kai Huang <kai.huang@intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
+ chen.bo@intel.com, linux-coco@lists.linux.dev,
+ Chao Peng <chao.p.peng@linux.intel.com>,
+ Ackerley Tng <ackerleytng@google.com>,
+ Vishal Annapurve <vannapurve@google.com>, Yuan Yao
+ <yuan.yao@linux.intel.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Xu Yilun <yilun.xu@intel.com>, Quentin Perret <qperret@google.com>,
+ wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>
+References: <cover.1692119201.git.isaku.yamahata@intel.com>
+ <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
+ <ZN+whX3/lSBcZKUj@google.com>
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <ZN+whX3/lSBcZKUj@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1PR03CA0003.namprd03.prod.outlook.com
+ (2603:10b6:806:2d3::14) To SN6PR12MB2767.namprd12.prod.outlook.com
+ (2603:10b6:805:75::23)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1692119201.git.isaku.yamahata@intel.com> <c3128665745b58500f71f46db6969d02cabcc8db.1692119201.git.isaku.yamahata@intel.com>
-Message-ID: <ZN+1QHGa6ltpQxZn@google.com>
-Subject: Re: [PATCH 7/8] KVM: gmem: Avoid race with kvm_gmem_release and mmu notifier
-From: Sean Christopherson <seanjc@google.com>
-To: isaku.yamahata@intel.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	isaku.yamahata@gmail.com, Michael Roth <michael.roth@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
-	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
-	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
-	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|DS0PR12MB6464:EE_
+X-MS-Office365-Filtering-Correlation-Id: a434dcb1-5668-4530-702b-08dba02a42f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Nux2QKSxnYypoXBKVJ9BoYCW1/cecBZ1tW5XK8XrLEuRAUBAjTyX+oGKO5w7jjKlPA0exq4yuMFm5+oYdwZGsU7Lmh7a66RzrA8+bezUaFWNfx/7lYgA4Qm+Oas3wXxyKjJ16wh6AH7fVVjsWFyLWoBBt9/R3XphvC0759e3mJUcAx6AGtakQUoyO8/vPLGqeWu9W3ZgBrbNQbu7MQs9J3ma8TcALN9dcE6i2rYhouBH2eiqMg1hAZ1QZHzCmt6UPBUZzSIdBLhRqNVze1A1NLBwObrcMHDcf41c5IhpCQxoNW+z0IRvWzrzMwK1xb/SL6MGjGDBVkKdzEU/iALZzOVAPOjkgaXSGYDF4DFcyENJmZEM9WsypVC4oxrFt1a0PzuC5IVKd/COUgh4pmfc+o3410rjo0aqg8lSBxp1PmxWsCQYTFkvXISwiJnDCVumtfsrj0PcOhWlig5cIOGuo6ej/3dWEXiD6YU1tSnVTq1sdvyVZVVELXJ/+yztQLzZX4ThUTr2fDBmVRXDlmj2LIiw96ErAPqQxQtyktDRwR5PJaphLGgzfB6MB2Db5KOmYGHF7zZdAOP2jfxTihEgFnM3ShUOwIPoZteCV943w3Q3J+Q6xXO8NCt3lffVLZQfDoesUI2vh3WdKE9Trv33RQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(39860400002)(136003)(366004)(396003)(451199024)(1800799009)(186009)(31686004)(86362001)(36756003)(31696002)(38100700002)(5660300002)(2616005)(6506007)(66946007)(66476007)(478600001)(6486002)(316002)(66556008)(53546011)(6666004)(26005)(54906003)(8936002)(6512007)(8676002)(4326008)(41300700001)(83380400001)(7416002)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OWNJL3E0OEN3cVkyQ285aVRycDQ2U0h0MlJQeU9tOXFvcytUaXpVeXR2VTMv?=
+ =?utf-8?B?cFNIZjA5amFFeGJYbmtMZzl4cGxDTUdVZlp3L1BRWTdZUFphZXdFOVV1aHEz?=
+ =?utf-8?B?Y1JtWGtBZ2hkbHo0ZGEvdzZyK1lYeERIK2xxWlVHLzF4N0dJQTdySW1WYSt4?=
+ =?utf-8?B?SUZ6L2VZUWpTeHlDb2Zwb0s3T0ZXZlFZbThMWGtRbnp4Z2Fxd1BuUXJPdEF3?=
+ =?utf-8?B?ckh4Nk96UU5QNE55dlVrdVFDajNrYWd6MVF2RXJGTVdaVXN0d293QlpxWDN1?=
+ =?utf-8?B?SloyeVJCazFkbitIaHZOSlRqNC9qbWUyc1RYaUhpWTg4aVlPY0oySTM3cktV?=
+ =?utf-8?B?RC9OdS9ha1JRMFpKVTZ4ZnExWVNpTFIxSkFPL2xVOHhvM0FzUnZrRWRDam1o?=
+ =?utf-8?B?UXBYWFF2dm1TYWJlaWhBNUwzbC9KQkdHOTNiVXdiVmNVOE9tTHVablEzWmg4?=
+ =?utf-8?B?NlQ2TWFxZW51VEpJeWx0NE9ZV0pHNEdwd1ZjVUNFc1FIaE9LRFRlMGI2QmM0?=
+ =?utf-8?B?dFdZMDVPR2VFeEFyVUo3MkdTK0J0WHVqYjRwK0V6ekNEVXltZVVFZ1VvRWZs?=
+ =?utf-8?B?KzhQVmN0K2VjcTBGTDZWL3IzdzFXRm5vTHBybzZqMVRkT1VBK3RBMXU3MUFk?=
+ =?utf-8?B?R2pkWC9kM2RVRVFoYkd1MkxqdTNHbVQ3UWdPM3JqclB0T2RZa2lIZWgvaURx?=
+ =?utf-8?B?blFYY2lDYm5sbGQwbitkZzZLS3dLTi90QWphNDRtbVAraVo3SXI2eGdIbE5U?=
+ =?utf-8?B?eDAyZGdnWVord24wRDR0WVBISHZPWHpPSE82SUZUdXBYV2hDUnBhc3lTVFFh?=
+ =?utf-8?B?SllRWENTL1k4SnNndjh4WGdMVi9TVWxDbCtkbEFDWW8vU1ZFbnFNL1NlWG4z?=
+ =?utf-8?B?VVlGWUtSaFZyb0xxbStVYVMzcHU5MmYxSmwvY0YyUVhnMG9LZHhTUXZZaDIx?=
+ =?utf-8?B?T1Y5YnJVQVBMdUZkQTIweU1kc2FwOS9WUEN2RUowVVZZbHhjWldKaEhselo1?=
+ =?utf-8?B?d29JYmlFQWdzcVI2bTJwKzFXUzVMUDVqNVVjcG9tSVJ1SE9mUlh4NTZ5UXhj?=
+ =?utf-8?B?b1lNWTBybE9EVkw5Vm0rM01hNmJvQWR3SUl5TVh2c3poRFEvZ2dHRDkwakF3?=
+ =?utf-8?B?NkVWVHNVVUtBQnJGb3J4bFRYSEJQS1RtaTQvSG5tZGhjYURPTmFIZDQzZEFQ?=
+ =?utf-8?B?cFYxWDFlSW5BQXoxblVSWGp4SXYycDdITHlSWFYydU8vK25MNWR2WWVQNlZ4?=
+ =?utf-8?B?aXMrenNFMUNJclpWUU5EQUZLYmpnaEtLc1Y1TTc0YkNDVEtBMFJPVzc5NEV6?=
+ =?utf-8?B?dHg4RUt6a1dMRUJ6OVFFMGg5T051clpacTFTdVdybHNoRkg5cStXd2l5WkRx?=
+ =?utf-8?B?K29oVVVlakNldnBZSm9nNnpoY0xMYytENEVJTE02VEp1djRocWhoMzMwVita?=
+ =?utf-8?B?ZEphcjVnNnZNUUV1elFCd2tkWHlrcU1Md1pPWkdua0JUb0dTalgvdlIzZGEw?=
+ =?utf-8?B?ZzlxaG1ZOUczT0owaXovdkFoSGpjWDlVakFMRnRLaXRTekgycFpNdWwzRzd3?=
+ =?utf-8?B?ck1DM1VpcFMrazRZWEdEaUFkSWdnV3V5QlFkS1M5eDFxVXJJRkRZd21SeFpJ?=
+ =?utf-8?B?Y1FMSTVyR05JSDNhcnFzZjJkZmlkQzdYQkljY29zRXhlUkpLd21Ub01Oc3VI?=
+ =?utf-8?B?UU50bGQ1bDliYldmOG1WZG1pLzVnajRuYkprSVZ4VFJCZlhzOExwcW11YktN?=
+ =?utf-8?B?N3lObjd3eWVZK3QvQjhrOThOVHg4QlkyWWx5TTRLeTIzRHZ2alV4MDlUbXRq?=
+ =?utf-8?B?Rms0NXJLQzJiejFYM2tyNkE0Ym5md0dHT2FIZkZIMGJFMGFLMGxaRGxIVzUz?=
+ =?utf-8?B?VHhxd0xxa2lkcUJsSkdMeGNtN3liaGZhOFgwRWh2VkVYYXlMUWlzUUtXMjl5?=
+ =?utf-8?B?MDl5dVplWFNzRDhzRHdyeFVLemtXSS9lb1pURlVXZEhCTXEvMTlzMkxRYXFr?=
+ =?utf-8?B?K0NrR09LeHBpRjJvTzE1aVRPa2pCS2liQzR2ZTg0OVFjd1FlNFhOWU4zWUx2?=
+ =?utf-8?B?Y1dBZ1JtUCtjVkgzNm1PZDJRR01XaW5nQ21qZG5BemJyYmF2MzV6Rm4yYjhR?=
+ =?utf-8?Q?VrZ0amPiFn5IGZ67LiXW0ge9O?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a434dcb1-5668-4530-702b-08dba02a42f6
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2023 20:32:37.6636
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bujt/hoV4vbyqn4iH044SAi9X1JdQSeroQ8tmcT9yF8BEoE+i5R3eaR6NN3VDg/QchVbHQQgqB+WO9UY0ImV0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6464
 
-On Tue, Aug 15, 2023, isaku.yamahata@intel.com wrote:
-> From: Isaku Yamahata <isaku.yamahata@intel.com>
+
+On 8/18/2023 12:55 PM, Sean Christopherson wrote:
+> On Tue, Aug 15, 2023, isaku.yamahata@intel.com wrote:
+>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>
+>> kvm_mmu_invalidate_end() updates struct kvm::mmu_invalidate_in_progress
+>> and it's protected by kvm::mmu_lock.  call kvm_mmu_invalidate_end() before
+>> unlocking it. Not after the unlock.
+>>
+>> Fixes: 8e9009ca6d14 ("KVM: Introduce per-page memory attributes")
 > 
-> Add slots_lock around kvm_flush_shadow_all().  kvm_gmem_release() via
-> fput() and kvm_mmu_notifier_release() via mmput() can be called
-> simultaneously on process exit because vhost, /dev/vhost_{net, vsock}, can
-> delay the call to release mmu_notifier, kvm_mmu_notifier_release() by its
-> kernel thread.  Vhost uses get_task_mm() and mmput() for the kernel thread
-> to access process memory.  mmput() can defer after closing the file.
+> This fixes is wrong.  It won't matter in the long run, but it makes my life that
+> much harder.
 > 
-> kvm_flush_shadow_all() and kvm_gmem_release() can be called simultaneously.
+>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>> ---
+>>   virt/kvm/kvm_main.c | 15 ++++++++++++++-
+>>   1 file changed, 14 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+>> index 8bfeb615fc4d..49380cd62367 100644
+>> --- a/virt/kvm/kvm_main.c
+>> +++ b/virt/kvm/kvm_main.c
+>> @@ -535,6 +535,7 @@ struct kvm_mmu_notifier_range {
+>>   	} arg;
+>>   	gfn_handler_t handler;
+>>   	on_lock_fn_t on_lock;
+>> +	on_unlock_fn_t before_unlock;
+>>   	on_unlock_fn_t on_unlock;
+> 
+> Ugh, shame on my past me.  Having on_lock and on_unlock be asymmetrical with respect
+> to the lock is nasty.
+> 
+> I would much rather we either (a) be explicit, e.g. before_(un)lock and after_(un)lock,
+> or (b) have just on_(un)lock, make them symetrical, and handle the SEV mess a
+> different way.
+> 
+> The SEV hook doesn't actually care about running immediately after unlock, it just
+> wants to know if there was an overlapping memslot.  It can run after SRCU is dropped,
+> because even if we make the behavior more precise (right now it blasts WBINVD),
+> just having a reference to memslots isn't sufficient, the code needs to guarantee
+> memslots are *stable*.  And that is already guaranteed by the notifier code, i.e.
+> the SEV code could just reacquire SRCU.
 
-KVM shouldn't reclaim memory on file release, it should instead do that on the
-inode being "evicted": https://lore.kernel.org/all/ZLGiEfJZTyl7M8mS@google.com
+On a separate note here, the SEV hook blasting WBINVD is still causing 
+serious performance degradation issues with SNP triggered via 
+AutoNUMA/numad/KSM, etc. With reference to previous discussions related 
+to it, we have plans to replace WBINVD with CLFLUSHOPT.
 
-> With TDX KVM, HKID releasing by kvm_flush_shadow_all() and private memory
-> releasing by kvm_gmem_release() can race.  Add slots_lock to
-> kvm_mmu_notifier_release().
+Pasting your previous thoughts on the same:
 
-No, the right answer is to not release the HKID until the VM is destroyed.  gmem
-has a reference to its associated kvm instance, and so that will naturally ensure
-memory all memory encrypted with the HKID is freed before the HKID is released.
-kvm_flush_shadow_all() should only tear down page tables, it shouldn't be freeing
-guest_memfd memory.
+For SNP guests, KVM should use CLFLUSHOPT and not WBINVD.
+That will slow down the SNP guest itself, but it should eliminate the 
+noisy neighbor problems.
 
-Then patches 6-8 go away.
+In theory, KVM could do the same for SEV/SEV-ES guests, but that's 
+subtly quite difficult, because in order to use CLFLUSHOPT, the kernel 
+needs a valid VA=>PA mapping.
+Because mmu_notifier_invalidate_range_start() calls aren't fully 
+serialized, KVM would encounter situations where there is no valid 
+mapping for the userspace VA.
+KVM could ignore those, but IIRC when Mingwei and I last looked at this, 
+we weren't super confident that KVM wouldn't miss edge cases.
+
+Using KVM's SPTEs to get the PA isn't a great option, as that would 
+require KVM to flush whenever a leaf SPTE were zapped, i.e. even when 
+_KVM_ initiates the zap.
+
+UPM is supposed to make this easier because the notifier should be able 
+to provide the PFN(s) being unmapped and the use the direct map to 
+flush.  I don't think the proposed series actually provides the PFN, but 
+it should not be difficult to add.
+
+Thanks,
+Ashish
+
