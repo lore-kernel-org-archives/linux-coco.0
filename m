@@ -1,129 +1,101 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C2020EE6
-	for <linux-coco@lists.linux.dev>; Tue, 22 Aug 2023 23:17:25 +0000 (UTC)
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-56f75e70190so876760a12.3
-        for <linux-coco@lists.linux.dev>; Tue, 22 Aug 2023 16:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692746245; x=1693351045;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oFwVY5f5dTBaMzDscxqMGNrjI0xrE58qgkFcYAhYpMc=;
-        b=75CU7MMPm59DuVURW4I5Awl+gGVby465miL42+4YWEZODWWEL1GIFpxXTJekpZnNnl
-         N2+UnX2W4vOlRH75+HBCFSmi5KGyPUK+mTvBnhZwlFmzX9cCvSTIE7ZL1eAz9khnzhtP
-         rknG3bjV6rcHOM9m2TBB2RUQgzFIUj/yrDi0u9in7pP+Djas/sZ1r/Eb7aIR9uP5sx0B
-         hKeT31r+ZeTT5KpzX3mpjuNkpOeSLI6FVVRN8X1Q8PjrcDEOIGp6x27azlCmYj9H+sBZ
-         V4N/le27vTaBzt7aJ4R4VYM2mXzinjZXff2aSp37hu/O48S1EavfVsSROouHe2adoqLg
-         7g2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692746245; x=1693351045;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oFwVY5f5dTBaMzDscxqMGNrjI0xrE58qgkFcYAhYpMc=;
-        b=FEF78sPThQ3VhzR4BwNImszfGjcA4dBq8CDDeXFkN+wAdKJQ1V5RNoBU2iks+90kvl
-         /PRhiaa4nUsaXhhL6d41ObG3DHJiCYLFz60/xOP5Czz5Qkgm5pmCFfU28sELtmy6TgSZ
-         RvZOdKf8Ssig9C859ALoyclH1W+kuF/HOVmx+2OoaEK0SvsnC2cwuOB1kmPz2bnNOomM
-         TR89NXps7XdGEX03tuo2dXaQ8OL5prQX/od7WfdyE5xg0JnDJe0QyTxmJeTQwcrGoKda
-         sS8iFG3i3X+fz54nwSbJGQVDJ74GoKNwMS1aLL4JcZq85OG1u0KzNnaPXWmpXZe4DVsg
-         7Ytg==
-X-Gm-Message-State: AOJu0YzgqpyJyoRq/twdmMzUiapoi1sRySS1z+IxAfV6GsUPyo9nUJ/J
-	6TDRu1JXCDI2UjrhR6wpvqQxxignOrM=
-X-Google-Smtp-Source: AGHT+IH25EflXFYRsSAIONlQdF4yEYShAZMjZEb7bXaRk6krlSYytMpTmCeiKJi71iN2KbTqlbAvt/EfaUY=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:fb03:b0:1bb:8c42:79f4 with SMTP id
- le3-20020a170902fb0300b001bb8c4279f4mr4246479plb.2.1692746245174; Tue, 22 Aug
- 2023 16:17:25 -0700 (PDT)
-Date: Tue, 22 Aug 2023 16:17:23 -0700
-In-Reply-To: <df49bbb2-92c0-7792-ab90-e748be570b5d@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBD920EE6
+	for <linux-coco@lists.linux.dev>; Tue, 22 Aug 2023 23:18:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692746325; x=1724282325;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=l1p2cOfxo3qmoiLl8kxy9Mc6cBgN7VSO9yg+nWKrdVk=;
+  b=gbEM1NZEi5miGFvfHE64cCwUgTsmh1FloZYNIQq3LyVb5NjBliym5ekJ
+   MzUqCZBuoyBnWwVko7MVLeqrujGCEI2qOLAay76GWRmtFouM7w7dsiC9m
+   hCmai33/es0ZRNHYz0VLs82bYPqvtSTW+uh067phg95xAuqPRnMxDZrhu
+   YHd6Cdpbh/eC6N5TffrqYe2caIg8uzd0c4FIzx04HrN0esZ7IB2y6GkAg
+   QqYm/yt/ba/MZQd0Muw+x/SOqDiaTl8HnNSG62Fs2hlunQmuxKfbPRyeE
+   VWaeNZSNb2gSvdi032f6JpynA8OebnVVahvQxm+YI9Nwp+iw3WPknP2to
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="377774182"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
+   d="scan'208";a="377774182"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 16:18:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="983055484"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
+   d="scan'208";a="983055484"
+Received: from avelea-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.212.70])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 16:18:42 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 803B610463C; Wed, 23 Aug 2023 02:18:39 +0300 (+03)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2] x86/tdx: Mark TSC reliable
+Date: Wed, 23 Aug 2023 02:18:23 +0300
+Message-ID: <20230822231823.3205-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1692119201.git.isaku.yamahata@intel.com>
- <b37fb13a9aeb8683d5fdd5351cdc5034639eb2bb.1692119201.git.isaku.yamahata@intel.com>
- <ZN+whX3/lSBcZKUj@google.com> <52c6a8a6-3a0a-83ba-173d-0833e16b64fd@amd.com>
- <ZN/0aefp2gw5wDXk@google.com> <CAL715WL9TJzDxZE8_gfhUQFGtOAydG0kyuSbzkqWTs3pc57j7A@mail.gmail.com>
- <df49bbb2-92c0-7792-ab90-e748be570b5d@amd.com>
-Message-ID: <ZOVCAweRM8Es6rJ4@google.com>
-Subject: Re: [PATCH 4/8] KVM: gmem: protect kvm_mmu_invalidate_end()
-From: Sean Christopherson <seanjc@google.com>
-To: Ashish Kalra <ashish.kalra@amd.com>
-Cc: Mingwei Zhang <mizhang@google.com>, Jacky Li <jackyli@google.com>, isaku.yamahata@intel.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
-	Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, 
-	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
-	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
-	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 21, 2023, Ashish Kalra wrote:
-> Hello Mingwei & Sean,
-> 
-> On 8/18/2023 9:08 PM, Mingwei Zhang wrote:
-> The maximum hits are seen with shmem_fallocate and madvise, which we believe
-> are response to shared<->private
-> GHCB page-state-chage requests. discard=both handles discard both for
-> private and shared memory, so freeing shared memory
-> via fallocate(shared_memfd, FALLOC_FL_PUNCH_HOLE, ...) would trigger the
-> notifiers when freeing shared pages after guest converts a GPA to
-> private.
-> 
-> Now, as with SNP+guest_memfd, guest private memory is not mapped in host
-> anymore, so i added a generic fix (instead of Sean's proposed patch of
-> checking for SNP guest inside sev_guest_memory_reclaimed()):
-> 
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -593,6 +593,9 @@ static __always_inline int __kvm_handle_hva_range(struct
-> kvm *kvm,
->                         unsigned long hva_start, hva_end;
-> 
->                         slot = container_of(node, struct kvm_memory_slot,
-> hva_node[slots->node_idx]);
-> +                       if (kvm_slot_can_be_private(slot)) {
-> +                               continue;
-> +                       }
->                         hva_start = max(range->start, slot->userspace_addr);
->                         hva_end = min(range->end, slot->userspace_addr +
->                                                   (slot->npages <<
-> PAGE_SHIFT));
+In x86 virtualization environments, including TDX, RDTSC instruction is
+handled without causing a VM exit, resulting in minimal overhead and
+jitters. On the other hand, other clock sources (such as HPET, ACPI
+timer, APIC, etc.) necessitate VM exits to implement, resulting in more
+fluctuating measurements compared to TSC. Thus, those clock sources are
+not effective for calibrating TSC.
 
-...
+In TD guests, TSC is virtualized by the TDX module, which ensures:
 
-> As expected, the SEV hook is not invoked for the guest private memory pages
-> (no more invalidation from shmem_fallocate() + madvise()).
-> 
-> Isn't it better to skip invoking the KVM MMU invalidation notifier when the
-> invalidated range belongs to guest private memory ?
+  - Virtual TSC values are consistent among all the TD’s VCPUs;
+  - Monotonously incrementing for any single VCPU;
+  - The frequency is determined by TD configuration. The host TSC is
+    invariant on platforms where TDX is available.
 
-Oooh, you're running into problems where KVM blasts both the private and shared
-mappings even though invalidations from the mmu_notifier are shared-only by
-definition.
+Reliable TSC is architectural guarantee for the TDX platform and it must
+work for any sane TDX implementation.
 
-The answer is "yes", but simply skipping slots that _can_ be private is wrong,
-as KVM still needs to zap any shared mappings.  I have a plan[*], but I completely
-spaced on incorporating the idea into the gmem RFC.  I'll add that to the "list
-of todos for merging gmem", which I need to get sent out asap.
+Use TSC as the only reliable clock source in TD guests, bypassing
+unstable calibration.
 
-https://lore.kernel.org/all/ZJX0hk+KpQP0KUyB@google.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ v2:
+  - Slightly updated commit message;
+---
+ arch/x86/coco/tdx/tdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> > In fact, AFAIC, SNP VM does not track whether each page is previously
-> > shared, isn't it? If a page was previously shared and was written by the
-> > host kernel or devices before it was changed to private. No one tracks it
-> > and dirty caches are there!
-> 
-> The skipped invalidation here covered the case Mingwei mentioned above,
-> where the pages are changed from private->shared and subsequent freeing of
-> shared pages triggered the invalidation.
-> 
-> But, then why are we concerned about this, i thought we have concerns about
-> the case where the dirty cache lines contain encrypted guest data ?
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 1d6b863c42b0..1583ec64d92e 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -769,6 +769,9 @@ void __init tdx_early_init(void)
+ 
+ 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
+ 
++	/* TSC is the only reliable clock in TDX guest */
++	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
++
+ 	cc_vendor = CC_VENDOR_INTEL;
+ 	tdx_parse_tdinfo(&cc_mask);
+ 	cc_set_mask(cc_mask);
+-- 
+2.41.0
 
-Yes, that's my understanding as well (assuming by "this" you mean the case where
-the CPU cache has dirty lines for _shared_ addresses).
