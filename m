@@ -1,101 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBD920EE6
-	for <linux-coco@lists.linux.dev>; Tue, 22 Aug 2023 23:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692746325; x=1724282325;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=l1p2cOfxo3qmoiLl8kxy9Mc6cBgN7VSO9yg+nWKrdVk=;
-  b=gbEM1NZEi5miGFvfHE64cCwUgTsmh1FloZYNIQq3LyVb5NjBliym5ekJ
-   MzUqCZBuoyBnWwVko7MVLeqrujGCEI2qOLAay76GWRmtFouM7w7dsiC9m
-   hCmai33/es0ZRNHYz0VLs82bYPqvtSTW+uh067phg95xAuqPRnMxDZrhu
-   YHd6Cdpbh/eC6N5TffrqYe2caIg8uzd0c4FIzx04HrN0esZ7IB2y6GkAg
-   QqYm/yt/ba/MZQd0Muw+x/SOqDiaTl8HnNSG62Fs2hlunQmuxKfbPRyeE
-   VWaeNZSNb2gSvdi032f6JpynA8OebnVVahvQxm+YI9Nwp+iw3WPknP2to
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="377774182"
-X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="377774182"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 16:18:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="983055484"
-X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; 
-   d="scan'208";a="983055484"
-Received: from avelea-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.212.70])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 16:18:42 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 803B610463C; Wed, 23 Aug 2023 02:18:39 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2] x86/tdx: Mark TSC reliable
-Date: Wed, 23 Aug 2023 02:18:23 +0300
-Message-ID: <20230822231823.3205-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190A420EE3
+	for <linux-coco@lists.linux.dev>; Tue, 22 Aug 2023 23:40:06 +0000 (UTC)
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-48d0ff94bc0so981001e0c.2
+        for <linux-coco@lists.linux.dev>; Tue, 22 Aug 2023 16:40:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692747606; x=1693352406;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I9fey2/SAZKWN4tBo8GAjsVwAf+maA65vmFEc29W24Y=;
+        b=l/S0v354GQEp1PmbZg0g5fxOWjZ8GhDalIVxtsqIbfAHakt2aMCPl+gFHIJD8CDFDd
+         zoyl8+foNdCqjMs5qGsqKCMIfHyKMlGDz76DEPmRh1yBT4Usfd0zcG25xAb7YUzEVffS
+         TNhbKjxyTJ/041wS7gLOuPZ+3vqcp5wMnQuJtmoyqC47SG2A7iPrR7WeEIaXKmn+oxCo
+         vQhK60JHm/Rh2gtogZ2x8bqYchouVcHQC3fxWmUa/LVEnbqc5M4a+Mjds0Vxm/K5Yutm
+         y7pXFwyke7hrjWGL5wZGn9LsCXdE/bfo35UYeD96jLQq/qFCB+fKoEbZIDKU4mhsSQx+
+         rU6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692747606; x=1693352406;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I9fey2/SAZKWN4tBo8GAjsVwAf+maA65vmFEc29W24Y=;
+        b=QaqKMRall7py/WhwJLv+m1C41ISTy6FhO9W46nluoqLgRSgufbeS3B+lL9BKA/EqXw
+         vZrq5VeLdPDH5YcADGfP2rIdDwbvpJXQe7Y07HKpHTtv8WW4VRVnM1vjp9wF9qWDo9vv
+         01kOaUfnqg31DP2/r+8DSgSILCf5JuQAIeGzWR9ptMVSCjojJcbQtHVO8Ww6uJlDeagM
+         NvJnC+UzUvXrV/9Qtgl/PBk0k8C0iIM6mIR/9bZV4/tPHeFmt2kMkEp6vmZQrqiuIuLJ
+         g1U0fVj6XOeKG3B6aE8D3E7VKoy2rkcqJ3m3/5+MILTGfgcc1dl5hNlthJ2ndoLhMK1F
+         hKAg==
+X-Gm-Message-State: AOJu0YzQB4MH8CmkoZBCmP/2bi6yijCzUxOX7RcvuInRFHGg8czE1Laj
+	SoCjit+JffHSlVI2dftDJRrj9X5reNwS01TY7ajcAw==
+X-Google-Smtp-Source: AGHT+IE1Lm/Hd4hHIWEIkcpcLsTejX0h6P4EPSyY/N7EqW0YAOuXbIQoPYsG324TkyjrhDq924/N/2brmFGRoQF+OYo=
+X-Received: by 2002:a1f:4846:0:b0:48d:1fcd:9760 with SMTP id
+ v67-20020a1f4846000000b0048d1fcd9760mr6081765vka.10.1692747605648; Tue, 22
+ Aug 2023 16:40:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20230808162320.27297-1-kirill.shutemov@linux.intel.com>
+ <ecc11d54-6aaa-f755-9436-ae15b94fb627@intel.com> <20230808200111.nz74tmschph435ri@box>
+ <DM8PR11MB5750DEFF988068EFAFE28667E712A@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20230809061348.vhm5ie4uzystwfya@box.shutemov.name>
+In-Reply-To: <20230809061348.vhm5ie4uzystwfya@box.shutemov.name>
+From: Erdem Aktas <erdemaktas@google.com>
+Date: Tue, 22 Aug 2023 16:39:54 -0700
+Message-ID: <CAAYXXYyuykiz80t4VO1ShdPGh=T3z0tcsV4EGG3N-rP9+4PFnA@mail.gmail.com>
+Subject: Re: [PATCH] x86/tdx: Mark TSC reliable
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>, "Hansen, Dave" <dave.hansen@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Borislav Petkov <bp@alien8.de>, "Lutomirski, Andy" <luto@kernel.org>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	"Nakajima, Jun" <jun.nakajima@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In x86 virtualization environments, including TDX, RDTSC instruction is
-handled without causing a VM exit, resulting in minimal overhead and
-jitters. On the other hand, other clock sources (such as HPET, ACPI
-timer, APIC, etc.) necessitate VM exits to implement, resulting in more
-fluctuating measurements compared to TSC. Thus, those clock sources are
-not effective for calibrating TSC.
+Reviewed-by: Erdem Aktas <erdemaktas@google.com>
 
-In TD guests, TSC is virtualized by the TDX module, which ensures:
+Thanks Kirill for this patch.  I think this patch is necessary to
+prevent guest marking TSC as unreliable due to the possible
+calibration failures at runtime. We also tested it.
 
-  - Virtual TSC values are consistent among all the TD’s VCPUs;
-  - Monotonously incrementing for any single VCPU;
-  - The frequency is determined by TD configuration. The host TSC is
-    invariant on platforms where TDX is available.
 
-Reliable TSC is architectural guarantee for the TDX platform and it must
-work for any sane TDX implementation.
 
-Use TSC as the only reliable clock source in TD guests, bypassing
-unstable calibration.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- v2:
-  - Slightly updated commit message;
----
- arch/x86/coco/tdx/tdx.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 1d6b863c42b0..1583ec64d92e 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -769,6 +769,9 @@ void __init tdx_early_init(void)
- 
- 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
- 
-+	/* TSC is the only reliable clock in TDX guest */
-+	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
-+
- 	cc_vendor = CC_VENDOR_INTEL;
- 	tdx_parse_tdinfo(&cc_mask);
- 	cc_set_mask(cc_mask);
--- 
-2.41.0
-
+On Tue, Aug 8, 2023 at 11:14=E2=80=AFPM Kirill A. Shutemov
+<kirill.shutemov@linux.intel.com> wrote:
+>
+> On Wed, Aug 09, 2023 at 05:44:37AM +0000, Reshetova, Elena wrote:
+> > >
+> > > I don't know what the rules here. As far as I can see, all other cloc=
+k
+> > > sources relevant for TDX guest have lower rating. I guess we are fine=
+?
+> >
+> > What about acpi_pm?
+> > See this:
+> > https://github.com/intel/tdx/commit/045692772ab4ef75062a83cc6e4ffa22cab=
+40226
+>
+> clocksource_acpi_pm.rating is 200 while TSC is 300.
+>
+> > > There's notable exception to the rating order is kvmclock which is hi=
+gher
+> > > than tsc. It has to be disabled, but it is not clear to me how. This =
+topic
+> > > is related to how we are going to filter allowed devices/drivers, so =
+I
+> > > would postpone the decision until we settle on wider filtering schema=
+.
+> >
+> > One option is to include "no-kvmclock" into kernel command line, which
+> > is attested. Another option is to try to disable it explicitly, like we=
+ had
+> > in past:
+> > https://github.com/intel/tdx/commit/6b0357f2115c1bdd158c0c8836f4f541517=
+bf375
+> >
+> > The obvious issues with command line is that it is going to 1) grow
+> > considerably if we try to disable everything we can via command line
+> > and 2) there is a high chance that in practice people will not use secu=
+re default
+> > and/or forget to verify the correct status of cmd line. But this is to =
+be
+> > expected I guess for any security method that involves attestation unfo=
+rtunately.
+>
+> I guess command line is fine, until we have coherent solution on
+> filtering.
+>
+> --
+>   Kiryl Shutsemau / Kirill A. Shutemov
