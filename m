@@ -1,98 +1,161 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B7D4C75
-	for <linux-coco@lists.linux.dev>; Wed, 23 Aug 2023 11:11:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692789111; x=1724325111;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=7lhvv0m0FRAc3xPq+YaVEQaHYC8M/wOu6WhO33cafNU=;
-  b=njRLEqfnqqqpaIOfz0P6sMbKp5pQAw5Wjtj2HqG9RxXYBDafngdoaAeW
-   mlPztfiaf5ASVwY4a6L6aAHlM62Nyb4N6AHWKGi6+6FcoiL9yLTeZNzCE
-   370JRuau+v5sX2QeaEKEEuODTNrol+iRowGG+kdnhUCRQn7cQ+I9o55M7
-   q7PaoghHN1VizuUzUObzg2QEsw9zm/sIezf+Fttvd5Igh28EMkdF6uPBA
-   UpszpJc20886tWI4Z8xlLwI6cGu95qhtKPQxum/WxWS8INGJ9UM0Bh+sU
-   cczKqNvm79H9ElUzM+fQrYrR6bbXew16F+hPzF6ClmUnEnSltlB9/GCQr
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="359118825"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="359118825"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2023 04:11:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="1067450061"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="1067450061"
-Received: from bachaue1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.212.119])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2023 04:11:47 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id DAA021098A2; Wed, 23 Aug 2023 14:11:44 +0300 (+03)
-Date: Wed, 23 Aug 2023 14:11:44 +0300
-From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"Lutomirski, Andy" <luto@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCHv2] x86/tdx: Mark TSC reliable
-Message-ID: <20230823111144.x7g3cvbxjenldnih@box.shutemov.name>
-References: <20230822231823.3205-1-kirill.shutemov@linux.intel.com>
- <f5dc2de9d3997c3a89bdedee6cb0bf554f400ccc.camel@intel.com>
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B472BA34
+	for <linux-coco@lists.linux.dev>; Wed, 23 Aug 2023 11:36:16 +0000 (UTC)
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 37NBL82T009557;
+	Wed, 23 Aug 2023 06:21:08 -0500
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 37NBL7nF009556;
+	Wed, 23 Aug 2023 06:21:07 -0500
+Date: Wed, 23 Aug 2023 06:21:07 -0500
+From: "Dr. Greg" <greg@enjellic.com>
+To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+        Brijesh Singh <brijesh.singh@amd.com>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dionna Amalie Glaze <dionnaglaze@google.com>,
+        Samuel Ortiz <sameo@rivosinc.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] tsm: Attestation Report ABI
+Message-ID: <20230823112107.GA9494@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com> <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f5dc2de9d3997c3a89bdedee6cb0bf554f400ccc.camel@intel.com>
+In-Reply-To: <57f3a05e-8fcd-4656-beea-56bb8365ae64@linux.microsoft.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Wed, 23 Aug 2023 06:21:08 -0500 (CDT)
 
-On Wed, Aug 23, 2023 at 04:47:29AM +0000, Huang, Kai wrote:
-> On Wed, 2023-08-23 at 02:18 +0300, Kirill A. Shutemov wrote:
-> > In x86 virtualization environments, including TDX, RDTSC instruction is
-> > handled without causing a VM exit, resulting in minimal overhead and
-> > jitters. On the other hand, other clock sources (such as HPET, ACPI
-> > timer, APIC, etc.) necessitate VM exits to implement, resulting in more
-> > fluctuating measurements compared to TSC. Thus, those clock sources are
-> > not effective for calibrating TSC.
-> > 
-> > In TD guests, TSC is virtualized by the TDX module, which ensures:
-> > 
-> >   - Virtual TSC values are consistent among all the TD’s VCPUs;
-> >   - Monotonously incrementing for any single VCPU;
-> 
-> Nit:
-> 
->     - Virtual TSC is monotonously incrementing ...
-> 
-> Otherwise here "incrementing" looks like a noun, which means you need to use
-> "monotonous" rather than "monotonously".
+On Mon, Aug 14, 2023 at 11:04:52AM +0200, Jeremi Piotrowski wrote:
 
-Okay, will update.
+Good morning, I hope the week is going well for everyone.
 
-> >   - The frequency is determined by TD configuration. The host TSC is
-> >     invariant on platforms where TDX is available.
+> On 8/14/2023 9:43 AM, Dan Williams wrote:
+> > Changes since v1:
+> > - Switch from Keyring to sysfs (James)
 > > 
-> > Reliable TSC is architectural guarantee for the TDX platform and it must
-> > work for any sane TDX implementation.
+> > An attestation report is signed evidence of how a Trusted Virtual
+> > Machine (TVM) was launched and its current state. A verifying party uses
+> > the report to make judgements of the confidentiality and integrity of
+> > that execution environment. Upon successful attestation the verifying
+> > party may, for example, proceed to deploy secrets to the TVM to carry
+> > out a workload. Multiple confidential computing platforms share this
+> > similar flow.
 > > 
-> > Use TSC as the only reliable clock source in TD guests, bypassing
-> > unstable calibration.
+> > The approach of adding adding new char devs and new ioctls, for what
+> > amounts to the same logical functionality with minor formatting
+> > differences across vendors [1], is untenable. Common concepts and the
+> > community benefit from common infrastructure.
 > > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> 
-> Acked-by: Kai Huang <kai.huang@intel.com>
+> > Use sysfs for this facility for maintainability compared to ioctl(). The
+> > expectation is that this interface is a boot time, configure once, get
+> > report, and done flow. I.e. not something that receives ongoing
+> > transactions at runtime. However, runtime retrieval is not precluded and
+> > a mechanism to detect potential configuration conflicts from
+> > multiple-threads using this interface is included.
+> > 
 
-Thanks.
+> I wanted to speak up to say that this does not align with the needs
+> we have in the Confidential Containers project. We want to be able
+> to perform attestation not just once during boot but during the
+> lifecycle of the confidential VM. We may need to fetch a fresh
+> attestation report from a trusted agent but also from arbitrary
+> applications running in containers.
+>
+> The trusted agent might need attestation when launching a new
+> container from an encrypted container image or when a new secret is
+> being added to the VM - both of these events may happen at any time
+> (also when containerized applications are already executing).
+>
+> Container applications have their own uses for attestation, such as
+> when they need to fetch keys required to decrypt payloads. We also
+> have things like performing attestation when establishing a TLS or
+> ssh connection to provide an attested e2e encrypted communication
+> channel.
+>
+> I don't think sysfs is suitable for such concurrent
+> transactions. Also if you think about exposing the sysfs interface
+> to an application in a container, this requires bind mounting rw
+> part of the sysfs tree into the mount namespace - not ideal.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+We don't have a dog in this fight regarding TDX [1], but we do have a
+significant body of experience with the concepts and challenges
+involved.
+
+The issue at hand is that trust is a resource that needs to be
+orchestrated, just like any other resource.  A concept, based on our
+experiences, that seems to be significantly outside of mainstream
+thought.
+
+The notion of the need to orchestrate trust seems to be particularly
+important with a concept such as Confidential Containers.
+
+FWIW, we have pushed forward a second round of patches for the kernel
+infrastructure that make the concepts of trust orchestration and
+containerization tenable:
+
+https://lore.kernel.org/linux-security-module/20230710102319.19716-1-greg@enjellic.com/T/#t
+
+In addition, FWIW, we have actually built systems that implement these
+principals, obviously not on TDX hardware, see [1], but we do have a
+significant body of experience with using SGX as a trust root.  We
+have even provided a substantial set of initial userspace tooling that
+implement these concepts to support the proposed patches.
+
+I only say all of this to convey the notion that we have actually done
+work on all of these concepts and are not just waving our hands
+around.
+
+The notion of surfacing this information through /sysfs becomes less
+problematic if one approaches the issue through the lens of having
+trust orchestrators that are responsible for managing the security or
+trust status of the execution platform at large and any subordinate
+workloads.
+
+This concept is true, even if the platform/VM is only hosting a single
+workload.  Which may be a necessity for some security contracts, where
+there is literally no trust in the fact that side-channel disclosure
+threats can be properly mitigated, ie. there cannot be workloads with
+possible adversarial intents.
+
+From the outside looking in, unless there are some fundamental
+conversations regarding how trusted systems and workloads can be
+developed with the architectures being proposed, it is completely
+unclear how durable API's, on the order of 20+ years are ever going to
+be attained.
+
+No criticism, just observation.
+
+> Jeremi
+
+Best wishes for continued progress on all of this, it is important
+stuff, both in the cloud and on the edge.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+
+[1]: TDX enabled hardware is difficult, if not impossible to obtain.
+If there is any doubt, simply search for TDX hardware availability and
+cringe at the conversations on the Intel forums about people trying to
+get experience with the technology.
+
+This is the same problem that plagued TXT and SGX and results in
+enabling infrastructure development being done in an echo chamber.  A
+concept that may have proven successful when all of this work was
+expected to be implementated and enabled by OEM providers but seems
+problematic in an ostensibly 'community' driven project such as Linux.
