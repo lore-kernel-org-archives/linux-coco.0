@@ -1,288 +1,244 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2060.outbound.protection.outlook.com [40.107.223.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC0237F
-	for <linux-coco@lists.linux.dev>; Sat, 26 Aug 2023 01:00:05 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jiHcvIYAT7Ex1C3g0yQyTz5emzxrNewVrcTmxQPc2tB/Vk6l37aUM97QEzg7E6tIYnsh6WQ6nOuTmAs/Q3T13lo/mgXcruOo9+KKl4EXI2HNx0a00Xc44aQsxI6gmL+WESritJ1WFFscm9Lpel3spd44kVzf6cB22jg59qqfomERtbgw7TxqfITlaBMtJP9bH60caHqSzYRzdWw3GdPts75vMNcr9FzSJ8OiFJ30+3+qcaNkByBr6ErbjgJpvL/PPOBn5PO0fgmwoBU4Rfh5/GIrrjkwVmTMrq+IdaBSS7mxyl14I9RjsMrz4iZONc1Xat+yz6PdUWcujTmjCd8bYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xsf6/lnGqcwEa4m99CINtaJ4nKAoCfAACJ85ewE3QyU=;
- b=RH+NOOQkIzP/j6ii/zuk3N2i7VmLGQMUpmN7HuRJcl3qWblhj0nBTsGgmqPjAfD4VF5ArE3FC95d7pkGxpvSv48bBm/WK0flWu5SV34rFT2cG8JGXoiVUgWV2q/G7DRMThZmrqMRWHse/sj1O/8HPtcUpJxpwh+l3NyW9sC9Cg8xV5BCOh6+szH1JeJPMlBKuIr59h/VUidCFVwiecXwrMweUSeeRAs+c85+xksQpGhmIOlyouKCcE8J294j0t9wXgi3ve8fbcSYPL4bTrjyIlTsYibZiwCop5XiWRS1mZ/t7ZQ8yk+C5EUzfj1iGYeJiqnNWY6gVtbDN5IofHJA0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xsf6/lnGqcwEa4m99CINtaJ4nKAoCfAACJ85ewE3QyU=;
- b=DcUd9FypZI255zeXzMt0iGrGrJn8pFjKXa1FTNl5oRIB7dJJ44wynOLVejvIj0nT2dTSYlcN5vu2oRsxiPun/WdBCpJQsHbOckuJ0JixAdGM8N7VOu4QtWKGBHU7QB85RntCMIqzMkTgXKJDFUz0/UxhDtR6119bksLBs2kY4H8=
-Received: from PH8PR15CA0008.namprd15.prod.outlook.com (2603:10b6:510:2d2::27)
- by PH8PR12MB6844.namprd12.prod.outlook.com (2603:10b6:510:1cb::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Sat, 26 Aug
- 2023 01:00:02 +0000
-Received: from SA2PEPF000015CC.namprd03.prod.outlook.com
- (2603:10b6:510:2d2:cafe::80) by PH8PR15CA0008.outlook.office365.com
- (2603:10b6:510:2d2::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.34 via Frontend
- Transport; Sat, 26 Aug 2023 01:00:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF000015CC.mail.protection.outlook.com (10.167.241.202) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6699.14 via Frontend Transport; Sat, 26 Aug 2023 01:00:02 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 25 Aug
- 2023 20:00:00 -0500
-Date: Fri, 25 Aug 2023 19:59:41 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <isaku.yamahata@intel.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <isaku.yamahata@gmail.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, <erdemaktas@google.com>, Sagi Shahar
-	<sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang
-	<kai.huang@intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
-	<chen.bo@intel.com>, <linux-coco@lists.linux.dev>, Chao Peng
-	<chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, "Vishal
- Annapurve" <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>,
-	<David.Kaplan@amd.com>
-Subject: Re: [RFC PATCH v4 07/10] KVM: x86: Add gmem hook for initializing
- private memory
-Message-ID: <20230826005941.c7gtsootdaod7ek3@amd.com>
-References: <cover.1689893403.git.isaku.yamahata@intel.com>
- <21e488b6ced77c08d9e6718fcf57e100af409c64.1689893403.git.isaku.yamahata@intel.com>
- <ZLqVdvsF11Ddo7Dq@google.com>
- <20230722003449.664x3xcu6ydi2vrz@amd.com>
- <ZN/wY53TF2aOZtLu@google.com>
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9977411C8D
+	for <linux-coco@lists.linux.dev>; Mon, 28 Aug 2023 10:47:59 +0000 (UTC)
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 37SAkaqD010074;
+	Mon, 28 Aug 2023 05:46:36 -0500
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 37SAkZ3g010073;
+	Mon, 28 Aug 2023 05:46:35 -0500
+Date: Mon, 28 Aug 2023 05:46:35 -0500
+From: "Dr. Greg" <greg@enjellic.com>
+To: Samuel Ortiz <sameo@rivosinc.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Dionna Amalie Glaze <dionnaglaze@google.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Peter Gonda <pgonda@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>, peterz@infradead.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] tsm: Introduce a shared ABI for attestation reports
+Message-ID: <20230828104635.GA10014@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com> <169199900110.1782217.12112722316618515086.stgit@dwillia2-xfh.jf.intel.com> <ZOYOXTsveEhPCHq2@vermeer>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZN/wY53TF2aOZtLu@google.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CC:EE_|PH8PR12MB6844:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1f65a58-f298-4ddd-a10c-08dba5cfc753
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Qx8mpks1uv+B8MygHHmnV1LWW3Rx3Kcl3CWLkRrRGW2Uwo9dkFgmE5Xilijk+93OLmddaJNmMj+JD9ANWTODAe1WBeSSgDAYupYseuVzF18a9ZzWu9O0uH6zjXNn2E/xYPjDQJAfI4+m6IjFxSl8FWFUZwzm7DQDXWvaNqlLrW7D8wvTAiHqQMn2Z0n9yHBwL8NEEzbMHzvTmtRj+6HEWcmeAGk73tMHvG0NwaksZrUW/skcKgIWafPNXbrHqpyUWKbQKZ0TTJ0YzWH/kYAV7SqUxTBxAzzi+C38Hbv7kPA4U/zCdkd/OFxjzVdHifI7yy55yhw2FcFY4/KX12SjAh2n6r3bmiPF3Bc0xsqTF9zJ4DxX/iEasbs1uvJCwL79grtRMtXotI0KnWduaJ6kXqv9QOoLQpuLmxM+mBn7+OnEW08i3OSjY4x4FzOR04bn0FzbKaHl7fnMdaIRCUtb9U0ZH0YCCVputi1X1W8y/CkmZ4UXhsHw8/JXSnLoEQ0ni3LEULUWVjXNFLs0DQ2xW7G6D8BW7UsfVzKqVkY7/wQ0zkZPEk5M18xjB8WRgm62hby0FpzEIqHndqvFBIdVtlObqO+cFqHv55Cdjsi/XelXDP1Imq61Pe73z1MQIVR5popo5P5pR8vBRQBda5wCcIIAvCU+bUNUIxGBvz9aeOoDRklMkEp9sStPKMEY3B4qY2VE12m0dPcz1UdrBRVYK4wvt7g/f5u9GcUFLWEtZIfsiF1z3SS6G0MYQ0fN2Kq9BS1hJdaViPQBiTxagKjq9w==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(396003)(39860400002)(376002)(346002)(451199024)(1800799009)(82310400011)(186009)(36840700001)(40470700004)(46966006)(86362001)(356005)(81166007)(82740400003)(36756003)(66899024)(40460700003)(478600001)(6666004)(966005)(70206006)(4326008)(54906003)(70586007)(6916009)(8676002)(2906002)(316002)(5660300002)(40480700001)(44832011)(8936002)(26005)(336012)(426003)(83380400001)(16526019)(41300700001)(7416002)(47076005)(2616005)(1076003)(36860700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2023 01:00:02.3235
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1f65a58-f298-4ddd-a10c-08dba5cfc753
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015CC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6844
+In-Reply-To: <ZOYOXTsveEhPCHq2@vermeer>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Mon, 28 Aug 2023 05:46:37 -0500 (CDT)
 
-On Fri, Aug 18, 2023 at 03:27:47PM -0700, Sean Christopherson wrote:
-> Sorry for responding so late, lost track of this and only found it against when
-> reviewing the next version :-/
+On Wed, Aug 23, 2023 at 03:49:17PM +0200, Samuel Ortiz wrote:
+
+Good morning, I hope the week is starting well for everyone.
+
+Some further background to hopefully assist decision making on how to
+handle the export of attestation information for COCO TSM's.
+
+> Hi Dan,
 > 
-> On Fri, Jul 21, 2023, Michael Roth wrote:
-> > On Fri, Jul 21, 2023 at 07:25:58AM -0700, Sean Christopherson wrote:
-> > > Practically speaking, hooking the fault path will result in undesirable behavior.
-> > > Just because KVM *maps* at 4KiB granularity doesn't mean the RMP must be assigned
-> > > at 4KiB granularity, e.g. if userspace chooses to *not* PUNCH_HOLE when the guest
-> > > shares a single 4KiB page in a 2MiB chunk.   Dirty logging is another case where
-> > > the RMP can stay at 2MiB.  Or as a very silly example, imagine userspace pulls a
-> > > stupid and covers a single 2MiB chunk of gmem with 512 memslots.
+> On Mon, Aug 14, 2023 at 12:43:21AM -0700, Dan Williams wrote:
+> > One of the common operations of a TSM (Trusted Security Module) is to
+> > provide a way for a TVM (confidential computing guest execution
+> > environment) to take a measurement of its launch state, sign it and
+> > submit it to a verifying party. Upon successful attestation that
+> > verifies the integrity of the TVM additional secrets may be deployed.
+> > The concept is common across TSMs, but the implementations are
+> > unfortunately vendor specific. While the industry grapples with a common
+> > definition of this attestation format [1], Linux need not make this
+> > problem worse by defining a new ABI per TSM that wants to perform a
+> > similar operation. The current momentum has been to invent new ioctl-ABI
+> > per TSM per function which at best is an abdication of the kernel's
+> > responsibility to make common infrastructure concepts share common ABI.
 > > 
-> > Unfortunately I don't think things aren't quite that flexible with SNP. If
-> > RMP entry is 2MB, and you map a sub-page as 4K in the NPT, you'll immediately
-> > get a PFERR_GUEST_SIZEM on the first access (presumably when the guest tries
-> > to PVALIDATE it before use). The RMP fault handler will then subsequently
-> > need to PSMASH the 2MB entry into 4K before that guest can access it. So you
-> > get an extra page fault for every 2MB page that's mapped this way.
-> > (APM Volume 2, Section 15.36.10).
-> 
-> Well that's just bloody stupid.  Why is that a restriction?  Obviously creating
-> an NPT mapping that's larger would be annoying to handle, e.g. would require
-> locking multiple entries or something, so I can understand why that's disallowed.
-> But why can't software map at a finer granularity?
-> 
-> Note, I'm expecting a spec change, just expressing a bit of disbelief.
-
-I asked David Kaplan about this and one of the reasons is that it allows
-hardware to reduce the number of RMP table accesses when doing table
-walks. E.g. if the mapping is 4K in the NPT, then only that RMP entry
-needs to be checked, the hardware doesn't need to also then check the
-2MB-aligned RMP entry before determining whether to generate a #NPF.
-
-(note: the 'assigned' bit does get set on each individual 4K entry when
-RMPUPDATE use the 'page-size' bit to create a 2MB RMP entry, but if you
-look at the pseudo-code in the APM for RMPUPDATE it actually leaves
-ASID=0, so those accesses always generate an #NPF(RMP) and aren't actually
-usable for 4K NPT mappings of sub-pages for the 2MB range corresponding
-to that 2MB RMP entry (and not #NPF+RMP+SIZEM as I incorrectly stated
-above))
-
-> 
-> Anyways, IMO, we should eat the extra #NPF in that scenario and optimize for much,
-> much more likely scenario of the RMP and NPT both being able to use 2MiB pages.
-
-That seems fair, I only see this particularly case occur once or twice
-for boot.
-
-> And that means not inserting into the RMP when handling #NPFs, e.g. so that userspace
-> can do fallocate() to prep the memory before mapping, and so that if the SPTEs
-
-Makes sense.
-
-> get zapped for whatever reason, faulting them back in doesn't trigger useless
-> RMP updates.
-
-We wouldn't issue an RMPUPDATE if we saw that the page was already set to
-private in the RMP table. So what you actually save on is just accesses to
-the memory range containing the RMP entry to do that check, but the approach
-still makes sense.
-
-> 
-> I guess the other way to optimze things would be for userspace to use the ioctl()
-> to map memory into the guest[*].  But even then, initializing when allocating
-> seems cleaner, especially for TDX.
-> 
-> [*] https://lore.kernel.org/all/ZMFYhkSPE6Zbp8Ea@google.com
-> 
-> > That might not be a big deal for guests that are at least somewhat optimized
-> > to make use of 2MB pages, but another situation is:
+> > The proposal, targeted to conceptually work with TDX, SEV, COVE if not
+> > more, is to define a sysfs interface to retrieve the TSM-specific blob.
 > > 
-> >   - gmem allocates 2MB page
-> >   - guest issues PVALIDATE on 2MB page
-> >   - guest later converts a subpage to shared but doesn't holepunch
-> >   - SNP host code issues PSMASH to split 2MB RMP mapping to 4K
-> >   - KVM MMU splits NPT mapping to 4K
-> >   - guest converts that shared page back to private
-> > 
-> > At this point there are no mixed attributes, and KVM would normally
-> > allow for 2MB NPT mappings again, but this is actually not allowed
-> > because the RMP table mappings are validated/4K and cannot be promoted on
-> > the hypervisor, so the NPT mappings must still be limited to 4K to
-> > match this, otherwise we hit the reverse of the PFERR_GUEST_SIZEM
-> > scenario above, where the NPT mapping level is *larger* than the RMP
-> > entry level. Unfortunately that does not result in a PFERR_GUEST_SIZEM
-> > where we can fix things up in response, but instead it's a general
-> > RMP fault that would be tricky to distinguish from an RMP fault
-> > resulting from an implicit page conversion or some other guest weirdness
-> > without doing RMP table checks every time we get a general RMP fault.
-> 
-> This seems like a bug in the SNP code.  (a) why would KVM/SNP PSMASH in that
-> scenario and (b) why can't it zap/split the NPT before PSMASH?
+> >     echo $hex_encoded_userdata_plus_nonce > /sys/class/tsm/tsm0/inhex
+> >     hexdump /sys/class/tsm/tsm0/outblob
 
-a) A PSMASH will be needed at some point, since, as detailed above, the 4K
-   NPT mapping requires the RMP entries for the pages it maps to be
-   limited to 4K RMP entries, but...
-b) What would happen normally[1] is the guest would issue PVALIDATE to
-   *rescind* the validated status of that 4K GPA before issuing the GHCB
-   request to convert it to shared. This would cause an
-   #NPF(RMP+SIZE_MISMATCH) and handle_rmp_page_fault() would PSMASH the RMP
-   entry so the PVALIDATE can succeed.
+> My concern with that interface is that one could easily get an
+> attestation report with a nonce set by another userspace component
+> or thread. I realize there is a generation counter to detect if a
+> configuration changed between the caller's last config setting and
+> the report it got, but I think that this shows that this may not be
+> the best interface. IMHO an attestation report request from
+> userspace should be an atomic call that includes multiple platform
+> independent attibutes like e.g. an attestation nonce.
 
-   So KVM doesn't even really have the option of deferring the PSMASH, it
-   happens before the SET_MEMORY_ATTRIBUTES is even issued to zap the 2MB
-   NPT mapping and switch the 2M range to 'mixed'. Because of that, we also
-   need a hook in the KVM MMU code to clamp the max mapping level based
-   on RMP entry size. Currently the kvm_gmem_prepare() in this patch
-   doubles for handling that clamping, so we would still need a similar
-   hook for that if we move the RMP initialization stuff to allocation
-   time.
+The challenge in all of this would seem to be the need to get a 20+
+year ABI 'right' on the first try, so some issues to consider based on
+our experiences building trusted systems, albeit with a focus on
+endpoint devices.
 
-[1] This handling is recommended for 'well-behaved' guests according to
-GHCB, but I don't see it documented as a hard requirement anywhere, so there
-is a possibility that that we have to deal with a guest that doesn't do this.
-What would happen then is the PVALIDATE wouldn't trigger the #NPF(RMP+SIZEM),
-and instead the SET_MEMORY_ATTRIBUTES would zap the 2MB mapping, install
-4K entries on next #NPF(NOT_PRESENT), and at *that* point we would get
-an #NPF(RMP) without the SIZEM bit set, due to the behavior described in
-the beginning of this email.
+The issue about needing to implement attestation atomically is on
+point.  This requirement would seem to suggest that the optimum path
+forward for confidential computing will be to have attestation support
+implemented in the resource orchestration infrastructure inside the
+TVM.
 
-handle_rmp_page_fault() can do the corresponding PSMASH to deal with that,
-but it is a little unfortunate since we can't differentiate that case from a
-spurious/unexpected RMP faults, so would need to attempt a PSMASH in all
-cases, sometimes failing.
+Since the goal is confidentiality, you need to trust everything that
+executes inside the execution domain/VM.  This is particularly true
+given the reality of micro-architectural side channel issues, which
+don't seem to be going away and which Intel explicitly documents that
+you must address with TDX.
 
-gmem itself could also trigger this case if the lpage_info_slot() tracking
-ever became more granular than what the guest was expected (which I don't
-think would happen normally, but I may have hit one case where it does, but
-haven't had a chance to debug if that's on the lpage_info_slot() side or
-something else on the SNP end.
+Given that, there would seem to be no reason not to have the
+attestation support all in one place and then provide access to that
+functionality to anything in the TVM that would want to make
+an integrity statement to a relying party.
 
-> 
-> > So for all intents and purposes it does sort of end up being the case
-> > that the mapping size and RMP entry size are sort of intertwined and
-> > can't totally be decoupled, and if you don't take that into account
-> > when updating the RMP entry, you'll have to do some extra PSMASH's
-> > in response to PFERR_GUEST_SIZEM RMP faults later.
-> > 
-> > > 
-> > > That likely means KVM will need an additional hook to clamp the max_level at the
-> > > RMP, but that shouldn't be a big deal, e.g. if we convert on allocation, then KVM
-> > > should be able to blindly do the conversion because it would be a kernel bug if
-> > > the page is already assigned to an ASID in the RMP, i.e. the additional hook
-> > > shouldn't incur an extra RMP lookup.
-> > 
-> > Yah we'd still need a hook in roughly this same place for clamping
-> > max_level. Previous versions of SNP hypervisor patches all had a separate
-> > hook for handling these cases, but since the work of updating the RMP table
-> > prior to mapping isn't too dissimilar from the work of determining max
-> > mapping size, I combined both of them into the kvm_x86_gmem_prepare()
-> > hook/implementation.
-> > 
-> > But I don't see any major issue with moving RMPUPDATE handling to an
-> > allocation-time hook. As mentioned above we'd get additional
-> > PFERR_GUEST_SIZEM faults by not taking MMU mapping level into account, but
-> > I previously had it implemented similarly via a hook in kvm_gmem_get_pfn()
-> > (because we need the GPA) and didn't notice anything major. But I'm not
-> > sure exactly where you're suggesting we do it now, so could use some
-> > clarify on that if kvm_gmem_get_pfn() isn't what you had in mind.
-> 
-> I was thinking kvm_gmem_get_folio().  If userspace doesn't preallocate, then
-> kvm_gmem_get_pfn() will still east the cost of the conversion, but it at least
-> gives userspace the option and handles the zap case.  Tracking which folios have
-> been assigned (HKID or RMP) should be pretty straightforward.
+A sysfs interface is perfectly suited to the this model, since the
+trust orchestrator, if we use our terminology, can address the
+concurrency and atomicity issues presented by a sysfs interface.
 
-This is a little tricky. kvm_gmem_get_pfn() can handle RMP entry
-initialization, no problem, because it has the GPA we are fetching the
-PFN for.
+From an Intel/SGX centric perspective, which is our area of expertise
+when it comes to the notion of a TSM, the attestation process is
+reasonably complex, even more so in a TDX environment, since you need
+to go outside the trusted execution domain in order to conduct the
+full attestation process.  I don't know how many people have direct
+experience with all of this, but we can offer it on good authority
+that the COCO model will benefit from having all the necessary
+procedures done correctly and in one place
 
-But kvm_gmem_get_folio() doesn't. But as long as the preallocation
-happens after kvm_gmem_bind() and before kvm_gmem_unbind() we should be
-able to use the slot to figure out what GPA a particular FD offset
-corresponds to. I'll look into this more.
+> > This approach later allows for the standardization of the
+> > attestation blob format without needing to change the Linux
+> > ABI. Until then, the format of 'outblob' is determined by the
+> > parent device for 'tsm0'.
+> >
+> > The expectation is that this is a boot time exchange that need not
+> > be regenerated,
 
-> 
-> I'm not totally opposed to doing more work at map time, e.g. to avoid faults or
-> to play nice with PSMASH, but I would rather that not bleed into gmem.   And I
-> think/hope if we hook kvm_gmem_get_folio(), then TDX and SNP can use that as a
-> common base, i.e. whatever extra shenanigans are needed for SNP can be carried
-> in the SNP series.  For me, having such "quirks" in the vendor specific series
-> would be quite helpful as I'm having a hell of a time keeping track of all the
-> wrinkles of TDX and SNP.
+> This works well with the encrypted boot disk that's decrypted
+> through attestation use-case, but this is just one use
+> case. Although I don't expect attestation requests to be frequent,
+> we should not assume this is only a boot time operation. Not only it
+> can happen after the guest is fully booted, but it can also happen
+> multiple times. An attestation flow where a guest gets an
+> attestation token back from a validated report is something we'd
+> want to support. Those token's validity are time limited, and
+> userspace would want to regenerate a report, with a fresh,
+> attestation service provided nonce.
 
-Seems reasonable. I'll work on re-working the hooks using this approach.
+There would certainly seem to be no argument that a trusted execution
+domain may want to conduct multiple attestations, Jeremi suggested
+this is something the Confidential Containers initiative would want as
+well.
 
-Thanks,
+The model of having attestation support centralized in the resource
+orchestration infrastructure is not only consistent with that need but
+would also appear to be the optimal approach.
 
-Mike
+Let us consider TDX as an example, since it will undoubtedly be a
+major player in COCO.
+
+In the Data Center Attestation Primitives (DCAP) model, one needs to
+choregraph a dance between the Provisioning Certification Enclave
+(PCE) and the Quoting Enclave (QE) in order to conduct the attestation
+process.  That requires access to SGX functionality, something that is
+not supported by Intel in a TDX mediated virtual machine.
+
+This imposes a need to go outside of the TD guest, to the host, in
+order to get access to SGX in order to load and run the PCE and QE
+enclaves.
+
+The call into the kernel to access the hypervisor interface is simply
+the starting point for the attestation process.  The purpose is to
+have the TDX module generate a CPU specific report (SEAMREPORT) that
+will ultimately authenticate material, usually ECDH key exchange
+components, as coming from an execution domain with known provenance.
+
+That report then needs to be processed through the PCE and QE enclave
+infrastructure in order to fully prove the identity of the report and
+thus authenticate its contents.  Mixed into all of this is a need to
+verify the MROWNER and MRSIGNER signatures on the involved enclaves as
+well as the Security Version Numbers (SVN's) on the enclaves and the
+TDX infrastructure.  This process ends up authenticating a certificate
+chain which proves that a secret to be conveyed into the TD is
+actually being injected into a valid TD, with known provenance and one
+that is 'Genuine Intel' in origin.
+
+All of this doesn't seem to speak of infrastructure you would want to
+replicate multiple times over.
+
+> Another thing to keep in mind is that an attestation report could be
+> amended by userspace itself, for TEE that support runtime
+> measurement (The RTMR things...). So the TVM measurement itself
+> could change during the lifecycle of a TVM.
+
+Once again, speaking only to TDX, it isn't apparent that the RTMR
+registers are going to be useful for the task of confirming general
+application level integrity once the OS is started.  Their primary
+utility will be to provide a root of trust for the resource
+orchestration infrastructure and in turn VTPM's, or something like
+TSEM's root security modeling namespace, if the goal is to provide a
+foundation for generalized trust/integrity mechanisms inside of the
+TVM.
+
+To wit:
+
+The formal usage recommendations for the TDX RTMR registers are as follows:
+
+RTMR[0]: PCR[1,7]
+RTMR[1]: PCR[4,5]
+RTMR[2]: PCR[8,15]
+RTMR[3]: Special use
+
+Where RTMR[2] is specified for usage by the OS/application for
+measurement purposes, so only the equivalent of one PCR is available.
+
+This would automatically preclude the use of systemd in a 'trusted' VM
+implementation, given that the latest Linux TPM PCR registry has
+systemd consuming PCR registers 11-15 for its own use.  Once again, if
+you are really serious about confidentiality, you need to have an
+attestable integrity guarantee for everything that happens inside the
+trusted VM.  IMA uses register 10 if you go that route and we will be
+using a register above what systemd is using for the TSEM root
+namespace.
+
+So we believe the lone trusted virtual machine measurement register
+will need to stay constant, in order to easily validate whatever root
+of trust that is in turn designated to guarantee the integrity of what
+goes on inside of the TVM from an OS/application perspective.
+
+A functional attestation scheme is thus going to require not only
+attestation of the state of the TVM but also what has gone on inside
+of the VM after it has booted.  Another reason for having a single
+shopping site for the attestation needs of whatever runs inside of the
+trusted VM.
+
+FWIW, since we copied the LSM list on this, we haven't come by the
+design and implementation of TSEM and the notion of trust
+orchestration idly.  If COCO is going to become a relevant reality
+there needs to be consideration given to the concept of trust
+orchestraton and management.
+
+Once gain, FWIW, and something that Jeremi from Microsoft might be
+able to comment on.  It is unclear how COCO based Confidential
+Containers fits into the standard IMA attestation model, where one has
+to review an event log documented by a linear extension trust
+measurement to determine whether or not the system is to be trusted.
+
+At a minimum, this would require that a relying party for attestation
+of one container be able to verify what has gone on in all other
+container invocations.  Unless the containers are being run for only a
+single entity, this would seem to imply a violation of the notion of
+privacy and confidentiality.
+
+> Cheers,
+> Samuel.
+
+Hopefully all of the above is of assistance in getting the ABI right
+and the scope of issues involved.
+
+Best wishes for a productive week.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
