@@ -1,107 +1,98 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2065.outbound.protection.outlook.com [40.107.101.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941DC8F57;
-	Thu, 31 Aug 2023 18:03:59 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hqCJWn5Qd/0sKuPwVsxhc4mJKbWLAH4x9wX/TZ7VYeWUBqZ19Xdc9e/1A8Hwp+XaHL5H84cWFRW5DXvKlIW/sPxeLylEx/u7Owr3nY7vniLfJoICUYX/2i7dLexpi00Bphi6DZcIvcZBUpBBwStEH/bCcWINuB3qJm5YerPnVlwnAkZuIVKXfJkgc5nMVHB3Um+VAaEWe4Q1isr5XSjd3B3Qgrxivz5KEdap4qw5VhrKNMcS0Fy8tAoQgC0XEzGhAjhXoH7e39YsrYy40Dngz08ADllXTKlda0KMVGhvZEacgBcEnmyYsvSCvoyl/VTbWHHlGc95E0wX3F0EUrFkDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fILcOJURw29+vX4/kZ077MGdt5BQJXNogaFSpQz5Pp8=;
- b=MPcZsc8+m2DXUSkg1EQazzx5vCmZT5pTYFKJgWlwtx2MKJudIN70kYrRivvl1W7bwo9XRR/qbjJ8ff57iRTjkkrLgh7BSFxejGW+IvePeKppGY1JkIZEsBeSim73zHih0H/pWd4nVqRjxOTMDGEPn0pbJOlX+XXRq169Sk+je8OzcSIxoQmcYsp9s/SjcuFmtBT5hbTnI8b60i/x7ezV/reqfHAGwviJPG/PS4Lz21Ce3sL4kw5OEcXzopSeYupHk4IDJaejIfE4rYH4TIBqY6VtHOz6cT0Q5ZUgPqhfmAII+lU9fivpxQhokdxrr6dPNA4+HjhQzHwkOPBkviXbHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lst.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fILcOJURw29+vX4/kZ077MGdt5BQJXNogaFSpQz5Pp8=;
- b=pG3vZwkzHOq7yweb2d4DPh72vfFtDe9u8MXLR/mS3snDOCZiKU4dq9sXM66o3T/8+D1gt/c0LG1Qq/1I1GakkctfMF0pgJkIb76JaKoc1YFJNF2PZxL1udtCILhqqmPEXyP4PU0aU8AerDYj1cklxnyL45Fq5tOWsBLuv462Mlg=
-Received: from DS7PR03CA0158.namprd03.prod.outlook.com (2603:10b6:5:3b2::13)
- by MW4PR12MB7358.namprd12.prod.outlook.com (2603:10b6:303:22b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.22; Thu, 31 Aug
- 2023 18:03:56 +0000
-Received: from DS1PEPF00017096.namprd05.prod.outlook.com
- (2603:10b6:5:3b2:cafe::cf) by DS7PR03CA0158.outlook.office365.com
- (2603:10b6:5:3b2::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.22 via Frontend
- Transport; Thu, 31 Aug 2023 18:03:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017096.mail.protection.outlook.com (10.167.18.100) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6745.20 via Frontend Transport; Thu, 31 Aug 2023 18:03:55 +0000
-Received: from [10.236.30.70] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
- 2023 13:03:54 -0500
-Message-ID: <d33f6abe-5de1-fdba-6a69-51bcbf568c81@amd.com>
-Date: Thu, 31 Aug 2023 13:03:53 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBB38F57
+	for <linux-coco@lists.linux.dev>; Thu, 31 Aug 2023 21:43:09 +0000 (UTC)
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-407db3e9669so19991cf.1
+        for <linux-coco@lists.linux.dev>; Thu, 31 Aug 2023 14:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1693518188; x=1694122988; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/mZ1G6WYDoeO3Lvq+RNnrhZA1r2o8U/1/K3H65sBRiw=;
+        b=GvkVXqt93v8dMUOr1SV4rVXSZ7h5BMbuZ2FWpWVmjd8bWiWH1CbK4tA7zX3W/SsKox
+         6qVhlsJTSe3NZUZdeD1ivg6+x54H8wsJP5MBvafWz1UvN+nv0sEXZm8aMrhdjDeu/VEw
+         7PTypE1erSFdn1dkxbfor3pP/Psq+ukXr7zIahVrMxuff4uCzw/PBsX+m5Ncl2gE5EXC
+         oIpYrpqe+xefVqjC3FnoB9w914Gf8qc+LkhV/iIesioSGOohO3ynwyzhkBqs1C1O74N+
+         FVIQP5SiY5oV3Lh78GdeChSlYvou1h8KTExYLgRlnR1chZBPB94INYXuA/kTWKXCbUrM
+         p7tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693518188; x=1694122988;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/mZ1G6WYDoeO3Lvq+RNnrhZA1r2o8U/1/K3H65sBRiw=;
+        b=enonU2bSBd9kYbt2tCmfozgrWHgEDXMCPGGi5EgchUlBZRlg327+YlCh8/FGj7vE5U
+         mVhMpBC1/SWsLmM9EK1KleJzWRatXPVplcwRsK6mi4BIRgnvcGvZAJClF3SHY6xr00yr
+         pKF5mrseSHEQEZsKA7rMpCsLrCMo5AkCvDtQpIBuHtyIRkoLEqh9fgRSafHm5L+SXlxH
+         dhR4AzRZoKbC6uqMpJgAn7XfkxvgH1VjIywdAMv+vH2OhBHPJIrTpjIZ9xh1dZ0isgbD
+         toPj38NHvxbg5fn9NZc/ePVutCh+elEmsEr5nPuF2uC9JOxojG+xxwJsGzQYt404yMdC
+         HSpg==
+X-Gm-Message-State: AOJu0YxUfN+oM9pVHrS4CvQsmQHTeCf/ORrhINjo1Uh4Ic/d5TEFJtsO
+	aOr+KCljokbRB670tfkDkXlNNq6IlTQfC+riJ6245Q==
+X-Google-Smtp-Source: AGHT+IG7pahh3NiOV7dOHK10ykKRvqDUl/wZH0nf2uzIX1qDM/zlw41rANgNx8Ce0oUM7H0PnXyHz7JLZxjyJpTPVqA=
+X-Received: by 2002:ac8:7c4d:0:b0:410:a4cb:9045 with SMTP id
+ o13-20020ac87c4d000000b00410a4cb9045mr105945qtv.18.1693518187836; Thu, 31 Aug
+ 2023 14:43:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-To: Christoph Hellwig <hch@lst.de>, <joro@8bytes.org>
-CC: <suravee.suthikulpanit@amd.com>, <iommu@lists.linux.dev>, Michael Roth
-	<michael.roth@amd.com>, "Kalra, Ashish" <Ashish.Kalra@amd.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>
-References: <20230831123107.280998-1-hch@lst.de>
-Content-Language: en-US
-From: Kim Phillips <kim.phillips@amd.com>
-Subject: Re: [PATCH] iommu/amd: remove amd_iommu_snp_enable
-In-Reply-To: <20230831123107.280998-1-hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017096:EE_|MW4PR12MB7358:EE_
-X-MS-Office365-Filtering-Correlation-Id: befd4d0b-ccc8-424b-8c02-08dbaa4ca46b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	QPImhrp+PUeq8I6F13KdiXimDUDJ07KjH/nIyfC2eDtckR4C9pkTFz5DAM6FxI2rLM5+9JymCngJO5mHfPeFFFeiy0XOj4CoDKr6ekC0S4VjgREP8AQDpUSTPE9ZD3CegsMDdFvEwzmLlRLRdjB4Vm+t2hQzo1pOkf9k16orUOmX5OR7cak1Dpm6ZRf/bF80BzPMiyfHZy6lE7RxX0Q+ZNyYJ3jtxr2gJJnqAXEUmhz1T5pevezPrmGEdPVheiD7CDOw/6LT1INJF34nxKIutEN/gRcZ+6uLoMnt/e+OqKEvnh5NW2B0iKJHSgmDO4P35aWTe7b8iFGaB7b9v1sGD5D1vbtnQ5O7JHmjg6MjLrbdg28O2f5N4nCol9at9Nr0rWI624ZcQuMsZtiy8SV1fwyRv5cn2ijf6MzK/ce+/NVm1UALcPBVxYJjc+WGJKJ6mc3MPit0pXGBfKQINTaClwddu1eB4RpBLYAoazXt4FijHG81LzO3JqRn2DOUvgslTwlpKfMLr6wpfMVGPVjb4nPhVKSWQuHYI/ydGfE8JUWAwY+Sli8zEwX9OfdWRdhHDN3g4gbSsIZqDlz2ibFNP9gydepJjGQAYXd4NulhVchriUOH5PgeQvruI4kTdbph17gS2iF87kYX+wLtQoPB2lvkP2Yzuwl9k3zG6Jsvwpj2dm2n6sBL5yFjCmrCwaeIcETcp9KOrX31ffI3WUPjlXNUO0UDdsmg6w37AqBppPRJexCqwOvngkpIxDiOh5BkkAVrvgh7ubHnSDPN4NChyIwU82IbnGSFllHbuFnSv+c=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(376002)(136003)(39860400002)(346002)(82310400011)(186009)(1800799009)(451199024)(40470700004)(36840700001)(46966006)(40480700001)(82740400003)(36756003)(41300700001)(336012)(426003)(966005)(26005)(40460700003)(16526019)(356005)(54906003)(110136005)(70586007)(70206006)(81166007)(316002)(16576012)(478600001)(2906002)(4744005)(53546011)(86362001)(5660300002)(31696002)(44832011)(8936002)(2616005)(8676002)(31686004)(36860700001)(47076005)(4326008)(36900700001)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 18:03:55.5023
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: befd4d0b-ccc8-424b-8c02-08dbaa4ca46b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017096.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7358
+References: <169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com>
+ <169342400469.3934343.12316161608372095860.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <169342400469.3934343.12316161608372095860.stgit@dwillia2-xfh.jf.intel.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Thu, 31 Aug 2023 14:42:56 -0700
+Message-ID: <CAAH4kHYNhiewBZ8Z_yF2F+ogkv_1UV8=Gu0KVDdTJN4iQKyNMg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] configfs-tsm: Introduce a shared ABI for
+ attestation reports
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Peter Gonda <pgonda@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Samuel Ortiz <sameo@rivosinc.com>, peterz@infradead.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de
+Content-Type: text/plain; charset="UTF-8"
 
-+Mike Roth, Ashish
+This is clean and approachable. Thanks for your implementation.
 
-On 8/31/23 7:31 AM, Christoph Hellwig wrote:
-> amd_iommu_snp_enable is unused and has been since it was added in commit
-> fb2accadaa94 ("iommu/amd: Introduce function to check and enable SNP").
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
+> +static int try_advance_write_generation(struct tsm_report *report)
+> +{
+> +       lockdep_assert_held_write(&tsm_rwsem);
+> +
+> +       /*
+> +        * malicious or broken userspace is attempting to wrap read_generation,
+> +        * stop accepting updates until current report configuration is read.
+> +        */
+> +       if (report->write_generation == report->read_generation - 1)
+> +               return -EBUSY;
+> +       report->write_generation++;
+> +       return 0;
+> +}
+> +
 
-It is used by the forthcoming host SNP support:
+This took me a while to wrap my head around.
+The property we want is that when we read outblob, it is the result of
+the attribute changes since the last read. If we write to an attribute
+2^64 times, we could get write_generation to wrap around to equal
+read_generation without actually reading outblob. So we could end up
+given a badly cached result when we read outblob? Is that what this is
+preventing?
 
-https://lore.kernel.org/lkml/20230612042559.375660-8-michael.roth@amd.com/
+I think I would word this to say,
 
-Thanks,
+"Malicious or broken userspace has written enough times for
+read_generation == write_generation by modular arithmetic without an
+interim read. Stop accepting updates until the current report
+configuration is read."
 
-Kim
+I think that at least in the SEV-SNP case, we can double-check from
+userspace that the report has values that we expected to configure the
+get_report with, so this isn't really an issue. I'm not sure what the
+use is of configuration that doesn't lead to observable (and
+checkable) differences, but I suppose this check doesn't hurt.
+
+-- 
+-Dionna Glaze, PhD (she/her)
