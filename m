@@ -1,46 +1,291 @@
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6033FD4;
-	Fri,  1 Sep 2023 05:50:25 +0000 (UTC)
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 2EFC468BEB; Fri,  1 Sep 2023 07:50:21 +0200 (CEST)
-Date: Fri, 1 Sep 2023 07:50:20 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: Christoph Hellwig <hch@lst.de>, joro@8bytes.org,
-	suravee.suthikulpanit@amd.com, iommu@lists.linux.dev,
-	Michael Roth <michael.roth@amd.com>,
-	"Kalra, Ashish" <Ashish.Kalra@amd.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH] iommu/amd: remove amd_iommu_snp_enable
-Message-ID: <20230901055020.GA31908@lst.de>
-References: <20230831123107.280998-1-hch@lst.de> <d33f6abe-5de1-fdba-6a69-51bcbf568c81@amd.com>
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7C7BE5A
+	for <linux-coco@lists.linux.dev>; Fri,  1 Sep 2023 15:25:27 +0000 (UTC)
+Received: from [192.168.2.39] (77-166-152-30.fixed.kpn.net [77.166.152.30])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DCC51212A79E;
+	Fri,  1 Sep 2023 08:25:24 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DCC51212A79E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1693581927;
+	bh=3U6deW3WmkYHw2SKJa5pZv80uKTtSTYWF2LN0Z1o9Gw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GH4y+ldXLGqvCvUFGbRh8Fwd0Y9no0kf2KbdFCHsw6mtioKMCTcjDfgGK+iU8D+Cu
+	 S7zJJq/FoKvWEJZ5BjnUkJb5Z8WXfTGVtiVeOXsdnuQSUC8ctmYWr82yQmaAMczTaK
+	 TTIdljDnDThnsTB/IuD5VLx63ur6ZfoFbS5zbA2E=
+Message-ID: <4e4407b0-179d-4be4-bf0b-0d674103d4f6@linux.microsoft.com>
+Date: Fri, 1 Sep 2023 17:25:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d33f6abe-5de1-fdba-6a69-51bcbf568c81@amd.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/5] virt: sevguest: Add TSM_REPORTS support for
+ SNP_{GET, GET_EXT}_REPORT
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh
+ <brijesh.singh@amd.com>, peterz@infradead.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de
+References: <169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com>
+ <169342402274.3934343.11704206926819634506.stgit@dwillia2-xfh.jf.intel.com>
+Content-Language: en-US
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <169342402274.3934343.11704206926819634506.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 31, 2023 at 01:03:53PM -0500, Kim Phillips wrote:
-> +Mike Roth, Ashish
->
-> On 8/31/23 7:31 AM, Christoph Hellwig wrote:
->> amd_iommu_snp_enable is unused and has been since it was added in commit
->> fb2accadaa94 ("iommu/amd: Introduce function to check and enable SNP").
->>
->> Signed-off-by: Christoph Hellwig <hch@lst.de>
->> ---
->
-> It is used by the forthcoming host SNP support:
->
-> https://lore.kernel.org/lkml/20230612042559.375660-8-michael.roth@amd.com/
+On 8/30/2023 9:33 PM, Dan Williams wrote:
+> The sevguest driver was a first mover in the confidential computing
+> space. As a first mover that afforded some leeway to build the driver
+> without concern for common infrastructure.
+> 
+> Now that sevguest is no longer a singleton [1] the common operation of
+> building and transmitting attestation report blobs can / should be made
+> common. In this model the so called "TSM-provider" implementations can
+> share a common envelope ABI even if the contents of that envelope remain
+> vendor-specific. When / if the industry agrees on an attestation record
+> format, that definition can also fit in the same ABI. In the meantime
+> the kernel's maintenance burden is reduced and collaboration on the
+> commons is increased.
+> 
+> Convert sevguest to use CONFIG_TSM_REPORTS to retrieve the blobs that
+> the SNP_{GET,GET_EXT}_REPORT ioctls produce. An example flow follows for
+> retrieving the SNP_GET_REPORT blob via the TSM interface utility,
+> assuming no nonce and VMPL==2:
+> 
+>     report=/sys/kernel/config/tsm/report/report0
+>     mkdir $report
+>     echo 2 > $report/privlevel
+>     dd if=/dev/urandom bs=64 count=1 > $report/inblob
+>     hexdump -C $report/outblob
+>     rmdir $report
+> 
+> ...while the SNP_GET_EXT_REPORT flow needs to additionally set the
+> format to "extended":
+> 
+>     report=/sys/kernel/config/tsm/report/report1
+>     mkdir $report
+>     echo extended > $report/format
+>     dd if=/dev/urandom bs=64 count=1 > $report/inblob
+>     hexdump -C $report/outblob
+>     rmdir $report
+> 
+> The old ioctls can be lazily deprecated, the main motivation of this
+> effort is to stop the proliferation of new ioctls, and to increase
+> cross-vendor collaboration.
+> 
+> Note, only compile-tested.
+> 
+> Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch [1]
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Dionna Glaze <dionnaglaze@google.com>
+> Cc: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  drivers/virt/coco/sev-guest/Kconfig     |    1 
+>  drivers/virt/coco/sev-guest/sev-guest.c |   83 +++++++++++++++++++++++++++++++
+>  2 files changed, 84 insertions(+)
+> 
+> diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-guest/Kconfig
+> index da2d7ca531f0..1cffc72c41cb 100644
+> --- a/drivers/virt/coco/sev-guest/Kconfig
+> +++ b/drivers/virt/coco/sev-guest/Kconfig
+> @@ -5,6 +5,7 @@ config SEV_GUEST
+>  	select CRYPTO
+>  	select CRYPTO_AEAD2
+>  	select CRYPTO_GCM
+> +	select TSM_REPORTS
+>  	help
+>  	  SEV-SNP firmware provides the guest a mechanism to communicate with
+>  	  the PSP without risk from a malicious hypervisor who wishes to read,
+> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+> index c3c9e9ea691f..c7bbb8f372a3 100644
+> --- a/drivers/virt/coco/sev-guest/sev-guest.c
+> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
+> @@ -16,10 +16,12 @@
+>  #include <linux/miscdevice.h>
+>  #include <linux/set_memory.h>
+>  #include <linux/fs.h>
+> +#include <linux/tsm.h>
+>  #include <crypto/aead.h>
+>  #include <linux/scatterlist.h>
+>  #include <linux/psp-sev.h>
+>  #include <linux/sockptr.h>
+> +#include <linux/cleanup.h>
+>  #include <uapi/linux/sev-guest.h>
+>  #include <uapi/linux/psp-sev.h>
+>  
+> @@ -759,6 +761,79 @@ static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno
+>  	return key;
+>  }
+>  
+> +static u8 *sev_report_new(const struct tsm_desc *desc, void *data, size_t *outblob_len)
+> +{
+> +	struct snp_guest_dev *snp_dev = data;
+> +	const int report_size = SZ_4K;
+> +	const int ext_size = SZ_16K;
+> +	int ret, size;
+> +
+> +	if (desc->inblob_len != 64)
+> +		return ERR_PTR(-EINVAL);
+> +
+> +	if (desc->outblob_format == TSM_FORMAT_EXTENDED)
+> +		size = report_size + ext_size;
+> +	else
+> +		size = report_size;
+> +
+> +	u8 *buf __free(kvfree) = kvzalloc(size, GFP_KERNEL);
+> +
+> +	guard(mutex)(&snp_cmd_mutex);
+> +	if (desc->outblob_format == TSM_FORMAT_EXTENDED) {
+> +		struct snp_ext_report_req ext_req = {
+> +			.data = { .vmpl = desc->privlevel },
+> +			.certs_address = (__u64)buf + report_size,
+> +			.certs_len = ext_size,
+> +		};
+> +		memcpy(&ext_req.data.user_data, desc->inblob, desc->inblob_len);
+> +
+> +		struct snp_guest_request_ioctl input = {
+> +			.msg_version = 1,
+> +			.req_data = (__u64)&ext_req,
+> +			.resp_data = (__u64)buf,
+> +		};
+> +		struct snp_req_resp io = {
+> +			.req_data = KERNEL_SOCKPTR(&ext_req),
+> +			.resp_data = KERNEL_SOCKPTR(buf),
+> +		};
+> +
+> +		ret = get_ext_report(snp_dev, &input, &io);
+> +	} else {
+> +		struct snp_report_req req = {
+> +			.vmpl = desc->privlevel,
+> +		};
+> +		memcpy(&req.user_data, desc->inblob, desc->inblob_len);
+> +
+> +		struct snp_guest_request_ioctl input = {
+> +			.msg_version = 1,
+> +			.req_data = (__u64)&req,
+> +			.resp_data = (__u64)buf,
+> +		};
+> +		struct snp_req_resp io = {
+> +			.req_data = KERNEL_SOCKPTR(&req),
+> +			.resp_data = KERNEL_SOCKPTR(buf),
+> +		};
+> +
+> +		ret = get_report(snp_dev, &input, &io);
+> +	}
+> +
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	*outblob_len = size;
+> +	return_ptr(buf);
+> +}
+> +
+> +static const struct tsm_ops sev_tsm_ops = {
+> +	.name = KBUILD_MODNAME,
+> +	.report_new = sev_report_new,
+> +};
+> +
+> +static void unregister_sev_tsm(void *data)
+> +{
+> +	unregister_tsm(&sev_tsm_ops);
+> +}
+> +
+>  static int __init sev_guest_probe(struct platform_device *pdev)
+>  {
+>  	struct snp_secrets_page_layout *layout;
+> @@ -832,6 +907,14 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>  	snp_dev->input.resp_gpa = __pa(snp_dev->response);
+>  	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
+>  
+> +	ret = register_tsm(&sev_tsm_ops, snp_dev, &tsm_report_ext_type);
+> +	if (ret)
+> +		goto e_free_cert_data;
+> +
+> +	ret = devm_add_action_or_reset(&pdev->dev, unregister_sev_tsm, NULL);
+> +	if (ret)
+> +		goto e_free_cert_data;
+> +
+>  	ret =  misc_register(misc);
+>  	if (ret)
+>  		goto e_free_cert_data;
+> 
 
-Then resend it with that support, but don't waste resources and everyones
-time now.
+I tried this with the non-extended request and realized it's a bit awkward from
+a uapi point of view. The returned outblob has a header prepended (table 23 in [1])
+and is arbitrarily sized at 4096. It would be more natural to only return the report
+field and the count bytes that the report actually has. I've attached a rough patch
+below to give you an idea of what I mean.
+
+The extended guest request is another topic, since userspace has to be aware of
+where the kernel choses to put the extended data, and fixup all the offsets in the
+table (section 4.1.8.1 in [2]). It would be better to return this data through a
+separate file.
+
+[1]: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56860.pdf
+[2]: https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56421-guest-hypervisor-communication-block-standardization.pdf
+
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index c7bbb8f372a3..e92a82d9c53f 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -761,9 +761,18 @@ static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno
+ 	return key;
+ }
+ 
++struct snp_msg_report_resp_hdr {
++	u32 status;
++	u32 report_size;
++	u8 rsvd[24];
++};
++#define SNP_REPORT_INVALID_PARAM 0x16
++#define SNP_REPORT_INVALID_KEY_SEL 0x27
++
+ static u8 *sev_report_new(const struct tsm_desc *desc, void *data, size_t *outblob_len)
+ {
+ 	struct snp_guest_dev *snp_dev = data;
++	struct snp_msg_report_resp_hdr hdr;
+ 	const int report_size = SZ_4K;
+ 	const int ext_size = SZ_16K;
+ 	int ret, size;
+@@ -777,6 +786,8 @@ static u8 *sev_report_new(const struct tsm_desc *desc, void *data, size_t *outbl
+ 		size = report_size;
+ 
+ 	u8 *buf __free(kvfree) = kvzalloc(size, GFP_KERNEL);
++	if (!buf)
++		return ERR_PTR(-ENOMEM);
+ 
+ 	guard(mutex)(&snp_cmd_mutex);
+ 	if (desc->outblob_format == TSM_FORMAT_EXTENDED) {
+@@ -820,8 +831,24 @@ static u8 *sev_report_new(const struct tsm_desc *desc, void *data, size_t *outbl
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	*outblob_len = size;
+-	return_ptr(buf);
++	memcpy(&hdr, buf, sizeof(hdr));
++	if (hdr.status == SNP_REPORT_INVALID_PARAM)
++		return ERR_PTR(-EINVAL);
++	if (hdr.status == SNP_REPORT_INVALID_KEY_SEL)
++		return ERR_PTR(-ENOKEY);
++	if (hdr.status)
++		return ERR_PTR(-EPROTO);
++	if ((hdr.report_size + sizeof(hdr)) > size)
++		return ERR_PTR(-ENOSPC);
++
++	/* TODO: figure out how we want to handle extended report */
++	u8 *buf2 = kvzalloc(hdr.report_size, GFP_KERNEL);
++	if (!buf2)
++		return ERR_PTR(-ENOMEM);
++
++	memcpy(buf2, buf + sizeof(hdr), hdr.report_size);
++	*outblob_len = hdr.report_size;
++	return buf2;
+ }
+ 
+ static const struct tsm_ops sev_tsm_ops = {
+
