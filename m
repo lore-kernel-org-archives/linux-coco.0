@@ -1,18 +1,18 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49A72571
-	for <linux-coco@lists.linux.dev>; Tue,  5 Sep 2023 15:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDD0C433C7;
-	Tue,  5 Sep 2023 15:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3975FD531
+	for <linux-coco@lists.linux.dev>; Tue,  5 Sep 2023 15:39:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2168EC433C8;
+	Tue,  5 Sep 2023 15:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1693928158;
-	bh=HhutMdt2v5Oki0P48G/qsRslHHu4n9/C6rU4c5lQPF4=;
+	s=korg; t=1693928361;
+	bh=IuTYB1prDBGGRSQfQarq/IhVRw5br9ovPsUKvnjcSZM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZK4rowOGG36y5OaIXHz+jzU+hbwuvGaYnlT1Sajgc5MvOBCVSewDT3a3Z9l+Pwono
-	 Vt8WrRMYDKeyJHM7qReP9CQgV6hKlFV2ToOJ+6sofyvhfMW3eVLdA4Rirmv9kzWbx5
-	 FCVdM3HW5konCPFglqEIVkg4L8z7CfZY9+vbdCvk=
-Date: Tue, 5 Sep 2023 16:35:55 +0100
+	b=X4Ub3csFSLuOvbcPvtEMyLZRqCkHa6DHUH193SdWA9d0qkRP0W2ykfArYwwxCJLpy
+	 n233eB2R8FTuUFTaCb9H8ls3I0lXdM4kbq18lOQ3vMpeKRfFKir1EqOkG0lfEjC3we
+	 C+uIX29aOPcPfYPe+FYj13lBBz87ABqScFvdAlh4=
+Date: Tue, 5 Sep 2023 16:39:18 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Carlos Bilbao <carlos.bilbao@amd.com>
 Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -31,7 +31,7 @@ Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Larry Dewey <larry.dewey@amd.com>
 Subject: Re: [PATCH v4] docs: security: Confidential computing intro and
  threat model for x86 virtualization
-Message-ID: <2023090538-apprehend-wind-8b1d@gregkh>
+Message-ID: <2023090555-gossip-neon-9f66@gregkh>
 References: <20230905152656.1215119-1-carlos.bilbao@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -44,24 +44,8 @@ Content-Disposition: inline
 In-Reply-To: <20230905152656.1215119-1-carlos.bilbao@amd.com>
 
 On Tue, Sep 05, 2023 at 10:26:56AM -0500, Carlos Bilbao wrote:
-> Kernel developers working on confidential computing for virtualized
-> environments in x86 operate under a set of assumptions regarding the Linux
-> kernel threat model that differs from the traditional view. Historically,
-> the Linux threat model acknowledges attackers residing in userspace, as
-> well as a limited set of external attackers that are able to interact with
-> the kernel through networking or limited HW-specific exposed interfaces
-> (e.g. USB, thunderbolt). The goal of this document is to explain additional
-> attack vectors that arise in the virtualized confidential computing space.
-> 
-> Reviewed-by: Larry Dewey <larry.dewey@amd.com>
-> Reviewed-by: David Kaplan <david.kaplan@amd.com>
-> Co-developed-by: Elena Reshetova <elena.reshetova@intel.com>
-> Signed-off-by: Elena Reshetova <elena.reshetova@intel.com>
-> Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
-> 
-> ---
-> V3 can be found in:
-> https://lwn.net/Articles/937927/
+> +The basic CoCo guest layout includes the host, guest, the interfaces that
+> +communicate guest and host, a platform capable of supporting CoCo VMs, and
 
-That's not a lore.kernel.org link :)
+"communicate between the guest and host" right?
 
