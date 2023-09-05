@@ -1,259 +1,209 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AE32571
-	for <linux-coco@lists.linux.dev>; Tue,  5 Sep 2023 15:49:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12AE0C433C8;
-	Tue,  5 Sep 2023 15:49:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1693928984;
-	bh=odQno2YjSY2n5UTj6PnQfVPkl1W+8vkvFMiImB6bXb4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RjTykYF+ms/bQ+Giy5U4GVXU+wRoxAdEsS7A6LZSF/1DEihYvUfMieeJKI1qVLZZz
-	 b+g1641Vpg5HHCUTI4kA8VRv/N1z0lzg1Uqm60mFvjx+eVjYQQ/hjr31u1UjKxQOvk
-	 7QxmeEsS6wZfZBlwwkZL7FH8fG26ULeDt/bSWUF4=
-Date: Tue, 5 Sep 2023 16:49:41 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Carlos Bilbao <carlos.bilbao@amd.com>
-Cc: corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ardb@kernel.org, kraxel@redhat.com, dovmurik@linux.ibm.com,
-	elena.reshetova@intel.com, dave.hansen@linux.intel.com,
-	Dhaval.Giani@amd.com, michael.day@amd.com,
-	pavankumar.paluri@amd.com, David.Kaplan@amd.com, Reshma.Lal@amd.com,
-	Jeremy.Powell@amd.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
-	tglx@linutronix.de, dgilbert@redhat.com, dinechin@redhat.com,
-	linux-coco@lists.linux.dev, berrange@redhat.com, mst@redhat.com,
-	tytso@mit.edu, jikos@kernel.org, joro@8bytes.org, leon@kernel.org,
-	richard.weinberger@gmail.com, lukas@wunner.de, jejb@linux.ibm.com,
-	cdupontd@redhat.com, jasowang@redhat.com, sameo@rivosinc.com,
-	bp@alien8.de, seanjc@google.com, security@kernel.org,
-	Larry Dewey <larry.dewey@amd.com>
-Subject: Re: [PATCH v4] docs: security: Confidential computing intro and
- threat model for x86 virtualization
-Message-ID: <2023090537-undesired-junction-b325@gregkh>
-References: <20230905152656.1215119-1-carlos.bilbao@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55B6DDC2
+	for <linux-coco@lists.linux.dev>; Tue,  5 Sep 2023 23:21:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693956101; x=1725492101;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=VF1wUVX3ZvL4ACnQV70PMdhhGokTpEaQf2TOA5AmWRg=;
+  b=KZ8au9hjOg/+d0q5XVO5HHMK38w6geBXGEokkuIskXjFUpvJVZQDfPbS
+   2p7DUZJe5Ut5zKwh5AtEjAectMQ3Z5hzkqI1lT65GZUrzpfoN7K0/WTyW
+   t8+JxU2wI2FBWDKgteZEMlkFVZAO+WG19qGSq0H3ZXXkpXMN9S1It2pUV
+   JzHhBsNnHbO9lnMhnW/4dHzaVGxSe3v4pa0yF0Re2K5NmNq8r0Ejly1wh
+   RNonDsbj5mcpbe3qUvQAx9BDSDNew4P2n98/fW2pdBPQuzZOMrBMaAdHG
+   LpJVwCZjsnPe8eGwwRVLuGkCrHPFGtcaisyiN7uMy3n5KMC2qOqx/BBno
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="374317610"
+X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
+   d="scan'208";a="374317610"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 16:21:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="864933592"
+X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
+   d="scan'208";a="864933592"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Sep 2023 16:21:39 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 5 Sep 2023 16:21:38 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 5 Sep 2023 16:21:37 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Tue, 5 Sep 2023 16:21:37 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Tue, 5 Sep 2023 16:21:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Y4n0kqRnY0iUAULu2JTlvpbm3EiBrXeBgPnT1bHMm1iHOj1JX1bsF9eVvmmBw4pG/dxaBk6W+SrHj65kU4xsYinmkGPn051jbigbmwvQjgVLByU7taOUKvw763bsTqedS17pZS8CHS5Qh07n9ImnKY+NenuxBCI23WHpuv5v4rGtoo3eN6jPsG+M7yPf/CtvvTe189KF8q3Ln6USN7icio3wd+Z9yR3XEZUPkwV09apSxY+FGQ6qWqumjgUf7sGBq2jHjmbAsgge7INbFyqFzsWPiH1SxV12wPicjyhjWCxdAnhuqbuBx0Jaw8v2zpqw+UdM8S5GxZE9w65QGY2xng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VF1wUVX3ZvL4ACnQV70PMdhhGokTpEaQf2TOA5AmWRg=;
+ b=jBelMB1ng1f0EzWQWljlzrEHtQpRB8AnvwQahpg9ncsQutbrN9CgyBqzLCSrZzBJkRE7E7POWIW6PbbkhBtqns6WQFlgvvKNHFVtmNfK8kMHDO60FvpY02cTpSkB1j9gS2ccd9rEvOW+MCBVfAOw9mxYI/bVGql8+mMr0ck9B4rgb3g12quXdgL4fg+GFG8EoDxV3JfbwefGAN8SZHeUp+bcvoqpZfgNEFgZqOMrPI34ffjEv8QD6t58P1kW/GOe52NMmK9zTfn7WbuVVaxgnM5TWzUQyUf2XsNaSxo6zJLC3JFkFtsDKw+DuV5keHjUrzr+2TllbJdRb5Yx0uISuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
+ by SA0PR11MB4686.namprd11.prod.outlook.com (2603:10b6:806:97::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Tue, 5 Sep
+ 2023 23:21:28 +0000
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::980d:80cc:c006:e739]) by BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::980d:80cc:c006:e739%4]) with mapi id 15.20.6745.030; Tue, 5 Sep 2023
+ 23:21:28 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "jpiotrowski@linux.microsoft.com"
+	<jpiotrowski@linux.microsoft.com>
+CC: "bp@alien8.de" <bp@alien8.de>, "peterz@infradead.org"
+	<peterz@infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "thomas.lendacky@amd.com"
+	<thomas.lendacky@amd.com>, "dionnaglaze@google.com" <dionnaglaze@google.com>,
+	"brijesh.singh@amd.com" <brijesh.singh@amd.com>, "Yamahata, Isaku"
+	<isaku.yamahata@intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>
+Subject: Re: [PATCH v3 5/5] virt: sevguest: Add TSM_REPORTS support for
+ SNP_{GET, GET_EXT}_REPORT
+Thread-Topic: [PATCH v3 5/5] virt: sevguest: Add TSM_REPORTS support for
+ SNP_{GET, GET_EXT}_REPORT
+Thread-Index: AQHZ23juqM3HPepUpkiDz/Fyv97nIbAGGhqAgAAUWICAA8XKgIAADAIAgALoMIA=
+Date: Tue, 5 Sep 2023 23:21:28 +0000
+Message-ID: <c3c17f12b30eb05d76fbea533b22324c9e536781.camel@intel.com>
+References: <169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com>
+	 <169342402274.3934343.11704206926819634506.stgit@dwillia2-xfh.jf.intel.com>
+	 <4e4407b0-179d-4be4-bf0b-0d674103d4f6@linux.microsoft.com>
+	 <64f2137362305_4c1f3294f4@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	 <4ff19f7c31b13a63756f40de69fbf8a24fe3bb08.camel@intel.com>
+	 <f859d123-6c85-4bc4-8ac9-8761f1f3f602@linux.intel.com>
+In-Reply-To: <f859d123-6c85-4bc4-8ac9-8761f1f3f602@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|SA0PR11MB4686:EE_
+x-ms-office365-filtering-correlation-id: 0897f2e5-2f5e-48a1-6660-08dbae66d4d6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: lvZqpkpknmliarKuhdPP03NHIJWcpfEuoFbioFXynDuh5oPGsKttAlS9rlCEF9dBb7IKgFhKHVh+aGpift4DsMb5AqS4OH9SD8Jm6thRKjL+w7qoxA+DIr8LujNNFk/N/ywUsUiITqfTuH19LKXcvNzmAvzGIZvDWCcSE1gVD6UcYdtcMLc8sicb9xePZMkCEd+0S9LLAthxqHgaF/jdHXs4kWI4DjJShGY0HngRyr/lQSuMrmNrMizOY6EKQ/DsXEjtCZHBDQtOraUvPA+zcauW/oSMHT0hWTQl3b086mvFgZwZL8oU7UCN7OnA24xP6gIXJvFlKV1arqaLQ09VH9CiBPvv+LRe9gaVmNn10zn9RbSWBQ9bW0E3WAhyTYBQVV4VpWSJlTP4GoWLqKQx4UkazwFsCg4DlV0kdQrDAGOS/+k9OZ/dphqt7J/iWzKIfC9DXfRZpdhgk8vjECMlN6ToIqvc8/1KC/oC41pNJKEYVUhljC5CFFtq9hiayzipkQ/K9KLeIaSGlj+YYQEVVA6gnREWCD54Fa3WUnyo0feQG7dnPv+HwB+sptE4dBsVwOdwaT9vOacs1LcGuIi0WDqN4/6BNK54V97zeAT7COc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(376002)(366004)(396003)(346002)(1800799009)(186009)(451199024)(83380400001)(2906002)(38070700005)(82960400001)(38100700002)(36756003)(86362001)(122000001)(6506007)(6512007)(41300700001)(53546011)(316002)(66446008)(54906003)(6486002)(64756008)(66476007)(110136005)(66556008)(91956017)(66946007)(76116006)(2616005)(4326008)(8676002)(8936002)(966005)(478600001)(71200400001)(7416002)(5660300002)(26005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q2ZweVdUS0dKVjB5QUw3UkRNcytmMTdJVURYbjQ5Q0pqbWNYaGg3dmd3c0VE?=
+ =?utf-8?B?K3JKUjU5VlJaSDJMUzEzSVFxckJLMmRBNlRQSHhEck1XcGRKelhDMDJmb1RY?=
+ =?utf-8?B?NTVGaGN2eEsySTIrdHdmZVVtRFgvSkx0TUVIbmNiaE1icEJyZE5ubUZacTRx?=
+ =?utf-8?B?cjQ1aDRyQzlRZ3ZvODlEdDJjSEcydjRlOXF3Z0xvYmF3QnZIc1BtZ2xYZ21U?=
+ =?utf-8?B?ZjFuMlFLNTFzNTRXbEZhYzRRZFBmbjN6anhxSHJuNkxlNjVkbWU4bnEybVJX?=
+ =?utf-8?B?SkcrYTFDRkpqUklWYW1Jbm5kQnR4ekYraDlOaHRlUzRHdGozZFVrWTVHUmlT?=
+ =?utf-8?B?TkVkdkZNR29OZ216OXF0L0JoNHNqL29WazNhcjd4VDArbUZ5dm4xLzE2U0hv?=
+ =?utf-8?B?NXNuM0pGVnJyNDMrR09CcTR5emduWVBTNnlVWXdZSHo3dTI0M25qUzRiN2Zh?=
+ =?utf-8?B?d3JlZHBDUFNXZzdpOTR3N0Vyb24xNHpVYVRhVXVyZGY2a1hnU1NIOVBlV0Ni?=
+ =?utf-8?B?bHdZQ2RRWUlZZUdzaXdoM3B1YXYwek5LSUprOHVhRW5lMDlTV1J1a2YxajZN?=
+ =?utf-8?B?bFlBVGRReU5IS3ZJQ25mRU4xWEhVdENmOW9TY0VGWEw2SHVEZFdlZ3gxUFVl?=
+ =?utf-8?B?K0JMbXNBdEtpaGxtRHVQcUJKVE81TUlkTGt6L1d2ckpJZExPZ1BTM1R1dXJQ?=
+ =?utf-8?B?d01HNXBsczR5NFcwU3gwTWNEL1N6MjNUakxYRmpHMk1sUURXUTh6dmZCMnhM?=
+ =?utf-8?B?NFhSNndVNG5ZdFE2SGpWODNSN3BLaWNYdDcwWlIwdDdPU2VVM3F3eVlPZE14?=
+ =?utf-8?B?MTBES1Mzc3JDVUcvZjZSRzNnTGFEV2ZxdDB1ZlBGUC93bXdsTE1BN0I1eXp0?=
+ =?utf-8?B?WUhjYVljZWhDOXlMdDdrNFV3UW9HUHZmRmY2OVJaSmVzNlZpYzh0VHpXUEdi?=
+ =?utf-8?B?UFZIMFhiYTUwRHlObkxyYUhQQloxK1M0ME5ta2VLME9oSlpRcndYaHJNZFlL?=
+ =?utf-8?B?YlNsVE9GTkdIZjZYRTg4NGNBMUhZR0c1RTNucDF5NVdFR2NvdUFKLzBkYmp2?=
+ =?utf-8?B?bmxub0JyQUxtM0lJQzFvRmhURllZcythWGZZZCtJWmxwZGhxUXZ4Z0dLWHpR?=
+ =?utf-8?B?amN2SFYvNGNXU2s0TTBhajcvZFlqVHoyd3ZPcUVuSE04THdGSmtMb25GcHJm?=
+ =?utf-8?B?QkpCNi9MdXQ1eFgrakd2ekNvNUVWWXZFRGt2TUxod2RaMXU5cE1TYmcwM3pD?=
+ =?utf-8?B?a3YyS2F5Wm14YVhCM2JBaG41ajNJZnhCOC9FSFN0bzdPK2ZBelhubTZQKzU0?=
+ =?utf-8?B?eGw4ZmdnQWFBQUJnN2lBR2owb0EvQXJRaFBOZUZHdk5seEdhc0xPcUdJdmNm?=
+ =?utf-8?B?SWRySHdhZHozMzVXN3lPbjZkN0FKSHVjRUZoRGphUVN1OWZLbWQ5U29NWUVH?=
+ =?utf-8?B?cnpWUEhtUUk5SDQxSnNUcDBINEdWRHRFc090dm5JUFpab1FpTTNDemx4TjRw?=
+ =?utf-8?B?cWpzQkJKbW9ZdE9YSXlrbjg3OGZjc2hSNzJHYXEzdU9ETGJHdmo3Q3FmNUk2?=
+ =?utf-8?B?aEpzZnZ6Q2tuTmc4NnhYQzNGMFcxWjNzelpoSVVxZUlhVStqcjlYeEE3dlhF?=
+ =?utf-8?B?ZmlNMmsrSHhKays3Q0tOQlFBQzRUbmVYU1pXai85NHRkN2lyc0Zpb0RIRWVG?=
+ =?utf-8?B?U25DZUlSRDRvSW1lMWlCMWhEOTFCV2Rvdk4rMktCakwva2NDeEhZcjFFQ3dW?=
+ =?utf-8?B?TVZ5VVBTTEkwK0VpMTFvY3U4OVgxcHMydnlpRjh0T3N0aFR3dUZINlFTQjBK?=
+ =?utf-8?B?cnAvZjM5aDZIaGhsVUdUTG5HSHQ5V1ZHZ2JLVTNBQzdwN1NhVkNNS0Q3bFlU?=
+ =?utf-8?B?TjVrODlnSlJaeTJ3VUdDOVRweXBHSFBRMVUwMFBManRJMzVLdG5QaGhDMHZt?=
+ =?utf-8?B?V20zNjN1QlNiL0RCdkg2NnRNK05JOEtCZkoxRjRaOXJnR3BrRnQvVVJpTFdZ?=
+ =?utf-8?B?ejgvZmhUdzE4R0ZSSEdLbm9XZHZZcEk4d3dCbHZuTjM2TmtTZVZiSEhIRTFz?=
+ =?utf-8?B?WWk3OThxclBHb2dodHNKS0hCMjRaTldLT3l2cC90emZGVjNHd1BwWVlrSGUw?=
+ =?utf-8?Q?7PYtxW7Av81BsXeup+R65Im5s?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6D80058FB725644FA7A40DCD9FBC74B3@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230905152656.1215119-1-carlos.bilbao@amd.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0897f2e5-2f5e-48a1-6660-08dbae66d4d6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2023 23:21:28.3776
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7fK7L858k23TswtW6veSaACkgNtZ6fXrEgYunVBKySr6VBY6cnudOOgCvFdx4/fxvd/ZLh9n+YNA1bRaaq6v9g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4686
+X-OriginatorOrg: intel.com
 
-On Tue, Sep 05, 2023 at 10:26:56AM -0500, Carlos Bilbao wrote:
-> +In the following diagram, the "<--->" lines represent bi-directional
-> +communication channels or interfaces between the CoCo security manager and
-> +the rest of the components (data flow for guest, host, hardware) ::
-> +
-> +    +-------------------+      +-----------------------+
-> +    | CoCo guest VM     |<---->|                       |
-> +    +-------------------+      |                       |
-> +      | Interfaces |           | CoCo security manager |
-> +    +-------------------+      |                       |
-> +    | Host VMM          |<---->|                       |
-> +    +-------------------+      |                       |
-> +                               |                       |
-> +    +--------------------+     |                       |
-> +    | CoCo platform      |<--->|                       |
-> +    +--------------------+     +-----------------------+
-
-I don't understand what "| Interfaces |" means here.  There is, or is
-not, a communication channel between the CoC guest VM and the Host VMM?
-
-What does "interface" mean?
-
-> +
-> +The specific details of the CoCo security manager vastly diverge between
-> +technologies. For example, in some cases, it will be implemented in HW
-> +while in others it may be pure SW.
-> +
-> +Existing Linux kernel threat model
-> +==================================
-> +
-> +The overall components of the current Linux kernel threat model are::
-> +
-> +     +-----------------------+      +-------------------+
-> +     |                       |<---->| Userspace         |
-> +     |                       |      +-------------------+
-> +     |   External attack     |         | Interfaces |
-> +     |       vectors         |      +-------------------+
-> +     |                       |<---->| Linux Kernel      |
-> +     |                       |      +-------------------+
-> +     +-----------------------+      +-------------------+
-> +                                    | Bootloader/BIOS   |
-> +                                    +-------------------+
-> +                                    +-------------------+
-> +                                    | HW platform       |
-> +                                    +-------------------+
-
-
-Same here, what does "Interfaces" mean?
-
-And external attack vectors can't get to the kernel without going
-through userspace (or the HW platform), right?
-
-> +There is also communication between the bootloader and the kernel during
-> +the boot process, but this diagram does not represent it explicitly. The
-> +"Interfaces" box represents the various interfaces that allow
-> +communication between kernel and userspace. This includes system calls,
-> +kernel APIs, device drivers, etc.
-
-Ah, you define that here now.
-
-But the kernel talks to the Bootloader/BIOS after things are up and
-running all the time.
-
-Same goes with the HW platform, the kernel talks to it too.
-
-> +The existing Linux kernel threat model typically assumes execution on a
-> +trusted HW platform with all of the firmware and bootloaders included on
-> +its TCB. The primary attacker resides in the userspace, and all of the data
-> +coming from there is generally considered untrusted, unless userspace is
-> +privileged enough to perform trusted actions. In addition, external
-> +attackers are typically considered, including those with access to enabled
-> +external networks (e.g. Ethernet, Wireless, Bluetooth), exposed hardware
-> +interfaces (e.g. USB, Thunderbolt), and the ability to modify the contents
-> +of disks offline.
-
-Ok, but again, your diagram is odd, the text seems correct though.
-
-> +Regarding external attack vectors, it is interesting to note that in most
-> +cases external attackers will try to exploit vulnerabilities in userspace
-> +first, but that it is possible for an attacker to directly target the
-> +kernel; particularly if the host has physical access. Examples of direct
-> +kernel attacks include the vulnerabilities CVE-2019-19524, CVE-2022-0435
-> +and CVE-2020-24490.
-> +
-> +Confidential Computing threat model and its security objectives
-> +===============================================================
-> +
-> +Confidential Computing adds a new type of attacker to the above list: a
-> +potentially misbehaving host (which can also include some part of a
-> +traditional VMM or all of it), which is typically placed outside of the
-> +CoCo VM TCB due to its large SW attack surface. It is important to note
-> +that this doesn’t imply that the host or VMM are intentionally
-> +malicious, but that there exists a security value in having a small CoCo
-> +VM TCB. This new type of adversary may be viewed as a more powerful type
-> +of external attacker, as it resides locally on the same physical machine
-> +(in contrast to a remote network attacker) and has control over the guest
-> +kernel communication with most of the HW::
-> +
-> +                                 +------------------------+
-> +                                 |    CoCo guest VM       |
-> +   +-----------------------+     |  +-------------------+ |
-> +   |                       |<--->|  | Userspace         | |
-> +   |                       |     |  +-------------------+ |
-> +   |   External attack     |     |     | Interfaces |     |
-> +   |       vectors         |     |  +-------------------+ |
-> +   |                       |<--->|  | Linux Kernel      | |
-> +   |                       |     |  +-------------------+ |
-> +   +-----------------------+     |  +-------------------+ |
-> +                                 |  | Bootloader/BIOS   | |
-> +   +-----------------------+     |  +-------------------+ |
-> +   |                       |<--->+------------------------+
-> +   |                       |          | Interfaces |
-> +   |                       |     +------------------------+
-> +   |     CoCo security     |<--->| Host/Host-side VMM |
-> +   |      manager          |     +------------------------+
-> +   |                       |     +------------------------+
-> +   |                       |<--->|   CoCo platform        |
-> +   +-----------------------+     +------------------------+
-> +
-> +While traditionally the host has unlimited access to guest data and can
-> +leverage this access to attack the guest, the CoCo systems mitigate such
-> +attacks by adding security features like guest data confidentiality and
-> +integrity protection. This threat model assumes that those features are
-> +available and intact.
-> +
-> +The **Linux kernel CoCo VM security objectives** can be summarized as follows:
-> +
-> +1. Preserve the confidentiality and integrity of CoCo guest's private
-> +memory and registers.
-
-Preserve it from whom?
-
-> +2. Prevent privileged escalation from a host into a CoCo guest Linux kernel.
-> +While it is true that the host (and host-side VMM) requires some level of
-> +privilege to create, destroy, or pause the guest, part of the goal of
-> +preventing privileged escalation is to ensure that these operations do not
-> +provide a pathway for attackers to gain access to the guest's kernel.
-> +
-> +The above security objectives result in two primary **Linux kernel CoCo
-> +VM assets**:
-> +
-> +1. Guest kernel execution context.
-> +2. Guest kernel private memory.
-> +
-> +The host retains full control over the CoCo guest resources, and can deny
-> +access to them at any time. Examples of resources include CPU time, memory
-> +that the guest can consume, network bandwidth, etc. Because of this, the
-> +host Denial of Service (DoS) attacks against CoCo guests are beyond the
-> +scope of this threat model.
-> +
-> +The **Linux CoCo VM attack surface** is any interface exposed from a CoCo
-> +guest Linux kernel towards an untrusted host that is not covered by the
-> +CoCo technology SW/HW protection. This includes any possible
-> +side-channels, as well as transient execution side channels. Examples of
-> +explicit (not side-channel) interfaces include accesses to port I/O, MMIO
-> +and DMA interfaces, access to PCI configuration space, VMM-specific
-> +hypercalls (towards Host-side VMM), access to shared memory pages,
-> +interrupts allowed to be injected into the guest kernel by the host, as
-> +well as CoCo technology-specific hypercalls, if present. Additionally, the
-> +host in a CoCo system typically controls the process of creating a CoCo
-> +guest: it has a method to load into a guest the firmware and bootloader
-> +images, the kernel image together with the kernel command line. All of this
-> +data should also be considered untrusted until its integrity and
-> +authenticity is established via attestation.
-> +
-> +The table below shows a threat matrix for the CoCo guest Linux kernel but
-> +does not discuss potential mitigation strategies. The matrix refers to
-> +CoCo-specific versions of the guest, host and platform.
-> +
-> +.. list-table:: CoCo Linux guest kernel threat matrix
-> +   :widths: auto
-> +   :align: center
-> +   :header-rows: 1
-> +
-> +   * - Threat name
-> +     - Threat description
-> +
-> +   * - Guest malicious configuration
-> +     - A misbehaving host modifies one of the following guest's
-> +       configuration:
-> +
-> +       1. Guest firmware or bootloader
-> +
-> +       2. Guest kernel or module binaries
-> +
-> +       3. Guest command line parameters
-> +
-> +       This allows the host to break the integrity of the code running
-> +       inside a CoCo guest, and violates the CoCo security objectives.
-> +
-> +   * - CoCo guest data attacks
-> +     - A misbehaving host retains full control of the CoCo guest's data
-> +       in-transit between the guest and the host-managed physical or
-> +       virtual devices. This allows any attack against confidentiality,
-> +       integrity or freshness of such data.
-> +
-> +   * - Malformed runtime input
-> +     - A misbehaving host injects malformed input via any communication
-> +       interface used by the guest's kernel code. If the code is not
-> +       prepared to handle this input correctly, this can result in a host
-> +       --> guest kernel privilege escalation. This includes traditional
-> +       side-channel and/or transient execution attack vectors.
-
-ok, good luck with that!  side-channel attack vectors are going to be
-interesting for you to attempt to handle.
-
-Anyway, you are setting yourself up to treat ALL data coming into any
-kernel interface as potentially malicious, right?  I welcome the patches
-to all of the drivers you are using to attempt to handle this properly,
-and to cover the performance impact that it is going to cause (check all
-the disk i/o packets!)  Good Luck!
-
-greg k-h
+T24gU3VuLCAyMDIzLTA5LTAzIGF0IDE5OjU3IC0wNzAwLCBLdXBwdXN3YW15IFNhdGh5YW5hcmF5
+YW5hbiB3cm90ZToNCj4gDQo+IE9uIDkvMy8yMDIzIDc6MTQgUE0sIEh1YW5nLCBLYWkgd3JvdGU6
+DQo+ID4gT24gRnJpLCAyMDIzLTA5LTAxIGF0IDA5OjM4IC0wNzAwLCBEYW4gV2lsbGlhbXMgd3Jv
+dGU6DQo+ID4gPiA+IFRoZSBleHRlbmRlZCBndWVzdCByZXF1ZXN0IGlzIGFub3RoZXIgdG9waWMs
+IHNpbmNlIHVzZXJzcGFjZSBoYXMgdG8gYmUgYXdhcmUgb2YNCj4gPiA+ID4gd2hlcmUgdGhlIGtl
+cm5lbCBjaG9zZXMgdG8gcHV0IHRoZSBleHRlbmRlZCBkYXRhLCBhbmQgZml4dXAgYWxsIHRoZSBv
+ZmZzZXRzIGluIHRoZQ0KPiA+ID4gPiB0YWJsZSAoc2VjdGlvbiA0LjEuOC4xIGluIFsyXSkuIEl0
+IHdvdWxkIGJlIGJldHRlciB0byByZXR1cm4gdGhpcyBkYXRhIHRocm91Z2ggYQ0KPiA+ID4gPiBz
+ZXBhcmF0ZSBmaWxlLg0KPiA+ID4gDQo+ID4gPiBJIG5vdGljZSB0aGF0IHRoZSBURFggcmVwb3J0
+IGFsc28gaW5jbHVkZXMgYSBjZXJ0aWZpY2F0ZSBibG9iLCBzbyBpZg0KPiA+ID4gdGhhdCBpcyBh
+IGNvbW1vbiBjb25jZXB0IHRoZW4geWVzLCBpdCBtYWtlcyBzZW5zZSB0byBoYXZlIGEgc2VwYXJh
+dGUNCj4gPiA+IGZpbGUgZm9yIHRoYXQuDQo+ID4gDQo+ID4gKyBTYXRoeSBhbmQgSXNha3UuDQo+
+ID4gDQo+ID4gSXQgaXMgYSBjb21tb24gY29uY2VwdCBmcm9tIHRoZSBwZXJzcGVjdGl2ZSBvZiAi
+Y29uY2VwdCIsIGJlY2F1c2Ugd2UgbmVlZA0KPiA+IGNlcnRpZmljYXRlcyB0byB2ZXJpZnkgdGhl
+IGF0dGVzdGF0aW9uIGJsb2IgYW55d2F5LiAgQnV0IGluIGltcGxlbWVudGF0aW9uLA0KPiA+IHVu
+bGlrZSB0byBTRVYsIFREWCBkb2Vzbid0IGhhdmUgYSBjb21tYW5kIHRvIHJldHVybiBjZXJ0aWZp
+Y2F0ZXMgc2VwYXJhdGVseSBvcg0KPiA+IGluZGVwZW5kZW50bHkgWzFdIC0tIHRoZXkgYXJlIGVt
+YmVkIHRvIHRoZSBRdW90ZSBpdHNlbGYsIG9yIHRoZW9yZXRpY2FsbHkgY2FuIGJlDQo+ID4gZmV0
+Y2hlZCBmcm9tIEludGVsLsKgIA0KPiA+IA0KPiA+IE1vcmUsIGZvciBURFggKFNHWCBiYXNlZCBh
+dHRlc3RhdGlvbikgY2VydGlmaWNhdGVzIGJsb2IgaXRzZWxmIGlzbid0IG1hbmRhdG9yeQ0KPiA+
+IHRvIGJlIHBhcnQgb2YgdGhlIFF1b3RlLiAgSW5zdGVhZCwgVERYIFF1b3RlIGNhbiBjaG9vc2Ug
+dG8gaW5jbHVkZSBzb21lIG1vcmUNCj4gPiBiYXNpYyBwbGF0Zm9ybSBpZGVudGlmaWNhdGlvbiB3
+aGljaCBjYW4gaW4gdHVybiBiZSB1c2VkIHRvIGdldCB0aG9zZQ0KPiA+IGNlcnRpZmljYXRlcyBm
+cm9tIEludGVsJ3MgcHJvdmlzaW9uaW5nIGNlcnRpZmljYXRlIHNlcnZpY2UgWzJdLg0KPiA+IA0K
+PiA+IFsxXSBJIGFtIG5vdCBzdXJlIHdoZXRoZXIgd2UgY2FuIGFkZCBvbmUgb3IgYWxyZWFkeSBo
+YXZlIG9uZSBpbiB0aGUgbGF0ZXN0IFREWA0KPiA+IGRldmVsb3BtZW50LiAgTWF5YmUgU2F0aHkg
+b3IgSXNha3UgY2FuIGhlbHAgdG8gY29uZmlybS4NCj4gPiANCj4gPiBbMl06wqBUYWJsZSA5OiBR
+RSBDZXJ0aWZpY2F0aW9uIERhdGENCj4gPiBodHRwczovL2Rvd25sb2FkLjAxLm9yZy9pbnRlbC1z
+Z3gvZGNhcC0xLjAuMS9kb2NzL0ludGVsX1NHWF9FQ0RTQV9RdW90ZUdlblJlZmVyZW5jZV9EQ0FQ
+X0FQSV9MaW51eF8xLjAuMS5wZGYNCj4gDQo+IFllcy4gVERYIGRvZXMgbm90IGhhdmUgYW55IHNw
+ZWNpYWwgY29tbWFuZCB0byBmZXRjaCB0aGUgY2VydGlmaWNhdGUgYmxvYg0KPiBzZXBhcmF0ZWx5
+LiBDdXJyZW50bHksIGl0IGlzIGZldGNoZWQgYXMgcGFydCBvZiBRdW90ZSBkYXRhLiBCdXQsIHNp
+bmNlIHRoZQ0KPiBjZXJ0aWZpY2F0ZSBibG9iIGlzIGZpeGVkIHBlciBib290ICh1bmxpa2UgUXVv
+dGUgZGF0YSksIEkgdGhpbmsgaXQgbWFrZXMNCj4gc2Vuc2UgdG8gYWRkIGEgc2VwYXJhdGUgY29t
+bWFuZCBmb3IgaXQuDQo+IA0KDQpJIHRob3VnaHQgYWJvdXQgdGhpcyBmb3IgYSB3aGlsZSwgYnV0
+IEkgdGhpbmsgd2UgcHJvYmFibHkgZG9uJ3QgaGF2ZSBlbm91Z2gNCmp1c3RpZmljYXRpb24gdG8g
+ZG8gc28uICBJbnRlbCBhdHRlc3RhdGlvbiB1c2Vyc3BhY2Ugc3RhY2sgaGFzIGFscmVhZHkgZnVs
+bHkNCmFkb3B0ZWQgcGFyc2luZyBRdW90ZSB3aXRoIHRoZSBjZXJ0aWZpY2F0ZXMgYmxvYiwgc28g
+SSBndWVzcyB0aGV5IGp1c3QgZG9uJ3QNCmhhdmUgbW90aXZhdGlvbiB0byB1c2UgdGhlIG5ldyBp
+bnRlcmZhY2UuDQoNCkhvd2V2ZXIgcGVyaGFwcyB0aGlzIHNob3VsZG4ndCBiZSBhIHN0cm9uZyBm
+YWN0b3IgdG8gaW1wYWN0IHdoZXRoZXIga2VybmVsDQpzaG91bGQgcHJvdmlkZSBhIHNlcGFyYXRl
+IGZpbGUgZm9yIGNlcnRpZmljYXRlcyBibG9iIChvciBleHRlbmRlZCBkYXRhIGluDQpnZW5lcmFs
+KS4gSWYgc29tZSB2ZW5kb3IgZG9lc24ndCBzdXBwb3J0IHN1Y2ggb3BlcmF0aW9uLCBJIHN1cHBv
+c2Ugd2UgY2FuIGp1c3QNCnJldHVybiBlcnJvciB3aGVuIHVzZXJzcGFjZSBhY2Nlc3NlcyB0aGF0
+IGZpbGUuDQo=
