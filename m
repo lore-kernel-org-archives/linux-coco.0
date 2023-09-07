@@ -1,85 +1,87 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA3712B63
-	for <linux-coco@lists.linux.dev>; Thu,  7 Sep 2023 15:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694101886; x=1725637886;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6EsGUJGhX1zT+Uyl+vPXWvJ0hitAvo76hypLco20y4Y=;
-  b=eQzq+RuxCvmYs5gwVa0CmmuEn6yIa/PyxstvRIhlNdG+Xq/KRDlb25h+
-   FbrxDiwfEDgIOmMcP+yH51LU/A90/Wk/w6mXj/pv2FIjM//mhHgIOBIgf
-   bkoK+cCHlIPibWfJYP+cmVUNfNEr4P7MqE4BRFaaLyILHWIUlcWrQ09Dn
-   TXliaHy7A9Q74ZZY12brulsYj3LZIEl7V3/dthqK86SUrgfB2X9IsVHXV
-   /RJ4agUQ+V5SL8mnp0XcEqPo1qLm6ab6rAxsWrc8Y7xzsY/eTQ++iw5pM
-   5Wd5hSdixKn56OgiKZrAAAhBiCh4iDlJ8I/grRsGz41osIwqDgYy5YzjE
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="408388052"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="408388052"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 08:51:07 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="915793424"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="915793424"
-Received: from ningle-mobl2.amr.corp.intel.com (HELO [10.209.13.77]) ([10.209.13.77])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 08:51:06 -0700
-Message-ID: <5a188bb6-add4-0522-069f-18fbd34aff16@intel.com>
-Date: Thu, 7 Sep 2023 08:51:06 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A0C28E7
+	for <linux-coco@lists.linux.dev>; Thu,  7 Sep 2023 16:10:23 +0000 (UTC)
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6c0bbbbad81so310204a34.3
+        for <linux-coco@lists.linux.dev>; Thu, 07 Sep 2023 09:10:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1694103022; x=1694707822; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SgLgd1SPc6YB6mb40hQjfa5ZZlpVScz+27QCEpD3rcU=;
+        b=hBVvB72sATgJasOWaikiVSEXm0BdMcJ8hM6GQIpNTvealwCr+oZtTWs3gmTOnOflVJ
+         O4lvYqvEgA9+n9nJyfRKITEcXM26KLVSYj1LNMK+AmUN5+fAvxhKZu13b1e0zikdp+9U
+         qSrb4vJWcR8MhupF+eP6ALipTfZPci2br8Mvy1LmFzGSUNttNl4pmVd4jRpCVqKsVfAs
+         tmi2/3ZJuvu+Xo4uXwGZ412zeQfxLLls81+GzCeskGFXUb8BwWeg7yZYr9ADEy/pAEMN
+         E57sH3qOR0/VebjICS6Yz7GppuSljfmjR2WTB3Rz01fpaBUxw/4vqRS/nfw1TpcsaojC
+         INkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694103022; x=1694707822;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SgLgd1SPc6YB6mb40hQjfa5ZZlpVScz+27QCEpD3rcU=;
+        b=AslcO2Q298a9y8ruv8+NkCbRlUnMwmOstBMKmkU8suB4u2D88ZoE5FfNaUxmXWB+zy
+         7poQR3fUhgoXPr7QSWoX2fLMZVYlVxLi3cD3WVAZCVmvCeNxdCcaAGw34/ycpeR8dTmX
+         kLC2WoQEtMltUsuLvQlKeMBrMkGTs6CIHKSiSB0w57qgSwnxMRORYm5jbnYoT/mAwLfl
+         s+JtUAQNvqBIuF3uMjSVcM+huaPZFxA3W3j/U+z9S2DflUtfXisIA5VyHiUfq7pG0Bo6
+         SBVuafhAM95qI/B255cHFpKHfPH10R2ow2yciUPqfP1HC7iVS+zBc3s9bftSU7UOOzc5
+         lfpg==
+X-Gm-Message-State: AOJu0Yw5ivIb11NQbSh3YTF9sZi/YEAlMu1Ed5+KLI7dxNRaHp1XzGZd
+	hidX3mosds1dgMU8EJ5jH8liAw==
+X-Google-Smtp-Source: AGHT+IERsBNl+Au3IHrRw2kUYGqmyQ32p3bRKRylRe/SD4Zg8jGBdBHeqpIHcghYXGcvloCt2IKYGg==
+X-Received: by 2002:a05:6358:52c8:b0:134:e964:134c with SMTP id z8-20020a05635852c800b00134e964134cmr8509262rwz.11.1694103022523;
+        Thu, 07 Sep 2023 09:10:22 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-134-41-202-196.dhcp-dynamic.fibreop.ns.bellaliant.net. [134.41.202.196])
+        by smtp.gmail.com with ESMTPSA id m17-20020a0cdb91000000b006418c076f59sm6395881qvk.100.2023.09.07.09.10.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Sep 2023 09:10:21 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1qeHaG-00170I-NH;
+	Thu, 07 Sep 2023 13:10:20 -0300
+Date: Thu, 7 Sep 2023 13:10:20 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Suthikulpanit, Suravee" <suravee.suthikulpanit@amd.com>
+Cc: Christoph Hellwig <hch@lst.de>, Kim Phillips <kim.phillips@amd.com>,
+	joro@8bytes.org, iommu@lists.linux.dev,
+	Michael Roth <michael.roth@amd.com>,
+	"Kalra, Ashish" <Ashish.Kalra@amd.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH] iommu/amd: remove amd_iommu_snp_enable
+Message-ID: <ZPn17E94bVUKIs+U@ziepe.ca>
+References: <20230831123107.280998-1-hch@lst.de>
+ <d33f6abe-5de1-fdba-6a69-51bcbf568c81@amd.com>
+ <20230901055020.GA31908@lst.de>
+ <ZPiAUx9Qysw0AKNq@ziepe.ca>
+ <d230d9f5-53bd-8ea1-d4c7-717b0e8be9b9@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 1/3] proc/vmcore: Do not map unaccepted memory
-Content-Language: en-US
-To: Adrian Hunter <adrian.hunter@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@linux.ibm.com>,
- Lorenzo Stoakes <lstoakes@gmail.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Baoquan He <bhe@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev, linux-efi@vger.kernel.org,
- kexec@lists.infradead.org
-References: <20230906073902.4229-1-adrian.hunter@intel.com>
- <20230906073902.4229-2-adrian.hunter@intel.com>
- <21bf2e44-3316-2372-44cb-1488f88650f5@intel.com>
- <30d0cebb-13f9-572e-9baa-b7450fec9108@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <30d0cebb-13f9-572e-9baa-b7450fec9108@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d230d9f5-53bd-8ea1-d4c7-717b0e8be9b9@amd.com>
 
-On 9/7/23 08:44, Adrian Hunter wrote:
-> On 7/09/23 18:39, Dave Hansen wrote:
->> On 9/6/23 00:39, Adrian Hunter wrote:
->>> @@ -559,7 +567,8 @@ static int vmcore_remap_oldmem_pfn(struct vm_area_struct *vma,
->>>  	 * pages without a reason.
->>>  	 */
->>>  	idx = srcu_read_lock(&vmcore_cb_srcu);
->>> -	if (!list_empty(&vmcore_cb_list))
->>> +	if (!list_empty(&vmcore_cb_list) ||
->>> +	    range_contains_unaccepted_memory(paddr, paddr + size))
->>>  		ret = remap_oldmem_pfn_checked(vma, from, pfn, size, prot);
->>>  	else
->>>  		ret = remap_oldmem_pfn_range(vma, from, pfn, size, prot);
->> The whole callback mechanism which fs/proc/vmcore.c::pfn_is_ram()
->> implements seems to be in place to ensure that there aren't a billion
->> different "ram" checks in here.
->>
->> Is there a reason you can't register_vmcore_cb() a callback to check for
->> unaccepted memory?
-> Someone asked for the change to be in arch-independent code... 😉
+On Thu, Sep 07, 2023 at 04:55:52PM +0700, Suthikulpanit, Suravee wrote:
 
-That doesn't really answer my question.  virtio_mem_init_kdump(), for
-instance, is in arch-independent code.
+> > I've said this many times lately. There are other things in this
+> > driver that have no upstream justification too, like nesting
+> > "support".
+> 
+> Jason, there is no need to keep repeating and polluting this thread. I am
+> happy to discuss and clarify any points of your concern on the "nesting
+> support" in a separate discussion thread :)
 
+It is not polluting this thread. We are, again, asking AMD to follow
+the rules please.
 
+None of the other threads about the nesting has resulted in acceptance
+that code needs to be removed as well. Go respond in one of those if
+you have something to add.
+
+Jason
