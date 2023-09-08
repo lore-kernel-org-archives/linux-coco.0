@@ -1,102 +1,102 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC7C134A3
-	for <linux-coco@lists.linux.dev>; Thu,  7 Sep 2023 17:25:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1694107517;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I/OggNw1/miPktGc+ci31BRP+FmUzQnb0YqvkymMCSY=;
-	b=IflUP8Oarx/7MspHypGke+YRa/KKLQpID4aN0QPBjVvcGi8428In04y2IHAMR8BYdUFuTo
-	XX0F74qAzVN83PYC79epxJieHbMlBqn7Jr1yykg1gM53bk3Ah7voExAoKPb0xMew01oFli
-	vyVbcBVj7tLp22ngl1cbVDRAqchxh7Q=
-Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
- [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-rnNKde9fMUOGnVlGCRXH7g-1; Thu, 07 Sep 2023 13:25:13 -0400
-X-MC-Unique: rnNKde9fMUOGnVlGCRXH7g-1
-Received: by mail-vk1-f198.google.com with SMTP id 71dfb90a1353d-48d10c6b0easo460376e0c.3
-        for <linux-coco@lists.linux.dev>; Thu, 07 Sep 2023 10:25:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694107513; x=1694712313;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I/OggNw1/miPktGc+ci31BRP+FmUzQnb0YqvkymMCSY=;
-        b=VaUIEcH2L7A0mhNySovNmtesVgeF7fYgrSRP2rkWC+cmnyMmkSgm9FQ2fNiKoGyYbc
-         Iv3l0NMM5MPuVx5V8J0mVyxWugTCpX8G61DHcnLuvMR0l5gsEdC5V1K/c+YHkCahYRkt
-         xTPwLBWxue9JtKnmdkfLrcjSXyC/XLh1+V44nS4L3tl+0++SDqxUSETTlQih1w0+4yGQ
-         XI1XS659ueBqc6ZYW/RyZc1Ktir4yTMAgg6/7sN2kwrDFw3wSKvXQOxo+F9kg9VC6LO0
-         8/7c1SEdD+8Uqa0hQ4JIxaSkIDM3V2Dlc1cRosQOleCh3Rhy4W2tRwjLsfNqUo5zTX2i
-         4/1A==
-X-Gm-Message-State: AOJu0YzEQVTv53y3BgXp3Ar9ZX2FBmt8WVP05gbKmLHeRzxhHKb+Y9Fi
-	na79oheyA78Eu/GU40W8xzfOVymnLBGJhhkAEr0rRf2faClg2o0GMLfGdVFWV1zzOEYgqIBUsqR
-	QC5MTVhiipoKQ95L1F+1oM1Y0b69HueETNoQueQ==
-X-Received: by 2002:a67:fb85:0:b0:44e:8773:8c72 with SMTP id n5-20020a67fb85000000b0044e87738c72mr471111vsr.0.1694107513200;
-        Thu, 07 Sep 2023 10:25:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhxn1D0fWjFQ1Y4HMVqjWJenp+XHu4GQAlpBeL+3lmhOq5kMP3AE5qEO3Ic1zVaOD1QOnI28eqes0wk4MOGHc=
-X-Received: by 2002:a67:fb85:0:b0:44e:8773:8c72 with SMTP id
- n5-20020a67fb85000000b0044e87738c72mr471100vsr.0.1694107512915; Thu, 07 Sep
- 2023 10:25:12 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607FB19F;
+	Fri,  8 Sep 2023 00:05:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694131541; x=1725667541;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1NcPYdiM0hvvDlVn8clbFgQP3ij1ceNFZwkmKqROmuI=;
+  b=C36atgye6pxiTHoySb8mK72NqLqZKoJNVVLHrOzWwOa6ybV1uKuu2alG
+   YcxDblsIKyvIBwOgbBo8ZhHji1Vy3WSoz1ZQpFSD7iP6jV3Cp1h6rUmgI
+   7ciU88ofxts8EQYEibIGDmuAd8tZ7jRpMpN+xm/jwKcaykk+nTXfjbYAa
+   KTLhu8jX7rsbbKUdd90K2p8/7m5/ilKpqiphwnKT7IAMQdobm9XxjMZys
+   mQrt10mnhmqie6wfEErsFWoo75SM4i07VPa4aQRGY5pJHVBrTNPXiJ6Rw
+   Fq+Q8c5dMby2iJ6802QDXyn2YR5k9DM5MQD0EXZRbIn53uRHxMMbDen2Z
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="441533654"
+X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
+   d="scan'208";a="441533654"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 17:04:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="857090883"
+X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
+   d="scan'208";a="857090883"
+Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 07 Sep 2023 17:04:40 -0700
+Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1qeOzF-0001jT-2w;
+	Fri, 08 Sep 2023 00:04:37 +0000
+Date: Fri, 8 Sep 2023 08:03:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Erdem Aktas <erdemaktas@google.com>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	Qinkun Bao <qinkun@apache.org>,
+	Guorui Yu <GuoRui.Yu@linux.alibaba.com>, linux-coco@lists.linux.dev,
+	x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] virt: tdx-guest: Add Quote generation support using
+ TSM_REPORTS
+Message-ID: <202309080741.ua24EU6S-lkp@intel.com>
+References: <20230907025405.2310931-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20230808162320.27297-1-kirill.shutemov@linux.intel.com>
- <ecc11d54-6aaa-f755-9436-ae15b94fb627@intel.com> <20230808200111.nz74tmschph435ri@box>
- <878ra0ck4k.ffs@tglx> <20230825134746.k7hkpa3e7wnsuq7m@box.shutemov.name> <ZOjF2DMBgW/zVvL3@google.com>
-In-Reply-To: <ZOjF2DMBgW/zVvL3@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 7 Sep 2023 19:25:01 +0200
-Message-ID: <CABgObfZE+1AkEPyXzQQCV5Ssho5hMrBvAi5rFdTKNNAAijhRjw@mail.gmail.com>
-Subject: Re: [PATCH] x86/tdx: Mark TSC reliable
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Dave Hansen <dave.hansen@intel.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230907025405.2310931-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 
-On Fri, Aug 25, 2023 at 5:25=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
-> > > TDX aside it might be useful to have a mechanism to select TSC over K=
-VM
-> > > clock in general.
-> >
-> > Sean, Paolo, any comment on this?
->
-> I would expect the VMM to not advertise KVM clock if the VM is going to r=
-un on
-> hosts with stable TSCs, i.e. the guest really shouldn't need to do anythi=
-ng in.
-> But I avoid clocks and timekeeping like the plague, so take that with a g=
-rain of
-> salt, e.g. maybe there's a good reason to always advertise kvmclock.
+Hi Kuppuswamy,
 
-Mostly because users avoid clocks and timekeeping _even more_;
-advertising kvmclock is safe in general, so userspace does it in case
-the VM is later migrated to a machine with unstable TSC.
+kernel test robot noticed the following build errors:
 
-> For TDX and other paranoid guests, I assume the kernel command line is ca=
-ptured
-> as part of attestation.   And so the existing "no-kvmclock" param should =
-be
-> sufficient to ensure the guest doesn't use KVM clock over the TSC, though=
- IIRC
-> TDX requires a constant, non-stop TSC, so it's likely not strictly necess=
-ary.
+[auto build test ERROR on tip/x86/core]
+[also build test ERROR on linus/master v6.5 next-20230907]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-As Kirill said, the guest still has to protect itself, so the patch
-makes sense (I see a v2 has been posted in the meanwhile).
+url:    https://github.com/intel-lab-lkp/linux/commits/Kuppuswamy-Sathyanarayanan/virt-tdx-guest-Add-Quote-generation-support-using-TSM_REPORTS/20230907-105752
+base:   tip/x86/core
+patch link:    https://lore.kernel.org/r/20230907025405.2310931-1-sathyanarayanan.kuppuswamy%40linux.intel.com
+patch subject: [PATCH v1] virt: tdx-guest: Add Quote generation support using TSM_REPORTS
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20230908/202309080741.ua24EU6S-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230908/202309080741.ua24EU6S-lkp@intel.com/reproduce)
 
-Paolo
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309080741.ua24EU6S-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+>> drivers/virt/coco/tdx-guest/tdx-guest.c:18:10: fatal error: linux/tsm.h: No such file or directory
+      18 | #include <linux/tsm.h>
+         |          ^~~~~~~~~~~~~
+   compilation terminated.
+
+
+vim +18 drivers/virt/coco/tdx-guest/tdx-guest.c
+
+  > 18	#include <linux/tsm.h>
+    19	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
