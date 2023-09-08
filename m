@@ -1,219 +1,71 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A314C93
-	for <linux-coco@lists.linux.dev>; Fri,  8 Sep 2023 16:19:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694189984; x=1725725984;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Eza83CeF16uHZ6nGbMx78p3c8Zx+i+fqwv9EWSzeRJs=;
-  b=ZwIdBZX7CkoDfzxyQLyAzt1f1CwR350qksnkIrA39K3a0/flvmmBvlyQ
-   PgS2Lv5M33viwxEdA2Dq3p4Dvt3yi7Ps9+DNPgOUerkdgIh971RbaLixa
-   Fnazvfp/5HeapPeC+2aMWdOgYK1sndORx2FPs0jfyv/lxrAJNhQz+e04T
-   T8GCr4u2hZnIN6ar2r00NhaKzs08N+cUDlJlT/rxsfeIg7aqTF83opiKe
-   +kC8QxQIODmd/MHweDGNBNJcAYRj00yEWJdlFUpk3afLcw+JOnQUt1YIx
-   VAb5ZwOTS2Hj0x/oe0A9nijjzIRXclw3GqUptjzU6gQ6vNeIwBUmK3+G6
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="376590633"
-X-IronPort-AV: E=Sophos;i="6.02,237,1688454000"; 
-   d="scan'208";a="376590633"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2023 09:19:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="745648788"
-X-IronPort-AV: E=Sophos;i="6.02,237,1688454000"; 
-   d="scan'208";a="745648788"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmsmga007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 08 Sep 2023 09:19:43 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Fri, 8 Sep 2023 09:19:42 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Fri, 8 Sep 2023 09:19:42 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Fri, 8 Sep 2023 09:19:42 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.45) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Fri, 8 Sep 2023 09:19:42 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V+WYDOaKCFIb0VzYrrBYIAJSSE0tqpuyc9C41yPurBZCNJXXu9CFM343TI0Lzb0/Pgc4bbAfN0HMI6nkl7xzEaBND2o4dfSotRNnAgYDNTwbp36+FgiCNLurZNiRT5ZBoZTJP8WJ06ZJEyWIqZPcN0GSLoNNC2Jx2nadbTyKUSuefQiXIDzGv9W3Fav2zpoUvEIyXPgbM28BKPGuOwEywCv3C1kSzjgE+IsN3nrSE96ahOieRmVn1olZiVwNh/PLQk+tNJjbJRyXx+Ifz+1hkflf9ef7WwswSlmG6b33MIpLiErk5xFzlP3ATkMPlJaPbsrHTwrItUbYJDyXsqPw1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jEJAQ2cZ0ENONDrSPSwvolGXcCChB52Va9cqZpBI1jk=;
- b=YcTtD6ReLh59POKoIJ0sW8SX8DhaowIO8W1Sxn7qAIT73GopLp6ej3YB7Ob6wqBLRaJavcFk9QIiA1xd8cnsZMZsxuOpUdPsg+yqnVGZYqCv5WCFXDxbx9QJXHhTrssvg/+zj5D4ItAIOzyMh6c/d7n9ti60W0hvJ5yVs7amnsV5fn6onUUeApIuGbE+SRdW40vr6zOViC+5DVg9R2KxAunYeFIJ/DIHc3RPB6ydOz6osEEWnUXFYbfiveYydc7/9uu2CHmO/+DZeegwN2YzMsQKuwHsCV296NHVCFX5vWcFo1Q7/1eMlxEyGkCaP4/FJx5BfPCoE5JszorHuzg6pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ0PR11MB5614.namprd11.prod.outlook.com (2603:10b6:a03:300::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.36; Fri, 8 Sep
- 2023 16:19:39 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992%5]) with mapi id 15.20.6745.034; Fri, 8 Sep 2023
- 16:19:39 +0000
-Date: Fri, 8 Sep 2023 09:19:36 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "Williams, Dan
- J" <dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-CC: "Yu, Guorui" <guorui.yu@linux.alibaba.com>, "qinkun@apache.org"
-	<qinkun@apache.org>, "wander@redhat.com" <wander@redhat.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "kirill.shutemov@linux.intel.com"
-	<kirill.shutemov@linux.intel.com>, "Aktas, Erdem" <erdemaktas@google.com>,
-	"Luck, Tony" <tony.luck@intel.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "dionnaglaze@google.com"
-	<dionnaglaze@google.com>, "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v1] virt: tdx-guest: Add Quote generation support using
- TSM_REPORTS
-Message-ID: <64fb499862936_7318294a0@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <20230907025405.2310931-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <da4a6c3f4cb9118e10866cb1d624ad5ec5c96d7d.camel@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <da4a6c3f4cb9118e10866cb1d624ad5ec5c96d7d.camel@intel.com>
-X-ClientProxiedBy: MW2PR16CA0014.namprd16.prod.outlook.com (2603:10b6:907::27)
- To PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167347466
+	for <linux-coco@lists.linux.dev>; Fri,  8 Sep 2023 23:57:50 +0000 (UTC)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-273983789adso3283098a91.0
+        for <linux-coco@lists.linux.dev>; Fri, 08 Sep 2023 16:57:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1694217470; x=1694822270; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7uIYG+nLope62BZraEl1dGlvLTb6/dt25z9HbvHirJU=;
+        b=spnBBvnFdMV5yeb25SHHHpZfuglTLZsY/sk4MOKIPHrsqghJHww4fypRMBo06xbX/e
+         clJqQ+C/Ovik6q8R4Cr3IDTmwhS00Qj0MWq0NIYOyWu/5QJWJgx17u58Xn3H9Mm+PO0T
+         RTO9s5iQznA2pYi53s/FKJuOfQ+L6ZvxX0+PI8dOpXOqYOgBLRiRU4WjfEkmTIzTACs2
+         88WVJ7/T5bpaTIGCtLeMrs1Anc91a8LWw6WsIuMduUwBAJp858aALiG1iLVp2jy8hC94
+         qxM4LsJiXLD+7ibEl55IyrBDwPTEwpVC70/FMVRMu82kszk3rNST4AhtQMqZRchaNJHj
+         WapA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694217470; x=1694822270;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7uIYG+nLope62BZraEl1dGlvLTb6/dt25z9HbvHirJU=;
+        b=BxlwJgTD+PWC1QVzKJAiNV05exQ5afXMEN1X2JS5AwIq9IQvx1Kkb52UgIHSzP6uU+
+         ZJAC2R4q/Wd9YU1qDElWUP07RZs/llljit2faq51ycmRcNeDOm8PbGwDyMSmQsthbmvl
+         J4qs+g/WkjYb+WMtmCGRQ5cSSBP0NbmsV+cMZMRZwQaAZ5PTM6pTI4/zSA3ToDIuFiEj
+         HZvkISeSjCupHItSJZ2bSbFpW5afne4P7rPcaoYd3MJLXyygsoKNyeoa05KuBsaUc43i
+         eRrQM3GGQHWqbu1/7gm1A/BD3N1/sCNOBi8+CBJiL9/MKUOsu8SbU+IU7mY3XiEzrkm8
+         tbqw==
+X-Gm-Message-State: AOJu0Yw2I8nijOANhsBbcmnyw8bhwE6+zk44m+wdqArPKUCw8CvZYzVX
+	bOtEmVap78ZRRN87/kgX5IXhke6gqOM=
+X-Google-Smtp-Source: AGHT+IGOduCypdMHrewnjkwc2pJMM36JJvakmRjZ4E49rexv6nYdn4l7KvNQRhkbNt8CfLhwBJHI+gLk6Cs=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:90a:dc05:b0:26d:ae3:f6a4 with SMTP id
+ i5-20020a17090adc0500b0026d0ae3f6a4mr981180pjv.5.1694217470364; Fri, 08 Sep
+ 2023 16:57:50 -0700 (PDT)
+Date: Fri, 8 Sep 2023 16:57:49 -0700
+In-Reply-To: <20230829132727.ne5xzb7uv2wnrjif@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ0PR11MB5614:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0bcd6263-7521-4d44-adfd-08dbb08766d0
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: VMmNOKFKQRW9rYga1UzkypbtlzdTIW917IJISwKVOUUd59LoHaNyYxtL3UPEy+1phZHhmbr8nOZF7n6fmk0Qrb5aXZKwz+QJWRBIRROdyHM++LgRAHB8lk9yk0HJZUS8VLCa0XjUePgsC7kXMv3fuY+d4sfz0B9elVubLanudSopYOB39IfAvfQmQg53H6zHMlVO1gik/fB+Tv/TglIm4YoXu6sETI8NkM0FzVaUOa3D/IHC4WUUHpCFIx9mld/w/hqBa80Qol9yp8UF0FC4WtrUU9vxEHBhH47CFin+4RwaZ3eeVNMWbFTiTV+l9uTJJinHn23swJ1CiTDAGSPIde3qXww+rl5/ksMIpqfKCJkoO6r2Mf4mFJcMiFMAQD/NANfGMxN5gXCf8sOPyGHyckXEXibWGv6Bki8wo7BimHhK/1Ru9XVkgWTE7RsOthA4koCPLVi+LWOWOJw03zhCwOTmxXPrzeX0t6yFOGKLj+JChnAcczXB7El7pVlVHsGo/ggB1PagIs59N5IxvpCQDpQ3Ch2sZ0dOxYmaB3GFrxKj3IGIcPdnKLlH841X5GuQ
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(346002)(376002)(39860400002)(396003)(186009)(451199024)(1800799009)(9686003)(6512007)(82960400001)(38100700002)(6486002)(86362001)(110136005)(6666004)(478600001)(26005)(6506007)(4326008)(41300700001)(8676002)(8936002)(5660300002)(66946007)(66476007)(316002)(66556008)(7416002)(2906002)(54906003)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?d+sOfUeyxgacT1rr8XOSEZwtPUGegnsh/drHV2Ph0l/XfIsmaLs3Wo0zmw5q?=
- =?us-ascii?Q?3zrG/HcOxpsI8UzdnoAJPEZOhLDvMvfHJkN71NBkk4hjucAFv9VDmjFLtnmc?=
- =?us-ascii?Q?zQrc50i1ZB+6d3IhR68bO1YGddQD3e7k5jw/jAF88adb+o6lA3D5xKjTEQPt?=
- =?us-ascii?Q?7rJeCrCDxb0ZHiWPOZ/j5ujVa/gf+RqgI3tx3hiHM8KCATP/UVEk6ZB1AfDT?=
- =?us-ascii?Q?Z9tnqTUOZV8aQYSKp3X7itTbLLdc1KmhYumIPvxXcODNLd4AGOj4Y3vpiEXt?=
- =?us-ascii?Q?OlQ7y+LW4BiwTCIu1tcTEOq1GtgdfWddTTyEPXRx/nkihIyE2bfpu31XWNa7?=
- =?us-ascii?Q?nlZzUcInXuHWf5pcUMQwgYk7gpfb/Pok6XVNnWeOhzL2NPglD4gxhKFX8qQ9?=
- =?us-ascii?Q?Q0+SoDeUiZf0mgi8jcOjpKgxDUjNgIsh7sZb5h+7aABUqGt4xA02wJdNFfuH?=
- =?us-ascii?Q?iufBKAdEf+XpPqC+/NoRchjmdt8W/m5HEV9KHfs9YBVC/Ev8sH3X+lZHVs6q?=
- =?us-ascii?Q?QRV1a2+kLMEdOfyX9Ho+1P97Uh5+yjLQiSksj3qjYREDKgM8bTmJXFjCJpLL?=
- =?us-ascii?Q?3W0Q5fNQLRUkxNx5U2LbDyOlDcBtYbKVl890sXLJ3jPzTVXJbX7xP+tH+1wg?=
- =?us-ascii?Q?dm3gTKl/7tfNhwPD6Adn0GO/s7XotN0qDPgqSCeBgCnSPainbryjSIKWaweM?=
- =?us-ascii?Q?SAJnvNbtEikv21sacIQe+41pI7z2jk9CSHzZaGqL+oleR5YtUQXYTzBiTMZ4?=
- =?us-ascii?Q?Oce7WH4tLevndngZL1WJBt032xN/hBSHLRx/Dp/xf6y3Qx6bHgZ1fFifXudW?=
- =?us-ascii?Q?NeGIqY+/dRiFsjEXemF82NXl6ZtRqJzjyhVdPSnBJAt7+mmcSVPjGKejLpzC?=
- =?us-ascii?Q?SpWh4bZ4F+yfJ5koMmbiFhbXGWBECbfJBPLqbLWBao2VHkpbLtCv7JR6dcDH?=
- =?us-ascii?Q?l1AMGHjwia1HJdZchWRryXL6xpyPeQ6gt7i9lIg+dy2no9FDHoX0XWIhtVlU?=
- =?us-ascii?Q?xAuRh9BFJmzjJ1YsmFPdkApfBx5VV2ZNohI5wyAZzaa7KwsKCBsOTG6/ndyg?=
- =?us-ascii?Q?nAEoA4CRWOUx6CAqaCpqJrHxs3UR84e/pkID4ahvmRlzOdwbjIusOLwzd9Im?=
- =?us-ascii?Q?9utPBP4/KkX5GO+6Rwi+wxDP+UuMSG0Y504b1aF1CaAoArVqPmZBM7tXm/PL?=
- =?us-ascii?Q?N4E5ZRoAzAA0OF0fT2FMoiiggBDvRaJw1qWVVRvMpJg9c0wrLqFvxZ8KkccI?=
- =?us-ascii?Q?oCV7A5x5mjJPu24+tjHuznocU10B1lDTMIpwL0GbY2Zc0qAB54BsfIaBgaVN?=
- =?us-ascii?Q?wTpVkUPf1N8kXvMEWmEwVJ0Wt3evTo0P/nkvOf0eQ0xDSHSdCPmWo6AEY1+Y?=
- =?us-ascii?Q?loAPphh+cX1VDEf0vmm0FBWS00akR1wnxYVy+9io64xcMMnfmMU6ZWTgCTCm?=
- =?us-ascii?Q?rcyR0uZM63ra8AWerPECgr0RaPd391Bz4bMuKZ8VbyJi0ZOePaDeqcNxKx5x?=
- =?us-ascii?Q?nFQvUG2uG1DLc7AfnWAv/W/kK/XS0r/rI+9QifYfMYm1C/CUyY4kAhcPIP1b?=
- =?us-ascii?Q?j5cvB4jlaMibP/LqxSzM3IA/Piq8AOqaWQPE8AvUN9fdRVJwhdCpJXVm9Raf?=
- =?us-ascii?Q?Og=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bcd6263-7521-4d44-adfd-08dbb08766d0
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2023 16:19:39.7010
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6cXMuGpHL9TdFlwaFYqt/ocKGvZXCp6J0Jm6ufqD5qfoLNYER6+I9BRJhbd9+HNZhQWJrDkZ2kKryFXt40QRkMb1kbgE4pKMe5gCtA7acEE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5614
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <cover.1689893403.git.isaku.yamahata@intel.com>
+ <21e488b6ced77c08d9e6718fcf57e100af409c64.1689893403.git.isaku.yamahata@intel.com>
+ <ZLqVdvsF11Ddo7Dq@google.com> <20230722003449.664x3xcu6ydi2vrz@amd.com>
+ <ZN/wY53TF2aOZtLu@google.com> <20230826005941.c7gtsootdaod7ek3@amd.com> <20230829132727.ne5xzb7uv2wnrjif@amd.com>
+Message-ID: <ZPu0/fxg1E0Yi4Gt@google.com>
+Subject: Re: [RFC PATCH v4 07/10] KVM: x86: Add gmem hook for initializing
+ private memory
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, David.Kaplan@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-Huang, Kai wrote:
-> 
-> > 
-> > Changes since previous version:
-> > * Used ConfigFS interface instead of IOCTL interface.
-> > * Used polling model for Quote generation and dropped the event notification IRQ support.
-> 
-> Can you elaborate why the notification IRQ is dropped?
+On Tue, Aug 29, 2023, Michael Roth wrote:
+> So we need to be able to deal with that even for 'well-behaved' guests.
+> With RMP-init-during-mapping-time approach I had some checks that avoided
+> creating the 2MB RMP entry in this mixed case which is why I didn't need
+> handling for this previously. But it's just one extra #NPF(RMP) and can
+> be handled cleanly since it can be distinguished from spurious cases.
 
-Because it was a pile of hacks and non-idiomatic complexity. It can come
-back when / if driver code can treat it like a typical interrupt.
-
-[..]
-> >  
-> > +/*
-> > + * Intel's SGX QE implementation generally uses Quote size less
-> > + * than 8K (2K Quote data + ~5K of ceritificate blob).
-> > + */
-> > +#define GET_QUOTE_BUF_SIZE		SZ_8K
-> 
-> SZ_8K is defined in <linux/sizes.h>.  It seems it's not explicitly included. 
-> It's better to explicitly include it.
-> 
-> Btw, although the size of the certificate blob shouldn't change dramatically,
-> the Quote can also include the "QE Authentication Data", which can vary a lot
-> depending on different QE implementation (e.g., containing geography
-> information, etc).
-> 
-> I wish eventually there's some /sysfs entry to configure the size of Quote
-> buffer, but I guess it can be done in the future.
-
-How would userspace have any idea of how big the quote buffer is to be
-able to set it? The output format at least needs to standardized within
-a given vendor's implementation, and future variation should be
-de-emphasized relative to getting to a common report format across
-vendors.
-
-[..]
-> > +/*
-> > + * wait_for_quote_completion() - Wait for Quote request completion
-> > + * @quote_buf: Address of Quote buffer.
-> > + * @timeout: Timeout in seconds to wait for the Quote generation.
-> > + *
-> > + * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
-> > + * the status field in the Quote buffer will be set to GET_QUOTE_IN_FLIGHT
-> > + * while VMM processes the GetQuote request, and will change it to success
-> > + * or error code after processing is complete. So wait till the status
-> > + * changes from GET_QUOTE_IN_FLIGHT or the request timedout.
-> > + */
-> > +static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
-> > +{
-> > +	int i = 0;
-> > +
-> > +	/*
-> > +	 * Quote requests usually take a few seconds to complete, so waking up
-> > +	 * once per second to recheck the status is fine for this use case.
-> > +	 */
-> > +	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout)
-> > +		ssleep(1);
-> > +
-> > +	return (i == timeout) ? -ETIMEDOUT : 0;
-> > +}
-> 
-> Why can't we use wait_for_completion_timeout() provided by the kernel?
-> 
-> Btw, can we use _killable() variant?  Supporting timeout brings extra
-> complication, and I think supporting timeout isn't mandatory for the first
-> version.
-
-It definitely is required even if interrupts were supported. The kernel
-needs to give up on stalled operations in a reasonable amount of time.
+Just to make sure you're not waiting on me for something, the TL;DR is that my
+suggestion is viable and not too horrific?
