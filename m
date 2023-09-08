@@ -1,479 +1,366 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4A515B3
-	for <linux-coco@lists.linux.dev>; Fri,  8 Sep 2023 04:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB30EDB
+	for <linux-coco@lists.linux.dev>; Fri,  8 Sep 2023 04:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694146535; x=1725682535;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=3+ryky8XXp9BdW0HqiBJHJH3sD7W4h1y5v1WLdCN140=;
-  b=CfaLCKmwZQY67gRSyhNu2PK6IbS1qeGVIf8fLN8DlwMkgzKV9p94kwA+
-   kty2qUkuv5/8rexhahzBrmIHGNdy6kk2YWcj2pl8eAvfOCVwH0l2Pr7AN
-   4H9Fj/R29cW55woWvuHbdLp+vEQa7zAhjZl2ukgyZunxeBnHLBDgBY6TP
-   KSgi3LO5KkV0cZod8sHJGQcC091+VZKaMiJBwFjSpd+op4fdSrJJ7FlKb
-   S0d9S1K6mz0EM7GvlCl2v+Hpv152+cxLTHyXxgrJYmNXKofKc4YF/+/HC
-   g9ohZJHj/fBFiqFW+6bd3zSptu1Zz/4Jwx0okxWTIRsJAj3SBx38NzSxL
+  t=1694148616; x=1725684616;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=dtLdJgLHDFfpQO6+mIBv/aPGe79Puep/EQITFXSh+sY=;
+  b=M4EUR6wM8webl+6FkZmeMp0cny3DmyCN0ZW2UsUHCiApNlOj46YgNust
+   sHRmPjnrfhQVFGzs3NZshgWkJ54vKpfUidla+xq+KgR74ULzMhMOWTVxp
+   80WvkBf5l6PV5FVAG/tt17sOqkKdUqtA6sjJ5ThQaKgwrSHCZfYwsbxFN
+   L116MFC2ulMEZ5gEhXL3xsULnA6R8FWX9U9gxy8Fh9/W0OnbhmE/P6epw
+   T/TH6bodueCRulwX6JG2XjBVQRXYmMnh8fSF2cwNw0pBFY1mtTbhHbBlr
+   xGbfezz+IsbqHbZrA+0/+qaak0fC7hKugEtS3YQj0TuGcHVGHHw2I1uqU
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="381364866"
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="374941319"
 X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
-   d="scan'208";a="381364866"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 21:10:10 -0700
+   d="scan'208";a="374941319"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 21:50:15 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="865924979"
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="719005138"
 X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
-   d="scan'208";a="865924979"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 07 Sep 2023 21:10:11 -0700
+   d="scan'208";a="719005138"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 07 Sep 2023 21:50:14 -0700
 Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 7 Sep 2023 21:10:11 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ 15.1.2507.32; Thu, 7 Sep 2023 21:50:14 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
  fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 7 Sep 2023 21:10:10 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.1.2507.32; Thu, 7 Sep 2023 21:50:13 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Thu, 7 Sep 2023 21:10:10 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.43) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ 15.1.2507.32 via Frontend Transport; Thu, 7 Sep 2023 21:50:13 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 7 Sep 2023 21:10:10 -0700
+ 15.1.2507.32; Thu, 7 Sep 2023 21:50:13 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Gc13y9My8gpHy028BtXWidfipsVlkMHM2MhA0pMbvA+8U4PguoTnT+nDji6qTgh5CWZ0DBbZdxosueW3hp+BU00tm0ohnLWL/DjQ5n8U3MKgdZ46PuT2m3WLYR+AY+AbVdt/Ml3F7ubuXxBSs2ywxuQxgOxpbZAKZXKIB4uY1Jdscm5WpEDsqfjesly60J0yAzbgr++ymkbpWnxetnmVl7j5Sdj9+DAId/HeHJQ0P4+NxgAauqtInPGG/cWx4GO751/aA25cF2ztB7PsikVsIvYTVYFMwZQpq543CYDaHQ0F4NZDSzCaNJxy+3VTuD95zOPyqnvbsIRkCyUkL4Gacw==
+ b=etQYNH4E0NE72rVorcqrUhsAtMFOE8CjOk0ZErireaw/kTDCGQQE6jADPgVT90ho8X/8/Js9bhVehNwDHmfxktMM7AbDYSZnZvepv4AOchPOeppIT4koNnBkqLZXh27WwekkfU8+xNW2ZaGG25ubawulnoImMyVmKbq5fW3hmT2Q1ZFCFfJe3/4a+xUoxhE0BWSxpiAwBQ74D8RO8eklw66R1rUIyK7uQh0pQKVH7Dgwc7AaZbeipxZGSloiU2LCqlPa0QnJVOJgTR3CEC5PUOIX0IDqMnbpvX60BhczJW0AtGj7yfc0Cz9XHJk/Q4VA/sesKW9qfaV2n8M9RIKy3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fOL3NHSgvBVhYVL72qwU95+1BfXXYVowytgONoSzgAw=;
- b=IgxGWCaYV0wUf3AJk+Yq46/bFR8HVW8kcpIJANTmi5ODlmAZySnbFbSG1uqpRBlNwHpN+Y1W237OXwFgIoKpoVFQ3CCLdSPfFYXuT2CFzI/u72hV9TZxgKtwf7kA4MjWVPSMW3cW8vI8tzNzd/YDkEyfBzDRyTHbepT5YU8MWXHM2pp0r85TKIYksgpaNm/nmHb7zgW8waE0jTgHItzxo4o0iNphJgECG55YWEdUKIcT56HqErq1arQ++L1siXaaxg2xqhsAKpy0tHVVT5QrhssLIXtgmGeLu2AMVjAYNzTmIsjNEqCzshuv2phv5V6ILDX2lIOkaO0c6ylFBVd8CA==
+ bh=dtLdJgLHDFfpQO6+mIBv/aPGe79Puep/EQITFXSh+sY=;
+ b=eBsPQVMWj8Z0Ihl5DU2egbrWovFss6xg9yhdAk0eqLH9ttfq/OT60iogY0Vwoawjz52pqwd4OdhWby7d0FBEiKS1SO+ecvuNte1PLHPrI60uJzWxjnAL7mGJFBZp4JqGhjXzbbukrz8325WN4fU+leBfs2xmYwL5g7FSaZhoL0Rtw09Oidgno1Z6hEGFs9vcwdPPhqFr4GpWhCpIIlXkm8dPyh/7V9d80TU02clYjIF8spL6xkCHU/AZwbrwA2ui+VJfvBiThyGNeQzOczNuQbF/wOq9e35YwSzbwmoiGTOyd6l/fxJnZzNFRVl5jagB/nIw1VXGJymToeBM1qyZTg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by BN0PR11MB5694.namprd11.prod.outlook.com (2603:10b6:408:167::10) with
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
+ by CH3PR11MB8443.namprd11.prod.outlook.com (2603:10b6:610:1bd::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.36; Fri, 8 Sep
- 2023 04:10:07 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992%5]) with mapi id 15.20.6745.034; Fri, 8 Sep 2023
- 04:10:07 +0000
-Date: Thu, 7 Sep 2023 21:10:03 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Erdem Aktas <erdemaktas@google.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>, "Kirill A . Shutemov"
-	<kirill.shutemov@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, "Tony
- Luck" <tony.luck@intel.com>, Wander Lairson Costa <wander@redhat.com>, Dionna
- Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao <qinkun@apache.org>, Guorui
- Yu <GuoRui.Yu@linux.alibaba.com>, <linux-coco@lists.linux.dev>,
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Fri, 8 Sep
+ 2023 04:50:10 +0000
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::980d:80cc:c006:e739]) by BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::980d:80cc:c006:e739%4]) with mapi id 15.20.6768.029; Fri, 8 Sep 2023
+ 04:50:09 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "Williams, Dan
+ J" <dan.j.williams@intel.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+CC: "Yu, Guorui" <guorui.yu@linux.alibaba.com>, "qinkun@apache.org"
+	<qinkun@apache.org>, "wander@redhat.com" <wander@redhat.com>, "hpa@zytor.com"
+	<hpa@zytor.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kirill.shutemov@linux.intel.com"
+	<kirill.shutemov@linux.intel.com>, "Aktas, Erdem" <erdemaktas@google.com>,
+	"Luck, Tony" <tony.luck@intel.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "dionnaglaze@google.com"
+	<dionnaglaze@google.com>, "x86@kernel.org" <x86@kernel.org>
 Subject: Re: [PATCH v1] virt: tdx-guest: Add Quote generation support using
  TSM_REPORTS
-Message-ID: <64fa9e9bcb164_68a129421@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Thread-Topic: [PATCH v1] virt: tdx-guest: Add Quote generation support using
+ TSM_REPORTS
+Thread-Index: AQHZ4Tat9x0/TMaw9keTjiStSWxYFbAQXXIA
+Date: Fri, 8 Sep 2023 04:50:09 +0000
+Message-ID: <da4a6c3f4cb9118e10866cb1d624ad5ec5c96d7d.camel@intel.com>
 References: <20230907025405.2310931-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <CAAYXXYzWMaruiTm84d=djM1Jekk-Ua9cEEZWWuZ-mh6knsCvTg@mail.gmail.com>
- <57469499-b150-4132-bd26-9a66991c9ce3@linux.intel.com>
+In-Reply-To: <20230907025405.2310931-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|CH3PR11MB8443:EE_
+x-ms-office365-filtering-correlation-id: 0e3b0b15-0532-4034-6923-08dbb027146a
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: HDIJF2ZRfxh8GGOK6Het6relK8Q8nGEosVt+AYRFjO8j0WMO5IAo7IvhebHGhsIT1TNtrfudpArlKWvk+whjynpEM7zqd8hipxI6ouaJilSea81UmQE3j6sjawhbjZme7X5hWeKS4fijxkbU5RRPP4m+/V/qbfhnC/TiemL/WRxBod0IY1Gc0fe7rJyvC4c2Rg9p7bl+/G8qMli1zAsS7qBgPPOVMGz5SRwvIcv/IiF/RXO1GJU+zWzrM33JLhgMjUGSDw69aEZnMUEI0zz9kXw4gYKNmPZ2sZWqTWpYimnxWsTHtCxWC8cgb+NlMpjb4ZUh7pBO0OWutjBNG8+TimAPepVMO9VAFFkWdlIRxqsDeN1dFvHD46jJm9eC1O606Za8U05lKzZSVh/ldTJwtP8t2XvMOVGCUiM3cCOvadGCAwV5uBeCFx3JsXR7cZ3OtGKUCja3E60n9qy8KIQCPZV8YyuwWRJUEyZsC+A3F3w5ozG6+er3y8Dk8LRhDJnZ6llIe08OGHATZWXcurs3YXJ+9QwHtMYnej30l9bgLIXUOw9s7OJDOkeZh2cXBQoLHFfKL3Qby3iTbeJ/vzGG7oT17cHPdVXa30yjozaA2V63Z1rQLrZDEhrnJMju9fhM
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39860400002)(136003)(366004)(346002)(396003)(1800799009)(186009)(451199024)(76116006)(82960400001)(6486002)(71200400001)(6506007)(6512007)(4326008)(38100700002)(86362001)(36756003)(122000001)(38070700005)(83380400001)(2616005)(26005)(2906002)(30864003)(66446008)(110136005)(478600001)(91956017)(66946007)(8676002)(5660300002)(316002)(8936002)(41300700001)(7416002)(66476007)(64756008)(54906003)(66556008);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U3dYSmZFQUljdnFnOHowVFQzRzZIZlhRa3FBSVhndHhJK0lvM3NSK3FuWmpB?=
+ =?utf-8?B?YUNlcTdnVUhHL05JWjYrM21obXBqY1NqQ3FEcFVQV0R2MnpkQWgyNXVRYWVE?=
+ =?utf-8?B?K1NjeTVCaGpDL3F4MlNUdFBqM1NJNFpYRENDNXZyNW9sZ3B3d3dFUGp6S1d3?=
+ =?utf-8?B?R1ZOR2RRV0UvbWRzZ2lsTGpUcUwxSENjNzQ5ME9lTi9NMmtRcmlZWXpYZE5L?=
+ =?utf-8?B?bWVmaC9OYitVOXVkREpMeHoyT3RaZHUxaXZGNmFxWWZ6bXl1SGtaYjdkQk53?=
+ =?utf-8?B?N2hNZVNmVklFeFQ4SEZyVDFIVnlOVnZVQ2UwSVNFOHRaZTZEV0dXeXRRV0lM?=
+ =?utf-8?B?c2lWb25ScWdvK3dlV1podHJwWUJUUGtFS25WRmZuSmpZOTBhbjVPSXdTRkNH?=
+ =?utf-8?B?QmpyelIrSEJLS0lMTlZFUFlRZUNKRVJ3VUU0TTY2K3ZLL0h2VXVzZVBzdUpx?=
+ =?utf-8?B?QmRoZUtsaVdFT3oxeTRrSk0zT1lva0g1TncvcElTOWpEeFpkbEpnK2NHMjRJ?=
+ =?utf-8?B?Z2dSNy81cmxmcDhWQThlZTFIckMyb2VTbTVVL1Vnd01vMlR1bzE2VDgwMXdk?=
+ =?utf-8?B?VVp5d2FDeHdNeTVCTHM5dTNNakFvNFdaNXFLd1R0cmJGQ3pKSEoyR2JJbEVF?=
+ =?utf-8?B?bUpwQjJMaVg3K21MaitoTnRZYXVVV1NhUGhYRW5sbVVJbFR2ZmV4cWprWlNE?=
+ =?utf-8?B?ODFNOFA2NnhVVXZ2MjBDcXp4R3AyeENaSXlWc0lKd3NXWngrOVplSUZNVE1K?=
+ =?utf-8?B?TjhsdTNHaW9QbjhUVlRDUGQ3VWdmZytPZ1BXNU1QcnlJSjFwbEhNYmdZT0c0?=
+ =?utf-8?B?ZHpCbDV4NEE4d0Y3YXh0QXVIMThPVUFLakNJMjZGZ0FOYmZteUJsRkxyblVs?=
+ =?utf-8?B?empTMnRiTHJTckVqb2pvQlJETnNIQU50UjNpWHpzRENOazV5ZW13dUNJYTgv?=
+ =?utf-8?B?SW9UOWZ4eUcrOHp3N25jYUJnZFZUUUw3c2ZDQnBSSkZnYjg0YlJJWUJMRzVX?=
+ =?utf-8?B?a1BJRk5tbmVJZ0c1R2FVbjlnODBHdUpQc0diNlBVMXk4eTR0UTczN2I1WCtG?=
+ =?utf-8?B?Z0RIV2lCQ056TThmdEJWZ3FqUktFbkI1K3c3UmdrelZwSUxQelM1cDRZb3I1?=
+ =?utf-8?B?b2ttZjFsOWc1cnRwMC94YXFRajQrWkxVRzhzeGhXZk1xaGswQTJoaWdub0xn?=
+ =?utf-8?B?akoxWHczL1ZkZFQ5cWdYVGZhMFhmMkRwU2VHTitZNzhDZVllNG9tektnYjZV?=
+ =?utf-8?B?ZmZPM0FoZlZ1K0pXak1WZUU4dWhvZVJNbGxVNkVpcXVWbEtyUndyc3R2OVJK?=
+ =?utf-8?B?eWNQZEJERk9SS1lDUXFMTkV2K3RrNW1HV1RvejhLdEJYMDd6RDdBL3VUTU5p?=
+ =?utf-8?B?TG9NTFNlbGEvV0FGZS9ONDZkUnpUekwzd0RXZTU0RitDdHF2WFBRcEppdXR4?=
+ =?utf-8?B?U1Axa1Z4Tldrc0hnRjI3VjBvdzFZcHoyc09yajFvOHN6aWIyWkVsVTJvVjlS?=
+ =?utf-8?B?MGsrRUpBVnpWNGFWSDZEVGNYZFQ3U2ltcFl3VUdMUTJVaUJVUHlpdE50cmVy?=
+ =?utf-8?B?RW41U2t1R2poMkJPa1hyUmRla3ZBWFlzZWFSQllXZ3JzMzNkTW04ZFZXc05w?=
+ =?utf-8?B?TlhLenY4dGVuWWJQN0EyOUV6Y2N4SUF5TEtyYmh0THJweUM4eXJzZUs3R1NV?=
+ =?utf-8?B?RzVla1hUZGtmUEJwdXZ5RVIrQWZ4SUlUYm9RekNJUHVYWWQ1U2p3cGs3a3Jr?=
+ =?utf-8?B?NmtqWVMrTXNnNFNmcjVrTktHdEtRY1FZU3crYmxvN1k4NCtvR1NRNlhjaGhH?=
+ =?utf-8?B?ZGdVWGdjdGQyQ1RTdnhBN1ZDd01DVi9aZWZJUCtDYUZtYTIrTmlld1RtWnAr?=
+ =?utf-8?B?bm0ySEI2elpSTkpQcmlvS2MzOWJGRGlRZ2NvaHFxb3VHd1hPbTNzeFAveS8r?=
+ =?utf-8?B?WllaQWhBN2FGanJmbW43alNEcHlPVVdqRXZmTjJueldtTmZSa1djQnNMUGZ4?=
+ =?utf-8?B?NHVpdDVrZWV4Si9LZW0vOE9Pb2NwWWJSNUoxUlQ0czZmSXFBZ2lvTE0rY0gv?=
+ =?utf-8?B?Ni9zYWFhNjZDZlc5Z3dyNk9KVUtFOTM2SzVJSW0vdE5nQXY3Rm1wQ1F3K0FG?=
+ =?utf-8?Q?WRcaaKv48+HG9rvvkXf/C03J4?=
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <57469499-b150-4132-bd26-9a66991c9ce3@linux.intel.com>
-X-ClientProxiedBy: MW3PR05CA0006.namprd05.prod.outlook.com
- (2603:10b6:303:2b::11) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+Content-ID: <90D9368F7996A64E9873D99D7F74615A@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|BN0PR11MB5694:EE_
-X-MS-Office365-Filtering-Correlation-Id: 822bf6c6-4b76-41e0-0ac4-08dbb0217c53
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 8Jnqckgp5K6Mlks+2Vd//yNCmYyNs0PMU7BL0H0WooJaTP8eJ0Zyn3ANkOR89+bnWQ1gwpQdNJcQxOztQyi6FNAEfDE618+F4uQIx+rM13McDmMJGHGJb2SsFBhsgUNEaaIGT0lcS1l+dhAOy38RR+LU09argidswHtErGlHAbsgUfVTP1+w5sbEud71klvyCa9wY247PAgm8uLfDzPAmmHkU8oYmXFF/Pm46ygrkIp0GilOFUEHBNdAIv1bt+pLEYpvpFoWl46bXeR9nXHcnODri+X6CocrNUvEWg0ZwX2vls0fu4nZNE7bAyvi75GTPnslIP3qjsaMfkNR5vSqvUGzzLpIQUK/GbwCJIvnODGVGe9L2AwXDFi2cf8DBla9bVnMsIC7DddNPfgRAV9H7qg8Nyu5Z0HLfdWUZhyC6uWRp/ZNPHA54kwvocuXpc/1M1lxvay/NX9Yk4mmq2R36enDwB1TofLpQgGEd15LDB0Or/eBUNuHXY5mYHOgNDUtmwRsCIq/blbnT/WwP9eIntw8oQBzmMpGWkuLQOAqJRbrYZ2K1L/B/eRUnjwCG3kpuhjWAMZkN7iwKJx1G8Z9LA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(366004)(376002)(136003)(396003)(451199024)(186009)(1800799009)(6512007)(53546011)(6666004)(6486002)(6506007)(9686003)(26005)(82960400001)(38100700002)(7416002)(4326008)(5660300002)(8676002)(8936002)(86362001)(2906002)(30864003)(41300700001)(316002)(54906003)(66476007)(66556008)(66946007)(110136005)(966005)(478600001)(83380400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QVgzanpmcTF2azNpREVaLzhaK3BRRUs4WDlDZkNPMmk0Zy9LdGZSMGt3ZnNL?=
- =?utf-8?B?ZnZLYk83UGRsTXlUUXVwUW5XQjU5QnpjNlVzR2ExZ3loZ1gvaG5jdGo5b3Qr?=
- =?utf-8?B?Z1ViOTdFRDZuTHVKLzNoMFBDVGVOaERsRnNhYWI4MkJEVU5VNmxibklqM1hL?=
- =?utf-8?B?bHdQM2ZCb2NjeFZwR0Jib0x3UGdWRmJwakNudGZiK3RzRUQ4TWMvWlBhaVhS?=
- =?utf-8?B?T1pyT3JyanRHRkp1Qk4vYmRDaVZoNVhkUVc2dlVrZ3FtNitscHJ5YlFQNUJJ?=
- =?utf-8?B?ak15aFlsL2N5d3hwZWU0NEJjMVhsWjBWMXJZbWxDNWtmSm5GQnpDenhnWmVV?=
- =?utf-8?B?QWRrbVN5QStGV0pPMWFhZ1ZqdDgwemgxa0k0U3RFSFhjNThqSXBtSGNUVkly?=
- =?utf-8?B?dm50ZXpMQ2JCZSt5aGZrOXlvZG1tR2diYlZDRzRXUWUzd1NJSklVQVJDOFVO?=
- =?utf-8?B?T3I2b2E4RC9NVGdvZSt5aG43dTVwTVlxWTU1N1lmL2hPS0ZGRG4vSVhKSUtL?=
- =?utf-8?B?UGRQdHFuN3BSNXNSYjJibmpjRzBUTHlnTFBHVUprUmpQNm5NeTB0Rzk4UUZL?=
- =?utf-8?B?VTZwTHB0WmNHWGdMT0U3ZWRUZDZsTWJFMG94STRHRUg2SjRTU1paWDRNMG9J?=
- =?utf-8?B?L2dxb1BjWWVqd0p0SEhkbEcrZjh2VVVMRzV5czd6REFnQmpMenhzUlVxTDZB?=
- =?utf-8?B?YVQ5N1JQZHR1cjZ0SEdxWVcrVU44aCsrTnNtbTBNSmVmazNsN214QU9heUE2?=
- =?utf-8?B?TXVuOXY5aEZvMXhJdEVsS3MwUll1MlNNMVpaNjMvdXY2T2NKcHN5Zkx2cnF6?=
- =?utf-8?B?SytLT2ZObmJZejlickNBUkdZSkdYKzVObTgzNm12RjBpN3oxZFhESWcxRHRU?=
- =?utf-8?B?ZDJiSlMrZ3VXZGlZZkJRbU5MVm5WSkR0SlA5ZmwxKzVqKzk0cFY3KzNCQWNt?=
- =?utf-8?B?L3BtOVl6OFBmbDMyaldPalVWUng4MHhuRVRCMVRoUStLTTUvdFBmVERqTmc4?=
- =?utf-8?B?OStaaDRrbjFJMzRsbVZScVBzZlMyU3NJODF5S1NWTStXVzUrMnlnelFRMEd6?=
- =?utf-8?B?VUsrOFI1a0xNVW1aZkpDNFJhQnNEZHM4R0RlRUVkOFQ3Nk5oeGJOTFc4U2Z3?=
- =?utf-8?B?MVdTWWd0ODNHSm5WTDJyZ3Exc2FSbTU5OHFEWFlQOEJrMWZ1TEZZUVNNSURr?=
- =?utf-8?B?QXpudGNERWdYS2g0QVFlR2VNMU9VNU5tQWhPaWdOTDlVWTR1MGIxOHNhcFZw?=
- =?utf-8?B?WHJUdGJlMFZoUjEyNnZENEFCcW0yV1NJa3k3NlZTZDNaWjhTcmpCckNhUldJ?=
- =?utf-8?B?VjNGVFhVVHdOK0pVMzRyQkJqWVBQdVlabXlMZ2t4YTRCWllydlV1L3V5SE14?=
- =?utf-8?B?bkp6eVdyMzBDY2NHQkR5T2pQdDdEM0NWQU15YXBPZFR2VEE3NkFBQVZEZWtv?=
- =?utf-8?B?M24rbCszS29NT3kyeFg5SnYvME1CRGJuMFFhODZwcWk2aDE2MVQ4ZXhaOUtm?=
- =?utf-8?B?N1A2Q0ZzWUIrSlVBaGVYMzR1dm1rTlNLTE1qR0NLUVowRlNZY0U2dEJlWkdI?=
- =?utf-8?B?S2k1S0R5UTJIODFyNlRIcHdDN0ZDNXlzckpvTFJTNk03SFVUSVNDRldqdkZM?=
- =?utf-8?B?SXJrb0RQNThNVDdUUWY0S0gwaGR6YjhXYTBGaDFyQ2UyS0diRHlManJIVHdT?=
- =?utf-8?B?cE5rcjQ1a1NmaWFkdGM5M2Q4UXJPTlErTTZycUFlSDVHaWlJUFU1RmdhZzI3?=
- =?utf-8?B?V0F3L0NLL05xeVBWcG5HMzFRdDhzUHdxYk9JWVB2R3ovOVlFN0c2Tk9jcGFJ?=
- =?utf-8?B?aEdCbDdOY1hXdFlyMkRUR2VycnZhZVZnZ3pzcklMcm1rMTB5aEIxbEFRSjRo?=
- =?utf-8?B?cWtSQ0Jlb3Vsdzk4SzNHWWxlMi9ZdFRUS3VZQ3hQcnR2c1N3cGRKaXFXNHVG?=
- =?utf-8?B?SjNsMzVjbGlLZ3lvQ0t6Mk5ITHVwRkdGSGxIK3JUUG5ZeS85UGpuN2ZDei9a?=
- =?utf-8?B?TW91c3NSUXdPUVFQQ1N3OFVTTnlPb0pYMlN1RSs2dC9xdzlvN1VNWW10dFo2?=
- =?utf-8?B?OHUxSzdnYm0relpzYjRvbU5ZL1VsbjhOQzVsOWIxblFIYVVBZjZwQ1F5M1lK?=
- =?utf-8?B?U0xJSzlzMzJqdm1GdzBtVytUR1gvdTE4ajVaQWVjckV1SzFhcGh5b1BBWXJQ?=
- =?utf-8?B?M0E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 822bf6c6-4b76-41e0-0ac4-08dbb0217c53
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2023 04:10:07.0843
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e3b0b15-0532-4034-6923-08dbb027146a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Sep 2023 04:50:09.5212
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hcdNKvzdhtkg93aT1IAoCfYhpPpuvfKlJIe9cwlvisXOm4SdSbp60jNbnGNJMUQz/C9hUt8ETFfAKeBwZZZaATB9ZsR6gGEBszkdhektzmk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR11MB5694
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: IatMU1H/sGCZuzdPBhHeB4/t9xQ87VM+B/LY2Q2PntG0p7RlN3ZYmSOUmTk7S9aKEn4S9d71FYjN/4jJBk4xdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8443
 X-OriginatorOrg: intel.com
 
-Kuppuswamy Sathyanarayanan wrote:
-> Hi Erdem,
-> 
-> Thanks for the review.
-> 
-> On 9/7/2023 6:30 PM, Erdem Aktas wrote:
-> > On Wed, Sep 6, 2023 at 7:54 PM Kuppuswamy Sathyanarayanan
-> > <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
-> >>
-> >> In TDX guest, the attestation process is used to verify the TDX guest
-> >> trustworthiness to other entities before provisioning secrets to the
-> >> guest. The First step in the attestation process is TDREPORT
-> >> generation, which involves getting the guest measurement data in the
-> >> format of TDREPORT, which is further used to validate the authenticity
-> >> of the TDX guest. TDREPORT by design is integrity-protected and can
-> >> only be verified on the local machine.
-> >>
-> >> To support remote verification of the TDREPORT (in a SGX-based
-> >> attestation), the TDREPORT needs to be sent to the SGX Quoting Enclave
-> >> (QE) to convert it to a remote verifiable Quote. SGX QE by design can
-> > s/remote/remotely ?
-> >> only run outside of the TDX guest (i.e. in a host process or in a
-> >> normal VM) and guest can use communication channels like vsock or
-> >> TCP/IP to send the TDREPORT to the QE. But for security concerns, the
-> >> TDX guest may not support these communication channels. To handle such
-> >> cases, TDX defines a GetQuote hypercall which can be used by the guest
-> >> to request the host VMM to communicate with the SGX QE. More details
-> >> about GetQuote hypercall can be found in TDX Guest-Host Communication
-> >> Interface (GHCI) for Intel TDX 1.0, section titled
-> >> "TDG.VP.VMCALL<GetQuote>".
-> >>
-> >> Trusted Security Module (TSM) [1] exposes a common ABI for Confidential
-> >> Computing Guest platforms to get the measurement data via ConfigFS.
-> >> Extend the TSM framework and add support to allow an attestation agent
-> >> to get the TDX Quote data (included usage example below).
-> >>
-> >>   report=/sys/kernel/config/tsm/report/report0
-> >>   mkdir $report
-> >>   dd if=/dev/urandom bs=64 count=1 > $report/inblob
-> >>   hexdump -C $report/outblob
-> >>   rmdir $report
-> >>
-> >> GetQuote TDVMCALL requires TD guest pass a 4K aligned shared buffer
-> >> with TDREPORT data as input, which is further used by the VMM to copy
-> >> the TD Quote result after successful Quote generation. To create the
-> >> shared buffer, allocate a large enough memory and mark it shared using
-> >> set_memory_decrypted() in tdx_guest_init(). This buffer will be re-used
-> >> for GetQuote requests in the TDX TSM handler.
-> >>
-> >> Although this method reserves a fixed chunk of memory for GetQuote
-> >> requests, such one time allocation can help avoid memory fragmentation
-> >> related allocation failures later in the uptime of the guest.
-> >>
-> >> Since the Quote generation process is not time-critical or frequently
-> >> used, the current version uses a polling model for Quote requests and
-> >> it also does not support parallel GetQuote requests.
-> >>
-> >> Link: https://lore.kernel.org/lkml/169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com/ [1]
-> >> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> >> ---
-> >>
-> >> Hi All,
-> >>
-> >> The previous version of this patch series [1] added support for TDX
-> >> Guest Quote generation via an IOCTL interface. Since we have multiple
-> >> vendors implementing such interface, to avoid ABI proliferation, Dan
-> >> proposed using a common ABI for it and submitted the Trusted Secure
-> >> module (TSM) report ABI support [2]. This patchset extends the
-> >> TSM REPORTS to implement the TDX Quote generation support. Since there
-> >> is a change in interface type, I have dropped the previous Acks.
-> >>
-> >> [1] https://lore.kernel.org/lkml/3c57deb0-a311-2aad-c06b-4938e33491b5@linux.intel.com/
-> >> [2] https://lore.kernel.org/lkml/169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com/
-> >>
-> >> Changes since previous version:
-> >> * Used ConfigFS interface instead of IOCTL interface.
-> >> * Used polling model for Quote generation and dropped the event notification IRQ support.
-> >>
-> >>  arch/x86/coco/tdx/tdx.c                 |  21 +++
-> >>  arch/x86/include/asm/shared/tdx.h       |   1 +
-> >>  arch/x86/include/asm/tdx.h              |   2 +
-> >>  drivers/virt/coco/tdx-guest/Kconfig     |   1 +
-> >>  drivers/virt/coco/tdx-guest/tdx-guest.c | 205 +++++++++++++++++++++++-
-> >>  5 files changed, 229 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> >> index 1d6b863c42b0..20414ed82fc5 100644
-> >> --- a/arch/x86/coco/tdx/tdx.c
-> >> +++ b/arch/x86/coco/tdx/tdx.c
-> >> @@ -104,6 +104,27 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
-> >>  }
-> >>  EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
-> >>
-> >> +/**
-> >> + * tdx_hcall_get_quote() - Wrapper to request TD Quote using GetQuote
-> >> + *                         hypercall.
-> >> + * @buf: Address of the directly mapped shared kernel buffer which
-> >> + *      contains TDREPORT data. The same buffer will be used by
-> >> + *      VMM to store the generated TD Quote output.
-> >> + * @size: size of the tdquote buffer (4KB-aligned).
-> >> + *
-> >> + * Refer to section titled "TDG.VP.VMCALL<GetQuote>" in the TDX GHCI
-> >> + * v1.0 specification for more information on GetQuote hypercall.
-> >> + * It is used in the TDX guest driver module to get the TD Quote.
-> >> + *
-> >> + * Return 0 on success or error code on failure.
-> >> + */
-> >> +u64 tdx_hcall_get_quote(u8 *buf, size_t size)
-> >> +{
-> >> +       /* Since buf is a shared memory, set the shared (decrypted) bits */
-> >> +       return _tdx_hypercall(TDVMCALL_GET_QUOTE, cc_mkdec(virt_to_phys(buf)), size, 0, 0);
-> >> +}
-> >> +EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
-> >> +
-> >>  static void __noreturn tdx_panic(const char *msg)
-> >>  {
-> >>         struct tdx_hypercall_args args = {
-> >> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-> >> index 7513b3bb69b7..9eab19950f39 100644
-> >> --- a/arch/x86/include/asm/shared/tdx.h
-> >> +++ b/arch/x86/include/asm/shared/tdx.h
-> >> @@ -22,6 +22,7 @@
-> >>
-> >>  /* TDX hypercall Leaf IDs */
-> >>  #define TDVMCALL_MAP_GPA               0x10001
-> >> +#define TDVMCALL_GET_QUOTE             0x10002
-> >>  #define TDVMCALL_REPORT_FATAL_ERROR    0x10003
-> >>
-> >>  #ifndef __ASSEMBLY__
-> >> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> >> index 603e6d1e9d4a..ebd1cda4875f 100644
-> >> --- a/arch/x86/include/asm/tdx.h
-> >> +++ b/arch/x86/include/asm/tdx.h
-> >> @@ -52,6 +52,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
-> >>
-> >>  int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
-> >>
-> >> +u64 tdx_hcall_get_quote(u8 *buf, size_t size);
-> >> +
-> >>  #else
-> >>
-> >>  static inline void tdx_early_init(void) { };
-> >> diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
-> >> index 14246fc2fb02..22dd59e19431 100644
-> >> --- a/drivers/virt/coco/tdx-guest/Kconfig
-> >> +++ b/drivers/virt/coco/tdx-guest/Kconfig
-> >> @@ -1,6 +1,7 @@
-> >>  config TDX_GUEST_DRIVER
-> >>         tristate "TDX Guest driver"
-> >>         depends on INTEL_TDX_GUEST
-> >> +       select TSM_REPORTS
-> >>         help
-> >>           The driver provides userspace interface to communicate with
-> >>           the TDX module to request the TDX guest details like attestation
-> >> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> >> index 5e44a0fa69bd..135d89a7e418 100644
-> >> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> >> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> >> @@ -12,12 +12,59 @@
-> >>  #include <linux/mod_devicetable.h>
-> >>  #include <linux/string.h>
-> >>  #include <linux/uaccess.h>
-> >> +#include <linux/set_memory.h>
-> >> +#include <linux/io.h>
-> >> +#include <linux/delay.h>
-> >> +#include <linux/tsm.h>
-> >>
-> >>  #include <uapi/linux/tdx-guest.h>
-> >>
-> >>  #include <asm/cpu_device_id.h>
-> >>  #include <asm/tdx.h>
-> >>
-> >> +/*
-> >> + * Intel's SGX QE implementation generally uses Quote size less
-> >> + * than 8K (2K Quote data + ~5K of ceritificate blob).
-> > s/ceritificate/certificate
-> >> + */
-> >> +#define GET_QUOTE_BUF_SIZE             SZ_8K
-> >> +
-> >> +#define GET_QUOTE_CMD_VER              1
-> >> +
-> >> +/* TDX GetQuote status codes */
-> >> +#define GET_QUOTE_SUCCESS              0
-> >> +#define GET_QUOTE_IN_FLIGHT            0xffffffffffffffff
-> >> +
-> >> +/* struct tdx_quote_buf: Format of Quote request buffer.
-> >> + * @version: Quote format version, filled by TD.
-> >> + * @status: Status code of Quote request, filled by VMM.
-> >> + * @in_len: Length of TDREPORT, filled by TD.
-> >> + * @out_len: Length of Quote data, filled by VMM.
-> >> + * @data: Quote data on output or TDREPORT on input.
-> >> + *
-> >> + * More details of Quote request buffer can be found in TDX
-> >> + * Guest-Host Communication Interface (GHCI) for Intel TDX 1.0,
-> >> + * section titled "TDG.VP.VMCALL<GetQuote>"
-> >> + */
-> >> +struct tdx_quote_buf {
-> >> +       u64 version;
-> >> +       u64 status;
-> >> +       u32 in_len;
-> >> +       u32 out_len;
-> >> +       u8 data[];
-> >> +};
-> >> +
-> >> +/* Quote data buffer */
-> >> +static void *quote_data;
-> >> +
-> >> +/* Lock to streamline quote requests */
-> >> +static DEFINE_MUTEX(quote_lock);
-> >> +
-> >> +/*
-> >> + * GetQuote request timeout in seconds. Expect that 30 seconds
-> >> + * is enough time for QE to respond to any Quote requests.
-> >> + */
-> >> +static u32 getquote_timeout = 30;
-> >> +
-> >>  static long tdx_get_report0(struct tdx_report_req __user *req)
-> >>  {
-> >>         u8 *reportdata, *tdreport;
-> >> @@ -53,6 +100,131 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
-> >>         return ret;
-> >>  }
-> >>
-> >> +static void free_quote_buf(void *buf)
-> >> +{
-> >> +       size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-> >> +       unsigned int count = len >> PAGE_SHIFT;
-> >> +
-> >> +       set_memory_encrypted((unsigned long)buf, count);
-> > Why not check the return error? if conversion fails (even though
-> > unlikely), we should at least print an error message.
-> 
-> Ok. Since it is unlikely to fail, we can use WARN_ON().
-> 
-> WARN_ON(set_memory_encrypted((unsigned long)buf, count))
-
-No, panic_on_warn turns recoverable errors into fatal errors. Just
-pr_err(). I also assume you don't want memory that failed to be set back
-to encrypted into the free page pool, so it seems safer to leak the
-memory at this point.
-
-> 
-> >> +
-> >> +       free_pages_exact(buf, len);
-> >> +}
-> >> +
-> >> +static void *alloc_quote_buf(void)
-> >> +{
-> >> +       size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-> >> +       unsigned int count = len >> PAGE_SHIFT;
-> >> +       void *addr;
-> >> +       int ret;
-> >> +
-> >> +       addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
-> >> +       if (!addr)
-> >> +               return NULL;
-> >> +
-> >> +       ret = set_memory_decrypted((unsigned long)addr, count);
-> >> +       if (ret) {
-> >> +               free_pages_exact(addr, len);
-> >> +               return NULL;
-> >> +       }
-> >> +
-> >> +       return addr;
-> >> +}
-> >> +
-> >> +/*
-> >> + * wait_for_quote_completion() - Wait for Quote request completion
-> >> + * @quote_buf: Address of Quote buffer.
-> >> + * @timeout: Timeout in seconds to wait for the Quote generation.
-> >> + *
-> >> + * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
-> >> + * the status field in the Quote buffer will be set to GET_QUOTE_IN_FLIGHT
-> >> + * while VMM processes the GetQuote request, and will change it to success
-> >> + * or error code after processing is complete. So wait till the status
-> >> + * changes from GET_QUOTE_IN_FLIGHT or the request timedout.
-> > s/timedout/being timed out?
-> >> + */
-> >> +static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
-> >> +{
-> >> +       int i = 0;
-> >> +
-> >> +       /*
-> >> +        * Quote requests usually take a few seconds to complete, so waking up
-> >> +        * once per second to recheck the status is fine for this use case.
-> >> +        */
-> >> +       while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout)
-> >> +               ssleep(1);
-> > Would not this loop cause soft lock (or even panic) if getquote waits
-> > for 30s? Should we not yield?
-> 
-> Since we are sleeping for a second in each cycle (which will relinquish the CPU
-> to other threads), it should not create a soft lockup.
-
-No, this would need to release the lock while sleeping or otherwise make
-this interruptible to make that happen. In fact it should release the
-lock or use mutex_lock_interruptible() and configfs-tsm should switch to
-interruptible synchronization.
-
-> 
-> >> +
-> >> +       return (i == timeout) ? -ETIMEDOUT : 0;
-> >> +}
-> >> +
-> >> +static u8 *tdx_report_new(const struct tsm_desc *desc, void *data, size_t *outblob_len)
-> >> +{
-> >> +       struct tdx_quote_buf *quote_buf = quote_data;
-> >> +       int ret;
-> >> +       u8 *buf;
-> >> +       u64 err;
-> >> +
-> >> +       guard(mutex)(&quote_lock);
-> > I understand that this does not support parallel getQuote requests but
-> > if the user space for some reason makes multiple requests, each
-> > request will finish until the previous ones are completed in kernel
-> 
-> Softlockup will only happen if a thread hogs the CPU for a long time without
-> relinquishing it. In our case, user processes waiting for the lock will be in
-> sleep state. So it should not create a lockup issue.
-
-Stuck in uninterruptible sleep is another failure mode of the lockup
-detector. The other threads waiting to acquire the mutex will fire being
-stuck behind this thread.
+DQo+IA0KPiBDaGFuZ2VzIHNpbmNlIHByZXZpb3VzIHZlcnNpb246DQo+ICogVXNlZCBDb25maWdG
+UyBpbnRlcmZhY2UgaW5zdGVhZCBvZiBJT0NUTCBpbnRlcmZhY2UuDQo+ICogVXNlZCBwb2xsaW5n
+IG1vZGVsIGZvciBRdW90ZSBnZW5lcmF0aW9uIGFuZCBkcm9wcGVkIHRoZSBldmVudCBub3RpZmlj
+YXRpb24gSVJRIHN1cHBvcnQuDQoNCkNhbiB5b3UgZWxhYm9yYXRlIHdoeSB0aGUgbm90aWZpY2F0
+aW9uIElSUSBpcyBkcm9wcGVkPw0KDQo+IA0KPiAgYXJjaC94ODYvY29jby90ZHgvdGR4LmMgICAg
+ICAgICAgICAgICAgIHwgIDIxICsrKw0KPiAgYXJjaC94ODYvaW5jbHVkZS9hc20vc2hhcmVkL3Rk
+eC5oICAgICAgIHwgICAxICsNCj4gIGFyY2gveDg2L2luY2x1ZGUvYXNtL3RkeC5oICAgICAgICAg
+ICAgICB8ICAgMiArDQo+ICBkcml2ZXJzL3ZpcnQvY29jby90ZHgtZ3Vlc3QvS2NvbmZpZyAgICAg
+fCAgIDEgKw0KPiAgZHJpdmVycy92aXJ0L2NvY28vdGR4LWd1ZXN0L3RkeC1ndWVzdC5jIHwgMjA1
+ICsrKysrKysrKysrKysrKysrKysrKysrLQ0KPiAgNSBmaWxlcyBjaGFuZ2VkLCAyMjkgaW5zZXJ0
+aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L2NvY28v
+dGR4L3RkeC5jIGIvYXJjaC94ODYvY29jby90ZHgvdGR4LmMNCj4gaW5kZXggMWQ2Yjg2M2M0MmIw
+Li4yMDQxNGVkODJmYzUgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L2NvY28vdGR4L3RkeC5jDQo+
+ICsrKyBiL2FyY2gveDg2L2NvY28vdGR4L3RkeC5jDQo+IEBAIC0xMDQsNiArMTA0LDI3IEBAIGlu
+dCB0ZHhfbWNhbGxfZ2V0X3JlcG9ydDAodTggKnJlcG9ydGRhdGEsIHU4ICp0ZHJlcG9ydCkNCj4g
+IH0NCj4gIEVYUE9SVF9TWU1CT0xfR1BMKHRkeF9tY2FsbF9nZXRfcmVwb3J0MCk7DQo+ICANCj4g
+Ky8qKg0KPiArICogdGR4X2hjYWxsX2dldF9xdW90ZSgpIC0gV3JhcHBlciB0byByZXF1ZXN0IFRE
+IFF1b3RlIHVzaW5nIEdldFF1b3RlDQo+ICsgKiAgICAgICAgICAgICAgICAgICAgICAgICBoeXBl
+cmNhbGwuDQo+ICsgKiBAYnVmOiBBZGRyZXNzIG9mIHRoZSBkaXJlY3RseSBtYXBwZWQgc2hhcmVk
+IGtlcm5lbCBidWZmZXIgd2hpY2gNCj4gKyAqCSBjb250YWlucyBURFJFUE9SVCBkYXRhLiBUaGUg
+c2FtZSBidWZmZXIgd2lsbCBiZSB1c2VkIGJ5DQo+ICsgKgkgVk1NIHRvIHN0b3JlIHRoZSBnZW5l
+cmF0ZWQgVEQgUXVvdGUgb3V0cHV0Lg0KDQpOaXQ6IA0KDQpJdCBzZWVtcyBpbmRlbnQgY2FuIGJl
+IGltcHJvdmVkIHRvIG1ha2UgdGhlIHRleHQgdmVydGljYWxseSBhbGlnbmVkLg0KDQpBbHNvLCAi
+VERSRVBPUlQgZGF0YSIgLT4gIlREUkVQT1JUIi4NCiANCj4gKyAqIEBzaXplOiBzaXplIG9mIHRo
+ZSB0ZHF1b3RlIGJ1ZmZlciAoNEtCLWFsaWduZWQpLg0KPiArICoNCj4gKyAqIFJlZmVyIHRvIHNl
+Y3Rpb24gdGl0bGVkICJUREcuVlAuVk1DQUxMPEdldFF1b3RlPiIgaW4gdGhlIFREWCBHSENJDQo+
+ICsgKiB2MS4wIHNwZWNpZmljYXRpb24gZm9yIG1vcmUgaW5mb3JtYXRpb24gb24gR2V0UXVvdGUg
+aHlwZXJjYWxsLg0KPiArICogSXQgaXMgdXNlZCBpbiB0aGUgVERYIGd1ZXN0IGRyaXZlciBtb2R1
+bGUgdG8gZ2V0IHRoZSBURCBRdW90ZS4NCj4gKyAqDQo+ICsgKiBSZXR1cm4gMCBvbiBzdWNjZXNz
+IG9yIGVycm9yIGNvZGUgb24gZmFpbHVyZS4NCj4gKyAqLw0KPiArdTY0IHRkeF9oY2FsbF9nZXRf
+cXVvdGUodTggKmJ1Ziwgc2l6ZV90IHNpemUpDQo+ICt7DQo+ICsJLyogU2luY2UgYnVmIGlzIGEg
+c2hhcmVkIG1lbW9yeSwgc2V0IHRoZSBzaGFyZWQgKGRlY3J5cHRlZCkgYml0cyAqLw0KPiArCXJl
+dHVybiBfdGR4X2h5cGVyY2FsbChURFZNQ0FMTF9HRVRfUVVPVEUsIGNjX21rZGVjKHZpcnRfdG9f
+cGh5cyhidWYpKSwgc2l6ZSwgMCwgMCk7DQo+ICt9DQo+ICtFWFBPUlRfU1lNQk9MX0dQTCh0ZHhf
+aGNhbGxfZ2V0X3F1b3RlKTsNCj4gKw0KPiAgc3RhdGljIHZvaWQgX19ub3JldHVybiB0ZHhfcGFu
+aWMoY29uc3QgY2hhciAqbXNnKQ0KPiAgew0KPiAgCXN0cnVjdCB0ZHhfaHlwZXJjYWxsX2FyZ3Mg
+YXJncyA9IHsNCj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L2luY2x1ZGUvYXNtL3NoYXJlZC90ZHgu
+aCBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3NoYXJlZC90ZHguaA0KPiBpbmRleCA3NTEzYjNiYjY5
+YjcuLjllYWIxOTk1MGYzOSAxMDA2NDQNCj4gLS0tIGEvYXJjaC94ODYvaW5jbHVkZS9hc20vc2hh
+cmVkL3RkeC5oDQo+ICsrKyBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3NoYXJlZC90ZHguaA0KPiBA
+QCAtMjIsNiArMjIsNyBAQA0KPiAgDQo+ICAvKiBURFggaHlwZXJjYWxsIExlYWYgSURzICovDQo+
+ICAjZGVmaW5lIFREVk1DQUxMX01BUF9HUEEJCTB4MTAwMDENCj4gKyNkZWZpbmUgVERWTUNBTExf
+R0VUX1FVT1RFCQkweDEwMDAyDQo+ICAjZGVmaW5lIFREVk1DQUxMX1JFUE9SVF9GQVRBTF9FUlJP
+UgkweDEwMDAzDQo+ICANCj4gICNpZm5kZWYgX19BU1NFTUJMWV9fDQo+IGRpZmYgLS1naXQgYS9h
+cmNoL3g4Ni9pbmNsdWRlL2FzbS90ZHguaCBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3RkeC5oDQo+
+IGluZGV4IDYwM2U2ZDFlOWQ0YS4uZWJkMWNkYTQ4NzVmIDEwMDY0NA0KPiAtLS0gYS9hcmNoL3g4
+Ni9pbmNsdWRlL2FzbS90ZHguaA0KPiArKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS90ZHguaA0K
+PiBAQCAtNTIsNiArNTIsOCBAQCBib29sIHRkeF9lYXJseV9oYW5kbGVfdmUoc3RydWN0IHB0X3Jl
+Z3MgKnJlZ3MpOw0KPiAgDQo+ICBpbnQgdGR4X21jYWxsX2dldF9yZXBvcnQwKHU4ICpyZXBvcnRk
+YXRhLCB1OCAqdGRyZXBvcnQpOw0KPiAgDQo+ICt1NjQgdGR4X2hjYWxsX2dldF9xdW90ZSh1OCAq
+YnVmLCBzaXplX3Qgc2l6ZSk7DQo+ICsNCj4gICNlbHNlDQo+ICANCj4gIHN0YXRpYyBpbmxpbmUg
+dm9pZCB0ZHhfZWFybHlfaW5pdCh2b2lkKSB7IH07DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Zp
+cnQvY29jby90ZHgtZ3Vlc3QvS2NvbmZpZyBiL2RyaXZlcnMvdmlydC9jb2NvL3RkeC1ndWVzdC9L
+Y29uZmlnDQo+IGluZGV4IDE0MjQ2ZmMyZmIwMi4uMjJkZDU5ZTE5NDMxIDEwMDY0NA0KPiAtLS0g
+YS9kcml2ZXJzL3ZpcnQvY29jby90ZHgtZ3Vlc3QvS2NvbmZpZw0KPiArKysgYi9kcml2ZXJzL3Zp
+cnQvY29jby90ZHgtZ3Vlc3QvS2NvbmZpZw0KPiBAQCAtMSw2ICsxLDcgQEANCj4gIGNvbmZpZyBU
+RFhfR1VFU1RfRFJJVkVSDQo+ICAJdHJpc3RhdGUgIlREWCBHdWVzdCBkcml2ZXIiDQo+ICAJZGVw
+ZW5kcyBvbiBJTlRFTF9URFhfR1VFU1QNCj4gKwlzZWxlY3QgVFNNX1JFUE9SVFMNCj4gIAloZWxw
+DQo+ICAJICBUaGUgZHJpdmVyIHByb3ZpZGVzIHVzZXJzcGFjZSBpbnRlcmZhY2UgdG8gY29tbXVu
+aWNhdGUgd2l0aA0KPiAgCSAgdGhlIFREWCBtb2R1bGUgdG8gcmVxdWVzdCB0aGUgVERYIGd1ZXN0
+IGRldGFpbHMgbGlrZSBhdHRlc3RhdGlvbg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy92aXJ0L2Nv
+Y28vdGR4LWd1ZXN0L3RkeC1ndWVzdC5jIGIvZHJpdmVycy92aXJ0L2NvY28vdGR4LWd1ZXN0L3Rk
+eC1ndWVzdC5jDQo+IGluZGV4IDVlNDRhMGZhNjliZC4uMTM1ZDg5YTdlNDE4IDEwMDY0NA0KPiAt
+LS0gYS9kcml2ZXJzL3ZpcnQvY29jby90ZHgtZ3Vlc3QvdGR4LWd1ZXN0LmMNCj4gKysrIGIvZHJp
+dmVycy92aXJ0L2NvY28vdGR4LWd1ZXN0L3RkeC1ndWVzdC5jDQo+IEBAIC0xMiwxMiArMTIsNTkg
+QEANCj4gICNpbmNsdWRlIDxsaW51eC9tb2RfZGV2aWNldGFibGUuaD4NCj4gICNpbmNsdWRlIDxs
+aW51eC9zdHJpbmcuaD4NCj4gICNpbmNsdWRlIDxsaW51eC91YWNjZXNzLmg+DQo+ICsjaW5jbHVk
+ZSA8bGludXgvc2V0X21lbW9yeS5oPg0KPiArI2luY2x1ZGUgPGxpbnV4L2lvLmg+DQo+ICsjaW5j
+bHVkZSA8bGludXgvZGVsYXkuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC90c20uaD4NCj4gIA0KPiAg
+I2luY2x1ZGUgPHVhcGkvbGludXgvdGR4LWd1ZXN0Lmg+DQo+ICANCj4gICNpbmNsdWRlIDxhc20v
+Y3B1X2RldmljZV9pZC5oPg0KPiAgI2luY2x1ZGUgPGFzbS90ZHguaD4NCj4gIA0KPiArLyoNCj4g
+KyAqIEludGVsJ3MgU0dYIFFFIGltcGxlbWVudGF0aW9uIGdlbmVyYWxseSB1c2VzIFF1b3RlIHNp
+emUgbGVzcw0KPiArICogdGhhbiA4SyAoMksgUXVvdGUgZGF0YSArIH41SyBvZiBjZXJpdGlmaWNh
+dGUgYmxvYikuDQo+ICsgKi8NCj4gKyNkZWZpbmUgR0VUX1FVT1RFX0JVRl9TSVpFCQlTWl84Sw0K
+DQpTWl84SyBpcyBkZWZpbmVkIGluIDxsaW51eC9zaXplcy5oPi4gIEl0IHNlZW1zIGl0J3Mgbm90
+IGV4cGxpY2l0bHkgaW5jbHVkZWQuIA0KSXQncyBiZXR0ZXIgdG8gZXhwbGljaXRseSBpbmNsdWRl
+IGl0Lg0KDQpCdHcsIGFsdGhvdWdoIHRoZSBzaXplIG9mIHRoZSBjZXJ0aWZpY2F0ZSBibG9iIHNo
+b3VsZG4ndCBjaGFuZ2UgZHJhbWF0aWNhbGx5LA0KdGhlIFF1b3RlIGNhbiBhbHNvIGluY2x1ZGUg
+dGhlICJRRSBBdXRoZW50aWNhdGlvbiBEYXRhIiwgd2hpY2ggY2FuIHZhcnkgYSBsb3QNCmRlcGVu
+ZGluZyBvbiBkaWZmZXJlbnQgUUUgaW1wbGVtZW50YXRpb24gKGUuZy4sIGNvbnRhaW5pbmcgZ2Vv
+Z3JhcGh5DQppbmZvcm1hdGlvbiwgZXRjKS4NCg0KSSB3aXNoIGV2ZW50dWFsbHkgdGhlcmUncyBz
+b21lIC9zeXNmcyBlbnRyeSB0byBjb25maWd1cmUgdGhlIHNpemUgb2YgUXVvdGUNCmJ1ZmZlciwg
+YnV0IEkgZ3Vlc3MgaXQgY2FuIGJlIGRvbmUgaW4gdGhlIGZ1dHVyZS4NCg0KPiArDQo+ICsjZGVm
+aW5lIEdFVF9RVU9URV9DTURfVkVSCQkxDQo+ICsNCj4gKy8qIFREWCBHZXRRdW90ZSBzdGF0dXMg
+Y29kZXMgKi8NCj4gKyNkZWZpbmUgR0VUX1FVT1RFX1NVQ0NFU1MJCTANCj4gKyNkZWZpbmUgR0VU
+X1FVT1RFX0lOX0ZMSUdIVAkJMHhmZmZmZmZmZmZmZmZmZmZmDQo+ICsNCj4gKy8qIHN0cnVjdCB0
+ZHhfcXVvdGVfYnVmOiBGb3JtYXQgb2YgUXVvdGUgcmVxdWVzdCBidWZmZXIuDQo+ICsgKiBAdmVy
+c2lvbjogUXVvdGUgZm9ybWF0IHZlcnNpb24sIGZpbGxlZCBieSBURC4NCj4gKyAqIEBzdGF0dXM6
+IFN0YXR1cyBjb2RlIG9mIFF1b3RlIHJlcXVlc3QsIGZpbGxlZCBieSBWTU0uDQo+ICsgKiBAaW5f
+bGVuOiBMZW5ndGggb2YgVERSRVBPUlQsIGZpbGxlZCBieSBURC4NCj4gKyAqIEBvdXRfbGVuOiBM
+ZW5ndGggb2YgUXVvdGUgZGF0YSwgZmlsbGVkIGJ5IFZNTS4NCj4gKyAqIEBkYXRhOiBRdW90ZSBk
+YXRhIG9uIG91dHB1dCBvciBURFJFUE9SVCBvbiBpbnB1dC4NCj4gKyAqDQo+ICsgKiBNb3JlIGRl
+dGFpbHMgb2YgUXVvdGUgcmVxdWVzdCBidWZmZXIgY2FuIGJlIGZvdW5kIGluIFREWA0KPiArICog
+R3Vlc3QtSG9zdCBDb21tdW5pY2F0aW9uIEludGVyZmFjZSAoR0hDSSkgZm9yIEludGVsIFREWCAx
+LjAsDQo+ICsgKiBzZWN0aW9uIHRpdGxlZCAiVERHLlZQLlZNQ0FMTDxHZXRRdW90ZT4iDQo+ICsg
+Ki8NCj4gK3N0cnVjdCB0ZHhfcXVvdGVfYnVmIHsNCj4gKwl1NjQgdmVyc2lvbjsNCj4gKwl1NjQg
+c3RhdHVzOw0KPiArCXUzMiBpbl9sZW47DQo+ICsJdTMyIG91dF9sZW47DQo+ICsJdTggZGF0YVtd
+Ow0KDQpJdCBzZWVtcyBERUNMQVJFX0ZMRVhfQVJSQVkoKSBpcyBwcmVmZXJyZWQuDQoNCj4gK307
+DQo+ICsNCj4gKy8qIFF1b3RlIGRhdGEgYnVmZmVyICovDQo+ICtzdGF0aWMgdm9pZCAqcXVvdGVf
+ZGF0YTsNCj4gKw0KPiArLyogTG9jayB0byBzdHJlYW1saW5lIHF1b3RlIHJlcXVlc3RzICovDQo+
+ICtzdGF0aWMgREVGSU5FX01VVEVYKHF1b3RlX2xvY2spOw0KPiArDQo+ICsvKg0KPiArICogR2V0
+UXVvdGUgcmVxdWVzdCB0aW1lb3V0IGluIHNlY29uZHMuIEV4cGVjdCB0aGF0IDMwIHNlY29uZHMN
+Cj4gKyAqIGlzIGVub3VnaCB0aW1lIGZvciBRRSB0byByZXNwb25kIHRvIGFueSBRdW90ZSByZXF1
+ZXN0cy4NCj4gKyAqLw0KPiArc3RhdGljIHUzMiBnZXRxdW90ZV90aW1lb3V0ID0gMzA7DQo+ICsN
+Cj4gIHN0YXRpYyBsb25nIHRkeF9nZXRfcmVwb3J0MChzdHJ1Y3QgdGR4X3JlcG9ydF9yZXEgX191
+c2VyICpyZXEpDQo+ICB7DQo+ICAJdTggKnJlcG9ydGRhdGEsICp0ZHJlcG9ydDsNCj4gQEAgLTUz
+LDYgKzEwMCwxMzEgQEAgc3RhdGljIGxvbmcgdGR4X2dldF9yZXBvcnQwKHN0cnVjdCB0ZHhfcmVw
+b3J0X3JlcSBfX3VzZXIgKnJlcSkNCj4gIAlyZXR1cm4gcmV0Ow0KPiAgfQ0KPiAgDQo+ICtzdGF0
+aWMgdm9pZCBmcmVlX3F1b3RlX2J1Zih2b2lkICpidWYpDQo+ICt7DQo+ICsJc2l6ZV90IGxlbiA9
+IFBBR0VfQUxJR04oR0VUX1FVT1RFX0JVRl9TSVpFKTsNCj4gKwl1bnNpZ25lZCBpbnQgY291bnQg
+PSBsZW4gPj4gUEFHRV9TSElGVDsNCj4gKw0KPiArCXNldF9tZW1vcnlfZW5jcnlwdGVkKCh1bnNp
+Z25lZCBsb25nKWJ1ZiwgY291bnQpOw0KDQpXQVJOKCksIG9yIGdpdmUgYW4gZXJyb3IgbWVzc2Fn
+ZSBvbiBmYWlsdXJlLCBhbmQgZ2l2ZSB1cCBmcmVlaW5nIHRoZSBidWZmZXI/DQoNCj4gKw0KPiAr
+CWZyZWVfcGFnZXNfZXhhY3QoYnVmLCBsZW4pOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgdm9pZCAq
+YWxsb2NfcXVvdGVfYnVmKHZvaWQpDQo+ICt7DQo+ICsJc2l6ZV90IGxlbiA9IFBBR0VfQUxJR04o
+R0VUX1FVT1RFX0JVRl9TSVpFKTsNCj4gKwl1bnNpZ25lZCBpbnQgY291bnQgPSBsZW4gPj4gUEFH
+RV9TSElGVDsNCj4gKwl2b2lkICphZGRyOw0KPiArCWludCByZXQ7DQo+ICsNCj4gKwlhZGRyID0g
+YWxsb2NfcGFnZXNfZXhhY3QobGVuLCBHRlBfS0VSTkVMIHwgX19HRlBfWkVSTyk7DQo+ICsJaWYg
+KCFhZGRyKQ0KPiArCQlyZXR1cm4gTlVMTDsNCj4gKw0KPiArCXJldCA9IHNldF9tZW1vcnlfZGVj
+cnlwdGVkKCh1bnNpZ25lZCBsb25nKWFkZHIsIGNvdW50KTsNCj4gKwlpZiAocmV0KSB7DQo+ICsJ
+CWZyZWVfcGFnZXNfZXhhY3QoYWRkciwgbGVuKTsNCj4gKwkJcmV0dXJuIE5VTEw7DQo+ICsJfQ0K
+DQpUaGUgJ3JldCcgY2FuIGJlIGF2b2lkZWQgaWYgeW91IGRvOg0KDQoJaWYgKHNldF9tZW1vcnlf
+ZGVjcnlwdGVkKC4uLikpDQoNCj4gKw0KPiArCXJldHVybiBhZGRyOw0KPiArfQ0KPiArDQo+ICsv
+Kg0KPiArICogd2FpdF9mb3JfcXVvdGVfY29tcGxldGlvbigpIC0gV2FpdCBmb3IgUXVvdGUgcmVx
+dWVzdCBjb21wbGV0aW9uDQo+ICsgKiBAcXVvdGVfYnVmOiBBZGRyZXNzIG9mIFF1b3RlIGJ1ZmZl
+ci4NCj4gKyAqIEB0aW1lb3V0OiBUaW1lb3V0IGluIHNlY29uZHMgdG8gd2FpdCBmb3IgdGhlIFF1
+b3RlIGdlbmVyYXRpb24uDQo+ICsgKg0KPiArICogQXMgcGVyIFREWCBHSENJIHYxLjAgc3BlY2lm
+aWNhdGlvbiwgc2VjIHRpdGxlZCAiVERHLlZQLlZNQ0FMTDxHZXRRdW90ZT4iLA0KPiArICogdGhl
+IHN0YXR1cyBmaWVsZCBpbiB0aGUgUXVvdGUgYnVmZmVyIHdpbGwgYmUgc2V0IHRvIEdFVF9RVU9U
+RV9JTl9GTElHSFQNCj4gKyAqIHdoaWxlIFZNTSBwcm9jZXNzZXMgdGhlIEdldFF1b3RlIHJlcXVl
+c3QsIGFuZCB3aWxsIGNoYW5nZSBpdCB0byBzdWNjZXNzDQo+ICsgKiBvciBlcnJvciBjb2RlIGFm
+dGVyIHByb2Nlc3NpbmcgaXMgY29tcGxldGUuIFNvIHdhaXQgdGlsbCB0aGUgc3RhdHVzDQo+ICsg
+KiBjaGFuZ2VzIGZyb20gR0VUX1FVT1RFX0lOX0ZMSUdIVCBvciB0aGUgcmVxdWVzdCB0aW1lZG91
+dC4NCj4gKyAqLw0KPiArc3RhdGljIGludCB3YWl0X2Zvcl9xdW90ZV9jb21wbGV0aW9uKHN0cnVj
+dCB0ZHhfcXVvdGVfYnVmICpxdW90ZV9idWYsIHUzMiB0aW1lb3V0KQ0KPiArew0KPiArCWludCBp
+ID0gMDsNCj4gKw0KPiArCS8qDQo+ICsJICogUXVvdGUgcmVxdWVzdHMgdXN1YWxseSB0YWtlIGEg
+ZmV3IHNlY29uZHMgdG8gY29tcGxldGUsIHNvIHdha2luZyB1cA0KPiArCSAqIG9uY2UgcGVyIHNl
+Y29uZCB0byByZWNoZWNrIHRoZSBzdGF0dXMgaXMgZmluZSBmb3IgdGhpcyB1c2UgY2FzZS4NCj4g
+KwkgKi8NCj4gKwl3aGlsZSAocXVvdGVfYnVmLT5zdGF0dXMgPT0gR0VUX1FVT1RFX0lOX0ZMSUdI
+VCAmJiBpKysgPCB0aW1lb3V0KQ0KPiArCQlzc2xlZXAoMSk7DQo+ICsNCj4gKwlyZXR1cm4gKGkg
+PT0gdGltZW91dCkgPyAtRVRJTUVET1VUIDogMDsNCj4gK30NCg0KV2h5IGNhbid0IHdlIHVzZSB3
+YWl0X2Zvcl9jb21wbGV0aW9uX3RpbWVvdXQoKSBwcm92aWRlZCBieSB0aGUga2VybmVsPw0KDQpC
+dHcsIGNhbiB3ZSB1c2UgX2tpbGxhYmxlKCkgdmFyaWFudD8gIFN1cHBvcnRpbmcgdGltZW91dCBi
+cmluZ3MgZXh0cmENCmNvbXBsaWNhdGlvbiwgYW5kIEkgdGhpbmsgc3VwcG9ydGluZyB0aW1lb3V0
+IGlzbid0IG1hbmRhdG9yeSBmb3IgdGhlIGZpcnN0DQp2ZXJzaW9uLg0KDQo+ICsNCj4gK3N0YXRp
+YyB1OCAqdGR4X3JlcG9ydF9uZXcoY29uc3Qgc3RydWN0IHRzbV9kZXNjICpkZXNjLCB2b2lkICpk
+YXRhLCBzaXplX3QgKm91dGJsb2JfbGVuKQ0KPiArew0KPiArCXN0cnVjdCB0ZHhfcXVvdGVfYnVm
+ICpxdW90ZV9idWYgPSBxdW90ZV9kYXRhOw0KPiArCWludCByZXQ7DQo+ICsJdTggKmJ1ZjsNCj4g
+Kwl1NjQgZXJyOw0KPiArDQo+ICsJZ3VhcmQobXV0ZXgpKCZxdW90ZV9sb2NrKTsNCj4gKw0KPiAr
+CS8qDQo+ICsJICogSWYgdGhlIHByZXZpb3VzIHJlcXVlc3QgaXMgdGltZWRvdXQgYW5kIFF1b3Rl
+IGJ1ZiBzdGF0dXMgaXMNCj4gKwkgKiBzdGlsbCBpbiBHRVRfUVVPVEVfSU5fRkxJR0hUIChvd25l
+ZCBieSBWTU0pLCBkb24ndCBwZXJtaXQgYW55DQo+ICsJICogbmV3IHJlcXVlc3QuDQo+ICsJICov
+DQo+ICsJaWYgKHF1b3RlX2J1Zi0+c3RhdHVzID09IEdFVF9RVU9URV9JTl9GTElHSFQpDQo+ICsJ
+CXJldHVybiBFUlJfUFRSKC1FQlVTWSk7DQo+ICsNCj4gKwlpZiAoZGVzYy0+aW5ibG9iX2xlbiAh
+PSBURFhfUkVQT1JUREFUQV9MRU4pDQo+ICsJCXJldHVybiBFUlJfUFRSKC1FSU5WQUwpOw0KPiAr
+DQo+ICsJLyogVERYIGF0dGVzdGF0aW9uIGRvZXMgbm90IHN1cHBvcnQgbXVsdGlwbGUgZm9ybWF0
+cyAqLw0KDQoib25seSBzdXBwb3J0cyBkZWZhdWx0IGZvcm1hdCByZXF1ZXN0IiA/DQoNCj4gKwlp
+ZiAoZGVzYy0+b3V0YmxvYl9mb3JtYXQgIT0gVFNNX0ZPUk1BVF9ERUZBVUxUKQ0KPiArCQlyZXR1
+cm4gRVJSX1BUUigtRUlOVkFMKTsNCj4gKw0KPiArCXU4ICpyZXBvcnRkYXRhIF9fZnJlZShrZnJl
+ZSkgPSBrbWFsbG9jKFREWF9SRVBPUlREQVRBX0xFTiwgR0ZQX0tFUk5FTCk7DQo+ICsJaWYgKCFy
+ZXBvcnRkYXRhKQ0KPiArCQlyZXR1cm4gRVJSX1BUUigtRU5PTUVNKTsNCj4gKw0KPiArCXU4ICp0
+ZHJlcG9ydCBfX2ZyZWUoa2ZyZWUpID0ga3phbGxvYyhURFhfUkVQT1JUX0xFTiwgR0ZQX0tFUk5F
+TCk7DQo+ICsJaWYgKCF0ZHJlcG9ydCkNCj4gKwkJcmV0dXJuIEVSUl9QVFIoLUVOT01FTSk7DQo+
+ICsNCj4gKwltZW1jcHkocmVwb3J0ZGF0YSwgZGVzYy0+aW5ibG9iLCBkZXNjLT5pbmJsb2JfbGVu
+KTsNCj4gKw0KPiArCS8qIEdlbmVyYXRlIFREUkVQT1JUMCB1c2luZyAiVERHLk1SLlJFUE9SVCIg
+VERDQUxMICovDQo+ICsJcmV0ID0gdGR4X21jYWxsX2dldF9yZXBvcnQwKHJlcG9ydGRhdGEsIHRk
+cmVwb3J0KTsNCj4gKwlpZiAocmV0KSB7DQo+ICsJCXByX2VycigiR2V0UmVwb3J0IGNhbGwgZmFp
+bGVkXG4iKTsNCj4gKwkJcmV0dXJuIEVSUl9QVFIocmV0KTsNCj4gKwl9DQo+ICsNCj4gKwltZW1z
+ZXQocXVvdGVfZGF0YSwgMCwgR0VUX1FVT1RFX0JVRl9TSVpFKTsNCj4gKw0KPiArCS8qIFVwZGF0
+ZSBRdW90ZSBidWZmZXIgaGVhZGVyICovDQo+ICsJcXVvdGVfYnVmLT52ZXJzaW9uID0gR0VUX1FV
+T1RFX0NNRF9WRVI7DQo+ICsJcXVvdGVfYnVmLT5pbl9sZW4gPSBURFhfUkVQT1JUX0xFTjsNCj4g
+Kw0KPiArCW1lbWNweShxdW90ZV9idWYtPmRhdGEsIHRkcmVwb3J0LCBURFhfUkVQT1JUX0xFTik7
+DQo+ICsNCj4gKwllcnIgPSB0ZHhfaGNhbGxfZ2V0X3F1b3RlKHF1b3RlX2RhdGEsIEdFVF9RVU9U
+RV9CVUZfU0laRSk7DQo+ICsJaWYgKGVycikgew0KPiArCQlwcl9lcnIoIkdldFF1b3RlIGh5cGVy
+Y2FsbCBmYWlsZWQsIHN0YXR1czolbGx4XG4iLCBlcnIpOw0KPiArCQlyZXR1cm4gRVJSX1BUUigt
+RUlPKTsNCj4gKwl9DQo+ICsNCj4gKwlyZXQgPSB3YWl0X2Zvcl9xdW90ZV9jb21wbGV0aW9uKHF1
+b3RlX2J1ZiwgZ2V0cXVvdGVfdGltZW91dCk7DQo+ICsJaWYgKHJldCkgew0KPiArCQlwcl9lcnIo
+IkdldFF1b3RlIHJlcXVlc3QgdGltZWRvdXRcbiIpOw0KPiArCQlyZXR1cm4gRVJSX1BUUihyZXQp
+Ow0KPiArCX0NCj4gKw0KPiArCWJ1ZiA9IGt2bWVtZHVwKHF1b3RlX2J1Zi0+ZGF0YSwgcXVvdGVf
+YnVmLT5vdXRfbGVuLCBHRlBfS0VSTkVMKTsNCj4gKwlpZiAoIWJ1ZikNCj4gKwkJcmV0dXJuIEVS
+Ul9QVFIoLUVOT01FTSk7DQo+ICsNCj4gKwkqb3V0YmxvYl9sZW4gPSBxdW90ZV9idWYtPm91dF9s
+ZW47DQo+ICsNCj4gKwlyZXR1cm4gYnVmOw0KPiArfQ0KPiArDQo+ICBzdGF0aWMgbG9uZyB0ZHhf
+Z3Vlc3RfaW9jdGwoc3RydWN0IGZpbGUgKmZpbGUsIHVuc2lnbmVkIGludCBjbWQsDQo+ICAJCQkg
+ICAgdW5zaWduZWQgbG9uZyBhcmcpDQo+ICB7DQo+IEBAIC04MiwxNyArMjU0LDQ4IEBAIHN0YXRp
+YyBjb25zdCBzdHJ1Y3QgeDg2X2NwdV9pZCB0ZHhfZ3Vlc3RfaWRzW10gPSB7DQo+ICB9Ow0KPiAg
+TU9EVUxFX0RFVklDRV9UQUJMRSh4ODZjcHUsIHRkeF9ndWVzdF9pZHMpOw0KPiAgDQo+ICtzdGF0
+aWMgY29uc3Qgc3RydWN0IHRzbV9vcHMgdGR4X3RzbV9vcHMgPSB7DQo+ICsJLm5hbWUgPSBLQlVJ
+TERfTU9ETkFNRSwNCj4gKwkucmVwb3J0X25ldyA9IHRkeF9yZXBvcnRfbmV3LA0KPiArfTsNCj4g
+Kw0KPiAgc3RhdGljIGludCBfX2luaXQgdGR4X2d1ZXN0X2luaXQodm9pZCkNCj4gIHsNCj4gKwlp
+bnQgcmV0Ow0KPiArDQo+ICAJaWYgKCF4ODZfbWF0Y2hfY3B1KHRkeF9ndWVzdF9pZHMpKQ0KPiAg
+CQlyZXR1cm4gLUVOT0RFVjsNCj4gIA0KPiAtCXJldHVybiBtaXNjX3JlZ2lzdGVyKCZ0ZHhfbWlz
+Y19kZXYpOw0KPiArCXJldCA9IG1pc2NfcmVnaXN0ZXIoJnRkeF9taXNjX2Rldik7DQo+ICsJaWYg
+KHJldCkNCj4gKwkJcmV0dXJuIHJldDsNCj4gKw0KPiArCXF1b3RlX2RhdGEgPSBhbGxvY19xdW90
+ZV9idWYoKTsNCj4gKwlpZiAoIXF1b3RlX2RhdGEpIHsNCj4gKwkJcHJfZXJyKCJGYWlsZWQgdG8g
+YWxsb2NhdGUgUXVvdGUgYnVmZmVyXG4iKTsNCj4gKwkJcmV0ID0gLUVOT01FTTsNCj4gKwkJZ290
+byBmcmVlX21pc2M7DQo+ICsJfQ0KPiArDQo+ICsJcmV0ID0gcmVnaXN0ZXJfdHNtKCZ0ZHhfdHNt
+X29wcywgTlVMTCwgTlVMTCk7DQo+ICsJaWYgKHJldCkNCj4gKwkJZ290byBmcmVlX3F1b3RlOw0K
+PiArDQo+ICsJcmV0dXJuIDA7DQo+ICsNCj4gK2ZyZWVfcXVvdGU6DQo+ICsJZnJlZV9xdW90ZV9i
+dWYocXVvdGVfZGF0YSk7DQo+ICtmcmVlX21pc2M6DQo+ICsJbWlzY19kZXJlZ2lzdGVyKCZ0ZHhf
+bWlzY19kZXYpOw0KPiArDQo+ICsJcmV0dXJuIHJldDsNCj4gIH0NCj4gIG1vZHVsZV9pbml0KHRk
+eF9ndWVzdF9pbml0KTsNCj4gIA0KPiAgc3RhdGljIHZvaWQgX19leGl0IHRkeF9ndWVzdF9leGl0
+KHZvaWQpDQo+ICB7DQo+ICsJdW5yZWdpc3Rlcl90c20oJnRkeF90c21fb3BzKTsNCj4gKwlmcmVl
+X3F1b3RlX2J1ZihxdW90ZV9kYXRhKTsNCj4gIAltaXNjX2RlcmVnaXN0ZXIoJnRkeF9taXNjX2Rl
+dik7DQo+ICB9DQo+ICBtb2R1bGVfZXhpdCh0ZHhfZ3Vlc3RfZXhpdCk7DQoNCg==
