@@ -1,52 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA68E17723
-	for <linux-coco@lists.linux.dev>; Tue, 12 Sep 2023 07:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AF3171DA
+	for <linux-coco@lists.linux.dev>; Tue, 12 Sep 2023 07:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1694503114;
+	s=mimecast20190719; t=1694503182;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+OodWnETEUgz5EFst9JGpxDf54xHXqhw04bLaPZH7zA=;
-	b=CfJufZ0+jnXUOpY16coEfCS98QFO6LyZiJN9ZQMEe4HxCEEczHeF8QRji3hYNbeDMVubLi
-	gHqDdWxKeZudQiHsUd87wPqpjxK1HDtphR7kFywyJrwBO45UzoqF2qdoKhL9doH/MrBHQR
-	2veEcmGi/Pw8q2Awo+KXC6QZ231lHVg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=UcEya9HqsW3o+5ldQKv7HTPg9J+Z7fGPS0QxHHzAjY0=;
+	b=EInQwufjK6X2hqSzpyD8lfb5B2tmW/zoFx+AlU0aAHMZEvvGmd1QCfuwH588gEdIqojYi9
+	BaSbNH/5nNf02s5wkBEpdPlmUrVQzEqFDBjuy4glPqUTmj8JGN/mYDlVlovLni7m35fQiI
+	6cRWXcnqWmbYsOOgySLJjDvPjX7+A+Q=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-jnD2qAyEOgGlWQGiuY0nFA-1; Tue, 12 Sep 2023 03:18:33 -0400
-X-MC-Unique: jnD2qAyEOgGlWQGiuY0nFA-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4005f0a53c5so42468175e9.3
-        for <linux-coco@lists.linux.dev>; Tue, 12 Sep 2023 00:18:33 -0700 (PDT)
+ us-mta-655-9F_j5WoOPZWo8J57es--9g-1; Tue, 12 Sep 2023 03:19:41 -0400
+X-MC-Unique: 9F_j5WoOPZWo8J57es--9g-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-402cba95486so41753275e9.0
+        for <linux-coco@lists.linux.dev>; Tue, 12 Sep 2023 00:19:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694503112; x=1695107912;
+        d=1e100.net; s=20230601; t=1694503180; x=1695107980;
         h=content-transfer-encoding:in-reply-to:organization:from:references
          :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+OodWnETEUgz5EFst9JGpxDf54xHXqhw04bLaPZH7zA=;
-        b=SjsqoUK4JDuN6i6grbltOQqFotwaoWuTywku8rBQJ0tslmQVCb+Ew+nCZGwahq3QVV
-         /6+IbLs81YMoBGkbIF7Tj4atUVFhlRO1AF+lCCXxzi23qT8cB956P1MoWwFoSrTpClBS
-         s4OkUNMoPpRXVjMHX4Hi/hGEaIXe/Xpgfc3dLwBmlx4WyG0XtE5jH1CJ9o5Z7Lk5lvFc
-         FQd5V0W0QDw1dsjM/2XDM3W5uEJQzlFW7e+Xrl7QPFjZDRTe7QdC7S3cJZA+H045btMJ
-         DExz3YyCfOOeWzf+LJaNevdf+b8+dGpFGDohGvHL15NAjX+OLeFBXUXtxQK98PMjI1Qv
-         F8rw==
-X-Gm-Message-State: AOJu0YybQnZakrZFTlEBN57TvSA1l+kxqL+duDzI3KRJC4b2G67BR1mY
-	4nxFx94CSIE5CSSkqpqbmpiQPRdYOBKnsLPT9N4ZM7+RosgBu8vVpxGwSWT8IzEaGeraxgWxcYy
-	1T8o3RS6Vw51sShkUvUxVFQ==
-X-Received: by 2002:a7b:c853:0:b0:401:db82:3edf with SMTP id c19-20020a7bc853000000b00401db823edfmr9908947wml.39.1694503112135;
-        Tue, 12 Sep 2023 00:18:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQr59YxQoahIdt2pGpOn3n/3cyfcIn7qrajZoDiICpNrmoOnS/ynh5Tia67CgdCYHJ/KD0yA==
-X-Received: by 2002:a7b:c853:0:b0:401:db82:3edf with SMTP id c19-20020a7bc853000000b00401db823edfmr9908928wml.39.1694503111718;
-        Tue, 12 Sep 2023 00:18:31 -0700 (PDT)
+        bh=UcEya9HqsW3o+5ldQKv7HTPg9J+Z7fGPS0QxHHzAjY0=;
+        b=mz3yxpQZvoB8x31b1KQ4kzHzNKwjqytcWhmtoDG2Q8hdRjAK+emr95IsSgCb/urJdk
+         Hsv8h9axXti9f7NTKPUfnuor1GSIOLBT+2PqXK2tfVqwdZ8qMzu9XP56498Qf9JJCc9p
+         XNJk71MwsITZ5uc3mRm9uuCJm9ir7FwybPsiYeAPmRG0DGnQTMKoxtDmUJCHFKqHje4a
+         I+mJb4f7MAJo9+3iP7Kfqwvj+3JH8BZBl7BL3qlYNQItkWZ22hOB8dmLAppd9Mo0N4GM
+         I1l+PUoqveSIzSzSvlwLSKk8yYkh0Q3kkbcnkF5p8SLBL04dHJYTABhMicBdiO3TxDXA
+         keag==
+X-Gm-Message-State: AOJu0YxcQsDgqcMVE6mlLrseRg5A3I8IaFbBuc5JDcTZGPR+nYDLlKWg
+	9UkVOVSYxjkz8qz43Dl0eSCd5z+cQrgaqPayakZnPtUP6L/eeysofwuYJMyPLAio4uT+mWYVuAD
+	37FWRDyKDw6gqxFtWC96SYg==
+X-Received: by 2002:a1c:7c0e:0:b0:401:6800:703c with SMTP id x14-20020a1c7c0e000000b004016800703cmr11272014wmc.21.1694503180596;
+        Tue, 12 Sep 2023 00:19:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFBHMbRtiRZlVheP6qVSb8MqZ6oMl+4dwmRZR30fLEhp0pib6sKRWhTtFCZOTZU2I6KyZfYPg==
+X-Received: by 2002:a1c:7c0e:0:b0:401:6800:703c with SMTP id x14-20020a1c7c0e000000b004016800703cmr11271987wmc.21.1694503180236;
+        Tue, 12 Sep 2023 00:19:40 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c74f:d600:c705:bc25:17b2:71c9? (p200300cbc74fd600c705bc2517b271c9.dip0.t-ipconnect.de. [2003:cb:c74f:d600:c705:bc25:17b2:71c9])
-        by smtp.gmail.com with ESMTPSA id y9-20020a7bcd89000000b003fed630f560sm12028942wmj.36.2023.09.12.00.18.30
+        by smtp.gmail.com with ESMTPSA id g17-20020a7bc4d1000000b003fc02e8ea68sm15188204wmk.13.2023.09.12.00.19.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Sep 2023 00:18:31 -0700 (PDT)
-Message-ID: <7f4881dc-885a-a8f5-47a5-0dd23886a416@redhat.com>
-Date: Tue, 12 Sep 2023 09:18:30 +0200
+        Tue, 12 Sep 2023 00:19:39 -0700 (PDT)
+Message-ID: <96f124d6-c1f2-adb3-1d3b-8329e85ff099@redhat.com>
+Date: Tue, 12 Sep 2023 09:19:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -86,29 +86,11 @@ On 11.09.23 13:21, Adrian Hunter wrote:
 > 
 > Do not let /proc/vmcore try to access unaccepted memory because it can
 > cause the guest to fail.
-> 
-> For /proc/vmcore, which is read-only, this means a read or mmap of
-> unaccepted memory will return zeros.
-> 
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> ---
 
-[...]
+Oh, hold on. What are the actual side effects of this?
 
-> +static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
-> +{
-> +	phys_addr_t paddr = pfn << PAGE_SHIFT;
-> +
-> +	return range_contains_unaccepted_memory(paddr, paddr + PAGE_SIZE);
-> +}
-> +
->   #endif /* _LINUX_MM_H */
-
-As stated, if the relevant table is not already properly populated with 
-information about unaccepted memory by the first kernel, this probably 
-logically belongs into Kirills series.
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Once we're in the kdump kernel, any guest is already dead. So failing a 
+guest doesn't apply, no?
 
 -- 
 Cheers,
