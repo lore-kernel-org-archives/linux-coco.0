@@ -1,507 +1,112 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27626EB8
-	for <linux-coco@lists.linux.dev>; Wed, 13 Sep 2023 03:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977311DDFB
+	for <linux-coco@lists.linux.dev>; Wed, 13 Sep 2023 10:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694577121; x=1726113121;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Rj+PGROzrOy+ixHMVyeKUEW8GhRus5TfuBK1dgAmkuk=;
-  b=E1l1PKTk33GQMc2b55lHk4SIYf79e93aDexX+rJBcJJ4hTRud2YmnFGm
-   GHYsDxcpDUWHjDjxU27I7cfHEXlVMSpyZ4d1X/Z0GWOIEzUyoaRuXcKCk
-   hBzBesB+fHqm8yPPzyUNW79aisM2F1XLYtJpQwbbmr8ZSmdJBQuveOedq
-   qfv2ylJJ/O4MeZOpNwtuMKKGo8scNDHEUWNhzga5+VEGF1ZViSC6yhusz
-   V05DIiKO3TL693jCThjVFLdKBmR2IxoUJEZCa6y2x757xrYRrGQYTrs4M
-   dS8m6d/K9QQWYU24HHpVzAv66IPMwOdpoCiPNy0Dk+ywrg6ogqvZxjL+v
+  t=1694602148; x=1726138148;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0ipY0xZJYgdQ7/oanIvGLJbsO2u+4QkUIghXmzX8/8w=;
+  b=baTt97SrJMcWx6FmzKv01Zshf2CiJ22uLuceew4qrZDPuXJ04QBaJHme
+   Ky4lVRwUuXtz4LfDQyJrTi9icJg7dqHfRJwdzY8P/wjGCQOXpCfe0cMMF
+   iR0VWrCunuxb0HtJY9mx7gW7Mom9bojQH/bnWUvCfB3IUyNJYpp2Msu3s
+   bh9EjkbLPgRv4iMNKzCWHQCkEu44/JeAS9MzPJ8JtmOw8SqwEO0a4hCsg
+   ckc3EGcbxtO6s3JeFIb0B4/TPvpeHIN9qNYtGGUy9ZqAvZ3cI7zWzASh7
+   NAVehuXS8b2yVRgr0frg+IBFHjEyUiMOdHqjbFQCJaRdTpuiY5MwFYOrg
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="357987694"
-X-IronPort-AV: E=Sophos;i="6.02,142,1688454000"; 
-   d="scan'208";a="357987694"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 20:51:59 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="464994924"
+X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
+   d="scan'208";a="464994924"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 03:49:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="773288616"
-X-IronPort-AV: E=Sophos;i="6.02,142,1688454000"; 
-   d="scan'208";a="773288616"
-Received: from pranga-mobl.amr.corp.intel.com (HELO [10.209.20.198]) ([10.209.20.198])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2023 20:51:58 -0700
-Message-ID: <5fe6d55e-4fd5-4f81-bfcf-535817d521dc@linux.intel.com>
-Date: Tue, 12 Sep 2023 20:51:58 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="737451848"
+X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
+   d="scan'208";a="737451848"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 03:49:06 -0700
+From: isaku.yamahata@intel.com
+To: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: isaku.yamahata@intel.com,
+	isaku.yamahata@gmail.com,
+	Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	erdemaktas@google.com,
+	Sagi Shahar <sagis@google.com>,
+	David Matlack <dmatlack@google.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Zhi Wang <zhi.wang.linux@gmail.com>,
+	chen.bo@intel.com,
+	linux-coco@lists.linux.dev,
+	Chao Peng <chao.p.peng@linux.intel.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Yuan Yao <yuan.yao@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Quentin Perret <qperret@google.com>,
+	wei.w.wang@intel.com,
+	Fuad Tabba <tabba@google.com>
+Subject: [RFC PATCH 0/6] KVM: gmem: Implement error_remove_page
+Date: Wed, 13 Sep 2023 03:48:49 -0700
+Message-Id: <cover.1694599703.git.isaku.yamahata@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] virt: tdx-guest: Add Quote generation support using
- TSM_REPORTS
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>,
- Erdem Aktas <erdemaktas@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
- Wander Lairson Costa <wander@redhat.com>,
- Dionna Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao
- <qinkun@apache.org>, Guorui Yu <GuoRui.Yu@linux.alibaba.com>,
- linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
-References: <20230907025405.2310931-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <CAAYXXYzWMaruiTm84d=djM1Jekk-Ua9cEEZWWuZ-mh6knsCvTg@mail.gmail.com>
- <57469499-b150-4132-bd26-9a66991c9ce3@linux.intel.com>
- <64fa9e9bcb164_68a129421@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <64fa9e9bcb164_68a129421@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+From: Isaku Yamahata <isaku.yamahata@intel.com>
+
+This patch series is to share my progress on the KVM gmem error_remove_page task.
+Although I'm still working on test cases, I don't want to hold the patches
+locally until I finish test cases.
+
+- Update error_remove_page method.  Unmap gfn on poisoned pages.  Pass related
+  arguments.  Unfortunately, the error_remove_page callback is passed struct
+  page.  So the callback can't know about the actual poisoned address and range.
+  The memory poisoning would be based on cache line size, though.
+- Add a new flag to KVM_EXIT_MEMORY_FAULT to indicate the page is poisoned.
+- Add check in faultin_pfn_private.  When the page is poisoned,
+  KVM_EXIT_MEMORY_FAULT(HWPOISON).
+- Only test case for ioctl(FIBMAP).  Test cases are TODO.
+
+TODOs
+- Implement test cases to inject HWPOISON or MCE by hwpoison
+  (/sys/kernel/debug/hwpoison/corrupt-pfn) or MCE injection
+  (/sys/kernel/debug/mce-inject).
+- Update qemu to handle KVM_EXIT_MEMORY_FAULT(HWPOISON)
+- Update TDX KVM to handle it and Add test cases for TDX.
+- Try to inject HWPOISON as soon as the poison is detected.
+
+Isaku Yamahata (6):
+  KVM: guest_memfd: Add config to show the capability to handle error
+    page
+  KVM: guestmem_fd: Make error_remove_page callback to unmap guest
+    memory
+  KVM: guest_memfd, x86: MEMORY_FAULT exit with hw poisoned page
+  KVM: guest_memfd: Implemnet bmap inode operation
+  KVM: selftests: Add selftest for guest_memfd() fibmap
+  KVM: X86: Allow KVM gmem hwpoison test cases
+
+ arch/x86/kvm/Kconfig                          |  2 +
+ arch/x86/kvm/mmu/mmu.c                        | 21 +++--
+ include/linux/kvm_host.h                      |  2 +
+ include/uapi/linux/kvm.h                      |  3 +-
+ .../testing/selftests/kvm/guest_memfd_test.c  | 45 ++++++++++
+ virt/kvm/Kconfig                              |  7 ++
+ virt/kvm/guest_mem.c                          | 82 +++++++++++++++----
+ 7 files changed, 139 insertions(+), 23 deletions(-)
 
 
-On 9/7/2023 9:10 PM, Dan Williams wrote:
-> Kuppuswamy Sathyanarayanan wrote:
->> Hi Erdem,
->>
->> Thanks for the review.
->>
->> On 9/7/2023 6:30 PM, Erdem Aktas wrote:
->>> On Wed, Sep 6, 2023 at 7:54 PM Kuppuswamy Sathyanarayanan
->>> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->>>>
->>>> In TDX guest, the attestation process is used to verify the TDX guest
->>>> trustworthiness to other entities before provisioning secrets to the
->>>> guest. The First step in the attestation process is TDREPORT
->>>> generation, which involves getting the guest measurement data in the
->>>> format of TDREPORT, which is further used to validate the authenticity
->>>> of the TDX guest. TDREPORT by design is integrity-protected and can
->>>> only be verified on the local machine.
->>>>
->>>> To support remote verification of the TDREPORT (in a SGX-based
->>>> attestation), the TDREPORT needs to be sent to the SGX Quoting Enclave
->>>> (QE) to convert it to a remote verifiable Quote. SGX QE by design can
->>> s/remote/remotely ?
->>>> only run outside of the TDX guest (i.e. in a host process or in a
->>>> normal VM) and guest can use communication channels like vsock or
->>>> TCP/IP to send the TDREPORT to the QE. But for security concerns, the
->>>> TDX guest may not support these communication channels. To handle such
->>>> cases, TDX defines a GetQuote hypercall which can be used by the guest
->>>> to request the host VMM to communicate with the SGX QE. More details
->>>> about GetQuote hypercall can be found in TDX Guest-Host Communication
->>>> Interface (GHCI) for Intel TDX 1.0, section titled
->>>> "TDG.VP.VMCALL<GetQuote>".
->>>>
->>>> Trusted Security Module (TSM) [1] exposes a common ABI for Confidential
->>>> Computing Guest platforms to get the measurement data via ConfigFS.
->>>> Extend the TSM framework and add support to allow an attestation agent
->>>> to get the TDX Quote data (included usage example below).
->>>>
->>>>   report=/sys/kernel/config/tsm/report/report0
->>>>   mkdir $report
->>>>   dd if=/dev/urandom bs=64 count=1 > $report/inblob
->>>>   hexdump -C $report/outblob
->>>>   rmdir $report
->>>>
->>>> GetQuote TDVMCALL requires TD guest pass a 4K aligned shared buffer
->>>> with TDREPORT data as input, which is further used by the VMM to copy
->>>> the TD Quote result after successful Quote generation. To create the
->>>> shared buffer, allocate a large enough memory and mark it shared using
->>>> set_memory_decrypted() in tdx_guest_init(). This buffer will be re-used
->>>> for GetQuote requests in the TDX TSM handler.
->>>>
->>>> Although this method reserves a fixed chunk of memory for GetQuote
->>>> requests, such one time allocation can help avoid memory fragmentation
->>>> related allocation failures later in the uptime of the guest.
->>>>
->>>> Since the Quote generation process is not time-critical or frequently
->>>> used, the current version uses a polling model for Quote requests and
->>>> it also does not support parallel GetQuote requests.
->>>>
->>>> Link: https://lore.kernel.org/lkml/169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com/ [1]
->>>> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>>> ---
->>>>
->>>> Hi All,
->>>>
->>>> The previous version of this patch series [1] added support for TDX
->>>> Guest Quote generation via an IOCTL interface. Since we have multiple
->>>> vendors implementing such interface, to avoid ABI proliferation, Dan
->>>> proposed using a common ABI for it and submitted the Trusted Secure
->>>> module (TSM) report ABI support [2]. This patchset extends the
->>>> TSM REPORTS to implement the TDX Quote generation support. Since there
->>>> is a change in interface type, I have dropped the previous Acks.
->>>>
->>>> [1] https://lore.kernel.org/lkml/3c57deb0-a311-2aad-c06b-4938e33491b5@linux.intel.com/
->>>> [2] https://lore.kernel.org/lkml/169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com/
->>>>
->>>> Changes since previous version:
->>>> * Used ConfigFS interface instead of IOCTL interface.
->>>> * Used polling model for Quote generation and dropped the event notification IRQ support.
->>>>
->>>>  arch/x86/coco/tdx/tdx.c                 |  21 +++
->>>>  arch/x86/include/asm/shared/tdx.h       |   1 +
->>>>  arch/x86/include/asm/tdx.h              |   2 +
->>>>  drivers/virt/coco/tdx-guest/Kconfig     |   1 +
->>>>  drivers/virt/coco/tdx-guest/tdx-guest.c | 205 +++++++++++++++++++++++-
->>>>  5 files changed, 229 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
->>>> index 1d6b863c42b0..20414ed82fc5 100644
->>>> --- a/arch/x86/coco/tdx/tdx.c
->>>> +++ b/arch/x86/coco/tdx/tdx.c
->>>> @@ -104,6 +104,27 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
->>>>  }
->>>>  EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
->>>>
->>>> +/**
->>>> + * tdx_hcall_get_quote() - Wrapper to request TD Quote using GetQuote
->>>> + *                         hypercall.
->>>> + * @buf: Address of the directly mapped shared kernel buffer which
->>>> + *      contains TDREPORT data. The same buffer will be used by
->>>> + *      VMM to store the generated TD Quote output.
->>>> + * @size: size of the tdquote buffer (4KB-aligned).
->>>> + *
->>>> + * Refer to section titled "TDG.VP.VMCALL<GetQuote>" in the TDX GHCI
->>>> + * v1.0 specification for more information on GetQuote hypercall.
->>>> + * It is used in the TDX guest driver module to get the TD Quote.
->>>> + *
->>>> + * Return 0 on success or error code on failure.
->>>> + */
->>>> +u64 tdx_hcall_get_quote(u8 *buf, size_t size)
->>>> +{
->>>> +       /* Since buf is a shared memory, set the shared (decrypted) bits */
->>>> +       return _tdx_hypercall(TDVMCALL_GET_QUOTE, cc_mkdec(virt_to_phys(buf)), size, 0, 0);
->>>> +}
->>>> +EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
->>>> +
->>>>  static void __noreturn tdx_panic(const char *msg)
->>>>  {
->>>>         struct tdx_hypercall_args args = {
->>>> diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
->>>> index 7513b3bb69b7..9eab19950f39 100644
->>>> --- a/arch/x86/include/asm/shared/tdx.h
->>>> +++ b/arch/x86/include/asm/shared/tdx.h
->>>> @@ -22,6 +22,7 @@
->>>>
->>>>  /* TDX hypercall Leaf IDs */
->>>>  #define TDVMCALL_MAP_GPA               0x10001
->>>> +#define TDVMCALL_GET_QUOTE             0x10002
->>>>  #define TDVMCALL_REPORT_FATAL_ERROR    0x10003
->>>>
->>>>  #ifndef __ASSEMBLY__
->>>> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
->>>> index 603e6d1e9d4a..ebd1cda4875f 100644
->>>> --- a/arch/x86/include/asm/tdx.h
->>>> +++ b/arch/x86/include/asm/tdx.h
->>>> @@ -52,6 +52,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
->>>>
->>>>  int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
->>>>
->>>> +u64 tdx_hcall_get_quote(u8 *buf, size_t size);
->>>> +
->>>>  #else
->>>>
->>>>  static inline void tdx_early_init(void) { };
->>>> diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
->>>> index 14246fc2fb02..22dd59e19431 100644
->>>> --- a/drivers/virt/coco/tdx-guest/Kconfig
->>>> +++ b/drivers/virt/coco/tdx-guest/Kconfig
->>>> @@ -1,6 +1,7 @@
->>>>  config TDX_GUEST_DRIVER
->>>>         tristate "TDX Guest driver"
->>>>         depends on INTEL_TDX_GUEST
->>>> +       select TSM_REPORTS
->>>>         help
->>>>           The driver provides userspace interface to communicate with
->>>>           the TDX module to request the TDX guest details like attestation
->>>> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>>> index 5e44a0fa69bd..135d89a7e418 100644
->>>> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
->>>> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
->>>> @@ -12,12 +12,59 @@
->>>>  #include <linux/mod_devicetable.h>
->>>>  #include <linux/string.h>
->>>>  #include <linux/uaccess.h>
->>>> +#include <linux/set_memory.h>
->>>> +#include <linux/io.h>
->>>> +#include <linux/delay.h>
->>>> +#include <linux/tsm.h>
->>>>
->>>>  #include <uapi/linux/tdx-guest.h>
->>>>
->>>>  #include <asm/cpu_device_id.h>
->>>>  #include <asm/tdx.h>
->>>>
->>>> +/*
->>>> + * Intel's SGX QE implementation generally uses Quote size less
->>>> + * than 8K (2K Quote data + ~5K of ceritificate blob).
->>> s/ceritificate/certificate
->>>> + */
->>>> +#define GET_QUOTE_BUF_SIZE             SZ_8K
->>>> +
->>>> +#define GET_QUOTE_CMD_VER              1
->>>> +
->>>> +/* TDX GetQuote status codes */
->>>> +#define GET_QUOTE_SUCCESS              0
->>>> +#define GET_QUOTE_IN_FLIGHT            0xffffffffffffffff
->>>> +
->>>> +/* struct tdx_quote_buf: Format of Quote request buffer.
->>>> + * @version: Quote format version, filled by TD.
->>>> + * @status: Status code of Quote request, filled by VMM.
->>>> + * @in_len: Length of TDREPORT, filled by TD.
->>>> + * @out_len: Length of Quote data, filled by VMM.
->>>> + * @data: Quote data on output or TDREPORT on input.
->>>> + *
->>>> + * More details of Quote request buffer can be found in TDX
->>>> + * Guest-Host Communication Interface (GHCI) for Intel TDX 1.0,
->>>> + * section titled "TDG.VP.VMCALL<GetQuote>"
->>>> + */
->>>> +struct tdx_quote_buf {
->>>> +       u64 version;
->>>> +       u64 status;
->>>> +       u32 in_len;
->>>> +       u32 out_len;
->>>> +       u8 data[];
->>>> +};
->>>> +
->>>> +/* Quote data buffer */
->>>> +static void *quote_data;
->>>> +
->>>> +/* Lock to streamline quote requests */
->>>> +static DEFINE_MUTEX(quote_lock);
->>>> +
->>>> +/*
->>>> + * GetQuote request timeout in seconds. Expect that 30 seconds
->>>> + * is enough time for QE to respond to any Quote requests.
->>>> + */
->>>> +static u32 getquote_timeout = 30;
->>>> +
->>>>  static long tdx_get_report0(struct tdx_report_req __user *req)
->>>>  {
->>>>         u8 *reportdata, *tdreport;
->>>> @@ -53,6 +100,131 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
->>>>         return ret;
->>>>  }
->>>>
->>>> +static void free_quote_buf(void *buf)
->>>> +{
->>>> +       size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->>>> +       unsigned int count = len >> PAGE_SHIFT;
->>>> +
->>>> +       set_memory_encrypted((unsigned long)buf, count);
->>> Why not check the return error? if conversion fails (even though
->>> unlikely), we should at least print an error message.
->>
->> Ok. Since it is unlikely to fail, we can use WARN_ON().
->>
->> WARN_ON(set_memory_encrypted((unsigned long)buf, count))
-> 
-> No, panic_on_warn turns recoverable errors into fatal errors. Just
-> pr_err(). I also assume you don't want memory that failed to be set back
-> to encrypted into the free page pool, so it seems safer to leak the
-> memory at this point.
-> 
->>
->>>> +
->>>> +       free_pages_exact(buf, len);
->>>> +}
->>>> +
->>>> +static void *alloc_quote_buf(void)
->>>> +{
->>>> +       size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->>>> +       unsigned int count = len >> PAGE_SHIFT;
->>>> +       void *addr;
->>>> +       int ret;
->>>> +
->>>> +       addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
->>>> +       if (!addr)
->>>> +               return NULL;
->>>> +
->>>> +       ret = set_memory_decrypted((unsigned long)addr, count);
->>>> +       if (ret) {
->>>> +               free_pages_exact(addr, len);
->>>> +               return NULL;
->>>> +       }
->>>> +
->>>> +       return addr;
->>>> +}
->>>> +
->>>> +/*
->>>> + * wait_for_quote_completion() - Wait for Quote request completion
->>>> + * @quote_buf: Address of Quote buffer.
->>>> + * @timeout: Timeout in seconds to wait for the Quote generation.
->>>> + *
->>>> + * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
->>>> + * the status field in the Quote buffer will be set to GET_QUOTE_IN_FLIGHT
->>>> + * while VMM processes the GetQuote request, and will change it to success
->>>> + * or error code after processing is complete. So wait till the status
->>>> + * changes from GET_QUOTE_IN_FLIGHT or the request timedout.
->>> s/timedout/being timed out?
->>>> + */
->>>> +static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
->>>> +{
->>>> +       int i = 0;
->>>> +
->>>> +       /*
->>>> +        * Quote requests usually take a few seconds to complete, so waking up
->>>> +        * once per second to recheck the status is fine for this use case.
->>>> +        */
->>>> +       while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout)
->>>> +               ssleep(1);
->>> Would not this loop cause soft lock (or even panic) if getquote waits
->>> for 30s? Should we not yield?
->>
->> Since we are sleeping for a second in each cycle (which will relinquish the CPU
->> to other threads), it should not create a soft lockup.
-> 
-> No, this would need to release the lock while sleeping or otherwise make
-> this interruptible to make that happen. In fact it should release the
-> lock or use mutex_lock_interruptible() and configfs-tsm should switch to
-> interruptible synchronization.
-> 
->>
->>>> +
->>>> +       return (i == timeout) ? -ETIMEDOUT : 0;
->>>> +}
->>>> +
->>>> +static u8 *tdx_report_new(const struct tsm_desc *desc, void *data, size_t *outblob_len)
->>>> +{
->>>> +       struct tdx_quote_buf *quote_buf = quote_data;
->>>> +       int ret;
->>>> +       u8 *buf;
->>>> +       u64 err;
->>>> +
->>>> +       guard(mutex)(&quote_lock);
->>> I understand that this does not support parallel getQuote requests but
->>> if the user space for some reason makes multiple requests, each
->>> request will finish until the previous ones are completed in kernel
->>
->> Softlockup will only happen if a thread hogs the CPU for a long time without
->> relinquishing it. In our case, user processes waiting for the lock will be in
->> sleep state. So it should not create a lockup issue.
-> 
-> Stuck in uninterruptible sleep is another failure mode of the lockup
-> detector. The other threads waiting to acquire the mutex will fire being
-> stuck behind this thread.
-> 
-
-Used interruptible variants for sleep and quote_lock. Final version looks like
-below.
-
-+/*
-+ * wait_for_quote_completion() - Wait for Quote request completion
-+ * @quote_buf: Address of Quote buffer.
-+ * @timeout: Timeout in seconds to wait for the Quote generation.
-+ *
-+ * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
-+ * the status field in the Quote buffer will be set to GET_QUOTE_IN_FLIGHT
-+ * while VMM processes the GetQuote request, and will change it to success
-+ * or error code after processing is complete. So wait till the status
-+ * changes from GET_QUOTE_IN_FLIGHT or the request being timed out.
-+ */
-+static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
-+{
-+	int i = 0;
-+
-+	/*
-+	 * Quote requests usually take a few seconds to complete, so waking up
-+	 * once per second to recheck the status is fine for this use case.
-+	 */
-+	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
-+		if (msleep_interruptible(MSEC_PER_SEC))
-+			return -EINTR;
-+	}
-+
-+	return (i == timeout) ? -ETIMEDOUT : 0;
-+}
-+
-+static u8 *tdx_report_new(const struct tsm_desc *desc, void *data, size_t *outblob_len)
-+{
-+	struct tdx_quote_buf *quote_buf = quote_data;
-+	int ret;
-+	u8 *buf;
-+	u64 err;
-+
-+	if (mutex_lock_interruptible(&quote_lock))
-+		return ERR_PTR(-EINTR);
-+
-+	/*
-+	 * If the previous request is timedout or interrupted, and the
-+	 * Quote buf status is still in GET_QUOTE_IN_FLIGHT (owned by
-+	 * VMM), don't permit any new request.
-+	 */
-+	if (quote_buf->status == GET_QUOTE_IN_FLIGHT) {
-+		ret = -EBUSY;
-+		goto done;
-+	}
-+
-+	if (desc->inblob_len != TDX_REPORTDATA_LEN) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	/* TDX attestation only supports default format request */
-+	if (desc->outblob_format != TSM_FORMAT_DEFAULT) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	u8 *reportdata __free(kfree) = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
-+	if (!reportdata) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	u8 *tdreport __free(kfree) = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
-+	if (!tdreport) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	memcpy(reportdata, desc->inblob, desc->inblob_len);
-+
-+	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
-+	ret = tdx_mcall_get_report0(reportdata, tdreport);
-+	if (ret) {
-+		pr_err("GetReport call failed\n");
-+		goto done;
-+	}
-+
-+	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
-+
-+	/* Update Quote buffer header */
-+	quote_buf->version = GET_QUOTE_CMD_VER;
-+	quote_buf->in_len = TDX_REPORT_LEN;
-+
-+	memcpy(quote_buf->data, tdreport, TDX_REPORT_LEN);
-+
-+	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
-+	if (err) {
-+		pr_err("GetQuote hypercall failed, status:%llx\n", err);
-+		ret = -EIO;
-+		goto done;
-+	}
-+
-+	ret = wait_for_quote_completion(quote_buf, getquote_timeout);
-+	if (ret) {
-+		pr_err("GetQuote request timedout\n");
-+		goto done;
-+	}
-+
-+	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
-+	if (!buf) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	*outblob_len = quote_buf->out_len;
-+
-+done:
-+	mutex_unlock(&quote_lock);
-+	return ret ? ERR_PTR(ret) : buf;
-+}
-
+base-commit: a5accd8596fa84b9fe00076444b5ef628d2351b9
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.25.1
+
