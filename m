@@ -1,32 +1,32 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F87C1DDFC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AECD1E500
 	for <linux-coco@lists.linux.dev>; Wed, 13 Sep 2023 10:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1694602155; x=1726138155;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vea9mvBaSY1mfkjysqPlMz9IcbWDu86rAIRw2ANf9IU=;
-  b=S3B5mHPMRO04ej1QqK8YST3CxjOPhX/PJ+GA7bcc1SPCwSPFj51UwKIW
-   I+0yTwV0jXkxBeSWFc3XIP00+Gz4jFkCq3dPT0a6qgc1hcexTjJwgrAVS
-   8NsgedDGxo89PvAaj4z+WgI7jnB1dDhLMDZlvbE7jRtavRWzgtVQDwE4R
-   pgVK8vCM1mYnQz7R3mXOoB7VWs9gvirXjoPVH+7OjV+Zw/l1Vl3gZE7At
-   6T3xqm/gb6A4Re1Da0zsGv5aHRH1EjpSjVlv2powyT+MFdf91SnsWRfXX
-   WGMTAVZ+7BI4hs4mdYXnLpirT+cYeF2LtzQuCfugs0VOpVJjAY18OToAH
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="464994950"
+  bh=l4rRB6q60nP3OBQRoA84gLJ739r9ruaKEWruVEincP8=;
+  b=OC4DL6MzbFPH/mZ7l2PAsEgNnTWOm1vFBQkcqdGL/dDHYobDBz7Iy74j
+   Sk37C4pUT4JW3c2BNkqTq1XINkcCZqLl85aMTEIDShgAGZpVDJx/pnTUU
+   bWP2L5qJA3qO98363nV8CGq7lAQ7lHmn8p3bytZzMW4YNg8kJgkW1x67V
+   5a+eXgW5OyIJM6uVIM+7MHVg5F44TRcJzSVL4qvfHCVLJBnVDLqHml7QH
+   0RIUQfae2zQq10MAG+RgeRftVOrypLmpBBQX3L/zuvyaEulP4c4KBATKI
+   4uOxL4mNoHgeHhbGQenc9J5Dl7mTOwCNunw60KXr0nKSMbFN8QztD2L0F
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="377537908"
 X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="464994950"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 03:49:15 -0700
+   d="scan'208";a="377537908"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 03:49:12 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="737451852"
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="809635601"
 X-IronPort-AV: E=Sophos;i="6.02,143,1688454000"; 
-   d="scan'208";a="737451852"
+   d="scan'208";a="809635601"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 03:49:07 -0700
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2023 03:49:12 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: isaku.yamahata@intel.com,
 	Quentin Perret <qperret@google.com>,
 	wei.w.wang@intel.com,
 	Fuad Tabba <tabba@google.com>
-Subject: [RFC PATCH 1/6] KVM: guest_memfd: Add config to show the capability to handle error page
-Date: Wed, 13 Sep 2023 03:48:50 -0700
-Message-Id: <56cd2f6f42351f2f27a07e5764bab7f689cc0059.1694599703.git.isaku.yamahata@intel.com>
+Subject: [RFC PATCH 6/6] KVM: X86: Allow KVM gmem hwpoison test cases
+Date: Wed, 13 Sep 2023 03:48:55 -0700
+Message-Id: <192a749b3842619e89bf91513e3c2715091ced61.1694599703.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1694599703.git.isaku.yamahata@intel.com>
 References: <cover.1694599703.git.isaku.yamahata@intel.com>
@@ -67,40 +67,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Add config, HAVE_GENERIC_PRIVATE_MEM_HANDLE_ERROR, to indicate kvm arch
-can handle gmem error page.
+Set HAVE_GENERIC_PRIVATE_MEM_HANDLE_ERROR and KVM_GENERIC_PRIVATE_MEM_BMAP
+to allow test cases for KVM gmem.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- virt/kvm/Kconfig     | 3 +++
- virt/kvm/guest_mem.c | 3 +++
- 2 files changed, 6 insertions(+)
+ arch/x86/kvm/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index 1a48cb530092..624df45baff0 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -112,3 +112,6 @@ config KVM_GENERIC_PRIVATE_MEM
-        select KVM_GENERIC_MEMORY_ATTRIBUTES
-        select KVM_PRIVATE_MEM
-        bool
-+
-+config HAVE_GENERIC_PRIVATE_MEM_HANDLE_ERROR
-+	bool
-diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-index 85903c32163f..35d8f03e7937 100644
---- a/virt/kvm/guest_mem.c
-+++ b/virt/kvm/guest_mem.c
-@@ -307,6 +307,9 @@ static int kvm_gmem_error_page(struct address_space *mapping, struct page *page)
- 	pgoff_t start, end;
- 	gfn_t gfn;
- 
-+	if (!IS_ENABLED(CONFIG_HAVE_GENERIC_PRIVATE_MEM_HANDLE_ERROR))
-+		return MF_IGNORED;
-+
- 	filemap_invalidate_lock_shared(mapping);
- 
- 	start = page->index;
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 029c76bcd1a5..46fdedde9c0f 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -82,6 +82,8 @@ config KVM_SW_PROTECTED_VM
+ 	depends on EXPERT
+ 	depends on X86_64
+ 	select KVM_GENERIC_PRIVATE_MEM
++	select HAVE_GENERIC_PRIVATE_MEM_HANDLE_ERROR
++	select KVM_GENERIC_PRIVATE_MEM_BMAP
+ 	help
+ 	  Enable support for KVM software-protected VMs.  Currently "protected"
+ 	  means the VM can be backed with memory provided by
 -- 
 2.25.1
 
