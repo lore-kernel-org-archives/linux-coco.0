@@ -1,232 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991DD36AEE
-	for <linux-coco@lists.linux.dev>; Wed, 20 Sep 2023 13:45:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1695217526;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=ujgTQ3qDufxtYM9d31tejNUpUpn73FVEUPZ3OHRj4VM=;
-	b=NfRXg3/Eo0y0TtSswgDucso8FU3AyZcFCxQ6j6lefHauWVUtXitpBS/Ctbn9f9cHCEnpP/
-	LA9Mi5Pvl/iXKdY5RFrK+NHSLWMuNnrTcK+10o8k32RH91XJ2kbQnfdn5k+IV2C2bR/Pwy
-	uMJUm5x/lLfBDwAvhfpMT+r3kSEWpAM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-325-gkLD6GTqPb-VgyoADgSo4A-1; Wed, 20 Sep 2023 09:45:23 -0400
-X-MC-Unique: gkLD6GTqPb-VgyoADgSo4A-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D3533C23FE9;
-	Wed, 20 Sep 2023 13:45:22 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id A0021492C37;
-	Wed, 20 Sep 2023 13:45:19 +0000 (UTC)
-Date: Wed, 20 Sep 2023 14:45:17 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
-	Wander Lairson Costa <wander@redhat.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Qinkun Bao <qinkun@apache.org>,
-	Guorui Yu <GuoRui.Yu@linux.alibaba.com>, linux-coco@lists.linux.dev,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] virt: tdx-guest: Add Quote generation support using
- TSM_REPORTS
-Message-ID: <ZQr3bTtq6N+myZ4u@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20230914031349.23516-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20230920131633.ig6ldmwavpu7uhss@box.shutemov.name>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5333B7BD
+	for <linux-coco@lists.linux.dev>; Wed, 20 Sep 2023 15:27:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695223660; x=1726759660;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=KijHtpRJFl9wBZjIYL7/l4jdXyNhLusYqik2sns1Gmg=;
+  b=hCX952Uiz5ton0qgd+P/pBfuEokmBSWqRLzsDlxb+p/Z1ZtsxYRob5Dg
+   +j8+93CSEJulMWQoD0z8xyZkDlOpSL8rYBHxeQswNJERfnoU9V1d+xmw4
+   1kB5FtdZjieOnIB47ajXvBYyZmFCJvbxdxtUWb8rMSdcW7BYo1vhu6lef
+   xC0itopQ85oPyN5iveKOx9+ftrxxnufSuV5ESff/KF1xD7MNKmIoyrqN6
+   5YDjjJYBt8rEJmK7qXP5LBDPVjX2Gtn/r50dKUtm4jhKzczpAFvmLvGFC
+   63QBqLXygxWXJ7u3vp3f4LG13LG8KZ0k3pfeuglLJZAJSZSyKw7mZtt8R
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="370566110"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="370566110"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 08:27:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="889970093"
+X-IronPort-AV: E=Sophos;i="6.03,162,1694761200"; 
+   d="scan'208";a="889970093"
+Received: from pkmanna-mobl3.amr.corp.intel.com (HELO [10.209.53.192]) ([10.209.53.192])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2023 08:26:50 -0700
+Message-ID: <0031e031-10a8-43b1-a29c-8e1cf913eaad@linux.intel.com>
+Date: Wed, 20 Sep 2023 08:27:39 -0700
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] virt: tdx-guest: Add Quote generation support using
+ TSM_REPORTS
+Content-Language: en-US
+To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Tony Luck <tony.luck@intel.com>, Wander Lairson Costa <wander@redhat.com>,
+ Erdem Aktas <erdemaktas@google.com>,
+ Dionna Amalie Glaze <dionnaglaze@google.com>, Qinkun Bao
+ <qinkun@apache.org>, Guorui Yu <GuoRui.Yu@linux.alibaba.com>,
+ linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
+References: <20230914031349.23516-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20230920131633.ig6ldmwavpu7uhss@box.shutemov.name>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 In-Reply-To: <20230920131633.ig6ldmwavpu7uhss@box.shutemov.name>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 20, 2023 at 04:16:33PM +0300, Kirill A . Shutemov wrote:
-> On Thu, Sep 14, 2023 at 03:13:49AM +0000, Kuppuswamy Sathyanarayanan wrote:
-> > In TDX guest, the attestation process is used to verify the TDX guest
-> > trustworthiness to other entities before provisioning secrets to the
-> > guest. The First step in the attestation process is TDREPORT
-> 
-> s/First/first/ ?
-> 
-> > generation, which involves getting the guest measurement data in the
-> > format of TDREPORT, which is further used to validate the authenticity
-> > of the TDX guest. TDREPORT by design is integrity-protected and can
-> > only be verified on the local machine.
-> > 
-> > To support remote verification of the TDREPORT (in a SGX-based
-> > attestation), the TDREPORT needs to be sent to the SGX Quoting Enclave
-> 
-> Parentheses can be dropped.
-> 
-> > (QE) to convert it to a remotely verifiable Quote. SGX QE by design can
-> > only run outside of the TDX guest (i.e. in a host process or in a
-> > normal VM) and guest can use communication channels like vsock or
-> > TCP/IP to send the TDREPORT to the QE. But for security concerns, the
-> > TDX guest may not support these communication channels. To handle such
-> > cases, TDX defines a GetQuote hypercall which can be used by the guest
-> > to request the host VMM to communicate with the SGX QE. More details
-> > about GetQuote hypercall can be found in TDX Guest-Host Communication
-> > Interface (GHCI) for Intel TDX 1.0, section titled
-> > "TDG.VP.VMCALL<GetQuote>".
-> > 
-> > Trusted Security Module (TSM) [1] exposes a common ABI for Confidential
-> > Computing Guest platforms to get the measurement data via ConfigFS.
-> > Extend the TSM framework and add support to allow an attestation agent
-> > to get the TDX Quote data (included usage example below).
-> > 
-> >   report=/sys/kernel/config/tsm/report/report0
-> >   mkdir $report
-> >   dd if=/dev/urandom bs=64 count=1 > $report/inblob
-> >   hexdump -C $report/outblob
-> >   rmdir $report
-> > 
-> > GetQuote TDVMCALL requires TD guest pass a 4K aligned shared buffer
-> > with TDREPORT data as input, which is further used by the VMM to copy
-> > the TD Quote result after successful Quote generation. To create the
-> > shared buffer, allocate a large enough memory and mark it shared using
-> > set_memory_decrypted() in tdx_guest_init(). This buffer will be re-used
-> > for GetQuote requests in the TDX TSM handler.
-> > 
-> > Although this method reserves a fixed chunk of memory for GetQuote
-> > requests, such one time allocation can help avoid memory fragmentation
-> > related allocation failures later in the uptime of the guest.
-> > 
-> > Since the Quote generation process is not time-critical or frequently
-> > used, the current version uses a polling model for Quote requests and
-> > it also does not support parallel GetQuote requests.
-> > 
-> > Link: https://lore.kernel.org/lkml/169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com/ [1]
-> > Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> 
-> The patch looks good to me. See one question below.
 
-> > +static u8 *tdx_report_new(const struct tsm_desc *desc, void *data, size_t *outblob_len)
-> > +{
-> > +	struct tdx_quote_buf *quote_buf = quote_data;
-> > +	int ret;
-> > +	u8 *buf;
-> > +	u64 err;
-> > +
-> > +	if (mutex_lock_interruptible(&quote_lock))
-> > +		return ERR_PTR(-EINTR);
-> > +
-> > +	/*
-> > +	 * If the previous request is timedout or interrupted, and the
-> > +	 * Quote buf status is still in GET_QUOTE_IN_FLIGHT (owned by
-> > +	 * VMM), don't permit any new request.
-> > +	 */
-> > +	if (quote_buf->status == GET_QUOTE_IN_FLIGHT) {
-> > +		ret = -EBUSY;
-> > +		goto done;
-> > +	}
-> > +
-> > +	if (desc->inblob_len != TDX_REPORTDATA_LEN) {
-> > +		ret = -EINVAL;
-> > +		goto done;
-> > +	}
-> > +
-> > +	/* TDX attestation only supports default format request */
-> > +	if (desc->outblob_format != TSM_FORMAT_DEFAULT) {
-> > +		ret = -EINVAL;
-> > +		goto done;
-> > +	}
-> > +
-> > +	u8 *reportdata __free(kfree) = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
-> 
+
+On 9/20/2023 6:16 AM, Kirill A . Shutemov wrote:
+>> +static u8 *tdx_report_new(const struct tsm_desc *desc, void *data, size_t *outblob_len)
+>> +{
+>> +	struct tdx_quote_buf *quote_buf = quote_data;
+>> +	int ret;
+>> +	u8 *buf;
+>> +	u64 err;
+>> +
+>> +	if (mutex_lock_interruptible(&quote_lock))
+>> +		return ERR_PTR(-EINTR);
+>> +
+>> +	/*
+>> +	 * If the previous request is timedout or interrupted, and the
+>> +	 * Quote buf status is still in GET_QUOTE_IN_FLIGHT (owned by
+>> +	 * VMM), don't permit any new request.
+>> +	 */
+>> +	if (quote_buf->status == GET_QUOTE_IN_FLIGHT) {
+>> +		ret = -EBUSY;
+>> +		goto done;
+>> +	}
+>> +
+>> +	if (desc->inblob_len != TDX_REPORTDATA_LEN) {
+>> +		ret = -EINVAL;
+>> +		goto done;
+>> +	}
+>> +
+>> +	/* TDX attestation only supports default format request */
+>> +	if (desc->outblob_format != TSM_FORMAT_DEFAULT) {
+>> +		ret = -EINVAL;
+>> +		goto done;
+>> +	}
+>> +
+>> +	u8 *reportdata __free(kfree) = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
 > __free() is new to me. Good to know.
 > 
 > But are we okay now with declaring variables in the middle of the
 > function? Any reason we can't do at the top?
 
-I expect that to be unsafe and result in uninitialized data from the
-stack being passed to kfree, if a "goto done" in the lines prior to
-this declaration is triggered.
+Declaring variables at the top is no longer a hard requirement. The main reason
+for declaring it here is to use __free cleanup function. If we use top
+declaration, then we have free it manually.
 
-The 'reportdata' variable will be in scope at the "done:" label,
-thus triggering the __free callback, but the 'kmalloc' initializer
-will not have executed.
-
-Variables should always be declared prior to any 'goto' statement
-within the same block of scope, if relying on __attribute__((cleanup))
-callbacks.
-
-> 
-> > +	if (!reportdata) {
-> > +		ret = -ENOMEM;
-> > +		goto done;
-> > +	}
-> > +
-> > +	u8 *tdreport __free(kfree) = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
-> > +	if (!tdreport) {
-> > +		ret = -ENOMEM;
-> > +		goto done;
-> > +	}
-> > +
-> > +	memcpy(reportdata, desc->inblob, desc->inblob_len);
-> > +
-> > +	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
-> > +	ret = tdx_mcall_get_report0(reportdata, tdreport);
-> > +	if (ret) {
-> > +		pr_err("GetReport call failed\n");
-> > +		goto done;
-> > +	}
-> > +
-> > +	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
-> > +
-> > +	/* Update Quote buffer header */
-> > +	quote_buf->version = GET_QUOTE_CMD_VER;
-> > +	quote_buf->in_len = TDX_REPORT_LEN;
-> > +
-> > +	memcpy(quote_buf->data, tdreport, TDX_REPORT_LEN);
-> > +
-> > +	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
-> > +	if (err) {
-> > +		pr_err("GetQuote hypercall failed, status:%llx\n", err);
-> > +		ret = -EIO;
-> > +		goto done;
-> > +	}
-> > +
-> > +	ret = wait_for_quote_completion(quote_buf, getquote_timeout);
-> > +	if (ret) {
-> > +		pr_err("GetQuote request timedout\n");
-> > +		goto done;
-> > +	}
-> > +
-> > +	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
-> > +	if (!buf) {
-> > +		ret = -ENOMEM;
-> > +		goto done;
-> > +	}
-> > +
-> > +	*outblob_len = quote_buf->out_len;
-> > +
-> > +done:
-> > +	mutex_unlock(&quote_lock);
-> > +	return ret ? ERR_PTR(ret) : buf;
-> > +}
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
