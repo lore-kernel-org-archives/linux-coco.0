@@ -1,50 +1,51 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4919CA5B
-	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:40:42 +0000 (UTC)
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5788445ac04so1021121a12.2
-        for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 13:40:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A4219470
+	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 21:29:23 +0000 (UTC)
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-d8571d5e71aso1869526276.0
+        for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 14:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695328842; x=1695933642; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1695331762; x=1695936562; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wY7skFGSh9IgJDFkQorAIyBJ+qj/XXwmSoR+xsvLutM=;
-        b=kyeGdibZiYleqMuokOED3GzUgFWGhvjM9e3ld6KdvlSFT96qmFoNogCHD9Q1/LTh6B
-         /QEvWphOhUvYP64fQhYl6v8sV0/kT9p1lk78lMwLSAkfVbFTjmhvxZi6Jy4J7yA0QATe
-         fiXIfBkjVRF0zEDb+OewFaweCAZPWJAHpfGB75/jpfAX/Skz5MkBP/IbFVd9b9NSTIOW
-         U12RJE6+QRxC8eRscDIWsHijU9RB//bnPVqfQGgKdwBcfRj09LvK6jlXgHo/oVryXzWC
-         dXXI1Xp4OwLzq/d0nK9WUMsPLxtC3cF34G37jyILc3W7DxylgncPChjO1xSdHnOmDD0v
-         itTQ==
+        bh=kGBnu6VSG+/azby0SuhGoM7WFu5N49MxhGtPLCEYj7Y=;
+        b=atfsO+MRcJERV/aF77Z9mDjFTUKjwslCk6mpPIbHl6t6HuiJOFWOP/r5gD/UcBIUMM
+         fdW52GI0qWA89710N0tV5zSI6UJ83hN3TaQQ+uIVVyNbdB1v+OYTj4wDfvC/4V5bowTa
+         fQ5qoYUQXyCtzHx6auXvQ+KT6p1/O+c8xsY8PmdZ7Q2TjqozYrLPeqYKEI9O2BxhPHYb
+         LlsYFjavcTjvPvYyUPyiiwSuiksEI1NrqHt5uypTcZKWkZnFzTe2Oga8zsWrI9kCgMHz
+         EXLhsd8q9aZUOJGDbOT9Y/KCD+FLmD97jwps6j4s/+tNn1TRBgOA/XYdxwulaA2HgroK
+         XZSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695328842; x=1695933642;
+        d=1e100.net; s=20230601; t=1695331762; x=1695936562;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wY7skFGSh9IgJDFkQorAIyBJ+qj/XXwmSoR+xsvLutM=;
-        b=MSJxU+PdhEsNzwItfGALb7M97ZyJiL+h1j4jK98GeaHeleA34dTriiW9VEjxdllgM1
-         H0u4NY17o0Z254a+hAL94wPfmWKAEm9mPVS99QFtSwLts81tghTXH/BiDflcCLYOqtZ+
-         2Rf7MYXuJpl4b4ULQJAthME1gMASe4eTVR+iZ+TBL+XV8BrDKAOSzlzRWImwfdC1UsLe
-         XO9f3XXgNpVbRIpCJp2ejTEOSeAzZaVA1kvH+oeFAJYSdANt8uKCwzcJ8HJRNT+tmmnu
-         yrD9Fv91Q0+Un9xJA2N4jl4yEJSe9AaG3GL/WIgNVyhOw8C9JJ0K+y1yZesZqefER6Va
-         xz3g==
-X-Gm-Message-State: AOJu0YzeQQvvXZVMcBmXV9XRCUqws1E8IIk289a1xClWmLA5anRV9hEJ
-	+KfKQtYRney0mjQiKegWIgnkbNuikbc=
-X-Google-Smtp-Source: AGHT+IE2K20JyCSxvBs9FX0l9CJg9tnhr+0tXhOs9dF7vlRV4Ygmc3v4TCO+SwF3JM+aWjkkBb9ehZqxmwE=
+        bh=kGBnu6VSG+/azby0SuhGoM7WFu5N49MxhGtPLCEYj7Y=;
+        b=KAQsIQz61GAQRchDSQ8sykXvaeHyj+9ld4lN20CO1w1VE30pDEKj/+VkEU4AzFHHZ3
+         z1FBBBjPXCLhK4JnjIOTz6rTz0qZcG34YAVKfcCn1NFHix/e1qyZAk7xu5ZmlC6VGYmG
+         BbZPqdlkJJ8bcih9Bsrhm583T83mIPgvwU4D7UN7Sq1puKfgn/FVRx/VdjEQAdBjhOFW
+         BrACDCLkqnE5jAFnyOuUDMow4kT/U0lr5XjqjJ24r/0KuqLGm4XhBT/02ep3YDd6wnmk
+         AHGb/CAZSldYFBlU3oq7PQR2hVCmMdTGPuFtA5r3h2VC08wx+B7WLZaXeoS3evsM07kX
+         zTHA==
+X-Gm-Message-State: AOJu0Yxi2S8SVJV0EvgzlCseHaSijA1t6M2SDBZTifoQhWFrZzIhhfu9
+	p+Dc3J+MSC1YUllXGIoWSe1Ba08cGsY=
+X-Google-Smtp-Source: AGHT+IHWNByCIxDzTx5QAdD7uR/d2d7gUCrth/qIEPfej09mGplokWZOjT6UEUFRsTTKmehDwV7dGEBrHFk=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:3307:0:b0:56c:24c2:488d with SMTP id
- z7-20020a633307000000b0056c24c2488dmr80575pgz.4.1695328842280; Thu, 21 Sep
- 2023 13:40:42 -0700 (PDT)
-Date: Thu, 21 Sep 2023 13:40:40 -0700
-In-Reply-To: <26822c313754e03b2c393e6fdefe495f117bbfff.1695327124.git.isaku.yamahata@intel.com>
+ (user=seanjc job=sendgmr) by 2002:a25:420b:0:b0:d0c:c83b:94ed with SMTP id
+ p11-20020a25420b000000b00d0cc83b94edmr88009yba.10.1695331762271; Thu, 21 Sep
+ 2023 14:29:22 -0700 (PDT)
+Date: Thu, 21 Sep 2023 14:29:20 -0700
+In-Reply-To: <363c4ac28af93aa96a52f897d2fe5c7ec013f746.1695327124.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <cover.1695327124.git.isaku.yamahata@intel.com> <26822c313754e03b2c393e6fdefe495f117bbfff.1695327124.git.isaku.yamahata@intel.com>
-Message-ID: <ZQyqSI0HOmamJbWn@google.com>
-Subject: Re: [RFC PATCH v2 3/6] KVM: selftests: Add tests for punch hole on guest_memfd
+References: <cover.1695327124.git.isaku.yamahata@intel.com> <363c4ac28af93aa96a52f897d2fe5c7ec013f746.1695327124.git.isaku.yamahata@intel.com>
+Message-ID: <ZQy1sDOQAxPyZzjW@google.com>
+Subject: Re: [RFC PATCH v2 4/6] KVM: gmem: Add ioctl to inject memory failure
+ on guest memfd
 From: Sean Christopherson <seanjc@google.com>
 To: isaku.yamahata@intel.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -61,31 +62,39 @@ Content-Type: text/plain; charset="us-ascii"
 On Thu, Sep 21, 2023, isaku.yamahata@intel.com wrote:
 > From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> Punch hole implies the region is zeroed out. Add tests if the punched
-> region has zero.
-> Oppertunistically Remove unused member, pattern, in guest_run_test().
-
-Heh, I didn't pretty much all the same stuff, except I opted to have
-SET_ATTRIBUTE instead of FALLOCATE_ONLY, e.g. in case we end up with a test that's
-wants a thrid flavor (or somehow neither?).
-
+> To test error_remove_page() method of KVM gmem, add a new ioctl to
+> inject memory failure based on offset of guest memfd.
+> 
 > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 > ---
->  .../kvm/x86_64/private_mem_conversions_test.c | 26 ++++++++++++++-----
->  1 file changed, 20 insertions(+), 6 deletions(-)
+>  include/uapi/linux/kvm.h |  6 ++++
+>  virt/kvm/guest_mem.c     | 68 ++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 74 insertions(+)
 > 
-
-...
-
-> @@ -156,6 +163,10 @@ static void guest_run_test(uint64_t base_gpa, bool do_fallocate)
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 65fc983af840..4160614bcc0f 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -2323,4 +2323,10 @@ struct kvm_create_guest_memfd {
+>  	__u64 reserved[6];
+>  };
 >  
->  		if (size > PAGE_SIZE) {
->  			memset((void *)gpa, p2, PAGE_SIZE);
-> +
-> +			/* Test if punch hole results in zeroing page. */
-> +			guest_punch_hole_private(gpa, PAGE_SIZE);
-> +			memcmp_g(gpa, 0, PAGE_SIZE);
+> +#define KVM_GUEST_MEMORY_FAILURE	_IOWR(KVMIO,  0xd5, struct kvm_guest_memory_failure)
 
-I added a dedicated sub-test to provide a bit more variety in the tests.  I highly
-doubt my version will ever find a bug that isn't caught by this approach, but if
-nothing else, it's nice to have a completely separate sub-test.
+If we're going to add a KVM ioctl(), my vote is to make it a generic ioctl(), not
+something that's specific to guest_memfd().  IIUC, all we need is the PFN, so the
+only downside is that it'd require valid memslots.  But the test isn't all that
+interesting unless there are memslots, so I don't see that as a negative.
+
+And if we add an ioctl(), it should be conditioned on CONFIG_HWPOISON_INJECT.
+
+An alternative I think we should seriously consider is using the FAULT_INJECTION
+framework to poison pages.  We (Google) have plans to utilize fault injection for
+other things in KVM, e.g. to inject "failures" on CMPXCHG in atomic SPTE updates
+to force KVM down unlikely slow paths.  I don't expect us to get patches posted
+until early next year due to priorities, but hell or high water we will get patches
+posted at some point.
+
+The fault injection framework might be overkill for injecting memory errors, e.g.
+a single ioctl() is definitely simpler to setup, but I suspect it would also be
+much more powerful in the long run..
