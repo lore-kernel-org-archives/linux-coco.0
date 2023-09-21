@@ -1,32 +1,32 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7E818B0D
-	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D5818B17
+	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695327289; x=1726863289;
+  t=1695327290; x=1726863290;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RtfNaKFCK9P/yxwP8BTsIwYqXtE9p2zlPuJXOdTAut0=;
-  b=PwInJ2KXLCgq+XukgA8TrRHkjFMbzg0QKgaakfD6vRpCpapwgFs373Ys
-   q7x/fy/LRrv8G11T+cKVWLQdYtAl+RK6mlgqA/cJ4geFJayV0zO+ycFof
-   nIcmSecCw0/L2t4ykIW16crTpy6HIJW8C82VE0Bv2x4UOmlkMwb1XtHtu
-   zpGB4RHagT2GL/YzoVGyMvwFtv8OgHV3JfH3hlvDzLo6OshqpBnmMMtTt
-   FwNiWsP5ospFkakQudyZEBdebk1W/xKhcXi8UcnlafyekwBW1gqHRSy5D
-   QK/wQy86UHWoeM9uWGE2WyyTiYPufEbWkk+fv9ENpCcwub+vgn4HBx4gn
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="383401617"
+  bh=xgBlKNZhDNJa7QFdNnudGsohvQxeiXqUZBEeWY2YObQ=;
+  b=bUDyBXXa6bQjMuJrONXV7FSAUNSDBeYS9znQ+MKDQJwiv7TWExVmcs9r
+   KX9a7d/P61WECcu3bujfB66BCOxWjDrDExch1GlsO83W1f7VTmv9UQnQ9
+   akd3UOq5R5dwXD7LNpc43fjSlQqHF81uBXL92BiBO9JkrBzzcOracJE83
+   VHKYi2058GXMAnSBrgfh51rQ+CI9X5oZzWXwDTT5RpzjGzOm9bLVs0XTa
+   k0hGdxJeTM/rwiXTiWWaQR+Z3quw6Ia+FWUbwwYO39Nmv9Crnd8KuywrU
+   ngKsDtTnY60POJdzDaI1FalnzYsI6Bid5Ya5O4VJDyzoVIBsIT9YCMGK4
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="383401652"
 X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
-   d="scan'208";a="383401617"
+   d="scan'208";a="383401652"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:48 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="696897795"
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="696897810"
 X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
-   d="scan'208";a="696897795"
+   d="scan'208";a="696897810"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:47 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:49 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: isaku.yamahata@intel.com,
 	Quentin Perret <qperret@google.com>,
 	wei.w.wang@intel.com,
 	Fuad Tabba <tabba@google.com>
-Subject: [RFC PATCH v2 3/6] KVM: selftests: Add tests for punch hole on guest_memfd
-Date: Thu, 21 Sep 2023 13:14:36 -0700
-Message-Id: <26822c313754e03b2c393e6fdefe495f117bbfff.1695327124.git.isaku.yamahata@intel.com>
+Subject: [RFC PATCH v2 5/6] KVM: selftests: Add test cases for KVM_GUEST_MEMORY_FAILURE
+Date: Thu, 21 Sep 2023 13:14:38 -0700
+Message-Id: <71be0cea7cd1ed2d7d20403a803213a9e2b28c11.1695327124.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1695327124.git.isaku.yamahata@intel.com>
 References: <cover.1695327124.git.isaku.yamahata@intel.com>
@@ -67,98 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Punch hole implies the region is zeroed out. Add tests if the punched
-region has zero.
-Oppertunistically Remove unused member, pattern, in guest_run_test().
+Add text cases for guest_memfd KVM_GUEST_MEMORY_FAILURE ioctl.
++ ioctl(KVM_GUEST_MEMORY_FAILURE) success with backing pages
++ ioctl(KVM_GUEST_MEMORY_FAILURE) fails with ENOENT without backing page
++ interaction with fallocate(PUNCH_HOLE)
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- .../kvm/x86_64/private_mem_conversions_test.c | 26 ++++++++++++++-----
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ .../testing/selftests/kvm/guest_memfd_test.c  | 48 +++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c
-index 50541246d6fd..c05c725645af 100644
---- a/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86_64/private_mem_conversions_test.c
-@@ -85,9 +85,10 @@ static void guest_sync_private(uint64_t gpa, uint64_t size, uint8_t pattern)
- /* Arbitrary values, KVM doesn't care about the attribute flags. */
- #define MAP_GPA_SHARED		BIT(0)
- #define MAP_GPA_DO_FALLOCATE	BIT(1)
-+#define MAP_GPA_FALLOCATE_ONLY	BIT(2)
- 
- static void guest_map_mem(uint64_t gpa, uint64_t size, bool map_shared,
--			  bool do_fallocate)
-+			  bool do_fallocate, bool fallocate_only)
- {
- 	uint64_t flags = 0;
- 
-@@ -95,17 +96,24 @@ static void guest_map_mem(uint64_t gpa, uint64_t size, bool map_shared,
- 		flags |= MAP_GPA_SHARED;
- 	if (do_fallocate)
- 		flags |= MAP_GPA_DO_FALLOCATE;
-+	if (fallocate_only)
-+		flags |= MAP_GPA_FALLOCATE_ONLY;
- 	kvm_hypercall_map_gpa_range(gpa, size, flags);
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index d5b4bfcdc3fe..f8b242c9319d 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -122,6 +122,53 @@ static void test_fallocate_fail(int fd, size_t page_size, size_t total_size)
+ 	}
  }
  
- static void guest_map_shared(uint64_t gpa, uint64_t size, bool do_fallocate)
- {
--	guest_map_mem(gpa, size, true, do_fallocate);
-+	guest_map_mem(gpa, size, true, do_fallocate, false);
- }
- 
- static void guest_map_private(uint64_t gpa, uint64_t size, bool do_fallocate)
- {
--	guest_map_mem(gpa, size, false, do_fallocate);
-+	guest_map_mem(gpa, size, false, do_fallocate, false);
++static void test_memory_failure(int fd, size_t page_size, size_t total_size)
++{
++	struct kvm_guest_memory_failure mf;
++	int ret;
++	int i;
++
++	/* Make whole file unallocated as known initial state */
++	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
++			0, total_size);
++	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) at while file should succeed");
++
++	/* Because there is no backing page, fail to inject memory failure. */
++	for (i = 0; i < total_size / page_size; i++) {
++		mf = (struct kvm_guest_memory_failure) {
++			.offset = i * page_size,
++		};
++
++		ret = ioctl(fd, KVM_GUEST_MEMORY_FAILURE, &mf);
++		if (ret == -1 && errno == EPERM) {
++			pr_info("KVM_GUEST_MEMORY_FAILURE requires CAP_SYS_ADMIN. Skipping.\n")
++			return;
++		}
++		TEST_ASSERT(ret == -1 && errno == ENOENT,
++			    "ioctl(KVM_GUEST_MEMORY_FAILURE) should fail i %d", i);
++	}
++
++	/* Allocate pages with index one and two. */
++	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE, page_size, page_size * 2);
++	TEST_ASSERT(!ret, "fallocate beginning at page_size should succeed");
++
++	for (i = 0; i < total_size / page_size; i++) {
++		mf = (struct kvm_guest_memory_failure) {
++			.offset = i * page_size,
++		};
++
++		ret = ioctl(fd, KVM_GUEST_MEMORY_FAILURE, &mf);
++
++		if (i == 1 || i == 2) {
++			TEST_ASSERT(!ret || (ret == -1 && errno == EBUSY),
++				    "ioctl(KVM_GUEST_MEMORY_FAILURE) should succeed i %d", i);
++		} else {
++			TEST_ASSERT(ret == -1 && errno == ENOENT,
++				    "ioctl(KVM_GUEST_MEMORY_FAILURE) should fail i %d", i);
++		}
++	}
 +}
 +
-+static void guest_punch_hole_private(uint64_t gpa, uint64_t size)
-+{
-+	guest_map_mem(gpa, size, true, true, true);
+ static void test_create_guest_memfd_invalid(struct kvm_vm *vm)
+ {
+ 	uint64_t valid_flags = 0;
+@@ -192,6 +239,7 @@ int main(int argc, char *argv[])
+ 	test_file_size(fd, page_size, total_size);
+ 	test_fallocate(fd, page_size, total_size);
+ 	test_fallocate_fail(fd, page_size, total_size);
++	test_memory_failure(fd, page_size, total_size);
+ 
+ 	close(fd);
  }
- 
- static void guest_run_test(uint64_t base_gpa, bool do_fallocate)
-@@ -113,7 +121,6 @@ static void guest_run_test(uint64_t base_gpa, bool do_fallocate)
- 	struct {
- 		uint64_t offset;
- 		uint64_t size;
--		uint8_t pattern;
- 	} stages[] = {
- 		GUEST_STAGE(0, PAGE_SIZE),
- 		GUEST_STAGE(0, SZ_2M),
-@@ -156,6 +163,10 @@ static void guest_run_test(uint64_t base_gpa, bool do_fallocate)
- 
- 		if (size > PAGE_SIZE) {
- 			memset((void *)gpa, p2, PAGE_SIZE);
-+
-+			/* Test if punch hole results in zeroing page. */
-+			guest_punch_hole_private(gpa, PAGE_SIZE);
-+			memcmp_g(gpa, 0, PAGE_SIZE);
- 			goto skip;
- 		}
- 
-@@ -229,6 +240,7 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
- 	uint64_t size = run->hypercall.args[1] * PAGE_SIZE;
- 	bool map_shared = run->hypercall.args[2] & MAP_GPA_SHARED;
- 	bool do_fallocate = run->hypercall.args[2] & MAP_GPA_DO_FALLOCATE;
-+	bool fallocate_only = run->hypercall.args[2] & MAP_GPA_FALLOCATE_ONLY;
- 	struct kvm_vm *vm = vcpu->vm;
- 
- 	TEST_ASSERT(run->hypercall.nr == KVM_HC_MAP_GPA_RANGE,
-@@ -238,8 +250,10 @@ static void handle_exit_hypercall(struct kvm_vcpu *vcpu)
- 	if (do_fallocate)
- 		vm_guest_mem_fallocate(vm, gpa, size, map_shared);
- 
--	vm_set_memory_attributes(vm, gpa, size,
--				 map_shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+	if (!fallocate_only)
-+		vm_set_memory_attributes(vm, gpa, size,
-+					 map_shared ?
-+					 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE);
- 	run->hypercall.ret = 0;
- }
- 
 -- 
 2.25.1
 
