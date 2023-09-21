@@ -1,50 +1,50 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB6C18B18
-	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:37:03 +0000 (UTC)
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-1c4375c1406so11594675ad.1
-        for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 13:37:03 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4919CA5B
+	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:40:42 +0000 (UTC)
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5788445ac04so1021121a12.2
+        for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 13:40:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695328622; x=1695933422; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1695328842; x=1695933642; darn=lists.linux.dev;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aP7hpifj13TY/cmxy/VtYAtAKQo7n6lxac2QUYqGXnE=;
-        b=betF0khUmgXaeZAkBSOCdUrZz7lys8PYtKktnVw2Pi7xxP+L9qXNl15Sro3DJEYsTy
-         FBcKguCutufoCOoig7170XNa02sXFmOHe9OYwBGc6nt7dGijQsR5pkCDaMEHjpWzy7OY
-         QjBDiQruub+dN4IqW/NJU+eww5O9/vd3HMK7WPpY7VjYw+T3Agpuw1AzAe3vu0Q9w9td
-         M/vPBSQUV+L9v2ol0+tA3f60DNhJDdp3yLav0jeiUB900boMTbidedhrvXWaESJiwn1L
-         8xJ+T7uBcS1WK5C978hTmVaLeakC2O0RUz3yBIM/SzgInxXIst+UkERcamHhhgqadkvz
-         gWuQ==
+        bh=wY7skFGSh9IgJDFkQorAIyBJ+qj/XXwmSoR+xsvLutM=;
+        b=kyeGdibZiYleqMuokOED3GzUgFWGhvjM9e3ld6KdvlSFT96qmFoNogCHD9Q1/LTh6B
+         /QEvWphOhUvYP64fQhYl6v8sV0/kT9p1lk78lMwLSAkfVbFTjmhvxZi6Jy4J7yA0QATe
+         fiXIfBkjVRF0zEDb+OewFaweCAZPWJAHpfGB75/jpfAX/Skz5MkBP/IbFVd9b9NSTIOW
+         U12RJE6+QRxC8eRscDIWsHijU9RB//bnPVqfQGgKdwBcfRj09LvK6jlXgHo/oVryXzWC
+         dXXI1Xp4OwLzq/d0nK9WUMsPLxtC3cF34G37jyILc3W7DxylgncPChjO1xSdHnOmDD0v
+         itTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695328622; x=1695933422;
+        d=1e100.net; s=20230601; t=1695328842; x=1695933642;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aP7hpifj13TY/cmxy/VtYAtAKQo7n6lxac2QUYqGXnE=;
-        b=Qm7ROvRO7bCmCO3EK2QKO6pTiScl6fxgpC8PtJMQLAwovYIoW7c9L08DEzieO9u/N7
-         9pKuYzY0FU7B+Mq9ccoFpBAu1KQjE9umofX0iGWtcE1Ywc2CBm0V2jTqAwPNYqKK0fNg
-         29e5dm0SHrbcj1Dxqk+OifGR35YJ56RGAWquO1YOzd+Giv/4YusuAJEEk5zP6V6SoUxJ
-         7cjjWb34wbV6HfUpb+/mn+k6EarzaI4NkzkkJYEZWkKny107UdKMgeQAnPcKS3o20fjV
-         4xIz6QeH0illpPzWUVKbVSIC0eJziREbCX4g/+nouvtvAxcJsWZTdGZCYfEp0vIJWEa4
-         VBLQ==
-X-Gm-Message-State: AOJu0YyFVoC4vm+ILopciRUD8izM6r+8DzbHAVw7EwoB3aKeOL9WyY8M
-	fQcjaKd+AUjVj4gNDORzgJipghK8+LQ=
-X-Google-Smtp-Source: AGHT+IEWJRg13o8CQmL28cdN0w6eaHgxHhAvKYngOPLn2gpdCakJVl0UPMB+5b2YBqkaLGEngQ4iwIMDAII=
+        bh=wY7skFGSh9IgJDFkQorAIyBJ+qj/XXwmSoR+xsvLutM=;
+        b=MSJxU+PdhEsNzwItfGALb7M97ZyJiL+h1j4jK98GeaHeleA34dTriiW9VEjxdllgM1
+         H0u4NY17o0Z254a+hAL94wPfmWKAEm9mPVS99QFtSwLts81tghTXH/BiDflcCLYOqtZ+
+         2Rf7MYXuJpl4b4ULQJAthME1gMASe4eTVR+iZ+TBL+XV8BrDKAOSzlzRWImwfdC1UsLe
+         XO9f3XXgNpVbRIpCJp2ejTEOSeAzZaVA1kvH+oeFAJYSdANt8uKCwzcJ8HJRNT+tmmnu
+         yrD9Fv91Q0+Un9xJA2N4jl4yEJSe9AaG3GL/WIgNVyhOw8C9JJ0K+y1yZesZqefER6Va
+         xz3g==
+X-Gm-Message-State: AOJu0YzeQQvvXZVMcBmXV9XRCUqws1E8IIk289a1xClWmLA5anRV9hEJ
+	+KfKQtYRney0mjQiKegWIgnkbNuikbc=
+X-Google-Smtp-Source: AGHT+IE2K20JyCSxvBs9FX0l9CJg9tnhr+0tXhOs9dF7vlRV4Ygmc3v4TCO+SwF3JM+aWjkkBb9ehZqxmwE=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:903:1c7:b0:1b8:3c5e:2289 with SMTP id
- e7-20020a17090301c700b001b83c5e2289mr84379plh.2.1695328622355; Thu, 21 Sep
- 2023 13:37:02 -0700 (PDT)
-Date: Thu, 21 Sep 2023 13:37:01 -0700
-In-Reply-To: <f987dcde3b051371b496847282022c679e9402e4.1695327124.git.isaku.yamahata@intel.com>
+ (user=seanjc job=sendgmr) by 2002:a63:3307:0:b0:56c:24c2:488d with SMTP id
+ z7-20020a633307000000b0056c24c2488dmr80575pgz.4.1695328842280; Thu, 21 Sep
+ 2023 13:40:42 -0700 (PDT)
+Date: Thu, 21 Sep 2023 13:40:40 -0700
+In-Reply-To: <26822c313754e03b2c393e6fdefe495f117bbfff.1695327124.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
-References: <cover.1695327124.git.isaku.yamahata@intel.com> <f987dcde3b051371b496847282022c679e9402e4.1695327124.git.isaku.yamahata@intel.com>
-Message-ID: <ZQypbSuMrbJpJBER@google.com>
-Subject: Re: [RFC PATCH v2 1/6] KVM: gmem: Truncate pages on punch hole
+References: <cover.1695327124.git.isaku.yamahata@intel.com> <26822c313754e03b2c393e6fdefe495f117bbfff.1695327124.git.isaku.yamahata@intel.com>
+Message-ID: <ZQyqSI0HOmamJbWn@google.com>
+Subject: Re: [RFC PATCH v2 3/6] KVM: selftests: Add tests for punch hole on guest_memfd
 From: Sean Christopherson <seanjc@google.com>
 To: isaku.yamahata@intel.com
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -61,69 +61,31 @@ Content-Type: text/plain; charset="us-ascii"
 On Thu, Sep 21, 2023, isaku.yamahata@intel.com wrote:
 > From: Isaku Yamahata <isaku.yamahata@intel.com>
 > 
-> Although kvm_gmem_punch_hole() keeps all pages in mapping on punching hole,
-> it's common expectation that pages are truncated.  Truncate pages on
-> punching hole.  As page contents can be encrypted, avoid zeroing partial
-> folio by refusing partial punch hole.
-> 
+> Punch hole implies the region is zeroed out. Add tests if the punched
+> region has zero.
+> Oppertunistically Remove unused member, pattern, in guest_run_test().
+
+Heh, I didn't pretty much all the same stuff, except I opted to have
+SET_ATTRIBUTE instead of FALLOCATE_ONLY, e.g. in case we end up with a test that's
+wants a thrid flavor (or somehow neither?).
+
 > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 > ---
->  virt/kvm/guest_mem.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+>  .../kvm/x86_64/private_mem_conversions_test.c | 26 ++++++++++++++-----
+>  1 file changed, 20 insertions(+), 6 deletions(-)
 > 
-> diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-> index a819367434e9..01fb4ca861d0 100644
-> --- a/virt/kvm/guest_mem.c
-> +++ b/virt/kvm/guest_mem.c
-> @@ -130,22 +130,32 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
->  static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
->  {
->  	struct list_head *gmem_list = &inode->i_mapping->private_list;
-> +	struct address_space *mapping  = inode->i_mapping;
->  	pgoff_t start = offset >> PAGE_SHIFT;
->  	pgoff_t end = (offset + len) >> PAGE_SHIFT;
->  	struct kvm_gmem *gmem;
+
+...
+
+> @@ -156,6 +163,10 @@ static void guest_run_test(uint64_t base_gpa, bool do_fallocate)
 >  
-> +	/*
-> +	 * punch hole may result in zeroing partial area.  As pages can be
-> +	 * encrypted, prohibit zeroing partial area.
-> +	 */
-> +	if (offset & ~PAGE_MASK || len & ~PAGE_MASK)
-> +		return -EINVAL;
-
-This should be unnecessary, kvm_gmem_fallocate() does
-
-	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
-		return -EINVAL;
-
-before invoking kvm_gmem_punch_hole().  If that's not working, i.e. your test
-fails, then that code needs to be fixed.  I'll run your test to double-check,
-but AFAICT this is unnecesary.
-
+>  		if (size > PAGE_SIZE) {
+>  			memset((void *)gpa, p2, PAGE_SIZE);
 > +
->  	/*
->  	 * Bindings must stable across invalidation to ensure the start+end
->  	 * are balanced.
->  	 */
-> -	filemap_invalidate_lock(inode->i_mapping);
-> +	filemap_invalidate_lock(mapping);
->  
->  	list_for_each_entry(gmem, gmem_list, entry) {
->  		kvm_gmem_invalidate_begin(gmem, start, end);
->  		kvm_gmem_invalidate_end(gmem, start, end);
->  	}
->  
-> -	filemap_invalidate_unlock(inode->i_mapping);
-> +	truncate_inode_pages_range(mapping, offset, offset + len - 1);
+> +			/* Test if punch hole results in zeroing page. */
+> +			guest_punch_hole_private(gpa, PAGE_SIZE);
+> +			memcmp_g(gpa, 0, PAGE_SIZE);
 
-The truncate needs to happen between begin() and end(), otherwise KVM can create
-mappings to the memory between end() and truncate().
-
-> +
-> +	filemap_invalidate_unlock(mapping);
->  
->  	return 0;
->  }
-> -- 
-> 2.25.1
-> 
+I added a dedicated sub-test to provide a bit more variety in the tests.  I highly
+doubt my version will ever find a bug that isn't caught by this approach, but if
+nothing else, it's nice to have a completely separate sub-test.
