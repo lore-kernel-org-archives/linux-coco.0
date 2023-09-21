@@ -1,103 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480DF4E26F;
-	Thu, 21 Sep 2023 18:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3795D168D8
+	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695320644; x=1726856644;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FER1jYQhc8M1tjEdNOGxkEPhK/JmbN1nNqfHGK27t6I=;
-  b=UEfDKLB7nVDHfHT/45a6fLNmXFKVwWjLAx+FDn5EJcbD2IC8Sacn+Zw0
-   QRuavPPRONPRBxfKcLgV0GXaEqSNI2BDzx5TyL/104UjK53OhXY7/WkNI
-   8mZ5cRxy7zl8HV0JV7nyUeqr1pJYo/N9nUugRYLsZM1SQS1rgE9FgeCgF
-   dJ9Plc7mwy9kJlu3mn8rHoIWquPLjRqYy4Tlgt9t8pemPnWrYjvWqUxOn
-   +WU39PDQwI1OL8dlgNV/mEKMR43kyieuIZnlLuJOu77MJN88KI1eGXsjE
-   gWRf1uAIjbUViExinQSVnF9yt9Lyy0/MPswOXDRNWw8rVWMiAtsrHUUUT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="444727673"
+  t=1695327286; x=1726863286;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uUCSLp/kd/xQmu6AYVH2w6xDmJBkRdaL5zkVvNRUtpE=;
+  b=G0qelphJrhk5QH+VHZuifkUQPKf6mbNVaIZb7Hji7rOaSxFhTUqn57Fq
+   R0JVXDBIeYH/00um5ed92sGVTi9RUkWC8LT7ApAQRUOcTL6bMnzoX+YU4
+   oGksFPFcraqlRMtZtUKi4b0fSJ2lny2Vb8+hhBjD6lwaeIZvbYXQadL+2
+   iVe6FN7cY0ZvQ0H7rRBIYF16YFj2pDTk/lx/quD4X2USUR1hL5enAzG6U
+   78X3IjDo3T9Xk2lI+BkQwpQFroeINLHBCuwSNHCP4k0T63xILOdOYGPWM
+   hUyr7V21yUFlZHNT5r3pKWJ/GGQdX/emx3ZHYuhaiMitvmsDH9OFWOrpK
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="383401582"
 X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
-   d="scan'208";a="444727673"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 11:23:55 -0700
+   d="scan'208";a="383401582"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="782305204"
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="696897775"
 X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
-   d="scan'208";a="782305204"
-Received: from lkp-server02.sh.intel.com (HELO b77866e22201) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 21 Sep 2023 11:23:51 -0700
-Received: from kbuild by b77866e22201 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1qjOL6-0000EZ-2P;
-	Thu, 21 Sep 2023 18:23:48 +0000
-Date: Fri, 22 Sep 2023 02:23:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
-	Wander Lairson Costa <wander@redhat.com>,
-	Erdem Aktas <erdemaktas@google.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Qinkun Bao <qinkun@apache.org>,
-	Guorui Yu <GuoRui.Yu@linux.alibaba.com>, linux-coco@lists.linux.dev,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] virt: tdx-guest: Add Quote generation support using
- TSM_REPORTS
-Message-ID: <202309220210.xtVRFXD8-lkp@intel.com>
-References: <20230914031349.23516-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+   d="scan'208";a="696897775"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:44 -0700
+From: isaku.yamahata@intel.com
+To: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: isaku.yamahata@intel.com,
+	isaku.yamahata@gmail.com,
+	Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	erdemaktas@google.com,
+	Sagi Shahar <sagis@google.com>,
+	David Matlack <dmatlack@google.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Zhi Wang <zhi.wang.linux@gmail.com>,
+	chen.bo@intel.com,
+	linux-coco@lists.linux.dev,
+	Chao Peng <chao.p.peng@linux.intel.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	Yuan Yao <yuan.yao@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Quentin Perret <qperret@google.com>,
+	wei.w.wang@intel.com,
+	Fuad Tabba <tabba@google.com>
+Subject: [RFC PATCH v2 0/6] KVM: gmem: Implement test cases for error_remove_page
+Date: Thu, 21 Sep 2023 13:14:33 -0700
+Message-Id: <cover.1695327124.git.isaku.yamahata@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230914031349.23516-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
 
-Hi Kuppuswamy,
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-kernel test robot noticed the following build errors:
+This patch series is to implement test cases for the KVM gmem error_remove_page
+method.
+- Update punch hole method to truncate pages
+- Add a new ioctl KVM_GUEST_MEMORY_FAILURE to inject memory failure on
+  offset of gmem
 
-[auto build test ERROR on tip/x86/core]
-[also build test ERROR on linus/master v6.6-rc2 next-20230921]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+TODO:
+- Update TDX KVM to handle it and Add test cases for TDX.
+  This will be done by its own patch series.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kuppuswamy-Sathyanarayanan/virt-tdx-guest-Add-Quote-generation-support-using-TSM_REPORTS/20230914-111637
-base:   tip/x86/core
-patch link:    https://lore.kernel.org/r/20230914031349.23516-1-sathyanarayanan.kuppuswamy%40linux.intel.com
-patch subject: [PATCH v2] virt: tdx-guest: Add Quote generation support using TSM_REPORTS
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20230922/202309220210.xtVRFXD8-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230922/202309220210.xtVRFXD8-lkp@intel.com/reproduce)
+Changes:
+v2:
+- rebased to [RFC PATCH v12 00/33] KVM: guest_memfd() and per-page attributes
+  https://lore.kernel.org/all/20230914015531.1419405-1-seanjc@google.com/
+- introduce new ioctl to inject memory fault on gmem and drop FIBMAP hack
+- Implement test cases
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309220210.xtVRFXD8-lkp@intel.com/
+v1:
+https://lore.kernel.org/all/cover.1694599703.git.isaku.yamahata@intel.com/
 
-All errors (new ones prefixed by >>):
+Isaku Yamahata (6):
+  KVM: gmem: Truncate pages on punch hole
+  KVM: selftests: Add negative test cases for punch hole for
+    guest_memfd()
+  KVM: selftests: Add tests for punch hole on guest_memfd
+  KVM: gmem: Add ioctl to inject memory failure on guest memfd
+  KVM: selftests: Add test cases for KVM_GUEST_MEMORY_FAILURE
+  KVM: guest_memfd: selftest: Add test case for error_remove_page method
 
->> drivers/virt/coco/tdx-guest/tdx-guest.c:18:10: fatal error: linux/tsm.h: No such file or directory
-      18 | #include <linux/tsm.h>
-         |          ^~~~~~~~~~~~~
-   compilation terminated.
+ include/uapi/linux/kvm.h                      |   6 +
+ tools/testing/selftests/kvm/Makefile          |   1 +
+ .../testing/selftests/kvm/guest_memfd_test.c  |  80 ++++
+ .../kvm/x86_64/private_mem_conversions_test.c |  26 +-
+ .../kvm/x86_64/private_mem_hwpoison_test.c    | 367 ++++++++++++++++++
+ virt/kvm/guest_mem.c                          |  82 +++-
+ 6 files changed, 554 insertions(+), 8 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86_64/private_mem_hwpoison_test.c
 
 
-vim +18 drivers/virt/coco/tdx-guest/tdx-guest.c
-
-  > 18	#include <linux/tsm.h>
-    19	#include <linux/sizes.h>
-    20	
-
+base-commit: 42dc814987c1feb6410904e58cfd4c36c4146150
+prerequisite-patch-id: 3c646922da088ceebe447974a90217f377b76e4a
+prerequisite-patch-id: 635c4dca26af8d105a4fd8f603e4a9cf830395c7
+prerequisite-patch-id: eede5382aa76c0602a853fc93a1450995c651345
+prerequisite-patch-id: 5549aad02248eb5a0c2853058dc7c102044c7a9d
+prerequisite-patch-id: ab6557f79edb77246ee1e9955be81a10841e65fd
+prerequisite-patch-id: bf75388851ee37a83b37bfa7cb0084f27301f6bc
+prerequisite-patch-id: cecffe9a2445f2ea01b9fdb1356b1c87eb6b8fe7
+prerequisite-patch-id: e1692d657690f974d836ba3efdd277ea82e675ca
+prerequisite-patch-id: 747debe72334ef0cd12bbb42d1acb281eb59cd98
+prerequisite-patch-id: 2d1df1bad8af51577ec15a37510ea8bf018b0d4f
+prerequisite-patch-id: d05f7429ca893fe0fe3beb460bba1400379cd0d1
+prerequisite-patch-id: 9916b6553a61beb9a5435bc0b1fcacf0a87165ea
+prerequisite-patch-id: 313219882d617e4d4cb226760d1f071f52b3f882
+prerequisite-patch-id: 5412c4037793bc0999377f9732290b9944257b7c
+prerequisite-patch-id: b737a534d8da531f6d030be5e864a3097ca97384
+prerequisite-patch-id: cafe1f6964532d261b950e1879e091dc8c0b4386
+prerequisite-patch-id: 20a5d5b1f853828061ccb07ed08459b9922e5214
+prerequisite-patch-id: 756402fa0914a86ac7db59aa54e36a7bca9d0770
+prerequisite-patch-id: 0e93d19cb59f3a052a377a56ff0a4399046818aa
+prerequisite-patch-id: 8576bf7ec9f786870e72b78299dcab5dd4eb0d23
+prerequisite-patch-id: 0693f3aa65226ff9ffa1f70b6f6da2410ebd0588
+prerequisite-patch-id: 301dbdf8448175ea609664c890a3694750ecf740
+prerequisite-patch-id: 8f67d4366ca5c9875c4ef7f445941e3ad3162c75
+prerequisite-patch-id: 2d62d84b4f9db4148af35495ce1b188c6b46f421
+prerequisite-patch-id: b4526dee5b5a95da0a13116ae0c73d4e69efa3c6
+prerequisite-patch-id: 8a2b4167ea632413ba8f6d39788ddf19eb928ab0
+prerequisite-patch-id: 5618d2414a1ef641b4c247b5e28076f67a765b24
+prerequisite-patch-id: 4415e2df6492fbb64746e3503deba6e991a0e08b
+prerequisite-patch-id: ba50138fe73e9a5f58e19eebaab2c17a2dc231e3
+prerequisite-patch-id: 1225df90aeae430a74354bc5ad0ddf508d0707db
+prerequisite-patch-id: 4c0e6ab89b9a3ed3a2cb236e942b5842926bf868
+prerequisite-patch-id: 59f78d417ca58088e336f8e2a9540d1c95bd2f6c
+prerequisite-patch-id: b6a6a8916fe89e7da1fadefb7d311960732e0faf
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
