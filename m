@@ -1,32 +1,32 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D5818B17
-	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1772418B00
+	for <linux-coco@lists.linux.dev>; Thu, 21 Sep 2023 20:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1695327290; x=1726863290;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=xgBlKNZhDNJa7QFdNnudGsohvQxeiXqUZBEeWY2YObQ=;
-  b=bUDyBXXa6bQjMuJrONXV7FSAUNSDBeYS9znQ+MKDQJwiv7TWExVmcs9r
-   KX9a7d/P61WECcu3bujfB66BCOxWjDrDExch1GlsO83W1f7VTmv9UQnQ9
-   akd3UOq5R5dwXD7LNpc43fjSlQqHF81uBXL92BiBO9JkrBzzcOracJE83
-   VHKYi2058GXMAnSBrgfh51rQ+CI9X5oZzWXwDTT5RpzjGzOm9bLVs0XTa
-   k0hGdxJeTM/rwiXTiWWaQR+Z3quw6Ia+FWUbwwYO39Nmv9Crnd8KuywrU
-   ngKsDtTnY60POJdzDaI1FalnzYsI6Bid5Ya5O4VJDyzoVIBsIT9YCMGK4
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="383401652"
+  bh=LrS431o0cshlDoRy46oclShFvKK7oFAV7dBwoRHaY3I=;
+  b=iyGorwnXy2aIljlKltKLJXXAEtiAOqKDFLv5gKq7azVAyGM8NNSsu6Zl
+   I03vynCWaoUnxWwCE05+DClX4HSVXGBxOoSRpg7vYGyEDe4zfn//dUkke
+   6RLJeSu8d0/ZdX674n7YMnHfAsiMe5bxFLTcppQvr6m8Riw+K3il/GgIe
+   uQh/QtNs/t4tYjQd6sl/enZq772KyJO9YmNbUHPexOCF2jaf00q6qZz3O
+   6xFOd0CNJm+ARd91Md1OlzYXs3Leq3CMxBR21HWyt6Gx2cRmrbkFXIBVx
+   kV7rbFCDFAF11rw+ehmEuPTDor1MMvVRg1BQ5bdQPCK3VoHH+UAd10+b3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="383401643"
 X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
-   d="scan'208";a="383401652"
+   d="scan'208";a="383401643"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:50 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:49 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="696897810"
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="696897807"
 X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
-   d="scan'208";a="696897810"
+   d="scan'208";a="696897807"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:49 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:14:48 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -51,9 +51,9 @@ Cc: isaku.yamahata@intel.com,
 	Quentin Perret <qperret@google.com>,
 	wei.w.wang@intel.com,
 	Fuad Tabba <tabba@google.com>
-Subject: [RFC PATCH v2 5/6] KVM: selftests: Add test cases for KVM_GUEST_MEMORY_FAILURE
-Date: Thu, 21 Sep 2023 13:14:38 -0700
-Message-Id: <71be0cea7cd1ed2d7d20403a803213a9e2b28c11.1695327124.git.isaku.yamahata@intel.com>
+Subject: [RFC PATCH v2 4/6] KVM: gmem: Add ioctl to inject memory failure on guest memfd
+Date: Thu, 21 Sep 2023 13:14:37 -0700
+Message-Id: <363c4ac28af93aa96a52f897d2fe5c7ec013f746.1695327124.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1695327124.git.isaku.yamahata@intel.com>
 References: <cover.1695327124.git.isaku.yamahata@intel.com>
@@ -67,82 +67,113 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Add text cases for guest_memfd KVM_GUEST_MEMORY_FAILURE ioctl.
-+ ioctl(KVM_GUEST_MEMORY_FAILURE) success with backing pages
-+ ioctl(KVM_GUEST_MEMORY_FAILURE) fails with ENOENT without backing page
-+ interaction with fallocate(PUNCH_HOLE)
+To test error_remove_page() method of KVM gmem, add a new ioctl to
+inject memory failure based on offset of guest memfd.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- .../testing/selftests/kvm/guest_memfd_test.c  | 48 +++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ include/uapi/linux/kvm.h |  6 ++++
+ virt/kvm/guest_mem.c     | 68 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 74 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index d5b4bfcdc3fe..f8b242c9319d 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -122,6 +122,53 @@ static void test_fallocate_fail(int fd, size_t page_size, size_t total_size)
- 	}
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 65fc983af840..4160614bcc0f 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -2323,4 +2323,10 @@ struct kvm_create_guest_memfd {
+ 	__u64 reserved[6];
+ };
+ 
++#define KVM_GUEST_MEMORY_FAILURE	_IOWR(KVMIO,  0xd5, struct kvm_guest_memory_failure)
++
++struct kvm_guest_memory_failure {
++	__u64 offset;
++};
++
+ #endif /* __LINUX_KVM_H */
+diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
+index 01fb4ca861d0..bc9dae50004b 100644
+--- a/virt/kvm/guest_mem.c
++++ b/virt/kvm/guest_mem.c
+@@ -291,10 +291,78 @@ static struct file *kvm_gmem_get_file(struct kvm_memory_slot *slot)
+ 	return file;
  }
  
-+static void test_memory_failure(int fd, size_t page_size, size_t total_size)
++static int kvm_gmem_inject_failure(struct file *file,
++				   struct kvm_guest_memory_failure *mf)
 +{
-+	struct kvm_guest_memory_failure mf;
-+	int ret;
-+	int i;
++	struct inode *inode = file_inode(file);
++	struct address_space *mapping = inode->i_mapping;
++	pgoff_t index = mf->offset >> PAGE_SHIFT;
++	struct folio *folio;
++	unsigned long pfn;
++	int err = 0;
 +
-+	/* Make whole file unallocated as known initial state */
-+	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE,
-+			0, total_size);
-+	TEST_ASSERT(!ret, "fallocate(PUNCH_HOLE) at while file should succeed");
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
 +
-+	/* Because there is no backing page, fail to inject memory failure. */
-+	for (i = 0; i < total_size / page_size; i++) {
-+		mf = (struct kvm_guest_memory_failure) {
-+			.offset = i * page_size,
-+		};
++	filemap_invalidate_lock_shared(mapping);
 +
-+		ret = ioctl(fd, KVM_GUEST_MEMORY_FAILURE, &mf);
-+		if (ret == -1 && errno == EPERM) {
-+			pr_info("KVM_GUEST_MEMORY_FAILURE requires CAP_SYS_ADMIN. Skipping.\n")
-+			return;
-+		}
-+		TEST_ASSERT(ret == -1 && errno == ENOENT,
-+			    "ioctl(KVM_GUEST_MEMORY_FAILURE) should fail i %d", i);
++	/* Don't allocate page. */
++	folio = filemap_get_folio(mapping, index);
++	if (!folio) {
++		err = -ENOENT;
++		goto out;
++	}
++	if (IS_ERR(folio)) {
++		err = PTR_ERR(folio);
++		goto out;
 +	}
 +
-+	/* Allocate pages with index one and two. */
-+	ret = fallocate(fd, FALLOC_FL_KEEP_SIZE, page_size, page_size * 2);
-+	TEST_ASSERT(!ret, "fallocate beginning at page_size should succeed");
++	pfn = folio_pfn(folio) + (index - folio_index(folio));
++	folio_put(folio);
 +
-+	for (i = 0; i < total_size / page_size; i++) {
-+		mf = (struct kvm_guest_memory_failure) {
-+			.offset = i * page_size,
-+		};
++out:
++	filemap_invalidate_unlock_shared(mapping);
++	if (err)
++		return err;
 +
-+		ret = ioctl(fd, KVM_GUEST_MEMORY_FAILURE, &mf);
-+
-+		if (i == 1 || i == 2) {
-+			TEST_ASSERT(!ret || (ret == -1 && errno == EBUSY),
-+				    "ioctl(KVM_GUEST_MEMORY_FAILURE) should succeed i %d", i);
-+		} else {
-+			TEST_ASSERT(ret == -1 && errno == ENOENT,
-+				    "ioctl(KVM_GUEST_MEMORY_FAILURE) should fail i %d", i);
-+		}
-+	}
++	/*
++	 * Race with pfn: memory_failure() and unpoison_memory() gain invalidate
++	 * lock as the error recovery logic tries to remove pages from
++	 * mapping.
++	 */
++	if (!pfn_valid(pfn))
++		return -ENXIO;
++	return memory_failure(pfn, MF_SW_SIMULATED);
 +}
 +
- static void test_create_guest_memfd_invalid(struct kvm_vm *vm)
- {
- 	uint64_t valid_flags = 0;
-@@ -192,6 +239,7 @@ int main(int argc, char *argv[])
- 	test_file_size(fd, page_size, total_size);
- 	test_fallocate(fd, page_size, total_size);
- 	test_fallocate_fail(fd, page_size, total_size);
-+	test_memory_failure(fd, page_size, total_size);
++static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
++			   unsigned long arg)
++{
++	void __user *argp = (void __user *)arg;
++	int r = -EINVAL;
++
++	switch (ioctl) {
++	case KVM_GUEST_MEMORY_FAILURE: {
++		struct kvm_guest_memory_failure mf;
++
++		r = -EFAULT;
++		if (copy_from_user(&mf, argp, sizeof(mf)))
++			break;
++		r = kvm_gmem_inject_failure(file, &mf);
++		break;
++	}
++	default:
++		break;
++	}
++
++	return r;
++}
++
+ static const struct file_operations kvm_gmem_fops = {
+ 	.open		= generic_file_open,
+ 	.release	= kvm_gmem_release,
+ 	.fallocate	= kvm_gmem_fallocate,
++	.unlocked_ioctl	= kvm_gmem_ioctl,
+ };
  
- 	close(fd);
- }
+ static int kvm_gmem_migrate_folio(struct address_space *mapping,
 -- 
 2.25.1
 
