@@ -1,92 +1,77 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AA227704
-	for <linux-coco@lists.linux.dev>; Fri, 22 Sep 2023 20:32:49 +0000 (UTC)
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-1c5b1e55d5eso24336025ad.3
-        for <linux-coco@lists.linux.dev>; Fri, 22 Sep 2023 13:32:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695414769; x=1696019569; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CSRAsOXqUG0ER0BOAKiobqvlHfjAj6fkRHJ850CANRE=;
-        b=KaINyi5CaHpFrnc2TCZGB2buYjharjaZpeEjIlvK3Ak5E1mEip+TMJdxpgXB4dnkT+
-         GPlDLLd7g3wn3N8KSek2wTq47pCtNuh+dDhrTIWDXn+swdcovQdWPIMEKz5K4PL+I+al
-         4Nf+/zCK7E6cMDTZn+NF6Q2oNhAs1R2Iu/IFSKHXCCqtKOCAM+yaD1MKZvfagNiIETmp
-         5dZWmqBhXVC6zCtFviBPGGukl52vS5rG4QcMIgHSB9XNbwwOugaX9Jf91UZQqh1Ry9rk
-         B1pQ1Q340oF5orv2IbiCJhblXpLBMfhxqhiP6lJZuxO6gznvdukxdL1feH0SOuYBz0PA
-         JZoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695414769; x=1696019569;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CSRAsOXqUG0ER0BOAKiobqvlHfjAj6fkRHJ850CANRE=;
-        b=uPx75zPIYMgM6ciPERy3vrzl2RGnZXpM3nXih/la2Q/ByEwh5pRCJIoq1rIAlwB8PW
-         Uu42YxPhh/eKHT0rCd9YLxnIP4BqSHVic76uDjAUK/j90a78RYMUpAtrxMplpDfMmOze
-         0zwyiapr18gt6WKToek0EoZ++A1NjVYhK5Dx1mnj6fAhTs9AKDZItVyLgH0RbcER4pBH
-         oGdxhNiZ3G6sF6GcKEpRBlZc4u6U7g18SaMTD3Z0aJzWrXWimkld8pI5l9d+tahAM81e
-         xuB5YhpAJ0rGfsKWNaw7petLjX46Bwl/o3BfeLtGa0UevRTcv34BYK8eJrSRa5jXrhHl
-         q6tA==
-X-Gm-Message-State: AOJu0YzzCdkTM3i8y4B3h1rq64r923TeeB3xlB836BUn1YOtBCGEFa44
-	O4KIyg7gKmTq4Ms+UbWGijlBPfD1gWU=
-X-Google-Smtp-Source: AGHT+IEiBw59NffQePuDv4nERVBcRa7yli0EECdvxQRHySgvasoDIFxcuZKKvgHTJ5qWHHbpwqq2PFwVIKQ=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:fa8d:b0:1b9:df8f:888c with SMTP id
- lc13-20020a170902fa8d00b001b9df8f888cmr4603plb.8.1695414768675; Fri, 22 Sep
- 2023 13:32:48 -0700 (PDT)
-Date: Fri, 22 Sep 2023 13:32:47 -0700
-In-Reply-To: <20230922194029.GA1206715@ls.amr.corp.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB2F469E
+	for <linux-coco@lists.linux.dev>; Sat, 23 Sep 2023 08:05:49 +0000 (UTC)
+Received: from localhost (unknown [217.144.90.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 8CDA0383;
+	Sat, 23 Sep 2023 07:57:23 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 8CDA0383
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1695455844; bh=mfkLM1mZ6patzZykKGGUczfcmlxw34HJH6wQWGJWhEI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ORgfQWMBvcaonPYu9FXssg1eETcs/C+oNsQNKobql3vJImfFeyEdqnjoPAOMydwEX
+	 uUN7e6ob3s9xvarSqsvfLw48K+gDBY5u5LEGPp9koqipZy6HhAuk9NC61ks9G+lLuX
+	 Hh6RYjbmVX4n3Wxkh65rhWu3tZmVvQ4l8L7NCCLBEsKG1MeNaI/+cs+hswnZT0TrZV
+	 ntQMB6QubijYg+v6Sh5hE1VOR/dlO291XoaKR0zLh54iuR25gi6pO+y+NLWMEL+Nit
+	 hs7lHfZmEGp7mmtbR5PnDI+N3hcqSX5+nUjpv/o4kZjJn8R2RLZu3SqxCSpXXnX7Rc
+	 5UH9UaFD51BWQ==
+From: Jonathan Corbet <corbet@lwn.net>
+To: Carlos Bilbao <carlos.bilbao@amd.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ardb@kernel.org, kraxel@redhat.com, dovmurik@linux.ibm.com,
+ elena.reshetova@intel.com, dave.hansen@linux.intel.com,
+ Dhaval.Giani@amd.com, michael.day@amd.com, pavankumar.paluri@amd.com,
+ David.Kaplan@amd.com, Reshma.Lal@amd.com, Jeremy.Powell@amd.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com,
+ alexander.shishkin@linux.intel.com, thomas.lendacky@amd.com,
+ tglx@linutronix.de, dgilbert@redhat.com, dinechin@redhat.com,
+ linux-coco@lists.linux.dev, berrange@redhat.com, mst@redhat.com,
+ tytso@mit.edu, jikos@kernel.org, joro@8bytes.org, leon@kernel.org,
+ richard.weinberger@gmail.com, lukas@wunner.de, jejb@linux.ibm.com,
+ cdupontd@redhat.com, jasowang@redhat.com, sameo@rivosinc.com,
+ bp@alien8.de, seanjc@google.com, security@kernel.org, Larry Dewey
+ <larry.dewey@amd.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [RESEND PATCH v4] docs: security: Confidential computing intro
+ and threat model for x86 virtualization
+In-Reply-To: <98804f27-c2e7-74d6-d671-1eda927e19fe@amd.com>
+References: <20230905152656.1215119-1-carlos.bilbao@amd.com>
+ <2023090537-undesired-junction-b325@gregkh>
+ <4a25cfe8-39d7-1d0f-b89b-2d62bdb085c1@amd.com>
+ <bb5a6655-ebaa-2ddf-0c49-6f1027ccb839@amd.com>
+ <f7700d54-da02-3482-17c5-bbae36799fb5@amd.com>
+ <98804f27-c2e7-74d6-d671-1eda927e19fe@amd.com>
+Date: Sat, 23 Sep 2023 01:57:20 -0600
+Message-ID: <87v8c15nkv.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <cover.1695327124.git.isaku.yamahata@intel.com>
- <ZQynx5DyP56/HAxV@google.com> <20230922194029.GA1206715@ls.amr.corp.intel.com>
-Message-ID: <ZQ3573rbNQpbNf09@google.com>
-Subject: Re: [RFC PATCH v2 0/6] KVM: gmem: Implement test cases for error_remove_page
-From: Sean Christopherson <seanjc@google.com>
-To: Isaku Yamahata <isaku.yamahata@linux.intel.com>
-Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
-	Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, 
-	Sagi Shahar <sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
-	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
-	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
-	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Fri, Sep 22, 2023, Isaku Yamahata wrote:
-> On Thu, Sep 21, 2023 at 01:29:59PM -0700,
-> Sean Christopherson <seanjc@google.com> wrote:
-> 
-> > On Thu, Sep 21, 2023, isaku.yamahata@intel.com wrote:
-> > > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > 
-> > > This patch series is to implement test cases for the KVM gmem error_remove_page
-> > > method.
-> > > - Update punch hole method to truncate pages
-> > > - Add a new ioctl KVM_GUEST_MEMORY_FAILURE to inject memory failure on
-> > >   offset of gmem
-> > 
-> > Doh.  Please try to communicate what you're working on.  I was just about to hit
-> > SEND on a series to fix the truncation bug, and to add a similar test.  I would
-> > have happily punted that in your direction, but I had no idea that you were aware
-> > of the bug[*], let alone working on a fix.  I could have explicitly stated that
-> > I was going to fix the bug, but I thought that it was implied that I needed to
-> > clean up my own mess.
-> 
-> Oops sorry.  Now I'm considering about machine check injection.
-> i.e. somehow trigger kvm_machine_check() and its own test cases.
+Carlos Bilbao <carlos.bilbao@amd.com> writes:
 
-Unless we can't extend fadvise() for some reason, I think we should pursue
-FADV_HWPOISION.  The enabling should be downright trivial, e.g. just implement
-file_operations.fadvise() for guest_memfd, have it handle FADV_HWPOISON, and pass
-everything else to generic_fadvise().
+> Kernel developers working on confidential computing for virtualized
+> environments in x86 operate under a set of assumptions regarding the Linux
+> kernel threat model that differs from the traditional view. Historically,
+> the Linux threat model acknowledges attackers residing in userspace, as
+> well as a limited set of external attackers that are able to interact with
+> the kernel through networking or limited HW-specific exposed interfaces
+> (e.g. USB, thunderbolt). The goal of this document is to explain additional
+> attack vectors that arise in the virtualized confidential computing space.
+>
+> Reviewed-by: Larry Dewey <larry.dewey@amd.com>
+> Reviewed-by: David Kaplan <david.kaplan@amd.com>
+> Co-developed-by: Elena Reshetova <elena.reshetova@intel.com>
+> Signed-off-by: Elena Reshetova <elena.reshetova@intel.com>
+> Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
 
-It'll basically be your ioctl() just without a dedicated ioctl().
+This patch was whitespace-corrupted (something wrapped the diff lines)
+making it hard to apply; I was able to fix it up and get git to swallow
+it.  So applied, thanks.
 
-At the very least, we should run the idea past the fs maintainers.
+jon
