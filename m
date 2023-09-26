@@ -1,451 +1,237 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9CF184F
-	for <linux-coco@lists.linux.dev>; Tue, 26 Sep 2023 04:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B779B339A9
+	for <linux-coco@lists.linux.dev>; Tue, 26 Sep 2023 18:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695701855; x=1727237855;
-  h=subject:from:to:cc:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4CvzD8vnm9Hmd+l6kx9YigHSx9vV/7dsCiz6scdND3s=;
-  b=NnJQ2U+QCfN3bCHICBFxwRyBxlXyyiAAgXpFu/TZ2nCkXkMPaAwpOfe/
-   OSJ11TklIUZXw5VKs1VzZ/Ker6NBVDXxfhy/up3kjnrNl/yCDT8NtjaSK
-   w0YO05YfX1/INRRBuofY4dXQe1meWqUaU1/x3+j/IWfCqPerdOI6yRqGf
-   qZUA4h9NlaqCwyqqJaO4l6WO550l6oGo9gT+HWIz7y/+NPydV9J4UPtrA
-   0d0E0YtIlVkMT3N8wLbTkz0blkdVP1HNwpGa6bDFVbLCiXkqpdTqoO2NF
-   iqwcWbgWnGuvCk7RKKfaiiQnmfrPovervYxQ/1GB6vhnZNylWXXt7Kl29
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="360856998"
-X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
-   d="scan'208";a="360856998"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2023 21:17:34 -0700
+  t=1695751472; x=1727287472;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BPSD5WhvXpBO3lsIdE4c7syBr8J6jYNl4IAaRzob9YA=;
+  b=D1OgvBNMHp1u53zOf1OONKlkZPkSEWYBGODnyQ/MKWso71k3HYY+KHMM
+   0AZKHUYau1kTDKXkyZFNk2g/Wv5IfBLKulqnArmJWpggLQHLyL83pOfAr
+   BxBLbT9ghi9I3vi9zSfDs/IpH2ChXa69saEiAIj0eDMmOslR0p1ka83dp
+   qg4K0ekduysrG4Hjp+j+4OCOyITmjAcKavn4Ig4N4XoXhm44X60lmKi6V
+   kqsgdN7VaC4EbzN0pzSQGhZO+7YOyEFCsWeUuj8/VYiDHnMcvZXvDck6A
+   piLYEy0RE7nCV0RAQULhOJ9BTtQknat67Z8Rl40NshMo1dWUhtbNlmu/O
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="371967685"
+X-IronPort-AV: E=Sophos;i="6.03,178,1694761200"; 
+   d="scan'208";a="371967685"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 11:04:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="698312218"
-X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
-   d="scan'208";a="698312218"
-Received: from fvivekku-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.251.18.72])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2023 21:17:34 -0700
-Subject: [PATCH v4 6/6] virt: tdx-guest: Add Quote generation support using
- TSM_REPORTS
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-coco@lists.linux.dev
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, peterz@infradead.org,
- linux-kernel@vger.kernel.org, x86@kernel.org, dave.hansen@linux.intel.com
-Date: Mon, 25 Sep 2023 21:17:34 -0700
-Message-ID: <169570185411.596431.3153227201984845022.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <169570181657.596431.6178773442587231200.stgit@dwillia2-xfh.jf.intel.com>
-References: <169570181657.596431.6178773442587231200.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="725514679"
+X-IronPort-AV: E=Sophos;i="6.03,178,1694761200"; 
+   d="scan'208";a="725514679"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 11:04:28 -0700
+From: isaku.yamahata@intel.com
+To: kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: isaku.yamahata@intel.com,
+	isaku.yamahata@gmail.com,
+	Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	linux-coco@lists.linux.dev,
+	Chao Peng <chao.p.peng@linux.intel.com>
+Subject: [PATCH] KVM: guest_memfd: Refactor kvm_gmem into inode->i_private
+Date: Tue, 26 Sep 2023 11:03:46 -0700
+Message-Id: <8e57c347d6c461431e84ef4354dc076f363f3c01.1695751312.git.isaku.yamahata@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-In TDX guest, the attestation process is used to verify the TDX guest
-trustworthiness to other entities before provisioning secrets to the
-guest. The first step in the attestation process is TDREPORT
-generation, which involves getting the guest measurement data in the
-format of TDREPORT, which is further used to validate the authenticity
-of the TDX guest. TDREPORT by design is integrity-protected and can
-only be verified on the local machine.
+Refactor guest_memfd to use inode->i_private to store info about kvm_gmem.
+Currently it is stored in the following way.
+- flags in inode->i_private
+- struct kvm_gmem in file->private_data
+- struct kvm_gmem in linked linst in inode->i_mapping->private_list
+  And this list has single entry.
 
-To support remote verification of the TDREPORT in a SGX-based
-attestation, the TDREPORT needs to be sent to the SGX Quoting Enclave
-(QE) to convert it to a remotely verifiable Quote. SGX QE by design can
-only run outside of the TDX guest (i.e. in a host process or in a
-normal VM) and guest can use communication channels like vsock or
-TCP/IP to send the TDREPORT to the QE. But for security concerns, the
-TDX guest may not support these communication channels. To handle such
-cases, TDX defines a GetQuote hypercall which can be used by the guest
-to request the host VMM to communicate with the SGX QE. More details
-about GetQuote hypercall can be found in TDX Guest-Host Communication
-Interface (GHCI) for Intel TDX 1.0, section titled
-"TDG.VP.VMCALL<GetQuote>".
+The relationship between struct file, struct inode and struct kvm_gmem is
+1:1, not 1:many. Consolidate related info in one place.
+- Move flags into struct kvm_gmem
+- Store struct kvm_gmem in inode->i_private
+- Don't use file->private_data
+- Don't use inode->i_mapping_private_list
+- Introduce a helper conversion function from inode to kvm_gmem
 
-Trusted Security Module (TSM) [1] exposes a common ABI for Confidential
-Computing Guest platforms to get the measurement data via ConfigFS.
-Extend the TSM framework and add support to allow an attestation agent
-to get the TDX Quote data (included usage example below).
-
-  report=/sys/kernel/config/tsm/report/report0
-  mkdir $report
-  dd if=/dev/urandom bs=64 count=1 > $report/inblob
-  hexdump -C $report/outblob
-  rmdir $report
-
-GetQuote TDVMCALL requires TD guest pass a 4K aligned shared buffer
-with TDREPORT data as input, which is further used by the VMM to copy
-the TD Quote result after successful Quote generation. To create the
-shared buffer, allocate a large enough memory and mark it shared using
-set_memory_decrypted() in tdx_guest_init(). This buffer will be re-used
-for GetQuote requests in the TDX TSM handler.
-
-Although this method reserves a fixed chunk of memory for GetQuote
-requests, such one time allocation can help avoid memory fragmentation
-related allocation failures later in the uptime of the guest.
-
-Since the Quote generation process is not time-critical or frequently
-used, the current version uses a polling model for Quote requests and
-it also does not support parallel GetQuote requests.
-
-Link: https://lore.kernel.org/lkml/169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com/ [1]
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Erdem Aktas <erdemaktas@google.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- arch/x86/coco/tdx/tdx.c                 |   21 +++
- arch/x86/include/asm/shared/tdx.h       |    1 
- arch/x86/include/asm/tdx.h              |    2 
- drivers/virt/coco/tdx-guest/Kconfig     |    1 
- drivers/virt/coco/tdx-guest/tdx-guest.c |  229 +++++++++++++++++++++++++++++++
- 5 files changed, 253 insertions(+), 1 deletion(-)
+ virt/kvm/guest_memfd.c | 53 ++++++++++++++++++------------------------
+ 1 file changed, 23 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 1d6b863c42b0..752867b1d11b 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -104,6 +104,27 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
- }
- EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
- 
-+/**
-+ * tdx_hcall_get_quote() - Wrapper to request TD Quote using GetQuote
-+ *                         hypercall.
-+ * @buf: Address of the directly mapped shared kernel buffer which
-+ *       contains TDREPORT. The same buffer will be used by VMM to
-+ *       store the generated TD Quote output.
-+ * @size: size of the tdquote buffer (4KB-aligned).
-+ *
-+ * Refer to section titled "TDG.VP.VMCALL<GetQuote>" in the TDX GHCI
-+ * v1.0 specification for more information on GetQuote hypercall.
-+ * It is used in the TDX guest driver module to get the TD Quote.
-+ *
-+ * Return 0 on success or error code on failure.
-+ */
-+u64 tdx_hcall_get_quote(u8 *buf, size_t size)
-+{
-+	/* Since buf is a shared memory, set the shared (decrypted) bits */
-+	return _tdx_hypercall(TDVMCALL_GET_QUOTE, cc_mkdec(virt_to_phys(buf)), size, 0, 0);
-+}
-+EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
-+
- static void __noreturn tdx_panic(const char *msg)
- {
- 	struct tdx_hypercall_args args = {
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 7513b3bb69b7..9eab19950f39 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -22,6 +22,7 @@
- 
- /* TDX hypercall Leaf IDs */
- #define TDVMCALL_MAP_GPA		0x10001
-+#define TDVMCALL_GET_QUOTE		0x10002
- #define TDVMCALL_REPORT_FATAL_ERROR	0x10003
- 
- #ifndef __ASSEMBLY__
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 603e6d1e9d4a..ebd1cda4875f 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -52,6 +52,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
- 
- int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
- 
-+u64 tdx_hcall_get_quote(u8 *buf, size_t size);
-+
- #else
- 
- static inline void tdx_early_init(void) { };
-diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
-index 14246fc2fb02..22dd59e19431 100644
---- a/drivers/virt/coco/tdx-guest/Kconfig
-+++ b/drivers/virt/coco/tdx-guest/Kconfig
-@@ -1,6 +1,7 @@
- config TDX_GUEST_DRIVER
- 	tristate "TDX Guest driver"
- 	depends on INTEL_TDX_GUEST
-+	select TSM_REPORTS
- 	help
- 	  The driver provides userspace interface to communicate with
- 	  the TDX module to request the TDX guest details like attestation
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 5e44a0fa69bd..1253bf76b570 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -12,12 +12,60 @@
- #include <linux/mod_devicetable.h>
- #include <linux/string.h>
- #include <linux/uaccess.h>
-+#include <linux/set_memory.h>
-+#include <linux/io.h>
-+#include <linux/delay.h>
-+#include <linux/tsm.h>
-+#include <linux/sizes.h>
- 
- #include <uapi/linux/tdx-guest.h>
- 
- #include <asm/cpu_device_id.h>
- #include <asm/tdx.h>
- 
-+/*
-+ * Intel's SGX QE implementation generally uses Quote size less
-+ * than 8K (2K Quote data + ~5K of certificate blob).
-+ */
-+#define GET_QUOTE_BUF_SIZE		SZ_8K
-+
-+#define GET_QUOTE_CMD_VER		1
-+
-+/* TDX GetQuote status codes */
-+#define GET_QUOTE_SUCCESS		0
-+#define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
-+
-+/* struct tdx_quote_buf: Format of Quote request buffer.
-+ * @version: Quote format version, filled by TD.
-+ * @status: Status code of Quote request, filled by VMM.
-+ * @in_len: Length of TDREPORT, filled by TD.
-+ * @out_len: Length of Quote data, filled by VMM.
-+ * @data: Quote data on output or TDREPORT on input.
-+ *
-+ * More details of Quote request buffer can be found in TDX
-+ * Guest-Host Communication Interface (GHCI) for Intel TDX 1.0,
-+ * section titled "TDG.VP.VMCALL<GetQuote>"
-+ */
-+struct tdx_quote_buf {
-+	u64 version;
-+	u64 status;
-+	u32 in_len;
-+	u32 out_len;
-+	u8 data[];
-+};
-+
-+/* Quote data buffer */
-+static void *quote_data;
-+
-+/* Lock to streamline quote requests */
-+static DEFINE_MUTEX(quote_lock);
-+
-+/*
-+ * GetQuote request timeout in seconds. Expect that 30 seconds
-+ * is enough time for QE to respond to any Quote requests.
-+ */
-+static u32 getquote_timeout = 30;
-+
- static long tdx_get_report0(struct tdx_report_req __user *req)
- {
- 	u8 *reportdata, *tdreport;
-@@ -53,6 +101,154 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
- 	return ret;
- }
- 
-+static void free_quote_buf(void *buf)
-+{
-+	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-+	unsigned int count = len >> PAGE_SHIFT;
-+
-+	if (set_memory_encrypted((unsigned long)buf, count)) {
-+		pr_err("Failed to restore encryption mask for Quote buffer, leak it\n");
-+		return;
-+	}
-+
-+	free_pages_exact(buf, len);
-+}
-+
-+static void *alloc_quote_buf(void)
-+{
-+	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-+	unsigned int count = len >> PAGE_SHIFT;
-+	void *addr;
-+
-+	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
-+	if (!addr)
-+		return NULL;
-+
-+	if (set_memory_decrypted((unsigned long)addr, count)) {
-+		free_pages_exact(addr, len);
-+		return NULL;
-+	}
-+
-+	return addr;
-+}
-+
-+/*
-+ * wait_for_quote_completion() - Wait for Quote request completion
-+ * @quote_buf: Address of Quote buffer.
-+ * @timeout: Timeout in seconds to wait for the Quote generation.
-+ *
-+ * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
-+ * the status field in the Quote buffer will be set to GET_QUOTE_IN_FLIGHT
-+ * while VMM processes the GetQuote request, and will change it to success
-+ * or error code after processing is complete. So wait till the status
-+ * changes from GET_QUOTE_IN_FLIGHT or the request being timed out.
-+ */
-+static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
-+{
-+	int i = 0;
-+
-+	/*
-+	 * Quote requests usually take a few seconds to complete, so waking up
-+	 * once per second to recheck the status is fine for this use case.
-+	 */
-+	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
-+		if (msleep_interruptible(MSEC_PER_SEC))
-+			return -EINTR;
-+	}
-+
-+	return (i == timeout) ? -ETIMEDOUT : 0;
-+}
-+
-+static int tdx_report_new(struct tsm_report *report, void *data)
-+{
-+	u8 *buf, *reportdata = NULL, *tdreport = NULL;
-+	struct tdx_quote_buf *quote_buf = quote_data;
-+	struct tsm_desc *desc = &report->desc;
-+	int ret;
-+	u64 err;
-+
-+	/* TODO: switch to guard(mutex_intr) */
-+	if (mutex_lock_interruptible(&quote_lock))
-+		return -EINTR;
-+
-+	/*
-+	 * If the previous request is timedout or interrupted, and the
-+	 * Quote buf status is still in GET_QUOTE_IN_FLIGHT (owned by
-+	 * VMM), don't permit any new request.
-+	 */
-+	if (quote_buf->status == GET_QUOTE_IN_FLIGHT) {
-+		ret = -EBUSY;
-+		goto done;
-+	}
-+
-+	if (desc->inblob_len != TDX_REPORTDATA_LEN) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
-+	if (!reportdata) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
-+	if (!tdreport) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	memcpy(reportdata, desc->inblob, desc->inblob_len);
-+
-+	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
-+	ret = tdx_mcall_get_report0(reportdata, tdreport);
-+	if (ret) {
-+		pr_err("GetReport call failed\n");
-+		goto done;
-+	}
-+
-+	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
-+
-+	/* Update Quote buffer header */
-+	quote_buf->version = GET_QUOTE_CMD_VER;
-+	quote_buf->in_len = TDX_REPORT_LEN;
-+
-+	memcpy(quote_buf->data, tdreport, TDX_REPORT_LEN);
-+
-+	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
-+	if (err) {
-+		pr_err("GetQuote hypercall failed, status:%llx\n", err);
-+		ret = -EIO;
-+		goto done;
-+	}
-+
-+	ret = wait_for_quote_completion(quote_buf, getquote_timeout);
-+	if (ret) {
-+		pr_err("GetQuote request timedout\n");
-+		goto done;
-+	}
-+
-+	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
-+	if (!buf) {
-+		ret = -ENOMEM;
-+		goto done;
-+	}
-+
-+	report->outblob = buf;
-+	report->outblob_len = quote_buf->out_len;
-+
-+	/*
-+	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
-+	 * provided
-+	 */
-+done:
-+	mutex_unlock(&quote_lock);
-+	kfree(reportdata);
-+	kfree(tdreport);
-+
-+	return ret;
-+}
-+
- static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
- 			    unsigned long arg)
- {
-@@ -82,17 +278,48 @@ static const struct x86_cpu_id tdx_guest_ids[] = {
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 4f3a313f5532..66dd9b55e85c 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -14,14 +14,19 @@ static struct vfsmount *kvm_gmem_mnt;
+ struct kvm_gmem {
+ 	struct kvm *kvm;
+ 	struct xarray bindings;
+-	struct list_head entry;
++	unsigned long flags;
  };
- MODULE_DEVICE_TABLE(x86cpu, tdx_guest_ids);
  
-+static const struct tsm_ops tdx_tsm_ops = {
-+	.name = KBUILD_MODNAME,
-+	.report_new = tdx_report_new,
-+};
++static struct kvm_gmem *to_gmem(struct inode *inode)
++{
++	return inode->i_private;
++}
 +
- static int __init tdx_guest_init(void)
+ static struct folio *kvm_gmem_get_huge_folio(struct inode *inode, pgoff_t index)
  {
-+	int ret;
-+
- 	if (!x86_match_cpu(tdx_guest_ids))
- 		return -ENODEV;
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	unsigned long huge_index = round_down(index, HPAGE_PMD_NR);
+-	unsigned long flags = (unsigned long)inode->i_private;
++	unsigned long flags = to_gmem(inode)->flags;
+ 	struct address_space *mapping  = inode->i_mapping;
+ 	gfp_t gfp = mapping_gfp_mask(mapping);
+ 	struct folio *folio;
+@@ -134,26 +139,22 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
  
--	return misc_register(&tdx_misc_dev);
-+	ret = misc_register(&tdx_misc_dev);
-+	if (ret)
-+		return ret;
-+
-+	quote_data = alloc_quote_buf();
-+	if (!quote_data) {
-+		pr_err("Failed to allocate Quote buffer\n");
-+		ret = -ENOMEM;
-+		goto free_misc;
-+	}
-+
-+	ret = tsm_register(&tdx_tsm_ops, NULL, NULL);
-+	if (ret)
-+		goto free_quote;
-+
-+	return 0;
-+
-+free_quote:
-+	free_quote_buf(quote_data);
-+free_misc:
-+	misc_deregister(&tdx_misc_dev);
-+
-+	return ret;
- }
- module_init(tdx_guest_init);
- 
- static void __exit tdx_guest_exit(void)
+ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
  {
-+	tsm_unregister(&tdx_tsm_ops);
-+	free_quote_buf(quote_data);
- 	misc_deregister(&tdx_misc_dev);
+-	struct list_head *gmem_list = &inode->i_mapping->private_list;
++	struct address_space *mapping = inode->i_mapping;
++	struct kvm_gmem *gmem = to_gmem(inode);
+ 	pgoff_t start = offset >> PAGE_SHIFT;
+ 	pgoff_t end = (offset + len) >> PAGE_SHIFT;
+-	struct kvm_gmem *gmem;
+ 
+ 	/*
+ 	 * Bindings must stable across invalidation to ensure the start+end
+ 	 * are balanced.
+ 	 */
+-	filemap_invalidate_lock(inode->i_mapping);
+-
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_begin(gmem, start, end);
++	filemap_invalidate_lock(mapping);
++	kvm_gmem_invalidate_begin(gmem, start, end);
+ 
+ 	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+ 
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_end(gmem, start, end);
+-
+-	filemap_invalidate_unlock(inode->i_mapping);
++	kvm_gmem_invalidate_end(gmem, start, end);
++	filemap_invalidate_unlock(mapping);
+ 
+ 	return 0;
  }
- module_exit(tdx_guest_exit);
+@@ -231,7 +232,7 @@ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
+ 
+ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ {
+-	struct kvm_gmem *gmem = file->private_data;
++	struct kvm_gmem *gmem = to_gmem(inode);
+ 	struct kvm_memory_slot *slot;
+ 	struct kvm *kvm = gmem->kvm;
+ 	unsigned long index;
+@@ -260,8 +261,6 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
+ 	kvm_gmem_invalidate_begin(gmem, 0, -1ul);
+ 	kvm_gmem_invalidate_end(gmem, 0, -1ul);
+ 
+-	list_del(&gmem->entry);
+-
+ 	filemap_invalidate_unlock(inode->i_mapping);
+ 
+ 	mutex_unlock(&kvm->slots_lock);
+@@ -305,8 +304,7 @@ static int kvm_gmem_migrate_folio(struct address_space *mapping,
+ 
+ static int kvm_gmem_error_page(struct address_space *mapping, struct page *page)
+ {
+-	struct list_head *gmem_list = &mapping->private_list;
+-	struct kvm_gmem *gmem;
++	struct kvm_gmem *gmem = to_gmem(mapping->host);
+ 	pgoff_t start, end;
+ 
+ 	filemap_invalidate_lock_shared(mapping);
+@@ -314,8 +312,7 @@ static int kvm_gmem_error_page(struct address_space *mapping, struct page *page)
+ 	start = page->index;
+ 	end = start + thp_nr_pages(page);
+ 
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_begin(gmem, start, end);
++	kvm_gmem_invalidate_begin(gmem, start, end);
+ 
+ 	/*
+ 	 * Do not truncate the range, what action is taken in response to the
+@@ -326,8 +323,7 @@ static int kvm_gmem_error_page(struct address_space *mapping, struct page *page)
+ 	 * error to userspace.
+ 	 */
+ 
+-	list_for_each_entry(gmem, gmem_list, entry)
+-		kvm_gmem_invalidate_end(gmem, start, end);
++	kvm_gmem_invalidate_end(gmem, start, end);
+ 
+ 	filemap_invalidate_unlock_shared(mapping);
+ 
+@@ -382,7 +378,6 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags,
+ 	if (err)
+ 		goto err_inode;
+ 
+-	inode->i_private = (void *)(unsigned long)flags;
+ 	inode->i_op = &kvm_gmem_iops;
+ 	inode->i_mapping->a_ops = &kvm_gmem_aops;
+ 	inode->i_mode |= S_IFREG;
+@@ -417,10 +412,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags,
+ 	kvm_get_kvm(kvm);
+ 	gmem->kvm = kvm;
+ 	xa_init(&gmem->bindings);
++	gmem->flags = flags;
+ 
+-	file->private_data = gmem;
+-
+-	list_add(&gmem->entry, &inode->i_mapping->private_list);
++	inode->i_private = gmem;
+ 
+ 	fd_install(fd, file);
+ 	return fd;
+@@ -476,12 +470,11 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	if (file->f_op != &kvm_gmem_fops)
+ 		goto err;
+ 
+-	gmem = file->private_data;
++	inode = file_inode(file);
++	gmem = to_gmem(inode);
+ 	if (gmem->kvm != kvm)
+ 		goto err;
+ 
+-	inode = file_inode(file);
+-
+ 	if (offset < 0 || !PAGE_ALIGNED(offset))
+ 		return -EINVAL;
+ 
+@@ -538,7 +531,7 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+ 	if (!file)
+ 		return;
+ 
+-	gmem = file->private_data;
++	gmem = to_gmem(file_inode(file));
+ 
+ 	filemap_invalidate_lock(file->f_mapping);
+ 	xa_store_range(&gmem->bindings, start, end - 1, NULL, GFP_KERNEL);
+@@ -563,7 +556,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	if (!file)
+ 		return -EFAULT;
+ 
+-	gmem = file->private_data;
++	gmem = to_gmem(file_inode(file));
+ 
+ 	if (WARN_ON_ONCE(xa_load(&gmem->bindings, index) != slot)) {
+ 		r = -EIO;
+-- 
+2.25.1
 
