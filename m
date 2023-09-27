@@ -1,40 +1,40 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A4314292
-	for <linux-coco@lists.linux.dev>; Wed, 27 Sep 2023 14:38:29 +0000 (UTC)
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-50348c54439so4170e87.1
-        for <linux-coco@lists.linux.dev>; Wed, 27 Sep 2023 07:38:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297BC26E17
+	for <linux-coco@lists.linux.dev>; Wed, 27 Sep 2023 16:14:53 +0000 (UTC)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5032a508e74so5004e87.1
+        for <linux-coco@lists.linux.dev>; Wed, 27 Sep 2023 09:14:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695825508; x=1696430308; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1695831292; x=1696436092; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kwuHSbCRREo5aUbdJ9sWu968f7uoQohrIUFOvrQTtAQ=;
-        b=YE3MxwRvO0NmeAzkB3VgPPwkH+PacPD4IMmKmGo/TS+p0sKEC1YUG4MwBuLAef6Yam
-         tZu5rRD1ijbr3LyGwnIc2nXmI3qLnPw51c3mr2QIQuuuveqwXbBr98NBT9a/eb9ULS17
-         cCuZyqHiRQ5FEtQvCOKeKjj85BWC6wVfwmmW4v2RxoWs+3IoaTa8+1D3KfozvVxeTfxh
-         CJH2NZ4mgj16TBim2Av2wme7m8QKFTHm4nv7VUCqC3fb7hKdOBble9G3zg0w76Kl3ZLV
-         BoNLoq76ha8z1wu7bI3VkYKukrDTEAJnrqsEeDr7wauo9oafrqB0ZoKzRpYWEl+A5Uu0
-         8vrw==
+        bh=deEAg0wdOMk2/iimIJp0P2VjFaxr/4oc1ty6m2sB+Ss=;
+        b=ktQ1tb59IrEZobrM3TCJSOu+BP5d1Kc0IXnl18Q+B9QvkyxH8aB2ca/2KjDmYT5i/j
+         k48iUxbJ1uWgy5wKGVel4xgAgO/oQfnFkvNRDfjK4KskZnLUNPKrb8D5FgXeDjvIZTvh
+         b8oAIHUg0JEP1s6Ruztzp+cC5CME85d266R8JkKBbQSwJMlx7Q5q/OR6fYh2NPEmrA19
+         53rcZkyOgVpHHWt7AoIuLQUa2MtuTCUqr4M4cIi73QBbSy5dxgwNuhODJ82qzO/g+v1a
+         gtD+9M+QfcDM3Sn9qwSJDa30oc7yscUV0xOuA5705f8pU+WjKt217GpOcm+9GN8wLuLD
+         rS6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695825508; x=1696430308;
+        d=1e100.net; s=20230601; t=1695831292; x=1696436092;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kwuHSbCRREo5aUbdJ9sWu968f7uoQohrIUFOvrQTtAQ=;
-        b=Gwet4vErwYoGDGWD/2KCtqTGQ5uuvtdTrB+1utZOD2MdjC131ONQzBtcfKP4b19XcF
-         K0YHTRcD6OUMbtITg36O5H2kuRyDuMhKkNnFWU7cGtkFtepG94NK4nOL89273WQV/zNI
-         F7rFdT8ZIeuShdz8aMeXxHV+9nqH2ybQwuUm4/dUimeLTrSndT9UfMIjLiyEY4G7hYgq
-         Z57wlLDA7qvdOseV153hSVdAyeB0lZKNwUWoGohmED+tM3WZECrLswlpvB52xmrQznfV
-         CnUwi9sgfea5GXFitXLonCrnzHhEH9/EdQ+zLCo1gwUzh4yBQWWQEjcYG0y/IorZ9nBA
-         xBuQ==
-X-Gm-Message-State: AOJu0Yzqwv51y+IypYg5aX1lc0sfUOz60Ja4woK4XimXm6TrmDvmIwqi
-	fm9/186czFd4vB67FPsJevv4Qx320YOm1O2Btst/qQ==
-X-Google-Smtp-Source: AGHT+IE0gH7zFleu7xoNGGBjmrFt70/G7NBdkx0ikfMBUwovBQX/1Ee6zh2CoeyoR1CwduIBaNurXRUJ/dV7DFnbRF4=
-X-Received: by 2002:a05:6512:3e0b:b0:504:7b50:ec9a with SMTP id
- i11-20020a0565123e0b00b005047b50ec9amr121228lfv.1.1695825507825; Wed, 27 Sep
- 2023 07:38:27 -0700 (PDT)
+        bh=deEAg0wdOMk2/iimIJp0P2VjFaxr/4oc1ty6m2sB+Ss=;
+        b=xLcCfyHGJL4QrIiZmmz4kgxYB9UvBipL/MqtyOp+O1uThYhQGTCJ6izXmpVUtf761s
+         xAkzlvFC0A3Qjqmr5IFvHh6H/cpriYhRVi0LzZNRCi7XvIa++USxJQBrMZPw1KS61TQG
+         Av+B49FGtNSAHhpbIR2TB5FwqG+1xzXk78Vve1KuElH/qvnqfQHd/SfnI190eOe1fXWT
+         30GwL/6OR11m5/6OuYW1ysx4xHiMEeDHu8+mO7Jk5bnDio929M/U5jTKbqKINYfmHnuM
+         6llG+sVN5/MsDNqDlHiZeb6lD+l+tVRd8pv7BpA99MkL5CXyxVog155BwiRNds6nmGTU
+         /vRg==
+X-Gm-Message-State: AOJu0Yyvm6qSCULbSbUPyS3luqXOoqNajdzVs8QJDJTyxE+YKuVNLk1p
+	yryiWti8EnRu21POGdB+bHEnpvjKZCcE3shGPCfWhg==
+X-Google-Smtp-Source: AGHT+IFUPtHbMGvooamvOFA6dCoa++W2n3L1mKUug8p/9C0xyUutQrkSl75OtHXX0UOmlL4Y7//sFYmAkVjhycB/T90=
+X-Received: by 2002:ac2:44d2:0:b0:502:dc15:7fb with SMTP id
+ d18-20020ac244d2000000b00502dc1507fbmr147845lfm.5.1695831291761; Wed, 27 Sep
+ 2023 09:14:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -42,39 +42,184 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <169570181657.596431.6178773442587231200.stgit@dwillia2-xfh.jf.intel.com>
- <169570182987.596431.14062417344858914481.stgit@dwillia2-xfh.jf.intel.com>
- <c3d347a7-58d6-4830-aad4-d354b83f0704@linux.intel.com> <CA+1=6yfmLXJbZu7Gd7cp_HOAbmHwx54aPgozWKBikWwZSYTOZw@mail.gmail.com>
- <6513e6079a427_91c1e294e@dwillia2-xfh.jf.intel.com.notmuch> <CA+1=6yeP6dDiXVQrxMt0AaEF_7S05p4Do67=ysXK-Chfvu-9ow@mail.gmail.com>
-In-Reply-To: <CA+1=6yeP6dDiXVQrxMt0AaEF_7S05p4Do67=ysXK-Chfvu-9ow@mail.gmail.com>
+ <169570185411.596431.3153227201984845022.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <169570185411.596431.3153227201984845022.stgit@dwillia2-xfh.jf.intel.com>
 From: Peter Gonda <pgonda@google.com>
-Date: Wed, 27 Sep 2023 08:38:16 -0600
-Message-ID: <CAMkAt6ohEnYwC8yVzye0F4gApvuyktHDP-q8-p7gJnSAyRMR_Q@mail.gmail.com>
-Subject: Re: [PATCH v4 2/6] configfs-tsm: Introduce a shared ABI for
- attestation reports
-To: Thomas Fossati <thomas.fossati@linaro.org>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev, 
-	Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Samuel Ortiz <sameo@rivosinc.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, peterz@infradead.org, linux-kernel@vger.kernel.org, 
+Date: Wed, 27 Sep 2023 10:14:39 -0600
+Message-ID: <CAMkAt6r2VPPMZ__SQfJse8qWsUyYW3AgYbOUVM0S_Vtk=KvkxQ@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] virt: tdx-guest: Add Quote generation support
+ using TSM_REPORTS
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, peterz@infradead.org, linux-kernel@vger.kernel.org, 
 	x86@kernel.org, dave.hansen@linux.intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 27, 2023 at 2:25=E2=80=AFAM Thomas Fossati
-<thomas.fossati@linaro.org> wrote:
+On Mon, Sep 25, 2023 at 10:17=E2=80=AFPM Dan Williams <dan.j.williams@intel=
+.com> wrote:
 >
-> On Wed, 27 Sept 2023 at 10:21, Dan Williams <dan.j.williams@intel.com> wr=
-ote:
-> > It can be expanded when/if those platforms expand the
-> > size of the supported user data, or another configfs-tsm backend arrive=
-s
-> > that needs that capability.
+> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.=
+com>
 >
-> Makes sense, thanks.
+> In TDX guest, the attestation process is used to verify the TDX guest
+> trustworthiness to other entities before provisioning secrets to the
+> guest. The first step in the attestation process is TDREPORT
+> generation, which involves getting the guest measurement data in the
+> format of TDREPORT, which is further used to validate the authenticity
+> of the TDX guest. TDREPORT by design is integrity-protected and can
+> only be verified on the local machine.
+>
+> To support remote verification of the TDREPORT in a SGX-based
+> attestation, the TDREPORT needs to be sent to the SGX Quoting Enclave
+> (QE) to convert it to a remotely verifiable Quote. SGX QE by design can
+> only run outside of the TDX guest (i.e. in a host process or in a
+> normal VM) and guest can use communication channels like vsock or
+> TCP/IP to send the TDREPORT to the QE. But for security concerns, the
+> TDX guest may not support these communication channels. To handle such
+> cases, TDX defines a GetQuote hypercall which can be used by the guest
+> to request the host VMM to communicate with the SGX QE. More details
+> about GetQuote hypercall can be found in TDX Guest-Host Communication
+> Interface (GHCI) for Intel TDX 1.0, section titled
+> "TDG.VP.VMCALL<GetQuote>".
+>
+> Trusted Security Module (TSM) [1] exposes a common ABI for Confidential
+> Computing Guest platforms to get the measurement data via ConfigFS.
+> Extend the TSM framework and add support to allow an attestation agent
+> to get the TDX Quote data (included usage example below).
+>
+>   report=3D/sys/kernel/config/tsm/report/report0
+>   mkdir $report
+>   dd if=3D/dev/urandom bs=3D64 count=3D1 > $report/inblob
+>   hexdump -C $report/outblob
+>   rmdir $report
+>
+> GetQuote TDVMCALL requires TD guest pass a 4K aligned shared buffer
+> with TDREPORT data as input, which is further used by the VMM to copy
+> the TD Quote result after successful Quote generation. To create the
+> shared buffer, allocate a large enough memory and mark it shared using
+> set_memory_decrypted() in tdx_guest_init(). This buffer will be re-used
+> for GetQuote requests in the TDX TSM handler.
+>
+> Although this method reserves a fixed chunk of memory for GetQuote
+> requests, such one time allocation can help avoid memory fragmentation
+> related allocation failures later in the uptime of the guest.
+>
+> Since the Quote generation process is not time-critical or frequently
+> used, the current version uses a polling model for Quote requests and
+> it also does not support parallel GetQuote requests.
+>
+> Link: https://lore.kernel.org/lkml/169342399185.3934343.30358453483269445=
+19.stgit@dwillia2-xfh.jf.intel.com/ [1]
+> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@lin=
+ux.intel.com>
+> Reviewed-by: Erdem Aktas <erdemaktas@google.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-I'm not familiar with the rats eat spec but I would assume the
-protocol would acquire more than just the nonce in the inblob.
-Probably some combination of claims, nonce, and information about a
-public key? Does the specification allow for the data needing to be
-signed by the TSM to be hashed first?
+Hey Dan,
+
+I tried running your test commands on an SNP enabled guest. To build
+the kernel I just checked out linus/master and applied your series. I
+haven't done any debugging yet, so I will update with what I find.
+
+root@Ubuntu2004:~#   hexdump -C $report/outblob
+[  219.871875] ------------[ cut here ]------------
+[  219.876642] kernel BUG at include/linux/scatterlist.h:187!
+[  219.882280] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[  219.887628] CPU: 0 PID: 1317 Comm: hexdump Not tainted 6.6.0-rc3-xfstest=
+s-000
+44-gf636850ddfc7 #1
+[  219.896530] Hardware name: Google Google Compute Engine/Google Compute E=
+ngine
+, BIOS Google 09/26/2023
+[  219.905859] RIP: 0010:enc_dec_message+0x4ed/0x570
+[  219.910673] Code: c7 c0 00 00 00 80 48 2b 05 b8 4f 99 00 e9 dc fd ff ff =
+0f 0b
+ bb f4 ff ff ff eb b5 0f 0b 0f 0b 0f 0b e8 e7 47 ce ff 89 c3 eb 94 <0f> 0b =
+0f 0b
+ 0f 0b 0f 0b 48 8d 7c 24 38 e8 11 6b 23 00 8b 5c 24 58
+[  219.929547] RSP: 0018:ffffc90000e27a18 EFLAGS: 00010246
+[  219.934893] RAX: 0000000000000000 RBX: ffffc90000e27bf8 RCX: 00000000000=
+81000
+[  219.942134] RDX: 0000000000000000 RSI: 0000000000080000 RDI: ffffc90080e=
+27bf8
+[  219.949378] RBP: ffff8881018980a0 R08: 0000000000000000 R09: ffffc90000e=
+27a78
+[  219.956621] R10: 0000000000026680 R11: 0000000000000008 R12: ffff888111a=
+3c400
+[  219.963864] R13: ffff8881018980d0 R14: ffff8881003e7000 R15: 00000000000=
+00060
+[  219.971106] FS:  00007fd7e75f5740(0000) GS:ffff888237c00000(0000) knlGS:=
+00000
+00000000000
+[  219.979303] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  219.985160] CR2: 00005563500e8808 CR3: 0008000111986001 CR4: 00000000003=
+70ef0
+[  219.992401] Call Trace:
+[  219.994955]  <TASK>
+[  219.997160]  ? die+0x36/0x80
+[  220.000149]  ? do_trap+0xf4/0x100
+[  220.003574]  ? enc_dec_message+0x4ed/0x570
+[  220.007777]  ? do_error_trap+0x65/0x80
+[  220.011632]  ? enc_dec_message+0x4ed/0x570
+[  220.015842]  ? exc_invalid_op+0x50/0x70
+[  220.019788]  ? enc_dec_message+0x4ed/0x570
+[  220.023994]  ? asm_exc_invalid_op+0x1a/0x20
+[  220.028288]  ? enc_dec_message+0x4ed/0x570
+[  220.032505]  ? enc_dec_message+0x16f/0x570
+[  220.036711]  ? srso_alias_return_thunk+0x5/0x7f
+[  220.041352]  ? srso_alias_return_thunk+0x5/0x7f
+[  220.045994]  handle_guest_request+0xc6/0x330
+[  220.050375]  get_ext_report+0x1e0/0x3d0
+[  220.054323]  sev_report_new+0x159/0x460
+[  220.058267]  tsm_report_read.part.0+0x96/0x120
+[  220.062818]  configfs_bin_read_iter+0xe1/0x1e0
+[  220.067377]  vfs_read+0x1db/0x310
+[  220.070813]  ksys_read+0x6f/0xf0
+[  220.074152]  do_syscall_64+0x3f/0x90
+[  220.077843]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  220.083007] RIP: 0033:0x7fd7e7705fd2
+[  220.086695] Code: c0 e9 c2 fe ff ff 50 48 8d 3d aa cb 0a 00 e8 d5 1a 02 =
+00 0f
+ 1f 44 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 0f 05 <48> 3d =
+00 f0
+ ff ff 77 56 c3 0f 1f 44 00 00 48 83 ec 28 48 89 54 24
+[  220.105572] RSP: 002b:00007fff9bc8fc18 EFLAGS: 00000246 ORIG_RAX: 000000=
+00000
+00000
+[  220.113252] RAX: ffffffffffffffda RBX: 00007fd7e77e4980 RCX: 00007fd7e77=
+05fd2
+[  220.120496] RDX: 0000000000001000 RSI: 00005563500e7800 RDI: 00000000000=
+00000
+[  220.127742] RBP: 00007fd7e77e14a0 R08: 0000000000000000 R09: 00000000000=
+0007c
+[  220.134988] R10: 0000000000000000 R11: 0000000000000246 R12: 00000000000=
+00010
+[  220.142232] R13: 00007fd7e77e08a0 R14: 0000000000000d68 R15: 00000000000=
+00d68
+[  220.149479]  </TASK>
+[  220.151865] ---[ end trace 0000000000000000 ]---
+[  220.156629] RIP: 0010:enc_dec_message+0x4ed/0x570
+[  220.161479] Code: c7 c0 00 00 00 80 48 2b 05 b8 4f 99 00 e9 dc fd ff ff =
+0f 0b
+ bb f4 ff ff ff eb b5 0f 0b 0f 0b 0f 0b e8 e7 47 ce ff 89 c3 eb 94 <0f> 0b =
+0f 0b
+ 0f 0b 0f 0b 48 8d 7c 24 38 e8 11 6b 23 00 8b 5c 24 58
+[  220.180379] RSP: 0018:ffffc90000e27a18 EFLAGS: 00010246
+[  220.185743] RAX: 0000000000000000 RBX: ffffc90000e27bf8 RCX: 00000000000=
+81000
+[  220.193012] RDX: 0000000000000000 RSI: 0000000000080000 RDI: ffffc90080e=
+27bf8
+[  220.200280] RBP: ffff8881018980a0 R08: 0000000000000000 R09: ffffc90000e=
+27a78
+[  220.207551] R10: 0000000000026680 R11: 0000000000000008 R12: ffff888111a=
+3c400
+[  220.214822] R13: ffff8881018980d0 R14: ffff8881003e7000 R15: 00000000000=
+00060
+[  220.222094] FS:  00007fd7e75f5740(0000) GS:ffff888237c00000(0000) knlGS:=
+00000
+00000000000
+[  220.230329] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  220.236210] CR2: 00005563500e8808 CR3: 0008000111986001 CR4: 00000000003=
+70ef0
