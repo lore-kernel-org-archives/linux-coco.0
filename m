@@ -1,264 +1,191 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8D93588F
-	for <linux-coco@lists.linux.dev>; Tue,  3 Oct 2023 15:40:54 +0000 (UTC)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0MR60mWpz67Ct8;
-	Tue,  3 Oct 2023 23:38:10 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 3 Oct
- 2023 16:40:50 +0100
-Date: Tue, 3 Oct 2023 16:40:48 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Lukas Wunner <lukas@wunner.de>
-CC: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>, Herbert Xu
-	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Alex
- Williamson <alex.williamson@redhat.com>, <linux-pci@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <linuxarm@huawei.com>, David Box
-	<david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>, Dave Jiang
-	<dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>, Zhi Wang
-	<zhi.a.wang@intel.com>, Alistair Francis <alistair.francis@wdc.com>, Wilfred
- Mallawa <wilfred.mallawa@wdc.com>, Alexey Kardashevskiy <aik@amd.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 12/12] PCI/CMA: Grant guests exclusive control of
- authentication
-Message-ID: <20231003164048.0000148c@Huawei.com>
-In-Reply-To: <467bff0c4bab93067b1e353e5b8a92f1de353a3f.1695921657.git.lukas@wunner.de>
-References: <cover.1695921656.git.lukas@wunner.de>
-	<467bff0c4bab93067b1e353e5b8a92f1de353a3f.1695921657.git.lukas@wunner.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FD63B2B7
+	for <linux-coco@lists.linux.dev>; Tue,  3 Oct 2023 18:37:16 +0000 (UTC)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5032a508e74so1004e87.1
+        for <linux-coco@lists.linux.dev>; Tue, 03 Oct 2023 11:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696358234; x=1696963034; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nm+7cYOviUtknmQJho1MKtDViZUMXc6rKNxLrNChrFE=;
+        b=U6BFPUED95F0+Is7sSRuWRU/ha3YvCqAnoYAiIA7PvdSII2hb7R21C5dwlcxKFsc2/
+         ojMNCHU/tDb1FYLhIl/UJqFpv+U4/SgEnZnGwbrU2m9LRviAbHEGjs2xA2z0TUOXUbIP
+         aOTLfW5qPZDkTyJTzbV+tYgSvuwoJ0ujCEz56X0T/4rRzlXbcbtcIrZTlA92LPd3s7Dx
+         dsMivXsAlaeERkzGYa7IORXerGUuxSDVML20evs0LIB77v96CQewI2hVm/50rTIXWMbo
+         Z98QV3TK/U/JPXIYcQU/DxZkk8fDLBUQVjRkN5sdPctTdpF+kJ4OD8v2XJt1rWkLv3jd
+         Gzqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696358234; x=1696963034;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Nm+7cYOviUtknmQJho1MKtDViZUMXc6rKNxLrNChrFE=;
+        b=KIrqWuXESN+WCcL9uTYZbVS/7+ygFgPfyvHp+5n3sLpcska5eb7wRxhPs+JrwxMv88
+         STtTImx91ko/3dDmfpr3tRsqYJWyMeW3h68fwHlKVkE+Qoin4SxYPYpJTTrJ8FvYMB5l
+         C4iMqMh8eFS45ibOruPSlNoRqAYR8q3pyIvvtdO5k0VB94CdasSfbysIro9bUowUNKXB
+         M81O2NOo6qJHn3Ak5HgyQbJVoII3dhPvv87C7OnORusWf6yy6MBII6+z/Lx+CXfunqZR
+         XK4JA/ehRyJ5VpvVo8aszR4MWdDy3PgOig7jYZ58Njm/xaKIEkeqm3mA/d80ulDCSHvn
+         bNow==
+X-Gm-Message-State: AOJu0YxaL17sDU81BZPGd5NsYe4oe8Om/ErejnoPVNEA9rGsZpXDiiu+
+	bnutwnS/msad0Rbhtm28sy6x/YVGxE5N/UMTKyZrTg==
+X-Google-Smtp-Source: AGHT+IGdkJLAOSTaCP9iR1nSmb71LB9wabpp+OpwtH+LOFpxDpXBbaAswNhzmlQFVKxR07+Cfxc89jVmUpKwnd3OSP0=
+X-Received: by 2002:ac2:51a7:0:b0:502:cdb6:f316 with SMTP id
+ f7-20020ac251a7000000b00502cdb6f316mr4633lfk.3.1696358234460; Tue, 03 Oct
+ 2023 11:37:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+References: <169570181657.596431.6178773442587231200.stgit@dwillia2-xfh.jf.intel.com>
+ <169570185411.596431.3153227201984845022.stgit@dwillia2-xfh.jf.intel.com>
+ <CAMkAt6r2VPPMZ__SQfJse8qWsUyYW3AgYbOUVM0S_Vtk=KvkxQ@mail.gmail.com>
+ <651602dc4c6e3_91c1e2947f@dwillia2-xfh.jf.intel.com.notmuch> <CAMkAt6rrzS85ZT9T7r6iwQHoVyEPwaxQ3Xayp_6XMbU+RJzS4w@mail.gmail.com>
+In-Reply-To: <CAMkAt6rrzS85ZT9T7r6iwQHoVyEPwaxQ3Xayp_6XMbU+RJzS4w@mail.gmail.com>
+From: Peter Gonda <pgonda@google.com>
+Date: Tue, 3 Oct 2023 12:37:00 -0600
+Message-ID: <CAMkAt6rwSwES_hEac=_7Gg8wcGosHMPXA3J2g_BGC_c+NbVp1w@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] virt: tdx-guest: Add Quote generation support
+ using TSM_REPORTS
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, peterz@infradead.org, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, dave.hansen@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 28 Sep 2023 19:32:42 +0200
-Lukas Wunner <lukas@wunner.de> wrote:
+On Fri, Sep 29, 2023 at 11:26=E2=80=AFAM Peter Gonda <pgonda@google.com> wr=
+ote:
+>
+> On Thu, Sep 28, 2023 at 4:49=E2=80=AFPM Dan Williams <dan.j.williams@inte=
+l.com> wrote:
+> >
+> > Peter Gonda wrote:
+> > > On Mon, Sep 25, 2023 at 10:17=E2=80=AFPM Dan Williams <dan.j.williams=
+@intel.com> wrote:
+> > > >
+> > > > From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.=
+intel.com>
+> > > >
+> > > > In TDX guest, the attestation process is used to verify the TDX gue=
+st
+> > > > trustworthiness to other entities before provisioning secrets to th=
+e
+> > > > guest. The first step in the attestation process is TDREPORT
+> > > > generation, which involves getting the guest measurement data in th=
+e
+> > > > format of TDREPORT, which is further used to validate the authentic=
+ity
+> > > > of the TDX guest. TDREPORT by design is integrity-protected and can
+> > > > only be verified on the local machine.
+> > > >
+> > > > To support remote verification of the TDREPORT in a SGX-based
+> > > > attestation, the TDREPORT needs to be sent to the SGX Quoting Encla=
+ve
+> > > > (QE) to convert it to a remotely verifiable Quote. SGX QE by design=
+ can
+> > > > only run outside of the TDX guest (i.e. in a host process or in a
+> > > > normal VM) and guest can use communication channels like vsock or
+> > > > TCP/IP to send the TDREPORT to the QE. But for security concerns, t=
+he
+> > > > TDX guest may not support these communication channels. To handle s=
+uch
+> > > > cases, TDX defines a GetQuote hypercall which can be used by the gu=
+est
+> > > > to request the host VMM to communicate with the SGX QE. More detail=
+s
+> > > > about GetQuote hypercall can be found in TDX Guest-Host Communicati=
+on
+> > > > Interface (GHCI) for Intel TDX 1.0, section titled
+> > > > "TDG.VP.VMCALL<GetQuote>".
+> > > >
+> > > > Trusted Security Module (TSM) [1] exposes a common ABI for Confiden=
+tial
+> > > > Computing Guest platforms to get the measurement data via ConfigFS.
+> > > > Extend the TSM framework and add support to allow an attestation ag=
+ent
+> > > > to get the TDX Quote data (included usage example below).
+> > > >
+> > > >   report=3D/sys/kernel/config/tsm/report/report0
+> > > >   mkdir $report
+> > > >   dd if=3D/dev/urandom bs=3D64 count=3D1 > $report/inblob
+> > > >   hexdump -C $report/outblob
+> > > >   rmdir $report
+> > > >
+> > > > GetQuote TDVMCALL requires TD guest pass a 4K aligned shared buffer
+> > > > with TDREPORT data as input, which is further used by the VMM to co=
+py
+> > > > the TD Quote result after successful Quote generation. To create th=
+e
+> > > > shared buffer, allocate a large enough memory and mark it shared us=
+ing
+> > > > set_memory_decrypted() in tdx_guest_init(). This buffer will be re-=
+used
+> > > > for GetQuote requests in the TDX TSM handler.
+> > > >
+> > > > Although this method reserves a fixed chunk of memory for GetQuote
+> > > > requests, such one time allocation can help avoid memory fragmentat=
+ion
+> > > > related allocation failures later in the uptime of the guest.
+> > > >
+> > > > Since the Quote generation process is not time-critical or frequent=
+ly
+> > > > used, the current version uses a polling model for Quote requests a=
+nd
+> > > > it also does not support parallel GetQuote requests.
+> > > >
+> > > > Link: https://lore.kernel.org/lkml/169342399185.3934343.30358453483=
+26944519.stgit@dwillia2-xfh.jf.intel.com/ [1]
+> > > > Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswa=
+my@linux.intel.com>
+> > > > Reviewed-by: Erdem Aktas <erdemaktas@google.com>
+> > > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > >
+> > > Hey Dan,
+> > >
+> > > I tried running your test commands on an SNP enabled guest. To build
+> > > the kernel I just checked out linus/master and applied your series. I
+> > > haven't done any debugging yet, so I will update with what I find.
+> > >
+> > > root@Ubuntu2004:~#   hexdump -C $report/outblob
+> > > [  219.871875] ------------[ cut here ]------------
+> > > [  219.876642] kernel BUG at include/linux/scatterlist.h:187!
+> >
+> > Ok, it does not like virtual address of one of the buffers, but my
+> > changes "should" not have affected that as get_ext_report() internally
+> > uses snp_dev->certs_data and snp_dev->response for bounce buffering the
+> > actual request / response memory. First test I want to try once I can
+> > get on an SNP system is compare this to the ioctl path just make sure
+> > that succeeds.
+>
 
-> At any given time, only a single entity in a physical system may have
-> an SPDM connection to a device.  That's because the GET_VERSION request
-> (which begins an authentication sequence) resets "the connection and all
-> context associated with that connection" (SPDM 1.3.0 margin no 158).
-> 
-> Thus, when a device is passed through to a guest and the guest has
-> authenticated it, a subsequent authentication by the host would reset
-> the device's CMA-SPDM session behind the guest's back.
-> 
-> Prevent by letting the guest claim exclusive CMA ownership of the device
-> during passthrough.  Refuse CMA reauthentication on the host as long.
-> After passthrough has concluded, reauthenticate the device on the host.
-> 
-> Store the flag indicating guest ownership in struct pci_dev's priv_flags
-> to avoid the concurrency issues observed by commit 44bda4b7d26e ("PCI:
-> Fix is_added/is_busmaster race condition").
-> 
-> Side note:  The Data Object Exchange r1.1 ECN (published Oct 11 2022)
-> retrofits DOE with Connection IDs.  In theory these allow simultaneous
-> CMA-SPDM connections by multiple entities to the same device.  But the
-> first hardware generation capable of CMA-SPDM only supports DOE r1.0.
-> The specification also neglects to reserve unique Connection IDs for
-> hosts and guests, which further limits its usefulness.
-> 
-> In general, forcing the transport to compensate for SPDM's lack of a
-> connection identifier feels like a questionable layering violation.
+I think there may be an issue with CONFIG_DEBUG_SG. That was the
+warning we were getting in my above stack trace:
 
-Is there anything stopping a PF presenting multiple CMA capable DOE
-instances?  I'd expect them to have their own contexts if they do..
+> [  219.876642] kernel BUG at include/linux/scatterlist.h:187!
 
-Something for the future if such a device shows up perhaps.
+This was for this line in enc_dec_message():
 
-Otherwise this looks superficially fine to me, but I'll leave
-giving tags to those more familiar with the VFIO side of things
-and potential use cases etc.
+        sg_set_buf(&src[1], src_buf, hdr->msg_sz);
 
-Jonathan
+I am not sure why in sg_set_buf() virt_addr_valid() returns false for
+the address given in the sev_report_new() which is from the variable
+'ext_req' which is stack allocated?
 
+static inline void sg_set_buf(struct scatterlist *sg, const void *buf,
+     unsigned int buflen)
+{
+#ifdef CONFIG_DEBUG_SG
+    BUG_ON(!virt_addr_valid(buf));
+#endif
+    sg_set_page(sg, virt_to_page(buf), buflen, offset_in_page(buf));
+}
 
-
-
-> 
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> Cc: Alex Williamson <alex.williamson@redhat.com>
-> ---
->  drivers/pci/cma.c                | 41 ++++++++++++++++++++++++++++++++
->  drivers/pci/pci.h                |  1 +
->  drivers/vfio/pci/vfio_pci_core.c |  9 +++++--
->  include/linux/pci.h              |  8 +++++++
->  include/linux/spdm.h             |  2 ++
->  lib/spdm_requester.c             | 11 +++++++++
->  6 files changed, 70 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/cma.c b/drivers/pci/cma.c
-> index c539ad85a28f..b3eee137ffe2 100644
-> --- a/drivers/pci/cma.c
-> +++ b/drivers/pci/cma.c
-> @@ -82,9 +82,50 @@ int pci_cma_reauthenticate(struct pci_dev *pdev)
->  	if (!pdev->cma_capable)
->  		return -ENOTTY;
->  
-> +	if (test_bit(PCI_CMA_OWNED_BY_GUEST, &pdev->priv_flags))
-> +		return -EPERM;
-> +
->  	return spdm_authenticate(pdev->spdm_state);
->  }
->  
-> +#if IS_ENABLED(CONFIG_VFIO_PCI_CORE)
-> +/**
-> + * pci_cma_claim_ownership() - Claim exclusive CMA-SPDM control for guest VM
-> + * @pdev: PCI device
-> + *
-> + * Claim exclusive CMA-SPDM control for a guest virtual machine before
-> + * passthrough of @pdev.  The host refrains from performing CMA-SPDM
-> + * authentication of the device until passthrough has concluded.
-> + *
-> + * Necessary because the GET_VERSION request resets the SPDM connection
-> + * and DOE r1.0 allows only a single SPDM connection for the entire system.
-> + * So the host could reset the guest's SPDM connection behind the guest's back.
-> + */
-> +void pci_cma_claim_ownership(struct pci_dev *pdev)
-> +{
-> +	set_bit(PCI_CMA_OWNED_BY_GUEST, &pdev->priv_flags);
-> +
-> +	if (pdev->cma_capable)
-> +		spdm_await(pdev->spdm_state);
-> +}
-> +EXPORT_SYMBOL(pci_cma_claim_ownership);
-> +
-> +/**
-> + * pci_cma_return_ownership() - Relinquish CMA-SPDM control to the host
-> + * @pdev: PCI device
-> + *
-> + * Relinquish CMA-SPDM control to the host after passthrough of @pdev to a
-> + * guest virtual machine has concluded.
-> + */
-> +void pci_cma_return_ownership(struct pci_dev *pdev)
-> +{
-> +	clear_bit(PCI_CMA_OWNED_BY_GUEST, &pdev->priv_flags);
-> +
-> +	pci_cma_reauthenticate(pdev);
-> +}
-> +EXPORT_SYMBOL(pci_cma_return_ownership);
-> +#endif
-> +
->  void pci_cma_destroy(struct pci_dev *pdev)
->  {
->  	if (pdev->spdm_state)
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index d80cc06be0cc..05ae6359b152 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -388,6 +388,7 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
->  #define PCI_DEV_ADDED 0
->  #define PCI_DPC_RECOVERED 1
->  #define PCI_DPC_RECOVERING 2
-> +#define PCI_CMA_OWNED_BY_GUEST 3
->  
->  static inline void pci_dev_assign_added(struct pci_dev *dev, bool added)
->  {
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 1929103ee59a..6f300664a342 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -487,10 +487,12 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->  	if (ret)
->  		goto out_power;
->  
-> +	pci_cma_claim_ownership(pdev);
-> +
->  	/* If reset fails because of the device lock, fail this path entirely */
->  	ret = pci_try_reset_function(pdev);
->  	if (ret == -EAGAIN)
-> -		goto out_disable_device;
-> +		goto out_cma_return;
->  
->  	vdev->reset_works = !ret;
->  	pci_save_state(pdev);
-> @@ -549,7 +551,8 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->  out_free_state:
->  	kfree(vdev->pci_saved_state);
->  	vdev->pci_saved_state = NULL;
-> -out_disable_device:
-> +out_cma_return:
-> +	pci_cma_return_ownership(pdev);
->  	pci_disable_device(pdev);
->  out_power:
->  	if (!disable_idle_d3)
-> @@ -678,6 +681,8 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
->  
->  	vfio_pci_dev_set_try_reset(vdev->vdev.dev_set);
->  
-> +	pci_cma_return_ownership(pdev);
-> +
->  	/* Put the pm-runtime usage counter acquired during enable */
->  	if (!disable_idle_d3)
->  		pm_runtime_put(&pdev->dev);
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 2c5fde81bb85..c14ea0e74fc4 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -2386,6 +2386,14 @@ static inline resource_size_t pci_iov_resource_size(struct pci_dev *dev, int res
->  static inline void pci_vf_drivers_autoprobe(struct pci_dev *dev, bool probe) { }
->  #endif
->  
-> +#ifdef CONFIG_PCI_CMA
-> +void pci_cma_claim_ownership(struct pci_dev *pdev);
-> +void pci_cma_return_ownership(struct pci_dev *pdev);
-> +#else
-> +static inline void pci_cma_claim_ownership(struct pci_dev *pdev) { }
-> +static inline void pci_cma_return_ownership(struct pci_dev *pdev) { }
-> +#endif
-> +
->  #if defined(CONFIG_HOTPLUG_PCI) || defined(CONFIG_HOTPLUG_PCI_MODULE)
->  void pci_hp_create_module_link(struct pci_slot *pci_slot);
->  void pci_hp_remove_module_link(struct pci_slot *pci_slot);
-> diff --git a/include/linux/spdm.h b/include/linux/spdm.h
-> index 69a83bc2eb41..d796127fbe9a 100644
-> --- a/include/linux/spdm.h
-> +++ b/include/linux/spdm.h
-> @@ -34,6 +34,8 @@ int spdm_authenticate(struct spdm_state *spdm_state);
->  
->  bool spdm_authenticated(struct spdm_state *spdm_state);
->  
-> +void spdm_await(struct spdm_state *spdm_state);
-> +
->  void spdm_destroy(struct spdm_state *spdm_state);
->  
->  #endif
-> diff --git a/lib/spdm_requester.c b/lib/spdm_requester.c
-> index b2af2074ba6f..99424d6aebf5 100644
-> --- a/lib/spdm_requester.c
-> +++ b/lib/spdm_requester.c
-> @@ -1483,6 +1483,17 @@ struct spdm_state *spdm_create(struct device *dev, spdm_transport *transport,
->  }
->  EXPORT_SYMBOL_GPL(spdm_create);
->  
-> +/**
-> + * spdm_await() - Wait for ongoing spdm_authenticate() to finish
-> + *
-> + * @spdm_state: SPDM session state
-> + */
-> +void spdm_await(struct spdm_state *spdm_state)
-> +{
-> +	mutex_lock(&spdm_state->lock);
-> +	mutex_unlock(&spdm_state->lock);
-> +}
-> +
->  /**
->   * spdm_destroy() - Destroy SPDM session
->   *
-
+When I disable CONFIG_DEBUG_SG in my config. Your patch seems to work,
+well at least it doesn't crash the guest. I haven't checked if the
+report is valid yet.
