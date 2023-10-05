@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05B7125A3
-	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 13:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EAD1A262
+	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 13:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G+OlSlHt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m8siYOju"
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696511823; x=1728047823;
+  t=1696511825; x=1728047825;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ja5J3yNUmltgYZsQ6ex9qPK0e1eU53KBqHupwbwonDY=;
-  b=G+OlSlHtnBZQRgYT2liv48z7pPRvqYmOi6BrCcVfoLsUEtwTexfZW+b7
-   x2s2Yo/+CUSlGaSoZvnRJaUsuaGBaV2JS8NX2976PzscOT/3E87NyV4pT
-   /gS0ztwd9Qpf37q1WfgCnUjQJTqCpsrFK2iXdIhC5jJaj9AYxyCPhxZC8
-   VyhBeUOTZKnRziScdw/6KWXnt1g+XySXbUnUbEkiHn/92bmINNrRNXxDA
-   HkQ/NZTQJvZJd7SEQJbvf0gCLxueVR1KtDtRLdC8gGh99V5YBOKJV6y9R
-   in3nHiCXpbGt9cGeTp6Az3/ABlg2TISZBjwuwb6UtotF27tN/wekhkAfZ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="382357575"
+  bh=YaJcwdfsbT/u6tJs5uRbj4NUFmy4HkVgm/EwY5jjC6U=;
+  b=m8siYOjuQhDxpXftYkyJ5wtjVyBh/IFf+qeHldeEsFmQ8C9jnegeBT5F
+   cMKBJH/KSRztR8PHzXJXf77/nWIlFLhQza00EQXgUveA+YsTYEoqzSODb
+   Py/i8zq/R+M3qiDZr2zwe2Vj4sTILK2RuISu87eMd1v5PMHKV4TNN8pFz
+   Iucna9xEBGjQu3nSfw/zDuQsOgwHFb2SrJuTsn+8ixIUhSlHW5mMqY7BQ
+   8xxsnaPjiD2GL3PYXPGrMSp/bhY+hWSJKoWNpuojd9mBo+It6TCXK1ork
+   JUpMu+axqp82xbl/EUUXc+K3JL98LjrB6FpUAOD6Jfrl42Pl2YpiACv8m
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="382357584"
 X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="382357575"
+   d="scan'208";a="382357584"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
   by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 06:14:27 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="817564322"
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="817564326"
 X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="817564322"
+   d="scan'208";a="817564326"
 Received: from skwasnia-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.222.71])
   by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 06:14:23 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 6748410A153; Thu,  5 Oct 2023 16:14:14 +0300 (+03)
+	id 7D68910A155; Thu,  5 Oct 2023 16:14:14 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -51,9 +51,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 09/13] x86/tdx: Account shared memory
-Date: Thu,  5 Oct 2023 16:13:58 +0300
-Message-ID: <20231005131402.14611-10-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 11/13] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+Date: Thu,  5 Oct 2023 16:14:00 +0300
+Message-ID: <20231005131402.14611-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
 References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
@@ -65,121 +65,72 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The kernel will convert all shared memory back to private during kexec.
-The direct mapping page tables will provide information on which memory
-is shared.
+e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
+things, guides where direct mapping ends. Any memory above max_pfn is
+not going to be present in the direct mapping.
 
-It is extremely important to convert all shared memory. If a page is
-missed, it will cause the target kernel to crash when it accesses it.
+e820__end_of_ram_pfn() finds the end of the ram based on the highest
+E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
+calculation.
 
-Keep track of the number of shared pages. This will allow for
-cross-checking against the shared information in the direct mapping and
-reporting if the shared bit is lost.
+Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
+tables and might be required by kernel to function properly.
 
-Include a debugfs interface that allows for the check to be performed at
-any point.
+Usually the problem is hidden because there is some E820_TYPE_RAM memory
+above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
+memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
+can fit under the last E820_TYPE_ACPI range.
+
+Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
+E820_TYPE_ACPI memory.
+
+The problem was discovered during debugging kexec for TDX guest. TDX
+guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
+it between the kernels on kexec.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/coco/tdx/tdx.c | 67 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ arch/x86/kernel/e820.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 46022283d955..56e152126f20 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -5,6 +5,7 @@
- #define pr_fmt(fmt)     "tdx: " fmt
- 
- #include <linux/cpufeature.h>
-+#include <linux/debugfs.h>
- #include <linux/export.h>
- #include <linux/io.h>
- #include <asm/coco.h>
-@@ -37,6 +38,13 @@
- 
- #define TDREPORT_SUBTYPE_0	0
- 
-+static atomic_long_t nr_shared;
-+
-+static inline bool pte_decrypted(pte_t pte)
-+{
-+	return cc_mkdec(pte_val(pte)) == pte_val(pte);
-+}
-+
- /* Called from __tdx_hypercall() for unrecoverable failure */
- noinstr void __noreturn __tdx_hypercall_failed(void)
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index fb8cf953380d..99c80680dc9e 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
+ /*
+  * Find the highest page frame number we have available
+  */
+-static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
++static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
  {
-@@ -799,6 +807,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
- 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
- 		return -EIO;
+ 	int i;
+ 	unsigned long last_pfn = 0;
+@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+ 		unsigned long start_pfn;
+ 		unsigned long end_pfn;
  
-+	if (enc)
-+		atomic_long_sub(numpages, &nr_shared);
-+	else
-+		atomic_long_add(numpages, &nr_shared);
-+
- 	return 0;
+-		if (entry->type != type)
++		if (entry->type != E820_TYPE_RAM &&
++		    entry->type != E820_TYPE_ACPI)
+ 			continue;
+ 
+ 		start_pfn = entry->addr >> PAGE_SHIFT;
+@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+ 
+ unsigned long __init e820__end_of_ram_pfn(void)
+ {
+-	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
++	return e820_end_ram_pfn(MAX_ARCH_PFN);
  }
  
-@@ -871,3 +884,57 @@ void __init tdx_early_init(void)
- 
- 	pr_info("Guest detected\n");
+ unsigned long __init e820__end_of_low_ram_pfn(void)
+ {
+-	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
++	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
  }
-+
-+#ifdef CONFIG_DEBUG_FS
-+static int tdx_shared_memory_show(struct seq_file *m, void *p)
-+{
-+	unsigned long addr, end;
-+	unsigned long found = 0;
-+
-+	addr = PAGE_OFFSET;
-+	end  = PAGE_OFFSET + get_max_mapped();
-+
-+	while (addr < end) {
-+		unsigned long size;
-+		unsigned int level;
-+		pte_t *pte;
-+
-+		pte = lookup_address(addr, &level);
-+		size = page_level_size(level);
-+
-+		if (pte && pte_decrypted(*pte))
-+			found += size / PAGE_SIZE;
-+
-+		addr += size;
-+	}
-+
-+	seq_printf(m, "Number of unshared pages in kernel page tables:  %16lu\n",
-+		   found);
-+	seq_printf(m, "Number of pages accounted as unshared:           %16ld\n",
-+		   atomic_long_read(&nr_shared));
-+	return 0;
-+}
-+
-+static int tdx_shared_memory_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, tdx_shared_memory_show, NULL);
-+}
-+
-+static const struct file_operations tdx_shared_memory_fops = {
-+	.open           = tdx_shared_memory_open,
-+	.read           = seq_read,
-+	.llseek         = seq_lseek,
-+	.release        = single_release,
-+};
-+
-+static __init int debug_tdx_shared_memory(void)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
-+		return 0;
-+
-+	debugfs_create_file("tdx_shared_memory", S_IRUSR, arch_debugfs_dir,
-+			    NULL, &tdx_shared_memory_fops);
-+	return 0;
-+}
-+fs_initcall(debug_tdx_shared_memory);
-+#endif
+ 
+ static void __init early_panic(char *msg)
 -- 
 2.41.0
 
