@@ -1,157 +1,169 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ABC12B74
-	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 22:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D49741E57
+	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 23:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M8WJzC3w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696544931; x=1728080931;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3ak/CqPJFuvAGz1nL0ORtkufKNGBvhTu0OaUcGSyyRI=;
-  b=M8WJzC3wqXA7oYbM3qTCSl4m2SpT7UXPCHm28YuBSPDI+op3sMctd2A5
-   EQpq4o2i5XrlnhqdPR/sx5hjOXCMrozc/umyP87I74bWirHoaLCr95f+z
-   C/xb/iCk19gkwKiEzp/wvFbrZQnbRlXYZWbydcgmcvq1y5Lcx2kokTx3X
-   78n44uDYRPqeD0Wis0TLJZ55WQjwRFN5x8bpzUHV2jjiMwGcmpCMhNtOv
-   ysoSS7Fs4/Nmu9gGmSDiZXJ1P/+Jn/5IBCftT6nVlDP0fdxuxfcbkyHoU
-   CsbU9w7khVMcXqsofnmSBcW4xJFJ0766sp7iQys2qW1caOCAnOcD7Yo9l
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="5195868"
-X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="5195868"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 15:28:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="817796476"
-X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="817796476"
-Received: from kvsudesh-mobl1.gar.corp.intel.com (HELO box.shutemov.name) ([10.251.222.76])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 15:28:43 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id BFE0B10A12D; Fri,  6 Oct 2023 01:28:39 +0300 (+03)
-Date: Fri, 6 Oct 2023 01:28:39 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/13] x86/tdx: Convert shared memory back to private on
- kexec
-Message-ID: <20231005222839.jt2du72xogg3c5ny@box>
-References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
- <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
- <8d0e4e71-0614-618a-0f84-55eeb6d27a6d@amd.com>
- <20231005212828.veeekxqc7rwvrbig@box>
- <e0459b50-7e21-7548-8151-9010ee88b0a6@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nMY0XAkO"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-59f7d109926so22275457b3.2
+        for <linux-coco@lists.linux.dev>; Thu, 05 Oct 2023 16:48:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696549731; x=1697154531; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+lEPeKg/GP3Y80L6NB8ajXYC+n4V3di2jIUF82A5N1I=;
+        b=nMY0XAkO1vrYBlz/3FakXY8TOf7Rt1Xnib12pzAnqHiVxMFmahsPxvCYn8GidYM/dR
+         /pWVm08iFYYb1OSZsjfGm9qrXYTHeTV9TYP8T8jIc4wsnceInq46Cr96DnhPGeloxG5P
+         7xZypaC43gGqenUrh7wrqIxOcP7G28Qd2ZeSD/bsd2qUOOWkoRrSsGQfG3K+0ms2kp/H
+         YtGRPgRCo8MtN+92IL4weh2/+b4pz/QVcF2PN7VThyHhe7pZUyBfBw3dNrIStywpsMWB
+         tfoLSBjkmk2yAWrKtNHfhS6Z8S+fUmH7/J7pLLlMhDbT1UG+bvt4UqEQY7+a0OIV9zSU
+         2j1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696549731; x=1697154531;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+lEPeKg/GP3Y80L6NB8ajXYC+n4V3di2jIUF82A5N1I=;
+        b=bKeaD/AjPpNYibDxJAnEq3BfPkwDQmI/P2P+JJQ9Uriq+zJ6RrQP+5kDv/qODgw7XS
+         QGZmtx9g1NNX/WE9pnAL28KknbJjFSiyOG+AMjQQhmszVOsOvGL6UL2C5JhpcHZUpGhz
+         GR/lhMVw41PifzhYwLZQAtQLdPXkVMQeK/dlBsbcUL6yXr/8Z7ZEOU8ddreImIGJo8jE
+         ZY+EMuvYi9QwAXoEDtZLNX8lYy2SxO2J78D+sUmBSmgaZsd9bgeyxviOF8LEX2nLiHfu
+         L+q53z0WvzhpKWRD83xHBVfDpAmdF67X/5/5sRHGASz8B07DwkPoRqubju7VlgOhFjxC
+         V5Lw==
+X-Gm-Message-State: AOJu0Yzcbs6RrndvDkZs1W/qXukmT/nZkSsb7XKoGA3k5w/ix3oYSqE5
+	pIVEhjgViMuIAx8M931whXt2fqtFr1k=
+X-Google-Smtp-Source: AGHT+IHRi3WHSS0eRi4G7jOWTC1zbVq5PcSR3DpHe2Rifw8FnLaa5w+GwmW/eLasxxswlFxA+y9CeGzvWuY=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:1f56:0:b0:d7e:7a8a:2159 with SMTP id
+ f83-20020a251f56000000b00d7e7a8a2159mr100071ybf.5.1696549731485; Thu, 05 Oct
+ 2023 16:48:51 -0700 (PDT)
+Date: Thu, 5 Oct 2023 16:48:50 -0700
+In-Reply-To: <20231005175238.7bb2zut4fb7ebdqc@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e0459b50-7e21-7548-8151-9010ee88b0a6@amd.com>
+Mime-Version: 1.0
+References: <cover.1695327124.git.isaku.yamahata@intel.com>
+ <f987dcde3b051371b496847282022c679e9402e4.1695327124.git.isaku.yamahata@intel.com>
+ <ZQypbSuMrbJpJBER@google.com> <ZQy29msIoAGQUGR2@google.com> <20231005175238.7bb2zut4fb7ebdqc@amd.com>
+Message-ID: <ZR9LYhpxTaTk6PJX@google.com>
+Subject: Re: [RFC PATCH v2 1/6] KVM: gmem: Truncate pages on punch hole
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: isaku.yamahata@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, isaku.yamahata@gmail.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, erdemaktas@google.com, Sagi Shahar <sagis@google.com>, 
+	David Matlack <dmatlack@google.com>, Kai Huang <kai.huang@intel.com>, 
+	Zhi Wang <zhi.wang.linux@gmail.com>, chen.bo@intel.com, linux-coco@lists.linux.dev, 
+	Chao Peng <chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, 
+	Vishal Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
+	Quentin Perret <qperret@google.com>, wei.w.wang@intel.com, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Oct 05, 2023 at 05:01:23PM -0500, Kalra, Ashish wrote:
-> On 10/5/2023 4:28 PM, Kirill A. Shutemov wrote:
-> > On Thu, Oct 05, 2023 at 01:41:38PM -0500, Kalra, Ashish wrote:
-> > > > +static void unshare_all_memory(bool unmap)
-> > > > +{
-> > > > +	unsigned long addr, end;
-> > > > +	long found = 0, shared;
-> > > > +
+On Thu, Oct 05, 2023, Michael Roth wrote:
+> On Thu, Sep 21, 2023 at 02:34:46PM -0700, Sean Christopherson wrote:
+> > On Thu, Sep 21, 2023, Sean Christopherson wrote:
+> > > > diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
+> > > > index a819367434e9..01fb4ca861d0 100644
+> > > > --- a/virt/kvm/guest_mem.c
+> > > > +++ b/virt/kvm/guest_mem.c
+> > > > @@ -130,22 +130,32 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
+> > > >  static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+> > > >  {
+> > > >  	struct list_head *gmem_list = &inode->i_mapping->private_list;
+> > > > +	struct address_space *mapping  = inode->i_mapping;
+> > > >  	pgoff_t start = offset >> PAGE_SHIFT;
+> > > >  	pgoff_t end = (offset + len) >> PAGE_SHIFT;
+> > > >  	struct kvm_gmem *gmem;
+> > > >  
 > > > > +	/*
-> > > > +	 * Walk direct mapping and convert all shared memory back to private,
+> > > > +	 * punch hole may result in zeroing partial area.  As pages can be
+> > > > +	 * encrypted, prohibit zeroing partial area.
 > > > > +	 */
-> > > > +
-> > > > +	addr = PAGE_OFFSET;
-> > > > +	end  = PAGE_OFFSET + get_max_mapped();
-> > > > +
-> > > > +	while (addr < end) {
-> > > > +		unsigned long size;
-> > > > +		unsigned int level;
-> > > > +		pte_t *pte;
-> > > > +
-> > > > +		pte = lookup_address(addr, &level);
+> > > > +	if (offset & ~PAGE_MASK || len & ~PAGE_MASK)
+> > > > +		return -EINVAL;
 > > > 
-> > > IIRC, you were earlier walking the direct mapping using
-> > > walk_page_range_novma(), any particular reason to use lookup_address()
-> > > instead ?
-> > 
-> > walk_page_range_novma() wants mmap lock to be taken, but it is tricky as
-> > we run here from atomic context in case of crash.
-> > 
-> > I considered using trylock to bypass the limitation, but it is a hack.
-> > 
+> > > This should be unnecessary, kvm_gmem_fallocate() does
 > > > 
-> > > > +		size = page_level_size(level);
-> > > > +
-> > > > +		if (pte && pte_decrypted(*pte)) {
+> > > 	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
+> > > 		return -EINVAL;
 > > > 
-> > > Additionally need to add check for pte_none() here to handle physical memory
-> > > holes in direct mapping.
+> > > before invoking kvm_gmem_punch_hole().  If that's not working, i.e. your test
+> > > fails, then that code needs to be fixed.  I'll run your test to double-check,
+> > > but AFAICT this is unnecesary.
 > > 
-> > lookup_address() returns NULL for none entries.
-> > 
+> > I confirmed that the testcase passes without the extra checks.  Just to close the
+> > loop, what prompted adding more checks to kvm_gmem_punch_hole()?
 > 
-> Looking at lookup_address_in_pgd(), at pte level it is simply returning
-> pte_offset_kernel() and there does not seem to be a check for returning NULL
-> if pte_none() ?
+> I don't know if it's the same issue that Isaku ran into, but for SNP we
+> hit a similar issue with the truncate_inode_pages_range(lstart, lend) call.
+> 
+> The issue in that case was a bit more subtle:
+> 
+>   - userspace does a hole-punch on a 4K range of its gmem FD, which happens
+>     to be backed by a 2MB folio.
+>   - truncate_inode_pages_range() gets called for that 4K range
+>   - truncate_inode_pages_range() does special handling on the folios at the
+>     start/end of the range in case they are partial and passes these to
+>     truncate_inode_partial_folio(folio, lstart, lend). In this case, there's
+>     just the 1 backing folio. But it *still* gets the special treatment, and
+>     so gets passed to truncate_inode_partial_folio().
+>   - truncate_inode_partial_folio() will then zero that 4K range, even though
+>     it is page-aligned, based on the following rationale in the comments:
+> 
+>         /*
+>          * We may be zeroing pages we're about to discard, but it avoids
+>          * doing a complex calculation here, and then doing the zeroing
+>          * anyway if the page split fails.
+>          */
+>         folio_zero_range(folio, offset, length);
+> 
+>   - after that, .invalidate_folio callback is issued, then the folio is split,
+>     and the caller (truncate_inode_pages_range()) does another pass through
+> 	the whole range and can free the now-split folio then .free_folio callbacks
+>     are issued.
+> 
+> Because of that, we can't rely on .invalidate_folio/.free_folio to handle
+> putting the page back into a normal host-accessible state, because the
+> zero'ing will happen beforehand.
 
-Hm. You are right.
+Argh, and that causes an RMP violation #PF.
 
-I think it yet another quirk in how lookup_address() implemented. We need
-to make it straight too.
+FWIW, I don't *think* zeroing would be problematic for TDX.  The page would get
+poisoned, but KVM would re-zero the memory with MOVDIR64B and flush the cache.
 
-There's two options: either make lookup_address() return pointer for entry
-even if it is NULL, or add check for pte_none() after pte_offset_kernel()
-and return NULL if it is true.
+> That's why we ended up needing to do this for SNP patches to make sure
+> arch-specific invalidation callbacks are issued before the truncation occurs:
+> 
+>   https://github.com/mdroth/linux/commit/4ebcc04b84dd691fc6daccb9b7438402520b0704#diff-77306411fdaeb7f322a1ca756dead9feb75363aa6117b703ac118576153ddb37R233
+> 
+> I'd planned to post those as a separate RFC to discuss, but when I came across
+> this it seemed like it might be relevant to what the TDX folks might ran into
+> here.
+> 
+> If not for the zero'ing logic mentioned above, for SNP at least, the
+> .free_folio() ends up working pretty nicely for both truncation and fput(),
+> and even plays nicely with live update use-case where the destination gmem
+> instance shares the inode->i_mapping, since iput() won't trigger the
+> truncate_inode_pages_final() until the last reference goes away so we don't
+> have to do anything special in kvm_gmem_release() to determine when we
+> should/shouldn't issue the arch-invalidations to clean up things like the
+> RMP table.
+> 
+> It seems like the above zero'ing logic could be reworked to only zero non-page
+> aligned ranges (as the comments above truncate_inode_pages_range() claim
+> should be the case), which would avoid the issue for the gmem use-case. But I
+> wonder if some explicit "dont-zero-these-pages" flag might be more robust.
+> 
+> Or maybe there's some other way we should be going about this?
 
-I like the first option more as it allows caller to populate the entry if
-it wants.
+Skipping the write seems like the obvious solution.  An address_space flag,
+e.g. AS_INACCESSIBLE, would be the easiest thing to implement.  Or maybe even
+make it AS_DONT_ZERO_ON_TRUNCATE_DAMMIT (mostly joking).
 
-> > > > +			int pages = size / PAGE_SIZE;
-> > > > +
-> > > > +			/*
-> > > > +			 * Touching memory with shared bit set triggers implicit
-> > > > +			 * conversion to shared.
-> > > > +			 *
-> > > > +			 * Make sure nobody touches the shared range from
-> > > > +			 * now on.
-> > > > +			 *
-> > > > +			 * Bypass unmapping for crash scenario. Unmapping
-> > > > +			 * requires sleepable context, but in crash case kernel
-> > > > +			 * hits the code path with interrupts disabled.
-> > > 
-> > > In case of SNP we will need to temporarily enable interrupts during this
-> > > unsharing as we invoke set_memory_encrypted() which then hits a BUG_ON() in
-> > > cpa_flush() if interrupts are disabled.
-> > 
-> > Do you really need full set_memory_encrypted()? Can't you do something
-> > ligher?
-> > 
-> We need to modify the PTE for setting c-bit to 1 so that will require
-> cpa_flush(), though probably can add something lighter to do
-> clflush_cache_range() directly ?
-
-For TDX, I don't touch shared bit as nobody suppose to touch the memory
-after the point (ans set_memory_np() enforces it for !crash case).
-
-Can't SNP do the same?
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Or a hook in address_space_operations to zero the folio, which conceptually is
+better in many ways, but feels like overkill.
