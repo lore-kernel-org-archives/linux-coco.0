@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EAD1A262
-	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 13:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E1F125A3
+	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 13:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m8siYOju"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mYA3tbeP"
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696511825; x=1728047825;
+  t=1696511826; x=1728047826;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YaJcwdfsbT/u6tJs5uRbj4NUFmy4HkVgm/EwY5jjC6U=;
-  b=m8siYOjuQhDxpXftYkyJ5wtjVyBh/IFf+qeHldeEsFmQ8C9jnegeBT5F
-   cMKBJH/KSRztR8PHzXJXf77/nWIlFLhQza00EQXgUveA+YsTYEoqzSODb
-   Py/i8zq/R+M3qiDZr2zwe2Vj4sTILK2RuISu87eMd1v5PMHKV4TNN8pFz
-   Iucna9xEBGjQu3nSfw/zDuQsOgwHFb2SrJuTsn+8ixIUhSlHW5mMqY7BQ
-   8xxsnaPjiD2GL3PYXPGrMSp/bhY+hWSJKoWNpuojd9mBo+It6TCXK1ork
-   JUpMu+axqp82xbl/EUUXc+K3JL98LjrB6FpUAOD6Jfrl42Pl2YpiACv8m
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="382357584"
+  bh=7MgS2tz+eXb3t+LyzYLE/xkq/zAhJTq68EvRtEFLASY=;
+  b=mYA3tbePiJqGhmcGvBEtQp74FKHQif67bAVKk2JjmVV75OzUbkcor/Po
+   i3YT6XsaqRGH63LQGmosZrpRiV6fKT6Ty98Z2xVSg7AYhrTBaXrYxDKFH
+   jgHiqovX7zTXaxuwFRdHfKXLP5EMcx4RBUCeKUm3P7wj+kSPK1n1PacvE
+   R/fnURrzp/g1xk4mwCyte/wcGgTSopvIbFUfBa/Y+JkBaTXpVFXEqbuvA
+   yqKp05b0tx3BrsY21AWUymR251JkkP2LQMwtztGKfQxSGS1sozIiGFGUg
+   uJpEx+fpMhkdXg3yxTeauWXiAAp+uetmRAOQGOrUjDc/JusNMkgilmsiR
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="382357562"
 X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="382357584"
+   d="scan'208";a="382357562"
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
   by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 06:14:27 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="817564326"
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="817564320"
 X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="817564326"
+   d="scan'208";a="817564320"
 Received: from skwasnia-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.222.71])
   by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 06:14:23 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 7D68910A155; Thu,  5 Oct 2023 16:14:14 +0300 (+03)
+	id 52B2510A150; Thu,  5 Oct 2023 16:14:14 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -51,9 +51,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 11/13] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
-Date: Thu,  5 Oct 2023 16:14:00 +0300
-Message-ID: <20231005131402.14611-12-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 07/13] x86/mm: Return correct level from lookup_address() if pte is none
+Date: Thu,  5 Oct 2023 16:13:56 +0300
+Message-ID: <20231005131402.14611-8-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
 References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
@@ -65,72 +65,75 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
-things, guides where direct mapping ends. Any memory above max_pfn is
-not going to be present in the direct mapping.
+lookup_address() only returns correct page table level for the entry if
+the entry is not none.
 
-e820__end_of_ram_pfn() finds the end of the ram based on the highest
-E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
-calculation.
+Make the helper to always return correct 'level'. It allows to implement
+iterator over kernel page tables using lookup_address().
 
-Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
-tables and might be required by kernel to function properly.
-
-Usually the problem is hidden because there is some E820_TYPE_RAM memory
-above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
-memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
-can fit under the last E820_TYPE_ACPI range.
-
-Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
-E820_TYPE_ACPI memory.
-
-The problem was discovered during debugging kexec for TDX guest. TDX
-guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
-it between the kernels on kexec.
+Add one more entry into enum pg_level to indicate size of VA covered by
+one PGD entry in 5-level paging mode.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- arch/x86/kernel/e820.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/pgtable_types.h | 1 +
+ arch/x86/mm/pat/set_memory.c         | 8 ++++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index fb8cf953380d..99c80680dc9e 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
- /*
-  * Find the highest page frame number we have available
-  */
--static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
-+static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
- {
- 	int i;
- 	unsigned long last_pfn = 0;
-@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 		unsigned long start_pfn;
- 		unsigned long end_pfn;
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index 0b748ee16b3d..3f648ffdfbe5 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -548,6 +548,7 @@ enum pg_level {
+ 	PG_LEVEL_2M,
+ 	PG_LEVEL_1G,
+ 	PG_LEVEL_512G,
++	PG_LEVEL_256T,
+ 	PG_LEVEL_NUM
+ };
  
--		if (entry->type != type)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_ACPI)
- 			continue;
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 6fbf22d5fa56..01f827eb8e80 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -666,32 +666,32 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
+ 	pud_t *pud;
+ 	pmd_t *pmd;
  
- 		start_pfn = entry->addr >> PAGE_SHIFT;
-@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+-	*level = PG_LEVEL_NONE;
++	*level = PG_LEVEL_256T;
  
- unsigned long __init e820__end_of_ram_pfn(void)
- {
--	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
-+	return e820_end_ram_pfn(MAX_ARCH_PFN);
- }
+ 	if (pgd_none(*pgd))
+ 		return NULL;
  
- unsigned long __init e820__end_of_low_ram_pfn(void)
- {
--	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
-+	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
- }
++	*level = PG_LEVEL_512G;
+ 	p4d = p4d_offset(pgd, address);
+ 	if (p4d_none(*p4d))
+ 		return NULL;
  
- static void __init early_panic(char *msg)
+-	*level = PG_LEVEL_512G;
+ 	if (p4d_large(*p4d) || !p4d_present(*p4d))
+ 		return (pte_t *)p4d;
+ 
++	*level = PG_LEVEL_1G;
+ 	pud = pud_offset(p4d, address);
+ 	if (pud_none(*pud))
+ 		return NULL;
+ 
+-	*level = PG_LEVEL_1G;
+ 	if (pud_large(*pud) || !pud_present(*pud))
+ 		return (pte_t *)pud;
+ 
++	*level = PG_LEVEL_2M;
+ 	pmd = pmd_offset(pud, address);
+ 	if (pmd_none(*pmd))
+ 		return NULL;
+ 
+-	*level = PG_LEVEL_2M;
+ 	if (pmd_large(*pmd) || !pmd_present(*pmd))
+ 		return (pte_t *)pmd;
+ 
 -- 
 2.41.0
 
