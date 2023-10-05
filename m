@@ -1,47 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E826542BE2
-	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 20:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7347028DD7
+	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 21:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxLYOc8G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C61C433C8;
-	Thu,  5 Oct 2023 20:34:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1696538084;
-	bh=32IWGcl/GhLZ3tegbGVzkBqng/XbsFXjV2W9sDN1IaY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=YxLYOc8GFP90I4Qy7piJ2uW3Mydkjmt+GKzOfIJP1dMkj9hSr6to2W9muxd7RukI/
-	 wdHdVqAG61HQqdffBx/9Oz3g4NJDpzaLH63to74WjxZLPEOfo5HrLH3nYB2DviFL49
-	 n7JcH3a9NerZVzzBZCNX2LtR/kMHhAzwXqwcmw3QFC39pNzy07rp7NlhuwT9cUQ0iZ
-	 U1UhM3GGv+Oh1hCmfMrIDCK3dvC4nEz3iT5cxpulGSRle9wzR0q/yTMnSQUWi8LQLS
-	 YYLQe2P3wp5k482GvCK6BW7PqkWC5nMaBdMVm9EVXC9PGyD+IRRpTiSiWVUlaQKQjZ
-	 XEy4QwveN7JyQ==
-Date: Thu, 5 Oct 2023 15:34:42 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linuxarm@huawei.com, David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
-	Zhi Wang <zhi.a.wang@intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 12/12] PCI/CMA: Grant guests exclusive control of
- authentication
-Message-ID: <20231005203442.GA790578@bhelgaas>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JOgqqFU5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696541316; x=1728077316;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ONU1C7tc3rc3AtZ7xkoZa57Ejqtw/z10sNPrapPUHTM=;
+  b=JOgqqFU5MJq7JBdpbB4j4XRCG5lYah9Yw+ypctxFq79T/UBlgny06ZOy
+   pse+QDtz/eq5AK20s6nq8wv4meuuKsY3BYo2u25BYAdEl0ovehGkFcXLD
+   GFswWkM6jqrOfMiSTZgf4igNCsv8hZvZGHfb0U+pxtBoBwKKzg8z/pO6c
+   /eYRpI7y7FdobO1SQ6qjXhuBOQ77SMdxnDPwM/gBYLiYSlnbRCNg2l7R5
+   ZQZsJhmQyGcrtjQG0ostCeoLKdXjebr6/FbIgu0ckyBOy8J33/uwSVVcD
+   HlLUtQeTY02OxjVuC0k0vs84RrQpzWo/rJ33X8/J7myEDI4ylQS5sNfK3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="382496484"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="382496484"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 14:28:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="875701487"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="875701487"
+Received: from kvsudesh-mobl1.gar.corp.intel.com (HELO box.shutemov.name) ([10.251.222.76])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 14:28:30 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 1D6CA10A12D; Fri,  6 Oct 2023 00:28:28 +0300 (+03)
+Date: Fri, 6 Oct 2023 00:28:28 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/13] x86/tdx: Convert shared memory back to private on
+ kexec
+Message-ID: <20231005212828.veeekxqc7rwvrbig@box>
+References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
+ <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
+ <8d0e4e71-0614-618a-0f84-55eeb6d27a6d@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,43 +62,67 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231003193058.GA16417@wunner.de>
+In-Reply-To: <8d0e4e71-0614-618a-0f84-55eeb6d27a6d@amd.com>
 
-On Tue, Oct 03, 2023 at 09:30:58PM +0200, Lukas Wunner wrote:
-> On Tue, Oct 03, 2023 at 04:40:48PM +0100, Jonathan Cameron wrote:
-> > On Thu, 28 Sep 2023 19:32:42 +0200 Lukas Wunner <lukas@wunner.de> wrote:
-> > > At any given time, only a single entity in a physical system may have
-> > > an SPDM connection to a device.  That's because the GET_VERSION request
-> > > (which begins an authentication sequence) resets "the connection and all
-> > > context associated with that connection" (SPDM 1.3.0 margin no 158).
-> > > 
-> > > Thus, when a device is passed through to a guest and the guest has
-> > > authenticated it, a subsequent authentication by the host would reset
-> > > the device's CMA-SPDM session behind the guest's back.
-> > > 
-> > > Prevent by letting the guest claim exclusive CMA ownership of the device
-> > > during passthrough.  Refuse CMA reauthentication on the host as long.
-> > > After passthrough has concluded, reauthenticate the device on the host.
-
-> Could you (as an English native speaker) comment on the clarity of the
-> two sentences "Prevent ... as long." above, as Ilpo objected to them?
+On Thu, Oct 05, 2023 at 01:41:38PM -0500, Kalra, Ashish wrote:
+> > +static void unshare_all_memory(bool unmap)
+> > +{
+> > +	unsigned long addr, end;
+> > +	long found = 0, shared;
+> > +
+> > +	/*
+> > +	 * Walk direct mapping and convert all shared memory back to private,
+> > +	 */
+> > +
+> > +	addr = PAGE_OFFSET;
+> > +	end  = PAGE_OFFSET + get_max_mapped();
+> > +
+> > +	while (addr < end) {
+> > +		unsigned long size;
+> > +		unsigned int level;
+> > +		pte_t *pte;
+> > +
+> > +		pte = lookup_address(addr, &level);
 > 
-> The antecedent of "Prevent" is the undesirable behaviour in the preceding
-> sentence (host resets guest's SPDM connection).
+> IIRC, you were earlier walking the direct mapping using
+> walk_page_range_novma(), any particular reason to use lookup_address()
+> instead ?
 
-I think this means "prevent a reauthentication by the host behind the
-guest's back" (which seems to match the first diff hunk), but I agree
-it would be helpful to make the connection clearer, e.g.,
+walk_page_range_novma() wants mmap lock to be taken, but it is tricky as
+we run here from atomic context in case of crash.
 
-  When passing a device through to a guest, mark it as "CMA owned
-  exclusively by the guest" for the duration of the passthrough to
-  prevent the host from reauthenticating and resetting the device's
-  CMA-SPDM session.
+I considered using trylock to bypass the limitation, but it is a hack.
 
-> The antecedent of "as long" is "during passthrough" in the preceding
-> sentence.
+> 
+> > +		size = page_level_size(level);
+> > +
+> > +		if (pte && pte_decrypted(*pte)) {
+> 
+> Additionally need to add check for pte_none() here to handle physical memory
+> holes in direct mapping.
 
-"as long" definitely needs something to connect it with the
-passthrough.
+lookup_address() returns NULL for none entries.
 
-Bjorn
+> > +			int pages = size / PAGE_SIZE;
+> > +
+> > +			/*
+> > +			 * Touching memory with shared bit set triggers implicit
+> > +			 * conversion to shared.
+> > +			 *
+> > +			 * Make sure nobody touches the shared range from
+> > +			 * now on.
+> > +			 *
+> > +			 * Bypass unmapping for crash scenario. Unmapping
+> > +			 * requires sleepable context, but in crash case kernel
+> > +			 * hits the code path with interrupts disabled.
+> 
+> In case of SNP we will need to temporarily enable interrupts during this
+> unsharing as we invoke set_memory_encrypted() which then hits a BUG_ON() in
+> cpa_flush() if interrupts are disabled.
+
+Do you really need full set_memory_encrypted()? Can't you do something
+ligher?
+
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
