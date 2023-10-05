@@ -1,205 +1,392 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2087.outbound.protection.outlook.com [40.107.223.87])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2088.outbound.protection.outlook.com [40.107.93.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BED438F97
-	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8F02E65A
+	for <linux-coco@lists.linux.dev>; Thu,  5 Oct 2023 18:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4hkAS2Pp"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="jksKzU/y"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MuXmqZjxPcdRI3DFhZtNmyLyCrxYUPNpOlhyRo1ZV2pgHS6l00DXQie7ypIKlOG2kxBvfHYWtbJwEizCT9ZSQGPvZiuyxI7wAJNQgxfV3HPcZ8nBaDYRVySuQSCVzyeEfIrpDOu+7fvVjFjKzUUVWITnnY/cndshBv4J0lRyGzo6TRF8ZAT1OEld6LsS7lDHdy77l7IYZBEoFEkp4t1C328kFoX8hF9p/pAA9dJYbKgCYNjb9v4kNtUdgP5IZvowJBI3xmnrWDKJDBNu+g/ahSuPXTDBi3DN7HJY8c7XVu91tmcD2aHC7mXkag4YajH9H3mFBlnemQgCgwJE1/SVRg==
+ b=KubZwKuIRpySnqJznDtRe9m/Pa8l1ei+WGqUmPScuVUo2WAuZKyUmdzu4OWiZoBY+OhErXreZbeTb8EH6nsDlcqoeFSwdYvBPPql1W8gF6UWlKlWeG6FlRQxoPdKDjgKFOf0Zsf9EztK5C6/KYq0dqxnx8IWOuIXD2aXGSBJ1khc91xHBg6eDVV5QpQtB/kN+18OMWrl3Yxrl+zAITJ5L8SM/6wnGwEaUCvbD1JMK5VOhg4MQQ1FRW8N1o8NuNSozS1j3jh4WnVyqDN6aLF7ZChtH1OqDlxFr2g8uKXsfrkAypyz/lk68LsLGeW4yrkhbyNuyCauHYP+MJAXeXijBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JH30AXY8RydZr5SMo+4uSNARyDUbHggctPWCrhVPBLM=;
- b=XAlqlkFa585C023f1v/w4r45t/8T31wpL7Vh0NQEpYHitqppG91/ZMu1VdixXktnXXXRaUl+nYvrsOvkDDQbwvZcmBfJ2D8p6Gqy2ya2p5j3kfBAtTFZHTef/dpXHCpI2Q1Djdi3YUfdklgNRCNwdjEp7ok2C9AAzxqWwH3tgLB8IK9nka8Ta8PwwjjWbyeBIidh90V/0RK3jhTAtx8HoGQulpGZAhe7Tzz939EDPoJtBaf3RDrNJqT3z1sSTwkoIW7ClHH9SDhCxU7jKEybV1/J8qk7sTOb5hoqC9TCzWJ6HFw2LXiU2EFFsh6B1C1AEBoxvBA0qJSfywDgVeC8fw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
+ bh=ZPIVgnCO3V+CzyzKmbYwoMHCsIkFLCJMdPPDjVpmWbE=;
+ b=Q0nWQr8H9rBZ3tlzQh3TKynJZb5LjfbBZYgMXWD/y9v0XiewHu68iZO875NyVNym8krqZIHym7xKz8BX0MMZUlDsSvDO/ThB9/qVPH7joYQQD5LUXq0U3/3c4U0dzG6cUJCFU49mevP1pzsqQ8HuufSrzXOyKrjTR1/k1NP5s2JdEXe9z7ytHMXq1lNrGlfVZ33SW+6CAKO5NSOhv0HzS4PYfEyIypVdy+o2VhcgbbmX//NN3ToXEeGIjjhjAxqoPcNy36Hf3bH3JjzkSAsCeUdD+s4s5TDfSBRa3QlDyZe/NR6drHLJVs7I/K050mzpvDPe1Vo5P13H22tVvorEOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JH30AXY8RydZr5SMo+4uSNARyDUbHggctPWCrhVPBLM=;
- b=4hkAS2PpVvVpqN20KiDyqEEBxV7WJVivk5dTRF3ebzAduoRgCQRQZ6Zk3u+AfBUFG12s7WP1ECqhMoAxsEaFh3Upaavw+ra5qSFq1fiusFPlpFQqJK4Noxd5uKgMWBJoQ89wqV+MoKzeAJ6BRB+JFTjvOwSayUlIKWooQTk7/MY=
-Received: from BL1PR13CA0339.namprd13.prod.outlook.com (2603:10b6:208:2c6::14)
- by CO6PR12MB5443.namprd12.prod.outlook.com (2603:10b6:303:13a::10) with
+ bh=ZPIVgnCO3V+CzyzKmbYwoMHCsIkFLCJMdPPDjVpmWbE=;
+ b=jksKzU/yk/eyE7Steu0myNNyHwWGyHixzXM8C8u1m4IHouc6TouU+zLQzILzncBPSEZc4A+/dP4lW4heOluZr2vd2d9HIIReOCwZyj34jJeySV1vnXxS1ZWXaHM5kl25GWeyt9P3sYr2Vgo6S4s55zmrPTX3iDw0i2RKaNQhj5U=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by MN0PR12MB5907.namprd12.prod.outlook.com (2603:10b6:208:37b::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Thu, 5 Oct
- 2023 17:52:54 +0000
-Received: from BL6PEPF0001AB76.namprd02.prod.outlook.com
- (2603:10b6:208:2c6:cafe::61) by BL1PR13CA0339.outlook.office365.com
- (2603:10b6:208:2c6::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.26 via Frontend
- Transport; Thu, 5 Oct 2023 17:52:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB76.mail.protection.outlook.com (10.167.242.169) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.14 via Frontend Transport; Thu, 5 Oct 2023 17:52:54 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 5 Oct
- 2023 12:52:53 -0500
-Date: Thu, 5 Oct 2023 12:52:38 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: <isaku.yamahata@intel.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <isaku.yamahata@gmail.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, <erdemaktas@google.com>, Sagi Shahar
-	<sagis@google.com>, David Matlack <dmatlack@google.com>, Kai Huang
-	<kai.huang@intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
-	<chen.bo@intel.com>, <linux-coco@lists.linux.dev>, Chao Peng
-	<chao.p.peng@linux.intel.com>, Ackerley Tng <ackerleytng@google.com>, Vishal
- Annapurve <vannapurve@google.com>, Yuan Yao <yuan.yao@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Xu Yilun <yilun.xu@intel.com>, Quentin
- Perret <qperret@google.com>, <wei.w.wang@intel.com>, Fuad Tabba
-	<tabba@google.com>
-Subject: Re: [RFC PATCH v2 1/6] KVM: gmem: Truncate pages on punch hole
-Message-ID: <20231005175238.7bb2zut4fb7ebdqc@amd.com>
-References: <cover.1695327124.git.isaku.yamahata@intel.com>
- <f987dcde3b051371b496847282022c679e9402e4.1695327124.git.isaku.yamahata@intel.com>
- <ZQypbSuMrbJpJBER@google.com>
- <ZQy29msIoAGQUGR2@google.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.34; Thu, 5 Oct
+ 2023 18:41:41 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6ac8:eb30:6faf:32b2]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6ac8:eb30:6faf:32b2%5]) with mapi id 15.20.6838.033; Thu, 5 Oct 2023
+ 18:41:41 +0000
+Message-ID: <8d0e4e71-0614-618a-0f84-55eeb6d27a6d@amd.com>
+Date: Thu, 5 Oct 2023 13:41:38 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH 10/13] x86/tdx: Convert shared memory back to private on
+ kexec
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
+ <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM6PR06CA0077.namprd06.prod.outlook.com
+ (2603:10b6:5:336::10) To SN6PR12MB2767.namprd12.prod.outlook.com
+ (2603:10b6:805:75::23)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZQy29msIoAGQUGR2@google.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB76:EE_|CO6PR12MB5443:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99806d05-a96a-41eb-2064-08dbc5cbe6c0
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|MN0PR12MB5907:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19df3610-54d5-4d4a-7640-08dbc5d2b782
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	+lST2BjvAYwIdQUoW6IeujKoMqwdoVt/8QV3I/Uo6L8ZhzuX4DKK8X9AEwL406SNct1FAfe+OqOgmwThseSE0J9ME8bEztMikMn434Z026wiRQVnHyZk5YlGTKcDtrPkopdNkppQGre2Qf4xf4t9Lg4A4cxkbXoyUb4k18AZGcEzm5BOWQtbj0UL/vX8eEdhhzBuTEYDu/Ud8hEGzTHvcQhnqoUZ0WiMBHgn/KOj4J/VSLiFcCquMd4D+enjDDlS5g7R+OcrUWjzmmpKRIo6+S8OBQuZQU+ZCRAdVHgqxYNmppEX1vkvsfK7m9lEwh2ydy5IRdkHXOtBmfxOybYG/akUWEObPXo8+xPIG5w5MGsb9lTolkWi5ZajztZJ79cRChlyPJwip0iI69S11mirL6lXjKWRTUTbRn7BvSu7m/cnzb/fIAjgmmKn6kflzUoCgKrec8tfKzKohZJAosQ1B068CGhzO+dhwi7HKqbqWDEgUdfyOq+iR7PVIzPipeSOG+CIqdgM6PSgIemk5FDO2Feyl88pGnTypfunYnzg+XFGKWSzEylldMf+RpOmNlkl3OMbj130WMP7sqPJsGpg8BmBXIRjRfvA2eBtL3vRcDcdSVtx6EojyhUfatCgW+o4ZoCmTjbCo7FBeOgrNau/64W/T4zH4HJ6z9wEUlyaDXJHBRrANsiEDYICD/7+p0zaub2uSXJX1jBhhhsa1EN0LFwmLvFoBXCwebLiP618LSLn2tgAvz1wUGLSyi84/Tv63Vd4dybBb+XLiSLgkTt5fQ==
+	4YVHsCJ2pyh3fg9DfYGC/h+MIDxIoXaFOWCIn7FOJvrnZsW/fZR3CjXRtz501FoTPuyjK22IQZEjst51Jb2SGmQZY0SnG7Kgh5VaRYKRuNze2gNtamdcPidADW5XqYExqTLSMDhEFHCo3vELQOXwu4AVa63lMB1wVLyW09nYXTPuqjLr7LvcPrizi0W/viq0ov2XQGaPOxGgVBoBaiaH3SIGMAKITewn1h/JXLowMs2DkDUVnge7uqzr1rq01NXj3bU450KZJmPrUt2VaRCJ5MkpzuG2/QDXAokNZ2NP+ZpYHYmGbb7EPWbAy4qXeIUyZ238TYhvQVGDF1CMlakOY4csFQ322BrxFQuAknde/2BvcGV4Don58nGhulKqvi1BhRM3hAtutoDj2NF98cow7znzXodVKukrpueqm9up1aMW/ZDdUUdJSv0bI7IyITiMX3CLnguWkF3X4rfRgZRUtCXm5xDaBtY5ZE2yOrzDnavHQPV2OTMIP6LdjIkl14HRtCJXm4DOw8wTXEm760WIdMZ/wDdSiOuFHowQQjqVbauXDWNh627rGoNdZuKYX/qwA8iGRCHEBLY8KOHEUgfzAUHFJAdJ52c0NVJVMPfBd/qqkqdoCoZTEcAq9xmkQu7kREi3hR42MVWD8ltvKcOEYg==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(136003)(396003)(376002)(346002)(230922051799003)(82310400011)(64100799003)(1800799009)(451199024)(186009)(46966006)(40470700004)(36840700001)(478600001)(70586007)(2616005)(966005)(426003)(44832011)(8936002)(83380400001)(26005)(2906002)(16526019)(1076003)(54906003)(41300700001)(7416002)(336012)(6916009)(70206006)(5660300002)(316002)(4326008)(36756003)(47076005)(82740400003)(81166007)(36860700001)(8676002)(356005)(86362001)(6666004)(40480700001)(40460700003)(36900700001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(136003)(396003)(366004)(376002)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(6486002)(6512007)(53546011)(2616005)(6506007)(478600001)(6666004)(83380400001)(26005)(2906002)(7416002)(316002)(5660300002)(66476007)(110136005)(66556008)(54906003)(4326008)(8676002)(8936002)(41300700001)(66946007)(36756003)(38100700002)(31696002)(86362001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YnVOOXUzMG8vWVYzcFMwQzR4V1YrOHVHZVlOdFlFUDJBTWordEtoTnBPekZY?=
+ =?utf-8?B?SE9LclhOUXZOd1dUWXB0RTZxOXFMd2NUY2k2SXVseklBV0R2NjlSR2pKdkZH?=
+ =?utf-8?B?K1ZWQWI1QUpYUzZGZ0Fzbk1CNFowNzZrbk1yajBmeGVZakIrTktjbXVFNFRH?=
+ =?utf-8?B?emNFSFVKcEdzZVBrai8yS3Y2UWthZ0NuTmRpV0FIVlQ2dm5kK1d1bCtxamYr?=
+ =?utf-8?B?L1hDaE1Kc2F3V1ZPejJsWDAwVXh0RTV3NUx2Z2R6VjN1czUwaUtvUVBSbU12?=
+ =?utf-8?B?Nzltc2pIalc2YWdEMzBJSVZGNjVOdE1lN3NxaXFRZnJSRFFDdHlTcnF2Vk5W?=
+ =?utf-8?B?dnlZa2d1MEdsdEVzUUJYa0RQcHFIUkpXQnZDYzBVMnRubnh4eHlHbTdSQzRT?=
+ =?utf-8?B?UlVrTGJhYTBzeDhLeW03YjNCRHB5STBDcHpKbFJBRDFuY3pVSTg0TktXekJM?=
+ =?utf-8?B?ZVlNOHlUdUd6M214YWsrZnkrc2tZMDhDWDdYTGRSNzljK29nMWp6aTFEUGVC?=
+ =?utf-8?B?KytyeEUydjMweEdITlNmNU1GaVlUa1c2eVZzemZTL09WT2Zma1B6MW1sLzds?=
+ =?utf-8?B?aHVGZlFvU1AzU3k1bkRTcW1lcms2aWFIR3lOb1VNODdtVk0xQ0FrYjZuZzFI?=
+ =?utf-8?B?MkswSk50SHp3RDBkODFPT2JCRTVxT0ZTdE1vV2ltS2JlWXlsK0N5djJJMVY1?=
+ =?utf-8?B?QmY2UkxvNFY5Q2NHdDZPNVBnMEtIRUZ0bVVNcEgxWjdVU2s4akM1K1c1Y292?=
+ =?utf-8?B?djBuMDk4bVh5a3BBMGwwbXlLdlB0MnRZSUwxRTB5U3o2TVlWd3p2amRkZFd6?=
+ =?utf-8?B?Mkw0WEVKcmJObGs1ZlE5QmNKRDIvVGFEMkQxUjRCbHZwWkY3UWZ5dUtSLzcy?=
+ =?utf-8?B?M2gwRFBoN1hVVlh3S3AwckdRcXpQdU1RNFIvOHNXK2VWcFJPcUZIL3VRZGw5?=
+ =?utf-8?B?L3JOTktFNGhSYWVzdkN5eDRNNjBYZVRMckRvaDgrQzAyTlRwNUZJMEptQXpu?=
+ =?utf-8?B?blh0RGl3TDlVaDF6WDlUY1hWVm9DQUNEdVRxSEwzZFJ1UzFhWEJDY3RnVzlP?=
+ =?utf-8?B?dnMxTjhOaVlKQXV1WGc2YmhtMFRSMXFLZytoQ01MaExRWFh5OHprb1FXL0Uw?=
+ =?utf-8?B?bUpLaVMzUVFnZTNLSXBxVytRSHdnMGtIY3JwUFNQREhWeXpNUkFUQk9pRHlU?=
+ =?utf-8?B?MTVDbE5UYmZtQnVyVFFYQ1N1Z2lYaUxDWWtVeDdIVzRlSFE5S3A2ckhjMVhl?=
+ =?utf-8?B?bm1iSWgyUW5STFZwVXZxbmJmT3pDSXBrbWQvTWhBZUF5S1JhMHh0enRqeFlv?=
+ =?utf-8?B?aGRidUw3bjA1MFI1aVRSVkZpRE1ZaDUzdml2UDdOSElBUUR5NUZMVVBKb2lB?=
+ =?utf-8?B?Y0dERnZ3TUV5VVhUMGhHWmRGS09Dbi81SkpNRFZ5b2lublU5VGZQVzlEV3FV?=
+ =?utf-8?B?dVhVQWZlZVIyc0Rha25UN1ZFSzd6QkFpV0VGRWVoRGtOVHplUkJZQlFaSlNV?=
+ =?utf-8?B?dE1LMkhxa0UzUWlkSHhMUmFid09JNFl3TXhZdldreEhHQ2dYYnFPMVpQREhk?=
+ =?utf-8?B?RE1SYkdXQWZZSTNXbWZkbFRkbHJmQnRSKzQwSkZ1MTE3V1QyeENpd0dRQjBU?=
+ =?utf-8?B?Zit5TmF4UkRaWWZPUk5sWWxKK1NPTisrajdUa1lVT2ZhV3RuNnh0VlIyV3kz?=
+ =?utf-8?B?c1B2TXBnUE9sTFQ5ajYvMHIwRU5ISlZXWi9TQzg1M3lYaXQ5VS9idUttcnZo?=
+ =?utf-8?B?K3JsdkVtNTNPQlNyQ2I2cXV1VXhieGdGakJ0Wm10bENKQnNudjZERUVWdGZz?=
+ =?utf-8?B?aWM2elJEaHVqbnpvK1BLK1ZWaUE1M2N1Z29oS0lDZjRFd1ZRMi9QTkRBK000?=
+ =?utf-8?B?V0R0cmFHb2wxSTVIbHBFNmFaRk5sWUxrcVpIUS9YakFhcS9zYVorc0x0YzYw?=
+ =?utf-8?B?c1oxRTdtRmh6Z01XV1VDWG5WT0xtNXdwS1lxakI0dGtDYmVMUGdjMFRFcVBF?=
+ =?utf-8?B?R3QyUVhaYWlyODVVdTJMb1lkUWZUQXMyeEdCWGVKVTZHUlQ2eDA3MkNVdUlB?=
+ =?utf-8?B?bXB1K0h2VGluUDVGMHRTZkFqU0R1cFgyQ0F5alpGSW1na1Y0YkF4SHZFc3JG?=
+ =?utf-8?Q?arvSqDJ44mXZSVUjGTSo/DCPq?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2023 17:52:54.2972
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19df3610-54d5-4d4a-7640-08dbc5d2b782
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2023 18:41:41.6995
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99806d05-a96a-41eb-2064-08dbc5cbe6c0
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB76.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR12MB5443
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qLXM/+VZJz5dB0ep3BOoi0w5VnsPXFibA3KUXlkQF+CdyXROiT0v9H53dLlKqWo2SFwdRIvel0kF+TKPp09BBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5907
 
-On Thu, Sep 21, 2023 at 02:34:46PM -0700, Sean Christopherson wrote:
-> On Thu, Sep 21, 2023, Sean Christopherson wrote:
-> > On Thu, Sep 21, 2023, isaku.yamahata@intel.com wrote:
-> > > From: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > 
-> > > Although kvm_gmem_punch_hole() keeps all pages in mapping on punching hole,
-> > > it's common expectation that pages are truncated.  Truncate pages on
-> > > punching hole.  As page contents can be encrypted, avoid zeroing partial
-> > > folio by refusing partial punch hole.
-> > > 
-> > > Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-> > > ---
-> > >  virt/kvm/guest_mem.c | 14 ++++++++++++--
-> > >  1 file changed, 12 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/virt/kvm/guest_mem.c b/virt/kvm/guest_mem.c
-> > > index a819367434e9..01fb4ca861d0 100644
-> > > --- a/virt/kvm/guest_mem.c
-> > > +++ b/virt/kvm/guest_mem.c
-> > > @@ -130,22 +130,32 @@ static void kvm_gmem_invalidate_end(struct kvm_gmem *gmem, pgoff_t start,
-> > >  static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
-> > >  {
-> > >  	struct list_head *gmem_list = &inode->i_mapping->private_list;
-> > > +	struct address_space *mapping  = inode->i_mapping;
-> > >  	pgoff_t start = offset >> PAGE_SHIFT;
-> > >  	pgoff_t end = (offset + len) >> PAGE_SHIFT;
-> > >  	struct kvm_gmem *gmem;
-> > >  
-> > > +	/*
-> > > +	 * punch hole may result in zeroing partial area.  As pages can be
-> > > +	 * encrypted, prohibit zeroing partial area.
-> > > +	 */
-> > > +	if (offset & ~PAGE_MASK || len & ~PAGE_MASK)
-> > > +		return -EINVAL;
-> > 
-> > This should be unnecessary, kvm_gmem_fallocate() does
-> > 
-> > 	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
-> > 		return -EINVAL;
-> > 
-> > before invoking kvm_gmem_punch_hole().  If that's not working, i.e. your test
-> > fails, then that code needs to be fixed.  I'll run your test to double-check,
-> > but AFAICT this is unnecesary.
+Hello Kirill,
+
+On 10/5/2023 8:13 AM, Kirill A. Shutemov wrote:
+> TDX guests allocate shared buffers to perform I/O. It is done by
+> allocating pages normally from the buddy allocator and converting them
+> to shared with set_memory_decrypted().
 > 
-> I confirmed that the testcase passes without the extra checks.  Just to close the
-> loop, what prompted adding more checks to kvm_gmem_punch_hole()?
+> The target kernel has no idea what memory is converted this way. It only
+> sees E820_TYPE_RAM.
+> 
+> Accessing shared memory via private mapping is fatal. It leads to
+> unrecoverable TD exit.
+> 
+> On TD shutdown (also covers kexec), walk direct mapping and convert all
+> shared memory back to private. It makes all RAM private again and target
+> kernel may use it normally.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> ---
+>   arch/x86/Kconfig          |   1 +
+>   arch/x86/coco/tdx/kexec.c |   0
+>   arch/x86/coco/tdx/tdx.c   | 137 +++++++++++++++++++++++++++++++++++++-
+>   3 files changed, 136 insertions(+), 2 deletions(-)
+>   create mode 100644 arch/x86/coco/tdx/kexec.c
+> 
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 7368d254d01f..b5acf9fb4c70 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
+>   	select X86_MEM_ENCRYPT
+>   	select X86_MCE
+>   	select UNACCEPTED_MEMORY
+> +	select EMERGENCY_VIRT_CALLBACK
+>   	help
+>   	  Support running as a guest under Intel TDX.  Without this support,
+>   	  the guest kernel can not boot or run under TDX.
+> diff --git a/arch/x86/coco/tdx/kexec.c b/arch/x86/coco/tdx/kexec.c
+> new file mode 100644
+> index 000000000000..e69de29bb2d1
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 56e152126f20..ac0745303983 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -6,6 +6,7 @@
+>   
+>   #include <linux/cpufeature.h>
+>   #include <linux/debugfs.h>
+> +#include <linux/delay.h>
+>   #include <linux/export.h>
+>   #include <linux/io.h>
+>   #include <asm/coco.h>
+> @@ -14,6 +15,8 @@
+>   #include <asm/insn.h>
+>   #include <asm/insn-eval.h>
+>   #include <asm/pgtable.h>
+> +#include <asm/reboot.h>
+> +#include <asm/set_memory.h>
+>   
+>   /* MMIO direction */
+>   #define EPT_READ	0
+> @@ -40,6 +43,9 @@
+>   
+>   static atomic_long_t nr_shared;
+>   
+> +static atomic_t conversions_in_progress;
+> +static bool conversion_allowed = true;
+> +
+>   static inline bool pte_decrypted(pte_t pte)
+>   {
+>   	return cc_mkdec(pte_val(pte)) == pte_val(pte);
+> @@ -704,6 +710,14 @@ static bool tdx_tlb_flush_required(bool private)
+>   
+>   static bool tdx_cache_flush_required(void)
+>   {
+> +	/*
+> +	 * Avoid issuing CLFLUSH on set_memory_decrypted() if conversions
+> +	 * stopped. Otherwise it can race with unshare_all_memory() and trigger
+> +	 * implicit conversion to shared.
+> +	 */
+> +	if (!conversion_allowed)
+> +		return false;
+> +
+>   	/*
+>   	 * AMD SME/SEV can avoid cache flushing if HW enforces cache coherence.
+>   	 * TDX doesn't have such capability.
+> @@ -787,12 +801,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+>   static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+>   					 bool enc)
+>   {
+> +	atomic_inc(&conversions_in_progress);
+> +
+> +	/*
+> +	 * Check after bumping conversions_in_progress to serialize
+> +	 * against tdx_shutdown().
+> +	 */
+> +	if (!conversion_allowed) {
+> +		atomic_dec(&conversions_in_progress);
+> +		return -EBUSY;
+> +	}
+> +
+>   	/*
+>   	 * Only handle shared->private conversion here.
+>   	 * See the comment in tdx_early_init().
+>   	 */
+> -	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+> +	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
+> +		atomic_dec(&conversions_in_progress);
+>   		return -EIO;
+> +	}
+>   
+>   	return 0;
+>   }
+> @@ -804,17 +831,115 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+>   	 * Only handle private->shared conversion here.
+>   	 * See the comment in tdx_early_init().
+>   	 */
+> -	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+> +	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
+> +		atomic_dec(&conversions_in_progress);
+>   		return -EIO;
+> +	}
+>   
+>   	if (enc)
+>   		atomic_long_sub(numpages, &nr_shared);
+>   	else
+>   		atomic_long_add(numpages, &nr_shared);
+>   
+> +	atomic_dec(&conversions_in_progress);
+> +
+>   	return 0;
+>   }
+>   
+> +static void unshare_all_memory(bool unmap)
+> +{
+> +	unsigned long addr, end;
+> +	long found = 0, shared;
+> +
+> +	/*
+> +	 * Walk direct mapping and convert all shared memory back to private,
+> +	 */
+> +
+> +	addr = PAGE_OFFSET;
+> +	end  = PAGE_OFFSET + get_max_mapped();
+> +
+> +	while (addr < end) {
+> +		unsigned long size;
+> +		unsigned int level;
+> +		pte_t *pte;
+> +
+> +		pte = lookup_address(addr, &level);
 
-I don't know if it's the same issue that Isaku ran into, but for SNP we
-hit a similar issue with the truncate_inode_pages_range(lstart, lend) call.
+IIRC, you were earlier walking the direct mapping using 
+walk_page_range_novma(), any particular reason to use lookup_address() 
+instead ?
 
-The issue in that case was a bit more subtle:
+> +		size = page_level_size(level);
+> +
+> +		if (pte && pte_decrypted(*pte)) {
 
-  - userspace does a hole-punch on a 4K range of its gmem FD, which happens
-    to be backed by a 2MB folio.
-  - truncate_inode_pages_range() gets called for that 4K range
-  - truncate_inode_pages_range() does special handling on the folios at the
-    start/end of the range in case they are partial and passes these to
-    truncate_inode_partial_folio(folio, lstart, lend). In this case, there's
-    just the 1 backing folio. But it *still* gets the special treatment, and
-    so gets passed to truncate_inode_partial_folio().
-  - truncate_inode_partial_folio() will then zero that 4K range, even though
-    it is page-aligned, based on the following rationale in the comments:
+Additionally need to add check for pte_none() here to handle physical 
+memory holes in direct mapping.
 
-        /*
-         * We may be zeroing pages we're about to discard, but it avoids
-         * doing a complex calculation here, and then doing the zeroing
-         * anyway if the page split fails.
-         */
-        folio_zero_range(folio, offset, length);
+> +			int pages = size / PAGE_SIZE;
+> +
+> +			/*
+> +			 * Touching memory with shared bit set triggers implicit
+> +			 * conversion to shared.
+> +			 *
+> +			 * Make sure nobody touches the shared range from
+> +			 * now on.
+> +			 *
+> +			 * Bypass unmapping for crash scenario. Unmapping
+> +			 * requires sleepable context, but in crash case kernel
+> +			 * hits the code path with interrupts disabled.
 
-  - after that, .invalidate_folio callback is issued, then the folio is split,
-    and the caller (truncate_inode_pages_range()) does another pass through
-	the whole range and can free the now-split folio then .free_folio callbacks
-    are issued.
+In case of SNP we will need to temporarily enable interrupts during this 
+unsharing as we invoke set_memory_encrypted() which then hits a BUG_ON() 
+in cpa_flush() if interrupts are disabled.
 
-Because of that, we can't rely on .invalidate_folio/.free_folio to handle
-putting the page back into a normal host-accessible state, because the
-zero'ing will happen beforehand. That's why we ended up needing to do this
-for SNP patches to make sure arch-specific invalidation callbacks are issued 
-before the truncation occurs:
+Thanks,
+Ashish
 
-  https://github.com/mdroth/linux/commit/4ebcc04b84dd691fc6daccb9b7438402520b0704#diff-77306411fdaeb7f322a1ca756dead9feb75363aa6117b703ac118576153ddb37R233
-
-I'd planned to post those as a separate RFC to discuss, but when I came across
-this it seemed like it might be relevant to what the TDX folks might ran into
-here.
-
-If not for the zero'ing logic mentioned above, for SNP at least, the
-.free_folio() ends up working pretty nicely for both truncation and fput(),
-and even plays nicely with live update use-case where the destination gmem
-instance shares the inode->i_mapping, since iput() won't trigger the
-truncate_inode_pages_final() until the last reference goes away so we don't
-have to do anything special in kvm_gmem_release() to determine when we
-should/shouldn't issue the arch-invalidations to clean up things like the
-RMP table.
-
-It seems like the above zero'ing logic could be reworked to only zero non-page
-aligned ranges (as the comments above truncate_inode_pages_range() claim
-should be the case), which would avoid the issue for the gmem use-case. But I
-wonder if some explicit "dont-zero-these-pages" flag might be more robust.
-
-Or maybe there's some other way we should be going about this?
+> +			 * It shouldn't be a problem as all secondary CPUs are
+> +			 * down and kernel runs with interrupts disabled, so
+> +			 * there is no room for race.
+> +			 */
+> +			if (unmap)
+> +				set_memory_np(addr, pages);
+> +
+> +			if (!tdx_enc_status_changed(addr, pages, true)) {
+> +				pr_err("Failed to unshare range %#lx-%#lx\n",
+> +				       addr, addr + size);
+> +			}
+> +
+> +			found += pages;
+> +		}
+> +
+> +		addr += size;
+> +	}
+> +
+> +	shared = atomic_long_read(&nr_shared);
+> +	if (shared != found) {
+> +		pr_err("shared page accounting is off\n");
+> +		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
+> +	}
+> +}
+> +
+> +static void tdx_shutdown(void)
+> +{
+> +	unsigned long timeout;
+> +
+> +	/*
+> +	 * Stop new private<->shared conversions and wait for in-flight
+> +	 * conversions to complete.
+> +	 *
+> +	 * Do not wait more than 30 seconds.
+> +	 */
+> +	timeout = 30 * USEC_PER_SEC;
+> +	conversion_allowed = false;
+> +	while (atomic_read(&conversions_in_progress) && timeout--)
+> +		udelay(1);
+> +
+> +	if (!timeout)
+> +		pr_warn("Failed to finish shared<->private conversions\n");
+> +
+> +	unshare_all_memory(true);
+> +
+> +	native_machine_shutdown();
+> +}
+> +
+> +static void tdx_crash_shutdown(void)
+> +{
+> +	/*
+> +	 * Crash can race with private<->shared conversion.
+> +	 *
+> +	 * There's no clean way out: report and proceed.
+> +	 */
+> +	if (atomic_read(&conversions_in_progress))
+> +		pr_warn("Failed to finish shared<->private conversions\n");
+> +
+> +	unshare_all_memory(false);
+> +}
+> +
+>   void __init tdx_early_init(void)
+>   {
+>   	struct tdx_module_args args = {
+> @@ -882,6 +1007,14 @@ void __init tdx_early_init(void)
+>   	 */
+>   	x86_cpuinit.parallel_bringup = false;
+>   
+> +	machine_ops.shutdown = tdx_shutdown;
+> +
+> +	/*
+> +	 * KVM overrides machine_ops.crash_shutdown, use emergency
+> +	 * virt callback instead.
+> +	 */
+> +	cpu_emergency_register_virt_callback(tdx_crash_shutdown);
+> +
+>   	pr_info("Guest detected\n");
+>   }
+>   
+> 
