@@ -1,263 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381A61BDCC
-	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 12:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D44C157
+	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 14:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TE8sMUFd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696593631; x=1728129631;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=yh5MuiZGQXQ6liK7/Tt2HXhGriUga9iujO4PJpKEKQU=;
-  b=TE8sMUFdYkWJXC0cCg53CkEjZZqE30L0FkAobE0qtHwAXaFEXMrpuZ4W
-   0VHfRNvoUcFcNYfUZAFXbMPtyD6ik1UOFyhc8JcruQGhvvxBzozLoQuZp
-   d+A4uO6lMSKuLIf8ygrUGvp7EvqneCeQ/vwTWkZOctzTurQgwRXzuEH4w
-   nexF6GevcELUfJficLF9vRMOOsoWc1G12XYbjPjcR16SyGgptteBtB8fc
-   IWcpGJCzu5NUxsmO3AiabN0dIozqBSZjKTFNj2psKcgHUOCQYWB9SWmGu
-   6bZT8lKUeAGlOzFMpPn/IK+G24kItQ6k9L+9QfqpwcO1xlnN84j+ZmCdD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="414732557"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="414732557"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 04:59:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="1083426786"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="1083426786"
-Received: from kvsudesh-mobl1.gar.corp.intel.com (HELO box.shutemov.name) ([10.251.222.76])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 04:59:39 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 2368510A12D; Fri,  6 Oct 2023 14:59:37 +0300 (+03)
-Date: Fri, 6 Oct 2023 14:59:37 +0300
-From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kexec@lists.infradead.org" <kexec@lists.infradead.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH 01/13] x86/acpi: Extract ACPI MADT wakeup code into a
- separate file
-Message-ID: <20231006115937.js5zkqlbqyv3venr@box.shutemov.name>
-References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
- <20231005131402.14611-2-kirill.shutemov@linux.intel.com>
- <e11888bc9775a8083b72cce8c58ee71b39d0e17f.camel@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H5haG04/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1696601896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=o1fHANI4y2LnpbnYU8tB9BVrhts43Vwe9t+yNXkQOOo=;
+	b=H5haG04/TqcWl4jscPItdAhZVkOKUD+BKTJC0LRDyTLAoxTJMsIZCQma/TKQkCyJ1psTvM
+	towFNNXGZnnoImLP4hCam1iK/ylpTSfkUOAJ4tD/ApFnybN3L364xHcR4EcgAZN6uD7/Da
+	9HUk6n8QCb1ERkLZpbd1W6ASumPUREg=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-142-pZlCy7QvOL6WRKhYt-sv-g-1; Fri, 06 Oct 2023 10:18:15 -0400
+X-MC-Unique: pZlCy7QvOL6WRKhYt-sv-g-1
+Received: by mail-yb1-f197.google.com with SMTP id 3f1490d57ef6-d8153284d6eso3021907276.3
+        for <linux-coco@lists.linux.dev>; Fri, 06 Oct 2023 07:18:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696601895; x=1697206695;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o1fHANI4y2LnpbnYU8tB9BVrhts43Vwe9t+yNXkQOOo=;
+        b=ACpZ9DXUorKXFpXsgrQY28F6pCd5FgMQE+wJLIe4Infx1J3G3K1Wj5y6WGY7QORZ84
+         13G/OMi346pahhLbvIH69hceza3UipDLI6ew8YerDnUIrnfTn6ZKzVITSereUMTi2sb/
+         lWo9J9NahcEfskiouNH3cySc4AKTi8OdmkKwOl6tVaPGHV3qP1oRqftNDHC3NOZhere8
+         A/ky2Q72/2lpjRn4uEQvGApHSq2GZu2ux8TrFS3X9GE3jfdgIlMXg1WTfhKfy3RRzy2h
+         rYWWlIywzxsCvjRHN9PrB48aik9ykMSN7opcY/pNYJQlWAbsJ+zSlhs52/zoNOPqXdrk
+         Ychw==
+X-Gm-Message-State: AOJu0Yw0MKhfvEm3bAc+rU09z2ByxA/6aOPxRDRjS9fu+aO0wgrC67go
+	WzETwRh472u0GwkdFTP5gSUilSL5U0ghSTegsdkXSeKCOTPtDQPzx6MiJxH0SftJVHBmJ6E5JXR
+	FO12Yi41IHOD3KyyKYp8IKiuu84/7cNUSCajbgQ==
+X-Received: by 2002:a25:3485:0:b0:d7b:95d2:6d68 with SMTP id b127-20020a253485000000b00d7b95d26d68mr7241704yba.29.1696601894747;
+        Fri, 06 Oct 2023 07:18:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7uUwYtSAE/rdMws61NcuvXjUsiyZqiCYXOP5jd+VA7pfYCA+IKD0zYs3Fmc5RFCWuktHYaT0lhL0u+xFquwM=
+X-Received: by 2002:a25:3485:0:b0:d7b:95d2:6d68 with SMTP id
+ b127-20020a253485000000b00d7b95d26d68mr7241689yba.29.1696601894421; Fri, 06
+ Oct 2023 07:18:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e11888bc9775a8083b72cce8c58ee71b39d0e17f.camel@intel.com>
+References: <c677020f-5c98-ccdc-b204-bfaf5cde02e6@amd.com>
+In-Reply-To: <c677020f-5c98-ccdc-b204-bfaf5cde02e6@amd.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Fri, 6 Oct 2023 16:18:02 +0200
+Message-ID: <CAGxU2F7kuTrrqWgwF9aVJKSZgn_fvyj4bjW2D_mgdfVssPmLYQ@mail.gmail.com>
+Subject: Re: SVSM v1.00 and GHCB v2.03 specifications available
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 06, 2023 at 10:22:54AM +0000, Huang, Kai wrote:
-> On Thu, 2023-10-05 at 16:13 +0300, Kirill A. Shutemov wrote:
-> > In order to prepare for the expansion of support for the ACPI MADT
-> > wakeup method, the relevant code has been moved into a separate file.
-> > A new configuration option has been introduced to clearly indicate
-> > dependencies without the use of ifdefs.
-> 
-> Use imperative mood?  
-> 
-> - Move the relevant code into ...
-> - Introduce a new configuration option to ...
+Hi Tom,
 
-Okay.
+On Wed, Oct 4, 2023 at 7:30=E2=80=AFPM Tom Lendacky <thomas.lendacky@amd.co=
+m> wrote:
+>
+> The new versions of the subject specifications are now available. The
+> https://www.amd.com/sev webpage will be updated shortly with the new
+> links.
+>
+> In the mean time...
+>
+> The v1.00 SVSM specification is available here:
+>
+>    https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/s=
+pecifications/58019.pdf
 
-> > There have been no functional changes.
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > ---
-> >  arch/x86/Kconfig                   |  7 +++
-> >  arch/x86/include/asm/acpi.h        |  5 ++
-> >  arch/x86/kernel/acpi/Makefile      | 11 ++--
-> >  arch/x86/kernel/acpi/boot.c        | 86 +-----------------------------
-> >  arch/x86/kernel/acpi/madt_wakeup.c | 80 +++++++++++++++++++++++++++
-> >  5 files changed, 99 insertions(+), 90 deletions(-)
-> >  create mode 100644 arch/x86/kernel/acpi/madt_wakeup.c
-> > 
-> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > index 3154dbc49cf5..7368d254d01f 100644
-> > --- a/arch/x86/Kconfig
-> > +++ b/arch/x86/Kconfig
-> > @@ -1108,6 +1108,13 @@ config X86_LOCAL_APIC
-> >  	depends on X86_64 || SMP || X86_32_NON_STANDARD || X86_UP_APIC || PCI_MSI
-> >  	select IRQ_DOMAIN_HIERARCHY
-> >  
-> > +config X86_ACPI_MADT_WAKEUP
-> > +	def_bool y
-> > +	depends on X86_64
-> > +	depends on ACPI
-> > +	depends on SMP
-> > +	depends on X86_LOCAL_APIC
-> > +
-> >  config X86_IO_APIC
-> >  	def_bool y
-> >  	depends on X86_LOCAL_APIC || X86_UP_IOAPIC
-> > diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-> > index c8a7fc23f63c..b536b5a6a57b 100644
-> > --- a/arch/x86/include/asm/acpi.h
-> > +++ b/arch/x86/include/asm/acpi.h
-> > @@ -73,6 +73,11 @@ static inline bool acpi_skip_set_wakeup_address(void)
-> >  
-> >  #define acpi_skip_set_wakeup_address acpi_skip_set_wakeup_address
-> >  
-> > +union acpi_subtable_headers;
-> > +
-> > +int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
-> > +			      const unsigned long end);
-> > +
-> >  /*
-> >   * Check if the CPU can handle C2 and deeper
-> >   */
-> > diff --git a/arch/x86/kernel/acpi/Makefile b/arch/x86/kernel/acpi/Makefile
-> > index fc17b3f136fe..8c7329c88a75 100644
-> > --- a/arch/x86/kernel/acpi/Makefile
-> > +++ b/arch/x86/kernel/acpi/Makefile
-> > @@ -1,11 +1,12 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >  
-> > -obj-$(CONFIG_ACPI)		+= boot.o
-> > -obj-$(CONFIG_ACPI_SLEEP)	+= sleep.o wakeup_$(BITS).o
-> > -obj-$(CONFIG_ACPI_APEI)		+= apei.o
-> > -obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc.o
-> > +obj-$(CONFIG_ACPI)			+= boot.o
-> > +obj-$(CONFIG_ACPI_SLEEP)		+= sleep.o wakeup_$(BITS).o
-> > +obj-$(CONFIG_ACPI_APEI)			+= apei.o
-> > +obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
-> > +obj-$(CONFIG_X86_ACPI_MADT_WAKEUP)	+= madt_wakeup.o
-> >  
-> >  ifneq ($(CONFIG_ACPI_PROCESSOR),)
-> > -obj-y				+= cstate.o
-> > +obj-y					+= cstate.o
-> >  endif
-> 
-> unintended code change?
+I think there's a little typo on page 30, section 7.2
+SVSM_ATTEST_SINGLE_SERVICE Call.
+RCX Description: "gPA of the attestation services operation structure, see
+Table 11: Attest Services Operation"
+^
+this should be "Table 13: Attest Single Service Operation", right?
 
-No. It keeps += aligned as they are before the patch.
-> 
-> [...]
-> 
-> > 
-> > diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-> > new file mode 100644
-> > index 000000000000..1b9747bfd5b9
-> > --- /dev/null
-> > +++ b/arch/x86/kernel/acpi/madt_wakeup.c
-> > @@ -0,0 +1,80 @@
-> > +#include <linux/acpi.h>
-> > +#include <asm/apic.h>
-> 
-> Functions like memremap(), smp_store_release() and cpu_relax() are used in this
-> file.  Should we explicitly include the relevant headers?
+Thanks,
+Stefano
 
-Okay, will do.
+>
+> the v2.03 GHCB specification that adds support needed for running an
+> SVSM is available here:
+>
+>    https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/s=
+pecifications/56421.pdf
+>
+> Thanks,
+> Tom
+>
 
-> > +
-> > +/* Physical address of the Multiprocessor Wakeup Structure mailbox */
-> > +static u64 acpi_mp_wake_mailbox_paddr;
-> > +/* Virtual address of the Multiprocessor Wakeup Structure mailbox */
-> > +static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
-> > +
-> > +static int acpi_wakeup_cpu(int apicid, unsigned long start_ip)
-> > +{
-> > +	/*
-> > +	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
-> > +	 *
-> > +	 * Wakeup of secondary CPUs is fully serialized in the core code.
-> > +	 * No need to protect acpi_mp_wake_mailbox from concurrent accesses.
-> > +	 */
-> > +	if (!acpi_mp_wake_mailbox) {
-> > +		acpi_mp_wake_mailbox = memremap(acpi_mp_wake_mailbox_paddr,
-> > +						sizeof(*acpi_mp_wake_mailbox),
-> > +						MEMREMAP_WB);
-> > +	}
-> > +
-> > +	/*
-> > +	 * Mailbox memory is shared between the firmware and OS. Firmware will
-> > +	 * listen on mailbox command address, and once it receives the wakeup
-> > +	 * command, the CPU associated with the given apicid will be booted.
-> > +	 *
-> > +	 * The value of 'apic_id' and 'wakeup_vector' must be visible to the
-> > +	 * firmware before the wakeup command is visible.  smp_store_release()
-> > +	 * ensures ordering and visibility.
-> > +	 */
-> > +	acpi_mp_wake_mailbox->apic_id	    = apicid;
-> > +	acpi_mp_wake_mailbox->wakeup_vector = start_ip;
-> > +	smp_store_release(&acpi_mp_wake_mailbox->command,
-> > +			  ACPI_MP_WAKE_COMMAND_WAKEUP);
-> > +
-> > +	/*
-> > +	 * Wait for the CPU to wake up.
-> > +	 *
-> > +	 * The CPU being woken up is essentially in a spin loop waiting to be
-> > +	 * woken up. It should not take long for it wake up and acknowledge by
-> > +	 * zeroing out ->command.
-> > +	 *
-> > +	 * ACPI specification doesn't provide any guidance on how long kernel
-> > +	 * has to wait for a wake up acknowledgement. It also doesn't provide
-> > +	 * a way to cancel a wake up request if it takes too long.
-> > +	 *
-> > +	 * In TDX environment, the VMM has control over how long it takes to
-> > +	 * wake up secondary. It can postpone scheduling secondary vCPU
-> > +	 * indefinitely. Giving up on wake up request and reporting error opens
-> > +	 * possible attack vector for VMM: it can wake up a secondary CPU when
-> > +	 * kernel doesn't expect it. Wait until positive result of the wake up
-> > +	 * request.
-> > +	 */
-> > +	while (READ_ONCE(acpi_mp_wake_mailbox->command))
-> > +		cpu_relax();
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
-> > +			      const unsigned long end)
-> > +{
-> > +	struct acpi_madt_multiproc_wakeup *mp_wake;
-> > +
-> > +	if (!IS_ENABLED(CONFIG_SMP))
-> > +		return -ENODEV;
-> 
-> Now you have made X86_ACPI_MADT_WAKEUP depend on SMP, and this file will only be
-> compiled when  X86_ACPI_MADT_WAKEUP is turned on.  IIUC this essentially means
-> IS_ENABLED(CONFIG_SMP) will always report true?
-
-Good catch. I didn't have 'depends SMP' initially, but it triggered build
-issue, so I added it, but forgot to drop IS_ENABLED().
-
-> > +
-> > +	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
-> > +	if (BAD_MADT_ENTRY(mp_wake, end))
-> > +		return -EINVAL;
-> > +
-> > +	acpi_table_print_madt_entry(&header->common);
-> > +
-> > +	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
-> > +
-> > +	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
-> > +
-> > +	return 0;
-> > +}
-> 
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
