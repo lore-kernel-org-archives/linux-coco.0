@@ -1,95 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2075.outbound.protection.outlook.com [40.107.93.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C801D551
-	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 20:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719CF450DF
+	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 22:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PJivBDrF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696624470; x=1728160470;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=iJytUC0utTJTMUR9fX2HEvRZjHviiFTVfW5ca79Z34U=;
-  b=PJivBDrFopDsb2GkIOMn0YxgzR8WlQ8NkXJRrMwjWxAhZOEwPcsZ8mfc
-   OXzJ4hpGytvl96+qOC2ynV91RXdM0b0nBi2jqZWVf7zmK0We70xcZMgNS
-   vG12wN3+4T04B2qTQ3YuNvR66SAk0LPdS0NtdaVD1SLYegcX1KQm3UkzM
-   vWZ2Q5A2DWS6+fTewQaeKQho95c5jDXcBf9m1gHdTInOZ1vZB4z7TCeuL
-   f/rA7dti4vax9xzYl1cgTnV3dfF/sT/WLeKqfh5BzAi9KGNKNjKM5Q41q
-   I2QOXKN0itAyWmTuTcmZFdPBOTvFKWGuBGQUNte1q3DaZijTAiWAhM510
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="386658432"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="386658432"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 13:34:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="896014069"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="896014069"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Oct 2023 13:32:56 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Fri, 6 Oct 2023 13:34:28 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Fri, 6 Oct 2023 13:34:28 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.43) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Fri, 6 Oct 2023 13:34:28 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WhBDK4hU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HEB4qw954p7fIox5/kT1rXEMt9ZWSpQdWNIomfPPV70fWqwwugnsLWWJtwkg9vA6d9mw/yI4ShwQqcfGMp78BX3Ecm4cGVU0stQJkr1IzrEVTJIvqMC4TTvp9yZP+VrZ9NpeRfZtzjmkUIrlVrcebTHoQRH25KwucmYU0VXrA/2Ocm/OMV6LclM/d91CI7/NCIhFAmClMcwPSqQojsVISGuV+vNwCBcVAw1iUfEYPU/3eF4SiRcD1kDR9vkxZejXmuV9zwS52/FAP9yzTjYx9h96aeAu/Qd8bYjDKerLLL9b3YZMDt3NTH8PzzbgnjyOHQ1eFQ0V6DyHxlW6HrA0Jg==
+ b=PFWW6VLSnvwxuSejS5rRezmGEq00OkknAFUBlMkT7ijREwQ7Xgajy3OHwP4xc2MhIU2HLu71zdn6hZL1pbRkN96s0CN7L2Su8CysETVUt/rQIy4XZQK2oukBqLPy0vYv29rWLzkHO3Wj2ZgcBTPxdzCKnc28oc7kE5vCr4jqElbSE5qS7ebYZYe/wRQeHocHEePVjbJXy20BzTUhin+Kmo6OqpXbTBcgSEXh4JZbqDXoO/Vk8hcUfcZ8X6pj+nHk/bwP/+IiMmFUcKeV6iwLloQ+d72MRewcGn7E/qoAOAX/u0qZ4Dm6Thfnhr3HOueV9zp1wE2s19LDJEdNqAV8Lw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xZ98nqlhH5sHTTLJxDRrv33NK4kjh/RHm1GkcIKes5o=;
- b=mU0aRQiYL3aUjx889e4DTJWJWY7RakVku+kdW2m/b/KGTqHftr8GRu69Z5Z7VFeRAosbyD53JxAUDFZc/YZ8HXi9emrm9Rg0Y85n1cTdabFqsfzS2u98Wx9Iu3xIiNZep67UpQsZudiWcC2xtrRNWegZ9Vc7ZZlDH/m3oQiNBxbgMzdLz3aLsaQUzvplDs9pXhS1TUJP6sa/lW+jIwKqBRzuguzLHqe+LhSQkG8De5MjMn7KE3XxGpZW+HawNXxigw6ZW/Tpoth/jKO/9Ho2Yg09CMuGgGqNz1Ty+YP8G5rBg/Bq9qOZVK5NX/jZfUNSMdQZyMmI7TmtkZ8dFCdOYg==
+ bh=dN6Z5QszQ5EpAPvPSOFOQMNg0o2WKKCZIlVxJUigaUI=;
+ b=k/Q5tIGgr6B4i8r6NFclbXoK77B9j9kfrALKY0Ca3ENrL/7ub8BOZXPI8KY3gvzPnwstlSG6PwanN2ntLZD6FzR9G7kOY290bfl/GcrOqNbIa4De1RavMRWddeGeFE5oQUjnxLZPHBvYkvBFey/G1ytMqOll0pB/Je8OBnQZNoAVGiCHk+kcPdou+Kik2JVvxpUeHPNpo23j81Dz1MNexxxn394pc/HkVsPDrsY20aBESI/g4V0cNhZDHjm3gI8S+E99QtNR5g/I7oXrN/MIV8QMkcY0fl2jWq+K5zaiPZa/OBRiutSIKnu2hnO74fQf9NnelNQ7hSlp6Tnx80pQVg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dN6Z5QszQ5EpAPvPSOFOQMNg0o2WKKCZIlVxJUigaUI=;
+ b=WhBDK4hUsrwZ6Ae0URItePlrL2hnpd+BZhuvi5c6fhsn1tSwoWM30Ju5W5SSmicLDelAIAsrG9hDNIYhzd6yJr0jG2r2KMrLPJcTyNkInx0obhuV0RM/ALJzJ9OQ4fD/KupWmN1G8VWuqvFRD0/jp89d6GQ0PKhXLh8wRJ5pTck=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS0PR11MB7288.namprd11.prod.outlook.com (2603:10b6:8:13b::14) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by PH7PR12MB6720.namprd12.prod.outlook.com (2603:10b6:510:1b3::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.37; Fri, 6 Oct
- 2023 20:34:25 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::acb0:6bd3:58a:c992%5]) with mapi id 15.20.6838.033; Fri, 6 Oct 2023
- 20:34:24 +0000
-Date: Fri, 6 Oct 2023 13:34:20 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>, "David
- Howells" <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>,
-	"Herbert Xu" <herbert@gondor.apana.org.au>, "David S. Miller"
-	<davem@davemloft.net>, Alex Williamson <alex.williamson@redhat.com>,
-	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, <linuxarm@huawei.com>,
-	David Box <david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>, Zhi Wang
-	<zhi.a.wang@intel.com>, Alistair Francis <alistair.francis@wdc.com>, "Wilfred
- Mallawa" <wilfred.mallawa@wdc.com>, Alexey Kardashevskiy <aik@amd.com>, "Tom
- Lendacky" <thomas.lendacky@amd.com>, Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>
-Subject: RE: [PATCH 07/12] spdm: Introduce library to authenticate devices
-Message-ID: <65206f4c7f0ae_ae7e729444@dwillia2-xfh.jf.intel.com.notmuch>
-References: <cover.1695921656.git.lukas@wunner.de>
- <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
-X-ClientProxiedBy: MW4PR04CA0235.namprd04.prod.outlook.com
- (2603:10b6:303:87::30) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.38; Fri, 6 Oct
+ 2023 22:15:40 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6ac8:eb30:6faf:32b2]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::6ac8:eb30:6faf:32b2%5]) with mapi id 15.20.6838.033; Fri, 6 Oct 2023
+ 22:15:40 +0000
+Message-ID: <ef24ca9a-383e-196d-fcfb-9b4f2e62d60a@amd.com>
+Date: Fri, 6 Oct 2023 17:15:37 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH 10/13] x86/tdx: Convert shared memory back to private on
+ kexec
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Sean Christopherson <seanjc@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
+ <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
+ <ZSAge6W4vF6ePudw@google.com>
+ <20231006151151.2m6t7fcu36hlrtzj@box.shutemov.name>
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <20231006151151.2m6t7fcu36hlrtzj@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DM6PR01CA0030.prod.exchangelabs.com (2603:10b6:5:296::35)
+ To SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -97,411 +69,127 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS0PR11MB7288:EE_
-X-MS-Office365-Filtering-Correlation-Id: d573b79b-3110-4d96-d12d-08dbc6aba06d
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|PH7PR12MB6720:EE_
+X-MS-Office365-Filtering-Correlation-Id: 07c38b52-7e09-4fa6-b8db-08dbc6b9c60c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MZi0R5C4Yln6rnFcV/tL4Hwjc3W3SM9yoAIe1hPyeiZnS8ZBrwoKlk4Ujkv86sCqU+zwudvAZFqn2cMiHbPk+O0Ra2v5wPb5l1pfxMuIH263k+o/VUflwuhTmZ0lYq7crvN7Ky12Opanyai4/lf/sioeeoCsGkaRhX+lQKVl1LMWl87xGZay9cTVCiL025CC830XBoVkQGjpusQZhZbFH+h3+tz3jXnopdqF9YMiJHlfgBiY/64uDcoMYXFxBPFTSdaarwYDWBlLnfKq1wCrqn80HPbxVbg0ueaFS5d0+LMVAjIdWjaFzqukViZz8ZrmqkjQNNo+738WbS5Hd7qt1OVgS50M/a/JeJHu5Ii8c2e7ox4obnkjfmfiuZh8taExZgivmCtG+cTQNvUyW1KlW4BPlpp0sJcZ0kqrVXtvYNeWr3XwwWp0XAPr0MGd6oshq2gl6yhampZypZkUOYZU4uLLmwTDb/89HHXH3bE0hokxw0mv5ie9e+bcKNQolgmk0Il0R5UBEglYF3VaISM0YQ/BNXPJlL+h3yWV5boS9IF2jDi9nqhwlKM/A4HqlIP8ta0WeCZnTNSHu7CF12iU52OpWmaOelIPXy6AnLWBXIrQ+NH38JV3f4Yr0e3gegn7
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(366004)(39860400002)(396003)(376002)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(7416002)(5660300002)(8676002)(30864003)(2906002)(4326008)(8936002)(41300700001)(66899024)(316002)(66946007)(66476007)(54906003)(66556008)(110136005)(6666004)(6506007)(26005)(6512007)(9686003)(478600001)(82960400001)(38100700002)(921005)(83380400001)(86362001)(6486002)(966005);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info:
+	OYBl3FvqLo7rEh44MBpoCHiAUJuEJPJGgjh6ncECYJFWR16h5zmZGbmEQJiPOPNNVBk+5OMPfOh5/hBNuKIBxygFQjzOUutrHC6YEI+P8c5rx+qdoeEIe9dKss4xkkIq6T12F6B6A/jff17LSomPy9A/g+P969RUfMzPyZAYn2tIL9ThhsOXXMsVacFK+PDflPEN4EtyRymrxRtDYDDmSaIOC4ip8s6uykZTPumx0VXlHVkPbH/kMB0ZIz7fY1fJD7OGd9YlCaNsVUT3zoJ5Z/BYjXsOaL4gfGcvG3R4KI+Ay80HLPOyCA/hSKAVRnWzZTxy+nejPyl+e5PTql9SWBC1vZPJeX7ELGwm2YPQNcIZg7oStxP76XpzLvuX7t22cR1U03Hi1WjjHk0Q0kYtMDSDVuJLtl0VZTC9rDSWFfkynKlLH3nBSRzo3G5Ol0dETfwbTc28JYqkVDA9qeqSOEbAXDIp7ElSG++RRHSc/1LZkGvJCVNoyDryaWf94Akph0Cgt6s/WO9SMYiVtRSF6nOt49I1+HGxdIsGUsBMLTMxKYKneviN5J39M4xti24CKs0wq+EMc8TWv9LiALKKS/mN1olmkAcM9pJ1i7ROknY7KKMI986fokFOnzDIS3q1G3RR9LCfMxxORybX06IpQw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(346002)(376002)(366004)(39860400002)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(53546011)(31686004)(66899024)(4326008)(8936002)(38100700002)(5660300002)(31696002)(86362001)(8676002)(36756003)(7416002)(66476007)(66556008)(316002)(66946007)(54906003)(478600001)(6486002)(2906002)(41300700001)(26005)(6512007)(110136005)(6506007)(2616005)(6666004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Ek58uPlQtUyCqC+YvdOn8l0saWGG2uBjs+gqvA74GazcpXL2sJIFN4abkA1j?=
- =?us-ascii?Q?2nZ2/xT5jdGJqHrAFF73OTp69VEwU8Cl/CsWsAyrMnyBWHgrG1tMNvjKR/kh?=
- =?us-ascii?Q?4wqombC6zxWLkAYi6CcrPccRDggSi1K3LOGg1D0uSeBae7I8q/Nhwa6N8Am/?=
- =?us-ascii?Q?6sRWqIbMdkGkUVqdL0u2UKrt9vh1xcK9vQEW/CctWaDEU8Dgz/U8G9rO5kMG?=
- =?us-ascii?Q?x2njp51MfY6t47+/T9CL5OCE/r882QyLgxgcOtP6xGxrXQQA+r/0Al+yCFRY?=
- =?us-ascii?Q?ntiwGJcRC7NYnfM1iV+gu2G3ZrqbcbLZInySwUXhD1L29FkZFGIX3TWWxCjx?=
- =?us-ascii?Q?04FL1KNLgutK+0p6vBzWmooKYUW+2mxLXH8EvLJ2rbEOz2d7d570GxlbGKDY?=
- =?us-ascii?Q?XLH95NTT0mYmG07H6rTITMwxNoiFNzYAvIIo+gvBWPRPdrHjQKglz1yF1CqD?=
- =?us-ascii?Q?p6tCeA7JARQTa804dU7ZMuDxaHfD+tyG6+HMZh6QHWWFg77WeUOlSjGha1x2?=
- =?us-ascii?Q?tX9fzKig9DqTsU8usWKlprwt6PGProUlzfUkH7LNICl6JAhIHL4CtE1Gx2Jc?=
- =?us-ascii?Q?7zN8e/BWjYZdKBTuIRiVp2MX+DTeXMlByX/ZRpQZyUHJgNDAx7kW33l9HPcM?=
- =?us-ascii?Q?TERIVp92nGY4vSsQTOCO9MxV0ZJsZXSi6WCQCpiVQqZmh6SWnwVcMZkGv3AT?=
- =?us-ascii?Q?ZfE7bLlCjjAsLCrQm2PtP8rC8ZNr1esKxVPHAuICXvgqw5JmUFD1v1OsmwLy?=
- =?us-ascii?Q?KEjjU90Cy1PNbfX4dUxScLKrcQh0PddWgm7/xFUCPbxdQxCmy/iJTrr9AzHd?=
- =?us-ascii?Q?tQ4jHxOWj3tlFIvoGwuoaYWc6i/qlUpFK8166chpZFQIoqWg+Qvkt349tEmb?=
- =?us-ascii?Q?yZzefpIQh2+lGYqZ649i97QAUkayRNsuE3vOvXsIFIbNsajaqpCgaWIhcbkB?=
- =?us-ascii?Q?6uBpDYGlIoAq7vux28FYG7CZB+NDhBtFLqfAoOMgWYPh0ZRrEynQ1U4ann+P?=
- =?us-ascii?Q?u/l/5gLnUpV/pnCewTqOurna4gOr7LJLiP8Z+usMonie0RJ+SMolVvgLTgK4?=
- =?us-ascii?Q?RPN3ikqluj2pERLgk9pxGbe3NbSDTeBvBBOJV9sG41eycM5e3Z4GlXiUboaD?=
- =?us-ascii?Q?tgn/8dfky8vD9guo3hK9VZVQO845DUQQrFh7rykIiuqWV6LvM18tj+9hNvjz?=
- =?us-ascii?Q?J9XOiVyrlZ4hh/7l/w7etd2ZpY1D6jjjlzjsnz1WxaxaLQZVujjC29bmpDmU?=
- =?us-ascii?Q?wcryQvQg6KzjvHUmkPyjdz6MTFlircAg/nO0EDI+j30T0yDClq6KZu7VZJAp?=
- =?us-ascii?Q?6eN2ZFQ1B7RjI5Ue/+uEd3vYbIOTnxR9iq+9OQSgy9pcw3OyBIt4yWXQQoZk?=
- =?us-ascii?Q?SwuZKp2HG1tu0kjE3IZCBBpkC/CNlwhqrFRohp4hRm+7TUbuT1kpvsKgCs5b?=
- =?us-ascii?Q?0Ghsr5cI5fDGZtGp5HG24T8+kL9KZMLUO9iR+5AbLA8FIm3gTgkVQYKFDCLi?=
- =?us-ascii?Q?A3TIN0CTDU4G7/7TSqMLp8C0Wo0P5mIrhQJxPYITHEz21cbb41LRciPIaigH?=
- =?us-ascii?Q?1VBFzDI7s2thhZKlAIZ7fpv2rlEw31JkslyNZuZpdYIduhQMsFs6WsDs7Wi5?=
- =?us-ascii?Q?/w=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: d573b79b-3110-4d96-d12d-08dbc6aba06d
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZlNUNUYyU2hnRHEyaHRCUkpvV3JNTkNPbHUwWDFmeW4rR2hkNFdrWHJDaTVy?=
+ =?utf-8?B?YjNMYmpIWFk0b0lYYXhlSm5haTVZN1grdXBNNkIxeHhEUnJJV0E4OUVQMkQw?=
+ =?utf-8?B?QUNPc3NRaXIrNmpWZExwZW1PajZ0UldZb1RrNW05b1YrVUV4OG9PSWx6UUt3?=
+ =?utf-8?B?cnlFVVM4WUdNTzhCZDhzRW94cEJrTEhaazlPLzNJVG51eVZSMjN6QkhaS2RT?=
+ =?utf-8?B?cGpvZ0hpTnNrc2FudVl2QXRyajlxbG9GeVdjd0pCZ2NKTmFkZzBlaHQ1M1Nr?=
+ =?utf-8?B?RWc1ZEJKVENtOVNjMUJ1TUR3ZjZTR2RiMGx3dDUxcGVaWElBMkdJWllMODkr?=
+ =?utf-8?B?REMxMC85NllGYjlpRXZNcTRDYVZMeGQ1elNRNmk4akhkdjZvdllka0VNaU1o?=
+ =?utf-8?B?MU1HNDNuQjFnaUtOSk1aN1JpTmtkNjR3OXNOd3VwTERzS0xRWU5qNC9yRHFC?=
+ =?utf-8?B?OEFNd1lkV1V2L1lZci8vVElDMXNxeXZxUmgxekxGUHg5UzJwT21nOHRQbmVz?=
+ =?utf-8?B?cFVYMmNTYWs5Z1BQcm5XQitXMFhvR3IwUGIzcGhFdjRLWUNqMkV3T2pYdytz?=
+ =?utf-8?B?b05qTGx5Yy9JSVpFOG13Ly9RcjZYc0dUd3RZdFQvbnlMOW15VUFFMVFCcUw0?=
+ =?utf-8?B?OUlPcjY5OXBtckU0cmUvZXF4SXB1djk0QkY2M2t3ay9wbk9HMVdvTlBpRFBp?=
+ =?utf-8?B?SVk4YkFjT3BrQXBFS0dpYjdFemZSRkZYaG53cDlUelcwNmcwaUlmYjJGWGJN?=
+ =?utf-8?B?NWtUczh6RHNMYXZ0K3U1MmVRa3pFa0NISWovWEhBQjRuL2g5ZWc1N1UrNWJK?=
+ =?utf-8?B?SWprWkMvUFVtQkVvbzB4d0oxVG1VMkVDTmVlT3JROUlyODYwYkVOYVV4Z1l5?=
+ =?utf-8?B?OTdLbGJxZVRHSWFpUkw3Q05sYjFyNnpiQStkSU41NjNQWk41R1ZabEMxUUlL?=
+ =?utf-8?B?STVHdlNNSDgrYzNrK1A3M2loQWRRNnZvenZjLy92NUl6ZjBwNWx5dUd4ZHpo?=
+ =?utf-8?B?cmg5TU5GRXRCRTRTRFcrTlBPTlFuOVBGR2FBQ2NMK3Fwd3Rra2IzQkNjTVg3?=
+ =?utf-8?B?Z004SlNtYUVtVWpJSHJPZ1BudVVwdWRxYmhPRFNuTTcyMDJlMDJ2U1VTeDFh?=
+ =?utf-8?B?d2NzMC9rRnVFbFZpUUl6cWRockViYjFPRHJCYk85d0VqWSswcGZkYlBNNExr?=
+ =?utf-8?B?QzZxZmpzWXl0UEU3QStzTk80WHplZGFaT3BCV3F0dTViZVNnVXNZZzAzWWtO?=
+ =?utf-8?B?MWczZDUrMHVuR2VSNTJoSU83VUNjRnZWN1MvNjFZWGthQ3p0THlnQ3A5MWsz?=
+ =?utf-8?B?WE9VOEtKRmJUd21MV0QwOWFLcCtnZHNPNDBHdDh3aFpwdEdGREZkMDJTaVkz?=
+ =?utf-8?B?MTBta0Y3enk2REhYQXZFU3VMZlpsbmoxejB6eWdGR1Z2ZmM1NFB5VkdLNWJo?=
+ =?utf-8?B?Rkt5RUFVOWVQZC9sTmR0SXpDM0VtVnpmRW11K0pEYUR4QmNqdGMvZ0ZpaFc0?=
+ =?utf-8?B?THJCbm4xdUV4aTBlakhVZFJMWG1LaENIbG8yL0wra0lqd3FSQ2dZZEtpTllH?=
+ =?utf-8?B?cG9BUXAwbHN0bW84YzBzeGJ2YURPOENELzhGN0pZak1JMVlBeUdPSGNkMU9t?=
+ =?utf-8?B?L0NGek5laXRNZGh2YzBWZmZUNWppQlFtUmN3N215MmwxRGNrRWlXV0IwTG93?=
+ =?utf-8?B?MUJGWDlTK2wwSllqdHpPNUtYZEpjOFVSTzE3cFVQMGIwVTNPWFpCODJVQlJs?=
+ =?utf-8?B?Mml2emJTYlBmZEc4N3I3SUdROWFWR2ZhQzVXUTZ0bEl1c2x6MFlhUU92MENt?=
+ =?utf-8?B?Q0tNMUdaNDVQOW4vcTdYc3JEQ0NUWldudTdRcXI4SnVvck1KenFyMFdjZjJE?=
+ =?utf-8?B?cnl1NkJQRUxiZHArR2x3T3lPVUZJY0JqdmRVc0NVYjFjcExhLzl1LzhlRXY2?=
+ =?utf-8?B?ZDZEazdiRnkvdHVkZEhnRGgxS0FMZ3RHVVplVW95M0tZRi9oLzh5NlBnMjVH?=
+ =?utf-8?B?U2Y2SmFaclBWcUJLSXJoTlVsUnJ4RzA3UUFCLzcxYkhVNFRRNklmYTI2UFow?=
+ =?utf-8?B?Y0t6eG4xcS8vMFZQVWtTaDVoUVY0bFJ3bE5MaUk1eWpmRDlVdHNGV0ZCaGsz?=
+ =?utf-8?Q?1sRfbhdi9eyWeJKMjtssZ8TbC?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 07c38b52-7e09-4fa6-b8db-08dbc6b9c60c
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2023 20:34:23.8321
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2023 22:15:39.8576
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F/EC0jn5fJddtP0mPjvnKzw34YwE6XopvuAyNjPnbEmtAZvx81wbLbjmCEe7L3b3DBAVjgXNiC+IPMENpdiulBPJ/Jfn4VFXwCRhV+K1uaI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7288
-X-OriginatorOrg: intel.com
-
-Lukas Wunner wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> The Security Protocol and Data Model (SPDM) allows for authentication,
-> measurement, key exchange and encrypted sessions with devices.
-> 
-> A commonly used term for authentication and measurement is attestation.
-> 
-> SPDM was conceived by the Distributed Management Task Force (DMTF).
-> Its specification defines a request/response protocol spoken between
-> host and attached devices over a variety of transports:
-> 
->   https://www.dmtf.org/dsp/DSP0274
-> 
-> This implementation supports SPDM 1.0 through 1.3 (the latest version).
-> It is designed to be transport-agnostic as the kernel already supports
-> two different SPDM-capable transports:
-> 
-> * PCIe Data Object Exchange (PCIe r6.1 sec 6.30, drivers/pci/doe.c)
-> * Management Component Transport Protocol (MCTP,
->   Documentation/networking/mctp.rst)
-> 
-> Use cases for SPDM include, but are not limited to:
-> 
-> * PCIe Component Measurement and Authentication (PCIe r6.1 sec 6.31)
-> * Compute Express Link (CXL r3.0 sec 14.11.6)
-> * Open Compute Project (Attestation of System Components r1.0)
->   https://www.opencompute.org/documents/attestation-v1-0-20201104-pdf
-> 
-> The initial focus of this implementation is enabling PCIe CMA device
-> authentication.  As such, only a subset of the SPDM specification is
-> contained herein, namely the request/response sequence GET_VERSION,
-> GET_CAPABILITIES, NEGOTIATE_ALGORITHMS, GET_DIGESTS, GET_CERTIFICATE
-> and CHALLENGE.
-> 
-> A simple API is provided for subsystems wishing to authenticate devices:
-> spdm_create(), spdm_authenticate() (can be called repeatedly for
-> reauthentication) and spdm_destroy().  Certificates presented by devices
-> are validated against an in-kernel keyring of trusted root certificates.
-> A pointer to the keyring is passed to spdm_create().
-> 
-> The set of supported cryptographic algorithms is limited to those
-> declared mandatory in PCIe r6.1 sec 6.31.3.  Adding more algorithms
-> is straightforward as long as the crypto subsystem supports them.
-> 
-> Future commits will extend this implementation with support for
-> measurement, key exchange and encrypted sessions.
-> 
-> So far, only the SPDM requester role is implemented.  Care was taken to
-> allow for effortless addition of the responder role at a later stage.
-> This could be needed for a PCIe host bridge operating in endpoint mode.
-> The responder role will be able to reuse struct definitions and helpers
-> such as spdm_create_combined_prefix().  Those can be moved to
-> spdm_common.{h,c} files upon introduction of the responder role.
-> For now, all is kept in a single source file to avoid polluting the
-> global namespace with unnecessary symbols.
-
-Since you are raising design considerations for the future reuse of this
-code in the responder role, I will raise some considerations for future
-reuse of this code with platform security modules (the TDISP specification
-calls them TSMs).
-
-> 
-> Credits:  Jonathan wrote a proof-of-concept of this SPDM implementation.
-> Lukas reworked it for upstream.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
->  MAINTAINERS          |    9 +
->  include/linux/spdm.h |   35 +
->  lib/Kconfig          |   15 +
->  lib/Makefile         |    2 +
->  lib/spdm_requester.c | 1487 ++++++++++++++++++++++++++++++++++++++++++
->  5 files changed, 1548 insertions(+)
->  create mode 100644 include/linux/spdm.h
->  create mode 100644 lib/spdm_requester.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 90f13281d297..2591d2217d65 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -19299,6 +19299,15 @@ M:	Security Officers <security@kernel.org>
->  S:	Supported
->  F:	Documentation/process/security-bugs.rst
->  
-> +SECURITY PROTOCOL AND DATA MODEL (SPDM)
-> +M:	Jonathan Cameron <jic23@kernel.org>
-> +M:	Lukas Wunner <lukas@wunner.de>
-> +L:	linux-cxl@vger.kernel.org
-> +L:	linux-pci@vger.kernel.org
-> +S:	Maintained
-> +F:	include/linux/spdm.h
-> +F:	lib/spdm*
-> +
->  SECURITY SUBSYSTEM
->  M:	Paul Moore <paul@paul-moore.com>
->  M:	James Morris <jmorris@namei.org>
-> diff --git a/include/linux/spdm.h b/include/linux/spdm.h
-> new file mode 100644
-> index 000000000000..e824063793a7
-> --- /dev/null
-> +++ b/include/linux/spdm.h
-> @@ -0,0 +1,35 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * DMTF Security Protocol and Data Model (SPDM)
-> + * https://www.dmtf.org/dsp/DSP0274
-> + *
-> + * Copyright (C) 2021-22 Huawei
-> + *     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> + *
-> + * Copyright (C) 2022-23 Intel Corporation
-> + */
-> +
-> +#ifndef _SPDM_H_
-> +#define _SPDM_H_
-> +
-> +#include <linux/types.h>
-> +
-> +struct key;
-> +struct device;
-> +struct spdm_state;
-> +
-> +typedef int (spdm_transport)(void *priv, struct device *dev,
-> +			     const void *request, size_t request_sz,
-> +			     void *response, size_t response_sz);
-
-TIL that even though "typedef <type> (*<name>)" is the predominant kernel
-style of declaring function pointer types, significant parts of the kernel
-use this "typedef <type> (<name>)" and declare it a pointer at the usage
-site.
-
-> +
-> +struct spdm_state *spdm_create(struct device *dev, spdm_transport *transport,
-> +			       void *transport_priv, u32 transport_sz,
-> +			       struct key *keyring);
-> +
-> +int spdm_authenticate(struct spdm_state *spdm_state);
-> +
-> +bool spdm_authenticated(struct spdm_state *spdm_state);
-> +
-> +void spdm_destroy(struct spdm_state *spdm_state);
-> +
-> +#endif
-> diff --git a/lib/Kconfig b/lib/Kconfig
-> index c686f4adc124..3516cf1dad16 100644
-> --- a/lib/Kconfig
-> +++ b/lib/Kconfig
-> @@ -764,3 +764,18 @@ config ASN1_ENCODER
->  
->  config POLYNOMIAL
->         tristate
-> +
-> +config SPDM_REQUESTER
-> +	tristate
-> +	select KEYS
-> +	select ASYMMETRIC_KEY_TYPE
-> +	select ASYMMETRIC_PUBLIC_KEY_SUBTYPE
-> +	select X509_CERTIFICATE_PARSER
-> +	help
-> +	 The Security Protocol and Data Model (SPDM) allows for authentication,
-> +	 measurement, key exchange and encrypted sessions with devices.  This
-> +	 option enables support for the SPDM requester role.
-> +
-> +	 Crypto algorithms offered to SPDM responders are limited to those
-> +	 enabled in .config.  Drivers selecting SPDM_REQUESTER need to also
-> +	 select any algorithms they deem mandatory.
-> diff --git a/lib/Makefile b/lib/Makefile
-> index 740109b6e2c8..d9ae58a9ca83 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -315,6 +315,8 @@ obj-$(CONFIG_PERCPU_TEST) += percpu_test.o
->  obj-$(CONFIG_ASN1) += asn1_decoder.o
->  obj-$(CONFIG_ASN1_ENCODER) += asn1_encoder.o
->  
-> +obj-$(CONFIG_SPDM_REQUESTER) += spdm_requester.o
-> +
->  obj-$(CONFIG_FONT_SUPPORT) += fonts/
->  
->  hostprogs	:= gen_crc32table
-> diff --git a/lib/spdm_requester.c b/lib/spdm_requester.c
-> new file mode 100644
-> index 000000000000..407041036599
-> --- /dev/null
-> +++ b/lib/spdm_requester.c
-[..]
-> +struct spdm_error_rsp {
-> +	u8 version;
-> +	u8 code;
-> +	enum spdm_error_code error_code:8;
-> +	u8 error_data;
-> +
-> +	u8 extended_error_data[];
-> +} __packed;
-> +
-> +static int spdm_err(struct device *dev, struct spdm_error_rsp *rsp)
-> +{
-
-Why not an error_code_to_string() helper and then use dev_err() directly at
-the call site? rsp->error_data could be conveyed uncoditionally, but maybe
-that belies that I do not understand the need for filtering ->error_data.
-
-> +	switch (rsp->error_code) {
-> +	case spdm_invalid_request:
-> +		dev_err(dev, "Invalid request\n");
-
-Setting the above comment aside, do you suspect these need to be
-dev_err_ratelimited() if only because it is unclear whether a user of this
-library will trigger screaming error messages?
+X-MS-Exchange-CrossTenant-UserPrincipalName: iDoial1oDEytHioR+wWcj0cg157iepjCXGHNcJ2yZ3ySDXJwZ2QHSVP5Zh96EpiphunZpoBEX4yoBAMPllNaxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6720
 
 
-> +		return -EINVAL;
-> +	case spdm_invalid_session:
-> +		if (rsp->version == 0x11) {
-> +			dev_err(dev, "Invalid session %#x\n", rsp->error_data);
-> +			return -EINVAL;
-> +		}
-> +		break;
-> +	case spdm_busy:
-> +		dev_err(dev, "Busy\n");
-> +		return -EBUSY;
-> +	case spdm_unexpected_request:
-> +		dev_err(dev, "Unexpected request\n");
-> +		return -EINVAL;
-> +	case spdm_unspecified:
-> +		dev_err(dev, "Unspecified error\n");
-> +		return -EINVAL;
-> +	case spdm_decrypt_error:
-> +		dev_err(dev, "Decrypt error\n");
-> +		return -EIO;
-> +	case spdm_unsupported_request:
-> +		dev_err(dev, "Unsupported request %#x\n", rsp->error_data);
-> +		return -EINVAL;
-> +	case spdm_request_in_flight:
-> +		dev_err(dev, "Request in flight\n");
-> +		return -EINVAL;
-> +	case spdm_invalid_response_code:
-> +		dev_err(dev, "Invalid response code\n");
-> +		return -EINVAL;
-> +	case spdm_session_limit_exceeded:
-> +		dev_err(dev, "Session limit exceeded\n");
-> +		return -EBUSY;
-> +	case spdm_session_required:
-> +		dev_err(dev, "Session required\n");
-> +		return -EINVAL;
-> +	case spdm_reset_required:
-> +		dev_err(dev, "Reset required\n");
-> +		return -ERESTART;
-> +	case spdm_response_too_large:
-> +		dev_err(dev, "Response too large\n");
-> +		return -EINVAL;
-> +	case spdm_request_too_large:
-> +		dev_err(dev, "Request too large\n");
-> +		return -EINVAL;
-> +	case spdm_large_response:
-> +		dev_err(dev, "Large response\n");
-> +		return -EMSGSIZE;
-> +	case spdm_message_lost:
-> +		dev_err(dev, "Message lost\n");
-> +		return -EIO;
-> +	case spdm_invalid_policy:
-> +		dev_err(dev, "Invalid policy\n");
-> +		return -EINVAL;
-> +	case spdm_version_mismatch:
-> +		dev_err(dev, "Version mismatch\n");
-> +		return -EINVAL;
-> +	case spdm_response_not_ready:
-> +		dev_err(dev, "Response not ready\n");
-> +		return -EINPROGRESS;
-> +	case spdm_request_resynch:
-> +		dev_err(dev, "Request resynchronization\n");
-> +		return -ERESTART;
-> +	case spdm_operation_failed:
-> +		dev_err(dev, "Operation failed\n");
-> +		return -EINVAL;
-> +	case spdm_no_pending_requests:
-> +		return -ENOENT;
-> +	case spdm_vendor_defined_error:
-> +		dev_err(dev, "Vendor defined error\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	dev_err(dev, "Undefined error %#x\n", rsp->error_code);
-> +	return -EINVAL;
-> +}
-> +
-[..]
-> +/**
-> + * spdm_authenticate() - Authenticate device
-> + *
-> + * @spdm_state: SPDM session state
-> + *
-> + * Authenticate a device through a sequence of GET_VERSION, GET_CAPABILITIES,
-> + * NEGOTIATE_ALGORITHMS, GET_DIGESTS, GET_CERTIFICATE and CHALLENGE exchanges.
-> + *
-> + * Perform internal locking to serialize multiple concurrent invocations.
-> + * Can be called repeatedly for reauthentication.
-> + *
-> + * Return 0 on success or a negative errno.  In particular, -EPROTONOSUPPORT
-> + * indicates that authentication is not supported by the device.
-> + */
-> +int spdm_authenticate(struct spdm_state *spdm_state)
-> +{
-> +	size_t transcript_sz;
-> +	void *transcript;
-> +	int rc = -ENOMEM;
-> +	u8 slot;
-> +
-> +	mutex_lock(&spdm_state->lock);
-> +	spdm_reset(spdm_state);
-> +
-> +	/*
-> +	 * For CHALLENGE_AUTH signature verification, a hash is computed over
-> +	 * all exchanged messages to detect modification by a man-in-the-middle
-> +	 * or media error.  However the hash algorithm is not known until the
-> +	 * NEGOTIATE_ALGORITHMS response has been received.  The preceding
-> +	 * GET_VERSION and GET_CAPABILITIES exchanges are therefore stashed
-> +	 * in a transcript buffer and consumed once the algorithm is known.
-> +	 * The buffer size is sufficient for the largest possible messages with
-> +	 * 255 version entries and the capability fields added by SPDM 1.2.
-> +	 */
-> +	transcript = kzalloc(struct_size_t(struct spdm_get_version_rsp,
-> +					   version_number_entries, 255) +
-> +			     sizeof(struct spdm_get_capabilities_reqrsp) * 2,
-> +			     GFP_KERNEL);
-> +	if (!transcript)
-> +		goto unlock;
-> +
-> +	rc = spdm_get_version(spdm_state, transcript, &transcript_sz);
-> +	if (rc)
-> +		goto unlock;
-> +
-> +	rc = spdm_get_capabilities(spdm_state, transcript + transcript_sz,
-> +				   &transcript_sz);
-> +	if (rc)
-> +		goto unlock;
-> +
-> +	rc = spdm_negotiate_algs(spdm_state, transcript, transcript_sz);
-> +	if (rc)
-> +		goto unlock;
-> +
-> +	rc = spdm_get_digests(spdm_state);
-> +	if (rc)
-> +		goto unlock;
-> +
-> +	for_each_set_bit(slot, &spdm_state->slot_mask, SPDM_SLOTS) {
-> +		rc = spdm_get_certificate(spdm_state, slot);
+On 10/6/2023 10:11 AM, Kirill A. Shutemov wrote:
+> On Fri, Oct 06, 2023 at 07:58:03AM -0700, Sean Christopherson wrote:
+>> On Thu, Oct 05, 2023, Kirill A. Shutemov wrote:
+>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+>>> index 7368d254d01f..b5acf9fb4c70 100644
+>>> --- a/arch/x86/Kconfig
+>>> +++ b/arch/x86/Kconfig
+>>> @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
+>>>   	select X86_MEM_ENCRYPT
+>>>   	select X86_MCE
+>>>   	select UNACCEPTED_MEMORY
+>>> +	select EMERGENCY_VIRT_CALLBACK
+>>>   	help
+>>>   	  Support running as a guest under Intel TDX.  Without this support,
+>>>   	  the guest kernel can not boot or run under TDX.
+>>
+>> ...
+>>
+>>>   void __init tdx_early_init(void)
+>>>   {
+>>>   	struct tdx_module_args args = {
+>>> @@ -882,6 +1007,14 @@ void __init tdx_early_init(void)
+>>>   	 */
+>>>   	x86_cpuinit.parallel_bringup = false;
+>>>   
+>>> +	machine_ops.shutdown = tdx_shutdown;
+>>> +
+>>> +	/*
+>>> +	 * KVM overrides machine_ops.crash_shutdown, use emergency
+>>
+>> This is going to be super confusing.  KVM utilizes the emergency virt callback.
+>> The KVM paravirt guest code uses .crash_shutdown().  People that are passingly
+>> familiar with virt and know what KVM is, but don't already know the difference
+>> between the two are going to be all kinds of confused.
+>>
+>> I also feel like you're playing with fire, e.g. what's to stop the hypervisor
+>> specific paravirt guest support from using .shutdown() in the future?
+>>
+>> And the callback is invoked for far more than just kexec().  I don't see how the
+>> host can emulate a reboot without destroying and rebuilding the VM, e.g. it can't
+>> stuff register state to emulate INIT or RESET.  Unless I'm missing something,
+>> converting shared memory back to private for a shutdown or reboot is undesirable
+>> as adds one more thing that can go wrong and prevent the system from cleanly
+>> shutting down ASAP (for some definitions of "cleanly").
+> 
+> Okay, fair enough. I will look for better way to hookup into kexec
+> process. That was the best fit I found so far, but yes it is not ideal.
+> 
+>> Lastly, doesn't SEV need similar behavior?  This seems like core functionality
+>> for any guest with cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT).  Why not make the
+>> "unshare on kexec" code common and gate it with CC_ATTR_GUEST_MEM_ENCRYPT?
+> 
+> I don't know SEV specifics. I am open to collaboration on this.
+> 
+> Tom, Ashish, let me know if you need this in generic code. I can arrange
+> that.
+> 
 
-A forward looking comment here, how to structure this code for reuse when
-end users opt their kernel into coordinating with a platform TSM? Since the
-DOE mailbox can only be owned by 1 entity, I expect sdpdm_state could grow
-additional operations beyond the raw transport. These operations would be
-for higher-order flows, like "get certificates", where that operation may
-be forwarded from guest-to-VMM-to-TSM, and where VMM and TSM manage the raw
-transport to return the result to the guest.
+Yes, some kind of a generic interface like unshare_on_kexec() gated with 
+CC_ATTR_GUEST_MEM_ENCRYPT is needed, we can then add SNP specific kexec 
+functionality as part of this.
 
-Otherwise no other implementation comments from me, my eyes are not well
-trained to spot misuse of the crypto apis.
+Thanks,
+Ashish
