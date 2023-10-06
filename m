@@ -1,128 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA32B22EFC
-	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 14:50:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4231C1CA9A
+	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 14:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dkBtcnRy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696603824; x=1728139824;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=W/51r4qVWeOrP4iJgr+qcAMJuEyFjcjduXqKxwHzQXk=;
-  b=dkBtcnRypc7QSXw5FRBmtgV/OEHYQgytM/ms7aXsuAm9DLiorHiY0Eo4
-   sCAHqUVhGEdlooACGmTMyAGDA/bSEcasW+BaF/QkJVY++0NAt64y24xh4
-   1H1y4iK5qXXT4WaqwqmmIZRCmHyLULfwx/1mrHFh8Lh3ihoJKIifiEMif
-   IZ30qNISK7wUQIOdeIictw8tpHjJ1QmtzVMwDqRtc23VMaoky9SzYBsOW
-   06vb04WP7QlhfW2L114BTnYSKXE4TP2So+FXEV4FjjdnVQWoSXaEvHQ9G
-   cENkbdSZvLOPyLRwjhUPfnITWMN3UxYN8pk0NZWY3jYJtTPinptWydKj3
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="374108529"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="374108529"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 07:50:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="781680129"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="781680129"
-Received: from kvsudesh-mobl1.gar.corp.intel.com (HELO box.shutemov.name) ([10.251.222.76])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 07:50:19 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 236CC10A172; Fri,  6 Oct 2023 17:50:17 +0300 (+03)
-Date: Fri, 6 Oct 2023 17:50:17 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 04/13] x86/kvm: Do not try to disable kvmclock if it was
- not enabled
-Message-ID: <20231006145017.26q2quuiup2emodp@box.shutemov.name>
-References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
- <20231005131402.14611-5-kirill.shutemov@linux.intel.com>
- <ZSAbhk7fu_w3ClOv@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2FogVlV5"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2777d237229so1904303a91.2
+        for <linux-coco@lists.linux.dev>; Fri, 06 Oct 2023 07:58:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696604285; x=1697209085; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L8SLlOsSBiXlVOZqd3MNbcaSevZs0Zf6iCkneXB+UYM=;
+        b=2FogVlV5hKnDTO12lDRF9pfkrra54zPjUaTfk5diNrLpIQQoax3+n6yW6TzvKhe4Lj
+         4dxiO2lj0zYQMjqh/O9Dg4YnBA10cLUWYoSXLbdVTddOER13Cu8tQlY+Q76G6uQYbsLh
+         iig44BQBkd48tKMqVkJ1WLF5IanR0aCAqo5NHeXfN0ryq0Y+WHWiPPHVxToKgzwQdJDI
+         ruyCl6cNAApZT+jLZUlrDQsG03p06cTfuDChtK3XjfuHJ7xQWNt/b6cvbuE9NXLjjCiz
+         FMOBtcjjPI4tfhIBnXte2/etUwiPC2+aA2cHDSLRLQOQiyCLxnNkdLbue9WMy/71Yros
+         vPFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696604285; x=1697209085;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L8SLlOsSBiXlVOZqd3MNbcaSevZs0Zf6iCkneXB+UYM=;
+        b=Tg/Au/ysFqYu+BT++RiUUCWUB0nbPtvDoZxjufL77esvnzu45yWKEh4wwxzizkofxX
+         Y10l/9SZuDqBsqomO+DtJQYkqhWmut1Xo9u8bYXTKcK+U+5mjV+zZJa0ocTPwssnNJyV
+         niuHNtVV+voh6EgI/G3T3CxIoEMOoXsr73u2MKoT9T8Ioj4rYPD6eysrz/X5k7FDtRrg
+         IFAhNIUdW2lB+SzDNIejctwz2uH7TIO8WTbOIpPiruT/SqJQKKxoujby9Jd911C/wu5m
+         h9p8g5iRX5HJg92ynA8dKFmscSiBbrAJGlx86H00v3hiN8rht4t5YfnjgJYI6J06B2r0
+         pncw==
+X-Gm-Message-State: AOJu0Yzsa7bv37aD9xR3KKj57O4fFlBwBcWy7DZeTrid+m22DFlRERqC
+	Iu9kkoO7P/XtglDBv77Yskv8rzvGQeQ=
+X-Google-Smtp-Source: AGHT+IGL88XAlpSBeihjb4Zfc5p6KDRf131bGYiWj2fWKD8BEJyproZ8L08qkjar6AMU++MXIPvMqBYldjM=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:90a:e548:b0:277:5c9b:14dd with SMTP id
+ ei8-20020a17090ae54800b002775c9b14ddmr137737pjb.2.1696604285539; Fri, 06 Oct
+ 2023 07:58:05 -0700 (PDT)
+Date: Fri, 6 Oct 2023 07:58:03 -0700
+In-Reply-To: <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZSAbhk7fu_w3ClOv@google.com>
+Mime-Version: 1.0
+References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com> <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
+Message-ID: <ZSAge6W4vF6ePudw@google.com>
+Subject: Re: [PATCH 10/13] x86/tdx: Convert shared memory back to private on kexec
+From: Sean Christopherson <seanjc@google.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Oct 06, 2023 at 07:36:54AM -0700, Sean Christopherson wrote:
-> +Paolo
-> 
-> Please use get_maintainers...
+On Thu, Oct 05, 2023, Kirill A. Shutemov wrote:
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 7368d254d01f..b5acf9fb4c70 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
+>  	select X86_MEM_ENCRYPT
+>  	select X86_MCE
+>  	select UNACCEPTED_MEMORY
+> +	select EMERGENCY_VIRT_CALLBACK
+>  	help
+>  	  Support running as a guest under Intel TDX.  Without this support,
+>  	  the guest kernel can not boot or run under TDX.
 
-Will do, sorry.
+...
 
-> On Thu, Oct 05, 2023, Kirill A. Shutemov wrote:
-> > kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
-> > present in the VM. It leads to write to a MSR that doesn't exist on some
-> > configurations, namely in TDX guest:
-> > 
-> > 	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
-> > 	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
-> > 
-> > kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
-> > features.
-> > 
-> > Do not disable kvmclock if it was not enumerated or disabled by user
-> > from kernel command line.
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
-> > ---
-> >  arch/x86/kernel/kvmclock.c | 9 +++++++--
-> >  1 file changed, 7 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-> > index fb8f52149be9..cba2e732e53f 100644
-> > --- a/arch/x86/kernel/kvmclock.c
-> > +++ b/arch/x86/kernel/kvmclock.c
-> > @@ -22,7 +22,7 @@
-> >  #include <asm/x86_init.h>
-> >  #include <asm/kvmclock.h>
-> >  
-> > -static int kvmclock __initdata = 1;
-> > +static int kvmclock __ro_after_init = 1;
-> >  static int kvmclock_vsyscall __initdata = 1;
-> >  static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
-> >  static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
-> > @@ -195,7 +195,12 @@ static void kvm_setup_secondary_clock(void)
-> >  
-> >  void kvmclock_disable(void)
-> >  {
-> > -	native_write_msr(msr_kvm_system_time, 0, 0);
-> > +	if (!kvm_para_available() || !kvmclock)
-> > +		return;
-> > +
-> > +	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE) ||
-> > +	    kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2))
-> > +		native_write_msr(msr_kvm_system_time, 0, 0);
-> 
-> Rather than recheck everything and preserve kvmclock, what about leaving the MSR
-> indices '0' by default and then disable msr_kvm_system_time iff it's non-zero.
-> That way the disable path won't become stale if the conditions for enabling
-> kvmclock change.
+>  void __init tdx_early_init(void)
+>  {
+>  	struct tdx_module_args args = {
+> @@ -882,6 +1007,14 @@ void __init tdx_early_init(void)
+>  	 */
+>  	x86_cpuinit.parallel_bringup = false;
+>  
+> +	machine_ops.shutdown = tdx_shutdown;
+> +
+> +	/*
+> +	 * KVM overrides machine_ops.crash_shutdown, use emergency
 
-Okay, works for me too.
+This is going to be super confusing.  KVM utilizes the emergency virt callback.
+The KVM paravirt guest code uses .crash_shutdown().  People that are passingly
+familiar with virt and know what KVM is, but don't already know the difference
+between the two are going to be all kinds of confused.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I also feel like you're playing with fire, e.g. what's to stop the hypervisor
+specific paravirt guest support from using .shutdown() in the future?
+
+And the callback is invoked for far more than just kexec().  I don't see how the
+host can emulate a reboot without destroying and rebuilding the VM, e.g. it can't
+stuff register state to emulate INIT or RESET.  Unless I'm missing something,
+converting shared memory back to private for a shutdown or reboot is undesirable
+as adds one more thing that can go wrong and prevent the system from cleanly
+shutting down ASAP (for some definitions of "cleanly").
+
+Lastly, doesn't SEV need similar behavior?  This seems like core functionality
+for any guest with cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT).  Why not make the
+"unshare on kexec" code common and gate it with CC_ATTR_GUEST_MEM_ENCRYPT?
