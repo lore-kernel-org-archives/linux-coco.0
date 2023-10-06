@@ -1,125 +1,196 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827EE241F4
-	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 15:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACAC26E0D
+	for <linux-coco@lists.linux.dev>; Fri,  6 Oct 2023 16:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HWY5Qkj3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WbEeLNuS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696605121; x=1728141121;
+  t=1696608483; x=1728144483;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fjbIAXrWpPm5Y8Alw4dLyHvY0cP22rX9Piu85LI1l5Y=;
-  b=HWY5Qkj3W00Q/fPR5VZ0mQpOWMOpMVy/Mm06PerHOtWFa7pX4JzD4dra
-   dKIAW3wlUUITgk5mB4H7hsY1j2zKJ5o/39P2/pCe1gWUgjrLuttpnr0uC
-   T53GwXx3uQWsyUer51DLt/bTUBtSOs/v/Tw/M0xzdlSUJ8D8euZkH8gyY
-   /3WV5i0dGQxmBxqq/W1bC4XfRcMSXAJvZD06MZNWKyCssZAMOOfv06JCA
-   fYAM5x3asyPwPZeijguuVkVsv/uBZtBHlePZXtddNUTezENKh/MRF8PSm
-   ezOrn887HXpcRYMeTyX4+t/Rjb3uAqd106eNPv3Thv1KT7WiC0PEk/lBM
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="470035255"
+   in-reply-to:mime-version;
+  bh=75bnDpHB1P6CVkGZ5JO5om66CcTmP0Th0MgOjcd1M3A=;
+  b=WbEeLNuSACgvBgtx8x7dFYatlQFOQsz1cYZ9S13ShKtTcjTbLOzFOum4
+   KX6wd4ICu8m+gnj/sXRZ2bxS2MOVlVXXHtMbiCSHgCA25tO0Qi7SY6xoE
+   CjNUkvb13zskOqycJ2JLaTkUBEfmdMmMTVIz1pOp5qmifVjJRRtIgWh/k
+   Ryo9QWRDUgt6f/v60Xg3NuVZULqNwzxbmsc+xcX6VPrNi5T0ohevVT6Py
+   gSZJrbb6Uw4kUWr+3a3jzCD5QQdjMHrdWnBdvIATpLobyQ6Tr9Wgshu7w
+   wS6EUczBOX1PxhY0bIKVIsyOUKpcxqSEGZ3T/BRJQxyynsSTOdZzekJMN
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="368853811"
 X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="470035255"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 08:11:59 -0700
+   d="scan'208";a="368853811"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 09:06:23 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="702081581"
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="895939976"
 X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="702081581"
-Received: from kvsudesh-mobl1.gar.corp.intel.com (HELO box.shutemov.name) ([10.251.222.76])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2023 08:11:54 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id AD52C10A172; Fri,  6 Oct 2023 18:11:51 +0300 (+03)
-Date: Fri, 6 Oct 2023 18:11:51 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	"Kalra, Ashish" <ashish.kalra@amd.com>
-Subject: Re: [PATCH 10/13] x86/tdx: Convert shared memory back to private on
- kexec
-Message-ID: <20231006151151.2m6t7fcu36hlrtzj@box.shutemov.name>
-References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
- <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
- <ZSAge6W4vF6ePudw@google.com>
+   d="scan'208";a="895939976"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Oct 2023 09:04:49 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Fri, 6 Oct 2023 09:06:21 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Fri, 6 Oct 2023 09:06:21 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Fri, 6 Oct 2023 09:06:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JUt/jlhannskvehxCLMrSTsHM7e2LeQtTFvSo/+OBvsnFizvuE403ugMG99IsI/yElbeAg8Nfpf+OlGCDwmwvq4DRkFagbhh772TIXu/qqHKBBhxnJ+KcTVIPbjFg57Bi+2nGUMS7WBx7lO2IlUUkPAGnYc6kRhF2vY4VaUp5NbSkOqQyPC2JuK0RUCfL9JBaNuAneCxVggOwEw7CI4l5q17ONOARedc8duIVeSCGKReb7Z7FBidhZ3HeeUtP3CCwG5vF6C/4K4z13ZKeV+cSCrcZIRFTDCjV8qloAknnZXfSW73kiSiBu8tT+6vqsrAfYM5W46nW42kxE5zDtDTZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hyFpocWSDdhKBCwhlBJkRaD58U/F0qQUO/MsIgygkhY=;
+ b=jZT4RbDwOhU7oka99znFsIMkeKgKAqshri1P0Oi+jI0C2TNXOk4PnEyZ4AXcyZVcx/FF2VCxIf1vsUoxY6xji44LwmdfP9G01vax1ojtGN4VTjD8Zlu5TgUR85NakQEeyl/CSS249GVELVTgB05hy1ugYrstDfrzhg4/tppXUqZfRkiSU5SUyZ4vUpKUi/PWWpcb2pBCYy7rK4nBPumfkywmsJTUABKXnj/B17SsewEcNFuWv+6SXF24HZCEug+kG7LgZdS1B+ExZHFHhGnvkw3oVQRehjyuBoqPvVKTcZvAZK4ZMZaX0WaXJJAC6YYi6y8mKet0Ew7YxTVNHfbKqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by PH0PR11MB7541.namprd11.prod.outlook.com (2603:10b6:510:26d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.31; Fri, 6 Oct
+ 2023 16:06:18 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::acb0:6bd3:58a:c992]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::acb0:6bd3:58a:c992%5]) with mapi id 15.20.6838.033; Fri, 6 Oct 2023
+ 16:06:17 +0000
+Date: Fri, 6 Oct 2023 09:06:13 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>, "David
+ Howells" <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>,
+	"Herbert Xu" <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, Alex Williamson <alex.williamson@redhat.com>,
+	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, <linuxarm@huawei.com>,
+	David Box <david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>, Zhi Wang
+	<zhi.a.wang@intel.com>, Alistair Francis <alistair.francis@wdc.com>, "Wilfred
+ Mallawa" <wilfred.mallawa@wdc.com>, Alexey Kardashevskiy <aik@amd.com>, "Tom
+ Lendacky" <thomas.lendacky@amd.com>, Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>
+Subject: RE: [PATCH 00/12] PCI device authentication
+Message-ID: <652030759e42d_ae7e72946@dwillia2-xfh.jf.intel.com.notmuch>
+References: <cover.1695921656.git.lukas@wunner.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <cover.1695921656.git.lukas@wunner.de>
+X-ClientProxiedBy: MW4PR04CA0361.namprd04.prod.outlook.com
+ (2603:10b6:303:81::6) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZSAge6W4vF6ePudw@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH0PR11MB7541:EE_
+X-MS-Office365-Filtering-Correlation-Id: dbc741d7-84d4-497e-5c25-08dbc6862c19
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: TDAiDAMAv1mhetfphhyHee+ePYwnrtJhBkTMmtS/gbT+m4+9DYUp1U4vI/1TJ9ae9B3kPuFsHbeG7XsYPovsBFpoZ8QAMT19PenLKO6wNvar3n5Ex7kCxgZFDz/iAAMe2RoA2T4f18x8+7AffaafuKOtU90kIl2T4Ie+VTbeHgcZm6TGGyd73jBdmnT5j6xxRiI0f4fJhV1Ts5g7pkbBwm355iH0d7QtpYfcxIDMr0UWH5SOYc0Xl5I1U3M3yxR4rE1/cOJh72Dqy6vkex3c2iG8LviFm8oPQQQGQzzxRE2YC5ORvBmKPmfxpG7qgBJTRcC8/21B4jjWr1AE4y18KoWtFXJK9FgiV4JbvOVvJzst85+gD0mnUx41k61Hb9zsvkrP3xJjooWQzLNrURK20sZmJkjNkdF1tQ7yERNk3JC/SBvc0Od22Ah0s/q3Qkd3Xv0D6hMXFA3llfLVyPjV47itWUe8xLEcr7RCrXBUQ9YmNyXRDWvloMO1iyEG3KwftHohGNZA3cTMhkkC6gkeI9pV3x425tExEgQQrhCpRBFl1YKLt1LYgr++c8b634Z8iYAK++9gFd597ZiXyWr/qA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(366004)(39860400002)(346002)(396003)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(26005)(9686003)(6512007)(83380400001)(921005)(82960400001)(86362001)(38100700002)(66556008)(66476007)(478600001)(7416002)(5660300002)(66946007)(54906003)(966005)(6486002)(316002)(41300700001)(110136005)(4326008)(8936002)(6506007)(6666004)(8676002)(2906002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uH4Yto7NDt9Qr9wFIHmUQJm4JNpXDgtRVOo9izLE0bGYHihXP+40ij1VQQ7v?=
+ =?us-ascii?Q?AV9sJdqtmf4HQ3Mee0ZKS/e1aCFwVq0fdSksX/KJnflcxLRgjgyLfZ8KV6/p?=
+ =?us-ascii?Q?/GVdEO0WgzToYlEQ/VjTMWZwXiDpQ036jtWw6EkXqLlxiIL3KbuBvPM8q5kg?=
+ =?us-ascii?Q?Q51ir8zT2rmPjBvQTu3n77M0kDDPg5Nhn2lsIMbTzmpeDagSjah1nYcidh+r?=
+ =?us-ascii?Q?L3/1X84eJS6S4RvG2gZ30xMoZdvn3oYRYLFY9X44GBixwcPpZZz5F6UlY9La?=
+ =?us-ascii?Q?K1zMOYtubk68ikRu2damnS+hOw50D6fl9X4XxfvGgyrsGC7bBclnmsgj8pVx?=
+ =?us-ascii?Q?11BjnK0mmfsNSXmUuvz14U1skBt+M2iiR71PvBrNc7/RSoAEa05es1zN1OfE?=
+ =?us-ascii?Q?PcfS3Gkku/ziItP7QKMpQ1vHgvFml+rQKgctbCwA6G2SiKf7T/Ws4hwi4cns?=
+ =?us-ascii?Q?D+AJjYfoeQUujO91/NW5lAIwgVoIYdfsmOJkvavqkQm+nXsCtTTdUwGRFyvg?=
+ =?us-ascii?Q?0/dOSZAvP2epTdyBICQ95mIvHFzZbmDVx+GTBSkN7xT1yTzC+YGmW8u1nFY0?=
+ =?us-ascii?Q?r+xDZJN786JfuER0gdDygt3xKECvmYSrHiZ32WA86TN8NYtc/r6cugBztjMn?=
+ =?us-ascii?Q?bBXpiGgbBwtG4NP14E7PllCVBQhd49HnOjr1cjXPfruvFzbLJppWntjkGFgI?=
+ =?us-ascii?Q?S8cSIPKgcqCDY5W79AONW+URLzmF5me+d9LyF2RcN0++z2AZnOZvkQcN5Zvf?=
+ =?us-ascii?Q?mFMpO368qM55Q/qx/y3LmpiAF2HBKrN8EVHEsypMJcCy7gNsVqwhJnBKsBI6?=
+ =?us-ascii?Q?5qMBkUZZIwcFm2+ZdcKzd3dhyaq+43hicFkmXmKBo09a6IJ4zFATKZMf0Q3A?=
+ =?us-ascii?Q?Zmy913hDffb2pom4gDJNMQiH3T54mEGM9c0FroS7Jbep9f8JinccHEPlDWTN?=
+ =?us-ascii?Q?KGimkJ/vK2+z9LjKJ4A20RNtZ8oB5hq9P853NeGlfG+wS2Ya1IRKnQXr2WXL?=
+ =?us-ascii?Q?ydyH7WheqUTxqcTvT2UHOIXBxXG+/5clcX/MyPW8DKvcQ7N/xA1G9jnuwIUL?=
+ =?us-ascii?Q?3OY6+gxp1nGOiubc1fhVvGiMj3cgTkzVMLYNFuMu1nHxH1Ps5s6YXt+0aAQ8?=
+ =?us-ascii?Q?fUEuqm+o8Xv5yBYkkoHEcVjgdmYyYrEuEdmxwdsXU4K+CtmL4Bj5yXqb4gP4?=
+ =?us-ascii?Q?Unx7Pcl7MCyKXchblPQU8l+lckjL/dHIXU3Hhn8c/in2lBvWdY7/9lkF436q?=
+ =?us-ascii?Q?blCxiFbjY+ewzazRhZ5ibZS2MBKKPvBufSUANW9EqTfw9N536RWoF+D6RThx?=
+ =?us-ascii?Q?MOeLlAYEiJblA54RsnfYMc2RlARl/rFtlTCtM0ySfs19DflOArfs+CZHXj40?=
+ =?us-ascii?Q?dc2MgCkfX1g8AZxXBGqFsNVxczGac6XUQEzrtgYwoxMMMLTUkz/A4FPWiRg6?=
+ =?us-ascii?Q?YE2jeU0dgX1pqrJEsyyAPOpDxn4PUXbbolmsUJIwq2jt/BbeZRa3eShE6B2P?=
+ =?us-ascii?Q?CE4rENqvlckff9hP7v7jewn4/ykUbAbhXdWXQZiXmfgW/OhMQDCpgKDYl3M7?=
+ =?us-ascii?Q?pJVZezH1FKFJRwSit1lBLzJV2MJDAL0Bh0fZmD6BOQ6CPYdK7IT0ELCI+tLU?=
+ =?us-ascii?Q?9g=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: dbc741d7-84d4-497e-5c25-08dbc6862c19
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2023 16:06:17.7557
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Etm5y+aLlnAC/GrJQTGrP4xZ3+EzT6qkhuse7Rq4Zo4UcIJTYcxgUoQ/81CwrY6RUHUu2CN4sXMhXrYRgIkXzDGu2pGNzkatmvmJIsuO4sE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7541
+X-OriginatorOrg: intel.com
 
-On Fri, Oct 06, 2023 at 07:58:03AM -0700, Sean Christopherson wrote:
-> On Thu, Oct 05, 2023, Kirill A. Shutemov wrote:
-> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > index 7368d254d01f..b5acf9fb4c70 100644
-> > --- a/arch/x86/Kconfig
-> > +++ b/arch/x86/Kconfig
-> > @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
-> >  	select X86_MEM_ENCRYPT
-> >  	select X86_MCE
-> >  	select UNACCEPTED_MEMORY
-> > +	select EMERGENCY_VIRT_CALLBACK
-> >  	help
-> >  	  Support running as a guest under Intel TDX.  Without this support,
-> >  	  the guest kernel can not boot or run under TDX.
+This looks great Lukas, some forward looking review comments below.
+
+Lukas Wunner wrote:
+> Authenticate PCI devices with CMA-SPDM (PCIe r6.1 sec 6.31) and
+> expose the result in sysfs.  This enables user-defined policies
+> such as forbidding driver binding to devices which failed
+> authentication.
 > 
-> ...
+> CMA-SPDM forms the basis for PCI encryption (PCIe r6.1 sec 6.33),
+> which will be submitted later.
 > 
-> >  void __init tdx_early_init(void)
-> >  {
-> >  	struct tdx_module_args args = {
-> > @@ -882,6 +1007,14 @@ void __init tdx_early_init(void)
-> >  	 */
-> >  	x86_cpuinit.parallel_bringup = false;
-> >  
-> > +	machine_ops.shutdown = tdx_shutdown;
-> > +
-> > +	/*
-> > +	 * KVM overrides machine_ops.crash_shutdown, use emergency
+> The meat of the series is in patches [07/12] and [08/12], which contain
+> the SPDM library and the CMA glue code (the PCI-adaption of SPDM).
 > 
-> This is going to be super confusing.  KVM utilizes the emergency virt callback.
-> The KVM paravirt guest code uses .crash_shutdown().  People that are passingly
-> familiar with virt and know what KVM is, but don't already know the difference
-> between the two are going to be all kinds of confused.
+> The reason why SPDM is done in-kernel is provided in patch [10/12]:
+> Briefly, when devices are reauthenticated on resume from system sleep,
+> user space is not yet available.  Same when reauthenticating after
+> recovery from reset.
 > 
-> I also feel like you're playing with fire, e.g. what's to stop the hypervisor
-> specific paravirt guest support from using .shutdown() in the future?
+> One use case for CMA-SPDM and PCI encryption is confidential access
+> to passed-through devices:  Neither the host nor other guests are
+> able to eavesdrop on device accesses, in particular if guest memory
+> is encrypted as well.
+
+Note, only for traffic over the SPDM session. In order for private MMIO and
+T=1 traffic to private memory, coordination with the platform TSM is
+mandated by all the known TSM (CPU/Platform security modules). This has
+implications for policy decisions later in this series.
+
+> Further use cases for the SPDM library are appearing on the horizon:
+> Alistair Francis and Wilfred Mallawa from WDC are interested in using
+> it for SCSI/SATA.  David Box from Intel has implemented measurement
+> retrieval over SPDM.
 > 
-> And the callback is invoked for far more than just kexec().  I don't see how the
-> host can emulate a reboot without destroying and rebuilding the VM, e.g. it can't
-> stuff register state to emulate INIT or RESET.  Unless I'm missing something,
-> converting shared memory back to private for a shutdown or reboot is undesirable
-> as adds one more thing that can go wrong and prevent the system from cleanly
-> shutting down ASAP (for some definitions of "cleanly").
+> The root of trust is initially an in-kernel key ring of certificates.
+> We can discuss linking the system key ring into it, thereby allowing
+> EFI to pass trusted certificates to the kernel for CMA.  Alternatively,
+> a bundle of trusted certificates could be loaded from the initrd.
+> I envision that we'll add TPMs or remote attestation services such as
+> https://keylime.dev/ to create an ecosystem of various trust sources.
 
-Okay, fair enough. I will look for better way to hookup into kexec
-process. That was the best fit I found so far, but yes it is not ideal.
+Linux also has an interest in accommodating opt-in to using platform
+managed keys, so the design requires that key management and session
+ownership is a system owner policy choice.
 
-> Lastly, doesn't SEV need similar behavior?  This seems like core functionality
-> for any guest with cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT).  Why not make the
-> "unshare on kexec" code common and gate it with CC_ATTR_GUEST_MEM_ENCRYPT?
-
-I don't know SEV specifics. I am open to collaboration on this.
-
-Tom, Ashish, let me know if you need this in generic code. I can arrange
-that.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> If you wish to play with PCI device authentication but lack capable
+> hardware, Wilfred has written a guide how to test with qemu:
+> https://github.com/twilfredo/spdm-emulation-guide-b
+> 
