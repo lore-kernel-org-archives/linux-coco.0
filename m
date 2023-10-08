@@ -1,35 +1,35 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FA7185E
-	for <linux-coco@lists.linux.dev>; Sun,  8 Oct 2023 08:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B45415AD5
+	for <linux-coco@lists.linux.dev>; Sun,  8 Oct 2023 23:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aVKCMeuJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Kt5cxSxJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1696754138;
+	s=mimecast20190719; t=1696808985;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=352kDl40f80i/CQnejiJXg2d98aXFfeMUDSAJFRyzsU=;
-	b=aVKCMeuJUTRqa9PQf6KB9gkzSPPsTsG+vReJAQB0S20o0UnzCiS/+lP0jXXOvohTS+iZZj
-	uD9FynJKmWKvhOS/Rg/Fjola8w4UG0WZiJcoeLQpxQKyhdOfLzw5NUh0mGn6VJgUuYSey8
-	jT12QN6LmTu0vVQGGzcNgmHaO7evfTI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-670-Tf4rPfv6NUG0JBlzajMs1w-1; Sun, 08 Oct 2023 04:35:32 -0400
-X-MC-Unique: Tf4rPfv6NUG0JBlzajMs1w-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	bh=/FSsorDmZKU+/zY1HOQ2lNG7L371+F5BVushkgG18HA=;
+	b=Kt5cxSxJhsoQK6ZSmPMLoUmtv7Kx6kUqmpq7zO4IT731V2lXapqhOR6lyqTwlUdRli2xPW
+	L6XJHHQkQh5n5cVNozJs10kIpTk/NIx4BoiHEIGki9hula9bQXVAU2XRmYz0W7jK9X+TVa
+	0Rx+ZW+4qDU9J0wBYL398QIULXKQyvc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-528-5H4jcVNROd2KF-WL1XMDcA-1; Sun, 08 Oct 2023 19:49:40 -0400
+X-MC-Unique: 5H4jcVNROd2KF-WL1XMDcA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC5AF3800E97;
-	Sun,  8 Oct 2023 08:35:31 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.132])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 5D54440C6EA8;
-	Sun,  8 Oct 2023 08:35:29 +0000 (UTC)
-Date: Sun, 8 Oct 2023 16:35:27 +0800
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D05C9802C1A;
+	Sun,  8 Oct 2023 23:49:39 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.74])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 14558140E953;
+	Sun,  8 Oct 2023 23:49:38 +0000 (UTC)
+Date: Mon, 9 Oct 2023 07:49:35 +0800
 From: Baoquan He <bhe@redhat.com>
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
@@ -44,11 +44,9 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 	Rick Edgecombe <rick.p.edgecombe@intel.com>,
 	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 10/13] x86/tdx: Convert shared memory back to private on
- kexec
-Message-ID: <ZSJpzw2e7KgtJAZy@MiWiFi-R3L-srv>
+Subject: Re: [PATCH 00/13] x86/tdx: Add kexec support
+Message-ID: <ZSNADxBZEDyxEnZ4@MiWiFi-R3L-srv>
 References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
- <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,258 +55,80 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231005131402.14611-11-kirill.shutemov@linux.intel.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+In-Reply-To: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 
 On 10/05/23 at 04:13pm, Kirill A. Shutemov wrote:
-> TDX guests allocate shared buffers to perform I/O. It is done by
-> allocating pages normally from the buddy allocator and converting them
-> to shared with set_memory_decrypted().
+> The patchset adds bits and pieces to get kexec (and crashkernel) work on
+> TDX guest.
 > 
-> The target kernel has no idea what memory is converted this way. It only
-      ~~~~~~~~~~~~~
-> sees E820_TYPE_RAM.
+> They bring kexec support to the point when we can start the new kernel,
+> but it will only be able to use single CPU. It should be enough to cover
+> the most common case: crashkernel.
 
-I finally realized it means the 2nd kernel of kexec rebooting. Maybe we
-can call it 2nd kernel always, it works for both kexec and kdump
-jumping. 
+Not sure if this question has been raised and answered in the past. Please
+forgive my bad memory if it has. The one cpu is fine to kdump kernel most
+of time, while we enable all CPUs by default when kexec rebooting. And kdump
+kernel with multiple cpu is allowed too. Wondering if there's plan to
+support the multiple cpu on TDX in the future.
+
+Thanks
+Baoquan
 
 > 
-> Accessing shared memory via private mapping is fatal. It leads to
-> unrecoverable TD exit.
+> The last patch implements CPU offlining according to the approved ACPI
+> spec change poposal[1]. It unlocks kexec with all CPUs visible in the target
+> kernel.
 > 
-> On TD shutdown (also covers kexec), walk direct mapping and convert all
-> shared memory back to private. It makes all RAM private again and target
-> kernel may use it normally.
+> Please review. I would be glad for any feedback.
 > 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  arch/x86/Kconfig          |   1 +
->  arch/x86/coco/tdx/kexec.c |   0
->  arch/x86/coco/tdx/tdx.c   | 137 +++++++++++++++++++++++++++++++++++++-
->  3 files changed, 136 insertions(+), 2 deletions(-)
+> [1] https://lore.kernel.org/all/13356251.uLZWGnKmhe@kreacher
+> 
+> Kirill A. Shutemov (13):
+>   x86/acpi: Extract ACPI MADT wakeup code into a separate file
+>   kernel/cpu: Add support for declaring CPU hotplug not supported
+>   cpu/hotplug, x86/acpi: Disable CPU hotplug for ACPI MADT wakeup
+>   x86/kvm: Do not try to disable kvmclock if it was not enabled
+>   x86/kexec: Keep CR4.MCE set during kexec for TDX guest
+>   x86/mm: Make x86_platform.guest.enc_status_change_*() return errno
+>   x86/mm: Return correct level from lookup_address() if pte is none
+>   KVM: x86: Add config option to gate emergency virt callback support
+>   x86/tdx: Account shared memory
+>   x86/tdx: Convert shared memory back to private on kexec
+>   x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+>   x86/acpi: Do not attempt to bring up secondary CPUs in kexec case
+>   x86/acpi: Add support for CPU offlining for ACPI MADT wakeup method
+> 
+>  arch/x86/Kconfig                     |   8 +
+>  arch/x86/coco/core.c                 |   1 -
+>  arch/x86/coco/tdx/kexec.c            |   0
+>  arch/x86/coco/tdx/tdx.c              | 220 +++++++++++++++++++++-
+>  arch/x86/hyperv/ivm.c                |   9 +-
+>  arch/x86/include/asm/acpi.h          |   5 +
+>  arch/x86/include/asm/pgtable_types.h |   1 +
+>  arch/x86/include/asm/reboot.h        |   4 +-
+>  arch/x86/include/asm/x86_init.h      |   4 +-
+>  arch/x86/kernel/acpi/Makefile        |  11 +-
+>  arch/x86/kernel/acpi/boot.c          |  88 +--------
+>  arch/x86/kernel/acpi/madt.S          |  28 +++
+>  arch/x86/kernel/acpi/madt_wakeup.c   | 262 +++++++++++++++++++++++++++
+>  arch/x86/kernel/e820.c               |   9 +-
+>  arch/x86/kernel/kvmclock.c           |   9 +-
+>  arch/x86/kernel/reboot.c             |   4 +-
+>  arch/x86/kernel/relocate_kernel_64.S |   5 +
+>  arch/x86/kernel/x86_init.c           |   4 +-
+>  arch/x86/kvm/Kconfig                 |   5 +
+>  arch/x86/mm/mem_encrypt_amd.c        |   8 +-
+>  arch/x86/mm/pat/set_memory.c         |  17 +-
+>  include/acpi/actbl2.h                |  19 +-
+>  include/linux/cc_platform.h          |  10 -
+>  include/linux/cpu.h                  |   2 +
+>  kernel/cpu.c                         |  17 +-
+>  25 files changed, 604 insertions(+), 146 deletions(-)
 >  create mode 100644 arch/x86/coco/tdx/kexec.c
+>  create mode 100644 arch/x86/kernel/acpi/madt.S
+>  create mode 100644 arch/x86/kernel/acpi/madt_wakeup.c
 > 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 7368d254d01f..b5acf9fb4c70 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -884,6 +884,7 @@ config INTEL_TDX_GUEST
->  	select X86_MEM_ENCRYPT
->  	select X86_MCE
->  	select UNACCEPTED_MEMORY
-> +	select EMERGENCY_VIRT_CALLBACK
->  	help
->  	  Support running as a guest under Intel TDX.  Without this support,
->  	  the guest kernel can not boot or run under TDX.
-> diff --git a/arch/x86/coco/tdx/kexec.c b/arch/x86/coco/tdx/kexec.c
-> new file mode 100644
-> index 000000000000..e69de29bb2d1
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 56e152126f20..ac0745303983 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -6,6 +6,7 @@
->  
->  #include <linux/cpufeature.h>
->  #include <linux/debugfs.h>
-> +#include <linux/delay.h>
->  #include <linux/export.h>
->  #include <linux/io.h>
->  #include <asm/coco.h>
-> @@ -14,6 +15,8 @@
->  #include <asm/insn.h>
->  #include <asm/insn-eval.h>
->  #include <asm/pgtable.h>
-> +#include <asm/reboot.h>
-> +#include <asm/set_memory.h>
->  
->  /* MMIO direction */
->  #define EPT_READ	0
-> @@ -40,6 +43,9 @@
->  
->  static atomic_long_t nr_shared;
->  
-> +static atomic_t conversions_in_progress;
-> +static bool conversion_allowed = true;
-> +
->  static inline bool pte_decrypted(pte_t pte)
->  {
->  	return cc_mkdec(pte_val(pte)) == pte_val(pte);
-> @@ -704,6 +710,14 @@ static bool tdx_tlb_flush_required(bool private)
->  
->  static bool tdx_cache_flush_required(void)
->  {
-> +	/*
-> +	 * Avoid issuing CLFLUSH on set_memory_decrypted() if conversions
-> +	 * stopped. Otherwise it can race with unshare_all_memory() and trigger
-> +	 * implicit conversion to shared.
-> +	 */
-> +	if (!conversion_allowed)
-> +		return false;
-> +
->  	/*
->  	 * AMD SME/SEV can avoid cache flushing if HW enforces cache coherence.
->  	 * TDX doesn't have such capability.
-> @@ -787,12 +801,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
->  static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
->  					 bool enc)
->  {
-> +	atomic_inc(&conversions_in_progress);
-> +
-> +	/*
-> +	 * Check after bumping conversions_in_progress to serialize
-> +	 * against tdx_shutdown().
-> +	 */
-> +	if (!conversion_allowed) {
-> +		atomic_dec(&conversions_in_progress);
-> +		return -EBUSY;
-> +	}
-> +
->  	/*
->  	 * Only handle shared->private conversion here.
->  	 * See the comment in tdx_early_init().
->  	 */
-> -	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-> +	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
-> +		atomic_dec(&conversions_in_progress);
->  		return -EIO;
-> +	}
->  
->  	return 0;
->  }
-> @@ -804,17 +831,115 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
->  	 * Only handle private->shared conversion here.
->  	 * See the comment in tdx_early_init().
->  	 */
-> -	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-> +	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
-> +		atomic_dec(&conversions_in_progress);
->  		return -EIO;
-> +	}
->  
->  	if (enc)
->  		atomic_long_sub(numpages, &nr_shared);
->  	else
->  		atomic_long_add(numpages, &nr_shared);
->  
-> +	atomic_dec(&conversions_in_progress);
-> +
->  	return 0;
->  }
->  
-> +static void unshare_all_memory(bool unmap)
-> +{
-> +	unsigned long addr, end;
-> +	long found = 0, shared;
-> +
-> +	/*
-> +	 * Walk direct mapping and convert all shared memory back to private,
-> +	 */
-> +
-> +	addr = PAGE_OFFSET;
-> +	end  = PAGE_OFFSET + get_max_mapped();
-> +
-> +	while (addr < end) {
-> +		unsigned long size;
-> +		unsigned int level;
-> +		pte_t *pte;
-> +
-> +		pte = lookup_address(addr, &level);
-> +		size = page_level_size(level);
-> +
-> +		if (pte && pte_decrypted(*pte)) {
-> +			int pages = size / PAGE_SIZE;
-> +
-> +			/*
-> +			 * Touching memory with shared bit set triggers implicit
-> +			 * conversion to shared.
-> +			 *
-> +			 * Make sure nobody touches the shared range from
-> +			 * now on.
-> +			 *
-> +			 * Bypass unmapping for crash scenario. Unmapping
-> +			 * requires sleepable context, but in crash case kernel
-> +			 * hits the code path with interrupts disabled.
-> +			 * It shouldn't be a problem as all secondary CPUs are
-> +			 * down and kernel runs with interrupts disabled, so
-> +			 * there is no room for race.
-> +			 */
-> +			if (unmap)
-> +				set_memory_np(addr, pages);
-> +
-> +			if (!tdx_enc_status_changed(addr, pages, true)) {
-> +				pr_err("Failed to unshare range %#lx-%#lx\n",
-> +				       addr, addr + size);
-> +			}
-> +
-> +			found += pages;
-> +		}
-> +
-> +		addr += size;
-> +	}
-> +
-> +	shared = atomic_long_read(&nr_shared);
-> +	if (shared != found) {
-> +		pr_err("shared page accounting is off\n");
-> +		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
-> +	}
-> +}
-> +
-> +static void tdx_shutdown(void)
-> +{
-> +	unsigned long timeout;
-> +
-> +	/*
-> +	 * Stop new private<->shared conversions and wait for in-flight
-> +	 * conversions to complete.
-> +	 *
-> +	 * Do not wait more than 30 seconds.
-> +	 */
-> +	timeout = 30 * USEC_PER_SEC;
-> +	conversion_allowed = false;
-> +	while (atomic_read(&conversions_in_progress) && timeout--)
-> +		udelay(1);
-> +
-> +	if (!timeout)
-> +		pr_warn("Failed to finish shared<->private conversions\n");
-> +
-> +	unshare_all_memory(true);
-> +
-> +	native_machine_shutdown();
-> +}
-> +
-> +static void tdx_crash_shutdown(void)
-> +{
-> +	/*
-> +	 * Crash can race with private<->shared conversion.
-> +	 *
-> +	 * There's no clean way out: report and proceed.
-> +	 */
-> +	if (atomic_read(&conversions_in_progress))
-> +		pr_warn("Failed to finish shared<->private conversions\n");
-> +
-> +	unshare_all_memory(false);
-> +}
-> +
->  void __init tdx_early_init(void)
->  {
->  	struct tdx_module_args args = {
-> @@ -882,6 +1007,14 @@ void __init tdx_early_init(void)
->  	 */
->  	x86_cpuinit.parallel_bringup = false;
->  
-> +	machine_ops.shutdown = tdx_shutdown;
-> +
-> +	/*
-> +	 * KVM overrides machine_ops.crash_shutdown, use emergency
-> +	 * virt callback instead.
-> +	 */
-> +	cpu_emergency_register_virt_callback(tdx_crash_shutdown);
-> +
->  	pr_info("Guest detected\n");
->  }
->  
 > -- 
 > 2.41.0
 > 
