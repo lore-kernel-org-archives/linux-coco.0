@@ -1,57 +1,48 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86BB2E63E
-	for <linux-coco@lists.linux.dev>; Mon,  9 Oct 2023 13:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fhPvEhQA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696858623; x=1728394623;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pTBhh0Z/eWz4qUWI59Hqv+z4l97YfU9wayl/EFDoxSw=;
-  b=fhPvEhQAQLfkY2E5WldCWKNKM1gIUsX1g7uxFCccOTNgdjSj8J2gsy+J
-   PthyFCv2RRuIXHlGJ6QXCczZSe4NUkI8491xHNgROZz2eqG5W1w8a7Ocb
-   ZV1ENcoqTm6tJxYUT0Y6RJNjqogew97U07mmffD2huAKh0VndQsha10VC
-   bQG7mhMLXfYN4tTytruoOYmyojdpYIjhDbgQgYevqq0H/wf1P+kQr2RxB
-   dQTDzMcFM5/9kgGnVY8GveP9GYyQ4HPqxfdWi4Tr17ROsYu4xRbJEbV31
-   T43W69kq2gjnpQ9AYBic30RhtSue2YcQh9OijrVfaFY08/GUl9/cr9xrJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="450645440"
-X-IronPort-AV: E=Sophos;i="6.03,210,1694761200"; 
-   d="scan'208";a="450645440"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2023 06:37:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="756721610"
-X-IronPort-AV: E=Sophos;i="6.03,210,1694761200"; 
-   d="scan'208";a="756721610"
-Received: from ahuge-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.40.233])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2023 06:36:58 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id E967510A196; Mon,  9 Oct 2023 16:36:55 +0300 (+03)
-Date: Mon, 9 Oct 2023 16:36:55 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/13] x86/tdx: Add kexec support
-Message-ID: <20231009133655.3aqi4kwx7wtqgqtm@box.shutemov.name>
-References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
- <ZSNADxBZEDyxEnZ4@MiWiFi-R3L-srv>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80C5341AC
+	for <linux-coco@lists.linux.dev>; Mon,  9 Oct 2023 13:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 88AF430001EC2;
+	Mon,  9 Oct 2023 15:49:50 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 77C5D30D471; Mon,  9 Oct 2023 15:49:50 +0200 (CEST)
+Date: Mon, 9 Oct 2023 15:49:50 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+	Zhi Wang <zhi.a.wang@intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 00/12] PCI device authentication
+Message-ID: <20231009134950.GA7097@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <652030759e42d_ae7e72946@dwillia2-xfh.jf.intel.com.notmuch>
+ <20231007100433.GA7596@wunner.de>
+ <20231009123335.00006d3d@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,27 +51,97 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZSNADxBZEDyxEnZ4@MiWiFi-R3L-srv>
+In-Reply-To: <20231009123335.00006d3d@Huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Oct 09, 2023 at 07:49:35AM +0800, Baoquan He wrote:
-> On 10/05/23 at 04:13pm, Kirill A. Shutemov wrote:
-> > The patchset adds bits and pieces to get kexec (and crashkernel) work on
-> > TDX guest.
+On Mon, Oct 09, 2023 at 12:33:35PM +0100, Jonathan Cameron wrote:
+> On Sat, 7 Oct 2023 12:04:33 +0200 Lukas Wunner <lukas@wunner.de> wrote:
+> > On Fri, Oct 06, 2023 at 09:06:13AM -0700, Dan Williams wrote:
+> > > Linux also has an interest in accommodating opt-in to using platform
+> > > managed keys, so the design requires that key management and session
+> > > ownership is a system owner policy choice.  
 > > 
-> > They bring kexec support to the point when we can start the new kernel,
-> > but it will only be able to use single CPU. It should be enough to cover
-> > the most common case: crashkernel.
+> > You're pointing out a gap in the specification:
+> > 
+> > There's an existing mechanism to negotiate which PCI features are
+> > handled natively by the OS and which by platform firmware and that's
+> > the _OSC Control Field (PCI Firmware Spec r3.3 table 4-5 and 4-6).
+> > 
+> > There are currently 10 features whose ownership is negotiated with _OSC,
+> > examples are Hotplug control and DPC configuration control.
+> > 
+> > I propose adding an 11th bit to negotiate ownership of the CMA-SPDM
+> > session.
+> > 
+> > Once that's added to the PCI Firmware Spec, amending the implementation
+> > to honor it is trivial:  Just check for platform ownership at the top
+> > of pci_cma_init() and return.
 > 
-> Not sure if this question has been raised and answered in the past. Please
-> forgive my bad memory if it has. The one cpu is fine to kdump kernel most
-> of time, while we enable all CPUs by default when kexec rebooting. And kdump
-> kernel with multiple cpu is allowed too. Wondering if there's plan to
-> support the multiple cpu on TDX in the future.
+> This might want to be a control over the specific DOE instance instead
+> of a general purpose CMA control (or maybe we want both).
+> 
+> There is no safe way to access a DOE to find out if it supports CMA
+> that doesn't potentially break another entity using the mailbox.
+> Given the DOE instances might be for something entirely different we
+> can't just decide not to use them at all based on a global control.
 
-Sorry, I didn't update this part of cover letter properly, but the last
-patch of the patchset makes possible to kexec with multiple CPUs and the
-2nd kernel will see them all. It requires support on BIOS side, otherwise
-we fallback to single CPU kexec.
+Per PCIe r6.1 sec 6.31.3, the DOE instance used for CMA-SPDM must support
+"no other data object protocol(s)" besides DOE discovery, CMA-SPDM and
+Secured CMA-SPDM.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+So if the platform doesn't grant the OS control over that DOE instance,
+unrelated DOE instances and protocols (such as CDAT retrieval) are not
+affected.
+
+E.g. PCI Firmware Spec r3.3 table 4-5 could be amended with something
+along the lines of:
+
+  Control Field Bit Offset: 11
+
+  Interpretation: PCI Express Component Measurement and Authentication control
+
+  The operating system sets this bit to 1 to request control over the
+  DOE instance supporting the CMA-SPDM feature.
+
+You're right that to discover the DOE instance for CMA-SPDM in the
+first place, it needs to be accessed, which might interfere with the
+firmware using it.  Perhaps this can be solved with the DOE Busy bit.
+
+
+> Any such control becomes messy when hotplug is taken into account.
+> I suppose we could do a _DSM based on BDF / path to device (to remain
+> stable across reenumeration) and config space offset to allow the OS
+> to say 'Hi other entity / firmware are you using this DOE instance?"
+> Kind of an OSC with parameters.  Also includes the other way around that
+> the question tells the firmware that if it says "no you can't" the OS
+> will leave it alone until a reboot or similar - that potentially avoids
+> the problem that we access DOE instances already without taking care
+> about this
+
+PCI Firmware Spec r3.3 table 4-7 lists a number of _DSM Definitions for
+PCI.  Indeed that could be another solution.  E.g. a newly defined _DSM
+might return the offset in config space of DOE instance(s) which the OS
+is not permitted to use.
+
+
+> (I dropped ball on this having raised it way back near start
+> of us adding DOE support.)
+
+Not your fault.  I think the industry got a bit ahead of itself in
+its "confidential computing" frenzy and forgot to specify these very
+basic things.
+
+
+> If we do want to do any of these, which spec is appropriate?  Link it to PCI
+> and propose a PCI firmware spec update? (not sure they have a code
+> first process available) or make it somewhat generic and propose an
+> ACPI Code first change?
+
+PCI Firmware Spec would seem to be appropriate.  However this can't
+be solved by the kernel community.  We need to talk to our confidential
+computing architects and our representatives at the PCISIG to get the
+spec amended.
+
+Thanks,
+
+Lukas
