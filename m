@@ -1,47 +1,54 @@
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAE0347C7
-	for <linux-coco@lists.linux.dev>; Mon,  9 Oct 2023 14:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id E4D27100D943F;
-	Mon,  9 Oct 2023 16:02:33 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id B2D8A30D471; Mon,  9 Oct 2023 16:02:33 +0200 (CEST)
-Date: Mon, 9 Oct 2023 16:02:33 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
-	Zhi Wang <zhi.a.wang@intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 12/12] PCI/CMA: Grant guests exclusive control of
- authentication
-Message-ID: <20231009140233.GB7097@wunner.de>
-References: <cover.1695921656.git.lukas@wunner.de>
- <467bff0c4bab93067b1e353e5b8a92f1de353a3f.1695921657.git.lukas@wunner.de>
- <de5450a7-1395-490c-9767-7feee43e156a@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89ECD347D4
+	for <linux-coco@lists.linux.dev>; Mon,  9 Oct 2023 14:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h2857Uy6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1696860814;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TtAr6vMHSkU1o8N9xFJERXPEAH/eUDbPVOnY1/d3q0M=;
+	b=h2857Uy6HXgDGJ9vpppo3gVSOFtVQQ7xNSm4kZl/Tx5RcxM/RsRXIqZPzgdBWINwbY5ssH
+	c4M1UDS2QyE8qIV3uhvE5CzWXhHe2vOKPJlkoc548Q1Kbqwt7GDVNs1H6YcqM3ViIA9Dez
+	PmRH4BJ5zdgllBruQm51Fqw9JrQXdFI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-641-1ORgyTEpN9-o7KLkB5trKw-1; Mon, 09 Oct 2023 10:13:15 -0400
+X-MC-Unique: 1ORgyTEpN9-o7KLkB5trKw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DDD5881D787;
+	Mon,  9 Oct 2023 14:13:14 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.74])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 1498240C6EBF;
+	Mon,  9 Oct 2023 14:13:13 +0000 (UTC)
+Date: Mon, 9 Oct 2023 22:13:10 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/13] x86/tdx: Add kexec support
+Message-ID: <ZSQKdrP9VE96eDxg@MiWiFi-R3L-srv>
+References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
+ <ZSNADxBZEDyxEnZ4@MiWiFi-R3L-srv>
+ <20231009133655.3aqi4kwx7wtqgqtm@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -50,49 +57,30 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <de5450a7-1395-490c-9767-7feee43e156a@amd.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20231009133655.3aqi4kwx7wtqgqtm@box.shutemov.name>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 
-On Mon, Oct 09, 2023 at 09:52:00PM +1100, Alexey Kardashevskiy wrote:
-> On 29/9/23 03:32, Lukas Wunner wrote:
-> > At any given time, only a single entity in a physical system may have
-> > an SPDM connection to a device.  That's because the GET_VERSION request
-> > (which begins an authentication sequence) resets "the connection and all
-> > context associated with that connection" (SPDM 1.3.0 margin no 158).
+On 10/09/23 at 04:36pm, Kirill A. Shutemov wrote:
+> On Mon, Oct 09, 2023 at 07:49:35AM +0800, Baoquan He wrote:
+> > On 10/05/23 at 04:13pm, Kirill A. Shutemov wrote:
+> > > The patchset adds bits and pieces to get kexec (and crashkernel) work on
+> > > TDX guest.
+> > > 
+> > > They bring kexec support to the point when we can start the new kernel,
+> > > but it will only be able to use single CPU. It should be enough to cover
+> > > the most common case: crashkernel.
 > > 
-> > Thus, when a device is passed through to a guest and the guest has
-> > authenticated it, a subsequent authentication by the host would reset
-> > the device's CMA-SPDM session behind the guest's back.
-> > 
-> > Prevent by letting the guest claim exclusive CMA ownership of the device
-> > during passthrough.  Refuse CMA reauthentication on the host as long.
-> > After passthrough has concluded, reauthenticate the device on the host.
-[...]
-> > --- a/drivers/pci/pci.h
-> > +++ b/drivers/pci/pci.h
-> > @@ -388,6 +388,7 @@ static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
-> >   #define PCI_DEV_ADDED 0
-> >   #define PCI_DPC_RECOVERED 1
-> >   #define PCI_DPC_RECOVERING 2
-> > +#define PCI_CMA_OWNED_BY_GUEST 3
+> > Not sure if this question has been raised and answered in the past. Please
+> > forgive my bad memory if it has. The one cpu is fine to kdump kernel most
+> > of time, while we enable all CPUs by default when kexec rebooting. And kdump
+> > kernel with multiple cpu is allowed too. Wondering if there's plan to
+> > support the multiple cpu on TDX in the future.
 > 
-> In AMD SEV TIO, the PSP firmware creates an SPDM connection. What is the
-> expected way of managing such ownership, a new priv_flags bit + api for it?
+> Sorry, I didn't update this part of cover letter properly, but the last
+> patch of the patchset makes possible to kexec with multiple CPUs and the
+> 2nd kernel will see them all. It requires support on BIOS side, otherwise
+> we fallback to single CPU kexec.
 
-Right, I understand.  See this ongoing discussion in reply to the
-cover letter:
+Oops, I didn't read them carefully. You have mentioned that in the last
+paragraph of cover letter. That's a great news, thanks.
 
-https://lore.kernel.org/all/652030759e42d_ae7e72946@dwillia2-xfh.jf.intel.com.notmuch/
-
-In short, we need a spec amendment to negotiate between platform and
-OS which of the two controls the DOE instance supporting CMA-SPDM.
-
-I think the OS is free to access any Extended Capabilities in
-Config Space unless the platform doesn't grant it control over
-them through _OSC.  Because the _OSC definition in the PCI
-Firmware Spec was not amended for CMA-SPDM, it is legal for the
-OS to assume control of CMA-SPDM, which is what this patch does.
-
-Thanks,
-
-Lukas
