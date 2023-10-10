@@ -1,36 +1,36 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C22D29D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C7128EA
 	for <linux-coco@lists.linux.dev>; Tue, 10 Oct 2023 08:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nPo3ON6t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="baDagjfc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1696926936; x=1728462936;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=mLhP+/UTxZsFYw+hdN7w9M/CFhBlJ75IonjuoNuiyMg=;
-  b=nPo3ON6tT095Na/1d1AUMMpH96oQbXGwKW/nH4sD2r7eocwzE3s2xXL9
-   RYyVykHlqtlaJPMFdmdtfwKxFcNGlnxxESrKf+1YEMLPrfFMdDDYkbe5u
-   Jddn6iq0hA2RbFztVLqPI5vWTcc41bDpLvzso1ohGBwP0xoOPdqhN/GXo
-   Y8ezfV6sw8OlF3GQO9XwIBzC+SrKJKJsMIdE8Qwd6gLFW/FVMJq9xS0CA
-   RVgymC2SUE1KAodGi0L6fx4xYtEPkyexNJXQTukfVJruPvr6JGtDHlh3u
-   lrLqLWNvlv+CIV9ocjGgic4lo3cO4MGepH06eYrmj3BSEGAc7iDz8d02U
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="363689806"
+  bh=XRUCF/P5uKgDye69B2VNPFxzhkCFQCyWEdXoWuKd6KA=;
+  b=baDagjfcVCO9bTcwhBlxRVxVcGwGiB0zXLqQCA9NMLxjyuT9l5kwBx8e
+   42B7cKQVrW1cDnHrzKrmH1Juqvn3suOWuKxSw9QCgrQsDPea/WVfHqU0S
+   ZNgptR6arPSymVUZAPFZeP7vupbqKn8gKNGDlAoVGtzfNAGIr5zUUSVo8
+   9cNxr42xfqLxQ30oi0BQkTwRzFsXQN2BEDHqSbSSL+py3rkAhqRRU6yTD
+   EjZfloOnlFmFm5KbdppkBkAZlVDnNbBEAIMOtQ0QqZAHsBhW8G4gy0aqI
+   2oMfrP/LYL7s5Uf62F5npowMKXfKY35G2kM8TWmyh1P4q5T+rO/lwlYEm
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="387176590"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="363689806"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:34 -0700
+   d="scan'208";a="387176590"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:32 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="1084687189"
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="730001327"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="1084687189"
+   d="scan'208";a="730001327"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:34 -0700
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:32 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -41,9 +41,9 @@ Cc: isaku.yamahata@intel.com,
 	Sean Christopherson <seanjc@google.com>,
 	linux-coco@lists.linux.dev,
 	Chao Peng <chao.p.peng@linux.intel.com>
-Subject: [PATCH 05/12] mm/fadvise: Add flags to inject hwpoison for posix_fadvise()
-Date: Tue, 10 Oct 2023 01:35:13 -0700
-Message-Id: <8bdfcbdc1b04baba70c25d7f5c3394c6d73f2ff4.1696926843.git.isaku.yamahata@intel.com>
+Subject: [PATCH 01/12] x86/mce: Fix hw MCE injection feature detection
+Date: Tue, 10 Oct 2023 01:35:09 -0700
+Message-Id: <23c6fa20777498bccd486aedc435eef9af174748.1696926843.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1696926843.git.isaku.yamahata@intel.com>
 References: <cover.1696926843.git.isaku.yamahata@intel.com>
@@ -57,149 +57,55 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-For VM-based confidential computing (AMD SEV-SNP and Intel TDX), the KVM
-guest memfd effort [1] is ongoing.  It allows KVM guests to use file
-descriptors and their offset as protected guest memory without user-space
-virtual address mapping.
+When initializing x86 MCE injection framework, it checks if hardware mce
+injection is available or not.  When it's not available on AMD, set the
+boolean variable to false to not use it.  The variable is on by default and
+the feature is AMD specific based on the code.
 
-Intel TDX uses machine checks to notify the host OS/VMM that the TDX guest
-consumed corrupted memory.  The KVM/x86 handles machine checks for guest
-vcpu specially.  It sets up the guest so that vcpu exits from running on
-machine check, checks the exit reason, and manually raises the machine
-check by calling do_machine_check().  To test the KVM machine check path,
-KVM wants to poison memory based on file descriptor and its offset.  The
-current memory poisoning is based on the physical address,
-/sys/kernel/debug/hwpoison/{corrupt-pfn, unpoison-pfn}, or the virtual
-address, MADV_HWPOISON and MADV_UNPOISON.
+Because the variable is default on, it is true on Intel platform (probably
+on other non-AMD x86 platform).  It results in unchecked msr access of
+MSR_K7_HWCR=0xc0010015 when injecting MCE on Intel platform.  (Probably on
+other x86 platform.)
 
-Add new flags FADV_HWPOISON, and FADV_UNPOISON to
-posix_fadvise() by following MADV_HWPOISON and MADV_UNPOISON.  9893e49d64a4
-("HWPOISON: Add madvise() based injector for hardware poisoned pages v4")
+Make the variable of by default, and set the variable on when the hardware
+feature is usable.
 
-The possible options would be
-- Add FADV flags for memory poison.  This patch.
-- introduce IOCTL specific to KVM guest memfd
-- introduce debugfs entries for KVM guest memfd
-  /sys/kernel/debug/kvm/<pid>-<vm-fd>/guest-memfd<fd>/hwpoison/
-  {corrupt-offset, unoison-offset}.
-  This options follows /sys/kernel/debug/hwpoison/{corrupt-pfn, unpoison-pfn}
+The procedure to produce on Intel platform.
+  echo hw > /sys/kernel/debug/mce-inject/flags
+    This succeeds.
+    set other MCE parameters if necessary.
+  echo 0 > /sys/kernel/debug/mce-inject/bank
+    This triggers mce injection.
 
-[1] https://lore.kernel.org/all/20230914015531.1419405-1-seanjc@google.com/
-    KVM guest_memfd() and per-page attributes
-    https://lore.kernel.org/all/20230921203331.3746712-1-seanjc@google.com/
-    [PATCH 00/13] KVM: guest_memfd fixes
+The kernel accesses MSR_K7_HWCR=0xc0010015 resulting unchecked MSR access.
 
+Fixes: 891e465a1bd8 ("x86/mce: Check whether writes to MCA_STATUS are getting ignored")
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- include/uapi/linux/fadvise.h |  4 +++
- mm/fadvise.c                 | 58 +++++++++++++++++++++++++++++++++++-
- 2 files changed, 61 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/inject.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/fadvise.h b/include/uapi/linux/fadvise.h
-index 0862b87434c2..3699b4b0adcd 100644
---- a/include/uapi/linux/fadvise.h
-+++ b/include/uapi/linux/fadvise.h
-@@ -19,4 +19,8 @@
- #define POSIX_FADV_NOREUSE	5 /* Data will be accessed once.  */
- #endif
- 
-+/* Same to MADV_HWPOISON and MADV_SOFT_OFFLINE */
-+#define FADV_HWPOISON		100	/* poison a page for testing */
-+#define FADV_SOFT_OFFLINE	101	/* soft offline page for testing */
-+
- #endif	/* FADVISE_H_INCLUDED */
-diff --git a/mm/fadvise.c b/mm/fadvise.c
-index 6c39d42f16dc..1f028a6e1d90 100644
---- a/mm/fadvise.c
-+++ b/mm/fadvise.c
-@@ -18,11 +18,62 @@
- #include <linux/writeback.h>
- #include <linux/syscalls.h>
- #include <linux/swap.h>
-+#include <linux/hugetlb.h>
- 
- #include <asm/unistd.h>
+diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
+index 4d8d4bcf915d..881898a1d2f4 100644
+--- a/arch/x86/kernel/cpu/mce/inject.c
++++ b/arch/x86/kernel/cpu/mce/inject.c
+@@ -33,7 +33,7 @@
  
  #include "internal.h"
  
-+static int fadvise_inject_error(struct file *file, struct address_space *mapping,
-+				loff_t offset, off_t endbyte, int advice)
-+{
-+	pgoff_t start_index, end_index, index, next;
-+	struct folio *folio;
-+	unsigned int shift;
-+	unsigned long pfn;
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_MEMORY_FAILURE))
-+		return -EOPNOTSUPP;
-+
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	if (is_file_hugepages(file))
-+		shift = huge_page_shift(hstate_file(file));
-+	else
-+		shift = PAGE_SHIFT;
-+	start_index = offset >> shift;
-+	end_index = endbyte >> shift;
-+
-+	index = start_index;
-+	while (index <= end_index) {
-+		folio = filemap_get_folio(mapping, index);
-+		if (IS_ERR(folio))
-+			return PTR_ERR(folio);
-+
-+		next = folio_next_index(folio);
-+		pfn = folio_pfn(folio);
-+		if (advice == FADV_SOFT_OFFLINE) {
-+			pr_info("Soft offlining pfn %#lx at file index %#lx\n",
-+				pfn, index);
-+			ret = soft_offline_page(pfn, MF_COUNT_INCREASED);
-+		} else {
-+			pr_info("Injecting memory failure for pfn %#lx at file index %#lx\n",
-+				pfn, index);
-+			ret = memory_failure(pfn, MF_COUNT_INCREASED | MF_SW_SIMULATED);
-+			if (ret == -EOPNOTSUPP)
-+				ret = 0;
-+		}
-+
-+		if (ret)
-+			return ret;
-+		index = next;
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * POSIX_FADV_WILLNEED could set PG_Referenced, and POSIX_FADV_NOREUSE could
-  * deactivate the pages and clear PG_Referenced.
-@@ -57,11 +108,13 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
- 		case POSIX_FADV_NOREUSE:
- 		case POSIX_FADV_DONTNEED:
- 			/* no bad return value, but ignore advice */
-+			return 0;
-+		case FADV_HWPOISON:
-+		case FADV_SOFT_OFFLINE:
- 			break;
- 		default:
- 			return -EINVAL;
- 		}
--		return 0;
- 	}
+-static bool hw_injection_possible = true;
++static bool hw_injection_possible;
  
- 	/*
-@@ -170,6 +223,9 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
- 			}
- 		}
- 		break;
-+	case FADV_HWPOISON:
-+	case FADV_SOFT_OFFLINE:
-+		return fadvise_inject_error(file, mapping, offset, endbyte, advice);
- 	default:
- 		return -EINVAL;
- 	}
+ /*
+  * Collect all the MCi_XXX settings
+@@ -732,6 +732,7 @@ static void check_hw_inj_possible(void)
+ 	if (!cpu_feature_enabled(X86_FEATURE_SMCA))
+ 		return;
+ 
++	hw_injection_possible = true;
+ 	cpu = get_cpu();
+ 
+ 	for (bank = 0; bank < MAX_NR_BANKS; ++bank) {
 -- 
 2.25.1
 
