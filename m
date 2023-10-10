@@ -1,36 +1,36 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736C514F75
-	for <linux-coco@lists.linux.dev>; Tue, 10 Oct 2023 08:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1879E28EA
+	for <linux-coco@lists.linux.dev>; Tue, 10 Oct 2023 08:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z+MMG8aQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bKMe2R3f"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696926940; x=1728462940;
+  t=1696926942; x=1728462942;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=GQCMPF9yOreHoZSYiAwwtuGF3KN8BZQ7hfFsQ7RV6BI=;
-  b=Z+MMG8aQJccugY4Q4K6hOofAL4tSoALeJYZnY2N8YZ5zoRiBGPGJNeE6
-   omvT93FB/kPozRvjqC306a4QwdPwWFWWYhq9wZutv1VGuIzMAwlK3j+Ys
-   soUlDemVpa8vwnWl4lMCYBjXveu/p4P909i+oauXBGDqTGt1uxhOXeP/I
-   qKhdwzZgQRstq9SF6L7r8uzelY63Ueu4CpCLszVU+OWz3uo265KGrZ/Zz
-   Xqw3DB1R8LQt7cMjvAViFKCQ07n3bO8W5KRHqW56vxLubVYOxza0bqRr2
-   MpEnG0GZVw2egSiPXgzVPbY6SjR7HuQi2adh8tdWWC3oIfYmmUrcAnQ9K
+  bh=o5MD2FPMw4tHBthOkn4CAG942xWE4Di7Fgiy08pHbDg=;
+  b=bKMe2R3f60l/humPONwhxlZaeF2HCpP11LKZINIsZrtkBugkxHHP2z1W
+   XbPhIY4QkDUUdw2sZV/JCWaKJsdyniXHTUsU3M6hRMVwWYOGc/5VmdO43
+   ocAwLQo2SequNn8Nhn3hYRTFPqFZKxchzU1LBnQzkIb/HK+T8CeR5Sxmp
+   vTy0m0qj8GbHv/TMFaQ4N9JQmXnrn/+XssimaETdc3gjKTbcMgAtNaC8F
+   RxoUR8ft6Nk7XblfRuxDL9xeuqoZac7/KqIW4TgExUfdCVIW8iTi3uQi6
+   7ppsT2n9QvQwcRU1NaRPeGCuBDy/mzAbKvV3qnq4/6jHaxo3ChaBxu9vM
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="363689844"
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="363689850"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="363689844"
+   d="scan'208";a="363689850"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
   by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:36 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="1084687206"
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="1084687210"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="1084687206"
+   d="scan'208";a="1084687210"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:35 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:36 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -41,9 +41,9 @@ Cc: isaku.yamahata@intel.com,
 	Sean Christopherson <seanjc@google.com>,
 	linux-coco@lists.linux.dev,
 	Chao Peng <chao.p.peng@linux.intel.com>
-Subject: [PATCH 10/12] KVM: selftests: Allow mapping guest memory without host alias
-Date: Tue, 10 Oct 2023 01:35:18 -0700
-Message-Id: <9e970731a61711acd38b1819ab5d2eaf326e0f0f.1696926843.git.isaku.yamahata@intel.com>
+Subject: [PATCH 11/12] KVM: selftests: lib: Add src memory type for hwpoison test
+Date: Tue, 10 Oct 2023 01:35:19 -0700
+Message-Id: <f3fe54089dd91357a29590444cf1a41abee39a9a.1696926843.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1696926843.git.isaku.yamahata@intel.com>
 References: <cover.1696926843.git.isaku.yamahata@intel.com>
@@ -57,95 +57,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-For test the KVM hwpoison of memory, the recovery path unmaps the virtual
-memory and send SIGBUS with its address.  If the poisoned page is mapped at
-twice or more in the virtual memory, the address in SIGBUS siginfo isn't
-deterministic.
-
-To make the hwpoison test cases deterministic, allow to avoid guest memory
-alias.
+For hwpoison test to recover hwpoisoned memory, use madvise(MADV_FREE) that
+requires private mapping.  Add a new src memory type for it.
 
 Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- .../selftests/kvm/include/kvm_util_base.h     |  4 ++++
- tools/testing/selftests/kvm/lib/kvm_util.c    | 23 ++++++++++++++-----
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/include/test_util.h | 2 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c      | 7 +++++--
+ tools/testing/selftests/kvm/lib/test_util.c     | 8 ++++++++
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util_base.h b/tools/testing/selftests/kvm/include/kvm_util_base.h
-index a18db6a7b3cf..e980776a2c94 100644
---- a/tools/testing/selftests/kvm/include/kvm_util_base.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util_base.h
-@@ -435,6 +435,10 @@ void vm_set_user_memory_region(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
- 			       uint64_t gpa, uint64_t size, void *hva);
- int __vm_set_user_memory_region(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
- 				uint64_t gpa, uint64_t size, void *hva);
-+void __vm_userspace_mem_region_add(struct kvm_vm *vm,
-+	enum vm_mem_backing_src_type src_type,
-+	uint64_t guest_paddr, uint32_t slot, uint64_t npages,
-+	uint32_t flags, bool alias);
- void vm_userspace_mem_region_add(struct kvm_vm *vm,
- 	enum vm_mem_backing_src_type src_type,
- 	uint64_t guest_paddr, uint32_t slot, uint64_t npages,
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+index 7e614adc6cf4..c97af4ff0699 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -111,6 +111,8 @@ enum vm_mem_backing_src_type {
+ 	VM_MEM_SRC_ANONYMOUS_HUGETLB_16GB,
+ 	VM_MEM_SRC_SHMEM,
+ 	VM_MEM_SRC_SHARED_HUGETLB,
++	VM_MEM_SRC_ANONYMOUS_MEMFD,
++	VM_MEM_SRC_ANONYMOUS_MEMFD_HUGETLB,
+ 	NUM_SRC_TYPES,
+ };
+ 
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 7a8af1821f5d..310c3a760cb8 100644
+index 310c3a760cb8..95ffb3b97dcf 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -691,12 +691,14 @@ static void __vm_mem_region_delete(struct kvm_vm *vm,
- 	sparsebit_free(&region->unused_phy_pages);
- 	ret = munmap(region->mmap_start, region->mmap_size);
- 	TEST_ASSERT(!ret, __KVM_SYSCALL_ERROR("munmap()", ret));
--	if (region->fd >= 0) {
--		/* There's an extra map when using shared memory. */
-+
-+	/* There's an extra map when using shared memory. */
-+	if (region->mmap_alias) {
- 		ret = munmap(region->mmap_alias, region->mmap_size);
- 		TEST_ASSERT(!ret, __KVM_SYSCALL_ERROR("munmap()", ret));
--		close(region->fd);
- 	}
-+	if (region->fd >= 0)
-+		close(region->fd);
+@@ -1007,9 +1007,12 @@ void __vm_userspace_mem_region_add(struct kvm_vm *vm,
+ 		region->mmap_size += alignment;
  
- 	free(region);
- }
-@@ -920,10 +922,10 @@ void vm_set_user_memory_region(struct kvm_vm *vm, uint32_t slot, uint32_t flags,
-  * given by slot, which must be unique and < KVM_MEM_SLOTS_NUM.  The
-  * region is created with the flags given by flags.
-  */
--void vm_userspace_mem_region_add(struct kvm_vm *vm,
-+void __vm_userspace_mem_region_add(struct kvm_vm *vm,
- 	enum vm_mem_backing_src_type src_type,
- 	uint64_t guest_paddr, uint32_t slot, uint64_t npages,
--	uint32_t flags)
-+	uint32_t flags, bool create_alias)
- {
- 	int ret;
- 	struct userspace_mem_region *region;
-@@ -1057,7 +1059,7 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
- 	hash_add(vm->regions.slot_hash, &region->slot_node, slot);
+ 	region->fd = -1;
+-	if (backing_src_is_shared(src_type))
++	if (backing_src_is_shared(src_type) ||
++		src_type == VM_MEM_SRC_ANONYMOUS_MEMFD ||
++		src_type == VM_MEM_SRC_ANONYMOUS_MEMFD_HUGETLB)
+ 		region->fd = kvm_memfd_alloc(region->mmap_size,
+-					     src_type == VM_MEM_SRC_SHARED_HUGETLB);
++					     src_type == VM_MEM_SRC_SHARED_HUGETLB ||
++					     src_type == VM_MEM_SRC_ANONYMOUS_MEMFD_HUGETLB);
  
- 	/* If shared memory, create an alias. */
--	if (region->fd >= 0) {
-+	if (region->fd >= 0 && create_alias) {
- 		region->mmap_alias = mmap(NULL, region->mmap_size,
- 					  PROT_READ | PROT_WRITE,
- 					  vm_mem_backing_src_alias(src_type)->flag,
-@@ -1070,6 +1072,15 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
- 	}
- }
- 
-+void vm_userspace_mem_region_add(struct kvm_vm *vm,
-+	enum vm_mem_backing_src_type src_type,
-+	uint64_t guest_paddr, uint32_t slot, uint64_t npages,
-+	uint32_t flags)
-+{
-+	__vm_userspace_mem_region_add(vm, src_type, guest_paddr, slot, npages,
-+				      flags, true);
-+}
-+
- /*
-  * Memslot to region
-  *
+ 	region->mmap_start = mmap(NULL, region->mmap_size,
+ 				  PROT_READ | PROT_WRITE,
+diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
+index 5d7f28b02d73..a09bba5c074e 100644
+--- a/tools/testing/selftests/kvm/lib/test_util.c
++++ b/tools/testing/selftests/kvm/lib/test_util.c
+@@ -281,6 +281,14 @@ const struct vm_mem_backing_src_alias *vm_mem_backing_src_alias(uint32_t i)
+ 			 */
+ 			.flag = MAP_SHARED,
+ 		},
++		[VM_MEM_SRC_ANONYMOUS_MEMFD] = {
++			.name = "anonymous_memfd",
++			.flag = ANON_FLAGS,
++		},
++		[VM_MEM_SRC_ANONYMOUS_MEMFD_HUGETLB] = {
++			.name = "anonymous_memfd_hugetlb",
++			.flag = ANON_HUGE_FLAGS,
++		},
+ 	};
+ 	_Static_assert(ARRAY_SIZE(aliases) == NUM_SRC_TYPES,
+ 		       "Missing new backing src types?");
 -- 
 2.25.1
 
