@@ -1,36 +1,36 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5218D15AC6
-	for <linux-coco@lists.linux.dev>; Tue, 10 Oct 2023 08:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135C115ADF
+	for <linux-coco@lists.linux.dev>; Tue, 10 Oct 2023 08:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gkmb1gKB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GxcEhBkb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696926933; x=1728462933;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=kaVTzwh2dN/eWiJYBlWq1T5Rd+0YPuN2zRyUm0iABbM=;
-  b=Gkmb1gKB03Yi+ySmtW1tmaJs9RjxhDl/fd//7QunWhHXfkfXST+mqCOc
-   spMemjjKS/YjMNMrMP2kneGcILxPxjL8oX7zquHY7TIddGFgJYhr82ldm
-   XsEB7ZXJQYvq3TOuhRfJnPzXTwNkxc6mGJAsocp9rxTevES74rQ6Kzef/
-   IYazChW26O7tFklCB/6jfkc64UXKSW3HS3Bqzn4pmF3C440mKje8bgt5B
-   cXM2WpV/JleOxW1aNtw/RocnrhlM0tyzXVoEfvHIrEW2b0Mds8luo5z1X
-   JwbFQFA/0ZVQyt1Cz78dORRm3iouRRGq/C03VfubB3kvbpnwQQJ8ipgTB
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="387176583"
+  t=1696926935; x=1728462935;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=m7pCDbhKS6+u2jcznAubfaRxlAgJtSYbB0zCkXhtCcE=;
+  b=GxcEhBkbqGbHT9xbRc34CJgn/Fh3UesMDX/ITs1klVPyVHu0bfQtnhbs
+   /gAYKLsbfUch9qiWYO3olrjAqGu6Qkb1ZTuplTxE3VYYowIuNKHfT5Wkn
+   oI67ufdFUad0h9eViZBthlnf2FhdtaB0C+EEswmy31kHZIL2GaBapEEdP
+   Ez3MsIcuO4w1Mr+KkE7aXySiVdrMEBKXdePFuY7Qer2UYHl5SVo5JS+y4
+   QCT6bBjYWq9WJP+0BWBrX9Gf7VlyGgPl3hmCzXq7v/vVe0HkLVarBNqY2
+   spj5SomoIfXV3KYWeBcY+2wknkrFHniTz/EqTWH3FryS2m5mXC7ZhsXJH
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="363689795"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="387176583"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:32 -0700
+   d="scan'208";a="363689795"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:33 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="730001321"
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="1084687182"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="730001321"
+   d="scan'208";a="1084687182"
 Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:31 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:35:33 -0700
 From: isaku.yamahata@intel.com
 To: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -41,10 +41,12 @@ Cc: isaku.yamahata@intel.com,
 	Sean Christopherson <seanjc@google.com>,
 	linux-coco@lists.linux.dev,
 	Chao Peng <chao.p.peng@linux.intel.com>
-Subject: [PATCH 00/12] x86/mce, KVM: X86: KVM memory poison and MCE injector support
-Date: Tue, 10 Oct 2023 01:35:08 -0700
-Message-Id: <cover.1696926843.git.isaku.yamahata@intel.com>
+Subject: [PATCH 03/12] x86/mce/inject: Add notrigger entry to suppress MCE injection
+Date: Tue, 10 Oct 2023 01:35:11 -0700
+Message-Id: <97809b68e427922948044e33599c2fc7c9f6134c.1696926843.git.isaku.yamahata@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1696926843.git.isaku.yamahata@intel.com>
+References: <cover.1696926843.git.isaku.yamahata@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,119 +57,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Isaku Yamahata <isaku.yamahata@intel.com>
 
-Background
-==========
-The TDX is a VM-based confidential computing technology.  It encrypts guest
-memory to protect it from software (host OS, VMM, firmware, etc. ...) outside of
-the TCB.  Software in the host can write to the protected guest memory to corrupt,
-and the protected guest can consume corrupted memory.  TDX uses machine checks
-to notify the TDX vcpu consumption of corrupted memory.
+The current x86 MCE injection framework injects MCE when writing to
+/sys/kernel/debug/mce-inject/bank.  KVM wants to inject machine check on
+behalf of vcpu context instead of the context of writing to the bank file.
 
-For VM-based confidential computing (AMD SEV-SNP and Intel TDX), the KVM guest
-memfd effort [1] is ongoing.  It allows guests to use file descriptors as the
-protected guest memory without user-space virtual address mapping.  KVM handles
-machine checks for guest vcpu specially.  It sets up the guest so that vcpu
-exits from running guests on machine check, checks the exit reason, and manually
-raises the machine check by calling do_machine_check().
+Because ACPI APEI has a similar requirement and it adds
+/sys/kernel/debug/apei/notrigger to suppress immediate injection.
+By Following it, add /sys/kernel/debug/mce-inject/notrigger to suppress
+MCE injection.
 
-Although Linux supports hwpoison and MCE injection framework, there are gaps in
-testing hwpoison or MCE for TDX KVM [2] with KVM guest memfd [1].  a) hwpoison
-framework (debugfs /sys/kernel/debug/hwpoison/{corrupt-pfn, unpison-pfn}) uses
-physical address.  MADV_{HWPISON, UNPOISON} uses the virtual address of the user
-process.  However, KVM guest memfd requires file descriptor and offset.  b) The
-x86 MCE injection framework, /dev/mce-log (legacy deprecated device driver
-interface) or debug fs /sys/kernel/debug/mce-inject/addr, also uses a physical
-address.  c) The x86 MCE injection framework injects machine checks in the
-context of the injector process.  KVM wants to inject machine check on behalf of
-running vcpu.
+The alternative is add new value "notrigger" to
+/sys/kernel/debug/mce-inject/flags in addition to "sw", "hw", "df", and
+"th".  Because it may break user space ABI, this option follow ACPI APEI
+error injection.
 
+Supposed usage flow:
+$ echo 1 > notrigger
+  ... setup MCE values
+$ echo 0 > bank
+  The last step to setup mce value to inject with MC bank 0.
+  Originally this step injects mce.  With noijnect=1, don't inject.
 
-Proposed solution
-=================
-This patch series fills those gaps and to test KVM with injecting machine
-checks.  The proposed solution is
+$ echo 1 > /sys/kernel/debug/kvm/<pid>-<fd>/vcpu<N>/mce-inject
+  tell KVM to inject MCE in the context of vcpu.
 
-a) Introduce new flags FADVISE_{HWPOISON, UNPOISON} to hwpoison memory to
-posix_fadvise():
-Possible options are a1) add new flags for posix_fadvise() because hwpoison with
-file descriptor and offset is a generic operation, not specific to KVM.  (This
-patch series) a2) Add KVM guest memfd specific ioctl to inject hwpoison/trigger
-MCE.  We can use same value to MADV_{HWPOISON, UNPOISON}.  a3) Add KVM-specific
-debugfs entry for guest memfd.  Say,
-/sys/kernel/debug/kvm/<pid>-<vm-fd>/guest-memfd<fd>/hwpoison/{corrupt-offset,
-unoison-offset}.
+Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+---
+ arch/x86/kernel/cpu/mce/inject.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-  - fadvise(FADVISE_{HWPOISON, UNPOISON}): This patch series.
-    Generic interface. Not specific to KVM.
-  - KVM ioctl
-    KVM specific.  The KVM debugfs is better.
-  - KVM debugfs
-    Debugfs is natural fit because this feature is for debug/test.
-    Specific to KVM guest_memfd.
-
-b) Enhancement to x86 MCE injector:
-Add debug fs entries to x86 MCE injector under /sys/kernel/debug/mce-inject/ to
-allow necessary parameters.  mcgstatus and notrigger.  mcgstatus is for LMCE_S.
-notrigger is to suppress triggering machine check handler so that KVM can
-trigger it.
-
-c) Add a debugfs entry for KVM vcpu to trigger MCE injection:
-Because setting parameters for MCE is not specific to KVM, reuse the existing
-debugfs mce-inject.  The debugfs entry is only to cause KVM to trigger
-MCE.  An alternative is to add an interface to set parameters without b)
-similar to /dev/mce-log.
-
-  - KVM debugfs: this patch series.
-    Debugfs is natural fit because this feature is for debug/test.
-  - New KVM ioctl
-    KVM debugfs seems better.
-  - Enhance /dev/mce-log
-    Because this is legacy, debugfs mce injector is better.
-  - Enhance /sys/kernel/debug/mce-inject/
-    Because the feature is KVM specific, adding the feature to KVM
-    interface is better than to the x86 MCE injector.
-
-[1] https://lore.kernel.org/all/20230914015531.1419405-1-seanjc@google.com/
-    KVM guest_memfd() and per-page attributes
-    https://lore.kernel.org/all/20230921203331.3746712-1-seanjc@google.com/
-    [PATCH 00/13] KVM: guest_memfd fixes
-[2] https://lore.kernel.org/all/cover.1690322424.git.isaku.yamahata@intel.com/
-    v15 KVM TDX basic feature support
-
-Isaku Yamahata (12):
-  x86/mce: Fix hw MCE injection feature detection
-  X86/mce/inject: Add mcgstatus for mce-inject debugfs
-  x86/mce/inject: Add notrigger entry to suppress MCE injection
-  x86/mce: Move and export inject_mce() from inject.c to core.c
-  mm/fadvise: Add flags to inject hwpoison for posix_fadvise()
-  mm/fadvise: Add FADV_MCE_INJECT flag for posix_fadvise()
-  x86/mce/inject: Wire up the x86 MCE injector to FADV_MCE_INJECT
-  x86/mce: Define a notifier chain for mce injector
-  KVM: X86: Add debugfs to inject machine check on VM exit
-  KVM: selftests: Allow mapping guest memory without host alias
-  KVM: selftests: lib: Add src memory type for hwpoison test
-  KVM: selftests: hwpoison/mce failure injection
-
- arch/x86/include/asm/kvm_host.h               |   1 +
- arch/x86/include/asm/mce.h                    |  16 +
- arch/x86/kernel/cpu/mce/core.c                |  56 ++
- arch/x86/kernel/cpu/mce/inject.c              |  91 ++-
- arch/x86/kvm/debugfs.c                        |  22 +
- arch/x86/kvm/x86.c                            |  14 +
- include/linux/fs.h                            |   8 +
- include/uapi/linux/fadvise.h                  |   5 +
- mm/fadvise.c                                  | 120 ++-
- tools/testing/selftests/kvm/Makefile          |   1 +
- .../selftests/kvm/include/kvm_util_base.h     |   4 +
- .../testing/selftests/kvm/include/test_util.h |   2 +
- tools/testing/selftests/kvm/lib/kvm_util.c    |  30 +-
- tools/testing/selftests/kvm/lib/test_util.c   |   8 +
- .../testing/selftests/kvm/mem_hwpoison_test.c | 721 ++++++++++++++++++
- 15 files changed, 1066 insertions(+), 33 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/mem_hwpoison_test.c
-
-
-base-commit: 6465e260f48790807eef06b583b38ca9789b6072
+diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
+index 461858ae18f9..88603a6c0afe 100644
+--- a/arch/x86/kernel/cpu/mce/inject.c
++++ b/arch/x86/kernel/cpu/mce/inject.c
+@@ -34,6 +34,7 @@
+ #include "internal.h"
+ 
+ static bool hw_injection_possible;
++static u64 notrigger;
+ 
+ /*
+  * Collect all the MCi_XXX settings
+@@ -598,6 +599,8 @@ static int inj_bank_set(void *data, u64 val)
+ 	}
+ 
+ 	m->bank = val;
++	if (notrigger)
++		return 0;
+ 
+ 	/*
+ 	 * sw-only injection allows to write arbitrary values into the MCA
+@@ -637,6 +640,21 @@ MCE_INJECT_GET(bank);
+ 
+ DEFINE_SIMPLE_ATTRIBUTE(bank_fops, inj_bank_get, inj_bank_set, "%llu\n");
+ 
++static int inj_notrigger_get(void *data, u64 *val)
++{
++	*val = notrigger;
++	return 0;
++}
++
++static int inj_notrigger_set(void *data, u64 val)
++{
++	notrigger = val;
++	return 0;
++}
++
++DEFINE_SIMPLE_ATTRIBUTE(notrigger_fops, inj_notrigger_get, inj_notrigger_set,
++			"%llx\n");
++
+ static const char readme_msg[] =
+ "Description of the files and their usages:\n"
+ "\n"
+@@ -685,6 +703,9 @@ static const char readme_msg[] =
+ "\n"
+ "mcgstatus:\t Set MCG_STATUS: the bits in that MSR describes the current state\n"
+ "\t of the processor after the MCE.\n"
++"\n"
++"notrigger:\t Suppress triggering the injection when set to non-zero\n"
++"\t The injection is triggered by other way.\n"
+ "\n";
+ 
+ static ssize_t
+@@ -714,6 +735,8 @@ static struct dfs_node {
+ 	{ .name = "cpu",	.fops = &extcpu_fops, .perm = S_IRUSR | S_IWUSR },
+ 	{ .name = "mcgstatus",	.fops = &mcgstatus_fops,
+ 						      .perm = S_IRUSR | S_IWUSR },
++	{ .name = "notrigger",	.fops = &notrigger_fops,
++						      .perm = S_IRUSR | S_IWUSR },
+ 	{ .name = "README",	.fops = &readme_fops, .perm = S_IRUSR | S_IRGRP | S_IROTH },
+ };
+ 
 -- 
 2.25.1
 
