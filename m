@@ -1,158 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EBA6132
-	for <linux-coco@lists.linux.dev>; Wed, 11 Oct 2023 06:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FD61EA92
+	for <linux-coco@lists.linux.dev>; Wed, 11 Oct 2023 13:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bwX26LkN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aSgeuu53"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697006647; x=1728542647;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3iJ8U9jFQ6lCjm3Gf+iNOfTGuAox0wwL1OCmGqcxbBA=;
-  b=bwX26LkNYy9+sjo4a3MA8Nl8mxdS6FQoOMK3jUlIRKwmt9mncUG0oXA4
-   EudyqXmveMuZETCyOVHWxeVQ4lgJFC2/4adTBvIAbRBrCa43agRQDjbEs
-   9z6h65nO0QLj4AJGmp/zrH7fg2gv3oJ8u3NutZmYK9O0qRb1GJ+Ru3mND
-   X6XawjcUcbvRTnCa+bdfInIlDMvf5pcAb/g4ps56rKHfbEIT8KSiXhVn3
-   6PCXIGgFx3z7qAeics/st3zVTHzCTpAOinZR+A7eba+J/vli1jGRP86Sr
-   T0ekbYJaW648lLaTCmT4dUztdMy7aOS9MFdT9kZZzSpvC60edWqwt0X0e
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="364877435"
-X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="364877435"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 23:44:06 -0700
+  t=1697029671; x=1728565671;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KLhN9KgQsZyg0n8Ly1Pb7b8a/0TBjyZmAM7hyIaqDU0=;
+  b=aSgeuu53gQ20ODiBjQ88f/DPfDwLLb6AyOa21nmc6xmy/8t5oAhI8vrq
+   2stSzL/7wPle/AbxSE60RGy7Q0CiXylNAvcA49coz09PzLszwof+BuTiO
+   eabQTBC1eIf7EurZsGsSyW3b7qt6C293HW/1p9LqfsnjgN8o5ZHf7iPpC
+   3MjYsDa7MaBfnYlhzOzlMhIuWf599JoLabt7GuCcoXmZ4KMK2zuNntPFP
+   qb6+xv7DYbuHoW29q6dJ1C1MlzejfJ0qsLzTyoqq2eRmZhlP3nrOx77N8
+   zPk534HHlBkqwWpBCO7447zO7P/EGjOgJ/Pb3j2Qxb/Pe8l8NXd6u/kGk
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="415703640"
+X-IronPort-AV: E=Sophos;i="6.03,216,1694761200"; 
+   d="scan'208";a="415703640"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 06:07:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="753711520"
-X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="753711520"
-Received: from gears-pc1.amr.corp.intel.com (HELO [10.251.3.56]) ([10.251.3.56])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 23:44:05 -0700
-Message-ID: <757483cf-443b-46d3-929d-ac56133cd9a5@linux.intel.com>
-Date: Tue, 10 Oct 2023 23:44:05 -0700
+X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="788987517"
+X-IronPort-AV: E=Sophos;i="6.03,216,1694761200"; 
+   d="scan'208";a="788987517"
+Received: from laptop-dan-intel.ccr.corp.intel.com (HELO box.shutemov.name) ([10.252.56.166])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2023 06:07:46 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 0FD8B109FB5; Wed, 11 Oct 2023 16:07:43 +0300 (+03)
+Date: Wed, 11 Oct 2023 16:07:43 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 02/13] kernel/cpu: Add support for declaring CPU hotplug
+ not supported
+Message-ID: <20231011130743.mdfi27pdwktefbsv@box.shutemov.name>
+References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
+ <20231005131402.14611-3-kirill.shutemov@linux.intel.com>
+ <dcf9317e-5557-4fe7-889c-1a02783fa894@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/7] configfs-tsm: Attestation Report ABI
-Content-Language: en-US
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: Brijesh Singh <brijesh.singh@amd.com>, Erdem Aktas
- <erdemaktas@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Peter Gonda <pgonda@google.com>,
- Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze
- <dionnaglaze@google.com>, Jeremi Piotrowski
- <jpiotrowski@linux.microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Samuel Ortiz <sameo@rivosinc.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- dave.hansen@linux.intel.com
-References: <169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dcf9317e-5557-4fe7-889c-1a02783fa894@linux.intel.com>
 
+On Tue, Oct 10, 2023 at 06:35:59AM -0700, Kuppuswamy Sathyanarayanan wrote:
+> 
+> 
+> On 10/5/2023 6:13 AM, Kirill A. Shutemov wrote:
+> > The function cpu_hotplug_not_supported() can be called to indicate that
+> > CPU hotplug should be disabled. It does not prevent the initial bring up
+> > of the CPU, but it stops subsequent offlining.
+> > 
+> > This function is intended to replace CC_ATTR_HOTPLUG_DISABLED.
+> > 
+> 
+> Looks good to me.
+> 
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
+Thanks.
 
-On 10/10/2023 10:27 PM, Dan Williams wrote:
-> Changes since v4 [1]:
-> - Fix a stack buffer vs scatterlist bug in sev-guest (Peter)
-> - Test on AMD hardware, thanks Peter for the help!
-> - Fix size of @len in __read_report() (Sathya)
-> - Clarify the NULL @buf case in __read_report() (Sathya)
-> - Fix kdoc for 'struct tsm_report' (Sathya)
-> - Add kdoc for 'struct tsm_ops' (Sathya)
-> - Initialize @certs_size to zero in sev_report_new() (Dan, smatch)
-> - Add links to documentation for the attestation report formats
-> - Drop conversion of sev-guest get_report(), just use get_ext_report()
->   exclusively
-> - Add is_vmpck_empty() and exitinfo2 init in set_report_new() similar to
->   the ioctl() path
+> > @@ -543,6 +546,18 @@ static void lockdep_release_cpus_lock(void)
+> >  	rwsem_release(&cpu_hotplug_lock.dep_map, _THIS_IP_);
+> >  }
+> >  
+> > +/*
+> > + * Declare CPU hotplug not supported.
+> > + *
+> > + * It doesn't prevent initial bring up of the CPU, but stops offlining.
+> > + */
+> > +void cpu_hotplug_not_supported(void)
+> > +{
+> > +	cpu_maps_update_begin();
+> > +	cpu_hotplug_supported = false;
+> > +	cpu_maps_update_done();
+> > +}
 > 
-> [1]: http://lore.kernel.org/r/169570181657.596431.6178773442587231200.stgit@dwillia2-xfh.jf.intel.com
-> 
-> ---
-> 
-> Merge notes: I am looking for Dave or Boris to pick this up, I believe
-> all outstanding comments have been resolved and this has now been
-> smoke-tested on AMD and Intel platforms.
-> 
-> ---
-> 
-> An attestation report is signed evidence of how a Trusted Virtual
-> Machine (TVM) was launched and its current state. A verifying party uses
-> the report to make judgements of the confidentiality and integrity of
-> that execution environment. Upon successful attestation the verifying
-> party may, for example, proceed to deploy secrets to the TVM to carry
-> out a workload. Multiple confidential computing platforms share this
-> similar flow.
->  
-> The approach of adding adding new char devs and new ioctls, for what
-> amounts to the same logical functionality with minor formatting
-> differences across vendors [2], is untenable. Common concepts and the
-> community benefit from common infrastructure. 
->  
-> Use configfs for this facility for maintainability compared to ioctl(),
-> and for its scalability compared to sysfs. Atomicity can be enforced at
-> item creation time, and a conflict detection mechanism is included for
-> scenarios where multiple threads may share a single configuration
-> instance.
->  
-> [2]: http://lore.kernel.org/r/cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com
-> 
-> ---
+> Since this function is not used in this patch, do you need to add __maybe_unused to
+> avoid warnings?
 
-Works fine in TDX environment.
-
-Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-
-
-> 
-> Dan Williams (6):
->       virt: sevguest: Fix passing a stack buffer as a scatterlist target
->       virt: coco: Add a coco/Makefile and coco/Kconfig
->       configfs-tsm: Introduce a shared ABI for attestation reports
->       virt: sevguest: Prep for kernel internal get_ext_report()
->       mm/slab: Add __free() support for kvfree
->       virt: sevguest: Add TSM_REPORTS support for SNP_GET_EXT_REPORT
-> 
-> Kuppuswamy Sathyanarayanan (1):
->       virt: tdx-guest: Add Quote generation support using TSM_REPORTS
-> 
-> 
->  Documentation/ABI/testing/configfs-tsm  |   76 ++++++
->  MAINTAINERS                             |    8 +
->  arch/x86/coco/tdx/tdx.c                 |   21 ++
->  arch/x86/include/asm/shared/tdx.h       |    1 
->  arch/x86/include/asm/tdx.h              |    2 
->  drivers/virt/Kconfig                    |    6 
->  drivers/virt/Makefile                   |    4 
->  drivers/virt/coco/Kconfig               |   14 +
->  drivers/virt/coco/Makefile              |    8 +
->  drivers/virt/coco/sev-guest/Kconfig     |    1 
->  drivers/virt/coco/sev-guest/sev-guest.c |  218 ++++++++++++++--
->  drivers/virt/coco/tdx-guest/Kconfig     |    1 
->  drivers/virt/coco/tdx-guest/tdx-guest.c |  229 +++++++++++++++++
->  drivers/virt/coco/tsm.c                 |  416 +++++++++++++++++++++++++++++++
->  include/linux/slab.h                    |    2 
->  include/linux/tsm.h                     |   68 +++++
->  16 files changed, 1039 insertions(+), 36 deletions(-)
->  create mode 100644 Documentation/ABI/testing/configfs-tsm
->  create mode 100644 drivers/virt/coco/Kconfig
->  create mode 100644 drivers/virt/coco/Makefile
->  create mode 100644 drivers/virt/coco/tsm.c
->  create mode 100644 include/linux/tsm.h
-> 
-> base-commit: 6465e260f48790807eef06b583b38ca9789b6072
+Hm? I don't think compiler complains about non-static unused functions. It
+has no visibility if it is used.
 
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+  Kiryl Shutsemau / Kirill A. Shutemov
