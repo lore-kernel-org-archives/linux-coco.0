@@ -1,54 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402CA354F6
-	for <linux-coco@lists.linux.dev>; Wed, 11 Oct 2023 05:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C3B354F6
+	for <linux-coco@lists.linux.dev>; Wed, 11 Oct 2023 05:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JasnlYDs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BZN0m7+l"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697002033; x=1728538033;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=560pGsYKJbvAEvqowrxNgbku4MlJdhEpxMlsLFOh914=;
-  b=JasnlYDsw0PKQKnd/U0yTu5NGQ83MrLmp8KefpUeMReiznPEjw9KW+Dr
-   FkitdGSIZvszFe3P9NiMAXgNZdwlV9Wa0tmdXA6WB/uprmooWN98LK2+e
-   th1SguQ8JSoUEFEWgdXwQQGTz/MnquaSgM61Jk5LRU8AQZY3FulIZOzZW
-   /WiruruYZd2cTcSBFfdCPv66TZ63OK3eCU5GKa+0JAFN0E3ELJHzued7g
-   SBl62Dkz6Inf41JqDPZeQSBoysjqJInhhGS5nZOPiTHk/hIw9WkvVpVd9
-   D/gnO7qDWEf3kRme1v3QQJIyV5mtkv72fpFdFWIKDdkB4btFZaXklAMJx
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="415627449"
+  t=1697002038; x=1728538038;
+  h=subject:from:to:cc:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=d5Cjcywf+ahr8kPHePSCqqdC8pDpWRxtYifIsOOEJXQ=;
+  b=BZN0m7+lnfzCY1rB5/TpDbcFg73SGEIfmntyypjJSYWuUM2DcVUw/190
+   vQkqqVE2TkCJVNiDfHbcyNiRDWJP+u37rdimEP51GSD2RMOwoGhsTJbWx
+   wFbk5Ce6Ox9s6SPVYlOXN9NyqNgyf2fsy+VLSqQZDAfcePk2+se2LOF8D
+   RQ2Pc+eCwl8ijT16miKAD4CT9/p4Bvt52/x08l3RMdvf/Ns78wHxFwFBr
+   Yq70PgzGSvg0WVS+/Ny6ylE6Em4zU1SA4rG0aUexCiOy6ifN2uwj4+OSh
+   gokBl5w9JR5bRD4bxndH4hEoBglhiWdTTPzJjiHK2azY0O9wmfG2RI/Zq
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="415627462"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="415627449"
+   d="scan'208";a="415627462"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:11 -0700
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:17 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="757409252"
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="757409284"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="757409252"
+   d="scan'208";a="757409284"
 Received: from mghorpad-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.251.2.142])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:11 -0700
-Subject: [PATCH v5 0/7] configfs-tsm: Attestation Report ABI
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:17 -0700
+Subject: [PATCH v5 1/7] virt: sevguest: Fix passing a stack buffer as a
+ scatterlist target
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev
-Cc: Brijesh Singh <brijesh.singh@amd.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Tom Lendacky <thomas.lendacky@amd.com>, Peter Gonda <pgonda@google.com>,
- Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>,
- Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
- Thomas Gleixner <tglx@linutronix.de>, Samuel Ortiz <sameo@rivosinc.com>,
- Dionna Glaze <dionnaglaze@google.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
+Cc: Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Dionna Glaze <dionnaglaze@google.com>,
+ Brijesh Singh <brijesh.singh@amd.com>,
+ Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, peterz@infradead.org,
  sathyanarayanan.kuppuswamy@linux.intel.com, dave.hansen@linux.intel.com,
  bp@alien8.de
-Date: Tue, 10 Oct 2023 22:27:10 -0700
-Message-ID: <169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com>
+Date: Tue, 10 Oct 2023 22:27:16 -0700
+Message-ID: <169700203681.779347.15304022058596035959.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com>
+References: <169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -59,86 +55,188 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Changes since v4 [1]:
-- Fix a stack buffer vs scatterlist bug in sev-guest (Peter)
-- Test on AMD hardware, thanks Peter for the help!
-- Fix size of @len in __read_report() (Sathya)
-- Clarify the NULL @buf case in __read_report() (Sathya)
-- Fix kdoc for 'struct tsm_report' (Sathya)
-- Add kdoc for 'struct tsm_ops' (Sathya)
-- Initialize @certs_size to zero in sev_report_new() (Dan, smatch)
-- Add links to documentation for the attestation report formats
-- Drop conversion of sev-guest get_report(), just use get_ext_report()
-  exclusively
-- Add is_vmpck_empty() and exitinfo2 init in set_report_new() similar to
-  the ioctl() path
+CONFIG_DEBUG_SG highlights that get_{report,ext_report,derived_key)()}
+are passing stack buffers as the @req_buf argument to
+handle_guest_request(), generating a Call Trace of the following form:
 
-[1]: http://lore.kernel.org/r/169570181657.596431.6178773442587231200.stgit@dwillia2-xfh.jf.intel.com
+    WARNING: CPU: 0 PID: 1175 at include/linux/scatterlist.h:187 enc_dec_message+0x518/0x5b0 [sev_guest]
+    [..]
+    Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+    RIP: 0010:enc_dec_message+0x518/0x5b0 [sev_guest]
+    Call Trace:
+     <TASK>
+    [..]
+     handle_guest_request+0x135/0x520 [sev_guest]
+     get_ext_report+0x1ec/0x3e0 [sev_guest]
+     snp_guest_ioctl+0x157/0x200 [sev_guest]
 
+Note that the above Call Trace was with the DEBUG_SG BUG_ON()s converted
+to WARN_ON()s.
+
+This is benign as long as there are no hardware crypto accelerators
+loaded for the aead cipher, and no subsequent dma_map_sg() is performed
+on the scatterlist. However, sev-guest can not assume the presence of
+an aead accelerator nor can it assume that CONFIG_DEBUG_SG is disabled.
+
+Resolve this bug by allocating virt_addr_valid() memory, similar to the
+other buffers am @snp_dev instance carries, to marshal requests from
+user buffers to kernel buffers.
+
+Reported-by: Peter Gonda <pgonda@google.com>
+Closes: http://lore.kernel.org/r/CAMkAt6r2VPPMZ__SQfJse8qWsUyYW3AgYbOUVM0S_Vtk=KvkxQ@mail.gmail.com
+Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Dionna Glaze <dionnaglaze@google.com>
+Cc: Brijesh Singh <brijesh.singh@amd.com>
+Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
+ drivers/virt/coco/sev-guest/sev-guest.c |   45 +++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
-Merge notes: I am looking for Dave or Boris to pick this up, I believe
-all outstanding comments have been resolved and this has now been
-smoke-tested on AMD and Intel platforms.
-
----
-
-An attestation report is signed evidence of how a Trusted Virtual
-Machine (TVM) was launched and its current state. A verifying party uses
-the report to make judgements of the confidentiality and integrity of
-that execution environment. Upon successful attestation the verifying
-party may, for example, proceed to deploy secrets to the TVM to carry
-out a workload. Multiple confidential computing platforms share this
-similar flow.
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 97dbe715e96a..5bee58ef5f1e 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -57,6 +57,11 @@ struct snp_guest_dev {
  
-The approach of adding adding new char devs and new ioctls, for what
-amounts to the same logical functionality with minor formatting
-differences across vendors [2], is untenable. Common concepts and the
-community benefit from common infrastructure. 
+ 	struct snp_secrets_page_layout *layout;
+ 	struct snp_req_data input;
++	union {
++		struct snp_report_req report;
++		struct snp_derived_key_req derived_key;
++		struct snp_ext_report_req ext_report;
++	} req;
+ 	u32 *os_area_msg_seqno;
+ 	u8 *vmpck;
+ };
+@@ -473,8 +478,8 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code,
+ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+ {
+ 	struct snp_guest_crypto *crypto = snp_dev->crypto;
++	struct snp_report_req *req = &snp_dev->req.report;
+ 	struct snp_report_resp *resp;
+-	struct snp_report_req req;
+ 	int rc, resp_len;
  
-Use configfs for this facility for maintainability compared to ioctl(),
-and for its scalability compared to sysfs. Atomicity can be enforced at
-item creation time, and a conflict detection mechanism is included for
-scenarios where multiple threads may share a single configuration
-instance.
+ 	lockdep_assert_held(&snp_cmd_mutex);
+@@ -482,7 +487,7 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
+ 	if (!arg->req_data || !arg->resp_data)
+ 		return -EINVAL;
  
-[2]: http://lore.kernel.org/r/cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com
+-	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
++	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
+ 		return -EFAULT;
+ 
+ 	/*
+@@ -496,7 +501,7 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
+ 		return -ENOMEM;
+ 
+ 	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg,
+-				  SNP_MSG_REPORT_REQ, &req, sizeof(req), resp->data,
++				  SNP_MSG_REPORT_REQ, req, sizeof(*req), resp->data,
+ 				  resp_len);
+ 	if (rc)
+ 		goto e_free;
+@@ -511,9 +516,9 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
+ 
+ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+ {
++	struct snp_derived_key_req *req = &snp_dev->req.derived_key;
+ 	struct snp_guest_crypto *crypto = snp_dev->crypto;
+ 	struct snp_derived_key_resp resp = {0};
+-	struct snp_derived_key_req req;
+ 	int rc, resp_len;
+ 	/* Response data is 64 bytes and max authsize for GCM is 16 bytes. */
+ 	u8 buf[64 + 16];
+@@ -532,11 +537,11 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
+ 	if (sizeof(buf) < resp_len)
+ 		return -ENOMEM;
+ 
+-	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
++	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
+ 		return -EFAULT;
+ 
+ 	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg,
+-				  SNP_MSG_KEY_REQ, &req, sizeof(req), buf, resp_len);
++				  SNP_MSG_KEY_REQ, req, sizeof(*req), buf, resp_len);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -552,8 +557,8 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
+ 
+ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
+ {
++	struct snp_ext_report_req *req = &snp_dev->req.ext_report;
+ 	struct snp_guest_crypto *crypto = snp_dev->crypto;
+-	struct snp_ext_report_req req;
+ 	struct snp_report_resp *resp;
+ 	int ret, npages = 0, resp_len;
+ 
+@@ -562,18 +567,18 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+ 	if (!arg->req_data || !arg->resp_data)
+ 		return -EINVAL;
+ 
+-	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
++	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
+ 		return -EFAULT;
+ 
+ 	/* userspace does not want certificate data */
+-	if (!req.certs_len || !req.certs_address)
++	if (!req->certs_len || !req->certs_address)
+ 		goto cmd;
+ 
+-	if (req.certs_len > SEV_FW_BLOB_MAX_SIZE ||
+-	    !IS_ALIGNED(req.certs_len, PAGE_SIZE))
++	if (req->certs_len > SEV_FW_BLOB_MAX_SIZE ||
++	    !IS_ALIGNED(req->certs_len, PAGE_SIZE))
+ 		return -EINVAL;
+ 
+-	if (!access_ok((const void __user *)req.certs_address, req.certs_len))
++	if (!access_ok((const void __user *)req->certs_address, req->certs_len))
+ 		return -EFAULT;
+ 
+ 	/*
+@@ -582,8 +587,8 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+ 	 * the host. If host does not supply any certs in it, then copy
+ 	 * zeros to indicate that certificate data was not provided.
+ 	 */
+-	memset(snp_dev->certs_data, 0, req.certs_len);
+-	npages = req.certs_len >> PAGE_SHIFT;
++	memset(snp_dev->certs_data, 0, req->certs_len);
++	npages = req->certs_len >> PAGE_SHIFT;
+ cmd:
+ 	/*
+ 	 * The intermediate response buffer is used while decrypting the
+@@ -597,14 +602,14 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+ 
+ 	snp_dev->input.data_npages = npages;
+ 	ret = handle_guest_request(snp_dev, SVM_VMGEXIT_EXT_GUEST_REQUEST, arg,
+-				   SNP_MSG_REPORT_REQ, &req.data,
+-				   sizeof(req.data), resp->data, resp_len);
++				   SNP_MSG_REPORT_REQ, &req->data,
++				   sizeof(req->data), resp->data, resp_len);
+ 
+ 	/* If certs length is invalid then copy the returned length */
+ 	if (arg->vmm_error == SNP_GUEST_VMM_ERR_INVALID_LEN) {
+-		req.certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
++		req->certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
+ 
+-		if (copy_to_user((void __user *)arg->req_data, &req, sizeof(req)))
++		if (copy_to_user((void __user *)arg->req_data, req, sizeof(*req)))
+ 			ret = -EFAULT;
+ 	}
+ 
+@@ -612,8 +617,8 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+ 		goto e_free;
+ 
+ 	if (npages &&
+-	    copy_to_user((void __user *)req.certs_address, snp_dev->certs_data,
+-			 req.certs_len)) {
++	    copy_to_user((void __user *)req->certs_address, snp_dev->certs_data,
++			 req->certs_len)) {
+ 		ret = -EFAULT;
+ 		goto e_free;
+ 	}
 
----
-
-Dan Williams (6):
-      virt: sevguest: Fix passing a stack buffer as a scatterlist target
-      virt: coco: Add a coco/Makefile and coco/Kconfig
-      configfs-tsm: Introduce a shared ABI for attestation reports
-      virt: sevguest: Prep for kernel internal get_ext_report()
-      mm/slab: Add __free() support for kvfree
-      virt: sevguest: Add TSM_REPORTS support for SNP_GET_EXT_REPORT
-
-Kuppuswamy Sathyanarayanan (1):
-      virt: tdx-guest: Add Quote generation support using TSM_REPORTS
-
-
- Documentation/ABI/testing/configfs-tsm  |   76 ++++++
- MAINTAINERS                             |    8 +
- arch/x86/coco/tdx/tdx.c                 |   21 ++
- arch/x86/include/asm/shared/tdx.h       |    1 
- arch/x86/include/asm/tdx.h              |    2 
- drivers/virt/Kconfig                    |    6 
- drivers/virt/Makefile                   |    4 
- drivers/virt/coco/Kconfig               |   14 +
- drivers/virt/coco/Makefile              |    8 +
- drivers/virt/coco/sev-guest/Kconfig     |    1 
- drivers/virt/coco/sev-guest/sev-guest.c |  218 ++++++++++++++--
- drivers/virt/coco/tdx-guest/Kconfig     |    1 
- drivers/virt/coco/tdx-guest/tdx-guest.c |  229 +++++++++++++++++
- drivers/virt/coco/tsm.c                 |  416 +++++++++++++++++++++++++++++++
- include/linux/slab.h                    |    2 
- include/linux/tsm.h                     |   68 +++++
- 16 files changed, 1039 insertions(+), 36 deletions(-)
- create mode 100644 Documentation/ABI/testing/configfs-tsm
- create mode 100644 drivers/virt/coco/Kconfig
- create mode 100644 drivers/virt/coco/Makefile
- create mode 100644 drivers/virt/coco/tsm.c
- create mode 100644 include/linux/tsm.h
-
-base-commit: 6465e260f48790807eef06b583b38ca9789b6072
