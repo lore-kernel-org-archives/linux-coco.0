@@ -1,47 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F8D354F6
-	for <linux-coco@lists.linux.dev>; Wed, 11 Oct 2023 05:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46F9354F6
+	for <linux-coco@lists.linux.dev>; Wed, 11 Oct 2023 05:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="La//Ce0e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EAgv9TlA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697002067; x=1728538067;
+  t=1697002072; x=1728538072;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Oj1DVsciywRdCYgg5NWbHAjtb/Z2QB8aHAHdJytRB4A=;
-  b=La//Ce0ejLNSLbN/6/ISi4hYDO8IoJzFlrM3pnnXT/FgaJPfOnLMJ9gV
-   89xrQo/EHx7RjvCEivHJqZ76a1wDZMA5r9mfjaz366NCwOlocm8j9oEma
-   VXhtifBysZU/8mbwIKjZAhY0JFC0fJzpiaaPrv0cuBlDTUIkmEV3XgL1o
-   bQkH/2rFIb5OX9AWOnRt7BWTD9h20NDBS0siLgVQ0Kod9HOh2Pj0ROJ5g
-   ewEjgTl2DJR4VuAUjF4Et5uORHgBM500JsPFoycGzW+JzVdqVvKmnYfUP
-   26vuam6I7Lfp05XPDA2mxWbJMwbKZt8wlcWUr6S81I9IbJvSkRylQECxu
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="387424365"
+  bh=4CvzD8vnm9Hmd+l6kx9YigHSx9vV/7dsCiz6scdND3s=;
+  b=EAgv9TlAzDn6yDnjPwD4b/m/I7yLR4l7+CNRGwMzYInUPhlgANzgsv6H
+   iq7vy0Y5IU50hbjAG2K8mPfFJUK/yauQaBxgBqxZOGn+cSge3ITNKliMH
+   Y2wNbtP4IA/Y92KhOTw9RI4aLZzOpL2MUZ1lJNhUyJrfahc07Cy5PaCbb
+   YPQLDuHbfGgGDcwKBiGkmYlB3cpfaX9TM98qWxSCz+4HHdsniDdpNKW59
+   aIjByvMJAhHsIeDPReSo61QDR+Hbj2c3Kvc4BXDyt/EdMQxx4weL8yopx
+   bsMi974fIY9iq44HdQvLuRKcZfFkt+/UqmZ1ucDWaLVbsZF+45zQMTCIW
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="387424392"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="387424365"
+   d="scan'208";a="387424392"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:47 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:52 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="747322623"
+X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="747322634"
 X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="747322623"
+   d="scan'208";a="747322634"
 Received: from mghorpad-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.251.2.142])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:46 -0700
-Subject: [PATCH v5 6/7] virt: sevguest: Add TSM_REPORTS support for
- SNP_GET_EXT_REPORT
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 22:27:52 -0700
+Subject: [PATCH v5 7/7] virt: tdx-guest: Add Quote generation support using
+ TSM_REPORTS
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev
-Cc: Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>,
- Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>,
- Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, peterz@infradead.org,
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, peterz@infradead.org,
  sathyanarayanan.kuppuswamy@linux.intel.com, dave.hansen@linux.intel.com,
  bp@alien8.de
-Date: Tue, 10 Oct 2023 22:27:46 -0700
-Message-ID: <169700206636.779347.12625001287120171667.stgit@dwillia2-xfh.jf.intel.com>
+Date: Tue, 10 Oct 2023 22:27:51 -0700
+Message-ID: <169700207187.779347.4790484425612155933.stgit@dwillia2-xfh.jf.intel.com>
 In-Reply-To: <169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com>
 References: <169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -54,231 +53,404 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The sevguest driver was a first mover in the confidential computing
-space. As a first mover that afforded some leeway to build the driver
-without concern for common infrastructure.
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-Now that sevguest is no longer a singleton [1] the common operation of
-building and transmitting attestation report blobs can / should be made
-common. In this model the so called "TSM-provider" implementations can
-share a common envelope ABI even if the contents of that envelope remain
-vendor-specific. When / if the industry agrees on an attestation record
-format, that definition can also fit in the same ABI. In the meantime
-the kernel's maintenance burden is reduced and collaboration on the
-commons is increased.
+In TDX guest, the attestation process is used to verify the TDX guest
+trustworthiness to other entities before provisioning secrets to the
+guest. The first step in the attestation process is TDREPORT
+generation, which involves getting the guest measurement data in the
+format of TDREPORT, which is further used to validate the authenticity
+of the TDX guest. TDREPORT by design is integrity-protected and can
+only be verified on the local machine.
 
-Convert sevguest to use CONFIG_TSM_REPORTS to retrieve the data that
-the SNP_GET_EXT_REPORT ioctl produces. An example flow follows for
-retrieving the report blob via the TSM interface utility,
-assuming no nonce and VMPL==2:
+To support remote verification of the TDREPORT in a SGX-based
+attestation, the TDREPORT needs to be sent to the SGX Quoting Enclave
+(QE) to convert it to a remotely verifiable Quote. SGX QE by design can
+only run outside of the TDX guest (i.e. in a host process or in a
+normal VM) and guest can use communication channels like vsock or
+TCP/IP to send the TDREPORT to the QE. But for security concerns, the
+TDX guest may not support these communication channels. To handle such
+cases, TDX defines a GetQuote hypercall which can be used by the guest
+to request the host VMM to communicate with the SGX QE. More details
+about GetQuote hypercall can be found in TDX Guest-Host Communication
+Interface (GHCI) for Intel TDX 1.0, section titled
+"TDG.VP.VMCALL<GetQuote>".
 
-    report=/sys/kernel/config/tsm/report/report0
-    mkdir $report
-    echo 2 > $report/privlevel
-    dd if=/dev/urandom bs=64 count=1 > $report/inblob
-    hexdump -C $report/outblob
-    cat $report/certs
-    rmdir $report
+Trusted Security Module (TSM) [1] exposes a common ABI for Confidential
+Computing Guest platforms to get the measurement data via ConfigFS.
+Extend the TSM framework and add support to allow an attestation agent
+to get the TDX Quote data (included usage example below).
 
-Given that the platform implementation is free to return empty
-certificate data if none is available it lets configfs-tsm be simplified
-as it only needs to worry about wrapping SNP_GET_EXT_REPORT, and leave
-SNP_GET_REPORT alone.
+  report=/sys/kernel/config/tsm/report/report0
+  mkdir $report
+  dd if=/dev/urandom bs=64 count=1 > $report/inblob
+  hexdump -C $report/outblob
+  rmdir $report
 
-The old ioctls can be lazily deprecated, the main motivation of this
-effort is to stop the proliferation of new ioctls, and to increase
-cross-vendor collaboration.
+GetQuote TDVMCALL requires TD guest pass a 4K aligned shared buffer
+with TDREPORT data as input, which is further used by the VMM to copy
+the TD Quote result after successful Quote generation. To create the
+shared buffer, allocate a large enough memory and mark it shared using
+set_memory_decrypted() in tdx_guest_init(). This buffer will be re-used
+for GetQuote requests in the TDX TSM handler.
 
-Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch [1]
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dionna Glaze <dionnaglaze@google.com>
-Cc: Brijesh Singh <brijesh.singh@amd.com>
-Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Although this method reserves a fixed chunk of memory for GetQuote
+requests, such one time allocation can help avoid memory fragmentation
+related allocation failures later in the uptime of the guest.
+
+Since the Quote generation process is not time-critical or frequently
+used, the current version uses a polling model for Quote requests and
+it also does not support parallel GetQuote requests.
+
+Link: https://lore.kernel.org/lkml/169342399185.3934343.3035845348326944519.stgit@dwillia2-xfh.jf.intel.com/ [1]
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Erdem Aktas <erdemaktas@google.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/virt/coco/sev-guest/Kconfig     |    1 
- drivers/virt/coco/sev-guest/sev-guest.c |  139 +++++++++++++++++++++++++++++++
- 2 files changed, 140 insertions(+)
+ arch/x86/coco/tdx/tdx.c                 |   21 +++
+ arch/x86/include/asm/shared/tdx.h       |    1 
+ arch/x86/include/asm/tdx.h              |    2 
+ drivers/virt/coco/tdx-guest/Kconfig     |    1 
+ drivers/virt/coco/tdx-guest/tdx-guest.c |  229 +++++++++++++++++++++++++++++++
+ 5 files changed, 253 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-guest/Kconfig
-index da2d7ca531f0..1cffc72c41cb 100644
---- a/drivers/virt/coco/sev-guest/Kconfig
-+++ b/drivers/virt/coco/sev-guest/Kconfig
-@@ -5,6 +5,7 @@ config SEV_GUEST
- 	select CRYPTO
- 	select CRYPTO_AEAD2
- 	select CRYPTO_GCM
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 1d6b863c42b0..752867b1d11b 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -104,6 +104,27 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport)
+ }
+ EXPORT_SYMBOL_GPL(tdx_mcall_get_report0);
+ 
++/**
++ * tdx_hcall_get_quote() - Wrapper to request TD Quote using GetQuote
++ *                         hypercall.
++ * @buf: Address of the directly mapped shared kernel buffer which
++ *       contains TDREPORT. The same buffer will be used by VMM to
++ *       store the generated TD Quote output.
++ * @size: size of the tdquote buffer (4KB-aligned).
++ *
++ * Refer to section titled "TDG.VP.VMCALL<GetQuote>" in the TDX GHCI
++ * v1.0 specification for more information on GetQuote hypercall.
++ * It is used in the TDX guest driver module to get the TD Quote.
++ *
++ * Return 0 on success or error code on failure.
++ */
++u64 tdx_hcall_get_quote(u8 *buf, size_t size)
++{
++	/* Since buf is a shared memory, set the shared (decrypted) bits */
++	return _tdx_hypercall(TDVMCALL_GET_QUOTE, cc_mkdec(virt_to_phys(buf)), size, 0, 0);
++}
++EXPORT_SYMBOL_GPL(tdx_hcall_get_quote);
++
+ static void __noreturn tdx_panic(const char *msg)
+ {
+ 	struct tdx_hypercall_args args = {
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index 7513b3bb69b7..9eab19950f39 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -22,6 +22,7 @@
+ 
+ /* TDX hypercall Leaf IDs */
+ #define TDVMCALL_MAP_GPA		0x10001
++#define TDVMCALL_GET_QUOTE		0x10002
+ #define TDVMCALL_REPORT_FATAL_ERROR	0x10003
+ 
+ #ifndef __ASSEMBLY__
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 603e6d1e9d4a..ebd1cda4875f 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -52,6 +52,8 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
+ 
+ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
+ 
++u64 tdx_hcall_get_quote(u8 *buf, size_t size);
++
+ #else
+ 
+ static inline void tdx_early_init(void) { };
+diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
+index 14246fc2fb02..22dd59e19431 100644
+--- a/drivers/virt/coco/tdx-guest/Kconfig
++++ b/drivers/virt/coco/tdx-guest/Kconfig
+@@ -1,6 +1,7 @@
+ config TDX_GUEST_DRIVER
+ 	tristate "TDX Guest driver"
+ 	depends on INTEL_TDX_GUEST
 +	select TSM_REPORTS
  	help
- 	  SEV-SNP firmware provides the guest a mechanism to communicate with
- 	  the PSP without risk from a malicious hypervisor who wishes to read,
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index e5f8f115f4af..7fdc5a774eab 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -16,10 +16,12 @@
- #include <linux/miscdevice.h>
- #include <linux/set_memory.h>
- #include <linux/fs.h>
+ 	  The driver provides userspace interface to communicate with
+ 	  the TDX module to request the TDX guest details like attestation
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 5e44a0fa69bd..1253bf76b570 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -12,12 +12,60 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/string.h>
+ #include <linux/uaccess.h>
++#include <linux/set_memory.h>
++#include <linux/io.h>
++#include <linux/delay.h>
 +#include <linux/tsm.h>
- #include <crypto/aead.h>
- #include <linux/scatterlist.h>
- #include <linux/psp-sev.h>
- #include <linux/sockptr.h>
-+#include <linux/cleanup.h>
- #include <uapi/linux/sev-guest.h>
- #include <uapi/linux/psp-sev.h>
++#include <linux/sizes.h>
  
-@@ -768,6 +770,135 @@ static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno
- 	return key;
+ #include <uapi/linux/tdx-guest.h>
+ 
+ #include <asm/cpu_device_id.h>
+ #include <asm/tdx.h>
+ 
++/*
++ * Intel's SGX QE implementation generally uses Quote size less
++ * than 8K (2K Quote data + ~5K of certificate blob).
++ */
++#define GET_QUOTE_BUF_SIZE		SZ_8K
++
++#define GET_QUOTE_CMD_VER		1
++
++/* TDX GetQuote status codes */
++#define GET_QUOTE_SUCCESS		0
++#define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
++
++/* struct tdx_quote_buf: Format of Quote request buffer.
++ * @version: Quote format version, filled by TD.
++ * @status: Status code of Quote request, filled by VMM.
++ * @in_len: Length of TDREPORT, filled by TD.
++ * @out_len: Length of Quote data, filled by VMM.
++ * @data: Quote data on output or TDREPORT on input.
++ *
++ * More details of Quote request buffer can be found in TDX
++ * Guest-Host Communication Interface (GHCI) for Intel TDX 1.0,
++ * section titled "TDG.VP.VMCALL<GetQuote>"
++ */
++struct tdx_quote_buf {
++	u64 version;
++	u64 status;
++	u32 in_len;
++	u32 out_len;
++	u8 data[];
++};
++
++/* Quote data buffer */
++static void *quote_data;
++
++/* Lock to streamline quote requests */
++static DEFINE_MUTEX(quote_lock);
++
++/*
++ * GetQuote request timeout in seconds. Expect that 30 seconds
++ * is enough time for QE to respond to any Quote requests.
++ */
++static u32 getquote_timeout = 30;
++
+ static long tdx_get_report0(struct tdx_report_req __user *req)
+ {
+ 	u8 *reportdata, *tdreport;
+@@ -53,6 +101,154 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
+ 	return ret;
  }
  
-+struct snp_msg_report_resp_hdr {
-+	u32 status;
-+	u32 report_size;
-+	u8 rsvd[24];
-+};
-+#define SNP_REPORT_INVALID_PARAM 0x16
-+#define SNP_REPORT_INVALID_KEY_SEL 0x27
-+
-+struct snp_msg_cert_entry {
-+	unsigned char guid[16];
-+	u32 offset;
-+	u32 length;
-+};
-+
-+static int sev_report_new(struct tsm_report *report, void *data)
++static void free_quote_buf(void *buf)
 +{
-+	static const struct snp_msg_cert_entry zero_ent = { 0 };
-+	int certs_size = 0, cert_count, i, offset;
-+	struct tsm_desc *desc = &report->desc;
-+	struct snp_guest_dev *snp_dev = data;
-+	struct snp_msg_report_resp_hdr hdr;
-+	const int report_size = SZ_4K;
-+	const int ext_size = SZ_16K;
-+	int ret, size = report_size + ext_size;
-+	u8 *certs_address;
++	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
++	unsigned int count = len >> PAGE_SHIFT;
 +
-+	if (desc->inblob_len != 64)
-+		return -EINVAL;
-+
-+	void *buf __free(kvfree) = kvzalloc(size, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	guard(mutex)(&snp_cmd_mutex);
-+
-+	/* Check if the VMPCK is not empty */
-+	if (is_vmpck_empty(snp_dev)) {
-+		dev_err_ratelimited(snp_dev->dev, "VMPCK is disabled\n");
-+		mutex_unlock(&snp_cmd_mutex);
-+		return -ENOTTY;
++	if (set_memory_encrypted((unsigned long)buf, count)) {
++		pr_err("Failed to restore encryption mask for Quote buffer, leak it\n");
++		return;
 +	}
 +
-+	certs_address = buf + report_size;
-+	struct snp_ext_report_req ext_req = {
-+		.data = { .vmpl = desc->privlevel },
-+		.certs_address = (__u64)certs_address,
-+		.certs_len = ext_size,
-+	};
-+	memcpy(&ext_req.data.user_data, desc->inblob, desc->inblob_len);
++	free_pages_exact(buf, len);
++}
 +
-+	struct snp_guest_request_ioctl input = {
-+		.msg_version = 1,
-+		.req_data = (__u64)&ext_req,
-+		.resp_data = (__u64)buf,
-+		.exitinfo2 = 0xff,
-+	};
-+	struct snp_req_resp io = {
-+		.req_data = KERNEL_SOCKPTR(&ext_req),
-+		.resp_data = KERNEL_SOCKPTR(buf),
-+	};
++static void *alloc_quote_buf(void)
++{
++	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
++	unsigned int count = len >> PAGE_SHIFT;
++	void *addr;
 +
-+	ret = get_ext_report(snp_dev, &input, &io);
++	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
++	if (!addr)
++		return NULL;
 +
++	if (set_memory_decrypted((unsigned long)addr, count)) {
++		free_pages_exact(addr, len);
++		return NULL;
++	}
++
++	return addr;
++}
++
++/*
++ * wait_for_quote_completion() - Wait for Quote request completion
++ * @quote_buf: Address of Quote buffer.
++ * @timeout: Timeout in seconds to wait for the Quote generation.
++ *
++ * As per TDX GHCI v1.0 specification, sec titled "TDG.VP.VMCALL<GetQuote>",
++ * the status field in the Quote buffer will be set to GET_QUOTE_IN_FLIGHT
++ * while VMM processes the GetQuote request, and will change it to success
++ * or error code after processing is complete. So wait till the status
++ * changes from GET_QUOTE_IN_FLIGHT or the request being timed out.
++ */
++static int wait_for_quote_completion(struct tdx_quote_buf *quote_buf, u32 timeout)
++{
++	int i = 0;
++
++	/*
++	 * Quote requests usually take a few seconds to complete, so waking up
++	 * once per second to recheck the status is fine for this use case.
++	 */
++	while (quote_buf->status == GET_QUOTE_IN_FLIGHT && i++ < timeout) {
++		if (msleep_interruptible(MSEC_PER_SEC))
++			return -EINTR;
++	}
++
++	return (i == timeout) ? -ETIMEDOUT : 0;
++}
++
++static int tdx_report_new(struct tsm_report *report, void *data)
++{
++	u8 *buf, *reportdata = NULL, *tdreport = NULL;
++	struct tdx_quote_buf *quote_buf = quote_data;
++	struct tsm_desc *desc = &report->desc;
++	int ret;
++	u64 err;
++
++	/* TODO: switch to guard(mutex_intr) */
++	if (mutex_lock_interruptible(&quote_lock))
++		return -EINTR;
++
++	/*
++	 * If the previous request is timedout or interrupted, and the
++	 * Quote buf status is still in GET_QUOTE_IN_FLIGHT (owned by
++	 * VMM), don't permit any new request.
++	 */
++	if (quote_buf->status == GET_QUOTE_IN_FLIGHT) {
++		ret = -EBUSY;
++		goto done;
++	}
++
++	if (desc->inblob_len != TDX_REPORTDATA_LEN) {
++		ret = -EINVAL;
++		goto done;
++	}
++
++	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
++	if (!reportdata) {
++		ret = -ENOMEM;
++		goto done;
++	}
++
++	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
++	if (!tdreport) {
++		ret = -ENOMEM;
++		goto done;
++	}
++
++	memcpy(reportdata, desc->inblob, desc->inblob_len);
++
++	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
++	ret = tdx_mcall_get_report0(reportdata, tdreport);
++	if (ret) {
++		pr_err("GetReport call failed\n");
++		goto done;
++	}
++
++	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
++
++	/* Update Quote buffer header */
++	quote_buf->version = GET_QUOTE_CMD_VER;
++	quote_buf->in_len = TDX_REPORT_LEN;
++
++	memcpy(quote_buf->data, tdreport, TDX_REPORT_LEN);
++
++	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
++	if (err) {
++		pr_err("GetQuote hypercall failed, status:%llx\n", err);
++		ret = -EIO;
++		goto done;
++	}
++
++	ret = wait_for_quote_completion(quote_buf, getquote_timeout);
++	if (ret) {
++		pr_err("GetQuote request timedout\n");
++		goto done;
++	}
++
++	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
++	if (!buf) {
++		ret = -ENOMEM;
++		goto done;
++	}
++
++	report->outblob = buf;
++	report->outblob_len = quote_buf->out_len;
++
++	/*
++	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
++	 * provided
++	 */
++done:
++	mutex_unlock(&quote_lock);
++	kfree(reportdata);
++	kfree(tdreport);
++
++	return ret;
++}
++
+ static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
+ 			    unsigned long arg)
+ {
+@@ -82,17 +278,48 @@ static const struct x86_cpu_id tdx_guest_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(x86cpu, tdx_guest_ids);
+ 
++static const struct tsm_ops tdx_tsm_ops = {
++	.name = KBUILD_MODNAME,
++	.report_new = tdx_report_new,
++};
++
+ static int __init tdx_guest_init(void)
+ {
++	int ret;
++
+ 	if (!x86_match_cpu(tdx_guest_ids))
+ 		return -ENODEV;
+ 
+-	return misc_register(&tdx_misc_dev);
++	ret = misc_register(&tdx_misc_dev);
 +	if (ret)
 +		return ret;
 +
-+	memcpy(&hdr, buf, sizeof(hdr));
-+	if (hdr.status == SNP_REPORT_INVALID_PARAM)
-+		return -EINVAL;
-+	if (hdr.status == SNP_REPORT_INVALID_KEY_SEL)
-+		return -EINVAL;
-+	if (hdr.status)
-+		return -ENXIO;
-+	if ((hdr.report_size + sizeof(hdr)) > report_size)
-+		return -ENOMEM;
-+
-+	void *rbuf __free(kvfree) = kvzalloc(hdr.report_size, GFP_KERNEL);
-+	if (!rbuf)
-+		return -ENOMEM;
-+
-+	memcpy(rbuf, buf + sizeof(hdr), hdr.report_size);
-+	report->outblob = no_free_ptr(rbuf);
-+	report->outblob_len = hdr.report_size;
-+
-+	for (i = 0; i < ext_size / sizeof(struct snp_msg_cert_entry); i++) {
-+		struct snp_msg_cert_entry *certs = buf + report_size;
-+
-+		if (memcmp(&certs[i], &zero_ent, sizeof(zero_ent)) == 0)
-+			break;
-+		certs_size += certs[i].length;
-+	}
-+	cert_count = i;
-+
-+	/* No certs to report */
-+	if (cert_count == 0)
-+		return 0;
-+
-+	/* sanity check that the entire certs table with metadata fits */
-+	if ((cert_count + 1) * sizeof(zero_ent) + certs_size > ext_size)
-+		return -ENXIO;
-+
-+	void *cbuf __free(kvfree) = kvzalloc(certs_size, GFP_KERNEL);
-+	if (!cbuf)
-+		return -ENOMEM;
-+
-+	/* Concatenate returned certs */
-+	for (i = 0, offset = 0; i < cert_count; i++) {
-+		struct snp_msg_cert_entry *certs = buf + report_size;
-+
-+		memcpy(cbuf + offset, certs_address + certs[i].offset, certs[i].length);
-+		offset += certs[i].length;
++	quote_data = alloc_quote_buf();
++	if (!quote_data) {
++		pr_err("Failed to allocate Quote buffer\n");
++		ret = -ENOMEM;
++		goto free_misc;
 +	}
 +
-+	report->certs = no_free_ptr(cbuf);
-+	report->certs_len = certs_size;
++	ret = tsm_register(&tdx_tsm_ops, NULL, NULL);
++	if (ret)
++		goto free_quote;
 +
 +	return 0;
-+}
 +
-+static const struct tsm_ops sev_tsm_ops = {
-+	.name = KBUILD_MODNAME,
-+	.report_new = sev_report_new,
-+};
++free_quote:
++	free_quote_buf(quote_data);
++free_misc:
++	misc_deregister(&tdx_misc_dev);
 +
-+static void unregister_sev_tsm(void *data)
-+{
-+	tsm_unregister(&sev_tsm_ops);
-+}
-+
- static int __init sev_guest_probe(struct platform_device *pdev)
- {
- 	struct snp_secrets_page_layout *layout;
-@@ -841,6 +972,14 @@ static int __init sev_guest_probe(struct platform_device *pdev)
- 	snp_dev->input.resp_gpa = __pa(snp_dev->response);
- 	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
++	return ret;
+ }
+ module_init(tdx_guest_init);
  
-+	ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_ext_type);
-+	if (ret)
-+		goto e_free_cert_data;
-+
-+	ret = devm_add_action_or_reset(&pdev->dev, unregister_sev_tsm, NULL);
-+	if (ret)
-+		goto e_free_cert_data;
-+
- 	ret =  misc_register(misc);
- 	if (ret)
- 		goto e_free_cert_data;
+ static void __exit tdx_guest_exit(void)
+ {
++	tsm_unregister(&tdx_tsm_ops);
++	free_quote_buf(quote_data);
+ 	misc_deregister(&tdx_misc_dev);
+ }
+ module_exit(tdx_guest_exit);
 
