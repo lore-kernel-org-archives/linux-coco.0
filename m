@@ -1,142 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B686116;
-	Thu, 12 Oct 2023 04:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2ZXpXd3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC85C433C8;
-	Thu, 12 Oct 2023 04:37:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1697085460;
-	bh=WKRKh0vu+lvGkILyFkc21Gg7NJFJdo31kGHt149b6Yw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=O2ZXpXd3qxrWT/U+L5Vg2+ZMY020MyCEIEfTRnWCs10Q47+Edcf1eUfbKNceFn18X
-	 GXn9+C1E3xDY9eSK8PirTh2Sh8AEdkDHUgt4D1X23uyPuxUAo3E0PbawhXUnKa8afZ
-	 wWFGRyqfZ3b0jXoDyJSAb/YoTB4QxXTIUok7R6dQqISYXGUarEehor/V6vSTIYExa/
-	 OkRBbIjSvxucQ1DBgn2gsGiQRy8MxHp9cnyhWuKur1R8VZ7MZdLKlIUiJeZHq41gdg
-	 zS+kLzAgEWw2O+K8k09av3yyOllgdil5akGob/T7C2x7G2U2dxg7+i/Nz/21BV51Ln
-	 nKJq7hBNkqfvw==
-Message-ID: <0340908d-8d23-4553-be46-50bab7fe053a@kernel.org>
-Date: Thu, 12 Oct 2023 13:37:36 +0900
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6ACFDDDB
+	for <linux-coco@lists.linux.dev>; Thu, 12 Oct 2023 07:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 904BD2800B1AF;
+	Thu, 12 Oct 2023 09:16:29 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 821D9224D1; Thu, 12 Oct 2023 09:16:29 +0200 (CEST)
+Date: Thu, 12 Oct 2023 09:16:29 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Alistair Francis <Alistair.Francis@wdc.com>
+Cc: "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	"graf@amazon.com" <graf@amazon.com>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"ming4.li@intel.com" <ming4.li@intel.com>,
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+	"helgaas@kernel.org" <helgaas@kernel.org>,
+	"alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"zhi.a.wang@intel.com" <zhi.a.wang@intel.com>,
+	"dwmw2@infradead.org" <dwmw2@infradead.org>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+	"aik@amd.com" <aik@amd.com>,
+	"david.e.box@intel.com" <david.e.box@intel.com>,
+	"linuxarm@huawei.com" <linuxarm@huawei.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"dhowells@redhat.com" <dhowells@redhat.com>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>
+Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+Message-ID: <20231012071629.GA6305@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+ <20231003153937.000034ca@Huawei.com>
+ <caf11c28d21382cc1a81d84a23cbca9e70805a87.camel@wdc.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
-Content-Language: en-US
-To: Alistair Francis <Alistair.Francis@wdc.com>,
- "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
- "lukas@wunner.de" <lukas@wunner.de>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Wilfred Mallawa <wilfred.mallawa@wdc.com>, "graf@amazon.com"
- <graf@amazon.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "davem@davemloft.net" <davem@davemloft.net>,
- "ming4.li@intel.com" <ming4.li@intel.com>,
- "herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
- "helgaas@kernel.org" <helgaas@kernel.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "zhi.a.wang@intel.com" <zhi.a.wang@intel.com>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>,
- "dave.jiang@intel.com" <dave.jiang@intel.com>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "aik@amd.com" <aik@amd.com>, "david.e.box@intel.com"
- <david.e.box@intel.com>, "linuxarm@huawei.com" <linuxarm@huawei.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "dhowells@redhat.com" <dhowells@redhat.com>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>
-References: <cover.1695921656.git.lukas@wunner.de>
- <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
- <20231003153937.000034ca@Huawei.com>
- <caf11c28d21382cc1a81d84a23cbca9e70805a87.camel@wdc.com>
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <caf11c28d21382cc1a81d84a23cbca9e70805a87.camel@wdc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On 10/12/23 12:26, Alistair Francis wrote:
+On Thu, Oct 12, 2023 at 03:26:44AM +0000, Alistair Francis wrote:
 > On Tue, 2023-10-03 at 15:39 +0100, Jonathan Cameron wrote:
->> On Thu, 28 Sep 2023 19:32:37 +0200
->> Lukas Wunner <lukas@wunner.de> wrote:
->>
->>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>
->>> The Security Protocol and Data Model (SPDM) allows for
->>> authentication,
->>> measurement, key exchange and encrypted sessions with devices.
->>>
->>> A commonly used term for authentication and measurement is
->>> attestation.
->>>
->>> SPDM was conceived by the Distributed Management Task Force (DMTF).
->>> Its specification defines a request/response protocol spoken
->>> between
->>> host and attached devices over a variety of transports:
->>>
->>>   https://www.dmtf.org/dsp/DSP0274
->>>
->>> This implementation supports SPDM 1.0 through 1.3 (the latest
->>> version).
->>
->> I've no strong objection in allowing 1.0, but I think we do need
->> to control min version accepted somehow as I'm not that keen to get
->> security folk analyzing old version...
+> > On Thu, 28 Sep 2023 19:32:37 +0200 Lukas Wunner <lukas@wunner.de> wrote:
+> > > This implementation supports SPDM 1.0 through 1.3 (the latest
+> > > version).
+> > 
+> > I've no strong objection in allowing 1.0, but I think we do need
+> > to control min version accepted somehow as I'm not that keen to get
+> > security folk analyzing old version...
 > 
 > Agreed. I'm not sure we even need to support 1.0
-> 
->>
->>> It is designed to be transport-agnostic as the kernel already
->>> supports
->>> two different SPDM-capable transports:
->>>
->>> * PCIe Data Object Exchange (PCIe r6.1 sec 6.30, drivers/pci/doe.c)
->>> * Management Component Transport Protocol (MCTP,
->>>   Documentation/networking/mctp.rst)
->>
->> The MCTP side of things is going to be interesting because mostly you
->> need to jump through a bunch of hoops (address assignment, routing
->> setup
->> etc) before you can actually talk to a device.   That all involves
->> a userspace agent.  So I'm not 100% sure how this will all turn out.
->> However still makes sense to have a transport agnostic implementation
->> as if nothing else it makes it easier to review as keeps us within
->> one specification.
-> 
-> This list will probably expand in the future though
-> 
->>>
->>> Use cases for SPDM include, but are not limited to:
->>>
->>> * PCIe Component Measurement and Authentication (PCIe r6.1 sec
->>> 6.31)
->>> * Compute Express Link (CXL r3.0 sec 14.11.6)
->>> * Open Compute Project (Attestation of System Components r1.0)
->>>  
->>> https://www.opencompute.org/documents/attestation-v1-0-20201104-pdf
->>
->> Alastair, would it make sense to also call out some of the storage
->> use cases you are interested in?
-> 
-> I don't really have anything to add at the moment. I think PCIe CMA
-> covers the current DOE work
 
-Specifications for SPDM encapsulation in SCSI and ATA commands (SECURITY
-PROTOCOL IN/OUT and TRUSTED SNED/RECEIVE) is being worked on now but that is
-still in early phases of definition. So that support can come later. I suspect
-the API may need some modification to accommodate that use case, but we need
-more complete specification first to clearly see what is needed (if anything at
-all).
+According to PCIe r6.1 page 115 ("Reference Documents"):
 
+   "CMA requires SPDM Version 1.0 or above.  IDE requires SPDM Version 1.1
+    or above.  TDISP requires version 1.2 or above."
 
--- 
-Damien Le Moal
-Western Digital Research
+This could be interpreted as SPDM 1.0 support being mandatory to be
+spec-compliant.  Even if we drop support for 1.0 from the initial
+bringup patches, someone could later come along and propose a patch
+to re-add it on the grounds of the above-quoted spec section.
+So I think we can't avoid it.
 
+Thanks,
+
+Lukas
