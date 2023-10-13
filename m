@@ -1,51 +1,56 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2061.outbound.protection.outlook.com [40.107.212.61])
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2063.outbound.protection.outlook.com [40.107.212.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6DE11CBC
-	for <linux-coco@lists.linux.dev>; Fri, 13 Oct 2023 15:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787F819BB2
+	for <linux-coco@lists.linux.dev>; Fri, 13 Oct 2023 15:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="I6clgWP9"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o2ey+xOZ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G08YNxdXSXiZovsps5TpzQL0L3C13IiLIq6PJ+6ZiWMJVqqZmrUA9I3NRf5U6sJSLv/MEPXFwjHWh3NmV+ygQ1HAsQE1i7da+TC7IgY777ajdMFzEFeekQdamMNWJr/LnHbT/i7hf2OyeSY1eO90cWluL+lLYFQbVlcpq/GhdUyzxlq4twncexRaidiERH2126AG/VWTLDmMR0/doORq+hEaX/w/HkqDlD4LJIUM2aEPOV5iPLCDJlTvz2vgrjldZ3mwHf9vIxGDFbEUeNib1RBZ5Rq93VFeGTDWm28Y3RqXBIjsJc6tDRclM4RYEH9baBE17SiGx43Rz59I0aksYw==
+ b=es7peDVOEZlS5Pupjm34098cJYoz4OqElvRg/Y9nl5vlLJLlzr7ZTg3gW9Rr8wHXNdX9AvH7uF0XlI9QmZWLAdKInDzSO2LvlgvrxWbhLVz+k5pbw+6DIwwfaJ4eeWg8Jo3ITvWmRt/NZL4MoUZRNpPVQ27WZbdvw5VoMTvugQFuZaROWbrR5TSGeJpA3Zsh8gJcmH9BKPs5ZCBAM7bdpLUg5r5hBr2ep1NvpSyRxdSwHyeLeQBVqNcp4vEtkkGa6jUFpGwGWtb4HBQI4jNx5EtttvHaWPGyiwG//2EKws2KwsXWf0H7s5dtyR4o5JixJ+5rgUq+DxySc7cePUVLYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DnZQG/S5vb8Jmv85/n/i/EDpC+xdlm+sY4tdqcv/fSg=;
- b=gejRVfHP5VygWPxuQp2QJ6QDRox00euTZFp02nB0gEINdy2hXPmibI4+qaJWt4mVpPwEEC0U8I0xE5XAQ48ymxROm7cgi5spx8/5IkKowoCLmUJpiGg+lvhcbjVWPpAUbAJAjNTFxQ8UkRxte02ziWnTjoAaLnLlxqlubutRDX/9vF/zG8pU48BxXILvqEbtIj2+kRpm5YRW/TdGZAcyzdpg2VEMS7t417tdPmigszFNM+NAX2oe3IFNDJviT6kvcx/heP781TDwBmb5a/epD+WEMVbXwoG2NmpNtrFdj8AsjniCmfGmx+6eH8Ai5pyVjlhmL9l5q7lph9x8L5+BhQ==
+ bh=7esKV4uXIVjkuGNFMnTKwfoSvgnfu6tyanl9YPQfD7Y=;
+ b=nl7xY60FdvW8GtxPXcj4ymxPLnIo1n1C4W+oO4nWbDkk/Jkr646dkUniHb9QLtsVPrJDJ6Yt58Z2FlYzLz8maTBbt0yL8SjI5j2zfdd1kQ4MBOeJ0rsDE7PVDbKdKqye1Inncadqy3yAv1edm6ROeEf4N9RcFUyZgOhWZonAMAbZDRAsgIpPlaeJogPMMqNC91SBxtIXZ5QHAJdCxyKnz02bMaNwVBO9iX5GonW96qnc4DWfuxaQ6gTmyfAeFsHN6ihYVNnBfqST5rImiOrozV/MnXeqDmprAV31UFFiDvZt8dyX1uDOM4Cwqh71unIewejKGZYhNK9AyN/6F8uQog==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DnZQG/S5vb8Jmv85/n/i/EDpC+xdlm+sY4tdqcv/fSg=;
- b=I6clgWP9dnFhEQdZ4ryemHBgrCrhoSDsFR0yKehF6unK+D8GmntMKtWrDB0J8pwCncbW+h35l9KNZ/bJ2ysW1cn9a5WlK02KuX9u0csRDHIwO/kNJyPeOhvvPG0drhAwOOvsT9zMpY+c/NIsBRoqP3sZk9xdqjXGC2V2kOY6KXI=
+ bh=7esKV4uXIVjkuGNFMnTKwfoSvgnfu6tyanl9YPQfD7Y=;
+ b=o2ey+xOZsNkR/0SjygDick0iZ5MBgO2xZe0AMtZhQhjjIMvHi9X2N5L4xpUSvC5mLrW+PkK6ZovAkuiNRRr3zMWEDtzTL4uj+2piKKkFpNeeXpUC3luAWmcqYZeXYElOXF+2x8XlRlMDENO40Qfh16mQ46aDVmO1n8Kkud0bA8U=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17)
  by SN7PR12MB7108.namprd12.prod.outlook.com (2603:10b6:806:2a3::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.46; Fri, 13 Oct
- 2023 15:38:56 +0000
+ 2023 15:39:41 +0000
 Received: from BL1PR12MB5732.namprd12.prod.outlook.com
  ([fe80::a13:336d:96a5:b7bf]) by BL1PR12MB5732.namprd12.prod.outlook.com
  ([fe80::a13:336d:96a5:b7bf%4]) with mapi id 15.20.6863.043; Fri, 13 Oct 2023
- 15:38:55 +0000
-Message-ID: <4778317a-af55-40a6-912c-cc685cb431d9@amd.com>
-Date: Fri, 13 Oct 2023 10:38:53 -0500
+ 15:39:41 +0000
+Message-ID: <fedb69c2-3277-4512-a8a2-55898822c81a@amd.com>
+Date: Fri, 13 Oct 2023 10:39:39 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 6/7] virt: sevguest: Add TSM_REPORTS support for
- SNP_GET_EXT_REPORT
+Subject: Re: [PATCH v6 0/7] configfs-tsm: Attestation Report ABI
 Content-Language: en-US
 To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: Borislav Petkov <bp@alien8.de>, Dionna Glaze <dionnaglaze@google.com>,
- Brijesh Singh <brijesh.singh@amd.com>,
- Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+Cc: Brijesh Singh <brijesh.singh@amd.com>,
  Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- peterz@infradead.org, dave.hansen@linux.intel.com
+ Erdem Aktas <erdemaktas@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Peter Gonda <pgonda@google.com>, Borislav Petkov <bp@alien8.de>,
+ Dionna Amalie Glaze <dionnaglaze@google.com>,
+ Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Samuel Ortiz <sameo@rivosinc.com>,
+ Pankaj Gupta <pankaj.gupta@amd.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ dave.hansen@linux.intel.com
 References: <169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com>
- <169716326994.984874.4170603294020542086.stgit@dwillia2-xfh.jf.intel.com>
 From: Tom Lendacky <thomas.lendacky@amd.com>
 Autocrypt: addr=thomas.lendacky@amd.com; keydata=
  xsFNBFaNZYkBEADxg5OW/ajpUG7zgnUQPsMqWPjeAxtu4YH3lCUjWWcbUgc2qDGAijsLTFv1
@@ -91,7 +96,7 @@ Autocrypt: addr=thomas.lendacky@amd.com; keydata=
  6irTe/qtb/1CMFFtcqDorjI3hkc10N0jzPOsjS8bhpwKeUwGsgvXWGEqwlEDs2rswfAU/tGZ
  7L30CgQ9itbxnlaOz1LkKOTuuxx4A+MDMCHbUMAAP9Eoh/L1ZU0z71xDyJ53WPBd9Izfr9wJ
  1NhFSLKvfA==
-In-Reply-To: <169716326994.984874.4170603294020542086.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: SN7PR04CA0196.namprd04.prod.outlook.com
@@ -105,294 +110,143 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BL1PR12MB5732:EE_|SN7PR12MB7108:EE_
-X-MS-Office365-Filtering-Correlation-Id: defe7fb5-f239-40ce-9ea8-08dbcc0282ac
+X-MS-Office365-Filtering-Correlation-Id: 728cd4a1-83db-4a71-83d1-08dbcc029ddf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	txK850Garocsdp3u7MYYF7b5g1FyJsEZX0bn+iwBkSfw7YAc4ZBn3ydEVt1N6J09KW491bGglaKvpoUcYZNV+w1akR9aMeD7iAcRF1MRI71tHiuyyf5CTA9dXfK7urALejvwhJ6DZRce5Xf8iKFyS4ybak9ttXFKg8AryUgrQDXyEmCwoTkNMHr+sv6EBoWdi2UqpmOBVXxIFFQiwcsZlxhhTTtl6ekY4PERS9Vnj7q+wEYMe3dal3+YbNJANuXxSDv3UpSa19Hv1JrPgtpzbte4KCivQ5CX05QVFOAzNCrMmpxzDra7E5TCL0d7uIOTm6eMQm/3jCiY8cCFsmeytn7ctfBpvYRO+lAsGIofHTO82mabm3MAxRR8umDsWSWk1QJuu8MdGWau3VSApDgwnOR0DQPHWIUuOiVFjmH7xrXy81xurh266/cZwo28QEjJ4iBYsVczNqvZOZE9KEHxSPkBRYmPt3DQzJri3RN6Vh1w52lG8CWnOsraKGmd53Xk1RtntiEarZH5LvxPgN4XlVqVYALG4eH2/ddywdu/DGzmmIIG/TFRstSvx+tbsjV4imWYzZV2HiEJ/g6UYnpV3M2gmo+Vq90n0u+3ONPk0fRuaB1QW3dueYRszJexUE4ErS9B+IxH9LbUwEAqE5OLaw==
+	n13vzMYm4+XNkge4jTDztj7E4CUIqtaaLhz6vjrtacwIyMmbGqoUxTQmF0jrNJX4AC+OwPPR5vHPEMWI8MF+C17rXctb9q1B04S4QvrlcwANa6P4/6rZoYQ6Ndw/Zba1CZi/A34LSZ4OKhCqsiY+c8GaNZskyLjTRmaJHGroYQj0eAbZ2Tt0ikIA1M/9czVk8bfGsba5yq1h85UHPyZeTLgZw38ZHfWLhgx4jhSfdKoUR5FfislLvJmEfi9O3c+BNOQ/KIIumB6x8glDfO7RLGwJbh9xKsDV2VfMc8c2Zgzz6ShIrL7QddVO+nq2cASRjmO572xHE0PRhyxOOMxR7AXQI40VkDfH9kYU0uF1JSdLt25vDhQPiJiXxO/vdmentqlQWsYIcSit8Pt7KjLv5Gxt6Db5cxWhxwsJdMw9u715lNpLlXcoOj2ln2snjx8XmAj7RtH53pI31rmb2icRG4N5BdTWDkZdOnUR2+lqNAQlR6rhDQr3ddly6q9uiYHAqJj7FLz45W3j2Mf3wjOxHhUMpDQMdHKjrp10p3z1Mes2BDQ5jtdtqHJSeZEP/w2hW5UiH2lrXP2Nl36rzbQNgIBt/KvOj90yBOtpJR8qacgULf7YpH64QUZ9FOfT2YdiTKQygrea0LJxqpFRWc86TRKa6Fzh2zfL/v6EHAeHYadIg5a5ydOoKA82RfkIfj1B
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(396003)(39860400002)(136003)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(6506007)(53546011)(83380400001)(31686004)(26005)(38100700002)(6512007)(31696002)(86362001)(2906002)(66556008)(5660300002)(966005)(6486002)(4326008)(8676002)(8936002)(2616005)(316002)(66946007)(54906003)(66476007)(41300700001)(36756003)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5732.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(396003)(39860400002)(136003)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(6506007)(53546011)(83380400001)(31686004)(26005)(38100700002)(6512007)(31696002)(7416002)(86362001)(2906002)(66556008)(5660300002)(966005)(6486002)(4326008)(8676002)(8936002)(2616005)(316002)(66946007)(54906003)(66476007)(41300700001)(36756003)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UlRUd29nb2VZZlg5ZDNPam1GSGhyVVpjZEhkSmJrUXcrTFlnYUVtNUt4Q1My?=
- =?utf-8?B?bWs5NmtTNWplNFgvc0dZeEp1R2YxT3ZGenk0NEJVUFhYeGxWZGFGVWU0RVg5?=
- =?utf-8?B?WGxiQ1J1UVRFUStPWWtQSjB0NE54dE93dCtYNUovWXh3TTZvT1I4a1h3ckhU?=
- =?utf-8?B?ZXJWK0wydmZ5WmF6N2E2V0RjU1QwZURJVUhFNUhUQW9hMUh2dC9icnNUSU52?=
- =?utf-8?B?TjhkbEdWQWJRek54NW5rRDhveEJETzlna2RTQ0VqY2xUT0tESENmbVorL0gx?=
- =?utf-8?B?YW96S2JCS1prUDZiMzRCQlA1VHZ2OUpQb2xqcHZwNS9oLzczaUk0YWg2V3cv?=
- =?utf-8?B?ZlhCdmRRTG5MdFRkWE5jc1FRSFpwa1FXLy92cWt2V05qZmVLRzQ4dDV5Rk9I?=
- =?utf-8?B?bzcvRXByNnRmTU5EVmFVTkN5UHdNY1R6ZjhDS2tHRDdSeFRWRXY4YnA4S1c5?=
- =?utf-8?B?TlpKU3FkcEFvaU54L1o0dnFOaHZTNEFCY3RkN3ErVnozZzlxMHVDdGVQNnVM?=
- =?utf-8?B?dXVNMnlLK0I1VHEzaVFCSmVjSUJicXFKTW9EVkxIWHplV1IyNVBVWVhnNHZK?=
- =?utf-8?B?Si8rY2VmczhrbVorY2NrYXBjc3BzeEpEUHZpRGpwZ1VWTDc1WCtyTGt5ZFU0?=
- =?utf-8?B?WmZST0p6aERkV2JOVW9nUlduc1pPd0orY2loeUJRaWwraS94M2pRYVVYT2Fy?=
- =?utf-8?B?clFlVkNxSU5CanRzOGxmNnR4QWh6cmFiM2pkK3dsbHpvVUhjcWJyTW9jYUdK?=
- =?utf-8?B?cHI5aUhFaDhHU2o0NUhqOGkxeDQ2aG5mWEVPS2lrMlBlWU1QMFl0Tkl5aW01?=
- =?utf-8?B?czZqbUdkZEJkQzUweWdMaGNVREljdWpDbC9keWdQOFZEbHlpK1lEZzRxRUhR?=
- =?utf-8?B?azgzMWkwQ3NOU0JYQldaa3hiaUtCbnBubCtQbkNKaC91czA3QWNtZVA2MDM5?=
- =?utf-8?B?ZVFYQkdPK0FCMXpsekp1Q3dRZGl5RjlrNGYzR3JOcE9VeklEK2RrTjZnYXkv?=
- =?utf-8?B?SjRLTXQwTlFyanFOTGdQYnlpc2xwZ2g2M2hmWlVEYVM0YWpyU1FDbHdaK1ZM?=
- =?utf-8?B?K2lOelpTUjVIajNhRXFLbGI2azdXdjFoUTBlK1hybUhaNVNtOWpBeHpja0tJ?=
- =?utf-8?B?T2ZBd1BPWVdVMmVhWCtwU2JZRmFOK3BQMmVRUEJJbU5Gb3doL0RLaDl0UGVa?=
- =?utf-8?B?bWdVYlV6aW0rYU03ZmJNWElma1VuQ21KeVg1cWZoNTdSbEhNVjZyNDI5a29o?=
- =?utf-8?B?eHFFcUtMdS9wUWJybGJmOGRPUU4zc1Q4Z25lLzdlb1NKeVNzZ0wxTGJOZjJm?=
- =?utf-8?B?bzg2M1o4MStNblhvR29lQ3E1Y1FnYnRKc3ZhSFhINFlKQVcxQm5MNXE1N0dp?=
- =?utf-8?B?dWdwS01GSU5WK1gvK3NTeWpNQjczeDNhQmg5b1BCOTl4dnUxOW51cCt6UWtq?=
- =?utf-8?B?S1dRbXhMN0swMG1BRlViVWxkZmhMVVNNeVpFWHlYSUY2TkNBRHRodDlYVHJu?=
- =?utf-8?B?SEVBUUNSMHFyVzlweU14MGpPNktNZEtaQXZMUTJYbTVteEJ2WS9WaWJGT1Nn?=
- =?utf-8?B?azh4TWxtOHJSQWFHeXcydnZnYlNmaTA2RWdIaklHV2VKVWlhUi9jYnVJQlox?=
- =?utf-8?B?V05ldzM0aStsVGt5QndwRGZzMERYT1kwM1EwVzd4cEF4NFNIS0FvM2hkMVJK?=
- =?utf-8?B?WHRsNGlhVVhKMytLNDA4T0VMdW1VcU9VUkFOdmJ3Um5aOVoxWXRiQU5SYWpR?=
- =?utf-8?B?aXNlc2pTQ3RQT2EvcjJkNnlrV3JJaC93c2dOL1czNzkxdURHd0FqTjM3Ui9i?=
- =?utf-8?B?TkRCaDV5d2dtU1NnMWEweEcwd1h4QzBETVZoVWdxVTFoUElIUVltVVZuem5J?=
- =?utf-8?B?SFd6TGtMU2owYTRNTTIrOHNqeG0wRUZzM2Q3RjVwb2QxODNiek82SXYxUWFW?=
- =?utf-8?B?cnI1MzViaFA1Qy9mZjFkTkNqUjExRktPbjFxbFI2dWVJczZocTU1L0MxMmNq?=
- =?utf-8?B?czBMdFBnWnVIYzBkMjg1RHY1d004Vnp0bDl1ck9FZDBKSVNlaDkvK2I0L0lv?=
- =?utf-8?B?U3BiL2tpSmFYMEsyZGRzOWplamwzMUZoZG5QMjJ1R2UvZDhWY3lvUGROWC9C?=
- =?utf-8?Q?Gujz0PihRyAEgawh/qgM/szgJ?=
+	=?utf-8?B?MEtCMFdRdkl5dGRHZmhyUEtWR0tQd3FwWmVoM1hnVjBpNWUvOWQvTitQZ2hl?=
+ =?utf-8?B?TEJjL1VRd0YzVTFjcjlrMEFDVjQ3M281UjJtaVNmdDJqWVdhQjVmMjBha20w?=
+ =?utf-8?B?TXNWRVRsdUo0akUvYnpJS1M1Nk84dTN1bXkwUFFiK29NNWgxbEhwRE5tT0xx?=
+ =?utf-8?B?ZEtDcFhpM2E1KzNwK2NQYzBjK2VMMVpENjMyK3pGdGx1MFdsbDVGakxuZ0RF?=
+ =?utf-8?B?TnJCejVjdFdlUFlZdEpSbWRqRGFJeUdaNnZ1NjlpWkRaTUtIekpGVGdhQThp?=
+ =?utf-8?B?QXJqdUxuSllJRXdJZlY0TE9KUGpCbWQyNzBEY0hEajdDV3NzQmIwbFgwaTAv?=
+ =?utf-8?B?bDJiZzEvS0NSenVwakFNcG1Ha21aQXJUOVowYkFvVUFWUFF4WmJRK3hyQS9L?=
+ =?utf-8?B?QTBtdWZ4QjZ4VndrSGJMQkFwSHIzbXlnQThTTlRqVWZ5Rm9hdDRIY1FFMGtW?=
+ =?utf-8?B?b2d6Y0xWMUFEaEVhMHlsWGJ5dDFxZlJLTC9nQWNTUnBoT1ZmQlJWYkRycGdI?=
+ =?utf-8?B?bUs4TCtPckthcHFMUFJHVzJoa3JCNG1yL3E3S0ZoeDY1WjRoSk9weit0V0tl?=
+ =?utf-8?B?RzVpZUtQVmhUVlBJM2piekpGekU5MDBDbzIzQzlLSUtnclp5c3FsbUJzSW11?=
+ =?utf-8?B?aFhIMkp5a2xkY1hobnBSSng1am9KZ3E4Vk1STENuSVB3RFBSWlgvMUxROGdm?=
+ =?utf-8?B?S3pjS1RrQmJyZVV3Yi93UUx3QW9EZDV2K2Zjc1BxZE12eGFsSVlUMFZhYTNy?=
+ =?utf-8?B?aDJ4TkxmaVZRNE4wRUpDbWwwUWtnZ2xGZVdldVhuTENNdEE5MzdMZXRMTXZV?=
+ =?utf-8?B?UHFRNFp0MDN0SE4vMU00dUhRdHAvRDd2UDJ1TXV6Y0pFNlIzR2x5WXpKY1Ny?=
+ =?utf-8?B?K09sNlMxNExGYW9tdzNEenlXeC8xYVUwa2lHU1FpTWFucUNWSklYWmsrSkZ6?=
+ =?utf-8?B?RFkrUCtUcERuMlZVcmZaTVMwT01vRjZsZHJFMDhKaHhkeDYwREJ1U3ZyRHl5?=
+ =?utf-8?B?eVI5cGVRUi9Cb1hraFdhUUZRV2hyY2RRWXZmaHA5dk9sUEF3OWxNNHk1RHVa?=
+ =?utf-8?B?V3FOaGVjZzlqeFpRbmgrYlZOQzNCK0pRdHQ2TE85ZllXbUhNZ2NGejJvdTlD?=
+ =?utf-8?B?UG5QT1FaLzNEUHRXL0tkSlJQRFhVcklTeXZNVFFWTHArMGNwTHhNQjgyR1Bo?=
+ =?utf-8?B?bGxkYjNQc0gxZWRsQitGZHBvWmgxc1lsaFo4V1I1YXB1azBoaGJsUnRFM3JM?=
+ =?utf-8?B?cHhjRjE0NWx3L2pFdUpTNmtPdS9kTDJBNFMzYk13Qm55dW9QeXhwRjYwUTRm?=
+ =?utf-8?B?TjNKQ3BRbXJPRlNlVUV5ZkVMSTdTczBta1lRejNXcjU4czgyY3lBV1E1Uk1J?=
+ =?utf-8?B?ZG5QcnNkNkpaVG1NdGNqS3NZOTR2aEhiQzEyOWdieUVsQmE0eDg1ZDJLbUV5?=
+ =?utf-8?B?aTR2SUZSeExGRWZyK1ovQUhZZnA3OGx0U3dDNXRyb201T3Z5alJRQmhmY2NW?=
+ =?utf-8?B?RUV4RGhTbmhPeGtoOUNKTHRiQUhlYVluZ2FqZ2ZveXRtSVdtMU1HSDBxU3Ax?=
+ =?utf-8?B?L0ZFZ3NpQmhjbmlLSzE5Q0ZwZGtCZXFkU09KQ0k1dGdiZmlMNGluQjB1R2Jo?=
+ =?utf-8?B?WDkwM01tTTR4N25ramRqeGNpa0RiNE1MRGtlUnRNQk9oYTZtbTFBVXU1VkNH?=
+ =?utf-8?B?Q3RsSnF6WjFGRjNrWXI2T05UMTE3UXBaNG56VVVQaExOMzVJWkJWS1BIRGIy?=
+ =?utf-8?B?RHdhWk9qMTlKTVhHcUhSSGc0aWpKVzFicEYxSURTR2EyOUNlTVZKRWdUZFNS?=
+ =?utf-8?B?SVJwR1hQT05ZSnVmek5sQ1J1dE5UdXpjOWE1dDRVT2VsTG5EL2Z1dnRiSFFO?=
+ =?utf-8?B?QktFZ3VvTHBPRzJ1bUsvSW5RRzZ5QTFlSkNDaDQ4a1orbkxTSnkzL1ovYzI3?=
+ =?utf-8?B?N3NkcCtTQmhnanZxc2pLc2NPZjVGTmI1ZDgrNXZQZFgyNlZDUHArd0pmYWZO?=
+ =?utf-8?B?bGZNSjdUNWxZdlNuZEp3T3lHbEJiOEVTODF1ZjBOZlNZREhmVDVzcnFicytQ?=
+ =?utf-8?B?c0VGNkNIQnQwT09GWEcxRzZNQnV4UEo1TVdVUWs4WldJdHYzNzc2cENVeU1C?=
+ =?utf-8?Q?VfOB1wTEls0lqX+Gi6607na2Q?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: defe7fb5-f239-40ce-9ea8-08dbcc0282ac
+X-MS-Exchange-CrossTenant-Network-Message-Id: 728cd4a1-83db-4a71-83d1-08dbcc029ddf
 X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5732.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 15:38:55.8828
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 15:39:41.4899
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Bv3pTY+2bXZ0WoclhQN1lcAz0b++E2JBoLAkNnQSHksnMtXtrBFmFo6W3HtQy2c4xE5m1GnuCk8n5Naj3MZypg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: EuYV4d8cw66axM8vYtYDcZ5yESr0YmMALC+kSKnfqiXzOhxDAsRU4oa6GpC+rl/oPcJLjJ3omHZq90wtgT3FAQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7108
 
-On 10/12/23 21:14, Dan Williams wrote:
-> The sevguest driver was a first mover in the confidential computing
-> space. As a first mover that afforded some leeway to build the driver
-> without concern for common infrastructure.
+On 10/12/23 21:13, Dan Williams wrote:
+> Changes since v5 [1]:
+> - Dump the raw cert_table via a new @auxblob attribute rather than
+>    concatenate the certificate data. (Dionna and Tom)
+> - Fix usage of guard(), drop erroneous copy-pasted mutex_unlock().
+>    (Tom)
 > 
-> Now that sevguest is no longer a singleton [1] the common operation of
-> building and transmitting attestation report blobs can / should be made
-> common. In this model the so called "TSM-provider" implementations can
-> share a common envelope ABI even if the contents of that envelope remain
-> vendor-specific. When / if the industry agrees on an attestation record
-> format, that definition can also fit in the same ABI. In the meantime
-> the kernel's maintenance burden is reduced and collaboration on the
-> commons is increased.
+> [1]: http://lore.kernel.org/r/169700203032.779347.11603484721811916604.stgit@dwillia2-xfh.jf.intel.com
 > 
-> Convert sevguest to use CONFIG_TSM_REPORTS to retrieve the data that
-> the SNP_GET_EXT_REPORT ioctl produces. An example flow follows for
-> retrieving the report blob via the TSM interface utility,
-> assuming no nonce and VMPL==2:
-> 
->      report=/sys/kernel/config/tsm/report/report0
->      mkdir $report
->      echo 2 > $report/privlevel
->      dd if=/dev/urandom bs=64 count=1 > $report/inblob
->      hexdump -C $report/outblob # SNP report
->      hexdump -C $report/auxblob # cert_table
->      rmdir $report
-> 
-> Given that the platform implementation is free to return empty
-> certificate data if none is available it lets configfs-tsm be simplified
-> as it only needs to worry about wrapping SNP_GET_EXT_REPORT, and leave
-> SNP_GET_REPORT alone.
-> 
-> The old ioctls can be lazily deprecated, the main motivation of this
-> effort is to stop the proliferation of new ioctls, and to increase
-> cross-vendor collaboration.
 
-Everything looks good. As for deprecating the ioctl(), you will probably 
-only be able to deprecate the certificate related portions of it. If we 
-ever have a common key derivation interface, then the complete ioctl() 
-could be deprecated.
+For the series:
 
-Thanks,
-Tom
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 
-> 
-> Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch [1]
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Tom Lendacky <thomas.lendacky@amd.com>
-> Cc: Dionna Glaze <dionnaglaze@google.com>
-> Cc: Brijesh Singh <brijesh.singh@amd.com>
-> Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-> Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
+> 
+> Merge notes: I am looking for Dave or Boris to pick this up, I believe
+> all outstanding comments have been resolved and this has now been
+> smoke-tested on AMD and Intel platforms (both v5 and v6).
+> 
+> ---
+> 
+> An attestation report is signed evidence of how a Trusted Virtual
+> Machine (TVM) was launched and its current state. A verifying party uses
+> the report to make judgements of the confidentiality and integrity of
+> that execution environment. Upon successful attestation the verifying
+> party may, for example, proceed to deploy secrets to the TVM to carry
+> out a workload. Multiple confidential computing platforms share this
+> similar flow.
+>   
+> The approach of adding adding new char devs and new ioctls, for what
+> amounts to the same logical functionality with minor formatting
+> differences across vendors [2], is untenable. Common concepts and the
+> community benefit from common infrastructure.
+>   
+> Use configfs for this facility for maintainability compared to ioctl(),
+> and for its scalability compared to sysfs. Atomicity can be enforced at
+> item creation time, and a conflict detection mechanism is included for
+> scenarios where multiple threads may share a single configuration
+> instance.
+>   
+> [2]: http://lore.kernel.org/r/cover.1684048511.git.sathyanarayanan.kuppuswamy@linux.intel.com
+> 
+> 
+> ---
+> 
+> Dan Williams (6):
+>        virt: sevguest: Fix passing a stack buffer as a scatterlist target
+>        virt: coco: Add a coco/Makefile and coco/Kconfig
+>        configfs-tsm: Introduce a shared ABI for attestation reports
+>        virt: sevguest: Prep for kernel internal get_ext_report()
+>        mm/slab: Add __free() support for kvfree
+>        virt: sevguest: Add TSM_REPORTS support for SNP_GET_EXT_REPORT
+> 
+> Kuppuswamy Sathyanarayanan (1):
+>        virt: tdx-guest: Add Quote generation support using TSM_REPORTS
+> 
+> 
+>   Documentation/ABI/testing/configfs-tsm  |   82 ++++++
+>   MAINTAINERS                             |    8 +
+>   arch/x86/coco/tdx/tdx.c                 |   21 ++
+>   arch/x86/include/asm/shared/tdx.h       |    1
+>   arch/x86/include/asm/tdx.h              |    2
+>   drivers/virt/Kconfig                    |    6
+>   drivers/virt/Makefile                   |    4
+>   drivers/virt/coco/Kconfig               |   14 +
+>   drivers/virt/coco/Makefile              |    8 +
 >   drivers/virt/coco/sev-guest/Kconfig     |    1
->   drivers/virt/coco/sev-guest/sev-guest.c |  133 +++++++++++++++++++++++++++++++
->   2 files changed, 134 insertions(+)
+>   drivers/virt/coco/sev-guest/sev-guest.c |  212 ++++++++++++++--
+>   drivers/virt/coco/tdx-guest/Kconfig     |    1
+>   drivers/virt/coco/tdx-guest/tdx-guest.c |  229 +++++++++++++++++
+>   drivers/virt/coco/tsm.c                 |  423 +++++++++++++++++++++++++++++++
+>   include/linux/slab.h                    |    2
+>   include/linux/tsm.h                     |   68 +++++
+>   16 files changed, 1046 insertions(+), 36 deletions(-)
+>   create mode 100644 Documentation/ABI/testing/configfs-tsm
+>   create mode 100644 drivers/virt/coco/Kconfig
+>   create mode 100644 drivers/virt/coco/Makefile
+>   create mode 100644 drivers/virt/coco/tsm.c
+>   create mode 100644 include/linux/tsm.h
 > 
-> diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-guest/Kconfig
-> index da2d7ca531f0..1cffc72c41cb 100644
-> --- a/drivers/virt/coco/sev-guest/Kconfig
-> +++ b/drivers/virt/coco/sev-guest/Kconfig
-> @@ -5,6 +5,7 @@ config SEV_GUEST
->   	select CRYPTO
->   	select CRYPTO_AEAD2
->   	select CRYPTO_GCM
-> +	select TSM_REPORTS
->   	help
->   	  SEV-SNP firmware provides the guest a mechanism to communicate with
->   	  the PSP without risk from a malicious hypervisor who wishes to read,
-> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-> index e5f8f115f4af..f3ca083127af 100644
-> --- a/drivers/virt/coco/sev-guest/sev-guest.c
-> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
-> @@ -16,10 +16,12 @@
->   #include <linux/miscdevice.h>
->   #include <linux/set_memory.h>
->   #include <linux/fs.h>
-> +#include <linux/tsm.h>
->   #include <crypto/aead.h>
->   #include <linux/scatterlist.h>
->   #include <linux/psp-sev.h>
->   #include <linux/sockptr.h>
-> +#include <linux/cleanup.h>
->   #include <uapi/linux/sev-guest.h>
->   #include <uapi/linux/psp-sev.h>
->   
-> @@ -768,6 +770,129 @@ static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno
->   	return key;
->   }
->   
-> +struct snp_msg_report_resp_hdr {
-> +	u32 status;
-> +	u32 report_size;
-> +	u8 rsvd[24];
-> +};
-> +#define SNP_REPORT_INVALID_PARAM 0x16
-> +#define SNP_REPORT_INVALID_KEY_SEL 0x27
-> +
-> +struct snp_msg_cert_entry {
-> +	unsigned char guid[16];
-> +	u32 offset;
-> +	u32 length;
-> +};
-> +
-> +static int sev_report_new(struct tsm_report *report, void *data)
-> +{
-> +	static const struct snp_msg_cert_entry zero_ent = { 0 };
-> +	struct snp_msg_cert_entry *cert_table;
-> +	struct tsm_desc *desc = &report->desc;
-> +	struct snp_guest_dev *snp_dev = data;
-> +	struct snp_msg_report_resp_hdr hdr;
-> +	const int report_size = SZ_4K;
-> +	const int ext_size = SEV_FW_BLOB_MAX_SIZE;
-> +	int ret, size = report_size + ext_size;
-> +	u32 certs_size, i;
-> +
-> +	if (desc->inblob_len != 64)
-> +		return -EINVAL;
-> +
-> +	void *buf __free(kvfree) = kvzalloc(size, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	guard(mutex)(&snp_cmd_mutex);
-> +
-> +	/* Check if the VMPCK is not empty */
-> +	if (is_vmpck_empty(snp_dev)) {
-> +		dev_err_ratelimited(snp_dev->dev, "VMPCK is disabled\n");
-> +		return -ENOTTY;
-> +	}
-> +
-> +	cert_table = buf + report_size;
-> +	struct snp_ext_report_req ext_req = {
-> +		.data = { .vmpl = desc->privlevel },
-> +		.certs_address = (__u64)cert_table,
-> +		.certs_len = ext_size,
-> +	};
-> +	memcpy(&ext_req.data.user_data, desc->inblob, desc->inblob_len);
-> +
-> +	struct snp_guest_request_ioctl input = {
-> +		.msg_version = 1,
-> +		.req_data = (__u64)&ext_req,
-> +		.resp_data = (__u64)buf,
-> +		.exitinfo2 = 0xff,
-> +	};
-> +	struct snp_req_resp io = {
-> +		.req_data = KERNEL_SOCKPTR(&ext_req),
-> +		.resp_data = KERNEL_SOCKPTR(buf),
-> +	};
-> +
-> +	ret = get_ext_report(snp_dev, &input, &io);
-> +
-> +	if (ret)
-> +		return ret;
-> +
-> +	memcpy(&hdr, buf, sizeof(hdr));
-> +	if (hdr.status == SNP_REPORT_INVALID_PARAM)
-> +		return -EINVAL;
-> +	if (hdr.status == SNP_REPORT_INVALID_KEY_SEL)
-> +		return -EINVAL;
-> +	if (hdr.status)
-> +		return -ENXIO;
-> +	if ((hdr.report_size + sizeof(hdr)) > report_size)
-> +		return -ENOMEM;
-> +
-> +	void *rbuf __free(kvfree) = kvzalloc(hdr.report_size, GFP_KERNEL);
-> +	if (!rbuf)
-> +		return -ENOMEM;
-> +
-> +	memcpy(rbuf, buf + sizeof(hdr), hdr.report_size);
-> +	report->outblob = no_free_ptr(rbuf);
-> +	report->outblob_len = hdr.report_size;
-> +
-> +	certs_size = 0;
-> +	for (i = 0; i < ext_size / sizeof(struct snp_msg_cert_entry); i++) {
-> +		if (memcmp(&cert_table[i], &zero_ent, sizeof(zero_ent)) == 0)
-> +			break;
-> +		certs_size = max(certs_size, cert_table[i].offset + cert_table[i].length);
-> +	}
-> +
-> +	/* No certs to report */
-> +	if (!certs_size)
-> +		return 0;
-> +
-> +	/*
-> +	 * cert_table reports more data than fits in ext_size the
-> +	 * userspace cert_table walker can decide what happens next,
-> +	 * truncate the output
-> +	 */
-> +	if (certs_size > ext_size)
-> +		certs_size = ext_size;
-> +
-> +	void *cbuf __free(kvfree) = kvzalloc(certs_size, GFP_KERNEL);
-> +	if (!cbuf)
-> +		return -ENOMEM;
-> +
-> +	memcpy(cbuf, cert_table, certs_size);
-> +	report->auxblob = no_free_ptr(cbuf);
-> +	report->auxblob_len = certs_size;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct tsm_ops sev_tsm_ops = {
-> +	.name = KBUILD_MODNAME,
-> +	.report_new = sev_report_new,
-> +};
-> +
-> +static void unregister_sev_tsm(void *data)
-> +{
-> +	tsm_unregister(&sev_tsm_ops);
-> +}
-> +
->   static int __init sev_guest_probe(struct platform_device *pdev)
->   {
->   	struct snp_secrets_page_layout *layout;
-> @@ -841,6 +966,14 @@ static int __init sev_guest_probe(struct platform_device *pdev)
->   	snp_dev->input.resp_gpa = __pa(snp_dev->response);
->   	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
->   
-> +	ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_ext_type);
-> +	if (ret)
-> +		goto e_free_cert_data;
-> +
-> +	ret = devm_add_action_or_reset(&pdev->dev, unregister_sev_tsm, NULL);
-> +	if (ret)
-> +		goto e_free_cert_data;
-> +
->   	ret =  misc_register(misc);
->   	if (ret)
->   		goto e_free_cert_data;
-> 
+> base-commit: 6465e260f48790807eef06b583b38ca9789b6072
