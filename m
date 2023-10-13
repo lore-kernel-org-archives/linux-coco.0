@@ -1,88 +1,156 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F5F5663
-	for <linux-coco@lists.linux.dev>; Fri, 13 Oct 2023 04:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3333D021
+	for <linux-coco@lists.linux.dev>; Fri, 13 Oct 2023 05:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cpgaMugp"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-537f07dfe8eso4832a12.1
-        for <linux-coco@lists.linux.dev>; Thu, 12 Oct 2023 21:44:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="T/7qDpxZ"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3232be274a0so1847716f8f.1
+        for <linux-coco@lists.linux.dev>; Thu, 12 Oct 2023 22:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697172241; x=1697777041; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zc3DlkMqN9yCN096oaPCTP4IgPsNMOP2NIgwh1GTL5Q=;
-        b=cpgaMugpYfQApi0/sa4VUIngixuSZLIgvVVS4+6fSwQOzTkrJ/5wH/nsymw9ajGRoa
-         d2O1j/+DwXp2Ut2D/rugM+Tg/3k3YJGfIELIiZBOoUc7QNhYHMiMUDuf+vlGkHIB/Xge
-         M893n1i+ZbR8bf6vCHCJko1+SqhEBJXjNvBK1B9JnIJowlOUWK35gtREyTWNn1xvQVXI
-         9lo7l+4sUhQvcn5sCQbAapwOpUxIQ25MpSysRH8s1IwOdrCfFauFQ8TxIMotiZmzb2rt
-         FHA/+a9+jCr1xQvBMfmJFVTTdK8qSU9OtDz369M5Q+deIFyFS7RLkZTdjZFmqo8MECuV
-         CS4A==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697173385; x=1697778185; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UVpd0E4GFx6H/SM7YV3uveoOWkdUC4wwz8FAahExBkA=;
+        b=T/7qDpxZTfBfSxi6Yki+79IgFQwj7fbjcrt4dDVuvPU/CEFlCGQEg7EToyS+ngxLxY
+         9JKuqoeNHVA01rKJOSMdRJWgNXqNiWrYwcaqVp3Rmxe2wVcL6+dTFIec5D9YvC57F0o/
+         PCMZWAU13rRTRfaV5siyIng9vWvjTLeMf+9qU7R/6MELBAOrLYAGnzp+zPkmrioEUXR4
+         h+yq5kzDAGt1MMtUDUcbHtp+3R7zrds8BvZxtxV5rqgHSP//BwTg+W/DLeolTvqIlaly
+         cusI08alHMg6oa6alNzWpxnOMGENAzieMs7zrjZF43SQA/yxTv73kn4LSj/5qzncpsjl
+         YPjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697172241; x=1697777041;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zc3DlkMqN9yCN096oaPCTP4IgPsNMOP2NIgwh1GTL5Q=;
-        b=jikhWDNi/6AeAfjbTpyykYqSRSNEL/X8hId69cOXkn3CeADNVYne1sqp0EmTCch9Bp
-         RpGGxEG6qAbmhTU2/lP/v2s5LTL1DZb8mHERY+U7I80kwRZ4JfXfE6oocjp+rok2bLuy
-         ZbXS8RJq6Ye4bm0+ForN2GhbfBGEMxneyRDlkjrBC1oV+zMurci8utKSou0MWLNg4nxD
-         uCzQmPDS3IQQ/hpcFyrwpb+7vSPTqfY/WC3xO/TZ9fEvktG584Y2S7d3Q4aXVJnIVnb6
-         ASJYEg3rtKbeHPAx5rBAmF+c7GyGqVq9FQGGcbzxDCwOHWRlTooH6UEbvXx+Lqc4jTx7
-         3n/Q==
-X-Gm-Message-State: AOJu0YztsSdsNLuFuWw75U4z2aV+XjN35+CDknWZOT9Iad+hREoeN+79
-	6rtPjnxGwNnHsL0l25pEDXrKXnpbgKjdJfgLZ2Ykow==
-X-Google-Smtp-Source: AGHT+IGdi1XS1f5c4fO5w7TyJHiMyVdtH2uTtTT9VgKjsUkDnu5dXbp7DtnV7CTbAfgEW/YU8t0BDKyYOgjIQY/DkbQ=
-X-Received: by 2002:a50:8e11:0:b0:519:7d2:e256 with SMTP id
- 17-20020a508e11000000b0051907d2e256mr77357edw.0.1697172241324; Thu, 12 Oct
- 2023 21:44:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697173385; x=1697778185;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UVpd0E4GFx6H/SM7YV3uveoOWkdUC4wwz8FAahExBkA=;
+        b=t/hUFYvKRQ5nv6x1GQY92QQ9vHQFGXga8yH8jPImDbqZS4lCaEzgXC996dmtEAN3aR
+         p90FhKWhWF4JiMrD7Rlqre6g+jpNu0bvIa0IS3g31O16T/o3Ir9/Gror9NxW4jqWMpMp
+         WkiY4ZSbhJh/fu6sZuYMNwlT1AcUM/bqDTLSS78pCHqXmOdACfoDdgw7TbMclb2H6J7K
+         wgjI3srNU9fiKOmF7J5VOP3pnWE6A4btrjlm8rP+IBGCKfroyGNgK2bffaLOzGiz3LWm
+         omlyiGQeZt4VAJlyE9qksfsCl0JuP46PYNMDwQPLTtt/0952fq5fE47co/DLi2gWPZHt
+         /lLg==
+X-Gm-Message-State: AOJu0YwG7mYOfj0V6MT/UWk+aJEU+b6kVxeh0jevK+igxfz69MC39Toc
+	Di+M0XfD7PXPx8yzwAtf+SJTcg==
+X-Google-Smtp-Source: AGHT+IEvea4eYbGIhMcMt7pht9MZ6rkBFbtUuvgV/OJhcSTlZKOMEd1P7WHPPrbIAstniFTyYUMHUA==
+X-Received: by 2002:adf:fb47:0:b0:318:416:a56a with SMTP id c7-20020adffb47000000b003180416a56amr17734101wrs.13.1697173384872;
+        Thu, 12 Oct 2023 22:03:04 -0700 (PDT)
+Received: from vermeer ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
+        by smtp.gmail.com with ESMTPSA id u5-20020a05600c00c500b004063c9f68f2sm1455494wmm.26.2023.10.12.22.03.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 22:03:04 -0700 (PDT)
+Date: Fri, 13 Oct 2023 07:03:01 +0200
+From: Samuel Ortiz <sameo@rivosinc.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Lukas Wunner <lukas@wunner.de>, Alexey Kardashevskiy <aik@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+	Zhi Wang <zhi.a.wang@intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 00/12] PCI device authentication
+Message-ID: <ZSjPhTJ9N0EKH5+W@vermeer>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <652030759e42d_ae7e72946@dwillia2-xfh.jf.intel.com.notmuch>
+ <20231007100433.GA7596@wunner.de>
+ <20231009123335.00006d3d@Huawei.com>
+ <20231009134950.GA7097@wunner.de>
+ <b003c0ca-b5c7-4082-a391-aeb04ccc33ca@amd.com>
+ <20231012091542.GA22596@wunner.de>
+ <ZSfw+xswgOSaYxgW@vermeer>
+ <20231012163221.000064af@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com>
- <169716325275.984874.18286682727336216616.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <169716325275.984874.18286682727336216616.stgit@dwillia2-xfh.jf.intel.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Thu, 12 Oct 2023 21:43:46 -0700
-Message-ID: <CAAH4kHYKOJcVdbEgey82aRcoaKzRi7qhHAtwG5pVNLWTwV0MGg@mail.gmail.com>
-Subject: Re: [PATCH v6 3/7] configfs-tsm: Introduce a shared ABI for
- attestation reports
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-coco@lists.linux.dev, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, Peter Gonda <pgonda@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Samuel Ortiz <sameo@rivosinc.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, peterz@infradead.org, dave.hansen@linux.intel.com, 
-	bp@alien8.de
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012163221.000064af@Huawei.com>
 
-> +What:          /sys/kernel/config/tsm/report/$name/privlevel
-> +Date:          September, 2023
-> +KernelVersion: v6.7
-> +Contact:       linux-coco@lists.linux.dev
-> +Description:
-> +               (WO) Attribute is visible if a TSM implementation provider
-> +               supports the concept of attestation reports for TVMs running at
-> +               different privilege levels, like SEV-SNP "VMPL", specify the
-> +               privilege level via this attribute.  The minimum acceptable
-> +               value is conveyed via @privlevel_floor and the maximum
-> +               acceptable value is TSM_PRIVLEVEL_MAX (3).
-> +
+On Thu, Oct 12, 2023 at 04:32:21PM +0100, Jonathan Cameron wrote:
+> On Thu, 12 Oct 2023 15:13:31 +0200
+> Samuel Ortiz <sameo@rivosinc.com> wrote:
+> 
+> > On Thu, Oct 12, 2023 at 11:15:42AM +0200, Lukas Wunner wrote:
+> > > On Tue, Oct 10, 2023 at 03:07:41PM +1100, Alexey Kardashevskiy wrote:  
+> > > > But the way SPDM is done now is that if the user (as myself) wants to let
+> > > > the firmware run SPDM - the only choice is disabling CONFIG_CMA completely
+> > > > as CMA is not a (un)loadable module or built-in (with some "blacklist"
+> > > > parameters), and does not provide a sysfs knob to control its tentacles.
+> > > > Kinda harsh.  
+> > > 
+> > > On AMD SEV-TIO, does the PSP perform SPDM exchanges with a device
+> > > *before* it is passed through to a guest?  If so, why does it do that?  
+> > 
+> > SPDM exchanges would be done with the DSM, i.e. through the PF, which is
+> > typically *not* passed through to guests. VFs are.
+> > 
+> > The RISC-V CoVE-IO [1] spec follows similar flows as SEV-TIO (and to
+> > some extend TDX-Connect) and expects the host to explicitly request the
+> > TSM to establish an SPDM connection with the DSM (PF) before passing one
+> > VF through a TSM managed guest. VFs would be vfio bound, not the PF, so
+> > I think patch #12 does not solve our problem here. 
+> > 
+> > > Dan and I discussed this off-list and Dan is arguing for lazy attestation,
+> > > i.e. the TSM should only have the need to perform SPDM exchanges with
+> > > the device when it is passed through.
+> > > 
+> > > So the host enumerates the DOE protocols and authenticates the device.
+> > > When the device is passed through, patch 12/12 ensures that the host
+> > > keeps its hands off of the device, thus affording the TSM exclusive
+> > > SPDM control.  
+> > 
+> > Just to re-iterate: The TSM does not talk SPDM with the passed
+> > through device(s), but with the corresponding PF. If the host kernel
+> > owns the SPDM connection when the TSM initiates the SPDM connection with
+> > the DSM (For IDE key setup), the connection establishment will fail.
+> > Both CoVE-IO and SEV-TIO (Alexey, please correct me if I'm wrong)
+> > expect the host to explicitly ask the TSM to establish that SPDM
+> > connection. That request should somehow come from KVM, which then would
+> > have to destroy the existing CMA/SPDM connection in order to give the
+> > TSM a chance to successfully establish the SPDM link.
+> 
+> Agreed - I don't see a problem with throwing away the initial connection.
+> In these cases you are passing that role on to another entity - the
+> job of this patch set is done.
 
-I'm unaware of another CC technology that has different privilege
-levels at which to request an attestation, but I'd be much happier to
-see another example here.
+Right. As long as there's a way for the kernel to explicitly drop that
+ownership before calling into the TSM for asking it to create a new SPDM
+connection, we should be fine. Alexey, would you agree with that
+statement?
 
-I take it my feedback about VLEK vs VCEK selection is going to be left
-for a future patch series? I can drop it if we can agree another WO
-attribute for that won't be met with a lot of barriers, but I think we
-may be generalizing a single data point with the privlevel and key
-selection attributes.
+> I'm not clear yet if we need an explicit lock out similar to the VFIO
+> one for PF pass through or if everything will happen in a 'safe' order
+> anyway. I suspect a lockout on the ability to re attest is necessary
+> if the PF driver is loaded.
+>
+> Perhaps just dropping the
+> +#if IS_ENABLED(CONFIG_VFIO_PCI_CORE)
+> and letting other PF drivers or another bit of core kernel code
+> (I'm not sure where the proxy resides for the models being discussed)
+> claim ownership is enough?
 
--- 
--Dionna Glaze, PhD (she/her)
+If we agree that other parts of the kernel (I suspect KVM would do the
+"Connect to device" call to the TSM) should be able to tear the
+established SPDM connection, then yes, the claim/return_ownership() API
+should not be only available to VFIO.
+
+Cheers,
+Samuel.
