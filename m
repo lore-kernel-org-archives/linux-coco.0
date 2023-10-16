@@ -1,55 +1,56 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC44374D2
-	for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 23:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1F1374D2
+	for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 23:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gLLHxmjt"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-534694a9f26so2719a12.1
-        for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 16:12:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="37zCXY4v"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-53eeb28e8e5so2600a12.1
+        for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 16:18:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697497919; x=1698102719; darn=lists.linux.dev;
+        d=google.com; s=20230601; t=1697498308; x=1698103108; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=INYfmMsWN7edn0Gii+wE0NftUpFkex0ev6KVgsT42SE=;
-        b=gLLHxmjtZXJ52BgZpOIVxLXhHZ3z5cMTYZWuEsp567bsVKGVba0OeUMuoQi/tFlGfy
-         Y69W9QfEwYmw/iOKVgdIHN077vKhbzeOjgbeek0J9oQLJkJh0ofjNWqkisz9F2ZV9PSQ
-         6ZvF/HsSTHvvrhwvbBnOnUYJNrB2tgD6fXEEj5U/i627/20bMOQ4R2MPkG1BhnAH14tm
-         c5iFthtw1sGwJE6sjCjsBkBdNl+Qolg8DmdmJHQ3jeGjbNXc95ZeQ5C8fxXR20Rpn/kN
-         la+fJPimm5Nh8K7QD1ZN3Y1zF7t11SHUii2OnBIEgnVJFcvq54Zdhx18tQGTV23DYYRO
-         6oRw==
+        bh=iC/11YtDunCM076LJgjQ2zeYYGBdalGng9NijQt/KpE=;
+        b=37zCXY4vxqX95ghXnzqOe4aJaTl25ze98P8NjOhoJA60EEvkHSqFuCLsvqHkajQWIZ
+         SGAkIiQIfMPL8ZyD0vDNUD+2NqJl1RhaMJJhmtvVOxjHHugP0VkdV0c/74jQEZpn0gvl
+         20/ihFmxRah1Us7MsXKvfM3pMOI2nh+e2tizA4NyugxBmzUeEi3Hj0JGn9dbzLnrg3T6
+         vXTuyn+CDeIrcV0tBtXAzghEy3LymF6kWqLB3fmZKVXLNQjAr+IPBKWKUJxlzkOGXDkO
+         tYWUpwKMNxgHVeO2NljxdbxCISDxylmau2sjBAB++NXe1lGlJ7nXtRCHFbO5g+5q4Qs9
+         bt9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697497919; x=1698102719;
+        d=1e100.net; s=20230601; t=1697498308; x=1698103108;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=INYfmMsWN7edn0Gii+wE0NftUpFkex0ev6KVgsT42SE=;
-        b=oqb7zI39B6rmnfouI6oO2UMRAOwwMV3R3T31e2f1ylTpEFxeib4tu3K8Qcxf9qnc/M
-         X8HeZDLvO3wkn8wQJf8X8f+XWGcFtBtblfQt/1kABMtWJT1Ev3tN6PoHdHmUD+sGCB07
-         NnZbH3x49JBoj5ZBHmx1JCpArnux3dxMPCtfz3Lbpb9odeHwv7wUfpEMWFUpllRsTz6w
-         ZuNm3PGLJtPHIXbWhnuJBLxrViDK1/I2iilwme4HLWLGntHop2Ffls9y6xu23voMlBgM
-         5JFmxTUmxkoyBOGXnQESSsDe4lWYLdTU7SDNeBxP+tGw1yKpgc52eCArQud5IjgOHIo8
-         m94A==
-X-Gm-Message-State: AOJu0YydEs+ChHJJpLxbPlrY03zKXrE3mvNJf8QOPIah6VV3/Muh4fg1
-	r7givNF3heR5VYD/m5epTyQTbikPK+tbnnYDXVM10A==
-X-Google-Smtp-Source: AGHT+IG1cYwz5bu/5ZgBzdw9ECTZUbCA2/P7RKfZVDqe7dVEa7NHVFBLtd0yrRKFg2ZVXhodz1Qj9XcCQ0fTbqf323w=
-X-Received: by 2002:a50:c31b:0:b0:538:5f9e:f0fc with SMTP id
- a27-20020a50c31b000000b005385f9ef0fcmr56602edb.0.1697497919196; Mon, 16 Oct
- 2023 16:11:59 -0700 (PDT)
+        bh=iC/11YtDunCM076LJgjQ2zeYYGBdalGng9NijQt/KpE=;
+        b=YfmIzJoQDwLHdCx6apU+usfGN3z6YA0KK+2KDESKX/83GuTXcY8xahcaGR3kzO+j9s
+         QZhmimQEd00/Tt1suOOi7uZTWwc0ha8uptTCp9XVAI4FNTSSPrUXTjc06+p8qWHl3P1z
+         WiKgQQHjGuT5HdxLgW5dZZgXH9gPA5t+6Pkrk4sfzYspkesJ6yf7XaRPwu6zpQ4ojiOu
+         eSpNn1PitXujNvUIWIoPxmwVDDOVZKBfCJZwL9abAowJM/DO1898FORkOi7pvOmFmc26
+         uTJbLHOhtYt4boFe0pQFFWYjYhGVXK8p120YAnidpXL1MU1y1gbFLzUCBQSWeadGOi2t
+         +e2Q==
+X-Gm-Message-State: AOJu0YyjVdZx8Wn/2cUdzgqtCMwKlO7+++ghatyk8XmXP+bIkUfe27Xn
+	OMM4lOA07/rGSbqPh6M3bMBvzTnzeaZ5W6Nj/peiYg==
+X-Google-Smtp-Source: AGHT+IHSDQVFWveLXyGf0tUPijXYrSYM2YYlGt8C3Vmqr3FgJBMJpfYl60pFDrziom8VotGlWJVPTuF/S05fQjy7/O0=
+X-Received: by 2002:a50:8ad6:0:b0:522:4741:d992 with SMTP id
+ k22-20020a508ad6000000b005224741d992mr50659edk.4.1697498308135; Mon, 16 Oct
+ 2023 16:18:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231016132819.1002933-1-michael.roth@amd.com> <20231016132819.1002933-47-michael.roth@amd.com>
-In-Reply-To: <20231016132819.1002933-47-michael.roth@amd.com>
+References: <20231016132819.1002933-1-michael.roth@amd.com> <20231016132819.1002933-49-michael.roth@amd.com>
+In-Reply-To: <20231016132819.1002933-49-michael.roth@amd.com>
 From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Mon, 16 Oct 2023 16:11:45 -0700
-Message-ID: <CAAH4kHYiV5M+LK1Za02pC3u8hG8e2utybadxZPG94q12YsnSBw@mail.gmail.com>
-Subject: Re: [PATCH v10 46/50] crypto: ccp: Add the SNP_{SET,GET}_EXT_CONFIG command
+Date: Mon, 16 Oct 2023 16:18:16 -0700
+Message-ID: <CAAH4kHb=hNH88poYw-fj+ewYgt8F-hseZcRuLDdvbgpSQ5FDZQ@mail.gmail.com>
+Subject: Re: [PATCH v10 48/50] KVM: SEV: Provide support for SNP_GUEST_REQUEST
+ NAE event
 To: Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
 	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
@@ -67,29 +68,22 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	Alexey Kardashevskiy <aik@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 
-> +/**
-> + * struct sev_data_snp_ext_config - system wide configuration value for SNP.
-> + *
-> + * @config_address: address of the struct sev_user_data_snp_config or 0 when
-> + *             reported_tcb does not need to be updated.
-> + * @certs_address: address of extended guest request certificate chain or
-> + *              0 when previous certificate should be removed on SNP_SET_EXT_CONFIG.
-> + * @certs_len: length of the certs
-> + */
-> +struct sev_user_data_ext_snp_config {
-> +       __u64 config_address;           /* In */
-> +       __u64 certs_address;            /* In */
-> +       __u32 certs_len;                /* In */
-> +} __packed;
+> +
+> +       /*
+> +        * If a VMM-specific certificate blob hasn't been provided, grab the
+> +        * host-wide one.
+> +        */
+> +       snp_certs = sev_snp_certs_get(sev->snp_certs);
+> +       if (!snp_certs)
+> +               snp_certs = sev_snp_global_certs_get();
 > +
 
-Can we add a generation number to this? Whenever user space sets the
-certs blob it will invalidate the instance-specific certificates that
-are settable in KVM.
-The VMM will need to weave the instance-specific data with the new
-certs installed at the machine level since we're not adding
-interpretation of the cert blob to KVM.
-
+This is where the generation I suggested adding would get checked. If
+the instance certs' generation is not the global generation, then I
+think we need a way to return to the VMM to make that right before
+continuing to provide outdated certificates.
+This might be an unreasonable request, but the fact that the certs and
+reported_tcb can be set while a VM is running makes this an issue.
 
 -- 
 -Dionna Glaze, PhD (she/her)
