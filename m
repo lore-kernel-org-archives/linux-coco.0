@@ -1,249 +1,413 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2050.outbound.protection.outlook.com [40.107.243.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A8A16438
-	for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 10:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE6123775
+	for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 11:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="x9uHVukI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="P4KkO+VB"
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 19EF61FEB7;
-	Mon, 16 Oct 2023 10:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1697453915; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EpJxWQRVZ9dNT5iVhQyoKAbtpxpQp9FHaAZXCYmJKV8=;
-	b=x9uHVukIBNTBXEqpoJeva/xL5zwbE7Gy6hp+IzuqxoJtD7e+mq3coAVRePtH9VUWF3me3R
-	nCYH53coKBCHXh3mgcqx2hgpBVCZZsDWXfIxePFThTifez4OYCd4xvJF8/lSjd/mdI1KAB
-	VW5ZoFZ+cy0Is0Wd5uHxgDmcYvyT90s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1697453915;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EpJxWQRVZ9dNT5iVhQyoKAbtpxpQp9FHaAZXCYmJKV8=;
-	b=P4KkO+VBuwRuNwx0Ba+M0yDl8ETGkwF0EzWOMVMisK0sDMy70Tz4Z+M094ZLvOsjLDGUU3
-	pouvFY/fCpA+nGBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8D6D7138EF;
-	Mon, 16 Oct 2023 10:58:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id lfu0IVoXLWXvZgAAMHmgww
-	(envelope-from <vbabka@suse.cz>); Mon, 16 Oct 2023 10:58:34 +0000
-Message-ID: <088593ea-e001-fa87-909f-a196b1373ca4@suse.cz>
-Date: Mon, 16 Oct 2023 12:58:34 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YAQB68+L"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mpbFw/Cq3gdB5sqP1ePu0LMCvNjNF0qqT8aQP7mRKxoAfbYoOyfngwR+uhoW2upL3qxuU+b996gNT5jY1YWSNdRRGKlQzyYzFOKUcKhojjEGeUEWSVgcdOk18j2/wHgi8KXMmoI7Vnb3HftJVKWYoUYB7OtwySPqNjsm/gv615Q76KezLatVx5tQBadD0bQhzAc4a4+c+s/xL+1Ui1qwX6tmIRnSlgX8R2pFkxV4qxryBZMpCcSgENTFG2NfKjvgJ//UElSrP8sVLHK+GbWQnxYxnkU+55RkFX5Gy4db7M2/Jqe1FK5NPz7vLLWu4ZnimEHJsaVVnJ5nHphGlsfOkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VSfVXtdiXFC4Y8IW928cz98QeKxqsSnW+Eph91jZSYk=;
+ b=nUfb6B2PDcfGSJC3vH5ank5tfv+YC/9DrtDjUDfa6ExJ3MSWXRqPHp2EACaZyrlkFOePV5l9At5qdBlMW/ohcghXZvvqaR1yKqZgWCVkDDgygeGrMKgoSJ3yuAPxfyvto2jamGEng98Na1oDsJ07ykCnTxcDxRxWC23B5vjBlEOS6es51/pzYV7+E8EYgSuJHOyRO+qysK1QDuCfkrwbbCpik6HkpsEHapE7e7m6FIlLoonsOJ+6E9Y652U211dHff4gsPbvyYA8X02CuuyR8W3LJeb33uvA50WkO4vaqL3pBUXXwzVr8QARWaHEUnrYn1Px1+7rl8URm29I6vQsXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VSfVXtdiXFC4Y8IW928cz98QeKxqsSnW+Eph91jZSYk=;
+ b=YAQB68+LLlEt6EYmgC92ryMoelzDD0sL6BM18kpTMG6BzFTM+HhzkecU2RnEY/IZ7rFIFMCJxdnTs7Qg//tmcy1UUbp84+FWVEZL1dmhY8fT6SxSR362J945+dK0qkOovE5TF962sFl+n2bDapBN+5IUJE+TG7Cp5+AjnyzNA0o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by IA0PR12MB7601.namprd12.prod.outlook.com (2603:10b6:208:43b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36; Mon, 16 Oct
+ 2023 11:36:43 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::16da:8b28:d454:ad5a]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::16da:8b28:d454:ad5a%3]) with mapi id 15.20.6863.043; Mon, 16 Oct 2023
+ 11:36:43 +0000
+Message-ID: <3e8aae49-010c-43be-888b-b3ed9ad85610@amd.com>
+Date: Mon, 16 Oct 2023 22:36:28 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 6/7] virt: sevguest: Add TSM_REPORTS support for
+ SNP_GET_EXT_REPORT
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh
+ <brijesh.singh@amd.com>, Jeremi Piotrowski
+ <jpiotrowski@linux.microsoft.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ peterz@infradead.org, dave.hansen@linux.intel.com
+References: <169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com>
+ <169716326994.984874.4170603294020542086.stgit@dwillia2-xfh.jf.intel.com>
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <169716326994.984874.4170603294020542086.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P300CA0009.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:1fb::8) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] efi/unaccepted: Fix soft lockups caused by parallel
- memory acceptance
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- Dave Hansen <dave.hansen@intel.com>, Sean Christopherson
- <seanjc@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
- Nikolay Borisov <nik.borisov@suse.com>
-Cc: Andi Kleen <ak@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- David Rientjes <rientjes@google.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Ingo Molnar <mingo@redhat.com>, Dario Faggioli <dfaggioli@suse.com>,
- Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@redhat.com>,
- Mel Gorman <mgorman@techsingularity.net>, marcelo.cerri@canonical.com,
- tim.gardner@canonical.com, khalid.elmously@canonical.com,
- philip.cox@canonical.com, aarcange@redhat.com, peterx@redhat.com,
- x86@kernel.org, linux-mm@kvack.org, linux-coco@lists.linux.dev,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, stable@kernel.org
-References: <20231014204040.28765-1-kirill.shutemov@linux.intel.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20231014204040.28765-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -1.10
-X-Spamd-Result: default: False [-1.10 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-1.00)[-1.000];
-	 NEURAL_SPAM_LONG(3.00)[1.000];
-	 RCPT_COUNT_TWELVE(0.00)[33];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_COUNT_TWO(0.00)[2];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|IA0PR12MB7601:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f46b8b5-9b77-4182-93a7-08dbce3c2bb0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	vIpWPDu2oaDGwO5FScmhZhwdLaon8VqNU+AqNbwiNjYHkOCLT/umd4tGRbhGgwDcAgTZDiMNp8Y9FWkJL4EiUaH0Kdj0ikJvVLwWTBCPk30ulcr59w0ZGwftX6yubDs83Y3G2BQbsIK4fiSBAaPdjWV12vh1Zw0FVg/URjgN+q/Y4kD1bTnBVc+nERo37mBQ1c5Yy37an/AKniunCaHMCm4+IOOjAwhTwA5QKLLqI2l1aCpGujqo2PXY2myTwfaJsXNHwgHi5SiYqYWXl6p7SN/1gQzMn6HxeTINGXH/R8KlQRGHoYwWrsOd5x1plFZ9Js9ecWeqzabzYVqs34i7vIQOPQcTervpiFM5MPgEYmPWE4tFqWm6k7K740rKIL2iUzppmodu30YJIz52rAs/V76bR6NHDy64AqPwnuUc5K6715un08Nkm6xfh5hqIEf20Zx8le30oCtlp4HNPGm/bysPdKVNBnlTudlIhLZPa99Dep2QCVZELGzTltRz5jwPY4ajhCRq721Fvdh9o19CEDO7QJMwxUVEhA7xMjpn07FdUIwLHSG3OFCdDKF+z+dxhSvrhleOCUZccFb5o/q7mXOaG5ADXFEFf28Q8NuCcEJZ2CFgbEzU07ytAJnz5JaEFYwyIIksNxnB4VX63DAoaw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(136003)(376002)(396003)(346002)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(478600001)(41300700001)(316002)(54906003)(66946007)(66556008)(66476007)(6486002)(966005)(8676002)(4326008)(8936002)(31686004)(5660300002)(6506007)(53546011)(31696002)(6666004)(38100700002)(6512007)(2616005)(83380400001)(26005)(36756003)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L25WcDZ6WDJVdTNzZVF0eVM1WTJpbzU1TjEwNytqa1VvQythV2ptdjNNSXlK?=
+ =?utf-8?B?d0ovVEkyOGo4U1IxUVFlbDIwMDhXR1hsRXRjTnlnT1IrT0lSMjZacE9pZGN6?=
+ =?utf-8?B?WGVuMkxNdHlWTXVZTDgwODJjTkJ6SVMvNjJ4ZnYvZGRTWlhlSEtZd0gyaHM3?=
+ =?utf-8?B?cVNZNkkzVngreUNzcURPa2dQVndXYVYxZk9SVEViR2hxcEZIY1B2TmRZTkhI?=
+ =?utf-8?B?dzVmemZ6djE5WjN1WHY2b2JMY0x6NmtjV0RTeXcvc0NJK1pPUVNlVm9hQWlo?=
+ =?utf-8?B?cHJDWk14L2RVV0pJNGlPVlZ4MXR1dnpabkVRVUwyR21PODNhUUdiOVcvZHVt?=
+ =?utf-8?B?Ty9yTWpDc0MzQUhXU3Z2QUJ2eVlrYWp6VDluaDY1R2NsL25BWDR6MUZaU0Jt?=
+ =?utf-8?B?OGs2WEZSeUF6cTRTdkRtckdvcnkweFFBMExhU3BSRmJQU05zWEI3UkdyOUJS?=
+ =?utf-8?B?K2ZudDlST1o0b1gzMTJFY2Y2ZGV2THBYNXMwZHhSL3BnQktDUDBNaWZsRDIv?=
+ =?utf-8?B?R1B6ZzZwdEM3cmtndnMwT2tYQURrQVFuNDhuTElBZW9rL3hNK0pZTGdIRmM1?=
+ =?utf-8?B?NCtERXRMSlRuZ1V0RDZaamVNTExETWNORytLaGFWY1hxZjZydXRiQjlUbW9Z?=
+ =?utf-8?B?eDFPT3ZMYmxEeHlHZ0JpcWxCaHJMaVpLWXc4eUlUVVBuL2VyVDBFRGlzWFpp?=
+ =?utf-8?B?eFlEL0J1Z1I1M1hBdXlJRStMZUs4bkVQT1dwNnBUVm1UZHMxY0E5Tzd6REIx?=
+ =?utf-8?B?azBaNWZuSk11dmFOQlpHdHQ3c21hS3Y5S2Y2L3VFNEhDVzhocnhkZVhGUFYy?=
+ =?utf-8?B?eFRJZnRLSW9xQW9DbzJzZ210U1JqUWIwWHAwUkpWUkttNWhaTElLckdJWWxN?=
+ =?utf-8?B?Z28xdVBUdE0vUDBIRVpFNVJGb1U3VytXN0FjbDI3S081ejZOKzFrRmMzdS9P?=
+ =?utf-8?B?aXhCUUZSWWliamwzeGhmaThvUGRLd2dwRWs1Zis1ZGt3NzJ6RVk0MWRGQ21C?=
+ =?utf-8?B?NGorOWpGK2sreGRBWTlrSysxK2ZKV1lseHBFdWRSTC9wN0JhalNNWkVBRmtS?=
+ =?utf-8?B?a3FjbFNqamx6TTEvTmw5c2NKUk85SUhPalNUbDd5ZmpncFpaMXd4d0ptak9K?=
+ =?utf-8?B?U0c2cXZpc2plK0xMSlJJM0dQaTVneElHNGdPOFY4L1ZyK2hGdGR4aS9WTEVp?=
+ =?utf-8?B?bjhwV1JpUkF5U0FtTzlYS2lSc1FtaExtL3oxZHF3b0E1MzlISWg3NEQ5YXVm?=
+ =?utf-8?B?OTRJK09XSTFFckZLNzErT2dsN0JSaGtEblljZ2xIdk9ncXJkUy8xaU1jditW?=
+ =?utf-8?B?TitDWTVLSDZOT0dzSXM0Si9zaHlKRlV6WG5oZFViejRRdFR4aFVnK1B4c3Qv?=
+ =?utf-8?B?amxYOThIZVYrSEo5ZmNIZW1vUU9CQ3ZPcWo1dTkzRzZzOWdzcFdZK2NxOGFO?=
+ =?utf-8?B?WnhDMUJLVzIrN09BaFI3UmM2d2VWSGRLVDJJVFJZM0d3NzZBbDhlR0NQWjlC?=
+ =?utf-8?B?V21uUTc5bUk3ZnlKWmZZU0JMQ3hCVzNmOTk0MHJVS3daWnp2MFVBbzJqYUFQ?=
+ =?utf-8?B?OHFVR3o5YkNVR1VETjBaS3VmWVJzd1MwZHo4VmIyMHV3VEFLNGJxVUhoN0Ji?=
+ =?utf-8?B?OTFvOEYxMnE0SFg2Q1hpMmpaZWRmR05vRXl3OFJkMTFFaUt6ajNEQU55Mzdv?=
+ =?utf-8?B?Sks0bUx6WWt3T0RrSFNwa3B4Wk1najlWdkZoTG1NRTR1OXZlN2VPQnNBVkw0?=
+ =?utf-8?B?dlkyODNCblhzTnlkTnBSN0dIcTB6U2NjZ0dPSjNjcnBHVk9rMVErYjJxTDZq?=
+ =?utf-8?B?ZDcybTZSazFCR25VM1F5OFZJY1BoODQwTnRObWdlMkNmWnJBQkJyZ0NhQkR2?=
+ =?utf-8?B?TFdzVkRkZ01EZ1dlcTJQb29wUWRWMDdjM3k2ZndBcm5RQitMMkxNeGNNUlZv?=
+ =?utf-8?B?MFRnL04rbnd6eVA3bm8yTTZDT2V0SzNtbDRoMG8zcW80d0tVb3picjNHWU5j?=
+ =?utf-8?B?aVJ2SXh0MkJRWWRyMmd2bWh1ZjlxMTYzZndUbkk0eVNzc1hGRFhBWWlVdWlw?=
+ =?utf-8?B?dXJmYU10WDRzazl6RG1Yc0sxMldPZ3AwV3dFbXBnMGcycTlSckgxbDE4eGNO?=
+ =?utf-8?Q?PO4OgDBHw0Pn8BQi/APCjYyqw?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f46b8b5-9b77-4182-93a7-08dbce3c2bb0
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2023 11:36:43.2573
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vUL0nwwKW9Gw+Ak2XuBRJbOID31UoXPKn0ifzld30nvYQqP4AzAsQwcXJNTYTJMUiFoynyGMQHmZb35TpRYL3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7601
 
-On 10/14/23 22:40, Kirill A. Shutemov wrote:
-> Michael reported soft lockups on a system that has unaccepted memory.
-> This occurs when a user attempts to allocate and accept memory on
-> multiple CPUs simultaneously.
+On 13/10/23 13:14, Dan Williams wrote:
+> The sevguest driver was a first mover in the confidential computing
+> space. As a first mover that afforded some leeway to build the driver
+> without concern for common infrastructure.
 > 
-> The root cause of the issue is that memory acceptance is serialized with
-> a spinlock, allowing only one CPU to accept memory at a time. The other
-> CPUs spin and wait for their turn, leading to starvation and soft lockup
-> reports.
+> Now that sevguest is no longer a singleton [1] the common operation of
+> building and transmitting attestation report blobs can / should be made
+> common. In this model the so called "TSM-provider" implementations can
+> share a common envelope ABI even if the contents of that envelope remain
+> vendor-specific. When / if the industry agrees on an attestation record
+> format, that definition can also fit in the same ABI. In the meantime
+> the kernel's maintenance burden is reduced and collaboration on the
+> commons is increased.
 > 
-> To address this, the code has been modified to release the spinlock
-> while accepting memory. This allows for parallel memory acceptance on
-> multiple CPUs.
+> Convert sevguest to use CONFIG_TSM_REPORTS to retrieve the data that
+> the SNP_GET_EXT_REPORT ioctl produces. An example flow follows for
+> retrieving the report blob via the TSM interface utility,
+> assuming no nonce and VMPL==2:
 > 
-> A newly introduced "accepting_list" keeps track of which memory is
-> currently being accepted. This is necessary to prevent parallel
-> acceptance of the same memory block. If a collision occurs, the lock is
-> released and the process is retried.
+>      report=/sys/kernel/config/tsm/report/report0
+>      mkdir $report
+>      echo 2 > $report/privlevel
+>      dd if=/dev/urandom bs=64 count=1 > $report/inblob
+
+Is not this one a "nonce"?
+
+>      hexdump -C $report/outblob # SNP report
+>      hexdump -C $report/auxblob # cert_table
+>      rmdir $report
 > 
-> Such collisions should rarely occur. The main path for memory acceptance
-> is the page allocator, which accepts memory in MAX_ORDER chunks. As long
-> as MAX_ORDER is equal to or larger than the unit_size, collisions will
-> never occur because the caller fully owns the memory block being
-> accepted.
+> Given that the platform implementation is free to return empty
+> certificate data if none is available it lets configfs-tsm be simplified
+> as it only needs to worry about wrapping SNP_GET_EXT_REPORT, and leave
+> SNP_GET_REPORT alone.
 > 
-> Aside from the page allocator, only memblock and deferered_free_range()
-> accept memory, but this only happens during boot.
+> The old ioctls can be lazily deprecated, the main motivation of this
+> effort is to stop the proliferation of new ioctls, and to increase
+> cross-vendor collaboration.
 > 
-> The code has been tested with unit_size == 128MiB to trigger collisions
-> and validate the retry codepath.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-by: Michael Roth <michael.roth@amd.com
-> Fixes: 2053bc57f367 ("efi: Add unaccepted memory support")
-> Cc: <stable@kernel.org>
+> Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch [1]
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Dionna Glaze <dionnaglaze@google.com>
+> Cc: Brijesh Singh <brijesh.singh@amd.com>
+> Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+> Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  drivers/firmware/efi/unaccepted_memory.c | 55 ++++++++++++++++++++++--
->  1 file changed, 51 insertions(+), 4 deletions(-)
+>   drivers/virt/coco/sev-guest/Kconfig     |    1
+>   drivers/virt/coco/sev-guest/sev-guest.c |  133 +++++++++++++++++++++++++++++++
+>   2 files changed, 134 insertions(+)
 > 
-> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-> index 853f7dc3c21d..8af0306c8e5c 100644
-> --- a/drivers/firmware/efi/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/unaccepted_memory.c
-> @@ -5,9 +5,17 @@
->  #include <linux/spinlock.h>
->  #include <asm/unaccepted_memory.h>
->  
-> -/* Protects unaccepted memory bitmap */
-> +/* Protects unaccepted memory bitmap and accepting_list */
->  static DEFINE_SPINLOCK(unaccepted_memory_lock);
->  
-> +struct accept_range {
-> +	struct list_head list;
-> +	unsigned long start;
-> +	unsigned long end;
+> diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-guest/Kconfig
+> index da2d7ca531f0..1cffc72c41cb 100644
+> --- a/drivers/virt/coco/sev-guest/Kconfig
+> +++ b/drivers/virt/coco/sev-guest/Kconfig
+> @@ -5,6 +5,7 @@ config SEV_GUEST
+>   	select CRYPTO
+>   	select CRYPTO_AEAD2
+>   	select CRYPTO_GCM
+> +	select TSM_REPORTS
+>   	help
+>   	  SEV-SNP firmware provides the guest a mechanism to communicate with
+>   	  the PSP without risk from a malicious hypervisor who wishes to read,
+> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+> index e5f8f115f4af..f3ca083127af 100644
+> --- a/drivers/virt/coco/sev-guest/sev-guest.c
+> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
+> @@ -16,10 +16,12 @@
+>   #include <linux/miscdevice.h>
+>   #include <linux/set_memory.h>
+>   #include <linux/fs.h>
+> +#include <linux/tsm.h>
+>   #include <crypto/aead.h>
+>   #include <linux/scatterlist.h>
+>   #include <linux/psp-sev.h>
+>   #include <linux/sockptr.h>
+> +#include <linux/cleanup.h>
+>   #include <uapi/linux/sev-guest.h>
+>   #include <uapi/linux/psp-sev.h>
+>   
+> @@ -768,6 +770,129 @@ static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno
+>   	return key;
+>   }
+>   
+> +struct snp_msg_report_resp_hdr {
+> +	u32 status;
+> +	u32 report_size;
+> +	u8 rsvd[24];
+> +};
+> +#define SNP_REPORT_INVALID_PARAM 0x16
+
+There is one already - SEV_RET_INVALID_PARAM, defined in "Secure 
+Encrypted Virtualization API".
+
+> +#define SNP_REPORT_INVALID_KEY_SEL 0x27
+
+This one needs to be defined in include/uapi/linux/psp-sev.h's sev_ret_code.
+
+> +
+> +struct snp_msg_cert_entry {
+> +	unsigned char guid[16];
+> +	u32 offset;
+> +	u32 length;
 > +};
 > +
-> +static LIST_HEAD(accepting_list);
-> +
->  /*
->   * accept_memory() -- Consult bitmap and accept the memory if needed.
->   *
-> @@ -24,6 +32,7 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
->  {
->  	struct efi_unaccepted_memory *unaccepted;
->  	unsigned long range_start, range_end;
-> +	struct accept_range range, *entry;
->  	unsigned long flags;
->  	u64 unit_size;
->  
-> @@ -78,20 +87,58 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
->  	if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
->  		end = unaccepted->size * unit_size * BITS_PER_BYTE;
->  
-> -	range_start = start / unit_size;
-> -
-> +	range.start = start / unit_size;
-> +	range.end = DIV_ROUND_UP(end, unit_size);
-> +retry:
->  	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-> +
-> +	/*
-> +	 * Check if anybody works on accepting the same range of the memory.
-> +	 *
-> +	 * The check with unit_size granularity. It is crucial to catch all
+> +static int sev_report_new(struct tsm_report *report, void *data)
+> +{
+> +	static const struct snp_msg_cert_entry zero_ent = { 0 };
+> +	struct snp_msg_cert_entry *cert_table;
+> +	struct tsm_desc *desc = &report->desc;
+> +	struct snp_guest_dev *snp_dev = data;
+> +	struct snp_msg_report_resp_hdr hdr;
+> +	const int report_size = SZ_4K;
+> +	const int ext_size = SEV_FW_BLOB_MAX_SIZE;
 
-"The check is done ..." ?
+These two are size_t. Or u32. "int" is just weird :)
 
-> +	 * accept requests to the same unit_size block, even if they don't
-> +	 * overlap on physical address level.
-> +	 */
-> +	list_for_each_entry(entry, &accepting_list, list) {
-> +		if (entry->end < range.start)
-> +			continue;
-> +		if (entry->start >= range.end)
-> +			continue;
+> +	int ret, size = report_size + ext_size;
+> +	u32 certs_size, i;
 
-Hmm we really don't have a macro for ranges_intersect()? Given how easy is
-to make a mistake. I found only zone_intersects().
+@certs_size is size_t (as it is copied to ->auxblob_len in the end), and 
+@size is size_t as well.
+
+@i is just "unsigned", can be declared right in the "for" below?
 
 > +
-> +		/*
-> +		 * Somebody else accepting the range. Or at least part of it.
-> +		 *
-> +		 * Drop the lock and retry until it is complete.
-> +		 */
-> +		spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-> +		cond_resched();
-> +		goto retry;
+> +	if (desc->inblob_len != 64)
+
+64 is either ext_req.data.user_data or TSM_INBLOB_MAX really.
+May be even BUILD_BUG_ON(TSM_INBLOB_MAX != sizeof(ext_req.data.user_data)) ?
+
+> +		return -EINVAL;
+> +
+> +	void *buf __free(kvfree) = kvzalloc(size, GFP_KERNEL);
+
+I did not realize declaring variables in a middle of a scope is allowed 
+now :)
+Since you are doing this, move zero_ent below. Or, better, use 
+guid_is_null().
+
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	guard(mutex)(&snp_cmd_mutex);
+> +
+> +	/* Check if the VMPCK is not empty */
+> +	if (is_vmpck_empty(snp_dev)) {
+> +		dev_err_ratelimited(snp_dev->dev, "VMPCK is disabled\n");
+> +		return -ENOTTY;
 > +	}
 > +
+> +	cert_table = buf + report_size;
+> +	struct snp_ext_report_req ext_req = {
+> +		.data = { .vmpl = desc->privlevel },
+> +		.certs_address = (__u64)cert_table,
+> +		.certs_len = ext_size,
+> +	};
+> +	memcpy(&ext_req.data.user_data, desc->inblob, desc->inblob_len);
+> +
+> +	struct snp_guest_request_ioctl input = {
+> +		.msg_version = 1,
+> +		.req_data = (__u64)&ext_req,
+> +		.resp_data = (__u64)buf,
+> +		.exitinfo2 = 0xff,
+
+Not sure we need this line with 0xff.
+
+The GHCB spec says the hypervisor sets it, not the guest. And I could 
+not figure out why exactly snp_guest_ioctl() does "input.exitinfo2 = 
+0xff", my best guest it is to catch GHCB not being called before copying 
+memory to user.
+
+> +	};
+> +	struct snp_req_resp io = {
+> +		.req_data = KERNEL_SOCKPTR(&ext_req),
+> +		.resp_data = KERNEL_SOCKPTR(buf),
+> +	};
+> +
+> +	ret = get_ext_report(snp_dev, &input, &io);
+> +
+
+Unnecessary empty line.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	memcpy(&hdr, buf, sizeof(hdr));
+> +	if (hdr.status == SNP_REPORT_INVALID_PARAM)
+> +		return -EINVAL;
+> +	if (hdr.status == SNP_REPORT_INVALID_KEY_SEL)
+> +		return -EINVAL;
+> +	if (hdr.status)
+> +		return -ENXIO;
+> +	if ((hdr.report_size + sizeof(hdr)) > report_size)
+> +		return -ENOMEM;
+> +
+> +	void *rbuf __free(kvfree) = kvzalloc(hdr.report_size, GFP_KERNEL);
+> +	if (!rbuf)
+> +		return -ENOMEM;
+> +
+> +	memcpy(rbuf, buf + sizeof(hdr), hdr.report_size);
+> +	report->outblob = no_free_ptr(rbuf);
+> +	report->outblob_len = hdr.report_size;
+> +
+> +	certs_size = 0;
+> +	for (i = 0; i < ext_size / sizeof(struct snp_msg_cert_entry); i++) {
+> +		if (memcmp(&cert_table[i], &zero_ent, sizeof(zero_ent)) == 0)
+> +			break;
+> +		certs_size = max(certs_size, cert_table[i].offset + cert_table[i].length);
+> +	}
+> +
+> +	/* No certs to report */
+> +	if (!certs_size)
+
+Nit: WARN_ON_ONCE(i) here?
+
+> +		return 0;
+> +
 > +	/*
-> +	 * Register that the range is about to be accepted.
-> +	 * Make sure nobody else will accept it.
+> +	 * cert_table reports more data than fits in ext_size the
+> +	 * userspace cert_table walker can decide what happens next,
+> +	 * truncate the output
 > +	 */
-> +	list_add(&range.list, &accepting_list);
-> +
-> +	range_start = range.start;
->  	for_each_set_bitrange_from(range_start, range_end, unaccepted->bitmap,
-> -				   DIV_ROUND_UP(end, unit_size)) {
-> +				   range.end) {
->  		unsigned long phys_start, phys_end;
->  		unsigned long len = range_end - range_start;
->  
->  		phys_start = range_start * unit_size + unaccepted->phys_base;
->  		phys_end = range_end * unit_size + unaccepted->phys_base;
->  
-> +		spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+> +	if (certs_size > ext_size)
+> +		certs_size = ext_size;
 
-Hm so this is bad, AFAICS. We enable IRQs, then an IRQ can come and try to
-accept in the same unit_size block, so it will keep the retrying by the goto
-above and itself have irqs disabled so the cond_resched() will never let us
-finish?
+This sounds more like the HV provided a broken table with offset(s) 
+ouside of the certs buffer. The HV is expected instead return 
+SW_EXITINFO2=0x0000000100000000 and RBX=requred_pages_number, and the 
+guest to retry.
 
 > +
->  		arch_accept_memory(phys_start, phys_end);
+> +	void *cbuf __free(kvfree) = kvzalloc(certs_size, GFP_KERNEL);
+> +	if (!cbuf)
+> +		return -ENOMEM;
+
+In a such (unlikely) event the function returns an error but does not 
+free report->outblob which is going to leak if consequent call succeded. 
+This new no_free_ptr business is confusing at times :(
+
+
 > +
-> +		spin_lock_irqsave(&unaccepted_memory_lock, flags);
->  		bitmap_clear(unaccepted->bitmap, range_start, len);
->  	}
+> +	memcpy(cbuf, cert_table, certs_size);
+> +	report->auxblob = no_free_ptr(cbuf);
+> +	report->auxblob_len = certs_size;
+
+
+Aaaand, it works, so:
+
+Tested-by: Alexey Kardashevskiy <aik@amd.com>
+
+Thanks,
+
 > +
-> +	list_del(&range.list);
->  	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
->  }
->  
+> +	return 0;
+> +}
+> +
+> +static const struct tsm_ops sev_tsm_ops = {
+> +	.name = KBUILD_MODNAME,
+> +	.report_new = sev_report_new,
+> +};
+> +
+> +static void unregister_sev_tsm(void *data)
+> +{
+> +	tsm_unregister(&sev_tsm_ops);
+> +}
+> +
+>   static int __init sev_guest_probe(struct platform_device *pdev)
+>   {
+>   	struct snp_secrets_page_layout *layout;
+> @@ -841,6 +966,14 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+>   	snp_dev->input.resp_gpa = __pa(snp_dev->response);
+>   	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
+>   
+> +	ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_ext_type);
+> +	if (ret)
+> +		goto e_free_cert_data;
+> +
+> +	ret = devm_add_action_or_reset(&pdev->dev, unregister_sev_tsm, NULL);
+> +	if (ret)
+> +		goto e_free_cert_data;
+> +
+>   	ret =  misc_register(misc);
+>   	if (ret)
+>   		goto e_free_cert_data;
+> 
+
+-- 
+Alexey
 
