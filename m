@@ -1,88 +1,219 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD8F2AB23
-	for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 15:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C976E30CE0
+	for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 16:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WNhVTyQN"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5079fe57721so6306e87.1
-        for <linux-coco@lists.linux.dev>; Mon, 16 Oct 2023 08:42:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697470936; x=1698075736; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lu5BfpoD0rf58AJyVvt9WR46RCb0rc8jvPm928IV7T8=;
-        b=WNhVTyQNi90VcHxojOE9/ah77KCkEXel6sZVOpc3df3tgMCXUje8DFq2Ge17rI8ZH3
-         CqjHGUHMpmKatLsnuR7/VCXMVIs3A2VIyeqVogmSFBO/OB6+KKwK3P4Poow29YNxi5jS
-         Bik5R5rrTIAiarlNdQJV5+WxozXw2Z2/4yRnZ5gGccYzW1esUgrJ6djwBZ2NdVRPA3qJ
-         9QESaq7H0QMSjdLFAZ+/fLDCivabd7JzgbWYpym1qQC2vpGQ7pU9c9ZRB35f2YleUFtp
-         SGepftdeVIlI0J4XVbSdnvKzK2AoGbPfA4CJw+yJWPeSMDEmQaKCZkt7a0uqxdw2WiCu
-         rmNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697470936; x=1698075736;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lu5BfpoD0rf58AJyVvt9WR46RCb0rc8jvPm928IV7T8=;
-        b=oGpob/SYz8qLhhO0E333SvphhCv08UjAkcwxK+7Y9pF7nIf6njH7PQZGk/nkgWHXiv
-         KlgVLDT8RqUy6RTUOd5FN6GQCtw0AkNCjGN2PYfmfM0xvN6FcZmzkSLafEVKONLTfS4/
-         RjnGCX+rC/VGE5clGwo3ZaabYbsj+zd1q9HtdipdqRpK7Ho56WNBk23WNBRdCOZlMTDv
-         MpKJ1iKfXy8rkSC/VIFYIYfulnls8wTijj5SqlituWJRZuUtX97knVT3nFp/whsAuZ2w
-         9dMG7kGzLvD+kkvJTEwv+uwsMMJEtSITt0Y4D/FpFmjlP32ZqJ60n0qx0bVpXCZ1EawU
-         XlYQ==
-X-Gm-Message-State: AOJu0YzlFNC0J5a9b/7EiUZNaKMwI0s6FCwNKc18JRvqY/viM/RikjKQ
-	OSokMxLtqBYNoUOJ5ZWJ/v0hVMpVCc1d+4jtmaQzNQ==
-X-Google-Smtp-Source: AGHT+IFpIhOIFr43LLqCP/27HhCG5lv3ENv1SE3apz5K/1ZpvZNaYuspV7cjXOpWsKAICJhXQhZA/MaLa2uXNgPOitQ=
-X-Received: by 2002:ac2:5f52:0:b0:505:6c73:ed08 with SMTP id
- 18-20020ac25f52000000b005056c73ed08mr123950lfz.3.1697470936452; Mon, 16 Oct
- 2023 08:42:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LkCgIGQR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697472723; x=1729008723;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=th4TeJcqs9Lsg7FgXl8/atfXmZLKWJrhml83JQ6RL6w=;
+  b=LkCgIGQRLBZjhsBKjMrsUWrzbV/mKLfuPH4syN3n9iFZts9TVp5WWJN7
+   pXM4rykrcOS5XREEQx+KLCKNfyx251y1vxVWMcSjttApPh89+kI144mr9
+   bO8r+3fdlTkDX4ozyvZ/pXhW3/7IZadqwlHlsDb3zMK8IKCK6MUdKh/vh
+   tfX+thE5geY+lSw13sEAcrwAUxzYZf0vprWYiNgsj4dmwuZP8NBYgXOUi
+   yoFrJU4FhAu1wE8tzTVTtuFFFNM8R+tGVVwKiu5z/7k4jO69SuXqNDKSs
+   HC91giSjv+j+q1P7C/MyKzTpy3y2DqZJiY7E0kddoWqb0sZQR8OO45Xix
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="4176284"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; 
+   d="scan'208";a="4176284"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 09:12:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="1087125336"
+X-IronPort-AV: E=Sophos;i="6.03,229,1694761200"; 
+   d="scan'208";a="1087125336"
+Received: from ranaelna-mobl.amr.corp.intel.com (HELO box.shutemov.name) ([10.251.208.247])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 09:11:48 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 423FC10A1EC; Mon, 16 Oct 2023 19:11:46 +0300 (+03)
+Date: Mon, 16 Oct 2023 19:11:46 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joerg Roedel <jroedel@suse.de>, Ard Biesheuvel <ardb@kernel.org>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	David Rientjes <rientjes@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Dario Faggioli <dfaggioli@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	marcelo.cerri@canonical.com, tim.gardner@canonical.com,
+	khalid.elmously@canonical.com, philip.cox@canonical.com,
+	aarcange@redhat.com, peterx@redhat.com, x86@kernel.org,
+	linux-mm@kvack.org, linux-coco@lists.linux.dev,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@kernel.org
+Subject: Re: [PATCH] efi/unaccepted: Fix soft lockups caused by parallel
+ memory acceptance
+Message-ID: <20231016161146.4j24jprkeaanflpf@box.shutemov.name>
+References: <20231014204040.28765-1-kirill.shutemov@linux.intel.com>
+ <088593ea-e001-fa87-909f-a196b1373ca4@suse.cz>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com>
- <169716326994.984874.4170603294020542086.stgit@dwillia2-xfh.jf.intel.com>
- <3e8aae49-010c-43be-888b-b3ed9ad85610@amd.com> <CAAH4kHY_R5-fCo_=n4=k+kE99EVT8m1tcOytK2MUessynE7X7w@mail.gmail.com>
-In-Reply-To: <CAAH4kHY_R5-fCo_=n4=k+kE99EVT8m1tcOytK2MUessynE7X7w@mail.gmail.com>
-From: Peter Gonda <pgonda@google.com>
-Date: Mon, 16 Oct 2023 09:42:05 -0600
-Message-ID: <CAMkAt6p_mTKrzzQGqzMPB9FU9Nqy9yLJ_tCqFQQ7Q_W12XCkJg@mail.gmail.com>
-Subject: Re: [PATCH v6 6/7] virt: sevguest: Add TSM_REPORTS support for SNP_GET_EXT_REPORT
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev, 
-	Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, peterz@infradead.org, 
-	dave.hansen@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <088593ea-e001-fa87-909f-a196b1373ca4@suse.cz>
 
-On Mon, Oct 16, 2023 at 9:39=E2=80=AFAM Dionna Amalie Glaze
-<dionnaglaze@google.com> wrote:
->
-> > > +
-> > > +     struct snp_guest_request_ioctl input =3D {
-> > > +             .msg_version =3D 1,
-> > > +             .req_data =3D (__u64)&ext_req,
-> > > +             .resp_data =3D (__u64)buf,
-> > > +             .exitinfo2 =3D 0xff,
-> >
-> > Not sure we need this line with 0xff.
-> >
->
-> The exitinfo2 value had an uninitialized memory bug, where random data
-> would get returned to user space. I think this is carrying forward the
-> initial value that sev-guest currently uses.
+On Mon, Oct 16, 2023 at 12:58:34PM +0200, Vlastimil Babka wrote:
+> On 10/14/23 22:40, Kirill A. Shutemov wrote:
+> > Michael reported soft lockups on a system that has unaccepted memory.
+> > This occurs when a user attempts to allocate and accept memory on
+> > multiple CPUs simultaneously.
+> > 
+> > The root cause of the issue is that memory acceptance is serialized with
+> > a spinlock, allowing only one CPU to accept memory at a time. The other
+> > CPUs spin and wait for their turn, leading to starvation and soft lockup
+> > reports.
+> > 
+> > To address this, the code has been modified to release the spinlock
+> > while accepting memory. This allows for parallel memory acceptance on
+> > multiple CPUs.
+> > 
+> > A newly introduced "accepting_list" keeps track of which memory is
+> > currently being accepted. This is necessary to prevent parallel
+> > acceptance of the same memory block. If a collision occurs, the lock is
+> > released and the process is retried.
+> > 
+> > Such collisions should rarely occur. The main path for memory acceptance
+> > is the page allocator, which accepts memory in MAX_ORDER chunks. As long
+> > as MAX_ORDER is equal to or larger than the unit_size, collisions will
+> > never occur because the caller fully owns the memory block being
+> > accepted.
+> > 
+> > Aside from the page allocator, only memblock and deferered_free_range()
+> > accept memory, but this only happens during boot.
+> > 
+> > The code has been tested with unit_size == 128MiB to trigger collisions
+> > and validate the retry codepath.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Reported-by: Michael Roth <michael.roth@amd.com
+> > Fixes: 2053bc57f367 ("efi: Add unaccepted memory support")
+> > Cc: <stable@kernel.org>
+> > ---
+> >  drivers/firmware/efi/unaccepted_memory.c | 55 ++++++++++++++++++++++--
+> >  1 file changed, 51 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+> > index 853f7dc3c21d..8af0306c8e5c 100644
+> > --- a/drivers/firmware/efi/unaccepted_memory.c
+> > +++ b/drivers/firmware/efi/unaccepted_memory.c
+> > @@ -5,9 +5,17 @@
+> >  #include <linux/spinlock.h>
+> >  #include <asm/unaccepted_memory.h>
+> >  
+> > -/* Protects unaccepted memory bitmap */
+> > +/* Protects unaccepted memory bitmap and accepting_list */
+> >  static DEFINE_SPINLOCK(unaccepted_memory_lock);
+> >  
+> > +struct accept_range {
+> > +	struct list_head list;
+> > +	unsigned long start;
+> > +	unsigned long end;
+> > +};
+> > +
+> > +static LIST_HEAD(accepting_list);
+> > +
+> >  /*
+> >   * accept_memory() -- Consult bitmap and accept the memory if needed.
+> >   *
+> > @@ -24,6 +32,7 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+> >  {
+> >  	struct efi_unaccepted_memory *unaccepted;
+> >  	unsigned long range_start, range_end;
+> > +	struct accept_range range, *entry;
+> >  	unsigned long flags;
+> >  	u64 unit_size;
+> >  
+> > @@ -78,20 +87,58 @@ void accept_memory(phys_addr_t start, phys_addr_t end)
+> >  	if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
+> >  		end = unaccepted->size * unit_size * BITS_PER_BYTE;
+> >  
+> > -	range_start = start / unit_size;
+> > -
+> > +	range.start = start / unit_size;
+> > +	range.end = DIV_ROUND_UP(end, unit_size);
+> > +retry:
+> >  	spin_lock_irqsave(&unaccepted_memory_lock, flags);
+> > +
+> > +	/*
+> > +	 * Check if anybody works on accepting the same range of the memory.
+> > +	 *
+> > +	 * The check with unit_size granularity. It is crucial to catch all
+> 
+> "The check is done ..." ?
 
-I think during the initial review I asked for exitinfo2 to be set to
-some known value initially. That way userspace can tell if the request
-failed before the ASP was involved.
->
-> --
-> -Dionna Glaze, PhD (she/her)
->
+Yep.
+
+> > +	 * accept requests to the same unit_size block, even if they don't
+> > +	 * overlap on physical address level.
+> > +	 */
+> > +	list_for_each_entry(entry, &accepting_list, list) {
+> > +		if (entry->end < range.start)
+> > +			continue;
+> > +		if (entry->start >= range.end)
+> > +			continue;
+> 
+> Hmm we really don't have a macro for ranges_intersect()? Given how easy is
+> to make a mistake. I found only zone_intersects().
+
+I don't know any.
+
+> > +
+> > +		/*
+> > +		 * Somebody else accepting the range. Or at least part of it.
+> > +		 *
+> > +		 * Drop the lock and retry until it is complete.
+> > +		 */
+> > +		spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+> > +		cond_resched();
+> > +		goto retry;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Register that the range is about to be accepted.
+> > +	 * Make sure nobody else will accept it.
+> > +	 */
+> > +	list_add(&range.list, &accepting_list);
+> > +
+> > +	range_start = range.start;
+> >  	for_each_set_bitrange_from(range_start, range_end, unaccepted->bitmap,
+> > -				   DIV_ROUND_UP(end, unit_size)) {
+> > +				   range.end) {
+> >  		unsigned long phys_start, phys_end;
+> >  		unsigned long len = range_end - range_start;
+> >  
+> >  		phys_start = range_start * unit_size + unaccepted->phys_base;
+> >  		phys_end = range_end * unit_size + unaccepted->phys_base;
+> >  
+> > +		spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
+> 
+> Hm so this is bad, AFAICS. We enable IRQs, then an IRQ can come and try to
+> accept in the same unit_size block, so it will keep the retrying by the goto
+> above and itself have irqs disabled so the cond_resched() will never let us
+> finish?
+
+Good catch. Will fix in the next version.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
