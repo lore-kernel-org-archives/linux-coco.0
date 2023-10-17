@@ -1,96 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C0A1FB6
-	for <linux-coco@lists.linux.dev>; Tue, 17 Oct 2023 02:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EE91FD5
+	for <linux-coco@lists.linux.dev>; Tue, 17 Oct 2023 04:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YmQ14sEX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z1d6thtu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697509180; x=1729045180;
+  t=1697515650; x=1729051650;
   h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=JVYci4dPjztqnuw4CCGXNDO/S27SEwG7LJmVmhKgDTg=;
-  b=YmQ14sEXweqAcf3r4mUW/rZnjBqarrxFRWfJc7gjAUIz+jGaYQ/F3Uq3
-   FY+0jE2O1J9GZ74rgZVvon92IdP6WP8AMxj7yusdopJPsp3KbFqCXkQrG
-   gEDmbCTNJ0/c+/tFQPPmDDy4MLFt2F/PwI/4JZD6WNG5Spbm1TizzGPKm
-   2LvwonBUIIscD//+Wqv+wyCPVCckmIVX0HkZKACh9zlobWxdnD5mzxZeb
-   wDHOF6H9p97Ypj/3mio7+msZkEgr51j1z6qhlD22a1HT1ToobDuEU6i8t
-   kPgBRwH59rR3FdZSssEKa5eqVU4vsKpMbR1S9a6BL2ZYlymJ/ll+4TdVz
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="385524342"
-X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
-   d="scan'208";a="385524342"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 19:19:39 -0700
+   in-reply-to:mime-version;
+  bh=mOi/PxuWGthP5fk2BEwCXpC7fhhfam29lQtAIk3y7II=;
+  b=Z1d6thtulFC3D6FxAmsuVNSQZyAij2kJDRuXa7Oqm4o6Yj3iTt+Fhz/I
+   TdTPtbreC7PZT+FNKmPYCqJfYVTaYNc5bVTiWpdOHatTEVUhgIUAvxuuN
+   jWlrpCOWevaovxVXNkgDNOUESV3cJ0zk1iaOIoN/Rnj3kBqv+t38tPWDa
+   00F1bgSIgutm35NcOD/LZYec+3ssRiASkTyH6pkJQMAcd7TTcBAWwBY7V
+   Ksg8w+K5KVdYzhF+VLW4UVw49XkgrrD5XiB0WDBBC5tvr3ZviqQkVRUIR
+   yqFM9QlqcE+MBDt5mxLTXXj0o0drr68C7nQAjHi5UDsLeZJBFDeDBR2kd
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="471913828"
+X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
+   d="scan'208";a="471913828"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2023 21:07:28 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10865"; a="929582354"
-X-IronPort-AV: E=Sophos;i="6.03,230,1694761200"; 
-   d="scan'208";a="929582354"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Oct 2023 19:19:39 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.03,231,1694761200"; 
+   d="scan'208";a="3762785"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Oct 2023 21:06:23 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Mon, 16 Oct 2023 19:19:38 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.1.2507.32; Mon, 16 Oct 2023 21:07:27 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Mon, 16 Oct 2023 19:19:38 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.1.2507.32; Mon, 16 Oct 2023 21:07:27 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Mon, 16 Oct 2023 19:19:38 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.1.2507.32 via Frontend Transport; Mon, 16 Oct 2023 21:07:27 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Mon, 16 Oct 2023 19:19:38 -0700
+ 15.1.2507.32; Mon, 16 Oct 2023 21:07:26 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nKV07WLJJSEet5/+Malls5wvcpoNHbnD5nsG6olQDxBJdiOe+8MuwBVQNPiAc2IvnUazOt54G55v8aVlLZRQqa5w/QP8UGHRiaYexEJWwUplxLvaReOaScJnSJNHvDqiusqOohw7v9O4xKyZrYVZ2UYJB/xrUZaq8SHn0+ZZ1hT6xF+80UFK574V/dIH+bxUEPmXWZ2SuyhxowEnlbejf587Xurtx7FapgCzIlbdUC3ltZ1KHk6ZteT+cQ1399wMTdDs19ekOqmhiX18uVC1T/VWbu2HvXInK9j8154pF+gfRNFCdU37FGqVsHunYgLzVigU7BPiZtNZVcKqUe6Grg==
+ b=jvi752bw/oB8qwuZ37AZkPjdnZmE6//BV6tDtAUqXMuoIbnsHMFB33GNvVkNTEXyz0JSzAcvBvAG5fAEiTNpfJrG48CmIfw+eJ/niLx/TgomP7UhGGRbOfMBdnbi7hRoEzUL58SsQ+LOAU/oe7w2kJxX1ubwj+koBDbwUu3cmwSxPJw+XISPAxG6Zz52toH6hFQ52gBMyx9XCYnMZ4NPBVz+MU9Fnzrl/TNcmTBMXfZXYYwt7LRQDgChKI78oJxVqyY+lpxREsiP3xWC3/tDWJiIN+sF5IWUOoOhvkV4u47Ql+g+7p9oIdeeJqV9ipapf723iZq+Gco5Lt5V7UdOqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IhJehLnOJVRXW1Eo1ZoKMi1HQODg/QY/DaPEj3p8rSI=;
- b=PEVtU22fcMgVNNZhdxb1FOR92DHw/ByiUUTNZ43OtIGsvfnx/8+ndtfL7znwrtKaT2Sguva36RbCzBhSj2LzRDlAyskU2q0i5Xg02K/To66DblzmfUwl5PuTkYrEntNX5f5vFlg0hoWUesh0hduN2DTWhEnx5NTbyyFaAOUaWOJjrP9DGTBKi6TnMIpO9UXMoNPYhpgAP9fV/hhrNbytc+Blz+AC1d6My1fyI0eJ2WMgnjeeq/HAQSq2XKntLn/zih7MEH8pK5K6m42zOGD7gPYNpf7NHorPYkm/wSiVvHSS8vw1QcPqBIxPfmEAwOKQWfKN6w2KfEv98bSsdLFzPw==
+ bh=GZdBapjJCLZpKPq10zzmWxHPRlxM+PiU9Kgfmg6rZto=;
+ b=JKQkmrVi+O3ZCNOZmrP1XcQwGRe29p/slTw2DTTsvY3RSt9YkCQ2W63FTtIfN2EfMxyi15aSW6IKRtGZVGoCGd5wIlqha9ZE7Y6pOf/+28G/6MkHN8yJTJrvq/ZolsigtJhGfoALWzGafQ7IoWGsY1s+qs4sqOpKfAMTFxn5hnYFb75iN0SbbbBK7UvvDolqbGQ3EAYTy9n1gHVPn0O4dDVdEIsowviQdFkw8OY0gMSjjqWgOtjYgAR3Sj6SAoX89A7pwgGsigyyUKfPQx1uu+xudycRmbVMskeqqxe9MYGvIw0DpwQXgDaltsNeuI/T5+Py4WAPdsl1u2+uPMG2Zg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by PH8PR11MB6730.namprd11.prod.outlook.com (2603:10b6:510:1c6::17) with
+ by SJ2PR11MB8346.namprd11.prod.outlook.com (2603:10b6:a03:536::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.42; Tue, 17 Oct
- 2023 02:19:36 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.35; Tue, 17 Oct
+ 2023 04:07:20 +0000
 Received: from PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::7978:1ba5:6ed0:717d]) by PH8PR11MB8107.namprd11.prod.outlook.com
  ([fe80::7978:1ba5:6ed0:717d%4]) with mapi id 15.20.6886.034; Tue, 17 Oct 2023
- 02:19:35 +0000
-Date: Mon, 16 Oct 2023 19:19:33 -0700
+ 04:07:13 +0000
+Date: Mon, 16 Oct 2023 21:07:11 -0700
 From: Dan Williams <dan.j.williams@intel.com>
 To: Alexey Kardashevskiy <aik@amd.com>, Dan Williams
 	<dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>
-CC: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>, James Bottomley
-	<James.Bottomley@hansenpartnership.com>, Peter Gonda <pgonda@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Samuel Ortiz
-	<sameo@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>,
-	<peterz@infradead.org>, <dave.hansen@linux.intel.com>, <bp@alien8.de>
-Subject: Re: [PATCH v6 3/7] configfs-tsm: Introduce a shared ABI for
- attestation reports
-Message-ID: <652def355ef34_f8792949c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+CC: Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>,
+	Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, "Kuppuswamy
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<peterz@infradead.org>, <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v6 6/7] virt: sevguest: Add TSM_REPORTS support for
+ SNP_GET_EXT_REPORT
+Message-ID: <652e086f8de7_f879294b0@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 References: <169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com>
- <169716325275.984874.18286682727336216616.stgit@dwillia2-xfh.jf.intel.com>
- <9b919716-127d-407a-85c2-df81cbbd9ba9@amd.com>
-Content-Type: text/plain; charset="iso-8859-1"
+ <169716326994.984874.4170603294020542086.stgit@dwillia2-xfh.jf.intel.com>
+ <3e8aae49-010c-43be-888b-b3ed9ad85610@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9b919716-127d-407a-85c2-df81cbbd9ba9@amd.com>
-X-ClientProxiedBy: MW4PR04CA0342.namprd04.prod.outlook.com
- (2603:10b6:303:8a::17) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+In-Reply-To: <3e8aae49-010c-43be-888b-b3ed9ad85610@amd.com>
+X-ClientProxiedBy: MW2PR16CA0012.namprd16.prod.outlook.com (2603:10b6:907::25)
+ To PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -98,464 +94,357 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|PH8PR11MB6730:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b4730ea-2a8f-4c5c-f4d9-08dbceb781d5
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ2PR11MB8346:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ae4d4e4-19e3-4ff0-8065-08dbcec68af2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: eecPrdnlS19Y9YMxBZ6R1JgyMFO1dT5PA5MyTEE6TdTi5xZU1hWOEsqRTIIU7k3HEjwm2qwHOPJHHYpawlaHGrE+q5ihEr/zvyIXVElxvzP7aqiZEIX2dBXyjVWpkrXMZvMrptUGbjHdOVsCok1v43YreCAYHYU1GzClPSMZytFV7dSgcgSXi15g9B8+s8Z1V6Fg9JiuFjUxDBare3ZiSXoDaksjnH/tTfFRrryzJccpcHeseR+/ae/DwNKzxCjqWCGjYmQw7z/EZRnba1JDz+AJ7Zy5voEBntvQyMCbHpCKlpTbZXAF6FP4MRWN++F1VayhpfqwzL5b9yBChqrjDa6v9z4okxiQZ0UuNLOvqlArZ6jr9rm/8qQ2Jaxn3sf+ZmlxvflRZ0NdT7hbW4FL9Pb5TxpbSsFcyGIhcg93sMfdzRfihMs7QkBTVQGs3L3bXDLsauSCAM3BuLteepmITX9rF744CjgV8qPnw0R1orDZmZnwjNvL5E2w7kg+tq44G6DtfqB+RMwWh8+ycSvIoUCY+nzvnI6qUxyfRofCUfbuIym4D/KEByHcxJRPMylVlw3EN90jK1q721ajrsEBhQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(396003)(346002)(376002)(136003)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(30864003)(5660300002)(41300700001)(8936002)(4326008)(8676002)(2906002)(86362001)(82960400001)(7416002)(478600001)(66556008)(966005)(6486002)(6506007)(6512007)(9686003)(26005)(66476007)(38100700002)(54906003)(316002)(66946007)(83380400001)(110136005);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: muiWhCKi8zJrSln2B0ATkwcXQaTztsTfsRzbaOu4YstAWbaZq2C1FqF4DzluOJYEseAuBjQFzN+iBpvRI5lXZFEaL0NdqQlgjuY0CzoylGwYJaxhoWppZO/nJayoyykbbg6XSPiw+H0nWrNv50P4dkA5thOZ53mE3yCCsYt45ITwAY/TcoHtAIG/ncpWnmBROgVqw1t/uFo4NToQsVTkodrk6yFdgMyyGzUPpv0JFHq4xqq9m3wbyCKg+A/OtEKSDMIB3X6zTW2mFHTnO+l+rkGY6juoI583dzxbE+ORxxv3eiab+pGQ5NCBHsqw5wLpvqw/H7mmQjv9smUqDh6+I4v//BKt/sY9zjCY2i/W1jDCUu1gxzPpO2OKlcRiJ2T6ARAlt/1tqOPAFsxPcdCyWJdkG44FHmJv+4MPT+6PjlRJ4P+x4W4eojnpREWPY4Xcm9bX8JjaKRU10kTL5lOIh/SyXrJ/0iJQ1fEoQe74VULUyLc7pfaPGT/YssK073qSK/04/8U2N28z+UNq1kbnNMr50KrRKkTXrAf4wDYaBlo=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(346002)(396003)(376002)(39860400002)(230922051799003)(64100799003)(1800799009)(186009)(451199024)(110136005)(2906002)(7416002)(41300700001)(6486002)(966005)(478600001)(30864003)(86362001)(66476007)(54906003)(66556008)(53546011)(66946007)(9686003)(6512007)(6506007)(316002)(8936002)(8676002)(82960400001)(26005)(83380400001)(4326008)(5660300002)(38100700002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?vmtmUj7XURkhvqTR4mItQn1sTubfoCLNmcOLrYiwk3zEKx7v2F+jFcue2B?=
- =?iso-8859-1?Q?Xze3uu5gBf+5YLV31Gf8Y1Dlo5Eh01qJYyaOninlgkWVnMWoHn9i35uNYX?=
- =?iso-8859-1?Q?5kWFl2sB+KCYt4AcvBdnzOgBoMsO04INssJ18ykkrCaZOylJ71PKei92tj?=
- =?iso-8859-1?Q?6KxyP8twERtw5KFc8fN0BH95x1lDUbHpjNg32QiJYS9WUy3QNFJPS7TIew?=
- =?iso-8859-1?Q?5kv+GbjhipfAZnxdabGPVcT0DcX3KOZr03+kbA26qFLd87fHoQuCIAVv+N?=
- =?iso-8859-1?Q?fHXfDIZfrgaiUFTRs8sJoPYjIQ4VKYWoV2Gf/+dPAB2OgWzKDf6e8tQBi8?=
- =?iso-8859-1?Q?cIdcUBS0b4X9cDKTwTlzEMiDgZLk1kSH5SUGFbqK5ChKzxZ5ctksNBfNXB?=
- =?iso-8859-1?Q?+Ipa4ShnniL2S2iQUNDQ4/id+v0flVUosnKWnOV6M30BtTxRJetx33HJeB?=
- =?iso-8859-1?Q?TfDuuj4iBAZ0eu/vL3NXDlWmz9ucRZ53DMdOfIoF0hX9hEljU+Ck5ezjTg?=
- =?iso-8859-1?Q?4QhEAYhdvWAoXz+OQHOZJPEnryHGrA2AHIsUTMZF7I9N9ApXlVO+I+P7AF?=
- =?iso-8859-1?Q?y57lr0hj7m3FVnBcXcHgUqMwZk7OYdm06mliZx672bvLk8itxyBe6qykZu?=
- =?iso-8859-1?Q?8SXhDxXatgDTWNIWyixOnj6PWOTpQQY/jnguW5QbCjUt+F9vaNeu89cOuM?=
- =?iso-8859-1?Q?xaBEPg9Ry4MsGgV5wms1zc0d/LVDo2DML9xc0CpwLXQYoLEjlujYTUExLh?=
- =?iso-8859-1?Q?bEnjOsLKwwX4N0nW1+I2BE8+13bPINXQed5BRW3CcoCnHFpqvebKMjMy1t?=
- =?iso-8859-1?Q?+/SbQna6ZYGjgwNbgjn+/rUS2Uow/W1Ca86sxhdmicfvlOexpj5YEpwa6V?=
- =?iso-8859-1?Q?iwPUY52jOOqmLzTPC29TQXovrTxbIcC1T8JDfZW3bjlH/RUBSEBRNp+xSa?=
- =?iso-8859-1?Q?Mlo+xF91jScxcZuUVGoqpOP76OcTuTJvFGsQccOvudamCLwXSquBYGHSo7?=
- =?iso-8859-1?Q?tp8ZWdrvrX0AuRBqlTO3i67layeGXmFTo/FWKE6dtOlmxVMiGNbHdnLwwM?=
- =?iso-8859-1?Q?ZXh3F9fgbnYMHRz5BP8JtucSCA7Tmb1p49e08EZY0CYIR5elk+p1YF9/TF?=
- =?iso-8859-1?Q?VhEfQWCacEl3UySqnz51XY+WcxL82+dtkkJazDoAjGZbU1O9RP/CYCZ5Av?=
- =?iso-8859-1?Q?pF45Bas4kYniaZ3felDvPr4qv94pe0o8Me6Be9tGhn9EpBxtz5MokuByju?=
- =?iso-8859-1?Q?k7I/CsBZrih9M4WuiCN9HD5FxY6LEbFybsA/DXUcgQmYrnuFYb3PUk1Faa?=
- =?iso-8859-1?Q?USUYUJeAJMwpbSPPkGN1y9TndBnOsi4Jc1fYUGEsllwec758gNPeEpRQf0?=
- =?iso-8859-1?Q?uL8FTROVKgt/92iMFmRXwnToBAmR8Xfn4dl7DtuZVUw0b9Ric4pea2Kz3C?=
- =?iso-8859-1?Q?f1qjjPNd5GniVp7i9TtZa0JxUUH7dgD3V3FBLYCwSl+hBTouPhtp0ex9rG?=
- =?iso-8859-1?Q?TexJmk7mOqToSjsfPCQmd0Dt/yIwnP+XQ9a7d5RvlKWzIq/8u2JDnMBNzg?=
- =?iso-8859-1?Q?JMcWzeZT8aWli9f39hci//k0FL48m9QeXpgc8faQVez08WknkL867Rl1wg?=
- =?iso-8859-1?Q?N55NIoPlC6cvvyBG6hAbG3CWT29r5OxtS/uTnHJNCLUMVnNvRlCwhL0w?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b4730ea-2a8f-4c5c-f4d9-08dbceb781d5
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?19JN5sIcFdQgtGwZoJhnfAgAwZ0q/Kfdqar3wG0Rn7DtwVpAPhxAFsOkgRxU?=
+ =?us-ascii?Q?6OMtMlpYWHQasb4WHstbS9lhOGdcQq+c2lscFDV0PMeMFUsrlW9nB7mP51uZ?=
+ =?us-ascii?Q?JTuG3tvKtjyAXwwble2rGHYpDM8nKkNqjgjv+TCYOKDJIXJJ7VuMDlKt4p0P?=
+ =?us-ascii?Q?DTE2N3SH5kxjomvZdRIbtsnsZO3bclgoUEXHz5p4aGRMAkAnAZ2NkHhZ7CNS?=
+ =?us-ascii?Q?gfvi6vZgNNc4tIWvFiGcKG24sMPN39nL/6/oty5K8SrKL1AGEW4YrWqOSaP6?=
+ =?us-ascii?Q?kiXhTiaMLrulOQitDoRuwXEmEm1vUeikds2xVQhc9/1/vfT0WdPZYrCbdY2c?=
+ =?us-ascii?Q?/COET0EbD6/SkQDMtsUB2LYwCcMjJ10oKoHq3tzkMiPgOBSyJu5wDuBRtHMd?=
+ =?us-ascii?Q?5bTOps16jc/S2aktb1XKpzzanlUQ7ILh/b13yskQtLNfJ9AWqxROSwS9gais?=
+ =?us-ascii?Q?f1ZjlqOtklFyD9FHg4MJujXbqdGiLqwSNyGNGR+E5dGNPhT7dqOdRI/mR4k3?=
+ =?us-ascii?Q?bI2AbSb6sGTTSyOt6slvue/YaPz3NvxCacM1hOhlwGbcoKkwcj6j6L8vNUQI?=
+ =?us-ascii?Q?ZbN6gqM2B2BgcMfJ0qrQb1aseV/D1NiVpUqby6ZbVawwNv6IddQh3569kkvN?=
+ =?us-ascii?Q?JzTPwh7zxTJ2ABYZkBiPWhEcAr8R3yb6eotPIpRBSG30V1bdFegskQI/D5De?=
+ =?us-ascii?Q?nT6u2LOczscsuBbjN0UnB9lIXR8GPTjv2Ab+dnfhwQxztLvKHoc+zU2QrvMk?=
+ =?us-ascii?Q?P/6ZB1J8h5CJvJJOIe2IzihwZON50J8Lli3pVwzvDpVhzJjV1USjtlOPgIIu?=
+ =?us-ascii?Q?rBLdzq086twXMtg1M+IISHWx+D8ndgH3mb0SN7OwSIOs560O6jfHeRMBF+xL?=
+ =?us-ascii?Q?z3rtIPrcqfRqloVvKDV7mXk0bVlAZOEzgx8KCVrVCFveLhyAv91dyqBnh2Yq?=
+ =?us-ascii?Q?jA0DcHYvbNqR+FK9kZbHgJlkJRA86Nwi8oW00YRn/GdCO//0kZz9N6WDc083?=
+ =?us-ascii?Q?w4Hbz5zLcNoffDIxpatC/okxwM/lLiMi0cV5SWWyr612hAcYFpKsCzqVM20F?=
+ =?us-ascii?Q?nQVT35SwGeLtRzaJZbX0kiFvmMkH1cJPmIG0oIqpIDuRQ1It8FxgJIXlc33e?=
+ =?us-ascii?Q?GP2yFoMai2Kh9G38qN90re5NRMeTdr84Y3V6bfzOOXvjy30GkMikkQqug8cg?=
+ =?us-ascii?Q?gNIWAc+5cyvI9eAFMfHujccgKc3ZuXWlmntHE8RLoTr+cLGUgsEQx8Ea4RKu?=
+ =?us-ascii?Q?kTZtP7I0nfPbSn4t8kGwHoGSCgZmrhnyBr3CKoHzZhAMEtmpHTnOKckEfovN?=
+ =?us-ascii?Q?+0G/LE22NZeTMfuxo76dSnpAUEDByDDLs4ufTJKwhU+lPNn+fOvCFMm5+Ysc?=
+ =?us-ascii?Q?19neRPaIPXi/g6QUw3NbwHAPl3zpYqjYKX+lC4l/8hcxfjrB7v7QTg/cB3Vu?=
+ =?us-ascii?Q?yt7AaKaa0WIpUiPjVdPNm4okVEhRK0jk5ibazTRkNeXbrUvitLFOANqzNhwa?=
+ =?us-ascii?Q?OfUQbvHesrw78DHhHUYliarqVF6B0Lou3LaC60xXeouLSM11RAHMWCqUxJU5?=
+ =?us-ascii?Q?uEfQRmurFLGsV+uZoDkezcUctxV1kcvC/j48OIhA89Kr+nRSesEOURYsNwec?=
+ =?us-ascii?Q?LQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ae4d4e4-19e3-4ff0-8065-08dbcec68af2
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2023 02:19:35.7631
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2023 04:07:13.4783
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ScArGHPzqTWQskziDBpeGkxPs1YL9Diyfc0nwHO5Lgstek/ipzutp1RCKeADW4D6JX4qDLJod0Nya7CXFyD58uFqeJgl1c0+VJJluip6Ekk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6730
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9LMZ/w/4GjnRCtX44Q6bwwnwXj8uTzO1UN9yOJUQGXaXPvBDRwAFIh5oL9CiplMeVui3PPpD3aLzVS9QZa/WDon/o04HaSGcPnTdQQSnEV8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8346
 X-OriginatorOrg: intel.com
 
 Alexey Kardashevskiy wrote:
-[..]
-> > +What:		/sys/kernel/config/tsm/report/$name/provider
-> > +Date:		September, 2023
-> > +KernelVersion:	v6.7
-> > +Contact:	linux-coco@lists.linux.dev
-> > +Description:
-> > +		(RO) A name for the format-specification of @outblob like
-> > +		"sev-guest" [1]  or "tdx-guest" [2] in the near term, or a
-> > +		common standard format in the future.
+> On 13/10/23 13:14, Dan Williams wrote:
+> > The sevguest driver was a first mover in the confidential computing
+> > space. As a first mover that afforded some leeway to build the driver
+> > without concern for common infrastructure.
+> > 
+> > Now that sevguest is no longer a singleton [1] the common operation of
+> > building and transmitting attestation report blobs can / should be made
+> > common. In this model the so called "TSM-provider" implementations can
+> > share a common envelope ABI even if the contents of that envelope remain
+> > vendor-specific. When / if the industry agrees on an attestation record
+> > format, that definition can also fit in the same ABI. In the meantime
+> > the kernel's maintenance burden is reduced and collaboration on the
+> > commons is increased.
+> > 
+> > Convert sevguest to use CONFIG_TSM_REPORTS to retrieve the data that
+> > the SNP_GET_EXT_REPORT ioctl produces. An example flow follows for
+> > retrieving the report blob via the TSM interface utility,
+> > assuming no nonce and VMPL==2:
+> > 
+> >      report=/sys/kernel/config/tsm/report/report0
+> >      mkdir $report
+> >      echo 2 > $report/privlevel
+> >      dd if=/dev/urandom bs=64 count=1 > $report/inblob
 > 
-> Nit: /sys/kernel/config/tsm/report/report0/provider contains 
-> "sev_guest", i.e. "_", not "-".
+> Is not this one a "nonce"?
 
-Yes, will fix either with a follow-on or a respin if more feedback
-arrives.
+No, a nonce would come from the verifier to be mixed with the 64-bytes
+that the guest uses to establish a shared secret. In this case this is
+just showing the mechanics of the ABI with those security best practices
+set aside.
 
 > 
-> > +
-> > +		[1]: SEV Secure Nested Paging Firmware ABI Specification
-> > +		Revision 1.55 Table 22
-> > +		https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/specifications/56860.pdf
-> > +
-> > +		[2]: Intel® Trust Domain Extensions Data Center Attestation
-> > +		Primitives : Quote Generation Library and Quote Verification
-> > +		Library Revision 0.8 Appendix 4,5
-> > +		https://download.01.org/intel-sgx/latest/dcap-latest/linux/docs/Intel_TDX_DCAP_Quoting_Library_API.pdf
-> > +
-> > +What:		/sys/kernel/config/tsm/report/$name/generation
-> > +Date:		September, 2023
-> > +KernelVersion:	v6.7
-> > +Contact:	linux-coco@lists.linux.dev
-> > +Description:
-> > +		(RO) The value in this attribute increments each time @inblob or
-> > +		any option is written. Userspace can detect conflicts by
-> > +		checking generation before writing to any attribute and making
-> > +		sure the number of writes matches expectations after reading
-> > +		@outblob, or it can prevent conflicts by creating a report
-> > +		instance per requesting context.
-> > +
-> > +What:		/sys/kernel/config/tsm/report/$name/privlevel
-> > +Date:		September, 2023
-> > +KernelVersion:	v6.7
-> > +Contact:	linux-coco@lists.linux.dev
-> > +Description:
-> > +		(WO) Attribute is visible if a TSM implementation provider
-> > +		supports the concept of attestation reports for TVMs running at
-> > +		different privilege levels, like SEV-SNP "VMPL", specify the
-> > +		privilege level via this attribute.  The minimum acceptable
-> > +		value is conveyed via @privlevel_floor and the maximum
-> > +		acceptable value is TSM_PRIVLEVEL_MAX (3).
-> > +
-> > +What:		/sys/kernel/config/tsm/report/$name/privlevel_floor
-> > +Date:		September, 2023
-> > +KernelVersion:	v6.7
-> > +Contact:	linux-coco@lists.linux.dev
-> > +Description:
-> > +		(RO) Indicates the minimum permissible value that can be written
-> > +		to @privlevel.
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index b19995690904..8acbeb029ba1 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -21889,6 +21889,14 @@ W:	https://github.com/srcres258/linux-doc
-> >   T:	git git://github.com/srcres258/linux-doc.git doc-zh-tw
-> >   F:	Documentation/translations/zh_TW/
-> >   
-> > +TRUSTED SECURITY MODULE (TSM) ATTESTATION REPORTS
-> > +M:	Dan Williams <dan.j.williams@intel.com>
-> > +L:	linux-coco@lists.linux.dev
-> > +S:	Maintained
-> > +F:	Documentation/ABI/testing/configfs-tsm
-> > +F:	drivers/virt/coco/tsm.c
-> > +F:	include/linux/tsm.h
-> > +
-> >   TTY LAYER AND SERIAL DRIVERS
-> >   M:	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >   M:	Jiri Slaby <jirislaby@kernel.org>
-> > diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
-> > index fc5c64f04c4a..87d142c1f932 100644
-> > --- a/drivers/virt/coco/Kconfig
-> > +++ b/drivers/virt/coco/Kconfig
-> > @@ -2,6 +2,11 @@
-> >   #
-> >   # Confidential computing related collateral
-> >   #
-> > +
-> > +config TSM_REPORTS
-> > +	select CONFIGFS_FS
-> > +	tristate
-> > +
-> >   source "drivers/virt/coco/efi_secret/Kconfig"
-> >   
-> >   source "drivers/virt/coco/sev-guest/Kconfig"
-> > diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
-> > index 55302ef719ad..18c1aba5edb7 100644
-> > --- a/drivers/virt/coco/Makefile
-> > +++ b/drivers/virt/coco/Makefile
-> > @@ -2,6 +2,7 @@
-> >   #
-> >   # Confidential computing related collateral
-> >   #
-> > +obj-$(CONFIG_TSM_REPORTS)	+= tsm.o
-> >   obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
-> >   obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
-> >   obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
-> > diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
-> > new file mode 100644
-> > index 000000000000..0200a86f1efe
-> > --- /dev/null
-> > +++ b/drivers/virt/coco/tsm.c
-> > @@ -0,0 +1,423 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/* Copyright(c) 2023 Intel Corporation. All rights reserved. */
-> > +
-> > +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> > +
+> >      hexdump -C $report/outblob # SNP report
+> >      hexdump -C $report/auxblob # cert_table
+> >      rmdir $report
+> > 
+> > Given that the platform implementation is free to return empty
+> > certificate data if none is available it lets configfs-tsm be simplified
+> > as it only needs to worry about wrapping SNP_GET_EXT_REPORT, and leave
+> > SNP_GET_REPORT alone.
+> > 
+> > The old ioctls can be lazily deprecated, the main motivation of this
+> > effort is to stop the proliferation of new ioctls, and to increase
+> > cross-vendor collaboration.
+> > 
+> > Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch [1]
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> > Cc: Dionna Glaze <dionnaglaze@google.com>
+> > Cc: Brijesh Singh <brijesh.singh@amd.com>
+> > Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+> > Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >   drivers/virt/coco/sev-guest/Kconfig     |    1
+> >   drivers/virt/coco/sev-guest/sev-guest.c |  133 +++++++++++++++++++++++++++++++
+> >   2 files changed, 134 insertions(+)
+> > 
+> > diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-guest/Kconfig
+> > index da2d7ca531f0..1cffc72c41cb 100644
+> > --- a/drivers/virt/coco/sev-guest/Kconfig
+> > +++ b/drivers/virt/coco/sev-guest/Kconfig
+> > @@ -5,6 +5,7 @@ config SEV_GUEST
+> >   	select CRYPTO
+> >   	select CRYPTO_AEAD2
+> >   	select CRYPTO_GCM
+> > +	select TSM_REPORTS
+> >   	help
+> >   	  SEV-SNP firmware provides the guest a mechanism to communicate with
+> >   	  the PSP without risk from a malicious hypervisor who wishes to read,
+> > diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+> > index e5f8f115f4af..f3ca083127af 100644
+> > --- a/drivers/virt/coco/sev-guest/sev-guest.c
+> > +++ b/drivers/virt/coco/sev-guest/sev-guest.c
+> > @@ -16,10 +16,12 @@
+> >   #include <linux/miscdevice.h>
+> >   #include <linux/set_memory.h>
+> >   #include <linux/fs.h>
 > > +#include <linux/tsm.h>
-> > +#include <linux/err.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/rwsem.h>
-> > +#include <linux/string.h>
-> > +#include <linux/module.h>
+> >   #include <crypto/aead.h>
+> >   #include <linux/scatterlist.h>
+> >   #include <linux/psp-sev.h>
+> >   #include <linux/sockptr.h>
 > > +#include <linux/cleanup.h>
-> > +#include <linux/configfs.h>
+> >   #include <uapi/linux/sev-guest.h>
+> >   #include <uapi/linux/psp-sev.h>
+> >   
+> > @@ -768,6 +770,129 @@ static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno
+> >   	return key;
+> >   }
+> >   
+> > +struct snp_msg_report_resp_hdr {
+> > +	u32 status;
+> > +	u32 report_size;
+> > +	u8 rsvd[24];
+> > +};
+> > +#define SNP_REPORT_INVALID_PARAM 0x16
+> 
+> There is one already - SEV_RET_INVALID_PARAM, defined in "Secure 
+> Encrypted Virtualization API".
+
+Ok, indeed I took this from Jeremi without checking for other
+definitions.
+
+> 
+> > +#define SNP_REPORT_INVALID_KEY_SEL 0x27
+> 
+> This one needs to be defined in include/uapi/linux/psp-sev.h's sev_ret_code.
+
+Ah, ok, will move.
+
+> 
 > > +
-> > +static struct tsm_provider {
-> > +	const struct tsm_ops *ops;
-> > +	const struct config_item_type *type;
-> > +	void *data;
-> > +} provider;
-> > +static DECLARE_RWSEM(tsm_rwsem);
-> > +
-> > +/**
-> > + * DOC: Trusted Security Module (TSM) Attestation Report Interface
-> > + *
-> > + * The TSM report interface is a common provider of blobs that facilitate
-> > + * attestation of a TVM (confidential computing guest) by an attestation
-> > + * service. A TSM report combines a user-defined blob (likely a public-key with
-> > + * a nonce for a key-exchange protocol) with a signed attestation report. That
-> > + * combined blob is then used to obtain secrets provided by an agent that can
-> > + * validate the attestation report. The expectation is that this interface is
-> > + * invoked infrequently, however configfs allows for multiple agents to
-> > + * own their own report generation instances to generate reports as
-> > + * often as needed.
-> > + *
-> > + * The attestation report format is TSM provider specific, when / if a standard
-> > + * materializes that can be published instead of the vendor layout. Until then
-> > + * the 'provider' attribute indicates the format of 'outblob', and optionally
-> > + * 'auxblob'.
-> > + */
-> > +
-> > +struct tsm_report_state {
-> > +	struct tsm_report report;
-> > +	unsigned long write_generation;
-> > +	unsigned long read_generation;
-> > +	struct config_item cfg;
+> > +struct snp_msg_cert_entry {
+> > +	unsigned char guid[16];
+> > +	u32 offset;
+> > +	u32 length;
 > > +};
 > > +
-> > +enum tsm_data_select {
-> > +	TSM_REPORT,
-> > +	TSM_CERTS,
-> > +};
-> > +
-> > +static struct tsm_report *to_tsm_report(struct config_item *cfg)
+> > +static int sev_report_new(struct tsm_report *report, void *data)
 > > +{
-> > +	struct tsm_report_state *state =
-> > +		container_of(cfg, struct tsm_report_state, cfg);
+> > +	static const struct snp_msg_cert_entry zero_ent = { 0 };
+> > +	struct snp_msg_cert_entry *cert_table;
+> > +	struct tsm_desc *desc = &report->desc;
+> > +	struct snp_guest_dev *snp_dev = data;
+> > +	struct snp_msg_report_resp_hdr hdr;
+> > +	const int report_size = SZ_4K;
+> > +	const int ext_size = SEV_FW_BLOB_MAX_SIZE;
 > 
-> This be one line of 88 chars (less than allowed 100).
-> 
-> (I'll comment once on this, feel free to ignore :) )
+> These two are size_t. Or u32. "int" is just weird :)
 
-Unless and until the kernel's .clang-format template is updated to 100
-you will find my patches wrapped to its ColumnLimit setting (80). I did
-manually fixup my sev_guest changes to 100 since there was precedent in
-that file, everything else I just let .clang-format do its thing.
+Nothing is bigger than a few kb here, but ok.
 
 > 
-> > +
-> > +	return &state->report;
-> > +}
-> > +
-> > +static struct tsm_report_state *to_state(struct tsm_report *report)
-> > +{
-> > +	return container_of(report, struct tsm_report_state, report);
-> > +}
-> > +
-> > +static int try_advance_write_generation(struct tsm_report *report)
-> > +{
-> > +	struct tsm_report_state *state = to_state(report);
-> > +
-> > +	lockdep_assert_held_write(&tsm_rwsem);
-> > +
-> > +	/*
-> > +	 * Malicious or broken userspace has written enough times for
-> > +	 * read_generation == write_generation by modular arithmetic without an
-> > +	 * interim read. Stop accepting updates until the current report
-> > +	 * configuration is read.
-> > +	 */
-> > +	if (state->write_generation == state->read_generation - 1)
-> > +		return -EBUSY;
-> > +	state->write_generation++;
-> > +	return 0;
-> > +}
-> > +
-> > +static ssize_t tsm_report_privlevel_store(struct config_item *cfg,
-> > +					  const char *buf, size_t len)
-> > +{
-> > +	struct tsm_report *report = to_tsm_report(cfg);
-> > +	unsigned int val;
-> > +	int rc;
-> > +
-> > +	rc = kstrtouint(buf, 0, &val);
-> > +	if (rc)
-> > +		return rc;
-> > +
-> > +	/*
-> > +	 * The valid privilege levels that a TSM might accept, if it accepts a
-> > +	 * privilege level setting at all, are a max of TSM_PRIVLEVEL_MAX (see
-> > +	 * SEV-SNP GHCB) and a minimum of a TSM selected floor value no less
-> > +	 * than 0.
-> > +	 */
+> > +	int ret, size = report_size + ext_size;
+> > +	u32 certs_size, i;
 > 
-> Sounds like privlevel_floor should be "unsigned int" rather than "int".
+> @certs_size is size_t (as it is copied to ->auxblob_len in the end), and 
+> @size is size_t as well.
+> 
+> @i is just "unsigned", can be declared right in the "for" below?
 
-Sure.
+ok.
 
-> > +	if (provider.ops->privlevel_floor > val || val > TSM_PRIVLEVEL_MAX)
+> 
+> > +
+> > +	if (desc->inblob_len != 64)
+> 
+> 64 is either ext_req.data.user_data or TSM_INBLOB_MAX really.
+> May be even BUILD_BUG_ON(TSM_INBLOB_MAX != sizeof(ext_req.data.user_data)) ?
+> 
 > > +		return -EINVAL;
 > > +
-> > +	guard(rwsem_write)(&tsm_rwsem);
-> > +	rc = try_advance_write_generation(report);
-> > +	if (rc)
-> > +		return rc;
-> > +	report->desc.privlevel = val;
-> > +
-> > +	return len;
-> > +}
-> > +CONFIGFS_ATTR_WO(tsm_report_, privlevel);
-> > +
-> > +static ssize_t tsm_report_privlevel_floor_show(struct config_item *cfg,
-> > +					       char *buf)
-> > +{
-> > +	guard(rwsem_read)(&tsm_rwsem);
-> > +	return sysfs_emit(buf, "%u\n", provider.ops->privlevel_floor);
+> > +	void *buf __free(kvfree) = kvzalloc(size, GFP_KERNEL);
 > 
-> %d  or  change the type.
+> I did not realize declaring variables in a middle of a scope is allowed 
+> now :)
 
-Ok.
+Yes, it's been allowed in loop declaration for a few kernels now and the
+new __free() helper in cleanup.h will make this model more prominent. My
+sense is that it is still not open season on mid-function declarations,
+but __attribute__((__cleanup__())) usage needs it.
 
-> 
-> > +}
-> > +CONFIGFS_ATTR_RO(tsm_report_, privlevel_floor);
+> Since you are doing this, move zero_ent below. Or, better, use 
+> guid_is_null().
+
+guid_is_null() is not techinically enough given the specification
+mandates that the entire entry is zero.
+
+
+> > +	if (!buf)
+> > +		return -ENOMEM;
 > > +
-> > +static ssize_t tsm_report_inblob_write(struct config_item *cfg,
-> > +				       const void *buf, size_t count)
-> > +{
-> > +	struct tsm_report *report = to_tsm_report(cfg);
-> > +	int rc;
+> > +	guard(mutex)(&snp_cmd_mutex);
 > > +
-> > +	guard(rwsem_write)(&tsm_rwsem);
-> > +	rc = try_advance_write_generation(report);
-> > +	if (rc)
-> > +		return rc;
-> > +
-> > +	report->desc.inblob_len = count;
-> > +	memcpy(report->desc.inblob, buf, count);
-> > +	return count;
-> > +}
-> > +CONFIGFS_BIN_ATTR_WO(tsm_report_, inblob, NULL, TSM_INBLOB_MAX);
-> > +
-> > +static ssize_t tsm_report_generation_show(struct config_item *cfg, char *buf)
-> > +{
-> > +	struct tsm_report *report = to_tsm_report(cfg);
-> > +	struct tsm_report_state *state = to_state(report);
-> > +
-> > +	guard(rwsem_read)(&tsm_rwsem);
-> > +	return sysfs_emit(buf, "%lu\n", state->write_generation);
-> > +}
-> > +CONFIGFS_ATTR_RO(tsm_report_, generation);
-> > +
-> > +static ssize_t tsm_report_provider_show(struct config_item *cfg, char *buf)
-> > +{
-> > +	guard(rwsem_read)(&tsm_rwsem);
-> > +	return sysfs_emit(buf, "%s\n", provider.ops->name);
-> > +}
-> > +CONFIGFS_ATTR_RO(tsm_report_, provider);
-> > +
-> > +static ssize_t __read_report(struct tsm_report *report, void *buf, size_t count,
-> > +			     enum tsm_data_select select)
-> > +{
-> > +	loff_t offset = 0;
-> > +	ssize_t len;
-> > +	u8 *out;
-> > +
-> > +	if (select == TSM_REPORT) {
-> > +		out = report->outblob;
-> > +		len = report->outblob_len;
-> > +	} else {
-> > +		out = report->auxblob;
-> > +		len = report->auxblob_len;
+> > +	/* Check if the VMPCK is not empty */
+> > +	if (is_vmpck_empty(snp_dev)) {
+> > +		dev_err_ratelimited(snp_dev->dev, "VMPCK is disabled\n");
+> > +		return -ENOTTY;
 > > +	}
 > > +
-> > +	/*
-> > +	 * Recall that a NULL @buf is configfs requesting the size of
-> > +	 * the buffer.
-> > +	 */
+> > +	cert_table = buf + report_size;
+> > +	struct snp_ext_report_req ext_req = {
+> > +		.data = { .vmpl = desc->privlevel },
+> > +		.certs_address = (__u64)cert_table,
+> > +		.certs_len = ext_size,
+> > +	};
+> > +	memcpy(&ext_req.data.user_data, desc->inblob, desc->inblob_len);
+> > +
+> > +	struct snp_guest_request_ioctl input = {
+> > +		.msg_version = 1,
+> > +		.req_data = (__u64)&ext_req,
+> > +		.resp_data = (__u64)buf,
+> > +		.exitinfo2 = 0xff,
 > 
-> The comment can be one line (or even dropped as it is configfs api).
+> Not sure we need this line with 0xff.
+> 
+> The GHCB spec says the hypervisor sets it, not the guest. And I could 
+> not figure out why exactly snp_guest_ioctl() does "input.exitinfo2 = 
+> 0xff", my best guest it is to catch GHCB not being called before copying 
+> memory to user.
 
-I got a comment from a reviewer that did not understand why @buf is
-allowed to be NULL. It's an oddity compared to sysfs binary attributes,
-so I don't mind the comment.
+It does mostly seem that way, but given this is plumbed deep into
+handle_guest_request() I figure might as well keep common semantics.
 
-[..]
-> > +static ssize_t tsm_report_read(struct tsm_report *report, void *buf,
-> > +			       size_t count, enum tsm_data_select select)
-> > +{
-> > +	struct tsm_report_state *state = to_state(report);
-> > +	const struct tsm_ops *ops;
-> > +	ssize_t rc;
+> > +	};
+> > +	struct snp_req_resp io = {
+> > +		.req_data = KERNEL_SOCKPTR(&ext_req),
+> > +		.resp_data = KERNEL_SOCKPTR(buf),
+> > +	};
 > > +
-> > +	/* try to read from the existing report if present and valid... */
-> > +	rc = read_cached_report(report, buf, count, select);
-> > +	if (rc >= 0 || rc != -EWOULDBLOCK)
-> > +		return rc;
+> > +	ret = get_ext_report(snp_dev, &input, &io);
 > > +
-> > +	/* slow path, report may need to be regenerated... */
-> > +	guard(rwsem_write)(&tsm_rwsem);
-> > +	ops = provider.ops;
-> > +	if (!report->desc.inblob_len)
+> 
+> Unnecessary empty line.
+
+ok.
+
+> 
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	memcpy(&hdr, buf, sizeof(hdr));
+> > +	if (hdr.status == SNP_REPORT_INVALID_PARAM)
 > > +		return -EINVAL;
+> > +	if (hdr.status == SNP_REPORT_INVALID_KEY_SEL)
+> > +		return -EINVAL;
+> > +	if (hdr.status)
+> > +		return -ENXIO;
+> > +	if ((hdr.report_size + sizeof(hdr)) > report_size)
+> > +		return -ENOMEM;
 > > +
-> > +	/* did another thread already generate this report? */
-> > +	if (report->outblob &&
-> > +	    state->read_generation == state->write_generation)
-> > +		goto out;
-> > +	kvfree(report->outblob);
-> > +	kvfree(report->auxblob);
-> > +	report->outblob = NULL;
-> > +	report->auxblob = NULL;
-> > +	rc = ops->report_new(report, provider.data);
+> > +	void *rbuf __free(kvfree) = kvzalloc(hdr.report_size, GFP_KERNEL);
+> > +	if (!rbuf)
+> > +		return -ENOMEM;
+> > +
+> > +	memcpy(rbuf, buf + sizeof(hdr), hdr.report_size);
+> > +	report->outblob = no_free_ptr(rbuf);
+> > +	report->outblob_len = hdr.report_size;
+> > +
+> > +	certs_size = 0;
+> > +	for (i = 0; i < ext_size / sizeof(struct snp_msg_cert_entry); i++) {
+> > +		if (memcmp(&cert_table[i], &zero_ent, sizeof(zero_ent)) == 0)
+> > +			break;
+> > +		certs_size = max(certs_size, cert_table[i].offset + cert_table[i].length);
+> > +	}
+> > +
+> > +	/* No certs to report */
+> > +	if (!certs_size)
+> 
+> Nit: WARN_ON_ONCE(i) here?
+
+Seems harsh for what could only be a firmware bug, panic_on_warn users
+would not appreciate crashing the kernel over something recoverable like
+this.
+
+> 
+> > +		return 0;
+> > +
+> > +	/*
+> > +	 * cert_table reports more data than fits in ext_size the
+> > +	 * userspace cert_table walker can decide what happens next,
+> > +	 * truncate the output
+> > +	 */
+> > +	if (certs_size > ext_size)
+> > +		certs_size = ext_size;
+> 
+> This sounds more like the HV provided a broken table with offset(s) 
+> ouside of the certs buffer. The HV is expected instead return 
+> SW_EXITINFO2=0x0000000100000000 and RBX=requred_pages_number, and the 
+> guest to retry.
+
+The existence of SEV_FW_BLOB_MAX_SIZE suggests the driver is not
+prepared to retry. Retry support would be a follow-on new capability.
+
+> > +
+> > +	void *cbuf __free(kvfree) = kvzalloc(certs_size, GFP_KERNEL);
+> > +	if (!cbuf)
+> > +		return -ENOMEM;
+> 
+> In a such (unlikely) event the function returns an error but does not 
+> free report->outblob which is going to leak if consequent call succeded. 
+> This new no_free_ptr business is confusing at times :(
+
+If this fails it results in the attribute read failing and
+read_generation does not advance. The next read attempt will free the
+partially completed report and retry, or the driver gets unloaded and
+the partially completed report is freed at that time.
+
 > 
 > 
-> Drop @ops and use "provider.ops" here?
-
-Shrug, ok.
-
+> > +
+> > +	memcpy(cbuf, cert_table, certs_size);
+> > +	report->auxblob = no_free_ptr(cbuf);
+> > +	report->auxblob_len = certs_size;
 > 
-> > +	if (rc < 0)
-> > +		return rc;
-> > +	state->read_generation = state->write_generation;
-> > +out:
-> > +	return __read_report(report, buf, count, select);
-> > +}
-> > +
-> > +static ssize_t tsm_report_outblob_read(struct config_item *cfg, void *buf,
-> > +				       size_t count)
-> > +{
-> > +	struct tsm_report *report = to_tsm_report(cfg);
-> > +
-> > +	return tsm_report_read(report, buf, count, TSM_REPORT);
-> > +}
-> > +CONFIGFS_BIN_ATTR_RO(tsm_report_, outblob, NULL, TSM_OUTBLOB_MAX);
-> > +
-> > +static ssize_t tsm_report_auxblob_read(struct config_item *cfg, void *buf,
-> > +				       size_t count)
-> > +{
-> > +	struct tsm_report *report = to_tsm_report(cfg);
-> > +
-> > +	return tsm_report_read(report, buf, count, TSM_CERTS);
-> > +}
-> > +CONFIGFS_BIN_ATTR_RO(tsm_report_, auxblob, NULL, TSM_OUTBLOB_MAX);
-> > +
-> > +#define TSM_DEFAULT_ATTRS() \
 > 
-> imho this one and TSM_DEFAULT_BIN_ATTRS are not really helping with 
-> readability or a size :)
-
-It is meant to do neither, it is only here to make it clear that
-tsm_report_bin_extra_attrs[] is a super-set of tsm_report_bin_attrs[].
-What I really want is sysfs-style group syntax, but configfs does not
-have that same declaration capability.
-
-[..]
+> Aaaand, it works, so:
 > 
-> A little confusing thing is that this guy is neither near the beginning 
-> of the file (with other statics, this could even be a member of 
-> tsm_provider) nor the code which sets/clears it - tsm_init/tsm_unregister.
+> Tested-by: Alexey Kardashevskiy <aik@amd.com>
 
-@tsm_report_group is only used in tsm_{init,exit}(). I'll move its
-declartion closer to tsm_init() in a follow-on.
+Thanks!
 
-[..]
-> > diff --git a/include/linux/tsm.h b/include/linux/tsm.h
-> > new file mode 100644
-> > index 000000000000..5fadc382064d
-> > --- /dev/null
-> > +++ b/include/linux/tsm.h
-> > @@ -0,0 +1,68 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef __TSM_H
-> > +#define __TSM_H
-> > +
-> > +#include <linux/sizes.h>
-> > +#include <linux/types.h>
-> > +#include <linux/device.h>
-> 
-> device.h is not needed.
-
-Yes, an earlier version of this interface referenced devices.
+Did you happen to test @auxblob population? I was not able to test that
+path on the hardware I tried.
