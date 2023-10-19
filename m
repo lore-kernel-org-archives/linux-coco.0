@@ -1,72 +1,94 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2059.outbound.protection.outlook.com [40.107.223.59])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E2E81E
-	for <linux-coco@lists.linux.dev>; Thu, 19 Oct 2023 02:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B541CA5C
+	for <linux-coco@lists.linux.dev>; Thu, 19 Oct 2023 03:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rKcHOYEq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AyaKo+Jr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697686507; x=1729222507;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=k/XN7Cl80NsiTeV28thLI+DZ6X1Y30D12TI7cTqou2s=;
+  b=AyaKo+Jr35SYrqNGQ4SZIdYcokcGLYl9bhlhqOnrM3XSwtNouTkVrgVn
+   DLtTxqpj9gFy2WnjhDeOehUYXWfTeKzTsGvsY9mTk3E/FKGspbSw+jnz8
+   sWPnUm7ckSfZ4d5QtNvXutPk1nXCv96++UIiUk+mxVGGxAKscpiLGYGsL
+   oZAhahTeH9fNwfv8GzWgseGbvriwmZ40wBYhB02M4I0zGx74eAr6TfelA
+   mX4/9CACb7W9Fy+oZwVPRcKvyMNg1CDEsEtMve2oEIhl2rrchs2yGleCf
+   hvGYAqtqrwBXP3iw1KcYyzX/56Bf0fb46BDQsUWl00zAIUXQR+zVblURR
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="4757045"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; 
+   d="scan'208";a="4757045"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 20:35:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="706705663"
+X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; 
+   d="scan'208";a="706705663"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Oct 2023 20:35:05 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Wed, 18 Oct 2023 20:35:05 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Wed, 18 Oct 2023 20:35:05 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Wed, 18 Oct 2023 20:35:05 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Wed, 18 Oct 2023 20:35:05 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=e44sMuoMWcJZf3YLqNjNmI8162QcO/75TfC2F92+bpBdmFzKCCUghGVBe6RJ07zevXvsvovHL0CcVEldqp3UQANoSg+GsYXWg287KtqlfPzFXK4BEGTw/RdNhArdvixz+4QHG/BqVYXEapCm/Nd8anA/yOsFXSplQd6uWOdOd6tikbslkjn4Brl3xa1qLmgILW8DwiH12EUx/K8kow62WJvU1swwMyIK9DcLmfwg1fQIRhjC/BwrtfElXfYNU3Jo8Txlfa379DKG2ETCN0PdtxDHZqwzEOHGAlgS3ZR83idt31pIWqxVqvYIL8dL11jL8c33aChWBpLGwByRRT5Azw==
+ b=OEwnYsQ+QZ4ajBAzGrNPpj6gytJMXKwYGOK67750oz04TJWnlCF3uEZ1kI/mzdZUl8xqJxl9GO10iNwAgxOZtld2eRwFpugY3CAvQGy91EYwMGXmRs/genpZbfOrCpNglwDXJMS8UEkrmJQ641eVdzt7Ac0HT3UBdtGoakiX/pYAox12o/mlPqMfDCVN9JE9TP1FkufoiS80mLQpda52wkLyZsa1+LGHaRgPH63zJMnvcvh4BQJj4NGn2ygjYtw9ERUDOp9KUbHS5K4mwjt0eXbwarPhAFkl6T3wSwKpU0fZx+MPiuC8J3Vfl5N3y5MvFqZS8yISHYZ4TrcQ3m/gvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q75WRsg9zaLqjI5Ls/eaC6LNAr2oOqKQfdFy0VzIxnU=;
- b=VwdV/gAVpQsU2tgw1WBw7Fs2gUZ6zEB3yGwViiUFWNQ8VLCmUH7+gJ13tZnneGWTlyU8uJsvyee0OsDFDev/ojl5CEk03d2EvwHAmO5T5B4sA2YvrUy23mVjHoKo83qASbiCw/pusGEYbWewyyh98beGzswoC1Oap9Y9EU2o+wd5lZwj5DIu/3Tj9M/Gkb2KDllM4NHc+xorsabUBMuaLB+nS1VQMbEmlHiEqlp/3YS6013LlUhIuRDezoWwEzqq42zQxZALfHS6MIuvCMHiil1mEUxWnH5JeNHFE8FqcD8E4kCipoqvsXbvJ+KHpt2i+3xNSS+5r2aTtPnBc9DE4Q==
+ bh=FiBUFpyBm5OW+TXEry6L7cJqiAX+UjXYuuoYynrfVQU=;
+ b=IrInLNszbpYl6CEbxLVpEJmV1r91aWrBXXx6tkIvyO00jOhoq6bT4mq+H69+01M4r253FXYL9+YS/tZJ3J5oCu1RpPnchgkTxM1DJx8en3ntyxWSoBeIGub0GE5qm+q6U05/XIsvRvCvgv2QcNLw4astiKV7eVzvoNKiEddFMJF7yeuTSMP/Hkv+9zeV56sO19r6Qrv4CvaCr+DWzC8QIJZBKM76RZD3ua7a10vUD2ykiuvqlLSOBno6bSEcc5HpA9pykB+BWU1/PxO6UrcKkTnr0DtK49WbfsEI2ly381Z8fvJPEnFGumQKN+/R+QlYUDUDc8KFhcGwUnOpjn/6Mw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q75WRsg9zaLqjI5Ls/eaC6LNAr2oOqKQfdFy0VzIxnU=;
- b=rKcHOYEqc2uTBSXN191mFMOxF/qdsAIyKxp++7WeXX1nDJrMC4zXZiBfBwTdc0U9lSTnYwNEFldQFtgXm02OLsX3E6le4AH8OvNqOX9KciXSY7YLDteWT8vDx1+UNpjhiWYMIcq8NitT9DZI1fA00Iq4hq9ltuHa4Vh0NPSlSm0=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by PH7PR12MB9256.namprd12.prod.outlook.com (2603:10b6:510:2fe::21) with
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM8PR11MB5621.namprd11.prod.outlook.com (2603:10b6:8:38::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.43; Thu, 19 Oct
- 2023 02:48:57 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::16da:8b28:d454:ad5a]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::16da:8b28:d454:ad5a%3]) with mapi id 15.20.6863.043; Thu, 19 Oct 2023
- 02:48:56 +0000
-Message-ID: <924b755a-977a-4476-9525-a7626d728e18@amd.com>
-Date: Thu, 19 Oct 2023 13:48:26 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 48/50] KVM: SEV: Provide support for SNP_GUEST_REQUEST
- NAE event
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
- Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, vkuznets@redhat.com, jmattson@google.com,
- luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
- pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-49-michael.roth@amd.com>
- <CAAH4kHb=hNH88poYw-fj+ewYgt8F-hseZcRuLDdvbgpSQ5FDZQ@mail.gmail.com>
- <ZS614OSoritrE1d2@google.com> <b9da2fed-b527-4242-a588-7fc3ee6c9070@amd.com>
- <ZS_iS4UOgBbssp7Z@google.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <ZS_iS4UOgBbssp7Z@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5PR01CA0075.ausprd01.prod.outlook.com
- (2603:10c6:10:1f4::11) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.24; Thu, 19 Oct
+ 2023 03:35:02 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d%4]) with mapi id 15.20.6886.034; Thu, 19 Oct 2023
+ 03:35:02 +0000
+Date: Wed, 18 Oct 2023 20:34:48 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alexey Kardashevskiy <aik@amd.com>, Dan Williams
+	<dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>
+CC: Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>,
+	Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>, "Kuppuswamy
+ Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<peterz@infradead.org>, <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v6 6/7] virt: sevguest: Add TSM_REPORTS support for
+ SNP_GET_EXT_REPORT
+Message-ID: <6530a3d89f717_5c0d29481@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com>
+ <169716326994.984874.4170603294020542086.stgit@dwillia2-xfh.jf.intel.com>
+ <3e8aae49-010c-43be-888b-b3ed9ad85610@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <3e8aae49-010c-43be-888b-b3ed9ad85610@amd.com>
+X-ClientProxiedBy: MW4PR04CA0375.namprd04.prod.outlook.com
+ (2603:10b6:303:81::20) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -74,280 +96,61 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|PH7PR12MB9256:EE_
-X-MS-Office365-Filtering-Correlation-Id: 068660b4-d522-47b6-e1ad-08dbd04def2c
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM8PR11MB5621:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1805d20d-faf8-4078-797c-08dbd05460c9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	lh5/0oyNVMewlcefv6a/erMyrMMUZdd5u5DTAxbuKt9NQi2R5sDctMcOEpjzaoOVQKkSvN/P0h0pusRobl1+H7QGw/kLs2yuu3VBrgbrCVu+2fjU3Enwjcsi1qRj8v9Zqt+Uh2EiqswOlfkbRmhZ0/hV204qG9RVYWSmvkzX6et2HWgFBW91Nx9Rl817khfZVD6bwika6+XxNhXE6EqSx1nL+V5kZS/V3rEuGdpEEjUtd4y47zVoprrLHMbzxFsmAg8Yr7tf1WiigMpHg18tx315SjL9ZdtgWSeIrZEEC+okQRVIY34S9/9sThCGPd22c210PPsSJChcZJsuG9HyTqz9hjD7S03jDbKViE1EAkmMiT8X2TAI/DurTjuLf58WKYqOyMSmDPfVAQtukvEKjokxLCys9RfF24oEjXS5Oh21176gKaqVRaRv2MBa2TCqgPZvB98DNovYaZlo8BQ7kHGWzR1IG9w6ym6UG5hQhySt/oISK4DW/QYiDKk06f9JHkVlIO7oTIhuARBYfe9AM9mzCzuuKA34FSRdcrTLSBRIp+4sV2RFZRCNUcvUIWkBI5WU2bhbPCE9bVK0BtQ4K5g0BsuiabV4EIRaDci3/LwHctYQBD4eWXSnejp0tJUibDUds9Q1x5OO3rZKV0TLjg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(39860400002)(376002)(396003)(346002)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(4326008)(66946007)(66476007)(54906003)(8936002)(66556008)(8676002)(6486002)(6916009)(5660300002)(316002)(31686004)(41300700001)(7406005)(6512007)(7416002)(66899024)(2906002)(26005)(83380400001)(2616005)(31696002)(53546011)(38100700002)(6666004)(478600001)(6506007)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: ktElLDN67PfyM2o8m3X+WUHLg/hphUl6b+U9coKO0BdZYx0ccmBMlWgrVgtiDNffI0uUUMgjlPGaEMcTL7dI9SW+BkkD55wi7B19KHMhUgar3/nkTXXz5C5Tpna64xqXTZUmDgBa8sQztISarcC5gSMZ44CWl1tPXB+OC6dipgwAabOOX1YwJ5rLn0fKBpNy2paXv6OexJBOwgg6DGtD1+94ZVzwYopto/MMCeR1JXTFME+wqnciujFkVd+PA5/mv3t1k4FojPyPcnUtAc/ygWwMe44jcNiRURLQHozuOMIVvL2XSnQOZAVNKUSdgI49MjZlf7iL4n1mIF0j0plkk8IrcHbP0jKuYDvAxsVYeB/5e/9+OQ9JEDgZI6CXQxYYjlgDYzynw25nSCSOYvofGNWCPc0lEXNw4ZQc8F5ph7gVlZx0lP/AmNAS8+vcc7pXAAVQ3svjADvLU8H0PonnDoBG+llIjsU492IgBgCzv/J7xV4d5eHePyMva7HCpaq76XNHY8YnQAVdOn0O/FPZ0vVP0TdXvcBSvQp8uOqY4ppkiALPCIs4Nh9Z0vVzSZEg
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(39860400002)(346002)(366004)(376002)(230922051799003)(186009)(451199024)(1800799009)(64100799003)(66476007)(66946007)(110136005)(8936002)(54906003)(316002)(66556008)(6486002)(6666004)(478600001)(8676002)(41300700001)(5660300002)(4326008)(4744005)(86362001)(2906002)(7416002)(38100700002)(6506007)(6512007)(26005)(82960400001)(9686003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WTAzQUFkZHpIWGh2ZFZRSi95amcxSTNtUTJVcnlZMVdlL2ZTc0tvYWErNUow?=
- =?utf-8?B?L3dNczNYYUc0U3o4R0twR2YyT2JaRXB4RTZBckE0MnNoSVRndWkxWGpjV2lG?=
- =?utf-8?B?UzRMbStsSFRsZDlSdll1SFBsNnBvdjdoOXVxSjZhZTVXWnFUYU4xZENOZTU4?=
- =?utf-8?B?QjE0bjBlZE80aENaU0UvbDdpc1ZiV216QU9tOVRaQWkrcG5ISjEyN05FdTdJ?=
- =?utf-8?B?L0N4ODRrYkp6R243LzloSWN4SGV6L2RIV2U0QnZIYzAwMFpkYjBKNjdJcGZ4?=
- =?utf-8?B?NXRtc0o1emY5ZXg5U1pMLzdVQmltbmpNWUxsYXFtcktJTmlBYTRjOWRTS2dq?=
- =?utf-8?B?TWlGUnFwelhqaXZNUXhibUp0YmdpTEZYcUwwTWU2S09KeHNpdUJHc2x2UER1?=
- =?utf-8?B?OTgxT05wUnFwbkxob2Z2LzVBOUhFZUZ6bkNSNEhXbDg0SmpJeE5MWXVheTJQ?=
- =?utf-8?B?ODJoNFoxanVaa3RJdnZuVEdXSjlyZ0hwZjZOWE4wVkwwdmsyWFpJR3llTHln?=
- =?utf-8?B?MFJxeXdLNW45NksvazJ1MEFzdVVzL3FqR0psT0VnVlV0RDR4WW5TWFFwcUd1?=
- =?utf-8?B?aHJmU1g1N1R3Zm5wbTRzdWtjcjhDVzRZYlM2QTYwaVVldkJkNU1jRFZheSth?=
- =?utf-8?B?T0VETjZxRk83aThmTlh1MlNVQndjSDNUdmFPQXhGbXNIT280N09qUTRMSlBX?=
- =?utf-8?B?VWdzZisvWlJDSjY0a0hmZk9RRTAvUTNycm1Nb0JoMG1aZ0duLzVaUVNyTkxn?=
- =?utf-8?B?L2l6NW8xOE9RVHJGeTc0TWNCeVlpOW1kNTJtelo0NXlsVUgzdmtZd2cvNWoz?=
- =?utf-8?B?c21BaTFSamh6Q0tkMVIzcGRGRUNDLzhpZ01pUno2L25Sb3RsM0pDV3dpUm8y?=
- =?utf-8?B?eTdaaFFSRXZqRVZCMDFhWlhDMk9UTnVsbGx4dUVqUUMxN3BINkdJLyt3bjM4?=
- =?utf-8?B?RUcrZnoxTzY2VGdKUGczcDJteXUyVytYRUt6UkJhM25SUGF4Smo5MEZOZEk5?=
- =?utf-8?B?T21kZHBHSk1lRHQ2MmRhZFR1TGxobUFqQ2UreWtHZEUvbk1pdUYxbDZxRnpP?=
- =?utf-8?B?cytmbkh4NmpId281akQ1bFVBb0phQkt2YjluMERrcGFoMThUbStaRkQ1MU5D?=
- =?utf-8?B?LzFEUG11bVJUMXJDYjRjdU9Zc2VNY0NBRHJxQ3hHanlXemhnYTlNV202Tyt6?=
- =?utf-8?B?WkZBK0JVUTNabkFOdU9YNmxMaEY1d3lDckRtVkNIUXNmOEVoU0c1dVhmcmNj?=
- =?utf-8?B?ekw0VjhnMW1oZ3JmRXNyQVpZU3FTcVRrM0piL0xlcVZZZHNrZ2xIdi9HWW1Z?=
- =?utf-8?B?dHJLQ3dEYVRuYTJwZWhhMHR5bm9sZFFmc2s3cmV4Y2o3aDlEY3NHVmNhcHJB?=
- =?utf-8?B?R3BjdE0veFZTNld6LzhQYVR0VTcxbExsRFJ3TWZPTjZKcjV2clIwamFTVnNS?=
- =?utf-8?B?K01KYkQ1TUZXZmRWSmtiLzhVQmZCZlhuKzZMc1daTkdCSkc4eUVkakw4bjI4?=
- =?utf-8?B?eDBGc2s3WVRvRXJmL3ZqY3NybDk0eEVXbllHL0gxSktLMSt3REIwZENvQ1Qv?=
- =?utf-8?B?NmxFZGlhWjRsRGw4MHYzaHcxbnZEOXhxcWZJTmphRUlwTkVGYXRrZzVmYldn?=
- =?utf-8?B?eXlaNEV2Y0Y0MmZyVnRnRUtzK0hudXE4STNGSVBkU1N2OURLS3ZmaHgydE1I?=
- =?utf-8?B?VHBLbmlERCtQdjY3ZVlCT0MvcWVEQ3VZMXVjMERhd0JJQUdoYzNoR3R0Uk9i?=
- =?utf-8?B?VUh1L0wvMElONkdFK1dveG1zcGpFVlI3UExyQ3NJK1pLWVVKaEhEQjZ6ZFZZ?=
- =?utf-8?B?SllqYjUrcUx3RlliU2JncTVLOFhMcnBiaEZXdisyNFFLTy9GL0kxN01oRVBp?=
- =?utf-8?B?QVFyazczYmY1ckFxNHFXWGhBS1g5ZWxPNC9OWjBFN2o0NzJtbUVuUzhsZ0ph?=
- =?utf-8?B?WVNCTHI1ckN2YjQ2MXd6Smh0bDB0a2hSTmdURzQxYnJKZTUrckV5bUFqandD?=
- =?utf-8?B?d1BCVGlmVHJ5VmZoSFJOd0Fjd1E2bFRqYjBtMHhCTldwWlVVNnhTR21haURv?=
- =?utf-8?B?VUlUdVZxQ3lGK2ZsYlNXMWRyaGhEcjlleDZUWi9FNFFsRFFodU1LOUpRQ0Fy?=
- =?utf-8?Q?jJv40YW5+4e/Mj5HOA6x26/Uf?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 068660b4-d522-47b6-e1ad-08dbd04def2c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?GK551fazx+ikx4eyYcm8OtpXV3dLgtMRzolUq+2Y58RiA8jQfDvopZwgAF/9?=
+ =?us-ascii?Q?Hp5wsJq5yhb92OVpnhDlshR6f7muveDIQIVE3iVCAH0mFV1ATpkunfim+KNs?=
+ =?us-ascii?Q?cs/Sw+BZ6iB7sRKZIDFnBqWiPb89vht4bUOG9P6SVwxqVPt43Az7v0c8sMKA?=
+ =?us-ascii?Q?+7Sg+4KYNstVX6i3voJL/dUzlPz9HRh/L/izbjEl0PMJp1OuVUI+90V/yPsA?=
+ =?us-ascii?Q?dezgzIkiPUwrwoEyBodgFmJa6VapcthBgHa8yTeADBHV/NlpGoGhNESNEOqP?=
+ =?us-ascii?Q?28cY/CjBtZYaGDITqncFtnfqDS2cjfqERqcZjHDNd6SuLTM17Bxb++2aqG5D?=
+ =?us-ascii?Q?ryeBupt4iMF4xiRg3pJJDl2QlHzKevgw7FzicR6ruX7W5a75yRqs9S+EGjN0?=
+ =?us-ascii?Q?meNr5EiFp40oXD20L2TloZwtBObEX0Co0GUwKape+m6NuK0yvNGCVl+U2XWq?=
+ =?us-ascii?Q?e69n/6HknRZUnRWQHnqFDfPMmjQuzMqZszN6FEPgKtd/Vve8n2EARrnhXaCD?=
+ =?us-ascii?Q?KmKGj0/po2jS7rtMX9H+eShYqdWdhqQPWDT5pj+F1thLPr0pJCgK2i/CX4ts?=
+ =?us-ascii?Q?UnvhvVy9ZwKofq2osd1Y1ib1gxB++0Ow4vYwQCiLXO11gawO2DUUWszwv7ug?=
+ =?us-ascii?Q?fB622zKY38lTuWADm3904dvKnuBFD/5eruym/ahd0DR3i/czYy6xxqtLXZPx?=
+ =?us-ascii?Q?JBZ5Fzn+QzM1HUWWHcqcn7V/TRk/Myi7m0int9motIHXDP/h916WUXUTuwWt?=
+ =?us-ascii?Q?5GcQVlHvjxP9u/At9VCKGOfBpluj7VrMy/vYO3Wy07LFHJXbeO4RS5PGeO+V?=
+ =?us-ascii?Q?VFWzJYj+tfRRsDl2nNX09gu7WUUXGvyd++ah0TDk2Q51lBzhm1sF6bVbL3cJ?=
+ =?us-ascii?Q?k6sGquMTw4B1ocSOrXsIINlXnlh/VP6fLsA22SOmmotbPqsJtEv+4V4ikJNv?=
+ =?us-ascii?Q?K8lzp2a0lsnev2iPft4UyxpWqNyHVuiTNIlP0g3TnQkJcsWcRgSRNgOJCeli?=
+ =?us-ascii?Q?8nW5AU/69hKwmWPlybBcuouPhL1ClMslpB/kF1xmF572BdyajC2scZvrHSbn?=
+ =?us-ascii?Q?mSHNm3bTmda9Ept1VjVqqPxK0CD/f2MeiCRBlFll4mBSMQtMa5/d4BXGMwz3?=
+ =?us-ascii?Q?UUdeQ9viVY/uACcBxotnxrcpC8DJBfDgnV61yg8DuqnrdWgqMdhcKt6B/LQH?=
+ =?us-ascii?Q?+3HVgZZC2O3SzzE8W46xbR1xozg6LpdwMNQfdQPE+IYzqfOGQQzEaM6Man5X?=
+ =?us-ascii?Q?YphIU91my3yW/utEEKjQQ5ffVieIa40XRmw4uPQAJcTBL+XNI8qLiBnOkjDf?=
+ =?us-ascii?Q?e67+jzm0cEr9iuQ3o74/wzOLOdNKJE2mpKQFce7g7AQ8O4mnsvE83EFpzlbH?=
+ =?us-ascii?Q?XJHtnhlD1MESyP5dkZSG5gFYv4QHzqDEixUHnHi+JOEN2YAlEJFm7WXSt8mc?=
+ =?us-ascii?Q?Tt9RBrJpdWzqD5mPTXl22DlpdJC4jXfpcQRHFXu6XT5blU3Lq0a/nXir4tU1?=
+ =?us-ascii?Q?q6+VXdJG7YkdvDwSoWqtJeLGgpjK4G0lALaU5WFccFBeU9NKtNp4baewp1+S?=
+ =?us-ascii?Q?yGrkBWBH6v2JAyVMVUjEWMVWb+22nnmqMJk1LG/hvk+202uaRsgrjHxWk/47?=
+ =?us-ascii?Q?Wg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1805d20d-faf8-4078-797c-08dbd05460c9
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2023 02:48:55.3196
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2023 03:35:02.4002
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kcLiFAEDfJViBKl5ZgD3MPpXEdt6uAVQ/6KU7jSPwVuW224q8z+UV7vrgSibgPybkJAm+kMAM23JGlKntohVhQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9256
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8HhkBjAVEztfHxrMEwd57VzEnCZpJbvkP4dxGxibA/RI5iA6D27SyjiQs2jOe/xk3pnek04epg1K8ah9hkBuaYtmmOyBaDiYFpbIrWjWzs0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR11MB5621
+X-OriginatorOrg: intel.com
 
+Alexey Kardashevskiy wrote:
+> > +
+> > +	if (desc->inblob_len != 64)
+> 
+> 64 is either ext_req.data.user_data or TSM_INBLOB_MAX really.
+> May be even BUILD_BUG_ON(TSM_INBLOB_MAX != sizeof(ext_req.data.user_data)) ?
 
-On 19/10/23 00:48, Sean Christopherson wrote:
-> On Wed, Oct 18, 2023, Alexey Kardashevskiy wrote:
->>
->> On 18/10/23 03:27, Sean Christopherson wrote:
->>> On Mon, Oct 16, 2023, Dionna Amalie Glaze wrote:
->>>>> +
->>>>> +       /*
->>>>> +        * If a VMM-specific certificate blob hasn't been provided, grab the
->>>>> +        * host-wide one.
->>>>> +        */
->>>>> +       snp_certs = sev_snp_certs_get(sev->snp_certs);
->>>>> +       if (!snp_certs)
->>>>> +               snp_certs = sev_snp_global_certs_get();
->>>>> +
->>>>
->>>> This is where the generation I suggested adding would get checked. If
->>>> the instance certs' generation is not the global generation, then I
->>>> think we need a way to return to the VMM to make that right before
->>>> continuing to provide outdated certificates.
->>>> This might be an unreasonable request, but the fact that the certs and
->>>> reported_tcb can be set while a VM is running makes this an issue.
->>>
->>> Before we get that far, the changelogs need to explain why the kernel is storing
->>> userspace blobs in the first place.  The whole thing is a bit of a mess.
->>>
->>> sev_snp_global_certs_get() has data races that could lead to variations of TOCTOU
->>> bugs: sev_ioctl_snp_set_config() can overwrite psp_master->sev_data->snp_certs
->>> while sev_snp_global_certs_get() is running.  If the compiler reloads snp_certs
->>> between bumping the refcount and grabbing the pointer, KVM will end up leaking a
->>> refcount and consuming a pointer without a refcount.
->>>
->>> 	if (!kref_get_unless_zero(&certs->kref))
->>> 		return NULL;
->>>
->>> 	return certs;
->>
->> I'm missing something here. The @certs pointer is on the stack,
-> 
-> No, nothing guarantees that @certs is on the stack and will never be reloaded.
-> sev_snp_certs_get() is in full view of sev_snp_global_certs_get(), so it's entirely
-> possible that it can be inlined.  Then you end up with:
-> 
-> 	struct sev_device *sev;
-> 
-> 	if (!psp_master || !psp_master->sev_data)
-> 		return NULL;
-> 
-> 	sev = psp_master->sev_data;
-> 	if (!sev->snp_initialized)
-> 		return NULL;
-> 
-> 	if (!sev->snp_certs)
-> 		return NULL;
-> 
-> 	if (!kref_get_unless_zero(&sev->snp_certs->kref))
-> 		return NULL;
-> 
-> 	return sev->snp_certs;
-> 
-> At which point the compiler could choose to omit a local variable entirely, it
-> could store @certs in a register and reload after kref_get_unless_zero(), etc.
-> If psp_master->sev_data->snp_certs is changed at any point, odd thing can happen.
-> 
-> That atomic operation in kref_get_unless_zero() might prevent a reload between
-> getting the kref and the return, but it wouldn't prevent a reload between the
-> !NULL check and kref_get_unless_zero().
-
-Oh. The function is exported so I thought gcc would not go that far but 
-yeah it is possible. So this needs an explicit READ_ONCE barrier.
-
-
->>> If userspace wants to provide garbage to the guest, so be it, not KVM's problem.
->>> That way, whether the VM gets the global cert or a per-VM cert is purely a userspace
->>> concern.
->>
->> The global cert lives in CCP (/dev/sev), the per VM cert lives in kvmvm_fd.
->> "A la vcpu->run" is fine for the latter but for the former we need something
->> else.
-> 
-> Why?  The cert ultimately comes from userspace, no?  Make userspace deal with it.
->
->> And there is scenario when one global certs blob is what is needed and
->> copying it over multiple VMs seems suboptimal.
-> 
-> That's a solvable problem.  I'm not sure I like the most obvious solution, but it
-> is a solution: let userspace define a KVM-wide blob pointer, either via .mmap()
-> or via an ioctl().
-> 
-> FWIW, there's no need to do .mmap() shenanigans, e.g. an ioctl() to set the
-> userspace pointer would suffice.  The benefit of a kernel controlled pointer is
-> that it doesn't require copying to a kernel buffer (or special code to copy from
-> userspace into guest).
-
-Just to clarify - like, a small userspace non-qemu program which just 
-holds a pointer with the certs blob, or embed it into libvirt or systemd?
-
-
-> Actually, looking at the flow again, AFAICT there's nothing special about the
-> target DATA_PAGE.  It must be SHARED *before* SVM_VMGEXIT_EXT_GUEST_REQUEST, i.e.
-> KVM doesn't need to do conversions, there's no kernel priveleges required, etc.
-> And the GHCB doesn't dictate ordering between storing the certificates and doing
-> the request.  That means the certificate stuff can be punted entirely to usersepace.
-
-All true.
-
-> Heh, typing up the below, there's another bug: KVM will incorrectly "return" '0'
-> for non-SNP guests:
-> 
-> 	unsigned long exitcode = 0;
-> 	u64 data_gpa;
-> 	int err, rc;
-> 
-> 	if (!sev_snp_guest(vcpu->kvm)) {
-> 		rc = SEV_RET_INVALID_GUEST; <= sets "rc", not "exitcode"
-> 		goto e_fail;
-> 	}
-> 
-> e_fail:
-> 	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, exitcode);
-> 
-> Which really highlights that we need to get test infrastructure up and running
-> for SEV-ES, SNP, and TDX.
-> 
-> Anyways, back to punting to userspace.  Here's a rough sketch.  The only new uAPI
-> is the definition of KVM_HC_SNP_GET_CERTS and its arguments.
-> 
-> static void snp_handle_guest_request(struct vcpu_svm *svm)
-> {
-> 	struct vmcb_control_area *control = &svm->vmcb->control;
-> 	struct sev_data_snp_guest_request data = {0};
-> 	struct kvm_vcpu *vcpu = &svm->vcpu;
-> 	struct kvm *kvm = vcpu->kvm;
-> 	struct kvm_sev_info *sev;
-> 	gpa_t req_gpa = control->exit_info_1;
-> 	gpa_t resp_gpa = control->exit_info_2;
-> 	unsigned long rc;
-> 	int err;
-> 
-> 	if (!sev_snp_guest(vcpu->kvm)) {
-> 		rc = SEV_RET_INVALID_GUEST;
-> 		goto e_fail;
-> 	}
-> 
-> 	sev = &to_kvm_svm(kvm)->sev_info;
-> 
-> 	mutex_lock(&sev->guest_req_lock);
-> 
-> 	rc = snp_setup_guest_buf(svm, &data, req_gpa, resp_gpa);
-> 	if (rc)
-> 		goto unlock;
-> 
-> 	rc = sev_issue_cmd(kvm, SEV_CMD_SNP_GUEST_REQUEST, &data, &err);
-> 	if (rc)
-> 		/* Ensure an error value is returned to guest. */
-> 		rc = err ? err : SEV_RET_INVALID_ADDRESS;
-> 
-> 	snp_cleanup_guest_buf(&data, &rc);
-> 
-> unlock:
-> 	mutex_unlock(&sev->guest_req_lock);
-> 
-> e_fail:
-> 	ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, rc);
-> }
-> 
-> static int snp_complete_ext_guest_request(struct kvm_vcpu *vcpu)
-> {
-> 	u64 certs_exitcode = vcpu->run->hypercall.args[2];
-> 	struct vcpu_svm *svm = to_svm(vcpu);
-> 
-> 	if (certs_exitcode)
-> 		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, certs_exitcode);
-> 	else
-> 		snp_handle_guest_request(svm);
-> 	return 1;
-> }
-> 
-> static int snp_handle_ext_guest_request(struct vcpu_svm *svm)
-> {
-> 	struct kvm_vcpu *vcpu = &svm->vcpu;
-> 	struct kvm *kvm = vcpu->kvm;
-> 	struct kvm_sev_info *sev;
-> 	unsigned long exitcode;
-> 	u64 data_gpa;
-> 
-> 	if (!sev_snp_guest(vcpu->kvm)) {
-> 		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SEV_RET_INVALID_GUEST);
-> 		return 1;
-> 	}
-> 
-> 	data_gpa = vcpu->arch.regs[VCPU_REGS_RAX];
-> 	if (!IS_ALIGNED(data_gpa, PAGE_SIZE)) {
-> 		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, SEV_RET_INVALID_ADDRESS);
-> 		return 1;
-> 	}
-> 
-> 	vcpu->run->hypercall.nr		 = KVM_HC_SNP_GET_CERTS;
-> 	vcpu->run->hypercall.args[0]	 = data_gpa;
-> 	vcpu->run->hypercall.args[1]	 = vcpu->arch.regs[VCPU_REGS_RBX];
-> 	vcpu->run->hypercall.flags	 = KVM_EXIT_HYPERCALL_LONG_MODE;
-
-btw why is it _LONG_MODE and not just _64? :)
-
-> 	vcpu->arch.complete_userspace_io = snp_complete_ext_guest_request;
-> 	return 0;
-> }
-
-This should work the KVM stored certs nicely but not for the global 
-certs. Although I am not all convinced that global certs is all that 
-valuable but I do not know the history of that, happened before I joined 
-so I let others to comment on that. Thanks,
-
-
--- 
-Alexey
-
-
+It may be the case that other implementations want a larger
+TSM_INBLOB_MAX. Now that something else cares about the size of the user
+data I think a new SNP_REPORT_USER_DATA_SIZE definition is appropriate.
