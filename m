@@ -1,104 +1,108 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFB81DA43
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9C51DA43
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2Wa8G/9V"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-1c9da175faaso7270105ad.1
-        for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 08:13:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697814800; x=1698419600; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3V/dl8/M0q65AbM9FO9EXQIgvMQ5r2H2FMc2x5re+aA=;
-        b=2Wa8G/9Vp4h9u/PMkdS/A/U11stk2FC9xWSG7DanfwulEtoRRKruiD/Cw/fqMhmAvz
-         tyAuwHDvhtFmDyici/x82DL+2OQhiLthK+P2RZOZLth4XxfDnuN/ErNTM2qH6AaysqBX
-         MtaOERP5HgkLTGonh1yH5qzd023GEnNcSc90IdYndk1AcuvkriH7xPpfWxf5VlmByiZu
-         SqXIsOhx7/kXLMN77pLyszdFKBWfPqTWmYQgE8qTlkb50vQ/ulIyNfsEr17DKAb4p+8v
-         AEulOmRlmh3VWbGZgTDsAMMo75kKiSrM0l5in77eaisrPPH6w73nuw9Wty7wVtQQyNep
-         /IvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697814800; x=1698419600;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3V/dl8/M0q65AbM9FO9EXQIgvMQ5r2H2FMc2x5re+aA=;
-        b=mWuHNb2d0m2xcJCIC6jcqK2cr2EH6tlH2rr2nbVm2nFF0PEnciQtd+NOF2AKwdSD3C
-         MILXIw3jug+sjUE8esSjsow57AJ4koz8lkub+9sVLchJXRf/0HlS84g+NcUaVkJfyIft
-         Pw2N15N91K5NNSaN5vavGc+wBAQ/C47PrXIxLnVoNNwJMTI7vWb3QF63iXJw5sdKUQNQ
-         1BM/6NUAbwM3sSVpAiQ0mSJj4MCX1oPW0qrNzmW60Syxh2rdY78Pr/MVZ2Voz6dR0u6B
-         JTQeAX4eZMFkOTyoCEugdhMtVRnR9OJit96cf+aqkct1bt7BYwIVakNihogMhtET5EuN
-         NQYg==
-X-Gm-Message-State: AOJu0Yx7I2yJDaBcUnsCii7ui0ctSRhycfWxkqC1R2pMLP4t1WAGOLPc
-	nbentQN6haRsL9buk2TQ1ALh/laUsQo=
-X-Google-Smtp-Source: AGHT+IHj2CnltiuYTZGUURvallHU7NdpsdbRO5EASAoqLjOVj8l+CRE78eMRyOyK3JHzlnarHigshf8H7dA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:d346:b0:1c6:d25:8730 with SMTP id
- l6-20020a170902d34600b001c60d258730mr54330plk.0.1697814799716; Fri, 20 Oct
- 2023 08:13:19 -0700 (PDT)
-Date: Fri, 20 Oct 2023 08:13:18 -0700
-In-Reply-To: <eea3a2f0-8aae-435e-b839-3f21c4a8e2e6@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VzmNRa0L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697814804; x=1729350804;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=EufwntLcxHa17lX7vkyRAITUbajJMYhr8ams+J+dhGY=;
+  b=VzmNRa0LR2Ki07ZSrSHGzAEPkUHG25J0v3Ro+3WP5ni/MFatYeuZ8Jb1
+   pI+xZxa2YrJybgDeYkWlpY6GPHWwE/uo2lb1+AFfmPcZRaKaI0HHfgYtf
+   dY223lfKQJUUvfIFrEe8CnVCmMnry7L0/lc8Nl2tM8WSPECTLnenbtVh6
+   Llx5qDfJSyHbRCLwdfkzTdQtQ6K/5heMzvhA4LrMnCtUr9LngcYfQ8iGe
+   yDSj/Czt1YLy+2QyjW2vck0c0BK9pAWjSzSyqA8wYlfPhjg5LheaeM+d2
+   637zrrqNVSCVAk/BZgB4VoISLU+zUcBpGYmqnjPskxpfjuvTlARdXeNB5
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="366742889"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="366742889"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:13:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="1004634219"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="1004634219"
+Received: from dgutows1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.39.237])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:12:56 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 1C68810A297; Fri, 20 Oct 2023 18:12:45 +0300 (+03)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe  <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 05/13] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
+Date: Fri, 20 Oct 2023 18:12:34 +0300
+Message-ID: <20231020151242.1814-6-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
+References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20231016132819.1002933-49-michael.roth@amd.com>
- <CAAH4kHb=hNH88poYw-fj+ewYgt8F-hseZcRuLDdvbgpSQ5FDZQ@mail.gmail.com>
- <ZS614OSoritrE1d2@google.com> <b9da2fed-b527-4242-a588-7fc3ee6c9070@amd.com>
- <ZS_iS4UOgBbssp7Z@google.com> <924b755a-977a-4476-9525-a7626d728e18@amd.com>
- <ZTFD8y5T9nPOpCyX@google.com> <2034624b-579f-482e-8a7a-0dfc91740d7e@amd.com>
- <ZTHGPlTXvLnEDbmd@google.com> <eea3a2f0-8aae-435e-b839-3f21c4a8e2e6@amd.com>
-Message-ID: <ZTKY18SvZ6lxMsF3@google.com>
-Subject: Re: [PATCH v10 48/50] KVM: SEV: Provide support for SNP_GUEST_REQUEST
- NAE event
-From: Sean Christopherson <seanjc@google.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>, Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, 
-	ardb@kernel.org, pbonzini@redhat.com, vkuznets@redhat.com, 
-	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com, 
-	slp@redhat.com, pgonda@google.com, peterz@infradead.org, 
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com, 
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com, 
-	nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com, 
-	zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 20, 2023, Alexey Kardashevskiy wrote:
-> 
-> On 20/10/23 11:13, Sean Christopherson wrote:
-> > On Fri, Oct 20, 2023, Alexey Kardashevskiy wrote:
-> > > Plus, GHCB now has to go via the userspace before talking to the PSP which
-> > > was not the case so far (though I cannot think of immediate implication
-> > > right now).
-> > 
-> > Any argument along the lines of "because that's how we've always done it" is going
-> > to fall on deaf ears.  If there's a real performance bottleneck with kicking out
-> > to userspace, then I'll happily work to figure out a solution.  If.
-> 
-> No, not performance, I was trying to imagine what can go wrong if multiple
-> vcpus are making this call, all exiting to QEMU, in a loop, racing,
-> something like this.
+TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
+to #VE.
 
-I am not at all concerned about userspace being able to handle parallel requests
-to get a certificate.  Per-vCPU exits that access global/shared resources might
-not be super common, but they're certainly not rare.  E.g. a guest access to an
-option ROM can trigger memslot updates in QEMU, which requires at least taking a
-mutex to guard KVM_SET_USER_MEMORY_REGION, and IIRC QEMU also uses RCU to protect
-QEMU accesses to address spaces.
+Use alternatives to keep the flag during kexec for TDX guests.
 
-Given that we know there will be scenarios where certificates are changed/updated,
-I wouldn't be at all surprised if handling this in userspace is actually easier
-as it will give userspace more control and options, and make it easier to reason
-about the resulting behavior.  E.g. userspace could choose between a lockless
-scheme and a r/w lock if there's a need to ensure per-VM and global certs are
-updated atomically from the guest's perspective.
+The change doesn't affect non-TDX-guest environments.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+---
+ arch/x86/kernel/relocate_kernel_64.S | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+index 56cab1bb25f5..bea89814b48e 100644
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -145,11 +145,16 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+ 	 * Set cr4 to a known state:
+ 	 *  - physical address extension enabled
+ 	 *  - 5-level paging, if it was enabled before
++	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
++	 *    in TDX guests.
+ 	 */
+ 	movl	$X86_CR4_PAE, %eax
+ 	testq	$X86_CR4_LA57, %r13
+ 	jz	1f
+ 	orl	$X86_CR4_LA57, %eax
++1:
++	ALTERNATIVE "jmp 1f", "", X86_FEATURE_TDX_GUEST
++	orl	$X86_CR4_MCE, %eax
+ 1:
+ 	movq	%rax, %cr4
+ 
+-- 
+2.41.0
+
