@@ -1,266 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9006E1DA54
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BA21DDCB
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CqCGPblc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697814809; x=1729350809;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=zg05dqbF6ukFIu0+7G4IdP/LS3UQhw0huRGxtZ2NJGM=;
-  b=CqCGPblcX27UOL1eO3L0+nT9pe+dQwQv+6VsAcJQqYtiI+Q4Qz7yb7YL
-   D43pTlyjkoqhXra+tKJ+v0j7ElezDlTtno2Y+qQTLslNAPoVBGOVno3Dq
-   rSiZ/5umVhkIEEWOzPDsyX8wd6k7RrjhdL575HLuBuKBmsuOvx9I2MHIL
-   ZHB1HQeG+2XHQeBSjg7Pc39fND/Oxb9XwlDy/cWk1+l8drcTMI1sI9ZDZ
-   2Nwb0NZ5O1Nqd+AwKZc6SKyLSI7/MpDDzUWNpHpXLPpQCMbsv7C3KqiA/
-   iWYKWDo7DO93rctfTl+8FO1yfP3rtXhux+m5MLeME7sOcF/NcHb22AJpK
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="366742933"
-X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="366742933"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:13:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="1004634228"
-X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="1004634228"
-Received: from dgutows1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.39.237])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:12:56 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 271F010A298; Fri, 20 Oct 2023 18:12:45 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe  <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 06/13] x86/mm: Make x86_platform.guest.enc_status_change_*() return errno
-Date: Fri, 20 Oct 2023 18:12:35 +0300
-Message-ID: <20231020151242.1814-7-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
-References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yx5Y2d+T"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-1c9d4e38f79so8013165ad.2
+        for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 08:32:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697815927; x=1698420727; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=X28nqJeYL84cwkoy9Ukz+291k+i+3AkqmrCU0I6FmGI=;
+        b=Yx5Y2d+TZSUia4CIdSCRpRl+C0RYGr+CExJD6O3J64xcjBQIoJGfwfuAx62sEZIn+G
+         veweAWpJ8i9bi7vJ/Ntzedn8VN5nr12NPF2eW4Zpl0T98NRg1IW08wOK0mPvij5XI/5q
+         Xk0pccgnCco9bN3fd4kWMFMdBPGwnrkGpGI/wT1VXJS9Hv6X5Vrkgh9cJFaw1bw2V1fF
+         7sNDp1jzy05Tl2ekmpzhA9SY6K5fdVWKmL5s5V1Q9UHIv9ffQodEJGLMmRPLnoFR8t32
+         lUVnNoD3Dv6hWk2VMiX62s3kRWUzwrlZjOWXhpNVg5lKkplyWLGaigYk3ZizCzJnRuax
+         i8wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697815927; x=1698420727;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X28nqJeYL84cwkoy9Ukz+291k+i+3AkqmrCU0I6FmGI=;
+        b=X6abHdVi9AaBfo1lbc3EscJRHFtdKBe5BxlrXDsY24kpHA9CBC7hO68xMj61YIHicm
+         8AylIOq3TYCEqXoZDCpooydb+dPjSW4csdpmQim68qc9Arb8VMYIgJQEG+yinlvDgPOd
+         TLwkfuUZYc0J1+QpU+fRCqb3jpXO7XYF/vTKYB35XRtMv4CGPUkbUNMjP2gf1rEoDgJC
+         +3kHWY2SpxBxVIlQpZTLOIPF1g3vq7m7BBcyoE1kAsof0msnzvUpbXLMFNQ6UxCdOWXl
+         vnY2QsiKNjgqaNQv0VWWCykVTY2VGKFNK5ctIT1n22gZP2XeXYJXpMYm+41jgSdK1Ef+
+         /+ag==
+X-Gm-Message-State: AOJu0Yw+PvBGJNPoFOfrPjj7MijylgJcDSmFDAoySwJZMp/u7EXCppy8
+	Y998gbre1DSbVhvdW/RsGf0PePl3ZnM=
+X-Google-Smtp-Source: AGHT+IH2aSPsxsO7CwyUlO4VocEfaDkvgJ7FypQ7zwjBiO8wnvZig7O+kXIj+6lirvDOUIZvueCzOsujUuo=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:902:e214:b0:1c9:db23:706e with SMTP id
+ u20-20020a170902e21400b001c9db23706emr38706plb.5.1697815926809; Fri, 20 Oct
+ 2023 08:32:06 -0700 (PDT)
+Date: Fri, 20 Oct 2023 08:32:05 -0700
+In-Reply-To: <20231020151242.1814-5-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com> <20231020151242.1814-5-kirill.shutemov@linux.intel.com>
+Message-ID: <ZTKddZEUyL3QQB6_@google.com>
+Subject: Re: [PATCHv2 04/13] x86/kvm: Do not try to disable kvmclock if it was
+ not enabled
+From: Sean Christopherson <seanjc@google.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Wanpeng Li <wanpengli@tencent.com>, Vitaly Kuznetsov <vkuznets@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
-TDX is going to have more than one reason to fail
-enc_status_change_prepare().
+On Fri, Oct 20, 2023, Kirill A. Shutemov wrote:
+> kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
+> present in the VM. It leads to write to a MSR that doesn't exist on some
+> configurations, namely in TDX guest:
+> 
+> 	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
+> 	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
+> 
+> kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
+> features.
+> 
+> Do not disable kvmclock if it was not enabled.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Wanpeng Li <wanpengli@tencent.com>
+> Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+> Cc: Sean Christopherson <seanjc@google.com>
+> ---
 
-Change the callback to return errno instead of assuming -EIO;
-enc_status_change_finish() changed too to keep the interface symmetric.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/coco/tdx/tdx.c         | 20 +++++++++++---------
- arch/x86/hyperv/ivm.c           |  9 +++------
- arch/x86/include/asm/x86_init.h |  4 ++--
- arch/x86/kernel/x86_init.c      |  4 ++--
- arch/x86/mm/mem_encrypt_amd.c   |  8 ++++----
- arch/x86/mm/pat/set_memory.c    |  9 +++++----
- 6 files changed, 27 insertions(+), 27 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index d11206ceff3b..8897d3cc8a15 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -776,28 +776,30 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- 	return true;
- }
- 
--static bool tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
--					  bool enc)
-+static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
-+					 bool enc)
- {
- 	/*
- 	 * Only handle shared->private conversion here.
- 	 * See the comment in tdx_early_init().
- 	 */
--	if (enc)
--		return tdx_enc_status_changed(vaddr, numpages, enc);
--	return true;
-+	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-+		return -EIO;
-+
-+	return 0;
- }
- 
--static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
-+static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
- 					 bool enc)
- {
- 	/*
- 	 * Only handle private->shared conversion here.
- 	 * See the comment in tdx_early_init().
- 	 */
--	if (!enc)
--		return tdx_enc_status_changed(vaddr, numpages, enc);
--	return true;
-+	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-+		return -EIO;
-+
-+	return 0;
- }
- 
- void __init tdx_early_init(void)
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index c1088d3661d5..7d2241059d49 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -510,13 +510,12 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
-  * with host. This function works as wrap of hv_mark_gpa_visibility()
-  * with memory base and size.
-  */
--static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
-+static int hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
- {
- 	enum hv_mem_host_visibility visibility = enc ?
- 			VMBUS_PAGE_NOT_VISIBLE : VMBUS_PAGE_VISIBLE_READ_WRITE;
- 	u64 *pfn_array;
- 	int ret = 0;
--	bool result = true;
- 	int i, pfn;
- 
- 	pfn_array = kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
-@@ -530,17 +529,15 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
- 		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
- 			ret = hv_mark_gpa_visibility(pfn, pfn_array,
- 						     visibility);
--			if (ret) {
--				result = false;
-+			if (ret)
- 				goto err_free_pfn_array;
--			}
- 			pfn = 0;
- 		}
- 	}
- 
-  err_free_pfn_array:
- 	kfree(pfn_array);
--	return result;
-+	return ret;
- }
- 
- static bool hv_vtom_tlb_flush_required(bool private)
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 5240d88db52a..5031cbc6e211 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -150,8 +150,8 @@ struct x86_init_acpi {
-  * @enc_cache_flush_required	Returns true if a cache flush is needed before changing page encryption status
-  */
- struct x86_guest {
--	bool (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
--	bool (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
-+	int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
-+	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
- 	bool (*enc_tlb_flush_required)(bool enc);
- 	bool (*enc_cache_flush_required)(void);
- };
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index a37ebd3b4773..f0f54e109eb9 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -131,8 +131,8 @@ struct x86_cpuinit_ops x86_cpuinit = {
- 
- static void default_nmi_init(void) { };
- 
--static bool enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return true; }
--static bool enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return true; }
-+static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
-+static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
- static bool enc_tlb_flush_required_noop(bool enc) { return false; }
- static bool enc_cache_flush_required_noop(void) { return false; }
- static bool is_private_mmio_noop(u64 addr) {return false; }
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index a68f2dda0948..6cf6cc8ae6a6 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -282,7 +282,7 @@ static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
- #endif
- }
- 
--static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
-+static int amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
- {
- 	/*
- 	 * To maintain the security guarantees of SEV-SNP guests, make sure
-@@ -291,11 +291,11 @@ static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool
- 	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && !enc)
- 		snp_set_memory_shared(vaddr, npages);
- 
--	return true;
-+	return 0;
- }
- 
- /* Return true unconditionally: return value doesn't matter for the SEV side */
--static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
-+static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
- {
- 	/*
- 	 * After memory is mapped encrypted in the page table, validate it
-@@ -307,7 +307,7 @@ static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool e
- 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
- 		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
- 
--	return true;
-+	return 0;
- }
- 
- static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index bda9f129835e..6fbf22d5fa56 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2152,8 +2152,9 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
- 		cpa_flush(&cpa, x86_platform.guest.enc_cache_flush_required());
- 
- 	/* Notify hypervisor that we are about to set/clr encryption attribute. */
--	if (!x86_platform.guest.enc_status_change_prepare(addr, numpages, enc))
--		return -EIO;
-+	ret = x86_platform.guest.enc_status_change_prepare(addr, numpages, enc);
-+	if (ret)
-+		return ret;
- 
- 	ret = __change_page_attr_set_clr(&cpa, 1);
- 
-@@ -2168,8 +2169,8 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
- 
- 	/* Notify hypervisor that we have successfully set/clr encryption attribute. */
- 	if (!ret) {
--		if (!x86_platform.guest.enc_status_change_finish(addr, numpages, enc))
--			ret = -EIO;
-+		ret = x86_platform.guest.enc_status_change_finish(addr,
-+								  numpages, enc);
- 	}
- 
- 	return ret;
--- 
-2.41.0
-
+Reviewed-by: Sean Christopherson <seanjc@google.com>
