@@ -1,62 +1,63 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5F41A711
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 12:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0889614AAC
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 12:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kSML7rlS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mjaxXvB2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697805265; x=1729341265;
+  t=1697805752; x=1729341752;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=KbNvs0px0D1QU2CACqrpgox2LilZmVWe6/Qr9SDWOLU=;
-  b=kSML7rlSrK4lEcL+LDwonLwZ6CHHeAcmIvY46FLwgHUA0xh1SEBn73Gu
-   O/mOoW110rWjeLkb7CkOQGuja9OZVj0hhHxJTodSSCoI/yFnP6Hxxbfow
-   NWQUImN4xbd91bUBv88Zi8h94dtgGBLRv2rM5Yu8FT9XxcfJo0wypBoGn
-   cKZdmV+DwDIbyzTPY7xeI/TK+ri90KXrIF7NA14ksl0CiiWDOZlr4YgMx
-   mddnkKDNGKN/kpXOxpfeuhstPzV/1mIUXqkCJz3wi9x7wbCpWhKarl0Mh
-   vFuD/fMJoxKVLpHzA1y7QxRBL/hLnUqtS5qNz+Ky2gasxlaQR/NME31Md
+  bh=ZS32j1eQY1Yi6SVLYpQrchRlTJGbASGZQz5j7O46Mxg=;
+  b=mjaxXvB2L2UYgKEy3IbhAbuKgKp3mHV0KoJqK3x1V3L5KfWjbu3LtRCS
+   j5Ybajqwdn8wYdhjL0O72OZrEEgKc9i61c97ZzDxdWTZnT/Rt0jO/7+Mz
+   aX+wYbKXyGo+c5Dil17AxKkS+84vt72HBXW5FKFG5NyZ5WcGS/8mvoVBR
+   DPXHAMVK9NpRrp80WQVQ6W+4UftYSpRJqAWK1iU63RGSoZDIteg/itsxw
+   KlBWmj/yrU2B2piz6jGnvX0u0RDvvTQ1cxbhfAvAEDuaCvXV1VYZ++mtV
+   Ny8d+Qwth3U+jvVQhE9ywYAQgYAoiBv7HsTYuGkP7Q941D8ul1T+yV0t0
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="371559986"
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="452967099"
 X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="371559986"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 05:34:24 -0700
+   d="scan'208";a="452967099"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 05:42:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="873891358"
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="931004423"
 X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="873891358"
+   d="scan'208";a="931004423"
 Received: from dgutows1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.39.237])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 05:34:20 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 05:42:23 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 0249010A1C7; Fri, 20 Oct 2023 15:34:17 +0300 (+03)
-Date: Fri, 20 Oct 2023 15:34:17 +0300
+	id D971C10A1C7; Fri, 20 Oct 2023 15:42:20 +0300 (+03)
+Date: Fri, 20 Oct 2023 15:42:20 +0300
 From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
 To: "Huang, Kai" <kai.huang@intel.com>
 Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
 	"mingo@redhat.com" <mingo@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
 	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
 	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
 	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
 	"rafael@kernel.org" <rafael@kernel.org>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
 	"peterz@infradead.org" <peterz@infradead.org>,
 	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
 	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"kexec@lists.infradead.org" <kexec@lists.infradead.org>,
 	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH 13/13] x86/acpi: Add support for CPU offlining for ACPI
- MADT wakeup method
-Message-ID: <20231020123417.2577fm526juwggkf@box.shutemov.name>
+Subject: Re: [PATCH 03/13] cpu/hotplug, x86/acpi: Disable CPU hotplug for
+ ACPI MADT wakeup
+Message-ID: <20231020124220.voezn7q72unnt2q6@box.shutemov.name>
 References: <20231005131402.14611-1-kirill.shutemov@linux.intel.com>
- <20231005131402.14611-14-kirill.shutemov@linux.intel.com>
- <e4cf5fbf384a14b06034667d62bb6cb85ec64305.camel@intel.com>
+ <20231005131402.14611-4-kirill.shutemov@linux.intel.com>
+ <9f9fef1eb387e6098ca762d10e9c2002296c89f6.camel@intel.com>
+ <edcd14bce71326e168a4dc11e5f1771e6f623aa8.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,106 +67,96 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e4cf5fbf384a14b06034667d62bb6cb85ec64305.camel@intel.com>
+In-Reply-To: <edcd14bce71326e168a4dc11e5f1771e6f623aa8.camel@intel.com>
 
-On Fri, Oct 20, 2023 at 11:21:34AM +0000, Huang, Kai wrote:
+On Fri, Oct 20, 2023 at 11:58:58AM +0000, Huang, Kai wrote:
+> On Tue, 2023-10-10 at 10:24 +0000, Huang, Kai wrote:
+> > >  /* Physical address of the Multiprocessor Wakeup Structure mailbox */
+> > > @@ -74,6 +75,9 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+> > >  
+> > > 
+> > >  	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
+> > >  
+> > > 
+> > > +	/* Disable CPU onlining/offlining */
+> > > +	cpu_hotplug_not_supported();
+> > > +
+> > 
+> > Both onlining/offlining are prevented, or just offlining?
+> > 
+> > The previous patch says:
+> > 
+> > 	It does not prevent the initial bring up of the CPU, but it stops 
+> > 	subsequent offlining.
+> > 
+> > And ...
+> > 
+> > [...]
+> > 
+> > 
+> > > --- a/kernel/cpu.c
+> > > +++ b/kernel/cpu.c
+> > > @@ -1522,7 +1522,7 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
+> > >  	 * If the platform does not support hotplug, report it explicitly to
+> > >  	 * differentiate it from a transient offlining failure.
+> > >  	 */
+> > > -	if (cc_platform_has(CC_ATTR_HOTPLUG_DISABLED) || !cpu_hotplug_supported)
+> > > +	if (!cpu_hotplug_supported)
+> > >  		return -EOPNOTSUPP;
+> > >  	if (cpu_hotplug_disabled)
+> > >  		return -EBUSY;
+> > 
+> > ... here cpu_down_maps_locked() only prevents offlining if I am reading
+> > correctly.
+> > 
+> > Also, can we rename cpu_hotplug_supported to cpu_offline_supported to match the
+> > behaviour better?
+> > 
+> > Anyway, isn't it a little bit odd to have:
+> > 
+> > 	if (!cpu_hotplug_supported)
+> >  		return -EOPNOTSUPP;
+> >  	if (cpu_hotplug_disabled)
+> >  		return -EBUSY;
+> > 
+> > ?
 > 
-> > --- /dev/null
-> > +++ b/arch/x86/kernel/acpi/madt.S
-> > @@ -0,0 +1,28 @@
-> > +#include <linux/linkage.h>
-> > +#include <asm/nospec-branch.h>
-> > +#include <asm/page_types.h>
-> > +#include <asm/processor-flags.h>
-> > +
-> > +	.text
-> > +	.align PAGE_SIZE
-> > +SYM_FUNC_START(asm_acpi_mp_play_dead)
-> > +	/* Load address of reset vector into RCX to jump when kernel is ready */
-> > +	movq	acpi_mp_reset_vector_paddr(%rip), %rcx
-> > +
-> > +	/* zero out flags, and disable interrupts */
-> > +	pushq	$0
-> > +	popfq
-> > +
-> > +	/* Turn off global entries. Following CR3 write will flush them. */
-> > +	movq	%cr4, %rdx
-> > +	andq	$~(X86_CR4_PGE), %rdx
-> > +	movq	%rdx, %cr4
-> > +
-> > +	/* Switch to identity mapping */
-> > +	movq	acpi_mp_pgd(%rip), %rax
-> > +	movq	%rax, %cr3
-> > +
-> > +	/* Jump to reset vector */
-> > +	ANNOTATE_RETPOLINE_SAFE
-> > +	jmp	*%rcx
-> > +SYM_FUNC_END(asm_acpi_mp_play_dead)
-> > diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-> > index 4e92d1d4a5fa..2cc8590ec7a5 100644
-> > --- a/arch/x86/kernel/acpi/madt_wakeup.c
-> > +++ b/arch/x86/kernel/acpi/madt_wakeup.c
-> > @@ -1,12 +1,162 @@
-> >  #include <linux/acpi.h>
-> >  #include <linux/cpu.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/memblock.h>
-> > +#include <linux/pgtable.h>
-> > +#include <linux/sched/hotplug.h>
-> >  #include <asm/apic.h>
-> > +#include <asm/init.h>
-> >  
-> >  /* Physical address of the Multiprocessor Wakeup Structure mailbox */
-> >  static u64 acpi_mp_wake_mailbox_paddr;
-> >  /* Virtual address of the Multiprocessor Wakeup Structure mailbox */
-> >  static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
-> >  
-> > +unsigned long acpi_mp_pgd;
-> > +u64 acpi_mp_reset_vector_paddr;
-> 
-> Nit: 
-> 
-> They are both physical address.  It's a little bit odd for one to use 'unsigned
-> long' and the other to use 'u64'.
+> I probably have missed something important, but I don't quite understand what's
+> the reason to have the CC_ATTR_HOTPLUG_DISABLED at the beginning, and now
+> replace it with cpu_hotplug_not_supported()?
 
-Okay, I will make them both u64.
+CC_ATTR_HOTPLUG_DISABLED was a mistake. And now obvious when we only need
+to disable offlining dynamically, based on supported MADT MP WP version.
 
-> > +
-> > +void asm_acpi_mp_play_dead(void);
-> > +
-> > +static void __init *alloc_pgt_page(void *context)
-> > +{
-> > +	return memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-> > +}
+> From the changelog:
 > 
-> If I am reading correclty, @context is never used.  It's not used inside this
-> function, and all the callers call this with @context = NULL.
-
-Yes. We need the argument to conform to x86_mapping_info::alloc_pgt_page
-interface.
-
-> > +
-> > +static void acpi_mp_play_dead(void)
-> > +{
-> > +	idle_task_exit();
-> > +	cpuhp_ap_report_dead();
-> > +	asm_acpi_mp_play_dead();
-> > +}
-> > +
+> 	Currently hotplug prevented based on the confidential computing
+> 	attribute which is set for Intel TDX. But TDX is not the only possible
+> 	user of the wake up method.
 > 
-> Looks you can use play_dead_common() here, if you take IRQ disable part out from
-> the assembly, because play_dead_common() does:
+> CC_ATTR_HOTPLUG_DISABLED is only used by TDX guest, but MADT can be used by non-
+> TDX guest too.
 > 
-> void play_dead_common(void)
-> {               
->         idle_task_exit();
->                 
->         cpuhp_ap_report_dead();                                                
->         
->         local_irq_disable();                                                   
-> }
+> Anyway, if the purpose is just to prevent CPU from going offline, can this be
+> done by registering a cpuhp callback?
+> 
+> 	static int madt_wakeup_offline_cpu(unsigned int cpu)
+> 	{
+> 		return -EOPNOTSUPP;
+> 	}
+> 
+> 	...
+> 
+> 	err = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "madt-wakeup",
+> 			NULL, madt_wakeup_offline_cpu);
+> 	if (err) {
+> 		pr_err("Register CPU hotplug callback failed.\n");
+> 		/* BUG() ??? */
+> 	}
+> 
+> This doesn't pollute the common CPU hotplug code, thus to me looks more clear?
 
-Okay, fair enough.
+Thomas seems fine with cpu_hotplug_disable_offlining().
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
