@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9961DA4E
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9006E1DA54
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OiQMPqG0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CqCGPblc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697814808; x=1729350808;
+  t=1697814809; x=1729350809;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=HRNPLDVUIxAZyLBln62K0h8qTymbHiDs6/gObbq9Ccw=;
-  b=OiQMPqG0RlZz6gKDZ/thm3NYC44FqOexUentcniheXCqTzoOIbtzuxHk
-   O2sGqCkX12BbATwCj8aBpAf41uBtkzhPSLtn1DPvBwYIvaSJ66Y3PG4TM
-   Df8MY+DXJMjZET2mnutiZPtll/Yqlmvoc/KPs+cJR5nLFmKvXZyeZP5z8
-   0AYATbV37ELGVzGi3GrYoaLBHr2CTFGe32ovzPLu7/vtx2QaR8UOUe/rP
-   8P5Ce7HvrmZOTpAKSdVNk5rL2EDoM1PcM2kYc1QVwPlqZ2pUkgNyUXyju
-   jJw7kqhOTVLIXmRWdYe8jd4Ko3HZza41Ca2U6I0VKvtg8wv0jIMVpljph
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="366742919"
+  bh=zg05dqbF6ukFIu0+7G4IdP/LS3UQhw0huRGxtZ2NJGM=;
+  b=CqCGPblcX27UOL1eO3L0+nT9pe+dQwQv+6VsAcJQqYtiI+Q4Qz7yb7YL
+   D43pTlyjkoqhXra+tKJ+v0j7ElezDlTtno2Y+qQTLslNAPoVBGOVno3Dq
+   rSiZ/5umVhkIEEWOzPDsyX8wd6k7RrjhdL575HLuBuKBmsuOvx9I2MHIL
+   ZHB1HQeG+2XHQeBSjg7Pc39fND/Oxb9XwlDy/cWk1+l8drcTMI1sI9ZDZ
+   2Nwb0NZ5O1Nqd+AwKZc6SKyLSI7/MpDDzUWNpHpXLPpQCMbsv7C3KqiA/
+   iWYKWDo7DO93rctfTl+8FO1yfP3rtXhux+m5MLeME7sOcF/NcHb22AJpK
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="366742933"
 X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="366742919"
+   d="scan'208";a="366742933"
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
   by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:13:01 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="1004634226"
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="1004634228"
 X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="1004634226"
+   d="scan'208";a="1004634228"
 Received: from dgutows1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.39.237])
   by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:12:56 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 456FA10A29B; Fri, 20 Oct 2023 18:12:45 +0300 (+03)
+	id 271F010A298; Fri, 20 Oct 2023 18:12:45 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -55,9 +55,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 09/13] x86/tdx: Convert shared memory back to private on kexec
-Date: Fri, 20 Oct 2023 18:12:38 +0300
-Message-ID: <20231020151242.1814-10-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 06/13] x86/mm: Make x86_platform.guest.enc_status_change_*() return errno
+Date: Fri, 20 Oct 2023 18:12:35 +0300
+Message-ID: <20231020151242.1814-7-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
 References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
@@ -69,286 +69,198 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDX guests allocate shared buffers to perform I/O. It is done by
-allocating pages normally from the buddy allocator and converting them
-to shared with set_memory_decrypted().
+TDX is going to have more than one reason to fail
+enc_status_change_prepare().
 
-The second kernel has no idea what memory is converted this way. It only
-sees E820_TYPE_RAM.
-
-Accessing shared memory via private mapping is fatal. It leads to
-unrecoverable TD exit.
-
-On kexec walk direct mapping and convert all shared memory back to
-private. It makes all RAM private again and second kernel may use it
-normally.
+Change the callback to return errno instead of assuming -EIO;
+enc_status_change_finish() changed too to keep the interface symmetric.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/coco/tdx/kexec.c       |   0
- arch/x86/coco/tdx/tdx.c         | 120 +++++++++++++++++++++++++++++++-
- arch/x86/include/asm/x86_init.h |   1 +
- arch/x86/kernel/crash.c         |   4 ++
- arch/x86/kernel/reboot.c        |   5 ++
- 5 files changed, 128 insertions(+), 2 deletions(-)
- create mode 100644 arch/x86/coco/tdx/kexec.c
+ arch/x86/coco/tdx/tdx.c         | 20 +++++++++++---------
+ arch/x86/hyperv/ivm.c           |  9 +++------
+ arch/x86/include/asm/x86_init.h |  4 ++--
+ arch/x86/kernel/x86_init.c      |  4 ++--
+ arch/x86/mm/mem_encrypt_amd.c   |  8 ++++----
+ arch/x86/mm/pat/set_memory.c    |  9 +++++----
+ 6 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/kexec.c b/arch/x86/coco/tdx/kexec.c
-new file mode 100644
-index 000000000000..e69de29bb2d1
 diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 587bdeb88afa..2be23fe8cb3d 100644
+index d11206ceff3b..8897d3cc8a15 100644
 --- a/arch/x86/coco/tdx/tdx.c
 +++ b/arch/x86/coco/tdx/tdx.c
-@@ -6,14 +6,17 @@
+@@ -776,28 +776,30 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ 	return true;
+ }
  
- #include <linux/cpufeature.h>
- #include <linux/debugfs.h>
-+#include <linux/delay.h>
- #include <linux/export.h>
- #include <linux/io.h>
-+#include <linux/kexec.h>
- #include <asm/coco.h>
- #include <asm/tdx.h>
- #include <asm/vmx.h>
- #include <asm/insn.h>
- #include <asm/insn-eval.h>
- #include <asm/pgtable.h>
-+#include <asm/set_memory.h>
- 
- /* MMIO direction */
- #define EPT_READ	0
-@@ -40,6 +43,9 @@
- 
- static atomic_long_t nr_shared;
- 
-+static atomic_t conversions_in_progress;
-+static bool conversion_allowed = true;
-+
- static inline bool pte_decrypted(pte_t pte)
+-static bool tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+-					  bool enc)
++static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
++					 bool enc)
  {
- 	return cc_mkdec(pte_val(pte)) == pte_val(pte);
-@@ -704,6 +710,14 @@ static bool tdx_tlb_flush_required(bool private)
- 
- static bool tdx_cache_flush_required(void)
- {
-+	/*
-+	 * Avoid issuing CLFLUSH on set_memory_decrypted() if conversions
-+	 * stopped. Otherwise it can race with unshare_all_memory() and trigger
-+	 * implicit conversion to shared.
-+	 */
-+	if (!conversion_allowed)
-+		return false;
-+
- 	/*
- 	 * AMD SME/SEV can avoid cache flushing if HW enforces cache coherence.
- 	 * TDX doesn't have such capability.
-@@ -787,12 +801,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
- 					 bool enc)
- {
-+	atomic_inc(&conversions_in_progress);
-+
-+	/*
-+	 * Check after bumping conversions_in_progress to serialize
-+	 * against tdx_shutdown().
-+	 */
-+	if (!conversion_allowed) {
-+		atomic_dec(&conversions_in_progress);
-+		return -EBUSY;
-+	}
-+
  	/*
  	 * Only handle shared->private conversion here.
  	 * See the comment in tdx_early_init().
  	 */
--	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-+	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
-+		atomic_dec(&conversions_in_progress);
- 		return -EIO;
-+	}
- 
- 	return 0;
+-	if (enc)
+-		return tdx_enc_status_changed(vaddr, numpages, enc);
+-	return true;
++	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
++		return -EIO;
++
++	return 0;
  }
-@@ -804,17 +831,104 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 
+-static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
++static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 					 bool enc)
+ {
+ 	/*
  	 * Only handle private->shared conversion here.
  	 * See the comment in tdx_early_init().
  	 */
--	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
-+	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
-+		atomic_dec(&conversions_in_progress);
- 		return -EIO;
-+	}
- 
- 	if (enc)
- 		atomic_long_sub(numpages, &nr_shared);
- 	else
- 		atomic_long_add(numpages, &nr_shared);
- 
-+	atomic_dec(&conversions_in_progress);
+-	if (!enc)
+-		return tdx_enc_status_changed(vaddr, numpages, enc);
+-	return true;
++	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
++		return -EIO;
 +
- 	return 0;
++	return 0;
  }
  
-+void tdx_kexec_unshare_mem(bool crash)
-+{
-+	unsigned long addr, end;
-+	long found = 0, shared;
-+
-+	/* Stop new private<->shared conversions */
-+	conversion_allowed = false;
-+
-+	/*
-+	 * Crash kernel reaches here with interrupts disabled: can't wait for
-+	 * conversions to finish.
-+	 *
-+	 * If race happened, just report and proceed.
-+	 */
-+	if (!crash) {
-+		unsigned long timeout;
-+
-+		/*
-+		 * Wait for in-flight conversions to complete.
-+		 *
-+		 * Do not wait more than 30 seconds.
-+		 */
-+		timeout = 30 * USEC_PER_SEC;
-+		while (atomic_read(&conversions_in_progress) && timeout--)
-+			udelay(1);
-+	}
-+
-+	if (atomic_read(&conversions_in_progress))
-+		pr_warn("Failed to finish shared<->private conversions\n");
-+
-+	/*
-+	 * Walk direct mapping and convert all shared memory back to private,
-+	 */
-+
-+	addr = PAGE_OFFSET;
-+	end  = PAGE_OFFSET + get_max_mapped();
-+
-+	while (addr < end) {
-+		unsigned long size;
-+		unsigned int level;
-+		pte_t *pte;
-+
-+		pte = lookup_address(addr, &level);
-+		size = page_level_size(level);
-+
-+		if (pte && pte_decrypted(*pte)) {
-+			int pages = size / PAGE_SIZE;
-+
-+			/*
-+			 * Touching memory with shared bit set triggers implicit
-+			 * conversion to shared.
-+			 *
-+			 * Make sure nobody touches the shared range from
-+			 * now on.
-+			 *
-+			 * Bypass unmapping for crash scenario. Unmapping
-+			 * requires sleepable context, but in crash case kernel
-+			 * hits the code path with interrupts disabled.
-+			 * It shouldn't be a problem as all secondary CPUs are
-+			 * down and kernel runs with interrupts disabled, so
-+			 * there is no room for race.
-+			 */
-+			if (!crash)
-+				set_memory_np(addr, pages);
-+
-+			if (!tdx_enc_status_changed(addr, pages, true)) {
-+				pr_err("Failed to unshare range %#lx-%#lx\n",
-+				       addr, addr + size);
-+			}
-+
-+			found += pages;
-+		}
-+
-+		addr += size;
-+	}
-+
-+	shared = atomic_long_read(&nr_shared);
-+	if (shared != found) {
-+		pr_err("shared page accounting is off\n");
-+		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
-+	}
-+}
-+
  void __init tdx_early_init(void)
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index c1088d3661d5..7d2241059d49 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -510,13 +510,12 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
+  * with host. This function works as wrap of hv_mark_gpa_visibility()
+  * with memory base and size.
+  */
+-static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
++static int hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
  {
- 	struct tdx_module_args args = {
-@@ -874,6 +988,8 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
- 	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
+ 	enum hv_mem_host_visibility visibility = enc ?
+ 			VMBUS_PAGE_NOT_VISIBLE : VMBUS_PAGE_VISIBLE_READ_WRITE;
+ 	u64 *pfn_array;
+ 	int ret = 0;
+-	bool result = true;
+ 	int i, pfn;
  
-+	x86_platform.guest.enc_kexec_unshare_mem     = tdx_kexec_unshare_mem;
-+
- 	/*
- 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
- 	 * bringup low level code. That raises #VE which cannot be handled
+ 	pfn_array = kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+@@ -530,17 +529,15 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+ 		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
+ 			ret = hv_mark_gpa_visibility(pfn, pfn_array,
+ 						     visibility);
+-			if (ret) {
+-				result = false;
++			if (ret)
+ 				goto err_free_pfn_array;
+-			}
+ 			pfn = 0;
+ 		}
+ 	}
+ 
+  err_free_pfn_array:
+ 	kfree(pfn_array);
+-	return result;
++	return ret;
+ }
+ 
+ static bool hv_vtom_tlb_flush_required(bool private)
 diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 5031cbc6e211..008a34b42057 100644
+index 5240d88db52a..5031cbc6e211 100644
 --- a/arch/x86/include/asm/x86_init.h
 +++ b/arch/x86/include/asm/x86_init.h
-@@ -154,6 +154,7 @@ struct x86_guest {
- 	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
+@@ -150,8 +150,8 @@ struct x86_init_acpi {
+  * @enc_cache_flush_required	Returns true if a cache flush is needed before changing page encryption status
+  */
+ struct x86_guest {
+-	bool (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
+-	bool (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
++	int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
++	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
  	bool (*enc_tlb_flush_required)(bool enc);
  	bool (*enc_cache_flush_required)(void);
-+	void (*enc_kexec_unshare_mem)(bool crash);
  };
+diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+index a37ebd3b4773..f0f54e109eb9 100644
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -131,8 +131,8 @@ struct x86_cpuinit_ops x86_cpuinit = {
  
- /**
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index c92d88680dbf..1618224775f5 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -40,6 +40,7 @@
- #include <asm/intel_pt.h>
- #include <asm/crash.h>
- #include <asm/cmdline.h>
-+#include <asm/tdx.h>
+ static void default_nmi_init(void) { };
  
- /* Used while preparing memory map entries for second kernel */
- struct crash_memmap_data {
-@@ -107,6 +108,9 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
+-static bool enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return true; }
+-static bool enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return true; }
++static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
++static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
+ static bool enc_tlb_flush_required_noop(bool enc) { return false; }
+ static bool enc_cache_flush_required_noop(void) { return false; }
+ static bool is_private_mmio_noop(u64 addr) {return false; }
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index a68f2dda0948..6cf6cc8ae6a6 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -282,7 +282,7 @@ static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ #endif
+ }
  
- 	crash_smp_send_stop();
- 
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-+		x86_platform.guest.enc_kexec_unshare_mem(true);
-+
- 	cpu_emergency_disable_virtualization();
- 
- 	/*
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 830425e6d38e..9fb302562bfd 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -12,6 +12,7 @@
- #include <linux/delay.h>
- #include <linux/objtool.h>
- #include <linux/pgtable.h>
-+#include <linux/kexec.h>
- #include <acpi/reboot.h>
- #include <asm/io.h>
- #include <asm/apic.h>
-@@ -31,6 +32,7 @@
- #include <asm/realmode.h>
- #include <asm/x86_init.h>
- #include <asm/efi.h>
-+#include <asm/tdx.h>
- 
- /*
-  * Power off function, if any
-@@ -716,6 +718,9 @@ static void native_machine_emergency_restart(void)
- 
- void native_machine_shutdown(void)
+-static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
++static int amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
  {
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && kexec_in_progress)
-+		x86_platform.guest.enc_kexec_unshare_mem(false);
-+
- 	/* Stop the cpus and apics */
- #ifdef CONFIG_X86_IO_APIC
  	/*
+ 	 * To maintain the security guarantees of SEV-SNP guests, make sure
+@@ -291,11 +291,11 @@ static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool
+ 	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && !enc)
+ 		snp_set_memory_shared(vaddr, npages);
+ 
+-	return true;
++	return 0;
+ }
+ 
+ /* Return true unconditionally: return value doesn't matter for the SEV side */
+-static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
++static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
+ {
+ 	/*
+ 	 * After memory is mapped encrypted in the page table, validate it
+@@ -307,7 +307,7 @@ static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool e
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
+ 
+-	return true;
++	return 0;
+ }
+ 
+ static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index bda9f129835e..6fbf22d5fa56 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2152,8 +2152,9 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+ 		cpa_flush(&cpa, x86_platform.guest.enc_cache_flush_required());
+ 
+ 	/* Notify hypervisor that we are about to set/clr encryption attribute. */
+-	if (!x86_platform.guest.enc_status_change_prepare(addr, numpages, enc))
+-		return -EIO;
++	ret = x86_platform.guest.enc_status_change_prepare(addr, numpages, enc);
++	if (ret)
++		return ret;
+ 
+ 	ret = __change_page_attr_set_clr(&cpa, 1);
+ 
+@@ -2168,8 +2169,8 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+ 
+ 	/* Notify hypervisor that we have successfully set/clr encryption attribute. */
+ 	if (!ret) {
+-		if (!x86_platform.guest.enc_status_change_finish(addr, numpages, enc))
+-			ret = -EIO;
++		ret = x86_platform.guest.enc_status_change_finish(addr,
++								  numpages, enc);
+ 	}
+ 
+ 	return ret;
 -- 
 2.41.0
 
