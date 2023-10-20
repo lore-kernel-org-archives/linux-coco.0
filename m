@@ -1,212 +1,132 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2058.outbound.protection.outlook.com [40.107.243.58])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEF4361
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 00:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC07C377
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 01:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1sPrYAhs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aYojC0vHRbqR8J1sAoEIlNzJnOuVLXqa1y+OWUcR4sJN4yzwbez7riQxus8YkyXlIS/L+Lh84/Z1uGIAg3GqIsoQu/5KkcCkOHRXjcr4KSlDKWP1vT++MrG8Zw9hL+BVbDtnT8NVw5JHnIrkbkDDLa7m1dCSC8lhydMslA+GeXWPj8rUubS+JYbSCIsyde46c5eg/MVeApBubnwq69LEJ74N82w4naI+I2cpzZu2ElvUBzTpZ5wg8M02A0+/UcqfjtzlSzuWfLN+F6KDKIS5GNTXSGSP5h+1SEZGHrzfSkOCfNJ6WDOqT3vzSsiBgX4lkmfcfR0GB20kIytoCEaNXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KMgIm/ehAmqey2MOX1hwVa7hqKrH9Ffe58BLMV/epXE=;
- b=WmJJliqxe0chLSPJX8BRR+GZm0nwlpY4d/I8PsN+bQWaLXbzM+u7XnJXgrb98TRbCNQAea0KSqMWotiPYoFjLQGy7dlY1okXfm7+1P8oztqEYRJqLqPZQZTQr1O2o4LKKzcBdZeA7ZHOKrPhoRVANLcnIir0GoXrLEdD0q9oIO351u1Ocm9GH46W+4f3+eZa+8ej5UW+6rCVAfSilb/a2BFTAkVfHBaPQBR2OWsQhljB2mGS10N6qcSrm/Nn7X8pD0uEsuvqYWuOBvRaLX+EcFtIOF4aq4ghB0E7KWsUv80SB53D0LE7EVhhg7Avg/GRJj3USntIkedJoackCz5TSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KMgIm/ehAmqey2MOX1hwVa7hqKrH9Ffe58BLMV/epXE=;
- b=1sPrYAhsPUKUBVFjX7yUg5AjR/dTsggy6I2lzci4ETuC3dH/iHGisPs2b5JReXs2sqBfuPPLtoXt+7Hm8X50QG0IeX6gB+iubmhtMvydHQQ5pM1FN4EsX/iyWIVsSYbE7Wpg9tkpol2pC3UFC2Bv+0SM/OAPcYIzc0xLQb0Rsyk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
- by CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.23; Fri, 20 Oct
- 2023 00:44:04 +0000
-Received: from CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::16da:8b28:d454:ad5a]) by CH3PR12MB9194.namprd12.prod.outlook.com
- ([fe80::16da:8b28:d454:ad5a%3]) with mapi id 15.20.6863.043; Fri, 20 Oct 2023
- 00:44:04 +0000
-Message-ID: <eea3a2f0-8aae-435e-b839-3f21c4a8e2e6@amd.com>
-Date: Fri, 20 Oct 2023 11:43:38 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 48/50] KVM: SEV: Provide support for SNP_GUEST_REQUEST
- NAE event
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>,
- Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, vkuznets@redhat.com, jmattson@google.com,
- luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
- pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-49-michael.roth@amd.com>
- <CAAH4kHb=hNH88poYw-fj+ewYgt8F-hseZcRuLDdvbgpSQ5FDZQ@mail.gmail.com>
- <ZS614OSoritrE1d2@google.com> <b9da2fed-b527-4242-a588-7fc3ee6c9070@amd.com>
- <ZS_iS4UOgBbssp7Z@google.com> <924b755a-977a-4476-9525-a7626d728e18@amd.com>
- <ZTFD8y5T9nPOpCyX@google.com> <2034624b-579f-482e-8a7a-0dfc91740d7e@amd.com>
- <ZTHGPlTXvLnEDbmd@google.com>
-From: Alexey Kardashevskiy <aik@amd.com>
-In-Reply-To: <ZTHGPlTXvLnEDbmd@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P300CA0071.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:247::18) To CH3PR12MB9194.namprd12.prod.outlook.com
- (2603:10b6:610:19f::7)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fYu3yG9D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697764587; x=1729300587;
+  h=subject:from:to:cc:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hiHinDXkbtgILpqX4ry34DWzM1JI1SB5votyccaPDW4=;
+  b=fYu3yG9DqB/dfiIK+K0jQdWX+Q/Ao5bYaAGrAKCtGpX/JLs3sc2DsVfK
+   jRzTGeujgx9bR7VHVbIC8/sS+ptrPlStA6HMaLHuhKJP2Kywc0bNJZprk
+   VR8s4/hwW+m4FPmjeP9mqt+Clv/EklSF4jgnC4PVpxBlvwEzSGGL87BpA
+   F+xpfsl0Ld+zf6G5H0WcnJ+lgGetmMbb6hz1Dupfnc6SNs5Q3hk4Z8Pgp
+   hInClw8paakAeTdDZ6ltwtgqIv/LfQo1ynPyHQb/XBsUPjzgh7Nx9oa0A
+   9YVPctl2wYMtMs9zB4O1h9MdFo5AI7tqGhwv06j73qz3USZ6j7xchfDo4
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="452886009"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="452886009"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:16:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="733793429"
+X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
+   d="scan'208";a="733793429"
+Received: from hilldani-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.27.118])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:16:26 -0700
+Subject: [PATCH v7 0/7] configfs-tsm: Attestation Report ABI
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-coco@lists.linux.dev
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Peter Zijlstra <peterz@infradead.org>,
+ Tom Lendacky <thomas.lendacky@amd.com>, Peter Gonda <pgonda@google.com>,
+ Borislav Petkov <bp@alien8.de>, Dionna Amalie Glaze <dionnaglaze@google.com>,
+ Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Samuel Ortiz <sameo@rivosinc.com>,
+ Dionna Glaze <dionnaglaze@google.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Alexey Kardashevskiy <aik@amd.com>, Andrew Morton <akpm@linux-foundation.org>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ dave.hansen@linux.intel.com, x86@kernel.org
+Date: Thu, 19 Oct 2023 18:16:25 -0700
+Message-ID: <169776458564.1705513.13069337506739791098.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: StGit/0.18-3-g996c
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CH3PR12MB8728:EE_
-X-MS-Office365-Filtering-Correlation-Id: 973f31b1-32e3-4094-3e40-08dbd105a8b8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	D4P6sAQxb4G7RbpGIE8cDnA2cZkDnzpzvjWd2RD8a9eGhytPSfwHqiK0yNZGlKd3gz96vupuBSt1en5gWN1WyNNHAJtULtG9F7YHBeQdC+uAl5SdCnwyGe9jRk4VMo91i1fEgW3In9nd4IowNBrdMLBdDYhODxISkDfRCgpnFI7lyBzaf8R6loGQPA1SxAcKDUZDi58lIn1ca1jM8Ykpk+ky8pUywVKhjqi56EnTQu2OsjOTlIkY8W9JVUMZ9Yhtjh7Qvz4jqa+y9muKjUUWhOGxsKpn3jncOKuXEk+8DBDNq6bYirgoGnE24+AlLDu5ikjuDWe6XnAtxF3TJg87vbFrm38p8UDvSW9bbuaqwch8KS+tiNu4eO32UzSYHPDfYDh4cT1aXpYnV6ZWLD4wLaX/aWjYeNn0PxPKd3lbT0Rpm6fthpQzmoS134h0JPSw31Sh5SCL0uS+PoayIjcmG5nBBIMgnuelXQL/MNfz3Bftdv64PptjjsX8GKyVY6KRh4HSEPaNBP1mIpWVu1PGI6bRD+LCL05lWyL5L6EMO77lAngCalZr8jFw+I9JyjifEW1lWgGGYUOL99nozPJF4ELCOwCV8Dy4wYwztkoLEmvXbBmQAv8igr3sUag9uPYiEt1h5MtYiasoPjd5S3RcLQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(396003)(39860400002)(376002)(136003)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(31686004)(38100700002)(66946007)(316002)(6916009)(6486002)(5660300002)(8936002)(31696002)(54906003)(7416002)(7406005)(6666004)(83380400001)(8676002)(41300700001)(66476007)(2906002)(53546011)(6506007)(66556008)(6512007)(4326008)(2616005)(478600001)(26005)(36756003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MVFxKzA1bXBYMkZJT2xLRXAvQlhRRDhSaUZGVVRyUnhYZUI2bEEzRllrQTFH?=
- =?utf-8?B?eUdDdkNUaWovK283amJBanMyUzRDSitpWjN5Sk1tUE9Oc1NlckpYcXdRcjgw?=
- =?utf-8?B?RG9Sc3FUU3VxMnVYTDJ0VzFFQU1GMk85R2ZRb2ZyOEtjMTlSVWh5WEhISVd2?=
- =?utf-8?B?ZE1oQU5GV2pLcWw3TEVYREZXTFZvRWIrVUNmc2hPb3loeDRNRlFtMkpPL1ZK?=
- =?utf-8?B?UkNkcVRWaE9DRmpFMmttWVhCRWRWT0p5YnVkZUx6aDRhd1pYMXBPRGY2cVBI?=
- =?utf-8?B?bkdUMjlXdXZPZkJ6cTNNMWdWbXJxeGViM0lpMWRJR0J5cmZHWmFwazUwalFN?=
- =?utf-8?B?WlpuaUJVNDNUQ3RMNVBHNXUwKzRDQXR0dWNhNy9DNWtvWEloeWlxMjczSWQx?=
- =?utf-8?B?cTFwcEJRY1hKOHJmMDNoa1hsa1NaT0d5MU8zL1dVaVFOVDIyVU9KbTlVSzZL?=
- =?utf-8?B?Y1lkNkZGdG5aMHdiY2R6RnEwOHVNSDBkTDZkVG5iVm9rRGZJejN2THFnaGU5?=
- =?utf-8?B?OHVEUWFidEZ1MjN0QzRUR05nQzY1SUlIbFZGc1BZNlQveVNoYXpMQnl6ZkJC?=
- =?utf-8?B?YkM3UXpNVXlzNXZ5WTFiUkpxVVpmbUlDK1FleFM4YmRjK1ViV3h3UmVlN1Vz?=
- =?utf-8?B?bUF0NmY1Ylk3aUR0V1dnUDNidDhpWWJIRktMcDRNUE56M1Jjb2xJMWhNajdC?=
- =?utf-8?B?ZEZFQkNmR2JDT1Y0T2xzdTk0LzBZUUdta0ZuSi9DMWYweDNRTW5ZRytxK3ZK?=
- =?utf-8?B?eVVaZkRQS3pQd3BBMmNha2xSTjFWYkVTT2wzZGJYa0NJaEo0cUhaY3psM2M2?=
- =?utf-8?B?M0RYNkZXZU1LRmpBbFdEbHgrZENrdUhIeFpMa1EydXJ0WVZ6TGJvWWJnR2Zn?=
- =?utf-8?B?T28vQ0Z3aCtjb1oxMU43aWJjNFp1bzZpYXBuSy9RSVZUMVFkVFhVOHBoRjI2?=
- =?utf-8?B?M2UrVWxpQmdhZnlGZFBQYTBDaVFRM094WFE5ZEQvYk9yeWlsZzBUeithajg3?=
- =?utf-8?B?OFJoOHFYMzRVZGEwcE9DdEFjeVBjdmVXYlVLMHNOUHBnZUovKzRwczJkS1FZ?=
- =?utf-8?B?ZUl2RDI3U2w1V3hsT1NhdDU2K2kxNXdraDN6QUxma3FNb0V2Zk16RFZ0c2Jk?=
- =?utf-8?B?UE53eTdrVWxkWlkxd3l4OStzSUFvazZna3ZmMXFCcFpjaFVibks0cS9zZHdv?=
- =?utf-8?B?N1lYWUJycTB2UXBhVlhiMlM5cE5NV1pRelFxbnZFRWVKV2ZQQysrUlNUcS82?=
- =?utf-8?B?VUZHU0ZQSjhYNVRWZDdENXdPZzZyMi85VS9wM1l3UUFNRnRSRjZ5YWJJMDhS?=
- =?utf-8?B?L09jT0ZpWWtNV3E5ajBBUGhaeW1zdDVjUm5PazZDSzBuTWVjeDRjSEgwQ0Fj?=
- =?utf-8?B?dW1VSEhEanVGc3YweEJGa2xTeW54enBmYk1CRElWRVFSWllOVUNzdjJWWHQ0?=
- =?utf-8?B?YWRWOWxYZ2o4R2dvQmhBUzN0U3lUVG5DR1M0NzdvTmc1UHhjSjFmYmxleEdr?=
- =?utf-8?B?M2pnWWJUTFpZV0VkQ2xUWThYRUY5czRpR1VyNTQzcHJKZjV5MFBkRFBZb1Ax?=
- =?utf-8?B?Z2NCbzl1WkdMYlI5WUl5R1RvNW5waG5hbFB3U0xZai94RFAxV0laaU1xSmly?=
- =?utf-8?B?dmsrcWxIaDRGRkp0RHI0eUljOUhMU2xtQWh0b3FwYlpFLy93OTltZG1QQ3R1?=
- =?utf-8?B?eVd4L0tseGdYZzRBRVM3Y1VDSHYyVlRPRjVsOS8xeEgrUlYwcVN5YVFHcXYx?=
- =?utf-8?B?eTNBK0ZCYk11bG5tNVJUTy90MHg1VTgwcFhXTkc1SEhxTkwwN2tkb0pwQUlT?=
- =?utf-8?B?TTlUeGZtaWdNc2piRU4yaVB2amxiZEhmcHpRelFPa0FsSDVacWlqVmp0YUs2?=
- =?utf-8?B?VnY3VUp4OGU5OGl4WjRuV2NQNWUwKy9yeXZ2RzFlT3FLUmNMQ1JaOG0vcUtN?=
- =?utf-8?B?dkdyN3EyWkJjeEcrRkFMa3luZG85MndyMFFVOXBUdFhYVzIwaElHenBLMkk2?=
- =?utf-8?B?QVRaZEROZzFHb2tBT2kwNCtzZTJ4aVYyWFRYNkM3WklCVG5WRjVWcDU0Qldw?=
- =?utf-8?B?dTJLWXFsK3puUzlXV0RsbEt6dXdBdXpaUmdZd1o5SVVvSGp0bzZPRnJNbG5F?=
- =?utf-8?Q?HjJCEwMN1jGUFatC+uV/cLVcV?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 973f31b1-32e3-4094-3e40-08dbd105a8b8
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2023 00:44:04.2063
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l+AnVrzNXOViaXvY0K1pbIoFd5diF6xHdebfaD8K3j3buI9DH3BM4m5a1s/fvOrG1sXz7opTxkyozNTLYsqL2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8728
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+
+Changes since v6 [1]:
+- s/sev-guest/sev_guest/ in Documentation (Alexey)
+- s/tdx-guest/tdx_guest/ in Documentation (Alexey)
+- Check for ops registration in tsm_report_read() (Alexey)
+- Reorder declaration of tsm_report_extra_attr and
+  tsm_report_extra_bin_attrs to make it clear they are supersets of
+  their "non-extra" versions (Alexey)
+- s/ext/extra/ (Alexey)
+- Move tsm_report_group declaration closer to its usage (Alexey)
+- Convert from int to unsigned int (multiple locations) (Alexey)
+- Drop device.h include (Alexey)
+- Move SNP_REPORT_INVALID_{PARAM,KEY} definitions to sev_ret_code values
+  (Alexey)
+- Use guid_is_null() and explicit offset and length checks to detect
+  empty entries (Alexey)
+- Replace magic number 64 with a new "SNP_REPORT_USER_DATA_SIZE" name
+  (Alexey)
+- Add warning message for suspicious cases where the certificate table
+  appears malformed (Alexey)
+
+[1]: http://lore.kernel.org/r/169716323436.984874.9170967990536970455.stgit@dwillia2-xfh.jf.intel.com
+
+---
+
+Merge notes: The feedback has reached a point where the big picture
+changes have been made and the last round was into more form and style
+cleanups. As for merging I leave it for Dave and Boris to comment. I
+am open to sending a pull request, just let me know.
+
+Much thanks to Alexey and Peter for verifying that the certificate table
+is being correctly conveyed through the @auxblob attribute, and for all
+the review from everyone. I smoke tested these again after the cleanups.
+
+---
+
+Dan Williams (6):
+      virt: sevguest: Fix passing a stack buffer as a scatterlist target
+      virt: coco: Add a coco/Makefile and coco/Kconfig
+      configfs-tsm: Introduce a shared ABI for attestation reports
+      virt: sevguest: Prep for kernel internal get_ext_report()
+      mm/slab: Add __free() support for kvfree
+      virt: sevguest: Add TSM_REPORTS support for SNP_GET_EXT_REPORT
+
+Kuppuswamy Sathyanarayanan (1):
+      virt: tdx-guest: Add Quote generation support using TSM_REPORTS
 
 
-On 20/10/23 11:13, Sean Christopherson wrote:
-> On Fri, Oct 20, 2023, Alexey Kardashevskiy wrote:
->>
->> On 20/10/23 01:57, Sean Christopherson wrote:
->>> On Thu, Oct 19, 2023, Alexey Kardashevskiy wrote:
->>>>> 	vcpu->arch.complete_userspace_io = snp_complete_ext_guest_request;
->>>>> 	return 0;
->>>>> }
->>>>
->>>> This should work the KVM stored certs nicely but not for the global certs.
->>>> Although I am not all convinced that global certs is all that valuable but I
->>>> do not know the history of that, happened before I joined so I let others to
->>>> comment on that. Thanks,
->>>
->>> Aren't the global certs provided by userspace too though?  If all certs are
->>> ultimately controlled by userspace, I don't see any reason to make the kernel a
->>> middle-man.
->>
->> The max blob size is 32KB or so and for 200 VMs it is:
-> 
-> Not according to include/linux/psp-sev.h:
-> 
-> #define SEV_FW_BLOB_MAX_SIZE	0x4000	/* 16KB */
-> 
-> Ugh, and I see in another patch:
-> 
->    Also increase the SEV_FW_BLOB_MAX_SIZE another 4K page to allow space
->    for an extra certificate.
-> 
-> -#define SEV_FW_BLOB_MAX_SIZE   0x4000  /* 16KB */
-> +#define SEV_FW_BLOB_MAX_SIZE   0x5000  /* 20KB */
-> 
-> That's gross and just asking for ABI problems, because then there's this:
-> 
-> +::
-> +
-> +       struct kvm_sev_snp_set_certs {
-> +               __u64 certs_uaddr;
-> +               __u64 certs_len
-> +       };
-> +
-> +The certs_len field may not exceed SEV_FW_BLOB_MAX_SIZE.
-> 
->> - 6.5MB, all in the userspace so swappable  vs
->> - 32KB but in the kernel so not swappable.
->> Sure, a box capable of running 200 VMs must have plenty of RAM but still :)
-> 
-> That's making quite a few assumptions.
-> 
->    1) That the global cert will be 32KiB (which clearly isn't the case today).
->    2) That every VM will want the global cert.
->    3) That userspace can't figure out a way to share the global cert.
-> 
-> Even in that absolutely worst case scenario, I am not remotely convinced that it
-> justifies taking on the necessary complexity to manage certs in-kernel.
-> 
->> Plus, GHCB now has to go via the userspace before talking to the PSP which
->> was not the case so far (though I cannot think of immediate implication
->> right now).
-> 
-> Any argument along the lines of "because that's how we've always done it" is going
-> to fall on deaf ears.  If there's a real performance bottleneck with kicking out
-> to userspace, then I'll happily work to figure out a solution.  If.
+ Documentation/ABI/testing/configfs-tsm  |   82 ++++++
+ MAINTAINERS                             |    8 +
+ arch/x86/coco/tdx/tdx.c                 |   21 ++
+ arch/x86/include/asm/shared/tdx.h       |    1 
+ arch/x86/include/asm/tdx.h              |    2 
+ drivers/virt/Kconfig                    |    6 
+ drivers/virt/Makefile                   |    4 
+ drivers/virt/coco/Kconfig               |   14 +
+ drivers/virt/coco/Makefile              |    8 +
+ drivers/virt/coco/sev-guest/Kconfig     |    1 
+ drivers/virt/coco/sev-guest/sev-guest.c |  214 ++++++++++++++--
+ drivers/virt/coco/tdx-guest/Kconfig     |    1 
+ drivers/virt/coco/tdx-guest/tdx-guest.c |  229 +++++++++++++++++
+ drivers/virt/coco/tsm.c                 |  425 +++++++++++++++++++++++++++++++
+ include/linux/slab.h                    |    2 
+ include/linux/tsm.h                     |   69 +++++
+ include/uapi/linux/psp-sev.h            |    1 
+ include/uapi/linux/sev-guest.h          |    4 
+ 18 files changed, 1055 insertions(+), 37 deletions(-)
+ create mode 100644 Documentation/ABI/testing/configfs-tsm
+ create mode 100644 drivers/virt/coco/Kconfig
+ create mode 100644 drivers/virt/coco/Makefile
+ create mode 100644 drivers/virt/coco/tsm.c
+ create mode 100644 include/linux/tsm.h
 
-No, not performance, I was trying to imagine what can go wrong if 
-multiple vcpus are making this call, all exiting to QEMU, in a loop, 
-racing, something like this.
-
-
-
--- 
-Alexey
-
-
+base-commit: 6465e260f48790807eef06b583b38ca9789b6072
