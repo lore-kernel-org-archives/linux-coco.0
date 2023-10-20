@@ -1,49 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE12377
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 01:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E3B377
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 01:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FJWiv4QN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CpRMbOac"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697764615; x=1729300615;
+  t=1697764624; x=1729300624;
   h=subject:from:to:cc:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=iai3Z5Z0sCoVWcTxNNJXR62irBh1sWVD6DxEb9TB+mo=;
-  b=FJWiv4QNX3XlsKjbvn+PD6qiNJ2ajjjBYTrg85/H0RmRaQjQei7VTD1v
-   GbcgdhURO3fLS9Ty8P2p8Dm1lUSQDHRQoBKYzvKnive5rg2V1flSaEOfx
-   tZ7ybtPhAM4sMCW+GBjuzyROg7sE1nMy+1g3EYALwPNo+dKuaRNLic/OY
-   Ctvkjhwjj83q/5K2F2wibLs1LLCMdDFVeHinKEDSs6WPP5wIRU27ql/+D
-   f6nwqxLParQ5bbPNultCrzWJy4ZV0xY9obIYGWJCdGxsT25sCa8S1FvQD
-   HRycq4xbEkGG870AUx6gqy582bwGUBxYUiRIoJOG8oexMd2DSWAbFOYlX
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="389270330"
+  bh=qsfLJYf82KSBmp6QPhjThH9pkN9eUHvCh5iQaNK9qgA=;
+  b=CpRMbOace4R5zp+SSLUk9lTmquotTvOe0Vy4dPtL1blFiVJoWAwRpIlq
+   zNxguNI8K5uDLXMMuTY0TQxtzeBqCB1ekgXknzXMFkjpMnTdsEpmf9BIN
+   9ZyavHBb0y4zyXt5M9x/x2i3CFtFQJMLXV0jjOKA0iwxUwqkGf6tE9N0C
+   63thYmZPpm4AAuxlv5v9FZfteM1NBWQaMDrdNx66cSC5OjMJ92uQTPDi4
+   0cnGeJfFQd+uzaLwYvN4jZb7NbAAxB2zwdX5mXvX0mB9AYCNcHNZovQwR
+   AA7Z09fRzZl1nIYnYKmHm5eN1VHchVFTVrs+Y5OwYGisRnt3tPW1O9pIT
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10868"; a="389270355"
 X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="389270330"
+   d="scan'208";a="389270355"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:16:55 -0700
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:17:02 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.03,238,1694761200"; 
-   d="scan'208";a="5215939"
+   d="scan'208";a="5215982"
 Received: from hilldani-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.27.118])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:16:55 -0700
-Subject: [PATCH v7 5/7] mm/slab: Add __free() support for kvfree
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Oct 2023 18:17:01 -0700
+Subject: [PATCH v7 6/7] virt: sevguest: Add TSM_REPORTS support for
+ SNP_GET_EXT_REPORT
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-coco@lists.linux.dev
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Pankaj Gupta <pankaj.gupta@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Borislav Petkov <bp@alien8.de>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Dionna Glaze <dionnaglaze@google.com>,
+ Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
  Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, dave.hansen@linux.intel.com,
- x86@kernel.org
-Date: Thu, 19 Oct 2023 18:16:53 -0700
-Message-ID: <169776461387.1705513.1890762019483676794.stgit@dwillia2-xfh.jf.intel.com>
+ Alexey Kardashevskiy <aik@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ peterz@infradead.org, dave.hansen@linux.intel.com, x86@kernel.org
+Date: Thu, 19 Oct 2023 18:17:00 -0700
+Message-ID: <169776461997.1705513.12624327821043619904.stgit@dwillia2-xfh.jf.intel.com>
 In-Reply-To: <169776458564.1705513.13069337506739791098.stgit@dwillia2-xfh.jf.intel.com>
 References: <169776458564.1705513.13069337506739791098.stgit@dwillia2-xfh.jf.intel.com>
 User-Agent: StGit/0.18-3-g996c
@@ -56,37 +54,260 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Allow for the declaration of variables that trigger kvfree() when they
-go out of scope. The check for NULL and call to kvfree() can be elided
-by the compiler in most cases, otherwise without the NULL check an
-unnecessary call to kvfree() may be emitted. Peter proposed a comment
-for this detail [1].
+The sevguest driver was a first mover in the confidential computing
+space. As a first mover that afforded some leeway to build the driver
+without concern for common infrastructure.
 
-Link: http://lore.kernel.org/r/20230816103102.GF980931@hirez.programming.kicks-ass.net [1]
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Now that sevguest is no longer a singleton [1] the common operation of
+building and transmitting attestation report blobs can / should be made
+common. In this model the so called "TSM-provider" implementations can
+share a common envelope ABI even if the contents of that envelope remain
+vendor-specific. When / if the industry agrees on an attestation record
+format, that definition can also fit in the same ABI. In the meantime
+the kernel's maintenance burden is reduced and collaboration on the
+commons is increased.
+
+Convert sevguest to use CONFIG_TSM_REPORTS to retrieve the data that
+the SNP_GET_EXT_REPORT ioctl produces. An example flow follows for
+retrieving the report blob via the TSM interface utility,
+assuming no nonce and VMPL==2:
+
+    report=/sys/kernel/config/tsm/report/report0
+    mkdir $report
+    echo 2 > $report/privlevel
+    dd if=/dev/urandom bs=64 count=1 > $report/inblob
+    hexdump -C $report/outblob # SNP report
+    hexdump -C $report/auxblob # cert_table
+    rmdir $report
+
+Given that the platform implementation is free to return empty
+certificate data if none is available it lets configfs-tsm be simplified
+as it only needs to worry about wrapping SNP_GET_EXT_REPORT, and leave
+SNP_GET_REPORT alone.
+
+The old ioctls can be lazily deprecated, the main motivation of this
+effort is to stop the proliferation of new ioctls, and to increase
+cross-vendor collaboration.
+
+Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.intel.com.notmuch [1]
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Dionna Glaze <dionnaglaze@google.com>
+Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
 Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Tested-by: Alexey Kardashevskiy <aik@amd.com>
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- include/linux/slab.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/virt/coco/sev-guest/Kconfig     |    1 
+ drivers/virt/coco/sev-guest/sev-guest.c |  135 +++++++++++++++++++++++++++++++
+ include/uapi/linux/psp-sev.h            |    1 
+ include/uapi/linux/sev-guest.h          |    4 +
+ 4 files changed, 140 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index 8228d1276a2f..df4c2d45bb86 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -763,6 +763,8 @@ static inline __alloc_size(1, 2) void *kvcalloc(size_t n, size_t size, gfp_t fla
- extern void *kvrealloc(const void *p, size_t oldsize, size_t newsize, gfp_t flags)
- 		      __realloc_size(3);
- extern void kvfree(const void *addr);
-+DEFINE_FREE(kvfree, void *, if (_T) kvfree(_T))
-+
- extern void kvfree_sensitive(const void *addr, size_t len);
+diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-guest/Kconfig
+index da2d7ca531f0..1cffc72c41cb 100644
+--- a/drivers/virt/coco/sev-guest/Kconfig
++++ b/drivers/virt/coco/sev-guest/Kconfig
+@@ -5,6 +5,7 @@ config SEV_GUEST
+ 	select CRYPTO
+ 	select CRYPTO_AEAD2
+ 	select CRYPTO_GCM
++	select TSM_REPORTS
+ 	help
+ 	  SEV-SNP firmware provides the guest a mechanism to communicate with
+ 	  the PSP without risk from a malicious hypervisor who wishes to read,
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index e5f8f115f4af..bc564adcf499 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -16,10 +16,13 @@
+ #include <linux/miscdevice.h>
+ #include <linux/set_memory.h>
+ #include <linux/fs.h>
++#include <linux/tsm.h>
+ #include <crypto/aead.h>
+ #include <linux/scatterlist.h>
+ #include <linux/psp-sev.h>
+ #include <linux/sockptr.h>
++#include <linux/cleanup.h>
++#include <linux/uuid.h>
+ #include <uapi/linux/sev-guest.h>
+ #include <uapi/linux/psp-sev.h>
  
- unsigned int kmem_cache_size(struct kmem_cache *s);
+@@ -768,6 +771,130 @@ static u8 *get_vmpck(int id, struct snp_secrets_page_layout *layout, u32 **seqno
+ 	return key;
+ }
+ 
++struct snp_msg_report_resp_hdr {
++	u32 status;
++	u32 report_size;
++	u8 rsvd[24];
++};
++
++struct snp_msg_cert_entry {
++	guid_t guid;
++	u32 offset;
++	u32 length;
++};
++
++static int sev_report_new(struct tsm_report *report, void *data)
++{
++	struct snp_msg_cert_entry *cert_table;
++	struct tsm_desc *desc = &report->desc;
++	struct snp_guest_dev *snp_dev = data;
++	struct snp_msg_report_resp_hdr hdr;
++	const u32 report_size = SZ_4K;
++	const u32 ext_size = SEV_FW_BLOB_MAX_SIZE;
++	u32 certs_size, i, size = report_size + ext_size;
++	int ret;
++
++	if (desc->inblob_len != SNP_REPORT_USER_DATA_SIZE)
++		return -EINVAL;
++
++	void *buf __free(kvfree) = kvzalloc(size, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	guard(mutex)(&snp_cmd_mutex);
++
++	/* Check if the VMPCK is not empty */
++	if (is_vmpck_empty(snp_dev)) {
++		dev_err_ratelimited(snp_dev->dev, "VMPCK is disabled\n");
++		return -ENOTTY;
++	}
++
++	cert_table = buf + report_size;
++	struct snp_ext_report_req ext_req = {
++		.data = { .vmpl = desc->privlevel },
++		.certs_address = (__u64)cert_table,
++		.certs_len = ext_size,
++	};
++	memcpy(&ext_req.data.user_data, desc->inblob, desc->inblob_len);
++
++	struct snp_guest_request_ioctl input = {
++		.msg_version = 1,
++		.req_data = (__u64)&ext_req,
++		.resp_data = (__u64)buf,
++		.exitinfo2 = 0xff,
++	};
++	struct snp_req_resp io = {
++		.req_data = KERNEL_SOCKPTR(&ext_req),
++		.resp_data = KERNEL_SOCKPTR(buf),
++	};
++
++	ret = get_ext_report(snp_dev, &input, &io);
++	if (ret)
++		return ret;
++
++	memcpy(&hdr, buf, sizeof(hdr));
++	if (hdr.status == SEV_RET_INVALID_PARAM)
++		return -EINVAL;
++	if (hdr.status == SEV_RET_INVALID_KEY)
++		return -EINVAL;
++	if (hdr.status)
++		return -ENXIO;
++	if ((hdr.report_size + sizeof(hdr)) > report_size)
++		return -ENOMEM;
++
++	void *rbuf __free(kvfree) = kvzalloc(hdr.report_size, GFP_KERNEL);
++	if (!rbuf)
++		return -ENOMEM;
++
++	memcpy(rbuf, buf + sizeof(hdr), hdr.report_size);
++	report->outblob = no_free_ptr(rbuf);
++	report->outblob_len = hdr.report_size;
++
++	certs_size = 0;
++	for (i = 0; i < ext_size / sizeof(struct snp_msg_cert_entry); i++) {
++		struct snp_msg_cert_entry *ent = &cert_table[i];
++
++		if (guid_is_null(&ent->guid) && !ent->offset && !ent->length)
++			break;
++		certs_size = max(certs_size, ent->offset + ent->length);
++	}
++
++	/* Suspicious that the response populated entries without populating size */
++	if (!certs_size && i)
++		dev_warn_ratelimited(snp_dev->dev, "certificate slots conveyed without size\n");
++
++	/* No certs to report */
++	if (!certs_size)
++		return 0;
++
++	/* Suspicious that the certificate blob size contract was violated
++	 */
++	if (certs_size > ext_size) {
++		dev_warn_ratelimited(snp_dev->dev, "certificate data truncated\n");
++		certs_size = ext_size;
++	}
++
++	void *cbuf __free(kvfree) = kvzalloc(certs_size, GFP_KERNEL);
++	if (!cbuf)
++		return -ENOMEM;
++
++	memcpy(cbuf, cert_table, certs_size);
++	report->auxblob = no_free_ptr(cbuf);
++	report->auxblob_len = certs_size;
++
++	return 0;
++}
++
++static const struct tsm_ops sev_tsm_ops = {
++	.name = KBUILD_MODNAME,
++	.report_new = sev_report_new,
++};
++
++static void unregister_sev_tsm(void *data)
++{
++	tsm_unregister(&sev_tsm_ops);
++}
++
+ static int __init sev_guest_probe(struct platform_device *pdev)
+ {
+ 	struct snp_secrets_page_layout *layout;
+@@ -841,6 +968,14 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+ 	snp_dev->input.resp_gpa = __pa(snp_dev->response);
+ 	snp_dev->input.data_gpa = __pa(snp_dev->certs_data);
+ 
++	ret = tsm_register(&sev_tsm_ops, snp_dev, &tsm_report_extra_type);
++	if (ret)
++		goto e_free_cert_data;
++
++	ret = devm_add_action_or_reset(&pdev->dev, unregister_sev_tsm, NULL);
++	if (ret)
++		goto e_free_cert_data;
++
+ 	ret =  misc_register(misc);
+ 	if (ret)
+ 		goto e_free_cert_data;
+diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
+index 1c9da485318f..b44ba7dcdefc 100644
+--- a/include/uapi/linux/psp-sev.h
++++ b/include/uapi/linux/psp-sev.h
+@@ -68,6 +68,7 @@ typedef enum {
+ 	SEV_RET_INVALID_PARAM,
+ 	SEV_RET_RESOURCE_LIMIT,
+ 	SEV_RET_SECURE_DATA_INVALID,
++	SEV_RET_INVALID_KEY = 0x27,
+ 	SEV_RET_MAX,
+ } sev_ret_code;
+ 
+diff --git a/include/uapi/linux/sev-guest.h b/include/uapi/linux/sev-guest.h
+index 2aa39112cf8d..154a87a1eca9 100644
+--- a/include/uapi/linux/sev-guest.h
++++ b/include/uapi/linux/sev-guest.h
+@@ -14,9 +14,11 @@
+ 
+ #include <linux/types.h>
+ 
++#define SNP_REPORT_USER_DATA_SIZE 64
++
+ struct snp_report_req {
+ 	/* user data that should be included in the report */
+-	__u8 user_data[64];
++	__u8 user_data[SNP_REPORT_USER_DATA_SIZE];
+ 
+ 	/* The vmpl level to be included in the report */
+ 	__u32 vmpl;
 
