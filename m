@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395EB1DDC9
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543331DA4C
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bm6Mk+zd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vdl5FkWf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697814777; x=1729350777;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3y5HBaCbruvZDuSXbdYk2vE0ssqVScSk0E4lneENlsY=;
-  b=Bm6Mk+zdBoni0Va+A/OetCK8Bx4tst4RrEurquWldQOl3/KQZuV08PH2
-   +IyxLZEeQbrP0CDsEzPgxShqsWFZY98WdaInc1qcd2XRPD7EBUqGqa7QP
-   0B+pufKxdPVeMUnVuWuZWhbToipzpNuVix97UjAeK7NSQgMAPvn8JP49G
-   II6v8t6GDsdDr/G2GUkxNM1NAjN373kBeD/wDhqFvluhGvGm3tufDlPdh
-   G55j5IS5rl08NSTHJfmyiYcPC7lJ19XxbQf3gp0tmOePBM8kAbxFf1+84
-   jSXYkQdOumJrM3PiqQV8UfkGVw0BQLSdU7eS0ZqoER497JU1eNkcVajLZ
+  t=1697814779; x=1729350779;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=U1LobsWM3Aw59qiHWBxCAWdYIVARSrv9M2Xk36B7ecs=;
+  b=Vdl5FkWfJ2gDuEhz+9EJu7ceskPztVUp2vVpKoYysZD19LcYN6GOQW4U
+   ZPXiROeW/2Ip9DvpB6NbE9uByFP8KhMTsEneTqWvJ6vgOZtP4vyIbeQo0
+   SaR+cko8NmiFP9zpXfaJHVGHMjBc2rJscLRf+9LIptdpAVW311JyQG4F6
+   9giuSdhzl1Xcr/dmFP+QMRoqSTL5sWDWj6RGTAyJ8HieHax8x96C48KDz
+   8vRuzaetyQQcxvvAVRCrUHPxan/n46MlkCXDWjE3rAl1c7g/pZqKH89XU
+   oqNd+6GhnNX3BjzZi2uAjv+lNUn3FnN1oVniCe6AFdw5BtPqQX+YEZOZi
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="376893603"
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="376893631"
 X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="376893603"
+   d="scan'208";a="376893631"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:12:54 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:12:55 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="761080243"
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="761080246"
 X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="761080243"
+   d="scan'208";a="761080246"
 Received: from dgutows1-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.39.237])
   by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:12:49 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 0648110A295; Fri, 20 Oct 2023 18:12:45 +0300 (+03)
+	id DCD8210A1C7; Fri, 20 Oct 2023 18:12:44 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -55,12 +55,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv2 03/13] cpu/hotplug, x86/acpi: Disable CPU offlining for ACPI MADT wakeup
-Date: Fri, 20 Oct 2023 18:12:32 +0300
-Message-ID: <20231020151242.1814-4-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv2 00/13] x86/tdx: Add kexec support
+Date: Fri, 20 Oct 2023 18:12:29 +0300
+Message-ID: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
-References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,88 +67,71 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ACPI MADT doesn't allow to offline CPU after it got woke up.
+The patchset adds bits and pieces to get kexec (and crashkernel) work on
+TDX guest.
 
-Currently hotplug prevented based on the confidential computing
-attribute which is set for Intel TDX. But TDX is not the only possible
-user of the wake up method.
+The last patch implements CPU offlining according to the approved ACPI
+spec change poposal[1]. It unlocks kexec with all CPUs visible in the target
+kernel. It requires BIOS-side enabling. If it missing we fallback to booting
+2nd kernel with single CPU.
 
-Disable CPU offlining on ACPI MADT wakeup enumeration.
+Please review. I would be glad for any feedback.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
----
- arch/x86/coco/core.c               |  1 -
- arch/x86/kernel/acpi/madt_wakeup.c |  3 +++
- include/linux/cc_platform.h        | 10 ----------
- kernel/cpu.c                       |  3 +--
- 4 files changed, 4 insertions(+), 13 deletions(-)
+v2:
+  - Rework how unsharing hook ups into kexec codepath;
+  - Rework kvmclock_disable() fix based on Sean's;
+  - s/cpu_hotplug_not_supported()/cpu_hotplug_disable_offlining()/;
+  - use play_dead_common() to implement acpi_mp_play_dead();
+  - cond_resched() in tdx_shared_memory_show();
+  - s/target kernel/second kernel/;
+  - Update commit messages and comments;
 
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index eeec9986570e..f07c3bb7deab 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -20,7 +20,6 @@ static bool noinstr intel_cc_platform_has(enum cc_attr attr)
- {
- 	switch (attr) {
- 	case CC_ATTR_GUEST_UNROLL_STRING_IO:
--	case CC_ATTR_HOTPLUG_DISABLED:
- 	case CC_ATTR_GUEST_MEM_ENCRYPT:
- 	case CC_ATTR_MEM_ENCRYPT:
- 		return true;
-diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-index 58cdfc0b6c0a..4bc1d5106afd 100644
---- a/arch/x86/kernel/acpi/madt_wakeup.c
-+++ b/arch/x86/kernel/acpi/madt_wakeup.c
-@@ -1,4 +1,5 @@
- #include <linux/acpi.h>
-+#include <linux/cpu.h>
- #include <linux/io.h>
- #include <asm/apic.h>
- #include <asm/barrier.h>
-@@ -75,6 +76,8 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
- 
- 	acpi_mp_wake_mailbox_paddr = mp_wake->base_address;
- 
-+	cpu_hotplug_disable_offlining();
-+
- 	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
- 
- 	return 0;
-diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
-index cb0d6cd1c12f..d08dd65b5c43 100644
---- a/include/linux/cc_platform.h
-+++ b/include/linux/cc_platform.h
-@@ -80,16 +80,6 @@ enum cc_attr {
- 	 * using AMD SEV-SNP features.
- 	 */
- 	CC_ATTR_GUEST_SEV_SNP,
--
--	/**
--	 * @CC_ATTR_HOTPLUG_DISABLED: Hotplug is not supported or disabled.
--	 *
--	 * The platform/OS is running as a guest/virtual machine does not
--	 * support CPU hotplug feature.
--	 *
--	 * Examples include TDX Guest.
--	 */
--	CC_ATTR_HOTPLUG_DISABLED,
- };
- 
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index faebee0050a2..51c258f289ac 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1517,8 +1517,7 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
- 	 * If the platform does not support hotplug, report it explicitly to
- 	 * differentiate it from a transient offlining failure.
- 	 */
--	if (cc_platform_has(CC_ATTR_HOTPLUG_DISABLED) ||
--	    cpu_hotplug_offline_disabled)
-+	if (cpu_hotplug_offline_disabled)
- 		return -EOPNOTSUPP;
- 	if (cpu_hotplug_disabled)
- 		return -EBUSY;
+[1] https://lore.kernel.org/all/13356251.uLZWGnKmhe@kreacher
+
+Kirill A. Shutemov (13):
+  x86/acpi: Extract ACPI MADT wakeup code into a separate file
+  kernel/cpu: Add support for declaring CPU offlining not supported
+  cpu/hotplug, x86/acpi: Disable CPU offlining for ACPI MADT wakeup
+  x86/kvm: Do not try to disable kvmclock if it was not enabled
+  x86/kexec: Keep CR4.MCE set during kexec for TDX guest
+  x86/mm: Make x86_platform.guest.enc_status_change_*() return errno
+  x86/mm: Return correct level from lookup_address() if pte is none
+  x86/tdx: Account shared memory
+  x86/tdx: Convert shared memory back to private on kexec
+  x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+  x86/acpi: Do not attempt to bring up secondary CPUs in kexec case
+  x86/acpi: Rename fields in acpi_madt_multiproc_wakeup structure
+  x86/acpi: Add support for CPU offlining for ACPI MADT wakeup method
+
+ arch/x86/Kconfig                     |   7 +
+ arch/x86/coco/core.c                 |   1 -
+ arch/x86/coco/tdx/kexec.c            |   0
+ arch/x86/coco/tdx/tdx.c              | 205 +++++++++++++++++++-
+ arch/x86/hyperv/ivm.c                |   9 +-
+ arch/x86/include/asm/acpi.h          |   5 +
+ arch/x86/include/asm/pgtable_types.h |   1 +
+ arch/x86/include/asm/x86_init.h      |   5 +-
+ arch/x86/kernel/acpi/Makefile        |  11 +-
+ arch/x86/kernel/acpi/boot.c          |  88 +--------
+ arch/x86/kernel/acpi/madt.S          |  24 +++
+ arch/x86/kernel/acpi/madt_wakeup.c   | 267 +++++++++++++++++++++++++++
+ arch/x86/kernel/crash.c              |   4 +
+ arch/x86/kernel/e820.c               |   9 +-
+ arch/x86/kernel/kvmclock.c           |  12 +-
+ arch/x86/kernel/reboot.c             |   5 +
+ arch/x86/kernel/relocate_kernel_64.S |   5 +
+ arch/x86/kernel/x86_init.c           |   4 +-
+ arch/x86/mm/mem_encrypt_amd.c        |   8 +-
+ arch/x86/mm/pat/set_memory.c         |  17 +-
+ include/acpi/actbl2.h                |  19 +-
+ include/linux/cc_platform.h          |  10 -
+ include/linux/cpu.h                  |   2 +
+ kernel/cpu.c                         |  12 +-
+ 24 files changed, 586 insertions(+), 144 deletions(-)
+ create mode 100644 arch/x86/coco/tdx/kexec.c
+ create mode 100644 arch/x86/kernel/acpi/madt.S
+ create mode 100644 arch/x86/kernel/acpi/madt_wakeup.c
+
 -- 
 2.41.0
 
