@@ -1,168 +1,141 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9B61DA49
-	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 15:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CCF200C3
+	for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 17:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wf5IhMV9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1697816477;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aa4iee+yZHK+8BBdXmj4PGqXcZj5CIosrDU7qDGuMQQ=;
-	b=Wf5IhMV9IdAjdLBTh7R8XMfMQgf/nVlzo6nANo8AA/KAC1cjI/PqgN3EEfattX6HYCrfNh
-	dFJf3NgU8urXVv28Go7tKhHTdCz34E2h2I8dR6YymR5SJ/1Unc8GaGtrnTUaLb7/iZxBR5
-	F/tYzIfm0klVcZATyYTylrUic0VVFIg=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-fdrYLPNjOh-xOBFeKhlNQA-1; Fri, 20 Oct 2023 11:41:16 -0400
-X-MC-Unique: fdrYLPNjOh-xOBFeKhlNQA-1
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-5079f6c127cso924011e87.3
-        for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 08:41:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wp4/bH7P"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-27d10ef87caso927126a91.0
+        for <linux-coco@lists.linux.dev>; Fri, 20 Oct 2023 10:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697821656; x=1698426456; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=x4BWurQpapK412rcDC+pUyHudLjLoftq7UvjlE0wpgY=;
+        b=Wp4/bH7PUzFcZi2UlDCZRQ6tx+Ukp2wNGdy4h/0VNoXJVdhnCJRZEcdXYxNUqpKBOM
+         yy4fFO89S7HjZtf0bUj9qO272w0Uks+NKTTQkq4AvRCOF+v8cdCGSYOMlGOgRZOifbvV
+         AXHjb0/EuZ7gC3IUyjfMWqtMGWSqoVwqGcs6TimU6hN4R63cT1JFMrvd5moJ2O9kmzYe
+         gI0e1UHVGzBqxBWK49I267kUEQGriO1wE5voGQ8CaRia98anu/6pFkmz80SXZENTHsnM
+         gOA+BNkq4wlcd5y0575nqcfPAyqoS/XnGSFPpmSndqceYJWnlbXqn2A1GHX75ZiNZqal
+         C6/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697816475; x=1698421275;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aa4iee+yZHK+8BBdXmj4PGqXcZj5CIosrDU7qDGuMQQ=;
-        b=EC2RyxNH1tl6o4vRaSM6GTZOiwjYKQ/1mpueaU/4xQiNBD1VyKZhDtvaLJd7FApxmM
-         Qn/Bi/g/CGfXEfUMh80tLgmtAQV3u/A8zL1Hnx8bhjXS7d3C7aIJWpnjFjOf7WNwVljk
-         eF3BMXhwXODOzihtps0NXRVK61mhCnPxT0geucxR2zL9OI9XaeHVxhleVlExt8RQhQcZ
-         /96oh9liPenxIKTmr4hY7vBophvy+EI2gs7TbD7oxSRVW2wrvFVxKvzOky2eSCYN/gjS
-         BVulSPdtWdW5Ipe3g/SOkgZFeMCt9lL4q4bsjVUZsF/tFp9O9qaU0LbG6MXg78b2nQdr
-         uAaw==
-X-Gm-Message-State: AOJu0YyELgvI5VORU3p6vLTlBejOZBEVTd22ouYWhVllyee1dpIE6cS6
-	RZQcQLV3nJKw77SstbppVCH1yDvFEhoB8MO1uz3LbkrUQq80EWPriZiDbtRDM9HSjb4wk+MffIs
-	4Db5SLw/SIllQPJJv/OtlRA==
-X-Received: by 2002:a19:500c:0:b0:502:cc8d:f20a with SMTP id e12-20020a19500c000000b00502cc8df20amr1641012lfb.27.1697816474863;
-        Fri, 20 Oct 2023 08:41:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEx40VYFF8tpxC5v03dVRu4wq4nsq5G+AfVDRR5o1snolIVICfC2CekJy5f8SCZ1z4mgxc/Og==
-X-Received: by 2002:a19:500c:0:b0:502:cc8d:f20a with SMTP id e12-20020a19500c000000b00502cc8df20amr1640982lfb.27.1697816474535;
-        Fri, 20 Oct 2023 08:41:14 -0700 (PDT)
-Received: from fedora (g2.ign.cz. [91.219.240.8])
-        by smtp.gmail.com with ESMTPSA id k13-20020a50c8cd000000b0053443c8fd90sm1642437edh.24.2023.10.20.08.41.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 08:41:14 -0700 (PDT)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima
- <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, "Huang,
- Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Kirill A. Shutemov"
- <kirill.shutemov@linux.intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Wanpeng Li <wanpengli@tencent.com>
-Subject: Re: [PATCHv2 04/13] x86/kvm: Do not try to disable kvmclock if it
- was not enabled
-In-Reply-To: <20231020151242.1814-5-kirill.shutemov@linux.intel.com>
-References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
- <20231020151242.1814-5-kirill.shutemov@linux.intel.com>
-Date: Fri, 20 Oct 2023 17:41:12 +0200
-Message-ID: <87wmvh47zb.fsf@redhat.com>
+        d=1e100.net; s=20230601; t=1697821656; x=1698426456;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x4BWurQpapK412rcDC+pUyHudLjLoftq7UvjlE0wpgY=;
+        b=Vd9pWIFL+CJsmVK6B+lZs2988kXq5KgIzW2lKoGWdrHADm9ypLc5cuJjpzk/QW3Yug
+         ApY33dgR7XyIdqRWMDu1NTVSkoL+/lEmnIeX+uXc1h9OLiMZc5oOA6aGgKf0Fb1tqDmG
+         QOw25W6TmqSyeQ3FulQlXNp15TIe2LVApp00Kmcx/HUDm2B2a29MpH4C3GML8cOrnBSO
+         twutcAHm6u/56/7tX+kmpEt+toiuVLB7mkpjBXcnWtUvDU+2jVdU+m9tST7+zSrl8Acb
+         WRqpjJ9Q4EJu5PbzR3Rvf3TEvKAK/F1r/H3eopPwQ/rgPnb5TISA1ogyUj+c7b1yZ3mv
+         ytPQ==
+X-Gm-Message-State: AOJu0Yw0LTV1Emqc4UUtxdOMjvlU1X2TbkQqnVQgSyMIkDIhuZpVZBrr
+	y4KNMXWNxpUP70jJbDnppI2KGbaxqTM=
+X-Google-Smtp-Source: AGHT+IFD7JzGLSjKGr2CZcLV495hcYva5IMtUI4k4GCi8eJrVOm0W02oUecMyWYmDKA2AFrypQyXMTC0gf8=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:90a:ab88:b0:277:3135:bc4f with SMTP id
+ n8-20020a17090aab8800b002773135bc4fmr57158pjq.1.1697821656319; Fri, 20 Oct
+ 2023 10:07:36 -0700 (PDT)
+Date: Fri, 20 Oct 2023 17:07:34 +0000
+In-Reply-To: <87wmvh47zb.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
+ <20231020151242.1814-5-kirill.shutemov@linux.intel.com> <87wmvh47zb.fsf@redhat.com>
+Message-ID: <ZTKg9XMxeBQ36f5L@google.com>
+Subject: Re: [PATCHv2 04/13] x86/kvm: Do not try to disable kvmclock if it was
+ not enabled
+From: Sean Christopherson <seanjc@google.com>
+To: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Wanpeng Li <wanpengli@tencent.com>
+Content-Type: text/plain; charset="us-ascii"
 
-"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com> writes:
-
-> kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
-> present in the VM. It leads to write to a MSR that doesn't exist on some
-> configurations, namely in TDX guest:
->
-> 	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
-> 	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
->
-> kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
-> features.
->
-> Do not disable kvmclock if it was not enabled.
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Wanpeng Li <wanpengli@tencent.com>
-> Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-> Cc: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kernel/kvmclock.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-> index fb8f52149be9..f2fff625576d 100644
-> --- a/arch/x86/kernel/kvmclock.c
-> +++ b/arch/x86/kernel/kvmclock.c
-> @@ -24,8 +24,8 @@
->  
->  static int kvmclock __initdata = 1;
->  static int kvmclock_vsyscall __initdata = 1;
-> -static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
-> -static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
-> +static int msr_kvm_system_time __ro_after_init;
-> +static int msr_kvm_wall_clock __ro_after_init;
->  static u64 kvm_sched_clock_offset __ro_after_init;
->  
->  static int __init parse_no_kvmclock(char *arg)
-> @@ -195,7 +195,8 @@ static void kvm_setup_secondary_clock(void)
->  
->  void kvmclock_disable(void)
->  {
-> -	native_write_msr(msr_kvm_system_time, 0, 0);
-> +	if (msr_kvm_system_time)
-> +		native_write_msr(msr_kvm_system_time, 0, 0);
+On Fri, Oct 20, 2023, Vitaly Kuznetsov wrote:
+> > ---
+> >  arch/x86/kernel/kvmclock.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+> > index fb8f52149be9..f2fff625576d 100644
+> > --- a/arch/x86/kernel/kvmclock.c
+> > +++ b/arch/x86/kernel/kvmclock.c
+> > @@ -24,8 +24,8 @@
+> >  
+> >  static int kvmclock __initdata = 1;
+> >  static int kvmclock_vsyscall __initdata = 1;
+> > -static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
+> > -static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
+> > +static int msr_kvm_system_time __ro_after_init;
+> > +static int msr_kvm_wall_clock __ro_after_init;
+> >  static u64 kvm_sched_clock_offset __ro_after_init;
+> >  
+> >  static int __init parse_no_kvmclock(char *arg)
+> > @@ -195,7 +195,8 @@ static void kvm_setup_secondary_clock(void)
+> >  
+> >  void kvmclock_disable(void)
+> >  {
+> > -	native_write_msr(msr_kvm_system_time, 0, 0);
+> > +	if (msr_kvm_system_time)
+> > +		native_write_msr(msr_kvm_system_time, 0, 0);
+> >  }
+> >  
+> >  static void __init kvmclock_init_mem(void)
+> > @@ -294,7 +295,10 @@ void __init kvmclock_init(void)
+> >  	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
+> >  		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
+> >  		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
+> > -	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
+> > +	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
+> > +		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
+> > +		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
+> > +	} else {
+> >  		return;
+> >  	}
+> 
+> This should work, so
+> 
+> Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+> 
+> but my personal preference would be to change kvm_guest_cpu_offline()
+> to check KVM features explicitly instead of checking MSRs against '0'
+> at least becase it already does so for other features. Completely
+> untested:
+> 
+> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+> index b8ab9ee5896c..1ee49c98e70a 100644
+> --- a/arch/x86/kernel/kvm.c
+> +++ b/arch/x86/kernel/kvm.c
+> @@ -454,7 +454,9 @@ static void kvm_guest_cpu_offline(bool shutdown)
+>         kvm_pv_disable_apf();
+>         if (!shutdown)
+>                 apf_task_wake_all();
+> -       kvmclock_disable();
+> +       if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2) ||
+> +           kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE))
+> +               kvmclock_disable();
 >  }
->  
->  static void __init kvmclock_init_mem(void)
-> @@ -294,7 +295,10 @@ void __init kvmclock_init(void)
->  	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
->  		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
->  		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
-> -	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-> +	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-> +		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
-> +		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
-> +	} else {
->  		return;
->  	}
 
-This should work, so
-
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-
-but my personal preference would be to change kvm_guest_cpu_offline()
-to check KVM features explicitly instead of checking MSRs against '0'
-at least becase it already does so for other features. Completely
-untested:
-
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index b8ab9ee5896c..1ee49c98e70a 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -454,7 +454,9 @@ static void kvm_guest_cpu_offline(bool shutdown)
-        kvm_pv_disable_apf();
-        if (!shutdown)
-                apf_task_wake_all();
--       kvmclock_disable();
-+       if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2) ||
-+           kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE))
-+               kvmclock_disable();
- }
-
--- 
-Vitaly
-
+That would result in an unnecessray WRMSR in the case where kvmclock is disabled
+on the command line.  It _should_ be benign given how the code is written, but
+it's not impossible to imagine a scenario where someone disabled kvmclock in the
+guest because of a hypervisor bug.  And the WRMSR would become a bogus write to
+MSR 0x0 if someone made a "cleanup" to set msr_kvm_system_time if and only if
+kvmclock is actually used, e.g. if someone made Kirill's change sans the check in
+kvmclock_disable().
