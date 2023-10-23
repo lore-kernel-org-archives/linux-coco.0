@@ -1,123 +1,109 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F61A12B60
-	for <linux-coco@lists.linux.dev>; Mon, 23 Oct 2023 14:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF02257D
+	for <linux-coco@lists.linux.dev>; Mon, 23 Oct 2023 15:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SQmTT8K4"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5b8ae483459so681230a12.1
-        for <linux-coco@lists.linux.dev>; Mon, 23 Oct 2023 07:40:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698072052; x=1698676852; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TOIO+H7vBCJRfyqao5vTRDK/ZnUXqp5753SeNzy629c=;
-        b=SQmTT8K4BcJy0LfZxbcH4hVbz3sLrWBV3x0wUWyAVIvPQXlb0fHUBRN/16EcZ5fcW9
-         PjYOKd1dgOJ1zFpJMQqaI0wpIRsHhBOCD0tZ/FwkbvTMdencz5GYX84nS/Td0vGG6S2t
-         mwbXQAeRDlAFFnfk8CgxWz/A6lvkcxjYo+787m6y5XZbMzfbUE7WwoAUjJkUzwiNh3A0
-         5gAiZ/Oxd05vNQrwtpP7YQouX/XHZvvliX+ZIXEu3ixDJ/zYKcaqPh6bL9kaWbwqaHXo
-         /K2ZaUTzt1uKu3g1w8mmYp2tA78IQA2pJ5KIyXf9SnOP21/fx7XesvOzpClaHg7baHHo
-         FdCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698072052; x=1698676852;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TOIO+H7vBCJRfyqao5vTRDK/ZnUXqp5753SeNzy629c=;
-        b=f9Ak3e0N7k1njudTop/nhGFA4k//9egW33neD9wQOgEn20XEcCvPWxAObhFYJ+tIBz
-         Zg4XCghPOSMVc8iIHUFSNsqkNQ7P0Ze+0yR9UwzFGMdyJEmVJzHLjHUlT6pw48mlW1PK
-         +uVBFlkc3VI0Jj9aCuUQ/uTCRfNTh9rosiRWZOEySRBUiRrB/xpc1ItkJQq01lNSSs9e
-         pjKJPU8UFXHuHUE71mxrxnOKkj8yZ2wog61qGg3XfVcqcpqExMPNQt1EKt05FCWSW74f
-         3pcRi7EJgsImDsEGW+m3iU+DjDIUreHqMZVX1mgKyBsoBDtKol05jmXl/q2b9l5kuZ4e
-         ktgQ==
-X-Gm-Message-State: AOJu0YxX1D7vNkTlKiPxe+3yuBOPf9/cup9Clb6KNkH2UvXu5bVVHpWm
-	ZQQWS83lvnjLgJQCfd2+UDBr6PEl46A=
-X-Google-Smtp-Source: AGHT+IExAuTTDvPv+uDKpzbze6eiqwdc7PLWiowzJWFsT1Fls/h45TIz/DhVhP8uEFt0TqXIZLj2MgO8bn8=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:e551:0:b0:584:dd94:24c1 with SMTP id
- z17-20020a63e551000000b00584dd9424c1mr155269pgj.11.1698072052492; Mon, 23 Oct
- 2023 07:40:52 -0700 (PDT)
-Date: Mon, 23 Oct 2023 07:40:50 -0700
-In-Reply-To: <87r0ll4thx.fsf@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g2LqzBO7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698075340; x=1729611340;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Rh3WIkroWfusSZh8pyM6xIJoI8clu8Gzvxh74Q9Cu1A=;
+  b=g2LqzBO7lUkK+TqvVbjTvrLpqffO40v25+HehJvEEVpRXpG2zR4aa7kG
+   EG7IHWt+2tBWO091OSSC3huC5viRyVcb3oRUQI9wuedFvxzjoX+S7wwH8
+   xVSJ3pgozd13KpXGAiXUw8ZD9ONyMimn0Vzx8kt6DfmCcgNcJaYKe9inT
+   rbYFw6IP7aRq+bjVmI3ZzX0JV5nUV9nawg/Ae2beJNl97Y/a0ogCGX3b5
+   8+ZsIH9VPaOKZwj4oVPiiDx9U42v0AP4wUdRlPVbxuS80dvu7hyI+9jpY
+   XUmWIz8IYUxf174qazM2jmtJC/Dpyu0dxnvpVjxBc9n9vWKOEoljyhgtl
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="385762198"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
+   d="scan'208";a="385762198"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 08:31:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="828480810"
+X-IronPort-AV: E=Sophos;i="6.03,244,1694761200"; 
+   d="scan'208";a="828480810"
+Received: from swidman-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.211.241])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2023 08:31:45 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id D62B9109B10; Mon, 23 Oct 2023 18:31:42 +0300 (+03)
+Date: Mon, 23 Oct 2023 18:31:42 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"ashish.kalra@amd.com" <ashish.kalra@amd.com>,
+	"kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+	"Christopherson,, Sean" <seanjc@google.com>,
+	"bhe@redhat.com" <bhe@redhat.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCHv2 02/13] kernel/cpu: Add support for declaring CPU
+ offlining not supported
+Message-ID: <20231023153142.bes7zxcjc2soihsl@box>
+References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
+ <20231020151242.1814-3-kirill.shutemov@linux.intel.com>
+ <0a29fef814e51a2aa0030ec9cc97366718859411.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
- <20231020151242.1814-5-kirill.shutemov@linux.intel.com> <87wmvh47zb.fsf@redhat.com>
- <ZTKg9XMxeBQ36f5L@google.com> <87r0ll4thx.fsf@redhat.com>
-Message-ID: <ZTaF8n9WM5BQ3rYS@google.com>
-Subject: Re: [PATCHv2 04/13] x86/kvm: Do not try to disable kvmclock if it was
- not enabled
-From: Sean Christopherson <seanjc@google.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Wanpeng Li <wanpengli@tencent.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a29fef814e51a2aa0030ec9cc97366718859411.camel@intel.com>
 
-On Mon, Oct 23, 2023, Vitaly Kuznetsov wrote:
-> Sean Christopherson <seanjc@google.com> writes:
+On Mon, Oct 23, 2023 at 09:30:59AM +0000, Huang, Kai wrote:
+> IMHO it's a little bit odd to have two mechanisms in place, even in this middle
+> state patch.  Is it better to completely replace CC_ATTR_HOTPLUG_DISABLED with
+> the new cpu_hotplug_offline_disabled in this patch? You can explicitly call
+> cpu_hotplug_disable_offlining() in tdx_early_init() so no functional change is
+> done.
+
+I can. But I don't see how it makes a difference.
+
+> Or I am wondering why cannot just merge this and the next patch together, with a
+> proper justification?
+
+Because the very next thing reviewers would ask is to split them :P
+
+> Btw, IMHO the changelog (this and next patch's) seems didn't explain the true
+> reason to replace CC_ATTR_HOTPLUG_DISABLED.
 > 
-> > On Fri, Oct 20, 2023, Vitaly Kuznetsov wrote:
-> >> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-> >> index b8ab9ee5896c..1ee49c98e70a 100644
-> >> --- a/arch/x86/kernel/kvm.c
-> >> +++ b/arch/x86/kernel/kvm.c
-> >> @@ -454,7 +454,9 @@ static void kvm_guest_cpu_offline(bool shutdown)
-> >>         kvm_pv_disable_apf();
-> >>         if (!shutdown)
-> >>                 apf_task_wake_all();
-> >> -       kvmclock_disable();
-> >> +       if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2) ||
-> >> +           kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE))
-> >> +               kvmclock_disable();
-> >>  }
-> >
-> > That would result in an unnecessray WRMSR in the case where kvmclock is disabled
-> > on the command line.  It _should_ be benign given how the code is written, but
-> > it's not impossible to imagine a scenario where someone disabled kvmclock in the
-> > guest because of a hypervisor bug.  And the WRMSR would become a bogus write to
-> > MSR 0x0 if someone made a "cleanup" to set msr_kvm_system_time if and only if
-> > kvmclock is actually used, e.g. if someone made Kirill's change sans the check in
-> > kvmclock_disable().
+> 	Currently hotplug prevented based on the confidential computing
+> 	attribute which is set for Intel TDX. But TDX is not the only possible
+> 	user of the wake up method.
 > 
-> True but we don't have such module params to disable other PV features so
-> e.g. KVM_FEATURE_PV_EOI/KVM_FEATURE_MIGRATION_CONTROL are written to
-> unconditionally. Wouldn't it be better to handle parameters like
-> 'no-kvmclock' by clearing the feature bit in kvm_arch_para_features()'s
-> return value so all kvm_para_has_feature() calls for it just return
-> 'false'? We can even do an umbreall "no-kvm-features=<mask>" to cover
-> all possible debug cases.
+> "TDX is not the only possible user of the wake up method" doesn't mean we need
+> to replace CC_ATTR_HOTPLUG_DISABLED.  E.g., other CoCo VM type can also select
+> CC_ATTR_HOTPLUG_DISABLED if it uses MADT wake up method.
+> 
+> To me the true reason is the new MADT wake up version actually brings the
+> support of offlining cpu, thus it's more suitable to decide whether the CoCo VM
+> needs to disable CPU offline based on the MADT wake up version, but not the CC_*
+> attributes that is determined by CoCo VM type.
 
-I don't know that it's worth the effort, or that it'd even be a net positive.
+No. MADT is orthogonal to CoCo. It can be implemented outside of CoCo
+environment and CoCo platform can implement other wake up methods. It is
+not up to TDX/SEV/whatever to decide if offlining is supported. It is
+property of the wakeup method implemented on the platform.
 
-Today, kvm_para_has_feature() goes through to CPUID every time, e.g. we'd have
-to add a small bit of infrastructure to snapshot and clear bits, or rework things
-to let kvm_para_has_feature peek at kvmclock.
-
-And things like KVM_FEATURE_PV_TLB_FLUSH would be quite weird, e.g. we either end
-up leaving the feature bit set while returning "false" for pv_tlb_flush_supported(),
-or we'd clear the feature bit for a rather large number of conditions that don't
-really have anything to do with KVM_FEATURE_PV_TLB_FLUSH being available.
-
-  static bool pv_tlb_flush_supported(void)
-  {
-	return (kvm_para_has_feature(KVM_FEATURE_PV_TLB_FLUSH) &&
-		!kvm_para_has_hint(KVM_HINTS_REALTIME) &&
-		kvm_para_has_feature(KVM_FEATURE_STEAL_TIME) &&
-		!boot_cpu_has(X86_FEATURE_MWAIT) &&
-		(num_possible_cpus() != 1));
-  }
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
