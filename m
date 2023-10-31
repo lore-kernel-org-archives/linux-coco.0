@@ -1,318 +1,193 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2061.outbound.protection.outlook.com [40.107.100.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26073D298
-	for <linux-coco@lists.linux.dev>; Sun, 29 Oct 2023 17:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E4422331
+	for <linux-coco@lists.linux.dev>; Tue, 31 Oct 2023 22:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2PIwh5ky";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XsE2YM75"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1698600697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=czSOa5APrOwjC65ep3L/a1WR9+Fo2vLgEdO5NlLCZ+I=;
-	b=2PIwh5kyXQzqCeOIiA4cyNwO8zpXypEZ1IiB+LETWHzyiH3I8lJV2yOgROI9P6Ta/DzxRb
-	hQzLFDufb2/I7bwXFuSbBTFPqtAYCf0I2L6Lc5nYmLdKneRZiQ9J/ii+njnEpX2t68mMwz
-	0n1BDL237R4UOZgjlrJIdDQB7xnumbcnxhoy32t/j26zB4s7igEvdRPaoxaoHN+eKNTkZy
-	TZLx5b+lpzjq6G0T9UgGqKv/ykBoUnpao64mRbcJhdH2PAcG8b+h4UO9/W8aXItg1Sn3Ub
-	eQBs0m+Fm1ul0z3LHFOWNjJpjT/J3IwUZny/St2TdSGuuYkp1F+WnAr/V7oQrw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1698600697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=czSOa5APrOwjC65ep3L/a1WR9+Fo2vLgEdO5NlLCZ+I=;
-	b=XsE2YM75vIZT3fXLsB5H3/kl4eVCN8+NkkulTnWltOymrlVwQMVFKnk9evBb4EdoJU+qtF
-	qfPw/WF2mNWRUfCg==
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima
- <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, "Huang,
- Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Kirill A. Shutemov"
- <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCHv2 13/13] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-In-Reply-To: <20231020151242.1814-14-kirill.shutemov@linux.intel.com>
-References: <20231020151242.1814-1-kirill.shutemov@linux.intel.com>
- <20231020151242.1814-14-kirill.shutemov@linux.intel.com>
-Date: Sun, 29 Oct 2023 18:31:36 +0100
-Message-ID: <87r0ldz66f.ffs@tglx>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="G3UY0Y0V"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j6qU6sfLiSBrcltbcgqxYCjyYGAvY6vFEiqUvO8RExLWBZ6Pn1t4/7iJHMs3dB88HeXwaK873YgltB+aWftuidyjQze9VkM/s6OB6pC4vOJXd3cBUgDE8daHlgHy0B2Z9j/mHc6lx3+qtvWApAqrM7k01NLOpb0HO7m/DJvxUMjbQ9nA+qM/41sTKVXaVbBCZzIUOdRBdAvdgdIG2oEHxhi7GBN5Y71jONgHPa08HSsnT7IhEFAPU6nw/blOLg6FImJGuDPJaLskT/rxmZ/j0EtZEcdIZxBvJnDpREznqroudEO0a4U0LyOaooJ8ILIJX0T08oWk4xGnlLMZPdcvow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6TM/du3fLk1yqES8zTn4pd8zqcPj9x0EB2RkYIUTm5Q=;
+ b=VsWdnLjLCrv42tne4pOT5PH/YZt0nJeJ2YHOy0vLOpHrO2Vplap5VNAMVGmBjoJ3xlAFhz/drhckPo/xBSQ8nHGVJ0K8+khI+SXpReyUvuqpg6Ozr622zjoudpg+kDLuJg3TGxDGIgLuChzAAxLesXrZzFbQIWcCsuECBQkzZl7xV3sZTdtdjbMXGR0DKU2fplxEJTsU+UHtkR4YUCa2JIdHn27mIFvFLK62UksC3TGORnBZe9aN0qCxyDE97CzEH2QLR+xAXjXewotCTgjMJiemvav2lVSOYoxfL3R0p3IrgYVWIN78hky6mjSWBr76avkXIVkk8yjpfSdJPn7E6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6TM/du3fLk1yqES8zTn4pd8zqcPj9x0EB2RkYIUTm5Q=;
+ b=G3UY0Y0VVRBo223gKOAz8gZY4pvi0BCAgrSGn3C5zORg15Uqsy9qmfMKeYLogcoSA6xBNfeJkxnwG4W4qPoE77+SZYzLDPcibw7azlyoJt8Pv9xxqr95Nl+fvr6eI2eNtEwasGc5XnMit83bxZTwhgRoo4Ebmh7YZMMdky+AfcQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by DS7PR12MB5936.namprd12.prod.outlook.com (2603:10b6:8:7f::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6933.27; Tue, 31 Oct 2023 22:56:22 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::7e54:2e35:593c:80a2]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::7e54:2e35:593c:80a2%7]) with mapi id 15.20.6954.019; Tue, 31 Oct 2023
+ 22:56:22 +0000
+Message-ID: <e05eafd8-04b3-4953-8bca-dc321c1a60b9@amd.com>
+Date: Wed, 1 Nov 2023 09:56:11 +1100
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: linux-coco@lists.linux.dev
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+From: Alexey Kardashevskiy <aik@amd.com>
+Subject: TDISP enablement
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY6PR01CA0048.ausprd01.prod.outlook.com
+ (2603:10c6:10:e9::17) To LV3PR12MB9213.namprd12.prod.outlook.com
+ (2603:10b6:408:1a6::20)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|DS7PR12MB5936:EE_
+X-MS-Office365-Filtering-Correlation-Id: c99b06e4-180b-4115-ad0f-08dbda6499a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	KBjTHR7igBqwhLsVt+fYAT2pEEoj8CiLv2UnP3K/Qj0/t5vOUjkXpN6FZqJfBhGKS90PG7miotWhXIAcvua+OgxwOpRSFbqnmVp8MIeie/B21NI+cVnPxdFJAwWum5hYq01BPBKmI0UI5FC4kbvt/mnJ47QVd2h+lOzAuvMrBJmTh65T6BL5ucTF3JNjIB4blCq7XO4dFTMMFL+8B4MGio75runYtLE4vn5KHMCcm1+UQ0x3lYvn84REBP6PHSemWPE+3ms7/wUtKQE/DpWrNGzTRu3R9ZKEhcC8dJZhFiil7ooHoaS0CVXrSPrc9ouAbyu3AEl4ITHaUcD7VKswFpL0RS/BJ68e9m/6pQw48cE4NDZo6IpUTpNB2mek+BuF2xr3Xh3a6EYY/JlqDdVgJn0xj7tAQiSv3bo9+FXYpPTC/cWp7BObBDsDrkDF317Rz9tlW62u7hHwaROKFdJT783BGukB1BZwVlvtqeZCmJhuXXtfQdDMr7qSbzbSbJ7E/uZfk6DLulFvmIrlGAvajOldudtlW6xukS68P83uDGiR7sdEEWQ7vA25Cq+E74MKLWsUk7KTwcMe5uHRT423ILuJ3HQLbfULSrrV0af7NbFsypqRs55M1DYYLQYgRmBrYK4jzzF7/MxF73c34Nvpxg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(346002)(39860400002)(136003)(396003)(230922051799003)(451199024)(186009)(64100799003)(1800799009)(26005)(6512007)(6506007)(6666004)(478600001)(83380400001)(2906002)(41300700001)(5660300002)(66946007)(66556008)(6486002)(66476007)(8936002)(7116003)(8676002)(6916009)(316002)(4326008)(38100700002)(2616005)(3480700007)(31696002)(36756003)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dTJodCtEVUpMMnA5M2hIRzVuTmVUMll0aWlpZm5DVEVoMmxwZE03ZkhMNWxm?=
+ =?utf-8?B?bFM2Rnlsc25NR3lsL003UXR0Rng5VEZxdU9EcC9OUmlpZTdzUVRHS1o0MTlQ?=
+ =?utf-8?B?MzdCVVhETTlOSk43MDlwMUlaR0UzRlowVDhRbHRQK1dXY1pmUjZ1NWJrSkxZ?=
+ =?utf-8?B?bkdsUkMwTFFoUjBaYmtXK1J2cTJrc01ocWhkeGErM2VibHJUUDFpaXhJeW5m?=
+ =?utf-8?B?WW9MOGpWNHJrNVVvbTRsWGUrL082UzZFbjJqMnhyY3VkbjM4V1lCTEthblRk?=
+ =?utf-8?B?VFpJaEgwSm1LdjJXOWNpVUxHWEtIMGsrM3hEY21TWGlyRVUyYnZxN1NiMFZq?=
+ =?utf-8?B?SGtpUndEYWJJUHVJVXZvRVhPeUtWVU5OZC9sc29wdG8wcFJobE1SRHZTclJ2?=
+ =?utf-8?B?bXZUZENseFBNZk1MdXpLUmQwUEZHbUQ0Qjd3NnRtUDhWRlZuQU5iZElIM2dy?=
+ =?utf-8?B?ZmxVQXo1V0N0U0R0R3ZHWjZDMjNyNTFrSGM5M0RFOExKNFQvWFNwOEtpak01?=
+ =?utf-8?B?bWVGMzBkY0RCOVMyc3V3aUFkT29VVmVodTFkbnJxdnBPeWt0UzhESzBXVlRw?=
+ =?utf-8?B?VW9EdWhFaDZkcDZBWE9MYm9GTmJmMXF6aStXLzhISUJWSjNhT2FjUXJPUS9R?=
+ =?utf-8?B?bko1U2xySVQwbHh4bUJBL0tVY0J0eXE2dmtWSDJ4SXppVkF3aXdTdENBbkpp?=
+ =?utf-8?B?N2pvOGUrZjE2aXhSdlpUQTF0aGZPWXhQWG1vM2k5MldQRG51MlhPeHU4SDFD?=
+ =?utf-8?B?S2M3Nm83Zi9waERKNCsyZVVQaVlSSFh0YjVndzlEODkveHhBQzhLd3A5NGZG?=
+ =?utf-8?B?Zzc3OG9qQ2NWRzV5MnJXYTUvMnVFTWFpTko2NDZTSzUxQmZqUU9ZdzJURnRD?=
+ =?utf-8?B?M3BzcFJHNStMZkhtRkdnOHpTZFd1TmNuWVdya1laZXpod3FiS2lDQ2VLYlNN?=
+ =?utf-8?B?ME9pRkhwQjVXVlhXRjNGMUFtQ1oybUI3WDI3bEozVzRaNkxSanpzdm1YemNk?=
+ =?utf-8?B?dUpuZjhBTTNpTTk2OGRaVnpCYmgrWWs1QTlObnNYYytzbXFudW5EZGFINlEz?=
+ =?utf-8?B?S2I0SEtXNmQwbnlRZWh6VnBxWXpLMXdBbEpLVWNuTGlIeWdmb1JYL3pBSzJR?=
+ =?utf-8?B?L0JtaUtueWRETjY4Ymw1MjdlOW10L0tyTWpqRmp6M29JaGNrZnJFNHhXYW5L?=
+ =?utf-8?B?M1QzTDFxUkRIY3pyV2g5bVU2cUJUakNRZkFHeWVtUlBjcDZodTgyNHhReFhs?=
+ =?utf-8?B?UGllL0tzS0FnRDEvalVTSjBLSUpjc3Zrcmg3OWRueUcvcFo3Uk52V1l0T3U5?=
+ =?utf-8?B?V0h4Ymt6V3BmUGRnY0tuZHk5a0t0SFF3TEpndlp1eVRHcTdMeFpCaGxuQjVB?=
+ =?utf-8?B?TFRZQndEdlRFN2tvVUVDUElQNE9kWTU1dFhlMHhsOURMQWJ2S1Y2RlYzMlFZ?=
+ =?utf-8?B?ZlZLNm9OVTFIOTVOUjhGajY0R0xoNE1OTUVJQmFjVmw4TmdOQW9KSU91OFRr?=
+ =?utf-8?B?NTJVWnlOMFk0YXpWemJBNUpwVm40ejhORUZ6VW5SQjZKNHc0bCtHMWlFcjht?=
+ =?utf-8?B?bkZ0cXJ1WitUL2huMThONyt6L3ptciszTlgrc2RQWFpodXgvNzJ5a3krT3Ns?=
+ =?utf-8?B?YVVLSGNjb0Qyb3RLcFBiNXMxa1A4dXRyZC8yMWZQQzdyZys1YWl6c2ZKeGVr?=
+ =?utf-8?B?L3Fic01Pci9USGJGZml1eEh1SGJYd3NkUStuNXZTZnFFb2p2citsenl4M0JC?=
+ =?utf-8?B?STJRaFdVZzg4TDF5T0dnRC9TczJPWW5ZUy9oRkgxRlhWZ25ZdHVVS29jRnh4?=
+ =?utf-8?B?TnV6dFdncFkrMGZMSXlCNHVzNE92UUt4RGV6K3BaM2EveTRSMVE2VE1hQ2Ru?=
+ =?utf-8?B?QzRKRXZ5MURaSUN3ZkNvMGhWdmtoc2lZQlRYdSsrMkx2UkRUZEk5UjYySjF2?=
+ =?utf-8?B?L1V5bEc3RGJIWmdwVEt6NTVBaDlEUy9HVzRTS0JEanFzOGIwandLeUxlc09m?=
+ =?utf-8?B?ZC9PR2FEQXkyOHErdlVtbGoxMGQ1cmlsTlZRUEs5OUJ3ZzFxSjVjaHhEODdN?=
+ =?utf-8?B?dDYyMXoxd2RaaHhlOHVIUm0zNEtzTy9GM3NWaDQ4aGRyME9LeTh2dHRCcTZP?=
+ =?utf-8?Q?do071ToUwufgf89Y5wNRZYS59?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c99b06e4-180b-4115-ad0f-08dbda6499a2
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9213.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2023 22:56:22.0105
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1KNJA9OSUVJsAkuH9WjIumpEM5mWGDysCSzU8kQkAWbmtg1nTFs2f6ogGLhL1h4m+esAFG5MPAf7NKvBDRjtDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5936
 
-On Fri, Oct 20 2023 at 18:12, Kirill A. Shutemov wrote:
+Hi everyone,
 
-> MADT Multiprocessor Wakeup structure version 1 brings support of CPU
-> offlining: BIOS provides a reset vector where the CPU has to jump to
-> offline itself. The new TEST mailbox command can be used to test the CPU
-> offlined successfully and BIOS has control over it.
->
-> Add CPU offling support for ACPI MADT wakeup method by implementing
-> custom cpu_die, play_dead and stop_other_cpus SMP operations.
->
-> CPU offlining makes possible to hand over secondary CPUs over kexec, not
+Here is followup after the Dan's community call we had weeks ago.
 
-makes it possible
+Our (AMD) goal at the moment is TDISP to pass through SRIOV VFs to 
+confidential VMs without trusting the HV and with enabled IDE 
+(encryption) and IOMMU (performance, compared to current SWIOTLB). I am 
+aware of other uses and vendors and I spend hours unsuccessfully trying 
+to generalize all this in a meaningful way.
 
-> limiting the second kernel with single CPU.
+The AMD SEV TIO verbs can be simplified as:
 
-s/with/to/
+- device_connect - starts CMA/SPDM session, returns measurements/certs, 
+runs IDE_KM to program the keys;
+- device_reclaim - undo the connect;
+- tdi_bind - transition the TDI to TDISP's LOCKED and RUN states, 
+generates interface report;
+- tdi_unbind - undo the bind;
+- tdi_info - read measurements/certs/interface report;
+- tdi_validate - unlock TDI's MMIO and IOMMU (or invalidate, depends on 
+the parameters).
 
-> The change conforms to the approved ACPI spec change proposal. See the
-> +SYM_FUNC_START(asm_acpi_mp_play_dead)
-> +	/* Load address of reset vector into RCX to jump when kernel is ready */
-> +	movq	acpi_mp_reset_vector_paddr(%rip), %rcx
-> +
-> +	/* Turn off global entries. Following CR3 write will flush them. */
-> +	movq	%cr4, %rdx
-> +	andq	$~(X86_CR4_PGE), %rdx
-> +	movq	%rdx, %cr4
-> +
-> +	/* Switch to identity mapping */
-> +	movq	acpi_mp_pgd(%rip), %rax
-> +	movq	%rax, %cr3
+The first 4 called by the host OS, the last two by the TVM ("Trusted 
+VM"). These are implemented in the AMD PSP (platform processor).
+There are CMA/SPDM, IDE_KV, TDISP in use.
 
-You can just make this function:
+Now, my strawman code does this on the host (I simplified a bit):
+- after PCI discovery but before probing: walk through all TDISP-capable 
+(TEE-IO in PCIe caps) endpoint devices and call device_connect;
+- when drivers probe - it is all set up and the device measurements are 
+visible to the driver;
+- when constructing a TVM, tdi_bind is called;
 
-    asm_acpi_mp_play_dead(u64 reset_vector, u64 pgd_pa);
+and then in the TVM:
+- after PCI discovery but before probing: walk through all TDIs (which 
+will have TEE IO bit set) and call tdi_info, verify the report, if ok - 
+call tdi_validate;
+- when drivers probe - it is all set up and the driver decides if/which 
+DMA mode to use (SWIOTLB or direct), or panic().
 
-then you have the reset vector in RDI and the pgd in RSI and spare the
-global variables.
 
->  
->  /* Physical address of the Multiprocessor Wakeup Structure mailbox */
-> @@ -11,6 +16,150 @@ static u64 acpi_mp_wake_mailbox_paddr;
->  /* Virtual address of the Multiprocessor Wakeup Structure mailbox */
->  static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
->  
-> +u64 acpi_mp_pgd;
-> +u64 acpi_mp_reset_vector_paddr;
+Uff. Too long already. Sorry. Now, go to the problems:
 
-See above (static) and __ro_after_init please
+If the user wants only CMA/SPDM, the Lukas'es patched will do that 
+without the PSP. This may co-exist with the AMD PSP (if the endpoint 
+allows multiple sessions).
 
-> +
-> +void asm_acpi_mp_play_dead(void);
-> +
-> +static void __init *alloc_pgt_page(void *context)
-> +{
+If the user wants only IDE, the AMD PSP's device_connect needs to be 
+called and the host OS does not get to know the IDE keys. Other vendors 
+allow programming IDE keys to the RC on the baremetal, and this also may 
+co-exist with a TSM running outside of Linux - the host still manages 
+trafic classes and streams.
 
-What's the purpose of the context argument?
+If the user wants TDISP for VMs, this assumes the user does not trust 
+the host OS and therefore the TSM (which is trusted) has to do CMA/SPDM 
+and IDE.
 
-> +	return memblock_alloc(PAGE_SIZE, PAGE_SIZE);
-> +}
-> +
-> +/*
-> + * Make sure asm_acpi_mp_play_dead() is present in the identity mapping at
-> + * the same place as in the kernel page tables. The function switches to
-> + * the identity mapping and has be present at the same spot in before and
-> + * after transition.
+The TSM code is not Linux and not shared among vendors. CMA/SPDM and IDE 
+seem capable of co-existing, TDISP does not.
 
-Why does it need to be there after the CPU jumped to the reset vector?
+However there are common bits.
+- certificates/measurements/reports blobs: storing, presenting to the 
+userspace (results of device_connect and tdi_bind);
+- place where we want to authenticate the device and enable IDE 
+(device_connect);
+- place where we want to bind TDI to a TVM (tdi_bind).
 
-> + */
-> +static int __init init_transition_pgtable(pgd_t *pgd)
-> +{
-> +	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
-> +	unsigned long vaddr, paddr;
-> +	int result = -ENOMEM;
-> +	p4d_t *p4d;
-> +	pud_t *pud;
-> +	pmd_t *pmd;
-> +	pte_t *pte;
-> +
-> +	vaddr = (unsigned long)asm_acpi_mp_play_dead;
-> +	pgd += pgd_index(vaddr);
-> +	if (!pgd_present(*pgd)) {
-> +		p4d = (p4d_t *)alloc_pgt_page(NULL);
-> +		if (!p4d)
-> +			goto err;
+I've tried to address this with my (poorly named) 
+drivers/pci/pcie/tdisp.ko and a hack for VFIO PCI device to call tdi_bind.
 
-        return -ENOMEM?
-
-the error labels is pretty silly without an actual cleanup, right?
-
-> +		set_pgd(pgd, __pgd(__pa(p4d) | _KERNPG_TABLE));
-> +	}
-> +	p4d = p4d_offset(pgd, vaddr);
-> +	if (!p4d_present(*p4d)) {
-> +		pud = (pud_t *)alloc_pgt_page(NULL);
-> +		if (!pud)
-> +			goto err;
-
-Ditto. But what mops up the already allocated page above?
-> +	set_pte(pte, pfn_pte(paddr >> PAGE_SHIFT, prot));
-> +
-> +	return 0;
-> +err:
-> +	return result;
-> +}
-
-Can you please move that function to the place where it is used?
-
-> +
-> +static void acpi_mp_play_dead(void)
-> +{
-> +	play_dead_common();
-> +	asm_acpi_mp_play_dead();
-> +}
-> +
-> +static void acpi_mp_cpu_die(unsigned int cpu)
-> +{
-> +	int apicid = per_cpu(x86_cpu_to_apicid, cpu);
-
-u32 apicid
-
-> +	unsigned long timeout;
-> +
-> +	/*
-> +	 * Use TEST mailbox command to prove that BIOS got control over
-> +	 * the CPU before declaring it dead.
-> +	 *
-> +	 * BIOS has to clear 'command' field of the mailbox.
-> +	 */
-> +	acpi_mp_wake_mailbox->apic_id = apicid;
-> +	smp_store_release(&acpi_mp_wake_mailbox->command,
-> +			  ACPI_MP_WAKE_COMMAND_TEST);
-> +
-> +	/* Don't wait longer than a second. */
-> +	timeout = USEC_PER_SEC;
-> +	while (READ_ONCE(acpi_mp_wake_mailbox->command) && timeout--)
-> +		udelay(1);
-> +}
-> +
-> +static void acpi_mp_stop_other_cpus(int wait)
-> +{
-> +	smp_shutdown_nonboot_cpus(smp_processor_id());
-
-This clearly was never tested with lockdep. At the point where
-stop_other_cpus() is invoked the invoking CPU has interrupts disabled...
-
-> +}
-> +
-> +static void acpi_mp_crash_stop_other_cpus(void)
-> +{
-> +	smp_shutdown_nonboot_cpus(smp_processor_id());
-
-Yuck. Crash can happen at arbitrary places. So you really cannot invoke
-the whole CPU hotplug state machine from here.
-
-There is a reason why the other implementation just kick CPUs into some
-"safe" state.
-
-> +	/* The kernel is broken so disable interrupts */
-> +	local_irq_disable();
-> +}
-> +
-> +static int __init acpi_mp_setup_reset(u64 reset_vector)
-> +{
-> +	pgd_t *pgd;
-> +	struct x86_mapping_info info = {
-> +		.alloc_pgt_page = alloc_pgt_page,
-> +		.page_flag      = __PAGE_KERNEL_LARGE_EXEC,
-> +		.kernpg_flag    = _KERNPG_TABLE_NOENC,
-> +	};
-> +
-> +	pgd = alloc_pgt_page(NULL);
-> +
-> +	for (int i = 0; i < nr_pfn_mapped; i++) {
-> +		unsigned long mstart, mend;
-
-Missing newline
-
-> +		mstart = pfn_mapped[i].start << PAGE_SHIFT;
-> +		mend   = pfn_mapped[i].end << PAGE_SHIFT;
-> +		if (kernel_ident_mapping_init(&info, pgd, mstart, mend))
-> +			return -ENOMEM;
-> +	}
-> +
-> +	if (kernel_ident_mapping_init(&info, pgd,
-> +				      PAGE_ALIGN_DOWN(reset_vector),
-> +				      PAGE_ALIGN(reset_vector + 1))) {
-> +		return -ENOMEM;
-> +	}
-> +
-> +	if (init_transition_pgtable(pgd))
-> +		return -ENOMEM;
-> +
-> +	smp_ops.play_dead = acpi_mp_play_dead;
-> +	smp_ops.cpu_die = acpi_mp_cpu_die;
-> +	smp_ops.stop_other_cpus = acpi_mp_stop_other_cpus;
-> +	smp_ops.crash_stop_other_cpus = acpi_mp_crash_stop_other_cpus;
-> +
-> +	acpi_mp_reset_vector_paddr = reset_vector;
-> +	acpi_mp_pgd = __pa(pgd);
-> +
-> +	return 0;
-> +}
-> +
->  static int acpi_wakeup_cpu(int apicid, unsigned long start_ip)
->  {
->  	if (!acpi_mp_wake_mailbox_paddr) {
-> @@ -74,31 +223,43 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
->  	struct acpi_madt_multiproc_wakeup *mp_wake;
->  
->  	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
-> -	if (BAD_MADT_ENTRY(mp_wake, end))
-> +	if (!mp_wake)
-> +		return -EINVAL;
-> +
-> +	if (end - (unsigned long)mp_wake < ACPI_MADT_MP_WAKEUP_SIZE_V0)
-> +		return -EINVAL;
-> +	if (mp_wake->header.length < ACPI_MADT_MP_WAKEUP_SIZE_V0)
->  		return -EINVAL;
->  
->  	acpi_table_print_madt_entry(&header->common);
->  
->  	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
->  
-> -	cpu_hotplug_disable_offlining();
-> +	if (mp_wake->version >= ACPI_MADT_MP_WAKEUP_VERSION_V1 &&
-> +	    mp_wake->header.length >= ACPI_MADT_MP_WAKEUP_SIZE_V1) {
-> +		acpi_mp_setup_reset(mp_wake->reset_vector);
-> +	} else {
-> +		cpu_hotplug_disable_offlining();
->  
-> -	/*
-> -	 * ACPI MADT doesn't allow to offline CPU after it got woke up.
-> -	 * It limits kexec: the second kernel won't be able to use more than
-> -	 * one CPU.
-> -	 *
-> -	 * Now acpi_mp_wake_mailbox_paddr already has the mailbox address.
-> -	 * The acpi_wakeup_cpu() will use it to bring up secondary cpus.
-> -	 *
-> -	 * Zero out mailbox address in the ACPI MADT wakeup structure to
-> -	 * indicate that the mailbox is not usable.  This prevents the
-> -	 * kexec()-ed kernel from reading a vaild mailbox, which in turn
-> -	 * makes the kexec()-ed kernel only be able to use the boot CPU.
-> -	 *
-> -	 * This is Linux-specific protocol and not reflected in ACPI spec.
-> -	 */
-> -	mp_wake->mailbox_address = 0;
-> +		/*
-> +		 * ACPI MADT doesn't allow to offline CPU after it got woke up.
-
-This is not longer accurate as V1 allows that ....
-
-> +		 * It limits kexec: the second kernel won't be able to use more
-> +		 * than one CPU.
+The next steps:
+- expose blobs via configfs (like Dan did configfs-tsm);
+- s/tdisp.ko/coco.ko/;
+- ask the audience - what is missing to make it reusable for other 
+vendors and uses?
 
 Thanks,
+-- 
+Alexey
 
-        tglx
+
