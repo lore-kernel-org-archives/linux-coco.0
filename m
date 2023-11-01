@@ -1,69 +1,223 @@
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA652F48
-	for <linux-coco@lists.linux.dev>; Wed,  1 Nov 2023 07:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFBA1096C
+	for <linux-coco@lists.linux.dev>; Wed,  1 Nov 2023 11:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 12FA7100D9404;
-	Wed,  1 Nov 2023 08:38:14 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id DEC64120EBC; Wed,  1 Nov 2023 08:38:13 +0100 (CET)
-Date: Wed, 1 Nov 2023 08:38:13 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <jic23@kernel.org>
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SL3xy3gfhz6K6Lm;
+	Wed,  1 Nov 2023 19:02:46 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 1 Nov
+ 2023 11:05:52 +0000
+Date: Wed, 1 Nov 2023 11:05:51 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Lukas Wunner <lukas@wunner.de>
+CC: Alexey Kardashevskiy <aik@amd.com>, <linux-coco@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>, Dan Williams
+	<dan.j.williams@intel.com>, Jonathan Cameron <jic23@kernel.org>,
+	<suzuki.poulose@arm.com>
 Subject: Re: TDISP enablement
-Message-ID: <20231101073813.GC25863@wunner.de>
+Message-ID: <20231101110551.00003896@Huawei.com>
+In-Reply-To: <20231101072717.GB25863@wunner.de>
 References: <e05eafd8-04b3-4953-8bca-dc321c1a60b9@amd.com>
- <CAAH4kHYgMKv2xYT8=4Vx7i8hhpCOMZNdzf8G4fbNdx=9gQ8Y1w@mail.gmail.com>
+	<20231101072717.GB25863@wunner.de>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAH4kHYgMKv2xYT8=4Vx7i8hhpCOMZNdzf8G4fbNdx=9gQ8Y1w@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
 
-On Tue, Oct 31, 2023 at 04:40:56PM -0700, Dionna Amalie Glaze wrote:
-> Only read? Can user space not provide a nonce for replay protection
-> here, or is that just inherent to the SPDM channel setup, and the
+On Wed, 1 Nov 2023 08:27:17 +0100
+Lukas Wunner <lukas@wunner.de> wrote:
 
-That's internal to SPDM, regardless whether SPDM is handled by the
-TSM or OS kernel.
+Thanks Alexy, this is a great discussion to kick off.
+
+> On Wed, Nov 01, 2023 at 09:56:11AM +1100, Alexey Kardashevskiy wrote:
+> > - device_connect - starts CMA/SPDM session, returns measurements/certs,
+> > runs IDE_KM to program the keys;  
+> 
+> Does the PSP have a set of trusted root certificates?
+> If so, where does it get them from?
+> 
+> If not, does the PSP just blindly trust the validity of the cert chain?
+> Who validates the cert chain, and when?
+> Which slot do you use?
+> Do you return only the cert chain of that single slot or of all slots?
+> Does the PSP read out all measurements available?  This may take a while
+> if the measurements are large and there are a lot of them.
+
+I'd definitely like their to be a path for certs and measurement to be
+checked by the Host OS (for the non TDISP path). Whether the
+policy setup cares about result is different question ;)
+
+> 
+> 
+> > - tdi_info - read measurements/certs/interface report;  
+> 
+> Does this return cached cert chains and measurements from the device
+> or does it retrieve them anew?  (Measurements might have changed if
+> MEAS_FRESH_CAP is supported.)
+> 
+> 
+> > If the user wants only CMA/SPDM, the Lukas'es patched will do that without
+> > the PSP. This may co-exist with the AMD PSP (if the endpoint allows multiple
+> > sessions).  
+> 
+> It can co-exist if the pci_cma_claim_ownership() library call
+> provided by patch 12/12 is invoked upon device_connect.
+> 
+> It would seem advantageous if you could delay device_connect
+> until a device is actually passed through.  Then the OS can
+> initially authenticate and measure devices and the PSP takes
+> over when needed.
+
+Would that delay mean IDE isn't up - I think that wants to be
+available whether or not pass through is going on.
+
+Given potential restrictions on IDE resources, I'd expect to see an explicit
+opt in from userspace on the host to start that process for a given
+device.  (udev rule or similar might kick it off for simple setups).
+
+Would that work for the flows described?  
+
+Next bit probably has holes...  Key is that a lot of the checks
+may fail, and it's up to host userspace policy to decide whether
+to proceed (other policy in the secure VM side of things obviously)
+
+So my rough thinking is - for the two options (IDE / TDISP)
+
+Comparing with Alexey's flow I think only real difference is that
+I call out explicit host userspace policy controls. I'd also like
+to use similar interfaces to convey state to host userspace as
+per Lukas' existing approaches.  Sure there will also be in
+kernel interfaces for driver to get data if it knows what to do
+with it.  I'd also like to enable the non tdisp flow to handle
+IDE setup 'natively' if that's possible on particular hardware.
+
+1. Host has a go at CMA/SPDM. Policy might say that a failure here is
+   a failure in general so reject device - or it might decide it's up to
+   the PSP etc.   (userspace can see if it succeeded)
+   I'd argue host software can launch this at any time.  It will
+   be a denial of service attack but so are many other things the host
+   can do.
+2. TDISP policy decision from host (userspace policy control)
+   Need to know end goal.
+3. IDE opt in from userspace.  Policy decision.
+  - If not TDISP 
+    - device_connect(IDE ONLY) - bunch of proxying in host OS.
+    - Cert chain and measurements presented to host, host can then check if
+      it is happy and expose for next policy decision.
+    - Hooks exposed for host to request more measurements, key refresh etc.
+      Idea being that the flow is host driven with PSP providing required
+      services.  If host can just do setup directly that's fine too.
+  - If TDISP (technically you can run tdisp from host, but lets assume
+    for now no one wants to do that? (yet)).
+    - device_connect(TDISP) - bunch of proxying in host OS.
+    - Cert chain and measurements presented to host, host can then check if
+      it is happy and expose for next policy decision.
+
+4. Flow after this depends on early or late binding (lockdown)
+   but could load driver at this point.  Userspace policy.
+   tdi-bind etc.
 
 
-> These vendored certificates will only grow in size, and they're
+> 
+> 
+> > If the user wants only IDE, the AMD PSP's device_connect needs to be called
+> > and the host OS does not get to know the IDE keys. Other vendors allow
+> > programming IDE keys to the RC on the baremetal, and this also may co-exist
+> > with a TSM running outside of Linux - the host still manages trafic classes
+> > and streams.  
+> 
+> I'm wondering if your implementation is spec compliant:
+> 
+> PCIe r6.1 sec 6.33.3 says that "It is permitted for a Root Complex
+> to [...] use implementation specific key management."  But "For
+> Endpoint Functions, [...] Function 0 must implement [...]
+> the IDE key management (IDE_KM) protocol as a Responder."
+> 
+> So the keys need to be programmed into the endpoint using IDE_KM
+> but for the Root Port it's permitted to use implementation-specific
+> means.
+> 
+> The keys for the endpoint and Root Port are the same because this
+> is symmetric encryption.
+> 
+> If the keys are internal to the PSP, the kernel can't program the
+> keys into the endpoint using IDE_KM.  So your implementation precludes
+> IDE setup by the host OS kernel.
 
-The size of a cert chain is limited to 64 kByte by the SPDM spec.
+Proxy the CMA messages through the host OS. Doesn't mean host has
+visibility of the keys or certs.  So indeed, the actual setup isn't being done
+by the host kernel, but rather by it requesting the 'blob' to send
+to the CMA DOE from PSP.
 
-A device may have 8 slots, each containing a cert chain.
+By my reading that's a bit inelegant but I don't see it being a break
+with the specification.
 
+> 
+> device_connect is meant to be used for TDISP, i.e. with devices which
+> have the TEE-IO Supported bit set in the Device Capabilities Register.
+> 
+> What are you going to do with IDE-capable devices which have that bit
+> cleared?  Are they unsupported by your implementation?
+> 
+> It seems to me an architecture cannot claim IDE compliance if it's
+> limited to TEE-IO capable devices, which might only be a subset of
+> the available products.
 
-> device-specific, so it makes sense for machines to have a local cache
-> of all the provisioned certificates that get forwarded to the guest
-> through the VMM. I'd like to see this kind of blob reporting as a more
-> general mechanism, however, so we can get TDX-specific blobs in too
-> without much fuss.
+Agreed.  If can request the PSP does a non TDISP IDE setup then
+I think we are fine.  If not then indeed usecases are limited and
+meh, it might be a spec compliance issue but I suspect not as
+TDISP has a note at the top that says:
 
-Cert chains and measurements from the interface report need to be
-exposed as individual sysfs attributes for compatibility with
-TEE-IO incapable devices.
+"Although it is permitted (and generally expected) that TDIs will
+be implemented such that they can be assigned to Legacy VMs, such
+use is not the focus of TDISP."
 
-Blobs make zero sense here.  Doubly so if they're vendor-specific.
+Which rather implies that devices that don't support other usecases
+are allowed.
 
-Thanks,
+> 
+> 
+> > The next steps:
+> > - expose blobs via configfs (like Dan did configfs-tsm);
+> > - s/tdisp.ko/coco.ko/;
+> > - ask the audience - what is missing to make it reusable for other vendors
+> > and uses?  
+> 
+> I intend to expose measurements in sysfs in a measurements/ directory
+> below each CMA-capable device's directory.  There are products coming
+> to the market which support only CMA and are not interested in IDE or
+> TISP.  When bringing up TDISP, measurements received as part of an
+> interface report must be exposed in the same way so that user space
+> tooling which evaluates the measurememt works both with TEE-IO capable
+> and incapable products.  This could be achieved by fetching measurements
+> from the interface report instead of via SPDM when TDISP is in use.
 
-Lukas
+Absolutely agree on this and superficially it feels like this should not
+be hard to hook up.
+
+There will also be paths where a driver wants to see the measurement report
+but that should also be easy enough to enable.
+
+Jonathan
+> 
+> Thanks,
+> 
+> Lukas
+> 
+
