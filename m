@@ -1,168 +1,205 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2089.outbound.protection.outlook.com [40.107.94.89])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FF22A8D2
-	for <linux-coco@lists.linux.dev>; Tue,  7 Nov 2023 22:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB03E652
+	for <linux-coco@lists.linux.dev>; Wed,  8 Nov 2023 01:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xJWE8wZX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FbPL8t2m5o0QZV3hVk3iH05F4IY1gMuyQz0JHCwytQjkbgu8U/7C+QXN5mfilVNPKcpy/RJMrPLtWi6D2gZym/FDYV1kVCHBYa5cNxrEpk8I81qG/8IQaOrmzPjmC6Qo3SoNdGaCYrgOr/5OjBwlSKNZmOk5gD8NbLeeo2Dmq7863vFwPM7Dyjxr+RmhLCPqLNtnhxfV85/iXnAJpfcJVPjM9YeNYyyxeBK/ofW4VI7YT5asejFavGliJGdKUZ4mxUXbLyES6gFWiLLlio7it5S8+RQxhs7IYK+JFzVVxBR6kmE/1FY/h4KT4bx3PAmGkzv4eq0VvaJSYBC03x9Xjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UMGrDPQak/zX4s/hDB/w4mO2t2Wb65hda8lIHXbTjOY=;
- b=HkgTKhhssgS84ytH1sdsnz0Q6YV1QnOoITYCRx4hR7M0O5hibLQrWUrq8nC3EqTK3JRcF9GWlYc/eB9kI4MWbntCGdXGP36QChvRlRm2Kr82i3ZjsoOXEyFQGGXUQhgBnmxgyX+il7tu6RpiKnyd4LU0pl4vLQTVC8s5E00mDA/qhWPIg0YM2B1HZnNpSlafpJgVmzV4kgCscuBIu944VI+CNR1Drhp1qyph1jyzE4e7aUFIUL1tU/wBSOX0O6VRyGNNsO6wlkq/BPBP8dQK5QwRnVxFpbd6nydbPrcmH/m40X6P1gZAYJ/aLKvDS/aswpT7LrXlz6DY5WSJPSfOrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UMGrDPQak/zX4s/hDB/w4mO2t2Wb65hda8lIHXbTjOY=;
- b=xJWE8wZX6Wck8f+3komwd+m+BnRq1SUe6HaJ5tlVUTBVY0+IJbw0890NzTIpuDyNfuBk46G6kQx2vxC/7ZcKVabJ4Q8xO8tKuT4sDhnmV1Z8tBf7nSeuYqMq4xtw/6i3eX5bh+jQL/Nixgjqql+v2yBYlnO5bP/F/WRiVdYEs9Q=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by SJ0PR12MB8614.namprd12.prod.outlook.com (2603:10b6:a03:47d::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Tue, 7 Nov
- 2023 22:33:44 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::3341:faaf:5974:f152]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::3341:faaf:5974:f152%6]) with mapi id 15.20.6954.028; Tue, 7 Nov 2023
- 22:33:44 +0000
-Message-ID: <4b68fd05-5d21-0472-42c3-6cf6f1f9f967@amd.com>
-Date: Tue, 7 Nov 2023 16:33:41 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH v10 06/50] x86/sev: Add the host SEV-SNP initialization
- support
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
- ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- jarkko@kernel.org, nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
- liam.merwick@oracle.com, zhi.a.wang@intel.com,
- Brijesh Singh <brijesh.singh@amd.com>
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-7-michael.roth@amd.com>
- <20231107163142.GAZUpmbt/i3himIf+E@fat_crate.local>
- <4a2016d6-dc1f-ff68-9827-0b72b7c8eac2@amd.com>
- <20231107191931.GCZUqNwxP8JcSbjZ0/@fat_crate.local>
- <20231107202757.GEZUqdzYyzVBHTBhZX@fat_crate.local>
- <250f5513-91c0-d0b5-cb59-439e26ba16dc@amd.com>
- <20231107212740.GFZUqrzK7yzy41dRKp@fat_crate.local>
- <20231107220852.GGZUq1dHJ2q9LYV2oG@fat_crate.local>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <20231107220852.GGZUq1dHJ2q9LYV2oG@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR13CA0095.namprd13.prod.outlook.com
- (2603:10b6:806:24::10) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X/+VjHiO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699406699; x=1730942699;
+  h=message-id:date:mime-version:from:subject:to:
+   content-transfer-encoding;
+  bh=2BFtOPR4IeFxoePlClBBCcOPt/XReC87njXr0Ha0tTA=;
+  b=X/+VjHiOWmWsmC/Tuct1AjeJs16mIIIUtxXMhszAhT2Ln6VKNyOClmkk
+   wameI+YR+oekJWc1Lli5DCfYwqHIfGWJyMdMT2IxQfjSombhDkQ9qnQ5E
+   qlR1SigqFG/hRsIor4QG7782Ui7GjGEUtGPJFGi8tqauqSWwx7D/U5ydw
+   oY3NUkaEP6r8C9MdWNUj+yy8Y66EJNLaBAsjvPkwxCiHlierDmGUWisDV
+   kdt576dYHH4XM0NK9DzaFWvtEwiKq1HRc6Gvu0GpkFwApRBdJUxg0IM+9
+   CD5uiIOp11+6fEliHxBiIWwBlWyloZTjwO8jVUt5Ib1AKOxxkxav8xPRS
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="475893342"
+X-IronPort-AV: E=Sophos;i="6.03,285,1694761200"; 
+   d="scan'208";a="475893342"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2023 17:24:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,285,1694761200"; 
+   d="scan'208";a="10627252"
+Received: from pjperrel-mobl.amr.corp.intel.com (HELO [10.92.32.81]) ([10.92.32.81])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2023 17:24:57 -0800
+Message-ID: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
+Date: Tue, 7 Nov 2023 19:24:56 -0600
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|SJ0PR12MB8614:EE_
-X-MS-Office365-Filtering-Correlation-Id: 880c81f9-5883-4883-f275-08dbdfe19993
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	RXzeH2pNwmOSO4kiam4rc8KNAvLxCQu3lM1evY8qclXPF9nBnEK4EEZJecp7MhKkeWzjYFWwG4DO31oR2FjokdhZVt8k8lWMa2N5MJPnrLDn8TwxToYPnzInHt3jmKjA7rgl5Za0xChqLr5Q0Uk/RJZWriGBeQvOqoOsfmFxDIDOJvEA9zYLuj9kyQnSnK8UxITlSQ+X5hVr/fQ/e15/0E2sLxqZIuhbWfA52DtslIka9F6B9zTa8gOWJFigixGrk3OsuCLSNf6DMNwcEzIYz6rrASjP96acwy1pwZXNXieTdZdyG4T4PeMQ5EgsFkabHkzvDIY9+9VjT2upywQkXMMLOh4OUe/b28ApNjYZhq1+5VTTNGVvmRm7OV/lRSrsRXRAjswmlfmunVwtdWOIet+KrsXfqQKhdX29vzt7Br4+LJhoMd1/nVCy/ZaMLxmV/SUi3K/2AdU6P8mcFyjnsLE+72dS3Fq9vH+9bSnVkrvKX+oa2qck+gsSkmHODO6B/igizj4dLfWeErCNqLffxF3UkZXPiGUbLDEs8Z63cSXYxxpKD2qKs49mkfyeqKvrYmA0Uu330z/rnUYSRliN20aNC6yAJY7nVgvzKFgFYd3HYMEEEtM4Wk6Acl73LRiQDlRzHD2RU2mNubUK3yIevQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(396003)(376002)(136003)(346002)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(54906003)(66476007)(66556008)(66946007)(6666004)(36756003)(6512007)(38100700002)(6506007)(26005)(2616005)(53546011)(316002)(31696002)(83380400001)(6916009)(86362001)(478600001)(8676002)(4326008)(2906002)(6486002)(8936002)(7406005)(41300700001)(7416002)(5660300002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OUU0Sm14UDdQTnZxYmZDVWlaalBwYWU4T0VOR3MyWnlYVHpkTlFSeXc2a2pH?=
- =?utf-8?B?QXQweUpDNE16Mk4rRlZKUVRsa1ZubXdLekp2c3FIOWVJS2lvMzhEOUh4MFVH?=
- =?utf-8?B?bStkRGp1eUpvcEJRQ2xRTUtlRjFpcGhhbmpuZnZyOUVRV3orRlcyL1pYQmtL?=
- =?utf-8?B?RU1mbnRJaFRJR3hKbms3bE41ZFQ3Q2hWaWZ2OGhtd1FQVEFWeGVmMFBnQXd5?=
- =?utf-8?B?WnUzUTJUdWxSREVQOHJYY3NsVXkwb3NCUWhGUmpVNU1WV0tOaEJudHVkdGNH?=
- =?utf-8?B?dTVNMXNjZHVYWllRSXdZTG9GVldvbkZ2NDZYMmtzUHc1SHV0WmNPU3VXQ1VU?=
- =?utf-8?B?a3hkQk9NMFNhNW1Lb0pIL0tZWEFUK0dQdUF5aCtDNXdBNmdWcXYwZ1BXQkNH?=
- =?utf-8?B?NURGbEczc0s5cFlLSWs4dEJDZEJMMGtadlZ3Tm1lUW0yb0s2VFFpTnB3WkJM?=
- =?utf-8?B?TGtUbk12eWU5L3RtallhUUVBNlYzQS90cnU4RnVoWmxIczJtYUc3aWdsd0Z5?=
- =?utf-8?B?NDZ4bFVZLzIwYnc5TVVWUUNMaW5rTHBUTmFsTCsxeHN4VHFDZFl6bno4c1dt?=
- =?utf-8?B?L3cxdWdCNWx5VTVET0p2ZEhVbEx2cTdvbmpqM1ZoUGlSeTEvcGhub3hTblJu?=
- =?utf-8?B?cklDbkhpNzFEN2VZbzhsRWtBYVlGTlZ0K3NiTUk2RnYwZHFhNmpxNHE5amFX?=
- =?utf-8?B?Uk1ZNjVyK1hSS2tPSXEyM05BbWMwemZOSTBKUWRSY1VFOEo3ZHdyaTR4bWtD?=
- =?utf-8?B?ZXk0SVkwSmYzQSt6c1I2dGh0NExVQURycXdvZHNnL3Q2NjBZK0k0VUpZVGtp?=
- =?utf-8?B?STl6cS9lQjJQb0o1YkRCdGZrV3FpcjliTzlGQWdkcWpWMUtwQkVCQk9MSHg5?=
- =?utf-8?B?b3kzUitmK1R3ZjFIOWNrU3ZVQUJSbWxxUXhsOWxQajU4VnAvZ2k1ZWJ2RGpC?=
- =?utf-8?B?aGdNWWw0L0JnS3h2dXcrMEZuaHRqdTIwaGNHc1VqeTIvdUcvK092NHp1NEVO?=
- =?utf-8?B?K281VGE4R0pFN01rWnhWN2hoQTlrNmdxSTFCd3RocXRXVGJER01ocjEyWFBy?=
- =?utf-8?B?SEFNUm9DVHFWYjRuZlFsbko2R0V3SGY5eDRQQVFtSFhNK2FJMFhaa0lJa0lO?=
- =?utf-8?B?Zng0eGpSRWI2dGRIQnNXQm9hYk9DWjB1bFpHWTM0c05oS3lVMWx5ejFvWmRx?=
- =?utf-8?B?R0M0bzEyS1lvRGN1eHhQNmFTamNEd0lrVkFUUXdZcmdmeDR5QWRIZ1dBekhp?=
- =?utf-8?B?emlGSWdKL2pNMEQrOEY2S3ZzVUx5REtNZGM5TWhzYUZmamt4U2NYTDM0MFBr?=
- =?utf-8?B?ZVptTEJkVUFoSlVzRnlNRjg1c2luTEJ5V3JhSVgrc29TOUtTU0JBcjJUc25w?=
- =?utf-8?B?dDRPN2xHMG1RTmNrM0dpNmpTTXJXOW5Sdjd2RmpMeG4rWGw2V0RxSDc0SDVq?=
- =?utf-8?B?aGtnQ3pMVnFjRUFwZGZ3R000L0ROTU04RVFqWDV0S3g0VDhkSWx0OFNGdFJq?=
- =?utf-8?B?eXE1dmhBVzdNUGgzZHZTTFRVZk5kS1dGNWVLOTkxRkZDVGNobUNSWnFrQ3hs?=
- =?utf-8?B?TlVkVGs3cndhMStvaG5SREdwcTdGTE9FNk54cEVFOWlpOUovRFNYSUtkY0c1?=
- =?utf-8?B?UjZDTnd0RFhQbHlTTnVFVExMZnRPSCtyQnczM3h5YVg4UDkzMmNyZU1BRDc2?=
- =?utf-8?B?SEUvR2x1T1d6RWY3c2hvNnd1dmxMcko3Wno0SmdaZEd3RTMxc1pTYVNjR2x6?=
- =?utf-8?B?cVNOZlZPWGFJRGZxZXhQUVIvMnIxRTJmREVMdE5xRml2TEJHc0czeFpKcE4y?=
- =?utf-8?B?RmxaN1ArcXkvWTJ6Zlg5R0pJcUZFQ3NGVFB1SVkwK2VCZGh4TVZZK2FVUERr?=
- =?utf-8?B?aHZ2SlBsQmdaZm5KRmIvYysvWWhWUzdyTWRTUEtabTNNRHc5eCsraFZ2bWNX?=
- =?utf-8?B?TjJ2bFlHM0llenorWTVCSWlVRkpQOCtOL3MxMUNJOVQyMlZnRVBPVmxTbkti?=
- =?utf-8?B?QmF5VXorakNRcWFsVUVRakxGNnF4Z1d5TytoMFlWTCtrWXBGbmlCbEkwRnk1?=
- =?utf-8?B?NURlaXBJNlU4R3daVTNyaXBPc28yUXVHM1R1Z0wyUG1sU0NnMDh0d1MvTWJG?=
- =?utf-8?Q?WY4TZAaX7ZoUjvTknxuOxNtRV?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 880c81f9-5883-4883-f275-08dbdfe19993
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2023 22:33:44.1927
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZKUwm0R7YU9P0kpfCWza7QfxQw7H/OLMrJ5T+8ofozleLF2/jOtG3rJSWqEExnkpRZOXXktYmLgdq/kPQQiJ7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8614
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Dan Middleton <dan.middleton@linux.intel.com>
+Subject: RFC: CCC Linux Kernel SIG
+To: linux-coco@lists.linux.dev
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 11/7/2023 4:08 PM, Borislav Petkov wrote:
->   static int __init snp_rmptable_init(void)
->   {
-> -	int family, model;
-> -
-> -	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +	if (!amd_iommu_snp_en)
->   		return 0;
-> 
+Hi from the CCC!
 
-We will still need some method to tell the IOMMU driver if SNP 
-support/feature is disabled by this function, for example, when CPU 
-family and model is not supported by SNP and we jump to no_snp label.
+Many of our companies also collaborate in the Confidential Computing 
+Consortium.
+There we are proposing a SIG and invite your feedback and involvement:
 
-The reliable way for this to work is to ensure snp_rmptable_init() is 
-called before IOMMU initialization and then IOMMU initialization depends 
-on SNP feature flag setup by snp_rmptable_init() to enable SNP support 
-on IOMMU or not.
+https://github.com/confidential-computing/governance/pull/196
 
-If snp_rmptable_init() is called after IOMMU initialization and it 
-detects an issue with SNP support it will clear the SNP feature but the 
-IOMMU driver does not get notified about it, therefore, 
-snp_rmptable_init() should get called before IOMMU initialization or as 
-part of IOMMU initialization, for example, amd_iommu_enable() calling 
-snp_rmptable_init() before calling iommu_snp_enable().
+The entirety of the proposal is also copied below.
 
 Thanks,
-Ashish
+
+Dan Middleton
+CCC TAC Chair
+
+
+# Proposal: CCC Linux Kernel SIG
+
+This proposal seeks to accelerate Confidential Computing feature 
+velocity in the Linux kernel.
+By creating a Linux Kernel SIG in the CCC we can foster community dialog 
+to develop vendor neutral
+architectural approaches to new features and thereby reduce complexity 
+in associated kernel patches.
+
+
+# Background:
+
+One of the technical limitations to the adoption rate for Confidential 
+Computing is the speed at
+which we as a community can add features to the Linux kernel. Each 
+vendor has similar needs of the
+kernel but has historically presented significantly different ABIs. To 
+contain complexity and manage
+maintainability, the Linux kernel community tries to prevent 
+proliferation of unnecessarily vendor
+specific ABIs. Often the opportunity for commonality is unclear until 
+multiple vendors have proposed
+separate interfaces [0].
+
+The CCC as the home of open collaboration for Confidential Computing 
+hardware vendors, software
+vendors, and end users facilitates a unique environment for exchanging 
+views on features and
+requirements. Up to this point in time though most CCC collaboration has 
+been on user space software
+and use cases. The Linux kernel community has not been a regular part of 
+discussions and the CCC has
+not been a regular participant on the Linux Kernel Mail List (LKML)[1]. 
+Bringing these communities
+together in a structured forum has the promise of accelerating their 
+joint work towards broad
+availability of Confidential Computing in Linux environments.
+
+
+# Scope:
+
+1. Facilitate dialog between Linux kernel and Confidential Computing 
+subject matter experts:
+     * to facilitate direction for topics that need formal collaboration,
+     * to have an additional venue to facilitate direction for topics 
+that are stalled on LKML,
+       which would benefit from higher bandwidth communication,
+     * to have a common place to record decisions and formalize the 
+output for others to reference,
+     * and to introduce new technical topics emerging in either domain, 
+e.g., attestation mechanisms
+       approaching standardization.
+2. Create recommendations for other organizations and communities such 
+as LKML, IETF, etc.
+    on topics at the intersection of the Linux kernel and Confidential 
+Computing.
+
+
+# Governance:
+
+The CCC adheres to a culture of Minimum Viable Governance [2].
+We prefer not to create rules that inhibit the progress of substantive work.
+
+All are welcome at all CCC community forums. This SIG is targeted to all 
+Linux kernel maintainers
+and Confidential Computing vendors, project contributors, and end users 
+with a dependence on the
+Linux kernel. Meetings will follow standard CCC practices of inclusivity 
+and openness adhering to
+the community code of conduct [3] and the Linux Foundation’s Antitrust 
+policy [4].
+
+
+## Decision Making:
+
+This SIG will use consensus decision making [5] wherein not all 
+participants must be in full
+agreement but that there should not be a strong consensus against a 
+proposal [6].
+
+In most cases we expect that once the SIG reaches consensus on a kernel 
+topic, contributors will
+propose aligned patches to LKML without any explicit communication from 
+the SIG or the CCC.
+
+If a formal CCC recommendation to another organization, e.g., IETF, TCG, 
+eBPF Foundation, etc. is
+required, the SIG will rely on the CCC Technical Advisory Council (TAC) 
+to ratify proposals from the
+SIG.
+
+The pipeline of activity is expected (but not required) to look like this:
+1. Identify feature need on mailing list or informal forum.
+2. Exchange community proposals in the SIG.
+3. Achieve informal consensus in the SIG.
+
+     a. Author patches and take them to the appropriate community, e.g., 
+LKML.
+
+     or
+
+     b. Raise an agenda item for the CCC TAC to formally ratify a 
+proposal and publish to the
+        appropriate organization.
+
+
+## Initial Logistics:
+
+The community will set its own meeting cadence starting from an initial 
+cadence of meeting twice per
+month. The CCC will provide a Zoom channel. At the end of each meeting a 
+new chair may volunteer to
+organize the agenda for the next meeting. The chair role confers no 
+other responsibility or
+authority beyond collecting agenda requests from the community and 
+enforcing minutes and good order.
+In addition to video meetings, the community will use an existing 
+Discord channel for ongoing
+communication. No mail list is required at this time.
+
+
+
+# References:
+[0] 
+https://lore.kernel.org/all/64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch/
+
+[1] https://lore.kernel.org/linux-coco/
+
+[2] Sarah Novotny, Stephen Walli, “Minimum Viable Governance”, Linux 
+Foundation Open Source Summit Europe 2020, 
+https://www.youtube.com/watch?v=C2-_MjzP-Rs
+
+[3] 
+https://github.com/confidential-computing/governance/blob/main/code-of-conduct.md
+
+[4] https://www.linuxfoundation.org/legal/antitrust-policy
+
+[5] https://en.wikipedia.org/wiki/Consensus_decision-making
+
+[6] See Rust’s Final Comment Period (FCP) https://github.com/rust-lang/rfcs
 
