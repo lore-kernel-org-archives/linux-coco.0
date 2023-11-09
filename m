@@ -1,116 +1,91 @@
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCFB374E0
-	for <linux-coco@lists.linux.dev>; Thu,  9 Nov 2023 18:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DEF36AFE
+	for <linux-coco@lists.linux.dev>; Thu,  9 Nov 2023 21:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="aDEy3/GK";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="aDEy3/GK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A/31QMjW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1699555139;
-	bh=W5Q+VrL+oMRcosTrKGOaCl9dbCzmJhDrQVVH+kKrCCA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=aDEy3/GKCU8/PKzRKbwdvc1nJwgYCHi5a+1jCgiOUQ0V4Q7C0Jo2kEtqhn0aX0hP1
-	 JEreUOBdAqvaFewhNgZAs1Zr8ORUJQZ0WKRkJUP0GyDsuU2QYDkLt862W62s8WCOir
-	 tl2+3l624tLOQvnXcMmCn6B85i/tOk2CzjFVb2Kg=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id CA6A41287AF1;
-	Thu,  9 Nov 2023 13:38:59 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id J51yJjF08RK9; Thu,  9 Nov 2023 13:38:59 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1699555139;
-	bh=W5Q+VrL+oMRcosTrKGOaCl9dbCzmJhDrQVVH+kKrCCA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=aDEy3/GKCU8/PKzRKbwdvc1nJwgYCHi5a+1jCgiOUQ0V4Q7C0Jo2kEtqhn0aX0hP1
-	 JEreUOBdAqvaFewhNgZAs1Zr8ORUJQZ0WKRkJUP0GyDsuU2QYDkLt862W62s8WCOir
-	 tl2+3l624tLOQvnXcMmCn6B85i/tOk2CzjFVb2Kg=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits))
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 46F221287AE6;
-	Thu,  9 Nov 2023 13:38:59 -0500 (EST)
-Message-ID: <a6155b6a3a211fa690ef9caa9c2e219dbcfec340.camel@HansenPartnership.com>
-Subject: Re: RFC: CCC Linux Kernel SIG
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Dan Middleton <dan.middleton@linux.intel.com>, linux-coco@lists.linux.dev
-Date: Thu, 09 Nov 2023 13:38:57 -0500
-In-Reply-To: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
-References: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699563956; x=1731099956;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=Ks8lhYSHX3MGCd6NIjFZa/RYSDwaHr8NYcmrH6gzbRM=;
+  b=A/31QMjWMN6JcwVmaA67xW6OTBuPckAoN+SEw6zUJtJRw4r7guydgShB
+   n8dLim/WQPWcgWfbxnEkqsJG/gxApsqgQ9VAxiPHgtJ2dUc8VYWaVXwux
+   1tCIERFj75HTZVs2rnln/pPUuwWo1CC3+hqoTrLZVzVNoBC7nMBO/5eMG
+   2fluE+9dk6lZtvTPf4HBYrFQ7iPcdmv4dCPtjid1ts9rvaAdcu82hT+wM
+   nApGRk3rAWyaFCRU5OI4oEiSR7J6kEoQWPXvAimwobENp2GoKBlQiaNWO
+   tWG3nISIqIzKrAGc0lU7sFq27cOpYvNZlcW4pqze/cqxbrWHvubrs0cg2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="454376433"
+X-IronPort-AV: E=Sophos;i="6.03,290,1694761200"; 
+   d="scan'208";a="454376433"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 13:05:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="829444122"
+X-IronPort-AV: E=Sophos;i="6.03,290,1694761200"; 
+   d="scan'208";a="829444122"
+Received: from pjperrel-mobl.amr.corp.intel.com (HELO [10.92.32.81]) ([10.92.32.81])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 13:05:54 -0800
+Message-ID: <0743a815-e567-4273-8e13-bf8372c7ee71@linux.intel.com>
+Date: Thu, 9 Nov 2023 15:05:53 -0600
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: RFC: CCC Linux Kernel SIG
+Content-Language: en-US
+To: Carlos Bilbao <carlos.bilbao@amd.com>, linux-coco@lists.linux.dev
+References: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
+ <22966e1b-dd7f-4eb2-ac5d-5988cc6687b6@amd.com>
+From: Dan Middleton <dan.middleton@linux.intel.com>
+In-Reply-To: <22966e1b-dd7f-4eb2-ac5d-5988cc6687b6@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2023-11-07 at 19:24 -0600, Dan Middleton wrote:
-> One of the technical limitations to the adoption rate for
-> Confidential Computing is the speed at which we as a community can
-> add features to the Linux kernel. Each vendor has similar needs of
-> the kernel but has historically presented significantly different
-> ABIs. To  contain complexity and manage maintainability, the Linux
-> kernel community tries to prevent proliferation of unnecessarily
-> vendor specific ABIs. Often the opportunity for commonality is
-> unclear until multiple vendors have proposed separate interfaces [0].
+On 11/9/23 11:22 AM, Carlos Bilbao wrote:
 
-The kernel community would see this as a feature not a bug.  It's very
-difficult to appreciate the technical ramifications until you see the
-actual code so even though it seems like more work in the beginning it
-produces better and faster outcomes in the end.
+> On 11/7/23 19:24, Dan Middleton wrote:
+>> <snip>
+>> In addition to video meetings, the community will use an existing 
+>> Discord channel for ongoing
+>> communication. No mail list is required at this time.
+>
+> May I ask what Discord channel you're referring to? I'm assuming it's
+> open access.
+>
+https://discord.com/channels/1123803528377413762/1124090655707234334
 
-To give the counter point to your example: each CC implementation had
-its own ioctl set.  The proposal unifies it through a configfs
-interface, but it's still not clear that the unification covers all the
-use cases.  This, though, can be worked through after the acceptance of
-the configfs pull request.  Adding ioctls is fairly simple, so there
-wasn't really much wasted work before agreement was reached on a
-preliminary design for configfs which can now be worked on by everyone.
+I believe it is open.
+All CCC community forums zoom, slack, mail list, code are open.
+However, this is a pre-existing channel... see below.
 
-[...]
-> The Linux kernel community has not been a regular part of 
-> discussions and the CCC has not been a regular participant on the
-> Linux Kernel Mail List (LKML)[1].
+On 11/9/23 12:38 PM, James Bottomley wrote:
+> Just on a personal note: I've had no end of trouble with Discord,
+> primarily around the verification requirements for my email address
+> preventing me from getting an account from the single gatekeeper, so it
+> would be last on my list of useful systems for open conversations.
 
-Isn't this the current key problem with an obvious solution: the
-interested members of the CCC can simply join the lists.  You could
-make them do a formalised readout back to the CCC for people who don't
-want to be at the kernel list sharp end and establish an action plan
-from there if things are perceived to be going wrong.
+The CCC typically uses slack.
 
-> The pipeline of activity is expected (but not required) to look like
-> this:
-> 1. Identify feature need on mailing list or informal forum.
-> 2. Exchange community proposals in the SIG.
-> 3. Achieve informal consensus in the SIG.
-> 
->      a. Author patches and take them to the appropriate community,
-> e.g., LKML.
+This discord reference is meant to accommodate kernel contributors who are
+already communicating there. We don't want to break anything that's working.
+Instead looking to bridge these different parts of the confidential 
+computing
+community who aren't in communication right now.
 
-This really isn't the correct workflow for the Kernel.  The kernel
-likes to see sketches in code when arguing about ABI and design.
+Thanks for the feedback and questions so far!
 
-The process really already works like your 1,2,3 with the exception
-that 1. begins on the kernel or KVM list.  Trying to achieve consensus
-in some other industrial forum and then present the patches to the list
-as the unified consensus hasn't really worked out well in the past
-(NVMe still has the scars to prove this).
 
-[...]
-> In addition to video meetings, the community will use an existing 
-> Discord channel for ongoing communication
+Regards,
 
-Just on a personal note: I've had no end of trouble with Discord,
-primarily around the verification requirements for my email address
-preventing me from getting an account from the single gatekeeper, so it
-would be last on my list of useful systems for open conversations.
+Dan Middleton
 
-James
 
