@@ -1,130 +1,142 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE54374EF
-	for <linux-coco@lists.linux.dev>; Thu,  9 Nov 2023 21:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F72F38F94
+	for <linux-coco@lists.linux.dev>; Thu,  9 Nov 2023 22:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gpkoSabP"
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9LJMOC004572;
-	Thu, 9 Nov 2023 21:22:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=+HYZ05OB3hOlKtu2k0E+W1bvUcu2LyFq9tbUqL+Bwo8=;
- b=gpkoSabPB5SgqLavbPQ4qcx60TFUpBclEkixE3OFM4D6ox0B31lTalGosqzFknebUYRm
- MRJ2QYTjeh3dfoRfY3Q2YIl+s1CzwTZBBImspmo6/j3n30v3X64yW3Yg83tf5JtRAQF2
- MS1ae0M9S70IUUXZ6YCDRBNH4h+Qtgrkid7nvATHaHuegwsCiK8H71ZVyjhptLSOw8Xd
- y6XonIi2MdU1AfEj2rDVsAdi5ILv4/cS+wipzReY3zsAcQ9TBu8UajdAAA5PZIZRYymb
- XEIlAO3N4R0Q5VV4DDjJlph0kfcCJvMdqjzffOaqcehTgfrczmQsLkhPYTxXdnd80kXQ 6g== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u96hg9102-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Nov 2023 21:22:53 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9JHu6T000675;
-	Thu, 9 Nov 2023 21:22:52 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w236mm8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Nov 2023 21:22:52 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A9LMqql13959886
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Nov 2023 21:22:52 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EB07658059;
-	Thu,  9 Nov 2023 21:22:51 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1DA3258057;
-	Thu,  9 Nov 2023 21:22:51 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.67.108.147])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Nov 2023 21:22:50 +0000 (GMT)
-Message-ID: <69d8f7d930eb6e40db10f985ffba99a1eaeac32b.camel@linux.ibm.com>
-Subject: Re: RFC: CCC Linux Kernel SIG
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: Dan Middleton <dan.middleton@linux.intel.com>,
-        Carlos Bilbao
-	 <carlos.bilbao@amd.com>, linux-coco@lists.linux.dev
-Date: Thu, 09 Nov 2023 16:22:49 -0500
-In-Reply-To: <0743a815-e567-4273-8e13-bf8372c7ee71@linux.intel.com>
-References: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
-	 <22966e1b-dd7f-4eb2-ac5d-5988cc6687b6@amd.com>
-	 <0743a815-e567-4273-8e13-bf8372c7ee71@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AtgBOnvAOYw62KpMYeAXr0TuLOdDEbR6
-X-Proofpoint-ORIG-GUID: AtgBOnvAOYw62KpMYeAXr0TuLOdDEbR6
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ljxEsh+J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699568861; x=1731104861;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=pVZ7lRm3XFIeymCfKGDu4zIqbrie8tGBSzv9IgUfa80=;
+  b=ljxEsh+Jug/cftUPMx6wIvF3wSkKJHYdo9MICwkEEwVPkYtCtBXXH8qe
+   wqYRjOyPP3nd3QUm5BwtlsQWsyxKqNtG3JY87cmj/NaCPqEQ9+sQCBvhg
+   /Ha+nIX6PrWcLH7TzN0FUAdNloBxPVotbs8Peesr+86PFls9RhaEm7TrL
+   Xl2U+X6kV8aMjMH9+wYu8AZQZfoUXlxGFFlKjuaWJu797uNsiWdvogWfh
+   anh6NblkQv2YhKg/7KbK126M2mOR0HVEGOoDR1s0aMj3iC+y++EhZIIhU
+   rcVgSeyCsk1cqD5n/uUzhUcPns3BtXhuOQLDwbFJrPSMTp5QMADU9kSZH
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="380477326"
+X-IronPort-AV: E=Sophos;i="6.03,290,1694761200"; 
+   d="scan'208";a="380477326"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 14:27:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10889"; a="1095013312"
+X-IronPort-AV: E=Sophos;i="6.03,290,1694761200"; 
+   d="scan'208";a="1095013312"
+Received: from pjperrel-mobl.amr.corp.intel.com (HELO [10.92.32.81]) ([10.92.32.81])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2023 14:27:35 -0800
+Message-ID: <c190ef76-77e1-4493-8481-a46d75eff1c8@linux.intel.com>
+Date: Thu, 9 Nov 2023 16:27:34 -0600
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-09_14,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 malwarescore=0
- phishscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 impostorscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311090153
+User-Agent: Mozilla Thunderbird
+Subject: Re: RFC: CCC Linux Kernel SIG
+Content-Language: en-US
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ linux-coco@lists.linux.dev
+References: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
+ <a6155b6a3a211fa690ef9caa9c2e219dbcfec340.camel@HansenPartnership.com>
+From: Dan Middleton <dan.middleton@linux.intel.com>
+In-Reply-To: <a6155b6a3a211fa690ef9caa9c2e219dbcfec340.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2023-11-09 at 15:05 -0600, Dan Middleton wrote:
-> On 11/9/23 11:22 AM, Carlos Bilbao wrote:
-> 
-> > On 11/7/23 19:24, Dan Middleton wrote:
-> > > <snip>
-> > > In addition to video meetings, the community will use an existing
-> > > Discord channel for ongoing
-> > > communication. No mail list is required at this time.
-> > 
-> > May I ask what Discord channel you're referring to? I'm assuming
-> > it's
-> > open access.
-> > 
-> https://discord.com/channels/1123803528377413762/1124090655707234334
-> 
-> I believe it is open.
-> All CCC community forums zoom, slack, mail list, code are open.
-> However, this is a pre-existing channel... see below.
-> 
-> On 11/9/23 12:38 PM, James Bottomley wrote:
-> > Just on a personal note: I've had no end of trouble with Discord,
-> > primarily around the verification requirements for my email address
-> > preventing me from getting an account from the single gatekeeper,
-> > so it
-> > would be last on my list of useful systems for open conversations.
-> 
-> The CCC typically uses slack.
+On 11/9/23 12:38 PM, James Bottomley wrote:
+> On Tue, 2023-11-07 at 19:24 -0600, Dan Middleton wrote:
+>> One of the technical limitations to the adoption rate for
+>> Confidential Computing is the speed at which we as a community can
+>> add features to the Linux kernel. Each vendor has similar needs of
+>> the kernel but has historically presented significantly different
+>> ABIs. To  contain complexity and manage maintainability, the Linux
+>> kernel community tries to prevent proliferation of unnecessarily
+>> vendor specific ABIs. Often the opportunity for commonality is
+>> unclear until multiple vendors have proposed separate interfaces [0].
+> The kernel community would see this as a feature not a bug.  It's very
+> difficult to appreciate the technical ramifications until you see the
+> actual code so even though it seems like more work in the beginning it
+> produces better and faster outcomes in the end.
+>
+> To give the counter point to your example: each CC implementation had
+> its own ioctl set.  The proposal unifies it through a configfs
+> interface, but it's still not clear that the unification covers all the
+> use cases.  This, though, can be worked through after the acceptance of
+> the configfs pull request.  Adding ioctls is fairly simple, so there
+> wasn't really much wasted work before agreement was reached on a
+> preliminary design for configfs which can now be worked on by everyone.
+>
+> [...]
 
-For slack like but open chat, most communities are coalescing around
-matrix (it's what Linux Plumbers will be using).  The kernel community
-does still like IRC, though.
+I agree we got there, but the path was quite long.
+This might be the point where the second vendor ioctl was proposed which
+would eventually give rise to the observation that a profusion of ioctl's
+is bad:
+https://lore.kernel.org/all/cover.1624719668.git.sathyanarayanan.kuppuswamy@linux.intel.com/
 
+That was June 2021. It's now November 2023.
 
-> This discord reference is meant to accommodate kernel contributors
-> who are already communicating there.
+>> The Linux kernel community has not been a regular part of
+>> discussions and the CCC has not been a regular participant on the
+>> Linux Kernel Mail List (LKML)[1].
+> Isn't this the current key problem with an obvious solution: the
+> interested members of the CCC can simply join the lists.  You could
+> make them do a formalised readout back to the CCC for people who don't
+> want to be at the kernel list sharp end and establish an action plan
+> from there if things are perceived to be going wrong.
 
-OK, I'm not actually aware of any kernel conversations going on in
-Discord (but then the kernel is a huge community, so I'm not aware of a
-lot of things ...).
- 
->  We don't want to break anything that's working.
-> Instead looking to bridge these different parts of the confidential 
-> computing community who aren't in communication right now.
+I think that's a great suggestion.
+That probably catches things already on the list.
 
-As I said in my reply: I'd start on the existing Mailing lists. 
-Designate someone at the CCC to watch and report and then relay any
-feedback or concerns.  At least that starts to get you input without
-having to have everyone in the CCC exposed to the kernel community.
+What about getting in front of things before that stage?
 
-James
+>> The pipeline of activity is expected (but not required) to look like
+>> this:
+>> 1. Identify feature need on mailing list or informal forum.
+>> 2. Exchange community proposals in the SIG.
+>> 3. Achieve informal consensus in the SIG.
+>>
+>>       a. Author patches and take them to the appropriate community,
+>> e.g., LKML.
+> This really isn't the correct workflow for the Kernel.  The kernel
+> likes to see sketches in code when arguing about ABI and design.
+>
+> The process really already works like your 1,2,3 with the exception
+> that 1. begins on the kernel or KVM list.  Trying to achieve consensus
+> in some other industrial forum and then present the patches to the list
+> as the unified consensus hasn't really worked out well in the past
+> (NVMe still has the scars to prove this).
+>
+> [...]
+That's really interesting. I'd love any references about what didn't work
+and what did work.
+
+I think we could revise step 1 to read like.. learn about upcoming
+features in the SIG and then recognize whether those will have kernel
+impacts.
+
+For example, it looks like most CPU vendors will be offering different
+analogs of runtime measurement registers.
+
+TEE-IO is coming down the pipe from CPU and device vendors.
+
+There are software vendors working on novel use cases which might
+imply different access patterns.
+
+Would the CCC facilitating a mechanism to generate these cross-vendor
+conversations be helpful?
+
+What else would be helpful?
+
+Thanks,
+Dan Middleton
+
 
