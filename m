@@ -1,78 +1,50 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2073.outbound.protection.outlook.com [40.107.237.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B5337160
-	for <linux-coco@lists.linux.dev>; Wed,  8 Nov 2023 19:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF01C22329
+	for <linux-coco@lists.linux.dev>; Thu,  9 Nov 2023 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IhNeWXwJ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="B3XjCchh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a2U9UxGV9aUtoCFiNJHHZZ7gY0eVzQQIE+ZFZiiIM/81RHixjh5lCV5/yQjHL3pZi4GjzVy5x82D/1h7SqxjT0724fL5GEIRdJUmx8S7ug62VQp8rbmEmI2xV+w7eqY4WThWSj5u0qkcjm1dPoWeTwUXx4eNhch6XfOVubeZ0PoQsju7zyBXkTtK7G6JpqXEanmy6abxby/8QjFRc1iX+Oo1Ehi2QI4OGAqf2bN3JB7ri/NlTUDF1/bKMChqUd0cxRpReTFUGq2KOu0hC5NbFbzjMkFSQX+YQXp8UlFy65gVHdrfqsV7HSbXG7xvitfwkAzXrZD0Ud2X9fxNOgezzA==
+ b=O9yQdXyY+RH1mx1IeykktpmaD82Nij9YpAJEy+ihS2INz17TiQU64793SlLDnCrV1qcpurnovYPX4RbhClBh68Uql2bWw3z+1d9+2PiUg0JaXKFFq67cY5l3eJx4EsLbfUfs2nK8DjtOWsuJdN7sxbC6cxQRBMJWA8+D8Jwr1iRk/DiVmXssauWSZ9aUdKOSplrAKiLBQE1rpoXDz42gCfdB4CWyIBYtY4xV5bTW+kN8/fctpB2AaEwJBnMXhjZjqfVPkzQMHPk6Dse7KzdqrB037x/Or6Ts/RHST+qTr9dbV8qGwE9QgXRJ9PY99bRm/GtwYE1jbXRRvAjyDsnODQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5nQr4RBqGiB8dHXvZDmJCmsInztRncX4F2Cutfuhvgs=;
- b=Z1RtMrp6o2Rfdc79N1oklb4/72p83u/lUBSyhve7s3LS6kg11V2XG2cvaOxA4Y10saVyXmdep+6yOYtE0cpOe4pri33TAjBGT7ji5s8BXFUVR3OlSEMSlbVXvpL57KnYanwI/HiWoYJal49w13nIW5HzER9YGfjYYhEC8Xgdcmk2NV74ebqUwUneAcaUaSeVcsIW4UKi3sokHhuSwIb76SII1zatgeh1PNiqTeZ/emrglnW10zb/XJ7/G2BpgWr2wUwLtEaRjv7+sL9hn/WwzoOVpw/Api/sMx8rvU6m8q+RxwbUuoBf1kexQhYyDnlD7h1P8TyPUZYjdhUAP1ZfUw==
+ bh=09xwgKHJozhFt6hkPaEkcxFSl4+ELzArGXyXsedvjpk=;
+ b=HjA2xKPc2bP67Ng6B1O2lABZG7yT1Ct58udO/jUxr3mIyJoMphIQMLsdKNngNehZim5bUKYPjsp944a04L1L4jtnCCNPSvAuaPDAhw0xBlKC/YyGlO8xCRo2rJOj1wNlVartMMo3kUHyezY2PO2wYplKpDPQCOmNfiQtpeUucrTdQwJcLuwAr4kuGTB3NG6DW5DPwtx+1/kr3IzN6TW3HKkWLu7HFiA6T8e55uo2AXaEcyWBIAp2qYpMvZrWiIb5+F0pFhlhHX+R8F/39T1AdRC+b5MDBoRga9Q4RkhdgivzHpV1z76TmWl1rVQFIvYerGSlE3cZ1Gu3Ht0ijsrZOw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5nQr4RBqGiB8dHXvZDmJCmsInztRncX4F2Cutfuhvgs=;
- b=IhNeWXwJ+9T30wzP5cgcPTnskt90Yr+a5yMtWQ9eZw8R5DSBmqEYc85Vq++SMU+1qcYw0IFiecAImI5ppVQTOM9PObsd1vynIQW/ciongIb4vq31tp9UdOwp7UIqVLw5K2/8JwkNlsLRfDP/mbaYjC7ryp3vjmuIgm0YlY3G/60=
+ bh=09xwgKHJozhFt6hkPaEkcxFSl4+ELzArGXyXsedvjpk=;
+ b=B3XjCchhcNNB80n7bhFyY4tV8N5xF1tyak2RjSNwOug8VVDeLTK3ekD7969W9RX36kpL25LkXu/w+zL7QRQswCANTA51CfZPMbKk9Xr1TYr1qa0XEMQL11CZuZ7nC/s6L75YVTAZPC2EwQl1P38CwVvgeJysil+BLiIzikVW/Lg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
- by BN9PR12MB5115.namprd12.prod.outlook.com (2603:10b6:408:118::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18; Wed, 8 Nov
- 2023 19:53:14 +0000
-Received: from SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::3341:faaf:5974:f152]) by SN6PR12MB2767.namprd12.prod.outlook.com
- ([fe80::3341:faaf:5974:f152%6]) with mapi id 15.20.6954.028; Wed, 8 Nov 2023
- 19:53:14 +0000
-Message-ID: <f6e36ffd-86e4-49cf-40d7-a289b444fe3e@amd.com>
-Date: Wed, 8 Nov 2023 13:53:10 -0600
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.1
-Subject: Re: [PATCH v10 06/50] x86/sev: Add the host SEV-SNP initialization
- support
+Received: from DM4PR12MB5891.namprd12.prod.outlook.com (2603:10b6:8:67::19) by
+ IA0PR12MB7722.namprd12.prod.outlook.com (2603:10b6:208:432::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6954.28; Thu, 9 Nov 2023 17:23:15 +0000
+Received: from DM4PR12MB5891.namprd12.prod.outlook.com
+ ([fe80::657:3c69:afe6:f855]) by DM4PR12MB5891.namprd12.prod.outlook.com
+ ([fe80::657:3c69:afe6:f855%7]) with mapi id 15.20.6954.027; Thu, 9 Nov 2023
+ 17:23:15 +0000
+Message-ID: <22966e1b-dd7f-4eb2-ac5d-5988cc6687b6@amd.com>
+Date: Thu, 9 Nov 2023 11:22:47 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: RFC: CCC Linux Kernel SIG
+To: Dan Middleton <dan.middleton@linux.intel.com>, linux-coco@lists.linux.dev
+References: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
 Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
- ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- jarkko@kernel.org, nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
- liam.merwick@oracle.com, zhi.a.wang@intel.com,
- Brijesh Singh <brijesh.singh@amd.com>
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-7-michael.roth@amd.com>
- <20231107163142.GAZUpmbt/i3himIf+E@fat_crate.local>
- <4a2016d6-dc1f-ff68-9827-0b72b7c8eac2@amd.com>
- <20231107191931.GCZUqNwxP8JcSbjZ0/@fat_crate.local>
- <20231107202757.GEZUqdzYyzVBHTBhZX@fat_crate.local>
- <250f5513-91c0-d0b5-cb59-439e26ba16dc@amd.com>
- <20231107212740.GFZUqrzK7yzy41dRKp@fat_crate.local>
- <20231107220852.GGZUq1dHJ2q9LYV2oG@fat_crate.local>
- <4b68fd05-5d21-0472-42c3-6cf6f1f9f967@amd.com>
- <20231108061413.GAZUsnNVcmYZNMw2Kr@fat_crate.local>
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-In-Reply-To: <20231108061413.GAZUsnNVcmYZNMw2Kr@fat_crate.local>
+From: Carlos Bilbao <carlos.bilbao@amd.com>
+In-Reply-To: <4dcca77e-e6d0-4cd1-9813-6a7ad24ba0e8@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR02CA0154.namprd02.prod.outlook.com
- (2603:10b6:5:332::21) To SN6PR12MB2767.namprd12.prod.outlook.com
- (2603:10b6:805:75::23)
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SA1P222CA0060.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:2c1::10) To DM4PR12MB5891.namprd12.prod.outlook.com
+ (2603:10b6:8:67::19)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -80,104 +52,227 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|BN9PR12MB5115:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0ee4af0-e1d3-4abd-5618-08dbe0945854
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5891:EE_|IA0PR12MB7722:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c93e26e-8e1b-4d3a-d9b1-08dbe1488ed3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	yV7mrddSSr78bOc34/uCeRCQE7PoIXSgXOZYBoWW0hvz4v7HsbORORdFRgJ31Nof4hY2QM/fR+iHVqB+9fVPB+jOIGn9yoHdSgTyhX7bVYPcgmwXy5PCch521IosrsDKewr0CrhKbkApkcUc0W5j2geFn39jxiov1fwl/1naS3ELp27bSJBaF1JJRWm92aaiTAELmgqgkG/KB5tWwBbb31UvQYKNNH+S5hZ9Zg6sbeiUrGna47TsrpOuXvPgKNOfB9RURR8HYrwWQi7qVYqPO4lFq66C3dnNgb2m8LGYNx8pSluwCpANH4RYwuHE1Rpv1QhXpzG9w8KLwCq2tdT3asItiF+9o1h1tOp1ZlkiDG8nBcGmk7rk2aRR9KdGEHaOR1/2RhfqiGSd5h7Qat64jKlr0ZEEGwlX5pFw5zhNEJrIcOO9ucCexPU9HRDKA9gRgcwWfTvdazv/RwsGX03/D4yAREVDHZ3fxWwSEgA9H4lj4bnV+xXEdGhNtyYDRkXHsHI4W7FLpqd85VDb6DEb5dvvP9PprmCB5hjLKP7aoZvqlI7mAmGy7UZPEir4bcsUDHjSGp4GREgZi8smEwQJc+9puqO+mYsnILHxN5pXVMFBhdAbc0TgzI8c5xghBk+m7MLbRyOJzMLI06ij+8Pegw==
+	9GsTUtp8r4m99hVZYOd+K3aa0eJV0NY7/8IAq++fXqeFqe+vArKMrhBJdVS/D8BrtxnqkbXqq/kAmiSVy9ExFaNu6JBNwHo9TsUO86wgRoEKzocFJUtKTqiJpstet63WaEVFXZxeZ4eks6Z1FE1wHSLFUj3NbjCRC+6KanYQbtFygeTjssGvQjtrKs2vLz36aSAqFZRg+BU6yi/69HaDf+t4jNEWRvajV15/k284y1MoLve6ossRMxhRJ6KYOYfLKuKLDIgA16QVuEIIU6ZAcIJbZvk+X77Ib1HG+kvDhdabQkYaGOaw/UfRA0q0qJK344N7owZEzWBytlDK8n9GPFYOIfnLgBwV70MTQn15fyxUubw8zoFWIkHLHihZVfdSarsEpNpn7lKMC2XduAu5nsM4EcKzYPaBPuZkgyXN7fI7BCMkHPq66Kwxqdin+U81ruS4O7uf1b5LXlor8KWivZ9WoHIg3yFYqH8n9Rot2nHf6a2sNLQJ+IvhQr4DV3nkZhND3PiX7bhUUB2h2dGg3iMSYvgUOZTdRVrvy/yCrdY5XUCjHEBtx3jwrwTvdT5DMMZxNOZbB7BnhrqZKhlWYt+LI5owJX7MEGqqi+pxjPHUDgQKVmeeBV5s03nAHTgEMTfQkagj3DgVl+zshy7Y14Gdv5E6lvMDgsoriKjTYX4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(346002)(366004)(396003)(39860400002)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(2906002)(7406005)(7416002)(31686004)(41300700001)(8676002)(8936002)(4326008)(5660300002)(66556008)(6916009)(316002)(54906003)(66476007)(66946007)(31696002)(6486002)(26005)(478600001)(6512007)(53546011)(36756003)(2616005)(6506007)(83380400001)(86362001)(6666004)(38100700002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5891.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(396003)(366004)(39860400002)(376002)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(5660300002)(8936002)(2616005)(66899024)(6512007)(44832011)(31696002)(316002)(966005)(6486002)(478600001)(36756003)(26005)(66556008)(66476007)(6506007)(66946007)(6666004)(53546011)(8676002)(2906002)(31686004)(38100700002)(83380400001)(41300700001)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SjlhR1kybWFMbE5TSVhiMk81OVhqRVVCUzQxcFpUVkl1TGJVSE15eFo3TFBW?=
- =?utf-8?B?YmpzeGpsZ0JtdWg1aUczZ25NRmgrcnpNK2tqaUFYcVM0ZGNobHBBU0lEc3kw?=
- =?utf-8?B?OFJmSWw3dFoyN0pxRE5Mc3RDeTRVL3JBREhEcWxmSmIyMnpydWo3K1pTWlg1?=
- =?utf-8?B?Wlh0eG1wendkRHFJM2VzVnpYUTZqK0IzbUY4QWdyKzJuTnpldCt0Y3p2MWY4?=
- =?utf-8?B?bjNLR3UvMDlZelVzWVZ3bGMybnlJRC9pVmdPNnQ0d3hudnV4cWNuS09zd242?=
- =?utf-8?B?OG0vZlZDM3cyK2lBK0xaaUJzaXBYR0oxdVAydjI0YW1LWHRrbEwzVHA0SVN2?=
- =?utf-8?B?WFJpVmQ0eGhWdDB6L3Z1YVA2WjQ0Tjd2bmtGMWNORCtlQjhvZmdhbGNRcVNN?=
- =?utf-8?B?RFZMdVByQkRxUjFWZFF6WFNOa05WY2dsV0w0V2JlSzZIamwzWU5MaFFDWjdO?=
- =?utf-8?B?NUR3K0FZdkhSTzdiK0EyNHNJUVFJTG9pMmY1aUJxR3NBL21aZm4rZ21sMnF6?=
- =?utf-8?B?dVd2VVEybVFiUkw2eXRQUkRqRjlScDczQTBiY1kxWktTd0ZWUXFIQ0hRaCsy?=
- =?utf-8?B?OXJHQWk2anB4dTRKRXVkY1o5Z05oOU9oU2FRUWdjR3l6NEZNSk1LRTJOcDFJ?=
- =?utf-8?B?Tm9zNjJEeGI4U0J5RlZUTE91RjdoL2xlc3RIOXhGaVJSQUhmMCtWVm9hcE1y?=
- =?utf-8?B?K2dNa25xYUZ1VWdYc01uS2VKTXUwaDM3b21aTnh6MFhQNERPbWM3MGtncUhj?=
- =?utf-8?B?dGZvUjJaOWJhdklOWnhJUlU4TGZnVS9SR2ppRzg0ZU5jZldUWkEySDV0QU1G?=
- =?utf-8?B?ZGRxaFVqSFRpT3I2NVVFNzdJa0ZWZzJsUG9BMzZhNnZtTnVwcXBOUUZ2YitO?=
- =?utf-8?B?V1dFenl0TTJvbkhEd2ZUenVZN1BWeFdGbTZ0S081MWw1UGIxRG5Ic2RqWm5O?=
- =?utf-8?B?WlNLVTdOa05LS3Mzc2VlWHdEOEN6ck5KY1NQb3FJL1VQQzFkS0pwdG1ydTYw?=
- =?utf-8?B?MzEveWhDeFcxWjVnb2dBbExGNkZVRTJwVnZTbjZ0TGNES1NzN0ZzVXZ5ajJI?=
- =?utf-8?B?YmtVSEtlOEZTRDlUNE5TVCt0UXVLQVVPbGVudzVWQjZVeStxSXpiRkNHQWZH?=
- =?utf-8?B?NDFRUmZRSHlkTllJa2dhelVIcGRqVzM0djZnNjhuTUEwZXhqSWJzU2hxUVdR?=
- =?utf-8?B?YUdxRmJKOVhpMWtRcjFhcHVoQ2lrbDRnZzJmTXZCa0JLdk5mbWNRc0N5Z210?=
- =?utf-8?B?V2tQV0szVE5wSjZiZzl5d2ZTY1BoNVdPZzNYQkZyWGwrWHFaQkVKRGlEL0oz?=
- =?utf-8?B?Z0k1YS9tRjB6RUtGb3FaK2h5NWlnTmJDNWJ4TVZaTkx4Smh3bVN2bm1MMEdN?=
- =?utf-8?B?b1NqL1poZi9PV2dXVGxDemMwQUc4OG9oYTI3MVQ2RWNPc0wrZjVnekNXclRX?=
- =?utf-8?B?UWZnTmcyaXFsRm16QUpLcld1eDZ0UzIzU1VSenZvTjlWNTNpeTJhZmd3NWNW?=
- =?utf-8?B?anRhcGtMcXdORk95ZGhkeWF0QXh0UkpZWkJod2NUWTU4NkQvbDFEd2p2NVlF?=
- =?utf-8?B?WEQ1cmk5elIyS1RyK3hwd1R4QTRXbkQ5YThyR2FJaE1lQW1UUFZQNDlyTkxN?=
- =?utf-8?B?NHZOV2VscEVLWFJsUGR4b0ZsQ3pnakZQa202QVpueEo2clQ1Q1V5RjlnMzhn?=
- =?utf-8?B?eDQ5NmFTWGsxckthLzgyRnpoYXl4SSs4Y2dtTlcraTF4WDczTGhUajJ5RTg5?=
- =?utf-8?B?RnlmK29TWlV5SVNhZm9pMUEwSkZCTWdZbFh5aTlUZm84dDVzRjhJQUZPMjlw?=
- =?utf-8?B?U1B4WVF5eGtQdC9PQlFyUEdRN1lQcEJtS2huNHNQY2FVN1JJR1ZvMHVVMWhQ?=
- =?utf-8?B?TVNtSFRQc3FGWVBBZXBuOFN4dWJabDNpeFZaL0QyZjhCTXVBVmpPdXJPQVYw?=
- =?utf-8?B?V055bUh1bGkwVm95MWE2eFo5VDljZ041elY2SHF0cjY0dUd5V3A5N21GZm5Z?=
- =?utf-8?B?WkdFRzVsQ0FpZVpBeThhZ1JwR0hVTmozMHBYN2NmUFg5UnBhaFV0cWFjTGMv?=
- =?utf-8?B?alNOQkY2c2VNU0JXVHkwbUZ1RWxvNy9zOWV5VGJJQ3hIK05xSzV6OURWMjhQ?=
- =?utf-8?Q?Sn+WU3OBgwV8PFlrEelwKuqYS?=
+	=?utf-8?B?cldNYThRUDJlbHVkUWNrY1J1VnBQZ3FJaThrOGNwNk5tSGE3R3hzL3lKbXUv?=
+ =?utf-8?B?ekFFTXp2d3BFYkFIQi9CdUYxd2EvM3hKS3ZlcVY0RXQvQm1veTM5VXdWeG15?=
+ =?utf-8?B?OW9SbzFOY1hJTWZScWdyZ2NJOFdYbnVyV3ZxczR6bjIvRUkvOHhWL2dXdlZQ?=
+ =?utf-8?B?YloxWnZsRlhZUldnOVdGa1p5aVBMUWZVOFJrWW1pYktmR0tuWkpaL05GTTRG?=
+ =?utf-8?B?K29XVnZmTFVXQlNFa2kzUXZxaXFRelBCVkViS0U2V3k0MXJFbmhUb09jSHRU?=
+ =?utf-8?B?RjZ3YmdvSXF1STR0c2U4QmxCL2x3cGRJQjVDOHJQKzBMeHI3TkNrRWZmWlJw?=
+ =?utf-8?B?MG5OVDVJOEE5cEd0TkVnVHpzdlVLWXB4a1M3aWVmZmFTMjRvRDdTaXZrSkRE?=
+ =?utf-8?B?YWtMMytnWTlRcVFPcnFyaUx1M1hiQ0NVQ0NNbTMrbng4cGs0UlB2NkdrSmdr?=
+ =?utf-8?B?UDVUOWRJbmlhQmREWWpOTk4rSVRwYngxVC9YY1lkbXZkb3pTTHB3YkdmREl0?=
+ =?utf-8?B?czQ4Ri9pYkZVQ2dUbnVEeTQ0WlFFNS9sRU5saDhsZlVmTDlJNStkenkyWUFD?=
+ =?utf-8?B?TlJxNjNhNjBsOVd4MEd5NTBVTVlSWXNCYklqcXhGZ0Q3S3FWMGFVUjV2L0lw?=
+ =?utf-8?B?aW0zTzREaVVsOC9NelpuWTJnZUJ3YTZNcWt2aitiUm1OcFpQaS85SGdrWSth?=
+ =?utf-8?B?djdtS1VUNHlCL3JyTzhpcXNnV003Wll1ZWlQZnc3dW9sM3AxSDZCdkRLZ2Jk?=
+ =?utf-8?B?SXcxa3U2dDlaeTU4eDFnelFjQ25jWGtva1lkWTBoVXJwNzYxUmhNZmhIbWJp?=
+ =?utf-8?B?MnF3OW02Y0tpc29TNEpSU3lSTG1uUjl4VUZtblZUN1dQckVoN2ltcmR6RHF4?=
+ =?utf-8?B?d05Ba0w1Z0R1alFNbW1Ca0RKSEVFOUhOQnRkZ1llS3FEZ2Q1TmxsOXpjUnVm?=
+ =?utf-8?B?YzNtMXBxUUthYzF1a3FVa1JKamZ4cDRKOVc1d092SmhtK0tackdHMytpUEhl?=
+ =?utf-8?B?MWF6M0FHbEp6Y2c4ZGNWamZrbU9MTFRZSHpDMmhXQUxqN0RnYVVlMmpwenZR?=
+ =?utf-8?B?aUtnK3Q4Z09PNVQwM25ycEUzbTh0T0tNZUxXdjE4a0R6VDJNcGxqUUtZSC9R?=
+ =?utf-8?B?WXlwK1FhOTl5RmQzbmdXR0doQWVURGVWZlhKWHlRS3ljK0hhalhmbkFyM3Vp?=
+ =?utf-8?B?YlF5Ri9kVm9vdjFqM1FFeXJJbmUvWWZxaU5xRUg5R1hoYnNLZ1U5ZEVrYzNQ?=
+ =?utf-8?B?cTZxWVRpVEFrSVZqZnVWV1gyZnBvM3N2OEkrOEVkc0xtNGh0d2VpQWxQZitk?=
+ =?utf-8?B?RTFGR2tBQkNPTDNXSG1TTUJzL285MzdZZkltemJGbGZYSUlxaFl4YmJGNVJp?=
+ =?utf-8?B?MVliSmxZdnZ2T0NBRnEzb2FTM2hxZDFYUHl2eFFQSXUySURMVlNjYmFXTW8v?=
+ =?utf-8?B?ZkUwLzZiVzZzeTZyeUd0Yk5JSTRxZmpEaVU3WitNdFNYSnU4bFJZMERVa1BS?=
+ =?utf-8?B?dXY0ckQ0a293TTdzNHcwS2RXYTBmV3l5MGpRVnN6Sm5hYWMzUmFudXA3dTUz?=
+ =?utf-8?B?S0RzdHRHR013V0pyZjM5L1BBd1daT3ltaVZWTlNTZGJ1dlMzbGI5Qy9MNzVW?=
+ =?utf-8?B?M2I4U3IxNDROT3VmcHF1NHNLN3ZLSkNzUEh2NlRoRFBnd0hjSzFnc0RTZ3Rx?=
+ =?utf-8?B?L2hjNnRadGxHWUl5d3JqWE53ejFMZTJWaEM1aGFlZGUvcVJFM242TnhPZG1q?=
+ =?utf-8?B?anRlMnNtWUtWT2ZEdHZuelRrSnJOZW5CR0toV2s4VzY2RXFuQS9sMkI3Z2JB?=
+ =?utf-8?B?KzF1SUQ2VlhWamtieGJUcGpYOEJYZ0l5a2lhSTRydnJFL0dxbmpzS09YbEpq?=
+ =?utf-8?B?QUJxNkUrdFhCZXBrQWMxT3RnUWtUQnJkempDNlFlbDVwaEtzUzRUTm9FVGFX?=
+ =?utf-8?B?OUJraktKOGVCU2kxREpxcHRONGwzdlU3SC9qYndtaFFtZ1pKNXJzdXVPcVlS?=
+ =?utf-8?B?QklaSzB2a0FmUmpJM1JTNTViVExQMEpzOUh1OXZwUzR2N3UvRERTbXNwdFM1?=
+ =?utf-8?B?MlgzUVBlN2VnR2szQ2hCYVpjVENKTkY2YkFLK040SVhxb1NMQThSZW90WlRL?=
+ =?utf-8?Q?VvsJIiVb8rBCkLrxKmiuwkXIS?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0ee4af0-e1d3-4abd-5618-08dbe0945854
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c93e26e-8e1b-4d3a-d9b1-08dbe1488ed3
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5891.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 19:53:14.6572
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2023 17:23:15.5522
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KV4TOhwV6NSHLIqNZxXni+ELcQf7yd7uonFgvg/XCW52KGFJrOQZcjRWhPrLkjFRODzM20eyp7/DzRvICH+W9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5115
+X-MS-Exchange-CrossTenant-UserPrincipalName: J5XZQMVLw3rIQvP1tiSaix3GLlC2D2Z6qLe+c0YIe60EFUpE2EP58GSC1esgtb2iGfcVgOTwbfryTik/Db0GKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7722
 
-On 11/8/2023 12:14 AM, Borislav Petkov wrote:
-> On Tue, Nov 07, 2023 at 04:33:41PM -0600, Kalra, Ashish wrote:
->> We will still need some method to tell the IOMMU driver if SNP
->> support/feature is disabled by this function, for example, when CPU family
->> and model is not supported by SNP and we jump to no_snp label.
+On 11/7/23 19:24, Dan Middleton wrote:
+> Hi from the CCC!
 > 
-> See below.
+> Many of our companies also collaborate in the Confidential Computing 
+> Consortium.
+> There we are proposing a SIG and invite your feedback and involvement:
 > 
->> The reliable way for this to work is to ensure snp_rmptable_init() is called
->> before IOMMU initialization and then IOMMU initialization depends on SNP
->> feature flag setup by snp_rmptable_init() to enable SNP support on IOMMU or
->> not.
+> https://github.com/confidential-computing/governance/pull/196
 > 
-> Yes, this whole SNP initialization needs to be reworked and split this
-> way:
+> The entirety of the proposal is also copied below.
 > 
-> - early detection work which needs to be done once goes to
->    bsp_init_amd(): that's basically your early_detect_mem_encrypt() stuff
->    which needs to happen exactly only once and early.
+> Thanks,
 > 
-> - Any work like:
+> Dan Middleton
+> CCC TAC Chair
 > 
-> 	 c->x86_phys_bits -= (cpuid_ebx(0x8000001f) >> 6) & 0x3f;
 > 
->    and the like which needs to happen on each AP, gets put in a function
->    which gets called by init_amd().
+> # Proposal: CCC Linux Kernel SIG
 > 
-> By the time IOMMU gets to init, you already know whether it should
-> enable SNP and check X86_FEATURE_SEV_SNP.
+> This proposal seeks to accelerate Confidential Computing feature velocity 
+> in the Linux kernel.
+> By creating a Linux Kernel SIG in the CCC we can foster community dialog to 
+> develop vendor neutral
+> architectural approaches to new features and thereby reduce complexity in 
+> associated kernel patches.
 > 
-> Finally, you call __snp_rmptable_init() which does the *per-CPU* init
-> work which is still pending. >
-> Ok?	
+> 
+> # Background:
+> 
+> One of the technical limitations to the adoption rate for Confidential 
+> Computing is the speed at
+> which we as a community can add features to the Linux kernel. Each vendor 
+> has similar needs of the
+> kernel but has historically presented significantly different ABIs. To 
+> contain complexity and manage
+> maintainability, the Linux kernel community tries to prevent proliferation 
+> of unnecessarily vendor
+> specific ABIs. Often the opportunity for commonality is unclear until 
+> multiple vendors have proposed
+> separate interfaces [0].
+> 
+> The CCC as the home of open collaboration for Confidential Computing 
+> hardware vendors, software
+> vendors, and end users facilitates a unique environment for exchanging 
+> views on features and
+> requirements. Up to this point in time though most CCC collaboration has 
+> been on user space software
+> and use cases. The Linux kernel community has not been a regular part of 
+> discussions and the CCC has
+> not been a regular participant on the Linux Kernel Mail List (LKML)[1]. 
+> Bringing these communities
+> together in a structured forum has the promise of accelerating their joint 
+> work towards broad
+> availability of Confidential Computing in Linux environments.
+> 
+> 
+> # Scope:
+> 
+> 1. Facilitate dialog between Linux kernel and Confidential Computing 
+> subject matter experts:
+>      * to facilitate direction for topics that need formal collaboration,
+>      * to have an additional venue to facilitate direction for topics that 
+> are stalled on LKML,
+>        which would benefit from higher bandwidth communication,
+>      * to have a common place to record decisions and formalize the output 
+> for others to reference,
+>      * and to introduce new technical topics emerging in either domain, 
+> e.g., attestation mechanisms
+>        approaching standardization.
+> 2. Create recommendations for other organizations and communities such as 
+> LKML, IETF, etc.
+>     on topics at the intersection of the Linux kernel and Confidential 
+> Computing.
+> 
+> 
+> # Governance:
+> 
+> The CCC adheres to a culture of Minimum Viable Governance [2].
+> We prefer not to create rules that inhibit the progress of substantive work.
+> 
+> All are welcome at all CCC community forums. This SIG is targeted to all 
+> Linux kernel maintainers
+> and Confidential Computing vendors, project contributors, and end users 
+> with a dependence on the
+> Linux kernel. Meetings will follow standard CCC practices of inclusivity 
+> and openness adhering to
+> the community code of conduct [3] and the Linux Foundation’s Antitrust 
+> policy [4].
+> 
+> 
+> ## Decision Making:
+> 
+> This SIG will use consensus decision making [5] wherein not all 
+> participants must be in full
+> agreement but that there should not be a strong consensus against a 
+> proposal [6].
+> 
+> In most cases we expect that once the SIG reaches consensus on a kernel 
+> topic, contributors will
+> propose aligned patches to LKML without any explicit communication from the 
+> SIG or the CCC.
+> 
+> If a formal CCC recommendation to another organization, e.g., IETF, TCG, 
+> eBPF Foundation, etc. is
+> required, the SIG will rely on the CCC Technical Advisory Council (TAC) to 
+> ratify proposals from the
+> SIG.
+> 
+> The pipeline of activity is expected (but not required) to look like this:
+> 1. Identify feature need on mailing list or informal forum.
+> 2. Exchange community proposals in the SIG.
+> 3. Achieve informal consensus in the SIG.
+> 
+>      a. Author patches and take them to the appropriate community, e.g., LKML.
+> 
+>      or
+> 
+>      b. Raise an agenda item for the CCC TAC to formally ratify a proposal 
+> and publish to the
+>         appropriate organization.
+> 
+> 
+> ## Initial Logistics:
+> 
+> The community will set its own meeting cadence starting from an initial 
+> cadence of meeting twice per
+> month. The CCC will provide a Zoom channel. At the end of each meeting a 
+> new chair may volunteer to
+> organize the agenda for the next meeting. The chair role confers no other 
+> responsibility or
+> authority beyond collecting agenda requests from the community and 
+> enforcing minutes and good order.
+> In addition to video meetings, the community will use an existing Discord 
+> channel for ongoing
+> communication. No mail list is required at this time.
 
-Yes, will need to rework the SNP initialization stuff, the important 
-point is that we want to do snp_rmptable_init() stuff before IOMMU 
-initialization as for things like RMP table not correctly setup, etc., 
-we don't want IOMMU initialization to enable SNP on the IOMMUs.
+May I ask what Discord channel you're referring to? I'm assuming it's
+open access.
+
+> 
+> 
+> 
+> # References:
+> [0] 
+> https://lore.kernel.org/all/64876bf6c30e2_1433ac29415@dwillia2-xfh.jf.intel.com.notmuch/
+> 
+> [1] https://lore.kernel.org/linux-coco/
+> 
+> [2] Sarah Novotny, Stephen Walli, “Minimum Viable Governance”, Linux 
+> Foundation Open Source Summit Europe 2020, 
+> https://www.youtube.com/watch?v=C2-_MjzP-Rs
+> 
+> [3] 
+> https://github.com/confidential-computing/governance/blob/main/code-of-conduct.md
+> 
+> [4] https://www.linuxfoundation.org/legal/antitrust-policy
+> 
+> [5] https://en.wikipedia.org/wiki/Consensus_decision-making
+> 
+> [6] See Rust’s Final Comment Period (FCP) https://github.com/rust-lang/rfcs
+> 
+> 
 
 Thanks,
-Ashish
-
+Carlos
