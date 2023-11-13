@@ -1,54 +1,58 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C3D11702
-	for <linux-coco@lists.linux.dev>; Mon, 13 Nov 2023 05:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C48D11712
+	for <linux-coco@lists.linux.dev>; Mon, 13 Nov 2023 06:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="FZ3fbKKU"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4083f613275so33241315e9.2
-        for <linux-coco@lists.linux.dev>; Sun, 12 Nov 2023 21:43:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="izReDwsi"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-407c3adef8eso35142365e9.2
+        for <linux-coco@lists.linux.dev>; Sun, 12 Nov 2023 22:05:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1699854208; x=1700459008; darn=lists.linux.dev;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1699855502; x=1700460302; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vhHN7O93waVt11wa6SX8/dSGCmxRKEMMr4q4LYfCtPI=;
-        b=FZ3fbKKUQ4rUQR3nbdR+XGv2p+HmIaGQIpzFm33RL5RQD86wIw43x2fN14ZMV4ZObq
-         CvSWHvS4uvBHoKS2xQF2iT7KN42ejCGPtG9FaPWfx3OMonyjV4xDteD0YV9idqIjOPEJ
-         yZxtu8X9t4852oObtwNBbgHMqgGvtdxQJd1q4rEVOEuxNPbIyx+j4VOb6qD/0TCcIQa/
-         Nu5aiBSA6TBImEzPqOJhUmCFMck0rI4VIcUEJuUukRHkVIxG0Fnw/bfCNoOMexmj3xXT
-         t3GGgwEZHNrgBeHzNC9EsayycUQQpxMqiG+FnZToFCe4h/YVKhBNJnQLTCmbZnTgNRDq
-         xbvw==
+        bh=N+nt+ngB41YS8+YA9mwjeT/ra7CS09vjO32TMqTgtLU=;
+        b=izReDwsiZw/oXC4p1RrYkAsF2gfZ54qcNnYyge91ZU0WKxC2jbErXGDIHtRaBQasyo
+         /TpxZ9w4xH04JWSgJZ35SvIwnPVuXX5VUbDpEy+KVjZzjBdU0j3sdtlS/J+4KL3x4bM5
+         GICmcWTaL6afg1w2Q7EXePdvN8AxIKZrJxoJ1rx4rABG908zljk9cW6XkOfVpYR56sQn
+         4x4cWMk46XjgFmFJy8sXVadAG58ARUSIc6COJjrdnXbJ8tqJupWes6PeC2J/FV5VqGPf
+         9/jiFmg7gGgkdncfVi2SPDmjjhwhNdqmp4myEINlOOgwQxOA20eTmdQSiJVb6ST91rXy
+         oPQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699854208; x=1700459008;
+        d=1e100.net; s=20230601; t=1699855502; x=1700460302;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vhHN7O93waVt11wa6SX8/dSGCmxRKEMMr4q4LYfCtPI=;
-        b=G1mGWj2MHXCYumA+vbincnT2XxrnH0j6yjYf6CvGjSkQVrNVvJ3lK15B87bVw8085K
-         HGVpgQrYeWjNc5cnde5dzqa2V5GyKKximo2EsL0FOT/m7ikL7SksMPHEamGWc4AnY4rZ
-         jweVe3bWB6N0RiDhnJo2DoqXJpofGqxgUGx8UwHEMMYgmey/dIuN/BB9BmqkiPKIwpIE
-         aktzd+ExPgJ/CSj7N3y3/ZO5CZYOlY548LjFK2BXocXyh84HQmEXFGIq+iz8QqlXbDAw
-         CZai8fTvyL8sM1+0d8OEfo2GS85Yh1jOtgn9qZNGKsuxhD2onG7ILLZDgMgSwYfgEdI9
-         yvlA==
-X-Gm-Message-State: AOJu0Yxf3g+TyIRL4vhEq4uj7cNAee/f/DE3EjkMdLQhtLzmiN3+oeiY
-	eGUD0/KkDh3dTPdNDwOoRIN4Iw==
-X-Google-Smtp-Source: AGHT+IETQgYjc0LVkzBsM+Fe+jtpGKe/99W2fGyK3xlMw1EPH56T3INTRwrxOPb+IFOsEZlJ6jIlZg==
-X-Received: by 2002:a05:600c:524c:b0:3fd:2e89:31bd with SMTP id fc12-20020a05600c524c00b003fd2e8931bdmr4795155wmb.14.1699854208249;
-        Sun, 12 Nov 2023 21:43:28 -0800 (PST)
+        bh=N+nt+ngB41YS8+YA9mwjeT/ra7CS09vjO32TMqTgtLU=;
+        b=BIFnvhq2WawTcMDOnNfbVj5KKr/rPGBP56IFfwlDmq75yWULYEIB3FeM7/Y3dFylKj
+         Rvr1MXgRTCbTMQDuQOSbB9SOQI7nhPtLatWOLWVysEei96/I8KumAvvQkgq9xUjRAh4L
+         chsuSxMyMnXXjveaEu2jZLxR6Crhw2tfyPoc9QUv+eJJcN/CTSzgisFwAXM5YF0TCKQe
+         zt4XrJ8ovGJIlI9jjPinG3BFndodDDHd27enBXRIoy7fvpuL9dLsRpooWJ1jdHa1yniv
+         Bu3l0qxHdJwYXxtkYnYzosUSyDsbRSqoaKfVX2CZkEPBfVF6pbZVMQf1rlJuE2GufMuc
+         XIXg==
+X-Gm-Message-State: AOJu0YzXVOeZ0JfxSwt+z9QnBjNUnUMkP5L3AqLUH8FKj78lwcAk3qiw
+	mJQlex7JcantuuEZ9NEd8xiboQ==
+X-Google-Smtp-Source: AGHT+IHFciwgtxW1rksmHcHPusfhYOJiMy7bV87co79QYsxgNyZQobB/kNC+U7rr/vXbrw7L1F+UWg==
+X-Received: by 2002:a05:600c:54cb:b0:40a:45ff:fd69 with SMTP id iw11-20020a05600c54cb00b0040a45fffd69mr4856019wmb.19.1699855501521;
+        Sun, 12 Nov 2023 22:05:01 -0800 (PST)
 Received: from vermeer ([2a01:cb1d:81a9:dd00:a3fd:7e78:12c3:f74b])
-        by smtp.gmail.com with ESMTPSA id n10-20020a05600c3b8a00b003fef5e76f2csm8667754wms.0.2023.11.12.21.43.27
+        by smtp.gmail.com with ESMTPSA id fm6-20020a05600c0c0600b004063d8b43e7sm12740541wmb.48.2023.11.12.22.05.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Nov 2023 21:43:27 -0800 (PST)
-Date: Mon, 13 Nov 2023 06:43:25 +0100
+        Sun, 12 Nov 2023 22:05:01 -0800 (PST)
+Date: Mon, 13 Nov 2023 07:04:58 +0100
 From: Samuel Ortiz <sameo@rivosinc.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: linux-coco@lists.linux.dev, kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Lukas Wunner <lukas@wunner.de>, Alexey Kardashevskiy <aik@amd.com>,
+	linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+	linux-pci@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <jic23@kernel.org>, suzuki.poulose@arm.com
 Subject: Re: TDISP enablement
-Message-ID: <ZVG3fREeTQqvHLb/@vermeer>
+Message-ID: <ZVG8itkUnvmhR5kG@vermeer>
 References: <e05eafd8-04b3-4953-8bca-dc321c1a60b9@amd.com>
+ <20231101072717.GB25863@wunner.de>
+ <20231101110551.00003896@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,133 +61,171 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e05eafd8-04b3-4953-8bca-dc321c1a60b9@amd.com>
+In-Reply-To: <20231101110551.00003896@Huawei.com>
 
-Hi Alexey,
-
-On Wed, Nov 01, 2023 at 09:56:11AM +1100, Alexey Kardashevskiy wrote:
-> Hi everyone,
+On Wed, Nov 01, 2023 at 11:05:51AM +0000, Jonathan Cameron wrote:
+> On Wed, 1 Nov 2023 08:27:17 +0100
+> Lukas Wunner <lukas@wunner.de> wrote:
 > 
-> Here is followup after the Dan's community call we had weeks ago.
+> Thanks Alexy, this is a great discussion to kick off.
+
+I'd certainly agree with that.
+
+> > On Wed, Nov 01, 2023 at 09:56:11AM +1100, Alexey Kardashevskiy wrote:
+> > > - device_connect - starts CMA/SPDM session, returns measurements/certs,
+> > > runs IDE_KM to program the keys;  
+> > 
+> > Does the PSP have a set of trusted root certificates?
+> > If so, where does it get them from?
+> > 
+> > If not, does the PSP just blindly trust the validity of the cert chain?
+> > Who validates the cert chain, and when?
+> > Which slot do you use?
+> > Do you return only the cert chain of that single slot or of all slots?
+> > Does the PSP read out all measurements available?  This may take a while
+> > if the measurements are large and there are a lot of them.
 > 
-> Our (AMD) goal at the moment is TDISP to pass through SRIOV VFs to
-> confidential VMs without trusting the HV and with enabled IDE (encryption)
-> and IOMMU (performance, compared to current SWIOTLB). I am aware of other
-> uses and vendors and I spend hours unsuccessfully trying to generalize all
-> this in a meaningful way.
+> I'd definitely like their to be a path for certs and measurement to be
+> checked by the Host OS (for the non TDISP path). Whether the
+> policy setup cares about result is different question ;)
 > 
-> The AMD SEV TIO verbs can be simplified as:
+> > 
+> > 
+> > > - tdi_info - read measurements/certs/interface report;  
+> > 
+> > Does this return cached cert chains and measurements from the device
+> > or does it retrieve them anew?  (Measurements might have changed if
+> > MEAS_FRESH_CAP is supported.)
+> > 
+> > 
+> > > If the user wants only CMA/SPDM, the Lukas'es patched will do that without
+> > > the PSP. This may co-exist with the AMD PSP (if the endpoint allows multiple
+> > > sessions).  
+> > 
+> > It can co-exist if the pci_cma_claim_ownership() library call
+> > provided by patch 12/12 is invoked upon device_connect.
+> > 
+> > It would seem advantageous if you could delay device_connect
+> > until a device is actually passed through.  Then the OS can
+> > initially authenticate and measure devices and the PSP takes
+> > over when needed.
 > 
-> - device_connect - starts CMA/SPDM session, returns measurements/certs, runs
-> IDE_KM to program the keys;
-> - device_reclaim - undo the connect;
-> - tdi_bind - transition the TDI to TDISP's LOCKED and RUN states, generates
-> interface report;
-
-From a VF to TVM use case, I think tdi_bind should only transition to
-LOCKED, but not RUN. RUN should only be reached once the TVM approves
-the device, and afaiu this is a host call.
-
-> - tdi_unbind - undo the bind;
-> - tdi_info - read measurements/certs/interface report;
-> - tdi_validate - unlock TDI's MMIO and IOMMU (or invalidate, depends on the
-> parameters).
-
-That's equivalent to the TVM accepting the TDI, and this should
-transition the TDI from LOCKED to RUN.
-
-
-> The first 4 called by the host OS, the last two by the TVM ("Trusted VM").
-> These are implemented in the AMD PSP (platform processor).
-> There are CMA/SPDM, IDE_KV, TDISP in use.
+> Would that delay mean IDE isn't up - I think that wants to be
+> available whether or not pass through is going on.
+>
+> Given potential restrictions on IDE resources, I'd expect to see an explicit
+> opt in from userspace on the host to start that process for a given
+> device.  (udev rule or similar might kick it off for simple setups).
 > 
-> Now, my strawman code does this on the host (I simplified a bit):
-> - after PCI discovery but before probing: walk through all TDISP-capable
-> (TEE-IO in PCIe caps) endpoint devices and call device_connect;
-
-Would the host call device_connect unconditionally for all TEE-IO device
-probed on the host? Wouldn't you want to do so only before the first
-tdi_bind for a TDI that belongs to the physical device?
-
-
-> - when drivers probe - it is all set up and the device measurements are
-> visible to the driver;
-> - when constructing a TVM, tdi_bind is called;
-
-Here as well, the tdi_bind could be asynchronous to e.g. support hot
-plugging TDIs into TVMs.
-
-
+> Would that work for the flows described?  
 > 
-> and then in the TVM:
-> - after PCI discovery but before probing: walk through all TDIs (which will
-> have TEE IO bit set) and call tdi_info, verify the report, if ok - call
-> tdi_validate;
-
-By verify you mean verify the reported MMIO ranges? With support from
-the TSM?
-We discussed that a few times, but the device measurements and
-attestation report should also be attested, i.e. run against a relying
-party. The kernel may not be the right place for that, and I'm proposing
-for the guest kernel to rely on a user space component and offload the
-attestation part to it. This userspace component would then
-synchronously return to the guest kernel with an attestation result.
-
-> - when drivers probe - it is all set up and the driver decides if/which DMA
-> mode to use (SWIOTLB or direct), or panic().
+> Next bit probably has holes...  Key is that a lot of the checks
+> may fail, and it's up to host userspace policy to decide whether
+> to proceed (other policy in the secure VM side of things obviously)
 > 
-
-When would it panic?
-
-> Uff. Too long already. Sorry. Now, go to the problems:
+> So my rough thinking is - for the two options (IDE / TDISP)
 > 
-> If the user wants only CMA/SPDM, 
-
-By user here, you mean the user controlling the host? Or the TVM
-user/owner? I assume the former.
-
-> the Lukas'es patched will do that without
-> the PSP. This may co-exist with the AMD PSP (if the endpoint allows multiple
-> sessions).
+> Comparing with Alexey's flow I think only real difference is that
+> I call out explicit host userspace policy controls. I'd also like
+> to use similar interfaces to convey state to host userspace as
+> per Lukas' existing approaches.  Sure there will also be in
+> kernel interfaces for driver to get data if it knows what to do
+> with it.  I'd also like to enable the non tdisp flow to handle
+> IDE setup 'natively' if that's possible on particular hardware.
 > 
-> If the user wants only IDE, the AMD PSP's device_connect needs to be called
-> and the host OS does not get to know the IDE keys. Other vendors allow
-> programming IDE keys to the RC on the baremetal, and this also may co-exist
-> with a TSM running outside of Linux - the host still manages trafic classes
-> and streams.
-> 
-> If the user wants TDISP for VMs, this assumes the user does not trust the
-> host OS and therefore the TSM (which is trusted) has to do CMA/SPDM and IDE.
-> 
-> The TSM code is not Linux and not shared among vendors. CMA/SPDM and IDE
-> seem capable of co-existing, TDISP does not.
+> 1. Host has a go at CMA/SPDM. Policy might say that a failure here is
+>    a failure in general so reject device - or it might decide it's up to
+>    the PSP etc.   (userspace can see if it succeeded)
+>    I'd argue host software can launch this at any time.  It will
+>    be a denial of service attack but so are many other things the host
+>    can do.
+> 2. TDISP policy decision from host (userspace policy control)
+>    Need to know end goal.
+> 3. IDE opt in from userspace.  Policy decision.
+>   - If not TDISP 
+>     - device_connect(IDE ONLY) - bunch of proxying in host OS.
+>     - Cert chain and measurements presented to host, host can then check if
+>       it is happy and expose for next policy decision.
+>     - Hooks exposed for host to request more measurements, key refresh etc.
+>       Idea being that the flow is host driven with PSP providing required
+>       services.  If host can just do setup directly that's fine too.
+>   - If TDISP (technically you can run tdisp from host, but lets assume
+>     for now no one wants to do that? (yet)).
 
-Which makes sense, TDISP is not designed to be used outside of the
-TEE-IO VFs assigned to TVM use case.
+Yes, I'd say it's a safe assumption.
+
+>     - device_connect(TDISP) - bunch of proxying in host OS.
+
+imho TDISP should be orthogonal to the connect verb. connect is a
+PF/Physical device scoped action. TDISP is a VF/TDI state machine, and
+the bind verb is meant for that (This is where the TSM should start
+moving the TDISP state machine to bind a TDI and a TVM together).
+
+>     - Cert chain and measurements presented to host, host can then check if
+>       it is happy and expose for next policy decision.
+
+In the TDISP/VF passthrough case, the device cert chain and it's
+attestation report will also have to be available to the guest in order
+for it to verify and attest to the device.
 
 > 
-> However there are common bits.
-> - certificates/measurements/reports blobs: storing, presenting to the
-> userspace (results of device_connect and tdi_bind);
-> - place where we want to authenticate the device and enable IDE
-> (device_connect);
-> - place where we want to bind TDI to a TVM (tdi_bind).
+> 4. Flow after this depends on early or late binding (lockdown)
+>    but could load driver at this point.  Userspace policy.
+>    tdi-bind etc.
 > 
-> I've tried to address this with my (poorly named) drivers/pci/pcie/tdisp.ko
-> and a hack for VFIO PCI device to call tdi_bind.
 > 
-> The next steps:
-> - expose blobs via configfs (like Dan did configfs-tsm);
-> - s/tdisp.ko/coco.ko/;
-> - ask the audience - what is missing to make it reusable for other vendors
-> and uses?
+> > 
+> > 
+> > > If the user wants only IDE, the AMD PSP's device_connect needs to be called
+> > > and the host OS does not get to know the IDE keys. Other vendors allow
+> > > programming IDE keys to the RC on the baremetal, and this also may co-exist
+> > > with a TSM running outside of Linux - the host still manages trafic classes
+> > > and streams.  
+> > 
+> > I'm wondering if your implementation is spec compliant:
+> > 
+> > PCIe r6.1 sec 6.33.3 says that "It is permitted for a Root Complex
+> > to [...] use implementation specific key management."  But "For
+> > Endpoint Functions, [...] Function 0 must implement [...]
+> > the IDE key management (IDE_KM) protocol as a Responder."
+> > 
+> > So the keys need to be programmed into the endpoint using IDE_KM
+> > but for the Root Port it's permitted to use implementation-specific
+> > means.
+> > 
+> > The keys for the endpoint and Root Port are the same because this
+> > is symmetric encryption.
+> > 
+> > If the keys are internal to the PSP, the kernel can't program the
+> > keys into the endpoint using IDE_KM.  So your implementation precludes
+> > IDE setup by the host OS kernel.
+> 
+> Proxy the CMA messages through the host OS. Doesn't mean host has
+> visibility of the keys or certs.  So indeed, the actual setup isn't being done
+> by the host kernel, but rather by it requesting the 'blob' to send
+> to the CMA DOE from PSP.
+> 
+> By my reading that's a bit inelegant but I don't see it being a break
+> with the specification.
+> 
+> > 
+> > device_connect is meant to be used for TDISP, i.e. with devices which
+> > have the TEE-IO Supported bit set in the Device Capabilities Register.
+> > 
+> > What are you going to do with IDE-capable devices which have that bit
+> > cleared?  Are they unsupported by your implementation?
+> > 
+> > It seems to me an architecture cannot claim IDE compliance if it's
+> > limited to TEE-IO capable devices, which might only be a subset of
+> > the available products.
+> 
+> Agreed.  If can request the PSP does a non TDISP IDE setup then
+> I think we are fine.  
 
-The connect-bind-run flow is similar to the one we have defined for
-RISC-V [1]. There we are defining the TEE-IO flows for RISC-V in
-details, but nothing there is architectural and could somehow apply to
-other architectures.
+The TSM, upon receiving a connect request from the host should establish
+the SPDM+IDE connection. If it never receives a bind request, it should
+not do any TDISP action. This way we could have the TSM supporting both
+the passthrough and non passthrough use cases.
 
 Cheers,
 Samuel.
-
-[1] https://github.com/riscv-non-isa/riscv-ap-tee-io/blob/main/specification/07-theory_operations.adoc
