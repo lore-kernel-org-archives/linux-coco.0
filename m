@@ -1,114 +1,178 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C701864D
-	for <linux-coco@lists.linux.dev>; Wed, 15 Nov 2023 13:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC04931750
+	for <linux-coco@lists.linux.dev>; Wed, 15 Nov 2023 16:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f3raxvep"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700053398; x=1731589398;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=E4dKQNl6OtXKCpQsl6Lr+xytDUybE96dRWIvxmvWFcQ=;
-  b=f3raxvepjKqkwzReMNZhI/406qZhQjNZh9uU9XSR2PD1LU/5QjezlDw2
-   jWFwZBczVUBsAmHBfQWwCz229tIDu3B9Mxow356HVzU9fFqy+NECkofvt
-   Zz7MuVyFYC7c2KgxfRoFkIj6sBh4tkMjIABieNlh2ZSB8E/g4doYardYM
-   PG9TOSp1gouOA+FIijQFbkU//hNufwJ6JDIHvVtrcjMRvdjr9/TZwahZI
-   EMMU2Tgj6xF8L8GTQtfBMs4rcA5bk+MDlS+gyYmfgdzmuhlpW7afdHiQq
-   MtnDWuoCoS6aXkuq8L2mU042E6dztkfdAsnO7KvmMVaOIDHB4HYuwTyJu
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="477091536"
-X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
-   d="scan'208";a="477091536"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 05:03:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="835391248"
-X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
-   d="scan'208";a="835391248"
-Received: from mituomis-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.44.135])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 05:03:09 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id EE156109F3E; Wed, 15 Nov 2023 16:03:06 +0300 (+03)
-Date: Wed, 15 Nov 2023 16:03:06 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv3 06/14] x86/kexec: Keep CR4.MCE set during kexec for TDX
- guest
-Message-ID: <20231115130306.kmhaqsfpzi3gkpik@box.shutemov.name>
-References: <20231115120044.8034-1-kirill.shutemov@linux.intel.com>
- <20231115120044.8034-7-kirill.shutemov@linux.intel.com>
- <20231115122343.GA8262@noisy.programming.kicks-ass.net>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="htGOrDLe"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A522340E018F;
+	Wed, 15 Nov 2023 16:09:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id XnjlSzdNZWW9; Wed, 15 Nov 2023 16:09:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1700064582; bh=bueQ2kw7gyEFK0bJoqQbhhrZVo/9ubg2OCMl9sxv48U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=htGOrDLe+3bJficaYArCv8d5oQ8bNdPh02lr3A54uQfa/eBBm6wyzdJr2GalIjlBg
+	 CMi9t46e+ppAubFDqG9qjUioO4AeE3WwDA+d3OlGAzmTsmYoV9wca+Qax1skABRNzW
+	 nOQrmVHAFiDs5ROjiFOvA4Fn7n1+BGR1J/vFUuCRHMY9XXRyDlr8RHhw3mVKA5kHtm
+	 x3MXIsRL8kPsWoQgRYm7pgS/Yya6wY24cf7hq1n34j7yXXQTLRHbXmaHopZhxf0Zrh
+	 0ABQIgTbeddkTIXb2u6tT3XqgeHWtrGyXHXpJrxe8LRPW6IkXr+2zXO5AFxH9PFm87
+	 tR61dMECG/8Q8JMGs7WO+sFHZpT3rxgyyc1gvhnQhhsRu7BZLaXvNf0cbOTY7Tf/7A
+	 rihB0PXLS/S69T6KmHf4blvUYlJmm4SGvnnGhZrX5/FOW2pG4yXZt2PPqfSYh2uOvj
+	 XX2QcR+9mQN7HTtCX0qphDqtLTrD7vxcVEFBK0zwGR11ggnBdyNWN8jr7If1A16dO3
+	 I7SzyUrQ9f7iskGXh7Nvby7p7OS9JleG9hdR1F1/tij7BgjRi/Eb5kWdgPmMYrpIlp
+	 ZuQhd05YRHikbirhjVOGagNSe1s9xDEn6dUIVdxkovglOs74ktLMU/3d1HZnFWHnRc
+	 3NdkbkJ7Myl//EmKR6/Lf/4U=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8FA4440E0030;
+	Wed, 15 Nov 2023 16:09:01 +0000 (UTC)
+Date: Wed, 15 Nov 2023 17:08:52 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v10 08/50] x86/fault: Add helper for dumping RMP entries
+Message-ID: <20231115160852.GDZVTtFHB0+HpVZnpG@fat_crate.local>
+References: <20231016132819.1002933-1-michael.roth@amd.com>
+ <20231016132819.1002933-9-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231115122343.GA8262@noisy.programming.kicks-ass.net>
+In-Reply-To: <20231016132819.1002933-9-michael.roth@amd.com>
 
-On Wed, Nov 15, 2023 at 01:23:43PM +0100, Peter Zijlstra wrote:
-> On Wed, Nov 15, 2023 at 03:00:36PM +0300, Kirill A. Shutemov wrote:
-> > TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
-> > to #VE.
-> > 
-> > Use alternatives to keep the flag during kexec for TDX guests.
-> > 
-> > The change doesn't affect non-TDX-guest environments.
-> > 
-> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Reviewed-by: Kai Huang <kai.huang@intel.com>
-> > ---
-> >  arch/x86/kernel/relocate_kernel_64.S | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> > 
-> > diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-> > index 56cab1bb25f5..bea89814b48e 100644
-> > --- a/arch/x86/kernel/relocate_kernel_64.S
-> > +++ b/arch/x86/kernel/relocate_kernel_64.S
-> > @@ -145,11 +145,16 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
-> >  	 * Set cr4 to a known state:
-> >  	 *  - physical address extension enabled
-> >  	 *  - 5-level paging, if it was enabled before
-> > +	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
-> > +	 *    in TDX guests.
-> >  	 */
-> >  	movl	$X86_CR4_PAE, %eax
-> >  	testq	$X86_CR4_LA57, %r13
-> >  	jz	1f
-> >  	orl	$X86_CR4_LA57, %eax
-> > +1:
-> > +	ALTERNATIVE "jmp 1f", "", X86_FEATURE_TDX_GUEST
-> > +	orl	$X86_CR4_MCE, %eax
-> >  1:
-> 
-> 	ALTERNATIVE "", "orl $X86_CR4_MCE, %eax", X86_FEATURE_TDX_GUEST
-> 
-> ?
+On Mon, Oct 16, 2023 at 08:27:37AM -0500, Michael Roth wrote:
+> +/*
+> + * Dump the raw RMP entry for a particular PFN. These bits are documented in the
+> + * PPR for a particular CPU model and provide useful information about how a
+> + * particular PFN is being utilized by the kernel/firmware at the time certain
+> + * unexpected events occur, such as RMP faults.
+> + */
+> +static void sev_dump_rmpentry(u64 dumped_pfn)
 
-Oh. Right. Silly me.
+Just "dump_rmentry"
 
-Will fix.
+s/dumped_pfn/pfn/g
+
+> +	struct rmpentry e;
+> +	u64 pfn, pfn_end;
+> +	int level, ret;
+> +	u64 *e_data;
+> +
+> +	ret = __snp_lookup_rmpentry(dumped_pfn, &e, &level);
+> +	if (ret) {
+> +		pr_info("Failed to read RMP entry for PFN 0x%llx, error %d\n",
+> +			dumped_pfn, ret);
+> +		return;
+> +	}
+> +
+> +	e_data = (u64 *)&e;
+> +	if (e.assigned) {
+> +		pr_info("RMP entry for PFN 0x%llx: [high=0x%016llx low=0x%016llx]\n",
+> +			dumped_pfn, e_data[1], e_data[0]);
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * If the RMP entry for a particular PFN is not in an assigned state,
+> +	 * then it is sometimes useful to get an idea of whether or not any RMP
+> +	 * entries for other PFNs within the same 2MB region are assigned, since
+> +	 * those too can affect the ability to access a particular PFN in
+> +	 * certain situations, such as when the PFN is being accessed via a 2MB
+> +	 * mapping in the host page table.
+> +	 */
+> +	pfn = ALIGN(dumped_pfn, PTRS_PER_PMD);
+> +	pfn_end = pfn + PTRS_PER_PMD;
+> +
+> +	while (pfn < pfn_end) {
+> +		ret = __snp_lookup_rmpentry(pfn, &e, &level);
+> +		if (ret) {
+> +			pr_info_ratelimited("Failed to read RMP entry for PFN 0x%llx\n", pfn);
+
+Why ratelmited?
+
+No need to print anything if you fail to read it - simply dump the range
+[pfn, pfn_end], _data[0], e_data[1] exactly *once* before the loop and
+inside the loop dump only the ones you can lookup...
+
+> +			pfn++;
+> +			continue;
+> +		}
+> +
+> +		if (e_data[0] || e_data[1]) {
+> +			pr_info("No assigned RMP entry for PFN 0x%llx, but the 2MB region contains populated RMP entries, e.g.: PFN 0x%llx: [high=0x%016llx low=0x%016llx]\n",
+> +				dumped_pfn, pfn, e_data[1], e_data[0]);
+> +			return;
+> +		}
+> +		pfn++;
+> +	}
+> +
+> +	pr_info("No populated RMP entries in the 2MB region containing PFN 0x%llx\n",
+> +		dumped_pfn);
+
+... and then you don't need this one either.
+
+> +}
+> +
+> +void sev_dump_hva_rmpentry(unsigned long hva)
+> +{
+> +	unsigned int level;
+> +	pgd_t *pgd;
+> +	pte_t *pte;
+> +
+> +	pgd = __va(read_cr3_pa());
+> +	pgd += pgd_index(hva);
+> +	pte = lookup_address_in_pgd(pgd, hva, &level);
+
+If this is using the current CR3, why aren't you simply using
+lookup_address() here without the need to read pgd?
+
+> +
+> +	if (pte) {
+
+	if (!pte)
+
+Doh.
+
+> +		pr_info("Can't dump RMP entry for HVA %lx: no PTE/PFN found\n", hva);
+> +		return;
+> +	}
+> +
+> +	sev_dump_rmpentry(pte_pfn(*pte));
+> +}
+> +EXPORT_SYMBOL_GPL(sev_dump_hva_rmpentry);
+
+Who's going to use this, kvm?
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
