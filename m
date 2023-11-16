@@ -1,123 +1,96 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E84CA57
-	for <linux-coco@lists.linux.dev>; Thu, 16 Nov 2023 05:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F4945957
+	for <linux-coco@lists.linux.dev>; Thu, 16 Nov 2023 12:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nj7eHqmZ"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-53eeb28e8e5so4465a12.1
-        for <linux-coco@lists.linux.dev>; Wed, 15 Nov 2023 21:31:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700112708; x=1700717508; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4diCtTL3EivIaKd6Yrty+RIJmvtzTDLTo/nXfRxccPk=;
-        b=nj7eHqmZMtvU+rqiEzq9HBzjeFtIz4xnTUk0DV8okpX6MkSG5uBrnf/Idh91eAgnPW
-         rgWT2Mo/ROTlnVc/a/PrbfdM66cU6XpN76jRof/Ab4bhsAkXMyCixzsJbLTIbZ5EO/zi
-         +cKDde6eeFe41uRas3ouplE/onnI2WZ089KXyJ9WpSjfZdSPHRQOP5a/7U4OXjoRMVL1
-         IB7CuZPjEs6LBL9SrfFkxF77aTXrOUDAOgGswHH4mqV96y6M4rtMqZhoSAIw30pdquRC
-         U8MJ3cB60OMUt4lsaa6PYtgEhLXxUb6hP6a60p6d6C3pvFgm+hGnBDKv/SsvNOKpz2vW
-         vNfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700112708; x=1700717508;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4diCtTL3EivIaKd6Yrty+RIJmvtzTDLTo/nXfRxccPk=;
-        b=Ihe6bCEZTcf/b4Dfhcl4yRQvpsB6Cxpa1wE/N0Y1AQpFFiG0wt/XgO+PjMMhi6e9Q3
-         wGk2os3dLoePmRWILQ2QxRRF8zUxCWS2KAWBQ1dbiem9pJ+OSfliEwyc96trJNnfkE5N
-         gRCVFBqwma+OUqfWSJn+aw8gxGrRkbdkJnmWsZOMNlg3ICtHaOubOnBzqRkMK1ixqwQT
-         4OqPA7nmT6T5dgZ8l6oXBhUrVZ3Dj2tjZgpLZnOGr5C5sbzJQqCDAeqGMoGCNmH8ijsw
-         SpdI0cK+1zOCPRWqVdD7M6a5r0HuklTam96b7WovgXXUeqStO80x/sYDFwQEF3TGl3rr
-         uelw==
-X-Gm-Message-State: AOJu0YyKlXJUKSoJXGsxx/fYYMJqbdvXpP0QxsilmLhoeRZWVewmfeqh
-	20VtuETQG4y5G2eQNEbCet99ip6bA2rZRb6/oftsfA==
-X-Google-Smtp-Source: AGHT+IGOHarkPwgABVlEMIKneg9bFJeC/Sizgt1g86eNBkXhc6lGj6UX9Rcz+JOCTeiCxNp2DrA60v/aOwz4dSqmSxY=
-X-Received: by 2002:a05:6402:1bcb:b0:547:3f1:84e0 with SMTP id
- ch11-20020a0564021bcb00b0054703f184e0mr60685edb.7.1700112707847; Wed, 15 Nov
- 2023 21:31:47 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fccec/cl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700136656;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2o8llrEy4J3tkRIyO6miHMlYGkEf09QZYyfJI1/fuJU=;
+	b=fccec/cla5eQArgHuhiDh0LR/mkzcyj+tX12llUx83KiCiAxlPPYV+Blso9p4pZBJgqvwm
+	s+jy4uVtJv7XjEUjB7wGrJB7uOamyHdmpMoR55uRndTOM/2URjdlmAbagkAcYfQdoXlf8W
+	jM6hGArbkNeVyPvwJosOvRDKvZJXZJk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-O4zObQUCNOqwSdecns0Nxg-1; Thu, 16 Nov 2023 07:10:52 -0500
+X-MC-Unique: O4zObQUCNOqwSdecns0Nxg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ADDF285A58C;
+	Thu, 16 Nov 2023 12:10:51 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.11])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id DFD311C060AE;
+	Thu, 16 Nov 2023 12:10:50 +0000 (UTC)
+Date: Thu, 16 Nov 2023 20:10:47 +0800
+From: Baoquan He <bhe@redhat.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv3 00/14] x86/tdx: Add kexec support
+Message-ID: <ZVYGx1EwzjXbTEyX@MiWiFi-R3L-srv>
+References: <20231115120044.8034-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-49-michael.roth@amd.com> <CAAH4kHb=hNH88poYw-fj+ewYgt8F-hseZcRuLDdvbgpSQ5FDZQ@mail.gmail.com>
- <ZS614OSoritrE1d2@google.com> <b9da2fed-b527-4242-a588-7fc3ee6c9070@amd.com>
- <ZS_iS4UOgBbssp7Z@google.com> <20231110220756.7hhiy36jc6jiu7nm@amd.com> <ZU6zGgvfhga0Oiob@google.com>
-In-Reply-To: <ZU6zGgvfhga0Oiob@google.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Wed, 15 Nov 2023 21:31:34 -0800
-Message-ID: <CAAH4kHYPAiS+_KKhb1=8q=OkS+XBsES8J3K_acJ_5YcNZPi=kA@mail.gmail.com>
-Subject: Re: [PATCH v10 48/50] KVM: SEV: Provide support for SNP_GUEST_REQUEST
- NAE event
-To: Sean Christopherson <seanjc@google.com>
-Cc: Michael Roth <michael.roth@amd.com>, Alexey Kardashevskiy <aik@amd.com>, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
-	mingo@redhat.com, jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, 
-	ardb@kernel.org, pbonzini@redhat.com, vkuznets@redhat.com, 
-	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com, 
-	slp@redhat.com, pgonda@google.com, peterz@infradead.org, 
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com, 
-	dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
-	Brijesh Singh <brijesh.singh@amd.com>, Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231115120044.8034-1-kirill.shutemov@linux.intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-> > So we're sort of complicating the more common case to support a more niche
-> > one (as far as userspace is concerned anyway; as far as kernel goes, your
-> > approach is certainly simplest :)).
-> >
-> > Instead, maybe a compromise is warranted so the requirements on userspace
-> > side are less complicated for a more basic deployment:
-> >
-> >   1) If /dev/sev is used to set a global certificate, then that will be
-> >      used unconditionally by KVM, protected by simple dumb mutex during
-> >      usage/update.
-> >   2) If /dev/sev is not used to set the global certificate is the value
-> >      is NULL, we assume userspace wants full responsibility for managing
-> >      certificates and exit to userspace to request the certs in the manner
-> >      you suggested.
-> >
-> > Sean, Dionna, would this cover your concerns and address the certificate
-> > update use-case?
->
-> Honestly, no.  I see zero reason for the kernel to be involved.  IIUC, there's no
-> privileged operations that require kernel intervention, which means that shoving
-> a global cert into /dev/sev is using the CCP driver as middleman.  Just use a
-> userspace daemon.  I have a very hard time believing that passing around large-ish
-> blobs of data in userspace isn't already a solved problem.
+On 11/15/23 at 03:00pm, Kirill A. Shutemov wrote:
+> The patchset adds bits and pieces to get kexec (and crashkernel) work on
+> TDX guest.
 
-ping sathyanarayanan.kuppuswamy@linux.intel.com and +Dan Williams
+I finally got a machine of intel-eaglestream-spr as host and built a
+tdx guest to give it a shot, the kexec reboot is working very well,
+while kdump kernel always failed to boot up. I only built kernel and
+installed it on tdx guest.
+------------------------------------------
+[    1.422500] Run /init as init process
+[    1.423073] Failed to execute /init (error -2)
+[    1.423759] Run /sbin/init as init process
+[    1.424370] Run /etc/init as init process
+[    1.424969] Run /bin/init as init process
+[    1.425588] Run /bin/sh as init process
+[    1.426150] Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
+[    1.428122] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-00014-gbdba31ba3cec #3
+[    1.429232] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
+[    1.430328] Call Trace:
+[    1.430717]  <TASK>
+[    1.431041]  dump_stack_lvl+0x33/0x50
+[    1.431581]  panic+0x324/0x340
+[    1.432037]  ? __pfx_kernel_init+0x10/0x10
+[    1.432629]  kernel_init+0x174/0x1c0
+[    1.433149]  ret_from_fork+0x2d/0x50
+[    1.433690]  ? __pfx_kernel_init+0x10/0x10
+[    1.434277]  ret_from_fork_asm+0x1b/0x30
+[    1.434850]  </TASK>
+[    1.435345] Kernel Offset: disabled
+[    1.439216] Rebooting in 10 seconds..
+qemu-kvm: cpus are not resettable, terminating
 
-I think for a uniform experience for all coco technologies, we need
-someone from Intel to weigh in on supporting auxblob through a similar
-vmexit. Whereas the quoting enclave gets its PCK cert installed by the
-host, something like the firmware's SBOM [1] could be delivered in
-auxblob. The proposal to embed the compressed SBOM binary in a coff
-section of the UEFI doesn't get it communicated to user space, so this
-is a good place to get that info about the expected TDMR in. The SBOM
-proposal itself would need additional modeling in the coRIM profile to
-have extra coco-specific measurements or we need to find some other
-method of getting this info bundled with the attestation report.
-
-My own plan for SEV-SNP was to have a bespoke signed measurement of
-the UEFI in the GUID table, but that doesn't extend to TDX. If we're
-looking more at an industry alignment on coRIM for SBOM formats (yes
-please), then it'd be great to start getting that kind of info plumbed
-to the user in a uniform way that doesn't have to rely on servers
-providing the endorsements.
-
-[1] https://uefi.org/blog/firmware-sbom-proposal
-
-
-
--- 
--Dionna Glaze, PhD (she/her)
