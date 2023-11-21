@@ -1,46 +1,47 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9424C584C2
-	for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 21:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18452584C7
+	for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 21:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WPgnf8DE"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1cf59c07faeso19354315ad.2
-        for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 13:20:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPIfIzeP"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1ce3084c2d1so50992155ad.3
+        for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 13:20:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700601633; x=1701206433; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3xc8GLr7b1Ue8tHqz7t72K+XV3v6lbBa6kVrEMAQXlc=;
-        b=WPgnf8DEh3eQJpYVZArP3nP3s9pM5sBUk2HNOY7rWAdv+lr2u5xkp5rEH+5JaKNhjl
-         yCv2LvUKZx1MX/Ya4OKjnG0HaRIOXmKgON3X5RrivWrGZcmjkpe81RPiQgnZ9NxA9lRz
-         I7iZ5loNjeca9pVgvb0d59ZONG1zawQuU3RDplbBm0IbZ+Pl5RXE4toV6ETm6zIILzTQ
-         A1ltkrxNF/bsxN6NyoDMMQsgBIAGhGgXuBRNJ0iybpcT2o6lUd0sniitHh0sPeisjZjQ
-         s7d+8Q+tHC6e/fu+ytVIe89EivnGmHQ1SeFB0lrm5WVx/Mm32z81BLLiYPAF+O6FfwkQ
-         pc8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700601633; x=1701206433;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1700601635; x=1701206435; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3xc8GLr7b1Ue8tHqz7t72K+XV3v6lbBa6kVrEMAQXlc=;
-        b=oFBDbUR7GoRM8NgIlCH2J7Dm56a0EsqWZojkjpNVXG+XnF2qcwUjtCR42IN0s5G1oC
-         Rwd4WxodQmXvNihpnBpeQzIlBYUjRH2HOLg0qzw4B2q9gzSQXIGD/N7GPHw+WBpy6xYm
-         yFXHnZKFgFHIa7HpeRpM6HPDIT5e7QJPGGGcMa/9ULyOAve8EfCDbu7H/u7RurzakIsF
-         KsiZguET1Y9wS4vspD0NpPFuAVkmjV0XXszFA78HTtQoPK2qpQBKlkv/MxSNqn2N/WjJ
-         3G3NMLzHOd1zeLpYbzSPTPLVQwD5RVSd5VYl0V4WHa4Vi6GAZd0zuztUJvMMielvyPIa
-         H/7A==
-X-Gm-Message-State: AOJu0YxdHsclyh6YJgtbmYeC3Esxuxpi8xPpk9QcMqNCT0amMMERhPYw
-	8hejTwhfemFRFP1GcjSW/ds=
-X-Google-Smtp-Source: AGHT+IHM5X1K1llz1VLKg9yvkhT/EXDhe6Mz6grLILsACT3NwCrpJBBQDYHT5we5qKHkDCR9OMYszw==
-X-Received: by 2002:a17:902:f542:b0:1ce:5b21:5c34 with SMTP id h2-20020a170902f54200b001ce5b215c34mr508877plf.5.1700601632801;
-        Tue, 21 Nov 2023 13:20:32 -0800 (PST)
+        bh=huLzv0PM0TYdV6aZ2lF/u0VoqugwXORYCB79pbYxdec=;
+        b=nPIfIzePFz+aez/pRSosITdyBUCxl1U/ljLEL1v3i2oUdieOLVxLyrTsKiP3+2CjoY
+         yTixyoah//IAB+sw7b+6JVcmrB4zJ9GQyVmB5xozuY5fP0UMlPmilCp/YrJXBA6BuURj
+         /vwaEjaPpyj0qqLCu1gFLU+AYgxICv+9MIXBSLnJpClaHhUp52f0f2TgS0uIb1bMybd0
+         MakF5oYxTNklgvC0dwiD6jtOQbsAUrQ5eXRIL09Bc6Fk1zxjKE/46YqxnkageJD2QgHt
+         0XlgCVj0+tXV+T4Zbn87cocZqfpJyX+P6Hpt5e43UJvHrEDSqNxaRErXcII6WWvl81h4
+         HyUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700601635; x=1701206435;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=huLzv0PM0TYdV6aZ2lF/u0VoqugwXORYCB79pbYxdec=;
+        b=lBHfjZ5BmObNbj+Ap/O5Z1WcM5XbUaLV7zupnpPf6NsQLXMZg69je4es2RDj7VXLCR
+         HPNuBNp1oqrbNFa66rSVgRe1/rAEwavJPABZdygouaxN6Gwqiji4JkvbW/m7NNUF1j5o
+         SQ1XPpbDPCe1MEHIkSP/s+3oMjrDMhKwPrHMZl6MKXG/jJ2ZpPAN0LPi4OgwMn7dyFjz
+         CTYKFrJNPihyYA+XPDUq+H5vgq1+sYm+4x8F3id4qt0AUlMM5Fn7TuwEc5APOqCZbY+Y
+         8eiQbbUBi5eDJr5NMlraPicxfBIwm3KDpy/2xRmo89JhXVfFLafQyttjZwGfpSgRd5DX
+         EHeA==
+X-Gm-Message-State: AOJu0YyeE6FyHQT/lIGHQYxkTNJCQPoFma8hT5eb2+UwHbeVDwpWGBND
+	F2t7BN+5ucAZwrsWTbUXuj4=
+X-Google-Smtp-Source: AGHT+IGu3jcvDWzMmd2brW4AbNgRjSnITFzU3bEr293ek/NBxeKno17B5zHl10Y2Oi8nNIq+gnZz2g==
+X-Received: by 2002:a17:902:b687:b0:1cf:6d46:9f2f with SMTP id c7-20020a170902b68700b001cf6d469f2fmr351299pls.48.1700601635304;
+        Tue, 21 Nov 2023 13:20:35 -0800 (PST)
 Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id j2-20020a170902758200b001bf52834696sm8281924pll.207.2023.11.21.13.20.31
+        by smtp.gmail.com with ESMTPSA id j2-20020a170902758200b001bf52834696sm8281924pll.207.2023.11.21.13.20.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 13:20:32 -0800 (PST)
+        Tue, 21 Nov 2023 13:20:35 -0800 (PST)
 From: mhkelley58@gmail.com
 X-Google-Original-From: mhklinux@outlook.com
 To: tglx@linutronix.de,
@@ -70,10 +71,12 @@ To: tglx@linutronix.de,
 	linux-coco@lists.linux.dev,
 	linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 0/8] x86/coco: Mark CoCo VM pages not present when changing encrypted state
-Date: Tue, 21 Nov 2023 13:20:08 -0800
-Message-Id: <20231121212016.1154303-1-mhklinux@outlook.com>
+Subject: [PATCH v2 2/8] x86/mm: Don't do a TLB flush if changing a PTE that isn't marked present
+Date: Tue, 21 Nov 2023 13:20:10 -0800
+Message-Id: <20231121212016.1154303-3-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231121212016.1154303-1-mhklinux@outlook.com>
+References: <20231121212016.1154303-1-mhklinux@outlook.com>
 Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -85,127 +88,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Kelley <mhklinux@outlook.com>
 
-In a CoCo VM when a page transitions from encrypted to decrypted, or vice
-versa, attributes in the PTE must be updated *and* the hypervisor must
-be notified of the change. Because there are two separate steps, there's
-a window where the settings are inconsistent.  Normally the code that
-initiates the transition (via set_memory_decrypted() or
-set_memory_encrypted()) ensures that the memory is not being accessed
-during a transition, so the window of inconsistency is not a problem.
-However, the load_unaligned_zeropad() function can read arbitrary memory
-pages at arbitrary times, which could read a transitioning page during
-the window.  In such a case, CoCo VM specific exceptions are taken
-(depending on the CoCo architecture in use).  Current code in those
-exception handlers recovers and does "fixup" on the result returned by
-load_unaligned_zeropad().  Unfortunately, this exception handling can't
-work in paravisor scenarios (TDX Paritioning and SEV-SNP in vTOM mode)
-if the exceptions are routed to the paravisor.  The paravisor can't
-do load_unaligned_zeropad() fixup, so the exceptions would need to
-be forwarded from the paravisor to the Linux guest, but there are
-no architectural specs for how to do that.
+The core function __change_page_attr() currently sets up a TLB flush if
+a PTE is changed. But if the old value of the PTE doesn't include the
+PRESENT flag, the PTE won't be in the TLB, so a flush isn't needed.
 
-Fortunately, there's a simpler way to solve the problem by changing
-the core transition code in __set_memory_enc_pgtable() to do the
-following:
+Avoid an unnecessary TLB flush by conditioning the flush on the old
+PTE value including PRESENT.  This change improves the performance of
+functions like set_memory_p() by avoiding the flush if the memory range
+was previously all not present.
 
-1.  Remove aliasing mappings
-2.  Flush the data cache if needed
-3.  Remove the PRESENT bit from the PTEs of all transitioning pages
-4.  Set/clear the encryption attribute as appropriate
-5.  Flush the TLB so the changed encryption attribute isn't visible
-6.  Notify the hypervisor of the encryption status change
-7.  Add back the PRESENT bit, making the changed attribute visible
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+---
+ arch/x86/mm/pat/set_memory.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-With this approach, load_unaligned_zeropad() just takes its normal
-page-fault-based fixup path if it touches a page that is transitioning.
-As a result, load_unaligned_zeropad() and CoCo VM page transitioning
-are completely decoupled.  CoCo VM page transitions can proceed
-without needing to handle architecture-specific exceptions and fix
-things up. This decoupling reduces the complexity due to separate
-TDX and SEV-SNP fixup paths, and gives more freedom to revise and
-introduce new capabilities in future versions of the TDX and SEV-SNP
-architectures. Paravisor scenarios work properly without needing
-to forward exceptions.
-
-Patch 1 handles implications of the hypervisor callbacks in Step 6
-needing to do virt-to-phys translations on pages that are temporarily
-marked not present.
-
-Patch 2 ensures that Step 7 doesn't generate a TLB flush.  It is a
-performance optimization only and is not necessary for correctness.
-
-Patches 3 and 4 handle the case where SEV-SNP does PVALIDATE in
-Step 6, which requires a valid virtual address.  But since the
-PRESENT bit has been removed from the direct map virtual address,
-the PVALIDATE fails.  These patches construct a temporary virtual
-address to be used by PVALIDATE.  This code is SEV-SNP only because
-the TDX and Hyper-V paravisor flavors operate on physical addresses.
-
-Patches 5 and 6 are the core change that marks the transitioning
-pages as not present.  Patch 6 is optional since retaining both
-the "prepare" and "finish" callbacks doesn't hurt anything and
-there might be an argument for retaining both for future
-flexibility.  However, Patch 6 *does* eliminate about 75 lines of
-code and comments.
-
-Patch 7 is a somewhat tangential cleanup that removes an unnecessary
-wrapper function in the path for doing a transition.
-
-Patch 8 adds comments describing the implications of errors when
-doing a transition.  These implications are discussed in the email
-thread for the RFC patch[1] and a patch proposed by Rick Edgecombe.
-[2][3]
-
-With this change, the #VE and #VC exception handlers should no longer
-be triggered for load_unaligned_zeropad() accesses, and the existing
-code in those handlers to do the "fixup" shouldn't be needed. But I
-have not removed that code in this patch set. Kirill Shutemov wants
-to keep the code for TDX #VE, so the code for #VC on the SEV-SNP
-side has also been kept.
-
-This patch set is based on the linux-next20231117 code tree.
-
-Changes in v2:
-* Added Patches 3 and 4 to deal with the failure on SEV-SNP
-  [Tom Lendacky]
-* Split the main change into two separate patches (Patch 5 and
-  Patch 6) to improve reviewability and to offer the option of
-  retaining both hypervisor callbacks.
-* Patch 5 moves set_memory_p() out of an #ifdef CONFIG_X86_64
-  so that the code builds correctly for 32-bit, even though it
-  is never executed for 32-bit [reported by kernel test robot]
-
-[1] https://lore.kernel.org/lkml/1688661719-60329-1-git-send-email-mikelley@microsoft.com/
-[2] https://lore.kernel.org/lkml/20231017202505.340906-1-rick.p.edgecombe@intel.com/
-[3] https://lore.kernel.org/lkml/20231024234829.1443125-1-rick.p.edgecombe@intel.com/
-
-Michael Kelley (8):
-  x86/coco: Use slow_virt_to_phys() in page transition hypervisor
-    callbacks
-  x86/mm: Don't do a TLB flush if changing a PTE that isn't marked
-    present
-  x86/mm: Remove "static" from vmap_pages_range()
-  x86/sev: Enable PVALIDATE for PFNs without a valid virtual address
-  x86/mm: Mark CoCo VM pages not present while changing encrypted state
-  x86/mm: Merge CoCo prepare and finish hypervisor callbacks
-  x86/mm: Remove unnecessary call layer for __set_memory_enc_pgtable()
-  x86/mm: Add comments about errors in
-    set_memory_decrypted()/encrypted()
-
- arch/x86/boot/compressed/sev.c  |   2 +-
- arch/x86/coco/tdx/tdx.c         |  66 +----------------
- arch/x86/hyperv/ivm.c           |  15 ++--
- arch/x86/include/asm/sev.h      |   6 +-
- arch/x86/include/asm/x86_init.h |   4 --
- arch/x86/kernel/sev-shared.c    |  57 ++++++++++++---
- arch/x86/kernel/sev.c           |  43 ++++++-----
- arch/x86/kernel/x86_init.c      |   4 --
- arch/x86/mm/mem_encrypt_amd.c   |  23 +-----
- arch/x86/mm/pat/set_memory.c    | 122 ++++++++++++++++++++++----------
- include/linux/vmalloc.h         |   2 +
- mm/vmalloc.c                    |   2 +-
- 12 files changed, 171 insertions(+), 175 deletions(-)
-
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 8e19796e7ce5..d7ef8d312a47 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -1636,7 +1636,10 @@ static int __change_page_attr(struct cpa_data *cpa, int primary)
+ 		 */
+ 		if (pte_val(old_pte) != pte_val(new_pte)) {
+ 			set_pte_atomic(kpte, new_pte);
+-			cpa->flags |= CPA_FLUSHTLB;
++
++			/* If old_pte isn't present, it's not in the TLB */
++			if (pte_present(old_pte))
++				cpa->flags |= CPA_FLUSHTLB;
+ 		}
+ 		cpa->numpages = 1;
+ 		return 0;
 -- 
 2.25.1
 
