@@ -1,319 +1,211 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1010B3B785
-	for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 16:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9424C584C2
+	for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 21:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="eVwqUMJq"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0FE4A40E0031;
-	Tue, 21 Nov 2023 16:22:39 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id oGV3VnjCGa0l; Tue, 21 Nov 2023 16:22:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1700583756; bh=KxtFZyD5p+0QcjGE2q3dM11exyBdBO+J4w/uEQye0ts=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eVwqUMJqsVBloXiFRt+258PJZFxtbn4wup872Xc1eoqsrYQJz+sNNzMfmerWNy9Ye
-	 gJS9fWp4qQRzMrP/8h2ZCNfdu0EyfGQjIx/4dXPX/YYQ+/s5+bhQQsWsxBhwnzpteO
-	 sRlbZz6JKXOrk4JPgu3m9+bf2ulEoQJyAGr5xRvZQv3QffnTgXrj8i/6DT0ZD2MMCG
-	 a7F/anwpZmcKO4rgvu/vfInEj0icBwTmo9dyjASF19D5fWnlRnQz7gZvEixvsDzY7I
-	 dMsaKp1tq3jRgTCizTvL2E/10HFgE27HT64RIbLAM76/wiXAiLf2iHI0OsvDfS+AkY
-	 FVrgvhJjTphltPocEVyzTEoq+YCP8d3m/cg6cPLIKRBGPJmmWlWR8TutanG6QMYtDL
-	 /7lFAyeO4IZ3hZgxOlAEZQn0kff60spdv8O8ugxapdgUvPqiXzKrjSAJ40sOUl3Say
-	 P1+0IsBOsneK/9T2yy2gTJ/7e8OIgsBU7bM+HJbyGHb3kKm97uMyq8UAcGfVnYG6M4
-	 YPInq/u+smERJV4XSqxngcedV06ZTkID1BHdNOqgucK9mlKQLChBTKtiGAheZNy7jM
-	 x7+ghE5Nr1+wm+4Rn3W12IJbzDp+jqAnUCfodqx+BMXrNfZ21JeHa/naTZq8kOfIU6
-	 bJClC6oA6/aymqRh/j5YGUlg=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6FCF940E0032;
-	Tue, 21 Nov 2023 16:21:55 +0000 (UTC)
-Date: Tue, 21 Nov 2023 17:21:49 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
-	tony.luck@intel.com, marcorr@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v10 11/50] x86/sev: Add helper functions for RMPUPDATE
- and PSMASH instruction
-Message-ID: <20231121162149.GFZVzZHQB1g2bdvJie@fat_crate.local>
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-12-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WPgnf8DE"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1cf59c07faeso19354315ad.2
+        for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 13:20:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700601633; x=1701206433; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3xc8GLr7b1Ue8tHqz7t72K+XV3v6lbBa6kVrEMAQXlc=;
+        b=WPgnf8DEh3eQJpYVZArP3nP3s9pM5sBUk2HNOY7rWAdv+lr2u5xkp5rEH+5JaKNhjl
+         yCv2LvUKZx1MX/Ya4OKjnG0HaRIOXmKgON3X5RrivWrGZcmjkpe81RPiQgnZ9NxA9lRz
+         I7iZ5loNjeca9pVgvb0d59ZONG1zawQuU3RDplbBm0IbZ+Pl5RXE4toV6ETm6zIILzTQ
+         A1ltkrxNF/bsxN6NyoDMMQsgBIAGhGgXuBRNJ0iybpcT2o6lUd0sniitHh0sPeisjZjQ
+         s7d+8Q+tHC6e/fu+ytVIe89EivnGmHQ1SeFB0lrm5WVx/Mm32z81BLLiYPAF+O6FfwkQ
+         pc8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700601633; x=1701206433;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3xc8GLr7b1Ue8tHqz7t72K+XV3v6lbBa6kVrEMAQXlc=;
+        b=oFBDbUR7GoRM8NgIlCH2J7Dm56a0EsqWZojkjpNVXG+XnF2qcwUjtCR42IN0s5G1oC
+         Rwd4WxodQmXvNihpnBpeQzIlBYUjRH2HOLg0qzw4B2q9gzSQXIGD/N7GPHw+WBpy6xYm
+         yFXHnZKFgFHIa7HpeRpM6HPDIT5e7QJPGGGcMa/9ULyOAve8EfCDbu7H/u7RurzakIsF
+         KsiZguET1Y9wS4vspD0NpPFuAVkmjV0XXszFA78HTtQoPK2qpQBKlkv/MxSNqn2N/WjJ
+         3G3NMLzHOd1zeLpYbzSPTPLVQwD5RVSd5VYl0V4WHa4Vi6GAZd0zuztUJvMMielvyPIa
+         H/7A==
+X-Gm-Message-State: AOJu0YxdHsclyh6YJgtbmYeC3Esxuxpi8xPpk9QcMqNCT0amMMERhPYw
+	8hejTwhfemFRFP1GcjSW/ds=
+X-Google-Smtp-Source: AGHT+IHM5X1K1llz1VLKg9yvkhT/EXDhe6Mz6grLILsACT3NwCrpJBBQDYHT5we5qKHkDCR9OMYszw==
+X-Received: by 2002:a17:902:f542:b0:1ce:5b21:5c34 with SMTP id h2-20020a170902f54200b001ce5b215c34mr508877plf.5.1700601632801;
+        Tue, 21 Nov 2023 13:20:32 -0800 (PST)
+Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
+        by smtp.gmail.com with ESMTPSA id j2-20020a170902758200b001bf52834696sm8281924pll.207.2023.11.21.13.20.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Nov 2023 13:20:32 -0800 (PST)
+From: mhkelley58@gmail.com
+X-Google-Original-From: mhklinux@outlook.com
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	kirill.shutemov@linux.intel.com,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	akpm@linux-foundation.org,
+	urezki@gmail.com,
+	hch@infradead.org,
+	lstoakes@gmail.com,
+	thomas.lendacky@amd.com,
+	ardb@kernel.org,
+	jroedel@suse.de,
+	seanjc@google.com,
+	rick.p.edgecombe@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-hyperv@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/8] x86/coco: Mark CoCo VM pages not present when changing encrypted state
+Date: Tue, 21 Nov 2023 13:20:08 -0800
+Message-Id: <20231121212016.1154303-1-mhklinux@outlook.com>
+X-Mailer: git-send-email 2.25.1
+Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231016132819.1002933-12-michael.roth@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 16, 2023 at 08:27:40AM -0500, Michael Roth wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
-> 
-> The RMPUPDATE instruction writes a new RMP entry in the RMP Table. The
-> hypervisor will use the instruction to add pages to the RMP table. See
-> APM3 for details on the instruction operations.
-> 
-> The PSMASH instruction expands a 2MB RMP entry into a corresponding set
-> of contiguous 4KB-Page RMP entries. The hypervisor will use this
+From: Michael Kelley <mhklinux@outlook.com>
 
-s/-Page//
+In a CoCo VM when a page transitions from encrypted to decrypted, or vice
+versa, attributes in the PTE must be updated *and* the hypervisor must
+be notified of the change. Because there are two separate steps, there's
+a window where the settings are inconsistent.  Normally the code that
+initiates the transition (via set_memory_decrypted() or
+set_memory_encrypted()) ensures that the memory is not being accessed
+during a transition, so the window of inconsistency is not a problem.
+However, the load_unaligned_zeropad() function can read arbitrary memory
+pages at arbitrary times, which could read a transitioning page during
+the window.  In such a case, CoCo VM specific exceptions are taken
+(depending on the CoCo architecture in use).  Current code in those
+exception handlers recovers and does "fixup" on the result returned by
+load_unaligned_zeropad().  Unfortunately, this exception handling can't
+work in paravisor scenarios (TDX Paritioning and SEV-SNP in vTOM mode)
+if the exceptions are routed to the paravisor.  The paravisor can't
+do load_unaligned_zeropad() fixup, so the exceptions would need to
+be forwarded from the paravisor to the Linux guest, but there are
+no architectural specs for how to do that.
 
-> instruction to adjust the RMP entry without invalidating the previous
-> RMP entry.
+Fortunately, there's a simpler way to solve the problem by changing
+the core transition code in __set_memory_enc_pgtable() to do the
+following:
 
-"... without invalidating it."
+1.  Remove aliasing mappings
+2.  Flush the data cache if needed
+3.  Remove the PRESENT bit from the PTEs of all transitioning pages
+4.  Set/clear the encryption attribute as appropriate
+5.  Flush the TLB so the changed encryption attribute isn't visible
+6.  Notify the hypervisor of the encryption status change
+7.  Add back the PRESENT bit, making the changed attribute visible
 
-This below is useless text in the commit message - that should be all
-visible from the patch itself.
+With this approach, load_unaligned_zeropad() just takes its normal
+page-fault-based fixup path if it touches a page that is transitioning.
+As a result, load_unaligned_zeropad() and CoCo VM page transitioning
+are completely decoupled.  CoCo VM page transitions can proceed
+without needing to handle architecture-specific exceptions and fix
+things up. This decoupling reduces the complexity due to separate
+TDX and SEV-SNP fixup paths, and gives more freedom to revise and
+introduce new capabilities in future versions of the TDX and SEV-SNP
+architectures. Paravisor scenarios work properly without needing
+to forward exceptions.
 
-> Add the following external interface API functions:
-> 
-> psmash(): Used to smash a 2MB aligned page into 4K pages while
-> preserving the Validated bit in the RMP.
-> 
-> rmp_make_private(): Used to assign a page to guest using the RMPUPDATE
-> instruction.
-> 
-> rmp_make_shared(): Used to transition a page to hypervisor/shared
-> state using the RMPUPDATE instruction.
+Patch 1 handles implications of the hypervisor callbacks in Step 6
+needing to do virt-to-phys translations on pages that are temporarily
+marked not present.
 
-> 
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+Patch 2 ensures that Step 7 doesn't generate a TLB flush.  It is a
+performance optimization only and is not necessary for correctness.
 
-Since Brijesh is the author, first comes his SOB, then Ashish's and then
-yours.
+Patches 3 and 4 handle the case where SEV-SNP does PVALIDATE in
+Step 6, which requires a valid virtual address.  But since the
+PRESENT bit has been removed from the direct map virtual address,
+the PVALIDATE fails.  These patches construct a temporary virtual
+address to be used by PVALIDATE.  This code is SEV-SNP only because
+the TDX and Hyper-V paravisor flavors operate on physical addresses.
 
-> [mdr: add RMPUPDATE retry logic for transient FAIL_OVERLAP errors]
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/include/asm/sev-common.h | 14 +++++
->  arch/x86/include/asm/sev-host.h   | 10 ++++
->  arch/x86/virt/svm/sev.c           | 89 +++++++++++++++++++++++++++++++
->  3 files changed, 113 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
-> index 1e6fb93d8ab0..93ec8c12c91d 100644
-> --- a/arch/x86/include/asm/sev-common.h
-> +++ b/arch/x86/include/asm/sev-common.h
-> @@ -173,8 +173,22 @@ struct snp_psc_desc {
->  #define GHCB_ERR_INVALID_INPUT		5
->  #define GHCB_ERR_INVALID_EVENT		6
->  
-> +/* RMUPDATE detected 4K page and 2MB page overlap. */
-> +#define RMPUPDATE_FAIL_OVERLAP		4
-> +
->  /* RMP page size */
->  #define RMP_PG_SIZE_4K			0
-> +#define RMP_PG_SIZE_2M			1
+Patches 5 and 6 are the core change that marks the transitioning
+pages as not present.  Patch 6 is optional since retaining both
+the "prepare" and "finish" callbacks doesn't hurt anything and
+there might be an argument for retaining both for future
+flexibility.  However, Patch 6 *does* eliminate about 75 lines of
+code and comments.
 
-RMP_PG_LEVEL_2M
+Patch 7 is a somewhat tangential cleanup that removes an unnecessary
+wrapper function in the path for doing a transition.
 
->  #define RMP_TO_X86_PG_LEVEL(level)	(((level) == RMP_PG_SIZE_4K) ? PG_LEVEL_4K : PG_LEVEL_2M)
-> +#define X86_TO_RMP_PG_LEVEL(level)	(((level) == PG_LEVEL_4K) ? RMP_PG_SIZE_4K : RMP_PG_SIZE_2M)
-> +
-> +struct rmp_state {
-> +	u64 gpa;
-> +	u8 assigned;
-> +	u8 pagesize;
-> +	u8 immutable;
-> +	u8 rsvd;
-> +	u32 asid;
-> +} __packed;
->  
->  #endif
-> diff --git a/arch/x86/include/asm/sev-host.h b/arch/x86/include/asm/sev-host.h
-> index bb06c57f2909..1df989411334 100644
-> --- a/arch/x86/include/asm/sev-host.h
-> +++ b/arch/x86/include/asm/sev-host.h
-> @@ -16,9 +16,19 @@
->  #ifdef CONFIG_KVM_AMD_SEV
->  int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level);
->  void sev_dump_hva_rmpentry(unsigned long address);
-> +int psmash(u64 pfn);
-> +int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable);
-> +int rmp_make_shared(u64 pfn, enum pg_level level);
->  #else
->  static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return -ENXIO; }
->  static inline void sev_dump_hva_rmpentry(unsigned long address) {}
-> +static inline int psmash(u64 pfn) { return -ENXIO; }
-> +static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid,
-> +				   bool immutable)
-> +{
-> +	return -ENXIO;
-> +}
-> +static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENXIO; }
->  #endif
->  
->  #endif
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index cac3e311c38f..24a695af13a5 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-> @@ -367,3 +367,92 @@ void sev_dump_hva_rmpentry(unsigned long hva)
->  	sev_dump_rmpentry(pte_pfn(*pte));
->  }
->  EXPORT_SYMBOL_GPL(sev_dump_hva_rmpentry);
-> +
-> +/*
-> + * PSMASH a 2MB aligned page into 4K pages in the RMP table while preserving the
-> + * Validated bit.
-> + */
-> +int psmash(u64 pfn)
-> +{
-> +	unsigned long paddr = pfn << PAGE_SHIFT;
-> +	int ret;
-> +
-> +	pr_debug("%s: PFN: 0x%llx\n", __func__, pfn);
+Patch 8 adds comments describing the implications of errors when
+doing a transition.  These implications are discussed in the email
+thread for the RFC patch[1] and a patch proposed by Rick Edgecombe.
+[2][3]
 
-Left over?
+With this change, the #VE and #VC exception handlers should no longer
+be triggered for load_unaligned_zeropad() accesses, and the existing
+code in those handlers to do the "fixup" shouldn't be needed. But I
+have not removed that code in this patch set. Kirill Shutemov wants
+to keep the code for TDX #VE, so the code for #VC on the SEV-SNP
+side has also been kept.
 
-> +
-> +	if (!pfn_valid(pfn))
-> +		return -EINVAL;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return -ENXIO;
+This patch set is based on the linux-next20231117 code tree.
 
-That needs to happen first in the function.
+Changes in v2:
+* Added Patches 3 and 4 to deal with the failure on SEV-SNP
+  [Tom Lendacky]
+* Split the main change into two separate patches (Patch 5 and
+  Patch 6) to improve reviewability and to offer the option of
+  retaining both hypervisor callbacks.
+* Patch 5 moves set_memory_p() out of an #ifdef CONFIG_X86_64
+  so that the code builds correctly for 32-bit, even though it
+  is never executed for 32-bit [reported by kernel test robot]
 
-> +
-> +	/* Binutils version 2.36 supports the PSMASH mnemonic. */
-> +	asm volatile(".byte 0xF3, 0x0F, 0x01, 0xFF"
-> +		      : "=a"(ret)
-> +		      : "a"(paddr)
+[1] https://lore.kernel.org/lkml/1688661719-60329-1-git-send-email-mikelley@microsoft.com/
+[2] https://lore.kernel.org/lkml/20231017202505.340906-1-rick.p.edgecombe@intel.com/
+[3] https://lore.kernel.org/lkml/20231024234829.1443125-1-rick.p.edgecombe@intel.com/
 
-Add an empty space between the " and the (
+Michael Kelley (8):
+  x86/coco: Use slow_virt_to_phys() in page transition hypervisor
+    callbacks
+  x86/mm: Don't do a TLB flush if changing a PTE that isn't marked
+    present
+  x86/mm: Remove "static" from vmap_pages_range()
+  x86/sev: Enable PVALIDATE for PFNs without a valid virtual address
+  x86/mm: Mark CoCo VM pages not present while changing encrypted state
+  x86/mm: Merge CoCo prepare and finish hypervisor callbacks
+  x86/mm: Remove unnecessary call layer for __set_memory_enc_pgtable()
+  x86/mm: Add comments about errors in
+    set_memory_decrypted()/encrypted()
 
-> +		      : "memory", "cc");
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(psmash);
-> +
-> +static int rmpupdate(u64 pfn, struct rmp_state *val)
-
-rmp_state *state
-
-so that it is clear what this is.
-
-> +{
-> +	unsigned long paddr = pfn << PAGE_SHIFT;
-> +	int ret, level, npages;
-> +	int attempts = 0;
-> +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return -ENXIO;
-> +
-> +	do {
-> +		/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
-> +		asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
-> +			     : "=a"(ret)
-> +			     : "a"(paddr), "c"((unsigned long)val)
-
-Add an empty space between the " and the (
-
-> +			     : "memory", "cc");
-> +
-> +		attempts++;
-> +	} while (ret == RMPUPDATE_FAIL_OVERLAP);
-
-What's the logic here? Loop as long as it says "overlap"?
-
-How "transient" is that overlapping condition?
-
-What's the upper limit of that loop?
-
-This loop should check a generously chosen upper limit of attempts and
-then break if that limit is reached.
-
-> +	if (ret) {
-> +		pr_err("RMPUPDATE failed after %d attempts, ret: %d, pfn: %llx, npages: %d, level: %d\n",
-> +		       attempts, ret, pfn, npages, level);
-
-You're dumping here uninitialized stack variables npages and level.
-Looks like leftover from some prior version of this function.
-
-> +		sev_dump_rmpentry(pfn);
-> +		dump_stack();
-
-This is going to become real noisy on a huge machine with a lot of SNP
-guests.
-
-> +		return -EFAULT;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Assign a page to guest using the RMPUPDATE instruction.
-> + */
-
-One-line comment works too.
-
-/* Assign ... */
-
-> +int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable)
-> +{
-> +	struct rmp_state val;
-> +
-> +	memset(&val, 0, sizeof(val));
-> +	val.assigned = 1;
-> +	val.asid = asid;
-> +	val.immutable = immutable;
-> +	val.gpa = gpa;
-> +	val.pagesize = X86_TO_RMP_PG_LEVEL(level);
-> +
-> +	return rmpupdate(pfn, &val);
-> +}
-> +EXPORT_SYMBOL_GPL(rmp_make_private);
-> +
-> +/*
-> + * Transition a page to hypervisor/shared state using the RMPUPDATE instruction.
-> + */
-
-Ditto.
-
-> +int rmp_make_shared(u64 pfn, enum pg_level level)
-> +{
-> +	struct rmp_state val;
-> +
-> +	memset(&val, 0, sizeof(val));
-> +	val.pagesize = X86_TO_RMP_PG_LEVEL(level);
-> +
-> +	return rmpupdate(pfn, &val);
-> +}
-> +EXPORT_SYMBOL_GPL(rmp_make_shared);
-> -- 
-
-Thx.
+ arch/x86/boot/compressed/sev.c  |   2 +-
+ arch/x86/coco/tdx/tdx.c         |  66 +----------------
+ arch/x86/hyperv/ivm.c           |  15 ++--
+ arch/x86/include/asm/sev.h      |   6 +-
+ arch/x86/include/asm/x86_init.h |   4 --
+ arch/x86/kernel/sev-shared.c    |  57 ++++++++++++---
+ arch/x86/kernel/sev.c           |  43 ++++++-----
+ arch/x86/kernel/x86_init.c      |   4 --
+ arch/x86/mm/mem_encrypt_amd.c   |  23 +-----
+ arch/x86/mm/pat/set_memory.c    | 122 ++++++++++++++++++++++----------
+ include/linux/vmalloc.h         |   2 +
+ mm/vmalloc.c                    |   2 +-
+ 12 files changed, 171 insertions(+), 175 deletions(-)
 
 -- 
-Regards/Gruss,
-    Boris.
+2.25.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
