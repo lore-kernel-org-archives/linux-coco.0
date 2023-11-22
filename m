@@ -1,151 +1,67 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA73B584C4
-	for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 21:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE1715AD3
+	for <linux-coco@lists.linux.dev>; Wed, 22 Nov 2023 06:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKFnUhmX"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1cf61eed213so21289445ad.2
-        for <linux-coco@lists.linux.dev>; Tue, 21 Nov 2023 13:20:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700601643; x=1701206443; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r8UP31zz2tzNyQ1XI1JgNxsSlBbVYVcKRejtDKCckFA=;
-        b=NKFnUhmXCyWmobfxUyN0/UHr11yt4lZ2XdnWS1Ec+dJvrqnEwKcWOh+ABbvm3J07Ow
-         d/7pz5wYYhjdHV9gAkuuBGbzbeYUF6wnhBXwVJY1DUnaOlzgUXybLCd9tcG/4scRIMK6
-         y78MmwS0S3VSsBbmX6Jqspi4QVmrqvuoHJT97bnt2BMDetdd8cJHKROdAi9QeFqGDS4j
-         cJ3JNzC38joX+G8HIk3i3V+3KItHCJrTPDsQm6QwySC4BxdlUapgSCwTybRHg1B7UV7o
-         VXII1yWaMJUxMOfmMHEAF90mqTxMFKUj3i0Gm9zzdxLBz1rkmxi55sAfM89DKPmxLnX2
-         umjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700601643; x=1701206443;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=r8UP31zz2tzNyQ1XI1JgNxsSlBbVYVcKRejtDKCckFA=;
-        b=ilxGxu3CI4gA+qkDjophXafZ0Z/zdGvgJZE7PzV5Ufp9veGFgAMsXxvkarKrhlbCo2
-         3yebthY5phjGAF5VFEx5D855Adme5xuzn7WB7IT3RCCcOfg9UvYbOOOlR3Br54p0vQWm
-         dU0VQpalakl7XSBcNr+/4dG9GgYiVWXaJlIdyTh5sQD5rXkNpptAzg+3d7SKz3AKYUYS
-         Y53BSBeFRNcmRBHbxfy1N3cQdceNWzzluBloawwRBwIJMOw7vjYWS+PpltN+seA91cMS
-         IOTkrXpigDVKnWhZwdCapSSwJrCPxljwtXnDjgN8HhPXKKNSRuLxQKFY1VUmWRLVT9E2
-         RSKA==
-X-Gm-Message-State: AOJu0YxU+iobjZOlwVL46wq5MpYvodcotKJV5Yj/wBZxurK3VS1KN2uK
-	KkBeh15ujUfJnHSaRSXMraA=
-X-Google-Smtp-Source: AGHT+IGw2VRIF1KG5D53DbB1/O4g2GnYpBfD7Y44LMA28ENuVB/Zgq+24fLWa4HnCMkuyOoJyBsYkg==
-X-Received: by 2002:a17:903:1107:b0:1cf:73ff:b196 with SMTP id n7-20020a170903110700b001cf73ffb196mr470013plh.8.1700601643193;
-        Tue, 21 Nov 2023 13:20:43 -0800 (PST)
-Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id j2-20020a170902758200b001bf52834696sm8281924pll.207.2023.11.21.13.20.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 13:20:42 -0800 (PST)
-From: mhkelley58@gmail.com
-X-Google-Original-From: mhklinux@outlook.com
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	kirill.shutemov@linux.intel.com,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	akpm@linux-foundation.org,
-	urezki@gmail.com,
-	hch@infradead.org,
-	lstoakes@gmail.com,
-	thomas.lendacky@amd.com,
-	ardb@kernel.org,
-	jroedel@suse.de,
-	seanjc@google.com,
-	rick.p.edgecombe@intel.com,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Fe2I/IaA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xtM5w+3ktsUlDXMQVtnpLNAqSOnoIivIrkJOJCkE54I=; b=Fe2I/IaAvdwWG+Odxk+6Jev5z3
+	mK9sa7hFGwb3eVUq2oD7TbGb7hgoYqNv1lUIQA7B9oEqYEdA7jZ3gET9qde5ALtzb3OuNKtvKWEni
+	o2qwzas/AcBnFxN3yaeTlYMG1T7VFZ9CnZPWJdRQxiWxsMbr5KKC1jffOB91ZtG1CEHWFcV/1IYgy
+	4bx/fnMba/ANB9OlFhprno8GEhWK/gchg0kss9uWMEk4L5iMiT/3nWara2+kiWD/wDuQTE7xclyVN
+	+dq0YYJeGwaDiM6gM3nRzb56eKlxYha4MQob2PkWBTKillzASwWTQQRdBl+sAWzopkMNCaJfilvz4
+	jufGGghg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+	id 1r5gga-000q0S-01;
+	Wed, 22 Nov 2023 06:26:08 +0000
+Date: Tue, 21 Nov 2023 22:26:07 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: mhklinux@outlook.com
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	kirill.shutemov@linux.intel.com, kys@microsoft.com,
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	luto@kernel.org, peterz@infradead.org, akpm@linux-foundation.org,
+	urezki@gmail.com, hch@infradead.org, lstoakes@gmail.com,
+	thomas.lendacky@amd.com, ardb@kernel.org, jroedel@suse.de,
+	seanjc@google.com, rick.p.edgecombe@intel.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-hyperv@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 8/8] x86/mm: Add comments about errors in set_memory_decrypted()/encrypted()
-Date: Tue, 21 Nov 2023 13:20:16 -0800
-Message-Id: <20231121212016.1154303-9-mhklinux@outlook.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231121212016.1154303-1-mhklinux@outlook.com>
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-hyperv@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 3/8] x86/mm: Remove "static" from vmap_pages_range()
+Message-ID: <ZV2e/6qTJDkjYbfY@infradead.org>
 References: <20231121212016.1154303-1-mhklinux@outlook.com>
-Reply-To: mhklinux@outlook.com
+ <20231121212016.1154303-4-mhklinux@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231121212016.1154303-4-mhklinux@outlook.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Michael Kelley <mhklinux@outlook.com>
+On Tue, Nov 21, 2023 at 01:20:11PM -0800, mhkelley58@gmail.com wrote:
+> From: Michael Kelley <mhklinux@outlook.com>
+> 
+> The mm subsystem currently provides no mechanism to map memory pages
+> to a specified virtual address range.  A virtual address range can be
+> allocated using get_vm_area(), but the only function available for
+> mapping memory pages to a caller-specified address in that range is
+> ioremap_page_range(), which is inappropriate for system memory.
+> 
+> Fix this by allowing vmap_pages_range() to be used by callers outside
+> of vmalloc.c.
 
-The functions set_memory_decrypted()/encrypted() may leave the input
-memory range in an inconsistent state if an error occurs.  Add comments
-describing the situation and what callers must be aware of.  Also add
-comments in __set_memory_enc_dec() with more details on the issues and
-why further investment in error handling is not likely to be useful.
-
-No functional change.
-
-Suggested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
----
- arch/x86/mm/pat/set_memory.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 7365c86a7ff0..f519e5ca543b 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2133,6 +2133,24 @@ int set_memory_global(unsigned long addr, int numpages)
- /*
-  * __set_memory_enc_dec() is used for the hypervisors that get
-  * informed about "encryption" status via page tables.
-+ *
-+ * If an error occurs in making the transition between encrypted and
-+ * decrypted, the transitioned memory is left in an indeterminate state.
-+ * The encryption status in the guest page tables may not match the
-+ * hypervisor's view of the encryption status, making the memory unusable.
-+ * If the memory consists of multiple pages, different pages may be in
-+ * different indeterminate states.
-+ *
-+ * It is difficult to recover from errors such that we can ensure
-+ * consistency between the page tables and hypervisor view of the encryption
-+ * state. It may not be possible to back out of changes, particularly if the
-+ * failure occurs in communicating with the hypervisor. Given this limitation,
-+ * further work on the error handling is not likely to meaningfully improve
-+ * the reliablity or usability of the system.
-+ *
-+ * Any errors are likely to soon render the VM inoperable, but we return
-+ * an error rather than panic'ing so that the caller can decide how best
-+ * to shutdown cleanly.
-  */
- static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
- {
-@@ -2203,6 +2221,14 @@ static int __set_memory_enc_dec(unsigned long addr, int numpages, bool enc)
- 	return set_memory_p(&addr, numpages);
- }
- 
-+/*
-+ * If set_memory_encrypted()/decrypted() returns an error, the input memory
-+ * range is left in an indeterminate state.  The encryption status of pages
-+ * may be inconsistent, so the memory is unusable.  The caller should not try
-+ * to do further operations on the memory, or return it to the free list.
-+ * The memory must be leaked, and the caller should take steps to shutdown
-+ * the system as cleanly as possible as something is seriously wrong.
-+ */
- int set_memory_encrypted(unsigned long addr, int numpages)
- {
- 	return __set_memory_enc_dec(addr, numpages, true);
--- 
-2.25.1
+I really do not want to expose vmap_pages_range.  Please try to come up
+with a good way to encapsulate your map at a certain address primitive
+and implement it in vmalloc.c.
 
