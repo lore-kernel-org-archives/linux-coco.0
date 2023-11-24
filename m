@@ -1,98 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8F018035
-	for <linux-coco@lists.linux.dev>; Fri, 24 Nov 2023 10:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9F21D554
+	for <linux-coco@lists.linux.dev>; Fri, 24 Nov 2023 14:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aSjC4u+1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700820396; x=1732356396;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ohoDw7JZUTv1RjPou6a4xNAn3GHL7KxVPsE5YzKJdKk=;
-  b=aSjC4u+1xmJTwGHLPyvaC9P0P/0ptyoQ8N2eVVMsXs7Btdq2Qie8xUk4
-   grmyikOhraRY8QtpeeNMN+yDQ9srm+OGuzVK7laz0XgnxfqFK+nw1cOvC
-   1EDcV4ozsR4n3PVEBkxoNWman0NYAL5GlgEuuydsyk//+yeV75qHInDV2
-   CTdemdR5BhvETXbzLQBH/UP9tEQQ305A+XNyHMaxNsM64x+kjVjYc7ryk
-   wmGnBPkMb7XKJE1GH6PqU6nUeLjNuwUyi87qxtHZhei7XCkMW2Zoz+++m
-   FJ9XTr8R+00T9kTSW+2l08cyxZLrLc7cskKBiD9k4iZYc9oHbtVs0yJtB
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="377430630"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
-   d="scan'208";a="377430630"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 02:06:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="1014863922"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
-   d="scan'208";a="1014863922"
-Received: from dlemiech-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.59.78])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 02:06:29 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 6460210A38A; Fri, 24 Nov 2023 13:06:27 +0300 (+03)
-Date: Fri, 24 Nov 2023 13:06:27 +0300
-From: kirill.shutemov@linux.intel.com
-To: mhklinux@outlook.com
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, luto@kernel.org, peterz@infradead.org,
-	akpm@linux-foundation.org, urezki@gmail.com, hch@infradead.org,
-	lstoakes@gmail.com, thomas.lendacky@amd.com, ardb@kernel.org,
-	jroedel@suse.de, seanjc@google.com, rick.p.edgecombe@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-hyperv@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/8] x86/coco: Mark CoCo VM pages not present when
- changing encrypted state
-Message-ID: <20231124100627.avltdnuhminwuzax@box>
-References: <20231121212016.1154303-1-mhklinux@outlook.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Ctooe/e9"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EDE9D40E014B;
+	Fri, 24 Nov 2023 14:21:26 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id YSeBXnDxtyE4; Fri, 24 Nov 2023 14:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1700835684; bh=70iKoPUGxr70BVQmnLb6A91Gn+tCho1RWbxI7o21LXI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ctooe/e9xdy7g9A5Dt3Co0Eih6gkBFObocpqY9kf+AVVX2JHHnrhGw956oEpX2JSl
+	 pWLZ+ahyE8qbumSobifYHrDWkNgjqRE2iukzLYGxMCdUQe23vykj1F8o+tPwuVVJeX
+	 8FDKfwXuaG1ThoXbxS2ho06wnEKITKqosOxfM+NS+c5QbXPzFqdbQOnEv7pu3M1sAS
+	 ch19QwIEi5sim25VWG59lh+/w9JdOgZ3Pk9zZWj4KUKSCaQkY6V21JUmGpqCKJEDeq
+	 GeyndQcsiIhyBcDub9T5+b2SkMCQ3PAXXJX55NKbmMxfVWfNd/sIt1YcDglyMRKGD3
+	 Tw4vME3fA66qWtvNS0bhOMQo7RlE6dIOBNfdMuDqxRfDAvwOUuHaw0AA6KDANfVEA1
+	 gqSfIZGxL2/3bnUeNNZ3vhPytb603QwpgcLvmYQQDfpp51v+P3sULMlfBLI6VqutPx
+	 T2sjDy5Q66tOUvH9FVsBs8vCfKtjTc7MujYkFp88FWTDu6VmN9lMgpYsTCFENJ+0Gh
+	 9i8PFahOe9kp4ZGsyLzADxDhStdNLcg2Y3WYGs+G15F4ko4D83as9ax0X/aHqNuXE1
+	 vW6e47/s0EI/jlEnPXTx52prR/UIzAk2uwbVXPuoUvaDNBaRKKTBvkLWPm9WqvnnHk
+	 od6sd/wlEQNH5QrX5sJdyX44=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E2DD740E01A5;
+	Fri, 24 Nov 2023 14:20:43 +0000 (UTC)
+Date: Fri, 24 Nov 2023 15:20:43 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v10 12/50] x86/sev: Invalidate pages from the direct map
+ when adding them to the RMP table
+Message-ID: <20231124142043.GJZWCxOxeX0MLyZEWs@fat_crate.local>
+References: <20231016132819.1002933-1-michael.roth@amd.com>
+ <20231016132819.1002933-13-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231121212016.1154303-1-mhklinux@outlook.com>
+In-Reply-To: <20231016132819.1002933-13-michael.roth@amd.com>
 
-On Tue, Nov 21, 2023 at 01:20:08PM -0800, mhkelley58@gmail.com wrote:
-> From: Michael Kelley <mhklinux@outlook.com>
+On Mon, Oct 16, 2023 at 08:27:41AM -0500, Michael Roth wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> In a CoCo VM when a page transitions from encrypted to decrypted, or vice
-> versa, attributes in the PTE must be updated *and* the hypervisor must
-> be notified of the change.
+> The integrity guarantee of SEV-SNP is enforced through the RMP table.
+> The RMP is used with standard x86 and IOMMU page tables to enforce
+> memory restrictions and page access rights. The RMP check is enforced as
+> soon as SEV-SNP is enabled globally in the system. When hardware
+> encounters an RMP-check failure, it raises a page-fault exception.
+> 
+> The rmp_make_private() and rmp_make_shared() helpers are used to add
+> or remove the pages from the RMP table. Improve the rmp_make_private()
+> to invalidate state so that pages cannot be used in the direct-map after
+> they are added the RMP table, and restored to their default valid
+> permission after the pages are removed from the RMP table.
 
-Strictly speaking it is not true for TDX. Conversion to shared can be
-implicit: set shared bit and touch the page will do the conversion. MapGPA
-is optional.
+Brijesh's SOB comes
 
-> Because there are two separate steps, there's
-> a window where the settings are inconsistent.  Normally the code that
-> initiates the transition (via set_memory_decrypted() or
-> set_memory_encrypted()) ensures that the memory is not being accessed
-> during a transition, so the window of inconsistency is not a problem.
-> However, the load_unaligned_zeropad() function can read arbitrary memory
-> pages at arbitrary times, which could read a transitioning page during
-> the window.  In such a case, CoCo VM specific exceptions are taken
-> (depending on the CoCo architecture in use).  Current code in those
-> exception handlers recovers and does "fixup" on the result returned by
-> load_unaligned_zeropad().  Unfortunately, this exception handling can't
-> work in paravisor scenarios (TDX Paritioning and SEV-SNP in vTOM mode)
-> if the exceptions are routed to the paravisor.  The paravisor can't
-> do load_unaligned_zeropad() fixup, so the exceptions would need to
-> be forwarded from the paravisor to the Linux guest, but there are
-> no architectural specs for how to do that.
+<--- here,
 
-Hm. Can't we inject #PF (or #GP) into L2 if #VE/#VC handler in L1 sees
-cross-page access to shared memory while no fixup entry for the page in
-L1. It would give L2 chance to handle the situation in a transparent way.
+then Ashish's two tags.
 
-Maybe I miss something, I donno.
+Please audit your whole set for such inconsistencies.
+
+> @@ -404,6 +440,21 @@ static int rmpupdate(u64 pfn, struct rmp_state *val)
+>  	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+>  		return -ENXIO;
+>  
+> +	level = RMP_TO_X86_PG_LEVEL(val->pagesize);
+> +	npages = page_level_size(level) / PAGE_SIZE;
+> +
+> +	/*
+> +	 * If page is getting assigned in the RMP table then unmap it from the
+> +	 * direct map.
+
+Here I'm missing the explanation *why* the pages need to be unmapped
+from the direct map.
+
+What happens if not?
+
+> +	 */
+> +	if (val->assigned) {
+> +		if (invalidate_direct_map(pfn, npages)) {
+> +			pr_err("Failed to unmap %d pages at pfn 0x%llx from the direct_map\n",
+> +			       npages, pfn);
+
+invalidate_direct_map() already dumps an error message - no need to do
+that here too.
+
+> +			return -EFAULT;
+> +		}
+> +	}
+> +
+>  	do {
+>  		/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
+>  		asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
+> @@ -422,6 +473,17 @@ static int rmpupdate(u64 pfn, struct rmp_state *val)
+>  		return -EFAULT;
+>  	}
+>  
+> +	/*
+> +	 * Restore the direct map after the page is removed from the RMP table.
+> +	 */
+> +	if (!val->assigned) {
+> +		if (restore_direct_map(pfn, npages)) {
+> +			pr_err("Failed to map %d pages at pfn 0x%llx into the direct_map\n",
+> +			       npages, pfn);
+
+Ditto.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
