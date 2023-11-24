@@ -1,34 +1,32 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145872E41C
-	for <linux-coco@lists.linux.dev>; Fri, 24 Nov 2023 14:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADC22EB15
+	for <linux-coco@lists.linux.dev>; Fri, 24 Nov 2023 16:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ScHsj59y3z6K5q0;
-	Fri, 24 Nov 2023 22:48:25 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ScL0J3zRqz67cSV;
+	Sat, 25 Nov 2023 00:24:16 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 24 Nov
- 2023 14:52:45 +0000
-Date: Fri, 24 Nov 2023 14:52:44 +0000
+ 2023 16:25:43 +0000
+Date: Fri, 24 Nov 2023 16:25:42 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Dan Williams <dan.j.williams@intel.com>
-CC: Alexey Kardashevskiy <aik@amd.com>, Lukas Wunner <lukas@wunner.de>,
+CC: Lukas Wunner <lukas@wunner.de>, Alexey Kardashevskiy <aik@amd.com>,
 	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>,
 	<linux-pci@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>,
 	<suzuki.poulose@arm.com>
 Subject: Re: TDISP enablement
-Message-ID: <20231124145244.00001092@Huawei.com>
-In-Reply-To: <655004226efd8_46f029452@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Message-ID: <20231124162542.00005d95@Huawei.com>
+In-Reply-To: <654ebd31be94a_46f0294a5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 References: <e05eafd8-04b3-4953-8bca-dc321c1a60b9@amd.com>
 	<20231101072717.GB25863@wunner.de>
 	<20231101110551.00003896@Huawei.com>
-	<4cfe829f-8373-4ff4-a963-3ee74fa39efe@amd.com>
-	<20231103164404.00006e0b@Huawei.com>
-	<655004226efd8_46f029452@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	<654ebd31be94a_46f0294a5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -39,136 +37,164 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 
-On Sat, 11 Nov 2023 14:45:54 -0800
+On Fri, 10 Nov 2023 15:30:57 -0800
 Dan Williams <dan.j.williams@intel.com> wrote:
 
 > Jonathan Cameron wrote:
-> >    
-> > > >>> - tdi_info - read measurements/certs/interface report;    
-> > > >>
-> > > >> Does this return cached cert chains and measurements from the device
-> > > >> or does it retrieve them anew?  (Measurements might have changed if
-> > > >> MEAS_FRESH_CAP is supported.)
-> > > >>
-> > > >>    
-> > > >>> If the user wants only CMA/SPDM, the Lukas'es patched will do that without
-> > > >>> the PSP. This may co-exist with the AMD PSP (if the endpoint allows multiple
-> > > >>> sessions).    
-> > > >>
-> > > >> It can co-exist if the pci_cma_claim_ownership() library call
-> > > >> provided by patch 12/12 is invoked upon device_connect.
-> > > >>
-> > > >> It would seem advantageous if you could delay device_connect
-> > > >> until a device is actually passed through.  Then the OS can
-> > > >> initially authenticate and measure devices and the PSP takes
-> > > >> over when needed.    
-> > > > 
-> > > > Would that delay mean IDE isn't up - I think that wants to be
-> > > > available whether or not pass through is going on.
-> > > > 
-> > > > Given potential restrictions on IDE resources, I'd expect to see an explicit
-> > > > opt in from userspace on the host to start that process for a given
-> > > > device.  (udev rule or similar might kick it off for simple setups).
-> > > > 
-> > > > Would that work for the flows described?    
-> > > 
-> > > This would work but my (likely wrong) intention was also to run 
-> > > necessary setup in both host and guest at the same time before drivers 
-> > > probe devices. And while delaying it in the host is fine (well, for us 
-> > > in AMD, as we are aiming for CoCo/TDISP), in the guest this means less 
-> > > flexibility in enlightening the PCI subsystem and the guest driver: 
-> > > ideally (or at least initially) the driver is supposed to probe already 
-> > > enabled and verified device, as otherwise it has to do SWIOTLB until the 
-> > > userspace does the verification and kicks the driver to go proper direct 
-> > > DMA (or reload the driver?).  
+> > On Wed, 1 Nov 2023 08:27:17 +0100
+> > Lukas Wunner <lukas@wunner.de> wrote:
 > > 
-> > In the case of a guest getting a VF, there probably won't be any way for
-> > the kernel to run any native attestation anyway, so policy would have to
-> > rely on the CoCo paths. Kernel stuff Lukas has would just not try to attest
-> > or claim anything about it. If a VF has a CMA capable DOE instance
-> > then that's not there for IDE stuff at all, but for the guest to get
-> > direct measurements etc without PSP or anything else getting involved
-> > in which case the guest using that directly is a reasonable thing to do.  
-> 
-> Is that a practical reality that VFs are going to implement CMA?
-Maybe?  CMA definition allows for it.
->  My
-> expectation is CMA is a PF facility and the TSM retrieves measurements
-> for TDIs through that. At least that seems to be fundamental assumption
-> of the TDISP specification. Given config-cycles are always host-mediated
-> I expect guest CMA will always be a proxy whether it is is per-VF CMA
-> interface or not.
-
-There's a different between proxying where we just pass the reads and writes
-through unmodified as PCI config accesses and where we provide a userspace
-interface to do it because we need to maintain locking etc vs any potential
-host accesses. But sure, it's emulated even in this path.
-
-
-> 
+> > Thanks Alexy, this is a great discussion to kick off.
 > >   
+> > > On Wed, Nov 01, 2023 at 09:56:11AM +1100, Alexey Kardashevskiy wrote:  
+> > > > - device_connect - starts CMA/SPDM session, returns measurements/certs,
+> > > > runs IDE_KM to program the keys;    
+> > > 
+> > > Does the PSP have a set of trusted root certificates?
+> > > If so, where does it get them from?
+> > > 
+> > > If not, does the PSP just blindly trust the validity of the cert chain?
+> > > Who validates the cert chain, and when?
+> > > Which slot do you use?
+> > > Do you return only the cert chain of that single slot or of all slots?
+> > > Does the PSP read out all measurements available?  This may take a while
+> > > if the measurements are large and there are a lot of them.  
+> > 
+> > I'd definitely like their to be a path for certs and measurement to be
+> > checked by the Host OS (for the non TDISP path). Whether the
+> > policy setup cares about result is different question ;)
+> >   
+> > > 
 > > >   
-> > > > Next bit probably has holes...  Key is that a lot of the checks
-> > > > may fail, and it's up to host userspace policy to decide whether
-> > > > to proceed (other policy in the secure VM side of things obviously)
-> > > > 
-> > > > So my rough thinking is - for the two options (IDE / TDISP)
-> > > > 
-> > > > Comparing with Alexey's flow I think only real difference is that
-> > > > I call out explicit host userspace policy controls. I'd also like    
+> > > > - tdi_info - read measurements/certs/interface report;    
 > > > 
-> > > My imagination fails me :) What is the host supposed to do if the device 
-> > > verification fails/succeeds later, and how much later, and the device is 
-> > > a boot disk? Or is this userspace going to be limited to initramdisk? 
-> > > What is that thing which we are protecting against? Or it is for CUDA 
-> > > and such (which yeah, it can wait)?  
-> > 
-> > There are a bunch of non obvious cases indeed.  Hence make it all policy.
-> > Though if you have a flow where verification is needed for boot disk and
-> > it fails (and policy says that's not acceptable) then bad luck you
-> > probably need to squirt a cert into your ramdisk or UEFI or similar.  
-> 
-> It seems policy mechanisms should be incrementally added as clear need
-> for policy dictates, because that has ABI implications and
-> kernel-depedency-on-userpace expectations.
-
-Agreed, but I'd expect anything we implement in kernel to at least anticipate
-that we may want policy.  If there are multiple possible sources of
-verfication I'd be very surprised if we didn't need controls on whether
-we require all to pass, none to pass, one specific one to pass, or any one to pass.
-
-> 
-> > > > to use similar interfaces to convey state to host userspace as
-> > > > per Lukas' existing approaches.  Sure there will also be in
-> > > > kernel interfaces for driver to get data if it knows what to do
-> > > > with it.  I'd also like to enable the non tdisp flow to handle
-> > > > IDE setup 'natively' if that's possible on particular hardware.
-> > > > 
-> > > > 1. Host has a go at CMA/SPDM. Policy might say that a failure here is
-> > > >     a failure in general so reject device - or it might decide it's up to
-> > > >     the PSP etc.   (userspace can see if it succeeded)
-> > > >     I'd argue host software can launch this at any time.  It will
-> > > >     be a denial of service attack but so are many other things the host
-> > > >     can do.    
+> > > Does this return cached cert chains and measurements from the device
+> > > or does it retrieve them anew?  (Measurements might have changed if
+> > > MEAS_FRESH_CAP is supported.)
 > > > 
-> > > Trying to visualize it in my head - policy is a kernel cmdline or module 
-> > > parameter?  
+> > >   
+> > > > If the user wants only CMA/SPDM, the Lukas'es patched will do that without
+> > > > the PSP. This may co-exist with the AMD PSP (if the endpoint allows multiple
+> > > > sessions).    
+> > > 
+> > > It can co-exist if the pci_cma_claim_ownership() library call
+> > > provided by patch 12/12 is invoked upon device_connect.
+> > > 
+> > > It would seem advantageous if you could delay device_connect
+> > > until a device is actually passed through.  Then the OS can
+> > > initially authenticate and measure devices and the PSP takes
+> > > over when needed.  
 > > 
-> > Neither - it's bind not happening until userspace decides to kick it off.
-> > The module could provide it's own policy on top of this - so userspace
-> > could defer to that if it makes sense (so bind but rely on probe failing
-> > if policy not met).  
+> > Would that delay mean IDE isn't up - I think that wants to be
+> > available whether or not pass through is going on.
+> > 
+> > Given potential restrictions on IDE resources, I'd expect to see an explicit
+> > opt in from userspace on the host to start that process for a given
+> > device.  (udev rule or similar might kick it off for simple setups).
+> > 
+> > Would that work for the flows described?  
+> > 
+> > Next bit probably has holes...  Key is that a lot of the checks
+> > may fail, and it's up to host userspace policy to decide whether
+> > to proceed (other policy in the secure VM side of things obviously)
+> > 
+> > So my rough thinking is - for the two options (IDE / TDISP)
+> > 
+> > Comparing with Alexey's flow I think only real difference is that
+> > I call out explicit host userspace policy controls. I'd also like
+> > to use similar interfaces to convey state to host userspace as
+> > per Lukas' existing approaches.  Sure there will also be in
+> > kernel interfaces for driver to get data if it knows what to do
+> > with it.  I'd also like to enable the non tdisp flow to handle
+> > IDE setup 'natively' if that's possible on particular hardware.  
 > 
-> udev module policy can already gate binding, its not clear new policy
-> mechanism is needed here.
+> Are there any platforms that have IDE host capability that are not also
+> shipping a TSM. I know that some platform allow for either the TSM or
+> the OS to own that setup, but there are no standards there. I am not
+> opposed to the native path, but given a cross-vendor "TSM" concept is
+> needed and that a TSM is likely available on all IDE capable platforms
+> it seems reasonable for Linux to rely on TSM managed IDE for the near
+> term if not the long term as well.
 
-Yeah, I think that works - but to be sure definitely want to see a PoC.
+Just for completeness, (I mentioned it in the LPC discussion):
+IDE might well be link based between a switch inside the chassis and devices
+outside the chassis in which case it is all standards defined and the host
+isn't involved.  Not TDISP related though in that case.
 
-...
+> 
+> > 
+> > 1. Host has a go at CMA/SPDM. Policy might say that a failure here is
+> >    a failure in general so reject device - or it might decide it's up to
+> >    the PSP etc.   (userspace can see if it succeeded)
+> >    I'd argue host software can launch this at any time.  It will
+> >    be a denial of service attack but so are many other things the host
+> >    can do.
+> > 2. TDISP policy decision from host (userspace policy control)
+> >    Need to know end goal.  
+> 
+> If the TSM owns the TDISP state what this policy decision rely comes
+> down to is IDE stream resource management, I otherwise struggle to
+> conceptualize "TDISP policy".
+> 
+> The policy is userspace deciding to assign an interface to a TVM, and
+> that TVM requests that the assigned interface be allowed to access
+> private memory. So it's not necessarily TDISP policy, its assigned
+> interface is allowed to transition to private operation.
+Agreed - that is probably enough. I was avoiding calling out specific
+policy method, just don't want it to all flow through in the kernel without
+a hook.  If we assume that we do stuff only when allocated to a TVM
+then that acts as the gate.
+
+> 
+> > 3. IDE opt in from userspace.  Policy decision.
+> >   - If not TDISP 
+> >     - device_connect(IDE ONLY) - bunch of proxying in host OS.
+> >     - Cert chain and measurements presented to host, host can then check if
+> >       it is happy and expose for next policy decision.
+> >     - Hooks exposed for host to request more measurements, key refresh etc.
+> >       Idea being that the flow is host driven with PSP providing required
+> >       services.  If host can just do setup directly that's fine too.
+> >   - If TDISP (technically you can run tdisp from host, but lets assume
+> >     for now no one wants to do that? (yet)).
+> >     - device_connect(TDISP) - bunch of proxying in host OS.
+> >     - Cert chain and measurements presented to host, host can then check if
+> >       it is happy and expose for next policy decision.
+> > 
+> > 4. Flow after this depends on early or late binding (lockdown)
+> >    but could load driver at this point.  Userspace policy.
+> >    tdi-bind etc.  
+> 
+> It is valid to load the driver and operate the device in shared mode, so
+> I am not sure that acceptance should gate driver loading. It also seems
+> like something that could be managed with module policy if someone
+> wanted to prevent shared operation before acceptance.
+
+Indeed that might work.  Depends on device and whether it needs to be exposed
+in shared mode (which may well require driver code auditing etc that can be relaxed
+if it's up with TDISP and we know it's not a 'fake').
+
+> 
+> [..]
+> > > > The next steps:
+> > > > - expose blobs via configfs (like Dan did configfs-tsm);  
+> 
+> I am missing the context here, but for measurements I think those are
+> better in sysfs. configs was only to allow for multiple containers to grab
+> attestation reports, measurements are device local and containers can
+> all see the same measurements.
+
+Ah. Fair point.
+
+> 
+> > > > - s/tdisp.ko/coco.ko/;  
+> 
+> My bikeshed contribution, perhaps tsm.ko? I am still not someone who can
+> say "coco" for confidential computing with a straight face.
+
+Then definitely should be coco.ko :)
 
 Jonathan
-
