@@ -1,153 +1,452 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2101.outbound.protection.outlook.com [40.92.21.101])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED8F815
-	for <linux-coco@lists.linux.dev>; Mon, 27 Nov 2023 01:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F3717988
+	for <linux-coco@lists.linux.dev>; Mon, 27 Nov 2023 10:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kV4YxyQ/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CxkJdp0QRv/hMqZecdVzYfhXFjUlCUoY4cQn3np5omlij+F1431t5kPC0Cm4sakgbGkR2BUQCGTvacyqjkgmiSxlnQ/SGk+40Q/0xe5/rh2+uQpfPEDq8GrC2YRLZLbO4VGYXobeUTP7sd40zWS26ocSQq6Zgh8gQ5IwmECSWC5IRd7bDnLVu/TRujGsaVAsuxY81w0ZCQ4rMNBJM4SUIyVv4NBnq6MKYEXDA3ovS15fGbX0TqamKq0h+x9/uSyAnc6JVKD/M3ig14w/bw9QuoD/a3kdZAWA2lpjuLg8xk42AvJRPeoxrJtmn2HsLZhU2UhMYKDlqW4sDTZUje0PWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pFYAwb2uHkRzfJiUT3Q5WIZy/cuNKmc5tHQfzHPzR1M=;
- b=aqXWnduc3ZtEsDsNDZ1VPkHomTSXiy2wDOnZqAXsrdXFobPRJRY5rZLmMTzSXz2fgLk/AHHlZTP2QI1scS7bTDK3mNfia9rtj1fL+oYv1k+eCsxBIylI23A30FFSsMuzEzlPleqI6YiNKUMXMZceLK4kB+l1pb4wnOWr6UBtvuU8YPrJbScYSTf2pL10vCJBvI06v3rNwOzJPM+BP8qx90B6KHg0o2b1g+GUWUEPUV0aDHFRfT1J90EeXJuxT9PWSBHr+IgjTf/xtF1fEUCc45rmQnc7ZXAyMGWxRh50qjYqTRdKASZ9nINCssYscD7GJceAh0LKjxIHotFWDva1Og==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pFYAwb2uHkRzfJiUT3Q5WIZy/cuNKmc5tHQfzHPzR1M=;
- b=kV4YxyQ/vQuFMxkfKtody0jFeObI8OkJDLGfF7J1D7uhlxnGr0esC9YmT9k+pp9oLpb5YUUGfJoXrQrl+fh9Q5jc//Zkm5O7uhRH02wpB0HTMFpN1ewNh0Oh8LFLKIoNqJUp6hSjHVBpRkEhmMaTtRo6v6yFqqT3hMlZJJskzxBqZ3gguuo8UEJEy2hSdM6SXKiYVhsLkDxrtcIQPQANU7GJsH2SfZDh6L5IIzHyWvi2bLx1qC5B5GFz3cFOrHXC+R9j7j0cKRGiMowct5s4xXTvwb+HRMR67y20kXNlz2erWPB3NfONn+LKpVGXY7Lve5dUWLGLcpAZ2ybo75LHog==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by DM6PR02MB6859.namprd02.prod.outlook.com (2603:10b6:5:211::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Mon, 27 Nov
- 2023 01:06:06 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::54e5:928f:135c:6190]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::54e5:928f:135c:6190%7]) with mapi id 15.20.7025.022; Mon, 27 Nov 2023
- 01:06:06 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Christoph Hellwig <hch@infradead.org>
-CC: "tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
-	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
-	<haiyangz@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"decui@microsoft.com" <decui@microsoft.com>, "luto@kernel.org"
-	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "urezki@gmail.com"
-	<urezki@gmail.com>, "lstoakes@gmail.com" <lstoakes@gmail.com>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "ardb@kernel.org"
-	<ardb@kernel.org>, "jroedel@suse.de" <jroedel@suse.de>, "seanjc@google.com"
-	<seanjc@google.com>, "rick.p.edgecombe@intel.com"
-	<rick.p.edgecombe@intel.com>, "sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: RE: [PATCH v2 3/8] x86/mm: Remove "static" from vmap_pages_range()
-Thread-Topic: [PATCH v2 3/8] x86/mm: Remove "static" from vmap_pages_range()
-Thread-Index: AQHaHMCcNHra+kumRUKExlyvEEqwbLCF4AyAgAEpOhCAAHuSgIAF2cCA
-Date: Mon, 27 Nov 2023 01:06:06 +0000
-Message-ID:
- <SN6PR02MB4157CF2A7C5064889843D79CD4BDA@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20231121212016.1154303-1-mhklinux@outlook.com>
- <20231121212016.1154303-4-mhklinux@outlook.com>
- <ZV2e/6qTJDkjYbfY@infradead.org>
- <SN6PR02MB41571479B921621EDE3BE2EFD4B9A@SN6PR02MB4157.namprd02.prod.outlook.com>
- <ZV7//Yjx6ngKSf0M@infradead.org>
-In-Reply-To: <ZV7//Yjx6ngKSf0M@infradead.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [8sq0PsiZIh4OiZxFtOxeEFKLYajZBv4t]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|DM6PR02MB6859:EE_
-x-ms-office365-filtering-correlation-id: f9e86026-9ebc-435f-1284-08dbeee508ad
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- uUczENZUO9tU8KLD4eO5/4JTMPNPddsExLkMHuBmza2d0sTIjV5lHDUU9QhIACQS9iJqsnDv0dZNNEgIGcRYua+SczxeXNBJWUxTVqdTVL5Xcz/LT9dlwt1OBspKO5vHaqsnrpYDNFLacYWtK/s1lK+i9fIMTP7kVHnRF0wfq1dmeqd1pZQ6S3h+oTvw2BX2C+DSrKEEsXulytpzwHgfiupEz71p/jeL38K/YwrZinqf85qOt31PKAZ6gUzh2WlVa1uJfiClVd8VHxqxqZZyxEHTF7hCChaK/qjQuu6jRt326GfyK0C/1gzgFh2Ij2QhkRHUtf5V6oY2mbQ4zVw05Hj/bfZjiddZwS0V8pPAwjrSSlZDw/HilQ8aKWxAqS0YUqpnYlbOgpE5rTtdCDP35UX0yeo3ha2FfKX5OsfezyRzyJ6PmirFW6S687Aq+uY7RYrE9/728Xe2Br6h8yTES4PMosxj2TkKyLYXSczOP5/oiOB4nPTqg7SH2hPTFPISsDKOfyIrU0/DnNiNFKRfuKq7iXGIRnG2WyaimK55jh/CkAbElyuR13R0c0PxpeWt
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?QNm+2Y/9H9BB7qvg69Bb9JgxlHERT+21UEB0/HpEFAXEo0hkBMglPFWxaF02?=
- =?us-ascii?Q?UvXvy1gXsspLeE7Xx9k4DSv6T616ezIh+ynd831TTZLP57MGdAAR+ThXdF3f?=
- =?us-ascii?Q?9pML6cwrjbXn1+bhINM8Vf/87elx1aieCm/99bAwRiAN964h4Coep2t/qxpa?=
- =?us-ascii?Q?H6Z61MZ4t9xITThEVWYyyH4Xn8nBG5DMEkhjhn3dJlvMFIK8cyLPWpKDx7jp?=
- =?us-ascii?Q?FV41DSbkupMfJDHd/18I0jdijD2/SL4OefrIcRHUtn3Tij+sWT+1tcBtQcw3?=
- =?us-ascii?Q?v2p7jlS/jk1hEdA/2tuINH/tYRCTF6z0NA07/bcnKDgQrHpKjh/Xf6p0AxLG?=
- =?us-ascii?Q?olluCCnfqLHg1l1OyopHNItcLtsL5GGXLZcGLI7EYqlWmnmeA/CFO4LbADBb?=
- =?us-ascii?Q?neKYuDYlrn/z/sHmZCvPILk0elP8I9kESegKwT/13XS3QaCJaLFINJSlUt4j?=
- =?us-ascii?Q?RFR5WXys6Mxd/PyJ6vf5RWqyXxKybEPMMgB6wVcKJMAemB+Nef+4Zmusd2eb?=
- =?us-ascii?Q?GKQGkBHuxWp51pXshzXOjPI34a5RAEqO6ZTDDNeNCiwfRAt+akATzloks98x?=
- =?us-ascii?Q?Cn66onciJwI2MTKnZ2KWz/5BDy6YCANQm7RckIDYgzZnq0QBtXamnar3y3ny?=
- =?us-ascii?Q?AvEVHTq0UoDMaaDY8IcjySsojwTe+vcaYcFR2uS6RgGZA1HI4S1FsSsvbBhj?=
- =?us-ascii?Q?XFb5CbXxJygUBjP0D4fD+nja4A0YL/4fbWSVSFE+FPKC1eWBE/KTab8elza5?=
- =?us-ascii?Q?GUXBUyGfzt5bugQNSap8LpetHPvbeX7bLGkYvl6qfzt5IiNN8BS59qiWhQ7p?=
- =?us-ascii?Q?/z96y1zwxZd/G6Y+FrEummobaO6/Tjw0hka9GWo1oa+PSb5yIVCDLz/AQFsj?=
- =?us-ascii?Q?Eg6jeb8mbiBT73rc2jrBSGQ+eOEVwzR6AGUzfofmInM5mKvlKW81Spf7wcIb?=
- =?us-ascii?Q?Ymc5FUuacM2P2/BIgKHCaOJE4Udew1tFDvysXjZ8Y7enEED+ZzjhYgt6ejm4?=
- =?us-ascii?Q?3ClWJtCi29F5PeZs2o+5PF05pOGZyNDhwOIgBOd0bmP+jQNxul8O3JYRc5sA?=
- =?us-ascii?Q?OqoLOSg8QrFpyeVnjZECoBVNcEAghPuOBG7QKTI+r8l7chThz5xhp2MVMJ7g?=
- =?us-ascii?Q?/NbT196UaWh9r6SHmdlxkY50J3RsZQ0YUNcjtCOdr16vV93/ZudJewsjr8Yc?=
- =?us-ascii?Q?bmkRKH9EkQLE0er71pDjY1RiCa0lYY+7822PSA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="M6Rt7dYW"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7ECCC40E0257;
+	Mon, 27 Nov 2023 10:00:27 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id BU3zEmMa-BjB; Mon, 27 Nov 2023 10:00:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1701079225; bh=TtlE36AUctgokR2LY9a4CvYQHcd567Ym1wq8sq+2ihM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M6Rt7dYWHGuYYMKKnLHdE+bsGHF4qtcXP+fynrgyym9GNI2DisXZC/Im1xT+/o7ky
+	 vPEWJVl69HWMWMtsPt4j7/Maw8VNJUX8xA6vTrjjh0hu6NjyPY74CNk2vOpPKAaRyr
+	 eKUaIRfaJ671zR1EZ7+EIHom+tYw3QpojOHy0Tvbnf9OWdz6YrRppAv4btNQ24JKAG
+	 ys+2POPXC2GIhcNbDyLmCPlW6bnhZhwmOOnOpKQpYBLmD56/gdjCoiQTQwJzW3rLW3
+	 BRjzUP2icnTuEN5XYI8+sryVJjw7KRTSqb+xDKhQBEOoJGxr/8ICUdFYK44slWI85j
+	 N3EYYhf8P/f2EDo95DHJ6iqXaRp2fyo0hoWARYy3s4mWnma41/nz2SFsWL+A5jZUN9
+	 kyIn1B88ZjyJH2l/W+Zt7XuJSDsWLa/k1N0P6zaD5b5BL/sH6lknLw63swIpXLtpXQ
+	 Sz+5D1rUWLIt7lNSiTx7krZmSV1RpOoP+4mguMQpVuHkXfcZEXI2TlxQFnrkIvz3nB
+	 rxu5dSBq25HD2LP5DOJdprHsyRqw3/r/B7X90yhqMyBRamWw7ZI4piTMVxxuOSsgPp
+	 Y5ZJgsTZuvZe4I2q3oZTtxYmyPqgHgvKlyVaDctG5MbOoTTQlisZcOge/khZj1o1Jp
+	 F4+/JjWMsZQKD/FINdCPRVsQ=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 00F5940E014B;
+	Mon, 27 Nov 2023 09:59:43 +0000 (UTC)
+Date: Mon, 27 Nov 2023 10:59:37 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Jarkko Sakkinen <jarkko@profian.com>
+Subject: Re: [PATCH v10 14/50] crypto: ccp: Add support to initialize the
+ AMD-SP for SEV-SNP
+Message-ID: <20231127095937.GLZWRoiaqGlJMX54Xb@fat_crate.local>
+References: <20231016132819.1002933-1-michael.roth@amd.com>
+ <20231016132819.1002933-15-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9e86026-9ebc-435f-1284-08dbeee508ad
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2023 01:06:06.3058
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6859
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231016132819.1002933-15-michael.roth@amd.com>
 
-From: Christoph Hellwig <hch@infradead.org> Sent: Wednesday, November 22, 2=
-023 11:32 PM
->=20
-> On Thu, Nov 23, 2023 at 12:24:49AM +0000, Michael Kelley wrote:
-> > > I really do not want to expose vmap_pages_range.  Please try to come =
-up
-> > > with a good way to encapsulate your map at a certain address primitiv=
-e
-> > > and implement it in vmalloc.c.
-> >
-> > To clarify, is your concern narrowly about vmap_pages_range()
-> > specifically?
->=20
-> The prime concern is that it took a lot of effort to make
-> vmap_pages_range static and remove all the abuses.  I absolutely
-> object to undoing that.
+On Mon, Oct 16, 2023 at 08:27:43AM -0500, Michael Roth wrote:
+> +/*
+> + * SEV_DATA_RANGE_LIST:
+> + *   Array containing range of pages that firmware transitions to HV-fixed
+> + *   page state.
+> + */
+> +struct sev_data_range_list *snp_range_list;
+> +static int __sev_snp_init_locked(int *error);
 
-OK, so I assume that means a new variant of vmap_pages_range(),
-such as one that always sets the page_shift parameter to PAGE_SIZE,
-is also disallowed because of the same potential for abuse.
+Put the function above the caller instead of doing a forward
+declaration.
 
-So the only way to map a system memory page to a vmalloc
-vaddr is via vmap() or some vmap() variant, which always
-creates a new vmalloc area via get_vm_area().  I've done the
-perf measurements, and that approach won't work for this use
-case.  Independent of the alignment requirements, the churn in
-creating and removing a lot of vmalloc areas has too much perf
-impact.   The use case needs to create a single vmalloc area, and
-then repeatedly map/unmap a page in that existing area.
+>  static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
+>  {
+>  	struct sev_device *sev = psp_master->sev_data;
+> @@ -466,9 +479,9 @@ static inline int __sev_do_init_locked(int *psp_ret)
+>  		return __sev_init_locked(psp_ret);
+>  }
+>  
+> -static int __sev_platform_init_locked(int *error)
+> +static int ___sev_platform_init_locked(int *error, bool probe)
+>  {
+> -	int rc = 0, psp_ret = SEV_RET_NO_FW_CALL;
+> +	int rc, psp_ret = SEV_RET_NO_FW_CALL;
+>  	struct psp_device *psp = psp_master;
+>  	struct sev_device *sev;
+>  
+> @@ -480,6 +493,34 @@ static int __sev_platform_init_locked(int *error)
+>  	if (sev->state == SEV_STATE_INIT)
+>  		return 0;
+>  
+> +	/*
+> +	 * Legacy guests cannot be running while SNP_INIT(_EX) is executing,
+> +	 * so perform SEV-SNP initialization at probe time.
+> +	 */
+> +	rc = __sev_snp_init_locked(error);
+> +	if (rc && rc != -ENODEV) {
+> +		/*
+> +		 * Don't abort the probe if SNP INIT failed,
+> +		 * continue to initialize the legacy SEV firmware.
+> +		 */
+> +		dev_err(sev->dev, "SEV-SNP: failed to INIT rc %d, error %#x\n", rc, *error);
+> +	}
+> +
+> +	/* Delay SEV/SEV-ES support initialization */
+> +	if (probe && !psp_init_on_probe)
+> +		return 0;
+> +
+> +	if (!sev_es_tmr) {
+> +		/* Obtain the TMR memory area for SEV-ES use */
+> +		sev_es_tmr = sev_fw_alloc(SEV_ES_TMR_SIZE);
+> +		if (sev_es_tmr)
+> +			/* Must flush the cache before giving it to the firmware */
+> +			clflush_cache_range(sev_es_tmr, SEV_ES_TMR_SIZE);
+> +		else
+> +			dev_warn(sev->dev,
+> +				 "SEV: TMR allocation failed, SEV-ES support unavailable\n");
+> +		}
+> +
+>  	if (sev_init_ex_buffer) {
+>  		rc = sev_read_init_ex_file();
+>  		if (rc)
+> @@ -522,6 +563,11 @@ static int __sev_platform_init_locked(int *error)
+>  	return 0;
+>  }
+>  
+> +static int __sev_platform_init_locked(int *error)
+> +{
+> +	return ___sev_platform_init_locked(error, false);
+> +}
 
-I'll have to handle the top-level problem in this patch set in
-a completely different way.
+Uff, this is silly. And it makes the code hard to follow and that meat
+of the platform init functionality in the ___-prefixed function a mess.
 
-Michael
+And the problem is that that "probe" functionality is replicated from
+the one place where it is actually needed - sev_pci_init() which calls
+that new sev_platform_init_on_probe() function - to everything that
+calls __sev_platform_init_locked() for which you've added a wrapper.
+
+What you should do, instead, is split the code around
+__sev_snp_init_locked() in a separate function which does only that and
+is called something like __sev_platform_init_snp_locked() or so which
+does that unconditional work. And then you define:
+
+_sev_platform_init_locked(int *error, bool probe)
+
+note the *one* '_' - i.e., first layer:
+
+_sev_platform_init_locked(int *error, bool probe):
+{
+	__sev_platform_init_snp_locked(error);
+
+	if (!probe)
+		return 0;
+
+	if (psp_init_on_probe)
+		__sev_platform_init_locked(error);
+
+	...
+}
+
+and you do the probing in that function only so that it doesn't get lost
+in the bunch of things __sev_platform_init_locked() does.
+
+And then you call _sev_platform_init_locked() everywhere and no need for
+a second sev_platform_init_on_probe().
+
+> +
+>  int sev_platform_init(int *error)
+>  {
+>  	int rc;
+> @@ -534,6 +580,17 @@ int sev_platform_init(int *error)
+>  }
+>  EXPORT_SYMBOL_GPL(sev_platform_init);
+>  
+> +static int sev_platform_init_on_probe(int *error)
+> +{
+> +	int rc;
+> +
+> +	mutex_lock(&sev_cmd_mutex);
+> +	rc = ___sev_platform_init_locked(error, true);
+> +	mutex_unlock(&sev_cmd_mutex);
+> +
+> +	return rc;
+> +}
+> +
+>  static int __sev_platform_shutdown_locked(int *error)
+>  {
+>  	struct sev_device *sev = psp_master->sev_data;
+> @@ -838,6 +895,191 @@ static int sev_update_firmware(struct device *dev)
+>  	return ret;
+>  }
+>  
+> +static void snp_set_hsave_pa(void *arg)
+> +{
+> +	wrmsrl(MSR_VM_HSAVE_PA, 0);
+> +}
+> +
+> +static int snp_filter_reserved_mem_regions(struct resource *rs, void *arg)
+> +{
+> +	struct sev_data_range_list *range_list = arg;
+> +	struct sev_data_range *range = &range_list->ranges[range_list->num_elements];
+> +	size_t size;
+> +
+> +	if ((range_list->num_elements * sizeof(struct sev_data_range) +
+> +	     sizeof(struct sev_data_range_list)) > PAGE_SIZE)
+> +		return -E2BIG;
+
+Why? A comment would be helpful like with the rest this patch adds.
+
+> +	switch (rs->desc) {
+> +	case E820_TYPE_RESERVED:
+> +	case E820_TYPE_PMEM:
+> +	case E820_TYPE_ACPI:
+> +		range->base = rs->start & PAGE_MASK;
+> +		size = (rs->end + 1) - rs->start;
+> +		range->page_count = size >> PAGE_SHIFT;
+> +		range_list->num_elements++;
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __sev_snp_init_locked(int *error)
+> +{
+> +	struct psp_device *psp = psp_master;
+> +	struct sev_data_snp_init_ex data;
+> +	struct sev_device *sev;
+> +	int rc = 0;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return -ENODEV;
+> +
+> +	if (!psp || !psp->sev_data)
+> +		return -ENODEV;
+
+Only caller checks this already.
+
+> +	sev = psp->sev_data;
+> +
+> +	if (sev->snp_initialized)
+
+Do we really need this silly boolean or is there a way to query the
+platform whether SNP has been initialized?
+
+> +		return 0;
+> +
+> +	if (!sev_version_greater_or_equal(SNP_MIN_API_MAJOR, SNP_MIN_API_MINOR)) {
+> +		dev_dbg(sev->dev, "SEV-SNP support requires firmware version >= %d:%d\n",
+> +			SNP_MIN_API_MAJOR, SNP_MIN_API_MINOR);
+> +		return 0;
+> +	}
+> +
+> +	/*
+> +	 * The SNP_INIT requires the MSR_VM_HSAVE_PA must be set to 0h
+> +	 * across all cores.
+> +	 */
+> +	on_each_cpu(snp_set_hsave_pa, NULL, 1);
+> +
+> +	/*
+> +	 * Starting in SNP firmware v1.52, the SNP_INIT_EX command takes a list of
+> +	 * system physical address ranges to convert into the HV-fixed page states
+> +	 * during the RMP initialization.  For instance, the memory that UEFI
+> +	 * reserves should be included in the range list. This allows system
+> +	 * components that occasionally write to memory (e.g. logging to UEFI
+> +	 * reserved regions) to not fail due to RMP initialization and SNP enablement.
+> +	 */
+> +	if (sev_version_greater_or_equal(SNP_MIN_API_MAJOR, 52)) {
+
+Is there a generic way to probe SNP_INIT_EX presence in the firmware or
+are FW version numbers the only way?
+
+> +		/*
+> +		 * Firmware checks that the pages containing the ranges enumerated
+> +		 * in the RANGES structure are either in the Default page state or in the
+
+"default"
+
+> +		 * firmware page state.
+> +		 */
+> +		snp_range_list = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> +		if (!snp_range_list) {
+> +			dev_err(sev->dev,
+> +				"SEV: SNP_INIT_EX range list memory allocation failed\n");
+> +			return -ENOMEM;
+> +		}
+> +
+> +		/*
+> +		 * Retrieve all reserved memory regions setup by UEFI from the e820 memory map
+> +		 * to be setup as HV-fixed pages.
+> +		 */
+> +
+
+
+^ Superfluous newline.
+
+> +		rc = walk_iomem_res_desc(IORES_DESC_NONE, IORESOURCE_MEM, 0, ~0,
+> +					 snp_range_list, snp_filter_reserved_mem_regions);
+> +		if (rc) {
+> +			dev_err(sev->dev,
+> +				"SEV: SNP_INIT_EX walk_iomem_res_desc failed rc = %d\n", rc);
+> +			return rc;
+> +		}
+> +
+> +		memset(&data, 0, sizeof(data));
+> +		data.init_rmp = 1;
+> +		data.list_paddr_en = 1;
+> +		data.list_paddr = __psp_pa(snp_range_list);
+> +
+> +		/*
+> +		 * Before invoking SNP_INIT_EX with INIT_RMP=1, make sure that
+> +		 * all dirty cache lines containing the RMP are flushed.
+> +		 *
+> +		 * NOTE: that includes writes via RMPUPDATE instructions, which
+> +		 * are also cacheable writes.
+> +		 */
+> +		wbinvd_on_all_cpus();
+> +
+> +		rc = __sev_do_cmd_locked(SEV_CMD_SNP_INIT_EX, &data, error);
+> +		if (rc)
+> +			return rc;
+> +	} else {
+> +		/*
+> +		 * SNP_INIT is equivalent to SNP_INIT_EX with INIT_RMP=1, so
+> +		 * just as with that case, make sure all dirty cache lines
+> +		 * containing the RMP are flushed.
+> +		 */
+> +		wbinvd_on_all_cpus();
+> +
+> +		rc = __sev_do_cmd_locked(SEV_CMD_SNP_INIT, NULL, error);
+> +		if (rc)
+> +			return rc;
+> +	}
+
+So instead of duplicating the code here at the end of the if-else
+branching, you can do:
+
+	void *arg = &data;
+
+	if () {
+		...
+		cmd = SEV_CMD_SNP_INIT_EX;
+	} else {
+		cmd = SEV_CMD_SNP_INIT;
+		arg = NULL;
+	}
+
+	wbinvd_on_all_cpus();
+	rc = __sev_do_cmd_locked(cmd, arg, error);
+	if (rc)
+		return rc;
+
+> +	/* Prepare for first SNP guest launch after INIT */
+> +	wbinvd_on_all_cpus();
+
+Why is that WBINVD needed?
+
+> +	rc = __sev_do_cmd_locked(SEV_CMD_SNP_DF_FLUSH, NULL, error);
+> +	if (rc)
+> +		return rc;
+> +
+> +	sev->snp_initialized = true;
+> +	dev_dbg(sev->dev, "SEV-SNP firmware initialized\n");
+> +
+> +	return rc;
+> +}
+> +
+> +static int __sev_snp_shutdown_locked(int *error)
+> +{
+> +	struct sev_device *sev = psp_master->sev_data;
+> +	struct sev_data_snp_shutdown_ex data;
+> +	int ret;
+> +
+> +	if (!sev->snp_initialized)
+> +		return 0;
+> +
+> +	memset(&data, 0, sizeof(data));
+> +	data.length = sizeof(data);
+> +	data.iommu_snp_shutdown = 1;
+> +
+> +	wbinvd_on_all_cpus();
+> +
+> +retry:
+> +	ret = __sev_do_cmd_locked(SEV_CMD_SNP_SHUTDOWN_EX, &data, error);
+> +	/* SHUTDOWN may require DF_FLUSH */
+> +	if (*error == SEV_RET_DFFLUSH_REQUIRED) {
+> +		ret = __sev_do_cmd_locked(SEV_CMD_SNP_DF_FLUSH, NULL, NULL);
+> +		if (ret) {
+> +			dev_err(sev->dev, "SEV-SNP DF_FLUSH failed\n");
+> +			return ret;
+
+When you return here,  sev->snp_initialized is still true but, in
+reality, it probably is in some half-broken state after issuing those
+commands you it is not really initialized anymore.
+
+> +		}
+> +		goto retry;
+
+This needs an upper limit from which to break out and not potentially
+endless-loop.
+
+> +	}
+> +	if (ret) {
+> +		dev_err(sev->dev, "SEV-SNP firmware shutdown failed\n");
+> +		return ret;
+> +	}
+> +
+> +	sev->snp_initialized = false;
+> +	dev_dbg(sev->dev, "SEV-SNP firmware shutdown\n");
+> +
+> +	return ret;
+> +}
+> +
+> +static int sev_snp_shutdown(int *error)
+> +{
+> +	int rc;
+> +
+> +	mutex_lock(&sev_cmd_mutex);
+> +	rc = __sev_snp_shutdown_locked(error);
+
+Why is this "locked" version even there if it is called only here?
+
+IOW, put all the logic in here - no need for
+__sev_snp_shutdown_locked().
+
+> +	mutex_unlock(&sev_cmd_mutex);
+> +
+> +	return rc;
+> +}
+
+...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
