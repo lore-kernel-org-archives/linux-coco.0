@@ -1,200 +1,153 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2101.outbound.protection.outlook.com [40.92.21.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADC22EB15
-	for <linux-coco@lists.linux.dev>; Fri, 24 Nov 2023 16:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ScL0J3zRqz67cSV;
-	Sat, 25 Nov 2023 00:24:16 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 24 Nov
- 2023 16:25:43 +0000
-Date: Fri, 24 Nov 2023 16:25:42 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: Lukas Wunner <lukas@wunner.de>, Alexey Kardashevskiy <aik@amd.com>,
-	<linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>,
-	<suzuki.poulose@arm.com>
-Subject: Re: TDISP enablement
-Message-ID: <20231124162542.00005d95@Huawei.com>
-In-Reply-To: <654ebd31be94a_46f0294a5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <e05eafd8-04b3-4953-8bca-dc321c1a60b9@amd.com>
-	<20231101072717.GB25863@wunner.de>
-	<20231101110551.00003896@Huawei.com>
-	<654ebd31be94a_46f0294a5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED8F815
+	for <linux-coco@lists.linux.dev>; Mon, 27 Nov 2023 01:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kV4YxyQ/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CxkJdp0QRv/hMqZecdVzYfhXFjUlCUoY4cQn3np5omlij+F1431t5kPC0Cm4sakgbGkR2BUQCGTvacyqjkgmiSxlnQ/SGk+40Q/0xe5/rh2+uQpfPEDq8GrC2YRLZLbO4VGYXobeUTP7sd40zWS26ocSQq6Zgh8gQ5IwmECSWC5IRd7bDnLVu/TRujGsaVAsuxY81w0ZCQ4rMNBJM4SUIyVv4NBnq6MKYEXDA3ovS15fGbX0TqamKq0h+x9/uSyAnc6JVKD/M3ig14w/bw9QuoD/a3kdZAWA2lpjuLg8xk42AvJRPeoxrJtmn2HsLZhU2UhMYKDlqW4sDTZUje0PWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pFYAwb2uHkRzfJiUT3Q5WIZy/cuNKmc5tHQfzHPzR1M=;
+ b=aqXWnduc3ZtEsDsNDZ1VPkHomTSXiy2wDOnZqAXsrdXFobPRJRY5rZLmMTzSXz2fgLk/AHHlZTP2QI1scS7bTDK3mNfia9rtj1fL+oYv1k+eCsxBIylI23A30FFSsMuzEzlPleqI6YiNKUMXMZceLK4kB+l1pb4wnOWr6UBtvuU8YPrJbScYSTf2pL10vCJBvI06v3rNwOzJPM+BP8qx90B6KHg0o2b1g+GUWUEPUV0aDHFRfT1J90EeXJuxT9PWSBHr+IgjTf/xtF1fEUCc45rmQnc7ZXAyMGWxRh50qjYqTRdKASZ9nINCssYscD7GJceAh0LKjxIHotFWDva1Og==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pFYAwb2uHkRzfJiUT3Q5WIZy/cuNKmc5tHQfzHPzR1M=;
+ b=kV4YxyQ/vQuFMxkfKtody0jFeObI8OkJDLGfF7J1D7uhlxnGr0esC9YmT9k+pp9oLpb5YUUGfJoXrQrl+fh9Q5jc//Zkm5O7uhRH02wpB0HTMFpN1ewNh0Oh8LFLKIoNqJUp6hSjHVBpRkEhmMaTtRo6v6yFqqT3hMlZJJskzxBqZ3gguuo8UEJEy2hSdM6SXKiYVhsLkDxrtcIQPQANU7GJsH2SfZDh6L5IIzHyWvi2bLx1qC5B5GFz3cFOrHXC+R9j7j0cKRGiMowct5s4xXTvwb+HRMR67y20kXNlz2erWPB3NfONn+LKpVGXY7Lve5dUWLGLcpAZ2ybo75LHog==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by DM6PR02MB6859.namprd02.prod.outlook.com (2603:10b6:5:211::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Mon, 27 Nov
+ 2023 01:06:06 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::54e5:928f:135c:6190]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::54e5:928f:135c:6190%7]) with mapi id 15.20.7025.022; Mon, 27 Nov 2023
+ 01:06:06 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Christoph Hellwig <hch@infradead.org>
+CC: "tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
+	<haiyangz@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>, "luto@kernel.org"
+	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "urezki@gmail.com"
+	<urezki@gmail.com>, "lstoakes@gmail.com" <lstoakes@gmail.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "ardb@kernel.org"
+	<ardb@kernel.org>, "jroedel@suse.de" <jroedel@suse.de>, "seanjc@google.com"
+	<seanjc@google.com>, "rick.p.edgecombe@intel.com"
+	<rick.p.edgecombe@intel.com>, "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: RE: [PATCH v2 3/8] x86/mm: Remove "static" from vmap_pages_range()
+Thread-Topic: [PATCH v2 3/8] x86/mm: Remove "static" from vmap_pages_range()
+Thread-Index: AQHaHMCcNHra+kumRUKExlyvEEqwbLCF4AyAgAEpOhCAAHuSgIAF2cCA
+Date: Mon, 27 Nov 2023 01:06:06 +0000
+Message-ID:
+ <SN6PR02MB4157CF2A7C5064889843D79CD4BDA@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20231121212016.1154303-1-mhklinux@outlook.com>
+ <20231121212016.1154303-4-mhklinux@outlook.com>
+ <ZV2e/6qTJDkjYbfY@infradead.org>
+ <SN6PR02MB41571479B921621EDE3BE2EFD4B9A@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <ZV7//Yjx6ngKSf0M@infradead.org>
+In-Reply-To: <ZV7//Yjx6ngKSf0M@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tmn: [8sq0PsiZIh4OiZxFtOxeEFKLYajZBv4t]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|DM6PR02MB6859:EE_
+x-ms-office365-filtering-correlation-id: f9e86026-9ebc-435f-1284-08dbeee508ad
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ uUczENZUO9tU8KLD4eO5/4JTMPNPddsExLkMHuBmza2d0sTIjV5lHDUU9QhIACQS9iJqsnDv0dZNNEgIGcRYua+SczxeXNBJWUxTVqdTVL5Xcz/LT9dlwt1OBspKO5vHaqsnrpYDNFLacYWtK/s1lK+i9fIMTP7kVHnRF0wfq1dmeqd1pZQ6S3h+oTvw2BX2C+DSrKEEsXulytpzwHgfiupEz71p/jeL38K/YwrZinqf85qOt31PKAZ6gUzh2WlVa1uJfiClVd8VHxqxqZZyxEHTF7hCChaK/qjQuu6jRt326GfyK0C/1gzgFh2Ij2QhkRHUtf5V6oY2mbQ4zVw05Hj/bfZjiddZwS0V8pPAwjrSSlZDw/HilQ8aKWxAqS0YUqpnYlbOgpE5rTtdCDP35UX0yeo3ha2FfKX5OsfezyRzyJ6PmirFW6S687Aq+uY7RYrE9/728Xe2Br6h8yTES4PMosxj2TkKyLYXSczOP5/oiOB4nPTqg7SH2hPTFPISsDKOfyIrU0/DnNiNFKRfuKq7iXGIRnG2WyaimK55jh/CkAbElyuR13R0c0PxpeWt
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?QNm+2Y/9H9BB7qvg69Bb9JgxlHERT+21UEB0/HpEFAXEo0hkBMglPFWxaF02?=
+ =?us-ascii?Q?UvXvy1gXsspLeE7Xx9k4DSv6T616ezIh+ynd831TTZLP57MGdAAR+ThXdF3f?=
+ =?us-ascii?Q?9pML6cwrjbXn1+bhINM8Vf/87elx1aieCm/99bAwRiAN964h4Coep2t/qxpa?=
+ =?us-ascii?Q?H6Z61MZ4t9xITThEVWYyyH4Xn8nBG5DMEkhjhn3dJlvMFIK8cyLPWpKDx7jp?=
+ =?us-ascii?Q?FV41DSbkupMfJDHd/18I0jdijD2/SL4OefrIcRHUtn3Tij+sWT+1tcBtQcw3?=
+ =?us-ascii?Q?v2p7jlS/jk1hEdA/2tuINH/tYRCTF6z0NA07/bcnKDgQrHpKjh/Xf6p0AxLG?=
+ =?us-ascii?Q?olluCCnfqLHg1l1OyopHNItcLtsL5GGXLZcGLI7EYqlWmnmeA/CFO4LbADBb?=
+ =?us-ascii?Q?neKYuDYlrn/z/sHmZCvPILk0elP8I9kESegKwT/13XS3QaCJaLFINJSlUt4j?=
+ =?us-ascii?Q?RFR5WXys6Mxd/PyJ6vf5RWqyXxKybEPMMgB6wVcKJMAemB+Nef+4Zmusd2eb?=
+ =?us-ascii?Q?GKQGkBHuxWp51pXshzXOjPI34a5RAEqO6ZTDDNeNCiwfRAt+akATzloks98x?=
+ =?us-ascii?Q?Cn66onciJwI2MTKnZ2KWz/5BDy6YCANQm7RckIDYgzZnq0QBtXamnar3y3ny?=
+ =?us-ascii?Q?AvEVHTq0UoDMaaDY8IcjySsojwTe+vcaYcFR2uS6RgGZA1HI4S1FsSsvbBhj?=
+ =?us-ascii?Q?XFb5CbXxJygUBjP0D4fD+nja4A0YL/4fbWSVSFE+FPKC1eWBE/KTab8elza5?=
+ =?us-ascii?Q?GUXBUyGfzt5bugQNSap8LpetHPvbeX7bLGkYvl6qfzt5IiNN8BS59qiWhQ7p?=
+ =?us-ascii?Q?/z96y1zwxZd/G6Y+FrEummobaO6/Tjw0hka9GWo1oa+PSb5yIVCDLz/AQFsj?=
+ =?us-ascii?Q?Eg6jeb8mbiBT73rc2jrBSGQ+eOEVwzR6AGUzfofmInM5mKvlKW81Spf7wcIb?=
+ =?us-ascii?Q?Ymc5FUuacM2P2/BIgKHCaOJE4Udew1tFDvysXjZ8Y7enEED+ZzjhYgt6ejm4?=
+ =?us-ascii?Q?3ClWJtCi29F5PeZs2o+5PF05pOGZyNDhwOIgBOd0bmP+jQNxul8O3JYRc5sA?=
+ =?us-ascii?Q?OqoLOSg8QrFpyeVnjZECoBVNcEAghPuOBG7QKTI+r8l7chThz5xhp2MVMJ7g?=
+ =?us-ascii?Q?/NbT196UaWh9r6SHmdlxkY50J3RsZQ0YUNcjtCOdr16vV93/ZudJewsjr8Yc?=
+ =?us-ascii?Q?bmkRKH9EkQLE0er71pDjY1RiCa0lYY+7822PSA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9e86026-9ebc-435f-1284-08dbeee508ad
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Nov 2023 01:06:06.3058
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6859
 
-On Fri, 10 Nov 2023 15:30:57 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+From: Christoph Hellwig <hch@infradead.org> Sent: Wednesday, November 22, 2=
+023 11:32 PM
+>=20
+> On Thu, Nov 23, 2023 at 12:24:49AM +0000, Michael Kelley wrote:
+> > > I really do not want to expose vmap_pages_range.  Please try to come =
+up
+> > > with a good way to encapsulate your map at a certain address primitiv=
+e
+> > > and implement it in vmalloc.c.
+> >
+> > To clarify, is your concern narrowly about vmap_pages_range()
+> > specifically?
+>=20
+> The prime concern is that it took a lot of effort to make
+> vmap_pages_range static and remove all the abuses.  I absolutely
+> object to undoing that.
 
-> Jonathan Cameron wrote:
-> > On Wed, 1 Nov 2023 08:27:17 +0100
-> > Lukas Wunner <lukas@wunner.de> wrote:
-> > 
-> > Thanks Alexy, this is a great discussion to kick off.
-> >   
-> > > On Wed, Nov 01, 2023 at 09:56:11AM +1100, Alexey Kardashevskiy wrote:  
-> > > > - device_connect - starts CMA/SPDM session, returns measurements/certs,
-> > > > runs IDE_KM to program the keys;    
-> > > 
-> > > Does the PSP have a set of trusted root certificates?
-> > > If so, where does it get them from?
-> > > 
-> > > If not, does the PSP just blindly trust the validity of the cert chain?
-> > > Who validates the cert chain, and when?
-> > > Which slot do you use?
-> > > Do you return only the cert chain of that single slot or of all slots?
-> > > Does the PSP read out all measurements available?  This may take a while
-> > > if the measurements are large and there are a lot of them.  
-> > 
-> > I'd definitely like their to be a path for certs and measurement to be
-> > checked by the Host OS (for the non TDISP path). Whether the
-> > policy setup cares about result is different question ;)
-> >   
-> > > 
-> > >   
-> > > > - tdi_info - read measurements/certs/interface report;    
-> > > 
-> > > Does this return cached cert chains and measurements from the device
-> > > or does it retrieve them anew?  (Measurements might have changed if
-> > > MEAS_FRESH_CAP is supported.)
-> > > 
-> > >   
-> > > > If the user wants only CMA/SPDM, the Lukas'es patched will do that without
-> > > > the PSP. This may co-exist with the AMD PSP (if the endpoint allows multiple
-> > > > sessions).    
-> > > 
-> > > It can co-exist if the pci_cma_claim_ownership() library call
-> > > provided by patch 12/12 is invoked upon device_connect.
-> > > 
-> > > It would seem advantageous if you could delay device_connect
-> > > until a device is actually passed through.  Then the OS can
-> > > initially authenticate and measure devices and the PSP takes
-> > > over when needed.  
-> > 
-> > Would that delay mean IDE isn't up - I think that wants to be
-> > available whether or not pass through is going on.
-> > 
-> > Given potential restrictions on IDE resources, I'd expect to see an explicit
-> > opt in from userspace on the host to start that process for a given
-> > device.  (udev rule or similar might kick it off for simple setups).
-> > 
-> > Would that work for the flows described?  
-> > 
-> > Next bit probably has holes...  Key is that a lot of the checks
-> > may fail, and it's up to host userspace policy to decide whether
-> > to proceed (other policy in the secure VM side of things obviously)
-> > 
-> > So my rough thinking is - for the two options (IDE / TDISP)
-> > 
-> > Comparing with Alexey's flow I think only real difference is that
-> > I call out explicit host userspace policy controls. I'd also like
-> > to use similar interfaces to convey state to host userspace as
-> > per Lukas' existing approaches.  Sure there will also be in
-> > kernel interfaces for driver to get data if it knows what to do
-> > with it.  I'd also like to enable the non tdisp flow to handle
-> > IDE setup 'natively' if that's possible on particular hardware.  
-> 
-> Are there any platforms that have IDE host capability that are not also
-> shipping a TSM. I know that some platform allow for either the TSM or
-> the OS to own that setup, but there are no standards there. I am not
-> opposed to the native path, but given a cross-vendor "TSM" concept is
-> needed and that a TSM is likely available on all IDE capable platforms
-> it seems reasonable for Linux to rely on TSM managed IDE for the near
-> term if not the long term as well.
+OK, so I assume that means a new variant of vmap_pages_range(),
+such as one that always sets the page_shift parameter to PAGE_SIZE,
+is also disallowed because of the same potential for abuse.
 
-Just for completeness, (I mentioned it in the LPC discussion):
-IDE might well be link based between a switch inside the chassis and devices
-outside the chassis in which case it is all standards defined and the host
-isn't involved.  Not TDISP related though in that case.
+So the only way to map a system memory page to a vmalloc
+vaddr is via vmap() or some vmap() variant, which always
+creates a new vmalloc area via get_vm_area().  I've done the
+perf measurements, and that approach won't work for this use
+case.  Independent of the alignment requirements, the churn in
+creating and removing a lot of vmalloc areas has too much perf
+impact.   The use case needs to create a single vmalloc area, and
+then repeatedly map/unmap a page in that existing area.
 
-> 
-> > 
-> > 1. Host has a go at CMA/SPDM. Policy might say that a failure here is
-> >    a failure in general so reject device - or it might decide it's up to
-> >    the PSP etc.   (userspace can see if it succeeded)
-> >    I'd argue host software can launch this at any time.  It will
-> >    be a denial of service attack but so are many other things the host
-> >    can do.
-> > 2. TDISP policy decision from host (userspace policy control)
-> >    Need to know end goal.  
-> 
-> If the TSM owns the TDISP state what this policy decision rely comes
-> down to is IDE stream resource management, I otherwise struggle to
-> conceptualize "TDISP policy".
-> 
-> The policy is userspace deciding to assign an interface to a TVM, and
-> that TVM requests that the assigned interface be allowed to access
-> private memory. So it's not necessarily TDISP policy, its assigned
-> interface is allowed to transition to private operation.
-Agreed - that is probably enough. I was avoiding calling out specific
-policy method, just don't want it to all flow through in the kernel without
-a hook.  If we assume that we do stuff only when allocated to a TVM
-then that acts as the gate.
+I'll have to handle the top-level problem in this patch set in
+a completely different way.
 
-> 
-> > 3. IDE opt in from userspace.  Policy decision.
-> >   - If not TDISP 
-> >     - device_connect(IDE ONLY) - bunch of proxying in host OS.
-> >     - Cert chain and measurements presented to host, host can then check if
-> >       it is happy and expose for next policy decision.
-> >     - Hooks exposed for host to request more measurements, key refresh etc.
-> >       Idea being that the flow is host driven with PSP providing required
-> >       services.  If host can just do setup directly that's fine too.
-> >   - If TDISP (technically you can run tdisp from host, but lets assume
-> >     for now no one wants to do that? (yet)).
-> >     - device_connect(TDISP) - bunch of proxying in host OS.
-> >     - Cert chain and measurements presented to host, host can then check if
-> >       it is happy and expose for next policy decision.
-> > 
-> > 4. Flow after this depends on early or late binding (lockdown)
-> >    but could load driver at this point.  Userspace policy.
-> >    tdi-bind etc.  
-> 
-> It is valid to load the driver and operate the device in shared mode, so
-> I am not sure that acceptance should gate driver loading. It also seems
-> like something that could be managed with module policy if someone
-> wanted to prevent shared operation before acceptance.
-
-Indeed that might work.  Depends on device and whether it needs to be exposed
-in shared mode (which may well require driver code auditing etc that can be relaxed
-if it's up with TDISP and we know it's not a 'fake').
-
-> 
-> [..]
-> > > > The next steps:
-> > > > - expose blobs via configfs (like Dan did configfs-tsm);  
-> 
-> I am missing the context here, but for measurements I think those are
-> better in sysfs. configs was only to allow for multiple containers to grab
-> attestation reports, measurements are device local and containers can
-> all see the same measurements.
-
-Ah. Fair point.
-
-> 
-> > > > - s/tdisp.ko/coco.ko/;  
-> 
-> My bikeshed contribution, perhaps tsm.ko? I am still not someone who can
-> say "coco" for confidential computing with a straight face.
-
-Then definitely should be coco.ko :)
-
-Jonathan
+Michael
