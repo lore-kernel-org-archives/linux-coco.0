@@ -1,161 +1,176 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11olkn2013.outbound.protection.outlook.com [40.92.19.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294151E4A4
-	for <linux-coco@lists.linux.dev>; Tue, 28 Nov 2023 15:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09EE37D02
+	for <linux-coco@lists.linux.dev>; Tue, 28 Nov 2023 17:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fB74SdBN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701186341; x=1732722341;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BTtNI/kP7Oj/cphm9g8LdfrDMhDpH3L8ToC6A/UuepU=;
-  b=fB74SdBNE3mbwjKOhyxZtBEf+nz3qlLu/UNCcgwu75sU0k0LpBBxDS+N
-   hv4TyyXpxOEXyouB5qLIXKjj+fib8zQdOECal7gzWGway+rvN5xxbvLuL
-   x5W9O8cE7B5vLFqrAVk6tpIJ+h8semPlSQNRs2D0WW4kuAYXrAJt6apbv
-   HViTuasJFRPIiiZORLSpwClTrSsGDfWYQMx3TOJfYP2hQmez1ySIFmqGN
-   rcsys0sOS8H7xsl871PD/vnhX1Szd1kjUbczH46IGgiQntmcyqpNcJSzw
-   SFb8Dv9l4dhyRcrf/IgzNtgAvtr0HcfRvisfjeKg5MJ7wzc4eHMq1fePl
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="457274711"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="457274711"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 07:45:40 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="744946511"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="744946511"
-Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 07:45:39 -0800
-Date: Tue, 28 Nov 2023 07:45:39 -0800
-From: Isaku Yamahata <isaku.yamahata@linux.intel.com>
-To: Baoquan He <bhe@redhat.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, ltao@redhat.com,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	isaku.yamahata@linux.intel.com, isaku.yamahata@intel.com
-Subject: Re: [PATCHv3 00/14] x86/tdx: Add kexec support
-Message-ID: <20231128154539.GC1102144@ls.amr.corp.intel.com>
-References: <20231115120044.8034-1-kirill.shutemov@linux.intel.com>
- <ZVYGx1EwzjXbTEyX@MiWiFi-R3L-srv>
- <20231116125612.daxettqcapled7ac@box.shutemov.name>
- <ZVYkdI74X8acDtTq@MiWiFi-R3L-srv>
- <ZVYrA+Ks0DGFo/0p@MiWiFi-R3L-srv>
- <20231117124748.umfuc3no2qvh4shj@box.shutemov.name>
- <ZVeApN4lDqTLu7ma@MiWiFi-R3L-srv>
- <20231117154632.zvi6g6lblmtvikzt@box>
- <ZVxRBLsQcv8KRasA@MiWiFi-R3L-srv>
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="gTRZMyaU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eRJDh4dxpphcTcqJQw1XBOeLW5BFOj+THmU/ynQhs/1Cx1HwCaLV0IKLJbY7P41Hh5pFpcS77oJQ0QhNjE4eramHHDuAP/BmSjzPBmMeJX39lK7Qy0Ek6S1Qhp3c5fziQU2rI2rSaRJ68Inta2AqRNlocU4NNe1Vw5jBsQPOVgb1QUS1cAVUcaDRYOSCNB/c7b7Dzw0J3c6Nh+wNvFv9MtMjKYkW+FdI9ZQu656ZAJhZLAE5KwouSPay9b/SBAgQKtaGQZoepbQStyyXBR5RTqTd1DqR8XJxG4XgFxam0OUkWIeEVWU+gibLPp5HyiqFGSVf1vbOPD/1IVLtmeP7kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=etZG95++lXbBRptlcgOqOny5SulXi8w1E68hcgafbVc=;
+ b=IIDQTiqt8YYXvTNSGB0dK5bFyyG7wrdfW6vFRwWaPXY58et89rWk+eGzJykuMJoYGsTLqvV1QaLdR/KDxClNFvYHa0usD7LXlkvZN3ChfCgPlKBbwyfjwj8Z2knguU59S7l8BxUWwYhyPvT4OmgOOWH7pHQN9Tm+6bxDGfbywLh2/s3ohj+Wx7SJA/6tYaXtr0D4G5smJV/aMMbIavrVhYD6+UYu2p5VOxt8zxvqqJg0cv460SyLNnDyFUP6L36cPeMUhuEjRfsRK7r7Bu52gjXOvGgdpMFAHEife5vSMyrM+dwSuoxKgTzEdCMUZx8EKO3aaAybwwBWMw4PzfDGoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=etZG95++lXbBRptlcgOqOny5SulXi8w1E68hcgafbVc=;
+ b=gTRZMyaUfhgOZeR0FpB44hPw1XG/tA+ItmZgThK3mBx0cRgifJFy4seIzF5gTKu4Tql9vicHs8irFpzIZOm8Gew8h5+D9/GRSOxHI427jBJS9RAMF1Mk+GNKTztI1nYTl3CuPoJTRPuOsAsYN2VC43MCeAGTlx89dItIr9D8+9s/9Rvnjii1w/qKsomIfZO7z4VcZMBwagRJumpStl8FLKV8GBIPdjuYjIshWVePUGf01BwtzVAlZ2CQ/v+Aoa5QmkhXJSzh3IuEH+r/el3P3HxaE6c3gQaVIv9yfI8N2s2QvrCzwXasSBQIF8fFL5JeTS96MZuCB802HE8g6DAifg==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by PH0PR02MB7157.namprd02.prod.outlook.com (2603:10b6:510:17::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.29; Tue, 28 Nov
+ 2023 17:34:38 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::54e5:928f:135c:6190]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::54e5:928f:135c:6190%7]) with mapi id 15.20.7025.022; Tue, 28 Nov 2023
+ 17:34:38 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"ardb@kernel.org" <ardb@kernel.org>, "hch@infradead.org" <hch@infradead.org>,
+	"Lutomirski, Andy" <luto@kernel.org>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "thomas.lendacky@amd.com"
+	<thomas.lendacky@amd.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "seanjc@google.com"
+	<seanjc@google.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "kys@microsoft.com" <kys@microsoft.com>,
+	"Cui, Dexuan" <decui@microsoft.com>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"urezki@gmail.com" <urezki@gmail.com>, "hpa@zytor.com" <hpa@zytor.com>,
+	"peterz@infradead.org" <peterz@infradead.org>, "wei.liu@kernel.org"
+	<wei.liu@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "Rodel, Jorg"
+	<jroedel@suse.de>, "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "lstoakes@gmail.com"
+	<lstoakes@gmail.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: RE: [PATCH v2 2/8] x86/mm: Don't do a TLB flush if changing a PTE
+ that isn't marked present
+Thread-Topic: [PATCH v2 2/8] x86/mm: Don't do a TLB flush if changing a PTE
+ that isn't marked present
+Thread-Index: AQHaHMCZqqw22lSVnUqFkh2+XRP0FrCOxoeAgAE5LFA=
+Date: Tue, 28 Nov 2023 17:34:38 +0000
+Message-ID:
+ <SN6PR02MB41573431683896536879EF40D4BCA@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20231121212016.1154303-1-mhklinux@outlook.com>
+	 <20231121212016.1154303-3-mhklinux@outlook.com>
+ <4a64d05c80c9c490d291af881a86c3d853160060.camel@intel.com>
+In-Reply-To: <4a64d05c80c9c490d291af881a86c3d853160060.camel@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tmn: [vVoMCQPoqiUQ+vIvcEVURONnMzuvxNgX]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|PH0PR02MB7157:EE_
+x-ms-office365-filtering-correlation-id: 802ff28a-270a-412b-3996-08dbf0384bc8
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 7MQq/Z+861MpMmRItJtj4KzAPPrjAVzD9uoqjipBoN9ZdA3OyUwbV9tiJAI1m90sq5UnOv+nPweu4SmQIkgONBmRODRfGGbAKeOyKl9ODiRWEHpJyRU39m5HhXnkzWWMzC6aEd/vwW/94Txf09BAuPS+BzjrlzFjsEs+1oZDs/vNe+xic2ZL0TRMGnRQ0IgBNGdQ8UqOQ2dBrX7jPxbwG0Sp6Zw8L5KADRSQe6X7CG3WWpRZ9ZQtEfUYgpMtra6BB1uiDtcr+fHGBG5ktvRnDY+9NFP8TkbhG76rqZvF6trcq4HAqIjqJ65b+V22s9LHrUu+AWznu9KWyRTEFuZARuCUhUrtHUafClWcTRypFgmeolQ9L31GT087iltuS0Uxn4RBSkpTaZ2dXvS9lx5TZ5VnhFROB4qQv6mKnUcNsoiriB55vG46kD/V8uPqPg0YJHUJq86J+vJL//z+uAIffEc1zWuGglyK7S2gtlakrE/sCcCmi38pwVRLtQnnhc+JYv+byREj6sjOJJUZ9QBnB9iCYyvNpWZSt3Krygv2FeLmGK+LeQmHuM7hXGfCyJ8M
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?N1dObzdwMDNCMlBGbEM0RmlkK2NBSVlxK0E1cUtPdUVhek1uL2k1d0xsR2lm?=
+ =?utf-8?B?cDJmTE50MUtsUWlKVDEvRmYyNm9pOVJIa2VjdkFMZHlQdmxqRzFHWEhoWHZ1?=
+ =?utf-8?B?TVN3TU42bHdDQnZPT3o3LzJ4RzFMdEdkQmNZS1VBUXFEbUk0SGd6QTZLSWkv?=
+ =?utf-8?B?MTB6MXFlSEc4V01XTjdURDNtdkwyUExtMkNBRmhWVS9IbXA0S01EZmZsNmNr?=
+ =?utf-8?B?Qi8zTlZhYjRrVFQvZ0tSTGdoY2l5ZUo1ZDJDRUxqNzRkb2FVdkxheWVFdERl?=
+ =?utf-8?B?MzJrRllsaGpRTGF2YW1PYTg2NThJbWNjZmNZbHZwM2RteThiUmI0cnp3SENN?=
+ =?utf-8?B?MFRNSWhaUlJvYXhCNFRQUmJLNVl6UFEvK1lFTG9RYzNaUmxtRERzcXV3NFhS?=
+ =?utf-8?B?QTV2b2x0UExOUzBpblZNQ2lWZkRSRWcrRFpDNXNNWWt3eFFSQXJFWGlyOGdL?=
+ =?utf-8?B?dTNMZVFvL2pQbW5aenBSZGRnbEtZcFJGVTh3YSthaCtqT0Z1VllFTzROTDNB?=
+ =?utf-8?B?MnM5TlIrM1FiQS84UXcwUll3YW5aUGlxVXdSd0VadkJhK25FaFVCeW1YN2hW?=
+ =?utf-8?B?eFYvWUhLWXlXMzRjZnJYbjMzYTcyTjhsSXdOVHhVakFpQW9QVFc3M3RSSlcv?=
+ =?utf-8?B?OWJxeU4ya2ZjL1ovRk1MS2ovZDRIVDFCMCt3NTJ4TUJlejI3dFRWRTNYVHo1?=
+ =?utf-8?B?S2lCUGx0TUU4VkZGa0N6NXdOUU8yWmg4bXRQbnM2U3prUWlLOHRvZW9BTk9j?=
+ =?utf-8?B?ZFErNTVrOW4zc3N1dXEyb2I2elZmZ0dVc0pCRlR2OGg3MUpkeVl3S2ZoR052?=
+ =?utf-8?B?TFQ3T2xBNVFDekhWM0VkVjdKRFVvbE9mdW9yL3pQTGZJbTJkNlBER0VJU0M3?=
+ =?utf-8?B?VVYxYzFPWmtHNC81Tjh3eEJPNDArNlJCNVRzd3JZSEJLSlc2dHJtVzFIc0VD?=
+ =?utf-8?B?RUFBWjVwdkVjUGlOQU0veGtTWVBVclJHUGJ3WUFUc1ZvT3paSzhwTGMxZ1RQ?=
+ =?utf-8?B?OEdsUWp2Y2EwUVhBT1lnZGlDVUpKalFrU3NybmpxN0x0b2M4UUdxME41ZVR3?=
+ =?utf-8?B?S3NTR2ZITUFSTDBSUGh4dERmbS80VmxFa29BRDNKZXZYNTZxTWpHUVkzQlBW?=
+ =?utf-8?B?c2N6MFJiNGxEMzNCWGVKaHdTTFhJVnpjZHpWb3JJUzdTa3ZzNlVkaXowSzhx?=
+ =?utf-8?B?eVBKa3NienF6c2hSZGd2UlE4LzhtTjU1WE5vMytXVmhybjIxZ0JFYk03Y2w5?=
+ =?utf-8?B?eFpWOEJCc2FUMTg2WmIxTUN3cFFSZ2RURG56cnpLNnV6Yld1a0xUcnpBL2VB?=
+ =?utf-8?B?WDNOeGFzKytlei9nbjdJbU9kNkZFeXZ4U1RmNUN5L3JsYmswZ3NFQlZZYjRi?=
+ =?utf-8?B?Y0xFblc5UzdxWjV5em1IRWx5Z2Y5WUdNUTBwcUliK1ZqTEZCQ1dSTkJzUWhJ?=
+ =?utf-8?B?VllyVER3OU80MmJRWmUwNEh3UmxOWTlWL0pUejcybXUzVXlJMkdJeGx2Q1lz?=
+ =?utf-8?B?R2h4S0Z3RU5RVzAxcldSckRyVVBJSlNkTEplalltWkE0b3llWWNyRk5VY3lk?=
+ =?utf-8?Q?hl7XuW24OC87ZI1oMlnhGlMn7pM4HNAUA+LJBi9R05ON/G?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZVxRBLsQcv8KRasA@MiWiFi-R3L-srv>
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 802ff28a-270a-412b-3996-08dbf0384bc8
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2023 17:34:38.2918
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR02MB7157
 
-On Tue, Nov 21, 2023 at 02:41:08PM +0800,
-Baoquan He <bhe@redhat.com> wrote:
-
-> On 11/17/23 at 06:46pm, Kirill A. Shutemov wrote:
-> > On Fri, Nov 17, 2023 at 11:03:00PM +0800, Baoquan He wrote:
-> > > On 11/17/23 at 03:47pm, Kirill A. Shutemov wrote:
-> > > > On Thu, Nov 16, 2023 at 10:45:23PM +0800, Baoquan He wrote:
-> > > > > On 11/16/23 at 10:17pm, Baoquan He wrote:
-> > > > > > On 11/16/23 at 03:56pm, Kirill A. Shutemov wrote:
-> > > > > > > On Thu, Nov 16, 2023 at 08:10:47PM +0800, Baoquan He wrote:
-> > > > > > > > On 11/15/23 at 03:00pm, Kirill A. Shutemov wrote:
-> > > > > > > > > The patchset adds bits and pieces to get kexec (and crashkernel) work on
-> > > > > > > > > TDX guest.
-> > > > > > > > 
-> > > > > > > > I finally got a machine of intel-eaglestream-spr as host and built a
-> > > > > > > > tdx guest to give it a shot, the kexec reboot is working very well,
-> > > > > > > > while kdump kernel always failed to boot up. I only built kernel and
-> > > > > > > > installed it on tdx guest.
-> > > > > > > > ------------------------------------------
-> > > > > > > > [    1.422500] Run /init as init process
-> > > > > > > > [    1.423073] Failed to execute /init (error -2)
-> > > > > > > > [    1.423759] Run /sbin/init as init process
-> > > > > > > > [    1.424370] Run /etc/init as init process
-> > > > > > > > [    1.424969] Run /bin/init as init process
-> > > > > > > > [    1.425588] Run /bin/sh as init process
-> > > > > > > > [    1.426150] Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
-> > > > > > > > [    1.428122] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-00014-gbdba31ba3cec #3
-> > > > > > > > [    1.429232] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
-> > > > > > > > [    1.430328] Call Trace:
-> > > > > > > > [    1.430717]  <TASK>
-> > > > > > > > [    1.431041]  dump_stack_lvl+0x33/0x50
-> > > > > > > > [    1.431581]  panic+0x324/0x340
-> > > > > > > > [    1.432037]  ? __pfx_kernel_init+0x10/0x10
-> > > > > > > > [    1.432629]  kernel_init+0x174/0x1c0
-> > > > > > > > [    1.433149]  ret_from_fork+0x2d/0x50
-> > > > > > > > [    1.433690]  ? __pfx_kernel_init+0x10/0x10
-> > > > > > > > [    1.434277]  ret_from_fork_asm+0x1b/0x30
-> > > > > > > > [    1.434850]  </TASK>
-> > > > > > > > [    1.435345] Kernel Offset: disabled
-> > > > > > > > [    1.439216] Rebooting in 10 seconds..
-> > > > > > > > qemu-kvm: cpus are not resettable, terminating
-> > > > > > > 
-> > > > > > > Could you shared your kernel config and details about your setup (qemu
-> > > > > > > command, kernel command line, ...)?
-> > > > > > 
-> > > > > > We followed tdx-tools README to setup the environment and built host and
-> > > > > > guest kernel, qemu command is as below. I copied the
-> > > > > > tdx-tools/build/rhel-9/intel-mvp-tdx-kernel/tdx-base.config to the
-> > > > > > latest upstream linxu kernel then execute 'make olddefconfig'. Because
-> > > > > > your patchset can't be applied to the stable kernel with the 731
-> > > > > > patches.
-> > > > > > 
-> > > > > > cd /home/root/tdx-tools
-> > > > > > ./start-qemu.sh -i /home/root/guest_tdx.qcow2 -b grub
-> > > > > 
-> > > > > This is the qemu command when execute above line of command, just for
-> > > > > your reference if you happen to not take this way.
-> > > > 
-> > > > Still failed to reproduce :/
-> > > > 
-> > > > Blind shot: could you check if the patch below makes any difference.
-> > > 
-> > > Still failed. And I found the normal reboot does't work either. I will
-> > > do more testing tomorrow, e.g use the tdx-tools's own rhel9 kernel
-> > > config and rebuild, and update host kernel too.
-> 
-> I did more tests, resuls are summarized as below: 
-> 
-> 1) kexec reboot works, but always fallback to 1 cpu even though multiple
-> cpus are specified;
-> 2) kdump kernel need more crashkernel memory to boot up,
->    crashkernel=512M works well in our case. But it failed in vmcore
->    saving process, either makedumpfile or cp can't access the 1st
->    kernel's old memory;
-> 3) Normal reboot always failed;
-...
-> 3) not sure if this is particular case on the system we tested on.
-
-qemu handles guest reset request as shutdown.  This is expected. 
-It is common for confidential guest support.
-
-In theory it's possible for qemu to re-create TDX guest and start a new guest.
-Because the qemu implementation is too convoluted, it's not worthwhile to
-implement it.  Instead we can modify libvirt to restart qemu for reset request.
--- 
-Isaku Yamahata <isaku.yamahata@linux.intel.com>
+RnJvbTogRWRnZWNvbWJlLCBSaWNrIFAgPHJpY2sucC5lZGdlY29tYmVAaW50ZWwuY29tPiBTZW50
+OiBNb25kYXksIE5vdmVtYmVyIDI3LCAyMDIzIDI6MjEgUE0NCj4gDQo+IE9uIFR1ZSwgMjAyMy0x
+MS0yMSBhdCAxMzoyMCAtMDgwMCwgbWhrZWxsZXk1OEBnbWFpbC5jb20gd3JvdGU6DQo+ID4gLS0t
+IGEvYXJjaC94ODYvbW0vcGF0L3NldF9tZW1vcnkuYw0KPiA+ICsrKyBiL2FyY2gveDg2L21tL3Bh
+dC9zZXRfbWVtb3J5LmMNCj4gPiBAQCAtMTYzNiw3ICsxNjM2LDEwIEBAIHN0YXRpYyBpbnQgX19j
+aGFuZ2VfcGFnZV9hdHRyKHN0cnVjdCBjcGFfZGF0YQ0KPiA+ICpjcGEsIGludCBwcmltYXJ5KQ0K
+PiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICovDQo+ID4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAocHRlX3ZhbChvbGRfcHRlKSAhPSBwdGVfdmFsKG5ld19w
+dGUpKSB7DQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgc2V0X3B0ZV9hdG9taWMoa3B0ZSwgbmV3X3B0ZSk7DQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjcGEtPmZsYWdzIHw9IENQQV9GTFVTSFRMQjsN
+Cj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAvKiBJZiBvbGRfcHRlIGlzbid0IHByZXNlbnQsIGl0J3Mgbm90IGluIHRoZSBUTEIgKi8NCj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChwdGVf
+cHJlc2VudChvbGRfcHRlKSkNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjcGEtPmZsYWdzIHw9IENQQV9GTFVTSFRMQjsN
+Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH0NCj4gPiDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoGNwYS0+bnVtcGFnZXMgPSAxOw0KPiA+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuIDA7DQo+ID4NCj4gDQo+IE1ha2VzIHNlbnNlIHRvIG1l
+LiBUaGUgUE1EIGNhc2UgY2FuIGJlIGhhbmRsZWQgc2ltaWxhcmx5IGluDQo+IF9fc2hvdWxkX3Nw
+bGl0X2xhcmdlX3BhZ2UoKS4NCg0KT0ssIEknbGwgbG9vayBhdCB0aGF0IGNhc2UuDQoNCj4gDQo+
+IEkgYWxzbyB0aGluayBpdCBzaG91bGQgYmUgbW9yZSByb2J1c3QgaW4gcmVnYXJkcyB0byB0aGUg
+Y2FjaGUgZmx1c2hpbmcNCj4gY2hhbmdlcy4NCj4gDQo+IElmIGNhbGxlcnMgZGlkOg0KPiBzZXRf
+bWVtb3J5X25wKCkNCj4gc2V0X21lbW9yeV91YygpDQo+IHNldF9tZW1vcnlfcCgpDQo+IA0KPiBU
+aGVuIHRoZSBjYWNoZSBmbHVzaCB3b3VsZCBiZSBtaXNzZWQuICBJIGRvbid0IHRoaW5rIGFueW9u
+ZSBpcywgYnV0IHdlDQo+IHNob3VsZG4ndCBpbnRyb2R1Y2UgaGlkZGVuIHRoaW5ncyBsaWtlIHRo
+YXQuIE1heWJlIGZpeCBpdCBsaWtlIHRoaXM6DQo+IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYv
+bW0vcGF0L3NldF9tZW1vcnkuYw0KPiBiL2FyY2gveDg2L21tL3BhdC9zZXRfbWVtb3J5LmMNCj4g
+aW5kZXggZjUxOWU1Y2E1NDNiLi4yOGZmNTNhNDQ0N2EgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2
+L21tL3BhdC9zZXRfbWVtb3J5LmMNCj4gKysrIGIvYXJjaC94ODYvbW0vcGF0L3NldF9tZW1vcnku
+Yw0KPiBAQCAtMTg1NiwxMSArMTg1Niw2IEBAIHN0YXRpYyBpbnQgY2hhbmdlX3BhZ2VfYXR0cl9z
+ZXRfY2xyKHVuc2lnbmVkDQo+IGxvbmcgKmFkZHIsIGludCBudW1wYWdlcywNCj4gDQo+ICAgICAg
+ICAgcmV0ID0gX19jaGFuZ2VfcGFnZV9hdHRyX3NldF9jbHIoJmNwYSwgMSk7DQo+IA0KPiAtICAg
+ICAgIC8qDQo+IC0gICAgICAgICogQ2hlY2sgd2hldGhlciB3ZSByZWFsbHkgY2hhbmdlZCBzb21l
+dGhpbmc6DQo+IC0gICAgICAgICovDQo+IC0gICAgICAgaWYgKCEoY3BhLmZsYWdzICYgQ1BBX0ZM
+VVNIVExCKSkNCj4gLSAgICAgICAgICAgICAgIGdvdG8gb3V0Ow0KPiANCj4gICAgICAgICAvKg0K
+PiAgICAgICAgICAqIE5vIG5lZWQgdG8gZmx1c2gsIHdoZW4gd2UgZGlkIG5vdCBzZXQgYW55IG9m
+IHRoZSBjYWNoaW5nDQo+IEBAIC0xODY4LDYgKzE4NjMsMTIgQEAgc3RhdGljIGludCBjaGFuZ2Vf
+cGFnZV9hdHRyX3NldF9jbHIodW5zaWduZWQNCj4gbG9uZyAqYWRkciwgaW50IG51bXBhZ2VzLA0K
+PiAgICAgICAgICAqLw0KPiAgICAgICAgIGNhY2hlID0gISFwZ3Byb3QyY2FjaGVtb2RlKG1hc2tf
+c2V0KTsNCj4gDQo+ICsgICAgICAgLyoNCj4gKyAgICAgICAgKiBDaGVjayB3aGV0aGVyIHdlIHJl
+YWxseSBjaGFuZ2VkIHNvbWV0aGluZzoNCj4gKyAgICAgICAgKi8NCj4gKyAgICAgICBpZiAoIShj
+cGEuZmxhZ3MgJiBDUEFfRkxVU0hUTEIpICYmICFjYWNoZSkNCj4gKyAgICAgICAgICAgICAgIGdv
+dG8gb3V0Ow0KPiArDQo+ICAgICAgICAgLyoNCj4gICAgICAgICAgKiBPbiBlcnJvcjsgZmx1c2gg
+ZXZlcnl0aGluZyB0byBiZSBzdXJlLg0KPiAgICAgICAgICAqLw0KPiANCj4gSG1tLCBtaWdodCB3
+YW50IHRvIG1haW50YWluIHRoZSAiT24gZXJyb3I7IGZsdXNoIGV2ZXJ5dGhpbmcgdG8gYmUgc3Vy
+ZSINCj4gbG9naWMgaW4gdGhlIE5QLT5QIGNhc2UgYXMgd2VsbC4NCg0KT0ssIEkgc2VlIHlvdXIg
+cG9pbnQuICBJIGhhZCBub3QgcmVhbGl6ZWQgdGhhdCBDUEFfRkxVU0hUTEIgcmVhbGx5DQpoYXMg
+YSBtZWFuaW5nIGJleW9uZCBqdXN0IGluZGljYXRpbmcgdGhhdCB0aGUgVExCIG5lZWRzIHRvIGJl
+DQpmbHVzaGVkLiAgSXQgcmVhbGx5IG1lYW5zICJzb21ldGhpbmcgaGFzIGNoYW5nZWQiIGluIGEg
+UFRFLiAgSSdsbA0KaW5jb3Jwb3JhdGUgeW91ciBzdWdnZXN0aW9uLg0KDQpNaWNoYWVsDQo=
