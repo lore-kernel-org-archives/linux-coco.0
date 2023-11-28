@@ -1,81 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C0E10796
-	for <linux-coco@lists.linux.dev>; Tue, 28 Nov 2023 11:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294151E4A4
+	for <linux-coco@lists.linux.dev>; Tue, 28 Nov 2023 15:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjVTNoCn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6667BC433C9
-	for <linux-coco@lists.linux.dev>; Tue, 28 Nov 2023 11:50:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701172214;
-	bh=OCv5jOPu04qFPi6ssiG4av97RLxhHF1iTMxErUPuhxM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OjVTNoCngj8vhKQa4NLxoGYZGPzhnXiWZTtymJszXRp9aE5OHmasJdxQxtWYTb1lT
-	 x+1ii7lVkfaehoU9AwY17drmJlHGDUVjY7gb2ulMt29SnG31aIAXjY37IRjiHqrjRT
-	 3IyWZ8kl4uz0D3//4gXLGxipDqQnpzx9x+U9UdxJYrg2UWwtb4/ihKunSdFRHYuX+H
-	 D+x+WM+Y3GycueXKYJcj+GJCE306wYDXHxsJla04bHbSsmI8/Hi3Dnwyv/uDMfvytG
-	 1/2/evih98QpUNbii8Xkms+PQRMMYyODIGLBkHgdLmBJvtbqfJl+XYsK2hGEgkS/Gz
-	 iCU0/MZpgLXFA==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2c993da0b9eso39546561fa.1
-        for <linux-coco@lists.linux.dev>; Tue, 28 Nov 2023 03:50:14 -0800 (PST)
-X-Gm-Message-State: AOJu0Yx26ThTASOsgEN+py8LuCCL+NaK81wLBMQglwQmR31VJlZwQuX2
-	sVSkrxUfUa4yxxFJh8GoqVT5EgAcfZDrZGMNaV8=
-X-Google-Smtp-Source: AGHT+IEcQ8JC8Crlu73uQLM9HlwZR3LZT0et+kEASrOblD8H6K4gVCHuT491KE4vEf9NtjRDaSpeS0lEVW4n7CQRei0=
-X-Received: by 2002:a2e:7a0e:0:b0:2c9:b8e0:6e4c with SMTP id
- v14-20020a2e7a0e000000b002c9b8e06e4cmr434921ljc.49.1701172212628; Tue, 28 Nov
- 2023 03:50:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fB74SdBN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701186341; x=1732722341;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BTtNI/kP7Oj/cphm9g8LdfrDMhDpH3L8ToC6A/UuepU=;
+  b=fB74SdBNE3mbwjKOhyxZtBEf+nz3qlLu/UNCcgwu75sU0k0LpBBxDS+N
+   hv4TyyXpxOEXyouB5qLIXKjj+fib8zQdOECal7gzWGway+rvN5xxbvLuL
+   x5W9O8cE7B5vLFqrAVk6tpIJ+h8semPlSQNRs2D0WW4kuAYXrAJt6apbv
+   HViTuasJFRPIiiZORLSpwClTrSsGDfWYQMx3TOJfYP2hQmez1ySIFmqGN
+   rcsys0sOS8H7xsl871PD/vnhX1Szd1kjUbczH46IGgiQntmcyqpNcJSzw
+   SFb8Dv9l4dhyRcrf/IgzNtgAvtr0HcfRvisfjeKg5MJ7wzc4eHMq1fePl
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="457274711"
+X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
+   d="scan'208";a="457274711"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 07:45:40 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="744946511"
+X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
+   d="scan'208";a="744946511"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 07:45:39 -0800
+Date: Tue, 28 Nov 2023 07:45:39 -0800
+From: Isaku Yamahata <isaku.yamahata@linux.intel.com>
+To: Baoquan He <bhe@redhat.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, ltao@redhat.com,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>, kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	isaku.yamahata@linux.intel.com, isaku.yamahata@intel.com
+Subject: Re: [PATCHv3 00/14] x86/tdx: Add kexec support
+Message-ID: <20231128154539.GC1102144@ls.amr.corp.intel.com>
+References: <20231115120044.8034-1-kirill.shutemov@linux.intel.com>
+ <ZVYGx1EwzjXbTEyX@MiWiFi-R3L-srv>
+ <20231116125612.daxettqcapled7ac@box.shutemov.name>
+ <ZVYkdI74X8acDtTq@MiWiFi-R3L-srv>
+ <ZVYrA+Ks0DGFo/0p@MiWiFi-R3L-srv>
+ <20231117124748.umfuc3no2qvh4shj@box.shutemov.name>
+ <ZVeApN4lDqTLu7ma@MiWiFi-R3L-srv>
+ <20231117154632.zvi6g6lblmtvikzt@box>
+ <ZVxRBLsQcv8KRasA@MiWiFi-R3L-srv>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231103151354.110636-1-michael.roth@amd.com> <30ff0335-3d9c-7d54-85d0-5898320f4e1f@suse.cz>
- <CAMj1kXF-B_1MJahfFg72cgcmZ9dMvqiEm8WGGejkqRFN=JreEA@mail.gmail.com> <9be0159e-1762-6c07-e6eb-a86f1c780118@suse.cz>
-In-Reply-To: <9be0159e-1762-6c07-e6eb-a86f1c780118@suse.cz>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 28 Nov 2023 12:50:01 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXE65htEpXSL+h1X-zQ2RH4Oc193rac7=PBYMYJvEUBXNA@mail.gmail.com>
-Message-ID: <CAMj1kXE65htEpXSL+h1X-zQ2RH4Oc193rac7=PBYMYJvEUBXNA@mail.gmail.com>
-Subject: Re: [PATCH v2] efi/unaccepted: Fix off-by-one when checking for
- overlapping ranges
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michael Roth <michael.roth@amd.com>, linux-efi@vger.kernel.org, x86@kernel.org, 
-	linux-coco@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Nikolay Borisov <nik.borisov@suse.com>, 
-	stable@kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZVxRBLsQcv8KRasA@MiWiFi-R3L-srv>
 
-On Tue, 28 Nov 2023 at 12:25, Vlastimil Babka <vbabka@suse.cz> wrote:
->
-> On 11/8/23 12:21, Ard Biesheuvel wrote:
-> > On Fri, 3 Nov 2023 at 16:30, Vlastimil Babka <vbabka@suse.cz> wrote:
-> >>
-> >> On 11/3/23 16:13, Michael Roth wrote:
-> >> > When a task needs to accept memory it will scan the accepting_list
-> >> > to see if any ranges already being processed by other tasks overlap
-> >> > with its range. Due to an off-by-one in the range comparisons, a task
-> >> > might falsely determine that an overlapping range is being accepted,
-> >> > leading to an unnecessary delay before it begins processing the range.
-> >> >
-> >> > Fix the off-by-one in the range comparison to prevent this and slightly
-> >> > improve performance.
-> >> >
-> >> > Fixes: 50e782a86c98 ("efi/unaccepted: Fix soft lockups caused by parallel memory acceptance")
-> >> > Link: https://lore.kernel.org/linux-mm/20231101004523.vseyi5bezgfaht5i@amd.com/T/#me2eceb9906fcae5fe958b3fe88e41f920f8335b6
-> >> > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> >> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> >>
-> >> More justification for introducing a common ranges_overlap() helper somewhere :)
-> >>
-> >> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> >>
-> >
-> > Thanks, I'll take this as a fix.
->
-> Ping, can't see it in mainline nor -next?
->
+On Tue, Nov 21, 2023 at 02:41:08PM +0800,
+Baoquan He <bhe@redhat.com> wrote:
 
-Apologies - queued up now.
+> On 11/17/23 at 06:46pm, Kirill A. Shutemov wrote:
+> > On Fri, Nov 17, 2023 at 11:03:00PM +0800, Baoquan He wrote:
+> > > On 11/17/23 at 03:47pm, Kirill A. Shutemov wrote:
+> > > > On Thu, Nov 16, 2023 at 10:45:23PM +0800, Baoquan He wrote:
+> > > > > On 11/16/23 at 10:17pm, Baoquan He wrote:
+> > > > > > On 11/16/23 at 03:56pm, Kirill A. Shutemov wrote:
+> > > > > > > On Thu, Nov 16, 2023 at 08:10:47PM +0800, Baoquan He wrote:
+> > > > > > > > On 11/15/23 at 03:00pm, Kirill A. Shutemov wrote:
+> > > > > > > > > The patchset adds bits and pieces to get kexec (and crashkernel) work on
+> > > > > > > > > TDX guest.
+> > > > > > > > 
+> > > > > > > > I finally got a machine of intel-eaglestream-spr as host and built a
+> > > > > > > > tdx guest to give it a shot, the kexec reboot is working very well,
+> > > > > > > > while kdump kernel always failed to boot up. I only built kernel and
+> > > > > > > > installed it on tdx guest.
+> > > > > > > > ------------------------------------------
+> > > > > > > > [    1.422500] Run /init as init process
+> > > > > > > > [    1.423073] Failed to execute /init (error -2)
+> > > > > > > > [    1.423759] Run /sbin/init as init process
+> > > > > > > > [    1.424370] Run /etc/init as init process
+> > > > > > > > [    1.424969] Run /bin/init as init process
+> > > > > > > > [    1.425588] Run /bin/sh as init process
+> > > > > > > > [    1.426150] Kernel panic - not syncing: No working init found.  Try passing init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
+> > > > > > > > [    1.428122] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-00014-gbdba31ba3cec #3
+> > > > > > > > [    1.429232] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
+> > > > > > > > [    1.430328] Call Trace:
+> > > > > > > > [    1.430717]  <TASK>
+> > > > > > > > [    1.431041]  dump_stack_lvl+0x33/0x50
+> > > > > > > > [    1.431581]  panic+0x324/0x340
+> > > > > > > > [    1.432037]  ? __pfx_kernel_init+0x10/0x10
+> > > > > > > > [    1.432629]  kernel_init+0x174/0x1c0
+> > > > > > > > [    1.433149]  ret_from_fork+0x2d/0x50
+> > > > > > > > [    1.433690]  ? __pfx_kernel_init+0x10/0x10
+> > > > > > > > [    1.434277]  ret_from_fork_asm+0x1b/0x30
+> > > > > > > > [    1.434850]  </TASK>
+> > > > > > > > [    1.435345] Kernel Offset: disabled
+> > > > > > > > [    1.439216] Rebooting in 10 seconds..
+> > > > > > > > qemu-kvm: cpus are not resettable, terminating
+> > > > > > > 
+> > > > > > > Could you shared your kernel config and details about your setup (qemu
+> > > > > > > command, kernel command line, ...)?
+> > > > > > 
+> > > > > > We followed tdx-tools README to setup the environment and built host and
+> > > > > > guest kernel, qemu command is as below. I copied the
+> > > > > > tdx-tools/build/rhel-9/intel-mvp-tdx-kernel/tdx-base.config to the
+> > > > > > latest upstream linxu kernel then execute 'make olddefconfig'. Because
+> > > > > > your patchset can't be applied to the stable kernel with the 731
+> > > > > > patches.
+> > > > > > 
+> > > > > > cd /home/root/tdx-tools
+> > > > > > ./start-qemu.sh -i /home/root/guest_tdx.qcow2 -b grub
+> > > > > 
+> > > > > This is the qemu command when execute above line of command, just for
+> > > > > your reference if you happen to not take this way.
+> > > > 
+> > > > Still failed to reproduce :/
+> > > > 
+> > > > Blind shot: could you check if the patch below makes any difference.
+> > > 
+> > > Still failed. And I found the normal reboot does't work either. I will
+> > > do more testing tomorrow, e.g use the tdx-tools's own rhel9 kernel
+> > > config and rebuild, and update host kernel too.
+> 
+> I did more tests, resuls are summarized as below: 
+> 
+> 1) kexec reboot works, but always fallback to 1 cpu even though multiple
+> cpus are specified;
+> 2) kdump kernel need more crashkernel memory to boot up,
+>    crashkernel=512M works well in our case. But it failed in vmcore
+>    saving process, either makedumpfile or cp can't access the 1st
+>    kernel's old memory;
+> 3) Normal reboot always failed;
+...
+> 3) not sure if this is particular case on the system we tested on.
+
+qemu handles guest reset request as shutdown.  This is expected. 
+It is common for confidential guest support.
+
+In theory it's possible for qemu to re-create TDX guest and start a new guest.
+Because the qemu implementation is too convoluted, it's not worthwhile to
+implement it.  Instead we can modify libvirt to restart qemu for reset request.
+-- 
+Isaku Yamahata <isaku.yamahata@linux.intel.com>
