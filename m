@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E5DECB
-	for <linux-coco@lists.linux.dev>; Tue,  5 Dec 2023 00:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD0463D
+	for <linux-coco@lists.linux.dev>; Tue,  5 Dec 2023 00:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d16+luLs"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h8P6EH6p"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1701737137; x=1733273137;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=X/WHs4jb2k1fyD6oT320fhQc0wtdLRiTKuUWbSP8aYs=;
-  b=d16+luLsGoEKQKEJkgVeBNE/4in+aT52Y5I170ga72D3EwillxOe938L
-   DUepdvQt4HGRXpfR4Bqy03VA3dRr8krHGY6X0O02st0IujBHqdTlbl8dk
-   42+lDh9bpg6fLlvHN5mm8YACcm3Ughxbwasf7fTraQ2Hn0hrgOUGj39/h
-   EEX3A39DW0718loEizyQw++GuVdkSL+G1vMIXpa9cp7QvFgEDNBOApvRk
-   8vfbh8UIIpgjQ0cgBXplZm91yR75PVErdYzMaVpPGdqSXNsBuwgasWIsy
-   HJktK7OA3k6tbbgaqq7XGTo1eRYR+hGRPLXaitdj0Di+vH4QcDgaca12P
+  bh=NCrHDHYqaRsJTQsJlXRJcHU/RO2MzFqbmR6RTmdv2Ks=;
+  b=h8P6EH6pjLFaGgV0ZJNzRDXoBrm0PObDnNW7hfABqRMrnA5VbCvo1pVN
+   VpmUyAizuTh0c6zKtbZfa2oXS3r7ChqC8JmrX9KJu6vtt2Ib+wiwAPd9E
+   QsJJ16CWveZtbRqhwJ2UO0OKq1A6Qeru4/5hp1vArziReai0zf9z7Qu1W
+   QKv96a/sSA+XVAunQWawIFB8QVwDnLQnvKrSFoe7rY7RpQWEl1G4CGegw
+   nplQmG1su6Vmmo7fCxnbc5EFZ7tjZcMiO9K1WM7Q1dNKkJXgGMs+Wmmiq
+   IbdFcB/R1QmZ9gUC9kwp+4KLVL5XKIkgqluz3GjbrVBVvivD+lzCiPMtb
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="392688688"
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="392688678"
 X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="392688688"
+   d="scan'208";a="392688678"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:35 -0800
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:34 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="888704411"
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="888704408"
 X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="888704411"
+   d="scan'208";a="888704408"
 Received: from abijaz-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.61.240])
   by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:30 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id B75CB10A450; Tue,  5 Dec 2023 03:45:20 +0300 (+03)
+	id 72EEE10A447; Tue,  5 Dec 2023 03:45:20 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -55,9 +55,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv4 13/14] x86/acpi: Do not attempt to bring up secondary CPUs in kexec case
-Date: Tue,  5 Dec 2023 03:45:09 +0300
-Message-ID: <20231205004510.27164-14-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv4 07/14] x86/mm: Make x86_platform.guest.enc_status_change_*() return errno
+Date: Tue,  5 Dec 2023 03:45:03 +0300
+Message-ID: <20231205004510.27164-8-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
 References: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
@@ -69,69 +69,198 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ACPI MADT doesn't allow to offline CPU after it got woke up. It limits
-kexec: the second kernel won't be able to use more than one CPU.
+TDX is going to have more than one reason to fail
+enc_status_change_prepare().
 
-Now acpi_mp_wake_mailbox_paddr already has the mailbox address.
-The acpi_wakeup_cpu() will use it to bring up secondary cpus.
-
-Zero out mailbox address in the ACPI MADT wakeup structure to indicate
-that the mailbox is not usable.  This prevents the kexec()-ed kernel
-from reading a vaild mailbox, which in turn makes the kexec()-ed kernel
-only be able to use the boot CPU.
-
-This is Linux-specific protocol and not reflected in ACPI spec.
-
-Booting the second kernel with signle CPU is enough to cover the most
-common case for kexec -- kdump.
+Change the callback to return errno instead of assuming -EIO;
+enc_status_change_finish() changed too to keep the interface symmetric.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 ---
- arch/x86/kernel/acpi/madt_wakeup.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/x86/coco/tdx/tdx.c         | 20 +++++++++++---------
+ arch/x86/hyperv/ivm.c           |  9 +++------
+ arch/x86/include/asm/x86_init.h |  4 ++--
+ arch/x86/kernel/x86_init.c      |  4 ++--
+ arch/x86/mm/mem_encrypt_amd.c   |  8 ++++----
+ arch/x86/mm/pat/set_memory.c    |  9 +++++----
+ 6 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
-index 386adbb03094..5d92d12f1042 100644
---- a/arch/x86/kernel/acpi/madt_wakeup.c
-+++ b/arch/x86/kernel/acpi/madt_wakeup.c
-@@ -13,6 +13,11 @@ static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox __ro_afte
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 1b5d17a9f70d..2d90043a0e91 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -797,28 +797,30 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ 	return true;
+ }
  
- static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+-static bool tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+-					  bool enc)
++static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
++					 bool enc)
  {
-+	if (!acpi_mp_wake_mailbox_paddr) {
-+		pr_warn_once("No MADT mailbox: cannot bringup secondary CPUs. Booting with kexec?\n");
-+		return -EOPNOTSUPP;
-+	}
-+
  	/*
- 	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
- 	 *
-@@ -78,6 +83,23 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
- 
- 	cpu_hotplug_disable_offlining();
- 
-+	/*
-+	 * ACPI MADT doesn't allow to offline CPU after it got woke up.
-+	 * It limits kexec: the second kernel won't be able to use more than
-+	 * one CPU.
-+	 *
-+	 * Now acpi_mp_wake_mailbox_paddr already has the mailbox address.
-+	 * The acpi_wakeup_cpu() will use it to bring up secondary cpus.
-+	 *
-+	 * Zero out mailbox address in the ACPI MADT wakeup structure to
-+	 * indicate that the mailbox is not usable.  This prevents the
-+	 * kexec()-ed kernel from reading a vaild mailbox, which in turn
-+	 * makes the kexec()-ed kernel only be able to use the boot CPU.
-+	 *
-+	 * This is Linux-specific protocol and not reflected in ACPI spec.
-+	 */
-+	mp_wake->mailbox_address = 0;
+ 	 * Only handle shared->private conversion here.
+ 	 * See the comment in tdx_early_init().
+ 	 */
+-	if (enc)
+-		return tdx_enc_status_changed(vaddr, numpages, enc);
+-	return true;
++	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
++		return -EIO;
 +
- 	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
++	return 0;
+ }
  
- 	return 0;
+-static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
++static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 					 bool enc)
+ {
+ 	/*
+ 	 * Only handle private->shared conversion here.
+ 	 * See the comment in tdx_early_init().
+ 	 */
+-	if (!enc)
+-		return tdx_enc_status_changed(vaddr, numpages, enc);
+-	return true;
++	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
++		return -EIO;
++
++	return 0;
+ }
+ 
+ void __init tdx_early_init(void)
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 02e55237d919..2e1be1afeebe 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -510,13 +510,12 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
+  * with host. This function works as wrap of hv_mark_gpa_visibility()
+  * with memory base and size.
+  */
+-static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
++static int hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bool enc)
+ {
+ 	enum hv_mem_host_visibility visibility = enc ?
+ 			VMBUS_PAGE_NOT_VISIBLE : VMBUS_PAGE_VISIBLE_READ_WRITE;
+ 	u64 *pfn_array;
+ 	int ret = 0;
+-	bool result = true;
+ 	int i, pfn;
+ 
+ 	pfn_array = kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+@@ -530,17 +529,15 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+ 		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
+ 			ret = hv_mark_gpa_visibility(pfn, pfn_array,
+ 						     visibility);
+-			if (ret) {
+-				result = false;
++			if (ret)
+ 				goto err_free_pfn_array;
+-			}
+ 			pfn = 0;
+ 		}
+ 	}
+ 
+  err_free_pfn_array:
+ 	kfree(pfn_array);
+-	return result;
++	return ret;
+ }
+ 
+ static bool hv_vtom_tlb_flush_required(bool private)
+diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+index c878616a18b8..c9503fe2d13a 100644
+--- a/arch/x86/include/asm/x86_init.h
++++ b/arch/x86/include/asm/x86_init.h
+@@ -150,8 +150,8 @@ struct x86_init_acpi {
+  * @enc_cache_flush_required	Returns true if a cache flush is needed before changing page encryption status
+  */
+ struct x86_guest {
+-	bool (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
+-	bool (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
++	int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
++	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
+ 	bool (*enc_tlb_flush_required)(bool enc);
+ 	bool (*enc_cache_flush_required)(void);
+ };
+diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
+index a37ebd3b4773..f0f54e109eb9 100644
+--- a/arch/x86/kernel/x86_init.c
++++ b/arch/x86/kernel/x86_init.c
+@@ -131,8 +131,8 @@ struct x86_cpuinit_ops x86_cpuinit = {
+ 
+ static void default_nmi_init(void) { };
+ 
+-static bool enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return true; }
+-static bool enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return true; }
++static int enc_status_change_prepare_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
++static int enc_status_change_finish_noop(unsigned long vaddr, int npages, bool enc) { return 0; }
+ static bool enc_tlb_flush_required_noop(bool enc) { return false; }
+ static bool enc_cache_flush_required_noop(void) { return false; }
+ static bool is_private_mmio_noop(u64 addr) {return false; }
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index a68f2dda0948..6cf6cc8ae6a6 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -282,7 +282,7 @@ static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ #endif
+ }
+ 
+-static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
++static int amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
+ {
+ 	/*
+ 	 * To maintain the security guarantees of SEV-SNP guests, make sure
+@@ -291,11 +291,11 @@ static bool amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool
+ 	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP) && !enc)
+ 		snp_set_memory_shared(vaddr, npages);
+ 
+-	return true;
++	return 0;
+ }
+ 
+ /* Return true unconditionally: return value doesn't matter for the SEV side */
+-static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
++static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool enc)
+ {
+ 	/*
+ 	 * After memory is mapped encrypted in the page table, validate it
+@@ -307,7 +307,7 @@ static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool e
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+ 		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
+ 
+-	return true;
++	return 0;
+ }
+ 
+ static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index bda9f129835e..6fbf22d5fa56 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2152,8 +2152,9 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+ 		cpa_flush(&cpa, x86_platform.guest.enc_cache_flush_required());
+ 
+ 	/* Notify hypervisor that we are about to set/clr encryption attribute. */
+-	if (!x86_platform.guest.enc_status_change_prepare(addr, numpages, enc))
+-		return -EIO;
++	ret = x86_platform.guest.enc_status_change_prepare(addr, numpages, enc);
++	if (ret)
++		return ret;
+ 
+ 	ret = __change_page_attr_set_clr(&cpa, 1);
+ 
+@@ -2168,8 +2169,8 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
+ 
+ 	/* Notify hypervisor that we have successfully set/clr encryption attribute. */
+ 	if (!ret) {
+-		if (!x86_platform.guest.enc_status_change_finish(addr, numpages, enc))
+-			ret = -EIO;
++		ret = x86_platform.guest.enc_status_change_finish(addr,
++								  numpages, enc);
+ 	}
+ 
+ 	return ret;
 -- 
 2.41.0
 
