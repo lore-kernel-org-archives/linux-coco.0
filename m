@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330B8A5A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCAAECB
 	for <linux-coco@lists.linux.dev>; Tue,  5 Dec 2023 00:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hxDbFye3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GqH70m5o"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1701737139; x=1733273139;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=baddqEIghmkFajP6rpIfXbNavqQAwsBb4c0/kd75gPA=;
-  b=hxDbFye3+dtmc6tCTdpwQIggITT9S1NRKoje6vYQKNRBUnaKHWrDq/mk
-   Xy6kD8mqLHA6ZxqcwX2NjKpG9dU38lv04St8um9dlMGf/aUAgZnbK88C3
-   nyLcjveKpqzsJVrT6H7AIDUzZmZxds1Fn5kRS8RcsCQdp8SClbEIDZ5Ai
-   cLex0VzHRcRsiS83cUyqa1WAaufRmg+86n+kVwPYZJ6e4pIOzEyZjexrY
-   rpzkMko/WNDscCqsc8JrL/dvZdl0lfRkN4FiThYSfX3KHmnElX3DdqYjG
-   2zZ6I/Q13IVM53xQJ45fPwRDcbNMLcqcZO3SUgk5W6eI+NoDZxgD0N6Yq
+  bh=7MgS2tz+eXb3t+LyzYLE/xkq/zAhJTq68EvRtEFLASY=;
+  b=GqH70m5oYOqSlhH7oObV2YTwKzPyO6Gag3cCPXPSXNR9pHhxhDK/g0lw
+   WBD1r18RJz3VkzYCH88/Wd9PRcJPdRa15mGJmoaAGYHUjNvCOds+uStPY
+   r/AVVBPZOTZ3JzaEuTddNekcbIyNesdgwQY+hjLzF8CF6BgairPV50GLB
+   6zAJx2vOqkouA2HwVnseOZbZaTXMjkkmRAXU7oLcgrqT3qz6aKX3RJ6kn
+   xD0WUNnvzL7SqZc8i55rmVd5fuEJO5rufJVXWyCBQCn8ID5iiGmwlspqb
+   kXWrHovo7awQp37wf1SyX6S4Lu1vbnyxNuHyAHzHOgucSleCNu1Cg0P24
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="392688733"
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="392688721"
 X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="392688733"
+   d="scan'208";a="392688721"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:36 -0800
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="944067951"
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="944067949"
 X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="944067951"
+   d="scan'208";a="944067949"
 Received: from abijaz-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.61.240])
   by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:30 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 5C3E410A445; Tue,  5 Dec 2023 03:45:20 +0300 (+03)
+	id 7E6FD10A448; Tue,  5 Dec 2023 03:45:20 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -54,13 +54,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	kexec@lists.infradead.org,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>
-Subject: [PATCHv4 05/14] x86/kvm: Do not try to disable kvmclock if it was not enabled
-Date: Tue,  5 Dec 2023 03:45:01 +0300
-Message-ID: <20231205004510.27164-6-kirill.shutemov@linux.intel.com>
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv4 08/14] x86/mm: Return correct level from lookup_address() if pte is none
+Date: Tue,  5 Dec 2023 03:45:04 +0300
+Message-ID: <20231205004510.27164-9-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
 References: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
@@ -72,64 +69,74 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
-present in the VM. It leads to write to a MSR that doesn't exist on some
-configurations, namely in TDX guest:
+lookup_address() only returns correct page table level for the entry if
+the entry is not none.
 
-	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
-	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
+Make the helper to always return correct 'level'. It allows to implement
+iterator over kernel page tables using lookup_address().
 
-kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
-features.
-
-Do not disable kvmclock if it was not enabled.
+Add one more entry into enum pg_level to indicate size of VA covered by
+one PGD entry in 5-level paging mode.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Wanpeng Li <wanpengli@tencent.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 ---
- arch/x86/kernel/kvmclock.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/pgtable_types.h | 1 +
+ arch/x86/mm/pat/set_memory.c         | 8 ++++----
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index fb8f52149be9..f2fff625576d 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -24,8 +24,8 @@
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index 0b748ee16b3d..3f648ffdfbe5 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -548,6 +548,7 @@ enum pg_level {
+ 	PG_LEVEL_2M,
+ 	PG_LEVEL_1G,
+ 	PG_LEVEL_512G,
++	PG_LEVEL_256T,
+ 	PG_LEVEL_NUM
+ };
  
- static int kvmclock __initdata = 1;
- static int kvmclock_vsyscall __initdata = 1;
--static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
--static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
-+static int msr_kvm_system_time __ro_after_init;
-+static int msr_kvm_wall_clock __ro_after_init;
- static u64 kvm_sched_clock_offset __ro_after_init;
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 6fbf22d5fa56..01f827eb8e80 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -666,32 +666,32 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
+ 	pud_t *pud;
+ 	pmd_t *pmd;
  
- static int __init parse_no_kvmclock(char *arg)
-@@ -195,7 +195,8 @@ static void kvm_setup_secondary_clock(void)
+-	*level = PG_LEVEL_NONE;
++	*level = PG_LEVEL_256T;
  
- void kvmclock_disable(void)
- {
--	native_write_msr(msr_kvm_system_time, 0, 0);
-+	if (msr_kvm_system_time)
-+		native_write_msr(msr_kvm_system_time, 0, 0);
- }
+ 	if (pgd_none(*pgd))
+ 		return NULL;
  
- static void __init kvmclock_init_mem(void)
-@@ -294,7 +295,10 @@ void __init kvmclock_init(void)
- 	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
- 		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
- 		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
--	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
-+		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
-+	} else {
- 		return;
- 	}
++	*level = PG_LEVEL_512G;
+ 	p4d = p4d_offset(pgd, address);
+ 	if (p4d_none(*p4d))
+ 		return NULL;
+ 
+-	*level = PG_LEVEL_512G;
+ 	if (p4d_large(*p4d) || !p4d_present(*p4d))
+ 		return (pte_t *)p4d;
+ 
++	*level = PG_LEVEL_1G;
+ 	pud = pud_offset(p4d, address);
+ 	if (pud_none(*pud))
+ 		return NULL;
+ 
+-	*level = PG_LEVEL_1G;
+ 	if (pud_large(*pud) || !pud_present(*pud))
+ 		return (pte_t *)pud;
+ 
++	*level = PG_LEVEL_2M;
+ 	pmd = pmd_offset(pud, address);
+ 	if (pmd_none(*pmd))
+ 		return NULL;
+ 
+-	*level = PG_LEVEL_2M;
+ 	if (pmd_large(*pmd) || !pmd_present(*pmd))
+ 		return (pte_t *)pmd;
  
 -- 
 2.41.0
