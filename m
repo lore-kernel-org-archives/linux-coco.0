@@ -1,41 +1,44 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CA26A35A
-	for <linux-coco@lists.linux.dev>; Tue,  5 Dec 2023 18:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9886A024
+	for <linux-coco@lists.linux.dev>; Tue,  5 Dec 2023 18:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DruW0T1U"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701799699; x=1733335699;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nU6+ltTP+gOUvBsLEAvcLUqPG2SP0oUe7thQXPa5nUo=;
-  b=DruW0T1UTHoqYqYdjH+iHtPNOQSBCJC1sGp2qKNIVWP4UaSgAqDOt17i
-   jIybeu+GSpFw0/2w7nrVO0kVn5+X6wHzpRfVaKwD5BVPi9S0vu5vgYeoK
-   L2z96doOsDXH3Z96fYnk5hSf1ZNi85VwVYbEIPbSlZ9trJkauwvmQg2WH
-   3RtQv4Dze9dwjBR0JuaVL1ndztBqnQR5kiYxK6vk4gnrb6q5nFoK0G9kd
-   OM6h9SCfq3m1kVK5XlIMXVOf4hJgjYW3IEmcsIk1vSGknsX20ct/Nm/2H
-   F/NpQHnzJsfzbhuH+nPlY3sP3daqcjuiQZPnje3d9IO2F8fIAm6FuxL2n
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="992290"
-X-IronPort-AV: E=Sophos;i="6.04,253,1695711600"; 
-   d="scan'208";a="992290"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 10:08:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="747327088"
-X-IronPort-AV: E=Sophos;i="6.04,253,1695711600"; 
-   d="scan'208";a="747327088"
-Received: from rjongalo-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.46.235])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 10:08:16 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 3A14A10A43A; Tue,  5 Dec 2023 21:08:13 +0300 (+03)
-Date: Tue, 5 Dec 2023 21:08:13 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="L2LDMDZg"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 705DA40E01AD;
+	Tue,  5 Dec 2023 18:52:57 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id J6-BrYYixBWq; Tue,  5 Dec 2023 18:52:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1701802375; bh=COpgCkikT3z+JRnd2ns06QRSDfXH8wlW9tuJ0ai1Q54=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L2LDMDZgpAK8mc+Y+JnHsQLOgod5dbCCOkwTjSoU5GWU4Iiw7QLIv5P7l2KV35keA
+	 vnm9DUxHxKPU9ShsZWSOIC8qIM1fAc8jnxAdwmqRSKibWVLmZfCLs+xeeNmT8RNXFy
+	 ycLZzX25TjUGQwyfSulbzjCZR1OkWG0nraW9vMK0JOffoVriyuwYKW7xO1aU0AAJjO
+	 7DZkXnUudBEevfOxa+WfreQK5I9EV5+x5HgH0PPQZsgcI/wTUc2iTpUFRECJ4KLwpu
+	 eizRrxra395oxqFTGnHjQ3tOchDdwBGt2wpA/UMzcZSAjjlhbv+tJrkhqy90pYcIe3
+	 vRbv5dIeKEjFteKEnQD/jzEEWJ/FVgXtwoj7cid8s3I0+TKFYCcOKJh4t8Lqty6ZYa
+	 +qfIsFWWI283HyQmz1veW7nkZGAdQ5ZXgixBhMJoAhzp+AHSytp/Lkvf3/5yT4Kmfm
+	 V2YC95zRco0aUNJYZ3dus+xX2GBd6Zc+F2Umt89CkHpAHY0OKxqbazLsdq/9CPZiv9
+	 wUpY4O2p7YvCq+/IFhV/wqNdb2fqC9XNkEFerRrUtskr8OZ+k5E7K8N+UZoGCtFwjD
+	 1MeJDBGlLRY2/Z3WgD2Lfz5FRWo/nbnZMm9SaZvvBljtFdksmno2pLRur7UE0egyps
+	 SyeMIpyx1zo6VoeiwAqxroHs=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7823440E0239;
+	Tue,  5 Dec 2023 18:52:46 +0000 (UTC)
+Date: Tue, 5 Dec 2023 19:52:41 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -44,7 +47,7 @@ Cc: Tom Lendacky <thomas.lendacky@amd.com>,
 	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] x86/coco, x86/sev: Use cpu_feature_enabled() to detect
  SEV guest flavor
-Message-ID: <20231205180813.phbxg5jdumfovshz@box.shutemov.name>
+Message-ID: <20231205185241.GGZW9xeTtiG6sORMTr@fat_crate.local>
 References: <20231205143738.2875-1-kirill.shutemov@linux.intel.com>
  <20231205144619.GCZW83uzAomKmupn7j@fat_crate.local>
  <20231205150012.6lma2wzcellr7pz7@box.shutemov.name>
@@ -53,30 +56,40 @@ References: <20231205143738.2875-1-kirill.shutemov@linux.intel.com>
  <20231205160035.GEZW9JI8eKENXBo6EO@fat_crate.local>
  <20231205171643.zg7fwxjyccab53kf@box.shutemov.name>
  <20231205172436.GFZW9c1EaCaguGhglb@fat_crate.local>
+ <20231205180813.phbxg5jdumfovshz@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231205172436.GFZW9c1EaCaguGhglb@fat_crate.local>
+In-Reply-To: <20231205180813.phbxg5jdumfovshz@box.shutemov.name>
 
-On Tue, Dec 05, 2023 at 06:24:36PM +0100, Borislav Petkov wrote:
-> On Tue, Dec 05, 2023 at 08:16:43PM +0300, Kirill A. Shutemov wrote:
-> > What's wrong with using X86_FEATURE_* here?
-> 
-> What's wrong with using something which is already there?
+On Tue, Dec 05, 2023 at 09:08:13PM +0300, Kirill A. Shutemov wrote:
+> It is here and it is broken.
 
-It is here and it is broken.
+It is not broken - it is getting improved as we go.
 
-I think legitimate use case for cc_platfrom_has() is to check platform
-capability, not specific implementation. CC_ATTR_GUEST_MEM_ENCRYPT makes
-sense, CC_ATTR_GUEST_SEV_SNP doesn't.
+> I think legitimate use case for cc_platfrom_has() is to check platform
+> capability, not specific implementation.
 
-And we have much more mature infrastructure around X86_FEATURE_ comparing
-to CC_ATRR_. If we can use it, we should.
+Yes, and I already agreed that it is used the wrong way there.
+
+> And we have much more mature infrastructure around X86_FEATURE_ comparing
+> to CC_ATRR_. If we can use it, we should.
+
+Mature, shmature. X86_FEATURE_ has its own issues - don't even get me
+started on it. You want it because you use TDX_GUEST and it works fine
+for you. Yes, we can always do X86_FEATURE_ but X86_FEATURE_ doesn't
+belong in arch-agnostic code. cc_platform_has() does, OTOH.
+
+So yes, we will fix your issue, no worries. I'm figuring out the
+details as we speak.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
