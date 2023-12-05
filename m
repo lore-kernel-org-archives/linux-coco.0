@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32148EC7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879DF10E8
 	for <linux-coco@lists.linux.dev>; Tue,  5 Dec 2023 00:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VVvJeOFX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d4uxwGRq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1701737135; x=1733273135;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=wYs3fU4C0jZd+PnKZxc0e8e/KDE7b/5Kd3uwb7sJ62o=;
-  b=VVvJeOFXdukENYjO5Jdl14fcw6D5WsD0/HDJ6I8May/E19hU+70m/ssv
-   txdv+vmpGqmeTpGcBDr+mGXwTdoxpau9zCXlnaUMwVG0PJBM8iVyhgzhm
-   Q7ELTAW906J/8MS+TxELsynG4g/FGr24ws7po8mLQSyXwLiU7k/sxySvE
-   khF4h2p0He97LJBGIGKSJPmccoeEZB4nDXAYFrlndztC2ndEYqPwJ6L9+
-   7+UZqZIp28vTyLa3pLAg3LKxfyVylAbNk0tu/VX1PQQglrxXvU8NG3NVs
-   rAzhTCySaFP6iupOiLA8aVS88o7auARmskHrF56jufvH29aOt8+L2/4qK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="392688657"
+  bh=RP/Va3aoGG5zb/Y76A/szY23yia8vizTXE1CbaIASh0=;
+  b=d4uxwGRqsLO8MY5jI7Rcaw3E7aOZ5O/M8KFi3bGWq+mRn4IMZlp+2owi
+   1KpCn57uS8n+9Omo55V6OBvHJk0GPt9oVZRDARl4HVPY5L14g8eNe4Boe
+   61zxw4odZK9P15QM082Q5Aec2cgeRPelMies7aJa2EL7RarnKPkuvNw7M
+   zAIrVGHY4+BVg/dGmGHk76tQFljoDQR5o5inT5IrO77L7+R5Zo3q+uOxg
+   h2b04YSBVyTwz1ZopWjS8hloiNRsFRbfIF7AP/BbcaoSXUEC3e0PCLIQV
+   XGV0ZusYFGIrx1ii6KaR90TGWra5ph4cm4wJPczcjbBGAmfLG44tPM2bC
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="392688667"
 X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="392688657"
+   d="scan'208";a="392688667"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
   by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:34 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="888704402"
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="888704404"
 X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="888704402"
+   d="scan'208";a="888704404"
 Received: from abijaz-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.61.240])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:29 -0800
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 16:45:30 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 67CE110A446; Tue,  5 Dec 2023 03:45:20 +0300 (+03)
+	id 8959010A44A; Tue,  5 Dec 2023 03:45:20 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -55,9 +55,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv4 06/14] x86/kexec: Keep CR4.MCE set during kexec for TDX guest
-Date: Tue,  5 Dec 2023 03:45:02 +0300
-Message-ID: <20231205004510.27164-7-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv4 09/14] x86/tdx: Account shared memory
+Date: Tue,  5 Dec 2023 03:45:05 +0300
+Message-ID: <20231205004510.27164-10-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
 References: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
@@ -69,39 +69,123 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
-to #VE.
+The kernel will convert all shared memory back to private during kexec.
+The direct mapping page tables will provide information on which memory
+is shared.
 
-Use alternatives to keep the flag during kexec for TDX guests.
+It is extremely important to convert all shared memory. If a page is
+missed, it will cause the second kernel to crash when it accesses it.
 
-The change doesn't affect non-TDX-guest environments.
+Keep track of the number of shared pages. This will allow for
+cross-checking against the shared information in the direct mapping and
+reporting if the shared bit is lost.
+
+Include a debugfs interface that allows for the check to be performed at
+any point.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
 ---
- arch/x86/kernel/relocate_kernel_64.S | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/coco/tdx/tdx.c | 69 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
-diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-index 56cab1bb25f5..cd6a53667c6b 100644
---- a/arch/x86/kernel/relocate_kernel_64.S
-+++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -145,12 +145,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	 * Set cr4 to a known state:
- 	 *  - physical address extension enabled
- 	 *  - 5-level paging, if it was enabled before
-+	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
-+	 *    in TDX guests.
- 	 */
- 	movl	$X86_CR4_PAE, %eax
- 	testq	$X86_CR4_LA57, %r13
- 	jz	1f
- 	orl	$X86_CR4_LA57, %eax
- 1:
-+	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
- 	movq	%rax, %cr4
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 2d90043a0e91..fcc159497554 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -5,6 +5,7 @@
+ #define pr_fmt(fmt)     "tdx: " fmt
  
- 	jmp 1f
+ #include <linux/cpufeature.h>
++#include <linux/debugfs.h>
+ #include <linux/export.h>
+ #include <linux/io.h>
+ #include <asm/coco.h>
+@@ -37,6 +38,13 @@
+ 
+ #define TDREPORT_SUBTYPE_0	0
+ 
++static atomic_long_t nr_shared;
++
++static inline bool pte_decrypted(pte_t pte)
++{
++	return cc_mkdec(pte_val(pte)) == pte_val(pte);
++}
++
+ /* Called from __tdx_hypercall() for unrecoverable failure */
+ noinstr void __noreturn __tdx_hypercall_failed(void)
+ {
+@@ -820,6 +828,11 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+ 		return -EIO;
+ 
++	if (enc)
++		atomic_long_sub(numpages, &nr_shared);
++	else
++		atomic_long_add(numpages, &nr_shared);
++
+ 	return 0;
+ }
+ 
+@@ -895,3 +908,59 @@ void __init tdx_early_init(void)
+ 
+ 	pr_info("Guest detected\n");
+ }
++
++#ifdef CONFIG_DEBUG_FS
++static int tdx_shared_memory_show(struct seq_file *m, void *p)
++{
++	unsigned long addr, end;
++	unsigned long found = 0;
++
++	addr = PAGE_OFFSET;
++	end  = PAGE_OFFSET + get_max_mapped();
++
++	while (addr < end) {
++		unsigned long size;
++		unsigned int level;
++		pte_t *pte;
++
++		pte = lookup_address(addr, &level);
++		size = page_level_size(level);
++
++		if (pte && pte_decrypted(*pte))
++			found += size / PAGE_SIZE;
++
++		addr += size;
++
++		cond_resched();
++	}
++
++	seq_printf(m, "Number of shared pages in kernel page tables:  %16lu\n",
++		   found);
++	seq_printf(m, "Number of pages accounted as shared:           %16ld\n",
++		   atomic_long_read(&nr_shared));
++	return 0;
++}
++
++static int tdx_shared_memory_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, tdx_shared_memory_show, NULL);
++}
++
++static const struct file_operations tdx_shared_memory_fops = {
++	.open           = tdx_shared_memory_open,
++	.read           = seq_read,
++	.llseek         = seq_lseek,
++	.release        = single_release,
++};
++
++static __init int debug_tdx_shared_memory(void)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_TDX_GUEST))
++		return 0;
++
++	debugfs_create_file("tdx_shared_memory", S_IRUSR, arch_debugfs_dir,
++			    NULL, &tdx_shared_memory_fops);
++	return 0;
++}
++fs_initcall(debug_tdx_shared_memory);
++#endif
 -- 
 2.41.0
 
