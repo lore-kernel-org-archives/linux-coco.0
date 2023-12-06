@@ -1,193 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC21809
-	for <linux-coco@lists.linux.dev>; Wed,  6 Dec 2023 04:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A8437156
+	for <linux-coco@lists.linux.dev>; Wed,  6 Dec 2023 13:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eU2c7XM7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MkVDQZk4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701837788; x=1733373788;
+  t=1701869197; x=1733405197;
   h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=7TjjfuIrDxHvq3J1LuDKkwzJWHZempJkLsUwdcaQSn8=;
-  b=eU2c7XM7cbO9y4mFk6VHiMYBC+pAVrj5E6joekC0Juqc7OQC6lYT/eCd
-   p+rRysrlne/WJ2dcofBSR1QzAHxDtt0OnwU9iK2PI0WYbykhLqtb5PajU
-   f0fQLHwgU/OnGo2bK32FNjXNXsdmAQJQQcnWNsBBucerL1fhLVXB0JLBW
-   WINorVK690nAc4BP7zDOWx/k9HbmIeLsGDiAodepqmLO2I7YG1rINNXln
-   aGh46Z1bLWs3noLcYW7t6Y5JlsNr1EZ9VTyJ6Yl5fesSpjFzT0qnYnzAA
-   cVHy5hnF3LewR3+Ybv+ubuVoah3BNh15CKL9yY5vTK4oDRYAvDTNXVfu+
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="1099598"
-X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="1099598"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 20:43:07 -0800
+   mime-version:in-reply-to;
+  bh=wvRatAZPIQq3Q3PGd/WkGxxbZ5rxDQhioWQiZbIj1vg=;
+  b=MkVDQZk4VhNOA2h2CsGC9ZL0FfekEb/1kxjb6jVN73kcgNIbxMmJ/FVF
+   y/U8JhU4jsFSkQw7B0moYU6/K2XicscZLZCiCyXARo8LvwqvsTbCX6UIH
+   VmDreGxayRaj9L6zUrPjzCF0ctTwZuo837klgiumBGbcmlR1TiNcHo9kC
+   5WZ7GXunCyZvl3ik1nYK7k68/TOwIbyryBZF8slgDOvN1f9ZO6ItWe8df
+   JHezM7C2FWKXpNxoalbtVVCqeONGjJoI7xr7ut0xhE3Ap9qD9PhWrMdEO
+   isrpTVgpAKr1iQt4U2x7I5ZUqYdWSVaFN8UrqfGlKkFfgeMVxoBPxvZeB
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="930864"
+X-IronPort-AV: E=Sophos;i="6.04,255,1695711600"; 
+   d="scan'208";a="930864"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 05:26:36 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="1018449133"
-X-IronPort-AV: E=Sophos;i="6.04,254,1695711600"; 
-   d="scan'208";a="1018449133"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Dec 2023 20:43:06 -0800
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 5 Dec 2023 20:43:06 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 5 Dec 2023 20:43:06 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 5 Dec 2023 20:43:06 -0800
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 5 Dec 2023 20:43:05 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HrzLhluz+eCvaiC2vIadMqNnw0TTHz8aKNon4wzSr088cecGtnBxc8cGhH4dNBTWkXcAIq10JH19TUSnh9cdfcXkx25NXExxlbSbzsoTpNy20/Kzvs8DqkE3T86X8wN53Tz6UogZmMKaN53Jna9hevMf632nWTFOWMUVx788Ucw6Wn+lnXeUwTAnBSpoeENURxvgZDc6BRJU4wmJwg+U0ECDMXO4vvNUU8i4ZMH+09nWMr0lKAjrutt75+nwLhWamZvuPdzIZXjURStVIpl7agTDk2icbY54xktsWULIcQ3/aplEsv0fk1LVUae/1DzQSlpmF4Y/atlJkh1XP3V/gQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JtWYyjCJm1YqZ3/CgwUPLl2TR3yRSgXfXpO46vDoXyA=;
- b=kcmJqu4sj+HP3DWAXbKj+U1B/ZZeA4xExWweC79lfAVpWM7Pi6TKUE2HGX5BXwO34WwccwrO+UVAx7TpvYeOk+gm30c5ItLxhLhc9bWGSEjxtB+M9c7IJ8GfqQQO3yWXYg4xxkmxn1aa3dxedElV3Al27G1WIVEsOd7caLEozTyPFKJ5bVx3RR3W/smMFZC0FYoOxsZszOEY8fYXrmbXdtvz4JWk/lpgFLb+Qf01MwRDPt4BdFyIyhBjkEvt81dnkUoLMhJt5+MIhP0THGC/yILelj1umwhX4CMi6fq6URnymCOz/h9xh0VNWnjZP8TwIvYqQS4IJfS5N88lBFd5sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by MN6PR11MB8218.namprd11.prod.outlook.com (2603:10b6:208:47c::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Wed, 6 Dec
- 2023 04:43:03 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6362:763e:f84b:4169]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6362:763e:f84b:4169%5]) with mapi id 15.20.7068.025; Wed, 6 Dec 2023
- 04:43:03 +0000
-Date: Tue, 5 Dec 2023 20:43:00 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Samuel Ortiz <sameo@rivosinc.com>, Alexey Kardashevskiy <aik@amd.com>
-CC: <linux-coco@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-Subject: Re: TDISP enablement
-Message-ID: <656ffbd4e2a39_4568a294c5@dwillia2-xfh.jf.intel.com.notmuch>
-References: <e05eafd8-04b3-4953-8bca-dc321c1a60b9@amd.com>
- <ZVG3fREeTQqvHLb/@vermeer>
- <58a60211-1edc-4238-b4a3-fe7faf3b6458@amd.com>
- <ZVI8Y8VICy/SwYy5@vermeer>
- <51bf9fed-2bad-4eb1-bbc7-239200bff668@amd.com>
- <ZVOTsEhQTYxOpxA8@vermeer>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZVOTsEhQTYxOpxA8@vermeer>
-X-ClientProxiedBy: MW4PR04CA0388.namprd04.prod.outlook.com
- (2603:10b6:303:81::33) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="721084730"
+X-IronPort-AV: E=Sophos;i="6.04,255,1695711600"; 
+   d="scan'208";a="721084730"
+Received: from eborisov-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.46.36])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 05:26:30 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 0618B10A3F5; Wed,  6 Dec 2023 16:26:28 +0300 (+03)
+Date: Wed, 6 Dec 2023 16:26:27 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"ashish.kalra@amd.com" <ashish.kalra@amd.com>,
+	"kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"bhe@redhat.com" <bhe@redhat.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCHv4 06/14] x86/kexec: Keep CR4.MCE set during kexec for TDX
+ guest
+Message-ID: <20231206132627.5dx4sbgkypgnq6yn@box.shutemov.name>
+References: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
+ <20231205004510.27164-7-kirill.shutemov@linux.intel.com>
+ <861f583e2550959616e19565235f0debbe27149b.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MN6PR11MB8218:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63f6dc9b-2800-42fc-6061-08dbf615d51e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cfYUefsIjEBc2+oVKU1bspR8NcPUYcnhOtJpY3OK+7+EPa8Xq5rQAhAaHIf65J1YerTEIaW1rpemrhe2LAEM6/8Iy3alzvosh3xqFLsGuAUy80ZARxkA5Gg9APcAllEuDqvFnT9EEzAVFo5uwF/B5J2ZcSrBFcE30oECnD5/uHjo40VrHEr356jZp5IzGJfJTOu4jNJk5QFhd7s+4Fg09XzvM6RAAhHwHdl1980KdKsbxCN/gWlRb7GAdSGiO8EDe6+ai9XlvGUPmmQoq6sfc+IHKymWSvhA4d19tOXGEV2Tf2ZSsZ0PxqSYclx6EUadW3Zst4GkLw9iHXtjbqz+oPwmErb/40HIMM6dQbe+IcoOTWi0JYlrMSGn+4UpWk9KFhm8EksySbT/1L9MBbJ/D9BLTMOrxibRjR6c6pCgPO5fuMA1Mozu2GvQc+vBXkDoaBeGMNSgYGegwHFUPv5JhkV4jyQepKuqO9dB+XWPVbhiAWg1gIsIoTg/h35D6ViLCDD40mfv9CqthwHUTVpYIJds5fiHBQ5jNV14EvtoKSXwD8mr36z6A9MjVp233mJ/
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(376002)(136003)(346002)(366004)(39860400002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(66946007)(110136005)(66476007)(316002)(66556008)(478600001)(38100700002)(6486002)(5660300002)(41300700001)(2906002)(7116003)(86362001)(8936002)(4326008)(8676002)(83380400001)(26005)(3480700007)(82960400001)(9686003)(6512007)(6506007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?C/RfKV3D0rqN6u8RQ2yWWr0Q7BUjjx6grBIsh44zdvYIstUjt8oMl3NSv6kP?=
- =?us-ascii?Q?1DL9mbGibjTWP51QXqxoApYAn/a5qvCAIdBMfy6O3qROTIh3crDAmoN7gvDj?=
- =?us-ascii?Q?w9dblbBzZn7gKxuj3B2NwvBzzH+0PSx5TyjptWef61hTT4ZTk2HhUZNFRFpn?=
- =?us-ascii?Q?nmGzC77L5pH5rLKpoB6CPtHOsXiRfb/1dQP7oNKXBpGRcvBsgowPPQjMtfra?=
- =?us-ascii?Q?SolSTt6hm+Rb7PQ+XDLfV1eWSu9MEXtqhsow4+x37S2xfFUQYwu4f/f9NwuK?=
- =?us-ascii?Q?Kb9Wv9zqbKyCh+ExL1JpjWRh9cGfdfjfX0mV31j59ej5Ik9sLc1ua+Fctutl?=
- =?us-ascii?Q?2527CUhYDQJEdvFCH9DKqUsYrNUFT1b30jZLh9hpWrLj+kC0Ryi7ixtY/w9E?=
- =?us-ascii?Q?APzxH2lBN28+0NgoVPIdHdKByfSocN1gGpJLHRTl/6AKYKwDTcrXYQkuGR5U?=
- =?us-ascii?Q?YivqS8OTPb/0H4TBPqfIPMBQqo7GdXY2R4dmq2ZT4PYFAk0Dr0M7KkGzANUa?=
- =?us-ascii?Q?KEez64EZB6KElm8FLMEWz0Z1HB7gBf2OlzdriHF7lNAYrqmWAJQYMR9Uvzqq?=
- =?us-ascii?Q?pZSJ/zwX6HZ1IjrfGXrge0l1mSvW55TYhtVsaNdqsDWf3eUEvHIrQ3UCClXW?=
- =?us-ascii?Q?MJJQaLm/Ovfep0huc3fUSv94EVJXzyxNE6ylx9Eu5wTckgUavokTV7mF+bGE?=
- =?us-ascii?Q?KAasbiU+Z4OZ+c+tAn7Re0TUtvpL1/bv3R/e1kM+Z9lL7Hcjl1wrWXBgXIvl?=
- =?us-ascii?Q?1z65sO+yqCYIIxyflJeVFNjgfiwNyhMikNyFfOJ2jXUzp36iWjCouaELOqcU?=
- =?us-ascii?Q?yaIfYZrj5KTLwhclj6AMEUfLqs3gYHS3gFdOjSws9U6gtc6RqsbQB4ETCRSJ?=
- =?us-ascii?Q?Kdl0sjHaQRae5Q0KUrZKSPi+Lx9VfkwKbcYF0X61VG0/ZBR4eVAtsfbUmczW?=
- =?us-ascii?Q?7CjWfUABt0rgMGedITMEmVZEQ6+h4rHtGxMbBVMPVVW2Opy/2D6X8zglDPHb?=
- =?us-ascii?Q?SSmGo7OT5kUC1E3wKlLi17Eh1dgWidDFobFmZKF5uNUPMyBcB1jskPqtAwD0?=
- =?us-ascii?Q?QaG8T1UawjlQwK68OBLRCRSIAL+LoHy283evLlzz2pvH5yu9bKMXjLv7xi6N?=
- =?us-ascii?Q?0UCyMFJsI0BABnwasff51I85Hx3iTLeopeHoY7dkiJmy5GGN4vydG8OP+iW0?=
- =?us-ascii?Q?4URmcIbXff7jwaX9JZOpcuRWskdnEtvj3izsk3UAH65OeYMX+JkrxuJM0U6y?=
- =?us-ascii?Q?rLZsFAvD7SSPRJE10B60UnuJlIRBhS3JXJJsTvjTkOgCBMV08wkqD476RjQS?=
- =?us-ascii?Q?cGw7LaketXfDktxCCiyCWFdToWEyTbrY6yfqcwNW489Nent7noQjqD4C2wGT?=
- =?us-ascii?Q?bM8QeSPTGxVUChvHX46rkxS8TrgLIJht7ZLjCkVjD0TsfYsoLNB3DmZFIXFs?=
- =?us-ascii?Q?oawsu0VDbo9+VWGxG4WPq6LueugTT7vKyB2aEMJzAPD6mTcckJV7PwEpxpb1?=
- =?us-ascii?Q?c3KT04VPh74NLVD12jmqbmxXk0dD2BwlEkwM/N/8vnVu0oqN8X1hfIHGy/LU?=
- =?us-ascii?Q?Tz3WMfmivoaHdS8d7lqJXH2sSTiWqqwiGGuN3QJL+5H313b+dvbifQl5yTi6?=
- =?us-ascii?Q?PA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63f6dc9b-2800-42fc-6061-08dbf615d51e
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 04:43:03.5538
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y3PHVzVVVyjMLf/99Do8z6qabQiuD0calh9yckmPxu9QZ9OwuqS8jmHwLWh2EpHxxAW47Tu285UMsOArKTHTC8D6Z0YwHZxT3QConE0FYW8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8218
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <861f583e2550959616e19565235f0debbe27149b.camel@intel.com>
 
-Samuel Ortiz wrote:
-[..]
-> > There is always a driver which has to enable the device and tell it where it
-> > can DMA to/from anyway so the RUN state does not really let the device start
-> > doing things once it is moved to RUN 
+On Tue, Dec 05, 2023 at 11:58:45PM +0000, Huang, Kai wrote:
+> On Tue, 2023-12-05 at 03:45 +0300, Kirill A. Shutemov wrote:
+> > TDX guests are not allowed to clear CR4.MCE. Attempt to clear it leads
+> > to #VE.
+> > 
+> > Use alternatives to keep the flag during kexec for TDX guests.
+> > 
+> > The change doesn't affect non-TDX-guest environments.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Reviewed-by: Kai Huang <kai.huang@intel.com>
+> > ---
+> >  arch/x86/kernel/relocate_kernel_64.S | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
+> > index 56cab1bb25f5..cd6a53667c6b 100644
+> > --- a/arch/x86/kernel/relocate_kernel_64.S
+> > +++ b/arch/x86/kernel/relocate_kernel_64.S
+> > @@ -145,12 +145,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
+> >  	 * Set cr4 to a known state:
+> >  	 *  - physical address extension enabled
+> >  	 *  - 5-level paging, if it was enabled before
+> > +	 *  - Machine check exception on TDX guest. Clearing MCE is not allowed
+> > +	 *    in TDX guests.
+> >  	 */
+> >  	movl	$X86_CR4_PAE, %eax
+> >  	testq	$X86_CR4_LA57, %r13
+> >  	jz	1f
+> >  	orl	$X86_CR4_LA57, %eax
+> >  1:
+> > +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %eax), X86_FEATURE_TDX_GUEST
+> >  	movq	%rax, %cr4
+> >  
+> >  	jmp 1f
 > 
-> I agree. But setting RUN from the host means that the guest can start
-> configuring and using that device at any point in time, i.e. even before
-> any guest component could verify, validate and attest to the TDI. RUN is
-> precisely defined for that purpose: Telling the TDI that it should now
-> accept T-bit TLPs, and you want to do that *after* the TVM accepts the
-> TDI. Here, by having the host move the TDI to RUN, potentially even before
-> the TVM has even booted, you're not giving the guest a chance to explictly
-> accept the TDI.
-
-I wanted to circle back to this to agree about allowing the guest to
-control the transition from LOCKED to RUN. Recall the Plumbers
-conversation where I mentioned TDX moving closer to TIO to streamline
-the common TSM interface in Linux, and foreshadowing other vendors
-making similar concessions. This is an example where the "as simple as
-possible, but no simpler" threshold looks to have been crossed.
-
-TDX like COVE allows for guest to trigger LOCKED to RUN transition. For
-vendor alignment purposes this looks like an opportunity for TIO to
-enable the same and prevent a vendor-specific semantic difference in the
-TSM common infrastructure.
-
-[..]
-[inclue Samuel's further justification that I also Ack]
-> > > After that call, the TDI is usable from a TVM perspective. Before that
-> > > call it is not, but its configuration and state are locked.
-> > Right. I still wonder what bad thing can happen if we move to RUN before
-> > starting the TVM (I suspect there is something), or it is all about
-> > semantics (for the AMD TIO usecase, at least)?
+> Nit:
 > 
-> It's not only about semantics, it's about ownership. By moving to RUN
-> before the TVM starts, you're basically saying the host decides if the
-> TDI is acceptable by the TVM or not. The TVM is responsible for making
-> that decision and does not trust the host VMM to do so on its behalf, at
-> least in the confidential computing threat model.
+> It seems <asm/alternative.h> isn't included in relocate_kernel_64.S.  Maybe it's
+> better to do it explicitly.
 > 
-> Is there any specific reason why you wouldn't move the TDI to RUN when
-> the SEV guest calls into the validat ABI?
-> 
-> Cheers,
-> Samuel.
-> 
+> Maybe even better to explicitly include <linux/stringify.h> too, but I see
+> <asm/alternative.h> already does that.
 
+Okay, I will add both.
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
