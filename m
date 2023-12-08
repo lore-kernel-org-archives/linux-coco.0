@@ -1,35 +1,44 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1A638F86
-	for <linux-coco@lists.linux.dev>; Fri,  8 Dec 2023 17:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2082.outbound.protection.outlook.com [40.107.95.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22891EB24
+	for <linux-coco@lists.linux.dev>; Fri,  8 Dec 2023 20:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="BR+eQu4R"
-Received: from [192.168.178.49] (dynamic-adsl-84-220-28-122.clienti.tiscali.it [84.220.28.122])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4D6C620B74C0;
-	Fri,  8 Dec 2023 09:09:15 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4D6C620B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1702055363;
-	bh=9l5Ru2o2nTcnqhIvnh2spJXetvDDmWSNf5VpeRTEbg8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BR+eQu4RJTh0ceQuXPjHpA9kHIzOrd0+p5df/UHzA0eGNYqc7rUGlPbQK5a/OmO7F
-	 BbSngliMq/ni3wzjMbXTyzXGGeWj/BPeGnENYV5rl5q2z1u31ztbdarZNon2OuZnsr
-	 0mfhXeVkJmSZMWdfLpcgO7+g7mYQigjJ7RHMbUDM=
-Message-ID: <68b2d6bf-bce7-47f9-bebb-2652cc923ff9@linux.microsoft.com>
-Date: Fri, 8 Dec 2023 18:09:13 +0100
-Precedence: bulk
-X-Mailing-List: linux-coco@lists.linux.dev
-List-Id: <linux-coco.lists.linux.dev>
-List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
-List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 06/50] x86/sev: Add the host SEV-SNP initialization
- support
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KafJddU5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fUlu5Mr+lxsHp7HzrXRjN6moP8fbuUI4wvNMCzQLfxfJkZmx7IMtWHlg6+bSFj4+YI1zWwgbYkr98mStdJ1sJ41Q3hy7T8/oqqw7Bb/TFnQFZ1L0mjc1rdQAQ2fsDzyYzJ683zXLxg0OyXyqsdZLTgBoH2xtjrJ8ny9yhaRMwVZ8Fmt57pZ/0rgJ4Hxyb/nrdfcc7rDqLSB89m1bAubPuqsw7JRqsj02dT6eonTRxvTgnWWgZEnTVR/MpgQNvbEm3AgbrwtVWjgz35eaxidwnbI0GyHk0P7z955Ir/84L5RAJi0JvV2IcsGyqTuYSjO1vECPxUVMaiv/9WBwLQBY5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a0mDd65rYssYzWRBtV0aogY1FIT4MPMeaYO5Tclb7n0=;
+ b=V1ng9i85dbjVsj12owZbg38zBkNWn3Veeh5vAq13SvHwYzAwATSJax1+bejX9vRub2TlZYk28tonGYJjOYHo06C7DMqQHSlvLOAK1A7rSbSDfJMhXvpdDgGISOtumJlHpLum2oUZKEQe7YLd0Dy+YsBkIP8UROr+MvI224/Qb+JPJLmb8jtOPzL7WJy22zJhuFlXtZgTD+yxG2Zq8WjIKiswAPOHPV7IK40AhGpVf9FpM3sRjeiMmfSxXis8RlJIQfnvAlA87RVkR0zPz6uPTj0/akbnnnLzBJzt6TLiu4NwRHZ3xTk/IrLz3rueSgmRNzzTTcjpKWXWS+4oeNsVWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a0mDd65rYssYzWRBtV0aogY1FIT4MPMeaYO5Tclb7n0=;
+ b=KafJddU5oHkY3qtqj2N/zyA+k8dfkdiBSphEy21RnxKh1oyb19VxHiKft89iIhYSURzfQEEMOISTNLQdjYVUmlORMEHBTJfLwie7KSVrNZMBr+oLXTLklHxcmSLshATDZGABccorqHTfOEtc0V/viz6AF1O2Y02itD3mdwuj8q4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com (2603:10b6:805:75::23)
+ by DM4PR12MB6662.namprd12.prod.outlook.com (2603:10b6:8:b5::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.28; Fri, 8 Dec
+ 2023 20:54:21 +0000
+Received: from SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::3341:faaf:5974:f152]) by SN6PR12MB2767.namprd12.prod.outlook.com
+ ([fe80::3341:faaf:5974:f152%7]) with mapi id 15.20.7068.028; Fri, 8 Dec 2023
+ 20:54:21 +0000
+Message-ID: <f0dc32ea-3b77-1e9e-42fd-3f115c001f7c@amd.com>
+Date: Fri, 8 Dec 2023 14:54:14 -0600
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.1
+Subject: Re: [PATCH v10 16/50] x86/sev: Introduce snp leaked pages list
 Content-Language: en-US
-To: "Kalra, Ashish" <ashish.kalra@amd.com>, Borislav Petkov <bp@alien8.de>,
- Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
  linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
  tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
@@ -42,220 +51,113 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
  ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
  sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
  jarkko@kernel.org, nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
- liam.merwick@oracle.com, zhi.a.wang@intel.com,
- Brijesh Singh <brijesh.singh@amd.com>
+ liam.merwick@oracle.com, zhi.a.wang@intel.com
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-7-michael.roth@amd.com>
- <20231107163142.GAZUpmbt/i3himIf+E@fat_crate.local>
- <4a2016d6-dc1f-ff68-9827-0b72b7c8eac2@amd.com>
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <4a2016d6-dc1f-ff68-9827-0b72b7c8eac2@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ <20231016132819.1002933-17-michael.roth@amd.com>
+ <20231206204255.GEZXDcz9yfyMiyYQ1H@fat_crate.local>
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <20231206204255.GEZXDcz9yfyMiyYQ1H@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7PR04CA0021.namprd04.prod.outlook.com
+ (2603:10b6:806:f2::26) To SN6PR12MB2767.namprd12.prod.outlook.com
+ (2603:10b6:805:75::23)
+Precedence: bulk
+X-Mailing-List: linux-coco@lists.linux.dev
+List-Id: <linux-coco.lists.linux.dev>
+List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
+List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR12MB2767:EE_|DM4PR12MB6662:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46b61379-d39f-47c6-9962-08dbf82fd843
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	IR6o5tliSKpLkV9yTEmMpauMzmfJDAxDZWF+hIo3m5HRjf0FjUMr6JynaTGEpN2waw4xThs3feTOt2VBDizIWXBTi19Pz5FwDaVGsFcB4RQOl+LPI8IPg/6UmFFRPTw+OZR5LGYkpkziUFsG2Jo0kKsmP8CaSZy6wyOgdYgxpyM8ui5DFxGIHB4greC8WCQz2qp1aU9OqD0wctTdUYsqJ+GV+0VGawSSl85CIU4qiyUvqcpKqc+Hij6DAwGkYedOAu6RjeHe4DvbF7qZERMi46ENAUMehxqAwcpBkbEVDAo/jQfUuGouweq/F7ROu1U5YAl7FVIclT/az6N4uKqIhJK+T5EFldF37snUQkZbfasJWY7Hc6/nToCQLw0QO26aOVPhNctJXxrmGU+la168yDlXBt01T2xeXazRXOaT4Ypj0BajPk9RXI+OV0kbEwCO6RkfZStr/r5Fya05+0oc8LTEPHKXeSKOPEeVyiuHggOhPrx+BU/FdRCHOWhKodPflVp5ram6NvlUZ96bYzvmoPwY/Uql7NMqiW7eSl+iVlRS+0P6DAmKWCXKE9EcW57QUw2cfyaWW+ujcerkG7VBKRzD73DodG/1D9GcbYKVlc3TyHz06NkY3OACrDc/MbyI+DRi1CFBJOiNxWxhth7+XQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR12MB2767.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(396003)(376002)(136003)(346002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(31686004)(38100700002)(66556008)(66946007)(86362001)(66476007)(31696002)(36756003)(26005)(83380400001)(2616005)(6512007)(53546011)(6506007)(6486002)(7416002)(7406005)(4744005)(2906002)(316002)(110136005)(6636002)(6666004)(478600001)(8676002)(5660300002)(4326008)(8936002)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N3ZJOUVUZndTK0ptWUlLckRKUVpRMkxIZm4xbTdwa2ozWWFWVFZNSWhGb0tk?=
+ =?utf-8?B?UjlWaWZ1N3hEOWlzeEVuSVl4a1dPd0Q4cEVZVnEwWHgvSW5jNE85SWZlelhU?=
+ =?utf-8?B?aHQrNFhtcnlCZEk1VXFrZzN6dGFSUEVGNnVZYjhhTi9rS0lITEV2c2xyenRO?=
+ =?utf-8?B?VkJPcjRyZmN5cXp4MjRoZzFIWU93TmRKcnZOZVhINkpQQ1hsNG5FOGxBOTkz?=
+ =?utf-8?B?ajVqSkswMld1Sm5wYXN5RkdxN1dmc043ZUpuVVdqeUZJMDBQWHp2MklnYTJG?=
+ =?utf-8?B?UHJZN1JpN1Yxd0FkOGc0azZNT2FvR0I0WEZ3QUYxQzhGbHBJL21oTFpnKzQ1?=
+ =?utf-8?B?cnFmVVhDMStrOFRIVXRxRzFCa2h4cHM0ZXdaOTB5Vnd3ZDArOEk4eDJZV2x5?=
+ =?utf-8?B?dThLa005WnJtZjdYTEFjd0dONGxwL3BMMWF6ZUcrL1o2WExaRlBZamhUZ3RT?=
+ =?utf-8?B?WEJDclNCTUJmMFh3S0tGWXFYMzRxUmVhTStFL2ZQdWtBZkQ1dVduVU4yZ2lQ?=
+ =?utf-8?B?S0VVdlhYQkE5ZTlOU2tGMVFYalhPaTlIcVZWcmFnczRBZGhGQTV6UlVjVGpB?=
+ =?utf-8?B?djFPelRYK1BCY0llZFVVN0hET0JBNUVIYWpnUnRqMWRLWTRQN000NVBFbXkz?=
+ =?utf-8?B?WEMrODhpWTFCWVdqYy9MMk9SdlB1MTFuZ3ZFY2Z3MmsyYi9sQ2F4V3VuNG9R?=
+ =?utf-8?B?cWJBWU5DOFN0N3NWRDQxaEgwUFgwMkU1b2FsdGpkUW5RcDlvNGU5bTdXV3p2?=
+ =?utf-8?B?MDYzdlVoNTNoMlByZW9pT0VKTDI3OG40cDVETHdOMmFtOHIwdWRqTHM0SFBL?=
+ =?utf-8?B?NndGQ2l0QzM4M21EOHU5T0tBcGc1TVZEbUx0elZHWkJKV2JMVHhOY0x3MDVO?=
+ =?utf-8?B?Szk1Rzk2ZDBYUnF6Vm11NkVwdzFLNEtTczhERGZlQmdlWkdXaEtDcWk2QTJQ?=
+ =?utf-8?B?d1lKcW9FNFNmK0VrTlRDOUFOWGtNWkVCOFN1TEdrWkphY1JwanBETlg5U2ZS?=
+ =?utf-8?B?T1BrSTRGdjN2ZjNVSnhxejlSMzhHL0tHQ0lOQUl5QTNxYTlsdjBYSmJaNGJ2?=
+ =?utf-8?B?ZXROdjBQVGRTcnkvZmlFLzlrVkZaYVpkdWcwbEl0U0xHZFArc3NSOWk5cjRE?=
+ =?utf-8?B?dW1pMCs2b1ZnRytOeFl1eXBkY29WeU1HRzlQMFFPZ1VsV2dJTUF4cHRGMmdK?=
+ =?utf-8?B?MjkwUStpRVZTU01MMDdibDREVlJiRy9JVDZPWVNiTHhQekJtVXU2M0lnMjlO?=
+ =?utf-8?B?T3duWS9kZlRscFpJeW51ei92Wk85bUVheDlkWTM3dldhSS9VMS9MVVdFT1BL?=
+ =?utf-8?B?bE1sajRWaHBHbkI4eWwvT1VBUTMyUnFjUzZpbktTNUhJU3VYMWdIQ25qZjBJ?=
+ =?utf-8?B?ZTBmSGpnYXp5MXpWSlZpSGhVOTROUjJCWnYyckpabHc2UzZMYVkvNkx2dHBU?=
+ =?utf-8?B?Qko4c214bXlCWG1HYzd2dnAwZ2EzdEYvQWNQZFgyUUZMYXFzcmZFS0YzdDdC?=
+ =?utf-8?B?TW8wazhyazREWVBwbDdVdFRhWGcxQjlmK3ZMQUJ6Y3M2SlExbE81SjE2ZG1O?=
+ =?utf-8?B?UndFNVpqY0ZSUGw5Yjc4UnNEci96L3JBT2ZGbmFMRS9wanVIYWFjRjMxRzNu?=
+ =?utf-8?B?Yk04VkRWNGE3OEM2N254OWF1VGtzTmYzNEkxL0MrajYwQ2tzSGMyb2Q5S1o5?=
+ =?utf-8?B?SkZya3h4ZzF4eUZhOTJkYVEvU1hHYVNocUo0TnRnQndLcG9wb2dzbXdnay83?=
+ =?utf-8?B?WUd1ZjNjdGZEZHlPaWgzQ25BVFF3b3phd0xudFRJSnN4SXNqci9Xazh4N2I3?=
+ =?utf-8?B?N24xcW9nbk9WRFVuRkJPc1hKYnFLY2tjYXJXbnVlUjFqcXFqMUoyMkFxQ2p4?=
+ =?utf-8?B?K2N4NFZxM0JWdHUwYU1wVTdheTc4V2VZR0krYit5S1RnSGVzOXpkUUJsWlho?=
+ =?utf-8?B?L3kvbmxReXd3TEpZYkx6eTJGSVdUMjUyT2dJSzYxWWVTcWhXb0I3UjBJQ0RF?=
+ =?utf-8?B?UHY2YkFFSXZWbW5IVm9Xem8rT2hlMkpadjQ5V0RIUWxuWEFuMm5nZ0NhT1FB?=
+ =?utf-8?B?YzhXMmlLcFV3L3psdlhxOEdweVRpWUM5Nk94TGdiL1Flbm4wM3kvcDZCMHFa?=
+ =?utf-8?Q?+s99FiQb5MEZspLcpEY8NvcYU?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46b61379-d39f-47c6-9962-08dbf82fd843
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR12MB2767.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2023 20:54:21.3463
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0jsjs6M9BCMyGYfJJu/qT8WpHL/+USVuOcxRAYOX/cGWQXBJRZEC0U87HGDI+NpHW17lTd6jl8LrIha1hE/U7A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6662
 
-On 07/11/2023 20:00, Kalra, Ashish wrote:
-> Hello Boris,
+On 12/6/2023 2:42 PM, Borislav Petkov wrote:
+> On Mon, Oct 16, 2023 at 08:27:45AM -0500, Michael Roth wrote:
+>> +	spin_lock(&snp_leaked_pages_list_lock);
+>> +	while (npages--) {
+>> +		/*
+>> +		 * Reuse the page's buddy list for chaining into the leaked
+>> +		 * pages list. This page should not be on a free list currently
+>> +		 * and is also unsafe to be added to a free list.
+>> +		 */
+>> +		list_add_tail(&page->buddy_list, &snp_leaked_pages_list);
+>> +		sev_dump_rmpentry(pfn);
+>> +		pfn++;
+>> +	}
+>> +	spin_unlock(&snp_leaked_pages_list_lock);
+>> +	atomic_long_inc(&snp_nr_leaked_pages);
 > 
-> Addressing of some of the remaining comments:
+> How is this supposed to count?
 > 
-> On 11/7/2023 10:31 AM, Borislav Petkov wrote:
->> On Mon, Oct 16, 2023 at 08:27:35AM -0500, Michael Roth wrote:
->>> +static bool early_rmptable_check(void)
->>> +{
->>> +    u64 rmp_base, rmp_size;
->>> +
->>> +    /*
->>> +     * For early BSP initialization, max_pfn won't be set up yet, wait until
->>> +     * it is set before performing the RMP table calculations.
->>> +     */
->>> +    if (!max_pfn)
->>> +        return true;
->>
->> This already says that this is called at the wrong point during init.
->>
->> Right now we have
->>
->> early_identify_cpu -> early_init_amd -> early_detect_mem_encrypt
->>
->> which runs only on the BSP but then early_init_amd() is called in
->> init_amd() too so that it takes care of the APs too.
->>
->> Which ends up doing a lot of unnecessary work on each AP in
->> early_detect_mem_encrypt() like calculating the RMP size on each AP
->> unnecessarily where this needs to happen exactly once.
->>
->> Is there any reason why this function cannot be moved to init_amd()
->> where it'll do the normal, per-AP init?
->>
->> And the stuff that needs to happen once, needs to be called once too.
->>
->>> +
->>> +    return snp_get_rmptable_info(&rmp_base, &rmp_size);
->>> +}
->>> +
->>>   static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
->>>   {
->>>       u64 msr;
->>> @@ -659,6 +674,9 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
->>>           if (!(msr & MSR_K7_HWCR_SMMLOCK))
->>>               goto clear_sev;
->>>   +        if (cpu_has(c, X86_FEATURE_SEV_SNP) && !early_rmptable_check())
->>> +            goto clear_snp;
->>> +
->>>           return;
->>>     clear_all:
->>> @@ -666,6 +684,7 @@ static void early_detect_mem_encrypt(struct cpuinfo_x86 *c)
->>>   clear_sev:
->>>           setup_clear_cpu_cap(X86_FEATURE_SEV);
->>>           setup_clear_cpu_cap(X86_FEATURE_SEV_ES);
->>> +clear_snp:
->>>           setup_clear_cpu_cap(X86_FEATURE_SEV_SNP);
->>>       }
->>>   }
->>
->> ...
->>
->>> +bool snp_get_rmptable_info(u64 *start, u64 *len)
->>> +{
->>> +    u64 max_rmp_pfn, calc_rmp_sz, rmp_sz, rmp_base, rmp_end;
->>> +
->>> +    rdmsrl(MSR_AMD64_RMP_BASE, rmp_base);
->>> +    rdmsrl(MSR_AMD64_RMP_END, rmp_end);
->>> +
->>> +    if (!(rmp_base & RMP_ADDR_MASK) || !(rmp_end & RMP_ADDR_MASK)) {
->>> +        pr_err("Memory for the RMP table has not been reserved by BIOS\n");
->>> +        return false;
->>> +    }
->>
->> If you're masking off bits 0-12 above...
->>
->>> +
->>> +    if (rmp_base > rmp_end) {
->>
->> ... why aren't you using the masked out vars further on?
->>
->> I know, the hw will say, yeah, those bits are 0 but still. IOW, do:
->>
->>     rmp_base &= RMP_ADDR_MASK;
->>     rmp_end  &= RMP_ADDR_MASK;
->>
->> after reading them.
->>
->>> +        pr_err("RMP configuration not valid: base=%#llx, end=%#llx\n", rmp_base, rmp_end);
->>> +        return false;
->>> +    }
->>> +
->>> +    rmp_sz = rmp_end - rmp_base + 1;
->>> +
->>> +    /*
->>> +     * Calculate the amount the memory that must be reserved by the BIOS to
->>> +     * address the whole RAM, including the bookkeeping area. The RMP itself
->>> +     * must also be covered.
->>> +     */
->>> +    max_rmp_pfn = max_pfn;
->>> +    if (PHYS_PFN(rmp_end) > max_pfn)
->>> +        max_rmp_pfn = PHYS_PFN(rmp_end);
->>> +
->>> +    calc_rmp_sz = (max_rmp_pfn << 4) + RMPTABLE_CPU_BOOKKEEPING_SZ;
->>> +
->>> +    if (calc_rmp_sz > rmp_sz) {
->>> +        pr_err("Memory reserved for the RMP table does not cover full system RAM (expected 0x%llx got 0x%llx)\n",
->>> +               calc_rmp_sz, rmp_sz);
->>> +        return false;
->>> +    }
->>> +
->>> +    *start = rmp_base;
->>> +    *len = rmp_sz;
->>> +
->>> +    return true;
->>> +}
->>> +
->>> +static __init int __snp_rmptable_init(void)
->>> +{
->>> +    u64 rmp_base, rmp_size;
->>> +    void *rmp_start;
->>> +    u64 val;
->>> +
->>> +    if (!snp_get_rmptable_info(&rmp_base, &rmp_size))
->>> +        return 1;
->>> +
->>> +    pr_info("RMP table physical address [0x%016llx - 0x%016llx]\n",
->>
->> That's "RMP table physical range"
->>
->>> +        rmp_base, rmp_base + rmp_size - 1);
->>> +
->>> +    rmp_start = memremap(rmp_base, rmp_size, MEMREMAP_WB);
->>> +    if (!rmp_start) {
->>> +        pr_err("Failed to map RMP table addr 0x%llx size 0x%llx\n", rmp_base, rmp_size);
->>
->> No need to dump rmp_base and rmp_size again here - you're dumping them
->> above.
->>
->>> +        return 1;
->>> +    }
->>> +
->>> +    /*
->>> +     * Check if SEV-SNP is already enabled, this can happen in case of
->>> +     * kexec boot.
->>> +     */
->>> +    rdmsrl(MSR_AMD64_SYSCFG, val);
->>> +    if (val & MSR_AMD64_SYSCFG_SNP_EN)
->>> +        goto skip_enable;
->>> +
->>> +    /* Initialize the RMP table to zero */
->>
->> Again: useless comment.
->>
->>> +    memset(rmp_start, 0, rmp_size);
->>> +
->>> +    /* Flush the caches to ensure that data is written before SNP is enabled. */
->>> +    wbinvd_on_all_cpus();
->>> +
->>> +    /* MFDM must be enabled on all the CPUs prior to enabling SNP. */
->>
->> First of all, use the APM bit name here pls: MtrrFixDramModEn.
->>
->> And then, for the life of me, I can't find any mention in the APM why
->> this bit is needed. Neither in "15.36.2 Enabling SEV-SNP" nor in
->> "15.34.3 Enabling SEV".
->>
->> Looking at the bit defintions of WrMem an RdMem - read and write
->> requests get directed to system memory instead of MMIO so I guess you
->> don't want to be able to write MMIO for certain physical ranges when SNP
->> is enabled but it'll be good to have this properly explained instead of
->> a "this must happen" information-less sentence.
+> You're leaking @npages as the function's parameter but are incrementing
+> snp_nr_leaked_pages only once?
 > 
-> This is a per-requisite for SNP_INIT as per the SNP Firmware ABI specifications, section 8.8.2:
+> Just make it a bog-normal unsigned long and increment it inside the
+> locked section.
 > 
-> From the SNP FW ABI specs:
+> Or do at the beginning of the function:
 > 
-> If INIT_RMP is 1, then the firmware ensures the following system requirements are met:
-> • SYSCFG[MemoryEncryptionModEn] must be set to 1 across all cores. (SEV must be
-> enabled.)> • SYSCFG[SecureNestedPagingEn] must be set to 1 across all cores.
-> • SYSCFG[VMPLEn] must be set to 1 across all cores.
-> • SYSCFG[MFDM] must be set to 1 across all cores.
-
-Hi Ashish,
-
-I just noticed that the kernel shouts at me about this bit when I offline->online a CPU in
-an SNP host:
-
-[2692586.589194] smpboot: CPU 63 is now offline
-[2692589.366822] [Firmware Warn]: MTRR: CPU 0: SYSCFG[MtrrFixDramModEn] not cleared by BIOS, clearing this bit
-[2692589.376582] smpboot: Booting Node 0 Processor 63 APIC 0x3f
-[2692589.378070] [Firmware Warn]: MTRR: CPU 63: SYSCFG[MtrrFixDramModEn] not cleared by BIOS, clearing this bit
-[2692589.388845] microcode: CPU63: new patch_level=0x0a0011d1
-
-Now I understand if you say "CPU offlining is not supported" but there's nothing currently
-blocking it.
-
-Best wishes,
-Jeremi 
-
-> • VM_HSAVE_PA (MSR C001_0117) must be set to 0h across all cores.
-> • HWCR[SmmLock] (MSR C001_0015) must be set to 1 across all cores.
-> 
-> So, this platform enabling code for SNP needs to ensure that these conditions are met before SNP_INIT is called.
+> 	atomic_long_add(npages, &snp_nr_leaked_pages);
 > 
 
+Yes will fix accordingly by incrementing it inside the locked section.
+
+Thanks,
+Ashish
