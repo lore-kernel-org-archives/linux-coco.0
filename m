@@ -1,217 +1,332 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E9644C92
-	for <linux-coco@lists.linux.dev>; Thu,  7 Dec 2023 16:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03021C68F
+	for <linux-coco@lists.linux.dev>; Fri,  8 Dec 2023 13:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="xxTXJx3G";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TGD6PJiW";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="xxTXJx3G";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TGD6PJiW"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GbulNFr8"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E733740E00CC;
+	Fri,  8 Dec 2023 13:06:04 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id UcgXcBcz720k; Fri,  8 Dec 2023 13:06:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1702040762; bh=k9BBLCJJHxA1EJZX5E05AB1l8VGWke2lYGmIBt3xYhI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GbulNFr88+NES6gJHTFBzrBKX/G3XJQuA9w1k2sxH60A/Wa+Q0S4Q4ADKct/6sZd7
+	 jWtKPKbepUNQmtCtWDUDBg+npO3ghryF1cxT/96f7+4PpMoauZm3/LQj/AZ+po9XXs
+	 nfTqUr4v/Po53yiRNUaaeLru/Iw1JXnsWaOrCJv7f5vFwVQ1mrT8aiVQtly4JT4SvD
+	 i+uSxZ1UCEMnWehnui2RGaHlOT0kUlAMce/KNpms2x4RWI5TI2GSkmOs5mf7SqHIiS
+	 o40ADaVmrbYYCe1DaIbJQpTW5SNs3d62nQpVEp1+bUdXacnFLMUTnj6kuNXDqJmWNo
+	 lebCrPQqNlaYsODU4eKlhHYDK68Vbx87AdzVEmBqkce3j+dYhl0qgQWsCFH2nbl9QQ
+	 WtJirz/E27HdFcX46vJQoUnQRBbahjobKBRvgejZqMwVGLWiJWRpty46e3aolqeUDA
+	 eH1IDSafl/VjW2eltN6Xit1ttGsl36wW+bf4UVfpZ1mi2B0Fq7DnsVRGZmvcdzBW7L
+	 iSk7BTgF/O/fJ0srB42um9or3KpbvdcjjDw4RZGuQ9vie2HF2j6X0ZRJ0/Fqo7c12p
+	 WPisowwqJylliuaF9EcI7pqy9VkHToC0fGcJMZ1sB3C1BaBZ0FYpe+ND1BmLfusJ5E
+	 hEPD6WDU7YS2VPZbYbCGhfnY=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 49D4A1FB8F;
-	Thu,  7 Dec 2023 16:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1701966036; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R9gDJpilOFtri5BMtSk1bR16VKzmy1EoAMg8XN+4Hs8=;
-	b=xxTXJx3GPoOl7SBcxIJqOQY+tneUAmrvullQZsq6Y0AdZHg7xq11tltLJ6XCWQKwQxYcwk
-	HT33a4nMU2w3w9MG+rUa8S0IjxZBChoNpEM/Fk61JsRbYhku/KT2ETpZ6RCdOFtcJMjyDz
-	IKKnYkKtyOjkwmj0q+ZaOkeGmOSUCXE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1701966036;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R9gDJpilOFtri5BMtSk1bR16VKzmy1EoAMg8XN+4Hs8=;
-	b=TGD6PJiW4rWFAKNCxeLhi1pT83vgP+nsYq+vHBQVED9NbLzgVnBTcoOEz45J5WokkGcnPi
-	EpQoh63MFcmvc0Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1701966036; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R9gDJpilOFtri5BMtSk1bR16VKzmy1EoAMg8XN+4Hs8=;
-	b=xxTXJx3GPoOl7SBcxIJqOQY+tneUAmrvullQZsq6Y0AdZHg7xq11tltLJ6XCWQKwQxYcwk
-	HT33a4nMU2w3w9MG+rUa8S0IjxZBChoNpEM/Fk61JsRbYhku/KT2ETpZ6RCdOFtcJMjyDz
-	IKKnYkKtyOjkwmj0q+ZaOkeGmOSUCXE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1701966036;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R9gDJpilOFtri5BMtSk1bR16VKzmy1EoAMg8XN+4Hs8=;
-	b=TGD6PJiW4rWFAKNCxeLhi1pT83vgP+nsYq+vHBQVED9NbLzgVnBTcoOEz45J5WokkGcnPi
-	EpQoh63MFcmvc0Bw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7DE013B6A;
-	Thu,  7 Dec 2023 16:20:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id liI5ONPwcWWzXwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 07 Dec 2023 16:20:35 +0000
-Message-ID: <0e84720f-bb52-c77f-e496-40d91e94a4f6@suse.cz>
-Date: Thu, 7 Dec 2023 17:20:35 +0100
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B4F4140E00A9;
+	Fri,  8 Dec 2023 13:05:21 +0000 (UTC)
+Date: Fri, 8 Dec 2023 14:05:20 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v10 17/50] crypto: ccp: Handle the legacy TMR allocation
+ when SNP is enabled
+Message-ID: <20231208130520.GFZXMUkKR+aexFpxXf@fat_crate.local>
+References: <20231016132819.1002933-1-michael.roth@amd.com>
+ <20231016132819.1002933-18-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v10 16/50] x86/sev: Introduce snp leaked pages list
-To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
-Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com,
- dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, kirill@shutemov.name,
- ak@linux.intel.com, tony.luck@intel.com, marcorr@google.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
- pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-17-michael.roth@amd.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20231016132819.1002933-17-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-3.10 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[39];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -3.10
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231016132819.1002933-18-michael.roth@amd.com>
 
-On 10/16/23 15:27, Michael Roth wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
+On Mon, Oct 16, 2023 at 08:27:46AM -0500, Michael Roth wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> Pages are unsafe to be released back to the page-allocator, if they
-> have been transitioned to firmware/guest state and can't be reclaimed
-> or transitioned back to hypervisor/shared state. In this case add
-> them to an internal leaked pages list to ensure that they are not freed
-
-Note the adding to the list doesn't ensure anything like that. Not dropping
-the refcount to zero does. But tracking them might indeed not be bad for
-e.g. crashdump investigations so no objection there.
-
-> or touched/accessed to cause fatal page faults.
+> The behavior and requirement for the SEV-legacy command is altered when
+> the SNP firmware is in the INIT state. See SEV-SNP firmware specification
+> for more details.
 > 
+> Allocate the Trusted Memory Region (TMR) as a 2mb sized/aligned region
+> when SNP is enabled to satisfy new requirements for the SNP. Continue
+
+s/the //
+
+> allocating a 1mb region for !SNP configuration.
+> 
+> While at it, provide API that can be used by others to allocate a page
+
+"...an API... ... to allocate a firmware page."
+
+Simple.
+
+> that can be used by the firmware.
+
+> The immediate user for this API will be the KVM driver.
+
+Delete that sentence.
+
+> The KVM driver to need to allocate a firmware context
+
+"The KVM driver needs to allocate ...
+
+> page during the guest creation. The context page need to be updated
+
+"needs"
+
+> by the firmware. See the SEV-SNP specification for further details.
+> 
+> Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
 > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> [mdr: relocate to arch/x86/coco/sev/host.c]
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> [mdr: use struct sev_data_snp_page_reclaim instead of passing paddr
+>       directly to SEV_CMD_SNP_PAGE_RECLAIM]
 > Signed-off-by: Michael Roth <michael.roth@amd.com>
 > ---
->  arch/x86/include/asm/sev-host.h |  3 +++
->  arch/x86/virt/svm/sev.c         | 28 ++++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+)
+>  drivers/crypto/ccp/sev-dev.c | 151 ++++++++++++++++++++++++++++++++---
+>  include/linux/psp-sev.h      |   9 +++
+>  2 files changed, 151 insertions(+), 9 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/sev-host.h b/arch/x86/include/asm/sev-host.h
-> index 1df989411334..7490a665e78f 100644
-> --- a/arch/x86/include/asm/sev-host.h
-> +++ b/arch/x86/include/asm/sev-host.h
-> @@ -19,6 +19,8 @@ void sev_dump_hva_rmpentry(unsigned long address);
->  int psmash(u64 pfn);
->  int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable);
->  int rmp_make_shared(u64 pfn, enum pg_level level);
-> +void snp_leak_pages(u64 pfn, unsigned int npages);
+> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+> index 613b25f81498..ea21307a2b34 100644
+> --- a/drivers/crypto/ccp/sev-dev.c
+> +++ b/drivers/crypto/ccp/sev-dev.c
+> @@ -30,6 +30,7 @@
+>  #include <asm/smp.h>
+>  #include <asm/cacheflush.h>
+>  #include <asm/e820/types.h>
+> +#include <asm/sev-host.h>
+>  
+>  #include "psp-dev.h"
+>  #include "sev-dev.h"
+> @@ -93,6 +94,13 @@ static void *sev_init_ex_buffer;
+>  struct sev_data_range_list *snp_range_list;
+>  static int __sev_snp_init_locked(int *error);
+>  
+> +/* When SEV-SNP is enabled the TMR needs to be 2MB aligned and 2MB size. */
+> +#define SEV_SNP_ES_TMR_SIZE	(2 * 1024 * 1024)
+
+There's "SEV", "SNP" *and* "ES". Wow.
+
+Let's do this:
+
+#define SEV_TMR_SIZE	SZ_1M
+#define SNP_TMR_SIZE	SZ_2M
+
+Done.
+
+> +static size_t sev_es_tmr_size = SEV_ES_TMR_SIZE;
 > +
->  #else
->  static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return -ENXIO; }
->  static inline void sev_dump_hva_rmpentry(unsigned long address) {}
-> @@ -29,6 +31,7 @@ static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int as
->  	return -ENXIO;
+> +static int __sev_do_cmd_locked(int cmd, void *data, int *psp_ret);
+
+Instead of doing forward declarations, move the whole logic around
+__sev_do_cmd_locked() up here in the file so that you can call that
+function by other functions without forward declarations.
+
+The move should probably be a pre-patch.
+
+>  static inline bool sev_version_greater_or_equal(u8 maj, u8 min)
+>  {
+>  	struct sev_device *sev = psp_master->sev_data;
+> @@ -193,11 +201,131 @@ static int sev_cmd_buffer_len(int cmd)
+>  	return 0;
 >  }
->  static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENXIO; }
-> +static inline void snp_leak_pages(u64 pfn, unsigned int npages) {}
->  #endif
 >  
->  #endif
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index bf9b97046e05..29a69f4b8cfb 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-> @@ -59,6 +59,12 @@ struct rmpentry {
->  static struct rmpentry *rmptable_start __ro_after_init;
->  static u64 rmptable_max_pfn __ro_after_init;
->  
-> +/* list of pages which are leaked and cannot be reclaimed */
-> +static LIST_HEAD(snp_leaked_pages_list);
-> +static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
-> +
-> +static atomic_long_t snp_nr_leaked_pages = ATOMIC_LONG_INIT(0);
-> +
->  #undef pr_fmt
->  #define pr_fmt(fmt)	"SEV-SNP: " fmt
->  
-> @@ -518,3 +524,25 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
->  	return rmpupdate(pfn, &val);
->  }
->  EXPORT_SYMBOL_GPL(rmp_make_shared);
-> +
-> +void snp_leak_pages(u64 pfn, unsigned int npages)
+> +static int snp_reclaim_pages(unsigned long paddr, unsigned int npages, bool locked)
 > +{
-> +	struct page *page = pfn_to_page(pfn);
+> +	/* Cbit maybe set in the paddr */
+> +	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
+> +	int ret, err, i, n = 0;
 > +
-> +	pr_debug("%s: leaking PFN range 0x%llx-0x%llx\n", __func__, pfn, pfn + npages);
+> +	for (i = 0; i < npages; i++, pfn++, n++) {
+> +		struct sev_data_snp_page_reclaim data = {0};
 > +
-> +	spin_lock(&snp_leaked_pages_list_lock);
-> +	while (npages--) {
-> +		/*
-> +		 * Reuse the page's buddy list for chaining into the leaked
-> +		 * pages list. This page should not be on a free list currently
-> +		 * and is also unsafe to be added to a free list.
-> +		 */
-> +		list_add_tail(&page->buddy_list, &snp_leaked_pages_list);
-> +		sev_dump_rmpentry(pfn);
-> +		pfn++;
+> +		data.paddr = pfn << PAGE_SHIFT;
 
-You increment pfn, but not page, which is always pointing to the page of the
-initial pfn, so need to do page++ too.
-But that assumes it's all order-0 pages (hard to tell for me whether that's
-true as we start with a pfn), if there can be compound pages, it would be
-best to only add the head page and skip the tail pages - it's not expected
-to use page->buddy_list of tail pages.
+This shifting back'n'forth between paddr and pfn makes this function
+hard to read. Let's use only paddr (diff ontop):
 
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index ea21307a2b34..25078b0253bd 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -203,14 +203,15 @@ static int sev_cmd_buffer_len(int cmd)
+ 
+ static int snp_reclaim_pages(unsigned long paddr, unsigned int npages, bool locked)
+ {
+-	/* Cbit maybe set in the paddr */
+-	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
+ 	int ret, err, i, n = 0;
+ 
+-	for (i = 0; i < npages; i++, pfn++, n++) {
++	/* C-bit maybe set, clear it: */
++	paddr = __sme_clr(paddr);
++
++	for (i = 0; i < npages; i++, paddr += PAGE_SIZE, n++) {
+ 		struct sev_data_snp_page_reclaim data = {0};
+ 
+-		data.paddr = pfn << PAGE_SHIFT;
++		data.paddr = paddr;
+ 
+ 		if (locked)
+ 			ret = __sev_do_cmd_locked(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+@@ -220,7 +221,7 @@ static int snp_reclaim_pages(unsigned long paddr, unsigned int npages, bool lock
+ 		if (ret)
+ 			goto cleanup;
+ 
+-		ret = rmp_make_shared(pfn, PG_LEVEL_4K);
++		ret = rmp_make_shared(__phys_to_pfn(paddr), PG_LEVEL_4K);
+ 		if (ret)
+ 			goto cleanup;
+ 	}
+@@ -232,7 +233,7 @@ static int snp_reclaim_pages(unsigned long paddr, unsigned int npages, bool lock
+ 	 * If failed to reclaim the page then page is no longer safe to
+ 	 * be release back to the system, leak it.
+ 	 */
+-	snp_leak_pages(pfn, npages - n);
++	snp_leak_pages(__phys_to_pfn(paddr), npages - n);
+ 	return ret;
+ }
+ 
+> +
+> +		if (locked)
+> +			ret = __sev_do_cmd_locked(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+> +		else
+> +			ret = sev_do_cmd(SEV_CMD_SNP_PAGE_RECLAIM, &data, &err);
+> +
+> +		if (ret)
+> +			goto cleanup;
+> +
+> +		ret = rmp_make_shared(pfn, PG_LEVEL_4K);
+> +		if (ret)
+> +			goto cleanup;
 > +	}
-> +	spin_unlock(&snp_leaked_pages_list_lock);
-> +	atomic_long_inc(&snp_nr_leaked_pages);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_leak_pages);
+> +
+> +	return 0;
+> +
+> +cleanup:
+> +	/*
+> +	 * If failed to reclaim the page then page is no longer safe to
+> +	 * be release back to the system, leak it.
 
+"released"
+
+> +	 */
+> +	snp_leak_pages(pfn, npages - n);
+> +	return ret;
+> +}
+> +
+> +static int rmp_mark_pages_firmware(unsigned long paddr, unsigned int npages, bool locked)
+> +{
+> +	/* Cbit maybe set in the paddr */
+> +	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
+> +	int rc, n = 0, i;
+
+That n looks like it can be replaced by i.
+
+> +
+> +	for (i = 0; i < npages; i++, n++, pfn++) {
+> +		rc = rmp_make_private(pfn, 0, PG_LEVEL_4K, 0, true);
+> +		if (rc)
+> +			goto cleanup;
+> +	}
+> +
+> +	return 0;
+> +
+> +cleanup:
+> +	/*
+> +	 * Try unrolling the firmware state changes by
+> +	 * reclaiming the pages which were already changed to the
+> +	 * firmware state.
+> +	 */
+> +	snp_reclaim_pages(paddr, n, locked);
+> +
+> +	return rc;
+> +}
+> +
+> +static struct page *__snp_alloc_firmware_pages(gfp_t gfp_mask, int order, bool locked)
+
+AFAICT, @locked is always false. So it can go.
+
+> +{
+> +	unsigned long npages = 1ul << order, paddr;
+> +	struct sev_device *sev;
+> +	struct page *page;
+> +
+> +	if (!psp_master || !psp_master->sev_data)
+> +		return NULL;
+> +
+> +	page = alloc_pages(gfp_mask, order);
+> +	if (!page)
+> +		return NULL;
+> +
+> +	/* If SEV-SNP is initialized then add the page in RMP table. */
+> +	sev = psp_master->sev_data;
+> +	if (!sev->snp_initialized)
+> +		return page;
+> +
+> +	paddr = __pa((unsigned long)page_address(page));
+> +	if (rmp_mark_pages_firmware(paddr, npages, locked))
+> +		return NULL;
+> +
+> +	return page;
+> +}
+> +
+> +void *snp_alloc_firmware_page(gfp_t gfp_mask)
+> +{
+> +	struct page *page;
+> +
+> +	page = __snp_alloc_firmware_pages(gfp_mask, 0, false);
+> +
+> +	return page ? page_address(page) : NULL;
+> +}
+> +EXPORT_SYMBOL_GPL(snp_alloc_firmware_page);
+> +
+> +static void __snp_free_firmware_pages(struct page *page, int order, bool locked)a
+
+This @locked too is always false. It becomes true later in
+
+Subject: [PATCH v10 50/50] crypto: ccp: Add panic notifier for SEV/SNP firmware shutdown on kdump
+
+which talks about some panic notifier running in atomic context. But
+then you can't take locks in atomic context.
+
+Looks like this whole dance around the locked thing needs a cleanup.
+
+...
+
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
