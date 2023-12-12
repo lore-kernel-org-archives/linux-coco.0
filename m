@@ -1,180 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA276639
-	for <linux-coco@lists.linux.dev>; Tue, 12 Dec 2023 01:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12072168A2
+	for <linux-coco@lists.linux.dev>; Tue, 12 Dec 2023 06:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ONYkfsRS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702343148; x=1733879148;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=JMdVWuAsAgPs8PnIQ2LhINinx9znBKH9To1fRSIFnFM=;
-  b=ONYkfsRSfWxIuUlEcSNuzmlEn1oDcEKHcBDhW58xa8EyzAd9/D4WGOGX
-   WOnhZ6Zu163w6bnRrCnFjRNb9kZAxC3WFUWhZ4pm90Q56weP53dsYCrR9
-   5e6LnzVNx33Z6scUlKAR/CBdXFK6VGaWiQM3JQ5G7F3/lrXGMvag4IOW5
-   zyBvbTE5EmrKKpYW/xiV5UYl2BnHQzIIJWQJFD00sE3HqVetrGZAwafWN
-   czoixiy02RlQVr6BhmsYKA6aDbNx6rhojkO6q68vLs2JKQ2ZqhdctwDvy
-   V0kxumGDEb7j1RjioWNK7jl6+YOhcMPBAJCh+TMhzxc+rhN+HJ+A1gRG3
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="459047620"
-X-IronPort-AV: E=Sophos;i="6.04,269,1695711600"; 
-   d="scan'208";a="459047620"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 17:05:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="843715020"
-X-IronPort-AV: E=Sophos;i="6.04,269,1695711600"; 
-   d="scan'208";a="843715020"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmsmga004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 11 Dec 2023 17:05:34 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 11 Dec 2023 17:05:33 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 11 Dec 2023 17:05:33 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 11 Dec 2023 17:05:33 -0800
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 11 Dec 2023 17:05:28 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PnBBSBTrDXCVLdSdc2mzpppWaXIrORMyo9xTr+4305QKM1I4N4rC5eKg6sLi9qD7BszUCbr3AjoavMfh+0zpbuesecnKTOO2UIJVF0tyRihmvjrfmDpk6ne+Y/LXwY9Qn5s5lpIhsmLle6PvVrq8qvpNE7KNOeqaM6TVRC0TsJYQaiQpr/B3w9eJJdGlKamX5r2NNdE99eXtrckuPB1+W70Ei2uWdnpVx0KNApFI3dDuoLddK38noS+/CPleeQPbY0Jj4LK8276xeL1LCWrSWaSwyHTEOA9MMm5UhhVJDM7sr6odWBAO480kNnvCbwsV4pIvJZSMyjXAfWqybs8ghg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JMdVWuAsAgPs8PnIQ2LhINinx9znBKH9To1fRSIFnFM=;
- b=nf8dk+zH2IzF431t4SznE27yXx7PGgRwlpE9bdNy/rrp65NG4o8+rfCfgTaS6GqqdKNRfk48D077/U5R/FoGaOvmJNSc4ygBIu2rl2Z02sdYP+2EeQ2WILI13SDNb6W8eeSWfjwtvASaMWM7fdvZ9B9YvbfRj8CmjaaKlI4+ZRHlvB0y3imyXfvNyAc+z2d1f+/9MACHGJj47kkhXxCOsGVx5x4iKS7VySM9xF800TfcvbEihdGZOVOKbPwDQliCRXVE81DA/frRuS4CdIacBKfYIBXySUCJJJd5B0I/JnVirqHzwIsT6QfbyxduFJFVKl6urNAzYqL0lsXy5lKAng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB5983.namprd11.prod.outlook.com (2603:10b6:510:1e2::13)
- by SN7PR11MB7090.namprd11.prod.outlook.com (2603:10b6:806:299::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Tue, 12 Dec
- 2023 01:05:23 +0000
-Received: from PH7PR11MB5983.namprd11.prod.outlook.com
- ([fe80::64e:c72b:e390:6248]) by PH7PR11MB5983.namprd11.prod.outlook.com
- ([fe80::64e:c72b:e390:6248%7]) with mapi id 15.20.7068.031; Tue, 12 Dec 2023
- 01:05:23 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
-	<mingo@redhat.com>, "yang.lee@linux.alibaba.com"
-	<yang.lee@linux.alibaba.com>, "x86@kernel.org" <x86@kernel.org>
-CC: "hpa@zytor.com" <hpa@zytor.com>, "kirill.shutemov@linux.intel.com"
-	<kirill.shutemov@linux.intel.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "abaci@linux.alibaba.com"
-	<abaci@linux.alibaba.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>
-Subject: Re: [PATCH -next] x86/virt/tdx: Remove duplicated include in tdx.c
-Thread-Topic: [PATCH -next] x86/virt/tdx: Remove duplicated include in tdx.c
-Thread-Index: AQHaLJORcvH6AQ8RFE+nBSh1oPx5trCk1WYA
-Date: Tue, 12 Dec 2023 01:05:23 +0000
-Message-ID: <9ad5777c3cc885194f3fd634c1bc139124062256.camel@intel.com>
-References: <20231212003825.70297-1-yang.lee@linux.alibaba.com>
-In-Reply-To: <20231212003825.70297-1-yang.lee@linux.alibaba.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.50.2 (3.50.2-1.fc39) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB5983:EE_|SN7PR11MB7090:EE_
-x-ms-office365-filtering-correlation-id: 49e327e8-9457-4514-6ff6-08dbfaae6b62
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: RkvmEfLQ/dCrbuQUNDVSMu9o7DEg1Wolx7CzM9NS5RXVHoD07XCVDK2SIIiwF4bLhNU/t+41ljGK0p2jzl9/mVNApG8U4Db1oNYcQ7mIGn77cP/otgrK0MtDUMzZI6iBh9gXzuR3L1ItYDIffZxQaMSzZotiUL4ocvSAMrB2hjhY9H6g6+XZcpf+Q73oALRD9mAlPQI8oLsowq+ZbOVxVXjYFUC+YGnW+dzSsOi3DQHJrDFri1dXgviO6PLf9bUCAAbM5IC4YNjx72iQqOpuQUUTIrFubnVyPHSpESploZegfQIL1Ht9MGrli/ef4r2thdAjGud1TGUDHTEUiV6Z156Q8BcgYsGSNTilm5UZkrKFf9YlArPtzKHGvgPeIVjeTnjpzul/YCTs27v7Un2kGmhPOuFvey1jOItDu4hffNIVsvC9mP9zLzEOXPWhFDkJTZKc7t7fWGWwGFyFuQKBRBScZY6NQGDOkjrHM8HY5XdC3I8A3yusf028DQxcMwJSZV/MNoeG9Vq4K8uY7Kh2WsHXdxxr8ytwZOUY4aihoqbkmNGPqyNHhHVf7KrXE+xJxIrMOcKTeGlhQNO7KxDHtXFb+WRLc0YFa8R8TqWMvUg=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB5983.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(366004)(376002)(39860400002)(136003)(230922051799003)(64100799003)(1800799012)(186009)(451199024)(2616005)(26005)(71200400001)(6506007)(478600001)(6512007)(66476007)(83380400001)(6486002)(7416002)(4744005)(76116006)(2906002)(41300700001)(5660300002)(66946007)(110136005)(4001150100001)(91956017)(66446008)(8676002)(4326008)(316002)(54906003)(64756008)(8936002)(966005)(66556008)(122000001)(38100700002)(82960400001)(38070700009)(86362001)(36756003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bjJpNWU4OWN4MjJLZlIvN1I2dXNSZTl5dXJLd0o5dmRuV1h1K2R3NllHOTNV?=
- =?utf-8?B?YTk3RWdSbVU5Ris2aGJRN09JQlZUL2Jnd2prU3doTjZqVFdqSzF4MEdYcHJW?=
- =?utf-8?B?OWlBaFR5VjFod3VBSnkyMGpYZHduUWhlK3BUZVYvYVFWVi9FNlJRWUkzUWhD?=
- =?utf-8?B?OTEzZWVpd0ZqbGFVaUNmZVlFdWFtUUVtcUp5TE50ZWpGc2o4UHprU3BNaFNM?=
- =?utf-8?B?UEMzYnZSNWRPcTcrSzNIQ3pqQ3M1Wk9YMXZpY3U3elRxSWRRTEIxb205bWxI?=
- =?utf-8?B?aUJzclh2R0drS1MzaVM2bXB1dTNyQlM4YnFMb0pTUjc5QWpWd2ZhbHdEc01K?=
- =?utf-8?B?cXNpQWRSRk9NK2F4TkZvbldaZzNNZlV6MS82SS9CSnM4MzJiWHk2MXFIQnVo?=
- =?utf-8?B?dVBRSmFVSm04bGx6QndrWjNES1l2eGpSSGc3dkoyWFR2SUZDVHREMVVTeS9k?=
- =?utf-8?B?QjYvdkd6QmVtSVZ1eks1dFFNM0xwaHB1ZnNidTc0THBIWG1seEZrZ01aM2Zl?=
- =?utf-8?B?enN6UmJTQitzMWRVVUc0WDVTS240QThhUG1kOVpJZll4amwzTEdYaUZGMG5a?=
- =?utf-8?B?KzA4UkhBZ3lLUlFQYWI3c2RGZmhOSUxHMXNodzlrZzVGdHdYWVNsNVBoM0Ey?=
- =?utf-8?B?MlNNYXN1dk9YM2xYR2hIY3NUQ1o1L2J2REFYL3YvOFZRRGYzcHY0YnN5Nk1M?=
- =?utf-8?B?S1FRS3dPbFNTNEk2czI2TmY4YjdHRC8vbndyeGpMci9BajNiWmFrZWczYk53?=
- =?utf-8?B?VGx6SVdrdFFsM3FhTTRHbXhHZ1V1cFNsVjRudllqYVVlQkJUWmJaS0dyeXBv?=
- =?utf-8?B?Sm9EYWhGTnBUdXVuVXNhdEhnUUlicmZoWDZHVks0dUh5OWhyWGxoeUpiV05a?=
- =?utf-8?B?VEtGRXV5LytIRW9nNGY2WjErVXA2QVhHazFqdUZGcEtEbmVzZDdDSTlOZXN6?=
- =?utf-8?B?MG5oV1ZRNWt6UWxMdStrR05WcktUNUVSR1JicUdzeGczU1RNZU5yT29oWSty?=
- =?utf-8?B?czF1eThPM3o2RERSSlhxM2pQSE5YYll0a29qcDBxUGE0MkZRRjgzSFdINlFU?=
- =?utf-8?B?VUFaa3JUb0Jtenc3ZFQ5QXRIZlRCek9TUVFDSXcvN2dRRnduRjh0Y1NPaDRn?=
- =?utf-8?B?eFZacmNvcDdDU3pSRGtWRmRobWhpOFJtRWx6SmJMc1ppdmgzMHd5R2FQR2ow?=
- =?utf-8?B?WllZS1NuekVMaHhmOEtuMVdRQlRqbWxIVnVaN3ArR0hHRnMzb20raDlrMkJP?=
- =?utf-8?B?elNSMk9pUlU4U3VYV21tdlNxSCtDelVYalloWlRTT1dHRFRjVHo1aGxLQ1V3?=
- =?utf-8?B?NmhvTUhUK2RzMmV3UXpnemJBcDIvaFUwb1ljQ0R1ZTBQTnNsMzQ5Y3lQZnZv?=
- =?utf-8?B?Qm4rUllHUDNvYXB5KzZ4d2JlOGE5Rm9XY2p2R2Q5eG1ZR0kxL1ZFdERXTlhs?=
- =?utf-8?B?NWhtQ3BNSFpTb1NmUk9qQ0pGK3RGUW9ubEVMay9pOE40dVVqYmtLLzBQUi9J?=
- =?utf-8?B?eXc0MHBDeUVSbHIzSkloUko1czFDNjF5SURuRkQwbXdVMnA2U1lsdC9pd0E2?=
- =?utf-8?B?V216V3JSV0ZTRnJoQ000blNWRnVTRXAyRU1rdGdFdFdZZTZPWmZPa0piVXFJ?=
- =?utf-8?B?UVdORE92OERodEVRSElydUFJdjh0SzFhT25TZWIxd1Y2TXhnNjhTWGQrblQ0?=
- =?utf-8?B?ek9yV1RURzNMNlYvcm5jcVBEYnBOeGp3RzJkUEVBWlhxZ3NmWndiWGRKSk9t?=
- =?utf-8?B?aGJuL0xJaUY0MzBBVEZzQkR2cVliUFVEMy9LYUR1c0pYZ083d2JZbFJsWHd0?=
- =?utf-8?B?OTEzUjh2OXBGa0JWWlNTSkRmdlRta3hzQzBZRkpNSXRGR1EvOG5ac3I3Nm1V?=
- =?utf-8?B?cWk2UmNRa3VMYW9kbVJoM2J0cVRUdnFuc1ljYi81cnFicEdsN3IxVkhGcFVT?=
- =?utf-8?B?emgyK05mTGN5MllhL2Nua0FFd1pWT3c5bkpQcmloQ3hJT2NjZ09QejVERk42?=
- =?utf-8?B?bHcydGdtTmY3R3dzZVVlSXZnY1RIRHIxclQ3Q2wxUk5JV0w2c09zdEpEQU40?=
- =?utf-8?B?R2E0NGZCUTYwZG5JaU40WUpwd0w4a2dDOUpNRXpINDVTTzJlODNWUXNvRmc5?=
- =?utf-8?B?U0tuV1pWNXZiZXg3aW1veDY2SXRHdCtVUVJQbCtKaEhsQURnRFd2SVV4ZnRP?=
- =?utf-8?B?blE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C75C8327E410C441B4ACFDF6638E0C79@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="h9cZgdMO"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3C0CD40E00CC;
+	Tue, 12 Dec 2023 06:53:51 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id pDdtV7Aw2AiP; Tue, 12 Dec 2023 06:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1702364029; bh=ew/p29RsERxODejVJK/prbLDG9ex/vpDFzw9MN3tsq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h9cZgdMOi4AMc5jH32UrN+EA/9cBM1Asn0f/Pr0gfyds7BT+/0Nl8WWbmiFGhFvnL
+	 feiBK24dWx5QmKrugrqG+BSkAIjkeoP1DcOAlr/M2EibJQCDDswuey9R+RGJ5GOBlJ
+	 Ke4JiNNqMyPNHcXzaLYMVUsplURYCQ0RwHHdrmahz3AGMay87J/8OPpj7rk4tSpVWx
+	 bfie+iEo7Ys5+Ckq33dtr0+wXW99FMSLL8DhoG+btVZdKGytgGHbarIRjBV+p3juCO
+	 emoCj3qel7qPCyEugklZ4H9n3HSY76Y0c1YrwTA3+61y+5bPZGqJFN8IVUs8TXIlH1
+	 15YdOLX5pkgvpOoNGJYKIAhEUmxR/QcsRAbrkbmRTt1A7pFTDLyVLHfzguoLIUpanQ
+	 U3jCxGi+/3Wop99zzzymNsV1Y++VkPDUgL31pov6Glf5dVUVjgnaylMQwYtGrHWaTU
+	 OZNdBr5Y1qV/GiAuBzSZziTAdc7wTsIHmUOOgg3HRTmDcj3tJnVsieftsrIMOPgLbU
+	 cPDLPohB32GLlZcSa0sbWJAb/GhiU51Vl6XWnqftK7X4tvj2EqvSTFcD8DXHQDDIqT
+	 Z1KwgUMBNnz0+NuhUZwK0k2PDwNSOxfYqwReoBEx4psdy3ftP8v+81+eCYHbtHFkCs
+	 WcXNL786gMn32z/o0RXvSjyI=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 897BA40E00CB;
+	Tue, 12 Dec 2023 06:53:08 +0000 (UTC)
+Date: Tue, 12 Dec 2023 07:52:59 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+	alpergun@google.com, jarkko@kernel.org, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Jarkko Sakkinen <jarkko@profian.com>
+Subject: Re: [PATCH v10 14/50] crypto: ccp: Add support to initialize the
+ AMD-SP for SEV-SNP
+Message-ID: <20231212065259.GAZXgDSwV+zaH8MvB6@fat_crate.local>
+References: <20231016132819.1002933-1-michael.roth@amd.com>
+ <20231016132819.1002933-15-michael.roth@amd.com>
+ <20231127095937.GLZWRoiaqGlJMX54Xb@fat_crate.local>
+ <d5242390-8904-7ec5-d8a1-9e3fb8f6423c@amd.com>
+ <20231206170807.GBZXCqd0z8uu2rlhpn@fat_crate.local>
+ <9af9b10f-0ab6-1fe8-eaec-c9f98e14a203@amd.com>
+ <20231209162015.GBZXSTv738J09Htf51@fat_crate.local>
+ <2800d4d6-8ae9-e6c9-287a-301beb0a2f50@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5983.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49e327e8-9457-4514-6ff6-08dbfaae6b62
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2023 01:05:23.5617
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jb19u7ywABjtidd2W6o5mFbm56/5q6ln1oHQleIvt2B+L1KrLIIyH2ZfdJewzWRSx59/mfS9OnTpluKTMl3zWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7090
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2800d4d6-8ae9-e6c9-287a-301beb0a2f50@amd.com>
 
-T24gVHVlLCAyMDIzLTEyLTEyIGF0IDA4OjM4ICswODAwLCBZYW5nIExpIHdyb3RlOg0KPiBUaGUg
-aGVhZGVyIGZpbGVzIGxpbnV4L2FjcGkuaCBhbmQgYXNtL2NwdWZlYXR1cmUuaCBhcmUgYm90aA0K
-PiBpbmNsdWRlZCB0d2ljZSBpbiBDLCBzbyBvbmUgaW5jbHVzaW9uIG9mIGVhY2ggY2FuIGJlIHJl
-bW92ZWQuDQo+IA0KPiBSZXBvcnRlZC1ieTogQWJhY2kgUm9ib3QgPGFiYWNpQGxpbnV4LmFsaWJh
-YmEuY29tPg0KPiBDbG9zZXM6IGh0dHBzOi8vYnVnemlsbGEub3BlbmFub2xpcy5jbi9zaG93X2J1
-Zy5jZ2k/aWQ9NzcxMw0KPiBTaWduZWQtb2ZmLWJ5OiBZYW5nIExpIDx5YW5nLmxlZUBsaW51eC5h
-bGliYWJhLmNvbT4NCg0KUmV2aWV3ZWQtYnk6IEthaSBIdWFuZyA8a2FpLmh1YW5nQGludGVsLmNv
-bT4NCg0KPiAtLS0NCj4gIGFyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHguYyB8IDIgLS0NCj4gIDEg
-ZmlsZSBjaGFuZ2VkLCAyIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2
-L3ZpcnQvdm14L3RkeC90ZHguYyBiL2FyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHguYw0KPiBpbmRl
-eCAxM2RmNjhlZjQwYjUuLjQ5YTFjNjg5MGI1NSAxMDA2NDQNCj4gLS0tIGEvYXJjaC94ODYvdmly
-dC92bXgvdGR4L3RkeC5jDQo+ICsrKyBiL2FyY2gveDg2L3ZpcnQvdm14L3RkeC90ZHguYw0KPiBA
-QCAtMjcsMTQgKzI3LDEyIEBADQo+ICAjaW5jbHVkZSA8bGludXgvbG9nMi5oPg0KPiAgI2luY2x1
-ZGUgPGxpbnV4L2FjcGkuaD4NCj4gICNpbmNsdWRlIDxsaW51eC9zdXNwZW5kLmg+DQo+IC0jaW5j
-bHVkZSA8bGludXgvYWNwaS5oPg0KPiAgI2luY2x1ZGUgPGFzbS9wYWdlLmg+DQo+ICAjaW5jbHVk
-ZSA8YXNtL3NwZWNpYWxfaW5zbnMuaD4NCj4gICNpbmNsdWRlIDxhc20vbXNyLWluZGV4Lmg+DQo+
-ICAjaW5jbHVkZSA8YXNtL21zci5oPg0KPiAgI2luY2x1ZGUgPGFzbS9jcHVmZWF0dXJlLmg+DQo+
-ICAjaW5jbHVkZSA8YXNtL3RkeC5oPg0KPiAtI2luY2x1ZGUgPGFzbS9jcHVmZWF0dXJlLmg+DQo+
-ICAjaW5jbHVkZSA8YXNtL2ludGVsLWZhbWlseS5oPg0KPiAgI2luY2x1ZGUgPGFzbS9wcm9jZXNz
-b3IuaD4NCj4gICNpbmNsdWRlIDxhc20vbWNlLmg+DQo=
+On Mon, Dec 11, 2023 at 03:11:17PM -0600, Kalra, Ashish wrote:
+> What we need is a mechanism to do legacy SEV/SEV-ES INIT only if a
+> SEV/SEV-ES guest is being launched, hence, we want an additional parameter
+> added to sev_platform_init() exported interface so that kvm_amd module can
+> call this interface during guest launch and indicate if SNP/legacy guest is
+> being launched.
+> 
+> That's the reason we want to add the probe parameter to
+> sev_platform_init().
+
+That's not what your original patch does and nowhere in the whole
+patchset do I see this new requirement for KVM to be able to control the
+probing.
+
+The probe param is added to ___sev_platform_init_locked() which is
+called by this new sev_platform_init_on_probe() thing to signal that
+whatever calls this, it wants the probing.
+
+And "whatever" is sev_pci_init() which is called from the bowels of the
+secure processor drivers. Suffice it to say, this is some sort of an
+init path.
+
+So, it wants to init SNP stuff which is unconditional during driver init
+- not when KVM starts guests - and probe too on driver init time, *iff*
+that psp_init_on_probe thing is set. Which looks suspicious to me:
+
+  "Add psp_init_on_probe module parameter that allows for skipping the
+  PSP's SEV platform initialization during module init. User may decouple
+  module init from PSP init due to use of the INIT_EX support in upcoming
+  patch which allows for users to save PSP's internal state to file."
+
+From b64fa5fc9f44 ("crypto: ccp - Add psp_init_on_probe module
+parameter").
+
+And reading about INIT_EX, "This command loads the SEV related
+persistent data from user-supplied data and initializes the platform
+context."
+
+So it sounds like HV vendor wants to supply something itself. But then
+looking at init_ex_path and open_file_as_root() makes me cringe.
+I would've never done it this way: we have request_firmware* etc helpers
+for loading blobs from userspace which are widely used. But then reading 
+
+  3d725965f836 ("crypto: ccp - Add SEV_INIT_EX support")
+
+that increases the cringe factor even more because that also wants to
+*write* into that file. Maybe there were good reasons to do it this way
+- it is still yucky for my taste tho...
+
+But I digress - whatever you want to do, the right approach is to split
+the functionality:
+
+SNP init
+legacy SEV init
+
+and to call them from a wrapper function around it which determines
+which ones need to get called depending on that delayed probe thing.
+
+Lumping everything together and handing a silly bool downwards is
+already turning into a mess.
+
+Now, looking at sev_guest_init() which calls sev_platform_init() and if
+you want to pass back'n'forth more information than just that &error
+pointer, then you can define your own struct sev_platform_init_info or
+so which you preset before calling sev_platform_init() and pass in
+a pointer to it.
+
+And in it you can stick &error, bool probe or whatever else you need to
+control what the platform needs to do upon init. And if you need to
+extend that in the future, you can add new struct members and so on.
+
+HTH.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
