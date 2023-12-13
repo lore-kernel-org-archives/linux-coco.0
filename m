@@ -1,122 +1,95 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12FD3307E
-	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 15:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B0351C31
+	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 17:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="QOAG/cZ1"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 834E940E00CB;
-	Wed, 13 Dec 2023 15:41:57 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3WN12W1SPrIZ; Wed, 13 Dec 2023 15:41:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1702482115; bh=IyhM7Slw/zIKLzW0NKmy0CrnbMXBOwC2G6bxrBly64g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QOAG/cZ16FSsNmwYJBb7r6qQgBeJQZTYcRo4azQifv+sKJfJy0k00NV5msq6ymTAY
-	 NdSWQqiaJzIIbbjQawtF5wiDnmZRIpMjCY5i5wVf1mcEiJ5QdOMvwYylKQB0wtBzsA
-	 wADGzcVl17JzPGddFLy0pTMafOg2YyX7aoMJdR8zVSaPE7JKCZNzqsXKkBWQRozFUr
-	 jaFqS5IATs10wyL7JrP6lrjpe/uG23/9rJkvrNsl+S8T76DZT7ZSxIhSBIwItLek0B
-	 4fbUky4Eiz7wCrJoMdKeUoBz12+M+ToP6KNiAj0eYkTIKvM4ANAKMXiWWvW4/ZFTbY
-	 tsZr7I8vWlAoUPMOtYV0mVZaUei4nttnjdpAvWsNNX05bY6ByXb10hG7vZuoAnbRiW
-	 ZRHqIscTgQNR0E3nEVAczRVmsSUnmQve5Li6FeVGf5BmVgKrVl2psZiiTXV+N6UdWF
-	 pRYwOSxj4xEoiW73XfixRM7B8R1yJ01piZAtC1OZHPaBlUT2kqUaUlQVg62qfO/Cjy
-	 TQrMu6YCHcrmOGZjE2T5WSBPMUEh/ayPYhujwMrw3O/+wYBDFxhpyeAsLK3xChvB5O
-	 HBPreAb4duw1cKA5I6mD6repeSryseqxrlv4kLdUJJTs956fDOM2icXv+LzuLksbOW
-	 BbNi0uSQw+rozRuITpo5zsMI=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ED3D640E00CD;
-	Wed, 13 Dec 2023 15:41:13 +0000 (UTC)
-Date: Wed, 13 Dec 2023 16:41:07 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, seanjc@google.com, vkuznets@redhat.com,
-	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
-	slp@redhat.com, pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
-	nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
-	liam.merwick@oracle.com, zhi.a.wang@intel.com,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Jarkko Sakkinen <jarkko@profian.com>
-Subject: Re: [PATCH v10 04/50] x86/cpufeatures: Add SEV-SNP CPU feature
-Message-ID: <20231213154107.GGZXnQkxEuw6dJfbc7@fat_crate.local>
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-5-michael.roth@amd.com>
- <0b2eb374-356c-46c6-9c4a-9512fbfece7a@redhat.com>
- <20231213131324.GDZXmt9LsMmJZyzCJw@fat_crate.local>
- <40915dc3-4083-4b9f-bc64-7542833566e1@redhat.com>
- <20231213133628.GEZXmzXFwA1p+crH/5@fat_crate.local>
- <9ac2311c-9ccc-4468-9b26-6cb0872e207f@redhat.com>
- <20231213134945.GFZXm2eTkd+IfdsjVE@fat_crate.local>
- <b4aab361-4494-4a4b-b180-d7df05fd3d5b@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LejcMrHG"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5c680110ea9so6300254a12.2
+        for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 09:22:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702488156; x=1703092956; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6ViX/Qqiqk/4TxTiVczHsfkpJiJjwcbO6aH0GOTDDcw=;
+        b=LejcMrHGw+w3CUXoZPCEobzqPdXyASs9ROmHsut4xKVz2xt3s8bhKq5BTmoTH/NzoY
+         jgLjpaWnkEZEK4obcvWSb8G+1nCHv0Czgbvs4jcBN9SFncz53WW9RkhRzoyJ9fPrXM3X
+         Gx3LmUSpUuf1PRcG7PcSDNqb4WdK9PhMv0mkUpsMLR3XZjpv/PdGfimOnzMorwDUvWyA
+         rLGcMVUR4sXKxrgfHl/Spx7dp6sZ1YUPj35/7k64liLwwpYDY2Vpfjy1wp7GmGXtEFO5
+         3nlu5O+JoaBz0G1gkqDT5FLLfvwnNv0VOf6okViU4Mg8xRil3sR4UaDcwjLGa6y/Yt4j
+         kfpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702488156; x=1703092956;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6ViX/Qqiqk/4TxTiVczHsfkpJiJjwcbO6aH0GOTDDcw=;
+        b=Ojb1+JRHZLufXXt+idJRItpgcRF6X0Z0bjqFw0syV420iH5x2h17JhJyBCDzAR8LKl
+         T/sJCHUUpdScNISHISMQlJKy8fLDt8xZYsWp4FHnHmhYjF+yXcjuZWzJesK5tDGqwe+9
+         Owj3lffUtY3o/p0wGQememKY1bnMZAvTceD/jNEFwf5pxraukk829CE/TgHttHxG45Gp
+         Lrho3QkgAT2LE14aSbn1TElKV7Ee+Z51y6AiVqYYNO/6RnDdRL4BZYf8r3A70kAJe4hd
+         TIAjk4TmXYdkmc7zQ0w2Q0SvvKkxdJm2ggNl0z6tMC6n9z6MtI8xLohJyrxYj11eqCMk
+         b7hg==
+X-Gm-Message-State: AOJu0Yz5Moo1lcPeL/Qcl74atxrTboQ2knuEBn66vikOU4n+wlDrzkAr
+	VxvV6MW5e7Bzt++caUATJ8UEYuaGyrA=
+X-Google-Smtp-Source: AGHT+IHDC+0wF7yt+7K1uyt/r/lMDTjmVPeporp00WV6ZNCML8y1Mv3AsmJMG9SX/ub7Z9qJkWpnW9vU16Q=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6a02:51e:b0:5ca:3b18:9ec6 with SMTP id
+ bx30-20020a056a02051e00b005ca3b189ec6mr328107pgb.5.1702488156338; Wed, 13 Dec
+ 2023 09:22:36 -0800 (PST)
+Date: Wed, 13 Dec 2023 09:22:34 -0800
+In-Reply-To: <20231211231035.743cesujphsp5eve@box.shutemov.name>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b4aab361-4494-4a4b-b180-d7df05fd3d5b@redhat.com>
+Mime-Version: 1.0
+References: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
+ <20231205004510.27164-6-kirill.shutemov@linux.intel.com> <20231211231035.743cesujphsp5eve@box.shutemov.name>
+Message-ID: <ZXnoWuaXvRkJjlDK@google.com>
+Subject: Re: [PATCHv4 05/14] x86/kvm: Do not try to disable kvmclock if it was
+ not enabled
+From: Sean Christopherson <seanjc@google.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Kai Huang <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Wanpeng Li <wanpengli@tencent.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Dec 13, 2023 at 03:18:17PM +0100, Paolo Bonzini wrote:
-> Surely we can agree that cpu_feature_enabled(X86_FEATURE_SEV_SNP) has nothing
-> to do with SEV-SNP host patches being present? 
+On Tue, Dec 12, 2023, Kirill A. Shutemov wrote:
+> On Tue, Dec 05, 2023 at 03:45:01AM +0300, Kirill A. Shutemov wrote:
+> > kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
+> > present in the VM. It leads to write to a MSR that doesn't exist on some
+> > configurations, namely in TDX guest:
+> > 
+> > 	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
+> > 	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
+> > 
+> > kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
+> > features.
+> > 
+> > Do not disable kvmclock if it was not enabled.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
+> > Reviewed-by: Sean Christopherson <seanjc@google.com>
+> > Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+> > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > Cc: Wanpeng Li <wanpengli@tencent.com>
+> 
+> Paolo, Sean, any chance you can get it in through KVM tree while the rest
+> of kexec patchset is pending? The problem is visible on normal reboot too.
 
-It does - we're sanitizing the meaning of a CPUID flag present in
-/proc/cpuinfo, see here:
-
-https://git.kernel.org/tip/79c603ee43b2674fba0257803bab265147821955
-
-> And that therefore retpolines are preferred even without any SEV-SNP
-> support in KVM?
-
-No, automatic IBRS should be disabled when SNP is enabled. Not CPUID
-present - enabled. We clear that bit on a couple of occasions in the SNP
-host patchset if we determine that SNP host support is not possible so
-4/50 needs to go together with the rest to mean something.
-
-> And can we agree that "Acked-by" means "feel free and take it if you wish,
-
-I can see how it can mean that and I'm sorry for the misunderstanding
-I caused. Two things here:
-
-* I acked it because I did a lengthly digging internally on whether
-disabling AIBRS makes sense on SNP and this was a note more to myself to
-say, yes, that's a good change.
-
-* If I wanted for you to pick it up, I would've acked 4/50 too. Which
-I haven't.
-
-> I'm asking because I'm not sure if we agree on these two things, but they
-> really seem basic to me?
-
-I think KVM and x86 maintainers should sit down and discuss who picks up
-what and through which tree so that there's no more confusion in the
-future. It seems things need discussion...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Paolo is going to grab this (possibly for 6.7-rc?).  I'll keep this tagged on my
+end in case that doesn't happen "soon".
