@@ -1,55 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD003A8D7
-	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 17:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C0724B3D
+	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 18:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XF25PjNO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cup2IQwg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702489257;
+	s=mimecast20190719; t=1702493146;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5somQ2S3bpJ+yVpaee1GysURi5+Ex675PUxdDG+ZeIQ=;
-	b=XF25PjNOj01HsD9tkrQmE24QtxfKLrT8fUIDAdQc1IKD+XDmOzWFUecTUPTkV+g7MkA+gk
-	VFQWPFRSMGiPKYuCXz/Vg/dxfjnKGgYyGv1QQ3491BRza/STrOfmjFV2H2KDq0FJCZ0pdi
-	iHXHwJZFUQW5eZb1WqJjAdW2dac4kGw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=W6FQ857DrbeP82Sds80Qy0ykClNS9Wo10FW4yj5khes=;
+	b=cup2IQwgFYFNUEUxP1eX/hgXKadT1LvRNuDcIMTSWvo2BopmAItn/f09BFiWPJNHS9jblN
+	DNQQ7x4J7TbTS01a1l2ibp+Ya40kVUUCVEXUjdGKpxAukdyz8jpD9BBJQ81smlsTDb+Pli
+	g4Mzmg6mVKQa4iUf9fHAjCCQZik72cQ=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-L4K7VxzFNJuUeBaDS0EhIw-1; Wed, 13 Dec 2023 12:40:53 -0500
-X-MC-Unique: L4K7VxzFNJuUeBaDS0EhIw-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-544b5d65a1aso3355323a12.2
-        for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 09:40:53 -0800 (PST)
+ us-mta-633-HL28BqmvPrmZahQZZ82i5Q-1; Wed, 13 Dec 2023 13:45:45 -0500
+X-MC-Unique: HL28BqmvPrmZahQZZ82i5Q-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-5526368023cso63472a12.3
+        for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 10:45:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702489252; x=1703094052;
+        d=1e100.net; s=20230601; t=1702493144; x=1703097944;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5somQ2S3bpJ+yVpaee1GysURi5+Ex675PUxdDG+ZeIQ=;
-        b=hM5xbXQwLb6Vtpp2WfEp9E7YVdO+C10rScEMiYcGBmhMWaW4CGjN32URyXdMCbvhOX
-         HTzN1rXTnnJ/sH8XN9f0P/CQgQ5PSCrH8SIi1T6tfoZOSAdaZyRPkfWF2CfemTxMVKth
-         aIiA/CtZ+MeSYTk90fQ7uKvRIRkL02PhtPtWYm+03H+9STUbMqS+goulCADzCWxjHIrQ
-         7WZWPU4c1Kg8vfJrpYLBae6VIcirxsi4V8KF3GXgkz/LVfs4JxDUZhti6hS9NZ0HpfS1
-         UC8PLIluU/fTv0vyTMWtFnudylyzNqfL99jCSu3L1vB487qHqveK3pQu5v3fPK98dXj/
-         SXSg==
-X-Gm-Message-State: AOJu0YxeZdm2jV4KeJKDKRnTACYhui2eGO1/0aztmUw0sRsJ6u+2isvc
-	EyPSDBze9hpZEBj8IjKoMqOzNi2REAu4p8O8B+k5r1G+3KVY45BGj5IZnfssNVJw/zMB2v3qAXQ
-	dQKMIQ94+CkqVBou4eZfFMg==
-X-Received: by 2002:a50:d089:0:b0:552:27d2:a10d with SMTP id v9-20020a50d089000000b0055227d2a10dmr704220edd.12.1702489252470;
-        Wed, 13 Dec 2023 09:40:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEJkEAJ6CTdBfyQKvtHpMnagmfVq2yCVoMPjKxPagyIMlry/rmA+m2NFU3o+SUgvBr7eRY7SA==
-X-Received: by 2002:a50:d089:0:b0:552:27d2:a10d with SMTP id v9-20020a50d089000000b0055227d2a10dmr704204edd.12.1702489252175;
-        Wed, 13 Dec 2023 09:40:52 -0800 (PST)
+        bh=W6FQ857DrbeP82Sds80Qy0ykClNS9Wo10FW4yj5khes=;
+        b=bknNc6G2nNltrmAAQWausPB1CHY6IAOOepkuaG9LQ57V/ssEBvbjvDe/XOFjNtKNBr
+         PkoLKmh2OqAbnxpeYvBlRN3V57VhyMGYPtX/XE+XadChs0s8IfQYAUSeplh3ffONfWlx
+         G8OS54WM0y92QPgCwLIrqsv1X2YRP9w+qt3+hOwSjF5rxlOHe+1J0wCWq/Za9vogdJ/N
+         Gq7lVprx+/WGSVFSpCm21Ggn1bKINu/EDRidUsnPwNZoRONL7kMJDV+28QE2IBRLxPU/
+         8Bpkc/V9xryiStB2t8D/qXdUs6ypLDn5DYaKJkQkgow0bfqV5AQbc1mQ6eq8XOs5Bx4K
+         sZuQ==
+X-Gm-Message-State: AOJu0Yw/uzX5fvqljhrIsq5ldDKD4WKyVdMWHMC7LwrjPTSppdOv4n2R
+	r2iQMbgLFqHr7CoNiNzaSJPuxWSXLm4vMRNIx5w5jJwCJfG+ZpuikJYa1ZbPzO1p9e3DO9TIdVJ
+	LcEk6bIaaw3+GOcWHri1Kzw==
+X-Received: by 2002:a17:907:9815:b0:a08:291c:62c9 with SMTP id ji21-20020a170907981500b00a08291c62c9mr5195481ejc.5.1702493143950;
+        Wed, 13 Dec 2023 10:45:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHKjpQf2TwqPPzPCiRhO+rs0Ty7nBrbEfxbl+4ROQnFliFrZhXtWWO3zx7mzt0F8wkwmUvOsA==
+X-Received: by 2002:a17:907:9815:b0:a08:291c:62c9 with SMTP id ji21-20020a170907981500b00a08291c62c9mr5195454ejc.5.1702493143555;
+        Wed, 13 Dec 2023 10:45:43 -0800 (PST)
 Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045? ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
-        by smtp.googlemail.com with ESMTPSA id dc23-20020a056402311700b005525a9abf73sm171094edb.11.2023.12.13.09.40.47
+        by smtp.googlemail.com with ESMTPSA id vk5-20020a170907cbc500b00a1ce56f7b16sm8240761ejc.71.2023.12.13.10.45.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 09:40:51 -0800 (PST)
-Message-ID: <13d72960-c7bc-4bc2-8404-931d3de04ecf@redhat.com>
-Date: Wed, 13 Dec 2023 18:40:47 +0100
+        Wed, 13 Dec 2023 10:45:42 -0800 (PST)
+Message-ID: <f1e37bbf-a98c-4090-bc48-05bdae58cbf9@redhat.com>
+Date: Wed, 13 Dec 2023 19:45:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,14 +57,13 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 03/50] KVM: SEV: Do not intercept accesses to
- MSR_IA32_XSS for SEV-ES guests
-To: Sean Christopherson <seanjc@google.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
+Subject: Re: [PATCH v10 23/50] KVM: SEV: Make AVIC backing, VMSA and VMCB
+ memory allocation SNP safe
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
  linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
  tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com,
  vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
  dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
  peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
@@ -74,11 +73,9 @@ Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
  sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
  jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
  pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
- Alexey Kardashevskiy <aik@amd.com>
+ Brijesh Singh <brijesh.singh@amd.com>
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-4-michael.roth@amd.com>
- <e094dc8b-6758-4dd8-89a5-8aab05b2626b@redhat.com>
- <ZXnqJMKD6lO6a0oq@google.com>
+ <20231016132819.1002933-24-michael.roth@amd.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -115,25 +112,222 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <ZXnqJMKD6lO6a0oq@google.com>
+In-Reply-To: <20231016132819.1002933-24-michael.roth@amd.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/13/23 18:30, Sean Christopherson wrote:
->> For now, all we can do is document our wishes, with which userspace had
->> better comply.  Please send a patch to QEMU that makes it obey.
-> Discussed this early today with Paolo at PUCK and pointed out that (a) the CPU
-> context switches the underlying state, (b) SVM doesn't allow intercepting*just*
-> XSAVES, and (c) SNP's AP creation can bypass XSS interception.
+On 10/16/23 15:27, Michael Roth wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> So while we all (all == KVM folks) agree that this is rather terrifying, e.g.
-> gives KVM zero option if there is a hardware issue, it's "fine" to let the guest
-> use XSAVES/XSS.
+> Implement a workaround for an SNP erratum where the CPU will incorrectly
+> signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
+> RMP entry of a VMCB, VMSA or AVIC backing page.
+> 
+> When SEV-SNP is globally enabled, the CPU marks the VMCB, VMSA, and AVIC
+> backing pages as "in-use" via a reserved bit in the corresponding RMP
+> entry after a successful VMRUN. This is done for _all_ VMs, not just
+> SNP-Active VMs.
+> 
+> If the hypervisor accesses an in-use page through a writable
+> translation, the CPU will throw an RMP violation #PF. On early SNP
+> hardware, if an in-use page is 2mb aligned and software accesses any
+> part of the associated 2mb region with a hupage, the CPU will
+> incorrectly treat the entire 2mb region as in-use and signal a spurious
+> RMP violation #PF.
+> 
+> The recommended is to not use the hugepage for the VMCB, VMSA or
+> AVIC backing page for similar reasons. Add a generic allocator that will
+> ensure that the page returns is not hugepage (2mb or 1gb) and is safe to
+> be used when SEV-SNP is enabled. Also implement similar handling for the
+> VMCB/VMSA pages of nested guests.
+> 
+> Co-developed-by: Marc Orr <marcorr@google.com>
+> Signed-off-by: Marc Orr <marcorr@google.com>
+> Reported-by: Alper Gun <alpergun@google.com> # for nested VMSA case
+> Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> [mdr: squash in nested guest handling from Ashish]
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-Indeed; looks like I've got to queue this for 6.7 after all.
+Based on the discussion with Borislav, please move this earlier in the 
+series, before patch 6.
 
 Paolo
+
+> ---
+>   arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>   arch/x86/include/asm/kvm_host.h    |  1 +
+>   arch/x86/kvm/lapic.c               |  5 ++++-
+>   arch/x86/kvm/svm/nested.c          |  2 +-
+>   arch/x86/kvm/svm/sev.c             | 33 ++++++++++++++++++++++++++++++
+>   arch/x86/kvm/svm/svm.c             | 17 ++++++++++++---
+>   arch/x86/kvm/svm/svm.h             |  1 +
+>   7 files changed, 55 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+> index f1505a5fa781..4ef2eca14287 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -136,6 +136,7 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
+>   KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+>   KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
+>   KVM_X86_OP_OPTIONAL(gmem_invalidate)
+> +KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
+>   
+>   #undef KVM_X86_OP
+>   #undef KVM_X86_OP_OPTIONAL
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index fa401cb1a552..a3983271ea28 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1763,6 +1763,7 @@ struct kvm_x86_ops {
+>   
+>   	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+>   	void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
+> +	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+>   };
+>   
+>   struct kvm_x86_nested_ops {
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index dcd60b39e794..631a554c0f48 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -2810,7 +2810,10 @@ int kvm_create_lapic(struct kvm_vcpu *vcpu, int timer_advance_ns)
+>   
+>   	vcpu->arch.apic = apic;
+>   
+> -	apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+> +	if (kvm_x86_ops.alloc_apic_backing_page)
+> +		apic->regs = static_call(kvm_x86_alloc_apic_backing_page)(vcpu);
+> +	else
+> +		apic->regs = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+>   	if (!apic->regs) {
+>   		printk(KERN_ERR "malloc apic regs error for vcpu %x\n",
+>   		       vcpu->vcpu_id);
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index dd496c9e5f91..1f9a3f9eb985 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -1194,7 +1194,7 @@ int svm_allocate_nested(struct vcpu_svm *svm)
+>   	if (svm->nested.initialized)
+>   		return 0;
+>   
+> -	vmcb02_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +	vmcb02_page = snp_safe_alloc_page(&svm->vcpu);
+>   	if (!vmcb02_page)
+>   		return -ENOMEM;
+>   	svm->nested.vmcb02.ptr = page_address(vmcb02_page);
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 088b32657f46..1cfb9232fc74 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3211,3 +3211,36 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector)
+>   		break;
+>   	}
+>   }
+> +
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
+> +{
+> +	unsigned long pfn;
+> +	struct page *p;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +
+> +	/*
+> +	 * Allocate an SNP safe page to workaround the SNP erratum where
+> +	 * the CPU will incorrectly signal an RMP violation  #PF if a
+> +	 * hugepage (2mb or 1gb) collides with the RMP entry of VMCB, VMSA
+> +	 * or AVIC backing page. The recommeded workaround is to not use the
+> +	 * hugepage.
+> +	 *
+> +	 * Allocate one extra page, use a page which is not 2mb aligned
+> +	 * and free the other.
+> +	 */
+> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
+> +	if (!p)
+> +		return NULL;
+> +
+> +	split_page(p, 1);
+> +
+> +	pfn = page_to_pfn(p);
+> +	if (IS_ALIGNED(pfn, PTRS_PER_PMD))
+> +		__free_page(p++);
+> +	else
+> +		__free_page(p + 1);
+> +
+> +	return p;
+> +}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 1e7fb1ea45f7..8e4ef0cd968a 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -706,7 +706,7 @@ static int svm_cpu_init(int cpu)
+>   	int ret = -ENOMEM;
+>   
+>   	memset(sd, 0, sizeof(struct svm_cpu_data));
+> -	sd->save_area = alloc_page(GFP_KERNEL | __GFP_ZERO);
+> +	sd->save_area = snp_safe_alloc_page(NULL);
+>   	if (!sd->save_area)
+>   		return ret;
+>   
+> @@ -1425,7 +1425,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+>   	svm = to_svm(vcpu);
+>   
+>   	err = -ENOMEM;
+> -	vmcb01_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +	vmcb01_page = snp_safe_alloc_page(vcpu);
+>   	if (!vmcb01_page)
+>   		goto out;
+>   
+> @@ -1434,7 +1434,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+>   		 * SEV-ES guests require a separate VMSA page used to contain
+>   		 * the encrypted register state of the guest.
+>   		 */
+> -		vmsa_page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +		vmsa_page = snp_safe_alloc_page(vcpu);
+>   		if (!vmsa_page)
+>   			goto error_free_vmcb_page;
+>   
+> @@ -4876,6 +4876,16 @@ static int svm_vm_init(struct kvm *kvm)
+>   	return 0;
+>   }
+>   
+> +static void *svm_alloc_apic_backing_page(struct kvm_vcpu *vcpu)
+> +{
+> +	struct page *page = snp_safe_alloc_page(vcpu);
+> +
+> +	if (!page)
+> +		return NULL;
+> +
+> +	return page_address(page);
+> +}
+> +
+>   static struct kvm_x86_ops svm_x86_ops __initdata = {
+>   	.name = KBUILD_MODNAME,
+>   
+> @@ -5007,6 +5017,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+>   
+>   	.vcpu_deliver_sipi_vector = svm_vcpu_deliver_sipi_vector,
+>   	.vcpu_get_apicv_inhibit_reasons = avic_vcpu_get_apicv_inhibit_reasons,
+> +	.alloc_apic_backing_page = svm_alloc_apic_backing_page,
+>   };
+>   
+>   /*
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index c13070d00910..b7b8bf73cbb9 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -694,6 +694,7 @@ void sev_es_vcpu_reset(struct vcpu_svm *svm);
+>   void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+>   void sev_es_prepare_switch_to_guest(struct sev_es_save_area *hostsa);
+>   void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
+>   
+>   /* vmenter.S */
+>   
 
