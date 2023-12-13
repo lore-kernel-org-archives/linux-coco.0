@@ -1,107 +1,169 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C0E56B86
-	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 17:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFB83307A
+	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 17:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d5Kp4nXT"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dbc8996908dso2017343276.3
-        for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 09:30:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702488614; x=1703093414; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x/vSOPRW34ZBEoGLP7AobDWeoYbZlEIfUFdS/cfIhTI=;
-        b=d5Kp4nXTHg0No+EZ4ToWNyFwsgxilzhqfg/CQ9aXeKzxwDhIZr7cpe9Cl//A2sKS4K
-         wnrA2SHT0zt/8ZJmeEBnPWQI4g5sRUdiobJHgiQI5dNpwF8aXZ+4gWMN3FDVGdebzcQh
-         XqGpwjidvPXJefw0noYCRanWcnBIg/QEftTs/40qT2GQWrYJUorQRPg8m8Npz35q0aCO
-         e7M93gUDq88n95hB3rqJAzFAfn4cvpdZictm4XdNfpAHfiAz3nxarby4/fmAdzJghJnT
-         jA83RZ+zNjNBNxXEWo3qwfqGsZTWSdoVHWNjGTZvyMQ+oQPLLUWPnN1ixdf6LfK8sKTn
-         Cpwg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KAbtQHOv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702488945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZI5vco6PWgJtc3JoTVRWQROHjU+p2avOcErV9v922iw=;
+	b=KAbtQHOvL7VHny3fCsFUhi8bM+1UUN/pJHLFF3AH2Y/aQaN/H7X1oM/Y7m8qEWdxild3HW
+	zsBADTzc3T4y+CHQYEX7DJu3U2RSYLVN1VMKIrq9bQ14vY4bPfHtDLa0hGo3t7u2q/w3gm
+	Sdfj2cnXHAZc++te/rHQ3q6ezUtFI2k=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-310-EFbre32rPryDQt8WdaaR6g-1; Wed, 13 Dec 2023 12:35:44 -0500
+X-MC-Unique: EFbre32rPryDQt8WdaaR6g-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-50c1e669bf2so6440969e87.1
+        for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 09:35:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702488614; x=1703093414;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x/vSOPRW34ZBEoGLP7AobDWeoYbZlEIfUFdS/cfIhTI=;
-        b=d1zU15DCKTRUI+t3wyxsrCj6ewGW3rasBDF/hRb2yL5inG3nfYTUhNdtSGzpe6oqzC
-         uuqaB+cQCtv+iPmEEPV5dgSabHaB/AQgmlF3ZvZm/Ok+RmFvyxIemdx8/EErAvruQakg
-         rZYTel/2b6dbzQrc4u/VSIJm3FqrUvSll+AZ/7JZXvDI1X2LB4fKG5cYH72gq8q+KPjR
-         BU7/8ksiKO1PAR+q+0yoihr283oQp1NrldaoP1tXsZH897/vlS36PWMthVZhQkQE+mIz
-         18IixQ6AskmgWCc3SMfc2Jd/LvQoDK/0W2jyTP3T/UT7L1cnlezugxqF5+/TUHAFvOLN
-         Q6cA==
-X-Gm-Message-State: AOJu0YySZSTSbz7365k33GqYvzrbVTR0gppX+OG86dfYj3iKwraDaw0F
-	DIDp4K87Ja1jys485wuVC1h7kI1ZTWc=
-X-Google-Smtp-Source: AGHT+IFOP09PwT6lqIkFRJAMnbtTHRKLbaBMtetikxZWuMnGPaXYka0H53M769c+RQXX26fiZIa7/SXOFXE=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6902:1812:b0:dbc:cc25:8ab with SMTP id
- cf18-20020a056902181200b00dbccc2508abmr23845ybb.4.1702488614570; Wed, 13 Dec
- 2023 09:30:14 -0800 (PST)
-Date: Wed, 13 Dec 2023 09:30:12 -0800
-In-Reply-To: <e094dc8b-6758-4dd8-89a5-8aab05b2626b@redhat.com>
+        d=1e100.net; s=20230601; t=1702488942; x=1703093742;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZI5vco6PWgJtc3JoTVRWQROHjU+p2avOcErV9v922iw=;
+        b=lfC6C20JZnhyUX9pssNjzQOQp+lhRCsXHNyPWpSNRIHp37JoMfdFqrYDqiDdPotP6A
+         gKhhfFU8d2piAjn9yu10DSR5EwZJxjzQYyQrUWthDqDJNnbCfHt7vqkvgX80gzwnmqn7
+         /V2VCVnNf5XbZF5B8tNmaWW5JL49ODDag5+aV6yQf+GKSk5gJwh701E+TjEJGxial4UB
+         qCE6PxnigQ/tuBEH7IcFH4x5R9LDK7cb2RmM5e1tEbBBIe8dhd3afNOcJU1X36U+/3mE
+         btouMCNRfAuKGFDmi5B1dc2+GS5ZP7I++SflbaQvRqrHbUw82sSmYM83Gs+gSEEyYgUn
+         YWIg==
+X-Gm-Message-State: AOJu0YxxxKAXYlcsQmzS7Hn4MOVgiPzw3dw9w+5/XMknpXtmURlzRDJp
+	Wu+IlKvGWP23gFXS7cEwafqe/Q4KOUQbI1LzS57VTy63NW84E/Wlv2LeNwxivDKnfZKMEohbDyv
+	554sGNTk9whYi3Jz/CmjjSg==
+X-Received: by 2002:a05:6512:2385:b0:50b:f509:a2d3 with SMTP id c5-20020a056512238500b0050bf509a2d3mr5654276lfv.43.1702488942406;
+        Wed, 13 Dec 2023 09:35:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGfk8baDYcfEvOfdRyazgNm5STYlR8fJYNeGgxe6yeh3SUZzGnCwld8+CCbn45sJYfQ28B4Ew==
+X-Received: by 2002:a05:6512:2385:b0:50b:f509:a2d3 with SMTP id c5-20020a056512238500b0050bf509a2d3mr5654258lfv.43.1702488942051;
+        Wed, 13 Dec 2023 09:35:42 -0800 (PST)
+Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045? ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+        by smtp.googlemail.com with ESMTPSA id vs4-20020a170907a58400b00a22fb8901c4sm1312645ejc.12.2023.12.13.09.35.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Dec 2023 09:35:41 -0800 (PST)
+Message-ID: <e4b8326b-5b7b-4004-b0e1-b60e63bdcdd1@redhat.com>
+Date: Wed, 13 Dec 2023 18:35:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 04/50] x86/cpufeatures: Add SEV-SNP CPU feature
+To: Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com,
+ vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+ dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+ peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+ rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
+ kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
+ nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
+ zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>,
+ Jarkko Sakkinen <jarkko@profian.com>
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-4-michael.roth@amd.com> <e094dc8b-6758-4dd8-89a5-8aab05b2626b@redhat.com>
-Message-ID: <ZXnqJMKD6lO6a0oq@google.com>
-Subject: Re: [PATCH v10 03/50] KVM: SEV: Do not intercept accesses to
- MSR_IA32_XSS for SEV-ES guests
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com, 
-	alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com, 
-	nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com, 
-	zhi.a.wang@intel.com, Alexey Kardashevskiy <aik@amd.com>
-Content-Type: text/plain; charset="us-ascii"
+ <20231016132819.1002933-5-michael.roth@amd.com>
+ <0b2eb374-356c-46c6-9c4a-9512fbfece7a@redhat.com>
+ <20231213131324.GDZXmt9LsMmJZyzCJw@fat_crate.local>
+ <40915dc3-4083-4b9f-bc64-7542833566e1@redhat.com>
+ <20231213133628.GEZXmzXFwA1p+crH/5@fat_crate.local>
+ <9ac2311c-9ccc-4468-9b26-6cb0872e207f@redhat.com>
+ <20231213134945.GFZXm2eTkd+IfdsjVE@fat_crate.local>
+ <b4aab361-4494-4a4b-b180-d7df05fd3d5b@redhat.com>
+ <20231213154107.GGZXnQkxEuw6dJfbc7@fat_crate.local>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20231213154107.GGZXnQkxEuw6dJfbc7@fat_crate.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 13, 2023, Paolo Bonzini wrote:
-> On 10/16/23 15:27, Michael Roth wrote:
-> > Address this by disabling intercepts of MSR_IA32_XSS for SEV-ES guests
-> > if the host/guest configuration allows it. If the host/guest
-> > configuration doesn't allow for MSR_IA32_XSS, leave it intercepted so
-> > that it can be caught by the existing checks in
-> > kvm_{set,get}_msr_common() if the guest still attempts to access it.
+On 12/13/23 16:41, Borislav Petkov wrote:
+> On Wed, Dec 13, 2023 at 03:18:17PM +0100, Paolo Bonzini wrote:
+>> Surely we can agree that cpu_feature_enabled(X86_FEATURE_SEV_SNP) has nothing
+>> to do with SEV-SNP host patches being present?
 > 
-> This is wrong, because it allows the guest to do untrapped writes to
-> MSR_IA32_XSS and therefore (via XRSTORS) to MSRs that the host might not
-> save or restore.
+> It does - we're sanitizing the meaning of a CPUID flag present in
+> /proc/cpuinfo, see here:
 > 
-> If the processor cannot let the host validate writes to MSR_IA32_XSS,
-> KVM simply cannot expose XSAVES to SEV-ES (and SEV-SNP) guests.
+> https://git.kernel.org/tip/79c603ee43b2674fba0257803bab265147821955
+>
+>> And that therefore retpolines are preferred even without any SEV-SNP
+>> support in KVM?
 > 
-> Because SVM doesn't provide a way to disable just XSAVES in the guest,
-> all that KVM can do is keep on trapping MSR_IA32_XSS (which the guest
-> shouldn't read or write to).  In other words the crash on accesses to
-> MSR_IA32_XSS is not a bug but a feature (of the hypervisor, that
-> wants/needs to protect itself just as much as the guest wants to).
-> 
-> The bug is that there is no API to tell userspace "do not enable this
-> and that CPUID for SEV guests", there is only the extremely limited
-> KVM_GET_SUPPORTED_CPUID system ioctl.
-> 
-> For now, all we can do is document our wishes, with which userspace had
-> better comply.  Please send a patch to QEMU that makes it obey.
+> No, automatic IBRS should be disabled when SNP is enabled. Not CPUID
+> present - enabled.
 
-Discussed this early today with Paolo at PUCK and pointed out that (a) the CPU
-context switches the underlying state, (b) SVM doesn't allow intercepting *just*
-XSAVES, and (c) SNP's AP creation can bypass XSS interception.
+Ok, so the root cause of the problem is commit message/patch ordering:
 
-So while we all (all == KVM folks) agree that this is rather terrifying, e.g.
-gives KVM zero option if there is a hardware issue, it's "fine" to let the guest
-use XSAVES/XSS.
+1) patch 4 should have unconditionally cleared the feature (until the 
+initialization code comes around in patch 6); and it should have 
+mentioned in the commit message that we don't want X86_FEATURE_SEV_SNP 
+to be set, unless SNP can be enabled via MSR_AMD64_SYSCFG.
 
-See also https://lore.kernel.org/all/ZUQvNIE9iU5TqJfw@google.com
+2) possibly, the commit message of patch 5 could have said something 
+like "at this point in the kernel SNP is never enabled".
+
+3) Patch 23 should have been placed before the SNP initialization, 
+because as things stand the patches (mildly) break bisectability.
+
+> We clear that bit on a couple of occasions in the SNP
+> host patchset if we determine that SNP host support is not possible so
+> 4/50 needs to go together with the rest to mean something.
+
+Understood now.  With the patch ordering and commit message edits I 
+suggested above, indeed I would not have picked up patch 4.
+
+But with your explanation, I would even say that "4/50 needs to go 
+together with the rest" *for correctness*, not just to mean something.
+
+Paolo
+
