@@ -1,55 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2422C864
-	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688CB2D624
+	for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 13:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CyhGL4cR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WUbAju55"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702474273;
+	s=mimecast20190719; t=1702474306;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xy+gGhL7AyEamvAPEfK3bcTxNX+yDMotxm2Egrdrhwk=;
-	b=CyhGL4cRggPtXup/7sJbhhUQpjIllMuE46wVJu5nI2XQdLHIXUozIhdu8rCeXumgPCvoqd
-	junuwyQmdHsKZcGv0Q43/5DcZztwqqWklNgoKaGGsFtduTgNUOrHU09V/aqwCtut9T4lVT
-	eZcpDJ1UPDxPDxINHPZMWxF7uAc03e0=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=6ZKsZXAGZPzGdkl/Bds/E/0NRdRFaaRkoaeJez+DeeI=;
+	b=WUbAju55neVpt0AUOTcWy+B33D0HS3h81dzrBJx6jThjeH8kxtwDtwk1Yjoi9Yz+VMujdH
+	V+3/fMUGNIEy+NdO5AaOTU08wvRHZmjVHJ1wwqlqA7ii8qyP9zlCIU9zhEg2QdXy4OG1cy
+	ef5xsQlqCb/gapYNAr+sAwcyY0NqxKI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-XZz9_mdEPmmDWGBfvHIwxQ-1; Wed, 13 Dec 2023 08:31:10 -0500
-X-MC-Unique: XZz9_mdEPmmDWGBfvHIwxQ-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a1f6b432d50so321041766b.3
-        for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 05:31:10 -0800 (PST)
+ us-mta-317-14cFWG2qP4i3E482g9pJkQ-1; Wed, 13 Dec 2023 08:31:45 -0500
+X-MC-Unique: 14cFWG2qP4i3E482g9pJkQ-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a1e88d2d7faso370293266b.1
+        for <linux-coco@lists.linux.dev>; Wed, 13 Dec 2023 05:31:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702474269; x=1703079069;
+        d=1e100.net; s=20230601; t=1702474304; x=1703079104;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xy+gGhL7AyEamvAPEfK3bcTxNX+yDMotxm2Egrdrhwk=;
-        b=w8Abawyt1nmiYzoR0fNroPWZ8Wj2hO73c7ND/RDhVQpPIMXYRQPwgxzkcAYsKsmdk8
-         8yUW4qHCKBI/hU89vBd/XpEHC+KMwDWZpWY7j4PZCknvTsx5DnK1u613k2iyy8b47ql8
-         9jp1vutk1PLRW/XfUPYDreOOzOCyGNQA54TINHnaUbEp7gT34ZPmX0WtrE9V9CM8XXMU
-         egpKOTBp/d3UGBIu4aq79VClJpS4bF9p4bSrSpgP4cwjW5Irw1HOi1+6Yzl0rg9xt3f3
-         MV0VXlArB2cY0f6dgDsg71zcPDKDnxGFgdTUBMdgkdS99QG7ULumVN1Q5aUYtm1AMYhA
-         hWZw==
-X-Gm-Message-State: AOJu0YzvEgTPdqmxwKxa+M5CEapZKN00ih3u7YRzhuDTCFfdmcB0lh7I
-	A8/QvWSwIG6CDb6Ptntf+Jb1YhIAwXqvqGB935aw6WxSC6w5WL0oz0cLoDX5j5s/Rta/SPVpVcY
-	C1eOlxjOsgzISQ7HbNh+WVw==
-X-Received: by 2002:a17:906:f905:b0:a1c:8eb6:1478 with SMTP id lc5-20020a170906f90500b00a1c8eb61478mr4138817ejb.57.1702474269355;
-        Wed, 13 Dec 2023 05:31:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGJAR9rfNphsHvR0U+BVMfZfb5eR2gjnHHRFdyQ7X1cHqJ+1xkD833QYIbhscR0UDk/FPpEoQ==
-X-Received: by 2002:a17:906:f905:b0:a1c:8eb6:1478 with SMTP id lc5-20020a170906f90500b00a1c8eb61478mr4138782ejb.57.1702474269029;
-        Wed, 13 Dec 2023 05:31:09 -0800 (PST)
+        bh=6ZKsZXAGZPzGdkl/Bds/E/0NRdRFaaRkoaeJez+DeeI=;
+        b=GULPecboD9gYs0zpQydrDJtEX82ACmMoL2XBT4BljLrRM7dPoiIxpNaEURKgkmYRIq
+         RP+pkdQozSkFfaByhA5q5Gyl4zfdD+9qsS9mDi6OsdtGW1uFjpmWD9dXK2lxXmr7OoYZ
+         umLyIhQIvd4KZVG9hQAtYXKfF0wX3ei6pKDEQZm5bTkBDmkL1Pc9zyhB55P+SjsU3mCB
+         iG259K4MNCr0rTl8YEqn8D16m8kW/wkbLZ4z/iyV4RE0U2L3CFwwD/z9hVPUy+Nvu7xc
+         vegmOx650rx2xZMOaWuHgz1j2mFnGo5TIDb1v7yzv/xvn2zDtYwK5ElhP2TsDJrx6NqO
+         3v9Q==
+X-Gm-Message-State: AOJu0Yz6PBm+YmRgrvRHAuJBKYze3h1ee9wp25aU8j4Uq4Jzal3W5/xq
+	2Ia3lPJ1MnHyVVh5COM8dLf+V11VbVrhnUeAK9ZQ0xPxmU15cBVf4ZqQl7OykcXeLIZTaovLeIm
+	UISR7V70HQSFOwUF28DNxWw==
+X-Received: by 2002:a17:906:2:b0:a23:482:ee74 with SMTP id 2-20020a170906000200b00a230482ee74mr251982eja.28.1702474304120;
+        Wed, 13 Dec 2023 05:31:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPrwg34mR9QL3IK9lbbz36ejShRG3Tw1YL7unA2WVHwsE4ZIHQYfrs0+x2kBoMmIZzjvL3FA==
+X-Received: by 2002:a17:906:2:b0:a23:482:ee74 with SMTP id 2-20020a170906000200b00a230482ee74mr251933eja.28.1702474303726;
+        Wed, 13 Dec 2023 05:31:43 -0800 (PST)
 Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045? ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
-        by smtp.googlemail.com with ESMTPSA id tg10-20020a1709078dca00b00a178b965899sm7819372ejc.100.2023.12.13.05.31.06
+        by smtp.googlemail.com with ESMTPSA id tg10-20020a1709078dca00b00a178b965899sm7819372ejc.100.2023.12.13.05.31.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 05:31:08 -0800 (PST)
-Message-ID: <40915dc3-4083-4b9f-bc64-7542833566e1@redhat.com>
-Date: Wed, 13 Dec 2023 14:31:05 +0100
+        Wed, 13 Dec 2023 05:31:43 -0800 (PST)
+Message-ID: <f08334c6-24b4-4451-b1e1-3834b933f2fa@redhat.com>
+Date: Wed, 13 Dec 2023 14:31:37 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -57,27 +57,25 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 04/50] x86/cpufeatures: Add SEV-SNP CPU feature
-To: Borislav Petkov <bp@alien8.de>
-Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
+Subject: Re: [PATCH v10 23/50] KVM: SEV: Make AVIC backing, VMSA and VMCB
+ memory allocation SNP safe
+To: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org
+Cc: linux-coco@lists.linux.dev, linux-mm@kvack.org,
  linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
  tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
  thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, seanjc@google.com,
  vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
  dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
  peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
- rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, vbabka@suse.cz,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- marcorr@google.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>,
- Jarkko Sakkinen <jarkko@profian.com>
+ rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de,
+ vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+ tony.luck@intel.com, marcorr@google.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+ Brijesh Singh <brijesh.singh@amd.com>
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-5-michael.roth@amd.com>
- <0b2eb374-356c-46c6-9c4a-9512fbfece7a@redhat.com>
- <20231213131324.GDZXmt9LsMmJZyzCJw@fat_crate.local>
+ <20231016132819.1002933-24-michael.roth@amd.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -114,37 +112,35 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20231213131324.GDZXmt9LsMmJZyzCJw@fat_crate.local>
+In-Reply-To: <20231016132819.1002933-24-michael.roth@amd.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/13/23 14:13, Borislav Petkov wrote:
-> On Wed, Dec 13, 2023 at 01:51:58PM +0100, Paolo Bonzini wrote:
->> On 10/16/23 15:27, Michael Roth wrote:
->>> From: Brijesh Singh <brijesh.singh@amd.com>
->>>
->>> Add CPU feature detection for Secure Encrypted Virtualization with
->>> Secure Nested Paging. This feature adds a strong memory integrity
->>> protection to help prevent malicious hypervisor-based attacks like
->>> data replay, memory re-mapping, and more.
->>>
->>> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
->>> Signed-off-by: Jarkko Sakkinen <jarkko@profian.com>
->>> Signed-off-by: Ashish Kalra <Ashish.Kalra@amd.com>
->>> Signed-off-by: Michael Roth <michael.roth@amd.com>
->>
->> Queued, thanks.
+On 10/16/23 15:27, Michael Roth wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> Paolo, please stop queueing x86 patches through your tree. I'll give you
-> an immutable branch with the x86 bits when the stuff has been reviewed.
+> Implement a workaround for an SNP erratum where the CPU will incorrectly
+> signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
+> RMP entry of a VMCB, VMSA or AVIC backing page.
+> 
+> When SEV-SNP is globally enabled, the CPU marks the VMCB, VMSA, and AVIC
+> backing pages as "in-use" via a reserved bit in the corresponding RMP
+> entry after a successful VMRUN. This is done for _all_ VMs, not just
+> SNP-Active VMs.
+> 
+> If the hypervisor accesses an in-use page through a writable
+> translation, the CPU will throw an RMP violation #PF. On early SNP
+> hardware, if an in-use page is 2mb aligned and software accesses any
+> part of the associated 2mb region with a hupage, the CPU will
+> incorrectly treat the entire 2mb region as in-use and signal a spurious
+> RMP violation #PF.
 
-Sure, I only queued it because you gave Acked-by for 05/50 and this is 
-an obvious dependency.  I would like to get things in as they are ready 
-(whenever it makes sense), so if you want to include those two in the 
-x86 tree for 6.8, that would work for me.
+I don't understand if this can happen even if SEV-SNP is not in use, 
+just because it is supported on the host?  If so, should this be Cc'd to 
+stable?  (I can tweak the wording and submit it).
 
 Paolo
 
