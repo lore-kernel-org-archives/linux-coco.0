@@ -1,42 +1,42 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B59213ADD
-	for <linux-coco@lists.linux.dev>; Mon, 18 Dec 2023 10:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC2A13FE7
+	for <linux-coco@lists.linux.dev>; Mon, 18 Dec 2023 10:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fxXH5ry6"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jyDBqdNM"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6872A40E00CB;
-	Mon, 18 Dec 2023 10:14:39 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8D96440E0030;
+	Mon, 18 Dec 2023 10:24:46 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6gSLe3VmLbrr; Mon, 18 Dec 2023 10:14:37 +0000 (UTC)
+	with ESMTP id VU4bhOjEhgIz; Mon, 18 Dec 2023 10:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1702894476; bh=flSmrHICJg+bcSVL2Gg7M4juB6JLxKEwKyo/mAL/FNc=;
+	t=1702895084; bh=+qd2C9CoTRT8YdE7RLTwVb7qNN/yqYEkDFQLfrBIgLE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fxXH5ry6RnlJenPbiE6v3VXxmsrkTHM5Uupmu165JWWiAgHehbqsc4BccpJeJIvU8
-	 oXOGZQSlClpqYfk9UrVG5efKbQfGG5lplRVjyUkvs7/EnP/i4LidFQY8B8sXqRFGOf
-	 gSrXskQuCeEvDZw/RF0HGvuWPfYcBwYD0dxz2cGonJub0ZJoz9pL9YoG8xHPYeVjtW
-	 IaKfeyG5f01ZyhG0Cp7zXMkqHPwuxBtWVtatD0ID+/X+ENwTRoFPYzXmsEDBon+zSu
-	 qrdQDWTFEpqTEWvDlXNwLUMhtXlWTUfww0YrzpWJm5BX+D66wTTz9HW6ouIxdpWFN+
-	 GGxS5Keuc7leOliayFRH/y3lI/J5L+VLaqHA5qoVC14rNgEiU3Rs7dqlxnyve/h2Zp
-	 T9Yos25zGBBBjcERWxAjXWVE0fz86AxGoIY2/qJBS1qJ4+zmeaEgE2Rl7uoWw5oZht
-	 oIm33Tv8ybUANBaOyOpHbLe255QGVCCuE1hlKw25bG78+eVCamI9/21sWhJ/YpNPsj
-	 KfL+zMlrYgLiJNedm2V2L7fhzneY312Oa7Fs2L4M6nm2LMEHW2GP3UsTpPy7LDtoV3
-	 B2qaVZ7dNmD5lOAA+vlsn7ugICNiIo5NC/1e3svNnFoU2nS/4+jLd2rfnCoJbEzDjG
-	 uJP/vqTMNYhv3VA64TRIqrI8=
+	b=jyDBqdNMXR+jZLcCyXJ4YR2GJc9LKFzUfKQU3+hzFPr2OQcmEZmCb/QfiQ9fGD0J9
+	 eQYwFxWWXMCvdmIB+F0qxZDDtmSCXC0qZbY41Wjb2pXH1THKaSUAfgZ58i5kPY7QSL
+	 WSWSVpxOHcPCd6xS9yGOuh+n+HxUm53a+/piNO0RL9Zjvu9V7zukW0vt81gfS74Dcx
+	 aA0wUPFu+W3LkrEt1Wkc3fLEPFALNemjO22dBaz2Q4T8BrzSeI3Sng4aozUlUX2EEu
+	 SaEz5M3ODAere1yfS09GTlW6/kVi5rIfYwk1LD7QVs7lPCFolNwcpGcIOB2HSzfaTV
+	 MItf1qGYtHgocHKjCn9euwhsyDZmnBVeKMziA0/hLgGbE9u1G/VD3PToB4mKfWlf4X
+	 xxtCVWvGGRgUqIkgt6yT/Ri7odTlfxrE3BL0M94Zk3Eykmmnkm+C+OnN/HG0Gv1sVR
+	 I9GjsRFtMrl3xUHXPjp2MZ9curGgNAmGbHh88r3Y9Ec13kZ6HaS+iBgpwvIhDmpiIo
+	 i5uFIBoZ/R/BFQVomO/iT/1hireFV74sUd2IBJb95rD/0LsCqfzRzG1Hdc0Bodjwff
+	 BEfsF00lawewiDqL8njMUlKG1PHYVIQ7lZulWHIFedIHeyLzkmsUsdx/uARXly9hqc
+	 hy9nZw4cu/qb4T4O6GAl8IY0=
 Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3532640E0030;
-	Mon, 18 Dec 2023 10:13:57 +0000 (UTC)
-Date: Mon, 18 Dec 2023 11:13:50 +0100
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E8A8140E00CB;
+	Mon, 18 Dec 2023 10:24:03 +0000 (UTC)
+Date: Mon, 18 Dec 2023 11:23:57 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
@@ -52,12 +52,13 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	tony.luck@intel.com, marcorr@google.com,
 	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
 	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
-Subject: Re: [PATCH v10 20/50] KVM: SEV: Select CONFIG_KVM_SW_PROTECTED_VM
- when CONFIG_KVM_AMD_SEV=y
-Message-ID: <20231218101350.GAZYAbXqYLXByk5Akw@fat_crate.local>
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v10 22/50] KVM: SEV: Add GHCB handling for Hypervisor
+ Feature Support requests
+Message-ID: <20231218102357.GPZYAdvfG5jNyajyu6@fat_crate.local>
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-21-michael.roth@amd.com>
+ <20231016132819.1002933-23-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -66,44 +67,55 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231016132819.1002933-21-michael.roth@amd.com>
+In-Reply-To: <20231016132819.1002933-23-michael.roth@amd.com>
 
-On Mon, Oct 16, 2023 at 08:27:49AM -0500, Michael Roth wrote:
-> SEV-SNP relies on the restricted/protected memory support to run guests,
-> so make sure to enable that support with the
-> CONFIG_KVM_SW_PROTECTED_VM build option.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/kvm/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index 8452ed0228cb..71dc506aa3fb 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -126,6 +126,7 @@ config KVM_AMD_SEV
->  	bool "AMD Secure Encrypted Virtualization (SEV) support"
->  	depends on KVM_AMD && X86_64
->  	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
-> +	select KVM_SW_PROTECTED_VM
->  	help
->  	  Provides support for launching Encrypted VMs (SEV) and Encrypted VMs
->  	  with Encrypted State (SEV-ES) on AMD processors.
-> -- 
+On Mon, Oct 16, 2023 at 08:27:51AM -0500, Michael Roth wrote:
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 4f895a7201ed..088b32657f46 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2568,6 +2568,7 @@ static int sev_es_validate_vmgexit(struct vcpu_svm *svm)
+>  	case SVM_VMGEXIT_AP_HLT_LOOP:
+>  	case SVM_VMGEXIT_AP_JUMP_TABLE:
+>  	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
+> +	case SVM_VMGEXIT_HV_FEATURES:
+>  		break;
+>  	default:
+>  		reason = GHCB_ERR_INVALID_EVENT;
+> @@ -2828,6 +2829,13 @@ static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
+>  				  GHCB_MSR_INFO_MASK,
+>  				  GHCB_MSR_INFO_POS);
+>  		break;
+> +	case GHCB_MSR_HV_FT_REQ: {
+				^^^
 
-Kconfig doesn't like this one:
+No need to have a statement block here. Neither below.
 
-WARNING: unmet direct dependencies detected for KVM_SW_PROTECTED_VM
-  Depends on [n]: VIRTUALIZATION [=y] && EXPERT [=n] && X86_64 [=y]
-  Selected by [m]:
-  - KVM_AMD_SEV [=y] && VIRTUALIZATION [=y] && KVM_AMD [=m] && X86_64 [=y] && CRYPTO_DEV_SP_PSP [=y] && (KVM_AMD [=m]!=y || CRYPTO_DEV_CCP_DD [=m]!=m)
 
-WARNING: unmet direct dependencies detected for KVM_SW_PROTECTED_VM
-  Depends on [n]: VIRTUALIZATION [=y] && EXPERT [=n] && X86_64 [=y]
-  Selected by [m]:
-  - KVM_AMD_SEV [=y] && VIRTUALIZATION [=y] && KVM_AMD [=m] && X86_64 [=y] && CRYPTO_DEV_SP_PSP [=y] && (KVM_AMD [=m]!=y || CRYPTO_DEV_CCP_DD [=m]!=m)
+> +		set_ghcb_msr_bits(svm, GHCB_HV_FT_SUPPORTED,
+> +				  GHCB_MSR_HV_FT_MASK, GHCB_MSR_HV_FT_POS);
+> +		set_ghcb_msr_bits(svm, GHCB_MSR_HV_FT_RESP,
+> +				  GHCB_MSR_INFO_MASK, GHCB_MSR_INFO_POS);
+> +		break;
+> +	}
+>  	case GHCB_MSR_TERM_REQ: {
+>  		u64 reason_set, reason_code;
+>  
+> @@ -2952,6 +2960,12 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
+>  		ret = 1;
+>  		break;
+>  	}
+> +	case SVM_VMGEXIT_HV_FEATURES: {
+				      ^^^^
 
+> +		ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, GHCB_HV_FT_SUPPORTED);
+> +
+> +		ret = 1;
+> +		break;
+> +	}
+>  	case SVM_VMGEXIT_UNSUPPORTED_EVENT:
+>  		vcpu_unimpl(vcpu,
+>  			    "vmgexit: unsupported event - exit_info_1=%#llx, exit_info_2=%#llx\n",
 
 -- 
 Regards/Gruss,
