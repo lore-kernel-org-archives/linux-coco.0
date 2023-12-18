@@ -1,42 +1,42 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A73E37884
-	for <linux-coco@lists.linux.dev>; Mon, 18 Dec 2023 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882AC72079
+	for <linux-coco@lists.linux.dev>; Mon, 18 Dec 2023 17:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="f7Ico4zk"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Up7Ng5oa"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2115840E00A9;
-	Mon, 18 Dec 2023 14:58:41 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 853C040E00A9;
+	Mon, 18 Dec 2023 17:44:00 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id duilsy3bKYSQ; Mon, 18 Dec 2023 14:58:39 +0000 (UTC)
+	with ESMTP id m9dl5PpHaaR0; Mon, 18 Dec 2023 17:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1702911518; bh=1weCWgHoOtoy2vZBHy2ouJrV4MN1BpD6yK4soKgP07A=;
+	t=1702921437; bh=Z3gLK2hvl7+MxZT0PYqx203zqjrTJn7QqrwGTsrc/p0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f7Ico4zkVTqrPgNkFulLln5Nn7Rt6hd6Lducnsi8AYtG2bRm1E7fIBe6Agbk2AS6/
-	 FBDdj+dVtsq21L4WCqfqzN77iciza6p2Aazc2xTtVR3SxGuiOp0VPWoYs+A/dgTw5b
-	 FgSNf+naMbhlKqPoTH4nYKt6j/lGJTCzRFDF4XDSqBeJbwFjcBzMZA6eR0ZnvgW5aN
-	 /N2XD1CjVWWNzuNDrtaYPgb/nDgDtai+TfUQDFIVaeu0uSEwHoXEt+3JE6DkHhBz6j
-	 wvXlKb79qjR05I27rf8pvHauSbZPWHvBhI6rsPg1l8zLgirQ22GzSLcHG+dOypn41P
-	 PcoxaCOKIRq+p6J/7+9P+8OePnsL2wBeWwV1cvApZkEYjZhj6gxrQsBbuLgucPLPdh
-	 t8RC4QYZ50vBVCiyindR7gHvpBk9/KtPZSxrkHRhlg3/rkjSjF4p4Z2DMEFrl7ydMC
-	 fmG7msrfTsjutInRMdlsQJBiQI1INizVxWIRhb+u7mGKAarSV0OH67C80Lko5LTDDe
-	 srRrnXx9sapR/7cSRyPEKGogfLs/jNmNHc7T2XI9NAIVSSFtNoxs4tYoSR8TR17OpG
-	 6jEfc1CY0Pj+fXzA549HB2h4pmBSG3wjep4rqzlZPMZqBTnh5l17Nw0wYsSbaICG+w
-	 CkPBR5p/qZQ9y1BnQook8fHg=
+	b=Up7Ng5oayew1nPDTS0jZMKdUCZRcJGusLwfhWKwuqbsptAuhc8CEsSU+T/NNbADem
+	 U9TXTld+nlWGfR3r/Gl8dsDw3L7tUlsWL3E55mpZnfNz0oF/3mIIa8WLoCpZrewYvz
+	 4zHzHJgJsC+ziQexo2dVq1aHs5wTaL1BvC4MotTUFzD6AaSbsITmmDNEVJdbVJZjEI
+	 huOu5B5UXtVvxvGiCcSfHdie7WnkrD6XyAws6gQUp6al3cF3K6vcXa/LG8rM0IsHJC
+	 6aK3MDZ+VNwbPWwT/jkclDKCOJW/XKIsGlUXJkN4Rc0r/lfBp6lBIlAjfbOF5WBWio
+	 Zjl2o6R8oV8YAsek34ZsWiFyldI3lnEN1BoEdMj/tNDLwaVEo707D+rgOaonrxaK+N
+	 1KW8Vmqn05yPH+i1kKC9N191sEjyEubZPbiVaHtMwTqIYVXPAsvjIyzIFJjqAydhvM
+	 eKJSFsiYrYY4PMu7vLOJQcdWL8gBwwxwSTo6P5+NtGl8FjMfdCCGbd9XXXIiNDeEYa
+	 60+s3aYP9FB2hb57qqyWV6PSBaRAqq+2L775+nzV4Sgs5uH23dLGl20KHYSQ8fDHmw
+	 0XDAyTBR1TeVLiOrDj7Nk6H7bwDvIMx74gnIpVFVWBi8m7FUqyic2ZjqodnfPUDl0C
+	 jf0z7QWWclQVjf7G/k32LP6U=
 Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9413440E0030;
-	Mon, 18 Dec 2023 14:57:58 +0000 (UTC)
-Date: Mon, 18 Dec 2023 15:57:52 +0100
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 39F9A40E0030;
+	Mon, 18 Dec 2023 17:43:18 +0000 (UTC)
+Date: Mon, 18 Dec 2023 18:43:11 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Michael Roth <michael.roth@amd.com>
 Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
@@ -54,11 +54,10 @@ Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
 	nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
 	liam.merwick@oracle.com, zhi.a.wang@intel.com,
 	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v10 23/50] KVM: SEV: Make AVIC backing, VMSA and VMCB
- memory allocation SNP safe
-Message-ID: <20231218145752.GQZYBd8D1iJBrI3cWs@fat_crate.local>
+Subject: Re: [PATCH v10 24/50] KVM: SEV: Add initial SEV-SNP support
+Message-ID: <20231218174258.GRZYCEomVKa9J+EvHh@fat_crate.local>
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-24-michael.roth@amd.com>
+ <20231016132819.1002933-25-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,80 +66,85 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231016132819.1002933-24-michael.roth@amd.com>
+In-Reply-To: <20231016132819.1002933-25-michael.roth@amd.com>
 
-
-Just typos:
-
-On Mon, Oct 16, 2023 at 08:27:52AM -0500, Michael Roth wrote:
+On Mon, Oct 16, 2023 at 08:27:53AM -0500, Michael Roth wrote:
 > From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> Implement a workaround for an SNP erratum where the CPU will incorrectly
-> signal an RMP violation #PF if a hugepage (2mb or 1gb) collides with the
-> RMP entry of a VMCB, VMSA or AVIC backing page.
+> The next generation of SEV is called SEV-SNP (Secure Nested Paging).
+> SEV-SNP builds upon existing SEV and SEV-ES functionality  while adding new
+> hardware based security protection. SEV-SNP adds strong memory encryption
+> integrity protection to help prevent malicious hypervisor-based attacks
+> such as data replay, memory re-mapping, and more, to create an isolated
+> execution environment.
 > 
-> When SEV-SNP is globally enabled, the CPU marks the VMCB, VMSA, and AVIC
-> backing pages as "in-use" via a reserved bit in the corresponding RMP
-> entry after a successful VMRUN. This is done for _all_ VMs, not just
-> SNP-Active VMs.
+> The SNP feature is added incrementally, the later patches adds a new module
+> parameters that can be used to enabled SEV-SNP in the KVM.
+
+This sentence can simply go to /dev/null.
+
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/kvm/svm/sev.c | 10 ++++++++++
+>  arch/x86/kvm/svm/svm.h |  8 ++++++++
+>  2 files changed, 18 insertions(+)
 > 
-> If the hypervisor accesses an in-use page through a writable
-> translation, the CPU will throw an RMP violation #PF. On early SNP
-> hardware, if an in-use page is 2mb aligned and software accesses any
-> part of the associated 2mb region with a hupage, the CPU will
-
-"hugepage"
-
-> incorrectly treat the entire 2mb region as in-use and signal a spurious
-> RMP violation #PF.
-> 
-> The recommended is to not use the hugepage for the VMCB, VMSA or
-
-s/recommended/recommendation/
-s/the hugepage/a hugepage/
-
-> AVIC backing page for similar reasons. Add a generic allocator that will
-> ensure that the page returns is not hugepage (2mb or 1gb) and is safe to
-
-"... the page returned is not a hugepage..."
-
-...
-
-> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
-> +{
-> +	unsigned long pfn;
-> +	struct page *p;
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 1cfb9232fc74..4eefc168ebb3 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -59,10 +59,14 @@ module_param_named(sev_es, sev_es_enabled, bool, 0444);
+>  /* enable/disable SEV-ES DebugSwap support */
+>  static bool sev_es_debug_swap_enabled = true;
+>  module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
 > +
-> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> +		return alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
-> +
-> +	/*
-> +	 * Allocate an SNP safe page to workaround the SNP erratum where
-> +	 * the CPU will incorrectly signal an RMP violation  #PF if a
-> +	 * hugepage (2mb or 1gb) collides with the RMP entry of VMCB, VMSA
-> +	 * or AVIC backing page. The recommeded workaround is to not use the
+> +/* enable/disable SEV-SNP support */
 
-"recommended"
+Useless comment.
 
-> +	 * hugepage.
-> +	 *
-> +	 * Allocate one extra page, use a page which is not 2mb aligned
-> +	 * and free the other.
-> +	 */
-> +	p = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
-> +	if (!p)
-> +		return NULL;
+> +static bool sev_snp_enabled;
+>  #else
+>  #define sev_enabled false
+>  #define sev_es_enabled false
+>  #define sev_es_debug_swap_enabled false
+> +#define sev_snp_enabled false
+>  #endif /* CONFIG_KVM_AMD_SEV */
+>  
+>  #define AP_RESET_HOLD_NONE		0
+> @@ -2186,6 +2190,7 @@ void __init sev_hardware_setup(void)
+>  {
+>  #ifdef CONFIG_KVM_AMD_SEV
+>  	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
+> +	bool sev_snp_supported = false;
+>  	bool sev_es_supported = false;
+>  	bool sev_supported = false;
+>  
+> @@ -2261,6 +2266,10 @@ void __init sev_hardware_setup(void)
+>  	sev_es_asid_count = min_sev_asid - 1;
+>  	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV_ES, sev_es_asid_count));
+>  	sev_es_supported = true;
+> +	sev_snp_supported = sev_snp_enabled && cpu_feature_enabled(X86_FEATURE_SEV_SNP);
 > +
-> +	split_page(p, 1);
-> +
-> +	pfn = page_to_pfn(p);
-> +	if (IS_ALIGNED(pfn, PTRS_PER_PMD))
-> +		__free_page(p++);
-> +	else
-> +		__free_page(p + 1);
-> +
-> +	return p;
-> +}
+> +	pr_info("SEV-ES %ssupported: %u ASIDs\n",
+> +		sev_snp_supported ? "and SEV-SNP " : "", sev_es_asid_count);
+
+Why like this?
+
+>  
+>  out:
+
+Here, below the "out:" label you're already dumping SEV and -ES status.
+Just do SNP exactly the same.
+
+>  	if (boot_cpu_has(X86_FEATURE_SEV))
+> @@ -2277,6 +2286,7 @@ void __init sev_hardware_setup(void)
+>  	if (!sev_es_enabled || !cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP) ||
+>  	    !cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
+>  		sev_es_debug_swap_enabled = false;
+> +	sev_snp_enabled = sev_snp_supported;
+>  #endif
+>  }
 
 -- 
 Regards/Gruss,
