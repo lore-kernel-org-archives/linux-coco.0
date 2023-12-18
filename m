@@ -1,248 +1,112 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE14945BE9
-	for <linux-coco@lists.linux.dev>; Fri, 15 Dec 2023 20:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B59213ADD
+	for <linux-coco@lists.linux.dev>; Mon, 18 Dec 2023 10:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TtQP+GF6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="d849ArFb"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702672154;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pdq43RkAMkdg64YcpCIrr5Wg9aGVqWCQPynJbOk//bU=;
-	b=TtQP+GF6498gZz0p5GV9BYwaeHviZOgZWKhk7Fv+0l5DAjQSNO16kXf3H/3Ec5x3Zk3veD
-	6Mv5luUPKrBmwgLzqIVKZ30I8T6Ups/t+8RG12TESFuVzfjai1GtQUnyNz5zukSJWVPq2V
-	rGUz8E090pXzNqQpRxLd4Cw1tIvIaNsyJ7pGGdpaa6SRXPiO3btEE8U/IYdNzx7OJvLdg+
-	nCI5OUFbKeewFcermt0SokMBUzIzVSA4kVzN72x5qOCY/ybspROM1CwFd/DYelIRac4CMW
-	nQY3av0SKR8IiRif3d2L0DtL423+Xix5WKG5FlEkcKnkKjYJBk2xd4rCNsCmig==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702672154;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pdq43RkAMkdg64YcpCIrr5Wg9aGVqWCQPynJbOk//bU=;
-	b=d849ArFbwUVVVXS+AJgHszyAoTXPSCgpdH4Mzi0wPuRdF+SUHe3NpdPovJ4cHqVgo4s2tC
-	1hKUNFtrIwjsXgDQ==
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima
- <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom
- Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, "Huang,
- Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Kirill A. Shutemov"
- <kirill.shutemov@linux.intel.com>
-Subject: Re: [PATCHv4 14/14] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-In-Reply-To: <20231205004510.27164-15-kirill.shutemov@linux.intel.com>
-References: <20231205004510.27164-1-kirill.shutemov@linux.intel.com>
- <20231205004510.27164-15-kirill.shutemov@linux.intel.com>
-Date: Fri, 15 Dec 2023 21:29:13 +0100
-Message-ID: <877clfmcpy.ffs@tglx>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fxXH5ry6"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6872A40E00CB;
+	Mon, 18 Dec 2023 10:14:39 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6gSLe3VmLbrr; Mon, 18 Dec 2023 10:14:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1702894476; bh=flSmrHICJg+bcSVL2Gg7M4juB6JLxKEwKyo/mAL/FNc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fxXH5ry6RnlJenPbiE6v3VXxmsrkTHM5Uupmu165JWWiAgHehbqsc4BccpJeJIvU8
+	 oXOGZQSlClpqYfk9UrVG5efKbQfGG5lplRVjyUkvs7/EnP/i4LidFQY8B8sXqRFGOf
+	 gSrXskQuCeEvDZw/RF0HGvuWPfYcBwYD0dxz2cGonJub0ZJoz9pL9YoG8xHPYeVjtW
+	 IaKfeyG5f01ZyhG0Cp7zXMkqHPwuxBtWVtatD0ID+/X+ENwTRoFPYzXmsEDBon+zSu
+	 qrdQDWTFEpqTEWvDlXNwLUMhtXlWTUfww0YrzpWJm5BX+D66wTTz9HW6ouIxdpWFN+
+	 GGxS5Keuc7leOliayFRH/y3lI/J5L+VLaqHA5qoVC14rNgEiU3Rs7dqlxnyve/h2Zp
+	 T9Yos25zGBBBjcERWxAjXWVE0fz86AxGoIY2/qJBS1qJ4+zmeaEgE2Rl7uoWw5oZht
+	 oIm33Tv8ybUANBaOyOpHbLe255QGVCCuE1hlKw25bG78+eVCamI9/21sWhJ/YpNPsj
+	 KfL+zMlrYgLiJNedm2V2L7fhzneY312Oa7Fs2L4M6nm2LMEHW2GP3UsTpPy7LDtoV3
+	 B2qaVZ7dNmD5lOAA+vlsn7ugICNiIo5NC/1e3svNnFoU2nS/4+jLd2rfnCoJbEzDjG
+	 uJP/vqTMNYhv3VA64TRIqrI8=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3532640E0030;
+	Mon, 18 Dec 2023 10:13:57 +0000 (UTC)
+Date: Mon, 18 Dec 2023 11:13:50 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+	linux-crypto@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+	tony.luck@intel.com, marcorr@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
+Subject: Re: [PATCH v10 20/50] KVM: SEV: Select CONFIG_KVM_SW_PROTECTED_VM
+ when CONFIG_KVM_AMD_SEV=y
+Message-ID: <20231218101350.GAZYAbXqYLXByk5Akw@fat_crate.local>
+References: <20231016132819.1002933-1-michael.roth@amd.com>
+ <20231016132819.1002933-21-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231016132819.1002933-21-michael.roth@amd.com>
 
-On Tue, Dec 05 2023 at 03:45, Kirill A. Shutemov wrote:
+On Mon, Oct 16, 2023 at 08:27:49AM -0500, Michael Roth wrote:
+> SEV-SNP relies on the restricted/protected memory support to run guests,
+> so make sure to enable that support with the
+> CONFIG_KVM_SW_PROTECTED_VM build option.
+> 
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> ---
+>  arch/x86/kvm/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+> index 8452ed0228cb..71dc506aa3fb 100644
+> --- a/arch/x86/kvm/Kconfig
+> +++ b/arch/x86/kvm/Kconfig
+> @@ -126,6 +126,7 @@ config KVM_AMD_SEV
+>  	bool "AMD Secure Encrypted Virtualization (SEV) support"
+>  	depends on KVM_AMD && X86_64
+>  	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+> +	select KVM_SW_PROTECTED_VM
+>  	help
+>  	  Provides support for launching Encrypted VMs (SEV) and Encrypted VMs
+>  	  with Encrypted State (SEV-ES) on AMD processors.
+> -- 
 
-> MADT Multiprocessor Wakeup structure version 1 brings support of CPU
-> offlining: BIOS provides a reset vector where the CPU has to jump to
-> offline itself.
+Kconfig doesn't like this one:
 
-CPU has to jump to for offlining itself.
+WARNING: unmet direct dependencies detected for KVM_SW_PROTECTED_VM
+  Depends on [n]: VIRTUALIZATION [=y] && EXPERT [=n] && X86_64 [=y]
+  Selected by [m]:
+  - KVM_AMD_SEV [=y] && VIRTUALIZATION [=y] && KVM_AMD [=m] && X86_64 [=y] && CRYPTO_DEV_SP_PSP [=y] && (KVM_AMD [=m]!=y || CRYPTO_DEV_CCP_DD [=m]!=m)
 
-> The new TEST mailbox command can be used to test the CPU offlined
-> successfully and BIOS has control over it.
+WARNING: unmet direct dependencies detected for KVM_SW_PROTECTED_VM
+  Depends on [n]: VIRTUALIZATION [=y] && EXPERT [=n] && X86_64 [=y]
+  Selected by [m]:
+  - KVM_AMD_SEV [=y] && VIRTUALIZATION [=y] && KVM_AMD [=m] && X86_64 [=y] && CRYPTO_DEV_SP_PSP [=y] && (KVM_AMD [=m]!=y || CRYPTO_DEV_CCP_DD [=m]!=m)
 
-test whether the CPU offlined itself which means the BIOS has control
-over the CPU and can online it again via the ACPI MADT wakeup method.
 
-> Add CPU offling support for ACPI MADT wakeup method by implementing
+-- 
+Regards/Gruss,
+    Boris.
 
-for the ACPI
-
-> custom cpu_die, play_dead and stop_other_cpus SMP operations.
-
-cpu_die(), play_dead() ...
-
-> CPU offlining makes is possible to hand over secondary CPUs over kexec,
-> not limiting the second kernel to single CPU.
-
-to a single CPU.
-
-> diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-> index 4fab2ed454f3..3c8efba86d5c 100644
-> --- a/arch/x86/include/asm/smp.h
-> +++ b/arch/x86/include/asm/smp.h
-> @@ -38,6 +38,7 @@ struct smp_ops {
->  	int (*cpu_disable)(void);
->  	void (*cpu_die)(unsigned int cpu);
->  	void (*play_dead)(void);
-> +	void (*crash_play_dead)(void);
-
-This new callback and the callsite change wants to be introduced in a
-preparatory patch. This one is doing too many things at once, really.
-  
-> diff --git a/arch/x86/kernel/acpi/madt_playdead.S b/arch/x86/kernel/acpi/madt_playdead.S
-> new file mode 100644
-> index 000000000000..68f83865a1e3
-> --- /dev/null
-> +++ b/arch/x86/kernel/acpi/madt_playdead.S
-> @@ -0,0 +1,21 @@
-> +#include <linux/linkage.h>
-> +#include <asm/nospec-branch.h>
-> +#include <asm/page_types.h>
-> +#include <asm/processor-flags.h>
-> +
-> +	.text
-> +	.align PAGE_SIZE
-
-Newline please
-
-Please document what the register arguments to this function are.
-
-> +SYM_FUNC_START(asm_acpi_mp_play_dead)
-> +	/* Turn off global entries. Following CR3 write will flush them. */
-> +	movq	%cr4, %rdx
-> +	andq	$~(X86_CR4_PGE), %rdx
-> +	movq	%rdx, %cr4
-> +
-> +	/* Switch to identity mapping */
-> +	movq	%rsi, %rax
-> +	movq	%rax, %cr3
-> +
-> +	/* Jump to reset vector */
-> +	ANNOTATE_RETPOLINE_SAFE
-> +	jmp	*%rdi
-> +SYM_FUNC_END(asm_acpi_mp_play_dead)
-
-> +static u64 acpi_mp_pgd __ro_after_init;
-> +static u64 acpi_mp_reset_vector_paddr __ro_after_init;
-> +
-> +void asm_acpi_mp_play_dead(u64 reset_vector, u64 pgd_pa);
-
-Declarations want to be in a header file.
-
-> +static void crash_acpi_mp_play_dead(void)
-> +{
-> +	asm_acpi_mp_play_dead(acpi_mp_reset_vector_paddr,
-> +			      acpi_mp_pgd);
-
-Pointless line break.
-
-> +}
-> +
-> +static void acpi_mp_play_dead(void)
-> +{
-> +	play_dead_common();
-> +	asm_acpi_mp_play_dead(acpi_mp_reset_vector_paddr,
-> +			      acpi_mp_pgd);
-
-Ditto.
-
-> +}
-> +
-> +static void acpi_mp_cpu_die(unsigned int cpu)
-> +{
-> +	u32 apicid = per_cpu(x86_cpu_to_apicid, cpu);
-> +	unsigned long timeout;
-> +
-> +	/*
-> +	 * Use TEST mailbox command to prove that BIOS got control over
-> +	 * the CPU before declaring it dead.
-> +	 *
-> +	 * BIOS has to clear 'command' field of the mailbox.
-> +	 */
-> +	acpi_mp_wake_mailbox->apic_id = apicid;
-> +	smp_store_release(&acpi_mp_wake_mailbox->command,
-> +			  ACPI_MP_WAKE_COMMAND_TEST);
-> +
-> +	/* Don't wait longer than a second. */
-> +	timeout = USEC_PER_SEC;
-> +	while (READ_ONCE(acpi_mp_wake_mailbox->command) && timeout--)
-> +		udelay(1);
-
-So this waits and then does nothing if the wait fails. What's the point?
-
-...
-<SNIP 170 lines of pagetable muck>
-
-Do we really need this specific hackery or is there some similar
-identity mapping muck which can be generalized?
-
-> +	smp_ops.play_dead = acpi_mp_play_dead;
-> +	smp_ops.crash_play_dead = crash_acpi_mp_play_dead;
-> +	smp_ops.cpu_die = acpi_mp_cpu_die;
-> +	smp_ops.stop_other_cpus = acpi_mp_stop_other_cpus;
-> +
-> +	acpi_mp_reset_vector_paddr = reset_vector;
-> +	acpi_mp_pgd = __pa(pgd);
-> +
-> +	return 0;
-> +}
-> +
->  static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
->  {
->  	if (!acpi_mp_wake_mailbox_paddr) {
-> @@ -68,37 +299,63 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
->  	return 0;
->  }
->  
-> +static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup *mp_wake)
-> +{
-> +	cpu_hotplug_disable_offlining();
-> +
-> +	/*
-> +	 * Zero out mailbox address in the ACPI MADT wakeup structure
-> +	 * to indicate that the mailbox is not usable.  This prevents
-> +	 * the kexec()-ed kernel from reading a vaild mailbox, which in
-> +	 * turn makes the kexec()-ed kernel only be able to use the boot
-> +	 * CPU.
-> +	 *
-> +	 * This is Linux-specific protocol and not reflected in ACPI spec.
-> +	 *
-> +	 * acpi_mp_wake_mailbox_paddr already has the mailbox address.
-> +	 * The acpi_wakeup_cpu() will use it to bring up secondary cpus for
-> +	 * the current kernel.
-> +	 */
-> +	mp_wake->mailbox_address = 0;
-> +}
-
-The previous patch could have split this out into a helper already, no?
-
-> +
->  int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
->  			      const unsigned long end)
->  {
->  	struct acpi_madt_multiproc_wakeup *mp_wake;
->  
->  	mp_wake = (struct acpi_madt_multiproc_wakeup *)header;
-> -	if (BAD_MADT_ENTRY(mp_wake, end))
-> +
-> +        /*
-> +         * Cannot use the standard BAD_MADT_ENTRY() to sanity check the @mp_wake
-> +         * entry.  'sizeof (struct acpi_madt_multiproc_wakeup)' can be larger
-> +         * than the actual size of the MP wakeup entry in ACPI table because the
-> +	 * 'reset_vector' is only available in the V1 MP wakeup structure.
-> +         */
-
-The comment is white space damaged. Use tabs everywhere please and not
-only in one line.
-
-Thanks,
-
-        tglx
+https://people.kernel.org/tglx/notes-about-netiquette
