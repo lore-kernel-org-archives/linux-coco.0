@@ -1,153 +1,198 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2041.outbound.protection.outlook.com [40.107.93.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882AC72079
-	for <linux-coco@lists.linux.dev>; Mon, 18 Dec 2023 17:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273823B18A
+	for <linux-coco@lists.linux.dev>; Tue, 19 Dec 2023 21:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Up7Ng5oa"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 853C040E00A9;
-	Mon, 18 Dec 2023 17:44:00 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id m9dl5PpHaaR0; Mon, 18 Dec 2023 17:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1702921437; bh=Z3gLK2hvl7+MxZT0PYqx203zqjrTJn7QqrwGTsrc/p0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Up7Ng5oayew1nPDTS0jZMKdUCZRcJGusLwfhWKwuqbsptAuhc8CEsSU+T/NNbADem
-	 U9TXTld+nlWGfR3r/Gl8dsDw3L7tUlsWL3E55mpZnfNz0oF/3mIIa8WLoCpZrewYvz
-	 4zHzHJgJsC+ziQexo2dVq1aHs5wTaL1BvC4MotTUFzD6AaSbsITmmDNEVJdbVJZjEI
-	 huOu5B5UXtVvxvGiCcSfHdie7WnkrD6XyAws6gQUp6al3cF3K6vcXa/LG8rM0IsHJC
-	 6aK3MDZ+VNwbPWwT/jkclDKCOJW/XKIsGlUXJkN4Rc0r/lfBp6lBIlAjfbOF5WBWio
-	 Zjl2o6R8oV8YAsek34ZsWiFyldI3lnEN1BoEdMj/tNDLwaVEo707D+rgOaonrxaK+N
-	 1KW8Vmqn05yPH+i1kKC9N191sEjyEubZPbiVaHtMwTqIYVXPAsvjIyzIFJjqAydhvM
-	 eKJSFsiYrYY4PMu7vLOJQcdWL8gBwwxwSTo6P5+NtGl8FjMfdCCGbd9XXXIiNDeEYa
-	 60+s3aYP9FB2hb57qqyWV6PSBaRAqq+2L775+nzV4Sgs5uH23dLGl20KHYSQ8fDHmw
-	 0XDAyTBR1TeVLiOrDj7Nk6H7bwDvIMx74gnIpVFVWBi8m7FUqyic2ZjqodnfPUDl0C
-	 jf0z7QWWclQVjf7G/k32LP6U=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 39F9A40E0030;
-	Mon, 18 Dec 2023 17:43:18 +0000 (UTC)
-Date: Mon, 18 Dec 2023 18:43:11 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com,
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
-	tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
-	alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
-	nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
-	liam.merwick@oracle.com, zhi.a.wang@intel.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v10 24/50] KVM: SEV: Add initial SEV-SNP support
-Message-ID: <20231218174258.GRZYCEomVKa9J+EvHh@fat_crate.local>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BiBRGd3E"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cpLp1wSEtLBy7tRRBZ8V2OUZ+WH/QjqrcQ38H2g5JjMrkBnAQ2BQxRq8eC8abzZg/qHFba2zJjKSgSS/L5ScgTgn03ssReCBKNtn3Ce8vSiyo4xIKlGj7PmZ4Qq/M/PCzV6w9IvTArgjaQBZrtFEsN/nRoFjgFeqRjLkbAp3MdCt9+Z+Mv6tB16VytvESfS4jZVbh0PgGn1JhhYVoi6X8S5TcR7ZWNrQ3pVCjZGj9bI2Gg2iKVT0CsfnnOIMLgxmSZhhePdzixSZ9f9j8bma2jOqX3F05usjNYo2q9p9YUyThmewM6iCAu2etPp5bty0q3AQ0hUZIz7WxUqeI+6YzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=larFxOrXAtkjbUQlyWzN5yyIEXBmwUnR3RKBgeKYw8w=;
+ b=YQQLUqGWhAYllErJQRmK6X3OfGNg4e77HNpVlW4kRiSAPyV4eXQE199Z1zqDFmzMv3TSXfD4h1jIlwd3eLnVwH5ohab9lmOZlQqs1er3CHgLkTgwv7g1HOTF+gLwwfyiJTiy+RrwkOCpwVZfM2/qMLN15KvaD3HELvtvhUxdVpp9a5jGipCf5teziwwnoQi10DMOFITdq/AFk/tgBGg2wJgI5Bpr6o6u8yOjMSJdU88qsG7epG+ge7bVOc9bJcAHqrpB03EZj14Nh3ujBIrRXPjlH8XRS7I6ZezSBjjROcEc8bQwbcqPLvCztozC3HnLxaH/s2xtP/cMXxVnRXNFUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=larFxOrXAtkjbUQlyWzN5yyIEXBmwUnR3RKBgeKYw8w=;
+ b=BiBRGd3EgO86yQ+3pz9vRrWHfyBQxP5FQbMutb7jsMWr9czaesHFSuxjTDUbR2S6WhS4e5bNXFDpGm1tkQiNy+u4Ip49cZ2SIYLLE9tdmXUkfF0BzF7PUt6Y8C+sBramXLLHCnbahpKPlaxXyTHTWtxIzyu9qrDzwnbl7mmpNtY=
+Received: from CH2PR05CA0021.namprd05.prod.outlook.com (2603:10b6:610::34) by
+ DM4PR12MB5841.namprd12.prod.outlook.com (2603:10b6:8:64::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7091.38; Tue, 19 Dec 2023 21:29:48 +0000
+Received: from SA2PEPF00001507.namprd04.prod.outlook.com
+ (2603:10b6:610:0:cafe::9b) by CH2PR05CA0021.outlook.office365.com
+ (2603:10b6:610::34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18 via Frontend
+ Transport; Tue, 19 Dec 2023 21:29:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7113.14 via Frontend Transport; Tue, 19 Dec 2023 21:29:47 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 19 Dec
+ 2023 15:29:46 -0600
+Date: Mon, 18 Dec 2023 21:31:50 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
+	<vbabka@suse.cz>, <kirill@shutemov.name>, <ak@linux.intel.com>,
+	<tony.luck@intel.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<alpergun@google.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+	<nikunj.dadhania@amd.com>, <pankaj.gupta@amd.com>, <liam.merwick@oracle.com>,
+	<zhi.a.wang@intel.com>, Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v10 07/50] x86/sev: Add RMP entry lookup helpers
+Message-ID: <20231219033150.m4x6yh6udupkdqaa@amd.com>
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-25-michael.roth@amd.com>
+ <20231016132819.1002933-8-michael.roth@amd.com>
+ <20231114142442.GCZVODKh03BoMFdlmj@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231016132819.1002933-25-michael.roth@amd.com>
+In-Reply-To: <20231114142442.GCZVODKh03BoMFdlmj@fat_crate.local>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|DM4PR12MB5841:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3bc95432-33d2-4ad1-31e0-08dc00d9a068
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	9KD0603tTAiALk7I6Jz12bQio8+vI4sno7zUFyDelGPzqACFMThcn3dAoBEgAUF68TmjEno8fwCgGaM83MStOqm94FR+FgCUlmB0w6mtH/vKGfVUwAs7vDl+r073Pc2ZlDec+6IA3/m+xMcbRKrTmp4q0yZtMOo3UCrjDFbdeebapQ+5asHlCOAAZ60VJU0LsqUFlnR0hxVGHuU4F0v2R7B0sQUmI7fjrcMVhtttbiJHT74i1W2cVoVS6tVPzVeYrPwXicKHD0jrHMkTaUhAlX5sRwE4KT4XwmcAhkRa5KIk+wAcfE+aYdvgD0Mr82VVAaFO/FAagUkmjNwqiQYcvibBncoibGKPVy6LhKg9VLRLa3rTXgpNWApFie8TbSuoSNbB5/cYrVoYEIivdxbXxJAj+yU7nPg6zctn+oBnSLVrO/OvLgsUOQxFqBCOL9PpFVM6RRAqOsFo603KpxFuqjj36D0erWwjERDhAjl0gxEKBDtWBu/+RLjlQUahSP5oCmoj50h+7Xw+0YMpT3uFfuneLoUaC2A/XVc+TcX5MPNk75FYlO/VyprXI8ZoQglzrZb+7fULWpA9gV8gRyUR5NAUZS2J6UAPh2lxydQfEz8HXzCrZlK45cp6xBlYOXMokhied3xskSAN0lcTbrc9igboiXW/bZxQB/RCsMsrzKgt9AtGlCBx2X4cpdNrPPpPUGCJXHOfkpZWcj0/7XNVFH3S7s0tQOruBCAbeMuciggk6xH8IKd+rTTi1JrPAF8I62NF7y1tCpcNV5KJ2zzWbdg0oiRUxTepiUp8cviyAyk=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(376002)(346002)(396003)(230273577357003)(230173577357003)(230922051799003)(1800799012)(451199024)(82310400011)(186009)(64100799003)(40470700004)(46966006)(36840700001)(36756003)(83380400001)(7416002)(6916009)(316002)(426003)(336012)(70206006)(40480700001)(7406005)(54906003)(70586007)(47076005)(4326008)(44832011)(8936002)(5660300002)(36860700001)(82740400003)(8676002)(2906002)(6666004)(86362001)(16526019)(478600001)(1076003)(966005)(2616005)(26005)(41300700001)(40460700003)(81166007)(356005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2023 21:29:47.8229
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3bc95432-33d2-4ad1-31e0-08dc00d9a068
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001507.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5841
 
-On Mon, Oct 16, 2023 at 08:27:53AM -0500, Michael Roth wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
+On Tue, Nov 14, 2023 at 03:24:42PM +0100, Borislav Petkov wrote:
+> On Mon, Oct 16, 2023 at 08:27:36AM -0500, Michael Roth wrote:
+> > From: Brijesh Singh <brijesh.singh@amd.com>
+> > 
+> > The snp_lookup_page_in_rmptable() can be used by the host to read the RMP
 > 
-> The next generation of SEV is called SEV-SNP (Secure Nested Paging).
-> SEV-SNP builds upon existing SEV and SEV-ES functionality  while adding new
-> hardware based security protection. SEV-SNP adds strong memory encryption
-> integrity protection to help prevent malicious hypervisor-based attacks
-> such as data replay, memory re-mapping, and more, to create an isolated
-> execution environment.
+> $ git grep snp_lookup_page_in_rmptable
+> $
 > 
-> The SNP feature is added incrementally, the later patches adds a new module
-> parameters that can be used to enabled SEV-SNP in the KVM.
-
-This sentence can simply go to /dev/null.
-
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 10 ++++++++++
->  arch/x86/kvm/svm/svm.h |  8 ++++++++
->  2 files changed, 18 insertions(+)
+> Stale commit message. And not very telling. Please rewrite.
 > 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 1cfb9232fc74..4eefc168ebb3 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -59,10 +59,14 @@ module_param_named(sev_es, sev_es_enabled, bool, 0444);
->  /* enable/disable SEV-ES DebugSwap support */
->  static bool sev_es_debug_swap_enabled = true;
->  module_param_named(debug_swap, sev_es_debug_swap_enabled, bool, 0444);
-> +
-> +/* enable/disable SEV-SNP support */
+> > entry for a given page. The RMP entry format is documented in AMD PPR, see
+> > https://bugzilla.kernel.org/attachment.cgi?id=296015.
+> 
+> <--- Brijesh's SOB comes first here if he's the primary author.
+> 
+> > Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+> > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > [mdr: separate 'assigned' indicator from return code]
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  arch/x86/include/asm/sev-common.h |  4 +++
+> >  arch/x86/include/asm/sev-host.h   | 22 +++++++++++++
+> >  arch/x86/virt/svm/sev.c           | 53 +++++++++++++++++++++++++++++++
+> >  3 files changed, 79 insertions(+)
+> >  create mode 100644 arch/x86/include/asm/sev-host.h
+> > 
+> > diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+> > index b463fcbd4b90..1e6fb93d8ab0 100644
+> > --- a/arch/x86/include/asm/sev-common.h
+> > +++ b/arch/x86/include/asm/sev-common.h
+> > @@ -173,4 +173,8 @@ struct snp_psc_desc {
+> >  #define GHCB_ERR_INVALID_INPUT		5
+> >  #define GHCB_ERR_INVALID_EVENT		6
+> >  
+> > +/* RMP page size */
+> > +#define RMP_PG_SIZE_4K			0
+> 
+> RMP_PG_LEVEL_4K just like the generic ones.
 
-Useless comment.
+I've moved this to sev.h, but it RMP_PG_SIZE_4K is already defined there
+and used by a bunch of guest code so it's a bit out-of-place to update
+those as part of this patchset. I can send a follow-up series to clean up
+some of the naming and get rid of sev-common.h
 
-> +static bool sev_snp_enabled;
->  #else
->  #define sev_enabled false
->  #define sev_es_enabled false
->  #define sev_es_debug_swap_enabled false
-> +#define sev_snp_enabled false
->  #endif /* CONFIG_KVM_AMD_SEV */
->  
->  #define AP_RESET_HOLD_NONE		0
-> @@ -2186,6 +2190,7 @@ void __init sev_hardware_setup(void)
->  {
->  #ifdef CONFIG_KVM_AMD_SEV
->  	unsigned int eax, ebx, ecx, edx, sev_asid_count, sev_es_asid_count;
-> +	bool sev_snp_supported = false;
->  	bool sev_es_supported = false;
->  	bool sev_supported = false;
->  
-> @@ -2261,6 +2266,10 @@ void __init sev_hardware_setup(void)
->  	sev_es_asid_count = min_sev_asid - 1;
->  	WARN_ON_ONCE(misc_cg_set_capacity(MISC_CG_RES_SEV_ES, sev_es_asid_count));
->  	sev_es_supported = true;
-> +	sev_snp_supported = sev_snp_enabled && cpu_feature_enabled(X86_FEATURE_SEV_SNP);
-> +
-> +	pr_info("SEV-ES %ssupported: %u ASIDs\n",
-> +		sev_snp_supported ? "and SEV-SNP " : "", sev_es_asid_count);
+> 
+> > +#define RMP_TO_X86_PG_LEVEL(level)	(((level) == RMP_PG_SIZE_4K) ? PG_LEVEL_4K : PG_LEVEL_2M)
+> 
+> What else is there besides X86 PG level?
+> 
+> IOW, RMP_TO_PG_LEVEL simply.
 
-Why like this?
+Make sense.
 
->  
->  out:
+> 
+> > +
+> >  #endif
+> > diff --git a/arch/x86/include/asm/sev-host.h b/arch/x86/include/asm/sev-host.h
+> 
+> Nah, we don't need a third sev header:
+> 
+> arch/x86/include/asm/sev-common.h
+> arch/x86/include/asm/sev.h
+> arch/x86/include/asm/sev-host.h
+> 
+> Put it in sev.h pls.
 
-Here, below the "out:" label you're already dumping SEV and -ES status.
-Just do SNP exactly the same.
+Done.
 
->  	if (boot_cpu_has(X86_FEATURE_SEV))
-> @@ -2277,6 +2286,7 @@ void __init sev_hardware_setup(void)
->  	if (!sev_es_enabled || !cpu_feature_enabled(X86_FEATURE_DEBUG_SWAP) ||
->  	    !cpu_feature_enabled(X86_FEATURE_NO_NESTED_DATA_BP))
->  		sev_es_debug_swap_enabled = false;
-> +	sev_snp_enabled = sev_snp_supported;
->  #endif
->  }
+> 
+> sev-common.h should be merged into sev.h too unless there's a compelling
+> reason not to which I don't see atm.
 
--- 
-Regards/Gruss,
-    Boris.
+Doesn't seem like it would be an issue, maybe some fallout from any
+files that previously only included sev-common.h and now need to pull in
+guest struct definitions as well, but those definitions don't have a lot
+of external dependencies so don't anticipate any header include
+hellishness. I'll send that as a separate follow-up, along with some of
+the renames you suggested above since they'll touch guest code and
+create unecessary churn for SNP host support.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+
+Mike
+
+> > -- 
+> 
+> Thx.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
