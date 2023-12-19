@@ -1,37 +1,37 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2060.outbound.protection.outlook.com [40.107.95.60])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2061.outbound.protection.outlook.com [40.107.220.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92C43D0B1
-	for <linux-coco@lists.linux.dev>; Tue, 19 Dec 2023 21:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE374A98E
+	for <linux-coco@lists.linux.dev>; Wed, 20 Dec 2023 16:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BoNuw3Rw"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CvsibWWF"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q7GRe3G8MQPSyK1Q2+UXrrtzl0UH7S9v4KqL4S0TLit9WCVe0P+2OPQMGWnZn9g/5xe8Ee3VZA4rPtaYMkCoHKWIAtJVZn5aZnXBLc325hgogY+lWlYcdfmP0e2dCcBg6eaY+PPmNGDL3mK8r7wPeZ8HhRL93bucHhlaSxhb4wa9r94fnMIjy3f4ankIju3dOrgLRnd+G4cuM/bczSJJUePcs7r/v6UcSRIl8aTR1UjRm7wBb1BDXRh6hOlglWzh9jmX0ZlUzKX/w1uv4RhetkNHJIvpHJzXVDizXMzKD2wEOpmtcbc1eYma9GtYss1NafoeeEjLzg9vz5l6+PKq+g==
+ b=FTSS4WeLl6XGS2RmGj3PTqNAQpHYX6120oN8YTm87XzaOQY20IxIK4HDipWQ8uKTncXU4h538zDofQlfTxhWWf4z50/k6F5CC1NKyv/rc0ZKdw+H0vJ/wZHqGdT+9BfOKj7xOUm7JefLrAOz7OVrQcylXtIOY0NducWaaYm/O644tx32SPuiUPmf7CmxGckoYbGMCy79ESi8ED4u77J/Fl8KVqVe0+OaFT53GhM1llZ/04Lixp+Y0XO4TnaWyjdLfcNKrgxd3yYNwuiBMMGHGbgi7Lj/WuCThDptMqVzTYB52rXkyIzZBU9WBeAOx2MU/sBhptHNkPniYm6MH/f8EQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=06d69L1CrHqIxaTmS38aZSzitC0So0NOlv1zMifyYxc=;
- b=I25/BA9MJsfXeOzfMTO5MdEXkC6iyMQnlruw3CrbkickLUAXxLiJAcPnWv330te3rqRtJiptef/u9qXsICW/o8n5sOUbWAJ6j+V287OzpwgIyPwmrDVW1ADhN5BK+mvjKzSmboSkTPA5jhn1ECgWhVOF86mkf6UExcRKCA4urHZqAZ4PnBb+l/++b1TdfeNMgdfpWDBTAsn/GRKs1+mPTQVhDI51oC0wBw1CFAIaQa5TpqdbvULZluEd7u8SEK5ODq2AU+cTQ8oQYFdDEmsvFsww8GF7jaxbOVCnkWsLONw8T4wCKvKZS2OW/7UP+ldzusp45SxfziROw9dCunopig==
+ bh=zztFM+6SePAdYVo8ypzTXKKU7fpjrsqPY34SNgTgrFY=;
+ b=TkmVIARLB8S9F5tlI7RlX6qeqJ3A4SyBAx8ovpxK5mKlnrf5sOoEvq/5swC8yQ4XO4ksA4gAtK23DvAgNacYHs/+IX9YCjhLsv8FLdyYntDWNM0jeDJiaLnyefoaQcvaDCxLE+LBKsHrXeJUmySaFXx+t2vhUK4/ZVEuLHcV7oUoPloP79rpzkmHCZRSU0Pg9FiBASENh7UvBs3QE8TMTRI1DP2O5guePzZPoLVq0Jmg6K/oWjQ+Q56NpNk59vYv4MX5MCOg57sJ7owdzHnn2YA1p0aUMukJxE0A7gRpNGC7Qu2zM30aIjkC7E/N9TSoqinZCVDULy4zLy4urhATYA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=06d69L1CrHqIxaTmS38aZSzitC0So0NOlv1zMifyYxc=;
- b=BoNuw3Rw/v1xSYYS7gpkwirFUt8KxAU5A7iL1nqfozt/0meFRI5JX0svCF9cdiTCokkofbgkOhcRU76U5Jl5pXdB0hTXWbivfh4xOPOKeRQPgZ9E2uTqkUr5ImgjFmL39ZOSMLZqLdDtiPPfkXquTrWs1JLtGcg3LV7QK6c2ZdU=
-Received: from CH2PR05CA0009.namprd05.prod.outlook.com (2603:10b6:610::22) by
- LV3PR12MB9165.namprd12.prod.outlook.com (2603:10b6:408:19f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.38; Tue, 19 Dec
- 2023 21:30:32 +0000
+ bh=zztFM+6SePAdYVo8ypzTXKKU7fpjrsqPY34SNgTgrFY=;
+ b=CvsibWWFoM4QjBNpUNVqDN0zGcYlsnkpvtkdRr7HV0O/D1SpIde15PV3sIcF5iEhzl5pwcdlM8+Qnj4yYCKkC/N5TaHhVVX/gkVFF1PgNHHpO6UbpOGIQoDi+O1yf2GkToMjhY0jbrXzH89KrsVAvLEUoRxSxWiX+8hKo0Nai7I=
+Received: from SN6PR2101CA0007.namprd21.prod.outlook.com
+ (2603:10b6:805:106::17) by PH8PR12MB7254.namprd12.prod.outlook.com
+ (2603:10b6:510:225::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Wed, 20 Dec
+ 2023 16:12:08 +0000
 Received: from SA2PEPF00001507.namprd04.prod.outlook.com
- (2603:10b6:610:0:cafe::c3) by CH2PR05CA0009.outlook.office365.com
- (2603:10b6:610::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18 via Frontend
- Transport; Tue, 19 Dec 2023 21:30:29 +0000
+ (2603:10b6:805:106:cafe::43) by SN6PR2101CA0007.outlook.office365.com
+ (2603:10b6:805:106::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.19 via Frontend
+ Transport; Wed, 20 Dec 2023 16:12:06 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -41,12 +41,12 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
  SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.14 via Frontend Transport; Tue, 19 Dec 2023 21:30:29 +0000
+ 15.20.7113.14 via Frontend Transport; Wed, 20 Dec 2023 16:12:05 +0000
 Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Tue, 19 Dec
- 2023 15:30:28 -0600
-Date: Tue, 19 Dec 2023 10:20:26 -0600
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 20 Dec
+ 2023 10:12:00 -0600
+Date: Tue, 19 Dec 2023 17:46:12 -0600
 From: Michael Roth <michael.roth@amd.com>
 To: Borislav Petkov <bp@alien8.de>
 CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
@@ -59,17 +59,16 @@ CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
 	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
 	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
 	<vbabka@suse.cz>, <kirill@shutemov.name>, <ak@linux.intel.com>,
-	<tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, <zhi.a.wang@intel.com>,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v10 11/50] x86/sev: Add helper functions for RMPUPDATE
- and PSMASH instruction
-Message-ID: <20231219162026.mzicb22hbwjycpzg@amd.com>
+	<tony.luck@intel.com>, <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	<alpergun@google.com>, <jarkko@kernel.org>, <ashish.kalra@amd.com>,
+	<nikunj.dadhania@amd.com>, <pankaj.gupta@amd.com>, <liam.merwick@oracle.com>,
+	<zhi.a.wang@intel.com>, Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v10 17/50] crypto: ccp: Handle the legacy TMR allocation
+ when SNP is enabled
+Message-ID: <20231219234612.qaq6bv54jcgo4f2a@amd.com>
 References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-12-michael.roth@amd.com>
- <20231121162149.GFZVzZHQB1g2bdvJie@fat_crate.local>
+ <20231016132819.1002933-18-michael.roth@amd.com>
+ <20231208130520.GFZXMUkKR+aexFpxXf@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -78,131 +77,138 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20231121162149.GFZVzZHQB1g2bdvJie@fat_crate.local>
+In-Reply-To: <20231208130520.GFZXMUkKR+aexFpxXf@fat_crate.local>
 X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|LV3PR12MB9165:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9566ee79-2ea1-4314-6780-08dc00d9b95b
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|PH8PR12MB7254:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7c4d304-2869-4127-7563-08dc017668e6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	wdnBtnFz5dQcEiFh4uyCOjtN5ZK9tmGjkrYM1LKZcW/X6t7Yn5xHnZT+hF3EwiLMNK5u4fxlxEHb38MFkHVov55qF9uLrwXugYzyWlK149V/bP//ajSdBKdfYfkkxittkViE3BckygfWGgfYOTregBQOAnr9ozGy7FLGjU77RRMgv8j7qyWpOuNzC44LLAYeQapmF2oE9rmZ7mdwaXBjUTLIpWZf6w+2oLegHGF8YMNx4jvfLr8dzhyj735oAgLAd8ziMJGxIY6wF6l3WzJtr6kEwweyxedhPdzBdSNqXRoKG2MULPWESNmdo46SQyKDe3wbn/CgPODhBNJ9rlmasz5AjFqVr014ZjUvyv7s3gaXgnBqmUlnQhTk7k2DoD9vPez4AXE0TmlzO/Acor7veFp1xkfIqcuvNe/ilZAWkqBVSuZ+I3iYOYqUYyHm02taexSwmYEwecwzjYC5Lo2z6JPcStEURjqIAcEZxHnToOyte6Vkmxugeoi21cSB1FgaNTalOm0TOorFYL9ios4L/xPYmXF017Tr0KORnXpRgcDDIyNrG0gJunFn1h56eyBvA7wYiXGMvawzHzM83529pQIYFazH9JZl1qt7NbqG/ObFLYnh3emVegrdatyVD+rbqnESU//JoqL9DpPr3PnHei5xDiDA4t1fMPn0LddusbBdlLcVvDAZGsAiAHg3a0SKD2I19JylbkLVvgrjLWBMRPtGYB07/f/GtPVvWuKLfv+Z7gnEj3Cdc5VARDbYlqPYNIgkvHsDF2qDux6Yp89rDg==
+	mSNy81YozXg0UI4icIdEP9j4E+lRFUq1zThrbIaFO75IyhSLqabKqrmRGR2VMx6JmeHp7uLFG93bJa4QJsHe1S/ZJRx1QZ+LYDDfngpxl26nOCwnHNObKb39UIAy1MzwW00jkk/pQJWK6sDQ4azMPbHPjbAngSpjK6T0el5MzzVdusmiC6P9LT1vlO4Xb2tDEMmfiRwSXoRS5SCfe+gicPfFuc0JBFdxKsfXsU7RDnSpWqGZkq/0WY6mEtNJxH0cuReKVqWd/CYDJOslhQ9w9uEbXw4wyiFGRzwRE45VMc/sx0fEbG022YKu12s/V5koElq1gpHyJNHXWblVM5XDFvhKx/8K1CEUoK95wVqKKqtB/5lMXyLESxIx3mixZaJ9UTOOlH4eTL8T9Q9BGDhDJeXXl5cTUtyyqvdouYY29ExsPRdK9vnFxR0xX51qQ/i9MWGdLRy7X5WuGQG37Y3JA/w1Z76U81QyZgeVRpcojfbwycrf9lLA4rlWox7Fg501+HqSRLABNwn20Q0f3z2zdWDeCSQsDgjVjKBGUOinmFIR5GNlZcrY+25eghQDwxfxC0bXyNuix49kJHq44F/egZcchO37mQcvAI5kfxgJifi2j4MD5KuIFc/G9Qc/vzBBZr2xeox9+GjnYZCUAwdLqJzHxvnEcJPVyzJmaE2SkwMIj1a1E4agoW4Jhb71BjGU20PQKRmqOQRD6ssOi9r+uF8RAsIpQeYFX8QiObKjZXYCrmp4XHq86NNNNdJ4j70FqbdvkBxAKrgI+aS2HDKbsw==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(376002)(346002)(136003)(396003)(230922051799003)(82310400011)(64100799003)(186009)(1800799012)(451199024)(40470700004)(46966006)(36840700001)(8936002)(5660300002)(36860700001)(44832011)(47076005)(4326008)(8676002)(2906002)(83380400001)(6916009)(316002)(426003)(70586007)(40480700001)(70206006)(7406005)(7416002)(336012)(54906003)(41300700001)(82740400003)(40460700003)(81166007)(356005)(26005)(16526019)(1076003)(966005)(86362001)(2616005)(478600001)(36756003)(66899024)(36900700001);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(396003)(39860400002)(136003)(376002)(230922051799003)(1800799012)(186009)(451199024)(64100799003)(82310400011)(36840700001)(40470700004)(46966006)(2616005)(83380400001)(426003)(336012)(1076003)(16526019)(26005)(86362001)(44832011)(36756003)(8676002)(8936002)(41300700001)(2906002)(4326008)(5660300002)(7406005)(7416002)(316002)(70586007)(54906003)(6916009)(70206006)(6666004)(478600001)(966005)(81166007)(47076005)(356005)(36860700001)(82740400003)(40480700001)(40460700003)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2023 21:30:29.6352
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 16:12:05.6845
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9566ee79-2ea1-4314-6780-08dc00d9b95b
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7c4d304-2869-4127-7563-08dc017668e6
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	SA2PEPF00001507.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9165
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7254
 
-On Tue, Nov 21, 2023 at 05:21:49PM +0100, Borislav Petkov wrote:
-> On Mon, Oct 16, 2023 at 08:27:40AM -0500, Michael Roth wrote:
-> > +static int rmpupdate(u64 pfn, struct rmp_state *val)
+On Fri, Dec 08, 2023 at 02:05:20PM +0100, Borislav Petkov wrote:
+> On Mon, Oct 16, 2023 at 08:27:46AM -0500, Michael Roth wrote:
+> > From: Brijesh Singh <brijesh.singh@amd.com>
+> > 
+> > The behavior and requirement for the SEV-legacy command is altered when
+> > the SNP firmware is in the INIT state. See SEV-SNP firmware specification
+> > for more details.
+> > 
+> > Allocate the Trusted Memory Region (TMR) as a 2mb sized/aligned region
+> > when SNP is enabled to satisfy new requirements for the SNP. Continue
 > 
-> rmp_state *state
+> s/the //
 > 
-> so that it is clear what this is.
+> > allocating a 1mb region for !SNP configuration.
+> > 
+> > While at it, provide API that can be used by others to allocate a page
 > 
+> "...an API... ... to allocate a firmware page."
+> 
+> Simple.
+> 
+> > that can be used by the firmware.
+> 
+> > The immediate user for this API will be the KVM driver.
+> 
+> Delete that sentence.
+> 
+> > The KVM driver to need to allocate a firmware context
+> 
+> "The KVM driver needs to allocate ...
+> 
+> > page during the guest creation. The context page need to be updated
+> 
+> "needs"
+> 
+> > by the firmware. See the SEV-SNP specification for further details.
+> > 
+> > Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+> > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> > [mdr: use struct sev_data_snp_page_reclaim instead of passing paddr
+> >       directly to SEV_CMD_SNP_PAGE_RECLAIM]
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  drivers/crypto/ccp/sev-dev.c | 151 ++++++++++++++++++++++++++++++++---
+> >  include/linux/psp-sev.h      |   9 +++
+> >  2 files changed, 151 insertions(+), 9 deletions(-)
+> > 
+> > +static int rmp_mark_pages_firmware(unsigned long paddr, unsigned int npages, bool locked)
 > > +{
-> > +	unsigned long paddr = pfn << PAGE_SHIFT;
-> > +	int ret, level, npages;
-> > +	int attempts = 0;
+> > +	/* Cbit maybe set in the paddr */
+> > +	unsigned long pfn = __sme_clr(paddr) >> PAGE_SHIFT;
+> > +	int rc, n = 0, i;
+> 
+> That n looks like it can be replaced by i.
+
+Indeed, and for snp_reclaim_pages() too by the looks of it. Will fix that up,
+along with all the other suggestions.
+
 > > +
-> > +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
-> > +		return -ENXIO;
+> > +void *snp_alloc_firmware_page(gfp_t gfp_mask)
+> > +{
+> > +	struct page *page;
 > > +
-> > +	do {
-> > +		/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
-> > +		asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
-> > +			     : "=a"(ret)
-> > +			     : "a"(paddr), "c"((unsigned long)val)
-> 
-> Add an empty space between the " and the (
-> 
-> > +			     : "memory", "cc");
+> > +	page = __snp_alloc_firmware_pages(gfp_mask, 0, false);
 > > +
-> > +		attempts++;
-> > +	} while (ret == RMPUPDATE_FAIL_OVERLAP);
+> > +	return page ? page_address(page) : NULL;
+> > +}
+> > +EXPORT_SYMBOL_GPL(snp_alloc_firmware_page);
+> > +
+> > +static void __snp_free_firmware_pages(struct page *page, int order, bool locked)a
 > 
-> What's the logic here? Loop as long as it says "overlap"?
+> This @locked too is always false. It becomes true later in
 > 
-> How "transient" is that overlapping condition?
+> Subject: [PATCH v10 50/50] crypto: ccp: Add panic notifier for SEV/SNP firmware shutdown on kdump
 > 
-> What's the upper limit of that loop?
-> 
-> This loop should check a generously chosen upper limit of attempts and
-> then break if that limit is reached.
+> which talks about some panic notifier running in atomic context. But
+> then you can't take locks in atomic context.
 
-We've raised similar questions to David Kaplan and discussed this to a
-fair degree.
-
-The transient condition here is due to firmware locking the 2MB-aligned
-RMP entry for the range to handle atomic updates. There is no upper bound
-on retries or the amount of time spent, but it is always transient since
-multiple hypervisor implementations now depend on this and any deviation
-from this assurance would constitute a firmware regression.
-
-A good torture test for this path is lots of 4K-only guests doing
-concurrent boot/shutdowns in a tight loop. With week-long runs the
-longest delay seen was on the order of 100ns, but there's no real 
-correlation between time spent and number of retries, sometimes
-100ns delays only involve 1 retry, sometimes much smaller time delays
-involve hundreds of retries, and it all depends on what firmware is
-doing, so there's no way to infer a safe retry limit based on that
-data.
-
-All that said, there are unfortunately other conditions that can
-trigger non-transient RMPUPDATE_FAIL_OVERLAP failures, and these will
-result in an infinite loop. Those are the result of host misbehavior
-however, like trying to set up 2MB private RMP entries when there are
-already private 4K entries in the range. Ideally these would be separate
-error codes, but even if that were changed in firmware we'd still need
-code to support older firmwares that don't disambiguate so not sure this
-situation can be improved much.
+In that case, the lock isn't actually taken. locked==true is basically
+used to tell the code to not to try to acquire the lock, but the caller
+is relying on the fact that all the other CPUs are stopped at that point
+so there's no need to protect against multiple concurrent firmware
+commands being issued.
 
 > 
-> > +	if (ret) {
-> > +		pr_err("RMPUPDATE failed after %d attempts, ret: %d, pfn: %llx, npages: %d, level: %d\n",
-> > +		       attempts, ret, pfn, npages, level);
-> 
-> You're dumping here uninitialized stack variables npages and level.
-> Looks like leftover from some prior version of this function.
+> Looks like this whole dance around the locked thing needs a cleanup.
 
-Yah, I'll clean this up. I think logging the attempts probably doesn't
-have much use anymore either.
-
-> 
-> > +		sev_dump_rmpentry(pfn);
-> > +		dump_stack();
-> 
-> This is going to become real noisy on a huge machine with a lot of SNP
-> guests.
-
-Since the transient case will eventually resolve to ret==0, we will only
-get here on a kernel oops sort of condition where a stack dump seems
-appropriate. rmpupdate() shouldn't error during normal operation, and if
-it ever does it will likely be a fatal situation where those stack dumps
-will be useful.
+There's another case that will be introduced in the next version of this
+series (likely right after this patch) to handle a bug where the buffer used
+to access INIT_EX non-volatile data needs to be transitioned to
+firmware-owned beforehand. In that case, the CCP cleanup path introduces
+another caller of __snp_free_firmware_pages() where locked==true. Maybe this
+can be revisited in that context.
 
 Thanks,
 
 Mike
 
+
 > 
-> Thx.
+> ...
+> 
 > 
 > -- 
 > Regards/Gruss,
 >     Boris.
 > 
 > https://people.kernel.org/tglx/notes-about-netiquette
-> 
