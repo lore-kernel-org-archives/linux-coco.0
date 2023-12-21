@@ -1,155 +1,156 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2057.outbound.protection.outlook.com [40.107.237.57])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581174A9A6
-	for <linux-coco@lists.linux.dev>; Wed, 20 Dec 2023 16:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A434D4685
+	for <linux-coco@lists.linux.dev>; Thu, 21 Dec 2023 01:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xogbklVY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Vv6gQRQdpDbu4DPyzLPtUBAtVQTr2h/ORVga5MlzY9l3WVFkXjP9qQ1T1/bUj/O1aopXj+jQEviYr20ULI0+yU444mamH56oSi6K0FljrHd6rL+6cuBboK+F75oPDgkslDIHsDqifBBB5LdH1lz7UdtfgT2a7uUWDuB7Evh4EVBIOZfedurdeCFfECzojDNY+PWMnVRP+3gd7g1sCgoBAt9VkmRmB4TwuDltMHFR1/wX38WgUNzMZlwjxB6A81agtLCIL62p+bSvKbqG5zYE+p7FmMH3bkkVt+dxsApQi6Kx+eXLU6HRM1zel5g8joSXogWH24go4NvsA4iznA7ATw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LMjJTc+GpWuNtXghuhJzFXtI91YHxY729XnHr+vspBs=;
- b=e5mOgmRi5A9nIahjSfsjvKkvH87fw2k6uJ5F3VPejaqC4Njph70b4ts/aA13NafltPdcR4F0v8oZNNrgdREa8A5WoaHrXrA+GfMAyblrP96AZfpcMmMyGau/VIefEpWdkGgnyB+y0BxE/FN8Kh2NPJ/b6EYE0GpHpZUj9SWNDr9mdGcPzidxLuKEL5wS1iZFVisPK3MabcNQeCjpCwYY/zCYpFAgFhcQbQ1CzBDU+gM8harZMJ/znhxge5EblRkkkFUQBkxBINpZkPDoU0NQULt3f0+BG24gjtr6VLZy0dg5tbhZ9MT62eBH1QcyMoms4a2jbTlDTNgectT4x5UnKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LMjJTc+GpWuNtXghuhJzFXtI91YHxY729XnHr+vspBs=;
- b=xogbklVYVegafxKcUJsywltHjlToNBsWasKdEmuezh7qIEdYy1vNz4GpUaBhTE9gYDYlLI+yzg+gIo3NQxPdsA7Sy83PvCoVud4OhXss1/6/dmFia/RwTc1JsawMR39a2XKP9QAeicgNOw877SzGkU7zc6swc0Gur8Uo92zeY2M=
-Received: from SN7PR18CA0030.namprd18.prod.outlook.com (2603:10b6:806:f3::7)
- by MN2PR12MB4127.namprd12.prod.outlook.com (2603:10b6:208:1d1::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18; Wed, 20 Dec
- 2023 16:12:26 +0000
-Received: from SA2PEPF00001504.namprd04.prod.outlook.com
- (2603:10b6:806:f3:cafe::fa) by SN7PR18CA0030.outlook.office365.com
- (2603:10b6:806:f3::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.18 via Frontend
- Transport; Wed, 20 Dec 2023 16:12:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF00001504.mail.protection.outlook.com (10.167.242.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.14 via Frontend Transport; Wed, 20 Dec 2023 16:12:25 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 20 Dec
- 2023 10:12:21 -0600
-Date: Wed, 20 Dec 2023 01:07:03 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
-	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
-	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
-	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
-	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
-	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
-	<rientjes@google.com>, <dovmurik@linux.ibm.com>, <tobin@ibm.com>,
-	<vbabka@suse.cz>, <kirill@shutemov.name>, <ak@linux.intel.com>,
-	<tony.luck@intel.com>, <marcorr@google.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, <zhi.a.wang@intel.com>,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v10 06/50] x86/sev: Add the host SEV-SNP initialization
- support
-Message-ID: <20231220070703.24rfvmjegrvozkfr@amd.com>
-References: <20231016132819.1002933-1-michael.roth@amd.com>
- <20231016132819.1002933-7-michael.roth@amd.com>
- <20231107163142.GAZUpmbt/i3himIf+E@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ILdODGhw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703123447; x=1734659447;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2tuMQTLnpWNSaQU/lRbWgiKEXw5+wZidku5aPEemZcE=;
+  b=ILdODGhwqh00CrloMlBHOVcwlR4M6dI31CV5d3airValekPZyyrms2cz
+   6VboyzrZrrewptAOYEfE/KSdfSbkiPnflJCEdmnyl/6kK4nu9K/hjYJgS
+   u9L0B7DiMiGoogdNowAfuCQeH9pF0DRbzgUYf+EEr09xCnuq2H9WQz5wx
+   jLPjw16DVTgsirMZOpblxrX6V9mSBjfGOBSi9L3cgHtAavxZTlHih1zP5
+   GzgPToiP88f9laT/SUxbG0hx+c7Dm748D/elIizU1aFgztoKraYto8lqR
+   xuZxxWFVjEBm7RR0PW0498bvoDE9IpUnto3K3UZ1ph1EjVJIqE8/kmvJE
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10930"; a="9287577"
+X-IronPort-AV: E=Sophos;i="6.04,292,1695711600"; 
+   d="scan'208";a="9287577"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2023 17:50:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,292,1695711600"; 
+   d="scan'208";a="18169222"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.12.199]) ([10.93.12.199])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2023 17:50:45 -0800
+Message-ID: <b8cfb05b-bf39-4573-b31b-ef4671d9c6ff@intel.com>
+Date: Thu, 21 Dec 2023 09:50:42 +0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20231107163142.GAZUpmbt/i3himIf+E@fat_crate.local>
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001504:EE_|MN2PR12MB4127:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5cd86037-9562-42fa-b8ba-08dc017674e2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	UT61sSIdBxumW9GK6D154EmEAAaLb0r6XAWOQ0DmzQq5wvjM44CSxVk43UXCzwqBoDg0FM7ABvMvmoMvSvCGsVUO5MDag+FhkZsY+m0nlLlH5amSaGYMUDhrL1l+BPwY/f0Gyu8hNe/r8Q6BHCRLl+O+B4iJCwhwdXFW1CQUYE7i0CKxdMPek4VSyMhLZftBNHCZQgAW8rIDbPlIzhAUQWsR9iJnObv5PzZQmZxY8pbbN4X9Z99OQcBd5J9HNd+9soPEIS7fYm/WDE76zM5caDKfgqICUVGOIRU+qfD63FW8YSm41D3vh72bbpuz2oORCWOOYEqfO0WQugrWho2MQZzHkyyfXquHdV1cT2sMIC0LJIRUdpGdFp02x/UxDwE1YoMEb+CG6Ra9K/suzr0ZF2gP4LIZnP6SZssev+GtRYdbrQ0E1qPjtkSiVHVC04gJ43suhwQeG4i38oGp3/+x2L4ivYcT/688MlRXV4cEWhB/hEKDY5rZ0zF2bUCoLXVpoEvaYO2oQ8UJoxjrLW0Ms35jOkl9cXcHgkqRGZUnGwCayrW55xCDekQ8+ByVxLpppoNgbW8BKmQZ5uiblHLFLJrjtR9LRWD+eXymM27wF5cJodwSda4G5oiadoiF8UX294S8EPhW1/0aZ97LNhGEoCoooOHedZavgNeUr2jzsT7WbBIjxuQ+YLu8dQFZ/j1Enp0k6Iomk4xk2nj+JJNwz/7iVVCEWL2X3hPBgwU2KRieJPk0aAXgAZ5+m5qtLoERqJ+8teCZCTActoH8AdgcHQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(136003)(346002)(376002)(396003)(230922051799003)(451199024)(82310400011)(186009)(64100799003)(1800799012)(40470700004)(36840700001)(46966006)(356005)(81166007)(82740400003)(26005)(41300700001)(86362001)(36860700001)(16526019)(36756003)(83380400001)(336012)(47076005)(426003)(2616005)(7406005)(7416002)(1076003)(5660300002)(2906002)(8936002)(8676002)(4326008)(6916009)(316002)(70586007)(70206006)(54906003)(40480700001)(478600001)(40460700003)(6666004)(44832011)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2023 16:12:25.7927
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5cd86037-9562-42fa-b8ba-08dc017674e2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001504.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4127
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 7/7] virt: tdx-guest: Add Quote generation support
+ using TSM_REPORTS
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Erdem Aktas <erdemaktas@google.com>, Peter Gonda <pgonda@google.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, peterz@infradead.org,
+ dave.hansen@linux.intel.com, x86@kernel.org
+References: <169776458564.1705513.13069337506739791098.stgit@dwillia2-xfh.jf.intel.com>
+ <169776462726.1705513.6571107715919082569.stgit@dwillia2-xfh.jf.intel.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <169776462726.1705513.6571107715919082569.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 07, 2023 at 05:31:42PM +0100, Borislav Petkov wrote:
-> On Mon, Oct 16, 2023 at 08:27:35AM -0500, Michael Roth wrote:
-> > +static bool early_rmptable_check(void)
-> > +{
-> > +	u64 rmp_base, rmp_size;
-> > +
-> > +	/*
-> > +	 * For early BSP initialization, max_pfn won't be set up yet, wait until
-> > +	 * it is set before performing the RMP table calculations.
-> > +	 */
-> > +	if (!max_pfn)
-> > +		return true;
-> 
-> This already says that this is called at the wrong point during init.
-> 
-> Right now we have
-> 
-> early_identify_cpu -> early_init_amd -> early_detect_mem_encrypt
-> 
-> which runs only on the BSP but then early_init_amd() is called in
-> init_amd() too so that it takes care of the APs too.
-> 
-> Which ends up doing a lot of unnecessary work on each AP in
-> early_detect_mem_encrypt() like calculating the RMP size on each AP
-> unnecessarily where this needs to happen exactly once.
-> 
-> Is there any reason why this function cannot be moved to init_amd()
-> where it'll do the normal, per-AP init?
-> 
-> And the stuff that needs to happen once, needs to be called once too.
+On 10/20/2023 9:17 AM, Dan Williams wrote:
+> From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+...
+> +static int tdx_report_new(struct tsm_report *report, void *data)
+> +{
+> +	u8 *buf, *reportdata = NULL, *tdreport = NULL;
+> +	struct tdx_quote_buf *quote_buf = quote_data;
+> +	struct tsm_desc *desc = &report->desc;
+> +	int ret;
+> +	u64 err;
+> +
+> +	/* TODO: switch to guard(mutex_intr) */
+> +	if (mutex_lock_interruptible(&quote_lock))
+> +		return -EINTR;
+> +
+> +	/*
+> +	 * If the previous request is timedout or interrupted, and the
+> +	 * Quote buf status is still in GET_QUOTE_IN_FLIGHT (owned by
+> +	 * VMM), don't permit any new request.
+> +	 */
+> +	if (quote_buf->status == GET_QUOTE_IN_FLIGHT) {
+> +		ret = -EBUSY;
+> +		goto done;
+> +	}
+> +
+> +	if (desc->inblob_len != TDX_REPORTDATA_LEN) {
+> +		ret = -EINVAL;
+> +		goto done;
+> +	}
+> +
+> +	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
+> +	if (!reportdata) {
+> +		ret = -ENOMEM;
+> +		goto done;
+> +	}
+> +
+> +	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
+> +	if (!tdreport) {
+> +		ret = -ENOMEM;
+> +		goto done;
+> +	}
+> +
+> +	memcpy(reportdata, desc->inblob, desc->inblob_len);
+> +
+> +	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
+> +	ret = tdx_mcall_get_report0(reportdata, tdreport);
+> +	if (ret) {
+> +		pr_err("GetReport call failed\n");
+> +		goto done;
+> +	}
+> +
+> +	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
+> +
+> +	/* Update Quote buffer header */
+> +	quote_buf->version = GET_QUOTE_CMD_VER;
+> +	quote_buf->in_len = TDX_REPORT_LEN;
+> +
+> +	memcpy(quote_buf->data, tdreport, TDX_REPORT_LEN);
+> +
+> +	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
+> +	if (err) {
+> +		pr_err("GetQuote hypercall failed, status:%llx\n", err);
+> +		ret = -EIO;
+> +		goto done;
+> +	}
+> +
+> +	ret = wait_for_quote_completion(quote_buf, getquote_timeout);
+> +	if (ret) {
+> +		pr_err("GetQuote request timedout\n");
+> +		goto done;
+> +	}
 
-I've renamed/repurposed snp_get_rmptable_info() to
-snp_probe_rmptable_info(). It now reads the MSRs, sanity-checks them,
-and stores the values into ro_after_init variables on success.
+Sorry that I didn't check the previous discussion and don't know if it 
+is by design or not:
 
-Subsequent code uses those values to initialize the RMP table mapping
-instead of re-reading the MSRs.
+Why don't check the quote_buf->status? If it indicates errors, we should 
+return some error code instead, right?
 
-I've moved the call-site for snp_probe_rmptable_info() to
-bsp_init_amd(), which gets called right after early_init_amd(), so
-should still be early enough to clear X86_FEATURE_SEV_SNP such that
-AutoIBRS doesn't get disabled if SNP isn't available on the system. APs
-don't call bsp_init_amd(), so that should avoid doing multiple MSR reads.
+> +	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
+> +	if (!buf) {
+> +		ret = -ENOMEM;
+> +		goto done;
+> +	}
+> +
+> +	report->outblob = buf;
+> +	report->outblob_len = quote_buf->out_len;
+> +
+> +	/*
+> +	 * TODO: parse the PEM-formatted cert chain out of the quote buffer when
+> +	 * provided
+> +	 */
+> +done:
+> +	mutex_unlock(&quote_lock);
+> +	kfree(reportdata);
+> +	kfree(tdreport);
+> +
+> +	return ret;
+> +}
+> +
 
-And I think Ashish has all the other review comments addressed now.
-
-Thanks,
-
-Mike
