@@ -1,38 +1,38 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20833446AB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECFA4C3A6
 	for <linux-coco@lists.linux.dev>; Fri, 22 Dec 2023 23:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YRwVo+KQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g3AAvs1R"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1703289153; x=1734825153;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=RhnEAsovR1/on/ST7snqUo3geUenPPWRU+fc0vbg0rk=;
-  b=YRwVo+KQqK/OMJI+DUVw6DGt8v4J/CvDAVicOzgaHWMKcxqAprjnkUZH
-   9Om2miLd0GcOU84TJ/d8HYLeNaNLwqLEZMsl4DPATPbqHBry4G8NaulGy
-   VBWTb8l4KCgEjZ/lyT3jvLAxDhK6odRWCHwKgj+CtjzLgUsXRTUSzBD7o
-   BOzkxc317aaTo5hJgeEoNCf8EiVA1KdY6SshQLa4CG1cknrVOXXTS8TvC
-   5vMKH79wiJYtrgwTu8cWVTvbn2YAmP8rtwcCyrBEJaCe3OaChdfsu53EV
-   QqHN6qpM28LiGWxYq8voCmJ9Fq/7SAClxW1MU3vSwRJtCzCTo2ipBN6Ua
+  bh=YaJcwdfsbT/u6tJs5uRbj4NUFmy4HkVgm/EwY5jjC6U=;
+  b=g3AAvs1RWDd7BqXBiCfiyh9omxn82SJLyFzlwPV7X8MipbGbLKotuBmI
+   VU3oup6yo3ONHm0DIIeKEuqHtbd8qZe7y8piAodlSBr876ND3dD29qUG4
+   DrSTgaeoGIxV59z7HDvdkV02/sdm89zJqWrUItghDczk06Rq8rGCntxwD
+   r5s65MV27RLvfOeyxa5LGwMLeZmiLyRfaiE2Nap9EkEUIFAlQGhjW/FQ3
+   OGjJveCBjRhNd0iswJrp1N4n4rv8xFsBKOUYA1kcVazKJDDk0Z5RzYit9
+   CekEemJjbCdj/IhArx9OIEA/PIM7Hz9JjDv8ZgdJg0GvJhUTL7rID8jy/
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="395063344"
+X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="395063328"
 X-IronPort-AV: E=Sophos;i="6.04,297,1695711600"; 
-   d="scan'208";a="395063344"
+   d="scan'208";a="395063328"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
   by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2023 15:52:28 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="900623014"
+X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="900623008"
 X-IronPort-AV: E=Sophos;i="6.04,297,1695711600"; 
-   d="scan'208";a="900623014"
+   d="scan'208";a="900623008"
 Received: from jeroenke-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.35.180])
   by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2023 15:52:22 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 69FCD10A4E0; Sat, 23 Dec 2023 02:52:12 +0300 (+03)
+	id 4D67210A4DD; Sat, 23 Dec 2023 02:52:12 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -55,9 +55,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv5 14/16] x86/smp: Add smp_ops.stop_this_cpu() callback
-Date: Sat, 23 Dec 2023 02:52:06 +0300
-Message-ID: <20231222235209.32143-15-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv5 11/16] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
+Date: Sat, 23 Dec 2023 02:52:03 +0300
+Message-ID: <20231222235209.32143-12-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
 References: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
@@ -69,85 +69,72 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the helper is defined, it is called instead of halt() to stop the CPU
-at the end of stop_this_cpu() and on crash CPU shutdown.
+e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
+things, guides where direct mapping ends. Any memory above max_pfn is
+not going to be present in the direct mapping.
 
-ACPI MADT will use it to hand over the CPU to BIOS in order to be able
-to wake it up again after kexec.
+e820__end_of_ram_pfn() finds the end of the ram based on the highest
+E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
+calculation.
+
+Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
+tables and might be required by kernel to function properly.
+
+Usually the problem is hidden because there is some E820_TYPE_RAM memory
+above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
+memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
+can fit under the last E820_TYPE_ACPI range.
+
+Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
+E820_TYPE_ACPI memory.
+
+The problem was discovered during debugging kexec for TDX guest. TDX
+guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
+it between the kernels on kexec.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/include/asm/smp.h |  1 +
- arch/x86/kernel/process.c  | 20 +++++++++++++-------
- arch/x86/kernel/reboot.c   | 12 ++++++++----
- 3 files changed, 22 insertions(+), 11 deletions(-)
+ arch/x86/kernel/e820.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 4fab2ed454f3..390d53fd34f9 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -38,6 +38,7 @@ struct smp_ops {
- 	int (*cpu_disable)(void);
- 	void (*cpu_die)(unsigned int cpu);
- 	void (*play_dead)(void);
-+	void (*stop_this_cpu)(void);
+diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
+index fb8cf953380d..99c80680dc9e 100644
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
+ /*
+  * Find the highest page frame number we have available
+  */
+-static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
++static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
+ {
+ 	int i;
+ 	unsigned long last_pfn = 0;
+@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+ 		unsigned long start_pfn;
+ 		unsigned long end_pfn;
  
- 	void (*send_call_func_ipi)(const struct cpumask *mask);
- 	void (*send_call_func_single_ipi)(int cpu);
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index b6f4e8399fca..65c7971defd2 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -835,13 +835,19 @@ void __noreturn stop_this_cpu(void *dummy)
- 	 */
- 	cpumask_clear_cpu(cpu, &cpus_stop_mask);
+-		if (entry->type != type)
++		if (entry->type != E820_TYPE_RAM &&
++		    entry->type != E820_TYPE_ACPI)
+ 			continue;
  
--	for (;;) {
--		/*
--		 * Use native_halt() so that memory contents don't change
--		 * (stack usage and variables) after possibly issuing the
--		 * native_wbinvd() above.
--		 */
--		native_halt();
-+	if (smp_ops.stop_this_cpu) {
-+		smp_ops.stop_this_cpu();
-+		unreachable();
-+	} else {
-+
-+		for (;;) {
-+			/*
-+			 * Use native_halt() so that memory contents don't
-+			 * change (stack usage and variables) after possibly
-+			 * issuing the native_wbinvd() above.
-+			 */
-+			native_halt();
-+		}
- 	}
+ 		start_pfn = entry->addr >> PAGE_SHIFT;
+@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
+ 
+ unsigned long __init e820__end_of_ram_pfn(void)
+ {
+-	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
++	return e820_end_ram_pfn(MAX_ARCH_PFN);
  }
  
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 16dde83df49a..738b3e810196 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -881,10 +881,14 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
- 	cpu_emergency_disable_virtualization();
- 
- 	atomic_dec(&waiting_for_crash_ipi);
--	/* Assume hlt works */
--	halt();
--	for (;;)
--		cpu_relax();
-+
-+	if (smp_ops.stop_this_cpu) {
-+		smp_ops.stop_this_cpu();
-+	} else {
-+		halt();
-+		for (;;)
-+			cpu_relax();
-+	}
- 
- 	return NMI_HANDLED;
+ unsigned long __init e820__end_of_low_ram_pfn(void)
+ {
+-	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
++	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
  }
+ 
+ static void __init early_panic(char *msg)
 -- 
 2.41.0
 
