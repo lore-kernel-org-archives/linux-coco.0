@@ -1,38 +1,38 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECFA4C3A6
-	for <linux-coco@lists.linux.dev>; Fri, 22 Dec 2023 23:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EDC35EEA
+	for <linux-coco@lists.linux.dev>; Fri, 22 Dec 2023 23:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g3AAvs1R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mCSP2jn9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703289153; x=1734825153;
+  t=1703289155; x=1734825155;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YaJcwdfsbT/u6tJs5uRbj4NUFmy4HkVgm/EwY5jjC6U=;
-  b=g3AAvs1RWDd7BqXBiCfiyh9omxn82SJLyFzlwPV7X8MipbGbLKotuBmI
-   VU3oup6yo3ONHm0DIIeKEuqHtbd8qZe7y8piAodlSBr876ND3dD29qUG4
-   DrSTgaeoGIxV59z7HDvdkV02/sdm89zJqWrUItghDczk06Rq8rGCntxwD
-   r5s65MV27RLvfOeyxa5LGwMLeZmiLyRfaiE2Nap9EkEUIFAlQGhjW/FQ3
-   OGjJveCBjRhNd0iswJrp1N4n4rv8xFsBKOUYA1kcVazKJDDk0Z5RzYit9
-   CekEemJjbCdj/IhArx9OIEA/PIM7Hz9JjDv8ZgdJg0GvJhUTL7rID8jy/
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="395063328"
+  bh=H0KNXcx7kYiuLNhk2lubKN7E5oHJBEIlL2/mP4OOsUg=;
+  b=mCSP2jn9kr4WoHyXb5ln9Tj0+CopPr6EAkE6svaPxvzArippZoBd1/90
+   5vyzyZq7q7dgYx2HgisuXWg/uN5ajLiH11TFNSmaYWfmUGc0K/0WolU85
+   lFqcuHAtzF6xnOcMTAgkFGX5kcHEptayo3SM+k+UUSuMja50qfv3XLgJi
+   g2HHX4XxzQmSo9yQ/kz1KycJhJJoyzq4xs6X3eJmVN8IdKzboU/lZzLYW
+   8GNBf1vOFbTuvPSbLt3oHHCI9iFQhwbBCgF5HffTRrsAsU/HsZM1aGrwX
+   DKToOnq5IRMoMUsMMbxFdBUE3xLkurp9ZKoTkx521gBLwgqdVb6RaA1xS
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="3414392"
 X-IronPort-AV: E=Sophos;i="6.04,297,1695711600"; 
-   d="scan'208";a="395063328"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2023 15:52:28 -0800
+   d="scan'208";a="3414392"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2023 15:52:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="900623008"
+X-IronPort-AV: E=McAfee;i="6600,9927,10932"; a="726961507"
 X-IronPort-AV: E=Sophos;i="6.04,297,1695711600"; 
-   d="scan'208";a="900623008"
+   d="scan'208";a="726961507"
 Received: from jeroenke-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.35.180])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2023 15:52:22 -0800
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Dec 2023 15:52:29 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 4D67210A4DD; Sat, 23 Dec 2023 02:52:12 +0300 (+03)
+	id 7502410A4E1; Sat, 23 Dec 2023 02:52:12 +0300 (+03)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -55,9 +55,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv5 11/16] x86/mm: Make e820_end_ram_pfn() cover E820_TYPE_ACPI ranges
-Date: Sat, 23 Dec 2023 02:52:03 +0300
-Message-ID: <20231222235209.32143-12-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv5 15/16] x86/mm: Introduce kernel_ident_mapping_free()
+Date: Sat, 23 Dec 2023 02:52:07 +0300
+Message-ID: <20231222235209.32143-16-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
 References: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
@@ -69,72 +69,123 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-e820__end_of_ram_pfn() is used to calculate max_pfn which, among other
-things, guides where direct mapping ends. Any memory above max_pfn is
-not going to be present in the direct mapping.
+The helper complements kernel_ident_mapping_init(): it frees the
+identity mapping that was previously allocated. It will be used in the
+error path to free a partially allocated mapping or if the mapping is no
+longer needed.
 
-e820__end_of_ram_pfn() finds the end of the ram based on the highest
-E820_TYPE_RAM range. But it doesn't includes E820_TYPE_ACPI ranges into
-calculation.
-
-Despite the name, E820_TYPE_ACPI covers not only ACPI data, but also EFI
-tables and might be required by kernel to function properly.
-
-Usually the problem is hidden because there is some E820_TYPE_RAM memory
-above E820_TYPE_ACPI. But crashkernel only presents pre-allocated crash
-memory as E820_TYPE_RAM on boot. If the preallocated range is small, it
-can fit under the last E820_TYPE_ACPI range.
-
-Modify e820__end_of_ram_pfn() and e820__end_of_low_ram_pfn() to cover
-E820_TYPE_ACPI memory.
-
-The problem was discovered during debugging kexec for TDX guest. TDX
-guest uses E820_TYPE_ACPI to store the unaccepted memory bitmap and pass
-it between the kernels on kexec.
+The caller provides a struct x86_mapping_info with the free_pgd_page()
+callback hooked up and the pgd_t to free.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/kernel/e820.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/init.h |  3 ++
+ arch/x86/mm/ident_map.c     | 73 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 76 insertions(+)
 
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index fb8cf953380d..99c80680dc9e 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -827,7 +827,7 @@ u64 __init e820__memblock_alloc_reserved(u64 size, u64 align)
- /*
-  * Find the highest page frame number we have available
+diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
+index cc9ccf61b6bd..14d72727d7ee 100644
+--- a/arch/x86/include/asm/init.h
++++ b/arch/x86/include/asm/init.h
+@@ -6,6 +6,7 @@
+ 
+ struct x86_mapping_info {
+ 	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
++	void (*free_pgt_page)(void *, void *); /* free buf for page table */
+ 	void *context;			 /* context for alloc_pgt_page */
+ 	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
+ 	unsigned long offset;		 /* ident mapping offset */
+@@ -16,4 +17,6 @@ struct x86_mapping_info {
+ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
+ 				unsigned long pstart, unsigned long pend);
+ 
++void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd);
++
+ #endif /* _ASM_X86_INIT_H */
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index 968d7005f4a7..3996af7b4abf 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -4,6 +4,79 @@
+  * included by both the compressed kernel and the regular kernel.
   */
--static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type type)
-+static unsigned long __init e820_end_ram_pfn(unsigned long limit_pfn)
+ 
++static void free_pte(struct x86_mapping_info *info, pmd_t *pmd)
++{
++	pte_t *pte = pte_offset_kernel(pmd, 0);
++
++	info->free_pgt_page(pte, info->context);
++}
++
++static void free_pmd(struct x86_mapping_info *info, pud_t *pud)
++{
++	pmd_t *pmd = pmd_offset(pud, 0);
++	int i;
++
++	for (i = 0; i < PTRS_PER_PMD; i++) {
++		if (!pmd_present(pmd[i]))
++			continue;
++
++		if (pmd_leaf(pmd[i]))
++			continue;
++
++		free_pte(info, &pmd[i]);
++	}
++
++	info->free_pgt_page(pmd, info->context);
++}
++
++static void free_pud(struct x86_mapping_info *info, p4d_t *p4d)
++{
++	pud_t *pud = pud_offset(p4d, 0);
++	int i;
++
++	for (i = 0; i < PTRS_PER_PUD; i++) {
++		if (!pud_present(pud[i]))
++			continue;
++
++		if (pud_leaf(pud[i]))
++			continue;
++
++		free_pmd(info, &pud[i]);
++	}
++
++	info->free_pgt_page(pud, info->context);
++}
++
++static void free_p4d(struct x86_mapping_info *info, pgd_t *pgd)
++{
++	p4d_t *p4d = p4d_offset(pgd, 0);
++	int i;
++
++	for (i = 0; i < PTRS_PER_P4D; i++) {
++		if (!p4d_present(p4d[i]))
++			continue;
++
++		free_pud(info, &p4d[i]);
++	}
++
++	if (pgtable_l5_enabled())
++		info->free_pgt_page(pgd, info->context);
++}
++
++void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd)
++{
++	int i;
++
++	for (i = 0; i < PTRS_PER_PGD; i++) {
++		if (!pgd_present(pgd[i]))
++			continue;
++
++		free_p4d(info, &pgd[i]);
++	}
++
++	info->free_pgt_page(pgd, info->context);
++}
++
+ static void ident_pmd_init(struct x86_mapping_info *info, pmd_t *pmd_page,
+ 			   unsigned long addr, unsigned long end)
  {
- 	int i;
- 	unsigned long last_pfn = 0;
-@@ -838,7 +838,8 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 		unsigned long start_pfn;
- 		unsigned long end_pfn;
- 
--		if (entry->type != type)
-+		if (entry->type != E820_TYPE_RAM &&
-+		    entry->type != E820_TYPE_ACPI)
- 			continue;
- 
- 		start_pfn = entry->addr >> PAGE_SHIFT;
-@@ -864,12 +865,12 @@ static unsigned long __init e820_end_pfn(unsigned long limit_pfn, enum e820_type
- 
- unsigned long __init e820__end_of_ram_pfn(void)
- {
--	return e820_end_pfn(MAX_ARCH_PFN, E820_TYPE_RAM);
-+	return e820_end_ram_pfn(MAX_ARCH_PFN);
- }
- 
- unsigned long __init e820__end_of_low_ram_pfn(void)
- {
--	return e820_end_pfn(1UL << (32 - PAGE_SHIFT), E820_TYPE_RAM);
-+	return e820_end_ram_pfn(1UL << (32 - PAGE_SHIFT));
- }
- 
- static void __init early_panic(char *msg)
 -- 
 2.41.0
 
