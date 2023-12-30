@@ -1,66 +1,73 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2067.outbound.protection.outlook.com [40.107.95.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85151848
-	for <linux-coco@lists.linux.dev>; Mon, 25 Dec 2023 08:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8055DBE4E
+	for <linux-coco@lists.linux.dev>; Sat, 30 Dec 2023 16:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VSyHvSZM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703491607; x=1735027607;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=sbhL8XxPds8sXmlf1stkNedv8XeK9UzxN+klgJ58pBg=;
-  b=VSyHvSZMiQO40DjOQ0CpuxYKFfUJxsBhyPfu9dKW3yWub64M0H7GwVMN
-   5BEFYJg0Sa5De0slNtQhZOgmIwjWlcOYHeQXyQd6EjH/URmIYeRaprqqh
-   Nd6BjwG2DTuRa6Y8/JsnlTTbyjOowVFMZi+/enXMn+7BCe12q/prDtBlF
-   dr5gC4EpsBPRI6/fNJNwpdnHcpvb38s983WQr0MhxutAoRMne11rINoXV
-   pSavOXS/8DRtkgyFTXWtPo74UiKt8HXIKJf1lJGIuwrCKRSHYlDMhTB/j
-   d+FN+tv/X6wuzRWtCNq+Sa4l8llCkWcJ6ZI6/3o2X0dwTknOWRU4To2im
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10934"; a="399059644"
-X-IronPort-AV: E=Sophos;i="6.04,302,1695711600"; 
-   d="scan'208";a="399059644"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2023 00:06:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10934"; a="727474524"
-X-IronPort-AV: E=Sophos;i="6.04,302,1695711600"; 
-   d="scan'208";a="727474524"
-Received: from flombard-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.50.77])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2023 00:05:30 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id B7BB1109970; Mon, 25 Dec 2023 11:05:27 +0300 (+03)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: kirill.shutemov@linux.intel.com
-Cc: adrian.hunter@intel.com,
-	ashish.kalra@amd.com,
-	bhe@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	elena.reshetova@intel.com,
-	jun.nakajima@intel.com,
-	kai.huang@intel.com,
-	kexec@lists.infradead.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	rafael@kernel.org,
-	rick.p.edgecombe@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	seanjc@google.com,
-	tglx@linutronix.de,
-	thomas.lendacky@amd.com,
-	x86@kernel.org
-Subject: [PATCHv5.1 14/16] x86/smp: Add smp_ops.stop_this_cpu() callback
-Date: Mon, 25 Dec 2023 11:05:24 +0300
-Message-ID: <20231225080524.4240-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231222235209.32143-15-kirill.shutemov@linux.intel.com>
-References: <20231222235209.32143-15-kirill.shutemov@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Qi4IGBd0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BP/uX1FjkURr7t6F9B6rGTs+jDPvdYiAyizrsiebZQKGtHd9t/jtsEyT7z+BoJ7/cGUpYBiKP3p0/qtZ+S32ayLFJ5kxV1i2QhQPwN/cZGzsCI8QhPAFgZzEuI4FAGi3KnzSMUzNuMeuj6VVy0FtnRrsnYXRnL7hBApdmmwYWgFHq3UlD0VBQ34jyMbxYDjV0A6aKQhKOy8Ad7XqXxH/jbCXD2NpqyzHeXDP/u1z/PGXQNzeynT7qMqEVKS37l8gI7oYb5bjcpda8+aHrIyMsiXxrRH19AWRa9taDmO5ps2JKHdngXdQikB5ZVGnibgGkF5x+6VFbptSR8+NJn2s/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jT21oM7hF8GJ7QiA3VH/SoVsWv4M1q1DV5y907a+zac=;
+ b=SvjNB+mIE825dobN0JAAsQltliKM1Aj1av9S3jWnJHeDx4XaPn3/ev4+VVgPjswWjj5bxK6EMqdbHTbJhxMMF9pWRZuar4m8halEZkvv6Mdp2k4SHdq5Evap0H8JMZMN1RwMr26s599b2AEI2yKGtS9Td+sIiCGM6hA8IpcJAxs/Td3ETsGNiTNhwDnbjN6d2M6EsN06pZVJoAfhj9u+GVuTvnvObWMnsQs4us9MxUOWrV6ExTnmANRHodWWYN7Eu675MT1EzWqaqpQMKjH5higqHehEl258KFnSpkEwuhsY4w6NbfoqGZXONF95774SIauIDvHl2v1bXFeRHo5jNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jT21oM7hF8GJ7QiA3VH/SoVsWv4M1q1DV5y907a+zac=;
+ b=Qi4IGBd0WpQjZU24ieP1V/z14eTUkMDpByeiPzGlgrt4AHCzlc//SKIK/W76WfrIkey6MqNpJWpAChX4h5GMEexUWIA5xE+ySeEjUWtMQ6yEQ0Gb2EDIkncz+COFdPgspYxIxnNce5Y7HYt0dIjQ7l+019pIE1UkMCmk2o6pzMM=
+Received: from DM6PR03CA0073.namprd03.prod.outlook.com (2603:10b6:5:333::6) by
+ MW4PR12MB6951.namprd12.prod.outlook.com (2603:10b6:303:209::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.22; Sat, 30 Dec
+ 2023 16:20:23 +0000
+Received: from DS3PEPF000099DC.namprd04.prod.outlook.com
+ (2603:10b6:5:333:cafe::63) by DM6PR03CA0073.outlook.office365.com
+ (2603:10b6:5:333::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.27 via Frontend
+ Transport; Sat, 30 Dec 2023 16:20:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF000099DC.mail.protection.outlook.com (10.167.17.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7159.9 via Frontend Transport; Sat, 30 Dec 2023 16:20:23 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Sat, 30 Dec
+ 2023 10:20:22 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: <x86@kernel.org>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <jroedel@suse.de>,
+	<thomas.lendacky@amd.com>, <hpa@zytor.com>, <ardb@kernel.org>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <vkuznets@redhat.com>,
+	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
+	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
+	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
+	<tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
+	<ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, <zhi.a.wang@intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: [PATCH v1 06/26] x86/sev: Add RMP entry lookup helpers
+Date: Sat, 30 Dec 2023 10:19:34 -0600
+Message-ID: <20231230161954.569267-7-michael.roth@amd.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231230161954.569267-1-michael.roth@amd.com>
+References: <20231230161954.569267-1-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -68,78 +75,139 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099DC:EE_|MW4PR12MB6951:EE_
+X-MS-Office365-Filtering-Correlation-Id: e71555b1-0b8e-4803-7a0f-08dc09533987
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	HjtvCXtXmA2OCtgiLfWFCJe8EwEruu/0Lb/QuZSRk6kLZEIO4qSnIVgPSxGDzhj+VaVPniBvjrSvXYhtBRBlXdfOEQgzSjHwNg40Ml3qv+eTVvtif71kQ6rntz4BWKZ35fHHbEwn7PZlpOWDClOjgtftJuFoiVg8ZiFeNSwjhtEf0r6yuDkX2LPYeiCO1saLK2K7qmbEgkgxalOR3SCCa8Q2x9vTQCXdfdo67KYYiSIKOj3UBedNA4dxqEpaTTAadHdy0iokBxUwNdLAc3kEj7/GrUMTZgsAeYEkXDE7HYd0D9RBeRaCfHszxDCFUO8YEoWEvO+c/kN/3I7SKRjcCWCYFSUN6ytgqXJ+MqDFKzRja2pHgffc/aRfaTY1QJHdLPVqzLkqnaTDLJrKOlX9ImBeLlOr24mh+r5irqSWSgqnTHbClufbhfwx6jOfLcixh279/yhlXuv2jwIZBwuy6jYxdxilgXTQTJUvf96YEAonMCbCBD5v3z+3/AAEWVndw87qbDach36TAvlAZLILKdMTDRKu/eMjMyPQWdjojM8MtKu4EIHJ/1lmCkmsfQQPSa9XO5z0kAdOWEqsQtKclkuzRzFn4DTxLneM5IVXfjV3Qqu/2mUwjRB5OYswmenZGXW/XN4Ervcu0UheIA93FC3YxFLBlxR3B+YggerOK6WE2LM1gkpO8pGwHGy9wqLSZ1lTk/pAhBy2r6M7z3gdGLTpEVRMv8QvyeAkvjys5h7d4juQNB7d8nP6ZUyfsyT0vcoYXSx5ss3nMGKvMfjENRmuvw2rJ/MB9YGo8Hz2/GA=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(396003)(376002)(346002)(230922051799003)(82310400011)(1800799012)(186009)(451199024)(64100799003)(46966006)(36840700001)(40470700004)(26005)(1076003)(54906003)(70586007)(70206006)(40460700003)(6916009)(40480700001)(2616005)(6666004)(83380400001)(4326008)(8676002)(8936002)(36756003)(316002)(336012)(426003)(478600001)(16526019)(44832011)(7416002)(7406005)(5660300002)(47076005)(86362001)(356005)(2906002)(81166007)(36860700001)(82740400003)(41300700001)(36900700001)(309714004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Dec 2023 16:20:23.1102
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e71555b1-0b8e-4803-7a0f-08dc09533987
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF000099DC.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6951
 
-If the helper is defined, it is called instead of halt() to stop the CPU
-at the end of stop_this_cpu() and on crash CPU shutdown.
+From: Brijesh Singh <brijesh.singh@amd.com>
 
-ACPI MADT will use it to hand over the CPU to BIOS in order to be able
-to wake it up again after kexec.
+Add a helper that can be used to access information contained in the RMP
+entry corresponding to a particular PFN. This will be needed to make
+decisions on how to handle setting up mappings in the NPT in response to
+guest page-faults and handling things like cleaning up pages and setting
+them back to the default hypervisor-owned state when they are no longer
+being used for private data.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+[mdr: separate 'assigned' indicator from return code, and simplify
+      function signatures for various helpers]
+Signed-off-by: Michael Roth <michael.roth@amd.com>
 ---
+ arch/x86/include/asm/sev.h |  3 +++
+ arch/x86/virt/svm/sev.c    | 49 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+)
 
- v5.1:
-   - Fix build for !SMP;
-
----
- arch/x86/include/asm/smp.h |  1 +
- arch/x86/kernel/process.c  |  7 +++++++
- arch/x86/kernel/reboot.c   | 12 ++++++++----
- 3 files changed, 16 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 4fab2ed454f3..390d53fd34f9 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -38,6 +38,7 @@ struct smp_ops {
- 	int (*cpu_disable)(void);
- 	void (*cpu_die)(unsigned int cpu);
- 	void (*play_dead)(void);
-+	void (*stop_this_cpu)(void);
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 1f59d8ba9776..01ce61b283a3 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -90,6 +90,7 @@ extern bool handle_vc_boot_ghcb(struct pt_regs *regs);
+ /* RMP page size */
+ #define RMP_PG_SIZE_4K			0
+ #define RMP_PG_SIZE_2M			1
++#define RMP_TO_PG_LEVEL(level)		(((level) == RMP_PG_SIZE_4K) ? PG_LEVEL_4K : PG_LEVEL_2M)
  
- 	void (*send_call_func_ipi)(const struct cpumask *mask);
- 	void (*send_call_func_single_ipi)(int cpu);
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index b6f4e8399fca..ea4c812c7bf3 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -835,6 +835,13 @@ void __noreturn stop_this_cpu(void *dummy)
- 	 */
- 	cpumask_clear_cpu(cpu, &cpus_stop_mask);
+ #define RMPADJUST_VMSA_PAGE_BIT		BIT(16)
  
-+#ifdef CONFIG_SMP
-+	if (smp_ops.stop_this_cpu) {
-+		smp_ops.stop_this_cpu();
-+		unreachable();
-+	}
-+#endif
+@@ -245,8 +246,10 @@ static inline u64 sev_get_status(void) { return 0; }
+ 
+ #ifdef CONFIG_KVM_AMD_SEV
+ bool snp_probe_rmptable_info(void);
++int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level);
+ #else
+ static inline bool snp_probe_rmptable_info(void) { return false; }
++static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return -ENODEV; }
+ #endif
+ 
+ #endif
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index ce7ede9065ed..49fdfbf4e518 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -53,6 +53,9 @@ struct rmpentry {
+  */
+ #define RMPTABLE_CPU_BOOKKEEPING_SZ	0x4000
+ 
++/* Mask to apply to a PFN to get the first PFN of a 2MB page */
++#define PFN_PMD_MASK	GENMASK_ULL(63, PMD_SHIFT - PAGE_SHIFT)
 +
- 	for (;;) {
- 		/*
- 		 * Use native_halt() so that memory contents don't change
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 16dde83df49a..738b3e810196 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -881,10 +881,14 @@ static int crash_nmi_callback(unsigned int val, struct pt_regs *regs)
- 	cpu_emergency_disable_virtualization();
- 
- 	atomic_dec(&waiting_for_crash_ipi);
--	/* Assume hlt works */
--	halt();
--	for (;;)
--		cpu_relax();
+ static u64 probed_rmp_base, probed_rmp_size;
+ static struct rmpentry *rmptable __ro_after_init;
+ static u64 rmptable_max_pfn __ro_after_init;
+@@ -217,3 +220,49 @@ static int __init snp_rmptable_init(void)
+  * This must be called after the IOMMU has been initialized.
+  */
+ device_initcall(snp_rmptable_init);
 +
-+	if (smp_ops.stop_this_cpu) {
-+		smp_ops.stop_this_cpu();
-+	} else {
-+		halt();
-+		for (;;)
-+			cpu_relax();
-+	}
- 
- 	return NMI_HANDLED;
- }
++static struct rmpentry *get_rmpentry(u64 pfn)
++{
++	if (WARN_ON_ONCE(pfn > rmptable_max_pfn))
++		return ERR_PTR(-EFAULT);
++
++	return &rmptable[pfn];
++}
++
++static struct rmpentry *__snp_lookup_rmpentry(u64 pfn, int *level)
++{
++	struct rmpentry *large_entry, *entry;
++
++	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
++		return ERR_PTR(-ENODEV);
++
++	entry = get_rmpentry(pfn);
++	if (IS_ERR(entry))
++		return entry;
++
++	/*
++	 * Find the authoritative RMP entry for a PFN. This can be either a 4K
++	 * RMP entry or a special large RMP entry that is authoritative for a
++	 * whole 2M area.
++	 */
++	large_entry = get_rmpentry(pfn & PFN_PMD_MASK);
++	if (IS_ERR(large_entry))
++		return large_entry;
++
++	*level = RMP_TO_PG_LEVEL(large_entry->pagesize);
++
++	return entry;
++}
++
++int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level)
++{
++	struct rmpentry *e;
++
++	e = __snp_lookup_rmpentry(pfn, level);
++	if (IS_ERR(e))
++		return PTR_ERR(e);
++
++	*assigned = !!e->assigned;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(snp_lookup_rmpentry);
 -- 
-2.41.0
+2.25.1
 
