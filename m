@@ -1,92 +1,135 @@
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE911F927
-	for <linux-coco@lists.linux.dev>; Thu,  4 Jan 2024 06:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5D620DE8
+	for <linux-coco@lists.linux.dev>; Thu,  4 Jan 2024 10:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="V2d40fYB"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7C1B540E0202;
+	Thu,  4 Jan 2024 10:31:33 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id cpt72dB3zF74; Thu,  4 Jan 2024 10:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1704364291; bh=0rxushcfZyl8L0hy6S9Km4lGh2/dzw7ZO9lKAm8opZ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V2d40fYBXLsjiwgw88xJEJal0iK5jhfOdiiW5CFmq7CsA30eB3UEH5tslaIptPYHx
+	 AiKsFb6HXIdUELKJTNpqrJ+OtNud5zqyBzQO12LOoH6NGEzs213S/tk5v/52ynLT+d
+	 BMUbP6o8Hi5BWVifZygd83cULDxVy73O2SgyQiBLTg/+hDTkamGbeymlReg9rcHoE2
+	 qb0hcW/GpP5dnDESmgo7cEDUG5p9xnZrGBlZk/BzCIXjhvzIKEkQmTdJsLz2hR9f5Y
+	 3e/8k6phnvZM8lA8qSM7zaOWOJp3eL9Tc+otbB0CH8PvK46AXOGxw1FN1ZCd2oaGD7
+	 indn2kf4LREaQl/JX+VTc0TLlwQNTp2WyLiBjla+Bw720a4k9qAZa9W7O5cQQKgwp7
+	 3HT2ReBRVycQg//veJFInytfO5HSRvVRcuJbA0MPCcLvSvs8oi9YMpQ4q1qn0bzL+5
+	 2UximNaMGXpHLlqLvXpeC2zshznqUwr9JofQc+LA8WBk+mL2P6pNm7ZxUHu8VyYs0d
+	 fc9TkDWvo4d7PMa4lnjQcWjHYn0Sf7srHrNS7OtjNQd21AGPYlE3GKV146o5opcokD
+	 0FvC5c4D1ZHKr5ycn1wFc1eWC9g48Qqj6QE89nWfm6ewVFLsyBNsoFSTzvr+7wDdPE
+	 uPUiPUyJWMXVD9UcdHdhHnFY=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 61C6930000D09;
-	Thu,  4 Jan 2024 07:57:44 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 4131E24ADCF; Thu,  4 Jan 2024 07:57:44 +0100 (CET)
-Date: Thu, 4 Jan 2024 07:57:44 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] mm/slab: Add __free() support for kvfree
-Message-ID: <20240104065744.GA6055@wunner.de>
-References: <169199898909.1782217.10899362240465838600.stgit@dwillia2-xfh.jf.intel.com>
- <169199901230.1782217.9803098171993981037.stgit@dwillia2-xfh.jf.intel.com>
- <2023081449-blurry-bath-248e@gregkh>
- <20230814161731.GN776869@hirez.programming.kicks-ass.net>
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D2A6C40E0177;
+	Thu,  4 Jan 2024 10:30:53 +0000 (UTC)
+Date: Thu, 4 Jan 2024 11:30:47 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
+Subject: Re: [PATCH v1 03/26] iommu/amd: Don't rely on external callers to
+ enable IOMMU SNP support
+Message-ID: <20240104103047.GDZZaI11z9Htj3XS/P@fat_crate.local>
+References: <20231230161954.569267-1-michael.roth@amd.com>
+ <20231230161954.569267-4-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230814161731.GN776869@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20231230161954.569267-4-michael.roth@amd.com>
 
-On Mon, Aug 14, 2023 at 06:17:31PM +0200, Peter Zijlstra wrote:
-> On Mon, Aug 14, 2023 at 05:31:27PM +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Aug 14, 2023 at 12:43:32AM -0700, Dan Williams wrote:
-> > > Allow for the declaration of variables that trigger kvfree() when they
-> > > go out of scope.
-> > > 
-> > > Cc: Andrew Morton <akpm@linux-foundation.org>
-> > > Cc: Peter Zijlstra <peterz@infradead.org>
-> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > > ---
-> > >  include/linux/slab.h |    2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/include/linux/slab.h b/include/linux/slab.h
-> > > index 848c7c82ad5a..241025367943 100644
-> > > --- a/include/linux/slab.h
-> > > +++ b/include/linux/slab.h
-> > > @@ -746,6 +746,8 @@ static inline __alloc_size(1, 2) void *kvcalloc(size_t n, size_t size, gfp_t fla
-> > >  extern void *kvrealloc(const void *p, size_t oldsize, size_t newsize, gfp_t flags)
-> > >  		      __realloc_size(3);
-> > >  extern void kvfree(const void *addr);
-> > > +DEFINE_FREE(kvfree, void *, if (_T) kvfree(_T))
-> > 
-> > No need to check _T before calling this, right (as was also pointed out
-> > earlier).
-> 
-> Well, that does mean you get an unconditional call to kvfree() in the
-> success case. Linus argued against this.
-> 
-> This way the compiler sees:
-> 
-> 	buf = NULL;
-> 	if (buf)
-> 		kvfree(buf);
-> 
-> and goes: 'let me clean that up for you'. And all is well.
+On Sat, Dec 30, 2023 at 10:19:31AM -0600, Michael Roth wrote:
+> +static void iommu_snp_enable(void)
+> +{
+> +#ifdef CONFIG_KVM_AMD_SEV
+> +	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +		return;
+> +	/*
+> +	 * The SNP support requires that IOMMU must be enabled, and is
+> +	 * not configured in the passthrough mode.
+> +	 */
+> +	if (no_iommu || iommu_default_passthrough()) {
+> +		pr_err("SNP: IOMMU is disabled or configured in passthrough mode, SNP cannot be supported.\n");
+> +		return;
+> +	}
+> +
+> +	amd_iommu_snp_en = check_feature(FEATURE_SNP);
+> +	if (!amd_iommu_snp_en) {
+> +		pr_err("SNP: IOMMU SNP feature is not enabled, SNP cannot be supported.\n");
+> +		return;
+> +	}
+> +
+> +	pr_info("IOMMU SNP support is enabled.\n");
+> +
+> +	/* Enforce IOMMU v1 pagetable when SNP is enabled. */
+> +	if (amd_iommu_pgtable != AMD_IOMMU_V1) {
+> +		pr_warn("Forcing use of AMD IOMMU v1 page table due to SNP.\n");
+> +		amd_iommu_pgtable = AMD_IOMMU_V1;
+> +	}
 
-Have you actually verified that assumption in the generated Assembler code?
+Kernel code usually says simple "<bla> enabled" not "<bla> is enabled".
+Other than that, LGTM.
 
-The kernel is compiled with -fno-delete-null-pointer-checks since commit
-a3ca86aea507 ("Add '-fno-delete-null-pointer-checks' to gcc CFLAGS").
+---
 
-So NULL pointer checks are *not* optimized away even if the compiler
-knows that a pointer is NULL.
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index 1ed2ef22a0fb..2f1517acaba0 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3231,17 +3231,17 @@ static void iommu_snp_enable(void)
+ 	 * not configured in the passthrough mode.
+ 	 */
+ 	if (no_iommu || iommu_default_passthrough()) {
+-		pr_err("SNP: IOMMU is disabled or configured in passthrough mode, SNP cannot be supported.\n");
++		pr_err("SNP: IOMMU disabled or configured in passthrough mode, SNP cannot be supported.\n");
+ 		return;
+ 	}
+ 
+ 	amd_iommu_snp_en = check_feature(FEATURE_SNP);
+ 	if (!amd_iommu_snp_en) {
+-		pr_err("SNP: IOMMU SNP feature is not enabled, SNP cannot be supported.\n");
++		pr_err("SNP: IOMMU SNP feature not enabled, SNP cannot be supported.\n");
+ 		return;
+ 	}
+ 
+-	pr_info("IOMMU SNP support is enabled.\n");
++	pr_info("IOMMU SNP support enabled.\n");
+ 
+ 	/* Enforce IOMMU v1 pagetable when SNP is enabled. */
+ 	if (amd_iommu_pgtable != AMD_IOMMU_V1) {
 
-Background story:
-https://lwn.net/Articles/342330/
 
-Thanks,
+-- 
+Regards/Gruss,
+    Boris.
 
-Lukas
+https://people.kernel.org/tglx/notes-about-netiquette
