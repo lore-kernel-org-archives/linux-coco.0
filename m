@@ -1,100 +1,152 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9306328AD
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jan 2024 16:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A68358B0
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jan 2024 18:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="B5hW1EV9"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C73DD40E016C;
-	Fri,  5 Jan 2024 16:22:28 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 84HtEWuwaCZG; Fri,  5 Jan 2024 16:22:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704471746; bh=j+eM5pN/ZJjguSTXrDo3g1D8mHy8zmaIa7AEsjD59Ss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B5hW1EV9vq5JsAI+1K8hZ+f2YqJiyOSKPbVarcMMiw8kX2ro9XqQCODVg4iFe/8fD
-	 NbSSivZTtrQT8C7BxFa1r+3wg7vnBfocNEP25TIBX6PPQIUjouhNkLFt5qQDLDZQF3
-	 GcrStKGHX+9V3L+8K+veTdS3iX3KgBDOqKjRijz3eaZFMPKLWD5I3S/nUEc7FUtMua
-	 OxSJc7LIquZzRfl25m1BfXTbp/+b6CCNX49o01v4+//tf4vZavCs52zR6GK+KOBk1M
-	 CMmrYtfB9tmVTYO3ZQfTtEy4GGBumFGc9Ii8TlDcXSOyqbfvndPOB2owY7i6nBe5zb
-	 q61eALCQgj6osq0Ey2wjgA75scGAlI46jHRjhfi+3Eml/OR3RND0+0N3t9Koohpr97
-	 9b3/yw4hn53CarYV5+2qqXyM14tD7rKlN/IcrMjh55wgT6dN/lJSiUvaXL5B9NMbf+
-	 JE3TFAEv3LTJMUaOk4vn/2+DMTrWYpMrgHUwVnC5kLreh3vS5P+EnlK8X0YeFz7mfM
-	 MapqpvHY/m07UOKex0RizLW2ykAOU0jdTwauka14ssguCs8KKAs75iH6KxiIHAF2wV
-	 ggQIii0tmodflsN7YB/D/WWv8Ci3WR46LazY5XuNEajUAbiv/GEmC6XEodW4IEugwu
-	 vYB5DRcBjVXm4N99CMbdoLkc=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 08D6A40E00C5;
-	Fri,  5 Jan 2024 16:21:47 +0000 (UTC)
-Date: Fri, 5 Jan 2024 17:21:42 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: Michael Roth <michael.roth@amd.com>, x86@kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
-	pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
-	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
-	slp@redhat.com, pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v1 04/26] x86/sev: Add the host SEV-SNP initialization
- support
-Message-ID: <20240105162142.GEZZgslgQCQYI7twat@fat_crate.local>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-5-michael.roth@amd.com>
- <f60c5fe0-9909-468d-8160-34d5bae39305@linux.microsoft.com>
- <20240105160916.GDZZgprE8T6xbbHJ9E@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKhJQeDU"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5ca1b4809b5so1110476a12.3
+        for <linux-coco@lists.linux.dev>; Fri, 05 Jan 2024 10:30:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704479441; x=1705084241; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3sjtnuQv0aW8e3tX/O8I3CPvFIKJ9WnNTakGmnE/PQ4=;
+        b=hKhJQeDUIj2JHDASOxtv3ljcsqr0zyDtA+3EkwvL+f4QhdG6CEoG4E24mzgofWlHlp
+         egVJzLYUN7QjLGj/BXkCdmQ9c7h9ggNCnEYawH7LVhuDGfrSV5dONbK43SbRZ/ZisBTB
+         eoSqo7W9jAhRH+UDTtXvkgghAhiRgCFHsPfRIDdTrn/slT20ermJvOimqEGThp6iJRrP
+         Z4xfIE7ZwA9/mqadkciTpHyDFXmBOS5SnWPFT7kQNxU/Fu6sN0Ut2Az8K/3U5tII8ELp
+         w8uI5FOiKCAfZEj3FIb+ht3e5ufYvtTeI0ihzFhd1bBwOa6X9yfT+ZUWwrVxwwyuP4OW
+         0wJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704479441; x=1705084241;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3sjtnuQv0aW8e3tX/O8I3CPvFIKJ9WnNTakGmnE/PQ4=;
+        b=PUJiXeqdrtSMRvj9ZdKBRaKdS33pjE5zZCb46UnOQBlaRSQHk5z19yPrGgwZWH9WTX
+         m81iX+l+bWIARwlhlwNKyOjkGH1lBvA5jRIjBKYikA5pev3n0RAmOFWBcDJ+Rn8cAnGC
+         PpUd6TqH9xs6gkg0fGkigK0S/cs5iHLfAMhaGPzQafgQ+w7xzHbIYhhi0hEHJsvISz0x
+         ik3gWbqGjdcj1GTtn4GCHpxkmC3tQHyDl9MKoljnU6F5BMKPqSsaKO1qXfXywNs4wbGn
+         LsQs5z3xtlZ2U1pinJJI3B5MxBwqCGkoAwS9SMCMbCUkNppjP5yBsz8ICa0bcAfOTLjj
+         PJxg==
+X-Gm-Message-State: AOJu0Yy6Cqy7CcUpFN+OiEJQHA8ur/+IQY2zFZMumXSfHQ52KxGxu3Rw
+	hSjUBTmfSCc+FtcS+e9FUmg=
+X-Google-Smtp-Source: AGHT+IGZaFoZdBTf7Hf3s9plZg+SJexjwJwB03dmWIM7+favexb3cAjsi05kOu2bP0EG5HtVpfK9Dg==
+X-Received: by 2002:a17:90b:1d0d:b0:28c:4a67:eb7d with SMTP id on13-20020a17090b1d0d00b0028c4a67eb7dmr2069534pjb.48.1704479440839;
+        Fri, 05 Jan 2024 10:30:40 -0800 (PST)
+Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
+        by smtp.gmail.com with ESMTPSA id 23-20020a17090a195700b002868abc0e6dsm1687293pjh.11.2024.01.05.10.30.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jan 2024 10:30:40 -0800 (PST)
+From: mhkelley58@gmail.com
+X-Google-Original-From: mhklinux@outlook.com
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	kirill.shutemov@linux.intel.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	akpm@linux-foundation.org,
+	urezki@gmail.com,
+	hch@infradead.org,
+	lstoakes@gmail.com,
+	thomas.lendacky@amd.com,
+	ardb@kernel.org,
+	jroedel@suse.de,
+	seanjc@google.com,
+	rick.p.edgecombe@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-hyperv@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 1/3] x86/hyperv: Use slow_virt_to_phys() in page transition hypervisor callback
+Date: Fri,  5 Jan 2024 10:30:23 -0800
+Message-Id: <20240105183025.225972-2-mhklinux@outlook.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240105183025.225972-1-mhklinux@outlook.com>
+References: <20240105183025.225972-1-mhklinux@outlook.com>
+Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240105160916.GDZZgprE8T6xbbHJ9E@fat_crate.local>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 05, 2024 at 05:09:16PM +0100, Borislav Petkov wrote:
-> On Thu, Jan 04, 2024 at 12:05:27PM +0100, Jeremi Piotrowski wrote:
-> > Is there a really good reason to perform the snp_probe_smptable_info() check at this
-> > point (instead of in snp_rmptable_init). snp_rmptable_init will also clear the cap
-> > on failure, and bsp_init_amd() runs too early to allow for the kernel to allocate the
-> > rmptable itself. I pointed out in the previous review that kernel allocation of rmptable
-> > is necessary in SNP-host capable VMs in Azure.
-> 
-> What does that even mean?
-> 
-> That function is doing some calculations after reading two MSRs. What
-> can possibly go wrong?!
+From: Michael Kelley <mhklinux@outlook.com>
 
-That could be one reason perhaps:
+In preparation for temporarily marking pages not present during a
+transition between encrypted and decrypted, use slow_virt_to_phys()
+in the hypervisor callback. As long as the PFN is correct,
+slow_virt_to_phys() works even if the leaf PTE is not present.
+The existing functions that depend on vmalloc_to_page() all
+require that the leaf PTE be marked present, so they don't work.
 
-"It needs to be called early enough to allow for AutoIBRS to not be disabled
-just because SNP is supported. By calling it where it is currently called, the
-SNP feature can be cleared if, even though supported, SNP can't be used,
-allowing AutoIBRS to be used as a more performant Spectre mitigation."
+Update the comments for slow_virt_to_phys() to note this broader usage
+and the requirement to work even if the PTE is not marked present.
 
-https://lore.kernel.org/r/8ec38db1-5ccf-4684-bc0d-d48579ebf0d0@amd.com
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+---
+ arch/x86/hyperv/ivm.c        |  9 ++++++++-
+ arch/x86/mm/pat/set_memory.c | 13 +++++++++----
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 02e55237d919..8ba18635e338 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -524,7 +524,14 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+ 		return false;
+ 
+ 	for (i = 0, pfn = 0; i < pagecount; i++) {
+-		pfn_array[pfn] = virt_to_hvpfn((void *)kbuffer + i * HV_HYP_PAGE_SIZE);
++		/*
++		 * Use slow_virt_to_phys() because the PRESENT bit has been
++		 * temporarily cleared in the PTEs.  slow_virt_to_phys() works
++		 * without the PRESENT bit while virt_to_hvpfn() or similar
++		 * does not.
++		 */
++		pfn_array[pfn] = slow_virt_to_phys((void *)kbuffer +
++					i * HV_HYP_PAGE_SIZE) >> HV_HYP_PAGE_SHIFT;
+ 		pfn++;
+ 
+ 		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index bda9f129835e..8e19796e7ce5 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -755,10 +755,15 @@ pmd_t *lookup_pmd_address(unsigned long address)
+  * areas on 32-bit NUMA systems.  The percpu areas can
+  * end up in this kind of memory, for instance.
+  *
+- * This could be optimized, but it is only intended to be
+- * used at initialization time, and keeping it
+- * unoptimized should increase the testing coverage for
+- * the more obscure platforms.
++ * It is also used in callbacks for CoCo VM page transitions between private
++ * and shared because it works when the PRESENT bit is not set in the leaf
++ * PTE. In such cases, the state of the PTEs, including the PFN, is otherwise
++ * known to be valid, so the returned physical address is correct. The similar
++ * function vmalloc_to_pfn() can't be used because it requires the PRESENT bit.
++ *
++ * This could be optimized, but it is only used in paths that are not perf
++ * sensitive, and keeping it unoptimized should increase the testing coverage
++ * for the more obscure platforms.
+  */
+ phys_addr_t slow_virt_to_phys(void *__virt_addr)
+ {
 -- 
-Regards/Gruss,
-    Boris.
+2.25.1
 
-https://people.kernel.org/tglx/notes-about-netiquette
