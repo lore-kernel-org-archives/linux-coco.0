@@ -1,214 +1,103 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FCB35F16
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jan 2024 18:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211D035F01
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jan 2024 19:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jh85rNWe"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5c66b093b86so581781a12.0
-        for <linux-coco@lists.linux.dev>; Fri, 05 Jan 2024 10:30:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704479443; x=1705084243; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/DDBxixv8I/6JBD0uZ/FnCePGFgbAZpyF75SjVpOH3s=;
-        b=Jh85rNWeafjRFt3DPBWeWSkounYk5001Pv5GVLf0WM8VlWw7lEVD4asPAsV0LKlbW1
-         LHDbp4be9i1ZthJxRJmpfiK1uk5+if9v+FaVxQTrItGfKgU85jYxqhxaGE0uFkGUXfag
-         m63rMl/mSkFL5OJJzjqvCLW+hQfqNi3a0kIaPHpSwZ3Mu514/m9ZZIYPqiAvJJW8Iktp
-         U9BHnGWmlOXKrV7DNOh0R9YLePR9h4i7ebONgCnjuA/QO2Waxkx20G2Z1EtNZ7I4Q4ze
-         S6gGSEyOlT3hXs0JfuSOuC+pEnu75Ea1q/UUHDsaftpkpdCGziKdCPcgqGRzWqnHDcPC
-         UJWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704479443; x=1705084243;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/DDBxixv8I/6JBD0uZ/FnCePGFgbAZpyF75SjVpOH3s=;
-        b=n0a5Mo156J+APiJiFDDWOSkB3t6DjskWf/VbA7lKLDn/fns5sOxHbD8d8Zcp8cDIaq
-         ykwwsyH7Hhpb1g8aXloMKDB+koOnVaPVsbBdaFct4CQE2wLMsEYzkOybIB2cxX6I2uzG
-         Ot/n8A0WHdyqySF20pGBWIRle+i0mz505g2dhOgAOnNSv0A4fGRIWSouehYyeIMyliT+
-         eYKqTJMnZL9LCamy5Sk/vMydfYtiDCyuDPMsMPTZXO31toaVWSxsmBYz3IYLSGKIUPe5
-         ftV/lOwDjr6pAr22vno/KgttOz+oe7zDqlOdbz9pK0idWfa0wS+pB1e8q9qAD/m74aDn
-         rFxw==
-X-Gm-Message-State: AOJu0Yw4PvAA1+PSQMMYG/bP/gtgbuHyLx4Q27hjPS5dkwCVk7doWdQH
-	9wzH2lfWMqLYEgSXCBGDc1Q=
-X-Google-Smtp-Source: AGHT+IHZB8hxoZEO9XFseOS+q+ucI/+i6AVwNZFHhru24uO3VXpK5t8sRYDrNHcHS8sHO6AGVonlVw==
-X-Received: by 2002:a17:90a:de11:b0:28c:3620:b5ee with SMTP id m17-20020a17090ade1100b0028c3620b5eemr3251196pjv.28.1704479443490;
-        Fri, 05 Jan 2024 10:30:43 -0800 (PST)
-Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id 23-20020a17090a195700b002868abc0e6dsm1687293pjh.11.2024.01.05.10.30.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jan 2024 10:30:43 -0800 (PST)
-From: mhkelley58@gmail.com
-X-Google-Original-From: mhklinux@outlook.com
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	kirill.shutemov@linux.intel.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	akpm@linux-foundation.org,
-	urezki@gmail.com,
-	hch@infradead.org,
-	lstoakes@gmail.com,
-	thomas.lendacky@amd.com,
-	ardb@kernel.org,
-	jroedel@suse.de,
-	seanjc@google.com,
-	rick.p.edgecombe@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-hyperv@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 3/3] x86/hyperv: Make encrypted/decrypted changes safe for load_unaligned_zeropad()
-Date: Fri,  5 Jan 2024 10:30:25 -0800
-Message-Id: <20240105183025.225972-4-mhklinux@outlook.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240105183025.225972-1-mhklinux@outlook.com>
-References: <20240105183025.225972-1-mhklinux@outlook.com>
-Reply-To: mhklinux@outlook.com
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="aB0j7KDK"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4CE2040E0196;
+	Fri,  5 Jan 2024 19:20:09 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 0HqsHS1C0SBX; Fri,  5 Jan 2024 19:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1704482406; bh=/a0UKaTZTMHEDAeTcb9/TUYxxz2I8dAfWxoQjcoX6lk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aB0j7KDKQj5CmPpTDfG8fpfAgLxkhkEPYfftoiRN375Q2eqjmbXSZoLvE1rkW77ur
+	 PBB7Bhkm7hV1hQ5zqE7y3eiSezd+C2GUrHWdxLKpJpHpKDRTaCVdwrUyJBicvK7y8b
+	 n4xfyrSeqlVW7GPisHaI/41JrTno/0pm91uwlQfYucfSvFu3lIcoHt0v19OfT2Bpk7
+	 6gCCZP0zsZRj0YxlIHFJtx2RHMUgIT7eEb0Bm/RzsR5NE03ncesHWgxCtBXEXDZOI2
+	 CgnqiDwNGwZk8xiO+nVW+VLrYMh72Ol3PSuzDEjl26zuhx8gqXscQJGNHR8BIpe82d
+	 fpJj5Fkn//3ajL6hD+dFCKilsF+JYuFLqu9nI6qEAmio/sCcjgB8foNEgyRkjCJlEk
+	 +GT0bLOv49gpGqT3M3tji45NaKScH5oEnYcAC9+6CGNnz1P9JSThezuZuoL4qINjn8
+	 qaUKvknOiIm8IfGkVPGmohdF4wyw8rwWoEq/dvhO84tm3vYhb12ACwTiqUX+/959h5
+	 h26Lgcl/UzvbK3ECtWX85yXyO1KjvTWvCQqJMeV9MetLGDerh1p2AKYryaJb1hCY2C
+	 o1VJqEql+2MuC/k6EYSHlWU/sx+3wxccHJ3FwwEYYtMGqQwcO7gv59LDp4dCIlNMub
+	 AFpDI4YqDo5B71rG79b35ceM=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 49A5040E00C5;
+	Fri,  5 Jan 2024 19:19:28 +0000 (UTC)
+Date: Fri, 5 Jan 2024 20:19:21 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v1 04/26] x86/sev: Add the host SEV-SNP initialization
+ support
+Message-ID: <20240105191921.GHZZhWObgbgXxP/kkB@fat_crate.local>
+References: <20231230161954.569267-1-michael.roth@amd.com>
+ <20231230161954.569267-5-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231230161954.569267-5-michael.roth@amd.com>
 
-From: Michael Kelley <mhklinux@outlook.com>
+On Sat, Dec 30, 2023 at 10:19:32AM -0600, Michael Roth wrote:
+> +static int __init __snp_rmptable_init(void)
+> +{
+> +	u64 rmptable_size;
+> +	void *rmptable_start;
+> +	u64 val;
 
-In a CoCo VM, when transitioning memory from encrypted to decrypted, or
-vice versa, the caller of set_memory_encrypted() or set_memory_decrypted()
-is responsible for ensuring the memory isn't in use and isn't referenced
-while the transition is in progress.  The transition has multiple steps,
-and the memory is in an inconsistent state until all steps are complete.
-A reference while the state is inconsistent could result in an exception
-that can't be cleanly fixed up.
+...
 
-However, the kernel load_unaligned_zeropad() mechanism could cause a stray
-reference that can't be prevented by the caller of set_memory_encrypted()
-or set_memory_decrypted(), so there's specific code to handle this case.
-But a CoCo VM running on Hyper-V may be configured to run with a paravisor,
-with the #VC or #VE exception routed to the paravisor. There's no
-architectural way to forward the exceptions back to the guest kernel, and
-in such a case, the load_unaligned_zeropad() specific code doesn't work.
+Ontop:
 
-To avoid this problem, mark pages as "not present" while a transition
-is in progress. If load_unaligned_zeropad() causes a stray reference, a
-normal page fault is generated instead of #VC or #VE, and the
-page-fault-based fixup handlers for load_unaligned_zeropad() resolve the
-reference. When the encrypted/decrypted transition is complete, mark the
-pages as "present" again.
-
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
----
- arch/x86/hyperv/ivm.c | 49 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 46 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 8ba18635e338..5ad39256a5d2 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -15,6 +15,7 @@
- #include <asm/io.h>
- #include <asm/coco.h>
- #include <asm/mem_encrypt.h>
-+#include <asm/set_memory.h>
- #include <asm/mshyperv.h>
- #include <asm/hypervisor.h>
- #include <asm/mtrr.h>
-@@ -502,6 +503,31 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
- 		return -EFAULT;
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index ce7ede9065ed..566bb6f39665 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -150,6 +150,11 @@ bool snp_probe_rmptable_info(void)
+ 	return true;
  }
  
 +/*
-+ * When transitioning memory between encrypted and decrypted, the caller
-+ * of set_memory_encrypted() or set_memory_decrypted() is responsible for
-+ * ensuring that the memory isn't in use and isn't referenced while the
-+ * transition is in progress.  The transition has multiple steps, and the
-+ * memory is in an inconsistent state until all steps are complete. A
-+ * reference while the state is inconsistent could result in an exception
-+ * that can't be cleanly fixed up.
-+ *
-+ * But the Linux kernel load_unaligned_zeropad() mechanism could cause a
-+ * stray reference that can't be prevented by the caller, so Linux has
-+ * specific code to handle this case. But when the #VC and #VE exceptions
-+ * routed to a paravisor, the specific code doesn't work. To avoid this
-+ * problem, mark the pages as "not present" while the transition is in
-+ * progress. If load_unaligned_zeropad() causes a stray reference, a normal
-+ * page fault is generated instead of #VC or #VE, and the page-fault-based
-+ * handlers for load_unaligned_zeropad() resolve the reference.  When the
-+ * transition is complete, hv_vtom_set_host_visibility() marks the pages
-+ * as "present" again.
++ * Do the necessary preparations which are verified by the firmware as
++ * described in the SNP_INIT_EX firmware command description in the SNP
++ * firmware ABI spec.
 + */
-+static bool hv_vtom_clear_present(unsigned long kbuffer, int pagecount, bool enc)
-+{
-+	return !set_memory_np(kbuffer, pagecount);
-+}
-+
- /*
-  * hv_vtom_set_host_visibility - Set specified memory visible to host.
-  *
-@@ -521,7 +547,7 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
- 
- 	pfn_array = kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
- 	if (!pfn_array)
--		return false;
-+		goto err_set_memory_p;
- 
- 	for (i = 0, pfn = 0; i < pagecount; i++) {
- 		/*
-@@ -545,14 +571,30 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
- 		}
- 	}
- 
-- err_free_pfn_array:
-+err_free_pfn_array:
- 	kfree(pfn_array);
-+
-+err_set_memory_p:
-+	/*
-+	 * Set the PTE PRESENT bits again to revert what hv_vtom_clear_present()
-+	 * did. Do this even if there is an error earlier in this function in
-+	 * order to avoid leaving the memory range in a "broken" state. Setting
-+	 * the PRESENT bits shouldn't fail, but return an error if it does.
-+	 */
-+	if (set_memory_p(kbuffer, pagecount))
-+		result = false;
-+
- 	return result;
- }
- 
- static bool hv_vtom_tlb_flush_required(bool private)
+ static int __init __snp_rmptable_init(void)
  {
--	return true;
-+	/*
-+	 * Since hv_vtom_clear_present() marks the PTEs as "not present"
-+	 * and flushes the TLB, they can't be in the TLB. That makes the
-+	 * flush controlled by this function redundant, so return "false".
-+	 */
-+	return false;
- }
- 
- static bool hv_vtom_cache_flush_required(void)
-@@ -615,6 +657,7 @@ void __init hv_vtom_init(void)
- 	x86_platform.hyper.is_private_mmio = hv_is_private_mmio;
- 	x86_platform.guest.enc_cache_flush_required = hv_vtom_cache_flush_required;
- 	x86_platform.guest.enc_tlb_flush_required = hv_vtom_tlb_flush_required;
-+	x86_platform.guest.enc_status_change_prepare = hv_vtom_clear_present;
- 	x86_platform.guest.enc_status_change_finish = hv_vtom_set_host_visibility;
- 
- 	/* Set WB as the default cache mode. */
--- 
-2.25.1
+ 	u64 rmptable_size;
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
