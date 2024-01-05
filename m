@@ -1,46 +1,47 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6078D3526E
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jan 2024 18:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4E435EF2
+	for <linux-coco@lists.linux.dev>; Fri,  5 Jan 2024 18:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5HqWUKY"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-28c7e30c83fso1324669a91.1
-        for <linux-coco@lists.linux.dev>; Fri, 05 Jan 2024 10:30:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzydqmgh"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5cda24a77e0so1142901a12.2
+        for <linux-coco@lists.linux.dev>; Fri, 05 Jan 2024 10:30:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704479440; x=1705084240; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GhZC869aJnqNJACUr8BJ3n7gkdmfHBpgiLz8gKtgcrw=;
-        b=b5HqWUKY5WZhoSVRKHksIdVTXdzKX/WZOEpgE+sn4SmHVG9eMnJs5b18KJbCUfYiMi
-         Bp+gPQ3Wr133wRvRt/8zjMa5PIwLvi0AgzoTkmKvV34NTEWTAB+9WnQIqfnBHiuovIjz
-         SZicPIEP1WQvRhVvUbYb370DOKInT2bRoxiQexJX/yBrhfd0CXSm02sLfcQ63fz6vQTA
-         YqHZoASiBAlsmpsY5AKF6vqANrvpXOgGSkeF6mDPB2YRJvPRBI9UECe9bbdyDhSj6xe5
-         i5Dpf1xNQSwHpycXhcFNBW/5hixQyWMU1sY6cpZMSlBkUEP8V4Z8+rrOe2aiuFCZ5oCe
-         8XrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704479440; x=1705084240;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1704479442; x=1705084242; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GhZC869aJnqNJACUr8BJ3n7gkdmfHBpgiLz8gKtgcrw=;
-        b=L3JrGz8DWGXI2JB7NsqUb28APGjz3OTjCy30Az/1+WVhaNhgFyep7uOh76H+okNWlq
-         M8Qu9GprTifLwjHDMFia5FtusX1NfLJLubDAZcevQjAOrS5/IEUK3pHTF9TUVbYHzPVr
-         FYfjxE0jTOLbz0+tSK/mAsUruZ4VL+2Lmvtni/HuwU5g59kCROPa8xI1SL/Amw8tIIF9
-         jUbjOjjSRwApmcDv8czzVMRhdSh/gxFz2mx2mn8mHzKahDFJoZ3619T8HUSlf8/J+VyM
-         219M8WN+s67OwjfqKKkDY8tTvn0hWAKvpNzyBsAwhneM5OCnw9pIMupcLPbJGXddMRzx
-         3M9g==
-X-Gm-Message-State: AOJu0Yz+TNxz4k0GCiYNPlEiyGv9UgSdF5e+XKx1eGIxnJt//+bE1UAs
-	dSYMxMlLIlCUjFJ9H0ohBn4=
-X-Google-Smtp-Source: AGHT+IHXiqb2zLOL212dF7sFCdw/skkZ7ndS0GC2Iw301HIGKXy9MO1ye5sBWak1F9zIaebZIH9sdw==
-X-Received: by 2002:a17:90a:51a2:b0:28c:76b:7cf7 with SMTP id u31-20020a17090a51a200b0028c076b7cf7mr2000773pjh.21.1704479439684;
-        Fri, 05 Jan 2024 10:30:39 -0800 (PST)
+        bh=lydFpi0OZX3PRN1Ii8TvNVEIYJGkasxvD7FkCrzWjvc=;
+        b=dzydqmgh5gpSAeKbFqVgIlDgDQaMA7ol5BzMyrWdj5zAz1tQiYTLKCCy0UHHUeDMXQ
+         ldkMracmo2lGTyJbl/IbCtESvd2ObnvJgmXKetYp2A0YFfNccHV2E7ZJsBosD4aFNKix
+         4/Wvb4vMT1DcZHPBMl2Frux9MvSk5m6z1g2NA6Pxi0HU8DsfMcfZYC/r1uToDxdiuXIi
+         2lNThgAoPgDBhP4EsuhaAazpiUaUYFCuu9fEZNEX5XAunwqQPXcs9NjLWsYh3vfHGAtt
+         5MFa4E1RiyG41UzPseqo85mBnXWxDDVPoN/nakbAMJoXmAuAo6usRv5i9UkEaHMTB+5L
+         9TRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704479442; x=1705084242;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lydFpi0OZX3PRN1Ii8TvNVEIYJGkasxvD7FkCrzWjvc=;
+        b=fSCUJgaH3CgkKDiyQT84//E++t5YKZJQL6NsKyck5nTeAcGKaTuvP5yKDZH4FHGglK
+         2e63xHN3kbvkBo8CvbAdWx7Q2zGKfQYdbeHauX+nar1MqucfiWLodrYXzT7NFh2xqHol
+         DLXRxVNVIvrgmK1N4y6/u2KQFUZE+MlEgXr2AiLrLgizWxVmWMzO+3POy7hV78qwZWg8
+         yRCi07DPISmHI90Qo5PlCzlMxRKLuuAsTTJYqMZjfeCUiue+h9ZFhowDgrBHXYw7syWD
+         Mx1zJ3wuPQNknIb73Pg7b9f3swNhGjAihWGW56zwWG39EL60SmtK8oYoC8vBJkKJXSfS
+         Gw7Q==
+X-Gm-Message-State: AOJu0Yyc0jTp7KAMZTSunUXa3id7hF2zwPMrHMfT9XS4z3NnbH6nDD2Q
+	vWIdwO2X7ZLEtQjZXP0Bmes=
+X-Google-Smtp-Source: AGHT+IG19yTmGDm43gGH0Te1ADwX3xmhZ2HI5+b+LjzFdjx7tfO595u+C0rtiQTuBnjZcxP5J7fOYQ==
+X-Received: by 2002:a17:90b:24b:b0:28b:c9fb:e328 with SMTP id fz11-20020a17090b024b00b0028bc9fbe328mr2079013pjb.51.1704479442131;
+        Fri, 05 Jan 2024 10:30:42 -0800 (PST)
 Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id 23-20020a17090a195700b002868abc0e6dsm1687293pjh.11.2024.01.05.10.30.38
+        by smtp.gmail.com with ESMTPSA id 23-20020a17090a195700b002868abc0e6dsm1687293pjh.11.2024.01.05.10.30.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jan 2024 10:30:39 -0800 (PST)
+        Fri, 05 Jan 2024 10:30:41 -0800 (PST)
 From: mhkelley58@gmail.com
 X-Google-Original-From: mhklinux@outlook.com
 To: tglx@linutronix.de,
@@ -69,10 +70,12 @@ To: tglx@linutronix.de,
 	linux-coco@lists.linux.dev,
 	linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 0/3] x86/hyperv: Mark CoCo VM pages not present when changing encrypted state
-Date: Fri,  5 Jan 2024 10:30:22 -0800
-Message-Id: <20240105183025.225972-1-mhklinux@outlook.com>
+Subject: [PATCH v3 2/3] x86/mm: Regularize set_memory_p() parameters and make non-static
+Date: Fri,  5 Jan 2024 10:30:24 -0800
+Message-Id: <20240105183025.225972-3-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240105183025.225972-1-mhklinux@outlook.com>
+References: <20240105183025.225972-1-mhklinux@outlook.com>
 Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -84,98 +87,71 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Kelley <mhklinux@outlook.com>
 
-In a CoCo VM, when transitioning memory from encrypted to decrypted, or
-vice versa, the caller of set_memory_encrypted() or set_memory_decrypted()
-is responsible for ensuring the memory isn't in use and isn't referenced
-while the transition is in progress.  The transition has multiple steps,
-and the memory is in an inconsistent state until all steps are complete.
-A reference while the state is inconsistent could result in an exception
-that can't be cleanly fixed up.
+set_memory_p() is currently static.  It has parameters that don't
+match set_memory_p() under arch/powerpc and that aren't congruent
+with the other set_memory_* functions. There's no good reason for
+the difference.
 
-However, the kernel load_unaligned_zeropad() mechanism could cause a stray
-reference that can't be prevented by the caller of set_memory_encrypted()
-or set_memory_decrypted(), so there's specific code to handle this case.
-But a CoCo VM running on Hyper-V may be configured to run with a paravisor,
-with the #VC or #VE exception routed to the paravisor. There's no
-architectural way to forward the exceptions back to the guest kernel, and
-in such a case, the load_unaligned_zeropad() specific code doesn't work.
+Fix this by making the parameters consistent, and update the one
+existing call site.  Make the function non-static and add it to
+include/asm/set_memory.h so that it is completely parallel to
+set_memory_np() and is usable in other modules.
 
-To avoid this problem, mark pages as "not present" while a transition
-is in progress. If load_unaligned_zeropad() causes a stray reference, a
-normal page fault is generated instead of #VC or #VE, and the
-page-fault-based fixup handlers for load_unaligned_zeropad() resolve the
-reference. When the encrypted/decrypted transition is complete, mark the
-pages as "present" again.
+No functional change.
 
-This version of the patch series marks transitioning pages "not present"
-only when running as a Hyper-V guest with a paravisor. Previous
-versions[1] marked transitioning pages "not present" regardless of the
-hypervisor and regardless of whether a paravisor is in use.  That more
-general use had the benefit of decoupling the load_unaligned_zeropad()
-fixup from CoCo VM #VE and #VC exception handling.  But the implementation
-was problematic for SEV-SNP because the SEV-SNP hypervisor callbacks
-require a valid virtual address, not a physical address like with TDX and
-the Hyper-V paravisor.  Marking the transitioning pages "not present"
-causes the virtual address to not be valid, and the PVALIDATE
-instruction in the SEV-SNP callback fails. Constructing a temporary
-virtual address for this purpose is slower and adds complexity that
-negates the benefits of the more general use. So this version narrows
-the applicability of the approach to just where it is required
-because of the #VC and #VE exceptions being routed to a paravisor.
-
-The previous version minimized the TLB flushing done during page
-transitions between encrypted and decrypted. Because this version
-marks the pages "not present" in hypervisor specific callbacks and
-not in __set_memory_enc_pgtable(), doing such optimization is more
-difficult to coordinate. But the page transitions are not a hot path,
-so this version eschews optimization of TLB flushing in favor of
-simplicity.
-
-Since this version no longer touches __set_memory_enc_pgtable(),
-I've also removed patches that add comments about error handling
-in that function.  Rick Edgecombe has proposed patches to improve
-that error handling, and I'll leave those comments to Rick's
-patches.
-
-Patch 1 handles implications of the hypervisor callbacks needing
-to do virt-to-phys translations on pages that are temporarily
-marked not present.
-
-Patch 2 makes the existing set_memory_p() function available for
-use in the hypervisor callbacks.
-
-Patch 3 is the core change that marks the transitioning pages
-as not present.
-
-This patch set is based on the linux-next20240103 code tree.
-
-Changes in v3:
-* Major rework and simplification per discussion above.
-
-Changes in v2:
-* Added Patches 3 and 4 to deal with the failure on SEV-SNP
-  [Tom Lendacky]
-* Split the main change into two separate patches (Patch 5 and
-  Patch 6) to improve reviewability and to offer the option of
-  retaining both hypervisor callbacks.
-* Patch 5 moves set_memory_p() out of an #ifdef CONFIG_X86_64
-  so that the code builds correctly for 32-bit, even though it
-  is never executed for 32-bit [reported by kernel test robot]
-
-[1] https://lore.kernel.org/lkml/20231121212016.1154303-1-mhklinux@outlook.com/
-
-Michael Kelley (3):
-  x86/hyperv: Use slow_virt_to_phys() in page transition hypervisor
-    callback
-  x86/mm: Regularize set_memory_p() parameters and make non-static
-  x86/hyperv: Make encrypted/decrypted changes safe for
-    load_unaligned_zeropad()
-
- arch/x86/hyperv/ivm.c             | 58 ++++++++++++++++++++++++++++---
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+---
  arch/x86/include/asm/set_memory.h |  1 +
- arch/x86/mm/pat/set_memory.c      | 25 +++++++------
- 3 files changed, 70 insertions(+), 14 deletions(-)
+ arch/x86/mm/pat/set_memory.c      | 12 ++++++------
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
+diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+index a5e89641bd2d..9aee31862b4a 100644
+--- a/arch/x86/include/asm/set_memory.h
++++ b/arch/x86/include/asm/set_memory.h
+@@ -47,6 +47,7 @@ int set_memory_uc(unsigned long addr, int numpages);
+ int set_memory_wc(unsigned long addr, int numpages);
+ int set_memory_wb(unsigned long addr, int numpages);
+ int set_memory_np(unsigned long addr, int numpages);
++int set_memory_p(unsigned long addr, int numpages);
+ int set_memory_4k(unsigned long addr, int numpages);
+ int set_memory_encrypted(unsigned long addr, int numpages);
+ int set_memory_decrypted(unsigned long addr, int numpages);
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 8e19796e7ce5..05d42395a462 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2046,17 +2046,12 @@ int set_mce_nospec(unsigned long pfn)
+ 	return rc;
+ }
+ 
+-static int set_memory_p(unsigned long *addr, int numpages)
+-{
+-	return change_page_attr_set(addr, numpages, __pgprot(_PAGE_PRESENT), 0);
+-}
+-
+ /* Restore full speculative operation to the pfn. */
+ int clear_mce_nospec(unsigned long pfn)
+ {
+ 	unsigned long addr = (unsigned long) pfn_to_kaddr(pfn);
+ 
+-	return set_memory_p(&addr, 1);
++	return set_memory_p(addr, 1);
+ }
+ EXPORT_SYMBOL_GPL(clear_mce_nospec);
+ #endif /* CONFIG_X86_64 */
+@@ -2109,6 +2104,11 @@ int set_memory_np_noalias(unsigned long addr, int numpages)
+ 					CPA_NO_CHECK_ALIAS, NULL);
+ }
+ 
++int set_memory_p(unsigned long addr, int numpages)
++{
++	return change_page_attr_set(&addr, numpages, __pgprot(_PAGE_PRESENT), 0);
++}
++
+ int set_memory_4k(unsigned long addr, int numpages)
+ {
+ 	return change_page_attr_set_clr(&addr, numpages, __pgprot(0),
 -- 
 2.25.1
 
