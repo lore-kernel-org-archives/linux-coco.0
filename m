@@ -1,566 +1,112 @@
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A446234540
-	for <linux-coco@lists.linux.dev>; Fri,  5 Jan 2024 22:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70D915AC
+	for <linux-coco@lists.linux.dev>; Sat,  6 Jan 2024 00:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0VRqwEr3"
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-36000a26f8aso29455ab.0
-        for <linux-coco@lists.linux.dev>; Fri, 05 Jan 2024 14:08:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704492517; x=1705097317; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kwlLOBBYePpLJI+ZCa7Tq9sayi/mDxTaVztGeIAF2Qg=;
-        b=0VRqwEr3lYlo2z7dn9CVWYBz0pJg2ZPhnCv0mRcvNZt3XqKUe/9vY3tOc1winLE5ja
-         LnSBWMr82mNzH9DkmkUn8cKQV2TPHnzd2CR9JKjv2K50g47yacLUGC/IYPNs1WVMoulG
-         WmtjWzGqVLbCKhRwvRxAGXaT1Hpzl43+g0eR7eVy2twjX2U3JjmlrMBPjRS4p3QlIspH
-         NKCqu/tMWRLVCb5uzoY8iYIZHKozdejEdDbsVR3RjAZWraD8TR/LVpXmdy/76onj6w5I
-         BG+Z2v5ndbHRVIoISiD5GCryoUYYMny+iPzbgObZVu3ToxH4HqHHKVJLIfRid7yV1Akf
-         u5JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704492517; x=1705097317;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kwlLOBBYePpLJI+ZCa7Tq9sayi/mDxTaVztGeIAF2Qg=;
-        b=txNWiO8zMpBC1TiCyMjxz1U22COPixSvks56B7YfunPCPnT6hGWH+kRlTtPBmJmU3x
-         7/Cz/IWQqYYRBvP15aa6qfBsQMtF8vxUzxuT3cfGclC9FvkVURMsRlH635YgBjWaTaws
-         WSdDQ9u36lfoDboZGV8TljV3nqbjhcl4kExN3CBl7FG7mielZHOZL0rTdQm3JB8vpMMW
-         cKk1LDP454x7fEpol+cFjT2Y/d/Ktqu+oBTjLuHSyl3QYLdJg5IS33a7ADyTcKHdt8MJ
-         xXRY4xoTLdFmBOcWCy7T8nS6qGAE0+3PVkBGf9pipDScYYOkr3IO9IAjIXvwVJe/jKd+
-         Di/Q==
-X-Gm-Message-State: AOJu0YySqZryYTxjveRw+F6EqAFnXgi62iFAu6dx9njSEeiiw1G1sDD2
-	kj8t0eCBZhg8Rr+qliic6tY+xaVje7FcIK60kBFxZmI6IPiQ
-X-Google-Smtp-Source: AGHT+IGPv70wZ6AFOIkxXqhir3xSkvaDS2YuYLURQ1YKBHPf4U8D93dPWsA4iion3PtZSZRd3rI6B19xWMpfPmFDuP0=
-X-Received: by 2002:a05:6e02:1b08:b0:360:6233:1377 with SMTP id
- i8-20020a056e021b0800b0036062331377mr18945ilv.27.1704492516442; Fri, 05 Jan
- 2024 14:08:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BRLQ4bSz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704502749; x=1736038749;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=bSsYNHPqPBPvIfJLFuPRmb0GQmnn1/patfbIJCmnLTQ=;
+  b=BRLQ4bSz0qsthctPXjsE714BffJdhaitUaTo1HBmQqSev3BEL8TcgIGr
+   SPCvUwG81S8NtPQdvE0KD2y+ol8M2s92hypDG04jrmusTH0GGyqS9Q/iY
+   p22eRRg0R+Gz2EsEFly1ZnwSFYS2SQEcS7TGix4JjzXFnCkOtnR8MZVzf
+   ZXrxjptYzNzAaQSQkiDr9x9T3HXvsnDwczDmReYAxjBF3HeF7Htln1Xw4
+   9cwfaYhhZNhxDcbN7qaCktyqvxBv+1Z1M5rIffLOpRGmCNcIKDTY2Xn1A
+   ooM1x3lh75z1utonYTR9k/wrkpWvzURECnskenf6/wgbsiERv2rxZzO/G
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10944"; a="461918828"
+X-IronPort-AV: E=Sophos;i="6.04,335,1695711600"; 
+   d="scan'208";a="461918828"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2024 16:59:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10944"; a="871366157"
+X-IronPort-AV: E=Sophos;i="6.04,335,1695711600"; 
+   d="scan'208";a="871366157"
+Received: from mflierl-xps15.amr.corp.intel.com (HELO box.shutemov.name) ([10.252.36.84])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jan 2024 16:59:03 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 49F5C10A57B; Sat,  6 Jan 2024 03:59:01 +0300 (+03)
+Date: Sat, 6 Jan 2024 03:59:01 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"kexec@lists.infradead.org" <kexec@lists.infradead.org>,
+	"Reshetova, Elena" <elena.reshetova@intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"ashish.kalra@amd.com" <ashish.kalra@amd.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"bhe@redhat.com" <bhe@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCHv5 10/16] x86/tdx: Convert shared memory back to private
+ on kexec
+Message-ID: <20240106005901.jpdxd544ddih6nw7@box.shutemov.name>
+References: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
+ <20231222235209.32143-11-kirill.shutemov@linux.intel.com>
+ <063a42bfe538710931fca183a8d28c8a3d011608.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-27-michael.roth@amd.com>
-In-Reply-To: <20231230172351.574091-27-michael.roth@amd.com>
-From: Jacob Xu <jacobhxu@google.com>
-Date: Fri, 5 Jan 2024 14:08:24 -0800
-Message-ID: <CAJ5mJ6hpSSVhZ5hbPZ8vfSnmNU6W+g4e=PeLrG7fG2u8KptfHQ@mail.gmail.com>
-Subject: Re: [PATCH v11 26/35] KVM: SEV: Support SEV-SNP AP Creation NAE event
-To: Michael Roth <michael.roth@amd.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org, 
-	linux-crypto@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, 
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
-	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
-	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
-	Brijesh Singh <brijesh.singh@amd.com>, Adam Dunlap <acdunlap@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <063a42bfe538710931fca183a8d28c8a3d011608.camel@intel.com>
 
-On Sat, Dec 30, 2023 at 9:32=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
- wrote:
->
-> From: Tom Lendacky <thomas.lendacky@amd.com>
->
-> Add support for the SEV-SNP AP Creation NAE event. This allows SEV-SNP
-> guests to alter the register state of the APs on their own. This allows
-> the guest a way of simulating INIT-SIPI.
->
-> A new event, KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, is created and used
-> so as to avoid updating the VMSA pointer while the vCPU is running.
->
-> For CREATE
->   The guest supplies the GPA of the VMSA to be used for the vCPU with
->   the specified APIC ID. The GPA is saved in the svm struct of the
->   target vCPU, the KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event is added
->   to the vCPU and then the vCPU is kicked.
->
-> For CREATE_ON_INIT:
->   The guest supplies the GPA of the VMSA to be used for the vCPU with
->   the specified APIC ID the next time an INIT is performed. The GPA is
->   saved in the svm struct of the target vCPU.
->
-> For DESTROY:
->   The guest indicates it wishes to stop the vCPU. The GPA is cleared
->   from the svm struct, the KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event is
->   added to vCPU and then the vCPU is kicked.
->
-> The KVM_REQ_UPDATE_PROTECTED_GUEST_STATE event handler will be invoked
-> as a result of the event or as a result of an INIT. The handler sets the
-> vCPU to the KVM_MP_STATE_UNINITIALIZED state, so that any errors will
-> leave the vCPU as not runnable. Any previous VMSA pages that were
-> installed as part of an SEV-SNP AP Creation NAE event are un-pinned. If
-> a new VMSA is to be installed, the VMSA guest page is pinned and set as
-> the VMSA in the vCPU VMCB and the vCPU state is set to
-> KVM_MP_STATE_RUNNABLE. If a new VMSA is not to be installed, the VMSA is
-> cleared in the vCPU VMCB and the vCPU state is left as
-> KVM_MP_STATE_UNINITIALIZED to prevent it from being run.
->
-> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> [mdr: add handling for gmem]
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  arch/x86/include/asm/kvm_host.h |   1 +
->  arch/x86/include/asm/svm.h      |   5 +
->  arch/x86/kvm/svm/sev.c          | 219 ++++++++++++++++++++++++++++++++
->  arch/x86/kvm/svm/svm.c          |   3 +
->  arch/x86/kvm/svm/svm.h          |   8 +-
->  arch/x86/kvm/x86.c              |  11 ++
->  6 files changed, 246 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
-ost.h
-> index 3fdcbb1da856..9e45402e51bc 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -121,6 +121,7 @@
->         KVM_ARCH_REQ_FLAGS(31, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
->  #define KVM_REQ_HV_TLB_FLUSH \
->         KVM_ARCH_REQ_FLAGS(32, KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP)
-> +#define KVM_REQ_UPDATE_PROTECTED_GUEST_STATE   KVM_ARCH_REQ(34)
->
->  #define CR0_RESERVED_BITS                                               =
-\
->         (~(unsigned long)(X86_CR0_PE | X86_CR0_MP | X86_CR0_EM | X86_CR0_=
-TS \
-> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-> index ba8ce15b27d7..4b73cf5e9de0 100644
-> --- a/arch/x86/include/asm/svm.h
-> +++ b/arch/x86/include/asm/svm.h
-> @@ -287,6 +287,11 @@ static_assert((X2AVIC_MAX_PHYSICAL_ID & AVIC_PHYSICA=
-L_MAX_INDEX_MASK) =3D=3D X2AVIC_
->
->  #define SVM_SEV_FEAT_DEBUG_SWAP                        BIT(5)
->  #define SVM_SEV_FEAT_SNP_ACTIVE                        BIT(0)
-> +#define SVM_SEV_FEAT_RESTRICTED_INJECTION              BIT(3)
-> +#define SVM_SEV_FEAT_ALTERNATE_INJECTION              BIT(4)
-> +#define SVM_SEV_FEAT_INT_INJ_MODES             \
-> +       (SVM_SEV_FEAT_RESTRICTED_INJECTION |    \
-> +        SVM_SEV_FEAT_ALTERNATE_INJECTION)
->
->  struct vmcb_seg {
->         u16 selector;
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 996b5a668938..3bb89c4df5d6 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -652,6 +652,7 @@ static int sev_launch_update_data(struct kvm *kvm, st=
-ruct kvm_sev_cmd *argp)
->
->  static int sev_es_sync_vmsa(struct vcpu_svm *svm)
->  {
-> +       struct kvm_sev_info *sev =3D &to_kvm_svm(svm->vcpu.kvm)->sev_info=
-;
->         struct sev_es_save_area *save =3D svm->sev_es.vmsa;
->
->         /* Check some debug related fields before encrypting the VMSA */
-> @@ -700,6 +701,12 @@ static int sev_es_sync_vmsa(struct vcpu_svm *svm)
->         if (sev_snp_guest(svm->vcpu.kvm))
->                 save->sev_features |=3D SVM_SEV_FEAT_SNP_ACTIVE;
->
-> +       /*
-> +        * Save the VMSA synced SEV features. For now, they are the same =
-for
-> +        * all vCPUs, so just save each time.
-> +        */
-> +       sev->sev_features =3D save->sev_features;
-> +
->         pr_debug("Virtual Machine Save Area (VMSA):\n");
->         print_hex_dump_debug("", DUMP_PREFIX_NONE, 16, 1, save, sizeof(*s=
-ave), false);
->
-> @@ -3082,6 +3089,11 @@ static int sev_es_validate_vmgexit(struct vcpu_svm=
- *svm)
->                 if (!kvm_ghcb_sw_scratch_is_valid(svm))
->                         goto vmgexit_err;
->                 break;
-> +       case SVM_VMGEXIT_AP_CREATION:
-> +               if (lower_32_bits(control->exit_info_1) !=3D SVM_VMGEXIT_=
-AP_DESTROY)
-> +                       if (!kvm_ghcb_rax_is_valid(svm))
-> +                               goto vmgexit_err;
-> +               break;
->         case SVM_VMGEXIT_NMI_COMPLETE:
->         case SVM_VMGEXIT_AP_HLT_LOOP:
->         case SVM_VMGEXIT_AP_JUMP_TABLE:
-> @@ -3322,6 +3334,202 @@ static int snp_complete_psc(struct kvm_vcpu *vcpu=
-)
->         return 1; /* resume guest */
->  }
->
-> +static int __sev_snp_update_protected_guest_state(struct kvm_vcpu *vcpu)
-> +{
-> +       struct vcpu_svm *svm =3D to_svm(vcpu);
-> +       hpa_t cur_pa;
-> +
-> +       WARN_ON(!mutex_is_locked(&svm->sev_es.snp_vmsa_mutex));
-> +
-> +       /* Save off the current VMSA PA for later checks */
-> +       cur_pa =3D svm->sev_es.vmsa_pa;
-> +
-> +       /* Mark the vCPU as offline and not runnable */
-> +       vcpu->arch.pv.pv_unhalted =3D false;
-> +       vcpu->arch.mp_state =3D KVM_MP_STATE_HALTED;
-> +
-> +       /* Clear use of the VMSA */
-> +       svm->sev_es.vmsa_pa =3D INVALID_PAGE;
-> +       svm->vmcb->control.vmsa_pa =3D INVALID_PAGE;
-> +
-> +       /*
-> +        * sev->sev_es.vmsa holds the virtual address of the VMSA initial=
-ly
-> +        * allocated by the host. If the guest specified a new a VMSA via
-> +        * AP_CREATION, it will have been pinned to avoid future issues
-> +        * with things like page migration support. Make sure to un-pin i=
-t
-> +        * before switching to a newer guest-specified VMSA.
-> +        */
-> +       if (cur_pa !=3D __pa(svm->sev_es.vmsa) && VALID_PAGE(cur_pa))
-> +               kvm_release_pfn_dirty(__phys_to_pfn(cur_pa));
-> +
-> +       if (VALID_PAGE(svm->sev_es.snp_vmsa_gpa)) {
-> +               gfn_t gfn =3D gpa_to_gfn(svm->sev_es.snp_vmsa_gpa);
-> +               struct kvm_memory_slot *slot;
-> +               kvm_pfn_t pfn;
-> +
-> +               slot =3D gfn_to_memslot(vcpu->kvm, gfn);
-> +               if (!slot)
-> +                       return -EINVAL;
-> +
-> +               /*
-> +                * The new VMSA will be private memory guest memory, so
-> +                * retrieve the PFN from the gmem backend, and leave the =
-ref
-> +                * count of the associated folio elevated to ensure it wo=
-n't
-> +                * ever be migrated.
-> +                */
-> +               if (kvm_gmem_get_pfn(vcpu->kvm, slot, gfn, &pfn, NULL))
-> +                       return -EINVAL;
-> +
-> +               /* Use the new VMSA */
-> +               svm->sev_es.vmsa_pa =3D pfn_to_hpa(pfn);
-> +               svm->vmcb->control.vmsa_pa =3D svm->sev_es.vmsa_pa;
-> +
-> +               /* Mark the vCPU as runnable */
-> +               vcpu->arch.pv.pv_unhalted =3D false;
-> +               vcpu->arch.mp_state =3D KVM_MP_STATE_RUNNABLE;
-> +
-> +               svm->sev_es.snp_vmsa_gpa =3D INVALID_PAGE;
-> +       }
-> +
-> +       /*
-> +        * When replacing the VMSA during SEV-SNP AP creation,
-> +        * mark the VMCB dirty so that full state is always reloaded.
-> +        */
-> +       vmcb_mark_all_dirty(svm->vmcb);
-> +
-> +       return 0;
-> +}
-> +
-> +/*
-> + * Invoked as part of svm_vcpu_reset() processing of an init event.
-> + */
-> +void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu)
-> +{
-> +       struct vcpu_svm *svm =3D to_svm(vcpu);
-> +       int ret;
-> +
-> +       if (!sev_snp_guest(vcpu->kvm))
-> +               return;
-> +
-> +       mutex_lock(&svm->sev_es.snp_vmsa_mutex);
-> +
-> +       if (!svm->sev_es.snp_ap_create)
-> +               goto unlock;
-> +
-> +       svm->sev_es.snp_ap_create =3D false;
-> +
-> +       ret =3D __sev_snp_update_protected_guest_state(vcpu);
-> +       if (ret)
-> +               vcpu_unimpl(vcpu, "snp: AP state update on init failed\n"=
-);
-> +
-> +unlock:
-> +       mutex_unlock(&svm->sev_es.snp_vmsa_mutex);
-> +}
-> +
-> +static int sev_snp_ap_creation(struct vcpu_svm *svm)
-> +{
-> +       struct kvm_sev_info *sev =3D &to_kvm_svm(svm->vcpu.kvm)->sev_info=
-;
-> +       struct kvm_vcpu *vcpu =3D &svm->vcpu;
-> +       struct kvm_vcpu *target_vcpu;
-> +       struct vcpu_svm *target_svm;
-> +       unsigned int request;
-> +       unsigned int apic_id;
-> +       bool kick;
-> +       int ret;
-> +
-> +       request =3D lower_32_bits(svm->vmcb->control.exit_info_1);
-> +       apic_id =3D upper_32_bits(svm->vmcb->control.exit_info_1);
-> +
-> +       /* Validate the APIC ID */
-> +       target_vcpu =3D kvm_get_vcpu_by_id(vcpu->kvm, apic_id);
-> +       if (!target_vcpu) {
-> +               vcpu_unimpl(vcpu, "vmgexit: invalid AP APIC ID [%#x] from=
- guest\n",
-> +                           apic_id);
-> +               return -EINVAL;
-> +       }
-> +
-> +       ret =3D 0;
-> +
-> +       target_svm =3D to_svm(target_vcpu);
-> +
-> +       /*
-> +        * The target vCPU is valid, so the vCPU will be kicked unless th=
-e
-> +        * request is for CREATE_ON_INIT. For any errors at this stage, t=
-he
-> +        * kick will place the vCPU in an non-runnable state.
-> +        */
-> +       kick =3D true;
-> +
-> +       mutex_lock(&target_svm->sev_es.snp_vmsa_mutex);
-> +
-> +       target_svm->sev_es.snp_vmsa_gpa =3D INVALID_PAGE;
-> +       target_svm->sev_es.snp_ap_create =3D true;
-> +
-> +       /* Interrupt injection mode shouldn't change for AP creation */
-> +       if (request < SVM_VMGEXIT_AP_DESTROY) {
-> +               u64 sev_features;
-> +
-> +               sev_features =3D vcpu->arch.regs[VCPU_REGS_RAX];
-> +               sev_features ^=3D sev->sev_features;
-> +               if (sev_features & SVM_SEV_FEAT_INT_INJ_MODES) {
-> +                       vcpu_unimpl(vcpu, "vmgexit: invalid AP injection =
-mode [%#lx] from guest\n",
-> +                                   vcpu->arch.regs[VCPU_REGS_RAX]);
-> +                       ret =3D -EINVAL;
-> +                       goto out;
-> +               }
-> +       }
-> +
-> +       switch (request) {
-> +       case SVM_VMGEXIT_AP_CREATE_ON_INIT:
-> +               kick =3D false;
-> +               fallthrough;
-> +       case SVM_VMGEXIT_AP_CREATE:
-> +               if (!page_address_valid(vcpu, svm->vmcb->control.exit_inf=
-o_2)) {
-> +                       vcpu_unimpl(vcpu, "vmgexit: invalid AP VMSA addre=
-ss [%#llx] from guest\n",
-> +                                   svm->vmcb->control.exit_info_2);
-> +                       ret =3D -EINVAL;
-> +                       goto out;
-> +               }
-> +
-> +               /*
-> +                * Malicious guest can RMPADJUST a large page into VMSA w=
-hich
-> +                * will hit the SNP erratum where the CPU will incorrectl=
-y signal
-> +                * an RMP violation #PF if a hugepage collides with the R=
-MP entry
-> +                * of VMSA page, reject the AP CREATE request if VMSA add=
-ress from
-> +                * guest is 2M aligned.
-> +                */
-> +               if (IS_ALIGNED(svm->vmcb->control.exit_info_2, PMD_SIZE))=
- {
-> +                       vcpu_unimpl(vcpu,
-> +                                   "vmgexit: AP VMSA address [%llx] from=
- guest is unsafe as it is 2M aligned\n",
-> +                                   svm->vmcb->control.exit_info_2);
-> +                       ret =3D -EINVAL;
-> +                       goto out;
-> +               }
-> +
-> +               target_svm->sev_es.snp_vmsa_gpa =3D svm->vmcb->control.ex=
-it_info_2;
-> +               break;
-> +       case SVM_VMGEXIT_AP_DESTROY:
-> +               break;
-> +       default:
-> +               vcpu_unimpl(vcpu, "vmgexit: invalid AP creation request [=
-%#x] from guest\n",
-> +                           request);
-> +               ret =3D -EINVAL;
-> +               break;
-> +       }
-> +
-> +out:
-> +       if (kick) {
-> +               if (target_vcpu->arch.mp_state =3D=3D KVM_MP_STATE_UNINIT=
-IALIZED)
-> +                       target_vcpu->arch.mp_state =3D KVM_MP_STATE_RUNNA=
-BLE;
-> +
-> +               kvm_make_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, ta=
-rget_vcpu);
+On Fri, Jan 05, 2024 at 07:38:48PM +0000, Edgecombe, Rick P wrote:
+> The break apart looks good.
+> 
+> On Sat, 2023-12-23 at 02:52 +0300, Kirill A. Shutemov wrote:
+> > +       while (addr < end) {
+> > +               unsigned long size;
+> > +               unsigned int level;
+> > +               pte_t *pte;
+> > +
+> > +               pte = lookup_address(addr, &level);
+> > +               size = page_level_size(level);
+> > +
+> > +               if (pte && pte_decrypted(*pte)) {
+> > +                       int pages = size / PAGE_SIZE;
+> > +
+> > +                       /*
+> > +                        * Touching memory with shared bit set
+> > triggers implicit
+> > +                        * conversion to shared.
+> > +                        *
+> > +                        * Make sure nobody touches the shared range
+> > from
+> > +                        * now on.
+> > +                        */
+> > +                       set_pte(pte, __pte(0));
+> 
+> Does this need a full shootdown at this point, at least in the crash
+> case? A local flush for the non-crash case might be nice too.
 
-I think we should  switch the order of these two statements for
-setting mp_state and for making the request for
-KVM_REQ_UPDATE_PROTECTED_GUEST_STATE.
-There is a race condition I observed when booting with SVSM where:
-1. BSP sets target vcpu to KVM_MP_STATE_RUNNABLE
-2. AP thread within the loop of arch/x86/kvm.c:vcpu_run() checks
-vm_vcpu_running()
-3. AP enters the guest without having updated the VMSA state from
-KVM_REQ_UPDATE_PROTECTED_GUEST_STATE
+See __flush_tlb_all() after the loop.
 
-This results in the AP executing on a bad RIP and then crashing.
-If we set the request first, then we avoid the race condition.
+> Also, probably a barrier() between set_pte() and
+> tdx_enc_status_changed().
 
-> +               kvm_vcpu_kick(target_vcpu);
-> +       }
-> +
-> +       mutex_unlock(&target_svm->sev_es.snp_vmsa_mutex);
-> +
-> +       return ret;
-> +}
-> +
->  static int sev_handle_vmgexit_msr_protocol(struct vcpu_svm *svm)
->  {
->         struct vmcb_control_area *control =3D &svm->vmcb->control;
-> @@ -3565,6 +3773,15 @@ int sev_handle_vmgexit(struct kvm_vcpu *vcpu)
->                 vcpu->run->vmgexit.psc.shared_gpa =3D svm->sev_es.sw_scra=
-tch;
->                 vcpu->arch.complete_userspace_io =3D snp_complete_psc;
->                 break;
-> +       case SVM_VMGEXIT_AP_CREATION:
-> +               ret =3D sev_snp_ap_creation(svm);
-> +               if (ret) {
-> +                       ghcb_set_sw_exit_info_1(svm->sev_es.ghcb, 2);
-> +                       ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, GHCB_ER=
-R_INVALID_INPUT);
-> +               }
-> +
-> +               ret =3D 1;
-> +               break;
->         case SVM_VMGEXIT_UNSUPPORTED_EVENT:
->                 vcpu_unimpl(vcpu,
->                             "vmgexit: unsupported event - exit_info_1=3D%=
-#llx, exit_info_2=3D%#llx\n",
-> @@ -3731,6 +3948,8 @@ void sev_es_vcpu_reset(struct vcpu_svm *svm)
->         set_ghcb_msr(svm, GHCB_MSR_SEV_INFO(GHCB_VERSION_MAX,
->                                             GHCB_VERSION_MIN,
->                                             sev_enc_bit));
-> +
-> +       mutex_init(&svm->sev_es.snp_vmsa_mutex);
->  }
->
->  void sev_es_prepare_switch_to_guest(struct sev_es_save_area *hostsa)
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index da49e4981d75..240518f8d6c7 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -1398,6 +1398,9 @@ static void svm_vcpu_reset(struct kvm_vcpu *vcpu, b=
-ool init_event)
->         svm->spec_ctrl =3D 0;
->         svm->virt_spec_ctrl =3D 0;
->
-> +       if (init_event)
-> +               sev_snp_init_protected_guest_state(vcpu);
-> +
->         init_vmcb(vcpu);
->
->         if (!init_event)
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index 4ef41f4d4ee6..d953ae41c619 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -96,6 +96,7 @@ struct kvm_sev_info {
->         atomic_t migration_in_progress;
->         u64 snp_init_flags;
->         void *snp_context;      /* SNP guest context page */
-> +       u64 sev_features;       /* Features set at VMSA creation */
->  };
->
->  struct kvm_svm {
-> @@ -214,6 +215,10 @@ struct vcpu_sev_es_state {
->         bool ghcb_sa_free;
->
->         u64 ghcb_registered_gpa;
-> +
-> +       struct mutex snp_vmsa_mutex; /* Used to handle concurrent updates=
- of VMSA. */
-> +       gpa_t snp_vmsa_gpa;
-> +       bool snp_ap_create;
->  };
->
->  struct vcpu_svm {
-> @@ -689,7 +694,7 @@ void avic_refresh_virtual_apic_mode(struct kvm_vcpu *=
-vcpu);
->  #define GHCB_VERSION_MAX       2ULL
->  #define GHCB_VERSION_MIN       1ULL
->
-> -#define GHCB_HV_FT_SUPPORTED   GHCB_HV_FT_SNP
-> +#define GHCB_HV_FT_SUPPORTED   (GHCB_HV_FT_SNP | GHCB_HV_FT_SNP_AP_CREAT=
-ION)
->
->  extern unsigned int max_sev_asid;
->
-> @@ -719,6 +724,7 @@ void sev_es_prepare_switch_to_guest(struct sev_es_sav=
-e_area *hostsa);
->  void sev_es_unmap_ghcb(struct vcpu_svm *svm);
->  struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
->  void handle_rmp_page_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_c=
-ode);
-> +void sev_snp_init_protected_guest_state(struct kvm_vcpu *vcpu);
->
->  /* vmenter.S */
->
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 87b78d63e81d..df9ec357d538 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10858,6 +10858,14 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcp=
-u)
->
->                 if (kvm_check_request(KVM_REQ_UPDATE_CPU_DIRTY_LOGGING, v=
-cpu))
->                         static_call(kvm_x86_update_cpu_dirty_logging)(vcp=
-u);
-> +
-> +               if (kvm_check_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STAT=
-E, vcpu)) {
-> +                       kvm_vcpu_reset(vcpu, true);
-> +                       if (vcpu->arch.mp_state !=3D KVM_MP_STATE_RUNNABL=
-E) {
-> +                               r =3D 1;
-> +                               goto out;
-> +                       }
-> +               }
->         }
->
->         if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
-> @@ -13072,6 +13080,9 @@ static inline bool kvm_vcpu_has_events(struct kvm=
-_vcpu *vcpu)
->         if (kvm_test_request(KVM_REQ_PMI, vcpu))
->                 return true;
->
-> +       if (kvm_test_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, vcpu))
-> +               return true;
-> +
->         if (kvm_arch_interrupt_allowed(vcpu) &&
->             (kvm_cpu_has_interrupt(vcpu) ||
->             kvm_guest_apic_has_interrupt(vcpu)))
-> --
-> 2.25.1
->
->
+But why? There's no concurrency at this point. Interrupts are disabled and
+only one CPU is active. Nobody can touch the memory relevant for the PTE.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
