@@ -1,191 +1,139 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1D314009
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jan 2024 10:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B784121F
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jan 2024 13:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eiEEANnR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="IV8c+llT";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="eiEEANnR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="IV8c+llT"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3202A1F799;
-	Mon,  8 Jan 2024 10:45:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1704710737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUrMQ588PontGGXfiGWoujWrvGIzdjiET4ISNVeyer4=;
-	b=eiEEANnRZeJbaI8CjaucatZH8wxLgTMD8Nk1SAQoE9nwmL1h2dUv1nlSVapgm4KTIOeJ2/
-	aMrE4dOrgd1/yC96csd/826bfs3cmng0vvAESMigZFOw1zkE56jOHBFH4mnYcyuOEsWu22
-	ZBeQB6XKFbe9p8uVFqSSaQ149yYvCzY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1704710737;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUrMQ588PontGGXfiGWoujWrvGIzdjiET4ISNVeyer4=;
-	b=IV8c+llTYz1HJ2A4ILW2O+hnTA2OBYy29S6zX46BbRE/P0eK+LIIY/1uKRHvcMglTAu+a4
-	O3kM68xKIg9EAIAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1704710737; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUrMQ588PontGGXfiGWoujWrvGIzdjiET4ISNVeyer4=;
-	b=eiEEANnRZeJbaI8CjaucatZH8wxLgTMD8Nk1SAQoE9nwmL1h2dUv1nlSVapgm4KTIOeJ2/
-	aMrE4dOrgd1/yC96csd/826bfs3cmng0vvAESMigZFOw1zkE56jOHBFH4mnYcyuOEsWu22
-	ZBeQB6XKFbe9p8uVFqSSaQ149yYvCzY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1704710737;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DUrMQ588PontGGXfiGWoujWrvGIzdjiET4ISNVeyer4=;
-	b=IV8c+llTYz1HJ2A4ILW2O+hnTA2OBYy29S6zX46BbRE/P0eK+LIIY/1uKRHvcMglTAu+a4
-	O3kM68xKIg9EAIAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DC53B1392C;
-	Mon,  8 Jan 2024 10:45:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ew51NVDSm2V1QgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 08 Jan 2024 10:45:36 +0000
-Message-ID: <f221ad9d-6fc3-466b-bacf-23986b8655f5@suse.cz>
-Date: Mon, 8 Jan 2024 11:45:36 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jxnJZAOv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704719288; x=1736255288;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jzTq7VWB7XmiLfpeuE4JA2ASHQLGj6MFtlAwRa1zfoE=;
+  b=jxnJZAOv5AJDJsoAOIBFNCnfri5g8WtrwTgYUNa3FiRwqbI0DsmsLd+q
+   6FuYixfwcbYyr1MqOOMtKcNBn5AYjRDS5HLOHu9A5emP+ghsDKoXrIo+v
+   Vq8fQet56MoT2dZJ9geulTjvBxaBHNitGvlmQWDq1lmFr1Ov2V/0gmWrt
+   3cn4jXmhZsyZ/OpdmDdRQaCFrC7rWT3kbdAnqmQ8ffco4hKDC0jOLS5Fc
+   OAXJsMJ4lhDcIJl9jhV5nN7ao80zCJSgancJ13J28mJsPEhefnxNVKiGN
+   vUJWdSciqdi01vua8lRvU3d8VgsEfYLzkBfuwsFawTmp7Wr9+mQ59r9nF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10946"; a="4664997"
+X-IronPort-AV: E=Sophos;i="6.04,341,1695711600"; 
+   d="scan'208";a="4664997"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2024 05:08:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10946"; a="815601069"
+X-IronPort-AV: E=Sophos;i="6.04,341,1695711600"; 
+   d="scan'208";a="815601069"
+Received: from ddraghic-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.212.53])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2024 05:08:00 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 5EB1510498C; Mon,  8 Jan 2024 16:07:57 +0300 (+03)
+Date: Mon, 8 Jan 2024 16:07:57 +0300
+From: kirill.shutemov@linux.intel.com
+To: mhklinux@outlook.com
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	luto@kernel.org, peterz@infradead.org, akpm@linux-foundation.org,
+	urezki@gmail.com, hch@infradead.org, lstoakes@gmail.com,
+	thomas.lendacky@amd.com, ardb@kernel.org, jroedel@suse.de,
+	seanjc@google.com, rick.p.edgecombe@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-hyperv@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/3] x86/hyperv: Use slow_virt_to_phys() in page
+ transition hypervisor callback
+Message-ID: <20240108130757.xryzva4fkmgeekhu@box.shutemov.name>
+References: <20240105183025.225972-1-mhklinux@outlook.com>
+ <20240105183025.225972-2-mhklinux@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 15/26] x86/sev: Introduce snp leaked pages list
-To: Michael Roth <michael.roth@amd.com>, x86@kernel.org
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
- thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com, tobin@ibm.com,
- bp@alien8.de, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
- pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-16-michael.roth@amd.com>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20231230161954.569267-16-michael.roth@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=eiEEANnR;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IV8c+llT
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-1.51 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 TO_DN_SOME(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_MATCH_FROM(0.00)[];
-	 BAYES_HAM(-0.01)[51.02%];
-	 ARC_NA(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 FROM_HAS_DN(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[37];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -1.51
-X-Rspamd-Queue-Id: 3202A1F799
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240105183025.225972-2-mhklinux@outlook.com>
 
-On 12/30/23 17:19, Michael Roth wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
+On Fri, Jan 05, 2024 at 10:30:23AM -0800, mhkelley58@gmail.com wrote:
+> From: Michael Kelley <mhklinux@outlook.com>
 > 
-> Pages are unsafe to be released back to the page-allocator, if they
-> have been transitioned to firmware/guest state and can't be reclaimed
-> or transitioned back to hypervisor/shared state. In this case add
-> them to an internal leaked pages list to ensure that they are not freed
-> or touched/accessed to cause fatal page faults.
+> In preparation for temporarily marking pages not present during a
+> transition between encrypted and decrypted, use slow_virt_to_phys()
+> in the hypervisor callback. As long as the PFN is correct,
+> slow_virt_to_phys() works even if the leaf PTE is not present.
+> The existing functions that depend on vmalloc_to_page() all
+> require that the leaf PTE be marked present, so they don't work.
 > 
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> [mdr: relocate to arch/x86/virt/svm/sev.c]
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Update the comments for slow_virt_to_phys() to note this broader usage
+> and the requirement to work even if the PTE is not marked present.
+> 
+> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> ---
+>  arch/x86/hyperv/ivm.c        |  9 ++++++++-
+>  arch/x86/mm/pat/set_memory.c | 13 +++++++++----
+>  2 files changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+> index 02e55237d919..8ba18635e338 100644
+> --- a/arch/x86/hyperv/ivm.c
+> +++ b/arch/x86/hyperv/ivm.c
+> @@ -524,7 +524,14 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+>  		return false;
+>  
+>  	for (i = 0, pfn = 0; i < pagecount; i++) {
+> -		pfn_array[pfn] = virt_to_hvpfn((void *)kbuffer + i * HV_HYP_PAGE_SIZE);
+> +		/*
+> +		 * Use slow_virt_to_phys() because the PRESENT bit has been
+> +		 * temporarily cleared in the PTEs.  slow_virt_to_phys() works
+> +		 * without the PRESENT bit while virt_to_hvpfn() or similar
+> +		 * does not.
+> +		 */
+> +		pfn_array[pfn] = slow_virt_to_phys((void *)kbuffer +
+> +					i * HV_HYP_PAGE_SIZE) >> HV_HYP_PAGE_SHIFT;
 
-Hi, sorry I didn't respond in time to the last mail discussing previous
-version in
-https://lore.kernel.org/all/8c1fd8da-912a-a9ce-9547-107ba8a450fc@amd.com/
-due to upcoming holidays.
+I think you can make it much more readable by introducing few variables:
 
-I would rather avoid the approach of allocating container objects:
-- it's allocating memory when effectively losing memory, a dangerous thing
-- are all the callers and their context ok with GFP_KERNEL?
-- GFP_KERNEL_ACCOUNT seems wrong, why would we be charging this to the
-current process, it's probably not its fault the pages are leaked? Also the
-charging can fail?
-- given the benefit of having leaked pages on a list is basically just
-debugging (i.e. crash dump or drgn inspection) this seems too heavy
+		virt = (void *)kbuffer + i * HV_HYPPAGE_SIZE;
+		phys = slow_virt_to_phys(virt);
+		pfn_array[pfn] = phys >> HV_HYP_PAGE_SHIFT;
 
-I think it would be better and sufficient to use page->lru for order-0 and
-head pages, and simply skip tail pages (possibly with adjusted warning
-message for that case).
+>  		pfn++;
+>  
+>  		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index bda9f129835e..8e19796e7ce5 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -755,10 +755,15 @@ pmd_t *lookup_pmd_address(unsigned long address)
+>   * areas on 32-bit NUMA systems.  The percpu areas can
+>   * end up in this kind of memory, for instance.
+>   *
+> - * This could be optimized, but it is only intended to be
+> - * used at initialization time, and keeping it
+> - * unoptimized should increase the testing coverage for
+> - * the more obscure platforms.
+> + * It is also used in callbacks for CoCo VM page transitions between private
+> + * and shared because it works when the PRESENT bit is not set in the leaf
+> + * PTE. In such cases, the state of the PTEs, including the PFN, is otherwise
+> + * known to be valid, so the returned physical address is correct. The similar
+> + * function vmalloc_to_pfn() can't be used because it requires the PRESENT bit.
+> + *
+> + * This could be optimized, but it is only used in paths that are not perf
+> + * sensitive, and keeping it unoptimized should increase the testing coverage
+> + * for the more obscure platforms.
+>   */
+>  phys_addr_t slow_virt_to_phys(void *__virt_addr)
+>  {
+> -- 
+> 2.25.1
+> 
 
-Vlastimil
-
-<snip>
-
-> +
-> +void snp_leak_pages(u64 pfn, unsigned int npages)
-> +{
-> +	struct page *page = pfn_to_page(pfn);
-> +	struct leaked_page *leak;
-> +
-> +	pr_debug("%s: leaking PFN range 0x%llx-0x%llx\n", __func__, pfn, pfn + npages);
-> +
-> +	spin_lock(&snp_leaked_pages_list_lock);
-> +	while (npages--) {
-> +		leak = kzalloc(sizeof(*leak), GFP_KERNEL_ACCOUNT);
-> +		if (!leak)
-> +			goto unlock;
-
-Should we skip the dump_rmpentry() in such a case?
-
-> +		leak->page = page;
-> +		list_add_tail(&leak->list, &snp_leaked_pages_list);
-> +		dump_rmpentry(pfn);
-> +		snp_nr_leaked_pages++;
-> +		pfn++;
-> +		page++;
-> +	}
-> +unlock:
-> +	spin_unlock(&snp_leaked_pages_list_lock);
-> +}
-> +EXPORT_SYMBOL_GPL(snp_leak_pages);
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
