@@ -1,98 +1,199 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB87954662
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jan 2024 17:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D1C55C00
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jan 2024 18:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="U/ewXcsS"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8DA1C40E016C;
-	Mon,  8 Jan 2024 17:05:06 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id CuKpKJOv0sMx; Mon,  8 Jan 2024 17:05:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704733504; bh=w1U9JuwWvaJMBjH60Qfm085eTdHCG+21c5u4mrqzaCs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U/ewXcsSUdD+9SivtyMgsN1CLap1vAi6dgi/nHSjCXg0jJhmbsOPxEmWonINyytCW
-	 yHusPDNEelLb2hSX/YpL86mKhzh6613QmFUDCKyPEVWa+yTwr3xKKYmHYETfOFioHM
-	 UG7wND5TN6SCBiUotmh/m0XPbPDaukfUGTkMy8jnkxzO4SwdfBDEUEnmkTpsGLZIOE
-	 sect88K4iyvL5/WYaCvR73nckuSijcOIQo4dmwfrAlizNGjOyn854a/fvz8K//UgzF
-	 WHkRisFKQ8H6k4WW77iRE/076LW8ZTb2CZJ5Tw71s6Ct6Jj8qJbypu83wz+y5t6xtn
-	 iyzJ67+JsiDecDvJpKCAYW9vOrCoSsUAmnPZCMwZX4Kz7rzgKj5fdwvD6fNyPGt4M0
-	 Wqatg1aOn4oh4LYWIf771GzU8hK1uihaj2XDIN6oLIWQ0iVNt5H/oTMPAW2d50+Jcb
-	 Gp2WStL5TwCP2vpCpWCHmCVAXXECM1pdxg5YQR7YlHrwAzoXgGYnr3TKUZKIclkwWQ
-	 /SVh/PhLwC3rsUUnMSUm+aBtUwi3A7GTVVTadwBTH/Qe3NuvHc677pP2x2yTeqLHPg
-	 pbBP0l6Y/iLEfyEE0WoSxhReJIxxwMk0lxvbvVJDa22IFMtfW8R1HhMLioru2Lyj6A
-	 Mxev4/iCkvm2ibZWTuP9drhI=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DC56840E01B0;
-	Mon,  8 Jan 2024 17:04:24 +0000 (UTC)
-Date: Mon, 8 Jan 2024 18:04:18 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: Michael Roth <michael.roth@amd.com>, x86@kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
-	pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
-	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
-	slp@redhat.com, pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v1 04/26] x86/sev: Add the host SEV-SNP initialization
- support
-Message-ID: <20240108170418.GDZZwrEiIaGuMpV0B0@fat_crate.local>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-5-michael.roth@amd.com>
- <f60c5fe0-9909-468d-8160-34d5bae39305@linux.microsoft.com>
- <20240105160916.GDZZgprE8T6xbbHJ9E@fat_crate.local>
- <20240105162142.GEZZgslgQCQYI7twat@fat_crate.local>
- <0c4aac73-10d8-4e47-b6a8-f0c180ba1900@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZbPbCyEH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704739054; x=1736275054;
+  h=message-id:date:mime-version:subject:to:references:from:
+   in-reply-to:content-transfer-encoding;
+  bh=OHCMnUym3kiJu7MowwwFDStEQeC8LwsWW80R0Z2s7Lo=;
+  b=ZbPbCyEHvA3sgqVSirhfm0Foo7vKnsUmpHTuCv4NVeNkX1LP9JszVugE
+   K80XMgSMclxZBPsVEk9T6hjoSa/qnOrkXiqhOlBlAyUXRtRBZPHci4oKd
+   /SA1OGiGrVyLN4xcUFxrUC9Ytm5UmNvQRCZpF8qnv98b2z9grd4L53sHx
+   cNrHSIO12kd8ibasXg8f0Ga/cfw/k5Wg+6bUEWYbq0x4PHrcVXO6GfKnx
+   t28HSGUkxHjLeYSsKFXdxC30KPTZD1Bdd3/8296S5or6VrKK7NodCzJWr
+   BHidnxCG4fRAGD2FTopHPkW4dWvUagP4oT8S2seD9Ie8qo18RJWMhylL0
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="4717261"
+X-IronPort-AV: E=Sophos;i="6.04,180,1695711600"; 
+   d="scan'208";a="4717261"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2024 10:37:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="757693603"
+X-IronPort-AV: E=Sophos;i="6.04,180,1695711600"; 
+   d="scan'208";a="757693603"
+Received: from nsingiri-mobl2.amr.corp.intel.com (HELO [10.212.166.188]) ([10.212.166.188])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2024 10:37:32 -0800
+Message-ID: <a559406d-acd5-40eb-906e-2b8b11739e9e@linux.intel.com>
+Date: Mon, 8 Jan 2024 10:37:28 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <0c4aac73-10d8-4e47-b6a8-f0c180ba1900@linux.microsoft.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] x86/hyperv: Make encrypted/decrypted changes safe
+ for load_unaligned_zeropad()
+Content-Language: en-US
+To: mhklinux@outlook.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ kirill.shutemov@linux.intel.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, luto@kernel.org, peterz@infradead.org,
+ akpm@linux-foundation.org, urezki@gmail.com, hch@infradead.org,
+ lstoakes@gmail.com, thomas.lendacky@amd.com, ardb@kernel.org,
+ jroedel@suse.de, seanjc@google.com, rick.p.edgecombe@intel.com,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-hyperv@vger.kernel.org, linux-mm@kvack.org
+References: <20240105183025.225972-1-mhklinux@outlook.com>
+ <20240105183025.225972-4-mhklinux@outlook.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240105183025.225972-4-mhklinux@outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 08, 2024 at 05:49:01PM +0100, Jeremi Piotrowski wrote:
-> What I wrote: "allow for the kernel to allocate the rmptable".
 
-What?!
 
-"15.36.5 Hypervisor RMP Management
+On 1/5/2024 10:30 AM, mhkelley58@gmail.com wrote:
+> From: Michael Kelley <mhklinux@outlook.com>
+> 
+> In a CoCo VM, when transitioning memory from encrypted to decrypted, or
+> vice versa, the caller of set_memory_encrypted() or set_memory_decrypted()
+> is responsible for ensuring the memory isn't in use and isn't referenced
+> while the transition is in progress.  The transition has multiple steps,
+> and the memory is in an inconsistent state until all steps are complete.
+> A reference while the state is inconsistent could result in an exception
+> that can't be cleanly fixed up.
+> 
+> However, the kernel load_unaligned_zeropad() mechanism could cause a stray
+> reference that can't be prevented by the caller of set_memory_encrypted()
+> or set_memory_decrypted(), so there's specific code to handle this case.
+> But a CoCo VM running on Hyper-V may be configured to run with a paravisor,
+> with the #VC or #VE exception routed to the paravisor. There's no
+> architectural way to forward the exceptions back to the guest kernel, and
+> in such a case, the load_unaligned_zeropad() specific code doesn't work.
+> 
+> To avoid this problem, mark pages as "not present" while a transition
+> is in progress. If load_unaligned_zeropad() causes a stray reference, a
+> normal page fault is generated instead of #VC or #VE, and the
+> page-fault-based fixup handlers for load_unaligned_zeropad() resolve the
+> reference. When the encrypted/decrypted transition is complete, mark the
+> pages as "present" again.
 
-...
+Change looks good to me. But I am wondering why are adding it part of prepare
+and finish callbacks instead of directly in set_memory_encrypted() function.
 
-Because the RMP is initialized by the AMD-SP to prevent direct access to
-the RMP, the hypervisor must use the RMPUPDATE instruction to alter the
-entries of the RMP. RMPUPDATE allows the hypervisor to alter the
-Guest_Physical_Address, Assigned, Page_Size, Immutable, and ASID fields
-of an RMP entry."
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-What you want is something that you should keep far and away from the
-upstream kernel.
+
+> 
+> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> ---
+>  arch/x86/hyperv/ivm.c | 49 ++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 46 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+> index 8ba18635e338..5ad39256a5d2 100644
+> --- a/arch/x86/hyperv/ivm.c
+> +++ b/arch/x86/hyperv/ivm.c
+> @@ -15,6 +15,7 @@
+>  #include <asm/io.h>
+>  #include <asm/coco.h>
+>  #include <asm/mem_encrypt.h>
+> +#include <asm/set_memory.h>
+>  #include <asm/mshyperv.h>
+>  #include <asm/hypervisor.h>
+>  #include <asm/mtrr.h>
+> @@ -502,6 +503,31 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
+>  		return -EFAULT;
+>  }
+>  
+> +/*
+> + * When transitioning memory between encrypted and decrypted, the caller
+> + * of set_memory_encrypted() or set_memory_decrypted() is responsible for
+> + * ensuring that the memory isn't in use and isn't referenced while the
+> + * transition is in progress.  The transition has multiple steps, and the
+> + * memory is in an inconsistent state until all steps are complete. A
+> + * reference while the state is inconsistent could result in an exception
+> + * that can't be cleanly fixed up.
+> + *
+> + * But the Linux kernel load_unaligned_zeropad() mechanism could cause a
+> + * stray reference that can't be prevented by the caller, so Linux has
+> + * specific code to handle this case. But when the #VC and #VE exceptions
+> + * routed to a paravisor, the specific code doesn't work. To avoid this
+> + * problem, mark the pages as "not present" while the transition is in
+> + * progress. If load_unaligned_zeropad() causes a stray reference, a normal
+> + * page fault is generated instead of #VC or #VE, and the page-fault-based
+> + * handlers for load_unaligned_zeropad() resolve the reference.  When the
+> + * transition is complete, hv_vtom_set_host_visibility() marks the pages
+> + * as "present" again.
+> + */
+> +static bool hv_vtom_clear_present(unsigned long kbuffer, int pagecount, bool enc)
+> +{
+> +	return !set_memory_np(kbuffer, pagecount);
+> +}
+> +
+>  /*
+>   * hv_vtom_set_host_visibility - Set specified memory visible to host.
+>   *
+> @@ -521,7 +547,7 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+>  
+>  	pfn_array = kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+>  	if (!pfn_array)
+> -		return false;
+> +		goto err_set_memory_p;
+>  
+>  	for (i = 0, pfn = 0; i < pagecount; i++) {
+>  		/*
+> @@ -545,14 +571,30 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+>  		}
+>  	}
+>  
+> - err_free_pfn_array:
+> +err_free_pfn_array:
+>  	kfree(pfn_array);
+> +
+> +err_set_memory_p:
+> +	/*
+> +	 * Set the PTE PRESENT bits again to revert what hv_vtom_clear_present()
+> +	 * did. Do this even if there is an error earlier in this function in
+> +	 * order to avoid leaving the memory range in a "broken" state. Setting
+> +	 * the PRESENT bits shouldn't fail, but return an error if it does.
+> +	 */
+> +	if (set_memory_p(kbuffer, pagecount))
+> +		result = false;
+> +
+>  	return result;
+>  }
+>  
+>  static bool hv_vtom_tlb_flush_required(bool private)
+>  {
+> -	return true;
+> +	/*
+> +	 * Since hv_vtom_clear_present() marks the PTEs as "not present"
+> +	 * and flushes the TLB, they can't be in the TLB. That makes the
+> +	 * flush controlled by this function redundant, so return "false".
+> +	 */
+> +	return false;
+>  }
+>  
+>  static bool hv_vtom_cache_flush_required(void)
+> @@ -615,6 +657,7 @@ void __init hv_vtom_init(void)
+>  	x86_platform.hyper.is_private_mmio = hv_is_private_mmio;
+>  	x86_platform.guest.enc_cache_flush_required = hv_vtom_cache_flush_required;
+>  	x86_platform.guest.enc_tlb_flush_required = hv_vtom_tlb_flush_required;
+> +	x86_platform.guest.enc_status_change_prepare = hv_vtom_clear_present;
+>  	x86_platform.guest.enc_status_change_finish = hv_vtom_set_host_visibility;
+>  
+>  	/* Set WB as the default cache mode. */
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
