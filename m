@@ -1,142 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4921745944
-	for <linux-coco@lists.linux.dev>; Mon,  8 Jan 2024 13:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1055102B
+	for <linux-coco@lists.linux.dev>; Mon,  8 Jan 2024 15:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wo70vdpY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704720945; x=1736256945;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Tvyxi9rLpB6tMw43Ff+F4ni44W91YgQK1/npXpO1cwc=;
-  b=Wo70vdpYUc7Cr1IosTWjGQfKA/Ynnl13U96bHDNkPoSY8m8Is44h7ePv
-   gZal7uWhwSov8Ekp2htXKRrKa6dgBs3zWvQAgQgXOsHz+nfJGq8z9329Z
-   l9DHJ2EKRje4b7jc4s0OrTHtjQ3FggVnKHwfjpDgIj38TbJx7oq09QZON
-   TZtpOxup4i+zEUigKZ+6zLHzT2g5iQqdo+hkvCE53a20xMFbCqFJtyWN0
-   L1C6qf5MrjYgSc0f6vI+t4R5b1Ndv557BFhRJlTC6aw2gnBGt250eHz1L
-   nJp+H4MLuFAZh6a9c91+Sd2dKdEAjRdaCBXjavF2wMa5ojZX5X+EIdy1p
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="429064495"
-X-IronPort-AV: E=Sophos;i="6.04,341,1695711600"; 
-   d="scan'208";a="429064495"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2024 05:35:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="1028403682"
-X-IronPort-AV: E=Sophos;i="6.04,341,1695711600"; 
-   d="scan'208";a="1028403682"
-Received: from ddraghic-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.212.53])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2024 05:35:39 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id D536E10498C; Mon,  8 Jan 2024 16:35:36 +0300 (+03)
-Date: Mon, 8 Jan 2024 16:35:36 +0300
-From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"ashish.kalra@amd.com" <ashish.kalra@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"Reshetova, Elena" <elena.reshetova@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"bhe@redhat.com" <bhe@redhat.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCHv5 15/16] x86/mm: Introduce kernel_ident_mapping_free()
-Message-ID: <20240108133536.7mi6oc2sfkumjqpv@box.shutemov.name>
-References: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
- <20231222235209.32143-16-kirill.shutemov@linux.intel.com>
- <ba8265977a4b30f48b6b33fb135b714d5ada2a52.camel@intel.com>
- <3bddc0a0d69b6b18ce3fd568e6a7e6d7be8a1a11.camel@intel.com>
- <20240108101715.7hxn3wj6njemsf2x@box.shutemov.name>
- <b0dcc7016e6810791fa0aedbe7728a5deab29f5b.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q2a8cxQl"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dbed7ba6545so2247007276.1
+        for <linux-coco@lists.linux.dev>; Mon, 08 Jan 2024 07:53:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704729184; x=1705333984; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LXpfvDdR25mi61ZRv+hUGYfziJrbv6+q0uR9W3pdtgw=;
+        b=Q2a8cxQl+Jp3G6KgwpoKQ66HsbWHjJ7PgsN05bBDcCZb1Ug6PAYmvmFHR+35GyDlBJ
+         sJLFdxYcwQrQVQbzeb0jw8nzBXcyXQcmR98sAANJMzbVh6JH8Vd2UXHus67gEyDBUs1f
+         hkDo9BoVbw7jpOnaagGGkmVjVouqxKUEP7CU0oRr6l2dyhSpnuj6CmpHhYtOPEO96R5X
+         CeyeTrXAqXO7iMkQDsGS+Jww+D+yT/xqBmSLT27qd2X8Tp+vyqhe8AB6u2Fyts5/PDvy
+         kSBwW2Ie+YXmXYz0+STZJZJXtso7kWx6/TJIZi85DVOcvORWMJzd5sd/3v9mR4Ht+93C
+         uVPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704729184; x=1705333984;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LXpfvDdR25mi61ZRv+hUGYfziJrbv6+q0uR9W3pdtgw=;
+        b=xI95ADAwA8FkiR41UirKQbBPHit8/OZ+JGhj1cuwUqsc7iBZ5zzhl8J/NZmcAiEvdt
+         K6y7TwEFdojnmAL/9ja8fTZqy19HVTe7tDR4PEIev8Ws6XZau3iZMFeVVTDuxT1MiZTM
+         RV6POOggzDZR+6tM6L7fJ2xGWzHvDXglrrSGuH/7W/lPwRSFtgBOZwzIvHQYQJO3BNdu
+         dHqoSDJoCyNJCpUhxOfLc8bmwwgnr2Z76ul8ZMzQk3Cx28Akp6LOYhLDjD+xcw1tgzSr
+         QfRDyRNYujzfN8kKkyySPdYNj+saQYXcIE6Fdu4+/3HSHPQwbmSkBArhc3OuXad1RAt+
+         +SwQ==
+X-Gm-Message-State: AOJu0Yw4GQ5dLTurLubimiJfOUu1WHj7eiZc/uTgRv5HqN/uOPJBSd0o
+	SypbUSez9RZL1JLYXU4XdHKfmzoeRGyeK2sDOw==
+X-Google-Smtp-Source: AGHT+IH6tgug6GZXuthKAIt2m3rWLQls/sRxvnIhe9rTO176GAtStoSNma4aHNycx8stxCAgF2wzux11TeA=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:83d0:0:b0:dbe:a20a:6330 with SMTP id
+ v16-20020a2583d0000000b00dbea20a6330mr1497318ybm.9.1704729184054; Mon, 08 Jan
+ 2024 07:53:04 -0800 (PST)
+Date: Mon, 8 Jan 2024 07:53:02 -0800
+In-Reply-To: <CAJ5mJ6hpSSVhZ5hbPZ8vfSnmNU6W+g4e=PeLrG7fG2u8KptfHQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0dcc7016e6810791fa0aedbe7728a5deab29f5b.camel@intel.com>
+Mime-Version: 1.0
+References: <20231230172351.574091-1-michael.roth@amd.com> <20231230172351.574091-27-michael.roth@amd.com>
+ <CAJ5mJ6hpSSVhZ5hbPZ8vfSnmNU6W+g4e=PeLrG7fG2u8KptfHQ@mail.gmail.com>
+Message-ID: <ZZwaXo62DpiBJiWN@google.com>
+Subject: Re: [PATCH v11 26/35] KVM: SEV: Support SEV-SNP AP Creation NAE event
+From: Sean Christopherson <seanjc@google.com>
+To: Jacob Xu <jacobhxu@google.com>
+Cc: Michael Roth <michael.roth@amd.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
+	pbonzini@redhat.com, vkuznets@redhat.com, jmattson@google.com, 
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com, 
+	pgonda@google.com, peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, dovmurik@linux.ibm.com, tobin@ibm.com, bp@alien8.de, 
+	vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
+	Brijesh Singh <brijesh.singh@amd.com>, Adam Dunlap <acdunlap@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Jan 08, 2024 at 01:13:18PM +0000, Huang, Kai wrote:
-> On Mon, 2024-01-08 at 13:17 +0300, kirill.shutemov@linux.intel.com wrote:
-> > On Mon, Jan 08, 2024 at 03:30:21AM +0000, Huang, Kai wrote:
-> > > On Mon, 2024-01-08 at 03:13 +0000, Huang, Kai wrote:
-> > > > On Sat, 2023-12-23 at 02:52 +0300, Kirill A. Shutemov wrote:
-> > > > > The helper complements kernel_ident_mapping_init(): it frees the
-> > > > > identity mapping that was previously allocated. It will be used in the
-> > > > > error path to free a partially allocated mapping or if the mapping is no
-> > > > > longer needed.
-> > > > > 
-> > > > > The caller provides a struct x86_mapping_info with the free_pgd_page()
-> > > > > callback hooked up and the pgd_t to free.
-> > > > > 
-> > > > > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > > > ---
-> > > > >  arch/x86/include/asm/init.h |  3 ++
-> > > > >  arch/x86/mm/ident_map.c     | 73 +++++++++++++++++++++++++++++++++++++
-> > > > >  2 files changed, 76 insertions(+)
-> > > > > 
-> > > > > diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
-> > > > > index cc9ccf61b6bd..14d72727d7ee 100644
-> > > > > --- a/arch/x86/include/asm/init.h
-> > > > > +++ b/arch/x86/include/asm/init.h
-> > > > > @@ -6,6 +6,7 @@
-> > > > >  
-> > > > >  struct x86_mapping_info {
-> > > > >  	void *(*alloc_pgt_page)(void *); /* allocate buf for page table */
-> > > > > +	void (*free_pgt_page)(void *, void *); /* free buf for page table */
-> > > > >  	void *context;			 /* context for alloc_pgt_page */
-> > > > >  	unsigned long page_flag;	 /* page flag for PMD or PUD entry */
-> > > > >  	unsigned long offset;		 /* ident mapping offset */
-> > > > > @@ -16,4 +17,6 @@ struct x86_mapping_info {
-> > > > >  int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
-> > > > >  				unsigned long pstart, unsigned long pend);
-> > > > >  
-> > > > > +void kernel_ident_mapping_free(struct x86_mapping_info *info, pgd_t *pgd);
-> > > > 
-> > > > Maybe range-based free function can provide more flexibility (e.g., you can
-> > > > directly call the free function to cleanup in kernel_ident_mapping_init()
-> > > > internally when something goes wrong), but I guess this is sufficient for
-> > > > current use case (and perhaps the majority use cases).
-> > > > 
-> > > > Reviewed-by: Kai Huang <kai.huang@intel.com>
-> > > > 
-> > > 
-> > > Another argument of range-based free function is, theoretically you can build
-> > > the identical mapping table using different x86_mapping_info on different
-> > > ranges, thus it makes less sense to use one 'struct x86_mapping_info *info' to
-> > > free the entire page table, albeit in this implementation only the
-> > > 'free_pgt_page()' callback is used. 
-> > 
-> > The interface can be changed if there will be need for such behaviour.
-> > This kind of future-proofing rarely helpful.
-> > 
+On Fri, Jan 05, 2024, Jacob Xu wrote:
+> > +       if (kick) {
+> > +               if (target_vcpu->arch.mp_state == KVM_MP_STATE_UNINITIALIZED)
+> > +                       target_vcpu->arch.mp_state = KVM_MP_STATE_RUNNABLE;
+> > +
+> > +               kvm_make_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, target_vcpu);
 > 
-> Do you want to just pass the 'free_pgt_page' function pointer to
-> kernel_ident_mapping_free(), instead of 'struct x86_mapping_info *info'?  As
-> mentioned above conceptually the page table can be built from multiple
-> x86_mapping_info for multiple ranges.
+> I think we should  switch the order of these two statements for
+> setting mp_state and for making the request for
+> KVM_REQ_UPDATE_PROTECTED_GUEST_STATE.
+> There is a race condition I observed when booting with SVSM where:
+> 1. BSP sets target vcpu to KVM_MP_STATE_RUNNABLE
+> 2. AP thread within the loop of arch/x86/kvm.c:vcpu_run() checks
+> vm_vcpu_running()
+> 3. AP enters the guest without having updated the VMSA state from
+> KVM_REQ_UPDATE_PROTECTED_GUEST_STATE
+> 
+> This results in the AP executing on a bad RIP and then crashing.
+> If we set the request first, then we avoid the race condition.
 
-I don't think we have such cases in kernel. Let's not overcomplicate
-things. I see value in keeping interface symmetric.
+That just introducs a different race, e.g. if this task gets delayed and the
+target vCPU processes KVM_REQ_UPDATE_PROTECTED_GUEST_STATE before its marked
+RUNNABLE, then the target vCPU could end up stuck in the UNINITIALIZED loop.
 
-We can always change things according to needs.
+Reading and writing arch.mp_state across vCPUs is simply not safe.  There's a
+reason why KVM atomically manages INITs and SIPIs and only modifies mp_state when
+processing events on the target vCPU.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> > +               kvm_vcpu_kick(target_vcpu);
+
+...
+
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index 87b78d63e81d..df9ec357d538 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -10858,6 +10858,14 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+> >
+> >                 if (kvm_check_request(KVM_REQ_UPDATE_CPU_DIRTY_LOGGING, vcpu))
+> >                         static_call(kvm_x86_update_cpu_dirty_logging)(vcpu);
+> > +
+> > +               if (kvm_check_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, vcpu)) {
+> > +                       kvm_vcpu_reset(vcpu, true);
+> > +                       if (vcpu->arch.mp_state != KVM_MP_STATE_RUNNABLE) {
+> > +                               r = 1;
+> > +                               goto out;
+> > +                       }
+> > +               }
+> >         }
+> >
+> >         if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
+> > @@ -13072,6 +13080,9 @@ static inline bool kvm_vcpu_has_events(struct kvm_vcpu *vcpu)
+> >         if (kvm_test_request(KVM_REQ_PMI, vcpu))
+> >                 return true;
+> >
+> > +       if (kvm_test_request(KVM_REQ_UPDATE_PROTECTED_GUEST_STATE, vcpu))
+> > +               return true;
+> > +
+> >         if (kvm_arch_interrupt_allowed(vcpu) &&
+> >             (kvm_cpu_has_interrupt(vcpu) ||
+> >             kvm_guest_apic_has_interrupt(vcpu)))
+> > --
+> > 2.25.1
+> >
+> >
