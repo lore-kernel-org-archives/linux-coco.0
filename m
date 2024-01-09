@@ -1,108 +1,81 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96111381BB
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jan 2024 12:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B72838F8A
+	for <linux-coco@lists.linux.dev>; Tue,  9 Jan 2024 13:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="P3vWCRHo"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C5EDB40E01B2;
-	Tue,  9 Jan 2024 12:45:24 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 8JN_jPoAT9UY; Tue,  9 Jan 2024 12:45:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704804322; bh=l6b0BVWYus0PqvwNEk2f7GpDUFZb2PXSAO/GejNElUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P3vWCRHonjL26YO014HkDzmHfhlyWvUpkuqIEPLXmV5eJ6Q4HswyJIiLdCq75I/tc
-	 Y7Lqd6l5lCkjB1JZRE4EF7T8eyRhELDXngGcqWwMI/3mQZpI50KOA0Gmjvo+69HuS8
-	 n6TZ95AZFoyCuQW9z8vz8SPac5eetbfupizS08/01RM4MPNyNkXsge5GtptNLRHrq4
-	 8aS72rGot0EIdY8gRNmoujNrFPgrg8SKJs/SKuT/Vpo6n6qAOtL0ccrAvx6y8xMDvG
-	 dmqSGzlx7F6yOD3YqtjplBih06OELzh1ouH6b32/zyPV4ZV/rDq5hm3y/ili1YRrfm
-	 LB3ULJANtMn33Ocx3ZP8oyp0ONqAgvUjXcw/E4hX6UnZr9hTrrO9iff5N89D3ltHLR
-	 JCEXwEDP1mRsoi9kCKG5DK1CswarhfyY5jdBTZQejQgd5eisdRaOQLYPEu6O/ouEaf
-	 zZ3esY5AxUJZQeR35pBzbCUj31lahwt+PHpqJp9eVgjywOTA2ngPbKuPdgaFwqwKIb
-	 68ngs77We4wQiFOCjSQr/w2Se3FUxh9rxbfMAV01fYUUqS3JXb4WQEtScEkZtx2dF0
-	 H6nyFxBskt06YADAQ2otuQ68m+yCRo4zpo/KnTsFgjhSyy/p3wTaDebIwcr7o3Kr7/
-	 yxAy0oTE3aG+3thy44+MQJSM=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 05E5540E01B0;
-	Tue,  9 Jan 2024 12:44:44 +0000 (UTC)
-Date: Tue, 9 Jan 2024 13:44:40 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: Michael Roth <michael.roth@amd.com>, x86@kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
-	thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
-	pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
-	jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
-	slp@redhat.com, pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com,
-	"liam.merwick@oracle.com Brijesh Singh" <brijesh.singh@amd.com>
-Subject: Re: [PATCH v1 04/26] x86/sev: Add the host SEV-SNP initialization
- support
-Message-ID: <20240109124440.GDZZ0/uDY9RRPIOxOB@fat_crate.local>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-5-michael.roth@amd.com>
- <f60c5fe0-9909-468d-8160-34d5bae39305@linux.microsoft.com>
- <20240105160916.GDZZgprE8T6xbbHJ9E@fat_crate.local>
- <20240105162142.GEZZgslgQCQYI7twat@fat_crate.local>
- <0c4aac73-10d8-4e47-b6a8-f0c180ba1900@linux.microsoft.com>
- <20240108170418.GDZZwrEiIaGuMpV0B0@fat_crate.local>
- <b5b57b60-1573-44f4-8161-e2249eb6f9b6@linux.microsoft.com>
- <20240109122906.GCZZ08Esh86vhGwVx1@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k4jiLNNQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704806296; x=1736342296;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=cJPKiirKT9lqC0Z6wFvcgBdIL3HSIWmPzlmahryzrlo=;
+  b=k4jiLNNQT9Xx9hJ3jAVuo5FjN9RLjPKDP6gUJ2p4EH9zN3c8Gjio+mIf
+   rQTC7I2UzFVnoJml4nWHrg/VtaK+X+TPbYWnvGfcWFpsjIWWLhmXH/Bpy
+   RBK6ilbNHU2ox7/X25lkZpRgz4GeTNogDpZuiiRaENpQRpA1bdvYkmlpd
+   1grnCHv/7ph7WTSyzcpEWH41W/qLfS+V1EhdWrRFYLbGSjPrhCNWzQGjD
+   Fy/FFyJqCuwQBCwNt9QgLuUuLbFu7fF//T5pcEDKBqvM3dzyk9IW5rHcw
+   dx2IL2j43REBA3cvuDsgZgO7svLTC3ipz3lBqG1cJlQVngLH3BzKPs7RM
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="19697836"
+X-IronPort-AV: E=Sophos;i="6.04,182,1695711600"; 
+   d="scan'208";a="19697836"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 05:17:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="781794615"
+X-IronPort-AV: E=Sophos;i="6.04,182,1695711600"; 
+   d="scan'208";a="781794615"
+Received: from arunjose-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.37.37])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 05:17:43 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 4CB9010A4E9; Tue,  9 Jan 2024 16:17:40 +0300 (+03)
+Date: Tue, 9 Jan 2024 16:17:40 +0300
+From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Xiaoyao Li <xiaoyao.li@intel.com>, linux-kernel@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v1] virt: tdx-guest: Handle GetQuote request error code
+Message-ID: <20240109131740.nk54gdmri6gpwkta@box.shutemov.name>
+References: <20240109054604.2562620-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240109122906.GCZZ08Esh86vhGwVx1@fat_crate.local>
+In-Reply-To: <20240109054604.2562620-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 
-On Tue, Jan 09, 2024 at 01:29:06PM +0100, Borislav Petkov wrote:
-> At least three issues I see with that:
-> 
-> - the allocation can fail so it is a lot more convenient when the
->   firmware prepares it
-> 
-> - the RMP_BASE and RMP_END writes need to be verified they actially did
->   set up the RMP range because if they haven't, you might as well
->   throw SNP security out of the window. In general, letting the kernel
->   do the RMP allocation needs to be verified very very thoroughly.
-> 
-> - a future feature might make this more complicated
+On Tue, Jan 09, 2024 at 05:46:04AM +0000, Kuppuswamy Sathyanarayanan wrote:
+> Currently when a user requests for the Quote generation, the Quote
+> generation handler (tdx_report_new()) only checks whether the VMM
+> successfully processes the Quote generation request (status !=
+> GET_QUOTE_IN_FLIGHT) and returns the output to the user without
+> validating the status of the output data. Since VMM can return error
+> even after processing the Quote request, returning success just after
+> successful processing will create confusion to the user. Although for
+> the failed request, output buffer length will be zero and can also be
+> used by the user to identify the failure case, it will be more clear to
+> return error for all failed cases. So validate the Quote output status
+> and return error code for all failed cases.
 
-- What do you do if you boot on a system which has the RMP already
-  allocated in the BIOS?
+Could you split commit message into several paragraphs? It would be easier
+to get along.
 
-- How do you detect that it is the L1 kernel that must allocate the RMP?
+It can be helpful to follow structure like:
 
-- Why can't you use the BIOS allocated RMP in your scenario too instead
-  of the L1 kernel allocating it?
+<Background>
 
-- ...
+<Problem>
 
-I might think of more.
+<Solution>
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
