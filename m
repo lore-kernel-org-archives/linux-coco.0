@@ -1,50 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2A3E495;
-	Tue,  9 Jan 2024 23:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CCF364BD;
+	Tue,  9 Jan 2024 23:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jVxJ6tAp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KW6Xn49V"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704841604; x=1736377604;
+  t=1704844040; x=1736380040;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=qB6rllY9Y9lF/uM8R45vNgHXRFEg+zZ+eoCghnpCI60=;
-  b=jVxJ6tApQ6k/f84mK8Lonb2Fp0pwhJcxrq95PRCT5diRMkMuKFLwiAaF
-   ap2VoTBIRebHhIXFcSCodqUtc/a4nYYjLKr4iBH3APiUXN8GsT8AmHHZC
-   Q8eSjEeuQZcS3zUiUp01z37J1x2lfmZVupELOWxKmX4OcXmEr2KnoXNhz
-   KVSg9hhCOMG01vL0Jjg0lGvOMbf3kBr3QRRsd+zSfh9rENpOmaTXyg4V0
-   4391sCrziteppLkQfW88uUmEB2oaqu33E1+GmEAE4VkjdU9jCiiTer8yo
-   II4lWXIf9JnpdzITansYeKTk/8ymweaWnEuZxbwrv3U9sL9oS26PcwYJe
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="5122169"
+  bh=bewDhbzp09Q75N7YhFCyWSzSy1l1fniXCPCgpAHNkBE=;
+  b=KW6Xn49Vp8oMSxY4LGQpY8VtAp3uPfWlAds6OTnjJrLn4WuT/6SQ+qe1
+   sCRgKzvm4Ik8E7KC3PYr15mLnEBZtW8bOpNuhgjAiAyOeVrUs0Dbm16Fp
+   HOo9jt/0lWwAKUsGhEvpUy4CqpV4Ya84rvsD0Hg5XnIDcgsqRJriM5c+h
+   VtOfqqTcTIZ4aIv2n94nWCbvzIg3/Lucrcgnhzg8j5JaCkc0CTZzo6IQm
+   kyPJECs9tO2iGr4GD73mL8+xwilQ2EnyNGpEIZxu40H0Kvf8SnOuj1s7L
+   FEy4SKmzDojs/jS5iC3IPbTyR5+H5z6+8VBseasXYYzMsKAoWjyvYxJsz
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="462643280"
 X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="5122169"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 15:06:01 -0800
+   d="scan'208";a="462643280"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 15:47:19 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="785405104"
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="905323749"
 X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="785405104"
+   d="scan'208";a="905323749"
 Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga007.fm.intel.com with ESMTP; 09 Jan 2024 15:05:57 -0800
+  by orsmga004.jf.intel.com with ESMTP; 09 Jan 2024 15:47:17 -0800
 Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rNLAR-0006LG-0v;
-	Tue, 09 Jan 2024 23:05:55 +0000
-Date: Wed, 10 Jan 2024 07:05:43 +0800
+	id 1rNLoQ-0006Ne-2k;
+	Tue, 09 Jan 2024 23:47:14 +0000
+Date: Wed, 10 Jan 2024 07:47:11 +0800
 From: kernel test robot <lkp@intel.com>
 To: Jun Miao <jun.miao@intel.com>, kirill.shutemov@linux.intel.com,
 	dave.hansen@linux.intel.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, jun.miao@intel.com,
-	x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, jun.miao@intel.com, x86@kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] x86/tdx: Optimize try_accept_memory() to reduce 1GB page
  accepted failed times
-Message-ID: <202401100620.TjY1Uq2O-lkp@intel.com>
+Message-ID: <202401100747.8LTktRbX-lkp@intel.com>
 References: <20240109054824.9023-1-jun.miao@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -71,28 +70,21 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Jun-Miao/x86-tdx-Optimize
 base:   tip/x86/tdx
 patch link:    https://lore.kernel.org/r/20240109054824.9023-1-jun.miao%40intel.com
 patch subject: [PATCH] x86/tdx: Optimize try_accept_memory() to reduce 1GB page accepted failed times
-config: x86_64-allmodconfig (https://download.01.org/0day-ci/archive/20240110/202401100620.TjY1Uq2O-lkp@intel.com/config)
-compiler: ClangBuiltLinux clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240110/202401100620.TjY1Uq2O-lkp@intel.com/reproduce)
+config: x86_64-rhel-8.3-bpf (https://download.01.org/0day-ci/archive/20240110/202401100747.8LTktRbX-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240110/202401100747.8LTktRbX-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401100620.TjY1Uq2O-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401100747.8LTktRbX-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
->> arch/x86/coco/tdx/tdx-shared.c:62:3: warning: '/*' within block comment [-Wcomment]
+   arch/x86/coco/tdx/tdx-shared.c: In function 'tdx_accept_memory':
+>> arch/x86/coco/tdx/tdx-shared.c:62:17: warning: "/*" within comment [-Wcomment]
       62 |                 /* The 4KB page case or accept 2MB page failed case. */
-         |                 ^
->> arch/x86/coco/tdx/tdx-shared.c:63:8: warning: variable 'accept_size' is uninitialized when used here [-Wuninitialized]
-      63 |                 if (!accept_size)
-         |                      ^~~~~~~~~~~
-   arch/x86/coco/tdx/tdx-shared.c:49:28: note: initialize the variable 'accept_size' to silence this warning
-      49 |                 unsigned long accept_size;
-         |                                          ^
-         |                                           = 0
-   2 warnings generated.
+         |                  
 
 
 vim +62 arch/x86/coco/tdx/tdx-shared.c
@@ -120,7 +112,7 @@ vim +62 arch/x86/coco/tdx/tdx-shared.c
     60				accept_size = try_accept_one(start, len, PG_LEVEL_2M);
     61	
   > 62			/* The 4KB page case or accept 2MB page failed case. */
-  > 63			if (!accept_size)
+    63			if (!accept_size)
     64				accept_size = try_accept_one(start, len, PG_LEVEL_4K);
     65			if (!accept_size)
     66				return false;
