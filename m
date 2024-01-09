@@ -1,162 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4E61E4B1
-	for <linux-coco@lists.linux.dev>; Tue,  9 Jan 2024 11:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894E938DD6
+	for <linux-coco@lists.linux.dev>; Tue,  9 Jan 2024 11:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m1SxpyZZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704800461; x=1736336461;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=AoPRblfBYSSpxI4NW0UoohG5awkc5/gNHCwPgvymxJ0=;
-  b=m1SxpyZZ//mAVpPeNxSy2D5FFs5MlhJ5KAlsEwFJu93gDMOdYGRGaahT
-   +fNAAsEhjvjgIGVL89UdNqiR4tq5ch7oh2vRlKYvbxcfo3+d1GdhSFe2o
-   /DMsFcb7GxvKqiyUg+3GfMg6xjcjHLToHoGebd/YVSl2u3iEKKHHVtyF1
-   5m8s8+o0czCvZyfjhZI6inYNsM/FdnO3dbPK1iqePFXKz5J/Bam0zD+ye
-   D/INmEfj14m3+th+kjG6OpHGeCfUvlkQFvDy4AN8Uw+IKOkOxL9cddgwv
-   9Ta6kcXSyRPS8TmcG5ox20Q9WGD1f47Yanos5q5G8HMVBFEKI2orPOuzy
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="4946117"
-X-IronPort-AV: E=Sophos;i="6.04,182,1695711600"; 
-   d="scan'208";a="4946117"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 03:41:00 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="757957217"
-X-IronPort-AV: E=Sophos;i="6.04,182,1695711600"; 
-   d="scan'208";a="757957217"
-Received: from arunjose-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.37.37])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 03:40:58 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id F2CA710A4E9; Tue,  9 Jan 2024 14:40:54 +0300 (+03)
-Date: Tue, 9 Jan 2024 14:40:54 +0300
-From: kirill.shutemov@linux.intel.com
-To: Jun Miao <jun.miao@intel.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/tdx: Optimize try_accept_memory() to reduce 1GB page
- accepted failed times
-Message-ID: <20240109114054.s2mzvhp2dgbihcvy@box.shutemov.name>
-References: <20240109054824.9023-1-jun.miao@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="leEnvgxm"
+Received: from [192.168.1.210] (181-28-144-85.ftth.glasoperator.nl [85.144.28.181])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 5DA60209AF69;
+	Tue,  9 Jan 2024 03:56:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5DA60209AF69
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1704801386;
+	bh=qTrKm5gfDaGVKWMebrVJloyB8rgSl281DiQxs9lsdz4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=leEnvgxmqMyQcS71Cg/lDkkVYOlAo1MdVzP4smUzAvnnaHz4jrz2ndUmu4HVjlYiQ
+	 pQ9ufr8kiXyrTyy7o8s4h6REGjMhslEU9OG1i/Gy8bxqDNExlO0wS6czjMnGF8TyoQ
+	 P4TKIMEclkSk/uRWSxMfgue1qpFPR6T4Eu81gM/Y=
+Message-ID: <b5b57b60-1573-44f4-8161-e2249eb6f9b6@linux.microsoft.com>
+Date: Tue, 9 Jan 2024 12:56:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240109054824.9023-1-jun.miao@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 04/26] x86/sev: Add the host SEV-SNP initialization
+ support
+Content-Language: en-US
+To: Borislav Petkov <bp@alien8.de>
+Cc: Michael Roth <michael.roth@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com, tobin@ibm.com,
+ vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
+ tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
+ alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
+ nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
+ zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>
+References: <20231230161954.569267-1-michael.roth@amd.com>
+ <20231230161954.569267-5-michael.roth@amd.com>
+ <f60c5fe0-9909-468d-8160-34d5bae39305@linux.microsoft.com>
+ <20240105160916.GDZZgprE8T6xbbHJ9E@fat_crate.local>
+ <20240105162142.GEZZgslgQCQYI7twat@fat_crate.local>
+ <0c4aac73-10d8-4e47-b6a8-f0c180ba1900@linux.microsoft.com>
+ <20240108170418.GDZZwrEiIaGuMpV0B0@fat_crate.local>
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <20240108170418.GDZZwrEiIaGuMpV0B0@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 09, 2024 at 01:48:24PM +0800, Jun Miao wrote:
-> Since the current TDX module ABI spec TDG.MEM.PAGE.ACCEPT Leaf show:
-> "Level of the Secure EPT leaf entry that maps the private page to be
-> accepted: either 0 (4KB) or 1 (2MB)".
-
-Well, that's true that current implementation supports only 4k and 2M, but
-note reference to "Secure EPT level" table. This as well as size of the
-field suggests that it can be extended to more page levels.
-
-> There is not 1G page accept dynamically, if every time try to accept 1G
-> size but always fail, then cost more time from two cases:
-> 	- When size < 1G, judge failed return 0
-> 	- Really TDCALL<ACCEPT_PAGE> 1G failed when size >= 1G
-> So skip the 1G and optimize it to 2M directly to save time.
-
-Do you actually see issued TDCALL for 1G pages? It shouldn't be the case.
-
-Kernel accepts memory in MAX_ORDER chunks -- 4MiB a time. try_accept_one()
-will fail on alignment check 511 times of 512 and on len check for the
-one. I expected these checks to be within noise compared to TDCALL.
-
-I don't oppose the patch in principal, but let's establish facts first.
-
+On 08/01/2024 18:04, Borislav Petkov wrote:
+> On Mon, Jan 08, 2024 at 05:49:01PM +0100, Jeremi Piotrowski wrote:
+>> What I wrote: "allow for the kernel to allocate the rmptable".
 > 
-> Run the eatmemory with different memories to get the cost time as follow:
-> 	[root@td-guest ~]# ./eatmemory 8G
-> 	Currently total memory: 100169027584
-> 	Currently avail memory: 99901911040
-> 	Eating 8589934592 bytes in chunks of 1024...
+> What?!
 > 
-> 	  Start time：1704699207487 ms
-> 	  End time：1704699222966 ms
-> 	  Cost time: 15479 ms
->   #
->   # Compare with/without this optimization
->   #
->   # Hardware: ArcherCity Sapphire Rapids 128cores
->   # Test eatmemory: https://github.com/jmiao2018/eatmemory.git
->   # Detail test log link: https://github.com/jmiao2018/eatmemory/blob/master/log-tdx.txt
->   #
->   # Accept Memeory Sizes      Before(ms)       After(ms)      Trigger 1G Failed Times      Reduce Time%
->   # ....................      ..........       .........      .......................	   .............
->   #
-> 		  1G                3414         3402                        751824        -12(-0.035%)
-> 		  2G                3853         3804                       1015126       -349(-0.128%)
-> 		  4G                7773         7561                       1557834       -212(-0.281%)
-> 		  8G               15479        15173                       2633686       -306(-0.201%)
->   		 16G               31527        30379                       4785649      -1148(-0.378%)
->   		 32G               65058        63723                       9087686      -1335(-0.209%)
-> 		 64G              133379       128354                      17693366      -5025(-0.391%)
+> "15.36.5 Hypervisor RMP Management
 > 
-> Co-developed-by: Zhiquan Li <zhiquan1.li@intel.com>
-> Signed-off-by: Jun Miao <jun.miao@intel.com>
-> ---
->  arch/x86/coco/tdx/tdx-shared.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+> ...
 > 
-> diff --git a/arch/x86/coco/tdx/tdx-shared.c b/arch/x86/coco/tdx/tdx-shared.c
-> index 1655aa56a0a5..1694b7eba93b 100644
-> --- a/arch/x86/coco/tdx/tdx-shared.c
-> +++ b/arch/x86/coco/tdx/tdx-shared.c
-> @@ -18,7 +18,7 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
->  	 * Pass the page physical address to the TDX module to accept the
->  	 * pending, private page.
->  	 *
-> -	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M, 2 - 1G.
-> +	 * Bits 2:0 of RCX encode page size: 0 - 4K, 1 - 2M.
->  	 */
->  	switch (pg_level) {
->  	case PG_LEVEL_4K:
-> @@ -27,9 +27,6 @@ static unsigned long try_accept_one(phys_addr_t start, unsigned long len,
->  	case PG_LEVEL_2M:
->  		page_size = TDX_PS_2M;
->  		break;
-> -	case PG_LEVEL_1G:
-> -		page_size = TDX_PS_1G;
-> -		break;
->  	default:
->  		return 0;
->  	}
-> @@ -55,11 +52,14 @@ bool tdx_accept_memory(phys_addr_t start, phys_addr_t end)
->  		 * Try larger accepts first. It gives chance to VMM to keep
->  		 * 1G/2M Secure EPT entries where possible and speeds up
->  		 * process by cutting number of hypercalls (if successful).
-> -		 */
-> +		 * Since per current TDX spec, only support for adding 4KB or
-> +		 * 2MB page dynamically.
-> +		 * /
->  
-> -		accept_size = try_accept_one(start, len, PG_LEVEL_1G);
-> -		if (!accept_size)
-> +		if (IS_ALIGNED(start, PMD_SIZE) && len >= PMD_SIZE)
+> Because the RMP is initialized by the AMD-SP to prevent direct access to
+> the RMP, the hypervisor must use the RMPUPDATE instruction to alter the
+> entries of the RMP. RMPUPDATE allows the hypervisor to alter the
+> Guest_Physical_Address, Assigned, Page_Size, Immutable, and ASID fields
+> of an RMP entry."
+>> What you want is something that you should keep far and away from the
+> upstream kernel.
+>
 
-You duplicate checks inside try_to_accept_on().
+Can we please not assume I am acting in bad faith. I am explicitly trying to
+integrate nicely with AMD's KVM SNP host patches to cover an additional usecase
+and get something upstreamable.
 
->  			accept_size = try_accept_one(start, len, PG_LEVEL_2M);
-> +
-> +		/* The 4KB page case or accept 2MB page failed case. */
->  		if (!accept_size)
->  			accept_size = try_accept_one(start, len, PG_LEVEL_4K);
->  		if (!accept_size)
-> -- 
-> 2.32.0
-> 
+Let's separate RMP allocation from who (and how) maintains the entries.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+"""
+15.36.4 Initializing the RMP
+...
+Software must program RMP_BASE and RMP_END identically for each core in the
+system and before enabling SEV-SNP globally.
+"""
+
+KVM expects UEFI to do this, Hyper-V does the allocation itself (on bare-metal).
+Both are valid. Afaik it is the SNP_INIT command that hands over control of the
+RMP from software to AMD-SP.
+
+When it comes to "who and how maintains the rmp" - that is of course the AMD-SP
+and hypervisor issues RMPUPDATE instructions. The paragraph you cite talks about
+the physical RMP and AMD-SP - not virtualized SNP (aka "SNP-host VM"/nested SNP).
+AMD specified an MSR-based RMPUPDATE for us for that usecase (15.36.19 SEV-SNP
+Instruction Virtualization). The RMP inside the SNP-host VM is not related to
+the physical RMP and is an entirely software based construct.
+
+The RMP in nested SNP is only used for kernel bookkeeping and so its allocation
+is optional. KVM could do without reading the RMP directly altogether (by tracking
+the assigned bit somewhere) but that would be a design change and I'd rather see
+the KVM SNP host patches merged in their current shape. Which is why the patch
+I linked allocates a (shadow) RMP from the kernel.
+
+I would very much appreciate if we would not prevent that usecase from working -
+that's why I've been reviewing and testing multiple revisions of these patches
+and providing feedback all along.
