@@ -1,50 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA05B482EF
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 12:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753834A995;
+	Wed, 10 Jan 2024 13:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mw0Opq/z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QI8nzHAd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704891297; x=1736427297;
+  t=1704893828; x=1736429828;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Xm2YU4WaqEHvWHszTGe+00QdRB6H2V0BZ+19qV1T0og=;
-  b=Mw0Opq/zlvG+t6a20i3J/DFSbNxX4jytHjtlfQChtj7/f41+gRbDx47+
-   R9sK5gKk1k5UzWDYL2pkb7G9oUlo5PVJK1J82RNB5zzSBEfw4IXN5URsa
-   vn+kBcZzpAlYeTWdEGdnKt0B6Y6ghEK9cG1TTV9dtiaCnUp1cKPK45WaP
-   glz7/2Kmd+a5ZpFE/NlSmUnP3tCoXCOnRtTV9cld76Ct1HlwnPS831/UW
-   rPJYs8fZ4iPu3Z2DiXmpc+LexhRHIRl8CEsyond/FdzzHN0wYY/3bxg8G
-   oclysBur3BpqhqloJxcp9cYhsrsLcWlkcbeNWIgWnRpK/1jnH6TbV/JU2
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10948"; a="5257500"
+  bh=3KjM4afpgsVkg16ec8qhOMcIMU+MFDkAz+XeEDCLYjk=;
+  b=QI8nzHAd5CG4V7O4UCIE7+E9z1PRb4DCR/ix5W9XfGsUyIimj0steTf+
+   kYILwsrmXjLq23TCUSUUVexchAZM5CLx1up9dJ6csnUkWOtsGtlhA57P4
+   0wvhaMqBbUNbM4meBBQW9zun4RJbwTY/dGTqpdQkGFsmhdfNwJhrNnTk4
+   s/scsHrebWjuS9WV08AJGgeWNI2D/EUwjJSCgrS/TnjXbLRUFedWqUjGk
+   boyz90F/k4Y7BEr+5thss32inlupHSP5cWds38a1x7W8KpICO8r2Par+w
+   8NBL2UgBD5W067spn+iDc+6jMzjigoiYtsZ3+JMZ+ppGqPDJw/AHwozlE
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10948"; a="5291530"
 X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="5257500"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 04:54:56 -0800
+   d="scan'208";a="5291530"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 05:37:06 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10948"; a="785592166"
 X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="785592166"
+   d="scan'208";a="24271084"
 Received: from jganji-mobl1.gar.corp.intel.com (HELO box.shutemov.name) ([10.249.37.201])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 04:54:54 -0800
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 05:37:00 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 6CB6B109589; Wed, 10 Jan 2024 15:54:51 +0300 (+03)
-Date: Wed, 10 Jan 2024 15:54:51 +0300
-From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v1] virt: tdx-guest: Handle GetQuote request error code
-Message-ID: <20240110125451.whabimhece7dw5jn@box>
-References: <20240109054604.2562620-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <20240109131740.nk54gdmri6gpwkta@box.shutemov.name>
- <6805ad1f-2c91-4a8d-98c9-5da337dd13f6@linux.intel.com>
+	id 4DBCC109589; Wed, 10 Jan 2024 16:36:57 +0300 (+03)
+Date: Wed, 10 Jan 2024 16:36:57 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Kevin Loughlin <kevinloughlin@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Kees Cook <keescook@chromium.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Ze Gao <zegao2021@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Joerg Roedel <jroedel@suse.de>, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, linux-coco@lists.linux.dev,
+	Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>,
+	Jacob Xu <jacobhxu@google.com>,
+	Sidharth Telang <sidtelang@google.com>
+Subject: Re: [RFC PATCH] x86/sev: x86/sev: enforce PC-relative addressing in
+ clang
+Message-ID: <20240110133657.vbpzplchgaim3bya@box>
+References: <20240110012640.1335694-1-kevinloughlin@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -53,62 +70,55 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6805ad1f-2c91-4a8d-98c9-5da337dd13f6@linux.intel.com>
+In-Reply-To: <20240110012640.1335694-1-kevinloughlin@google.com>
 
-On Tue, Jan 09, 2024 at 07:56:56PM -0800, Kuppuswamy Sathyanarayanan wrote:
+On Wed, Jan 10, 2024 at 01:26:39AM +0000, Kevin Loughlin wrote:
+> SEV/SME code can execute prior to page table fixups for kernel
+> relocation. However, as with global variables accessed in
+> __startup_64(), clang does not currently generate PC-relative accesses
+> for SEV/SME global variables, causing certain flavors of SEV hosts and
+> guests to crash.
 > 
+> While an attempt was made to force PC-relative addressing for certain
+> global SEV/SME variables via inline assembly (see snp_cpuid_get_table()
+> for example), PC-relative addressing must be pervasively-enforced for
+> SEV/SME global variables that can be accessed prior to page table
+> fixups.
 > 
-> On 1/9/2024 5:17 AM, Kirill A . Shutemov wrote:
-> > On Tue, Jan 09, 2024 at 05:46:04AM +0000, Kuppuswamy Sathyanarayanan wrote:
-> >> Currently when a user requests for the Quote generation, the Quote
-> >> generation handler (tdx_report_new()) only checks whether the VMM
-> >> successfully processes the Quote generation request (status !=
-> >> GET_QUOTE_IN_FLIGHT) and returns the output to the user without
-> >> validating the status of the output data. Since VMM can return error
-> >> even after processing the Quote request, returning success just after
-> >> successful processing will create confusion to the user. Although for
-> >> the failed request, output buffer length will be zero and can also be
-> >> used by the user to identify the failure case, it will be more clear to
-> >> return error for all failed cases. So validate the Quote output status
-> >> and return error code for all failed cases.
-> > 
-> > Could you split commit message into several paragraphs? It would be easier
-> > to get along.
-> > 
-> > It can be helpful to follow structure like:
-> > 
-> > <Background>
-> > 
-> > <Problem>
-> > 
-> > <Solution>
-> > 
+> To avoid the error-prone approach of manually referencing each SEV/SME
+> global variable via a general form of snp_cpuid_get_table(), it is
+> preferable to use compiler flags for position-independent code (ex:
+> `-fPIE`) that result in PC-relative accesses. While architecture-
+> specific code for Linux can be pervasively compiled as position-
+> independent on select architectures (ex: RISC-V), this is not currently
+> the case for x86-64 and would require extensive changes (see "[PATCH
+> RFC 00/43] x86/pie: Make kernel image's virtual address flexible" for
+> example).
 > 
-> How about the following version?
+> Fortunately, the relevant files for SEV/SME code do indeed support
+> position-independent clang compilation, so we can use this technique to
+> ensure all global variables in these files are accessed via PC-relative
+> addressing.
 > 
-> During the TDX guest attestation process, TSM ConfigFS ABI is used by
-> the user attestation agent to get the signed VM measurement data (a.k.a
-> Quote), which can be used by a remote verifier to validate the
-> trustworthiness of the guest. When a user requests for the Quote data
-> via the ConfigFS ABI, the TDX Quote generation handler
-> (tdx_report_new()) forwards the request to VMM (or QE) via a hypercall,
-> and then shares the output with the user.
+> Unlike clang, gcc does not currently allow `-fPIE` in conjunction with
+> `mcmodel=kernel`. Thus, to preserve existing gcc behavior, this patch
+> does not remove the (otherwise unnecessary) inline assembly that
+> already enforces PC-relative addressing for select SEV/SME globals
+> (mentioned above). If gcc supports these joint options in the future,
+> we can remove such inline assembly and also apply this patch to gcc
+> builds.
 > 
-> Currently, when handling the Quote generation request, tdx_report_new()
-> handler only checks whether the VMM successfully processed the request
-> and if it is true it returns success and shares the output to the user
-> without actually validating the output data. Since the VMM can return
-> error even after processing the Quote request, always returning success
-> for the processed requests is incorrect and will create confusion to
-> the user. Although for the failed request, output buffer length will
-> be zero and can also be used by the user to identify the failure case,
-> it will be more clear to return error for all failed cases.
+> Tested by successful boot of SEV-SNP guest built with clang, alongside
+> Adam Dunlap's necessary "[PATCH v2] x86/asm: Force native_apic_mem_read
+> to use mov".
 > 
-> So when handling the Quote generation request, validate the Quote data
-> output status and return error code for all failed cases.
 
-I would drop the start of the sentence upto ',' here, but otherwise looks
-good to me.
+Similar issues was fixed before with fixup_pointer() tricks. Have you
+tried looking this direction.
+
+Relevant thread starting with:
+
+https://lore.kernel.org/all/20210920192341.maue7db4lcbdn46x@box.shutemov.name
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
