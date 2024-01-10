@@ -1,124 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753834A995;
-	Wed, 10 Jan 2024 13:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QI8nzHAd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704893828; x=1736429828;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3KjM4afpgsVkg16ec8qhOMcIMU+MFDkAz+XeEDCLYjk=;
-  b=QI8nzHAd5CG4V7O4UCIE7+E9z1PRb4DCR/ix5W9XfGsUyIimj0steTf+
-   kYILwsrmXjLq23TCUSUUVexchAZM5CLx1up9dJ6csnUkWOtsGtlhA57P4
-   0wvhaMqBbUNbM4meBBQW9zun4RJbwTY/dGTqpdQkGFsmhdfNwJhrNnTk4
-   s/scsHrebWjuS9WV08AJGgeWNI2D/EUwjJSCgrS/TnjXbLRUFedWqUjGk
-   boyz90F/k4Y7BEr+5thss32inlupHSP5cWds38a1x7W8KpICO8r2Par+w
-   8NBL2UgBD5W067spn+iDc+6jMzjigoiYtsZ3+JMZ+ppGqPDJw/AHwozlE
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10948"; a="5291530"
-X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="5291530"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 05:37:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="24271084"
-Received: from jganji-mobl1.gar.corp.intel.com (HELO box.shutemov.name) ([10.249.37.201])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 05:37:00 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 4DBCC109589; Wed, 10 Jan 2024 16:36:57 +0300 (+03)
-Date: Wed, 10 Jan 2024 16:36:57 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Kevin Loughlin <kevinloughlin@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Kees Cook <keescook@chromium.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Ze Gao <zegao2021@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Joerg Roedel <jroedel@suse.de>, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, linux-coco@lists.linux.dev,
-	Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>,
-	Jacob Xu <jacobhxu@google.com>,
-	Sidharth Telang <sidtelang@google.com>
-Subject: Re: [RFC PATCH] x86/sev: x86/sev: enforce PC-relative addressing in
- clang
-Message-ID: <20240110133657.vbpzplchgaim3bya@box>
-References: <20240110012640.1335694-1-kevinloughlin@google.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523EA48CC9;
+	Wed, 10 Jan 2024 13:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 083E62F4;
+	Wed, 10 Jan 2024 05:45:37 -0800 (PST)
+Received: from [10.57.46.83] (unknown [10.57.46.83])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 438EE3F64C;
+	Wed, 10 Jan 2024 05:44:47 -0800 (PST)
+Message-ID: <d47e8b8c-50e4-4ad3-8f00-cadaede1eca9@arm.com>
+Date: Wed, 10 Jan 2024 13:44:45 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240110012640.1335694-1-kevinloughlin@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] Support for Arm CCA VMs on Linux
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+To: Itaru Kitayama <itaru.kitayama@linux.dev>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org,
+ maz@kernel.org, steven.price@arm.com, alexandru.elisei@arm.com,
+ joey.gouly@arm.com, james.morse@arm.com, Jonathan.Cameron@huawei.com,
+ dgilbert@redhat.com, jpb@kernel.org, oliver.upton@linux.dev,
+ zhi.wang.linux@gmail.com, yuzenghui@huawei.com, salil.mehta@huawei.com,
+ Andrew Jones <andrew.jones@linux.dev>,
+ Chao Peng <chao.p.peng@linux.intel.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Mark Rutland <mark.rutland@arm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Quentin Perret <qperret@google.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Huth <thuth@redhat.com>,
+ Ryan Roberts <Ryan.Roberts@arm.com>, Sami Mujawar <Sami.Mujawar@arm.com>
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <20231002124311.204614-1-suzuki.poulose@arm.com> <ZZ4tsTQOKOamM+h/@vm3>
+ <ec8ed5b0-5080-45e9-a4a6-e5dbe48e86d3@arm.com>
+In-Reply-To: <ec8ed5b0-5080-45e9-a4a6-e5dbe48e86d3@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 10, 2024 at 01:26:39AM +0000, Kevin Loughlin wrote:
-> SEV/SME code can execute prior to page table fixups for kernel
-> relocation. However, as with global variables accessed in
-> __startup_64(), clang does not currently generate PC-relative accesses
-> for SEV/SME global variables, causing certain flavors of SEV hosts and
-> guests to crash.
+On 10/01/2024 11:41, Suzuki K Poulose wrote:
+> Hi Itaru,
 > 
-> While an attempt was made to force PC-relative addressing for certain
-> global SEV/SME variables via inline assembly (see snp_cpuid_get_table()
-> for example), PC-relative addressing must be pervasively-enforced for
-> SEV/SME global variables that can be accessed prior to page table
-> fixups.
+> On 10/01/2024 05:40, Itaru Kitayama wrote:
+>> On Mon, Oct 02, 2023 at 01:43:11PM +0100, Suzuki K Poulose wrote:
+>>> Hi,
+>>>
+>>>
+
+...
+
+>>
+>> Suzuki,
+>> Any update to the Arm CCA series (v3?) since last October?
 > 
-> To avoid the error-prone approach of manually referencing each SEV/SME
-> global variable via a general form of snp_cpuid_get_table(), it is
-> preferable to use compiler flags for position-independent code (ex:
-> `-fPIE`) that result in PC-relative accesses. While architecture-
-> specific code for Linux can be pervasively compiled as position-
-> independent on select architectures (ex: RISC-V), this is not currently
-> the case for x86-64 and would require extensive changes (see "[PATCH
-> RFC 00/43] x86/pie: Make kernel image's virtual address flexible" for
-> example).
+> Yes, we now have a version that supports the final RMM-v1.0
+> specification (RMM-v1.0-EAC5). We also have the UEFI EDK2 firmware
+> support for Guests in Realm world.
 > 
-> Fortunately, the relevant files for SEV/SME code do indeed support
-> position-independent clang compilation, so we can use this technique to
-> ensure all global variables in these files are accessed via PC-relative
-> addressing.
+> We are planning to post the changes for review in the v6.8-rc cycle. We
+> are trying to integrate the guest_mem support (available in v6.8-rc1) as
+> well as reusing some of the arm64 kvm generic interface for configuring
+> the Realm parameters (e.g., PMU, SVE_VL etc).
 > 
-> Unlike clang, gcc does not currently allow `-fPIE` in conjunction with
-> `mcmodel=kernel`. Thus, to preserve existing gcc behavior, this patch
-> does not remove the (otherwise unnecessary) inline assembly that
-> already enforces PC-relative addressing for select SEV/SME globals
-> (mentioned above). If gcc supports these joint options in the future,
-> we can remove such inline assembly and also apply this patch to gcc
-> builds.
+> Here is a version that is missing the items mentioned above, based
+> on v6.7-rc4, if anyone would like to try.
 > 
-> Tested by successful boot of SEV-SNP guest built with clang, alongside
-> Adam Dunlap's necessary "[PATCH v2] x86/asm: Force native_apic_mem_read
-> to use mov".
+> Also, the easiest way to get the components built and model kick started
+> is using the shrinkwrap [6] tool, using the cca-3world configuration.
+> The tool pulls all the required software components, builds (including
+> the buildroot for rootfs) and can run a model using these built
+> components.
+
+Also, please see 'arm/run-realm-tests.sh' in the kvm-unit-tests-cca 
+repository for sample command lines to invoke kvmtool to create Realm
+VMs.
+
+
+> 
+> 
+> 
+> [0] Linux Repo:
+>        Where: git@git.gitlab.arm.com:linux-arm/linux-cca.git
+>        KVM Support branch: cca-host/rmm-v1.0-eac5
+>        Linux Guest branch: cca-guest/rmm-v1.0-eac5
+>        Full stack branch:  cca-full/rmm-v1.0-eac5
+> 
+> [1] kvmtool Repo:
+>        Where: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git
+>        Branch: cca/rmm-v1.0-eac5
+> 
+> [2] kvm-unit-tests Repo:
+>        Where: git@git.gitlab.arm.com:linux-arm/kvm-unit-tests-cca.git
+>        Branch: cca/rmm-v1.0-eac5
+> 
+> [3] UEFI Guest firmware:
+>        edk2:     https://git.gitlab.arm.com/linux-arm/edk2-cca.git
+>        revision: 2802_arm_cca_rmm-v1.0-eac5
+> 
+>        edk2-platforms: 
+> https://git.gitlab.arm.com/linux-arm/edk2-platforms-cca.git
+>        revision:       2802_arm_cca_rmm-v1.0-eac5
+> 
+> 
+> [4] RMM Repo:
+>        Where: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
+>        tag : tf-rmm-v0.4.0
+> 
+> [5] TF-A repo:
+>        Where: https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+>        Tag: v2.10
+> 
+> 
+> [6] https://shrinkwrap.docs.arm.com/en/latest/
+>      config: cca-3world.yaml
 > 
 
-Similar issues was fixed before with fixup_pointer() tricks. Have you
-tried looking this direction.
+Suzuki
 
-Relevant thread starting with:
-
-https://lore.kernel.org/all/20210920192341.maue7db4lcbdn46x@box.shutemov.name
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
