@@ -1,125 +1,76 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523EA48CC9;
-	Wed, 10 Jan 2024 13:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 083E62F4;
-	Wed, 10 Jan 2024 05:45:37 -0800 (PST)
-Received: from [10.57.46.83] (unknown [10.57.46.83])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 438EE3F64C;
-	Wed, 10 Jan 2024 05:44:47 -0800 (PST)
-Message-ID: <d47e8b8c-50e4-4ad3-8f00-cadaede1eca9@arm.com>
-Date: Wed, 10 Jan 2024 13:44:45 +0000
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADCE4B5C4
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 14:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QDHCZRuX"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1d3eff55aa5so39050695ad.2
+        for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 06:59:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704898798; x=1705503598; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jQgwaFhg2BKv9e1KoNKcmXpgVYtZET9cMV48SEG0pPU=;
+        b=QDHCZRuXs5b7YCABXO+Z+posQTKopsC7FDpbfzDroIJv2SCoMtkpljfy5vPtPGymO5
+         yv46ZNP+o8J3ZC2wPlmDYihoBShAPdj53QH8Cy0Ogv7mSI93qK42p2whIOkW41E/chD6
+         LI20syKc59wb96ljJ7CarcxTqzTt5F1GzIN65vKwYh4GM35NoB6atCQtvYIiaPOE2iwE
+         UCZRxNXtSY3fXxiYm/2fSODYv+PVBlaKlzJyJUyY5lBJO1+qG3GZJaQjcPgZ70isyOrw
+         6v1iqpEuukfLmEWC6HISArcMSyCveOe9X067cCKoOCa2ykRdfY2ElE1wBNuQEPzCEhTO
+         ghgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704898798; x=1705503598;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jQgwaFhg2BKv9e1KoNKcmXpgVYtZET9cMV48SEG0pPU=;
+        b=euQ+4cT2NtnEB9lUKhCUdABjdfyDJl8T+paqmcAuiXqv0oHgjFYaEAjLIxTgwLFUc2
+         x46jeMhjXy1bNBmkjHsHIDhdjz4+Z3NJPkFp5cn4OEC3pRqWMIo7uXa9QTfXVzkPzXWc
+         dBxPh19UrFvuMYli2WdaSYundnCoOZ/zMhmn/zB4EwgfSszxZx0Ui5cR64+R1U26OGY0
+         GPjl0rouZKgWQ1e/zl/BsvYRk71GQMGYne3HFtBpiHY9wnr4ruenSxD76xompt0I+VxC
+         go5BkMEYBxcaMcAuPjanRF9Wixo0lb11AGd/+5qnHo3kEsxFkUzeRo5OjKZqe7WkHvCa
+         jSqw==
+X-Gm-Message-State: AOJu0YykM66yqQ4GzXPLXFJ5uysrnG7ZU5G7Vkg7onpYonA9KlIhkajP
+	VR0GJDAS9FStY6OOiMRXkqv0AQynRq3iczHymg==
+X-Google-Smtp-Source: AGHT+IEFhpLTQv5FIWQpxWjgo1MFihEctBgRDmmwpll2k+f+nuyvSydHAURFUngl8/4pjVhHXFBidN6ogTw=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:902:cec1:b0:1d4:a996:fc96 with SMTP id
+ d1-20020a170902cec100b001d4a996fc96mr6121plg.11.1704898797659; Wed, 10 Jan
+ 2024 06:59:57 -0800 (PST)
+Date: Wed, 10 Jan 2024 06:59:56 -0800
+In-Reply-To: <20231230161954.569267-21-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-Content-Language: en-GB
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: Itaru Kitayama <itaru.kitayama@linux.dev>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org,
- maz@kernel.org, steven.price@arm.com, alexandru.elisei@arm.com,
- joey.gouly@arm.com, james.morse@arm.com, Jonathan.Cameron@huawei.com,
- dgilbert@redhat.com, jpb@kernel.org, oliver.upton@linux.dev,
- zhi.wang.linux@gmail.com, yuzenghui@huawei.com, salil.mehta@huawei.com,
- Andrew Jones <andrew.jones@linux.dev>,
- Chao Peng <chao.p.peng@linux.intel.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Mark Rutland <mark.rutland@arm.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Quentin Perret <qperret@google.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Huth <thuth@redhat.com>,
- Ryan Roberts <Ryan.Roberts@arm.com>, Sami Mujawar <Sami.Mujawar@arm.com>
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <20231002124311.204614-1-suzuki.poulose@arm.com> <ZZ4tsTQOKOamM+h/@vm3>
- <ec8ed5b0-5080-45e9-a4a6-e5dbe48e86d3@arm.com>
-In-Reply-To: <ec8ed5b0-5080-45e9-a4a6-e5dbe48e86d3@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20231230161954.569267-1-michael.roth@amd.com> <20231230161954.569267-21-michael.roth@amd.com>
+Message-ID: <ZZ6w7A8SYz3_VT3u@google.com>
+Subject: Re: [PATCH v1 20/26] crypto: ccp: Add debug support for decrypting pages
+From: Sean Christopherson <seanjc@google.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
+	pbonzini@redhat.com, vkuznets@redhat.com, jmattson@google.com, 
+	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com, 
+	pgonda@google.com, peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com, 
+	Brijesh Singh <brijesh.singh@amd.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On 10/01/2024 11:41, Suzuki K Poulose wrote:
-> Hi Itaru,
+On Sat, Dec 30, 2023, Michael Roth wrote:
+> From: Brijesh Singh <brijesh.singh@amd.com>
 > 
-> On 10/01/2024 05:40, Itaru Kitayama wrote:
->> On Mon, Oct 02, 2023 at 01:43:11PM +0100, Suzuki K Poulose wrote:
->>> Hi,
->>>
->>>
+> Add support to decrypt guest encrypted memory. These API interfaces can
+> be used for example to dump VMCBs on SNP guest exit.
 
-...
-
->>
->> Suzuki,
->> Any update to the Arm CCA series (v3?) since last October?
-> 
-> Yes, we now have a version that supports the final RMM-v1.0
-> specification (RMM-v1.0-EAC5). We also have the UEFI EDK2 firmware
-> support for Guests in Realm world.
-> 
-> We are planning to post the changes for review in the v6.8-rc cycle. We
-> are trying to integrate the guest_mem support (available in v6.8-rc1) as
-> well as reusing some of the arm64 kvm generic interface for configuring
-> the Realm parameters (e.g., PMU, SVE_VL etc).
-> 
-> Here is a version that is missing the items mentioned above, based
-> on v6.7-rc4, if anyone would like to try.
-> 
-> Also, the easiest way to get the components built and model kick started
-> is using the shrinkwrap [6] tool, using the cca-3world configuration.
-> The tool pulls all the required software components, builds (including
-> the buildroot for rootfs) and can run a model using these built
-> components.
-
-Also, please see 'arm/run-realm-tests.sh' in the kvm-unit-tests-cca 
-repository for sample command lines to invoke kvmtool to create Realm
-VMs.
-
-
-> 
-> 
-> 
-> [0] Linux Repo:
->        Where: git@git.gitlab.arm.com:linux-arm/linux-cca.git
->        KVM Support branch: cca-host/rmm-v1.0-eac5
->        Linux Guest branch: cca-guest/rmm-v1.0-eac5
->        Full stack branch:  cca-full/rmm-v1.0-eac5
-> 
-> [1] kvmtool Repo:
->        Where: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git
->        Branch: cca/rmm-v1.0-eac5
-> 
-> [2] kvm-unit-tests Repo:
->        Where: git@git.gitlab.arm.com:linux-arm/kvm-unit-tests-cca.git
->        Branch: cca/rmm-v1.0-eac5
-> 
-> [3] UEFI Guest firmware:
->        edk2:     https://git.gitlab.arm.com/linux-arm/edk2-cca.git
->        revision: 2802_arm_cca_rmm-v1.0-eac5
-> 
->        edk2-platforms: 
-> https://git.gitlab.arm.com/linux-arm/edk2-platforms-cca.git
->        revision:       2802_arm_cca_rmm-v1.0-eac5
-> 
-> 
-> [4] RMM Repo:
->        Where: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
->        tag : tf-rmm-v0.4.0
-> 
-> [5] TF-A repo:
->        Where: https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
->        Tag: v2.10
-> 
-> 
-> [6] https://shrinkwrap.docs.arm.com/en/latest/
->      config: cca-3world.yaml
-> 
-
-Suzuki
-
+By who?  Nothing in this series, or the KVM series, ever invokes
+snp_guest_dbg_decrypt_page().
