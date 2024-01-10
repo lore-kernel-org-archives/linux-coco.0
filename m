@@ -1,128 +1,187 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CCF364BD;
-	Tue,  9 Jan 2024 23:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489141370
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 01:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KW6Xn49V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704844040; x=1736380040;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bewDhbzp09Q75N7YhFCyWSzSy1l1fniXCPCgpAHNkBE=;
-  b=KW6Xn49Vp8oMSxY4LGQpY8VtAp3uPfWlAds6OTnjJrLn4WuT/6SQ+qe1
-   sCRgKzvm4Ik8E7KC3PYr15mLnEBZtW8bOpNuhgjAiAyOeVrUs0Dbm16Fp
-   HOo9jt/0lWwAKUsGhEvpUy4CqpV4Ya84rvsD0Hg5XnIDcgsqRJriM5c+h
-   VtOfqqTcTIZ4aIv2n94nWCbvzIg3/Lucrcgnhzg8j5JaCkc0CTZzo6IQm
-   kyPJECs9tO2iGr4GD73mL8+xwilQ2EnyNGpEIZxu40H0Kvf8SnOuj1s7L
-   FEy4SKmzDojs/jS5iC3IPbTyR5+H5z6+8VBseasXYYzMsKAoWjyvYxJsz
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="462643280"
-X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="462643280"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 15:47:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="905323749"
-X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
-   d="scan'208";a="905323749"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 09 Jan 2024 15:47:17 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rNLoQ-0006Ne-2k;
-	Tue, 09 Jan 2024 23:47:14 +0000
-Date: Wed, 10 Jan 2024 07:47:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jun Miao <jun.miao@intel.com>, kirill.shutemov@linux.intel.com,
-	dave.hansen@linux.intel.com
-Cc: oe-kbuild-all@lists.linux.dev, jun.miao@intel.com, x86@kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/tdx: Optimize try_accept_memory() to reduce 1GB page
- accepted failed times
-Message-ID: <202401100747.8LTktRbX-lkp@intel.com>
-References: <20240109054824.9023-1-jun.miao@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y6FEDrCq"
+Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-7bc2b7bef65so388090339f.0
+        for <linux-coco@lists.linux.dev>; Tue, 09 Jan 2024 17:26:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704850012; x=1705454812; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=k5v8oUBjXEAVbu4/vqslVZCTCJ0ygzsKmcB0GfrIu20=;
+        b=Y6FEDrCqauaXy350WCcMkpiwMMJjQg0QAsyTleEWWpjf8OjWRvwsJfsz7lcYcUDueC
+         G7gSbQDz/XOgJz8/d8ZIKJbezl6R2nsBA9lQ/I9EwiI7U5f7dIHRI3qmfcIRi1qZgres
+         YQ6VI8wnhmQgzmp0eqImx2RqwxQapNo/EjYvGU4hiYDL3Mhn+dGpMy3bdr9HQCTNcNj4
+         K3AacMIpiu/JtGXnNdp9CETzlpy0JMzYfZmk7le/tk3DJq8rrVytLjFkxK8R0WSYEKBo
+         BiJXKXyp8cGMAdUlqFpJMzfauRbOGdM9T90rbj9J3RWm6V5Pl+c5BSQ5QwmphbTY8l52
+         tv4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704850012; x=1705454812;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k5v8oUBjXEAVbu4/vqslVZCTCJ0ygzsKmcB0GfrIu20=;
+        b=JhZIpyMXjfqLRcNtrJxJOUehfrruCujok3if2nGvWdMTZxBUo9qn0R15pukt7CnyPf
+         nSSGLd8gwkslcxjjXwc+UXEbAtrPvOr1VwM6CYYY0mFNYOIQRIjv1/oUa3u8J0ILyK8I
+         W3UcF313GK9bM0x3Aij7W5DzIkDqYNrBH0Mi5qSVWUat8i0x/Y9Hc7CIf1igsN4kgUqQ
+         DKjHIKzIth00cTh/NFQKXsy1Qhaa+pRFB1t6Yex2uRGoKLYLnMbWFq0i3r+O5HUThJOk
+         NgvqAF5wsp8UrQhDQQ4IUnIshK+KfRXCNhsVFYPyScif3LnwNinbICACLOAxo37Rh8VD
+         H7fQ==
+X-Gm-Message-State: AOJu0YwDpNrbX+wDSlcQcN+skKB4sSBXeXN3NoGg/6/hTUDK9u6Wul+d
+	hQqTMS72RcY/aRiMw7D5069Rw7MZOjiphv5YNRzmOfoqKL8=
+X-Google-Smtp-Source: AGHT+IFw+G2FQxRDkksoxjc8deUmz4WU+ECeujMhwOD2760Mzm4ZYaoCgZNF2Ucn1CHML3j5eZGJdt5/7obNiAMBn9Jp
+X-Received: from loughlin00.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:1b6f])
+ (user=kevinloughlin job=sendgmr) by 2002:a05:6638:2645:b0:46e:308a:832 with
+ SMTP id n5-20020a056638264500b0046e308a0832mr15553jat.3.1704850012536; Tue,
+ 09 Jan 2024 17:26:52 -0800 (PST)
+Date: Wed, 10 Jan 2024 01:26:39 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240109054824.9023-1-jun.miao@intel.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
+Message-ID: <20240110012640.1335694-1-kevinloughlin@google.com>
+Subject: [RFC PATCH] x86/sev: x86/sev: enforce PC-relative addressing in clang
+From: Kevin Loughlin <kevinloughlin@google.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	"GitAuthor: Kevin Loughlin" <kevinloughlin@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Kees Cook <keescook@chromium.org>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
+	Ze Gao <zegao2021@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Pengfei Xu <pengfei.xu@intel.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Joerg Roedel <jroedel@suse.de>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-coco@lists.linux.dev
+Cc: Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, 
+	Jacob Xu <jacobhxu@google.com>, Sidharth Telang <sidtelang@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Jun,
+SEV/SME code can execute prior to page table fixups for kernel
+relocation. However, as with global variables accessed in
+__startup_64(), clang does not currently generate PC-relative accesses
+for SEV/SME global variables, causing certain flavors of SEV hosts and
+guests to crash.
 
-kernel test robot noticed the following build warnings:
+While an attempt was made to force PC-relative addressing for certain
+global SEV/SME variables via inline assembly (see snp_cpuid_get_table()
+for example), PC-relative addressing must be pervasively-enforced for
+SEV/SME global variables that can be accessed prior to page table
+fixups.
 
-[auto build test WARNING on tip/x86/tdx]
-[also build test WARNING on next-20240109]
-[cannot apply to linus/master v6.7]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+To avoid the error-prone approach of manually referencing each SEV/SME
+global variable via a general form of snp_cpuid_get_table(), it is
+preferable to use compiler flags for position-independent code (ex:
+`-fPIE`) that result in PC-relative accesses. While architecture-
+specific code for Linux can be pervasively compiled as position-
+independent on select architectures (ex: RISC-V), this is not currently
+the case for x86-64 and would require extensive changes (see "[PATCH
+RFC 00/43] x86/pie: Make kernel image's virtual address flexible" for
+example).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jun-Miao/x86-tdx-Optimize-try_accept_memory-to-reduce-1GB-page-accepted-failed-times/20240109-134908
-base:   tip/x86/tdx
-patch link:    https://lore.kernel.org/r/20240109054824.9023-1-jun.miao%40intel.com
-patch subject: [PATCH] x86/tdx: Optimize try_accept_memory() to reduce 1GB page accepted failed times
-config: x86_64-rhel-8.3-bpf (https://download.01.org/0day-ci/archive/20240110/202401100747.8LTktRbX-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240110/202401100747.8LTktRbX-lkp@intel.com/reproduce)
+Fortunately, the relevant files for SEV/SME code do indeed support
+position-independent clang compilation, so we can use this technique to
+ensure all global variables in these files are accessed via PC-relative
+addressing.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401100747.8LTktRbX-lkp@intel.com/
+Unlike clang, gcc does not currently allow `-fPIE` in conjunction with
+`mcmodel=kernel`. Thus, to preserve existing gcc behavior, this patch
+does not remove the (otherwise unnecessary) inline assembly that
+already enforces PC-relative addressing for select SEV/SME globals
+(mentioned above). If gcc supports these joint options in the future,
+we can remove such inline assembly and also apply this patch to gcc
+builds.
 
-All warnings (new ones prefixed by >>):
+Tested by successful boot of SEV-SNP guest built with clang, alongside
+Adam Dunlap's necessary "[PATCH v2] x86/asm: Force native_apic_mem_read
+to use mov".
 
-   arch/x86/coco/tdx/tdx-shared.c: In function 'tdx_accept_memory':
->> arch/x86/coco/tdx/tdx-shared.c:62:17: warning: "/*" within comment [-Wcomment]
-      62 |                 /* The 4KB page case or accept 2MB page failed case. */
-         |                  
+Fixes: 95d33bfaa3e1 ("x86/sev: Register GHCB memory when SEV-SNP is active")
+Fixes: ee0bfa08a345 ("x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers")
+Fixes: 1cd9c22fee3a ("x86/mm/encrypt: Move page table helpers into separate translation unit")
+Fixes: c9f09539e16e ("x86/head/64: Check SEV encryption before switching to kernel page-table")
+Fixes: b577f542f93c ("x86/coco: Add API to handle encryption mask")
+Tested-by: Kevin Loughlin <kevinloughlin@google.com>
+Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
+---
+ arch/x86/coco/Makefile   | 10 ++++++++++
+ arch/x86/kernel/Makefile | 10 ++++++++++
+ arch/x86/mm/Makefile     | 13 +++++++++++++
+ 3 files changed, 33 insertions(+)
 
-
-vim +62 arch/x86/coco/tdx/tdx-shared.c
-
-    40	
-    41	bool tdx_accept_memory(phys_addr_t start, phys_addr_t end)
-    42	{
-    43		/*
-    44		 * For shared->private conversion, accept the page using
-    45		 * TDG_MEM_PAGE_ACCEPT TDX module call.
-    46		 */
-    47		while (start < end) {
-    48			unsigned long len = end - start;
-    49			unsigned long accept_size;
-    50	
-    51			/*
-    52			 * Try larger accepts first. It gives chance to VMM to keep
-    53			 * 1G/2M Secure EPT entries where possible and speeds up
-    54			 * process by cutting number of hypercalls (if successful).
-    55			 * Since per current TDX spec, only support for adding 4KB or
-    56			 * 2MB page dynamically.
-    57			 * /
-    58	
-    59			if (IS_ALIGNED(start, PMD_SIZE) && len >= PMD_SIZE)
-    60				accept_size = try_accept_one(start, len, PG_LEVEL_2M);
-    61	
-  > 62			/* The 4KB page case or accept 2MB page failed case. */
-    63			if (!accept_size)
-    64				accept_size = try_accept_one(start, len, PG_LEVEL_4K);
-    65			if (!accept_size)
-    66				return false;
-    67			start += accept_size;
-    68		}
-    69	
-    70		return true;
-    71	}
-    72	
-
+diff --git a/arch/x86/coco/Makefile b/arch/x86/coco/Makefile
+index c816acf78b6a..286950596ee9 100644
+--- a/arch/x86/coco/Makefile
++++ b/arch/x86/coco/Makefile
+@@ -5,4 +5,14 @@ CFLAGS_core.o		+= -fno-stack-protector
+ 
+ obj-y += core.o
+ 
++# clang allows -fPIE with mcmodel=kernel; gcc currently does not.
++ifdef CONFIG_CC_IS_CLANG
++# Enforce PC-relative addressing for SEV/SME global variables.
++CFLAGS_core.o		+= -fPIE
++# Disable relocation relaxation in case the link is not PIE.
++CFLAGS_core.o 		+= $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
++# Avoid unnecessary GOT overhead in PC-relative addressing.
++CFLAGS_core.o 		+= -include $(srctree)/include/linux/hidden.h
++endif
++
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx/
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index 0000325ab98f..bf85f9de89e9 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -7,6 +7,16 @@ extra-y	+= vmlinux.lds
+ 
+ CPPFLAGS_vmlinux.lds += -U$(UTS_MACHINE)
+ 
++# clang allows -fPIE with mcmodel=kernel; gcc currently does not.
++ifdef CONFIG_CC_IS_CLANG
++# Enforce PC-relative addressing for SEV/SME global variables.
++CFLAGS_sev.o += -fPIE
++# Disable relocation relaxation in case the link is not PIE.
++CFLAGS_sev.o += $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
++# Avoid unnecessary GOT overhead in PC-relative addressing.
++CFLAGS_sev.o += -include $(srctree)/include/linux/hidden.h
++endif
++
+ ifdef CONFIG_FUNCTION_TRACER
+ # Do not profile debug and lowlevel utilities
+ CFLAGS_REMOVE_tsc.o = -pg
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index c80febc44cd2..7abf20a94451 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -17,6 +17,19 @@ KCSAN_SANITIZE := n
+ # Avoid recursion by not calling KMSAN hooks for CEA code.
+ KMSAN_SANITIZE_cpu_entry_area.o := n
+ 
++# clang allows -fPIE with mcmodel=kernel; gcc currently does not.
++ifdef CONFIG_CC_IS_CLANG
++# Enforce PC-relative addressing for SEV/SME global variables.
++CFLAGS_mem_encrypt_amd.o 	+= -fPIE
++CFLAGS_mem_encrypt_identity.o 	+= -fPIE
++# Disable relocation relaxation in case the link is not PIE.
++CFLAGS_mem_encrypt_amd.o 	+= $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
++CFLAGS_mem_encrypt_identity.o 	+= $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
++# Avoid unnecessary GOT overhead in PC-relative addressing.
++CFLAGS_mem_encrypt_amd.o 	+= -include $(srctree)/include/linux/hidden.h
++CFLAGS_mem_encrypt_identity.o 	+= -include $(srctree)/include/linux/hidden.h
++endif
++
+ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_mem_encrypt.o		= -pg
+ CFLAGS_REMOVE_mem_encrypt_amd.o		= -pg
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0.275.g3460e3d667-goog
+
