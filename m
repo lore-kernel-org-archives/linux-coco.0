@@ -1,187 +1,110 @@
-Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489141370
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 01:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033AD3C32
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 03:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y6FEDrCq"
-Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-7bc2b7bef65so388090339f.0
-        for <linux-coco@lists.linux.dev>; Tue, 09 Jan 2024 17:26:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704850012; x=1705454812; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=k5v8oUBjXEAVbu4/vqslVZCTCJ0ygzsKmcB0GfrIu20=;
-        b=Y6FEDrCqauaXy350WCcMkpiwMMJjQg0QAsyTleEWWpjf8OjWRvwsJfsz7lcYcUDueC
-         G7gSbQDz/XOgJz8/d8ZIKJbezl6R2nsBA9lQ/I9EwiI7U5f7dIHRI3qmfcIRi1qZgres
-         YQ6VI8wnhmQgzmp0eqImx2RqwxQapNo/EjYvGU4hiYDL3Mhn+dGpMy3bdr9HQCTNcNj4
-         K3AacMIpiu/JtGXnNdp9CETzlpy0JMzYfZmk7le/tk3DJq8rrVytLjFkxK8R0WSYEKBo
-         BiJXKXyp8cGMAdUlqFpJMzfauRbOGdM9T90rbj9J3RWm6V5Pl+c5BSQ5QwmphbTY8l52
-         tv4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704850012; x=1705454812;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k5v8oUBjXEAVbu4/vqslVZCTCJ0ygzsKmcB0GfrIu20=;
-        b=JhZIpyMXjfqLRcNtrJxJOUehfrruCujok3if2nGvWdMTZxBUo9qn0R15pukt7CnyPf
-         nSSGLd8gwkslcxjjXwc+UXEbAtrPvOr1VwM6CYYY0mFNYOIQRIjv1/oUa3u8J0ILyK8I
-         W3UcF313GK9bM0x3Aij7W5DzIkDqYNrBH0Mi5qSVWUat8i0x/Y9Hc7CIf1igsN4kgUqQ
-         DKjHIKzIth00cTh/NFQKXsy1Qhaa+pRFB1t6Yex2uRGoKLYLnMbWFq0i3r+O5HUThJOk
-         NgvqAF5wsp8UrQhDQQ4IUnIshK+KfRXCNhsVFYPyScif3LnwNinbICACLOAxo37Rh8VD
-         H7fQ==
-X-Gm-Message-State: AOJu0YwDpNrbX+wDSlcQcN+skKB4sSBXeXN3NoGg/6/hTUDK9u6Wul+d
-	hQqTMS72RcY/aRiMw7D5069Rw7MZOjiphv5YNRzmOfoqKL8=
-X-Google-Smtp-Source: AGHT+IFw+G2FQxRDkksoxjc8deUmz4WU+ECeujMhwOD2760Mzm4ZYaoCgZNF2Ucn1CHML3j5eZGJdt5/7obNiAMBn9Jp
-X-Received: from loughlin00.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:1b6f])
- (user=kevinloughlin job=sendgmr) by 2002:a05:6638:2645:b0:46e:308a:832 with
- SMTP id n5-20020a056638264500b0046e308a0832mr15553jat.3.1704850012536; Tue,
- 09 Jan 2024 17:26:52 -0800 (PST)
-Date: Wed, 10 Jan 2024 01:26:39 +0000
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Di0upVoz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704859017; x=1736395017;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gdadnGNt0Fm1J3d13vTf9QC7afXDTIlf4F249pDwUqM=;
+  b=Di0upVozpG/71gPCnlIUhjHGce0c16RUd2Mg3zMzr+Irykoh1MTkQc9P
+   v907RnvJTZJHbZKYc6J/QMhC2Nf6p5OKP5NLUSyfmIA6P8gWArNkZWnHX
+   5eTxdtEO/YeEPkstFglEQ8IihExAYwmryhkUscVpc28OzTQR44sv8MXJ8
+   +tIcFD3FjFcQfoNlkZp8Hdy8hpXSVekGhmeYEeL1BDdnJnC2ITPT/q5CA
+   jaJjN+BZxAM2nUsN0b2NhOnpvzzEy4by32NML/OgUFUJ9cLWM7Rd8YSKy
+   kzHexDvVa0Yy9PTO7W2NQ2+CZYbnu0tPxFR2JdEo4qPiUwM9T1yJMDraZ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="388840833"
+X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
+   d="scan'208";a="388840833"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 19:56:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="925493785"
+X-IronPort-AV: E=Sophos;i="6.04,184,1695711600"; 
+   d="scan'208";a="925493785"
+Received: from nitishde-mobl1.amr.corp.intel.com (HELO [10.209.101.57]) ([10.209.101.57])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 19:56:56 -0800
+Message-ID: <6805ad1f-2c91-4a8d-98c9-5da337dd13f6@linux.intel.com>
+Date: Tue, 9 Jan 2024 19:56:56 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
-Message-ID: <20240110012640.1335694-1-kevinloughlin@google.com>
-Subject: [RFC PATCH] x86/sev: x86/sev: enforce PC-relative addressing in clang
-From: Kevin Loughlin <kevinloughlin@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	"GitAuthor: Kevin Loughlin" <kevinloughlin@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Kees Cook <keescook@chromium.org>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
-	Ze Gao <zegao2021@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Pengfei Xu <pengfei.xu@intel.com>, Brijesh Singh <brijesh.singh@amd.com>, 
-	Michael Roth <michael.roth@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Joerg Roedel <jroedel@suse.de>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-coco@lists.linux.dev
-Cc: Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, 
-	Jacob Xu <jacobhxu@google.com>, Sidharth Telang <sidtelang@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] virt: tdx-guest: Handle GetQuote request error code
+Content-Language: en-US
+To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
+References: <20240109054604.2562620-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20240109131740.nk54gdmri6gpwkta@box.shutemov.name>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240109131740.nk54gdmri6gpwkta@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-SEV/SME code can execute prior to page table fixups for kernel
-relocation. However, as with global variables accessed in
-__startup_64(), clang does not currently generate PC-relative accesses
-for SEV/SME global variables, causing certain flavors of SEV hosts and
-guests to crash.
 
-While an attempt was made to force PC-relative addressing for certain
-global SEV/SME variables via inline assembly (see snp_cpuid_get_table()
-for example), PC-relative addressing must be pervasively-enforced for
-SEV/SME global variables that can be accessed prior to page table
-fixups.
 
-To avoid the error-prone approach of manually referencing each SEV/SME
-global variable via a general form of snp_cpuid_get_table(), it is
-preferable to use compiler flags for position-independent code (ex:
-`-fPIE`) that result in PC-relative accesses. While architecture-
-specific code for Linux can be pervasively compiled as position-
-independent on select architectures (ex: RISC-V), this is not currently
-the case for x86-64 and would require extensive changes (see "[PATCH
-RFC 00/43] x86/pie: Make kernel image's virtual address flexible" for
-example).
+On 1/9/2024 5:17 AM, Kirill A . Shutemov wrote:
+> On Tue, Jan 09, 2024 at 05:46:04AM +0000, Kuppuswamy Sathyanarayanan wrote:
+>> Currently when a user requests for the Quote generation, the Quote
+>> generation handler (tdx_report_new()) only checks whether the VMM
+>> successfully processes the Quote generation request (status !=
+>> GET_QUOTE_IN_FLIGHT) and returns the output to the user without
+>> validating the status of the output data. Since VMM can return error
+>> even after processing the Quote request, returning success just after
+>> successful processing will create confusion to the user. Although for
+>> the failed request, output buffer length will be zero and can also be
+>> used by the user to identify the failure case, it will be more clear to
+>> return error for all failed cases. So validate the Quote output status
+>> and return error code for all failed cases.
+> 
+> Could you split commit message into several paragraphs? It would be easier
+> to get along.
+> 
+> It can be helpful to follow structure like:
+> 
+> <Background>
+> 
+> <Problem>
+> 
+> <Solution>
+> 
 
-Fortunately, the relevant files for SEV/SME code do indeed support
-position-independent clang compilation, so we can use this technique to
-ensure all global variables in these files are accessed via PC-relative
-addressing.
+How about the following version?
 
-Unlike clang, gcc does not currently allow `-fPIE` in conjunction with
-`mcmodel=kernel`. Thus, to preserve existing gcc behavior, this patch
-does not remove the (otherwise unnecessary) inline assembly that
-already enforces PC-relative addressing for select SEV/SME globals
-(mentioned above). If gcc supports these joint options in the future,
-we can remove such inline assembly and also apply this patch to gcc
-builds.
+During the TDX guest attestation process, TSM ConfigFS ABI is used by
+the user attestation agent to get the signed VM measurement data (a.k.a
+Quote), which can be used by a remote verifier to validate the
+trustworthiness of the guest. When a user requests for the Quote data
+via the ConfigFS ABI, the TDX Quote generation handler
+(tdx_report_new()) forwards the request to VMM (or QE) via a hypercall,
+and then shares the output with the user.
 
-Tested by successful boot of SEV-SNP guest built with clang, alongside
-Adam Dunlap's necessary "[PATCH v2] x86/asm: Force native_apic_mem_read
-to use mov".
+Currently, when handling the Quote generation request, tdx_report_new()
+handler only checks whether the VMM successfully processed the request
+and if it is true it returns success and shares the output to the user
+without actually validating the output data. Since the VMM can return
+error even after processing the Quote request, always returning success
+for the processed requests is incorrect and will create confusion to
+the user. Although for the failed request, output buffer length will
+be zero and can also be used by the user to identify the failure case,
+it will be more clear to return error for all failed cases.
 
-Fixes: 95d33bfaa3e1 ("x86/sev: Register GHCB memory when SEV-SNP is active")
-Fixes: ee0bfa08a345 ("x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers")
-Fixes: 1cd9c22fee3a ("x86/mm/encrypt: Move page table helpers into separate translation unit")
-Fixes: c9f09539e16e ("x86/head/64: Check SEV encryption before switching to kernel page-table")
-Fixes: b577f542f93c ("x86/coco: Add API to handle encryption mask")
-Tested-by: Kevin Loughlin <kevinloughlin@google.com>
-Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
----
- arch/x86/coco/Makefile   | 10 ++++++++++
- arch/x86/kernel/Makefile | 10 ++++++++++
- arch/x86/mm/Makefile     | 13 +++++++++++++
- 3 files changed, 33 insertions(+)
+So when handling the Quote generation request, validate the Quote data
+output status and return error code for all failed cases.
 
-diff --git a/arch/x86/coco/Makefile b/arch/x86/coco/Makefile
-index c816acf78b6a..286950596ee9 100644
---- a/arch/x86/coco/Makefile
-+++ b/arch/x86/coco/Makefile
-@@ -5,4 +5,14 @@ CFLAGS_core.o		+= -fno-stack-protector
- 
- obj-y += core.o
- 
-+# clang allows -fPIE with mcmodel=kernel; gcc currently does not.
-+ifdef CONFIG_CC_IS_CLANG
-+# Enforce PC-relative addressing for SEV/SME global variables.
-+CFLAGS_core.o		+= -fPIE
-+# Disable relocation relaxation in case the link is not PIE.
-+CFLAGS_core.o 		+= $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
-+# Avoid unnecessary GOT overhead in PC-relative addressing.
-+CFLAGS_core.o 		+= -include $(srctree)/include/linux/hidden.h
-+endif
-+
- obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx/
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 0000325ab98f..bf85f9de89e9 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -7,6 +7,16 @@ extra-y	+= vmlinux.lds
- 
- CPPFLAGS_vmlinux.lds += -U$(UTS_MACHINE)
- 
-+# clang allows -fPIE with mcmodel=kernel; gcc currently does not.
-+ifdef CONFIG_CC_IS_CLANG
-+# Enforce PC-relative addressing for SEV/SME global variables.
-+CFLAGS_sev.o += -fPIE
-+# Disable relocation relaxation in case the link is not PIE.
-+CFLAGS_sev.o += $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
-+# Avoid unnecessary GOT overhead in PC-relative addressing.
-+CFLAGS_sev.o += -include $(srctree)/include/linux/hidden.h
-+endif
-+
- ifdef CONFIG_FUNCTION_TRACER
- # Do not profile debug and lowlevel utilities
- CFLAGS_REMOVE_tsc.o = -pg
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index c80febc44cd2..7abf20a94451 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -17,6 +17,19 @@ KCSAN_SANITIZE := n
- # Avoid recursion by not calling KMSAN hooks for CEA code.
- KMSAN_SANITIZE_cpu_entry_area.o := n
- 
-+# clang allows -fPIE with mcmodel=kernel; gcc currently does not.
-+ifdef CONFIG_CC_IS_CLANG
-+# Enforce PC-relative addressing for SEV/SME global variables.
-+CFLAGS_mem_encrypt_amd.o 	+= -fPIE
-+CFLAGS_mem_encrypt_identity.o 	+= -fPIE
-+# Disable relocation relaxation in case the link is not PIE.
-+CFLAGS_mem_encrypt_amd.o 	+= $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
-+CFLAGS_mem_encrypt_identity.o 	+= $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
-+# Avoid unnecessary GOT overhead in PC-relative addressing.
-+CFLAGS_mem_encrypt_amd.o 	+= -include $(srctree)/include/linux/hidden.h
-+CFLAGS_mem_encrypt_identity.o 	+= -include $(srctree)/include/linux/hidden.h
-+endif
-+
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_mem_encrypt.o		= -pg
- CFLAGS_REMOVE_mem_encrypt_amd.o		= -pg
+
 -- 
-2.43.0.275.g3460e3d667-goog
-
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
