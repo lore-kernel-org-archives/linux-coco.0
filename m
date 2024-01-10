@@ -1,71 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D909D4F5EF;
-	Wed, 10 Jan 2024 20:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BD74F1E5
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 22:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvkunF8I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01087C433F1;
-	Wed, 10 Jan 2024 20:18:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704917926;
-	bh=fgRgZuoAXQ+AEZV1jM9xn99Om5QJ8jDoPAfUebkzG1k=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ZvkunF8I+PbytQ3aauQZUhtA04lAEOU1IIG/RzeLPK401UDcocZUiX7tCvNZkhUk4
-	 J8a7G8Iysz62mTv6dS7JxkxqOpnkVy0/tWgEyKHX0ldkP1s5h1dIXmuIQPkQhKovTm
-	 Cub4+DO8mPJAz+POJlzwqzGt+XtknBta4GkxUMyo0//jfrITtgslfxtCKBzyk9B0qx
-	 raZ45Hlaa0llbA+sg7uaPslIrVCLG2bYGGGl4PlWYiRlAyGoNI0zCZ+6ZGhY9M/AMT
-	 /ni0sJFRI03TITR1JWZJnCtipD43lilhybATuWTUCrc8Q7YIMfY2l/lWVu4GyNF9xT
-	 JNdHq6vFCh6cg==
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="T7tPVLGj"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E2EB740E01F9;
+	Wed, 10 Jan 2024 22:15:02 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id nyXwZKqd1a34; Wed, 10 Jan 2024 22:15:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1704924900; bh=qzYKfx3de59+vgu9hb7XP534ekilIGghNG65JX231Xw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T7tPVLGjEkG/q/m/oH7mkFdDSm4g2QnCZlUFWhO4EGnjXvMod93Xmw38Bn6Qb02r8
+	 nVFfOtjpQQjaePLyFHocD24AWkK+eKheKufHm6jIuZsdberpp7cjLKTTTL4Sjip/lF
+	 Sxjy//bcTKZlT06vTRplCHHl8DqCr+tPTSlSQC0WQqDmdH0Hge0WZKgYQj2tMBe/Rx
+	 Xr91oVHJxIbJ0ZwzFk4MlIv7acdNiks925JUCne17jxQPHPY4amCgxM59vOSaZgezg
+	 YVUqIxNGgpKG0Fsr+hv2s33cd3ENnb7hSAX0Qvx065ZjUprPxuH7YkWvagW5+DR5Ot
+	 Kemo2oqFTqg6S4xoCIC3E3WweV6jc1c4lXvDZq2yciB5bqbXCghRbMmNeFPYcVgbar
+	 vnkdWwdyOwC4GbhSLTHRzi0hOajTdSUSGK/B5RLAW8Zt5ACALLmT4+pEaqb406hbZs
+	 iOl9T/u3ucRUZKWJJAc6B9oVbP29ud3il+OUf2RAvWYjNOHSppvfdr8eQ1XADoPpoi
+	 yD8LSFO8WizFfqBxIv4qNn47XIKqyWwIcQRafgo7sjlVZhQrKeWYPMrmMReiNz5g/6
+	 pnB79G3kp/jjse4W92qGlxhmpVRliPceQSyedFqsoc4HfF/fnlUSNqjajDUxgDdX+8
+	 y3b1JVQnou1C5kImEixUgwGk=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 72F3A40E0196;
+	Wed, 10 Jan 2024 22:14:22 +0000 (UTC)
+Date: Wed, 10 Jan 2024 23:14:21 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jarkko Sakkinen <jarkko@kernel.org>,
+	Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	ashish.kalra@amd.com, nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
+	liam.merwick@oracle.com, zhi.a.wang@intel.com,
+	Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v1 07/26] x86/fault: Add helper for dumping RMP entries
+Message-ID: <20240110221421.GGZZ8WvTGdNrWkUkfv@fat_crate.local>
+References: <20231230161954.569267-1-michael.roth@amd.com>
+ <20231230161954.569267-8-michael.roth@amd.com>
+ <20240110095912.GAZZ5qcFXYgvPrCdRI@fat_crate.local>
+ <CYBAYMHESW3Z.1EVW4Q0W0FHEC@suppilovahvero>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Jan 2024 22:18:37 +0200
-Message-Id: <CYBAYMHESW3Z.1EVW4Q0W0FHEC@suppilovahvero>
-Cc: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
- <linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
- <ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
- <vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
- <dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
- <peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
- <rientjes@google.com>, <tobin@ibm.com>, <vbabka@suse.cz>,
- <kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
- <sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
- <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>, <pankaj.gupta@amd.com>,
- <liam.merwick@oracle.com>, <zhi.a.wang@intel.com>, "Brijesh Singh"
- <brijesh.singh@amd.com>
-Subject: Re: [PATCH v1 07/26] x86/fault: Add helper for dumping RMP entries
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Borislav Petkov" <bp@alien8.de>, "Michael Roth" <michael.roth@amd.com>
-X-Mailer: aerc 0.15.2
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-8-michael.roth@amd.com>
- <20240110095912.GAZZ5qcFXYgvPrCdRI@fat_crate.local>
-In-Reply-To: <20240110095912.GAZZ5qcFXYgvPrCdRI@fat_crate.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CYBAYMHESW3Z.1EVW4Q0W0FHEC@suppilovahvero>
 
-On Wed Jan 10, 2024 at 11:59 AM EET, Borislav Petkov wrote:
-> On Sat, Dec 30, 2023 at 10:19:35AM -0600, Michael Roth wrote:
-> > +void snp_dump_hva_rmpentry(unsigned long hva)
-> > +{
-> > +	unsigned int level;
-> > +	pgd_t *pgd;
-> > +	pte_t *pte;
-> > +
-> > +	pgd =3D __va(read_cr3_pa());
-> > +	pgd +=3D pgd_index(hva);
-> > +	pte =3D lookup_address_in_pgd(pgd, hva, &level);
-> > +
-> > +	if (!pte) {
-> > +		pr_info("Can't dump RMP entry for HVA %lx: no PTE/PFN found\n", hva)=
-;
-                ~~~~~~~
-		is this correct log level?
+On Wed, Jan 10, 2024 at 10:18:37PM +0200, Jarkko Sakkinen wrote:
+> > > +	if (!pte) {
+> > > +		pr_info("Can't dump RMP entry for HVA %lx: no PTE/PFN found\n", hva);
+>                 ~~~~~~~
+> 		is this correct log level?
 
-BR, Jarkko
+No, and I caught a couple of those already but missed this one, thanks.
+
+Mike, please make sure all your error prints are pr_err.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
