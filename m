@@ -1,335 +1,226 @@
-Received: from out-185.mta1.migadu.com (out-185.mta1.migadu.com [95.215.58.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396DDDDBE
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 05:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273493A8CA
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 08:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rAIiSnmz"
-Date: Wed, 10 Jan 2024 14:40:01 +0900
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1704865217;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qjBrksVJ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="RY4cswgs";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qjBrksVJ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="RY4cswgs"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1F65B21E17;
+	Wed, 10 Jan 2024 08:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1704877184; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nP4QGViiPKOV25sR2kSzujffUmO/B6EG/+2I8jku3HU=;
-	b=rAIiSnmzKHnKmlEOjOADmAsWvbEZ+xYQZR7cE/4i91kHa/HStDxecZpanUvfHp2uJGM9vf
-	K+NLo0fzH3jWbCjazTWTxrYKQdKrru1Ww9THb5y5jTsQC+aCDYtW4Xa9Ir/VBUTj4a7b1n
-	NHZRoSnQ/EKv/0mAnxWy4clPt1m4s5o=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org,
-	maz@kernel.org, steven.price@arm.com, alexandru.elisei@arm.com,
-	joey.gouly@arm.com, james.morse@arm.com,
-	Jonathan.Cameron@huawei.com, dgilbert@redhat.com, jpb@kernel.org,
-	oliver.upton@linux.dev, zhi.wang.linux@gmail.com,
-	yuzenghui@huawei.com, salil.mehta@huawei.com,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Quentin Perret <qperret@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Huth <thuth@redhat.com>
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-Message-ID: <ZZ4tsTQOKOamM+h/@vm3>
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <20231002124311.204614-1-suzuki.poulose@arm.com>
+	bh=0GtM+U/m1/8CwPcl+4EBtNE2sj1pzKEolTyiwmoL/Us=;
+	b=qjBrksVJ7ayqtT+hHMQ3E32pBal7nh9Y3++2UcNMq4F1aQ3R606xDvDXyS+8yjW8lBsHyI
+	zAW5/0Mpb1ig+YsUu+Cz467VrCMZ8P/EL0QCo9fUb6+aYrPjF4yCSvFvSD3XKPexpTJLzA
+	+575X+EQKkKnU9eakb6GIjaE4bFTFB4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1704877184;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0GtM+U/m1/8CwPcl+4EBtNE2sj1pzKEolTyiwmoL/Us=;
+	b=RY4cswgsDRFXGOkmPW9cy8ROFg9IKH3nV+B1DI5nTja1CXyN+Fuu1V6t+BKZ6incmHbQow
+	/wczs5i4KHO89nBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1704877184; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0GtM+U/m1/8CwPcl+4EBtNE2sj1pzKEolTyiwmoL/Us=;
+	b=qjBrksVJ7ayqtT+hHMQ3E32pBal7nh9Y3++2UcNMq4F1aQ3R606xDvDXyS+8yjW8lBsHyI
+	zAW5/0Mpb1ig+YsUu+Cz467VrCMZ8P/EL0QCo9fUb6+aYrPjF4yCSvFvSD3XKPexpTJLzA
+	+575X+EQKkKnU9eakb6GIjaE4bFTFB4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1704877184;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0GtM+U/m1/8CwPcl+4EBtNE2sj1pzKEolTyiwmoL/Us=;
+	b=RY4cswgsDRFXGOkmPW9cy8ROFg9IKH3nV+B1DI5nTja1CXyN+Fuu1V6t+BKZ6incmHbQow
+	/wczs5i4KHO89nBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CCB0E13786;
+	Wed, 10 Jan 2024 08:59:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MHKKMX9cnmVXewAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 10 Jan 2024 08:59:43 +0000
+Message-ID: <7234513d-45c9-4bda-a537-4278387cedc4@suse.cz>
+Date: Wed, 10 Jan 2024 09:59:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231002124311.204614-1-suzuki.poulose@arm.com>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 15/26] x86/sev: Introduce snp leaked pages list
+To: "Kalra, Ashish" <ashish.kalra@amd.com>,
+ Michael Roth <michael.roth@amd.com>, x86@kernel.org
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com, tobin@ibm.com,
+ bp@alien8.de, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ jarkko@kernel.org, nikunj.dadhania@amd.com, pankaj.gupta@amd.com,
+ liam.merwick@oracle.com, zhi.a.wang@intel.com
+References: <20231230161954.569267-1-michael.roth@amd.com>
+ <20231230161954.569267-16-michael.roth@amd.com>
+ <f221ad9d-6fc3-466b-bacf-23986b8655f5@suse.cz>
+ <5cdd2093-b007-404d-96a8-89b3aa6e6e4b@amd.com>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <5cdd2093-b007-404d-96a8-89b3aa6e6e4b@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 1F65B21E17
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qjBrksVJ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=RY4cswgs
+X-Spam-Score: -4.50
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-4.50 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 R_RATELIMIT(0.00)[to_ip_from(RLisu716frudqkg98kczdd9eac)];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_TWELVE(0.00)[37];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
 
-On Mon, Oct 02, 2023 at 01:43:11PM +0100, Suzuki K Poulose wrote:
-> Hi,
+On 1/9/24 23:19, Kalra, Ashish wrote:
+> Hello Vlastimil,
 > 
+> On 1/8/2024 4:45 AM, Vlastimil Babka wrote:
+>> On 12/30/23 17:19, Michael Roth wrote:
+>>> From: Ashish Kalra <ashish.kalra@amd.com>
+>>>
+>>> Pages are unsafe to be released back to the page-allocator, if they
+>>> have been transitioned to firmware/guest state and can't be reclaimed
+>>> or transitioned back to hypervisor/shared state. In this case add
+>>> them to an internal leaked pages list to ensure that they are not freed
+>>> or touched/accessed to cause fatal page faults.
+>>>
+>>> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+>>> [mdr: relocate to arch/x86/virt/svm/sev.c]
+>>> Signed-off-by: Michael Roth <michael.roth@amd.com>
+>> Hi, sorry I didn't respond in time to the last mail discussing previous
+>> version in
+>> https://lore.kernel.org/all/8c1fd8da-912a-a9ce-9547-107ba8a450fc@amd.com/
+>> due to upcoming holidays.
+>>
+>> I would rather avoid the approach of allocating container objects:
+>> - it's allocating memory when effectively losing memory, a dangerous thing
+>> - are all the callers and their context ok with GFP_KERNEL?
+>> - GFP_KERNEL_ACCOUNT seems wrong, why would we be charging this to the
+>> current process, it's probably not its fault the pages are leaked? Also the
+>> charging can fail?
+>> - given the benefit of having leaked pages on a list is basically just
+>> debugging (i.e. crash dump or drgn inspection) this seems too heavy
+>>
+>> I think it would be better and sufficient to use page->lru for order-0 and
+>> head pages, and simply skip tail pages (possibly with adjusted warning
+>> message for that case).
+>>
+>> Vlastimil
+>>
+>> <snip
 > 
-> > We are happy to announce the early RFC version of the Arm
-> > Confidential Compute Architecture (CCA) support for the Linux
-> > stack. The intention is to seek early feedback in the following areas:
-> >  * KVM integration of the Arm CCA
-> >  * KVM UABI for managing the Realms, seeking to generalise the operations
-> >    wherever possible with other Confidential Compute solutions.
-> >    Note: This version doesn't support Guest Private memory, which will be added
-> >    later (see below).
-> >  * Linux Guest support for Realms
-> >
+> Considering the above thoughts, this is updated version of 
+> snp_leak_pages(), looking forward to any review comments/feedback you 
+> have on the same:
 > 
-> We have updated the stack for Arm CCA Linux support to RMM-v1.0-EAC2 (See links)
-> We are not posting the patches for review yet, as we plan to update our
-> stack to support the latest RMM-v1.0 specification, which includes some
-> functional changes to support PSCI monitoring by the VMM along with other
-> minor changes. All relevant components are updated on a new branch "rmm-v1.0-eac2"
-> Guest-mem support is not included, but is in progress.
+> void snp_leak_pages(u64 pfn, unsigned int npages)
+> {
+>          struct page *page = pfn_to_page(pfn);
 > 
-> Change log :
->  - KVM RMI support updated to v1.0-eac2, with optimisations to stage2 tear down
->  - Guest (Linux and kvm-unit-test) support for RSI compliant to v1.0-eac2
->  - SVE, PMU support for Realms
+>          pr_debug("%s: leaking PFN range 0x%llx-0x%llx\n", __func__, 
+> pfn, pfn + npages);
 > 
-> kvmtool :
->   - Dropped no-compat and switched to --loglevel (merged upstream)
->   - Support for SVE, --sve-vl for vector length
-> 
-> > Arm CCA Introduction
-> > =====================
-> > 
-> > The Arm CCA is a reference software architecture and implementation that builds
-> > on the Realm Management Extension (RME), enabling the execution of Virtual
-> > machines, while preventing access by more privileged software, such as hypervisor.
-> > The Arm CCA allows the hypervisor to control the VM, but removes the right for
-> > access to the code, register state or data that is used by VM.
-> > More information on the architecture is available here[0].
-> > 
-> >     Arm CCA Reference Software Architecture
-> > 
-> >         Realm World    ||    Normal World   ||  Secure World  ||
-> >                        ||        |          ||                ||
-> >  EL0 x-------x         || x----x | x------x ||                ||
-> >      | Realm |         || |    | | |      | ||                ||
-> >      |       |         || | VM | | |      | ||                ||
-> >  ----|  VM*  |---------||-|    |---|      |-||----------------||
-> >      |       |         || |    | | |  H   | ||                ||
-> >  EL1 x-------x         || x----x | |      | ||                ||
-> >          ^             ||        | |  o   | ||                ||
-> >          |             ||        | |      | ||                ||
-> >  ------- R*------------------------|  s  -|---------------------
-> >          S             ||          |      | ||                ||
-> >          I             ||          |  t   | ||                ||
-> >          |             ||          |      | ||                || 
-> >          v             ||          x------x ||                ||
-> >  EL2    RMM*           ||              ^    ||                ||
-> >          ^             ||              |    ||                ||
-> >  ========|=============================|========================
-> >          |                             | SMC
-> >          x--------- *RMI* -------------x
-> > 
-> >  EL3                   Root World
-> >                        EL3 Firmware
-> >  ===============================================================
-> > Where :
-> >  RMM - Realm Management Monitor
-> >  RMI - Realm Management Interface
-> >  RSI - Realm Service Interface
-> >  SMC - Secure Monitor Call
-> > 
-> > RME introduces a new security state "Realm world", in addition to the
-> > traditional Secure and Non-Secure states. The Arm CCA defines a new component,
-> > Realm Management Monitor (RMM) that runs at R-EL2. This is a standard piece of
-> > firmware, verified, installed and loaded by the EL3 firmware (e.g, TF-A), at
-> > system boot.
-> > 
-> > The RMM provides standard interfaces - Realm Management Interface (RMI) - to the
-> > Normal world hypervisor to manage the VMs running in the Realm world (also called
-> > Realms in short). These are exposed via SMC and are routed through the EL3
-> > firmwre.
-> > The RMI interface includes:
-> >   - Move a physical page from the Normal world to the Realm world
-> >   - Creating a Realm with requested parameters, tracked via Realm Descriptor (RD)
-> >   - Creating VCPUs aka Realm Execution Context (REC), with initial register state.
-> >   - Create stage2 translation table at any level.
-> >   - Load initial images into Realm Memory from normal world memory
-> >   - Schedule RECs (vCPUs) and handle exits
-> >   - Inject virtual interrupts into the Realm
-> >   - Service stage2 runtime faults with pages (provided by host, scrubbed by RMM).
-> >   - Create "shared" mappings that can be accessed by VMM/Hyp.
-> >   - Reclaim the memory allocated for the RAM and RTTs (Realm Translation Tables)
-> > 
-> > However v1.0 of RMM specifications doesn't support:
-> >  - Paging protected memory of a Realm VM. Thus the pages backing the protected
-> >    memory region must be pinned.
-> >  - Live migration of Realms.
-> >  - Trusted Device assignment.
-> >  - Physical interrupt backed Virtual interrupts for Realms
-> > 
-> > RMM also provides certain services to the Realms via SMC, called Realm Service
-> > Interface (RSI). These include:
-> >  - Realm Guest Configuration.
-> >  - Attestation & Measurement services
-> >  - Managing the state of an Intermediate Physical Address (IPA aka GPA) page.
-> >  - Host Call service (Communication with the Normal world Hypervisor)
-> > 
-> > The specifications for the RMM software is currently at *v1.0-Beta2* and the
-> > latest version is available here [1].
-> > 
-> > The Trusted Firmware foundation has an implementation of the RMM - TF-RMM -
-> > available here [3].
-> > 
-> > Implementation
-> > =================
-> > 
-> > This version of the stack is based on the RMM specification v1.0-Beta0[2], with
-> > following exceptions :
-> >   - TF-RMM/KVM currently doesn't support the optional features of PMU,
-> >      SVE and Self-hosted debug (coming soon).
-> >   - The RSI_HOST_CALL structure alignment requirement is reduced to match
-> >      RMM v1.0 Beta1
-> >   - RMI/RSI version numbers do not match the RMM spec. This will be
-> >     resolved once the spec/implementation is complete, across TF-RMM+Linux stack.
-> > 
-> > We plan to update the stack to support the latest version of the RMMv1.0 spec
-> > in the coming revisions.
-> > 
-> > This release includes the following components :
-> > 
-> >  a) Linux Kernel
-> >      i) Host / KVM support - Support for driving the Realms via RMI. This is
-> >      dependent on running in the Kernel at EL2 (aka VHE mode). Also provides
-> >      UABI for VMMs to manage the Realm VMs. The support is restricted to 4K page
-> >      size, matching the Stage2 granule supported by RMM. The VMM is responsible
-> >      for making sure the guest memory is locked.
-> > 
-> >        TODO: Guest Private memory[10] integration - We have been following the
-> >        series and support will be added once it is merged upstream.
-> >      
-> >      ii) Guest support - Support for a Linux Kernel to run in the Realm VM at
-> >      Realm-EL1, using RSI services. This includes virtio support (virtio-v1.0
-> >      only). All I/O are treated as non-secure/shared.
-> >  
-> >  c) kvmtool - VMM changes required to manage Realm VMs. No guest private memory
-> >     as mentioned above.
-> >  d) kvm-unit-tests - Support for running in Realms along with additional tests
-> >     for RSI ABI.
-> > 
-> > Running the stack
-> > ====================
-> > 
-> > To run/test the stack, you would need the following components :
-> > 
-> > 1) FVP Base AEM RevC model with FEAT_RME support [4]
-> > 2) TF-A firmware for EL3 [5]
-> > 3) TF-A RMM for R-EL2 [3]
-> > 4) Linux Kernel [6]
-> > 5) kvmtool [7]
-> > 6) kvm-unit-tests [8]
-> > 
-> > Instructions for building the firmware components and running the model are
-> > available here [9]. Once, the host kernel is booted, a Realm can be launched by
-> > invoking the `lkvm` commad as follows:
-> > 
-> >  $ lkvm run --realm 				 \
-> > 	 --measurement-algo=["sha256", "sha512"] \
-> > 	 --disable-sve				 \
-> 
-> As noted above, this is no longer required.
-> 
-> > 	 <normal-vm-options>
-> > 
-> > Where:
-> >  * --measurement-algo (Optional) specifies the algorithm selected for creating the
-> >    initial measurements by the RMM for this Realm (defaults to sha256).
-> >  * GICv3 is mandatory for the Realms.
-> >  * SVE is not yet supported in the TF-RMM, and thus must be disabled using
-> >    --disable-sve
-> > 
-> > You may also run the kvm-unit-tests inside the Realm world, using the similar
-> > options as above.
-> > 
-> > 
-> > Links
-> > ============
-> > 
-> > [0] Arm CCA Landing page (See Key Resources section for various documentations)
-> >     https://www.arm.com/architecture/security-features/arm-confidential-compute-architecture
-> > 
-> > [1] RMM Specification Latest
-> >     https://developer.arm.com/documentation/den0137/latest
-> > 
-> > [2] RMM v1.0-Beta0 specification
-> >     https://developer.arm.com/documentation/den0137/1-0bet0/
-> 
->  EAC2 spec: https://developer.arm.com/documentation/den0137/1-0eac2/
-> > 
-> > [3] Trusted Firmware RMM - TF-RMM
-> >     https://www.trustedfirmware.org/projects/tf-rmm/
-> >     GIT: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
-> > 
-> > [4] FVP Base RevC AEM Model (available on x86_64 / Arm64 Linux)
-> >     https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms
-> > 
-> > [5] Trusted Firmware for A class
-> >     https://www.trustedfirmware.org/projects/tf-a/
-> > 
-> > [6] Linux kernel support for Arm-CCA
-> >     https://gitlab.arm.com/linux-arm/linux-cca
-> >     Host Support branch:	cca-host/rfc-v1
-> 
-> Update branch : cca-host/rmm-v1.0-eac2
-> 
-> >     Guest Support branch:	cca-guest/rfc-v1
-> 
-> Update branch : cca-guest/rmm-v1.0-eac2
-> 
-> Combined tree for host and guest is also available at: "cca-full/rmm-v1.0-eac2"
-> 
-> > 
-> > [7] kvmtool support for Arm CCA
-> >     https://gitlab.arm.com/linux-arm/kvmtool-cca cca/rfc-v1
-> 
-> Update branch : cca/rmm-v1.0-eac2
-> 
-> > 
-> > [8] kvm-unit-tests support for Arm CCA
-> >     https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca  cca/rfc-v1
-> > 
-> 
-> Update branch : cca/rmm-v1.0-eac2
-> 
-> 
-> Suzuki
-> 
-> > [9] Instructions for Building Firmware components and running the model, see
-> >     section 4.19.2 "Building and running TF-A with RME"
-> >     https://trustedfirmware-a.readthedocs.io/en/latest/components/realm-management-extension.html#building-and-running-tf-a-with-rme
-> > 
-> > [10] fd based Guest Private memory for KVM
-> >    https://lkml.kernel.org/r/20221202061347.1070246-1-chao.p.peng@linux.intel.com
-> 
-> 
-> 
-> 
-> 
-> Cc: Alexandru Elisei <alexandru.elisei@arm.com>
-> Cc: Andrew Jones <andrew.jones@linux.dev>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Chao Peng <chao.p.peng@linux.intel.com>
-> Cc: Christoffer Dall <christoffer.dall@arm.com>
-> Cc: Fuad Tabba <tabba@google.com>
-> Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Cc: James Morse <james.morse@arm.com>
-> Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Cc: Joey Gouly <Joey.Gouly@arm.com>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Oliver Upton <oliver.upton@linux.dev>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Quentin Perret <qperret@google.com>
-> Cc: Sean Christopherson <seanjc@google.com>
-> Cc: Steven Price <steven.price@arm.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Zenghui Yu <yuzenghui@huawei.com>
-> To: linux-coco@lists.linux.dev
-> To: kvmarm@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> To: linux-kernel@vger.kernel.org
-> To: kvm@vger.kernel.org
+>          spin_lock(&snp_leaked_pages_list_lock);
+>          while (npages--) {
+>                  /*
+>                   * Reuse the page's buddy list for chaining into the leaked
+>                   * pages list. This page should not be on a free list 
+> currently
+>                   * and is also unsafe to be added to a free list.
+>                   */
+>                  if ((likely(!PageCompound(page))) || (PageCompound(page) &&
+>                      !PageTail(page) && compound_head(page) == page))
 
-Suzuki,
-Any update to the Arm CCA series (v3?) since last October?
+This is unnecessarily paranoid wrt that compound_head(page) test, but OTOH
+doesn't handle the weird case when we're leaking less than whole compound
+page (if that can even happen). So I'd suggest:
 
-Thanks,
-Itaru.
+while (npages) {
+
+  if ((likely(!PageCompound(page))) || (PageHead(page) && compound_nr(page)
+<= npages))
+	list_add_tail(&page->buddy_list, ...)
+  }
+
+  ... (no change from yours)
+
+  npages--;
+}
+
+(or an equivalent for()) perhaps
+
+>                          /*
+>                           * Skip inserting tail pages of compound page as
+>                           * page->buddy_list of tail pages is not usable.
+>                           */
+>                          list_add_tail(&page->buddy_list, 
+> &snp_leaked_pages_list);
+>                  sev_dump_rmpentry(pfn);
+>                  snp_nr_leaked_pages++;
+>                  pfn++;
+>                  page++;
+>          }
+>          spin_unlock(&snp_leaked_pages_list_lock);
+> }
+> 
+> Thanks, Ashish
+> 
+
