@@ -1,87 +1,123 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950D44C63B
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 15:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB004CE09
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 17:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DvO7RhNe"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0290C40E016C;
-	Wed, 10 Jan 2024 15:56:11 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jhy-WvyI-ZKl; Wed, 10 Jan 2024 15:56:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704902168; bh=9AXlWCYHyGlZWoMBjnEdXnJNXAAZdOZ1mMO8CIYljuM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DvO7RhNeuoKySKUfs6PH0zwrctKvn30zN4ZJDSb4SJEyCcf/+ZUAT51AnHdipMAh7
-	 rm0RrWrys+aUa/IzTcaKG3XQZypPVKlUvek2MEpQmkr+NuF5q9tRLpICGdc0/QWziU
-	 MwU/PkCLVGULD/bD5kg83YuJkvlWJO6QsaEenRoEObBox8gQVQvOU+FYNLztanY1Yq
-	 Rg6EiSfJWGaWHw6zbN51AyuRDr+Gta1viaxdbG/MHFJN8DQlIaS0GDhyhpuBGYXiZd
-	 QXHYO3b1r66t6qXOhXGV1ZPN+Ftm4y7/vGYv1NcEhVaqZtGue97HlNS0yT53vMp/+/
-	 o7gi4l2nlH6zVoGaNly8UNIs8TfMAcJxu/jPx6VwPlFgpkLdPWqcg2r1CCH+l9I1vn
-	 IUn3st1d8C838EjqjP+1VkwM0KrZDrQw2voJaJIKrvOM15E1+WhXiIbZBgaHOPcc90
-	 FXp61xtJLgEtlnKTodZAGCn+aXb9dm7jz+fiSKkzJlKzi7V+fiUMnpIsARIk/0FffF
-	 xdLIK8mYSVKwdgB00rWb/VTCt9noXUDjeGEYMbMPWGTF19zJxZNDhLwTBK8Px0bF8u
-	 CXpBdrtdMuIoGpqfvJx9e+EmE4Yrut8ZwqkQGOad2y15r9Q0D4m1gM7uN3plRwBes3
-	 XjO8/dwgOZn6I30W6HVlZEXA=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 73DF440E01A9;
-	Wed, 10 Jan 2024 15:55:30 +0000 (UTC)
-Date: Wed, 10 Jan 2024 16:55:23 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Michael Roth <michael.roth@amd.com>, x86@kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
-	hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com,
-	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com,
-	luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
-	pgonda@google.com, peterz@infradead.org,
-	srinivas.pandruvada@linux.intel.com, rientjes@google.com,
-	tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
-	ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v1 07/26] x86/fault: Add helper for dumping RMP entries
-Message-ID: <20240110155523.GEZZ696yxCY-oOvygR@fat_crate.local>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-8-michael.roth@amd.com>
- <20240110111344.GBZZ576DpwHHs997Zl@fat_crate.local>
- <625926f9-6c45-4242-ac62-8f36abfcb099@amd.com>
- <20240110152745.GDZZ63cekYEDqdajjO@fat_crate.local>
- <9e3a6d33-cc04-46cb-b97d-e903a263800f@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s/4MyyrT"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-7ce6c3dab88so826283241.2
+        for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 09:14:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704906872; x=1705511672; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=47+kebr9NR02suN55GcRoFoS4Z36G90GbJxMRtrcWos=;
+        b=s/4MyyrTS6B+EuHI9nHutFzN2AacMO4HJoVZCx3Rhj4R7jAsT6Fde3EaF5aV3GuOxn
+         7cfyYMovQs6RgB7VbcvJZPVxElAs2zFd87P0DKk4ncLlqtjW8XoKcHZL/tSokOrah3Yc
+         GuSuyuxwecE3z/xh2fdViFzpQuQ/F5iHI2T/MWdNjN0HPJEHSGb911mzcFCxTjeYuIvt
+         ZEtAX+5+lXQzS6AexMGuKW/Ek1gE5QOIafvoe7alGMMeKXqPuGtvdHub2DqYEpeW0tbG
+         tWzXV3xBAl7/R7V4BbfW4B6iqvHiz9HJdA2SDPqHUCiJMiERfffNaZlKlQVAzuCOs4QK
+         11Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704906872; x=1705511672;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=47+kebr9NR02suN55GcRoFoS4Z36G90GbJxMRtrcWos=;
+        b=eHCuUQC1MlLKHLaaTkHutrAtLC0bl0QqSueqfCwK30yUpOhaGhPrtEpzygJprzkjqm
+         vjhENvOXBX4L4KwNHAGMGse3qdhFjwWxeoKGbviF9h3/F2h3hGwmx4vA80l2nCWGWxcZ
+         1cIMkaP7MeALjxzwuIxeJNwx4VCrkhiKfdIeSYUX3GhTaGC3M/rzwov/t213Dt8k+jmM
+         Mv/ewtAbGsRli5JA3V2v58lHxq53AtTwAyXY1F8KZ27cjrrdqlTEf+aKr0M6B16XPCdB
+         cpqhVCekSHtI6IIdfdgbZm+WoOsl/IdZhbJyI41E658RQIILk/FYo4W5UHXgnwUjok2d
+         jwdg==
+X-Gm-Message-State: AOJu0YxcqRACVVAIHEyXGiPFTccWEkP1S8IOA2tE7kfjN0+TGj5vg+p2
+	roy2Lx3nr61ZJzPc4HHFbNK0ErrtY0WalcOf+GRuEhtsk4AS
+X-Google-Smtp-Source: AGHT+IFt1ee4CI7VwM2yjMu1duupkUufXWQXpIrbOUtpjd6BP29CJhH30mLzrPKRhF2RYm/k+dF9QfffZ9W9SCkGk58=
+X-Received: by 2002:a05:6122:4b01:b0:4b7:177a:25e4 with SMTP id
+ fc1-20020a0561224b0100b004b7177a25e4mr1141463vkb.9.1704906872057; Wed, 10 Jan
+ 2024 09:14:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9e3a6d33-cc04-46cb-b97d-e903a263800f@amd.com>
+References: <20240110012640.1335694-1-kevinloughlin@google.com> <ZZ6DSdaaoYKzgp4K@tassilo>
+In-Reply-To: <ZZ6DSdaaoYKzgp4K@tassilo>
+From: Kevin Loughlin <kevinloughlin@google.com>
+Date: Wed, 10 Jan 2024 09:14:21 -0800
+Message-ID: <CAGdbjmJcQeLWroBkbRC-cFQ6OuMHONsGLzpUrrA5k3uc8Rzkmw@mail.gmail.com>
+Subject: Re: [RFC PATCH] x86/sev: x86/sev: enforce PC-relative addressing in clang
+To: Andi Kleen <ak@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Kees Cook <keescook@chromium.org>, 
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Ze Gao <zegao2021@gmail.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Pengfei Xu <pengfei.xu@intel.com>, 
+	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	Ashish Kalra <ashish.kalra@amd.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	Joerg Roedel <jroedel@suse.de>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-coco@lists.linux.dev, Adam Dunlap <acdunlap@google.com>, 
+	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
+	Sidharth Telang <sidtelang@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 10, 2024 at 09:51:04AM -0600, Tom Lendacky wrote:
-> I'm only suggesting getting rid of the else that prints "..." when the entry
-> is all zeroes. Printing the non-zero entries would still occur.
+On Wed, Jan 10, 2024 at 3:45=E2=80=AFAM Andi Kleen <ak@linux.intel.com> wro=
+te:
+>
+> On Wed, Jan 10, 2024 at 01:26:39AM +0000, Kevin Loughlin wrote:
+> >
+> > While an attempt was made to force PC-relative addressing for certain
+> > global SEV/SME variables via inline assembly (see snp_cpuid_get_table()
+> > for example), PC-relative addressing must be pervasively-enforced for
+> > SEV/SME global variables that can be accessed prior to page table
+> > fixups.
+> >
+> > To avoid the error-prone approach of manually referencing each SEV/SME
+> > global variable via a general form of snp_cpuid_get_table(), it is
+> > preferable to use compiler flags for position-independent code (ex:
+>
+> But if gcc doesn't support it then it doesn't work.
+>
+> It seems your approach with incompatible execution models between
+> the compilers is just a recipe for future patches only working
+> on one of the compilers because most code submitters probably
+> won't test both.
+>
+> It would be better to at least use a unified execution model, if you want
+> to extend the hack and not fix the underlying issue.
 
-Sure, one should be able to to infer that the missing entries are null.
+Fair point; while gcc (unlike clang) appears to currently generate
+PC-relative accesses to these vars, the patch in its current state
+would not account for gcc's behavior potentially changing in the
+future.
 
-:-)
+On that note, I do have another version of this patch that abstracts
+snp_cpuid_get_table() into a macro along the lines of...
 
--- 
-Regards/Gruss,
-    Boris.
+#define GET_RIP_RELATIVE_PTR(var) \
+({  \
+ void *ptr; \
+ asm ("lea "#var"(%%rip), %0" \
+      : "=3Dr" (ptr) \
+      : "p" (&var)); \
+ ptr; \
+})
 
-https://people.kernel.org/tglx/notes-about-netiquette
+...and uses this new macro to access all SEV/SME global variables (not
+just the cpuid_table). It's similar in nature to `fixup_pointer()`
+(currently defined in arch/x86/kernel/head64.c) but doesn't require us
+to pass around `physaddr` from `__startup64()`. This wouldn't
+introduce any new execution model changes between clang vs gcc and
+would be consistent with the kernel's current approach of relying on
+developers to manually apply fixups for global variable accesses prior
+to kernel relocation. I can send an RFC v2 for the
+GET_RIP_RELATIVE_PTR() version of this patch.
