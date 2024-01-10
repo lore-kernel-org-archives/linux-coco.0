@@ -1,42 +1,42 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31433F8D8
-	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 10:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138F547762
+	for <linux-coco@lists.linux.dev>; Wed, 10 Jan 2024 11:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MZUF+eVm"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DRISGyRR"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AC5AA40E01B2;
-	Wed, 10 Jan 2024 09:59:59 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2B03040E01A9;
+	Wed, 10 Jan 2024 11:14:30 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
 	header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id t_Tn0inSc1pY; Wed, 10 Jan 2024 09:59:58 +0000 (UTC)
+	with ESMTP id rk1GXipRnNvY; Wed, 10 Jan 2024 11:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1704880797; bh=KJvIW3wGLgeykBglh9gfqqbtZfBEiY8fY9XU3XU6k20=;
+	t=1704885267; bh=fwWP59DQZ/MSSlZK6nSA8WJmcHMonAP5bkUAu0nzMfE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MZUF+eVmMir+M1csoIULZxfauukcd7CIuBhSBhwBfhowq36E2RXi4e9gJ75fzZH9b
-	 Wg6xn7brRPR4AwnRuCsq63ewIR/Xd7XFj67bgKbdKeb989Hgb9jGSZeUDdRLdfG7kB
-	 WfsISTeUpUhK+LnBQkmPsNRbT0sOMv8Q8OQfrD6QLCHN/DQZpoTReSw82F5WpR//qZ
-	 BnysNvbWGF31/Flzzv+uQLZQE9GP/i48XSZWOFnCIeLTv0UDkMM8XwpEpUSjbtQ+in
-	 ytNul1/xz+BxbQ+322LEQcEVeh5I7sKfUzvQ/3PHa/BiTQX2YsmDlKSn3r3FJ2HEVo
-	 tAfW05x8P5pbsC5YfiyRWtBfpkQFgr8M1DaPYLouuX8BfM/HMK15n6sIPb++WoPywo
-	 yf2277q5vXXIdpe+FL1J6T2SCJH/lQEIdnLhwgQ4zFJxtufCyWXcVgfMax9BHQYREq
-	 ptClxSF7ifxh6Z2ojSIgdLXQx1zVF8cnZaJw6qS1Uokypca32F5hO6k6w/j62w1xNH
-	 Hv9ZDY3ZSUdUrwC+hrnXWhglinSkchD9uqSyz/Pu05OogRBjymaUWH2mLgixn8o8X5
-	 a29JrS9ZsD6e1pt0bQjQlLXa4MC3q7a7wr2jbO3L2uGQ2u7+Ec5IaMh9WP0uztwh3O
-	 IfOfk0ue5sI4yXGKrvIRn+f4=
+	b=DRISGyRRH2Yb8ljr7qzKxmjDv5PDR//i1JNCPji2bZmoSqvXC2CEFgz/un4zlwdOd
+	 1gE3QpuxPCOS/AO49UojJngUhe+gslvuDort5mT6YKdB6PxdpW6SSQ6zI36SoQuZR2
+	 j+RNLNTXzjvJQgrviDjXNmGcHbG5Mhmfs3WnhbYXRMEeLIMF9EE/Sfiam/v3lfpkqD
+	 jmyhL1yhBFmtW21wCivpy1KA++k78OC13Jex3T8KKx2xdYeruw7kBahsHOSGi83Nc6
+	 zsmsThRTTmzDRmCRXhyv4Wh7snbFm9Jn0fzha+wd4J2CxbS65LeqhPk/ZyYjL29/bo
+	 uzu+pKOPJQzyhB3gyH2U0vw/1s2cnfvdj8f4glLTntMjkAbIhBlBYRxUu+5LM16j5D
+	 U55MFzVMl22H06LDmtwxnqgrBxOzam7Rf4F2Fu/NM/qSWgrU3fe+/dUsfjXHbxCZ5G
+	 e7qT409qJNtDLgXCJ76zb6Vl1icGQQwZPxoS/Wdei8VQcHsSvz5xp6cU2JEctfs62k
+	 7S7u9Tu+1rKxVl8sIi+n7DFgdXO+dkjJJ2aOKwBMXd4jKb0z/ex7gzelEMo/Qew5t7
+	 pM9QC4FIj9hngIZR138Qa4DFSWnFwdYzXo60YT4dvPw5Je2/cOL9wzPkTcg6JofhE0
+	 8CJKjCNIb4GEyJfUyPXLgMxs=
 Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 22F3940E0196;
-	Wed, 10 Jan 2024 09:59:19 +0000 (UTC)
-Date: Wed, 10 Jan 2024 10:59:12 +0100
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 67EAF40E01F9;
+	Wed, 10 Jan 2024 11:13:49 +0000 (UTC)
+Date: Wed, 10 Jan 2024 12:13:44 +0100
 From: Borislav Petkov <bp@alien8.de>
 To: Michael Roth <michael.roth@amd.com>
 Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
@@ -54,7 +54,7 @@ Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
 	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
 	Brijesh Singh <brijesh.singh@amd.com>
 Subject: Re: [PATCH v1 07/26] x86/fault: Add helper for dumping RMP entries
-Message-ID: <20240110095912.GAZZ5qcFXYgvPrCdRI@fat_crate.local>
+Message-ID: <20240110111344.GBZZ576DpwHHs997Zl@fat_crate.local>
 References: <20231230161954.569267-1-michael.roth@amd.com>
  <20231230161954.569267-8-michael.roth@amd.com>
 Precedence: bulk
@@ -68,34 +68,145 @@ Content-Disposition: inline
 In-Reply-To: <20231230161954.569267-8-michael.roth@amd.com>
 
 On Sat, Dec 30, 2023 at 10:19:35AM -0600, Michael Roth wrote:
-> +void snp_dump_hva_rmpentry(unsigned long hva)
-> +{
-> +	unsigned int level;
-> +	pgd_t *pgd;
-> +	pte_t *pte;
+> +	while (pfn_current < pfn_end) {
+> +		e = __snp_lookup_rmpentry(pfn_current, &level);
+> +		if (IS_ERR(e)) {
+> +			pfn_current++;
+> +			continue;
+> +		}
 > +
-> +	pgd = __va(read_cr3_pa());
-> +	pgd += pgd_index(hva);
-> +	pte = lookup_address_in_pgd(pgd, hva, &level);
-> +
-> +	if (!pte) {
-> +		pr_info("Can't dump RMP entry for HVA %lx: no PTE/PFN found\n", hva);
-> +		return;
+> +		e_data = (u64 *)e;
+> +		if (e_data[0] || e_data[1]) {
+> +			pr_info("No assigned RMP entry for PFN 0x%llx, but the 2MB region contains populated RMP entries, e.g.: PFN 0x%llx: [high=0x%016llx low=0x%016llx]\n",
+> +				pfn, pfn_current, e_data[1], e_data[0]);
+> +			return;
+> +		}
+> +		pfn_current++;
 > +	}
 > +
-> +	dump_rmpentry(pte_pfn(*pte));
+> +	pr_info("No populated RMP entries in the 2MB region containing PFN 0x%llx\n",
+> +		pfn);
 > +}
-> +EXPORT_SYMBOL_GPL(snp_dump_hva_rmpentry);
 
-show_fault_oops() - the only caller of this - is builtin code and thus
-doesn't need symbol exports. Symbol exports are only for module code.
+Ok, I went and reworked this, see below.
+
+Yes, I think it is important - at least in the beginning - to dump the
+whole 2M PFN region for debugging purposes. If that output starts
+becoming too unwieldy and overflowing terminals or log files, we'd
+shorten it or put it behind a debug option or so.
+
+Thx.
 
 ---
 diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index a8cf33b7da71..31154f087fb0 100644
+index a8cf33b7da71..259a1dd655a7 100644
 --- a/arch/x86/virt/svm/sev.c
 +++ b/arch/x86/virt/svm/sev.c
-@@ -339,4 +339,3 @@ void snp_dump_hva_rmpentry(unsigned long hva)
+@@ -35,16 +35,21 @@
+  * Family 19h Model 01h, Rev B1 processor.
+  */
+ struct rmpentry {
+-	u64	assigned	: 1,
+-		pagesize	: 1,
+-		immutable	: 1,
+-		rsvd1		: 9,
+-		gpa		: 39,
+-		asid		: 10,
+-		vmsa		: 1,
+-		validated	: 1,
+-		rsvd2		: 1;
+-	u64 rsvd3;
++	union {
++		struct {
++			u64	assigned	: 1,
++				pagesize	: 1,
++				immutable	: 1,
++				rsvd1		: 9,
++				gpa		: 39,
++				asid		: 10,
++				vmsa		: 1,
++				validated	: 1,
++				rsvd2		: 1;
++		};
++		u64 lo;
++	};
++	u64 hi;
+ } __packed;
+ 
+ /*
+@@ -272,22 +277,20 @@ EXPORT_SYMBOL_GPL(snp_lookup_rmpentry);
+  */
+ static void dump_rmpentry(u64 pfn)
+ {
+-	u64 pfn_current, pfn_end;
++	u64 pfn_i, pfn_end;
+ 	struct rmpentry *e;
+-	u64 *e_data;
+ 	int level;
+ 
+ 	e = __snp_lookup_rmpentry(pfn, &level);
+ 	if (IS_ERR(e)) {
+-		pr_info("Failed to read RMP entry for PFN 0x%llx, error %ld\n",
+-			pfn, PTR_ERR(e));
++		pr_err("Error %ld reading RMP entry for PFN 0x%llx\n",
++			PTR_ERR(e), pfn);
+ 		return;
+ 	}
+ 
+-	e_data = (u64 *)e;
+ 	if (e->assigned) {
+-		pr_info("RMP entry for PFN 0x%llx: [high=0x%016llx low=0x%016llx]\n",
+-			pfn, e_data[1], e_data[0]);
++		pr_info("PFN 0x%llx, RMP entry: [0x%016llx - 0x%016llx]\n",
++			pfn, e->lo, e->hi);
+ 		return;
+ 	}
+ 
+@@ -299,27 +302,28 @@ static void dump_rmpentry(u64 pfn)
+ 	 * certain situations, such as when the PFN is being accessed via a 2MB
+ 	 * mapping in the host page table.
+ 	 */
+-	pfn_current = ALIGN(pfn, PTRS_PER_PMD);
+-	pfn_end = pfn_current + PTRS_PER_PMD;
++	pfn_i = ALIGN(pfn, PTRS_PER_PMD);
++	pfn_end = pfn_i + PTRS_PER_PMD;
+ 
+-	while (pfn_current < pfn_end) {
+-		e = __snp_lookup_rmpentry(pfn_current, &level);
++	pr_info("PFN 0x%llx unassigned, dumping the whole 2M PFN region: [0x%llx - 0x%llx]\n",
++		pfn, pfn_i, pfn_end);
++
++	while (pfn_i < pfn_end) {
++		e = __snp_lookup_rmpentry(pfn_i, &level);
+ 		if (IS_ERR(e)) {
+-			pfn_current++;
++			pr_err("Error %ld reading RMP entry for PFN 0x%llx\n",
++				PTR_ERR(e), pfn_i);
++			pfn_i++;
+ 			continue;
+ 		}
+ 
+-		e_data = (u64 *)e;
+-		if (e_data[0] || e_data[1]) {
+-			pr_info("No assigned RMP entry for PFN 0x%llx, but the 2MB region contains populated RMP entries, e.g.: PFN 0x%llx: [high=0x%016llx low=0x%016llx]\n",
+-				pfn, pfn_current, e_data[1], e_data[0]);
+-			return;
+-		}
+-		pfn_current++;
+-	}
++		if (e->lo || e->hi)
++			pr_info("PFN: 0x%llx, [0x%016llx - 0x%016llx]\n", pfn_i, e->lo, e->hi);
++		else
++			pr_info("PFN: 0x%llx ...\n", pfn_i);
+ 
+-	pr_info("No populated RMP entries in the 2MB region containing PFN 0x%llx\n",
+-		pfn);
++		pfn_i++;
++	}
+ }
+ 
+ void snp_dump_hva_rmpentry(unsigned long hva)
+@@ -339,4 +343,3 @@ void snp_dump_hva_rmpentry(unsigned long hva)
  
  	dump_rmpentry(pte_pfn(*pte));
  }
