@@ -1,48 +1,54 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C687EC0
-	for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 03:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE2C14F81
+	for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 11:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iI008k/x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W61qeUVg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704944043; x=1736480043;
+  t=1704971554; x=1736507554;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=HL60IJCbg51uCA/Ke8LM4u0ojnLTkmcbUqIywmQAX3Q=;
-  b=iI008k/xNny23jcOq5NqlOJ0Bsvgv4Q0lz/+nrVM1DtMBntbUrXDxUPV
-   eMFTl8Xdq3lE4w8ANtPjYTEyWL56ZET1tLVqLeaRCz9fcPzMyhohAgECr
-   dvL7Ko9WLnitaJ5AhwOLQiOp1lvmYrDzsYaDlaiZnF6/zCp9cxWqaaIVA
-   hdQSkr4jaWCO8FKbk7DaIvUSyzltl3i/wJSOohW6nF33lvdfDp7Djf8SW
-   3/3Ba0MOvrGB0PL+PaQ2nTwz+5GyZJ+9ilrpEGnI64QHdE07cbO/23MW7
-   sTg5FFBl31dctrsa3VAYEnBrteJhDjScSV6EuXvD0Pj7JmHVcsxUTW/eb
+  bh=1YFtBXWVelzOCij9mu8FZw930rKm1mM6tLkMC1PxwA8=;
+  b=W61qeUVgV7B7ZJ/4uZmGD/ID7cFfikWkAYSIqDLkThXVDJGGIsBRHnhz
+   n1h6WJqTnxDhvQ9jCr5Snpbl8M1AqvNqTn7p+bl6VBgtCJ1Rr8mXYd6nz
+   j1VTXSjcWmOkz1zZN/foNsYQA2XxzgLQhx+L69Q97FZleQ38j5tuC2Nui
+   vluMKWTh6TZlf3FmIHTtw05G9p3e7xm+1OrUv4aM0iVueGtC9ZgYXr+8D
+   yVwWbkgHF5cqg4QqIGj9pqAEcpA9jsHl9iQULcm67Cf+cEnXgTMuhzvcD
+   LKfD3mSgTRzWfDYkv1Mojce0U0kBrRTeLCJ2SJgZGIXv2QGGZMVGv6qX7
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="20209901"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
-   d="scan'208";a="20209901"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 19:34:03 -0800
+X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="6175592"
+X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
+   d="scan'208";a="6175592"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 03:12:34 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="905794898"
-X-IronPort-AV: E=Sophos;i="6.04,185,1695711600"; 
-   d="scan'208";a="905794898"
-Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2024 19:34:02 -0800
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-To: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	x86@kernel.org
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>,
+X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
+   d="scan'208";a="24593644"
+Received: from gcrisanx-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.213.56])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 03:12:30 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id B879810A557; Thu, 11 Jan 2024 14:12:27 +0300 (+03)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: [PATCH v2] virt: tdx-guest: Handle GetQuote request error code
-Date: Thu, 11 Jan 2024 03:32:45 +0000
-Message-Id: <20240111033245.2632484-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Subject: [PATCHv2] x86/mm: Fix memory encryption features advertisement
+Date: Thu, 11 Jan 2024 14:12:24 +0300
+Message-ID: <20240111111224.25289-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -51,56 +57,103 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-During the TDX guest attestation process, TSM ConfigFS ABI is used by
-the user attestation agent to get the signed VM measurement data (a.k.a
-Quote), which can be used by a remote verifier to validate the
-trustworthiness of the guest. When a user requests for the Quote data
-via the ConfigFS ABI, the TDX Quote generation handler
-(tdx_report_new()) forwards the request to VMM (or QE) via a hypercall,
-and then shares the output with the user.
+When memory encryption is enabled, the kernel prints the encryption
+flavor that the system supports.
 
-Currently, when handling the Quote generation request, tdx_report_new()
-handler only checks whether the VMM successfully processed the request
-and if it is true it returns success and shares the output to the user
-without actually validating the output data. Since the VMM can return
-error even after processing the Quote request, always returning success
-for the processed requests is incorrect and will create confusion to
-the user. Although for the failed request, output buffer length will
-be zero and can also be used by the user to identify the failure case,
-it will be more clear to return error for all failed cases.
+The check assumes that everything is AMD SME/SEV if it doesn't have
+the TDX CPU feature set.
 
-Validate the Quote data output status and return error code for all
-failed cases.
+Hyper-V vTOM sets cc_vendor to CC_VENDOR_INTEL when it runs as L2 guest
+on top of TDX, but not X86_FEATURE_TDX_GUEST. Hyper-V only needs memory
+encryption enabled for I/O without the rest of CoCo enabling.
 
-Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
-Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Closes: https://lore.kernel.org/linux-coco/6bdf569c-684a-4459-af7c-4430691804eb@linux.intel.com/T/#u
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+To avoid confusion, check the cc_vendor directly.
+
+Possible alternative is to completely removing the print statement.
+For a regular TDX guest, the kernel already prints a message indicating
+that it is booting on TDX. Similarly, AMD and Hyper-V can also display
+a message during their enumeration process.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Dexuan Cui <decui@microsoft.com>
+Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
 ---
+ arch/x86/mm/mem_encrypt.c | 56 +++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
 
-Changes since v1:
- * Updated the commit log (Kirill)
-
- drivers/virt/coco/tdx-guest/tdx-guest.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 1253bf76b570..61368318fa39 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -228,6 +228,12 @@ static int tdx_report_new(struct tsm_report *report, void *data)
- 		goto done;
- 	}
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index c290c55b632b..d035bce3a2b0 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -42,38 +42,42 @@ bool force_dma_unencrypted(struct device *dev)
  
-+	if (quote_buf->status != GET_QUOTE_SUCCESS) {
-+		pr_err("GetQuote request failed, ret %llx\n", quote_buf->status);
-+		ret = -EIO;
-+		goto done;
-+	}
+ static void print_mem_encrypt_feature_info(void)
+ {
+-	pr_info("Memory Encryption Features active:");
++	pr_info("Memory Encryption Features active: ");
+ 
+-	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+-		pr_cont(" Intel TDX\n");
+-		return;
+-	}
++	switch (cc_vendor) {
++	case CC_VENDOR_INTEL:
++		pr_cont("Intel TDX\n");
++		break;
++	case CC_VENDOR_AMD:
++		pr_cont("AMD");
+ 
+-	pr_cont(" AMD");
+-
+-	/* Secure Memory Encryption */
+-	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
++		/* Secure Memory Encryption */
++		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+ 		/*
+ 		 * SME is mutually exclusive with any of the SEV
+ 		 * features below.
+-		 */
+-		pr_cont(" SME\n");
+-		return;
++		*/
++			pr_cont(" SME\n");
++			return;
++		}
 +
- 	buf = kvmemdup(quote_buf->data, quote_buf->out_len, GFP_KERNEL);
- 	if (!buf) {
- 		ret = -ENOMEM;
++		/* Secure Encrypted Virtualization */
++		if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++			pr_cont(" SEV");
++
++		/* Encrypted Register State */
++		if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
++			pr_cont(" SEV-ES");
++
++		/* Secure Nested Paging */
++		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++			pr_cont(" SEV-SNP");
++
++		pr_cont("\n");
++		break;
++	default:
++		pr_cont("Unknown\n");
+ 	}
+-
+-	/* Secure Encrypted Virtualization */
+-	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+-		pr_cont(" SEV");
+-
+-	/* Encrypted Register State */
+-	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+-		pr_cont(" SEV-ES");
+-
+-	/* Secure Nested Paging */
+-	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+-		pr_cont(" SEV-SNP");
+-
+-	pr_cont("\n");
+ }
+ 
+ /* Architecture __weak replacement functions */
 -- 
-2.25.1
+2.41.0
 
