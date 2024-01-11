@@ -1,86 +1,166 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00414F8B
-	for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 11:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8763D549
+	for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 14:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IxEkt4DL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HDAZs6aJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704972197; x=1736508197;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IhLVf1IN4DSrbYF9P13rk6JGQJ+d09K7DNovQma/Gpc=;
-  b=IxEkt4DL9N66BUh+U0i+FlV5R8mPwxZi7Up/qjwNz9Y/N5sJCORrIN3N
-   FQzj6BRb7b8d61Ic8/9S0DWU43E4n9D6CBv8KyJwH6LJ1NRFL+blPKr8U
-   TZ5uePheb032va/3aa2kMNpWYTbpOsO+LgDgw7Ihus5KjR1LARVC/Z/oI
-   x7nMDU6JyHP4EQtqahbTyxnrvD1b6xhVo83YGqO7Iy08dKCdCeOPjJ/r1
-   kPN2os/mEvw3qqXwsDy27x+mP/sBVIAwZBgAqhvWQhghrpzTFJjoCWRB3
-   5p2PK+NX30Hs7zn9X5pTafp1wQx70ggN7K17NwVzlsHyacpP9NM9EnmIS
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="5546858"
+  t=1704982787; x=1736518787;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=m9r/zSGvLdOLi0BGLqhWMQAD8e0dWyA3OSr/FvhjBSg=;
+  b=HDAZs6aJxlNtnhtFqsBrZlEuw43GzA/82ADkhfLTo4kER5OBqiZ5+pLc
+   uNp23YdV6SaBTfMX77jq8R/Y822nTO5yj8KQ64mwJqn29XpkqCAMNttsp
+   JLxAOvrpRVK7LLh2eZlDLX2Y7sgWnspq0VD8wmWJtwCLqLDfqLtQyeYeC
+   FLaz3MtNjEDCR5FZVD8A9BiYx22Hza84SO2pvo8XiYMsQHEB1zmpSsGak
+   Ikie8n5fDS+xDqHatoYwGwJJgp/KE9m1OUgIdiWDtk8H+0lvza/KgGRZS
+   9lmxlKsdlZPi/28W0lE0ZrPDkmNWLbRRwF6r5M4NTLb+vruUE/Cap4qS9
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="402632016"
 X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="5546858"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 03:23:17 -0800
+   d="scan'208";a="402632016"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 06:19:47 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="852916313"
 X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="852916313"
-Received: from gcrisanx-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.213.56])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 03:23:15 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id BD76F10A557; Thu, 11 Jan 2024 14:23:12 +0300 (+03)
-Date: Thu, 11 Jan 2024 14:23:12 +0300
-From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>, linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v2] virt: tdx-guest: Handle GetQuote request error code
-Message-ID: <20240111112312.zdgkmfywscp2kvxw@box.shutemov.name>
-References: <20240111033245.2632484-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+   d="scan'208";a="17055629"
+Received: from unknown (HELO [10.125.177.125]) ([10.125.177.125])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 06:19:46 -0800
+Message-ID: <1a3661d5-3539-4443-88da-003dea920188@linux.intel.com>
+Date: Thu, 11 Jan 2024 06:19:46 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240111033245.2632484-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2] x86/mm: Fix memory encryption features advertisement
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Dexuan Cui <decui@microsoft.com>,
+ Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+References: <20240111111224.25289-1-kirill.shutemov@linux.intel.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240111111224.25289-1-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 11, 2024 at 03:32:45AM +0000, Kuppuswamy Sathyanarayanan wrote:
-> During the TDX guest attestation process, TSM ConfigFS ABI is used by
-> the user attestation agent to get the signed VM measurement data (a.k.a
-> Quote), which can be used by a remote verifier to validate the
-> trustworthiness of the guest. When a user requests for the Quote data
-> via the ConfigFS ABI, the TDX Quote generation handler
-> (tdx_report_new()) forwards the request to VMM (or QE) via a hypercall,
-> and then shares the output with the user.
-> 
-> Currently, when handling the Quote generation request, tdx_report_new()
-> handler only checks whether the VMM successfully processed the request
-> and if it is true it returns success and shares the output to the user
-> without actually validating the output data. Since the VMM can return
-> error even after processing the Quote request, always returning success
-> for the processed requests is incorrect and will create confusion to
-> the user. Although for the failed request, output buffer length will
-> be zero and can also be used by the user to identify the failure case,
-> it will be more clear to return error for all failed cases.
-> 
-> Validate the Quote data output status and return error code for all
-> failed cases.
-> 
-> Fixes: f4738f56d1dc ("virt: tdx-guest: Add Quote generation support using TSM_REPORTS")
-> Reported-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Closes: https://lore.kernel.org/linux-coco/6bdf569c-684a-4459-af7c-4430691804eb@linux.intel.com/T/#u
-> Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+
+On 1/11/2024 3:12 AM, Kirill A. Shutemov wrote:
+> When memory encryption is enabled, the kernel prints the encryption
+> flavor that the system supports.
+> 
+> The check assumes that everything is AMD SME/SEV if it doesn't have
+> the TDX CPU feature set.
+> 
+> Hyper-V vTOM sets cc_vendor to CC_VENDOR_INTEL when it runs as L2 guest
+> on top of TDX, but not X86_FEATURE_TDX_GUEST. Hyper-V only needs memory
+> encryption enabled for I/O without the rest of CoCo enabling.
+> 
+> To avoid confusion, check the cc_vendor directly.
+> 
+> Possible alternative is to completely removing the print statement.
+> For a regular TDX guest, the kernel already prints a message indicating
+> that it is booting on TDX. Similarly, AMD and Hyper-V can also display
+> a message during their enumeration process.
+
+With this change, will it print "Intel TDX" for Hyper-V?
+
+IMO, since there is already a debug message for type identification, we
+can remove this part. 
+
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Dexuan Cui <decui@microsoft.com>
+> Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+> ---
+>  arch/x86/mm/mem_encrypt.c | 56 +++++++++++++++++++++------------------
+>  1 file changed, 30 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+> index c290c55b632b..d035bce3a2b0 100644
+> --- a/arch/x86/mm/mem_encrypt.c
+> +++ b/arch/x86/mm/mem_encrypt.c
+> @@ -42,38 +42,42 @@ bool force_dma_unencrypted(struct device *dev)
+>  
+>  static void print_mem_encrypt_feature_info(void)
+>  {
+> -	pr_info("Memory Encryption Features active:");
+> +	pr_info("Memory Encryption Features active: ");
+>  
+> -	if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+> -		pr_cont(" Intel TDX\n");
+> -		return;
+> -	}
+> +	switch (cc_vendor) {
+> +	case CC_VENDOR_INTEL:
+> +		pr_cont("Intel TDX\n");
+> +		break;
+> +	case CC_VENDOR_AMD:
+> +		pr_cont("AMD");
+>  
+> -	pr_cont(" AMD");
+> -
+> -	/* Secure Memory Encryption */
+> -	if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+> +		/* Secure Memory Encryption */
+> +		if (cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)) {
+>  		/*
+>  		 * SME is mutually exclusive with any of the SEV
+>  		 * features below.
+> -		 */
+> -		pr_cont(" SME\n");
+> -		return;
+> +		*/
+> +			pr_cont(" SME\n");
+> +			return;
+> +		}
+> +
+> +		/* Secure Encrypted Virtualization */
+> +		if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> +			pr_cont(" SEV");
+> +
+> +		/* Encrypted Register State */
+> +		if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+> +			pr_cont(" SEV-ES");
+> +
+> +		/* Secure Nested Paging */
+> +		if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+> +			pr_cont(" SEV-SNP");
+> +
+> +		pr_cont("\n");
+> +		break;
+> +	default:
+> +		pr_cont("Unknown\n");
+>  	}
+> -
+> -	/* Secure Encrypted Virtualization */
+> -	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> -		pr_cont(" SEV");
+> -
+> -	/* Encrypted Register State */
+> -	if (cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+> -		pr_cont(" SEV-ES");
+> -
+> -	/* Secure Nested Paging */
+> -	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+> -		pr_cont(" SEV-SNP");
+> -
+> -	pr_cont("\n");
+>  }
+>  
+>  /* Architecture __weak replacement functions */
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
