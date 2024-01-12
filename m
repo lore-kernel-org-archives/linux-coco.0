@@ -1,53 +1,55 @@
 Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C935B5CC
-	for <linux-coco@lists.linux.dev>; Fri, 12 Jan 2024 05:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6295DF4F7
+	for <linux-coco@lists.linux.dev>; Fri, 12 Jan 2024 05:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ayZDybvw"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-db402e6f61dso8176253276.3
-        for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 21:52:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3VhQDSMa"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbedc37d66cso6534237276.3
+        for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 21:53:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705038777; x=1705643577; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Eek3/p9ES41h8PWH5gBdbupDvFtsA2EdHaKQWrImp7c=;
-        b=ayZDybvwH/4YTdhrSE5rfHKmR3L+Y7KWOh5UMRh6U/DKU5SECG7Mtgk4HOO0/FT6rW
-         DGhYO05lU+FIvZUP3NTW63fhYmn7btLbg5Ai85WQidgU+Tm3YalmT9gMv9r1jR9iSA5C
-         eUnqbP5TyC7eLX0zhB/45GdccWXQ4qUf4oyVgpjlFsZfYLCbT91oRIQqgwLBzHG5eNYJ
-         +DuPXap5a8Kplh7KaWOGwAGZUs6OkQfhXfnnwtiCEB08QCZz0tPJ0LBslsLlSwmB4VV/
-         I29h5jc3JecFgd8aOeuwXxwpoZf36EZ0qmU1UKN57V+kcIcCzNSLlOp5jqQnNs4O7NUC
-         WXyg==
+        d=google.com; s=20230601; t=1705038782; x=1705643582; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CCgv2gQcPlkrLlc5vy0/ee6RBdfFJuXbxv5Hj/nh1sY=;
+        b=3VhQDSMafPsn47hMA+oeu/KGbU1lIICbLbGS7ECtMNdWmSxsG2FP3ToKuqc9IkjaKN
+         IzUKjs/NNAszQfFwcdxjA+sGTAVI7MEAhaUx0idgebW6ZgGHFMXVzCoK4sQB170em4D4
+         Tm2qUVdlQ4qP7nttCpQp5o9ZCA+AlhL5IU4w3aQ3Z8hWon7btCtFQsWDIDal+dmGb6pe
+         bpzFaQMJIRk30nNnA3P6mtjCoQzNHGEJW8KCHT+nTAcEKyYb6UtrZWcCVUY5SE8Omhh2
+         /LkaK+iUsbYAbA7KfKsnvWpH+ZDvgDmnrv/C4MkWPETVHQSGFvdTyZiXhLUzuTUgLlml
+         DHaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705038777; x=1705643577;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Eek3/p9ES41h8PWH5gBdbupDvFtsA2EdHaKQWrImp7c=;
-        b=Muj06NJWxWZ/+T5a1duOSK5/8oD3VnX8pM4MNZzlOr70qL7R6Q+4YZ5FtjXnVxTNvf
-         9XUaMAiFXp70YYT/EhezmumLoVBTSsslGEa9KZf+ePryYnqQlq/z+NNlK7eR3oRZ4Udo
-         AT8CPlv/0pBLmDRisTAqGu9dCYXJLGGMG8fcasm4Icfz8E+rePGuOqZTN3DW2npOBIfn
-         G0pJ7NDPkN7CUzayNb8fL1HYFyGBp545aobO8wblrXnmgiFBxlIJRv+BsU6XyfobyY5C
-         WP5cFu9AGtPqrGj2EeXi4YdYccsctzNsQl3ieAfB20kdy57dQeP5keu2L5t+1eWogWP4
-         UT8A==
-X-Gm-Message-State: AOJu0YyXfEVDgNOvnUL7XOWbWljj+LM9IAUhz+EC4DHrbP8e58SsLMPL
-	gyerLquu4iMQSeYYNiB6zmsYGbKtZlNPcKynZyp9Wk0=
-X-Google-Smtp-Source: AGHT+IHwTOdClhtUPbfkNLCqsrkV+DUCP10t3cc3JC0hHLwhlQAS7BqfEhb+YkVABN3l+xlef5DkGsoXndaAdE3b
+        d=1e100.net; s=20230601; t=1705038782; x=1705643582;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CCgv2gQcPlkrLlc5vy0/ee6RBdfFJuXbxv5Hj/nh1sY=;
+        b=WypQZS8F15WDQmQgdN5MwUg4E4yH2VI5WF0pbCCC/lEXsJzfbcMfwSf8p9wmEzC/jX
+         sPemQWnUzcHG+yTuc7X1w2clV/cRP2H65pghNtHhakXf8BwJvhAshnzjqJMIinMVo3Ay
+         AVfhgjLDGL+oZ4uMtE+ceGg8sjD4ljuWm7unr0BEr2LdnUSFR6jlDgr0g+1GwHC/1Yfj
+         /05o8qhGFbXMa/OgpOprDwmW06RyGTv9veOvtXprih1gnmsCuMwHqmuFCTB9q79FF+qs
+         vPNqr/KuwRZX2cPDl6mppvUFC6qu4uWysoXnsSx2vv5ykn+8t0tGf0NZGiQJ+n8fok/T
+         5ndw==
+X-Gm-Message-State: AOJu0Yz82NMYX5a+Xvd64w8wBJtBaRfZlRyWe606MQwxCqIlVQB6jK+i
+	Ks9SVXTbSKbr7ZDkK1xbPKaWYHp0zZ4smuXw25Q6rng=
+X-Google-Smtp-Source: AGHT+IHzIdxRbUN3uUh2p4li/usVrD1CGbdlJlgyLfKsoH/zMy1VbGZJ/Dfi9+WcQoQmfD7YSqjGuTsHmLd/HH/O
 X-Received: from vannapurve2.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:43a4])
- (user=vannapurve job=sendgmr) by 2002:a05:6902:e88:b0:dbd:ea33:cc2 with SMTP
- id dg8-20020a0569020e8800b00dbdea330cc2mr138415ybb.12.1705038776754; Thu, 11
- Jan 2024 21:52:56 -0800 (PST)
-Date: Fri, 12 Jan 2024 05:52:46 +0000
+ (user=vannapurve job=sendgmr) by 2002:a05:6902:1b81:b0:dbe:d426:c456 with
+ SMTP id ei1-20020a0569021b8100b00dbed426c456mr10589ybb.4.1705038782481; Thu,
+ 11 Jan 2024 21:53:02 -0800 (PST)
+Date: Fri, 12 Jan 2024 05:52:47 +0000
+In-Reply-To: <20240112055251.36101-1-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 Mime-Version: 1.0
+References: <20240112055251.36101-1-vannapurve@google.com>
 X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
-Message-ID: <20240112055251.36101-1-vannapurve@google.com>
-Subject: [RFC V1 0/5] x86: CVMs: Align memory conversions to 2M granularity
+Message-ID: <20240112055251.36101-2-vannapurve@google.com>
+Subject: [RFC V1 1/5] swiotlb: Support allocating DMA memory from SWIOTLB
 From: Vishal Annapurve <vannapurve@google.com>
 To: x86@kernel.org, linux-kernel@vger.kernel.org
 Cc: pbonzini@redhat.com, rientjes@google.com, bgardon@google.com, 
@@ -62,132 +64,118 @@ Cc: pbonzini@redhat.com, rientjes@google.com, bgardon@google.com,
 	Vishal Annapurve <vannapurve@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Goal of this series is aligning memory conversion requests from CVMs to
-huge page sizes to allow better host side management of guest memory and
-optimized page table walks.
+Modify SWIOTLB framework to allocate DMA memory always from SWIOTLB.
 
-This patch series is partially tested and needs more work, I am seeking
-feedback from wider community before making further progress.
+CVMs use SWIOTLB buffers for bouncing memory when using dma_map_* APIs
+to setup memory for IO operations. SWIOTLB buffers are marked as shared
+once during early boot.
 
-Background
-=====================
-Confidential VMs(CVMs) support two types of guest memory ranges:
-1) Private Memory: Intended to be consumed/modified only by the CVM.
-2) Shared Memory: visible to both guest/host components, used for
-non-trusted IO.
+Buffers allocated using dma_alloc_* APIs are allocated from kernel memory
+and then converted to shared during each API invocation. This patch ensures
+that such buffers are also allocated from already shared SWIOTLB
+regions. This allows enforcing alignment requirements on regions marked
+as shared.
 
-Guest memfd [1] support is set to be merged upstream to handle guest private
-memory isolation from host usersapace. Guest memfd approach allows following
-setup:
-* private memory backed using the guest memfd file which is not accessible
-  from host userspace.
-* Shared memory backed by tmpfs/hugetlbfs files that are accessible from
-  host userspace.
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+---
+ include/linux/swiotlb.h | 17 +----------------
+ kernel/dma/direct.c     |  4 ++--
+ kernel/dma/swiotlb.c    |  5 +++--
+ 3 files changed, 6 insertions(+), 20 deletions(-)
 
-Userspace VMM needs to register two backing stores for all of the guest
-memory ranges:
-* HVA for shared memory
-* Guest memfd ranges for private memory
-
-KVM keeps track of shared/private guest memory ranges that can be updated at
-runtime using IOCTLs. This allows KVM to back the guest memory using either HVA
-(shared) or guest memfd file offsets (private) based on the attributes of the
-guest memory ranges.
-
-In this setup, there is possibility of "double allocation" i.e. scenarios where
-both shared and private memory backing stores mapped to the same guest memory
-ranges have memory allocated.
-
-Guest issues an hypercall to convert the memory types which is forwarded by KVM
-to the host userspace.
-Userspace VMM is supposed to handle conversion as follows:
-1) Private to shared conversion:
-  * Update guest memory attributes for the range to be shared using KVM
-    supported IOCTLs.
-    - While handling this IOCTL, KVM will unmap EPT/NPT entries corresponding
-      to the guest memory being converted.
-  * Unback the guest memfd range.
-2) Shared to private conversion:
-  * Update guest memory attributes for the range to be private using KVM
-    supported IOCTLs.
-    - While handling this IOCTL, KVM will unmap EPT/NPT entries corresponding
-      to the guest memory being converted.
-  * Unback the shared memory file.
-
-Note that unbacking needs to be done for both kinds of conversions in order to
-avoid double allocation.
-
-Problem
-=====================
-CVMs can convert memory between these two types at 4K granularity. Conversion
-done at 4K granularity causes issues when using guest memfd support
-with hugetlb/Hugepage backed guest private memory:
-1) Hugetlb fs doesn't allow freeing subpage ranges when punching holes,
-causing all the private to shared memory conversions to result in double
-allocation.
-2) Even if a new fs is implemented for guest memfd that allows splitting
-hugepages, punching holes at 4K will cause:
-   - loss of vmemmmap optimization [2]
-   - more memory for EPT/NPT entries and extra pagetable walks for guest
-     side accesses.
-   - Shared memory mappings to consume more host pagetable entries and
-     extra pagetalble walks for host side access.
-   - Higher number of conversions with additional overhead of VM exits
-     serviced by host userspace.
-
-Memory conversion scenarios in the guest that are of major concern:
-- SWIOTLB area conversion early during boot.
-   * dma_map_* API invocations for CVMs result in using bounce buffers
-     from SWIOTLB region which is already marked as shared.
-- Device drivers allocating memory using dma_alloc_* APIs at runtime
-  that bypass SWIOTLB.
-
-Proposal
-=====================
-To counter above issues, this series proposes following:
-1) Use boot time allocated SWIOTLB pools for all DMA memory allocated
-using dma_alloc_* APIs.
-2) Increase memory allocated at boot for SWIOTLB from 6% to 8% for CVMs.
-3) Enable dynamic SWIOTLB [4] by default for CVMs so that SWITLB can be
-scaled up as needed.
-4) Ensure SWIOTLB pool is 2MB aligned so that all the conversions happen at
-2M granularity once during boot.
-5) Add a check to ensure all conversions happen at 2M granularity.
-
-** This series leaves out some of the conversion sites which might not
-be 2M aligned but should be easy to fix once the approach is finalized. **
-
-1G alignment for conversion:
-* Using 1G alignment may cause over-allocated SWIOTLB buffers but might
-  be acceptable for CVMs depending on more considerations.
-* It might be challenging to use 1G aligned conversion in OVMF. 2M
-  alignment should be achievable with OVMF changes [3].
-
-Alternatives could be:
-1) Separate hugepage aligned DMA pools setup by individual device drivers in
-case of CVMs.
-
-[1] https://lore.kernel.org/linux-mips/20231105163040.14904-1-pbonzini@redhat.com/
-[2] https://www.kernel.org/doc/html/next/mm/vmemmap_dedup.html
-[3] https://github.com/tianocore/edk2/pull/3784
-[4] https://lore.kernel.org/lkml/20230908080031.GA7848@lst.de/T/
-
-Vishal Annapurve (5):
-  swiotlb: Support allocating DMA memory from SWIOTLB
-  swiotlb: Allow setting up default alignment of SWIOTLB region
-  x86: CVMs: Enable dynamic swiotlb by default for CVMs
-  x86: CVMs: Allow allocating all DMA memory from SWIOTLB
-  x86: CVMs: Ensure that memory conversions happen at 2M alignment
-
- arch/x86/Kconfig             |  2 ++
- arch/x86/kernel/pci-dma.c    |  2 +-
- arch/x86/mm/mem_encrypt.c    |  8 ++++++--
- arch/x86/mm/pat/set_memory.c |  6 ++++--
- include/linux/swiotlb.h      | 22 ++++++----------------
- kernel/dma/direct.c          |  4 ++--
- kernel/dma/swiotlb.c         | 17 ++++++++++++-----
- 7 files changed, 33 insertions(+), 28 deletions(-)
-
+diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
+index ecde0312dd52..058901313405 100644
+--- a/include/linux/swiotlb.h
++++ b/include/linux/swiotlb.h
+@@ -17,6 +17,7 @@ struct scatterlist;
+ #define SWIOTLB_VERBOSE	(1 << 0) /* verbose initialization */
+ #define SWIOTLB_FORCE	(1 << 1) /* force bounce buffering */
+ #define SWIOTLB_ANY	(1 << 2) /* allow any memory for the buffer */
++#define SWIOTLB_ALLOC	(1 << 4) /* force dma allocation through swiotlb */
+ 
+ /*
+  * Maximum allowable number of contiguous slabs to map,
+@@ -259,7 +260,6 @@ static inline phys_addr_t default_swiotlb_limit(void)
+ 
+ extern void swiotlb_print_info(void);
+ 
+-#ifdef CONFIG_DMA_RESTRICTED_POOL
+ struct page *swiotlb_alloc(struct device *dev, size_t size);
+ bool swiotlb_free(struct device *dev, struct page *page, size_t size);
+ 
+@@ -267,20 +267,5 @@ static inline bool is_swiotlb_for_alloc(struct device *dev)
+ {
+ 	return dev->dma_io_tlb_mem->for_alloc;
+ }
+-#else
+-static inline struct page *swiotlb_alloc(struct device *dev, size_t size)
+-{
+-	return NULL;
+-}
+-static inline bool swiotlb_free(struct device *dev, struct page *page,
+-				size_t size)
+-{
+-	return false;
+-}
+-static inline bool is_swiotlb_for_alloc(struct device *dev)
+-{
+-	return false;
+-}
+-#endif /* CONFIG_DMA_RESTRICTED_POOL */
+ 
+ #endif /* __LINUX_SWIOTLB_H */
+diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+index 73c95815789a..a7d3266d3d83 100644
+--- a/kernel/dma/direct.c
++++ b/kernel/dma/direct.c
+@@ -78,7 +78,7 @@ bool dma_coherent_ok(struct device *dev, phys_addr_t phys, size_t size)
+ 
+ static int dma_set_decrypted(struct device *dev, void *vaddr, size_t size)
+ {
+-	if (!force_dma_unencrypted(dev))
++	if (!force_dma_unencrypted(dev) || is_swiotlb_for_alloc(dev))
+ 		return 0;
+ 	return set_memory_decrypted((unsigned long)vaddr, PFN_UP(size));
+ }
+@@ -87,7 +87,7 @@ static int dma_set_encrypted(struct device *dev, void *vaddr, size_t size)
+ {
+ 	int ret;
+ 
+-	if (!force_dma_unencrypted(dev))
++	if (!force_dma_unencrypted(dev) || is_swiotlb_for_alloc(dev))
+ 		return 0;
+ 	ret = set_memory_encrypted((unsigned long)vaddr, PFN_UP(size));
+ 	if (ret)
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 33d942615be5..a056d2f8b9ee 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -363,6 +363,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
+ 
+ 	io_tlb_default_mem.force_bounce =
+ 		swiotlb_force_bounce || (flags & SWIOTLB_FORCE);
++	io_tlb_default_mem.for_alloc = (flags & SWIOTLB_ALLOC);
+ 
+ #ifdef CONFIG_SWIOTLB_DYNAMIC
+ 	if (!remap)
+@@ -1601,8 +1602,6 @@ static inline void swiotlb_create_debugfs_files(struct io_tlb_mem *mem,
+ 
+ #endif	/* CONFIG_DEBUG_FS */
+ 
+-#ifdef CONFIG_DMA_RESTRICTED_POOL
+-
+ struct page *swiotlb_alloc(struct device *dev, size_t size)
+ {
+ 	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+@@ -1634,6 +1633,8 @@ bool swiotlb_free(struct device *dev, struct page *page, size_t size)
+ 	return true;
+ }
+ 
++#ifdef CONFIG_DMA_RESTRICTED_POOL
++
+ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
+ 				    struct device *dev)
+ {
 -- 
 2.43.0.275.g3460e3d667-goog
 
