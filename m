@@ -1,406 +1,193 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02E55B5BA
-	for <linux-coco@lists.linux.dev>; Fri, 12 Jan 2024 05:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C935B5CC
+	for <linux-coco@lists.linux.dev>; Fri, 12 Jan 2024 05:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vZIgMpP5"
-Date: Fri, 12 Jan 2024 14:01:47 +0900
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1705035724;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a31lxfS2Eq7+p4BmDm53oRDaST/BQ8PiEP0ZwMsQpSY=;
-	b=vZIgMpP5O6T7sTFHGxg9Ecv+XRXsrfXatxk0xMBTeJCxj35Yu3BPCMV5ao0frPZowkE7fQ
-	KBS+AzUZoA+8GYEAcw/l1j8lNEJnpOWQo7MtAyWN7XYFZcTJ9h0Jz4XXi0TQ9PrGGIrSdN
-	q4WZGIHaSnUSsrWDKlkJsyBELNksx5I=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org,
-	maz@kernel.org, steven.price@arm.com, alexandru.elisei@arm.com,
-	joey.gouly@arm.com, james.morse@arm.com,
-	Jonathan.Cameron@huawei.com, dgilbert@redhat.com, jpb@kernel.org,
-	oliver.upton@linux.dev, zhi.wang.linux@gmail.com,
-	yuzenghui@huawei.com, salil.mehta@huawei.com,
-	Andrew Jones <andrew.jones@linux.dev>,
-	Chao Peng <chao.p.peng@linux.intel.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Quentin Perret <qperret@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Huth <thuth@redhat.com>, Ryan Roberts <Ryan.Roberts@arm.com>,
-	Sami Mujawar <Sami.Mujawar@arm.com>
-Subject: Re: [RFC] Support for Arm CCA VMs on Linux
-Message-ID: <ZaDHu/zUlazt7i+R@vm3>
-References: <20230127112248.136810-1-suzuki.poulose@arm.com>
- <20231002124311.204614-1-suzuki.poulose@arm.com>
- <ZZ4tsTQOKOamM+h/@vm3>
- <ec8ed5b0-5080-45e9-a4a6-e5dbe48e86d3@arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ayZDybvw"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-db402e6f61dso8176253276.3
+        for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 21:52:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1705038777; x=1705643577; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Eek3/p9ES41h8PWH5gBdbupDvFtsA2EdHaKQWrImp7c=;
+        b=ayZDybvwH/4YTdhrSE5rfHKmR3L+Y7KWOh5UMRh6U/DKU5SECG7Mtgk4HOO0/FT6rW
+         DGhYO05lU+FIvZUP3NTW63fhYmn7btLbg5Ai85WQidgU+Tm3YalmT9gMv9r1jR9iSA5C
+         eUnqbP5TyC7eLX0zhB/45GdccWXQ4qUf4oyVgpjlFsZfYLCbT91oRIQqgwLBzHG5eNYJ
+         +DuPXap5a8Kplh7KaWOGwAGZUs6OkQfhXfnnwtiCEB08QCZz0tPJ0LBslsLlSwmB4VV/
+         I29h5jc3JecFgd8aOeuwXxwpoZf36EZ0qmU1UKN57V+kcIcCzNSLlOp5jqQnNs4O7NUC
+         WXyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705038777; x=1705643577;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Eek3/p9ES41h8PWH5gBdbupDvFtsA2EdHaKQWrImp7c=;
+        b=Muj06NJWxWZ/+T5a1duOSK5/8oD3VnX8pM4MNZzlOr70qL7R6Q+4YZ5FtjXnVxTNvf
+         9XUaMAiFXp70YYT/EhezmumLoVBTSsslGEa9KZf+ePryYnqQlq/z+NNlK7eR3oRZ4Udo
+         AT8CPlv/0pBLmDRisTAqGu9dCYXJLGGMG8fcasm4Icfz8E+rePGuOqZTN3DW2npOBIfn
+         G0pJ7NDPkN7CUzayNb8fL1HYFyGBp545aobO8wblrXnmgiFBxlIJRv+BsU6XyfobyY5C
+         WP5cFu9AGtPqrGj2EeXi4YdYccsctzNsQl3ieAfB20kdy57dQeP5keu2L5t+1eWogWP4
+         UT8A==
+X-Gm-Message-State: AOJu0YyXfEVDgNOvnUL7XOWbWljj+LM9IAUhz+EC4DHrbP8e58SsLMPL
+	gyerLquu4iMQSeYYNiB6zmsYGbKtZlNPcKynZyp9Wk0=
+X-Google-Smtp-Source: AGHT+IHwTOdClhtUPbfkNLCqsrkV+DUCP10t3cc3JC0hHLwhlQAS7BqfEhb+YkVABN3l+xlef5DkGsoXndaAdE3b
+X-Received: from vannapurve2.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:43a4])
+ (user=vannapurve job=sendgmr) by 2002:a05:6902:e88:b0:dbd:ea33:cc2 with SMTP
+ id dg8-20020a0569020e8800b00dbdea330cc2mr138415ybb.12.1705038776754; Thu, 11
+ Jan 2024 21:52:56 -0800 (PST)
+Date: Fri, 12 Jan 2024 05:52:46 +0000
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ec8ed5b0-5080-45e9-a4a6-e5dbe48e86d3@arm.com>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
+Message-ID: <20240112055251.36101-1-vannapurve@google.com>
+Subject: [RFC V1 0/5] x86: CVMs: Align memory conversions to 2M granularity
+From: Vishal Annapurve <vannapurve@google.com>
+To: x86@kernel.org, linux-kernel@vger.kernel.org
+Cc: pbonzini@redhat.com, rientjes@google.com, bgardon@google.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
+	jxgao@google.com, sagis@google.com, oupton@google.com, peterx@redhat.com, 
+	vkuznets@redhat.com, dmatlack@google.com, pgonda@google.com, 
+	michael.roth@amd.com, kirill@shutemov.name, thomas.lendacky@amd.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
+	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, andrew.jones@linux.dev, 
+	corbet@lwn.net, hch@lst.de, m.szyprowski@samsung.com, bp@suse.de, 
+	rostedt@goodmis.org, iommu@lists.linux.dev, 
+	Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jan 10, 2024 at 11:41:09AM +0000, Suzuki K Poulose wrote:
-> Hi Itaru,
-> 
-> On 10/01/2024 05:40, Itaru Kitayama wrote:
-> > On Mon, Oct 02, 2023 at 01:43:11PM +0100, Suzuki K Poulose wrote:
-> > > Hi,
-> > > 
-> > > 
-> > > > We are happy to announce the early RFC version of the Arm
-> > > > Confidential Compute Architecture (CCA) support for the Linux
-> > > > stack. The intention is to seek early feedback in the following areas:
-> > > >   * KVM integration of the Arm CCA
-> > > >   * KVM UABI for managing the Realms, seeking to generalise the operations
-> > > >     wherever possible with other Confidential Compute solutions.
-> > > >     Note: This version doesn't support Guest Private memory, which will be added
-> > > >     later (see below).
-> > > >   * Linux Guest support for Realms
-> > > > 
-> > > 
-> > > We have updated the stack for Arm CCA Linux support to RMM-v1.0-EAC2 (See links)
-> > > We are not posting the patches for review yet, as we plan to update our
-> > > stack to support the latest RMM-v1.0 specification, which includes some
-> > > functional changes to support PSCI monitoring by the VMM along with other
-> > > minor changes. All relevant components are updated on a new branch "rmm-v1.0-eac2"
-> > > Guest-mem support is not included, but is in progress.
-> > > 
-> > > Change log :
-> > >   - KVM RMI support updated to v1.0-eac2, with optimisations to stage2 tear down
-> > >   - Guest (Linux and kvm-unit-test) support for RSI compliant to v1.0-eac2
-> > >   - SVE, PMU support for Realms
-> > > 
-> > > kvmtool :
-> > >    - Dropped no-compat and switched to --loglevel (merged upstream)
-> > >    - Support for SVE, --sve-vl for vector length
-> > > 
-> > > > Arm CCA Introduction
-> > > > =====================
-> > > > 
-> > > > The Arm CCA is a reference software architecture and implementation that builds
-> > > > on the Realm Management Extension (RME), enabling the execution of Virtual
-> > > > machines, while preventing access by more privileged software, such as hypervisor.
-> > > > The Arm CCA allows the hypervisor to control the VM, but removes the right for
-> > > > access to the code, register state or data that is used by VM.
-> > > > More information on the architecture is available here[0].
-> > > > 
-> > > >      Arm CCA Reference Software Architecture
-> > > > 
-> > > >          Realm World    ||    Normal World   ||  Secure World  ||
-> > > >                         ||        |          ||                ||
-> > > >   EL0 x-------x         || x----x | x------x ||                ||
-> > > >       | Realm |         || |    | | |      | ||                ||
-> > > >       |       |         || | VM | | |      | ||                ||
-> > > >   ----|  VM*  |---------||-|    |---|      |-||----------------||
-> > > >       |       |         || |    | | |  H   | ||                ||
-> > > >   EL1 x-------x         || x----x | |      | ||                ||
-> > > >           ^             ||        | |  o   | ||                ||
-> > > >           |             ||        | |      | ||                ||
-> > > >   ------- R*------------------------|  s  -|---------------------
-> > > >           S             ||          |      | ||                ||
-> > > >           I             ||          |  t   | ||                ||
-> > > >           |             ||          |      | ||                ||
-> > > >           v             ||          x------x ||                ||
-> > > >   EL2    RMM*           ||              ^    ||                ||
-> > > >           ^             ||              |    ||                ||
-> > > >   ========|=============================|========================
-> > > >           |                             | SMC
-> > > >           x--------- *RMI* -------------x
-> > > > 
-> > > >   EL3                   Root World
-> > > >                         EL3 Firmware
-> > > >   ===============================================================
-> > > > Where :
-> > > >   RMM - Realm Management Monitor
-> > > >   RMI - Realm Management Interface
-> > > >   RSI - Realm Service Interface
-> > > >   SMC - Secure Monitor Call
-> > > > 
-> > > > RME introduces a new security state "Realm world", in addition to the
-> > > > traditional Secure and Non-Secure states. The Arm CCA defines a new component,
-> > > > Realm Management Monitor (RMM) that runs at R-EL2. This is a standard piece of
-> > > > firmware, verified, installed and loaded by the EL3 firmware (e.g, TF-A), at
-> > > > system boot.
-> > > > 
-> > > > The RMM provides standard interfaces - Realm Management Interface (RMI) - to the
-> > > > Normal world hypervisor to manage the VMs running in the Realm world (also called
-> > > > Realms in short). These are exposed via SMC and are routed through the EL3
-> > > > firmwre.
-> > > > The RMI interface includes:
-> > > >    - Move a physical page from the Normal world to the Realm world
-> > > >    - Creating a Realm with requested parameters, tracked via Realm Descriptor (RD)
-> > > >    - Creating VCPUs aka Realm Execution Context (REC), with initial register state.
-> > > >    - Create stage2 translation table at any level.
-> > > >    - Load initial images into Realm Memory from normal world memory
-> > > >    - Schedule RECs (vCPUs) and handle exits
-> > > >    - Inject virtual interrupts into the Realm
-> > > >    - Service stage2 runtime faults with pages (provided by host, scrubbed by RMM).
-> > > >    - Create "shared" mappings that can be accessed by VMM/Hyp.
-> > > >    - Reclaim the memory allocated for the RAM and RTTs (Realm Translation Tables)
-> > > > 
-> > > > However v1.0 of RMM specifications doesn't support:
-> > > >   - Paging protected memory of a Realm VM. Thus the pages backing the protected
-> > > >     memory region must be pinned.
-> > > >   - Live migration of Realms.
-> > > >   - Trusted Device assignment.
-> > > >   - Physical interrupt backed Virtual interrupts for Realms
-> > > > 
-> > > > RMM also provides certain services to the Realms via SMC, called Realm Service
-> > > > Interface (RSI). These include:
-> > > >   - Realm Guest Configuration.
-> > > >   - Attestation & Measurement services
-> > > >   - Managing the state of an Intermediate Physical Address (IPA aka GPA) page.
-> > > >   - Host Call service (Communication with the Normal world Hypervisor)
-> > > > 
-> > > > The specifications for the RMM software is currently at *v1.0-Beta2* and the
-> > > > latest version is available here [1].
-> > > > 
-> > > > The Trusted Firmware foundation has an implementation of the RMM - TF-RMM -
-> > > > available here [3].
-> > > > 
-> > > > Implementation
-> > > > =================
-> > > > 
-> > > > This version of the stack is based on the RMM specification v1.0-Beta0[2], with
-> > > > following exceptions :
-> > > >    - TF-RMM/KVM currently doesn't support the optional features of PMU,
-> > > >       SVE and Self-hosted debug (coming soon).
-> > > >    - The RSI_HOST_CALL structure alignment requirement is reduced to match
-> > > >       RMM v1.0 Beta1
-> > > >    - RMI/RSI version numbers do not match the RMM spec. This will be
-> > > >      resolved once the spec/implementation is complete, across TF-RMM+Linux stack.
-> > > > 
-> > > > We plan to update the stack to support the latest version of the RMMv1.0 spec
-> > > > in the coming revisions.
-> > > > 
-> > > > This release includes the following components :
-> > > > 
-> > > >   a) Linux Kernel
-> > > >       i) Host / KVM support - Support for driving the Realms via RMI. This is
-> > > >       dependent on running in the Kernel at EL2 (aka VHE mode). Also provides
-> > > >       UABI for VMMs to manage the Realm VMs. The support is restricted to 4K page
-> > > >       size, matching the Stage2 granule supported by RMM. The VMM is responsible
-> > > >       for making sure the guest memory is locked.
-> > > > 
-> > > >         TODO: Guest Private memory[10] integration - We have been following the
-> > > >         series and support will be added once it is merged upstream.
-> > > >       ii) Guest support - Support for a Linux Kernel to run in the Realm VM at
-> > > >       Realm-EL1, using RSI services. This includes virtio support (virtio-v1.0
-> > > >       only). All I/O are treated as non-secure/shared.
-> > > >   c) kvmtool - VMM changes required to manage Realm VMs. No guest private memory
-> > > >      as mentioned above.
-> > > >   d) kvm-unit-tests - Support for running in Realms along with additional tests
-> > > >      for RSI ABI.
-> > > > 
-> > > > Running the stack
-> > > > ====================
-> > > > 
-> > > > To run/test the stack, you would need the following components :
-> > > > 
-> > > > 1) FVP Base AEM RevC model with FEAT_RME support [4]
-> > > > 2) TF-A firmware for EL3 [5]
-> > > > 3) TF-A RMM for R-EL2 [3]
-> > > > 4) Linux Kernel [6]
-> > > > 5) kvmtool [7]
-> > > > 6) kvm-unit-tests [8]
-> > > > 
-> > > > Instructions for building the firmware components and running the model are
-> > > > available here [9]. Once, the host kernel is booted, a Realm can be launched by
-> > > > invoking the `lkvm` commad as follows:
-> > > > 
-> > > >   $ lkvm run --realm 				 \
-> > > > 	 --measurement-algo=["sha256", "sha512"] \
-> > > > 	 --disable-sve				 \
-> > > 
-> > > As noted above, this is no longer required.
-> > > 
-> > > > 	 <normal-vm-options>
-> > > > 
-> > > > Where:
-> > > >   * --measurement-algo (Optional) specifies the algorithm selected for creating the
-> > > >     initial measurements by the RMM for this Realm (defaults to sha256).
-> > > >   * GICv3 is mandatory for the Realms.
-> > > >   * SVE is not yet supported in the TF-RMM, and thus must be disabled using
-> > > >     --disable-sve
-> > > > 
-> > > > You may also run the kvm-unit-tests inside the Realm world, using the similar
-> > > > options as above.
-> > > > 
-> > > > 
-> > > > Links
-> > > > ============
-> > > > 
-> > > > [0] Arm CCA Landing page (See Key Resources section for various documentations)
-> > > >      https://www.arm.com/architecture/security-features/arm-confidential-compute-architecture
-> > > > 
-> > > > [1] RMM Specification Latest
-> > > >      https://developer.arm.com/documentation/den0137/latest
-> > > > 
-> > > > [2] RMM v1.0-Beta0 specification
-> > > >      https://developer.arm.com/documentation/den0137/1-0bet0/
-> > > 
-> > >   EAC2 spec: https://developer.arm.com/documentation/den0137/1-0eac2/
-> > > > 
-> > > > [3] Trusted Firmware RMM - TF-RMM
-> > > >      https://www.trustedfirmware.org/projects/tf-rmm/
-> > > >      GIT: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
-> > > > 
-> > > > [4] FVP Base RevC AEM Model (available on x86_64 / Arm64 Linux)
-> > > >      https://developer.arm.com/Tools%20and%20Software/Fixed%20Virtual%20Platforms
-> > > > 
-> > > > [5] Trusted Firmware for A class
-> > > >      https://www.trustedfirmware.org/projects/tf-a/ >>>
-> > > > [6] Linux kernel support for Arm-CCA
-> > > >      https://gitlab.arm.com/linux-arm/linux-cca
-> > > >      Host Support branch:	cca-host/rfc-v1
-> > > 
-> > > Update branch : cca-host/rmm-v1.0-eac2
-> > > 
-> > > >      Guest Support branch:	cca-guest/rfc-v1
-> > > 
-> > > Update branch : cca-guest/rmm-v1.0-eac2
-> > > 
-> > > Combined tree for host and guest is also available at: "cca-full/rmm-v1.0-eac2"
-> > > 
-> > > > 
-> > > > [7] kvmtool support for Arm CCA
-> > > >      https://gitlab.arm.com/linux-arm/kvmtool-cca cca/rfc-v1
-> > > 
-> > > Update branch : cca/rmm-v1.0-eac2
-> > > 
-> > > > 
-> > > > [8] kvm-unit-tests support for Arm CCA
-> > > >      https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca  cca/rfc-v1
-> > > > 
-> > > 
-> > > Update branch : cca/rmm-v1.0-eac2
-> > > 
-> > > 
-> > > Suzuki
-> > > 
-> > > > [9] Instructions for Building Firmware components and running the model, see
-> > > >      section 4.19.2 "Building and running TF-A with RME"
-> > > >      https://trustedfirmware-a.readthedocs.io/en/latest/components/realm-management-extension.html#building-and-running-tf-a-with-rme
-> > > > 
-> > > > [10] fd based Guest Private memory for KVM
-> > > >     https://lkml.kernel.org/r/20221202061347.1070246-1-chao.p.peng@linux.intel.com
-> > > 
-> > > 
-> > > 
-> > > 
-> > > 
-> > > Cc: Alexandru Elisei <alexandru.elisei@arm.com>
-> > > Cc: Andrew Jones <andrew.jones@linux.dev>
-> > > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > > Cc: Chao Peng <chao.p.peng@linux.intel.com>
-> > > Cc: Christoffer Dall <christoffer.dall@arm.com>
-> > > Cc: Fuad Tabba <tabba@google.com>
-> > > Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > > Cc: James Morse <james.morse@arm.com>
-> > > Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > Cc: Joey Gouly <Joey.Gouly@arm.com>
-> > > Cc: Marc Zyngier <maz@kernel.org>
-> > > Cc: Mark Rutland <mark.rutland@arm.com>
-> > > Cc: Oliver Upton <oliver.upton@linux.dev>
-> > > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > > Cc: Quentin Perret <qperret@google.com>
-> > > Cc: Sean Christopherson <seanjc@google.com>
-> > > Cc: Steven Price <steven.price@arm.com>
-> > > Cc: Thomas Huth <thuth@redhat.com>
-> > > Cc: Will Deacon <will@kernel.org>
-> > > Cc: Zenghui Yu <yuzenghui@huawei.com>
-> > > To: linux-coco@lists.linux.dev
-> > > To: kvmarm@lists.linux.dev
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > To: linux-kernel@vger.kernel.org
-> > > To: kvm@vger.kernel.org
-> > 
-> > Suzuki,
-> > Any update to the Arm CCA series (v3?) since last October?
-> 
-> Yes, we now have a version that supports the final RMM-v1.0
-> specification (RMM-v1.0-EAC5). We also have the UEFI EDK2 firmware
-> support for Guests in Realm world.
-> 
-> We are planning to post the changes for review in the v6.8-rc cycle. We
-> are trying to integrate the guest_mem support (available in v6.8-rc1) as
-> well as reusing some of the arm64 kvm generic interface for configuring
-> the Realm parameters (e.g., PMU, SVE_VL etc).
-> 
-> Here is a version that is missing the items mentioned above, based
-> on v6.7-rc4, if anyone would like to try.
-> 
-> Also, the easiest way to get the components built and model kick started
-> is using the shrinkwrap [6] tool, using the cca-3world configuration.
-> The tool pulls all the required software components, builds (including
-> the buildroot for rootfs) and can run a model using these built
-> components.
+Goal of this series is aligning memory conversion requests from CVMs to
+huge page sizes to allow better host side management of guest memory and
+optimized page table walks.
 
-Hi Suzuki,
+This patch series is partially tested and needs more work, I am seeking
+feedback from wider community before making further progress.
 
-This is great news! I've just booted you guys WIP Linux kernel through
-shrinkwrap (cca-3world.yaml) without an issue. 
-Many thanks to Ryan who delivered an extremely handy tool to us. 
+Background
+=====================
+Confidential VMs(CVMs) support two types of guest memory ranges:
+1) Private Memory: Intended to be consumed/modified only by the CVM.
+2) Shared Memory: visible to both guest/host components, used for
+non-trusted IO.
 
-Thanks,
-Itaru.
+Guest memfd [1] support is set to be merged upstream to handle guest private
+memory isolation from host usersapace. Guest memfd approach allows following
+setup:
+* private memory backed using the guest memfd file which is not accessible
+  from host userspace.
+* Shared memory backed by tmpfs/hugetlbfs files that are accessible from
+  host userspace.
 
-> 
-> 
-> 
-> [0] Linux Repo:
->       Where: git@git.gitlab.arm.com:linux-arm/linux-cca.git
->       KVM Support branch: cca-host/rmm-v1.0-eac5
->       Linux Guest branch: cca-guest/rmm-v1.0-eac5
->       Full stack branch:  cca-full/rmm-v1.0-eac5
-> 
-> [1] kvmtool Repo:
->       Where: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git
->       Branch: cca/rmm-v1.0-eac5
-> 
-> [2] kvm-unit-tests Repo:
->       Where: git@git.gitlab.arm.com:linux-arm/kvm-unit-tests-cca.git
->       Branch: cca/rmm-v1.0-eac5
-> 
-> [3] UEFI Guest firmware:
->       edk2:     https://git.gitlab.arm.com/linux-arm/edk2-cca.git
->       revision: 2802_arm_cca_rmm-v1.0-eac5
-> 
->       edk2-platforms:
-> https://git.gitlab.arm.com/linux-arm/edk2-platforms-cca.git
->       revision:       2802_arm_cca_rmm-v1.0-eac5
-> 
-> 
-> [4] RMM Repo:
->       Where: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
->       tag : tf-rmm-v0.4.0
-> 
-> [5] TF-A repo:
->       Where: https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
->       Tag: v2.10
-> 
-> 
-> [6] https://shrinkwrap.docs.arm.com/en/latest/
->     config: cca-3world.yaml
-> 
-> Kind regards
-> Suzuki
-> 
-> 
+Userspace VMM needs to register two backing stores for all of the guest
+memory ranges:
+* HVA for shared memory
+* Guest memfd ranges for private memory
+
+KVM keeps track of shared/private guest memory ranges that can be updated at
+runtime using IOCTLs. This allows KVM to back the guest memory using either HVA
+(shared) or guest memfd file offsets (private) based on the attributes of the
+guest memory ranges.
+
+In this setup, there is possibility of "double allocation" i.e. scenarios where
+both shared and private memory backing stores mapped to the same guest memory
+ranges have memory allocated.
+
+Guest issues an hypercall to convert the memory types which is forwarded by KVM
+to the host userspace.
+Userspace VMM is supposed to handle conversion as follows:
+1) Private to shared conversion:
+  * Update guest memory attributes for the range to be shared using KVM
+    supported IOCTLs.
+    - While handling this IOCTL, KVM will unmap EPT/NPT entries corresponding
+      to the guest memory being converted.
+  * Unback the guest memfd range.
+2) Shared to private conversion:
+  * Update guest memory attributes for the range to be private using KVM
+    supported IOCTLs.
+    - While handling this IOCTL, KVM will unmap EPT/NPT entries corresponding
+      to the guest memory being converted.
+  * Unback the shared memory file.
+
+Note that unbacking needs to be done for both kinds of conversions in order to
+avoid double allocation.
+
+Problem
+=====================
+CVMs can convert memory between these two types at 4K granularity. Conversion
+done at 4K granularity causes issues when using guest memfd support
+with hugetlb/Hugepage backed guest private memory:
+1) Hugetlb fs doesn't allow freeing subpage ranges when punching holes,
+causing all the private to shared memory conversions to result in double
+allocation.
+2) Even if a new fs is implemented for guest memfd that allows splitting
+hugepages, punching holes at 4K will cause:
+   - loss of vmemmmap optimization [2]
+   - more memory for EPT/NPT entries and extra pagetable walks for guest
+     side accesses.
+   - Shared memory mappings to consume more host pagetable entries and
+     extra pagetalble walks for host side access.
+   - Higher number of conversions with additional overhead of VM exits
+     serviced by host userspace.
+
+Memory conversion scenarios in the guest that are of major concern:
+- SWIOTLB area conversion early during boot.
+   * dma_map_* API invocations for CVMs result in using bounce buffers
+     from SWIOTLB region which is already marked as shared.
+- Device drivers allocating memory using dma_alloc_* APIs at runtime
+  that bypass SWIOTLB.
+
+Proposal
+=====================
+To counter above issues, this series proposes following:
+1) Use boot time allocated SWIOTLB pools for all DMA memory allocated
+using dma_alloc_* APIs.
+2) Increase memory allocated at boot for SWIOTLB from 6% to 8% for CVMs.
+3) Enable dynamic SWIOTLB [4] by default for CVMs so that SWITLB can be
+scaled up as needed.
+4) Ensure SWIOTLB pool is 2MB aligned so that all the conversions happen at
+2M granularity once during boot.
+5) Add a check to ensure all conversions happen at 2M granularity.
+
+** This series leaves out some of the conversion sites which might not
+be 2M aligned but should be easy to fix once the approach is finalized. **
+
+1G alignment for conversion:
+* Using 1G alignment may cause over-allocated SWIOTLB buffers but might
+  be acceptable for CVMs depending on more considerations.
+* It might be challenging to use 1G aligned conversion in OVMF. 2M
+  alignment should be achievable with OVMF changes [3].
+
+Alternatives could be:
+1) Separate hugepage aligned DMA pools setup by individual device drivers in
+case of CVMs.
+
+[1] https://lore.kernel.org/linux-mips/20231105163040.14904-1-pbonzini@redhat.com/
+[2] https://www.kernel.org/doc/html/next/mm/vmemmap_dedup.html
+[3] https://github.com/tianocore/edk2/pull/3784
+[4] https://lore.kernel.org/lkml/20230908080031.GA7848@lst.de/T/
+
+Vishal Annapurve (5):
+  swiotlb: Support allocating DMA memory from SWIOTLB
+  swiotlb: Allow setting up default alignment of SWIOTLB region
+  x86: CVMs: Enable dynamic swiotlb by default for CVMs
+  x86: CVMs: Allow allocating all DMA memory from SWIOTLB
+  x86: CVMs: Ensure that memory conversions happen at 2M alignment
+
+ arch/x86/Kconfig             |  2 ++
+ arch/x86/kernel/pci-dma.c    |  2 +-
+ arch/x86/mm/mem_encrypt.c    |  8 ++++++--
+ arch/x86/mm/pat/set_memory.c |  6 ++++--
+ include/linux/swiotlb.h      | 22 ++++++----------------
+ kernel/dma/direct.c          |  4 ++--
+ kernel/dma/swiotlb.c         | 17 ++++++++++++-----
+ 7 files changed, 33 insertions(+), 28 deletions(-)
+
+-- 
+2.43.0.275.g3460e3d667-goog
+
