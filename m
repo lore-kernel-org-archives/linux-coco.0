@@ -1,93 +1,117 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C225D756
-	for <linux-coco@lists.linux.dev>; Fri, 12 Jan 2024 05:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A62B6A026;
+	Fri, 12 Jan 2024 12:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VShIcEp3"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5e73bd9079eso116823057b3.2
-        for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 21:53:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705038795; x=1705643595; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MxvkESmzviEYCBtp91snCvTXp4bYwC2oMLMP2RAwiuA=;
-        b=VShIcEp3yLk+3VgVx/xoZ5gkzhmHt85bIsmbVvwdAQlAqUVcaxOPMxFIB3UUIb1DOA
-         bwDKOcfZ0rAqxTCfsE6WunpW9zA1OrL7VLQeT1i88CDfgE8Ak7fI+ynTfjTq0NiB2X3J
-         VFRbfw9ubgDatM9z4/gT1SK1SicqKxWLoViEl5ccaaJKBpWln/2xnGn+Vu8cWBbuKCxD
-         plHAPgxw5eIY+1S6sGAwKeJ5xdkaWutCYh4iDJ9kBLEOZAm/Jr3qhccFAIOA6++G4wur
-         Hnyj/rT8JXDgfIRo+6I0yEX7IiCD5FZH8YfvE4sS3BgR5fAyWbRhhuP3egEikum//raw
-         8QBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705038795; x=1705643595;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MxvkESmzviEYCBtp91snCvTXp4bYwC2oMLMP2RAwiuA=;
-        b=ZKDtv1r054tnruiXhcY3X8W4pnkPOJKDHxwHcxNvWZAZ0FvhrO2OIFemIc+jwJLmc7
-         /MB/QkVc6XvYZ597E49KPnzcZMs8BCBWtmCFoPYoNKPoYlcYz5a06XrgJWWKAzqNnfo/
-         Tsd76cPdIfAbo48l7/pYtFdvOFscG/ym67MaJAxILjw3ERyE6wpy++2eisCR8VQ/XDd+
-         UNTFxefvzCP4UT2ZQYD3hercmuASki/6ZXshkjrQpAfOQQWBJedZLa6ER4O5Td7K9wcD
-         klpVMqf+mD9NRVwL9sjacOxA59lALFxG2FQR/AWTwqfVXKDR/FhZbBwbeUI0EqtPZHO9
-         oDLg==
-X-Gm-Message-State: AOJu0YzNVEnfZ+L9i4Yf8Otk/dufXtXwo/Q32JDEdXym1pQLZRAyF644
-	pQxeYVxP/f0C2U+KWnLJABiRSditFJC27tnGueLTqV4=
-X-Google-Smtp-Source: AGHT+IEQgbkriNOGK5mfwWNuA4LMZiYYrvGPT1vz3dpLuatntUClCmGcbrPmnPd+PTEtKaWhmKYQgGZpVUGSTNxw
-X-Received: from vannapurve2.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:43a4])
- (user=vannapurve job=sendgmr) by 2002:a0d:e003:0:b0:5fb:7d88:a558 with SMTP
- id j3-20020a0de003000000b005fb7d88a558mr497217ywe.0.1705038794846; Thu, 11
- Jan 2024 21:53:14 -0800 (PST)
-Date: Fri, 12 Jan 2024 05:52:51 +0000
-In-Reply-To: <20240112055251.36101-1-vannapurve@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FcToq9du"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705061859; x=1736597859;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xvCX4d6bX2d4IAUESbi7SQnSQnl8gaBJl/nEkzGvOoo=;
+  b=FcToq9durZcYm9L3BiWAr+IYgsb8X76Ndg+JDIc2XvToq7/E0SkuPIxC
+   m2LVSBt/fJLGTKrLKnZqDkvexW664YnbSqU5VZzLcvG922nVnpNfwSpKv
+   l8vz0mfBWbnV4xVYQK1MaOp+PWYYUxuLb5riREbcPqN64X3lq4l1+HsW/
+   4mvVxR00kCsKDla/0bzPv35XQC3sy9mx8zpsNRhxQUCW9PCrdDXkxU6nn
+   wqJFKOypXY/Gym/UlRpMZHrmrMNakBWP/QG1pALCAeIMQmKHzdLp0SLYC
+   /c6sw/Jq9qlZlzvdd0D9eQ/xIfEO2geOAnMUezs3GddmK4rDOYvZVmTKu
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="20627411"
+X-IronPort-AV: E=Sophos;i="6.04,189,1695711600"; 
+   d="scan'208";a="20627411"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 04:17:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="775990528"
+X-IronPort-AV: E=Sophos;i="6.04,189,1695711600"; 
+   d="scan'208";a="775990528"
+Received: from kschuele-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.213.195])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 04:17:27 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 13ED110A557; Fri, 12 Jan 2024 15:17:25 +0300 (+03)
+Date: Fri, 12 Jan 2024 15:17:25 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Kevin Loughlin <kevinloughlin@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Steve Rutherford <srutherford@google.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Wang Jinchao <wangjinchao@xfusion.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Joerg Roedel <jroedel@suse.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, linux-coco@lists.linux.dev,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>,
+	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>,
+	Sidharth Telang <sidtelang@google.com>
+Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
+ SEV/SME code
+Message-ID: <20240112121725.3amxlumpifhagamb@box>
+References: <ZZ7YuEexYSaZYmLK@tassilo>
+ <20240111223650.3502633-1-kevinloughlin@google.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240112055251.36101-1-vannapurve@google.com>
-X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
-Message-ID: <20240112055251.36101-6-vannapurve@google.com>
-Subject: [RFC V1 5/5] x86: CVMs: Ensure that memory conversions happen at 2M alignment
-From: Vishal Annapurve <vannapurve@google.com>
-To: x86@kernel.org, linux-kernel@vger.kernel.org
-Cc: pbonzini@redhat.com, rientjes@google.com, bgardon@google.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
-	jxgao@google.com, sagis@google.com, oupton@google.com, peterx@redhat.com, 
-	vkuznets@redhat.com, dmatlack@google.com, pgonda@google.com, 
-	michael.roth@amd.com, kirill@shutemov.name, thomas.lendacky@amd.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, andrew.jones@linux.dev, 
-	corbet@lwn.net, hch@lst.de, m.szyprowski@samsung.com, bp@suse.de, 
-	rostedt@goodmis.org, iommu@lists.linux.dev, 
-	Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240111223650.3502633-1-kevinloughlin@google.com>
 
-Return error on conversion of memory ranges not aligned to 2M size.
+On Thu, Jan 11, 2024 at 10:36:50PM +0000, Kevin Loughlin wrote:
+> SEV/SME code can execute prior to page table fixups for kernel
+> relocation. However, as with global variables accessed in
+> __startup_64(), the compiler is not required to generate RIP-relative
+> accesses for SEV/SME global variables, causing certain flavors of SEV
+> hosts and guests built with clang to crash during boot.
+> 
+> While an attempt was made to force RIP-relative addressing for certain
+> global SEV/SME variables via inline assembly (see snp_cpuid_get_table()
+> for example), RIP-relative addressing must be pervasively-enforced for
+> SEV/SME global variables when accessed prior to page table fixups.
+> 
+> __startup_64() already handles this issue for select non-SEV/SME global
+> variables using fixup_pointer(), which adjusts the pointer relative to
+> a `physaddr` argument. To avoid having to pass around this `physaddr`
+> argument across all functions needing to apply pointer fixups, this
+> patch introduces the macro GET_RIP_RELATIVE_PTR() (an abstraction of
+> the existing snp_cpuid_get_table()), which generates an RIP-relative
+> pointer to a passed variable. Similarly, PTR_TO_RIP_RELATIVE_PTR() is
+> introduced to fixup an existing pointer value with RIP-relative logic.
 
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
----
- arch/x86/mm/pat/set_memory.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Can we replace existing fixup_pointer() (and other fixup_*()) with the new
+thing? I don't think we need two confusing things for the same function.
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index bda9f129835e..6f7b06a502f4 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2133,8 +2133,10 @@ static int __set_memory_enc_pgtable(unsigned long addr, int numpages, bool enc)
- 	int ret;
- 
- 	/* Should not be working on unaligned addresses */
--	if (WARN_ONCE(addr & ~PAGE_MASK, "misaligned address: %#lx\n", addr))
--		addr &= PAGE_MASK;
-+	if (WARN_ONCE(addr & ~HPAGE_MASK, "misaligned address: %#lx\n", addr)
-+		|| WARN_ONCE((numpages << PAGE_SHIFT) & ~HPAGE_MASK,
-+			"misaligned numpages: %#lx\n", numpages))
-+		return -EINVAL;
- 
- 	memset(&cpa, 0, sizeof(cpa));
- 	cpa.vaddr = &addr;
+Also, is there any reason why GET_RIP_RELATIVE_PTR() and
+PTR_TO_RIP_RELATIVE_PTR() have to be macros? Inline functions would be
+cleaner.
+
 -- 
-2.43.0.275.g3460e3d667-goog
-
+  Kiryl Shutsemau / Kirill A. Shutemov
