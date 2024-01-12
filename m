@@ -1,676 +1,181 @@
-Received: from mail-il1-f201.google.com (mail-il1-f201.google.com [209.85.166.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A15D21350
-	for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 22:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA462362
+	for <linux-coco@lists.linux.dev>; Fri, 12 Jan 2024 00:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sXH8x7jv"
-Received: by mail-il1-f201.google.com with SMTP id e9e14a558f8ab-3606bb75320so35427285ab.0
-        for <linux-coco@lists.linux.dev>; Thu, 11 Jan 2024 14:36:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705012615; x=1705617415; darn=lists.linux.dev;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lczn+93s43xycbOUg1tjz5/Z/zIwNlBLG84sXxBI1vc=;
-        b=sXH8x7jvoEzzx5OutkbUkXuMOrZE8PkOx05fL0iAaBYOFP7jF4CfM9WAdB9+L49BGO
-         SAWIMivz2k/FgCxXAoMhF//or/Cc/wBmX6+J7k6j/DCOHUgjYpZupGurINUnSFVKjLW4
-         bX5MThUlTmR2vv+oBgN/XNME2JMECNfMaHqIgNT1BMuilGNprjmWUh4Tq5LnnJEj+rQN
-         WOxuo1TumZKNKK5q6sJDpHj/R4Z2k5VX30pFx0i5Jea5JwWBl8bhXuus4hrpmQjjmNaF
-         AfdyFiD0uWPKOM7lpU/Wj9vt+vSJti3/IN4/04J/tTM+se2Ox2/1Y271BEGhcfjLV8jK
-         DOAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705012615; x=1705617415;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lczn+93s43xycbOUg1tjz5/Z/zIwNlBLG84sXxBI1vc=;
-        b=tOiyMcKWhrd1HpTCfe7leWToRS8EXu8miSfQnl+eP/NPaYwwP2CKY0njxmqYeSK24V
-         HOc1UdqGzzuvg6iJpFu1u5qyet/Rjq4xcANmHNAqXsZyV2H9ZhKJbc6cAe1TJbK6Q0X3
-         xKGTiqgjK2t8EFdVooISObX4U6RTHiY6zw7yJU2PY3N/mjMyEUvoxA0gluy7SL67fAxI
-         W8TU3WQg1huKSvKnh+mVKShFtr+lonZD/CLgBV3b6z1Ofg8t8sssu9Zz8cP/ZyrQBYA6
-         jiKMWlh844sF73wVuITs/2PNXA1eK6wh5zXbiccFUH5PxJo6NW3ki1nHesrxILMJ+iPK
-         BqTg==
-X-Gm-Message-State: AOJu0Ywo09o8SUOtsowsF+KAsTf6YFWRgYuVrwfk03vxazdDxtabvbqM
-	fFNSTDuBtFOLI3iEvlSQ6lCo6jGrmxKG9xpP9EVH2/W8SCc=
-X-Google-Smtp-Source: AGHT+IE9G10UZqiKCF//ORs9+mSiFte53u+DD+bCNQWkWjXXdqCOytQJCId7DmHVBmf6hSyIeFawQFEr8UUo2Bq+cNUU
-X-Received: from loughlin00.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:1b6f])
- (user=kevinloughlin job=sendgmr) by 2002:a05:6e02:18cd:b0:35f:cca8:cd54 with
- SMTP id s13-20020a056e0218cd00b0035fcca8cd54mr90119ilu.2.1705012615662; Thu,
- 11 Jan 2024 14:36:55 -0800 (PST)
-Date: Thu, 11 Jan 2024 22:36:50 +0000
-In-Reply-To: <ZZ7YuEexYSaZYmLK@tassilo>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MlI6MFwa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705019208; x=1736555208;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-id:content-transfer-encoding:mime-version;
+  bh=wWtcH6WYFrDRK28hFLh7sYKiAuWJEne9YA5yB4CHw+o=;
+  b=MlI6MFwacUmOu2K0uxhkxqp0wD1OiNcLeizxgUT5Gcvc7EDL+/3DCnJT
+   qZy9GYOiirzXF6vAukcQcNU5nWOyoqy3Gj/0LoG0j/bnMqiadgrA13J+a
+   JsNxkZaIBg0ygOg6jQ8q3Jihg6bS3e0xrAqjOIh3n4j9bnpevG+P1NBhW
+   OKyoJF3+RucSnvemhJzc9numpTbewjIjPMl1vNQI+9zfW7ULlusXnRxO/
+   SaFIiWPsx1yEbijkVnrHcwzG6PCaqXPZFEtWkyFi/S/3Jz8S02NQ81JgK
+   FkyB31NQZ+3mg3uwWdH779ob/tVwk4mewE1Dfd4ovVHQ25nrk6H16x2eQ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="430218251"
+X-IronPort-AV: E=Sophos;i="6.04,187,1695711600"; 
+   d="scan'208";a="430218251"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 16:26:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10950"; a="775816514"
+X-IronPort-AV: E=Sophos;i="6.04,187,1695711600"; 
+   d="scan'208";a="775816514"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 11 Jan 2024 16:26:46 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 11 Jan 2024 16:26:45 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 11 Jan 2024 16:26:45 -0800
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.168)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 11 Jan 2024 16:26:45 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kPOHE3+gVxeqPz0mumg+jfCglI0H+11I/NrIZPc3pONXb5rUqINBO0+jkCO/FIQK0ZzSdpbhecCD2hPd0Hx9BJeepOq3jhq7FH24D+2N/JhVeUoc31/UD9H2JggEa0tbpg1NvcAgZTDEb5XK+Zmv8+dtoJlBc0S9SL1kUANFySVqKOgIZypVNoKis6MP1UFY0nJh/32WW4yI4EY9wOuBeyMEb4kSOGbdGVI1PZ5rxWwm7CfABNIhf/6h+BZGapZ0ZaRX8HxVyHShDG5Fsvj+lGdkrX2KUI9NXjpelu7aI8XX5F68Pjdi1dHtk8LLf45RHDEIUFxH5IsWRFbR77Pw0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wWtcH6WYFrDRK28hFLh7sYKiAuWJEne9YA5yB4CHw+o=;
+ b=AF3Ypx1mGR3sYDmYB1pftlopFOC9dfentN962CgZtnEohxCoNHo0X146JpgTCxUJe1UGMRbB5DOiyNsgowR/9K2EaxxjbJIYOI00gfoEYbgi6jx82IgKLVThBFAvOIDWCBj5r7o0WfKqT5Glu7vw5kZpb51zgJ2wPjMXp+AdNPnV9ZX8d8yfmDHRupI2vWA0OOyht1l7udIhhduDxT7QjuZ3KPiJRT5CkHp7/rKc+jIcj2n2CgouhkHTBPsStmFr59qrZqnMGQze3vnGSqVbeudZU4c6TuDSamRfEizC3S0alxXLa9v66V0vbdAvtXDA9AdC/hCV+fGbnnnalQkaLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
+ by PH7PR11MB5765.namprd11.prod.outlook.com (2603:10b6:510:139::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.18; Fri, 12 Jan
+ 2024 00:26:42 +0000
+Received: from MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::6dc:cee5:b26b:7d93]) by MN0PR11MB5963.namprd11.prod.outlook.com
+ ([fe80::6dc:cee5:b26b:7d93%4]) with mapi id 15.20.7181.018; Fri, 12 Jan 2024
+ 00:26:42 +0000
+From: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+To: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"ardb@kernel.org" <ardb@kernel.org>, "hch@infradead.org" <hch@infradead.org>,
+	"Lutomirski, Andy" <luto@kernel.org>, "mhklinux@outlook.com"
+	<mhklinux@outlook.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "thomas.lendacky@amd.com"
+	<thomas.lendacky@amd.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"mingo@redhat.com" <mingo@redhat.com>, "seanjc@google.com"
+	<seanjc@google.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+	"Cui, Dexuan" <decui@microsoft.com>, "urezki@gmail.com" <urezki@gmail.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"peterz@infradead.org" <peterz@infradead.org>, "wei.liu@kernel.org"
+	<wei.liu@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "Rodel, Jorg"
+	<jroedel@suse.de>, "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "lstoakes@gmail.com"
+	<lstoakes@gmail.com>, "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 3/3] x86/hyperv: Make encrypted/decrypted changes safe
+ for load_unaligned_zeropad()
+Thread-Topic: [PATCH v3 3/3] x86/hyperv: Make encrypted/decrypted changes safe
+ for load_unaligned_zeropad()
+Thread-Index: AQHaQAVUxqgHxuoJlkaDzPPbYPQuurDVW/yA
+Date: Fri, 12 Jan 2024 00:26:42 +0000
+Message-ID: <21f41af44fcc2ce52bdb40c7560fc7c9c0d56ec4.camel@intel.com>
+References: <20240105183025.225972-1-mhklinux@outlook.com>
+	 <20240105183025.225972-4-mhklinux@outlook.com>
+In-Reply-To: <20240105183025.225972-4-mhklinux@outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.44.4-0ubuntu2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|PH7PR11MB5765:EE_
+x-ms-office365-filtering-correlation-id: 4b98b119-85d3-477a-2051-08dc1305267b
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 99i/dJD4hp8SFX13k8LmsIJPdarx4PqatwKdtxTzsYmPE5qHd2dF6RCfSboiLI1ZQWCG1jXqSNNN2x3DYdN9TXj6upIIMqT8X5dW3+z849NUCvKVZsQ8sJYPgKR23QFcClBpGGweAWmC5CNlxH1ve8AqhWDEWzBwevFhtsXgnAfVYxzH1xF5yB+8L1bFPSY7rWVfqtH2E8eeIRtdBwUv41rC7RIMSWibHwnOTsmYQaBZhQLWnrZBp24oumoUIOQr3ug8mPUxj6R/pJNHDeF2Ct21AP9vM+rBfUhXLdabxfAAmW3HqdTAoDZ133k7wCM5ijfkQfw6W7fDwQj/yGj0KQsv0vHhnHIfBPHqVF9qbemUDdBJqZ2ej+kaohx/pQ7db2hxfPI2OqDmK6kFjprUNcqDx8DjDr8KGFMQTSnfccNatTO0JX+BofIIvZnAsTJbzeujEiotMwhMVRji7Qu7+V1o1QOj61Y7nmwF5J84V9oInSE33AHVpqNkkLEyDRk0s5EIUxpUchuTTsZJVCnhkfsiWHchMkWa1jtVzUlX1ooyYaeVXBvasU67QdUQpjl90OzuvwhWysgmmQmeGssiRRoKTbJoVelCutlLYxXtAUGWqCW0m7izPDM4KUrU/d+XABe27qPQXlDS2D6f6H6ejQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(376002)(346002)(136003)(39860400002)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(6506007)(8676002)(5660300002)(7416002)(4744005)(2906002)(122000001)(38100700002)(8936002)(36756003)(41300700001)(82960400001)(86362001)(26005)(66946007)(6512007)(6486002)(66446008)(2616005)(478600001)(66476007)(316002)(64756008)(76116006)(91956017)(66556008)(110136005)(38070700009)(921011)(71200400001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?czN3S3oyOXpnNSttbW5uYW5hNEIrUWNOVWRMMFZ1alNMdWg1STlxVnlNUDVF?=
+ =?utf-8?B?QVpBQ1pRZWxVMWhveFBKV1FRbzA3TVhCbHB5eTVydVlxZEgxVVdkRmpacDNC?=
+ =?utf-8?B?b0pUY3FoMFZVU25DRklxN2FsRVF2Mkg4WjByRGJkUmljSXZtMnJLMEdoMk1V?=
+ =?utf-8?B?L0dPaFMvYnlxWGNuVXVOcEFtaXQzUmRQQlN6SGRycGJ2R0w0Y2hmZVQ5WDVz?=
+ =?utf-8?B?SlVWaUozeElJU0xYVG40SHRsanRLa20zVEVJMngyNzJxZG11NHpMSXNGRDZM?=
+ =?utf-8?B?T3ptSzIrTTZiZTByV1BuSGdRNk5MZm41N25MWVRMK0pmQ1JGOGI4a3AzU0xj?=
+ =?utf-8?B?Ui9veGhlK1BYRzExY3NYOXlGdWNJcEx3QWdRRGpFY210akJWWmpVRUdVR3Nm?=
+ =?utf-8?B?VWpkN0JMWitLcC9XYi9tcWFXZDBCWWxrUTNLNll5WWZwWmphYXZrS0dlK3F4?=
+ =?utf-8?B?NlVXTzJWSTBTRGFteGR6R1FQRHFRbVZmK3ZWbm9uV0g3STludm1tc0tzUng0?=
+ =?utf-8?B?S1dISHJzVE8yTU5VWlJZbTRsSXUvdG9yNG1yTEJlbm4wM09KaVhKUVBCLzRZ?=
+ =?utf-8?B?SGoybWRnZU9mWTEwb2lxM0NUcW94dk9uMFJYVk9mWEJzeXc5Wjlvc2Mzalpx?=
+ =?utf-8?B?VW9tdFlnd3d1WlQxWFpvVUg2ekNkVDJxczRQNi9NTUR2ZHJaVDVOMFFTU2Za?=
+ =?utf-8?B?b2hXUGxVWFZvb2IvbFZnanp0WlQ1d0I4WlhLdGc0VTdsaGFXWWIxRWxIekRP?=
+ =?utf-8?B?ZmtlRlhyN3RER2xiZVNYZzBOOTA3dVg0RFcxenhNRmVxN3l4dWVTeWttZnVz?=
+ =?utf-8?B?RTRTMG9FMkFIZGJUWFQ4UnFxL3dDYkh6Rmw0MUpZUVByeEFqREhMbXFPNFBi?=
+ =?utf-8?B?LzVvczZnd2RaTHB2eEZBNkNYWUt5NVJQNFQxaU1nb0IzZWh5dUwwaGlRcWFB?=
+ =?utf-8?B?bE1VL2tiNXhlaEFRMUlWdDk4TGpqT2tEVmVrUXpReng0Q1dDZktQQk9tdTU2?=
+ =?utf-8?B?bW1yV2VhRmh5Y0E2U1JzYWRvUHhGMTNTeThoVGdZNFE3dFJQMUVVRXp0TE45?=
+ =?utf-8?B?MWpjTW5hNlcrTnY5SUxvNHFNNTVmMjdsQUZWMW1pbnE0QTRDOVNuNlhZYVlS?=
+ =?utf-8?B?NFEvSEdpRy9NZlE1cnJoT2pBQVVKL2lHWEJSM2M4blFsMit2VjlHa1pab2I1?=
+ =?utf-8?B?ZDRTTFdJb3AvOURhaTZ1VnNacTNSa0VyVXZhNUdnTEhjVm04VDQ5Z1diYnl4?=
+ =?utf-8?B?NStWS2h5YUUrb3VialB2QjdjMzR3MS9jbitrVGU5d2NweVZrZW1qeUZaMkFx?=
+ =?utf-8?B?UnptdElkT0hVVDRvMWlaMEFRTWVSNm8xeko5VDdodTRMY3BhbituOFYzdEJp?=
+ =?utf-8?B?cE9HWWk2VElaY0JXWEpNV1NKZ2sraHl1TThxZXpGQkxUT3RZcXczMGNFVEdG?=
+ =?utf-8?B?R21pK29RaWhJa1NZYzZFNjdQQW5YOGwzTXk3L2R0VXNnM0w1ekNpaE5yNjNJ?=
+ =?utf-8?B?ZnpFVjBOVTNvSmk1WkZFNnZsWEhaQ2lzME92YzdoRitBOGJhWnBiWng2V2dr?=
+ =?utf-8?B?NnFLS25TdTZLdEx3S2ZvdjhzbWZZN3pSZm5ocnBJWlUwZE40cEpnSXNZSDdP?=
+ =?utf-8?B?TG9QTDFhWllGbkpWZjc2WWNOSklsVGpuM1R5eEJSSnlkbGFFNEs5L2F1Nkdl?=
+ =?utf-8?B?WTBEV0x1aFIyRURJWHAyRmdzd21GOEc5NWFsU0Y5Nmx2Y01YY1BGd0tKWjRr?=
+ =?utf-8?B?WERubzJFSitCYWdZY2h4ZmIyZHN4R1lHa0ZHTGNMVHhKNFZ1MUtpUzlrTEE3?=
+ =?utf-8?B?b0VQR0VUajBVeWNQdFBwOTBhTHBvZTJqRnNuQ3hBc3RMODg4UHRCSExaVG5S?=
+ =?utf-8?B?ZXFuY0VXZEJLTHJ3c3BkdmRpV2pOcXVCOEExb2NteTAxc3dpdnZrcS9sVENy?=
+ =?utf-8?B?bTcyT2JBd1EzeFl2ZWlITWhNOG90Q09uc3NMYmpBQlZNa1NmUXBCM1E5OGp1?=
+ =?utf-8?B?T2IvS3BoTHNMMWtsWEdGOFI3blJyOXpsTDBDczh3R0NOcmZQc29zUjlld2sr?=
+ =?utf-8?B?YWd1WnBUNDNWY1R3VHBLbU40SjI0a0UvY1NpUjZ1cUR3QXYwQTdPNWcydlFz?=
+ =?utf-8?B?THhhQk44cW94cFNqc2ZwNEJuenBXbk1maFlPc2ZRQ2M4NVovMUZNRllDRWV0?=
+ =?utf-8?B?Y1E9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3F43C51E914DCD48B6989FBA1094B814@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <ZZ7YuEexYSaZYmLK@tassilo>
-X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
-Message-ID: <20240111223650.3502633-1-kevinloughlin@google.com>
-Subject: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
- SEV/SME code
-From: Kevin Loughlin <kevinloughlin@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Michael Kelley <mikelley@microsoft.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
-	Stephen Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>, 
-	Steve Rutherford <srutherford@google.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Hou Wenlong <houwenlong.hwl@antgroup.com>, Vegard Nossum <vegard.nossum@oracle.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Yuntao Wang <ytcoode@gmail.com>, 
-	Wang Jinchao <wangjinchao@xfusion.com>, David Woodhouse <dwmw@amazon.co.uk>, 
-	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Joerg Roedel <jroedel@suse.de>, Randy Dunlap <rdunlap@infradead.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Dionna Glaze <dionnaglaze@google.com>, 
-	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-coco@lists.linux.dev, 
-	Ashish Kalra <ashish.kalra@amd.com>, Andi Kleen <ak@linux.intel.com>
-Cc: Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, 
-	Jacob Xu <jacobhxu@google.com>, Sidharth Telang <sidtelang@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b98b119-85d3-477a-2051-08dc1305267b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jan 2024 00:26:42.0960
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8xSBKdTGT5VIOr4yBY8xhpP7CZFw8HtcfRAFZ+L8g9x+5N/Bv2IHjilQiEeOk22sB/4uGYf3ygTLgRtmdAZzhe3CK5WoxHiB9q8poaeF82Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5765
+X-OriginatorOrg: intel.com
 
-SEV/SME code can execute prior to page table fixups for kernel
-relocation. However, as with global variables accessed in
-__startup_64(), the compiler is not required to generate RIP-relative
-accesses for SEV/SME global variables, causing certain flavors of SEV
-hosts and guests built with clang to crash during boot.
-
-While an attempt was made to force RIP-relative addressing for certain
-global SEV/SME variables via inline assembly (see snp_cpuid_get_table()
-for example), RIP-relative addressing must be pervasively-enforced for
-SEV/SME global variables when accessed prior to page table fixups.
-
-__startup_64() already handles this issue for select non-SEV/SME global
-variables using fixup_pointer(), which adjusts the pointer relative to
-a `physaddr` argument. To avoid having to pass around this `physaddr`
-argument across all functions needing to apply pointer fixups, this
-patch introduces the macro GET_RIP_RELATIVE_PTR() (an abstraction of
-the existing snp_cpuid_get_table()), which generates an RIP-relative
-pointer to a passed variable. Similarly, PTR_TO_RIP_RELATIVE_PTR() is
-introduced to fixup an existing pointer value with RIP-relative logic.
-
-Applying these macros to early SEV/SME code (alongside Adam Dunlap's
-necessary "[PATCH v2] x86/asm: Force native_apic_mem_read to use mov")
-enables previously-failing boots of clang builds to succeed, while
-preserving successful boot of gcc builds. Tested with and without SEV,
-SEV-ES, SEV-SNP enabled in guests built via both gcc and clang.
-
-Fixes: 95d33bfaa3e1 ("x86/sev: Register GHCB memory when SEV-SNP is active")
-Fixes: ee0bfa08a345 ("x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers")
-Fixes: 1cd9c22fee3a ("x86/mm/encrypt: Move page table helpers into separate translation unit")
-Fixes: c9f09539e16e ("x86/head/64: Check SEV encryption before switching to kernel page-table")
-Fixes: b577f542f93c ("x86/coco: Add API to handle encryption mask")
-Tested-by: Kevin Loughlin <kevinloughlin@google.com>
-Signed-off-by: Kevin Loughlin <kevinloughlin@google.com>
----
- arch/x86/coco/core.c               | 22 +++++++----
- arch/x86/include/asm/mem_encrypt.h | 37 +++++++++++++++++-
- arch/x86/kernel/head64.c           | 22 ++++++-----
- arch/x86/kernel/head_64.S          |  4 +-
- arch/x86/kernel/sev-shared.c       | 63 ++++++++++++++++--------------
- arch/x86/kernel/sev.c              | 15 +++++--
- arch/x86/mm/mem_encrypt_identity.c | 50 ++++++++++++------------
- 7 files changed, 136 insertions(+), 77 deletions(-)
-
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index eeec9986570e..8c45b5643f48 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -5,6 +5,11 @@
-  * Copyright (C) 2021 Advanced Micro Devices, Inc.
-  *
-  * Author: Tom Lendacky <thomas.lendacky@amd.com>
-+ *
-+ * WARNING!!
-+ * Select functions in this file can execute prior to page table fixups and thus
-+ * require pointer fixups for global variable accesses. See WARNING in
-+ * arch/x86/kernel/head64.c.
-  */
- 
- #include <linux/export.h>
-@@ -61,33 +66,34 @@ static __maybe_unused __always_inline bool amd_cc_platform_vtom(enum cc_attr att
- static bool noinstr amd_cc_platform_has(enum cc_attr attr)
- {
- #ifdef CONFIG_AMD_MEM_ENCRYPT
-+	const u64 sev_status_fixed_up = sev_get_status_fixup();
- 
--	if (sev_status & MSR_AMD64_SNP_VTOM)
-+	if (sev_status_fixed_up & MSR_AMD64_SNP_VTOM)
- 		return amd_cc_platform_vtom(attr);
- 
- 	switch (attr) {
- 	case CC_ATTR_MEM_ENCRYPT:
--		return sme_me_mask;
-+		return sme_get_me_mask_fixup();
- 
- 	case CC_ATTR_HOST_MEM_ENCRYPT:
--		return sme_me_mask && !(sev_status & MSR_AMD64_SEV_ENABLED);
-+		return sme_get_me_mask_fixup() && !(sev_status_fixed_up & MSR_AMD64_SEV_ENABLED);
- 
- 	case CC_ATTR_GUEST_MEM_ENCRYPT:
--		return sev_status & MSR_AMD64_SEV_ENABLED;
-+		return sev_status_fixed_up & MSR_AMD64_SEV_ENABLED;
- 
- 	case CC_ATTR_GUEST_STATE_ENCRYPT:
--		return sev_status & MSR_AMD64_SEV_ES_ENABLED;
-+		return sev_status_fixed_up & MSR_AMD64_SEV_ES_ENABLED;
- 
- 	/*
- 	 * With SEV, the rep string I/O instructions need to be unrolled
- 	 * but SEV-ES supports them through the #VC handler.
- 	 */
- 	case CC_ATTR_GUEST_UNROLL_STRING_IO:
--		return (sev_status & MSR_AMD64_SEV_ENABLED) &&
--			!(sev_status & MSR_AMD64_SEV_ES_ENABLED);
-+		return (sev_status_fixed_up & MSR_AMD64_SEV_ENABLED) &&
-+			!(sev_status_fixed_up & MSR_AMD64_SEV_ES_ENABLED);
- 
- 	case CC_ATTR_GUEST_SEV_SNP:
--		return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
-+		return sev_status_fixed_up & MSR_AMD64_SEV_SNP_ENABLED;
- 
- 	default:
- 		return false;
-diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
-index 359ada486fa9..d007050a0edc 100644
---- a/arch/x86/include/asm/mem_encrypt.h
-+++ b/arch/x86/include/asm/mem_encrypt.h
-@@ -17,6 +17,34 @@
- 
- #include <asm/bootparam.h>
- 
-+/*
-+ * Generates an RIP-relative pointer to a data variable "var".
-+ * This macro can be used to safely access global data variables prior to kernel
-+ * relocation, similar to fixup_pointer() in arch/x86/kernel/head64.c.
-+ */
-+#define GET_RIP_RELATIVE_PTR(var)	\
-+({					\
-+	void *rip_rel_ptr;		\
-+	asm ("lea "#var"(%%rip), %0"	\
-+		: "=r" (rip_rel_ptr)	\
-+		: "p" (&var));		\
-+	rip_rel_ptr;			\
-+})
-+
-+/*
-+ * Converts an existing pointer "ptr" to an RIP-relative pointer.
-+ * This macro can be used to safely access global pointers prior to kernel
-+ * relocation, similar to fixup_pointer() in arch/x86/kernel/head64.c.
-+ */
-+#define PTR_TO_RIP_RELATIVE_PTR(ptr)	\
-+({					\
-+	void *rip_rel_ptr;		\
-+	asm ("lea "#ptr"(%%rip), %0"	\
-+		: "=r" (rip_rel_ptr)	\
-+		: "p" (ptr));		\
-+	rip_rel_ptr;			\
-+})
-+
- #ifdef CONFIG_X86_MEM_ENCRYPT
- void __init mem_encrypt_init(void);
- void __init mem_encrypt_setup_arch(void);
-@@ -106,9 +134,14 @@ void add_encrypt_protection_map(void);
- 
- extern char __start_bss_decrypted[], __end_bss_decrypted[], __start_bss_decrypted_unused[];
- 
--static inline u64 sme_get_me_mask(void)
-+static inline u64 sme_get_me_mask_fixup(void)
-+{
-+	return *((u64 *) GET_RIP_RELATIVE_PTR(sme_me_mask));
-+}
-+
-+static inline u64 sev_get_status_fixup(void)
- {
--	return sme_me_mask;
-+	return *((u64 *) GET_RIP_RELATIVE_PTR(sev_status));
- }
- 
- #endif	/* __ASSEMBLY__ */
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index dc0956067944..8df7a198094d 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -130,6 +130,7 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp, pmdv
- {
- 	unsigned long vaddr, vaddr_end;
- 	int i;
-+	const u64 sme_me_mask_fixed_up = sme_get_me_mask_fixup();
- 
- 	/* Encrypt the kernel and related (if SME is active) */
- 	sme_encrypt_kernel(bp);
-@@ -140,7 +141,7 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp, pmdv
- 	 * there is no need to zero it after changing the memory encryption
- 	 * attribute.
- 	 */
--	if (sme_get_me_mask()) {
-+	if (sme_me_mask_fixed_up) {
- 		vaddr = (unsigned long)__start_bss_decrypted;
- 		vaddr_end = (unsigned long)__end_bss_decrypted;
- 
-@@ -158,7 +159,7 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp, pmdv
- 			early_snp_set_memory_shared(__pa(vaddr), __pa(vaddr), PTRS_PER_PMD);
- 
- 			i = pmd_index(vaddr);
--			pmd[i] -= sme_get_me_mask();
-+			pmd[i] -= sme_me_mask_fixed_up;
- 		}
- 	}
- 
-@@ -166,14 +167,16 @@ static unsigned long __head sme_postprocess_startup(struct boot_params *bp, pmdv
- 	 * Return the SME encryption mask (if SME is active) to be used as a
- 	 * modifier for the initial pgdir entry programmed into CR3.
- 	 */
--	return sme_get_me_mask();
-+	return sme_me_mask_fixed_up;
- }
- 
--/* Code in __startup_64() can be relocated during execution, but the compiler
-+/*
-+ * WARNING!!
-+ * Code in __startup_64() can be relocated during execution, but the compiler
-  * doesn't have to generate PC-relative relocations when accessing globals from
-  * that function. Clang actually does not generate them, which leads to
-  * boot-time crashes. To work around this problem, every global pointer must
-- * be adjusted using fixup_pointer().
-+ * be adjusted using fixup_pointer() or GET_RIP_RELATIVE_PTR().
-  */
- unsigned long __head __startup_64(unsigned long physaddr,
- 				  struct boot_params *bp)
-@@ -188,6 +191,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	bool la57;
- 	int i;
- 	unsigned int *next_pgt_ptr;
-+	const u64 sme_me_mask_fixed_up = sme_get_me_mask_fixup();
- 
- 	la57 = check_la57_support(physaddr);
- 
-@@ -206,7 +210,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 		for (;;);
- 
- 	/* Include the SME encryption mask in the fixup value */
--	load_delta += sme_get_me_mask();
-+	load_delta += sme_me_mask_fixed_up;
- 
- 	/* Fixup the physical addresses in the page table */
- 
-@@ -242,7 +246,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	pud = fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], physaddr);
- 	pmd = fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++], physaddr);
- 
--	pgtable_flags = _KERNPG_TABLE_NOENC + sme_get_me_mask();
-+	pgtable_flags = _KERNPG_TABLE_NOENC + sme_me_mask_fixed_up;
- 
- 	if (la57) {
- 		p4d = fixup_pointer(early_dynamic_pgts[(*next_pgt_ptr)++],
-@@ -269,7 +273,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	/* Filter out unsupported __PAGE_KERNEL_* bits: */
- 	mask_ptr = fixup_pointer(&__supported_pte_mask, physaddr);
- 	pmd_entry &= *mask_ptr;
--	pmd_entry += sme_get_me_mask();
-+	pmd_entry += sme_me_mask_fixed_up;
- 	pmd_entry +=  physaddr;
- 
- 	for (i = 0; i < DIV_ROUND_UP(_end - _text, PMD_SIZE); i++) {
-@@ -313,7 +317,7 @@ unsigned long __head __startup_64(unsigned long physaddr,
- 	 * Fixup phys_base - remove the memory encryption mask to obtain
- 	 * the true physical address.
- 	 */
--	*fixup_long(&phys_base, physaddr) += load_delta - sme_get_me_mask();
-+	*fixup_long(&phys_base, physaddr) += load_delta - sme_me_mask_fixed_up;
- 
- 	return sme_postprocess_startup(bp, pmd);
- }
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index d4918d03efb4..b9e52cee6e00 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -176,9 +176,11 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	/*
- 	 * Retrieve the modifier (SME encryption mask if SME is active) to be
- 	 * added to the initial pgdir entry that will be programmed into CR3.
-+	 * Since we may have not completed page table fixups, use RIP-relative
-+	 * addressing for sme_me_mask.
- 	 */
- #ifdef CONFIG_AMD_MEM_ENCRYPT
--	movq	sme_me_mask, %rax
-+	movq	sme_me_mask(%rip), %rax
- #else
- 	xorq	%rax, %rax
- #endif
-diff --git a/arch/x86/kernel/sev-shared.c b/arch/x86/kernel/sev-shared.c
-index 1d24ec679915..e71752c990ef 100644
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -7,6 +7,11 @@
-  * This file is not compiled stand-alone. It contains code shared
-  * between the pre-decompression boot code and the running Linux kernel
-  * and is included directly into both code-bases.
-+ *
-+ * WARNING!!
-+ * Select functions in this file can execute prior to page table fixups and thus
-+ * require pointer fixups for global variable accesses. See WARNING in
-+ * arch/x86/kernel/head64.c.
-  */
- 
- #ifndef __BOOT_COMPRESSED
-@@ -110,8 +115,9 @@ static void __noreturn sev_es_terminate(unsigned int set, unsigned int reason)
- static u64 get_hv_features(void)
- {
- 	u64 val;
-+	const u16 *ghcb_version_ptr = (const u16 *) GET_RIP_RELATIVE_PTR(ghcb_version);
- 
--	if (ghcb_version < 2)
-+	if (*ghcb_version_ptr < 2)
- 		return 0;
- 
- 	sev_es_wr_ghcb_msr(GHCB_MSR_HV_FT_REQ);
-@@ -143,6 +149,7 @@ static void snp_register_ghcb_early(unsigned long paddr)
- static bool sev_es_negotiate_protocol(void)
- {
- 	u64 val;
-+	u16 *ghcb_version_ptr;
- 
- 	/* Do the GHCB protocol version negotiation */
- 	sev_es_wr_ghcb_msr(GHCB_MSR_SEV_INFO_REQ);
-@@ -156,7 +163,8 @@ static bool sev_es_negotiate_protocol(void)
- 	    GHCB_MSR_PROTO_MIN(val) > GHCB_PROTOCOL_MAX)
- 		return false;
- 
--	ghcb_version = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
-+	ghcb_version_ptr = (u16 *) GET_RIP_RELATIVE_PTR(ghcb_version);
-+	*ghcb_version_ptr = min_t(size_t, GHCB_MSR_PROTO_MAX(val), GHCB_PROTOCOL_MAX);
- 
- 	return true;
- }
-@@ -318,23 +326,6 @@ static int sev_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid
- 		    : __sev_cpuid_hv_msr(leaf);
- }
- 
--/*
-- * This may be called early while still running on the initial identity
-- * mapping. Use RIP-relative addressing to obtain the correct address
-- * while running with the initial identity mapping as well as the
-- * switch-over to kernel virtual addresses later.
-- */
--static const struct snp_cpuid_table *snp_cpuid_get_table(void)
--{
--	void *ptr;
--
--	asm ("lea cpuid_table_copy(%%rip), %0"
--	     : "=r" (ptr)
--	     : "p" (&cpuid_table_copy));
--
--	return ptr;
--}
--
- /*
-  * The SNP Firmware ABI, Revision 0.9, Section 7.1, details the use of
-  * XCR0_IN and XSS_IN to encode multiple versions of 0xD subfunctions 0
-@@ -357,7 +348,8 @@ static const struct snp_cpuid_table *snp_cpuid_get_table(void)
-  */
- static u32 snp_cpuid_calc_xsave_size(u64 xfeatures_en, bool compacted)
- {
--	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-+	const struct snp_cpuid_table *cpuid_table = (const struct
-+		snp_cpuid_table *) GET_RIP_RELATIVE_PTR(cpuid_table_copy);
- 	u64 xfeatures_found = 0;
- 	u32 xsave_size = 0x240;
- 	int i;
-@@ -394,7 +386,8 @@ static u32 snp_cpuid_calc_xsave_size(u64 xfeatures_en, bool compacted)
- static bool
- snp_cpuid_get_validated_func(struct cpuid_leaf *leaf)
- {
--	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-+	const struct snp_cpuid_table *cpuid_table = (const struct
-+		snp_cpuid_table *) GET_RIP_RELATIVE_PTR(cpuid_table_copy);
- 	int i;
- 
- 	for (i = 0; i < cpuid_table->count; i++) {
-@@ -530,7 +523,9 @@ static int snp_cpuid_postprocess(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
-  */
- static int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
--	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-+	const struct snp_cpuid_table *cpuid_table = (const struct
-+		snp_cpuid_table *) GET_RIP_RELATIVE_PTR(cpuid_table_copy);
-+	const u32 *cpuid_std_range_max_ptr, *cpuid_hyp_range_max_ptr, *cpuid_ext_range_max_ptr;
- 
- 	if (!cpuid_table->count)
- 		return -EOPNOTSUPP;
-@@ -555,10 +550,14 @@ static int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_le
- 		 */
- 		leaf->eax = leaf->ebx = leaf->ecx = leaf->edx = 0;
- 
-+		cpuid_std_range_max_ptr = (const u32 *) GET_RIP_RELATIVE_PTR(cpuid_std_range_max);
-+		cpuid_hyp_range_max_ptr = (const u32 *) GET_RIP_RELATIVE_PTR(cpuid_hyp_range_max);
-+		cpuid_ext_range_max_ptr = (const u32 *) GET_RIP_RELATIVE_PTR(cpuid_ext_range_max);
-+
- 		/* Skip post-processing for out-of-range zero leafs. */
--		if (!(leaf->fn <= cpuid_std_range_max ||
--		      (leaf->fn >= 0x40000000 && leaf->fn <= cpuid_hyp_range_max) ||
--		      (leaf->fn >= 0x80000000 && leaf->fn <= cpuid_ext_range_max)))
-+		if (!(leaf->fn <= *cpuid_std_range_max_ptr ||
-+		      (leaf->fn >= 0x40000000 && leaf->fn <= *cpuid_hyp_range_max_ptr) ||
-+		      (leaf->fn >= 0x80000000 && leaf->fn <= *cpuid_ext_range_max_ptr)))
- 			return 0;
- 	}
- 
-@@ -1046,6 +1045,7 @@ static struct cc_blob_sev_info *find_cc_blob_setup_data(struct boot_params *bp)
- static void __init setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
- {
- 	const struct snp_cpuid_table *cpuid_table_fw, *cpuid_table;
-+	u32 *cpuid_std_range_max_ptr, *cpuid_hyp_range_max_ptr, *cpuid_ext_range_max_ptr;
- 	int i;
- 
- 	if (!cc_info || !cc_info->cpuid_phys || cc_info->cpuid_len < PAGE_SIZE)
-@@ -1055,19 +1055,24 @@ static void __init setup_cpuid_table(const struct cc_blob_sev_info *cc_info)
- 	if (!cpuid_table_fw->count || cpuid_table_fw->count > SNP_CPUID_COUNT_MAX)
- 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_CPUID);
- 
--	cpuid_table = snp_cpuid_get_table();
-+	cpuid_table = (const struct snp_cpuid_table *) GET_RIP_RELATIVE_PTR(
-+		cpuid_table_copy);
- 	memcpy((void *)cpuid_table, cpuid_table_fw, sizeof(*cpuid_table));
- 
-+	cpuid_std_range_max_ptr = (u32 *) GET_RIP_RELATIVE_PTR(cpuid_std_range_max);
-+	cpuid_hyp_range_max_ptr = (u32 *) GET_RIP_RELATIVE_PTR(cpuid_hyp_range_max);
-+	cpuid_ext_range_max_ptr = (u32 *) GET_RIP_RELATIVE_PTR(cpuid_ext_range_max);
-+
- 	/* Initialize CPUID ranges for range-checking. */
- 	for (i = 0; i < cpuid_table->count; i++) {
- 		const struct snp_cpuid_fn *fn = &cpuid_table->fn[i];
- 
- 		if (fn->eax_in == 0x0)
--			cpuid_std_range_max = fn->eax;
-+			*cpuid_std_range_max_ptr = fn->eax;
- 		else if (fn->eax_in == 0x40000000)
--			cpuid_hyp_range_max = fn->eax;
-+			*cpuid_hyp_range_max_ptr = fn->eax;
- 		else if (fn->eax_in == 0x80000000)
--			cpuid_ext_range_max = fn->eax;
-+			*cpuid_ext_range_max_ptr = fn->eax;
- 	}
- }
- 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index c67285824e82..c966bc511949 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -5,6 +5,11 @@
-  * Copyright (C) 2019 SUSE
-  *
-  * Author: Joerg Roedel <jroedel@suse.de>
-+ *
-+ * WARNING!!
-+ * Select functions in this file can execute prior to page table fixups and thus
-+ * require pointer fixups for global variable accesses. See WARNING in
-+ * arch/x86/kernel/head64.c.
-  */
- 
- #define pr_fmt(fmt)	"SEV: " fmt
-@@ -748,7 +753,7 @@ void __init early_snp_set_memory_private(unsigned long vaddr, unsigned long padd
- 	 * This eliminates worries about jump tables or checking boot_cpu_data
- 	 * in the cc_platform_has() function.
- 	 */
--	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (!(sev_get_status_fixup() & MSR_AMD64_SEV_SNP_ENABLED))
- 		return;
- 
- 	 /*
-@@ -767,7 +772,7 @@ void __init early_snp_set_memory_shared(unsigned long vaddr, unsigned long paddr
- 	 * This eliminates worries about jump tables or checking boot_cpu_data
- 	 * in the cc_platform_has() function.
- 	 */
--	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (!(sev_get_status_fixup() & MSR_AMD64_SEV_SNP_ENABLED))
- 		return;
- 
- 	 /* Ask hypervisor to mark the memory pages shared in the RMP table. */
-@@ -2114,7 +2119,8 @@ void __init __noreturn snp_abort(void)
- 
- static void dump_cpuid_table(void)
- {
--	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-+	const struct snp_cpuid_table *cpuid_table = (const struct
-+		snp_cpuid_table *) GET_RIP_RELATIVE_PTR(cpuid_table_copy);
- 	int i = 0;
- 
- 	pr_info("count=%d reserved=0x%x reserved2=0x%llx\n",
-@@ -2138,7 +2144,8 @@ static void dump_cpuid_table(void)
-  */
- static int __init report_cpuid_table(void)
- {
--	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
-+	const struct snp_cpuid_table *cpuid_table = (const struct
-+		snp_cpuid_table *) GET_RIP_RELATIVE_PTR(cpuid_table_copy);
- 
- 	if (!cpuid_table->count)
- 		return 0;
-diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
-index d73aeb16417f..f4c864ea2468 100644
---- a/arch/x86/mm/mem_encrypt_identity.c
-+++ b/arch/x86/mm/mem_encrypt_identity.c
-@@ -5,6 +5,11 @@
-  * Copyright (C) 2016 Advanced Micro Devices, Inc.
-  *
-  * Author: Tom Lendacky <thomas.lendacky@amd.com>
-+ *
-+ * WARNING!!
-+ * Select functions in this file can execute prior to page table fixups and thus
-+ * require pointer fixups for global variable accesses. See WARNING in
-+ * arch/x86/kernel/head64.c.
-  */
- 
- #define DISABLE_BRANCH_PROFILING
-@@ -305,7 +310,7 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
- 	 * instrumentation or checking boot_cpu_data in the cc_platform_has()
- 	 * function.
- 	 */
--	if (!sme_get_me_mask() || sev_status & MSR_AMD64_SEV_ENABLED)
-+	if (!sme_get_me_mask_fixup() || sev_get_status_fixup() & MSR_AMD64_SEV_ENABLED)
- 		return;
- 
- 	/*
-@@ -346,9 +351,7 @@ void __init sme_encrypt_kernel(struct boot_params *bp)
- 	 * We're running identity mapped, so we must obtain the address to the
- 	 * SME encryption workarea using rip-relative addressing.
- 	 */
--	asm ("lea sme_workarea(%%rip), %0"
--	     : "=r" (workarea_start)
--	     : "p" (sme_workarea));
-+	workarea_start = (unsigned long) PTR_TO_RIP_RELATIVE_PTR(sme_workarea);
- 
- 	/*
- 	 * Calculate required number of workarea bytes needed:
-@@ -511,7 +514,7 @@ void __init sme_enable(struct boot_params *bp)
- 	unsigned long me_mask;
- 	char buffer[16];
- 	bool snp;
--	u64 msr;
-+	u64 msr, *sme_me_mask_ptr, *sev_status_ptr;
- 
- 	snp = snp_init(bp);
- 
-@@ -542,12 +545,14 @@ void __init sme_enable(struct boot_params *bp)
- 
- 	me_mask = 1UL << (ebx & 0x3f);
- 
-+	sev_status_ptr = (u64 *) GET_RIP_RELATIVE_PTR(sev_status);
-+
- 	/* Check the SEV MSR whether SEV or SME is enabled */
--	sev_status   = __rdmsr(MSR_AMD64_SEV);
--	feature_mask = (sev_status & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
-+	*sev_status_ptr   = __rdmsr(MSR_AMD64_SEV);
-+	feature_mask = (*sev_status_ptr & MSR_AMD64_SEV_ENABLED) ? AMD_SEV_BIT : AMD_SME_BIT;
- 
- 	/* The SEV-SNP CC blob should never be present unless SEV-SNP is enabled. */
--	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
-+	if (snp && !(*sev_status_ptr & MSR_AMD64_SEV_SNP_ENABLED))
- 		snp_abort();
- 
- 	/* Check if memory encryption is enabled */
-@@ -573,7 +578,8 @@ void __init sme_enable(struct boot_params *bp)
- 			return;
- 	} else {
- 		/* SEV state cannot be controlled by a command line option */
--		sme_me_mask = me_mask;
-+		sme_me_mask_ptr = (u64 *) GET_RIP_RELATIVE_PTR(sme_me_mask);
-+		*sme_me_mask_ptr = me_mask;
- 		goto out;
- 	}
- 
-@@ -582,15 +588,9 @@ void __init sme_enable(struct boot_params *bp)
- 	 * identity mapped, so we must obtain the address to the SME command
- 	 * line argument data using rip-relative addressing.
- 	 */
--	asm ("lea sme_cmdline_arg(%%rip), %0"
--	     : "=r" (cmdline_arg)
--	     : "p" (sme_cmdline_arg));
--	asm ("lea sme_cmdline_on(%%rip), %0"
--	     : "=r" (cmdline_on)
--	     : "p" (sme_cmdline_on));
--	asm ("lea sme_cmdline_off(%%rip), %0"
--	     : "=r" (cmdline_off)
--	     : "p" (sme_cmdline_off));
-+	cmdline_arg = (const char *) PTR_TO_RIP_RELATIVE_PTR(sme_cmdline_arg);
-+	cmdline_on = (const char *) PTR_TO_RIP_RELATIVE_PTR(sme_cmdline_on);
-+	cmdline_off = (const char *) PTR_TO_RIP_RELATIVE_PTR(sme_cmdline_off);
- 
- 	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT))
- 		active_by_default = true;
-@@ -603,16 +603,18 @@ void __init sme_enable(struct boot_params *bp)
- 	if (cmdline_find_option(cmdline_ptr, cmdline_arg, buffer, sizeof(buffer)) < 0)
- 		return;
- 
-+	sme_me_mask_ptr = (u64 *) GET_RIP_RELATIVE_PTR(sme_me_mask);
-+
- 	if (!strncmp(buffer, cmdline_on, sizeof(buffer)))
--		sme_me_mask = me_mask;
-+		*sme_me_mask_ptr = me_mask;
- 	else if (!strncmp(buffer, cmdline_off, sizeof(buffer)))
--		sme_me_mask = 0;
-+		*sme_me_mask_ptr = 0;
- 	else
--		sme_me_mask = active_by_default ? me_mask : 0;
-+		*sme_me_mask_ptr = active_by_default ? me_mask : 0;
- out:
--	if (sme_me_mask) {
--		physical_mask &= ~sme_me_mask;
-+	if (*sme_me_mask_ptr) {
-+		physical_mask &= ~(*sme_me_mask_ptr);
- 		cc_vendor = CC_VENDOR_AMD;
--		cc_set_mask(sme_me_mask);
-+		cc_set_mask(*sme_me_mask_ptr);
- 	}
- }
--- 
-2.43.0.275.g3460e3d667-goog
-
+T24gRnJpLCAyMDI0LTAxLTA1IGF0IDEwOjMwIC0wODAwLCBtaGtlbGxleTU4QGdtYWlsLmNvbSB3
+cm90ZToNCj4gwqAgKiBodl92dG9tX3NldF9ob3N0X3Zpc2liaWxpdHkgLSBTZXQgc3BlY2lmaWVk
+IG1lbW9yeSB2aXNpYmxlIHRvDQo+IGhvc3QuDQo+IMKgICoNCj4gQEAgLTUyMSw3ICs1NDcsNyBA
+QCBzdGF0aWMgYm9vbCBodl92dG9tX3NldF9ob3N0X3Zpc2liaWxpdHkodW5zaWduZWQNCj4gbG9u
+ZyBrYnVmZmVyLCBpbnQgcGFnZWNvdW50LCBibw0KPiDCoA0KPiDCoMKgwqDCoMKgwqDCoMKgcGZu
+X2FycmF5ID0ga21hbGxvYyhIVl9IWVBfUEFHRV9TSVpFLCBHRlBfS0VSTkVMKTsNCj4gwqDCoMKg
+wqDCoMKgwqDCoGlmICghcGZuX2FycmF5KQ0KPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgcmV0dXJuIGZhbHNlOw0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZ290byBl
+cnJfc2V0X21lbW9yeV9wOw0KPiDCoA0KDQpJZiBrbWFsbG9jKCkgZmFpbHMgaGVyZSwgYW5kIHNl
+dF9tZW1vcnlfcCgpIHN1Y2NlZWRzIGJlbG93LCB0aGVuDQpodl92dG9tX3NldF9ob3N0X3Zpc2li
+aWxpdHkoKSByZXR1cm5zIHRydWUsIGJ1dCBza2lwcyBhbGwgdGhlDQpodl9tYXJrX2dwYV92aXNp
+YmlsaXR5KCkgd29yay4gU2hvdWxkbid0IGl0IHJldHVybiBmYWxzZT8NCg==
