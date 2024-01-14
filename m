@@ -1,125 +1,252 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF0B1641B
-	for <linux-coco@lists.linux.dev>; Fri, 12 Jan 2024 20:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD2D1F19B
+	for <linux-coco@lists.linux.dev>; Sun, 14 Jan 2024 22:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OZj5hTN6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705091855; x=1736627855;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7Ghu41Z2IsEQ66CSni8Rd5fHmhbvJ8BiP5Up0k2SILE=;
-  b=OZj5hTN6E0X+EjWCQ8yoXKW5KFf/DSBp0sXr2Mt6z4U8cDrodk4aoVzK
-   nEXiHbhk6/39GIPU3QLgGqalPBdVLMN/pVEgdO9qKXocs/1THRje2GnO1
-   Zpd6ZVjIIvYS8k2Ch+DpXzqd2vwDqpqUB6wl3Y+ukb2kVzWuoMzKD2II6
-   X3foetv/vRQgsS8eOSOeLX5kD51WU5FwvxXGf1eg55wiL3vsvFhPva/22
-   jow6AXQ58DeBmO/InPJ9Y3STY1LmvUPrHXLgd+TZfLmxcjXEcNqFxKQj2
-   L2z4NZvfR42rHQgI1dLQyrYDoVd0ffXjvTsNVvGFjLPnV5/6r7bhX7+sr
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="398959164"
-X-IronPort-AV: E=Sophos;i="6.04,190,1695711600"; 
-   d="scan'208";a="398959164"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 12:37:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="853392188"
-X-IronPort-AV: E=Sophos;i="6.04,190,1695711600"; 
-   d="scan'208";a="853392188"
-Received: from yrayx-mobl.amr.corp.intel.com (HELO [10.209.50.27]) ([10.209.50.27])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 12:37:32 -0800
-Message-ID: <336b55f9-c7e6-4ec9-806b-cb3659dbfdc3@intel.com>
-Date: Fri, 12 Jan 2024 12:37:31 -0800
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="T+TfrNCJ"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40e5afc18f5so40691535e9.3
+        for <linux-coco@lists.linux.dev>; Sun, 14 Jan 2024 14:37:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705271825; x=1705876625; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uyCtxuiA2VvE4Fz+oM8sGxNPZlsi0nRvVQ196H2vya4=;
+        b=T+TfrNCJSDmbB51Eled1jt5rH+nkPcTGZ2feasHZp4be5BKMP1RCa7zgsePhvmSP5c
+         NvbuCPYnSw7f7jUkryjuC3UYG+a5E9BuIYsKckbxdxt1hIAn6r5c1bjxNVTSjD1B2xBm
+         Txuu5W3RoqkcmjWwIQa8H3yJs5zsIZ5jOQO9UXdrolN6Omgv2ya0Mcg46Lhh82pZEmcp
+         LpXwJ0d3brcNuzjKHoikPr2N64S7xppNwIlM5UAO8yGgc88Y6pWxod9ysBZC/NRS8xtH
+         zaUmYNDuG0IQWfQXVTz0NUo3/CUPmLyNL58y21D53LEJeidIi/syULWfccthp8nSspx6
+         xv3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705271825; x=1705876625;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uyCtxuiA2VvE4Fz+oM8sGxNPZlsi0nRvVQ196H2vya4=;
+        b=fxl60e2wul95pXkNvOg1C2wjrZ9Tv1TSmQ9oQIMsTXoG9sCpVp3gOa9smmsOeMBmU7
+         vJjK3F8KNj6FFHrLQV3BLwCnkkF0yKnnl46SBRiKJO27n+Z8OhjA6mcwebIfXMYiY3df
+         58X+PzjgOoSLUTD0IMvqrmJ/3T1HNQET+nd5dXVY1AxkbB2e/FCuX8Qzdzv5BmrFKg/8
+         2c1dUAPcqs5kd5QhzzfiHcS6uRc3T8wLEq45oVdwBrF4lGasvdg2IvYFzqD3syaE+C6X
+         R/UVoibxSDKiy8zb+jNScyd2+1t5CobGyaR1/NDCvjysNs29PhckOymKydT1w80lJJaM
+         1zRg==
+X-Gm-Message-State: AOJu0Yyzx/V/A7l+B8ilrq+g3MAQWSXLcJebg0+WcXuqKtaqVMkhDP9v
+	YgV0T8Y/xFfeMJTW2pmpuWs8xQC0FiXZfCTlkenUx3s0ZHc=
+X-Google-Smtp-Source: AGHT+IHfTzhFsQAuTOZv9dzrzuL44Q0lc8K9g8JSdz4/vDiQzq/WmLjBnzhCltYKJKswjnc1I+p8Qw==
+X-Received: by 2002:a1c:7503:0:b0:40e:657c:5c88 with SMTP id o3-20020a1c7503000000b0040e657c5c88mr2367018wmc.28.1705271825364;
+        Sun, 14 Jan 2024 14:37:05 -0800 (PST)
+Received: from vermeer.ba.rivosinc.com (lfbn-mon-1-1176-165.w90-113.abo.wanadoo.fr. [90.113.119.165])
+        by smtp.gmail.com with ESMTPSA id v10-20020a5d610a000000b0033719111458sm10158693wrt.36.2024.01.14.14.37.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Jan 2024 14:37:04 -0800 (PST)
+From: Samuel Ortiz <sameo@rivosinc.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH v1 1/4] tsm: Runtime measurement register support
+Date: Sun, 14 Jan 2024 23:35:27 +0100
+Message-ID: <20240114223532.290550-2-sameo@rivosinc.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20240114223532.290550-1-sameo@rivosinc.com>
+References: <20240114223532.290550-1-sameo@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 11/26] x86/sev: Invalidate pages from the direct map
- when adding them to the RMP table
-Content-Language: en-US
-To: Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>
-Cc: Michael Roth <michael.roth@amd.com>, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-mm@kvack.org,
- linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de, hpa@zytor.com,
- ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
- vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
- dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
- peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
- rientjes@google.com, tobin@ibm.com, vbabka@suse.cz, kirill@shutemov.name,
- ak@linux.intel.com, tony.luck@intel.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
- pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
- Brijesh Singh <brijesh.singh@amd.com>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-12-michael.roth@amd.com>
- <cb604c37-aeb5-45bd-b6db-246ae724e4ca@intel.com>
- <20240112200751.GHZaGcF0-OZVJiIB7y@fat_crate.local>
- <63297d29-bb24-ac5e-0b47-35e22bb1a2f8@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <63297d29-bb24-ac5e-0b47-35e22bb1a2f8@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/12/24 12:28, Tom Lendacky wrote:
-> I thought there was also a desire to remove the direct map for any pages
-> assigned to a guest as private, not just the case that the comment says.
-> So updating the comment would probably the best action.
+Some confidential computing architecture (Intel TDX, ARM-CCA, RISC-V
+CoVE) provide the TVM (confidential computing guest) with a set of
+runtime measurement registers (RTMR). TVMs can extend those registers
+with their measurements at runtime, i.e. after the TVM initial
+measurements are finalized and the TVM actually runs.
 
-I'm not sure who desires that.
+RTMRs are separated from the initial measurement registers set, and TSMs
+typically includes RTMR values into a distinct section of their signed
+attestion reports.
 
-It's sloooooooow to remove things from the direct map.  There's almost
-certainly a frequency cutoff where running the whole direct mapping as
-4k is better than the cost of mapping/unmapping.
+We add support for extending and reading a TSM runtime measurement
+registers by extending the TSM ops structure with resp. an rtmr_extend()
+and an rtmr_read() function pointers. TSM providers/backends will
+implement those ops if they are capable of exposing RTMRs to their
+TVMs. This capability is now described by a tsm_capabilites structure,
+passed by the TSM provider to the TSM framework at registration time.
 
-Actually, where _is_ the TLB flushing here?
+TVMs can configure, extend and read RTMRs from the configfs-tsm interface.
+
+Signed-off-by: Samuel Ortiz <sameo@rivosinc.com>
+---
+ drivers/virt/coco/tsm.c | 80 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/tsm.h     | 28 ++++++++++++++-
+ 2 files changed, 107 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/virt/coco/tsm.c b/drivers/virt/coco/tsm.c
+index d1c2db83a8ca..6b71650271fe 100644
+--- a/drivers/virt/coco/tsm.c
++++ b/drivers/virt/coco/tsm.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <linux/cleanup.h>
+ #include <linux/configfs.h>
++#include <linux/tpm.h>
+ 
+ static struct tsm_provider {
+ 	const struct tsm_ops *ops;
+@@ -50,6 +51,85 @@ enum tsm_data_select {
+ 	TSM_CERTS,
+ };
+ 
++/**
++ * DOC: Trusted Security Module (TSM) Runtime Measurement Register (RTMR) Interface
++ *
++ * The TSM RTMR interface is a common ABI for allowing TVMs to extend
++ * and read measurement registers at runtime, i.e. after the TVM initial
++ * measurement is finalized. TSMs that support such capability will typically
++ * include all runtime measurement registers values into their signed
++ * attestation report, providing the TVM post-boot measurements to e.g. remote
++ * attestation services.
++ *
++ * A TVM uses the TSM RTMR configfs ABI to create all runtime measurement
++ * registers (RTMR) that it needs. Each created RTMR must be configured first
++ * before being readable and extensible. TVM configures an RTMR by setting its
++ * index and optionally by mapping it to one or more TCG PCR indexes.
++ *
++ * A TSM backend statically declares the number of RTMRs it supports and which
++ * hash algorithm must be used when extending them. This declaration is done
++ * through the tsm_capabilities structure, at TSM registration time (see
++ * tsm_register()).
++ */
++
++/**
++ * struct tsm_rtmr_state - tracks the state of a TSM RTMR.
++ * @index: The RTMR hardware index.
++ * @alg: The hash algorithm used for this RTMR.
++ * @digest: The RTMR cached digest value.
++ * @cached_digest: Is the RTMR cached digest valid or not.
++ * @cfg: The configfs item for this RTMR.
++ */
++struct tsm_rtmr_state {
++	u32 index;
++	enum hash_algo alg;
++	u8 digest[TSM_DIGEST_MAX];
++	bool cached_digest;
++	struct config_item cfg;
++};
++
++static bool is_rtmr_configured(struct tsm_rtmr_state *rtmr_state)
++{
++	return rtmr_state->index != U32_MAX;
++}
++
++/**
++ * struct tsm_rtmrs_state - tracks the state of all RTMRs for a TSM.
++ * @rtmrs: The array of all created RTMRs.
++ * @tcg_map: A mapping between TCG PCR and RTMRs, indexed by PCR indexes.
++ * Entry `i` on this map points to an RTMR that covers TCG PCR[i] for the TSM
++ * hash algorithm.
++ * @group: The configfs group for a TSM RTMRs.
++ */
++static struct tsm_rtmrs_state {
++	struct tsm_rtmr_state **rtmrs;
++	struct tsm_rtmr_state *tcg_map[TPM2_PLATFORM_PCR];
++	struct config_group *group;
++} *tsm_rtmrs;
++
++static int tsm_rtmr_read(struct tsm_provider *tsm, u32 idx,
++			 u8 *digest, size_t digest_size)
++{
++	if (tsm->ops && tsm->ops->rtmr_read)
++		return tsm->ops->rtmr_read(idx, digest, digest_size);
++
++	return -ENXIO;
++}
++
++static int tsm_rtmr_extend(struct tsm_provider *tsm, u32 idx,
++			   const u8 *digest, size_t digest_size)
++{
++	if (tsm->ops && tsm->ops->rtmr_extend)
++		return tsm->ops->rtmr_extend(idx, digest, digest_size);
++
++	return -ENXIO;
++}
++
++static struct tsm_rtmr_state *to_tsm_rtmr_state(struct config_item *cfg)
++{
++	return container_of(cfg, struct tsm_rtmr_state, cfg);
++}
++
+ static struct tsm_report *to_tsm_report(struct config_item *cfg)
+ {
+ 	struct tsm_report_state *state =
+diff --git a/include/linux/tsm.h b/include/linux/tsm.h
+index de8324a2223c..e912cd665684 100644
+--- a/include/linux/tsm.h
++++ b/include/linux/tsm.h
+@@ -2,11 +2,13 @@
+ #ifndef __TSM_H
+ #define __TSM_H
+ 
++#include <crypto/hash_info.h>
+ #include <linux/sizes.h>
+ #include <linux/types.h>
+ 
+ #define TSM_INBLOB_MAX 64
+ #define TSM_OUTBLOB_MAX SZ_32K
++#define TSM_DIGEST_MAX SHA512_DIGEST_SIZE
+ 
+ /*
+  * Privilege level is a nested permission concept to allow confidential
+@@ -42,12 +44,33 @@ struct tsm_report {
+ 	u8 *auxblob;
+ };
+ 
++#define TSM_MAX_RTMR 32
++
++/**
++ * struct tsm_capabilities - Describes a TSM capabilities.
++ * @num_rtmrs: The number of Runtime Measurement Registers (RTMR) available from
++ * a TSM.
++ * @rtmr_hash_alg: The hash algorithm used to extend a runtime measurement
++ * register.
++ */
++struct tsm_capabilities {
++	size_t num_rtmrs;
++	enum hash_algo rtmr_hash_alg;
++};
++
+ /**
+  * struct tsm_ops - attributes and operations for tsm instances
+  * @name: tsm id reflected in /sys/kernel/config/tsm/report/$report/provider
+  * @privlevel_floor: convey base privlevel for nested scenarios
++ * @capabilities: Describe the TSM capabilities, e.g. the number of available
++ *                runtime measurement registers (see `struct tsm_capabilities`).
+  * @report_new: Populate @report with the report blob and auxblob
+- * (optional), return 0 on successful population, or -errno otherwise
++ *              (optional), return 0 on successful population, or -errno
++ *              otherwise
++ * @rtmr_extend: Extend an RTMR with the provided digest.
++ *               Return 0 on successful extension, or -errno otherwise.
++ * @rtmr_read: Reads the value of an RTMR.
++ *             Return the number of bytes read or -errno for errors.
+  *
+  * Implementation specific ops, only one is expected to be registered at
+  * a time i.e. only one of "sev-guest", "tdx-guest", etc.
+@@ -55,7 +78,10 @@ struct tsm_report {
+ struct tsm_ops {
+ 	const char *name;
+ 	const unsigned int privlevel_floor;
++	const struct tsm_capabilities capabilities;
+ 	int (*report_new)(struct tsm_report *report, void *data);
++	int (*rtmr_extend)(u32 idx, const u8 *digest, size_t digest_size);
++	ssize_t (*rtmr_read)(u32 idx, u8 *digest, size_t digest_size);
+ };
+ 
+ extern const struct config_item_type tsm_report_default_type;
+-- 
+2.42.0
+
