@@ -1,133 +1,340 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F472BAF7;
-	Mon, 15 Jan 2024 10:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ED51E4B9
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 10:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SITVhrct"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705313572; x=1736849572;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=MEptrc0fT+8LksarjLhrGDoVU7ynwzFrpAwX1CpyhrM=;
-  b=SITVhrctcssEHP9cN+G/XXQ+/QH6E6AYEJVoGRrVXyf/Qa4p5msug2d0
-   UZd+SXCcTDLXi9/vXjGOWSOvWIYX68xpgrrR2CKLbh5kkwfqU8Vi9e6p+
-   v7l12GDgmIpALbkZNbVHld/TvZEP+IZy9FY7SsJFo2yf+/tqpWadFBEvq
-   omxGsciAKT5d3RGQjwx0Yp5a9RkIR2tbv/QYDzzRxYueKBkxX49mL0E4g
-   G1RvTANQ38u+Xas8sPXQVSUQ/5LXJZh9q4ZvDHLrh/P8KN4izNR8X7gjZ
-   HFTKVD1qcC3wI9dyPlieDxs9znrNu7KH72kGcZLc1wPUejMpCk8paD/te
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="403343252"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; 
-   d="scan'208";a="403343252"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2024 02:12:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="853957004"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; 
-   d="scan'208";a="853957004"
-Received: from jeroenke-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.55.160])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2024 02:12:42 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 93EE910A58F; Mon, 15 Jan 2024 13:12:39 +0300 (+03)
-Date: Mon, 15 Jan 2024 13:12:39 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Kevin Loughlin <kevinloughlin@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Steve Rutherford <srutherford@google.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Wang Jinchao <wangjinchao@xfusion.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Joerg Roedel <jroedel@suse.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Michael Roth <michael.roth@amd.com>, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, linux-coco@lists.linux.dev,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>,
-	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>,
-	Sidharth Telang <sidtelang@google.com>
-Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
- SEV/SME code
-Message-ID: <20240115101239.nab725vuazvutgw6@box.shutemov.name>
-References: <ZZ7YuEexYSaZYmLK@tassilo>
- <20240111223650.3502633-1-kevinloughlin@google.com>
- <20240112121725.3amxlumpifhagamb@box>
- <CAGdbjmLeyPhYfjVHPRa8LgNYjt9-rOPiyCodHoQOkEh9iQhjBg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="enblA7ff"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3377d45c178so3751703f8f.2
+        for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 02:53:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1705316025; x=1705920825; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9pR96MCcFBbAOBcPEV4qXfMgedzTlkO8zl1DrKszMlM=;
+        b=enblA7ffJFzOe/dd6rCH1N4llojwGTOkKY9Q8IbIwN5osPs3XkprCB9HoavNoK7IFU
+         9TYS9Gp1CBxJCuXK+fBc1mLqoZ83SOihQFW3ZKPrMM/n2C3bL31XOkgo+xXoRf3E9COb
+         RZXyf0IjRcdAZfy9eIYrvb6C3T8tY9ftnudjI64g+E1bPQDxtd7Ez1m5op7ok12FYlxt
+         VXht2JEXQhrjrxPYn96q74PCHitQwiIcAS+WxcOnlGmLX4BBrFiFyJ760dHWYtALgplb
+         QKsZ6lCzz6O3e/Lx8muup8aczj+aCLdYzl4cXxZkDpjIT4PbAPMu3rby6f+th2E9Pg8y
+         kF/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705316025; x=1705920825;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9pR96MCcFBbAOBcPEV4qXfMgedzTlkO8zl1DrKszMlM=;
+        b=gFlPngvqvZZGxf4yYJuf+P6gjcfswqxupjsDCPLWbbDHamAdo+knLDtovnYUPaIuqL
+         7iE2bCizJabeAfrZUq4o0pMC6GpexW1DMRpMhxixjJk7FfkvRBePcONTaZ/5PFRnNJWM
+         9/nomUMUcabckkCcaCcPS1XFCH/XlUTe3XoonerwEAS7LP61q43swL5o3nIVikU8Znj3
+         B5d45JSI5TvwT3P7lKm9OT0LtOTEAdj0XkbN1F4PLvCiQnMTA9h29pIzb3+i+itTZtqC
+         AkVxHNHmFVLrnh2+r0elDw+3bLkxr7dYbSBANypprsPfG4HBbZySmXnAY9WYm3PpQegi
+         ivXg==
+X-Gm-Message-State: AOJu0Yy1/O3ALmPrbXRJ7W8nJdTf+NrUg1J2JTa6zbJmZdG2FYoozXd+
+	86SmLfeBq2I/sZ/lWvLWBOor1+0GpvVOjg==
+X-Google-Smtp-Source: AGHT+IEWE40Myl6wet6SyKd3nOM1KtbkgYXbne0nQwhV6e6E13uytwtXotiT8hRihtXjCQ7aqzpVHg==
+X-Received: by 2002:a05:6000:1567:b0:337:8da4:efde with SMTP id 7-20020a056000156700b003378da4efdemr4174920wrz.80.1705316025082;
+        Mon, 15 Jan 2024 02:53:45 -0800 (PST)
+Received: from ?IPV6:2a10:bac0:b000:7588:7285:c2ff:fedd:7e3a? ([2a10:bac0:b000:7588:7285:c2ff:fedd:7e3a])
+        by smtp.gmail.com with ESMTPSA id d16-20020adf9c90000000b003366c058509sm11529791wre.23.2024.01.15.02.53.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Jan 2024 02:53:44 -0800 (PST)
+Message-ID: <89e8722b-661b-4319-8018-06705b366c62@suse.com>
+Date: Mon, 15 Jan 2024 12:53:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv5 10/16] x86/tdx: Convert shared memory back to private on
+ kexec
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
+ "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
+ kexec@lists.infradead.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
+ <20231222235209.32143-11-kirill.shutemov@linux.intel.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+In-Reply-To: <20231222235209.32143-11-kirill.shutemov@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGdbjmLeyPhYfjVHPRa8LgNYjt9-rOPiyCodHoQOkEh9iQhjBg@mail.gmail.com>
 
-On Fri, Jan 12, 2024 at 10:29:36AM -0800, Kevin Loughlin wrote:
-> On Fri, Jan 12, 2024 at 4:17 AM Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> >
-> > Can we replace existing fixup_pointer() (and other fixup_*()) with the new
-> > thing? I don't think we need two confusing things for the same function.
+
+
+On 23.12.23 г. 1:52 ч., Kirill A. Shutemov wrote:
+> TDX guests allocate shared buffers to perform I/O. It is done by
+> allocating pages normally from the buddy allocator and converting them
+> to shared with set_memory_decrypted().
 > 
-> Per my tests, yes we can; I replaced the fixup_*() functions with
-> GET_RIP_RELATIVE_PTR()/PTR_TO_RIP_RELATIVE_PTR(), and guests with and
-> without SEV, SEV-ES, and SEV-SNP all successfully booted under both
-> clang and gcc builds.
-
-Okay good.
-
-BTW, do we need both macros? Caller can do &var, right?
-
-If we are okay with single macro, maybe rename it to RIP_RELATIVE_PTR().
-
-One other thing: I see you sprinkle casts to for every use of the macros.
-But why? void* can cast to any other pointer without explicit casting.
-
-> I have a slight preference for sending that as a
-> separate follow-up commit, but please let me know if you feel
-> differently. Thanks.
-
-I'm okay with a separate patch in the same patchset.
-
+> The second kernel has no idea what memory is converted this way. It only
+> sees E820_TYPE_RAM.
 > 
-> > Also, is there any reason why GET_RIP_RELATIVE_PTR() and
-> > PTR_TO_RIP_RELATIVE_PTR() have to be macros? Inline functions would be
-> > cleaner.
+> Accessing shared memory via private mapping is fatal. It leads to
+> unrecoverable TD exit.
 > 
-> I used macros because we need to use both the global variable itself
-> and the global variable's string name (obtained via #var in the macro)
-> in the inline assembly. As a secondary reason, the macro also avoids
-> the need to provide separate functions for each type of variable for
-> which we'd like to get RIP-relative pointers (ex: u64, unsigned int,
-> unsigned long, etc.).
+> On kexec walk direct mapping and convert all shared memory back to
+> private. It makes all RAM private again and second kernel may use it
+> normally.
+> 
+> The conversion occurs in two steps: stopping new conversions and
+> unsharing all memory. In the case of normal kexec, the stopping of
+> conversions takes place while scheduling is still functioning. This
+> allows for waiting until any ongoing conversions are finished. The
+> second step is carried out when all CPUs except one are inactive and
+> interrupts are disabled. This prevents any conflicts with code that may
+> access shared memory.
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> ---
+>   arch/x86/coco/tdx/tdx.c         | 119 +++++++++++++++++++++++++++++++-
+>   arch/x86/include/asm/x86_init.h |   2 +
+>   arch/x86/kernel/crash.c         |   6 ++
+>   arch/x86/kernel/reboot.c        |  13 ++++
+>   4 files changed, 138 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 8a49484a2917..5c64db168edd 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -6,8 +6,10 @@
+>   
+>   #include <linux/cpufeature.h>
+>   #include <linux/debugfs.h>
+> +#include <linux/delay.h>
+>   #include <linux/export.h>
+>   #include <linux/io.h>
+> +#include <linux/kexec.h>
+>   #include <asm/coco.h>
+>   #include <asm/tdx.h>
+>   #include <asm/vmx.h>
+> @@ -15,6 +17,7 @@
+>   #include <asm/insn.h>
+>   #include <asm/insn-eval.h>
+>   #include <asm/pgtable.h>
+> +#include <asm/set_memory.h>
+>   
+>   /* MMIO direction */
+>   #define EPT_READ	0
+> @@ -41,6 +44,9 @@
+>   
+>   static atomic_long_t nr_shared;
+>   
+> +static atomic_t conversions_in_progress;
+> +static bool conversion_allowed = true;
 
-If we do it only on pointers, wouldn't void * -> void * be enough?
+Given the usage model of this variable, shouldn't it be simply accessed 
+via READ/WRITE_ONCE macros?
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> +
+>   static inline bool pte_decrypted(pte_t pte)
+>   {
+>   	return cc_mkdec(pte_val(pte)) == pte_val(pte);
+> @@ -726,6 +732,14 @@ static bool tdx_tlb_flush_required(bool private)
+>   
+>   static bool tdx_cache_flush_required(void)
+>   {
+> +	/*
+> +	 * Avoid issuing CLFLUSH on set_memory_decrypted() if conversions
+> +	 * stopped. Otherwise it can race with unshare_all_memory() and trigger
+> +	 * implicit conversion to shared.
+> +	 */
+> +	if (!conversion_allowed)
+> +		return false;
+> +
+>   	/*
+>   	 * AMD SME/SEV can avoid cache flushing if HW enforces cache coherence.
+>   	 * TDX doesn't have such capability.
+> @@ -809,12 +823,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+>   static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+>   					 bool enc)
+>   {
+> +	atomic_inc(&conversions_in_progress);
+> +
+> +	/*
+> +	 * Check after bumping conversions_in_progress to serialize
+> +	 * against tdx_shutdown().
+> +	 */
+> +	if (!conversion_allowed) {
+> +		atomic_dec(&conversions_in_progress);
+> +		return -EBUSY;
+> +	}
+
+nit: Can you make the inc of conversions_in_progress be done here, this 
+eliminated the atomic_dec in case they aren't. Somewhat simplifies the 
+logic.
+> +
+>   	/*
+>   	 * Only handle shared->private conversion here.
+>   	 * See the comment in tdx_early_init().
+>   	 */
+> -	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+> +	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
+> +		atomic_dec(&conversions_in_progress);
+>   		return -EIO;
+> +	}
+>   
+>   	return 0;
+>   }
+> @@ -826,17 +853,102 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+>   	 * Only handle private->shared conversion here.
+>   	 * See the comment in tdx_early_init().
+>   	 */
+> -	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+> +	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
+> +		atomic_dec(&conversions_in_progress);
+>   		return -EIO;
+> +	}
+>   
+>   	if (enc)
+>   		atomic_long_sub(numpages, &nr_shared);
+>   	else
+>   		atomic_long_add(numpages, &nr_shared);
+>   
+> +	atomic_dec(&conversions_in_progress);
+> +
+>   	return 0;
+>   }
+>   
+> +static void tdx_kexec_stop_conversion(bool crash)
+> +{
+> +	/* Stop new private<->shared conversions */
+> +	conversion_allowed = false;
+
+What's the logic behind this compiler barrier?
+
+> +	barrier();
+> +
+> +	/*
+> +	 * Crash kernel reaches here with interrupts disabled: can't wait for
+> +	 * conversions to finish.
+> +	 *
+> +	 * If race happened, just report and proceed.
+> +	 */
+> +	if (!crash) {
+> +		unsigned long timeout;
+> +
+> +		/*
+> +		 * Wait for in-flight conversions to complete.
+> +		 *
+> +		 * Do not wait more than 30 seconds.
+> +		 */
+> +		timeout = 30 * USEC_PER_SEC;
+> +		while (atomic_read(&conversions_in_progress) && timeout--)
+> +			udelay(1);
+> +	}
+> +
+> +	if (atomic_read(&conversions_in_progress))
+> +		pr_warn("Failed to finish shared<->private conversions\n");
+> +}
+> +
+
+<snip>
+
+> diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+> index c9503fe2d13a..3196ff20a29e 100644
+> --- a/arch/x86/include/asm/x86_init.h
+> +++ b/arch/x86/include/asm/x86_init.h
+> @@ -154,6 +154,8 @@ struct x86_guest {
+>   	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
+>   	bool (*enc_tlb_flush_required)(bool enc);
+>   	bool (*enc_cache_flush_required)(void);
+> +	void (*enc_kexec_stop_conversion)(bool crash);
+> +	void (*enc_kexec_unshare_mem)(void);
+
+These are only being initialized in the TDX case, but called in all 
+cases when CC_ATTR_GUEST_MEM_ENCRYPT is true, which includes AMD. So it 
+would cause a crash, no ? Shouldn't you also introduce noop handlers 
+initialized in the default x86_platform struct in 
+arch/x86/kernel/x86_init.c ?
+
+>   };
+>   
+>   /**
+> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+> index c92d88680dbf..b99bd28ad22f 100644
+> --- a/arch/x86/kernel/crash.c
+> +++ b/arch/x86/kernel/crash.c
+> @@ -40,6 +40,7 @@
+>   #include <asm/intel_pt.h>
+>   #include <asm/crash.h>
+>   #include <asm/cmdline.h>
+> +#include <asm/tdx.h>
+>   
+>   /* Used while preparing memory map entries for second kernel */
+>   struct crash_memmap_data {
+> @@ -107,6 +108,11 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
+>   
+>   	crash_smp_send_stop();
+>   
+> +	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+> +		x86_platform.guest.enc_kexec_stop_conversion(true);
+> +		x86_platform.guest.enc_kexec_unshare_mem();
+> +	}
+> +
+>   	cpu_emergency_disable_virtualization();
+>   
+>   	/*
+> diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+> index 830425e6d38e..16dde83df49a 100644
+> --- a/arch/x86/kernel/reboot.c
+> +++ b/arch/x86/kernel/reboot.c
+> @@ -12,6 +12,7 @@
+>   #include <linux/delay.h>
+>   #include <linux/objtool.h>
+>   #include <linux/pgtable.h>
+> +#include <linux/kexec.h>
+>   #include <acpi/reboot.h>
+>   #include <asm/io.h>
+>   #include <asm/apic.h>
+> @@ -31,6 +32,7 @@
+>   #include <asm/realmode.h>
+>   #include <asm/x86_init.h>
+>   #include <asm/efi.h>
+> +#include <asm/tdx.h>
+>   
+>   /*
+>    * Power off function, if any
+> @@ -716,6 +718,14 @@ static void native_machine_emergency_restart(void)
+>   
+>   void native_machine_shutdown(void)
+>   {
+> +	/*
+> +	 * Call enc_kexec_stop_conversion() while all CPUs are still active and
+> +	 * interrupts are enabled. This will allow all in-flight memory
+> +	 * conversions to finish cleanly.
+> +	 */
+> +	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && kexec_in_progress)
+> +		x86_platform.guest.enc_kexec_stop_conversion(false);
+> +
+>   	/* Stop the cpus and apics */
+>   #ifdef CONFIG_X86_IO_APIC
+>   	/*
+> @@ -752,6 +762,9 @@ void native_machine_shutdown(void)
+>   #ifdef CONFIG_X86_64
+>   	x86_platform.iommu_shutdown();
+>   #endif
+> +
+> +	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) && kexec_in_progress)
+> +		x86_platform.guest.enc_kexec_unshare_mem();
+>   }
+>   
+>   static void __machine_emergency_restart(int emergency)
