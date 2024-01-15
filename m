@@ -1,127 +1,124 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F27F9D7
-	for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 09:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EDEF9C1
+	for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 10:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="kZq7oIgp"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 367D240E016C;
-	Mon, 15 Jan 2024 09:41:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id gbcYK8KndIZR; Mon, 15 Jan 2024 09:41:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1705311716; bh=XBIKxlNsZUJPRPkrxlOi1GzgwTad37xoV2mYozz4U4g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kZq7oIgpoPYNJEFRmQ9JE48d2cPjKOwShniYdb8svdbjNuXaCXgkI4vm7t9jN3tk3
-	 0SyquZx6f4o+581UG8SQEF/a5JXBrhlewfKVgs0DWSPD7Xhu3x7KPorhxYHOrW/ZkW
-	 /WkS4JM23S0qQa6J6k/PMJ9/UFQC3c3EAtxAAudXnxy2OfmMr6GryU5ieNcRB0VUqF
-	 Kk56gR6BWxDGFlGlKPXEkv3AS1x2RjKgRjF4rN71FCEKHAR7JQV8a9ePmr0epXg4nr
-	 +K8OUef+fdVPdl9dDUwxnKAIEtAaEqwy5hTxtLcpu+fZI3TyrfY91wAV77MqGaQJX+
-	 I9TV8Vr7MDR6A+XR2gzKocxtwZwUaUPYPtI71n52jydUwNRUFbuLfcJmGPHLs6vmCc
-	 GT15I5hrWJ5oS44BqXuvuQz7Gn+RxvthADl5Xqp7KraalD4OGnhM3sIkHtrlPoA+SP
-	 ElIlzTj3x2wO4UdsT9YEgQcRKXep+r2BCZohCYiRrppaZJ8uagtla5VglupvrYmOSB
-	 Uz8ExwhjAP5m15h1O0Q7sQH1RYxDEBqFCXtAiJLE2g5DCXhPEhpyNgmdJIGvMFTeRG
-	 6p+xjuV3jBjkoXBYS7fHf89rG4lL2UmaOvBIU5i6yOHaa7F3eHhKV/VzYkAGlTfiYe
-	 I7Bqk/56DF97nG5LMUix8SaU=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AC6A940E01A9;
-	Mon, 15 Jan 2024 09:41:19 +0000 (UTC)
-Date: Mon, 15 Jan 2024 10:41:12 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com,
-	"liam.merwick@oracle.com Brijesh Singh" <brijesh.singh@amd.com>
-Subject: Re: [PATCH v1 12/26] crypto: ccp: Define the SEV-SNP commands
-Message-ID: <20240115094103.GFZaT9r4zX8V_ax8lv@fat_crate.local>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-13-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kBi7HhCv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705312820; x=1736848820;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=utTJkdiQ3vnztSPGEHcOmRJIWy6d/oKeObynN8qfOUs=;
+  b=kBi7HhCvaH2leHxkZOeIvjOfVwHdwNNYUngjOw7zARJXm/5kxKNJeKjF
+   PJitXnGRVV7DZrVMyVjxufPs8hpZa9DMi71Xd8yo47V2e6oLu8EoYX7/G
+   5WnHP2mSrax/oP+9NCMJOQJuQ0a7y2ZeWR1zrMm6LFhMkB5wV5Lp4EKin
+   9mLhO890duRfe4fu6mt516h2Xo0TGJDXFy5jkldqeFo2KYwGenmvV/Y+N
+   OhDOzpshOgOzCTwXIJ2r1/wkyJqEt6zLfTvpzP6DUBMarXJlEZgrU74I3
+   k2JwYilFMb0qgrXpjys8Xj9S/wmuE8isxxyYLltrPwvRAbwQONKKeKI+K
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="18182460"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; 
+   d="scan'208";a="18182460"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2024 02:00:20 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="874059378"
+X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; 
+   d="scan'208";a="874059378"
+Received: from jeroenke-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.55.160])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2024 02:00:13 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 44E2E10A58F; Mon, 15 Jan 2024 13:00:11 +0300 (+03)
+Date: Mon, 15 Jan 2024 13:00:11 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"ardb@kernel.org" <ardb@kernel.org>,
+	"Lutomirski, Andy" <luto@kernel.org>,
+	"hch@infradead.org" <hch@infradead.org>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"Cui, Dexuan" <decui@microsoft.com>,
+	"urezki@gmail.com" <urezki@gmail.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"hpa@zytor.com" <hpa@zytor.com>, "bp@alien8.de" <bp@alien8.de>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"Rodel, Jorg" <jroedel@suse.de>,
+	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"lstoakes@gmail.com" <lstoakes@gmail.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 1/3] x86/hyperv: Use slow_virt_to_phys() in page
+ transition hypervisor callback
+Message-ID: <20240115100011.yvecjjezrkcptnle@box.shutemov.name>
+References: <20240105183025.225972-1-mhklinux@outlook.com>
+ <20240105183025.225972-2-mhklinux@outlook.com>
+ <9dcdd088494b3fa285781cccfd35cd47a70d69c3.camel@intel.com>
+ <SN6PR02MB4157B123128F6C2F6C3600D9D46F2@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <3ddc237d9fbbe0aa8838babf0df790076017e9f7.camel@intel.com>
+ <SN6PR02MB415720444A3D848D444BB58AD46F2@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20231230161954.569267-13-michael.roth@amd.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <SN6PR02MB415720444A3D848D444BB58AD46F2@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-On Sat, Dec 30, 2023 at 10:19:40AM -0600, Michael Roth wrote:
-> From: Brijesh Singh <brijesh.singh@amd.com>
+On Fri, Jan 12, 2024 at 07:24:35PM +0000, Michael Kelley wrote:
+> From: Edgecombe, Rick P <rick.p.edgecombe@intel.com> Sent: Friday, January 12, 2024 9:17 AM
+> > 
+> > On Fri, 2024-01-12 at 15:07 +0000, Michael Kelley wrote:
+> > > The comment is Kirill Shutemov's suggestion based on comments in
+> > > an earlier version of the patch series.  See [1].   The intent is to
+> > > prevent
+> > > some later revision to slow_virt_to_phys() from adding a check for
+> > > the
+> > > present bit and breaking the CoCo VM hypervisor callback.  Yes, the
+> > > comment could get stale, but I'm not sure how else to call out the
+> > > implicit dependency.  The idea of creating a private version of
+> > > slow_virt_to_phys() for use only in the CoCo VM hypervisor callback
+> > > is also discussed in the thread, but that seems worse overall.
+> > 
+> > Well, it's not a huge deal, but I would have just put a comment at the
+> > caller like:
+> > 
+> > /*
+> >  * Use slow_virt_to_phys() instead of vmalloc_to_page(), because it
+> >  * returns the PFN even for NP PTEs.
+> >  */
 > 
-> AMD introduced the next generation of SEV called SEV-SNP (Secure Nested
-> Paging). SEV-SNP builds upon existing SEV and SEV-ES functionality
-> while adding new hardware security protection.
+> Yes, that comment is added in this patch.
 > 
-> Define the commands and structures used to communicate with the AMD-SP
-> when creating and managing the SEV-SNP guests. The SEV-SNP firmware spec
-> is available at developer.amd.com/sev.
+> > 
+> > If someone is changing slow_virt_to_phys() they should check the
+> > callers to make sure they won't break anything. They can see the
+> > comment then and have an easy time.
+> > 
+> > An optional comment at slow_virt_to_phys() could explain how the
+> > function works in regards to the present bit, but not include details
+> > about CoCoO VM page transition's usage of the present bit. The proposed
+> > comment text looks like something more appropriate for a commit log.
 > 
-> Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> [mdr: update SNP command list and SNP status struct based on current
->       spec, use C99 flexible arrays, fix kernel-doc issues]
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  drivers/crypto/ccp/sev-dev.c |  16 +++
->  include/linux/psp-sev.h      | 264 +++++++++++++++++++++++++++++++++++
->  include/uapi/linux/psp-sev.h |  56 ++++++++
->  3 files changed, 336 insertions(+)
+> Kirill -- you originally asked for a comment in slow_virt_to_phys(). [1]
+> Are you OK with Rick's proposal?
 
-More ignored feedback:
-
-https://lore.kernel.org/r/20231124143630.GKZWC07hjqxkf60ni4@fat_crate.local
-
-Lemme send it to you as a diff then - it'll work then perhaps.
-
-diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-index 983d314b5ff5..1a76b5297f03 100644
---- a/include/linux/psp-sev.h
-+++ b/include/linux/psp-sev.h
-@@ -104,7 +104,7 @@ enum sev_cmd {
- 	SEV_CMD_SNP_PAGE_RECLAIM	= 0x0C7,
- 	SEV_CMD_SNP_PAGE_UNSMASH	= 0x0C8,
- 	SEV_CMD_SNP_CONFIG		= 0x0C9,
--	SEV_CMD_SNP_DOWNLOAD_FIRMWARE_EX	= 0x0CA,
-+	SEV_CMD_SNP_DOWNLOAD_FIRMWARE_EX = 0x0CA,
- 	SEV_CMD_SNP_COMMIT		= 0x0CB,
- 	SEV_CMD_SNP_VLEK_LOAD		= 0x0CD,
- 
-@@ -624,7 +624,8 @@ enum {
-  * @gctx_paddr: system physical address of guest context page
-  * @page_size: page size 0 indicates 4K and 1 indicates 2MB page
-  * @page_type: encoded page type
-- * @imi_page: indicates that this page is part of the IMI of the guest
-+ * @imi_page: indicates that this page is part of the IMI (Incoming
-+ * Migration Image) of the guest
-  * @rsvd: reserved
-  * @rsvd2: reserved
-  * @address: system physical address of destination page to encrypt
+Yes, sounds sensible.
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+  Kiryl Shutsemau / Kirill A. Shutemov
