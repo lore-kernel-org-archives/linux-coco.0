@@ -1,47 +1,47 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597881C13
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 02:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C2353B4
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 02:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lwumlPHK"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d542701796so48516655ad.1
-        for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 18:20:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ljPmGet7"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d5db9eb0e7so4215545ad.2
+        for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 18:20:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705371630; x=1705976430; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1705371631; x=1705976431; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WMHKxJ/T5Ct44oYlSE+LYrzOvXToXwBp+RoVB/ApQnM=;
-        b=lwumlPHKRrfTbkosxh+s3rqB5UzlQp+s52PqNUYrN3lSByuFuaArIE9Izouv7Ynnok
-         EMobojAuZpELYK3Q28jW0cmFS6NBKn0DY3FRMvT4FxVGHAhiEon60WdHN3ysrpYMt32c
-         0wkhNpW/EjSRcMufoa4UeknT5NkxuatXz++14gpPyMMLUqTKQzJAmpno6jsSmhuGG+Xg
-         75Dn+/H13RQ2vu4cvIeiRyWq93bfMkpzVmYRPfN4b1psGle4bbNg0t2kMwgyDnpEVHAm
-         ZG8eKKjzdjzVf8FBLteiPf/2z+4fMMaPwRrcN9GS5yPeh7m4Md/p/5N5z0Q1wkxwAwny
-         mhZw==
+        bh=c4vfRMdoaViI6HxDtxXy2GwJGspyIYSCzcn+j2z7kh4=;
+        b=ljPmGet7fGtge7V4tXVJfjz8AUd7WfypuLcZhlfgFVND8mSG79R+8YgYHUGncv4WFw
+         Ylg+FR/FzKvQ/Tk760w8IQERJASR18tddlN2WJDldVnLymBoIUuHR1DqWwDfIlxcOCCw
+         0aPEptCUnUk+ErxwzTFy+X8weHLSaG/A87Kqstty4IaF/3kaKgbely07uoSbcK1NLZlx
+         bQwv2a1EOEFZZVnMeLrFkScovwFSwxvgj+7/GbhOUCI+9gIILI9mrgYYqrbAVyfxTKhX
+         xE9exwmar8M55y4DThnmmWNBlHLRDlQVGIKqzCImkOrCMGq2Nowfvw06clF9jZ9HglQH
+         UvDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705371630; x=1705976430;
+        d=1e100.net; s=20230601; t=1705371631; x=1705976431;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WMHKxJ/T5Ct44oYlSE+LYrzOvXToXwBp+RoVB/ApQnM=;
-        b=YSkE4I8vDdBu4I8slHusNsWiyAtF7DD5FVrE+gyyltMV2SaCQLP3FHN/vXT2V23c6w
-         SWo6QjsiGHgNORCOnKNAYh4ViDYnJHi/0rOg6Kuxs+g0FwxgTW5Z0gwaPP+kq9M52sLa
-         Dn7MQ6vPQ9LfmoB4HJN7/PGf6Vd2lBnnrBTKJUEb7OrTYt8GrbXPR3C3TBRZC3N2bRmz
-         urJfKzMh1HTIeX8r4tGZ3DPimkHU13E0I8oeHm07vdeuKSOKPkgYqB7GMWL0Bzd7V4SP
-         XZPnBjL6lCmKxL6ZRt5cZrvlTEX+6LHQ6PeHI7oUYBsnvyA0xiJ6i1Dm69mqLsHSK3V8
-         QYyA==
-X-Gm-Message-State: AOJu0YzgjCjiQGs58pwLJ85VfcUGORqAYxmQM4drR5jl7XtzIKnItL3/
-	XqlTELR5x4/Cn7wA73gwphk=
-X-Google-Smtp-Source: AGHT+IGKhIpxJK9risAw80iB9x8SFXIfFEzqHrHFHgbziciGN/6OZbZls+x7EV8Jy+UwtVv+JbHLlQ==
-X-Received: by 2002:a17:903:2808:b0:1d4:75c6:9560 with SMTP id kp8-20020a170903280800b001d475c69560mr2742635plb.59.1705371630377;
-        Mon, 15 Jan 2024 18:20:30 -0800 (PST)
+        bh=c4vfRMdoaViI6HxDtxXy2GwJGspyIYSCzcn+j2z7kh4=;
+        b=Cwpbyq9haufhlWxnZ1g/vDbRsdLXZ46JJZ+C84M+YcdwRRpe4VEP4hSM7C2gAC2uwj
+         DILoYkH3zxzx0nGU0XF+aBJYVjFbTkj6OfxLHjLbXh4X+cF12ZOWrLjAbLT6604TW7ju
+         fiMPhHOQ+TKry8P8P/q0YbQoN6oGQb9zI66UZf9ujWCweBV9JEhSdm0qjZtzWZKStCoy
+         po2258rpNLXd0LP63/viUZQtEygZJ0HnyXz/vcYuPznuhbRgBWsnALieelm1/mHKrsSd
+         AkiNV9+KmPR5/dIH6PKgrkIdvuD6UtRViGuXQaiPFiPKHb1FBW6za73R5M6iT52tRBvp
+         25rA==
+X-Gm-Message-State: AOJu0YxEy3EgDUkMTODnBovcx5hrLr3g2epwlfNjMYYpILMjami23/lK
+	XwqLhAHIcIDy9ScnfGmo4Es=
+X-Google-Smtp-Source: AGHT+IFRVMIEFLp+rPfL0OtTdnRiBOnM5nFlc0pFAGcjr3KeEtvte2JqdiXRGVdv5FquDNd/HY+qHQ==
+X-Received: by 2002:a17:902:cec8:b0:1d5:c558:164d with SMTP id d8-20020a170902cec800b001d5c558164dmr1779308plg.74.1705371631546;
+        Mon, 15 Jan 2024 18:20:31 -0800 (PST)
 Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id kn14-20020a170903078e00b001d1d1ef8be5sm8193379plb.173.2024.01.15.18.20.29
+        by smtp.gmail.com with ESMTPSA id kn14-20020a170903078e00b001d1d1ef8be5sm8193379plb.173.2024.01.15.18.20.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 18:20:30 -0800 (PST)
+        Mon, 15 Jan 2024 18:20:31 -0800 (PST)
 From: mhkelley58@gmail.com
 X-Google-Original-From: mhklinux@outlook.com
 To: tglx@linutronix.de,
@@ -70,9 +70,9 @@ To: tglx@linutronix.de,
 	linux-coco@lists.linux.dev,
 	linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 1/3] x86/hyperv: Use slow_virt_to_phys() in page transition hypervisor callback
-Date: Mon, 15 Jan 2024 18:20:06 -0800
-Message-Id: <20240116022008.1023398-2-mhklinux@outlook.com>
+Subject: [PATCH v4 2/3] x86/mm: Regularize set_memory_p() parameters and make non-static
+Date: Mon, 15 Jan 2024 18:20:07 -0800
+Message-Id: <20240116022008.1023398-3-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240116022008.1023398-1-mhklinux@outlook.com>
 References: <20240116022008.1023398-1-mhklinux@outlook.com>
@@ -87,75 +87,73 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Kelley <mhklinux@outlook.com>
 
-In preparation for temporarily marking pages not present during a
-transition between encrypted and decrypted, use slow_virt_to_phys()
-in the hypervisor callback. As long as the PFN is correct,
-slow_virt_to_phys() works even if the leaf PTE is not present.
-The existing functions that depend on vmalloc_to_page() all
-require that the leaf PTE be marked present, so they don't work.
+set_memory_p() is currently static.  It has parameters that don't
+match set_memory_p() under arch/powerpc and that aren't congruent
+with the other set_memory_* functions. There's no good reason for
+the difference.
 
-Update the comments for slow_virt_to_phys() to note this broader usage
-and the requirement to work even if the PTE is not marked present.
+Fix this by making the parameters consistent, and update the one
+existing call site.  Make the function non-static and add it to
+include/asm/set_memory.h so that it is completely parallel to
+set_memory_np() and is usable in other modules.
+
+No functional change.
 
 Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/hyperv/ivm.c        | 12 +++++++++++-
- arch/x86/mm/pat/set_memory.c | 12 ++++++++----
- 2 files changed, 19 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/set_memory.h |  1 +
+ arch/x86/mm/pat/set_memory.c      | 12 ++++++------
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 02e55237d919..851107c77f4d 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -515,6 +515,8 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
- 	enum hv_mem_host_visibility visibility = enc ?
- 			VMBUS_PAGE_NOT_VISIBLE : VMBUS_PAGE_VISIBLE_READ_WRITE;
- 	u64 *pfn_array;
-+	phys_addr_t paddr;
-+	void *vaddr;
- 	int ret = 0;
- 	bool result = true;
- 	int i, pfn;
-@@ -524,7 +526,15 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
- 		return false;
- 
- 	for (i = 0, pfn = 0; i < pagecount; i++) {
--		pfn_array[pfn] = virt_to_hvpfn((void *)kbuffer + i * HV_HYP_PAGE_SIZE);
-+		/*
-+		 * Use slow_virt_to_phys() because the PRESENT bit has been
-+		 * temporarily cleared in the PTEs.  slow_virt_to_phys() works
-+		 * without the PRESENT bit while virt_to_hvpfn() or similar
-+		 * does not.
-+		 */
-+		vaddr = (void *)kbuffer + (i * HV_HYP_PAGE_SIZE);
-+		paddr = slow_virt_to_phys(vaddr);
-+		pfn_array[pfn] = paddr >> HV_HYP_PAGE_SHIFT;
- 		pfn++;
- 
- 		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
+diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
+index a5e89641bd2d..9aee31862b4a 100644
+--- a/arch/x86/include/asm/set_memory.h
++++ b/arch/x86/include/asm/set_memory.h
+@@ -47,6 +47,7 @@ int set_memory_uc(unsigned long addr, int numpages);
+ int set_memory_wc(unsigned long addr, int numpages);
+ int set_memory_wb(unsigned long addr, int numpages);
+ int set_memory_np(unsigned long addr, int numpages);
++int set_memory_p(unsigned long addr, int numpages);
+ int set_memory_4k(unsigned long addr, int numpages);
+ int set_memory_encrypted(unsigned long addr, int numpages);
+ int set_memory_decrypted(unsigned long addr, int numpages);
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index bda9f129835e..e76ac64b516e 100644
+index e76ac64b516e..164d32029424 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -755,10 +755,14 @@ pmd_t *lookup_pmd_address(unsigned long address)
-  * areas on 32-bit NUMA systems.  The percpu areas can
-  * end up in this kind of memory, for instance.
-  *
-- * This could be optimized, but it is only intended to be
-- * used at initialization time, and keeping it
-- * unoptimized should increase the testing coverage for
-- * the more obscure platforms.
-+ * Note that as long as the PTEs are well-formed with correct PFNs, this
-+ * works without checking the PRESENT bit in the leaf PTE.  This is unlike
-+ * the similar vmalloc_to_page() and derivatives.  Callers may depend on
-+ * this behavior.
-+ *
-+ * This could be optimized, but it is only used in paths that are not perf
-+ * sensitive, and keeping it unoptimized should increase the testing coverage
-+ * for the more obscure platforms.
-  */
- phys_addr_t slow_virt_to_phys(void *__virt_addr)
+@@ -2045,17 +2045,12 @@ int set_mce_nospec(unsigned long pfn)
+ 	return rc;
+ }
+ 
+-static int set_memory_p(unsigned long *addr, int numpages)
+-{
+-	return change_page_attr_set(addr, numpages, __pgprot(_PAGE_PRESENT), 0);
+-}
+-
+ /* Restore full speculative operation to the pfn. */
+ int clear_mce_nospec(unsigned long pfn)
  {
+ 	unsigned long addr = (unsigned long) pfn_to_kaddr(pfn);
+ 
+-	return set_memory_p(&addr, 1);
++	return set_memory_p(addr, 1);
+ }
+ EXPORT_SYMBOL_GPL(clear_mce_nospec);
+ #endif /* CONFIG_X86_64 */
+@@ -2108,6 +2103,11 @@ int set_memory_np_noalias(unsigned long addr, int numpages)
+ 					CPA_NO_CHECK_ALIAS, NULL);
+ }
+ 
++int set_memory_p(unsigned long addr, int numpages)
++{
++	return change_page_attr_set(&addr, numpages, __pgprot(_PAGE_PRESENT), 0);
++}
++
+ int set_memory_4k(unsigned long addr, int numpages)
+ {
+ 	return change_page_attr_set_clr(&addr, numpages, __pgprot(0),
 -- 
 2.25.1
 
