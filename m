@@ -1,47 +1,47 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C2353B4
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 02:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3136FD3
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 02:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ljPmGet7"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d5db9eb0e7so4215545ad.2
-        for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 18:20:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z50MA3XO"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5cf22a89a54so2578857a12.3
+        for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 18:20:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705371631; x=1705976431; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1705371633; x=1705976433; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c4vfRMdoaViI6HxDtxXy2GwJGspyIYSCzcn+j2z7kh4=;
-        b=ljPmGet7fGtge7V4tXVJfjz8AUd7WfypuLcZhlfgFVND8mSG79R+8YgYHUGncv4WFw
-         Ylg+FR/FzKvQ/Tk760w8IQERJASR18tddlN2WJDldVnLymBoIUuHR1DqWwDfIlxcOCCw
-         0aPEptCUnUk+ErxwzTFy+X8weHLSaG/A87Kqstty4IaF/3kaKgbely07uoSbcK1NLZlx
-         bQwv2a1EOEFZZVnMeLrFkScovwFSwxvgj+7/GbhOUCI+9gIILI9mrgYYqrbAVyfxTKhX
-         xE9exwmar8M55y4DThnmmWNBlHLRDlQVGIKqzCImkOrCMGq2Nowfvw06clF9jZ9HglQH
-         UvDA==
+        bh=bse0/qXZQoiuVJq8kHe7VoVGITL3RsI555OnNeb2YB0=;
+        b=Z50MA3XOus69DPkqxuZn0S1MNzRGQ57DSS6uYJeKg+pg2HreBM7an0tEKOJesGrxnv
+         3xNFUAY2EHdQWSi7CSKyyX8437QxGmLGNZeYxGbTMM0EPCCIGmF5CYVo990ZA7oO5Do2
+         VbiE11ifkeaIYyfgYaXcEG38S3Gvo9bPKf6uh6xkp6MduY/ESOUfNHWhosvoBfsM0hxe
+         02LuuTO03kaoW6glBiePKMegPxtKT5uGosZ91yzYOZxZ5prfbi3bIPXew8L2HIq+cg3M
+         z/KCy10zow09sObZB7VJvrzMBMDOdaHpEAKatjQOt0U1GWros+CSj2EkvYdkubVaG13E
+         gqiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705371631; x=1705976431;
+        d=1e100.net; s=20230601; t=1705371633; x=1705976433;
         h=content-transfer-encoding:mime-version:reply-to:references
          :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=c4vfRMdoaViI6HxDtxXy2GwJGspyIYSCzcn+j2z7kh4=;
-        b=Cwpbyq9haufhlWxnZ1g/vDbRsdLXZ46JJZ+C84M+YcdwRRpe4VEP4hSM7C2gAC2uwj
-         DILoYkH3zxzx0nGU0XF+aBJYVjFbTkj6OfxLHjLbXh4X+cF12ZOWrLjAbLT6604TW7ju
-         fiMPhHOQ+TKry8P8P/q0YbQoN6oGQb9zI66UZf9ujWCweBV9JEhSdm0qjZtzWZKStCoy
-         po2258rpNLXd0LP63/viUZQtEygZJ0HnyXz/vcYuPznuhbRgBWsnALieelm1/mHKrsSd
-         AkiNV9+KmPR5/dIH6PKgrkIdvuD6UtRViGuXQaiPFiPKHb1FBW6za73R5M6iT52tRBvp
-         25rA==
-X-Gm-Message-State: AOJu0YxEy3EgDUkMTODnBovcx5hrLr3g2epwlfNjMYYpILMjami23/lK
-	XwqLhAHIcIDy9ScnfGmo4Es=
-X-Google-Smtp-Source: AGHT+IFRVMIEFLp+rPfL0OtTdnRiBOnM5nFlc0pFAGcjr3KeEtvte2JqdiXRGVdv5FquDNd/HY+qHQ==
-X-Received: by 2002:a17:902:cec8:b0:1d5:c558:164d with SMTP id d8-20020a170902cec800b001d5c558164dmr1779308plg.74.1705371631546;
-        Mon, 15 Jan 2024 18:20:31 -0800 (PST)
+        bh=bse0/qXZQoiuVJq8kHe7VoVGITL3RsI555OnNeb2YB0=;
+        b=aQO05q9bfNm2fVjMkDL4dUyN9IpKgv68vlByyq4iJF0XiLPcGuEFfZy4cjXuVOZwpW
+         BNkjDxCF+yHoxRov2rwFuzxiZbcFtzHjt4O2U+tcAZCgCIM1ho8wB4uIp4DuMCeb7UxU
+         /ilTMNegViFgUONTQJvsusrOBbJDS6o29H6aKFNdVd30wcEKRbcY6V2/EdRJU8NqMIrG
+         ol39eotzK3BIGgaOWxmXFWumobGnzqeMOA+9J5lvMMVypyr8thxOkcPoGaMLGAsNVQGk
+         Q1tAs1Q/GUW7K59KOt/PSWLTytFI8LjPQU5sIy2MQl/PyVPuGKXHCq54KHZ6A9MCN/rU
+         w+Cw==
+X-Gm-Message-State: AOJu0YzJFM3hpi3QrJlUXBpSsFsvqMOpUtQdYEEEG6kQGQYLR0nsGqOA
+	dTg7IomLILSrUpFnISgQUQIx75TMT3c=
+X-Google-Smtp-Source: AGHT+IEr2+CDYGS0V8/X7I1MGszR2ZNlclrOwLdx0/MeFP/gOuYxw/HddIq+C+XRl375qrBivD1cYQ==
+X-Received: by 2002:a05:6a20:e618:b0:19b:1da3:bafc with SMTP id my24-20020a056a20e61800b0019b1da3bafcmr760682pzb.4.1705371632710;
+        Mon, 15 Jan 2024 18:20:32 -0800 (PST)
 Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id kn14-20020a170903078e00b001d1d1ef8be5sm8193379plb.173.2024.01.15.18.20.30
+        by smtp.gmail.com with ESMTPSA id kn14-20020a170903078e00b001d1d1ef8be5sm8193379plb.173.2024.01.15.18.20.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 18:20:31 -0800 (PST)
+        Mon, 15 Jan 2024 18:20:32 -0800 (PST)
 From: mhkelley58@gmail.com
 X-Google-Original-From: mhklinux@outlook.com
 To: tglx@linutronix.de,
@@ -70,9 +70,9 @@ To: tglx@linutronix.de,
 	linux-coco@lists.linux.dev,
 	linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 2/3] x86/mm: Regularize set_memory_p() parameters and make non-static
-Date: Mon, 15 Jan 2024 18:20:07 -0800
-Message-Id: <20240116022008.1023398-3-mhklinux@outlook.com>
+Subject: [PATCH v4 3/3] x86/hyperv: Make encrypted/decrypted changes safe for load_unaligned_zeropad()
+Date: Mon, 15 Jan 2024 18:20:08 -0800
+Message-Id: <20240116022008.1023398-4-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240116022008.1023398-1-mhklinux@outlook.com>
 References: <20240116022008.1023398-1-mhklinux@outlook.com>
@@ -87,73 +87,133 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Kelley <mhklinux@outlook.com>
 
-set_memory_p() is currently static.  It has parameters that don't
-match set_memory_p() under arch/powerpc and that aren't congruent
-with the other set_memory_* functions. There's no good reason for
-the difference.
+In a CoCo VM, when transitioning memory from encrypted to decrypted, or
+vice versa, the caller of set_memory_encrypted() or set_memory_decrypted()
+is responsible for ensuring the memory isn't in use and isn't referenced
+while the transition is in progress.  The transition has multiple steps,
+and the memory is in an inconsistent state until all steps are complete.
+A reference while the state is inconsistent could result in an exception
+that can't be cleanly fixed up.
 
-Fix this by making the parameters consistent, and update the one
-existing call site.  Make the function non-static and add it to
-include/asm/set_memory.h so that it is completely parallel to
-set_memory_np() and is usable in other modules.
+However, the kernel load_unaligned_zeropad() mechanism could cause a stray
+reference that can't be prevented by the caller of set_memory_encrypted()
+or set_memory_decrypted(), so there's specific code to handle this case.
+But a CoCo VM running on Hyper-V may be configured to run with a paravisor,
+with the #VC or #VE exception routed to the paravisor. There's no
+architectural way to forward the exceptions back to the guest kernel, and
+in such a case, the load_unaligned_zeropad() specific code doesn't work.
 
-No functional change.
+To avoid this problem, mark pages as "not present" while a transition
+is in progress. If load_unaligned_zeropad() causes a stray reference, a
+normal page fault is generated instead of #VC or #VE, and the
+page-fault-based fixup handlers for load_unaligned_zeropad() resolve the
+reference. When the encrypted/decrypted transition is complete, mark the
+pages as "present" again.
 
 Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 ---
- arch/x86/include/asm/set_memory.h |  1 +
- arch/x86/mm/pat/set_memory.c      | 12 ++++++------
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/hyperv/ivm.c | 53 +++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 49 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/set_memory.h b/arch/x86/include/asm/set_memory.h
-index a5e89641bd2d..9aee31862b4a 100644
---- a/arch/x86/include/asm/set_memory.h
-+++ b/arch/x86/include/asm/set_memory.h
-@@ -47,6 +47,7 @@ int set_memory_uc(unsigned long addr, int numpages);
- int set_memory_wc(unsigned long addr, int numpages);
- int set_memory_wb(unsigned long addr, int numpages);
- int set_memory_np(unsigned long addr, int numpages);
-+int set_memory_p(unsigned long addr, int numpages);
- int set_memory_4k(unsigned long addr, int numpages);
- int set_memory_encrypted(unsigned long addr, int numpages);
- int set_memory_decrypted(unsigned long addr, int numpages);
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index e76ac64b516e..164d32029424 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2045,17 +2045,12 @@ int set_mce_nospec(unsigned long pfn)
- 	return rc;
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 851107c77f4d..95036feb95e7 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -15,6 +15,7 @@
+ #include <asm/io.h>
+ #include <asm/coco.h>
+ #include <asm/mem_encrypt.h>
++#include <asm/set_memory.h>
+ #include <asm/mshyperv.h>
+ #include <asm/hypervisor.h>
+ #include <asm/mtrr.h>
+@@ -502,6 +503,31 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
+ 		return -EFAULT;
  }
  
--static int set_memory_p(unsigned long *addr, int numpages)
--{
--	return change_page_attr_set(addr, numpages, __pgprot(_PAGE_PRESENT), 0);
--}
--
- /* Restore full speculative operation to the pfn. */
- int clear_mce_nospec(unsigned long pfn)
- {
- 	unsigned long addr = (unsigned long) pfn_to_kaddr(pfn);
- 
--	return set_memory_p(&addr, 1);
-+	return set_memory_p(addr, 1);
- }
- EXPORT_SYMBOL_GPL(clear_mce_nospec);
- #endif /* CONFIG_X86_64 */
-@@ -2108,6 +2103,11 @@ int set_memory_np_noalias(unsigned long addr, int numpages)
- 					CPA_NO_CHECK_ALIAS, NULL);
- }
- 
-+int set_memory_p(unsigned long addr, int numpages)
++/*
++ * When transitioning memory between encrypted and decrypted, the caller
++ * of set_memory_encrypted() or set_memory_decrypted() is responsible for
++ * ensuring that the memory isn't in use and isn't referenced while the
++ * transition is in progress.  The transition has multiple steps, and the
++ * memory is in an inconsistent state until all steps are complete. A
++ * reference while the state is inconsistent could result in an exception
++ * that can't be cleanly fixed up.
++ *
++ * But the Linux kernel load_unaligned_zeropad() mechanism could cause a
++ * stray reference that can't be prevented by the caller, so Linux has
++ * specific code to handle this case. But when the #VC and #VE exceptions
++ * routed to a paravisor, the specific code doesn't work. To avoid this
++ * problem, mark the pages as "not present" while the transition is in
++ * progress. If load_unaligned_zeropad() causes a stray reference, a normal
++ * page fault is generated instead of #VC or #VE, and the page-fault-based
++ * handlers for load_unaligned_zeropad() resolve the reference.  When the
++ * transition is complete, hv_vtom_set_host_visibility() marks the pages
++ * as "present" again.
++ */
++static bool hv_vtom_clear_present(unsigned long kbuffer, int pagecount, bool enc)
 +{
-+	return change_page_attr_set(&addr, numpages, __pgprot(_PAGE_PRESENT), 0);
++	return !set_memory_np(kbuffer, pagecount);
 +}
 +
- int set_memory_4k(unsigned long addr, int numpages)
+ /*
+  * hv_vtom_set_host_visibility - Set specified memory visible to host.
+  *
+@@ -522,8 +548,10 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+ 	int i, pfn;
+ 
+ 	pfn_array = kmalloc(HV_HYP_PAGE_SIZE, GFP_KERNEL);
+-	if (!pfn_array)
+-		return false;
++	if (!pfn_array) {
++		result = false;
++		goto err_set_memory_p;
++	}
+ 
+ 	for (i = 0, pfn = 0; i < pagecount; i++) {
+ 		/*
+@@ -548,14 +576,30 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+ 		}
+ 	}
+ 
+- err_free_pfn_array:
++err_free_pfn_array:
+ 	kfree(pfn_array);
++
++err_set_memory_p:
++	/*
++	 * Set the PTE PRESENT bits again to revert what hv_vtom_clear_present()
++	 * did. Do this even if there is an error earlier in this function in
++	 * order to avoid leaving the memory range in a "broken" state. Setting
++	 * the PRESENT bits shouldn't fail, but return an error if it does.
++	 */
++	if (set_memory_p(kbuffer, pagecount))
++		result = false;
++
+ 	return result;
+ }
+ 
+ static bool hv_vtom_tlb_flush_required(bool private)
  {
- 	return change_page_attr_set_clr(&addr, numpages, __pgprot(0),
+-	return true;
++	/*
++	 * Since hv_vtom_clear_present() marks the PTEs as "not present"
++	 * and flushes the TLB, they can't be in the TLB. That makes the
++	 * flush controlled by this function redundant, so return "false".
++	 */
++	return false;
+ }
+ 
+ static bool hv_vtom_cache_flush_required(void)
+@@ -618,6 +662,7 @@ void __init hv_vtom_init(void)
+ 	x86_platform.hyper.is_private_mmio = hv_is_private_mmio;
+ 	x86_platform.guest.enc_cache_flush_required = hv_vtom_cache_flush_required;
+ 	x86_platform.guest.enc_tlb_flush_required = hv_vtom_tlb_flush_required;
++	x86_platform.guest.enc_status_change_prepare = hv_vtom_clear_present;
+ 	x86_platform.guest.enc_status_change_finish = hv_vtom_set_host_visibility;
+ 
+ 	/* Set WB as the default cache mode. */
 -- 
 2.25.1
 
