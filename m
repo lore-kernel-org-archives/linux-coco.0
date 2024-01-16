@@ -1,164 +1,198 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691822320
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 20:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705436579; cv=none; b=WrQr92iEZohQp9/hrCvxUyBIj0ggEUYCujJNKsb4dqwOm9Nwb8VhA1U51gRWEFKw+aA6ZpacDDNPIoASoxC+1RrBefjlNmqU/3tWyJ0kE2E4qHcnXLTtpAIa5ZsVk56fYmM+kyyGJUXDDGu8vGV5Qy8PPUrA7267lsDz2zkXe04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705436579; c=relaxed/simple;
-	bh=ItdUtcnm9gsvKn9MK8/TzDTtO7PdJPtshfQ8tmBw9ks=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DEC250E4
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 20:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.55.52.88
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705437887; cv=fail; b=bCW4eMU5LLocVCSvKTHjZU9oMvMyc0ax5oXvP1+qwyM6MnWkf6m2u+gCWASNYuWj2OxPbFjotDD91Hx81UbF4gHE6jYQanAxk+Kf3kBniWBSDzLWHtdg5nhfK5fS+nuTPtEXplbI2he9l9pDOGdmhnkGEqWUtECSYvFZhXjKasg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705437887; c=relaxed/simple;
+	bh=bu92IdavPEeDP7Vds6g97Bn9y/QE21/FmxeLT7ocVUk=;
 	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
-	 X-IronPort-AV:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:Content-Language:To:Cc:References:From:Autocrypt:
-	 In-Reply-To:Content-Type:Content-Transfer-Encoding; b=Mg1jR/R1ANG8W2G1FTtJlvLvlNpKk3vuTO7QI96Si4b9DGNIArEAdIOS8CRL+Kv9T1Y/c1wGrXEJfYEG6SCV+Z9okKM39EgZdb9Rwp88cX7v+sAZmK5BJsx6lMsispVnzIv6ql9mGxDyIJHxGLpZ/ts5PboBC+e6iFddNrNMuKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XYRFbjST; arc=none smtp.client-ip=198.175.65.12
+	 X-IronPort-AV:X-IronPort-AV:Received:Received:Received:Received:
+	 Received:ARC-Message-Signature:ARC-Authentication-Results:Received:
+	 Received:Date:From:To:CC:Subject:Message-ID:References:
+	 Content-Type:Content-Disposition:In-Reply-To:X-ClientProxiedBy:
+	 MIME-Version:X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:X-OriginatorOrg;
+	b=qGOzE00uKmyucKaX8KLqbU4uGgmXIl6O0HrjT0Zh8PfK7BJd2k3vMLjGSugfYboQT3AiiNcm+trB3jGFm1KF5z5lMbiX81IUJAFvAmc0XN6Zvq5fs5kd00WNEr5PTmOaUIhoJrrey1w2sYuKbvFnxfv1tWvuWLa4+bKvPG60hcs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bNOJY3HI; arc=fail smtp.client-ip=192.55.52.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XYRFbjST"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bNOJY3HI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705436578; x=1736972578;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ItdUtcnm9gsvKn9MK8/TzDTtO7PdJPtshfQ8tmBw9ks=;
-  b=XYRFbjSTnGHkD21AHmRkHiRXj+zN1uzkITS85bVfvAfLq1HTtfblDkwD
-   QmLMi+2uMJEaLK4OozHMPIc2mfqGssLGMzeFc8ZS8Q1tMiZ4Ma8Qb/D6B
-   y9CHU7GXQ1f5j5ybPEgYS2ELi9A3i1yxlvL9E0IRQ2Rz+pgrsvc5djoql
-   if8pUsHXbDJN4aWT8y+GVB81BXfRtHTkz4enwoZBEZUySFkKUPsbdWQkg
-   1IdT7j+eiQqOPinMmiIKAkPNDuexG5i9D9ZniwgJ+tznJfUczIbYxVRms
-   KHXwviSfno778lUy6DWRTwpDQbs1ehXpJXG/0NHR0MzI6e2KU0vdo6LfK
+  t=1705437885; x=1736973885;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=bu92IdavPEeDP7Vds6g97Bn9y/QE21/FmxeLT7ocVUk=;
+  b=bNOJY3HIXFeZCyN5iY2LMCJGAyl0xvDUqTBXVblSwgI+ivMOncUAXhxX
+   O/SOHS5dLR1waLO6+QYKX+ombn/kskCAbya+Z3zWmVsOfPYTp5KcTzd0y
+   4vRFRTQIrTgV9MtwiwbwsW6U/lfdcgNo4/whmADi8NcKub8+ODNqCw9dS
+   YmM3G2Q4U6RbM45u4mI3p38s/3vNixBadELHla+VmzfU5TOd7JAtLRNEb
+   dsWnUzBe88WOEyt/toIt986i6lxPuptSiEI78PwrAtHVqfWLvY5mIypuj
+   6UK0c16OpoNvtLoW9EioBGj22GRkZMaTJAHCT1nURYBCYWLz09qOYKl1C
    g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="7354426"
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="431145034"
 X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
-   d="scan'208";a="7354426"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 12:22:45 -0800
+   d="scan'208";a="431145034"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 12:44:44 -0800
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="1031114084"
 X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
-   d="scan'208";a="18587250"
-Received: from aegarcia-mobl1.amr.corp.intel.com (HELO [10.212.31.16]) ([10.212.31.16])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 12:22:40 -0800
-Message-ID: <011fed12-7fcd-4df8-b264-b55db2f3e95f@intel.com>
-Date: Tue, 16 Jan 2024 12:22:39 -0800
+   d="scan'208";a="1031114084"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmsmga006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 16 Jan 2024 12:44:44 -0800
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Jan 2024 12:44:43 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Jan 2024 12:44:43 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 16 Jan 2024 12:44:43 -0800
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Jan 2024 12:44:43 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IXBlSVlCk/xWhN2frfl/kclbjGwp+sLHng8squx0dIR3MJ8390ehZZ2FOmNDC5/i0GJBZn248BrPqnoSEkznpgb0kGM6UjE62l8EVwD7qT5Mo7lZR9rx+oT/2qwT4hM4Ry49vfO3IA+ZuOeaYLXiRmi47SKeJXFrXjZHNtqo8eLufU58piuTrWM3gE2bDg34gu76bI5qfOGlM9DJ/HDneiHZhcgJsk9/+9WuxbdsD8/ZeO4uqrwJPsbvL2cyIK38XYSy6rexLOBkReGK20v7/nreuSfWoMxpu/0w8W0BKPAZlYUSFFcLaLLZlKcQWyAedAV83mYBTsf9cUQiErIU2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Spacb9LHlV7jl0j3ERtRm3LNVf9kbkBRNgitevBkTRM=;
+ b=HWjq/Jw136OULbbSVdsVI3gLKFVoU0WoXRw31QDIOKMPVJBNWGEhcMuaQO9nF55+jy7YT1GSKoMyxtZD0lAqdsEXeXqMb1EuAl1tqYQWV55+x+yFhSZkCrWfp0tHQKFxcRnd5fWBuI7Y/yuEa+0lFtjh0de61Ru/aeqWxRiNfZO0gSWjv/pxrloSbx3V0H4TyJ7uB4y6nmfSSFVE0UASHkDXQs9adgOvqyZW5PHvfbGbaGlhPLVn3+f7LhsImplY31eEGbT8hnSsoDqqbyAdNWZAByOC8/1ICC1BbxiFxyWyQ5Ysok66gcZDVgy0eKdDlKZOiFEhumd3e2I8FadCxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA2PR11MB5001.namprd11.prod.outlook.com (2603:10b6:806:118::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.30; Tue, 16 Jan
+ 2024 20:44:40 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7181.015; Tue, 16 Jan 2024
+ 20:44:40 +0000
+Date: Tue, 16 Jan 2024 12:44:38 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Samuel Ortiz <sameo@rivosinc.com>, Dan Williams <dan.j.williams@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>
+Subject: RE: [RFC PATCH v1 0/4] tsm: Runtime measurement registers ABI
+Message-ID: <65a6eab6ad920_37ad29424@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20240114223532.290550-1-sameo@rivosinc.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240114223532.290550-1-sameo@rivosinc.com>
+X-ClientProxiedBy: MW4PR03CA0060.namprd03.prod.outlook.com
+ (2603:10b6:303:8e::35) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 11/26] x86/sev: Invalidate pages from the direct map
- when adding them to the RMP table
-Content-Language: en-US
-To: Michael Roth <michael.roth@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- jroedel@suse.de, hpa@zytor.com, ardb@kernel.org, pbonzini@redhat.com,
- seanjc@google.com, vkuznets@redhat.com, jmattson@google.com,
- luto@kernel.org, dave.hansen@linux.intel.com, slp@redhat.com,
- pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com, tobin@ibm.com,
- vbabka@suse.cz, kirill@shutemov.name, ak@linux.intel.com,
- tony.luck@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- alpergun@google.com, jarkko@kernel.org, ashish.kalra@amd.com,
- nikunj.dadhania@amd.com, pankaj.gupta@amd.com, liam.merwick@oracle.com,
- zhi.a.wang@intel.com, Brijesh Singh <brijesh.singh@amd.com>, rppt@kernel.org
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-12-michael.roth@amd.com>
- <cb604c37-aeb5-45bd-b6db-246ae724e4ca@intel.com>
- <20240112200751.GHZaGcF0-OZVJiIB7y@fat_crate.local>
- <63297d29-bb24-ac5e-0b47-35e22bb1a2f8@amd.com>
- <336b55f9-c7e6-4ec9-806b-cb3659dbfdc3@intel.com>
- <20240116161909.msbdwiyux7wsxw2i@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20240116161909.msbdwiyux7wsxw2i@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA2PR11MB5001:EE_
+X-MS-Office365-Filtering-Correlation-Id: f1cbd81b-f96d-46c8-ca45-08dc16d3f64c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: I8zVsFRmAwauOfUlf7p7ohHn/vRuM2CEmsDcZJyPHp9UbWcCE4xyD4o0KERw3NDFZOfsD6vDDKAJ3LjAc1pO5QhzRvB4HZbSbls0AcEjSLQQNo3Msg0Jc2q8fruoftyfT5Y8h+POjMpAeMXaA5nt2Wdeo0vF8Ml4YFuQlbenRJVK2KIypkuUpxa6LWFLNpvJIJGEno2vdxt/45TgPXXbqMhUexeFyF/AiHrZW4NUu6gAZZc7/aRTCWKchBGBtKhK0RL3GlXEblBBpmttilNbuHfuAFEa/Ho2sAVWLsa7G0GQUfrN99LxrgExZDbykFdxKuX962A3FCGrZIopy2jajNpcFmyFH8uLcJB/MFzoJwMdzH81FjqsZbNkbvE7hkpW+heUXHDvqiZDkkhbdapi4PXLaDqPABODG/G4jMqHv7AdSfYdjGzJmPg7eBVR8hSUOfUBXqdgAzm/UhEUjTHmAB/wIOStWrZZehQ6p9HJg2mHHm0dhi2CNqsPQdLsZvGy1R7i/yerfDXQIFSqoNWC94UI/3+8GPWnUGYuWajSzPlY1cflmO5EZSXOyMdnrf7J
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(376002)(136003)(346002)(396003)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(41300700001)(38100700002)(83380400001)(86362001)(82960400001)(110136005)(316002)(66476007)(66556008)(66946007)(2906002)(8676002)(8936002)(4326008)(5660300002)(26005)(6486002)(6506007)(478600001)(9686003)(6512007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?iCZ60zhc5CqJ6pg2EDhaVMaNrN64WFeDYFw5Y69BTy6YInEZt68QUjmKfrtv?=
+ =?us-ascii?Q?+6bPVetE7TyfG51XTu868Qboo4VuBbAkaEntwa2NPgTSDx7GBYH3chrfeexv?=
+ =?us-ascii?Q?SJP2ttmf5UGP3RNBjK55jk94nL7lpe/NOQ2xpUZyjPR9e08ZNLeSL8qbh66x?=
+ =?us-ascii?Q?LnYwtYTTSp9fK2HHeFsqdFtSdwdrerhzYvpNqxiKgLyvX803jaqNY90iEkTo?=
+ =?us-ascii?Q?BftUbbXyRcLwQAoDcRA5TbB9zOFxZNaINKQMKYgzruGXZfpvSowyvrem80bO?=
+ =?us-ascii?Q?0z7Djs3DVEhaNdoVGZacQBQTp4qOWC2Hb5NKmYVWj6Gn/BH+jcRt7yKi+Qmb?=
+ =?us-ascii?Q?NQnqbpWcaqvsN06qWTsNEFvDMUiASBuUN/6eGN1Xtcwyr5iVaUf+EO8OWb5C?=
+ =?us-ascii?Q?6zxucbiNBXHj4MuozTp0hRv+IpQyv3n/vGE9te78+iRdgHPgQnkQ5D5sns6D?=
+ =?us-ascii?Q?RkGyi7arj+fqeBKkYYOoLV787itqzpg0tBun9BWuX1EMIFNG6iEyh66dCthX?=
+ =?us-ascii?Q?f/YwxafT8vz6kD90crO2RHwzlvk/lx85Uk3JcnEjZxYC1foAmYEN17PoZPm4?=
+ =?us-ascii?Q?N+iIYadq73fKhRdpx+mLOCsh5Vi6XqHK+/kPrrPQuueQ5Rt0iQQmIscZGhtP?=
+ =?us-ascii?Q?5F5jnoRYFA1kzVmFFW4OBpGHQxLB5J8OXZQn6bnrVuYCfGDY4qVQKEZXQjwD?=
+ =?us-ascii?Q?WZ97utPR51JBcjOo4ilK7NJkAAn8o1g0FN6orOPuYKv3tqSVEud+plLMfL4h?=
+ =?us-ascii?Q?w44w6AlJAKvRNv8hVpU4O6GM/5KuxulkpbnlJdLstzDgMzZfEPNvdkIbXnMD?=
+ =?us-ascii?Q?1i+QUy2fbb+WrAlY5GKJhN6pQupYdteSi3NugvxZvT/lpx0OvRYy2fzschGn?=
+ =?us-ascii?Q?f0RqlAiQxTBDGCEFS07gacIKTF2aMWPAy1uwgc924BDkeyxYHmWmBzAQioV7?=
+ =?us-ascii?Q?vL7zhfQFrEskJXjE5FEWUF1gRpKJWv03onyTPd1iKcg4wBsI+n0R2HUD1F7K?=
+ =?us-ascii?Q?Rv1f/q8/VyHnbAs6cnTWUdmNmUXg8oBLz8l/PcyR2YxNgL30+s5On7Va686L?=
+ =?us-ascii?Q?sIzAC18alXyD+SWuB+2nbLzqiaJ19dLQMpazGAAm61ckgcpopJecWeMPE/eh?=
+ =?us-ascii?Q?haR+wbG1jliKdCisD9wfxa4oPQfrR3dJ2Cz63FvmenWdKoqEHvyn2uj+agto?=
+ =?us-ascii?Q?kBORYwgfGaoGpVzBY7bY1FccUvtEK8J26aUAOLfCdlN02GV9NQNJFpduVDst?=
+ =?us-ascii?Q?1uCsB9NqpLzse71vfv/XvTZGIopIADWF9rWRuh04da2rm7M/+9/JS+mQ6BYh?=
+ =?us-ascii?Q?yVYzlPgcPTml710X9JHT+HNWWc8PAA/3F2AHxQ3UXrOhv6zU6Asr7mqb0jlW?=
+ =?us-ascii?Q?QGDvRTHiZgg/wCzBsF5PbO1ttluJb70HBILZIUWIQwg7cDJLDNJ/Aw3vb/8S?=
+ =?us-ascii?Q?XFXsULekDGPkN9L6v+7j3w4gMaTag7kwbxKJ4oEhpdNMAx+9JWDBAEipGQod?=
+ =?us-ascii?Q?PF4RpQz6RKQ6x5kVh3RKw+lVcMejFj2Es69ulisU0KlKPAtb0n01ccFByvnq?=
+ =?us-ascii?Q?VeaLu7zYPrCYg9EZtgm8lQO7uiUv+XHFhFguJZ5wLwgBx1Rtj0ijgBQWhUZV?=
+ =?us-ascii?Q?Nw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f1cbd81b-f96d-46c8-ca45-08dc16d3f64c
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2024 20:44:40.7131
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ju1rh5FWAszlSJyGbwdVrSz4FmnwCDnKizqZxI8l+tWHJg0NxAW7Wdr6Enavj+5l2z8SyKmP0gxS8gGmnhDT0kMmxzP7YABwWviuaBoORac=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5001
+X-OriginatorOrg: intel.com
 
-On 1/16/24 08:19, Michael Roth wrote:
+Samuel Ortiz wrote:
+> Some confidential computing architectures (Intel TDX, ARM CCA, RISC-V
+> CoVE) provide their guests with a set of measurements registers that can
+> be extended at runtime, i.e. after the initial, host-initiated
+> measurements of the TVM are finalized. Those runtime measurement
+> registers (RTMR) are isolated from the host accessible ones but TSMs
+> include them in their signed attestation reports.
 > 
-> So at the very least, if we went down this path, we would be worth
-> investigating the following areas in addition to general perf testing:
-> 
->   1) Only splitting directmap regions corresponding to kernel-allocatable
->      *data* (hopefully that's even feasible...)
+> All architectures supporting RTMRs expose a similar interface to their
+> TVMs: An extension command/call that takes a measurement value and an
+> RTMR index to extend it with, and a readback command for reading an RTMR
+> value back (taking an RTMR index as an argument as well). This patch series
+> builds an architecture agnostic, configfs-based ABI for userspace to extend
+> and read RTMR values back. It extends the current TSM ops structure and
+> each confidential computing architecture can implement this extension to
+> provide RTMR support.
 
-Take a look at the 64-bit memory map in here:
+Hi Samuel, this looks like the right direction to me.
 
-	https://www.kernel.org/doc/Documentation/x86/x86_64/mm.rst
+One of my goals at Plumbers was to explore the tension of the perception
+of RTMR being a one-off (Intel-only) solution, and that the ecosystem is
+otherwise best served by preserving TPM ABI momentum.
 
-We already have separate mappings for kernel data and (normal) kernel text.
+This submission clears that first concern, several vendors have an RTMR
+concept. The second concern, after talking with others, is that a
+soft-TPM (e.g. vtpm_proxy) backed by RTMR can support the TPM ecosystem.
+Such a layer on top of this achieves TPM support for several
+architectures at once which seems the right thing to do from an upstream
+maintenance perspective.
 
->   2) Potentially deferring the split until an SNP guest is actually
->      run, so there isn't any impact just from having SNP enabled (though
->      you still take a hit from RMP checks in that case so maybe it's not
->      worthwhile, but that itself has been noted as a concern for users
->      so it would be nice to not make things even worse).
-
-Yes, this would be nice too.
-
->> Actually, where _is_ the TLB flushing here?
-> Boris pointed that out in v6, and we implemented it in v7, but it
-> completely cratered performance:
-
-That *desperately* needs to be documented.
-
-How can it be safe to skip the TLB flush?  It this akin to a page
-permission promotion where you go from RO->RW but can skip the TLB
-flush?  In that case, the CPU will see the RO TLB entry violation, drop
-it, and re-walk the page tables, discovering the RW entry.
-
-Does something similar happen here where the CPU sees the 2M/4k conflict
-in the TLB, drops the 2M entry, does a re-walk then picks up the
-newly-split 2M->4k entries?
-
-I can see how something like that would work, but it's _awfully_ subtle
-to go unmentioned.
+I will likely have some questions about the details, but that basic
+"should we do this" threshold in my view has been overcome.
