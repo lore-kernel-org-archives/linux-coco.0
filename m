@@ -1,46 +1,47 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5005139C
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 02:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597881C13
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 02:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dt4QKPu/"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5cd51c0e8ebso4534946a12.3
-        for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 18:20:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lwumlPHK"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d542701796so48516655ad.1
+        for <linux-coco@lists.linux.dev>; Mon, 15 Jan 2024 18:20:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705371629; x=1705976429; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=f7Z1mtPltzcSBEq804G8TTNx6jfdkFZ1S3I87AVOGno=;
-        b=dt4QKPu/r62c6zNX0D6DvdUsZvxBt/nIeJahwY39JnkXduGgOSSYy4e3IOfcN+JXan
-         UdjcuPm+rtpFAvKYLK1L1lGv9zaZ4OHld0YLs1vSwCZDDOqLHHqyJqO+Gj2+bNsOK0OD
-         CG6xV9sAnJyUwJWJ0lVAWsddyYZzlbVxjYvDtBXJ3pb8rQ9qqlBkhlNVWMh9WCv/IFh4
-         VasoEb50jsL166HzKlof+rUEC/Ng4xbmv9PLWBlvxwIhOrBiieyJbgBOMPsXKq0S8oSV
-         CJ2j8N2twoT4+lFdnNGYGKvp71drIsCpQ3+vvJ3jdESoYjEtsVu/LeIawpDHexQPuJYJ
-         drkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705371629; x=1705976429;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1705371630; x=1705976430; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f7Z1mtPltzcSBEq804G8TTNx6jfdkFZ1S3I87AVOGno=;
-        b=A4QSh2v+AJg9hxaOD9e83kemddrR4ickCoe8PIbBKlUxBsNTrO8zDR3R0Tz3i8+0W6
-         TXm8C3UFDMQUAi7GSByb2DJ8iOaV7eSgxu+XYgt+O6rUs6qaYGBrsyZfSV54RwHKCyjl
-         QDzG9pc1MQ9YtHutkmfz5e1NdOpWW6p22o48ulv4iTPGNFdwzDP2YVTMZhipicr5kZ7i
-         gX8UZWdi4p1/1P7dTP4hAj6MVnKsnhkt1Boe3KSlawgg4S8WtZtpK3oREhKZgD944jyq
-         52Et35oExw7A+FJ5T5df4ILaP9AAhRuRvDrs6irrDu2N82j3UPST9qyPkYWUVINXDLEx
-         DBHw==
-X-Gm-Message-State: AOJu0YyzC8pjOZvV82CHNZx7hGKmhScUaRx/SbOQQQLqA9ni5yQ1Mg5I
-	g/lKcfA3LSvawuQmC7ZhvPU=
-X-Google-Smtp-Source: AGHT+IFpEHkY0yoYeAhv8uuFIshSZ9ztV2gY9fMSrDRyVFa67Pg8mi4Mlid+vf3l1tJRX6tt5cPILg==
-X-Received: by 2002:a05:6a21:9181:b0:19a:d952:e21e with SMTP id tp1-20020a056a21918100b0019ad952e21emr1489772pzb.50.1705371629082;
-        Mon, 15 Jan 2024 18:20:29 -0800 (PST)
+        bh=WMHKxJ/T5Ct44oYlSE+LYrzOvXToXwBp+RoVB/ApQnM=;
+        b=lwumlPHKRrfTbkosxh+s3rqB5UzlQp+s52PqNUYrN3lSByuFuaArIE9Izouv7Ynnok
+         EMobojAuZpELYK3Q28jW0cmFS6NBKn0DY3FRMvT4FxVGHAhiEon60WdHN3ysrpYMt32c
+         0wkhNpW/EjSRcMufoa4UeknT5NkxuatXz++14gpPyMMLUqTKQzJAmpno6jsSmhuGG+Xg
+         75Dn+/H13RQ2vu4cvIeiRyWq93bfMkpzVmYRPfN4b1psGle4bbNg0t2kMwgyDnpEVHAm
+         ZG8eKKjzdjzVf8FBLteiPf/2z+4fMMaPwRrcN9GS5yPeh7m4Md/p/5N5z0Q1wkxwAwny
+         mhZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705371630; x=1705976430;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:to:from:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WMHKxJ/T5Ct44oYlSE+LYrzOvXToXwBp+RoVB/ApQnM=;
+        b=YSkE4I8vDdBu4I8slHusNsWiyAtF7DD5FVrE+gyyltMV2SaCQLP3FHN/vXT2V23c6w
+         SWo6QjsiGHgNORCOnKNAYh4ViDYnJHi/0rOg6Kuxs+g0FwxgTW5Z0gwaPP+kq9M52sLa
+         Dn7MQ6vPQ9LfmoB4HJN7/PGf6Vd2lBnnrBTKJUEb7OrTYt8GrbXPR3C3TBRZC3N2bRmz
+         urJfKzMh1HTIeX8r4tGZ3DPimkHU13E0I8oeHm07vdeuKSOKPkgYqB7GMWL0Bzd7V4SP
+         XZPnBjL6lCmKxL6ZRt5cZrvlTEX+6LHQ6PeHI7oUYBsnvyA0xiJ6i1Dm69mqLsHSK3V8
+         QYyA==
+X-Gm-Message-State: AOJu0YzgjCjiQGs58pwLJ85VfcUGORqAYxmQM4drR5jl7XtzIKnItL3/
+	XqlTELR5x4/Cn7wA73gwphk=
+X-Google-Smtp-Source: AGHT+IGKhIpxJK9risAw80iB9x8SFXIfFEzqHrHFHgbziciGN/6OZbZls+x7EV8Jy+UwtVv+JbHLlQ==
+X-Received: by 2002:a17:903:2808:b0:1d4:75c6:9560 with SMTP id kp8-20020a170903280800b001d475c69560mr2742635plb.59.1705371630377;
+        Mon, 15 Jan 2024 18:20:30 -0800 (PST)
 Received: from localhost.localdomain (c-73-254-87-52.hsd1.wa.comcast.net. [73.254.87.52])
-        by smtp.gmail.com with ESMTPSA id kn14-20020a170903078e00b001d1d1ef8be5sm8193379plb.173.2024.01.15.18.20.27
+        by smtp.gmail.com with ESMTPSA id kn14-20020a170903078e00b001d1d1ef8be5sm8193379plb.173.2024.01.15.18.20.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 18:20:28 -0800 (PST)
+        Mon, 15 Jan 2024 18:20:30 -0800 (PST)
 From: mhkelley58@gmail.com
 X-Google-Original-From: mhklinux@outlook.com
 To: tglx@linutronix.de,
@@ -69,10 +70,12 @@ To: tglx@linutronix.de,
 	linux-coco@lists.linux.dev,
 	linux-hyperv@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v4 0/3] x86/hyperv: Mark CoCo VM pages not present when changing encrypted state
-Date: Mon, 15 Jan 2024 18:20:05 -0800
-Message-Id: <20240116022008.1023398-1-mhklinux@outlook.com>
+Subject: [PATCH v4 1/3] x86/hyperv: Use slow_virt_to_phys() in page transition hypervisor callback
+Date: Mon, 15 Jan 2024 18:20:06 -0800
+Message-Id: <20240116022008.1023398-2-mhklinux@outlook.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240116022008.1023398-1-mhklinux@outlook.com>
+References: <20240116022008.1023398-1-mhklinux@outlook.com>
 Reply-To: mhklinux@outlook.com
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
@@ -84,110 +87,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Kelley <mhklinux@outlook.com>
 
-In a CoCo VM, when transitioning memory from encrypted to decrypted, or
-vice versa, the caller of set_memory_encrypted() or set_memory_decrypted()
-is responsible for ensuring the memory isn't in use and isn't referenced
-while the transition is in progress.  The transition has multiple steps,
-and the memory is in an inconsistent state until all steps are complete.
-A reference while the state is inconsistent could result in an exception
-that can't be cleanly fixed up.
+In preparation for temporarily marking pages not present during a
+transition between encrypted and decrypted, use slow_virt_to_phys()
+in the hypervisor callback. As long as the PFN is correct,
+slow_virt_to_phys() works even if the leaf PTE is not present.
+The existing functions that depend on vmalloc_to_page() all
+require that the leaf PTE be marked present, so they don't work.
 
-However, the kernel load_unaligned_zeropad() mechanism could cause a stray
-reference that can't be prevented by the caller of set_memory_encrypted()
-or set_memory_decrypted(), so there's specific code to handle this case.
-But a CoCo VM running on Hyper-V may be configured to run with a paravisor,
-with the #VC or #VE exception routed to the paravisor. There's no
-architectural way to forward the exceptions back to the guest kernel, and
-in such a case, the load_unaligned_zeropad() specific code doesn't work.
+Update the comments for slow_virt_to_phys() to note this broader usage
+and the requirement to work even if the PTE is not marked present.
 
-To avoid this problem, mark pages as "not present" while a transition
-is in progress. If load_unaligned_zeropad() causes a stray reference, a
-normal page fault is generated instead of #VC or #VE, and the
-page-fault-based fixup handlers for load_unaligned_zeropad() resolve the
-reference. When the encrypted/decrypted transition is complete, mark the
-pages as "present" again.
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+---
+ arch/x86/hyperv/ivm.c        | 12 +++++++++++-
+ arch/x86/mm/pat/set_memory.c | 12 ++++++++----
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-This version of the patch series marks transitioning pages "not present"
-only when running as a Hyper-V guest with a paravisor. Previous
-versions[1] marked transitioning pages "not present" regardless of the
-hypervisor and regardless of whether a paravisor is in use.  That more
-general use had the benefit of decoupling the load_unaligned_zeropad()
-fixup from CoCo VM #VE and #VC exception handling.  But the implementation
-was problematic for SEV-SNP because the SEV-SNP hypervisor callbacks
-require a valid virtual address, not a physical address like with TDX and
-the Hyper-V paravisor.  Marking the transitioning pages "not present"
-causes the virtual address to not be valid, and the PVALIDATE
-instruction in the SEV-SNP callback fails. Constructing a temporary
-virtual address for this purpose is slower and adds complexity that
-negates the benefits of the more general use. So this version narrows
-the applicability of the approach to just where it is required
-because of the #VC and #VE exceptions being routed to a paravisor.
-
-The previous version minimized the TLB flushing done during page
-transitions between encrypted and decrypted. Because this version
-marks the pages "not present" in hypervisor specific callbacks and
-not in __set_memory_enc_pgtable(), doing such optimization is more
-difficult to coordinate. But the page transitions are not a hot path,
-so this version eschews optimization of TLB flushing in favor of
-simplicity.
-
-Since this version no longer touches __set_memory_enc_pgtable(),
-I've also removed patches that add comments about error handling
-in that function.  Rick Edgecombe has proposed patches to improve
-that error handling, and I'll leave those comments to Rick's
-patches.
-
-Patch 1 handles implications of the hypervisor callbacks needing
-to do virt-to-phys translations on pages that are temporarily
-marked not present.
-
-Patch 2 makes the existing set_memory_p() function available for
-use in the hypervisor callbacks.
-
-Patch 3 is the core change that marks the transitioning pages
-as not present.
-
-This patch set is based on the linux-next20240103 code tree.
-
-Changes in v4:
-* Patch 1: Updated comment in slow_virt_to_phys() to reduce the
-  likelihood of the comment becoming stale.  The new comment
-  describes the requirement to work with leaf PTE not present,
-  but doesn't directly reference the CoCo hypervisor callbacks.
-  [Rick Edgecombe]
-* Patch 1: Decomposed a complex line-wrapped statement into
-  multiple statements for ease of understanding. No functional
-  change compared with v3. [Kirill Shutemov]
-* Patch 3: Fixed handling of memory allocation errors. [Rick
-  Edgecombe]
-
-Changes in v3:
-* Major rework and simplification per discussion above.
-
-Changes in v2:
-* Added Patches 3 and 4 to deal with the failure on SEV-SNP
-  [Tom Lendacky]
-* Split the main change into two separate patches (Patch 5 and
-  Patch 6) to improve reviewability and to offer the option of
-  retaining both hypervisor callbacks.
-* Patch 5 moves set_memory_p() out of an #ifdef CONFIG_X86_64
-  so that the code builds correctly for 32-bit, even though it
-  is never executed for 32-bit [reported by kernel test robot]
-
-[1] https://lore.kernel.org/lkml/20231121212016.1154303-1-mhklinux@outlook.com/
-
-Michael Kelley (3):
-  x86/hyperv: Use slow_virt_to_phys() in page transition hypervisor
-    callback
-  x86/mm: Regularize set_memory_p() parameters and make non-static
-  x86/hyperv: Make encrypted/decrypted changes safe for
-    load_unaligned_zeropad()
-
- arch/x86/hyperv/ivm.c             | 65 ++++++++++++++++++++++++++++---
- arch/x86/include/asm/set_memory.h |  1 +
- arch/x86/mm/pat/set_memory.c      | 24 +++++++-----
- 3 files changed, 75 insertions(+), 15 deletions(-)
-
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 02e55237d919..851107c77f4d 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -515,6 +515,8 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+ 	enum hv_mem_host_visibility visibility = enc ?
+ 			VMBUS_PAGE_NOT_VISIBLE : VMBUS_PAGE_VISIBLE_READ_WRITE;
+ 	u64 *pfn_array;
++	phys_addr_t paddr;
++	void *vaddr;
+ 	int ret = 0;
+ 	bool result = true;
+ 	int i, pfn;
+@@ -524,7 +526,15 @@ static bool hv_vtom_set_host_visibility(unsigned long kbuffer, int pagecount, bo
+ 		return false;
+ 
+ 	for (i = 0, pfn = 0; i < pagecount; i++) {
+-		pfn_array[pfn] = virt_to_hvpfn((void *)kbuffer + i * HV_HYP_PAGE_SIZE);
++		/*
++		 * Use slow_virt_to_phys() because the PRESENT bit has been
++		 * temporarily cleared in the PTEs.  slow_virt_to_phys() works
++		 * without the PRESENT bit while virt_to_hvpfn() or similar
++		 * does not.
++		 */
++		vaddr = (void *)kbuffer + (i * HV_HYP_PAGE_SIZE);
++		paddr = slow_virt_to_phys(vaddr);
++		pfn_array[pfn] = paddr >> HV_HYP_PAGE_SHIFT;
+ 		pfn++;
+ 
+ 		if (pfn == HV_MAX_MODIFY_GPA_REP_COUNT || i == pagecount - 1) {
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index bda9f129835e..e76ac64b516e 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -755,10 +755,14 @@ pmd_t *lookup_pmd_address(unsigned long address)
+  * areas on 32-bit NUMA systems.  The percpu areas can
+  * end up in this kind of memory, for instance.
+  *
+- * This could be optimized, but it is only intended to be
+- * used at initialization time, and keeping it
+- * unoptimized should increase the testing coverage for
+- * the more obscure platforms.
++ * Note that as long as the PTEs are well-formed with correct PFNs, this
++ * works without checking the PRESENT bit in the leaf PTE.  This is unlike
++ * the similar vmalloc_to_page() and derivatives.  Callers may depend on
++ * this behavior.
++ *
++ * This could be optimized, but it is only used in paths that are not perf
++ * sensitive, and keeping it unoptimized should increase the testing coverage
++ * for the more obscure platforms.
+  */
+ phys_addr_t slow_virt_to_phys(void *__virt_addr)
+ {
 -- 
 2.25.1
 
