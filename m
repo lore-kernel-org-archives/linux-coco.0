@@ -1,64 +1,56 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B819469
-	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 10:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9041A587
+	for <linux-coco@lists.linux.dev>; Tue, 16 Jan 2024 10:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KbEWUu1G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hf3wWH2s"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705402413; x=1736938413;
+  t=1705402731; x=1736938731;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=kwLew776p5vzcGbpOZt4QJk08QQAHvX8ubIV3cyIJIw=;
-  b=KbEWUu1Ge8ZpC9QZ67NOETkzeOOGaG3IBJPCpG05thxetqI5xUEf8L2n
-   1aWfXn7RsfgPVKYc8hEiNSIVIdyKXgFogJgYtWB7SkCX7xMQlgIKMSxqs
-   7Udf97MCChaqGtZzTb9LPQIMkgun23HoZZGZdt4Q94EbStc3TAgQZlV0V
-   XxR+efB8VF3x3SjDsl/2yEJd0Rlk8Ogpv4M280/MYN3aex54cd75SFeDv
-   3k1BlUYy1URBelVtrputZRf83xEnKzH9i5ubGvvhvvfdeeIZYeFmEPUzQ
-   NGr17oMO4nRUfl/ipD5whBZTI/fhAfm1wDJJHbar8BXLgbvHFleD8bqUU
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="396983674"
+  bh=fVFzolAaNMqJShGWKu8kQmZjsqjN+EpSt9vDF82e8oo=;
+  b=hf3wWH2sdtxbiZ4puwlEzC4I8O/OrB/YpIkEcS6/Q/AZ19GSYiLRP7Gw
+   R19SwvCfjBzM2+Hmnqsi62GdhsCqQz/INZF/a3174HdkXTNZfYyIrLMVg
+   O2m9eK3RuSAYQxe1v9Yh3I+v/OlWqZkFefak39MEFsku5714IiX0d7V97
+   V9snWISWFl/5osiNnISBE0Zov3V3M3jDIKYxSiOQO+gvKYHUS8yQ3xg3k
+   1PVKjVfGyxLyOU4xiQOyWts/LwJu+WhjqbQ0TeW1padzsxCHt4hHncOvy
+   aXN0KOnEzlkdskQPIvRiJM2jbveQ1p44NON2JkI+hldN+0AfNY20BVyus
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="399496628"
 X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; 
-   d="scan'208";a="396983674"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 02:53:32 -0800
+   d="scan'208";a="399496628"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 02:58:50 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="818134005"
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="1115252763"
 X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; 
-   d="scan'208";a="818134005"
+   d="scan'208";a="1115252763"
 Received: from uschumac-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.213.254])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 02:53:27 -0800
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 02:58:47 -0800
 Received: by box.shutemov.name (Postfix, from userid 1000)
-	id BBABD10A17B; Tue, 16 Jan 2024 13:53:24 +0300 (+03)
-Date: Tue, 16 Jan 2024 13:53:24 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv5 10/16] x86/tdx: Convert shared memory back to private
- on kexec
-Message-ID: <20240116105324.5kz6b2b6cbv6g4xn@box.shutemov.name>
-References: <20231222235209.32143-1-kirill.shutemov@linux.intel.com>
- <20231222235209.32143-11-kirill.shutemov@linux.intel.com>
- <89e8722b-661b-4319-8018-06705b366c62@suse.com>
- <20240116072822.pvzseyqry56eqa4j@box.shutemov.name>
+	id 8EDF310A17B; Tue, 16 Jan 2024 13:58:44 +0300 (+03)
+Date: Tue, 16 Jan 2024 13:58:44 +0300
+From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"hpa@zytor.com" <hpa@zytor.com>,
+	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"jpiotrowski@linux.microsoft.com" <jpiotrowski@linux.microsoft.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Cui, Dexuan" <decui@microsoft.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCHv2] x86/mm: Fix memory encryption features advertisement
+Message-ID: <20240116105844.cjnwpzuywukfv5rs@box.shutemov.name>
+References: <20240111111224.25289-1-kirill.shutemov@linux.intel.com>
+ <2b171c78e3dbc33f6fcf015c14c9e84825776798.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -67,50 +59,46 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240116072822.pvzseyqry56eqa4j@box.shutemov.name>
+In-Reply-To: <2b171c78e3dbc33f6fcf015c14c9e84825776798.camel@intel.com>
 
-On Tue, Jan 16, 2024 at 10:28:22AM +0300, Kirill A. Shutemov wrote:
-> > > @@ -809,12 +823,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
-> > >   static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
-> > >   					 bool enc)
-> > >   {
-> > > +	atomic_inc(&conversions_in_progress);
-> > > +
-> > > +	/*
-> > > +	 * Check after bumping conversions_in_progress to serialize
-> > > +	 * against tdx_shutdown().
-
-s/tdx_shutdown/tdx_kexec_stop_conversion/
-
-> > > +	 */
-> > > +	if (!conversion_allowed) {
-> > > +		atomic_dec(&conversions_in_progress);
-> > > +		return -EBUSY;
-> > > +	}
+On Tue, Jan 16, 2024 at 10:36:10AM +0000, Huang, Kai wrote:
+> On Thu, 2024-01-11 at 14:12 +0300, Kirill A. Shutemov wrote:
+> > When memory encryption is enabled, the kernel prints the encryption
+> > flavor that the system supports.
 > > 
-> > nit: Can you make the inc of conversions_in_progress be done here, this
-> > eliminated the atomic_dec in case they aren't. Somewhat simplifies the
-> > logic.
+> > The check assumes that everything is AMD SME/SEV if it doesn't have
+> > the TDX CPU feature set.
+> > 
+> > Hyper-V vTOM sets cc_vendor to CC_VENDOR_INTEL when it runs as L2 guest
+> > on top of TDX, but not X86_FEATURE_TDX_GUEST. Hyper-V only needs memory
+> > encryption enabled for I/O without the rest of CoCo enabling.
+> > 
+> > To avoid confusion, check the cc_vendor directly.
+> > 
+> > Possible alternative is to completely removing the print statement.
+> > For a regular TDX guest, the kernel already prints a message indicating
+> > that it is booting on TDX. Similarly, AMD and Hyper-V can also display
+> > a message during their enumeration process.
+> > 
+> > Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Cc: Dexuan Cui <decui@microsoft.com>
+> > Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
 > 
-> Okay, fair enough. Will change.
+> Seems this fix is for userspace running in hyperv environment being able to use
+> some easy grep to get which coco vendor it is running on?
 
-Actually, no, it will breaks serialization.
+Making decision in userspace by	grepping dmesg is bad idea and nobody
+should do this. It can easily give false result: dmesg is not ABI, format
+can change and ring buffer has finite size, the message can be overridden.
 
-Consider following scenario (includes change you proposed):
+If we need a way for userspace to discover which CoCo environment it runs
+on, we need proper ABI for that. Maybe sysfs file or something.
 
-	    CPU0			      CPU1
+> If so I think it would be nice to mention it too.
+> 
+> Acked-by: Kai Huang <kai.huang@intel.com>
 
-tdx_enc_status_change_prepare()
-  if (!conversion_allowed) // false
-					tdx_kexec_stop_conversion()
-					  conversion_allowed = false;
-					  <...>
-					  <return as no conversion in flight>
-  <continue with conversion>
-
-Incrementing conversion_in_progress before checking conversion_allowed
-will make tdx_kexec_stop_conversion() to spin until CPU0 is done with
-conversion.
+Thanks.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
