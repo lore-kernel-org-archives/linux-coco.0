@@ -1,122 +1,126 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AEB14280
-	for <linux-coco@lists.linux.dev>; Wed, 17 Jan 2024 09:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281831CF81;
+	Wed, 17 Jan 2024 10:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705484969; cv=none; b=nANPoLZduGnRWHB1FIwIFVeHmcEcnAHDtCNCm8rt0QPLPdyf1nj9ZwHSUXB6xNdQa5je32lTQXR40RTmj5aAMOZD6XY9AOmmJUO78nHisNiv0v0QnHwTHn75WYveKe4AN9hnFC8Sast3QEYWhWUr3Jj5Xj7EALWZJwKAft1pseo=
+	t=1705489168; cv=none; b=L6zp55bcThp80KWo5b6/vF6ldgpr4T2rEZsDwryhEriKwk6absxdONUzkJmc/uy/E3NwYSI7avlVlvOde9Dx/CNnT4hdh7VQrlfVh7+/J8OtU6vL+Gfm+hUbdAilqp7+ZS0w/bMPRrpov2UdujE8Qb1FxhvORbCToqqQZ9AfvQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705484969; c=relaxed/simple;
-	bh=NeXbzY9+OZVSrlATeMXiaBJzHoo1NhZn/JV7MllYRi0=;
-	h=Received:X-Virus-Scanned:Received:DKIM-Signature:Received:Date:
-	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=NWI5DIIUueYPBGbJFIwMfGigUNcXCGYkeWt0H4QE7UQXpnYhOgJzE0/G3Mvr8UKb/iaw979ou4E1+Iro4QY0juVex05KPb6R7QYE2NtES6clMVhJBc0rcvbEU5okaR74GT166LEKMDp7PlotCEB37JGMFnu387RehCgv5Wl6OXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AUPVTfrH; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1705489168; c=relaxed/simple;
+	bh=z++aPhqJYmV8VB4OIKDmSI4vg9WbQB6P+vqni7mLX4M=;
+	h=Received:DKIM-Signature:Received:X-Gm-Message-State:
+	 X-Google-Smtp-Source:X-Received:MIME-Version:References:
+	 In-Reply-To:From:Date:X-Gmail-Original-Message-ID:Message-ID:
+	 Subject:To:Cc:Content-Type; b=tbWfd2bpZlZ/ywDoWW/43GSN9CEoq7iCKNdQzFhKQONWhcBvFeEt1asf2B66K3O/FyjS9OaNmT5guh/45/lG0Np+UNDrDXyhPV2ic9jd5RLdlHQyX1Do3V1DnK/ED3v2RTNSF/222dei5/pJmz1mg3hfX31k5c2goJ7McxUZXfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUmbAnsI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AUPVTfrH"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8DE3840E0177;
-	Wed, 17 Jan 2024 09:49:24 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 73h8eGAiSvco; Wed, 17 Jan 2024 09:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1705484962; bh=CjSLyfAbv41XmX0Cv5sZW7YHSOKxGuGf033WvhzwPIg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AUPVTfrHiTingPKZFsEqLYK+TO00Iy3wbEj0fI4XxjUUpFdFJlDE/XHGxTyF8nNo4
-	 VVarO1oPMsXUftLhWvSIRZLQ47Bo2voFTP1gEo4+hhuX7kAFqnYkYo7+NqfLY/uV7x
-	 w3KOTxa1iOIkskfSCrMQde/2pRbzPQuY69h+gNahEfptdViN4dIKJ1W6FCleIgSWEe
-	 CUkAZBF1by7UteEN7U2wuUWNo/W22/k1TU4LbMVGxvVzMHFBJjvdcbChVzoBZhNb36
-	 oTgykRuhLSJ9UI7ECrukEUA0afo/IfqgN3GdaptmgQgdedHpMQto+oM4zz67TmD10h
-	 PYsXe+s1aGs1umDN8NlMjTYJBJQZXugAMHwhoeRPfhEUaYo+eYxIkcZDyJyOHmOPGo
-	 WTNGuznm7QQ+70yycVYpQhWrGOVDGcBljzDDbQVoc7cDjD0KV0tKRVohIfoR++sWx/
-	 Ff/nNR578eIa8XaX2HnSPfonK33YzATVzjQbPgsbzjOUYtXpMPu0yp98yegOQonIcC
-	 rKkr85aYezQJWaYLAV7mG2gdRRW2FPECtlw+FMAoDg/o9K/FCOLPr65iTRc8vorClb
-	 8HZJsWJHOZ2wNwTGoo59jdcsMfyhyvXm6PSAW7yKHhBfnOlPLypb2vQ7Vi4wlTzBY+
-	 ITa9H0uT9nSwrrTWtNdFtXec=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BA00240E01B2;
-	Wed, 17 Jan 2024 09:48:43 +0000 (UTC)
-Date: Wed, 17 Jan 2024 10:48:37 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com, zhi.a.wang@intel.com,
-	Brijesh Singh <brijesh.singh@amd.com>
-Subject: Re: [PATCH v1 14/26] crypto: ccp: Provide API to issue SEV and SNP
- commands
-Message-ID: <20240117094837.GIZaeidSVUPFF7792g@fat_crate.local>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-15-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUmbAnsI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDA8C4166C;
+	Wed, 17 Jan 2024 10:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705489167;
+	bh=z++aPhqJYmV8VB4OIKDmSI4vg9WbQB6P+vqni7mLX4M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IUmbAnsIE5vCKOMG92SfDaJvvsQbn0Gd9j+ni1Xumo7BbhtLTqu7AKam6IsvwF1b+
+	 Jlcr14KUq6L5ESg5D0E49101sji45b+wC4YBgTE4eZ6IYwvdWD/Tj+f4lTk9GgQ83/
+	 QCQ0CYq8jJJ260HIui8AqoqEC6ls7r8Fv5qED3KcDrKf2XQ545aXrNbZsuK5Hs9B8U
+	 b6yjz0yNnHvvq4qxZ+F39BjZFbivVM+DtSH5lMhzp6Zg0RadvC4r283C4gi1YOBl3A
+	 6ljYXjh8ELhx+2NzE/8ermEEzBtTQZx7CgJVxsO4jX/YTAM2MTHGzRi2fOy/OFX9iI
+	 WZ3rdiK6djkbQ==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50e7c6e3c63so11339637e87.3;
+        Wed, 17 Jan 2024 02:59:27 -0800 (PST)
+X-Gm-Message-State: AOJu0YzDyYDWjC5HdWtQP2Syz7LktFirJK9NizoiwcgsLoXvaa5+exyG
+	4ovA1RhE0C5BHCv7qhYJyuP7OaF5GTHcHXWkBbY=
+X-Google-Smtp-Source: AGHT+IFxh5QrJ1gWQCd/4YDEkFNTtChPK1g37tz97wiiKd3o0JeZrjXVzdzGAYAydUm+Cs0LLEXbDoyNQCA1Pd1yKTw=
+X-Received: by 2002:a05:6512:33cf:b0:50e:506c:a2b7 with SMTP id
+ d15-20020a05651233cf00b0050e506ca2b7mr2662609lfg.249.1705489165792; Wed, 17
+ Jan 2024 02:59:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231230161954.569267-15-michael.roth@amd.com>
+References: <ZZ7YuEexYSaZYmLK@tassilo> <20240111223650.3502633-1-kevinloughlin@google.com>
+ <20240115204634.GHZaWZqsVyU_fvn_RW@fat_crate.local>
+In-Reply-To: <20240115204634.GHZaWZqsVyU_fvn_RW@fat_crate.local>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 17 Jan 2024 11:59:14 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXH=k26nNyB+LQJ7WUJgbD2f3PREyjCzSngMCGc+72XJ6w@mail.gmail.com>
+Message-ID: <CAMj1kXH=k26nNyB+LQJ7WUJgbD2f3PREyjCzSngMCGc+72XJ6w@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
+ SEV/SME code
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kevin Loughlin <kevinloughlin@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Kelley <mikelley@microsoft.com>, 
+	Pankaj Gupta <pankaj.gupta@amd.com>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Arnd Bergmann <arnd@arndb.de>, Steve Rutherford <srutherford@google.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Hou Wenlong <houwenlong.hwl@antgroup.com>, Vegard Nossum <vegard.nossum@oracle.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Yuntao Wang <ytcoode@gmail.com>, 
+	Wang Jinchao <wangjinchao@xfusion.com>, David Woodhouse <dwmw@amazon.co.uk>, 
+	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>, Joerg Roedel <jroedel@suse.de>, 
+	Randy Dunlap <rdunlap@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-coco@lists.linux.dev, 
+	Ashish Kalra <ashish.kalra@amd.com>, Andi Kleen <ak@linux.intel.com>, 
+	Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
+	Sidharth Telang <sidtelang@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Dec 30, 2023 at 10:19:42AM -0600, Michael Roth wrote:
-> +/**
-> + * sev_do_cmd - issue an SEV or an SEV-SNP command
-> + *
-> + * @cmd: SEV or SEV-SNP firmware command to issue
-> + * @data: arguments for firmware command
-> + * @psp_ret: SEV command return code
-> + *
-> + * Returns:
-> + * 0 if the SEV successfully processed the command
+On Mon, 15 Jan 2024 at 21:47, Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Thu, Jan 11, 2024 at 10:36:50PM +0000, Kevin Loughlin wrote:
+> > SEV/SME code can execute prior to page table fixups for kernel
+> > relocation. However, as with global variables accessed in
+> > __startup_64(), the compiler is not required to generate RIP-relative
+> > accesses for SEV/SME global variables, causing certain flavors of SEV
+> > hosts and guests built with clang to crash during boot.
+>
+> So, about that. If I understand my gcc toolchain folks correctly:
+>
+> mcmodel=kernel - everything fits into the high 31 bit of the address
+> space
+>
+> -fPIE/PIC - position independent
+>
+> And supplied both don't make a whole lotta of sense: if you're building
+> position-independent, then mcmodel=kernel would be overridden by the
+> first.
+>
+> I have no clue why clang enabled it...
+>
+> So, *actually* the proper fix here should be not to add this "fixed_up"
+> gunk everywhere but remove mcmodel=kernel from the build and simply do
+> -fPIE/PIC.
+>
 
-More forgotten feedback:
+Fully agree. All this fiddling with RIP relative references from C
+code is going to be a maintenance burden going forward.
 
----
-diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
-index 0581f194cdd0..a356a7b7408e 100644
---- a/include/linux/psp-sev.h
-+++ b/include/linux/psp-sev.h
-@@ -922,7 +922,7 @@ int sev_guest_decommission(struct sev_data_decommission *data, int *error);
-  * @psp_ret: SEV command return code
-  *
-  * Returns:
-- * 0 if the SEV successfully processed the command
-+ * 0 if the SEV device successfully processed the command
-  * -%ENODEV    if the PSP device is not available
-  * -%ENOTSUPP  if PSP device does not support SEV
-  * -%ETIMEDOUT if the SEV command timed out
+The proper way to do this is use PIC codegen for the objects that
+matter. I had a stab [0] at this a while ago (for the purpose of
+increasing the KASLR range, which requires PIE linking) but I didn't
+pursue it in the end.
 
----
+On arm64, we use a separate pseudo-namespace for code that can run
+safely at any offset, using the __pi_ prefix (for Position
+Independent). Using symbol prefixing at the linker level, we ensure
+that __pi_ code can only call other __pi_ code, or code that has been
+made available to it via an explicit __pi_ prefixed alias. (Happy to
+elaborate more but we should find a smaller audience - your cc list is
+a tad long). Perhaps this is something we should explore on x86 as
+well (note that the EFI stub does something similar for architectures
+that link the EFI stub into the core kernel rather than into the
+decompressor)
 
-Also, pls add it to your TODO list as a very low prio item to fixup all
-this complains about:
 
-./scripts/kernel-doc -none include/linux/psp-sev.h
 
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?h=x86-pie&id=4ba81de75d92fafdab2a8a389d1b7791dddf74f3
