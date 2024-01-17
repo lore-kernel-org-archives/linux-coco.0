@@ -1,137 +1,151 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFEC1DFCD
-	for <linux-coco@lists.linux.dev>; Wed, 17 Jan 2024 12:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BE11DFDE;
+	Wed, 17 Jan 2024 13:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705495702; cv=none; b=mx5hNtPrDkZMrYqLtGgeEYOXvdZ8crFoJqmP3J3Dj5KZi/CAFUC+hozsyYiIKxyVRbY1Gr+f9qLRJEhsBiKd+Ok8AVmbt4xGmymHyT+qAPu6Bz5F4hZc55AWiKyhriOT6O4fjVsck872F41wyX7dvdDAJ38U8ZOt/DIFzo+Zoc0=
+	t=1705496820; cv=none; b=sKrYxCoToF9Tx58rzAX9dx5i5ahE0FJVSE97h+1n17ewu3PWlYswLj1ethYBOMVXzRK+R45m5sTuJhsRRl20hsNd1AJocMKWHGX7RUqMx6wXsafAIaf9MUFaexHEABKm1vbWYCJWI0YATIi2xb2adRGcHZvNABE7Lry41VWzD6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705495702; c=relaxed/simple;
-	bh=kuWU8iRngxF2LSPNWcIwd7MS5lbLqQKeTAauQAS6vLo=;
-	h=Received:DKIM-Signature:DKIM-Signature:DKIM-Signature:
-	 DKIM-Signature:Received:Received:From:Content-Type:
-	 Content-Transfer-Encoding:Mime-Version:Subject:Message-Id:Date:To:
-	 X-Mailer:X-Spam-Level:X-Spam-Score:X-Spamd-Result:X-Spam-Flag; b=WH8rE108ncTZejOGiyGTU+O1AfrIVwxHmeQ9fPs2H/5u64HETuWxsi6YWPvTFzr7rN863Jvsl8TB2Dt2wLZKZ5pru2Ga4tfxFZJxdD8cgFstkyrgKzC4Gh0s0h6PZWYesDU+brnDJ0WMhru6hq4y8Uj9Xo7oAmkJgAbLe0n6Z5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LBm9dpd2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=eHhNo3Q+; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LBm9dpd2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=eHhNo3Q+; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1705496820; c=relaxed/simple;
+	bh=+iccQ9RDRKo+U5kOojUc8XJKb8fhdLp9mgj0tdfmQ0k=;
+	h=Received:X-Virus-Scanned:Received:DKIM-Signature:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=kpNu11zbrkvg5MfmwmyXyHedZcK4rCuWawsjqGWeJqjNdIC5ASclmPVr9xc1peCGjjOcVVTZFoMYVPOjKfsIBDc3o+nliGVgeS7hNk6aGZlDw284IZInuYQHY4BpcNg4g82By8eD9BYyOXHqP9fqWc7FT6gKn6+ZL8egpr5yaAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=EgN/ZODz; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LBm9dpd2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="eHhNo3Q+";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LBm9dpd2";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="eHhNo3Q+"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="EgN/ZODz"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8187840E01F9;
+	Wed, 17 Jan 2024 13:06:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 0UjbuZsisOSy; Wed, 17 Jan 2024 13:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1705496808; bh=XtdEgP6dOqkMXgOKRwFSLg/wNuK24wOiZgQ/zzNNgN8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EgN/ZODzUr25dK36lZC4hinfYq3WyZn7sM3FM0/QtznryZKJKHIYoRX5jYsKGU+TM
+	 wnpu4IxCGrerzDsmqTTP00384xIY9c1cB2YkT7fEFJ1Uv/TauCzURZQE/Pyn1jT0Xz
+	 XGLvvbNUz3Niw5zzGVJIDgzsnSa4yvYbeJR2XAlPlSTe2goswsySiC1crcxMn0I7V+
+	 86nzV6682Pos3k6D8iwZeN0QQPQLmXghfjOKU/s4t1JgTgVK1dcKGE1BxMNGjeM+y2
+	 pSEhLepePpTPqscWXMLrzr2dyySlSY24YXeQ+p+7ATNaorcw3NeUFGuVeer1rFP349
+	 /zREIybjklViYwKGK5Bwp9Vu+9CJ03NO+WRfM/TBZL3JGgL26gU7UuqqMyH/TyNdr6
+	 qB2GUx+BqMrWy354WXbvpNPXoTzBjtLJFYZ6aFUi5BKDxF/8ep79xU7H3nPGR/v0Gx
+	 cQQeObpn5VA2YjUbZ5inPvbSerNXQtr1bQFy1JQ1s8EkY2i7H3xEd8bSil/fwzCIul
+	 h6MElaoZ5znMuv4CEbHC/sW03BZ5/daAl2qEVJwjrFOwNhK/MsqJ9bt6meUUKo0KuN
+	 57fBl2DNO3Nkcc9VGpLTygX0Zf8FYEB9qubRYa+PLRlb0/igeW7Ef+krpNAIXx65R0
+	 GFBWdqA3GAqJ0cyAjXak8Hjc=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8F2C821F28;
-	Wed, 17 Jan 2024 12:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705495698; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kuWU8iRngxF2LSPNWcIwd7MS5lbLqQKeTAauQAS6vLo=;
-	b=LBm9dpd2pFpjPzjYp+VLCRug7Jva+qnRaDLK1LNkWtf+nhYcILmQuMadSKfTXCy+gONUlg
-	DXKMcIQMxcL/xxrx27iM3W69osagz8ryrAdxvB0VUjFZt3JoaFCuHUpmIw/nhn09fNzJFA
-	4wq0seJ6oIEYxNlIbR1DVXJqviEQlb8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705495698;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kuWU8iRngxF2LSPNWcIwd7MS5lbLqQKeTAauQAS6vLo=;
-	b=eHhNo3Q+iNyCsKw95YCJZCZPg5BgwSZJhI2/3RI8AgoCMmTwl9IKXiLhbt/6fpaAqDt2Zg
-	lInSgozNz1ZOB7Dg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1705495698; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kuWU8iRngxF2LSPNWcIwd7MS5lbLqQKeTAauQAS6vLo=;
-	b=LBm9dpd2pFpjPzjYp+VLCRug7Jva+qnRaDLK1LNkWtf+nhYcILmQuMadSKfTXCy+gONUlg
-	DXKMcIQMxcL/xxrx27iM3W69osagz8ryrAdxvB0VUjFZt3JoaFCuHUpmIw/nhn09fNzJFA
-	4wq0seJ6oIEYxNlIbR1DVXJqviEQlb8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1705495698;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kuWU8iRngxF2LSPNWcIwd7MS5lbLqQKeTAauQAS6vLo=;
-	b=eHhNo3Q+iNyCsKw95YCJZCZPg5BgwSZJhI2/3RI8AgoCMmTwl9IKXiLhbt/6fpaAqDt2Zg
-	lInSgozNz1ZOB7Dg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 775F713800;
-	Wed, 17 Jan 2024 12:48:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id T7SzG5LMp2VmXwAAD6G6ig
-	(envelope-from <jroedel@suse.de>); Wed, 17 Jan 2024 12:48:18 +0000
-From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A7CC840E01A9;
+	Wed, 17 Jan 2024 13:06:03 +0000 (UTC)
+Date: Wed, 17 Jan 2024 14:05:57 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Kevin Loughlin <kevinloughlin@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Steve Rutherford <srutherford@google.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Hou Wenlong <houwenlong.hwl@antgroup.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Wang Jinchao <wangjinchao@xfusion.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Dionna Glaze <dionnaglaze@google.com>,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>,
+	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>,
+	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>,
+	Sidharth Telang <sidtelang@google.com>
+Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
+ SEV/SME code
+Message-ID: <20240117130557.GDZafQtfRyeVFbBUXA@fat_crate.local>
+References: <ZZ7YuEexYSaZYmLK@tassilo>
+ <20240111223650.3502633-1-kevinloughlin@google.com>
+ <20240115204634.GHZaWZqsVyU_fvn_RW@fat_crate.local>
+ <CAMj1kXH=k26nNyB+LQJ7WUJgbD2f3PREyjCzSngMCGc+72XJ6w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
-Subject: SVSM Development Call Jan 17th, 2024
-Message-Id: <6C4D2A02-3B78-4F3F-AD1A-87A1C24CB8CD@suse.de>
-Date: Wed, 17 Jan 2024 13:48:07 +0100
-To: svsm-devel@coconut-svsm.dev,
- linux-coco@lists.linux.dev
-X-Mailer: Apple Mail (2.3774.300.61.1.2)
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: 0.20
-X-Spamd-Result: default: False [0.20 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-0.26)[73.48%];
-	 FROM_HAS_DN(0.00)[];
-	 MV_CASE(0.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_DN_NONE(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.19)[-0.973];
-	 RCPT_COUNT_TWO(0.00)[2];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 R_MIXED_CHARSET(1.25)[subject];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXH=k26nNyB+LQJ7WUJgbD2f3PREyjCzSngMCGc+72XJ6w@mail.gmail.com>
 
-Hi all,
+On Wed, Jan 17, 2024 at 11:59:14AM +0100, Ard Biesheuvel wrote:
+> Fully agree. All this fiddling with RIP relative references from C
+> code is going to be a maintenance burden going forward.
 
-Just a reminder for todays SVSM Development call at 9am PST/6pm CET.
+Yah.
 
-If you have any agenda items you want to see covered, please let me =
-know. Otherwise we will just do the usual rounds of updates and Q&A.
+> The proper way to do this is use PIC codegen for the objects that
+> matter.
 
-We meet as usual at https://meet.google.com/ppv-xehx-dvb
+And we have arch/x86/mm/mem_encrypt_identity.c which is supposed to deal
+with stuff running from the ident mappings and PA == VA.
 
-Regards,
+We could put the rest of those special SEV things there or do a separate
+TU to be built using something like PIE_FLAGS, as in your patch.
 
-J=C3=B6rg R=C3=B6del
-jroedel@suse.de
+> I had a stab [0] at this a while ago (for the purpose of increasing
+> the KASLR range, which requires PIE linking) but I didn't pursue it in
+> the end.
 
-SUSE Software Solutions Germany GmbH
-Frankenstra=C3=9Fe 146
-90461 N=C3=BCrnberg
-Germany
-https://www.suse.com/
+FWIW, that looks a lot more like a natural kernel code with
+__va_symbol() etc. Definitely better and we talked about it at some
+point already as it does ring a bell.
 
-Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev, Andrew McDonald, Werner Knoblich
-(HRB 36809, AG N=C3=BCrnberg)
+> On arm64, we use a separate pseudo-namespace for code that can run
+> safely at any offset, using the __pi_ prefix (for Position
+> Independent). Using symbol prefixing at the linker level, we ensure
+> that __pi_ code can only call other __pi_ code, or code that has been
+> made available to it via an explicit __pi_ prefixed alias. (Happy to
+> elaborate more but we should find a smaller audience - your cc list is
+> a tad long). Perhaps this is something we should explore on x86 as
+> well (note that the EFI stub does something similar for architectures
+> that link the EFI stub into the core kernel rather than into the
+> decompressor)
 
+Grepping through the tree, is __pi_memcpy one example for that?
+
+It sure looks like it with the alias and all. From a quick scan, that is
+not that bad either. It gives you the clear distinction what that
+symbol is and who can call it.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
