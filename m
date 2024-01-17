@@ -1,127 +1,122 @@
-Received: from out187-20.us.a.mail.aliyun.com (out187-20.us.a.mail.aliyun.com [47.90.187.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DF217E9;
-	Wed, 17 Jan 2024 02:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.187.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AF91C0F
+	for <linux-coco@lists.linux.dev>; Wed, 17 Jan 2024 03:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705459965; cv=none; b=DBejKltHi9fxjetMuNfRUtm9FopKOl70rK5+ARTocUN2hNFZi1oF1PT6BPacMUBncDvM8R20yqfY0QVWJsRrhXqnfMMr/28g3XvZcqj3OXsVtk+SM06DWBRClg25VRBGjQSi80TcfosymaI4dMJgvWKwWXtLEFSVJ0Dlg/R+4Jg=
+	t=1705462533; cv=none; b=JaIU5h0tn0S9HY9ZZnyZo2R06cA6wFEpd18IhfKW8zKtzGnLazr7BpcXt5CR+trhgdlpLUw3KRX4FUU45JJu4Sz7ERBteP9szq77EQd/gO0TUtkxrwwiXp0/V+7S51gCRukBOqyk3oVdhrWOdokoL44rKDiwvmxaUevP0YQlvbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705459965; c=relaxed/simple;
-	bh=f2vOvPOp7ODqJoWpEW+g6YZ4ClQrHu8xwoToqzW/ISo=;
-	h=X-Alimail-AntiSpam:Received:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To:User-Agent; b=CxS2EHr6SWlGVx7sOolLTYlAtypf9DmShQ3igtT2SmfmJtCK7VltRhR7QyXDEu0yxam/AJWNMQed7ZFaM0WoQTmrivM4BU4o90t1YCPh55+3HSAdYaowU+XRWA0VgVjLtht2uhAGduh3CAwzbSzKyawufIuaFXQXknu6RsN40IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; arc=none smtp.client-ip=47.90.187.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R581e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018047212;MF=houwenlong.hwl@antgroup.com;NM=1;PH=DS;RN=44;SR=0;TI=SMTPD_---.W8.S.yY_1705459622;
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.W8.S.yY_1705459622)
-          by smtp.aliyun-inc.com;
-          Wed, 17 Jan 2024 10:47:04 +0800
-Date: Wed, 17 Jan 2024 10:47:02 +0800
-From: "Hou Wenlong" <houwenlong.hwl@antgroup.com>
-To: Kevin Loughlin <kevinloughlin@google.com>
-Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Steve Rutherford <srutherford@google.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Wang Jinchao <wangjinchao@xfusion.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Joerg Roedel <jroedel@suse.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>,
-	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>,
-	Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>,
-	Sidharth Telang <sidtelang@google.com>
-Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
- SEV/SME code
-Message-ID: <20240117024702.GA112065@k08j02272.eu95sqa>
-References: <ZZ7YuEexYSaZYmLK@tassilo>
- <20240111223650.3502633-1-kevinloughlin@google.com>
- <20240115204634.GHZaWZqsVyU_fvn_RW@fat_crate.local>
- <CAGdbjm+fMBnkKDVFpf-fAEbYxTUWR0od2JzTTbEMoPVS3J_Faw@mail.gmail.com>
+	s=arc-20240116; t=1705462533; c=relaxed/simple;
+	bh=9nDQIlSt6xsOi7mqkg97CDkr7r22IzuP+v40N6vIppI=;
+	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
+	 X-IronPort-AV:Received:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:Content-Language:To:Cc:References:From:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding; b=abXldxZ853syNAZz2zlD1Dk9d2g4Th79TEnyAdt8x72Iw1RD1rLqmef0wsTTfRxxPUojckZZsYwPLTUUQapq768bFkumdPOLKDAaMSivPGQDuEKg9cK8muTmAAJVhJXfuVvsqKIZJzvsBT6yXBJjItYHSRdTMDAz6+AyF+UKqt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EfAnh+YB; arc=none smtp.client-ip=192.55.52.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EfAnh+YB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705462532; x=1736998532;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9nDQIlSt6xsOi7mqkg97CDkr7r22IzuP+v40N6vIppI=;
+  b=EfAnh+YByIDbg3afghsVof4R8XNwgQZnewsL1ywNj5z8hMPrO/ZM4qYW
+   pBP/n1Q8YpDsrdbQxdKtIEPjrujGqFJ8C5gQGNtgXKCZz2H4zQLyvqP/a
+   BQ6tTwp0tT1sxHEjPwhJXzoEQzVMrkpOZhZa7fL45I2GC7tod/XCGYRHu
+   ggyxuq65JMkmpnJXpprjVyZu0lfrMZLUEKDygX9PHQDLQXIiqx+S1Gf5L
+   DdxS1mMu/DyOdX/FTfu6uZCfjnGym24TrfWudXM2AP/PtAf74YBKh6+o0
+   nMAwZAH7UiVrfGXEVyBFelpQWW8xyE0dIDRQ4CfN08eCmBJL+yxrD/SQc
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="486213922"
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="486213922"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 19:35:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="18694093"
+Received: from kogunron-mobl1.amr.corp.intel.com (HELO [10.209.49.98]) ([10.209.49.98])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 19:35:30 -0800
+Message-ID: <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com>
+Date: Tue, 16 Jan 2024 19:35:30 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGdbjm+fMBnkKDVFpf-fAEbYxTUWR0od2JzTTbEMoPVS3J_Faw@mail.gmail.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>, Samuel Ortiz <sameo@rivosinc.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240114223532.290550-1-sameo@rivosinc.com>
+ <20240114223532.290550-4-sameo@rivosinc.com>
+ <1bbf8d3e-aa94-48c7-a1e4-76f9eefc4af7@linux.intel.com>
+ <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 17, 2024 at 08:07:49AM +0800, Kevin Loughlin wrote:
-> On Mon, Jan 15, 2024 at 12:47 PM Borislav Petkov <bp@alien8.de> wrote:
-> >
-> > On Thu, Jan 11, 2024 at 10:36:50PM +0000, Kevin Loughlin wrote:
-> > > SEV/SME code can execute prior to page table fixups for kernel
-> > > relocation. However, as with global variables accessed in
-> > > __startup_64(), the compiler is not required to generate RIP-relative
-> > > accesses for SEV/SME global variables, causing certain flavors of SEV
-> > > hosts and guests built with clang to crash during boot.
-> >
-> > So, about that. If I understand my gcc toolchain folks correctly:
-> >
-> > mcmodel=kernel - everything fits into the high 31 bit of the address
-> > space
-> >
-> > -fPIE/PIC - position independent
-> >
-> > And supplied both don't make a whole lotta of sense: if you're building
-> > position-independent, then mcmodel=kernel would be overridden by the
-> > first.
-> >
-> > I have no clue why clang enabled it...
-> >
-> > So, *actually* the proper fix here should be not to add this "fixed_up"
-> > gunk everywhere but remove mcmodel=kernel from the build and simply do
-> > -fPIE/PIC.
-> 
-> I believe that the key distinction is that using mcmodel=kernel (upper
-> 2 GB of address space) or the similar mcmodel=small (lower 2 GB) means
-> the compiler *can* use RIP-relative addressing for globals (because
-> everything is within +/- 2GB of RIP) but is not *required* to do so.
-> In contrast, fPIE/fPIC *requires* relative addressing but does not
-> necessarily require a specific 2 GB placement range. Altogether, I do
-> think there are use cases for both options individually. I can't think
-> of a reason why gcc wouldn't be able to support mcmodel=kernel in
-> conjunction with fPIE off the top of my head, but I admittedly haven't
-> looked into it; I simply observed that the combination is not
-> currently supported.
-> 
-> RE: compiling the whole x86-64 kernel with fPIE/fPIC, I believe the
-> required changes would be very extensive (see "[PATCH RFC 00/43]
-> x86/pie: Make kernel image's virtual address flexible" at
-> https://lore.kernel.org/lkml/cover.1682673542.git.houwenlong.hwl@antgroup.com/).
 
-FYI I have sent a small patchset[0] that attempts to build the head code
-(head64.c and mem_encrypt_identity.c) as PIE. However, there are still a
-few functions that are called by the head code but are not in these two
-files.
+On 1/16/24 5:24 PM, Dan Williams wrote:
+> Kuppuswamy Sathyanarayanan wrote:
+>> On 1/14/24 2:35 PM, Samuel Ortiz wrote:
+>>> Many user space and internal kernel subsystems (e.g. the Linux IMA)
+>>> expect a Root of Trust for Storage (RTS) that allows for extending
+>>> and reading measurement registers that are compatible with the TCG TPM
+>>> PCRs layout, e.g. a TPM. In order to allow those components to
+>>> alternatively use a platform TSM as their RTS, a TVM could map the
+>>> available RTMRs to one or more TCG TPM PCRs. Once configured, those PCR
+>>> to RTMR mappings give the kernel TSM layer all the necessary information
+>>> to be a RTS for e.g. the Linux IMA or any other components that expects
+>>> a TCG compliant TPM PCRs layout.
+>>>
+>>> TPM PCR mappings are configured through configfs:
+>>>
+>>> // Create and configure 2 RTMRs
+>>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr0
+>>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr1
+>>> echo 0 > /sys/kernel/config/tsm/rtmrs/rtmr0/index
+>>> echo 1 > /sys/kernel/config/tsm/rtmrs/rtmr1/index
+>>>
+>>> // Map RTMR 0 to PCRs 4, 5, 6, 7 and 8
+>>> echo 4-8 > /sys/kernel/config/tsm/rtmrs/rtmr0/tcg_map
+>>>
+>>> // Map RTMR 1 to PCRs 16, 17 and 18
+>>> echo 16-18 > /sys/kernel/config/tsm/rtmrs/rtmr1/tcg_map
+>> Any information on how this mapping will be used by TPM or IMA ?
+>>
+>> RTMR to PCR mapping is fixed by design, right? If yes, why allow
+>> user to configure it. We can let vendor drivers to configure it, right?
+> I assume the "vendor driver", that publishes the RTMR to the tsm-core,
+> has no idea whether they will be used for PCR emulation, or not. The TPM
+> proxy layer sitting on top of this would know the mapping of which RTMRs
+> are recording a transcript of which PCR extend events. 
 
-[0] https://lore.kernel.org/lkml/cover.1689130310.git.houwenlong.hwl@antgroup.com
+My thinking is, since this mapping is ARCH-specific information
+and fixed by design, it makes more sense to hide this detail in the
+vendor driver than letting userspace configure it. If we allow users to
+configure it, there is a chance for incorrect mapping.
+
+Regarding the TPM proxy, I am still not clear how it is going to use
+this mapping. If we want to provide TPM like feature, it needs a
+special kernel TPM driver, right? Even if we enable TPM support
+with RTMR, I assume it can only support pcr_extend(). Other TPM
+features should be disabled. If yes, since we already have this ABI
+for measurement extension, why again support it via TPM or did
+I misunderstand the use case.
+
+>
+> For IMA the situation is different because that can be a kernel internal
+> configuration flow without need to involve userspace.
+>
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
