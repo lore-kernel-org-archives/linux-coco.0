@@ -1,180 +1,124 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EB028DC5
-	for <linux-coco@lists.linux.dev>; Thu, 18 Jan 2024 16:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078C42D03B
+	for <linux-coco@lists.linux.dev>; Thu, 18 Jan 2024 17:43:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705593685; cv=none; b=CtqyHASUgLjXuWK7URLqVhmjopofevRhkdGjfFdpgPe3+NFgcyZ2heSMYz7M1iQIYXmmteN+1k11+1V85fgLifnpOyx2nacpGZO2QP15xN0c21SW4WRhreh7/SqG98oVu8MGhh4P6fmTVMjyQkH+hSS79tAr/LKwK4lMJV/dZ2M=
+	t=1705599789; cv=none; b=dX2IxTsxT3rncHGAgHxwLjSBwIIuOI4BEUJniOusrR8vnAV3syh3UPmeOsM02XnQSFLGGH4DWwDLUp8oxM7AB3Z/n1aYgm5F+4Gdnpmn0wrAfhHNvFk3qx/vdhhDdm3HtJpNIWbdKVrH3YwDTe6HWEP+XM3wUmSKnEuzwoZm5h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705593685; c=relaxed/simple;
-	bh=/bFitulnKeMD7nL6DUK9UTmNnjFHo6afAaFJr8rlhh8=;
-	h=Received:DKIM-Signature:DKIM-Signature:Received:Received:From:To:
-	 Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding:X-Spamd-Result:X-Spam-Level:X-Spam-Score:
-	 X-Spam-Flag; b=DJwp+HakXeFIMIbgYx7+ymRGXJ0cRY8o2/eWCDEwq+/Ssopkuet8jLp6Wm5JiraKC6GlyAQhZZg62seEc92PGrwZrpodrmAenBws2YtyMWNB6UfokF+WH0Lki27iNmD3gWQRlZXRfbN3bVeqCVKeA6nXqGg02KM5fycrv6aNJCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=GFhHCI6L; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=GFhHCI6L; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1705599789; c=relaxed/simple;
+	bh=NOcAiExZvR2mQb61dcNah83qN7CavovaR3DLX+XgZEM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NNlj0rAI9ao7ouUbywnpNuNNd0LlEuMqZL+viV8ImqAvg87WFcCmsgflEx1jptjgvigj6U0LHPUjYSym6M6NRO41WdWae4YqasuYJwe16GLNmUHvnjOsyi5ewS9M36q19iB+D8y7nZwXy9ly3pVA4TYkVu93jx9RFYeUf+Xaq78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZFp9L+mT; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="GFhHCI6L";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="GFhHCI6L"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8C1AC1F78C;
-	Thu, 18 Jan 2024 16:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1705593681; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yqxe6RmDElHAsoN8dM0gFQuxWNqNWQehMUdGnSfMDbQ=;
-	b=GFhHCI6LVB4uh/keNp8qXLftsxLtPNTvriewBj9rql/Fqf4J/g31CCV4IEDqDEot0dZTAn
-	V6NDmKL7ljVneEWZmAyT1GBdvBJqSiLI60a/hbTVp4ZVn+fXKkC+CR4gAj5MfNVFR113tW
-	Z1tqaddjVbY5e+6UgwKA4NRYnXFRW6E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1705593681; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yqxe6RmDElHAsoN8dM0gFQuxWNqNWQehMUdGnSfMDbQ=;
-	b=GFhHCI6LVB4uh/keNp8qXLftsxLtPNTvriewBj9rql/Fqf4J/g31CCV4IEDqDEot0dZTAn
-	V6NDmKL7ljVneEWZmAyT1GBdvBJqSiLI60a/hbTVp4ZVn+fXKkC+CR4gAj5MfNVFR113tW
-	Z1tqaddjVbY5e+6UgwKA4NRYnXFRW6E=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2221013874;
-	Thu, 18 Jan 2024 16:01:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id g5ZJBVFLqWV9OgAAD6G6ig
-	(envelope-from <nik.borisov@suse.com>); Thu, 18 Jan 2024 16:01:21 +0000
-From: Nikolay Borisov <nik.borisov@suse.com>
-To: linux-kernel@vger.kernel.org
-Cc: x86@kernel.org,
-	dave.hansen@linux.intel.com,
-	linux-coco@lists.linux.dev,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [RFC PATCH] x86/virt/tdx: Disable KEXEC in the presence of TDX
-Date: Thu, 18 Jan 2024 18:01:18 +0200
-Message-Id: <20240118160118.1899299-1-nik.borisov@suse.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZFp9L+mT"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-553e36acfbaso197a12.0
+        for <linux-coco@lists.linux.dev>; Thu, 18 Jan 2024 09:43:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1705599786; x=1706204586; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NOcAiExZvR2mQb61dcNah83qN7CavovaR3DLX+XgZEM=;
+        b=ZFp9L+mTRleciDyEjmFB7NeowAsT6o5+4H0CxkholuV1FiDrvRX0CgxPJSM/NwkU7f
+         smLASOWQoWOAljfGKBmqj7TaH8Kch6N2AMIGNYIqJVsgNsdpxLNGOkDmwUCXNm1Ml0Yw
+         UczlgHL1DDrBIpE35fpXq10UlfsDAfbbpLHtC2qcS/HQbZj1B0kSm9IZBggec8Sr4RE1
+         8z87ne0YDD8wOA9zzUCuC2dSzIwn3HUXeYQ5BRwZWE69oCBXXUnSVCrMZzfU4nC6MoVN
+         dwg0+tG6GOOiOnfRNVM/qEuXCMddukNs9QUJYF33ypp2ipn7BYIJoJgry8Ew4kpFjy/Y
+         m+Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705599786; x=1706204586;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NOcAiExZvR2mQb61dcNah83qN7CavovaR3DLX+XgZEM=;
+        b=aako13rvsK7ZDE47zZqPm0FTLjz/EyyCmbLaE2yyEBbH80NPCwyVWlzN//rsZ+oHki
+         5sY3dbxm8ONqz7MVXVGhtAFdbb56NAZ0xHpaK2klxAffZQBWRATUdwqNawkoBKyrLguM
+         BpvKP0W7/D23mh5H69qsG39y6jYfF19l/+/ENw8NjeZq2FRc/caFLWu8ZnzOKrmaX7f1
+         jhP8BCCsFWSyrHJg5oiYui21bwEsxkCDYZf0n3C7GkIDuo4bfnJMjkld9WZaFPTfRWZi
+         q2F18nj5orC061STFvIw2xPVtlpp3NNOEOKWQx6NShm5YHw5B7AWwvIfbfb2EQIVPKwa
+         4pvA==
+X-Gm-Message-State: AOJu0Yy2w8g1/MJTo2OtrBkGgBoxftzZiPMw7iVVrPWho4g5nJCFp22z
+	C+I0XwYtUqDcAYAXgR4427ibywbxtE8HCb1LmT7xqKJRbhZmBZYWaK4DRYIW4WyJGp3FhAa6Lu+
+	LTIxhu0w8ld3zMj/n3Tjh1vDOni7+rEhV0O0Z3hUd03shNAqniQ==
+X-Google-Smtp-Source: AGHT+IE0AakL/4sUeGb+URi8tBIOtgC2fQnSnJWrYDiK2j7xATlq2bUkk4OH1pRcNoFZDynH19IvzdzPXcB0BJXDBJ0=
+X-Received: by 2002:a05:6402:b4c:b0:55a:47a0:d8ad with SMTP id
+ bx12-20020a0564020b4c00b0055a47a0d8admr63065edb.3.1705599786153; Thu, 18 Jan
+ 2024 09:43:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [1.90 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCPT_COUNT_FIVE(0.00)[5];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Level: *
-X-Spam-Score: 1.90
-X-Spam-Flag: NO
+References: <20240114223532.290550-1-sameo@rivosinc.com> <20240118033515.2293149-1-biao.lu@intel.com>
+In-Reply-To: <20240118033515.2293149-1-biao.lu@intel.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Thu, 18 Jan 2024 09:42:50 -0800
+Message-ID: <CAAH4kHb9-7p0z2xgmofiCVkOUgXdkJz89qLPc1DuG0F_Wf4-Tg@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 0/4] tsm: Runtime measurement registers ABI
+To: biao.lu@intel.com
+Cc: sameo@rivosinc.com, dan.j.williams@intel.com, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Joerg Roedel <jroedel@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-TDX doesn't currently support kexec so disable the latter when TDX
-is detected at boot time. If kexec must absolutely be supported then
-TDX can be disabled from the bios.
+On Wed, Jan 17, 2024 at 7:36=E2=80=AFPM <biao.lu@intel.com> wrote:
+>
+> Samuel Ortiz wrote:
+> > Some confidential computing architectures (Intel TDX, ARM CCA, RISC-V
+> > CoVE) provide their guests with a set of measurements registers that ca=
+n
+> > be extended at runtime, i.e. after the initial, host-initiated
+> > measurements of the TVM are finalized. Those runtime measurement
+> > registers (RTMR) are isolated from the host accessible ones but TSMs
+> > include them in their signed attestation reports.
+> >
+> > All architectures supporting RTMRs expose a similar interface to their
+> > TVMs: An extension command/call that takes a measurement value and an
+> > RTMR index to extend it with, and a readback command for reading an RTM=
+R
+> > value back (taking an RTMR index as an argument as well). This patch se=
+ries
+> > builds an architecture agnostic, configfs-based ABI for userspace to ex=
+tend
+> > and read RTMR values back. It extends the current TSM ops structure and
+> > each confidential computing architecture can implement this extension t=
+o
+> > provide RTMR support.
+>
+> Hi, Samuel
+> The ABI does not include eventlog, but eventlog is usually used with RTMR=
+.
+> What do you think about how to implement eventlog?
+>
+>
 
-Making this decision at run time rather than as a compile time option
-allows distribution kernels to have both enabled and delegate to the
-user whether they want to use TDX/Kexec.
+I had the same question and deleted my reply. The event log in TPM is
+made available in sysfs only up to the point that control transitions
+to user space. After that, all extensions to PCRs have to be logged by
+user space with whatever chosen workload event log representation. I
+imagine the same is true for RTMRs.
 
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
----
+What this patch series doesn't take into account is how RTMRs might
+not be represented in the hardware attestation, but rather would be in
+a supervisor service whose integrity is chained from hardware
+attestation. In the configfs-tsm model, tsm/report with its single
+provider requirement will not be able to interface with the SVSM
+attestation protocol /and/ the AMD hardware protocol. That may as well
+be okay, but that's a choice folks need to be aware of. There's still
+the issue of attesting a single service vs attesting all services in
+the SVSM. I imagine single service attestation will have to be
+abandoned.
 
-Sending as RFC as I don't know the reason why initially it was decided to
-enforce the incompaibility between kexec/tdx at build time rather than runtime.
+In SVSM, a vTPM is a service that an updated linux driver will be able
+to get a quote from, and the same AMD SEV-SNP attestation report TSM
+provider would still be present, but if we want a simpler RTMR
+service, then we're in a little pickle with this design.
 
- arch/x86/Kconfig            | 1 -
- arch/x86/virt/vmx/tdx/tdx.c | 6 ++++++
- include/linux/kexec.h       | 1 +
- kernel/kexec_core.c         | 5 +++++
- 4 files changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 92c03cb99b3e..6c2b620b40d8 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1973,7 +1973,6 @@ config INTEL_TDX_HOST
- 	depends on X86_X2APIC
- 	select ARCH_KEEP_MEMBLOCK
- 	depends on CONTIG_ALLOC
--	depends on !KEXEC_CORE
- 	depends on X86_MCE
- 	help
- 	  Intel Trust Domain Extensions (TDX) protects guest VMs from malicious
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4d6826a76f78..270090bd7b5e 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -20,6 +20,7 @@
- #include <linux/memblock.h>
- #include <linux/memory.h>
- #include <linux/minmax.h>
-+#include <linux/kexec.h>
- #include <linux/sizes.h>
- #include <linux/pfn.h>
- #include <linux/align.h>
-@@ -1473,6 +1474,11 @@ void __init tdx_init(void)
- 		return;
- 	}
-
-+#ifdef CONFIG_KEXEC_CORE
-+	kexec_disable();
-+	pr_info("Disable Kexec. Turn off TDX in the BIOS to use KEXEC.\n");
-+#endif
-+
- #if defined(CONFIG_ACPI) && defined(CONFIG_SUSPEND)
- 	pr_info("Disable ACPI S3. Turn off TDX in the BIOS to use ACPI S3.\n");
- 	acpi_suspend_lowlevel = NULL;
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index 8227455192b7..c434c8569242 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -500,6 +500,7 @@ static inline int crash_hotplug_memory_support(void) { return 0; }
- static inline unsigned int crash_get_elfcorehdr_size(void) { return 0; }
- #endif
-
-+extern void kexec_disable(void);
- #else /* !CONFIG_KEXEC_CORE */
- struct pt_regs;
- struct task_struct;
-diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-index be5642a4ec49..8d3a2a04ff4d 100644
---- a/kernel/kexec_core.c
-+++ b/kernel/kexec_core.c
-@@ -927,6 +927,11 @@ struct kimage *kexec_image;
- struct kimage *kexec_crash_image;
- static int kexec_load_disabled;
-
-+void kexec_disable(void)
-+{
-+	kexec_load_disabled = 1;
-+}
-+
- #ifdef CONFIG_SYSCTL
- static int kexec_limit_handler(struct ctl_table *table, int write,
- 			       void *buffer, size_t *lenp, loff_t *ppos)
---
-2.34.1
-
+--=20
+-Dionna Glaze, PhD (she/her)
