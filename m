@@ -1,119 +1,82 @@
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D9522EE0
-	for <linux-coco@lists.linux.dev>; Wed, 17 Jan 2024 17:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF311610A
+	for <linux-coco@lists.linux.dev>; Thu, 18 Jan 2024 03:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705513593; cv=none; b=axiROW48NyF5DrNjnyggFeCVWrJiuqyK9wJiiMqqRtuvairt/90aAujxSpVP07aL1/RTpEYP+hZeyhbRLQd+LkfcGwM7cF62RviMIK7SXktM6GMeUAKGGCw1F+s1b/zd+O7el89OAVzZLP+zhBgVuA6dB9y9PyxOQoCuJ97YXoA=
+	t=1705549006; cv=none; b=mn5V4ezFu4Vf8uoLDkM6DEO39lPgbr7pdOW/nZhvCmtuijoLhxrajinKvyiXOl9B+pMVGQ4mwvEGI5bBnIByh67xySMRT5D40ayrtCtv8tAdXD2Aw4dw0HP03L4a5jp1tfTKfM3FqxwIMv+rXvRN4+HkIjXUAsQ7ZVqRHklCUbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705513593; c=relaxed/simple;
-	bh=LTKMsVfgPN3dX5Bxo71zqeqMSBCzkJajVmflW4l7M3s=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=EZaK3A/u50s44lPQU2CvkbCr+tNx1sG6NeU2cX5LhAaWgb0Pw16lBUFoQFMpGjwNkVaBDyaEMXO5sV3CpYTh1PUsACklU62Oh/lgM5dNXcfrq4iqGvk8yk3D/Mg/BUROQwI37e8yOoXJqcCaFFrF8YksD0xyb5LIDFpIamIvF1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ow+HHvya; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1705549006; c=relaxed/simple;
+	bh=KHaJKuupFrb/5JLgFhafWv0RzApN98z5dybDAr16RQo=;
+	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
+	 X-IronPort-AV:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding; b=hJy/3c4VbM3YN1w3vu6MlVFNCOZ4zUj//x8eAu/KyXHlC6yXnRYixarAy+Rhs+HB81pADOcXvmdh7zj2LwZvbn59vwot3lNjf8KKuWWpJ0xqqJwv/pvPYoFQE+zyBEerC8eDsNZeuxapQ9UPNMtznugMtRrpxKkWaiungxrVe2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O+PRy84f; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ow+HHvya"
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3600b2c43a8so181255ab.0
-        for <linux-coco@lists.linux.dev>; Wed, 17 Jan 2024 09:46:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705513590; x=1706118390; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LTKMsVfgPN3dX5Bxo71zqeqMSBCzkJajVmflW4l7M3s=;
-        b=ow+HHvyavl/GBGp2BdWLdmKYUouxFgqYFSK6oGB+S4xU0/9SN9ZDtwc7ic4soH4jVI
-         v1fRvBX3rwGkQqg3UBMff8HVRNrfS+XNYEDPNSUhmdeMp3NwTcFCpUVQ9E86QPriAwaR
-         WkN1zIdImMtAAeKV7yQzxbKghlxmQ1JXnUwoeBVoRKZIMKFkiKyFbu94Filfhx6ISCCh
-         Tg+Z6nxVxAI6+Di3FSDtSYv5NgLBBiKjgep9w7b3P9ei5i2L0uYS4KCKPhZl/Fzpf4zY
-         OTdEJMzz6U7P0PF5aYiz7CssJM8+Kr/WEfcqGNyrL2oU5fI3rfnwhqlBB40HAaHX/np7
-         IegQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705513590; x=1706118390;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LTKMsVfgPN3dX5Bxo71zqeqMSBCzkJajVmflW4l7M3s=;
-        b=GJEepUYMcZf1TWzrQzgcwNzkmpdGvgxPwPCjL5UFAOFiAnuEoHRDFxN6BaVZAvBaPd
-         arQZwnaWmtg3U4ZVibDQcmqWldrQ97j/x57YUTyCl7SBLaV7EJTCGqR8CWj2XwjDfEBE
-         VzaLYgk+W0XXqLrAvzFGAfdR+KS3nigPH2sgF5v8WUzaLtQRgLqtBg+3Mhb4I3MRMBMz
-         49rHksxrAFT2KfPWWRS/EVPQyTCqgZLGugSlJj/n1Eszt3M2Y3HcjWCry5glIhhzEfxb
-         dbwQuaCaalxWpddRAzwFNT0AzXj/1WB+7Btwntgo/ZBjos2V8mLwUrAeeLnCGCxQAojr
-         v0bw==
-X-Gm-Message-State: AOJu0Yw3eSDEm5qckSnoNlMhtpq0AFb0GvdXnmxvlFbeUFf4rFc0wwSk
-	cMZ4iYs3TgkPZHuNp4xYUM+jJqKJmFlqSK1bqZ02hKgxOt7NiNggTo4BCcDU+sCwwS97zLmKNB8
-	zfIa72fvYPlHe9bbU2+cC70xEqs5DT75HyEZu
-X-Google-Smtp-Source: AGHT+IGtFbCZmFUqfkYUbnB0FjCccHeCoRnTNb6dFlkddBPkLRuY4MO0QvXtbj5atDcUYTDacJ7gj8wB/nUzvjZyqhs=
-X-Received: by 2002:a05:6e02:1ca7:b0:360:36:8243 with SMTP id
- x7-20020a056e021ca700b0036000368243mr229349ill.20.1705513589860; Wed, 17 Jan
- 2024 09:46:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O+PRy84f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705549004; x=1737085004;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KHaJKuupFrb/5JLgFhafWv0RzApN98z5dybDAr16RQo=;
+  b=O+PRy84fu6Uyna07zyroGoFIyO+4FRFmOvyfyhN95XieQARk+9LSU+lj
+   pV+w6XXMwa0NNiClCuIkKMtz1w2kWu+wBGr1U5WB0eALs0F93tQoT84hG
+   uRXdZewblECE0aZRmy0aAVQQ0GGZykOcOyKrnAzmEgv6GD4vRsZXih0/C
+   o3mLgkLUGB9dwE25Fj7IQ6LvcDJG5yxeSkxEXIV8+YnwbgHc1YQaUD2JH
+   YtVQFHDG1xSUaxCby5rsQv9nM65T7+SooGCjD3K2NLGcEuO1jRCoPxHIy
+   GGxeFmOj/0MEogk01bg5Z9NsQYMCx73CusVczelKw02eISBcEsnWzfd5F
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="7709232"
+X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
+   d="scan'208";a="7709232"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2024 19:36:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
+   d="scan'208";a="26346462"
+Received: from myalnuc.bj.intel.com ([10.238.158.152])
+  by orviesa002.jf.intel.com with ESMTP; 17 Jan 2024 19:36:42 -0800
+From: biao.lu@intel.com
+To: sameo@rivosinc.com
+Cc: dan.j.williams@intel.com,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/4] tsm: Runtime measurement registers ABI
+Date: Thu, 18 Jan 2024 11:35:15 +0800
+Message-Id: <20240118033515.2293149-1-biao.lu@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240114223532.290550-1-sameo@rivosinc.com>
+References: <20240114223532.290550-1-sameo@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <6C4D2A02-3B78-4F3F-AD1A-87A1C24CB8CD@suse.de> <CAJ5mJ6ix_+pJc+ty8OgEdZt4gwBXhJd00DbhccESJYZh9_wsUQ@mail.gmail.com>
-In-Reply-To: <CAJ5mJ6ix_+pJc+ty8OgEdZt4gwBXhJd00DbhccESJYZh9_wsUQ@mail.gmail.com>
-From: Jacob Xu <jacobhxu@google.com>
-Date: Wed, 17 Jan 2024 09:46:18 -0800
-Message-ID: <CAJ5mJ6hJ_u62YwYae8Y6b7EFe6HRh8LBmtKyN5nCW8V8654_5w@mail.gmail.com>
-Subject: Re: SVSM Development Call Jan 17th, 2024
-To: =?UTF-8?B?SsO2cmcgUsO2ZGVs?= <jroedel@suse.de>, carlos.bilbao@amd.com
-Cc: svsm-devel@coconut-svsm.dev, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-(re-sending as plain text instead of html message)
-
-Hi Carlos,
-
-Here's a link to the AP boot race condition mentioned during the call,
-it's on the SNP host-kernel patches.
-
-https://www.spinics.net/lists/kernel/msg5058122.html
-
-
-On Wed, Jan 17, 2024 at 9:39=E2=80=AFAM Jacob Xu <jacobhxu@google.com> wrot=
-e:
+Samuel Ortiz wrote:
+> Some confidential computing architectures (Intel TDX, ARM CCA, RISC-V
+> CoVE) provide their guests with a set of measurements registers that can
+> be extended at runtime, i.e. after the initial, host-initiated
+> measurements of the TVM are finalized. Those runtime measurement
+> registers (RTMR) are isolated from the host accessible ones but TSMs
+> include them in their signed attestation reports.
 >
-> Hi Carlos,
->
-> Here's a link to the AP boot race condition mentioned during the call, it=
-'s on the SNP host-kernel patches.
->
-> https://www.spinics.net/lists/kernel/msg5058122.html
->
-> Jacob
->
-> On Wed, Jan 17, 2024 at 4:48=E2=80=AFAM J=C3=B6rg R=C3=B6del <jroedel@sus=
-e.de> wrote:
->>
->> Hi all,
->>
->> Just a reminder for todays SVSM Development call at 9am PST/6pm CET.
->>
->> If you have any agenda items you want to see covered, please let me know=
-. Otherwise we will just do the usual rounds of updates and Q&A.
->>
->> We meet as usual at https://meet.google.com/ppv-xehx-dvb
->>
->> Regards,
->>
->> J=C3=B6rg R=C3=B6del
->> jroedel@suse.de
->>
->> SUSE Software Solutions Germany GmbH
->> Frankenstra=C3=9Fe 146
->> 90461 N=C3=BCrnberg
->> Germany
->> https://www.suse.com/
->>
->> Gesch=C3=A4ftsf=C3=BChrer: Ivo Totev, Andrew McDonald, Werner Knoblich
->> (HRB 36809, AG N=C3=BCrnberg)
->>
->>
+> All architectures supporting RTMRs expose a similar interface to their
+> TVMs: An extension command/call that takes a measurement value and an
+> RTMR index to extend it with, and a readback command for reading an RTMR
+> value back (taking an RTMR index as an argument as well). This patch series
+> builds an architecture agnostic, configfs-based ABI for userspace to extend
+> and read RTMR values back. It extends the current TSM ops structure and
+> each confidential computing architecture can implement this extension to
+> provide RTMR support.
+
+Hi, Samuel
+The ABI does not include eventlog, but eventlog is usually used with RTMR.
+What do you think about how to implement eventlog?
+
