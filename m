@@ -1,82 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF311610A
-	for <linux-coco@lists.linux.dev>; Thu, 18 Jan 2024 03:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B8D25756
+	for <linux-coco@lists.linux.dev>; Thu, 18 Jan 2024 14:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705549006; cv=none; b=mn5V4ezFu4Vf8uoLDkM6DEO39lPgbr7pdOW/nZhvCmtuijoLhxrajinKvyiXOl9B+pMVGQ4mwvEGI5bBnIByh67xySMRT5D40ayrtCtv8tAdXD2Aw4dw0HP03L4a5jp1tfTKfM3FqxwIMv+rXvRN4+HkIjXUAsQ7ZVqRHklCUbw=
+	t=1705586678; cv=none; b=pIuxoYazXE8YUx0RYt2AsFGy0GShV7cBOtLlSZMP1044uM3hgZqAplvsP00yVA5tPVCN+4KALUW1aUR3an5nkc4twkv3qzpQqWsEXalsenhqFUMbBgeHUpYSi54g2jjaZVLWRLTsi8cwdgXI8sAZsEcYb3kRxwOciCaATxB00ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705549006; c=relaxed/simple;
-	bh=KHaJKuupFrb/5JLgFhafWv0RzApN98z5dybDAr16RQo=;
-	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
-	 X-IronPort-AV:Received:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding; b=hJy/3c4VbM3YN1w3vu6MlVFNCOZ4zUj//x8eAu/KyXHlC6yXnRYixarAy+Rhs+HB81pADOcXvmdh7zj2LwZvbn59vwot3lNjf8KKuWWpJ0xqqJwv/pvPYoFQE+zyBEerC8eDsNZeuxapQ9UPNMtznugMtRrpxKkWaiungxrVe2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O+PRy84f; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1705586678; c=relaxed/simple;
+	bh=maSG38FRSlRqfJJYy0Qy2S5rKAfADRtfQn+zD30T+/0=;
+	h=Received:X-Virus-Scanned:Received:DKIM-Signature:Received:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=NWSxiwLBCyIVg6MwNUZIuUVFMrUpo6bDSpFyH3xGPP0ctiavYq9d+0aXF8OhsHe01JnVy9nAiTM+iqsEahG76zXbAr+E3bIuTU84F9aFv2U61b/6PTR1ODU0Z3zMv9Wp6bmkw/mmU1cz0UzygB5F3tYowERIq+jrgRLlQUyYY3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Kt3H5wHF; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O+PRy84f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705549004; x=1737085004;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KHaJKuupFrb/5JLgFhafWv0RzApN98z5dybDAr16RQo=;
-  b=O+PRy84fu6Uyna07zyroGoFIyO+4FRFmOvyfyhN95XieQARk+9LSU+lj
-   pV+w6XXMwa0NNiClCuIkKMtz1w2kWu+wBGr1U5WB0eALs0F93tQoT84hG
-   uRXdZewblECE0aZRmy0aAVQQ0GGZykOcOyKrnAzmEgv6GD4vRsZXih0/C
-   o3mLgkLUGB9dwE25Fj7IQ6LvcDJG5yxeSkxEXIV8+YnwbgHc1YQaUD2JH
-   YtVQFHDG1xSUaxCby5rsQv9nM65T7+SooGCjD3K2NLGcEuO1jRCoPxHIy
-   GGxeFmOj/0MEogk01bg5Z9NsQYMCx73CusVczelKw02eISBcEsnWzfd5F
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="7709232"
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="7709232"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2024 19:36:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="26346462"
-Received: from myalnuc.bj.intel.com ([10.238.158.152])
-  by orviesa002.jf.intel.com with ESMTP; 17 Jan 2024 19:36:42 -0800
-From: biao.lu@intel.com
-To: sameo@rivosinc.com
-Cc: dan.j.williams@intel.com,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 0/4] tsm: Runtime measurement registers ABI
-Date: Thu, 18 Jan 2024 11:35:15 +0800
-Message-Id: <20240118033515.2293149-1-biao.lu@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240114223532.290550-1-sameo@rivosinc.com>
-References: <20240114223532.290550-1-sameo@rivosinc.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Kt3H5wHF"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 30A1640E0196;
+	Thu, 18 Jan 2024 14:04:28 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id gLCyDuDGzu6c; Thu, 18 Jan 2024 14:04:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1705586665; bh=VoFIqBDZC2Z/liH3WDJQdK5q0qjW6OBA8h6YdVHmZ98=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Kt3H5wHF/tNwLtW0f/4BhPNVZfeZzR6mmo1JsyrecxQ+2GjqAAk0RKd5bm9OTceZV
+	 ZI4o3+1pW10/YCYAjSmp9UY18092RN0MwaIH0wIuYAegxBGvqSXma0EgQR8Sy6RcKl
+	 rBG4WgZ6pAD8UZbYEpW93HQM4eZuX5CQ9Y7UhuLrOK69EjAXTq3EMkECWHa2PTW4ue
+	 XW/SlAblPN+o9dG+CC22p6CNi8IB4fovTsV9CK4CWTp7hzv9f0Xrddo0UgWOYUWQju
+	 EZejyWpOy/70tZ4einnZMW+vh+90oPY6IDrBkcUGk6fK0dzQmz9rQ55dywi7JS1HWo
+	 FOR1rqhVcTEd6o1S0VvY6doKJMxIfFx8acDkSQ6SFhEkrYk1q/747p6PHa/ObA5Qa5
+	 X18JH1GeIgQPZV0u5ZAeQON0wKpolt4u0Mm9y/60ACtbuU+nC0U9I4xjB6aiy0rySY
+	 glGjVUm1L+SycV0gvjuaZM0iEeuD4cUHW+PlExWusVm0PlQeuKS4WOoQ1pkk8YAbwo
+	 LPmS6KEkc7fAdpOUZb1UQnIPXB0ihX5/+qbd320usnEtD+9ts8haiaDrIj1TwhwGEn
+	 tqsZVPxmjb6GleGKcm3rQNfHV7dFtnCUQ8PyZnS9byl/kg/IKbV6mcGIRo0nUmvQ+P
+	 H1RPqdZLPDbBogXGZW/d2hqs=
+Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 443BF40E0177;
+	Thu, 18 Jan 2024 14:03:49 +0000 (UTC)
+Date: Thu, 18 Jan 2024 15:03:43 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com
+Subject: Re: [PATCH v1 17/26] crypto: ccp: Handle non-volatile INIT_EX data
+ when SNP is enabled
+Message-ID: <20240118140333.GJZakvtcJO1QYh8C8-@fat_crate.local>
+References: <20231230161954.569267-1-michael.roth@amd.com>
+ <20231230161954.569267-18-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231230161954.569267-18-michael.roth@amd.com>
 
-Samuel Ortiz wrote:
-> Some confidential computing architectures (Intel TDX, ARM CCA, RISC-V
-> CoVE) provide their guests with a set of measurements registers that can
-> be extended at runtime, i.e. after the initial, host-initiated
-> measurements of the TVM are finalized. Those runtime measurement
-> registers (RTMR) are isolated from the host accessible ones but TSMs
-> include them in their signed attestation reports.
->
-> All architectures supporting RTMRs expose a similar interface to their
-> TVMs: An extension command/call that takes a measurement value and an
-> RTMR index to extend it with, and a readback command for reading an RTMR
-> value back (taking an RTMR index as an argument as well). This patch series
-> builds an architecture agnostic, configfs-based ABI for userspace to extend
-> and read RTMR values back. It extends the current TSM ops structure and
-> each confidential computing architecture can implement this extension to
-> provide RTMR support.
+On Sat, Dec 30, 2023 at 10:19:45AM -0600, Michael Roth wrote:
+>  drivers/crypto/ccp/sev-dev.c | 104 ++++++++++++++++++++++++++---------
+>  1 file changed, 79 insertions(+), 25 deletions(-)
 
-Hi, Samuel
-The ABI does not include eventlog, but eventlog is usually used with RTMR.
-What do you think about how to implement eventlog?
+Some minor cleanups ontop:
 
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index dfe7f7afc411..a72ed4466d7b 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -266,16 +266,15 @@ static int sev_read_init_ex_file(void)
+ }
+ 
+ /*
+- * When SNP is enabled, the pages comprising the buffer used to populate
+- * the file specified by the init_ex_path module parameter needs to be set
+- * to firmware-owned, which removes the mapping from the kernel direct
+- * mapping since generally the hypervisor does not access firmware-owned
+- * pages. However, in this case the hypervisor does need to read the
+- * buffer to transfer the contents to the file at init_ex_path, so this
+- * function is used to create a temporary virtual mapping to be used for
+- * this purpose.
++ * When SNP is enabled, the pages comprising the buffer used to populate the
++ * file specified by the init_ex_path module parameter needs to be set to
++ * firmware-owned. This removes the mapping from the kernel direct mapping since
++ * generally the hypervisor does not access firmware-owned pages. However, in
++ * this case the hypervisor does need to read the buffer to transfer the
++ * contents to the file at init_ex_path, so create a temporary virtual mapping
++ * to be used for this purpose.
+  */
+-static void *vmap_sev_init_ex_buffer(void)
++static void *vmap_init_ex_buf(void)
+ {
+ 	struct page *pages[NV_PAGES];
+ 	unsigned long base_pfn;
+@@ -292,6 +291,11 @@ static void *vmap_sev_init_ex_buffer(void)
+ 	return vmap(pages, NV_PAGES, VM_MAP, PAGE_KERNEL_RO);
+ }
+ 
++static void destroy_init_ex_buf(void *buf)
++{
++	vunmap(buf);
++}
++
+ static int sev_write_init_ex_file(void)
+ {
+ 	struct sev_device *sev = psp_master->sev_data;
+@@ -315,7 +319,7 @@ static int sev_write_init_ex_file(void)
+ 		return ret;
+ 	}
+ 
+-	sev_init_ex_buffer = vmap_sev_init_ex_buffer();
++	sev_init_ex_buffer = vmap_init_ex_buf();
+ 	if (!sev_init_ex_buffer) {
+ 		dev_err(sev->dev, "SEV: failed to map non-volative memory area\n");
+ 		return -EIO;
+@@ -329,12 +333,12 @@ static int sev_write_init_ex_file(void)
+ 		dev_err(sev->dev,
+ 			"SEV: failed to write %u bytes to non volatile memory area, ret %ld\n",
+ 			NV_LENGTH, nwrite);
+-		vunmap(sev_init_ex_buffer);
++		destroy_init_ex_buf(sev_init_ex_buffer);
+ 		return -EIO;
+ 	}
+ 
+ 	dev_dbg(sev->dev, "SEV: write successful to NV file\n");
+-	vunmap(sev_init_ex_buffer);
++	destroy_init_ex_buf(sev_init_ex_buffer);
+ 
+ 	return 0;
+ }
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
