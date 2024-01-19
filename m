@@ -1,113 +1,157 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC20A818
-	for <linux-coco@lists.linux.dev>; Fri, 19 Jan 2024 00:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C0AECE
+	for <linux-coco@lists.linux.dev>; Fri, 19 Jan 2024 01:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705625739; cv=none; b=L6FqiZpzQywljAuyuPDRktD50V3EM0fu6LEffvhAqMuvjxokWuMeK9hKMDdOh+n+yVgRHbgM+7nPx+Fv8PfYYj/PxD0xukJAKBPh54XyDrYfAJTWInco5YEr5OapDev4asux7Uw4V5/YtKVP6h8Ca164V7l0kGSPByEC44dPDv0=
+	t=1705627639; cv=none; b=LD/xS29TRTLDFDPa/6bIpnwvk6KfFlqWBEzfKX8Hs2GeqvKV974WVtfxYZEsEWhVG609U2UPyJN7+BEgE9DwTH7OYfKJYZ/NvKbvuNSRLkx2wipx/HzUWSOjbEg+T6jbKIvCpNV3sTZH0oM+Yi+LHc+yvxfKNOkPpswZszn9eDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705625739; c=relaxed/simple;
-	bh=aIJvYfmi6HJlaanfsGfkyB5yItcPr3SfQ5xVggiChrI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ua75UgGcUhz+yclEM5pUakECezg0eKMY3hr4AeDiEIACLBl17M1o0oN6wL9j5v4WgUZKkKHXm3gOfsx9xmus7OTjmqU2ZuDMEXIDNOrVg1momOB/gRMv1zUqgP0NzB6uZhMzkRiDnstKy4mRtuqeAlHdr1PsNRQjlopxxmpsPTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NoTgxeyW; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1705627639; c=relaxed/simple;
+	bh=oIs2VoyVo5eys3aTQpEMmJF1mdTuSPVW1ZHPdC2hqxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g21+1TsWiEGHQCVb+oA3hVDCnQvCQX18z1/qmGsi6PBErscc01j30gU1Ie8Iqg4CD89KdII+AUIw3GZps1TRjXyRABYDx1NeIV7f7ATPwFkCLgnM0jJoc5+LwJhjbRJu/GHryQ4IBTrf264Ou3G3AxBEoZzlIiC7Q9DuEYy5kjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aNjOWHXC; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NoTgxeyW"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-337d5aa5ef6so138191f8f.3
-        for <linux-coco@lists.linux.dev>; Thu, 18 Jan 2024 16:55:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1705625735; x=1706230535; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Zp8xmya7ffNONLsIkwl+dwEuPGDnVZOPk1TpK+AOkSg=;
-        b=NoTgxeyW0E6lj+0y59f7SHd/leLnGQKvTJTB7itjCnBJQ99WBGdFiJhzm/i9KZANLn
-         bEtqy6s70XU+mWMgVwlyv6o/MfdcW0XdvGl4aetc0UiLzXS8YL0uaOziEjcG4YcqC5Ax
-         RhHR3hssdB3OXWnCEMtLUEtZQbncnY8QMgL4rtc7LgXIH7ahEIRen1muby+3VuksVZrk
-         ZYirMx0Zo2ec5fVjlXHVTaQ2IZbhIR4uEHpqDwpRH5YXvJOhE8XzGCp6MDBBFw9qZUED
-         BpAinR25P1LNIt9kYlZW5OwkQ1G0Wq2zjf+5XMa0Mr4psRdOBsc3ce7BbWaAH/CtNCvz
-         9n5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705625735; x=1706230535;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zp8xmya7ffNONLsIkwl+dwEuPGDnVZOPk1TpK+AOkSg=;
-        b=FPY+4G4PEkF361zb9mFpRaTjrZ5QCTqcYyybjsCMbRI1Qr7hVv8u54aRXasJlZRqJN
-         2Lc3T8T3jIu4msZmkH/D/k7ldDi4qAbXcdrLWChkRjCAVEvlFvPu3EBS6BvrEY+ocgmZ
-         bxuWwwq1GwrsPMXOoGs79TSGGGELBayYfTYWlyPkwjv7sgNWTrRcjaRXNuF4jnJlHgsJ
-         yfveb9UAyxIZ+CDbCGE/nukhtwmlf4AuZwPxh9Xw097D5NViBIoDgaI2QckoQuv/74F/
-         W+Puih1j8dkTYlDhppVzcoJe+YgOgzQmKPX/m64Ig2UwZ2156T3XN4qhIQ5uJerRRIZJ
-         WTWA==
-X-Gm-Message-State: AOJu0Yxmv0hYYD20Ld1AAdMq4AlQTRQ3MMjPMngwrPL67RePpq/3y7Wu
-	AyJiHqOYyXxbaTzh6hEwXELTk6c26r48/AgBXrNsIAttp0y51hT8RLGPy8LgZlM=
-X-Google-Smtp-Source: AGHT+IEEtt9IXe34jmW2SWZlwSiC3ZqX9bmzujyx2QT1Z1XZwHpyNCAKSldgcj5KlfGZ3ySBlDK1xA==
-X-Received: by 2002:adf:b319:0:b0:337:c91d:e816 with SMTP id j25-20020adfb319000000b00337c91de816mr1089220wrd.1.1705625734915;
-        Thu, 18 Jan 2024 16:55:34 -0800 (PST)
-Received: from ?IPV6:2a10:bac0:b000:7589:26fc:cf3:a5b9:2475? ([2a10:bac0:b000:7589:26fc:cf3:a5b9:2475])
-        by smtp.gmail.com with ESMTPSA id t1-20020a5d5341000000b003378e67fd2asm5183061wrv.86.2024.01.18.16.55.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 16:55:34 -0800 (PST)
-Message-ID: <bd363091-22a6-4203-a7ec-b0ec4abfaf98@suse.com>
-Date: Fri, 19 Jan 2024 02:55:33 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aNjOWHXC"
+Date: Fri, 19 Jan 2024 10:26:59 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1705627634;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MEAAKdKI2s28mLXSjhbge/t2jcWXL1sSrlOeBNigut8=;
+	b=aNjOWHXCrX/lkwKeCe64ksjMWHQnYhafV7LjxiqaEbtC7Rtq2OswV7y4MAuWj8a0yQmjgh
+	LIHNxMfvUdAjeJ9hG0aTTuYW8VB0blGusdNjdMZYbXrerP2ioa++WAdfAkv3UDD8GsJBKI
+	b0XaHXSc78GqGkDtCfcwHTBTwGgeDlI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Itaru Kitayama <itaru.kitayama@linux.dev>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org,
+	maz@kernel.org, steven.price@arm.com, alexandru.elisei@arm.com,
+	joey.gouly@arm.com, james.morse@arm.com,
+	Jonathan.Cameron@huawei.com, dgilbert@redhat.com, jpb@kernel.org,
+	oliver.upton@linux.dev, zhi.wang.linux@gmail.com,
+	yuzenghui@huawei.com, salil.mehta@huawei.com,
+	Andrew Jones <andrew.jones@linux.dev>,
+	Chao Peng <chao.p.peng@linux.intel.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Quentin Perret <qperret@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Thomas Huth <thuth@redhat.com>, Ryan Roberts <Ryan.Roberts@arm.com>,
+	Sami Mujawar <Sami.Mujawar@arm.com>
+Subject: Re: [RFC] Support for Arm CCA VMs on Linux
+Message-ID: <ZanP4+K/CEkhukkp@vm3>
+References: <20230127112248.136810-1-suzuki.poulose@arm.com>
+ <20231002124311.204614-1-suzuki.poulose@arm.com>
+ <ZZ4tsTQOKOamM+h/@vm3>
+ <ec8ed5b0-5080-45e9-a4a6-e5dbe48e86d3@arm.com>
+ <d47e8b8c-50e4-4ad3-8f00-cadaede1eca9@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] x86/virt/tdx: Disable KEXEC in the presence of TDX
-Content-Language: en-US
-To: "Huang, Kai" <kai.huang@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "x86@kernel.org" <x86@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-References: <20240118160118.1899299-1-nik.borisov@suse.com>
- <e75addd3a8af6ef0243999f933df528e975d5ca3.camel@intel.com>
- <fc731bd3-4232-4906-9f78-448a96e3eb5b@suse.com>
- <7695034c0c7bf91532fb5cbd05d9a4b8cb77e70f.camel@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <7695034c0c7bf91532fb5cbd05d9a4b8cb77e70f.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <d47e8b8c-50e4-4ad3-8f00-cadaede1eca9@arm.com>
+X-Migadu-Flow: FLOW_OUT
 
-
-
-On 19.01.24 Ð³. 2:52 Ñ‡., Huang, Kai wrote:
-> On Fri, 2024-01-19 at 02:49 +0200, Nikolay Borisov wrote:
->> [Adding Kirill as he has a series in flight about KEXEC]
->>
->> On 18.01.24 Ð³. 23:31 Ñ‡., Huang, Kai wrote:
->>> On Thu, 2024-01-18 at 18:01 +0200, Nikolay Borisov wrote:
->>>> TDX doesn't currently support kexec so disable the latter when TDX
->>>> is detected at boot time. If kexec must absolutely be supported then
->>>> TDX can be disabled from the bios.
->>>>
->>>> Making this decision at run time rather than as a compile time option
->>>> allows distribution kernels to have both enabled and delegate to the
->>>> user whether they want to use TDX/Kexec.
->>>>
->>>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
->>>
->>> Hi Nikolay,
->>>
->>> Thanks for the patch.
->>>
->>> I am working in progress on patches to make kexec() work with TDX.  I plan to
->>> send them out soon (e.g., next week), but I think perhaps your patch is
->>> reasonable before that is merged.
->>
->> I thought Kirill's series rectifies this ?
->>
+On Wed, Jan 10, 2024 at 01:44:45PM +0000, Suzuki K Poulose wrote:
+> On 10/01/2024 11:41, Suzuki K Poulose wrote:
+> > Hi Itaru,
+> > 
+> > On 10/01/2024 05:40, Itaru Kitayama wrote:
+> > > On Mon, Oct 02, 2023 at 01:43:11PM +0100, Suzuki K Poulose wrote:
+> > > > Hi,
+> > > > 
+> > > > 
 > 
-> No that's for TDX guest.
+> ...
+> 
+> > > 
+> > > Suzuki,
+> > > Any update to the Arm CCA series (v3?) since last October?
+> > 
+> > Yes, we now have a version that supports the final RMM-v1.0
+> > specification (RMM-v1.0-EAC5). We also have the UEFI EDK2 firmware
+> > support for Guests in Realm world.
+> > 
+> > We are planning to post the changes for review in the v6.8-rc cycle. We
+> > are trying to integrate the guest_mem support (available in v6.8-rc1) as
+> > well as reusing some of the arm64 kvm generic interface for configuring
+> > the Realm parameters (e.g., PMU, SVE_VL etc).
+> > 
+> > Here is a version that is missing the items mentioned above, based
+> > on v6.7-rc4, if anyone would like to try.
+> > 
+> > Also, the easiest way to get the components built and model kick started
+> > is using the shrinkwrap [6] tool, using the cca-3world configuration.
+> > The tool pulls all the required software components, builds (including
+> > the buildroot for rootfs) and can run a model using these built
+> > components.
+> 
+> Also, please see 'arm/run-realm-tests.sh' in the kvm-unit-tests-cca
+> repository for sample command lines to invoke kvmtool to create Realm
+> VMs.
 
-Well in this case shouldn't INTEL_TDX_GUEST also be gated on KEXEC_CORE 
-being inoperable either via Kconfig option or via a similar approach to 
-this one (if it's accepted)?
+Thank you, Suzuki. I have just run the script above, again in the
+framework of shrinkwrap on the RevC FVP and the jobs ran fine. I need to
+go look at the lots of logs.
+
+Itaru.
+
+> 
+> 
+> > 
+> > 
+> > 
+> > [0] Linux Repo:
+> >        Where: git@git.gitlab.arm.com:linux-arm/linux-cca.git
+> >        KVM Support branch: cca-host/rmm-v1.0-eac5
+> >        Linux Guest branch: cca-guest/rmm-v1.0-eac5
+> >        Full stack branch:  cca-full/rmm-v1.0-eac5
+> > 
+> > [1] kvmtool Repo:
+> >        Where: git@git.gitlab.arm.com:linux-arm/kvmtool-cca.git
+> >        Branch: cca/rmm-v1.0-eac5
+> > 
+> > [2] kvm-unit-tests Repo:
+> >        Where: git@git.gitlab.arm.com:linux-arm/kvm-unit-tests-cca.git
+> >        Branch: cca/rmm-v1.0-eac5
+> > 
+> > [3] UEFI Guest firmware:
+> >        edk2:     https://git.gitlab.arm.com/linux-arm/edk2-cca.git
+> >        revision: 2802_arm_cca_rmm-v1.0-eac5
+> > 
+> >        edk2-platforms:
+> > https://git.gitlab.arm.com/linux-arm/edk2-platforms-cca.git
+> >        revision:       2802_arm_cca_rmm-v1.0-eac5
+> > 
+> > 
+> > [4] RMM Repo:
+> >        Where: https://git.trustedfirmware.org/TF-RMM/tf-rmm.git
+> >        tag : tf-rmm-v0.4.0
+> > 
+> > [5] TF-A repo:
+> >        Where: https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+> >        Tag: v2.10
+> > 
+> > 
+> > [6] https://shrinkwrap.docs.arm.com/en/latest/
+> >      config: cca-3world.yaml
+> > 
+> 
+> Suzuki
+> 
