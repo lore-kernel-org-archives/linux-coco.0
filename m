@@ -1,145 +1,126 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2897934550
-	for <linux-coco@lists.linux.dev>; Sun, 21 Jan 2024 16:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7654B381AB;
+	Sun, 21 Jan 2024 16:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705854745; cv=none; b=uJ55JABHH1UQ1Jh/lgMeRxQQQzlPhkzjZwLK8sulRKMHeuqpxd3cXlzLEI0ZPi3nwJDWKuSvIj7LrwqXG6HMMWELLKVwvSMuIyla7Z3UwqhngHm+MBlls4VAHTHW5U7o428axaCP7PtXHDRC45fzvZcq1DBGSKgsUvPgqkUSDSA=
+	t=1705855798; cv=none; b=YXbgMDNTLngNAB7UxD7R5lqHIEuiJytUv7avHD5gjRf5FgJZsdpyimah0/47O89ktewlFUj/OPT55S1ZyOD1+qXpVVVTbOZNJlAZ3dnsFOp0a5cMlQETBZZ3IuXINEGWy6FWHEQW4Okw3IBSjPaNo9hBYww9vBrONY0phxMancQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705854745; c=relaxed/simple;
-	bh=8zEE9I8VVQtetaFadHdll6t6LLZXEd7fe7Zr2BRIELs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f6QG/IeN/cekxi95eRabcUkul1RPKzf4Dr/hSkpJKpp+5m7Lq9uPI8/AaMfIVSrlsVSYUr4wXry2kspk0CBU09f44A9NXlQMaCcrMJLyC78DhEZxUuCRmnOU3yx0v1IFL4YpbyP5P7ZRU20Rdj7pihI5C8fIr6yP7q/rzcXzbDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=JdHhWEwH; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1705855798; c=relaxed/simple;
+	bh=Yu2mnmzL/2zG52YkN0D/5mY9ox1CRlA9H7snmZd4sAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dfyy+fidc4tz8IvAdqQ7y8bfvicm0Gk/zp/FtMkqTGQJ/J4REQ+tnFmfMbV09oDMpHCkUPU4HZjGtI88TLcursCf1K981BzKYj+wuFpdJ4JslrAvwTpMMqRqfsULgFIbHwhXc+HH7kXAogddsaxSMtxkgRIqGyiUi5/YrvYtx2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YifFATis; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="JdHhWEwH"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40eae03904cso694395e9.2
-        for <linux-coco@lists.linux.dev>; Sun, 21 Jan 2024 08:32:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1705854741; x=1706459541; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ldc2CrIv74PboBZE+DvH0Rjv81zlMWieF3D03B91UUY=;
-        b=JdHhWEwHPzkInBJuvFVLSsdiPzyr3wNvfvNOIkHXNdOFmVm/+0zd6o6+jTGbXjKSXB
-         uEpTbjazGcGUSH3i7WOXKOu1UkKt3FvTZmw8gt6OKwUYXLx0vIIzu0WX1mkpakZYA7+R
-         4NaWclThJRLGUnOnliTcRyHLSekqr7lFLL9aK/xhWumcnkx+ivR8O+4XhUmKj8z7IrLR
-         4qZm4Fr/tVj+PPqGRRNuEvayxYaIBVaRg7KhdhhvNkFAOydAgBobCoAesVExBPLQsSPT
-         wccNpR1K6/kwzp0gUD6a2JXBBsJWU1ULnN1hdWoJGSaPu/LhBBnEPSBx95SXGMS+zPBF
-         Da0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705854741; x=1706459541;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ldc2CrIv74PboBZE+DvH0Rjv81zlMWieF3D03B91UUY=;
-        b=n6R+ssigPxOdolaI1DbOWQup+Xxf3ddGaAwsMxCCdXAsXsFglYfTEoYtEmAIL9Qysx
-         5RyWIcAWNFF8OunGGxh0Bvao356dL1yI4cVA4VKtk0msTj4RjU/cZUJ7BFGhiUcCpwtK
-         gwrbtgrC25KKV0W7RTnknBnbJCCY4jXPgO9sWSlEFmVbkLNA5BREKBChjTnpl7tuo+Sz
-         ARAR10w7zxYp5vw6Ymvm9W8nXbsBjyQVFcryAZPk1gsYQv+0tqmH2tSUjEeSQAbdoRax
-         vntTNsTxCeBDmBIr5QJptUbmiu1GhNTWJAbKeH1CdqxWX1C+BO39s95C8Dtv2K+af9Hf
-         Fmzg==
-X-Gm-Message-State: AOJu0YxxIo+5Ug9JMAuFSpi6aq0mfcKtDcUyep0UxjaYJSPevapAvUIq
-	06KHExrpzt2jLlR+/biRQywr7k/Y4Fo8CVyWD3nohzhtnkEWQPW36QJeACrlPYQ=
-X-Google-Smtp-Source: AGHT+IGmjRdjijNnHR6sxxLbWx7HcuoCkDaDCqnI3nsn1Cgffmcz0c9w3kSC/IpmrXGVNhMYbpfFnA==
-X-Received: by 2002:a05:600c:1913:b0:40e:4271:69ea with SMTP id j19-20020a05600c191300b0040e427169eamr1641380wmq.12.1705854741105;
-        Sun, 21 Jan 2024 08:32:21 -0800 (PST)
-Received: from vermeer (lfbn-mon-1-1176-165.w90-113.abo.wanadoo.fr. [90.113.119.165])
-        by smtp.gmail.com with ESMTPSA id fa6-20020a05600c518600b0040e861ad5d2sm18158109wmb.0.2024.01.21.08.32.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jan 2024 08:32:20 -0800 (PST)
-Date: Sun, 21 Jan 2024 17:31:48 +0100
-From: Samuel Ortiz <sameo@rivosinc.com>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
-Message-ID: <Za1G9I+tYuIL9ser@vermeer>
-References: <20240114223532.290550-1-sameo@rivosinc.com>
- <20240114223532.290550-4-sameo@rivosinc.com>
- <1bbf8d3e-aa94-48c7-a1e4-76f9eefc4af7@linux.intel.com>
- <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
- <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YifFATis"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269B6C43601;
+	Sun, 21 Jan 2024 16:49:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705855798;
+	bh=Yu2mnmzL/2zG52YkN0D/5mY9ox1CRlA9H7snmZd4sAg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YifFATisI4S9mzV53Yaxg2FHC9cxCheQBRH1SBe53+9QBCSn8s/x3+A35TCG/EuC/
+	 /90uMLiBSObEMGDnSdCGvXatnN1T29M00Fz4tUUcW50meVi/pkvrPJ1B+RnqKp7BGJ
+	 pnA8qS0DyQYN52wN0U8WW+CjXKFD2GP5n2BvukE5n3x5n75hZKKrLMhdvDI8QXrqae
+	 UaIFL6+7A3gj3wicPM6HJYCNh89IvQShOCrO/GgLFTBlvKrULFeLtYHfzS+AUMHNvU
+	 jUpzyTH0VL0/YYiKsU/dAHvEQf8DTKyAn3MQDSAX6ftzkusPyE+wqqzHoyHITyBz+T
+	 GHf5xG2n7t6ZA==
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2cca8eb0509so26231191fa.3;
+        Sun, 21 Jan 2024 08:49:58 -0800 (PST)
+X-Gm-Message-State: AOJu0YxyH3C9tvoQIxbt9GJhtdcaAAIH69KsD42TU9ZwhY0fSt04niMf
+	dB2swyKJln62SrpcD/u+yg3Ihe/1awWrmZ0mhuE1xprCRdcLwhb7VP7a8nkcvP3Nkh3I+nhzxN9
+	9Ob0F4K2z4VYdBQhc5xqgoSoeshA=
+X-Google-Smtp-Source: AGHT+IGHEkqWt2FccuGrB0odXcj0oConLNVLfjg1Y7N6s0ozISSAAdvFhsepXzXFkzLk/10PUHmViAzGLDAZ+PzrD3U=
+X-Received: by 2002:a2e:a784:0:b0:2cd:463f:6c34 with SMTP id
+ c4-20020a2ea784000000b002cd463f6c34mr1315834ljf.78.1705855796240; Sun, 21 Jan
+ 2024 08:49:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com>
+References: <ZZ7YuEexYSaZYmLK@tassilo> <20240111223650.3502633-1-kevinloughlin@google.com>
+ <20240115204634.GHZaWZqsVyU_fvn_RW@fat_crate.local> <CAMj1kXH=k26nNyB+LQJ7WUJgbD2f3PREyjCzSngMCGc+72XJ6w@mail.gmail.com>
+ <20240117130557.GDZafQtfRyeVFbBUXA@fat_crate.local> <CAMj1kXEML99u7a8mZMhiWXXozsJYhVPaaTzYkegiSJcLw2pNJg@mail.gmail.com>
+ <CAMj1kXGO68zBNXtdxDXbcQ0U7NRFe4m9bF4L_qFmYZ6mkOvmww@mail.gmail.com> <20240121153702.GAZa06Hvt8b0hQ4LjR@fat_crate.local>
+In-Reply-To: <20240121153702.GAZa06Hvt8b0hQ4LjR@fat_crate.local>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 21 Jan 2024 17:49:44 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFMe6WqKXJsK1Lqk++naM8D=MZADhgpO_FjUd0RuFQU2w@mail.gmail.com>
+Message-ID: <CAMj1kXFMe6WqKXJsK1Lqk++naM8D=MZADhgpO_FjUd0RuFQU2w@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
+ SEV/SME code
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kevin Loughlin <kevinloughlin@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Kelley <mikelley@microsoft.com>, 
+	Pankaj Gupta <pankaj.gupta@amd.com>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Arnd Bergmann <arnd@arndb.de>, Steve Rutherford <srutherford@google.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Hou Wenlong <houwenlong.hwl@antgroup.com>, Vegard Nossum <vegard.nossum@oracle.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Yuntao Wang <ytcoode@gmail.com>, 
+	Wang Jinchao <wangjinchao@xfusion.com>, David Woodhouse <dwmw@amazon.co.uk>, 
+	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>, Joerg Roedel <jroedel@suse.de>, 
+	Randy Dunlap <rdunlap@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-coco@lists.linux.dev, 
+	Ashish Kalra <ashish.kalra@amd.com>, Andi Kleen <ak@linux.intel.com>, 
+	Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
+	Sidharth Telang <sidtelang@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jan 16, 2024 at 07:35:30PM -0800, Kuppuswamy Sathyanarayanan wrote:
-> 
-> On 1/16/24 5:24 PM, Dan Williams wrote:
-> > Kuppuswamy Sathyanarayanan wrote:
-> >> On 1/14/24 2:35 PM, Samuel Ortiz wrote:
-> >>> Many user space and internal kernel subsystems (e.g. the Linux IMA)
-> >>> expect a Root of Trust for Storage (RTS) that allows for extending
-> >>> and reading measurement registers that are compatible with the TCG TPM
-> >>> PCRs layout, e.g. a TPM. In order to allow those components to
-> >>> alternatively use a platform TSM as their RTS, a TVM could map the
-> >>> available RTMRs to one or more TCG TPM PCRs. Once configured, those PCR
-> >>> to RTMR mappings give the kernel TSM layer all the necessary information
-> >>> to be a RTS for e.g. the Linux IMA or any other components that expects
-> >>> a TCG compliant TPM PCRs layout.
-> >>>
-> >>> TPM PCR mappings are configured through configfs:
-> >>>
-> >>> // Create and configure 2 RTMRs
-> >>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr0
-> >>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr1
-> >>> echo 0 > /sys/kernel/config/tsm/rtmrs/rtmr0/index
-> >>> echo 1 > /sys/kernel/config/tsm/rtmrs/rtmr1/index
-> >>>
-> >>> // Map RTMR 0 to PCRs 4, 5, 6, 7 and 8
-> >>> echo 4-8 > /sys/kernel/config/tsm/rtmrs/rtmr0/tcg_map
-> >>>
-> >>> // Map RTMR 1 to PCRs 16, 17 and 18
-> >>> echo 16-18 > /sys/kernel/config/tsm/rtmrs/rtmr1/tcg_map
-> >> Any information on how this mapping will be used by TPM or IMA ?
-> >>
-> >> RTMR to PCR mapping is fixed by design, right? If yes, why allow
-> >> user to configure it. We can let vendor drivers to configure it, right?
-> > I assume the "vendor driver", that publishes the RTMR to the tsm-core,
-> > has no idea whether they will be used for PCR emulation, or not. The TPM
-> > proxy layer sitting on top of this would know the mapping of which RTMRs
-> > are recording a transcript of which PCR extend events. 
-> 
-> My thinking is, since this mapping is ARCH-specific information
-> and fixed by design, it makes more sense to hide this detail in the
-> vendor driver than letting userspace configure it. If we allow users to
-> configure it, there is a chance for incorrect mapping.
+On Sun, 21 Jan 2024 at 16:38, Borislav Petkov <bp@alien8.de> wrote:
+>
+> On Sun, Jan 21, 2024 at 03:12:56PM +0100, Ard Biesheuvel wrote:
+> > The SEV boot code is especially tricky here as very few
+> > people can even test it,
+>
+> No worries about that - us, the Google cloud folks, AWS and a bunch of
+> others are people I could think of who could help out. :-)
+>
 
-I think I agree with the fact that letting users configure that mapping
-may be error prone. But I'm not sure this is an architecture specific
-mapping, but rather a platform specific one. I'd expect the guest firmware
-to provide it through e.g. the MapPcrToMrIndex EFI CC protocol.
+Yeah. I have been trying to find people internally at Google that can
+help me set up some CI that I can throw kernel builds at and they will
+be test booted in a SEV guest, but so far progress has been slow.
 
-So I agree I should remove the user interface for setting that mapping,
-and pass it from the provider capabilities instead. It is then up to the
-provider to choose how it'd build that information (hard coded, from
-EFI, etc).
+> > 1)
+> > WARNING: modpost: vmlinux: section mismatch in reference:
+> > startup_64_pi+0x33 (section: .pi.text) -> sme_enable (section:
+> > .init.text)
+>
+> sme_enable() is in the 1:1 mapping TU
+> arch/x86/mm/mem_encrypt_identity.c, see
+>
+>   1cd9c22fee3a ("x86/mm/encrypt: Move page table helpers into separate translation unit")
+>
+> so might as well move it to .pi.text
+>
 
-> Regarding the TPM proxy, I am still not clear how it is going to use
-> this mapping. If we want to provide TPM like feature, it needs a
-> special kernel TPM driver, right? Even if we enable TPM support
-> with RTMR, I assume it can only support pcr_extend().
+Ack.
 
-Extend and read, yes.
+> The rest below look like they'd need more serious untangling.
+>
+> Btw, I just had another idea: we could remove -mcmodel=kernel from the
+> build flags of the whole kernel once -fPIC is enabled so that gcc can be
+> forced to do rIP-relative addressing.
+>
+> I'm being told the reason it doesn't allow mcmodel=kernel with -fPIC is
+> only a matter of removing that check and that it *should* otherwise work
+> but someone needs to try that. And then there are older gccs which we
+> cannot fix.
+>
 
-> Other TPM
-> features should be disabled. If yes, since we already have this ABI
-> for measurement extension, why again support it via TPM or did
-> I misunderstand the use case.
+-fPIE -mcmodel=small should work fine afaik. The only problem i
+encountered is that it changes the default per-CPU base register to FS
+but that can be overridden on the command line.
 
-I am not sure the TPM compatibility is always needed, but for subsystems
-(like e.g. IMA) that look for a TPM as their root of trust for storage,
-providing the extend+read ABI and the PCR mapping should be sufficient.
-
-Cheers,
-Samuel.
-
+The problem with building the entire kernel -fPIE is that it increases
+code size: RIP-relative LEA instructions are 1 byte longer than
+absolute 32-bit MOVs.
