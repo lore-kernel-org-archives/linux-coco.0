@@ -1,119 +1,202 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFF637142
-	for <linux-coco@lists.linux.dev>; Sun, 21 Jan 2024 12:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50491F60F;
+	Sun, 21 Jan 2024 14:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705840909; cv=none; b=LIdXv5f2qb3iHPMaBWQeCWRwCtpla0ddfD64HI/djzILhLk+5OpYrlK0bwDO7jNxwq8ZwtUcw9tA/Fp9ZC/LNqP0Ptc/kaaytWU5DArhlQLy4TwaqGPrSL7tcyjGAH1IXpiQFKQ8jtTjDsJ5zqWl14TD4nNLPllqozHrWOeFCgs=
+	t=1705846389; cv=none; b=GXuGwfchXkkgbXfrBlyW8KZvgkeDaQV2WsfcUAcuTNtj8v3uzHGtEnfykmOdyDActvrNDBm59UemG50zcM22dATO9IBE5TwBanSHPQ8xo1vV4mTXtY/DQYd9xDwT0lFBsSrHP1OiR4T3rb9f57/v+Ls8Iqwvkm+XDO1d7dkvkss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705840909; c=relaxed/simple;
-	bh=b8kssEXUcXyp+9yNySq1ZhZ7sO+9Z0J8oTphLVHUrSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bwkeuV/KyvymrBKUTf28Yu06BHC+jmED+oVuwx/OZPLPjWfpN7b4fxx9d44h4DP8ZJ36x0toh+5+71+j+u+9qv1A4Q0jFV1l4UJW5kNeZbuex6xosNaFMCHs1dxy6rGeBkhIgxcuGyJtZsspXkQeMIaFIU1BQpJGSse6oScfN9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RZTMuyMX; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1705846389; c=relaxed/simple;
+	bh=93nlBq01+/R25XO6WFV6nXv5nI6SYaa/g5F1Y7cEzng=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EMBsJM3gf4sZhG7xaVj/VKw6ZuCr96eTTuDmQrlhpr6wwD9OwXtSX1xKBcIn/VpY/7AHfbG8IgA+0zs5fzrYKLsKIX9msxh7Y9pXFF0NajyeKfve2QZ+tReYIy2qFtT/jIOOryAWicfyYNEwHefXrEvzOQSiaCbJhNDs/Cy/6xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbk0aL3n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RZTMuyMX"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3174D40E0177;
-	Sun, 21 Jan 2024 12:41:45 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id n2xllazxIvv4; Sun, 21 Jan 2024 12:41:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1705840903; bh=DdanBUUkzmEiL4WSI9ML5YIGh668EwCLp/CMKO1Dfnc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RZTMuyMX3VgHk63OanWHbKzjFKwZiqdXLYCiVXJhzB9i3WpVpKJ+3d6zftj9gSVIu
-	 77xLCZ1tjQvsjiwNzqySdXhaV3DVPeAkW7s2edCI3z2wUsyhmbWQwv1qUyLv/3eZu6
-	 K20T0sIVPQp9u2CcqztXJnr+dDoELbMEVVCpUvp9pTO1erBkf/id+HlwoiDMl68k6F
-	 LHrQLs5kOa/9KSQF946VvtBl6Lo8Jr7Q9eeLd/MPMLaZZn7koA4cQJkBQkXpaElTSz
-	 pnl7ekltsypo7YyGIefJlpkGg8cGkK78qVbdj03pRewqW9RFwHk4iBph9+nKBJpWE8
-	 wB5MdGS/taoN5YeyhbdJGTQBNoSqkmcYbWdRB4dQi0PQQI1SteJOAcDTb4fTzu99dc
-	 z18R/pNaxbGy4q7gV2dWtMN7Q+6lYimR58vxr3O5ZgPQMsfkTNNbzI+E8y1fI5bKDE
-	 W1wasiStWVkB+t3kGq6tmnX6TcFmaFZ8sQbvGS6w6fr5k0anDm+Ddvhl9Z1B4dbrA6
-	 G9lkDN+ZCwy+lEoJxh8xDRQDTwPqENL0bomUjFV975KK2npNCLfKK6U8JUZKTmwPq5
-	 uUmzyeDDN/p0tR1uyS3ajxEg/gVjrbvq4hiUKq8D8b2m8guGhuodYpWBp0qnba2W5M
-	 LwAkg6N092PjLvUSz+CFsiho=
-Received: from zn.tnic (pd953099d.dip0.t-ipconnect.de [217.83.9.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9771940E016C;
-	Sun, 21 Jan 2024 12:41:03 +0000 (UTC)
-Date: Sun, 21 Jan 2024 13:41:02 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dionna Glaze <dionnaglaze@google.com>
-Subject: Re: [PATCH v1 26/26] crypto: ccp: Add the SNP_SET_CONFIG command
-Message-ID: <20240121124102.GPZa0Q3oBHLG0fH_yn@fat_crate.local>
-References: <20231230161954.569267-1-michael.roth@amd.com>
- <20231230161954.569267-27-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbk0aL3n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9E4C433C7;
+	Sun, 21 Jan 2024 14:13:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705846389;
+	bh=93nlBq01+/R25XO6WFV6nXv5nI6SYaa/g5F1Y7cEzng=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=cbk0aL3nUdkUhAL+1Wf1HilycWoHWRY9yDxRbRV5u19rf5FQH6w3n313+Tl06YI+o
+	 m48AAiOrMNQuQR50OOvvVFr9ZOyuTsYQRXzitVBL/CjWEW37yoXaBKIgy5/9dFaZ7U
+	 klkQic6Zl1YETFfqUZQfadwurtjPPqqmiU7aSwTSrjOCKc1p0f5vkxLGhw6VMg6bj7
+	 ZSLnzUyY5Le70971gJVppcKLuaZkmfa7qM6TEHJvnvbLtrnCkqLji3h1pgT+LYxZPb
+	 kLZ75r97jCCW5uZgMx504s9ius3sx7nSStdiJJLTS5pUuoCGP/kYoAOcMb8abYDx6e
+	 oxAb+aH4B/cbA==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ccea11b6bbso22105111fa.0;
+        Sun, 21 Jan 2024 06:13:09 -0800 (PST)
+X-Gm-Message-State: AOJu0Yx6qaGAreRGuZhN+nKcRC3BtsD75kxGxv6RiLLwnnwF3ltdWyYj
+	raYQRiK5mueawSoY5oL9suziOJvAn0krIPOgbMlMVa1GjaNNxAT1BfnASnyi/4sgGonkwQuxAeb
+	GMGVWiRwlSq+TayopO4s6w8oVQqo=
+X-Google-Smtp-Source: AGHT+IGrUGrnjbKM61VvfEhxcFAefz8MbgAJ03qJrEO4R2GdMx67v4+DOerGiUD93x+5IQksusbst8XkKXxOMo4T4oY=
+X-Received: by 2002:a2e:701a:0:b0:2cd:9067:6bd2 with SMTP id
+ l26-20020a2e701a000000b002cd90676bd2mr1452981ljc.7.1705846387577; Sun, 21 Jan
+ 2024 06:13:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231230161954.569267-27-michael.roth@amd.com>
+References: <ZZ7YuEexYSaZYmLK@tassilo> <20240111223650.3502633-1-kevinloughlin@google.com>
+ <20240115204634.GHZaWZqsVyU_fvn_RW@fat_crate.local> <CAMj1kXH=k26nNyB+LQJ7WUJgbD2f3PREyjCzSngMCGc+72XJ6w@mail.gmail.com>
+ <20240117130557.GDZafQtfRyeVFbBUXA@fat_crate.local> <CAMj1kXEML99u7a8mZMhiWXXozsJYhVPaaTzYkegiSJcLw2pNJg@mail.gmail.com>
+In-Reply-To: <CAMj1kXEML99u7a8mZMhiWXXozsJYhVPaaTzYkegiSJcLw2pNJg@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 21 Jan 2024 15:12:56 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGO68zBNXtdxDXbcQ0U7NRFe4m9bF4L_qFmYZ6mkOvmww@mail.gmail.com>
+Message-ID: <CAMj1kXGO68zBNXtdxDXbcQ0U7NRFe4m9bF4L_qFmYZ6mkOvmww@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
+ SEV/SME code
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kevin Loughlin <kevinloughlin@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Michael Kelley <mikelley@microsoft.com>, 
+	Pankaj Gupta <pankaj.gupta@amd.com>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Arnd Bergmann <arnd@arndb.de>, Steve Rutherford <srutherford@google.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Hou Wenlong <houwenlong.hwl@antgroup.com>, Vegard Nossum <vegard.nossum@oracle.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Yuntao Wang <ytcoode@gmail.com>, 
+	Wang Jinchao <wangjinchao@xfusion.com>, David Woodhouse <dwmw@amazon.co.uk>, 
+	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>, Joerg Roedel <jroedel@suse.de>, 
+	Randy Dunlap <rdunlap@infradead.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Dionna Glaze <dionnaglaze@google.com>, Brijesh Singh <brijesh.singh@amd.com>, 
+	Michael Roth <michael.roth@amd.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-coco@lists.linux.dev, 
+	Ashish Kalra <ashish.kalra@amd.com>, Andi Kleen <ak@linux.intel.com>, 
+	Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, Jacob Xu <jacobhxu@google.com>, 
+	Sidharth Telang <sidtelang@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, Dec 30, 2023 at 10:19:54AM -0600, Michael Roth wrote:
-> +The SNP_SET_CONFIG is used to set the system-wide configuration such as
-> +reported TCB version in the attestation report. The command is similar to
-> +SNP_CONFIG command defined in the SEV-SNP spec. The current values of the
-> +firmware parameters affected by this command can be queried via
-> +SNP_PLATFORM_STATUS.
+On Wed, 17 Jan 2024 at 14:38, Ard Biesheuvel <ardb@kernel.org> wrote:
+>
+> On Wed, 17 Jan 2024 at 14:06, Borislav Petkov <bp@alien8.de> wrote:
+> >
+> > On Wed, Jan 17, 2024 at 11:59:14AM +0100, Ard Biesheuvel wrote:
+> ...
+> > > On arm64, we use a separate pseudo-namespace for code that can run
+> > > safely at any offset, using the __pi_ prefix (for Position
+> > > Independent). Using symbol prefixing at the linker level, we ensure
+> > > that __pi_ code can only call other __pi_ code, or code that has been
+> > > made available to it via an explicit __pi_ prefixed alias. (Happy to
+> > > elaborate more but we should find a smaller audience - your cc list is
+> > > a tad long). Perhaps this is something we should explore on x86 as
+> > > well (note that the EFI stub does something similar for architectures
+> > > that link the EFI stub into the core kernel rather than into the
+> > > decompressor)
+> >
+> > Grepping through the tree, is __pi_memcpy one example for that?
+> >
+>
+> That is an example of a function that is known to be callable from any
+> context, and so it is emitted with an alias that makes it accessible
+> to other code that is position independent.
+>
+> There is some linker foo in arch/arm64/kernel/pi/Makefile that builds
+> a couple of objects in PIC mode. The source symbols have ordinary
+> names (even the external imports), but will be renamed by the linker
+> to have a __pi_ prefix. The result is that those objects can only call
+> into each other, or out to ordinary code that has been marked as __pi_
+> as well.
+>
+> The entry into this code is
+>
+> arch/arm64/kernel/head.S:885:   bl      __pi_kaslr_early_init
+>
+> which is called before relocations have been applied, as that requires
+> knowing how the kernel base address is randomized.
 
-diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
-index 4f696aacc866..14c9de997b7d 100644
---- a/Documentation/virt/coco/sev-guest.rst
-+++ b/Documentation/virt/coco/sev-guest.rst
-@@ -169,10 +169,10 @@ that of the currently installed firmware.
- :Parameters (in): struct sev_user_data_snp_config
- :Returns (out): 0 on success, -negative on error
- 
--The SNP_SET_CONFIG is used to set the system-wide configuration such as
--reported TCB version in the attestation report. The command is similar to
--SNP_CONFIG command defined in the SEV-SNP spec. The current values of the
--firmware parameters affected by this command can be queried via
-+SNP_SET_CONFIG is used to set the system-wide configuration such as
-+reported TCB version in the attestation report. The command is similar
-+to SNP_CONFIG command defined in the SEV-SNP spec. The current values of
-+the firmware parameters affected by this command can be queried via
- SNP_PLATFORM_STATUS.
- 
- 3. SEV-SNP CPUID Enforcement
+I've done a quick experiment with moving the early code that runs from
+the 1:1 mapping into .pi.text, and getting modpost to warn about calls
+from this section into other text sections.
 
----
+My preliminary conclusion confirms that the SEV code is quite
+problematic in this regard (which is the reason for this patch, so we
+already knew that, of course).
+Below are a couple of examples of how these calls fan out.
 
-Ok, you're all reviewed. Please send a new revision with *all* feedback
-addressed so that I can queue it.
+TL;DR I think we will need a way to build certain objects with -fPIC
+(as we do in other places and on other architectures), but we should
+add instrumentation to ensure that these issues can be detected at
+build time. The SEV boot code is especially tricky here as very few
+people can even test it, so applying this patch and hoping that the
+compiler will never generate reachable code paths that only work
+correctly when executed via the ordinary kernel virtual mapping is not
+sufficient.
 
-Thx.
 
--- 
-Regards/Gruss,
-    Boris.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+
+
+1)
+WARNING: modpost: vmlinux: section mismatch in reference:
+startup_64_pi+0x33 (section: .pi.text) -> sme_enable (section:
+.init.text)
+
+leads to
+
+WARNING: modpost: vmlinux: section mismatch in reference:
+sme_enable+0x21 (section: .pi.text) -> snp_init (section: .init.text)
+WARNING: modpost: vmlinux: section mismatch in reference:
+sme_enable+0x99 (section: .pi.text) -> cc_set_mask (section:
+.init.text)
+WARNING: modpost: vmlinux: section mismatch in reference:
+sme_enable+0xf8 (section: .pi.text) -> cmdline_find_option (section:
+.text)
+WARNING: modpost: vmlinux: section mismatch in reference:
+sme_enable+0x10c (section: .pi.text) -> strncmp (section: .text)
+WARNING: modpost: vmlinux: section mismatch in reference:
+sme_enable+0x129 (section: .pi.text) -> snp_abort (section:
+.init.text)
+
+2)
+WARNING: modpost: vmlinux: section mismatch in reference:
+startup_64_setup_env+0x27 (section: .pi.text) -> vc_no_ghcb (section:
+.init.text)
+
+leads to
+
+WARNING: modpost: vmlinux: section mismatch in reference:
+vc_no_ghcb+0x46 (section: .pi.text) -> do_vc_no_ghcb (section:
+.init.text)
+
+leads to
+
+WARNING: modpost: vmlinux: section mismatch in reference:
+do_vc_no_ghcb+0x55 (section: .pi.text) -> snp_cpuid (section: .text)
+WARNING: modpost: vmlinux: section mismatch in reference:
+do_vc_no_ghcb+0x66 (section: .pi.text) -> __sev_cpuid_hv_msr (section:
+.text)
+WARNING: modpost: vmlinux: section mismatch in reference:
+do_vc_no_ghcb+0xc1 (section: .pi.text) -> __x86_return_thunk (section:
+.text..__x86.return_thunk)
+WARNING: modpost: vmlinux: section mismatch in reference:
+do_vc_no_ghcb+0xd4 (section: .pi.text) -> sev_es_terminate (section:
+.text)
+WARNING: modpost: vmlinux: section mismatch in reference:
+do_vc_no_ghcb+0xd9 (section: .pi.text) -> __stack_chk_fail (section:
+.noinstr.text)
+
+3)
+WARNING: modpost: vmlinux: section mismatch in reference:
+__startup_64+0x39d (section: .pi.text) -> early_snp_set_memory_shared
+(section: .init.text)
+
+leads to
+
+WARNING: modpost: vmlinux: section mismatch in reference:
+early_snp_set_memory_shared+0x18 (section: .pi.text) ->
+early_set_pages_state (section: .text)
+
+leads to
+
+WARNING: modpost: vmlinux: section mismatch in reference:
+early_set_pages_state+0x151 (section: .pi.text) -> __warn_printk
+(section: .text)
