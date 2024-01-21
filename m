@@ -1,137 +1,183 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590A338381;
-	Sun, 21 Jan 2024 18:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705861306; cv=none; b=TpJDM4NW9LA5BxOl8OLDwXPhWtN+INWffd80Fr9yXuRbxp9UgJKsYP1fhXrWf5EMe7RC3e0XXlTFF8A4arwcuDvKhx1msAer1xsVJRFnvgwalo5hefSVXfjOE7Em8lbsVQY9a6ldgNJj3E4R99Sn5h5vwoB8PSzapCOvytB9/Gs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705861306; c=relaxed/simple;
-	bh=RQcsOSgWEkebJ4aFw/hm8jeagskSK6NIf06EChLFEFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pLvbj49R0aj5xfDVCXw+4ocWKQSvJDknNKlvV9btSYDsvLE0zWgzNKj/rlRuHQwhUbVzcSFfxQFXN09eRPmnNOktMVL0qRAUzVcBuVpLwKb5wHsrG7D0ZsBCEXJTaEkFCJsraAPzs5Iaj3YDcDb4RBVv/LYaNLEc/CRGykiZ7wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AUFIZ7Hk; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CB13838B
+	for <linux-coco@lists.linux.dev>; Sun, 21 Jan 2024 19:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.55.52.115
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705864518; cv=fail; b=jKnsaawc61R/4a63w99pwRNbzT2J3Fn/Iz1fUmdsQs4nKP1PfRBXuT+sv3ffboBr00L4sixujpSH+Cs5T3E0jAmkwTA1R03XwmvBoGqe4cxCv1AfrDVjP+TQhlfBsWLVpJJRo+ugn/Nh/p9mdJL6Ecj7kEbNrsOWWnZNZ3NvOwY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705864518; c=relaxed/simple;
+	bh=nnz3+14Y7BFOR99HMts2IdfK5ZGIIXaMov8xu/QGEuU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qjgKNzMtOkv+5GbNOYfDfcjz/TASdjkffs9me5m3xZ9tNt1CX72cCBXmw66hgg+CetTcDbWIopnRjT/atIicrzksHi1TRY/hiDu+tSBu+OFXlxvvN1wsZF1BOgSUoRj+NvAj0SPSiixFRF1AKfUKAPzp5MKxUKhtuOBn+laxcvc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g4R1eft+; arc=fail smtp.client-ip=192.55.52.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AUFIZ7Hk"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0BC2C40E0196;
-	Sun, 21 Jan 2024 18:21:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id VCM38jTVkex4; Sun, 21 Jan 2024 18:21:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1705861298; bh=2hNU8iQHcvaHyKkIctC4wY2bSsuo5SQCshNeksB3b9A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AUFIZ7Hk5hJYAryXMjEguN4LPCmbfR1Nng9ffvRWSHC+bsGYm64r6JfARdgqXJlFD
-	 Y/PYUqLriC0c9MrHq/sdO1CWZ7yBH6xyibOXFi1lDlNGzA6a+mB1CNOTL+VWvvKL73
-	 8RtnMSA2MszsvHeBMiMXZZ+Hf7atcfj2+K9S30DuYm9sMvDGmABj+SPLLBLhn35G4t
-	 F6VtYrIjqwQCEliQn3z6mTBXo3PvZ0Xg0a88ROqVayPGTLaoq91BgqmJ/lsR30pwQr
-	 Nu9MMyWiHp6mOz+JsS286w1D31wCvvxolniMU93s7OEOzs1kuaQo9YVH8U531CMvv4
-	 UruUYm6xk/NrFUcqP4mNTJN+6PBuAZpjR4wSDFJTBu4hSGj94vMuWVLkZnMuZc25YX
-	 8jscNfujSdUHFqzD7bMM7gzxUEaJ5aO/3I6if/dfH+zSbpoZH8gtkAXFdAtvCAa39/
-	 xzy327AuL5qiWo7Bvg/5JVj71/9ImNaAwepirfWi7O+IZ9ViEqSo2LL88nW5NZsZwM
-	 mTN7hsgPAPDuDeY/4UP2GKwgUKv+Qxo5ymGNeJFm2x6g7qhSURXocC+JDHSNi57w43
-	 pKX0LkDP3B+aHAcHthXCwl0wtKc4W5yZFjtU84endp4cn6q/bFIUbUEct31LRjZpUF
-	 Hzi1fCAvqvSzE3lnVRanRmXo=
-Received: from zn.tnic (pd953099d.dip0.t-ipconnect.de [217.83.9.157])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0F8A840E016C;
-	Sun, 21 Jan 2024 18:20:54 +0000 (UTC)
-Date: Sun, 21 Jan 2024 19:20:40 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Ard Biesheuvel <ardb@kernel.org>, Peter Gonda <pgonda@google.com>
-Cc: Kevin Loughlin <kevinloughlin@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Steve Rutherford <srutherford@google.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Hou Wenlong <houwenlong.hwl@antgroup.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Wang Jinchao <wangjinchao@xfusion.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Brian Gerst <brgerst@gmail.com>, Hugh Dickins <hughd@google.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dionna Glaze <dionnaglaze@google.com>,
-	Brijesh Singh <brijesh.singh@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-coco@lists.linux.dev, Ashish Kalra <ashish.kalra@amd.com>,
-	Andi Kleen <ak@linux.intel.com>, Adam Dunlap <acdunlap@google.com>,
-	Jacob Xu <jacobhxu@google.com>,
-	Sidharth Telang <sidtelang@google.com>
-Subject: Re: [RFC PATCH v2] x86/sev: enforce RIP-relative accesses in early
- SEV/SME code
-Message-ID: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
-References: <ZZ7YuEexYSaZYmLK@tassilo>
- <20240111223650.3502633-1-kevinloughlin@google.com>
- <20240115204634.GHZaWZqsVyU_fvn_RW@fat_crate.local>
- <CAMj1kXH=k26nNyB+LQJ7WUJgbD2f3PREyjCzSngMCGc+72XJ6w@mail.gmail.com>
- <20240117130557.GDZafQtfRyeVFbBUXA@fat_crate.local>
- <CAMj1kXEML99u7a8mZMhiWXXozsJYhVPaaTzYkegiSJcLw2pNJg@mail.gmail.com>
- <CAMj1kXGO68zBNXtdxDXbcQ0U7NRFe4m9bF4L_qFmYZ6mkOvmww@mail.gmail.com>
- <20240121153702.GAZa06Hvt8b0hQ4LjR@fat_crate.local>
- <CAMj1kXFMe6WqKXJsK1Lqk++naM8D=MZADhgpO_FjUd0RuFQU2w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g4R1eft+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705864516; x=1737400516;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=nnz3+14Y7BFOR99HMts2IdfK5ZGIIXaMov8xu/QGEuU=;
+  b=g4R1eft+RFdAOoEKwMjQJHjLRJKKlpffu8yYnWcHfpu5BQDSAk8Ri7H7
+   wD9jO7nrvPiRyJtbaolwcFbe6N7E2Dovc92h14dWu0Rs+b0qL+rwhtcO1
+   lheLLDZchw9DdaXh7u0KAIpE7DxZq0w9ss1ExLbUgTsV0K3amU4Y1Mdxd
+   NdHDrJiRXFus6rPLBF3rGU0VhGQ69mNyBdxlOP2Xf+1hWbhAEyxXSqMwU
+   gbHFMDj993W4bPFCqdPOS/OPiHgak6dkeJxkeAnEd+3StgmMhGGgObYj9
+   e3RPECwAX8B3GLveGQZMFULQEGG8JITmKzHFAMNDCCqMObjA8BETG1I9x
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="400705863"
+X-IronPort-AV: E=Sophos;i="6.05,210,1701158400"; 
+   d="scan'208";a="400705863"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2024 11:15:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10960"; a="778410195"
+X-IronPort-AV: E=Sophos;i="6.05,210,1701158400"; 
+   d="scan'208";a="778410195"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Jan 2024 11:15:15 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sun, 21 Jan 2024 11:15:14 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Sun, 21 Jan 2024 11:15:14 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Sun, 21 Jan 2024 11:15:14 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Oj+QdQQkd5A79Hh1bZXWMIOt+VlgTbm/Pbk8XWM6L+AFvDuxJklrTnDq0YCM0s4pPie/EBw/tOMLwZo+dZHUdH/8HV6Kx0wvwA12qvK9e/WN0gZIGOICOdOYz4t45eJVrB5fbCJRlCnh47wDvCCr7tfMFCiBkvZIKZkTzLFx3ZYs3sqauPH4KEX+OOJkcXdzr0TGw0DLOmtrxDfxlxR0mnPf54z1CcxSsL11GSoL4kgweqgla9Vuhk2jDGBG6XKONeG3Ml9RHosMrV4V+azBtypE/+V7TkoK2hfAQ/wZ6Vf+uev+z0WfGyOPxuxwrocclXXuDPA512OCEwYPYfnHUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4ZD6RqtHkuVkVbnT4eAW2q07OsNAA9NjCJYJhYFs6y0=;
+ b=Y8Q9i0QAiQ2FbWCvrDfLSEac6I+vVeYsFk+vO2kbgJok8WmCWnNLTL70aaM6JFjN8mTmGD0D0f+Sr6OU8lQlHDM0FpUqc2bOFOXAr2Z3U0+nEv/WCe+SnkvK1QlQtOScuFhIjSbyLMLfChHN55KSUIC3s9x1VYN11xfd2fzH/CZLGeKDpKNCEnxfcEncwvkf4GUPSXSIqL5uu9Q5HjZdndeXukFs5p4jTKHFM0bKgHNGYxLtAZWb7u7mmwN3enIVcL55LY45geTnMvflkeQeIcL1ffEdevqFPQIdlytq07YK723YoC9n0qmivVRRkBeBo/OeIZdf+fhHTAAdutj06A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by MW4PR11MB5775.namprd11.prod.outlook.com (2603:10b6:303:181::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.32; Sun, 21 Jan
+ 2024 19:15:11 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7202.031; Sun, 21 Jan 2024
+ 19:15:11 +0000
+Date: Sun, 21 Jan 2024 11:15:09 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Samuel Ortiz <sameo@rivosinc.com>, <biao.lu@intel.com>
+CC: <dan.j.williams@intel.com>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v1 0/4] tsm: Runtime measurement registers ABI
+Message-ID: <65ad6d3db040d_107423294de@dwillia2-xfh.jf.intel.com.notmuch>
+References: <20240114223532.290550-1-sameo@rivosinc.com>
+ <20240118033515.2293149-1-biao.lu@intel.com>
+ <Za1eXWiKPQp//1CO@vermeer>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <Za1eXWiKPQp//1CO@vermeer>
+X-ClientProxiedBy: MW4PR03CA0343.namprd03.prod.outlook.com
+ (2603:10b6:303:dc::18) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFMe6WqKXJsK1Lqk++naM8D=MZADhgpO_FjUd0RuFQU2w@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MW4PR11MB5775:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a88a9ed-2cc2-4a51-ef5c-08dc1ab54a35
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0Ph+ttGDA8orC+kebH9E0tgEX4xvNvvIy0snpdU6L2hJOKudl9CBGyUi9rAXj17px5u1kTVhkijirn3ZoNjFTG6X58a9ZIXpAgh5ryrddv5CHOhskdkjdUAcPW+rlpl4D9LOVY6107d21OwVwzCFlooeyVKxxZEeSggTXRFW3/TjQ879gc01/SMendJpTwtw73CPNjRPEoNJfxfiehauUM7gh6gKqzjNJX9FVmSxRqMmfhAnZpGl5uSXnysc5RhYVKSST3Jul/qFnbxOdDAaGSYKjycdTLR+fuCJSsPkPpK42ku7q3AS8dYoRju829lmVYSFJCKQb380YTsBQI4rluwjdtBEsPpWWUs9Uy/VEPyQhzup6VRbfGwvIcvEuPIkRnUi9GH5lgy+nCyii+czTaY0BLBTDTkeIcbEeQm2Yl/JrFKWBYcuRW2sHTLs9vNZStgeL1ckEl2eL4hCVNYgEFiIPu1rtBq+vPHJ+kd7aSHFAHtd/E0EGVSI5CBN37MVlX5/iUiCMiGDKI21Bb6qFkj/k0JbUtG4TgQn0TcI/LeX0EWE9J+ZqsB37HpxWC/+
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(366004)(39860400002)(396003)(346002)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(5660300002)(41300700001)(86362001)(38100700002)(82960400001)(83380400001)(478600001)(8676002)(6506007)(4326008)(8936002)(6512007)(316002)(6486002)(6636002)(66556008)(66946007)(66476007)(26005)(2906002)(9686003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mFCBYtJI1t8edombRi1dMrq5pSVy67xos1CG88vm29ygJ6LAwOgNyOwK2YVd?=
+ =?us-ascii?Q?7NXoJvwdnRPTwfXWMOlLQPwPtaknk9nMm0tq52md8Q+4DMTpHJokRgKgSj1w?=
+ =?us-ascii?Q?ED7f/gdWXVU0f8qoA8i2uIwWxMdK7GR744rl1rCaHiNkTMuGyHFLwSd4TCIa?=
+ =?us-ascii?Q?3pxdGtJ9eOq0+whcRYTLNf7Qjx2kQJMfo3NdTQ9wmr6RC9fy69Rjf4Jirkwx?=
+ =?us-ascii?Q?LIG1ecS1AyBn3UrAZ4ZdmWcAb679Ny/kWOFnKsP4IOP5m/CyFb+DJLO0FhFC?=
+ =?us-ascii?Q?Ww5PIxcqAgQbaG850Mqu2F+1/PNV+ToVaNyqYscmgv5RMwUjAlY5NrYVlQtm?=
+ =?us-ascii?Q?hh6oUuBj8+s/OfloLESHZ+SYboNJiUkZwlZXrRFostlAnXkLZQqaLecm9EQ9?=
+ =?us-ascii?Q?Q4hP2GIo2a6f+wj+YP5MvxU6TgRp0e3FPkZ9eMssW75o2FJ4TpFBzHobgYgO?=
+ =?us-ascii?Q?381FHnyqy3TCU1ge/MZs01CoqFt8LahnDbNUnCmWa1JfGOr8Rfu2ONI0i6hv?=
+ =?us-ascii?Q?EoqxkTAnOcBA7dZo6kD4dM2g/E2JzY0TWCFVGNhj4F7WJzvVWKzkBjkk1k90?=
+ =?us-ascii?Q?4aUqd8farYlJmw9UoxCbG8iWJrO8IZvIMpGV8es7CvRMpbCmcjkfE69aBpN4?=
+ =?us-ascii?Q?mAlnu2M6LYWaZnWp4l4DUL5t2xYRhmoFdTpVugISfjlM+XVtlocpXNmxRQAb?=
+ =?us-ascii?Q?lIB9JDNzvchDqc6VV7rMsFuhJC0qcNs3hU2VsDQsrHNoYM8z29kcPe/caD7o?=
+ =?us-ascii?Q?lL1hsMPMDg1DyH5vQCIG/cXkeofsFeBs76v9Id28pGIRNlEo4K1tYw0P64rf?=
+ =?us-ascii?Q?0CbDK+vXFULcqJfPyWu3Mh0ixVjHOBZIMEVqudkLkZYQA+kHrNnLULoo+JRn?=
+ =?us-ascii?Q?QhSA22U+2TcQ7Yt9N+IIzgVLTZIaR/Q+9JZ93EFAgPBhEhVVvv6HVLTLZZc1?=
+ =?us-ascii?Q?LtCrxVOH8iFqdHrpKPoF43OuwdHK4zR81EngHsUK0y3C5FikCplmCN4JqV1Y?=
+ =?us-ascii?Q?vjqFc12tLppMeZ/4cYjy/ClLBI87JPqlBFHA8ZC4AxH7Ct5fjLku1EKg4N3O?=
+ =?us-ascii?Q?2EiK9lO/j926kfX+by+ICTFLalqHchrnKv1+nrgywU2VHPA/L7UTFxAgb1oY?=
+ =?us-ascii?Q?elkIEniU4UcYER28ZO9jpsCfgnaEKNdGkm6GsY+g8TGE1L5PPVCIrkuINNhX?=
+ =?us-ascii?Q?QZNEvOhHoipBltqGo3hXtvejF8fy2fYNokgnfcW0DKcz5HEZa6MPc156vk17?=
+ =?us-ascii?Q?1nllN8eDmoZtzfBVWZUnPVOnfTdZHtlVWLFaKoaf/drLSfnQRKzxEBJYlFJK?=
+ =?us-ascii?Q?F1Lb9An6ADEQWN9fbepQXA82EvMD/MPFA8nPuQ4axU00sGAYnymqA2TINjRT?=
+ =?us-ascii?Q?QjysrP/eNn+wJ6PiQM+GHH0HuystYFdYHmsO8126s2OP6tDOLQ+C70zBheeD?=
+ =?us-ascii?Q?lkupI41bQROg0vCP+8RX/nl0wGSLZ98Ov6RPHc1TFGcWunz6IJzfFNBPrEiE?=
+ =?us-ascii?Q?mlvXHfr6n7zwCHeA9kx4sJWGSH8Iw/QVy2LPLEe/dDS/fjfDPN7TwLuI9arx?=
+ =?us-ascii?Q?eYGblWAZ6DhgxCjDhYdUOGljMstCSpZTppcsLFvOfwRurW9gwvUkrg1U6SxJ?=
+ =?us-ascii?Q?pg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a88a9ed-2cc2-4a51-ef5c-08dc1ab54a35
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jan 2024 19:15:11.7632
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sBoe0g+g1v1jokyxCkdO2lWjR+lNWJrMhtS77FZesofeSrUchkO3qw6SFNe7CalEi4py5sxgK0O5shQWJQDvBpVV8hrzNpg45azO6t49Zk4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5775
+X-OriginatorOrg: intel.com
 
-On Sun, Jan 21, 2024 at 05:49:44PM +0100, Ard Biesheuvel wrote:
-> Yeah. I have been trying to find people internally at Google that can
-> help me set up some CI that I can throw kernel builds at and they will
-> be test booted in a SEV guest, but so far progress has been slow.
+Samuel Ortiz wrote:
+> On Thu, Jan 18, 2024 at 11:35:15AM +0800, biao.lu@intel.com wrote:
+> > Samuel Ortiz wrote:
+> > > Some confidential computing architectures (Intel TDX, ARM CCA, RISC-V
+> > > CoVE) provide their guests with a set of measurements registers that can
+> > > be extended at runtime, i.e. after the initial, host-initiated
+> > > measurements of the TVM are finalized. Those runtime measurement
+> > > registers (RTMR) are isolated from the host accessible ones but TSMs
+> > > include them in their signed attestation reports.
+> > >
+> > > All architectures supporting RTMRs expose a similar interface to their
+> > > TVMs: An extension command/call that takes a measurement value and an
+> > > RTMR index to extend it with, and a readback command for reading an RTMR
+> > > value back (taking an RTMR index as an argument as well). This patch series
+> > > builds an architecture agnostic, configfs-based ABI for userspace to extend
+> > > and read RTMR values back. It extends the current TSM ops structure and
+> > > each confidential computing architecture can implement this extension to
+> > > provide RTMR support.
+> > 
+> > Hi, Samuel
+> > The ABI does not include eventlog, but eventlog is usually used with RTMR.
+> > What do you think about how to implement eventlog?
+> 
+> Since the event log is typically maintained in the firmware and not in
+> the TSM itself, I don't think we should expose e.g. an event log
+> extension ABI through the config-tsm one.
+> We could decide to check for an EFI CC protocol availability and extend
+> the event log when any RTMR gets extended, and that would be an
+> internal, not userspace visible operation. I'm not sure that this
+> would scale well with e.g. IMA (a lot more events than pre-OS boot
+> afaik).
 
-Dunno, if you have some internal access to GCE, it does support SEV
-guests so you could test that side at least. Peter Gonda is on Cc, he
-should have an idea what to do, lemme move him to To.
-
-> -fPIE -mcmodel=small should work fine afaik. The only problem i
-> encountered is that it changes the default per-CPU base register to FS
-> but that can be overridden on the command line.
-
-Yeah, there's a gcc switch - I hope clang supports it too.
-
-> The problem with building the entire kernel -fPIE is that it increases
-> code size: RIP-relative LEA instructions are 1 byte longer than
-> absolute 32-bit MOVs.
-
-Right, but the folks who started this thread are already doing that
-anyway so...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Another observation after chatting with my colleague Cedric is that the 
+TPM layer that builds on RTMR can maintain an event log that forks from
+the RTMR log. I.e. instead of the TPM event log containig pre-OS events
+starting from 0, it would start from a golden point in the RTMR
+measurements.
