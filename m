@@ -1,103 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEEC405DA
-	for <linux-coco@lists.linux.dev>; Mon, 22 Jan 2024 20:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983FF482DA
+	for <linux-coco@lists.linux.dev>; Mon, 22 Jan 2024 21:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=134.134.136.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705954245; cv=fail; b=ax5zWNrrkzrLFzVLY7QUfFUY2e8gGb194dL499TMPk8FlE+3AqCMpaU5Mz87JXpZm9MHSgjUtEWVC7pGBOclIEMZXR+BJorozGzBh40X+OwQ/eiY+Ozy9BjtUCAfhuYmN4Bfei1RakM5HIWNGUXZzgCDr9Z/dZEz0X0jhw2tF/A=
+	t=1705960736; cv=fail; b=sDA+4RIlQ4pyUsUSAUhhiRQSwPwNg0/GAJ7G5Yh/7X6gzTorZcZwAIkWc+ZtHqnYVOMQUopMWyVUW2/CisrGJl9XpfZQOrRDGEG+eUx1Ddm22+FLlCXl+IAgAesCVTwtw/1yHeQN9FD/YXDmsv5157m3YRa62xxKxreaUinxcgg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705954245; c=relaxed/simple;
-	bh=8Mjp4I8IQrvGplmOLAp4c47jOxJw/GpqxKXsqRzy/OY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=t7k+b8o5W6duesUHRG/kzxplGXQr+6XyFfzdFrLpcTmFTSRZx9qG+tcz8q5B70Vzre0HR51Fy0VP464dsSp0ZlxQ3D1g9yE0PJbktoRtrdSiNvlPYfSUKqNu2Lvo6tccIGvPAE9tGbvVdLWqgdpIOxaRvOGXdOxPITWNm7rVtVM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iQ6wY2y0; arc=fail smtp.client-ip=198.175.65.12
+	s=arc-20240116; t=1705960736; c=relaxed/simple;
+	bh=md0ookuLXsFTJ25f2kyqSKisIcVySDDiO/7xXDYMoVo=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=P3tjz3kK+CPXZGLWW+VN3HxEosBDAGeYiKr9R2pcb54fFhaudZ52aih5LWDrNydzmgOU2YU762ebwczHaJUWuu3VDMKzoKOp2BitQH7FWgkkb4k2gIYQY1ZdpIkDJkgV48SrIP5dMYkQXt38/QyUS2GsLTMvijS4xb/aEHX2DvM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fS7BnEvv; arc=fail smtp.client-ip=134.134.136.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iQ6wY2y0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fS7BnEvv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705954244; x=1737490244;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=8Mjp4I8IQrvGplmOLAp4c47jOxJw/GpqxKXsqRzy/OY=;
-  b=iQ6wY2y0Qjcz2YpCSX9bflH/DQ1nLotJNOBIZj2wYTt4XwTLdmAcuitC
-   cEXFg/ev4XSVZLlFbPdQ5VqjmSvKQVl/57BnGnP6HZ0E+unHrlUr4Y/uP
-   kO9jhBintCCSs+FpJ1YDWUI8cUVSXZu2t66Cy9nPWVODc7Voa34nzPW1B
-   jls25htbVXkagpNn1IucrD7/jvtIme4rurLHp5VtKGbIh/h333w93lrY/
-   N4zGPlZX03w/dEdHHC8dpgxWTKqrZriaj3iQUQH8wEbWVc0KkzsugLEy6
-   FaDhtdTsN/sQKXMNZqP0i4+khlJt8btV49h/X7Y+Lofs6w0URV5xwG6nx
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="8683709"
+  t=1705960734; x=1737496734;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=md0ookuLXsFTJ25f2kyqSKisIcVySDDiO/7xXDYMoVo=;
+  b=fS7BnEvvX07EjIMHXoqkbccxJx4NcC0NqMytqZWSwhgzGDKg2p1GgkwE
+   PBgCK4vHV1Eg2X/IYJz9JN4K/vCNXFg6UMj6BlX2OKOr40HlsENDcknfv
+   SJtvHl0ZYuc3hUuVJa7Zam1XuhMV2IJ5Lwr1e0qJF92IkwclRcEsSVEHw
+   jNn8JsSMzw3XOaoDT6yFLYoFCz8nm9bAIKbjHmqfcIZKV7OwgUNMWEPGs
+   8pJkBJcg4hggFqU3kDtwa6zxr6316y6lgc2CVNK4W5LWLI21hbMmYfi7z
+   6vfTDdrfhNNsCq3pMy3v6gothZi6jflTHR1ECB08wCCSrHlNG4VhWUY1b
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="405094495"
 X-IronPort-AV: E=Sophos;i="6.05,212,1701158400"; 
-   d="scan'208";a="8683709"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 12:10:43 -0800
+   d="scan'208";a="405094495"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2024 13:58:52 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="819831939"
+X-IronPort-AV: E=McAfee;i="6600,9927,10961"; a="876100407"
 X-IronPort-AV: E=Sophos;i="6.05,212,1701158400"; 
-   d="scan'208";a="819831939"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Jan 2024 12:10:42 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+   d="scan'208";a="876100407"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by FMSMGA003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Jan 2024 13:58:51 -0800
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 22 Jan 2024 12:10:42 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.1.2507.35; Mon, 22 Jan 2024 13:58:51 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Mon, 22 Jan 2024 12:10:42 -0800
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ 15.1.2507.35; Mon, 22 Jan 2024 13:58:50 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 22 Jan 2024 13:58:50 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 22 Jan 2024 12:10:41 -0800
+ 15.1.2507.35; Mon, 22 Jan 2024 13:58:50 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mv0JM9o9E87RHxZR1sRrJ5gUX4x+WN4Z5lEiYE9CRDz5Eq40s4/uZjwyfbE6MsWfysEkRFowlsjg3nqFuI7wqODCYrV/rcojVnuTKYH32qS3FYx/jWfDUKJUWTk8RM+LV3WdXvBlDz8KGLfvjh8P148YRvIEegIg9/YDC9I27D3zVrAH9fF9RzflU/aZGc8PuHrjBIrMB2CvrRaV85aBLwpYaOSsx7kwpfFXquVO0VjZbZdYGm+uGU4RhCEQQklNqfTHDn81jfV1NOLaquzQdrSxKR/mAg7e9nL/G3zLTIH/OOP+kpTZTvKDumOLSj4BbJkRHthY1H2QJEPos1P7kw==
+ b=Rd1CYP1t9mdeJmWQzxXzwt6vq0MQ9uqdVR3wuV5oyI/ek01Z40FDBg/sWfIP00L6psdW+hvPIyYNgZOrLYL9yayTA1xQVeHcvTp4K7HH71p3xYGSIcB1VztnZZQSZHf90EkttTjSCrKc+xNLt/BwtKsznWASrHtWXYSdPQ0o9aO33lJE4yB2LnLKtF8/l1qwr3gMIgDLi++c5JhibCLmdWwL+I5xu/pW+9BF7/lKEdbvAr+LfY6+pglK/ksC36qsXGEr0/pJTeKX3aHR+rsyuw6nU66PF5LZZ//dzMOGhN1LE2z+66Up4KAarQVL08K+069iJMo863/Us3yJ7JtxNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Tm9/wax7jCcDJ9puHfrscWKZTEOShv6luvpC8Sh/fM=;
- b=SlRkXhi92+snmCNi6KaGonJ772KWtoCl0YTwBcj7Bgve6URjz+77wk0ONo3K0BNU/CF4Ppk5K6UITuErqPxHV1bDIlc3eR8igU7YqudkMJH1kJ2yH6pnG2+sMWhRvfRZ6VSemjPU/QYANw3W0Ua7ap04OqotdGr8Opyeukw7S0UvF09FvEfnr175Shcq8uAcOCDUo4yBTaTgP7auf6k/sFEMUSlTp06Awjm/lq/J5S4+Ej1TbnT5OYZn5uhepY2+K2bgWu/PSMsJ0LuuV5z86sDaYe3mnQ63giYpat2MfPTK6qUuXzk7LgL2b3jCv6dazkOKhU+CsS7ergPDu8GtTg==
+ bh=qvN3qeE9WhdqUSEQNgUC+fKGrfCYjN1utu9qI2ohoqE=;
+ b=DdYazY/XjOixENoThIPB0Dh0W0wdDV6be7cJ2QkPglQCjX8Fb+E4lESzzT6HPlx9VyOd288aKHXAZtc8gFYP0CuTr3x+Hi4o4SzHSkpRsf5ruzEFqrCSY5NX0XwDiM3jAD7AtLxMLBx6WXdrahzHyQOapq2+NqazQiN9uyOpbS1HysewyrtmY09y+u0bOifAGIWZ9A+bgRqITLObqMG+9gEUvn6lFQibDjVqoPXro43CAxQZP7sXP/+qkQK+c8uJFSQaaSisK509JeEJC1Fyy3KXjTsic07sb+ZCCdF0oImJ73IlMfIUWJf3VB5QGxOXf6m+DvVQUxVTBRXGYa8t8Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DS7PR11MB7906.namprd11.prod.outlook.com (2603:10b6:8:ec::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.34; Mon, 22 Jan
- 2024 20:10:39 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7202.031; Mon, 22 Jan 2024
- 20:10:39 +0000
-Date: Mon, 22 Jan 2024 12:10:36 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: "Yao, Jiewen" <jiewen.yao@intel.com>, Qinkun Bao <qinkun@google.com>,
-	Samuel Ortiz <sameo@rivosinc.com>, "Lu, Ken" <ken.lu@intel.com>
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com (2603:10b6:8:97::14) by
+ DS0PR11MB7971.namprd11.prod.outlook.com (2603:10b6:8:122::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7202.32; Mon, 22 Jan 2024 21:58:46 +0000
+Received: from DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::52c6:33d7:27be:28c5]) by DS7PR11MB6269.namprd11.prod.outlook.com
+ ([fe80::52c6:33d7:27be:28c5%4]) with mapi id 15.20.7202.031; Mon, 22 Jan 2024
+ 21:58:46 +0000
+Message-ID: <c3b99264-233b-4997-9e20-c4c2693b8cdc@intel.com>
+Date: Mon, 22 Jan 2024 13:58:42 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
+To: Dan Williams <dan.j.williams@intel.com>, "Yao, Jiewen"
+	<jiewen.yao@intel.com>, Qinkun Bao <qinkun@google.com>, Samuel Ortiz
+	<sameo@rivosinc.com>, "Lu, Ken" <ken.lu@intel.com>
 CC: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
-Message-ID: <65aecbbce09dd_107423294b7@dwillia2-xfh.jf.intel.com.notmuch>
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <20240114223532.290550-1-sameo@rivosinc.com>
  <20240114223532.290550-4-sameo@rivosinc.com>
  <1bbf8d3e-aa94-48c7-a1e4-76f9eefc4af7@linux.intel.com>
  <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
  <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com>
- <Za1G9I+tYuIL9ser@vermeer>
- <CF3D8DE1-AD47-4A77-B8BD-8A12A6F7E9DB@google.com>
+ <Za1G9I+tYuIL9ser@vermeer> <CF3D8DE1-AD47-4A77-B8BD-8A12A6F7E9DB@google.com>
  <MW4PR11MB5872F46A2089C8C2D8EF7A008C752@MW4PR11MB5872.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+ <65aecbbce09dd_107423294b7@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Language: en-US
+From: "Xing, Cedric" <cedric.xing@intel.com>
+In-Reply-To: <65aecbbce09dd_107423294b7@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <MW4PR11MB5872F46A2089C8C2D8EF7A008C752@MW4PR11MB5872.namprd11.prod.outlook.com>
-X-ClientProxiedBy: MW2PR2101CA0031.namprd21.prod.outlook.com
- (2603:10b6:302:1::44) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+X-ClientProxiedBy: MW4PR03CA0226.namprd03.prod.outlook.com
+ (2603:10b6:303:b9::21) To DS7PR11MB6269.namprd11.prod.outlook.com
+ (2603:10b6:8:97::14)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -105,172 +109,180 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DS7PR11MB7906:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89822853-1d64-409e-e4b0-08dc1b8633f5
+X-MS-TrafficTypeDiagnostic: DS7PR11MB6269:EE_|DS0PR11MB7971:EE_
+X-MS-Office365-Filtering-Correlation-Id: a97d63ce-9e47-4043-00a2-08dc1b954e5e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: hmyETvkaO9jlIUhA8IX5Y0CIWTyiBJ4Icua2LT8M+TePo53ghoy4N5C3WTNvZJo4PPk3rTD8RDbly0RfdhcVcPjTjsf/b4NKn24FOTXCPI0E1DqYfps8ejsQO8VaAO3ahnbwt+G4qm7T8NlE79DB+vEZ0A58mPcao7q5C2aGwUI1NfZxJdXVidqVuNC/gypIFS8JvWuyiciL0iIWoHxcdw8UT8c8pfuR4dQrZEy7r7yVWyDCa0kCo1rhWw+21T/5ABn6epd+5JZ0R5TLiyztJLPpnkaLezwZxajQiKufdytM/Nw+tFzk0d/8nYCCJj6U4uN10z0NiNoNquWhWKgxK7ESEE3g1ceaOzNPfNKuma3ySKCm6XV9ulY9cQc2ORIespPeijqOp0ogkdIlq3w0ii3++gH2PGoIxQn7LlRtb9XIL2zAVdnk1tAwjDNLleFNYFY6v2PpuU+1CMSLMT21OlNBWYvF8lK32LjQT4NmRg0wiLNTGOnVsW8bNZivW1NHad4d6UjFl3miIm1oiFMxzI1ZWMG496lO+3h4zdHrHfrDh1ud9Pd7HHUaxca0RZnLVmvTyffVyr0Jii0BYxtYfg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39860400002)(396003)(366004)(346002)(136003)(230922051799003)(64100799003)(186009)(451199024)(1800799012)(6506007)(6666004)(53546011)(9686003)(6512007)(26005)(38100700002)(82960400001)(86362001)(41300700001)(83380400001)(5660300002)(2906002)(66476007)(4326008)(8676002)(8936002)(66556008)(478600001)(66946007)(966005)(110136005)(316002)(54906003)(6486002)(6636002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: +NcHI5EeHlL1nrVxYw7ClxGt6Icl/Jmu/ETog1S3FZpqlKcd4de3sY+NuhjbCWBXq9G7O2fRcUEtBRaGPTRdIS65Tu15bnuxIcCo7Uu4HCLeVNPdwHXA9rMZYfjt+mf+xHZC/vC70fiPrmnA0o/wE1Tthh1ei9Ki2Q+NunL15FZWZVHb+czRo4skBadzaD4dFuZYqd1UwviHtKJrT1Yf01JuGOusURoNUTHA0UzWzEgywV0FPUzoI1Dgwr9P4tcZEEPIJiYHoMq52TVPXzFce2gjXnEjM2qF4TklVu718GeVcLj6TAVr96CueUsM+CUvh5BSRydBG/QwPAUn3SawCpeWPQnJwqo/W/SIQzIEpxgLFkTehpLsPstSO4LOZczcocAe/9BnLLt1WBbN2f1vhK6trvXoQdR4uP9HqzJOcGJlfdMCk5OdKXV48fpTgz1+A9SL8VwleMdiHdR5iDX3jKUaCuRjHb02+RAL/FUHDM/wVBFP1QJqNJOcfC51aY5SpoGtnox58gvm/NMB0kdWjEEFJLct2k7kFWBRgcyp5bFxefyr5BxMu0rrAFMMd5CfPqWIS4OJGBXmD7aMtZ08W0Nrln7NpmtNzzwtpzl7p4CQR1jlWukz06UOCWxCh7nbTsnWfowZUdMkbAioiGdlJIP+R4SloutpnN18YqkObQEtnBYHuUj3Ro+MOvTyg17g
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6269.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(376002)(346002)(39860400002)(136003)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(31686004)(6666004)(6506007)(6512007)(2616005)(53546011)(26005)(38100700002)(31696002)(86362001)(36756003)(82960400001)(83380400001)(5660300002)(2906002)(66556008)(41300700001)(8936002)(66476007)(8676002)(110136005)(6486002)(4326008)(478600001)(966005)(54906003)(6636002)(66946007)(316002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RkZFWWJra3cwS01ocllXRGM3NWpNOFBndG9TWVNRdXlQQkd6YmFxb09sS0dq?=
- =?utf-8?B?TVRiNExaNEQ0Z3FzcXdybU01VkYxY2FuWG9xUmkyNWw5UndLZ3JuM3VOQ2tt?=
- =?utf-8?B?ajlIZUNmZDZDeXNRVk5mNU1BNnZBcGUwbTlUNmRidjdIRm82UC9PbkQ0N1pl?=
- =?utf-8?B?V3hrakthMGFWekVrSzFLeGViWENnY1lEa29yckJhQnFXTW43ZmVJOE80SGJF?=
- =?utf-8?B?a3BDNHQwa0tTVlJMMzVmamhkYzhVRmsvbnFCTHBGSlUwWE9ReWYvbDlvZTBz?=
- =?utf-8?B?U0FReC9kYWZrd01USy91cVFrVFoxQ25NZ0FIVnc5QVdkbXhjNzJzdlppYWx0?=
- =?utf-8?B?NEkydEtGU0Z0SGFTaTZQaGhXVHB3UVN5a2NxcTBhR2RnQUFBNENuUEVsRy9C?=
- =?utf-8?B?TmVmVCtHNmwwZFVWWjJzRU9vaWx4UlFVTlp6czd4bjg0UjJxblBMdDR0OW9D?=
- =?utf-8?B?c2hZUFZibGZtSUZ4TG84MWZLWGp5OEtqdGVWazV3ZzM1SklmT2ZSbEZhM1lB?=
- =?utf-8?B?b3JLc0lCNGhKOVV2dURtQ0dIbUF0TDZsMjNKYk1ack15c1M1NU5jbEQydmhG?=
- =?utf-8?B?SkhVY2RGZFMxZ2VRbkYrSFovNmFSRjRIQ256d0twVzlnNTdYcDU1aVpwT0hP?=
- =?utf-8?B?SXhuQjZQdEVmeUd3LzdJWjlLbjdIUE1oclozSGd3Mi9WVEdWQUdPR1hTYS8y?=
- =?utf-8?B?SEtvcXlZU2RaTUJMNkNCdEpTOHNPOStPdWNBYWhwMWRsYjhUTDBkSkFPNjR5?=
- =?utf-8?B?cG9EblJaQXFyaVBwclVlcmt3TXpYVHMxMmkveXhXOWFjVkpnNXFQK2taV2pw?=
- =?utf-8?B?RHJyc2pPMGY0bmJSTzJ4dW1LTm40U080UkJKclRDZUg3bVQyLyt4SElZTm9E?=
- =?utf-8?B?WDUydU8zOFR4S2lxbzlKT3MxL0pHMmNPTEZ0NWJGc2hxS3ZEZks0djlQZ3JG?=
- =?utf-8?B?bjNSK29udFpnMExzemFyeXVac204NFdwcGhlSzV3cG81WWVyMFBHY2tmNENp?=
- =?utf-8?B?cGk5ZlJJaWpzdnNxZVZUMit3R2FRUnk1VWFaNTRtSTBLQnlGZmQxOE8xMk1m?=
- =?utf-8?B?bDlxbUcvMlMvR0gwNTBZclpETk9WcFdabW8yMjloblNuNC9JTlVJT09rVzFL?=
- =?utf-8?B?MnQ2RnlQUW1VR25qMEVoRVJ3NDExR1pKNjVFSUl2VUNFWXhyUUhXVmNiRlBv?=
- =?utf-8?B?UFlIbTdaU2JFRUZuNXFuUVhUeDQ1bDM4aElUMDJSeVdpeG9TYmEwWmd6Yjdi?=
- =?utf-8?B?SUp1czZab2VpcDFjbzZNQzFKUFRNNkN0R0t6cDVmV0pEdWY2Q016ZHVRODBQ?=
- =?utf-8?B?NjJ1OXk3OVZKTVozMDM1eXh3TFo2UVNxSTlHaGVWZWNkUTd3ME5LcGo0RHYz?=
- =?utf-8?B?S1Fvc0c2dGVFK2srdU5KUEJtbEo4OXU1aUh3bUZEdjJ2a1JjOUI4bHk1UXky?=
- =?utf-8?B?b2Y0SzlyRTViWVFFdHJaNHVZdnR0QnZuWmc2akVaWnN3NENDbWVOdjk0Ni9k?=
- =?utf-8?B?Tzg5QzRObVZQVm9CUDZJd1ozQkQwc05JU3ZkZUEwTkdTVFZaVGthbHEvUmJS?=
- =?utf-8?B?bWx3Ti9OQkZQdVFrQjVBZ0Z4bXFRT09PdlJKZGlkUU9BNzFBWWFmU2YvcGVz?=
- =?utf-8?B?RWZJb3dJSjh4Ymp3NHgyV2hOVWZwbVMrT3QxeEtrWFJoblM5UVNYdk56eFE0?=
- =?utf-8?B?YWljcTg1elVxTTBMenM4dnI2NXFwWi9zZy9zQUl6dHFWejcxOEEvam9GRWJn?=
- =?utf-8?B?ckFabFhpaU5TcFF4c0xHd2ZWb1lmcEhsVUJnYUxWdDJaNHBDL1RMbE1zalM0?=
- =?utf-8?B?dWFUNWNTUEltU3NnUUladEtOYjV1T3NDMjNrbm1zZjBRWG0vLzY1WGRHMmNP?=
- =?utf-8?B?dUppbXI2dVRWcWJQWGhmQm5iMzhhcjZqbWRReWQ5Qm9RNk9maG9KSHgya2Zn?=
- =?utf-8?B?cEd0R0MxQldkV014TjlrQVE4d1Y4Wjk4MGRBVVJzcXd5S3dsOUJvek5LQmpt?=
- =?utf-8?B?aTBaeGJpUmdCaENuOW5ieVA2ek0wTG5uVlNZeFdJdTRZd0JCYzE4dmJ5T01r?=
- =?utf-8?B?dWswTGFSNEZLUHcyTmUwZXhJVEdvK1U1aEF5d3pUQ2Z2Mk9lbjVNa3dvQ3N2?=
- =?utf-8?B?bThOY0FFSVdzS2g0YlVFcGlZV2FRZzJKYW1BMU81aEIvSjd3bFV3bllDb2g2?=
- =?utf-8?B?Rnc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89822853-1d64-409e-e4b0-08dc1b8633f5
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZmFuN1BNdG5IcHFtRWxBb2VQSHlIMktkS2F2SVNqeHZISmVZU012Ky9jdDZN?=
+ =?utf-8?B?cnJXdzh3TG1SQU9EcjVOdUVNYmFOYWhmTTJrWmkrNHRRT3R6SjlSdWU3eHZq?=
+ =?utf-8?B?K0VjemVwMjc3QjlTbVZ5V28weGt3NVhmTllBeE95aUFVY28wbkV0VmhBOTZL?=
+ =?utf-8?B?OXoxcU8wWU41cDMxL3NkdmxlZWY1SDVackRKU2xVbUQ1cTYxdkIxUlZsM3NG?=
+ =?utf-8?B?NlFUNXd1WXN1OWt5NDRXNVJPOElicnYwZUhKWVRIRnFnT2hZSUE2eTFQRmNJ?=
+ =?utf-8?B?UUFiYXg0cDN5dVRNdGFtVjcrcUlkeHREbGt0TjRMRDNtRkNtTHRtU280cGpy?=
+ =?utf-8?B?N0tjTkErcU1CN29VT2ozWEpLd1EyaUdNbmtRZUFWWW5BaUwyOVl0ekRNM0lV?=
+ =?utf-8?B?SDZJenMxMkR3emFDOUQ3eDZBYjFhWHVVM1dKOUc1L29RNjMxNVNJMG9pREI1?=
+ =?utf-8?B?UUJHVnhGWTFHQitZZDl0Z28zL254ZHJJTUxRL0pya25vMkxuWXZyTHNDTHNX?=
+ =?utf-8?B?ZFFBbWczeExyY05tRDMvVmpOTmJJcmcwOFI0MGtDdHZvbEsxMDB5eU1va1NE?=
+ =?utf-8?B?TnptWDMvK0lTNG1GeGlpdkphYmZFUitnN0VLK25PRUVCSnNEMm1acUdMbVZx?=
+ =?utf-8?B?NytCblQrVFdYcTcxcUtUWURsSWRlTnIyaGJNdWQ5ZWJKRGVMREFkUWxDR29D?=
+ =?utf-8?B?Y0k0b2tDU0RoTW54UTE4d2Y3T0xYSnZQdVhMb094c2xab0NESUtnNUFRUGFw?=
+ =?utf-8?B?Skk2cWhkN3l3K0xWazhtUUpMcVR5dStoMWZFczNlRTJzeWtXWklLRW9RNHNH?=
+ =?utf-8?B?eTZycURISHlTZ0JkbW95Znp2bnFHandnSVYvZHJUTkE3SUNTYUovZkg2YVdI?=
+ =?utf-8?B?dUtITTBnSWtnTjcyc3M4TjRiWHUxVVFNRVk1L3IzRStJVERaR0hKTTlEaG1s?=
+ =?utf-8?B?Y2JZcVc3ZVJaaTdZQTNHSjdZazdBTXFjdUwvK1ByZG1sTyt2Z21wdzVrUU9D?=
+ =?utf-8?B?UzJKVGthWFNPb2Zaay9BL2NjS1NEUUR1N3Q4Q3dxTlR2L2NRcGRZTmdpWkdo?=
+ =?utf-8?B?YWVjbVJaTzZoRVZsbXVvczhxOFNLekdNZS9KRFNoZVVGR1o0QXZOSXRyUVdv?=
+ =?utf-8?B?L0lIRW43SkUwMVhrU0tZd0lIMXh2UWZsenhNZ3Q2c3VpbStnTXpjYVpNZEF1?=
+ =?utf-8?B?V2xLZDQ5a0hTWDMzTk5waC9QaXRIa0ZsSytZYUtJc3lERm5WU0MvWEE1ekhQ?=
+ =?utf-8?B?dXIvaU5uNDViMjgzcHV6VnZDc2R0SncraTZSc3V1YVhKZGR4QmErWjVBd0t4?=
+ =?utf-8?B?a292WkdyM0piY1d3SGk3M2h4Z201ZXNzdnhlMk1pVmtiYngwM2Ivb0tickZQ?=
+ =?utf-8?B?L0NJbVdSZXhGd3p5ZjRyZHczL0FoTEEzcWlERFBwcDhQM1AyRjNvQWhTL2VH?=
+ =?utf-8?B?UTNkUnFVNExqSnlNcVVUcUpvY0lxVUhxUytmOGZZL3hmekRkbWp6bytYR2E5?=
+ =?utf-8?B?Q2x3YW5TTkRweUZob2VKdUpBSWlaMWhpWmZlYUZGTkpoVVNmZGZxZnBNMk15?=
+ =?utf-8?B?cHM2Q3lENGZXb3UvQ3V6T1MxSWp6VWRZai83cGU4S1ZTMUoyZDNHVStIS2pu?=
+ =?utf-8?B?bHQzM3JyS0ZlTjRJSUEyZUtheTVrWS9ITU1EdzFoZnNwK2JvUDM2TElvZkZw?=
+ =?utf-8?B?NGR5V0hqb3pES3JXS0ZVOGJ5YkVIdTVLdEg2VmJyb0FCendaRVloZDc2d1B5?=
+ =?utf-8?B?YUhqZEFYa0tOcjh1SFhVczBlSDZ6dHdkcjRiV1hmU2c1MGZFb0VjQTZGbTBP?=
+ =?utf-8?B?cC9oQ3h1OTNCTG5wZkhqd1U4UEZ5NGx4SXJhUzZOajI2MFV5ZGlCeENZa1gx?=
+ =?utf-8?B?WHNNOHdYdVpTaHpOY21MTzJyMHkwYTV4ZHp2VHpCazNxZEMrKzZUWFZaK1Yy?=
+ =?utf-8?B?WG5hOVJwcmFqQ3ZmenR3eHZQbXp1QWlyQkE3M3NKaThFMnZnZldtUlJWOXpa?=
+ =?utf-8?B?VmFOamxrMmMybGE1QkxjdUVPWmMwTEpDUzFqTVhoUWJ1TGVvanVHY1VuWmdI?=
+ =?utf-8?B?eEZmTU9YT0tiam5wWmZiMlo3b09XQyt1Nm9GNUc2ZzZaWGg3R2tLY09BeU5Q?=
+ =?utf-8?Q?mNG2/ZK1gr2NTx2ffekQNqESn?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a97d63ce-9e47-4043-00a2-08dc1b954e5e
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6269.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2024 20:10:39.2053
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2024 21:58:46.0200
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K/DUdVE21pOqMkq/ZUz5T0mWmnyZmcpfoABMJsQo67wYyd7VfoMeBPd0uv/fc78yc15HfishO0jdIgQir34KuhmriJu3k7f+hR3gNRu0ryI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7906
+X-MS-Exchange-CrossTenant-UserPrincipalName: zz+/xMHm05yQGEDVg6jpIzznKqzr2x8EArGU28ofYF8zTZvl5VoJ6+/lKxE4z/xyN/514dn5oCcYXKS+vx/+5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7971
 X-OriginatorOrg: intel.com
 
-Yao, Jiewen wrote:
-> Comment below:
+
+
+On 1/22/2024 12:10 PM, Dan Williams wrote:
+> Yao, Jiewen wrote:
+>> Comment below:
+>>
+>>> -----Original Message-----
+>>> From: Qinkun Bao <qinkun@google.com>
+>>> Sent: Monday, January 22, 2024 10:13 AM
+>>> To: Samuel Ortiz <sameo@rivosinc.com>; Yao, Jiewen <jiewen.yao@intel.com>;
+>>> Lu, Ken <ken.lu@intel.com>
+>>> Cc: Kuppuswamy Sathyanarayanan
+>>> <sathyanarayanan.kuppuswamy@linux.intel.com>; Williams, Dan J
+>>> <dan.j.williams@intel.com>; linux-coco@lists.linux.dev; linux-
+>>> kernel@vger.kernel.org
+>>> Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
+>>>
+>>>
+>>>
+>>>> On Jan 21, 2024, at 8:31 AM, Samuel Ortiz <sameo@rivosinc.com> wrote:
+>>>>
+>>>> On Tue, Jan 16, 2024 at 07:35:30PM -0800, Kuppuswamy Sathyanarayanan
+>>> wrote:
+>>>>>
+>>>>> On 1/16/24 5:24 PM, Dan Williams wrote:
+>>>>>> Kuppuswamy Sathyanarayanan wrote:
+>>>>>>> On 1/14/24 2:35 PM, Samuel Ortiz wrote:
+>>>>>>>> Many user space and internal kernel subsystems (e.g. the Linux IMA)
+>>>>>>>> expect a Root of Trust for Storage (RTS) that allows for extending
+>>>>>>>> and reading measurement registers that are compatible with the TCG TPM
+>>>>>>>> PCRs layout, e.g. a TPM. In order to allow those components to
+>>>>>>>> alternatively use a platform TSM as their RTS, a TVM could map the
+>>>>>>>> available RTMRs to one or more TCG TPM PCRs. Once configured, those
+>>> PCR
+>>>>>>>> to RTMR mappings give the kernel TSM layer all the necessary information
+>>>>>>>> to be a RTS for e.g. the Linux IMA or any other components that expects
+>>>>>>>> a TCG compliant TPM PCRs layout.
+>>>>>>>>
+>>>>>>>> TPM PCR mappings are configured through configfs:
+>>>>>>>>
+>>>>>>>> // Create and configure 2 RTMRs
+>>>>>>>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr0
+>>>>>>>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr1
+>>>>>>>> echo 0 > /sys/kernel/config/tsm/rtmrs/rtmr0/index
+>>>>>>>> echo 1 > /sys/kernel/config/tsm/rtmrs/rtmr1/index
+>>>>>>>>
+>>>>>>>> // Map RTMR 0 to PCRs 4, 5, 6, 7 and 8
+>>>>>>>> echo 4-8 > /sys/kernel/config/tsm/rtmrs/rtmr0/tcg_map
+>>>>>>>>
+>>>>>>>> // Map RTMR 1 to PCRs 16, 17 and 18
+>>>>>>>> echo 16-18 > /sys/kernel/config/tsm/rtmrs/rtmr1/tcg_map
+>>>>>>> Any information on how this mapping will be used by TPM or IMA ?
+>>>>>>>
+>>>>>>> RTMR to PCR mapping is fixed by design, right? If yes, why allow
+>>>>>>> user to configure it. We can let vendor drivers to configure it, right?
+>>>>>> I assume the "vendor driver", that publishes the RTMR to the tsm-core,
+>>>>>> has no idea whether they will be used for PCR emulation, or not. The TPM
+>>>>>> proxy layer sitting on top of this would know the mapping of which RTMRs
+>>>>>> are recording a transcript of which PCR extend events.
+>>>>>
+>>>>> My thinking is, since this mapping is ARCH-specific information
+>>>>> and fixed by design, it makes more sense to hide this detail in the
+>>>>> vendor driver than letting userspace configure it. If we allow users to
+>>>>> configure it, there is a chance for incorrect mapping.
+>>>>
+>>>> I think I agree with the fact that letting users configure that mapping
+>>>> may be error prone. But I'm not sure this is an architecture specific
+>>>> mapping, but rather a platform specific one. I'd expect the guest firmware
+>>>> to provide it through e.g. the MapPcrToMrIndex EFI CC protocol.
+>>>>
+>>>> So I agree I should remove the user interface for setting that mapping,
+>>>> and pass it from the provider capabilities instead. It is then up to the
+>>>> provider to choose how it'd build that information (hard coded, from
+>>>> EFI, etc).
+>>>
+>>> The UEFI specification has defined the mapping relationship between the
+>>> TDX RTMR and TPM PCRs (See
+>>> https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-
+>>> domain-extension). The current RTMR implementation in the boot loader
+>>> is “hooked” in the implementation for the TPM.
+>>>
+>>> When the bootloader needs to extend the PCR value, it calls
+>>> `map_pcr_to_mr_index`  to retrieve the corresponding RTMR index and
+>>> then extends the RTMR. Considering this behavior, I don’t think we should
+>>> allow users to configure the mappings between the PCR and RTMR. (See
+>>> https://github.com/rhboot/shim/pull/485/files).
+>>>
+>>> Add Jiewen (owner of the RTMR changes in the firmware) and Ken (
+>>> owner of the RTMR changes in the boot loader) for the visibility.
+>>
+>> I think the mapping should be static and determined by the hardware architecture.
+>>
+>> Allowing user to configure the mapping just adds complexity and
+>> confusing. For example, the user must understand clearly on what is
+>> Intel-TDX/AMD-SEV/ARM-CCA/RISCV-CoVE, how many registers they have,
+>> what is the best way to map it.
+>>
+>> It also adds complexity to the verifier. For example, the verifier
+>> must understand how a user configure the mapping, then get the
+>> expected measurement register value.
 > 
-> > -----Original Message-----
-> > From: Qinkun Bao <qinkun@google.com>
-> > Sent: Monday, January 22, 2024 10:13 AM
-> > To: Samuel Ortiz <sameo@rivosinc.com>; Yao, Jiewen <jiewen.yao@intel.com>;
-> > Lu, Ken <ken.lu@intel.com>
-> > Cc: Kuppuswamy Sathyanarayanan
-> > <sathyanarayanan.kuppuswamy@linux.intel.com>; Williams, Dan J
-> > <dan.j.williams@intel.com>; linux-coco@lists.linux.dev; linux-
-> > kernel@vger.kernel.org
-> > Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
-> > 
-> > 
-> > 
-> > > On Jan 21, 2024, at 8:31 AM, Samuel Ortiz <sameo@rivosinc.com> wrote:
-> > >
-> > > On Tue, Jan 16, 2024 at 07:35:30PM -0800, Kuppuswamy Sathyanarayanan
-> > wrote:
-> > >>
-> > >> On 1/16/24 5:24 PM, Dan Williams wrote:
-> > >>> Kuppuswamy Sathyanarayanan wrote:
-> > >>>> On 1/14/24 2:35 PM, Samuel Ortiz wrote:
-> > >>>>> Many user space and internal kernel subsystems (e.g. the Linux IMA)
-> > >>>>> expect a Root of Trust for Storage (RTS) that allows for extending
-> > >>>>> and reading measurement registers that are compatible with the TCG TPM
-> > >>>>> PCRs layout, e.g. a TPM. In order to allow those components to
-> > >>>>> alternatively use a platform TSM as their RTS, a TVM could map the
-> > >>>>> available RTMRs to one or more TCG TPM PCRs. Once configured, those
-> > PCR
-> > >>>>> to RTMR mappings give the kernel TSM layer all the necessary information
-> > >>>>> to be a RTS for e.g. the Linux IMA or any other components that expects
-> > >>>>> a TCG compliant TPM PCRs layout.
-> > >>>>>
-> > >>>>> TPM PCR mappings are configured through configfs:
-> > >>>>>
-> > >>>>> // Create and configure 2 RTMRs
-> > >>>>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr0
-> > >>>>> mkdir /sys/kernel/config/tsm/rtmrs/rtmr1
-> > >>>>> echo 0 > /sys/kernel/config/tsm/rtmrs/rtmr0/index
-> > >>>>> echo 1 > /sys/kernel/config/tsm/rtmrs/rtmr1/index
-> > >>>>>
-> > >>>>> // Map RTMR 0 to PCRs 4, 5, 6, 7 and 8
-> > >>>>> echo 4-8 > /sys/kernel/config/tsm/rtmrs/rtmr0/tcg_map
-> > >>>>>
-> > >>>>> // Map RTMR 1 to PCRs 16, 17 and 18
-> > >>>>> echo 16-18 > /sys/kernel/config/tsm/rtmrs/rtmr1/tcg_map
-> > >>>> Any information on how this mapping will be used by TPM or IMA ?
-> > >>>>
-> > >>>> RTMR to PCR mapping is fixed by design, right? If yes, why allow
-> > >>>> user to configure it. We can let vendor drivers to configure it, right?
-> > >>> I assume the "vendor driver", that publishes the RTMR to the tsm-core,
-> > >>> has no idea whether they will be used for PCR emulation, or not. The TPM
-> > >>> proxy layer sitting on top of this would know the mapping of which RTMRs
-> > >>> are recording a transcript of which PCR extend events.
-> > >>
-> > >> My thinking is, since this mapping is ARCH-specific information
-> > >> and fixed by design, it makes more sense to hide this detail in the
-> > >> vendor driver than letting userspace configure it. If we allow users to
-> > >> configure it, there is a chance for incorrect mapping.
-> > >
-> > > I think I agree with the fact that letting users configure that mapping
-> > > may be error prone. But I'm not sure this is an architecture specific
-> > > mapping, but rather a platform specific one. I'd expect the guest firmware
-> > > to provide it through e.g. the MapPcrToMrIndex EFI CC protocol.
-> > >
-> > > So I agree I should remove the user interface for setting that mapping,
-> > > and pass it from the provider capabilities instead. It is then up to the
-> > > provider to choose how it'd build that information (hard coded, from
-> > > EFI, etc).
-> > 
-> > The UEFI specification has defined the mapping relationship between the
-> > TDX RTMR and TPM PCRs (See
-> > https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-
-> > domain-extension). The current RTMR implementation in the boot loader
-> > is “hooked” in the implementation for the TPM.
-> > 
-> > When the bootloader needs to extend the PCR value, it calls
-> > `map_pcr_to_mr_index`  to retrieve the corresponding RTMR index and
-> > then extends the RTMR. Considering this behavior, I don’t think we should
-> > allow users to configure the mappings between the PCR and RTMR. (See
-> > https://github.com/rhboot/shim/pull/485/files).
-> > 
-> > Add Jiewen (owner of the RTMR changes in the firmware) and Ken (
-> > owner of the RTMR changes in the boot loader) for the visibility.
+> I agree with this, what I have a problem with is that this:
 > 
-> I think the mapping should be static and determined by the hardware architecture.
+> https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
 > 
-> Allowing user to configure the mapping just adds complexity and
-> confusing. For example, the user must understand clearly on what is
-> Intel-TDX/AMD-SEV/ARM-CCA/RISCV-CoVE, how many registers they have,
-> what is the best way to map it.
+> ...is vendor specific, especially when the kernel enabling is being
+> targeted as cross-vendor.
 > 
-> It also adds complexity to the verifier. For example, the verifier
-> must understand how a user configure the mapping, then get the
-> expected measurement register value.
 
-I agree with this, what I have a problem with is that this:
+I have the same concern.
 
-https://uefi.org/specs/UEFI/2.10/38_Confidential_Computing.html#intel-trust-domain-extension
+> So, yes, the mapping should be allowed to specified by the low-level
+> driver, but at the same time every vendor should not reinvent their own
+> enumeration method when we have EFI for that.
+> 
 
-...is vendor specific, especially when the kernel enabling is being
-targeted as cross-vendor.
-
-So, yes, the mapping should be allowed to specified by the low-level
-driver, but at the same time every vendor should not reinvent their own
-enumeration method when we have EFI for that.
-
-In other words Linux should enforce unification across vendors and
-consider waiting until the RTMR enumeration is promoted out of the
-vendor specific section to a cross vendor standard.
+Given PCR->RTMR mapping is static, I just wonder why it needs to be kept 
+in kernel. Given that PCRs can never be 1:1 mapped to RTMRs, and that 
+TDX quotes are never TPM quotes, applications used to extend PCRs would 
+have to be changed/recompiled. Then wouldn't it suffice to define the 
+mappings as macros in an architecture specific header file?
