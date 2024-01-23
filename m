@@ -1,247 +1,209 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3B8481DC
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 19:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706037003; cv=none; b=Z8O+pxmrx+LrJTBUYY7FehpSVgM9P00miJ74XoYeO2Gdf8MZDPmX+odr/H38Ub6ERb61L0M6rQoLu9EaJTbLDeZd+n7vMabSuYrM466tF03RU8HmtGEUQZaXtYs6LI/mwDdSf0keWBXBEoQdJFZDlOI1myK7pr6oGzT32LGtehA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706037003; c=relaxed/simple;
-	bh=qnPnYU3UCCouLaq3I4xfQprTzMjKQEyku6K7RAxK7uE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V0XAGm/x6jcrjW31PUH8gTnQyX9wsijWYlPO05tWYIkQQkVvdckAsun/HIbeCb4mQEZm9F+qyaV5NTOBYJWAd0LI3ln9+GVY977D/dPNHO4mWRDq8a0V/lCuJE5hRniPQSlRN+Vh7ENDVYSYPrnluKaGtJJg4HCESvo0m1wxULo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vUaUXhJM; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712CC6A005
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 19:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706037282; cv=fail; b=H7XTnaUqF+MCj+54j5WwLSIgrkeIH19c+bekEX9w9FlyGMcUyq/o3CS+oVM4S3yq6WLmdAmDA1nSCT9HYUQwzIC8ufOOYvmKPlN6zq7FWsHzBSpmMvy86RQKn3LAomhk9oWf7JWsYUB0uq4ZwoAgYCfuwVwn6kC/RZQE6PXjRyQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706037282; c=relaxed/simple;
+	bh=X81x54J3KgRrBOhq1QcTn+vWx44WOA6j4v24x7x59eU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sKOFjdZTqzYXoGuY68A/0mUJVHPEs5n9jyn5krNVt84WT/pTARIxean2+571y9hhjak5XjsTgnO9h5S+BOyL3wCmxhMmFwZy2NtV02RBpgYnTc6Dv+75fyJNcQP7/3lOPj0cpaPuq1CCVxSlPw1mwqVRkds/YOVvA/pQD3nUrIk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GAyZ27Jn; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vUaUXhJM"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-55818b7053eso2391a12.0
-        for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 11:10:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706036999; x=1706641799; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HCHEH5/HbAn23PxxtNB7IHSI9wOxxl+NwqvMevwTt4Y=;
-        b=vUaUXhJMjgFUI4nkeVNgvZnXkMx6KV35ta+asWmG0VvffUV9YJaJYa8wx0VVzTS0zr
-         EirkAW/HGQU9tZjlex4sKlrEXtgm6S6vDuU295NTAFAHC1NX+VXlVQS7t8w0gFtUZHyq
-         6O01+9M6qFWiS9dGfgGCaC/xuEUqKLcEVh+flVNn/AhA4WPWD1hJbZN995GDf0QjUttT
-         TpK8Ilq3Po7URnonP5TSipmpO6eLxYbvpSY2g5CyxjI87c+tAJffZDryXBH+wH4tGa9B
-         FyC7osNmURIva/JGY1zffY+Bpf2j9tyP6FwvxlsAaGJ0Nk5atgUv/lImgxx1u0PDUTts
-         ABcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706036999; x=1706641799;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HCHEH5/HbAn23PxxtNB7IHSI9wOxxl+NwqvMevwTt4Y=;
-        b=M4K8TUV6KHjyjZdIOnl5swU2JvtlVgXL4BFyYlzmQ5tF6B8+cEDF7EhK6PtB0bSbL3
-         YeSr6g++MAUQc9MHFgRYqolrpXYLZuXnkWK6yl+5iEPnu4MBWYXS+MyBZdSeWsT3dGbh
-         ZNEw7zhspCa7bcvq85NfmSyGwnl6OIMtRDNE1rH+3goCs2opGFWtX5L28Hn8xJoXF/3m
-         JsLyXnbBhJLzFl8lHjYxPcrwhwdcsl4ZkcSe2zWpl8AZmXzmT7vFSIuVDkX4bEvhP4HG
-         IMmPO1AfKDm63n4sDPqIchToVB+jQFnTrg7b2tjZhXV3a+9henXcKFeAmGI381N00pRq
-         fYYQ==
-X-Gm-Message-State: AOJu0Yzpc5mP9QPa0IPIqblVFtEHW02hzAUfMUPA+mmiaYBjc/VL/I9Y
-	/ucw6gEPcNrfwEMIN+iOshs6qEj5vjioce8l4hxvlj78IwFZGrSWTDLZV73gR6NCeQHZAE7Ut67
-	rxpRNHudqNoEj+913FameVzYaCc2X2O70U7kU
-X-Google-Smtp-Source: AGHT+IGyHsDKZDRw84SigcKxj+vazyoy83vVM2HM6XtYpkkZw104LKSJRBAxIsTSglb20He/DLk1COCbwOcrO9JZsOc=
-X-Received: by 2002:a05:6402:2922:b0:55a:5fe0:87e4 with SMTP id
- ee34-20020a056402292200b0055a5fe087e4mr49878edb.0.1706036999257; Tue, 23 Jan
- 2024 11:09:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GAyZ27Jn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706037280; x=1737573280;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=X81x54J3KgRrBOhq1QcTn+vWx44WOA6j4v24x7x59eU=;
+  b=GAyZ27JnmgALWxFxm482VVfVs/RbvU4xRDv7eNDfPxQG/3ozai0K4n55
+   oUr4HanRzPEDeDynUeY1Wi+i1wJBIS6okK6AbKls+H/PcI90izx6tF5qr
+   iyXJXGoVgsy+pj7OC5/dnyBTHjpDr5PDy0Lds0EOKp+uiKc+FzXui63BZ
+   nWvRO0M9cDbWnYouO0L3UaPHcl+grcKDmY48MrgbPLJVywjesZ6K8CyoP
+   br/Z0C+HZpf2LP2bkWDAwUc5HNH66iLbkNLyCe1Gt1+iLbcnT5GbmZzmA
+   qAXjULnYO9d+qS/85Nm0ZZr0kFwfo27iqQ5KAS60cN0oI0LovrcfiUnvS
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="15142431"
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
+   d="scan'208";a="15142431"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 11:14:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="929428217"
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
+   d="scan'208";a="929428217"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Jan 2024 11:14:31 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 23 Jan 2024 11:14:30 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 23 Jan 2024 11:14:30 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 23 Jan 2024 11:14:31 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=n8teBktxZGLiUNN0/CqpUuR+MU6ejXk/gL0K1CfGWI/PTO7IO1NjKMME4iilp+F8JQQ+KTV+FaHf5ssgW+aAHJfzGe42g92Zqe0sk4Hl5xSkssY3UuE7Cvs1Z823JoXvInuUPbRvr5ruT2HnfA7PbQ5UyiTlp7bVKXYoS57nGi20hZWuSzH1xAMwx8o6EF3q4twVm0OPQrmd4T3+QEtYEPs55BEo5xw1IaJysYJhr2HDwgGSy6T3p46O2+5KW+4PHSWBf161O0VjJRTYjRznSr+sjox5P+uPZGNhKz80aUM30tDOpbG+EeR+W2QGcIR8c0eMscV/Outl2eNizL1Xug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K4JWzwJnTDzmIOq/dzI1jaz8dI1KOBbPxf118mEcSB8=;
+ b=AGufYGz5S6AfHPNsCImwW8ZuhH8P5mwJZHIb3q//rKk8jKqS61bR3vLLD4sUfjvyZ+JbC8eDwkyI9+xEKa2HcO1/Z/f87gtB9RXP+skJmr955ho0ZsVAkhHw8pGxzkEsSOVm8VtsAbmxDezJBphxqEY18xIGEdZZFT/DnLpH1AG4BKfqZbQbYwmDwc54chpDvsDalrmMIxZXzLTMHIixWumRav/gOnukMW+tE3gBEpvEjZEg8PZsUGOCKGLDrsIfuXMml7PoC26j8tE4Dm3OqIRakZ5stODrMKyGv9hf918SUXbGJ18vhciMsX0Ui/+eTTiafUg/KRygR7cf+vBMLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by MN0PR11MB6060.namprd11.prod.outlook.com (2603:10b6:208:378::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.34; Tue, 23 Jan
+ 2024 19:14:28 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7202.035; Tue, 23 Jan 2024
+ 19:14:28 +0000
+Date: Tue, 23 Jan 2024 11:14:26 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: "Xing, Cedric" <cedric.xing@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, "Yao, Jiewen" <jiewen.yao@intel.com>, Qinkun Bao
+	<qinkun@google.com>, Samuel Ortiz <sameo@rivosinc.com>, "Lu, Ken"
+	<ken.lu@intel.com>
+CC: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
+Message-ID: <65b010121635d_37ad294f3@dwillia2-xfh.jf.intel.com.notmuch>
+References: <1bbf8d3e-aa94-48c7-a1e4-76f9eefc4af7@linux.intel.com>
+ <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
+ <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com>
+ <Za1G9I+tYuIL9ser@vermeer>
+ <CF3D8DE1-AD47-4A77-B8BD-8A12A6F7E9DB@google.com>
+ <MW4PR11MB5872F46A2089C8C2D8EF7A008C752@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <65aecbbce09dd_107423294b7@dwillia2-xfh.jf.intel.com.notmuch>
+ <c3b99264-233b-4997-9e20-c4c2693b8cdc@intel.com>
+ <65aeecea827f0_37ad2948@dwillia2-xfh.jf.intel.com.notmuch>
+ <14dffda2-f413-4304-9932-3ac8ddfb30e4@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <14dffda2-f413-4304-9932-3ac8ddfb30e4@intel.com>
+X-ClientProxiedBy: MW4PR04CA0111.namprd04.prod.outlook.com
+ (2603:10b6:303:83::26) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240123160704.1270147-1-nik.borisov@suse.com>
- <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com> <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
-In-Reply-To: <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Tue, 23 Jan 2024 11:09:47 -0800
-Message-ID: <CAAH4kHbYC4j2Zsz9fBbvUdQzcZxHtQ_H+bR8pS9_QkD0N+3ouA@mail.gmail.com>
-Subject: Re: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
-To: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-coco@lists.linux.dev, 
-	dave.hansen@linux.intel.com, x86@kernel.org, kirill.shutemov@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MN0PR11MB6060:EE_
+X-MS-Office365-Filtering-Correlation-Id: 38671d10-3f8b-45ca-a763-08dc1c478543
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hc445KXphlMxjmu3Tb0mI45R2rnZd5F6ioXyLilBy5iQgp6eHe86/YljPP4xdFdJhcDUDT1x0nY2Vccjn/jV9OBsofkvREml0nYHLupWD47Ey651i+TXeMvYkakh9NQPxuhzR4R7G1dLWtQU8JtCPC+oKln/jWw4izwvUc8qHxDfH1W7L7w+RvQhtQ6804T9dUH5XeUe2bBRPfklKmoahCN//Dl6fIRBDw8iR2UuvOm4aIzT6Is3QKKX4PiAGC/iuUWHspCEXXuxtkNC7zLhOKQUhBRdHxsH/QRA0wsrt9Abf3iQ6U6cIinTozqWFtCBKJk0EiT2qpS6FH8etTkj6gCugW+vY7bYYAPaSn9cBAu6MyxU+vvzRZ/rR38LCnBQyc648g8bkXgBoDhmYPATRLZnqpUATh9fqZ8qQtsjRj8Hpjpv+UkmV/iZRcTReSkyoSHGAX4HeDtE9VwQW/9+FByzeog1jDmkDHbXTU/st4S/MpK0H8x8um529cTdvCmgCoMoT2g67zscHNzTnkWiPzlvGGxjPtC7Bc1uSz4Bc1VGDpRxW8Sm1gyGCdaCmMM/
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(366004)(346002)(376002)(39860400002)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(83380400001)(66946007)(5660300002)(6512007)(9686003)(26005)(38100700002)(4326008)(8676002)(110136005)(8936002)(6506007)(53546011)(478600001)(54906003)(66556008)(6486002)(2906002)(66476007)(6636002)(316002)(41300700001)(82960400001)(86362001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?nE5xIiW1lfwLYmGVBfpAJ6P8dLbRxeX059O6I+c6DVQSvoQXwtuPacpkL6CG?=
+ =?us-ascii?Q?l3EC/jUkRm9Fgex2iu9tw7ysJmVuuZZfCdMqe6J3Uz06E/g5sLbRTYFBhSzW?=
+ =?us-ascii?Q?2CWjhN4dbjiDuEvzrqix6OQvxu27oNpdvVHTRiakmQd+ihLJBAEoTp86rVVc?=
+ =?us-ascii?Q?8B0BkZ2BtlvHNxOUQPlE4nXEzO9EYUPMqg0GrhRDqdUNpifeGb7mQbT+939X?=
+ =?us-ascii?Q?KKRZAxTvIbaA0iriqEexM7TtNaBTM0WIcVyXyBTiYmKuDoZkjRtNB3ANAPR1?=
+ =?us-ascii?Q?S44EsoaNy+YYasGAqyn8HL33HTnEd0EbdpGBK9cHkguwWRq9ITJHquUyVHQ5?=
+ =?us-ascii?Q?L8E/AWQ3Ye0Ukn53AVqNno0cjxRpVTkCKqJGjiBB2Icdnky/zTUIe+kgnzv2?=
+ =?us-ascii?Q?tW8X+0RBmxy53qEUq/0IkDva6Xl7AUPgouw3gUe5sIY751QChQPuWyQUIDRV?=
+ =?us-ascii?Q?HDoXfrMAVeAcQV8IUUOIw5h7QjGJI/zTvmZzfqNjN3puszeqzxVEq4RcSm+W?=
+ =?us-ascii?Q?Cm9klBGV9SAFWjv8yhRrpoRjSAY6AJcXaw/XcWPS6Hu+RWujSftoxOEn4L7y?=
+ =?us-ascii?Q?6IRfvftOTOzlKqX6D2ihpS5YHO6TE5wCF3599NfWIGR6V+BMgRik5/2y8XC2?=
+ =?us-ascii?Q?k3f54951xAI4OZt7t8h967UJky2uJtxFXnIWU/EdZxaQ9aCa4f29hBdgr+Qg?=
+ =?us-ascii?Q?F9lOdvk93XmDofnFFMOL/EDvFsNVjPo5xocYdzu/WvKqd90LEVgjUVVi0PTq?=
+ =?us-ascii?Q?I7+0ZfLkhhBs7f9qCQUfGNp/lVrxB57H0tCzFNYefxc7Al9JY8UGqv8R2CZO?=
+ =?us-ascii?Q?MkT+TsbXk4Jv/0ih0bdIbm5xYFospqAMAIlma5RpSir203hSEMJIkTuGwwk2?=
+ =?us-ascii?Q?MMJeGSS6DRnwhou9sm3AbgCA+UPTZ6gj3F6lBuy4oPOUwEv/jZbOf0c+Gq27?=
+ =?us-ascii?Q?fGu6QRDrM2dYsPWH4J11Fpd4WLxyYu5vESljfDgvnnBkZqTgeVF+rGyipNpZ?=
+ =?us-ascii?Q?SRZGxxGiv7YnbYRloGIVtDi9MGGGZJzfQegDjrUTemowViz2A17LafkOCp77?=
+ =?us-ascii?Q?FclG5D/krzSag4yhF6Sktjtb0zAVxsjCyHVGHXCfVdKkg35cyMWjy4Gw3Sn0?=
+ =?us-ascii?Q?qbRJFtp94aVTel5/ZuOQpocRzDm/FS89GfI1Ov4uO4rwutRk50Ske7dK+iYU?=
+ =?us-ascii?Q?EROEpimjwIumtfaVd6ufuwVGl6ELxxDaAuig8Kyq2wVVRSSLJlscfMPSI8ZS?=
+ =?us-ascii?Q?Iw9X1afLYAjXmjVqmGtYQBtO5+Y3/A1u92vY+yHAdtGewDWA+L5M/RTyGoG5?=
+ =?us-ascii?Q?gs3cRPS3qlnZ0aXYP2LizVyCvtW9/Hlff3PgZQuX/69sdVEWQIBTCHjuQtYO?=
+ =?us-ascii?Q?PENkS3109WSRbvoTdBlA+g2Us81EUibjgrc5CrZg1hV3SgI2ZoeW92WL6vKT?=
+ =?us-ascii?Q?SMAnuLzvHkDLPlXGBVKxuYr1bq33BQffonJgquqf2NChEzXXpGy64sEJNQxT?=
+ =?us-ascii?Q?a9lvGRz2rSu4XRmCH5UzvOukKvTY4/SZNzNOXzNpDbGQZ59vOZHQxHDMNcbM?=
+ =?us-ascii?Q?DvZG/WI8Ywm4UKFmi75AmKWX9hCI55yyHX7RBISGNJTN9kfTm7QUuxaMsRAi?=
+ =?us-ascii?Q?9w=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 38671d10-3f8b-45ca-a763-08dc1c478543
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2024 19:14:28.5211
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8m7k+neYmWh4M9d7YTDatSvUy7yVh1mOETtKo8UN5llE5nWoyhwiOrFZCyYniAUvZ605qTZcEYNs3eUlT+fuVSwYga+2bHFXUCAebot6Or0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6060
+X-OriginatorOrg: intel.com
 
-On Tue, Jan 23, 2024 at 10:24=E2=80=AFAM Nikolay Borisov <nik.borisov@suse.=
-com> wrote:
->
->
->
-> On 23.01.24 =D0=B3. 19:51 =D1=87., Kuppuswamy Sathyanarayanan wrote:
-> >
-> > On 1/23/24 8:07 AM, Nikolay Borisov wrote:
-> >> When this driver got merged initially there was no widely agreed upon
-> >> interface how the quote generation interface will work so having an
-> >> ioctl made sense. However, there's now a vendor-neutral interface via
-> >> configfs. Just remove the old ioctl interface and leave only the the
-> >> configfs one.
+Xing, Cedric wrote:
+> On 1/22/2024 2:32 PM, Dan Williams wrote:
+> > Xing, Cedric wrote:
+> > [..]
+> >>> So, yes, the mapping should be allowed to specified by the low-level
+> >>> driver, but at the same time every vendor should not reinvent their own
+> >>> enumeration method when we have EFI for that.
 > >>
-> >> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-> >> ---
-> >
-> > This ABI allows the user to get the raw report which is further used
-> > for Quote generation via vsock. AFAIK, some vendors (TDX users) and
-> > DCAP user libraries are still using this ABI to support attestation ove=
-r
-> > vsock model.
-> >
-> > Don't you think we should wait till there are no users before consideri=
-ng
-> > removing it?
->
-> Given that hw with TDX was just released I'd be surprised if there are
-> any users? But then again, this is an RFC so let's get opinions :)
->
+> >> Given PCR->RTMR mapping is static, I just wonder why it needs to be kept
+> >> in kernel. Given that PCRs can never be 1:1 mapped to RTMRs, and that
+> >> TDX quotes are never TPM quotes, applications used to extend PCRs would
+> >> have to be changed/recompiled. Then wouldn't it suffice to define the
+> >> mappings as macros in an architecture specific header file?
+> > 
+> > I think something is wrong if applications are exposed to the PCR->RTMR
+> > mapping thrash. I would hope / expect that detail is hidden behind a TPM
+> > proxy layer sitting in front of this mapping on behalf of TPM-client
+> > applications.
+> 
+> Hi Dan,
+> 
+> My apology for the confusion! I think we are talking about 2 different 
+> scenarios - (1) this patch alone; and (2) this patch + vTPM.
+> 
+> Scenario 1: This patch provides RTMR access only. My assumption is, 
+> there are existing application (and/or kernel modules) that extend to 
+> PCRs today and would like to work in TDs where only RTMRs are available. 
+> Changes are of course necessary in those applications as TPMs/PCRs are 
+> no longer available, but from security perspective they would like to 
+> keep the same activity log and just change to use RTMRs (in lieu of 
+> PCRs) as the secure storage. Hence a PCR->RTMR mapping is necessary and 
+> must be agreed upon by all those applications and relying parties. IIUC, 
+> this is the intention of having PCR->RTMR mapping config maintained by 
+> the kernel, as proposed by Sam O. originally.
+> 
+> Scenario 2: A vTPM is implemented on top of this patch, in which case 
+> the existing applications don't have to change as they can continue 
+> extending to the same PCRs, which will then be emulated by the 
+> underlying vTPM implementation. PCR->RTMR mapping in this scenario is 
+> obviously internal to the vTPM and I agree with you completely that it 
+> should be hidden inside the vTPM.
+> 
+> My comment in my previous email was regarding Scenario 1. I hope the 
+> clarification above helps.
 
-There are users in private preview, so non-production testing, but still us=
-ers.
-Our (Google's) testing environment is already updated to use the new
-configfs-tsm interface. I think with the technology being so new, we
-ought to remove the old interface sooner rather than later to make the
-early adopters the only ones who need to incur penalties for a
-volatile interface.
+Got it, yes, makes sense.
 
->
-> >
-> >>
-> >> I think it's better to remove the legacy interface now, before there's=
- been a
-> >> wide adoption of it, cementing it as an ABI of sorts.
-> >>
-> >>   drivers/virt/coco/tdx-guest/tdx-guest.c | 75 +----------------------=
---
-> >>   1 file changed, 2 insertions(+), 73 deletions(-)
-> >>
-> >> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/co=
-co/tdx-guest/tdx-guest.c
-> >> index 1253bf76b570..1642a0f70333 100644
-> >> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> >> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> >> @@ -66,41 +66,6 @@ static DEFINE_MUTEX(quote_lock);
-> >>    */
-> >>   static u32 getquote_timeout =3D 30;
-> >>
-> >> -static long tdx_get_report0(struct tdx_report_req __user *req)
-> >> -{
-> >> -    u8 *reportdata, *tdreport;
-> >> -    long ret;
-> >> -
-> >> -    reportdata =3D kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
-> >> -    if (!reportdata)
-> >> -            return -ENOMEM;
-> >> -
-> >> -    tdreport =3D kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
-> >> -    if (!tdreport) {
-> >> -            ret =3D -ENOMEM;
-> >> -            goto out;
-> >> -    }
-> >> -
-> >> -    if (copy_from_user(reportdata, req->reportdata, TDX_REPORTDATA_LE=
-N)) {
-> >> -            ret =3D -EFAULT;
-> >> -            goto out;
-> >> -    }
-> >> -
-> >> -    /* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
-> >> -    ret =3D tdx_mcall_get_report0(reportdata, tdreport);
-> >> -    if (ret)
-> >> -            goto out;
-> >> -
-> >> -    if (copy_to_user(req->tdreport, tdreport, TDX_REPORT_LEN))
-> >> -            ret =3D -EFAULT;
-> >> -
-> >> -out:
-> >> -    kfree(reportdata);
-> >> -    kfree(tdreport);
-> >> -
-> >> -    return ret;
-> >> -}
-> >> -
-> >>   static void free_quote_buf(void *buf)
-> >>   {
-> >>      size_t len =3D PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-> >> @@ -249,29 +214,6 @@ static int tdx_report_new(struct tsm_report *repo=
-rt, void *data)
-> >>      return ret;
-> >>   }
-> >>
-> >> -static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
-> >> -                        unsigned long arg)
-> >> -{
-> >> -    switch (cmd) {
-> >> -    case TDX_CMD_GET_REPORT0:
-> >> -            return tdx_get_report0((struct tdx_report_req __user *)ar=
-g);
-> >> -    default:
-> >> -            return -ENOTTY;
-> >> -    }
-> >> -}
-> >> -
-> >> -static const struct file_operations tdx_guest_fops =3D {
-> >> -    .owner =3D THIS_MODULE,
-> >> -    .unlocked_ioctl =3D tdx_guest_ioctl,
-> >> -    .llseek =3D no_llseek,
-> >> -};
-> >> -
-> >> -static struct miscdevice tdx_misc_dev =3D {
-> >> -    .name =3D KBUILD_MODNAME,
-> >> -    .minor =3D MISC_DYNAMIC_MINOR,
-> >> -    .fops =3D &tdx_guest_fops,
-> >> -};
-> >> -
-> >>   static const struct x86_cpu_id tdx_guest_ids[] =3D {
-> >>      X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
-> >>      {}
-> >> @@ -290,27 +232,15 @@ static int __init tdx_guest_init(void)
-> >>      if (!x86_match_cpu(tdx_guest_ids))
-> >>              return -ENODEV;
-> >>
-> >> -    ret =3D misc_register(&tdx_misc_dev);
-> >> -    if (ret)
-> >> -            return ret;
-> >> -
-> >>      quote_data =3D alloc_quote_buf();
-> >>      if (!quote_data) {
-> >>              pr_err("Failed to allocate Quote buffer\n");
-> >> -            ret =3D -ENOMEM;
-> >> -            goto free_misc;
-> >> +            return -ENOMEM;
-> >>      }
-> >>
-> >>      ret =3D tsm_register(&tdx_tsm_ops, NULL, NULL);
-> >>      if (ret)
-> >> -            goto free_quote;
-> >> -
-> >> -    return 0;
-> >> -
-> >> -free_quote:
-> >> -    free_quote_buf(quote_data);
-> >> -free_misc:
-> >> -    misc_deregister(&tdx_misc_dev);
-> >> +            free_quote_buf(quote_data);
-> >>
-> >>      return ret;
-> >>   }
-> >> @@ -320,7 +250,6 @@ static void __exit tdx_guest_exit(void)
-> >>   {
-> >>      tsm_unregister(&tdx_tsm_ops);
-> >>      free_quote_buf(quote_data);
-> >> -    misc_deregister(&tdx_misc_dev);
-> >>   }
-> >>   module_exit(tdx_guest_exit);
-> >>
-> >> --
-> >> 2.34.1
-> >>
-> >>
->
+I think the only use cases in scenario 1 are either kernel internal or
+the backend of the vTPM implementation.
 
-
---=20
--Dionna Glaze, PhD (she/her)
+Even though RTMR is cross-platform it is not universal, so vTPM remains
+the universal solution for most applications.
