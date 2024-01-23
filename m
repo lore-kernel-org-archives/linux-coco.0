@@ -1,230 +1,209 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF357612FA
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 16:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9055811E7
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 17:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706026034; cv=none; b=nq0AeN08uWmbyqPADhaBvTdbEXYSell55ZSU354G9YwOQPzs5QE55f7A8Rvm/UeQVvR0n3eASv1Pu0DG3ES5ZDYcRww7AASJxdtbp7HZydkCS9VBm8SoSzYRhyy3vNHZ8N+aZ5Pdh3gLOQaYnJ3jHnCuppH4GwisgqUZWAhQCuk=
+	t=1706032273; cv=none; b=AcKQSHV++KOkVsAkdi8vSX8I5xaYCiX8NryIaOpt2wUhDIA4MR2Hm2TAHoZuoHXnQMxOKjScdtF7GrttnwzD/kFIzT4TJ8ieLkJAwm3VkanYX/SWyOzHTzCpUJSLyOFSe1OKAaynYpo/o6V+NBBbTISXhdbVSj/+Qj61pNhk2vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706026034; c=relaxed/simple;
-	bh=oArA8gAgOf6DwtHqEkWkB4PfhwP6GD1CXVafL0V+osM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c6ejBCR0xpxSJjD3ezm3L10m/hitX+QlwLc+ZxbPYB4UjI2bmcnpUgjNdB56dzN6HV106CCEVREnI6xDGlboY1kzDG09dM9PoccwdlxsCeOyCorTxLIqmpCkEKP2Y+r7yF8EQ4FwImmElKZUtbvjd5c2YAE2Mm7XeLMdn+3ZK54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=Ca/TdBl7; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=VadsGYOm; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1706032273; c=relaxed/simple;
+	bh=BxzQgin45pshm06ZzBQCLW6SoFp8AflNyPYA4gCDqdU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kOhLjfnDofyKmsdqpk7K3g3BXpy0tL/UdGRrVtzJvLBENDTsGM2RXGHasR/yWEw2arkhaFLPqBIXDBgM5PKAJSGoe8e+TNG3ilLE+4mjrp1R5QHFbcb5fjDmHg+HJ0SYukafUpEzG6VG64H5Za1rQs7mOw66ms3+rxSmzYWrxs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mZTUEeHj; arc=none smtp.client-ip=192.55.52.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="Ca/TdBl7";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="VadsGYOm"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DE26F22362;
-	Tue, 23 Jan 2024 16:07:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706026031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=i0l4zzRKpor7redu5Wc4ZskDiBwMjnit2xX74Qd5zRA=;
-	b=Ca/TdBl7o7aNP6h2xY/T+QGYH+Z9W8V3xfIVi+LA5nAeUwVUVbU+nqylgKGtHHlp3RvwRg
-	OOpZymPvEDW1MdShCUojjeT79qR7zM9xSxzZn/Cvfy96hVUqliBWLY+UnWdCTqbaMTL3AH
-	6jNyNXvjWWHDr0Kk0w1OlZf/LBaYUlA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706026029; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=i0l4zzRKpor7redu5Wc4ZskDiBwMjnit2xX74Qd5zRA=;
-	b=VadsGYOmViRGkoboXLuuVhSHO0eIhNwjPMaeVo9MhyYonEcMeeKBf0/0Q7YDQvhgDfqZXt
-	rzSH7KOZOt/xq9cJZNYvfFyNIJykKXnCXPJHM7Ow6+CfYZYZBzRekDAvIozxLU7P9YrnFy
-	WbzJbEsAWaFPFREK2doVHxX6tnHP/Cc=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4100D136A4;
-	Tue, 23 Jan 2024 16:07:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id D6qiCy3kr2WeBAAAD6G6ig
-	(envelope-from <nik.borisov@suse.com>); Tue, 23 Jan 2024 16:07:09 +0000
-From: Nikolay Borisov <nik.borisov@suse.com>
-To: linux-coco@lists.linux.dev
-Cc: dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	kirill.shutemov@linux.intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
-Date: Tue, 23 Jan 2024 18:07:04 +0200
-Message-Id: <20240123160704.1270147-1-nik.borisov@suse.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mZTUEeHj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706032270; x=1737568270;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BxzQgin45pshm06ZzBQCLW6SoFp8AflNyPYA4gCDqdU=;
+  b=mZTUEeHjs/hZLsyy+c1cbkYW/og1HmJ4qljcRcRMOaWexUFz9EXTMfJM
+   pa5908eIlp6I0PxvS3CLmiRwbZ+8BXPaJU8wxj8WbxPSGB0HQD3AfmuY8
+   bxpsg37eCQVnLTDQDSN+zfvoHVPzg6YPYm6344JG9KvOl6T5QE+o7p+Cr
+   vm3XR0sksGgELcfgTYIq42nXYZop4KUyjy58905gL6PcLmK1MewcKz9MX
+   n1dYyN5TEaksMbCKNVi7Sjmtzv7UkwqTjpsliP6IegsfpAe5cP6u1CDxa
+   AzEQI0efmEKr/1a2a1esNnVpCPWIBfwIz2K2Uo7A3zvrAwLuimo+Oxhvc
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="398757252"
+X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; 
+   d="scan'208";a="398757252"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 09:51:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,214,1701158400"; 
+   d="scan'208";a="1754442"
+Received: from weifeng1-mobl1.amr.corp.intel.com (HELO [10.212.171.111]) ([10.212.171.111])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 09:51:09 -0800
+Message-ID: <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com>
+Date: Tue, 23 Jan 2024 09:51:08 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=VadsGYOm
-X-Spamd-Result: default: False [2.69 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 DWL_DNSWL_MED(-2.00)[suse.com:dkim];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 DKIM_TRACE(0.00)[suse.com:+];
-	 MX_GOOD(-0.01)[];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: 2.69
-X-Rspamd-Queue-Id: DE26F22362
-X-Spam-Level: **
-X-Spam-Flag: NO
-X-Spamd-Bar: ++
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
+Content-Language: en-US
+To: Nikolay Borisov <nik.borisov@suse.com>, linux-coco@lists.linux.dev
+Cc: dave.hansen@linux.intel.com, x86@kernel.org,
+ kirill.shutemov@linux.intel.com
+References: <20240123160704.1270147-1-nik.borisov@suse.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240123160704.1270147-1-nik.borisov@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When this driver got merged initially there was no widely agreed upon
-interface how the quote generation interface will work so having an
-ioctl made sense. However, there's now a vendor-neutral interface via
-configfs. Just remove the old ioctl interface and leave only the the
-configfs one.
 
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
----
+On 1/23/24 8:07 AM, Nikolay Borisov wrote:
+> When this driver got merged initially there was no widely agreed upon
+> interface how the quote generation interface will work so having an
+> ioctl made sense. However, there's now a vendor-neutral interface via
+> configfs. Just remove the old ioctl interface and leave only the the
+> configfs one.
+>
+> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+> ---
 
-I think it's better to remove the legacy interface now, before there's been a
-wide adoption of it, cementing it as an ABI of sorts.
+This ABI allows the user to get the raw report which is further used
+for Quote generation via vsock. AFAIK, some vendors (TDX users) and
+DCAP user libraries are still using this ABI to support attestation over
+vsock model.
 
- drivers/virt/coco/tdx-guest/tdx-guest.c | 75 +------------------------
- 1 file changed, 2 insertions(+), 73 deletions(-)
+Don't you think we should wait till there are no users before considering
+removing it?
 
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 1253bf76b570..1642a0f70333 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -66,41 +66,6 @@ static DEFINE_MUTEX(quote_lock);
-  */
- static u32 getquote_timeout = 30;
-
--static long tdx_get_report0(struct tdx_report_req __user *req)
--{
--	u8 *reportdata, *tdreport;
--	long ret;
--
--	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
--	if (!reportdata)
--		return -ENOMEM;
--
--	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
--	if (!tdreport) {
--		ret = -ENOMEM;
--		goto out;
--	}
--
--	if (copy_from_user(reportdata, req->reportdata, TDX_REPORTDATA_LEN)) {
--		ret = -EFAULT;
--		goto out;
--	}
--
--	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
--	ret = tdx_mcall_get_report0(reportdata, tdreport);
--	if (ret)
--		goto out;
--
--	if (copy_to_user(req->tdreport, tdreport, TDX_REPORT_LEN))
--		ret = -EFAULT;
--
--out:
--	kfree(reportdata);
--	kfree(tdreport);
--
--	return ret;
--}
--
- static void free_quote_buf(void *buf)
- {
- 	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-@@ -249,29 +214,6 @@ static int tdx_report_new(struct tsm_report *report, void *data)
- 	return ret;
- }
-
--static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
--			    unsigned long arg)
--{
--	switch (cmd) {
--	case TDX_CMD_GET_REPORT0:
--		return tdx_get_report0((struct tdx_report_req __user *)arg);
--	default:
--		return -ENOTTY;
--	}
--}
--
--static const struct file_operations tdx_guest_fops = {
--	.owner = THIS_MODULE,
--	.unlocked_ioctl = tdx_guest_ioctl,
--	.llseek = no_llseek,
--};
--
--static struct miscdevice tdx_misc_dev = {
--	.name = KBUILD_MODNAME,
--	.minor = MISC_DYNAMIC_MINOR,
--	.fops = &tdx_guest_fops,
--};
--
- static const struct x86_cpu_id tdx_guest_ids[] = {
- 	X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
- 	{}
-@@ -290,27 +232,15 @@ static int __init tdx_guest_init(void)
- 	if (!x86_match_cpu(tdx_guest_ids))
- 		return -ENODEV;
-
--	ret = misc_register(&tdx_misc_dev);
--	if (ret)
--		return ret;
--
- 	quote_data = alloc_quote_buf();
- 	if (!quote_data) {
- 		pr_err("Failed to allocate Quote buffer\n");
--		ret = -ENOMEM;
--		goto free_misc;
-+		return -ENOMEM;
- 	}
-
- 	ret = tsm_register(&tdx_tsm_ops, NULL, NULL);
- 	if (ret)
--		goto free_quote;
--
--	return 0;
--
--free_quote:
--	free_quote_buf(quote_data);
--free_misc:
--	misc_deregister(&tdx_misc_dev);
-+		free_quote_buf(quote_data);
-
- 	return ret;
- }
-@@ -320,7 +250,6 @@ static void __exit tdx_guest_exit(void)
- {
- 	tsm_unregister(&tdx_tsm_ops);
- 	free_quote_buf(quote_data);
--	misc_deregister(&tdx_misc_dev);
- }
- module_exit(tdx_guest_exit);
-
---
-2.34.1
+>
+> I think it's better to remove the legacy interface now, before there's been a
+> wide adoption of it, cementing it as an ABI of sorts.
+>
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 75 +------------------------
+>  1 file changed, 2 insertions(+), 73 deletions(-)
+>
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index 1253bf76b570..1642a0f70333 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -66,41 +66,6 @@ static DEFINE_MUTEX(quote_lock);
+>   */
+>  static u32 getquote_timeout = 30;
+>
+> -static long tdx_get_report0(struct tdx_report_req __user *req)
+> -{
+> -	u8 *reportdata, *tdreport;
+> -	long ret;
+> -
+> -	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
+> -	if (!reportdata)
+> -		return -ENOMEM;
+> -
+> -	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
+> -	if (!tdreport) {
+> -		ret = -ENOMEM;
+> -		goto out;
+> -	}
+> -
+> -	if (copy_from_user(reportdata, req->reportdata, TDX_REPORTDATA_LEN)) {
+> -		ret = -EFAULT;
+> -		goto out;
+> -	}
+> -
+> -	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
+> -	ret = tdx_mcall_get_report0(reportdata, tdreport);
+> -	if (ret)
+> -		goto out;
+> -
+> -	if (copy_to_user(req->tdreport, tdreport, TDX_REPORT_LEN))
+> -		ret = -EFAULT;
+> -
+> -out:
+> -	kfree(reportdata);
+> -	kfree(tdreport);
+> -
+> -	return ret;
+> -}
+> -
+>  static void free_quote_buf(void *buf)
+>  {
+>  	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
+> @@ -249,29 +214,6 @@ static int tdx_report_new(struct tsm_report *report, void *data)
+>  	return ret;
+>  }
+>
+> -static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
+> -			    unsigned long arg)
+> -{
+> -	switch (cmd) {
+> -	case TDX_CMD_GET_REPORT0:
+> -		return tdx_get_report0((struct tdx_report_req __user *)arg);
+> -	default:
+> -		return -ENOTTY;
+> -	}
+> -}
+> -
+> -static const struct file_operations tdx_guest_fops = {
+> -	.owner = THIS_MODULE,
+> -	.unlocked_ioctl = tdx_guest_ioctl,
+> -	.llseek = no_llseek,
+> -};
+> -
+> -static struct miscdevice tdx_misc_dev = {
+> -	.name = KBUILD_MODNAME,
+> -	.minor = MISC_DYNAMIC_MINOR,
+> -	.fops = &tdx_guest_fops,
+> -};
+> -
+>  static const struct x86_cpu_id tdx_guest_ids[] = {
+>  	X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
+>  	{}
+> @@ -290,27 +232,15 @@ static int __init tdx_guest_init(void)
+>  	if (!x86_match_cpu(tdx_guest_ids))
+>  		return -ENODEV;
+>
+> -	ret = misc_register(&tdx_misc_dev);
+> -	if (ret)
+> -		return ret;
+> -
+>  	quote_data = alloc_quote_buf();
+>  	if (!quote_data) {
+>  		pr_err("Failed to allocate Quote buffer\n");
+> -		ret = -ENOMEM;
+> -		goto free_misc;
+> +		return -ENOMEM;
+>  	}
+>
+>  	ret = tsm_register(&tdx_tsm_ops, NULL, NULL);
+>  	if (ret)
+> -		goto free_quote;
+> -
+> -	return 0;
+> -
+> -free_quote:
+> -	free_quote_buf(quote_data);
+> -free_misc:
+> -	misc_deregister(&tdx_misc_dev);
+> +		free_quote_buf(quote_data);
+>
+>  	return ret;
+>  }
+> @@ -320,7 +250,6 @@ static void __exit tdx_guest_exit(void)
+>  {
+>  	tsm_unregister(&tdx_tsm_ops);
+>  	free_quote_buf(quote_data);
+> -	misc_deregister(&tdx_misc_dev);
+>  }
+>  module_exit(tdx_guest_exit);
+>
+> --
+> 2.34.1
+>
+>
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
