@@ -1,228 +1,158 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145CE81AAA
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 18:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1AD81AA2
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 18:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706034283; cv=none; b=TEY+IM/jrTEZgbw/yN68ylLww8gN3nSJgxkcwYd8wNsGDQBUw9VC2zDOK1QlU/TA/LTKycRnc2FoJ4MMt5XLP9UtMcc6bVddg3FwORY4xV7k8l3iuAO7nYe7I8jtqMGV5fhikyLERGTepE63vd8wq1qYG4VgD+zc+5McgZMvrro=
+	t=1706035491; cv=none; b=AP8yk+r/q8VWtfUbbD4mqBVEeGtwktGKZd+0X27zqgbP2Fdo9E2VWoLCNDUAgtH+GZxbZB6NF3L6y2X7kp0Cwoi1GRSyUCF7SZ+dgiuz+QJWeKrCm0LrLxA4bC544FrKCFELvKnhgAipajPZGivc4ltKBsB9cC1vrIyL/lsn/6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706034283; c=relaxed/simple;
-	bh=JyTEfXliXz1JU1rgKyqj5o8l2YikviqE8axxWKp5KAI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s0+lBYcRPxmNZ2gqCcRWBG9LyMuJfTKL+9F63h3YPTlKpnpuhyRsKPTuUXCN/MenIJ+1nm8BjK8VR+x1gs97Tor4x3A4vQpXlFIEXfEB+2xeOetYU0j+uZbXw4cc87u/xmHzjWB9x5VKOZjEYz51BJmTgmlVls8kmsruxTUd3to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UMRVsv7r; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1706035491; c=relaxed/simple;
+	bh=lrCR1vBVWavKGNLtupI3WTgZmzw9VeDBZn63GtrWyj8=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=U1RFYhic2bVw0bysCZayr3UZA5lAKnVLRYNoPF/sCzxJ83WRmdAxzw4Zuk5J3GtT+Ncz4tm8lWQEk90bv0iDL8bai2nKCzpFcaUnrcsPJJuewnDxzcS69hAMuJu2mV9cclQhzvbSFsP8IBW+BKn4k4CUDvvkg4TpmUwwRSn/X8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ilZ41R0R; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UMRVsv7r"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2cf1c8cc6bdso2382001fa.3
-        for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 10:24:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ilZ41R0R"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-55818b7053eso1779a12.0
+        for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 10:44:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1706034279; x=1706639079; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LO4ktamApWz7Ik6VhyAZ4LuHOHW6b8Dk0a/AWCbH9y0=;
-        b=UMRVsv7rEsqCxbaZY6fZ+4T3h2o+qrMU8+Bp9oaHkmskvcAPEbYXiqhggTtLTjumbW
-         LI1wrP4f6JfQvQEW9wyq0a32stIOQHscyZSKXRViNaXnpqom/iax2w7OGp1uVwfmWvkI
-         4GRUNBCKpT5mFwzzdmaoDeF018yXPSnJDyTjBTemMMZ2+H0uJYRTvfYXo4boN4su6aNf
-         bsnk+T6Ci1h5ij6ZGy71K9II71wvpSrJ9qV2j5Ke0kowHqXJJk1XZbNx+6LF5dT14OTZ
-         4bRlOP9EjGnKAX6Y2wH3KV16JES5PyjYZz4zWM5dHqqmSwLRGbOAU6TDOmtn2FaIJpC1
-         DqWg==
+        d=google.com; s=20230601; t=1706035487; x=1706640287; darn=lists.linux.dev;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iwz7teBJAbM5hRqIyAnU/YSMzh7V1k6xD5wTHYPZdK4=;
+        b=ilZ41R0RNHOlIoH/qNzAhElMcJuWY3K837DcTwjIIpvhPckKnlUXEFxsNaA81LBtI3
+         WOGSc65ubBzgp9m+9BG5EUjJui4XDICKTd49W0vrApjDmMFmAbM4HuVw9hQmS+IU+n1i
+         q+jIOHlvmm1froBCFNPmJV2aeQ0Y2TdQkcO250pCfPOMQbdRcDy830QhM9Ko7qZm6JxI
+         N/WIP5EmN/vxCl1FWpG/8mvKReFFkfuHxzWqSob/qoD+8yxBgOXH4yxxevxtmCqW3+e5
+         6yWNUwHGe6VpV8GfqttndB/DOiSHYKC6I+WpuAljRRFxUX75xxCGtSQfiSEh7cxL9X0r
+         8iXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706034279; x=1706639079;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LO4ktamApWz7Ik6VhyAZ4LuHOHW6b8Dk0a/AWCbH9y0=;
-        b=LFLvPwWVXlYCd5pSJ1VYSqFvs9G7wdc9sKtO7mrucvYcknsp4xxgdhACDLCcy7VTHM
-         8bI1Mm3UBBGxO4bZcJSPEaCXsisg4ASyZRZaIB1k7OcsgStzUYD/mIXNs3dGIRqa5k6J
-         a6MvzM84G6QXf40vjTXCUVZsPmbT5VaXAMdI0EsQoLa5DLIxCdVh5SSLAVXmpLHh6CNl
-         L/Dtk7I3b58D9nmdoQXTDPHRZgIAJdS62FJzlb3E+K9pnFesPyIQeJ9NZDJaNFc0DZBX
-         ZNAkttiF8mD79ssgKq/ui2vkWd15my2I/v13XTIS1APT7CB6aY4QHTLFbhLAzd2Fx6R/
-         Qglw==
-X-Gm-Message-State: AOJu0YysLQAjQwZ//qzjYA977zNZvhxDsUT/v8NcPHPLWFWAnE5ugckz
-	uXjPCxeVonzGyYRxdomIAsZ4ZVuavOG7dKzck9iGid34HKUrFaoF/tWsk4W3Xt5YOhnU+xJGifF
-	2
-X-Google-Smtp-Source: AGHT+IFB0swReGWh/oPnB9sDxEeGoBUQgI+tl3+qRrIdvhv47u2AbpvaqSwmRZv/1luAr7W0IGJiHg==
-X-Received: by 2002:a2e:b803:0:b0:2cd:39ec:c325 with SMTP id u3-20020a2eb803000000b002cd39ecc325mr104451ljo.73.1706034279051;
-        Tue, 23 Jan 2024 10:24:39 -0800 (PST)
-Received: from ?IPV6:2a10:bac0:b000:7589:7285:c2ff:fedd:7e3a? ([2a10:bac0:b000:7589:7285:c2ff:fedd:7e3a])
-        by smtp.gmail.com with ESMTPSA id i1-20020a2e2201000000b002cf1a1e7234sm87735lji.123.2024.01.23.10.24.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 10:24:38 -0800 (PST)
-Message-ID: <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
-Date: Tue, 23 Jan 2024 20:24:32 +0200
+        d=1e100.net; s=20230601; t=1706035487; x=1706640287;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iwz7teBJAbM5hRqIyAnU/YSMzh7V1k6xD5wTHYPZdK4=;
+        b=NE+NlEovueZZBtt4ZWs+PVMoxZbCxiLizfSyqZNr2RrfKuNIB41ZBtJDmY42TlobRl
+         doXqVz3+0OUnt2ZY45E6xWv7ivUhlSrBsQelniZsYoWKDuVasvOfZhhzm7ir24AsSVO5
+         Qw8Sl3WVv16vVUB1cN9IkZuna3G7zhMSupIjoXUVwPTJzno5GXzic2D7V+qVIaeFjBZV
+         yrv+o17DS9MIyDOpMpxUdqqZH7GP/YwXkUZvwdNP9mop5vGNN72reg7ZzzVAmbo7utRj
+         vb9uknwtqJ+RF6lh/cAud63tOxK2SH24vC5oU5cdhqi0Auk9bvY7pcSXgTF4uqLI0v91
+         cnMQ==
+X-Gm-Message-State: AOJu0Yx85iNB0/0KhO0IkObZUokM1GXGXrCzo8+JYXbhhTRzuoLSsW1H
+	53sgrf8AvHHwrX004ouuYFA1NSNdrXjQ8ogBLbo4so74Yv5HTcXq10SUl5yUd12gggFN89qRUTb
+	31BHe+4IUHTp2c3545eRrqW9cM0g0mWWzmafkMJxBkZPpLaTD8VUg
+X-Google-Smtp-Source: AGHT+IGFVgfFIxC+vKwAdCUc6d3nZm6tSXXea0PxhR1LDLiFSXhf7gJ6PWqOyXKaVGbDBWtyatVmfumBcxWhxzU47VA=
+X-Received: by 2002:a05:6402:17cd:b0:558:8016:b347 with SMTP id
+ s13-20020a05640217cd00b005588016b347mr39616edy.5.1706035487401; Tue, 23 Jan
+ 2024 10:44:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
-Content-Language: en-US
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-coco@lists.linux.dev
-Cc: dave.hansen@linux.intel.com, x86@kernel.org,
- kirill.shutemov@linux.intel.com
-References: <20240123160704.1270147-1-nik.borisov@suse.com>
- <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 23 Jan 2024 10:44:34 -0800
+Message-ID: <CAAH4kHarATWGg6S9DGA9a+yvSgLGY417xf2AZGO0ae=f2Z2aKQ@mail.gmail.com>
+Subject: Attestation evidence collection "standard package(s)" effort
+To: linux-coco@lists.linux.dev, hannes.tschofenig@gmail.com, 
+	Yogesh Deshpande <Yogesh.Deshpande@arm.com>, Thomas Fossati <thomas.fossati@linaro.org>, 
+	Thomas Fossati <Thomas.Fossati@arm.com>, public@thson.de, 
+	Jeff Andersen <jeffandersen@google.com>, Chong Cai <chongc@google.com>, 
+	roksana.golizadeh.mojarad@intel.com, Dan Williams <dan.j.williams@intel.com>, 
+	James Bottomley <jejb@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Hi all, I thought I'd start the conversation here about a concern I'm
+hearing in various working groups. There are many software packages
+folks are writing to provide in their VM guest images to gather
+attestation reports and quotes, and no one feels they have a good
+mandate to say "X package is what everyone ought to use" and that it
+should be in most distributions' software repositories.
 
+I'm not coming here with a suggested 15th tool that standardizes all
+the other 14 standards, but to see what folks' requirements are such
+that we can establish a concerted effort to solve them as a
+collective. I still will suggest a concrete starting point to focus
+the conversation.
 
-On 23.01.24 г. 19:51 ч., Kuppuswamy Sathyanarayanan wrote:
-> 
-> On 1/23/24 8:07 AM, Nikolay Borisov wrote:
->> When this driver got merged initially there was no widely agreed upon
->> interface how the quote generation interface will work so having an
->> ioctl made sense. However, there's now a vendor-neutral interface via
->> configfs. Just remove the old ioctl interface and leave only the the
->> configfs one.
->>
->> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
->> ---
-> 
-> This ABI allows the user to get the raw report which is further used
-> for Quote generation via vsock. AFAIK, some vendors (TDX users) and
-> DCAP user libraries are still using this ABI to support attestation over
-> vsock model.
-> 
-> Don't you think we should wait till there are no users before considering
-> removing it?
+The problem I think a large majority of us want to solve is how to
+provide evidence to (possibly remote) requesters in a standard format.
 
-Given that hw with TDX was just released I'd be surprised if there are 
-any users? But then again, this is an RFC so let's get opinions :)
+Challenges:
 
+1. authZN: who is allowed to gather evidence? To make attestation work
+with a background check model (RFC9334) and seamlessly for users who
+want "security sprinkles", the standard tool should be a daemon that
+provides an evidence collection service for a standard protocol. I'd
+recommend getting a tcp port assigned from the IANA and combining TLS
+with OAuth 2.0 to pass "evidence challenge requests" to the server and
+get evidence out. This is just a concrete starting point, not a line
+in the sand.
 
-> 
->>
->> I think it's better to remove the legacy interface now, before there's been a
->> wide adoption of it, cementing it as an ABI of sorts.
->>
->>   drivers/virt/coco/tdx-guest/tdx-guest.c | 75 +------------------------
->>   1 file changed, 2 insertions(+), 73 deletions(-)
->>
->> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
->> index 1253bf76b570..1642a0f70333 100644
->> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
->> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
->> @@ -66,41 +66,6 @@ static DEFINE_MUTEX(quote_lock);
->>    */
->>   static u32 getquote_timeout = 30;
->>
->> -static long tdx_get_report0(struct tdx_report_req __user *req)
->> -{
->> -	u8 *reportdata, *tdreport;
->> -	long ret;
->> -
->> -	reportdata = kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
->> -	if (!reportdata)
->> -		return -ENOMEM;
->> -
->> -	tdreport = kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
->> -	if (!tdreport) {
->> -		ret = -ENOMEM;
->> -		goto out;
->> -	}
->> -
->> -	if (copy_from_user(reportdata, req->reportdata, TDX_REPORTDATA_LEN)) {
->> -		ret = -EFAULT;
->> -		goto out;
->> -	}
->> -
->> -	/* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
->> -	ret = tdx_mcall_get_report0(reportdata, tdreport);
->> -	if (ret)
->> -		goto out;
->> -
->> -	if (copy_to_user(req->tdreport, tdreport, TDX_REPORT_LEN))
->> -		ret = -EFAULT;
->> -
->> -out:
->> -	kfree(reportdata);
->> -	kfree(tdreport);
->> -
->> -	return ret;
->> -}
->> -
->>   static void free_quote_buf(void *buf)
->>   {
->>   	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->> @@ -249,29 +214,6 @@ static int tdx_report_new(struct tsm_report *report, void *data)
->>   	return ret;
->>   }
->>
->> -static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
->> -			    unsigned long arg)
->> -{
->> -	switch (cmd) {
->> -	case TDX_CMD_GET_REPORT0:
->> -		return tdx_get_report0((struct tdx_report_req __user *)arg);
->> -	default:
->> -		return -ENOTTY;
->> -	}
->> -}
->> -
->> -static const struct file_operations tdx_guest_fops = {
->> -	.owner = THIS_MODULE,
->> -	.unlocked_ioctl = tdx_guest_ioctl,
->> -	.llseek = no_llseek,
->> -};
->> -
->> -static struct miscdevice tdx_misc_dev = {
->> -	.name = KBUILD_MODNAME,
->> -	.minor = MISC_DYNAMIC_MINOR,
->> -	.fops = &tdx_guest_fops,
->> -};
->> -
->>   static const struct x86_cpu_id tdx_guest_ids[] = {
->>   	X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
->>   	{}
->> @@ -290,27 +232,15 @@ static int __init tdx_guest_init(void)
->>   	if (!x86_match_cpu(tdx_guest_ids))
->>   		return -ENODEV;
->>
->> -	ret = misc_register(&tdx_misc_dev);
->> -	if (ret)
->> -		return ret;
->> -
->>   	quote_data = alloc_quote_buf();
->>   	if (!quote_data) {
->>   		pr_err("Failed to allocate Quote buffer\n");
->> -		ret = -ENOMEM;
->> -		goto free_misc;
->> +		return -ENOMEM;
->>   	}
->>
->>   	ret = tsm_register(&tdx_tsm_ops, NULL, NULL);
->>   	if (ret)
->> -		goto free_quote;
->> -
->> -	return 0;
->> -
->> -free_quote:
->> -	free_quote_buf(quote_data);
->> -free_misc:
->> -	misc_deregister(&tdx_misc_dev);
->> +		free_quote_buf(quote_data);
->>
->>   	return ret;
->>   }
->> @@ -320,7 +250,6 @@ static void __exit tdx_guest_exit(void)
->>   {
->>   	tsm_unregister(&tdx_tsm_ops);
->>   	free_quote_buf(quote_data);
->> -	misc_deregister(&tdx_misc_dev);
->>   }
->>   module_exit(tdx_guest_exit);
->>
->> --
->> 2.34.1
->>
->>
+The service doesn't need to be on, and in fact I think we want an
+offline tool and a service that wraps the tool in order to keep the
+functionality opt-in.
+
+2. request/response formats: I would recommend that responses use the
+standards effort in IETF RATS for a Conceptual Message Wrapper (CMW).
+Part of the challenge is to reduce the amount of variance in that
+wrapper. Roksana (CC'd) is trying to lead an effort for manufacturers
+to converge on a standard evidence format going forward, but an
+envelope is needed for now due to existing bespoke evidence formats.
+For the request, I think we should talk about ways to multiplex
+challenges out to configfs-tsm, TPM, workload attesters and the like.
+
+Given a standard request/response format, we may even get Microsoft to
+provide more access to the guest attestation service in their Windows
+offering?
+
+3. extensibility: I think that each evidence collection technology
+should be a separately installed plugin to the daemon, and the daemon
+knows through configuration how to request evidence and store the
+result in the final CMW.
+
+4. binary distribution: distributing the binary(ies) that collect
+evidence to include in the format is the nail biter. How do we build
+trust in which implementation to use? This is where I think we would
+like to come together to produce an implementation under open
+governance and consortium support in the form of CCC or linux
+foundation or something. The goal of proposing a standard for evidence
+collection though is that other implementations would still be able to
+be used seamlessly in the remote attestation ecosystem.
+
+4b. trustworthiness: not to start a flame war (please), but I think
+there's a large contingent of folks that expect this tool to be
+written in Rust.
+
+I would ask that we keep the discussion of a single non-envelope
+evidence format to a separate forum, since we are trying to account
+for SEV-SNP, TDX, and TPM.
+
+On that note, I will shout out different client/library implementation
+projects that I specifically hope would join the collective effort.
+
+* go-configfs-tsm/go-sev-guest/go-tdx-guest/go-tpm-tools: All Google
+libraries with a client aspect that would be happy to switch to a
+standard client that more folks can easily include in their images.
+* Keylime: A TPM project that cares deeply about TPM quotes, yet also
+has the client problem.
+* cc-api/cc-trusted-api: An Intel project that provides a compelling
+interface, yet still is looking for collaboration to build collective
+trust in the project.
+* virtee: Mostly a SEV tool, but an open source community that cares
+about security and remote attestation
+* AMDESE/sev-guest: AMD's own tool for collecting a SEV-SNP attestation.
+
+I'm sure James Bottomley has a specific suite of TPM tools to plug
+here, but I don't know them specifically. I've heard about client
+software on video calls but haven't learned the specifics.
+
+This is a lot of duplicated effort that makes negotiations with Linux
+distributions difficult. What packages should be included? I would
+hope a suite of packages under a single banner that we can all be
+happy with.
+
+-- 
+-Dionna Glaze, PhD (she/her)
