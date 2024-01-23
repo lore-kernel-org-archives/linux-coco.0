@@ -1,163 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1726A005
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 19:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706036771; cv=fail; b=TWbeQJZnF38j27Fy064Z/EVq1iwLvfWWZVC8u7HBDmK4Hl+3p79TcBJ4JGhkZW1Go+McOUOvVmHMQAVrtg98pkmfzgVq+tWsrDagdzjrYJpF+RRJFhG/tjpT0TNKgQfaBD5rCrkjC/YzLeAyNiJ6WFbD0494KAfdJoZRrUA0FoE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706036771; c=relaxed/simple;
-	bh=4k7d/HGvd+SxtT/ZWepc23jZAKN9p74fJcn48SXVQv4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bOm/6EFAEwvk41BIuYmrC2sbQLpGg1OSqYhW4Or3ZNriuJYyHrrBm4WHSJm1n7yqaa04lP41jbgk9MDY0nbVAuC7w1c+Oc+sUEGn616ryT7qCLaHh3Bu5dkXJSG6uikjDJrHz/GWofwbFLBW4T6XaeKx/t+sfH2YNKAxU0s57Es=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CyCUJWtJ; arc=fail smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3B8481DC
+	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 19:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706037003; cv=none; b=Z8O+pxmrx+LrJTBUYY7FehpSVgM9P00miJ74XoYeO2Gdf8MZDPmX+odr/H38Ub6ERb61L0M6rQoLu9EaJTbLDeZd+n7vMabSuYrM466tF03RU8HmtGEUQZaXtYs6LI/mwDdSf0keWBXBEoQdJFZDlOI1myK7pr6oGzT32LGtehA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706037003; c=relaxed/simple;
+	bh=qnPnYU3UCCouLaq3I4xfQprTzMjKQEyku6K7RAxK7uE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V0XAGm/x6jcrjW31PUH8gTnQyX9wsijWYlPO05tWYIkQQkVvdckAsun/HIbeCb4mQEZm9F+qyaV5NTOBYJWAd0LI3ln9+GVY977D/dPNHO4mWRDq8a0V/lCuJE5hRniPQSlRN+Vh7ENDVYSYPrnluKaGtJJg4HCESvo0m1wxULo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vUaUXhJM; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CyCUJWtJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706036770; x=1737572770;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=4k7d/HGvd+SxtT/ZWepc23jZAKN9p74fJcn48SXVQv4=;
-  b=CyCUJWtJT07uAD53e4w1du50PvpWGc73FwnF9P+GfyAtgWmSz+3Jy1OT
-   zcN0Hijd7ojuqeDooENdc0fl82cqZxVH4wn+xhVRj3kuf6KzcP5P16Rzu
-   cgcMaeJDxFXMiAyCuG/1zxp3HFZMpVNyi8JSKIaGtixaZIFcmLpVzgsGZ
-   MUP4nUNhP4A/000goUp5bCCG3CVussyXDHUo8c/Hwh2+XIMXIKtTWvWcc
-   DH6hUnhDaRnBh7glRoooX91HN6exEVweoO/lmBl0GH99+bbWv/73NEn8B
-   k/vLKcSp76YrD12NrAS3DXe+ZBze4F9lvUgMxo3c3NEYwDGwkrv2ikWQG
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="9013607"
-X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="9013607"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 11:06:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="20457777"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Jan 2024 11:06:09 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 23 Jan 2024 11:06:08 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 23 Jan 2024 11:06:08 -0800
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 23 Jan 2024 11:06:06 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TaOc9KGPJBcDb1dZYeDXqgUoY8eNn44l5gqIDBEYA30HAZ3Ok8BTuf0tBdDqxI7IKANeqCf71hli1KlocIloBqWyChbaHIS1YP1akOhy19TdD4PNPl1DTfLhoVdw5MrPpASmWs4xs/+simkl7YTEhZ8l663QnQZ48T7nfUrSCJgBJ9xKbUoZdExPLTM1/K7FlYScfU7LKN6JlmII0Fm8M110uJsoFBzmsNIRn6gEXLoiSloPbDSqAExpZY5aNtsy+7yInrL/HesvlqzM5BhwjwQ0/Sbxtlt6OieNB5yTEgh4+0pdavxrsPcIixsWBErL+nNqaOPFmU1VWjNaPNJeCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QG4Nwn12Tig7v80wQVBPbAaEeEf/gmPt7/KkRVMPGGU=;
- b=GPTRkZAHeNyVOR3ckwwmOs++xNAhOc32MmmP+I9GToZirX+b16n2q4LzntyolrzPwDOIKA6AiQRIQxwgOG9+vffkwujpQFwgtrpb1lLL1AZ/yJiFdAXVKt1mNs2PWph8HDD0d2o5fAFFB6fSt7bIKwwRUbFzcWjwdTkNGOkwfKdObJFjEc0NFu3z/JhbQ07U20JgoiQYUutMCaYMh881hIsLHqHohM2Bc2LYqM0dkhhhFgZyJi7ShAehlb3jNBcvLUNVmKBPI4t/reM3k14XOtVo/QLWRSQiPYvZWPT8WM/ovAIiWWoLyjbcm/sdcHgCCiinG/e9r1gD0YMns5eBXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SA2PR11MB5147.namprd11.prod.outlook.com (2603:10b6:806:118::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.37; Tue, 23 Jan
- 2024 19:06:03 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7202.035; Tue, 23 Jan 2024
- 19:06:03 +0000
-Date: Tue, 23 Jan 2024 11:06:01 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Nikolay Borisov <nik.borisov@suse.com>, Kuppuswamy Sathyanarayanan
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <linux-coco@lists.linux.dev>
-CC: <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	<kirill.shutemov@linux.intel.com>
-Subject: Re: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
-Message-ID: <65b00e191087c_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20240123160704.1270147-1-nik.borisov@suse.com>
- <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com>
- <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
-X-ClientProxiedBy: MW2PR16CA0023.namprd16.prod.outlook.com (2603:10b6:907::36)
- To PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vUaUXhJM"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-55818b7053eso2391a12.0
+        for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 11:10:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706036999; x=1706641799; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HCHEH5/HbAn23PxxtNB7IHSI9wOxxl+NwqvMevwTt4Y=;
+        b=vUaUXhJMjgFUI4nkeVNgvZnXkMx6KV35ta+asWmG0VvffUV9YJaJYa8wx0VVzTS0zr
+         EirkAW/HGQU9tZjlex4sKlrEXtgm6S6vDuU295NTAFAHC1NX+VXlVQS7t8w0gFtUZHyq
+         6O01+9M6qFWiS9dGfgGCaC/xuEUqKLcEVh+flVNn/AhA4WPWD1hJbZN995GDf0QjUttT
+         TpK8Ilq3Po7URnonP5TSipmpO6eLxYbvpSY2g5CyxjI87c+tAJffZDryXBH+wH4tGa9B
+         FyC7osNmURIva/JGY1zffY+Bpf2j9tyP6FwvxlsAaGJ0Nk5atgUv/lImgxx1u0PDUTts
+         ABcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706036999; x=1706641799;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HCHEH5/HbAn23PxxtNB7IHSI9wOxxl+NwqvMevwTt4Y=;
+        b=M4K8TUV6KHjyjZdIOnl5swU2JvtlVgXL4BFyYlzmQ5tF6B8+cEDF7EhK6PtB0bSbL3
+         YeSr6g++MAUQc9MHFgRYqolrpXYLZuXnkWK6yl+5iEPnu4MBWYXS+MyBZdSeWsT3dGbh
+         ZNEw7zhspCa7bcvq85NfmSyGwnl6OIMtRDNE1rH+3goCs2opGFWtX5L28Hn8xJoXF/3m
+         JsLyXnbBhJLzFl8lHjYxPcrwhwdcsl4ZkcSe2zWpl8AZmXzmT7vFSIuVDkX4bEvhP4HG
+         IMmPO1AfKDm63n4sDPqIchToVB+jQFnTrg7b2tjZhXV3a+9henXcKFeAmGI381N00pRq
+         fYYQ==
+X-Gm-Message-State: AOJu0Yzpc5mP9QPa0IPIqblVFtEHW02hzAUfMUPA+mmiaYBjc/VL/I9Y
+	/ucw6gEPcNrfwEMIN+iOshs6qEj5vjioce8l4hxvlj78IwFZGrSWTDLZV73gR6NCeQHZAE7Ut67
+	rxpRNHudqNoEj+913FameVzYaCc2X2O70U7kU
+X-Google-Smtp-Source: AGHT+IGyHsDKZDRw84SigcKxj+vazyoy83vVM2HM6XtYpkkZw104LKSJRBAxIsTSglb20He/DLk1COCbwOcrO9JZsOc=
+X-Received: by 2002:a05:6402:2922:b0:55a:5fe0:87e4 with SMTP id
+ ee34-20020a056402292200b0055a5fe087e4mr49878edb.0.1706036999257; Tue, 23 Jan
+ 2024 11:09:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA2PR11MB5147:EE_
-X-MS-Office365-Filtering-Correlation-Id: be45fc11-8a43-4d41-9790-08dc1c46582d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: tDKisiX/XU/h5su4EONtpBX7DEh9LGgTECudX+c8a5hLhUE0tBcGok9yBCZQYo3cnqGWRmgL2q0YBs9mGPbupa3XEUz3J17gs7FVMouUhZ5JghfyWSpg+1Kp6jt2Y5U/Xd7+0vjefjl31zGfpuFM7GgzZcA/3tlUPHyBcStyMNE/BnzyjbXVcO2PPLBPINlj1MGxAU4c9y+FK955267OWA0YkQAl1wtZEZjW3JOZgU0e8E10HtTglW1eiK3cWIxrdm6HIgRH8jroQpT2tDBh+ts/1o2JDqEVPeDlt52eDsu1+lSmRM1ED/tss+QNILddQqMmimKSVQdIkLWM5a4/Vu8WyT8ncn8ZQJGxpXykQ0LroNyBA3TDdrZ0WG3yEdI2wJyMQe5Uhltd97bXNjIxgECreWULGy+ipJCIri/e4dcl75RIcRnKmwjs6YDs+3TH+o/BM1PZVhoPvF7rZmgVFJ/sAOs81hZMzxqO6QUwtq9rXvkHhZc6bchBMsQZcHXbgzOfgwRXe0bNCTcWnQl/nJQTgHu4DMlxoKNmW5QxXYsI08xNTvgxtLqvJ+X5GjKwLYjzfUu26MKpTz53e+oHsP+J1H86H5ZNKOpEgY4/aiPH0moz8rUvi+hY5ElivC7y
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(136003)(39860400002)(346002)(396003)(230273577357003)(230173577357003)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(83380400001)(9686003)(6512007)(41300700001)(26005)(38100700002)(2906002)(4326008)(8676002)(8936002)(5660300002)(478600001)(6486002)(6506007)(66946007)(53546011)(66476007)(66556008)(316002)(110136005)(86362001)(82960400001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZkRjdHM2K2taZm1JMlZPNVBEMUR2UCtjdUtFcldjdGhPRWdpU1pvaGVycWJt?=
- =?utf-8?B?M1o5RVhmN0x5YU1lblNwV09idGJIbW9WV21KdTE1TWJPVURNU3FoRFlGS0Vv?=
- =?utf-8?B?U1Y3UlhKdjZiN0crUW5pUmNmdG1lYkd2TXpTK0RuMVZZVktpbW95cHdCZWt0?=
- =?utf-8?B?Ym1ocDZkRHJZWWxTT0UzT1kxNCs4Q0V2MmZBUktNM2RFKzJsQ0hCcGRhRU85?=
- =?utf-8?B?blBnNCtmRlc4ZStUUWVwdnFxbW44WnlkYWRQaHc2RkoyUklLTXYyTGVuKzZ6?=
- =?utf-8?B?bWZFd3pSUEV1cWRNVUtCVHZQZCtwWlZQVDFVZiszbS82Nlh5TVlHd1B6OUFu?=
- =?utf-8?B?c2lXY1pqakpUY1lFMXRFZlBGcUJkaE5LUjdFSnNUR2RmRG1aMnlSZTRIUlp2?=
- =?utf-8?B?ZGp6WjZaMzdjcmVxTHU2ZDVVL1EvZDJMREYzYjF3UHNlV3dJK1FoekZNclpY?=
- =?utf-8?B?THU0cERKNTAxdTFGVU53V0xzTzBoNElYNFFSTE9BWXFXQlJNa00rVkZLTkZF?=
- =?utf-8?B?OXZ2TVhnY05Fb2x3OC9jaVNBUHo3TlBwRlBKeDFTa1FOcTZqc1d1c21Qbk5o?=
- =?utf-8?B?eklMY0hGaWZmWXJ3eG5IOERkTHUyb1ZXU1BtU2dFOHdydEZtQU1pRG43TC80?=
- =?utf-8?B?N1l3TUpKdnpxTHA5RHcrMk9Oa3htTzBlZzhIR2drM0FYeHRGMEV2SEMzRTlV?=
- =?utf-8?B?Q1ZSQ1RvRVZVQWZOckk5WkRRT25zMVowR2ErZFovSmlRcmlDUzFBVVYwakFx?=
- =?utf-8?B?cVMwYmtMRXFSTElTNWl5cklDQjAzVW5NYS9HbGZYTGxPckk3NGtWOEpRdlZp?=
- =?utf-8?B?STR1a3ZCVHRaWlpseUxPKzVvdVRPemUzN1lHR1VweTlVejZOWVkxK3lTTVhU?=
- =?utf-8?B?UWJwbkY3b1lQVkJTdWRKNWNvVzg1WVB5UkZGZm9wd2xkdTR6VXoyaTRzdzJp?=
- =?utf-8?B?cTdUTnpWM2xoYzhHdDRnYys5bVJGUHIxYjFYeFBsaG0zbkplRWp3eXVkeXhu?=
- =?utf-8?B?SENvMjdGMGdTNHAycmxPUVI3OFl2dE0rNXlMNlB2L0R6TmRJVFZtVnJiN3Bt?=
- =?utf-8?B?OC9aUjUzVCtoaGlrdk9oV3ovTmR3bHRZbU02QjF4ZHlITmowd3dsSkVoMkpj?=
- =?utf-8?B?dUYyQW9ENTJYOE9BY3RYc2VLcitoVWlOSzhLSlhDdmJuSitIVVRoT0pmWHFF?=
- =?utf-8?B?ajBLVDNCWkE1U1BWWVJpejhMUWVlZVI0UWFJRXl0S21oeW55amRKUEZwZ0o0?=
- =?utf-8?B?OHowTTVkSlVyVm9MKzhJZnNkbk9uYXRpSm5PQmhIeE1Vc201dW12V1NnejJP?=
- =?utf-8?B?TlVGSFVnUXdRZTlzZ052RSsxeXFMQ1FrZS92Nkc2dURjN0NYRHpDNFFpVzRq?=
- =?utf-8?B?L2hJb01ycmNYTkVCTE05RkN3VmpkVTlzN0c0T0p3ZkZSdDM3OUc0K2xlMEtE?=
- =?utf-8?B?SVFqNFdnekRGNmNDRWNSRVdVbGNUZ1REdWFUOFRzU0pIYjFYWnduSUQ1Z2V6?=
- =?utf-8?B?UXREbVl2aWcxYzBiS004TFhmWDhpODZkdXhqSGJEV1FrYTdKd1phS29LZU9K?=
- =?utf-8?B?UFNyQjNDVE1zVDNnRmtMa0huZjZURjV5ZEdMTHU1SmZFRzdlMmw0bEVIc1Zl?=
- =?utf-8?B?MEhVQWk5dlNuVTVnM1h5UjRBQUhBZEI0UU14dEkxR011aWhvaTdXcU9BRFY5?=
- =?utf-8?B?aDZNWXZEME9pTFJwL09CelRNMzVBMHhyS3h6cGVnb3I3SjAxOW1DVm1uMjVH?=
- =?utf-8?B?MWpKK1ZZT1MzSGszVU1vSm5UckljVWFZYUVIY1ZlK1Z5MVZhbEJCMXBVS1dN?=
- =?utf-8?B?Rm1hMmJ0bSs1QlY2c0ZudStUeVRnMkN3NjF1TkFrMDV6dUNsOThQTjRyZUJ1?=
- =?utf-8?B?YWk2T3ZLaytOanh1NmpsVGZBQ20ySGlLVnNHK1dxNDhBWkhjRTh5cTBpTjhn?=
- =?utf-8?B?SnVKenVEUE1YQ21KQitFNTNybnhRdGxpMEJvVk0wbTEzUDFPeVZ2SUxxYWxG?=
- =?utf-8?B?c2JsRllKUkVKNFNJL25OTEZxa1FJN1hHbkxLRm9nb2xhUUVuRDF6UXVpbDM2?=
- =?utf-8?B?STZPTDcrZkdUM3ZVeEJrZFdBS0lQMVBZenQ3cXFiZkowcjJmNWdPcVJ4Zmkv?=
- =?utf-8?B?Mmphbmw4NVVjbmZhbTg2eEtSQ2dOMkwya3hHS1JuOU5jUkh2WWxBU1I1VVF3?=
- =?utf-8?B?cmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: be45fc11-8a43-4d41-9790-08dc1c46582d
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2024 19:06:03.3709
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YZnmKpPpQXNrwz5nwKA3SQN3b7HO4/S4ky//DUfzS2BLR/oNeA5LW7pLiDA9fM/wFD9JMy78BbB9v9FBhmXO64YvP9LCNb2jQh5BU2wP06U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5147
-X-OriginatorOrg: intel.com
+References: <20240123160704.1270147-1-nik.borisov@suse.com>
+ <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com> <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
+In-Reply-To: <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Tue, 23 Jan 2024 11:09:47 -0800
+Message-ID: <CAAH4kHbYC4j2Zsz9fBbvUdQzcZxHtQ_H+bR8pS9_QkD0N+3ouA@mail.gmail.com>
+Subject: Re: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
+To: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, linux-coco@lists.linux.dev, 
+	dave.hansen@linux.intel.com, x86@kernel.org, kirill.shutemov@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Nikolay Borisov wrote:
-> 
-> 
-> On 23.01.24 г. 19:51 ч., Kuppuswamy Sathyanarayanan wrote:
-> > 
+On Tue, Jan 23, 2024 at 10:24=E2=80=AFAM Nikolay Borisov <nik.borisov@suse.=
+com> wrote:
+>
+>
+>
+> On 23.01.24 =D0=B3. 19:51 =D1=87., Kuppuswamy Sathyanarayanan wrote:
+> >
 > > On 1/23/24 8:07 AM, Nikolay Borisov wrote:
 > >> When this driver got merged initially there was no widely agreed upon
 > >> interface how the quote generation interface will work so having an
@@ -167,25 +84,164 @@ Nikolay Borisov wrote:
 > >>
 > >> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
 > >> ---
-> > 
+> >
 > > This ABI allows the user to get the raw report which is further used
 > > for Quote generation via vsock. AFAIK, some vendors (TDX users) and
-> > DCAP user libraries are still using this ABI to support attestation over
+> > DCAP user libraries are still using this ABI to support attestation ove=
+r
 > > vsock model.
-> > 
-> > Don't you think we should wait till there are no users before considering
+> >
+> > Don't you think we should wait till there are no users before consideri=
+ng
 > > removing it?
-> 
-> Given that hw with TDX was just released I'd be surprised if there are 
+>
+> Given that hw with TDX was just released I'd be surprised if there are
 > any users? But then again, this is an RFC so let's get opinions :)
-> 
+>
 
-The assumption is that this tdx_guest_ioctl() ABI has never appeared in
-an enterprise distro kernel. If that assumption is valid, it
-significantly reduces the long term support exposure.
+There are users in private preview, so non-production testing, but still us=
+ers.
+Our (Google's) testing environment is already updated to use the new
+configfs-tsm interface. I think with the technology being so new, we
+ought to remove the old interface sooner rather than later to make the
+early adopters the only ones who need to incur penalties for a
+volatile interface.
 
-At a minimum, a build time option to disable the ioctl() path and a
-runtime deprecation warning would be suitable. Certainly just removing a
-never-been-enterprise-shipped ABI and see who screams is one way to
-start the negotiation of the deprecation period. The current status of
-no deprecation notification is difficult to justify.
+>
+> >
+> >>
+> >> I think it's better to remove the legacy interface now, before there's=
+ been a
+> >> wide adoption of it, cementing it as an ABI of sorts.
+> >>
+> >>   drivers/virt/coco/tdx-guest/tdx-guest.c | 75 +----------------------=
+--
+> >>   1 file changed, 2 insertions(+), 73 deletions(-)
+> >>
+> >> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/co=
+co/tdx-guest/tdx-guest.c
+> >> index 1253bf76b570..1642a0f70333 100644
+> >> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> >> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> >> @@ -66,41 +66,6 @@ static DEFINE_MUTEX(quote_lock);
+> >>    */
+> >>   static u32 getquote_timeout =3D 30;
+> >>
+> >> -static long tdx_get_report0(struct tdx_report_req __user *req)
+> >> -{
+> >> -    u8 *reportdata, *tdreport;
+> >> -    long ret;
+> >> -
+> >> -    reportdata =3D kmalloc(TDX_REPORTDATA_LEN, GFP_KERNEL);
+> >> -    if (!reportdata)
+> >> -            return -ENOMEM;
+> >> -
+> >> -    tdreport =3D kzalloc(TDX_REPORT_LEN, GFP_KERNEL);
+> >> -    if (!tdreport) {
+> >> -            ret =3D -ENOMEM;
+> >> -            goto out;
+> >> -    }
+> >> -
+> >> -    if (copy_from_user(reportdata, req->reportdata, TDX_REPORTDATA_LE=
+N)) {
+> >> -            ret =3D -EFAULT;
+> >> -            goto out;
+> >> -    }
+> >> -
+> >> -    /* Generate TDREPORT0 using "TDG.MR.REPORT" TDCALL */
+> >> -    ret =3D tdx_mcall_get_report0(reportdata, tdreport);
+> >> -    if (ret)
+> >> -            goto out;
+> >> -
+> >> -    if (copy_to_user(req->tdreport, tdreport, TDX_REPORT_LEN))
+> >> -            ret =3D -EFAULT;
+> >> -
+> >> -out:
+> >> -    kfree(reportdata);
+> >> -    kfree(tdreport);
+> >> -
+> >> -    return ret;
+> >> -}
+> >> -
+> >>   static void free_quote_buf(void *buf)
+> >>   {
+> >>      size_t len =3D PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
+> >> @@ -249,29 +214,6 @@ static int tdx_report_new(struct tsm_report *repo=
+rt, void *data)
+> >>      return ret;
+> >>   }
+> >>
+> >> -static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
+> >> -                        unsigned long arg)
+> >> -{
+> >> -    switch (cmd) {
+> >> -    case TDX_CMD_GET_REPORT0:
+> >> -            return tdx_get_report0((struct tdx_report_req __user *)ar=
+g);
+> >> -    default:
+> >> -            return -ENOTTY;
+> >> -    }
+> >> -}
+> >> -
+> >> -static const struct file_operations tdx_guest_fops =3D {
+> >> -    .owner =3D THIS_MODULE,
+> >> -    .unlocked_ioctl =3D tdx_guest_ioctl,
+> >> -    .llseek =3D no_llseek,
+> >> -};
+> >> -
+> >> -static struct miscdevice tdx_misc_dev =3D {
+> >> -    .name =3D KBUILD_MODNAME,
+> >> -    .minor =3D MISC_DYNAMIC_MINOR,
+> >> -    .fops =3D &tdx_guest_fops,
+> >> -};
+> >> -
+> >>   static const struct x86_cpu_id tdx_guest_ids[] =3D {
+> >>      X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
+> >>      {}
+> >> @@ -290,27 +232,15 @@ static int __init tdx_guest_init(void)
+> >>      if (!x86_match_cpu(tdx_guest_ids))
+> >>              return -ENODEV;
+> >>
+> >> -    ret =3D misc_register(&tdx_misc_dev);
+> >> -    if (ret)
+> >> -            return ret;
+> >> -
+> >>      quote_data =3D alloc_quote_buf();
+> >>      if (!quote_data) {
+> >>              pr_err("Failed to allocate Quote buffer\n");
+> >> -            ret =3D -ENOMEM;
+> >> -            goto free_misc;
+> >> +            return -ENOMEM;
+> >>      }
+> >>
+> >>      ret =3D tsm_register(&tdx_tsm_ops, NULL, NULL);
+> >>      if (ret)
+> >> -            goto free_quote;
+> >> -
+> >> -    return 0;
+> >> -
+> >> -free_quote:
+> >> -    free_quote_buf(quote_data);
+> >> -free_misc:
+> >> -    misc_deregister(&tdx_misc_dev);
+> >> +            free_quote_buf(quote_data);
+> >>
+> >>      return ret;
+> >>   }
+> >> @@ -320,7 +250,6 @@ static void __exit tdx_guest_exit(void)
+> >>   {
+> >>      tsm_unregister(&tdx_tsm_ops);
+> >>      free_quote_buf(quote_data);
+> >> -    misc_deregister(&tdx_misc_dev);
+> >>   }
+> >>   module_exit(tdx_guest_exit);
+> >>
+> >> --
+> >> 2.34.1
+> >>
+> >>
+>
+
+
+--=20
+-Dionna Glaze, PhD (she/her)
