@@ -1,199 +1,118 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493C1802B
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jan 2024 09:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8093D1B592
+	for <linux-coco@lists.linux.dev>; Wed, 24 Jan 2024 11:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706089145; cv=none; b=Qi+rhsFv4MoO3hoK/hvRL3xNe41fJFwlZ+A51avclljhCjiBW27j3B4+Vq3u9FYpyxY3d6GbOiPdxQlcFuEVWPlhBQP1sKDv1LtjQ2hNG7s60MoBltco2HLjmXRDq62CNqFJe2uvQK8jIywoZD6DlyLYPkn8GMRq+NV0M9wVEGc=
+	t=1706096999; cv=none; b=jq+wtKauA3NQHow5OaS2V4+Y8jB3Ode7IbBxvP8irYD8lg8ymSBd3wQ1EWLLqSzfgBs92NPi7AttWbr6+oXI9tL5yla4Ppb44uM1WcT6ZYPWUB4Lt5sE+JunSxYBPoxKF8l36DBoRDLh7UFdPVbdQ1//paNB99i0G4uABJDd9wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706089145; c=relaxed/simple;
-	bh=HRIugs/IFretHEO+UmHHlcM0euBzIhx+QipfPUnVWDM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LIQnNsI5oQeep3tNsjifRf5n888Y3WofIvHsKjSORnbvxzHDN3EEdW+fbLNuRSCqkCC8zGSs4LeyiLyl4QiLJOUZ1Xn419AWQ2MEUrPZmr7xYoLs9gujUdgdcC8cWOMIGUu6tYTySxO2IVKPYEvid73BWRJWAYOV2iyIXWKmStM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SEuPWdpV; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SEuPWdpV; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1706096999; c=relaxed/simple;
+	bh=bOmdQFFnlsI98JvifJBMSVzxN5noEKx0jP99ZVdS7NQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k3/exvSPWlloQt81wHxhcPGplyavAUy+FTGjF/7N0Q1+zVG0IzCTk1SQH1IWfJHSkTdNoCdBwS//+xYQmVRon2YavhKW4e1OIImmWouih+Dm7JOcPvXo4obMVKaJlwXbwPkEb1rTaGPgjlZ8SKpTnxSyZ8WcU5xrBWwh6ngav7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kuWrcuBI; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SEuPWdpV";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SEuPWdpV"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B411321E9F;
-	Wed, 24 Jan 2024 09:39:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706089141; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=KDHVojexE2waSINUyS/E9Yl+5feqhE9AgLomVA8pVIg=;
-	b=SEuPWdpVD62LajuKiJO7+j2ua1aou1BIHOBCLJPvxwfMmBWWSVw3crIl/lEM+4OsE7PkWc
-	zwvxlucOfytWlyFdoQqN3DcZKAG8cwGlpvstqA9gV7VDpDNnfpROrfAoHcm4tIDVtLG5vH
-	Z8b7vqBDi1v9+RGiCvmFzm8NIvWF7eg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706089141; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=KDHVojexE2waSINUyS/E9Yl+5feqhE9AgLomVA8pVIg=;
-	b=SEuPWdpVD62LajuKiJO7+j2ua1aou1BIHOBCLJPvxwfMmBWWSVw3crIl/lEM+4OsE7PkWc
-	zwvxlucOfytWlyFdoQqN3DcZKAG8cwGlpvstqA9gV7VDpDNnfpROrfAoHcm4tIDVtLG5vH
-	Z8b7vqBDi1v9+RGiCvmFzm8NIvWF7eg=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3FE8013786;
-	Wed, 24 Jan 2024 09:39:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PSR+DLXasGUDegAAD6G6ig
-	(envelope-from <nik.borisov@suse.com>); Wed, 24 Jan 2024 09:39:01 +0000
-From: Nikolay Borisov <nik.borisov@suse.com>
-To: linux-coco@lists.linux.dev
-Cc: x86@kernel.org,
-	dave.hansen@linux.intel.com,
-	dan.j.williams@intel.com,
-	dionnaglaze@google.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface for quote generation
-Date: Wed, 24 Jan 2024 11:38:58 +0200
-Message-Id: <20240124093858.1818497-1-nik.borisov@suse.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kuWrcuBI"
+Received: from [192.168.1.212] (181-28-144-85.ftth.glasoperator.nl [85.144.28.181])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 93F7820E34F0;
+	Wed, 24 Jan 2024 03:49:56 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 93F7820E34F0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1706096998;
+	bh=GjRxSdqCKq2z3wCMpH2/II5GsafX4QuIERVof3DOZ/4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=kuWrcuBIoWsk7Uv7pvVLOjz6wWa9VzwvX42N4rgy6QG8ZURL+deEHRaIxCcVv5HlN
+	 GgJUfStm+uYZ8JAkvnA8JDLqyBHZhdkE15V4w/auxvJYr3GoiRQ3K6Sc5Gn5Z/9P06
+	 0/NVg96O+4arfbh32rQirSCpX7geMEYmGDUsRXkc=
+Message-ID: <0c6af28e-b2d6-48b8-90c9-e99a47260904@linux.microsoft.com>
+Date: Wed, 24 Jan 2024 12:49:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
+To: Dan Williams <dan.j.williams@intel.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Nikolay Borisov <nik.borisov@suse.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-coco@lists.linux.dev, dave.hansen@linux.intel.com, x86@kernel.org,
+ kirill.shutemov@linux.intel.com
+References: <20240123160704.1270147-1-nik.borisov@suse.com>
+ <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com>
+ <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
+ <65b00e191087c_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
+ <ZbAaKAh-230Hj4BF@redhat.com>
+ <65b01d00cae32_37ad29499@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Language: en-US
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <65b01d00cae32_37ad29499@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: 0.70
-X-Spamd-Result: default: False [0.70 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 NEURAL_HAM_SHORT(-0.20)[-0.994];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Flag: NO
 
-IOCTL based interface was the natural choice for interacting with the
-quote generation machine at a time when there wasn't anything better.
-Fortunately, now we have a vendor-agnostic, configfs-based one which
-obviates the need to have the IOCTL-based interface.
+On 23/01/2024 21:09, Dan Williams wrote:
+> Daniel P. Berrangé wrote:
+>> On Tue, Jan 23, 2024 at 11:06:01AM -0800, Dan Williams wrote:
+>>> Nikolay Borisov wrote:
+>>>>
+>>>>
+>>>> On 23.01.24 г. 19:51 ч., Kuppuswamy Sathyanarayanan wrote:
+>>>>>
+>>>>> On 1/23/24 8:07 AM, Nikolay Borisov wrote:
+>>>>>> When this driver got merged initially there was no widely agreed upon
+>>>>>> interface how the quote generation interface will work so having an
+>>>>>> ioctl made sense. However, there's now a vendor-neutral interface via
+>>>>>> configfs. Just remove the old ioctl interface and leave only the the
+>>>>>> configfs one.
+>>>>>>
+>>>>>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+>>>>>> ---
+>>>>>
+>>>>> This ABI allows the user to get the raw report which is further used
+>>>>> for Quote generation via vsock. AFAIK, some vendors (TDX users) and
+>>>>> DCAP user libraries are still using this ABI to support attestation over
+>>>>> vsock model.
+>>>>>
+>>>>> Don't you think we should wait till there are no users before considering
+>>>>> removing it?
+>>>>
+>>>> Given that hw with TDX was just released I'd be surprised if there are 
+>>>> any users? But then again, this is an RFC so let's get opinions :)
+>>>>
+>>>
+>>> The assumption is that this tdx_guest_ioctl() ABI has never appeared in
+>>> an enterprise distro kernel. If that assumption is valid, it
+>>> significantly reduces the long term support exposure.
+>>
+>> This ioctl is present in current RHEL-9 kernels
+>>
+>>   https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9/-/blob/main/drivers/virt/coco/tdx-guest/tdx-guest.c?ref_type=heads#L69
+>>
+>> and this is exposed to users when running RHEL-9 guest on Azure
+>> cloud with TDX support.
+> 
+> Ah, ok, thanks for looking that up. Also good to see the new interface
+> is also backported into that kernel.
 
-Gate the relevant code behind a Kconfig option, clearly marking it as
-deprecated as well as introduce a runtime warning.
+Azure TDX instances don't actually have access to that ioctl() interface because
+they run with TD partitioning and that module call is not exposed to linux. The
+TD report is used to chain trust to the TPM provided by the paravisor (TD L1),
+the TD quote can be fetched through a TPM NVRAM index.
 
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
----
- drivers/virt/coco/tdx-guest/Kconfig     |  9 +++++++++
- drivers/virt/coco/tdx-guest/tdx-guest.c | 13 +++++++++++++
- 2 files changed, 22 insertions(+)
+So I wouldn't block removal on this.
 
-diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
-index 22dd59e19431..0f1cfdfbbd28 100644
---- a/drivers/virt/coco/tdx-guest/Kconfig
-+++ b/drivers/virt/coco/tdx-guest/Kconfig
-@@ -9,3 +9,12 @@ config TDX_GUEST_DRIVER
- 
- 	  To compile this driver as module, choose M here. The module will
- 	  be called tdx-guest.
-+
-+config TDX_GUEST_DRIVER_LEGACY_IOCTL
-+	def_bool y
-+	prompt "Enable legacy ioctl interface (DEPRECATED)"
-+	depends on TDX_GUEST_DRIVER
-+	help
-+	  Enable the legacy IOCTL-based interface to get the TDX report. It's
-+	  deprecated in favor of the configfs based one and will be removed
-+	  in a future release.
-diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-index 1253bf76b570..b8cea9486daf 100644
---- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-+++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-@@ -66,6 +66,7 @@ static DEFINE_MUTEX(quote_lock);
-  */
- static u32 getquote_timeout = 30;
- 
-+#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
- static long tdx_get_report0(struct tdx_report_req __user *req)
- {
- 	u8 *reportdata, *tdreport;
-@@ -100,6 +101,7 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
- 
- 	return ret;
- }
-+#endif
- 
- static void free_quote_buf(void *buf)
- {
-@@ -249,6 +251,9 @@ static int tdx_report_new(struct tsm_report *report, void *data)
- 	return ret;
- }
- 
-+
-+
-+#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
- static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
- 			    unsigned long arg)
- {
-@@ -271,6 +276,7 @@ static struct miscdevice tdx_misc_dev = {
- 	.minor = MISC_DYNAMIC_MINOR,
- 	.fops = &tdx_guest_fops,
- };
-+#endif
- 
- static const struct x86_cpu_id tdx_guest_ids[] = {
- 	X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
-@@ -290,9 +296,12 @@ static int __init tdx_guest_init(void)
- 	if (!x86_match_cpu(tdx_guest_ids))
- 		return -ENODEV;
- 
-+#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
-+	pr_info("Legacy IOCTL-based interface is deprecated and will be removed in a future release\n");
- 	ret = misc_register(&tdx_misc_dev);
- 	if (ret)
- 		return ret;
-+#endif
- 
- 	quote_data = alloc_quote_buf();
- 	if (!quote_data) {
-@@ -310,7 +319,9 @@ static int __init tdx_guest_init(void)
- free_quote:
- 	free_quote_buf(quote_data);
- free_misc:
-+#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
- 	misc_deregister(&tdx_misc_dev);
-+#endif
- 
- 	return ret;
- }
-@@ -320,7 +331,9 @@ static void __exit tdx_guest_exit(void)
- {
- 	tsm_unregister(&tdx_tsm_ops);
- 	free_quote_buf(quote_data);
-+#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
- 	misc_deregister(&tdx_misc_dev);
-+#endif
- }
- module_exit(tdx_guest_exit);
- 
--- 
-2.34.1
+> 
+>> I've not directly checked, but I would assume it is also probably
+>> included in Ubuntu LTS kernels too, since they also target TDX in
+>> Azure.
+>>
+>> No idea what the status of SLES is wrt TDX / Azure offhand.
+> 
+> Seems like this needs to follow the typical upstream deprecation of
+> notifying in Kconfig and maybe a runtime message, and then circle back
+> in a couple years to remove when distros stop enabling the legacy
+> interface.
 
