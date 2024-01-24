@@ -1,47 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79997C0B5
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jan 2024 12:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1B67C0AC
+	for <linux-coco@lists.linux.dev>; Wed, 24 Jan 2024 12:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706101023; cv=none; b=K28WP57+eNZ67rVM/cYuYPCzwCn0Mu+tsUN23hanAIJdNmtIFKPA6Wa8guwiRhtM8f61oEsmowcTd8DkzAId2dpv1ewqCAc3XWfp3ojGYKjf+c9RvCapD0DYFqnnnlVQB85sazThO5We2M7uwi+Y1yI4LBzV70hYU/iCXNcvoPo=
+	t=1706101023; cv=none; b=gwGDWbiRQtbbkmENrdCMfsTPU+eZvA0gRrbYjHbDy0yY28e1jtpXYgFW3kK/gpAxPZFAzY5ZDauLdln7nJKAOunkx2A1qHZqnmcWWtW/nZWfzJWhmkUW+fJdMmPOxwIVSNYKN3rGMODwNLqNxH2i95ZhDHsGHoWhLvkou4/Nnhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706101023; c=relaxed/simple;
-	bh=SxAJq8PySGkIldIS+Dq+6BevKxjnV/qVUXBP60oIUiw=;
+	bh=dL+ZDyNfeHUiVdGS89eu26OHL8+JI0276K2FgncM1Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQ9SWfRtwHXGQE1H1U8qJnNkSK5RLclo8x4V1J55gf/O4gz2SPU3cBDjOr4KFEQ0zuiNGPEWlIoXFApZr96jE5en/MNXioLU3ZsvxHxzbnAP+lGJA9lHYv0T868bPWwq5pUUuHzQu1CBRwyF6Xlq1AC0hdsAGjVkHwsnqaBATvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BpSsIBWA; arc=none smtp.client-ip=134.134.136.31
+	 MIME-Version; b=Q2Gaqi4QkVGeFfIuVOc9EA3wC/aSDiItJ83m9DVa/M+6FD/0//B4Hv//PUjH9/BGmI7RXFt7U/Cv10ZSixZ3A2HTmakEUcZr421jfXSKuVe2z9/4fQ5PnBV9mSFZZHPR0H1Ka/Qiv/Lk5KYlnA9o4CiLTIISFLgGgZUszcIIR5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FnE7etgZ; arc=none smtp.client-ip=134.134.136.31
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BpSsIBWA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FnE7etgZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706101021; x=1737637021;
+  t=1706101022; x=1737637022;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=SxAJq8PySGkIldIS+Dq+6BevKxjnV/qVUXBP60oIUiw=;
-  b=BpSsIBWAlNmW7Z/DX8dU1I8d3Pt+bzm3x84Ho2XIuPQR/9n7tjCReKys
-   G9WYRWxN2B2fznh0uRwR68yW/nYbSzAPlZLDi723Ux0IUE91Ns2QGvcDD
-   9VoMpRsroVK3Xpals6lohe3q5DnB7q6IZf31gfnFtaOhOV4ADwtz8bBvX
-   muNzaZ4/qfamxM/Ie+H4k82F8S0wmvIh7kIm7D/kpvJkvRZ/EfNrBACqW
-   t5w3KpWvLeS9e8DBWVAqcL1M3qHe9DKu8zQuRZvb29Qydbxrw4kN9OSPh
-   yUiPBw5mPzjELHZFQqGdN31fn5Edzcdh2z3AJ+iUP7qWEqxFqW1syhS0y
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="466110226"
+  bh=dL+ZDyNfeHUiVdGS89eu26OHL8+JI0276K2FgncM1Wo=;
+  b=FnE7etgZqfXLZmZ/Uhi33R0pqAiAundiEusjKpMF7Lxjoz99OqJjnNtw
+   gwuUB4ASn3OxP1t1hL1DBhoQQ34kvqbarqTRZ8fiDPxELwZP5Tatj8luW
+   SfNNFx5e4+SuA3H7rMcTGiyoPGHPcE7WRiKen9E13oViE4ktQS31oiWrk
+   deL5rWac2Wgk+YzuftUY+eCvtkCs4g2eMXEDQ+VMRvpFyCSRG6yIrP0WO
+   ZziILEzCWFtk+bWx2kZN9c5E9PF/vOEYPKJmrK3qwwfeyuxY6gQDEHpQz
+   JZ9GARAuj25Sqj2Lvpihxgh3n8/6D0+6VjK83mvL3q1Zr48LFpRep4Jpx
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="466110249"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="466110226"
+   d="scan'208";a="466110249"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
   by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 04:56:59 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="735924096"
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="735924100"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="735924096"
+   d="scan'208";a="735924100"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orsmga003.jf.intel.com with ESMTP; 24 Jan 2024 04:56:53 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 6D64D75F; Wed, 24 Jan 2024 14:56:02 +0200 (EET)
+	id BBE84A62; Wed, 24 Jan 2024 14:56:02 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -64,9 +64,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCHv6 07/16] x86/mm: Return correct level from lookup_address() if pte is none
-Date: Wed, 24 Jan 2024 14:55:48 +0200
-Message-ID: <20240124125557.493675-8-kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 13/16] x86/acpi: Do not attempt to bring up secondary CPUs in kexec case
+Date: Wed, 24 Jan 2024 14:55:54 +0200
+Message-ID: <20240124125557.493675-14-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
 References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
@@ -78,74 +78,80 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-lookup_address() only returns correct page table level for the entry if
-the entry is not none.
+ACPI MADT doesn't allow to offline a CPU after it was onlined. This
+limits kexec: the second kernel won't be able to use more than one CPU.
 
-Make the helper to always return correct 'level'. It allows to implement
-iterator over kernel page tables using lookup_address().
+To prevent a kexec kernel from onlining secondary CPUs invalidate the
+mailbox address in the ACPI MADT wakeup structure which prevents a
+kexec kernel to use it.
 
-Add one more entry into enum pg_level to indicate size of VA covered by
-one PGD entry in 5-level paging mode.
+This is safe as the booting kernel has the mailbox address cached
+already and acpi_wakeup_cpu() uses the cached value to bring up the
+secondary CPUs.
+
+Note: This is a Linux specific convention and not covered by the
+      ACPI specification.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 ---
- arch/x86/include/asm/pgtable_types.h | 1 +
- arch/x86/mm/pat/set_memory.c         | 8 ++++----
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/kernel/acpi/madt_wakeup.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 0b748ee16b3d..3f648ffdfbe5 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -548,6 +548,7 @@ enum pg_level {
- 	PG_LEVEL_2M,
- 	PG_LEVEL_1G,
- 	PG_LEVEL_512G,
-+	PG_LEVEL_256T,
- 	PG_LEVEL_NUM
- };
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index 004801b9b151..30820f9de5af 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -14,6 +14,11 @@ static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox __ro_afte
  
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index f92da8c9a86d..3612e3167147 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -666,32 +666,32 @@ pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
- 	pud_t *pud;
- 	pmd_t *pmd;
+ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+ {
++	if (!acpi_mp_wake_mailbox_paddr) {
++		pr_warn_once("No MADT mailbox: cannot bringup secondary CPUs. Booting with kexec?\n");
++		return -EOPNOTSUPP;
++	}
++
+ 	/*
+ 	 * Remap mailbox memory only for the first call to acpi_wakeup_cpu().
+ 	 *
+@@ -64,6 +69,28 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+ 	return 0;
+ }
  
--	*level = PG_LEVEL_NONE;
-+	*level = PG_LEVEL_256T;
++static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup *mp_wake)
++{
++	cpu_hotplug_disable_offlining();
++
++	/*
++	 * ACPI MADT doesn't allow to offline a CPU after it was onlined. This
++	 * limits kexec: the second kernel won't be able to use more than one CPU.
++	 *
++	 * To prevent a kexec kernel from onlining secondary CPUs invalidate the
++	 * mailbox address in the ACPI MADT wakeup structure which prevents a
++	 * kexec kernel to use it.
++	 *
++	 * This is safe as the booting kernel has the mailbox address cached
++	 * already and acpi_wakeup_cpu() uses the cached value to bring up the
++	 * secondary CPUs.
++	 *
++	 * Note: This is a Linux specific convention and not covered by the
++	 *       ACPI specification.
++	 */
++	mp_wake->mailbox_address = 0;
++}
++
+ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+ 			      const unsigned long end)
+ {
+@@ -77,7 +104,7 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
  
- 	if (pgd_none(*pgd))
- 		return NULL;
+ 	acpi_mp_wake_mailbox_paddr = mp_wake->mailbox_address;
  
-+	*level = PG_LEVEL_512G;
- 	p4d = p4d_offset(pgd, address);
- 	if (p4d_none(*p4d))
- 		return NULL;
+-	cpu_hotplug_disable_offlining();
++	acpi_mp_disable_offlining(mp_wake);
  
--	*level = PG_LEVEL_512G;
- 	if (p4d_large(*p4d) || !p4d_present(*p4d))
- 		return (pte_t *)p4d;
- 
-+	*level = PG_LEVEL_1G;
- 	pud = pud_offset(p4d, address);
- 	if (pud_none(*pud))
- 		return NULL;
- 
--	*level = PG_LEVEL_1G;
- 	if (pud_large(*pud) || !pud_present(*pud))
- 		return (pte_t *)pud;
- 
-+	*level = PG_LEVEL_2M;
- 	pmd = pmd_offset(pud, address);
- 	if (pmd_none(*pmd))
- 		return NULL;
- 
--	*level = PG_LEVEL_2M;
- 	if (pmd_large(*pmd) || !pmd_present(*pmd))
- 		return (pte_t *)pmd;
+ 	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
  
 -- 
 2.43.0
