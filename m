@@ -1,118 +1,305 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8093D1B592
-	for <linux-coco@lists.linux.dev>; Wed, 24 Jan 2024 11:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B371C33
+	for <linux-coco@lists.linux.dev>; Wed, 24 Jan 2024 12:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706096999; cv=none; b=jq+wtKauA3NQHow5OaS2V4+Y8jB3Ode7IbBxvP8irYD8lg8ymSBd3wQ1EWLLqSzfgBs92NPi7AttWbr6+oXI9tL5yla4Ppb44uM1WcT6ZYPWUB4Lt5sE+JunSxYBPoxKF8l36DBoRDLh7UFdPVbdQ1//paNB99i0G4uABJDd9wg=
+	t=1706101009; cv=none; b=R9C8cG8LB/yKWN4Yny05L7LrTZWF+IQ+Ux3WQTcJy/ZzKNmXvtbomxvt14kP8YJhBd6VKuhXPEGY/AIwSu74uc1/QXgZUK7EejhTXrENZ+zcoIxRaLpQtLMQ4oUChWgWkBJ14G4HyTYSpDeQTOzEa7y+d4kQRFyKBtSiYiu8QKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706096999; c=relaxed/simple;
-	bh=bOmdQFFnlsI98JvifJBMSVzxN5noEKx0jP99ZVdS7NQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k3/exvSPWlloQt81wHxhcPGplyavAUy+FTGjF/7N0Q1+zVG0IzCTk1SQH1IWfJHSkTdNoCdBwS//+xYQmVRon2YavhKW4e1OIImmWouih+Dm7JOcPvXo4obMVKaJlwXbwPkEb1rTaGPgjlZ8SKpTnxSyZ8WcU5xrBWwh6ngav7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kuWrcuBI; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1706101009; c=relaxed/simple;
+	bh=OpIDWzdlg0any9JAzqVnZ+xhu2rjxA6sBoybOHgswyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=un5AuV+kWXFZSUjDzZ3MQSwnBbppz2+7x5N4Fd0noQ6MxT8fhWRX4nQ0HoO6fnbg6Hqmwout7NVKl+1QAP29f5/mRXRexx/+WRRuX+NvleTrTzoM3s492VhW3uSm0CM0gEZvusOuCEwSSlkle0ii8HH9hGk0PBKUZp6ZQgEyxFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LO7ctXRm; arc=none smtp.client-ip=134.134.136.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kuWrcuBI"
-Received: from [192.168.1.212] (181-28-144-85.ftth.glasoperator.nl [85.144.28.181])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 93F7820E34F0;
-	Wed, 24 Jan 2024 03:49:56 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 93F7820E34F0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1706096998;
-	bh=GjRxSdqCKq2z3wCMpH2/II5GsafX4QuIERVof3DOZ/4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kuWrcuBIoWsk7Uv7pvVLOjz6wWa9VzwvX42N4rgy6QG8ZURL+deEHRaIxCcVv5HlN
-	 GgJUfStm+uYZ8JAkvnA8JDLqyBHZhdkE15V4w/auxvJYr3GoiRQ3K6Sc5Gn5Z/9P06
-	 0/NVg96O+4arfbh32rQirSCpX7geMEYmGDUsRXkc=
-Message-ID: <0c6af28e-b2d6-48b8-90c9-e99a47260904@linux.microsoft.com>
-Date: Wed, 24 Jan 2024 12:49:54 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LO7ctXRm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706101007; x=1737637007;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=OpIDWzdlg0any9JAzqVnZ+xhu2rjxA6sBoybOHgswyk=;
+  b=LO7ctXRmjAf/wW1P6dQkl5WRM4Qsl8CesuSHvSuk4Wh855CxiET7teZS
+   3okUdpz5CKOQvuOp0feVYkDEZaz12igHn5dUmO56y5LK6DzN2O3fdaEXB
+   +7riklKq+1ZHYD7wdPG0fbaN6MgGGcmUZ9HKNEE81MwdMVWkG0Ohbi2t3
+   PCjE0RszXBaTyzRNlPMOC0MnyeCP0Xuyi5OANinbEzNJw736M9hRIJsOU
+   hjKsjUpzNOZb30aazyEtahpnB1BQiolzfivF3SEOvKEQ3GLmDLo2wt5A8
+   3Ci1gSrxmcY1Rfnw8QwC1+MbDjCd/MkdKEq7C8zI892OngzduV4WwcDus
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="466110024"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="466110024"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 04:56:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="735924052"
+X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
+   d="scan'208";a="735924052"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 24 Jan 2024 04:56:40 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 954A689B; Wed, 24 Jan 2024 14:56:02 +0200 (EET)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe  <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	Baoquan He <bhe@redhat.com>,
+	kexec@lists.infradead.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: [PATCHv6 10/16] x86/tdx: Convert shared memory back to private on kexec
+Date: Wed, 24 Jan 2024 14:55:51 +0200
+Message-ID: <20240124125557.493675-11-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
+References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] virt: tdx-guest: Remove quote generation via ioctl
-To: Dan Williams <dan.j.williams@intel.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-coco@lists.linux.dev, dave.hansen@linux.intel.com, x86@kernel.org,
- kirill.shutemov@linux.intel.com
-References: <20240123160704.1270147-1-nik.borisov@suse.com>
- <d3230869-e07f-41c8-b613-ccfc2eaa83a2@linux.intel.com>
- <ea5dc4b4-6aed-4672-bbe6-e2f477528f36@suse.com>
- <65b00e191087c_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
- <ZbAaKAh-230Hj4BF@redhat.com>
- <65b01d00cae32_37ad29499@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <65b01d00cae32_37ad29499@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 23/01/2024 21:09, Dan Williams wrote:
-> Daniel P. Berrangé wrote:
->> On Tue, Jan 23, 2024 at 11:06:01AM -0800, Dan Williams wrote:
->>> Nikolay Borisov wrote:
->>>>
->>>>
->>>> On 23.01.24 г. 19:51 ч., Kuppuswamy Sathyanarayanan wrote:
->>>>>
->>>>> On 1/23/24 8:07 AM, Nikolay Borisov wrote:
->>>>>> When this driver got merged initially there was no widely agreed upon
->>>>>> interface how the quote generation interface will work so having an
->>>>>> ioctl made sense. However, there's now a vendor-neutral interface via
->>>>>> configfs. Just remove the old ioctl interface and leave only the the
->>>>>> configfs one.
->>>>>>
->>>>>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
->>>>>> ---
->>>>>
->>>>> This ABI allows the user to get the raw report which is further used
->>>>> for Quote generation via vsock. AFAIK, some vendors (TDX users) and
->>>>> DCAP user libraries are still using this ABI to support attestation over
->>>>> vsock model.
->>>>>
->>>>> Don't you think we should wait till there are no users before considering
->>>>> removing it?
->>>>
->>>> Given that hw with TDX was just released I'd be surprised if there are 
->>>> any users? But then again, this is an RFC so let's get opinions :)
->>>>
->>>
->>> The assumption is that this tdx_guest_ioctl() ABI has never appeared in
->>> an enterprise distro kernel. If that assumption is valid, it
->>> significantly reduces the long term support exposure.
->>
->> This ioctl is present in current RHEL-9 kernels
->>
->>   https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-9/-/blob/main/drivers/virt/coco/tdx-guest/tdx-guest.c?ref_type=heads#L69
->>
->> and this is exposed to users when running RHEL-9 guest on Azure
->> cloud with TDX support.
-> 
-> Ah, ok, thanks for looking that up. Also good to see the new interface
-> is also backported into that kernel.
+TDX guests allocate shared buffers to perform I/O. It is done by
+allocating pages normally from the buddy allocator and converting them
+to shared with set_memory_decrypted().
 
-Azure TDX instances don't actually have access to that ioctl() interface because
-they run with TD partitioning and that module call is not exposed to linux. The
-TD report is used to chain trust to the TPM provided by the paravisor (TD L1),
-the TD quote can be fetched through a TPM NVRAM index.
+The second kernel has no idea what memory is converted this way. It only
+sees E820_TYPE_RAM.
 
-So I wouldn't block removal on this.
+Accessing shared memory via private mapping is fatal. It leads to
+unrecoverable TD exit.
 
-> 
->> I've not directly checked, but I would assume it is also probably
->> included in Ubuntu LTS kernels too, since they also target TDX in
->> Azure.
->>
->> No idea what the status of SLES is wrt TDX / Azure offhand.
-> 
-> Seems like this needs to follow the typical upstream deprecation of
-> notifying in Kconfig and maybe a runtime message, and then circle back
-> in a couple years to remove when distros stop enabling the legacy
-> interface.
+On kexec walk direct mapping and convert all shared memory back to
+private. It makes all RAM private again and second kernel may use it
+normally.
+
+The conversion occurs in two steps: stopping new conversions and
+unsharing all memory. In the case of normal kexec, the stopping of
+conversions takes place while scheduling is still functioning. This
+allows for waiting until any ongoing conversions are finished. The
+second step is carried out when all CPUs except one are inactive and
+interrupts are disabled. This prevents any conflicts with code that may
+access shared memory.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+---
+ arch/x86/coco/tdx/tdx.c | 124 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 122 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index fd212c9bad89..bb77a927a831 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -6,8 +6,10 @@
+ 
+ #include <linux/cpufeature.h>
+ #include <linux/debugfs.h>
++#include <linux/delay.h>
+ #include <linux/export.h>
+ #include <linux/io.h>
++#include <linux/kexec.h>
+ #include <asm/coco.h>
+ #include <asm/tdx.h>
+ #include <asm/vmx.h>
+@@ -15,6 +17,7 @@
+ #include <asm/insn.h>
+ #include <asm/insn-eval.h>
+ #include <asm/pgtable.h>
++#include <asm/set_memory.h>
+ 
+ /* MMIO direction */
+ #define EPT_READ	0
+@@ -41,6 +44,9 @@
+ 
+ static atomic_long_t nr_shared;
+ 
++static atomic_t conversions_in_progress;
++static bool conversion_allowed = true;
++
+ static inline bool pte_decrypted(pte_t pte)
+ {
+ 	return cc_mkdec(pte_val(pte)) == pte_val(pte);
+@@ -726,6 +732,14 @@ static bool tdx_tlb_flush_required(bool private)
+ 
+ static bool tdx_cache_flush_required(void)
+ {
++	/*
++	 * Avoid issuing CLFLUSH on set_memory_decrypted() if conversions
++	 * stopped. Otherwise it can race with unshare_all_memory() and trigger
++	 * implicit conversion to shared.
++	 */
++	if (!conversion_allowed)
++		return false;
++
+ 	/*
+ 	 * AMD SME/SEV can avoid cache flushing if HW enforces cache coherence.
+ 	 * TDX doesn't have such capability.
+@@ -809,12 +823,25 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
+ static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
+ 					 bool enc)
+ {
++	atomic_inc(&conversions_in_progress);
++
++	/*
++	 * Check after bumping conversions_in_progress to serialize
++	 * against tdx_kexec_stop_conversion().
++	 */
++	if (!conversion_allowed) {
++		atomic_dec(&conversions_in_progress);
++		return -EBUSY;
++	}
++
+ 	/*
+ 	 * Only handle shared->private conversion here.
+ 	 * See the comment in tdx_early_init().
+ 	 */
+-	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc))
++	if (enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
++		atomic_dec(&conversions_in_progress);
+ 		return -EIO;
++	}
+ 
+ 	return 0;
+ }
+@@ -826,17 +853,107 @@ static int tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
+ 	 * Only handle private->shared conversion here.
+ 	 * See the comment in tdx_early_init().
+ 	 */
+-	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
++	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc)) {
++		atomic_dec(&conversions_in_progress);
+ 		return -EIO;
++	}
+ 
+ 	if (enc)
+ 		atomic_long_sub(numpages, &nr_shared);
+ 	else
+ 		atomic_long_add(numpages, &nr_shared);
+ 
++	atomic_dec(&conversions_in_progress);
++
+ 	return 0;
+ }
+ 
++static void tdx_kexec_stop_conversion(bool crash)
++{
++	/* Stop new private<->shared conversions */
++	conversion_allowed = false;
++
++	/*
++	 * Make sure conversion_allowed is cleared before checking
++	 * conversions_in_progress.
++	 */
++	barrier();
++
++	/*
++	 * Crash kernel reaches here with interrupts disabled: can't wait for
++	 * conversions to finish.
++	 *
++	 * If race happened, just report and proceed.
++	 */
++	if (!crash) {
++		unsigned long timeout;
++
++		/*
++		 * Wait for in-flight conversions to complete.
++		 *
++		 * Do not wait more than 30 seconds.
++		 */
++		timeout = 30 * USEC_PER_SEC;
++		while (atomic_read(&conversions_in_progress) && timeout--)
++			udelay(1);
++	}
++
++	if (atomic_read(&conversions_in_progress))
++		pr_warn("Failed to finish shared<->private conversions\n");
++}
++
++static void tdx_kexec_unshare_mem(void)
++{
++	unsigned long addr, end;
++	long found = 0, shared;
++
++	/*
++	 * Walk direct mapping and convert all shared memory back to private,
++	 */
++
++	addr = PAGE_OFFSET;
++	end  = PAGE_OFFSET + get_max_mapped();
++
++	while (addr < end) {
++		unsigned long size;
++		unsigned int level;
++		pte_t *pte;
++
++		pte = lookup_address(addr, &level);
++		size = page_level_size(level);
++
++		if (pte && pte_decrypted(*pte)) {
++			int pages = size / PAGE_SIZE;
++
++			/*
++			 * Touching memory with shared bit set triggers implicit
++			 * conversion to shared.
++			 *
++			 * Make sure nobody touches the shared range from
++			 * now on.
++			 */
++			set_pte(pte, __pte(0));
++
++			if (!tdx_enc_status_changed(addr, pages, true)) {
++				pr_err("Failed to unshare range %#lx-%#lx\n",
++				       addr, addr + size);
++			}
++
++			found += pages;
++		}
++
++		addr += size;
++	}
++
++	__flush_tlb_all();
++
++	shared = atomic_long_read(&nr_shared);
++	if (shared != found) {
++		pr_err("shared page accounting is off\n");
++		pr_err("nr_shared = %ld, nr_found = %ld\n", shared, found);
++	}
++}
++
+ void __init tdx_early_init(void)
+ {
+ 	struct tdx_module_args args = {
+@@ -896,6 +1013,9 @@ void __init tdx_early_init(void)
+ 	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
+ 	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
+ 
++	x86_platform.guest.enc_kexec_stop_conversion = tdx_kexec_stop_conversion;
++	x86_platform.guest.enc_kexec_unshare_mem     = tdx_kexec_unshare_mem;
++
+ 	/*
+ 	 * TDX intercepts the RDMSR to read the X2APIC ID in the parallel
+ 	 * bringup low level code. That raises #VE which cannot be handled
+-- 
+2.43.0
 
