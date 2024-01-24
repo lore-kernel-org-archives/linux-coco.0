@@ -1,116 +1,199 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA275243
-	for <linux-coco@lists.linux.dev>; Tue, 23 Jan 2024 20:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A493C1802B
+	for <linux-coco@lists.linux.dev>; Wed, 24 Jan 2024 09:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706043559; cv=none; b=fSG4XKwvfdvu3jkq5WWvT/kboHmbqGSb1sr0pyiV+/lOX4sEX0ZBtanjk44K7ppnU+4S/18seNZvXjXyMr5W/FI37Dc7eEUyrWboN/9KGY2Qbt1vH4h4z7+J2NTibla5Gui3xdHG2IVGsxA65Uj3wh8hDEuLcoLbK01/b7Ez21c=
+	t=1706089145; cv=none; b=Qi+rhsFv4MoO3hoK/hvRL3xNe41fJFwlZ+A51avclljhCjiBW27j3B4+Vq3u9FYpyxY3d6GbOiPdxQlcFuEVWPlhBQP1sKDv1LtjQ2hNG7s60MoBltco2HLjmXRDq62CNqFJe2uvQK8jIywoZD6DlyLYPkn8GMRq+NV0M9wVEGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706043559; c=relaxed/simple;
-	bh=0/FI8p1SE6PzHzqOaW3ljzb4454vuzBBOrRuHNH4K9s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sxRWvWNmpGwO14lL/bWWWJFDpH6sqZMvgcH0QGFJXFSmRDPt6P/BqG0r6k/E6sRqKEioBNBkM4W+VyejCqL4/WZt7AALJeiEUjPc2Q6EAi2YUkiO0pGTNPIDFzsYysXvdx8kSyUMMQ4FROhZpxzrjpeVDLpZDj2/pRl5XRMYj3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NzusgAwU; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706089145; c=relaxed/simple;
+	bh=HRIugs/IFretHEO+UmHHlcM0euBzIhx+QipfPUnVWDM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LIQnNsI5oQeep3tNsjifRf5n888Y3WofIvHsKjSORnbvxzHDN3EEdW+fbLNuRSCqkCC8zGSs4LeyiLyl4QiLJOUZ1Xn419AWQ2MEUrPZmr7xYoLs9gujUdgdcC8cWOMIGUu6tYTySxO2IVKPYEvid73BWRJWAYOV2iyIXWKmStM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SEuPWdpV; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SEuPWdpV; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NzusgAwU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706043559; x=1737579559;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0/FI8p1SE6PzHzqOaW3ljzb4454vuzBBOrRuHNH4K9s=;
-  b=NzusgAwUjmkIim3XYoDf95qtG2nxdnPNn+g8JpbLxGgVvx7etbB7atsE
-   oSzWtZ2S1g9Tg93qAt0VLA/GRZ0eg+YFH9m0L6BviEgvD9Ph9HrBzS/w3
-   kTXvCRNxPgB+gAiPkBtf5eug+STn0rh0pckPvs7TXM3mSq2Q1bwk8IEfs
-   uQEVecbNkYHg14EjfridqqDdTLSKZnkGV4GRW1qJUrgWhkpJijKS8lusr
-   wpvXIED0e+yNbbWL0BrBmujG7YglSlXjIXtilGHEssin+wHJ7UDYQy8l+
-   aMYEjz+OTIyJM/U3f/djuG5TsIlD+qr0mLi70/6tkbnAp+ydan8qyG1oD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="8764721"
-X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="8764721"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 12:59:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="905367654"
-X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
-   d="scan'208";a="905367654"
-Received: from weifeng1-mobl1.amr.corp.intel.com (HELO [10.212.171.111]) ([10.212.171.111])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2024 12:59:16 -0800
-Message-ID: <85109de4-5832-4e14-8416-6443ac417c9d@linux.intel.com>
-Date: Tue, 23 Jan 2024 12:59:15 -0800
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SEuPWdpV";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SEuPWdpV"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B411321E9F;
+	Wed, 24 Jan 2024 09:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1706089141; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=KDHVojexE2waSINUyS/E9Yl+5feqhE9AgLomVA8pVIg=;
+	b=SEuPWdpVD62LajuKiJO7+j2ua1aou1BIHOBCLJPvxwfMmBWWSVw3crIl/lEM+4OsE7PkWc
+	zwvxlucOfytWlyFdoQqN3DcZKAG8cwGlpvstqA9gV7VDpDNnfpROrfAoHcm4tIDVtLG5vH
+	Z8b7vqBDi1v9+RGiCvmFzm8NIvWF7eg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1706089141; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=KDHVojexE2waSINUyS/E9Yl+5feqhE9AgLomVA8pVIg=;
+	b=SEuPWdpVD62LajuKiJO7+j2ua1aou1BIHOBCLJPvxwfMmBWWSVw3crIl/lEM+4OsE7PkWc
+	zwvxlucOfytWlyFdoQqN3DcZKAG8cwGlpvstqA9gV7VDpDNnfpROrfAoHcm4tIDVtLG5vH
+	Z8b7vqBDi1v9+RGiCvmFzm8NIvWF7eg=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3FE8013786;
+	Wed, 24 Jan 2024 09:39:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PSR+DLXasGUDegAAD6G6ig
+	(envelope-from <nik.borisov@suse.com>); Wed, 24 Jan 2024 09:39:01 +0000
+From: Nikolay Borisov <nik.borisov@suse.com>
+To: linux-coco@lists.linux.dev
+Cc: x86@kernel.org,
+	dave.hansen@linux.intel.com,
+	dan.j.williams@intel.com,
+	dionnaglaze@google.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface for quote generation
+Date: Wed, 24 Jan 2024 11:38:58 +0200
+Message-Id: <20240124093858.1818497-1-nik.borisov@suse.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
-Content-Language: en-US
-To: "Xing, Cedric" <cedric.xing@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, "Yao, Jiewen"
- <jiewen.yao@intel.com>, Qinkun Bao <qinkun@google.com>,
- Samuel Ortiz <sameo@rivosinc.com>, "Lu, Ken" <ken.lu@intel.com>
-Cc: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240114223532.290550-1-sameo@rivosinc.com>
- <20240114223532.290550-4-sameo@rivosinc.com>
- <1bbf8d3e-aa94-48c7-a1e4-76f9eefc4af7@linux.intel.com>
- <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
- <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com>
- <Za1G9I+tYuIL9ser@vermeer> <CF3D8DE1-AD47-4A77-B8BD-8A12A6F7E9DB@google.com>
- <MW4PR11MB5872F46A2089C8C2D8EF7A008C752@MW4PR11MB5872.namprd11.prod.outlook.com>
- <65aecbbce09dd_107423294b7@dwillia2-xfh.jf.intel.com.notmuch>
- <c3b99264-233b-4997-9e20-c4c2693b8cdc@intel.com>
- <65aeecea827f0_37ad2948@dwillia2-xfh.jf.intel.com.notmuch>
- <14dffda2-f413-4304-9932-3ac8ddfb30e4@intel.com>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <14dffda2-f413-4304-9932-3ac8ddfb30e4@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 NEURAL_HAM_SHORT(-0.20)[-0.994];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Spam-Flag: NO
 
+IOCTL based interface was the natural choice for interacting with the
+quote generation machine at a time when there wasn't anything better.
+Fortunately, now we have a vendor-agnostic, configfs-based one which
+obviates the need to have the IOCTL-based interface.
 
-On 1/23/24 10:48 AM, Xing, Cedric wrote:
-> On 1/22/2024 2:32 PM, Dan Williams wrote:
->> Xing, Cedric wrote:
->> [..]
->>>> So, yes, the mapping should be allowed to specified by the low-level
->>>> driver, but at the same time every vendor should not reinvent their own
->>>> enumeration method when we have EFI for that.
->>>
->>> Given PCR->RTMR mapping is static, I just wonder why it needs to be kept
->>> in kernel. Given that PCRs can never be 1:1 mapped to RTMRs, and that
->>> TDX quotes are never TPM quotes, applications used to extend PCRs would
->>> have to be changed/recompiled. Then wouldn't it suffice to define the
->>> mappings as macros in an architecture specific header file?
->>
->> I think something is wrong if applications are exposed to the PCR->RTMR
->> mapping thrash. I would hope / expect that detail is hidden behind a TPM
->> proxy layer sitting in front of this mapping on behalf of TPM-client
->> applications.
->
-> Hi Dan,
->
-> My apology for the confusion! I think we are talking about 2 different scenarios - (1) this patch alone; and (2) this patch + vTPM.
->
-> Scenario 1: This patch provides RTMR access only. My assumption is, there are existing application (and/or kernel modules) that extend to PCRs today and would like to work in TDs where only RTMRs are available. Changes are of course necessary in those applications as TPMs/PCRs are no longer available, but from security perspective they would like to keep the same activity log and just change to use RTMRs (in lieu of PCRs) as the secure storage. Hence a PCR->RTMR mapping is necessary and must be agreed upon by all those applications and relying parties. IIUC, this is the intention of having PCR->RTMR mapping config maintained by the kernel, as proposed by Sam O. originally.
->
-> Scenario 2: A vTPM is implemented on top of this patch, in which case the existing applications don't have to change as they can continue extending to the same PCRs, which will then be emulated by the underlying vTPM implementation. PCR->RTMR mapping in this scenario is obviously internal to the vTPM and I agree with you completely that it should be hidden inside the vTPM.
->
-> My comment in my previous email was regarding Scenario 1. I hope the clarification above helps.
+Gate the relevant code behind a Kconfig option, clearly marking it as
+deprecated as well as introduce a runtime warning.
 
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+---
+ drivers/virt/coco/tdx-guest/Kconfig     |  9 +++++++++
+ drivers/virt/coco/tdx-guest/tdx-guest.c | 13 +++++++++++++
+ 2 files changed, 22 insertions(+)
 
-IMO, we should adapt an approach with as minimal user changes as possible. So I think we should try to avoid scenario 1 if possible.
-
-
->
-> -Cedric
->
+diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
+index 22dd59e19431..0f1cfdfbbd28 100644
+--- a/drivers/virt/coco/tdx-guest/Kconfig
++++ b/drivers/virt/coco/tdx-guest/Kconfig
+@@ -9,3 +9,12 @@ config TDX_GUEST_DRIVER
+ 
+ 	  To compile this driver as module, choose M here. The module will
+ 	  be called tdx-guest.
++
++config TDX_GUEST_DRIVER_LEGACY_IOCTL
++	def_bool y
++	prompt "Enable legacy ioctl interface (DEPRECATED)"
++	depends on TDX_GUEST_DRIVER
++	help
++	  Enable the legacy IOCTL-based interface to get the TDX report. It's
++	  deprecated in favor of the configfs based one and will be removed
++	  in a future release.
+diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+index 1253bf76b570..b8cea9486daf 100644
+--- a/drivers/virt/coco/tdx-guest/tdx-guest.c
++++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+@@ -66,6 +66,7 @@ static DEFINE_MUTEX(quote_lock);
+  */
+ static u32 getquote_timeout = 30;
+ 
++#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+ static long tdx_get_report0(struct tdx_report_req __user *req)
+ {
+ 	u8 *reportdata, *tdreport;
+@@ -100,6 +101,7 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
+ 
+ 	return ret;
+ }
++#endif
+ 
+ static void free_quote_buf(void *buf)
+ {
+@@ -249,6 +251,9 @@ static int tdx_report_new(struct tsm_report *report, void *data)
+ 	return ret;
+ }
+ 
++
++
++#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+ static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
+ 			    unsigned long arg)
+ {
+@@ -271,6 +276,7 @@ static struct miscdevice tdx_misc_dev = {
+ 	.minor = MISC_DYNAMIC_MINOR,
+ 	.fops = &tdx_guest_fops,
+ };
++#endif
+ 
+ static const struct x86_cpu_id tdx_guest_ids[] = {
+ 	X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
+@@ -290,9 +296,12 @@ static int __init tdx_guest_init(void)
+ 	if (!x86_match_cpu(tdx_guest_ids))
+ 		return -ENODEV;
+ 
++#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
++	pr_info("Legacy IOCTL-based interface is deprecated and will be removed in a future release\n");
+ 	ret = misc_register(&tdx_misc_dev);
+ 	if (ret)
+ 		return ret;
++#endif
+ 
+ 	quote_data = alloc_quote_buf();
+ 	if (!quote_data) {
+@@ -310,7 +319,9 @@ static int __init tdx_guest_init(void)
+ free_quote:
+ 	free_quote_buf(quote_data);
+ free_misc:
++#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+ 	misc_deregister(&tdx_misc_dev);
++#endif
+ 
+ 	return ret;
+ }
+@@ -320,7 +331,9 @@ static void __exit tdx_guest_exit(void)
+ {
+ 	tsm_unregister(&tdx_tsm_ops);
+ 	free_quote_buf(quote_data);
++#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+ 	misc_deregister(&tdx_misc_dev);
++#endif
+ }
+ module_exit(tdx_guest_exit);
+ 
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.34.1
 
