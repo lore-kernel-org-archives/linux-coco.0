@@ -1,401 +1,210 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBEE1AACB
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 13:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706276687; cv=none; b=bdRlLGCI8jLPqMoW7d1a2XZAYA768BPodj2ddL/kD+bzH+DuZRsbbk2gzN9Q53X/28NXOhZXlXmxEFeXHPQKviFo+jB2lNiDUks+fr8muWdidaNNRH+TEy9Tmjaqf+Ob+dNm+I69SZ8+tJrU4wSY2/GoD7r5fguF8qA76xBSAtk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706276687; c=relaxed/simple;
-	bh=nsXQorC8j+BZ4N0IBxG+fCtItGzvSrcJ0orVYy/bv60=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JSEWLGoX1n53KsYXDfZD6ru7Y4SOpxFq30EAejCh1DaKcztOLYnq8yUhBk+f1mGANFXzkEAiVLsFWlyeTTqRlzdEK/Ybjheu+evrPcXwIUID6Q6Wfr37SsjjJZcDps/8J51xDo+TEfyZLs2HtRxEeFAqDwBtcjmsr3p1mM2mGqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GIxe4RCx; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA6D1C28B
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 14:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=134.134.136.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706278122; cv=fail; b=VKMN/cttzGzIm2IrrYn6Dx+PE/mFBlOUBCsRzUr379OULjKgupFc1+SfMwhbTESuSAClvsdZsJeuSkJ/olGcb/tghrLagD+01tPP5iGl5E15mpxUXJ8ZSuoxwVLyG8XDQis+FUQtvo6X/GA9rzgEnqgg50L1j79cE6Phg6F+2PU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706278122; c=relaxed/simple;
+	bh=WYfG8WkiTDQ3PZnDwgK27a6qqHwFvCHRq37dFIugODM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tSTrvLYJJ1drU8RzzYIOpWn+mm2JmiVWs5pkt9AB9OtvKjWcYqkfNP6hLUiHb7QFXefis5cLkanjoSmCM2KOJBZzQxrTzVPJPs8O1CJH6P/gqJc8u6u34/6psrBJMYwxyEvCVb9fzyk8189a3MXkIoDUH9A0Kbxlh86jrtMdYlY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YO7wJtnD; arc=fail smtp.client-ip=134.134.136.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GIxe4RCx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YO7wJtnD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706276684; x=1737812684;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=nsXQorC8j+BZ4N0IBxG+fCtItGzvSrcJ0orVYy/bv60=;
-  b=GIxe4RCxL7EfQOi2nIalvDbRENTeOYbA6j/vVLmqn7LpS4HlAkurPii6
-   jVbs3SHkyl+NhL0GJzqqnFnXqdZBMVEqtIb+W5Nm5sdi9sC/tlhxcqTT1
-   JPQOIOGn7mBH3KeMsm6Qk2XQ44RhAXsvgv3Ukxjw//rwVBFnuEuYAHZCH
-   llEkUwCrxU8JknA/KMnmnwQt43y55eutRvM6LVxdCFXfNHRucu6+jPCMS
-   XVYeT8HHYhi2L5KHAb/4ACra+2rhPZ/Ca1eUKA8RZbckuKhLRssL47AqH
-   3dzOOX6AA47A+jtz641BiaPMCBroBa6oe6O6kHkQoq9MwmOTvJSMq+FDX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="9840167"
+  t=1706278119; x=1737814119;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=WYfG8WkiTDQ3PZnDwgK27a6qqHwFvCHRq37dFIugODM=;
+  b=YO7wJtnDarLofFWOGEtUYPHQJTIGo7+9LSuUNuoBjYHz7OlwZ0fHclZg
+   mPkRBBjJBVKFB8Nka+1/3ng3cMzJiTEETyYEZG4EVB4SQvq1vU20Po11I
+   KX5+Nz/6LIp8jjuxTnDOxjlr0LBL7nRHQ68DEEB20zW+2tCVz1i0NDe8L
+   wh+eJyg+DinwaqkrRqbIdP/An0Vsq/i3qGtvfIMtaEJnpi/ItKhUq4yve
+   2YE5nrKWB7Ly8UToZ5fAs8T38MvdcG+wbZRmxk9q/lxdRTUEY9M+DRlzD
+   Rc4iucsvGl5WI7VdSX3gtwAJJrpRGO1Xill0XWXPX+BLL2e78gDFWgbMH
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="392911804"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="9840167"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2024 05:44:44 -0800
+   d="scan'208";a="392911804"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2024 06:08:38 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="910338889"
 X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="910338889"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 26 Jan 2024 05:44:39 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E1ECE431; Fri, 26 Jan 2024 15:42:50 +0200 (EET)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	x86@kernel.org,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [RFC] Randomness on confidential computing platforms
-Date: Fri, 26 Jan 2024 15:42:30 +0200
-Message-ID: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+   d="scan'208";a="28831297"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Jan 2024 06:08:38 -0800
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Fri, 26 Jan 2024 06:08:37 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Fri, 26 Jan 2024 06:08:37 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 26 Jan 2024 06:08:37 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cugOT0zTqn6kc85p1CYByi7wWKKq9IE3u3v4rdU7u5DU0M885ZoNkz003By9gZCpXQiGE1JPPMgxDJt+fQ7MF7dmUEpYkxkiQpzmSOzv1vCtJS70VGAzPMBPrgEelMLda9TJiU8W555O00cPEOtLFs3DUPj/3XDUQNy8QmibeGQkxz5ocl2MrCKQ/H7Yw8a1dVqqSzxVD9u11ZOLTBlKoo10yQUtvdv+zd7r4DMNmvhKcOOeysGWJYS3EEQx7iEgfoVKsmkCgJxg94MFeZE9s+A1aLDi5PQeDYeEvta1VORV1pW76uW2DDiWtNiOpRV8jadHCy36QQzSo9JnXXUBIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WYfG8WkiTDQ3PZnDwgK27a6qqHwFvCHRq37dFIugODM=;
+ b=oLldi1upV6wrmtAzNSl0C/hsKIjtwa+Ev0N6ib/1VoARvvPsVo0Oq0WOCDzYGYKLlId1NsxFptaMQMzU+DmGVT3BiflLbAjicQK0VDbIMQsXsGZkHRYEbKwBkRdn7PMU4on5vq8XwX1VAxnCsI9Gw0Udn0zc4RXHF8qWLx+8L267+X1tBC1BtcA759+JEnwohQ01KJcWRrkMubFnXoh+SeobK7mTBukp7+SoVctIykYs+xn3IkpAF5aIUGfFI72lNnYlbDQPcTbmLZzaHVHKLg3n4zWJPMgZCmvetgqGwb6OnNLNPXL9BGj3iAU1R3ZgfMNvL8cbXQomf8s7lZvLjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com (2603:10b6:208:385::18)
+ by DM4PR11MB5262.namprd11.prod.outlook.com (2603:10b6:5:389::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27; Fri, 26 Jan
+ 2024 14:08:35 +0000
+Received: from BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::124d:fbd5:113b:16ec]) by BL1PR11MB5978.namprd11.prod.outlook.com
+ ([fe80::124d:fbd5:113b:16ec%4]) with mapi id 15.20.7228.023; Fri, 26 Jan 2024
+ 14:08:35 +0000
+From: "Huang, Kai" <kai.huang@intel.com>
+To: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de"
+	<bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
+CC: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "Reshetova, Elena"
+	<elena.reshetova@intel.com>, "Nakajima, Jun" <jun.nakajima@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "peterz@infradead.org"
+	<peterz@infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "sathyanarayanan.kuppuswamy@linux.intel.com"
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, "Hunter, Adrian"
+	<adrian.hunter@intel.com>, "thomas.lendacky@amd.com"
+	<thomas.lendacky@amd.com>, "ashish.kalra@amd.com" <ashish.kalra@amd.com>,
+	"kexec@lists.infradead.org" <kexec@lists.infradead.org>, "seanjc@google.com"
+	<seanjc@google.com>, "bhe@redhat.com" <bhe@redhat.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Subject: Re: [PATCHv6 14/16] x86/smp: Add smp_ops.stop_this_cpu() callback
+Thread-Topic: [PATCHv6 14/16] x86/smp: Add smp_ops.stop_this_cpu() callback
+Thread-Index: AQHaTsTwkHBmL99raEi1zxttIjQCR7DsJL8A
+Date: Fri, 26 Jan 2024 14:08:35 +0000
+Message-ID: <e2d6aeb8eed69bd9a648de59d7abfa255b503259.camel@intel.com>
+References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
+	 <20240124125557.493675-15-kirill.shutemov@linux.intel.com>
+In-Reply-To: <20240124125557.493675-15-kirill.shutemov@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR11MB5978:EE_|DM4PR11MB5262:EE_
+x-ms-office365-filtering-correlation-id: ed8ab966-97a4-45ca-e88b-08dc1e784930
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 5lTQev0Eb/cTbEWri9IfJmXbH6u3k4mLlaJfuyJ4xqBf/f+ZIN/5QegRq1brWCILaCyt6JHdcqO9LTwRWy3RIYaDrzi7udWE1DES1QS9sUBkgyW2sDnsUysaUVH5qGvRepRe4H6BJwHkCq2lDbqLZThdez1PGLRPHNNe5k7PUP/6D+4d71TJldc3PGSa83K8mmGly1M0xXfcJhDMtfu1qbF6a8No/Cp6lYzWTdmEd0PmV8vXToqlqZjDpkWBP8iRTbcrEIZYwk6togoMs9lKrnqF5zDUobbcMNT9Dfyhm9bc1XNGKHCOkZqOs870h4z80fLIAC9CREzN8xyxmPZB4dv6Db12TgHSr8BqeRMYdYwvhlMBjZIh0bO6wvkGZjkomuo3OoA+y5B8IEbiOWss18KGnnLLSz3RYFQz+kl79+Fxlng9ZnWP0+qc6KaPHwKnLS4vdu6wAGA09XNuofbZyNFKAMC04MSp2F9Y7xVTeCaRjljoFtIqvyHaHd/2CxsqfvB1WrPALj9vSG0l3oFltq1lpDH+grIscCK80eb311HH5k6KTYIo2KaoZCGuy/1YUeuEcX6pNk3shcmzqGCclYkHTJIF8m1/1TJ6/3KCTR5d1Vb+I2pKGm8Q86ml27wZ
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB5978.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(39860400002)(346002)(396003)(366004)(230922051799003)(64100799003)(1800799012)(186009)(451199024)(7416002)(38100700002)(2906002)(122000001)(82960400001)(41300700001)(36756003)(5660300002)(38070700009)(86362001)(6486002)(26005)(478600001)(6512007)(6506007)(2616005)(71200400001)(83380400001)(4326008)(8936002)(8676002)(316002)(66946007)(54906003)(66556008)(66476007)(76116006)(66446008)(110136005)(91956017)(64756008);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U2laR1hsRE14MDdxTVZHQVR6RzdiZm5YTzJFZWcvc3VkZXAwaFRTZTJySDRh?=
+ =?utf-8?B?UGRWVm5PSEVhY2UzL2I2KzFGUXBwLzFOcW1HRXZ6MkkzWXE2ZVoxQ0hJVXow?=
+ =?utf-8?B?ZHcrbDJ2U3liaXE4cDVzamFtb0ovNlhGRFdMemhDcVBGVE10YjJYZFZmWmUv?=
+ =?utf-8?B?b1FCSWZOQmU0R0pyQVRrTi9ZUlRzOE8vZER3KzZwNTY5SUxUcmJ5SnVLQWtm?=
+ =?utf-8?B?MFdEbW1oNEFuNkRoeVlBcW5JQXA2ZU13K0p2UUxqcjg5ZHZ3L3VNa2J6QjhH?=
+ =?utf-8?B?a2VVb2ZkWDNjMGlFdzVtdmM1SS9uMkJmTi90aUxLMDRTR2RRQmJaTGtYN0RF?=
+ =?utf-8?B?T2pyZnVYVGNxTG9ESEdPUjNxZ2hoR0JLc1RKTXJpcWMrK3FuZlhBejZnb0ha?=
+ =?utf-8?B?Qk4ydi9UTmlWWnBWbk1YWG9RVTQrS2JsTU9MWVZBK3VhMmdJRHVRQnkveTR3?=
+ =?utf-8?B?RmpxNUNXNWtTU3MyVUt6MTJiR0xPWGlkVytkMEt4UFo0UDAxTGkzRW1GMzRG?=
+ =?utf-8?B?ODRNZmM1UWVJb3NsYVJaeWxmWDdKR0JqOUpqSzE4enhtYU1hNm9zYVFsaG1M?=
+ =?utf-8?B?ZGRaY2hGbFRYeDBqRXpSUVE4Y01FMGU2WHlHVDJLV1dUYkJ6dFl5OVlFdXo2?=
+ =?utf-8?B?TzA0dkZ0Zk42aU51MzhhdHcrQ0FwY2o4ZXBBTCtHeWRBR2p6OFpQYmpDa2s0?=
+ =?utf-8?B?N2pmeTFKZFVISWYvQ3BHTmF1MXJRWE9mMlAySTdEZVdCYVhqbUhDNS9PQ0lw?=
+ =?utf-8?B?RmRpUGZOUDNCeVpTNStUb0liT0pFVWtJdE5SWW5zeTkyZUhVWmU4ckd3amwx?=
+ =?utf-8?B?MjBSVEhsWDlZdngrVTlBNTd0VTdzQ2VRa1plSnk3WTJUc1BtTkk5OE8wUTV4?=
+ =?utf-8?B?cFRGMkF3TUNxYXYyNjF2TEVsUmFVcWtmQUpMalVCNFBnV01aQTRpTGxxRlE3?=
+ =?utf-8?B?T3ZHYSs5Vy9MQzFWRkgyUFRVSnZyWjc0Rkp4enJzUU16N2lPSXl1Z2ptVUJy?=
+ =?utf-8?B?YkJuRDdGN3U3Yk5LSzRXaGIxWTd0VW9seHlkTDR6dWpGaFc5OHM2RHZEZFFB?=
+ =?utf-8?B?VTRrY3RlNktNcVFKUXd4OUJsMloyRi91azB1RXJZYUVEZTFTZStDNFd3aHFS?=
+ =?utf-8?B?TjJ0Z0ZVOGtJNmdzSlM5aEJxaGc3SXF1TWFvaXZwZ3A1RVpJbDVFTnJQUG5H?=
+ =?utf-8?B?T2xWVW01MXhQN2FPMGpwZnlmZDhDbmt5ajVZYUNIR0V4S0xiUHhFWlEyQk50?=
+ =?utf-8?B?cU1rTEZIMVIySTRKQmVUMktKUXlrSDNWakNNZzlzK2hXVWdnbVc0MzRwS1dB?=
+ =?utf-8?B?T2xWYTUrdnA5cHJjVE0yTWZVMWtHeW96WHlUZFhGODltd3JnbVNObThjY2I5?=
+ =?utf-8?B?d08xU0w0Uzl1WXFlR0JrSnJLZDFHN1RKd2htcUlKOG1scGozVnIwa0l6Z1Nm?=
+ =?utf-8?B?S0JLcWpMWU5DQTAwYXRXSHRtSEhJSjl2Ym51UUI0eWV2MEUvOEp0U0JTTFpM?=
+ =?utf-8?B?dE5hdVZMVFRuMnJ2NXV0MmF4TW1tV09BTy9DME9SN1Z3ZkZ0cjk2dVBIVVd0?=
+ =?utf-8?B?SkM0OHk0UDY3TU5lSUF5bUNjMGdFQjN6RmNEZG5IRGt3dWtkYXQrc2Fna1dk?=
+ =?utf-8?B?bnY1bmYreExobzVXQUdlR0FocmI0cXhYWGl2N3NkbVdza1dmMWhxR0M5SXB3?=
+ =?utf-8?B?SEtwb2F3R3Y4QlVkNzZqazVKZThMdUllQ0tUdTJqdEYreElISU1aa2RMVUhz?=
+ =?utf-8?B?ckZHRHlpOUp6UUtUeWM2YlAzUHdVQzJBMnNQc1NTMGhKSXlZaklXSHhNY1pI?=
+ =?utf-8?B?U3RENFI2QytHSGFKeEd0enlOUWU0K2FxMWJ4M0VyZHEySXFHNHB6TE43YUZH?=
+ =?utf-8?B?SFlzZ2hPR2hqL3FlTVFoRGZxeDMzUzljSHBLUFFmaGQ3M09TNGZsQTZCcUtu?=
+ =?utf-8?B?b3BBYzVYYUJIbEs2QXEvQXRaZVhlZ2Vxc2NoWlFISzQzS1lYK1g2eHJ0c1ND?=
+ =?utf-8?B?WU9TY05uemRJeXNxZUh1OW9iamdmQWlYWmVsOXh1cFc4dzBpYTNYSnpJUHNh?=
+ =?utf-8?B?SDF3TkpjZzU5UzZ6WFVRbzJNU1hqRkdXcHU1b1lEYllzQys4V000SjBPUUJE?=
+ =?utf-8?B?cVdwSVh3b1QvQVJUc3JyZ0d5QjgvVlJNdi9sMDVESUZrdDBvVlFwWWR1YThX?=
+ =?utf-8?B?clE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B293AEAC472F4E49B85318E82AEAB704@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB5978.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed8ab966-97a4-45ca-e88b-08dc1e784930
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jan 2024 14:08:35.2584
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: EtBvhgMa7OV2a+LI2/o4GOrHZW+OxCXkq+1mIDiqs6RwGyogrPd3Cy1JxBNqkzKOCSDUw+uwnLzWOkTlBzVnTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5262
+X-OriginatorOrg: intel.com
 
-Problem Statement
-
-Currently Linux RNG uses the random inputs obtained from x86
-RDRAND/RDSEED instructions (if present) during early initialization
-stage (by mixing the obtained input into the random pool via
-_mix_pool_bytes()), as well as for seeding/reseeding ChaCha-based CRNG.
-When the calls to both RDRAND/RDSEED fail (including RDRAND internal
-retries), the timing-based fallbacks are used in the latter case, and
-during the early boot case this source of entropy input is simply
-skipped. Overall Linux RNG has many other sources of entropy that it
-uses (also depending on what HW is used), but the dominating one is
-interrupts.
-
-In a Confidential Computing Guest threat model, given the absence of any
-special trusted HW for the secure entropy input, RDRAND/RDSEED
-instructions is the only entropy source that is unobservable outside of
-Confidential Computing Guest TCB. However, with enough pressure on these
-instructions from multiple cores (see Intel SDM, Volume 1, Section
-7.3.17, “Random Number Generator Instructions”), they can be made to
-fail on purpose and force the Confidential Computing Guest Linux RNG to
-use only Host/VMM controlled entropy sources.
-
-Solution options
-
-There are several possible solutions to this problem and the intention
-of this RFC is to initiate a joined discussion. Here are some options
-that has been considered:
-
-1. Do nothing and accept the risk.
-2. Force endless looping on RDRAND/RDSEED instructions when run in a
-   Confidential Computing Guest (this patch). This option turns the
-   attack against the quality of cryptographic randomness provided by
-   Confidential Computing Guest’s Linux RNG into a DoS attack against
-   the Confidential Computing Guest itself (DoS attack is out of scope
-   for the Confidential Computing threat model).
-3. Panic after enough re-tries of RDRAND/RDSEED instructions fail.
-   Another DoS variant against the Guest.
-4. Exit to the host/VMM with an error indication after a Confidential
-   Computing Guest failed to obtain random input from RDRAND/RDSEED
-   instructions after reasonable number of retries. This option allows
-   host/VMM to take some correction action for cases when the load on
-   RDRAND/RDSEED instructions has been put by another actor, i.e. the
-   other guest VM. The exit to host/VMM in such cases can be made
-   transparent for the Confidential Computing Guest in the TDX case with
-   the assistance of the TDX module component.
-5. Anything other better option?
-
-The patch below implements the second option. I believe the problem is
-common for Intel TDX and AMD SEV. The patch cover both.
----
- arch/x86/boot/compressed/kaslr.c  |  6 ++++++
- arch/x86/boot/compressed/mem.c    | 26 -------------------------
- arch/x86/boot/compressed/misc.h   |  3 +++
- arch/x86/boot/compressed/sev.c    |  5 +++++
- arch/x86/boot/compressed/sev.h    |  2 ++
- arch/x86/boot/compressed/tdx.c    | 32 ++++++++++++++++++++++++++-----
- arch/x86/boot/compressed/tdx.h    |  2 ++
- arch/x86/coco/core.c              |  2 ++
- arch/x86/include/asm/archrandom.h | 22 ++++++++++++++++-----
- include/linux/cc_platform.h       | 11 +++++++++++
- 10 files changed, 75 insertions(+), 36 deletions(-)
-
-diff --git a/arch/x86/boot/compressed/kaslr.c b/arch/x86/boot/compressed/kaslr.c
-index dec961c6d16a..a7bba37c7539 100644
---- a/arch/x86/boot/compressed/kaslr.c
-+++ b/arch/x86/boot/compressed/kaslr.c
-@@ -23,6 +23,7 @@
- #include "error.h"
- #include "../string.h"
- #include "efi.h"
-+#include "sev.h"
- 
- #include <generated/compile.h>
- #include <linux/module.h>
-@@ -304,6 +305,11 @@ static void handle_mem_options(void)
- 	return;
- }
- 
-+bool rd_loop(void)
-+{
-+	return early_is_tdx_guest() || sev_enabled();
-+}
-+
- /*
-  * In theory, KASLR can put the kernel anywhere in the range of [16M, MAXMEM)
-  * on 64-bit, and [16M, KERNEL_IMAGE_SIZE) on 32-bit.
-diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
-index dbba332e4a12..84a9d9ad98b2 100644
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -6,32 +6,6 @@
- #include "sev.h"
- #include <asm/shared/tdx.h>
- 
--/*
-- * accept_memory() and process_unaccepted_memory() called from EFI stub which
-- * runs before decompressor and its early_tdx_detect().
-- *
-- * Enumerate TDX directly from the early users.
-- */
--static bool early_is_tdx_guest(void)
--{
--	static bool once;
--	static bool is_tdx;
--
--	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
--		return false;
--
--	if (!once) {
--		u32 eax, sig[3];
--
--		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
--			    &sig[0], &sig[2],  &sig[1]);
--		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
--		once = true;
--	}
--
--	return is_tdx;
--}
--
- void arch_accept_memory(phys_addr_t start, phys_addr_t end)
- {
- 	/* Platform-specific memory-acceptance call goes here */
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
-index bc2f0f17fb90..3fd0aba836e7 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -255,4 +255,7 @@ static inline bool init_unaccepted_memory(void) { return false; }
- extern struct efi_unaccepted_memory *unaccepted_table;
- void accept_memory(phys_addr_t start, phys_addr_t end);
- 
-+#define rd_loop rd_loop
-+extern bool rd_loop(void);
-+
- #endif /* BOOT_COMPRESSED_MISC_H */
-diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 454acd7a2daf..5e7fb31e630b 100644
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -125,6 +125,11 @@ static bool fault_in_kernel_space(unsigned long address)
- /* Include code for early handlers */
- #include "../../kernel/sev-shared.c"
- 
-+bool sev_enabled(void)
-+{
-+	return sev_status & MSR_AMD64_SEV_ENABLED;
-+}
-+
- bool sev_snp_enabled(void)
- {
- 	return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
-diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
-index fc725a981b09..ec99e0390324 100644
---- a/arch/x86/boot/compressed/sev.h
-+++ b/arch/x86/boot/compressed/sev.h
-@@ -10,11 +10,13 @@
- 
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 
-+bool sev_enabled(void);
- bool sev_snp_enabled(void);
- void snp_accept_memory(phys_addr_t start, phys_addr_t end);
- 
- #else
- 
-+static inline bool sev_enabled(void) { return false; }
- static inline bool sev_snp_enabled(void) { return false; }
- static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
- 
-diff --git a/arch/x86/boot/compressed/tdx.c b/arch/x86/boot/compressed/tdx.c
-index 8451d6a1030c..90dcfb9e82bf 100644
---- a/arch/x86/boot/compressed/tdx.c
-+++ b/arch/x86/boot/compressed/tdx.c
-@@ -61,13 +61,35 @@ static inline void tdx_outw(u16 value, u16 port)
- 	tdx_io_out(2, port, value);
- }
- 
-+/*
-+ * accept_memory() and process_unaccepted_memory() called from EFI stub which
-+ * runs before decompressor and its early_tdx_detect().
-+ *
-+ * Enumerate TDX directly from the early users.
-+ */
-+bool early_is_tdx_guest(void)
-+{
-+	static bool once;
-+	static bool is_tdx;
-+
-+	if (!IS_ENABLED(CONFIG_INTEL_TDX_GUEST))
-+		return false;
-+
-+	if (!once) {
-+		u32 eax, sig[3];
-+
-+		cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax,
-+			    &sig[0], &sig[2],  &sig[1]);
-+		is_tdx = !memcmp(TDX_IDENT, sig, sizeof(sig));
-+		once = true;
-+	}
-+
-+	return is_tdx;
-+}
-+
- void early_tdx_detect(void)
- {
--	u32 eax, sig[3];
--
--	cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax, &sig[0], &sig[2],  &sig[1]);
--
--	if (memcmp(TDX_IDENT, sig, sizeof(sig)))
-+	if (!early_is_tdx_guest())
- 		return;
- 
- 	/* Use hypercalls instead of I/O instructions */
-diff --git a/arch/x86/boot/compressed/tdx.h b/arch/x86/boot/compressed/tdx.h
-index 9055482cd35c..6c097de8392e 100644
---- a/arch/x86/boot/compressed/tdx.h
-+++ b/arch/x86/boot/compressed/tdx.h
-@@ -5,8 +5,10 @@
- #include <linux/types.h>
- 
- #ifdef CONFIG_INTEL_TDX_GUEST
-+bool early_is_tdx_guest(void);
- void early_tdx_detect(void);
- #else
-+bool early_is_tdx_guest(void) { return false; }
- static inline void early_tdx_detect(void) { };
- #endif
- 
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index f07c3bb7deab..655d881a9cfa 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -22,6 +22,7 @@ static bool noinstr intel_cc_platform_has(enum cc_attr attr)
- 	case CC_ATTR_GUEST_UNROLL_STRING_IO:
- 	case CC_ATTR_GUEST_MEM_ENCRYPT:
- 	case CC_ATTR_MEM_ENCRYPT:
-+	case CC_ATTR_GUEST_RAND_LOOP:
- 		return true;
- 	default:
- 		return false;
-@@ -72,6 +73,7 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
- 		return sme_me_mask && !(sev_status & MSR_AMD64_SEV_ENABLED);
- 
- 	case CC_ATTR_GUEST_MEM_ENCRYPT:
-+	case CC_ATTR_GUEST_RAND_LOOP:
- 		return sev_status & MSR_AMD64_SEV_ENABLED;
- 
- 	case CC_ATTR_GUEST_STATE_ENCRYPT:
-diff --git a/arch/x86/include/asm/archrandom.h b/arch/x86/include/asm/archrandom.h
-index 02bae8e0758b..63368227c9d6 100644
---- a/arch/x86/include/asm/archrandom.h
-+++ b/arch/x86/include/asm/archrandom.h
-@@ -10,6 +10,7 @@
- #ifndef ASM_X86_ARCHRANDOM_H
- #define ASM_X86_ARCHRANDOM_H
- 
-+#include <linux/cc_platform.h>
- #include <asm/processor.h>
- #include <asm/cpufeature.h>
- 
-@@ -17,6 +18,13 @@
- 
- /* Unconditional execution of RDRAND and RDSEED */
- 
-+#ifndef rd_loop
-+static inline bool rd_loop(void)
-+{
-+	return cc_platform_has(CC_ATTR_GUEST_RAND_LOOP);
-+}
-+#endif
-+
- static inline bool __must_check rdrand_long(unsigned long *v)
- {
- 	bool ok;
-@@ -27,17 +35,21 @@ static inline bool __must_check rdrand_long(unsigned long *v)
- 			     : CC_OUT(c) (ok), [out] "=r" (*v));
- 		if (ok)
- 			return true;
--	} while (--retry);
-+	} while (rd_loop() || --retry);
- 	return false;
- }
- 
- static inline bool __must_check rdseed_long(unsigned long *v)
- {
- 	bool ok;
--	asm volatile("rdseed %[out]"
--		     CC_SET(c)
--		     : CC_OUT(c) (ok), [out] "=r" (*v));
--	return ok;
-+	do {
-+		asm volatile("rdseed %[out]"
-+			     CC_SET(c)
-+			     : CC_OUT(c) (ok), [out] "=r" (*v));
-+		if (ok)
-+			return ok;
-+	} while (rd_loop());
-+	return false;
- }
- 
- /*
-diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
-index d08dd65b5c43..e554e8919eb0 100644
---- a/include/linux/cc_platform.h
-+++ b/include/linux/cc_platform.h
-@@ -80,6 +80,17 @@ enum cc_attr {
- 	 * using AMD SEV-SNP features.
- 	 */
- 	CC_ATTR_GUEST_SEV_SNP,
-+
-+	/**
-+	 * @CC_ATTR_GUEST_RAND_LOOP: Make RDRAND/RDSEED loop forever to
-+	 * harden the random number generation.
-+	 *
-+	 * The platform/OS is running as a guest/virtual machine and
-+	 * harden the random number generation.
-+	 *
-+	 * Examples include TDX guest & SEV.
-+	 */
-+	CC_ATTR_GUEST_RAND_LOOP,
- };
- 
- #ifdef CONFIG_ARCH_HAS_CC_PLATFORM
--- 
-2.43.0
-
+T24gV2VkLCAyMDI0LTAxLTI0IGF0IDE0OjU1ICswMjAwLCBLaXJpbGwgQS4gU2h1dGVtb3Ygd3Jv
+dGU6DQo+IElmIHRoZSBoZWxwZXIgaXMgZGVmaW5lZCwgaXQgaXMgY2FsbGVkIGluc3RlYWQgb2Yg
+aGFsdCgpIHRvIHN0b3AgdGhlIENQVQ0KPiBhdCB0aGUgZW5kIG9mIHN0b3BfdGhpc19jcHUoKSBh
+bmQgb24gY3Jhc2ggQ1BVIHNodXRkb3duLg0KPiANCj4gQUNQSSBNQURUIHdpbGwgdXNlIGl0IHRv
+IGhhbmQgb3ZlciB0aGUgQ1BVIHRvIEJJT1MgaW4gb3JkZXIgdG8gYmUgYWJsZQ0KPiB0byB3YWtl
+IGl0IHVwIGFnYWluIGFmdGVyIGtleGVjLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogS2lyaWxsIEEu
+IFNodXRlbW92IDxraXJpbGwuc2h1dGVtb3ZAbGludXguaW50ZWwuY29tPg0KDQpBY2tlZC1ieTog
+S2FpIEh1YW5nIDxrYWkuaHVhbmdAaW50ZWwuY29tPg0KDQo+IC0tLQ0KPiAgYXJjaC94ODYvaW5j
+bHVkZS9hc20vc21wLmggfCAxICsNCj4gIGFyY2gveDg2L2tlcm5lbC9wcm9jZXNzLmMgIHwgNyAr
+KysrKysrDQo+ICBhcmNoL3g4Ni9rZXJuZWwvcmVib290LmMgICB8IDYgKysrKysrDQo+ICAzIGZp
+bGVzIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS9hcmNoL3g4
+Ni9pbmNsdWRlL2FzbS9zbXAuaCBiL2FyY2gveDg2L2luY2x1ZGUvYXNtL3NtcC5oDQo+IGluZGV4
+IDRmYWIyZWQ0NTRmMy4uMzkwZDUzZmQzNGY5IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3g4Ni9pbmNs
+dWRlL2FzbS9zbXAuaA0KPiArKysgYi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9zbXAuaA0KPiBAQCAt
+MzgsNiArMzgsNyBAQCBzdHJ1Y3Qgc21wX29wcyB7DQo+ICAJaW50ICgqY3B1X2Rpc2FibGUpKHZv
+aWQpOw0KPiAgCXZvaWQgKCpjcHVfZGllKSh1bnNpZ25lZCBpbnQgY3B1KTsNCj4gIAl2b2lkICgq
+cGxheV9kZWFkKSh2b2lkKTsNCj4gKwl2b2lkICgqc3RvcF90aGlzX2NwdSkodm9pZCk7DQo+ICAN
+Cj4gIAl2b2lkICgqc2VuZF9jYWxsX2Z1bmNfaXBpKShjb25zdCBzdHJ1Y3QgY3B1bWFzayAqbWFz
+ayk7DQo+ICAJdm9pZCAoKnNlbmRfY2FsbF9mdW5jX3NpbmdsZV9pcGkpKGludCBjcHUpOw0KPiBk
+aWZmIC0tZ2l0IGEvYXJjaC94ODYva2VybmVsL3Byb2Nlc3MuYyBiL2FyY2gveDg2L2tlcm5lbC9w
+cm9jZXNzLmMNCj4gaW5kZXggYWI0OWFkZTMxYjBkLi4wMGMxYjk1NzQ3NmQgMTAwNjQ0DQo+IC0t
+LSBhL2FyY2gveDg2L2tlcm5lbC9wcm9jZXNzLmMNCj4gKysrIGIvYXJjaC94ODYva2VybmVsL3By
+b2Nlc3MuYw0KPiBAQCAtODM1LDYgKzgzNSwxMyBAQCB2b2lkIF9fbm9yZXR1cm4gc3RvcF90aGlz
+X2NwdSh2b2lkICpkdW1teSkNCj4gIAkgKi8NCj4gIAljcHVtYXNrX2NsZWFyX2NwdShjcHUsICZj
+cHVzX3N0b3BfbWFzayk7DQo+ICANCj4gKyNpZmRlZiBDT05GSUdfU01QDQo+ICsJaWYgKHNtcF9v
+cHMuc3RvcF90aGlzX2NwdSkgew0KPiArCQlzbXBfb3BzLnN0b3BfdGhpc19jcHUoKTsNCj4gKwkJ
+dW5yZWFjaGFibGUoKTsNCj4gKwl9DQo+ICsjZW5kaWYNCj4gKw0KPiAgCWZvciAoOzspIHsNCj4g
+IAkJLyoNCj4gIAkJICogVXNlIG5hdGl2ZV9oYWx0KCkgc28gdGhhdCBtZW1vcnkgY29udGVudHMg
+ZG9uJ3QgY2hhbmdlDQo+IGRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rZXJuZWwvcmVib290LmMgYi9h
+cmNoL3g4Ni9rZXJuZWwvcmVib290LmMNCj4gaW5kZXggMDU3NGQ0YWQ2YjQxLi4wYTc1ZWZlNTc5
+YzAgMTAwNjQ0DQo+IC0tLSBhL2FyY2gveDg2L2tlcm5lbC9yZWJvb3QuYw0KPiArKysgYi9hcmNo
+L3g4Ni9rZXJuZWwvcmVib290LmMNCj4gQEAgLTg4MCw2ICs4ODAsMTIgQEAgc3RhdGljIGludCBj
+cmFzaF9ubWlfY2FsbGJhY2sodW5zaWduZWQgaW50IHZhbCwgc3RydWN0IHB0X3JlZ3MgKnJlZ3Mp
+DQo+ICAJY3B1X2VtZXJnZW5jeV9kaXNhYmxlX3ZpcnR1YWxpemF0aW9uKCk7DQo+ICANCj4gIAlh
+dG9taWNfZGVjKCZ3YWl0aW5nX2Zvcl9jcmFzaF9pcGkpOw0KPiArDQo+ICsJaWYgKHNtcF9vcHMu
+c3RvcF90aGlzX2NwdSkgew0KPiArCQlzbXBfb3BzLnN0b3BfdGhpc19jcHUoKTsNCj4gKwkJdW5y
+ZWFjaGFibGUoKTsNCj4gKwl9DQo+ICsNCj4gIAkvKiBBc3N1bWUgaGx0IHdvcmtzICovDQo+ICAJ
+aGFsdCgpOw0KPiAgCWZvciAoOzspDQoNCg==
