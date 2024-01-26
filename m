@@ -1,144 +1,108 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9F21CD3C
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 15:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D580C1C68A
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 15:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706282639; cv=none; b=RORId+igA2s2i5dqAJ1vS3OrvQsKViWTIE+aykxdQUu3Mm2zUVo9VUmk8el7f5oMBSWIHQpoA92t/e4zXr5t7yC1lBhikkfHmRx9C6/G0RyegwdtlFwuJSh6IWVqHgFK9V6q3fB7fu4DA3tkC4+e/0sLk+gEZlNG8Wm4IGRop7M=
+	t=1706283342; cv=none; b=FHfuZAflJqgguHhf1L9ckFdIkEZ0f7iyafLVLrJvbWxhfdUhcmyzr4sRICYjfzDCvM3+q2VhNcmwnAHB1BJcmCv3S5XabDbWVLnBAR9QWRlrdnpoa13cf36gj8GyYSLgXJCh0kaGtKyFneP+nqbzdFHua6HmcP+zVWocuzKO9DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706282639; c=relaxed/simple;
-	bh=ydPZ3tu4FlaDxMtV6SOM9OK/z2p8/IzKH4YoVsZ330U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OqcPEx7sbhuQLuObHFynUOLypbnE8UkvhKdakMXQHyQPm5tRxonrI8qunEWrAGJXKmtkLxsYnoRSesru7RUKGYfGp7j129xsYGH/DW4dPhvl+wnJokJyuywE7wewhYLLJaSRxisiib7NhfVgIAV2Jpvqb2DPdCRtu5V3YWtayKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ua3DLU4I; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1706283342; c=relaxed/simple;
+	bh=Q1gySN7TT9h0jHMhyfEM8IvkE1u4CiHb4/JNQ9iYKDg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gDqLZVDlL95K2j1kQ7QZXS6HPks5C5Ar7mgpS7M2rqtB3jcgdOB+vKqeAtQW/ryomY/VPp2R7AcK6x4VPseucOzHgF7E0oAEswLbV0YPwM4KBfp43uZnJ0+GnWlNXh29s9I93p+uT/nDHZMLD+rivGslGysG4lv3D9dGY+wU5ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=e1N5s1Dc; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ua3DLU4I"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-6ddded741bfso489454b3a.1
-        for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 07:23:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706282638; x=1706887438; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uy3R1AKMbIaUlXE1Nr9/RuFwNoQzqIu4pzJFsA3j5jw=;
-        b=Ua3DLU4IrCRWhXyS5Q3ERzJSLOrQPIck87L/xWzLkvad/79wJTLjABmZO7DSmY1FER
-         p2J7bLX67pT5HA09ru3lmvUq4DE5QRBT5l3r3wmfpyQ4rRjUtyTqgo9P0lpKflVoRP+d
-         0zpVY97etyIx/SggQun1RlFlsIeVdtjWgN9yF2mmZhbyDE9xdhWfojgCKr5lQSijVWLr
-         Mu1vIkSi7jUVh4yTl+eyap6ngmPCK7n4pqNimOxoCgaDFe1RaSve8mpOMzq2qpKWvaIR
-         EWU3rVS5HNjJL+xp3aaC3uyadJcTSq8xxJ5IoABh3ZZSUwFq7JU2bW1Vwwnge83gS6PY
-         MCAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706282638; x=1706887438;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uy3R1AKMbIaUlXE1Nr9/RuFwNoQzqIu4pzJFsA3j5jw=;
-        b=Lmq+2mZwtURm9Apl9gAXApeCzID+7afIrJ4mLunsPi4PM38pFnFW16fanx4AEqkO7k
-         O3FWrrNwncGlPHAwK8gvI2y0w9sjtd9tZ1znzbhk33llSyJtSHAUpRfANXkDv0UoqVnu
-         3w6KQ+FEPz5FsB/oc0gd7mTnqIJrzy0rJETiZof1M9aiVZIIimLAZkqGOgrk/UJqcEFs
-         EB0BaAu1E5/U2/sKSNkp3JkJ/Q9R3HpDD/zAgq92bzIdwUJWIz8a09zKHBq0ckG5FE5o
-         Rdf1jHXZu2QH9+GlDcIP01wvV+a1B4s0wZwEv8skVT+tuNj+as8hQLmAoRaImnTWWWkr
-         ByYQ==
-X-Gm-Message-State: AOJu0YwK5NhRJgrWMB9BnIbQ5yYLbOAJNYQjKWeFvKFHQofqhyP5Dqj8
-	kWh9sZovFEhakxb+sZFJ0Eyxxn7v5fSX5syP1/Jg+I8bz6CeVpMLmHYcrk30S5Iy9FME1qSFpmy
-	iWw==
-X-Google-Smtp-Source: AGHT+IHQfxRoZeNwOqFJdXs7U9dhuzak/9AcePRZQYH58f/39D52wykb9ESAoZ9pjQpLXy9fdKdTaNW+gCM=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:1d1d:b0:6de:622:2ebf with SMTP id
- a29-20020a056a001d1d00b006de06222ebfmr81316pfx.3.1706282637856; Fri, 26 Jan
- 2024 07:23:57 -0800 (PST)
-Date: Fri, 26 Jan 2024 07:23:55 -0800
-In-Reply-To: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="e1N5s1Dc"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 01BE740E016C;
+	Fri, 26 Jan 2024 15:35:37 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id GaR2USFls6AC; Fri, 26 Jan 2024 15:35:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1706283334; bh=P7Oe6KlLPTo7Wpl5+l3vTi17r9sFPMt5tYVi1N17yxE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e1N5s1DcEV7OiU5ueEYz3Jxa4whCu+ho0B6R1fOpyyV+Iv+KlFHIhB9EW9cLnU0Ln
+	 zva+78aCi2XO9l9jtkUIqqWPS+3xzfiB8Yvlr3S34dn3sIn4gSxL3uyVLrY7J9lDCs
+	 NOG1rnlnfuOSQNqMZgr4kbkKNL8i+V9Bo8F3tNfhufb9DnPpUjs+TT5+evf2sGLyjS
+	 i8nfDJflpmurujqBU7N92Bc7SpVkczSbBq9xp1xljfk46HlzCivDoZQpeyErkUFZiE
+	 94QEUkF118r3VnQlWKugUtvQu7tNF+JUI91yJChdl8ltXa8AR3u6lVp4D/zzuxqgEi
+	 MNVoV5Fb1TTudu8Gb/AAX0dl0RW1TPy+Y6xQ1sGbX8O/OvRnWmDheR5aCWKuHfip5g
+	 R+LHCSSifjGrgrmVZVypkn+7PxMJFrf3rVJIxOH791SzmggCT9Vt5pj3F2/ZrYTMlb
+	 P8WnVnvXwlSt7mvO17dEIZcNtBgKPsf7RG4R062ogzhkZSdu1XAzI+bfRRqJNsRerp
+	 cwJKPQZxDWk8SWv+UyMnNO4W5xDrPnuElc8jmGgdFNcZlucu4hVIMuZDyGJTDvjbMO
+	 qHa3FNM0namjZivxU/Rj3ymRYCZLeq0P2GGQxYYMsq6f8QFN5HAxtQ1+LASrFWoH55
+	 hfiAarXcIepWsdBBMxjYqSU4=
+Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2982F40E0196;
+	Fri, 26 Jan 2024 15:34:58 +0000 (UTC)
+Date: Fri, 26 Jan 2024 16:34:51 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com
+Subject: Re: [PATCH v2 11/25] x86/sev: Adjust directmap to avoid inadvertant
+ RMP faults
+Message-ID: <20240126153451.GDZbPRG3KxaQik-0aY@fat_crate.local>
+References: <20240126041126.1927228-1-michael.roth@amd.com>
+ <20240126041126.1927228-12-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
-Message-ID: <ZbPOi0760srv0rE0@google.com>
-Subject: Re: [RFC] Randomness on confidential computing platforms
-From: Sean Christopherson <seanjc@google.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
-	"Theodore Ts'o" <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Ashish Kalra <ashish.kalra@amd.com>, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240126041126.1927228-12-michael.roth@amd.com>
 
-On Fri, Jan 26, 2024, Kirill A. Shutemov wrote:
-> Problem Statement
->=20
-> Currently Linux RNG uses the random inputs obtained from x86
-> RDRAND/RDSEED instructions (if present) during early initialization
-> stage (by mixing the obtained input into the random pool via
-> _mix_pool_bytes()), as well as for seeding/reseeding ChaCha-based CRNG.
-> When the calls to both RDRAND/RDSEED fail (including RDRAND internal
-> retries), the timing-based fallbacks are used in the latter case, and
-> during the early boot case this source of entropy input is simply
-> skipped. Overall Linux RNG has many other sources of entropy that it
-> uses (also depending on what HW is used), but the dominating one is
-> interrupts.
->=20
-> In a Confidential Computing Guest threat model, given the absence of any
-> special trusted HW for the secure entropy input, RDRAND/RDSEED
-> instructions is the only entropy source that is unobservable outside of
-> Confidential Computing Guest TCB. However, with enough pressure on these
-> instructions from multiple cores (see Intel SDM, Volume 1, Section
-> 7.3.17, =E2=80=9CRandom Number Generator Instructions=E2=80=9D), they can=
- be made to
-> fail on purpose and force the Confidential Computing Guest Linux RNG to
-> use only Host/VMM controlled entropy sources.
->=20
-> Solution options
->=20
-> There are several possible solutions to this problem and the intention
-> of this RFC is to initiate a joined discussion. Here are some options
-> that has been considered:
->=20
-> 1. Do nothing and accept the risk.
-> 2. Force endless looping on RDRAND/RDSEED instructions when run in a
->    Confidential Computing Guest (this patch). This option turns the
->    attack against the quality of cryptographic randomness provided by
->    Confidential Computing Guest=E2=80=99s Linux RNG into a DoS attack aga=
-inst
->    the Confidential Computing Guest itself (DoS attack is out of scope
->    for the Confidential Computing threat model).
-> 3. Panic after enough re-tries of RDRAND/RDSEED instructions fail.
->    Another DoS variant against the Guest.
-> 4. Exit to the host/VMM with an error indication after a Confidential
->    Computing Guest failed to obtain random input from RDRAND/RDSEED
->    instructions after reasonable number of retries. This option allows
->    host/VMM to take some correction action for cases when the load on
->    RDRAND/RDSEED instructions has been put by another actor, i.e. the
->    other guest VM. The exit to host/VMM in such cases can be made
->    transparent for the Confidential Computing Guest in the TDX case with
->    the assistance of the TDX module component.
+On Thu, Jan 25, 2024 at 10:11:11PM -0600, Michael Roth wrote:
+> +static int adjust_direct_map(u64 pfn, int rmp_level)
+> +{
+> +	unsigned long vaddr = (unsigned long)pfn_to_kaddr(pfn);
+> +	unsigned int level;
+> +	int npages, ret;
+> +	pte_t *pte;
 
-Hell no.  Develop better hardware if you want to guarantee forward progress=
-.
-Don't push more complexity into the host stack for something that in all li=
-kelihood
-will never happen outside of buggy software or hardware.
+Again, something I asked the last time but no reply:
 
-> 5. Anything other better option?
+Looking at Documentation/arch/x86/x86_64/mm.rst, the direct map starts
+at page_offset_base so this here should at least check
 
-Give the admin the option to choose between "I don't care, carry-on with le=
-ss
-randomness" and "I'm paranoid, panic, panic, panic!".  In other words, let =
-the
-admin choose between #1 and #3 at boot time.  You could probably even let t=
-he
-admin control the number of retries, though that's probably a bit excessive=
-.
+	if (vaddr < __PAGE_OFFSET)
+		return 0;
 
-And don't tie it to CoCo VMs, e.g. if someone is relying on randomness for =
-a bare
-metal workload, they might prefer to panic if hardware is acting funky.
+I'm not sure about the upper end. Right now, the adjusting should not
+happen only for the direct map but also for the whole kernel address
+space range because we don't want to cause any mismatch between page
+mappings anywhere.
+
+Which means, this function should be called adjust_kernel_map() or so...
+
+Hmmm.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
