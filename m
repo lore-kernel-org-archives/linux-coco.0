@@ -1,121 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A01A1DA20
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 15:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5D11D699
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 16:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706284692; cv=none; b=PLZXwfQZ2tgboMdQ0wqumG8S15a18ddvvzuYgD5O2e1sQJmt98f9bhUdIj2LfXlMGNVQD8C9S/kU2TLm05i1Un5Xi4RtYTnclKGRZslgNqryIBxYuKXndflZGcc8nvprL5FsESfKEpyUuqrVjxXx8QjeUuNeMyf8MMEb7CB8Gok=
+	t=1706287097; cv=none; b=LFxM0puQRL+sLDXKoawvaMP2TVYETt0rOdvCEftmhB7id7aOlPDgxTEYkTPE0toHnf6FPu3YPfmYiAvcl8OCxvP1p7js7qXuWwRaTvLf8AAt1mSZ1c9MGwYy7g/CMfje4UsCxMpg0AZ53k/GmQziY5QnvGAhco8Hr9H+bkPq21I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706284692; c=relaxed/simple;
-	bh=ilnm1wNghs09Z/CTi1P721/uUCE6aBg4rWcPoCAoqQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bmZMZ/eGXiyoEZW2E8e0skm9uhZtnCnDwCyiQsSTD85cwqEEzvHttNuLLDV85PzeBEMVuIzmEZnNZm2Dvg43pOMnmSe+sVygkwM6F0H6jvCcz2mpzE0kx969Yzj/lIC9DMnj/kbUcjjWgODZJCdXr5538EHWITFFUQgwQRaoGNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V007I65a; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1706287097; c=relaxed/simple;
+	bh=/FfErPD7fPuY6n+IL4H7hJhZx3N0+Izam7zb+o4a8ac=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TAtC27O3dA6X/iHsd5zSEF6y1kpC0M5eksHhTS8WEGpLTRtUa0imXcZwpt+urJmypQmGTlsIrMy3KxyECnGdZIZuh9PDV3cBJ18UfYOLAZ6vyNdVcwjFiOFt6Ped8+jSWEN7/ayI84jNqsua+m762kV7c9biApREhDGGRPVeUGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EDDEN9g0; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V007I65a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706284689;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lg7dGqFnTAiQObLEEkoZsTTFKEGghBhKhIxyZIgynYY=;
-	b=V007I65a5Q8eNRD7sMSYyAUarsumoSvgIZ8xhOi9WR1hVOR951AQ+Or4DhiqrRQuGaDdWp
-	zcwh2P4GKNVtO+KXqGrqgYr2afE3xLsRzYr3HSkwBONGH0Mx1AT0dlFaOHGz20v4jVIIxP
-	hWgWzLeBp9JA5qveZtAGy8z8VFjcWP8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-jG-sTitgOSWX5w2TxXHjZg-1; Fri,
- 26 Jan 2024 10:58:06 -0500
-X-MC-Unique: jG-sTitgOSWX5w2TxXHjZg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E1CCD28B6AA8;
-	Fri, 26 Jan 2024 15:58:04 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.198])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C7D8C15E61;
-	Fri, 26 Jan 2024 15:58:01 +0000 (UTC)
-Date: Fri, 26 Jan 2024 15:57:58 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC] Randomness on confidential computing platforms
-Message-ID: <ZbPWht37uWZGhp4m@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
- <6afe76be-90a7-4cf7-8c6c-23e6a14f8116@suse.com>
- <DM8PR11MB5750C6641F0951928E95439BE7792@DM8PR11MB5750.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EDDEN9g0"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-510133ed214so989763e87.1
+        for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 08:38:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1706287093; x=1706891893; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yIxa+CX1/TJs1SziOesxW18rUtHS0l1URIjIkyBIsA8=;
+        b=EDDEN9g0mGQzR1PUYzJ7t8imm0ulwGbIDQJ7e7z9hnNsoV40xEmzEar08DQSfR25MH
+         ZZ/0hxdGnpPVgh3oPPWkpdltGYY+HlSfkiwH4NNPDvNSBafDzewr82Tn9ahLn9AP/h/L
+         jTWAB4ma+D+0nboGUSAksy+ZfdADEO8TT7PrDGQve4IWJ6uF7dTnvjn4q5U+GUeDmCtr
+         bw9hHjrYYqqKa2EMOo3jNzYSxDoOvVeEtzReASQ7TkI+YaCuGxM69WURGaCd+qsFf3xw
+         IZXFmRYkT2+wruNeMTNppFrKV4IGE/sEZw1hHyCyX70c6m863m/aVu2xxPoAu3uI3/fK
+         1b+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706287093; x=1706891893;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yIxa+CX1/TJs1SziOesxW18rUtHS0l1URIjIkyBIsA8=;
+        b=jUM3bAuUURowrZ3SyHkFRkq+akAD5M01AkCi1MhSa9Y7vggZVRwNqSfg55OkyhE1eO
+         fRyw7ORrb1K9tSCUfBooLM3CMEN/gO9jpgG74F1hacE+q09PEBKePs63+5oSHADpb6oC
+         MDNCDlZEkTnSbDPUYL0/TmBX2zEJEsPEJ8dsquE8HF86wXZO3FFlDwLt2XmmU8TK63Ru
+         aAPTi99nb1gqDO0vOUOjKf0VJ9p7xhQ2DVveiB+wodZpIJHQ1bRgNb1KioEQEImDOibf
+         ww1yoTdHG682rLnkf5L1DusAXVyjVM1tfbuzkLI26gNPCReajVY4sWp4yHBeuur2toCt
+         9KjQ==
+X-Gm-Message-State: AOJu0YzweKNXzh/17qNZvNBZPclY0DyfwDmZ+bHAxmvkEvSLzxYEsZWn
+	OYRn1GsXtWzqqbsPZrSwbNspOUgUviR5lyeesQcDhEcXhWX5Jz/+oHG6caVTMsU=
+X-Google-Smtp-Source: AGHT+IE8xcb1wWSISj/bWqhgPC2j6HpUh+TnOucjqd3fNKnHetPqYqz6sgdZkACsOKi6NIy3PvfbbA==
+X-Received: by 2002:ac2:5a51:0:b0:510:1777:9559 with SMTP id r17-20020ac25a51000000b0051017779559mr821159lfn.86.1706287092847;
+        Fri, 26 Jan 2024 08:38:12 -0800 (PST)
+Received: from ?IPV6:2a10:bac0:b000:7589:7285:c2ff:fedd:7e3a? ([2a10:bac0:b000:7589:7285:c2ff:fedd:7e3a])
+        by smtp.gmail.com with ESMTPSA id c9-20020ac25f69000000b005101772e298sm220688lfc.19.2024.01.26.08.36.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jan 2024 08:36:41 -0800 (PST)
+Message-ID: <4f717166-863e-4145-8b8b-37e09415e855@suse.com>
+Date: Fri, 26 Jan 2024 18:35:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] Randomness on confidential computing platforms
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+ Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "Nakajima, Jun" <jun.nakajima@intel.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
+ <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
+ <6afe76be-90a7-4cf7-8c6c-23e6a14f8116@suse.com>
+ <DM8PR11MB5750C6641F0951928E95439BE7792@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <ZbPWht37uWZGhp4m@redhat.com>
+From: Nikolay Borisov <nik.borisov@suse.com>
+In-Reply-To: <ZbPWht37uWZGhp4m@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM8PR11MB5750C6641F0951928E95439BE7792@DM8PR11MB5750.namprd11.prod.outlook.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 
-On Fri, Jan 26, 2024 at 03:42:12PM +0000, Reshetova, Elena wrote:
-> > 
-> > On 26.01.24 г. 15:42 ч., Kirill A. Shutemov wrote:
-> > > 4. Exit to the host/VMM with an error indication after a Confidential
-> > >     Computing Guest failed to obtain random input from RDRAND/RDSEED
-> > >     instructions after reasonable number of retries. This option allows
-> > >     host/VMM to take some correction action for cases when the load on
-> > >     RDRAND/RDSEED instructions has been put by another actor, i.e. the
-> > >     other guest VM. The exit to host/VMM in such cases can be made
-> > >     transparent for the Confidential Computing Guest in the TDX case with
-> > >     the assistance of the TDX module component.
-> > 
-> > But is this really a viable solution in the face of malicious VMM? It
-> > assumes that if the VMM is signaled that randomness has been exhausted
-> > it will try to rectify it, what if such a signal can instead be
-> > repurposed for malicious purposes? Could it perhaps be used as some sort
-> > of a side channel attack ?
-> 
-> The idea here is that it is not necessary VMM that is the cause why the
-> RDRAND/RDSEED fails, so if this is the case, VMM can in theory do smth
-> about the situation.
-> 
-> We have been thinking about if it can create an additional attack vector,
-> but were not able to come with one. Do you have any in mind?
 
-A guest might exit claiming failed RDRAND when in fact no such problem
-occurred, as a way to mislead the host admin into taking action against
-other guests.
 
-If the CPU performance counters could report RDRAND exhaustion directly,
-then the host admin could trust that information and monitor it, but the
-host shouldn't rely on the (hostile) guest software to tell it about
-exhaustion.
+On 26.01.24 г. 17:57 ч., Daniel P. Berrangé wrote:
+> If the CPU performance counters could report RDRAND exhaustion directly,
+> then the host admin could trust that information and monitor it, but the
+> host shouldn't rely on the (hostile) guest software to tell it about
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+I guess it really depends on the POV - from the POV of an encrypted 
+guest the VMM is hostile so we ideally don't like to divulge more 
+information than is absolutely necessary.
 
+OTOH, from the POV of the VMM we could say that the guest could be 
+running anything and so a facility like that could cause some confusion 
+on the VMM site.
+
+I think it would be very hard to reconcile the 2 views.
+
+> exhaustion.
