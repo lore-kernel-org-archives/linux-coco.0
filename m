@@ -1,104 +1,155 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5D11D699
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 16:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092E91D545
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 16:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706287097; cv=none; b=LFxM0puQRL+sLDXKoawvaMP2TVYETt0rOdvCEftmhB7id7aOlPDgxTEYkTPE0toHnf6FPu3YPfmYiAvcl8OCxvP1p7js7qXuWwRaTvLf8AAt1mSZ1c9MGwYy7g/CMfje4UsCxMpg0AZ53k/GmQziY5QnvGAhco8Hr9H+bkPq21I=
+	t=1706288144; cv=none; b=diQ8jeL6cuCVjJzQkt66W6hD7op/iMerhTsHuH2h2cPJpNZqi8y4QHGCApYb3ALrH1/HyZjjqgfTYqhts/Zubu1ocjN7UbVvICi7IpoYFmslqJmq/LlblRVpdmQgaspSiF7FJDOUXvT4jptFOaSgn4xWBG8uh93Uq+UezmNqTWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706287097; c=relaxed/simple;
-	bh=/FfErPD7fPuY6n+IL4H7hJhZx3N0+Izam7zb+o4a8ac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TAtC27O3dA6X/iHsd5zSEF6y1kpC0M5eksHhTS8WEGpLTRtUa0imXcZwpt+urJmypQmGTlsIrMy3KxyECnGdZIZuh9PDV3cBJ18UfYOLAZ6vyNdVcwjFiOFt6Ped8+jSWEN7/ayI84jNqsua+m762kV7c9biApREhDGGRPVeUGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EDDEN9g0; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1706288144; c=relaxed/simple;
+	bh=zxwhVOLE3gzPx1lLnJ7kUSvc4kjwJMjq+fDCZLpDEU8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hkDRoDh4A4jC5aeNc9XJ+XddtUaDFCsYozPj5YJzXjRHo+oVGSE+AvfKfmAxN8q3rBRUe4bsoSNVFPGfm6BnuEHE1zU0ArYuk9FLQEKhWF3mXeUsFr84XCLDzdWOgf9+J5TYcbMqz8obBYvA/1HG7CTDL0LJnZywx7nJ1NWvLSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mhUWhp14; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EDDEN9g0"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-510133ed214so989763e87.1
-        for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 08:38:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mhUWhp14"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-55d418c5ca1so5719a12.1
+        for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 08:55:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1706287093; x=1706891893; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yIxa+CX1/TJs1SziOesxW18rUtHS0l1URIjIkyBIsA8=;
-        b=EDDEN9g0mGQzR1PUYzJ7t8imm0ulwGbIDQJ7e7z9hnNsoV40xEmzEar08DQSfR25MH
-         ZZ/0hxdGnpPVgh3oPPWkpdltGYY+HlSfkiwH4NNPDvNSBafDzewr82Tn9ahLn9AP/h/L
-         jTWAB4ma+D+0nboGUSAksy+ZfdADEO8TT7PrDGQve4IWJ6uF7dTnvjn4q5U+GUeDmCtr
-         bw9hHjrYYqqKa2EMOo3jNzYSxDoOvVeEtzReASQ7TkI+YaCuGxM69WURGaCd+qsFf3xw
-         IZXFmRYkT2+wruNeMTNppFrKV4IGE/sEZw1hHyCyX70c6m863m/aVu2xxPoAu3uI3/fK
-         1b+g==
+        d=google.com; s=20230601; t=1706288141; x=1706892941; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zxwhVOLE3gzPx1lLnJ7kUSvc4kjwJMjq+fDCZLpDEU8=;
+        b=mhUWhp14LaFYd1m5h6nkPCzXqmdlrlju8coX/2kSwdX9BcvpSzLW/+tSSMlpGJmKMM
+         wQbDjk3QlwfX6S4tLP9xDh0mVWqBIDiHPjG9mHJK/PeH5Kuw0LmQupmLCN5qVycM2gnX
+         dKBPnjNHj1MhCbBBKPMxQxwYAuj6me2DQR4Q4BPP8jWYTsSKXy0YOBk+un9zQMVIOrTw
+         kTPMf2TNw8U5KDCl09C8qUQXBH9VxBgcjmpE3nUoirOXCPFB7F03lSXc0ypDDAGuwDCb
+         UfaQKeFPaXRsw2XBah8IcxqdiT4UVCWWV4CKvsRB2rZYcWBsp94zmxxs0NmRYuUmUMEf
+         MNoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706287093; x=1706891893;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yIxa+CX1/TJs1SziOesxW18rUtHS0l1URIjIkyBIsA8=;
-        b=jUM3bAuUURowrZ3SyHkFRkq+akAD5M01AkCi1MhSa9Y7vggZVRwNqSfg55OkyhE1eO
-         fRyw7ORrb1K9tSCUfBooLM3CMEN/gO9jpgG74F1hacE+q09PEBKePs63+5oSHADpb6oC
-         MDNCDlZEkTnSbDPUYL0/TmBX2zEJEsPEJ8dsquE8HF86wXZO3FFlDwLt2XmmU8TK63Ru
-         aAPTi99nb1gqDO0vOUOjKf0VJ9p7xhQ2DVveiB+wodZpIJHQ1bRgNb1KioEQEImDOibf
-         ww1yoTdHG682rLnkf5L1DusAXVyjVM1tfbuzkLI26gNPCReajVY4sWp4yHBeuur2toCt
-         9KjQ==
-X-Gm-Message-State: AOJu0YzweKNXzh/17qNZvNBZPclY0DyfwDmZ+bHAxmvkEvSLzxYEsZWn
-	OYRn1GsXtWzqqbsPZrSwbNspOUgUviR5lyeesQcDhEcXhWX5Jz/+oHG6caVTMsU=
-X-Google-Smtp-Source: AGHT+IE8xcb1wWSISj/bWqhgPC2j6HpUh+TnOucjqd3fNKnHetPqYqz6sgdZkACsOKi6NIy3PvfbbA==
-X-Received: by 2002:ac2:5a51:0:b0:510:1777:9559 with SMTP id r17-20020ac25a51000000b0051017779559mr821159lfn.86.1706287092847;
-        Fri, 26 Jan 2024 08:38:12 -0800 (PST)
-Received: from ?IPV6:2a10:bac0:b000:7589:7285:c2ff:fedd:7e3a? ([2a10:bac0:b000:7589:7285:c2ff:fedd:7e3a])
-        by smtp.gmail.com with ESMTPSA id c9-20020ac25f69000000b005101772e298sm220688lfc.19.2024.01.26.08.36.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jan 2024 08:36:41 -0800 (PST)
-Message-ID: <4f717166-863e-4145-8b8b-37e09415e855@suse.com>
-Date: Fri, 26 Jan 2024 18:35:59 +0200
+        d=1e100.net; s=20230601; t=1706288141; x=1706892941;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zxwhVOLE3gzPx1lLnJ7kUSvc4kjwJMjq+fDCZLpDEU8=;
+        b=cRES4LTUTpkhUnHBXGumgmzwZSNqcShVuZtJ79qw5fq8bRESVF8rXwZO5Ci1AXCTDY
+         7YY5P5A7mdxj4wR46itpO+fGIrIcu8Kxg3uoZAovZzSQmva7jzozS9sY+amZpDghFs50
+         oQhzwxaMMdz3Yl8sEwt7r8kIY6wA1R12pyPxgzGe1higg2epZNMumjA3icY/mV/mIapZ
+         EQgIwf8hdA229TUzoyG2d7F1LNUo2ju0/m2uU/iCpRMbPg/kzvJlPhZhUV/iSGvueJj+
+         E4QJxd6o4FDClUnozVnJwR0r+Tcadq784Or3IpfONxSSUScd5FjIUAFjbkeGkYeR5QzJ
+         B+xQ==
+X-Gm-Message-State: AOJu0YwXOdoqs5fL0aFycMW5M/fKOfxPvThakAFYi+81B+7Eka2EczeG
+	an8gCKZPnJl08/ljPzJD9JtcKDCWZLywymwIk8RIFnp8HlUZTYObl/My0kVDhV+oA7jA5wptamO
+	Vd9Mb+9wV8O4OzYWxinYdT58lrFzA1fe2E3Ku
+X-Google-Smtp-Source: AGHT+IEBXRn/yWC2G3iLvBVpTnf7frUux03kuFyEOJZMUmvVIkI7QkDfzNcoibbTn583SotrwZpKTXcErZZGb809pYo=
+X-Received: by 2002:a05:6402:22cb:b0:55d:20f2:6d64 with SMTP id
+ dm11-20020a05640222cb00b0055d20f26d64mr192253edb.6.1706288141014; Fri, 26 Jan
+ 2024 08:55:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] Randomness on confidential computing platforms
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
- Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Nakajima, Jun" <jun.nakajima@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
- <6afe76be-90a7-4cf7-8c6c-23e6a14f8116@suse.com>
- <DM8PR11MB5750C6641F0951928E95439BE7792@DM8PR11MB5750.namprd11.prod.outlook.com>
- <ZbPWht37uWZGhp4m@redhat.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <ZbPWht37uWZGhp4m@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240114223532.290550-1-sameo@rivosinc.com> <20240114223532.290550-4-sameo@rivosinc.com>
+ <1bbf8d3e-aa94-48c7-a1e4-76f9eefc4af7@linux.intel.com> <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
+ <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com> <Za1G9I+tYuIL9ser@vermeer>
+ <CF3D8DE1-AD47-4A77-B8BD-8A12A6F7E9DB@google.com> <MW4PR11MB5872F46A2089C8C2D8EF7A008C752@MW4PR11MB5872.namprd11.prod.outlook.com>
+ <65aecbbce09dd_107423294b7@dwillia2-xfh.jf.intel.com.notmuch>
+ <c3b99264-233b-4997-9e20-c4c2693b8cdc@intel.com> <65aeecea827f0_37ad2948@dwillia2-xfh.jf.intel.com.notmuch>
+ <14dffda2-f413-4304-9932-3ac8ddfb30e4@intel.com> <85109de4-5832-4e14-8416-6443ac417c9d@linux.intel.com>
+In-Reply-To: <85109de4-5832-4e14-8416-6443ac417c9d@linux.intel.com>
+From: Dionna Amalie Glaze <dionnaglaze@google.com>
+Date: Fri, 26 Jan 2024 08:55:26 -0800
+Message-ID: <CAAH4kHbhiyruEHiVx6cj_CangiD5L40+aRJBjgFJ65r9VHxpbA@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: "Xing, Cedric" <cedric.xing@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
+	"Yao, Jiewen" <jiewen.yao@intel.com>, Qinkun Bao <qinkun@google.com>, 
+	Samuel Ortiz <sameo@rivosinc.com>, "Lu, Ken" <ken.lu@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Jan 23, 2024 at 12:59=E2=80=AFPM Kuppuswamy Sathyanarayanan
+<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+>
+>
+> On 1/23/24 10:48 AM, Xing, Cedric wrote:
+> > On 1/22/2024 2:32 PM, Dan Williams wrote:
+> >> Xing, Cedric wrote:
+> >> [..]
+> >>>> So, yes, the mapping should be allowed to specified by the low-level
+> >>>> driver, but at the same time every vendor should not reinvent their =
+own
+> >>>> enumeration method when we have EFI for that.
+> >>>
+> >>> Given PCR->RTMR mapping is static, I just wonder why it needs to be k=
+ept
+> >>> in kernel. Given that PCRs can never be 1:1 mapped to RTMRs, and that
+> >>> TDX quotes are never TPM quotes, applications used to extend PCRs wou=
+ld
+> >>> have to be changed/recompiled. Then wouldn't it suffice to define the
+> >>> mappings as macros in an architecture specific header file?
+> >>
+> >> I think something is wrong if applications are exposed to the PCR->RTM=
+R
+> >> mapping thrash. I would hope / expect that detail is hidden behind a T=
+PM
+> >> proxy layer sitting in front of this mapping on behalf of TPM-client
+> >> applications.
+> >
+> > Hi Dan,
+> >
+> > My apology for the confusion! I think we are talking about 2 different =
+scenarios - (1) this patch alone; and (2) this patch + vTPM.
+> >
+> > Scenario 1: This patch provides RTMR access only. My assumption is, the=
+re are existing application (and/or kernel modules) that extend to PCRs tod=
+ay and would like to work in TDs where only RTMRs are available. Changes ar=
+e of course necessary in those applications as TPMs/PCRs are no longer avai=
+lable, but from security perspective they would like to keep the same activ=
+ity log and just change to use RTMRs (in lieu of PCRs) as the secure storag=
+e. Hence a PCR->RTMR mapping is necessary and must be agreed upon by all th=
+ose applications and relying parties. IIUC, this is the intention of having=
+ PCR->RTMR mapping config maintained by the kernel, as proposed by Sam O. o=
+riginally.
+> >
+> > Scenario 2: A vTPM is implemented on top of this patch, in which case t=
+he existing applications don't have to change as they can continue extendin=
+g to the same PCRs, which will then be emulated by the underlying vTPM impl=
+ementation. PCR->RTMR mapping in this scenario is obviously internal to the=
+ vTPM and I agree with you completely that it should be hidden inside the v=
+TPM.
+> >
+> > My comment in my previous email was regarding Scenario 1. I hope the cl=
+arification above helps.
+>
+>
+> IMO, we should adapt an approach with as minimal user changes as possible=
+. So I think we should try to avoid scenario 1 if possible.
+>
+
+I would note that the MapPcrToMrIndex mapping is an entrypoint of the
+EFI_CC_MEASUREMENT_PROTOCOL boot service of UEFI v2.10. Similarly, the
+event log should be collected before called ExitBootServices and made
+available at /sys/kernel/security/coco/binary_bios_measurements.
+
+>
+> >
+> > -Cedric
+> >
+> --
+> Sathyanarayanan Kuppuswamy
+> Linux Kernel Developer
+>
+>
 
 
-
-On 26.01.24 г. 17:57 ч., Daniel P. Berrangé wrote:
-> If the CPU performance counters could report RDRAND exhaustion directly,
-> then the host admin could trust that information and monitor it, but the
-> host shouldn't rely on the (hostile) guest software to tell it about
-
-I guess it really depends on the POV - from the POV of an encrypted 
-guest the VMM is hostile so we ideally don't like to divulge more 
-information than is absolutely necessary.
-
-OTOH, from the POV of the VMM we could say that the guest could be 
-running anything and so a facility like that could cause some confusion 
-on the VMM site.
-
-I think it would be very hard to reconcile the 2 views.
-
-> exhaustion.
+--=20
+-Dionna Glaze, PhD (she/her)
