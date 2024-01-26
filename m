@@ -1,183 +1,316 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2084.outbound.protection.outlook.com [40.107.244.84])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D610134BD
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 04:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706244564; cv=fail; b=QbTt2FUNZCWY5+f0UtDR5QZf1EXRDWkfGici84G26gYkKiN1ah7kV22WtcAcwtmYtKVzJxlnTWC/ew+1NhI+Y3pHtoKzujEd/FjXgRIXv2Uv6ZSvoYCN4TEZ5ee6Kzo2bqXZNKxEh/+7ojz5ZkuKLX9O0fHoRBYY8KVVN+4KC6o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706244564; c=relaxed/simple;
-	bh=qmd0HiFjl6AgJdoM8m7Xoo3YL2eJ2Q7Q9E5NaKQQn8E=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ucHlKBh45dVUPg4TfEoeo6Z1iXZAqvteTpl36ZUeFQsCJK0hTpdiKv+nKhXQ8MeU/jADWnuNZY328OkfOqSre0MMy0I+4SkTj3XL8AJ1BKmAaz/g22yhGUImjH1PAlRC4wCkP9fjAfYjP97wLN5IgiwiYMHvXZ3d03CBmZczShU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tkqtAq22; arc=fail smtp.client-ip=40.107.244.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABA2134A3
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 11:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706266863; cv=none; b=AzonNjjvi+wiXtuTYMs4UyclFwFY6jhg/oVtAAXDGhtzg/42uYLP//UazKobb6B1/zIvAh3fpUsRpzUEaEZVOyEM3IXpXnvqZcrgS3+H1f1TRQ6XNVdNETCRh0qII2FcEAnmp71Qu3Q8I525Clfbf99ccfRYx9gB+gVOXkha8GM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706266863; c=relaxed/simple;
+	bh=2Kk/JhDn9ums2Gl2pmtY8M5lBtSFaCH5fDViOXSC1mo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QzZCg5CqheeRnlfWmJ4+wmAK5S+TNGr5M0NxdTE5mx4hb+NyUXA9NU7jyMIjvHt4SvcmHvblsyjqcE2IkaVpwlwIhOrHLdrJ9Q3SKf6W56m4EaW8AeZ/gwLOF7MUnM5BL9HC6NXzfOHosYY4F9HYvkIoznwskH3ylnc8TKqPXzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cduZuv0M; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tkqtAq22"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=as2DK2Bfajk95Lg0jcbXcWM8yXeMmXNwYy5xj9qcrO07OWxS9uHMcZdgboZHY/QiEMjnUUXSVMk3SsuxubPGXT4ikoWuhXNzL52WHLQCy+i+QAI6lNx6jJMK/+d1iLogM0h2YVTPxIjmC1TH2jpxLJ2lREvwLIhq59lU0Xiw1QvJvmltZwXsSrbSLOXFp98/Q6tv6QajGH2mN0Z13NEhPKHgp7RevsYTv6JsDupXqrtTQNotoSFQAE85yWXp9T2YWyWUjP5ogo9A6lMqdYuoMRQAUg1bB+KaNIo82KE2Bp2sqdWhaqei7rrSm2XKfH2bVVvoZ5CBE0IjsU9olsp57A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3U3JEpITMWrdJUCfljL+TeerAiuU7ufrDQlHJ3pkGqI=;
- b=jlsDZ89QTE3Ca71M7pcDugcg3MOYVtUJELp3u687xd+XAqROX3J6V7B8juFc2ztutc/dcInvZiSbtk6Rbi6ymgDQvZud4+QynlOJ08m2Q0fNQ5odXnjo6q2edYvYH1DxyRVTUebdPGwmZZcAZX7mQk/FGZxIlQyS0/GsJU6jTxaR1zn5O9ca+31U3vaLig6vI8MohgYeJhAqmGWQhW9xZHsC/EMc2Vsw14iAghgJpqQiFLrUEftJ3vkonrHBhLSuyJGwbL7WoGyVl3nF4eSqUj4A1xURGSoFXaiLn5yVwONxnlP+s2v/HKVuY21T6OXtOngIiiYoHgpj0I6pVk03uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3U3JEpITMWrdJUCfljL+TeerAiuU7ufrDQlHJ3pkGqI=;
- b=tkqtAq22rRfxOOf6dhvzdxc4kK1pXOStAtMkFGUfvf7XU2rfJxvcPcJu0ldQKTeElET5IhHc0T9mzyoGmPvEXfzLovU+rZB6tjDwUwhcIXhtnLbuoP1or1YqVPR+K1mArVqFGNwFcc7oPrTk0ZRREHKHYhdyBjDTrqZqkXahaKs=
-Received: from CH5PR02CA0001.namprd02.prod.outlook.com (2603:10b6:610:1ed::17)
- by DM4PR12MB5152.namprd12.prod.outlook.com (2603:10b6:5:393::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27; Fri, 26 Jan
- 2024 04:49:18 +0000
-Received: from DS2PEPF00003440.namprd02.prod.outlook.com
- (2603:10b6:610:1ed:cafe::c9) by CH5PR02CA0001.outlook.office365.com
- (2603:10b6:610:1ed::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27 via Frontend
- Transport; Fri, 26 Jan 2024 04:49:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF00003440.mail.protection.outlook.com (10.167.18.43) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7228.16 via Frontend Transport; Fri, 26 Jan 2024 04:49:18 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 25 Jan
- 2024 22:49:14 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: <x86@kernel.org>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<tglx@linutronix.de>, <mingo@redhat.com>, <jroedel@suse.de>,
-	<thomas.lendacky@amd.com>, <hpa@zytor.com>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <seanjc@google.com>, <vkuznets@redhat.com>,
-	<jmattson@google.com>, <luto@kernel.org>, <dave.hansen@linux.intel.com>,
-	<slp@redhat.com>, <pgonda@google.com>, <peterz@infradead.org>,
-	<srinivas.pandruvada@linux.intel.com>, <rientjes@google.com>,
-	<tobin@ibm.com>, <bp@alien8.de>, <vbabka@suse.cz>, <kirill@shutemov.name>,
-	<ak@linux.intel.com>, <tony.luck@intel.com>,
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
-	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
-	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>, Brijesh Singh
-	<brijesh.singh@amd.com>, Dave Hansen <dave.hansen@intel.com>
-Subject: [PATCH v2 08/25] x86/traps: Define RMP violation #PF error code
-Date: Thu, 25 Jan 2024 22:11:08 -0600
-Message-ID: <20240126041126.1927228-9-michael.roth@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240126041126.1927228-1-michael.roth@amd.com>
-References: <20240126041126.1927228-1-michael.roth@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cduZuv0M"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706266859;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vz4PWAkydzxt+A7z4COEEylDr902GbpCA3qhDTN+Qeg=;
+	b=cduZuv0M4Psp1UTRkyPuFLufaaHbpUVp6kClk7L0pz/gGYWXDFEvBwYXTMqDgx4XYJrzL6
+	oJtcRsSZrWX4C+U0RoKsUkpEId1sUnt70DbaNSAhLb7LaGKmTTtMVwQLyPnGTd9J4iarfL
+	Y68eDSPDieorlPcNYSQjsIpOXZVERto=
+Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com
+ [209.85.217.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-546-KyZZF61uNxWiCDMgPZgTiQ-1; Fri, 26 Jan 2024 06:00:57 -0500
+X-MC-Unique: KyZZF61uNxWiCDMgPZgTiQ-1
+Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-466ec6d33bcso50132137.3
+        for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 03:00:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706266857; x=1706871657;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vz4PWAkydzxt+A7z4COEEylDr902GbpCA3qhDTN+Qeg=;
+        b=MtGjJ+JlISCenVhwUlwCD8nZIs1+R7KxjjTVw1xu4FWYWjzdJhIbdu3gwgOlhCeBmc
+         6jaz4jTp2arH8HpNyTSSdOS6TIrZHSu23o/LW4R5BOyrawJT9CcxigAzLEWff8TT8Cxr
+         dbhV8PVESMNHhxYRczRfkfFcmXcoX7WxfPLlpJGVBUoquPtA1Ow065v8mYh/mibw1U0z
+         7QMbJ8pyKGT9ltSskcq8jSeunTU+5fcVwrraGAeBa40gHQhf2ZAhW6XGMbEMRjshls6s
+         d3lgIu78gIEgtGehMTzhDLvkozFPDWVVYtQVOIUXsFfAaZQi83X92xv0YSuTWSLV++BB
+         fhng==
+X-Gm-Message-State: AOJu0Yy0HJqTRGXEkNuytF70HrEFTB65ksc8FpkbMHc3Ff/jI3Q/8nvH
+	KXJlVwNbCX6UteUS0fF+N4AgwKWt7qiKWCZzUXL0aFE5hwsUhiSUl8vJzTFNlMFyFS+ffRqDGfd
+	uvfXbXNxGVDiLOqZIwaj8NvpgzsBZNpARsuSwVnV+nDexDyvqBHREuZOpKfSZOc9OvpjGNLjTHD
+	hKnqmMHlwKCexmmFcFGHJYN0BTw2cLBsPnBw==
+X-Received: by 2002:a67:f7d3:0:b0:46b:2177:3dd5 with SMTP id a19-20020a67f7d3000000b0046b21773dd5mr813803vsp.59.1706266857212;
+        Fri, 26 Jan 2024 03:00:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGpXTYAbdzLiIsrnQlBUga5yJGtTPifrKZ94nSeg3N8tWU7X+J3z3U88iJcUhzqazoErnhnGdfkCOzGN9AK1kM=
+X-Received: by 2002:a67:f7d3:0:b0:46b:2177:3dd5 with SMTP id
+ a19-20020a67f7d3000000b0046b21773dd5mr813761vsp.59.1706266856821; Fri, 26 Jan
+ 2024 03:00:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003440:EE_|DM4PR12MB5152:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6473a4cb-ba7d-4781-7266-08dc1e2a27b6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	EMlA1XpWP772hJ+SIi8tdaA8NpZT4Q/4+zomJ+PnNHgCfBRXcb5myQ/MfxYziLCilGju1KYixxBhtl1yBxFWwj50ToqUSDXXkVxlyPbk2pUU8zU5C23T8Uq5Xm8H++HHRJz8jw/7RkKpvH24KqYpFkPLttLM/bikHVm1v7x58CWJPy3JZtUTlyYRpagWlYuvahPqQnboHKpr62kCikhRx90BVZ5pl03TSYjku83faJOE9L0QJsJ5Zcmky/qA0h0M9JY28PPOOJcoQFLW73Hixo93nWPQDs5R+BFiygCBe0chwXIXH5BiBb63I8040HzusKahKKAudQZurGl8b6IiHzhWIY9Wvdr5+TrXNPFWk/zG0rxhRDlMmd+cc73TkBZd0dH1A46ISsB7/kvD3YWOk5zOW8FHpVe00jvAEUZzvSNTCm/urPKZ0BZNFdWbI6V/yIdYHmFrfBapcOTDbKd1kp8mkFXd8H1RzN5aGPdzZqANV+saMNwZ9JO5kqLfKxiOdErnUDL+pKRPUouLeEfTXCWwv0rylqGQo2YeoYqohfckfTI8ddSmSZQXnWg1WVbPGx0iKLZY49fg4QVGm8VeBZO6uFE8HQK63yLMtS+pbbfBF4N2I7/5HJPA3dgwrKKC2OAUVmp0+PVXgWTID3jDWk5H3QB3XLkR/m+KMkzzv62zkYpoWieCyI0Dci2a5yTX/0xl9OEtgyS1Yzwa54cQAPtMzlQ1ecFJYq45GZMyiSQ8PCUkuTQynuqFF+vrf5N081Nqo9qa12pUZ6PaMLt9tA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(136003)(39860400002)(396003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(82310400011)(36840700001)(40470700004)(46966006)(26005)(16526019)(2616005)(1076003)(6666004)(83380400001)(336012)(426003)(8936002)(8676002)(4326008)(44832011)(5660300002)(478600001)(6916009)(54906003)(316002)(70206006)(70586007)(86362001)(356005)(36860700001)(82740400003)(81166007)(47076005)(41300700001)(7416002)(40480700001)(40460700003)(36756003)(2906002)(7406005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2024 04:49:18.2714
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6473a4cb-ba7d-4781-7266-08dc1e2a27b6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF00003440.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5152
+References: <20240126041126.1927228-1-michael.roth@amd.com> <20240126041126.1927228-22-michael.roth@amd.com>
+In-Reply-To: <20240126041126.1927228-22-michael.roth@amd.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 26 Jan 2024 12:00:43 +0100
+Message-ID: <CABgObfaqjBBt74ZX6LtP=sQgYsu4FRTuKsDZ1ZaFkA5vK1ddCQ@mail.gmail.com>
+Subject: Re: [PATCH v2 21/25] KVM: SEV: Make AVIC backing, VMSA and VMCB
+ memory allocation SNP safe
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, 
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org, 
+	seanjc@google.com, vkuznets@redhat.com, jmattson@google.com, luto@kernel.org, 
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com, 
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com, 
+	rientjes@google.com, tobin@ibm.com, bp@alien8.de, vbabka@suse.cz, 
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com, 
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com, 
+	pankaj.gupta@amd.com, liam.merwick@oracle.com, 
+	Brijesh Singh <brijesh.singh@amd.com>, Marc Orr <marcorr@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Brijesh Singh <brijesh.singh@amd.com>
+On Fri, Jan 26, 2024 at 5:45=E2=80=AFAM Michael Roth <michael.roth@amd.com>=
+ wrote:
+>
+> From: Brijesh Singh <brijesh.singh@amd.com>
+>
+> Implement a workaround for an SNP erratum where the CPU will incorrectly
+> signal an RMP violation #PF if a hugepage (2MB or 1GB) collides with the
+> RMP entry of a VMCB, VMSA or AVIC backing page.
+>
+> When SEV-SNP is globally enabled, the CPU marks the VMCB, VMSA, and AVIC
+> backing pages as "in-use" via a reserved bit in the corresponding RMP
+> entry after a successful VMRUN. This is done for _all_ VMs, not just
+> SNP-Active VMs.
+>
+> If the hypervisor accesses an in-use page through a writable
+> translation, the CPU will throw an RMP violation #PF. On early SNP
+> hardware, if an in-use page is 2MB-aligned and software accesses any
+> part of the associated 2MB region with a hugepage, the CPU will
+> incorrectly treat the entire 2MB region as in-use and signal a an RMP
+> violation #PF.
+>
+> To avoid this, the recommendation is to not use a 2MB-aligned page for
+> the VMCB, VMSA or AVIC pages. Add a generic allocator that will ensure
+> that the page returned is not 2MB-aligned and is safe to be used when
+> SEV-SNP is enabled. Also implement similar handling for the VMCB/VMSA
+> pages of nested guests.
+>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Co-developed-by: Marc Orr <marcorr@google.com>
+> Signed-off-by: Marc Orr <marcorr@google.com>
+> Reported-by: Alper Gun <alpergun@google.com> # for nested VMSA case
+> Co-developed-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> [mdr: squash in nested guest handling from Ashish, commit msg fixups]
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-Bit 31 in the page fault-error bit will be set when processor encounters
-an RMP violation.
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 
-While at it, use the BIT() macro.
 
-Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-Signed-off by: Ashish Kalra <ashish.kalra@amd.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
----
- arch/x86/include/asm/trap_pf.h | 20 ++++++++++++--------
- arch/x86/mm/fault.c            |  1 +
- 2 files changed, 13 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/include/asm/trap_pf.h b/arch/x86/include/asm/trap_pf.h
-index afa524325e55..7fc4db774dd6 100644
---- a/arch/x86/include/asm/trap_pf.h
-+++ b/arch/x86/include/asm/trap_pf.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_X86_TRAP_PF_H
- #define _ASM_X86_TRAP_PF_H
- 
-+#include <linux/bits.h>  /* BIT() macro */
-+
- /*
-  * Page fault error code bits:
-  *
-@@ -13,16 +15,18 @@
-  *   bit 5 ==				1: protection keys block access
-  *   bit 6 ==				1: shadow stack access fault
-  *   bit 15 ==				1: SGX MMU page-fault
-+ *   bit 31 ==				1: fault was due to RMP violation
-  */
- enum x86_pf_error_code {
--	X86_PF_PROT	=		1 << 0,
--	X86_PF_WRITE	=		1 << 1,
--	X86_PF_USER	=		1 << 2,
--	X86_PF_RSVD	=		1 << 3,
--	X86_PF_INSTR	=		1 << 4,
--	X86_PF_PK	=		1 << 5,
--	X86_PF_SHSTK	=		1 << 6,
--	X86_PF_SGX	=		1 << 15,
-+	X86_PF_PROT	=		BIT(0),
-+	X86_PF_WRITE	=		BIT(1),
-+	X86_PF_USER	=		BIT(2),
-+	X86_PF_RSVD	=		BIT(3),
-+	X86_PF_INSTR	=		BIT(4),
-+	X86_PF_PK	=		BIT(5),
-+	X86_PF_SHSTK	=		BIT(6),
-+	X86_PF_SGX	=		BIT(15),
-+	X86_PF_RMP	=		BIT(31),
- };
- 
- #endif /* _ASM_X86_TRAP_PF_H */
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 679b09cfe241..8805e2e20df6 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -547,6 +547,7 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long ad
- 		 !(error_code & X86_PF_PROT) ? "not-present page" :
- 		 (error_code & X86_PF_RSVD)  ? "reserved bit violation" :
- 		 (error_code & X86_PF_PK)    ? "protection keys violation" :
-+		 (error_code & X86_PF_RMP)   ? "RMP violation" :
- 					       "permissions violation");
- 
- 	if (!(error_code & X86_PF_USER) && user_mode(regs)) {
--- 
-2.25.1
+> ---
+>  arch/x86/include/asm/kvm-x86-ops.h |  1 +
+>  arch/x86/include/asm/kvm_host.h    |  1 +
+>  arch/x86/kvm/lapic.c               |  5 ++++-
+>  arch/x86/kvm/svm/nested.c          |  2 +-
+>  arch/x86/kvm/svm/sev.c             | 32 ++++++++++++++++++++++++++++++
+>  arch/x86/kvm/svm/svm.c             | 17 +++++++++++++---
+>  arch/x86/kvm/svm/svm.h             |  1 +
+>  7 files changed, 54 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kv=
+m-x86-ops.h
+> index 378ed944b849..ab24ce207988 100644
+> --- a/arch/x86/include/asm/kvm-x86-ops.h
+> +++ b/arch/x86/include/asm/kvm-x86-ops.h
+> @@ -138,6 +138,7 @@ KVM_X86_OP(complete_emulated_msr)
+>  KVM_X86_OP(vcpu_deliver_sipi_vector)
+>  KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
+>  KVM_X86_OP_OPTIONAL(get_untagged_addr)
+> +KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
+>
+>  #undef KVM_X86_OP
+>  #undef KVM_X86_OP_OPTIONAL
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index b5b2d0fde579..5c12af29fd9b 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1794,6 +1794,7 @@ struct kvm_x86_ops {
+>         unsigned long (*vcpu_get_apicv_inhibit_reasons)(struct kvm_vcpu *=
+vcpu);
+>
+>         gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsi=
+gned int flags);
+> +       void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+>  };
+>
+>  struct kvm_x86_nested_ops {
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index 3242f3da2457..1edf93ee3395 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -2815,7 +2815,10 @@ int kvm_create_lapic(struct kvm_vcpu *vcpu, int ti=
+mer_advance_ns)
+>
+>         vcpu->arch.apic =3D apic;
+>
+> -       apic->regs =3D (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+> +       if (kvm_x86_ops.alloc_apic_backing_page)
+> +               apic->regs =3D static_call(kvm_x86_alloc_apic_backing_pag=
+e)(vcpu);
+> +       else
+> +               apic->regs =3D (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT=
+);
+>         if (!apic->regs) {
+>                 printk(KERN_ERR "malloc apic regs error for vcpu %x\n",
+>                        vcpu->vcpu_id);
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index dee62362a360..55b9a6d96bcf 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -1181,7 +1181,7 @@ int svm_allocate_nested(struct vcpu_svm *svm)
+>         if (svm->nested.initialized)
+>                 return 0;
+>
+> -       vmcb02_page =3D alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +       vmcb02_page =3D snp_safe_alloc_page(&svm->vcpu);
+>         if (!vmcb02_page)
+>                 return -ENOMEM;
+>         svm->nested.vmcb02.ptr =3D page_address(vmcb02_page);
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 564091f386f7..f99435b6648f 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -3163,3 +3163,35 @@ void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu =
+*vcpu, u8 vector)
+>
+>         ghcb_set_sw_exit_info_2(svm->sev_es.ghcb, 1);
+>  }
+> +
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu)
+> +{
+> +       unsigned long pfn;
+> +       struct page *p;
+> +
+> +       if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+> +               return alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +
+> +       /*
+> +        * Allocate an SNP-safe page to workaround the SNP erratum where
+> +        * the CPU will incorrectly signal an RMP violation #PF if a
+> +        * hugepage (2MB or 1GB) collides with the RMP entry of a
+> +        * 2MB-aligned VMCB, VMSA, or AVIC backing page.
+> +        *
+> +        * Allocate one extra page, choose a page which is not
+> +        * 2MB-aligned, and free the other.
+> +        */
+> +       p =3D alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO, 1);
+> +       if (!p)
+> +               return NULL;
+> +
+> +       split_page(p, 1);
+> +
+> +       pfn =3D page_to_pfn(p);
+> +       if (IS_ALIGNED(pfn, PTRS_PER_PMD))
+> +               __free_page(p++);
+> +       else
+> +               __free_page(p + 1);
+> +
+> +       return p;
+> +}
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 61f2bdc9f4f8..272d5ed37ce7 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -703,7 +703,7 @@ static int svm_cpu_init(int cpu)
+>         int ret =3D -ENOMEM;
+>
+>         memset(sd, 0, sizeof(struct svm_cpu_data));
+> -       sd->save_area =3D alloc_page(GFP_KERNEL | __GFP_ZERO);
+> +       sd->save_area =3D snp_safe_alloc_page(NULL);
+>         if (!sd->save_area)
+>                 return ret;
+>
+> @@ -1421,7 +1421,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+>         svm =3D to_svm(vcpu);
+>
+>         err =3D -ENOMEM;
+> -       vmcb01_page =3D alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> +       vmcb01_page =3D snp_safe_alloc_page(vcpu);
+>         if (!vmcb01_page)
+>                 goto out;
+>
+> @@ -1430,7 +1430,7 @@ static int svm_vcpu_create(struct kvm_vcpu *vcpu)
+>                  * SEV-ES guests require a separate VMSA page used to con=
+tain
+>                  * the encrypted register state of the guest.
+>                  */
+> -               vmsa_page =3D alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO)=
+;
+> +               vmsa_page =3D snp_safe_alloc_page(vcpu);
+>                 if (!vmsa_page)
+>                         goto error_free_vmcb_page;
+>
+> @@ -4900,6 +4900,16 @@ static int svm_vm_init(struct kvm *kvm)
+>         return 0;
+>  }
+>
+> +static void *svm_alloc_apic_backing_page(struct kvm_vcpu *vcpu)
+> +{
+> +       struct page *page =3D snp_safe_alloc_page(vcpu);
+> +
+> +       if (!page)
+> +               return NULL;
+> +
+> +       return page_address(page);
+> +}
+> +
+>  static struct kvm_x86_ops svm_x86_ops __initdata =3D {
+>         .name =3D KBUILD_MODNAME,
+>
+> @@ -5031,6 +5041,7 @@ static struct kvm_x86_ops svm_x86_ops __initdata =
+=3D {
+>
+>         .vcpu_deliver_sipi_vector =3D svm_vcpu_deliver_sipi_vector,
+>         .vcpu_get_apicv_inhibit_reasons =3D avic_vcpu_get_apicv_inhibit_r=
+easons,
+> +       .alloc_apic_backing_page =3D svm_alloc_apic_backing_page,
+>  };
+>
+>  /*
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index 8ef95139cd24..7f1fbd874c45 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -694,6 +694,7 @@ void sev_es_vcpu_reset(struct vcpu_svm *svm);
+>  void sev_vcpu_deliver_sipi_vector(struct kvm_vcpu *vcpu, u8 vector);
+>  void sev_es_prepare_switch_to_guest(struct sev_es_save_area *hostsa);
+>  void sev_es_unmap_ghcb(struct vcpu_svm *svm);
+> +struct page *snp_safe_alloc_page(struct kvm_vcpu *vcpu);
+>
+>  /* vmenter.S */
+>
+> --
+> 2.25.1
+>
 
