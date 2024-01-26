@@ -1,155 +1,171 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2057.outbound.protection.outlook.com [40.107.237.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092E91D545
-	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 16:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706288144; cv=none; b=diQ8jeL6cuCVjJzQkt66W6hD7op/iMerhTsHuH2h2cPJpNZqi8y4QHGCApYb3ALrH1/HyZjjqgfTYqhts/Zubu1ocjN7UbVvICi7IpoYFmslqJmq/LlblRVpdmQgaspSiF7FJDOUXvT4jptFOaSgn4xWBG8uh93Uq+UezmNqTWI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706288144; c=relaxed/simple;
-	bh=zxwhVOLE3gzPx1lLnJ7kUSvc4kjwJMjq+fDCZLpDEU8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hkDRoDh4A4jC5aeNc9XJ+XddtUaDFCsYozPj5YJzXjRHo+oVGSE+AvfKfmAxN8q3rBRUe4bsoSNVFPGfm6BnuEHE1zU0ArYuk9FLQEKhWF3mXeUsFr84XCLDzdWOgf9+J5TYcbMqz8obBYvA/1HG7CTDL0LJnZywx7nJ1NWvLSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mhUWhp14; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA831CD0A
+	for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 17:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706288677; cv=fail; b=nfeMMlOGQk8iDfgHRLICs+pgWCkZBnJn1sQkxu1dSzZDtHhF06OcMscwdRRVn1BTD/oW26GAlGeyXHdEzvym2nOwFhRP1fwobtr4M75ePW4yph6Etkwbnfu/04LkUr1w+GYZaQpPN32pXZhZIdfl/Mma0tD0mXrC+yIdNtiqT+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706288677; c=relaxed/simple;
+	bh=09mwhBDbwNEi9M6AIMT2Bpc1lpk3eAIVAjymH4XtRlI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pHGXCRVBrcMSJ51zDdwbl18gyDDcavfsL8pbe/HX9nS071ttjS28efIvFre0hh7LHeVlxPWJu6AB9hP2cglKUdGcR9hL5bEBc7zKfTkaG/eC7TSF7cGdQGbHza8i/3Cogvm/dmwAHQ1Xj1pP1PIuubEJ9xUclcsM59Yb5mdKkGk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=K7TwhBwo; arc=fail smtp.client-ip=40.107.237.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mhUWhp14"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-55d418c5ca1so5719a12.1
-        for <linux-coco@lists.linux.dev>; Fri, 26 Jan 2024 08:55:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706288141; x=1706892941; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zxwhVOLE3gzPx1lLnJ7kUSvc4kjwJMjq+fDCZLpDEU8=;
-        b=mhUWhp14LaFYd1m5h6nkPCzXqmdlrlju8coX/2kSwdX9BcvpSzLW/+tSSMlpGJmKMM
-         wQbDjk3QlwfX6S4tLP9xDh0mVWqBIDiHPjG9mHJK/PeH5Kuw0LmQupmLCN5qVycM2gnX
-         dKBPnjNHj1MhCbBBKPMxQxwYAuj6me2DQR4Q4BPP8jWYTsSKXy0YOBk+un9zQMVIOrTw
-         kTPMf2TNw8U5KDCl09C8qUQXBH9VxBgcjmpE3nUoirOXCPFB7F03lSXc0ypDDAGuwDCb
-         UfaQKeFPaXRsw2XBah8IcxqdiT4UVCWWV4CKvsRB2rZYcWBsp94zmxxs0NmRYuUmUMEf
-         MNoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706288141; x=1706892941;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zxwhVOLE3gzPx1lLnJ7kUSvc4kjwJMjq+fDCZLpDEU8=;
-        b=cRES4LTUTpkhUnHBXGumgmzwZSNqcShVuZtJ79qw5fq8bRESVF8rXwZO5Ci1AXCTDY
-         7YY5P5A7mdxj4wR46itpO+fGIrIcu8Kxg3uoZAovZzSQmva7jzozS9sY+amZpDghFs50
-         oQhzwxaMMdz3Yl8sEwt7r8kIY6wA1R12pyPxgzGe1higg2epZNMumjA3icY/mV/mIapZ
-         EQgIwf8hdA229TUzoyG2d7F1LNUo2ju0/m2uU/iCpRMbPg/kzvJlPhZhUV/iSGvueJj+
-         E4QJxd6o4FDClUnozVnJwR0r+Tcadq784Or3IpfONxSSUScd5FjIUAFjbkeGkYeR5QzJ
-         B+xQ==
-X-Gm-Message-State: AOJu0YwXOdoqs5fL0aFycMW5M/fKOfxPvThakAFYi+81B+7Eka2EczeG
-	an8gCKZPnJl08/ljPzJD9JtcKDCWZLywymwIk8RIFnp8HlUZTYObl/My0kVDhV+oA7jA5wptamO
-	Vd9Mb+9wV8O4OzYWxinYdT58lrFzA1fe2E3Ku
-X-Google-Smtp-Source: AGHT+IEBXRn/yWC2G3iLvBVpTnf7frUux03kuFyEOJZMUmvVIkI7QkDfzNcoibbTn583SotrwZpKTXcErZZGb809pYo=
-X-Received: by 2002:a05:6402:22cb:b0:55d:20f2:6d64 with SMTP id
- dm11-20020a05640222cb00b0055d20f26d64mr192253edb.6.1706288141014; Fri, 26 Jan
- 2024 08:55:41 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="K7TwhBwo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=d7xH/NtPJZRS+RkJUmQuDNWhknQHwb9+zJ+pYSmOvzpJV6CSZeqM85taMgALAxBf1HCwyBLeup2xiICE960rleTuR7ZE/em3PNmnoIIphbdwO/BRZR7uE0xRAOUsUyUYV+RigPEGHFL1u1IYoA1kjJSi98F+6HdUiij3HuCdMfKwxiNcfJ58g1VmoQ2gZ3vmj5eDrFkZWQ6L82VLr5cocn+9jVaA+iMHIt1pUfPBsq3FFSDaNiye0paxi3wK1g3wu4lgWdmB7Zd91RpEEB0Xo46wVOUAal+II0vrj8k7N4B607xxGYMjTGvOhO+8qKRCkgsQlBMSIenxMmEV997ixA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7D3HMU4iNiLKmlHuqj7Pyiq0i3oOiWA0wLhseqWLGJE=;
+ b=Ar7n4r2jM6GCywfxni9SB93dYuah0jmXUxI1tethNedbJgcdN9dcRzwXx47IvHzZHyQw5I/P3ueej5HeBBiLFgJmGJl1BkslyUg/1F3TmAwgrD45Monv7f35SlJO0+boXzKXMtml9y4xGcS0oBW0eZVHzg8W/yohy7dKYYIsB99JK56xS7DuyL5zBfd/QVt3o2mjSIvAsxqK2bfZ/waHiDqZgsGhEwUoqR9dShY9lL1ryRoFsZI6r2vANw8josol5Ty24LgGDNIia7y1l30ebIwM1oKHlNtDJjlrbSDrighLFri0n+h82ZtpykY/j0TcIrRpKvetzpzwv6fj2H2LGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7D3HMU4iNiLKmlHuqj7Pyiq0i3oOiWA0wLhseqWLGJE=;
+ b=K7TwhBwok/nYgBwjan/byZuOeQDLTc46S/zW2yELxTUthSPpOVMdAh/Bwbvag9epAbq0WNRNzbNu8iKx8Vnm3gFND+7upcZlCbDVqENvqLQKSUMeBKfEMb8G8NIUpPzDE9txDkjRiwyuj2VGD9oYU7NbVCzDJ7gNudi8CmlMWUc=
+Received: from BN9PR03CA0919.namprd03.prod.outlook.com (2603:10b6:408:107::24)
+ by DM4PR12MB5342.namprd12.prod.outlook.com (2603:10b6:5:39f::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.24; Fri, 26 Jan
+ 2024 17:04:31 +0000
+Received: from BN2PEPF000044AC.namprd04.prod.outlook.com
+ (2603:10b6:408:107:cafe::a8) by BN9PR03CA0919.outlook.office365.com
+ (2603:10b6:408:107::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27 via Frontend
+ Transport; Fri, 26 Jan 2024 17:04:31 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN2PEPF000044AC.mail.protection.outlook.com (10.167.243.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7228.16 via Frontend Transport; Fri, 26 Jan 2024 17:04:30 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 26 Jan
+ 2024 11:04:28 -0600
+Date: Fri, 26 Jan 2024 11:04:15 -0600
+From: Michael Roth <michael.roth@amd.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: <x86@kernel.org>, <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-mm@kvack.org>, <linux-crypto@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<jroedel@suse.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>,
+	<ardb@kernel.org>, <pbonzini@redhat.com>, <seanjc@google.com>,
+	<vkuznets@redhat.com>, <jmattson@google.com>, <luto@kernel.org>,
+	<dave.hansen@linux.intel.com>, <slp@redhat.com>, <pgonda@google.com>,
+	<peterz@infradead.org>, <srinivas.pandruvada@linux.intel.com>,
+	<rientjes@google.com>, <tobin@ibm.com>, <vbabka@suse.cz>,
+	<kirill@shutemov.name>, <ak@linux.intel.com>, <tony.luck@intel.com>,
+	<sathyanarayanan.kuppuswamy@linux.intel.com>, <alpergun@google.com>,
+	<jarkko@kernel.org>, <ashish.kalra@amd.com>, <nikunj.dadhania@amd.com>,
+	<pankaj.gupta@amd.com>, <liam.merwick@oracle.com>
+Subject: Re: [PATCH v2 11/25] x86/sev: Adjust directmap to avoid inadvertant
+ RMP faults
+Message-ID: <20240126170415.f7r4nvsrzgpzcrzv@amd.com>
+References: <20240126041126.1927228-1-michael.roth@amd.com>
+ <20240126041126.1927228-12-michael.roth@amd.com>
+ <20240126153451.GDZbPRG3KxaQik-0aY@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240114223532.290550-1-sameo@rivosinc.com> <20240114223532.290550-4-sameo@rivosinc.com>
- <1bbf8d3e-aa94-48c7-a1e4-76f9eefc4af7@linux.intel.com> <65a72c305291f_3b8e29484@dwillia2-xfh.jf.intel.com.notmuch>
- <5539c533-37b2-4b12-a5c5-056881cf8e3c@linux.intel.com> <Za1G9I+tYuIL9ser@vermeer>
- <CF3D8DE1-AD47-4A77-B8BD-8A12A6F7E9DB@google.com> <MW4PR11MB5872F46A2089C8C2D8EF7A008C752@MW4PR11MB5872.namprd11.prod.outlook.com>
- <65aecbbce09dd_107423294b7@dwillia2-xfh.jf.intel.com.notmuch>
- <c3b99264-233b-4997-9e20-c4c2693b8cdc@intel.com> <65aeecea827f0_37ad2948@dwillia2-xfh.jf.intel.com.notmuch>
- <14dffda2-f413-4304-9932-3ac8ddfb30e4@intel.com> <85109de4-5832-4e14-8416-6443ac417c9d@linux.intel.com>
-In-Reply-To: <85109de4-5832-4e14-8416-6443ac417c9d@linux.intel.com>
-From: Dionna Amalie Glaze <dionnaglaze@google.com>
-Date: Fri, 26 Jan 2024 08:55:26 -0800
-Message-ID: <CAAH4kHbhiyruEHiVx6cj_CangiD5L40+aRJBjgFJ65r9VHxpbA@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 3/4] tsm: Allow for mapping RTMRs to TCG TPM PCRs
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: "Xing, Cedric" <cedric.xing@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
-	"Yao, Jiewen" <jiewen.yao@intel.com>, Qinkun Bao <qinkun@google.com>, 
-	Samuel Ortiz <sameo@rivosinc.com>, "Lu, Ken" <ken.lu@intel.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240126153451.GDZbPRG3KxaQik-0aY@fat_crate.local>
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044AC:EE_|DM4PR12MB5342:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16614c17-f87a-4b56-3195-08dc1e90dcb8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	1QMnA6ffmzgL/PyywB+uInmTvbFcDvcLerf00p9Y6y1hC8ECTPEID2wCPZ0U/ih+nTJRacH5aStUwtSUWvObwHtzz9doa3p9Z6IGrxuZYg6Bde2UEL8Il952P5eyeasKbSx3detu2ws/z3wYe/nH5CAhThkDI9V9Nf9A4UT8qQ3jviWIfbFKGxACgljVM/bweo9hdFYW+3R1v4HMjYAyik86Q4E5sqsMqbeiEhaMoY0RFfsM1kGD3l+pVCMOUpEnEXEbrsCAH5M/tZZ83I+wjGzS2lNo59MHFpPLOqJH7aDCxoRGW+k3Ej3FLDj3pH0bvD5b2yS0Xpe22dlfVc1H517U/z5J78dBwDZiYVzqg/PkeUVEAnOCmOxIOgwY5aUkgQTbOz4DhnjqrD9O1WfCHZUfeX5s0ZoHy5fgxWOvRhUdt4wIKQrmVrBSgiyWw83UVd1kjn8o+DEE/2KSGNIoo4AHdUeY5hX6IeNz4xbYoNAN27VyeKMS8Zxj1pjcDDoDPjMtFZuPE74q1IcVp2j4h16dnbWJGeEZbVJfTCX4Ae9ZgBLzshGfAw4B1xNHWG4S4SN1epnd8b8npCrS01Ucuir3XEDrBDYBoiNN4xPWfE8QOqjfIo1wrWiNPVZxzoWKLHXgNjA7sGlI8LvpNvkpFblPLsLBda1jQ1zJqA0XRq5sJuglh7BNz77nH/GECEQHDKgPtDHAskME9srrtKagUIza2VIJqLaIGsYcmxTc6tgiJiKd0k+UV8XpNf+S5R8Gi3I0swmGacufZSx6ojlTTQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(39860400002)(376002)(346002)(230922051799003)(82310400011)(64100799003)(1800799012)(186009)(451199024)(40470700004)(46966006)(36840700001)(336012)(426003)(26005)(16526019)(2616005)(4326008)(36756003)(1076003)(6916009)(8676002)(70586007)(54906003)(316002)(44832011)(7416002)(7406005)(2906002)(5660300002)(8936002)(86362001)(70206006)(6666004)(478600001)(41300700001)(966005)(40460700003)(40480700001)(36860700001)(47076005)(81166007)(82740400003)(356005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2024 17:04:30.5231
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16614c17-f87a-4b56-3195-08dc1e90dcb8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044AC.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5342
 
-On Tue, Jan 23, 2024 at 12:59=E2=80=AFPM Kuppuswamy Sathyanarayanan
-<sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
->
->
-> On 1/23/24 10:48 AM, Xing, Cedric wrote:
-> > On 1/22/2024 2:32 PM, Dan Williams wrote:
-> >> Xing, Cedric wrote:
-> >> [..]
-> >>>> So, yes, the mapping should be allowed to specified by the low-level
-> >>>> driver, but at the same time every vendor should not reinvent their =
-own
-> >>>> enumeration method when we have EFI for that.
-> >>>
-> >>> Given PCR->RTMR mapping is static, I just wonder why it needs to be k=
-ept
-> >>> in kernel. Given that PCRs can never be 1:1 mapped to RTMRs, and that
-> >>> TDX quotes are never TPM quotes, applications used to extend PCRs wou=
-ld
-> >>> have to be changed/recompiled. Then wouldn't it suffice to define the
-> >>> mappings as macros in an architecture specific header file?
-> >>
-> >> I think something is wrong if applications are exposed to the PCR->RTM=
-R
-> >> mapping thrash. I would hope / expect that detail is hidden behind a T=
-PM
-> >> proxy layer sitting in front of this mapping on behalf of TPM-client
-> >> applications.
-> >
-> > Hi Dan,
-> >
-> > My apology for the confusion! I think we are talking about 2 different =
-scenarios - (1) this patch alone; and (2) this patch + vTPM.
-> >
-> > Scenario 1: This patch provides RTMR access only. My assumption is, the=
-re are existing application (and/or kernel modules) that extend to PCRs tod=
-ay and would like to work in TDs where only RTMRs are available. Changes ar=
-e of course necessary in those applications as TPMs/PCRs are no longer avai=
-lable, but from security perspective they would like to keep the same activ=
-ity log and just change to use RTMRs (in lieu of PCRs) as the secure storag=
-e. Hence a PCR->RTMR mapping is necessary and must be agreed upon by all th=
-ose applications and relying parties. IIUC, this is the intention of having=
- PCR->RTMR mapping config maintained by the kernel, as proposed by Sam O. o=
-riginally.
-> >
-> > Scenario 2: A vTPM is implemented on top of this patch, in which case t=
-he existing applications don't have to change as they can continue extendin=
-g to the same PCRs, which will then be emulated by the underlying vTPM impl=
-ementation. PCR->RTMR mapping in this scenario is obviously internal to the=
- vTPM and I agree with you completely that it should be hidden inside the v=
-TPM.
-> >
-> > My comment in my previous email was regarding Scenario 1. I hope the cl=
-arification above helps.
->
->
-> IMO, we should adapt an approach with as minimal user changes as possible=
-. So I think we should try to avoid scenario 1 if possible.
->
+On Fri, Jan 26, 2024 at 04:34:51PM +0100, Borislav Petkov wrote:
+> On Thu, Jan 25, 2024 at 10:11:11PM -0600, Michael Roth wrote:
+> > +static int adjust_direct_map(u64 pfn, int rmp_level)
+> > +{
+> > +	unsigned long vaddr = (unsigned long)pfn_to_kaddr(pfn);
+> > +	unsigned int level;
+> > +	int npages, ret;
+> > +	pte_t *pte;
+> 
+> Again, something I asked the last time but no reply:
+> 
+> Looking at Documentation/arch/x86/x86_64/mm.rst, the direct map starts
+> at page_offset_base so this here should at least check
+> 
+> 	if (vaddr < __PAGE_OFFSET)
+> 		return 0;
 
-I would note that the MapPcrToMrIndex mapping is an entrypoint of the
-EFI_CC_MEASUREMENT_PROTOCOL boot service of UEFI v2.10. Similarly, the
-event log should be collected before called ExitBootServices and made
-available at /sys/kernel/security/coco/binary_bios_measurements.
+vaddr comes from pfn_to_kaddr(pfn), i.e. __va(paddr), so it will
+necessarily be a direct-mapped address above __PAGE_OFFSET.
 
->
-> >
-> > -Cedric
-> >
-> --
-> Sathyanarayanan Kuppuswamy
-> Linux Kernel Developer
->
->
+> 
+> I'm not sure about the upper end. Right now, the adjusting should not
 
+For upper-end, a pfn_valid(pfn) check might suffice, since only a valid
+PFN would have a possibly-valid mapping wthin the directmap range.
 
---=20
--Dionna Glaze, PhD (she/her)
+> happen only for the direct map but also for the whole kernel address
+> space range because we don't want to cause any mismatch between page
+> mappings anywhere.
+> 
+> Which means, this function should be called adjust_kernel_map() or so...
+
+These are PFNs that are owned/allocated-to the caller. Due to the nature
+of the directmap it's possible non-owners would write to a mapping that
+overlaps, but vmalloc()/etc. would not create mappings for any pages that
+were not specifically part of an allocation that belongs to the caller,
+so I don't see where there's any chance for an overlap there. And the caller
+of these functions would not be adjusting directmap for PFNs that might be
+mapped into other kernel address ranges like kernel-text/etc unless the
+caller was specifically making SNP-aware adjustments to those ranges, in
+which case it would be responsible for making those other adjustments,
+or implementing the necessary helpers/etc.
+
+I'm not aware of such cases in the current code, and I don't think it makes
+sense to attempt to try to handle them here generically until such a case
+arises, since it will likely involve more specific requirements than what
+we can anticipate from a theoretical/generic standpoint.
+
+-Mike
+
+> 
+> Hmmm.
+> 
+> -- 
+> Regards/Gruss,
+>     Boris.
+> 
+> https://people.kernel.org/tglx/notes-about-netiquette
