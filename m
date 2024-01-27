@@ -1,66 +1,65 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CD62D60C
-	for <linux-coco@lists.linux.dev>; Sat, 27 Jan 2024 18:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4292D2E41A
+	for <linux-coco@lists.linux.dev>; Sat, 27 Jan 2024 19:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706379368; cv=none; b=a5PfNfvMkTvnzQy46XSooS/TarNJ7qOWHIA0eHyXbX+fB0XFQi63nUPrzMD60oFHWIAHdGgd7IBVJNDfmwIiChaOCXAw7AIksKFalSE8+/wCr/QFPthNTF5YWSCh6O+KToUTn5poEydA6Xve9dpvQb7jpRBi0rrAidhYGCOt1YQ=
+	t=1706384149; cv=none; b=kc3uy8bwc5gd9XPRIgx75lC4VA1j3Gq46frUEh4nIcvF8ToP8Yu2m6Kx7Rihpfhu0OHIH3Nqxkuxdd1HK0Amimwh3kpn1nQg/K4bsBmHnsIKfocYuzh5dj+4gGxN0kCLAWfHG1i7O+4gG+zj6/Z7gQ4GBNIxKJQfRnp0OWHZYwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706379368; c=relaxed/simple;
-	bh=ZaHfr8zzpIiXgdpCUTc6QBJVotPOw1kev8Awy0ZxIXE=;
+	s=arc-20240116; t=1706384149; c=relaxed/simple;
+	bh=JsNjDeEosD68W82IVuf9LcDq0mJQmIvRYnUGnYlOl5o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T9cF4E7j3sK4wAKFlrWiCvWp5g2yLs+ApyJOpZ1DAFHEyX2PTfs3FrMhO1CsDmzKsZms32C36TmJMKPgwB2pZ8dMO7Zj1NTLNR+IBTp4y1kGb+T0genPVSTospWzUSkQvWIT2rHgzXsTDX5foQ8vGLCh72WEVAOd52thzLl4kD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gJzblu0j; arc=none smtp.client-ip=192.198.163.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=uDkuKLjHKS/J4VcjRvBWzkX+bFC16/Iza6BHGRASQqDl4o/DMtQ8GgdXVVbFRwVIubv5cWV3yukwKOufkFVDo3J3GHtg1c6drePNKk/0hnw3ss+LXGz47rp2zoEZZyKUloTejyvSdS0awQeTmfY+EgVyouWsSSGubAV9u+wcYDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KY1n42pR; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gJzblu0j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KY1n42pR"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706379366; x=1737915366;
+  t=1706384148; x=1737920148;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ZaHfr8zzpIiXgdpCUTc6QBJVotPOw1kev8Awy0ZxIXE=;
-  b=gJzblu0jpKRnX+zKMk9EXijQgQXGXHVfWmcwSGw83eSiTbGCemJ1M0zX
-   vPKb3GIXmfJDDglceRDSQpp7Woi8Zk53IxOAYS8UgTet20YKJgBt1JW0W
-   ofSRzfTZ/rR39UgMBgSHh2/b4Pa0q320amqZrcveEiRggOZk4MiHhmACp
-   eR21czmZ7FKH7yCJlQ6gqHzKlbnDhXOf9ktb+XGnbEBJJ2tWuaYEmOmf+
-   fq5795eIhCjuUPm7anW52gg/p3WefUHh0zwUxDnaEEXTBckARZaCxq0Uh
-   VnfZTgJGuJe2p/fFeYmn4NF5Kx8umT81b4CpBumJgDuiKLosM9TxC0AxQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="10084692"
+  bh=JsNjDeEosD68W82IVuf9LcDq0mJQmIvRYnUGnYlOl5o=;
+  b=KY1n42pRnqWZGCl3hAfgZS8po/RzROOdaOBw/VNiRu+JC57iG4rkuzB+
+   CRtdEwQMfXIpD60dq/jzauNYrvJCSTBjDQQ0a24xYsic+1QADHG8gHD0M
+   E69ieG47upBoZMJDHtWdkWuSjTm3v/2kSvXspQwbCaQnL7CMJj0S8Hw+N
+   9LidgCWXVHmfYlhU2RBmp3//LxSbMSLijGXQcZ6COWuBLUx9gaylZWN45
+   lx0lF9PvfW2i7g1X0rPplTn7UZvtQjy0HDZvnrZ9r2Aa8YO7CvI5iUbx1
+   ilh3Yx5c21734Z5U+hG6WXJNQuQjOY9IOCEYJrr2fNTPRIJnxWt+16FOI
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="16071601"
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="10084692"
+   d="scan'208";a="16071601"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 10:16:06 -0800
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2024 11:35:48 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="787423836"
+X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="787430462"
 X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="787423836"
+   d="scan'208";a="787430462"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga002.jf.intel.com with ESMTP; 27 Jan 2024 10:16:00 -0800
+  by orsmga002.jf.intel.com with ESMTP; 27 Jan 2024 11:35:42 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 9CC521F1; Sat, 27 Jan 2024 20:15:59 +0200 (EET)
-Date: Sat, 27 Jan 2024 20:15:59 +0200
-From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>, 
-	"mingo@redhat.com" <mingo@redhat.com>, "x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
-	"Reshetova, Elena" <elena.reshetova@intel.com>, "Nakajima, Jun" <jun.nakajima@intel.com>, 
-	"rafael@kernel.org" <rafael@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"sathyanarayanan.kuppuswamy@linux.intel.com" <sathyanarayanan.kuppuswamy@linux.intel.com>, "Hunter, Adrian" <adrian.hunter@intel.com>, 
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "ashish.kalra@amd.com" <ashish.kalra@amd.com>, 
-	"kexec@lists.infradead.org" <kexec@lists.infradead.org>, "seanjc@google.com" <seanjc@google.com>, 
-	"bhe@redhat.com" <bhe@redhat.com>, "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+	id 21D451F1; Sat, 27 Jan 2024 21:35:41 +0200 (EET)
+Date: Sat, 27 Jan 2024 21:35:41 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Subject: Re: [PATCHv6 16/16] x86/acpi: Add support for CPU offlining for ACPI
  MADT wakeup method
-Message-ID: <r6u3m7ux2v7w3bg24dqmrolos4jna74nfeheudgxmxcn3iuets@qkuaj2son5mr>
+Message-ID: <vfk7v6ywaclyydshucnnuvsyg6e6sntyzimgqgjc7ye77z2ukr@lk4e3wz4ap3y>
 References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
  <20240124125557.493675-17-kirill.shutemov@linux.intel.com>
- <075348cdf2b4d3361db5c7d420f09a1c8935328e.camel@intel.com>
+ <4aa2c961-a0dc-45dc-b996-57c8468660df@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -69,32 +68,20 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <075348cdf2b4d3361db5c7d420f09a1c8935328e.camel@intel.com>
+In-Reply-To: <4aa2c961-a0dc-45dc-b996-57c8468660df@linux.intel.com>
 
-On Fri, Jan 26, 2024 at 02:21:30PM +0000, Huang, Kai wrote:
-> > +static int __init acpi_mp_setup_reset(u64 reset_vector)
-> > +{
-> > +	pgd_t *pgd;
-> > +	struct x86_mapping_info info = {
-> > +		.alloc_pgt_page = alloc_pgt_page,
-> > +		.free_pgt_page	= free_pgt_page,
-> > +		.page_flag      = __PAGE_KERNEL_LARGE_EXEC,
-> > +		.kernpg_flag    = _KERNPG_TABLE_NOENC,
-> > +	};
-> 
-> Nit: Reverse Christmas-tree style
-> 
-> [...]
+On Fri, Jan 26, 2024 at 12:03:14PM -0800, Kuppuswamy Sathyanarayanan wrote:
+> > +	/* Don't wait longer than a second. */
+> > +	timeout = USEC_PER_SEC;
+> > +	while (READ_ONCE(acpi_mp_wake_mailbox->command) && --timeout)
+> > +		udelay(1);
+> > +
+> > +	if (!timeout)
+> Nit: IMO, since you are dumping failure error message (not timeout
+> message), you can use non zero acpi_mp_wake_mailbox->command
+> check. But it is up to you.
 
-Okay, will fix if new version is required.
-
-> >  
-> > -#define ACPI_MP_WAKE_COMMAND_WAKEUP    1
-> > +#define ACPI_MP_WAKE_COMMAND_WAKEUP	1
-> 
-> Nit: Is this change intended?
-
-Yes. Changed to indentation with tabs.
-
+I think my version is pretty idiomatic. The same pattern used in other
+places. For instance, test_nmi_ipi().
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
