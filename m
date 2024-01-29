@@ -1,91 +1,171 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A72B15AABE
-	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 17:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DB73F9CF
+	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 17:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548076; cv=none; b=oGn2HMP3SgEpRac1jhl/oAUWIsDa9nEaOw0Ph1r3nNsIZL+G58Cb3emGnKmfOMcAQEtYx1mtrRki+8r60mw7SMN2fAFWR+Nj4Laqk319GZ87Ds6UGc6MugdZPucYeHUM6wUPkS6E5ABiXSK6Zhidw06VJzmHqnA2pnR6iCw01rE=
+	t=1706551138; cv=none; b=YnlxcwdCEPQGPkd7ielTOLG3VO6r8o92fFNCZVtK/guvAU4B0klW/5CEA4ckB9KWcltPvQjUXx3ayoLArSAwrxiI1ODAx8zvZiwWt/lyadHcA1BJRrAJvxPyCrvtQdRMlt9ek5SZ+LwLYzfsuVvxt7eVbdHbXTxYnF1NDC4H2sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548076; c=relaxed/simple;
-	bh=0LKrBNn/tdgYxQG5tXJjBvRgb8P6qEb0b3d3tmgiVL4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Z087cgcZXw6nATZo7WRYwDQZhK90gZBKaO/5eRzyPUgCcafNcEsyh4K53hWTrdxcwfUOMe3XSjCQjlOWpgX0beYsW2Q98yXmQjbSrfLJ6apVqPN9fGVNYmc0Saf5y7JzZh2jSxFdZ3YgB4dZZl0g5Cy+QW29q9uI7EaEvNTia80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=ZyG41W4t reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1706551138; c=relaxed/simple;
+	bh=brZXU+54yeeIyXk8P9EznYfF+mgwIvbQaMmnQXIIBt4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KMb+HdvKArVi94hhRYT/aK/wUndLI2zBY7sRu0gyGr2d+3QdfLwyzU/Chg+FaYVg/5/DOiOevSPLBVvw7xpOPz1USwW4satb11rygX/5oxlKK5xgdjSwZ6yqH/F1/+CkEt3TAHZbsFE6kehsCr7W6cRNXUXKjwo4PAuk4PZwaVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Cotx7+I0 reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="ZyG41W4t"
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 40TH7GOG2246529
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 29 Jan 2024 09:07:17 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 40TH7GOG2246529
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024011201; t=1706548038;
-	bh=5MgQaeiM+/jYwFflXcmFfBk4nscCJV22lLY8J+jZeMM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=ZyG41W4tgHSLobFqHKGEupEcCs6PB4mbtcLDIHcTPTTwHOWrC6KexJsTVE/ff1ndU
-	 5OhAYNEdR0F9PJ8N9QmcyiE/p4a/BsVtg9A3vkhIFlKrmuEPMfzdrOH+WrRUL5ZNAZ
-	 XaSakUAOVmfiYPxnQA88cpcdKcvql9+I9IkyajGURzbsa2dFSlvldE7easV1Fr5a28
-	 jPTOcYZ+w3RbBq3V9aYJ+pnfqIn+S8o50V4owFWZG/QUB9amNec8PPwVbpGZUlgk4u
-	 eDWwBPjI0gtp3sv2rA0YBljxZi6YdWSs9/lDJYj2hjpzoTQZ/caRio78l6o8JJnVGY
-	 oEyTNk0vyAYkg==
-Date: Mon, 29 Jan 2024 09:07:13 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Dave Hansen <dave.hansen@intel.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Elena Reshetova <elena.reshetova@intel.com>,
-        Jun Nakajima <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC] Randomness on confidential computing platforms
-User-Agent: K-9 Mail for Android
-In-Reply-To: <dqiaimv3qqh77cfm2huzja4vsho3jls7vjmnwgda7enw633ke2@qiqrdnno75a7>
-References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com> <276aaeee-cb01-47d3-a3bf-f8fa2e59016c@intel.com> <dqiaimv3qqh77cfm2huzja4vsho3jls7vjmnwgda7enw633ke2@qiqrdnno75a7>
-Message-ID: <B5BF8A36-DB2C-4CEA-8011-1708F84827D9@zytor.com>
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Cotx7+I0"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 68C1140E00C5;
+	Mon, 29 Jan 2024 17:58:53 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id i6QaokLd0hxR; Mon, 29 Jan 2024 17:58:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1706551131; bh=haKRuQSPjwn4cZ6Nd5ze9P3MYIvIFCO4ld+rTiW5Nok=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cotx7+I0f/7Gt9x7NWnbs/g0LaIwF6oRcwW5rTcKXCC9xkME6wAfqHrTzkkgOup7A
+	 kDUNDxWsdDds1nDmCKD58UhsVntsZo4C1fKrPqXjaY9dqRt+Z9cIJeFDdI9mLbgpKZ
+	 s4qgfyCwegiOe+c95T55T+0LMrvWz73oQGMlt6hhTINLQ9u87OV1BBkzI+s3UAMQki
+	 EiE6/lwoUIQamQYxuGWU4v8uXNZLA5BzheYMPr+4XA6EAJG+cTumWaule7SYdQzd3X
+	 CjbsbDw4O+fCxHaSfXhPPQWWT4oCT5B2SRv3OUnqAXhk8gefpEDl39LkU1ErXglmpz
+	 IihJRAoHAdwcNdjWr/KPPnqwegCBx27/RNuUlxQ340dn5QvkqTNFfTdKgGO9WwNUR1
+	 aoYa+eaWqChUqSSrv+g/QxeICCyfZaIicFzzOIjUmKN7xRw4Wal7qz4dNYTfEzOT4q
+	 q968O/clmAVLn5qoGPNuD3WoaQS/ESk1uAeK2GLknMWm+Rh+HIO8KvXhrRTwibbd0/
+	 rzkAqbvj5HS19afzr2rnkbYCCU/HRthEyYW3mpHBsK7JwXgWzu1WEjqZzR5jK15Yt8
+	 mtoc0sk0JJii4l6Roz1lSmr79VPsu/i8lclUem/bo+LBSd+mlVZtNyFzNat27QDPzs
+	 SNsPorfagbq1htmTG2J6pDaM=
+Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A6D1940E016C;
+	Mon, 29 Jan 2024 17:58:12 +0000 (UTC)
+Date: Mon, 29 Jan 2024 18:58:06 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com,
+	Brijesh Singh <brijesh.singh@amd.com>,
+	Jarkko Sakkinen <jarkko@profian.com>
+Subject: Re: [PATCH v2 13/25] crypto: ccp: Add support to initialize the
+ AMD-SP for SEV-SNP
+Message-ID: <20240129175806.GBZbfnLsqTgqoKwt0S@fat_crate.local>
+References: <20240126041126.1927228-1-michael.roth@amd.com>
+ <20240126041126.1927228-14-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240126041126.1927228-14-michael.roth@amd.com>
 Content-Transfer-Encoding: quoted-printable
 
-On January 29, 2024 8:41:49 AM PST, "Kirill A=2E Shutemov" <kirill=2Eshutem=
-ov@linux=2Eintel=2Ecom> wrote:
->On Mon, Jan 29, 2024 at 08:30:11AM -0800, Dave Hansen wrote:
->> On 1/26/24 05:42, Kirill A=2E Shutemov wrote:
->> > 3=2E Panic after enough re-tries of RDRAND/RDSEED instructions fail=
-=2E
->> >    Another DoS variant against the Guest=2E
->>=20
->> I think Sean was going down the same path, but I really dislike the ide=
-a
->> of having TDX-specific (or CoCo-specific) policy here=2E
->>=20
->> How about we WARN_ON() RDRAND/RDSEED going bonkers?  The paranoid folks
->> can turn on panic_on_warn, if they haven't already=2E
->
->Sure, we can do it for kernel, but we have no control on what userspace
->does=2E
->
->Sensible userspace on RDRAND/RDSEED failure should fallback to kernel
->asking for random bytes, but who knows if it happens in practice
->everywhere=2E
->
->Do we care?
->
+On Thu, Jan 25, 2024 at 10:11:13PM -0600, Michael Roth wrote:
+> diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+> index 006e4cdbeb78..8128de17f0f4 100644
+> --- a/include/linux/psp-sev.h
+> +++ b/include/linux/psp-sev.h
+> @@ -790,10 +790,23 @@ struct sev_data_snp_shutdown_ex {
+> =20
+>  #ifdef CONFIG_CRYPTO_DEV_SP_PSP
+> =20
+> +/**
+> + * struct sev_platform_init_args
+> + *
+> + * @error: SEV firmware error code
+> + * @probe: True if this is being called as part of CCP module probe, w=
+hich
+> + *  will defer SEV_INIT/SEV_INIT_EX firmware initialization until need=
+ed
+> + *  unless psp_init_on_probe module param is set
+> + */
+> +struct sev_platform_init_args {
+> +	int error;
+> +	bool probe;
+> +};
 
-You can't fix what you can't touch=2E
+This struct definition cannot be under the ifdef, otherwise:
+
+arch/x86/kvm/svm/sev.c: In function =E2=80=98sev_guest_init=E2=80=99:
+arch/x86/kvm/svm/sev.c:267:33: error: passing argument 1 of =E2=80=98sev_=
+platform_init=E2=80=99 from incompatible pointer type [-Werror=3Dincompat=
+ible-pointer-types]
+  267 |         ret =3D sev_platform_init(&init_args);
+      |                                 ^~~~~~~~~~
+      |                                 |
+      |                                 struct sev_platform_init_args *
+In file included from arch/x86/kvm/svm/sev.c:16:
+./include/linux/psp-sev.h:952:42: note: expected =E2=80=98int *=E2=80=99 =
+but argument is of type =E2=80=98struct sev_platform_init_args *=E2=80=99
+  952 | static inline int sev_platform_init(int *error) { return -ENODEV;=
+ }
+      |                                     ~~~~~^~~~~
+cc1: all warnings being treated as errors
+
+---
+
+on a 32-bit allmodconfig.
+
+Build fix:
+
+---
+
+diff --git a/include/linux/psp-sev.h b/include/linux/psp-sev.h
+index beba10d6b39c..d0e184db9d37 100644
+--- a/include/linux/psp-sev.h
++++ b/include/linux/psp-sev.h
+@@ -797,8 +797,6 @@ struct sev_data_snp_commit {
+ 	u32 len;
+ } __packed;
+=20
+-#ifdef CONFIG_CRYPTO_DEV_SP_PSP
+-
+ /**
+  * struct sev_platform_init_args
+  *
+@@ -812,6 +810,8 @@ struct sev_platform_init_args {
+ 	bool probe;
+ };
+=20
++#ifdef CONFIG_CRYPTO_DEV_SP_PSP
++
+ /**
+  * sev_platform_init - perform SEV INIT command
+  *
+@@ -949,7 +949,7 @@ void snp_free_firmware_page(void *addr);
+ static inline int
+ sev_platform_status(struct sev_user_data_status *status, int *error) { r=
+eturn -ENODEV; }
+=20
+-static inline int sev_platform_init(int *error) { return -ENODEV; }
++static inline int sev_platform_init(struct sev_platform_init_args *args)=
+ { return -ENODEV; }
+=20
+ static inline int
+ sev_guest_deactivate(struct sev_data_deactivate *data, int *error) { ret=
+urn -ENODEV; }
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
