@@ -1,122 +1,225 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51017657AA
-	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 13:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DCF65BB4
+	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 14:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706535849; cv=none; b=qfjcGJHOxyzmY4/BZ8t0qDQ3oOalKB3jueKHIODiBYVoQWayrzPiZEu4Tk58nINhKeL9fh6ocYeae+8F4OwiK2SWV3PSISqChHmj29Sy5B0dtigvSLCKKXyyFOUJZ+40rl9Q7uqZb4Yypq1rBlKrD4vD/PtMmTx1cnzSUdhjnmg=
+	t=1706538396; cv=none; b=T6YGLMywv1buhmaJg+Vzxz3xoAJH9eVGb1CdlmgAB9hn1IejD/k0me9Bn0A8ewqYbuKNqKGyUxI0ly4cqhJ1ohKV087Nhknl5QPeIi/NVjv9tThuXU890XirtoE1jnyU38eqYGxZivjJXnpMqKU4EbRvf4Ue7iht/vYkuOzS4Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706535849; c=relaxed/simple;
-	bh=S8kbVyjQ+Xxyq/e0oWsbM2LE48Ugi1oJFP+DJtdQZK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fS1gtvxMYP3p0ZBOjtaSMinJVG0wYtGx9k1GHHjk4OC6clq98RWV57cXcIgjLDC2i+srynVfA2IT8wixRJhGHiNm4c/9S2lcZ8t9bxE1R5Trz7AWcz23slCNurgVRmOmBCwy18e0zHOeS1boqP8Lj8RE4GEPqojBEV6z/QNiLIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HCoPOiTL; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706538396; c=relaxed/simple;
+	bh=1CWG8fGDTE0PFV2DRxwsn6+363/lO1dP/IeyyUt0PoY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iEr2QuYyK0+wktMp52llKiK+mDOv0BpRmXtKS4BjWlbggvcFTrkcdP+5pBs5ny1jaYhBGP8rF+nMiFOsCXyb31Wh3myK4oDPH00ptujSX0az4znjf681IUK6T0kA7od9GgX234w2pmxGIoo7tMak029YrfglD8h7v941higJnEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=MoS1gs2H; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lWxaA4vI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=gfO7Mc1E; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=sd1TWSyq; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HCoPOiTL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706535847; x=1738071847;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=S8kbVyjQ+Xxyq/e0oWsbM2LE48Ugi1oJFP+DJtdQZK8=;
-  b=HCoPOiTLyZMpcCo9nXaEKAJceipANUFkcnRRy4Sb8XnQv4wVW1LJV6Fb
-   AC9OT9aVEQPs8p/yVI1jRQsqHgtYVUh2FV71bvla92MEIveziyZo9Puqd
-   7RYjezbx+oQTfr7af1c+iQm+3kTSRocK12ie0ScDmDXiTAV7DSw7J1QmP
-   ZJgDE+222BtVo0eK7YMpqCCDb7P35HPkiUY78vQ15qVA+k++j5fznSGSz
-   Pfe1jBbvGx28x5JfATtAajGT5kWiEcaQr6FnDhRfO7LX6kWsUySdUxdYt
-   fannQw0LQ228dFQ4ZhOeBvFZiNIMPr8DE0VAuTKJdeagnVm9KQX6R2wJz
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="16311026"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="16311026"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 05:44:07 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="931093593"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="931093593"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Jan 2024 05:44:01 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 992EC53C; Mon, 29 Jan 2024 15:34:26 +0200 (EET)
-Date: Mon, 29 Jan 2024 15:34:26 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv6 10/16] x86/tdx: Convert shared memory back to private
- on kexec
-Message-ID: <ao36mdmctptya2r25v3lvuocjbhllum2upmskxjcjtt3c7o3ii@nsghte2cnmkx>
-References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
- <20240124125557.493675-11-kirill.shutemov@linux.intel.com>
- <f0677a02-72ea-49e8-9499-18eca6b5e8d7@amd.com>
- <r5logoyy46fztohkm6bjobomsrst2izbs2nsts4fegii2uswca@fovizly7y5ju>
- <fad515ec-aba3-4f48-b8be-ebc6640899e3@amd.com>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="MoS1gs2H";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lWxaA4vI";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="gfO7Mc1E";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="sd1TWSyq"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E012C21BF5;
+	Mon, 29 Jan 2024 14:26:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1706538391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yVCErth3fJSXbSPYKO931WJVaP5CdJG9Rs6XjxdlFvY=;
+	b=MoS1gs2Hl4EgJ5NL6qalPr5In9E86rdnlvIznU6e6uzBepu+P+a0IA3lv84Ad2PzWvlMyQ
+	hxoXkyxOG2VPmgjftKtmq1GlPP379m4z03COsx7ohuQr/BlvK5JSkoDNk7WLGBSbAbNLFw
+	5KJ009zaCwYLAYNjS9CHarYnvFpB7FI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1706538391;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yVCErth3fJSXbSPYKO931WJVaP5CdJG9Rs6XjxdlFvY=;
+	b=lWxaA4vI45WlLR5SVl+jZF3+l5yuFu9OW9bU6bJGmfamA8bxRT4JWrN5/sgvElyJ5cHzV1
+	wUM/aMXPmstFo6CQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1706538389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yVCErth3fJSXbSPYKO931WJVaP5CdJG9Rs6XjxdlFvY=;
+	b=gfO7Mc1E1PiMODYu+5MLfCH3iGbrIB26IpBO4ToDdMgglzyXCPJCUV6j/pBJwIh28EHLOA
+	vso3+m3dnRk3TNOJ/iAPbh9RFv8O4T1LKt1VC0+uiF+y+P1peMVG41CIi4juS3SKyDiOhf
+	Hgrn5fDKGnsuNp7qAdgKdQBVKVSG3mQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1706538389;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yVCErth3fJSXbSPYKO931WJVaP5CdJG9Rs6XjxdlFvY=;
+	b=sd1TWSyqZeSLloNag5rRyzE3DDd9JvMRR0bf2I1EfXwV4odzaQaVunxZ/10QQB7zUqffYs
+	u7U2ysU9swvXdECA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9B73012FF7;
+	Mon, 29 Jan 2024 14:26:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id BmKbJZW1t2WqNQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 29 Jan 2024 14:26:29 +0000
+Message-ID: <1cc76023-ef3e-4639-9a02-644c5abe918d@suse.cz>
+Date: Mon, 29 Jan 2024 15:26:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fad515ec-aba3-4f48-b8be-ebc6640899e3@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 15/25] x86/sev: Introduce snp leaked pages list
+Content-Language: en-US
+To: Michael Roth <michael.roth@amd.com>, x86@kernel.org
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, linux-mm@kvack.org,
+ linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, jroedel@suse.de,
+ thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
+ pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
+ jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
+ slp@redhat.com, pgonda@google.com, peterz@infradead.org,
+ srinivas.pandruvada@linux.intel.com, rientjes@google.com, tobin@ibm.com,
+ bp@alien8.de, kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+ sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+ jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+ pankaj.gupta@amd.com, liam.merwick@oracle.com
+References: <20240126041126.1927228-1-michael.roth@amd.com>
+ <20240126041126.1927228-16-michael.roth@amd.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20240126041126.1927228-16-michael.roth@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-3.09 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%];
+	 MIME_GOOD(-0.10)[text/plain];
+	 R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 RCPT_COUNT_TWELVE(0.00)[36];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -3.09
 
-On Mon, Jan 29, 2024 at 07:09:37AM -0600, Kalra, Ashish wrote:
-> Hello Kirill,
+On 1/26/24 05:11, Michael Roth wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> On 1/29/2024 4:36 AM, Kirill A. Shutemov wrote:
-> > On Mon, Jan 29, 2024 at 04:24:09AM -0600, Kalra, Ashish wrote:
-> > > In case of SNP and crash/kdump case, we need to prevent the boot_ghcb being
-> > > converted to shared (in snp_kexec_unshare_mem()) as the boot_ghcb is
-> > > required to handle all I/O for disabling IO-APIC/lapic, hpet, etc., as the
-> > > enc_kexec_unshare_mem() callback is invoked before the apics, hpet, etc. are
-> > > disabled.
-> > > 
-> > > Is there any reason why enc_kexec_unshare_mem() callback is invoked in crash
-> > > case before the IO-APIC/lapic, hpet, etc. are shutdown/disabled ?
-> > Not really. Either way works for TDX. I've tested the patch below. Is it
-> > what you want?
-> > 
-> > diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-> > index 6585a5f2c2ba..3001f4857ed7 100644
-> > --- a/arch/x86/kernel/crash.c
-> > +++ b/arch/x86/kernel/crash.c
-> > @@ -107,11 +107,6 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
-> >   	crash_smp_send_stop();
-> > -	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
-> > -		x86_platform.guest.enc_kexec_stop_conversion(true);
-> > -		x86_platform.guest.enc_kexec_unshare_mem();
-> > -	}
-> > -
-> >   	cpu_emergency_disable_virtualization();
-> >   	/*
-> > @@ -129,6 +124,12 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
-> >   #ifdef CONFIG_HPET_TIMER
-> >   	hpet_disable();
-> >   #endif
-> > +
-> > +	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
-> > +		x86_platform.guest.enc_kexec_stop_conversion(true);
-> > +		x86_platform.guest.enc_kexec_unshare_mem();
-> > +	}
-> > +
-> >   	crash_save_cpu(regs, safe_smp_processor_id());
-> >   }
+> Pages are unsafe to be released back to the page-allocator, if they
+> have been transitioned to firmware/guest state and can't be reclaimed
+> or transitioned back to hypervisor/shared state. In this case add
+> them to an internal leaked pages list to ensure that they are not freed
+> or touched/accessed to cause fatal page faults.
 > 
-> Yes, this will work for SNP.
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> [mdr: relocate to arch/x86/virt/svm/sev.c]
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-Okay, good. Will include the change into the next version of the patchset.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Some minor nitpicks:
+
+> ---
+>  arch/x86/include/asm/sev.h |  2 ++
+>  arch/x86/virt/svm/sev.c    | 34 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 36 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+> index d3ccb7a0c7e9..435ba9bc4510 100644
+> --- a/arch/x86/include/asm/sev.h
+> +++ b/arch/x86/include/asm/sev.h
+> @@ -264,6 +264,7 @@ void snp_dump_hva_rmpentry(unsigned long address);
+>  int psmash(u64 pfn);
+>  int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int asid, bool immutable);
+>  int rmp_make_shared(u64 pfn, enum pg_level level);
+> +void snp_leak_pages(u64 pfn, unsigned int npages);
+>  #else
+>  static inline bool snp_probe_rmptable_info(void) { return false; }
+>  static inline int snp_lookup_rmpentry(u64 pfn, bool *assigned, int *level) { return -ENODEV; }
+> @@ -275,6 +276,7 @@ static inline int rmp_make_private(u64 pfn, u64 gpa, enum pg_level level, int as
+>  	return -ENODEV;
+>  }
+>  static inline int rmp_make_shared(u64 pfn, enum pg_level level) { return -ENODEV; }
+> +static inline void snp_leak_pages(u64 pfn, unsigned int npages) {}
+>  #endif
+>  
+>  #endif
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index 1a13eff78c9d..649ac1bb6b0e 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -65,6 +65,11 @@ static u64 probed_rmp_base, probed_rmp_size;
+>  static struct rmpentry *rmptable __ro_after_init;
+>  static u64 rmptable_max_pfn __ro_after_init;
+>  
+> +static LIST_HEAD(snp_leaked_pages_list);
+> +static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
+> +
+> +static unsigned long snp_nr_leaked_pages;
+> +
+>  #undef pr_fmt
+>  #define pr_fmt(fmt)	"SEV-SNP: " fmt
+>  
+> @@ -505,3 +510,32 @@ int rmp_make_shared(u64 pfn, enum pg_level level)
+>  	return rmpupdate(pfn, &state);
+>  }
+>  EXPORT_SYMBOL_GPL(rmp_make_shared);
+> +
+> +void snp_leak_pages(u64 pfn, unsigned int npages)
+> +{
+> +	struct page *page = pfn_to_page(pfn);
+> +
+> +	pr_warn("Leaking PFN range 0x%llx-0x%llx\n", pfn, pfn + npages);
+> +
+> +	spin_lock(&snp_leaked_pages_list_lock);
+> +	while (npages--) {
+> +		/*
+> +		 * Reuse the page's buddy list for chaining into the leaked
+> +		 * pages list. This page should not be on a free list currently
+> +		 * and is also unsafe to be added to a free list.
+> +		 */
+> +		if (likely(!PageCompound(page)) ||
+> +		    (PageHead(page) && compound_nr(page) <= npages))
+> +			/*
+> +			 * Skip inserting tail pages of compound page as
+> +			 * page->buddy_list of tail pages is not usable.
+> +			 */
+> +			list_add_tail(&page->buddy_list, &snp_leaked_pages_list);
+
+Even though it's not necessary for correctness, with the comment I'd put the
+whole block into { } to make easier to follow. Or just move the comment
+above the if() itself?
+
+> +		dump_rmpentry(pfn);
+> +		snp_nr_leaked_pages++;
+> +		pfn++;
+> +		page++;
+> +	}
+> +	spin_unlock(&snp_leaked_pages_list_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(snp_leak_pages);
+
