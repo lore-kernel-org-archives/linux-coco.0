@@ -1,254 +1,115 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2084.outbound.protection.outlook.com [40.107.93.84])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DD376022
-	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 20:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706559068; cv=fail; b=VRJ1skji3cU0r3qWpdoPTpQ3N//4xGG8tWscSqJ8C1Uvd0/8WOVMYDDkll1RfF8zeg9KOXsB5bZHb8fcQWsZeF6Ddzkx+ezn+vuB8xI+rjA7pTJIbfZ5KcTUsZEslR+NkwoW0hTPhhbJYTAIdgkXYDvzjP0sGBzgMUg/cFXiPuY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706559068; c=relaxed/simple;
-	bh=/2QJpaTLmh0aFPoQsD8uMSVwvH5FFGm/sasgIfcGHno=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Va81MmEzXMWD8CFGNwEY+GLt78mmL0YRGD/7daM6XdfYhIO0lQ9VkxBKkG9hxkv72tgJ9qTXugqp4ADblFxmqrLAJL0X1eDNItiNH3oyjFhPa9OcgGGhZxhM8e1NV0Jhcj8Sv9q/yryVmEa1jgeICvWb6KcO08fB01lFYjXTZHk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BF7e9mVn; arc=fail smtp.client-ip=40.107.93.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B88C13DB94
+	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 20:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706561054; cv=none; b=XyqV12AVH2fYxpdTluo+1mqlYWNcTJcE5ZnPCjFY1LisTOKfcEK/Fw8FXSbocHPkTnf/CEBpp0YMl8fO9lOSPEO3QJpvLivwflN1oKOk7NisKJ+AaV5OP1whCUyDCmubsAfHiIGHWT4p7MmupiPz2CtwDuiQoKNneb9W67oejNw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706561054; c=relaxed/simple;
+	bh=Elo6Kas6QgeP8iJYfbZQ29s6uVogIsyKYcHhQDUTX4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VxJJSN0VymY8lyFr1NRwQ4X+MAiH8xH9viMiSqQKkDZDVUy91lQfF9CMdQTfmFqBuwlc67wjn2Bv6VhpxZZWPK4z+utgS8hQvOcQDAzzF6hQlogd16K4VU1haZy8m8PB+Nu4uMUGK1ko5yr4Uen1esu19FeU0q5WxjX6OlA9/Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iQ9gsx7u; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BF7e9mVn"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MMB6uYgtyo6Hn4QPbiTlNMS69fWyR0PGEZNOBcp11ZXuuEflwQfXW6ih9JFv9OiFpuDd4WKQQdrXd89LHJO4D2bEdyNLxkXPZ1IsZwQJ78LBp8tCKq1ZPoTKYju4qW0lL4vAhzlWB0XJC/t3zyGLWWaX3b5fKCnhDOaMabx4DEx98SyLfVe2dOEdNYliDV09Umr/degpK8Fuw6P/2IdXvtjCYSFwYNOOLBb670YJYmciJ82fKtLAs/8z+1DP1xuWpu4FGnu7cEVIaSXDkmtQg7H3sZXzLWlRUuv6k2hqKHoJW1sMrCFxOtZoZ1sJjzFkHITs60W12fh3THCLoF2Cpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FP2HbMCHGlfqGqtwHam1WgbNI/Scba3qLOcmTdHU/nY=;
- b=h88LLVqMu04SuftdFQaIXd1i0art5lFtvux627dGJLAeRiWVr6q2AVXJDSHjNQlDbqH98z4EscXrBFuaj335+h+kzGJq2p5TXGXKep+L8F/wyPm6r2dr+4J5nTYoMQh4K5DH0ENiva9OWwqfWrRKKso1VSM5P5fmop1ENUcCcyYIf1LBN9WicvN/fNkp0GjaAEUTRVrViPj6b4HxN9N9ppCd7jj0mSHhm35ASIuIhnteXaOp3q8j4IynGzXEbol5AtgkvONa81ERb5eCLwTSUL9Rjw9jNuQ760setWafBcXRHZHqQSeCYLeaGDpzQegQIEPa/gOXdr5oeahRF5qAYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=oracle.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FP2HbMCHGlfqGqtwHam1WgbNI/Scba3qLOcmTdHU/nY=;
- b=BF7e9mVnuLekXQxF7/ocIhqHgW5j+mg7M+CGgigflsqF1CFXgH/YObQHcdbPJOQ3t2gRCarZUWKf49Y7LI1mzrE7/6D6ZIfrL7w1V2gvgiDvOkgM1XmEjc8pHoW+F25g+AbPjEdrcMmdUCIaZy0ySpGgvcEpHahHhFp3Q2xvvs8=
-Received: from MW4PR04CA0224.namprd04.prod.outlook.com (2603:10b6:303:87::19)
- by SA1PR12MB7319.namprd12.prod.outlook.com (2603:10b6:806:2b5::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.32; Mon, 29 Jan
- 2024 20:11:02 +0000
-Received: from MWH0EPF000989EC.namprd02.prod.outlook.com
- (2603:10b6:303:87:cafe::90) by MW4PR04CA0224.outlook.office365.com
- (2603:10b6:303:87::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.33 via Frontend
- Transport; Mon, 29 Jan 2024 20:11:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MWH0EPF000989EC.mail.protection.outlook.com (10.167.241.139) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7249.19 via Frontend Transport; Mon, 29 Jan 2024 20:11:01 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Mon, 29 Jan
- 2024 14:11:00 -0600
-Date: Mon, 29 Jan 2024 14:10:39 -0600
-From: Michael Roth <michael.roth@amd.com>
-To: Liam Merwick <liam.merwick@oracle.com>
-CC: "x86@kernel.org" <x86@kernel.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
-	<mingo@redhat.com>, "jroedel@suse.de" <jroedel@suse.de>,
-	"thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "hpa@zytor.com"
-	<hpa@zytor.com>, "ardb@kernel.org" <ardb@kernel.org>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "seanjc@google.com" <seanjc@google.com>,
-	"vkuznets@redhat.com" <vkuznets@redhat.com>, "jmattson@google.com"
-	<jmattson@google.com>, "luto@kernel.org" <luto@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "slp@redhat.com"
-	<slp@redhat.com>, "pgonda@google.com" <pgonda@google.com>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"srinivas.pandruvada@linux.intel.com" <srinivas.pandruvada@linux.intel.com>,
-	"rientjes@google.com" <rientjes@google.com>, "tobin@ibm.com" <tobin@ibm.com>,
-	"bp@alien8.de" <bp@alien8.de>, "vbabka@suse.cz" <vbabka@suse.cz>,
-	"kirill@shutemov.name" <kirill@shutemov.name>, "ak@linux.intel.com"
-	<ak@linux.intel.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"sathyanarayanan.kuppuswamy@linux.intel.com"
-	<sathyanarayanan.kuppuswamy@linux.intel.com>, "alpergun@google.com"
-	<alpergun@google.com>, "jarkko@kernel.org" <jarkko@kernel.org>,
-	"ashish.kalra@amd.com" <ashish.kalra@amd.com>, "nikunj.dadhania@amd.com"
-	<nikunj.dadhania@amd.com>, "pankaj.gupta@amd.com" <pankaj.gupta@amd.com>,
-	Brijesh Singh <brijesh.singh@amd.com>, Alexey Kardashevskiy <aik@amd.com>,
-	Dionna Glaze <dionnaglaze@google.com>
-Subject: Re: [PATCH v2 25/25] crypto: ccp: Add the SNP_SET_CONFIG command
-Message-ID: <20240129201039.7gi3o3tfuvimycye@amd.com>
-References: <20240126041126.1927228-1-michael.roth@amd.com>
- <20240126041126.1927228-26-michael.roth@amd.com>
- <57750667-92a2-4510-99fa-af7df8d887fc@oracle.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iQ9gsx7u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706561053; x=1738097053;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Elo6Kas6QgeP8iJYfbZQ29s6uVogIsyKYcHhQDUTX4w=;
+  b=iQ9gsx7uYHD3Ow405moXh8YF/f8oPpayxZTt/D9tYublkUhRIX36oIvP
+   5HA1jvzwDCLrIfYf69ApCFXdw+vaUaMm7huZHyHFK2cEjROr0veGttdEQ
+   N9pIkP7g+PMaPlEODJiCPN/PLole5wjukZijYffmTjoHsUYgqj2DFIy8N
+   mRj/IqVXFi80dk/5w//skIfqpeM5QTDpYnv2nNoGkaPJ6Zz0DfHAdVWTY
+   ro5W/pmfmCXNvFT8EUKUt6I4B8gDK7ZNx6G7qKeSWDSNDfOVz2ymWJR5H
+   YuLALJ/sH8zyByDPmJiUuWhAPSTq5RmPUORUTucKx96Xd9Z1PFHAmTpHg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="2913274"
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="2913274"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 12:44:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="858241427"
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="858241427"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga004.fm.intel.com with ESMTP; 29 Jan 2024 12:44:07 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id E906FFF; Mon, 29 Jan 2024 22:26:06 +0200 (EET)
+Date: Mon, 29 Jan 2024 22:26:06 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Theodore Ts'o <tytso@mit.edu>, 
+	"Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] Randomness on confidential computing platforms
+Message-ID: <dlhffyn7cccn5d4uvubggkrmtyxl4jodj5ukffafpsxsnqini3@5rcbybumab4c>
+References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
+ <276aaeee-cb01-47d3-a3bf-f8fa2e59016c@intel.com>
+ <dqiaimv3qqh77cfm2huzja4vsho3jls7vjmnwgda7enw633ke2@qiqrdnno75a7>
+ <f5236e76-27d0-4a90-bde5-513ac9446184@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <57750667-92a2-4510-99fa-af7df8d887fc@oracle.com>
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000989EC:EE_|SA1PR12MB7319:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ef9ecf0-e620-4d60-0e7d-08dc21066a82
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	IohQ03/Ydga1+YGtR/K04IHgb1m9b5sq0KPoIjOV2vyI9odaUaoENczXQxVx8lc3nScx9gI2dlxnJ+D75BkOROpYpFKFU+696txFSzahsdKMUOCZAF9C6J+RG2u6x4Mpg+ChIKgttVEDu8YPIWl0Bvmbn8MSn2wVjBjYW4RjlcmU21GeECJjK2R0SxwBrWDMtE6ijdXIS0Dg5hbaEg2/J7+9A0YSYF+lQpDAzfmkUaAXvWvc7ocD1okGxwwmAU2aSopse7MHpjwdJdrsxuWjUxbRrPItu63tX9OBAJKr5AQB1jnRZtkazRehQkyM5WPHT/Aj0CJle8R/hSEtW1Xw0OihTpVWDIgbIfJ5NxxGZOgk8RSDosuPWdCImxD8gk1GZp4/r3hojxeD65JHqxYoy0R6rx+wHomX7GR3GQ+NBNqDlh6r5Tvd6l7FBvMwW3wCS4DOwNY3HV7GkQlVyRDwDHsjl6Q4oyRcqslJgU4N+Qc/7UVNNsTtO8ALYb5m6iHpqlZJEvT6zMEEtyh2t41uSbGsnc1zRdiDoJy4dbZRqTxcekAbfvquac/Zz6a2zTpD3pBF1AIRW7gAH03XN7mG1Uxslk5wu2P38JfzPR7fq/f2Jv0fymnkqsQnDkD0+SzrV4hLjmNTjlaOpogvvSHj3ySHHs4OkZd0CS8AGOQvBui0fo9ztCPL9p9LwT9w4r3SKo3n4REXYzpDoIeCXnsh5vOGAZIXsqoCH13fJms68L0AXV/TeGhH68xr1CvHe2dYfMD8zmSwKVRAylHuwTMT3A==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(346002)(376002)(396003)(39860400002)(230922051799003)(82310400011)(1800799012)(186009)(64100799003)(451199024)(46966006)(40470700004)(36840700001)(40460700003)(40480700001)(16526019)(426003)(83380400001)(6666004)(336012)(53546011)(1076003)(36756003)(86362001)(82740400003)(26005)(356005)(81166007)(44832011)(8676002)(8936002)(41300700001)(4326008)(5660300002)(36860700001)(478600001)(316002)(47076005)(70206006)(6916009)(54906003)(7406005)(7416002)(966005)(2616005)(2906002)(70586007)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 20:11:01.8477
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ef9ecf0-e620-4d60-0e7d-08dc21066a82
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000989EC.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7319
+In-Reply-To: <f5236e76-27d0-4a90-bde5-513ac9446184@intel.com>
 
-On Mon, Jan 29, 2024 at 07:18:54PM +0000, Liam Merwick wrote:
-> On 26/01/2024 04:11, Michael Roth wrote:
-> > From: Brijesh Singh <brijesh.singh@amd.com>
+On Mon, Jan 29, 2024 at 10:55:38AM -0800, Dave Hansen wrote:
+> On 1/29/24 08:41, Kirill A. Shutemov wrote:
+> > On Mon, Jan 29, 2024 at 08:30:11AM -0800, Dave Hansen wrote:
+> >> On 1/26/24 05:42, Kirill A. Shutemov wrote:
+> >>> 3. Panic after enough re-tries of RDRAND/RDSEED instructions fail.
+> >>>    Another DoS variant against the Guest.
+> >>
+> >> I think Sean was going down the same path, but I really dislike the idea
+> >> of having TDX-specific (or CoCo-specific) policy here.
+> >>
+> >> How about we WARN_ON() RDRAND/RDSEED going bonkers?  The paranoid folks
+> >> can turn on panic_on_warn, if they haven't already.
 > > 
-> > The SEV-SNP firmware provides the SNP_CONFIG command used to set various
-> > system-wide configuration values for SNP guests, such as the reported
-> > TCB version used when signing guest attestation reports. Add an
-> > interface to set this via userspace.
+> > Sure, we can do it for kernel, but we have no control on what userspace
+> > does.
 > > 
-> > Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
-> > Co-developed-by: Alexey Kardashevskiy <aik@amd.com>
-> > Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-> > Co-developed-by: Dionna Glaze <dionnaglaze@google.com>
-> > Signed-off-by: Dionna Glaze <dionnaglaze@google.com>
-> > Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-> > [mdr: squash in doc patch from Dionna, drop extended request/certificate
-> >   handling and simplify this to a simple wrapper around SNP_CONFIG fw
-> >   cmd]
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > ---
-> >   Documentation/virt/coco/sev-guest.rst | 13 +++++++++++++
-> >   drivers/crypto/ccp/sev-dev.c          | 20 ++++++++++++++++++++
-> >   include/uapi/linux/psp-sev.h          |  1 +
-> >   3 files changed, 34 insertions(+)
+> > Sensible userspace on RDRAND/RDSEED failure should fallback to kernel
+> > asking for random bytes, but who knows if it happens in practice
+> > everywhere.
 > > 
-> > diff --git a/Documentation/virt/coco/sev-guest.rst b/Documentation/virt/coco/sev-guest.rst
-> > index 007ae828aa2a..14c9de997b7d 100644
-> > --- a/Documentation/virt/coco/sev-guest.rst
-> > +++ b/Documentation/virt/coco/sev-guest.rst
-> > @@ -162,6 +162,19 @@ SEV-SNP firmware SNP_COMMIT command. This prevents roll-back to a previously
-> >   committed firmware version. This will also update the reported TCB to match
-> >   that of the currently installed firmware.
-> >   
-> > +2.6 SNP_SET_CONFIG
-> > +------------------
-> > +:Technology: sev-snp
-> > +:Type: hypervisor ioctl cmd
-> > +:Parameters (in): struct sev_user_data_snp_config
-> > +:Returns (out): 0 on success, -negative on error
-> > +
-> > +SNP_SET_CONFIG is used to set the system-wide configuration such as
-> > +reported TCB version in the attestation report. The command is similar
-> > +to SNP_CONFIG command defined in the SEV-SNP spec. The current values of
-> > +the firmware parameters affected by this command can be queried via
-> > +SNP_PLATFORM_STATUS.
-> > +
-> >   3. SEV-SNP CPUID Enforcement
-> >   ============================
-> >   
-> > diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> > index 73ace4064e5a..398ae932aa0b 100644
-> > --- a/drivers/crypto/ccp/sev-dev.c
-> > +++ b/drivers/crypto/ccp/sev-dev.c
-> > @@ -1982,6 +1982,23 @@ static int sev_ioctl_do_snp_commit(struct sev_issue_cmd *argp)
-> >   	return __sev_do_cmd_locked(SEV_CMD_SNP_COMMIT, &buf, &argp->error);
-> >   }
-> >   
-> > +static int sev_ioctl_do_snp_set_config(struct sev_issue_cmd *argp, bool writable)
-> > +{
-> > +	struct sev_device *sev = psp_master->sev_data;
+> > Do we care?
 > 
-> Should this check that psp_master is not NULL? Like the fix for
-> https://lore.kernel.org/all/20240125231253.3122579-1-kim.phillips@amd.com/
-
-It wouldn't hurt, but sev_ioctl() will check for it before getting here,
-so I don't think it's a reachable condition.
-
-There's a number of spots where existing SEV/legacy code relies on
-psp_pci_init() always setting psp_master before sev_pci_init(). Kim's
-patch fixes 1 exception that's reachable if you synthetically force a
-driver remove via DEBUG_TEST_DRIVER_REMOVE before the psp_pci_init()
-call is made during probe, which generally wouldn't happen in practice.
-
-But there may be other cases like the one Kim hit where "not work"
-isn't handled gracefully. Fortunately the other obvious spot,
-sev_do_cmd(), also checks for !psp_master, so that covers most of the
-internal users of sev-dev.c.
-
-But a general cleanup to introduce a helper like get_sev_device() that
-handles !psp_master might be a nice follow-up to make things more
-robust.
-
--Mike
-
+> I want to make sure I understand the scenario:
 > 
-> Otherwise,
-> Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
+>  1. We're running in a guest under TDX (or SEV-SNP)
+>  2. The VMM (or somebody) is attacking the guest by eating all the
+>     hardware entropy and RDRAND is effectively busted
+>  3. Assuming kernel-based panic_on_warn and WARN_ON() rdrand_long()
+>     failure, that rdrand_long() never gets called.
+
+Never gets called during attack. It can be used before and after.
+
+>  4. Userspace is using RDRAND output in some critical place like key
+>     generation and is not checking it for failure, nor mixing it with
+>     entropy from any other source
+>  5. Userspace uses the failed RDRAND output to generate a key
+>  6. Someone exploits the horrible key
 > 
-> > +	struct sev_user_data_snp_config config;
-> > +
-> > +	if (!sev->snp_initialized || !argp->data)
-> > +		return -EINVAL;
-> > +
-> > +	if (!writable)
-> > +		return -EPERM;
-> > +
-> > +	if (copy_from_user(&config, (void __user *)argp->data, sizeof(config)))
-> > +		return -EFAULT;
-> > +
-> > +	return __sev_do_cmd_locked(SEV_CMD_SNP_CONFIG, &config, &argp->error);
-> > +}
-> > +
-> >   static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
-> >   {
-> >   	void __user *argp = (void __user *)arg;
-> > @@ -2039,6 +2056,9 @@ static long sev_ioctl(struct file *file, unsigned int ioctl, unsigned long arg)
-> >   	case SNP_COMMIT:
-> >   		ret = sev_ioctl_do_snp_commit(&input);
-> >   		break;
-> > +	case SNP_SET_CONFIG:
-> > +		ret = sev_ioctl_do_snp_set_config(&input, writable);
-> > +		break;
-> >   	default:
-> >   		ret = -EINVAL;
-> >   		goto out;
-> > diff --git a/include/uapi/linux/psp-sev.h b/include/uapi/linux/psp-sev.h
-> > index 35c207664e95..b7a2c2ee35b7 100644
-> > --- a/include/uapi/linux/psp-sev.h
-> > +++ b/include/uapi/linux/psp-sev.h
-> > @@ -30,6 +30,7 @@ enum {
-> >   	SEV_GET_ID2,
-> >   	SNP_PLATFORM_STATUS,
-> >   	SNP_COMMIT,
-> > +	SNP_SET_CONFIG,
-> >   
-> >   	SEV_MAX,
-> >   };
-> 
+> Is that it?
+
+Yes.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
