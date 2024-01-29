@@ -1,78 +1,46 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DE3155A28
-	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 15:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E592157E86
+	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 16:30:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706541973; cv=none; b=acZzz0pUojrb39nwylpTPsrBTNujMdB1yvQjVbmYAS9N7Y+uy5yjKEz7ZGiDKojQymDJWSAGS6AyWmpfBaOLfehhKQwhcwcHzdxe+Y0BxDvA6bb+sB+0mUk76GWgJyWGy9t8PlTJmA0fLejoOlPLnQJLqezViwWPh8FGwUwcdZ4=
+	t=1706545815; cv=none; b=E/AvVxc00hm8HM4lEs4paRNryva2GshR3fAYx90/cnvGN3YVEoM1UIda2CQHWFVvjhpaWLWB5DjUgPwNCI+sO5C664sPFuRQ0gb8gM/27qLQUJ9/VH4+B4ZxNgiCy7/VdVrvhw5FHvirqg6WhNHApOrLdK4UOvzRxIuAop79Kqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706541973; c=relaxed/simple;
-	bh=2krepP86f5+8aMs2Z47cms8u797SS21OCKmTKGRnVBM=;
+	s=arc-20240116; t=1706545815; c=relaxed/simple;
+	bh=lyMEVGTL8q4f+5Pm8EabaoZjivTi8nh4Ha6NjgG/m0A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=suM6ADHIhRBSapgN2PbU8NNt9jrT9W4VcBCMbP0V1A7NeLw8PyBeqKO4NtVsUZQxTRwyzFBIODAeC9tP1Zw+FOy6Wq09wIKQ9UDrCNcbyA9ssqhczAEcUsQf8MW14W5kMTHtGSOwKnF6J3AEI6af1TVit4s/T3Llt6bkHfQOx7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=IqJ9FeBb; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=buBCJSoE; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=wra20jGo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=QGF3yu+y; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	 In-Reply-To:Content-Type; b=bhODAkhUJh8HzcImWYH9hBygaBGY4g307x0WjgwHwcUUGcNZgrQsK0RFzZ+7qYWo1Sj4cIbuEQoX9ql9a1SzEf+erdsYBwyjxrEmJqeztlQ84qguJs6+VkxDOXwKYAI4e8Wu5gbttzACdzuBj9Yj3aZizwQjGeiUy4ONY9T1hsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Akw8iV65; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="IqJ9FeBb";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="buBCJSoE";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="wra20jGo";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="QGF3yu+y"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B26A01F7EF;
-	Mon, 29 Jan 2024 15:26:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1706541963; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jh9pQCHiNrOIgT4Qx0ZOIp8ky/ddjw+KrmlzKD3GTFA=;
-	b=IqJ9FeBbPT86udoxla6bPHyxwjxJzWqX7LKUgjJK80R5KnYwWbAAOHeWSivRHKTim9jS4C
-	AGd8isc43iGspBrV087KRzqkHx8cDtcjOGfxumSF+UmpfzhTsaGPVyd4WF8uG3cjFqYFIq
-	LvI6iAgggiWgMe7TcwdX8ZurFxm3emA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1706541963;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jh9pQCHiNrOIgT4Qx0ZOIp8ky/ddjw+KrmlzKD3GTFA=;
-	b=buBCJSoENZMrlJF3gAtTCcP9YbSkzSTmYZPOMOHmNSfSKzKJyT1yHabOIKQWMQHSFjiKmM
-	VXdS65hxh/BSTgDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1706541961; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jh9pQCHiNrOIgT4Qx0ZOIp8ky/ddjw+KrmlzKD3GTFA=;
-	b=wra20jGo4/gxClPMQNEDxg3qKNEOScanFSiG/ETsrUypOo2JjVxnSwInEkTN/6LLJK8vVk
-	lr0dEOzA4BY/h9s6rmQy5uO24sZFxM4CfUUU/8H/5uZXweZKJ7QtHpxtCVrjufuWVnL4al
-	7ChaBUZLjJahSiWbJ1BTuv9XGk79JKw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1706541961;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jh9pQCHiNrOIgT4Qx0ZOIp8ky/ddjw+KrmlzKD3GTFA=;
-	b=QGF3yu+yO4l0N6y9I54yuTV433cHTbnUtte7rHsiobjlibNuPusNpVGfX31J18kGHt/OrC
-	c9YEFnT6c3ldgqDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6548013647;
-	Mon, 29 Jan 2024 15:26:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dcSQF4nDt2U4RAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 29 Jan 2024 15:26:01 +0000
-Message-ID: <2068cfca-b99b-4cf0-addc-43376c2681cb@suse.cz>
-Date: Mon, 29 Jan 2024 16:26:01 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Akw8iV65"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706545814; x=1738081814;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lyMEVGTL8q4f+5Pm8EabaoZjivTi8nh4Ha6NjgG/m0A=;
+  b=Akw8iV65u/gZBLzM7LIvMJMVnKdy7O4sQJNDsU3bbvq7G/U9OnKK2aDE
+   IMGhKbS91z8r8gdfaepvdr65a0FqlCSDI3SVDbVN0v6DLtoBHT9AxaWfV
+   0iveRicPJaZRtsUl0cZIIMJV6IDu5pyh2yGmAqdkofRoIoFad794OHNjd
+   CJe2Uj1qVos+z/HDGmKTwMT0NVDLq+w7jdpHxTz7irEBrFZouaMEpr/Kq
+   nGYcO+UBcp3zDWrgj6EzIao3BlnDLXr2+3DReWbVxDP1+fmYMFPUNvayB
+   cTYJ5YoLWNyoXSloLNIpJJZvhLMKDDITzQ2ZCQDYDYawPqoqHppbcbD1F
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="1928480"
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="1928480"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 08:30:13 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
+   d="scan'208";a="29830269"
+Received: from swayomab-mobl1.amr.corp.intel.com (HELO [10.212.130.221]) ([10.212.130.221])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 08:30:12 -0800
+Message-ID: <276aaeee-cb01-47d3-a3bf-f8fa2e59016c@intel.com>
+Date: Mon, 29 Jan 2024 08:30:11 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -80,110 +48,74 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/25] x86/sev: Adjust directmap to avoid inadvertant
- RMP faults
+Subject: Re: [RFC] Randomness on confidential computing platforms
 Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>, Michael Roth <michael.roth@amd.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-mm@kvack.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com, ardb@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, vkuznets@redhat.com,
- jmattson@google.com, luto@kernel.org, dave.hansen@linux.intel.com,
- slp@redhat.com, pgonda@google.com, peterz@infradead.org,
- srinivas.pandruvada@linux.intel.com, rientjes@google.com, tobin@ibm.com,
- kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
- sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
- jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
- pankaj.gupta@amd.com, liam.merwick@oracle.com
-References: <20240126041126.1927228-1-michael.roth@amd.com>
- <20240126041126.1927228-12-michael.roth@amd.com>
- <20240126153451.GDZbPRG3KxaQik-0aY@fat_crate.local>
- <20240126170415.f7r4nvsrzgpzcrzv@amd.com>
- <20240126184340.GEZbP9XA13X91-eybA@fat_crate.local>
- <20240126235420.mu644waj2eyoxqx6@amd.com>
- <20240127114207.GBZbTsDyC3hFq8pQ3D@fat_crate.local>
- <20240127154506.v3wdio25zs6i2lc3@amd.com>
- <20240127160249.GDZbUpKW_cqRzdYn7Z@fat_crate.local>
- <20240129115928.GBZbeTIJUYivEMSonh@fat_crate.local>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20240129115928.GBZbeTIJUYivEMSonh@fat_crate.local>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+ Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>,
+ Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-3.09 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 MIME_GOOD(-0.10)[text/plain];
-	 R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[36];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -3.09
 
-On 1/29/24 12:59, Borislav Petkov wrote:
-> On Sat, Jan 27, 2024 at 05:02:49PM +0100, Borislav Petkov wrote:
->> This function takes any PFN it gets passed in as it is. I don't care
->> who its users are now or in the future and whether they pay attention
->> what they pass into - it needs to be properly defined.
-> 
-> Ok, we solved it offlist, here's the final version I have. It has
-> a comment explaining what I was asking.
-> 
-> ---
-> From: Michael Roth <michael.roth@amd.com>
-> Date: Thu, 25 Jan 2024 22:11:11 -0600
-> Subject: [PATCH] x86/sev: Adjust the directmap to avoid inadvertent RMP faults
-> 
-> If the kernel uses a 2MB or larger directmap mapping to write to an
-> address, and that mapping contains any 4KB pages that are set to private
-> in the RMP table, an RMP #PF will trigger and cause a host crash.
-> 
-> SNP-aware code that owns the private PFNs will never attempt such
-> a write, but other kernel tasks writing to other PFNs in the range may
-> trigger these checks inadvertently due to writing to those other PFNs
-> via a large directmap mapping that happens to also map a private PFN.
-> 
-> Prevent this by splitting any 2MB+ mappings that might end up containing
-> a mix of private/shared PFNs as a result of a subsequent RMPUPDATE for
-> the PFN/rmp_level passed in.
-> 
-> Another way to handle this would be to limit the directmap to 4K
-> mappings in the case of hosts that support SNP, but there is potential
-> risk for performance regressions of certain host workloads.
-> 
-> Handling it as-needed results in the directmap being slowly split over
-> time, which lessens the risk of a performance regression since the more
-> the directmap gets split as a result of running SNP guests, the more
-> likely the host is being used primarily to run SNP guests, where
-> a mostly-split directmap is actually beneficial since there is less
-> chance of TLB flushing and cpa_lock contention being needed to perform
-> these splits.
-> 
-> Cases where a host knows in advance it wants to primarily run SNP guests
-> and wishes to pre-split the directmap can be handled by adding
-> a tuneable in the future, but preliminary testing has shown this to not
-> provide a signficant benefit in the common case of guests that are
-> backed primarily by 2MB THPs, so it does not seem to be warranted
-> currently and can be added later if a need arises in the future.
-> 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Link: https://lore.kernel.org/r/20240126041126.1927228-12-michael.roth@amd.com
+On 1/26/24 05:42, Kirill A. Shutemov wrote:
+> 3. Panic after enough re-tries of RDRAND/RDSEED instructions fail.
+>    Another DoS variant against the Guest.
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+I think Sean was going down the same path, but I really dislike the idea
+of having TDX-specific (or CoCo-specific) policy here.
 
-Thanks!
+How about we WARN_ON() RDRAND/RDSEED going bonkers?  The paranoid folks
+can turn on panic_on_warn, if they haven't already.
