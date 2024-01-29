@@ -1,115 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B88C13DB94
-	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 20:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEA9156967
+	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 21:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706561054; cv=none; b=XyqV12AVH2fYxpdTluo+1mqlYWNcTJcE5ZnPCjFY1LisTOKfcEK/Fw8FXSbocHPkTnf/CEBpp0YMl8fO9lOSPEO3QJpvLivwflN1oKOk7NisKJ+AaV5OP1whCUyDCmubsAfHiIGHWT4p7MmupiPz2CtwDuiQoKNneb9W67oejNw=
+	t=1706562268; cv=none; b=g4exEdFwIGynaoL/CzQUTw08jy7Ys1tNIk8ySYkygz8F2s/3L0bpRj1EbViWo7AezCZg62LgTNIkW3Iv8LKrD0ixDoYWfkMfZVbBb4MgB1fE8Wwgr6848Ayy3OMNUBd+gjoVgdqQkRWzvPL7dHLRaU+Hhgk6R4gRwF5Kaf3GvC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706561054; c=relaxed/simple;
-	bh=Elo6Kas6QgeP8iJYfbZQ29s6uVogIsyKYcHhQDUTX4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VxJJSN0VymY8lyFr1NRwQ4X+MAiH8xH9viMiSqQKkDZDVUy91lQfF9CMdQTfmFqBuwlc67wjn2Bv6VhpxZZWPK4z+utgS8hQvOcQDAzzF6hQlogd16K4VU1haZy8m8PB+Nu4uMUGK1ko5yr4Uen1esu19FeU0q5WxjX6OlA9/Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iQ9gsx7u; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706562268; c=relaxed/simple;
+	bh=txLCLPkzKVHdhvYurzAAldVYFeaSAhmddBNWP92y3q0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dIrFO3i9pfGQkJHssy02mwVwLE2BGGpuX93DDG4j/t3hbtlEKs4bd3LneFZgEhS6Jb/BMVU2vWnUjaBapW5zZIwrEq9FEuqAmlx3hpspeaIHE7Xx56E2Ix1U2/fxL7kSa4AMhYAnp/QlQFoxdMGSfirssmiT5dz2xeBnJIPvT/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EXF1gTWh; arc=none smtp.client-ip=134.134.136.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iQ9gsx7u"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EXF1gTWh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706561053; x=1738097053;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Elo6Kas6QgeP8iJYfbZQ29s6uVogIsyKYcHhQDUTX4w=;
-  b=iQ9gsx7uYHD3Ow405moXh8YF/f8oPpayxZTt/D9tYublkUhRIX36oIvP
-   5HA1jvzwDCLrIfYf69ApCFXdw+vaUaMm7huZHyHFK2cEjROr0veGttdEQ
-   N9pIkP7g+PMaPlEODJiCPN/PLole5wjukZijYffmTjoHsUYgqj2DFIy8N
-   mRj/IqVXFi80dk/5w//skIfqpeM5QTDpYnv2nNoGkaPJ6Zz0DfHAdVWTY
-   ro5W/pmfmCXNvFT8EUKUt6I4B8gDK7ZNx6G7qKeSWDSNDfOVz2ymWJR5H
-   YuLALJ/sH8zyByDPmJiUuWhAPSTq5RmPUORUTucKx96Xd9Z1PFHAmTpHg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="2913274"
+  t=1706562266; x=1738098266;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=txLCLPkzKVHdhvYurzAAldVYFeaSAhmddBNWP92y3q0=;
+  b=EXF1gTWhhfvwkPP+4UwEBN9ZuzJc1hW7TLErpnCMnEs5qKjLs4Hb8D53
+   lEvGlCsN3KKqL0HlpRwPKJE3rVMr02ErirmFR429XbzUyL5A7i+3uuglz
+   Jixig7jqJYdlAN3xjLrYFUaVkrGcCusuEeMTvZAt/hUmoBR0BCygh7gKK
+   iuh+h1Hfk97ZnHINvaiz4pW0JSPsOpb18+2QgDkAE855Vz7xcfJBJ4WbO
+   8SYUEDxlRm11wmyETAIAtUkGtOHEan+O5YgOmMcxsvRvu3GL+ZfPvAaWa
+   Ct8j/l31DeobmHb3Ky855jwWKpXLNzQ9jFHET7klng2YrOj/yJj84GVw9
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="393521289"
 X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="2913274"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 12:44:12 -0800
+   d="scan'208";a="393521289"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 13:04:25 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="858241427"
 X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="858241427"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga004.fm.intel.com with ESMTP; 29 Jan 2024 12:44:07 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E906FFF; Mon, 29 Jan 2024 22:26:06 +0200 (EET)
-Date: Mon, 29 Jan 2024 22:26:06 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Theodore Ts'o <tytso@mit.edu>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] Randomness on confidential computing platforms
-Message-ID: <dlhffyn7cccn5d4uvubggkrmtyxl4jodj5ukffafpsxsnqini3@5rcbybumab4c>
-References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
- <276aaeee-cb01-47d3-a3bf-f8fa2e59016c@intel.com>
- <dqiaimv3qqh77cfm2huzja4vsho3jls7vjmnwgda7enw633ke2@qiqrdnno75a7>
- <f5236e76-27d0-4a90-bde5-513ac9446184@intel.com>
+   d="scan'208";a="22226347"
+Received: from swayomab-mobl1.amr.corp.intel.com (HELO [10.212.130.221]) ([10.212.130.221])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 13:04:23 -0800
+Message-ID: <3a37eae3-9d3c-420c-a1c7-2d14f6982774@intel.com>
+Date: Mon, 29 Jan 2024 13:04:23 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f5236e76-27d0-4a90-bde5-513ac9446184@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] Randomness on confidential computing platforms
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+ Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Elena Reshetova <elena.reshetova@intel.com>,
+ Jun Nakajima <jun.nakajima@intel.com>, Tom Lendacky
+ <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>,
+ Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
+ <276aaeee-cb01-47d3-a3bf-f8fa2e59016c@intel.com>
+ <dqiaimv3qqh77cfm2huzja4vsho3jls7vjmnwgda7enw633ke2@qiqrdnno75a7>
+ <f5236e76-27d0-4a90-bde5-513ac9446184@intel.com>
+ <dlhffyn7cccn5d4uvubggkrmtyxl4jodj5ukffafpsxsnqini3@5rcbybumab4c>
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <dlhffyn7cccn5d4uvubggkrmtyxl4jodj5ukffafpsxsnqini3@5rcbybumab4c>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 29, 2024 at 10:55:38AM -0800, Dave Hansen wrote:
-> On 1/29/24 08:41, Kirill A. Shutemov wrote:
-> > On Mon, Jan 29, 2024 at 08:30:11AM -0800, Dave Hansen wrote:
-> >> On 1/26/24 05:42, Kirill A. Shutemov wrote:
-> >>> 3. Panic after enough re-tries of RDRAND/RDSEED instructions fail.
-> >>>    Another DoS variant against the Guest.
-> >>
-> >> I think Sean was going down the same path, but I really dislike the idea
-> >> of having TDX-specific (or CoCo-specific) policy here.
-> >>
-> >> How about we WARN_ON() RDRAND/RDSEED going bonkers?  The paranoid folks
-> >> can turn on panic_on_warn, if they haven't already.
-> > 
-> > Sure, we can do it for kernel, but we have no control on what userspace
-> > does.
-> > 
-> > Sensible userspace on RDRAND/RDSEED failure should fallback to kernel
-> > asking for random bytes, but who knows if it happens in practice
-> > everywhere.
-> > 
-> > Do we care?
+On 1/29/24 12:26, Kirill A. Shutemov wrote:
+>>> Do we care?
+>> I want to make sure I understand the scenario:
+>>
+>>  1. We're running in a guest under TDX (or SEV-SNP)
+>>  2. The VMM (or somebody) is attacking the guest by eating all the
+>>     hardware entropy and RDRAND is effectively busted
+>>  3. Assuming kernel-based panic_on_warn and WARN_ON() rdrand_long()
+>>     failure, that rdrand_long() never gets called.
+> Never gets called during attack. It can be used before and after.
 > 
-> I want to make sure I understand the scenario:
-> 
->  1. We're running in a guest under TDX (or SEV-SNP)
->  2. The VMM (or somebody) is attacking the guest by eating all the
->     hardware entropy and RDRAND is effectively busted
->  3. Assuming kernel-based panic_on_warn and WARN_ON() rdrand_long()
->     failure, that rdrand_long() never gets called.
+>>  4. Userspace is using RDRAND output in some critical place like key
+>>     generation and is not checking it for failure, nor mixing it with
+>>     entropy from any other source
+>>  5. Userspace uses the failed RDRAND output to generate a key
+>>  6. Someone exploits the horrible key
+>>
+>> Is that it?
+> Yes.
 
-Never gets called during attack. It can be used before and after.
+Is there something that fundamentally makes this a VMM vs. TDX guest
+problem?  If a malicious VMM can exhaust RDRAND, why can't malicious
+userspace do the same?
 
->  4. Userspace is using RDRAND output in some critical place like key
->     generation and is not checking it for failure, nor mixing it with
->     entropy from any other source
->  5. Userspace uses the failed RDRAND output to generate a key
->  6. Someone exploits the horrible key
-> 
-> Is that it?
-
-Yes.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Let's assume buggy userspace exists.  Is that userspace *uniquely*
+exposed to a naughty VMM or is that VMM just added to the list of things
+that can attack buggy userspace?
