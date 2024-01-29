@@ -1,113 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B39266D4
-	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 21:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877DC15A489
+	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 22:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706564680; cv=none; b=E9J6XibKSuqjw8z4Sb2HKUhFyzzwmL6TLt31PwJeEjfLGiq3sMWIhjbVmxAYdFYIfmumR0uWKSCWArWlPS14CaEZK8u9QGPI9hiGGXh2w3hINXCKNufqjsupcMZaEb0QKAgaLdoMBGrgiD6W8REF4nkMEbOI34Jruk1VXPBkcj8=
+	t=1706566393; cv=none; b=Q46tAFkCUOJV61rS6cglk0WojPGtlQu05Z0a3nADQ/qSFKyJuNru6dNk0Lhi8lXvGXuzHfoSL7qubyTiQEuGHgiqal8wObuEBQFAEuNYAKQiB0RbKLAXDEIPywgHF8PZpHOkHRY2kYIpmfIiHdDmUhNad2lK8FVy2g05lCZvzGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706564680; c=relaxed/simple;
-	bh=ZPrtIDYwdeoYrKa8v/Jr8d+FvYQ17cyId6EuVFn8HZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ekocKXsB/9hpRh5CD/jatQ86b0zhyWHJB6kjYSJurjmuH4WPbvNH+Oz/50ucviZJ7i1HBl28A+57jwI4mvB3T357Q+8pMpsioqGHMGFhThZRpRU+ke06f5Y19GLx/tEBuaCJchYML1Qq50k7Q5Z7xBKHAC2Zm0+pB2fZSuCfi7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y+m9Vxh+; arc=none smtp.client-ip=134.134.136.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706566393; c=relaxed/simple;
+	bh=nSLKu2t6GgeiI8HRpX8Lq8m3dUaKQaQRRTPAKivBNEQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=ICQkkA73MrEW37aNQeeVv0mXC8KpW/BJUcle+XoX6uQk/40WF2xhUn42G5pRaci5ibjHek7oX0Hnptpu5fKKh8TPG+qP/gbFLrXQdnWP/wrEQKsu1iqtxih96AeFq8Gx8dOIW+FPIGsIMnU2WKVt8oZvH7HzWVU2xCfergd4X3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=SY5M6LiB reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y+m9Vxh+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706564679; x=1738100679;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZPrtIDYwdeoYrKa8v/Jr8d+FvYQ17cyId6EuVFn8HZE=;
-  b=Y+m9Vxh+CqkX7zSO1nhnxw6t633vUDOup+R91noXxKBAmXe3wJOsuw1j
-   LR7CWw0Hki1YY8Kz9fAhO+AbpFoLPJnJqTQ7wJ31f5WgoSzve2WltDeeF
-   xfwAtgmNa2dHZ5G20T8wmCv+mWIqqIFRJIlIPF4aYWtgHG/g7sEWfwoqf
-   Bp6FbNsgt1mcXq+ZPFebj4M05xUUd3uve/tBvkrSVgSTCSZjvmU9arnWJ
-   75XX+FradiCV7pPOI3yXYW05jL7JOLqmdWBV8Zxd0Cy9+BT2Cmv+XS6Vs
-   hXrVono4X7AN65FgLckvHhInyRpuT7ev/2/KipXq1m2TmJqPqd4be/ss4
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="406812958"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="406812958"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 13:44:38 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="931225023"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="931225023"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Jan 2024 13:44:34 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 654F8FF; Mon, 29 Jan 2024 23:33:00 +0200 (EET)
-Date: Mon, 29 Jan 2024 23:33:00 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Theodore Ts'o <tytso@mit.edu>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="SY5M6LiB"
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 40TMCRZl2363387
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 29 Jan 2024 14:12:28 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 40TMCRZl2363387
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024011201; t=1706566349;
+	bh=gpJw5FwCNuj7MiUegNuTIOJWYystXX40HW9rUaj/KaE=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=SY5M6LiBwCI6+K0Oba8EFNosxeAkE2IuOtv8qiWosLobfCaKkpXkOcxtl50EPZxpw
+	 kLYIrXRro6nnGI5DwC/MYmhqv7XWiQuH8O5qAhQwUhWFb1TLC8LTd/55mc/Ey/4lMA
+	 92UuS8Yg6qQOACYo+Q7ZwHdjT90TOyiG1tPs3AouL/UdPe9vwa2whNM+/12nfXAdjf
+	 ZP0qLQ/MoMHMTDu7r199LRG4DrM4oA3gnM6JyLTJgMAyn2ryANhsUvqOhQAG/kvVsH
+	 fbYCuSXIFIFnkr1r+AL8sergSQs9400bPaqpqnus0XcQEz4uAh8U9QQlUNRg/7QDQ7
+	 M5H24kFy50h+Q==
+Date: Mon, 29 Jan 2024 14:12:26 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Dave Hansen <dave.hansen@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Elena Reshetova <elena.reshetova@intel.com>,
+        Jun Nakajima <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev,
+        linux-kernel@vger.kernel.org
 Subject: Re: [RFC] Randomness on confidential computing platforms
-Message-ID: <v6maadzwtke3z5ejp2mavsnm4mvmjbu7demvldzpobqeva74rx@r6y5fwxsyoep>
-References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com>
- <276aaeee-cb01-47d3-a3bf-f8fa2e59016c@intel.com>
- <dqiaimv3qqh77cfm2huzja4vsho3jls7vjmnwgda7enw633ke2@qiqrdnno75a7>
- <f5236e76-27d0-4a90-bde5-513ac9446184@intel.com>
- <dlhffyn7cccn5d4uvubggkrmtyxl4jodj5ukffafpsxsnqini3@5rcbybumab4c>
- <3a37eae3-9d3c-420c-a1c7-2d14f6982774@intel.com>
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CC681F94-469C-4225-A075-C5F9129E7D96@zytor.com>
+References: <20240126134230.1166943-1-kirill.shutemov@linux.intel.com> <276aaeee-cb01-47d3-a3bf-f8fa2e59016c@intel.com> <dqiaimv3qqh77cfm2huzja4vsho3jls7vjmnwgda7enw633ke2@qiqrdnno75a7> <f5236e76-27d0-4a90-bde5-513ac9446184@intel.com> <dlhffyn7cccn5d4uvubggkrmtyxl4jodj5ukffafpsxsnqini3@5rcbybumab4c> <3a37eae3-9d3c-420c-a1c7-2d14f6982774@intel.com> <CC681F94-469C-4225-A075-C5F9129E7D96@zytor.com>
+Message-ID: <A9C23B76-490C-4DDA-A420-EA6F75E820EA@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3a37eae3-9d3c-420c-a1c7-2d14f6982774@intel.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 29, 2024 at 01:04:23PM -0800, Dave Hansen wrote:
-> On 1/29/24 12:26, Kirill A. Shutemov wrote:
-> >>> Do we care?
-> >> I want to make sure I understand the scenario:
-> >>
-> >>  1. We're running in a guest under TDX (or SEV-SNP)
-> >>  2. The VMM (or somebody) is attacking the guest by eating all the
-> >>     hardware entropy and RDRAND is effectively busted
-> >>  3. Assuming kernel-based panic_on_warn and WARN_ON() rdrand_long()
-> >>     failure, that rdrand_long() never gets called.
-> > Never gets called during attack. It can be used before and after.
-> > 
-> >>  4. Userspace is using RDRAND output in some critical place like key
-> >>     generation and is not checking it for failure, nor mixing it with
-> >>     entropy from any other source
-> >>  5. Userspace uses the failed RDRAND output to generate a key
-> >>  6. Someone exploits the horrible key
-> >>
-> >> Is that it?
-> > Yes.
-> 
-> Is there something that fundamentally makes this a VMM vs. TDX guest
-> problem?  If a malicious VMM can exhaust RDRAND, why can't malicious
-> userspace do the same?
-> 
-> Let's assume buggy userspace exists.  Is that userspace *uniquely*
-> exposed to a naughty VMM or is that VMM just added to the list of things
-> that can attack buggy userspace?
+On January 29, 2024 1:17:07 PM PST, "H=2E Peter Anvin" <hpa@zytor=2Ecom> wr=
+ote:
+>On January 29, 2024 1:04:23 PM PST, Dave Hansen <dave=2Ehansen@intel=2Eco=
+m> wrote:
+>>On 1/29/24 12:26, Kirill A=2E Shutemov wrote:
+>>>>> Do we care?
+>>>> I want to make sure I understand the scenario:
+>>>>
+>>>>  1=2E We're running in a guest under TDX (or SEV-SNP)
+>>>>  2=2E The VMM (or somebody) is attacking the guest by eating all the
+>>>>     hardware entropy and RDRAND is effectively busted
+>>>>  3=2E Assuming kernel-based panic_on_warn and WARN_ON() rdrand_long()
+>>>>     failure, that rdrand_long() never gets called=2E
+>>> Never gets called during attack=2E It can be used before and after=2E
+>>>=20
+>>>>  4=2E Userspace is using RDRAND output in some critical place like ke=
+y
+>>>>     generation and is not checking it for failure, nor mixing it with
+>>>>     entropy from any other source
+>>>>  5=2E Userspace uses the failed RDRAND output to generate a key
+>>>>  6=2E Someone exploits the horrible key
+>>>>
+>>>> Is that it?
+>>> Yes=2E
+>>
+>>Is there something that fundamentally makes this a VMM vs=2E TDX guest
+>>problem?  If a malicious VMM can exhaust RDRAND, why can't malicious
+>>userspace do the same?
+>>
+>>Let's assume buggy userspace exists=2E  Is that userspace *uniquely*
+>>exposed to a naughty VMM or is that VMM just added to the list of things
+>>that can attack buggy userspace?
+>
+>The concern, I believe, is that a TDX guest is vulnerable as a *victim*, =
+especially if the OS is being malicious=2E
+>
+>However, as you say a malicious user space including a conventional VM co=
+uld try to use it to attack another=2E The only thing we can do in the kern=
+el about that is to be resilient=2E
+>
+>Note that there is an option to the kernel to suspend boot until enough e=
+ntropy has been gathered that predicting the output of the entropy pool in =
+the kernel ought to be equivalent to breaking AES (in which case we have fa=
+r worse problems=2E) To harden the VM case in general perhaps we should con=
+sider RDRAND to have zero entropy credit when used as a fallback for RDSEED=
+=2E
+>
 
-This is good question.
+So as far as I understand, the uncore bus (at least at the time RDRAND/RDS=
+EED was designed) is a single-transaction bus; once a read transaction has =
+been accepted by the bus the bus is locked until the reply is sent (like PC=
+I=2E) As such, the RNG unit simply doesn't have to option of not returning =
+a response without holding the whole uncore bus locked=2E However, I believ=
+e that if another core is waiting for the bus, that request will be served =
+before the other core can return for more=2E
 
-VMM has control over when a VCPU gets scheduled and on what CPU which
-gives it tighter control over the target workload. It can make a
-difference if there's small window for an attack before RDRAND is
-functional again.
+If the RNG bit source is crippled for some reason to the point of being ne=
+ar failure, it is certainly possible for a livelock to happen, but at least=
+ as far as I understand the likelihood of that happening enough to cause 16=
+ failures in a row is so close to a total failure that it might be as well =
+treated as one=2E
 
-Admittedly, I don't find my own argument very convincing :)
+*Any* security sensitive application that doesn't take total RNG failure i=
+nto account is fundamentally broken=2E *Any* hardware random number generat=
+or is inherently an analog device, and as such has a nonzero probability of=
+ failure=2E It has an integrity monitor, but all it can do is say "no" and =
+not credit entropy, thereby slowing down and eventually stopping the unit (=
+even RDRAND has a minimum seeding frequency guarantee, unlike /dev/urandom=
+=2E)
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
