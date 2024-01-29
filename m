@@ -1,116 +1,260 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8335EE62
-	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 11:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5E75FEF9
+	for <linux-coco@lists.linux.dev>; Mon, 29 Jan 2024 12:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706526850; cv=none; b=gLDWNuQQJ7QfzJiCMhR657Yt117qYJmJwW8jSaQDhynYgJAPayHx7cZVB1KuKJSHPUq14EWg1P8aG2AyujVW5JxUmPnMQqTXH6a8Tw4uubQ4/K0nxEtC+J5uplYAad6j9xdlHgBc0rNnnZWUEsF6PdNVlru75YHewfM2dW+GYP4=
+	t=1706529618; cv=none; b=q6iaH1s2ooa9OEq5mujBNbqnBfcexf5ocJ52nl7NFfzLnUIsAclG81LAMmO8lMvdNnr+G6/xIPBL3DPupmlRFQQIEAWsUfZQr1Ivl3q+cql6FZOG5GLrxYM+C+Qb4wf9SQFLNvCB66bahDNXkL766fszjFVQekCWCe1qooD0JHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706526850; c=relaxed/simple;
-	bh=I4gxSa9YE8dZelntOrU+Hi4kAJP1ulsGJuomatELRgY=;
+	s=arc-20240116; t=1706529618; c=relaxed/simple;
+	bh=mhGFf7MGTE5UAJykdouzYWhk4A4r1a2TZMx7bqBDAL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xr5T1jhKGYNdnGg3Pm88sQayGVYgheJsU8r9PpBM5PXQJy5YPzCX2sYqYL5jm8Iwx5SL9G+7KIQdRykWJDd5Zo4RZdbAsX/xf+FvxI0Is4BQrQ5q22RvF3xM+V+W9M8L8A+jcUhxxOtT+3mAb77Cv8V3u+UKeOSRn+hxoWrJaZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLXdZQBX; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=VVBec265HIey2uPXgBuEYU9ogUlCXkDIntF5hq9lLPkyeYWerhDkey2F/p22nBY2SvFjopITtrNdNlAlfEfchRseAxNVlc8ha9n90aGTjl+X0SskWqaMP9TQsJhaQWrbxlDT4H8SroGjpTG5raAUE28aVf3SXwsNyzCpE9Edb6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IBierxaI; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLXdZQBX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706526848; x=1738062848;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I4gxSa9YE8dZelntOrU+Hi4kAJP1ulsGJuomatELRgY=;
-  b=PLXdZQBXrFbo25ZV2gOoOH//kXVUtu2SzVzV0ZFixR9XqZ5vVT+G5YeI
-   pvw9K14rSVc/i4GhlhPxkBqcuBzcFJvjwa/OkcFEb8NCKZktUnbmG0RYf
-   QAeeZPr3pYZoJL5ohKj6Vezxnk5tWZjWZF9SBalTJUz7UoekZ2TcA8H3j
-   UOoM0sOB8bZuNQg7q0i349wTEaX7LopG/O0FggThUwlLIb0ggH5sexeSv
-   HEW4o/S/5xWKlP5y29q9PwsJGaujuvWoITo6fisjfwtiqHkKxGFUn3VfT
-   jirAKJXFwCMBBBKa8w5Eu6YRJEEk1Z0yA4GIx4HN1fEH8OCSme83WDIhE
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="21448883"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="21448883"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2024 03:14:07 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="878044370"
-X-IronPort-AV: E=Sophos;i="6.05,227,1701158400"; 
-   d="scan'208";a="878044370"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 29 Jan 2024 03:14:02 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 29C46125; Mon, 29 Jan 2024 12:36:09 +0200 (EET)
-Date: Mon, 29 Jan 2024 12:36:09 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv6 10/16] x86/tdx: Convert shared memory back to private
- on kexec
-Message-ID: <r5logoyy46fztohkm6bjobomsrst2izbs2nsts4fegii2uswca@fovizly7y5ju>
-References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
- <20240124125557.493675-11-kirill.shutemov@linux.intel.com>
- <f0677a02-72ea-49e8-9499-18eca6b5e8d7@amd.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IBierxaI"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A8E7B40E0196;
+	Mon, 29 Jan 2024 12:00:12 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id O1PSSIUvSr7N; Mon, 29 Jan 2024 12:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1706529610; bh=/7xdwftFvU+K+fkB5/ftiK4NLEcLXN8V2ZAOrBtCZIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IBierxaIyAM4wVGGVRMEVa0DhSTk88Xh5/OsGgzc4yP+6lvF1kUD9VZKGAew+NHBk
+	 Q7kGzqLvTMr/cz9aNoicn2tPBb271lGceu6yMC3cXAwExtfCV7kF8VqTitg6j/sG6v
+	 oLJcAizi3PnbrH56dycJABb3hEU14dL5U02Li4+7Nc7eclV5FfDPpbMRXOokEF4WMh
+	 aA8YVFXNFx2WroM0cNQGlOH+9xU6gPwFBySl7FoIsVYslCfQg51BMFrYVyYuwrunM9
+	 +ftHYOc1z+qpU3qAsIUI5scOBlpibpkNiiuOIL6kF7C0BAFkXmuKf5sNowzEfPP7A7
+	 V/frA2kDd09a9fkvf18ND5bZ0UT0bvklhvTo6r0kID8oikyiKGNFFgW9v8lQeor+AC
+	 0N89Ed4xoAnVVZKSfKOZTMFcGRAV2+YeStzr2kEdj4BprulWSHFugZ2dUQNv8ALRRP
+	 0h7Cy0WCjKz3yqdnObG/x8fN6OVW5EPRjtH/oyymOa2RKAL8I6DksXWuR5Mc4igIAG
+	 OV8POWpWzWX1g04MaabkYiJfBVCA8egDSArYfvEXl2bIjTNdiKpu59WvZA7MFZ4qyH
+	 yHIbgrkCVe7vMaOO4/FnbijEXMg6/T+tQMWhqY0DwOGiMrVLaZqjh16+IrNNXnDYjk
+	 kStk+XZ13tqUQvqFgyhus5/0=
+Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AB5CF40E01B3;
+	Mon, 29 Jan 2024 11:59:33 +0000 (UTC)
+Date: Mon, 29 Jan 2024 12:59:28 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com
+Subject: Re: [PATCH v2 11/25] x86/sev: Adjust directmap to avoid inadvertant
+ RMP faults
+Message-ID: <20240129115928.GBZbeTIJUYivEMSonh@fat_crate.local>
+References: <20240126041126.1927228-1-michael.roth@amd.com>
+ <20240126041126.1927228-12-michael.roth@amd.com>
+ <20240126153451.GDZbPRG3KxaQik-0aY@fat_crate.local>
+ <20240126170415.f7r4nvsrzgpzcrzv@amd.com>
+ <20240126184340.GEZbP9XA13X91-eybA@fat_crate.local>
+ <20240126235420.mu644waj2eyoxqx6@amd.com>
+ <20240127114207.GBZbTsDyC3hFq8pQ3D@fat_crate.local>
+ <20240127154506.v3wdio25zs6i2lc3@amd.com>
+ <20240127160249.GDZbUpKW_cqRzdYn7Z@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <f0677a02-72ea-49e8-9499-18eca6b5e8d7@amd.com>
+In-Reply-To: <20240127160249.GDZbUpKW_cqRzdYn7Z@fat_crate.local>
 
-On Mon, Jan 29, 2024 at 04:24:09AM -0600, Kalra, Ashish wrote:
-> In case of SNP and crash/kdump case, we need to prevent the boot_ghcb being
-> converted to shared (in snp_kexec_unshare_mem()) as the boot_ghcb is
-> required to handle all I/O for disabling IO-APIC/lapic, hpet, etc., as the
-> enc_kexec_unshare_mem() callback is invoked before the apics, hpet, etc. are
-> disabled.
-> 
-> Is there any reason why enc_kexec_unshare_mem() callback is invoked in crash
-> case before the IO-APIC/lapic, hpet, etc. are shutdown/disabled ?
+On Sat, Jan 27, 2024 at 05:02:49PM +0100, Borislav Petkov wrote:
+> This function takes any PFN it gets passed in as it is. I don't care
+> who its users are now or in the future and whether they pay attention
+> what they pass into - it needs to be properly defined.
 
-Not really. Either way works for TDX. I've tested the patch below. Is it
-what you want?
+Ok, we solved it offlist, here's the final version I have. It has
+a comment explaining what I was asking.
 
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index 6585a5f2c2ba..3001f4857ed7 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -107,11 +107,6 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- 
- 	crash_smp_send_stop();
- 
--	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
--		x86_platform.guest.enc_kexec_stop_conversion(true);
--		x86_platform.guest.enc_kexec_unshare_mem();
--	}
--
- 	cpu_emergency_disable_virtualization();
- 
- 	/*
-@@ -129,6 +124,12 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- #ifdef CONFIG_HPET_TIMER
- 	hpet_disable();
- #endif
-+
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
-+		x86_platform.guest.enc_kexec_stop_conversion(true);
-+		x86_platform.guest.enc_kexec_unshare_mem();
-+	}
-+
- 	crash_save_cpu(regs, safe_smp_processor_id());
+---
+From: Michael Roth <michael.roth@amd.com>
+Date: Thu, 25 Jan 2024 22:11:11 -0600
+Subject: [PATCH] x86/sev: Adjust the directmap to avoid inadvertent RMP faults
+
+If the kernel uses a 2MB or larger directmap mapping to write to an
+address, and that mapping contains any 4KB pages that are set to private
+in the RMP table, an RMP #PF will trigger and cause a host crash.
+
+SNP-aware code that owns the private PFNs will never attempt such
+a write, but other kernel tasks writing to other PFNs in the range may
+trigger these checks inadvertently due to writing to those other PFNs
+via a large directmap mapping that happens to also map a private PFN.
+
+Prevent this by splitting any 2MB+ mappings that might end up containing
+a mix of private/shared PFNs as a result of a subsequent RMPUPDATE for
+the PFN/rmp_level passed in.
+
+Another way to handle this would be to limit the directmap to 4K
+mappings in the case of hosts that support SNP, but there is potential
+risk for performance regressions of certain host workloads.
+
+Handling it as-needed results in the directmap being slowly split over
+time, which lessens the risk of a performance regression since the more
+the directmap gets split as a result of running SNP guests, the more
+likely the host is being used primarily to run SNP guests, where
+a mostly-split directmap is actually beneficial since there is less
+chance of TLB flushing and cpa_lock contention being needed to perform
+these splits.
+
+Cases where a host knows in advance it wants to primarily run SNP guests
+and wishes to pre-split the directmap can be handled by adding
+a tuneable in the future, but preliminary testing has shown this to not
+provide a signficant benefit in the common case of guests that are
+backed primarily by 2MB THPs, so it does not seem to be warranted
+currently and can be added later if a need arises in the future.
+
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240126041126.1927228-12-michael.roth@amd.com
+---
+ arch/x86/virt/svm/sev.c | 86 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+index c0b4c2306e8d..8da9c5330ff0 100644
+--- a/arch/x86/virt/svm/sev.c
++++ b/arch/x86/virt/svm/sev.c
+@@ -368,6 +368,82 @@ int psmash(u64 pfn)
  }
+ EXPORT_SYMBOL_GPL(psmash);
  
++/*
++ * If the kernel uses a 2MB or larger directmap mapping to write to an address,
++ * and that mapping contains any 4KB pages that are set to private in the RMP
++ * table, an RMP #PF will trigger and cause a host crash. Hypervisor code that
++ * owns the PFNs being transitioned will never attempt such a write, but other
++ * kernel tasks writing to other PFNs in the range may trigger these checks
++ * inadvertently due a large directmap mapping that happens to overlap such a
++ * PFN.
++ *
++ * Prevent this by splitting any 2MB+ mappings that might end up containing a
++ * mix of private/shared PFNs as a result of a subsequent RMPUPDATE for the
++ * PFN/rmp_level passed in.
++ *
++ * Note that there is no attempt here to scan all the RMP entries for the 2MB
++ * physical range, since it would only be worthwhile in determining if a
++ * subsequent RMPUPDATE for a 4KB PFN would result in all the entries being of
++ * the same shared/private state, thus avoiding the need to split the mapping.
++ * But that would mean the entries are currently in a mixed state, and so the
++ * mapping would have already been split as a result of prior transitions.
++ * And since the 4K split is only done if the mapping is 2MB+, and there isn't
++ * currently a mechanism in place to restore 2MB+ mappings, such a check would
++ * not provide any usable benefit.
++ *
++ * More specifics on how these checks are carried out can be found in APM
++ * Volume 2, "RMP and VMPL Access Checks".
++ */
++static int adjust_direct_map(u64 pfn, int rmp_level)
++{
++	unsigned long vaddr;
++	unsigned int level;
++	int npages, ret;
++	pte_t *pte;
++
++	/*
++	 * pfn_to_kaddr() will return a vaddr only within the direct
++	 * map range.
++	 */
++	vaddr = (unsigned long)pfn_to_kaddr(pfn);
++
++	/* Only 4KB/2MB RMP entries are supported by current hardware. */
++	if (WARN_ON_ONCE(rmp_level > PG_LEVEL_2M))
++		return -EINVAL;
++
++       if (!pfn_valid(pfn))
++               return -EINVAL;
++
++       if (rmp_level == PG_LEVEL_2M &&
++           (!IS_ALIGNED(pfn, PTRS_PER_PMD) ||
++            !pfn_valid(pfn + PTRS_PER_PMD - 1)))
++		return -EINVAL;
++
++	/*
++	 * If an entire 2MB physical range is being transitioned, then there is
++	 * no risk of RMP #PFs due to write accesses from overlapping mappings,
++	 * since even accesses from 1GB mappings will be treated as 2MB accesses
++	 * as far as RMP table checks are concerned.
++	 */
++	if (rmp_level == PG_LEVEL_2M)
++		return 0;
++
++	pte = lookup_address(vaddr, &level);
++	if (!pte || pte_none(*pte))
++		return 0;
++
++	if (level == PG_LEVEL_4K)
++		return 0;
++
++	npages = page_level_size(rmp_level) / PAGE_SIZE;
++	ret = set_memory_4k(vaddr, npages);
++	if (ret)
++		pr_warn("Failed to split direct map for PFN 0x%llx, ret: %d\n",
++			pfn, ret);
++
++	return ret;
++}
++
+ /*
+  * It is expected that those operations are seldom enough so that no mutual
+  * exclusion of updaters is needed and thus the overlap error condition below
+@@ -384,11 +460,16 @@ EXPORT_SYMBOL_GPL(psmash);
+ static int rmpupdate(u64 pfn, struct rmp_state *state)
+ {
+ 	unsigned long paddr = pfn << PAGE_SHIFT;
+-	int ret;
++	int ret, level;
+ 
+ 	if (!cpu_feature_enabled(X86_FEATURE_SEV_SNP))
+ 		return -ENODEV;
+ 
++	level = RMP_TO_PG_LEVEL(state->pagesize);
++
++	if (adjust_direct_map(pfn, level))
++		return -EFAULT;
++
+ 	do {
+ 		/* Binutils version 2.36 supports the RMPUPDATE mnemonic. */
+ 		asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFE"
+@@ -398,7 +479,8 @@ static int rmpupdate(u64 pfn, struct rmp_state *state)
+ 	} while (ret == RMPUPDATE_FAIL_OVERLAP);
+ 
+ 	if (ret) {
+-		pr_err("RMPUPDATE failed for PFN %llx, ret: %d\n", pfn, ret);
++		pr_err("RMPUPDATE failed for PFN %llx, pg_level: %d, ret: %d\n",
++		       pfn, level, ret);
+ 		dump_rmpentry(pfn);
+ 		dump_stack();
+ 		return -EFAULT;
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.43.0
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
