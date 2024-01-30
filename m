@@ -1,153 +1,63 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DDC5C8B
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 15:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706628806; cv=none; b=DSuteE/PqVBJJUNy8GPBLnb+NWVeDcJy9Hm40cG2/DQfria4jBcwO+xXEnWp04MX/SO8oFPrMG3+r0KgpQRDJyYHDLxBS7jalriP+ezUpsa7MQ75/t7e4AvE3sMRr26TgMUTtQxM6UuiSHJPv/XV9NaLDqYF1T4VPl5yjco3H2k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706628806; c=relaxed/simple;
+	bh=RDJuywBa8mKM0Mz/nW7YLrR/sd7UWiuAdnDmFhWOzBo=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To; b=MAl0uslxf/fHR2xgBXvWIKGvqMjpnCNHKlVdChmbz6SX46navmNlgAEeQSYLm3avSN24GykGagOaN17rn4PV2jUodHQTgh904Yn/cfkB66B3v3Ya/C2MA2rfaZLwMUMn/NLjhEOqRAMQEDFVglTpcdXSW1eNldWYlz0ASvsIBbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=tyFdzb8t; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="tyFdzb8t"
+Received: from smtpclient.apple (p200300f6af22b000e03f7ecb16e15d4b.dip0.t-ipconnect.de [IPv6:2003:f6:af22:b000:e03f:7ecb:16e1:5d4b])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE835129A7F
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 15:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706628061; cv=none; b=IBl6l9JhRc8P9GT5AdaY922zCXnuvFbEcGfjmqPqfOvMBpoGoOzyuU3hDPsuiBtuAqWYLoSQuDREKOENRCYetQOCmJvCNGHd5iDET/dIG2OSPPj9PeqJjoFy7LD6RivRIxBMqdAlszP7+ARg3VNk+zc/OCOxs1K7BQtLUtUjWfc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706628061; c=relaxed/simple;
-	bh=fnaHevZn3AnWviCVrRshdG83k6cks6roj4RtEKpfX24=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=Rt/3Iv2KiM9mt7mW1MxsEZaCJeTVWWGKa+pQ7GgsMjHB77RhHyBk+rC4VN7xYSXnNPuKzXY/7ZssbWSGnWxdbB0A+i1xRZ36wi4Ohz1ALyp8PF/vz9EB9wtIbwPA5C9GuNiHVKOpX/8MlA2y97v+F79fBPbH5DQBXDQJxViM5cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=IZTMGvJa reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="IZTMGvJa"
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 40UFKPTL2866718
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 30 Jan 2024 07:20:25 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 40UFKPTL2866718
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024011201; t=1706628026;
-	bh=1ilVVk8Q8DP7NWzjjOV5yV70ZqlWK9unRMrjNDIK6u0=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=IZTMGvJa3wcmHi53UyzRx5CifOcNPjraHJfs5CMoswcufrmNCCKj0oQZ5iEt/NPo9
-	 8Uv8TCEAF6xMJYqBXkt9tkxUqWfkHmeUIMrCFhQgdX4hzYp7Eu6/CiK4e9fmNTiTxf
-	 FyQ1qrDdP7N9aVGDlrc5Hy4Sfxze7Dkt2GMrlx5pr6PlJlEUMqTXQDcu/j38hsPIet
-	 uOw2BFjESMFE98xBEiKEtLm9FM4jUCx1AoWjlX8L8AtaGJfKP/GXL00PUwskj6854R
-	 GP4yNV48PAc49ySYNkL3oK5M+VZe0Gy0SeYatRx+TtTAbW++KxSTNjqH1dhA9Erk/l
-	 5blYBbE1adaWQ==
-Date: Tue, 30 Jan 2024 07:20:23 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 1/2] x86/random: Retry on RDSEED failure
-User-Agent: K-9 Mail for Android
-In-Reply-To: <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <CAHmME9pOt=uEmuBzBpgUHw9DqAD2FZTZ3v53AOZbQ3Cd2p97xQ@mail.gmail.com> <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
-Message-ID: <1C8939C0-BC58-4BE9-95B8-4B6F4A36115D@zytor.com>
+	by mail.8bytes.org (Postfix) with ESMTPSA id BCDE11E1FC3;
+	Tue, 30 Jan 2024 16:33:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1706628796;
+	bh=RDJuywBa8mKM0Mz/nW7YLrR/sd7UWiuAdnDmFhWOzBo=;
+	h=From:Subject:Date:To:From;
+	b=tyFdzb8tzoh5rX6iCY0IEFIOiQ4n9iVRCmb/mjh54Ikt7toULPlk2slVy5ABw0Ubo
+	 tUFMpN5Vx7EmqEyzGMZ5+f3nOBVdgKJ3CzAV9rvHOEbQOM4R5ifH+SNdCVcHBQJypi
+	 Pmm0Oy5dFl2qmIVjUYrqWoGaNxJjppXKmu3o7rkjSbfojMYUK0p2pc7UztIbKTDBGW
+	 RHAyU0j3ddzFOZNjKatrlsoxtfp1DClpp1nGcxYUR1jHGAiVy67Cnep86IBdxaCp9K
+	 yA4KfuS7B5NEKtElg0f2MeNwaMdvOKYDGcktgvHbk3J+0oi+c5WUqGLybE15XoaL/M
+	 c1j6VmTZAwBWQ==
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: SVSM Development Call Jan. 31st
+Message-Id: <F0CA63AD-EE1A-41E8-8F2D-6181BF4CEB7E@8bytes.org>
+Date: Tue, 30 Jan 2024 16:33:06 +0100
+To: svsm-devel@coconut-svsm.dev,
+ linux-coco@lists.linux.dev
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
-On January 30, 2024 5:10:20 AM PST, "Reshetova, Elena" <elena=2Ereshetova@i=
-ntel=2Ecom> wrote:
->=20
->> Hi Kirill,
->>=20
->> I've been following the other discussion closely thinking about the
->> matter, but I suppose I'll jump in here directly on this patch, if
->> this is the approach the discussion is congealing around=2E
->>=20
->> A comment below:
->>=20
->> On Tue, Jan 30, 2024 at 9:30=E2=80=AFAM Kirill A=2E Shutemov
->> <kirill=2Eshutemov@linux=2Eintel=2Ecom> wrote:
->> >  static inline bool __must_check rdseed_long(unsigned long *v)
->> >  {
->> > +       unsigned int retry =3D RDRAND_RETRY_LOOPS;
->> >         bool ok;
->> > -       asm volatile("rdseed %[out]"
->> > -                    CC_SET(c)
->> > -                    : CC_OUT(c) (ok), [out] "=3Dr" (*v));
->> > -       return ok;
->> > +
->> > +       do {
->> > +               asm volatile("rdseed %[out]"
->> > +                            CC_SET(c)
->> > +                            : CC_OUT(c) (ok), [out] "=3Dr" (*v));
->> > +
->> > +               if (ok)
->> > +                       return true;
->> > +       } while (--retry);
->> > +
->> > +       return false;
->> >  }
->>=20
->> So, my understanding of RDRAND vs RDSEED -- deliberately leaving out
->> any cryptographic discussion here -- is roughly that RDRAND will
->> expand the seed material for longer, while RDSEED will mostly always
->> try to sample more bits from the environment=2E AES is fast, while
->> sampling is slow, so RDRAND gives better performance and is less
->> likely to fail, whereas RDSEED always has to wait on the hardware to
->> collect some bits, so is more likely to fail=2E
->
->The internals of Intel DRBG behind RDRAND/RDSEED has been publicly
->documented, so the structure is no secret=2E Please see [1] for overall
->structure and other aspects=2E So, yes, your overall understanding is cor=
-rect
->(there are many more details though)=2E=20
->
->[1] https://www=2Eintel=2Ecom/content/www/us/en/developer/articles/guide/=
-intel-digital-random-number-generator-drng-software-implementation-guide=2E=
-html
->
->
->>=20
->> For that reason, most of the usage of RDRAND and RDSEED inside of
->> random=2Ec is something to the tune of `if (!rdseed(out)) rdrand(out);`=
-,
->> first trying RDSEED but falling back to RDRAND if it's busy=2E That
->> still seems to me like a reasonable approach, which this patch would
->> partly undermine (in concert with the next patch, which I'll comment
->> on in a follow up email there)=2E
->
->I agree that for the purpose of extracting entropy for Linux RNG falling
->back to RDRAND (current behavior) is perfectly ok, so I think you are doi=
-ng
->the right thing=2E However, in principle it is not always the case, there=
- are
->situations when a fallback to RDRAND should not be used, but it is also
->true that the user of this interface should know/understand this situatio=
-n=2E=20
->
->>=20
->> So maybe this patch #1 (of 2) can be dropped?
->
->Before we start debating this patchset, what is your opinion on the origi=
-nal
->problem we raised for CoCo VMs when both RDRAND/RDSEED are made to
->fail deliberately?=20
->
->Best Regards,
->Elena=2E
->
->
 
-I have a real concern with this=2E We already have the option to let the e=
-ntropy pool fill before the boot can proceed=2E This would have the risk of=
- massively increasing the interrupt latency for what will be retried anyway=
-=2E
+Hi all,
+
+Just again a call for agenda items for tomorrow=E2=80=99s SVSM =
+development call. I have one item to cover among the usual round of =
+updates:
+
+* Licensing discussion; Moving from Apache-2.0 OR MIT -> MIT-only
+
+If you have additional topics to discuss, please let me know.
+
+Hope to see you all there!
+
+Regards,
+
+J=C3=B6rg=
