@@ -1,60 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8498654F94;
-	Tue, 30 Jan 2024 15:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542397F7CF
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 15:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706627546; cv=none; b=BUnIdP45dSjY3qeXADmUyETphwFgMbKGTzR88trg9iQ7leFRGWdJmi1bxJhjUe9e6veykbg2ltXF76Vw8gtDoI2mYlAn4FOFbRqEXU3qwZT1oP3QyTf4yFMIYXNiJC13Qwwu4TaY9E+uL/TZ/ZZC5Z9XKRPTIKjqZ2EZUyF5Ubs=
+	t=1706627731; cv=none; b=aJHWZn7r1MeFY8eP15qtVpD1FH+i8pHVWYL4gPcMQ/0+k68nyhJ03u1l4gH2bRXJVFOOgChKr6VSlBWZ1J+aeDGXsJwsXF4EKfUr/5CluMlYUb2S26uPOPbDcf1ga7q15bSMiWfnUAa/5dXohH5BWtL1OCSeTX/AML9ITSueKJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706627546; c=relaxed/simple;
-	bh=mND0/asZNEjOD27agRTV1UOdcbQ9NaBVstFsI7+cWZc=;
+	s=arc-20240116; t=1706627731; c=relaxed/simple;
+	bh=cg4Vqit6KxU2rQTAj377CjGsVM4isPa7zNpJYoTP4as=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gVxPqTc4Gnm/R6QuTzGBIvJ3hH+sly0Bq9kNBNf8YQGtHVe8TBnc3HmP7WOsPx+TRpEsy2DoZLBSaK7WKE7ADWOIXQIy8qedV+tLIQgBBGwbbf+utHugY2aIxY75OpUHFjjbMdT1g597nhJ4ZE+W6cngA8ctVuNhkxntxIQe/Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=fYHyC8VM; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=n+mszjIHAAGcKj5LFARssAkS5BFaqTFhXnghPs45F3kujLxkAOhuSdsQKc65Q4TesFDK3RaLWmXTm5d4yQ10BMB4dHP03uFKzRJQkIRJdrhqV49reOLDwN20GEybku6hl+QSbQtrj+4HHEt69Pc5x6UK7dKsO8lq8QNo+ey2Hjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A/LvQMKK; arc=none smtp.client-ip=192.55.52.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fYHyC8VM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559EEC433F1;
-	Tue, 30 Jan 2024 15:12:24 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fYHyC8VM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1706627542;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CE+dHfwhchbF76+8SdQnvFtWXgv6n6pDLWAAkhWYuhY=;
-	b=fYHyC8VMnKFjridhhmbE30U+37ezIZg1lnRsT+RTZdNcyK5/Io9NCQCkOSJyRltBfKOyMD
-	KVpaLvYMLJdKrLlVMtcBchYysH98nDW0OLV8rn9rVtcZQ/X89q0j/6WTerC6UAcLQ9Kvfa
-	T20Ef0+WgIQ0av4WyqHgdlyqszj3uYQ=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c91b9cdd (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Tue, 30 Jan 2024 15:12:22 +0000 (UTC)
-Date: Tue, 30 Jan 2024 16:12:22 +0100
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	"Nakajima, Jun" <jun.nakajima@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Message-ID: <ZbkR1qGl3_qy_tNs@zx2c4.com>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
- <CAHmME9pOt=uEmuBzBpgUHw9DqAD2FZTZ3v53AOZbQ3Cd2p97xQ@mail.gmail.com>
- <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9qMO7=RDR60bKJvpDTRokcKed_i0+7BbFD53_7o2OJ6-g@mail.gmail.com>
- <ZbkLBwLlTNMFZ-2B@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A/LvQMKK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706627729; x=1738163729;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=cg4Vqit6KxU2rQTAj377CjGsVM4isPa7zNpJYoTP4as=;
+  b=A/LvQMKKosaoNYic0i05z2Ua9dRzxELSBlZrPPtYhlBI6ObUbKJwtbWe
+   7g968SEiVYVy6x4yEhQDXp/FTF7YiGvOanusgEFMJLnz1Ey3yImJs9Tox
+   2nDM6NlYUgBVzYLcLsmZDi50Gw+3NuLdnUCgDKjI28xfm5Fo6+y7AftmG
+   n6lHXF7gToG6uCkctAGGg19NXk1M1k3j67YhQ+6y0VDd49Bku9Onlu8GE
+   J+x08bbUaRtW2kUjAqr1Ic2YrgdcaeKIMC0CsOEi5+JqM/xZcxHY6TDEA
+   TyNfqdJio/O6fv0BpITKbkUIHPKsqJQMvNsJy2dZhjKWwPcOckUKGFHFG
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="434482029"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
+   d="scan'208";a="434482029"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 07:15:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="737804714"
+X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
+   d="scan'208";a="737804714"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga003.jf.intel.com with ESMTP; 30 Jan 2024 07:15:22 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 5FA15DE; Tue, 30 Jan 2024 17:15:21 +0200 (EET)
+Date: Tue, 30 Jan 2024 17:15:21 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
+	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
+	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv6 00/16] x86/tdx: Add kexec support
+Message-ID: <qj3arfigftoolcdptm2yzqwufs6ywp2snqme5wknkt3odkon45@h76u2hnrswlq>
+References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
+ <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com>
+ <g7jh422ild6c23hjxvf7q2xtygkumbpynz4hcops7nvg5izvpp@r3oyhvssph2o>
+ <CABgObfZiyx8hRsD37xZq5TNs9sRq48vLUxbOKa=HZ1vcr67sWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -64,41 +69,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZbkLBwLlTNMFZ-2B@redhat.com>
+In-Reply-To: <CABgObfZiyx8hRsD37xZq5TNs9sRq48vLUxbOKa=HZ1vcr67sWQ@mail.gmail.com>
 
-On Tue, Jan 30, 2024 at 02:43:19PM +0000, Daniel P. Berrangé wrote:
-> On Tue, Jan 30, 2024 at 03:06:14PM +0100, Jason A. Donenfeld wrote:
-> > Is that an accurate summary? If it is, then the actual problem is that
-> > the hardware provided to solve this problem doesn't actually solve it
-> > that well, so we're caught deciding between guest-guest DoS (some
-> > other guest on the system uses all RDRAND resources) and cryptographic
-> > failure because of a malicious host creating a deterministic
-> > environment.
+On Tue, Jan 30, 2024 at 03:59:34PM +0100, Paolo Bonzini wrote:
+> On Tue, Jan 30, 2024 at 3:34 PM Kirill A. Shutemov
+> <kirill.shutemov@linux.intel.com> wrote:
+> >
+> > On Tue, Jan 30, 2024 at 02:43:15PM +0100, Paolo Bonzini wrote:
+> > > On 1/24/24 13:55, Kirill A. Shutemov wrote:
+> > > > The patchset adds bits and pieces to get kexec (and crashkernel) work on
+> > > > TDX guest.
+> > > >
+> > > > The last patch implements CPU offlining according to the approved ACPI
+> > > > spec change poposal[1]. It unlocks kexec with all CPUs visible in the target
+> > > > kernel. It requires BIOS-side enabling. If it missing we fallback to booting
+> > > > 2nd kernel with single CPU.
+> > > >
+> > > > Please review. I would be glad for any feedback.
+> > >
+> > > Hi Kirill,
+> > >
+> > > I have a very basic question: is there a reason why this series does not
+> > > revert commit cb8eb06d50fc, "x86/virt/tdx: Disable TDX host support when
+> > > kexec is enabled"?
+> >
+> > My patchset enables kexec for TDX guest. The commit you refer blocks kexec
+> > for host. TDX host and guest have totally different problems with handling
+> > kexec. Kai looks on how to get host kexec functional.
 > 
-> In a CoCo VM environment, a guest DoS is not a unique threat
-> scenario, as it is unrelated to confidentiality. Ensuring
-> fair subdivision of resources between competeing guests is
-> just a general VM threat. There are many easy ways a host
-> admin can stop a guest making computational progress. Simply
-> not scheduling the guest vCPU threads is one. CoCo doesn't
-> try to solve this problem.
+> Yeah, that was right there in the cover letter (and I should have
+> gotten a clue from the many references to CC_* constants...). Somebody
+> pointed me to this series as "the TDX kexec series from Intel" and I
+> had some tunnel vision issues. Sorry for the noise!
 > 
-> Preserving confidentiality is the primary aim of CoCo.
-> 
-> IOW, if the guest boot is stalled because the kernel is spinning
-> waiting on RDRAND to return data, that's fine. If the kernel
-> panics after "n" RDRAND failures in a row that's fine too. They
-> are both just yet another DoS scenario. 
-> 
-> If the kernel ignores the RDRAND failure and lets it boot with
-> degraded RNG state there were susceptible to attacks, that would
-> not be OK for CoCo. 
+> But since I have your attention, do you have a pointer to the
+> corresponding edk2 series?
 
-Yea, that's why I said "we're caught deciding..." One case is a DoS that
-would affect all VMs, so while one guest preventing new guests from
-booting seems like not a CoCo problem, yes, it is still a problem.
+Relevant code can be found here:
 
-At least in theory. And in practice this is easy with RDSEED too. In
-practice, could you actually indefinably starve RDRAND between guests?
-Is this pretty easy to do with a little tinkering, or is this a
-practically impossible DoS vector? I don't actually know.
+https://github.com/tianocore/edk2-staging/commits/tdvf-kexec/
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
