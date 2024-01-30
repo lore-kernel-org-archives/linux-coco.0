@@ -1,102 +1,231 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15086AE6
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 16:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860D8823AA
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 16:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706631647; cv=none; b=Gx7ykzJTb3xsx+Fo6yHdLQqsyepm1pFp9q/cxTAemigjX5RQrANfKPS5U/fpXk6hX/DCkMlWo8UIfVT2haVoEF1khtl3zz8IweEF+FdhB/y4iRzaDliN6nYmhlqMch64H0fQRP0/CethT0HMG0FwjaxzRoGQ6SQRz+32MyUhMug=
+	t=1706632991; cv=none; b=gQUl/A+pznpBVbPuoAk2Iwy4C3JbbqqlrwiYwwzTIrAZY43NthwMXW1+sm7yttRFOk5XUXZCuuw5AeqFy2du7maCCRcZe5uVmjEDZMXdZjw1gC0BWQbcXGHEdQvir20yq1gcyiZmroCOKMOBHWvaSEDI0rqukvv4SdmQ0wsl2QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706631647; c=relaxed/simple;
-	bh=9dqoKUzfPnS0ouqZmUsutY8WSQ36Ew7hhDXp38tOQgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RG2xbvybelyM1vOKiLoZUQsNWl2DHtGgBh0OgS0bAbIo4pd93I9QnKGG6ScyD1ioJS97Q4RPsTp3zfQ5Cq/AJ5ih+U4omsqLGDQphNG4DyiQA7+OzWjjyjr64sA3jRucv33vUKCfBEVQMSUAwTbr/ytaCl6TpBwFwBY4kiTCwwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RFQwU6NC; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1706632991; c=relaxed/simple;
+	bh=Kb5PrKiPOgqplZ89pZOWEqk6h7d4LV1jujZTZpIvh4k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y64IH2mg/squJDs/R2VR0CZW64x7N9ZoFR6fEeWopALCu1gV0uEKJQeCrKDLVzvyd7GToRS0VCWXzmUEfRsUE+IQDMnkpYtRfy8mBo9vra8g9uxFZ65NJSX4IAvLYlF8/SvbqU/3fkJ0t+q8/QkmWEbGpYKcHSzr+mYa7uOIP60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SxCv7gQO; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RFQwU6NC"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 161F040E01B3;
-	Tue, 30 Jan 2024 16:20:41 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7yVcVDOXyjWb; Tue, 30 Jan 2024 16:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1706631639; bh=alWf9PlcGUIY347NLIw+uw/YZFl5yuvijufcFHJXHac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RFQwU6NCK40raUA31PWhXPZKfjdfhCWWZXv8repbMJaj2d3tzBIwSyhuY0zVFuL/t
-	 nGJHjh6F7ujehycrE+kCrMDQZbCn6ouDqp23GJ73Fe4jnIX5WaGDIQQFF/qUtf/Ujt
-	 /nknHKZZogm7FogSq7ryuDZobR5h0c7ThyoD7NY9hhxHGvpjhDbEKpk8pPCyPPguQL
-	 dIdj3AzixiVWYkSS78kQTyZ0yFwnUF5RCxkLDV8R8X88vHhSXKgLLF1ksUq8pnIGKv
-	 2fLvgnufs9u8Ml0SxAJughMKYrDg13dD+ul8HQPKYgJvWhL7j+BAW0DSrfUwG1XVY7
-	 /By15uTzDxBIdER5lNvw1JI0VM9rMiPJeT7rt2TWOOD7K8H3ZScAj+wzJTCs1wVW5j
-	 LvnDz5D4NIMP7QMiItg4PTaMZZLKAjVSpDES8TEw/8h7+7k3xyGQCQPYYcSeAYYh79
-	 VbAFiHvz0xEHOt1rmkwfNS/TqeT0R1fjx7XRHgoL6l4SbRbWj0DJY6kr1iuelg/9Xn
-	 /nCrkyaNKsNK3+BXCCFQWjRCcVWbPEV6YUZxfgY9IXU3hb9lZY6rBroNNLIcA9CXq5
-	 Sotj8mLiXilxw9pP/mTw6O34JotnPspFg0YTCAVMGQ147AKOYj5YSRCf95TC47qAFT
-	 tFPrc8bdrPIOARXme6y93Rgc=
-Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B083840E00C5;
-	Tue, 30 Jan 2024 16:20:00 +0000 (UTC)
-Date: Tue, 30 Jan 2024 17:19:55 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Michael Roth <michael.roth@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
-	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
-	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
-	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
-	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
-	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
-	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
-	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
-	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
-	pankaj.gupta@amd.com, liam.merwick@oracle.com
-Subject: Re: [PATCH v2 00/25] Add AMD Secure Nested Paging (SEV-SNP)
- Initialization Support
-Message-ID: <20240130161955.GFZbkhq2RDUrW5-NvV@fat_crate.local>
-References: <20240126041126.1927228-1-michael.roth@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SxCv7gQO"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-783d4b3a026so325581585a.1
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 08:43:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706632988; x=1707237788; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=afivU5ukzroUUjSv6dIA62TuQmhqdbJqObxkN1yxecQ=;
+        b=SxCv7gQO3WOLffcU2taoNslUowV/yUDSwG8AJGY9ueyMoiMtIIBvgKMrcmlcCwBD3Q
+         2StU2/CuuFWfEKx6mmZcNgVIZBDfhC66ve62aoC99cd/tJfKVNVvNS1MkhviNeZn8KWA
+         r+ugWdCjYCr3yXiqp2WHVDZbBzx6O8gfHIZIlGp2sKWHQD3Gs5w/j0IM+l0BbbDD5LiF
+         FmHk1ezq5WOvRdjleiwaoWyuWeZokOR2ZrMV0vpaJIItsQaK6FkbJl17+gD28fr/P8+d
+         aJKjz97v+NuCMBkdfQHOhObqn42J/ULJuj3PgZnmrVAPn3aBVvVqZWVCQhyVDsp0cnPn
+         B37w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706632988; x=1707237788;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=afivU5ukzroUUjSv6dIA62TuQmhqdbJqObxkN1yxecQ=;
+        b=R9p2WppuByGA46lAs5I6BkqGb20d7iFXFCsJYJKD830hX/a5krItiRrM5hnh03jkOA
+         XqUvcCWKzs19z2uH+/2iCWU4Yfq2RWEqMwN2VqBmef/1eepc84pQDozpCqO84jb4zOjr
+         u4hkIoyeJc1j0v1PnXynC6h8eRIdSvHsq3LYIdL4M2nlrfTkD0wnbsmQqBbjHNjEY0qB
+         Orjf74LFuUV5YH8xgLXYw7/HA9ghDCc2b3RSdo9d7kg7CIYRvQbIrzZIB4503hywTTwR
+         76jvOFdgOnezREfQbP9fB/ugGRpg+Ks6p0golBp7f8B+YhDQ7p1hA9Jg9qmBZf32bvM1
+         Gp4Q==
+X-Gm-Message-State: AOJu0YyORFzL+H2bqTz38LeByZ+JhD1lPRJONuuZArKtEIpYAhvuq+da
+	XRcNcDiGMS/zhb9pQZVaVfv40yI/9h4iO0EEr7zCs5Q2F4i3dsbM1B477HHHHpM50RZyeeYad9S
+	VaWhwp+jcWm97k53+wgx5OmJ+Us05dx2NicAe
+X-Google-Smtp-Source: AGHT+IGCcD7PVaq/cz09ZQVjo9JbEtUXpAooRm0ZDYVkjI4/fdo/VvkMg1PDcsBy+2LIz+Ukv1U3YQPLDOpR5Jivfxc=
+X-Received: by 2002:a05:6214:194e:b0:685:4bd7:8bb3 with SMTP id
+ q14-20020a056214194e00b006854bd78bb3mr9344578qvk.2.1706632987877; Tue, 30 Jan
+ 2024 08:43:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240126041126.1927228-1-michael.roth@amd.com>
+References: <20240112055251.36101-1-vannapurve@google.com>
+In-Reply-To: <20240112055251.36101-1-vannapurve@google.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Tue, 30 Jan 2024 22:12:54 +0530
+Message-ID: <CAGtprH9FA3-RetE=6i7ezxfV0qEV-8z3HLgPEPY=pzuxSiOD+w@mail.gmail.com>
+Subject: Re: [RFC V1 0/5] x86: CVMs: Align memory conversions to 2M granularity
+To: x86@kernel.org, linux-kernel@vger.kernel.org, hch@lst.de, 
+	petrtesarik@huaweicloud.com, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	m.szyprowski@samsung.com, robin.murphy@arm.com
+Cc: pbonzini@redhat.com, rientjes@google.com, seanjc@google.com, 
+	erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, peterx@redhat.com, vkuznets@redhat.com, 
+	dmatlack@google.com, pgonda@google.com, michael.roth@amd.com, 
+	kirill@shutemov.name, thomas.lendacky@amd.com, linux-coco@lists.linux.dev, 
+	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, andrew.jones@linux.dev, 
+	corbet@lwn.net, rostedt@goodmis.org, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 25, 2024 at 10:11:00PM -0600, Michael Roth wrote:
-> This patchset is also available at:
-> 
->   https://github.com/amdese/linux/commits/snp-host-init-v2
-> 
-> and is based on top of linux-next tag next-20240125
+On Fri, Jan 12, 2024 at 11:22=E2=80=AFAM Vishal Annapurve <vannapurve@googl=
+e.com> wrote:
+>
+> Goal of this series is aligning memory conversion requests from CVMs to
+> huge page sizes to allow better host side management of guest memory and
+> optimized page table walks.
+>
+> This patch series is partially tested and needs more work, I am seeking
+> feedback from wider community before making further progress.
+>
+> Background
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Confidential VMs(CVMs) support two types of guest memory ranges:
+> 1) Private Memory: Intended to be consumed/modified only by the CVM.
+> 2) Shared Memory: visible to both guest/host components, used for
+> non-trusted IO.
+>
+> Guest memfd [1] support is set to be merged upstream to handle guest priv=
+ate
+> memory isolation from host usersapace. Guest memfd approach allows follow=
+ing
+> setup:
+> * private memory backed using the guest memfd file which is not accessibl=
+e
+>   from host userspace.
+> * Shared memory backed by tmpfs/hugetlbfs files that are accessible from
+>   host userspace.
+>
+> Userspace VMM needs to register two backing stores for all of the guest
+> memory ranges:
+> * HVA for shared memory
+> * Guest memfd ranges for private memory
+>
+> KVM keeps track of shared/private guest memory ranges that can be updated=
+ at
+> runtime using IOCTLs. This allows KVM to back the guest memory using eith=
+er HVA
+> (shared) or guest memfd file offsets (private) based on the attributes of=
+ the
+> guest memory ranges.
+>
+> In this setup, there is possibility of "double allocation" i.e. scenarios=
+ where
+> both shared and private memory backing stores mapped to the same guest me=
+mory
+> ranges have memory allocated.
+>
+> Guest issues an hypercall to convert the memory types which is forwarded =
+by KVM
+> to the host userspace.
+> Userspace VMM is supposed to handle conversion as follows:
+> 1) Private to shared conversion:
+>   * Update guest memory attributes for the range to be shared using KVM
+>     supported IOCTLs.
+>     - While handling this IOCTL, KVM will unmap EPT/NPT entries correspon=
+ding
+>       to the guest memory being converted.
+>   * Unback the guest memfd range.
+> 2) Shared to private conversion:
+>   * Update guest memory attributes for the range to be private using KVM
+>     supported IOCTLs.
+>     - While handling this IOCTL, KVM will unmap EPT/NPT entries correspon=
+ding
+>       to the guest memory being converted.
+>   * Unback the shared memory file.
+>
+> Note that unbacking needs to be done for both kinds of conversions in ord=
+er to
+> avoid double allocation.
+>
+> Problem
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> CVMs can convert memory between these two types at 4K granularity. Conver=
+sion
+> done at 4K granularity causes issues when using guest memfd support
+> with hugetlb/Hugepage backed guest private memory:
+> 1) Hugetlb fs doesn't allow freeing subpage ranges when punching holes,
+> causing all the private to shared memory conversions to result in double
+> allocation.
+> 2) Even if a new fs is implemented for guest memfd that allows splitting
+> hugepages, punching holes at 4K will cause:
+>    - loss of vmemmmap optimization [2]
+>    - more memory for EPT/NPT entries and extra pagetable walks for guest
+>      side accesses.
+>    - Shared memory mappings to consume more host pagetable entries and
+>      extra pagetalble walks for host side access.
+>    - Higher number of conversions with additional overhead of VM exits
+>      serviced by host userspace.
+>
+> Memory conversion scenarios in the guest that are of major concern:
+> - SWIOTLB area conversion early during boot.
+>    * dma_map_* API invocations for CVMs result in using bounce buffers
+>      from SWIOTLB region which is already marked as shared.
+> - Device drivers allocating memory using dma_alloc_* APIs at runtime
+>   that bypass SWIOTLB.
+>
+> Proposal
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> To counter above issues, this series proposes following:
+> 1) Use boot time allocated SWIOTLB pools for all DMA memory allocated
+> using dma_alloc_* APIs.
+> 2) Increase memory allocated at boot for SWIOTLB from 6% to 8% for CVMs.
+> 3) Enable dynamic SWIOTLB [4] by default for CVMs so that SWITLB can be
+> scaled up as needed.
+> 4) Ensure SWIOTLB pool is 2MB aligned so that all the conversions happen =
+at
+> 2M granularity once during boot.
+> 5) Add a check to ensure all conversions happen at 2M granularity.
+>
+> ** This series leaves out some of the conversion sites which might not
+> be 2M aligned but should be easy to fix once the approach is finalized. *=
+*
+>
+> 1G alignment for conversion:
+> * Using 1G alignment may cause over-allocated SWIOTLB buffers but might
+>   be acceptable for CVMs depending on more considerations.
+> * It might be challenging to use 1G aligned conversion in OVMF. 2M
+>   alignment should be achievable with OVMF changes [3].
+>
+> Alternatives could be:
+> 1) Separate hugepage aligned DMA pools setup by individual device drivers=
+ in
+> case of CVMs.
+>
+> [1] https://lore.kernel.org/linux-mips/20231105163040.14904-1-pbonzini@re=
+dhat.com/
+> [2] https://www.kernel.org/doc/html/next/mm/vmemmap_dedup.html
+> [3] https://github.com/tianocore/edk2/pull/3784
+> [4] https://lore.kernel.org/lkml/20230908080031.GA7848@lst.de/T/
+>
+> Vishal Annapurve (5):
+>   swiotlb: Support allocating DMA memory from SWIOTLB
+>   swiotlb: Allow setting up default alignment of SWIOTLB region
+>   x86: CVMs: Enable dynamic swiotlb by default for CVMs
+>   x86: CVMs: Allow allocating all DMA memory from SWIOTLB
+>   x86: CVMs: Ensure that memory conversions happen at 2M alignment
+>
+>  arch/x86/Kconfig             |  2 ++
+>  arch/x86/kernel/pci-dma.c    |  2 +-
+>  arch/x86/mm/mem_encrypt.c    |  8 ++++++--
+>  arch/x86/mm/pat/set_memory.c |  6 ++++--
+>  include/linux/swiotlb.h      | 22 ++++++----------------
+>  kernel/dma/direct.c          |  4 ++--
+>  kernel/dma/swiotlb.c         | 17 ++++++++++++-----
+>  7 files changed, 33 insertions(+), 28 deletions(-)
+>
+> --
+> 2.43.0.275.g3460e3d667-goog
+>
 
-Ok, I've queued this now after some testing.
+Ping for review of this series.
 
-As of now
-
-https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/sev
-
-is frozen and fixes should come ontop so that Paolo/Sean can use that
-branch to base the remaining SNP host stuff ontop.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Vishal
