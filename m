@@ -1,133 +1,167 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FCB78B4B
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 18:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CAA78B50
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 18:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706639839; cv=none; b=H9sd7RPwJtGPkKXJ8knu6jsJvjUKIMsq6a0Tt6JTyx8alE1tG7bQQhbkAiihP49PSHG5R1mQ4hGRw+O7HoXCpp3oF9zcZPsL+aJI4YbwHg2ZAIzvp3Qmtvinue6UigNzdMTsnkC5OWysqW7qXOW/ZtjLkscpYYO57FL1d5VhKyg=
+	t=1706640069; cv=none; b=MSlgfUxq2kJSF4guqbJj0ELA+/zNghsNIJCy4gLrAtW1leQewGNP7eurkie09XGRZncWxnQtZq4LTT70Oe9sfSKR1CNtSvN4j0c7hw8QkQB1hyS3/fy0eBSqQhlkoXorYx8Ms7EYLA/ghzrRI6AW+jDysIcTJnLjIux/yidpz3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706639839; c=relaxed/simple;
-	bh=8Uf0WTn1udNkMEF5NppmgMKtpZesYNngtz3jj8FuUoI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EqVD/mD0mSPtHJ9kXWS307l3DmPqvCrGB02CS+h8F57cbcP2U71SxiU0ScNy85DAw8HtEFMmWaLFRuyC2kBtyjPHKg3gbo0rcKx8zpzBsOjxWr/rVKJ9AMGMwBL/Czdl/9cWlVAVUC9LkrR/vnJSJRn1bwtB0AXULL/RO+fxraw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gMlmkvcb; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1706640069; c=relaxed/simple;
+	bh=FguebPSg0HUsNFSJ74ZD5+TiVpglPbVDOkutWtGbuyw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=ifRBmkcb9BlVcee4boTKhci8IHtulcxCqXgCFMTiaJ60ieV1eByGgCV4c41jdbqjffhBHdHd7HGMSZoTF4IklpYgybBE2914P4Yr8jBhIDAxzP+6VgoCj/sXUARrzidNit9Jj8H/bzwZHT5ai7Yajv8hRP9RqjJyKoWAKD6cAz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=HZBrmsoW reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gMlmkvcb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706639837; x=1738175837;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=8Uf0WTn1udNkMEF5NppmgMKtpZesYNngtz3jj8FuUoI=;
-  b=gMlmkvcbxNqf09V/Y2AGO0pNzaC191bhvtJHCfxoxHCekisdNj3F/E5E
-   m5cGPNDbE2TBp7HU0eNSDZgTz5BNEsDdY7/b7RYtwRU6XlgGKni/Nd1GY
-   GaluJ68izliBP3uR1b7nn80FQcTsBOXLvVuKtmvR/Y1DqlH2u7eqOoxM1
-   9oJoXBwKC/5wVlpABXcvG3gaFxZncXhxxmQIgeOYs0eiTnBlgVXZVZnoD
-   43AQja1jUd7chRqv0CDmZa3HEKzfh7jZgfLYqf7B2domcG42cs/zinS64
-   3ODLAqzwI1mrjGM5i6S8gicpi+9PoN5KzCloZc4YtxiDNgcYqjqz7fFVK
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3214260"
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; 
-   d="scan'208";a="3214260"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 10:37:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="911531968"
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; 
-   d="scan'208";a="911531968"
-Received: from anjishnu-mobl1.amr.corp.intel.com (HELO [10.212.150.19]) ([10.212.150.19])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 10:37:15 -0800
-Message-ID: <9c6f045e-6e14-49a2-973d-276e8a5bce84@intel.com>
-Date: Tue, 30 Jan 2024 10:37:15 -0800
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="HZBrmsoW"
+Received: from [IPv6:::1] ([172.56.208.49])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 40UIeZF42947366
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 30 Jan 2024 10:40:37 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 40UIeZF42947366
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024011201; t=1706640038;
+	bh=LtA6AyWu9wA8RgFBYpf0xObk1vz6dfM341Zg3x5QGq0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=HZBrmsoWblW/2FdH+M3Hpxl5mlwYWWb8aLRiQ7kt4LTEN8TGWLCgfdvvqODiXooKR
+	 DfsJM6lLCMnzaCv5tSpTo1s+O0HA9sYhO+1Tdiz6JSDGsz2J9ZjQaKL2amxBMx8Ymi
+	 aWw9MYCUZ9Dsgjt94Euehn6W4mnDxesGyqvBxYtZ7Jw25uUZX6GQ7FJPfItP1Iw9+B
+	 5U6x0dDQ+fI/Q0QmubEIdADXftJ+T0kGOBIlgMjP9T/AmdbE5KUWCkLa4wmyoaWFp1
+	 Ou1YsSa2xUROtuLKX65h2JPnR4I0T82ihMvU1XkV83NoW+4/6iSM5gmw8DGrQdbLvL
+	 1U+gRPsRNkD6w==
+Date: Tue, 30 Jan 2024 10:40:24 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: =?ISO-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>
+CC: Dave Hansen <dave.hansen@intel.com>,
+        "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+User-Agent: K-9 Mail for Android
+In-Reply-To: <Zbk6h0ogqeInLa_1@redhat.com>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com>
+Message-ID: <33EBFB22-0063-4E3C-A43D-63638D308325@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Content-Language: en-US
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
- Theodore Ts'o <tytso@mit.edu>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Nakajima, Jun" <jun.nakajima@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
- <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
- <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com>
- <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com>
- <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com>
- <a076974c-e2c7-43c9-9858-71c913361cea@intel.com>
- <CAHmME9qEaJvaV2OVhpqPNnu4YmD-GgbqeePZPjZwA-XiHkeTmg@mail.gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <CAHmME9qEaJvaV2OVhpqPNnu4YmD-GgbqeePZPjZwA-XiHkeTmg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 1/30/24 10:23, Jason A. Donenfeld wrote:
->> Any chance you could share some more information about the environment
->> where you're seeing this?  It'd be good to reconcile what you're seeing
->> with how the hardware is expected to behave.
-> That is already in this thread already. Maybe catch up on the whole
-> thing and then jump back in?
-> https://lore.kernel.org/all/Zbjw5hRHr_E6k18r@zx2c4.com/
+On January 30, 2024 10:05:59 AM PST, "Daniel P=2E Berrang=C3=A9" <berrange@=
+redhat=2Ecom> wrote:
+>On Tue, Jan 30, 2024 at 06:49:15PM +0100, Jason A=2E Donenfeld wrote:
+>> On Tue, Jan 30, 2024 at 6:32=E2=80=AFPM Dave Hansen <dave=2Ehansen@inte=
+l=2Ecom> wrote:
+>> >
+>> > On 1/30/24 05:45, Reshetova, Elena wrote:
+>> > >> You're the Intel employee so you can find out about this with much
+>> > >> more assurance than me, but I understand the sentence above to be =
+_way
+>> > >> more_ true for RDRAND than for RDSEED=2E If your informed opinion =
+is,
+>> > >> "RDRAND failing can only be due to totally broken hardware"
+>> > > No, this is not the case per Intel SDM=2E I think we can live under=
+ a simple
+>> > > assumption that both of these instructions can fail not just due to=
+ broken
+>> > > HW, but also due to enough pressure put into the whole DRBG constru=
+ction
+>> > > that supplies random numbers via RDRAND/RDSEED=2E
+>> >
+>> > I don't think the SDM is the right thing to look at for guidance here=
+=2E
+>> >
+>> > Despite the SDM allowing it, we (software) need RDRAND/RDSEED failure=
+s
+>> > to be exceedingly rare by design=2E  If they're not, we're going to g=
+et
+>> > our trusty torches and pitchforks and go after the folks who built th=
+e
+>> > broken hardware=2E
+>> >
+>> > Repeat after me:
+>> >
+>> >         Regular RDRAND/RDSEED failures only occur on broken hardware
+>> >
+>> > If it's nice hardware that's gone bad, then we WARN() and try to make
+>> > the best of it=2E  If it turns out that WARN() was because of a broke=
+n
+>> > hardware _design_ then we go sharpen the pitchforks=2E
+>> >
+>> > Anybody disagree?
+>>=20
+>> Yes, I disagree=2E I made a trivial test that shows RDSEED breaks easil=
+y
+>> in a busy loop=2E So at the very least, your statement holds true only
+>> for RDRAND=2E
+>>=20
+>> But, anyway, if the statement "RDRAND failures only occur on broken
+>> hardware" is true, then a WARN() in the failure path there presents no
+>> DoS potential of any kind, and so that's a straightforward conclusion
+>> to this discussion=2E However, that really hinges on  "RDRAND failures
+>> only occur on broken hardware" being a true statement=2E
+>
+>There's a useful comment here from an Intel engineer
+>
+>https://web=2Earchive=2Eorg/web/20190219074642/https://software=2Eintel=
+=2Ecom/en-us/blogs/2012/11/17/the-difference-between-rdrand-and-rdseed
+>
+>  "RDRAND is, indeed, faster than RDSEED because it comes
+>   from a hardware-based pseudorandom number generator=2E
+>   One seed value (effectively, the output from one RDSEED
+>   command) can provide up to 511 128-bit random values
+>   before forcing a reseed"
+>
+>We know we can exhaust RDSEED directly pretty trivially=2E Making your
+>test program run in parallel across 20 cpus, I got a mere 3% success
+>rate from RDSEED=2E
+>
+>If RDRAND is reseeding every 511 values, RDRAND output would have
+>to be consumed significantly faster than RDSEED in order that the
+>reseed will happen frequently enough to exhaust the seeds=2E
+>
+>This looks pretty hard, but maybe with a large enough CPU count
+>this will be possible in extreme load ?
+>
+>So I'm not convinced we can blindly wave away RDRAND failures as
+>guaranteed to mean broken hardware=2E
+>
+>With regards,
+>Daniel
 
-Gah, sorry about that.  I can reproduce what you're seeing, and it does
-seem widespread.  Let me do some digging and see where we got our wires
-crossed.
+The general approach has been "don't credit entropy and try again on the n=
+ext interrupt=2E" We can, of course, be much more aggressive during boot=2E
+
+We only need 256-512 bits for the kernel random pool to be equivalent to b=
+reaking mainstream crypto primitives even if it is a PRNG only from that po=
+int on (which is extremely unlikely=2E) The Linux PRNG has a very large sta=
+te, which helps buffer entropy variations=2E
+
+Again, applications *should* be using /dev/[u]random as appropriate, and i=
+f they opt to use lower level primitives in user space they need to impleme=
+nt them correctly =E2=80=93 there is literally nothing the kernel can do at=
+ that point=2E
+
+If the probability of success is 3% per your CPU that is still 2 bits of t=
+rue entropy per invocation=2E However, the probability of failure after 16 =
+loops is over 60%=2E I think this validates the concept of continuing to po=
+ll periodically rather than looping in time critical paths=2E
+
