@@ -1,113 +1,153 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542397F7CF
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 15:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE835129A7F
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 15:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706627731; cv=none; b=aJHWZn7r1MeFY8eP15qtVpD1FH+i8pHVWYL4gPcMQ/0+k68nyhJ03u1l4gH2bRXJVFOOgChKr6VSlBWZ1J+aeDGXsJwsXF4EKfUr/5CluMlYUb2S26uPOPbDcf1ga7q15bSMiWfnUAa/5dXohH5BWtL1OCSeTX/AML9ITSueKJM=
+	t=1706628061; cv=none; b=IBl6l9JhRc8P9GT5AdaY922zCXnuvFbEcGfjmqPqfOvMBpoGoOzyuU3hDPsuiBtuAqWYLoSQuDREKOENRCYetQOCmJvCNGHd5iDET/dIG2OSPPj9PeqJjoFy7LD6RivRIxBMqdAlszP7+ARg3VNk+zc/OCOxs1K7BQtLUtUjWfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706627731; c=relaxed/simple;
-	bh=cg4Vqit6KxU2rQTAj377CjGsVM4isPa7zNpJYoTP4as=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n+mszjIHAAGcKj5LFARssAkS5BFaqTFhXnghPs45F3kujLxkAOhuSdsQKc65Q4TesFDK3RaLWmXTm5d4yQ10BMB4dHP03uFKzRJQkIRJdrhqV49reOLDwN20GEybku6hl+QSbQtrj+4HHEt69Pc5x6UK7dKsO8lq8QNo+ey2Hjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A/LvQMKK; arc=none smtp.client-ip=192.55.52.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706628061; c=relaxed/simple;
+	bh=fnaHevZn3AnWviCVrRshdG83k6cks6roj4RtEKpfX24=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=Rt/3Iv2KiM9mt7mW1MxsEZaCJeTVWWGKa+pQ7GgsMjHB77RhHyBk+rC4VN7xYSXnNPuKzXY/7ZssbWSGnWxdbB0A+i1xRZ36wi4Ohz1ALyp8PF/vz9EB9wtIbwPA5C9GuNiHVKOpX/8MlA2y97v+F79fBPbH5DQBXDQJxViM5cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=fail (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=IZTMGvJa reason="signature verification failed"; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A/LvQMKK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706627729; x=1738163729;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=cg4Vqit6KxU2rQTAj377CjGsVM4isPa7zNpJYoTP4as=;
-  b=A/LvQMKKosaoNYic0i05z2Ua9dRzxELSBlZrPPtYhlBI6ObUbKJwtbWe
-   7g968SEiVYVy6x4yEhQDXp/FTF7YiGvOanusgEFMJLnz1Ey3yImJs9Tox
-   2nDM6NlYUgBVzYLcLsmZDi50Gw+3NuLdnUCgDKjI28xfm5Fo6+y7AftmG
-   n6lHXF7gToG6uCkctAGGg19NXk1M1k3j67YhQ+6y0VDd49Bku9Onlu8GE
-   J+x08bbUaRtW2kUjAqr1Ic2YrgdcaeKIMC0CsOEi5+JqM/xZcxHY6TDEA
-   TyNfqdJio/O6fv0BpITKbkUIHPKsqJQMvNsJy2dZhjKWwPcOckUKGFHFG
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="434482029"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="434482029"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 07:15:28 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="737804714"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="737804714"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga003.jf.intel.com with ESMTP; 30 Jan 2024 07:15:22 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 5FA15DE; Tue, 30 Jan 2024 17:15:21 +0200 (EET)
-Date: Tue, 30 Jan 2024 17:15:21 +0200
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, 
-	kexec@lists.infradead.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv6 00/16] x86/tdx: Add kexec support
-Message-ID: <qj3arfigftoolcdptm2yzqwufs6ywp2snqme5wknkt3odkon45@h76u2hnrswlq>
-References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
- <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com>
- <g7jh422ild6c23hjxvf7q2xtygkumbpynz4hcops7nvg5izvpp@r3oyhvssph2o>
- <CABgObfZiyx8hRsD37xZq5TNs9sRq48vLUxbOKa=HZ1vcr67sWQ@mail.gmail.com>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="IZTMGvJa"
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 40UFKPTL2866718
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 30 Jan 2024 07:20:25 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 40UFKPTL2866718
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024011201; t=1706628026;
+	bh=1ilVVk8Q8DP7NWzjjOV5yV70ZqlWK9unRMrjNDIK6u0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=IZTMGvJa3wcmHi53UyzRx5CifOcNPjraHJfs5CMoswcufrmNCCKj0oQZ5iEt/NPo9
+	 8Uv8TCEAF6xMJYqBXkt9tkxUqWfkHmeUIMrCFhQgdX4hzYp7Eu6/CiK4e9fmNTiTxf
+	 FyQ1qrDdP7N9aVGDlrc5Hy4Sfxze7Dkt2GMrlx5pr6PlJlEUMqTXQDcu/j38hsPIet
+	 uOw2BFjESMFE98xBEiKEtLm9FM4jUCx1AoWjlX8L8AtaGJfKP/GXL00PUwskj6854R
+	 GP4yNV48PAc49ySYNkL3oK5M+VZe0Gy0SeYatRx+TtTAbW++KxSTNjqH1dhA9Erk/l
+	 5blYBbE1adaWQ==
+Date: Tue, 30 Jan 2024 07:20:23 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Nakajima, Jun" <jun.nakajima@intel.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Kalra, Ashish" <ashish.kalra@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 1/2] x86/random: Retry on RDSEED failure
+User-Agent: K-9 Mail for Android
+In-Reply-To: <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <CAHmME9pOt=uEmuBzBpgUHw9DqAD2FZTZ3v53AOZbQ3Cd2p97xQ@mail.gmail.com> <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+Message-ID: <1C8939C0-BC58-4BE9-95B8-4B6F4A36115D@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfZiyx8hRsD37xZq5TNs9sRq48vLUxbOKa=HZ1vcr67sWQ@mail.gmail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 03:59:34PM +0100, Paolo Bonzini wrote:
-> On Tue, Jan 30, 2024 at 3:34 PM Kirill A. Shutemov
-> <kirill.shutemov@linux.intel.com> wrote:
-> >
-> > On Tue, Jan 30, 2024 at 02:43:15PM +0100, Paolo Bonzini wrote:
-> > > On 1/24/24 13:55, Kirill A. Shutemov wrote:
-> > > > The patchset adds bits and pieces to get kexec (and crashkernel) work on
-> > > > TDX guest.
-> > > >
-> > > > The last patch implements CPU offlining according to the approved ACPI
-> > > > spec change poposal[1]. It unlocks kexec with all CPUs visible in the target
-> > > > kernel. It requires BIOS-side enabling. If it missing we fallback to booting
-> > > > 2nd kernel with single CPU.
-> > > >
-> > > > Please review. I would be glad for any feedback.
-> > >
-> > > Hi Kirill,
-> > >
-> > > I have a very basic question: is there a reason why this series does not
-> > > revert commit cb8eb06d50fc, "x86/virt/tdx: Disable TDX host support when
-> > > kexec is enabled"?
-> >
-> > My patchset enables kexec for TDX guest. The commit you refer blocks kexec
-> > for host. TDX host and guest have totally different problems with handling
-> > kexec. Kai looks on how to get host kexec functional.
-> 
-> Yeah, that was right there in the cover letter (and I should have
-> gotten a clue from the many references to CC_* constants...). Somebody
-> pointed me to this series as "the TDX kexec series from Intel" and I
-> had some tunnel vision issues. Sorry for the noise!
-> 
-> But since I have your attention, do you have a pointer to the
-> corresponding edk2 series?
+On January 30, 2024 5:10:20 AM PST, "Reshetova, Elena" <elena=2Ereshetova@i=
+ntel=2Ecom> wrote:
+>=20
+>> Hi Kirill,
+>>=20
+>> I've been following the other discussion closely thinking about the
+>> matter, but I suppose I'll jump in here directly on this patch, if
+>> this is the approach the discussion is congealing around=2E
+>>=20
+>> A comment below:
+>>=20
+>> On Tue, Jan 30, 2024 at 9:30=E2=80=AFAM Kirill A=2E Shutemov
+>> <kirill=2Eshutemov@linux=2Eintel=2Ecom> wrote:
+>> >  static inline bool __must_check rdseed_long(unsigned long *v)
+>> >  {
+>> > +       unsigned int retry =3D RDRAND_RETRY_LOOPS;
+>> >         bool ok;
+>> > -       asm volatile("rdseed %[out]"
+>> > -                    CC_SET(c)
+>> > -                    : CC_OUT(c) (ok), [out] "=3Dr" (*v));
+>> > -       return ok;
+>> > +
+>> > +       do {
+>> > +               asm volatile("rdseed %[out]"
+>> > +                            CC_SET(c)
+>> > +                            : CC_OUT(c) (ok), [out] "=3Dr" (*v));
+>> > +
+>> > +               if (ok)
+>> > +                       return true;
+>> > +       } while (--retry);
+>> > +
+>> > +       return false;
+>> >  }
+>>=20
+>> So, my understanding of RDRAND vs RDSEED -- deliberately leaving out
+>> any cryptographic discussion here -- is roughly that RDRAND will
+>> expand the seed material for longer, while RDSEED will mostly always
+>> try to sample more bits from the environment=2E AES is fast, while
+>> sampling is slow, so RDRAND gives better performance and is less
+>> likely to fail, whereas RDSEED always has to wait on the hardware to
+>> collect some bits, so is more likely to fail=2E
+>
+>The internals of Intel DRBG behind RDRAND/RDSEED has been publicly
+>documented, so the structure is no secret=2E Please see [1] for overall
+>structure and other aspects=2E So, yes, your overall understanding is cor=
+rect
+>(there are many more details though)=2E=20
+>
+>[1] https://www=2Eintel=2Ecom/content/www/us/en/developer/articles/guide/=
+intel-digital-random-number-generator-drng-software-implementation-guide=2E=
+html
+>
+>
+>>=20
+>> For that reason, most of the usage of RDRAND and RDSEED inside of
+>> random=2Ec is something to the tune of `if (!rdseed(out)) rdrand(out);`=
+,
+>> first trying RDSEED but falling back to RDRAND if it's busy=2E That
+>> still seems to me like a reasonable approach, which this patch would
+>> partly undermine (in concert with the next patch, which I'll comment
+>> on in a follow up email there)=2E
+>
+>I agree that for the purpose of extracting entropy for Linux RNG falling
+>back to RDRAND (current behavior) is perfectly ok, so I think you are doi=
+ng
+>the right thing=2E However, in principle it is not always the case, there=
+ are
+>situations when a fallback to RDRAND should not be used, but it is also
+>true that the user of this interface should know/understand this situatio=
+n=2E=20
+>
+>>=20
+>> So maybe this patch #1 (of 2) can be dropped?
+>
+>Before we start debating this patchset, what is your opinion on the origi=
+nal
+>problem we raised for CoCo VMs when both RDRAND/RDSEED are made to
+>fail deliberately?=20
+>
+>Best Regards,
+>Elena=2E
+>
+>
 
-Relevant code can be found here:
-
-https://github.com/tianocore/edk2-staging/commits/tdvf-kexec/
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I have a real concern with this=2E We already have the option to let the e=
+ntropy pool fill before the boot can proceed=2E This would have the risk of=
+ massively increasing the interrupt latency for what will be retried anyway=
+=2E
