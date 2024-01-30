@@ -1,117 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f74.google.com (mail-io1-f74.google.com [209.85.166.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDA27AE59
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 19:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF61D78662
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 22:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706642196; cv=none; b=MfxzwcRC6GRVDo4BKUjgjC1qCYAm2Aa8AWNJe3B6PNwHA3uek8cD7p7cD1N0hKILQh3vuxwPdI/rQylR99qUJivpuvDSdyVMvNifjJ5lmoUXeK7mIkdnSdN6I7u/agI6dplQ/hW6MMxQU/dgMbgN940jcAB2sF8qBatxUUJx4L8=
+	t=1706652533; cv=none; b=NkD6rirmTO4nrfvT1NzfQxFK8CDzuvdj9g9W/hGfXbpgrPzV/p0+r+rZR54hxevdNn60BBNkuwoKrPBssCCrmn7jUVV6C46wki1v0R4qFY0h/tHvw/0Lv4g6PABmYYlnC1BLiHVW1Z1qdl+iPh05O04GcSCQC4Ieav++3hT9/4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706642196; c=relaxed/simple;
-	bh=FOGTgz8QyzT/ZF/Z5hhIwI5EdOmk9zDiwfNKjfkeYko=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HvOKcnDTq9H2vnHYTMb9DdLDBgfanJemXgbORgCTXLh9QA5ORj6qVelG4RALItjBJRBTib5BDmsaG8zBHVGpjr8N2blvtaOwCHytu12HUUO5nVtplTHTlqq8W5sL21SlCCWwcAZrcNQJwvAwixQtl5yZM8TAZRVWLPWuwOy1rEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=Jz9PFqwO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706652533; c=relaxed/simple;
+	bh=wLXGJX7ZPdzpVptP9s9CeY5Mk/dYYO7q22+aMQXDhEk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tnFjtQEvgjIrV/kkY64R5K/DFfzkIb5g5wxENUCxjCT8R6FD/s0GAsasadKxF+UE+p35tX5ZQBOnvuFZbsba3OuqSXEFyUnEDOXmataJXIOq6mvxiwr1XDbjfA5f+yzsdPI0ZUezAZrauSrSew6NJvcwnOHg2DW4vZOJf4W01qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o/XLAreN; arc=none smtp.client-ip=209.85.166.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kevinloughlin.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Jz9PFqwO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DC5C433F1
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 19:16:35 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Jz9PFqwO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1706642193;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FOGTgz8QyzT/ZF/Z5hhIwI5EdOmk9zDiwfNKjfkeYko=;
-	b=Jz9PFqwO5VGVqomR0NC8T/vQQQPR3LhYKP0OnmLqBeCjP1piOi7CxIyBPXtGCzvZejOR34
-	uc+A8T34+Y4babFKi40Ht13qVEOTIvgHykmtD1QVmP9AGn4SYmqROT8pmHSu9BFQ5F8fkL
-	I8k8IYgNgtR8QzMkG27vmg4GcYA5A3g=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id fd788486 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <linux-coco@lists.linux.dev>;
-	Tue, 30 Jan 2024 19:16:33 +0000 (UTC)
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc223d20a29so3965472276.3
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 11:16:32 -0800 (PST)
-X-Gm-Message-State: AOJu0YyGyySQCKQGdr7PSH1SlWQBZnTCfEAONnct9QF5p3yyAiyqc+Ee
-	CH00FbsTXc3Q2u/MJT3ZuHeJqQU4WBENra5ZBT/5wdvxhMCrLUpfxOXhyGMj9DbBo9GZFqJsz6A
-	c0nbKWixkro6SVwOe+hldLRjWgAk=
-X-Google-Smtp-Source: AGHT+IFKROBZjHRa9s5PTu3r1D0HpehKbjeDA7mAVb/D5WsyVsnKN3orzZkfHYEeBLOaCMFtEebHMUmR9wcb8Qxx0bg=
-X-Received: by 2002:a05:6902:1022:b0:dc2:3f75:1f79 with SMTP id
- x2-20020a056902102200b00dc23f751f79mr6364693ybt.23.1706642191426; Tue, 30 Jan
- 2024 11:16:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o/XLAreN"
+Received: by mail-io1-f74.google.com with SMTP id ca18e2360f4ac-7bf48e0f513so353628439f.0
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 14:08:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706652531; x=1707257331; darn=lists.linux.dev;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g4o2DS6nz22ReCocFZD628QsKvugxD4ZslaXCuzueXU=;
+        b=o/XLAreNYLsLjz5wFm2Q4ZRoC2kunaWgt+zw04O/W6grQUAQQBRJoYbzOp+5rv9oQJ
+         m7Fv6k+UbHZHU77zbM1xyl848tm6Qb5q1Yt8vq3MBK3hUoQXpljxIChofjBJSh5U9kY9
+         s5zxTkAzO0Yi8Rxv/xQAk1swGKexaECm66cSU1JQ0JnG0+w+yxg+IsmRKDOdu82dE0qq
+         Qqj/PhsjyvpMasTGKiCAvUejQdP7yM4uhhXQ7JmZV28/51rbPsX7ie5Wjic3HZPOCpys
+         eIDdQsyJuNjirm2UpmS8X6QowRUv/AjVZH3fV0iABzVUZJuEobQdzZ3zIBV6S/UhTKZC
+         2iZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706652531; x=1707257331;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g4o2DS6nz22ReCocFZD628QsKvugxD4ZslaXCuzueXU=;
+        b=YCxZOxD4u3WKVvA2bppdVt1q85YH3jPsjo7RAwvaKKf2Q8iMRs0sK/x025UkIdYGd8
+         o86ZX1N3OOqYXdsC+g2rHdhf3m5MSEHSlfHupl65zWy4Clkp0QCGSZcyGQpq8vhSfPtF
+         wbHoW0MsXtC5SUKSwtRbMEZdtsFfPME0n6JWRmMnDvGBxWNg+NXF0Am0X2mu1Itg+BOr
+         DqJz6HOmGpFMrThFMpZplwyDc8uVzyXELEO8KiwVd1IfVBeW87yduVL3g4u+L8ek+k0G
+         zm5jCCSz53yZs5F89spdzNrosDClMXt8XfezqWZtNNH/Smz/IZCR9V+ptr6HuxcyjxMO
+         5zXQ==
+X-Gm-Message-State: AOJu0YzjDCoE2QxUtua1P+jhLjMDtv9zmYiYJZHsYR5F34OFUtBg96BO
+	qixLUslxbAXKxM0EAqKD3nkqG0GGFwmL1Y7ukn2+7FVVHICRqzCWe8T7C48Inco3gUl4NoWrQqC
+	ihf/05Jwcrr8StpKWJGGy87ZrAvJ3hA==
+X-Google-Smtp-Source: AGHT+IFCRfKhWZRTr+KDp9L4a02S08LEimE8qMaXDlyq6BDCOhXQB2PbalDDpVRn2ZzbZOn51uX14mS9ojwXOeRzWTiU
+X-Received: from loughlin00.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:1b6f])
+ (user=kevinloughlin job=sendgmr) by 2002:a5d:9907:0:b0:7bf:e3a5:ccea with
+ SMTP id x7-20020a5d9907000000b007bfe3a5cceamr11521iol.0.1706652530978; Tue,
+ 30 Jan 2024 14:08:50 -0800 (PST)
+Date: Tue, 30 Jan 2024 22:08:43 +0000
+In-Reply-To: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
- <CAHmME9pOt=uEmuBzBpgUHw9DqAD2FZTZ3v53AOZbQ3Cd2p97xQ@mail.gmail.com>
- <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
- <CAHmME9qMO7=RDR60bKJvpDTRokcKed_i0+7BbFD53_7o2OJ6-g@mail.gmail.com>
- <CAHmME9rum4uwSNFd_GkD9p_+vN4DBxA=feZX7k9RvugFZsZNJg@mail.gmail.com> <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
-In-Reply-To: <DM8PR11MB5750797D0B9B8EB32740F55DE77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Tue, 30 Jan 2024 20:16:20 +0100
-X-Gmail-Original-Message-ID: <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com>
-Message-ID: <CAHmME9oC=GE-7QS2m9FA5cs_ss+tQgB9Pj3tKnTtMMFpQmUshg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	"Nakajima, Jun" <jun.nakajima@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Mime-Version: 1.0
+References: <20240121182040.GBZa1geI5NxWSslvt0@fat_crate.local>
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240130220845.1978329-1-kevinloughlin@google.com>
+Subject: [PATCH v3 0/2] x86: enforce and cleanup RIP-relative accesses in
+ early boot code
+From: Kevin Loughlin <kevinloughlin@google.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Nick Desaulniers <ndesaulniers@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Kevin Loughlin <kevinloughlin@google.com>, 
+	Pankaj Gupta <pankaj.gupta@amd.com>, Hou Wenlong <houwenlong.hwl@antgroup.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Dionna Glaze <dionnaglaze@google.com>, 
+	Brijesh Singh <brijesh.singh@amd.com>, Michael Roth <michael.roth@amd.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-coco@lists.linux.dev, 
+	Ashish Kalra <ashish.kalra@amd.com>, Andi Kleen <ak@linux.intel.com>
+Cc: Adam Dunlap <acdunlap@google.com>, Peter Gonda <pgonda@google.com>, 
+	Jacob Xu <jacobhxu@google.com>, Sidharth Telang <sidtelang@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Elena,
+SEV/SME code can execute prior to page table fixups for kernel
+relocation. However, as with global variables accessed in
+__startup_64(), the compiler is not required to generate RIP-relative
+accesses for SEV/SME global variables, causing certain flavors of SEV
+hosts and guests built with clang to crash during boot.
 
-On Tue, Jan 30, 2024 at 8:06=E2=80=AFPM Reshetova, Elena
-<elena.reshetova@intel.com> wrote:
-> Yes, sorry, I am just behind answering this thread and it is getting late=
- here.
-> This is exactly what I would like to have an open discussion about
-> with inputs from everyone.
-> We have to remember that it is not only about host 'producing'
-> a fully deterministic environment, but also about host being able to
-> *observe* the entropy input. So the more precise question to ask is
-> how much can a host observe?
+These crashes highlight a broader problem wherein the toolchain does
+not guarantee that early x86-64 code executes correctly at any offset.
+While Ard has been looking into overhauling the early x86-64 code
+going forward [0], the signficant proposed changes are unfortunately
+not backport-friendly.
 
-Right, observation is just as relevant.
+Instead, this patchset continues the approach of fixing the immediate
+problem of SEV-SNP boots crashing when built by clang, providing a
+backport-friendly set of changes needed to successfully boot SEV-SNP
+hosts and guests. In particular, this patchset is a cleanup of V2 [1],
+which introduces a macro to force RIP-relative addressing in early
+SEV/SME global variable accesses and existing head64 global accesses.
 
-> My personal understanding is that host can
-> observe all guest interrupts and their timings, including APIC timer inte=
-rrupts
-> (and IPIs), so what is actually left for the guest as unobservable entrop=
-y
-> input?
+V2 -> V3: Rename RIP_RELATIVE_ADDR(), remove fixup_*(), cleanup style
+V1 -> V2: Use GET_RIP_RELATIVE_PTR() macro to avoid -fPIE compilation
 
-Check out try_to_generate_entropy() and random_get_entropy(), for
-example. How observable is RDTSC? Other HPTs?
+[0] https://lore.kernel.org/lkml/20240129180502.4069817-23-ardb+git@google.com/T/
+[1] https://lore.kernel.org/lkml/20240111223650.3502633-1-kevinloughlin@google.com/
 
-> > > I imagine the attestation part of CoCo means these VMs need to run on
-> > > real Intel silicon and so it can't be single stepped in TCG or
-> > > something, right?
->
-> Yes, there is an attestation of a confidential VM and some protections in=
- place
-> that helps against single-stepping attacks. But I am not sure how this is=
- relevant
-> for this, could you please clarify?
+Kevin Loughlin (2):
+  x86/sev: enforce RIP-relative accesses in early SEV/SME code
+  x86/head64: Replace pointer fixups with RIP_RELATIVE_ADDR()
 
-I was just thinking that if this didn't require genuine Intel hardware
-with prebaked keys in it that you could emulate a CPU and all its
-peripherals and ram with defined latencies and such, and run the VM in
-a very straightforwardly deterministic environment, because nothing
-would be real. But if this does have to hit metal somewhere, then
-there's some possibility you at least interact with some hard-to-model
-physical hardware.
+ arch/x86/coco/core.c               | 22 +++++---
+ arch/x86/include/asm/mem_encrypt.h | 32 +++++++++--
+ arch/x86/kernel/head64.c           | 88 +++++++++++++-----------------
+ arch/x86/kernel/head_64.S          |  4 +-
+ arch/x86/kernel/sev-shared.c       | 52 +++++++++---------
+ arch/x86/kernel/sev.c              | 13 +++--
+ arch/x86/mm/mem_encrypt_identity.c | 50 +++++++++--------
+ 7 files changed, 143 insertions(+), 118 deletions(-)
 
-Jason
+-- 
+2.43.0.429.g432eaa2c6b-goog
+
