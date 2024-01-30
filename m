@@ -1,231 +1,120 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860D8823AA
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 16:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F5E8612C;
+	Tue, 30 Jan 2024 16:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706632991; cv=none; b=gQUl/A+pznpBVbPuoAk2Iwy4C3JbbqqlrwiYwwzTIrAZY43NthwMXW1+sm7yttRFOk5XUXZCuuw5AeqFy2du7maCCRcZe5uVmjEDZMXdZjw1gC0BWQbcXGHEdQvir20yq1gcyiZmroCOKMOBHWvaSEDI0rqukvv4SdmQ0wsl2QA=
+	t=1706633046; cv=none; b=cLXjpcX0Xej2T8NeumuJi1KjULIsi+t2E2cHPuzMQ0sZZCxZh/C1Mz7KYFyr5J1Kwi8ksKQbo9oFsQtehELtIm/N39LoCjjOXoMWSnpYtQCDKUZhNXVeFg+fP2ZYlb8lZwBC28wOhMI/9ZJNwb12CE0hvJLQgSwKlzopVyv/W+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706632991; c=relaxed/simple;
-	bh=Kb5PrKiPOgqplZ89pZOWEqk6h7d4LV1jujZTZpIvh4k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y64IH2mg/squJDs/R2VR0CZW64x7N9ZoFR6fEeWopALCu1gV0uEKJQeCrKDLVzvyd7GToRS0VCWXzmUEfRsUE+IQDMnkpYtRfy8mBo9vra8g9uxFZ65NJSX4IAvLYlF8/SvbqU/3fkJ0t+q8/QkmWEbGpYKcHSzr+mYa7uOIP60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SxCv7gQO; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1706633046; c=relaxed/simple;
+	bh=QgABafDNsktgkXRudOCLlwXhcYXw4Ycvqs7d0i/LQ1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XcbUSyMx655xevO71/iiR6rWZQQVmpIi7aZCmKXB+2pDPedW0GY/3oUdA5N/HM7vB1kcH88swf4WlAv72BO5ZXtZqc/BXpDgoQpmYjVLVLgUcHlR0NkMa/qsTocjczk+0gqJ5HTJSAqTMMW6IQM1vKm4Y45AlXIPxD/Ot87CDyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzqAZKLn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SxCv7gQO"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-783d4b3a026so325581585a.1
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 08:43:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706632988; x=1707237788; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=afivU5ukzroUUjSv6dIA62TuQmhqdbJqObxkN1yxecQ=;
-        b=SxCv7gQO3WOLffcU2taoNslUowV/yUDSwG8AJGY9ueyMoiMtIIBvgKMrcmlcCwBD3Q
-         2StU2/CuuFWfEKx6mmZcNgVIZBDfhC66ve62aoC99cd/tJfKVNVvNS1MkhviNeZn8KWA
-         r+ugWdCjYCr3yXiqp2WHVDZbBzx6O8gfHIZIlGp2sKWHQD3Gs5w/j0IM+l0BbbDD5LiF
-         FmHk1ezq5WOvRdjleiwaoWyuWeZokOR2ZrMV0vpaJIItsQaK6FkbJl17+gD28fr/P8+d
-         aJKjz97v+NuCMBkdfQHOhObqn42J/ULJuj3PgZnmrVAPn3aBVvVqZWVCQhyVDsp0cnPn
-         B37w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706632988; x=1707237788;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=afivU5ukzroUUjSv6dIA62TuQmhqdbJqObxkN1yxecQ=;
-        b=R9p2WppuByGA46lAs5I6BkqGb20d7iFXFCsJYJKD830hX/a5krItiRrM5hnh03jkOA
-         XqUvcCWKzs19z2uH+/2iCWU4Yfq2RWEqMwN2VqBmef/1eepc84pQDozpCqO84jb4zOjr
-         u4hkIoyeJc1j0v1PnXynC6h8eRIdSvHsq3LYIdL4M2nlrfTkD0wnbsmQqBbjHNjEY0qB
-         Orjf74LFuUV5YH8xgLXYw7/HA9ghDCc2b3RSdo9d7kg7CIYRvQbIrzZIB4503hywTTwR
-         76jvOFdgOnezREfQbP9fB/ugGRpg+Ks6p0golBp7f8B+YhDQ7p1hA9Jg9qmBZf32bvM1
-         Gp4Q==
-X-Gm-Message-State: AOJu0YyORFzL+H2bqTz38LeByZ+JhD1lPRJONuuZArKtEIpYAhvuq+da
-	XRcNcDiGMS/zhb9pQZVaVfv40yI/9h4iO0EEr7zCs5Q2F4i3dsbM1B477HHHHpM50RZyeeYad9S
-	VaWhwp+jcWm97k53+wgx5OmJ+Us05dx2NicAe
-X-Google-Smtp-Source: AGHT+IGCcD7PVaq/cz09ZQVjo9JbEtUXpAooRm0ZDYVkjI4/fdo/VvkMg1PDcsBy+2LIz+Ukv1U3YQPLDOpR5Jivfxc=
-X-Received: by 2002:a05:6214:194e:b0:685:4bd7:8bb3 with SMTP id
- q14-20020a056214194e00b006854bd78bb3mr9344578qvk.2.1706632987877; Tue, 30 Jan
- 2024 08:43:07 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzqAZKLn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADF1C433F1;
+	Tue, 30 Jan 2024 16:44:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706633045;
+	bh=QgABafDNsktgkXRudOCLlwXhcYXw4Ycvqs7d0i/LQ1U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uzqAZKLnLfqAX16wTaHfxzIhJle9n1YAO75dG0h3i7HfVla1jerWbReyXqYPut88f
+	 Y0Lft1wcBTSuVpW2zVmxysZP8URMLHnmB5qI8n9dmNgfb7keXFOZTJh6ncc3YYSouz
+	 KOofi6pqU7s2S/17CPUT1SNuEz0vb8M/cZYNJEAI=
+Date: Tue, 30 Jan 2024 08:44:04 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-coco@lists.linux.dev, linux-pci@vger.kernel.org
+Subject: Re: [RFC PATCH 4/5] sysfs: Introduce a mechanism to hide static
+ attribute_groups
+Message-ID: <2024013016-sank-idly-dd6b@gregkh>
+References: <170660662589.224441.11503798303914595072.stgit@dwillia2-xfh.jf.intel.com>
+ <170660664848.224441.8152468052311375109.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240112055251.36101-1-vannapurve@google.com>
-In-Reply-To: <20240112055251.36101-1-vannapurve@google.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 30 Jan 2024 22:12:54 +0530
-Message-ID: <CAGtprH9FA3-RetE=6i7ezxfV0qEV-8z3HLgPEPY=pzuxSiOD+w@mail.gmail.com>
-Subject: Re: [RFC V1 0/5] x86: CVMs: Align memory conversions to 2M granularity
-To: x86@kernel.org, linux-kernel@vger.kernel.org, hch@lst.de, 
-	petrtesarik@huaweicloud.com, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	m.szyprowski@samsung.com, robin.murphy@arm.com
-Cc: pbonzini@redhat.com, rientjes@google.com, seanjc@google.com, 
-	erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
-	sagis@google.com, oupton@google.com, peterx@redhat.com, vkuznets@redhat.com, 
-	dmatlack@google.com, pgonda@google.com, michael.roth@amd.com, 
-	kirill@shutemov.name, thomas.lendacky@amd.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, andrew.jones@linux.dev, 
-	corbet@lwn.net, rostedt@goodmis.org, iommu@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170660664848.224441.8152468052311375109.stgit@dwillia2-xfh.jf.intel.com>
 
-On Fri, Jan 12, 2024 at 11:22=E2=80=AFAM Vishal Annapurve <vannapurve@googl=
-e.com> wrote:
->
-> Goal of this series is aligning memory conversion requests from CVMs to
-> huge page sizes to allow better host side management of guest memory and
-> optimized page table walks.
->
-> This patch series is partially tested and needs more work, I am seeking
-> feedback from wider community before making further progress.
->
-> Background
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Confidential VMs(CVMs) support two types of guest memory ranges:
-> 1) Private Memory: Intended to be consumed/modified only by the CVM.
-> 2) Shared Memory: visible to both guest/host components, used for
-> non-trusted IO.
->
-> Guest memfd [1] support is set to be merged upstream to handle guest priv=
-ate
-> memory isolation from host usersapace. Guest memfd approach allows follow=
-ing
-> setup:
-> * private memory backed using the guest memfd file which is not accessibl=
-e
->   from host userspace.
-> * Shared memory backed by tmpfs/hugetlbfs files that are accessible from
->   host userspace.
->
-> Userspace VMM needs to register two backing stores for all of the guest
-> memory ranges:
-> * HVA for shared memory
-> * Guest memfd ranges for private memory
->
-> KVM keeps track of shared/private guest memory ranges that can be updated=
- at
-> runtime using IOCTLs. This allows KVM to back the guest memory using eith=
-er HVA
-> (shared) or guest memfd file offsets (private) based on the attributes of=
- the
-> guest memory ranges.
->
-> In this setup, there is possibility of "double allocation" i.e. scenarios=
- where
-> both shared and private memory backing stores mapped to the same guest me=
-mory
-> ranges have memory allocated.
->
-> Guest issues an hypercall to convert the memory types which is forwarded =
-by KVM
-> to the host userspace.
-> Userspace VMM is supposed to handle conversion as follows:
-> 1) Private to shared conversion:
->   * Update guest memory attributes for the range to be shared using KVM
->     supported IOCTLs.
->     - While handling this IOCTL, KVM will unmap EPT/NPT entries correspon=
-ding
->       to the guest memory being converted.
->   * Unback the guest memfd range.
-> 2) Shared to private conversion:
->   * Update guest memory attributes for the range to be private using KVM
->     supported IOCTLs.
->     - While handling this IOCTL, KVM will unmap EPT/NPT entries correspon=
-ding
->       to the guest memory being converted.
->   * Unback the shared memory file.
->
-> Note that unbacking needs to be done for both kinds of conversions in ord=
-er to
-> avoid double allocation.
->
-> Problem
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> CVMs can convert memory between these two types at 4K granularity. Conver=
-sion
-> done at 4K granularity causes issues when using guest memfd support
-> with hugetlb/Hugepage backed guest private memory:
-> 1) Hugetlb fs doesn't allow freeing subpage ranges when punching holes,
-> causing all the private to shared memory conversions to result in double
-> allocation.
-> 2) Even if a new fs is implemented for guest memfd that allows splitting
-> hugepages, punching holes at 4K will cause:
->    - loss of vmemmmap optimization [2]
->    - more memory for EPT/NPT entries and extra pagetable walks for guest
->      side accesses.
->    - Shared memory mappings to consume more host pagetable entries and
->      extra pagetalble walks for host side access.
->    - Higher number of conversions with additional overhead of VM exits
->      serviced by host userspace.
->
-> Memory conversion scenarios in the guest that are of major concern:
-> - SWIOTLB area conversion early during boot.
->    * dma_map_* API invocations for CVMs result in using bounce buffers
->      from SWIOTLB region which is already marked as shared.
-> - Device drivers allocating memory using dma_alloc_* APIs at runtime
->   that bypass SWIOTLB.
->
-> Proposal
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> To counter above issues, this series proposes following:
-> 1) Use boot time allocated SWIOTLB pools for all DMA memory allocated
-> using dma_alloc_* APIs.
-> 2) Increase memory allocated at boot for SWIOTLB from 6% to 8% for CVMs.
-> 3) Enable dynamic SWIOTLB [4] by default for CVMs so that SWITLB can be
-> scaled up as needed.
-> 4) Ensure SWIOTLB pool is 2MB aligned so that all the conversions happen =
-at
-> 2M granularity once during boot.
-> 5) Add a check to ensure all conversions happen at 2M granularity.
->
-> ** This series leaves out some of the conversion sites which might not
-> be 2M aligned but should be easy to fix once the approach is finalized. *=
-*
->
-> 1G alignment for conversion:
-> * Using 1G alignment may cause over-allocated SWIOTLB buffers but might
->   be acceptable for CVMs depending on more considerations.
-> * It might be challenging to use 1G aligned conversion in OVMF. 2M
->   alignment should be achievable with OVMF changes [3].
->
-> Alternatives could be:
-> 1) Separate hugepage aligned DMA pools setup by individual device drivers=
- in
-> case of CVMs.
->
-> [1] https://lore.kernel.org/linux-mips/20231105163040.14904-1-pbonzini@re=
-dhat.com/
-> [2] https://www.kernel.org/doc/html/next/mm/vmemmap_dedup.html
-> [3] https://github.com/tianocore/edk2/pull/3784
-> [4] https://lore.kernel.org/lkml/20230908080031.GA7848@lst.de/T/
->
-> Vishal Annapurve (5):
->   swiotlb: Support allocating DMA memory from SWIOTLB
->   swiotlb: Allow setting up default alignment of SWIOTLB region
->   x86: CVMs: Enable dynamic swiotlb by default for CVMs
->   x86: CVMs: Allow allocating all DMA memory from SWIOTLB
->   x86: CVMs: Ensure that memory conversions happen at 2M alignment
->
->  arch/x86/Kconfig             |  2 ++
->  arch/x86/kernel/pci-dma.c    |  2 +-
->  arch/x86/mm/mem_encrypt.c    |  8 ++++++--
->  arch/x86/mm/pat/set_memory.c |  6 ++++--
->  include/linux/swiotlb.h      | 22 ++++++----------------
->  kernel/dma/direct.c          |  4 ++--
->  kernel/dma/swiotlb.c         | 17 ++++++++++++-----
->  7 files changed, 33 insertions(+), 28 deletions(-)
->
-> --
-> 2.43.0.275.g3460e3d667-goog
->
+On Tue, Jan 30, 2024 at 01:24:08AM -0800, Dan Williams wrote:
+> Add a mechanism for named attribute_groups to hide their directory at
+> sysfs_update_group() time, or otherwise skip emitting the group
+> directory when the group is first registered. It piggybacks on
+> is_visible() in a similar manner as SYSFS_PREALLOC, i.e. special flags
+> in the upper bits of the returned mode. To use it, specify a symbol
+> prefix to DEFINE_SYSFS_GROUP_VISIBLE(), and then pass that same prefix
+> to SYSFS_GROUP_VISIBLE() when assigning the @is_visible() callback:
+> 
+> 	DEFINE_SYSFS_GROUP_VISIBLE($prefix)
+> 
+> 	struct attribute_group $prefix_group = {
+> 		.name = $name,
+> 		.is_visible = SYSFS_GROUP_VISIBLE($prefix),
+> 	};
+> 
+> SYSFS_GROUP_VISIBLE() expects a definition of $prefix_group_visible()
+> and $prefix_attr_visible(), where $prefix_group_visible() just returns
+> true / false and $prefix_attr_visible() behaves as normal.
+> 
+> The motivation for this capability is to centralize PCI device
+> authentication in the PCI core with a named sysfs group while keeping
+> that group hidden for devices and platforms that do not meet the
+> requirements. In a PCI topology, most devices will not support
+> authentication, a small subset will support just PCI CMA (Component
+> Measurement and Authentication), a smaller subset will support PCI CMA +
+> PCIe IDE (Link Integrity and Encryption), and only next generation
+> server hosts will start to include a platform TSM (TEE Security
+> Manager).
+> 
+> Without this capability the alternatives are:
+> 
+> * Check if all attributes are invisible and if so, hide the directory.
+>   Beyond trouble getting this to work [1], this is an ABI change for
+>   scenarios if userspace happens to depend on group visibility absent any
+>   attributes. I.e. this new capability avoids regression since it does
+>   not retroactively apply to existing cases.
+> 
+> * Publish an empty /sys/bus/pci/devices/$pdev/tsm/ directory for all PCI
+>   devices (i.e. for the case when TSM platform support is present, but
+>   device support is absent). Unfortunate that this will be a vestigial
+>   empty directory in the vast majority of cases.
+> 
+> * Reintroduce usage of runtime calls to sysfs_{create,remove}_group()
+>   in the PCI core. Bjorn has already indicated that he does not want to
+>   see any growth of pci_sysfs_init() [2].
+> 
+> * Drop the named group and simulate a directory by prefixing all
+>   TSM-related attributes with "tsm_". Unfortunate to not use the naming
+>   capability of a sysfs group as intended.
+> 
+> In comparison, there is a small potential for regression if for some
+> reason an @is_visible() callback had dependencies on how many times it
+> was called. Additionally, it is no longer an error to update a group
+> that does not have its directory already present, and it is no longer a
+> WARN() to remove a group that was never visible.
+> 
+> Link: https://lore.kernel.org/all/2024012321-envious-procedure-4a58@gregkh/ [1]
+> Link: https://lore.kernel.org/linux-pci/20231019200110.GA1410324@bhelgaas/ [2]
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  fs/sysfs/group.c      |   45 ++++++++++++++++++++++++++++-------
+>  include/linux/sysfs.h |   63 ++++++++++++++++++++++++++++++++++++++++---------
+>  2 files changed, 87 insertions(+), 21 deletions(-)
 
-Ping for review of this series.
+You beat me to this again :)
 
-Thanks,
-Vishal
+I have tested this patch, and it looks good, I'll send out my series
+that uses it for a different subsystem as well.
+
+I guess I can take this as a static tag for others to pull from for this
+rc development cycle?
+
+thanks,
+
+greg k-h
