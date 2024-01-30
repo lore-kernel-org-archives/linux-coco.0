@@ -1,46 +1,47 @@
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497F776C79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAB826AC2
 	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 08:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706603456; cv=none; b=pTO2M1NRdZeL2Pw7cKkGgM4Z5ZhSHQ2yPRHBuBHSdp1Wc14Ut1A412WYp68ABVSjNQNbECE5BhVa0Yp437ttR1kb0ejntp4520N78JRzswbuavxG1PHc8GuskBZF/6IvVdDnQ40qQLxve4c7K8xZY+4WxzbTtuwsUqzmphBiMqI=
+	t=1706603457; cv=none; b=fDsj2b9F+h9cghXFN4dEvhHOHQSepi48uAGznjRo1l26+fjcsBvMo75gjmM4fJ3rUml5yz2BKUjuzbKYXmXKIyqCwIbNeq5BJlCFQPkMvwOBa61ffcGaoHDgVgqcRmPS1hW8zdA/1Nlwm6D/TFV5jblwRD62fMzGs+GJcqQ5088=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706603456; c=relaxed/simple;
-	bh=bboqiXpspNty+IUr75AIb5o8t24UN3eTB7gE/wxTugU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PsSqBz0inRDqS17ohulZuweiu5GeJwWrqNmq7AEIFPblFVvwkWHSJruyW1M1EKt3bAN8BkqzQbh7hom0R0hdT1t9zbEJnp5kHHqUtJiv2tmASi0/zDQ8Dpu0182OFJy3mc95JrENefvJeUKRFX5SgHu1sIqHwN5+ep7lgp8Erfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W/e4fGrO; arc=none smtp.client-ip=134.134.136.31
+	s=arc-20240116; t=1706603457; c=relaxed/simple;
+	bh=AwZwJ5cYVLV4jd8F8avXy7jN4r8TxDP5NN7KpZbNqJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fBmjpzqhXqs4epO11fEDnsM6btXo3Ph/FAtTZ3F0nAoqnkGWIPIySRICAakRsI50IotJMKbRqoAH0V8Yyh7YXi4d2Xk8rI32KoCCPXSEwVM+HzdSYsNSTdzQT7KlfrvIiPKYrWV1xBhUetfn3Wp7q8s94n7kqtjy7gqVe572cK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TNME18jA; arc=none smtp.client-ip=134.134.136.31
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W/e4fGrO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TNME18jA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1706603455; x=1738139455;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bboqiXpspNty+IUr75AIb5o8t24UN3eTB7gE/wxTugU=;
-  b=W/e4fGrOycPonf5ZB6fkIRXhcv4JHn4gKUHXqvzVih9cnrDoSp/zrr9F
-   O7deKy+fFG0GtAH5mCl5VI9n0NnlRMuXW8QBf5dJylzJd3NQ5UJGtOcU8
-   PVH84BJ245h6jqMIOm9OSYdWpL0D0Sb0yol61x3iVd2+pxqgc1xiFFCIJ
-   QAo6+0dpS2hOIXKaW5drqlmo81gbrLY0y8kzRxLmoCYlJPsmtztQnK0bi
-   66Ik8utqNG8za/qZv0UBGt5+5WEZHeM06viCsqkTk8/51kewlDBF8bxLi
-   xocIwiae3fZDJxpjp0R7UO6e5UYVdkRsE9heH6OzyXatZIgKRH4FviVc3
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="467464324"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AwZwJ5cYVLV4jd8F8avXy7jN4r8TxDP5NN7KpZbNqJY=;
+  b=TNME18jATKnZBMKyxYHwkR7Y/H06oinPcSuEtyjCzxYuScMTBO1cEQfQ
+   AnLBb/JGfqas6gAMN0DCjkfnR+dbRSiyLkaB3TRtdthL87NgCPXICG4e1
+   YE2dxl1gwOXsetIKTlYkTY/eIXucdOeqHHYnctpu/CLOhgkP2pXCBubR/
+   /N9ERVF9Q+HOm1n9fy2/rmQpHiz+1LY0GH3+M3QYgAFpKAt/6Z8ZS3ODC
+   F5cI4LLIWqj93nAEjT+TVMlVDdpw5wMGNTClauYcFb+Qxpq1aTwcBCgFW
+   KkuHEhVYi7SgAqACIs8awSP34+QeIi8uwAy72Ed4ITvGLi81LMjZYJl8U
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="467464335"
 X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="467464324"
+   d="scan'208";a="467464335"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
   by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 00:30:18 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="822120351"
+X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="822120353"
 X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="822120351"
+   d="scan'208";a="822120353"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orsmga001.jf.intel.com with ESMTP; 30 Jan 2024 00:30:13 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 751D5DE; Tue, 30 Jan 2024 10:30:12 +0200 (EET)
+	id 81FFBB8; Tue, 30 Jan 2024 10:30:12 +0200 (EET)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -59,10 +60,12 @@ Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	linux-coco@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 1/2] x86/random: Retry on RDSEED failure
-Date: Tue, 30 Jan 2024 10:30:06 +0200
-Message-ID: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Date: Tue, 30 Jan 2024 10:30:07 +0200
+Message-ID: <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -71,50 +74,56 @@ List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The function rdrand_long() retries 10 times before returning failure to
-the caller. On the other hand, rdseed_long() gives up on the first
-failure.
+RDRAND and RDSEED instructions rarely fail. Ten retries should be
+sufficient to account for occasional failures.
 
-According to the Intel SDM, both instructions should follow the same
-retry approach. This information can be found in the section titled
-"Random Number Generator Instructions".
+If the instruction fails more than ten times, it is likely that the
+hardware is broken or someone is attempting to exceed the rate at which
+the random number generator hardware can provide random numbers.
 
-To align the behavior of rdseed_long() with rdrand_long(), it should be
-modified to retry 10 times before giving up.
+Issue a warning if ten retries were not enough.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 ---
- arch/x86/include/asm/archrandom.h | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/archrandom.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/arch/x86/include/asm/archrandom.h b/arch/x86/include/asm/archrandom.h
-index 02bae8e0758b..918c5880de9e 100644
+index 918c5880de9e..fc8d837fb3b9 100644
 --- a/arch/x86/include/asm/archrandom.h
 +++ b/arch/x86/include/asm/archrandom.h
-@@ -33,11 +33,19 @@ static inline bool __must_check rdrand_long(unsigned long *v)
+@@ -13,6 +13,12 @@
+ #include <asm/processor.h>
+ #include <asm/cpufeature.h>
  
- static inline bool __must_check rdseed_long(unsigned long *v)
- {
-+	unsigned int retry = RDRAND_RETRY_LOOPS;
- 	bool ok;
--	asm volatile("rdseed %[out]"
--		     CC_SET(c)
--		     : CC_OUT(c) (ok), [out] "=r" (*v));
--	return ok;
++#ifdef KASLR_COMPRESSED_BOOT
++#define rd_warn(msg) warn(msg)
++#else
++#define rd_warn(msg) WARN_ONCE(1, msg)
++#endif
 +
-+	do {
-+		asm volatile("rdseed %[out]"
-+			     CC_SET(c)
-+			     : CC_OUT(c) (ok), [out] "=r" (*v));
+ #define RDRAND_RETRY_LOOPS	10
+ 
+ /* Unconditional execution of RDRAND and RDSEED */
+@@ -28,6 +34,9 @@ static inline bool __must_check rdrand_long(unsigned long *v)
+ 		if (ok)
+ 			return true;
+ 	} while (--retry);
 +
-+		if (ok)
-+			return true;
-+	} while (--retry);
++	rd_warn("RDRAND failed\n");
 +
-+	return false;
+ 	return false;
  }
  
- /*
+@@ -45,6 +54,8 @@ static inline bool __must_check rdseed_long(unsigned long *v)
+ 			return true;
+ 	} while (--retry);
+ 
++	rd_warn("RDSEED failed\n");
++
+ 	return false;
+ }
+ 
 -- 
 2.43.0
 
