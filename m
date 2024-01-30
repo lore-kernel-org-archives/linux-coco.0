@@ -1,46 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308A06D1B1
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 14:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8546DD11
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 14:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706623592; cv=none; b=hHb4gsRvfcZT6V5qUwkJWcYx+clzVtVnJVq1xDr2Cxk+O4n74MFs2HUnLvVEs1eTDUpBncsinhpsAk18uVGuUmLQyDmre91AThJmVXUzTEznUBW3eBYs0GnsvX3ckT5+YqwFbMpcOVd2EIIv1GC9yBM1+/o+n2QkFXx3WKGJLtY=
+	t=1706624512; cv=none; b=Fe/mwVZZPhA6GS0FcOWCnH5Vl+kVoPVZwoAhVFQ/W1YgoOLfSZ4hu6DJXPJp/Yi9hCVSknR5LbrPkVlE2OCrcK4jItgUs0obpkhBqERwDJ2auGMQjiT8VDEoSLCZgQcGJJL/Yf2sAZZICJFrsJWbdl49nvlj74GIJeMziDm1DMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706623592; c=relaxed/simple;
-	bh=rGPKHFYctFgJTSDAEL8ugysx0wg7XcdedZQnDgXkEiw=;
+	s=arc-20240116; t=1706624512; c=relaxed/simple;
+	bh=iifEdyBkoeN6gHOB3ij71Qr/fQ1oSrL2kWDHJSYyho4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TgIEPBOVO2xmKFQleHXk0zzuRcYZhlqJn9wPNC67lQJRQkczl2MDnoXvOB3FWNK4099V7zXoP3DBthvdalNhWBjgjI3+/uaKFz7ExTTdfOmo77Anai8yAVTmEJ83ye+bA9CAR7UpWNB/rZhEP9EcUrKS3uLy8UdryfmBp1sYm+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=CSfSNK6O; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=p6Kq/le7RQgkwa7bnmQZEHY7qQj8DplAf2CSHTB8DhhbhXPZwGM++LXifHvirM3A5n9Ujnard4AEslbgx5gD7GECNAmQpN5phjgbzXWIfqMxg17OBkXsFJKiIneNli530zC4GP6/dQRixh3XwhD9CaR6UiBBc1Q77RVMbpywtLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=ASLGWzVV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="CSfSNK6O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FFEC43394
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 14:06:31 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ASLGWzVV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E943DC43399
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 14:21:51 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="CSfSNK6O"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ASLGWzVV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1706623588;
+	t=1706624507;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rGPKHFYctFgJTSDAEL8ugysx0wg7XcdedZQnDgXkEiw=;
-	b=CSfSNK6O9igpN6XJ70K68Ikt0eGMGfHtl3l7/yZ60E7GofVY7n+dxrcaLd6zyAga9miGfw
-	zqK4pveEbmw40oYk6UcxJWai/wOIPwM/WikcEmZY8nHwStw9EIyaYdoBtRM11suhZAuPx5
-	jm5B/uqesrnSq+jDMX4iiM/Fi7VG9xM=
+	bh=iifEdyBkoeN6gHOB3ij71Qr/fQ1oSrL2kWDHJSYyho4=;
+	b=ASLGWzVVd4eo14mT6IQZ6iXdA4CNZbF5flQRUoNCWbXfmBL3ar+MBRNCz9NdQVSvhjWtdZ
+	E0CY9Lr44unCOXBgZeABtALgqRbxJWY0B36ZBhb55VFiOrVFP0OU4TzstMr8moM0hY5f0f
+	y3MtqwRFf4OmAoSOIM+qSass5ShRu5s=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 1190f3c9 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c8bd70a5 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
 	for <linux-coco@lists.linux.dev>;
-	Tue, 30 Jan 2024 14:06:28 +0000 (UTC)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-602d2e67217so41026797b3.2
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 06:06:28 -0800 (PST)
-X-Gm-Message-State: AOJu0YwC/TpxsNbPhFM31opYx284xQzmSvPzWX2qfIzNkWB23YnCrPfQ
-	FE/GLCloX710OW5u33rt7K/sbKCfzWtzMfWAte+iJJouRhxjbli8xTZHpzk+SrnE9e3XOoEcycj
-	psJuobhxj1qHzumZeNaptz2eDsuI=
-X-Google-Smtp-Source: AGHT+IHp2RV26oHQ6aA9DH+78zuence6Rgc81OpkDg7yYJXrbPKDi9GckbwZEPtjem4X+5pqnPR4FhGdj0c1T/oGk5o=
-X-Received: by 2002:a05:690c:3508:b0:5ff:682c:6c1b with SMTP id
- fq8-20020a05690c350800b005ff682c6c1bmr7742121ywb.43.1706623586675; Tue, 30
- Jan 2024 06:06:26 -0800 (PST)
+	Tue, 30 Jan 2024 14:21:46 +0000 (UTC)
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-603fdc46852so1750467b3.2
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 06:21:46 -0800 (PST)
+X-Gm-Message-State: AOJu0YzgAazDZqR1j/J6LywWtCGn6hAL59LQVz1sgcsSfvc/2IU+44ob
+	HXljc4mengbTsfot3KzNznp9FN+emH8m2PsQIC0Ljm+vbIw/Emql132lf67bnQYXqiTv3pH4xlP
+	QmsTgN8N5QOlZ/IoFGSS2e80v8O0=
+X-Google-Smtp-Source: AGHT+IGd74BfrxlFkGzfmhnUEfgPF97lQH+UYzmcIyQ916N8eCF2PZXTRYcIB6FeAn8u7Xf2y2NKvZFX2Ktwb79FSf0=
+X-Received: by 2002:a81:ac60:0:b0:600:367a:f99f with SMTP id
+ z32-20020a81ac60000000b00600367af99fmr5446557ywj.4.1706624505457; Tue, 30 Jan
+ 2024 06:21:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -48,13 +48,14 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
- <CAHmME9pOt=uEmuBzBpgUHw9DqAD2FZTZ3v53AOZbQ3Cd2p97xQ@mail.gmail.com> <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
-In-Reply-To: <DM8PR11MB5750E38A8B2BCE66AF7F9812E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
+ <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+In-Reply-To: <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Tue, 30 Jan 2024 15:06:14 +0100
-X-Gmail-Original-Message-ID: <CAHmME9qMO7=RDR60bKJvpDTRokcKed_i0+7BbFD53_7o2OJ6-g@mail.gmail.com>
-Message-ID: <CAHmME9qMO7=RDR60bKJvpDTRokcKed_i0+7BbFD53_7o2OJ6-g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] x86/random: Retry on RDSEED failure
+Date: Tue, 30 Jan 2024 15:21:34 +0100
+X-Gmail-Original-Message-ID: <CAHmME9odqcxdak3HK-XD6-H0SjYmecnTsxzDhYy+-0shhTFygQ@mail.gmail.com>
+Message-ID: <CAHmME9odqcxdak3HK-XD6-H0SjYmecnTsxzDhYy+-0shhTFygQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
 To: "Reshetova, Elena" <elena.reshetova@intel.com>
 Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
@@ -68,62 +69,46 @@ Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Thomas Gleixner <tgl
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 2:10=E2=80=AFPM Reshetova, Elena
+On Tue, Jan 30, 2024 at 2:45=E2=80=AFPM Reshetova, Elena
 <elena.reshetova@intel.com> wrote:
-> The internals of Intel DRBG behind RDRAND/RDSEED has been publicly
-> documented, so the structure is no secret. Please see [1] for overall
-> structure and other aspects. So, yes, your overall understanding is corre=
-ct
-> (there are many more details though).
+> No, this is not the case per Intel SDM. I think we can live under a simpl=
+e
+> assumption that both of these instructions can fail not just due to broke=
+n
+> HW, but also due to enough pressure put into the whole DRBG construction
+> that supplies random numbers via RDRAND/RDSEED.
 
-Indeed, have read it.
+Yea, thought so.
 
-> > So maybe this patch #1 (of 2) can be dropped?
+> I guess your concern about DoS here is for the case when we don=E2=80=99t
+> trust the host/VMM *and* assume malicious userspace, correct?
+> Because in non-confidential computing case, the Linux RNG in such
+> case will just use non-RDRAND fallbacks, no DoS will happen and we
+> should have enough entropy that is outside of userspace control.
+
+Don't think about the RNG for just one second. The basic principle is
+simpler: if you have a
+`WARN_ON(unprivd_userspace_triggerable_condition)`, that's usually
+considered a DoS - panic_on_warn and such.
+
+> >
+> > And if the DoS thing _is_ a concern, and the use case for this WARN_ON
+> > in the first place is the trusted computing scenario, so we basically
+> > only care about early boot, then one addendum would be to only warn if
+> > we're in early boot, which would work because seeding via RDRAND is
+> > attempted pretty early on in init.c.
 >
-> Before we start debating this patchset, what is your opinion on the origi=
-nal
-> problem we raised for CoCo VMs when both RDRAND/RDSEED are made to
-> fail deliberately?
+> I don=E2=80=99t think we are only concerned with initial early boot and i=
+nitial seeding.
+> What about periodic reseeding of ChaCha CSPRNG? If you don=E2=80=99t get
+> RDRAND/RDSEED output during this step, don=E2=80=99t we formally loose th=
+e forward
+> prediction resistance property of Linux RNG assuming this is the only sou=
+rce
+> of entropy that is outside of attacker control?
 
-My general feeling is that this seems like a hardware problem.
-
-If you have a VM, the hypervisor should provide a seed. But with CoCo,
-you can't trust the host to do that. But can't the host do anything to
-the VM that it wants, like fiddle with its memory? No, there are
-special new hardware features to encrypt and protect ram to prevent
-this. So if you've found yourself in a situation where you absolutely
-cannot trust the host, AND the hardware already has working guest
-protections from the host, then it would seem you also need a hardware
-solution to handle seeding. And you're claiming that RDRAND/RDSEED is
-the *only* hardware solution available for it.
-
-Is that an accurate summary? If it is, then the actual problem is that
-the hardware provided to solve this problem doesn't actually solve it
-that well, so we're caught deciding between guest-guest DoS (some
-other guest on the system uses all RDRAND resources) and cryptographic
-failure because of a malicious host creating a deterministic
-environment.
-
-But I have two questions:
-
-1) Is this CoCo VM stuff even real? Is protecting guests from hosts
-actually possible in the end? Is anybody doing this? I assume they
-are, so maybe ignore this question, but I would like to register my
-gut feeling that on the Intel platform this seems like an endless
-whack-a-mole problem like SGX.
-
-2) Can a malicious host *actually* create a fully deterministic
-environment? One that'll produce the same timing for the jitter
-entropy creation, and all the other timers and interrupts and things?
-I imagine the attestation part of CoCo means these VMs need to run on
-real Intel silicon and so it can't be single stepped in TCG or
-something, right? So is this problem actually a real one? And to what
-degree? Any good experimental research on this?
-
-Either way, if you're convinced RDRAND is the *only* way here, adding
-a `WARN_ON(is_in_early_boot)` to the RDRAND (but not RDSEED) failure
-path seems a fairly lightweight bandaid. I just wonder if the hardware
-people could come up with something more reliable that we wouldn't
-have to agonize over in the kernel.
+If you never add new material, and you have the initial seed, then
+it's deterministic. But you still mostly can't backtrack if the state
+leaks at some future point in time.
 
 Jason
