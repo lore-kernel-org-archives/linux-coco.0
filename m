@@ -1,46 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732CE1272DA
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 18:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7389515EA87
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 18:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706639084; cv=none; b=ESybS7Xc0d41PqnD6ep+HG986n/pQ6bSV+ETbBgl8lLCfKOP1fODGxuBFWyzsAROs/r8iJx1hKHWDJ5mJqIXM1JRDuF8ZFjRRb/X8sqMleBZtYfbThiAjDFVfTdi9qLKmLaOh1pOK3yoDrt8jyGbWPBopD0zmLRQqbdBWEgxGUc=
+	t=1706639520; cv=none; b=GCL+wUZ9DbIIx3kb6JqEOxm953jB/YyiUrycjAPP5Y6Yq9MA/Q3RmWrX4D09VF71d4kl59vlNiWzFFZzNtcqIwxFjSBslULxm8ViFrgm1pyemxwR8kwgp5izy8PGLTMC35cp+ubCn49nJD8MM5Kq1eRiipQQVaDgg2/zyXiRIaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706639084; c=relaxed/simple;
-	bh=YUmfBWFQ6tCEpoMRctNdicF/PTXXo5NEZEPkn6VcDTI=;
+	s=arc-20240116; t=1706639520; c=relaxed/simple;
+	bh=iRpgRmHarH60GRDB5jVlAFnXl1prqJyytsKoq7Cs4Z8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fviH3pYb0nONhohQuHCi+2MJOBPUuV60WU0jsU826MNt+KVjoM0Fr/rkfWFwOIC7Il/YNSm9w/aAqdb7MNRJowWRVpjXwag92iAagYaAhQcvHrggRjN6Ey9+RJUAqxS/oIGHvPNhefRpgkCmDtT5vl/XUnpxHheTTbSfM020QVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=gcywChRk; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=t8aDVVEQzhcTG/B/8mTqToHcSwZMbCi1jvDM3IUagmB0tJkIDSSicYlJTlOwMrFFTRMMgZ7HhqilwhIxAAYILOBNaqV4Hi4iG98SOfbXJSfu7QACff5/fXZfEGUdBTbIUh0cgJNLCFmRCqL8CmnxJOqk7GQExqVxGBHHvMoJ9zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=TG4zboBz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="gcywChRk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6896C43390
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 18:24:43 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="TG4zboBz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9C9C43394
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 18:31:59 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="gcywChRk"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="TG4zboBz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1706639082;
+	t=1706639516;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YUmfBWFQ6tCEpoMRctNdicF/PTXXo5NEZEPkn6VcDTI=;
-	b=gcywChRk9C9EfkvBCWSeF9jKKanK4DMvWfgFTKboEjcAhVLkjtwZnoG8yNxt7je8xrkq1s
-	LgXdgaNglLsN1Daf24pb0dnL7c8WeQIZDXlcZ9RrO6BtNzJXaAw1k0jkB74CkrR9sIOwoD
-	S3rOlzguUuWB46PzMh3oFuTI4qtxE98=
+	bh=tG7DptqGlrQotRRCL+fVetrdXEbeDlcaTep4/MHs0M8=;
+	b=TG4zboBzZKgvM2qVC9xqBRHPMsOz/xvuoWaqhoBU/X49AAAZqEdPmaSHEOk6rGb15KweKt
+	iLxP3dmIN/CWoIN0mRYjd0PMiy+Khc/CpFUxcgDvEWsHPn8ZI9c2IrTwxNAQDKif3lkKYr
+	lyu8qdZXh6HXcUdqEmGiKCFubG1m2as=
 Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ebf0a6ee (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 98abee37 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
 	for <linux-coco@lists.linux.dev>;
-	Tue, 30 Jan 2024 18:24:42 +0000 (UTC)
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-5edfcba97e3so47234577b3.2
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 10:24:41 -0800 (PST)
-X-Gm-Message-State: AOJu0YyiFdWdBCYZ88Jj8YnjEd3jW3RnZ36q8sk35hDQv8RFDq0ibJKp
-	T/lIkrBC5f06I7Ddgve5cET7AOQ4u2fzdmfpXIxFy5w/5cD20ZjVv1xilwe2BqwjYMo8kgLzo5S
-	A/yia7+vcOUxyEzCLnnvkMBnjQFk=
-X-Google-Smtp-Source: AGHT+IHs1X6GyHofuCm5wWklYUOEkGmQh3S2SxOZMW5eNxNCRUnzVnAuGciDZbV+el+aoBZWnYUODQffo17X7ao8AVE=
-X-Received: by 2002:a81:c74d:0:b0:5ff:4e3b:dc89 with SMTP id
- i13-20020a81c74d000000b005ff4e3bdc89mr6687543ywl.11.1706639080294; Tue, 30
- Jan 2024 10:24:40 -0800 (PST)
+	Tue, 30 Jan 2024 18:31:56 +0000 (UTC)
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-dc25e12cc63so96911276.0
+        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 10:31:56 -0800 (PST)
+X-Gm-Message-State: AOJu0YwB5lH8JsIE9hEIuCpsmocWEHxQz3GtipsEhNBZ3yRKHx8MAere
+	M+5lZQLwcUpBX1y27+NJ0qVyfbTGKw362kOgJ4ixd0yNS6dzg8uF+OcyeFeHISNXEpdKzXBys/j
+	PCw7hGpje6bN4Ld0W3YVg/FHOYU4=
+X-Google-Smtp-Source: AGHT+IGRHdsBprwo6nL35R9Sk+xZZnX67yX7st+CY86TGoFFpkZ7BZtaClGjk3oFJVouonid2cvJWPfU8amnWFLjXAk=
+X-Received: by 2002:a25:c5c8:0:b0:dc3:6b67:9341 with SMTP id
+ v191-20020a25c5c8000000b00dc36b679341mr1497437ybe.37.1706639514684; Tue, 30
+ Jan 2024 10:31:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -55,9 +55,9 @@ References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
  <Zbk6h0ogqeInLa_1@redhat.com>
 In-Reply-To: <Zbk6h0ogqeInLa_1@redhat.com>
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Tue, 30 Jan 2024 19:24:29 +0100
-X-Gmail-Original-Message-ID: <CAHmME9rq-_f9C=DMjjYeCXFcMrCooD-AYVZVj2oF8Je7ztGnTw@mail.gmail.com>
-Message-ID: <CAHmME9rq-_f9C=DMjjYeCXFcMrCooD-AYVZVj2oF8Je7ztGnTw@mail.gmail.com>
+Date: Tue, 30 Jan 2024 19:31:42 +0100
+X-Gmail-Original-Message-ID: <CAHmME9p3AT+MYXD9G0NL0Ge+-eh4cOc7HVQmk4uzi7ZjXH3hww@mail.gmail.com>
+Message-ID: <CAHmME9p3AT+MYXD9G0NL0Ge+-eh4cOc7HVQmk4uzi7ZjXH3hww@mail.gmail.com>
 Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
 To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: Dave Hansen <dave.hansen@intel.com>, "Reshetova, Elena" <elena.reshetova@intel.com>, 
@@ -75,8 +75,90 @@ Content-Transfer-Encoding: quoted-printable
 
 On Tue, Jan 30, 2024 at 7:06=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
 edhat.com> wrote:
-> So I'm not convinced we can blindly wave away RDRAND failures as
-> guaranteed to mean broken hardware.
+>
+> On Tue, Jan 30, 2024 at 06:49:15PM +0100, Jason A. Donenfeld wrote:
+> > On Tue, Jan 30, 2024 at 6:32=E2=80=AFPM Dave Hansen <dave.hansen@intel.=
+com> wrote:
+> > >
+> > > On 1/30/24 05:45, Reshetova, Elena wrote:
+> > > >> You're the Intel employee so you can find out about this with much
+> > > >> more assurance than me, but I understand the sentence above to be =
+_way
+> > > >> more_ true for RDRAND than for RDSEED. If your informed opinion is=
+,
+> > > >> "RDRAND failing can only be due to totally broken hardware"
+> > > > No, this is not the case per Intel SDM. I think we can live under a=
+ simple
+> > > > assumption that both of these instructions can fail not just due to=
+ broken
+> > > > HW, but also due to enough pressure put into the whole DRBG constru=
+ction
+> > > > that supplies random numbers via RDRAND/RDSEED.
+> > >
+> > > I don't think the SDM is the right thing to look at for guidance here=
+.
+> > >
+> > > Despite the SDM allowing it, we (software) need RDRAND/RDSEED failure=
+s
+> > > to be exceedingly rare by design.  If they're not, we're going to get
+> > > our trusty torches and pitchforks and go after the folks who built th=
+e
+> > > broken hardware.
+> > >
+> > > Repeat after me:
+> > >
+> > >         Regular RDRAND/RDSEED failures only occur on broken hardware
+> > >
+> > > If it's nice hardware that's gone bad, then we WARN() and try to make
+> > > the best of it.  If it turns out that WARN() was because of a broken
+> > > hardware _design_ then we go sharpen the pitchforks.
+> > >
+> > > Anybody disagree?
+> >
+> > Yes, I disagree. I made a trivial test that shows RDSEED breaks easily
+> > in a busy loop. So at the very least, your statement holds true only
+> > for RDRAND.
+> >
+> > But, anyway, if the statement "RDRAND failures only occur on broken
+> > hardware" is true, then a WARN() in the failure path there presents no
+> > DoS potential of any kind, and so that's a straightforward conclusion
+> > to this discussion. However, that really hinges on  "RDRAND failures
+> > only occur on broken hardware" being a true statement.
+>
+> There's a useful comment here from an Intel engineer
+>
+> https://web.archive.org/web/20190219074642/https://software.intel.com/en-=
+us/blogs/2012/11/17/the-difference-between-rdrand-and-rdseed
+>
+>   "RDRAND is, indeed, faster than RDSEED because it comes
+>    from a hardware-based pseudorandom number generator.
+>    One seed value (effectively, the output from one RDSEED
+>    command) can provide up to 511 128-bit random values
+>    before forcing a reseed"
+>
+> We know we can exhaust RDSEED directly pretty trivially. Making your
+> test program run in parallel across 20 cpus, I got a mere 3% success
+> rate from RDSEED.
+>
+> If RDRAND is reseeding every 511 values, RDRAND output would have
+> to be consumed significantly faster than RDSEED in order that the
+> reseed will happen frequently enough to exhaust the seeds.
+>
+> This looks pretty hard, but maybe with a large enough CPU count
+> this will be possible in extreme load ?
 
-Indeed, and now I'm further disturbed by the @intel.com people on the
-thread making these claims that are demonstratively false.
+So what this suggests is that the guest-guest DoS caused by looping
+forever (or panic-on-warn'ing) is at least possible on large enough
+hardware for some non-zero amount of time, depending on whatever hard
+to hit environmental factors.
+
+Another approach would be to treat this as a hardware flaw, in that
+the RDRAND does not provide a universally reliable interface, and so
+something like CoCo doesn't work with the current design, and so Intel
+should issue some microcode updates that gives some separated pools
+and separated rate limiting on a per-VMX ring 0 basis. Or something
+like that. I dunno; maybe it's unrealistic to hope Intel will repair
+their interface. But I think we've got to acknowledge that it's sort
+of broken/irreliable.
+
+Jason
