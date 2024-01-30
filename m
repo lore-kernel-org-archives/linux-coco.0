@@ -1,129 +1,133 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB6155E54
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 14:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30BD7E578;
+	Tue, 30 Jan 2024 15:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706626791; cv=none; b=j3oVqDZxSaJXSnYY32WbmklKh8quOSsPitzrISken313z1b2lwtt3UiRSz5i0ZVy3wg12qF8oW2vXWswOQpR1P4FBU3McYRGMwfsBxpYdCAkIwPrid72kGtnhbgDmXPGa2Df9h273M3yfhbll11x+2k9FxDFbjxI6NPkgTDQLAM=
+	t=1706626849; cv=none; b=V7b6FFmrkto1E9wx/RDHlu/Nz1WPC0vmC18BvEwhmgS/nIR7i7vv3pRa7t8xshsb+eGpo7BKGA8Ln25pvhTCTSMGz1g9Vj/xuvrrP+UHqfWSPb0czf0UHnltw3sVz0jVVJRIboY9uRSgRjlK+vHSoUd2aOW69IVL/AHZEwSWc4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706626791; c=relaxed/simple;
-	bh=1tgAgVSY1WXEHtXlxjinJFnJmsZeG3N/wjN5CzUBIZc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S9XlXop0OfIT+PlmtK/PFDXxrSQihrbunqNeOabuHRqGWJ66kMfGH6956pg2QCMqvZKbpgu+xLGmSn10s+ItJbiNvphI3u3KLgGIgVs0hvpQVoSnvQBz357gY1q2yhAQcwSfnsLj0jBGXrJITDVHFb425wqF1sOSRoGyzXjl6/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GuRxMZHy; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1706626849; c=relaxed/simple;
+	bh=4qpjlgFvnRxSYoqozHHFiDmpvUwGwaRo34COft/1gDc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZIVzNE/RFt5GES1lO6Xo0hz/H+MAsp2gHI3RhMKmXfuzTya47/18WND/tDukJdWO4bs3LwVKB/VkQfFgmdNBbUIvv6Mxc6o0LAU2vYNsgGqxVxikvJ9PSd3wAA5JarjJ/Kp/aoMlK5nmOmrdw4Aj3XHczzZ/t2Cq1itxHbLvnIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=U0S1J1X2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GuRxMZHy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706626788;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="U0S1J1X2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D8DC433F1;
+	Tue, 30 Jan 2024 15:00:48 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="U0S1J1X2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1706626844;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1tgAgVSY1WXEHtXlxjinJFnJmsZeG3N/wjN5CzUBIZc=;
-	b=GuRxMZHy0UaNK+wlbYPJnSepZni/zPip5USJ1M2pUmSz/lIJoK9Mjkb5uxG0OFCbZpXJo/
-	FFwaIDC1PXZQg1r5Ns7OlPZSOgRmvhd3yPU5f3sH+HP/NtorHOKYocBhheCOM+W86uKKMC
-	Jq+GTfRj0c3RCM08ez6K0ADKD9UL41A=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-245-Y0ewRGRROV6EaS8d-fP7Jw-1; Tue, 30 Jan 2024 09:59:47 -0500
-X-MC-Unique: Y0ewRGRROV6EaS8d-fP7Jw-1
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-7cee1755d80so1991930241.2
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 06:59:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706626786; x=1707231586;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1tgAgVSY1WXEHtXlxjinJFnJmsZeG3N/wjN5CzUBIZc=;
-        b=IT8X3aFoNiJGbfTSTGCs83+gRxPaYQQrn9G2cr5D44y6z3P4qy68aHY05+CgZSCxS3
-         E+qB8CWgCUil7wCyga7p8cpz+JbBzQQFwgYdnaq6FfhHPMLx4tVsyA5urvF891ckEIFX
-         P+VHvzEREZYXF0+CJicnX8t2MxokLKTsmnCFa3pbw1QYSsQePwjd/VOMj5Gb7d6oQl+K
-         p2DDMQ3CyttmJoj0eBX0eyLSkQblhFhRLprYUBvUSO02rNfRMuof8ZNgr+0yKsFD2oOL
-         5JYID0N7q8M6gHMibyJVQOgTV0kyKKJoFsGtA9fQiMAeAtAWsyZoq9lwFSy5QN9Gzb6X
-         efDQ==
-X-Gm-Message-State: AOJu0YwmjKX+Zk2RsmGs/5457Ru4Er9fj2WW8GCC+lD9SVlfKF+T6riP
-	HrZPzUi+4z6iTvXW6T74PwudFw96pG77YqRzpAvdfsP7k6dOLMXYS2Kt2YXwN1SsdwUqKVIDlBX
-	dKZ0KnrlCxd0rgbJ5ZyI+AJwd27MABP0f8ol38GX0bkCTQG9YPI+syM1ytJY8CRvYIlQgc+Lc0Z
-	3qyc7xioiMJmSuhtjrxYKudlqFTFwk0yEhLA==
-X-Received: by 2002:a05:6102:2256:b0:46b:6a7a:30a1 with SMTP id e22-20020a056102225600b0046b6a7a30a1mr2218300vsb.6.1706626786409;
-        Tue, 30 Jan 2024 06:59:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEDswsxCrtanUl+20n0ev8u+2WT23/0oF8G8nh8pG6OHZQJZLcwjksCHvNXwQ79sSgdmASJmVb7xQIYR598Wyc=
-X-Received: by 2002:a05:6102:2256:b0:46b:6a7a:30a1 with SMTP id
- e22-20020a056102225600b0046b6a7a30a1mr2218288vsb.6.1706626786190; Tue, 30 Jan
- 2024 06:59:46 -0800 (PST)
+	bh=zblYLYwNZ4cge9X2bnUsN+nY4bwbL11gVrn6W4nM2wc=;
+	b=U0S1J1X2olcCsxMv+q5Da9spxGrhLCSJEkRJuyqeVJ3ZgO8ut8Da/arMIk1BiCn5Sy1rlx
+	QaKBb1CKNsb/x17Wf2JpMzQGB43WUgnbSTK0XlSN4lrUXaJ/n4MQd9H4yBBNdvvCQxANmD
+	cprKPTOvGH07V2eICjEOkEQ8VsK6J2E=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 42f035c5 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 30 Jan 2024 15:00:44 +0000 (UTC)
+Date: Tue, 30 Jan 2024 16:00:42 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: "Reshetova, Elena" <elena.reshetova@intel.com>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Nakajima, Jun" <jun.nakajima@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
+Message-ID: <ZbkPGl7sdg5NZMtn@zx2c4.com>
+References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
+ <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
+ <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com>
+ <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <CAHmME9odqcxdak3HK-XD6-H0SjYmecnTsxzDhYy+-0shhTFygQ@mail.gmail.com>
+ <DM8PR11MB57507D16E4A4679AD4B4B964E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
- <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com> <g7jh422ild6c23hjxvf7q2xtygkumbpynz4hcops7nvg5izvpp@r3oyhvssph2o>
-In-Reply-To: <g7jh422ild6c23hjxvf7q2xtygkumbpynz4hcops7nvg5izvpp@r3oyhvssph2o>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 30 Jan 2024 15:59:34 +0100
-Message-ID: <CABgObfZiyx8hRsD37xZq5TNs9sRq48vLUxbOKa=HZ1vcr67sWQ@mail.gmail.com>
-Subject: Re: [PATCHv6 00/16] x86/tdx: Add kexec support
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Elena Reshetova <elena.reshetova@intel.com>, Jun Nakajima <jun.nakajima@intel.com>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM8PR11MB57507D16E4A4679AD4B4B964E77D2@DM8PR11MB5750.namprd11.prod.outlook.com>
 
-On Tue, Jan 30, 2024 at 3:34=E2=80=AFPM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> On Tue, Jan 30, 2024 at 02:43:15PM +0100, Paolo Bonzini wrote:
-> > On 1/24/24 13:55, Kirill A. Shutemov wrote:
-> > > The patchset adds bits and pieces to get kexec (and crashkernel) work=
- on
-> > > TDX guest.
+On Tue, Jan 30, 2024 at 02:55:08PM +0000, Reshetova, Elena wrote:
+> 
+> 
+> > On Tue, Jan 30, 2024 at 2:45 PM Reshetova, Elena
+> > <elena.reshetova@intel.com> wrote:
+> > > No, this is not the case per Intel SDM. I think we can live under a simple
+> > > assumption that both of these instructions can fail not just due to broken
+> > > HW, but also due to enough pressure put into the whole DRBG construction
+> > > that supplies random numbers via RDRAND/RDSEED.
+> > 
+> > Yea, thought so.
+> > 
+> > > I guess your concern about DoS here is for the case when we don’t
+> > > trust the host/VMM *and* assume malicious userspace, correct?
+> > > Because in non-confidential computing case, the Linux RNG in such
+> > > case will just use non-RDRAND fallbacks, no DoS will happen and we
+> > > should have enough entropy that is outside of userspace control.
+> > 
+> > Don't think about the RNG for just one second. The basic principle is
+> > simpler: if you have a
+> > `WARN_ON(unprivd_userspace_triggerable_condition)`, that's usually
+> > considered a DoS - panic_on_warn and such.
+> 
+> Ok, agree, you do bring a valid point that we should not create new 
+> DoS attack vectors from  userspace in such cases. 
+> 
+> > 
+> > > >
+> > > > And if the DoS thing _is_ a concern, and the use case for this WARN_ON
+> > > > in the first place is the trusted computing scenario, so we basically
+> > > > only care about early boot, then one addendum would be to only warn if
+> > > > we're in early boot, which would work because seeding via RDRAND is
+> > > > attempted pretty early on in init.c.
 > > >
-> > > The last patch implements CPU offlining according to the approved ACP=
-I
-> > > spec change poposal[1]. It unlocks kexec with all CPUs visible in the=
- target
-> > > kernel. It requires BIOS-side enabling. If it missing we fallback to =
-booting
-> > > 2nd kernel with single CPU.
-> > >
-> > > Please review. I would be glad for any feedback.
-> >
-> > Hi Kirill,
-> >
-> > I have a very basic question: is there a reason why this series does no=
-t
-> > revert commit cb8eb06d50fc, "x86/virt/tdx: Disable TDX host support whe=
-n
-> > kexec is enabled"?
->
-> My patchset enables kexec for TDX guest. The commit you refer blocks kexe=
-c
-> for host. TDX host and guest have totally different problems with handlin=
-g
-> kexec. Kai looks on how to get host kexec functional.
+> > > I don’t think we are only concerned with initial early boot and initial seeding.
+> > > What about periodic reseeding of ChaCha CSPRNG? If you don’t get
+> > > RDRAND/RDSEED output during this step, don’t we formally loose the forward
+> > > prediction resistance property of Linux RNG assuming this is the only source
+> > > of entropy that is outside of attacker control?
+> > 
+> > If you never add new material, and you have the initial seed, then
+> > it's deterministic. But you still mostly can't backtrack if the state
+> > leaks at some future point in time.
+> 
+> I am not talking about backtrack resistance, i.e. when attacker learns about 
+> RNG state and then can recover the past output. I was talking about an attacker
+> learning the RNG state at some point of time (RNG compromise) and
+> then for RNG being able to recover over time from this state to a secure state using 
+> fresh entropy input that is outside of attacker control/observance.
+> Does Linux RNG aim to provide this property? Do people care about this? 
+> If noone cares about this one and Linux RNG doesn’t aim to provide it anyhow,
+> then I agree that we should just ensure that early entropy collection includes
+> RDRAND/RDSEED input for confidential VMs one way or another.
 
-Yeah, that was right there in the cover letter (and I should have
-gotten a clue from the many references to CC_* constants...). Somebody
-pointed me to this series as "the TDX kexec series from Intel" and I
-had some tunnel vision issues. Sorry for the noise!
+That's the first thing I mentioned -- "If you never add new material,
+and you have the initial seed, then it's deterministic." The property
+you mention is a good one to have and Linux usually has it. 
 
-But since I have your attention, do you have a pointer to the
-corresponding edk2 series? Thanks,
 
-Paolo
-
+> 
+> Best Regards,
+> Elena.
+> 
+> > 
+> > Jason
