@@ -1,134 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C0285C7F
-	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 15:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15086AE6
+	for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 16:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706629844; cv=none; b=fqYvAiVgGChjOlGcJD9jPGn4L5d9A+hJktl/aTP0mNFiI+HVu5cERPTF2JqiUUGdH5Td4uj5VfrrF4RfqkOjLyj/RcndqH8V9iDlSbYt/fgj7WpKGrVUGpYv0lZV1S1mbm/f38FKnb03wg+PO3yBKNAkMrT59XpPtMPtBf8KIl8=
+	t=1706631647; cv=none; b=Gx7ykzJTb3xsx+Fo6yHdLQqsyepm1pFp9q/cxTAemigjX5RQrANfKPS5U/fpXk6hX/DCkMlWo8UIfVT2haVoEF1khtl3zz8IweEF+FdhB/y4iRzaDliN6nYmhlqMch64H0fQRP0/CethT0HMG0FwjaxzRoGQ6SQRz+32MyUhMug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706629844; c=relaxed/simple;
-	bh=uKm+UW/Vo4GQhTpv3sxOiaQtBenqWb70/6yWKJn8914=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DnoXCtNucfBYDkOdYhELn4r4UDSA4LmzwMtSUYkh9YepcfmgjRZvu+ZUojOS9Jki8aqKSbo/nwcgaccBpzuKzg3INGo9oQW2AHL6R652APA8GrZFILh+YWiaGKj77DgBoznmCqtv6PA3jGfAcl2QtiFoAB0piu98NftBZFdoMUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i2lSZ7GN; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1706631647; c=relaxed/simple;
+	bh=9dqoKUzfPnS0ouqZmUsutY8WSQ36Ew7hhDXp38tOQgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RG2xbvybelyM1vOKiLoZUQsNWl2DHtGgBh0OgS0bAbIo4pd93I9QnKGG6ScyD1ioJS97Q4RPsTp3zfQ5Cq/AJ5ih+U4omsqLGDQphNG4DyiQA7+OzWjjyjr64sA3jRucv33vUKCfBEVQMSUAwTbr/ytaCl6TpBwFwBY4kiTCwwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RFQwU6NC; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i2lSZ7GN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706629843; x=1738165843;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uKm+UW/Vo4GQhTpv3sxOiaQtBenqWb70/6yWKJn8914=;
-  b=i2lSZ7GNx0KrR1gu3mTwRBo6qsHJ2R8O08guq24ceuffrBDKrcbtac8e
-   +LRsD6v9ZfrqhSSX0F+SB21KZnAa3YnyIypf6tsdIPVD7kgSBo7golygV
-   14RBojHe6Y8OtnNwp/3sbaL+3x5MaW3yOs+L27WwhA4czhYAjgv6b3miF
-   VE6qLsHXxBv4QQoMg3I2kwx2KcX2KyczvCe0fKHMRHYoggEsc2wyAcxL4
-   rTEem05iS34u7mbi5lxO/KsguAqz0GCtcifAcIv1h/ss9R7+EA1X3t7u4
-   Att0suSAZ71dZSGy/gd43XLozwNB0+s4UXnfNXi2Z0/PO/XxWIc7G2oXm
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10064926"
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; 
-   d="scan'208";a="10064926"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 07:50:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="737811733"
-X-IronPort-AV: E=Sophos;i="6.05,230,1701158400"; 
-   d="scan'208";a="737811733"
-Received: from pangchin-mobl3.amr.corp.intel.com (HELO [10.209.54.246]) ([10.209.54.246])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 07:50:41 -0800
-Message-ID: <deecae79-625f-4f57-a764-67d01d7f264c@linux.intel.com>
-Date: Tue, 30 Jan 2024 07:50:40 -0800
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RFQwU6NC"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 161F040E01B3;
+	Tue, 30 Jan 2024 16:20:41 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 7yVcVDOXyjWb; Tue, 30 Jan 2024 16:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1706631639; bh=alWf9PlcGUIY347NLIw+uw/YZFl5yuvijufcFHJXHac=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RFQwU6NCK40raUA31PWhXPZKfjdfhCWWZXv8repbMJaj2d3tzBIwSyhuY0zVFuL/t
+	 nGJHjh6F7ujehycrE+kCrMDQZbCn6ouDqp23GJ73Fe4jnIX5WaGDIQQFF/qUtf/Ujt
+	 /nknHKZZogm7FogSq7ryuDZobR5h0c7ThyoD7NY9hhxHGvpjhDbEKpk8pPCyPPguQL
+	 dIdj3AzixiVWYkSS78kQTyZ0yFwnUF5RCxkLDV8R8X88vHhSXKgLLF1ksUq8pnIGKv
+	 2fLvgnufs9u8Ml0SxAJughMKYrDg13dD+ul8HQPKYgJvWhL7j+BAW0DSrfUwG1XVY7
+	 /By15uTzDxBIdER5lNvw1JI0VM9rMiPJeT7rt2TWOOD7K8H3ZScAj+wzJTCs1wVW5j
+	 LvnDz5D4NIMP7QMiItg4PTaMZZLKAjVSpDES8TEw/8h7+7k3xyGQCQPYYcSeAYYh79
+	 VbAFiHvz0xEHOt1rmkwfNS/TqeT0R1fjx7XRHgoL6l4SbRbWj0DJY6kr1iuelg/9Xn
+	 /nCrkyaNKsNK3+BXCCFQWjRCcVWbPEV6YUZxfgY9IXU3hb9lZY6rBroNNLIcA9CXq5
+	 Sotj8mLiXilxw9pP/mTw6O34JotnPspFg0YTCAVMGQ147AKOYj5YSRCf95TC47qAFT
+	 tFPrc8bdrPIOARXme6y93Rgc=
+Received: from zn.tnic (pd953033e.dip0.t-ipconnect.de [217.83.3.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B083840E00C5;
+	Tue, 30 Jan 2024 16:20:00 +0000 (UTC)
+Date: Tue, 30 Jan 2024 17:19:55 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+	linux-mm@kvack.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	jroedel@suse.de, thomas.lendacky@amd.com, hpa@zytor.com,
+	ardb@kernel.org, pbonzini@redhat.com, seanjc@google.com,
+	vkuznets@redhat.com, jmattson@google.com, luto@kernel.org,
+	dave.hansen@linux.intel.com, slp@redhat.com, pgonda@google.com,
+	peterz@infradead.org, srinivas.pandruvada@linux.intel.com,
+	rientjes@google.com, tobin@ibm.com, vbabka@suse.cz,
+	kirill@shutemov.name, ak@linux.intel.com, tony.luck@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com, alpergun@google.com,
+	jarkko@kernel.org, ashish.kalra@amd.com, nikunj.dadhania@amd.com,
+	pankaj.gupta@amd.com, liam.merwick@oracle.com
+Subject: Re: [PATCH v2 00/25] Add AMD Secure Nested Paging (SEV-SNP)
+ Initialization Support
+Message-ID: <20240130161955.GFZbkhq2RDUrW5-NvV@fat_crate.local>
+References: <20240126041126.1927228-1-michael.roth@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
- Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>, Tom Lendacky
- <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>,
- Sean Christopherson <seanjc@google.com>, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com>
- <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20240130083007.1876787-2-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240126041126.1927228-1-michael.roth@amd.com>
 
+On Thu, Jan 25, 2024 at 10:11:00PM -0600, Michael Roth wrote:
+> This patchset is also available at:
+> 
+>   https://github.com/amdese/linux/commits/snp-host-init-v2
+> 
+> and is based on top of linux-next tag next-20240125
 
-On 1/30/24 12:30 AM, Kirill A. Shutemov wrote:
-> RDRAND and RDSEED instructions rarely fail. Ten retries should be
-> sufficient to account for occasional failures.
->
-> If the instruction fails more than ten times, it is likely that the
-> hardware is broken or someone is attempting to exceed the rate at which
-> the random number generator hardware can provide random numbers.
->
-> Issue a warning if ten retries were not enough.
+Ok, I've queued this now after some testing.
 
-Did you come across a case where it fails? Wondering why add this
-warning now?
+As of now
 
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> ---
->  arch/x86/include/asm/archrandom.h | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/arch/x86/include/asm/archrandom.h b/arch/x86/include/asm/archrandom.h
-> index 918c5880de9e..fc8d837fb3b9 100644
-> --- a/arch/x86/include/asm/archrandom.h
-> +++ b/arch/x86/include/asm/archrandom.h
-> @@ -13,6 +13,12 @@
->  #include <asm/processor.h>
->  #include <asm/cpufeature.h>
->  
-> +#ifdef KASLR_COMPRESSED_BOOT
-> +#define rd_warn(msg) warn(msg)
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=x86/sev
 
-Why not use warn_once in both cases?
+is frozen and fixes should come ontop so that Paolo/Sean can use that
+branch to base the remaining SNP host stuff ontop.
 
-> +#else
-> +#define rd_warn(msg) WARN_ONCE(1, msg)
-> +#endif
-> +
->  #define RDRAND_RETRY_LOOPS	10
->  
->  /* Unconditional execution of RDRAND and RDSEED */
-> @@ -28,6 +34,9 @@ static inline bool __must_check rdrand_long(unsigned long *v)
->  		if (ok)
->  			return true;
->  	} while (--retry);
-> +
-> +	rd_warn("RDRAND failed\n");
-> +
->  	return false;
->  }
->  
-> @@ -45,6 +54,8 @@ static inline bool __must_check rdseed_long(unsigned long *v)
->  			return true;
->  	} while (--retry);
->  
-> +	rd_warn("RDSEED failed\n");
-> +
->  	return false;
->  }
->  
+Thx.
 
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
