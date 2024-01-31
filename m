@@ -1,184 +1,117 @@
-Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576B620DE3
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 20:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FDC20DE0
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 20:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706733622; cv=none; b=RaXIJ56jHD+8sjB+71/Ox3oFDlw93xq5/S4UoPNMwd6niZFHKwyr8EIf4ydL2fhgyRRsMVGMN6Y/U3ySnlLOzuLTpboTBVEDWkaq37d/QMg5Pk7HLwELRCKCLS/wuJEpyun0u2cfY5bvafFeJqC1xZjU0zeIiJDjb1jdVpHjzjA=
+	t=1706733891; cv=none; b=I1RBkIzX+MKnFmLZ4OqyxQqhe18XDjkj1WIm0E9KZEGwp9n6HvQz4UC3nfi1EG3TC2Dv2y7nF2H+tvcATWS54kkCBcYDQJkXgXMJY24OGME0aNnXBtQwgVb6VC/aoD7SDeIqYmQIY3VGiJpZzZ0y24vshnHYWyqXSmbm0lYnqro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706733622; c=relaxed/simple;
-	bh=fLIPQCnNQ5E/r9b+KCaDi39a1lB6LxyGJhCI6rNLasw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qLHlcDTHzWm/sc6mUuG8M8z7gwGzSy/JsLY6RGv9jyL1rUVPpNiBS4PTQRwNDsHGXuUxdf+Ij/kQrjsC51RGDAf+jDQ3aLOm++Mu0AlzlVDKDXSc83oziGHRmYln+sAiCgl0XYhknis5wRtKnyp/8CH7gTfAY8NMHEPBsV6MsYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 40VKZWY1012224;
-	Wed, 31 Jan 2024 14:35:32 -0600
-Received: (from greg@localhost)
-	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 40VKZWYw012223;
-	Wed, 31 Jan 2024 14:35:32 -0600
-Date: Wed, 31 Jan 2024 14:35:32 -0600
-From: "Dr. Greg" <greg@enjellic.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-        "Daniel P. Berrang??" <berrange@redhat.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Nakajima, Jun" <jun.nakajima@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] x86/random: Issue a warning if RDRAND or RDSEED fails
-Message-ID: <20240131203531.GA12035@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <20240130083007.1876787-1-kirill.shutemov@linux.intel.com> <20240130083007.1876787-2-kirill.shutemov@linux.intel.com> <CAHmME9qsfOdOEHHw_MOBmt6YAtncbbqP9LPK2dRjuOp1CrHzRA@mail.gmail.com> <DM8PR11MB57507611D651E6D7CBC2A2F3E77D2@DM8PR11MB5750.namprd11.prod.outlook.com> <88a72370-e300-4bbc-8077-acd1cc831fe7@intel.com> <CAHmME9oSQbd3V8+qR0e9oPb7ppO=E7GrCW-a2RN8QNdY_ARbSQ@mail.gmail.com> <Zbk6h0ogqeInLa_1@redhat.com> <DM8PR11MB575052B985CA97B29A443F9AE77C2@DM8PR11MB5750.namprd11.prod.outlook.com> <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com>
+	s=arc-20240116; t=1706733891; c=relaxed/simple;
+	bh=kHN7BNBI5EH4kNeammkUSuRN5n+Qzd5PsJRKjJZE1r4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YOnfeGRjyNuMsIJso4A4owcPLE8pyF4smLeUeu34z6BEWWEqyYOA/SBK+q68PLgfdz8b7J87+Ueiv1PRi9VroPEZcRkNx7nwp5DnhWpuiM8ijENlvyWwlgToYqMVD7JRkwxZ6GLq/3ddZqPGkOjuKVEy6j4HkaJDlk5cHTyPsd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=buoSHWZy; arc=none smtp.client-ip=192.55.52.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="buoSHWZy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706733889; x=1738269889;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kHN7BNBI5EH4kNeammkUSuRN5n+Qzd5PsJRKjJZE1r4=;
+  b=buoSHWZyqiQ/XK3eB4z5qrVMbH5rPKC8GMmA8/6j5J2lutDaJRL0QdNO
+   TSoAM42qrjTfuu8vfSrOArB5UsTGTBM5rBSAPBmQEMjbA7/NDr5CtN/oq
+   rQvh/DIXB0U7jbr69oSU9ydWJjuMCixjDbPVlFP2b1H3liXW9MYNBcKC3
+   EIcJX4zIP3KF9Emlp90nyMHZk/YiuSrEH+V2IKf9Q35RWKLB0VqTtBg1r
+   p2yHci5MPkMt422ClVlQ4cwtNKsoAuAIz+91lU87lk3DrNZEHBaDjTs57
+   9To8emwczejif8DYXhd/QBoPQVKKup1euOmRfGyoSnCBe0Hql3C/DHt+O
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="434891512"
+X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
+   d="scan'208";a="434891512"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 12:44:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="931974323"
+X-IronPort-AV: E=Sophos;i="6.05,233,1701158400"; 
+   d="scan'208";a="931974323"
+Received: from ktpate-mobl2.amr.corp.intel.com (HELO [10.209.73.130]) ([10.209.73.130])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 12:44:47 -0800
+Message-ID: <59f268c4-8491-4256-8766-664a8ee0ffd8@linux.intel.com>
+Date: Wed, 31 Jan 2024 12:44:46 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
 List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHmME9ps6W5snQrYeNVMFgfhMKFKciky=-UxxGFbAx_RrxSHoA@mail.gmail.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Wed, 31 Jan 2024 14:35:33 -0600 (CST)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
+ for quote generation
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>,
+ Nikolay Borisov <nik.borisov@suse.com>, linux-coco@lists.linux.dev
+Cc: x86@kernel.org, dave.hansen@linux.intel.com, dionnaglaze@google.com,
+ dan.middleton@linux.intel.com
+References: <20240124093858.1818497-1-nik.borisov@suse.com>
+ <e8c2043a-a872-43ff-b079-ebbbfa6cb743@linux.intel.com>
+ <65baa477b8da8_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <65baa477b8da8_37ad29436@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 31, 2024 at 02:06:13PM +0100, Jason A. Donenfeld wrote:
 
-Hi again to everyone, beautiful day here in North Dakota.
+On 1/31/24 11:50 AM, Dan Williams wrote:
+> Kuppuswamy Sathyanarayanan wrote:
+>> + Dan Middleton
+>>
+>> Hi Boris,
+>>
+>> On 1/24/24 1:38 AM, Nikolay Borisov wrote:
+>>> IOCTL based interface was the natural choice for interacting with the
+>>> quote generation machine at a time when there wasn't anything better.
+>>> Fortunately, now we have a vendor-agnostic, configfs-based one which
+>>> obviates the need to have the IOCTL-based interface.
+>>>
+>>> Gate the relevant code behind a Kconfig option, clearly marking it as
+>>> deprecated as well as introduce a runtime warning.
+>>>
+>>> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+>>> ---
+>> In the following thread, Dan Middleton raised a point about this interface
+>> being used for local attestation use cases.
+>>
+>> https://lore.kernel.org/all/ZbAaKAh-230Hj4BF@redhat.com/T/#m691dae9a7833a35552cafb597c838df9c2ed5f3a
+>>
+>> Currently, the configfs-based ABI does not support the local attestation use cases.
+> What are local attestation use cases, and what happens if Linux does not
+> provide a local attestation interface and standardizes on remotely
+> attestable as the standard?
 
-> On Wed, Jan 31, 2024 at 9:17???AM Reshetova, Elena
-> <elena.reshetova@intel.com> wrote:
-> > This matches both my understanding (I do have cryptography background
-> > and understanding how cryptographic RNGs work)
-> > and official public docs that Intel published on this matter.
-> > Given that the physical entropy source is limited anyhow, and by giving
-> > enough pressure on the whole construction you should be able to
-> > make RDRAND fail because if the intermediate AES-CBC MAC extractor/
-> > conditioner is not getting its min entropy input rate, it wont
-> > produce a proper seed for AES CTR DRBG.
-> > Of course exact details/numbers can wary between different generations of
-> > Intel DRNG implementation, and the platforms where it is running on,
-> > so be careful to sticking to concrete numbers.
 
-> Alright, so RDRAND is not reliable. The question for us now is: do
-> we want RDRAND unreliability to translate to another form of
-> unreliability elsewhere, e.g. DoS/infiniteloop/latency/WARN_ON()? Or
-> would it be better to declare the hardware simply broken and ask
-> Intel to fix it? (I don't know the answer to that question.)
+Local attestation is used by one TD on the same platform to prove to another TD
+in the same platform about its identity. It is mainly used in cases where a TD provides
+some special services required by other TDs. Since they are all in the same platform,
+there is no need for a 3rd party verifier or Quoting service. It can use the verifiable MAC
+to check the correctness of the TD.
 
-I think it would demonstrate a lack of appropriate engineering
-diligence on the part of our community to declare RDRAND 'busted' at
-this point.
+I am not sure about actual local attestation users. May be Dan can share that info.
 
-While it appeares to be trivially easy to force RDSEED into depletion,
-there does not seem to be a suggestion, at least in the open
-literature, that this directly or easily translates into stalling
-output from RDRAND in any type of relevant adversarial fashion.
+Regarding your question about using "remotely attestable as the standard", I think
+remote attestation can handle all local attestation use cases. But, does it make sense to
+force users to run a Quoting service if they don't need to communicate with 3rd party
+servers?
 
-If this were the case, given what CVE's seem to be worth on a resume,
-someone would have rented a cloud machine and come up with a POC
-against RDRAND in a multi-tenant environment and then promptly put up
-a web-site called 'Random Starve' or something equally ominous.
+SGX also seems to have local attestation concept
 
-This is no doubt secondary to the 1022x amplication factor inherent in
-the 'Bull Mountain' architecture.
+https://sgx101.gitbook.io/sgx101/sgx-bootstrap/attestation/inter-process-local-attestation
 
-I'm a bit surprised that no one from the Intel side of this
-conversation didn't pitch this over the wall as soon as this
-conversation came up, but I would suggest that everyone concerned
-about this issue give the following a thorough read:
+>
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
-https://www.intel.com/content/www/us/en/developer/articles/guide/intel-digital-random-number-generator-drng-software-implementation-guide.html
-
-Relevant highlights:
-
-- As I suggested in my earlier e-mail, random number generation is a
-  socket based resource, hence an adversarial domain limited to only
-  the cores on a common socket.
-
-- There is a maximum randomness throughput rate of 800 MB/s over all
-  cores sharing common random number infrastructure.  Single thread
-  throughput rates of 70-200 MB/s are demonstratable.
-
-- A failure of RDRAND over 10 re-tries is 'astronomically' small, with
-  no definition of astronomical provided, one would assume really
-  small, given they are using the word astronomical.
-
-> > That said, I have taken an AR to follow up internally on what can be done
-> > to improve our situation with RDRAND/RDSEED.
-
-I think I can save you some time Elena.
-
-> Specifying this is an interesting question. What exactly might our
-> requirements be for a "non-broken" RDRAND? It seems like we have two
-> basic ones:
-> 
-> - One VMX (or host) context can't DoS another one.
-> - Ring 3 can't DoS ring 0.
-> 
-> I don't know whether that'd be implemented with context-tied rate
-> limiting or more state or what. But I think, short of just making
-> RDRAND never fail, that's basically what's needed.
-
-I think we probably have that, for all intents and purposes, given
-that we embrace the following methodogy:
-
-- Use RDRAND exclusively.
-
-- Be willing to take 10 swings at the plate.
-
-- Given the somewhat demanding requirements for TDX/COCO, fail and
-  either deadlock or panic after 10 swings since that would seem to
-  suggest the hardware is broken, ie. RMA time.
-
-Either deadlock or panic would be appropriate.  The objective in the
-COCO environment is to get the person who clicked on the 'Enable Azure
-Confidential' checkbox, or its equivalent, on their cloud dashboard,
-to call the HelpDesk and ask them why their confidential application
-won't come up.
-
-After the user confirms to the HelpDesk that their computer is plugged
-in, the problem will get fixed.  Either the broken hardware will be
-identified and idled out or the mighty sword of vengeance will be
-summoned down on whoever has all of the other cores on the socket
-pegged.
-
-Final thoughts:
-
-- RDSEED is probably a poor thing to be using.
-
-- There may be a reasonable argument that RDSEED shouldn't have been
-  exposed above ring 0, but that ship has sailed.  Brownie points
-  moving forward for an RDsomething that is ring 0 and has guaranteed
-  access to some amount of functionally reasonable entropy.
-
-- Intel and AMD are already doing a lot of 'special' stuff with their
-  COCO hardware in order to defy the long standing adage of: 'You
-  can't have security without physical security'.  Access to per core thermal
-  noise, as I suggested, is probably a big lift but clever engineers can
-  probably cook up some type of fairness doctrine for randomness in
-  TDX or SEV_SNP, given the particular importance of instruction based
-  randomness in COCO.
-
-- Perfection is the enemy of good.
-
-> Jason
-
-Have a good day.
-
-As always,
-Dr. Greg
-
-The Quixote Project - Flailing at the Travails of Cybersecurity
-              https://github.com/Quixote-Project
