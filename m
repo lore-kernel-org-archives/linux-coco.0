@@ -1,58 +1,46 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C12B55782
-	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 07:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251E54F9C
+	for <linux-coco@lists.linux.dev>; Wed, 31 Jan 2024 07:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706686287; cv=none; b=cr6KmrN7/KA7fMGTqIJU3qHc3bgZO9jGdbZkJEytjRj/L1RuTQM3FfkbZPoP4DH7BQNWv2bk2MB1E35G0Yavzz8DOkyy8/2yI9dA2Hefkf7WOdTv2NpE63ocYjac2Aad1KnHTneP2aEmYKjunNzeNXHj/7b8yNcTqNQI42E9DZY=
+	t=1706687285; cv=none; b=t8/cIr/Z+FAV9e/MeEkOosoF51xQRp8AtZPwcnJkXTXAyQZfKwMX6zTA9frZoJtZSLeelDqwBOVxDlRzEg6RQ1s0s7WzK2Vt/5vbeU0/QGFPBh2XBBsJ2LhTvqs5VjNFzUquFEpay1EEwNJuxpkEMfnZf3JMjrbclYddmtp2A1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706686287; c=relaxed/simple;
-	bh=qam7HRULEOr6fNQvTRT8ZVpRJTxiJi5JDfLfsxZxk68=;
+	s=arc-20240116; t=1706687285; c=relaxed/simple;
+	bh=l9M7ytoYtx0wMSoveOWMkfIN7H38u9HPk0svWGTpzYE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b5oDgFUybyXh7oFShe2gIONv0X9Ia5xfUq7h0eVfgzbgrq7EzF5JzL9HG9CTlsYn5JPdiiYttCinRHBAeuTawR0ge+yIVzoboA0Jv+NdPOnr5QSoPp2KKPBElTwjZtG5YpIKq2WVXs05kmj2ySdfqOPkbnjRX3ghT+dJGb1HQ/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cXnjXuww; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	 In-Reply-To:Content-Type; b=gWkxlFu7TAw43LUoFLjynN2/5kNFXKIJ1VQELxhc/xipM/2ZQAoHL2zmrxj5bN87+HtfanQ7D4pbBuTJ/OXLrQishwP+K0ToWjwpTC3E+5XIuwT0HtMunOX5cdf8eil6vIEkk+AVzpu3MRL0kTnM3bf1pwRHHvVAR/OfD8LACuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZCK/6E3o; arc=none smtp.client-ip=134.134.136.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cXnjXuww"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-55ee9805da7so4142080a12.3
-        for <linux-coco@lists.linux.dev>; Tue, 30 Jan 2024 23:31:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1706686283; x=1707291083; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dgLPIeASAe7o9WjBABzOsB7qU2IyoTbg5XdoUZ2fWs8=;
-        b=cXnjXuwwJWnf2RGSjZa0dsiIUNb4VLWIZVwcbBV6g2KlmljKHMTWuyaudlLLUj0xvT
-         95mexoB+WYfZQ1Uet9lBFwNtBfYwypnxK4aOwkrXg3f3+6orp0qxqSSZAHbLkZFTCNkZ
-         pqR5Aj1XFbOnKwdEbNzer194nwio4ZNdP38jaRKnrtdY0FM9oYLtZ7fefZ5AX+3r7cJe
-         +Rs7TIlqRyt0sxxcBbmmwhFNdsT+Y0nWiCFzL9PLdZ4tnvy/DW9d2kJGOJ8toEHEWT5S
-         3Y5yJnUzSKUje/spYdMb1XIQBlfkDX4FVDDwxuMkbaBMortaAG0n9j4LAkMTTlg3HSH+
-         GcLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706686283; x=1707291083;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dgLPIeASAe7o9WjBABzOsB7qU2IyoTbg5XdoUZ2fWs8=;
-        b=Fd1SshNN6ZV3h6A/HVrEzBQTn2aEwqtsujTA2CuleKvT97lN3hDkDtEN5angyYPlaZ
-         mwdJROYPv3L4CaBKnTmzid0YgVKLbAyeHYF1sBUUUGV3LtePZpGbW69QvROVk1WOp84k
-         SM1T+ODyxHz0ouTTycNyczq4UePLYsDlYek+9tIgluffi8kI8wPGROZHTp1ehAv1Qf61
-         Mm3LKbWIKwk8uZOepCF8BDsK7s4dEh7cRYCwg2WrTgcZjwLkm3wWeE4gZsC6IhGC4tbJ
-         BhiZ17hY9Gamv9aNXIKHUOkkUGjr32124lZQuGM+kBJF+CDSoUleWkMXVOF9bFMeiCvo
-         /qnA==
-X-Gm-Message-State: AOJu0Yx6UUD///XUdjLA2fruG8/Curw+pYRXhKKgxSZo1PjXUPJllgiG
-	ooZdpie5jAqPxr5LoI6Jk2COTLwF6Lm6uCd18BZo0R4MCRk+EX8hBdYEOacMPrU=
-X-Google-Smtp-Source: AGHT+IGPzOcdc3+8Kb0Rxv3ybitEJMCoQK5tB6gdp4e+UqRtfJmhKXIVnjnDfIu++uawgiS1GLjYKw==
-X-Received: by 2002:a05:6402:f93:b0:55e:ed35:ffce with SMTP id eh19-20020a0564020f9300b0055eed35ffcemr427085edb.37.1706686283355;
-        Tue, 30 Jan 2024 23:31:23 -0800 (PST)
-Received: from ?IPV6:2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f? ([2a10:bac0:b000:7588:aea0:a2ac:ddc1:371f])
-        by smtp.gmail.com with ESMTPSA id d32-20020a056402402000b0055f82f799dasm323865eda.66.2024.01.30.23.31.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jan 2024 23:31:23 -0800 (PST)
-Message-ID: <efe20a00-9a7c-4c03-8fcc-fce265cdbf0e@suse.com>
-Date: Wed, 31 Jan 2024 09:31:21 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZCK/6E3o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706687283; x=1738223283;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=l9M7ytoYtx0wMSoveOWMkfIN7H38u9HPk0svWGTpzYE=;
+  b=ZCK/6E3oG/dcXsROegsJujO4vkBupYJLphB920IXffweBhyceWueNxJs
+   BJ50voMRyD367MHCEH10qfTUdtE+vUJu2kswlZGsNKh0ILemZnQoN3wHw
+   wCyyRcyDc4nAKwtN/8wi7kwg4mkQAql30PyTTeZARtza48TLu4nJYphRu
+   CZfJbGhyn8pfEgytursxrqqQz9Dlo1Kk1dWpHYeI6r2CUKgkIJQi+w8z0
+   en2cDt0CRpx38OCzx7CZb8ui2ZylWB9wkzJszXoomDy6C4zANFklhbVHP
+   Q3BYJiWs3E6+MQhDAz5JAUyOvqT7Qdo2TRGiiPcPm1UgZ6jXCL8AjCxhL
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="467766547"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="467766547"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 23:48:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="4076149"
+Received: from ktpate-mobl2.amr.corp.intel.com (HELO [10.209.73.130]) ([10.209.73.130])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 23:48:03 -0800
+Message-ID: <e8c2043a-a872-43ff-b079-ebbbfa6cb743@linux.intel.com>
+Date: Tue, 30 Jan 2024 23:48:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-coco@lists.linux.dev
 List-Id: <linux-coco.lists.linux.dev>
@@ -60,67 +48,139 @@ List-Subscribe: <mailto:linux-coco+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:linux-coco+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 00/16] x86/tdx: Add kexec support
+Subject: Re: [PATCH] virt: tdx-guest: Deprecate legacy IOCTL-based interface
+ for quote generation
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "Huang, Kai" <kai.huang@intel.com>, Baoquan He <bhe@redhat.com>,
- kexec@lists.infradead.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20240124125557.493675-1-kirill.shutemov@linux.intel.com>
- <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <3f44458f-2b4a-4464-a3df-cb791298dafc@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Nikolay Borisov <nik.borisov@suse.com>, linux-coco@lists.linux.dev
+Cc: x86@kernel.org, dave.hansen@linux.intel.com, dan.j.williams@intel.com,
+ dionnaglaze@google.com, dan.middleton@linux.intel.com
+References: <20240124093858.1818497-1-nik.borisov@suse.com>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240124093858.1818497-1-nik.borisov@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
++ Dan Middleton
 
+Hi Boris,
 
-On 30.01.24 г. 15:43 ч., Paolo Bonzini wrote:
-> On 1/24/24 13:55, Kirill A. Shutemov wrote:
->> The patchset adds bits and pieces to get kexec (and crashkernel) work on
->> TDX guest.
->>
->> The last patch implements CPU offlining according to the approved ACPI
->> spec change poposal[1]. It unlocks kexec with all CPUs visible in the 
->> target
->> kernel. It requires BIOS-side enabling. If it missing we fallback to 
->> booting
->> 2nd kernel with single CPU.
->>
->> Please review. I would be glad for any feedback.
-> 
-> Hi Kirill,
-> 
-> I have a very basic question: is there a reason why this series does not 
-> revert commit cb8eb06d50fc, "x86/virt/tdx: Disable TDX host support when 
-> kexec is enabled"?
+On 1/24/24 1:38 AM, Nikolay Borisov wrote:
+> IOCTL based interface was the natural choice for interacting with the
+> quote generation machine at a time when there wasn't anything better.
+> Fortunately, now we have a vendor-agnostic, configfs-based one which
+> obviates the need to have the IOCTL-based interface.
+>
+> Gate the relevant code behind a Kconfig option, clearly marking it as
+> deprecated as well as introduce a runtime warning.
+>
+> Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+> ---
 
-While on the topic, Paolo do you think it's  better to have a runtime 
-disable of kexec rather than at compile time:
+In the following thread, Dan Middleton raised a point about this interface
+being used for local attestation use cases.
 
-[RFC PATCH] x86/virt/tdx: Disable KEXEC in the presence of TDX
+https://lore.kernel.org/all/ZbAaKAh-230Hj4BF@redhat.com/T/#m691dae9a7833a35552cafb597c838df9c2ed5f3a
 
-20240118160118.1899299-1-nik.borisov@suse.com
+Currently, the configfs-based ABI does not support the local attestation use cases.
 
-I'm trying to get traction for this patch.
+IMO, for now we can just add a config option to allow the user to selectively
+enable it. We can add the runtime warning once we address the local attestation
+use case via configfs ABI.
 
+>  drivers/virt/coco/tdx-guest/Kconfig     |  9 +++++++++
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 13 +++++++++++++
+>  2 files changed, 22 insertions(+)
+>
+> diff --git a/drivers/virt/coco/tdx-guest/Kconfig b/drivers/virt/coco/tdx-guest/Kconfig
+> index 22dd59e19431..0f1cfdfbbd28 100644
+> --- a/drivers/virt/coco/tdx-guest/Kconfig
+> +++ b/drivers/virt/coco/tdx-guest/Kconfig
+> @@ -9,3 +9,12 @@ config TDX_GUEST_DRIVER
+>  
+>  	  To compile this driver as module, choose M here. The module will
+>  	  be called tdx-guest.
+> +
+> +config TDX_GUEST_DRIVER_LEGACY_IOCTL
+> +	def_bool y
+> +	prompt "Enable legacy ioctl interface (DEPRECATED)"
+> +	depends on TDX_GUEST_DRIVER
+> +	help
+> +	  Enable the legacy IOCTL-based interface to get the TDX report. It's
+> +	  deprecated in favor of the configfs based one and will be removed
+> +	  in a future release.
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index 1253bf76b570..b8cea9486daf 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -66,6 +66,7 @@ static DEFINE_MUTEX(quote_lock);
+>   */
+>  static u32 getquote_timeout = 30;
+>  
+> +#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+>  static long tdx_get_report0(struct tdx_report_req __user *req)
+>  {
+>  	u8 *reportdata, *tdreport;
+> @@ -100,6 +101,7 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
+>  
+>  	return ret;
+>  }
+> +#endif
+>  
+>  static void free_quote_buf(void *buf)
+>  {
+> @@ -249,6 +251,9 @@ static int tdx_report_new(struct tsm_report *report, void *data)
+>  	return ret;
+>  }
+>  
+> +
+> +
+> +#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+>  static long tdx_guest_ioctl(struct file *file, unsigned int cmd,
+>  			    unsigned long arg)
+>  {
+> @@ -271,6 +276,7 @@ static struct miscdevice tdx_misc_dev = {
+>  	.minor = MISC_DYNAMIC_MINOR,
+>  	.fops = &tdx_guest_fops,
+>  };
+> +#endif
+>  
+>  static const struct x86_cpu_id tdx_guest_ids[] = {
+>  	X86_MATCH_FEATURE(X86_FEATURE_TDX_GUEST, NULL),
+> @@ -290,9 +296,12 @@ static int __init tdx_guest_init(void)
+>  	if (!x86_match_cpu(tdx_guest_ids))
+>  		return -ENODEV;
+>  
+> +#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+> +	pr_info("Legacy IOCTL-based interface is deprecated and will be removed in a future release\n");
+>  	ret = misc_register(&tdx_misc_dev);
+>  	if (ret)
+>  		return ret;
+> +#endif
+>  
+>  	quote_data = alloc_quote_buf();
+>  	if (!quote_data) {
+> @@ -310,7 +319,9 @@ static int __init tdx_guest_init(void)
+>  free_quote:
+>  	free_quote_buf(quote_data);
+>  free_misc:
+> +#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+>  	misc_deregister(&tdx_misc_dev);
+> +#endif
+>  
+>  	return ret;
+>  }
+> @@ -320,7 +331,9 @@ static void __exit tdx_guest_exit(void)
+>  {
+>  	tsm_unregister(&tdx_tsm_ops);
+>  	free_quote_buf(quote_data);
+> +#ifdef CONFIG_TDX_GUEST_DRIVER_LEGACY_IOCTL
+>  	misc_deregister(&tdx_misc_dev);
+> +#endif
+>  }
+>  module_exit(tdx_guest_exit);
+>  
 
-> 
-> Thanks,
-> 
-> Paolo
-> 
-> 
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
